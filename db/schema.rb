@@ -11,39 +11,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-#ActiveRecord::Schema.define(version: 20130905150104) do
+ActiveRecord::Schema.define(version: 20130905000000) do
 
-  #devise
-  #create_table "users", force: true do |t|
-  #  t.string   "email",                  default: "", null: false
-  #  t.string   "encrypted_password",     default: "", null: false
-  #  t.string   "reset_password_token"
-  #  t.datetime "reset_password_sent_at"
-  #  t.datetime "remember_created_at"
-  #  t.integer  "sign_in_count",          default: 0
-  #  t.datetime "current_sign_in_at"
-  #  t.datetime "last_sign_in_at"
-  #  t.string   "current_sign_in_ip"
-  #  t.string   "last_sign_in_ip"
-  #  t.datetime "created_at"
-  #  t.datetime "updated_at"
-  #end
-  #
-  #add_index "users", ["email"], name: "index_users_on_email", unique: true
-  #add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
 
-  #end
-
-ActiveRecord::Schema.define(:version => 20130905000000) do
-
-  create_table "academic_sessions", :force => true do |t|
+  create_table "academic_sessions", force: true do |t|
     t.string   "semester"
     t.integer  "total_week"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  create_table "accessions", :force => true do |t|
+  create_table "accessions", force: true do |t|
     t.integer  "book_id"
     t.string   "accession_no"
     t.string   "order_no"
@@ -55,7 +35,26 @@ ActiveRecord::Schema.define(:version => 20130905000000) do
     t.datetime "updated_at"
   end
 
-  create_table "addsuppliers", :force => true do |t|
+  create_table "addbooks", force: true do |t|
+    t.string   "name"
+    t.string   "phone"
+    t.string   "address"
+    t.string   "mail"
+    t.string   "web"
+    t.string   "fax"
+    t.string   "shortname"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "address_book_items", force: true do |t|
+    t.integer  "address_book_id"
+    t.string   "item"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "addsuppliers", force: true do |t|
     t.integer  "supplier_id"
     t.string   "lpono"
     t.string   "document"
@@ -66,7 +65,7 @@ ActiveRecord::Schema.define(:version => 20130905000000) do
     t.datetime "updated_at"
   end
 
-  create_table "answerchoices", :force => true do |t|
+  create_table "answerchoices", force: true do |t|
     t.integer  "examquestion_id"
     t.string   "item"
     t.string   "description"
@@ -74,7 +73,7 @@ ActiveRecord::Schema.define(:version => 20130905000000) do
     t.datetime "updated_at"
   end
 
-  create_table "appraisals", :force => true do |t|
+  create_table "appraisals", force: true do |t|
     t.integer  "staff_id"
     t.date     "evaldt"
     t.date     "parttwodt"
@@ -124,7 +123,7 @@ ActiveRecord::Schema.define(:version => 20130905000000) do
     t.datetime "updated_at"
   end
 
-  create_table "asset_defects", :force => true do |t|
+  create_table "asset_defects", force: true do |t|
     t.integer  "asset_id"
     t.integer  "reported_by"
     t.text     "notes"
@@ -141,7 +140,7 @@ ActiveRecord::Schema.define(:version => 20130905000000) do
     t.datetime "updated_at"
   end
 
-  create_table "asset_disposals", :force => true do |t|
+  create_table "asset_disposals", force: true do |t|
     t.integer  "asset_id"
     t.integer  "quantity"
     t.integer  "asset_defect_id"
@@ -197,7 +196,7 @@ ActiveRecord::Schema.define(:version => 20130905000000) do
     t.datetime "updated_at"
   end
 
-  create_table "asset_loans", :force => true do |t|
+  create_table "asset_loans", force: true do |t|
     t.integer  "asset_id"
     t.integer  "staff_id"
     t.text     "reasons"
@@ -218,7 +217,7 @@ ActiveRecord::Schema.define(:version => 20130905000000) do
     t.datetime "updated_at"
   end
 
-  create_table "asset_losses", :force => true do |t|
+  create_table "asset_losses", force: true do |t|
     t.boolean  "form_type"
     t.string   "loss_type"
     t.integer  "asset_id"
@@ -263,7 +262,7 @@ ActiveRecord::Schema.define(:version => 20130905000000) do
     t.datetime "updated_at"
   end
 
-  create_table "asset_placements", :force => true do |t|
+  create_table "asset_placements", force: true do |t|
     t.integer  "asset_id"
     t.integer  "location_id"
     t.integer  "staff_id"
@@ -273,7 +272,7 @@ ActiveRecord::Schema.define(:version => 20130905000000) do
     t.datetime "updated_at"
   end
 
-  create_table "assetcategories", :force => true do |t|
+  create_table "assetcategories", force: true do |t|
     t.integer  "parent_id"
     t.string   "description"
     t.integer  "cattype_id"
@@ -281,7 +280,7 @@ ActiveRecord::Schema.define(:version => 20130905000000) do
     t.datetime "updated_at"
   end
 
-  create_table "assetlosses", :force => true do |t|
+  create_table "assetlosses", force: true do |t|
     t.string   "losstype"
     t.decimal  "estvalue"
     t.integer  "asset_id"
@@ -328,7 +327,7 @@ ActiveRecord::Schema.define(:version => 20130905000000) do
     t.datetime "updated_at"
   end
 
-  create_table "assetnums", :force => true do |t|
+  create_table "assetnums", force: true do |t|
     t.integer  "asset_id"
     t.string   "assetnumname"
     t.string   "assetadnum"
@@ -336,7 +335,7 @@ ActiveRecord::Schema.define(:version => 20130905000000) do
     t.datetime "updated_at"
   end
 
-  create_table "assets", :force => true do |t|
+  create_table "assets", force: true do |t|
     t.string   "assetcode"
     t.string   "cardno"
     t.integer  "assettype"
@@ -376,7 +375,7 @@ ActiveRecord::Schema.define(:version => 20130905000000) do
     t.datetime "updated_at"
   end
 
-  create_table "assetsearches", :force => true do |t|
+  create_table "assetsearches", force: true do |t|
     t.string   "assetcode"
     t.integer  "assettype"
     t.string   "name"
@@ -420,7 +419,7 @@ ActiveRecord::Schema.define(:version => 20130905000000) do
     t.datetime "updated_at"
   end
 
-  create_table "assettracks", :force => true do |t|
+  create_table "assettracks", force: true do |t|
     t.integer  "asset_id"
     t.integer  "staff_id"
     t.date     "reservationdate"
@@ -436,7 +435,7 @@ ActiveRecord::Schema.define(:version => 20130905000000) do
     t.datetime "updated_at"
   end
 
-  create_table "attendances", :force => true do |t|
+  create_table "attendances", force: true do |t|
     t.integer  "staff_id"
     t.date     "attdate"
     t.time     "time_in"
@@ -448,7 +447,7 @@ ActiveRecord::Schema.define(:version => 20130905000000) do
     t.datetime "updated_at"
   end
 
-  create_table "bankaccounts", :force => true do |t|
+  create_table "bankaccounts", force: true do |t|
     t.integer  "staff_id"
     t.integer  "student_id"
     t.integer  "bank_id"
@@ -458,7 +457,7 @@ ActiveRecord::Schema.define(:version => 20130905000000) do
     t.datetime "updated_at"
   end
 
-  create_table "banks", :force => true do |t|
+  create_table "banks", force: true do |t|
     t.string   "short_name"
     t.string   "long_name"
     t.datetime "created_at"
@@ -466,7 +465,7 @@ ActiveRecord::Schema.define(:version => 20130905000000) do
     t.boolean  "active"
   end
 
-  create_table "books", :force => true do |t|
+  create_table "books", force: true do |t|
     t.string   "tagno"
     t.string   "controlno"
     t.string   "isbn"
@@ -514,7 +513,7 @@ ActiveRecord::Schema.define(:version => 20130905000000) do
     t.datetime "updated_at"
   end
 
-  create_table "booksearches", :force => true do |t|
+  create_table "booksearches", force: true do |t|
     t.string   "title"
     t.string   "author"
     t.string   "isbn"
@@ -528,7 +527,7 @@ ActiveRecord::Schema.define(:version => 20130905000000) do
     t.datetime "updated_at"
   end
 
-  create_table "booleananswers", :force => true do |t|
+  create_table "booleananswers", force: true do |t|
     t.integer  "examquestion_id"
     t.string   "item"
     t.boolean  "answer"
@@ -536,7 +535,7 @@ ActiveRecord::Schema.define(:version => 20130905000000) do
     t.datetime "updated_at"
   end
 
-  create_table "booleanchoices", :force => true do |t|
+  create_table "booleanchoices", force: true do |t|
     t.integer  "examquestion_id"
     t.string   "item"
     t.string   "description"
@@ -544,7 +543,7 @@ ActiveRecord::Schema.define(:version => 20130905000000) do
     t.datetime "updated_at"
   end
 
-  create_table "bulletins", :force => true do |t|
+  create_table "bulletins", force: true do |t|
     t.string   "headline"
     t.text     "content"
     t.integer  "postedby_id"
@@ -557,7 +556,7 @@ ActiveRecord::Schema.define(:version => 20130905000000) do
     t.datetime "updated_at"
   end
 
-  create_table "cofiles", :force => true do |t|
+  create_table "cofiles", force: true do |t|
     t.string   "cofileno"
     t.string   "name"
     t.string   "location"
@@ -570,14 +569,14 @@ ActiveRecord::Schema.define(:version => 20130905000000) do
     t.datetime "updated_at"
   end
 
-  create_table "counsellings", :force => true do |t|
+  create_table "counsellings", force: true do |t|
     t.integer  "student_id"
     t.integer  "cofile_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  create_table "curriculumsearches", :force => true do |t|
+  create_table "curriculumsearches", force: true do |t|
     t.integer  "programme_id"
     t.integer  "semester"
     t.integer  "subject"
@@ -586,7 +585,7 @@ ActiveRecord::Schema.define(:version => 20130905000000) do
     t.datetime "updated_at"
   end
 
-  create_table "disposals", :force => true do |t|
+  create_table "disposals", force: true do |t|
     t.integer  "asset_id"
     t.boolean  "used"
     t.string   "usedduration"
@@ -599,7 +598,7 @@ ActiveRecord::Schema.define(:version => 20130905000000) do
     t.datetime "updated_at"
   end
 
-  create_table "documents", :force => true do |t|
+  create_table "documents", force: true do |t|
     t.string   "serialno"
     t.string   "refno"
     t.integer  "category"
@@ -637,12 +636,12 @@ ActiveRecord::Schema.define(:version => 20130905000000) do
     t.datetime "updated_at"
   end
 
-  create_table "documents_staffs", :id => false, :force => true do |t|
+  create_table "documents_staffs", id: false, force: true do |t|
     t.integer "document_id"
     t.integer "staff_id"
   end
 
-  create_table "documentsearches", :force => true do |t|
+  create_table "documentsearches", force: true do |t|
     t.string   "refno"
     t.integer  "category"
     t.string   "title"
@@ -658,14 +657,14 @@ ActiveRecord::Schema.define(:version => 20130905000000) do
     t.datetime "updated_at"
   end
 
-  create_table "employgrades", :force => true do |t|
+  create_table "employgrades", force: true do |t|
     t.string   "name"
     t.integer  "group_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  create_table "evactivities", :force => true do |t|
+  create_table "evactivities", force: true do |t|
     t.integer  "appraisal_id"
     t.date     "evaldt"
     t.string   "evactivity"
@@ -675,7 +674,7 @@ ActiveRecord::Schema.define(:version => 20130905000000) do
     t.datetime "updated_at"
   end
 
-  create_table "events", :force => true do |t|
+  create_table "events", force: true do |t|
     t.string   "eventname"
     t.string   "location"
     t.text     "participants"
@@ -688,7 +687,7 @@ ActiveRecord::Schema.define(:version => 20130905000000) do
     t.datetime "updated_at"
   end
 
-  create_table "examanalyses", :force => true do |t|
+  create_table "examanalyses", force: true do |t|
     t.integer  "exam_id"
     t.integer  "gradeA"
     t.integer  "gradeAminus"
@@ -705,7 +704,7 @@ ActiveRecord::Schema.define(:version => 20130905000000) do
     t.datetime "updated_at"
   end
 
-  create_table "examanalysissearches", :force => true do |t|
+  create_table "examanalysissearches", force: true do |t|
     t.string   "examtype"
     t.integer  "subject_id"
     t.date     "examon"
@@ -715,7 +714,7 @@ ActiveRecord::Schema.define(:version => 20130905000000) do
     t.datetime "updated_at"
   end
 
-  create_table "examanswers", :force => true do |t|
+  create_table "examanswers", force: true do |t|
     t.integer  "examquestion_id"
     t.string   "item"
     t.string   "answer_desc"
@@ -723,7 +722,7 @@ ActiveRecord::Schema.define(:version => 20130905000000) do
     t.datetime "updated_at"
   end
 
-  create_table "exammakers", :force => true do |t|
+  create_table "exammakers", force: true do |t|
     t.string   "name"
     t.text     "description"
     t.integer  "creator_id"
@@ -731,14 +730,14 @@ ActiveRecord::Schema.define(:version => 20130905000000) do
     t.datetime "updated_at"
   end
 
-  create_table "exammakers_examquestions", :id => false, :force => true do |t|
+  create_table "exammakers_examquestions", id: false, force: true do |t|
     t.integer  "exammaker_id"
     t.integer  "examquestion_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  create_table "exammarks", :force => true do |t|
+  create_table "exammarks", force: true do |t|
     t.integer  "student_id"
     t.integer  "exam_id"
     t.decimal  "total_mcq"
@@ -746,7 +745,7 @@ ActiveRecord::Schema.define(:version => 20130905000000) do
     t.datetime "updated_at"
   end
 
-  create_table "exammcqanswers", :force => true do |t|
+  create_table "exammcqanswers", force: true do |t|
     t.integer  "examquestion_id"
     t.string   "sequence"
     t.string   "answer"
@@ -754,7 +753,7 @@ ActiveRecord::Schema.define(:version => 20130905000000) do
     t.datetime "updated_at"
   end
 
-  create_table "examquestionanalyses", :force => true do |t|
+  create_table "examquestionanalyses", force: true do |t|
     t.integer  "examquestion_id"
     t.integer  "count"
     t.decimal  "min"
@@ -773,7 +772,7 @@ ActiveRecord::Schema.define(:version => 20130905000000) do
     t.datetime "updated_at"
   end
 
-  create_table "examquestions", :force => true do |t|
+  create_table "examquestions", force: true do |t|
     t.integer  "subject_id"
     t.string   "questiontype"
     t.text     "question"
@@ -813,7 +812,7 @@ ActiveRecord::Schema.define(:version => 20130905000000) do
     t.datetime "updated_at"
   end
 
-  create_table "examquestions_exams", :id => false, :force => true do |t|
+  create_table "examquestions_exams", id: false, force: true do |t|
     t.integer  "exam_id"
     t.integer  "examquestion_id"
     t.integer  "sequence"
@@ -821,7 +820,7 @@ ActiveRecord::Schema.define(:version => 20130905000000) do
     t.datetime "updated_at"
   end
 
-  create_table "examresults", :force => true do |t|
+  create_table "examresults", force: true do |t|
     t.integer  "programme_id"
     t.decimal  "total"
     t.decimal  "pngs17"
@@ -834,12 +833,12 @@ ActiveRecord::Schema.define(:version => 20130905000000) do
     t.datetime "updated_at"
   end
 
-  create_table "examresults_students", :id => false, :force => true do |t|
+  create_table "examresults_students", id: false, force: true do |t|
     t.integer "examresult_id"
     t.integer "student_id"
   end
 
-  create_table "examresultsearches", :force => true do |t|
+  create_table "examresultsearches", force: true do |t|
     t.integer  "programme_id"
     t.integer  "subject_id"
     t.integer  "student_id"
@@ -850,7 +849,7 @@ ActiveRecord::Schema.define(:version => 20130905000000) do
     t.datetime "updated_at"
   end
 
-  create_table "exams", :force => true do |t|
+  create_table "exams", force: true do |t|
     t.string   "name"
     t.text     "description"
     t.integer  "created_by"
@@ -868,7 +867,7 @@ ActiveRecord::Schema.define(:version => 20130905000000) do
     t.datetime "updated_at"
   end
 
-  create_table "examsearches", :force => true do |t|
+  create_table "examsearches", force: true do |t|
     t.integer  "programme_id"
     t.integer  "subject_id"
     t.string   "examtype"
@@ -879,7 +878,7 @@ ActiveRecord::Schema.define(:version => 20130905000000) do
     t.datetime "updated_at"
   end
 
-  create_table "examsubquestions", :force => true do |t|
+  create_table "examsubquestions", force: true do |t|
     t.integer  "examquestion_id"
     t.integer  "parent_id"
     t.string   "sequence"
@@ -891,7 +890,7 @@ ActiveRecord::Schema.define(:version => 20130905000000) do
     t.datetime "updated_at"
   end
 
-  create_table "examtemplates", :force => true do |t|
+  create_table "examtemplates", force: true do |t|
     t.integer  "quantity"
     t.integer  "exam_id"
     t.decimal  "total_marks"
@@ -900,7 +899,7 @@ ActiveRecord::Schema.define(:version => 20130905000000) do
     t.datetime "updated_at"
   end
 
-  create_table "grades", :force => true do |t|
+  create_table "grades", force: true do |t|
     t.integer  "student_id"
     t.integer  "subject_id"
     t.boolean  "sent_to_BPL"
@@ -924,7 +923,7 @@ ActiveRecord::Schema.define(:version => 20130905000000) do
     t.datetime "updated_at"
   end
 
-  create_table "intakes", :force => true do |t|
+  create_table "intakes", force: true do |t|
     t.string   "name"
     t.string   "description"
     t.date     "register_on"
@@ -935,7 +934,7 @@ ActiveRecord::Schema.define(:version => 20130905000000) do
     t.datetime "updated_at"
   end
 
-  create_table "kins", :force => true do |t|
+  create_table "kins", force: true do |t|
     t.integer  "kintype_id"
     t.integer  "staff_id"
     t.integer  "student_id"
@@ -949,7 +948,7 @@ ActiveRecord::Schema.define(:version => 20130905000000) do
     t.datetime "updated_at"
   end
 
-  create_table "klasses", :force => true do |t|
+  create_table "klasses", force: true do |t|
     t.string   "name"
     t.integer  "intake_id"
     t.integer  "programme_id"
@@ -958,12 +957,12 @@ ActiveRecord::Schema.define(:version => 20130905000000) do
     t.datetime "updated_at"
   end
 
-  create_table "klasses_students", :id => false, :force => true do |t|
+  create_table "klasses_students", id: false, force: true do |t|
     t.integer "klass_id"
     t.integer "student_id"
   end
 
-  create_table "leaveforstaffs", :force => true do |t|
+  create_table "leaveforstaffs", force: true do |t|
     t.integer  "staff_id"
     t.integer  "leavetype"
     t.date     "leavestartdate"
@@ -983,7 +982,7 @@ ActiveRecord::Schema.define(:version => 20130905000000) do
     t.datetime "updated_at"
   end
 
-  create_table "leaveforstudents", :force => true do |t|
+  create_table "leaveforstudents", force: true do |t|
     t.integer  "student_id"
     t.string   "leavetype"
     t.date     "requestdate"
@@ -1001,14 +1000,14 @@ ActiveRecord::Schema.define(:version => 20130905000000) do
     t.datetime "updated_at"
   end
 
-  create_table "lesson_plan_trainingnotes", :force => true do |t|
+  create_table "lesson_plan_trainingnotes", force: true do |t|
     t.integer  "lesson_plan_id"
     t.integer  "trainingnote_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  create_table "lesson_plans", :force => true do |t|
+  create_table "lesson_plans", force: true do |t|
     t.integer  "lecturer"
     t.integer  "intake_id"
     t.integer  "student_qty"
@@ -1050,7 +1049,7 @@ ActiveRecord::Schema.define(:version => 20130905000000) do
     t.datetime "updated_at"
   end
 
-  create_table "lessonplan_methodologies", :force => true do |t|
+  create_table "lessonplan_methodologies", force: true do |t|
     t.text     "content"
     t.text     "lecturer_activity"
     t.text     "student_activity"
@@ -1063,7 +1062,7 @@ ActiveRecord::Schema.define(:version => 20130905000000) do
     t.datetime "updated_at"
   end
 
-  create_table "lessonplansearches", :force => true do |t|
+  create_table "lessonplansearches", force: true do |t|
     t.integer  "lecturer"
     t.integer  "intake_id"
     t.integer  "programme_id"
@@ -1072,7 +1071,7 @@ ActiveRecord::Schema.define(:version => 20130905000000) do
     t.datetime "updated_at"
   end
 
-  create_table "librarytransactions", :force => true do |t|
+  create_table "librarytransactions", force: true do |t|
     t.integer  "accession_id"
     t.boolean  "ru_staff"
     t.integer  "staff_id"
@@ -1096,7 +1095,7 @@ ActiveRecord::Schema.define(:version => 20130905000000) do
     t.datetime "updated_at"
   end
 
-  create_table "librarytransactionsearches", :force => true do |t|
+  create_table "librarytransactionsearches", force: true do |t|
     t.integer  "accumbookloan"
     t.integer  "programme"
     t.integer  "fines"
@@ -1107,7 +1106,7 @@ ActiveRecord::Schema.define(:version => 20130905000000) do
     t.datetime "updated_at"
   end
 
-  create_table "loans", :force => true do |t|
+  create_table "loans", force: true do |t|
     t.integer  "staff_id"
     t.integer  "ltype"
     t.string   "accno"
@@ -1122,7 +1121,7 @@ ActiveRecord::Schema.define(:version => 20130905000000) do
     t.datetime "updated_at"
   end
 
-  create_table "locations", :force => true do |t|
+  create_table "locations", force: true do |t|
     t.string   "code"
     t.string   "name"
     t.integer  "lclass"
@@ -1135,7 +1134,7 @@ ActiveRecord::Schema.define(:version => 20130905000000) do
     t.datetime "updated_at"
   end
 
-  create_table "maints", :force => true do |t|
+  create_table "maints", force: true do |t|
     t.integer  "asset_id"
     t.integer  "maintainer_id"
     t.string   "workorderno"
@@ -1145,14 +1144,14 @@ ActiveRecord::Schema.define(:version => 20130905000000) do
     t.datetime "updated_at"
   end
 
-  create_table "marks", :force => true do |t|
+  create_table "marks", force: true do |t|
     t.integer  "exammark_id"
     t.decimal  "student_mark"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  create_table "messages", :force => true do |t|
+  create_table "messages", force: true do |t|
     t.integer  "from_id"
     t.integer  "to_id"
     t.text     "message"
@@ -1160,12 +1159,12 @@ ActiveRecord::Schema.define(:version => 20130905000000) do
     t.datetime "updated_at"
   end
 
-  create_table "messages_staffs", :id => false, :force => true do |t|
+  create_table "messages_staffs", id: false, force: true do |t|
     t.integer "message_id"
     t.integer "staff_id"
   end
 
-  create_table "pages", :force => true do |t|
+  create_table "pages", force: true do |t|
     t.string   "name"
     t.string   "title"
     t.text     "body"
@@ -1180,7 +1179,7 @@ ActiveRecord::Schema.define(:version => 20130905000000) do
     t.datetime "updated_at"
   end
 
-  create_table "parts", :force => true do |t|
+  create_table "parts", force: true do |t|
     t.string   "partcode"
     t.string   "category"
     t.string   "unittype"
@@ -1191,14 +1190,14 @@ ActiveRecord::Schema.define(:version => 20130905000000) do
     t.datetime "updated_at"
   end
 
-  create_table "personalizetimetablesearches", :force => true do |t|
+  create_table "personalizetimetablesearches", force: true do |t|
     t.integer  "lecturer"
     t.integer  "programme_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  create_table "positions", :force => true do |t|
+  create_table "positions", force: true do |t|
     t.string   "code"
     t.string   "combo_code"
     t.string   "name"
@@ -1214,7 +1213,7 @@ ActiveRecord::Schema.define(:version => 20130905000000) do
     t.datetime "updated_at"
   end
 
-  create_table "programmes", :force => true do |t|
+  create_table "programmes", force: true do |t|
     t.string   "code"
     t.string   "combo_code"
     t.string   "name"
@@ -1230,19 +1229,19 @@ ActiveRecord::Schema.define(:version => 20130905000000) do
     t.datetime "updated_at"
   end
 
-  create_table "programmes_subjects", :id => false, :force => true do |t|
+  create_table "programmes_subjects", id: false, force: true do |t|
     t.integer "programme_id"
     t.integer "subject_id"
   end
 
-  create_table "ptbudgets", :force => true do |t|
+  create_table "ptbudgets", force: true do |t|
     t.decimal  "budget"
     t.date     "fiscalstart"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  create_table "ptcourses", :force => true do |t|
+  create_table "ptcourses", force: true do |t|
     t.string   "name"
     t.integer  "course_type"
     t.integer  "provider_id"
@@ -1256,7 +1255,7 @@ ActiveRecord::Schema.define(:version => 20130905000000) do
     t.datetime "updated_at"
   end
 
-  create_table "ptdos", :force => true do |t|
+  create_table "ptdos", force: true do |t|
     t.integer  "ptcourse_id"
     t.integer  "ptschedule_id"
     t.integer  "staff_id"
@@ -1272,7 +1271,7 @@ ActiveRecord::Schema.define(:version => 20130905000000) do
     t.datetime "updated_at"
   end
 
-  create_table "ptschedules", :force => true do |t|
+  create_table "ptschedules", force: true do |t|
     t.integer  "ptcourse_id"
     t.date     "start"
     t.string   "location"
@@ -1284,7 +1283,7 @@ ActiveRecord::Schema.define(:version => 20130905000000) do
     t.datetime "updated_at"
   end
 
-  create_table "qualifications", :force => true do |t|
+  create_table "qualifications", force: true do |t|
     t.integer  "staff_id"
     t.integer  "student_id"
     t.integer  "level_id"
@@ -1295,7 +1294,7 @@ ActiveRecord::Schema.define(:version => 20130905000000) do
     t.datetime "updated_at"
   end
 
-  create_table "residences", :force => true do |t|
+  create_table "residences", force: true do |t|
     t.string   "rescode"
     t.string   "resname"
     t.integer  "parent_id"
@@ -1314,9 +1313,9 @@ ActiveRecord::Schema.define(:version => 20130905000000) do
     t.datetime "updated_at"
   end
 
-  add_index "residences", ["ancestry"], :name => "index_residences_on_ancestry"
+  add_index "residences", ["ancestry"], name: "index_residences_on_ancestry", using: :btree
 
-  create_table "resultlines", :force => true do |t|
+  create_table "resultlines", force: true do |t|
     t.decimal  "total"
     t.decimal  "pngs17"
     t.string   "status"
@@ -1328,19 +1327,19 @@ ActiveRecord::Schema.define(:version => 20130905000000) do
     t.datetime "updated_at"
   end
 
-  create_table "roles", :force => true do |t|
+  create_table "roles", force: true do |t|
     t.string   "name"
     t.string   "authname"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  create_table "roles_users", :id => false, :force => true do |t|
+  create_table "roles_users", id: false, force: true do |t|
     t.integer "role_id"
     t.integer "user_id"
   end
 
-  create_table "rxparts", :force => true do |t|
+  create_table "rxparts", force: true do |t|
     t.integer  "part_id"
     t.string   "lponum"
     t.string   "donum"
@@ -1352,7 +1351,7 @@ ActiveRecord::Schema.define(:version => 20130905000000) do
     t.datetime "updated_at"
   end
 
-  create_table "scores", :force => true do |t|
+  create_table "scores", force: true do |t|
     t.integer  "type_id"
     t.string   "description"
     t.decimal  "marks"
@@ -1365,7 +1364,7 @@ ActiveRecord::Schema.define(:version => 20130905000000) do
     t.datetime "updated_at"
   end
 
-  create_table "scsessions", :force => true do |t|
+  create_table "scsessions", force: true do |t|
     t.integer  "counselling_id"
     t.datetime "scsessiondt"
     t.time     "scsessiondtduration"
@@ -1378,7 +1377,7 @@ ActiveRecord::Schema.define(:version => 20130905000000) do
     t.datetime "updated_at"
   end
 
-  create_table "shortessays", :force => true do |t|
+  create_table "shortessays", force: true do |t|
     t.string   "item"
     t.string   "subquestion"
     t.decimal  "submark"
@@ -1389,7 +1388,7 @@ ActiveRecord::Schema.define(:version => 20130905000000) do
     t.datetime "updated_at"
   end
 
-  create_table "spmresults", :force => true do |t|
+  create_table "spmresults", force: true do |t|
     t.integer  "student_id"
     t.string   "spm_subject"
     t.integer  "spmsubject_id"
@@ -1398,7 +1397,7 @@ ActiveRecord::Schema.define(:version => 20130905000000) do
     t.datetime "updated_at"
   end
 
-  create_table "staff_appraisal_skts", :force => true do |t|
+  create_table "staff_appraisal_skts", force: true do |t|
     t.integer  "staff_appraisal_id"
     t.integer  "priority"
     t.string   "description"
@@ -1414,7 +1413,7 @@ ActiveRecord::Schema.define(:version => 20130905000000) do
     t.datetime "updated_at"
   end
 
-  create_table "staff_appraisals", :force => true do |t|
+  create_table "staff_appraisals", force: true do |t|
     t.integer  "staff_id"
     t.date     "evaluation_year"
     t.integer  "eval1_by"
@@ -1496,7 +1495,7 @@ ActiveRecord::Schema.define(:version => 20130905000000) do
     t.datetime "updated_at"
   end
 
-  create_table "staff_attendances", :force => true do |t|
+  create_table "staff_attendances", force: true do |t|
     t.integer  "thumb_id"
     t.datetime "logged_at"
     t.string   "log_type"
@@ -1511,7 +1510,7 @@ ActiveRecord::Schema.define(:version => 20130905000000) do
     t.datetime "updated_at"
   end
 
-  create_table "staff_grades", :force => true do |t|
+  create_table "staff_grades", force: true do |t|
     t.string   "name"
     t.string   "grade"
     t.integer  "level"
@@ -1522,7 +1521,7 @@ ActiveRecord::Schema.define(:version => 20130905000000) do
     t.string   "schemename"
   end
 
-  create_table "staff_shifts", :force => true do |t|
+  create_table "staff_shifts", force: true do |t|
     t.string   "name"
     t.time     "start_at"
     t.time     "end_at"
@@ -1530,22 +1529,22 @@ ActiveRecord::Schema.define(:version => 20130905000000) do
     t.datetime "updated_at"
   end
 
-  create_table "staffcourses", :force => true do |t|
+  create_table "staffcourses", force: true do |t|
     t.string   "name"
     t.integer  "coursetype"
     t.string   "provider"
     t.string   "location"
-    t.decimal  "duration",      :precision => 4, :scale => 1, :default => 0.0
+    t.decimal  "duration",      precision: 4, scale: 1, default: 0.0
     t.integer  "duration_type"
     t.string   "proponent"
-    t.decimal  "cost",          :precision => 8, :scale => 2, :default => 2.0
+    t.decimal  "cost",          precision: 8, scale: 2, default: 2.0
     t.date     "course_date"
     t.text     "description"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  create_table "staffemploygrades", :force => true do |t|
+  create_table "staffemploygrades", force: true do |t|
     t.integer  "staffemployscheme_id"
     t.integer  "employgrade_id"
     t.string   "name"
@@ -1553,14 +1552,14 @@ ActiveRecord::Schema.define(:version => 20130905000000) do
     t.datetime "updated_at"
   end
 
-  create_table "staffemployschemes", :force => true do |t|
+  create_table "staffemployschemes", force: true do |t|
     t.string   "glass"
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  create_table "staffs", :force => true do |t|
+  create_table "staffs", force: true do |t|
     t.string   "icno"
     t.string   "name"
     t.integer  "titlecd_id"
@@ -1622,7 +1621,7 @@ ActiveRecord::Schema.define(:version => 20130905000000) do
     t.datetime "updated_at"
   end
 
-  create_table "staffsearch2s", :force => true do |t|
+  create_table "staffsearch2s", force: true do |t|
     t.string   "keywords"
     t.integer  "position"
     t.integer  "staff_grade"
@@ -1630,7 +1629,7 @@ ActiveRecord::Schema.define(:version => 20130905000000) do
     t.datetime "updated_at"
   end
 
-  create_table "staffsearches", :force => true do |t|
+  create_table "staffsearches", force: true do |t|
     t.string   "keywords"
     t.integer  "position"
     t.integer  "staff_grade"
@@ -1638,7 +1637,7 @@ ActiveRecord::Schema.define(:version => 20130905000000) do
     t.datetime "updated_at"
   end
 
-  create_table "stationeries", :force => true do |t|
+  create_table "stationeries", force: true do |t|
     t.string   "code"
     t.string   "category"
     t.string   "unittype"
@@ -1648,7 +1647,7 @@ ActiveRecord::Schema.define(:version => 20130905000000) do
     t.datetime "updated_at"
   end
 
-  create_table "student_attendances", :force => true do |t|
+  create_table "student_attendances", force: true do |t|
     t.integer  "student_id"
     t.boolean  "attend"
     t.integer  "weeklytimetable_details_id"
@@ -1660,7 +1659,7 @@ ActiveRecord::Schema.define(:version => 20130905000000) do
     t.datetime "updated_at"
   end
 
-  create_table "student_counseling_sessions", :force => true do |t|
+  create_table "student_counseling_sessions", force: true do |t|
     t.integer  "student_id"
     t.integer  "case_id"
     t.datetime "requested_at"
@@ -1684,7 +1683,7 @@ ActiveRecord::Schema.define(:version => 20130905000000) do
     t.datetime "updated_at"
   end
 
-  create_table "student_discipline_cases", :force => true do |t|
+  create_table "student_discipline_cases", force: true do |t|
     t.integer  "reported_by"
     t.integer  "student_id"
     t.integer  "infraction_id"
@@ -1716,7 +1715,7 @@ ActiveRecord::Schema.define(:version => 20130905000000) do
     t.datetime "updated_at"
   end
 
-  create_table "studentattendances", :force => true do |t|
+  create_table "studentattendances", force: true do |t|
     t.integer  "timetable_id"
     t.integer  "student_id"
     t.boolean  "attend"
@@ -1724,7 +1723,7 @@ ActiveRecord::Schema.define(:version => 20130905000000) do
     t.datetime "updated_at"
   end
 
-  create_table "studentattendancesearches", :force => true do |t|
+  create_table "studentattendancesearches", force: true do |t|
     t.integer  "schedule_id"
     t.date     "intake_id"
     t.string   "student_id"
@@ -1732,14 +1731,14 @@ ActiveRecord::Schema.define(:version => 20130905000000) do
     t.datetime "updated_at"
   end
 
-  create_table "studentcounselingsearches", :force => true do |t|
+  create_table "studentcounselingsearches", force: true do |t|
     t.string   "matrixno"
     t.integer  "case_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  create_table "studentdisciplinesearches", :force => true do |t|
+  create_table "studentdisciplinesearches", force: true do |t|
     t.string   "name"
     t.integer  "programme"
     t.date     "intake"
@@ -1748,7 +1747,7 @@ ActiveRecord::Schema.define(:version => 20130905000000) do
     t.datetime "updated_at"
   end
 
-  create_table "students", :force => true do |t|
+  create_table "students", force: true do |t|
     t.string   "icno"
     t.string   "name"
     t.string   "matrixno"
@@ -1785,7 +1784,7 @@ ActiveRecord::Schema.define(:version => 20130905000000) do
     t.datetime "updated_at"
   end
 
-  create_table "studentsearches", :force => true do |t|
+  create_table "studentsearches", force: true do |t|
     t.string   "icno"
     t.string   "name"
     t.string   "matrixno"
@@ -1804,7 +1803,7 @@ ActiveRecord::Schema.define(:version => 20130905000000) do
     t.datetime "updated_at"
   end
 
-  create_table "suppliers", :force => true do |t|
+  create_table "suppliers", force: true do |t|
     t.string   "supplycode"
     t.string   "category"
     t.string   "unittype"
@@ -1814,7 +1813,7 @@ ActiveRecord::Schema.define(:version => 20130905000000) do
     t.datetime "updated_at"
   end
 
-  create_table "tenants", :force => true do |t|
+  create_table "tenants", force: true do |t|
     t.integer  "location_id"
     t.integer  "staff_id"
     t.integer  "student_id"
@@ -1826,7 +1825,7 @@ ActiveRecord::Schema.define(:version => 20130905000000) do
     t.datetime "updated_at"
   end
 
-  create_table "timetable_periods", :force => true do |t|
+  create_table "timetable_periods", force: true do |t|
     t.integer  "timetable_id"
     t.integer  "sequence"
     t.integer  "day_name"
@@ -1837,7 +1836,7 @@ ActiveRecord::Schema.define(:version => 20130905000000) do
     t.datetime "updated_at"
   end
 
-  create_table "timetables", :force => true do |t|
+  create_table "timetables", force: true do |t|
     t.string   "code"
     t.string   "name"
     t.string   "description"
@@ -1846,7 +1845,7 @@ ActiveRecord::Schema.define(:version => 20130905000000) do
     t.datetime "updated_at"
   end
 
-  create_table "titles", :force => true do |t|
+  create_table "titles", force: true do |t|
     t.string   "titlecode"
     t.string   "name"
     t.boolean  "berhormat"
@@ -1854,7 +1853,7 @@ ActiveRecord::Schema.define(:version => 20130905000000) do
     t.datetime "updated_at"
   end
 
-  create_table "topicdetails", :force => true do |t|
+  create_table "topicdetails", force: true do |t|
     t.string   "topic_name"
     t.integer  "topic_code"
     t.time     "duration"
@@ -1869,7 +1868,7 @@ ActiveRecord::Schema.define(:version => 20130905000000) do
     t.datetime "updated_at"
   end
 
-  create_table "trainingnotes", :force => true do |t|
+  create_table "trainingnotes", force: true do |t|
     t.integer  "timetable_id"
     t.string   "title"
     t.string   "reference"
@@ -1885,7 +1884,7 @@ ActiveRecord::Schema.define(:version => 20130905000000) do
     t.datetime "updated_at"
   end
 
-  create_table "trainingreports", :force => true do |t|
+  create_table "trainingreports", force: true do |t|
     t.integer  "classtype"
     t.integer  "timetable_id"
     t.boolean  "location_state"
@@ -1899,7 +1898,7 @@ ActiveRecord::Schema.define(:version => 20130905000000) do
     t.datetime "updated_at"
   end
 
-  create_table "trainingrequests", :force => true do |t|
+  create_table "trainingrequests", force: true do |t|
     t.integer  "staffcourse_id"
     t.integer  "staff_id"
     t.integer  "appraisal_id"
@@ -1913,7 +1912,7 @@ ActiveRecord::Schema.define(:version => 20130905000000) do
     t.datetime "updated_at"
   end
 
-  create_table "trainings", :force => true do |t|
+  create_table "trainings", force: true do |t|
     t.string   "code"
     t.string   "combo_code"
     t.string   "name"
@@ -1929,7 +1928,7 @@ ActiveRecord::Schema.define(:version => 20130905000000) do
     t.datetime "updated_at"
   end
 
-  create_table "trainneeds", :force => true do |t|
+  create_table "trainneeds", force: true do |t|
     t.string   "name"
     t.string   "reason"
     t.integer  "confirmedby_id"
@@ -1938,7 +1937,7 @@ ActiveRecord::Schema.define(:version => 20130905000000) do
     t.datetime "updated_at"
   end
 
-  create_table "travel_claim_allowances", :force => true do |t|
+  create_table "travel_claim_allowances", force: true do |t|
     t.integer  "travel_claim_id"
     t.integer  "expenditure_type"
     t.string   "receipt_code"
@@ -1952,7 +1951,7 @@ ActiveRecord::Schema.define(:version => 20130905000000) do
     t.datetime "updated_at"
   end
 
-  create_table "travel_claim_logs", :force => true do |t|
+  create_table "travel_claim_logs", force: true do |t|
     t.integer  "travel_request_id"
     t.date     "travel_on"
     t.time     "start_at"
@@ -1966,19 +1965,19 @@ ActiveRecord::Schema.define(:version => 20130905000000) do
     t.datetime "updated_at"
   end
 
-  create_table "travel_claim_mileage_rates", :force => true do |t|
+  create_table "travel_claim_mileage_rates", force: true do |t|
     t.integer  "km_low"
     t.integer  "km_high"
-    t.decimal  "a_group",    :precision => 4, :scale => 2
-    t.decimal  "b_group",    :precision => 4, :scale => 2
-    t.decimal  "c_group",    :precision => 4, :scale => 2
-    t.decimal  "d_group",    :precision => 4, :scale => 2
-    t.decimal  "e_group",    :precision => 4, :scale => 2
+    t.decimal  "a_group",    precision: 4, scale: 2
+    t.decimal  "b_group",    precision: 4, scale: 2
+    t.decimal  "c_group",    precision: 4, scale: 2
+    t.decimal  "d_group",    precision: 4, scale: 2
+    t.decimal  "e_group",    precision: 4, scale: 2
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  create_table "travel_claim_receipts", :force => true do |t|
+  create_table "travel_claim_receipts", force: true do |t|
     t.integer  "travel_claim_id"
     t.integer  "expenditure_type"
     t.string   "receipt_code"
@@ -1991,7 +1990,7 @@ ActiveRecord::Schema.define(:version => 20130905000000) do
     t.datetime "updated_at"
   end
 
-  create_table "travel_claims", :force => true do |t|
+  create_table "travel_claims", force: true do |t|
     t.integer  "staff_id"
     t.date     "claim_month"
     t.decimal  "advance"
@@ -2010,17 +2009,17 @@ ActiveRecord::Schema.define(:version => 20130905000000) do
     t.datetime "updated_at"
   end
 
-  create_table "travel_claims_transport_groups", :force => true do |t|
-    t.string   "group_name",  :limit => 2,                               :null => false
-    t.decimal  "salary_low",               :precision => 8, :scale => 2
-    t.decimal  "salary_high",              :precision => 8, :scale => 2
+  create_table "travel_claims_transport_groups", force: true do |t|
+    t.string   "group_name",  limit: 2,                         null: false
+    t.decimal  "salary_low",            precision: 8, scale: 2
+    t.decimal  "salary_high",           precision: 8, scale: 2
     t.integer  "cc_low"
     t.integer  "cc_high"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  create_table "travel_requests", :force => true do |t|
+  create_table "travel_requests", force: true do |t|
     t.integer  "staff_id"
     t.integer  "document_id"
     t.integer  "staff_course_conducted_id"
@@ -2053,7 +2052,7 @@ ActiveRecord::Schema.define(:version => 20130905000000) do
     t.datetime "updated_at"
   end
 
-  create_table "traveldetailreceipts", :force => true do |t|
+  create_table "traveldetailreceipts", force: true do |t|
     t.integer  "traveldetail_id"
     t.integer  "type_id"
     t.string   "receiptnp"
@@ -2062,7 +2061,7 @@ ActiveRecord::Schema.define(:version => 20130905000000) do
     t.datetime "updated_at"
   end
 
-  create_table "traveldetails", :force => true do |t|
+  create_table "traveldetails", force: true do |t|
     t.integer  "travelclaimrequest_id"
     t.date     "travelday"
     t.time     "departure"
@@ -2078,7 +2077,7 @@ ActiveRecord::Schema.define(:version => 20130905000000) do
     t.datetime "updated_at"
   end
 
-  create_table "txsupplies", :force => true do |t|
+  create_table "txsupplies", force: true do |t|
     t.integer "part_id"
     t.integer "receiver_id"
     t.decimal "quantity"
@@ -2086,13 +2085,13 @@ ActiveRecord::Schema.define(:version => 20130905000000) do
     t.text    "details"
   end
 
-  create_table "users", :force => true do |t|
-    t.string   "login",                     :limit => 40
-    t.string   "name",                      :limit => 100, :default => ""
-    t.string   "email",                     :limit => 100
-    t.string   "crypted_password",          :limit => 40
-    t.string   "salt",                      :limit => 40
-    t.string   "remember_token",            :limit => 40
+  create_table "users", force: true do |t|
+    t.string   "login",                     limit: 40
+    t.string   "name",                      limit: 100, default: ""
+    t.string   "email",                     limit: 100
+    t.string   "crypted_password",          limit: 40
+    t.string   "salt",                      limit: 40
+    t.string   "remember_token",            limit: 40
     t.datetime "remember_token_expires_at"
     t.integer  "staff_id"
     t.integer  "student_id"
@@ -2102,9 +2101,9 @@ ActiveRecord::Schema.define(:version => 20130905000000) do
     t.datetime "updated_at"
   end
 
-  add_index "users", ["login"], :name => "index_users_on_login", :unique => true
+  add_index "users", ["login"], name: "index_users_on_login", unique: true, using: :btree
 
-  create_table "usesupplies", :force => true do |t|
+  create_table "usesupplies", force: true do |t|
     t.integer  "supplier_id"
     t.integer  "issuedby"
     t.integer  "receivedby"
@@ -2114,7 +2113,7 @@ ActiveRecord::Schema.define(:version => 20130905000000) do
     t.datetime "updated_at"
   end
 
-  create_table "weeklytimetable_details", :force => true do |t|
+  create_table "weeklytimetable_details", force: true do |t|
     t.integer  "subject"
     t.integer  "topic"
     t.integer  "time_slot"
@@ -2129,7 +2128,7 @@ ActiveRecord::Schema.define(:version => 20130905000000) do
     t.datetime "updated_at"
   end
 
-  create_table "weeklytimetables", :force => true do |t|
+  create_table "weeklytimetables", force: true do |t|
     t.integer  "programme_id"
     t.integer  "intake_id"
     t.integer  "group_id"
@@ -2152,7 +2151,7 @@ ActiveRecord::Schema.define(:version => 20130905000000) do
     t.datetime "updated_at"
   end
 
-  create_table "weeklytimetablesearches", :force => true do |t|
+  create_table "weeklytimetablesearches", force: true do |t|
     t.integer  "programme_id"
     t.date     "startdate"
     t.date     "enddate"
@@ -2164,4 +2163,3 @@ ActiveRecord::Schema.define(:version => 20130905000000) do
   end
 
 end
-
