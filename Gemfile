@@ -7,7 +7,7 @@ gem "thin", "~> 1.6.0"
 gem "devise", "~> 3.2.1"
 gem 'pg', '~> 0.17.0'
 gem "bootstrap-sass", "~> 3.0.3.0"
-gem 'sass-rails', '4.0.0'
+gem 'sass-rails', '~> 4.0.0'
 gem 'uglifier', '~> 2.1.1'  # Use Uglifier as compressor for JavaScript assets
 gem 'coffee-rails', '~> 4.0.0'  # Use CoffeeScript for .js.coffee assets and views
 gem "jquery-rails", "~> 3.0.4"  # Use jquery as the JavaScript library
