@@ -1,4 +1,6 @@
 Skeleton::Application.routes.draw do
+  
+  resources     :staffs
   devise_for :users
   resources :users
   root  'static_pages#home'

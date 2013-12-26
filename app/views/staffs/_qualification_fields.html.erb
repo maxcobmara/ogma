@@ -1,0 +1,6 @@
+<div class="fields">
+	|  <%= f.select :level_id, DropDown::QTYPE, :prompt => "Select Qualification Level" %>          
+	|  <%= f.text_field :qname, :placeholder => 'Qualification Name' %>                                  
+	|  <%= f.text_field :institute, :size => '50', :placeholder => 'Institute Name' %><%= f.hidden_field :_destroy %>
+	<%= link_to image_tag("delete.png", :border => 0, :title => 'Remove'), class: "remove_fields" %>        
+</div>

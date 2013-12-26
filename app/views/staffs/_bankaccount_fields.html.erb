@@ -1,0 +1,8 @@
+<div class="fields">
+	<%= f.collection_select :bank_id, Bank.find(:all), :id, :long_name, :include_blank => true %>
+	<%= f.text_field :account_no, :size => 20, :placeholder => "account_no" %>
+	<%= f.select :account_type, 
+		              DropDown::BANKTYPE,
+		              :prompt => "Select"  %>
+	<%= link_to image_tag("delete.png", :border => 0, :title => 'Remove'), class: "remove_fields" %>
+</div>
