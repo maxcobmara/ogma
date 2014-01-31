@@ -1,6 +1,11 @@
 Skeleton::Application.routes.draw do
   
-  resources     :staffs
+  resources     :staffs do
+    collection do
+      get :borang_maklumat_staff
+    end
+  end
+  
   devise_for :users
   resources :users
   root  'static_pages#home'

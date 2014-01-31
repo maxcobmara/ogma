@@ -23,11 +23,7 @@ class Staff < ActiveRecord::Base
   belongs_to        :title,     :class_name => 'Title',     :foreign_key => 'titlecd_id'
   
   
-  
-  
-  def age
-    Date.today.year - cobirthdt.year unless cobirthdt == nil
-  end
+
   
   def render_reports_to
     if position.blank? 
@@ -40,4 +36,14 @@ class Staff < ActiveRecord::Base
       "#{position.parent.name} - #{position.parent.staff.name}"
     end
   end
+  
+  #--------------------Declerations----------------------------------------------------
+    def age
+      Date.today.year - cobirthdt.year unless cobirthdt == nil
+    end
+ 
+    def formatted_mykad
+      "#{icno[0,6]}-#{icno[6,2]}-#{icno[-4,4]}"
+    end  
+
 end
