@@ -1,11 +1,13 @@
 - model_class = Librarytransaction
 .page-header
-  %h1= t 'library.transaction.title', :default => model_class.model_name.human.pluralize
+  %h1= t('library.transaction.title')#, :default => model_class.model_name.human.pluralize
   
 .navbar.navbar-inverse{role: "navigation"}
   .col-md-2
     = select_tag_for_filter("library_librarytransactions", @filters, params) 
     
+.row
+  = paginate @paginated_transaction
 .row
   %table.table-striped.ogma
     %tr
@@ -21,7 +23,7 @@
       %th.date= t 'library.transaction.returneddate'
       %th= t 'action'
       
-    - @libtran_days.sort.reverse.each do |checkoutdate, librarytransactions|
+    - @libtran_days.each do |checkoutdate, librarytransactions|
       %tr
         %td{colspan: '12', style: "background-color:#EFF1F1;"}
           %span{style: "color:#218AFB; font-weight:bold;"}= checkoutdate.strftime("%A, %v")

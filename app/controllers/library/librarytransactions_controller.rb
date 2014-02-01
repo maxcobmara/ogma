@@ -7,7 +7,8 @@ class Library::LibrarytransactionsController < ApplicationController
     else
       @librarytransactions = Librarytransaction.all
     end
-    @libtran_days =  @librarytransactions.group_by {|t| t.checkoutdate}
+    @paginated_transaction = @librarytransactions.order(checkoutdate: :desc).page(params[:page]).per(10)
+    @libtran_days = @paginated_transaction.group_by {|t| t.checkoutdate}
   end
   
   
