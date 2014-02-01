@@ -1,4 +1,78 @@
 ms_MY:
+  
+  library:
+    transaction: 
+      title: Transaksi Perpustakaan
+      list: Senarai Transaksi Perpustakaan
+      book_id: ID Buku
+      borrower: Peminjam
+      author : Pengarang
+      staffstudent: Staf / Pelatih
+      staff: S
+      student: P
+      studentname: Dipinjam Oleh
+      checkoutdate: Tarikh Pinjaman
+      checkoutby: Pengawai Pengeluar Pinjaman
+      extendby: Pegawai Pengeluar Pinjaman (sambungan)
+      returnby: Pegawai Pemulangan Pinjaman 
+      duedate: Tarikh Harus Pulang
+      extend: Sambung?
+      extended: Returned
+      returneddate: Tarikh Dipulang
+      newrec: Cipta Transaksi Baru
+      returnrec: Transaksi Pemulangan
+      edit: Kemaskini Transaksi Perpustakaan
+      details: Butiran Buku Yang Dipinjam
+      loanedtotype: Dipinjam oleh Staf?
+      fine: Denda Perlu Dibayar
+      finepay: Bayar?
+      finepaydate: Tarikh Membayar Denda
+      lost: Hilang?
+      reportdetails: Laporan
+      reportlostdate: Tarikh Laporan Kehilangan
+      replaceddate: Tarikh Ganti
+      report: Laporan Kehilangan
+      
+    book:
+      new: Buku Baru
+      edit: Kemaskini Buku
+      list: Senarai Buku
+      book_details: Butiran Buku
+      tagno: No Bilangan
+      classddc: No Kelas (DDC/LC)
+      title: Tajuk
+      language: Bahasa
+      author: Penulis
+      subject: Subjek
+      publisher: Penerbit
+      loan_type: Jenis Pinjaman
+      mediatype: Jenis Media
+      publish_date: Tahun Terbitan
+      publish_location: Tempat Terbitan
+      links: Pautan Ruangan Elektonik
+      bookcode: Kod Perpustakaan
+      accessionno: No Pencapaian
+      catsource: Sumber Katalog Untuk
+      classno: No Kelas
+      description: Huraian Fizikal
+      roman: Roman
+      size: Saiz
+      pages: Muka Surat
+      notes: Nota
+      quantity: Kuantiti
+      series: Siri
+      location: Lokasi
+      edition: Edisi
+      upload_image: Muat Naik Imej Buku
+      purchase_info: Maklumat Pembayaran
+      orderno: No Pesanan
+      purchaseprice: Harga Pembayaran
+      purchasedate: Tarikh Pembayaran
+      receiveddate: Tarikh Diterima
+      receiver_id: Diterima Oleh
+      supplier_id: Pembekal
+  
+  
   sidebar:
     home: Rumah
     

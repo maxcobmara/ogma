@@ -6,6 +6,17 @@ Skeleton::Application.routes.draw do
     end
   end
   
+  namespace :library do
+    resources     :librarytransactions do
+      member do
+        get :extend
+        get :return
+      end
+    end
+    
+  end
+  
+  
   devise_for :users
   resources :users
   root  'static_pages#home'

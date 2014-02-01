@@ -1,0 +1,56 @@
+- model_class = Librarytransaction
+.page-header
+  %h1= t 'library.transaction.title', :default => model_class.model_name.human.pluralize
+  
+.navbar.navbar-inverse{role: "navigation"}
+  .col-md-2
+    = select_tag_for_filter("library_librarytransactions", @filters, params) 
+    
+.row
+  %table.table-striped.ogma
+    %tr
+      %th Accession No
+      %th Call No (NLM/LC)
+      %th= t 'library.transaction.author'
+      %th= t 'library.book.title'
+      %th= t 'library.transaction.staffstudent'
+      %th= t 'library.transaction.borrower'
+      //%th No
+      %th.date= t 'library.transaction.duedate'
+      %th.centre= t 'library.transaction.extend'
+      %th.date= t 'library.transaction.returneddate'
+      %th= t 'action'
+      
+    - @libtran_days.sort.reverse.each do |checkoutdate, librarytransactions|
+      %tr
+        %td{colspan: '12', style: "background-color:#EFF1F1;"}
+          %span{style: "color:#218AFB; font-weight:bold;"}= checkoutdate.strftime("%A, %v")
+      - for librarytransaction in librarytransactions
+        %tr
+          %td= librarytransaction.try(:accession).try(:accession_no)
+          %td
+            = librarytransaction.accession.book.classlcc? ?  librarytransaction.accession.book.classlcc : librarytransaction.accession.book.classddc
+            = librarytransaction.accession.book.classddc unless librarytransaction.accession_id.blank?
+          %td= librarytransaction.try(:accession).book.author unless librarytransaction.accession_id.blank?
+          %td= librarytransaction.accession.book.title unless librarytransaction.accession_id.blank?
+          %td.centre= librarytransaction.ru_staff? ? t('librarytransaction.staff') : t( 'librarytransaction.student')
+          //%td.centre= librarytransaction.ru_staff? ? image_tag("cross.png", :border=>0, :title=>'is staff') : image_tag("tick.png", :border=>0, :title=>'is staff')
+          %td= librarytransaction.borrower_name
+          //%td= librarytransaction.accession.book.orderno unless librarytransaction.accession_id.blank?
+          %td.date
+            - if librarytransaction.returnduedate < Date.today.yesterday && librarytransaction.returneddate.blank?
+              %span{style: "color:red;"}= librarytransaction.returnduedate.strftime('%d %b %Y')
+            - else
+              %span{style: "color:red;"}= librarytransaction.returnduedate.strftime('%d %b %Y')
+          %td.centre= fa_icon "check" if librarytransaction.extended?
+          %td.date= librarytransaction.returneddate.strftime('%d %b %Y') unless librarytransaction.returneddate.blank?
+          //= permitted_to? :manage, :librarytransactions do %>
+          %td
+            = if librarytransaction.extended != true && librarytransaction.returned != true
+              = link_to image_tag("clock_add.png", :border => 0, :title => 'Extend'), :action => 'extend', :id => librarytransaction
+            = if librarytransaction.returned != true
+              = link_to image_tag("book_previous.png", :border => 0, :title => 'Return'), :action => 'return', :id => librarytransaction
+            = link_to image_tag("document.png", :border => 0,  :title => 'Show'), :action => 'show', :id => librarytransaction
+            //= link_to image_tag("edit.png",     :border => 0,  :title => 'Edit'), :action => 'edit', :id => librarytransaction
+            //= link_to image_tag("delete.png",   :border => 0,  :title => 'Delete'), librarytransaction, :confirm => 'Are you sure?', :method => :delete
+

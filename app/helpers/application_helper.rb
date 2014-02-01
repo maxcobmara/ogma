@@ -32,4 +32,21 @@ module ApplicationHelper
     direction = column == sort_column && sort_direction == "asc" ? "desc" : "asc" 
     link_to title, {:sort => column, :direction => direction}, {:class => css_class}
   end
+  
+  def select_tag_for_filter(model, nvpairs, params)
+    options = { :query => params[:query] }
+    _url = url_for(eval("#{model}_url(options)"))
+    _html = %{<label for="show">Show:</label>}.html_safe
+    _html << %{<select name="show" id="show" class="selectpicker"}.html_safe
+    _html << %{onchange="window.location='#{_url}' + '?show=' + this.value">}.html_safe
+    nvpairs.each do |pair|
+      _html << %{<option value="#{pair[:scope]}"}.html_safe
+      if params[:show] == pair[:scope] || ((params[:show].nil? || params[:show].empty?) && pair[:scope] == "all")
+        _html << %{ selected="selected"}.html_safe
+      end
+      _html << %{>#{pair[:label]}}.html_safe
+      _html << %{</option>}.html_safe
+    end
+    _html << %{</select>}.html_safe
+  end
 end

@@ -2,25 +2,8 @@
   =link_to (fa_icon "home"), root_url
   %a#trigger.menu-trigger{:href => "#"}= fa_icon "bars", text: ""
 
-%div{:style => "float:right;"}
-  - if I18n.locale == I18n.default_locale
-    = link_to image_tag("MY.png", :border => 0, :title => 'Bahasa Malaysia'), locale: "ms_MY"
-  - else
-    = link_to image_tag("GB.png", :border => 0, :title => 'English'), locale: "en"
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/.topnav
-/ =link_to (fa_icon "home"), root_url
-/ %a#trigger.menu-trigger{:href => "#"}= fa_icon "reorder", text: ""
+  %div{:style => "float:right;"}
+    - if I18n.locale == I18n.default_locale
+      = link_to image_tag("MY.png", :border => 0, :title => 'Bahasa Malaysia'), locale: "ms_MY"
+    - else
+      = link_to image_tag("GB.png", :border => 0, :title => 'English'), locale: "en"

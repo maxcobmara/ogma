@@ -21,3 +21,78 @@
 
 en:
   hello: "Hello world"
+  
+  
+  
+  library:
+    transaction: 
+      title: Library Transactions
+      list: Library Transaction List
+      book_id: Book ID
+      borrower: Borrowed By
+      author: Author
+      staffstudent: Staff / Trainee
+      staff: S
+      student: T
+      checkoutdate: Checked Out
+      checkoutby: Loan Released By
+      extendby: Loan Extended By
+      returnby: Received By
+      studentname: Borrowed By
+      duedate: Due Date
+      extend: Extend
+      extended: Returned
+      returneddate: Returned On
+      newrec: Create New Transaction
+      returnrec: Return Transaction
+      edit: Edit Library Transaction
+      details: Loaned Book Details
+      loanedtotype: Member is Staff?
+      fine: Fine to be Paid
+      finepay: Fine Paid?
+      finepaydate: Fine Paid Date
+      lost: Lost?
+      reportdetails: Report Details
+      reportlostdate: Report Lost Date
+      replaceddate: Replaced Date
+      report: Report Lost
+      
+    book: 
+      new: New Book
+      edit: Editing Book
+      list: Lists Of Book
+      book_details: Book Details
+      tagno: Tag No
+      classddc: Class No (DDC/LC)
+      title: Title
+      language: Language
+      author: Author
+      subject: Subject
+      publisher: Publisher
+      loan_type: Loan Type
+      mediatype: Media Type
+      publish_date: Publish Date
+      publish_location: Publish Location
+      links: Links/URL
+      bookcode: Library Code
+      accessionno: Accession No
+      catsource: Cataloging Source To
+      classno: Class No
+      description: Physical Description
+      roman: Roman
+      size: Size
+      pages: Pages
+      notes: Notes
+      quantity: Quantity
+      series: Series
+      location: Location
+      edition: Edition
+      upload_image: Upload Book Image
+      purchase_info: Purchase Information
+      orderno: Order No
+      purchaseprice: Purchase Price
+      purchasedate: Purchase Date
+      receiveddate: Receive Date
+      receiver_id: Received By
+      supplier_id: Supplier
+    
