@@ -6,8 +6,7 @@
   .col-md-2
     = select_tag_for_filter("library_librarytransactions", @filters, params) 
     
-.row
-  = paginate @paginated_transaction
+
 .row
   %table.table-striped.ogma
     %tr
@@ -25,8 +24,7 @@
       
     - @libtran_days.each do |checkoutdate, librarytransactions|
       %tr
-        %td{colspan: '12', style: "background-color:#EFF1F1;"}
-          %span{style: "color:#218AFB; font-weight:bold;"}= checkoutdate.strftime("%A, %v")
+        %td.group{colspan: '12'}= checkoutdate.strftime("%A, %v")
       - for librarytransaction in librarytransactions
         %tr
           %td= librarytransaction.try(:accession).try(:accession_no)
@@ -44,15 +42,26 @@
               %span{style: "color:red;"}= librarytransaction.returnduedate.strftime('%d %b %Y')
             - else
               %span{style: "color:red;"}= librarytransaction.returnduedate.strftime('%d %b %Y')
-          %td.centre= fa_icon "check" if librarytransaction.extended?
-          %td.date= librarytransaction.returneddate.strftime('%d %b %Y') unless librarytransaction.returneddate.blank?
+          %td.centre
+            = fa_icon "check" if librarytransaction.extended?
+            - if librarytransaction.extended != true && librarytransaction.returned != true
+              %div.btn.btn-default{:type => "button", "data-toggle" => "tooltip", title: "Extend"}
+                = link_to fa_icon "clock-o", :action => 'extend', :id => librarytransaction
+          %td.date
+            = librarytransaction.returneddate.try(:strftime, '%d %b %Y')
+            - if librarytransaction.returned != true
+              %div.btn.btn-default{:type => "button", "data-toggle" => "tooltip", title: "Return"}
+                = link_to fa_icon "inbox", :action => 'return', :id => librarytransaction
           //= permitted_to? :manage, :librarytransactions do %>
           %td
-            = if librarytransaction.extended != true && librarytransaction.returned != true
-              = link_to image_tag("clock_add.png", :border => 0, :title => 'Extend'), :action => 'extend', :id => librarytransaction
-            = if librarytransaction.returned != true
-              = link_to image_tag("book_previous.png", :border => 0, :title => 'Return'), :action => 'return', :id => librarytransaction
-            = link_to image_tag("document.png", :border => 0,  :title => 'Show'), :action => 'show', :id => librarytransaction
-            //= link_to image_tag("edit.png",     :border => 0,  :title => 'Edit'), :action => 'edit', :id => librarytransaction
-            //= link_to image_tag("delete.png",   :border => 0,  :title => 'Delete'), librarytransaction, :confirm => 'Are you sure?', :method => :delete
+            .button-toolbar.pull-right
+              .btn-group
 
+                    
+
+                  
+                  
+
+
+.row
+  .centre= paginate @paginated_transaction

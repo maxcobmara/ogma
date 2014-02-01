@@ -39,10 +39,7 @@ textarea {resize: vertical;}
 
 
 
-.center {
-  text-align: center;
-}
-
+.centre {text-align: center;}
 .right {float:right;}
 
 .center h1 {
@@ -199,7 +196,9 @@ table.ogma {
         color:white; background-color:#72126C;}
   }
   tbody {
-    tr {font-size:0.9em;}
+    tr {font-size:0.85em;}
+    td.group{background-color: #999; color:#FFF; font-weight:bold; font-size:1.2em; padding: 5px 0; text-align:center;}
+    td {height:40px;}
   }
 }
 
