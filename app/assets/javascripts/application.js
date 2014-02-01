@@ -15,6 +15,3 @@
 //= require bootstrap
 //= require_tree .
 
-
-
-// Not Using at the mo //= require bootstrap-transition//= require turbolinks
