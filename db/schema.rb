@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20130905000000) do
+ActiveRecord::Schema.define(version: 20140101000000) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -31,25 +31,6 @@ ActiveRecord::Schema.define(version: 20130905000000) do
     t.date     "received"
     t.integer  "received_by"
     t.integer  "supplied_by"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "addbooks", force: true do |t|
-    t.string   "name"
-    t.string   "phone"
-    t.string   "address"
-    t.string   "mail"
-    t.string   "web"
-    t.string   "fax"
-    t.string   "shortname"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "address_book_items", force: true do |t|
-    t.integer  "address_book_id"
-    t.string   "item"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -1134,6 +1115,8 @@ ActiveRecord::Schema.define(version: 20130905000000) do
     t.datetime "updated_at"
   end
 
+  add_index "locations", ["ancestry"], name: "index_locations_on_ancestry", using: :btree
+
   create_table "maints", force: true do |t|
     t.integer  "asset_id"
     t.integer  "maintainer_id"
@@ -1212,6 +1195,8 @@ ActiveRecord::Schema.define(version: 20130905000000) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "positions", ["ancestry"], name: "index_positions_on_ancestry", using: :btree
 
   create_table "programmes", force: true do |t|
     t.string   "code"
@@ -1621,6 +1606,9 @@ ActiveRecord::Schema.define(version: 20130905000000) do
     t.datetime "updated_at"
   end
 
+  add_index "staffs", ["icno"], name: "index_staffs_on_icno", using: :btree
+  add_index "staffs", ["name"], name: "index_staffs_on_name", using: :btree
+
   create_table "staffsearch2s", force: true do |t|
     t.string   "keywords"
     t.integer  "position"
@@ -1783,6 +1771,10 @@ ActiveRecord::Schema.define(version: 20130905000000) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "students", ["icno"], name: "index_students_on_icno", using: :btree
+  add_index "students", ["matrixno"], name: "index_students_on_matrixno", using: :btree
+  add_index "students", ["name"], name: "index_students_on_name", using: :btree
 
   create_table "studentsearches", force: true do |t|
     t.string   "icno"
