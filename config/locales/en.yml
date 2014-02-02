@@ -43,7 +43,7 @@ en:
       extend: Extend
       extended: Returned
       returneddate: Returned On
-      newrec: Create New Transaction
+      new: Create New Transaction
       returnrec: Return Transaction
       edit: Edit Library Transaction
       details: Loaned Book Details

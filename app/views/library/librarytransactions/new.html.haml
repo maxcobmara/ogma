@@ -1,0 +1,54 @@
+- provide(:title, 'Uniform item')
+- model_class = Librarytransaction
+.page-header
+  %h1= t 'library.transaction.new', :default => [:'helpers.titles.new', 'New %{model}'], :model => model_class.model_name.human
+//= render :partial => 'form'
+
+//in case user click at 'Create All Records' button whereby book loan quota already exceeded
+
+- if (params[:student_first] == '0') || (params[:staff_first] == 0)
+  @current_staff = params[:staff_first]
+
+- if (params[:staff_first] == '0') || (params[:staff_first] == 0)
+  @current_student = params[:student_first]
+   
+- if @librarytransaction
+  // START-this part is for EXTEND & RETURN(IF 'UNREMARK') - Process:SINGLE Transaction
+  // for checking only-DO NOT REMOVE
+  // =# @librarytransaction.id %><%#=@librarytransaction.extended
+  - if (@librarytransaction.ru_staff == true) && (@librarytransaction.extended == true)
+    = @current_staff = @librarytransaction.staff_id
+    //still, have to provide data for multiple transaction (upon EXTEND/RETURN) - refer line 117:
+    //'@librarytransactions.each_with_index do |librarytransaction, index|'
+    =@librarytransactions = Librarytransaction.find(:all, :conditions=>['staff_id=?',@current_staff])
+  - elsif (@librarytransaction.ru_staff == false) && (@librarytransaction.extended == true)
+    = @current_student = @librarytransaction.student_id
+    //still, have to provide data for multiple transaction (upon EXTEND/RETURN) - refer line 117:
+    //'@librarytransactions.each_with_index do |librarytransaction, index|'-->
+    = @librarytransactions = Librarytransaction.find(:all, :conditions=>['student_id=?',@current_student])
+    //END-this part is for EXTEND & RETURN(IF 'UNREMARK') - Process:SINGLE Transaction-->
+- else
+  //START-this part is for MULTIPLE CREATION OF LOAN, when CREATE ALL RECORDS was clicked
+  - if @librarytransactions
+    - if @librarytransactions[0].ru_staff == true
+      = @current_staff = @librarytransactions[0].staff_id
+    - else
+      = @current_student = @librarytransactions[0].student_id
+      //END-this part is for MULTIPLE CREATION OF LOAN, when CREATE ALL RECORDS was clicked
+      
+.row
+  .new_form
+    %h2 Library Transaction - Loan Page
+    %table
+      %tr
+        %td.leftcol= t 'library.transaction.loanedtotype'
+        %td
+          = form_tag(:url => {:action => :check_availability}, :update => 'new_form2', :remote => true) do
+            - if @current_staff
+              = check_box :ru_staff,{}, :id => 'staff', :onchange => "switchvisibility('staff')", :checked=>"checked"
+              %span{id: "bstaff", style: "display:table-row;"}
+                = select_tag(:staff_search,"<option>Select Staff</option>"+"<option value=#{ @current_staff } selected='selected'>#{Staff.find( @current_staff ).staff_name_then_mykad}</option>"+options_from_collection_for_select(Staff.find(:all, :conditions=>['id!=?',@current_staff]),:id, :staff_name_then_mykad))
+                = text_field_with_auto_complete :librarytransaction, :staff_who ,{ :size => 50,:value=>Staff.find(@current_staff).name }, { :url => formatted_staffs_path(:js), :method => :get, :param_name => 'search' }
+                = submit_tag "Check Loan Details"
+            
+    

@@ -11,7 +11,22 @@ class Library::LibrarytransactionsController < ApplicationController
     @libtran_days = @paginated_transaction.group_by {|t| t.checkoutdate}
   end
   
-  
+
+  # GET /librarytransactions/new
+  # GET /librarytransactions/new.xml
+  def new
+    @librarytransaction = Librarytransaction.new
+    @librarytransactions = Array.new(4) #{ Libraryransaction.new }
+    #-----trial----
+    @aaa = params[:librarytransactions]
+    @staff1 = params[:stafffirst]
+    @student1 = params[:studentfirst]
+    #-----trial----
+    respond_to do |format|
+      format.html # new.html.erb
+      format.xml  { render :xml => @librarytransaction }
+    end
+  end  
   
   
   

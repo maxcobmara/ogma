@@ -186,14 +186,16 @@ input[type=checkbox] {width:13px; height:13px; *overflow: hidden; }
 /* table styles */
 
 table.ogma {
-  border:collapse; margin-top: 15px; margin-left: 30px; width:95%;
+  border:collapse; margin-top: 15px; margin-left: 20px; width:97%;
   td.right, th.right{text-align:right;}
   td.centre, th.centre{text-align:center;}
   td.date, th.date {text-align:center; width:80px;}
   td, th {border: 5px solid white;}
   thead {
-    tr {font-weight:bold; font-size:0.9em;
-        color:white; background-color:#72126C;}
+    tr {font-size:0.9em; 
+        color:white; background-color:#3574C4;}
+    th {padding:5px; font-weight:normal; vertical-align:top;}
+    th.action {padding:5px; vertical-align:middle; text-align:center; }
   }
   tbody {
     tr {font-size:0.85em;}

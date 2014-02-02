@@ -2,60 +2,67 @@
 .page-header
   %h1= t('library.transaction.title')#, :default => model_class.model_name.human.pluralize
   
-.navbar.navbar-inverse{role: "navigation"}
+.navbar.navbar-inverse{role: "navigation", style: "padding-right:40px;"}
+  %ul.nav.navbar-nav
+    %li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'actions.new'))), new_library_librarytransaction_path
+  %ul.nav.navbar-nav.navbar-right
+    %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "toga"
+    %li= link_to content_tag(:li, fa_icon("print", text: (t 'actions.print'))), "#"
+      
+.row.filter{style: "display:none;"}
   .col-md-2
     = select_tag_for_filter("library_librarytransactions", @filters, params) 
-    
+
 
 .row
-  %table.table-striped.ogma
-    %tr
-      %th Accession No
-      %th Call No (NLM/LC)
-      %th= t 'library.transaction.author'
-      %th= t 'library.book.title'
-      %th= t 'library.transaction.staffstudent'
-      %th= t 'library.transaction.borrower'
-      //%th No
-      %th.date= t 'library.transaction.duedate'
-      %th.centre= t 'library.transaction.extend'
-      %th.date= t 'library.transaction.returneddate'
-      %th= t 'action'
-      
-    - @libtran_days.each do |checkoutdate, librarytransactions|
+  %table.table-striped.table-hover.ogma
+    %thead
       %tr
-        %td.group{colspan: '12'}= checkoutdate.strftime("%A, %v")
-      - for librarytransaction in librarytransactions
+        %th Accession No
+        %th Call No (NLM/LC)
+        %th= t 'library.transaction.author'
+        %th= t 'library.book.title'
+        %th= t 'library.transaction.staffstudent'
+        %th= t 'library.transaction.borrower'
+        //%th No
+        %th.date= t 'library.transaction.duedate'
+        %th.centre= t 'library.transaction.extend'
+        %th.date= t 'library.transaction.returneddate'
+        %th.action= fa_icon "cogs"
+    
+    %tbody  
+      - @libtran_days.each do |checkoutdate, librarytransactions|
         %tr
-          %td= librarytransaction.try(:accession).try(:accession_no)
-          %td
-            = librarytransaction.accession.book.classlcc? ?  librarytransaction.accession.book.classlcc : librarytransaction.accession.book.classddc
-            = librarytransaction.accession.book.classddc unless librarytransaction.accession_id.blank?
-          %td= librarytransaction.try(:accession).book.author unless librarytransaction.accession_id.blank?
-          %td= librarytransaction.accession.book.title unless librarytransaction.accession_id.blank?
-          %td.centre= librarytransaction.ru_staff? ? t('librarytransaction.staff') : t( 'librarytransaction.student')
-          //%td.centre= librarytransaction.ru_staff? ? image_tag("cross.png", :border=>0, :title=>'is staff') : image_tag("tick.png", :border=>0, :title=>'is staff')
-          %td= librarytransaction.borrower_name
-          //%td= librarytransaction.accession.book.orderno unless librarytransaction.accession_id.blank?
-          %td.date
-            - if librarytransaction.returnduedate < Date.today.yesterday && librarytransaction.returneddate.blank?
-              %span{style: "color:red;"}= librarytransaction.returnduedate.strftime('%d %b %Y')
-            - else
-              %span{style: "color:red;"}= librarytransaction.returnduedate.strftime('%d %b %Y')
-          %td.centre
-            = fa_icon "check" if librarytransaction.extended?
-            - if librarytransaction.extended != true && librarytransaction.returned != true
-              %div.btn.btn-default{:type => "button", "data-toggle" => "tooltip", title: "Extend"}
-                = link_to fa_icon "clock-o", :action => 'extend', :id => librarytransaction
-          %td.date
-            = librarytransaction.returneddate.try(:strftime, '%d %b %Y')
-            - if librarytransaction.returned != true
-              %div.btn.btn-default{:type => "button", "data-toggle" => "tooltip", title: "Return"}
-                = link_to fa_icon "inbox", :action => 'return', :id => librarytransaction
-          //= permitted_to? :manage, :librarytransactions do %>
-          %td
-            .button-toolbar.pull-right
-              .btn-group
+          %td.group{colspan: '12'}= checkoutdate.strftime("%A, %v")
+        - for librarytransaction in librarytransactions
+          %tr
+            %td= librarytransaction.try(:accession).try(:accession_no)
+            %td
+              = librarytransaction.accession.book.classlcc? ?  librarytransaction.accession.book.classlcc : librarytransaction.accession.book.classddc
+              = librarytransaction.accession.book.classddc unless librarytransaction.accession_id.blank?
+            %td= librarytransaction.try(:accession).book.author unless librarytransaction.accession_id.blank?
+            %td= librarytransaction.accession.book.title unless librarytransaction.accession_id.blank?
+            %td.centre= librarytransaction.ru_staff? ? t('librarytransaction.staff') : t( 'librarytransaction.student')
+            //%td.centre= librarytransaction.ru_staff? ? image_tag("cross.png", :border=>0, :title=>'is staff') : image_tag("tick.png", :border=>0, :title=>'is staff')
+            %td= librarytransaction.borrower_name
+            //%td= librarytransaction.accession.book.orderno unless librarytransaction.accession_id.blank?
+            %td.date
+              - if librarytransaction.returnduedate < Date.today.yesterday && librarytransaction.returneddate.blank?
+                %span{style: "color:red;"}= librarytransaction.returnduedate.strftime('%d %b %Y')
+              - else
+                %span{style: "color:red;"}= librarytransaction.returnduedate.strftime('%d %b %Y')
+            %td.centre
+              = fa_icon "check" if librarytransaction.extended?
+              - if librarytransaction.extended != true && librarytransaction.returned != true
+                %div.btn.btn-default{:type => "button", "data-toggle" => "tooltip", title: "Extend"}
+                  = link_to fa_icon "clock-o", :action => 'extend', :id => librarytransaction
+            %td.date
+              = librarytransaction.returneddate.try(:strftime, '%d %b %Y')
+              - if librarytransaction.returned != true
+                %div.btn.btn-default{:type => "button", "data-toggle" => "tooltip", title: "Return"}
+                  = link_to fa_icon "inbox", :action => 'return', :id => librarytransaction
+            //= permitted_to? :manage, :librarytransactions do %>
+            %td
 
                     
 

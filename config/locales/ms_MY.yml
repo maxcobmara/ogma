@@ -19,7 +19,7 @@ ms_MY:
       extend: Sambung?
       extended: Returned
       returneddate: Tarikh Dipulang
-      newrec: Cipta Transaksi Baru
+      new: Cipta Transaksi Baru
       returnrec: Transaksi Pemulangan
       edit: Kemaskini Transaksi Perpustakaan
       details: Butiran Buku Yang Dipinjam
