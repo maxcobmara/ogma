@@ -95,7 +95,8 @@
         %h2.icon Locations
         %a.mp-back{:href => "#"} Back
         %ul
-          %li= link_to content_tag(:i, "", :class => "icon-numb") + "Residences", '#'
+          %li= link_to content_tag(:i, "", :class => "icon-numb") + "Locations", locations_path
+          %li= link_to content_tag(:i, "", :class => "icon-numb") + "Assignment", '#'
           %li= link_to content_tag(:i, "", :class => "icon-numb") + "Tenants", '#'
           %li= link_to content_tag(:i, "", :class => "icon-numb") + "Location Tree", '#'
 
@@ -106,7 +107,7 @@
         %a.mp-back{:href => "#"} Back
         %ul
           %li= link_to content_tag(:i, "", :class => "icon-numb") + "Campus Info", '#'
-          %li= link_to content_tag(:i, "", :class => "icon-numb") + "Campus Events", '#'
+          %li= link_to content_tag(:i, "", :class => "icon-numb") + "Campus Events", events_path
           %li= link_to content_tag(:i, "", :class => "icon-numb") + "Campus Events Calendar", '#'
           %li= link_to content_tag(:i, "", :class => "icon-numb") + "Local Messaging", '#'
           %li= link_to content_tag(:i, "", :class => "icon-numb") + "Bulletin Board", '#'

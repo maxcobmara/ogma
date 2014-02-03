@@ -7,6 +7,7 @@ gem "thin", "~> 1.6.0"
 gem "devise", "~> 3.2.1"
 gem 'pg', '~> 0.17.0'
 gem "paperclip", "~> 3.5.2"
+gem "ancestry", "~> 2.0.0"
 
 #stuff for layout
 gem "bootstrap-sass", "~> 3.0.3.0"

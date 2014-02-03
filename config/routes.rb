@@ -6,6 +6,10 @@ Skeleton::Application.routes.draw do
     end
   end
   
+  resources :locations
+  
+  resources :events
+  
   namespace :library do
     resources     :librarytransactions do
       member do
@@ -13,8 +17,9 @@ Skeleton::Application.routes.draw do
         get :return
       end
     end
-    
   end
+  
+  
   
   
   devise_for :users
