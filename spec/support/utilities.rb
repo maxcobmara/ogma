@@ -1,5 +1,5 @@
 def full_title(page_title)
-  base_title = "Skeleton App"
+  base_title = "Ogma App"
   if page_title.empty?
     base_title
   else

@@ -1,4 +1,4 @@
-Skeleton::Application.routes.draw do
+Ogma::Application.routes.draw do
   
   resources     :staffs do
     collection do

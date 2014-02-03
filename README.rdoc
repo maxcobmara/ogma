@@ -1,8 +1,8 @@
 == README
 
-Skeleton App updated for Rails 4 & Ruby 2
+Ogma App updated for Rails 4 & Ruby 2
 
-A skeleton application to get you started and ready to roll any sort of app.
+A ogma application to get you started and ready to roll any sort of app.
 Preconfigured with 
 #Capybara, Selenium, RSpec for Testing
 #Thin Webserver

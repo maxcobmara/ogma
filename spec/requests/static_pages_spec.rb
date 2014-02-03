@@ -1,14 +1,14 @@
 require 'spec_helper'
 
 describe "Static pages" do
-  let(:base_title)  {"Skeleton App"}
+  let(:base_title)  {"Ogma App"}
   subject { page }
 
   describe "Home page" do
     before { visit root_path }
     
-    it { should have_content('Skeleton App') }
-    it { should have_title("Skeleton") }
+    it { should have_content('Ogma App') }
+    it { should have_title("Ogma") }
     it { should_not have_title('| Home') }
   end
   

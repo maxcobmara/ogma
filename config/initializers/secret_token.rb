@@ -9,7 +9,7 @@
 
 # Make sure your secret_key_base is kept private
 # if you're sharing your code publicly.
-#Skeleton::Application.config.secret_key_base = '47b451ad0b9514f316194d7325922624000587c014fc85371f084b56b28e33a88ebd140d46f4d696af7847b30831d9fa99f955c43ecec1dbea941567437da4f4'
+#Ogma::Application.config.secret_key_base = '47b451ad0b9514f316194d7325922624000587c014fc85371f084b56b28e33a88ebd140d46f4d696af7847b30831d9fa99f955c43ecec1dbea941567437da4f4'
 
 require 'securerandom'
 
@@ -26,4 +26,4 @@ def secure_token
   end
 end
 
-Skeleton::Application.config.secret_key_base = secure_token
+Ogma::Application.config.secret_key_base = secure_token
