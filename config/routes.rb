@@ -14,6 +14,8 @@ Skeleton::Application.routes.draw do
     end
   end
   
+  resources :cofiles
+  
   namespace :library do
     resources     :librarytransactions do
       member do
