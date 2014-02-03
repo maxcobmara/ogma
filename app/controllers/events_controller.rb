@@ -5,6 +5,16 @@ class EventsController < ApplicationController
     @events = Event.all
   end
   
+  def calendar
+    @events = Event.find(:all)
+    @date = params[:month] ? Date.parse(params[:month].gsub('-', '/')) : Date.today
+
+    respond_to do |format|
+      format.html # index.html.erb
+      format.xml  { render :xml => @timetables }
+    end
+  end
+  
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_location

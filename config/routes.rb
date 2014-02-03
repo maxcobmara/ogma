@@ -8,7 +8,11 @@ Skeleton::Application.routes.draw do
   
   resources :locations
   
-  resources :events
+  resources :events do
+    member do
+      get :calendar
+    end
+  end
   
   namespace :library do
     resources     :librarytransactions do
