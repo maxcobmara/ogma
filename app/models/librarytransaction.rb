@@ -39,23 +39,11 @@ class Librarytransaction < ActiveRecord::Base
   ]
   
   def borrower_name
-   stid = Array(staff_id)
-   suid = Array(student_id)
-   stexists = Staff.where(id: "id").map(&:id)
-   stuexists = Student.where(id: "id").map(&:id)
-   staffchecker = stid & stexists
-   studentchecker = suid & stuexists
-   
-      if student_id == 0 && staff_id == 0 #student_id == nil && staff_id == nil 
-           "" 
-      elsif staff_id == 0 && stexists == [] #staff_id == nil && stexists == []
-           "Student No Longer Exists" 
-      elsif student_id == 0 && stuexists == []  #student_id == nil && stuexists == []
-          "Staff No Longer Exists" 
-      elsif student_id == 0
-          staff.name
-      elsif staff_id == 0
-          student.name
-      end
+    if ru_staff?
+      staff.try(:name)
+    else
+      student.try(:name)
+    end
   end
+
 end

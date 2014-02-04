@@ -1,5 +1,7 @@
 class Library::LibrarytransactionsController < ApplicationController
   
+  before_action :set_location, only: [:show, :edit, :update, :destroy]
+  
   def index
     @filters = Librarytransaction::FILTERS
     if params[:show] && @filters.collect{|f| f[:scope]}.include?(params[:show])
@@ -26,6 +28,31 @@ class Library::LibrarytransactionsController < ApplicationController
       format.html # new.html.erb
       format.xml  { render :xml => @librarytransaction }
     end
+  end
+  
+  def check_status
+    @librarytransactions = []
+    @staff_name = params[:search][:staff_name]
+    
+    @staff_list = []
+    @staff_list = Staff.where("name ILIKE ?", "%#{@staff_name}%").pluck(:id)
+    
+  
+    if (params[:search][:staff_name].present?)
+      scope = Librarytransaction.where("staff_id IN (?) AND returneddate IS ?", @staff_list, nil)
+    end
+    
+    @searches = scope.all
+    
+    #Staff.where("name ILIKE ?", "%#{@staff_name}%").each do |e|
+      @searches.each do |t|
+        @librarytransactions << t
+      end
+    #end
+    #@librarytransactions = Kaminari.paginate_array(@librarytransactions).page(params[:page] || 1)
+    
+    
+    
   end  
   
   
@@ -47,6 +74,17 @@ class Library::LibrarytransactionsController < ApplicationController
     @librarytransaction = Librarytransaction.find(params[:id])
     render :layout => false
   end
+  
+  private
+    # Use callbacks to share common setup or constraints between actions.
+    def set_librarytransaction
+      @librarytransaction = Librarytransaction.find(params[:id])
+    end
+
+    # Never trust parameters from the scary internet, only allow the white list through.
+    def location_params
+      params.require(:librarytransaction).permit()# <-- insert editable fields here inside here e.g (:date, :name)
+    end
   
 end
   

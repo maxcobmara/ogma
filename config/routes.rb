@@ -22,6 +22,10 @@ Ogma::Application.routes.draw do
         get :extend
         get :return
       end
+      collection do
+        get :check_status
+        post :check_status
+      end
     end
   end
   

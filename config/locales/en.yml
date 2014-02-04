@@ -20,7 +20,43 @@
 # available at http://guides.rubyonrails.org/i18n.html.
 
 en:
+  
+  #common
+  search:  Search
+  datelabel: Date
+  years_label: years
+  months_label: months
+  action: Action
+  back: Back
+  new: New
+  update: Update
+  control: Control
+  thank: "Staff was successfully created"
+  addmore: "Add More"
+  submit: Submit
   hello: "Hello world"
+  print: Print
+  
+  people:
+    male: male
+    female: female
+    staff: Staff
+    student: Student
+  
+  staff:
+    icno: "MyKad No"
+    name: "Name"
+    coemail: "Email"
+    code: "Staff Code"
+    fileno: "File No"
+    position: "Position"
+    bloodtype: "Blood Type"
+    addr: "Address"
+    poskod_id: "Poskod"
+    mrtlstatuscd: "Marital Status"
+    staffgrade_id: "Staff Grade"
+    statecd: "State of Birth"
+    country_cd: "Nationality"
   
   
   
@@ -56,6 +92,10 @@ en:
       reportlostdate: Report Lost Date
       replaceddate: Replaced Date
       report: Report Lost
+      
+    check:  
+      status: Check Status
+      search: "Search to check status"
       
     book: 
       new: New Book

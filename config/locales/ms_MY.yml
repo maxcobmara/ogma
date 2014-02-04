@@ -1,5 +1,39 @@
 ms_MY:
   
+  search:  Cari
+  datelabel: Tarikh
+  years_label: tahun
+  months_label: bulan
+  action: Tindakan
+  back: Kembali
+  new: Cipta
+  update: Kemaskini
+  control: Tindakan
+  addmore: "Tambah Rekod"
+  submit: Hantar
+  print: Cetak
+  
+  people:
+    male: Lelaki
+    female: Perempuan
+    staff: Kakitangan
+    student: Pelajar
+  
+  staff:
+    icno: "No MyKad"
+    name: "Nama"
+    coemail: "Emel"
+    code: "Kod Staf"
+    fileno: "No Fail"
+    position: "Jawatan"
+    bloodtype: "Jenis Darah"
+    addr: "Alamat"
+    poskod_id: "Poskod"
+    mrtlstatuscd: "Status Berkahwin"
+    staffgrade_id: "Gred Staf"
+    statecd: "Tempat Lahir"
+    country_cd: "Kewarganegaraan"
+  
   library:
     transaction: 
       title: Transaksi Perpustakaan
@@ -31,7 +65,12 @@ ms_MY:
       reportdetails: Laporan
       reportlostdate: Tarikh Laporan Kehilangan
       replaceddate: Tarikh Ganti
-      report: Laporan Kehilangan
+      report: Laporan Kehilangan  
+          
+    check:  
+      status: Semak Taraf
+      search: "Carian semak taraf"
+      
       
     book:
       new: Buku Baru

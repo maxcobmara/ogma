@@ -1,0 +1,46 @@
+- model_class = Librarytransaction
+.page-header
+  %h1= t('library.check.status')#, :default => model_class.model_name.human.pluralize
+  
+  
+.row
+  .col-md-3
+    .btn-group.right{"data-toggle" => "buttons"}
+      %button.btn.btn-default.btn-lgbtn#option_student{style: "width:90px;"}
+        %input#option1{:name => "options", :type => "radio"}
+          = (t 'people.student')
+      %button.btn.btn-default.btn-lgbtn#option_staff{style: "width:90px;"}
+        %input#option2{:name => "options", :type => "radio"}
+          = (t 'people.staff')
+  .col-md-6.staff_search{style: "display:none;"}
+    = form_for :search, :url => { :action => "check_status" }, :html=>{:class => "form-horizontal", :role => "form", :style => 'padding: 0 30px 0 30px; margin-top: 0;' } do |f|
+      .input-group
+        = f.text_field :staff_name, :autofocus => true, :required => true, :class => 'form-control', :type => "input", :id => "input1", placeholder: (t 'staff.name')
+        %span.input-group-btn
+          = f.submit (t 'search'), :class => "btn btn-primary", style: "width:80px;"
+      %span.help-block.small= (t 'library.check.search')
+
+          
+          
+.row.student_search{style: "display:none;"}
+
+.row
+  - if @librarytransactions
+    %table
+      - @librarytransactions.group_by(&:staff).each do |staff, transactions|
+        %tr
+          %th= staff.name
+          %th
+            %span.badge= transactions.length
+          - for transaction in transactions
+            %tr
+              %td= transaction.id
+              %td= transaction.accession.book.title
+              %td= transaction.returnduedate
+
+    
+.row
+
+%p{ :style => 'margin: 25px 0 30px 0' }
+%small{style: "padding-top:13px;"}
+    
