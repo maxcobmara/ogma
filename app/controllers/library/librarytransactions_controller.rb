@@ -32,27 +32,20 @@ class Library::LibrarytransactionsController < ApplicationController
   
   def check_status
     @librarytransactions = []
-    @staff_name = params[:search][:staff_name]
     
-    @staff_list = []
-    @staff_list = Staff.where("name ILIKE ?", "%#{@staff_name}%").pluck(:id)
+    
+    
     
   
-    if (params[:search][:staff_name].present?)
+    if params[:search].present? && params[:search][:staff_name].present?
+      @staff_name = params[:search][:staff_name]
+      @staff_list = Staff.where("name ILIKE ?", "%#{@staff_name}%").pluck(:id)
       scope = Librarytransaction.where("staff_id IN (?) AND returneddate IS ?", @staff_list, nil)
-    end
-    
-    @searches = scope.all
-    
-    #Staff.where("name ILIKE ?", "%#{@staff_name}%").each do |e|
+      @searches = scope.all
       @searches.each do |t|
         @librarytransactions << t
       end
-    #end
-    #@librarytransactions = Kaminari.paginate_array(@librarytransactions).page(params[:page] || 1)
-    
-    
-    
+    end 
   end  
   
   

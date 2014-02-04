@@ -25,7 +25,9 @@
 .row.student_search{style: "display:none;"}
 
 .row
-  - if @librarytransactions
+  - if @staff_name != nil && @librarytransactions == []
+    %p no transactions
+  - elsif @librarytransactions
     %table
       - @librarytransactions.group_by(&:staff).each do |staff, transactions|
         %tr
@@ -37,6 +39,8 @@
               %td= transaction.id
               %td= transaction.accession.book.title
               %td= transaction.returnduedate
+  
+    
 
     
 .row
