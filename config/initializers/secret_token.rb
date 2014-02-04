@@ -9,7 +9,7 @@
 
 # Make sure your secret_key_base is kept private
 # if you're sharing your code publicly.
-#Ogma::Application.config.secret_key_base = '47b451ad0b9514f316194d7325922624000587c014fc85371f084b56b28e33a88ebd140d46f4d696af7847b30831d9fa99f955c43ecec1dbea941567437da4f4'
+Ogma::Application.config.secret_key_base = '3c19144a8bd805b63790e32397b1e5b1d55164e6890c77c1ead12d02e4716d7bba8cd4cb0418a26fe158a3ef999f21efcee73a82271da2de1b7d99d04fe40d91'
 
 require 'securerandom'
 

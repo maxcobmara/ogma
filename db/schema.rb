@@ -35,6 +35,25 @@ ActiveRecord::Schema.define(version: 20140101000000) do
     t.datetime "updated_at"
   end
 
+  create_table "addbooks", force: true do |t|
+    t.string   "name"
+    t.string   "phone"
+    t.string   "address"
+    t.string   "mail"
+    t.string   "web"
+    t.string   "fax"
+    t.string   "shortname"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "address_book_items", force: true do |t|
+    t.integer  "address_book_id"
+    t.string   "item"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "addsuppliers", force: true do |t|
     t.integer  "supplier_id"
     t.string   "lpono"

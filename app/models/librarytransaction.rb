@@ -41,8 +41,8 @@ class Librarytransaction < ActiveRecord::Base
   def borrower_name
    stid = Array(staff_id)
    suid = Array(student_id)
-   stexists = Staff.find(:all, :select => "id").map(&:id)
-   stuexists = Student.find(:all, :select => "id").map(&:id)
+   stexists = Staff.where(id: "id").map(&:id)
+   stuexists = Student.where(id: "id").map(&:id)
    staffchecker = stid & stexists
    studentchecker = suid & stuexists
    

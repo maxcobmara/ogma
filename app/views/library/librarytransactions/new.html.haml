@@ -2,6 +2,24 @@
 - model_class = Librarytransaction
 .page-header
   %h1= t 'library.transaction.new', :default => [:'helpers.titles.new', 'New %{model}'], :model => model_class.model_name.human
+  
+  
+.row
+  .col-md-2.col-md-offset-1
+    .btn-group{"data-toggle" => "buttons"}
+      %button.btn.btn-default.btn-lgbtn
+        %input#option1{:name => "options", :type => "radio"}
+          Student
+      %button.btn.btn-default.btn-lgbtn
+        %input#option2{:name => "options", :type => "radio"}
+          Staff
+  .col-md-2.col-md-offset-1
+    = f.text_field :name
+  
+  %p
+    %button.btn.btn-default.btn-lgbtn= link_to "Student", '#'
+    %button.btn.btn-default.btn-lgbtn= link_to "Staff", '#'
+    
 //= render :partial => 'form'
 
 //in case user click at 'Create All Records' button whereby book loan quota already exceeded
