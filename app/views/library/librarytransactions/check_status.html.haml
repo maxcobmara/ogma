@@ -1,8 +1,6 @@
 - model_class = Librarytransaction
 .page-header
   %h1= t('library.check.status')#, :default => model_class.model_name.human.pluralize
-  %h5= request.host
-  
   
 .row
   .col-md-3
@@ -20,26 +18,71 @@
         %span.input-group-btn
           = f.submit (t 'search'), :class => "btn btn-primary", style: "width:80px;"
       %span.help-block.small= (t 'library.check.search')
+      
+  .col-md-6.student_search{style: "display:none;"}
+    = form_for :search, :url => { :action => "check_status" }, :html=>{:class => "form-horizontal", :role => "form", :style => 'padding: 0 30px 0 30px; margin-top: 0;' } do |f|
+      .input-group
+        = f.text_field :student_icno, :autofocus => true, :required => true, :class => 'form-control', :type => "input", :id => "input1", placeholder: "IC Starts with"
+        %span.input-group-btn
+          = f.submit (t 'search'), :class => "btn btn-primary", style: "width:80px;"
+      %span.help-block.small= (t 'library.check.search')
 
           
           
 .row.student_search{style: "display:none;"}
 
 .row
-  - if @staff_name != nil && @librarytransactions == []
-    %p no transactions
-  - elsif @librarytransactions
-    %table
+  %hr
+  .col-md-9.col-md-offset-1
+    - if (@staff_name != nil || @student_ic != nil) && @librarytransactions == []
+      %h4 Results
+      %p no transactions
+    - elsif @staff_name != nil && @librarytransactions != []
+      %h4 Results
       - @librarytransactions.group_by(&:staff).each do |staff, transactions|
-        %tr
-          %th= staff.name
-          %th
-            %span.badge= transactions.length
-          - for transaction in transactions
-            %tr
-              %td= transaction.id
-              %td= transaction.accession.book.title
-              %td= transaction.returnduedate
+        - if transactions.length < 5; @panel = "panel-info"; else @panel = "panel-danger"; end
+        .panel{:class => @panel}
+          .panel-heading
+            = staff.name
+            %span.badge.right= transactions.length
+          .panel-body
+            - for transaction in transactions
+              .col-sm-1= transaction.accession.accession_no
+              .col-sm-9= link_to transaction.accession.book.title, '#', class: "bogus"
+              .col-sm-2
+                - if transaction.returnduedate < Date.today.yesterday && transaction.returneddate.blank?
+                  %span{style: "color:red;"}= transaction.returnduedate
+                - else
+                  %span= transaction.returnduedate
+          - if @panel == "panel-info"
+            .panel-footer
+              .right Add Link
+              text
+              
+    - elsif @student_ic != nil && @librarytransactions != []
+      %h4 Results
+      - @librarytransactions.group_by(&:student).each do |student, transactions|
+        - if transactions.length < 5; @panel = "panel-info"; else @panel = "panel-danger"; end
+        .panel{:class => @panel}
+          .panel-heading
+            = student.name
+            = student.icno
+            %span.badge.right= transactions.length
+          .panel-body
+            - for transaction in transactions
+              .col-sm-1= transaction.accession.accession_no
+              .col-sm-9= link_to transaction.accession.book.title, '#', class: "bogus"
+              .col-sm-2
+                - if transaction.returnduedate < Date.today.yesterday && transaction.returneddate.blank?
+                  %span{style: "color:red;"}= transaction.returnduedate
+                - else
+                  %span= transaction.returnduedate
+          - if @panel == "panel-info"
+            .panel-footer
+              .right Add Link
+              text
+              
+          
   
     
 

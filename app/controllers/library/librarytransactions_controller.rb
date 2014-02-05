@@ -45,7 +45,17 @@ class Library::LibrarytransactionsController < ApplicationController
       @searches.each do |t|
         @librarytransactions << t
       end
-    end 
+    end
+    
+    if params[:search].present? && params[:search][:student_icno].present?
+      @student_ic = params[:search][:student_icno]
+      @student_list = Student.where("icno LIKE ?", "#{@student_ic}%").pluck(:id)
+      scope = Librarytransaction.where("student_id IN (?) AND returneddate IS ?", @student_list, nil)
+      @searches = scope.all
+      @searches.each do |t|
+        @librarytransactions << t
+      end
+    end  
   end  
   
   

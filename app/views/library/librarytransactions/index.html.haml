@@ -51,7 +51,7 @@
               - if librarytransaction.returnduedate < Date.today.yesterday && librarytransaction.returneddate.blank?
                 %span{style: "color:red;"}= librarytransaction.returnduedate.strftime('%d %b %Y')
               - else
-                %span{style: "color:red;"}= librarytransaction.returnduedate.strftime('%d %b %Y')
+                %span= librarytransaction.returnduedate.strftime('%d %b %Y')
             %td.centre
               = fa_icon "check" if librarytransaction.extended?
               - if librarytransaction.extended != true && librarytransaction.returned != true
