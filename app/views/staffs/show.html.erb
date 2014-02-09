@@ -59,7 +59,7 @@
 		<tr>
 			<td class="leftcol"><label for="bloodtype"><%= t 'staff.bloodtype' %> :</label></td>
 			<!--<td><#%=h @staff.bloodtype %><td>-->
-		<td><%=h (DropDown::BLOOD_TYPE.find_all{|disp, value| value == @staff.bloodtype}).map {|disp, value| disp} %></td>
+		<td><%= t(DropDown::BLOOD_TYPE.find_all{|disp, value| value == @staff.bloodtype}).map {|disp, value| disp} %></td>
 		</tr>
 	
 		<tr>

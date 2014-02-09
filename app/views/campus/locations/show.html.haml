@@ -1,0 +1,66 @@
+- model_class = Location
+.page-header
+  %h1= t('location.title')
+
+
+.row
+  %div{:class => set_view_class(@location)}
+    .row
+      - if @location.root?
+        .col-md-2.left= link_to (fa_icon "arrow-circle-o-left"), campus_locations_path, class: "iko"
+      - else
+        .col-md-2.left= link_to (fa_icon "arrow-circle-o-left"), campus_location_path(@location.parent), class: "iko"
+      .col-md-8.loc_name #{@location.code} : #{@location.name}
+      .col-md-2.right= link_to (fa_icon "plus-circle"), new_campus_location_path(:parent_id => @location), class: "iko"
+      //.col-md-3.add.right= link_to (fa_icon "camera-retro black"), '#', class: "iko"
+    - if @location.lclass == 1
+      - @location.children.order(:code).reverse.each do | child |
+        %div{:class => set_sub_class(child)}
+          #bigtext= link_to child.name, campus_location_path(child)
+    - else
+      - @location.children.sort.each do | child |
+        %div{:class => set_sub_class(child)}
+          #bigtext= link_to child.name, campus_location_path(child)
+    
+
+
+    
+  .col-md-4.location_details
+    .row
+      %dl.dl-horizontal
+        %dt= t 'code', :default => model_class.human_attribute_name(:code) + ":"
+        %dd= @location.code
+
+      %dl.dl-horizontal
+        %dt= t 'name', :default =>  model_class.human_attribute_name(:name) + ":"
+        %dd= @location.name 
+
+      %dl.dl-horizontal
+        %dt= t 'class', :default =>  model_class.human_attribute_name(:class) + ":"
+        %dd= t "location_categories.#{location_category(@location)}"
+
+      %dl.dl-horizontal
+        %dt= t 'location.administrator', :default =>  model_class.human_attribute_name(:administrator) + ":"
+        %dd= @location.administrator.try(:name)
+      
+      %dl.dl-horizontal
+        %dt= t 'type', :default =>  model_class.human_attribute_name(:type) + ":"
+        %dd= (DropDown::LOCATION_TYPE.find_all{|disp, value| value == @location.typename}).map {|disp, value| disp}[0]
+    
+    .row
+      %br 
+      .col-md-offset-3
+        .form-actions
+          = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), campus_locations_path, :class => 'btn btn-default'
+          = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('.edit', :default => t("helpers.links.edit")), |
+            edit_campus_location_path(@location), :class => 'btn btn-primary'
+          = link_to content_tag(:i, "", :class => "fa fa-trash-o icon-white") + " " + t('.destroy', :default => t("helpers.links.destroy")), |
+            campus_locations_path(@location),                                                                                                    |
+            :method => 'delete',                                                                                                           |
+            :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },                   |
+            :class => 'btn btn-danger'
+    
+//- child.children.each do | sub |
+//.row.room_index= sub.name
+
+.form-actions

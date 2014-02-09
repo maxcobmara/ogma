@@ -194,5 +194,24 @@ LTYPE = [
          [ "None", 99 ]
 ]
 
+LOCATION_CATEGORIES = [
+       #  Displayed       stored in db
+       [ "building" , 1 ],
+       [ "floor"    , 2 ],
+       [ "room"     , 3 ]
+ ]
+
+
+LOCATION_TYPE = [
+        #  Displayed       stored in db
+        [ "Staff Residence",   1 ],
+        [ "Student Room",      6 ],
+        [ "Bed (Student)",     2 ],
+        [ "Facility",          3 ],
+        [ "Staff Area",        4 ],
+        [ "Public Area",       5 ],
+        [ "Other",             7 ]
+]
+
 
 end

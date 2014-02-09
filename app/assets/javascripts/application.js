@@ -11,14 +11,35 @@
 // about supported directives.
 //
 //= require jquery
+//= require jquery.ui.autocomplete
 //= require jquery_ujs
-//= require bootstrap
+//= require bootstrap.min
+//= require bootstrap-datepicker
 //= require bootstrap-select
+//= require bigtext
 //= require_tree .
 
 
 $(document).ready(function () {
   $('.btn').tooltip( {placement: 'bottom', container: 'body'});  //pill tooltips
   $('.tipsy').tooltip({ placement: 'right'});
+  
+  $('[data-behaviour=datepicker_before]').datepicker({
+    format: "yyyy/mm/dd",
+    endDate: "today + 1",
+    todayBtn: "linked",
+    autoclose: true
+  });
+  
+  $('[data-behaviour=datepicker_after]').datepicker({
+    format: "yyyy/mm/dd",
+    startDate: "today",
+    autoclose: true,
+    todayBtn: true
+  });
+  
+  $('select').selectpicker();
+  
+  $('#bigtext').bigtext();
 });
 

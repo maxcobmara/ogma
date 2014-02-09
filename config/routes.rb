@@ -6,7 +6,10 @@ Ogma::Application.routes.draw do
     end
   end
   
-  resources :locations
+  namespace :campus do
+    resources :locations
+    resources :tenants
+  end
   
   resources :events do
     member do

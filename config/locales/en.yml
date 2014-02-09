@@ -36,6 +36,23 @@ en:
   submit: Submit
   hello: "Hello world"
   print: Print
+  code: code
+  name: name
+  class: Class
+  type: Type
+  
+  actions:
+    new: New
+    search: Search
+    print: Print
+    show: Show
+    edit: Edit
+    delete: Delete
+    create: Create
+    created: " was successfully created."
+    updated: " was successfully updated."
+    
+  errors:
   
   people:
     male: male
@@ -135,4 +152,20 @@ en:
       receiveddate: Receive Date
       receiver_id: Received By
       supplier_id: Supplier
+     
+  location:
+    title: Location
+    code: Location Code
+    name: Name
+    administrator: Administrated By
+    select_admin: "Select Administrator"
+    
+  location_categories:
+    building: Building
+    floor: Floor
+    room: "Unit/Room"
+    admin: Administrator
+      
+
+      
     

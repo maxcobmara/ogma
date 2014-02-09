@@ -11,9 +11,9 @@
       
 .row.filter{style: "display:none;"}
 
-.row
+.row#bigtext
   - @root_locations.each do |location|
-    .building 
-      %h5= link_to location.name, location
-  .building 
-    = link_to "ADD", '#'
+    .location
+      %span= link_to location.name, campus_location_path(location)
+  .location 
+    = link_to "ADD", new_campus_location_path

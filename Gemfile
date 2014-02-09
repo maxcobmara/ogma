@@ -10,19 +10,21 @@ gem "paperclip", "~> 4.0.0"
 gem "ancestry", "~> 2.0.0"
 
 #stuff for layout
-gem "bootstrap-sass", "~> 3.0.3.0"
+#gem "bootstrap-sass", "~> 3.0.3.0"
 gem 'sass-rails', '~> 4.0.0'
 gem 'uglifier', '~> 2.1.1'  # Use Uglifier as compressor for JavaScript assets
 gem 'coffee-rails', '~> 4.0.0'  # Use CoffeeScript for .js.coffee assets and views
+gem "jquery-ui-rails", "~> 4.1.1"
 gem "jquery-rails", "~> 3.0.4"  # Use jquery as the JavaScript library
 gem 'turbolinks', '~> 1.1.1'  # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
 gem 'jbuilder', '~> 1.2'  # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem "haml", "~> 4.0.3"
 gem "kaminari", "~> 0.15.1"
 gem "font-awesome-rails", "~> 4.0.3.1"
-gem "bootstrap-datepicker-rails", "~> 1.1.1.9"
+gem "bootstrap-datepicker-rails", "~> 1.3.0.1"
 gem "bootstrap-select-rails", "~> 1.3.0.1"
 gem "modernizr-rails", "~> 2.6.2.3"
+#gem "jquery-ui-bootstrap-rails", "~> 0.0.2"
 
 group :assets do
   

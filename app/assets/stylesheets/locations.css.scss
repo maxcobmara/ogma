@@ -1,9 +1,30 @@
-.building {
-  background: rgba(0,0,0,0.7); padding:20px; width:14%; float:left; margin:15px; min-height:100px;
-  h5 {color:#FFF !important; text-align:center; padding-top:7%; font-weight:normal;}
+.location {
+  background: rgba(0,0,0,0.1); padding:15px 8px; width:14%; float:left; margin:15px; min-height:100px;
+  h5, a {text-align:justify;  font-weight:normal; font-size:0.9em;} 
   
 }
 
+.building, .floor{
+  background: rgba(0,0,0,0.2); padding:5px; margin:10px; min-height:30px; text-align:center;
+  a {color:#FFF !important; text-align:center; font-weight:normal; font-size:0.9em;} 
+}
+
+.room {
+  background: rgba(0,0,0,0.3); padding:5px; margin:5px; min-height:50px; min-width:100px; text-align:center; float:left;
+  a {color:#FFF !important; text-align:center; font-weight:normal; font-size:0.9em;} 
+}
+
+.room_index {
+  background: rgba(0,0,0,0.25); padding:20px; width:14%; float:left; margin:15px; min-height:50px;
+  h5, a {color:#FFF !important; text-align:center; padding-top:7%; font-weight:normal;} 
+}
+
+.location_details { padding-top:40px;}
+
+.add {text-align:center;}
+.loc_name {padding-top:7px; text-align:center; font-weight:bold;}
+
+a.iko {color:#333 !important; font-size:1.5em;}
 
 .overlay {background: rgba(0,0,0,0.5); padding:20px;
 h1 {color:#FFF !important; text-align:left;}

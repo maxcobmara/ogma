@@ -12,6 +12,24 @@ ms_MY:
   addmore: "Tambah Rekod"
   submit: Hantar
   print: Cetak
+  code: Kod
+  name: Nama
+  class: Kelas
+  type: Jenis
+  
+  actions:
+    new: Baru
+    search: Cari
+    print: Cetak
+    show: Pamer
+    edit: Sunting
+    delete: Padam
+    create: Cipta
+    created: " telah berjaya disimpan."
+    updated: " telah berjaya dikemaskini."
+    
+  errors:
+
   
   people:
     male: Lelaki
@@ -111,7 +129,21 @@ ms_MY:
       receiver_id: Diterima Oleh
       supplier_id: Pembekal
   
-  
+  location:
+    title: Lokasi
+    code: Kod Lokasi
+    name: Nama
+    administrator: Ditadbir oleh
+    select_admin: "Pilih Pentadbir"
+    
+    categories:
+    
+  location_categories:
+    building: Bangunan
+    floor: Tingkat
+    room: "Unit/Bilik"
+    admin: Pentadbir
+    
   sidebar:
     home: Rumah
     
@@ -129,3 +161,7 @@ ms_MY:
       short: "%d %b"
       long: "%d %B, %Y"
       events: "%A, %e %b"
+      
+  building: Bangunan
+  floor: Tingkat
+  room: "Unit/Bilik"
