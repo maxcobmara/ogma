@@ -41,7 +41,7 @@
             %td= librarytransaction.try(:accession).try(:book).try(:classlcc) || librarytransaction.try(:accession).try(:book).try(:classddc)
     
             %td= librarytransaction.try(:accession).try(:book).try(:author)
-            %td= librarytransactiontry(:accession).try(:book).try(:title)
+            %td= librarytransaction.try(:accession).try(:book).try(:title)
             %td.centre= librarytransaction.ru_staff? ? t('librarytransaction.staff') : t( 'librarytransaction.student')
             //%td.centre= librarytransaction.ru_staff? ? image_tag("cross.png", :border=>0, :title=>'is staff') : image_tag("tick.png", :border=>0, :title=>'is staff')
             %td= librarytransaction.borrower_name
