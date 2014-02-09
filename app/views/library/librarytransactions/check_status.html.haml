@@ -47,8 +47,8 @@
             %span.badge.right= transactions.length
           .panel-body
             - for transaction in transactions
-              .col-sm-1= transaction.accession.accession_no
-              .col-sm-9= link_to transaction.accession.book.title, '#', class: "bogus"
+              .col-sm-1= transaction.try(:accession).try(:accession_no)
+              .col-sm-9= link_to transaction.try(:accession).book.title, '#', class: "bogus"
               .col-sm-2
                 - if transaction.returnduedate < Date.today.yesterday && transaction.returneddate.blank?
                   %span{style: "color:red;"}= transaction.returnduedate
@@ -70,8 +70,8 @@
             %span.badge.right= transactions.length
           .panel-body
             - for transaction in transactions
-              .col-sm-1= transaction.accession.accession_no
-              .col-sm-9= link_to transaction.accession.book.title, '#', class: "bogus"
+              .col-sm-1= transaction.try(:accession).accession_no
+              .col-sm-9= link_to transaction.try(:accession).book.title, '#', class: "bogus"
               .col-sm-2
                 - if transaction.returnduedate < Date.today.yesterday && transaction.returneddate.blank?
                   %span{style: "color:red;"}= transaction.returnduedate
