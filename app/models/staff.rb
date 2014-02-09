@@ -1,6 +1,7 @@
 class Staff < ActiveRecord::Base
   
   has_one           :position
+  has_many          :tenants
   
   
   has_attached_file :photo,

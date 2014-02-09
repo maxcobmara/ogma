@@ -38,9 +38,8 @@
         - for librarytransaction in librarytransactions
           %tr
             %td= librarytransaction.try(:accession).try(:accession_no)
-            %td
-              = librarytransaction.accession.book.classlcc? ?  librarytransaction.accession.book.classlcc : librarytransaction.accession.book.classddc
-              = librarytransaction.accession.book.classddc unless librarytransaction.accession_id.blank?
+            %td= librarytransaction.try(:accession).try(:book).try(:classlcc) || .try(:accession).try(:book).try(:classddc)
+    
             %td= librarytransaction.try(:accession).book.author unless librarytransaction.accession_id.blank?
             %td= librarytransaction.accession.book.title unless librarytransaction.accession_id.blank?
             %td.centre= librarytransaction.ru_staff? ? t('librarytransaction.staff') : t( 'librarytransaction.student')

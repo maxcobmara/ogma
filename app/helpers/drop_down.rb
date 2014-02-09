@@ -206,7 +206,8 @@ LOCATION_TYPE = [
         #  Displayed       stored in db
         [ "Staff Residence",   1 ],
         [ "Student Room",      6 ],
-        [ "Bed (Student)",     2 ],
+        [ "Bed (Student-Female)",   2 ],
+        [ "Bed (Student-Male)",     8 ],
         [ "Facility",          3 ],
         [ "Staff Area",        4 ],
         [ "Public Area",       5 ],

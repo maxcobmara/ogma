@@ -1,0 +1,43 @@
+- model_class = Librarytransaction
+.page-header
+  %h1= t('tenant.title')#, :default => model_class.model_name.human.pluralize
+  
+.navbar.navbar-inverse{role: "navigation", style: "padding-right:40px;"}
+  %ul.nav.navbar-nav
+    %li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'new'))), new_campus_tenant_path
+  %ul.nav.navbar-nav.navbar-right
+    %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'search'))), "#", class: "toga"
+    %li= link_to content_tag(:li, fa_icon("print", text: (t 'print'))), "#"
+
+.row
+  - @residentials.each do |building|
+    = building.name
+        
+.row
+  %table.table-striped.table-hover.ogma
+    %thead
+      %tr
+        %th= t 'location.name'
+        %th= t 'staff.name'
+        %th= t 'student.name'
+        %th= t 'programme.name'
+        %th= t 'tenant.key.accept'
+        %th= t 'tenant.key.expected'
+        %th= t 'tenant.key.return'
+        %th= t 'tenance.force_vacate'
+        %th.action= fa_icon "cogs"
+    
+    %tbody  
+      - @tenants.each do |tenant|
+        %tr
+          %td= tenant.location.try(:name)
+          %td= tenant.staff.try(:name)
+          %td= tenant.student.try(:name)
+          %td tenant.course_details
+          %td= l(tenant.keyaccept) rescue nil
+          %td= l(tenant.keyexpectedreturn) unless tenant.keyexpectedreturn.blank?
+          %td= l(tenant.keyreturned) unless tenant.keyreturned.blank?
+          %td= tenant.force_vacate? ? "Yes" : "No"
+          - if tenant.location.typename == 2
+            text
+          //%td= link_to image_tag("printer.png", :border => 0, :title => 'Borang Asrama'), :action => 'borang_asrama', :id => tenant
