@@ -23,7 +23,8 @@
           - @male =            floor.descendants.where('typename = ? AND id NOT IN (?)', 2, @occupied_locations).order(code: :asc)
             
           - @female_occupied.each do |bed|
-            .fbed_occupied.tenant{title: "#{bed.tenants.last.student.name}", 'data-toggle' => 'tooltip'}
+            = link_to campus_tenant_path(bed.tenants.last) do
+              .fbed_occupied.tenant{title: "#{bed.tenants.last.student.name}", 'data-toggle' => 'tooltip'}
           - @female.each do |bed|
             = link_to new_campus_tenant_path(:location_id => bed) do
               .fbed_empty.tenant{title: "#{bed.name}", 'data-toggle' => 'tooltip'}
@@ -38,7 +39,6 @@
       %tr
         %th= t 'location.name'
         %th= t 'staff.name'
-        %th= t 'student.name'
         %th= t 'programme.name'
         %th= t 'tenant.key.accept'
         %th= t 'tenant.key.expected'
@@ -50,13 +50,12 @@
       - @tenants.each do |tenant|
         %tr
           %td= tenant.location.try(:name)
-          %td= tenant.staff.try(:name)
-          %td= tenant.student.try(:name)
-          %td tenant.course_details
+          %td= tenant.staff.try(:name) || tenant.student.try(:name)
+          %td
+            - unless @tenant.try(:student).blank?
+              = tenant.try(:student).try(:programme).try(:name)
           %td= l(tenant.keyaccept) rescue nil
           %td= l(tenant.keyexpectedreturn) unless tenant.keyexpectedreturn.blank?
           %td= l(tenant.keyreturned) unless tenant.keyreturned.blank?
           %td= tenant.force_vacate? ? "Yes" : "No"
-          - if tenant.location.typename == 2
-            text
           //%td= link_to image_tag("printer.png", :border => 0, :title => 'Borang Asrama'), :action => 'borang_asrama', :id => tenant
