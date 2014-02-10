@@ -33,18 +33,20 @@ h2 {color:#FFF !important; text-align:left; font-weight:normal; letter-spacing:3
 
 /*tenants*/
 .tenancy_building {
-  background: rgba(0,0,0,0.1); padding:15px 8px; float:left; margin:15px; min-height:100px;
+  background: rgba(0,0,0,0.3); padding:15px 8px; float:left; margin:15px; min-height:100px;
   h5, a {text-align:justify;  font-weight:normal; font-size:0.9em;} 
 }
 
 .tenancy_floor{
-  background: rgba(0,0,0,0.2); padding:5px; margin:10px;} 
+  background: rgba(0,0,0,0.3); padding:10px; margin:5px;} 
+
+.floor_name {color:white; font-size:0.9em; width:100%; padding-bottom:3px;}
 
 .fbed_empty {
-  background:rgba(255,0,0,0.2);  float:left; width:16px; min-height:16px; border: solid 1px black;
+  background:#CD96CD;  float:left; width:16px; min-height:16px; border: solid 1px black;
 }
-.fbed {
-  background:rgba(255,0,0,0.7);  float:left; width:16px; min-height:16px; border: solid 1px black;
+.fbed_occupied {
+  background:#EE799F;  float:left; width:16px; min-height:16px; border: solid 1px black;
 }
 .mbed {
   background:#00F;  float:left; width:16px; min-height:16px; border: solid 1px black;

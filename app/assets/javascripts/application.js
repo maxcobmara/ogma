@@ -23,6 +23,7 @@
 $(document).ready(function () {
   $('.btn').tooltip( {placement: 'bottom', container: 'body'});  //pill tooltips
   $('.tipsy').tooltip({ placement: 'right'});
+  $('.tenant').tooltip( {placement: 'right', container: 'body'});
   
   $('[data-behaviour=datepicker_before]').datepicker({
     format: "yyyy/mm/dd",
