@@ -1,6 +1,6 @@
 class Campus::TenantsController < ApplicationController
   
-  before_action :set_location, only: [:show, :edit, :update, :destroy]
+  before_action :set_tenant, only: [:show, :edit, :update, :destroy]
   
   def index
     #getting buidings with student beds
@@ -64,12 +64,12 @@ class Campus::TenantsController < ApplicationController
   
   private
     # Use callbacks to share common setup or constraints between actions.
-    def set_location
+    def set_tenant
       @tenant = Tenant.find(params[:id])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
-    def location_params
+    def tenant_params
       params.require(:tenant).permit(:location_id, :staff_id, :student_id, :keyaccept, :keyexpectedreturn, :keyreturned, :force_vacate, :student_name)
     end
   
