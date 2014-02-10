@@ -56,7 +56,7 @@
                   %span= transaction.returnduedate
           - if @panel == "panel-info"
             .panel-footer
-              .right Add Link
+              .right= link_to "Add", new_library_librarytransaction_path
               text
               
     - elsif @student_ic != nil && @librarytransactions != []

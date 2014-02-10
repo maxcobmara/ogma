@@ -1,17 +1,30 @@
 - model_class = Librarytransaction
 .page-header
   %h1= t('tenant.title')#, :default => model_class.model_name.human.pluralize
-  
-.navbar.navbar-inverse{role: "navigation", style: "padding-right:40px;"}
-  %ul.nav.navbar-nav
-    %li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'new'))), new_campus_tenant_path
-  %ul.nav.navbar-nav.navbar-right
-    %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'search'))), "#", class: "toga"
-    %li= link_to content_tag(:li, fa_icon("print", text: (t 'print'))), "#"
+
+.row  
+  .navbar.navbar-inverse{role: "navigation", style: "padding-right:40px;"}
+    %ul.nav.navbar-nav
+      %li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'new'))), new_campus_tenant_path
+    %ul.nav.navbar-nav.navbar-right
+      %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'search'))), "#", class: "toga"
+      %li= link_to content_tag(:li, fa_icon("print", text: (t 'print'))), "#"
 
 .row
   - @residentials.each do |building|
-    = building.name
+    .tenancy_building{style: "width:#{@div_width}%;"}
+      = building.name
+      - building.children.sort.reverse.each do |floor|
+        .row.tenancy_floor
+          - @female_empty = floor.descendants.where('typename = ?', 2).joins(:tenants).where("tenants.keyreturned IS ? AND tenants.force_vacate = ?", nil, false)
+          
+          - @female_empty.each do |bed|
+            .fbed_empty
+          - floor.descendants.where('typename = ?', 2).each do |bed|
+            .fbed
+          - floor.descendants.where('typename = ?', 8).each do |bed|
+            .mbed
+
         
 .row
   %table.table-striped.table-hover.ogma

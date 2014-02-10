@@ -7,15 +7,15 @@
 .row
   = form_for [:library, @librarytransaction], :html => { :class => 'form-horizontal' }  do |f|
 
-    .form-group{style: "padding-top:0; padding-bottom:0;"}
+    .form-group
       = f.label :checkoutdate, :class => 'col-sm-2 control-label'
       .col-sm-3= f.text_field :checkoutdate, :class => 'form-control', :type => :text, 'data-behaviour' => 'datepicker_before'
     
-    .form-group{style: "padding-top:0; padding-bottom:0;"}
+    .form-group
       = f.label :returnduedate, :class => 'col-sm-2 control-label'
       .col-sm-3= f.text_field :returnduedate, :class => 'form-control', :type => :text, 'data-behaviour' => 'datepicker_after', :value => 2.weeks.from_now.strftime('%Y/%m/%d')
     
-    .form-group{style: "padding-top:0; padding-bottom:0;"}
+    .form-group
       = f.label :book_id, :class => 'col-sm-2 control-label'
       .col-sm-3= f.collection_select :accession_id, Accession.find(:all, :order => :accession_no), :id, :accession_no , class: "form-control"
 

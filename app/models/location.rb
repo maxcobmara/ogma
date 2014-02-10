@@ -1,6 +1,7 @@
 class Location < ActiveRecord::Base
   has_ancestry
   belongs_to  :administrator, :class_name => 'Staff', :foreign_key => 'staffadmin_id'
+  has_many :tenants, :dependent => :destroy
   
   
   def staff_name
