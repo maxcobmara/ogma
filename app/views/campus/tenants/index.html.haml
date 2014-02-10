@@ -9,14 +9,11 @@
     %ul.nav.navbar-nav.navbar-right
       %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'search'))), "#", class: "toga"
       %li= link_to content_tag(:li, fa_icon("print", text: (t 'print'))), "#"
-.row
-  = @locations
-  %br
-  = @occupied_locations
+
 .row
   - @residentials.each do |building|
     .tenancy_building{style: "width:#{@div_width}%;"}
-      = building.name
+      %h5= building.name
       - building.children.sort.reverse.each do |floor|
         .row.tenancy_floor
           .floor_name= floor.name
@@ -28,7 +25,9 @@
           - @female_occupied.each do |bed|
             .fbed_occupied.tenant{title: "#{bed.tenants.last.student.name}", 'data-toggle' => 'tooltip'}
           - @female.each do |bed|
-            .fbed_empty.tenant{title: "#{bed.name}", 'data-toggle' => 'tooltip'}
+            = link_to new_campus_tenant_path do
+              .fbed_empty.tenant{title: "#{bed.name}", 'data-toggle' => 'tooltip'}
+              
           - floor.descendants.where('typename = ?', 8).each do |bed|
             .mbed
 
