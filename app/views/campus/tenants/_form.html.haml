@@ -1,0 +1,45 @@
+.form-group
+  %label.col-sm-2.control-label{:for => "location_id"}= t 'location.code'
+  %label.col-md-4
+    = f.text_field :location_name, value: @tenant.try(:location).try(:name), :class => 'form-control', readonly: true
+
+    
+    
+- if [2].include? @tenant.try(:location).try(:typename)
+  .form-group
+    %label.col-sm-2.control-label{:for => "student_id"}= t 'student.name'
+    .col-md-7
+      = f.text_field :student_name, :class => 'form-control', data: {autocomplete_source: Student.where("id NOT IN (?) AND gender = ?", @current_tenant_ids, 2).order(name: :asc).map(&:name)}
+      //= f.collection_select :student_id, Student.where("id NOT IN (?) AND gender = ?", @current_tenant_ids, 2).order(name: :asc), :id, :name#:student_name_with_programme
+
+- if [8].include? @tenant.try(:location).try(:typename)
+  .form-group
+    %label.col-sm-2.control-label{:for => "student_id"}= t 'student.name'
+    .col-md-4
+      = f.collection_select :student_id, Student.where("id NOT IN (?) AND gender = ?", @current_tenant_ids, 1).order(name: :asc), :id, :name#:student_name_with_programme
+
+- if @tenant.try(:location).try(:typename) == 1
+  .form-group
+    %label.col-sm-2.control-label{:for => "staff_id"}= t 'staff.name'
+    .col-md-4
+      = f.collection_select :staff_id, Staff.find(:all), :id, :mykad_with_staff_name
+
+.form-group
+  %label.col-sm-2.control-label{:for => "returnduedate"}= t 'campus.tenants.keyaccept'
+  .col-md-2
+    = f.text_field :keyaccept, type: "text", :class => 'form-control', 'data-behaviour' => 'datepicker_after'
+    
+.form-group
+  %label.col-sm-2.control-label{:for => "keyexpectedreturn"}= t 'campus.tenants.keyexpectedreturn'
+  .col-md-2
+    = f.text_field :keyexpectedreturn, type: "text", :class => 'form-control', 'data-behaviour' => 'datepicker_after'
+
+.form-group
+  %label.col-sm-2.control-label{:for => "keyreturned"}= t 'campus.tenants.keyexpectedreturn'
+  .col-md-2
+    = f.text_field :keyreturned, type: "text", :class => 'form-control', 'data-behaviour' => 'datepicker_after'
+							
+.form-group
+  %label.col-sm-2.control-label{:for => "force_vacate"}= t 'campus.tenants.keyexpectedreturn'
+  .col-md-2
+    = f.check_box :force_vacate, :class => 'form-control'

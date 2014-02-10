@@ -25,7 +25,7 @@
           - @female_occupied.each do |bed|
             .fbed_occupied.tenant{title: "#{bed.tenants.last.student.name}", 'data-toggle' => 'tooltip'}
           - @female.each do |bed|
-            = link_to new_campus_tenant_path do
+            = link_to new_campus_tenant_path(:location_id => bed) do
               .fbed_empty.tenant{title: "#{bed.name}", 'data-toggle' => 'tooltip'}
               
           - floor.descendants.where('typename = ?', 8).each do |bed|
