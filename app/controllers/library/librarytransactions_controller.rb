@@ -1,6 +1,6 @@
 class Library::LibrarytransactionsController < ApplicationController
   
-  before_action :set_location, only: [:show, :edit, :update, :destroy]
+  before_action :set_librarytransaction, only: [:show, :edit, :update, :destroy]
   
   def index
     @filters = Librarytransaction::FILTERS
@@ -18,11 +18,11 @@ class Library::LibrarytransactionsController < ApplicationController
   # GET /librarytransactions/new.xml
   def new
     @librarytransaction = Librarytransaction.new
-    @librarytransactions = Array.new(4) #{ Libraryransaction.new }
+    #@librarytransactions = Array.new(4) #{ Libraryransaction.new }
     #-----trial----
-    @aaa = params[:librarytransactions]
-    @staff1 = params[:stafffirst]
-    @student1 = params[:studentfirst]
+    #@aaa = params[:librarytransactions]
+    #@staff1 = params[:stafffirst]
+    #@student1 = params[:studentfirst]
     #-----trial----
     respond_to do |format|
       format.html # new.html.erb
@@ -30,12 +30,37 @@ class Library::LibrarytransactionsController < ApplicationController
     end
   end
   
+  def create
+    @librarytransaction = Librarytransaction.new(librarytransaction_params)
+
+    respond_to do |format|
+      if @librarytransaction.save
+        format.html { redirect_to @librarytransaction, notice: 'Library was successfully created.' }
+        format.json { render json: [:library, @librarytransaction], status: :created, location: [:library, @librarytransaction] }
+      else
+        format.html { render action: "new" }
+        format.json { render json: @librarytransaction.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+  
+  def update
+    respond_to do |format|
+      if @librarytransaction.update(librarytransaction_params)
+        format.html { redirect_to library_librarytransaction_path(@librarytransaction), notice: (t 'location.title')+(t 'actions.updated')  }
+        format.json { head :no_content }
+      else
+        format.html { render action: 'edit' }
+        format.json { render json: @librarytransaction.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+  
+  
+  
+  
   def check_status
     @librarytransactions = []
-    
-    
-    
-    
   
     if params[:search].present? && params[:search][:staff_name].present?
       @staff_name = params[:search][:staff_name]
@@ -85,8 +110,9 @@ class Library::LibrarytransactionsController < ApplicationController
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
-    def location_params
-      params.require(:librarytransaction).permit()# <-- insert editable fields here inside here e.g (:date, :name)
+    def librarytransaction_params
+      params.require(:librarytransaction).permit(:accession_id, :staff_id, :student_id, :checkoutdate, :returnduedate, :accession_no, :accession_acc_book)
+      # <-- insert editable fields here inside here e.g (:date, :name)
     end
   
 end

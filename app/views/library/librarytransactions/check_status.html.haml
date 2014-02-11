@@ -22,7 +22,7 @@
   .col-md-6.student_search{style: "display:none;"}
     = form_for :search, :url => { :action => "check_status" }, :html=>{:class => "form-horizontal", :role => "form", :style => 'padding: 0 30px 0 30px; margin-top: 0;' } do |f|
       .input-group
-        = f.text_field :student_icno, :autofocus => true, :required => true, :class => 'form-control', :type => "input", :id => "input1", placeholder: "IC Starts with"
+        = f.text_field :student_icno, :autofocus => true, :required => true, :class => 'form-control', :type => "input", :id => "input1", placeholder: "IC Starts with", value: (@params_student_ic = params[:search].try(:[], :student_icno))
         %span.input-group-btn
           = f.submit (t 'search'), :class => "btn btn-primary", style: "width:80px;"
       %span.help-block.small= (t 'library.check.search')
@@ -31,7 +31,7 @@
           
 .row.student_search{style: "display:none;"}
 
-.row
+.row#loaners
   %hr
   .col-md-9.col-md-offset-1
     - if (@staff_name != nil || @student_ic != nil) && @librarytransactions == []
@@ -62,11 +62,19 @@
     - elsif @student_ic != nil && @librarytransactions != []
       %h4 Results
       - @librarytransactions.group_by(&:student).each do |student, transactions|
-        - if transactions.length < 5; @panel = "panel-info"; else @panel = "panel-danger"; end
+        - if transactions.length < 2; @panel = "panel-info"; else @panel = "panel-danger"; end
         .panel{:class => @panel}
           .panel-heading
             = student.name
+            %br
             = student.icno
+            = student.matrixno
+            %br
+            = student.course.course_type
+            = student.course.name
+            - @student = student
+            
+            
             %span.badge.right= transactions.length
           .panel-body
             - for transaction in transactions
@@ -79,16 +87,42 @@
                   %span= transaction.returnduedate
           - if @panel == "panel-info"
             .panel-footer
-              .right Add Link
-              text
+              //= link_to "Add", new_library_librarytransaction_path(:student => :student_id), 'data-toggle' => "modal", 'data-target'=> "#new-post-modal", class: 'btn btn-primary'#, url: new_library_librarytransaction_path(:student_id => student.id)#, campaign_name: campaign.name
+              = link_to "Add", "#new-post-modal", :data => {:toggle => "modal", :href => new_library_librarytransaction_path(:student => :student_id)},  :class=> "openModal btn btn-primary"
               
           
-  
-    
+#new-post-modal.modal.bs-modal-lg{"aria-hidden" => "true", role: "dialog", tabindex: "-1"}
+  .modal-dialog
+    .modal-content
+      = form_for([:library, Librarytransaction.new], remote: true, html: {"data-type" => :json}) do |f|
+        = f.hidden_field :student_id, value: @student.id rescue 0
+        .modal-header
+          %button.close{"aria-hidden" => "true", "data-dismiss" => "modal", :type => "button"} &times;
+          %h4.modal-title Add Item
+        .modal-body
+          %div{style: "padding-left:40px;"}
+            .row
+              .form-group
+                %label.col-sm-2.control-label{:for => "code"}= t 'accession'
+                .col-md-8
+                  = f.text_field :accession_acc_book, class: 'form-control', data: {autocomplete_source: Accession.order(:accession_no).map(&:acc_book) }, placeholder: "Accession No"
+            .row
+              .form-group
+                = f.label :checkoutdate, :class => 'col-sm-2 control-label'
+                .col-sm-3= f.text_field :checkoutdate, :class => 'form-control', :type => :text, 'data-behaviour' => 'datepicker_std'
+            .row
+              .form-group
+                = f.label :returnduedate, :class => 'col-sm-2 control-label'
+                .col-sm-3= f.text_field :returnduedate, :class => 'form-control', :type => :text, 'data-behaviour' => 'datepicker_std', :value => 2.weeks.from_now.strftime('%Y-%m-%d')
+        .modal-footer
+          .form-group
+            = f.submit t('update'), class: "btn btn-primary closeme", id: "closeme"
 
-    
 .row
+  %a#refreshdiv Add
+:javascript
+  $('#closeme').click(function() {
+      $('#new-post-modal').modal('hide');
+      location.reload(true);
 
-%p{ :style => 'margin: 25px 0 30px 0' }
-%small{style: "padding-top:13px;"}
-    
+  });

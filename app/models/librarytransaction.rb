@@ -38,6 +38,15 @@ class Librarytransaction < ActiveRecord::Base
     {:scope => "overdue",    :label => "Tamat Tempoh"}        #Overdue
   ]
   
+  def accession_acc_book
+    accession.try(:acc_book)
+  end
+
+  def accession_acc_book=(acc_book)
+    accession_no = acc_book.split(" ")[0]
+    self.accession = Accession.find_by_accession_no(accession_no) if accession_no.present?
+  end
+  
   def borrower_name
     if ru_staff?
       staff.try(:name)
@@ -45,5 +54,7 @@ class Librarytransaction < ActiveRecord::Base
       student.try(:name)
     end
   end
+  
+  
 
 end

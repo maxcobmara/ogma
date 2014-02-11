@@ -10,4 +10,8 @@ $(document).ready(function(){
         $('.student_search').hide();
         $('.staff_search').show();
     });
+    
+    $('#closeme').click(function() {
+       $('#new-post-modal').modal('hide');
+     });
 });

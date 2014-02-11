@@ -217,6 +217,8 @@ ul.ui-autocomplete {
   padding: 12px 0 0 0;
   border: solid 1px #999;
   cursor: default;
+  z-index: 1151 !important;
+  max-width: 500px;
   li {
     background-color: #FFF;
     border-top: solid 1px #DDD;
@@ -232,6 +234,8 @@ ul.ui-autocomplete {
     }
   }
 } 
+
+.datepicker {z-index: 1151 !important;}
 
 
 

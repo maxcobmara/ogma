@@ -39,6 +39,12 @@ $(document).ready(function () {
     todayBtn: true
   });
   
+  $('[data-behaviour=datepicker_std]').datepicker({
+    format: "yyyy-mm-dd",
+    autoclose: true,
+    todayBtn: true
+  });
+  
   $('select').selectpicker();
   
   $('#bigtext').bigtext();
