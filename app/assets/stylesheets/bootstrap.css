@@ -3516,7 +3516,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
 .pagination {
   display: inline-block;
   padding-left: 0;
-  margin: 20px 0;
+  margin: 0px 0;
   border-radius: 4px;
 }
 .pagination > li {
@@ -3526,7 +3526,8 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
 .pagination > li > span {
   position: relative;
   float: left;
-  padding: 6px 12px;
+  font-size:0.8em;
+  padding: 5px 10px;
   line-height: 1.428571429;
   text-decoration: none;
   color: #428bca;

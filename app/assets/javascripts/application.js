@@ -47,6 +47,11 @@ $(document).ready(function () {
   
   $('select').selectpicker();
   
+  $('.toga').click(function() {	   
+     $('.search_bar').toggle();
+     $('.search_row').toggleClass('hidden'); 
+  });
+  
   $('#bigtext').bigtext();
 });
 

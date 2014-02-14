@@ -5,7 +5,9 @@ class StaffsController < ApplicationController
   # GET /staffs
   # GET /staffs.json
   def index
-    @staffs = Staff.find(:all, :conditions => ['name ILIKE ?', "%#{params[:search]}%"])
+    @search = Staff.search(params[:q])
+    @staffs = @search.result
+    @staffs = @staffs.page(params[:page]||1)
     #previous
     #@staff_filtered = Staff.with_permissions_to(:edit).find(:all, :order => sort_column + ' ' + sort_direction ,:conditions => ['icno LIKE ? or name ILIKE ?', "%#{params[:search]}%", "%#{params[:search]}%"])
     @staff_filtered = Staff.find(:all, :order => sort_column + ' ' + sort_direction ,:conditions => ['icno LIKE ? or name ILIKE ?', "%#{params[:search]}%", "%#{params[:search]}%"])

@@ -1,5 +1,7 @@
 class Staff < ActiveRecord::Base
   
+  paginates_per 13
+  
   has_one           :position
   has_many          :tenants
   
@@ -21,22 +23,13 @@ class Staff < ActiveRecord::Base
   accepts_nested_attributes_for :kins, :reject_if => lambda { |a| a[:kintype_id].blank? }
   
   
-  belongs_to        :title,     :class_name => 'Title',     :foreign_key => 'titlecd_id'
+  belongs_to        :title,       :class_name => 'Title',       :foreign_key => 'titlecd_id'
+  belongs_to        :staffgrade, :class_name => 'Employgrade',  :foreign_key => 'staffgrade_id'
   
   
 
   
-  def render_reports_to
-    if position.blank? 
-      ""
-    elsif position.parent.blank?
-      "-"
-    elsif position.parent.staff.blank?
-      "#{position.parent.name}"
-    else 
-      "#{position.parent.name} - #{position.parent.staff.name}"
-    end
-  end
+
   
   #--------------------Declerations----------------------------------------------------
     def age
@@ -50,5 +43,6 @@ class Staff < ActiveRecord::Base
     def mykad_with_staff_name
       "#{formatted_mykad}  #{name}"
     end  
+    
 
 end
