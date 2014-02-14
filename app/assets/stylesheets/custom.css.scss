@@ -21,20 +21,20 @@ html, body, .container, .scroller {
 	height: 100%;
 }
 
-html { /*overflow-y: scroll;*/}
-body {/*padding-top: 60px;*/}
-/*section {overflow: auto;}*/
+html { overflow-y: scroll;}
+body {padding-top: 60px;}
+section {overflow: auto;}
 textarea {resize: vertical;}
 
 
 .container {
 	position: relative;
-	/*overflow: hidden;
-	/*max-width: none !important;*/
-	/*background: #34495e;*/
+	overflow: hidden;
+	max-width: none !important;
+	background: #34495e;
 }
 /*scroller to activate menu*/
-.scroller {/*overflow-y: scroll;*/}
+.scroller {overflow-y: scroll;}
 .scroller, .scroller-inner {position: relative;}
 
 

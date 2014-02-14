@@ -1,5 +1,7 @@
 Ogma::Application.routes.draw do
   
+  resources :articles
+
   resources     :staffs do
     collection do
       get :borang_maklumat_staff

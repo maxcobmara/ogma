@@ -165,7 +165,17 @@ en:
     floor: Floor
     room: "Unit/Room"
     admin: Administrator
-      
 
-      
-    
+  events:
+    list: Event List
+    sd: Start Date
+    ed: End Date
+    en: Event Name
+    loca: Location
+    ob: Officiated By
+    cb: Created By
+    cnt: Control
+
+  check:  
+    status: Check Status
+    search: "Search to check status"

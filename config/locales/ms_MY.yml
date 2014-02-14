@@ -165,3 +165,13 @@ ms_MY:
   building: Bangunan
   floor: Tingkat
   room: "Unit/Bilik"
+  
+  events:
+    list: Senarai Acara
+    sd: Tarikh Mula
+    ed: Tarikh Tamaat
+    en: Nama Acara
+    loca: Lokasi
+    ob: Dirasmikan Oleh
+    cb: Dibuat Oleh
+    cnt: Kawalan
