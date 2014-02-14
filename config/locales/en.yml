@@ -77,6 +77,16 @@ en:
   
   
   
+  cofiles:
+    index: File Registry Index
+    cofileno: Cofileno
+    name: Name
+    location: Location
+    owner: owner
+    onloan_to: On Loan To
+    onloandt: onloandt
+    control: Control
+  
   library:
     transaction: 
       title: Library Transactions
