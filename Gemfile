@@ -10,7 +10,7 @@ gem "paperclip", "~> 4.0.0"
 gem "ancestry", "~> 2.0.0"
 
 #stuff for layout
-#gem "bootstrap-sass", "~> 3.0.3.0"
+gem "bootstrap-sass", "~> 3.0.3.0"
 gem 'sass-rails', '~> 4.0.0'
 gem 'uglifier', '~> 2.1.1'  # Use Uglifier as compressor for JavaScript assets
 gem 'coffee-rails', '~> 4.0.0'  # Use CoffeeScript for .js.coffee assets and views
@@ -24,7 +24,9 @@ gem "font-awesome-rails", "~> 4.0.3.1"
 gem "bootstrap-datepicker-rails", "~> 1.3.0.1"
 gem "bootstrap-select-rails", "~> 1.3.0.1"
 gem "modernizr-rails", "~> 2.6.2.3"
-#gem "jquery-ui-bootstrap-rails", "~> 0.0.2"
+gem "jquery-ui-bootstrap-rails", "~> 0.0.2"
+gem "faker"
+gem 'ransack'
 
 group :assets do
   

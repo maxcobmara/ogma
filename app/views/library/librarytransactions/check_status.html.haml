@@ -11,6 +11,8 @@
       %button.btn.btn-default.btn-lgbtn#option_staff{style: "width:90px;"}
         %input#option2{:name => "options", :type => "radio"}
           = (t 'people.staff')
+		  
+		  
   .col-md-6.staff_search{style: "display:none;"}
     = form_for :search, :url => { :action => "check_status" }, :html=>{:class => "form-horizontal", :role => "form", :style => 'padding: 0 30px 0 30px; margin-top: 0;' } do |f|
       .input-group
@@ -19,6 +21,8 @@
           = f.submit (t 'search'), :class => "btn btn-primary", style: "width:80px;"
       %span.help-block.small= (t 'library.check.search')
       
+	  
+	  
   .col-md-6.student_search{style: "display:none;"}
     = form_for :search, :url => { :action => "check_status" }, :html=>{:class => "form-horizontal", :role => "form", :style => 'padding: 0 30px 0 30px; margin-top: 0;' } do |f|
       .input-group

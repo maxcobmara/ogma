@@ -51,6 +51,8 @@ ms_MY:
     staffgrade_id: "Gred Staf"
     statecd: "Tempat Lahir"
     country_cd: "Kewarganegaraan"
+    staff_information:
+      title: Informasi Staf
   
   library:
     transaction: 

@@ -19,7 +19,6 @@
 //= require bigtext
 //= require_tree .
 
-
 $(document).ready(function () {
   $('.btn').tooltip( {placement: 'bottom', container: 'body'});  //pill tooltips
   $('.tipsy').tooltip({ placement: 'right'});
