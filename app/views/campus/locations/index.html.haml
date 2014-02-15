@@ -11,9 +11,11 @@
       
 .row.filter{style: "display:none;"}
 
-.row#bigtext
+.row
+  .location.img-rounded 
+    .centre= link_to content_tag(:location, fa_icon("plus-circle 4x", text: "")), new_campus_location_path
   - @root_locations.each do |location|
-    .location
-      %span= link_to location.name, campus_location_path(location)
-  .location 
-    = link_to "ADD", new_campus_location_path
+    = link_to(campus_location_path(location)) do
+      .location.bigtext.img-rounded
+        %h5= location.name
+  

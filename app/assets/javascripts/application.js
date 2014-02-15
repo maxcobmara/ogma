@@ -52,6 +52,6 @@ $(document).ready(function () {
      $('.search_row').toggleClass('hidden'); 
   });
   
-  $('#bigtext').bigtext();
+  $('.bigtext').bigtext();
 });
 

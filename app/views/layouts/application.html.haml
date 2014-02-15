@@ -18,8 +18,7 @@
           .content.clearfix
             .block
               = render 'layouts/header'
-              - flash.each do |key, value|
-                %div{:class => "alert alert-#{key}"}= value
+              //= render 'shared/flashes'
               .my_content
                 = yield
               = render 'layouts/footer'

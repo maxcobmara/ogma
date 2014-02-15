@@ -20,16 +20,16 @@
   .col-md-6
     = f.text_field :staff_name, class: 'form-control', data: {autocomplete_source: Staff.order(:name).map(&:name)}
 
-- if @location.parent.lclass == 1; @location.lclass = 2; elsif @location.parent.lclass == 2; @location.lclass = 3; end
-- if parent != nil
-
-  .form-group
-    %label.col-sm-2.control-label{:for => "code"}= t 'location.lclass'
-    .col-md-6
-      = f.select :lclass, DropDown::LOCATION_CATEGORIES, html_options: {:include_blank => "", class: "form-control", type: "input"}
-
-.form-group{id: "form3",  style: "display: none;"}
+//- if parent != nil
+- if @location.parent == nil; @location.lclass = 1; elsif @location.parent.lclass == 1; @location.lclass = 2; elsif @location.parent.lclass == 2; @location.lclass = 3; end
+.form-group
   %label.col-sm-2.control-label{:for => "code"}= t 'location.lclass'
   .col-md-6
-    = f.select :typename, DropDown::LOCATION_TYPE, {class: 'selectpicker'}, 'data-live-search' => 'true', include_blank: true
+    = f.select :lclass, DropDown::LOCATION_CATEGORIES, html_options: {:include_blank => "", class: "form-control", type: "input"}
+
+.form-group{id: "form3",  style: "display: none;"}
+  %label.col-sm-2.control-label{:for => "code"}
+    = t 'location.lclass'
+  .col-md-6
+    = f.select :typename, DropDown::LOCATION_TYPE, {class: 'selectpicker', include_blank: true}, 'data-live-search' => 'true'
     
