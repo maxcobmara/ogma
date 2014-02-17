@@ -75,7 +75,15 @@ en:
     statecd: "State of Birth"
     country_cd: "Nationality"
   
-  
+  cofiles:
+    index: File Registry Index
+    cofileno: Cofileno
+    name: Name
+    location: Location
+    owner: owner
+    onloan_to: On Loan To
+    onloandt: onloandt
+    control: Control  
   
   library:
     transaction: 
