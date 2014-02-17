@@ -1,51 +1,39 @@
-//Heres the code in erb, change it to haml. refer /app/views/library/transactions/index.html.haml for new layout design.
+- model_class = Cofile
+.page-header
+  %h1= t('cofile.list')#, :default => model_class.model_name.human.pluralize
+  
+.navbar.navbar-inverse{role: "navigation", style: "padding-right:40px;"}
+  %ul.nav.navbar-nav
+    %li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'actions.new'))), '#'
+  %ul.nav.navbar-nav.navbar-right
+    %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "toga"
+    %li= link_to content_tag(:li, fa_icon("print", text: (t 'actions.print'))), "#"
 
-:erb
-  <!-- Box -->
-  <div class="box">
-  <!-- Box Head -->
-  <div class="box-head">
-  <h2 class="left">Lists of Files</h2>
-  <div class="right">
-  <% form_tag cofiles_path, :method => 'get' do %>
-  	  		<%= text_field_tag :search, params[:search], :placeholder => "FileName" %>
-  	  		<%= submit_tag I18n.t('search'), :name => nil %>
-  			<% end %>
-  </div>
-  </div>
-  </div>
-  <div class="tlist">
-  <table width=100%>
-  <tr>
-      <th><%= t 'cofile.cofileno' %></th>
-      <th><%= t 'cofile.name' %></th>
-      <th><%= t 'cofile.location' %></th>
-      <th><%= t 'cofile.owner' %></th>
-      <th><%= t 'cofile.onloan_to' %></th>
-      <th><%= t 'cofile.onloandt' %></th>
-     <th colspan=3 class="ac"><%= t 'control' %></th>
-  </tr>
 
-  <% @cofiles.each do |cofile| %>
-    <tr>
-      <td><%=h cofile.cofileno %></td>
-      <td><%=h cofile.name %></td>
-      <td><%=h cofile.location %></td>
-      <td><%=h cofile.owner.mykad_with_staff_name %></td>
-      <td><%#=h cofile.staffloan_id? ? cofile.borrower_details : "" %>
-  		<%=h cofile.staffloan_id? ? check_kin {cofile.borrower.mykad_with_staff_name} : "" %>
-  	</td>
-  	<td><%=h cofile.onloan? ? cofile.onloandt : "" %></td>
-      <td width=10px ><%= link_to image_tag("document.png", :border => 0), :action => 'show', :id => cofile %></td>
-      <td width=10px>
-  	</td>
-      <td width=10px>
-  			<%= link_to image_tag("delete.png", :border => 0, :title => 'Delete'), cofile, :confirm => 'Are you sure?', :method => :delete %>
-  	</td>
-    </tr>
-  <% end %>
-  </table>
-  <br />
-  </div>
+.row
+  %table.table-striped.table-hover.ogma
+    %thead
+      %tr
+        %th= sort_link(@search, :cofileno, (t 'cofile.cofileno'))
+        %th= sort_link(@search, :name, (t 'cofile.name'))
+        %th= sort_link(@search, :location, (t 'cofile.location'))
+        %th= sort_link(@search, :owner, (t 'cofile.owner'))
+        %th= sort_link(@search, :onloan_to, (t 'cofile.onloan_to'))
+        %th{style: "width:33%;"}= sort_link(@search, :onloandt,(t 'cofile.onloandt'))
+        %th.ac{:colspan => "2"}= t 'control'
+		
 
-  <%= link_to (t 'cofile.create'), new_cofile_path %>
+    %tbody
+    = render "index_search"
+    - @cofiles.each do |cofile|
+      %tr
+        %td= cofile.cofileno
+        %td= cofile.name
+        %td= cofile.location
+        %td= cofile.owner.mykad_with_staff_name
+        %td= cofile.staffloan_id? ? check_kin {cofile.borrower.mykad_with_staff_name} : ""
+        %td= cofile.onloan? ? cofile.onloandt : ""
+        %td{:width => "10px"}= link_to fa_icon("eye", :border => 0), :action => 'show', :id => cofile
+        %td{:width => "10px"}= link_to fa_icon("trash-o", :border => 0, :title => 'Delete'), cofile, :confirm => 'Are you sure?', :method => :delete
+
+  .right{style:"padding:0 30px; margin:0;"}= paginate @cofiles, :theme => 'twitter-bootstrap-3'
