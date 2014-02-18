@@ -74,10 +74,30 @@ en:
     staffgrade_id: "Staff Grade"
     statecd: "State of Birth"
     country_cd: "Nationality"
+    
+    
+  location:
+    title: Location
+    code: Location Code
+    name: Name
+    administrator: Administrated By
+    select_admin: "Select Administrator"
+    
+  student:
+    name: Student Name
   
-  
-  
+    tenant:
+      title: Student Residence
+      new: New Tenancy
+      key:
+        provided: Date Key Provided
+        expected: Date Key expected returned
+        returned: Date Returned
+      vacate: Force Vacate
+      
+
   library:
+    title: Library
     transaction: 
       title: Library Transactions
       list: Library Transaction List
@@ -153,18 +173,18 @@ en:
       receiver_id: Received By
       supplier_id: Supplier
      
-  location:
-    title: Location
-    code: Location Code
-    name: Name
-    administrator: Administrated By
-    select_admin: "Select Administrator"
+
     
   location_categories:
     building: Building
     floor: Floor
     room: "Unit/Room"
     admin: Administrator
+    
+    
+  campus:
+    tenants:
+      new: New Tenant
       
 
       

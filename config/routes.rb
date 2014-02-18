@@ -7,8 +7,7 @@ Ogma::Application.routes.draw do
   end
   
   namespace :campus do
-    resources :locations
-    resources :tenants
+    resources :locations  
   end
   
   resources :events do
@@ -18,6 +17,10 @@ Ogma::Application.routes.draw do
   end
   
   resources :cofiles
+  
+  namespace :student do
+    resources :tenants
+  end
   
   namespace :library do
     resources     :librarytransactions do
