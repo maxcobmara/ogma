@@ -1,4 +1,4 @@
-class Campus::TenantsController < ApplicationController
+class Student::TenantsController < ApplicationController
   
   before_action :set_tenant, only: [:show, :edit, :update, :destroy]
   
