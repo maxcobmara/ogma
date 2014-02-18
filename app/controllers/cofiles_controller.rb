@@ -22,7 +22,7 @@ class CofilesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def location_params
-      params.require(:cofile).permit(:cofileno, :name, :location, :owner)
+      params.require(:cofile).permit(:cofileno, :name, :location)
     end
     
     def sort_column
