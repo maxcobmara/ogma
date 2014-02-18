@@ -1,0 +1,12 @@
+= search_form_for @search, url: events_path,  class: "form-inline" do |f|
+  %tr.search_row.hidden
+    %td= f.text_field :start_at_gteq_start, size: 2,  :class => "form-control"
+    %td= f.text_field :end_at_lteq_cont, size: 2,  :class => "form-control"
+    %td= f.text_field :eventname_cont, size: 2,  :class => "form-control"
+    %td= f.text_field :location_cont, size: 8,  :class => "form-control"
+    %td= f.text_field :officiated_cont, size: 8,  :class => "form-control"
+    %td.input-group
+      = f.text_field :staff_name_cont, size: 8, :class => "form-control"
+      %span.input-group-btn
+        %button.btn.btn-sm.btn-default.right{:type => "submit"}
+          %i.fa.fa-search.fa-fw
