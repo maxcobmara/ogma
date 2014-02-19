@@ -123,13 +123,6 @@ ActiveRecord::Schema.define(version: 20140213070431) do
     t.datetime "updated_at"
   end
 
-  create_table "articles", force: true do |t|
-    t.string   "name"
-    t.text     "content"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
   create_table "asset_defects", force: true do |t|
     t.integer  "asset_id"
     t.integer  "reported_by"
