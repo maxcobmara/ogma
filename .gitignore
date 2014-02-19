@@ -29,4 +29,8 @@ public/assets/notes/*
 public/assets/staffs/*
 public/assets/students/*
 public/system/*
+<<<<<<< HEAD
 public/assets/*
+=======
+public/assets/*
+>>>>>>> upstream/master
