@@ -12,3 +12,7 @@ jQuery ->
     $("#form" + $(this).find("option:selected").attr("value")).show()
     return
   
+  $("#show_assets_link").click ->
+    $("#show_assets").toggle()
+    return
+  

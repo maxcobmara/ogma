@@ -3,6 +3,9 @@ class Location < ActiveRecord::Base
   belongs_to  :administrator, :class_name => 'Staff', :foreign_key => 'staffadmin_id'
   has_many  :tenants, :dependent => :destroy
   
+  has_many :asset_placements
+  has_many :assets, :through => :asset_placements
+  
   
   def staff_name
     administrator.try(:name)

@@ -52,12 +52,36 @@ ms_MY:
     statecd: "Tempat Lahir"
     country_cd: "Kewarganegaraan"
     
+    
+  asset:
+    title: Aset
+    new: Aset Baru
+    list: Inventori
+    create: Cipta Aset Baru
+    assettype: Jenis Aset
+    assetcode: No Siri Pendaftaran 
+    cardno: No Kad
+    name: Jenama
+    category_id: Kategori
+    subcategory_name: Subkategori
+    buyinfo: Maklumat Pembelian
+    orderno: No Pesanan Tempatan (No LO)
+    purchasedate: Tarikh Pesanan (Tarikh LO)
+    purchaseprice: Harga Beli
+    receiveddate: Tarikh Terima
+    country_id: Negara Pembuat
+    engine: "Jenis & No Enjin"
+    engineno: "No. Enjin"
+    registration: "No. Pendaftaran"
+    otherinfo: "Komponen & Aksesori"
+    
   location:
     title: Lokasi
     code: Kod Lokasi
     name: Nama
     administrator: Ditadbir oleh
     select_admin: "Pilih Pentadbir"
+    has_assets: "Lokasi ini punyai asset, kelik di sini untuk lihat/sorok"
     
     categories:
     
@@ -69,7 +93,6 @@ ms_MY:
     
   student:
     name: Nama Pelajar
-    
     tenant:
       title: Penempatan Pelajar
       new : Pendudukkan Baru

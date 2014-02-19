@@ -61,7 +61,10 @@
             :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },                   |
             :class => 'btn btn-danger'
     
-//- child.children.each do | sub |
-//.row.room_index= sub.name
-
-.form-actions
+.row
+  .col-md-10
+    - if @location.assets.exists?
+      .small= link_to (t "location.has_assets"), '#', id: "show_assets_link"
+      #show_assets{style: "display:none;"}
+        = render "show_assets"
+        

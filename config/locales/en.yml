@@ -74,6 +74,30 @@ en:
     staffgrade_id: "Staff Grade"
     statecd: "State of Birth"
     country_cd: "Nationality"
+    
+  asset:
+    title: Assets
+    new: Register New Asset
+    list: Inventory
+    create: Create New Asset
+    assettype: Asset Type
+    assetcode: Registration Serial No
+    cardno: Card No
+    name: Manufacturer/Brand
+    category_id: Category
+    subcategory_name: Subcategory
+    buyinfo: Purchasing Information
+    orderno: Local Order No (LO No)
+    purchasedate: Local Order Date (LO Date)
+    purchaseprice: Purchase Price
+    receiveddate: Received Date
+    country_id: Country of Manufacture
+    engine: "Engine Type & No"
+    engineno: "Engine No.:"
+    registration: "Registration No."
+    otherinfo: "Components & Accessories"
+    administered_by: "Administered By"  
+  
        
   location:
     title: Location
@@ -81,8 +105,26 @@ en:
     name: Name
     administrator: Administrated By
     select_admin: "Select Administrator"
+    has_assets: "This location contains assets, click here to show/hide"
     
+    location_categories:
+      building: Building
+      floor: Floor
+      room: "Unit/Room"
+      admin: Administrator
     
+  student:
+    name: Student Name 
+    tenant:
+      title: Student Residence
+      new: New Student Tenancy
+      key:
+        provided: Date Key Provided
+        expected: Date Key expected returned
+        returned: Date Returned
+      vacate: Force Vacate
+  
+
   cofiles:
     index: File Registry Index
     cofileno: Cofileno
@@ -196,11 +238,6 @@ en:
      
 
     
-  location_categories:
-    building: Building
-    floor: Floor
-    room: "Unit/Room"
-    admin: Administrator
 
     
     
