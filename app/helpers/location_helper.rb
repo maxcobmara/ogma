@@ -25,7 +25,7 @@ module LocationHelper
     elsif (DropDown::LOCATION_CATEGORIES.find_all{|disp, value| value == location.lclass}).map {|disp, value| disp }[0] == "floor"
       "row floor"
     elsif (DropDown::LOCATION_CATEGORIES.find_all{|disp, value| value == location.lclass}).map {|disp, value| disp }[0] == "room"
-      "room"
+      "room img-rounded"
     end
   end
 end

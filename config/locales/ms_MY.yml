@@ -51,8 +51,36 @@ ms_MY:
     staffgrade_id: "Gred Staf"
     statecd: "Tempat Lahir"
     country_cd: "Kewarganegaraan"
+    
+  location:
+    title: Lokasi
+    code: Kod Lokasi
+    name: Nama
+    administrator: Ditadbir oleh
+    select_admin: "Pilih Pentadbir"
+    
+    categories:
+    
+  location_categories:
+    building: Bangunan
+    floor: Tingkat
+    room: "Unit/Bilik"
+    admin: Pentadbir
+    
+  student:
+    name: Nama Pelajar
+    
+    tenant:
+      title: Penempatan Pelajar
+      new : Pendudukkan Baru
+      key:
+        provided: Tarikh Kunci Diberi
+        expected: Tarikh Dijangka Pulang
+        returned: Tarikh Dipulang
+      vacate: Kosongkan
   
   library:
+    title: Perpustakaan
     transaction: 
       title: Transaksi Perpustakaan
       list: Senarai Transaksi Perpustakaan
@@ -129,20 +157,11 @@ ms_MY:
       receiver_id: Diterima Oleh
       supplier_id: Pembekal
   
-  location:
-    title: Lokasi
-    code: Kod Lokasi
-    name: Nama
-    administrator: Ditadbir oleh
-    select_admin: "Pilih Pentadbir"
+
     
-    categories:
-    
-  location_categories:
-    building: Bangunan
-    floor: Tingkat
-    room: "Unit/Bilik"
-    admin: Pentadbir
+  campus:
+    tenants:
+      new: Pendudukan Baru
     
   sidebar:
     home: Rumah
