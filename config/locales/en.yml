@@ -74,8 +74,7 @@ en:
     staffgrade_id: "Staff Grade"
     statecd: "State of Birth"
     country_cd: "Nationality"
-    
-    
+       
   location:
     title: Location
     code: Location Code
@@ -83,9 +82,31 @@ en:
     administrator: Administrated By
     select_admin: "Select Administrator"
     
+    
+  cofiles:
+    index: File Registry Index
+    cofileno: Cofileno
+    name: Name
+    location: Location
+    owner: owner
+    onloan_to: On Loan To
+    onloandt: onloandt
+    control: Control
+    
+  events:
+    list: Event List
+    sd: Start Date
+    ed: End Date
+    en: Event Name
+    loca: Location
+    ob: Officiated By
+    cb: Created By
+    cnt: Control
+  
+    
   student:
     name: Student Name
-  
+
     tenant:
       title: Student Residence
       new: New Tenancy
@@ -180,25 +201,14 @@ en:
     floor: Floor
     room: "Unit/Room"
     admin: Administrator
-<<<<<<< HEAD
-=======
+
     
     
   campus:
     tenants:
       new: New Tenant
-      
->>>>>>> upstream/master
 
-  events:
-    list: Event List
-    sd: Start Date
-    ed: End Date
-    en: Event Name
-    loca: Location
-    ob: Officiated By
-    cb: Created By
-    cnt: Control
+
 
   check:  
     status: Check Status
