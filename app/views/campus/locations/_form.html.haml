@@ -8,12 +8,12 @@
   .col-md-6
     = f.text_field :name, class: 'form-control'
 
-- parent = :parent_id
-- if !parent == nil
-  .form-group
-    %label.col-sm-2.control-label{:for => "parent"}= t 'location.parent'
-    .col-md-6
-      = f.collection_select :parent_id, Location.order(:name), :id, :name, class: 'form-control', :include_blank => true
+//- parent = :parent_id
+//- if !parent == nil
+.form-group
+  %label.col-sm-2.control-label{:for => "parent"}= t 'location.parent'
+  .col-md-6
+    = f.collection_select :parent_id, Location.order(:name), :id, :name, class: 'form-control', :include_blank => true
     
 .form-group
   %label.col-sm-2.control-label{:for => "code"}= t 'location.administrator'
