@@ -85,6 +85,18 @@ en:
   student:
     name: Student Name
   
+
+  cofiles:
+    index: File Registry Index
+    cofileno: Cofileno
+    name: Name
+    location: Location
+    owner: owner
+    onloan_to: On Loan To
+    onloandt: onloandt
+    control: Control  
+  
+
     tenant:
       title: Student Residence
       new: New Tenancy
