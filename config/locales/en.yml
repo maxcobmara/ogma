@@ -74,8 +74,7 @@ en:
     staffgrade_id: "Staff Grade"
     statecd: "State of Birth"
     country_cd: "Nationality"
-    
-    
+       
   location:
     title: Location
     code: Location Code
@@ -86,18 +85,6 @@ en:
   student:
     name: Student Name
   
-<<<<<<< HEAD
-  cofiles:
-    index: File Registry Index
-    cofileno: Cofileno
-    name: Name
-    location: Location
-    owner: owner
-    onloan_to: On Loan To
-    onloandt: onloandt
-    control: Control  
-  
-=======
     tenant:
       title: Student Residence
       new: New Tenancy
@@ -108,7 +95,6 @@ en:
       vacate: Force Vacate
       
 
->>>>>>> upstream/master
   library:
     title: Library
     transaction: 
@@ -198,7 +184,3 @@ en:
   campus:
     tenants:
       new: New Tenant
-      
-
-      
-    
