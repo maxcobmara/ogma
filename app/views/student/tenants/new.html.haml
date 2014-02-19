@@ -1,10 +1,10 @@
 - model_class = Tenant
 .page-header
   %h1
-    = t('campus.tenant.new')
+    = t('student.tenant.new')
 
 .row
-  = form_for [:campus, @tenant], :html => { :class => 'form-horizontal' }  do |f| 
+  = form_for [:student, @tenant], :html => { :class => 'form-horizontal' }  do |f| 
     = render 'shared/error_messages', object: f.object
     .col-md-offset-1
       = f.hidden_field :location_id
