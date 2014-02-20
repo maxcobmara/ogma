@@ -12,9 +12,13 @@
 # It's strongly recommended that you check this file into your version control system.
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 ActiveRecord::Schema.define(version: 20140213070431) do
 =======
 ActiveRecord::Schema.define(version: 20131004091521) do
+>>>>>>> upstream/master
+=======
+ActiveRecord::Schema.define(version: 20140219125542) do
 >>>>>>> upstream/master
 
   # These are extensions that must be enabled in order to support this database
@@ -1136,7 +1140,11 @@ ActiveRecord::Schema.define(version: 20131004091521) do
     t.string   "ancestry"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "combo_code"
+    t.integer  "ancestry_depth", default: 0
   end
+
+  add_index "locations", ["ancestry"], name: "index_locations_on_ancestry", using: :btree
 
   create_table "maints", force: true do |t|
     t.integer  "asset_id"
@@ -1213,6 +1221,18 @@ ActiveRecord::Schema.define(version: 20131004091521) do
     t.boolean  "is_acting"
     t.string   "ancestry"
     t.integer  "ancestry_depth"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "postinfo_id"
+    t.integer  "status"
+  end
+
+  add_index "positions", ["ancestry"], name: "index_positions_on_ancestry", using: :btree
+
+  create_table "postinfos", force: true do |t|
+    t.string   "details"
+    t.integer  "staffgrade_id"
+    t.integer  "post_count"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -1625,6 +1645,9 @@ ActiveRecord::Schema.define(version: 20131004091521) do
     t.datetime "updated_at"
   end
 
+  add_index "staffs", ["icno"], name: "index_staffs_on_icno", using: :btree
+  add_index "staffs", ["name"], name: "index_staffs_on_name", using: :btree
+
   create_table "staffsearch2s", force: true do |t|
     t.string   "keywords"
     t.integer  "position"
@@ -1786,7 +1809,13 @@ ActiveRecord::Schema.define(version: 20131004091521) do
     t.integer  "intake_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "course_remarks"
+    t.integer  "race2"
   end
+
+  add_index "students", ["icno"], name: "index_students_on_icno", using: :btree
+  add_index "students", ["matrixno"], name: "index_students_on_matrixno", using: :btree
+  add_index "students", ["name"], name: "index_students_on_name", using: :btree
 
   create_table "studentsearches", force: true do |t|
     t.string   "icno"
