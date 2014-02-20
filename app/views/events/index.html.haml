@@ -60,26 +60,26 @@
   %table.table-striped.table-hover.ogma
     %thead
       %tr 
-        %th= sort_link(@search, :start_at_gteq,(t 'events.sd'))
-        %th= sort_link(@search, :end_at_lteq,(t 'events.ed'))
+        %th= sort_link(@search, :start_at,(t 'events.sd'))
+        %th= sort_link(@search, :end_at,(t 'events.ed'))
         %th= sort_link(@search, :eventname,(t 'events.en'))
         %th= sort_link(@search, :location,(t 'events.loca'))
         %th= sort_link(@search, :officiated,(t 'events.ob'))
-        %th{style: "width:33%;"}= sort_link(@search, :staff_name,(t 'events.cb'))
-        %th.ac{colspan: "3"}= t('events.cnt')
+        %th{style: "width:25%;"}= sort_link(@search, :staff_name,(t 'events.cb'))
+        %th.ac{colspan: "3"}= t('events.cnt') 
     %tbody 
-      = render "index_search"
-      - @events.each do |event|
-        %tr
-          %td= h event.start_at.strftime(" %d %b %y, %a, %I:%M%p  ") unless event.start_at.nil?
-          %td= h to event.end_at.try(:strftime, "%d %b %y, %a, %I:%M%p  ")
-          %td= h event.eventname
-          %td= h event.location
-          %td= h event.officiated
-          %td= h event.staff.blank? ? "-" : event.staff.name
-          %td{:width => "10px"}= link_to fa_icon("eye", :border => 0), :action => 'show', :id => event
-          %td{:width => "10px"}= link_to fa_icon("edit", :border => 0), :action => 'edit', :id => event
-          %td{:width => "10px"}= link_to fa_icon("trash-o", :border => 0, :title => 'Delete'), event, :confirm => 'Are you sure?', :method => :delete
+    = render "index_search"
+    - @events.each do |event|
+      %tr
+        %td= event.start_at.strftime(" %d %b %y, %a, %I:%M%p  ") unless event.start_at.nil?
+        %td= event.end_at.strftime(" %d %b %y, %a, %I:%M%p  ") unless event.end_at.nil?
+        %td= event.eventname
+        %td= event.location
+        %td= event.officiated
+        %td= event.staff.blank? ? "-" : event.staff.name
+        %td{:width => "10px"}= link_to fa_icon("eye", :border => 0), :action => 'show', :id => event
+        %td{:width => "10px"}= link_to fa_icon("edit", :border => 0), :action => 'edit', :id => event
+        %td{:width => "10px"}= link_to fa_icon("trash-o", :border => 0, :title => 'Delete'), event, :confirm => 'Are you sure?', :method => :delete
 		  
   .right{style:"padding:0 30px; margin:0;"}= paginate @events, :theme => 'twitter-bootstrap-3'
 	

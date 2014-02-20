@@ -14,12 +14,12 @@
   %table.table-striped.table-hover.ogma
     %thead
       %tr
-        %th= sort_link(@search, :cofileno, (t 'cofile.cofileno'))
-        %th= sort_link(@search, :name, (t 'cofile.name'))
-        %th= sort_link(@search, :location, (t 'cofile.location'))
-        %th= sort_link(@search, :owner, (t 'cofile.owner'))
-        %th= sort_link(@search, :onloan_to, (t 'cofile.onloan_to'))
-        %th{style: "width:33%;"}= sort_link(@search, :onloandt,(t 'cofile.onloandt'))
+        %th= sort_link(@search, :cofileno, (t 'cofiles.cofileno'))
+        %th= sort_link(@search, :name, (t 'cofiles.name'))
+        %th= sort_link(@search, :location, (t 'cofiles.location'))
+        %th= sort_link(@search, :owner, (t 'cofiles.owner'))
+        %th{style: "width:20%;"}= sort_link(@search, :onloan_to, (t 'cofiles.onloan_to'))
+        %th{style: "width:10%;"}= sort_link(@search, :onloandt,(t 'cofiles.onloandt'))
         %th.ac{:colspan => "2"}= t 'control'
 		
 
