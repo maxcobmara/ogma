@@ -236,18 +236,13 @@ en:
       receiver_id: Received By
       supplier_id: Supplier
     
-<<<<<<< HEAD
-
-    
-    
-=======
   location_categories:
     building: Building
     floor: Floor
     room: "Unit/Room"
     admin: Administrator
+<<<<<<< HEAD
    
->>>>>>> raqibhakim-master
   campus:
     tenants:
       new: New Tenant
@@ -257,3 +252,19 @@ en:
   check:  
     status: Check Status
     search: "Search to check status"
+=======
+
+  events:
+    list: Event List
+    sd: Start Date
+    ed: End Date
+    en: Event Name
+    loca: Location
+    ob: Officiated By
+    cb: Created By
+    cnt: Control
+
+  check:  
+    status: Check Status
+    search: "Search to check status"
+>>>>>>> b8b616ffeaf4f0ac42bd30b8bd485d86eaeb3510

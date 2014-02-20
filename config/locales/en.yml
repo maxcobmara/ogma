@@ -145,20 +145,6 @@ en:
     cb: Created By
     cnt: Control
   
-    
-  student:
-    name: Student Name
-
-    tenant:
-      title: Student Residence
-      new: New Tenancy
-      key:
-        provided: Date Key Provided
-        expected: Date Key expected returned
-        returned: Date Returned
-      vacate: Force Vacate
-      
-
   library:
     title: Library
     transaction: 
@@ -235,18 +221,29 @@ en:
       receiveddate: Receive Date
       receiver_id: Received By
       supplier_id: Supplier
+     
+  location:
+    title: Location
+    code: Location Code
+    name: Name
+    administrator: Administrated By
+    select_admin: "Select Administrator"
     
   location_categories:
     building: Building
     floor: Floor
     room: "Unit/Room"
     admin: Administrator
-   
-  campus:
-    tenants:
-      new: New Tenant
 
-
+  events:
+    list: Event List
+    sd: Start Date
+    ed: End Date
+    en: Event Name
+    loca: Location
+    ob: Officiated By
+    cb: Created By
+    cnt: Control
 
   check:  
     status: Check Status

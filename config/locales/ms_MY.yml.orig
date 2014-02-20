@@ -201,12 +201,7 @@ ms_MY:
       receiver_id: Diterima Oleh
       supplier_id: Pembekal
   
-  location:
-    title: Lokasi
-    code: Kod Lokasi
-    name: Nama
-    administrator: Ditadbir oleh
-    select_admin: "Pilih Pentadbir"
+
     
   campus:
     tenants:
@@ -242,4 +237,8 @@ ms_MY:
     loca: Lokasi
     ob: Dirasmikan Oleh
     cb: Dibuat Oleh
+<<<<<<< HEAD
     cnt: Kawalan
+=======
+    cnt: Kawalan
+>>>>>>> b8b616ffeaf4f0ac42bd30b8bd485d86eaeb3510
