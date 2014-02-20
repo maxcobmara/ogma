@@ -37,6 +37,8 @@ end
 
 group :development do
   gem "quiet_assets", "~> 1.0.2"
+  gem "seed_dump", "~> 3.1.0"
+  gem "annotate", "~> 2.6.1"
 end
 
 group :development, :test do

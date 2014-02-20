@@ -11,3 +11,20 @@ class Event < ActiveRecord::Base
   end
     
 end
+
+# == Schema Information
+#
+# Table name: events
+#
+#  created_at      :datetime
+#  createdby       :integer
+#  end_at          :datetime
+#  event_is_publik :boolean
+#  eventname       :string(255)
+#  id              :integer          not null, primary key
+#  location        :string(255)
+#  officiated      :string(255)
+#  participants    :text
+#  start_at        :datetime
+#  updated_at      :datetime
+#
