@@ -26,7 +26,7 @@ gem "bootstrap-datepicker-rails", "~> 1.3.0.1"
 gem "bootstrap-select-rails", "~> 1.3.0.1"
 gem "modernizr-rails", "~> 2.6.2.3"
 #gem "jquery-ui-bootstrap-rails", "~> 0.0.2"
-gem "faker"
+
 
 group :assets do
   
@@ -42,6 +42,7 @@ end
 group :development, :test do
   gem "rspec-rails", "~> 2.14.0"
   gem 'guard-rspec', "~> 2.5.0"
+  gem "faker"
 end
 
 group :test do
