@@ -127,12 +127,12 @@ en:
 
   cofiles:
     index: File Registry Index
-    cofileno: Cofileno
+    cofileno: Cofile No
     name: Name
     location: Location
-    owner: owner
+    owner: Owner
     onloan_to: On Loan To
-    onloandt: onloandt
+    onloandt: On Loan Date
     control: Control
     
   events:

@@ -233,7 +233,17 @@ ms_MY:
   building: Bangunan
   floor: Tingkat
   room: "Unit/Bilik"
-  
+
+  cofiles:
+    index: Indeks File Pendaftaran
+    cofileno: No Cofile
+    name: Nama
+    location: Lokasi
+    owner: Pemilik
+    onloan_to: Dipinjam Kepada
+    onloandt: Tarikh Pinjaman
+    control: Kawalan
+
   events:
     list: Senarai Acara
     sd: Tarikh Mula
