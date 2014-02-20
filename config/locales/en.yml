@@ -235,12 +235,13 @@ en:
       receiveddate: Receive Date
       receiver_id: Received By
       supplier_id: Supplier
-     
-
     
-
-    
-    
+  location_categories:
+    building: Building
+    floor: Floor
+    room: "Unit/Room"
+    admin: Administrator
+   
   campus:
     tenants:
       new: New Tenant

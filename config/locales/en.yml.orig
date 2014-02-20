@@ -21,27 +21,6 @@
 
 en:
   
-  activerecord:
-    models: 
-      location: Location
-    attributes:
-      location:
-        combo_code: Location Code
-    errors:
-      templates:
-        header:
-          one: "1 errors prohibited this {{model}} from being saved"
-          other: "{{count}} prohibited this {{model}} from being saved"
-        body: "There were problems with the following fields:"
-      messages:
-        blank: "cant't be blank"
-        not_a_number: "is not number"
-        too_short: "is too short (minimum is {{count}} characters)"
-        taken: "has already been taken"
-        illegal_char: contains illegal characters
-        invalid: is invalid
-    
-  
   #common
   search:  Search
   datelabel: Date
@@ -73,6 +52,7 @@ en:
     created: " was successfully created."
     updated: " was successfully updated."
     
+  errors:
   
   people:
     male: male
@@ -122,7 +102,6 @@ en:
   location:
     title: Location
     code: Location Code
-    combo_code: Location Code
     name: Name
     administrator: Administrated By
     select_admin: "Select Administrator"
@@ -145,6 +124,7 @@ en:
         returned: Date Returned
       vacate: Force Vacate
   
+
   cofiles:
     index: File Registry Index
     cofileno: Cofileno
@@ -169,7 +149,14 @@ en:
   student:
     name: Student Name
 
-
+    tenant:
+      title: Student Residence
+      new: New Tenancy
+      key:
+        provided: Date Key Provided
+        expected: Date Key expected returned
+        returned: Date Returned
+      vacate: Force Vacate
       
 
   library:
@@ -248,20 +235,19 @@ en:
       receiveddate: Receive Date
       receiver_id: Received By
       supplier_id: Supplier
-     
-
     
 <<<<<<< HEAD
+
+    
+    
+=======
   location_categories:
     building: Building
     floor: Floor
     room: "Unit/Room"
     admin: Administrator
-=======
->>>>>>> master
-
-    
-    
+   
+>>>>>>> raqibhakim-master
   campus:
     tenants:
       new: New Tenant

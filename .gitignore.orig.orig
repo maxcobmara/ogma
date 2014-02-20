@@ -31,6 +31,11 @@ public/assets/students/*
 public/system/*
 <<<<<<< HEAD
 public/assets/*
+<<<<<<< HEAD
+=======
+public/assets/*
+>>>>>>> 477e69b29cc9046bdd027b7dd75364000b8ca05e
+=======
 =======
 <<<<<<< HEAD
 public/assets/*
@@ -38,3 +43,4 @@ public/assets/*
 public/assets/*
 >>>>>>> upstream/master
 >>>>>>> bf22e32173ba1df7bc9379000f7be3ec850b16e7
+>>>>>>> raqibhakim-master
