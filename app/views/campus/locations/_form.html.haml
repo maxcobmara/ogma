@@ -1,12 +1,15 @@
 .form-group
-  %label.col-sm-2.control-label{:for => "code"}= t 'location.code'
-  .col-md-2
-    = f.text_field :code, class: 'form-control'
+  .col-sm-2.control-label
+    = f.label t 'location.code', for: :code
+  .col-md-4
+    .input-group
+      .input-group-addon= @location.parent.combo_code unless @location.parent.nil?
+      = f.text_field :code, class: 'form-control mandatory'
     
 .form-group
   %label.col-sm-2.control-label{:for => "code"}= t 'location.name'
   .col-md-6
-    = f.text_field :name, class: 'form-control'
+    = f.text_field :name, class: 'form-control mandatory'
 
 //- parent = :parent_id
 //- if !parent == nil
@@ -23,13 +26,13 @@
 //- if parent != nil
 - if @location.parent == nil; @location.lclass = 1; elsif @location.parent.lclass == 1; @location.lclass = 2; elsif @location.parent.lclass == 2; @location.lclass = 3; end
 .form-group
-  %label.col-sm-2.control-label{:for => "code"}= t 'location.lclass'
+  %label.col-sm-2.control-label{:for => "code"}= t 'class'
   .col-md-6
     = f.select :lclass, DropDown::LOCATION_CATEGORIES, html_options: {:include_blank => "", class: "form-control", type: "input"}
 
 .form-group{id: "form3",  style: "display: none;"}
   %label.col-sm-2.control-label{:for => "code"}
-    = t 'location.lclass'
+    = t 'type'
   .col-md-6
     = f.select :typename, DropDown::LOCATION_TYPE, {class: 'selectpicker', include_blank: true}, 'data-live-search' => 'true'
     
