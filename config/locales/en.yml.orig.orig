@@ -21,6 +21,8 @@
 
 en:
   
+<<<<<<< HEAD
+=======
   activerecord:
     models: 
       location: Location
@@ -42,6 +44,7 @@ en:
         invalid: is invalid
     
   
+>>>>>>> master
   #common
   search:  Search
   datelabel: Date
@@ -73,6 +76,10 @@ en:
     created: " was successfully created."
     updated: " was successfully updated."
     
+<<<<<<< HEAD
+  errors:
+=======
+>>>>>>> master
   
   people:
     male: male
@@ -122,7 +129,10 @@ en:
   location:
     title: Location
     code: Location Code
+<<<<<<< HEAD
+=======
     combo_code: Location Code
+>>>>>>> master
     name: Name
     administrator: Administrated By
     select_admin: "Select Administrator"
@@ -134,6 +144,12 @@ en:
       room: "Unit/Room"
       admin: Administrator
     
+<<<<<<< HEAD
+<<<<<<< HEAD
+    
+=======
+=======
+>>>>>>> master
   student:
     name: Student Name 
     tenant:
@@ -145,6 +161,11 @@ en:
         returned: Date Returned
       vacate: Force Vacate
   
+<<<<<<< HEAD
+
+>>>>>>> master
+=======
+>>>>>>> master
   cofiles:
     index: File Registry Index
     cofileno: Cofileno
