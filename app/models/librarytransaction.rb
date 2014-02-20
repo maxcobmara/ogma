@@ -58,3 +58,31 @@ class Librarytransaction < ActiveRecord::Base
   
 
 end
+
+# == Schema Information
+#
+# Table name: librarytransactions
+#
+#  accession_id   :integer
+#  checkoutdate   :date
+#  created_at     :datetime
+#  extended       :boolean
+#  fine           :decimal(, )
+#  finepay        :boolean
+#  finepaydate    :date
+#  id             :integer          not null, primary key
+#  libcheckout_by :integer
+#  libextended_by :integer
+#  libreturned_by :integer
+#  replaceddate   :date
+#  report         :text
+#  reportlost     :boolean
+#  reportlostdate :date
+#  returnduedate  :date
+#  returned       :boolean
+#  returneddate   :date
+#  ru_staff       :boolean
+#  staff_id       :integer
+#  student_id     :integer
+#  updated_at     :datetime
+#

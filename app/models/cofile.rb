@@ -18,3 +18,20 @@ class Cofile < ActiveRecord::Base
   end
   
 end
+
+# == Schema Information
+#
+# Table name: cofiles
+#
+#  cofileno     :string(255)
+#  created_at   :datetime
+#  id           :integer          not null, primary key
+#  location     :string(255)
+#  name         :string(255)
+#  onloan       :boolean
+#  onloandt     :date
+#  onloanxdt    :date
+#  owner_id     :integer
+#  staffloan_id :integer
+#  updated_at   :datetime
+#
