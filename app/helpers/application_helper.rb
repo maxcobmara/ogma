@@ -49,4 +49,12 @@ module ApplicationHelper
     end
     _html << %{</select>}.html_safe
   end
+  
+  def check_kin
+    begin
+      return yield
+    rescue
+      return "Empty"
+    end
+  end
 end

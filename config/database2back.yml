@@ -1,0 +1,26 @@
+development:
+  adapter: postgresql
+  encoding: unicode
+  database: ogma_development
+  pool: 5
+  username: diaarezz
+  password: 12345
+  host: localhost
+
+test:
+  adapter: postgresql
+  encoding: unicode
+  database: ogma_test
+  pool: 5
+  username: diaarezz
+  password: 12345
+  host: localhost
+
+production:
+  adapter: postgresql
+  encoding: unicode
+  database: ogma_production
+  pool: 5
+  username: diaarezz
+  password: 12345
+  host: localhost

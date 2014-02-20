@@ -30,7 +30,11 @@ public/assets/staffs/*
 public/assets/students/*
 public/system/*
 <<<<<<< HEAD
-public/assets/* 
+public/assets/*
+=======
+<<<<<<< HEAD
+public/assets/*
 =======
 public/assets/*
->>>>>>> b632fa6f217eed07924f0f9e80130eff973e4bde
+>>>>>>> upstream/master
+>>>>>>> bf22e32173ba1df7bc9379000f7be3ec850b16e7
