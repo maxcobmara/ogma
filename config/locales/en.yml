@@ -75,15 +75,46 @@ en:
     statecd: "State of Birth"
     country_cd: "Nationality"
     
-    
+  asset:
+    title: Assets
+    new: Register New Asset
+    list: Inventory
+    create: Create New Asset
+    assettype: Asset Type
+    assetcode: Registration Serial No
+    cardno: Card No
+    name: Manufacturer/Brand
+    category_id: Category
+    subcategory_name: Subcategory
+    buyinfo: Purchasing Information
+    orderno: Local Order No (LO No)
+    purchasedate: Local Order Date (LO Date)
+    purchaseprice: Purchase Price
+    receiveddate: Received Date
+    country_id: Country of Manufacture
+    engine: "Engine Type & No"
+    engineno: "Engine No.:"
+    registration: "Registration No."
+    otherinfo: "Components & Accessories"
+    administered_by: "Administered By"  
+  
+       
   location:
     title: Location
     code: Location Code
     name: Name
     administrator: Administrated By
     select_admin: "Select Administrator"
+    has_assets: "This location contains assets, click here to show/hide"
+    
+    location_categories:
+      building: Building
+      floor: Floor
+      room: "Unit/Room"
+      admin: Administrator
     
   student:
+<<<<<<< HEAD
     name: Student Name
   
 <<<<<<< HEAD
@@ -98,17 +129,43 @@ en:
     control: Control  
   
 =======
+=======
+    name: Student Name 
+>>>>>>> upstream/development
     tenant:
       title: Student Residence
-      new: New Tenancy
+      new: New Student Tenancy
       key:
         provided: Date Key Provided
         expected: Date Key expected returned
         returned: Date Returned
       vacate: Force Vacate
-      
+  
 
+<<<<<<< HEAD
 >>>>>>> upstream/master
+=======
+  cofiles:
+    index: File Registry Index
+    cofileno: Cofile No
+    name: Name
+    location: Location
+    owner: Owner
+    onloan_to: On Loan To
+    onloandt: On Loan Date
+    control: Control
+    
+  events:
+    list: Event List
+    sd: Start Date
+    ed: End Date
+    en: Event Name
+    loca: Location
+    ob: Officiated By
+    cb: Created By
+    cnt: Control
+  
+>>>>>>> upstream/development
   library:
     title: Library
     transaction: 
@@ -186,19 +243,29 @@ en:
       receiver_id: Received By
       supplier_id: Supplier
      
-
+  location:
+    title: Location
+    code: Location Code
+    name: Name
+    administrator: Administrated By
+    select_admin: "Select Administrator"
     
   location_categories:
     building: Building
     floor: Floor
     room: "Unit/Room"
     admin: Administrator
-    
-    
-  campus:
-    tenants:
-      new: New Tenant
-      
 
-      
-    
+  events:
+    list: Event List
+    sd: Start Date
+    ed: End Date
+    en: Event Name
+    loca: Location
+    ob: Officiated By
+    cb: Created By
+    cnt: Control
+
+  check:  
+    status: Check Status
+    search: "Search to check status"

@@ -10,7 +10,7 @@ gem "paperclip", "~> 4.0.0"
 gem "ancestry", "~> 2.0.0"
 gem "ransack", "~> 1.1.0"
 #stuff for layout
-#gem "bootstrap-sass", "~> 3.0.3.0"
+gem "bootstrap-sass", "~> 3.0.3.0"
 gem 'sass-rails', '~> 4.0.0'
 gem 'uglifier', '~> 2.1.1'  # Use Uglifier as compressor for JavaScript assets
 gem 'coffee-rails', '~> 4.0.0'  # Use CoffeeScript for .js.coffee assets and views
@@ -27,6 +27,7 @@ gem "bootstrap-select-rails", "~> 1.3.0.1"
 gem "modernizr-rails", "~> 2.6.2.3"
 #gem "jquery-ui-bootstrap-rails", "~> 0.0.2"
 
+
 group :assets do
   
 end
@@ -36,11 +37,14 @@ end
 
 group :development do
   gem "quiet_assets", "~> 1.0.2"
+  gem "seed_dump", "~> 3.1.0"
+  gem "annotate", "~> 2.6.1"
 end
 
 group :development, :test do
   gem "rspec-rails", "~> 2.14.0"
   gem 'guard-rspec', "~> 2.5.0"
+  gem "faker"
 end
 
 group :test do

@@ -53,6 +53,10 @@ h2 {color:#FFF !important; text-align:left; font-weight:normal; letter-spacing:3
 .fbed_empty {
   background:#EE799F;  float:left; width:16px; min-height:16px; border: solid thin #555;
 }
-.mbed {
-  background:#00F;  float:left; width:16px; min-height:16px; border: solid thin gray;
+.mbed_occupied {
+  background:#00688B;  float:left; width:16px; min-height:16px; border: solid thin gray;
 }
+.mbed_empty {
+  background:#009ACD;  float:left; width:16px; min-height:16px; border: solid thin #555;
+}
+

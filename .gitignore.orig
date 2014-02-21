@@ -1,0 +1,40 @@
+# Ignore bundler config
+/.bundle
+
+#Ignore Configs
+Gemfile.lock
+config/database.yml
+
+# Ignore the default SQLite database.
+/db/*.sqlite3
+
+# Ignore all logfiles and tempfiles.
+/log/*.log
+/tmp
+
+# Ignore other unneeded files.
+doc/
+*.swp
+*~
+.project
+.DS_Store
+bundler_stubs/
+
+.backup
+db/migrate/bin/*
+public/assets/books/*
+public/assets/bulletins/*
+public/assets/examquestions/*
+public/assets/notes/*
+public/assets/staffs/*
+public/assets/students/*
+public/system/*
+<<<<<<< HEAD
+public/assets/*
+=======
+<<<<<<< HEAD
+public/assets/*
+=======
+public/assets/*
+>>>>>>> upstream/master
+>>>>>>> bf22e32173ba1df7bc9379000f7be3ec850b16e7
