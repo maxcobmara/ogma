@@ -134,7 +134,21 @@ en:
       admin: Administrator
     
   student:
+
+    name: Student Name
+
+  cofiles:
+    index: File Registry Index
+    cofileno: Cofileno
+    name: Name
+    location: Location
+    owner: owner
+    onloan_to: On Loan To
+    onloandt: onloandt
+    control: Control  
+
     name: Student Name 
+
     tenant:
       title: Student Residence
       new: New Student Tenancy
@@ -145,16 +159,35 @@ en:
       vacate: Force Vacate
   
 
+<<<<<<< HEAD
   cofile:
     index: List
+=======
+<<<<<<< HEAD
+
+  cofiles:
+    index: File Registry Index
+=======
+  cofile:
+    index: List
+>>>>>>> master
+>>>>>>> 7d719595425a65a4c56df20e4c6946938789e90c
     cofileno: Cofile No
     name: Name
     location: Location
     owner: Owner
     onloan_to: On Loan To
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> 7d719595425a65a4c56df20e4c6946938789e90c
     onloandt: On Loan Date
     control: Control
     file_details: File Details      
+<<<<<<< HEAD
+=======
+>>>>>>> master
+>>>>>>> 7d719595425a65a4c56df20e4c6946938789e90c
   
 
     tenant:
@@ -258,10 +291,3 @@ en:
   campus:
     tenants:
       new: New Tenant
-<<<<<<< HEAD
-=======
-
-  check:  
-    status: Check Status
-    search: "Search to check status"
->>>>>>> bfee615987357df723808c0378b1884024c2c9ea

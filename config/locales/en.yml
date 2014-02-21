@@ -156,17 +156,6 @@ en:
     control: Control
     file_details: File Details      
   
-
-    tenant:
-      title: Student Residence
-      new: New Tenancy
-      key:
-        provided: Date Key Provided
-        expected: Date Key expected returned
-        returned: Date Returned
-      vacate: Force Vacate
-      
-
   library:
     title: Library
     transaction: 
@@ -254,7 +243,16 @@ en:
     control: Control
     
 
-    
-  campus:
-    tenants:
-      new: New Tenant
+  events:
+    list: Event List
+    sd: Start Date
+    ed: End Date
+    en: Event Name
+    loca: Location
+    ob: Officiated By
+    cb: Created By
+    cnt: Control
+
+  check:  
+    status: Check Status
+    search: "Search to check status"
