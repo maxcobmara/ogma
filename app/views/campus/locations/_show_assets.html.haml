@@ -1,0 +1,14 @@
+.row
+  %h2= t "asset.title"
+  %table.table-striped.table-hover.ogma
+    %thead
+      %tr
+        %th= t "asset.code"
+        %th= t "asset.name"
+        %th= t "asset.model"
+    %tbody
+      - for asset in @location.assets
+        %tr
+          %td= asset.assetcode
+          %td= asset.name
+          %td= asset.modelname

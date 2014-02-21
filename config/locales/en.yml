@@ -74,6 +74,30 @@ en:
     staffgrade_id: "Staff Grade"
     statecd: "State of Birth"
     country_cd: "Nationality"
+    
+  asset:
+    title: Assets
+    new: Register New Asset
+    list: Inventory
+    create: Create New Asset
+    assettype: Asset Type
+    assetcode: Registration Serial No
+    cardno: Card No
+    name: Manufacturer/Brand
+    category_id: Category
+    subcategory_name: Subcategory
+    buyinfo: Purchasing Information
+    orderno: Local Order No (LO No)
+    purchasedate: Local Order Date (LO Date)
+    purchaseprice: Purchase Price
+    receiveddate: Received Date
+    country_id: Country of Manufacture
+    engine: "Engine Type & No"
+    engineno: "Engine No.:"
+    registration: "Registration No."
+    otherinfo: "Components & Accessories"
+    administered_by: "Administered By"  
+  
        
   location:
     title: Location
@@ -81,40 +105,39 @@ en:
     name: Name
     administrator: Administrated By
     select_admin: "Select Administrator"
+    has_assets: "This location contains assets, click here to show/hide"
     
-    
-  cofiles:
-    index: File Registry Index
-    cofileno: Cofileno
-    name: Name
-    location: Location
-    owner: owner
-    onloan_to: On Loan To
-    onloandt: onloandt
-    control: Control
-    
-  events:
-    list: Event List
-    sd: Start Date
-    ed: End Date
-    en: Event Name
-    loca: Location
-    ob: Officiated By
-    cb: Created By
-    cnt: Control
-  
+    location_categories:
+      building: Building
+      floor: Floor
+      room: "Unit/Room"
+      admin: Administrator
     
   student:
-    name: Student Name
-
+    name: Student Name 
     tenant:
       title: Student Residence
-      new: New Tenancy
+      new: New Student Tenancy
       key:
         provided: Date Key Provided
         expected: Date Key expected returned
         returned: Date Returned
       vacate: Force Vacate
+  
+
+  cofile:
+    index: List
+    cofileno: Cofile No
+    name: Name
+    location: Location
+    owner: Owner
+    onloan_to: On Loan To
+    onloandt: onloandt
+    control: Control
+    file_details: File Details      
+  
+
+
       
 
   library:
@@ -196,20 +219,9 @@ en:
      
 
     
-  location_categories:
-    building: Building
-    floor: Floor
-    room: "Unit/Room"
-    admin: Administrator
 
     
     
   campus:
     tenants:
       new: New Tenant
-
-
-
-  check:  
-    status: Check Status
-    search: "Search to check status"

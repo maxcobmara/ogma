@@ -22,3 +22,14 @@ class Employgrade < ActiveRecord::Base
        [ "Bersepadu", 4 ]
   ]
 end
+
+# == Schema Information
+#
+# Table name: employgrades
+#
+#  created_at :datetime
+#  group_id   :integer
+#  id         :integer          not null, primary key
+#  name       :string(255)
+#  updated_at :datetime
+#

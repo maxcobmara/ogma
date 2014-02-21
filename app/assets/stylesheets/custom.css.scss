@@ -160,7 +160,7 @@ label {
     text-indent: -15px;
 }
 input {height: auto !important;}
-.text_field.mandatory {background-color:#FFF0F5;}
+.mandatory {background-color:#FFF0F5}
 .dropdown, select {position: relative;}
 
 input[type=checkbox] {width:13px; height:13px; *overflow: hidden; }
@@ -245,3 +245,6 @@ ul.ui-autocomplete {
 
 
 span.i {font-style:normal !important;}
+
+.legend_object {float:left; padding: 0 8px 0 12px;}
+.legend_title {float:left; padding: 0 20px 0 8px; font-size: 0.8em; }
