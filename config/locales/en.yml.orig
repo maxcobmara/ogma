@@ -145,13 +145,8 @@ en:
       vacate: Force Vacate
   
 
-<<<<<<< HEAD
-  cofiles:
-    index: File Registry Index
-=======
   cofile:
     index: List
->>>>>>> diaarezz-master
     cofileno: Cofile No
     name: Name
     location: Location
@@ -250,7 +245,6 @@ en:
       supplier_id: Supplier
      
 
-<<<<<<< HEAD
   buletin:
     list: List of Bulletins
     headline: Headline
@@ -258,19 +252,16 @@ en:
     posted_by: Posted By
     publish_date: Publish Date
     control: Control
-=======
     
 
->>>>>>> diaarezz-master
-    
     
   campus:
     tenants:
       new: New Tenant
 <<<<<<< HEAD
+=======
 
   check:  
     status: Check Status
     search: "Search to check status"
-=======
->>>>>>> diaarezz-master
+>>>>>>> bfee615987357df723808c0378b1884024c2c9ea
