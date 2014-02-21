@@ -22,6 +22,9 @@ Ogma::Application.routes.draw do
     resources :tenants
   end
   
+  
+  resources :bulletins
+  
   namespace :library do
     resources     :librarytransactions do
       member do
@@ -34,9 +37,6 @@ Ogma::Application.routes.draw do
       end
     end
   end
-  
-  
-  
   
   devise_for :users
   resources :users
