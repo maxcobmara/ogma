@@ -201,12 +201,13 @@ ms_MY:
       receiver_id: Diterima Oleh
       supplier_id: Pembekal
   
-  location:
-    title: Lokasi
-    code: Kod Lokasi
-    name: Nama
-    administrator: Ditadbir oleh
-    select_admin: "Pilih Pentadbir"
+  buletin:
+    list: Senarai Buletin
+    headline: Tajuk Utama
+    content: Kandungan
+    posted_by: Disiarkan Oleh
+    publish_date: Tarikh Penyiaran
+    control: Tindakan
     
   campus:
     tenants:

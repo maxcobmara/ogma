@@ -201,12 +201,22 @@ ms_MY:
       receiver_id: Diterima Oleh
       supplier_id: Pembekal
   
+<<<<<<< HEAD
   location:
     title: Lokasi
     code: Kod Lokasi
     name: Nama
     administrator: Ditadbir oleh
     select_admin: "Pilih Pentadbir"
+=======
+  buletin:
+    list: Senarai Buletin
+    headline: Tajuk Utama
+    content: Kandungan
+    posted_by: Disiarkan Oleh
+    publish_date: Tarikh Penyiaran
+    control: Tindakan
+>>>>>>> b29dba39733c0c98c190cf0184c92e7396b393c4
     
   campus:
     tenants:
@@ -247,23 +257,13 @@ ms_MY:
   events:
     list: Senarai Acara
     sd: Tarikh Mula
-<<<<<<< HEAD
     ed: Tarikh Tamaat
-=======
     ed: Tarikh Tamat
->>>>>>> master
     en: Nama Acara
     loca: Lokasi
     ob: Dirasmikan Oleh
     cb: Dibuat Oleh
-<<<<<<< HEAD
     cnt: Kawalan
-=======
-<<<<<<< HEAD
-    cnt: Kawalan
-=======
     cnt: Kawalan
     ced: Maklumat Terperinci Acara Kampus
     pt: Disertai
->>>>>>> master
->>>>>>> 15f59144f87bcd1910d09fe2545f656a2a4d63fb
