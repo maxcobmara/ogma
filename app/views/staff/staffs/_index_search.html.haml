@@ -1,4 +1,4 @@
-= search_form_for @search, url: staffs_path,  class: "form-inline" do |f|
+= search_form_for [:staff, @search], url: staff_infos_path,  class: "form-inline" do |f|
   %tr.search_row.hidden
     %td= f.text_field :icno_start, size: 2,  :class => "form-control"
     %td= f.text_field :name_cont, size: 8,  :class => "form-control"
