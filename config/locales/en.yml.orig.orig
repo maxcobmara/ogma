@@ -21,6 +21,26 @@
 
 en:
   
+  activerecord:
+    models: 
+      location: Lokasi
+    attributes:
+      location:
+        combo_code: Kod Lokasi
+    errors:
+        template:
+          body: "There were problems with the following fields:"
+          header:
+            one: "1 errors prohibited this {{model}} from being saved"
+            other: "{{count}} prohibited this {{model}} from being saved"
+        messages:
+            blank: "cant't be blank"
+            not_a_number: "is not number"
+            too_short: "is too short (minimum is {{count}} characters)"
+            taken: "telah terpakai"
+            illegal_char: contains illegal characters
+            invalid: is invalid
+  
   #common
   search:  Search
   datelabel: Date
@@ -125,8 +145,13 @@ en:
       vacate: Force Vacate
   
 
+<<<<<<< HEAD
   cofiles:
     index: File Registry Index
+=======
+  cofile:
+    index: List
+>>>>>>> diaarezz-master
     cofileno: Cofile No
     name: Name
     location: Location
@@ -134,17 +159,19 @@ en:
     onloan_to: On Loan To
     onloandt: On Loan Date
     control: Control
-    
-  events:
-    list: Event List
-    sd: Start Date
-    ed: End Date
-    en: Event Name
-    loca: Location
-    ob: Officiated By
-    cb: Created By
-    cnt: Control
+    file_details: File Details      
   
+
+    tenant:
+      title: Student Residence
+      new: New Tenancy
+      key:
+        provided: Date Key Provided
+        expected: Date Key expected returned
+        returned: Date Returned
+      vacate: Force Vacate
+      
+
   library:
     title: Library
     transaction: 
@@ -222,15 +249,8 @@ en:
       receiver_id: Received By
       supplier_id: Supplier
      
-<<<<<<< HEAD
-  location:
-    title: Location
-    code: Location Code
-    name: Name
-    administrator: Administrated By
-    select_admin: "Select Administrator"
-=======
 
+<<<<<<< HEAD
   buletin:
     list: List of Bulletins
     headline: Headline
@@ -238,27 +258,19 @@ en:
     posted_by: Posted By
     publish_date: Publish Date
     control: Control
+=======
     
->>>>>>> b29dba39733c0c98c190cf0184c92e7396b393c4
-    
-  location_categories:
-    building: Building
-    floor: Floor
-    room: "Unit/Room"
-    admin: Administrator
 
-  events:
-    list: Event List
-    sd: Start Date
-    ed: End Date
-    en: Event Name
-    loca: Location
-    ob: Officiated By
-    cb: Created By
-    cnt: Control
-    ced: Campus Event Details
-    pt: Participants
+>>>>>>> diaarezz-master
+    
+    
+  campus:
+    tenants:
+      new: New Tenant
+<<<<<<< HEAD
 
   check:  
     status: Check Status
     search: "Search to check status"
+=======
+>>>>>>> diaarezz-master

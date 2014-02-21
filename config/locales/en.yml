@@ -21,6 +21,26 @@
 
 en:
   
+  activerecord:
+    models: 
+      location: Lokasi
+    attributes:
+      location:
+        combo_code: Kod Lokasi
+    errors:
+        template:
+          body: "There were problems with the following fields:"
+          header:
+            one: "1 errors prohibited this {{model}} from being saved"
+            other: "{{count}} prohibited this {{model}} from being saved"
+        messages:
+            blank: "cant't be blank"
+            not_a_number: "is not number"
+            too_short: "is too short (minimum is {{count}} characters)"
+            taken: "telah terpakai"
+            illegal_char: contains illegal characters
+            invalid: is invalid
+  
   #common
   search:  Search
   datelabel: Date
@@ -125,8 +145,8 @@ en:
       vacate: Force Vacate
   
 
-  cofiles:
-    index: File Registry Index
+  cofile:
+    index: List
     cofileno: Cofile No
     name: Name
     location: Location
@@ -134,20 +154,8 @@ en:
     onloan_to: On Loan To
     onloandt: On Loan Date
     control: Control
-    
-  events:
-    list: Event List
-    sd: Start Date
-    ed: End Date
-    en: Event Name
-    loca: Location
-    ob: Officiated By
-    cb: Created By
-    cnt: Control
+    file_details: File Details      
   
-    
-  student:
-    name: Student Name
 
     tenant:
       title: Student Residence
@@ -245,11 +253,8 @@ en:
     publish_date: Publish Date
     control: Control
     
+
     
   campus:
     tenants:
       new: New Tenant
-
-  check:  
-    status: Check Status
-    search: "Search to check status"
