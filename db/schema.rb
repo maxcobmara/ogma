@@ -123,6 +123,13 @@ ActiveRecord::Schema.define(version: 20140219125542) do
     t.datetime "updated_at"
   end
 
+  create_table "articles", force: true do |t|
+    t.string   "name"
+    t.text     "content"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "asset_defects", force: true do |t|
     t.integer  "asset_id"
     t.integer  "reported_by"
@@ -1168,6 +1175,11 @@ ActiveRecord::Schema.define(version: 20140219125542) do
     t.integer "staff_id"
   end
 
+  create_table "my_models", force: true do |t|
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "pages", force: true do |t|
     t.string   "name"
     t.string   "title"
@@ -1228,8 +1240,6 @@ ActiveRecord::Schema.define(version: 20140219125542) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
-
-  add_index "positions", ["ancestry"], name: "index_positions_on_ancestry", using: :btree
 
   create_table "programmes", force: true do |t|
     t.string   "code"

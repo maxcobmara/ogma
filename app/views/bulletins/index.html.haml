@@ -1,0 +1,36 @@
+- model_class = Bulletin
+.page-header
+  %h1= t('buletin.list')#, :default => model_class.model_name.human.pluralize
+  
+.navbar.navbar-inverse{role: "navigation", style: "padding-right:40px;"}
+  %ul.nav.navbar-nav
+    %li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'actions.new'))), '#'
+  %ul.nav.navbar-nav.navbar-right
+    %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "toga"
+    %li= link_to content_tag(:li, fa_icon("print", text: (t 'actions.print'))), "#"
+
+
+.row
+  %table.table-striped.table-hover.ogma
+    %thead
+      %tr
+        %th= sort_link(@search, :headline, (t 'buletin.headline'))
+        %th= sort_link(@search, :content, (t 'buletin.content'))
+        %th= sort_link(@search, :postedby_id, (t 'buletin.posted_by'))
+        %th{style: "width:20%;"}= sort_link(@search, :publishdt,(t 'buletin.publish_date')) 
+        %th.ac{:colspan => "3"}= t('buletin.control') 
+
+    %tbody
+    = render "index_search"
+    - @bulletins.each do |bulletin|
+      %tr
+        %td= bulletin.headline
+        %td= truncate(bulletin.content, :length => 60)
+        %td= check_kin {bulletin.staff.mykad_with_staff_name}
+        %td= bulletin.publishdt
+        %td{:width => "10px"}= link_to fa_icon("eye", :border => 0), :action => 'show', :id => bulletin
+        %td{:width => "10px"}= link_to fa_icon("edit", :border => 0), :action => 'edit', :id => bulletin
+        %td{:width => "10px"}= link_to fa_icon("trash-o", :border => 0, :title => 'Delete'), bulletin, :confirm => 'Are you sure?', :method => :delete
+
+
+  .right{style:"padding:0 30px; margin:0;"}= paginate @bulletins, :theme => 'twitter-bootstrap-3'

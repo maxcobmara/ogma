@@ -237,8 +237,13 @@ en:
       supplier_id: Supplier
      
 
-    
-
+  buletin:
+    list: List of Bulletins
+    headline: Headline
+    content: Content
+    posted_by: Posted By
+    publish_date: Publish Date
+    control: Control
     
     
   campus:
