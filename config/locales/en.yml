@@ -21,6 +21,26 @@
 
 en:
   
+  activerecord:
+    models: 
+      location: Lokasi
+    attributes:
+      location:
+        combo_code: Kod Lokasi
+    errors:
+        template:
+          body: "There were problems with the following fields:"
+          header:
+            one: "1 errors prohibited this {{model}} from being saved"
+            other: "{{count}} prohibited this {{model}} from being saved"
+        messages:
+            blank: "cant't be blank"
+            not_a_number: "is not number"
+            too_short: "is too short (minimum is {{count}} characters)"
+            taken: "telah terpakai"
+            illegal_char: contains illegal characters
+            invalid: is invalid
+  
   #common
   search:  Search
   datelabel: Date
