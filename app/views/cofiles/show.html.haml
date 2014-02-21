@@ -1,0 +1,69 @@
+- model_class = Cofile
+.page-header
+  %h1= t 'cofile.file_details', :default => model_class.model_name.human
+.tform
+  %table{:width => "100%"}
+    %tr
+      %td.leftcol
+        %label{:for => "cofileno"}
+          %b
+            = t 'cofile.cofileno'
+            \:
+      %td= h @cofile.cofileno
+    %tr
+      %td.leftcol
+        %label{:for => "name"}
+          %b
+            = t 'cofile.name'
+            \:
+      %td
+        = h @cofile.name
+    %tr
+      %td.leftcol
+        %label{:for => "location"}
+          %b
+            = t 'cofile.location'
+            \:
+      %td
+        = h @cofile.location
+    %tr
+      %td.leftcol
+        %label{:for => "owner_id"}
+          %b
+            = t 'cofile.owner'
+            \:
+      %td= h check_kin {@cofile.owner.mykad_with_staff_name}
+    %tr
+      %td.leftcol
+        %label{:for => "onloan"}
+          %b
+            = t 'cofile.onloan'
+            \:
+      %td= h @cofile.onloan? ? "Yes" : "No"
+    - if @cofile.onloan == true
+      %tr
+        %td.leftcol
+          %label{:for => "staffloan_id"}
+            %b
+              = t 'cofile.onloan_to'
+              \:
+        %td= h @cofile.staffloan_id? ? @cofile.borrower.name : ""
+      %tr
+        %td.leftcol
+          %label{:for => "onloandt"}
+            %b
+              = t 'cofile.onloandt'
+              \:
+        %td= h l(@cofile.onloandt) unless @cofile.onloandt.blank?
+      %tr
+        %td.leftcol
+          %label{:for => "onloanxdt"}
+            %b
+              = t 'cofile.onloanxdt'
+              \:
+        %td
+          = h l(@cofile.onloanxdt) unless @cofile.onloanxdt.blank?
+  %BR
+= link_to (t 'icms.update'), edit_cofile_path(@cofile)
+|
+\#{link_to (t 'icms.back'), cofiles_path}
