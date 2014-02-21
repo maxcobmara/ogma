@@ -15,8 +15,8 @@
   %table.table-striped.table-hover.ogma
     %thead
       %tr 
-        %th= sort_link(@search, :start_at_gteq,(t 'events.sd'))
-        %th= sort_link(@search, :end_at_lteq,(t 'events.ed'))
+        %th= sort_link(@search, :start_at,(t 'events.sd'))
+        %th= sort_link(@search, :end_at,(t 'events.ed'))
         %th= sort_link(@search, :eventname,(t 'events.en'))
         %th= sort_link(@search, :location,(t 'events.loca'))
         %th= sort_link(@search, :officiated,(t 'events.ob'))
@@ -27,7 +27,7 @@
       - @events.each do |event|
         %tr
           %td= h event.start_at.strftime(" %d %b %y, %a, %I:%M%p  ") unless event.start_at.nil?
-          %td= h to event.end_at.try(:strftime, "%d %b %y, %a, %I:%M%p  ")
+          %td= h event.end_at.try(:strftime, "%d %b %y, %a, %I:%M%p  ")
           %td= h event.eventname
           %td= h event.location
           %td= h event.officiated
