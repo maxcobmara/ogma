@@ -10,7 +10,7 @@ gem "paperclip", "~> 4.0.0"
 gem "ancestry", "~> 2.0.0"
 gem "ransack", "~> 1.1.0"
 #stuff for layout
-gem "bootstrap-sass", "~> 3.0.3.0"
+#gem "bootstrap-sass", "~> 3.0.3.0"
 gem 'sass-rails', '~> 4.0.0'
 gem 'uglifier', '~> 2.1.1'  # Use Uglifier as compressor for JavaScript assets
 gem 'coffee-rails', '~> 4.0.0'  # Use CoffeeScript for .js.coffee assets and views

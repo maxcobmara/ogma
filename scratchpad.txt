@@ -1,4 +1,6 @@
-
+Run Annotate Gem: 
+annotate --routes --position after --sort
+annotate --exclude tests,fixtures,factories --position after --sort 
 
 
 <!-- Box -->

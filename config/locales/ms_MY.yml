@@ -248,8 +248,12 @@ ms_MY:
     list: Senarai Acara
     sd: Tarikh Mula
     ed: Tarikh Tamaat
+    ed: Tarikh Tamat
     en: Nama Acara
     loca: Lokasi
     ob: Dirasmikan Oleh
     cb: Dibuat Oleh
     cnt: Kawalan
+    cnt: Kawalan
+    ced: Maklumat Terperinci Acara Kampus
+    pt: Disertai

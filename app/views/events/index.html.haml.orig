@@ -46,45 +46,8 @@
 //Heres the code in erb, change it to haml. refer /app/views/library/transactions/index.html.haml for new layout design.
 
 <<<<<<< HEAD
-- model_class = Event
-.page-header
-  %h1= t('events.list')#, :default => model_class.model_name.human.pluralize
-  
-.navbar.navbar-inverse{role: "navigation", style: "padding-right:40px;"}
-  %ul.nav.navbar-nav
-    %li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'actions.new'))), '#'
-  %ul.nav.navbar-nav.navbar-right
-    %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "toga"
-    %li= link_to content_tag(:li, fa_icon("print", text: (t 'actions.print'))), "#"
-
-.row
-  %table.table-striped.table-hover.ogma
-    %thead
-      %tr 
-        %th= sort_link(@search, :start_at_gteq,(t 'events.sd'))
-        %th= sort_link(@search, :end_at_lteq,(t 'events.ed'))
-        %th= sort_link(@search, :eventname,(t 'events.en'))
-        %th= sort_link(@search, :location,(t 'events.loca'))
-        %th= sort_link(@search, :officiated,(t 'events.ob'))
-        %th{style: "width:33%;"}= sort_link(@search, :staff_name,(t 'events.cb'))
-        %th.ac{colspan: "3"}= t('events.cnt')
-    %tbody 
-      = render "index_search"
-      - @events.each do |event|
-        %tr
-          %td= h event.start_at.strftime(" %d %b %y, %a, %I:%M%p  ") unless event.start_at.nil?
-          %td= h to event.end_at.try(:strftime, "%d %b %y, %a, %I:%M%p  ")
-          %td= h event.eventname
-          %td= h event.location
-          %td= h event.officiated
-          %td= h event.staff.blank? ? "-" : event.staff.name
-          %td{:width => "10px"}= link_to fa_icon("eye", :border => 0), :action => 'show', :id => event
-          %td{:width => "10px"}= link_to fa_icon("edit", :border => 0), :action => 'edit', :id => event
-          %td{:width => "10px"}= link_to fa_icon("trash-o", :border => 0, :title => 'Delete'), event, :confirm => 'Are you sure?', :method => :delete
-		  
-  .right{style:"padding:0 30px; margin:0;"}= paginate @events, :theme => 'twitter-bootstrap-3'
-	
 =======
+<<<<<<< HEAD
 //:erb
 //  <!-- Box -->
 //  <div class="box"> 
@@ -131,4 +94,65 @@
 //  <BR>
 
 //  <%= link_to 'New Event', new_event_path %>
->>>>>>> b8b616ffeaf4f0ac42bd30b8bd485d86eaeb3510
+=======
+>>>>>>> 15f59144f87bcd1910d09fe2545f656a2a4d63fb
+- model_class = Event
+.page-header
+  %h1= t('events.list')#, :default => model_class.model_name.human.pluralize
+  
+.navbar.navbar-inverse{role: "navigation", style: "padding-right:40px;"}
+  %ul.nav.navbar-nav
+    %li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'actions.new'))), '#'
+  %ul.nav.navbar-nav.navbar-right
+    %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "toga"
+    %li= link_to content_tag(:li, fa_icon("print", text: (t 'actions.print'))), "#"
+
+.row
+  %table.table-striped.table-hover.ogma
+    %thead
+      %tr 
+        %th= sort_link(@search, :start_at,(t 'events.sd'))
+        %th= sort_link(@search, :end_at,(t 'events.ed'))
+        %th= sort_link(@search, :eventname,(t 'events.en'))
+        %th= sort_link(@search, :location,(t 'events.loca'))
+        %th= sort_link(@search, :officiated,(t 'events.ob'))
+<<<<<<< HEAD
+        %th{style: "width:25%;"}= sort_link(@search, :staff_name,(t 'events.cb'))
+        %th.ac{colspan: "3"}= t('events.cnt') 
+    %tbody 
+    = render "index_search"
+    - @events.each do |event|
+      %tr
+        %td= event.start_at.strftime(" %d %b %y, %a, %I:%M%p  ") unless event.start_at.nil?
+        %td= event.end_at.strftime(" %d %b %y, %a, %I:%M%p  ") unless event.end_at.nil?
+        %td= event.eventname
+        %td= event.location
+        %td= event.officiated
+        %td= event.staff.blank? ? "-" : event.staff.name
+        %td{:width => "10px"}= link_to fa_icon("eye", :border => 0), :action => 'show', :id => event
+        %td{:width => "10px"}= link_to fa_icon("edit", :border => 0), :action => 'edit', :id => event
+        %td{:width => "10px"}= link_to fa_icon("trash-o", :border => 0, :title => 'Delete'), event, :confirm => 'Are you sure?', :method => :delete
+		  
+  .right{style:"padding:0 30px; margin:0;"}= paginate @events, :theme => 'twitter-bootstrap-3'
+	
+=======
+        %th{style: "width:33%;"}= sort_link(@search, :staff_name,(t 'events.cb'))
+        %th.ac{colspan: "3"}= t('events.cnt')
+    %tbody 
+      = render "index_search"
+      - @events.each do |event|
+        %tr
+          %td= h event.start_at.strftime(" %d %b %y, %a, %I:%M%p  ") unless event.start_at.nil?
+          %td= h event.end_at.try(:strftime, "%d %b %y, %a, %I:%M%p  ")
+          %td= h event.eventname
+          %td= h event.location
+          %td= h event.officiated
+          %td= h event.staff.blank? ? "-" : event.staff.name
+          %td{:width => "10px"}= link_to fa_icon("eye", :border => 0), :action => 'show', :id => event
+          %td{:width => "10px"}= link_to fa_icon("edit", :border => 0), :action => 'edit', :id => event
+          %td{:width => "10px"}= link_to fa_icon("trash-o", :border => 0, :title => 'Delete'), event, :confirm => 'Are you sure?', :method => :delete
+		  
+  .right{style:"padding:0 30px; margin:0;"}= paginate @events, :theme => 'twitter-bootstrap-3'
+	
+>>>>>>> master
+>>>>>>> 15f59144f87bcd1910d09fe2545f656a2a4d63fb

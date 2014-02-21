@@ -3,12 +3,23 @@ class EventsController < ApplicationController
   helper_method :sort_column, :sort_direction
   
   def index
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+    @events = Event.find(:all, :conditions => ['eventname ILIKE ?', "%#{params[:search]}%"])
+    @events_filtered = Event.find(:all, :order => sort_column + ' ' + sort_direction ,:conditions => ['eventname LIKE ? or location ILIKE ?', "%#{params[:search]}%", "%#{params[:search]}%"])
+=======
+>>>>>>> 15f59144f87bcd1910d09fe2545f656a2a4d63fb
     @search = Event.search(params[:q])
     @events = @search.result
     @events = @events.page(params[:page]||1)
     #previous
     #@staff_filtered = Staff.with_permissions_to(:edit).find(:all, :order => sort_column + ' ' + sort_direction ,:conditions => ['icno LIKE ? or name ILIKE ?', "%#{params[:search]}%", "%#{params[:search]}%"])
     @event_filtered = Event.find(:all, :order => sort_column + ' ' + sort_direction ,:conditions => ['eventname LIKE ? or location ILIKE ?', "%#{params[:search]}%", "%#{params[:search]}%"])
+<<<<<<< HEAD
+=======
+>>>>>>> master
+>>>>>>> 15f59144f87bcd1910d09fe2545f656a2a4d63fb
   end
 
   
@@ -22,13 +33,17 @@ class EventsController < ApplicationController
     end
   end
   
-  
   private
-   # Use callbacks to share common setup or constraints between actions.
-   def set_location
-     @events = Event.find(params[:id])
-   end
+    # Use callbacks to share common setup or constraints between actions.
+    def set_location
+      @event = Event.find(params[:id])
+    end
 
+<<<<<<< HEAD
+    # Never trust parameters from the scary internet, only allow the white list through.
+    def location_params
+      params.require(:event).permit(:eventname, :location, :date)# <-- insert editable fields here inside here e.g (:date, :name)
+=======
 <<<<<<< HEAD
    # Never trust parameters from the scary internet, only allow the white list through.
    def location_params
@@ -45,7 +60,8 @@ class EventsController < ApplicationController
 =======
     # Never trust parameters from the scary internet, only allow the white list through.
     def location_params
-      params.require(:event).permit(:eventname, :location, :date)# <-- insert editable fields here inside here e.g (:date, :name)
+      params.require(:event).permit(:eventname, :location)# <-- insert editable fields here inside here e.g (:date, :name)
+>>>>>>> 15f59144f87bcd1910d09fe2545f656a2a4d63fb
     end
     
     def sort_column
@@ -55,4 +71,7 @@ class EventsController < ApplicationController
         %w[asc desc].include?(params[:direction])? params[:direction] : "asc" 
     end
 end
->>>>>>> 4e02793eb44929c22f6682aff2ac668105af95a3
+<<<<<<< HEAD
+=======
+>>>>>>> master
+>>>>>>> 15f59144f87bcd1910d09fe2545f656a2a4d63fb
