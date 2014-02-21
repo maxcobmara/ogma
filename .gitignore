@@ -19,6 +19,7 @@ doc/
 .project
 .DS_Store
 bundler_stubs/
+.orig
 
 .backup
 db/migrate/bin/*
@@ -30,3 +31,5 @@ public/assets/notes/*
 public/assets/staffs/*
 public/assets/students/*
 public/system/**
+tmp/
+tmp/**/*
