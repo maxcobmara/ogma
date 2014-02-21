@@ -114,7 +114,21 @@ en:
       admin: Administrator
     
   student:
+
+    name: Student Name
+
+  cofiles:
+    index: File Registry Index
+    cofileno: Cofileno
+    name: Name
+    location: Location
+    owner: owner
+    onloan_to: On Loan To
+    onloandt: onloandt
+    control: Control  
+
     name: Student Name 
+
     tenant:
       title: Student Residence
       new: New Student Tenancy
@@ -125,13 +139,20 @@ en:
       vacate: Force Vacate
   
 
+<<<<<<< HEAD
+
   cofiles:
     index: File Registry Index
+=======
+  cofile:
+    index: List
+>>>>>>> master
     cofileno: Cofile No
     name: Name
     location: Location
     owner: Owner
     onloan_to: On Loan To
+<<<<<<< HEAD
     onloandt: On Loan Date
     control: Control
     
@@ -144,6 +165,11 @@ en:
     ob: Officiated By
     cb: Created By
     cnt: Control
+=======
+    onloandt: onloandt
+    control: Control
+    file_details: File Details      
+>>>>>>> master
   
   library:
     title: Library

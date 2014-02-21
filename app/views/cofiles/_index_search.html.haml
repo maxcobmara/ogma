@@ -1,12 +1,12 @@
 = search_form_for @search, url: cofiles_path,  class: "form-inline" do |f|
   %tr.search_row.hidden
-    %td= f.text_field :cofileno_start, size: 2,  :class => "form-control"
+    %td= f.text_field :cofileno_cont, size: 2,  :class => "form-control"
     %td= f.text_field :name_cont, size: 2,  :class => "form-control"
     %td= f.text_field :location_cont, size: 2,  :class => "form-control"
     %td= f.text_field :owner_icno_cont, size: 2,  :class => "form-control"
     %td= f.text_field :borrower_icno_cont, size: 2,  :class => "form-control"
     %td.input-group
-      = f.text_field :_cont, size: 2,  :class => "form-control"    	  
+      = f.text_field :_eq, size: 2,  :class => "form-control"    	  
       %span.input-group-btn
         %button.btn.btn-sm.btn-default.right{:type => "submit"}
           %i.fa.fa-search.fa-fw
