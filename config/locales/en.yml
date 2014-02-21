@@ -114,10 +114,9 @@ en:
       admin: Administrator
     
   student:
-<<<<<<< HEAD
+
     name: Student Name
-  
-<<<<<<< HEAD
+
   cofiles:
     index: File Registry Index
     cofileno: Cofileno
@@ -127,11 +126,9 @@ en:
     onloan_to: On Loan To
     onloandt: onloandt
     control: Control  
-  
-=======
-=======
+
     name: Student Name 
->>>>>>> upstream/development
+
     tenant:
       title: Student Residence
       new: New Student Tenancy
@@ -142,9 +139,7 @@ en:
       vacate: Force Vacate
   
 
-<<<<<<< HEAD
->>>>>>> upstream/master
-=======
+
   cofiles:
     index: File Registry Index
     cofileno: Cofile No
@@ -165,7 +160,6 @@ en:
     cb: Created By
     cnt: Control
   
->>>>>>> upstream/development
   library:
     title: Library
     transaction: 
