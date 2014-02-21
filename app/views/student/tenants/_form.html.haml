@@ -1,9 +1,14 @@
 .form-group
-  %label.col-sm-2.control-label{:for => "location_id"}= t 'location.code'
+  .col-sm-2.control-label
+    = f.label (t 'location.code'), for: :code
+  %label.col-md-4
+    = f.text_field :location_combo_code, value: @tenant.try(:location).try(:combo_code), :class => 'form-control', readonly: true
+
+.form-group
+  %label.col-sm-2.control-label{:for => "location_id"}= t 'location.name'
   %label.col-md-4
     = f.text_field :location_name, value: @tenant.try(:location).try(:name), :class => 'form-control', readonly: true
-
-    
+  
     
 - if [2].include? @tenant.try(:location).try(:typename)
   .form-group
