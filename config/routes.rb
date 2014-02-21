@@ -17,7 +17,10 @@ Ogma::Application.routes.draw do
   end
   
   resources :cofiles
+
+
   
+    
   namespace :student do
     resources :tenants
   end

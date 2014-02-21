@@ -125,15 +125,16 @@ en:
       vacate: Force Vacate
   
 
-  cofiles:
-    index: File Registry Index
-    cofileno: Cofileno
+  cofile:
+    index: List
+    cofileno: Cofile No
     name: Name
     location: Location
-    owner: owner
+    owner: Owner
     onloan_to: On Loan To
     onloandt: onloandt
-    control: Control  
+    control: Control
+    file_details: File Details      
   
 
 

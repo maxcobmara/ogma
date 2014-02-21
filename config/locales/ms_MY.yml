@@ -122,6 +122,17 @@ ms_MY:
         expected: Tarikh Dijangka Pulang
         returned: Tarikh Dipulang
       vacate: Kosongkan
+
+  cofile:
+    index: Senarai
+    cofileno: Cofile No
+    name: Nama
+    location: Lokasi
+    owner: Pemilik
+    onloan_to: On Loan To
+    onloandt: Onloandt
+    control: Tindakan  
+    file_details: Maklumat Fail 
   
   library:
     title: Perpustakaan
