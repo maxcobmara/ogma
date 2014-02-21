@@ -11,7 +11,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140101000000) do
+<<<<<<< HEAD
+<<<<<<< HEAD
+ActiveRecord::Schema.define(version: 20140213070431) do
+=======
+ActiveRecord::Schema.define(version: 20131004091521) do
+>>>>>>> upstream/master
+=======
+ActiveRecord::Schema.define(version: 20140219125542) do
+>>>>>>> upstream/master
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -1132,6 +1140,8 @@ ActiveRecord::Schema.define(version: 20140101000000) do
     t.string   "ancestry"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "combo_code"
+    t.integer  "ancestry_depth", default: 0
   end
 
   add_index "locations", ["ancestry"], name: "index_locations_on_ancestry", using: :btree
@@ -1213,9 +1223,19 @@ ActiveRecord::Schema.define(version: 20140101000000) do
     t.integer  "ancestry_depth"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "postinfo_id"
+    t.integer  "status"
   end
 
   add_index "positions", ["ancestry"], name: "index_positions_on_ancestry", using: :btree
+
+  create_table "postinfos", force: true do |t|
+    t.string   "details"
+    t.integer  "staffgrade_id"
+    t.integer  "post_count"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "programmes", force: true do |t|
     t.string   "code"
@@ -1789,6 +1809,8 @@ ActiveRecord::Schema.define(version: 20140101000000) do
     t.integer  "intake_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "course_remarks"
+    t.integer  "race2"
   end
 
   add_index "students", ["icno"], name: "index_students_on_icno", using: :btree

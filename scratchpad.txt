@@ -1,3 +1,6 @@
+
+
+
 <!-- Box -->
 <div class="box">
 	<!-- Box Head -->
@@ -41,3 +44,9 @@
 <%= link_to (t 'staff.create'), new_staff_path %>
 <%# end %>
 <br />
+
+
+        %td{:width => "10px"}= link_to fa_icon "file", :border => 0, :title => 'Show', :action => 'show', :id => staff 
+        %td{:width => "10px"}= link_to fa_icon("pencil-square", :border => 0, :title => 'Edit'), :action => 'edit', :id => staff
+        %td{:width => "10px"}= link_to fa_icon("trash-o", :border => 0, :title => 'Delete'), staff, :confirm => 'Are you sure?', :method => :delete
+        %td{:width => "10px"}= link_to fa_icon("print", :border => 0, :title => 'Borang Maklumat Staf'), :action => 'borang_maklumat_staff', :id => staff

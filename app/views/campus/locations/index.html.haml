@@ -1,19 +1,22 @@
 - model_class = Location
 .page-header
   %h1= t('location.title')#, :default => model_class.model_name.human.pluralize
-  
-.navbar.navbar-inverse{role: "navigation", style: "padding-right:40px;"}
-  %ul.nav.navbar-nav
-    %li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'actions.new'))), '#'
-  %ul.nav.navbar-nav.navbar-right
-    %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "toga"
-    %li= link_to content_tag(:li, fa_icon("print", text: (t 'actions.print'))), "#"
+
+//navbar removed until used  
+//.navbar.navbar-inverse{role: "navigation", style: "padding-right:40px;"}
+//  %ul.nav.navbar-nav
+//    %li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'actions.new'))), '#'
+//  %ul.nav.navbar-nav.navbar-right
+//    %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "toga"
+//    %li= link_to content_tag(:li, fa_icon("print", text: (t 'actions.print'))), "#"
       
 .row.filter{style: "display:none;"}
 
-.row#bigtext
+.row
+  .location.img-rounded 
+    .centre= link_to content_tag(:location, fa_icon("plus-circle 4x", text: "")), new_campus_location_path
   - @root_locations.each do |location|
-    .location
-      %span= link_to location.name, campus_location_path(location)
-  .location 
-    = link_to "ADD", new_campus_location_path
+    = link_to(campus_location_path(location)) do
+      .location.bigtext.img-rounded
+        %h5= location.name
+  

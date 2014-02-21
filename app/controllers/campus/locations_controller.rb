@@ -43,7 +43,7 @@ class Campus::LocationsController < ApplicationController
   def update
     respond_to do |format|
       if @location.update(location_params)
-        format.html { redirect_to campus_location_path(@location.parent), notice: (t 'location.title')+(t 'actions.updated')  }
+        format.html {redirect_to campus_location_path(@location.parent || @location), notice: (t 'location.title')+(t 'actions.updated')  }
         format.json { head :no_content }
       else
         format.html { render action: 'edit' }
@@ -53,6 +53,14 @@ class Campus::LocationsController < ApplicationController
   end
   
   def show
+  end
+  
+  def destroy
+    @location.destroy
+    respond_to do |format|
+      format.html { redirect_to campus_locations_url }
+      format.json { head :no_content }
+    end
   end
   
   private

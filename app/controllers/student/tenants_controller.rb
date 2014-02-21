@@ -1,4 +1,4 @@
-class Campus::TenantsController < ApplicationController
+class Student::TenantsController < ApplicationController
   
   before_action :set_tenant, only: [:show, :edit, :update, :destroy]
   
@@ -35,7 +35,7 @@ class Campus::TenantsController < ApplicationController
     respond_to do |format|
       if @tenant.save
         flash[:notice] = 'Location was successfully created.'
-        format.html { redirect_to(campus_tenant_path(@tenant)) }
+        format.html { redirect_to(student_tenant_path(@tenant)) }
         format.xml  { render :xml => @tenant, :status => :created, :location => @tenant }
       else
         format.html { render :action => "new" }
@@ -47,7 +47,7 @@ class Campus::TenantsController < ApplicationController
   def update
     respond_to do |format|
       if @tenant.update(tenant_params)
-        format.html { redirect_to campus_location_path(@tenant), notice: (t 'location.title')+(t 'actions.updated')  }
+        format.html { redirect_to student_location_path(@tenant), notice: (t 'location.title')+(t 'actions.updated')  }
         format.json { head :no_content }
       else
         format.html { render action: 'edit' }
@@ -62,7 +62,7 @@ class Campus::TenantsController < ApplicationController
   def destroy
     @tenant.destroy
     respond_to do |format|
-      format.html { redirect_to campus_tenant_url }
+      format.html { redirect_to student_tenant_url }
       format.json { head :no_content }
     end
   end

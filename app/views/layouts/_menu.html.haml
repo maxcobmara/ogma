@@ -7,7 +7,7 @@
         %h2.icon Staff
         %a.mp-back{:href => "#"} Back
         %ul
-          %li= link_to "Staff Information", staffs_path
+          %li= link_to "Staff Information", staff_infos_path
           %li.icon.icon-left
             = link_to "Staff Attendance", '#'
             .mp-level
@@ -90,14 +90,14 @@
           %li= link_to content_tag(:i, "", :class => "icon-numb") + "Report / Downloads", '#'
 
     %li.icon.icon-left
-      = link_to content_tag(:i, "", :class => "icon-numb") + "Locations", '#'
+      = link_to content_tag(:i, "", :class => "icon-numb") + (t "location.title"), '#'
       .mp-level
         %h2.icon Locations
         %a.mp-back{:href => "#"} Back
         %ul
           %li= link_to content_tag(:i, "", :class => "icon-numb") + "Locations", campus_locations_path
           %li= link_to content_tag(:i, "", :class => "icon-numb") + "Assignment", '#'
-          %li= link_to content_tag(:i, "", :class => "icon-numb") + "Tenants", campus_tenants_path
+          %li= link_to content_tag(:i, "", :class => "icon-numb") + (t "student.tenant.title"), student_tenants_path
           %li= link_to content_tag(:i, "", :class => "icon-numb") + "Location Tree", '#'
 
     %li.icon.icon-left
@@ -169,16 +169,17 @@
           %li= link_to content_tag(:i, "", :class => "icon-numb") + "Examination Analysis", '#'
 
     %li.icon.icon-left
-      = link_to content_tag(:i, "", :class => "icon-numb") + "Library", '#'
+      //= link_to content_tag(:i, "", :class => "book") + (t "library.title"), '#'
+      = link_to (fa_icon "book", text: (t "library.title")), '#'
       .mp-level
-        %h2.icon Library
+        %h2.icon= fa_icon "book", text: (t "library.title")
         %a.mp-back{:href => "#"} Back
         %ul
           %li= link_to content_tag(:i, "", :class => "icon-numb") + "Rules & Regulations", '#'
-          %li= link_to content_tag(:i, "", :class => "icon-numb") + "Library Transactions", library_librarytransactions_path
+          %li= link_to content_tag(:i, "", :class => "icon-numb") + (t "library.transaction.title"), library_librarytransactions_path
           %li= link_to content_tag(:i, "", :class => "icon-numb") + "Resources", '#'
           %li= link_to content_tag(:i, "", :class => "icon-numb") + "Analysis", '#'
-          %li= link_to content_tag(:i, "", :class => "icon-numb") + "Statistics", '#'
+          %li= link_to content_tag(:i, fa_icon("bar-chart-o", text: "Statistics")), '#'
 
     %li.icon.icon-left
       = link_to content_tag(:i, "", :class => "icon-numb") + "Administration", '#'

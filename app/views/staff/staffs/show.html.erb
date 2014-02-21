@@ -140,7 +140,7 @@
 		</tr>
 		<tr>
 			<td class="leftcol"><label for="Reports To"><%= t 'staff.reports_to' %> :</label></td>
-			<td><%=h @staff.render_reports_to %></td>
+			<td><%=h @staff.try(:position).try(:parent).try(:name) %> - <%=h @staff.try(:position).try(:parent).try(:staff).try(:name)%></td>
 		</tr>
 		<tr>
 			<td class="leftcol"><label for="employstatus"><%= t 'staff.employstatus' %> :</label></td>

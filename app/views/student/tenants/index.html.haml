@@ -1,15 +1,27 @@
-- model_class = Librarytransaction
+- model_class = Tenant
 .page-header
-  %h1= t('tenant.title')#, :default => model_class.model_name.human.pluralize
+  %h1= t('student.tenant.title')#, :default => model_class.model_name.human.pluralize
 
 .row  
   .navbar.navbar-inverse{role: "navigation", style: "padding-right:40px;"}
     %ul.nav.navbar-nav
-      %li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'new'))), new_campus_tenant_path
+      //%li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'new'))), new_student_tenant_path
     %ul.nav.navbar-nav.navbar-right
       %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'search'))), "#", class: "toga"
       %li= link_to content_tag(:li, fa_icon("print", text: (t 'print'))), "#"
-
+.row
+  .col-md-offset-3
+    .fbed_occupied.legend_object
+    .legend_title female occupied
+    .fbed_empty.legend_object
+    .legend_title female empty
+    .mbed_occupied.legend_object
+    .legend_title male occupied
+    .mbed_empty.legend_object
+    .legend_title male empty
+  
+  
+  
 .row
   - @residentials.each do |building|
     .tenancy_building{style: "width:#{@div_width}%;"}
@@ -19,18 +31,22 @@
           .floor_name= floor.name
           - @female_occupied = floor.descendants.where('typename = ?', 2).order(code: :asc).joins(:tenants).where("tenants.id" => @current_tenants)
           - @female =          floor.descendants.where('typename = ? AND id NOT IN (?)', 2, @occupied_locations).order(code: :asc)
-          - @male_occupied =   floor.descendants.where('typename = ?', 8).order(code: :asc).joins(:tenants).where("tenants.location_id" => @current_tenants)
-          - @male =            floor.descendants.where('typename = ? AND id NOT IN (?)', 2, @occupied_locations).order(code: :asc)
+          - @male_occupied =   floor.descendants.where('typename = ?', 8).order(code: :asc).joins(:tenants).where("tenants.id" => @current_tenants)
+          - @male =            floor.descendants.where('typename = ? AND id NOT IN (?)', 8, @occupied_locations).order(code: :asc)
             
           - @female_occupied.each do |bed|
-            = link_to campus_tenant_path(bed.tenants.last) do
-              .fbed_occupied.tenant{title: "#{bed.tenants.last.student.name}", 'data-toggle' => 'tooltip'}
+            = link_to student_tenant_path(bed.tenants.last) do
+              .fbed_occupied.tenant{title: "#{render 'tooltip', bed: bed}", 'data-toggle' => 'tooltip', 'data-html' => "true"}
           - @female.each do |bed|
-            = link_to new_campus_tenant_path(:location_id => bed) do
-              .fbed_empty.tenant{title: "#{bed.name}", 'data-toggle' => 'tooltip'}
+            = link_to new_student_tenant_path(:location_id => bed) do
+              .fbed_empty.tenant{title: "#{render 'tooltip', bed: bed}", 'data-toggle' => 'tooltip', 'data-html' => "true"}
               
-          - floor.descendants.where('typename = ?', 8).each do |bed|
-            .mbed
+          - @male_occupied.each do |bed|
+            = link_to student_tenant_path(bed.tenants.last) do
+              .mbed_occupied.tenant{title: "#{render 'tooltip', bed: bed}", 'data-toggle' => 'tooltip', 'data-html' => "true"}
+          - @male.each do |bed|
+            = link_to new_student_tenant_path(:location_id => bed) do
+              .mbed_empty.tenant{title: "#{render 'tooltip', bed: bed}", 'data-toggle' => 'tooltip', 'data-html' => "true"}
 
         
 .row

@@ -13,3 +13,19 @@ class Tenant < ActiveRecord::Base
     self.student = Student.find_or_create_by_name(name) if name.present?
   end
 end
+
+# == Schema Information
+#
+# Table name: tenants
+#
+#  created_at        :datetime
+#  force_vacate      :boolean
+#  id                :integer          not null, primary key
+#  keyaccept         :date
+#  keyexpectedreturn :date
+#  keyreturned       :date
+#  location_id       :integer
+#  staff_id          :integer
+#  student_id        :integer
+#  updated_at        :datetime
+#

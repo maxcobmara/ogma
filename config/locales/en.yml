@@ -175,6 +175,11 @@ en:
     ob: Officiated By
     cb: Created By
     cnt: Control
+<<<<<<< HEAD
+=======
+    ced: Campus Event Details
+    pt: Participants
+>>>>>>> master
 
   check:  
     status: Check Status

@@ -1,5 +1,25 @@
 ms_MY:
   
+  activerecord:
+    models: 
+      location: Lokasi
+    attributes:
+      location:
+        combo_code: Kod Lokasi
+    errors:
+        template:
+          body: "There were problems with the following fields:"
+          header:
+            one: "1 errors prohibited this {{model}} from being saved"
+            other: "{{count}} prohibited this {{model}} from being saved"
+        messages:
+            blank: "cant't be blank"
+            not_a_number: "is not number"
+            too_short: "is too short (minimum is {{count}} characters)"
+            taken: "telah terpakai"
+            illegal_char: contains illegal characters
+            invalid: is invalid
+  
   search:  Cari
   datelabel: Tarikh
   years_label: tahun
@@ -51,8 +71,60 @@ ms_MY:
     staffgrade_id: "Gred Staf"
     statecd: "Tempat Lahir"
     country_cd: "Kewarganegaraan"
+    
+    
+  asset:
+    title: Aset
+    new: Aset Baru
+    list: Inventori
+    create: Cipta Aset Baru
+    assettype: Jenis Aset
+    assetcode: No Siri Pendaftaran 
+    cardno: No Kad
+    name: Jenama
+    category_id: Kategori
+    subcategory_name: Subkategori
+    buyinfo: Maklumat Pembelian
+    orderno: No Pesanan Tempatan (No LO)
+    purchasedate: Tarikh Pesanan (Tarikh LO)
+    purchaseprice: Harga Beli
+    receiveddate: Tarikh Terima
+    country_id: Negara Pembuat
+    engine: "Jenis & No Enjin"
+    engineno: "No. Enjin"
+    registration: "No. Pendaftaran"
+    otherinfo: "Komponen & Aksesori"
+    
+  location:
+    title: Lokasi
+    code: Kod Lokasi
+    combo_code: Kod Lokasi
+    name: Nama
+    administrator: Ditadbir oleh
+    select_admin: "Pilih Pentadbir"
+    has_assets: "Lokasi ini punyai asset, kelik di sini untuk lihat/sorok"
+    
+    categories:
+    
+  location_categories:
+    building: Bangunan
+    floor: Tingkat
+    room: "Unit/Bilik"
+    admin: Pentadbir
+    
+  student:
+    name: Nama Pelajar
+    tenant:
+      title: Penempatan Pelajar
+      new : Pendudukkan Baru
+      key:
+        provided: Tarikh Kunci Diberi
+        expected: Tarikh Dijangka Pulang
+        returned: Tarikh Dipulang
+      vacate: Kosongkan
   
   library:
+    title: Perpustakaan
     transaction: 
       title: Transaksi Perpustakaan
       list: Senarai Transaksi Perpustakaan
@@ -129,20 +201,11 @@ ms_MY:
       receiver_id: Diterima Oleh
       supplier_id: Pembekal
   
-  location:
-    title: Lokasi
-    code: Kod Lokasi
-    name: Nama
-    administrator: Ditadbir oleh
-    select_admin: "Pilih Pentadbir"
+
     
-    categories:
-    
-  location_categories:
-    building: Bangunan
-    floor: Tingkat
-    room: "Unit/Bilik"
-    admin: Pentadbir
+  campus:
+    tenants:
+      new: Pendudukan Baru
     
   sidebar:
     home: Rumah
@@ -169,9 +232,19 @@ ms_MY:
   events:
     list: Senarai Acara
     sd: Tarikh Mula
+<<<<<<< HEAD
     ed: Tarikh Tamaat
+=======
+    ed: Tarikh Tamat
+>>>>>>> master
     en: Nama Acara
     loca: Lokasi
     ob: Dirasmikan Oleh
     cb: Dibuat Oleh
+<<<<<<< HEAD
     cnt: Kawalan
+=======
+    cnt: Kawalan
+    ced: Maklumat Terperinci Acara Kampus
+    pt: Disertai
+>>>>>>> master

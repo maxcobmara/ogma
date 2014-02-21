@@ -1,0 +1,57 @@
+- model_class = Event
+.page-header
+  %h1= t 'events.ced', :default => model_class.model_name.human
+
+.tform
+  %table{:width => "100%"}
+    %tr
+      %td.leftcol
+        %label{:for => "start_at"}
+        %b= t 'events.sd'
+        \:
+      %td
+        = h @event.start_at.strftime("%I:%M%p, %A,  %d %B %Y ") unless @event.start_at.nil?
+    %tr
+      %td.leftcol
+        %label{:for => "end_at"}
+        %b= t 'events.ed'
+        \:
+      %td
+        = h @event.end_at.strftime("%I:%M%p, %A,  %d %B %Y ") unless @event.end_at.nil?
+    %tr
+      %td.leftcol
+        %label{:for => "eventname"}
+        %b= t 'events.en'
+        \:
+      %td
+        = h @event.eventname
+        (#{h @event.event_is_publik? ? "Public" : "Private"})
+    %tr
+      %td.leftcol
+        %label{:for => "location"}
+        %b= t 'events.loca'
+        \:
+      %td= h @event.location
+    %tr
+      %td.leftcol
+        %label{:for => "participants"}
+        %b= t 'events.pt'
+        \:
+      %td
+        = h @event.participants
+    %tr
+      %td.leftcol
+        %label{:for => "officiated "}
+        %b= t 'events.ob'
+        \:
+      %td= h @event.officiated
+    %tr
+      %td.leftcol
+        %label{:for => "createdby "}
+        %b= t 'events.cb'
+        \:
+      %td= h @event.staff.blank? ? "-" : @event.staff.name
+  %BR
+= link_to 'Edit', edit_event_path(@event)
+|
+\#{link_to 'Back', events_path}
