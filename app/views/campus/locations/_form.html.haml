@@ -16,7 +16,7 @@
 .form-group
   %label.col-sm-2.control-label{:for => "parent"}= t 'location.parent'
   .col-md-6
-    = f.collection_select :parent_id, Location.order(:name), :id, :name, class: 'form-control', :include_blank => true
+    = f.text_field :parent_code, class: 'form-control', data: {autocomplete_source: Location.where("combo_code IS NOT ?", nil).order(:combo_code).map(&:combo_code)} 
     
 .form-group
   %label.col-sm-2.control-label{:for => "code"}= t 'location.administrator'

@@ -204,14 +204,15 @@ LOCATION_CATEGORIES = [
 
 LOCATION_TYPE = [
         #  Displayed       stored in db
-        [ "Staff Residence",   1 ],
-        [ "Student Room",      6 ],
+        [ "Staff Unit",   1 ],
+        [ "Student Unit",      6 ],
         [ "Bed (Student-Female)",   2 ],
         [ "Bed (Student-Male)",     8 ],
         [ "Facility",          3 ],
         [ "Staff Area",        4 ],
         [ "Public Area",       5 ],
-        [ "Other",             7 ]
+        [ "Utilities",         7 ],
+        [ "Other",             9 ]
 ]
 
 

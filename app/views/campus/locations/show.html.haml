@@ -12,7 +12,8 @@
       - else
         .col-md-2.left= link_to (fa_icon "arrow-circle-o-left"), campus_location_path(@location.parent), class: "iko"
       .col-md-8.loc_name #{@location.combo_code}
-      .col-md-2.right= link_to (fa_icon "plus-circle"), new_campus_location_path(:parent_id => @location), class: "iko"
+      - unless [1,2,8].include?(@location.typename)
+        .col-md-2.right= link_to (fa_icon "plus-circle"), new_campus_location_path(:parent_id => @location), class: "iko"
       //.col-md-3.add.right= link_to (fa_icon "camera-retro black"), '#', class: "iko"
     - if @location.lclass == 1
       - @location.children.order(:code).reverse.each do | child |

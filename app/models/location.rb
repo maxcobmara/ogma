@@ -23,6 +23,14 @@ class Location < ActiveRecord::Base
     self.administrator = Staff.find_by_name(name) if name.present?
   end
   
+  def parent_code
+    parent.try(:combo_code)
+  end
+  
+  def parent_code=(combo_code)
+    self.parent = Location.find_by_combo_code(combo_code) if combo_code.present?
+  end
+  
   
   def translated_location_category
     I18n.t(location_category, :scope => :location_categories)

@@ -29,10 +29,10 @@
       - building.children.sort.reverse.each do |floor|
         .row.tenancy_floor
           .floor_name= floor.name
-          - @female_occupied = floor.descendants.where('typename = ?', 2).order(code: :asc).joins(:tenants).where("tenants.id" => @current_tenants)
-          - @female =          floor.descendants.where('typename = ? AND id NOT IN (?)', 2, @occupied_locations).order(code: :asc)
-          - @male_occupied =   floor.descendants.where('typename = ?', 8).order(code: :asc).joins(:tenants).where("tenants.id" => @current_tenants)
-          - @male =            floor.descendants.where('typename = ? AND id NOT IN (?)', 8, @occupied_locations).order(code: :asc)
+          - @female_occupied = floor.descendants.where('typename = ?', 2).order(combo_code: :asc).joins(:tenants).where("tenants.id" => @current_tenants)
+          - @female =          floor.descendants.where('typename = ? AND id NOT IN (?)', 2, @occupied_locations).order(combo_code: :asc)
+          - @male_occupied =   floor.descendants.where('typename = ?', 8).order(combo_code: :asc).joins(:tenants).where("tenants.id" => @current_tenants)
+          - @male =            floor.descendants.where('typename = ? AND id NOT IN (?)', 8, @occupied_locations).order(combo_code: :asc)
             
           - @female_occupied.each do |bed|
             = link_to student_tenant_path(bed.tenants.last) do
@@ -60,19 +60,19 @@
       %tbody
         %tr
           %th Empty
-          %td.centre= @female.count
-          %td.centre= @male.count
+          %td.centre= @female_student_beds.where('id NOT IN (?)', @occupied_locations).count
+          %td.centre= @male_student_beds.where('id NOT IN (?)', @occupied_locations).count
         %tr
           %th Occupied
-          %td.centre= @female_occupied.count
-          %td.centre= @male_occupied.count
+          %td.centre= @female_student_beds.joins(:tenants).where("tenants.id" => @current_tenants).count
+          %td.centre= @male_student_beds.joins(:tenants).where("tenants.id" => @current_tenants).count
         %tr
           %th Totals
-          %td.centre= (@female_occupied.count + @female.count)
-          %td.centre= (@male_occupied.count + @male.count)
+          %td.centre= a = @female_student_beds.count
+          %td.centre= b = @male_student_beds.count
         %tr
           %th Total
-          %td.centre{colspan: 2}= (@male_occupied.count + @male.count + @female_occupied.count + @female.count)
+          %td.centre{colspan: 2}= (a + b)
           
   
   
