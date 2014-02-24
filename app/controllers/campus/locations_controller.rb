@@ -71,6 +71,6 @@ class Campus::LocationsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def location_params
-      params.require(:location).permit(:code, :name, :parent_id, :lclass, :typename, :allocatable, :occupied, :staffadmin_id, :staff_name, :ancestry)
+      params.require(:location).permit(:code, :name, :parent_id, :lclass, :typename, :allocatable, :occupied, :staffadmin_id, :staff_name, :ancestry, :parent_code)
     end
 end

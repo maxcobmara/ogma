@@ -81,7 +81,32 @@ class Library::LibrarytransactionsController < ApplicationController
         @librarytransactions << t
       end
     end  
-  end  
+  end
+  
+  def late_books
+    @staff_late_books = Librarytransaction.find_by_sql("
+      SELECT s.name as name, s.coemail, b.title
+      FROM librarytransactions lt
+      LEFT JOIN staffs s on s.id=lt.staff_id
+      LEFT JOIN accessions a on a.id=lt.accession_id
+      LEFT OUTER JOIN books b on b.id=a.book_id
+      WHERE lt.returned IS NULL
+      AND s.coemail IS NOT NULL
+      AND lt.returnduedate < current_date
+      GROUP BY name, s.coemail, b.title;")
+      
+    @student_late_books = Librarytransaction.find_by_sql("
+      SELECT s.name as name, s.coemail, b.title, 
+      FROM librarytransactions lt
+      LEFT JOIN student s on s.id=lt.student_id
+      LEFT JOIN accessions a on a.id=lt.accession_id
+      LEFT OUTER JOIN books b on b.id=a.book_id
+      WHERE lt.returned IS NULL
+      AND s.coemail IS NOT NULL
+      AND lt.returnduedate < current_date
+      GROUP BY name, s.coemail, b.title;")
+    
+  end
   
   
   

@@ -25,6 +25,10 @@ $(document).ready(function () {
   $('.tipsy').tooltip({ placement: 'right'});
   $('.tenant').tooltip( {placement: 'right', container: 'body'});
   
+  $(".bogus").click(function (e) {
+      alert("Sorry! Feature not yet implemented");
+  });
+  
   $('[data-behaviour=datepicker_before]').datepicker({
     format: "yyyy/mm/dd",
     endDate: "today + 1",

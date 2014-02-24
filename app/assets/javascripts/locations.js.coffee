@@ -1,6 +1,11 @@
 jQuery ->
   $('#location_staff_name').autocomplete
+    minLength: 3
     source: $('#location_staff_name').data('autocomplete-source')
+    
+  $('#location_parent_code').autocomplete
+    minLength: 2
+    source: $('#location_parent_code').data('autocomplete-source')
     
   $("#location_lclass").change ->
     $("#form3").hide()

@@ -14,14 +14,15 @@
   .form-group
     %label.col-sm-2.control-label{:for => "student_id"}= t 'student.name'
     .col-md-7
-      = f.text_field :student_name, :class => 'form-control', data: {autocomplete_source: Student.where("id NOT IN (?) AND gender = ?", @current_tenant_ids, 2).order(name: :asc).map(&:name)}
+      = f.text_field :student_name, :class => 'form-control', data: {autocomplete_source: Student.where("id NOT IN (?) AND gender = ? AND end_training > ?", @current_tenant_ids, 2, Date.today).order(name: :asc).map(&:name)}
       //= f.collection_select :student_id, Student.where("id NOT IN (?) AND gender = ?", @current_tenant_ids, 2).order(name: :asc), :id, :name#:student_name_with_programme
 
 - if [8].include? @tenant.try(:location).try(:typename)
   .form-group
     %label.col-sm-2.control-label{:for => "student_id"}= t 'student.name'
     .col-md-4
-      = f.collection_select :student_id, Student.where("id NOT IN (?) AND gender = ?", @current_tenant_ids, 1).order(name: :asc), :id, :name#:student_name_with_programme
+      = f.text_field :student_name, :class => 'form-control', data: {autocomplete_source: Student.where("id NOT IN (?) AND gender = ? AND end_training > ?", @current_tenant_ids, 1, Date.today).order(name: :asc).map(&:name)}
+
 
 - if @tenant.try(:location).try(:typename) == 1
   .form-group

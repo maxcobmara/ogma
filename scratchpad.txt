@@ -1,3 +1,62 @@
+psql -U postgres -d icms_kskb_development
+
+
+SELECT id
+FROM tenants
+WHERE keyreturned IS null 
+AND force_vacate = false;
+
+.where("tenants.keyreturned IS ? AND tenants.force_vacate = ?", nil, false
+
+
+SELECT p.name, e.name as staffgrade, 
+COUNT(p.id) as total, 
+COUNT(CASE WHEN p.staff_id IS NOT NULL THEN 1 ELSE NULL END) as diisi,
+COUNT(CASE WHEN (p.staff_id IS NULL) THEN 1 ELSE NULL END) as kosong
+FROM positions p
+LEFT JOIN employgrades e on e.id=p.staffgrade_id
+GROUP BY p.name, staffgrade
+ORDER BY p.name;
+
+
+SELECT s.name, s.coemail, b.title
+FROM librarytransactions lt
+LEFT JOIN staffs s on s.id=lt.staff_id
+LEFT JOIN accessions a on a.id=lt.accession_id
+LEFT OUTER JOIN books b on b.id=a.book_id
+WHERE lt.returned IS NULL
+AND s.coemail IS NOT NULL
+AND lt.returnduedate < current_date
+GROUP BY s.name, s.coemail, b.title;
+
+Just get ids and emails
+then get book titles
+
+SELECT lt.staff_id, s.coemail
+FROM librarytransactions lt
+LEFT JOIN staffs s on s.id=lt.staff_id
+WHERE lt.returned IS NULL
+AND s.coemail IS NOT NULL
+AND lt.returnduedate < current_date
+GROUP BY lt.staff_id, s.coemail;
+
+SELECT b.title
+FROM librarytransactions lt
+LEFT JOIN accessions a on a.id=lt.accession_id
+LEFT OUTER JOIN books b on b.id=a.book_id
+WHERE lt.returned IS NULL
+AND lt.staff_id
+AND lt.returnduedate < current_date
+GROUP BY s.name, s.coemail, b.title;
+
+
+
+
+
+
+
+
+
 
 
 
