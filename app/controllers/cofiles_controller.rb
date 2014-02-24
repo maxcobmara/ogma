@@ -13,7 +13,8 @@ class CofilesController < ApplicationController
     @cofiles_filtered = Cofile.find(:all, :order => sort_column + ' ' + sort_direction ,:conditions => ['cofileno LIKE ? or name ILIKE ? ', "%#{params[:search]}%", "%#{params[:search]}%"])
 
   end
-  
+
+
 private
     # Use callbacks to share common setup or constraints between actions.
     def set_location
