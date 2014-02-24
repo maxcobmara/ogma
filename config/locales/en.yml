@@ -252,6 +252,8 @@ en:
     ob: Officiated By
     cb: Created By
     cnt: Control
+    ced: Campus Event Details
+    pt: Participants
 
   check:  
     status: Check Status
