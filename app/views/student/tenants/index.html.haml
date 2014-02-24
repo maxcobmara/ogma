@@ -48,7 +48,34 @@
             = link_to new_student_tenant_path(:location_id => bed) do
               .mbed_empty.tenant{title: "#{render 'tooltip', bed: bed}", 'data-toggle' => 'tooltip', 'data-html' => "true"}
 
-        
+.row
+  .col-md-3
+    %p Statistics
+    %table.table-striped.table-hover.ogma
+      %thead
+        %tr
+          %th Item
+          %th Female
+          %th Male
+      %tbody
+        %tr
+          %th Empty
+          %td.centre= @female.count
+          %td.centre= @male.count
+        %tr
+          %th Occupied
+          %td.centre= @female_occupied.count
+          %td.centre= @male_occupied.count
+        %tr
+          %th Totals
+          %td.centre= (@female_occupied.count + @female.count)
+          %td.centre= (@male_occupied.count + @male.count)
+        %tr
+          %th Total
+          %td.centre{colspan: 2}= (@male_occupied.count + @male.count + @female_occupied.count + @female.count)
+          
+  
+  
 .row
   %table.table-striped.table-hover.ogma
     %thead
