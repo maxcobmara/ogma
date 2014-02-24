@@ -28,8 +28,8 @@
         %td= truncate(bulletin.content, :length => 60)
         %td= check_kin {bulletin.staff.mykad_with_staff_name}
         %td= bulletin.publishdt
-        %td{:width => "10px"}= link_to fa_icon("eye", :border => 0), :action => 'show', :id => bulletin
-        %td{:width => "10px"}= link_to fa_icon("edit", :border => 0), :action => 'edit', :id => bulletin
+        %td{:width => "10px"}= link_to fa_icon("eye", :border => 0), '#', class: 'bogus', :action => 'show', :id => bulletin
+        %td{:width => "10px"}= link_to fa_icon("edit", :border => 0), '#', class: 'bogus', :action => 'edit', :id => bulletin, class: 'bogus'
         %td{:width => "10px"}= link_to fa_icon("trash-o", :border => 0, :title => 'Delete'), bulletin, :confirm => 'Are you sure?', :method => :delete
 
 
