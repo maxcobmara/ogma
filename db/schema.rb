@@ -11,11 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-<<<<<<< HEAD
-ActiveRecord::Schema.define(version: 20131004091521) do
-=======
-ActiveRecord::Schema.define(version: 20140213070431) do
->>>>>>> upstream/development
+ActiveRecord::Schema.define(version: 20140220194455) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -38,6 +34,9 @@ ActiveRecord::Schema.define(version: 20140213070431) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "accessions", ["accession_no"], name: "index_accessions_on_accession_no", using: :btree
+  add_index "accessions", ["id"], name: "index_accessions_on_id", using: :btree
 
   create_table "addbooks", force: true do |t|
     t.string   "name"
@@ -123,13 +122,6 @@ ActiveRecord::Schema.define(version: 20140213070431) do
     t.text     "ppkoverall"
     t.integer  "ppk_id"
     t.date     "ppkevaldt"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "articles", force: true do |t|
-    t.string   "name"
-    t.text     "content"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -523,6 +515,9 @@ ActiveRecord::Schema.define(version: 20140213070431) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "books", ["id"], name: "index_books_on_id", using: :btree
+  add_index "books", ["isbn"], name: "index_books_on_isbn", using: :btree
 
   create_table "booksearches", force: true do |t|
     t.string   "title"
@@ -1147,6 +1142,10 @@ ActiveRecord::Schema.define(version: 20140213070431) do
     t.integer  "ancestry_depth", default: 0
   end
 
+  add_index "locations", ["ancestry"], name: "index_locations_on_ancestry", using: :btree
+  add_index "locations", ["combo_code"], name: "index_locations_on_combo_code", using: :btree
+  add_index "locations", ["id"], name: "index_locations_on_id", using: :btree
+
   create_table "maints", force: true do |t|
     t.integer  "asset_id"
     t.integer  "maintainer_id"
@@ -1175,11 +1174,6 @@ ActiveRecord::Schema.define(version: 20140213070431) do
   create_table "messages_staffs", id: false, force: true do |t|
     t.integer "message_id"
     t.integer "staff_id"
-  end
-
-  create_table "my_models", force: true do |t|
-    t.datetime "created_at"
-    t.datetime "updated_at"
   end
 
   create_table "pages", force: true do |t|
@@ -1651,6 +1645,10 @@ ActiveRecord::Schema.define(version: 20140213070431) do
     t.datetime "updated_at"
   end
 
+  add_index "staffs", ["icno"], name: "index_staffs_on_icno", using: :btree
+  add_index "staffs", ["id"], name: "index_staffs_on_id", using: :btree
+  add_index "staffs", ["name"], name: "index_staffs_on_name", using: :btree
+
   create_table "staffsearch2s", force: true do |t|
     t.string   "keywords"
     t.integer  "position"
@@ -1816,6 +1814,11 @@ ActiveRecord::Schema.define(version: 20140213070431) do
     t.integer  "race2"
   end
 
+  add_index "students", ["icno"], name: "index_students_on_icno", using: :btree
+  add_index "students", ["id"], name: "index_students_on_id", using: :btree
+  add_index "students", ["matrixno"], name: "index_students_on_matrixno", using: :btree
+  add_index "students", ["name"], name: "index_students_on_name", using: :btree
+
   create_table "studentsearches", force: true do |t|
     t.string   "icno"
     t.string   "name"
@@ -1856,6 +1859,8 @@ ActiveRecord::Schema.define(version: 20140213070431) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "tenants", ["id"], name: "index_tenants_on_id", using: :btree
 
   create_table "timetable_periods", force: true do |t|
     t.integer  "timetable_id"
@@ -2133,6 +2138,7 @@ ActiveRecord::Schema.define(version: 20140213070431) do
     t.datetime "updated_at"
   end
 
+  add_index "users", ["id"], name: "index_users_on_id", using: :btree
   add_index "users", ["login"], name: "index_users_on_login", unique: true, using: :btree
 
   create_table "usesupplies", force: true do |t|

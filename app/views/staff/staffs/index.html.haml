@@ -22,10 +22,9 @@
       = render "index_search"
       - @staffs.each do |staff|
         %tr
-          %td= link_to staff.formatted_mykad, "#", class: 'bogus'
+          %td= link_to staff.formatted_mykad, staff_info_path(staff)
           %td= staff.name 
           %td= staff.try(:position).try(:name)
           
   .right{style:"padding:0 30px; margin:0;"}= paginate @staffs, :theme => 'twitter-bootstrap-3'
 	
-/staff_info_path(staff)

@@ -22,6 +22,7 @@ namespace :mailer do
     @late_books.group_by(&:name).each do |person, transactions|
       mailto person
       for transaction in trasactions
+      end
     end
   end
   
