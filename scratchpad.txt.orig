@@ -1,3 +1,8 @@
+<<<<<<< HEAD
+Run Annotate Gem: 
+annotate --routes --position after --sort
+annotate --exclude tests,fixtures,factories --position after --sort 
+=======
 psql -U postgres -d icms_kskb_development
 
 
@@ -58,6 +63,7 @@ GROUP BY s.name, s.coemail, b.title;
 
 
 
+>>>>>>> master
 
 
 <!-- Box -->

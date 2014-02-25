@@ -13,8 +13,13 @@ class Student::TenantsController < ApplicationController
     #sets div size to fit no of buildings 
     @div_width = 90/@residentials.count
     
-    @current_tenants = Tenant.where(:keyreturned => nil).where(:force_vacate => false)
+    @current_tenants = Tenant.where("keyreturned IS ? AND force_vacate != ?", nil, true)#.where(:keyreturned => nil).where(:force_vacate => false).where(s)
     @occupied_locations = @current_tenants.pluck(:location_id)
+    
+    
+    @locations = Location.where('typename IN (?)', [2,8])
+    @female_student_beds  = @locations.where('typename = ?', 2)
+    @male_student_beds    = @locations.where('typename = ?', 8)
     
     
     @tenants = Tenant.order(created_at: :desc)

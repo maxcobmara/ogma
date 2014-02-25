@@ -38,7 +38,7 @@
         %label{:for => "onloan"}
           %b
             = t 'cofile.onloan'
-            \:
+       
       %td= h @cofile.onloan? ? "Yes" : "No"
     - if @cofile.onloan == true
       %tr
@@ -64,8 +64,10 @@
         %td
           = h l(@cofile.onloanxdt) unless @cofile.onloanxdt.blank?
   %BR
-= link_to (t 'icms.update'), "#", class: 'bogus'
-|
+
+= link_to (t 'icms.update'), edit_cofile_path(@cofile)
 \#{link_to (t 'icms.back'), cofiles_path}
 
-/edit_cofile_path(@cofile)
+
+
+
