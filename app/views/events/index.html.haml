@@ -33,7 +33,7 @@
           %td= h event.officiated
           %td= h event.staff.blank? ? "-" : event.staff.name
           %td{:width => "10px"}= link_to fa_icon("eye", :border => 0), :action => 'show', :id => event
-          %td{:width => "10px"}= link_to fa_icon("edit", :border => 0), :action => 'edit', :id => event
+          %td{:width => "10px"}= link_to fa_icon("edit", :border => 0), '#', :action => 'edit', :id => event, class: 'bogus'
           %td{:width => "10px"}= link_to fa_icon("trash-o", :border => 0, :title => 'Delete'), event, :confirm => 'Are you sure?', :method => :delete
 		  
   .right{style:"padding:0 30px; margin:0;"}= paginate @events, :theme => 'twitter-bootstrap-3'
