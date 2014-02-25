@@ -67,6 +67,7 @@ en:
     code: "Staff Code"
     fileno: "File No"
     position: "Position"
+    cobirthdt: Date Of Birth
     bloodtype: "Blood Type"
     addr: "Address"
     poskod_id: "Poskod"
@@ -74,6 +75,8 @@ en:
     staffgrade_id: "Staff Grade"
     statecd: "State of Birth"
     country_cd: "Nationality"
+    thumb: Thumb ID Code
+    
     
   asset:
     title: Assets

@@ -64,6 +64,7 @@ ms_MY:
     code: "Kod Staf"
     fileno: "No Fail"
     position: "Jawatan"
+    cobirthdt: Tarikh Lahir
     bloodtype: "Jenis Darah"
     addr: "Alamat"
     poskod_id: "Poskod"
@@ -71,6 +72,7 @@ ms_MY:
     staffgrade_id: "Gred Staf"
     statecd: "Tempat Lahir"
     country_cd: "Kewarganegaraan"
+    thumb: Kod ID Biometric
     
     
   asset:
