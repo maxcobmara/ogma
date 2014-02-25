@@ -1,3 +1,21 @@
+<<<<<<< Local Changes
+<<<<<<< Local Changes
+<<<<<<< Local Changes
+<<<<<<< Local Changes
+=======
+<<<<<<< HEAD
+Run Annotate Gem: 
+annotate --routes --position after --sort
+annotate --exclude tests,fixtures,factories --position after --sort 
+=======
+>>>>>>> External Changes
+=======
+<<<<<<< HEAD
+Run Annotate Gem: 
+annotate --routes --position after --sort
+annotate --exclude tests,fixtures,factories --position after --sort 
+=======
+>>>>>>> External Changes
 psql -U postgres -d icms_kskb_development
 
 
@@ -29,6 +47,22 @@ AND s.coemail IS NOT NULL
 AND lt.returnduedate < current_date
 GROUP BY s.name, s.coemail, b.title;
 
+
+ @female_occupied = floor.descendants.where('typename = ?', 2).order(code: :asc).joins(:tenants).where("tenants.id" => @current_tenants)
+@female =          floor.descendants.where('typename = ? AND id NOT IN (?)', 2, @occupied_locations).order(code: :asc)
+
+@current_tenants = Tenant.where("keyreturned IS ? AND force_vacate != ?", nil, true)
+
+SELECT COUNT(id)
+FROM locations 
+WHERE typename = 2;
+
+SELECT id
+FROM tenants
+WHERE keyreturned = null
+AND force_vacate <> true;
+
+
 Just get ids and emails
 then get book titles
 
@@ -58,6 +92,19 @@ GROUP BY s.name, s.coemail, b.title;
 
 
 
+<<<<<<< Local Changes
+<<<<<<< Local Changes
+=======
+Run Annotate Gem: 
+annotate --routes --position after --sort
+annotate --exclude tests,fixtures,factories --position after --sort 
+>>>>>>> External Changes
+=======
+>>>>>>> master
+>>>>>>> External Changes
+=======
+>>>>>>> master
+>>>>>>> External Changes
 
 
 <!-- Box -->
@@ -109,3 +156,5 @@ GROUP BY s.name, s.coemail, b.title;
         %td{:width => "10px"}= link_to fa_icon("pencil-square", :border => 0, :title => 'Edit'), :action => 'edit', :id => staff
         %td{:width => "10px"}= link_to fa_icon("trash-o", :border => 0, :title => 'Delete'), staff, :confirm => 'Are you sure?', :method => :delete
         %td{:width => "10px"}= link_to fa_icon("print", :border => 0, :title => 'Borang Maklumat Staf'), :action => 'borang_maklumat_staff', :id => staff
+=======
+>>>>>>> External Changes
