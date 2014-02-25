@@ -1,0 +1,57 @@
+.row.fluid
+  = form_for [:staff, @info], url: staff_info_path(@info), :html => { :class => 'form-horizontal' }  do |f| 
+    = render 'shared/error_messages', object: f.object
+    .col-md-offset-1
+      .form-group
+        .col-sm-2.control-label
+          = f.label t 'staff.icno', for: :icno
+        .col-md-2
+          = f.text_field :icno, class: 'form-control mandatory'
+          .help-block.small Format:79XXXXXXXXXX
+
+          
+      .form-group
+        .col-sm-2.control-label
+          = f.label t 'staff.name', for: :name
+        .col-md-1
+          = f.collection_select :titlecd_id, Title.find(:all), :id, :name, {:include_blank => true}, {class: 'selectpicker', "data-width"=>"80px"}
+        .col-md-5
+          = f.text_field :name, class: 'form-control mandatory'
+          
+      .form-group
+        .col-sm-2.control-label
+          = f.label t 'staff.code', for: :code
+        .col-md-3
+          = f.text_field :code, class: 'form-control mandatory'
+          
+      .form-group
+        .col-sm-2.control-label
+          = f.label t 'staff.fileno', for: :fileno
+        .col-md-2
+          = f.text_field :fileno, class: 'form-control mandatory'
+          
+      .form-group
+        .col-sm-2.control-label
+          = f.label t 'staff.coemail', for: :coemail
+        .col-md-4
+          = f.text_field :coemail, class: 'form-control mandatory'
+          
+      .form-group
+        .col-sm-2.control-label
+          = f.label t 'staff.cobirthdt', for: :cobirthdt
+        .col-md-2
+          = f.text_field :cobirthdt, class: 'form-control mandatory', 'data-behaviour' => 'datepicker_dob'
+          
+
+      .hidden          
+        .form-group
+          .col-sm-2.control-label
+            = f.label t 'staff.thumb', for: :thumb_id
+          .col-md-1
+            = f.text_field :thumb_id, class: 'form-control mandatory'
+            
+      .form-group
+        .col-sm-offset-2.col-sm-2
+          = f.submit t('update'), class: "btn btn-primary"
+          
+          

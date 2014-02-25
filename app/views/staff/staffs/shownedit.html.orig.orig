@@ -9,7 +9,8 @@
 		<tr>
 			<td class="leftcol"><label for="icno"><%= t 'staff.icno' %> :</label></td>
 			<td><%=h @staff.icno %></td>
-			<td rowspan=10 align=right><% if @staff.photo.exists? then %>
+			<td rowspan=10 align=right>
+        <% if @staff.photo.exists? then %>
 			  <%= image_tag @staff.photo.url%>
 			<% else %>
 			  No Photo<BR>Available
@@ -357,4 +358,30 @@
 </div>	
 	
 <%= link_to (t 'icms.update'), edit_staff_path(@staff) %> 
+<<<<<<< HEAD:app/views/staff/staffs/show.html.orig
 <%= link_to (t 'icms.back'), staffs_path %>
+=======
+<%= link_to (t 'icms.back'), staffs_path %>
+
+
+
+
+
+############# Edit ##################
+
+
+<h3><%= t 'staff.edit' %></h3>
+
+<% form_for (@staff, :html => { :multipart => true}) do |f| %>
+  <%= f.error_messages %>
+
+ <%=render :partial => 'form', :locals => {:f => f} %> 
+
+  <p>
+    <%= f.submit 'Update' %>
+  </p>
+<% end %>
+
+<%= link_to 'Show', @staff %> |
+<%= link_to 'Back', staffs_path %>
+>>>>>>> master:app/views/staff/staffs/shownedit.html.orig
