@@ -25,7 +25,7 @@
 <<<<<<< HEAD
           %td= link_to staff.formatted_mykad, "#", class: 'bogus'
 =======
-          %td= link_to staff.formatted_mykad, '#', class: "bogus" #staff_info_path(staff)
+          %td= link_to staff.formatted_mykad, staff_info_path(staff)
 >>>>>>> master
           %td= staff.name 
           %td= staff.try(:position).try(:name)

@@ -216,6 +216,12 @@ table.ogma {
   dt {font-weight:bold;}
 }
 
+.dl-horizontal > dd:after {
+  display: table;
+  content: "";
+  clear: both;
+}
+
 ul.ui-autocomplete {
   position: absolute;
   list-style: none;
@@ -248,3 +254,4 @@ span.i {font-style:normal !important;}
 
 .legend_object {float:left; padding: 0 8px 0 12px;}
 .legend_title {float:left; padding: 0 20px 0 8px; font-size: 0.8em; }
+
