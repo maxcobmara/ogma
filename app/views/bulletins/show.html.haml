@@ -33,7 +33,7 @@
     %hr
     .form-actions
       = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), bulletins_path, :class => 'btn btn-default'
-      = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('.edit', :default => t("helpers.links.edit")),"#", :class => 'btn btn-primary'
+      = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('.edit', :default => t("helpers.links.edit")), edit_bulletin_path(@bulletin), :class => 'btn btn-primary'
       = link_to content_tag(:i, "", :class => "fa fa-trash-o icon-white") + " " + t('.destroy', :default => t("helpers.links.destroy")), |
         bulletins_path(@headline),                                                                                                    |
         :method => 'delete',                                                                                                           |
@@ -41,4 +41,3 @@
         :class => 'btn btn-danger'
 		
 		
-/edit_bulletin_path(@bulletin)
