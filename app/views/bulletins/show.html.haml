@@ -1,0 +1,43 @@
+- model_class = Bulletin
+.page-header
+  %h1= @bulletin.headline
+
+= render 'shared/flashes'
+
+.row
+  .col-md-8
+    %dl.dl-horizontal
+      %dt= t 'buletin.headline', :default => model_class.human_attribute_name(:headline) + ":"
+      %dd= @bulletin.headline
+      
+      %dt= t 'buletin.content', :default => model_class.human_attribute_name(:content) + ":"
+      %dd=  @bulletin.content
+    
+      %dt= t 'buletin.posted_by', :default => model_class.human_attribute_name(:postedby_id) + ":"
+      %dd= check_kin {@bulletin.staff.mykad_with_staff_name}
+
+      %dt= t 'buletin.publish_date', :default => model_class.human_attribute_name(:publishdt) + ":"
+      %dd= @bulletin.publishdt
+
+      %dt= t 'bulletin.uploaded', :default => model_class.human_attribute_name(:data) + ":"
+      %dd
+        - if @bulletin.data.exists? then
+          = @bulletin.data_file_name
+          = link_to (t 'bulletin.download'), @bulletin.data.url 
+        - else
+          No File Available
+		  
+
+.row
+  .col-md-4.col-md-offset-3
+    %hr
+    .form-actions
+      = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), bulletins_path, :class => 'btn btn-default'
+      = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('.edit', :default => t("helpers.links.edit")), edit_bulletin_path(@bulletin), :class => 'btn btn-primary'
+      = link_to content_tag(:i, "", :class => "fa fa-trash-o icon-white") + " " + t('.destroy', :default => t("helpers.links.destroy")), |
+        bulletins_path(@headline),                                                                                                    |
+        :method => 'delete',                                                                                                           |
+        :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },                   |
+        :class => 'btn btn-danger'
+		
+		
