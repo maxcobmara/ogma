@@ -157,7 +157,8 @@ en:
     onloan_to: On Loan To
     onloandt: On Loan Date
     control: Control
-    file_details: File Details      
+    file_details: File Details
+    onloanxdt: Onloan Xdt      
   
   library:
     title: Library

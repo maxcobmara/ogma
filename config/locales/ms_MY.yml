@@ -134,7 +134,8 @@ ms_MY:
     onloan_to: On Loan To
     onloandt: Onloandt
     control: Tindakan  
-    file_details: Maklumat Fail 
+    file_details: Maklumat Fail
+    onloanxdt: Onloan Xdt  
   
   library:
     title: Perpustakaan
