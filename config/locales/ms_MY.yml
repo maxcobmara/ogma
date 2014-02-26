@@ -222,7 +222,10 @@ ms_MY:
     posted_by: Disiarkan Oleh
     publish_date: Tarikh Penyiaran
     control: Tindakan
-    
+    new_bulletin: Buletin Baru
+    upload_file: Memuatnaik Dokumen
+
+
   campus:
     tenants:
       new: Pendudukan Baru

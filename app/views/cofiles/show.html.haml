@@ -24,6 +24,7 @@
       %dl
         %dt.leftcol
           %label{:for => "staffloan_id"}
+<<<<<<< HEAD
             = t 'cofile.onloan_to'
         %dt= h @cofile.staffloan_id? ? @cofile.borrower.name : ""
 		
@@ -48,3 +49,32 @@
               
 			  
 //edit_cofile_path(@cofile)			  
+=======
+            %b
+              = t 'cofile.onloan_to'
+              \:
+        %td= h @cofile.staffloan_id? ? @cofile.borrower.name : ""
+      %tr
+        %td.leftcol
+          %label{:for => "onloandt"}
+            %b
+              = t 'cofile.onloandt'
+              \:
+        %td= h l(@cofile.onloandt) unless @cofile.onloandt.blank?
+      %tr
+        %td.leftcol
+          %label{:for => "onloanxdt"}
+            %b
+              = t 'cofile.onloanxdt'
+              \:
+        %td
+          = h l(@cofile.onloanxdt) unless @cofile.onloanxdt.blank?
+  %BR
+
+= link_to (t 'icms.update'), edit_cofile_path(@cofile)
+\#{link_to (t 'icms.back'), cofiles_path}
+
+
+
+
+>>>>>>> upstream/development

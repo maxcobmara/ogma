@@ -245,6 +245,8 @@ en:
     posted_by: Posted By
     publish_date: Publish Date
     control: Control
+    new_bulletin: New Bulletin
+    upload_file: Upload File
     
 
   events:

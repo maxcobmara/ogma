@@ -57,32 +57,31 @@ class BulletinsController < ApplicationController
 
   # PUT /bulletins/1
   # PUT /bulletins/1.xml
-  def update
-    @bulletin = Bulletin.find(params[:id])
 
+  
+  def update
     respond_to do |format|
-      if @bulletin.update_attributes(params[:bulletin])
-        flash[:notice] = 'Bulletin was successfully updated.'
-        format.html { redirect_to(@bulletin) }
-        format.xml  { head :ok }
+      if @bulletin.update(bulletin_params)
+        format.html { redirect_to bulletin_path, notice: 'Bulletin Board was successfully updated.' }
+        format.json { head :no_content }
       else
-        format.html { render :action => "edit" }
-        format.xml  { render :xml => @bulletin.errors, :status => :unprocessable_entity }
+        format.html { render action: 'edit' }
+        format.json { render json: @bulletin.errors, status: :unprocessable_entity }
       end
     end
   end
-
+  
   # DELETE /bulletins/1
   # DELETE /bulletins/1.xml
   def destroy
-    @bulletin = Bulletin.find(params[:id])
     @bulletin.destroy
 
     respond_to do |format|
       format.html { redirect_to(bulletins_url) }
-      format.xml  { head :ok }
+      format.json { head :no_content }
     end
   end
+
   
 private
     # Use callbacks to share common setup or constraints between actions.
