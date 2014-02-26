@@ -1,0 +1,8 @@
+- model_class = Staff
+.page-header
+  %h1
+    = t 'edit'
+    = @staff.name
+
+= render 'shared/flashes'
+= render 'form'

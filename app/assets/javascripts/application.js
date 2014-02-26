@@ -49,7 +49,14 @@ $(document).ready(function () {
     todayBtn: true
   });
   
-  $('select').selectpicker();
+  $('[data-behaviour=datepicker_dob]').datepicker({
+    format: "yyyy/mm/dd",
+    autoclose: true,
+    startView: 2
+  });
+  
+
+  $('.selectpicker').selectpicker();
   
   $('.toga').click(function() {	   
      $('.search_bar').toggle();
