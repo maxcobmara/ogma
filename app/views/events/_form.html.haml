@@ -1,0 +1,59 @@
+.row.fluid
+  = form_for [:event, @event], url: event_path(@event), :html => { :class => 'form-horizontal' }  do |f| 
+    = render 'shared/error_messages', object: f.object
+    .col-md-offset-1
+
+      .form-group
+        .col-sm-2.control-label
+          = f.label t 'events.en', for: :eventname
+        .col-md-5
+          = f.text_field :eventname, class: 'form-control mandatory'
+
+      .form-group
+        .col-sm-2.control-label
+          = f.label t 'events.sd', for: :start_at
+        .col-md-5
+          //= f.datetime_select :start_at, :start_year => Time.now.year - 1, :minute_step => 15, :order => [:day, :month, :year]
+          = f.text_field :start_at, class: 'form-control mandatory', 'data-behaviour' => 'datepicker_dob'
+
+      .form-group
+        .col-sm-2.control-label
+          = f.label t 'events.ed', for: :end_at
+        .col-md-5
+          //= f.datetime_select :end_at, :start_year => Time.now.year - 1, :minute_step => 15, :order => [:day, :month, :year]
+          = f.text_field :end_at, class: 'form-control mandatory', 'data-behaviour' => 'datepicker_dob'
+
+
+
+      .form-group
+        .col-sm-2.control-label
+          = f.label t 'events.loca', for: :location
+        .col-md-5
+          = f.text_field :location, class: 'form-control mandatory'
+
+
+      .form-group
+        .col-sm-2.control-label
+          = f.label t 'events.pt', for: :participants
+        .col-md-5
+          = f.text_area :participants, class: 'form-control mandatory'
+
+
+      .form-group
+        .col-sm-2.control-label
+          = f.label t 'events.ob', for: :officiated
+        .col-md-5
+          = f.text_field :officiated, class: 'form-control mandatory'
+
+
+      //.form-group
+      //  .col-sm-2.control-label
+      //    = f.label t 'events.cb', for: :staff_name
+      //  .col-md-2
+      //    = f.collection_select :createdby, Staff.find(:all, :order=>'name ASC'), :id, :staff_name_with_position, {:include_blank => true}
+
+      .form-group
+        .col-sm-offset-2.col-sm-1
+          = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), event_path, :class => 'btn btn-default'
+        .col-md-2
+          = f.submit t('update'), class: "btn btn-primary"
