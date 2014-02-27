@@ -6,35 +6,35 @@
   
 .navbar.navbar-inverse{role: "navigation", style: "padding-right:40px;"}
   %ul.nav.navbar-nav
-    %li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'actions.new'))), '#'
+    %li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'actions.new'))), '#', class: 'bogus'
   %ul.nav.navbar-nav.navbar-right
     %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "toga"
-    %li= link_to content_tag(:li, fa_icon("print", text: (t 'actions.print'))), "#"
+    %li= link_to content_tag(:li, fa_icon("print", text: (t 'actions.print'))), "#", class: 'bogus'
 
 .row
   %table.table-striped.table-hover.ogma
     %thead
       %tr 
+        %th= sort_link(@search, :eventname,(t 'events.en'))
         %th= sort_link(@search, :start_at,(t 'events.sd'))
         %th= sort_link(@search, :end_at,(t 'events.ed'))
-        %th= sort_link(@search, :eventname,(t 'events.en'))
         %th= sort_link(@search, :location,(t 'events.loca'))
         %th= sort_link(@search, :officiated,(t 'events.ob'))
         %th{style: "width:33%;"}= sort_link(@search, :staff_name,(t 'events.cb'))
-        %th.ac{colspan: "3"}= t('events.cnt')
+        //%th.ac{colspan: "3"}= t('events.cnt')
     %tbody 
       = render "index_search"
       - @events.each do |event|
         %tr
-          %td= h event.start_at.strftime(" %d %b %y, %a, %I:%M%p  ") unless event.start_at.nil?
-          %td= h event.end_at.try(:strftime, "%d %b %y, %a, %I:%M%p  ")
-          %td= h event.eventname
-          %td= h event.location
-          %td= h event.officiated
-          %td= h event.staff.blank? ? "-" : event.staff.name
-          %td{:width => "10px"}= link_to fa_icon("eye", :border => 0), :action => 'show', :id => event
-          %td{:width => "10px"}= link_to fa_icon("edit", :border => 0), '#', :action => 'edit', :id => event, class: 'bogus'
-          %td{:width => "10px"}= link_to fa_icon("trash-o", :border => 0, :title => 'Delete'), event, :confirm => 'Are you sure?', :method => :delete
+          %td= link_to event.eventname, event_path(event)
+          %td= event.start_at.strftime(" %d %b %y, %a, %I:%M%p  ") unless event.start_at.nil?
+          %td= event.end_at.try(:strftime, "%d %b %y, %a, %I:%M%p  ")
+          %td= event.location
+          %td= event.officiated
+          %td= event.staff.blank? ? "-" : event.staff.name
+          //%td{:width => "10px"}= link_to fa_icon("eye", :border => 0), :action => 'show', :id => event
+          //%td{:width => "10px"}= link_to fa_icon("edit", :border => 0), '#', :action => 'edit', :id => event, class: 'bogus'
+          //%td{:width => "10px"}= link_to fa_icon("trash-o", :border => 0, :title => 'Delete'), event, :confirm => 'Are you sure?', :method => :delete
 		  
   .right{style:"padding:0 30px; margin:0;"}= paginate @events, :theme => 'twitter-bootstrap-3'
 	
