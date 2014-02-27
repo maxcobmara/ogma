@@ -28,11 +28,11 @@
 .form-group
   %label.col-sm-2.control-label{:for => "code"}= t 'class'
   .col-md-6
-    = f.select :lclass, DropDown::LOCATION_CATEGORIES, html_options: {:include_blank => "", class: "form-control", type: "input"}
+    = f.select :lclass, DropDown::LOCATION_CATEGORIES, {:include_blank => ""}, {class: "selectpicker"}
 
 .form-group{id: "form3",  style: "display: none;"}
   %label.col-sm-2.control-label{:for => "code"}
     = t 'type'
   .col-md-6
-    = f.select :typename, DropDown::LOCATION_TYPE, {class: 'selectpicker', include_blank: true}, 'data-live-search' => 'true'
+    = f.select :typename, DropDown::LOCATION_TYPE, {include_blank: true}, {class: 'selectpicker', 'data-live-search' => 'true'}
     
