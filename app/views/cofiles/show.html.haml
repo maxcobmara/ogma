@@ -19,13 +19,13 @@
       %dd= @cofile.owner.mykad_with_staff_name
 
       %dt= t 'cofile.onloan', :default => model_class.human_attribute_name(:onloan) + ":"  
-      %dd= h @cofile.onloan? ? "Yes" : "No"
+      %dd= @cofile.onloan? ? "Yes" : "No"
     - if @cofile.onloan == true
       %dl
-        %dt.leftcol
+        %dl.leftcol
           %label{:for => "staffloan_id"}
             = t 'cofile.onloan_to'
-        %dt= h @cofile.staffloan_id? ? @cofile.borrower.name : ""
+      %dt= h @cofile.staffloan_id? ? @cofile.borrower.name : ""
 		
 			       
       %dt= t 'cofile.onloandt', :default => model_class.human_attribute_name(:onloandt) + ":"

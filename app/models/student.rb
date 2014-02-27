@@ -45,14 +45,7 @@ class Student < ActiveRecord::Base
   #has_many :sdiciplines, :foreign_key => 'student_id'
   #has_many :std, :class_name => 'Sdicipline', :foreign_key => 'student_id'
   
-  def self.search(search)
-    if search
-     @students = Student.find(:all, :conditions => ["icno LIKE ? or name ILIKE ? or matrixno ILIKE ?", "%#{search}%","%#{search}%","%#{search}%"], :order => :icno)
-     # @students = Student.find(:all, :condition => ["course_id LIKE ?", "%#{search}"])
-    else
-     @students = Student.find(:all)
-    end
-  end
+
   
   def self.find_main
       Programme.find(:all, :condition => ['programme_id IS NULL'])

@@ -45,7 +45,7 @@ private
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def location_params
-      params.require(:cofile).permit(:cofileno, :name, :location, :owner_id, :staffloan_id)
+      params.require(:cofile).permit(:cofileno, :name, :location, :owner_id, :staffloan_id, :onloandt, :onloanxdt)
     end
     
     def sort_column

@@ -1,0 +1,24 @@
+<!-- Box -->
+<div class="box">
+	<!-- Box Head -->
+	<div class="box-head">
+		<h2 class="left">Students</h2>
+		<div class="right">
+			<% form_tag students_path, :method => 'get' do %>
+			<%= text_field_tag :search, params[:search], :placeholder => "MykadNo, Name, MatricNo" %>
+			<%= submit_tag "Search", :icno => nil %>
+			<% end %>
+		</div>
+	</div>
+</div>
+  
+<div class="indextable">
+
+	<table width=100%>
+			<tr>
+				<th>MyKad No</th>
+				<th>Name</th>
+				<th>Matrixno</th>
+				<th colspan=4 class="ac">Control</th>
+			</tr>
+			
