@@ -19,7 +19,9 @@ Ogma::Application.routes.draw do
   end
   
   resources :cofiles
-
+  
+  
+  resources :students
 
   
     
