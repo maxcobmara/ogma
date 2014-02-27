@@ -7,9 +7,9 @@ class ApplicationController < ActionController::Base
   helper :bootstrap_icon, :devise
   
   #set current user for development
-  def current_user
-    User.first
-  end
+  #def current_user
+  #  User.first
+  #end
   private
 
     def set_locale

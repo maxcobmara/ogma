@@ -27,7 +27,7 @@
 
 
     
-  .col-md-4.location_details
+  .col-md-5.location_details
     .row
       %dl.dl-horizontal
         %dt= t 'location.code', :default => model_class.human_attribute_name(:code) + ":"
@@ -53,11 +53,13 @@
     
     .row
       %br 
-      .col-md-offset-3
+      .col-md-offset-2
         .form-actions
           = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), campus_locations_path, :class => 'btn btn-default'
           = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('.edit', :default => t("helpers.links.edit")), |
             edit_campus_location_path(@location), :class => 'btn btn-primary'
+          - if @location.assets.exists?
+            = link_to content_tag(:i, "", :class => "fa fa-file ") + " PA7", kewpa7_campus_location_path(@location, format: "pdf"), :class => 'btn btn-default'
           = link_to content_tag(:i, "", :class => "fa fa-trash-o icon-white") + " " + t('.destroy', :default => t("helpers.links.destroy")), |
             campus_location_path(@location),                                                                                                    |
             :method => 'delete',                                                                                                           |

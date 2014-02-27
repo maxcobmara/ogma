@@ -9,7 +9,11 @@ Ogma::Application.routes.draw do
   end
   
   namespace :campus do
-    resources :locations  
+    resources :locations do
+      member do
+        get :kewpa7
+      end
+    end
   end
   
   resources :events do
