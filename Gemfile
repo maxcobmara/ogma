@@ -9,6 +9,7 @@ gem 'pg', '~> 0.17.1'
 gem "paperclip", "~> 4.0.0"
 gem "ancestry", "~> 2.0.0"
 gem "ransack", "~> 1.1.0"
+gem "prawn", "~> 0.15.0"
 #stuff for layout
 #gem "bootstrap-sass", "~> 3.0.3.0"
 gem 'sass-rails', '~> 4.0.0'

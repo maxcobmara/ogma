@@ -5,6 +5,11 @@ class ApplicationController < ActionController::Base
   
   before_filter :set_locale
   helper :bootstrap_icon, :devise
+  
+  #set current user for development
+  def current_user
+    User.first
+  end
   private
 
     def set_locale
