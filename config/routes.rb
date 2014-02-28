@@ -23,16 +23,14 @@ Ogma::Application.routes.draw do
   end
   
   resources :cofiles
-<<<<<<< HEAD
+
 
   resources :documents
-=======
+
   
   
   resources :students
 
-  
->>>>>>> upstream/development
     
   namespace :student do
     resources :tenants

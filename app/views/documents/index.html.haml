@@ -28,7 +28,7 @@
 
     %tbody
     = render "index_search"
-    - @tome_document_files.each do |filedocer_tome, documents_tome|
+-#    - @tome_document_files.each do |filedocer_tome, documents_tome|    PROBLEM
       - documents_tome.each_with_index do |document,count|
         - document.staffs.each_with_index do |doc_recepient,ind|
           - if doc_recepient.id == User.current_user.staff_id && count == 0 &&
