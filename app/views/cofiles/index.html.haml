@@ -32,7 +32,8 @@
         %td= cofile.location
         %td= cofile.owner.mykad_with_staff_name
         %td= cofile.staffloan_id? ? check_kin {cofile.borrower.mykad_with_staff_name} : ""
-        %td= cofile.onloan? ? cofile.onloandt : ""
+        //%td= cofile.onloan? ? cofile.onloandt : ""
+        %td= cofile.onloandt
         //%td{:width => "10px"}= link_to fa_icon("eye", :border => 0), :action => 'show', :id => cofile
         //%td{:width => "10px"}= link_to fa_icon("trash-o", :border => 0, :title => 'Delete'), cofile, :confirm => 'Are you sure?', :method => :delete
 
