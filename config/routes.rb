@@ -20,8 +20,7 @@ Ogma::Application.routes.draw do
   
   resources :cofiles
 
-
-  
+  resources :documents
     
   namespace :student do
     resources :tenants
