@@ -63,6 +63,18 @@ class Campus::LocationsController < ApplicationController
     end
   end
   
+  def kewpa7
+    @location = Location.find(params[:id])
+    respond_to do |format|
+      format.pdf do
+        pdf = Kewpa7Pdf.new(@location, current_user)
+        send_data pdf.render, filename: "order_#{@location.combo_code}",
+                              type: "application/pdf",
+                              disposition: "inline"
+      end
+    end
+  end
+  
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_location

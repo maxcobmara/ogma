@@ -146,19 +146,26 @@ en:
         expected: Date Key expected returned
         returned: Date Returned
       vacate: Force Vacate
+
+  students:
+    title: Student Info
+    formatted_mykad: MyKad No
+    name:	Name
+    matrixno: Matrixno	
   
 
   cofile:
     index: List
     cofileno: Cofile No
-    name: Name
+    name: Fail Name
     location: Location
     owner: Owner
     onloan_to: On Loan To
     onloandt: On Loan Date
     control: Control
     file_details: File Details
-    onloanxdt: Onloan Xdt      
+    onloanxdt: On Loan Returned Date
+    onloan: On Loan      
   
   library:
     title: Library

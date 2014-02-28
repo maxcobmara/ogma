@@ -127,15 +127,16 @@ ms_MY:
 
   cofile:
     index: Senarai
-    cofileno: Cofile No
-    name: Nama
+    cofileno: No Fail
+    name: Nama Fail
     location: Lokasi
     owner: Pemilik
-    onloan_to: On Loan To
-    onloandt: Onloandt
+    onloan_to: Dipinjamkan Kepada
+    onloandt: Tarikh Dipinjam
     control: Tindakan  
     file_details: Maklumat Fail
-    onloanxdt: Onloan Xdt  
+    onloanxdt: Tarikh Dipulangkan
+    onloan: Dipinjam	  
   
   library:
     title: Perpustakaan

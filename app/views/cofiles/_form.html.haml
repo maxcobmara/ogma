@@ -6,7 +6,8 @@
         .col-sm-2.control-label
           = f.label t 'cofile.cofileno', for: :cofileno
         .col-md-3
-          = f.text_field :cofileno, class: 'form-control mandatory'       
+          = f.text_field :cofileno, class: 'form-control mandatory'
+          .help-block.small Format: ()KSKBJB/       
       .form-group
         .col-sm-2.control-label
           = f.label t 'cofile.name', for: :code
@@ -23,8 +24,17 @@
         .col-sm-2.control-label
           = f.label t 'cofile.owner', for: :owner
         .col-md-4
-          = f.collection_select :owner_id, Staff.find(:all), :id, :mykad_with_staff_name, {:include_blank => true}, {class: 'selectpicker', "data-width"=>"350px"}      
+          = f.collection_select :owner_id, Staff.find(:all), :id, :mykad_with_staff_name, {:include_blank => true}, {class: 'selectpicker', "data-width"=>"350px"}
+        .col-md-4
 
+      .form-group
+        .col-sm-2.control-label
+          = f.label t 'cofile.onloan', for: :onloan
+        .col-md-4
+          = f.check_box :onloan, :id => "fileborrow", :onchange => "switchvisibility('fileborrow')"
+        .col-md-4
+          #borrower{:style => "display: none;"}
+		  		 
       .form-group
         .col-sm-2.control-label
           = f.label t 'cofile.onloan_to', for: :onloan_to

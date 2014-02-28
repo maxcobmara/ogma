@@ -9,7 +9,11 @@ Ogma::Application.routes.draw do
   end
   
   namespace :campus do
-    resources :locations  
+    resources :locations do
+      member do
+        get :kewpa7
+      end
+    end
   end
   
   resources :events do
@@ -19,8 +23,16 @@ Ogma::Application.routes.draw do
   end
   
   resources :cofiles
+<<<<<<< HEAD
 
   resources :documents
+=======
+  
+  
+  resources :students
+
+  
+>>>>>>> upstream/development
     
   namespace :student do
     resources :tenants
