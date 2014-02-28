@@ -254,7 +254,19 @@ en:
     control: Control
     new_bulletin: New Bulletin
     upload_file: Upload File
-    
+
+  document:
+    list_of_document: List Of Documents
+    serial_no: Serial No
+    ref_no: Ref No
+    category: Category
+    title: Title
+    letter_date: Letter Date
+    received_date: Received Date
+    from: From
+    circulate_to: Circulate To
+    action_notifications: Actions/Notifications
+    closed: Closed
 
   events:
     list: Event List

@@ -1,0 +1,16 @@
+= search_form_for @search, url: documents_path,  class: "form-inline" do |f|
+  %tr.search_row.hidden
+    %td= f.text_field :serialno_cont, size: 2,  :class => "form-control"
+    %td= f.text_field :refno_cont, size: 2,  :class => "form-control"
+    %td= f.text_field :category_cont, size: 2,  :class => "form-control"
+    %td= f.text_field :title_cont, size: 2,  :class => "form-control"
+    %td= f.text_field :letterdt_cont, size: 2,  :class => "form-control"
+    %td= f.text_field :letterxdt_cont, size: 2,  :class => "form-control"
+    %td= f.text_field :from_cont, size: 2,  :class => "form-control"
+    %td= f.text_field :stafffiled_id_cont, size: 2,  :class => "form-control"
+    %td= f.text_field :_cont, size: 2,  :class => "form-control"
+    %td.input-group
+      = f.text_field :closed_eq, size: 2,  :class => "form-control"    	  
+      %span.input-group-btn
+        %button.btn.btn-sm.btn-default.right{:type => "submit"}
+          %i.fa.fa-search.fa-fw

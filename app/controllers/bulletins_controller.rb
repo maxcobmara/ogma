@@ -57,8 +57,6 @@ class BulletinsController < ApplicationController
 
   # PUT /bulletins/1
   # PUT /bulletins/1.xml
-
-  
   def update
     respond_to do |format|
       if @bulletin.update(bulletin_params)
