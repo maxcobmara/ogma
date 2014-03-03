@@ -146,12 +146,11 @@ en:
         expected: Date Key expected returned
         returned: Date Returned
       vacate: Force Vacate
-
-  students:
-    title: Student Info
-    formatted_mykad: MyKad No
-    name:	Name
-    matrixno: Matrixno	
+    students:
+      list: Student Info List
+      formatted_mykad: MyKad No
+      name: Name
+      matrixno: Matrix No	
   
 
   cofile:
