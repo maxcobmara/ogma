@@ -8,7 +8,6 @@ class BulletinsController < ApplicationController
     @search = Bulletin.search(params[:q])
     @bulletins = @search.result
     @bulletins = @bulletins.page(params[:page]||1)
-    @bulletins_filtered = Bulletin.find(:all, :order => sort_column + ' ' + sort_direction ,:conditions => ['headline LIKE ? or content ILIKE ? ', "%#{params[:search]}%", "%#{params[:search]}%"])
   end
 
   # GET /bulletins/1
@@ -92,12 +91,5 @@ private
       params.require(:bulletin).permit(:headline, :content, :postedby_id, :publishdt , :date)
     end
     
-    def sort_column
-        Bulletin.column_names.include?(params[:sort]) ? params[:sort] : "headline" 
-    end
-    
-    def sort_direction
-        %w[asc desc].include?(params[:direction])? params[:direction] : "asc" 
-    end
 end
 
