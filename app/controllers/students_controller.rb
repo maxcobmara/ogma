@@ -1,16 +1,16 @@
 class StudentsController < ApplicationController
   helper_method :sort_column, :sort_direction
-  before_action :set_location, only: [:show, :edit, :update, :destroy]
+  before_action :set_student, only: [:show, :edit, :update, :destroy]
   #filter_resource_access
   #filter_access_to :all
   # GET /students
   # GET /students.xml
 
- # def index  S
-   # @search = Student.search(params[:q])
-   # @students = @search.result
-    #@students = @students.page(params[:page]||1)
-   # @students_filtered = Student.find(:all, :order => sort_column + ' ' + sort_direction ,:conditions => ['icno LIKE ? or name ILIKE ? ', "%#{params[:search]}%", "%#{params[:search]}%"])
+  def index
+    @search = Student.search(params[:q])
+    @students = @search.result
+    @students = @students.page(params[:page]||1)
+    #@students_filtered = Student.find(:all, :order => sort_column + ' ' + sort_direction ,:conditions => ['formatted_mykad LIKE ? or name ILIKE ? ', "%#{params[:search]}%", "%#{params[:search]}%"])
   end
 
   # GET /students/1
@@ -93,24 +93,25 @@ class StudentsController < ApplicationController
     end
     
     
-#   private
- #       # Use callbacks to share common setup or constraints between actions.
-  #      def set_location
- #         @student = Student.find(params[:id])
- #       end
-        #
+    private
+        # Use callbacks to share common setup or constraints between actions.
+        def set_student
+          @student = Student.find(params[:id])
+        end
+
         # Never trust parameters from the scary internet, only allow the white list through.
-  #      def location_params
- #         params.require(:student).permit(:icno)
- #       end
+        def student_params
+          params.require(:student).permit(:formatted_mykad)
+        end
     
-  #      def sort_column
-   #         Student.column_names.include?(params[:sort]) ? params[:sort] : "icno" 
-  #      end
-  #      def sort_direction
-  #          %w[asc desc].include?(params[:direction])? params[:direction] : "asc" 
-  #      end
-  #  end
+        def sort_column
+            Student.column_names.include?(params[:sort]) ? params[:sort] : "formatted_mykad" 
+        end
+    
+        def sort_direction
+            %w[asc desc].include?(params[:direction])? params[:direction] : "asc" 
+        end
+    end
   end
 
 
