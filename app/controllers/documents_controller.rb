@@ -8,15 +8,14 @@ class DocumentsController < ApplicationController
 
     @search = Document.search(params[:q])
     @documents = @search.result
-    @documents = @documents.page(params[:page]||1)
-  
-    @tome = Document.find(:all, :joins => :staffs, :conditions => ['staff_id =? and (refno ILIKE ? or title ILIKE ?)', current_user, "%#{params[:search]}%", "%#{params[:search]}%"], :order => "created_at DESC")
+    @documents_pagi = @documents.page(params[:page]||1)
     
+    @tome = Document.find(:all, :joins => :staffs, :conditions => ['staff_id =? and (refno ILIKE ? or title ILIKE ?)', current_user, "%#{params[:search]}%", "%#{params[:search]}%"], :order => "created_at DESC")
+      
     @document_files = @documents.group_by { |t| t.filedocer }
     @tome_document_files = @tome.group_by { |t| t.filedocer }
     
-    #@docs_for_me = @documents.joins(:staffs).where(staff_id=> current_user).order(created_at: :asc)
-    
+    #@docs_for_me = @documents.joins(:staffs).where(staffs.id => current_user).order(created_at: :asc)
   end
 
   # GET /documents/1
