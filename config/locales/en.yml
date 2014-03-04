@@ -150,7 +150,8 @@ en:
       list: Student Info List
       formatted_mykad: MyKad No
       name: Name
-      matrixno: Matrix No	
+      matrixno: Matrix No
+      race: Race	
   
 
   cofile:
