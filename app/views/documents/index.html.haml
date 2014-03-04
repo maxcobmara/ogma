@@ -9,7 +9,6 @@
     %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "toga"
     %li= link_to content_tag(:li, fa_icon("print", text: (t 'actions.print'))), "#", class: 'bogus'
 
-
 .row
   %table.table-striped.table-hover.ogma
     %thead
@@ -18,8 +17,8 @@
         %th= sort_link(@search, :refno, (t 'document.ref_no'))
         %th= sort_link(@search, :category, (t 'document.category'))
         %th{:style => "width:15%;"}= sort_link(@search, :title, (t 'document.title'))
-        %th{:style => "width:7%;"}= sort_link(@search, :letterdt, (t 'document.letter_date'))
-        %th{:style => "width:7%;;"}= sort_link(@search, :letterxdt, (t 'document.received_date'))
+        %th{:style => "width:8%;"}= sort_link(@search, :letterdt, (t 'document.letter_date'))
+        %th{:style => "width:8%;;"}= sort_link(@search, :letterxdt, (t 'document.received_date'))
         %th{:style => "width:15%;;"}= sort_link(@search, :from, (t 'document.from'))
         %th{:style => "width:13%;;"}= sort_link(@search, :stafffiled_id, (t 'document.circulate_to'))
         %th{:style => "width:10%;"}= sort_link(@search, :action_notifications, (t 'document.action_notifications'))
@@ -27,20 +26,24 @@
 
     %tbody
     = render "index_search"
-    - @documents.each do |document|
+    %td.group{:colspan => "10", :style => "background-color:#EFF1F1;"}
+      %BR
+        %span{:style => "color:#218AFB;font-weight:bold;"}= "In progress for group by"
+    - @documents.sort_by { |t| t.filedocer }.each do |document, filedocer|
       %tr
-        %td= document.serialno
+        %td.centre= link_to document.serialno, "#", class: 'bogus'
         %td= document.refno
-        %td= document.category
+        %td.centre= document.category
         %td= document.title
-        %td= l(document.letterdt)
-        %td= l(document.letterxdt)
+        %td.centre= l(document.letterdt)
+        %td.centre= l(document.letterxdt)
         %td= document.from
         %td/
         - document.staffs.each_with_index do |doc_recepient,ind|
           (#{ind+=1}) #{h doc_recepient.name} 
           %br
         %td= document.otherinfo
-        %td= document.closed? ? fa_icon("check", :border => 0) : ""
+        %td{style: 'text-align: center'}= document.closed? ? fa_icon("check", :border => 0) : ""
 		
-  .right{style:"padding:0 30px; margin:0;"}= paginate @documents, :theme => 'twitter-bootstrap-3'
+  .right{style:"padding:0 30px; margin:0;"}= paginate @documents_pagi, :theme => 'twitter-bootstrap-3'
+  
