@@ -371,3 +371,46 @@ BLOOD_TYPE = [
     
    
 end
+
+# == Schema Information
+#
+# Table name: students
+#
+#  address             :text
+#  address_posbasik    :text
+#  allergy             :string(255)
+#  bloodtype           :string(255)
+#  course_id           :integer
+#  course_remarks      :string(255)
+#  created_at          :datetime
+#  disease             :string(255)
+#  end_training        :date
+#  gender              :integer
+#  group_id            :integer
+#  icno                :string(255)
+#  id                  :integer          not null, primary key
+#  intake              :date
+#  intake_id           :integer
+#  matrixno            :string(255)
+#  medication          :string(255)
+#  mrtlstatuscd        :integer
+#  name                :string(255)
+#  offer_letter_serial :string(255)
+#  photo_content_type  :string(255)
+#  photo_file_name     :string(255)
+#  photo_file_size     :integer
+#  photo_updated_at    :datetime
+#  physical            :string(255)
+#  race                :string(255)
+#  race2               :integer
+#  regdate             :date
+#  remarks             :text
+#  sbirthdt            :date
+#  semail              :string(255)
+#  specialisation      :string(255)
+#  specilisation       :integer
+#  ssponsor            :string(255)
+#  sstatus             :string(255)
+#  stelno              :string(255)
+#  updated_at          :datetime
+#

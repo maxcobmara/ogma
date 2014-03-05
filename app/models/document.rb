@@ -161,3 +161,45 @@ CATEGORY = [
   
   
 end
+
+# == Schema Information
+#
+# Table name: documents
+#
+#  category                :integer
+#  cc1action               :string(255)
+#  cc1actiondate           :date
+#  cc1closed               :boolean
+#  cc1date                 :date
+#  cc1remarks              :text
+#  cc1staff_id             :integer
+#  cc2action               :string(255)
+#  cc2closed               :boolean
+#  cc2date                 :date
+#  cc2remarks              :text
+#  cc2staff_id             :integer
+#  cctype_id               :integer
+#  closed                  :boolean
+#  created_at              :datetime
+#  data_content_type       :string(255)
+#  data_file_name          :string(255)
+#  data_file_size          :integer
+#  data_updated_at         :datetime
+#  dataaction_content_type :string(255)
+#  dataaction_file_name    :string(255)
+#  dataaction_file_size    :integer
+#  dataaction_updated_at   :datetime
+#  file_id                 :integer
+#  from                    :string(255)
+#  id                      :integer          not null, primary key
+#  letterdt                :date
+#  letterxdt               :date
+#  otherinfo               :text
+#  prepared_by             :integer
+#  refno                   :string(255)
+#  sender                  :string(255)
+#  serialno                :string(255)
+#  stafffiled_id           :integer
+#  title                   :string(255)
+#  updated_at              :datetime
+#

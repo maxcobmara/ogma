@@ -26,17 +26,17 @@
 
     %tbody
     = render "index_search"
-    - @students.group_by{|t|t.intake}.each do |m ,students|
+    - @students.group_by{|t|t.intake}.each do |intake, student_course|
 
       %tr
         %td{:colspan => "10", :style => "background-color:#EFF1F1;"}
           %br
-          %span{:style => "color:#218AFB;font-weight:bold;"}= m.strftime('%B %Y')
-      - @students.group_by{|t|t.course_id}.each do |programme_list, students|
+          %span{:style => "color:#218AFB;font-weight:bold;"}= intake.strftime('%B %Y')
+      - student_course.group_by(&:course).each do |course, students|
         %tr
           %td{:colspan => "10", :style => "background-color:#EFF1F1;"}
             %br
-            %span{:style => "color:#black;font-weight:bold;"}= programme_list	  
+            %span{:style => "color:#black;font-weight:bold;"}= course.name	  
 
         - for student in students
           %tr	  

@@ -117,18 +117,27 @@ Ogma::Application.routes.draw do
   #   end
 end
 
-# == Route Map (Updated 2014-02-20 22:50)
+# == Route Map (Updated 2014-03-05 22:32)
 #
 #                                   Prefix Verb   URI Pattern                                         Controller#Action
-#             borang_maklumat_staff_staffs GET    /staffs/borang_maklumat_staff(.:format)             staffs#borang_maklumat_staff
-#                                   staffs GET    /staffs(.:format)                                   staffs#index
-#                                          POST   /staffs(.:format)                                   staffs#create
-#                                new_staff GET    /staffs/new(.:format)                               staffs#new
-#                               edit_staff GET    /staffs/:id/edit(.:format)                          staffs#edit
-#                                    staff GET    /staffs/:id(.:format)                               staffs#show
-#                                          PATCH  /staffs/:id(.:format)                               staffs#update
-#                                          PUT    /staffs/:id(.:format)                               staffs#update
-#                                          DELETE /staffs/:id(.:format)                               staffs#destroy
+#        borang_maklumat_staff_staff_infos GET    /staff/staffs/borang_maklumat_staff(.:format)       staff/staffs#borang_maklumat_staff
+#                              staff_infos GET    /staff/staffs(.:format)                             staff/staffs#index
+#                                          POST   /staff/staffs(.:format)                             staff/staffs#create
+#                           new_staff_info GET    /staff/staffs/new(.:format)                         staff/staffs#new
+#                          edit_staff_info GET    /staff/staffs/:id/edit(.:format)                    staff/staffs#edit
+#                               staff_info GET    /staff/staffs/:id(.:format)                         staff/staffs#show
+#                                          PATCH  /staff/staffs/:id(.:format)                         staff/staffs#update
+#                                          PUT    /staff/staffs/:id(.:format)                         staff/staffs#update
+#                                          DELETE /staff/staffs/:id(.:format)                         staff/staffs#destroy
+#                                ptbudgets GET    /ptbudgets(.:format)                                ptbudgets#index
+#                                          POST   /ptbudgets(.:format)                                ptbudgets#create
+#                             new_ptbudget GET    /ptbudgets/new(.:format)                            ptbudgets#new
+#                            edit_ptbudget GET    /ptbudgets/:id/edit(.:format)                       ptbudgets#edit
+#                                 ptbudget GET    /ptbudgets/:id(.:format)                            ptbudgets#show
+#                                          PATCH  /ptbudgets/:id(.:format)                            ptbudgets#update
+#                                          PUT    /ptbudgets/:id(.:format)                            ptbudgets#update
+#                                          DELETE /ptbudgets/:id(.:format)                            ptbudgets#destroy
+#                   kewpa7_campus_location GET    /campus/locations/:id/kewpa7(.:format)              campus/locations#kewpa7
 #                         campus_locations GET    /campus/locations(.:format)                         campus/locations#index
 #                                          POST   /campus/locations(.:format)                         campus/locations#create
 #                      new_campus_location GET    /campus/locations/new(.:format)                     campus/locations#new
@@ -154,6 +163,22 @@ end
 #                                          PATCH  /cofiles/:id(.:format)                              cofiles#update
 #                                          PUT    /cofiles/:id(.:format)                              cofiles#update
 #                                          DELETE /cofiles/:id(.:format)                              cofiles#destroy
+#                                documents GET    /documents(.:format)                                documents#index
+#                                          POST   /documents(.:format)                                documents#create
+#                             new_document GET    /documents/new(.:format)                            documents#new
+#                            edit_document GET    /documents/:id/edit(.:format)                       documents#edit
+#                                 document GET    /documents/:id(.:format)                            documents#show
+#                                          PATCH  /documents/:id(.:format)                            documents#update
+#                                          PUT    /documents/:id(.:format)                            documents#update
+#                                          DELETE /documents/:id(.:format)                            documents#destroy
+#                                 students GET    /students(.:format)                                 students#index
+#                                          POST   /students(.:format)                                 students#create
+#                              new_student GET    /students/new(.:format)                             students#new
+#                             edit_student GET    /students/:id/edit(.:format)                        students#edit
+#                                  student GET    /students/:id(.:format)                             students#show
+#                                          PATCH  /students/:id(.:format)                             students#update
+#                                          PUT    /students/:id(.:format)                             students#update
+#                                          DELETE /students/:id(.:format)                             students#destroy
 #                          student_tenants GET    /student/tenants(.:format)                          student/tenants#index
 #                                          POST   /student/tenants(.:format)                          student/tenants#create
 #                       new_student_tenant GET    /student/tenants/new(.:format)                      student/tenants#new
@@ -162,6 +187,14 @@ end
 #                                          PATCH  /student/tenants/:id(.:format)                      student/tenants#update
 #                                          PUT    /student/tenants/:id(.:format)                      student/tenants#update
 #                                          DELETE /student/tenants/:id(.:format)                      student/tenants#destroy
+#                                bulletins GET    /bulletins(.:format)                                bulletins#index
+#                                          POST   /bulletins(.:format)                                bulletins#create
+#                             new_bulletin GET    /bulletins/new(.:format)                            bulletins#new
+#                            edit_bulletin GET    /bulletins/:id/edit(.:format)                       bulletins#edit
+#                                 bulletin GET    /bulletins/:id(.:format)                            bulletins#show
+#                                          PATCH  /bulletins/:id(.:format)                            bulletins#update
+#                                          PUT    /bulletins/:id(.:format)                            bulletins#update
+#                                          DELETE /bulletins/:id(.:format)                            bulletins#destroy
 #        extend_library_librarytransaction GET    /library/librarytransactions/:id/extend(.:format)   library/librarytransactions#extend
 #        return_library_librarytransaction GET    /library/librarytransactions/:id/return(.:format)   library/librarytransactions#return
 # check_status_library_librarytransactions GET    /library/librarytransactions/check_status(.:format) library/librarytransactions#check_status
