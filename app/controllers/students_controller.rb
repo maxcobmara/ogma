@@ -11,6 +11,18 @@ class StudentsController < ApplicationController
     @students = @search.result
     @students = @students.page(params[:page]||1)
     #@students_filtered = Student.find(:all, :order => sort_column + ' ' + sort_direction ,:conditions => ['formatted_mykad LIKE ? or name ILIKE ? ', "%#{params[:search]}%", "%#{params[:search]}%"])
+
+
+    #@student = Student.with_permissions_to(:index).sort_by{|t|t.intake} #sort by intake (before split into pages)
+
+    @student_programmes = @students.group_by { |t| t.course_id } #group by intake, then sort by programme (first)
+		@programme=[] 
+		@student_count=[] 
+		@student_programmes.each do |x,y| 
+			@programme<<x
+			@student_count<< y.count 
+		end 
+    
   end
 
   # GET /students/1
@@ -23,6 +35,12 @@ class StudentsController < ApplicationController
       format.xml  { render :xml => @student }
     end
   end
+
+
+
+
+
+
 
   # GET /students/new
   # GET /students/new.xml
