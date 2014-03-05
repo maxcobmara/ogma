@@ -283,3 +283,46 @@ en:
   check:  
     status: Check Status
     search: "Search to check status"
+
+  ptbudgets:
+    list: Set Annual Training Budget
+    fys: Fiscal Year Start
+    budget: Budget
+    used: Used
+    budgetb: Balance
+
+  date:
+    formats:
+      default: "%d-%b-%Y"
+      short: "%d %b"
+      long: "%d %B %Y"
+      events: "%A, %e %b"
+      # Use the strftime parameters for formats.
+      # When no format has been given, it uses default.
+      # You can provide other formats here if you like!
+    day_names: [Sunday, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday]
+    abbr_day_names: [Sun, Mon, Tue, Wed, Thu, Fri, Sat]
+    # Don't forget the nil at the beginning; there's no such thing as a 0th month
+    month_names: [~, January, February, March, April, May, June, July, August, September, October, November, December]
+    abbr_month_names: [~, Jan, Feb, Mar, Apr, May, Jun, Jul, Aug, Sep, Oct, Nov, Dec]
+    # Used in date_select and datime_select.
+#    order: [ :day, :month, :year ]
+    
+  time:
+    formats:
+      default:  "%l:%M %p"
+      short: "%l:%M %p"
+      
+  datetime:
+    formats:
+      default: "%d %b %y, %l:%M %p"
+      short:   "%d %b %y, %l:%M %p"
+
+  number:
+    currency:
+      format:
+        format: "%u%n"
+        unit: "RM"
+        precision: 2
+        separator: '.'
+        delimiter: ','
