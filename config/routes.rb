@@ -7,7 +7,9 @@ Ogma::Application.routes.draw do
       end
     end
   end
-  
+
+  resources :ptbudgets
+
   namespace :campus do
     resources :locations do
       member do
