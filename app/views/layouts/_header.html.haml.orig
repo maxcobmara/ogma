@@ -1,13 +1,18 @@
 .topnav
+<<<<<<< HEAD
   =link_to (fa_icon "square"), "http://#{request.host}:3000"
+=======
+<<<<<<< HEAD
+  //=link_to (fa_icon "home"), "http://#{request.host}:3001"
+=======
+  =link_to (fa_icon "square"), "http://#{request.host}:3001"
+>>>>>>> master
+>>>>>>> 15f59144f87bcd1910d09fe2545f656a2a4d63fb
   =link_to (fa_icon "home"), root_url
   %a#trigger.menu-trigger{:href => "#"}= fa_icon "bars", text: ""
-  %span{:style => "font-size:0.9em"}= current_user.login
 
   %div{:style => "float:right;"}
     - if I18n.locale == I18n.default_locale
       = link_to image_tag("MY.png", :border => 0, :title => 'Bahasa Malaysia'), locale: "ms_MY"
     - else
       = link_to image_tag("GB.png", :border => 0, :title => 'English'), locale: "en"
-      
-//touch

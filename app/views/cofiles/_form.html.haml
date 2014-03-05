@@ -1,0 +1,63 @@
+.row.fluid
+  = form_for [:cofile, @cofile], url: cofile_path(@cofile), :html => { :class => 'form-horizontal' }  do |f| 
+    = render 'shared/error_messages', object: f.object
+    .col-md-offset-1
+      .form-group
+        .col-sm-2.control-label
+          = f.label t 'cofile.cofileno', for: :cofileno
+        .col-md-3
+          = f.text_field :cofileno, class: 'form-control mandatory'
+          .help-block.small Format: ()KSKBJB/       
+      .form-group
+        .col-sm-2.control-label
+          = f.label t 'cofile.name', for: :code
+        .col-md-3
+          = f.text_field :name, class: 'form-control mandatory'
+          
+      .form-group
+        .col-sm-2.control-label
+          = f.label t 'cofile.location', for: :location
+        .col-md-2
+          = f.text_field :location, class: 'form-control mandatory'
+          
+      .form-group
+        .col-sm-2.control-label
+          = f.label t 'cofile.owner', for: :owner
+        .col-md-4
+          = f.collection_select :owner_id, Staff.find(:all), :id, :mykad_with_staff_name, {:include_blank => true}, {class: 'selectpicker', "data-width"=>"350px"}
+        .col-md-4
+
+      .form-group
+        .col-sm-2.control-label
+          = f.label t 'cofile.onloan', for: :onloan
+        .col-md-4
+          = f.check_box :onloan, :id => "fileborrow", :onchange => "switchvisibility('fileborrow')"
+        .col-md-4
+          #borrower{:style => "display: none;"}
+		  		 
+      .form-group
+        .col-sm-2.control-label
+          = f.label t 'cofile.onloan_to', for: :onloan_to
+        .col-md-2
+          - if @cofile.onloanxdt == nil
+            = f.collection_select :staffloan_id, Staff.find(:all), :id, :mykad_with_staff_name, :selected=> @cofile.staffloan_id, :include_blank => true
+          - else
+            = f.collection_select :staffloan_id, Staff.find(:all), :id, :mykad_with_staff_name, :selected =>'',:include_blank => true
+
+      .form-group
+        .col-sm-2.control-label
+          = f.label t 'cofile.onloandt', for: :onloandt
+        .col-md-2
+          = f.text_field :onloandt, class: 'form-control mandatory', 'data-behaviour' => 'datepicker_dob'
+
+      .form-group
+        .col-sm-2.control-label
+          = f.label t 'cofile.onloanxdt', for: :onloanxdt
+        .col-md-2
+          = f.text_field :onloanxdt, class: 'form-control mandatory', 'data-behaviour' => 'datepicker_dob'
+
+      .form-group
+        .col-sm-offset-2.col-sm-1
+          = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), cofile_path(@cofile), :class => 'btn btn-default'
+        .col-sm-2
+          = f.submit t('update'), class: "btn btn-primary"

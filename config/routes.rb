@@ -7,7 +7,9 @@ Ogma::Application.routes.draw do
       end
     end
   end
-  
+
+  resources :ptbudgets
+
   namespace :campus do
     resources :locations do
       member do
@@ -23,10 +25,21 @@ Ogma::Application.routes.draw do
   end
   
   resources :cofiles
+
+
+  resources :documents
+
   
+  
+  resources :students
+
+    
   namespace :student do
     resources :tenants
   end
+  
+  
+  resources :bulletins
   
   namespace :library do
     resources     :librarytransactions do
@@ -40,9 +53,6 @@ Ogma::Application.routes.draw do
       end
     end
   end
-  
-  
-  
   
   devise_for :users
   resources :users

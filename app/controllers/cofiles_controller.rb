@@ -13,8 +13,31 @@ class CofilesController < ApplicationController
     @cofiles_filtered = Cofile.find(:all, :order => sort_column + ' ' + sort_direction ,:conditions => ['cofileno LIKE ? or name ILIKE ? ', "%#{params[:search]}%", "%#{params[:search]}%"])
 
   end
+
+
   
-  private
+  def update
+    respond_to do |format|
+      if @cofile.update(location_params)
+        format.html { redirect_to cofile_path, notice: 'File Registry was successfully updated.' }
+        format.json { head :no_content }
+      else
+        format.html { render action: 'edit' }
+        format.json { render json: @cofile.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  def destroy
+    @cofile.destroy
+    respond_to do |format|
+      
+      format.html { redirect_to cofiles_url }
+      format.json { head :no_content }
+    end
+  end
+
+private
     # Use callbacks to share common setup or constraints between actions.
     def set_location
       @cofile = Cofile.find(params[:id])
@@ -22,13 +45,13 @@ class CofilesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def location_params
-      params.require(:cofile).permit(:cofileno, :name, :location, :owner)
+      params.require(:cofile).permit(:cofileno, :name, :location, :owner_id, :staffloan_id, :onloandt, :onloanxdt)
     end
     
     def sort_column
         Cofile.column_names.include?(params[:sort]) ? params[:sort] : "cofileno" 
     end
     def sort_direction
-        %w[asc desc].include?(params[:direction])? params[:direction] : "asc" 
+        %w[asc desc].include?(params[:direction])? params[:direction] : "desc" 
     end
 end

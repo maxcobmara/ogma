@@ -124,6 +124,25 @@ ms_MY:
         expected: Tarikh Dijangka Pulang
         returned: Tarikh Dipulang
       vacate: Kosongkan
+    students:
+      list: Senarai Maklumat Pelajar
+      formatted_mykad: No Mykad
+      name: Nama
+      matrixno: No Matrik
+      race: Keturunan
+
+  cofile:
+    index: Senarai
+    cofileno: No Fail
+    name: Nama Fail
+    location: Lokasi
+    owner: Pemilik
+    onloan_to: Dipinjamkan Kepada
+    onloandt: Tarikh Dipinjam
+    control: Tindakan  
+    file_details: Maklumat Fail
+    onloanxdt: Tarikh Dipulangkan
+    onloan: Dipinjam	  
   
   library:
     title: Perpustakaan
@@ -203,8 +222,17 @@ ms_MY:
       receiver_id: Diterima Oleh
       supplier_id: Pembekal
   
+  buletin:
+    list: Senarai Buletin
+    headline: Tajuk Utama
+    content: Kandungan
+    posted_by: Disiarkan Oleh
+    publish_date: Tarikh Penyiaran
+    control: Tindakan
+    new_bulletin: Buletin Baru
+    upload_file: Memuatnaik Dokumen
 
-    
+
   campus:
     tenants:
       new: Pendudukan Baru
@@ -230,3 +258,61 @@ ms_MY:
   building: Bangunan
   floor: Tingkat
   room: "Unit/Bilik"
+
+  cofiles:
+    index: Indeks File Pendaftaran
+    cofileno: No Cofile
+    name: Nama
+    location: Lokasi
+    owner: Pemilik
+    onloan_to: Dipinjam Kepada
+    onloandt: Tarikh Pinjaman
+    control: Kawalan
+
+  events:
+    list: Senarai Acara
+    sd: Tarikh Mula
+    ed: Tarikh Tamaat
+    ed: Tarikh Tamat
+    en: Nama Acara
+    loca: Lokasi
+    ob: Dirasmikan Oleh
+    cb: Dibuat Oleh
+    cnt: Kawalan
+    cnt: Kawalan
+    ced: Maklumat Terperinci Acara Kampus
+    pt: Disertai
+
+  ptbudgets:
+    list: Set Latihan Bajet Tahunan
+    fys: Tahun Fiskal Mula
+    budget: Bajet
+    used: Digunakan
+    budgetb: Baki
+
+  date:
+      formats:
+        default: "%d %B %Y"
+        short: "%d %b"
+        long: "%d %B, %Y"
+        events: "%A, %e %b"
+        # Use the strftime parameters for formats.
+        # When no format has been given, it uses default.
+        # You can provide other formats here if you like!
+      day_names: [Ahad, Isnin, Selasa, Rabu, Khamis, Jumaat, Sabtu]
+      abbr_day_names: [Ahad, Isnin, Selasa, Rabu, Khamis, Jumaat, Sabtu]
+      #[Aha, Isn, Sel, Rab, Kha, Jum, Sab]
+      # Don't forget the nil at the beginning; there's no such thing as a 0th month
+      month_names: [~, Januari, Februari, Mac, April, Mei, Jun, Julai, Ogos, September, Oktober, November, Disember]
+      abbr_month_names: [~, Jan, Feb, Mar, Apr, Mei, Jun, Jul, Ogo, Sep, Okt, Nov, Dis]
+      # Used in date_select and datime_select.
+#      order: [ :day, :month, :year ]
+    
+  number:
+    currency:
+      format:
+        format: "%u%n"
+        unit: "RM"
+        precision: 2
+        separator: '.'
+        delimiter: ','

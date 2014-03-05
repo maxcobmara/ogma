@@ -1,0 +1,31 @@
+- model_class = Bulletin
+.page-header
+  %h1= t('buletin.list')#, :default => model_class.model_name.human.pluralize
+  
+.navbar.navbar-inverse{role: "navigation", style: "padding-right:40px;"}
+  %ul.nav.navbar-nav
+    %li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'actions.new'))), "#", class: 'bogus'
+  %ul.nav.navbar-nav.navbar-right
+    %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "toga"
+    %li= link_to content_tag(:li, fa_icon("print", text: (t 'actions.print'))), "#", class: 'bogus'
+
+
+.row
+  %table.table-striped.table-hover.ogma
+    %thead
+      %tr
+        %th= sort_link(@search, :headline, (t 'buletin.headline'))
+        %th= sort_link(@search, :content, (t 'buletin.content'))
+        %th= sort_link(@search, :postedby_id, (t 'buletin.posted_by'))
+        %th{style: "width:20%;"}= sort_link(@search, :publishdt,(t 'buletin.publish_date')) 
+
+    %tbody
+    = render "index_search"
+    - @bulletins.each do |bulletin|
+      %tr
+        %td= link_to  bulletin.headline, bulletin_path(bulletin)
+        %td= truncate(bulletin.content, :length => 60)
+        %td= check_kin {bulletin.staff.mykad_with_staff_name}
+        %td= bulletin.publishdt
+
+  .right{style:"padding:0 30px; margin:0;"}= paginate @bulletins, :theme => 'twitter-bootstrap-3'

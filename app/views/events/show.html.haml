@@ -1,0 +1,40 @@
+- model_class = Event
+.page-header
+  %h1= t 'events.ced', :default => model_class.model_name.human
+= render 'shared/flashes'
+
+.row
+  .col-md-8
+    %dl.dl-horizontal
+      %dt= t 'events.en', :default => model_class.human_attribute_name(:eventname) + ":"
+      %dd= @event.eventname
+
+      %dt= t 'events.sd', :default => model_class.human_attribute_name(:start_at) + ":"
+      %dd= @event.start_at
+      
+      %dt= t 'events.ed', :default => model_class.human_attribute_name(:end_at) + ":"
+      %dd= @event.end_at
+
+      %dt= t 'events.loca', :default => model_class.human_attribute_name(:location) + ":"
+      %dd= @event.location
+
+      %dt= t 'events.pt', :default => model_class.human_attribute_name(:participants) + ":"
+      %dd= @event.participants
+
+      %dt= t 'events.ob', :default => model_class.human_attribute_name(:officiated) + ":"
+      %dd= @event.officiated
+
+      %dt= t 'events.cb', :default => model_class.human_attribute_name(:staff_name) + ":"
+      %dd= @event.staff.blank? ? "-" : @event.staff.name
+
+.row
+  .col-md-4.col-md-offset-3
+    %hr
+    .form-actions
+      = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), events_path, :class => 'btn btn-default'
+      = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('.edit', :default => t("helpers.links.edit")), edit_event_path(@event), :class => 'btn btn-primary'
+      = link_to content_tag(:i, "", :class => "fa fa-trash-o icon-white") + " " + t('.destroy', :default => t("helpers.links.destroy")), |
+        event_path(@event),                                                                                                    |
+        :method => 'delete',                                                                                                           |
+        :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },                   |
+        :class => 'btn btn-danger'

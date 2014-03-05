@@ -21,6 +21,26 @@
 
 en:
   
+  activerecord:
+    models: 
+      location: Lokasi
+    attributes:
+      location:
+        combo_code: Kod Lokasi
+    errors:
+        template:
+          body: "There were problems with the following fields:"
+          header:
+            one: "1 errors prohibited this {{model}} from being saved"
+            other: "{{count}} prohibited this {{model}} from being saved"
+        messages:
+            blank: "cant't be blank"
+            not_a_number: "is not number"
+            too_short: "is too short (minimum is {{count}} characters)"
+            taken: "telah terpakai"
+            illegal_char: contains illegal characters
+            invalid: is invalid
+  
   #common
   search:  Search
   datelabel: Date
@@ -126,22 +146,27 @@ en:
         expected: Date Key expected returned
         returned: Date Returned
       vacate: Force Vacate
+    students:
+      list: Student Info List
+      formatted_mykad: MyKad No
+      name: Name
+      matrixno: Matrix No
+      race: Race	
   
 
-  cofiles:
-    index: File Registry Index
-    cofileno: Cofileno
-    name: Name
+  cofile:
+    index: List
+    cofileno: Cofile No
+    name: Fail Name
     location: Location
-    owner: owner
+    owner: Owner
     onloan_to: On Loan To
-    onloandt: onloandt
-    control: Control  
+    onloandt: On Loan Date
+    control: Control
+    file_details: File Details
+    onloanxdt: On Loan Returned Date
+    onloan: On Loan      
   
-
-
-      
-
   library:
     title: Library
     transaction: 
@@ -220,10 +245,84 @@ en:
       supplier_id: Supplier
      
 
-    
+  buletin:
+    list: List of Bulletins
+    headline: Headline
+    content: Content
+    posted_by: Posted By
+    publish_date: Publish Date
+    control: Control
+    new_bulletin: New Bulletin
+    upload_file: Upload File
 
+  document:
+    list_of_document: List Of Documents
+    serial_no: Serial No
+    ref_no: Ref No
+    category: Category
+    title: Title
+    letter_date: Letter Date
+    received_date: Received Date
+    from: From
+    circulate_to: Circulate To
+    action_notifications: Actions/Notifications
+    closed: Closed
+
+  events:
+    list: Event List
+    sd: Start Date
+    ed: End Date
+    en: Event Name
+    loca: Location
+    ob: Officiated By
+    cb: Created By
+    cnt: Control
+    ced: Campus Event Details
+    pt: Participants
+
+  check:  
+    status: Check Status
+    search: "Search to check status"
+
+  ptbudgets:
+    list: Set Annual Training Budget
+    fys: Fiscal Year Start
+    budget: Budget
+    used: Used
+    budgetb: Balance
+
+  date:
+    formats:
+      default: "%d-%b-%Y"
+      short: "%d %b"
+      long: "%d %B %Y"
+      events: "%A, %e %b"
+      # Use the strftime parameters for formats.
+      # When no format has been given, it uses default.
+      # You can provide other formats here if you like!
+    day_names: [Sunday, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday]
+    abbr_day_names: [Sun, Mon, Tue, Wed, Thu, Fri, Sat]
+    # Don't forget the nil at the beginning; there's no such thing as a 0th month
+    month_names: [~, January, February, March, April, May, June, July, August, September, October, November, December]
+    abbr_month_names: [~, Jan, Feb, Mar, Apr, May, Jun, Jul, Aug, Sep, Oct, Nov, Dec]
+    # Used in date_select and datime_select.
+#    order: [ :day, :month, :year ]
     
-    
-  campus:
-    tenants:
-      new: New Tenant
+  time:
+    formats:
+      default:  "%l:%M %p"
+      short: "%l:%M %p"
+      
+  datetime:
+    formats:
+      default: "%d %b %y, %l:%M %p"
+      short:   "%d %b %y, %l:%M %p"
+
+  number:
+    currency:
+      format:
+        format: "%u%n"
+        unit: "RM"
+        precision: 2
+        separator: '.'
+        delimiter: ','
