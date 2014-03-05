@@ -282,3 +282,37 @@ ms_MY:
     cnt: Kawalan
     ced: Maklumat Terperinci Acara Kampus
     pt: Disertai
+
+  ptbudgets:
+    list: Set Latihan Bajet Tahunan
+    fys: Tahun Fiskal Mula
+    budget: Bajet
+    used: Digunakan
+    budgetb: Baki
+
+  date:
+      formats:
+        default: "%d %B %Y"
+        short: "%d %b"
+        long: "%d %B, %Y"
+        events: "%A, %e %b"
+        # Use the strftime parameters for formats.
+        # When no format has been given, it uses default.
+        # You can provide other formats here if you like!
+      day_names: [Ahad, Isnin, Selasa, Rabu, Khamis, Jumaat, Sabtu]
+      abbr_day_names: [Ahad, Isnin, Selasa, Rabu, Khamis, Jumaat, Sabtu]
+      #[Aha, Isn, Sel, Rab, Kha, Jum, Sab]
+      # Don't forget the nil at the beginning; there's no such thing as a 0th month
+      month_names: [~, Januari, Februari, Mac, April, Mei, Jun, Julai, Ogos, September, Oktober, November, Disember]
+      abbr_month_names: [~, Jan, Feb, Mar, Apr, Mei, Jun, Jul, Ogo, Sep, Okt, Nov, Dis]
+      # Used in date_select and datime_select.
+#      order: [ :day, :month, :year ]
+    
+  number:
+    currency:
+      format:
+        format: "%u%n"
+        unit: "RM"
+        precision: 2
+        separator: '.'
+        delimiter: ','
