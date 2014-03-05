@@ -1,5 +1,4 @@
 class StudentsController < ApplicationController
-  helper_method :sort_column, :sort_direction
   before_action :set_student, only: [:show, :edit, :update, :destroy]
   #filter_resource_access
   #filter_access_to :all
@@ -90,27 +89,28 @@ class StudentsController < ApplicationController
         format.xml  { render :xml => @student.errors, :status => :unprocessable_entity }
       end
     end
+  end
+
     
     
   private
-      # Use callbacks to share common setup or constraints between actions.
-      def set_student
-        @student = Student.find(params[:id])
-      end
+    # Use callbacks to share common setup or constraints between actions.
+    def set_student
+      @student = Student.find(params[:id])
+    end
 
-      # Never trust parameters from the scary internet, only allow the white list through.
-      def student_params
-        params.require(:student).permit(:formatted_mykad)
-      end
-  
-      def sort_column
-          Student.column_names.include?(params[:sort]) ? params[:sort] : "formatted_mykad" 
-      end
-  
-      def sort_direction
-          %w[asc desc].include?(params[:direction])? params[:direction] : "asc" 
-      end
-  end
+    # Never trust parameters from the scary internet, only allow the white list through.
+    def student_params
+      params.require(:student).permit(:formatted_mykad)
+    end
+
+    def sort_column
+        Student.column_names.include?(params[:sort]) ? params[:sort] : "formatted_mykad" 
+    end
+
+    def sort_direction
+        %w[asc desc].include?(params[:direction])? params[:direction] : "asc" 
+    end
 end
 
 
