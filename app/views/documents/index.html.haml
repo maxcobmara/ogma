@@ -9,7 +9,6 @@
     %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "toga"
     %li= link_to content_tag(:li, fa_icon("print", text: (t 'actions.print'))), "#", class: 'bogus'
 
-
 .row
   %table.table-striped.table-hover.ogma
     %thead
@@ -17,54 +16,34 @@
         %th= sort_link(@search, :serialno, (t 'document.serial_no'))
         %th= sort_link(@search, :refno, (t 'document.ref_no'))
         %th= sort_link(@search, :category, (t 'document.category'))
-        %th= sort_link(@search, :title, (t 'document.title'))
-        %th{:style => "width:75px;"}= sort_link(@search, :letterdt, (t 'document.letter_date'))
-        %th{:style => "width:75px;"}= sort_link(@search, :letterxdt, (t 'document.received_date'))
-        %th= sort_link(@search, :from, (t 'document.from'))
-        %th= sort_link(@search, :stafffiled_id, (t 'document.circulate_to'))
-        %th= sort_link(@search, :action_notifications, (t 'document.action_notifications'))
-        %th{style: "width:20%;"}= sort_link(@search, :closed, (t 'document.closed'))
-
+        %th{:style => "width:15%;"}= sort_link(@search, :title, (t 'document.title'))
+        %th{:style => "width:8%;"}= sort_link(@search, :letterdt, (t 'document.letter_date'))
+        %th{:style => "width:8%;;"}= sort_link(@search, :letterxdt, (t 'document.received_date'))
+        %th{:style => "width:15%;;"}= sort_link(@search, :from, (t 'document.from'))
+        %th{:style => "width:13%;;"}= sort_link(@search, :stafffiled_id, (t 'document.circulate_to'))
+        %th{:style => "width:10%;"}= sort_link(@search, :action_notifications, (t 'document.action_notifications'))
+        %th{style: "width:5%;"}= sort_link(@search, :closed, (t 'document.closed'))
 
     %tbody
     = render "index_search"
--#    - @tome_document_files.each do |filedocer_tome, documents_tome|    PROBLEM
-      - documents_tome.each_with_index do |document,count|
+    %td.group{:colspan => "10", :style => "background-color:#EFF1F1;"}
+      %BR
+        %span{:style => "color:#218AFB;font-weight:bold;"}= "In progress for group by"
+    - @documents.sort_by { |t| t.filedocer }.each do |document, filedocer|
+      %tr
+        %td.centre= link_to document.serialno, "#", class: 'bogus'
+        %td= document.refno
+        %td.centre= document.category
+        %td= document.title
+        %td.centre= l(document.letterdt)
+        %td.centre= l(document.letterxdt)
+        %td= document.from
+        %td/
         - document.staffs.each_with_index do |doc_recepient,ind|
-          - if doc_recepient.id == User.current_user.staff_id && count == 0 &&
-            = document.owner_ids.include?(User.current_user.staff_id)== false
-            %tr
-              %td{:colspan => "13", :style => "background-color:#EFF1F1;"}
-              %BR
-              %span{:style => "color:#218AFB;font-weight:bold;"}
-            = h filedocer_tome
-
-            - documents_tome.each_with_index do |document,count|
-              - document.staffs.each_with_index do |doc_recepient, ind|
-                - if doc_recepient.id == User.current_user.staff_id && (document.owner_ids.include? doc_recepient.id)== false
-                  %tr
-                    %td= h document.serialno
-                    %td= h document.refno
-                    %td= h document.category
-                    %td= h document.title
-                    %td= h l(document.letterdt)
-                    %td= h l(document.letterxdt)
-                    %td/
-                  = h document.from
-                %td
-                  - document.staffs.each_with_index do |doc_recepient,ind|
-                    - if doc_recepient.id == User.current_user.staff_id
-                      - if ind!=0
-                        %br/
-                        %b
-                        (#{ind+=1}) #{h doc_recepient.name}
-                    - else
-                      %br
-                      (#{ind+=1}) #{h doc_recepient.name}
-                %td= h document.otherinfo
-                %td= h document.closed? ? image_tag("tick.png") : ""
-                %td{:width => "10px"}= link_to image_tag("document.png", :border => 0, :title => 'Show'), :action => 'show', :id => document
-                %td{:width => "10px"}
-                %td{:width => "10px"}
-				
-  .right{style:"padding:0 30px; margin:0;"}= paginate @documents, :theme => 'twitter-bootstrap-3'
+          (#{ind+=1}) #{h doc_recepient.name} 
+          %br
+        %td= document.otherinfo
+        %td{style: 'text-align: center'}= document.closed? ? fa_icon("check", :border => 0) : ""
+		
+  .right{style:"padding:0 30px; margin:0;"}= paginate @documents_pagi, :theme => 'twitter-bootstrap-3'
+  

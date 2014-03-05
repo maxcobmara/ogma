@@ -124,6 +124,12 @@ ms_MY:
         expected: Tarikh Dijangka Pulang
         returned: Tarikh Dipulang
       vacate: Kosongkan
+    students:
+      list: Senarai Maklumat Pelajar
+      formatted_mykad: No Mykad
+      name: Nama
+      matrixno: No Matrik
+      race: Keturunan
 
   cofile:
     index: Senarai
