@@ -16,6 +16,7 @@
 //= require bootstrap.min
 //= require bootstrap-datepicker
 //= require bootstrap-select
+//= require bootstrap-switch
 //= require bigtext
 //= require_tree .
 
@@ -62,6 +63,8 @@ $(document).ready(function () {
      $('.search_bar').toggle();
      $('.search_row').toggleClass('hidden'); 
   });
+  
+  $("[id='my_checkbox']").bootstrapSwitch();
   
   $('.bigtext').bigtext();
 });
