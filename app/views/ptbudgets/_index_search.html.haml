@@ -1,10 +1,10 @@
 = search_form_for @search, url: ptbudgets_path,  class: "form-inline" do |f|
   %tr.search_row.hidden
     %td= f.text_field :fiscalstart_eq, size: 2,  :class => "form-control"
-    %td= f.text_field :budget_cont, size: 2,  :class => "form-control" 
-    %td= f.text_field :_cont, size: 2,  :class => "form-control"  
+    %td= f.text_field :budget_eq, size: 2,  :class => "form-control" 
+    %td= f.text_field :_eq, size: 2,  :class => "form-control"  
     %td.input-group
-      = f.text_field :_cont, size: 8, :class => "form-control"
+      = f.text_field :_eq, size: 8, :class => "form-control"
       %span.input-group-btn
         %button.btn.btn-sm.btn-default.right{:type => "submit"}
           %i.fa.fa-search.fa-fw
