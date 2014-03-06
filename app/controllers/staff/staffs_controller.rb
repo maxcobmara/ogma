@@ -1,6 +1,6 @@
 class Staff::StaffsController < ApplicationController
   before_action :set_staff, only: [:show, :edit, :update, :destroy]
-  helper_method :sort_column, :sort_direction
+
 
   # GET /staffs
   # GET /staffs.json

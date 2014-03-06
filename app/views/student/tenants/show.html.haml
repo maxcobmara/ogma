@@ -16,8 +16,12 @@
 
     - unless @tenant.student.blank?
       %dl.dl-horizontal
+        %dt= t 'student.icno', :default =>  model_class.human_attribute_name(:student_id) + ":"
+        %dd= link_to @tenant.student.formatted_mykad, student_path(@tenant.student_id) unless @tenant.student.blank?
+        
+      %dl.dl-horizontal
         %dt= t 'student.name', :default =>  model_class.human_attribute_name(:student_id) + ":"
-        %dd= link_to @tenant.student.name, staff_info_path(@tenant.student_id) unless @tenant.student.blank?
+        %dd= link_to @tenant.student.name, student_path(@tenant.student_id) unless @tenant.student.blank?
     
     - unless @tenant.staff.blank?
       %dl.dl-horizontal

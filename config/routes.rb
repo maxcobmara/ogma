@@ -31,7 +31,11 @@ Ogma::Application.routes.draw do
 
   
   
-  resources :students
+  resources :students do
+    collection do
+      get :autocomplete
+    end
+  end
 
     
   namespace :student do

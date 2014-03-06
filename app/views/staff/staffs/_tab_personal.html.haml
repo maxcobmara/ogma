@@ -1,0 +1,45 @@
+- model_class = Staff
+.col-md-8.col-md-offset-1
+  %dl.dl-horizontal
+    %dt= t 'staff.bloodtype', :default => model_class.human_attribute_name(:bloodtype) + ":"
+    %dd= (DropDown::BLOOD_TYPE.find_all{|disp, value| value == @staff.bloodtype}).map {|disp, value| disp}[0]
+
+    %dt= t 'staff.gender', :default => model_class.human_attribute_name(:gender) + ":"
+    %dd= (DropDown::GENDER.find_all{|disp, value| value == @staff.gender.to_s}).map {|disp, value| disp}[0]
+
+    %dt= t 'staff.cooftelno'
+    %dd
+      = @staff.cooftelno
+      Ext
+      = @staff.cooftelext
+
+    %dt= t 'staff.phonecell', :default => model_class.human_attribute_name(:phonecell) + ":"
+    %dd= @staff.phonecell
+    
+    %dt= t 'staff.phonehome', :default => model_class.human_attribute_name(:phonehome) + ":"
+    %dd= @staff.phonehome
+    
+    %dt= t 'staff.address', :default => model_class.human_attribute_name(:addr) + ":"
+    %dd= @staff.addr
+    
+    %dt= t 'staff.poskod_id', :default => model_class.human_attribute_name(:poskod_id) + ":"
+    %dd= @staff.poskod_id
+    
+    %dt= t 'staff.mrtlstatuscd', :default => model_class.human_attribute_name(:mrtlstatuscd) + ":"
+    %dd= (DropDown::MARITAL_STATUS.find_all{|disp, value| value == @staff.mrtlstatuscd }).map {|disp, value| disp}[0]
+    
+    %dt= t 'staff.statecd', :default => model_class.human_attribute_name(:statecd) + ":"
+    %dd= (DropDown::STATECD.find_all{|disp, value| value == @staff.statecd}).map {|disp, value| disp}[0]
+    
+    %dt= t 'staff.race', :default => model_class.human_attribute_name(:race) + ":"
+    %dd= (DropDown::RACE.find_all{|disp, value| value == @staff.race}).map {|disp, value| disp}[0]
+
+    %dt= t 'staff.religion', :default => model_class.human_attribute_name(:religion) + ":"
+    %dd= (DropDown::RELIGION.find_all{|disp, value| value == @staff.religion}).map {|disp, value| disp}[0]
+
+    %dt= t 'staff.country_cd', :default => model_class.human_attribute_name(:country_cd) + ":"
+    %dd= (DropDown::NATIONALITY.find_all{|disp, value| value == @staff.country_cd}).map {|disp, value| disp}[0]
+
+    %dt= t 'staff.transportclass_id', :default => model_class.human_attribute_name(:transportclass_id) + ":"
+    %dd= @staff.transportclass_id
+
