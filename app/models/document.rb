@@ -90,18 +90,18 @@ before_save :set_actionstaff2_to_blank_if_close_is_selected
 #----------------Coded List----------------------------------- 
 CATEGORY = [
         #  Displayed       stored in db
-        [ "Surat",      "1" ],
-        [ "Memo",       "2" ],
-        [ "Pekeliling", "3" ],
-        [ "Lain-Lain",  "4" ],
-        [ "e-Mel",      "5" ]
+        [ "Surat",            "1" ],
+        [ "Memo",             "2" ],
+        [ "Pekeliling",       "3" ],
+        [ "Lain-Lain",        "4" ],
+        [ "e-Mel",            "5" ]
  ]
  
  ACTION = [
          #  Displayed       stored in db
-         [ "Segera","1" ],
-         [ "Biasa","2" ],
-         [ "Makluman", "3" ]
+         [ "Segera",          "1" ],
+         [ "Biasa",           "2" ],
+         [ "Makluman",        "3" ]
   ]
   
   def stafffiled_details 

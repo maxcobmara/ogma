@@ -1,5 +1,4 @@
 class StudentsController < ApplicationController
-  helper_method :sort_column, :sort_direction
   before_action :set_student, only: [:show, :edit, :update, :destroy]
   #filter_resource_access
   #filter_access_to :all
@@ -9,37 +8,18 @@ class StudentsController < ApplicationController
   def index
     @search = Student.search(params[:q])
     @students = @search.result
-    @students = @students.page(params[:page]||1)
-    #@students_filtered = Student.find(:all, :order => sort_column + ' ' + sort_direction ,:conditions => ['formatted_mykad LIKE ? or name ILIKE ? ', "%#{params[:search]}%", "%#{params[:search]}%"])
-
-
-    #@student = Student.with_permissions_to(:index).sort_by{|t|t.intake} #sort by intake (before split into pages)
-
-    @student_programmes = @students.group_by { |t| t.course_id } #group by intake, then sort by programme (first)
-		@programme=[] 
-		@student_count=[] 
-		@student_programmes.each do |x,y| 
-			@programme<<x
-			@student_count<< y.count 
-		end 
-    
+    @students = @students.page(params[:page]||1)  
+  end
+  
+  def auto_complete
+    @students = Student.order(:icno).where("icno like ?", "#{params[:term]}")
+    render json: @students.map(&:icno)
   end
 
   # GET /students/1
   # GET /students/1.xml
   def show
-    @student = Student.find(params[:id])
-
-    respond_to do |format|
-      format.html # show.html.erbS
-      format.xml  { render :xml => @student }
-    end
   end
-
-
-
-
-
 
 
   # GET /students/new
@@ -109,28 +89,29 @@ class StudentsController < ApplicationController
         format.xml  { render :xml => @student.errors, :status => :unprocessable_entity }
       end
     end
-    
-    
-    private
-        # Use callbacks to share common setup or constraints between actions.
-        def set_student
-          @student = Student.find(params[:id])
-        end
-
-        # Never trust parameters from the scary internet, only allow the white list through.
-        def student_params
-          params.require(:student).permit(:formatted_mykad)
-        end
-    
-        def sort_column
-            Student.column_names.include?(params[:sort]) ? params[:sort] : "formatted_mykad" 
-        end
-    
-        def sort_direction
-            %w[asc desc].include?(params[:direction])? params[:direction] : "asc" 
-        end
-    end
   end
+
+    
+    
+  private
+    # Use callbacks to share common setup or constraints between actions.
+    def set_student
+      @student = Student.find(params[:id])
+    end
+
+    # Never trust parameters from the scary internet, only allow the white list through.
+    def student_params
+      params.require(:student).permit(:formatted_mykad)
+    end
+
+    def sort_column
+        Student.column_names.include?(params[:sort]) ? params[:sort] : "formatted_mykad" 
+    end
+
+    def sort_direction
+        %w[asc desc].include?(params[:direction])? params[:direction] : "asc" 
+    end
+end
 
 
 
