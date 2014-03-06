@@ -20,7 +20,7 @@
         %th{style: "width:10%;"}= sort_link(@search, :letterdt, (t 'document.letter_date'))
         %th{style: "width:10%;"}= sort_link(@search, :letterxdt, (t 'document.received_date'))
         %th= sort_link(@search, :from, (t 'document.from'))
-        %th{style: "width:10%;"}= sort_link(@search, :sender, (t 'document.circulate_to'))
+        %th{style: "width:10%;"}= sort_link(@search, :staffs_name, (t 'document.circulate_to'))
         %th{style: "width:20%;"}= sort_link(@search, :action_notifications, (t 'document.action_notifications'))
         %th= sort_link(@search, :closed, (t 'document.closed'))
 
@@ -28,12 +28,11 @@
     = render "index_search"
     - @documents.group_by { |t| t.filedocer }.each do |filedocer, documents|
       %tr
-        %td{:colspan => "10", :style => "background-color:#EFF1F1;"}
-          %br
-          %span{:style => "color:#218AFB;font-weight:bold;"}= filedocer [0]
+        %td.group{:colspan => "10"}
+          %span= filedocer [0]
       - for document in documents
         %tr
-          %td.centre= link_to document.serialno, "#", class: 'bogus'
+          %td.centre= link_to document.serialno, document_path(document)
           %td= document.refno
           %td.centre= (Document::CATEGORY.find_all{|disp, value| value == document.category.to_s}).map {|disp, value| disp} [0]
           %td= document.title

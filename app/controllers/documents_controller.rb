@@ -10,12 +10,6 @@ class DocumentsController < ApplicationController
     @documents = @search.result
     @documents_pagi = @documents.page(params[:page]||1)
     @current_user = current_user.staff_id || '' 
-  
-    respond_to do |format|
-      format.html # index.html.erb
-      format.js   #{ render :js => @documents }
-      format.xml  { render :xml => @documents }
-    end
   end
 
   # GET /documents/1
@@ -136,12 +130,11 @@ class DocumentsController < ApplicationController
    # DELETE /documents/1
    # DELETE /documents/1.xml
    def destroy
-     @document = Document.find(params[:id])
      @document.destroy
 
      respond_to do |format|
        format.html { redirect_to(documents_url) }
-       format.xml  { head :ok }
+       format.json { head :no_content }
      end
    end
   
@@ -183,5 +176,13 @@ class DocumentsController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def document_params
       params.require(:document).permit(:serialno, :refno, :category, :title, :from, :stafffiled_id, :letterdt, :letterxdt, :sender)
+    end
+    
+    def sort_column
+        Document.column_names.include?(params[:sort]) ? params[:sort] : "filedocer" 
+    end
+    
+    def sort_direction
+        %w[asc desc].include?(params[:direction])? params[:direction] : "asc" 
     end
 end
