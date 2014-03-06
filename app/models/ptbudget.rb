@@ -23,3 +23,14 @@ class Ptbudget < ActiveRecord::Base
    Ptbudget.last.fiscalstart + 1.year
   end 
 end
+
+# == Schema Information
+#
+# Table name: ptbudgets
+#
+#  budget      :decimal(, )
+#  created_at  :datetime
+#  fiscalstart :date
+#  id          :integer          not null, primary key
+#  updated_at  :datetime
+#

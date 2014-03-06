@@ -1,0 +1,126 @@
+- model_class = Staff
+.col-md-8.col-md-offset-1
+  %dl.dl-horizontal
+    %dt= t 'staff.code', :default => model_class.human_attribute_name(:code) + ":"
+    %dd= @staff.code
+
+    %dt= t 'staff.fileno', :default => model_class.human_attribute_name(:fileno) + ":"
+    %dd= @staff.fileno
+
+    %dt= t 'staff.position'
+    %dd= @staff.try(:position).try(:name)
+
+    %dt= t 'staff.coemail', :default => model_class.human_attribute_name(:coemail) + ":"
+    %dd= @staff.coemail
+
+    %dt= t 'staff.cobirthdt', :default => model_class.human_attribute_name(:cobirthdt) + ":"
+    %dd= @staff.cobirthdt.try(:strftime, '%d %b %Y')
+
+    %dt= t 'staff.birthcertno', :default => model_class.human_attribute_name(:birthcertno) + ":"
+    %dd= @staff.birthcertno
+
+    %dt= t 'staff.age', :default => model_class.human_attribute_name(:age) + ":"
+    %dd= @staff.age
+    
+  :erb
+    <table width=100% >	
+    	<tr>
+    		<td class="leftcol"><label for="staffgrade_id"><%= t 'staff.staffgrade_id' %> :</label></td>
+    		<td><%=h @staff.staffgrade_id.blank? ? "" : @staff.staffgrade.name_and_group %></td>
+    	</tr>
+    	<tr>
+    		<td class="leftcol"><label for="position_id"><%= t 'staff.position_id' %> :</label></td>
+    		<td><%=h @staff.position.blank? ? "-" : @staff.position.name %></td>
+    	</tr>
+    	<tr>
+    		<td class="leftcol"><label for="Reports To"><%= t 'staff.reports_to' %> :</label></td>
+    		<td><%=h @staff.try(:position).try(:parent).try(:name) %> - <%=h @staff.try(:position).try(:parent).try(:staff).try(:name)%></td>
+    	</tr>
+    	<tr>
+    		<td class="leftcol"><label for="employstatus"><%= t 'staff.employstatus' %> :</label></td>
+    	<td><%=h (DropDown::STATUS.find_all{|disp, value| value == @staff.employstatus}).map {|disp, value| disp} %></td>
+    	</tr>
+
+    	<tr>
+    		<td class="leftcol"><label for="appointstatus"><%= t 'staff.appointstatus' %> :</label></td>
+    	<td><%=h (DropDown::APPOINTMENT.find_all{|disp, value| value == @staff.appointstatus.to_s}).map {|disp, value| disp} %></td>
+    	</tr>
+    	<tr>
+    		<td class="leftcol"><label for="appointdt "><%= t 'staff.appointdt' %> :</label></td>
+    		<td><%=h @staff.appointdt.blank? ? "-" : l(@staff.appointdt)  %></td>
+    	</tr>
+    	<tr>
+    		<td class="leftcol"><label for="schemedt"><%= t 'staff.schemedt' %> :</label></td>
+    		<td><%=h @staff.schemedt.blank? ? "-" : l(@staff.schemedt)  %></td>
+    	</tr>
+
+    	<tr>
+    		<td class="leftcol"><label for="confirmdt"><%= t 'staff.confirmdt' %> :</label></td>
+    		<td><%=h @staff.confirmdt.blank? ? "-" : l(@staff.confirmdt) %></td>
+    	</tr>
+
+    	<tr>
+    		<td class="leftcol"><%= t 'staff.posconfirmdate' %> :</td>
+    		<td><%=h @staff.posconfirmdate.blank? ? "-" : l(@staff.posconfirmdate) %></td>
+    	</tr>
+    	<!-- 14 April 2010 MYMN -->
+    	<tr>
+    		<td class="leftcol"><%= t 'staff.wealth_decleration_date' %> :</td>
+    		<td><%=h @staff.wealth_decleration_date.blank? ? "-" : l(@staff.wealth_decleration_date)  %></td>
+    	</tr>
+
+    	<tr>
+    		<td class="leftcol"><%= t 'staff.promotion_date' %> :</td>
+    		<td><%=h @staff.promotion_date.blank? ? "-" : l(@staff.promotion_date)  %></td>
+    	</tr>
+
+    	<tr>
+    		<td class="leftcol"><%= t 'staff.reconfirmation_date' %> :</td>
+    		<td><%=h @staff.reconfirmation_date.blank? ? "-" : l(@staff.reconfirmation_date) %></td>
+    	</tr>
+
+    	<tr>
+    		<td class="leftcol"><%= t 'staff.current_grade_date' %> :</td>
+    		<td><%=h @staff.to_current_grade_date.blank? ? "-" : l(@staff.to_current_grade_date)  %></td>
+    	</tr>
+
+    	<tr>
+    		<td class="leftcol"><%= t 'staff.starting_salary' %> :</td>
+    		<td><%=h ringgols(@staff.starting_salary ) %></td>
+    	</tr>
+
+    	<!-- EOF 14 April 2010 MYMN -->
+    	<tr>
+    		<td class="leftcol"><label for="appointby"><%= t 'staff.appointby' %> :</label></td>
+    		<td><%=h (DropDown::APPOINTED.find_all{|disp, value| value == @staff.appointby }).map {|disp, value| disp} %></td>
+    	</tr>
+
+    	<tr>
+    		<td class="leftcol"><label for="svchead"><%= t 'staff.svchead' %> :</label></td>
+    		<td><%=h (DropDown::HOS.find_all{|disp, value| value == @staff.svchead }).map {|disp, value| disp} %></td>
+    	</tr>
+
+    	<tr>
+    		<td class="leftcol"><label for="svctype "><%= t 'staff.svctype' %> :</label></td>
+    		<td><%=h (DropDown::TOS.find_all{|disp, value| value == @staff.svctype }).map {|disp, value| disp} %></td>
+    	</tr>
+
+    	<tr>
+    		<td class="leftcol"><label for="pensionstat "><%= t 'staff.pensionstat' %> :</label></td>
+    		<td><%=h (DropDown::PENSION.find_all{|disp, value| value == @staff.pensionstat}).map {|disp, value| disp} %></td>
+    	</tr>
+
+    	<tr>
+    		<td class="leftcol"><label for="pensiondt"><%= t 'staff.pensiondt' %> :</label></td>
+    		<td><%=h @staff.pensiondt.blank? ? "-" : l(@staff.pensiondt)  %></td>
+    	</tr>
+    	<tr>
+    		<td class="leftcol"><%= t 'staff.pension_confirm_date' %> :</td>
+    		<td><%=h @staff.pension_confirm_date.blank? ? "-" : l(@staff.pension_confirm_date)  %></td>
+    	</tr>
+
+    	<tr>
+    		<td class="leftcol"><label for="uniformstat "><%= t 'staff.uniformstat' %> :</label></td>
+    		<td><%=h (DropDown::UNIFORM.find_all{|disp, value| value == @staff.uniformstat }).map {|disp, value| disp} %></td>
+    	</tr>
+    </table>

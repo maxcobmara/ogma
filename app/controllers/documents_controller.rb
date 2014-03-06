@@ -9,13 +9,13 @@ class DocumentsController < ApplicationController
     @search = Document.search(params[:q])
     @documents = @search.result
     @documents_pagi = @documents.page(params[:page]||1)
-    
-    @tome = Document.find(:all, :joins => :staffs, :conditions => ['staff_id =? and (refno ILIKE ? or title ILIKE ?)', current_user, "%#{params[:search]}%", "%#{params[:search]}%"], :order => "created_at DESC")
-      
-    @document_files = @documents.group_by { |t| t.filedocer }
-    @tome_document_files = @tome.group_by { |t| t.filedocer }
-    
-    #@docs_for_me = @documents.joins(:staffs).where(staffs.id => current_user).order(created_at: :asc)
+    @current_user = current_user.staff_id || '' 
+  
+    respond_to do |format|
+      format.html # index.html.erb
+      format.js   #{ render :js => @documents }
+      format.xml  { render :xml => @documents }
+    end
   end
 
   # GET /documents/1
@@ -53,10 +53,10 @@ class DocumentsController < ApplicationController
    # POST /documents
    # POST /documents.xml
    def create
-    	@document = Document.new
-    	@document.staff_ids = []
-    	@document.staff_ids = Document.set_recipient(params[:document][:to_name])
-    	@document.serialno= params[:document][:serialno]
+     @document = Document.new
+     @document.staff_ids = []
+     @document.staff_ids = Document.set_recipient(params[:document][:to_name])
+     @document.serialno= params[:document][:serialno]
      @document.refno = params[:document][:refno]
      @document.category = params[:document][:category]
      @document.title = params[:document][:title]
@@ -93,10 +93,10 @@ class DocumentsController < ApplicationController
    # PUT /documents/1
    # PUT /documents/1.xml
    def update
-     	@document = Document.find(params[:id])
-     	@document.staff_ids = []
-      	@document.staff_ids = Document.set_recipient(params[:document][:to_name])
-      	@document.serialno= params[:document][:serialno]
+     	 @document = Document.find(params[:id])
+       @document.staff_ids = []
+       @document.staff_ids = Document.set_recipient(params[:document][:to_name])
+       @document.serialno= params[:document][:serialno]
        @document.refno = params[:document][:refno]
        @document.category = params[:document][:category]
        @document.title = params[:document][:title]

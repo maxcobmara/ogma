@@ -16,6 +16,7 @@
 //= require bootstrap.min
 //= require bootstrap-datepicker
 //= require bootstrap-select
+//= require bootstrap-switch
 //= require bigtext
 //= require_tree .
 
@@ -29,6 +30,7 @@ $(document).ready(function () {
       alert("Sorry! Feature not yet implemented");
   });
   
+  //Use this for picking only dates in the past
   $('[data-behaviour=datepicker_before]').datepicker({
     format: "yyyy/mm/dd",
     endDate: "today + 1",
@@ -36,6 +38,7 @@ $(document).ready(function () {
     autoclose: true
   });
   
+  //Use this for picking only future dates
   $('[data-behaviour=datepicker_after]').datepicker({
     format: "yyyy/mm/dd",
     startDate: "today",
@@ -49,6 +52,7 @@ $(document).ready(function () {
     todayBtn: true
   });
   
+  //Use this for birthdays
   $('[data-behaviour=datepicker_dob]').datepicker({
     format: "yyyy/mm/dd",
     autoclose: true,
@@ -62,6 +66,8 @@ $(document).ready(function () {
      $('.search_bar').toggle();
      $('.search_row').toggleClass('hidden'); 
   });
+  
+  $("[id='my_checkbox']").bootstrapSwitch();
   
   $('.bigtext').bigtext();
 });

@@ -1,0 +1,23 @@
+- model_class = Staff
+.col-md-8.col-md-offset-1
+  %dl.dl-horizontal
+    %dt= t 'staff.code', :default => model_class.human_attribute_name(:code) + ":"
+    %dd= @staff.code
+
+    %dt= t 'staff.fileno', :default => model_class.human_attribute_name(:fileno) + ":"
+    %dd= @staff.fileno
+
+    %dt= t 'staff.position'
+    %dd= @staff.try(:position).try(:name)
+
+    %dt= t 'staff.coemail', :default => model_class.human_attribute_name(:coemail) + ":"
+    %dd= @staff.coemail
+
+    %dt= t 'staff.cobirthdt', :default => model_class.human_attribute_name(:cobirthdt) + ":"
+    %dd= @staff.cobirthdt.try(:strftime, '%d %b %Y')
+
+    %dt= t 'staff.birthcertno', :default => model_class.human_attribute_name(:birthcertno) + ":"
+    %dd= @staff.birthcertno
+
+    %dt= t 'staff.age', :default => model_class.human_attribute_name(:age) + ":"
+    %dd= @staff.age
