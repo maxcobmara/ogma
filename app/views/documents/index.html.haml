@@ -13,14 +13,14 @@
   %table.table-striped.table-hover.ogma
     %thead
       %tr
-        %th= sort_link(@search, :serialno, (t 'document.serial_no'))
+        %th{style: "width:8%;"}= sort_link(@search, :serialno, (t 'document.serial_no'))
         %th= sort_link(@search, :refno, (t 'document.ref_no'))
         %th= sort_link(@search, :category, (t 'document.category'))
         %th= sort_link(@search, :title, (t 'document.title'))
-        %th= sort_link(@search, :letterdt, (t 'document.letter_date'))
-        %th= sort_link(@search, :letterxdt, (t 'document.received_date'))
+        %th{style: "width:10%;"}= sort_link(@search, :letterdt, (t 'document.letter_date'))
+        %th{style: "width:10%;"}= sort_link(@search, :letterxdt, (t 'document.received_date'))
         %th= sort_link(@search, :from, (t 'document.from'))
-        %th= sort_link(@search, :sender, (t 'document.circulate_to'))
+        %th{style: "width:10%;"}= sort_link(@search, :sender, (t 'document.circulate_to'))
         %th{style: "width:20%;"}= sort_link(@search, :action_notifications, (t 'document.action_notifications'))
         %th= sort_link(@search, :closed, (t 'document.closed'))
 
