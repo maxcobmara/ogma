@@ -20,8 +20,8 @@
         %th{style: "width:10%;"}= sort_link(@search, :letterdt, (t 'document.letter_date'))
         %th{style: "width:10%;"}= sort_link(@search, :letterxdt, (t 'document.received_date'))
         %th= sort_link(@search, :from, (t 'document.from'))
-        %th{style: "width:10%;"}= sort_link(@search, :staffs_name, (t 'document.circulate_to'))
-        %th{style: "width:20%;"}= sort_link(@search, :action_notifications, (t 'document.action_notifications'))
+        %th{style: "width:15%;"}= sort_link(@search, :staffs_name, (t 'document.circulate_to'))
+        %th{style: "width:15%;"}= sort_link(@search, :action_notifications, (t 'document.action_notifications'))
         %th= sort_link(@search, :closed, (t 'document.closed'))
 
     %tbody
