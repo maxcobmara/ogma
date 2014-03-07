@@ -232,6 +232,28 @@ ms_MY:
     new_bulletin: Buletin Baru
     upload_file: Memuatnaik Dokumen
 
+  document:
+    list_of_document: Senarai Dokumen
+    serial_no: No Siri
+    ref_no: No Rujukan
+    category: Kategori
+    title: Tajuk
+    letter_date: Tarikh Surat
+    received_date: Tarikh Terima
+    from: Daripada
+    circulate_to: Diedarkan Untuk
+    action_notifications: "Tindakan / Pemberitahuan"
+    closed: Ditutup
+    file_no: No File
+    circulate_minute_action: "Tindakan Edaran / Minit"
+    circulate_minute_date: "Tarikh Edaran / Minit"
+    action_type: Jenis Tindakan
+    file_closed: "Fail ditutup?"
+    minit_tindakan: "(Minit Tindakan)"
+    stafffiled_id: Diisi Oleh
+    letterdt: Tarikh Surat
+    letterxdt: Tarikh Terima
+    uploaded: File Memuatnaik 
 
   campus:
     tenants:

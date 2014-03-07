@@ -1,0 +1,31 @@
+- model_class = Document
+.col-md-8.col-md-offset-1
+  %dl.dl-horizontal
+
+    %dt= t 'document.category' , :default => model_class.human_attribute_name(:category) + ":"
+    %dd= (Document::CATEGORY.find_all{|disp, value| value == @document.category.to_s}).map {|disp, value| disp} [0]
+
+    %dt= t 'document.letterdt' , :default => model_class.human_attribute_name(:letterdt) + ":"
+    %dd= l(@document.letterdt)
+		  
+    %dt= t 'document.letterxdt' , :default => model_class.human_attribute_name(:letterxdt) + ":"
+    %dd= l(@document.letterxdt)
+    
+    %dt= t 'document.from' , :default => model_class.human_attribute_name(:from) + ":"
+    %dd= @document.from
+
+    %dt= t 'document.stafffiled_id' , :default => model_class.human_attribute_name(:stafffiled_id) + ":"
+    %dd= check_kin {@document.stafffiled_details}
+
+    %dt= t 'document.file_no' , :default => model_class.human_attribute_name(:file_id) + ":"
+    %dd= check_kin {@document.file_details} 
+
+    %dt= t 'document.uploaded' , :default => model_class.human_attribute_name(:data) + ":"
+    %dd
+      - if @document.data.exists? then
+        = @document.data_file_name
+        = link_to (t 'document.download'), @document.data.url 
+        ||
+        \#{link_to "ALT", @document.data.url}
+      - else
+        No File Available

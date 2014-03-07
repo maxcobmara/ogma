@@ -5,17 +5,10 @@ class DocumentsController < ApplicationController
   # GET /documents
   # GET /documents.xml
   def index
-
     @search = Document.search(params[:q])
     @documents = @search.result
     @documents_pagi = @documents.page(params[:page]||1)
     @current_user = current_user.staff_id || '' 
-  
-    respond_to do |format|
-      format.html # index.html.erb
-      format.js   #{ render :js => @documents }
-      format.xml  { render :xml => @documents }
-    end
   end
 
   # GET /documents/1
@@ -133,17 +126,6 @@ class DocumentsController < ApplicationController
    
    end
 
-   # DELETE /documents/1
-   # DELETE /documents/1.xml
-   def destroy
-     @document = Document.find(params[:id])
-     @document.destroy
-
-     respond_to do |format|
-       format.html { redirect_to(documents_url) }
-       format.xml  { head :ok }
-     end
-   end
   
    def generate_report
        @bb = params[:locals][:class_type]
@@ -173,6 +155,17 @@ class DocumentsController < ApplicationController
        end
        render :layout => 'report'
    end
+
+   # DELETE /documents/1
+   # DELETE /documents/1.xml
+  def destroy
+    @documents.destroy
+    respond_to do |format|
+      
+      format.html { redirect_to documents_url }
+      format.json { head :no_content }
+    end
+  end
    
   private
     # Use callbacks to share common setup or constraints between actions.
@@ -184,4 +177,5 @@ class DocumentsController < ApplicationController
     def document_params
       params.require(:document).permit(:serialno, :refno, :category, :title, :from, :stafffiled_id, :letterdt, :letterxdt, :sender)
     end
+
 end

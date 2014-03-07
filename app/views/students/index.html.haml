@@ -9,7 +9,10 @@
     %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "toga"
     %li= link_to content_tag(:li, fa_icon("print", text: (t 'actions.print'))), "#", class: 'bogus'
 
-
+.row.filter{style: "display:none;"}
+  .col-md-2
+  
+  
 .row
 
   %table.table-striped.table-hover.ogma
@@ -18,7 +21,7 @@
         %th= sort_link(@search, :formatted_mykad, (t 'student.students.formatted_mykad'))
         %th= sort_link(@search, :name, (t 'student.students.name'))
         %th= sort_link(@search, :matrixno, (t 'student.students.matrixno'))
-        %th{style: "width:20%;"}= t 'student.students.race'
+        %th{style: "width:20%;"}= sort_link(@search, :race, (t 'student.students.race'))
         //%th.ac{:colspan => "2"}= t 'control'
 
 
@@ -29,20 +32,16 @@
     - @students.group_by{|t|t.intake}.each do |intake, student_course|
 
       %tr
-        %td{:colspan => "10", :style => "background-color:#EFF1F1;"}
-          %br
-          %span{:style => "color:#218AFB;font-weight:bold;"}= intake.strftime('%B %Y')
+        %td.group{:colspan => "12"}
+          %span= intake.strftime('%B %Y')
       - student_course.group_by(&:course).each do |course, students|
         %tr
-          %td{:colspan => "10", :style => "background-color:#EFF1F1;"}
-            %br
-            %span{:style => "color:#black;font-weight:bold;"}= course.name	  
-
+          %td.centre{:colspan => "12", :style => "background-color:#E5E4E2;"}
+            %span{:style => "color:#black;font-weight:bold;font-size:14px"}= link_to course.name, "#", class: 'bogus'	  
         - for student in students
           %tr	  
             %td= link_to student.formatted_mykad, "#", class: 'bogus'
             %td= student.name
-            %td= student.course_id
             %td= student.matrixno
             %td
               - if (student.race2.nil? && !student.race.nil? && student.race!='')||(student.race2.blank? && !student.race.blank? &&  student.race!='')
