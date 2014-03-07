@@ -138,6 +138,7 @@ en:
     
   student:
     name: Student Name 
+    icno: MyKad No.
     tenant:
       title: Student Residence
       new: New Student Tenancy
