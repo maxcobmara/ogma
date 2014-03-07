@@ -116,6 +116,7 @@ ms_MY:
     
   student:
     name: Nama Pelajar
+    icno: No MyKad
     tenant:
       title: Penempatan Pelajar
       new : Pendudukkan Baru
