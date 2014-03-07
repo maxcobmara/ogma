@@ -5,7 +5,7 @@
 = render 'shared/flashes'
 
 .row
-  .col-md-8
+  .col-md-8.col-md-offset-1
     %dl.dl-horizontal
       %dt= t 'buletin.headline', :default => model_class.human_attribute_name(:headline) + ":"
       %dd= @bulletin.headline
