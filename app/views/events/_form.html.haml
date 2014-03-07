@@ -3,18 +3,24 @@
     = render 'shared/error_messages', object: f.object
     .col-md-offset-1
 
+
+
       .form-group
         .col-sm-2.control-label
           = f.label t 'events.en', for: :eventname
         .col-md-5
           = f.text_field :eventname, class: 'form-control mandatory'
 
+
+
       .form-group
         .col-sm-2.control-label
           = f.label t 'events.sd', for: :start_at
         .col-md-5
-          //= f.text_field :start_at, :start_year => Time.now.year - 1, :minute_step => 15, :order => [:day, :month, :year]
+          //= f.datetime_select :start_at, :start_year => Time.now.year - 1, :minute_step => 15, :order => [:day, :month, :year]
           = f.text_field :start_at, class: 'form-control mandatory', 'data-behaviour' => 'datepicker_dob'
+ 
+ 
 
       .form-group
         .col-sm-2.control-label
