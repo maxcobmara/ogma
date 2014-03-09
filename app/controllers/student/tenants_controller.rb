@@ -6,6 +6,7 @@ class Student::TenantsController < ApplicationController
     @search = Tenant.where("student_id IS NOT NULL").search(params[:q])
     @search.keyreturned_present != nil unless params[:q]
     @search.force_vacate_true = false unless params[:q]
+    @search.sorts = 'location_combo_code asc' if @search.sorts.empty?
     @tenants = @search.result
 
     

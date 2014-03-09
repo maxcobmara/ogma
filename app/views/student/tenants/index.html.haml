@@ -8,7 +8,18 @@
       //%li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'new'))), new_student_tenant_path
     %ul.nav.navbar-nav.navbar-right
       %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'search'))), "#", class: "toga"
-      %li= link_to content_tag(:li, fa_icon("print", text: (t 'print'))), "#"
+      %li.dropdown
+        %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#"}
+          = fa_icon "print", text: "Print"
+          %b.caret
+        %ul.dropdown-menu
+          %li
+            %a.bogus{:href => "#"} Statistics
+          %li
+            %a.bogus{:href => "#"} Lapuran Penginapan
+          %li
+            %a.bogus{:href => "#"} Census
+
 
 .row
   %table.table-striped.table-hover.ogma
@@ -17,7 +28,7 @@
         %th= t 'location.code'
         %th= t 'student.icno'
         %th= t 'student.name'
-        %th= t 'programme.name'
+        %th= t 'course.name'
         %th= t 'tenant.key.accept'
         %th= t 'tenant.key.expected'
         %th= t 'tenant.key.return'
@@ -27,9 +38,9 @@
       = render "index_search"
       - @tenants.each do |tenant|
         %tr
-          %td= tenant.location.try(:name)
-          %td= tenant.try(:student).try(:icno)
-          %td= tenant.try(:student).try(:name)
+          %td= link_to tenant.location.try(:combo_code), campus_location_path(tenant.location)
+          %td= link_to tenant.try(:student).try(:icno), student_tenant_path(tenant)
+          %td= link_to tenant.try(:student).try(:name), student_path(tenant.student)
           %td= tenant.try(:student).try(:programme).try(:name)
           %td= l(tenant.keyaccept) rescue nil
           %td= l(tenant.keyexpectedreturn) unless tenant.keyexpectedreturn.blank?

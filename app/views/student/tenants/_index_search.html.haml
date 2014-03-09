@@ -1,9 +1,9 @@
 = search_form_for [:tenant, @search], url: student_tenants_path,  class: "form-inline" do |f|
   %tr.search_row.hidden
     %td= f.text_field :location_combo_code_start, size: 2,  :class => "form-control"
-    %td= f.text_field :student_name_start, size: 8,  :class => "form-control"
+    %td= f.text_field :student_icno_start, size: 8,  :class => "form-control"
     %td.input-group
-      = f.text_field :student_icno_start, size: 8, :class => "form-control"
+      = f.text_field :student_name_start, size: 8, :class => "form-control"
       %span.input-group-btn
         %button.btn.btn-sm.btn-default.right{:type => "submit"}
           %i.fa.fa-search.fa-fw
