@@ -75,6 +75,10 @@
           %td.centre= @female_student_beds.joins(:tenants).where("tenants.id" => @current_tenants).count
           %td.centre= @male_student_beds.joins(:tenants).where("tenants.id" => @current_tenants).count
         %tr
+          %th Damaged
+          %td.centre= @female_student_beds.where(occupied: true).count
+          %td.centre= @male_student_beds.where(occupied: true).count
+        %tr
           %th Totals
           %td.centre= a = @female_student_beds.count
           %td.centre= b = @male_student_beds.count
