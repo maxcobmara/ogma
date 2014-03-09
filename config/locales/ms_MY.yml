@@ -36,6 +36,7 @@ ms_MY:
   name: Nama
   class: Kelas
   type: Jenis
+  notes: Catatan
   
   actions:
     new: Baru
@@ -117,6 +118,10 @@ ms_MY:
   student:
     name: Nama Pelajar
     icno: No MyKad
+    male: Lelaki
+    female: Perempuan
+    course: Program
+    year_semester: Tahun dan Semester
     tenant:
       title: Penempatan Pelajar
       new : Pendudukkan Baru
@@ -125,6 +130,13 @@ ms_MY:
         expected: Tarikh Dijangka Pulang
         returned: Tarikh Dipulang
       vacate: Kosongkan
+      room_map: Peta Katil
+      list: Senarai Penghuni
+      statistics: Statistik
+      empty: Kosong
+      occupied: Berpenghuni
+      damaged: Rosak
+      total: Jumlah
     students:
       list: Senarai Maklumat Pelajar
       formatted_mykad: No Mykad

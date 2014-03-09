@@ -60,6 +60,7 @@ en:
   name: name
   class: Class
   type: Type
+  notes: Notes
   
   actions:
     new: New
@@ -71,6 +72,7 @@ en:
     create: Create
     created: " was successfully created."
     updated: " was successfully updated."
+    
     
   errors:
   
@@ -139,6 +141,10 @@ en:
   student:
     name: Student Name 
     icno: MyKad No.
+    male: Male
+    female: Female
+    course: Programme
+    year_semester: Year and Semester
     tenant:
       title: Student Residence
       new: New Student Tenancy
@@ -147,6 +153,15 @@ en:
         expected: Date Key expected returned
         returned: Date Returned
       vacate: Force Vacate
+      room_map: Room Map
+      list: Tenancy List
+      statistics: Statistics
+      empty: Empty
+      occupied: Occupied
+      damaged: Damaged
+      total: Totals
+      
+      
     students:
       list: Student Info List
       formatted_mykad: MyKad No
