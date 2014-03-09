@@ -7,14 +7,13 @@
     %ul.nav.navbar-nav
       //%li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'new'))), new_student_tenant_path
     %ul.nav.navbar-nav.navbar-right
-      %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'search'))), "#", class: "toga"
+      %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "toga"
       %li.dropdown
         %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#"}
-          = fa_icon "print", text: "Print"
+          = fa_icon "print", text: (t 'actions.print')
           %b.caret
         %ul.dropdown-menu
-          %li
-            %a.bogus{:href => "#"} Statistics
+          %li= link_to (t "student.tenant.statistics"), statistics_student_tenants_path
           %li
             %a.bogus{:href => "#"} Lapuran Penginapan
           %li
@@ -48,56 +47,6 @@
           %td= tenant.force_vacate? ? "Yes" : "No"
           //%td= link_to image_tag("printer.png", :border => 0, :title => 'Borang Asrama'), :action => 'borang_asrama', :id => tenant
 
-
-
-
-
-.row
-  = column_chart [ |
-    {:name => "Empty",    :data => (@female_student_beds.where(occupied: [false, nil]).where('id NOT IN (?)', @occupied_locations).count)}, | 
-    {:name => "Occupied", :data => (@female_student_beds.joins(:tenants).where("tenants.id" => @current_tenants).count)},
-    {:name => "Damaged",  :data => (@female_student_beds.where(occupied: true).count)}]
-    
-
-  
-
-  
-
-
-
-.row
-  .col-md-3
-    %p Statistics
-    %table.table-striped.table-hover.ogma
-      %thead
-        %tr
-          %th Item
-          %th Female
-          %th Male
-      %tbody
-        %tr
-          %th Empty
-          %td.centre= @ef = @female_student_beds.where(occupied: [false, nil]).where('id NOT IN (?)', @occupied_locations).count
-          %td.centre= @male_student_beds.where(occupied: [false, nil]).where('id NOT IN (?)', @occupied_locations).count
-        %tr
-          %th Occupied
-          %td.centre= @of = @female_student_beds.joins(:tenants).where("tenants.id" => @current_tenants).count
-          %td.centre= @male_student_beds.joins(:tenants).where("tenants.id" => @current_tenants).count
-        %tr
-          %th Damaged
-          %td.centre= @df = @female_student_beds.where(occupied: true).count
-          %td.centre= @male_student_beds.where(occupied: true).count
-        %tr
-          %th Totals
-          %td.centre= a = @female_student_beds.count
-          %td.centre= b = @male_student_beds.count
-        %tr
-          %th Total
-          %td.centre{colspan: 2}= (a + b)
-          
-          
-.row
-  = pie_chart [["Empty", @ef], ["Occupied", @of], ["Damaged", @df]], :height => "200px", :library => {legend: { position: 'bottom'}}
 .row
   %H4 Lapuran Penginapan
   %table.table-striped.table-hover.ogma

@@ -8,25 +8,17 @@ class Student::TenantsController < ApplicationController
     @search.force_vacate_true = false unless params[:q]
     @search.sorts = 'location_combo_code asc' if @search.sorts.empty?
     @tenants = @search.result
-
-   
-   
-   
-   #reports - will move out
-   #getting buidings with student beds
-  @places = Location.where('typename = ? OR typename =?', 2, 8)
-  roots = []
-  @places.each do |place|
-    roots << place.root
-  end
-  @residentials = roots.uniq
-  ##sets div size to fit no of buildings 
-  #@div_width = 90/@residentials.count
-  #
-  @current_tenants = Tenant.where("keyreturned IS ? AND force_vacate != ?", nil, true)
   
-  #
-  #
+    #reports - will move out
+    #getting buidings with student beds
+    @places = Location.where('typename = ? OR typename =?', 2, 8)
+    roots = []
+    @places.each do |place|
+     roots << place.root
+    end
+    @residentials = roots.uniq
+    @current_tenants = Tenant.where("keyreturned IS ? AND force_vacate != ?", nil, true)
+
   end
   
   def room_map

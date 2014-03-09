@@ -93,12 +93,10 @@
               %h2.icon= t "student.tenant.title"
               %a.mp-back{:href => "#"}= t 'helpers.links.back'
               %ul
-                %li= link_to "Room Map", room_map_student_tenants_path
-                %li= link_to "Tenancy List", student_tenants_path
-                %li= link_to "Statistics", statistics_student_tenants_path
-          
-          
-          %li= link_to content_tag(:i, "", :class => "icon-numb") + (t "student.tenant.title"), student_tenants_path
+                %li= link_to (t "student.tenant.room_map"), room_map_student_tenants_path
+                %li= link_to (t "student.tenant.list"), student_tenants_path
+                %li= link_to (t "student.tenant.statistics"), statistics_student_tenants_path
+                  
           %li= link_to content_tag(:i, "", :class => "icon-numb") + "Location Tree", '#'
 
     %li.icon.icon-left
