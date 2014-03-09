@@ -68,8 +68,8 @@
       %tbody
         %tr
           %th Empty
-          %td.centre= @female_student_beds.where('id NOT IN (?)', @occupied_locations).count
-          %td.centre= @male_student_beds.where('id NOT IN (?)', @occupied_locations).count
+          %td.centre= @female_student_beds.where(occupied: [false, nil]).where('id NOT IN (?)', @occupied_locations).count
+          %td.centre= @male_student_beds.where(occupied: [false, nil]).where('id NOT IN (?)', @occupied_locations).count
         %tr
           %th Occupied
           %td.centre= @female_student_beds.joins(:tenants).where("tenants.id" => @current_tenants).count
@@ -85,8 +85,32 @@
         %tr
           %th Total
           %td.centre{colspan: 2}= (a + b)
-          
-  
+
+.row
+  %table.table-striped.table-hover.ogma
+    - @residentials.each do |building|
+      %thead
+        %tr
+          %th= building.name
+          %th isi
+          %th kosong
+          %th rosak
+          %th notes
+      - building.children.sort.reverse.each do |floor|
+      
+        - @occupied = floor.descendants.where(typename: [2,8]).joins(:tenants).where("tenants.id" => @current_tenants)
+        - @empty =    floor.descendants.where(typename: [2,8]).where(occupied: [false, nil]).where('id NOT IN (?)', @occupied_locations)
+        - @damaged =         floor.descendants.where(occupied: true)
+
+        %tr
+          %td= floor.name
+          %td= @occupied.count
+          %td= @empty.count
+          %td= @damaged.count
+          %td
+
+      
+    
   
 .row
   %table.table-striped.table-hover.ogma
