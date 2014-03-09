@@ -9,11 +9,6 @@ class Student::TenantsController < ApplicationController
     @search.sorts = 'location_combo_code asc' if @search.sorts.empty?
     @tenants = @search.result
 
-    
-    
-   @locations = Location.where('typename IN (?)', [2,8])
-   @female_student_beds  = @locations.where('typename = ?', 2)
-   @male_student_beds    = @locations.where('typename = ?', 8)
    
    
    
@@ -29,7 +24,7 @@ class Student::TenantsController < ApplicationController
   #@div_width = 90/@residentials.count
   #
   @current_tenants = Tenant.where("keyreturned IS ? AND force_vacate != ?", nil, true)
-  @occupied_locations = @current_tenants.pluck(:location_id)
+  
   #
   #
   end
@@ -43,6 +38,14 @@ class Student::TenantsController < ApplicationController
     @residentials = roots.uniq
     #sets div size to fit no of buildings 
     @div_width = 90/@residentials.count
+    @current_tenants = Tenant.where("keyreturned IS ? AND force_vacate != ?", nil, true)
+    @occupied_locations = @current_tenants.pluck(:location_id)
+  end
+  
+  def statistics
+    @locations = Location.where('typename IN (?)', [2,8])
+    @female_student_beds  = @locations.where('typename = ?', 2)
+    @male_student_beds    = @locations.where('typename = ?', 8)
     @current_tenants = Tenant.where("keyreturned IS ? AND force_vacate != ?", nil, true)
     @occupied_locations = @current_tenants.pluck(:location_id)
   end

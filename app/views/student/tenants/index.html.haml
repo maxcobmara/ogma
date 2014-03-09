@@ -52,7 +52,16 @@
 
 
 
+.row
+  = column_chart [ |
+    {:name => "Empty",    :data => (@female_student_beds.where(occupied: [false, nil]).where('id NOT IN (?)', @occupied_locations).count)}, | 
+    {:name => "Occupied", :data => (@female_student_beds.joins(:tenants).where("tenants.id" => @current_tenants).count)},
+    {:name => "Damaged",  :data => (@female_student_beds.where(occupied: true).count)}]
+    
 
+  
+
+  
 
 
 
@@ -68,15 +77,15 @@
       %tbody
         %tr
           %th Empty
-          %td.centre= @female_student_beds.where(occupied: [false, nil]).where('id NOT IN (?)', @occupied_locations).count
+          %td.centre= @ef = @female_student_beds.where(occupied: [false, nil]).where('id NOT IN (?)', @occupied_locations).count
           %td.centre= @male_student_beds.where(occupied: [false, nil]).where('id NOT IN (?)', @occupied_locations).count
         %tr
           %th Occupied
-          %td.centre= @female_student_beds.joins(:tenants).where("tenants.id" => @current_tenants).count
+          %td.centre= @of = @female_student_beds.joins(:tenants).where("tenants.id" => @current_tenants).count
           %td.centre= @male_student_beds.joins(:tenants).where("tenants.id" => @current_tenants).count
         %tr
           %th Damaged
-          %td.centre= @female_student_beds.where(occupied: true).count
+          %td.centre= @df = @female_student_beds.where(occupied: true).count
           %td.centre= @male_student_beds.where(occupied: true).count
         %tr
           %th Totals
@@ -85,7 +94,10 @@
         %tr
           %th Total
           %td.centre{colspan: 2}= (a + b)
-
+          
+          
+.row
+  = pie_chart [["Empty", @ef], ["Occupied", @of], ["Damaged", @df]], :height => "200px", :library => {legend: { position: 'bottom'}}
 .row
   %H4 Lapuran Penginapan
   %table.table-striped.table-hover.ogma

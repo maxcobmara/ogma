@@ -42,6 +42,7 @@ Ogma::Application.routes.draw do
     resources :tenants do
       collection do
         get :room_map
+        get :statistics
       end
     end
   end
