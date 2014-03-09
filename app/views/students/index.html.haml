@@ -31,7 +31,7 @@
       %tr
         %td{:colspan => "10", :style => "background-color:#EFF1F1;"}
           %br
-          %span{:style => "color:#218AFB;font-weight:bold;"}= intake.strftime('%B %Y')
+          %span{:style => "color:#218AFB;font-weight:bold;"}= intake.try(:strftime, '%B %Y')
       - student_course.group_by(&:course).each do |course, students|
         %tr
           %td{:colspan => "10", :style => "background-color:#EFF1F1;"}

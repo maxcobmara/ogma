@@ -3,7 +3,37 @@ class Student::TenantsController < ApplicationController
   before_action :set_tenant, only: [:show, :edit, :update, :destroy]
   
   def index
-    #getting buidings with student beds
+    @search = Tenant.where("student_id IS NOT NULL").search(params[:q])
+    @search.keyreturned_present != nil unless params[:q]
+    @search.force_vacate_true = false unless params[:q]
+    @tenants = @search.result
+
+    
+    
+   @locations = Location.where('typename IN (?)', [2,8])
+   @female_student_beds  = @locations.where('typename = ?', 2)
+   @male_student_beds    = @locations.where('typename = ?', 8)
+   
+   
+   
+   #reports - will move out
+   #getting buidings with student beds
+  @places = Location.where('typename = ? OR typename =?', 2, 8)
+  roots = []
+  @places.each do |place|
+    roots << place.root
+  end
+  @residentials = roots.uniq
+  ##sets div size to fit no of buildings 
+  #@div_width = 90/@residentials.count
+  #
+  @current_tenants = Tenant.where("keyreturned IS ? AND force_vacate != ?", nil, true)
+  @occupied_locations = @current_tenants.pluck(:location_id)
+  #
+  #
+  end
+  
+  def room_map
     @places = Location.where('typename = ? OR typename =?', 2, 8)
     roots = []
     @places.each do |place|
@@ -12,17 +42,8 @@ class Student::TenantsController < ApplicationController
     @residentials = roots.uniq
     #sets div size to fit no of buildings 
     @div_width = 90/@residentials.count
-    
-    @current_tenants = Tenant.where("keyreturned IS ? AND force_vacate != ?", nil, true)#.where(:keyreturned => nil).where(:force_vacate => false).where(s)
+    @current_tenants = Tenant.where("keyreturned IS ? AND force_vacate != ?", nil, true)
     @occupied_locations = @current_tenants.pluck(:location_id)
-    
-    
-    @locations = Location.where('typename IN (?)', [2,8])
-    @female_student_beds  = @locations.where('typename = ?', 2)
-    @male_student_beds    = @locations.where('typename = ?', 8)
-    
-    
-    @tenants = Tenant.order(created_at: :desc)
   end
   
   def new

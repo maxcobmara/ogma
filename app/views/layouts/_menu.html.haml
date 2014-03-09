@@ -87,6 +87,16 @@
         %ul
           %li= link_to content_tag(:i, "", :class => "icon-numb") + "Locations", campus_locations_path
           %li= link_to content_tag(:i, "", :class => "icon-numb") + "Assignment", '#'
+          %li.icon.icon-left
+            = link_to (t "student.tenant.title"), '#'
+            .mp-level
+              %h2.icon= t "student.tenant.title"
+              %a.mp-back{:href => "#"}= t 'helpers.links.back'
+              %ul
+                %li= link_to "Room Map", room_map_student_tenants_path
+                %li= link_to "Tenancy List", student_tenants_path
+          
+          
           %li= link_to content_tag(:i, "", :class => "icon-numb") + (t "student.tenant.title"), student_tenants_path
           %li= link_to content_tag(:i, "", :class => "icon-numb") + "Location Tree", '#'
 

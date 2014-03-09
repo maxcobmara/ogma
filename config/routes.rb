@@ -39,7 +39,11 @@ Ogma::Application.routes.draw do
 
     
   namespace :student do
-    resources :tenants
+    resources :tenants do
+      collection do
+        get :room_map
+      end
+    end
   end
   
   
