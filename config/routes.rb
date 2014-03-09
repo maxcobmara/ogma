@@ -43,6 +43,7 @@ Ogma::Application.routes.draw do
       collection do
         get :room_map
         get :statistics
+        get :census
       end
     end
   end

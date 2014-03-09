@@ -60,6 +60,7 @@ en:
   name: name
   class: Class
   type: Type
+  notes: Notes
   
   actions:
     new: New
@@ -71,6 +72,7 @@ en:
     create: Create
     created: " was successfully created."
     updated: " was successfully updated."
+    
     
   errors:
   
@@ -141,6 +143,8 @@ en:
     icno: MyKad No.
     male: Male
     female: Female
+    course: Programme
+    year_semester: Year and Semester
     tenant:
       title: Student Residence
       new: New Student Tenancy

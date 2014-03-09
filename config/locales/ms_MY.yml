@@ -36,6 +36,7 @@ ms_MY:
   name: Nama
   class: Kelas
   type: Jenis
+  notes: Catatan
   
   actions:
     new: Baru
@@ -119,6 +120,8 @@ ms_MY:
     icno: No MyKad
     male: Lelaki
     female: Perempuan
+    course: Program
+    year_semester: Tahun dan Semester
     tenant:
       title: Penempatan Pelajar
       new : Pendudukkan Baru

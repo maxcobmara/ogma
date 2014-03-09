@@ -5,11 +5,10 @@ annotate --position after --sort --force -e tests,fixtures,factories
 psql -U postgres -d icms_kskb_development
 
 
-SELECT l.name as name pl.name as parent
-COUNT(l.id) as total, 
-
+SELECT l.name as name, pl.name as parent,
+COUNT(l.id) as total
 FROM locations l
-LEFT JOIN locations pl on pl.id=l.location_id
+LEFT JOIN locations pl on pl.id=l.parent_id
 GROUP BY parent
 ORDER BY parent;
 

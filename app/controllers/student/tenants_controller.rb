@@ -42,6 +42,28 @@ class Student::TenantsController < ApplicationController
     @occupied_locations = @current_tenants.pluck(:location_id)
   end
   
+  def census
+    @places = Location.where('typename = ? OR typename =?', 2, 8)
+    roots = []
+    @places.each do |place|
+      roots << place.root
+    end
+    @residentials = roots.uniq
+    @current_tenants = Tenant.where("keyreturned IS ? AND force_vacate != ?", nil, true)
+    
+    respond_to do |format|
+      format.pdf do
+        pdf = CensusStudentTenantsPdf.new(@residentials, @current_tenants, current_user)
+        send_data pdf.render, filename: "census",
+                              type: "application/pdf",
+                              disposition: "inline"
+      end
+    end
+  end
+
+  
+  
+  
   def new
     @current_tenant_ids = Tenant.where(:keyreturned => nil).where(:force_vacate => false).pluck(:student_id)
     @tenant = Tenant.new(:location_id => params[:location_id])

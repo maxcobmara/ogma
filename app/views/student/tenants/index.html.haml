@@ -16,8 +16,8 @@
           %li= link_to (t "student.tenant.statistics"), statistics_student_tenants_path
           %li
             %a.bogus{:href => "#"} Lapuran Penginapan
-          %li
-            %a.bogus{:href => "#"} Census
+          %li= link_to (t "student.tenant.census"), census_student_tenants_path(:format => :pdf )
+            
 
 
 .row
