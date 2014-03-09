@@ -19,6 +19,8 @@
     .legend_title male occupied
     .mbed_empty.legend_object
     .legend_title male empty
+    .bed_damage.legend_object
+    .legend_title damaged
   
   
   
@@ -30,9 +32,10 @@
         .row.tenancy_floor
           .floor_name= floor.name
           - @female_occupied = floor.descendants.where('typename = ?', 2).order(combo_code: :asc).joins(:tenants).where("tenants.id" => @current_tenants)
-          - @female =          floor.descendants.where('typename = ? AND id NOT IN (?)', 2, @occupied_locations).order(combo_code: :asc)
+          - @female =          floor.descendants.where(occupied: [false, nil]).where('typename = ? AND id NOT IN (?)', 2, @occupied_locations).order(combo_code: :asc)
           - @male_occupied =   floor.descendants.where('typename = ?', 8).order(combo_code: :asc).joins(:tenants).where("tenants.id" => @current_tenants)
-          - @male =            floor.descendants.where('typename = ? AND id NOT IN (?)', 8, @occupied_locations).order(combo_code: :asc)
+          - @male =            floor.descendants.where(occupied: [false, nil]).where('typename = ? AND id NOT IN (?)', 8, @occupied_locations).order(combo_code: :asc)
+          - @damaged =         floor.descendants.where(occupied: true)
             
           - @female_occupied.each do |bed|
             = link_to student_tenant_path(bed.tenants.last) do
@@ -47,6 +50,11 @@
           - @male.each do |bed|
             = link_to new_student_tenant_path(:location_id => bed) do
               .mbed_empty.tenant{title: "#{render 'tooltip', bed: bed}", 'data-toggle' => 'tooltip', 'data-html' => "true"}
+              
+          - @damaged.each do | bed |
+            = link_to campus_location_path(:id => bed) do
+              .bed_damage.tenant{title: "#{render 'tooltip', bed: bed}", 'data-toggle' => 'tooltip', 'data-html' => "true"}
+          
 
 .row
   .col-md-3
