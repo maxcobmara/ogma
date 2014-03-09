@@ -87,6 +87,7 @@
           %td.centre{colspan: 2}= (a + b)
 
 .row
+  %H4 Lapuran Penginapan
   %table.table-striped.table-hover.ogma
     - @residentials.each do |building|
       %thead
@@ -108,6 +109,43 @@
           %td= @empty.count
           %td= @damaged.count
           %td
+          
+.row
+  %H4 Census
+  %table.table-striped.table-hover.ogma
+    - @residentials.each do |building|
+      - building.children.sort.reverse.each do |floor|
+      
+        - @occupied = floor.descendants.where(typename: [2,8]).joins(:tenants).where("tenants.id" => @current_tenants)
+        - @empty =    floor.descendants.where(typename: [2,8]).where(occupied: [false, nil]).where('id NOT IN (?)', @occupied_locations)
+        - @damaged =         floor.descendants.where(occupied: true)
+        
+        - @rooms = floor.descendants.where(typename: [2,8])
+        - @this_floor = @current_tenants.where(location_id: @rooms)
+        
+        - unless @this_floor.blank?
+          %thead
+            %tr
+              %td{colspan:7}= floor.name
+            %tr
+              %td Location Code
+              %td Location Name
+              %td Student Name
+              %td IC No
+              %td Programme
+              %td Year & Semester
+              %td Notes
+        %tbody
+          - @this_floor.each do |room|
+            %tr
+              %td= room.location.combo_code
+              %td= room.location.name
+              %td= room.student.name
+              %td= room.student.icno
+              %td= room.student.course.name
+              %td= year_and_sem(room.student) rescue "nil"
+              %td
+            
 
       
     
