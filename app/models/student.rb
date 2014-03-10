@@ -14,7 +14,7 @@ class Student < ActiveRecord::Base
   
   has_and_belongs_to_many :klasses          #has_and_belongs_to_many :programmes
   belongs_to :course,         :class_name => 'Programme', :foreign_key => 'course_id'       #Link to Programme
-  belongs_to :intakestudent,  :class_name => 'Intake',    :foreign_key => 'intake_id'       #Link to Model intake
+  belongs_to :intake    #Link to Model intake
   
   has_one   :user,              :dependent => :destroy                                      #Link to Model user
   has_many  :leaveforstudents,  :dependent => :destroy                                      #Link to LeaveStudent

@@ -7,98 +7,108 @@
     %ul.nav.navbar-nav
       //%li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'new'))), new_student_tenant_path
     %ul.nav.navbar-nav.navbar-right
-      %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'search'))), "#", class: "toga"
-      %li= link_to content_tag(:li, fa_icon("print", text: (t 'print'))), "#"
-.row
-  .col-md-offset-3
-    .fbed_occupied.legend_object
-    .legend_title female occupied
-    .fbed_empty.legend_object
-    .legend_title female empty
-    .mbed_occupied.legend_object
-    .legend_title male occupied
-    .mbed_empty.legend_object
-    .legend_title male empty
-  
-  
-  
-.row
-  - @residentials.each do |building|
-    .tenancy_building{style: "width:#{@div_width}%;"}
-      %h5= building.name
-      - building.children.sort.reverse.each do |floor|
-        .row.tenancy_floor
-          .floor_name= floor.name
-          - @female_occupied = floor.descendants.where('typename = ?', 2).order(combo_code: :asc).joins(:tenants).where("tenants.id" => @current_tenants)
-          - @female =          floor.descendants.where('typename = ? AND id NOT IN (?)', 2, @occupied_locations).order(combo_code: :asc)
-          - @male_occupied =   floor.descendants.where('typename = ?', 8).order(combo_code: :asc).joins(:tenants).where("tenants.id" => @current_tenants)
-          - @male =            floor.descendants.where('typename = ? AND id NOT IN (?)', 8, @occupied_locations).order(combo_code: :asc)
+      %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "toga"
+      %li.dropdown
+        %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#"}
+          = fa_icon "print", text: (t 'actions.print')
+          %b.caret
+        %ul.dropdown-menu
+          %li= link_to (t "student.tenant.statistics"), statistics_student_tenants_path
+          %li
+            %a.bogus{:href => "#"} Lapuran Penginapan
+          %li= link_to (t "student.tenant.census"), census_student_tenants_path(:format => :pdf )
             
-          - @female_occupied.each do |bed|
-            = link_to student_tenant_path(bed.tenants.last) do
-              .fbed_occupied.tenant{title: "#{render 'tooltip', bed: bed}", 'data-toggle' => 'tooltip', 'data-html' => "true"}
-          - @female.each do |bed|
-            = link_to new_student_tenant_path(:location_id => bed) do
-              .fbed_empty.tenant{title: "#{render 'tooltip', bed: bed}", 'data-toggle' => 'tooltip', 'data-html' => "true"}
-              
-          - @male_occupied.each do |bed|
-            = link_to student_tenant_path(bed.tenants.last) do
-              .mbed_occupied.tenant{title: "#{render 'tooltip', bed: bed}", 'data-toggle' => 'tooltip', 'data-html' => "true"}
-          - @male.each do |bed|
-            = link_to new_student_tenant_path(:location_id => bed) do
-              .mbed_empty.tenant{title: "#{render 'tooltip', bed: bed}", 'data-toggle' => 'tooltip', 'data-html' => "true"}
 
-.row
-  .col-md-3
-    %p Statistics
-    %table.table-striped.table-hover.ogma
-      %thead
-        %tr
-          %th Item
-          %th Female
-          %th Male
-      %tbody
-        %tr
-          %th Empty
-          %td.centre= @female_student_beds.where('id NOT IN (?)', @occupied_locations).count
-          %td.centre= @male_student_beds.where('id NOT IN (?)', @occupied_locations).count
-        %tr
-          %th Occupied
-          %td.centre= @female_student_beds.joins(:tenants).where("tenants.id" => @current_tenants).count
-          %td.centre= @male_student_beds.joins(:tenants).where("tenants.id" => @current_tenants).count
-        %tr
-          %th Totals
-          %td.centre= a = @female_student_beds.count
-          %td.centre= b = @male_student_beds.count
-        %tr
-          %th Total
-          %td.centre{colspan: 2}= (a + b)
-          
-  
-  
+
 .row
   %table.table-striped.table-hover.ogma
     %thead
       %tr
-        %th= t 'location.name'
-        %th= t 'staff.name'
-        %th= t 'programme.name'
+        %th= t 'location.code'
+        %th= t 'student.icno'
+        %th= t 'student.name'
+        %th= t 'course.name'
         %th= t 'tenant.key.accept'
         %th= t 'tenant.key.expected'
         %th= t 'tenant.key.return'
         %th= t 'tenance.force_vacate'
-        %th.action= fa_icon "cogs"
     
-    %tbody  
+    %tbody
+      = render "index_search"
       - @tenants.each do |tenant|
         %tr
-          %td= tenant.location.try(:name)
-          %td= tenant.staff.try(:name) || tenant.student.try(:name)
-          %td
-            - unless @tenant.try(:student).blank?
-              = tenant.try(:student).try(:programme).try(:name)
+          %td= link_to tenant.location.try(:combo_code), campus_location_path(tenant.location)
+          %td= link_to tenant.try(:student).try(:icno), student_tenant_path(tenant)
+          %td= link_to tenant.try(:student).try(:name), student_path(tenant.student)
+          %td= tenant.try(:student).try(:programme).try(:name)
           %td= l(tenant.keyaccept) rescue nil
           %td= l(tenant.keyexpectedreturn) unless tenant.keyexpectedreturn.blank?
           %td= l(tenant.keyreturned) unless tenant.keyreturned.blank?
           %td= tenant.force_vacate? ? "Yes" : "No"
           //%td= link_to image_tag("printer.png", :border => 0, :title => 'Borang Asrama'), :action => 'borang_asrama', :id => tenant
+
+.row
+  %H4 Lapuran Penginapan
+  %table.table-striped.table-hover.ogma
+    - @residentials.each do |building|
+      %thead
+        %tr
+          %th= building.name
+          %th isi
+          %th kosong
+          %th rosak
+          %th notes
+      - building.children.sort.reverse.each do |floor|
+      
+        - @occupied = floor.descendants.where(typename: [2,8]).joins(:tenants).where("tenants.id" => @current_tenants)
+        - @empty =    floor.descendants.where(typename: [2,8]).where(occupied: [false, nil]).where('id NOT IN (?)', @occupied_locations)
+        - @damaged =         floor.descendants.where(occupied: true)
+
+        %tr
+          %td= floor.name
+          %td= @occupied.count
+          %td= @empty.count
+          %td= @damaged.count
+          %td
+          
+.row
+  %H4 Census
+  %table.table-striped.table-hover.ogma
+    - @residentials.each do |building|
+      - building.children.sort.reverse.each do |floor|
+      
+        - @occupied = floor.descendants.where(typename: [2,8]).joins(:tenants).where("tenants.id" => @current_tenants)
+        - @empty =    floor.descendants.where(typename: [2,8]).where(occupied: [false, nil]).where('id NOT IN (?)', @occupied_locations)
+        - @damaged =         floor.descendants.where(occupied: true)
+        
+        - @rooms = floor.descendants.where(typename: [2,8])
+        - @this_floor = @current_tenants.where(location_id: @rooms)
+        
+        - unless @this_floor.blank?
+          %thead
+            %tr
+              %td{colspan:7}= floor.name
+            %tr
+              %td Location Code
+              %td Location Name
+              %td Student Name
+              %td IC No
+              %td Programme
+              %td Year & Semester
+              %td Notes
+        %tbody
+          - @this_floor.each do |room|
+            %tr
+              %td= room.location.combo_code
+              %td= room.location.name
+              %td= room.student.name
+              %td= room.student.icno
+              %td= room.student.course.name
+              %td= year_and_sem(room.student) rescue "nil"
+              %td
+            
+
+      
+    
+  
+

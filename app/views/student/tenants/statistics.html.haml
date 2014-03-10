@@ -1,0 +1,45 @@
+- model_class = Tenant
+.page-header
+  %h1
+    = t('student.tenant.title')
+    -
+    = (t "student.tenant.statistics")
+    //#, :default => model_class.model_name.human.pluralize
+
+
+.row
+  .col-md-3
+    %table.table-striped.table-hover.ogma
+      %thead
+        %tr
+          %th Item
+          %th= t 'student.female'
+          %th= t 'student.male'
+      %tbody
+        %tr
+          %th= t 'student.tenant.empty'
+          %td.centre= @ef = @female_student_beds.where(occupied: [false, nil]).where('id NOT IN (?)', @occupied_locations).count
+          %td.centre= @em = @male_student_beds.where(occupied: [false, nil]).where('id NOT IN (?)', @occupied_locations).count
+        %tr
+          %th= t 'student.tenant.occupied'
+          %td.centre= @of = @female_student_beds.joins(:tenants).where("tenants.id" => @current_tenants).count
+          %td.centre= @om = @male_student_beds.joins(:tenants).where("tenants.id" => @current_tenants).count
+        %tr
+          %th= t 'student.tenant.damaged'
+          %td.centre= @df = @female_student_beds.where(occupied: true).count
+          %td.centre= @dm = @male_student_beds.where(occupied: true).count
+        %tr
+          %th= t 'student.tenant.total'
+          %td.centre= a = @female_student_beds.count
+          %td.centre= b = @male_student_beds.count
+        %tr
+          %th= t 'student.tenant.total'
+          %td.centre{colspan: 2}= (a + b)
+          
+  .col-md-4
+    %h4.centre= t 'student.female'
+    = pie_chart [[(t 'student.tenant.empty'), @ef], [(t 'student.tenant.occupied'), @of], [(t 'student.tenant.damaged'), @df]], :height => "190px", :library => {legend: { position: 'left', maxLines: 3}}
+
+  .col-md-4
+    %h4.centre= t 'student.male'
+    = pie_chart [[(t 'student.tenant.empty'), @em], [(t 'student.tenant.occupied'), @om], [(t 'student.tenant.damaged'), @dm]], :height => "190px", :library => {legend: { position: 'right', maxLines: 3}}

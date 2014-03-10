@@ -18,6 +18,8 @@
 //= require bootstrap-select
 //= require bootstrap-switch
 //= require bigtext
+//= require jsapi
+//= require chartkick
 //= require_tree .
 
 

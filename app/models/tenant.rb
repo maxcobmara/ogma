@@ -5,12 +5,12 @@ class Tenant < ActiveRecord::Base
   
   
   #student autocomplete
-  def student_name
-    student.try(:name)
+  def student_icno
+    student.try(:icno)
   end
 
-  def student_name=(name)
-    self.student = Student.find_or_create_by_name(name) if name.present?
+  def student_icno=(icno)
+    self.student = Student.find_or_create_by_icno(icno) if icno.present?
   end
 end
 

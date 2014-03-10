@@ -1,0 +1,49 @@
+- model_class = Tenant
+.page-header
+  %h1= t('student.tenant.title')#, :default => model_class.model_name.human.pluralize
+
+.row
+  .col-md-offset-3
+    .fbed_occupied.legend_object
+    .legend_title female occupied
+    .fbed_empty.legend_object
+    .legend_title female empty
+    .mbed_occupied.legend_object
+    .legend_title male occupied
+    .mbed_empty.legend_object
+    .legend_title male empty
+    .bed_damage.legend_object
+    .legend_title damaged
+  
+  
+  
+.row
+  - @residentials.each do |building|
+    .tenancy_building{style: "width:#{@div_width}%;"}
+      %h5= building.name
+      - building.children.sort.reverse.each do |floor|
+        .row.tenancy_floor
+          .floor_name= floor.name
+          - @female_occupied = floor.descendants.where('typename = ?', 2).order(combo_code: :asc).joins(:tenants).where("tenants.id" => @current_tenants)
+          - @female =          floor.descendants.where(occupied: [false, nil]).where('typename = ? AND id NOT IN (?)', 2, @occupied_locations).order(combo_code: :asc)
+          - @male_occupied =   floor.descendants.where('typename = ?', 8).order(combo_code: :asc).joins(:tenants).where("tenants.id" => @current_tenants)
+          - @male =            floor.descendants.where(occupied: [false, nil]).where('typename = ? AND id NOT IN (?)', 8, @occupied_locations).order(combo_code: :asc)
+          - @damaged =         floor.descendants.where(occupied: true)
+            
+          - @female_occupied.each do |bed|
+            = link_to student_tenant_path(bed.tenants.last) do
+              .fbed_occupied.tenant{title: "#{render 'tooltip', bed: bed}", 'data-toggle' => 'tooltip', 'data-html' => "true"}
+          - @female.each do |bed|
+            = link_to new_student_tenant_path(:location_id => bed) do
+              .fbed_empty.tenant{title: "#{render 'tooltip', bed: bed}", 'data-toggle' => 'tooltip', 'data-html' => "true"}
+              
+          - @male_occupied.each do |bed|
+            = link_to student_tenant_path(bed.tenants.last) do
+              .mbed_occupied.tenant{title: "#{render 'tooltip', bed: bed}", 'data-toggle' => 'tooltip', 'data-html' => "true"}
+          - @male.each do |bed|
+            = link_to new_student_tenant_path(:location_id => bed) do
+              .mbed_empty.tenant{title: "#{render 'tooltip', bed: bed}", 'data-toggle' => 'tooltip', 'data-html' => "true"}
+              
+          - @damaged.each do | bed |
+            = link_to campus_location_path(:id => bed) do
+              .bed_damage.tenant{title: "#{render 'tooltip', bed: bed}", 'data-toggle' => 'tooltip', 'data-html' => "true"}
