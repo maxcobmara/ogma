@@ -3,7 +3,7 @@ class Document < ActiveRecord::Base
 #belongs_to :documents, :foreign_key => 'staff_id'
 # has_one :title
 
-validates_presence_of :serialno, :refno, :category, :title, :from, :stafffiled_id, :letterdt, :letterxdt, :sender
+validates_presence_of :serialno, :refno, :category, :title, :from, :stafffiled_id#,:letterdt, :letterxdt, :sender,
 
 has_and_belongs_to_many   :staffs, :join_table => :documents_staffs   #5Apr2013
 
@@ -14,7 +14,7 @@ belongs_to :cofile,       :foreign_key => 'file_id'
 
 has_many :asset_disposals
 has_many :asset_losses
-has_many :travel_requests,   :dependent => :nullify #ref:gmail-sept15,2012-Checking for broken association - refer document.rb (line 17)
+#has_many :travel_requests,   :dependent => :nullify #ref:gmail-sept15,2012-Checking for broken association - refer document.rb (line 17)
 
 before_save :set_actionstaff2_to_blank_if_close_is_selected
 
@@ -64,8 +64,8 @@ before_save :set_actionstaff2_to_blank_if_close_is_selected
   end
 
 
+#-------------------------Search---------------------------------------------------  
 
-  
 #---------------------AttachFile------------------------------------------------------------------------
  has_attached_file :data,
                     :url => "/assets/documents/:id/:style/:basename.:extension",
@@ -90,18 +90,18 @@ before_save :set_actionstaff2_to_blank_if_close_is_selected
 #----------------Coded List----------------------------------- 
 CATEGORY = [
         #  Displayed       stored in db
-        [ "Surat",            "1" ],
-        [ "Memo",             "2" ],
-        [ "Pekeliling",       "3" ],
-        [ "Lain-Lain",        "4" ],
-        [ "e-Mel",            "5" ]
+        [ "Surat",      "1" ],
+        [ "Memo",       "2" ],
+        [ "Pekeliling", "3" ],
+        [ "Lain-Lain",  "4" ],
+        [ "e-Mel",      "5" ]
  ]
  
  ACTION = [
          #  Displayed       stored in db
-         [ "Segera",          "1" ],
-         [ "Biasa",           "2" ],
-         [ "Makluman",        "3" ]
+         [ "Segera","1" ],
+         [ "Biasa","2" ],
+         [ "Makluman", "3" ]
   ]
   
   def stafffiled_details 
@@ -147,59 +147,7 @@ CATEGORY = [
   
   #5Apr2013  -------------------------------------
   
-  #8Apr2013 --------------------------------------
-  def self.set_recipient(recipients)
-    	recipient_no_wspace = recipients.gsub(/(\s+, +|,\s+|\s+,)/,',')     #remove whitespace
-    	@to_name_A = recipient_no_wspace.split(",") 											  #will become - ["Saadah","Sulijah"]
-    	@to_id_A = []
-      @to_name_A.each do |to_name|
-      	aa = Staff.find_by_name(to_name).id										            #result(sample)- ["1","7"]
-        @to_id_A << aa.to_i
-      end
-      return @to_id_A
-  end
+ 
   
   
 end
-
-# == Schema Information
-#
-# Table name: documents
-#
-#  category                :integer
-#  cc1action               :string(255)
-#  cc1actiondate           :date
-#  cc1closed               :boolean
-#  cc1date                 :date
-#  cc1remarks              :text
-#  cc1staff_id             :integer
-#  cc2action               :string(255)
-#  cc2closed               :boolean
-#  cc2date                 :date
-#  cc2remarks              :text
-#  cc2staff_id             :integer
-#  cctype_id               :integer
-#  closed                  :boolean
-#  created_at              :datetime
-#  data_content_type       :string(255)
-#  data_file_name          :string(255)
-#  data_file_size          :integer
-#  data_updated_at         :datetime
-#  dataaction_content_type :string(255)
-#  dataaction_file_name    :string(255)
-#  dataaction_file_size    :integer
-#  dataaction_updated_at   :datetime
-#  file_id                 :integer
-#  from                    :string(255)
-#  id                      :integer          not null, primary key
-#  letterdt                :date
-#  letterxdt               :date
-#  otherinfo               :text
-#  prepared_by             :integer
-#  refno                   :string(255)
-#  sender                  :string(255)
-#  serialno                :string(255)
-#  stafffiled_id           :integer
-#  title                   :string(255)
-#  updated_at              :datetime
-#

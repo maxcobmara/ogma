@@ -267,6 +267,7 @@ ms_MY:
     letterdt: Tarikh Surat
     letterxdt: Tarikh Terima
     uploaded: File Dimuatnaik 
+    upload_change_file: "Memuatnaik/Tukar File"
 
   campus:
     tenants:
