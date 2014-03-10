@@ -3,7 +3,7 @@
     %td= f.text_field :icno_cont, size: 2,  :class => "form-control"
     %td= f.text_field :name_cont, size: 2,  :class => "form-control"
     %td= f.text_field :matrixno_start, size: 2,  :class => "form-control"
-    /%td= f.select :name, options_from_collection_for_select(Student.all, "id", "name"), include_blank: true
+    /%td= f.select :course_cont, options_from_collection_for_select(Student.all, "id", "course"), {include_blank: true}#, {class: 'selectpicker', "data-width"=>"350px"}
     %td.input-group
       = f.text_field :race_cont, size: 2,  :class => "form-control"    	  
       %span.input-group-btn
