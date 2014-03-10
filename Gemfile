@@ -28,6 +28,7 @@ gem "bootstrap-select-rails", "~> 1.3.0.1"
 gem "bootstrap-switch-rails", "~> 2.0.2"
 gem "modernizr-rails", "~> 2.6.2.3"
 #gem "jquery-ui-bootstrap-rails", "~> 0.0.2"
+gem "bootstrap-datetimepicker", "~> 2.1.30"
 
 
 group :assets do
