@@ -39,7 +39,7 @@
         %tr
           %td= link_to tenant.location.try(:combo_code), campus_location_path(tenant.location)
           %td= link_to tenant.try(:student).try(:icno), student_tenant_path(tenant)
-          %td= link_to tenant.try(:student).try(:name), student_path(tenant.try(:student))
+          %td= link_to tenant.try(:student).try(:name), student_path(tenant.student) unless tenant.student.nil? 
           %td= tenant.try(:student).try(:programme).try(:name)
           %td= l(tenant.keyaccept) rescue nil
           %td= l(tenant.keyexpectedreturn) unless tenant.keyexpectedreturn.blank?
