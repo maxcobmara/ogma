@@ -35,7 +35,7 @@
         
       %dl.dl-horizontal
         %dt= t 'student.semester', :default =>  model_class.human_attribute_name(:semester) + ":"
-        %dd= year_and_sem(@tenant.student)
+        %dd= year_and_sem(@tenant.student) rescue ''
         
       %dl.dl-horizontal
         %dt= t 'student.name', :default =>  model_class.human_attribute_name(:student_id) + ":"

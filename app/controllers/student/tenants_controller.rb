@@ -3,7 +3,25 @@ class Student::TenantsController < ApplicationController
   before_action :set_tenant, only: [:show, :edit, :update, :destroy]
   
   def index
+    @search = Tenant.where("student_id IS NOT NULL").search(params[:q])
+    @search.keyreturned_present != nil unless params[:q]
+    @search.force_vacate_true = false unless params[:q]
+    @search.sorts = 'location_combo_code asc' if @search.sorts.empty?
+    @tenants = @search.result
+  
+    #reports - will move out
     #getting buidings with student beds
+    @places = Location.where('typename = ? OR typename =?', 2, 8)
+    roots = []
+    @places.each do |place|
+     roots << place.root
+    end
+    @residentials = roots.uniq
+    @current_tenants = Tenant.where("keyreturned IS ? AND force_vacate != ?", nil, true)
+
+  end
+  
+  def room_map
     @places = Location.where('typename = ? OR typename =?', 2, 8)
     roots = []
     @places.each do |place|
@@ -12,18 +30,39 @@ class Student::TenantsController < ApplicationController
     @residentials = roots.uniq
     #sets div size to fit no of buildings 
     @div_width = 90/@residentials.count
-    
-    @current_tenants = Tenant.where("keyreturned IS ? AND force_vacate != ?", nil, true)#.where(:keyreturned => nil).where(:force_vacate => false).where(s)
+    @current_tenants = Tenant.where("keyreturned IS ? AND force_vacate != ?", nil, true)
     @occupied_locations = @current_tenants.pluck(:location_id)
-    
-    
+  end
+  
+  def statistics
     @locations = Location.where('typename IN (?)', [2,8])
     @female_student_beds  = @locations.where('typename = ?', 2)
     @male_student_beds    = @locations.where('typename = ?', 8)
-    
-    
-    @tenants = Tenant.order(created_at: :desc)
+    @current_tenants = Tenant.where("keyreturned IS ? AND force_vacate != ?", nil, true)
+    @occupied_locations = @current_tenants.pluck(:location_id)
   end
+  
+  def census
+    @places = Location.where('typename = ? OR typename =?', 2, 8)
+    roots = []
+    @places.each do |place|
+      roots << place.root
+    end
+    @residentials = roots.uniq
+    @current_tenants = Tenant.where("keyreturned IS ? AND force_vacate != ?", nil, true)
+    
+    respond_to do |format|
+      format.pdf do
+        pdf = CensusStudentTenantsPdf.new(@residentials, @current_tenants, current_user)
+        send_data pdf.render, filename: "census",
+                              type: "application/pdf",
+                              disposition: "inline"
+      end
+    end
+  end
+
+  
+  
   
   def new
     @current_tenant_ids = Tenant.where(:keyreturned => nil).where(:force_vacate => false).pluck(:student_id)
