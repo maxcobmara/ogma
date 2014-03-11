@@ -293,6 +293,7 @@ en:
     letterdt: Letter Date
     letterxdt: Received Date
     uploaded: Uploaded File
+    upload_change_file: "Upload/Change File"
 
   events:
     list: Event List

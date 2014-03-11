@@ -88,7 +88,7 @@ class DocumentsController < ApplicationController
    def update
      	 @document = Document.find(params[:id])
        @document.staff_ids = []
-       @document.staff_ids = Document.set_recipient(params[:document][:to_name])
+       #@document.staff_ids = Document.set_recipient(params[:document][:to_name])
        @document.serialno= params[:document][:serialno]
        @document.refno = params[:document][:refno]
        @document.category = params[:document][:category]
@@ -159,7 +159,8 @@ class DocumentsController < ApplicationController
    # DELETE /documents/1
    # DELETE /documents/1.xml
   def destroy
-    @documents.destroy
+    @document = Document.find(params[:id])
+    @document.destroy
     respond_to do |format|
       
       format.html { redirect_to documents_url }

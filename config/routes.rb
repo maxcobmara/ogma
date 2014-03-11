@@ -28,8 +28,6 @@ Ogma::Application.routes.draw do
 
 
   resources :documents
-
-  
   
   resources :students do
     collection do

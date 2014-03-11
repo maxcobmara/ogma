@@ -12,7 +12,7 @@
         (#{ind+=1}) #{doc_recepient.name}
         %br
 
-    %dt= t 'document.circulate_minute_date' , :default => model_class.human_attribute_name(:DateTime) + ":"
+    %dt= t 'document.circulate_minute_date' , :default => model_class.human_attribute_name(:cc1date) + ":"
     %dd= l(@document.cc1date)
 
     %dt= t 'document.action_type' , :default => model_class.human_attribute_name(:action) + ":"
