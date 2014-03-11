@@ -39,7 +39,8 @@ $(document).ready(function () {
     todayBtn: "linked",
     autoclose: true
   });
-  
+
+
   //Use this for picking only future dates
   $('[data-behaviour=datepicker_after]').datepicker({
     format: "yyyy/mm/dd",

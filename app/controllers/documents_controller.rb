@@ -9,6 +9,12 @@ class DocumentsController < ApplicationController
     @documents = @search.result
     @documents_pagi = @documents.page(params[:page]||1)
     @current_user = current_user.staff_id || '' 
+    
+    respond_to do |format|
+      
+      format.html { redirect_to documents_url }
+      format.json { head :no_content }
+    end
   end
 
   # GET /documents/1
