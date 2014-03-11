@@ -40,7 +40,7 @@
           = f.label t 'cofile.onloan_to', for: :onloan_to
         .col-md-2
           - if @cofile.onloanxdt == nil
-            = f.collection_select :staffloan_id, Staff.find(:all), :id, :mykad_with_staff_name, :selected=> @cofile.staffloan_id, :include_blank => true
+            = f.collection_select :staffloan_id, Staff.find(:all), :id, :mykad_with_staff_name,{:include_blank => true}, {class: 'selectpicker', "data-width"=>"350px"}
           - else
             = f.collection_select :staffloan_id, Staff.find(:all), :id, :mykad_with_staff_name, :selected =>'',:include_blank => true
 
