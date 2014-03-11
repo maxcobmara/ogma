@@ -25,12 +25,9 @@
         //%th.ac{:colspan => "2"}= t 'control'
 
 
-
-
     %tbody
     = render "index_search"
     - @students.group_by{|t|t.intake}.each do |intake, student_course|
-
       %tr
         %td{:colspan => "10", :style => "background-color:#EFF1F1;"}
           %br
