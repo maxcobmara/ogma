@@ -86,7 +86,7 @@
         .col-sm-2.control-label
           = f.label  t 'document.circulate_to' , for: :document
         .col-md-8
-          -#= text_field_with_auto_complete :document, :to_name ,{ :size => 70 }, { :tokens => ",",:url => formatted_staffs_path(:js),  :method => :get, :param_name => 'search' }
+          = f.text_field :to_name, :class => 'form-control', data: {autocomplete_source: Staff.order(name: :asc)} [0]
           %i
             %font{:size => "2"} Type an alphabet and select a recipient accordingly. To add other recipient, please type a comma (,), without any spaces, followed by an alphabet and make your next selection.
 
