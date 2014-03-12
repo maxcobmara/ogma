@@ -325,6 +325,7 @@ ms_MY:
     budget: Bajet
     used: Digunakan
     budgetb: Baki
+    budget_details: Maklumat Bajet Latihan Tahunan
 
   date:
       formats:
