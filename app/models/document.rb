@@ -124,7 +124,6 @@ CATEGORY = [
     "#{refno}"+" : "+"#{title.capitalize}"+" - "+"#{letterdt}"
   end
     
-  #5Apr2013  -------------------------------------
 
   def to_name
   	recipient_qty = staffs.count
@@ -141,13 +140,11 @@ CATEGORY = [
   	return staff_names
   end
 
+
   def to_name=(name)
 	  self.staffs = Staff.find_by_name(name) unless name.blank?
   end
-  
-  #5Apr2013  -------------------------------------
-  
- 
+
   
   
 end

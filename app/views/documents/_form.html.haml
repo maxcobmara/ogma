@@ -88,7 +88,7 @@
         .col-sm-2.control-label
           = f.label  t 'document.circulate_to' , for: :document
         .col-md-8
-          = f.text_field :to_name, :class => 'form-control', data: {autocomplete_source: Staff.order(name: :asc)} [0]
+          = f.text_field :to_name, class: 'form-control', data: {autocomplete_source: Staff.order(:name).map(&:name)}
           %i
             %br
             %font{:size => "2"} Type an alphabet and select a recipient accordingly. To add other recipient, please type a comma ( , ) without any spaces, followed by an alphabet and make your next selection.
@@ -115,6 +115,7 @@
       .form-group
         .col-sm-offset-2.col-sm-1
           = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), document_path(@document), :class => 'btn btn-default'
-        .col-sm-2
+		  
+        .col-sm-offset-1.col-sm-2
           = f.submit t('update'), class: "btn btn-primary"
 		 
