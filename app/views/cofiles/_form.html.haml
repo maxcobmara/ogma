@@ -40,21 +40,20 @@
           = f.label t 'cofile.onloan_to', for: :onloan_to
         .col-md-2
           - if @cofile.onloanxdt == nil
-            = f.collection_select :staffloan_id, Staff.find(:all), :id, :mykad_with_staff_name, :selected=> @cofile.staffloan_id, :include_blank => true
+            = f.collection_select :staffloan_id, Staff.find(:all), :id, :mykad_with_staff_name,{:include_blank => true}, {class: 'selectpicker', "data-width"=>"350px"}
           - else
-            = f.collection_select :staffloan_id, Staff.find(:all), :id, :mykad_with_staff_name, :selected =>'',:include_blank => true
-
+            = f.collection_select :staffloan_id, Staff.find(:all), :id, :mykad_with_staff_name, {:include_blank => true}, {class: 'selectpicker', "data-width"=>"350px"}
       .form-group
         .col-sm-2.control-label
           = f.label t 'cofile.onloandt', for: :onloandt
         .col-md-2
-          = f.text_field :onloandt, class: 'form-control mandatory', 'data-behaviour' => 'datepicker_dob'
+          = f.text_field :onloandt, class: 'form-control mandatory', 'data-behaviour' => 'datepicker_today'
 
       .form-group
         .col-sm-2.control-label
           = f.label t 'cofile.onloanxdt', for: :onloanxdt
         .col-md-2
-          = f.text_field :onloanxdt, class: 'form-control mandatory', 'data-behaviour' => 'datepicker_dob'
+          = f.text_field :onloanxdt, class: 'form-control mandatory', 'data-behaviour' => 'datepicker_today'
 
       .form-group
         .col-sm-offset-2.col-sm-1

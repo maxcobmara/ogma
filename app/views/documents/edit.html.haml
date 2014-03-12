@@ -1,0 +1,8 @@
+- model_class = Document
+.page-header
+  %h1
+    = t 'edit'
+    = @document.doc_details
+
+= render 'shared/flashes'
+= render 'form'
