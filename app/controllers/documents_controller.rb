@@ -94,9 +94,9 @@ class DocumentsController < ApplicationController
        @document.category = params[:document][:category]
        @document.title = params[:document][:title]
        #-------this part for all dates---------http://accidentaltechnologist.com/ruby-on-rails/damn-you-rails-multiparameter-attributes/
-       @document.letterdt = Date.new(params[:document][:"letterdt(1i)"].to_i,params[:document][:"letterdt(2i)"].to_i,params[:document][:"letterdt(3i)"].to_i)
-       @document.letterxdt = Date.new(params[:document][:"letterxdt(1i)"].to_i,params[:document][:"letterxdt(2i)"].to_i,params[:document][:"letterxdt(3i)"].to_i)
-       @document.cc1date = Date.new(params[:document][:"cc1date(1i)"].to_i,params[:document][:"cc1date(2i)"].to_i,params[:document][:"cc1date(3i)"].to_i)
+       @document.letterdt = params[:document][:"letterdt"]
+       @document.letterxdt = params[:document][:"letterxdt"]
+       @document.cc1date = params[:document][:"cc1date"]
        #-------this part for all dates---------http://accidentaltechnologist.com/ruby-on-rails/damn-you-rails-multiparameter-attributes/
        @document.from = params[:document][:from]
        @document.stafffiled_id = params[:document][:stafffiled_id]

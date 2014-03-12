@@ -30,13 +30,15 @@
         .col-sm-2.control-label
           = f.label t 'document.letterdt' , for: :letterdt
         .col-md-3
-          = f.date_select :letterdt, :start_year => 2010, :end_year => 2020, :order => [:day, :month, :year]
+          = f.text_field :letterdt, class: 'form-control mandatory', 'data-behaviour' => 'datepicker_before' 
+          -#= f.date_select :letterdt, :start_year => 2010, :end_year => 2020, :order => [:day, :month, :year]
 
       .form-group
         .col-sm-2.control-label
           = f.label t 'document.letterxdt'  , for: :letterxdt
         .col-md-3
-          = f.date_select :letterxdt, :start_year => 2010, :end_year => 2020, :order => [:day, :month, :year]
+          = f.text_field :letterxdt, class: 'form-control mandatory', 'data-behaviour' => 'datepicker_before' 
+          -#= f.date_select :letterxdt, :start_year => 2010, :end_year => 2020, :order => [:day, :month, :year]
 
       .form-group
         .col-sm-2.control-label
@@ -86,15 +88,17 @@
         .col-sm-2.control-label
           = f.label  t 'document.circulate_to' , for: :document
         .col-md-8
-          -#= text_field_with_auto_complete :document, :to_name ,{ :size => 70 }, { :tokens => ",",:url => formatted_staffs_path(:js),  :method => :get, :param_name => 'search' }
+          = f.text_field :to_name, class: 'form-control', data: {autocomplete_source: Staff.order(:name).map(&:name)}
           %i
-            %font{:size => "2"} Type an alphabet and select a recipient accordingly. To add other recipient, please type a comma (,), without any spaces, followed by an alphabet and make your next selection.
+            %br
+            %font{:size => "2"} Type an alphabet and select a recipient accordingly. To add other recipient, please type a comma ( , ) without any spaces, followed by an alphabet and make your next selection.
 
       .form-group
         .col-sm-2.control-label
           = f.label  t 'document.circulate_minute_date' , for: :cc1date
         .col-md-3
-          = f.date_select :cc1date, :start_year => 2010, :end_year => 2020, :order => [:day, :month, :year]
+          = f.text_field :cc1date, class: 'form-control mandatory', 'data-behaviour' => 'datepicker_before' 
+          -#= f.date_select :cc1date, :start_year => 2010, :end_year => 2020, :order => [:day, :month, :year]
 		  
       .form-group
         .col-sm-2.control-label
@@ -111,6 +115,7 @@
       .form-group
         .col-sm-offset-2.col-sm-1
           = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), document_path(@document), :class => 'btn btn-default'
-        .col-sm-2
+		  
+        .col-sm-offset-1.col-sm-2
           = f.submit t('update'), class: "btn btn-primary"
 		 
