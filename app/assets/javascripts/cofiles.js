@@ -1,13 +1,14 @@
-:javascript
-  function switchvisibility(el) {
-    if (document.getElementById(el).checked) {
-      document.getElementById('borrower').style.display = "table-row";
-      document.getElementById('loaneddate').style.display = "table-row";
-      document.getElementById('returneddate').style.display = "table-row";
-    } else {
-      document.getElementById('borrower').style.display = "none";
-      document.getElementById('loaneddate').style.display = "none";
-      document.getElementById('returneddate').style.display = "none";
-    }
-  }
-  
+function toggle(check)
+   { if(!check.checked)
+   {
+   document.getElementById('borrower').style.visibility='hidden';
+   document.getElementById('loaneddate').style.visibility='hidden';
+   document.getElementById('returneddate').style.visibility='hidden';
+   }
+   else
+   {
+   document.getElementById('borrower').style.visibility='visible';
+   document.getElementById('loaneddate').style.visibility='visible';
+   document.getElementById('returneddate').style.visibility='visible';
+   }
+   }
