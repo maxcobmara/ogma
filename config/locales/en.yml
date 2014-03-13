@@ -317,6 +317,7 @@ en:
     budget: Budget
     used: Used
     budgetb: Balance
+    budget_details: Annual Training Budget Details
 
   date:
     formats:

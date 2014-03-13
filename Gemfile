@@ -31,6 +31,7 @@ gem "modernizr-rails", "~> 2.6.2.3"
 gem 'protected_attributes'
 gem "jquery-datetimepicker-rails", "~> 2.1.9.0"
 #gem "jquery-ui-bootstrap-rails", "~> 0.0.2"
+gem "bootstrap-datetimepicker", "~> 2.1.30"
 
 group :assets do
   
