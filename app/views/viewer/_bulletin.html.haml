@@ -1,19 +1,12 @@
 
+= javascript_include_tag "jquery.carousel.css"
+= stylesheet_link_tag 'jquery.carousel.js', :media => :screen
 
-
-= javascript_include_tag "jquery.liScroll.css"
-= stylesheet_link_tag 'jquery.liScroll.js', :media => :screen
-
-#bulletin_bar
+.slidewrap2
   - dash_bulletins = Bulletin.find(:all, :order => 'publishdt desc', :limit => 5)
-  
-  %ul.liScroll.centre
+  %ul.slider.centre
     - dash_bulletins.each do |b|
-      %li
-        = link_to b.headline, :controller => 'bulletins', :action => 'show', :id => b.id
+      %li.slide
+        %h2= link_to b.headline, :controller => 'bulletins', :action => 'show', :id => b.id
         = b.content
-	  
-#bulletin_title_item.centre
-  = link_to "[view all]", bulletins_path
-  
-  
+        %br= link_to "[view all]", bulletins_path
