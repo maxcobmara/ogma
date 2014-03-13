@@ -281,8 +281,19 @@ en:
     received_date: Received Date
     from: From
     circulate_to: Circulate To
-    action_notifications: Actions/Notifications
+    action_notifications: "Actions/Notifications"
     closed: Closed
+    file_no: File No
+    circulate_minute_action: "Circulation/Minute Action"
+    circulate_minute_date: "Circulation/Minute Date"
+    action_type: Action Type 
+    file_closed: "File closed?"
+    minit_tindakan: "(Minutes of Action)"
+    stafffiled_id: Filled By
+    letterdt: Letter Date
+    letterxdt: Received Date
+    uploaded: Uploaded File
+    upload_change_file: "Upload/Change File"
 
   events:
     list: Event List

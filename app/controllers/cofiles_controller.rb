@@ -10,7 +10,7 @@ class CofilesController < ApplicationController
     @cofiles = @cofiles.page(params[:page]||1)
     #previous
     #@staff_filtered = Staff.with_permissions_to(:edit).find(:all, :order => sort_column + ' ' + sort_direction ,:conditions => ['icno LIKE ? or name ILIKE ?', "%#{params[:search]}%", "%#{params[:search]}%"])
-    @cofiles_filtered = Cofile.find(:all, :order => sort_column + ' ' + sort_direction ,:conditions => ['cofileno LIKE ? or name ILIKE ? ', "%#{params[:search]}%", "%#{params[:search]}%"])
+   # @cofiles_filtered = Cofile.find(:all, :order => sort_column + ' ' + sort_direction ,:conditions => ['cofileno LIKE ? or name ILIKE ? ', "%#{params[:search]}%", "%#{params[:search]}%"])
 
   end
 
@@ -48,10 +48,4 @@ private
       params.require(:cofile).permit(:cofileno, :name, :location, :owner_id, :staffloan_id, :onloandt, :onloanxdt)
     end
     
-    def sort_column
-        Cofile.column_names.include?(params[:sort]) ? params[:sort] : "cofileno" 
-    end
-    def sort_direction
-        %w[asc desc].include?(params[:direction])? params[:direction] : "desc" 
-    end
 end

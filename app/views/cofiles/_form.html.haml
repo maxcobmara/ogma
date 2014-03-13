@@ -1,3 +1,4 @@
+
 .row.fluid
   = form_for [:cofile, @cofile], url: cofile_path(@cofile), :html => { :class => 'form-horizontal' }  do |f| 
     = render 'shared/error_messages', object: f.object
@@ -31,30 +32,30 @@
         .col-sm-2.control-label
           = f.label t 'cofile.onloan', for: :onloan
         .col-md-4
-          = f.check_box :onloan, :id => "fileborrow", :onchange => "switchvisibility('fileborrow')"
-        .col-md-4
-          #borrower{:style => "display: none;"}
+          %input{:unchecked => "checked", :name => "check", :onclick => "toggle(this.form.check);", :type => "checkbox"}
+
 		  		 
-      .form-group
+      .form-group#borrower{:style => "visibility:hidden"}
         .col-sm-2.control-label
           = f.label t 'cofile.onloan_to', for: :onloan_to
         .col-md-2
           - if @cofile.onloanxdt == nil
-            = f.collection_select :staffloan_id, Staff.find(:all), :id, :mykad_with_staff_name, :selected=> @cofile.staffloan_id, :include_blank => true
+            = f.collection_select :staffloan_id, Staff.find(:all), :id, :mykad_with_staff_name,{:include_blank => true}, {class: 'selectpicker', "data-width"=>"350px"}
           - else
-            = f.collection_select :staffloan_id, Staff.find(:all), :id, :mykad_with_staff_name, :selected =>'',:include_blank => true
-
-      .form-group
+            = f.collection_select :staffloan_id, Staff.find(:all), :id, :mykad_with_staff_name, {:include_blank => true}, {class: 'selectpicker', "data-width"=>"350px"}
+      .form-group#loaneddate{:style => "visibility:hidden"}
         .col-sm-2.control-label
           = f.label t 'cofile.onloandt', for: :onloandt
         .col-md-2
-          = f.text_field :onloandt, class: 'form-control mandatory', 'data-behaviour' => 'datepicker_dob'
+          = f.text_field :onloandt, class: 'form-control mandatory', 'data-behaviour' => 'datepicker_today'
 
-      .form-group
+      .form-group#returneddate{:style => "visibility:hidden"}
         .col-sm-2.control-label
           = f.label t 'cofile.onloanxdt', for: :onloanxdt
         .col-md-2
-          = f.text_field :onloanxdt, class: 'form-control mandatory', 'data-behaviour' => 'datepicker_dob'
+          = f.text_field :onloanxdt, class: 'form-control mandatory', 'data-behaviour' => 'datepicker_today'
+
+
 
       .form-group
         .col-sm-offset-2.col-sm-1

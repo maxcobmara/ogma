@@ -32,6 +32,14 @@ $(document).ready(function () {
       alert("Sorry! Feature not yet implemented");
   });
   
+  
+  $('[data-behaviour=datepicker_today]').datepicker({
+    format: "yyyy/mm/dd",
+    endDate: "today + 1",
+    todayBtn: "linked",
+    autoclose: true
+  });
+  
   //Use this for picking only dates in the past
   $('[data-behaviour=datepicker_before]').datepicker({
     format: "yyyy/mm/dd",
@@ -39,7 +47,8 @@ $(document).ready(function () {
     todayBtn: "linked",
     autoclose: true
   });
-  
+
+
   //Use this for picking only future dates
   $('[data-behaviour=datepicker_after]').datepicker({
     format: "yyyy/mm/dd",

@@ -5,18 +5,10 @@ class DocumentsController < ApplicationController
   # GET /documents
   # GET /documents.xml
   def index
-
     @search = Document.search(params[:q])
     @documents = @search.result
     @documents_pagi = @documents.page(params[:page]||1)
     @current_user = current_user.staff_id || '' 
-    
-    #@tome = Document.find(:all, :joins => :staffs, :conditions => ['staff_id =? and (refno ILIKE ? or title ILIKE ?)', current_user, "%#{params[:search]}%", "%#{params[:search]}%"], :order => "created_at DESC")
-    
-    #@document_files = @documents.group_by { |t| t.filedocer }
-    #@tome_document_files = @tome.group_by { |t| t.filedocer }
-    
-    #@docs_for_me = @documents.joins(:staffs).where(staffs.owner_ids => current_user).order(created_at: :asc)
   end
 
   # GET /documents/1
@@ -54,10 +46,10 @@ class DocumentsController < ApplicationController
    # POST /documents
    # POST /documents.xml
    def create
-    	@document = Document.new
-    	@document.staff_ids = []
-    	@document.staff_ids = Document.set_recipient(params[:document][:to_name])
-    	@document.serialno= params[:document][:serialno]
+     @document = Document.new
+     @document.staff_ids = []
+     @document.staff_ids = Document.set_recipient(params[:document][:to_name])
+     @document.serialno= params[:document][:serialno]
      @document.refno = params[:document][:refno]
      @document.category = params[:document][:category]
      @document.title = params[:document][:title]
@@ -94,17 +86,17 @@ class DocumentsController < ApplicationController
    # PUT /documents/1
    # PUT /documents/1.xml
    def update
-     	@document = Document.find(params[:id])
-     	@document.staff_ids = []
-      	@document.staff_ids = Document.set_recipient(params[:document][:to_name])
-      	@document.serialno= params[:document][:serialno]
+     	 @document = Document.find(params[:id])
+       @document.staff_ids = []
+       #@document.staff_ids = Document.set_recipient(params[:document][:to_name])
+       @document.serialno= params[:document][:serialno]
        @document.refno = params[:document][:refno]
        @document.category = params[:document][:category]
        @document.title = params[:document][:title]
        #-------this part for all dates---------http://accidentaltechnologist.com/ruby-on-rails/damn-you-rails-multiparameter-attributes/
-       @document.letterdt = Date.new(params[:document][:"letterdt(1i)"].to_i,params[:document][:"letterdt(2i)"].to_i,params[:document][:"letterdt(3i)"].to_i)
-       @document.letterxdt = Date.new(params[:document][:"letterxdt(1i)"].to_i,params[:document][:"letterxdt(2i)"].to_i,params[:document][:"letterxdt(3i)"].to_i)
-       @document.cc1date = Date.new(params[:document][:"cc1date(1i)"].to_i,params[:document][:"cc1date(2i)"].to_i,params[:document][:"cc1date(3i)"].to_i)
+       @document.letterdt = params[:document][:"letterdt"]
+       @document.letterxdt = params[:document][:"letterxdt"]
+       @document.cc1date = params[:document][:"cc1date"]
        #-------this part for all dates---------http://accidentaltechnologist.com/ruby-on-rails/damn-you-rails-multiparameter-attributes/
        @document.from = params[:document][:from]
        @document.stafffiled_id = params[:document][:stafffiled_id]
@@ -134,17 +126,6 @@ class DocumentsController < ApplicationController
    
    end
 
-   # DELETE /documents/1
-   # DELETE /documents/1.xml
-   def destroy
-     @document = Document.find(params[:id])
-     @document.destroy
-
-     respond_to do |format|
-       format.html { redirect_to(documents_url) }
-       format.xml  { head :ok }
-     end
-   end
   
    def generate_report
        @bb = params[:locals][:class_type]
@@ -174,6 +155,18 @@ class DocumentsController < ApplicationController
        end
        render :layout => 'report'
    end
+
+   # DELETE /documents/1
+   # DELETE /documents/1.xml
+  def destroy
+    @document = Document.find(params[:id])
+    @document.destroy
+    respond_to do |format|
+      
+      format.html { redirect_to documents_url }
+      format.json { head :no_content }
+    end
+  end
    
   private
     # Use callbacks to share common setup or constraints between actions.
@@ -185,4 +178,5 @@ class DocumentsController < ApplicationController
     def document_params
       params.require(:document).permit(:serialno, :refno, :category, :title, :from, :stafffiled_id, :letterdt, :letterxdt, :sender)
     end
+
 end
