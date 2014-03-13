@@ -1,0 +1,28 @@
+- model_class = Student	  
+  
+- puid = @student.id
+
+- thekins = Kin.find(:all, :conditions => ["student_id = ? AND kintype_id != ? AND kintype_id != ? ", puid,  98, 99 ])
+- thekins.each do |e|
+  .col-md-8.col-md-offset-1
+    %dl.dl-horizontal
+      %BR
+	  
+      %dt= t 'student.kintype_id' , :default => model_class.human_attribute_name(:kintype_id) + ":"
+      %dd= (Kin::KTYPE.find_all{|disp, value| value == e.kintype_id}).map {|disp, value| disp} [0]
+	  
+      %dt= t 'student.name' , :default => model_class.human_attribute_name(:name) + ":"
+      %dd= e.name.blank? ? "" : e.name
+	  
+      %dt= t 'student.icno' , :default => model_class.human_attribute_name(:icno) + ":"
+      %dd= e.mykadno
+	  
+      %dt= t 'student.profession' , :default => model_class.human_attribute_name(:profession) + ":"
+      %dd= e.profession
+	
+      %dt= t 'student.stelno' , :default => model_class.human_attribute_name(:phone) + ":"
+      %dd= e.phone
+	
+      %dt= t 'student.kinaddr' , :default => model_class.human_attribute_name(:kinaddr) + ":"
+      %dd= e.kinaddr
+		
