@@ -1,5 +1,5 @@
 .row.fluid
-  = form_for [:bulletin, @bulletin], url: bulletin_path(@bulletin), :html => { :class => 'form-horizontal' }  do |f| 
+  = form_for [:bulletin, @bulletin], url: bulletin_path(@bulletin) , :html => { :class => 'form-horizontal' }  do |f| 
     = render 'shared/error_messages', object: f.object
     .col-md-offset-1
       .form-group
@@ -24,7 +24,7 @@
         .col-sm-2.control-label
           = f.label t 'buletin.publish_date', for: :publishdt
         .col-md-3
-          = f.text_field :publishdt, class: 'form-control mandatory', 'data-behaviour' => 'datepicker_dob' 
+          = f.text_field :publishdt, class: 'form-control mandatory', 'data-behaviour' => 'datepicker_before' 
           /= f.date_select :publishdt, :start_year => Time.now.year-1, :order => [:day, :month, :year], :default => 1.days.from_now 
 	  
       .form-group

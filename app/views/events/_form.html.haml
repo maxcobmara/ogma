@@ -3,33 +3,35 @@
     = render 'shared/error_messages', object: f.object
     .col-md-offset-1
 
+
       .form-group
         .col-sm-2.control-label
           = f.label t 'events.en', for: :eventname
         .col-md-5
           = f.text_field :eventname, class: 'form-control mandatory'
 
+
       .form-group
         .col-sm-2.control-label
           = f.label t 'events.sd', for: :start_at
         .col-md-5
           //= f.datetime_select :start_at, :start_year => Time.now.year - 1, :minute_step => 15, :order => [:day, :month, :year]
-          = f.text_field :start_at, class: 'form-control mandatory', 'data-behaviour' => 'datepicker_dob'
+          = f.text_field :start_at, class: 'form-control mandatory', 'data-behaviour' => 'datepicker_std'
+ 
 
       .form-group
         .col-sm-2.control-label
           = f.label t 'events.ed', for: :end_at
         .col-md-5
           //= f.datetime_select :end_at, :start_year => Time.now.year - 1, :minute_step => 15, :order => [:day, :month, :year]
-          = f.text_field :end_at, class: 'form-control mandatory', 'data-behaviour' => 'datepicker_dob'
-
+          = f.text_field :end_at, class: 'form-control mandatory', 'data-behaviour' => 'datepicker_std'
 
 
       .form-group
         .col-sm-2.control-label
           = f.label t 'events.loca', for: :location
         .col-md-5
-          = f.text_field :location, class: 'form-control mandatory'
+          = f.collection_select :location, Event.find(:all), :id, :location, {:include_blank => true}, {class: 'selectpicker', "data-width"=>"300px"} 
 
 
       .form-group
@@ -46,11 +48,12 @@
           = f.text_field :officiated, class: 'form-control mandatory'
 
 
-      //.form-group
-      //  .col-sm-2.control-label
-      //    = f.label t 'events.cb', for: :staff_name
-      //  .col-md-2
-      //    = f.collection_select :createdby, Staff.find(:all, :order=>'name ASC'), :id, :staff_name_with_position, {:include_blank => true}
+      .form-group
+        .col-sm-2.control-label
+          = f.label t 'events.cb', for: :staff_name
+        .col-md-2
+          = f.collection_select :createdby, Staff.find(:all), :id, :name, {:include_blank => true}, {class: 'selectpicker', "data-width"=>"300px"}
+
 
       .form-group
         .col-sm-offset-2.col-sm-1

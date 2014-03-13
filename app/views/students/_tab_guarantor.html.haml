@@ -1,0 +1,40 @@
+- model_class = Student	  
+  
+- puid = @student.id
+- garantor = Kin.find(:all, :conditions => ["student_id = ? AND kintype_id = ? ", puid,  98])
+- garantor.each do |e|
+  .col-md-8.col-md-offset-1
+    %dl.dl-horizontal
+      %BR
+      %dt= t 'student.kintype_id' , :default => model_class.human_attribute_name(:kintype_id) + ":"
+      %dd Penjamin I
+	
+      %dt= t 'student.name' , :default => model_class.human_attribute_name(:name) + ":"
+      %dd= e.name.blank? ? "" : e.name
+	  
+  
+      %dt= t 'student.icno' , :default => model_class.human_attribute_name(:icno) + ":"
+      %dd= e.mykadno
+
+      %dt= t 'student.kinaddr' , :default => model_class.human_attribute_name(:kinaddr) + ":"
+      %dd= e.kinaddr
+      %BR
+ 
+- puid = @student.id
+- garantor = Kin.find(:all, :conditions => ["student_id = ? AND kintype_id = ? ", puid,  99 ])
+- garantor.each do |e|	  	  
+  .col-md-8.col-md-offset-1
+    %dl.dl-horizontal
+
+      %dt= t 'student.kintype_id' , :default => model_class.human_attribute_name(:kintype_id) + ":"
+      %dd Penjamin II
+	
+      %dt= t 'student.name' , :default => model_class.human_attribute_name(:name) + ":"
+      %dd= e.name.blank? ? "" : e.name
+	  
+  
+      %dt= t 'student.icno' , :default => model_class.human_attribute_name(:icno) + ":"
+      %dd= e.mykadno
+
+      %dt= t 'student.kinaddr' , :default => model_class.human_attribute_name(:kinaddr) + ":"
+      %dd= e.kinaddr

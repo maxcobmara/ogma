@@ -1,0 +1,12 @@
+
+= javascript_include_tag "jquery.carousel.css"
+= stylesheet_link_tag 'jquery.carousel.js', :media => :screen
+
+.slidewrap2
+  - dash_bulletins = Bulletin.find(:all, :order => 'publishdt desc', :limit => 5)
+  %ul.slider.centre
+    - dash_bulletins.each do |b|
+      %li.slide
+        %h2= link_to b.headline, :controller => 'bulletins', :action => 'show', :id => b.id
+        = b.content
+        %br= link_to "[view all]", bulletins_path

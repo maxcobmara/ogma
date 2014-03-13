@@ -14,6 +14,7 @@
   
   
 .row
+
   %table.table-striped.table-hover.ogma
     %thead
       %tr
@@ -24,20 +25,28 @@
         //%th.ac{:colspan => "2"}= t 'control'
 
 
+
+
     %tbody
     = render "index_search"
     - @students.group_by{|t|t.intake}.each do |intake, student_course|
+
       %tr
+<<<<<<< HEAD
+        %td.group{:colspan => "12"}
+          %span= intake.strftime('%B %Y')
+=======
         %td{:colspan => "10", :style => "background-color:#EFF1F1;"}
           %br
           %span{:style => "color:#218AFB;font-weight:bold;"}= intake.try(:strftime, '%B %Y')
+>>>>>>> master
       - student_course.group_by(&:course).each do |course, students|
         %tr
           %td.centre{:colspan => "12", :style => "background-color:#E5E4E2;"}
             %span{:style => "color:#black;font-weight:bold;font-size:14px"}= link_to course.name, "#", class: 'bogus'	  
         - for student in students
           %tr	  
-            %td= link_to student.formatted_mykad, student_path(student)
+            %td= link_to student.formatted_mykad, "#", class: 'bogus'
             %td= student.name
             %td= student.matrixno
             %td
