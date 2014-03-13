@@ -1,0 +1,48 @@
+- model_class = Student
+.col-md-8.col-md-offset-1
+  %dl.dl-horizontal
+    %BR
+
+    %dt= t 'student.students.sstatus' , :default => model_class.human_attribute_name(:sstatus) + ":"
+    %dd= @student.sstatus
+
+    %dt= t 'student.students.stelno' , :default => model_class.human_attribute_name(:stelno) + ":"
+    %dd=  @student.stelno
+		  
+    %dt= t 'student.students.address' , :default => model_class.human_attribute_name(:address) + ":"
+    %dd= @student.address
+ 
+    %dt= t 'student.students.address_posbasik' , :default => model_class.human_attribute_name(:address_posbasik) + ":"
+    %dd= @student.address_posbasik
+
+    %dt= t 'student.students.ssponsor' , :default => model_class.human_attribute_name(:ssponsor) + ":"
+    %dd=  @student.ssponsor
+
+    %dt= t 'student.students.gender' , :default => model_class.human_attribute_name(:gender) + ":"
+    %dd= (Student::GENDER.find_all{|disp, value| value == @student.gender.to_s}).map {|disp, value| disp} [0]
+		  
+    %dt= t 'student.students.dob' , :default => model_class.human_attribute_name(:sbirthd) + ":"
+    %dd= @student.sbirthdt
+    %dt= t 'student.students.age' , :default => model_class.human_attribute_name(:age) + ":"
+    %dd= @student.age
+ 
+    %dt= t 'student.students.mrtlstatuscd' , :default => model_class.human_attribute_name(:mrtlstatuscd) + ":"
+    %dd= (Student::MARITAL_STATUS.find_all{|disp, value| value == @student.mrtlstatuscd.to_s}).map {|disp, value| disp} [0]
+
+    %dt= t 'student.students.race' , :default => model_class.human_attribute_name(:race) + ":"
+    %dd= (Student::RACE.find_all{|disp, value| value == @student.race.to_s}).map {|disp, value| disp} [0]
+   
+    - if @student.race2 == 21
+      %dt= t 'student.etnic'
+      %dd= h @student.race
+	
+    %dt= t 'student.students.semail' , :default => model_class.human_attribute_name(:semail) + ":"
+    %dd= @student.semail
+
+    %dt= t 'student.students.regdate' , :default => model_class.human_attribute_name(:regdate) + ":"
+    %dd= @student.regdate
+    
+    %dt= t 'student.students.offer_letter_serial' , :default => model_class.human_attribute_name(:offer_letter_serial) + ":"
+    %dd= @student.offer_letter_serial
+       
+   

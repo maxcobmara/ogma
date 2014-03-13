@@ -6,7 +6,7 @@ class Student < ActiveRecord::Base
   validates_numericality_of :icno, :stelno
   validates_length_of       :icno, :is =>12
   validates_uniqueness_of   :icno
- #validates_format_of       :name, :with => /^[a-zA-Z'`\/\.\@\ ]+$/, :message => I18n.t('activerecord.errors.messages.illegal_char') #add allowed chars between bracket
+  #validates_format_of       :name, :with => /^[a-zA-Z'`\/\.\@\ ]+$/, :message => I18n.t('activerecord.errors.messages.illegal_char') #add allowed chars between bracket
   has_attached_file :photo,
                     :url => "/assets/students/:id/:style/:basename.:extension",
                     :path => ":rails_root/public/assets/students/:id/:style/:basename.:extension"
@@ -14,7 +14,7 @@ class Student < ActiveRecord::Base
   
   has_and_belongs_to_many :klasses          #has_and_belongs_to_many :programmes
   belongs_to :course,         :class_name => 'Programme', :foreign_key => 'course_id'       #Link to Programme
-  belongs_to :intake    #Link to Model intake
+  belongs_to :intakestudent,  :class_name => 'Intake',    :foreign_key => 'intake_id'       #Link to Model intake
   
   has_one   :user,              :dependent => :destroy                                      #Link to Model user
   has_many  :leaveforstudents,  :dependent => :destroy                                      #Link to LeaveStudent
@@ -50,6 +50,14 @@ class Student < ActiveRecord::Base
      end
   end
   
+  def self.search(search)
+    if search
+     @students = Student.find(:all, :conditions => ["icno LIKE ? or name ILIKE ? or matrixno ILIKE ? ", "%#{search}%","%#{search}%","%#{search}%"], :order => :icno)
+     # @students = Student.find(:all, :condition => ["course_id LIKE ?", "%#{search}"])
+    else
+     @students = Student.find(:all)
+    end
+  end
 
   def self.search2(intake, programme)
     if intake!='0' && programme!='0'
@@ -371,46 +379,3 @@ BLOOD_TYPE = [
     
    
 end
-
-# == Schema Information
-#
-# Table name: students
-#
-#  address             :text
-#  address_posbasik    :text
-#  allergy             :string(255)
-#  bloodtype           :string(255)
-#  course_id           :integer
-#  course_remarks      :string(255)
-#  created_at          :datetime
-#  disease             :string(255)
-#  end_training        :date
-#  gender              :integer
-#  group_id            :integer
-#  icno                :string(255)
-#  id                  :integer          not null, primary key
-#  intake              :date
-#  intake_id           :integer
-#  matrixno            :string(255)
-#  medication          :string(255)
-#  mrtlstatuscd        :integer
-#  name                :string(255)
-#  offer_letter_serial :string(255)
-#  photo_content_type  :string(255)
-#  photo_file_name     :string(255)
-#  photo_file_size     :integer
-#  photo_updated_at    :datetime
-#  physical            :string(255)
-#  race                :string(255)
-#  race2               :integer
-#  regdate             :date
-#  remarks             :text
-#  sbirthdt            :date
-#  semail              :string(255)
-#  specialisation      :string(255)
-#  specilisation       :integer
-#  ssponsor            :string(255)
-#  sstatus             :string(255)
-#  stelno              :string(255)
-#  updated_at          :datetime
-#
