@@ -24,7 +24,7 @@
           %td
             = h ptbudget.fiscalstart.try(:strftime, "%d %b %Y")
             to #{h ptbudget.fiscal_end.try(:strftime, "%d %b %Y")}
-          %td= h ringgols(ptbudget.budget)
+          %td= link_to ringgols(ptbudget.budget), ptbudget_path(ptbudget)
           %td= h ringgols(ptbudget.used_budget)
           %td= h ringgols(ptbudget.budget_balance)
 
