@@ -14,7 +14,6 @@
   
   
 .row
-
   %table.table-striped.table-hover.ogma
     %thead
       %tr
@@ -38,7 +37,7 @@
             %span{:style => "color:#black;font-weight:bold;font-size:14px"}= link_to course.name, "#", class: 'bogus'	  
         - for student in students
           %tr	  
-            %td= link_to student.formatted_mykad, "#", class: 'bogus'
+            %td= link_to student.formatted_mykad, student_path(student)
             %td= student.name
             %td= student.matrixno
             %td

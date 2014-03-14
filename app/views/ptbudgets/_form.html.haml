@@ -1,0 +1,22 @@
+.row.fluid
+  = form_for [:budget, @ptbudget], url: ptbudget_path(@ptbudget), :html => { :class => 'form-horizontal' }  do |f| 
+    = render 'shared/error_messages', object: f.object
+    .col-md-offset-1
+
+      .form-group
+        .col-sm-2.control-label
+          = f.label t 'ptbudgets.budget', for: :budget
+        .col-md-5
+          = f.text_field :budget, class: 'form-control mandatory'
+
+      .form-group
+        .col-sm-2.control-label
+          = f.label t 'ptbudgets.fys', for: :fiscalstart
+        .col-md-5
+          = f.text_field :fiscalstart, class: 'form-control mandatory', 'data-behaviour' => 'datepicker_std'
+
+      .form-group
+        .col-sm-offset-2.col-sm-1
+          = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), ptbudget_path, :class => 'btn btn-default'
+        .col-md-2
+          = f.submit t('update'), class: "btn btn-primary"

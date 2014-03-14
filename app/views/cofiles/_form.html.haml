@@ -32,7 +32,7 @@
         .col-sm-2.control-label
           = f.label t 'cofile.onloan', for: :onloan
         .col-md-4
-          %input{:unchecked => "checked", :name => "check", :onclick => "toggle(this.form.check);", :type => "checkbox"}
+          %input{:unchecked => "checked", :name => "check", :onclick => "switchvisibility(this.form.check);", :type => "checkbox"}
 
 		  		 
       .form-group#borrower{:style => "visibility:hidden"}

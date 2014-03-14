@@ -1,0 +1,11 @@
+- model_class = Student
+.col-md-8.col-md-offset-1
+  %dl.dl-horizontal
+    %BR
+  - for qualification in @student.qualifications
+    %dd{:for => "level_id "}
+      = h (Qualification::QTYPE.find_all{|disp, value| value == qualification.level_id}).map {|disp, value| disp}[0]
+      \:
+  %dt
+    = h qualification.qname
+    \&nbsp &nbsp from &nbsp &nbsp #{h qualification.institute}
