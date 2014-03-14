@@ -2,11 +2,24 @@
 = javascript_include_tag "jquery.carousel.css"
 = stylesheet_link_tag 'jquery.carousel.js', :media => :screen
 
-.slidewrap2
-  - dash_bulletins = Bulletin.find(:all, :order => 'publishdt desc', :limit => 5)
-  %ul.slider.centre
-    - dash_bulletins.each do |b|
-      %li.slide
-        %h2= link_to b.headline, :controller => 'bulletins', :action => 'show', :id => b.id
-        = b.content
-        %br= link_to "[view all]", bulletins_path
+
+- dash_bulletins = Bulletin.find(:all, :order => 'publishdt desc', :limit => 5)
+.row
+  .col-md-offset-2.col-md-8
+    %h2= link_to "Bulletin Board", bulletins_path
+    #quote-carousel.carousel.slide{"data-ride" => "carousel"}
+      - dash_bulletins.each do |b|
+        .carousel-inner
+          / Quote 1
+          .item.active
+            .row
+              .row-sm-3.text-center
+                %h2= link_to b.headline, :controller => 'bulletins', :action => 'show', :id => b.id
+              .row-sm-3.text-center
+                = b.content
+				
+        / Carousel Buttons Next/Prev
+        %a.left.carousel-control{"data-slide" => "prev", :href => "#quote-carousel"}
+          %i.fa.fa-chevron-left
+        %a.right.carousel-control{"data-slide" => "next", :href => "#quote-carousel"}
+          %i.fa.fa-chevron-right
