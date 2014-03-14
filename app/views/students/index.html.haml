@@ -28,12 +28,12 @@
     = render "index_search"
     - @students.group_by{|t|t.intake}.each do |intake, student_course|
       %tr
-        %td{:colspan => "10", :style => "background-color:#EFF1F1;"}
+        %td.group{:colspan => "10", :style => "background-color:#EFF1F1;"}
           %br
           %span{:style => "color:#218AFB;font-weight:bold;"}= intake.try(:strftime, '%B %Y')
       - student_course.group_by(&:course).each do |course, students|
         %tr
-          %td.centre{:colspan => "12", :style => "background-color:#E5E4E2;"}
+          %td.group{:colspan => "12", :style => "background-color:#E5E4E2;"}
             %span{:style => "color:#black;font-weight:bold;font-size:14px"}= link_to course.name, "#", class: 'bogus'	  
         - for student in students
           %tr	  
