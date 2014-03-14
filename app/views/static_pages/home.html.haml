@@ -1,16 +1,25 @@
 
-= render '/viewer/bulletin'
+
 .row
  .col-md-5.loginspace{:style => "height:120px;"}
   .content.clearfix
    .block
  .col-md-3.piclogo{:style => "float:right; height:120px; background:#DDD;"} 
   logo
+  
+.row  
+ .col-md-3.right
+  %br
+  = link_to  t("dashboard.dashboard"), dashboard_path, :class => 'btn btn-large btn-block btn-primary'
+  
 .center.hero-unit
  %h1 Welcome to Ogma
  %h2
   This is the home page for the
   %a{:href => "https://github.com/maxcobmara/ogma"} Ogma : New ICMS
+
+  %BR
+  = render '/viewer/bulletin'
   %br <BR/>
   /= link_to "Sign up now!", new_user_registration_path, class: "btn btn-primary" 
 = link_to image_tag("powered_by_rails.png", alt: "Rails"), 'http://rubyonrails.org/'
