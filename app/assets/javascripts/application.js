@@ -81,5 +81,9 @@ $(document).ready(function () {
   $("[id='my_checkbox']").bootstrapSwitch();
   
   $('.bigtext').bigtext();
+  
+  $('#quote-carousel').carousel({
+    interval: 10000,
+  });
 });
 

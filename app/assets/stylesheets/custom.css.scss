@@ -256,3 +256,18 @@ span.i {font-style:normal !important;}
 .legend_object {float:left; padding: 0 8px 0 12px;}
 .legend_title {float:left; padding: 0 20px 0 8px; font-size: 0.8em; }
 
+.about {
+  h2 {
+    padding-bottom:0; margin-bottom:0;
+    font-size: 1.2em;
+    letter-spacing: -1px;
+    text-align: center;
+    font-weight: normal;
+    color: #999;
+  }
+  p {
+    font-size: 0.9em;
+    padding:0; margin:0;
+    text-align: center;
+  }
+}
