@@ -1,37 +1,104 @@
-body { padding-bottom: 5em; }
-	ul { margin: 0; padding: 0; list-style: none; }
+/* carousel */
+#quote-carousel 
+{
+  padding: 0 10px 30px 10px;
+  margin-top: 30px 0px 0px;
+}
 
-	.carousel-tabs { clear: both; }
-	.carousel-active-tab { color: red; }	
-	.carousel-disabled,
-	.mr-rotato-disabled { color: #aaa; }
+/* Control buttons  */
+#quote-carousel .carousel-control
+{
+  background: none;
+  color: #222;
+  font-size: 2.3em;
+  text-shadow: none;
+  margin-top: 30px;
+  width: 1%;
+}
+/* Previous button  */
+#quote-carousel .carousel-control.left 
+{
+  left: -12px;
+}
+/* Next button  */
+#quote-carousel .carousel-control.right 
+{
+  right: -12px !important;
+}
+/* Changes the position of the indicators */
+#quote-carousel .carousel-indicators 
+{
+  right: 50%;
+  top: auto;
+  bottom: 0px;
+  margin-right: -19px;
+}
+/* Changes the color of the indicators */
+#quote-carousel .carousel-indicators li 
+{
+  background: #c0c0c0;
+}
+#quote-carousel .carousel-indicators .active 
+{
+  background: #333333;
+}
+#quote-carousel img
+{
+  width: 250px;
+  height: 100px
+}
+/* End carousel */
 
-	.slidewrap2 .carousel-tabs {
-		padding: 0;
-		margin: 1em 0;
-		clear: both;
-	}
-	.slidewrap2 .carousel-tabs li {
-	    display: inline-block; 
-	    padding: 0 2px;
-	}
-	.slidewrap2 .carousel-tabs a {
-	    background: #ddd;
-	    display: inline-block;
-	    height: 10px;
-	    text-indent: -9999px;
-	    width: 10px;
-	    border-radius: 5px;
-	}
-	.ie .slidewrap2 .carousel-tabs li,
-	.ie .slidewrap2 .carousel-tabs a { 
-		display: block;
-		float: left;
-	}
-	.slidewrap2 .carousel-tabs .carousel-active-tab a {
-		background: #777;
-	}
+.item blockquote {
+    border-left: none; 
+    margin: 0;
+}
 
-	.events {
-		font: normal 11px/1.4 arial, helvetica, sans-serif;
-	}
+.item blockquote img {
+    margin-bottom: 10px;
+}
+
+.item blockquote p:before {
+    content: "\f10d";
+    font-family: 'Fontawesome';
+    float: left;
+    margin-right: 10px;
+}
+
+
+
+/**
+  MEDIA QUERIES
+*/
+
+/* Small devices (tablets, 768px and up) */
+@media (min-width: 768px) { 
+    #quote-carousel 
+    {
+      margin-bottom: 0;
+      padding: 0 40px 30px 40px;
+      margin-top: 30px;
+    }
+    
+}
+
+/* Small devices (tablets, up to 768px) */
+@media (max-width: 768px) { 
+    
+    /* Make the indicators larger for easier clicking with fingers/thumb on mobile */
+    
+    #quote-carousel .carousel-indicators {
+        bottom: -20px !important;  
+    }
+    #quote-carousel .carousel-indicators li {
+        display: inline-block;
+        margin: 0px 5px;
+        width: 15px;
+        height: 15px;
+    }
+    #quote-carousel .carousel-indicators li.active {
+        margin: 0px 5px;
+        width: 20px;
+        height: 20px;
+    }
+}
