@@ -1,0 +1,7 @@
+- model_class = Student
+.col-md-8.col-md-offset-1
+  %dl.dl-horizontal
+    %BR
+
+    %dt= t 'student.students.sstatus' , :default => model_class.human_attribute_name(:sstatus) + ":"
+    %dd= @student.sstatus

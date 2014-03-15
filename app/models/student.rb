@@ -49,15 +49,7 @@ class Student < ActiveRecord::Base
       @students3 = Student.find(:all,  :order => :icno)
      end
   end
-  
-  def self.search(search)
-    if search
-     @students = Student.find(:all, :conditions => ["icno LIKE ? or name ILIKE ? or matrixno ILIKE ? ", "%#{search}%","%#{search}%","%#{search}%"], :order => :icno)
-     # @students = Student.find(:all, :condition => ["course_id LIKE ?", "%#{search}"])
-    else
-     @students = Student.find(:all)
-    end
-  end
+
 
   def self.search2(intake, programme)
     if intake!='0' && programme!='0'

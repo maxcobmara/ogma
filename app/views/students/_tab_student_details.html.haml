@@ -33,7 +33,7 @@
     %dd= (Student::RACE.find_all{|disp, value| value == @student.race.to_s}).map {|disp, value| disp} [0]
    
     - if @student.race2 == 21
-      %dt= t 'student.etnic'
+      %dt= t 'student.students.etnic'
       %dd= h @student.race
 	
     %dt= t 'student.students.semail' , :default => model_class.human_attribute_name(:semail) + ":"
