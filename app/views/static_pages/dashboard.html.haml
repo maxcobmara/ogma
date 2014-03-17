@@ -1,0 +1,28 @@
+.page-header
+  
+.row
+  .col-md-3
+    .row
+      .panel.panel-danger
+        .panel-heading Notifications
+        .panel-body
+          Notifications Go Here
+          
+    .row{:style => "background-color:#D0E8F5;"} 
+      = render 'bulletin'
+
+  .col-md-6
+    .panel.panel-warning
+      .panel-heading Day Calendar
+      .panel-body{:style => "min-height:150px;"}
+        Calendar Goes Here <BR>
+        - @bulletins.each do |bulletin|
+          = bulletin.content
+        
+
+  
+  .col-md-3.centre
+    .panel.panel-info
+      .panel-heading Events
+      .panel-body
+        We'll put events stuff here

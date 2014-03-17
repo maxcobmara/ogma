@@ -1,0 +1,22 @@
+- model_class = Student
+.col-md-8.col-md-offset-1
+  %dl.dl-horizontal
+    %BR
+    %dt= t 'student.students.physical' , :default => model_class.human_attribute_name(:physical) + ":"
+    %dd= @student.physical
+
+    %dt= t 'student.students.allergy' , :default => model_class.human_attribute_name(:allergy) + ":"
+    %dd= @student.allergy
+		  
+    %dt= t 'student.students.disease' , :default => model_class.human_attribute_name(:disease) + ":"
+    %dd= @student.disease
+ 
+    %dt= t 'student.students.bloodtype' , :default => model_class.human_attribute_name(:bloodtype) + ":"
+    %dd= (Student::BLOOD_TYPE.find_all{|disp, value| value == @student.bloodtype.to_s}).map {|disp, value| disp} [0]
+
+    %dt= t 'student.students.medication' , :default => model_class.human_attribute_name(:medication) + ":"
+    %dd= @student.physical
+
+    %dt= t 'student.students.remarks' , :default => model_class.human_attribute_name(:allergy) + ":"
+    %dd= @student.remarks
+		  

@@ -1,4 +1,4 @@
-function toggle(check)
+function switchvisibility(check)
    { if(!check.checked)
    {
    document.getElementById('borrower').style.visibility='hidden';
@@ -12,3 +12,4 @@ function toggle(check)
    document.getElementById('returneddate').style.visibility='visible';
    }
    }
+
