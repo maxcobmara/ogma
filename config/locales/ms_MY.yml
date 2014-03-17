@@ -37,7 +37,8 @@ ms_MY:
   class: Kelas
   type: Jenis
   notes: Catatan
-  
+  add: Tambah  
+ 
   actions:
     new: Baru
     search: Cari

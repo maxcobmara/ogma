@@ -41,6 +41,12 @@ class BulletinsController < ApplicationController
   # POST /bulletins.xml
   def create
     @bulletin = Bulletin.new(params[:bulletin])
+    
+    @bulletin.headline = params[:bulletin][:headline]
+    @bulletin.content = params[:bulletin][:content]
+    @bulletin.postedby_id = params[:bulletin][:postedby_id]
+    @bulletin.publishdt = params[:bulletin][:publishdt]
+    #@bulletin.data = params[:bulletin][:data]    
 
     respond_to do |format|
       if @bulletin.save
@@ -57,6 +63,16 @@ class BulletinsController < ApplicationController
   # PUT /bulletins/1
   # PUT /bulletins/1.xml
   def update
+    @bulletin = Bulletin.find(params[:id])
+    
+
+   
+    @bulletin.headline = params[:bulletin][:headline]
+    @bulletin.content = params[:bulletin][:content]
+    @bulletin.postedby_id = params[:bulletin][:postedby_id]
+    @bulletin.publishdt = params[:bulletin][:publishdt]
+    #@bulletin.data = params[:bulletin][:data]    
+    
     respond_to do |format|
       if @bulletin.update(bulletin_params)
         format.html { redirect_to bulletin_path, notice: 'Bulletin Board was successfully updated.' }
