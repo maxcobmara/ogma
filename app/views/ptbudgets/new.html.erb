@@ -1,0 +1,23 @@
+%h3= t 'ptbudget.new'
+- form_for(@ptbudget) do |f|
+  = f.error_messages
+  .tform
+    %H2
+      = t 'ptbudget.budget_details'
+      %table{:width => "100%"}
+        %tr
+          / 19/10/2011-Shaliza add placeholder
+          %td.leftcol
+            %label{:for => "budget"}
+              = t 'ptbudget.budget'
+              \:
+          %td= f.text_field :budget, :placeholder => 'RM', :size => 12
+        %tr
+          %td.leftcol
+            %label{:for => "fiscalstart"}
+              = t 'ptbudget.fiscalstart'
+              \:
+          %td= f.date_select :fiscalstart, :order => [:day, :month, :year], :default => @ptbudget.next_budget_date
+  %p
+    = f.submit  (t 'icms.submit')
+= link_to  (t 'icms.back'), ptbudgets_path
