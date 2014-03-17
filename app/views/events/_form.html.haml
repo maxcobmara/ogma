@@ -14,6 +14,22 @@
       .form-group
         .col-sm-2.control-label
           = f.label t 'events.sd', for: :start_at
+        .col-md-3
+          .input-group.datetimepicker.date
+            = f.text_field :start_at, :class => 'form-control', "data-format" => "yyyy/MM/dd hh:mm", :type => "input"
+            .input-group-addon.add-on
+              %i{"data-date-icon" => "fa fa-calendar", "data-time-icon" => "fa fa-clock-o"}
+
+
+
+
+
+
+
+
+      .form-group
+        .col-sm-2.control-label
+          = f.label t 'events.sd', for: :start_at
         .col-md-5
           //= f.datetime_select :start_at, :start_year => Time.now.year - 1, :minute_step => 15, :order => [:day, :month, :year]
           = f.text_field :start_at, class: 'form-control mandatory', 'data-behaviour' => 'datepicker_std'
@@ -31,14 +47,14 @@
         .col-sm-2.control-label
           = f.label t 'events.loca', for: :location
         .col-md-5
-          = f.collection_select :location, Event.find(:all), :id, :location, {:include_blank => true}, {class: 'selectpicker', "data-width"=>"300px"} 
+          = f.collection_select :location, Location.roots.order(combo_code: :asc), :id, :name, {:include_blank => true}, {class: 'selectpicker'} 
 
 
       .form-group
         .col-sm-2.control-label
           = f.label t 'events.pt', for: :participants
         .col-md-5
-          = f.text_area :participants, class: 'form-control mandatory'
+          = f.text_area :participants, class: 'form-control mandatory', :rows => "6"
 
 
       .form-group
