@@ -61,6 +61,7 @@ en:
   class: Class
   type: Type
   notes: Notes
+  add: Add 
   
   actions:
     new: New
