@@ -167,7 +167,37 @@ en:
       formatted_mykad: MyKad No
       name: Name
       matrixno: Matrix No
-      race: Race	
+      race: Race
+      icno: MyKad No
+      sstatus: Student Status
+      stelno: Telephone No
+      address: Address
+      address_posbasik: Address Duty 
+      ssponsor: Sponsor
+      gender: Gender
+      sbirthd: Date Of Birth
+      age: Age
+      mrtlstatuscd: Marital Status
+      etnic: Etnik
+      semail: Email
+      regdate: Registration Date
+      offer_letter_serial: Offer Letter No
+      course_id: Programme
+      intake_id: Intake Session
+      remarks: Remarks
+      physical: Physical
+      allergy: Allergy
+      disease: Condition/Disease
+      bloodtype: Blood Group
+      medication: Medication
+      kintype_id: Remarks
+      kinaddr: Relationship
+      profession: Profession
+      male: Male
+      female: Female
+      upload: Upload
+ 
+ 
   
 
   cofile:
