@@ -29,11 +29,10 @@ gem "bootstrap-select-rails", "~> 1.3.0.1"
 gem "bootstrap-switch-rails", "~> 2.0.2"
 gem "modernizr-rails", "~> 2.6.2.3"
 gem 'protected_attributes'
-gem "jquery-datetimepicker-rails", "~> 2.1.9.0"
+gem "bootstrap-datetimepicker-rails", "~> 0.0.11"
 #gem "jquery-ui-bootstrap-rails", "~> 0.0.2"
-gem "bootstrap-datetimepicker", "~> 2.1.30"
-gem 'momentjs-rails', '~> 2.5.0'
-gem 'bootstrap3-datetimepicker-rails', '~> 3.0.0'
+gem "whenever", "~> 0.9.2", require: false
+
 group :assets do
   
 end

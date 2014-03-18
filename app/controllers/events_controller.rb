@@ -1,6 +1,6 @@
 class EventsController < ApplicationController
   helper_method :sort_column, :sort_direction
-  before_action :set_location, only: [:show, :edit, :update, :destroy]
+  before_action :set_event, only: [:show, :edit, :update, :destroy]
 
   def index
     @search = Event.search(params[:q])
@@ -22,7 +22,7 @@ class EventsController < ApplicationController
 
   def update
     respond_to do |format|
-      if @event.update(location_params)
+      if @event.update(event_params)
         format.html { redirect_to event_path, notice: 'Event List was successfully updated.' }
         format.json { head :no_content }
       else
@@ -43,12 +43,12 @@ class EventsController < ApplicationController
   
   private
     # Use callbacks to share common setup or constraints between actions.
-    def set_location
+    def set_event
       @event = Event.find(params[:id])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
-    def location_params
+    def event_params
       params.require(:event).permit(:start_at, :end_at, :eventname, :location, :officiated, :staff_name)# <-- insert editable fields here inside here e.g (:date, :name)
     end
     
