@@ -319,6 +319,7 @@ en:
     used: Used
     budgetb: Balance
     budget_details: Annual Training Budget Details
+    new: New Annual Training Budget
 
   date:
     formats:

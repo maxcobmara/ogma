@@ -40,7 +40,14 @@ $(document).ready(function () {
     todayBtn: "linked",
     autoclose: true
   });
-  
+
+  $('[data-behaviour=datetimepicker]').datetimepicker({
+    format: "dd MM yyyy - HH:ii P",
+    showMeridian: true,
+    autoclose: true,
+    todayBtn: true
+  });  
+
   //Use this for picking only dates in the past
   $('[data-behaviour=datepicker_before]').datepicker({
     format: "yyyy/mm/dd",

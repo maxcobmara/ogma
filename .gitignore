@@ -19,7 +19,11 @@ doc/
 .project
 .DS_Store
 bundler_stubs/
+<<<<<<< HEAD
  *.orig
+=======
+*.orig
+>>>>>>> upstream/development
 
 .backup
 db/migrate/bin/*
