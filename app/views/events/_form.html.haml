@@ -21,26 +21,14 @@
               %i{"data-date-icon" => "fa fa-calendar", "data-time-icon" => "fa fa-clock-o"}
 
 
-
-
-
-
-
-
-      .form-group
-        .col-sm-2.control-label
-          = f.label t 'events.sd', for: :start_at
-        .col-md-5
-          //= f.datetime_select :start_at, :start_year => Time.now.year - 1, :minute_step => 15, :order => [:day, :month, :year]
-          = f.text_field :start_at, class: 'form-control mandatory', 'data-behaviour' => 'datetimepicker'
- 
-
       .form-group
         .col-sm-2.control-label
           = f.label t 'events.ed', for: :end_at
-        .col-md-5
-          //= f.datetime_select :end_at, :start_year => Time.now.year - 1, :minute_step => 15, :order => [:day, :month, :year]
-          = f.text_field :end_at, class: 'form-control mandatory', 'data-behaviour' => 'datetimepicker'
+        .col-md-3
+          .input-group.datetimepicker.date
+            = f.text_field :start_at, :class => 'form-control', "data-format" => "yyyy/MM/dd hh:mm", :type => "input"
+            .input-group-addon.add-on
+              %i{"data-date-icon" => "fa fa-calendar", "data-time-icon" => "fa fa-clock-o"}
 
 
       .form-group

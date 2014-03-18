@@ -32,6 +32,7 @@ class EventsController < ApplicationController
     end
   end
 
+
   def destroy
     @event.destroy
 
@@ -49,7 +50,7 @@ class EventsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def event_params
-      params.require(:event).permit(:start_at, :end_at, :eventname, :location, :officiated, :staff_name)# <-- insert editable fields here inside here e.g (:date, :name)
+      params.require(:event).permit(:eventname, :start_at, :end_at, :location, :participants, :officiated, :staff_name)# <-- insert editable fields here inside here e.g (:date, :name)
     end
     
     def sort_column
