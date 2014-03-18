@@ -78,7 +78,7 @@ $(document).ready(function () {
     startView: 2
   });
   
-
+  $('.datetimepicker').datetimepicker({pickSeconds: false});
   $('.selectpicker').selectpicker();
   
   $('.toga').click(function() {	   
