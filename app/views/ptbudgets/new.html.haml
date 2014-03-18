@@ -1,0 +1,27 @@
+- model_class = Ptbudget
+.page-header
+  %h1= t('ptbudgets.new')
+
+.row.fluid
+  = form_for [:budget, @ptbudget], url: new_ptbudget_path(@ptbudget), :html => { :class => 'form-horizontal' }  do |f| 
+    = render 'shared/error_messages', object: f.object
+    .col-md-offset-1
+
+      .form-group
+        .col-sm-2.control-label
+          = f.label t 'ptbudgets.budget', for: :budget
+        .col-md-5
+          = f.text_field :budget, class: 'form-control mandatory', :placeholder => 'RM'
+
+      .form-group
+        .col-sm-2.control-label
+          = f.label t 'ptbudgets.fys', for: :fiscalstart
+        .col-md-5
+          = f.text_field :fiscalstart, class: 'form-control mandatory', 'data-behaviour' => 'datepicker_today'
+
+.row
+  .col-md-4.col-md-offset-3
+    %hr
+    .form-actions
+      = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), ptbudgets_path, :class => 'btn btn-default'
+      = link_to content_tag(:i, "", :class => "fa fa-asterisk") + " " + t('.new', :default => t("helpers.links.create")), new_ptbudget_path(@ptbudget), :class => 'btn btn-primary'
