@@ -22,7 +22,7 @@
     .tab-content{style:"padding-top:1em"}
       .col-md-1
         - if @student.photo.exists? then
-          = image_tag @student.photo.url
+          #= image_tag @student.photo.url
         - else
           %img{:src => "http://placekitten.com/150/200"}/ 
       .col-md-8.col-md-offset-1
