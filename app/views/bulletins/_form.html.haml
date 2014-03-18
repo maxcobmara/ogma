@@ -33,7 +33,7 @@
       - if @bulletin.data.exists? then
         = @bulletin.data_file_name
       %font{:color => "#444", :size => "-2"} Or
-      = f.file_field :data, :style=>"width: 600px"
+      = f.file_field :data, :style=>"width: 400px", class: 'form-control'
       %font{:color => "#AAA", :size => "-2"} pdf/txt/doc/xls/jpg.  Max : 5MB
 	  
 		 

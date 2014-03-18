@@ -7,7 +7,6 @@ class BulletinsController < ApplicationController
     @search = Bulletin.search(params[:q])
     @bulletins = @search.result
     @bulletins = @bulletins.page(params[:page]||1)
-    @boards = @bulletins
   end
 
   # GET /bulletins/1
@@ -48,7 +47,7 @@ class BulletinsController < ApplicationController
   def update
     respond_to do |format|
       if @bulletin.update(bulletin_params)
-        format.html { redirect_to bulletin_path(@board), notice:  'Bulletin was successfully updated.' }
+        format.html { redirect_to bulletin_path, notice:  'Bulletin was successfully updated.' }
         format.json { head :no_content }
       else
         format.html { render action: 'edit' }
@@ -73,7 +72,6 @@ private
     # Use callbacks to share common setup or constraints between actions.
     def set_bulletin
       @bulletin = Bulletin.find(params[:id])
-      @board = @bulletin
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

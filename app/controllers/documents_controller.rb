@@ -7,7 +7,6 @@ class DocumentsController < ApplicationController
     @search = Document.search(params[:q])
     @documents = @search.result
     @documents_pagi = @documents.page(params[:page]||1) 
-    @registrys = @documents
   end
 
   # GET /documents/1
@@ -106,7 +105,6 @@ class DocumentsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_document
       @document = Document.find(params[:id])
-      @registry = @document
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
