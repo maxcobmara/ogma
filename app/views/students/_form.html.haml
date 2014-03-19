@@ -1,18 +1,18 @@
 - model_class = Student
 .page-header
-  %h1= @student.formatted_mykad
 = render 'shared/flashes'
-
 
 .row
   .col-md-offset-1
     / Nav tabs
     %ul.nav.nav-tabs
-      %li.active= link_to "Student Details","#student_details_edit", "data-toggle" => "tab"
-      %li= link_to "Course Details", "#course_details_edit", "data-toggle" => "tab"
+      %li.active= link_to ((t 'student.students.students_details')),"#mandatory_edit", "data-toggle" => "tab"
+      %li= link_to ((t 'student.students.course_details')), "#course_details_edit", "data-toggle" => "tab"
+      %li= link_to ((t 'student.students.health_status')), "#health_status_edit", "data-toggle" => "tab"
+      %li= link_to ((t 'student.students.qualifications')), "#qualifications_edit", "data-toggle" => "tab"
 
 
-.row.fluid
+		
   = form_for [:student, @student], url: student_path(@student), :html => { :class => 'form-horizontal' }  do |f| 
     = render 'shared/error_messages', object: f.object
 
@@ -20,15 +20,20 @@
       .col-md-8.col-md-offset-1
 	  
 	  		  
-      #student_details_edit.tab-pane.active
+      #mandatory_edit.tab-pane.active
+        %br
+        = render 'tab_mandatory_edit'
+      #student_details_edit.tab-pane
         %br
         = render 'tab_student_details_edit'
       #course_details_edit.tab-pane
         %br
         = render 'tab_course_details_edit'
 				  		 
-      .form-group
-        .col-sm-offset-2.col-sm-1
-          = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), student_path(@student), :class => 'btn btn-default'
-        .col-sm-2
-          = f.submit t('update'), class: "btn btn-primary"
+      #health_status_edit.tab-pane
+        %br
+        = render 'tab_health_status_edit'
+
+      #qualifications_edit.tab-pane
+        %br
+        = render 'tab_qualifications_edit'				  		 

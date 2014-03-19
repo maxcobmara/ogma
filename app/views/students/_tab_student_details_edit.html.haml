@@ -1,37 +1,14 @@
 .row.fluid
   = form_for [:student, @student], url: student_path(@student), :html => { :class => 'form-horizontal' }  do |f| 
     = render 'shared/error_messages', object: f.object
-    .col-md-offset-1
-      .form-group
-        .col-sm-2.control-label
-          = f.label t 'student.students.icno', for: :icno
-        .col-md-2
-          = f.text_field :icno, class: 'form-control mandatory', :size => 12
-       
-      .form-group
-        .col-sm-2.control-label
-          = f.label t 'student.students.name', for: :name
-        .col-md-3
-          = f.text_field :name, class: 'form-control mandatory'
+    .col-md-offset-3
+
           
       .form-group
         .col-sm-2.control-label
           = f.label t 'student.students.matrixno', for: :matrixno
         .col-md-2
           = f.text_field :matrixno, class: 'form-control'
-          
-      .form-group
-        .col-sm-2.control-label
-          = f.label t 'student.sstatus', for: :sstatus
-        .col-md-2
-          = f.select :sstatus, Student::STATUS, :prompt => "Select", class: 'form-control mandatory'
-
-
-      .form-group
-        .col-sm-2.control-label
-          = f.label t 'student.stelno', for: :stelno
-        .col-md-2
-          = f.text_field :stelno, class: 'form-control mandatory'
 
 
       .form-group
@@ -48,74 +25,53 @@
 
       .form-group
         .col-sm-2.control-label
-          =f.label t 'student.students.ssponsor', for: :ssponsor
-        .col-md-3
-          = f.select :ssponsor, Student::SPONSOR, :prompt => "Select", class: 'form-control mandatory'
-
-      .form-group
-        .col-sm-2.control-label
-          =f.label t 'student.students.gender', for: :gender
-        -#.col-md-1
-          /= f.select :gender, Student::GENDER, :prompt => "Select", class: 'form-control mandatory'
-        .col-md-1
-          = f.radio_button :gender,'1' 
-          = t('student.male')
-        .col-md-1
-          = f.radio_button :gender,'2'
-          = t('student.female')
-
-      .form-group
-        .col-sm-2.control-label
-          =f.label t 'student.dob', for: :sbirthdt
+          =f.label t 'student.students.sbirthd', for: :sbirthdt
         .col-md-2
-          = f.text_field :sbirthdt, class: 'form-control mandatory', 'data-behaviour' => 'datepicker_today'
+          = f.text_field :sbirthdt, class: 'form-control', 'data-behaviour' => 'datepicker_today'
  
+
       .form-group
         .col-sm-2.control-label
-          = f.label t 'student.etnic', for: :etnic
+          =f.label t 'student.students.race', for: :race2
+        .col-md-2 
+          = f.select :race2, Student::RACE, :prompt => "Select", class: 'form-control'
+          %font{:color => "blue"} Previous race entered: #{@student.race.blank? ? "" : @student.race}
+
+      .form-group
+        .col-sm-2.control-label
+          = f.label t 'student.students.etnic', for: :etnic
         .col-md-2
           = f.text_field :race, class: 'form-control'
 
-      .form-group
-        .col-sm-2.control-label
-          =f.label t 'student.mrtlstatuscd', for: :mrtlstatuscd
-        .col-md-2
-          = f.select :mrtlstatuscd, Student::MARITAL_STATUS, :prompt => "Select", class: 'form-control mandatory'
 
-      .form-group
-        .col-sm-2.control-label
-          =f.label t 'student.mrtlstatuscd', for: :race2
-        .col-md-2 
-          = f.select :race2, Student::RACE, :prompt => "Select", class: 'form-control mandatory'
-          %font{:color => "blue"} Previous race entered: #{@student.race.blank? ? "" : @student.race}
 
       .form-group#bong{:style => "display: none;"}
         .col-sm-2.control-label
-          =f.label t 'student.etnic', for: :race
+          =f.label t 'student.students.etnic', for: :race
         .col-md-2
           =f.text_field :race #class: 'selectpicker', "data-width"=>"350px"
  
-      .form-group
-        .col-sm-2.control-label
-          =f.label t 'student.semail', for: :semail
-        .col-md-2
-          =f.text_field :semail, class: 'form-control mandatory', 'data-behaviour' => 'datepicker_today'
- 	  
-      .form-group
-        .col-sm-2.control-label
-          =f.label t 'student.regdate', for: :regdate
-        .col-md-2
-          =f.text_field :regdate, class: 'form-control mandatory', 'data-behaviour' => 'datepicker_today'
 
       .form-group
         .col-sm-2.control-label
-          =f.label t 'student.offer_letter_serial', for: :offer_letter_serial
+          =f.label t 'student.students.offer_letter_serial', for: :offer_letter_serial
         .col-md-3
           =f.text_field :offer_letter_serial, class: 'form-control'
 
       .form-group
         .col-sm-2.control-label
-          =f.label t 'student.upload', for: :upload
-        .col-md-2
+          =f.label t 'student.students.upload', for: :upload
+        .col-md-4
           =f.file_field :photo, class: 'form-control'
+
+      .form-group
+        .col-sm-2.control-label
+          =f.label t 'student.students.semail', for: :semail
+        .col-md-2
+          =f.text_field :semail, class: 'form-control', 'data-behaviour' => 'datepicker_today'
   
+      .form-group
+        .col-sm-2.control-label
+          =f.label t 'student.students.regdate', for: :regdate
+        .col-md-2
+          =f.text_field :regdate, class: 'form-control', 'data-behaviour' => 'datepicker_today'

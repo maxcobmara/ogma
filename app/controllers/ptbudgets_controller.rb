@@ -8,7 +8,7 @@ class PtbudgetsController < ApplicationController
     @search = Ptbudget.search(params[:q])
     @ptbudgets = @search.result
     @ptbudgets = @ptbudgets.page(params[:page]||1)
-    #@ptbudgets_filtered = Ptbudget.find(:all, :order => sort_column + ' ' + sort_direction ,:conditions => ['fiscal_end LIKE ? or budget ILIKE ? ', "%#{params[:search]}%", "%#{params[:search]}%"])
+    #@ptbudgets_filtered = Ptbudget.find(:all, :order => psort_column + ' ' + sort_direction ,:conditions => ['fiscal_end LIKE ? or budget ILIKE ? ', "%#{params[:search]}%", "%#{params[:search]}%"])
   end
 
   # GET /ptbudgets/1
@@ -46,7 +46,7 @@ class PtbudgetsController < ApplicationController
     respond_to do |format|
       if @ptbudget.save
         flash[:notice] = 'A new budget was successfully created.'
-        format.html { redirect_to(@ptbudgets) }
+        format.html { redirect_to(@ptbudget) }
         format.xml  { render :xml => @ptbudget, :status => :created, :location => @ptbudget }
       else
         format.html { render :action => "new" }

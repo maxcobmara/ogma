@@ -21,7 +21,7 @@
     %dt= t 'student.students.gender' , :default => model_class.human_attribute_name(:gender) + ":"
     %dd= (Student::GENDER.find_all{|disp, value| value == @student.gender.to_s}).map {|disp, value| disp} [0]
 		  
-    %dt= t 'student.students.dob' , :default => model_class.human_attribute_name(:sbirthd) + ":"
+    %dt= t 'student.students.sbirthd' , :default => model_class.human_attribute_name(:sbirthd) + ":"
     %dd= @student.sbirthdt
     %dt= t 'student.students.age' , :default => model_class.human_attribute_name(:age) + ":"
     %dd= @student.age

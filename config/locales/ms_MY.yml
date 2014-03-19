@@ -143,7 +143,47 @@ ms_MY:
       formatted_mykad: No Mykad
       name: Nama
       matrixno: No Matrik
-      race: Keturunan
+      race: Bangsa
+      icno: No MyKad 
+      sstatus: Status Pelajar
+      stelno: No Telefon
+      address: Alamat
+      address_posbasik: Alamat Bertugas 
+      ssponsor: Penaja
+      gender: Jantina
+      sbirthd: Tarikh Lahir
+      age: Umur
+      mrtlstatuscd: Status Kahwin
+      etnic: Etnik
+      semail: Emel
+      regdate: Tarikh Pendaftaran
+      offer_letter_serial: No. Surat Tawaran
+      course_id: Program
+      remarks: Catatan
+      physical: Fizikal
+      allergy: Alergik
+      disease: Keadaan/Penyakit
+      bloodtype: Kumpulan Darah
+      medication: Ubat
+      kintype_id: Catatan
+      kinaddr: Relationship
+      profession: Profession
+      male: Lelaki
+      female: Perempuan
+      upload: Muat Naik Gambar
+      group_id: Kumpulan
+      intake_id: Sesi Pengambilan
+      end_training: Tarikh Tamat Pengajian
+      level_id: Tahap
+      qname: Kelayakan
+      institute: Institusi
+      students_details: Butiran Pelajar
+      course_details: Butiran Kursus
+      health_status: Status Kesihatan
+      qualifications: Kelayakan
+      guarantor: Keputusan SPM
+      contact_information: Maklumat Perhubungan dan Penjamin
+
 
   cofile:
     index: Senarai
@@ -319,6 +359,7 @@ ms_MY:
     cnt: Kawalan
     ced: Maklumat Terperinci Acara Kampus
     pt: Disertai
+    new: Acara Baru
 
   ptbudgets:
     list: Set Latihan Bajet Tahunan

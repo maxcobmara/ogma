@@ -62,6 +62,7 @@ en:
   type: Type
   notes: Notes
   add: Add 
+  create: Create
   
   actions:
     new: New
@@ -168,7 +169,53 @@ en:
       formatted_mykad: MyKad No
       name: Name
       matrixno: Matrix No
-      race: Race	
+      race: Race
+      icno: MyKad No
+      sstatus: Student Status
+      stelno: Telephone No
+      address: Address
+      address_posbasik: Address Duty 
+      ssponsor: Sponsor
+      gender: Gender
+      sbirthd: Date Of Birth
+      age: Age
+      mrtlstatuscd: Marital Status
+      etnic: Etnic
+      semail: Email
+      regdate: Registration Date
+      offer_letter_serial: Offer Letter No
+      course_id: Programme
+      intake_id: Intake Session
+      remarks: Remarks
+      physical: Physical
+      allergy: Allergy
+      disease: Condition/Disease
+      bloodtype: Blood Group
+      medication: Medication
+      kintype_id: Remarks
+      kinaddr: Relationship
+      profession: Profession
+      male: Male
+      female: Female
+      upload: Upload
+      group_id: Group
+      intake_id: Intake Session
+      end_training: End of Training Date
+      level_id: Level
+      qname: Qualification
+      institute: Institute
+      students_details: Students Details
+      course_details: Course Details
+      health_status: Health Status
+      qualifications: Qualifications
+      guarantor: Guarantor
+      contact_information: Contact Information
+
+
+
+
+ 
+ 
   
 
   cofile:
@@ -307,6 +354,7 @@ en:
     cnt: Control
     ced: Campus Event Details
     pt: Participants
+    new: New Event
 
   check:  
     status: Check Status

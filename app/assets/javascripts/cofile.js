@@ -12,4 +12,3 @@ function switchvisibility(check)
    document.getElementById('returneddate').style.visibility='visible';
    }
    }
-
