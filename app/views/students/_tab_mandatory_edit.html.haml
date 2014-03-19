@@ -1,0 +1,67 @@
+.row.fluid
+  = form_for [:student, @student], url: student_path(@student), :html => { :class => 'form-horizontal' }  do |f| 
+    = render 'shared/error_messages', object: f.object
+	
+    %H2= t('student.students.students_details')
+  
+    .col-md-offset-3
+      .form-group
+        .col-sm-2.control-label
+          = f.label t 'student.students.icno', for: :icno
+        .col-md-2
+          = f.text_field :icno, class: 'form-control mandatory', :size => 12
+       
+      .form-group
+        .col-sm-2.control-label
+          = f.label t 'student.students.name', for: :name
+        .col-md-4
+          = f.text_field :name, class: 'form-control mandatory'
+          
+      .form-group
+        .col-sm-2.control-label
+          = f.label t 'student.students.sstatus', for: :sstatus
+        .col-md-2
+          = f.select :sstatus, Student::STATUS, :prompt => "Select", class: 'form-control mandatory'
+
+
+      .form-group
+        .col-sm-2.control-label
+          = f.label t 'student.students.stelno', for: :stelno
+        .col-md-2
+          = f.text_field :stelno, class: 'form-control mandatory'
+
+      .form-group
+        .col-sm-2.control-label
+          =f.label t 'student.students.ssponsor', for: :ssponsor
+        .col-md-3
+          = f.select :ssponsor, Student::SPONSOR, :prompt => "Select", class: 'form-control mandatory'
+
+      .form-group
+        .col-sm-2.control-label
+          =f.label t 'student.students.gender', for: :gender
+        -#.col-md-1
+          /= f.select :gender, Student::GENDER, :prompt => "Select", class: 'form-control mandatory'
+        .col-md-1
+          = f.radio_button :gender,'1' 
+          = t('student.students.male')
+        .col-md-1
+          = f.radio_button :gender,'2'
+          = t('student.students.female')
+
+      .form-group
+        .col-sm-2.control-label
+          =f.label t 'student.students.mrtlstatuscd', for: :mrtlstatuscd
+        .col-md-2
+          = f.select :mrtlstatuscd, Student::MARITAL_STATUS, :prompt => "Select", class: 'form-control mandatory'
+
+
+
+    %H2= t('student.students.course_details')
+
+    .col-md-offset-3
+      .form-group
+        .col-sm-2.control-label
+          =f.label t 'student.students.intake_id', for: :intake
+        .col-md-3
+          = f.text_field :intake, class: 'form-control mandatory', 'data-behaviour' => 'datepicker_today'
+

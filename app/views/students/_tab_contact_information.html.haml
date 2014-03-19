@@ -8,7 +8,7 @@
     %dl.dl-horizontal
       %BR
 	  
-      %dt= t 'student.students.kintype_id' , :default => model_class.human_attribute_name(:kintype_id) + ":"
+      %dt= t 'student.students.kinaddr' , :default => model_class.human_attribute_name(:kintype_id) + ":"
       %dd= (Kin::KTYPE.find_all{|disp, value| value == e.kintype_id}).map {|disp, value| disp} [0]
 	  
       %dt= t 'student.students.name' , :default => model_class.human_attribute_name(:name) + ":"
@@ -23,6 +23,6 @@
       %dt= t 'student.students.stelno' , :default => model_class.human_attribute_name(:phone) + ":"
       %dd= e.phone
 	
-      %dt= t 'student.students.kinaddr' , :default => model_class.human_attribute_name(:kinaddr) + ":"
+      %dt= t 'student.students.address' , :default => model_class.human_attribute_name(:kinaddr) + ":"
       %dd= e.kinaddr
 		
