@@ -6,7 +6,7 @@ class Ptbudget < ActiveRecord::Base
     belongs_to :staff,  :foreign_key => 'fiscalstart' 
   
   def fiscal_end
-    fiscalstart + 1.year - 1.day
+#    fiscalstart + 1.year - 1.day
   end
   
   def used_budget
@@ -16,7 +16,7 @@ class Ptbudget < ActiveRecord::Base
   end
   
   def budget_balance
-    budget-used_budget
+ #   budget-used_budget
   end
   
   def next_budget_date

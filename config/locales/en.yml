@@ -61,6 +61,7 @@ en:
   class: Class
   type: Type
   notes: Notes
+  create: Create
   
   actions:
     new: New
@@ -306,6 +307,7 @@ en:
     cnt: Control
     ced: Campus Event Details
     pt: Participants
+    new: New Event
 
   check:  
     status: Check Status
