@@ -3,10 +3,11 @@
   %h1
     = t 'new_bulletin'
 
+
 = render 'shared/flashes'
 
 .row
-  = form_for @bulletin, html: { multipart: true, class: 'form-horizontal' }  do |f| 
+  = form_for @bulletin,  :html => { :class => 'form-horizontal' } do |f| 
     = render 'shared/error_messages', object: f.object
     .col-md-offset-1
       = render :partial => 'form', :locals => {:f => f}
@@ -14,4 +15,4 @@
         .col-sm-offset-4.col-sm-1
           = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), bulletins_path, :class => 'btn btn-default'
         .col-sm-2
-          = f.submit t('update'), class: "btn btn-primary"
+          = f.submit t('add'), class: "btn btn-primary"

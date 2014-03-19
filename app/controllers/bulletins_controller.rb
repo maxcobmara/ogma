@@ -12,7 +12,6 @@ class BulletinsController < ApplicationController
   # GET /bulletins/1
   # GET /bulletins/1.xml
   def show
-    @bulletin = Bulletin.find(params[:id])
   end
 
   # GET /bulletins/new
@@ -23,13 +22,12 @@ class BulletinsController < ApplicationController
 
   # GET /bulletins/1/edit
   def edit
-    @bulletin = Bulletin.find(params[:id])
   end
 
   # POST /bulletins
   # POST /bulletins.xml
   def create
-    @bulletin = Bulletin.new(params[:bulletin])
+    @bulletin = Bulletin.new(bulletin_params)
 
     respond_to do |format|
       if @bulletin.save
@@ -76,7 +74,7 @@ private
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def bulletin_params
-      params.require(:bulletin).permit(:headline, :content, :postedby_id, :publishdt , :date, :data)
+      params.require(:bulletin).permit(:headline, :content, :postedby_id, :publishdt )
     end
     
 end
