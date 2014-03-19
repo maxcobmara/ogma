@@ -9,8 +9,6 @@
           = f.label t 'student.students.matrixno', for: :matrixno
         .col-md-2
           = f.text_field :matrixno, class: 'form-control'
-          
-
 
 
       .form-group
@@ -25,19 +23,19 @@
         .col-md-3
           = f.text_area :address_posbasik, :size => "40x7", class: 'form-control'
 
+      .form-group
+        .col-sm-2.control-label
+          =f.label t 'student.students.sbirthd', for: :sbirthdt
+        .col-md-2
+          = f.text_field :sbirthdt, class: 'form-control', 'data-behaviour' => 'datepicker_today'
+ 
 
       .form-group
         .col-sm-2.control-label
-          =f.label t 'student.students.gender', for: :gender
-        -#.col-md-1
-          /= f.select :gender, Student::GENDER, :prompt => "Select", class: 'form-control mandatory'
-        .col-md-1
-          = f.radio_button :gender,'1' 
-          = t('student.students.male')
-        .col-md-1
-          = f.radio_button :gender,'2'
-          = t('student.students.female')
-
+          =f.label t 'student.students.race', for: :race2
+        .col-md-2 
+          = f.select :race2, Student::RACE, :prompt => "Select", class: 'form-control'
+          %font{:color => "blue"} Previous race entered: #{@student.race.blank? ? "" : @student.race}
 
       .form-group
         .col-sm-2.control-label
@@ -63,6 +61,17 @@
       .form-group
         .col-sm-2.control-label
           =f.label t 'student.students.upload', for: :upload
-        .col-md-2
+        .col-md-4
           =f.file_field :photo, class: 'form-control'
+
+      .form-group
+        .col-sm-2.control-label
+          =f.label t 'student.students.semail', for: :semail
+        .col-md-2
+          =f.text_field :semail, class: 'form-control', 'data-behaviour' => 'datepicker_today'
   
+      .form-group
+        .col-sm-2.control-label
+          =f.label t 'student.students.regdate', for: :regdate
+        .col-md-2
+          =f.text_field :regdate, class: 'form-control', 'data-behaviour' => 'datepicker_today'

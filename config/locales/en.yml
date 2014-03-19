@@ -178,7 +178,7 @@ en:
       sbirthd: Date Of Birth
       age: Age
       mrtlstatuscd: Marital Status
-      etnic: Etnik
+      etnic: Etnic
       semail: Email
       regdate: Registration Date
       offer_letter_serial: Offer Letter No
@@ -196,6 +196,22 @@ en:
       male: Male
       female: Female
       upload: Upload
+      group_id: Group
+      intake_id: Intake Session
+      end_training: End of Training Date
+      level_id: Level
+      qname: Qualification
+      institute: Institute
+      students_details: Students Details
+      course_details: Course Details
+      health_status: Health Status
+      qualifications: Qualifications
+      guarantor: Guarantor
+      contact_information: Contact Information
+
+
+
+
  
  
   
