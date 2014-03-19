@@ -1,78 +1,54 @@
-.row.fluid
-  = form_for @event, :html => { :class => 'form-horizontal' }  do |f| 
-    = render 'shared/error_messages', object: f.object
-    .col-md-offset-1
+.col-md-offset-1
+  .form-group
+    .col-sm-2.control-label
+      = f.label t 'events.en', for: :eventname
+    .col-md-5
+      = f.text_field :eventname, class: 'form-control mandatory'
 
 
-      .form-group
-        .col-sm-2.control-label
-          = f.label t 'events.en', for: :eventname
-        .col-md-5
-          = f.text_field :eventname, class: 'form-control mandatory'
+  .form-group
+    .col-sm-2.control-label
+      = f.label t 'events.sd', for: :start_at
+    .col-md-3
+      .input-group.datetimepicker.date
+        = f.text_field :start_at, :class => 'form-control', "data-format" => "yyyy/MM/dd hh:mm", :type => "input"
+        .input-group-addon.add-on
+          %i{"data-date-icon" => "fa fa-calendar", "data-time-icon" => "fa fa-clock-o"}
 
 
-      .form-group
-        .col-sm-2.control-label
-          = f.label t 'events.sd', for: :start_at
-        .col-md-3
-          .input-group.datetimepicker.date
-            = f.text_field :start_at, :class => 'form-control', "data-format" => "yyyy/MM/dd hh:mm", :type => "input"
-            .input-group-addon.add-on
-              %i{"data-date-icon" => "fa fa-calendar", "data-time-icon" => "fa fa-clock-o"}
+  .form-group
+    .col-sm-2.control-label
+      = f.label t 'events.ed', for: :end_at
+    .col-md-3
+      .input-group.datetimepicker.date
+        = f.text_field :end_at, :class => 'form-control', "data-format" => "yyyy/MM/dd hh:mm", :type => "input"
+        .input-group-addon.add-on
+          %i{"data-date-icon" => "fa fa-calendar", "data-time-icon" => "fa fa-clock-o"}
 
 
+  .form-group
+    .col-sm-2.control-label
+      = f.label t 'events.loca', for: :location
+    .col-md-5
+      = f.collection_select :location, Location.roots.order(combo_code: :asc), :id, :name, {:include_blank => true}, {class: 'selectpicker'} 
 
 
+  .form-group
+    .col-sm-2.control-label
+      = f.label t 'events.pt', for: :participants
+    .col-md-5
+      = f.text_area :participants, class: 'form-control mandatory', :rows => "6"
 
 
+  .form-group
+    .col-sm-2.control-label
+      = f.label t 'events.ob', for: :officiated
+    .col-md-5
+      = f.text_field :officiated, class: 'form-control mandatory'
 
 
-      .form-group
-        .col-sm-2.control-label
-          = f.label t 'events.sd', for: :start_at
-        .col-md-5
-          //= f.datetime_select :start_at, :start_year => Time.now.year - 1, :minute_step => 15, :order => [:day, :month, :year]
-          = f.text_field :start_at, class: 'form-control mandatory', 'data-behaviour' => 'datetimepicker'
- 
-
-      .form-group
-        .col-sm-2.control-label
-          = f.label t 'events.ed', for: :end_at
-        .col-md-5
-          //= f.datetime_select :end_at, :start_year => Time.now.year - 1, :minute_step => 15, :order => [:day, :month, :year]
-          = f.text_field :end_at, class: 'form-control mandatory', 'data-behaviour' => 'datetimepicker'
-
-
-      .form-group
-        .col-sm-2.control-label
-          = f.label t 'events.loca', for: :location
-        .col-md-5
-          = f.collection_select :location, Location.roots.order(combo_code: :asc), :id, :name, {:include_blank => true}, {class: 'selectpicker'} 
-
-
-      .form-group
-        .col-sm-2.control-label
-          = f.label t 'events.pt', for: :participants
-        .col-md-5
-          = f.text_area :participants, class: 'form-control mandatory', :rows => "6"
-
-
-      .form-group
-        .col-sm-2.control-label
-          = f.label t 'events.ob', for: :officiated
-        .col-md-5
-          = f.text_field :officiated, class: 'form-control mandatory'
-
-
-      .form-group
-        .col-sm-2.control-label
-          = f.label t 'events.cb', for: :staff_name
-        .col-md-2
-          = f.collection_select :createdby, Staff.find(:all), :id, :name, {:include_blank => true}, {class: 'selectpicker', "data-width"=>"300px"}
-
-
-      .form-group
-        .col-sm-offset-2.col-sm-1
-          = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), event_path, :class => 'btn btn-default'
-        .col-md-2
-          = f.submit t('update'), class: "btn btn-primary"
+  .form-group
+    .col-sm-2.control-label
+      = f.label t 'events.cb', for: :staff_name
+    .col-md-2
+      = f.collection_select :createdby, Staff.find(:all), :id, :name, {:include_blank => true}, {class: 'selectpicker', "data-width"=>"300px"}
