@@ -1,46 +1,38 @@
-.row.fluid
-  = form_for [:bulletin, @bulletin], url: bulletin_path(@bulletin) , :html => { :class => 'form-horizontal' }  do |f| 
-    = render 'shared/error_messages', object: f.object
-    .col-md-offset-1
-      .form-group
-        .col-sm-2.control-label
-          = f.label t 'buletin.headline', for: :headline
-        .col-md-5
-          = f.text_field :headline, class: 'form-control mandatory'
 
-      .form-group
-        .col-sm-2.control-label
-          = f.label t 'buletin.content', for: :content
-        .col-md-7
-          = f.text_area :content, :size => "30x7", class: 'form-control mandatory'
+.col-md-offset-1
+  .form-group
+    .col-sm-2.control-label
+      = f.label t 'buletin.headline', for: :headline
+    .col-md-5
+      = f.text_field :headline, class: 'form-control mandatory'
+
+  .form-group
+    .col-sm-2.control-label
+      = f.label t 'buletin.content', for: :content
+    .col-md-7
+      = f.text_area :content, :size => "30x7", class: 'form-control mandatory'
             
-      .form-group
-        .col-sm-2.control-label
-          = f.label t 'buletin.posted_by', for: :postedby_id
-        .col-md-5
-          = f.collection_select :postedby_id, Staff.find(:all), :id, :name, {:include_blank => true}, {class: 'selectpicker', "data-width"=>"300px"}
+  .form-group
+    .col-sm-2.control-label
+      = f.label t 'buletin.posted_by', for: :postedby_id
+    .col-md-5
+      = f.collection_select :postedby_id, Staff.find(:all), :id, :name, {:include_blank => true}, {class: 'selectpicker', "data-width"=>"300px"}
 		  
-      .form-group
-        .col-sm-2.control-label
-          = f.label t 'buletin.publish_date', for: :publishdt
-        .col-md-3
-          = f.text_field :publishdt, class: 'form-control mandatory', 'data-behaviour' => 'datepicker_before' 
-          /= f.date_select :publishdt, :start_year => Time.now.year-1, :order => [:day, :month, :year], :default => 1.days.from_now 
+  .form-group
+    .col-sm-2.control-label
+      = f.label t 'buletin.publish_date', for: :publishdt
+    .col-md-3
+      = f.text_field :publishdt, class: 'form-control mandatory', 'data-behaviour' => 'datepicker_before' 
 	  
-      .form-group
-        .col-sm-2.control-label
-          = f.label t 'buletin.upload_file', for: :data
-        .col-md-2
-          %font{:color => "#444", :size => "-2"} Current file is :
-          - if @bulletin.data.exists? then
-            = @bulletin.data_file_name
-          %font{:color => "#444", :size => "-2"} Or
-          = f.file_field :data, :style=>"width: 600px"
-          %font{:color => "#AAA", :size => "-2"} pdf/txt/doc/xls/jpg.  Max : 5MB
+  .form-group
+    .col-sm-2.control-label
+      = f.label t 'buletin.upload_file', for: :data
+    .col-md-3
+      %font{:color => "#444", :size => "-2"} Current file is :
+      - if @bulletin.data.exists? then
+        = @bulletin.data_file_name
+      %font{:color => "#444", :size => "-2"} Or
+      = f.file_field :data, :style=>"width: 400px", class: 'form-control'
+      %font{:color => "#AAA", :size => "-2"} pdf/txt/doc/xls/jpg.  Max : 5MB
 	  
-      .form-group
-        .col-sm-offset-2.col-sm-1
-          = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), bulletin_path(@bulletin), :class => 'btn btn-default'
-        .col-sm-2
-          = f.submit t('update'), class: "btn btn-primary"
 		 

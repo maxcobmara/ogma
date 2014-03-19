@@ -1,121 +1,112 @@
-.row.fluid
-  = form_for [:document, @document], url: document_path(@document) , :html => { :class => 'form-horizontal' }  do |f| 
-    = render 'shared/error_messages', object: f.object
-    .col-md-offset-1
-      .form-group
-        .col-sm-2.control-label
-          = f.label t 'document.serial_no' , for: :serialno
-        .col-md-1
-          = f.text_field :serialno, :value => Document.set_serialno(@document.id), :readonly => true, class: 'form-control mandatory'
 
-      .form-group
-        .col-sm-2.control-label
-          = f.label t 'document.ref_no' , for: :refno
-        .col-md-5
-          = f.text_field :refno, class: 'form-control mandatory'
+.col-md-offset-1
+  .form-group
+    .col-sm-2.control-label
+      = f.label t 'document.serial_no' , for: :serialno
+    .col-md-1
+      = f.text_field :serialno, :value => Document.set_serialno(@document.id), :readonly => true, class: 'form-control mandatory'
 
-      .form-group
-        .col-sm-2.control-label
-          = f.label t 'document.title'  , for: :title
-        .col-md-7
-          = f.text_field :title, :size => '60', class: 'form-control mandatory'    
+  .form-group
+    .col-sm-2.control-label
+      = f.label t 'document.ref_no' , for: :refno
+    .col-md-5
+      = f.text_field :refno, class: 'form-control mandatory'
 
-      .form-group
-        .col-sm-2.control-label
-          = f.label t 'document.category'  , for: :category
-        .col-md-4
-          = f.select :category, Document::CATEGORY, :class => "compulsory" , :prompt => "Select"
+  .form-group
+    .col-sm-2.control-label
+      = f.label t 'document.title'  , for: :title
+    .col-md-7
+      = f.text_field :title, :size => '60', class: 'form-control mandatory'    
+
+  .form-group
+    .col-sm-2.control-label
+      = f.label t 'document.category'  , for: :category
+    .col-md-4
+      = f.select :category, Document::CATEGORY, :class => "compulsory" , :prompt => "Select"
 		  
-      .form-group
-        .col-sm-2.control-label
-          = f.label t 'document.letterdt' , for: :letterdt
-        .col-md-3
-          = f.text_field :letterdt, class: 'form-control mandatory', 'data-behaviour' => 'datepicker_before' 
-          -#= f.date_select :letterdt, :start_year => 2010, :end_year => 2020, :order => [:day, :month, :year]
+  .form-group
+    .col-sm-2.control-label
+      = f.label t 'document.letterdt' , for: :letterdt
+    .col-md-3
+      = f.text_field :letterdt, class: 'form-control mandatory', 'data-behaviour' => 'datepicker_before' 
+      -#= f.date_select :letterdt, :start_year => 2010, :end_year => 2020, :order => [:day, :month, :year]
 
-      .form-group
-        .col-sm-2.control-label
-          = f.label t 'document.letterxdt'  , for: :letterxdt
-        .col-md-3
-          = f.text_field :letterxdt, class: 'form-control mandatory', 'data-behaviour' => 'datepicker_before' 
-          -#= f.date_select :letterxdt, :start_year => 2010, :end_year => 2020, :order => [:day, :month, :year]
+  .form-group
+    .col-sm-2.control-label
+      = f.label t 'document.letterxdt'  , for: :letterxdt
+    .col-md-3
+      = f.text_field :letterxdt, class: 'form-control mandatory', 'data-behaviour' => 'datepicker_before' 
+      -#= f.date_select :letterxdt, :start_year => 2010, :end_year => 2020, :order => [:day, :month, :year]
 
-      .form-group
-        .col-sm-2.control-label
-          = f.label t 'document.from'   , for: :from
-        .col-md-5
-          = f.text_field :from, :size => '60', class: 'form-control mandatory' 
+  .form-group
+    .col-sm-2.control-label
+      = f.label t 'document.from'   , for: :from
+    .col-md-5
+      = f.text_field :from, :size => '60', class: 'form-control mandatory' 
 
-      .form-group
-        .col-sm-2.control-label
-          = f.label t 'document.stafffiled_id' , for: :prepared_by
-        .col-md-3
-          = f.collection_select :stafffiled_id, Staff.find(:all, :order => :name), :id, :name, { :selected => 61 }, {class: 'selectpicker', "data-width"=>"350px"}
-          = f.hidden_field :prepared_by, :value=>current_user
+  .form-group
+    .col-sm-2.control-label
+      = f.label t 'document.stafffiled_id' , for: :prepared_by
+    .col-md-3
+      = f.collection_select :stafffiled_id, Staff.find(:all, :order => :name), :id, :name, { :selected => 61 }, {class: 'selectpicker', "data-width"=>"350px"}
+      = f.hidden_field :prepared_by, :value=>current_user
 		  
-      .form-group
-        .col-sm-2.control-label
-          = f.label t 'document.file_no'   , for: :file_id
-        .col-md-6
-          = f.collection_select :file_id, Cofile.find(:all, :order => :cofileno), :id, :file_no_and_name, {:include_blank => true}, {class: 'selectpicker', "data-width"=>"500px"}
+  .form-group
+    .col-sm-2.control-label
+      = f.label t 'document.file_no'   , for: :file_id
+    .col-md-6
+      = f.collection_select :file_id, Cofile.find(:all, :order => :cofileno), :id, :file_no_and_name, {:include_blank => true}, {class: 'selectpicker', "data-width"=>"500px"}
 		  
 		  
-      .form-group
-        .col-sm-2.control-label
-          = f.label t 'document.uploaded'  , for: :data
-        .col-md-5
-          = if @document.data.exists? then
-            = @document.data_file_name
-            \#{link_to (t 'document.download'), @document.data.url} ||
-            \#{link_to "ALT", @document.data.url}
-          - else
-          No Attachment yet
+  .form-group
+    .col-sm-2.control-label
+      = f.label t 'document.uploaded'  , for: :data
+    .col-md-5
+      = if @document.data.exists? then
+        = @document.data_file_name
+        \#{link_to (t 'document.download'), @document.data.url} ||
+        \#{link_to "ALT", @document.data.url}
+      - else
+      No Attachment yet
 
-      .form-group
-        .col-sm-2.control-label
-          = f.label t 'document.upload_change_file'   , for: :data
-        .col-md-5
-          = f.file_field :data
+  .form-group
+    .col-sm-2.control-label
+      = f.label t 'document.upload_change_file'   , for: :data
+    .col-md-4
+      = f.file_field :data, class: 'form-control'
  
-      .form-group
-        .col-sm-2.control-label
-          = f.label t 'document.circulate_minute_action'  , for: :circulate_to
-          = f.label t 'document.minit_tindakan'
-        .col-md-8
-          = f.text_area :otherinfo, :size => '40x3'
+  .form-group
+    .col-sm-2.control-label
+      = f.label t 'document.circulate_minute_action'  , for: :circulate_to
+      = f.label t 'document.minit_tindakan'
+    .col-md-8
+      = f.text_area :otherinfo, :size => '40x3'
 
-      .form-group
-        .col-sm-2.control-label
-          = f.label  t 'document.circulate_to' , for: :document
-        .col-md-8
-          = f.text_field :to_name, class: 'form-control', data: {autocomplete_source: Staff.order(:name).map(&:name)}
-          %i
-            %br
-            %font{:size => "2"} Type an alphabet and select a recipient accordingly. To add other recipient, please type a comma ( , ) without any spaces, followed by an alphabet and make your next selection.
+  .form-group
+    .col-sm-2.control-label
+      = f.label  t 'document.circulate_to' , for: :document
+    .col-md-8
+      = f.text_field :to_name, class: 'form-control', data: {autocomplete_source: Staff.order(:name).map(&:name)}
+      %i
+        %br
+        %font{:size => "2"} Type an alphabet and select a recipient accordingly. To add other recipient, please type a comma ( , ) without any spaces, followed by an alphabet and make your next selection.
 
-      .form-group
-        .col-sm-2.control-label
-          = f.label  t 'document.circulate_minute_date' , for: :cc1date
-        .col-md-3
-          = f.text_field :cc1date, class: 'form-control mandatory', 'data-behaviour' => 'datepicker_before' 
-          -#= f.date_select :cc1date, :start_year => 2010, :end_year => 2020, :order => [:day, :month, :year]
+  .form-group
+    .col-sm-2.control-label
+      = f.label  t 'document.circulate_minute_date' , for: :cc1date
+    .col-md-3
+      = f.text_field :cc1date, class: 'form-control mandatory', 'data-behaviour' => 'datepicker_before' 
+      -#= f.date_select :cc1date, :start_year => 2010, :end_year => 2020, :order => [:day, :month, :year]
 		  
-      .form-group
-        .col-sm-2.control-label
-          = f.label t 'document.action_type' , for: :cctype_id
-        .col-md-4
-          = f.select :cctype_id, Document::ACTION, :prompt => "Select"
+  .form-group
+    .col-sm-2.control-label
+      = f.label t 'document.action_type' , for: :cctype_id
+    .col-md-4
+      = f.select :cctype_id, Document::ACTION, :prompt => "Select"
 		  
-      .form-group
-        .col-sm-2.control-label
-          = f.label t 'document.file_closed'  , for: :closed
-        .col-md-3
-          = f.check_box :closed		    
+  .form-group
+    .col-sm-2.control-label
+      = f.label t 'document.file_closed'  , for: :closed
+    .col-md-3
+      = f.check_box :closed		    
 	  
-      .form-group
-        .col-sm-offset-2.col-sm-1
-          = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), document_path(@document), :class => 'btn btn-default'
-		  
-        .col-sm-offset-1.col-sm-2
-          = f.submit t('update'), class: "btn btn-primary"
-		 
