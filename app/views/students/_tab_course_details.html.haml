@@ -5,7 +5,8 @@
 
     %dt= t 'student.students.course_id' , :default => model_class.human_attribute_name(:course_id) + ":"
     %dd= @student.course_id.blank? ? " " : @student.course_id
-
+		
+	
     %dt= t 'student.students.intake_id' , :default => model_class.human_attribute_name(:intake_id) + ":"
     %dd= @student.intake.blank? ? "-" : @student.intake.strftime("%B %Y")
 		  

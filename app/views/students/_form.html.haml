@@ -1,39 +1,33 @@
-- model_class = Student
-.page-header
-= render 'shared/flashes'
-
 .row
   .col-md-offset-1
     / Nav tabs
     %ul.nav.nav-tabs
-      %li.active= link_to ((t 'student.students.students_details')),"#mandatory_edit", "data-toggle" => "tab"
+      %li.active= link_to ((t 'student.students.mandatory')),"#mandatory_edit", "data-toggle" => "tab"
+      %li= link_to ((t 'student.students.students_details')), "#student_details_edit", "data-toggle" => "tab"
       %li= link_to ((t 'student.students.course_details')), "#course_details_edit", "data-toggle" => "tab"
       %li= link_to ((t 'student.students.health_status')), "#health_status_edit", "data-toggle" => "tab"
       %li= link_to ((t 'student.students.qualifications')), "#qualifications_edit", "data-toggle" => "tab"
 
 
-		
-  = form_for [:student, @student], url: student_path(@student), :html => { :class => 'form-horizontal' }  do |f| 
-    = render 'shared/error_messages', object: f.object
 
     .tab-content{style:"padding-top:1em"}
       .col-md-8.col-md-offset-1
-	  
-	  		  
+
+
       #mandatory_edit.tab-pane.active
         %br
-        = render 'tab_mandatory_edit'
+        = render :partial => 'tab_mandatory_edit', :locals => {:f => f}
       #student_details_edit.tab-pane
         %br
-        = render 'tab_student_details_edit'
+        = render :partial => 'tab_student_details_edit', :locals => {:f => f}
       #course_details_edit.tab-pane
         %br
-        = render 'tab_course_details_edit'
-				  		 
+        = render :partial => 'tab_course_details_edit', :locals => {:f => f}
+
       #health_status_edit.tab-pane
         %br
-        = render 'tab_health_status_edit'
+        = render :partial => 'tab_health_status_edit', :locals => {:f => f}
 
       #qualifications_edit.tab-pane
         %br
-        = render 'tab_qualifications_edit'				  		 
+        = render :partial => 'tab_qualifications_edit', :locals => {:f => f}			

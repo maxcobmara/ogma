@@ -14,7 +14,9 @@ class CofilesController < ApplicationController
 
   end
   
-  
+  def new
+    @cofile = Cofile.new
+  end  
   
   def update
     respond_to do |format|
@@ -31,6 +33,23 @@ class CofilesController < ApplicationController
   def edit
     @cofile = Cofile.find(params[:id])
   end
+
+
+  def create
+    @cofile = Cofile.new(params[:cofile])
+    
+    respond_to do |format|
+      if @cofile.save
+        flash[:notice] = 'A new event was successfully created.'
+        format.html { redirect_to(@cofile) }
+        format.xml  { render :xml => @cofile, :status => :created, :location => @cofile }
+      else
+        format.html { render :action => "new" }
+        format.xml  { render :xml => @cofile.errors, :status => :unprocessable_entity }
+      end
+    end
+  end
+  
 
   def destroy
     @cofile.destroy
