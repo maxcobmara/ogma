@@ -30,7 +30,7 @@
     .col-sm-2.control-label
       = f.label t 'events.loca', for: :location
     .col-md-5
-      = f.collection_select :location, Location.roots.order(combo_code: :asc), :id, :name, {:include_blank => true}, {class: 'selectpicker'} 
+      = f.text_field :location, class: 'form-control mandatory'
 
 
   .form-group
