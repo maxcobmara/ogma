@@ -37,7 +37,7 @@ ms_MY:
   class: Kelas
   type: Jenis
   notes: Catatan
-  add: Tambah  
+  create: Tambah Data
  
   actions:
     new: Baru
@@ -309,6 +309,8 @@ ms_MY:
     letterxdt: Tarikh Terima
     uploaded: File Dimuatnaik 
     upload_change_file: "Memuatnaik/Tukar File"
+    document_details: Maklumat Dokumen
+    action_details: Maklumat Tindakan
 
   campus:
     tenants:
