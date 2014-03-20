@@ -6,7 +6,7 @@ class Bulletin < ActiveRecord::Base
   # validates_format_of    :headline, :with => /^[a-zA-Z'` ]+$/, :message => "contains illegal characters"
   
   #-------------Upload Document---------------#
-   attr_accessible :data
+   #attr_accessible :data
    
    has_attached_file :data,
                      :url => "/assets/bulletins/:id/:style/:basename.:extension",
@@ -27,6 +27,7 @@ class Bulletin < ActiveRecord::Base
   # end
      
 end
+
 
 # == Schema Information
 #
