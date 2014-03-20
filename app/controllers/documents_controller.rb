@@ -1,5 +1,4 @@
 class DocumentsController < ApplicationController
-  helper_method :sort_column, :sort_direction
   before_action :set_document, only: [:show, :edit, :update, :destroy]
   #filter_access_to :all#filter_resource_access #temp 5Apr2013
   # GET /documents
@@ -7,35 +6,22 @@ class DocumentsController < ApplicationController
   def index
     @search = Document.search(params[:q])
     @documents = @search.result
-    @documents_pagi = @documents.page(params[:page]||1)
-    @current_user = current_user.staff_id || '' 
+    @documents_pagi = @documents.page(params[:page]||1) 
   end
 
   # GET /documents/1
    # GET /documents/1.xml
    def show
-     @document = Document.find(params[:id])
-
-     respond_to do |format|
-       format.html # show.html.erb
-       format.xml  { render :xml => @document }
-     end
    end
 
    # GET /documents/new
    # GET /documents/new.xml
    def new
      @document = Document.new
-
-     respond_to do |format|
-       format.html # new.html.erb
-       format.xml  { render :xml => @document }
-     end
    end
 
    # GET /documents/1/edit
    def edit
-     @document = Document.find(params[:id])
    end
   
    def download
@@ -43,90 +29,6 @@ class DocumentsController < ApplicationController
      send_file @document.data.path, :type => @document.data_content_type
    end
 
-   # POST /documents
-   # POST /documents.xml
-   def create
-     @document = Document.new
-     @document.staff_ids = []
-     #@document.staff_ids = Document.set_recipient(params[:document][:to_name])
-     @document.serialno= params[:document][:serialno]
-     @document.refno = params[:document][:refno]
-     @document.category = params[:document][:category]
-     @document.title = params[:document][:title]
-     #-------this part for all dates---------http://accidentaltechnologist.com/ruby-on-rails/damn-you-rails-multiparameter-attributes/
-     @document.letterdt = params[:document][:"letterdt"]
-     @document.letterxdt = params[:document][:"letterxdt"]
-     @document.cc1date = params[:document][:"cc1date"]
-     #-------this part for all dates---------http://accidentaltechnologist.com/ruby-on-rails/damn-you-rails-multiparameter-attributes/
-     @document.from = params[:document][:from]
-     @document.stafffiled_id = params[:document][:stafffiled_id]
-     @document.file_id = params[:document][:file_id]
-     @document.closed = params[:document][:closed]
-     @document.data_file_name = params[:document][:data_file_name]
-     @document.data_content_type = params[:document][:data_content_type]
-     @document.data_file_size = params[:document][:data_file_size]
-     @document.data_updated_at = params[:document][:data_updated_at]
-     @document.otherinfo = params[:document][:otherinfo]
-     @document.cctype_id= params[:document][:cctype_id]
-     @document.prepared_by = params[:document][:prepared_by]
-    
-     respond_to do |format|
-       if @document.save
-         flash[:notice] = 'Document was successfully created.'
-         format.html { redirect_to(@document) }
-         format.xml  { render :xml => @document, :status => :created, :location => @document}
-       else
-         format.html { render :action => "new" }
-         format.xml  { render :xml => @document.errors, :status => :unprocessable_entity }
-       end
-     end
-    
-   end
-
-   # PUT /documents/1
-   # PUT /documents/1.xml
-   def update
-     	 @document = Document.find(params[:id])
-       @document.staff_ids = []
-       #@document.staff_ids = Document.set_recipient(params[:document][:to_name])
-       @document.serialno= params[:document][:serialno]
-       @document.refno = params[:document][:refno]
-       @document.category = params[:document][:category]
-       @document.title = params[:document][:title]
-       #-------this part for all dates---------http://accidentaltechnologist.com/ruby-on-rails/damn-you-rails-multiparameter-attributes/
-       @document.letterdt = params[:document][:"letterdt"]
-       @document.letterxdt = params[:document][:"letterxdt"]
-       @document.cc1date = params[:document][:"cc1date"]
-       #-------this part for all dates---------http://accidentaltechnologist.com/ruby-on-rails/damn-you-rails-multiparameter-attributes/
-       @document.from = params[:document][:from]
-       @document.stafffiled_id = params[:document][:stafffiled_id]
-       @document.file_id = params[:document][:file_id]
-       @document.closed = params[:document][:closed]
-       @document.data_file_name = params[:document][:data_file_name]
-       @document.data_content_type = params[:document][:data_content_type]
-       @document.data_file_size = params[:document][:data_file_size]
-       @document.data_updated_at = params[:document][:data_updated_at]
-       @document.otherinfo = params[:document][:otherinfo]
-       @document.cctype_id= params[:document][:cctype_id]
-       @document.prepared_by = params[:document][:prepared_by]
-      
-         respond_to do |format|
-     	  if @document.update_attributes(:staff_ids => @document.staff_ids, :serialno => @document.serialno, :refno => @document.refno,:category => @document.category,
- :title => @document.title,:letterdt => @document.letterdt,:letterxdt => @document.letterxdt,:cc1date => @document.cc1date,:from => @document.from,:stafffiled_id => @document.stafffiled_id,
- :file_id => @document.file_id,:closed => @document.closed,:data_file_name => @document.data_file_name, :data_content_type => @document.data_content_type,:data_file_size => @document.data_file_size,
- :data_updated_at => @document.data_updated_at,:otherinfo => @document.otherinfo,:cctype_id => @document.cctype_id,:prepared_by => @document.prepared_by)	
-             flash[:notice] = 'Document was successfully updated.'
-             format.html { redirect_to(@document) }
-             format.xml  { head :ok }
-           else
-             format.html { render :action => "edit" }
-             format.xml  { render :xml => @document.errors, :status => :unprocessable_entity }
-           end
-         end
-   
-   end
-
-  
    def generate_report
        @bb = params[:locals][:class_type]
        @bob = params[:locals][:dodo]
@@ -156,6 +58,37 @@ class DocumentsController < ApplicationController
        render :layout => 'report'
    end
 
+
+   # POST /documents
+   # POST /documents.xml
+   def create
+     @document = Document.new(document_params)
+
+     respond_to do |format|
+       if @document.save
+         format.html { redirect_to @document, notice: 'Document was successfully created.' }
+         format.json { render action: 'show', status: :created, location: @document }
+       else
+         format.html { render action: 'new' }
+         format.json { render json: @document.errors, status: :unprocessable_entity }
+       end
+     end
+   end
+
+   # PUT /documents/1
+   # PUT /documents/1.xml
+   def update
+     respond_to do |format|
+       if @document.update(document_params)
+         format.html { redirect_to document_path, notice: 'Document was successfully updated.' }
+         format.json { head :no_content }
+       else
+         format.html { render action: 'edit' }
+         format.json { render json: @document.errors, status: :unprocessable_entity }
+       end
+     end
+   end
+   
    # DELETE /documents/1
    # DELETE /documents/1.xml
   def destroy
@@ -171,12 +104,12 @@ class DocumentsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_document
-      @documents = Document.find(params[:id])
+      @document = Document.find(params[:id])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def document_params
-      params.require(:document).permit(:serialno, :refno, :category, :title, :from, :stafffiled_id, :letterdt, :letterxdt, :sender)
+      params.require(:document).permit(:serialno, :refno, :category, :title, :from, :stafffiled_id, :letterdt, :letterxdt, :sender, :circulate_to)
     end
 
 end

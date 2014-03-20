@@ -19,7 +19,9 @@ doc/
 .project
 .DS_Store
 bundler_stubs/
-*.orig
+
+ *.orig
+
 
 .backup
 db/migrate/bin/*

@@ -137,7 +137,7 @@ CATEGORY = [
   			staff_names << staff.name
   		end
   	end 
-  	return staff_names
+  	return staff_names [0]
   end
 
 
@@ -145,6 +145,6 @@ CATEGORY = [
 	  self.staffs = Staff.find_by_name(name) unless name.blank?
   end
 
-  
+
   
 end
