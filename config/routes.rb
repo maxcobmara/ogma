@@ -45,8 +45,9 @@ Ogma::Application.routes.draw do
     end
   end
 
-   
+
   resources :bulletins
+
   
   namespace :library do
     resources     :librarytransactions do

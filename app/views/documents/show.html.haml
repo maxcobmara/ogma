@@ -8,8 +8,8 @@
   .col-md-offset-1
     / Nav tabs
     %ul.nav.nav-tabs
-      %li.active= link_to "Document Details", "#document_details", "data-toggle" => "tab"
-      %li= link_to "Action Details",    "#action_details",    "data-toggle" => "tab"
+      %li.active= link_to  ((t 'document.document_details')), "#document_details", "data-toggle" => "tab"
+      %li= link_to ((t 'document.action_details')),    "#action_details",    "data-toggle" => "tab"
 
     .tab-content{style:"padding-top:1em"}
       .col-md-8.col-md-offset-1

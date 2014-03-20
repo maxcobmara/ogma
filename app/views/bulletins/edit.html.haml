@@ -6,15 +6,15 @@
 
 = render 'shared/flashes'
 
-.row.fluid
-  = form_for [:bulletin, @bulletin], url: bulletin_path(@bulletin) , html: { multipart: true, class: 'form-horizontal' }  do |f| 
+.row
+  = form_for @bulletin,  :html => { :class => 'form-horizontal' } do |f| 
     = render 'shared/error_messages', object: f.object
-    = render :partial => 'form', :locals => {:f => f}
-	
     .col-md-offset-1
+      = render :partial => 'form', :locals => {:f => f}
       .form-group
-        .col-sm-offset-2.col-sm-1
+        .col-sm-offset-4.col-sm-1
           = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), bulletin_path(@bulletin), :class => 'btn btn-default'
-        .col-sm-offset-1.col-sm-2
+        .col-sm-2
           = f.submit t('update'), class: "btn btn-primary"
+		 
 		 

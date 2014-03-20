@@ -72,8 +72,8 @@
   .form-group
     .col-sm-2.control-label
       = f.label t 'document.upload_change_file'   , for: :data
-    .col-md-5
-      = f.file_field :data
+    .col-md-4
+      = f.file_field :data, class: 'form-control'
  
   .form-group
     .col-sm-2.control-label

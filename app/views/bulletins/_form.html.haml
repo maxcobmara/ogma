@@ -23,17 +23,16 @@
       = f.label t 'buletin.publish_date', for: :publishdt
     .col-md-3
       = f.text_field :publishdt, class: 'form-control mandatory', 'data-behaviour' => 'datepicker_before' 
-      /= f.date_select :publishdt, :start_year => Time.now.year-1, :order => [:day, :month, :year], :default => 1.days.from_now 
 	  
   .form-group
     .col-sm-2.control-label
       = f.label t 'buletin.upload_file', for: :data
-    .col-md-2
+    .col-md-3
       %font{:color => "#444", :size => "-2"} Current file is :
       - if @bulletin.data.exists? then
         = @bulletin.data_file_name
       %font{:color => "#444", :size => "-2"} Or
-      = f.file_field :data, :style=>"width: 600px"
+      = f.file_field :data, :style=>"width: 400px", class: 'form-control'
       %font{:color => "#AAA", :size => "-2"} pdf/txt/doc/xls/jpg.  Max : 5MB
 	  
 		 
