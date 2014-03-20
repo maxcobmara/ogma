@@ -7,7 +7,7 @@
 = render 'shared/flashes'
 
 .row
-  = form_for @bulletin,  :html => { :class => 'form-horizontal' } do |f| 
+  = form_for @bulletin,  html: { multipart: true, class: 'form-horizontal' }  do |f| 
     = render 'shared/error_messages', object: f.object
     .col-md-offset-1
       = render :partial => 'form', :locals => {:f => f}
