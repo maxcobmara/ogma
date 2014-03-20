@@ -61,7 +61,7 @@ en:
   class: Class
   type: Type
   notes: Notes
-  add: Add 
+  add: Create
   
   actions:
     new: New
@@ -295,6 +295,8 @@ en:
     letterxdt: Received Date
     uploaded: Uploaded File
     upload_change_file: "Upload/Change File"
+    document_details: Document Details
+    action_details: Action Details
 
   events:
     list: Event List

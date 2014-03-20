@@ -269,6 +269,8 @@ ms_MY:
     letterxdt: Tarikh Terima
     uploaded: File Dimuatnaik 
     upload_change_file: "Memuatnaik/Tukar File"
+    document_details: Maklumat Dokumen
+    action_details: Maklumat Tindakan
 
   campus:
     tenants:

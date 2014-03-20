@@ -45,7 +45,7 @@ class BulletinsController < ApplicationController
   def update
     respond_to do |format|
       if @bulletin.update(bulletin_params)
-        format.html { redirect_to bulletin_path, notice:  'Bulletin was successfully updated.' }
+        format.html { redirect_to @bulletin, notice:  'Bulletin was successfully updated.' }
         format.json { head :no_content }
       else
         format.html { render action: 'edit' }
