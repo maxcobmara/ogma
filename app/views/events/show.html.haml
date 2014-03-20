@@ -10,10 +10,10 @@
       %dd= @event.eventname
 
       %dt= t 'events.sd', :default => model_class.human_attribute_name(:start_at) + ":"
-      %dd= @event.start_at
+      %dd= @event.start_at.strftime(" %d %b %y, %a, %I:%M%p  ")
       
       %dt= t 'events.ed', :default => model_class.human_attribute_name(:end_at) + ":"
-      %dd= @event.end_at
+      %dd= @event.end_at.try(:strftime, "%d %b %y, %a, %I:%M%p  ")
 
       %dt= t 'events.loca', :default => model_class.human_attribute_name(:location) + ":"
       %dd= @event.location
