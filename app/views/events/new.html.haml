@@ -1,9 +1,16 @@
-<%= link_to 'Back', events_path %>
+- model_class = Event
+.page-header
+  %h1
+    = t('events.new')
+    = render 'shared/flashes'
 
-%h3 New Event
-- form_for(@event) do |f|
-  = f.error_messages
-  = render :partial => 'form', :locals => {:f => f}
-  %p
-    = f.submit 'Create'
-= link_to 'Back', events_path
+.row.fluid
+  = form_for @event, :html => { :class => 'form-horizontal' }  do |f| 
+    = render 'shared/error_messages', object: f.object
+    .col-md-offset-1
+      = render :partial => 'form', :locals => {:f => f}
+      .form-group
+        .col-sm-offset-3.col-sm-1
+          = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), events_path, :class => 'btn btn-default'
+        .col-md-2
+          = f.submit t('create'), class: "btn btn-primary"

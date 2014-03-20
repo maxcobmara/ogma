@@ -1,6 +1,6 @@
 class CofilesController < ApplicationController
   helper_method :sort_column, :sort_direction
-  before_action :set_location, only: [:show, :edit, :update, :destroy]
+  before_action :set_cofile, only: [:show, :edit, :update, :destroy]
   # GET /cofiles
   # GET /cofiles.xml
 
@@ -13,12 +13,12 @@ class CofilesController < ApplicationController
     @cofiles_filtered = Cofile.find(:all, :order => sort_column + ' ' + sort_direction ,:conditions => ['cofileno LIKE ? or name ILIKE ? ', "%#{params[:search]}%", "%#{params[:search]}%"])
 
   end
-
-
+  
+  
   
   def update
     respond_to do |format|
-      if @cofile.update(location_params)
+      if @cofile.update(cofile_params)
         format.html { redirect_to cofile_path, notice: 'File Registry was successfully updated.' }
         format.json { head :no_content }
       else
@@ -26,6 +26,10 @@ class CofilesController < ApplicationController
         format.json { render json: @cofile.errors, status: :unprocessable_entity }
       end
     end
+  end
+  
+  def edit
+    @cofile = Cofile.find(params[:id])
   end
 
   def destroy
@@ -39,12 +43,12 @@ class CofilesController < ApplicationController
 
 private
     # Use callbacks to share common setup or constraints between actions.
-    def set_location
+    def set_cofile
       @cofile = Cofile.find(params[:id])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
-    def location_params
+    def cofile_params
       params.require(:cofile).permit(:cofileno, :name, :location, :owner_id, :staffloan_id, :onloandt, :onloanxdt)
     end
     

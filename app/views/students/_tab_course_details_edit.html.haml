@@ -2,6 +2,31 @@
   = form_for [:student, @student], url: student_path(@student), :html => { :class => 'form-horizontal' }  do |f| 
     = render 'shared/error_messages', object: f.object
 
+    .col-md-offset-3
+      .form-group
        
 
-  
+      .form-group
+        .col-sm-2.control-label
+          = f.label t 'student.students.course_id', for: :course_id
+        .col-md-2
+          //= f.select :course_id, Programme.roots, :id, :course_name, :include_blank => t('select')
+		        
+      .form-group
+        .col-sm-2.control-label
+          =f.label t 'student.students.group_id', for: :group_id
+        .col-md-3
+          = f.text_field :group_id, class: 'form-control'
+
+		  
+      .form-group
+        .col-sm-2.control-label
+          =f.label t 'student.students.end_training', for: :sbirthdt
+        .col-md-3
+          = f.text_field :end_training, class: 'form-control', 'data-behaviour' => 'datepicker_today'
+		  
+      .form-group
+        .col-sm-2.control-label
+          =f.label t 'student.students.remarks', for: :remarks
+        .col-md-3
+          = f.text_field :course_remarks, class: 'form-control'

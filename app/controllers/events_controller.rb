@@ -19,6 +19,29 @@ class EventsController < ApplicationController
     end
   end
 
+  def new
+    @event = Event.new
+
+    respond_to do |format|
+      format.html # new.html.erb
+      format.xml  { render :xml => @event }
+    end
+  end
+
+  def create
+    @event = Event.new(params[:event])
+
+    respond_to do |format|
+      if @event.save
+        flash[:notice] = 'A new event was successfully created.'
+        format.html { redirect_to(@event) }
+        format.xml  { render :xml => @event, :status => :created, :location => @event }
+      else
+        format.html { render :action => "new" }
+        format.xml  { render :xml => @event.errors, :status => :unprocessable_entity }
+      end
+    end
+  end
 
   def update
     respond_to do |format|
@@ -32,6 +55,7 @@ class EventsController < ApplicationController
     end
   end
 
+
   def destroy
     @event.destroy
 
@@ -39,6 +63,10 @@ class EventsController < ApplicationController
       format.html { redirect_to(events_url) }
       format.json { head :no_content }
     end
+  end
+
+  def edit
+    @event = Event.find(params[:id])
   end
   
   private
@@ -49,12 +77,13 @@ class EventsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def event_params
-      params.require(:event).permit(:start_at, :end_at, :eventname, :location, :officiated, :staff_name)# <-- insert editable fields here inside here e.g (:date, :name)
+      params.require(:event).permit(:eventname, :start_at, :end_at, :location, :participants, :officiated, :staff_name)# <-- insert editable fields here inside here e.g (:date, :name)
     end
     
     def sort_column
         Event.column_names.include?(params[:sort]) ? params[:sort] : "eventname" 
     end
+    
     def sort_direction
         %w[asc desc].include?(params[:direction])? params[:direction] : "asc" 
     end
