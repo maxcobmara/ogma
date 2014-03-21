@@ -1,4 +1,4 @@
-.col-md-offset-3
+.col-md-offset-2
   .form-group
     .col-sm-2.control-label
       = f.label t 'student.students.matrixno', for: :matrixno
@@ -9,19 +9,19 @@
   .form-group
     .col-sm-2.control-label
       =f.label t 'student.students.address', for: :remarks
-    .col-md-3
-      = f.text_area :address, :size => "40x7", class: 'form-control'
+    .col-md-5
+      = f.text_area :address, :size => "40x5", class: 'form-control'
 
   .form-group
     .col-sm-2.control-label
       =f.label t 'student.students.address_posbasik', for: :remarks
-    .col-md-3
-      = f.text_area :address_posbasik, :size => "40x7", class: 'form-control'
+    .col-md-5
+      = f.text_area :address_posbasik, :size => "40x5", class: 'form-control'
 
   .form-group
     .col-sm-2.control-label
       =f.label t 'student.students.sbirthd', for: :sbirthdt
-    .col-md-2
+    .col-md-4
       = f.text_field :sbirthdt, class: 'form-control', 'data-behaviour' => 'datepicker_today'
  
 
@@ -35,7 +35,7 @@
   .form-group
     .col-sm-2.control-label
       = f.label t 'student.students.etnic', for: :etnic
-    .col-md-2
+    .col-md-3
       = f.text_field :race, class: 'form-control'
 
 
@@ -43,7 +43,7 @@
   .form-group#bong{:style => "display: none;"}
     .col-sm-2.control-label
       =f.label t 'student.students.etnic', for: :race
-    .col-md-2
+    .col-md-4
       =f.text_field :race #class: 'selectpicker', "data-width"=>"350px"
  
 
@@ -62,11 +62,11 @@
   .form-group
     .col-sm-2.control-label
       =f.label t 'student.students.semail', for: :semail
-    .col-md-2
+    .col-md-4
       =f.text_field :semail, class: 'form-control', 'data-behaviour' => 'datepicker_today'
   
   .form-group
     .col-sm-2.control-label
       =f.label t 'student.students.regdate', for: :regdate
-    .col-md-2
+    .col-md-4
       =f.text_field :regdate, class: 'form-control', 'data-behaviour' => 'datepicker_today'

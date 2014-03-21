@@ -1,9 +1,16 @@
-.col-md-offset-1
+.col-md-offset-2
   .form-group
     .col-sm-3.control-label
-      =f.label t 'student.students.level_id', for: :level_id
+      =f.label t 'student.students.level_id'
     .col-sm-2.control-label
-      =f.label t 'student.students.qname', for: :qname
+      =f.label t 'student.students.gname'
     .col-sm-2.control-label
-      =f.label t 'student.students.institute', for: :institute
-      
+      =f.label t 'student.students.institute'
+	  
+
+-#  .form-group	  
+    .col-sm-8.control-label
+      = f.fields_for :qualifications do |builder|
+        = render 'qualification_fields', :f => builder
+ 
+      = link_to_add_fields fa_icon("asterisk", text: (t 'actions.new'), :border => 0), f, :qualifications
