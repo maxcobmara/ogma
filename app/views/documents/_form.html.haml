@@ -68,13 +68,6 @@
       - else
       No Attachment yet
 
-      %font{:color => "#444", :size => "-2"} Current file is :
-      - if @bulletin.data.exists? then
-        = @bulletin.data_file_name
-      %font{:color => "#444", :size => "-2"} Or
-      = f.file_field :data, :style=>"width: 400px", class: 'form-control'
-      %font{:color => "#AAA", :size => "-2"} pdf/txt/doc/xls/jpg.  Max : 5MB
-
   .form-group
     .col-sm-2.control-label
       = f.label t 'document.upload_change_file'   , for: :data
