@@ -62,16 +62,6 @@ class StudentsController < ApplicationController
   def create
     @student = Student.new(params[:student])
 
-    respond_to do |format|
-      if @student.save
-        flash[:notice] = 'Student was successfully created.'
-        format.html { redirect_to(@student) }
-        format.xml  { render :xml => @student, :status => :created, :location => @student }
-      else
-        format.html { render :action => "new" }
-        format.xml  { render :xml => @student.errors, :status => :unprocessable_entity }
-      end
-    end
   end
 
   # PUT /students/1
@@ -101,7 +91,7 @@ class StudentsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def student_params
-      params.require(:student).permit(:formatted_mykad)
+      params.require(:student).permit(:icno, :name, :sstatus, :stelno, :ssponsor, :gender, :sbirthdt, :mrtlstatuscd, :intake,:course_id)
     end
 
     def sort_column

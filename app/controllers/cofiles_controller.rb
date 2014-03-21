@@ -1,5 +1,4 @@
 class CofilesController < ApplicationController
-  helper_method :sort_column, :sort_direction
   before_action :set_cofile, only: [:show, :edit, :update, :destroy]
   # GET /cofiles
   # GET /cofiles.xml
@@ -10,16 +9,18 @@ class CofilesController < ApplicationController
     @cofiles = @cofiles.page(params[:page]||1)
     #previous
     #@staff_filtered = Staff.with_permissions_to(:edit).find(:all, :order => sort_column + ' ' + sort_direction ,:conditions => ['icno LIKE ? or name ILIKE ?', "%#{params[:search]}%", "%#{params[:search]}%"])
-    @cofiles_filtered = Cofile.find(:all, :order => sort_column + ' ' + sort_direction ,:conditions => ['cofileno LIKE ? or name ILIKE ? ', "%#{params[:search]}%", "%#{params[:search]}%"])
+    #@cofiles_filtered = Cofile.find(:all, :order => sort_column + ' ' + sort_direction ,:conditions => ['cofileno LIKE ? or name ILIKE ? ', "%#{params[:search]}%", "%#{params[:search]}%"])
 
   end
   
-  
+  def new
+    @cofile = Cofile.new
+  end  
   
   def update
     respond_to do |format|
       if @cofile.update(cofile_params)
-        format.html { redirect_to cofile_path, notice: 'File Registry was successfully updated.' }
+        format.html { redirect_to @cofile, notice: 'File Registry was successfully updated.' }
         format.json { head :no_content }
       else
         format.html { render action: 'edit' }
@@ -27,10 +28,28 @@ class CofilesController < ApplicationController
       end
     end
   end
+
   
   def edit
     @cofile = Cofile.find(params[:id])
   end
+
+
+  def create
+    @cofile = Cofile.new(params[:cofile])
+    
+    respond_to do |format|
+      if @cofile.save
+        flash[:notice] = 'A new event was successfully created.'
+        format.html { redirect_to(@cofile) }
+        format.xml  { render :xml => @cofile, :status => :created, :location => @cofile }
+      else
+        format.html { render :action => "new" }
+        format.xml  { render :xml => @cofile.errors, :status => :unprocessable_entity }
+      end
+    end
+  end
+  
 
   def destroy
     @cofile.destroy
@@ -51,11 +70,5 @@ private
     def cofile_params
       params.require(:cofile).permit(:cofileno, :name, :location, :owner_id, :staffloan_id, :onloandt, :onloanxdt)
     end
-    
-    def sort_column
-        Cofile.column_names.include?(params[:sort]) ? params[:sort] : "cofileno" 
-    end
-    def sort_direction
-        %w[asc desc].include?(params[:direction])? params[:direction] : "asc" 
-    end
+
 end

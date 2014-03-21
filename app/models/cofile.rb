@@ -1,7 +1,6 @@
 class Cofile < ActiveRecord::Base
   
   validates_presence_of :name, :location, :owner_id#:cofileno, 
-  
   belongs_to :owner,    :class_name => 'Staff', :foreign_key => 'owner_id' 
   belongs_to :borrower, :class_name => 'Staff', :foreign_key => 'staffloan_id' 
   

@@ -5,4 +5,16 @@
     = @cofile.cofileno
 
 = render 'shared/flashes'
-= render 'form'
+
+.row.fluid
+  = form_for [:cofile, @cofile], url: cofile_path(@cofile) , html: { multipart: true, class: 'form-horizontal' }  do |f| 
+    = render 'shared/error_messages', object: f.object
+    = render :partial => 'form', :locals => {:f => f}
+	
+    .col-md-offset-1
+      .form-group
+        .col-sm-offset-2.col-sm-1
+          = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), cofile_path(@cofile), :class => 'btn btn-default'
+        .col-sm-2
+          = f.submit t('update'), class: "btn btn-primary"
+		 
