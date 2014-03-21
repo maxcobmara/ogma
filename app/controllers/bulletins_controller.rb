@@ -74,7 +74,7 @@ private
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def bulletin_params
-      params.require(:bulletin).permit(:headline, :content, :postedby_id, :publishdt )
+      params.require(:bulletin).permit(:headline, :content, :postedby_id, :publishdt, :data)
     end
     
 end

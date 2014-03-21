@@ -70,10 +70,14 @@ before_save :set_actionstaff2_to_blank_if_close_is_selected
  has_attached_file :data,
                     :url => "/assets/documents/:id/:style/:basename.:extension",
                     :path => ":rails_root/public/assets/documents/:id/:style/:basename.:extension"
- #validates_attachment_content_type :data, 
-                        #:content_type => ['application/pdf', 'application/msword','application/msexcel','image/png','text/plain'],
-                        #:storage => :file_system,
-                        #:message => "Invalid File Format" 
+
+ validates_attachment_content_type :data, 
+                                   :content_type => ['application/pdf','application/txt', 'application/msword',
+                                                     'application/msexcel','image/png','image/jpeg','text/plain',
+                                                      'application/vnd.openxmlformats-officedocument.wordprocessingml.document'],
+                                   :storage => :file_system,
+                                   :message => "Invalid File Format" 
+                                   
  validates_attachment_size :data, :less_than => 5.megabytes
  
  #---------------------AttachFile-for circulation:action------------------------------------------------------

@@ -6,14 +6,19 @@ class Bulletin < ActiveRecord::Base
   # validates_format_of    :headline, :with => /^[a-zA-Z'` ]+$/, :message => "contains illegal characters"
   
   #-------------Upload Document---------------#
-   #attr_accessible :data
    
    has_attached_file :data,
                      :url => "/assets/bulletins/:id/:style/:basename.:extension",
                      :path => ":rails_root/public/assets/bulletins/:id/:style/:basename.:extension"
-   #validates_attachment_content_type :data, :content_type => ['application/pdf','application/txt', 'application/msword','application/msexcel','image/png','image/jpeg','text/plain'],
-                          #:storage => :file_system,
-                          #:message => "Invalid File Format" 
+                    
+                     
+   validates_attachment_content_type :data, 
+                                     :content_type => ['application/pdf','application/txt', 'application/msword',
+                                                       'application/msexcel','image/png','image/jpeg','text/plain',
+                                                       'application/vnd.openxmlformats-officedocument.wordprocessingml.document'],
+                                     :storage => :file_system,
+                                     :message => "Invalid File Format" 
+                          
    validates_attachment_size :data, :less_than => 5.megabytes
    
     def self.find_main
