@@ -22,7 +22,9 @@
 en:
   
   activerecord:
-    models: 
+    models:
+      staff: Staff
+      student: Student
       location: Lokasi
     attributes:
       location:
@@ -186,6 +188,7 @@ en:
   library:
     title: Library
     transaction: 
+      manager: Library Transaction Manager
       title: Library Transactions
       list: Library Transaction List
       book_id: Book ID

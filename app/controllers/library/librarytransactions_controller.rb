@@ -18,20 +18,13 @@ class Library::LibrarytransactionsController < ApplicationController
   # GET /librarytransactions/new.xml
   def new
     @librarytransaction = Librarytransaction.new
-    #@librarytransactions = Array.new(4) #{ Libraryransaction.new }
-    #-----trial----
-    #@aaa = params[:librarytransactions]
-    #@staff1 = params[:stafffirst]
-    #@student1 = params[:studentfirst]
-    #-----trial----
-    respond_to do |format|
-      format.html # new.html.erb
-      format.xml  { render :xml => @librarytransaction }
-    end
+  end
+  
+  def show
   end
   
   def create
-    @librarytransaction = Librarytransaction.new(librarytransaction_params)
+    #@librarytransaction = Librarytransaction.new(librarytransaction_params)
 
     respond_to do |format|
       if @librarytransaction.save
@@ -56,7 +49,27 @@ class Library::LibrarytransactionsController < ApplicationController
     end
   end
   
-  
+  def manager
+    #set person
+    @existing_library_transactions = []
+    if params[:search].present? && params[:search][:staff_name].present?
+      @staff_name = params[:search][:staff_name]
+      @selected_staff = Staff.where("name = ?", "#{@staff_name}").first
+      unless @selected_staff.nil?
+        scope = Librarytransaction.where(staff: @selected_staff).where(returneddate: nil).order(returnduedate: :asc)
+        @searches = scope.all
+        @searches.each do |t|
+          @existing_library_transactions << t
+        end
+      end
+      @booklimit = 5
+    end
+    
+    if params[:search].present? && params[:search][:student_icno].present?
+      @student_ic = params[:search][:student_icno]
+      @selected_student = Student.where("icno = ?", "#{@student_ic}").first
+    end  
+  end
   
   
   def check_status

@@ -17,3 +17,12 @@ jQuery ->
   $ ()->
     $("form.new_post").on "ajax:success", (event, data, status, xhr) ->
       $('#new-post-modal').modal('hide')
+      
+  $('#search_staff_name').autocomplete
+    minLength: 3
+    source: $('#search_staff_name').data('autocomplete-source')
+    
+  $('#search_student_icno').autocomplete
+    minLength: 3
+    source: $('#search_student_icno').data('autocomplete-source')
+  

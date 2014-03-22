@@ -2,6 +2,7 @@ ms_MY:
   
   activerecord:
     models: 
+      staff: Kakitangan
       location: Lokasi
     attributes:
       location:
@@ -160,6 +161,7 @@ ms_MY:
   library:
     title: Perpustakaan
     transaction: 
+      manager: Pengurusan Transaksi Perpustakaan
       title: Transaksi Perpustakaan
       list: Senarai Transaksi Perpustakaan
       book_id: ID Buku
