@@ -1,5 +1,9 @@
-%H2= t('student.students.students_details')
-.col-md-offset-3
+.col-md-offset-1
+  .form-group
+    .col-sm-7.control-label
+      %H2= t('student.students.student_details')
+
+.col-md-offset-2
   .form-group
     .col-sm-2.control-label
       = f.label t 'student.students.icno', for: :icno
@@ -49,10 +53,12 @@
     .col-md-2
       = f.select :mrtlstatuscd, Student::MARITAL_STATUS, :prompt => "Select", class: 'form-control mandatory'
 
-%BR
-  %H2= t('student.students.course_details')
+.col-md-offset-1
+  .form-group
+    .col-sm-7.control-label
+      %H2= t('student.students.course_details')
 
-  .col-md-offset-3
+  .col-md-offset-1
     .form-group
       .col-sm-2.control-label
         =f.label t 'student.students.intake_id', for: :intake

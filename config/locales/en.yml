@@ -210,6 +210,8 @@ en:
       guarantor: Guarantor
       contact_information: Contact Information
       mandatory: Mandatory
+      subject: Subject
+      grade: Grade
 
 
 

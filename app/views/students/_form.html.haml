@@ -1,5 +1,5 @@
 .row
-  .col-md-offset-1
+  .col-md-offset-2
     / Nav tabs
     %ul.nav.nav-tabs
       %li.active= link_to ((t 'student.students.mandatory')),"#mandatory_edit", "data-toggle" => "tab"
@@ -7,7 +7,7 @@
       %li= link_to ((t 'student.students.course_details')), "#course_details_edit", "data-toggle" => "tab"
       %li= link_to ((t 'student.students.health_status')), "#health_status_edit", "data-toggle" => "tab"
       %li= link_to ((t 'student.students.qualifications')), "#qualifications_edit", "data-toggle" => "tab"
-
+      %li= link_to ((t 'student.students.result')), "#result_edit", "data-toggle" => "tab"
 
 
     .tab-content{style:"padding-top:1em"}
@@ -31,3 +31,7 @@
       #qualifications_edit.tab-pane
         %br
         = render :partial => 'tab_qualifications_edit', :locals => {:f => f}			
+
+      #result_edit.tab-pane
+        %br
+        = render :partial => 'tab_result_edit', :locals => {:f => f}
