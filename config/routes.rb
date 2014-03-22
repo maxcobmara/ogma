@@ -58,6 +58,8 @@ Ogma::Application.routes.draw do
       collection do
         get :check_status
         post :check_status
+        get   :manager
+        post  :manager
       end
     end
   end
