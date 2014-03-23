@@ -10,9 +10,6 @@ jQuery ->
     $(this).before($(this).data('fields').replace(regexp, time))
     event.preventDefault()
     
-  $('#librarytransaction_accession_acc_book').autocomplete
-      source: $('#librarytransaction_accession_acc_book').data('autocomplete-source')
-
       
   $ ()->
     $("form.new_post").on "ajax:success", (event, data, status, xhr) ->
@@ -26,9 +23,9 @@ jQuery ->
     minLength: 3
     source: $('#search_student_icno').data('autocomplete-source')
     
-  $('#librarytransaction_accession_id').autocomplete
-    minLength: 2
-    source: $('#librarytransaction_accession_id').data('autocomplete-source')
+$('#librarytransaction_accession_acc_book').autocomplete
+  minLength: 2
+  source: $('#librarytransaction_accession_acc_book').data('autocomplete-source')
   
   
   

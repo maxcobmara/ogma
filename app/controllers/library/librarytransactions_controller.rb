@@ -27,15 +27,11 @@ class Library::LibrarytransactionsController < ApplicationController
   end
   
   def create
-    #@librarytransaction = Librarytransaction.new(librarytransaction_params)
-
-    respond_to do |format|
-      if @librarytransaction.save
-        format.html { redirect_to @librarytransaction, notice: 'Library was successfully created.' }
-        format.json { render json: [:library, @librarytransaction], status: :created, location: [:library, @librarytransaction] }
-      else
-        format.html { render action: "new" }
-        format.json { render json: @librarytransaction.errors, status: :unprocessable_entity }
+    def create
+      @librarytransaction = Librarytransaction.create!(params[:task])
+      respond_to do |format|
+        format.html { redirect_to manager_library_librarytransactions_path }
+        format.js
       end
     end
   end
@@ -152,7 +148,7 @@ class Library::LibrarytransactionsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def librarytransaction_params
-      params.require(:librarytransaction).permit(:accession_id, :staff_id, :student_id, :checkoutdate, :returnduedate, :accession_no, :accession_acc_book)
+      params.require(:librarytransaction).permit(:accession_id, :staff_id, :student_id, :checkoutdate, :returnduedate, :accession_acc_book)
       # <-- insert editable fields here inside here e.g (:date, :name)
     end
   
