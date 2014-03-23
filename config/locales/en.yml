@@ -243,6 +243,7 @@ en:
       list: Library Transaction List
       book_id: Book ID
       borrower: Borrowed By
+      add: Add
       author: Author
       staffstudent: Staff / Trainee
       staff: S

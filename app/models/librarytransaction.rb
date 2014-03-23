@@ -10,20 +10,10 @@ class Librarytransaction < ActiveRecord::Base
   
   attr_accessor :booktitle, :staf_who, :student_who
   
-  validates_presence_of :accession_id
-  validate :staff_or_student_borrower
+  #validates_presence_of :accession_id
   
   #18May2013-compulsory to have this method in order for autocomplete field to work
-  def staff_who
-  end
-  def student_who
-  end
 
-  def staff_or_student_borrower
-    if %w(staff_id student_id).all?{|attr| self[attr].blank?}
-      errors.add_to_base("A borrower is required")
-    end
-  end
   
   #scope :all,       :conditions => [ "id IS NOT ?", nil ]
   scope :borrowed,  lambda{where("returned = ? OR returned IS ?", false, nil)}

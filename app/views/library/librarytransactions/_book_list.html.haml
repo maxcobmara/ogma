@@ -1,5 +1,7 @@
 - if @existing_library_transactions.empty?
-  %h4 No Results
+  #no_books
+    %h4 No Results
+  #insert_book_details
 - else
   .row
     .col-sm-2.table_title= t 'book.accession_no'
@@ -8,6 +10,7 @@
   
   - @existing_library_transactions.each do | transaction |
     - if transaction.returnduedate < Date.today.yesterday && transaction.returneddate.blank?; @style = "overdue"; else; @style = "plain"; end
+    #insert_book_details
     .row{:class => @style}
       .col-sm-2= transaction.try(:accession).try(:accession_no)
       .col-sm-7= link_to transaction.try(:accession).try(:book).try(:title), '#', class: "bogus"
