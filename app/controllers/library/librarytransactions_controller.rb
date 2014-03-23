@@ -17,22 +17,30 @@ class Library::LibrarytransactionsController < ApplicationController
   # GET /librarytransactions/new
   # GET /librarytransactions/new.xml
   def new
+    @checked_out = Librarytransaction.where("returneddate IS ?", nil).pluck(:accession_id)
+    
     @librarytransaction = Librarytransaction.new
+    if @@selected_staff
+      @librarytransaction.ru_staff = true
+      @librarytransaction.staff_id = @@selected_staff.id
+    elsif @@selected_student
+      @librarytransaction.ru_staff = false
+      @librarytransaction.student_id = @@selected_student.id
+    end
+      
     #@librarytransaction.accession_id = 1
-    #@librarytransaction.checkoutdate = Date.today()
-    #@librarytransaction.returnduedate = Date.today() + 14.days
+    @librarytransaction.checkoutdate = Date.today()
+    @librarytransaction.returnduedate = Date.today() + 14.days
   end
   
   def show
   end
   
   def create
-    def create
-      @librarytransaction = Librarytransaction.create!(params[:task])
-      respond_to do |format|
-        format.html { redirect_to manager_library_librarytransactions_path }
-        format.js
-      end
+    @librarytransaction = Librarytransaction.create!(librarytransaction_params)
+    respond_to do |format|
+      format.html { redirect_to manager_library_librarytransactions_path }
+      format.js
     end
   end
   
@@ -61,13 +69,26 @@ class Library::LibrarytransactionsController < ApplicationController
           @existing_library_transactions << t
         end
       end
+      @@book_counter = @existing_library_transactions.count
       @booklimit = 5
     end
     
     if params[:search].present? && params[:search][:student_icno].present?
       @student_ic = params[:search][:student_icno]
       @selected_student = Student.where("icno = ?", "#{@student_ic}").first
-    end  
+      unless @selected_student.nil?
+        scope = Librarytransaction.where(student: @selected_student).where(returneddate: nil).order(returnduedate: :asc)
+        @searches = scope.all
+        @searches.each do |t|
+          @existing_library_transactions << t
+        end
+      end
+      @booklimit = 2
+    end
+    
+    @book_counter = @existing_library_transactions.count
+    @@selected_staff = @selected_staff
+    @@selected_student = @selected_student 
   end
   
   
@@ -148,7 +169,7 @@ class Library::LibrarytransactionsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def librarytransaction_params
-      params.require(:librarytransaction).permit(:accession_id, :staff_id, :student_id, :checkoutdate, :returnduedate, :accession_acc_book)
+      params.require(:librarytransaction).permit(:accession_id, :ru_staff, :staff_id, :student_id, :checkoutdate, :returnduedate, :accession, :accession_no, :accession_acc_book)
       # <-- insert editable fields here inside here e.g (:date, :name)
     end
   

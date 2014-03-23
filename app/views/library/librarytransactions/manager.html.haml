@@ -2,6 +2,7 @@
 .page-header
   %h1= t('library.transaction.manager')
 
+
 - unless @selected_staff || @selected_student
   .row
     .col-md-3
@@ -31,14 +32,14 @@
 - if @selected_staff || @selected_student
   .row
     .col-md-10.col-sm-offset-1
-      - if @existing_library_transactions.count < @booklimit; @panel = "panel-info"; else @panel = "panel-danger"; end
+      - if @book_counter < @booklimit; @panel = "panel-info"; else @panel = "panel-danger"; end
       .panel{:class => @panel}
         - if @selected_staff
           .panel-heading
             = t( 'activerecord.models.staff')
             &nbsp; : &nbsp;
             = @selected_staff.name
-            %span.badge.right= @existing_library_transactions.count
+            %span.badge.right.counter_badge= @book_counter
           .panel-body
             %dl.dl-horizontal
 
@@ -53,7 +54,11 @@
             %hr
             = render 'book_list'          
         - if @selected_student
-          .panel-heading Student
+          .panel-heading
+            = t( 'activerecord.models.student')
+            &nbsp; : &nbsp;
+            = @selected_student.name
+            %span.badge.right.counter_badge= @book_counter
           .panel-body
             %dl.dl-horizontal
 
@@ -68,26 +73,19 @@
             
               %dt= t 'student.programme'
               %dd= @selected_student.try(:course).try(:name)
+            %hr
+            = render 'book_list'
 
 
-  - if @existing_library_transactions.count < @booklimit
-    .row
-      .col-md-10.col-sm-offset-1
-        .button-toolbar.pull-right
+  .row
+    .col-md-10.col-sm-offset-1
+      .button-toolbar.pull-right
+        - if @book_counter < @booklimit
           = link_to content_tag(:i, "", class: "fa fa-bookmark"),
             new_library_librarytransaction_path, {id: "new_link", remote: true, class: "btn btn-default", :type => "button", "data-toggle" => "tooltip", title: "Add Book"}
-          = link_to content_tag(:i, "", class: "fa fa-repeat"),
-             manager_library_librarytransactions_path, {class: "btn btn-default", :type => "button", "data-toggle" => "tooltip", title: "Reset Form"}
-        %div#add_book_form
-        //.right= link_to "Add Book", new_library_librarytransaction_path, id: "new_link", remote: true
+        -else
+          = link_to content_tag(:i, "", class: "fa fa-bookmark"), '#', {class: "btn btn-default", :type => "button", "data-toggle" => "tooltip", title: "You Have Hit Limit", disabled: "disabled"}
+        = link_to content_tag(:i, "", class: "fa fa-repeat"),
+           manager_library_librarytransactions_path, {class: "btn btn-default", :type => "button", "data-toggle" => "tooltip", title: "Reset Form"}
+      %div#add_book_form
 
-/        
-/          .btn-group
-/            = link_to content_tag(:i, "", class: "glyphicon glyphicon-edit icon-white"),
-/              edit_aggregators_merchant_path(:id=>merchant.id), {class: "btn btn-default", :type => "button", "data-toggle" => "tooltip", title: "Edit"} if can? :manage_agreements, partner
-/            = link_to content_tag(:i, "", class: 'glyphicon glyphicon-transfer'), '#', :request_url => request_access_aggregators_merchant_path(merchant), 'data-toggle' => "modal", 'data-target'=> "#access-modal", class: "btn btn-default", :type => "button", :title => 'Request access'
-/            = link_to content_tag(:i, "", class: 'glyphicon glyphicon-bullhorn'), new_campaign_path(:partner_id => merchant), class: "btn btn-default", :type => "button", "data-toggle" => "tooltip", title: "New Campaign"
-/            - if agreement = agreement_of_interest(merchant)
-/              = link_to content_tag(:i, "", class: 'glyphicon glyphicon-list-alt'), partner_agreements_path(merchant_id: merchant.id), class: "btn btn-default", :type => "button", "data-toggle" => "tooltip", title: 'View Agreements' #show_aggregator_merchant_agreement_path(agreement)
-
-    

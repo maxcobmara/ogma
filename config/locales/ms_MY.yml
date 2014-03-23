@@ -208,6 +208,7 @@ ms_MY:
       list: Senarai Transaksi Perpustakaan
       book_id: ID Buku
       borrower: Peminjam
+      add: Tambah
       author : Pengarang
       staffstudent: Staf / Pelatih
       staff: S
