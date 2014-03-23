@@ -71,6 +71,11 @@ $(document).ready(function () {
     startView: 2
   });
   
+  $(".input-daterange").datepicker({
+    todayBtn: "linked", 
+    todayHighlight: true
+  });
+  
   $('.datetimepicker').datetimepicker({pickSeconds: false});
   $('.selectpicker').selectpicker();
   

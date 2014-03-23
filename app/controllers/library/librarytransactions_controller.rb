@@ -18,6 +18,9 @@ class Library::LibrarytransactionsController < ApplicationController
   # GET /librarytransactions/new.xml
   def new
     @librarytransaction = Librarytransaction.new
+    #@librarytransaction.accession_id = 1
+    #@librarytransaction.checkoutdate = Date.today()
+    #@librarytransaction.returnduedate = Date.today() + 14.days
   end
   
   def show

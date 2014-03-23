@@ -25,4 +25,11 @@ jQuery ->
   $('#search_student_icno').autocomplete
     minLength: 3
     source: $('#search_student_icno').data('autocomplete-source')
+    
+  $('#librarytransaction_accession_id').autocomplete
+    minLength: 2
+    source: $('#librarytransaction_accession_id').data('autocomplete-source')
+  
+  
+  
   

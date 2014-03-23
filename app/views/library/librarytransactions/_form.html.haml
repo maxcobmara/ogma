@@ -1,6 +1,17 @@
-= form_for [:library, Librarytransaction.new], remote: true do |f|
-  .col-md-3
-    =f.text_field :accession_id, :class => 'form-control mandatory'
-  .col-md-2
-    =f.text_field :checkoutdate, :class => 'form-control', :type => :text, 'data-behaviour' => 'datepicker_before'
+= form_for [:library, @librarytransaction], remote: true do |f|
+  .row
+    .col-md-5
+      %h4 Add Book
+  .row
+    .col-md-5
+      = f.text_field :accession_acc_book, class: 'form-control', data: {autocomplete_source: Accession.order(:accession_no).map(&:acc_book) }, placeholder: "Accession No"
+    .col-md-5
+      #datepicker.input-daterange.input-group
+        = f.text_field :checkoutdate, class: "form-control", :type => :text
+        %span.input-group-addon to
+        = f.text_field :returnduedate, class: "form-control", :type => :text
+    .col-md-2
+      %btn= f.submit 'send'
+    
+    
   

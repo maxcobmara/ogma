@@ -49,7 +49,7 @@ Ogma::Application.routes.draw do
   resources :bulletins
   
   namespace :library do
-    resources     :librarytransactions do
+    resources :librarytransactions do
       member do
         get :extend
         get :return

@@ -78,8 +78,7 @@
             new_library_librarytransaction_path, {id: "new_link", remote: true, class: "btn btn-default", :type => "button", "data-toggle" => "tooltip", title: "Add Book"}
           = link_to content_tag(:i, "", class: "fa fa-repeat"),
              manager_library_librarytransactions_path, {class: "btn btn-default", :type => "button", "data-toggle" => "tooltip", title: "Reset Form"}
-        #add_book_form(style="display:none;")
-          = render :partial => 'form'
+        %div#add_book_form
         //.right= link_to "Add Book", new_library_librarytransaction_path, id: "new_link", remote: true
 
 /        
