@@ -4,7 +4,7 @@
   
 .navbar.navbar-inverse{role: "navigation", style: "padding-right:40px;"}
   %ul.nav.navbar-nav
-    %li= link_to content_tag(:li, fa_icon("gear", text: (t 'library.transaction.manager'))), new_library_librarytransaction_path
+    %li= link_to content_tag(:li, fa_icon("gear", text: (t 'library.transaction.manager'))), manager_library_librarytransactions_path
     %li= link_to content_tag(:li, fa_icon("info-circle", text: (t 'library.check.status'))), check_status_library_librarytransactions_path
   %ul.nav.navbar-nav.navbar-right
     %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'search'))), "#", class: "toga"

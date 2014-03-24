@@ -87,5 +87,6 @@
           = link_to content_tag(:i, "", class: "fa fa-bookmark"), '#', {class: "btn btn-default", :type => "button", "data-toggle" => "tooltip", title: "You Have Hit Limit", disabled: "disabled"}
         = link_to content_tag(:i, "", class: "fa fa-repeat"),
            manager_library_librarytransactions_path, {class: "btn btn-default", :type => "button", "data-toggle" => "tooltip", title: "Reset Form"}
+        = link_to content_tag(:i, "", class: "fa fa-square"),
+           "http://#{request.host}:3000", {class: "btn btn-default", :type => "button", "data-toggle" => "tooltip", title: "Back to OLD ICMS"}
       %div#add_book_form
-
