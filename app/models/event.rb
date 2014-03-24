@@ -5,8 +5,6 @@ class Event < ActiveRecord::Base
   belongs_to :staff, :foreign_key => 'createdby'
   
   validates_presence_of :eventname, :start_at, :end_at, :location, :participants, :officiated, :createdby
-
-  #attr_accessible :eventname, :start_at, :end_at, :location, :participants, :officiated, :createdby
   
   def titleize_eventname
     self.eventname = eventname.titleize

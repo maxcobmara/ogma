@@ -12,6 +12,12 @@
         .panel.panel-info
           .panel-heading= bulletin.headline
           .panel-body{:style => "min-height:150px"}= bulletin.content
+          .panel-body{:style => "min-height:100px"}
+            - if bulletin.data.exists? then
+              = link_to (t 'bulletin.download'), bulletin.data.url 
+            - else
+
+			  
       - counter += 1
 
 

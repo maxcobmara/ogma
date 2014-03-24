@@ -64,8 +64,7 @@
     .col-md-5
       = if @document.data.exists? then
         = @document.data_file_name
-        \#{link_to (t 'document.download'), @document.data.url} ||
-        \#{link_to "ALT", @document.data.url}
+        \#{link_to (t 'document.download'), @document.data.url}
       - else
       No Attachment yet
 
