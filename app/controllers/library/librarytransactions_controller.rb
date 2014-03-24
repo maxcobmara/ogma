@@ -17,30 +17,30 @@ class Library::LibrarytransactionsController < ApplicationController
   # GET /librarytransactions/new
   # GET /librarytransactions/new.xml
   def new
+    @checked_out = Librarytransaction.where("returneddate IS ?", nil).pluck(:accession_id)
+    
     @librarytransaction = Librarytransaction.new
-    #@librarytransactions = Array.new(4) #{ Libraryransaction.new }
-    #-----trial----
-    #@aaa = params[:librarytransactions]
-    #@staff1 = params[:stafffirst]
-    #@student1 = params[:studentfirst]
-    #-----trial----
-    respond_to do |format|
-      format.html # new.html.erb
-      format.xml  { render :xml => @librarytransaction }
+    if @@selected_staff
+      @librarytransaction.ru_staff = true
+      @librarytransaction.staff_id = @@selected_staff.id
+    elsif @@selected_student
+      @librarytransaction.ru_staff = false
+      @librarytransaction.student_id = @@selected_student.id
     end
+      
+    #@librarytransaction.accession_id = 1
+    @librarytransaction.checkoutdate = Date.today()
+    @librarytransaction.returnduedate = Date.today() + 14.days
+  end
+  
+  def show
   end
   
   def create
-    @librarytransaction = Librarytransaction.new(librarytransaction_params)
-
+    @librarytransaction = Librarytransaction.create!(librarytransaction_params)
     respond_to do |format|
-      if @librarytransaction.save
-        format.html { redirect_to @librarytransaction, notice: 'Library was successfully created.' }
-        format.json { render json: [:library, @librarytransaction], status: :created, location: [:library, @librarytransaction] }
-      else
-        format.html { render action: "new" }
-        format.json { render json: @librarytransaction.errors, status: :unprocessable_entity }
-      end
+      format.html { redirect_to manager_library_librarytransactions_path }
+      format.js
     end
   end
   
@@ -56,7 +56,40 @@ class Library::LibrarytransactionsController < ApplicationController
     end
   end
   
-  
+  def manager
+    #set person
+    @existing_library_transactions = []
+    if params[:search].present? && params[:search][:staff_name].present?
+      @staff_name = params[:search][:staff_name]
+      @selected_staff = Staff.where("name = ?", "#{@staff_name}").first
+      unless @selected_staff.nil?
+        scope = Librarytransaction.where(staff: @selected_staff).where(returneddate: nil).order(returnduedate: :asc)
+        @searches = scope.all
+        @searches.each do |t|
+          @existing_library_transactions << t
+        end
+      end
+      @@book_counter = @existing_library_transactions.count
+      @booklimit = 5
+    end
+    
+    if params[:search].present? && params[:search][:student_icno].present?
+      @student_ic = params[:search][:student_icno]
+      @selected_student = Student.where("icno = ?", "#{@student_ic}").first
+      unless @selected_student.nil?
+        scope = Librarytransaction.where(student: @selected_student).where(returneddate: nil).order(returnduedate: :asc)
+        @searches = scope.all
+        @searches.each do |t|
+          @existing_library_transactions << t
+        end
+      end
+      @booklimit = 2
+    end
+    
+    @book_counter = @existing_library_transactions.count
+    @@selected_staff = @selected_staff
+    @@selected_student = @selected_student 
+  end
   
   
   def check_status
@@ -136,7 +169,7 @@ class Library::LibrarytransactionsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def librarytransaction_params
-      params.require(:librarytransaction).permit(:accession_id, :staff_id, :student_id, :checkoutdate, :returnduedate, :accession_no, :accession_acc_book)
+      params.require(:librarytransaction).permit(:accession_id, :ru_staff, :staff_id, :student_id, :checkoutdate, :returnduedate, :accession, :accession_no, :accession_acc_book)
       # <-- insert editable fields here inside here e.g (:date, :name)
     end
   

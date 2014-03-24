@@ -1,37 +1,37 @@
-.col-md-offset-3
+.col-md-offset-2
   .form-group
     .col-sm-2.control-label
       = f.label t 'student.students.physical', for: :physical
-    .col-md-2
+    .col-md-3
       = f.text_field :physical, class: 'form-control'
        
   .form-group
     .col-sm-2.control-label
       = f.label t 'student.students.allergy', for: :allergy
-    .col-md-2
+    .col-md-3
       = f.text_field :allergy, class: 'form-control'
        
   .form-group
     .col-sm-2.control-label
       = f.label t 'student.students.disease', for: :allergy
-    .col-md-2
+    .col-md-3
       = f.text_field :disease, class: 'form-control'
        
   .form-group
     .col-sm-2.control-label
       = f.label t 'student.students.medication', for: :medication
-    .col-md-2
+    .col-md-3
       = f.text_field :medication, class: 'form-control'
  
   .form-group
     .col-sm-2.control-label
       = f.label t 'student.students.bloodtype', for: :bloodtype
-    .col-md-2
+    .col-md-3
       = f.select :bloodtype, Student::BLOOD_TYPE, :prompt => "Select"
        
   .form-group
     .col-sm-2.control-label
       = f.label t 'student.students.remarks', for: :remarks
-    .col-md-2
+    .col-md-3
       = f.text_area :remarks, class: 'form-control'
        

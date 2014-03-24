@@ -1,0 +1,41 @@
+%div#add_book_form_page
+  = form_for [:library, @librarytransaction], remote: true, :html => { :class => 'form-horizontal' } do |f|
+    %h4 Add Book
+    = render 'shared/flashes'
+    = f.hidden_field :staff_id
+    = f.hidden_field :ru_staff
+    = f.hidden_field :student_id
+  
+    .form-group
+      .col-sm-2.control-label
+        = f.label "Select Book"
+      .col-md-6
+        = f.text_field :accession_acc_book, class: 'form-control', data: {autocomplete_source: Accession.where("id NOT IN (?)", @checked_out).order(:accession_no).map(&:acc_book) }, placeholder: "Accession No"
+      
+    .form-group
+      .col-sm-2.control-label
+        = f.label "Select Dates"
+      .col-md-5
+        #datepicker.input-daterange.input-group
+          = f.text_field :checkoutdate, class: "form-control", :type => :text
+          %span.input-group-addon to
+          = f.text_field :returnduedate, class: "form-control", :type => :text
+      
+    .form-group
+      .col-sm-offset-2.col-sm-2
+        %button.btn.btn-primary{:type => "submit"}
+          %i.fa.fa-plus-circle
+          = t('library.transaction.add')
+
+      
+  :javascript
+    $('#librarytransaction_accession_acc_book').autocomplete({
+      minLength: 2,
+      source: $('#librarytransaction_accession_acc_book').data('autocomplete-source')
+    });
+  
+    $(".input-daterange").datepicker({
+      format: "yyyy-mm-dd",
+      todayBtn: "linked", 
+      todayHighlight: true
+    });

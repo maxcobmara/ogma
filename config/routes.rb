@@ -50,7 +50,7 @@ Ogma::Application.routes.draw do
 
   
   namespace :library do
-    resources     :librarytransactions do
+    resources :librarytransactions do
       member do
         get :extend
         get :return
@@ -58,6 +58,8 @@ Ogma::Application.routes.draw do
       collection do
         get :check_status
         post :check_status
+        get   :manager
+        post  :manager
       end
     end
   end

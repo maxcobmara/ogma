@@ -1,11 +1,22 @@
 - model_class = Student
-.col-md-8.col-md-offset-1
+.col-md-8.col-md-offset-2
   %dl.dl-horizontal
     %BR
   - for qualification in @student.qualifications
-    %dd{:for => "level_id "}
+    %dt{:for => "level_id "}
       = h (Qualification::QTYPE.find_all{|disp, value| value == qualification.level_id}).map {|disp, value| disp}[0]
       \:
   %dt
     = h qualification.qname
     \&nbsp &nbsp from &nbsp &nbsp #{h qualification.institute}
+	
+.col-md-8.col-md-offset-2	
+  %BR	
+  %dt SPM Results
+  %BR
+.col-md-2.col-md-offset-2
+  - for spmresult in @student.spmresults
+    = h spmresult.spm_subject
+    %td -
+    = h spmresult.grade
+    %BR

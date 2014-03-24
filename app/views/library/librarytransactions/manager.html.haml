@@ -1,0 +1,91 @@
+- model_class = Librarytransaction
+.page-header
+  %h1= t('library.transaction.manager')
+
+
+- unless @selected_staff || @selected_student
+  .row
+    .col-md-3
+      .btn-group.right{"data-toggle" => "buttons"}
+        %button.btn.btn-default.btn-lgbtn#option_student{style: "width:90px;"}
+          %input#option1{:name => "options", :type => "radio"}
+            = (t 'people.student')
+        %button.btn.btn-default.btn-lgbtn#option_staff{style: "width:90px;"}
+          %input#option2{:name => "options", :type => "radio"}
+            = (t 'people.staff')
+    .col-md-6.staff_search{style: "display:none;"}
+      = form_for :search, :url => { :action => "manager" }, :html=>{:class => "form-horizontal", :role => "form", :style => 'padding: 0 30px 0 30px; margin-top: 0;' } do |f|
+        .input-group
+          = f.text_field :staff_name, data: {autocomplete_source: Staff.order(:name).map(&:name)}, :autofocus => true, :required => true, :class => 'form-control search-field', :type => "input", placeholder: (t 'staff.name')
+          %span.input-group-btn
+            = f.submit (t 'search'), :class => "btn btn-primary", style: "width:80px;"
+        %span.help-block.small= (t 'library.check.search')
+      
+    .col-md-6.student_search{style: "display:none;"}
+      = form_for :search, :url => { :action => "manager" }, :html=>{:class => "form-horizontal", :role => "form", :style => 'padding: 0 30px 0 30px; margin-top: 0;' } do |f|
+        .input-group
+          = f.text_field :student_icno, data: {autocomplete_source: Student.order(:icno).map(&:icno)}, :autofocus => true, :required => true, :class => 'form-control search-field', :type => "input", placeholder: "IC Starts with"#, value: (@params_student_ic = params[:search].try(:[], :student_icno))
+          %span.input-group-btn
+            = f.submit (t 'search'), :class => "btn btn-primary", style: "width:80px;"
+        %span.help-block.small= (t 'library.check.search')
+
+- if @selected_staff || @selected_student
+  .row
+    .col-md-10.col-sm-offset-1
+      - if @book_counter < @booklimit; @panel = "panel-info"; else @panel = "panel-danger"; end
+      .panel{:class => @panel}
+        - if @selected_staff
+          .panel-heading
+            = t( 'activerecord.models.staff')
+            &nbsp; : &nbsp;
+            = @selected_staff.name
+            %span.badge.right.counter_badge= @book_counter
+          .panel-body
+            %dl.dl-horizontal
+
+              %dt= t 'staff.name'
+              %dd= @selected_staff.name
+
+              %dt= t 'staff.icno'
+              %dd= @selected_staff.icno
+            
+              %dt= t 'position.name'
+              %dd= @selected_staff.try(:position).try(:name)
+            %hr
+            = render 'book_list'          
+        - if @selected_student
+          .panel-heading
+            = t( 'activerecord.models.student')
+            &nbsp; : &nbsp;
+            = @selected_student.name
+            %span.badge.right.counter_badge= @book_counter
+          .panel-body
+            %dl.dl-horizontal
+
+              %dt= t 'student.name'
+              %dd= @selected_student.name
+
+              %dt= t 'student.matrixno'
+              %dd= @selected_student.matrixno
+            
+              %dt= t 'student.icno'
+              %dd= @selected_student.icno
+            
+              %dt= t 'student.programme'
+              %dd= @selected_student.try(:course).try(:name)
+            %hr
+            = render 'book_list'
+
+
+  .row
+    .col-md-10.col-sm-offset-1
+      .button-toolbar.pull-right
+        - if @book_counter < @booklimit
+          = link_to content_tag(:i, "", class: "fa fa-bookmark"),
+            new_library_librarytransaction_path, {id: "new_link", remote: true, class: "btn btn-default", :type => "button", "data-toggle" => "tooltip", title: "Add Book"}
+        -else
+          = link_to content_tag(:i, "", class: "fa fa-bookmark"), '#', {class: "btn btn-default", :type => "button", "data-toggle" => "tooltip", title: "You Have Hit Limit", disabled: "disabled"}
+        = link_to content_tag(:i, "", class: "fa fa-repeat"),
+           manager_library_librarytransactions_path, {class: "btn btn-default", :type => "button", "data-toggle" => "tooltip", title: "Reset Form"}
+      %div#add_book_form
+
