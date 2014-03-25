@@ -29,16 +29,15 @@ class EventsController < ApplicationController
   end
 
   def create
-    @event = Event.new(params[:event])
+    @event = Event.new(event_params)
 
     respond_to do |format|
       if @event.save
-        flash[:notice] = 'A new event was successfully created.'
-        format.html { redirect_to(@event) }
-        format.xml  { render :xml => @event, :status => :created, :location => @event }
+        format.html { redirect_to @event, notice: 'A new event was successfully created.' }
+        format.json { render action: 'show', status: :created, location: @event }
       else
-        format.html { render :action => "new" }
-        format.xml  { render :xml => @event.errors, :status => :unprocessable_entity }
+        format.html { render action: 'new' }
+        format.json { render json: @event.errors, status: :unprocessable_entity }
       end
     end
   end
