@@ -5,12 +5,17 @@ class CensusStudentTenantsPdf < Prawn::Document
     @residentials = residentials
     @current_tenants = current_tenants
     @current_user = current_user
-    @residentials.map do |building|
-      building.children.map do |floor|  
-        @rooms = floor.descendants.where(typename: [2,8])
-        @this_floor = @current_tenants.where(location_id: @rooms)
+    
+    @residentials.map do | building |
+      Array(@buildings) << building
+      building.children.map do |floor|
+        Array(@floors) << floor 
       end
     end
+    
+
+    
+    
     font "Times-Roman"
     text "Census", :align => :right, :size => 16, :style => :bold
     move_down 20
@@ -20,15 +25,15 @@ class CensusStudentTenantsPdf < Prawn::Document
   
   def resident_list
     move_down 5
-    
-    table line_item_rows do
+    floor_rows
+  end
+  
+  def floor_rows
+    @floors.map do |floor|
+      [floor.name]
     end
   end
   
-  def line_item_rows
-    @this_floor.map do |room|
-      ["#{room.location.combo_code}", ""]
-    end
-  end
+
     
 end
