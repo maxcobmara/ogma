@@ -1,5 +1,6 @@
 class Location < ActiveRecord::Base
   
+  has_ancestry :cache_depth => true, orphan_strategy: :restrict
   before_validation     :set_combo_code
   before_save           :set_combo_code
 
@@ -7,7 +8,7 @@ class Location < ActiveRecord::Base
   validates :combo_code, uniqueness: true
   
   
-  has_ancestry :cache_depth => true, orphan_strategy: :restrict
+  
   belongs_to  :administrator, :class_name => 'Staff', :foreign_key => 'staffadmin_id'
   has_many  :tenants, :dependent => :destroy
   
