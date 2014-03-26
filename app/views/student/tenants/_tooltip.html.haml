@@ -1,4 +1,4 @@
-= check_kin{bed.tenants.last.student.name}
+= check_kin{bed.tenants.last.student.name} unless keyreturned.exists?
 %br
 = check_kin {bed.try(:parent).try(:combo_code)}
 %br

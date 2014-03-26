@@ -20,20 +20,18 @@
 
       %dt= t 'cofile.onloan', :default => model_class.human_attribute_name(:onloan) + ":"  
       %dd= @cofile.onloan? ? "Yes" : "No"
-    - if @cofile.onloan == true
-      %dl
-        %dl.leftcol
-          %label{:for => "staffloan_id"}
-            = t 'cofile.onloan_to'
-      %dt= h @cofile.staffloan_id? ? @cofile.borrower.name : ""
+    
+      -if @cofile.onloan == true
+        %dt= t 'cofile.onloan_to', :default => model_class.human_attribute_name(:staffloan_id) + ":"
+        %dd= h @cofile.staffloan_id? ? @cofile.borrower.name : ""
 
 
-      %dt= t 'cofile.onloandt', :default => model_class.human_attribute_name(:onloandt) + ":"
-      %dd= @cofile.onloandt unless @cofile.onloandt.blank?
+        %dt= t 'cofile.onloandt', :default => model_class.human_attribute_name(:onloandt) + ":"
+        %dd= @cofile.onloandt unless @cofile.onloandt.blank?
 
 
-      %dt= t 'cofile.onloanxdt', :default => model_class.human_attribute_name(:onloanxdt) + ":"
-      %dd= @cofile.onloanxdt unless @cofile.onloanxdt.blank?
+        %dt= t 'cofile.onloanxdt', :default => model_class.human_attribute_name(:onloanxdt) + ":"
+        %dd= @cofile.onloanxdt unless @cofile.onloanxdt.blank?
 .row
   .col-md-4.col-md-offset-5
     %hr

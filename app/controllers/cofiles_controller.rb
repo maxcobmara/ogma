@@ -36,21 +36,20 @@ class CofilesController < ApplicationController
 
 
   def create
-    @cofile = Cofile.new(params[:cofile])
-    
+    @cofile = Cofile.new(cofile_params)
+
     respond_to do |format|
       if @cofile.save
-        flash[:notice] = 'A new event was successfully created.'
-        format.html { redirect_to(@cofile) }
-        format.xml  { render :xml => @cofile, :status => :created, :location => @cofile }
+        format.html { redirect_to @cofile, notice: 'File Registry was successfully created.' }
+        format.json { render action: 'show', status: :created, location: @cofile }
       else
-        format.html { render :action => "new" }
-        format.xml  { render :xml => @cofile.errors, :status => :unprocessable_entity }
+        format.html { render action: 'new' }
+        format.json { render json: @cofile.errors, status: :unprocessable_entity }
       end
     end
   end
+ 
   
-
   def destroy
     @cofile.destroy
     respond_to do |format|
@@ -68,7 +67,7 @@ private
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def cofile_params
-      params.require(:cofile).permit(:cofileno, :name, :location, :owner_id, :staffloan_id, :onloandt, :onloanxdt)
+      params.require(:cofile).permit(:cofileno, :name, :location, :owner_id, :staffloan_id, :onloan, :onloandt, :onloanxdt)
     end
 
 end

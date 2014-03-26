@@ -1,5 +1,5 @@
 function switchvisibility(check)
-   { if(!check.checked)
+   { if(!fileborrow.checked)
    {
    document.getElementById('borrower').style.visibility='hidden';
    document.getElementById('loaneddate').style.visibility='hidden';
