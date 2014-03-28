@@ -38,7 +38,9 @@ textarea {resize: vertical;}
 .scroller {overflow-y: scroll;}
 .scroller, .scroller-inner {position: relative;}
 
-
+.text_align_right {
+		   text-align: right;
+}
 
 .centre {text-align: center;}
 .right {float:right;}
@@ -150,7 +152,7 @@ footer {
 
 input, textarea, select, .uneditable-input {
   border: 1px solid #bbb;
-  width: 80%;
+  width: 100%;
   margin-bottom: 15px;
   @include box_sizing;
 }
@@ -160,9 +162,14 @@ label {
     padding-left: 15px;
     text-indent: -15px;
 }
-input {height: auto !important;}
+input {height: auto !important;
+       outline: 0;
+	   border: none;
+
+	}
 .mandatory {background-color:#FFF0F5}
 .dropdown, select {position: relative;}
+
 
 input[type=checkbox] {width:13px; height:13px; *overflow: hidden; }
 .form-group {

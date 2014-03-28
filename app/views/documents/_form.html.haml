@@ -48,7 +48,7 @@
     .col-sm-2.control-label
       = f.label t 'document.stafffiled_id' , for: :prepared_by
     .col-md-3
-      = f.collection_select :stafffiled_id, Staff.find(:all, :order => :name), :id, :name, {:include_blank => true}, {class: 'selectpicker', "data-width"=>"350px"}
+      = f.collection_select :stafffiled_id, Staff.find(:all, :order => :name), :id, :name, {:selects => current_user}, {class: 'selectpicker', "data-width"=>"350px"}
       = f.hidden_field :prepared_by, :value=>current_user
 		  
   .form-group

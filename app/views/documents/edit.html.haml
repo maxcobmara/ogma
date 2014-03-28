@@ -6,14 +6,14 @@
 
 = render 'shared/flashes'
 
-.row
-  = form_for @document,  html: { multipart: true, class: 'form-horizontal' }  do |f| 
-    = render 'shared/error_messages', object: f.object
-    .col-md-offset-1
-      = render :partial => 'form', :locals => {:f => f}
-      .form-group
-        .col-sm-offset-4.col-sm-1
-          = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), document_path(@document), :class => 'btn btn-default'
-        .col-sm-2
-          = f.submit t('update'), class: "btn btn-primary"
+
+= form_for @document,  html: { multipart: true, class: 'form-horizontal' }  do |f| 
+  = render 'shared/error_messages', object: f.object
+  .col-md-offset-1
+    = render :partial => 'form', :locals => {:f => f}
+    .form-group
+      .col-sm-offset-4.col-sm-1
+        = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), document_path(@document), :class => 'btn btn-default'
+      .col-sm-2
+        = f.submit t('update'), class: "btn btn-primary"
 		 
