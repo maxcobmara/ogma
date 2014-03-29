@@ -11,12 +11,13 @@
       = f.label t 'buletin.content', for: :content
     .col-md-7
       = f.text_area :content, :size => "30x7", class: 'form-control mandatory'
+      %input#bulletin-counter.text_align_right{:disabled => "disabled", :value => "500"}
             
   .form-group
     .col-sm-2.control-label
       = f.label t 'buletin.posted_by', for: :postedby_id
     .col-md-5
-      = f.collection_select :postedby_id, Staff.find(:all), :id, :name, {:include_blank => true}, {class: 'selectpicker', "data-width"=>"300px"}
+      = f.collection_select :postedby_id, Staff.find(:all), :id, :name, {:selects => current_user}, {class: 'selectpicker', "data-width"=>"300px"}
 		  
   .form-group
     .col-sm-2.control-label
