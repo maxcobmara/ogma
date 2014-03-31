@@ -12,8 +12,8 @@
 	
     .col-md-offset-1
       .form-group
-        .col-sm-offset-2.col-sm-1
+        .col-sm-offset-4.col-sm-1
           = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), students_path, :class => 'btn btn-default'
         .col-sm-offset-1.col-sm-2
-          = f.submit t('add'), class: "btn btn-primary"
+          = f.submit t('create'), class: "btn btn-primary"
 		 

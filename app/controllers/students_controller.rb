@@ -59,11 +59,23 @@ class StudentsController < ApplicationController
  
   # POST /students
   # POST /students.xml
+
+
   def create
-    @student = Student.new(params[:student])
+    @student = Student.new(student_params)
 
+    respond_to do |format|
+      if @student.save
+        format.html { redirect_to @student, notice: 'Student Info was successfully created.' }
+        format.json { render action: 'show', status: :created, location: @student }
+      else
+        format.html { render action: 'new' }
+        format.json { render json: @student.errors, status: :unprocessable_entity }
+      end
+    end
   end
-
+  
+  
   # PUT /students/1
   # PUT /students/1.xml
   def update
@@ -91,7 +103,7 @@ class StudentsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def student_params
-      params.require(:student).permit(:icno, :name, :sstatus, :stelno, :ssponsor, :gender, :sbirthdt, :mrtlstatuscd, :intake,:course_id)
+      params.require(:student).permit(:icno, :name, :sstatus, :stelno, :ssponsor, :gender, :sbirthdt, :mrtlstatuscd, :intake,:course_id, :)
     end
 
     def sort_column
