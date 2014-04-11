@@ -1736,7 +1736,7 @@ input[type="date"] {
   line-height: 34px;
 }
 .form-group {
-  margin-bottom: 15px;
+  margin-bottom: 0px;
 }
 .radio,
 .checkbox {

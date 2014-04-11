@@ -163,6 +163,9 @@ label {
 input {height: auto !important;}
 .mandatory {background-color:#FFF0F5}
 .dropdown, select {position: relative;}
+.bootstrap-select.mandatory {
+  .btn.dropdown-toggle {background-color:#EF98AA}
+}
 
 input[type=checkbox] {width:13px; height:13px; *overflow: hidden; }
 .form-group {

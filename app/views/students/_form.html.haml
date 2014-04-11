@@ -1,5 +1,5 @@
 .row
-  .col-md-offset-2
+  .col-md-10.col-md-offset-1
     / Nav tabs
     %ul.nav.nav-tabs
       %li.active= link_to ((t 'student.students.mandatory')),"#mandatory_edit", "data-toggle" => "tab"
@@ -11,9 +11,6 @@
 
 
     .tab-content{style:"padding-top:1em"}
-      .col-md-8.col-md-offset-1
-
-
       #mandatory_edit.tab-pane.active
         %br
         = render :partial => 'tab_mandatory_edit', :locals => {:f => f}

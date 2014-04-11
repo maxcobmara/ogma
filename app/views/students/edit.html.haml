@@ -9,10 +9,11 @@
 .row
   = form_for @student,  :html => { :class => 'form-horizontal' } do |f| 
     = render 'shared/error_messages', object: f.object
-    .col-md-offset-1
-      = render :partial => 'form', :locals => {:f => f}
+    = render :partial => 'form', :locals => {:f => f}
+    .row
       .form-group
-        .col-sm-offset-5.col-sm-1
+        .col-md-1.col-md-offset-2
           = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), student_path(@student), :class => 'btn btn-default'
-        .col-sm-2
-          = f.submit t('update'), class: "btn btn-primary"
+        .col-md-2
+          .div{style: "margin-left:-40px;"}
+            = f.submit t('update'), class: "btn btn-primary"

@@ -3,7 +3,7 @@
     .col-sm-7.control-label
       %H2= t('student.students.student_details')
 
-.col-md-offset-2
+.col-md-11
   .form-group
     .col-sm-2.control-label
       = f.label t 'student.students.icno', for: :icno
@@ -13,14 +13,14 @@
   .form-group
     .col-sm-2.control-label
       = f.label t 'student.students.name', for: :name
-    .col-md-4
+    .col-md-6
       = f.text_field :name, class: 'form-control mandatory'
           
   .form-group
     .col-sm-2.control-label
       = f.label t 'student.students.sstatus', for: :sstatus
     .col-md-2
-      = f.select :sstatus, Student::STATUS, :prompt => "Select", class: 'form-control mandatory'
+      = f.select :sstatus, Student::STATUS, {:prompt => "Select"}, {class: 'selectpicker mandatory', "data-width"=>"auto"}
 
 
   .form-group
@@ -32,8 +32,8 @@
   .form-group
     .col-sm-2.control-label
       =f.label t 'student.students.ssponsor', for: :ssponsor
-    .col-md-3
-      = f.select :ssponsor, Student::SPONSOR, :prompt => "Select", class: 'form-control mandatory'
+    .col-md-8
+      = f.select :ssponsor, Student::SPONSOR, {:prompt => "Select"}, {class: 'selectpicker mandatory', "data-width"=>"auto"}
 
   .form-group
     .col-sm-2.control-label
@@ -51,17 +51,17 @@
     .col-sm-2.control-label
       =f.label t 'student.students.mrtlstatuscd', for: :mrtlstatuscd
     .col-md-2
-      = f.select :mrtlstatuscd, Student::MARITAL_STATUS, :prompt => "Select", class: 'form-control mandatory'
+      = f.select :mrtlstatuscd, Student::MARITAL_STATUS, {:prompt => "Select"}, {class: 'selectpicker mandatory', "data-width"=>"auto"}
 
 .col-md-offset-1
   .form-group
     .col-sm-7.control-label
       %H2= t('student.students.course_details')
 
-  .col-md-offset-1
-    .form-group
-      .col-sm-2.control-label
-        =f.label t 'student.students.intake_id', for: :intake
-      .col-md-3
-        = f.text_field :intake, class: 'form-control mandatory', 'data-behaviour' => 'datepicker_today'
+.col-md-11
+  .form-group
+    .col-sm-2.control-label
+      =f.label t 'student.students.intake_id', for: :intake
+    .col-md-3
+      = f.text_field :intake, class: 'form-control mandatory', 'data-behaviour' => 'datepicker_today'
 
