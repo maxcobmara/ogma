@@ -5,6 +5,14 @@ annotate --position after --sort --force -e tests,fixtures,factories
 psql -U postgres -d icms_kskb_development
 
 
+Fix ID
+-------
+psql -U postgres -d navy_development
+SELECT MAX(id) FROM vehicle_categories;
+SELECT nextval('vehicle_categories_id_seq');
+SELECT setval('vehicle_categories_id_seq', (SELECT MAX(id) FROM vehicle_categories));
+
+
 SELECT l.name as name, pl.name as parent,
 COUNT(l.id) as total
 FROM locations l

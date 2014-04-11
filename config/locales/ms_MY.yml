@@ -125,6 +125,8 @@ ms_MY:
     female: Perempuan
     course: Program
     year_semester: Tahun dan Semester
+    search:
+      ic_no: Carian Pelajar
     tenant:
       title: Penempatan Pelajar
       new : Pendudukkan Baru
@@ -140,6 +142,8 @@ ms_MY:
       occupied: Berpenghuni
       damaged: Rosak
       total: Jumlah
+      empty_room: Pemulangan Kunci
+      empty_room: Kosongkan Bilik
     students:
       list: Senarai Maklumat Pelajar
       formatted_mykad: No Mykad

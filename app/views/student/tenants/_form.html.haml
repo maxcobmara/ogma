@@ -41,12 +41,3 @@
   .col-md-2
     = f.text_field :keyexpectedreturn, type: "text", :class => 'form-control', 'data-behaviour' => 'datepicker_after'
 
-.form-group
-  %label.col-sm-2.control-label{:for => "keyreturned"}= t 'student.tenant.key.returned'
-  .col-md-2
-    = f.text_field :keyreturned, type: "text", :class => 'form-control', 'data-behaviour' => 'datepicker_after'
-							
-.form-group
-  %label.col-sm-2.control-label{:for => "force_vacate"}= t 'student.tenant.vacate'
-  .col-md-2
-    = f.check_box :force_vacate, :class => 'form-control'

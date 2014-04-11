@@ -2,29 +2,29 @@ module DropDown
 
 
 
-MARITAL_STATUS = [
-     #  Displayed       stored in db
-     [ "Tidak Pernah Berkahwin",1 ],
-     [ "Berkahwin",2 ],
-     [ "Balu", 3 ],
-     [ "Duda", 4],
-     [ "Bercerai", 5 ],
-     [ "Berpisah", 6 ],
-     [ "Tiada Maklumat", 9 ]
-]
+  MARITAL_STATUS = [
+       #  Displayed       stored in db
+       [ "Tidak Pernah Berkahwin",1 ],
+       [ "Berkahwin",2 ],
+       [ "Balu", 3 ],
+       [ "Duda", 4],
+       [ "Bercerai", 5 ],
+       [ "Berpisah", 6 ],
+       [ "Tiada Maklumat", 9 ]
+  ]
    
-BLOOD_TYPE = [
-    #  Displayed       stored in db
-    [ "O-",          "1" ],
-    [ "O+",    "2" ],
-    [ "A-", "3" ],
-    [ "A+", "4" ],
-    [ "B-", "5" ],
-    [ "B+", "6" ],
-    [ "AB-", "7" ],
-    [ "AB+", "8" ]
+  BLOOD_TYPE = [
+      #  Displayed       stored in db
+      [ "O-",          "1" ],
+      [ "O+",    "2" ],
+      [ "A-", "3" ],
+      [ "A+", "4" ],
+      [ "B-", "5" ],
+      [ "B+", "6" ],
+      [ "AB-", "7" ],
+      [ "AB+", "8" ]
     
-]
+  ]
 
 BANKTYPE = [
       #  Displayed       stored in db
@@ -170,36 +170,36 @@ RELIGION = [
       [ "Islam",1],
       [ "Buddha",2 ],
       [ "Hindu",3 ],
-      [ "Others",4 ],
+      [ "Others",4 ]
 ]
 
-TOS = [
-     #  Displayed       stored in db
-     [ "Persekutuan","p" ],
-     [ "Negeri","n" ]   
-]
-
-GENDER = [
-      #  Displayed       stored in db
-      [ "Male","1"],
-      [ "Female","2"]
-]
-
-LTYPE = [
-         #  Displayed       stored in db
-         [ "Perumahan", 1 ],
-         [ "Kenderaan", 2 ],
-         [ "Komputer", 3 ],
-         [ "Other", 4 ],
-         [ "None", 99 ]
-]
-
-LOCATION_CATEGORIES = [
+  TOS = [
        #  Displayed       stored in db
-       [ "building" , 1 ],
-       [ "floor"    , 2 ],
-       [ "room"     , 3 ]
- ]
+       [ "Persekutuan","p" ],
+       [ "Negeri","n" ]   
+  ]
+
+  GENDER = [
+        #  Displayed       stored in db
+        [ "Male","1"],
+        [ "Female","2"]
+  ]
+
+  LTYPE = [
+           #  Displayed       stored in db
+           [ "Perumahan", 1 ],
+           [ "Kenderaan", 2 ],
+           [ "Komputer", 3 ],
+           [ "Other", 4 ],
+           [ "None", 99 ]
+  ]
+
+  LOCATION_CATEGORIES = [
+         #  Displayed       stored in db
+         [ "building" , 1 ],
+         [ "floor"    , 2 ],
+         [ "room"     , 3 ]
+  ]
 
 
 LOCATION_TYPE = [

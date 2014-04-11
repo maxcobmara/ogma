@@ -41,6 +41,10 @@ Ogma::Application.routes.draw do
         get :room_map
         get :statistics
         get :census
+        get  :return_key
+        post :return_key
+        get  :empty_room
+        post :empty_room
       end
     end
   end

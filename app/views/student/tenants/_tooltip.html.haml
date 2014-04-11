@@ -1,5 +1,8 @@
-= check_kin{bed.tenants.last.student.name}
+- if bed.tenants.last.try(:keyreturned) != nil
+  Empty
+- else 
+  = bed.tenants.last.try(:student).try(:name) || "Empty"
 %br
-= check_kin {bed.try(:parent).try(:combo_code)}
+= bed.try(:parent).try(:combo_code)
 %br
 = bed.name

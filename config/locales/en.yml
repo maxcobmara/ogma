@@ -148,6 +148,8 @@ en:
     female: Female
     course: Programme
     year_semester: Year and Semester
+    search:
+      ic_no: Search for Student
     tenant:
       title: Student Residence
       new: New Student Tenancy
@@ -163,6 +165,8 @@ en:
       occupied: Occupied
       damaged: Damaged
       total: Totals
+      return_key: Return Key
+      empty_room: Empty Room
       
       
     students:

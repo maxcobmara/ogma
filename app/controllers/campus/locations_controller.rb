@@ -51,6 +51,7 @@ class Campus::LocationsController < ApplicationController
       end
     end
   end
+    
   
   def show
   end

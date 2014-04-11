@@ -60,6 +60,14 @@ class Student::TenantsController < ApplicationController
       end
     end
   end
+  
+  def return_key
+    if params[:search] && params[:search][:student_icno].present?
+      @student_ic = params[:search][:student_icno]
+      #@selected_student = Student.where("icno = ?", "#{@student_ic}").first
+      @my_room = Tenant.where(student_id: Student.where("icno = ?", "#{@student_ic}").first).first
+    end
+  end
 
   
   
