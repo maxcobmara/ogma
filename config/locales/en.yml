@@ -380,6 +380,10 @@ en:
     budgetb: Balance
     budget_details: Annual Training Budget Details
     new: New Annual Training Budget
+    
+  course:
+    title: Course
+    name: Programme Name
 
   date:
     formats:
