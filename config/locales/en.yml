@@ -140,6 +140,10 @@ en:
       floor: Floor
       room: "Unit/Room"
       admin: Administrator
+      
+    damage:
+      title: Location Damage
+      report: Report Damage
     
   student:
     name: Student Name 

@@ -110,13 +110,16 @@ ms_MY:
     select_admin: "Pilih Pentadbir"
     has_assets: "Lokasi ini punyai asset, kelik di sini untuk lihat/sorok"
     
-    categories:
     
-  location_categories:
-    building: Bangunan
-    floor: Tingkat
-    room: "Unit/Bilik"
-    admin: Pentadbir
+    location_categories:
+      building: Bangunan
+      floor: Tingkat
+      room: "Unit/Bilik"
+      admin: Pentadbir
+      
+    damage:
+      title: Location Damage
+      report: Report Damage
     
   student:
     name: Nama Pelajar
