@@ -10,19 +10,22 @@ class Campus::LocationDamagesController < ApplicationController
   end
   
   def new
-    @damage = Location.new(:parent_id => params[:parent_id])
+    @location = Location.find(params[:location_id])
+    @damage = @location.damages.new(params[:location_damage])
+    @damage.save
+    #@damage = LocationDamage.new(:location_id => params[:location_id])
   end
   
   def edit
   end
   
   def create
-    @damage = Location.new(location_params)
+    @damage = Location.new(location_damage_params)
 
     respond_to do |format|
       if @damage.save
         flash[:notice] = 'Location was successfully created.'
-        format.html { redirect_to(campus_location_path(@damage)) }
+        format.html { redirect_to(campus_location_path(@damage.location)) }
         format.xml  { render :xml => @damage, :status => :created, :location_damage => @damage }
       else
         format.html { render :action => "new" }
@@ -33,8 +36,8 @@ class Campus::LocationDamagesController < ApplicationController
   
   def update
     respond_to do |format|
-      if @damage.update(location_params)
-        format.html {redirect_to campus_location_path(@location), notice: (t 'location.title')+(t 'actions.updated')  }
+      if @damage.update(location_damage_params)
+        format.html {redirect_to campus_location_path(@damage.location), notice: (t 'location.title')+(t 'actions.updated')  }
         format.json { head :no_content }
       else
         format.html { render action: 'edit' }

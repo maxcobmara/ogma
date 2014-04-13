@@ -26,36 +26,45 @@
           = @my_room.location.name
         .panel-body
           .row
-            %dl.dl-horizontal
+            .col-md-10.col-md-offset-1
+              %dl.dl-horizontal
+                %dt= t 'student.name'
+                %dd= link_to @my_room.student.name, student_path(@my_room.student_id)
 
-              %dt= t 'student.name'
-              %dd= link_to @my_room.student.name, student_path(@my_room.student_id)
-
-              %dt= t 'student.matrixno'
-              %dd= @my_room.student.try(:matrixno)
+                %dt= t 'student.matrixno'
+                %dd= @my_room.student.try(:matrixno)
           
-              %dt= t 'student.icno'
-              %dd= @my_room.student.icno
+                %dt= t 'student.icno'
+                %dd= @my_room.student.icno
             
-              %dt= t 'programme.name', :default =>  model_class.human_attribute_name(:name) + ":"
-              %dd= @my_room.student.try(:course).try(:name)#, programme_path(@tenant.student.course.id)
+                %dt= t 'programme.name', :default =>  model_class.human_attribute_name(:name) + ":"
+                %dd= @my_room.student.try(:course).try(:name)#, programme_path(@tenant.student.course.id)
             
-              %dt= t 'student.intake', :default =>  model_class.human_attribute_name(:intake) + ":"
-              %dd= @my_room.student.try(:intake).try(:name)#, student_path(@tenant.student_id)
+                %dt= t 'student.intake', :default =>  model_class.human_attribute_name(:intake) + ":"
+                %dd= @my_room.student.try(:intake).try(:name)#, student_path(@tenant.student_id)
             
-              %dt= t 'student.semester', :default =>  model_class.human_attribute_name(:semester) + ":"
-              %dd= year_and_sem(@my_room.student) rescue ''
+                %dt= t 'student.semester', :default =>  model_class.human_attribute_name(:semester) + ":"
+                %dd= year_and_sem(@my_room.student) rescue ''
             
-              %dt= t 'student.tenant.key.provided', :default =>  model_class.human_attribute_name(:keyaccept) + ":"
-              %dd= @my_room.keyaccept.try(:strftime, "%d %b %Y")
+                %dt= t 'student.tenant.key.provided', :default =>  model_class.human_attribute_name(:keyaccept) + ":"
+                %dd= @my_room.keyaccept.try(:strftime, "%d %b %Y")
             
-              %dt= t 'student.tenant.key.expected', :default =>  model_class.human_attribute_name(:keyexpectedreturn) + ":"
-              %dd= @my_room.keyexpectedreturn.try(:strftime, "%d %b %Y")
+                %dt= t 'student.tenant.key.expected', :default =>  model_class.human_attribute_name(:keyexpectedreturn) + ":"
+                %dd= @my_room.keyexpectedreturn.try(:strftime, "%d %b %Y")
+                
+                %dt= t 'location.damage.title'
+                %dd
+                  - for damage in @my_room.location.damages.order(reported_on: :desc)
+                    = damage.reported_on
+                    &nbsp; : &nbsp;
+                    = damage.description
+                    %br
+
             .row
               .col-md-10.col-md-offset-1
                 %hr
                 = form_for [:student, @my_room], remote: true, :html => { :class => 'form-horizontal' } do |f|
-                  %dt Add Book
+                  %dt Return Key
                   = render 'shared/flashes'
                   = f.hidden_field :student_id, value: ''
                   .form-group

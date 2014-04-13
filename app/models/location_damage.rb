@@ -1,5 +1,5 @@
 class LocationDamage < ActiveRecord::Base
-  belongs_to :Location
+  belongs_to :location, :foreign_key => 'location_id'
 end
 
 # == Schema Information

@@ -79,9 +79,25 @@
 
 - if @location.damages.exists?
   .row
-    .col-md-10
-      .fieldset
-        .legend Damages
+    .col-md-6.col-md-offset-1
+      %h2= t "location.damage.title"
+      %table.table-striped.table-hover.ogma
+        %thead
+          %tr
+            %th= t "location.damage.reported_on"
+            %th= t "location.damage.description"
+        %tbody
+          - for damage in @location.damages.order(reported_on: :desc)
+            %tr
+              %td= damage.reported_on
+              %td= damage.description
+              
+
+      
+        
+        
+        
+
 
     
 - if @location.assets.exists?

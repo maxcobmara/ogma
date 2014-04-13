@@ -1,0 +1,28 @@
+- model_class = Location
+.page-header
+  %h1
+    = t('new')
+    damage for 
+    = @damage.location.combo_code
+    
+.row
+  = form_for [:campus, @damage], :html => { :class => 'form-horizontal' }  do |f| 
+    .form-group
+      %label.col-sm-2.control-label{:for => "Location"}= t 'location.title'
+      .col-md-3
+        %input#disabledInput.form-control{:disabled => "", :value => "#{@damage.location.combo_code}", :type => "text"}
+      
+    .form-group
+      %label.col-sm-2.control-label{:for => "reported_on"}= t 'location.damage.reported_on'
+      .col-md-2
+        = f.text_field :reported_on, type: "text", :class => 'form-control', 'data-behaviour' => 'datepicker_today'
+      
+    
+    .form-group
+      %label.col-sm-2.control-label{:for => "code"}= t 'location.damage.description'
+      .col-md-6
+        = f.text_field :description, class: 'form-control'
+        
+    .form-group
+      .col-sm-offset-2.col-sm-2
+        = f.submit t('actions.create'), class: "btn btn-primary"
