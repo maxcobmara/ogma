@@ -67,6 +67,7 @@ class Student::TenantsController < ApplicationController
       #@selected_student = Student.where("icno = ?", "#{@student_ic}").first
       @my_room = Tenant.where(student_id: Student.where("icno = ?", "#{@student_ic}").first).first
     end
+    @tenant = @my_room
   end
 
   
