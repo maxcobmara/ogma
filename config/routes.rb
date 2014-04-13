@@ -16,6 +16,7 @@ Ogma::Application.routes.draw do
         get :kewpa7
       end
     end
+    resources :location_damages
   end
   
   resources :events do

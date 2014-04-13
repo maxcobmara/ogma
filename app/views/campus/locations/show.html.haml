@@ -8,9 +8,9 @@
   %div{:class => set_view_class(@location)}
     .row
       - if @location.root?
-        .col-md-2.left= link_to (fa_icon "arrow-circle-o-left"), campus_locations_path, class: "iko"
+        .col-md-2.left= link_to (fa_icon "arrow-circle-o-up"), campus_locations_path, class: "iko"
       - else
-        .col-md-2.left= link_to (fa_icon "arrow-circle-o-left"), campus_location_path(@location.parent), class: "iko"
+        .col-md-2.left= link_to (fa_icon "arrow-circle-o-up"), campus_location_path(@location.parent), class: "iko"
       .col-md-8.loc_name #{@location.combo_code}
       - unless [1,2,8].include?(@location.typename)
         .col-md-2.right= link_to (fa_icon "plus-circle"), new_campus_location_path(:parent_id => @location), class: "iko"
@@ -62,8 +62,8 @@
               - if @location.parent
                 = link_to (fa_icon "arrow-up"), campus_location_path(@location.parent),
                   {class: "btn btn-default", "data-toggle" => "tooltip", title: "Up Level"}
-              = link_to content_tag(:i, "", :class => "fa fa-bug "), '#', 
-                {class: "btn btn-default", "data-toggle" => "tooltip", title: t("location.damage.report")}
+              = link_to content_tag(:i, "", :class => "fa fa-bug "), new_campus_location_damage_path(:location_id => @location),
+                {id: 'load_damage_form', class: "btn btn-default", "data-toggle" => "tooltip", title: t("location.damage.report")}
               - if @location.assets.exists?
                 = link_to content_tag(:i, "", :class => "fa fa-file "), kewpa7_campus_location_path(@location, format: "pdf"),
                   {class: "btn btn-default", "data-toggle" => "tooltip", title: "KEW.PA 7 PDF"}
@@ -74,10 +74,19 @@
                 :method => 'delete',                                                                                                           |
                 :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },                   |
                 :class => 'btn btn-danger', "data-toggle" => "tooltip", title: t("actions.delete")
+
+
+
+- if @location.damages.exists?
+  .row
+    .col-md-10
+      .fieldset
+        .legend Damages
+
     
-.row
-  .col-md-10
-    - if @location.assets.exists?
+- if @location.assets.exists?
+  .row
+    .col-md-10
       .small= link_to (t "location.has_assets"), '#', id: "show_assets_link"
       #show_assets{style: "display:none;"}
         = render "show_assets"
