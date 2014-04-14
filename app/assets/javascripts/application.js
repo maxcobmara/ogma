@@ -23,6 +23,7 @@
 //= require chartkick
 //= require_tree .
 
+$('.tenant').tooltip( {placement: 'right', container: 'body'});
 
 $(document).ready(function () {
   $('.btn').tooltip( {placement: 'bottom', container: 'body'});  //pill tooltips

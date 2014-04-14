@@ -15,7 +15,7 @@
       - unless [1,2,8].include?(@location.typename)
         .col-md-2.right= link_to (fa_icon "plus-circle"), new_campus_location_path(:parent_id => @location), class: "iko"
       //.col-md-3.add.right= link_to (fa_icon "camera-retro black"), '#', class: "iko"
-    - if @location.lclass == 1
+    - if [1,4].include?(@location.lclass)
       - @location.children.order(:code).reverse.each do | child |
         %div{:class => set_sub_class(child)}
           #bigtext= link_to child.name, campus_location_path(child)

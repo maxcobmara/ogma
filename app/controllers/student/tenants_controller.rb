@@ -22,12 +22,7 @@ class Student::TenantsController < ApplicationController
   end
   
   def room_map
-    @places = Location.where('typename = ? OR typename =?', 2, 8)
-    roots = []
-    @places.each do |place|
-      roots << place.root
-    end
-    @residentials = roots.uniq
+    @residentials = Location.where(lclass: 4).order(combo_code: :asc)
     #sets div size to fit no of buildings 
     @div_width = 90/@residentials.count
     @current_tenants = Tenant.where("keyreturned IS ? AND force_vacate != ?", nil, true)

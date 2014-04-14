@@ -2,7 +2,7 @@ class Location < ActiveRecord::Base
   
   has_ancestry :cache_depth => true, orphan_strategy: :restrict
   before_validation     :set_combo_code
-  before_save           :set_combo_code
+  before_save           :set_combo_code, :set_status
 
   validates_presence_of  :code, :name
   validates :combo_code, uniqueness: true
@@ -44,6 +44,23 @@ class Location < ActiveRecord::Base
     else
       self.combo_code = parent.combo_code + "-" + code
     end
+  end
+  
+  def set_status
+    if typename == 2
+      bed_type = "student_bed_female"
+    elsif typename == 8
+      bed_type = "student_bed_male"
+    end
+    @occupied_location_ids = Tenant.where("keyreturned IS ? AND force_vacate != ?", nil, true).pluck(:location_id)
+    if damaged?
+      status_type = "damaged"
+    elsif @occupied_location_ids.include? id
+      status_type = "occupied"
+    else
+      status_type = "empty"
+    end
+    self.status = "#{bed_type}_#{status_type}"
   end
   
 

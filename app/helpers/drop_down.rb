@@ -197,6 +197,7 @@ RELIGION = [
   LOCATION_CATEGORIES = [
          #  Displayed       stored in db
          [ "building" , 1 ],
+         [ "student residence" , 4 ],
          [ "floor"    , 2 ],
          [ "room"     , 3 ]
   ]
