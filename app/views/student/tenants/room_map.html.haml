@@ -21,7 +21,7 @@
   - @residentials.each do |building|
     .tenancy_building{style: "width:#{@div_width}%;"}
       %h5= building.name
-      - building.children.sort.reverse.each do |floor|
+      - building.children.order(combo_code: :desc).each do |floor|
         .row.tenancy_floor
           .floor_name= floor.name
           - @bed = floor.descendants.where(typename: [2,8]).order(combo_code: :asc)
