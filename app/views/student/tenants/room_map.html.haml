@@ -29,6 +29,8 @@
           - @male_occupied =   floor.descendants.where('typename = ?', 8).order(combo_code: :asc).joins(:tenants).where("tenants.id" => @current_tenants)
           - @male =            floor.descendants.where(occupied: [false, nil]).where('typename = ? AND id NOT IN (?)', 8, @occupied_locations).order(combo_code: :asc)
           - @damaged =         floor.descendants.where(occupied: true)
+		  
+          - @female_all = floor.descendants.where('typename = ?', 2).order(combo_code: :asc)
             
           - @female_occupied.each do |bed|
             = link_to student_tenant_path(bed.tenants.last) do
@@ -47,3 +49,16 @@
           - @damaged.each do | bed |
             = link_to campus_location_path(:id => bed) do
               .bed_damage.tenant{title: "#{render 'tooltip', bed: bed}", 'data-toggle' => 'tooltip', 'data-html' => "true"}
+
+          %br
+          %br	
+          %br
+          %br	
+          %br	  		  	  
+          - @female_all.each do |bed|
+            - if (bed.occupied==false || bed.occupied==nil) && @occupied_locations.include?(bed.id)==false
+              = link_to new_student_tenant_path(:location_id => bed) do
+                .fbed_empty.tenant{title: "#{render 'tooltip', bed: bed}", 'data-toggle' => 'tooltip', 'data-html' => "true"}
+            - else 
+              = link_to student_tenant_path(bed.tenants.last) do
+                .fbed_occupied.tenant{title: "#{render 'tooltip', bed: bed}", 'data-toggle' => 'tooltip', 'data-html' => "true"}
