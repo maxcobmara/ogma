@@ -1,4 +1,5 @@
 class Tenant < ActiveRecord::Base
+  before_save :save_my_vars
   belongs_to :location
   belongs_to :staff
   belongs_to :student
@@ -12,6 +13,13 @@ class Tenant < ActiveRecord::Base
   def student_icno=(icno)
     self.student = Student.find_or_create_by_icno(icno) if icno.present?
   end
+  
+  def save_my_vars
+    if id.nil? || id.blank?
+      self.force_vacate = 0
+    end
+  end
+  
 end
 
 # == Schema Information
