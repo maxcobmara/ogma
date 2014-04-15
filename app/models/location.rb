@@ -3,6 +3,7 @@ class Location < ActiveRecord::Base
   has_ancestry :cache_depth => true, orphan_strategy: :restrict
   before_validation     :set_combo_code
   before_save           :set_combo_code, :set_status
+  after_touch           :set_status
 
   validates_presence_of  :code, :name
   validates :combo_code, uniqueness: true

@@ -1,6 +1,6 @@
 class Tenant < ActiveRecord::Base
   before_save :save_my_vars
-  belongs_to :location
+  belongs_to :location, touch: true
   belongs_to :staff
   belongs_to :student
   
