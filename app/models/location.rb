@@ -53,7 +53,7 @@ class Location < ActiveRecord::Base
       bed_type = "student_bed_male"
     end
     @occupied_location_ids = Tenant.where("keyreturned IS ? AND force_vacate != ?", nil, true).pluck(:location_id)
-    if damaged?
+    if damaged == true
       status_type = "damaged"
     elsif @occupied_location_ids.include? id
       status_type = "occupied"
