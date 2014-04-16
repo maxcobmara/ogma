@@ -36,13 +36,24 @@
   .col-md-6
     = f.select :typename, DropDown::LOCATION_TYPE, {include_blank: true}, {class: 'selectpicker', 'data-live-search' => 'true'}
 
-- if [1,2,8].include?(@location.typename) 
+/- if [1,2,6,8].include?(@location.typename) -> 6 for room only first, 1-floor, 2 & 8 - bed 
+- if [1,6].include?(@location.typename) 
   .form-group
     %label.col-sm-2.control-label{:for => "occupied"}
-      = t 'location.damage'
+      = t 'location.damage.damage_status'
     .col-md-6
       %span.switch-left 
         Rosak
         = f.check_box :occupied, {type: "checkbox", id: "my_checkbox", "data-off-color"=>"danger"}, "true", "false"
+  .form-group
+    %label.col-sm-2.control-label{:for => "occupied"}
+      = t 'location.damage.describe_damage'
+    .col-md-6
+      %span.switch-left 
+        = f.fields_for :damages do |builder|
+          - if (builder.object.id!=nil && builder.object.document_id==1) || builder.object.id==nil
+            = render 'damage_fields', f: builder
+        = link_to_add_fields (t 'fuel_issueds.add_details'), f, :damages
+
       
       

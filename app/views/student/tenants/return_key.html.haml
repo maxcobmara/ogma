@@ -80,7 +80,15 @@
                     %label.col-sm-3.control-label{:for => "force_vacate"}= t 'student.tenant.vacate'
                     .col-md-4
                       = f.check_box :force_vacate, :class => 'form-control'
-                      
+
+                  .form-group
+                    %label.col-sm-3.control-label{:for => "damage"}= t 'student.tenant.damage'
+                    .col-md-6
+                      = f.fields_for :damages do |builder|
+                        - if (builder.object.id!=nil && builder.object.document_id==2) || builder.object.id==nil
+                          = render 'damage_fields', f: builder
+                      = link_to_add_fields ("Add Details"), f, :damages
+					                        
                   .form-group.returned
                     .col-sm-offset-3.col-sm-4
                       = f.submit t('student.tenant.return_key'), class: "btn btn-primary", id: "save"

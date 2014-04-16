@@ -86,15 +86,17 @@
           %tr
             %th= t "location.damage.reported_on"
             %th= t "location.damage.description"
+            %th= t "location.damage.damage_type"
         %tbody
           - for damage in @location.damages.order(reported_on: :desc)
             %tr
               %td= damage.reported_on
               %td= damage.description
-              
-
-      
-        
+              %td
+                - if damage.document_id == 1
+                  =t "location.damage.room_damage"			  
+                - elsif damage.document_id == 2
+                  =t "location.damage.asset_damage"     
         
         
 

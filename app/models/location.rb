@@ -13,7 +13,7 @@ class Location < ActiveRecord::Base
   belongs_to  :administrator, :class_name => 'Staff', :foreign_key => 'staffadmin_id'
   has_many  :tenants, :dependent => :destroy
   has_many  :damages, :class_name => 'LocationDamage', :foreign_key => 'location_id', :dependent => :destroy
-  
+  accepts_nested_attributes_for :damages, :allow_destroy => true, reject_if: proc { |damages| damages[:description].blank?}
   has_many :asset_placements
   has_many :assets, :through => :asset_placements
   
@@ -54,8 +54,18 @@ class Location < ActiveRecord::Base
       bed_type = "student_bed_male"
     end
     @occupied_location_ids = Tenant.where("keyreturned IS ? AND force_vacate != ?", nil, true).pluck(:location_id)
-    if damaged == true
-      status_type = "damaged"
+    if occupied == true || parent.occupied == true #damaged == true
+      status_type = "damage"
+      if typename == 2|| typename == 8
+        bed_type = "bed"
+      end
+      
+      self.children.each do |c|
+        c.occupied = 1
+        c.status=self.parent.status
+        c.save!
+      end
+      
     elsif @occupied_location_ids.include? id
       status_type = "occupied"
     else
@@ -63,13 +73,13 @@ class Location < ActiveRecord::Base
     end
     "#{bed_type}_#{status_type}"
     self.status = "#{bed_type}_#{status_type}"
+
   end
   
   def update_status
     update_attribute(:status, set_status)
   end
   
-
   
 end
 
