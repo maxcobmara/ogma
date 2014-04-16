@@ -144,6 +144,11 @@ en:
     damage:
       title: Location Damage
       report: Report Damage
+      damage_status: Damage Status
+      describe_damage: Describe Damage
+      damage_type: Damage Type
+      asset_damage: Asset Damage
+      room_damage: Room Damage
     
   student:
     name: Student Name 
@@ -171,6 +176,7 @@ en:
       total: Totals
       return_key: Return Key
       empty_room: Empty Room
+      damage: Damage by Student
       
       
     students:

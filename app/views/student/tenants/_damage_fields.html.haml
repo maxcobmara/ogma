@@ -1,0 +1,10 @@
+%fieldset
+  .form-inline{role: "form"}
+    = f.text_field :description, :class => 'text_field input-small', :placeholder => 'Description'
+    = f.hidden_field :document_id, :value => 2
+    = f.hidden_field :location_id, :value => @my_room.location.id
+    = f.hidden_field :reported_on, :value => Date.today, :placeholder => 'Date Reported'
+/= link_to_remove_fields (fa_icon "trash-o"), f
+/- f.collection_select :unit_type_id, UnitType.all, :id, :description, :include_blank => (t 'helpers.prompt.select_unit_type'), :html_options => {:class => 'selectpicker'}
+/- f.hidden_field :_destroy
+/- link_to_remove_fields (fa_icon "trash-o"), f     
