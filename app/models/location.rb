@@ -54,7 +54,7 @@ class Location < ActiveRecord::Base
       bed_type = "student_bed_male"
     end
     @occupied_location_ids = Tenant.where("keyreturned IS ? AND force_vacate != ?", nil, true).pluck(:location_id)
-    if occupied == true || parent.occupied == true #damaged == true
+    if occupied == true || (parent.occupied == true && parent.status== "_empty")
       status_type = "damage"
       if typename == 2|| typename == 8
         bed_type = "bed"
@@ -65,7 +65,18 @@ class Location < ActiveRecord::Base
         c.status=self.parent.status
         c.save!
       end
-      
+    #required when damaged room is repaired
+    elsif (occupied == false && status="_damage") 
+      status_type = "empty"
+      if typename == 2
+        bed_type = "student_bed_female"
+      elsif typename == 8
+        bed_type = "student_bed_male"
+      end
+      self.children.each do |c|
+        c.occupied = 0
+        c.save!
+      end    
     elsif @occupied_location_ids.include? id
       status_type = "occupied"
     else
