@@ -56,7 +56,9 @@
       .col-md-offset-2
         .form-actions
           .button-toolbar
-            .btn-group             
+            .btn-group  
+              = link_to content_tag(:i, "", :class => "fa fa-map-marker "), room_map_student_tenants_path,
+                {class: "btn btn-default", "data-toggle" => "tooltip", title: t("student.tenant.room_map")}           
               = link_to (fa_icon "building-o"), campus_locations_path, 
                 {class: "btn btn-default", "data-toggle" => "tooltip", title: "Back"}
               - if @location.parent
