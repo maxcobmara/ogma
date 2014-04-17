@@ -149,6 +149,8 @@ en:
       damage_type: Damage Type
       asset_damage: Asset Damage
       room_damage: Room Damage
+      description: Description
+      reported_on: Reported On 
     
   student:
     name: Student Name 
