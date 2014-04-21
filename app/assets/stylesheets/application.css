@@ -13,7 +13,7 @@
  *= require bootstrap-theme
  *= require bootstrap-select
  *= require bootstrap-datepicker
- *= require bootstrap-datetimepicker
+ *= require datetimepicker
  *= require bootstrap3-switch
  *= require_self
  *= require_tree .

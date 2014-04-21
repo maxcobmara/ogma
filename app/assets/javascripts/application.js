@@ -15,7 +15,6 @@
 //= require jquery_ujs
 //= require bootstrap.min
 //= require bootstrap-datepicker
-//= require bootstrap-datetimepicker
 //= require bootstrap-select
 //= require bootstrap-switch
 //= require bigtext
