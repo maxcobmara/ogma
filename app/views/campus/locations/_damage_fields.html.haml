@@ -1,0 +1,17 @@
+%fieldset
+  .form-inline{role: "form"}
+    = f.text_field :description, :class => 'text_field input-small', :placeholder => 'Description'
+    = f.hidden_field :document_id, :value => 1
+  #datepicker.input-daterange{:style => "float:left"}
+    = f.text_field :reported_on, type: "text", :class => 'form-control', 'data-behaviour' => 'datepicker_after'
+/= link_to_remove_fields (fa_icon "trash-o"), f
+/- f.collection_select :unit_type_id, UnitType.all, :id, :description, :include_blank => (t 'helpers.prompt.select_unit_type'), :html_options => {:class => 'selectpicker'}
+/- f.hidden_field :_destroy
+/- link_to_remove_fields (fa_icon "trash-o"), f   
+
+
+:javascript
+  $('.input-daterange').datepicker({
+     format: "yyyy-mm-dd",
+     autoclose: true
+   });  

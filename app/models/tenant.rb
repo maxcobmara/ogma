@@ -1,17 +1,20 @@
 class Tenant < ActiveRecord::Base
   before_save :save_my_vars
-  belongs_to :location
+  belongs_to :location, touch: true
   belongs_to :staff
   belongs_to :student
+  has_many  :damages, :class_name => 'LocationDamage', :foreign_key => 'user_id', :dependent => :destroy
+  accepts_nested_attributes_for :damages, :allow_destroy => true, reject_if: proc { |damages| damages[:description].blank?}
   
   
   #student autocomplete
   def student_icno
-    student.try(:icno)
+    student.try(:student_list)
   end
 
   def student_icno=(icno)
-    self.student = Student.find_or_create_by_icno(icno) if icno.present?
+    icno2 = icno.split(" ")[0]
+    self.student = Student.find_or_create_by_icno(icno2) if icno2.present?
   end
   
   def save_my_vars

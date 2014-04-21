@@ -118,8 +118,15 @@ ms_MY:
       admin: Pentadbir
       
     damage:
-      title: Location Damage
-      report: Report Damage
+      title: Kerosakan di Lokasi
+      report: Laporan Kerosakan
+      damage_status: Status Kerosakan
+      describe_damage: Nyatakan Kerosakan
+      damage_type: Jenis Kerosakan	  
+      asset_damage: Aset Rosak
+      room_damage: Bilik Rosak
+      description: Deskripsi Kerosakan
+      reported_on: Tarikh Dilaporkan
     
   student:
     name: Nama Pelajar
@@ -147,6 +154,7 @@ ms_MY:
       total: Jumlah
       empty_room: Pemulangan Kunci
       empty_room: Kosongkan Bilik
+      damage: Kerosakan oleh Pelajar
     students:
       list: Senarai Maklumat Pelajar
       formatted_mykad: No Mykad

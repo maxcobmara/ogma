@@ -14,7 +14,7 @@
   .form-group
     %label.col-sm-2.control-label{:for => "student_id"}= t 'student.icno'
     .col-md-3
-      = f.text_field :student_icno, :class => 'form-control', data: {autocomplete_source: Student.order(icno: :asc).map(&:icno)}
+      = f.text_field :student_icno, :class => 'form-control', data: {autocomplete_source: Student.order(icno: :asc).map(&:student_list)}
     
       //= f.text_field :student_icno, :class => 'form-control', data: {autocomplete_source: Student.where("id NOT IN (?) AND gender = ? AND end_training > ?", @current_tenant_ids, 2, Date.today).order(icno: :asc).map(&:icno)}
 
@@ -23,7 +23,7 @@
   .form-group
     %label.col-sm-2.control-label{:for => "student_id"}= t 'student.icno'
     .col-md-3
-      = f.text_field :student_icno, :class => 'form-control', data: {autocomplete_source: Student.where("id NOT IN (?) AND gender = ? AND end_training > ?", @current_tenant_ids, 1, Date.today).order(icno: :asc).map(&:icno)}
+      = f.text_field :student_icno, :class => 'form-control', data: {autocomplete_source: Student.where("id NOT IN (?) AND gender = ? AND end_training > ?", @current_tenant_ids, 1, Date.today).order(icno: :asc).map(&:student_list)}
       
 - if @tenant.try(:location).try(:typename) == 1
   .form-group
