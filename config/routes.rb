@@ -9,6 +9,15 @@ Ogma::Application.routes.draw do
   end
 
   resources :ptbudgets
+  
+  namespace :asset do
+    resources :assets do
+      collection do
+        get   :fixed_assets
+        post  :fixed_assets
+      end
+    end
+  end
 
   namespace :campus do
     resources :locations do

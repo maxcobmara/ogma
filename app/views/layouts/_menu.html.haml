@@ -63,6 +63,7 @@
         %h2.icon Assets
         %a.mp-back{:href => "#"} Back
         %ul
+          %li= link_to content_tag(:i, "", :class => "icon-numb") + "Assets", asset_assets_path
           %li= link_to content_tag(:i, "", :class => "icon-numb") + "Fixed Assets", '#'
           %li= link_to content_tag(:i, "", :class => "icon-numb") + "Inventory", '#'
           %li= link_to content_tag(:i, "", :class => "icon-numb") + "Office Supplies", '#'
