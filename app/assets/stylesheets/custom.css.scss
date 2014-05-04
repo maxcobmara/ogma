@@ -218,7 +218,7 @@ table.ogma {
 
 /* shows */
 
-.dl-horizontal {padding:0; margin:0;
+.dl-horizontal {padding:30px 0 0 0; margin:0;
   dt {font-weight:bold;}
 }
 
@@ -280,5 +280,6 @@ span.i {font-style:normal !important;}
 /* shows */
 .table_title {font-weight:bold; text-decoration:underline}
 .overdue, .overdue a {background-color:#FAFAFA; font-weight:bold; color:red;}
-
 .full_width{width:50%;}
+.tab-content {margin-bottom: 25px;}
+

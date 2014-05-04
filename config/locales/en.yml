@@ -65,6 +65,7 @@ en:
   type: Type
   notes: Notes
   create: Create
+  no: No
   
   actions:
     new: New
@@ -114,14 +115,15 @@ en:
     placement: Placement
     maintenance: Maintenance
     new: Register New Asset
-    list: Inventory
     create: Create New Asset
-    assettype: Asset Type
     assetcode: Registration Serial No
     cardno: Card No
     name: Manufacturer/Brand
-    category_id: Category
+    category: Category
     subcategory_name: Subcategory
+    typename: Asset Type
+    bookable: Bookable
+    bookable_text: This asset is reservable
     buyinfo: Purchasing Information
     orderno: Local Order No (LO No)
     purchasedate: Local Order Date (LO Date)

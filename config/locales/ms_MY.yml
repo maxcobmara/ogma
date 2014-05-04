@@ -41,6 +41,7 @@ ms_MY:
   type: Jenis
   notes: Catatan
   create: Tambah Data
+  no: Tidak
  
   actions:
     new: Baru
@@ -92,12 +93,14 @@ ms_MY:
     new: Aset Baru
     list: Inventori
     create: Cipta Aset Baru
-    assettype: Jenis Aset
     assetcode: No Siri Pendaftaran 
     cardno: No Kad
     name: Jenama
-    category_id: Kategori
+    category: Kategori
     subcategory_name: Subkategori
+    typename: Jenis Aset
+    bookable: Tempahan
+    bookable_text: Aset ini boleh ditempah
     buyinfo: Maklumat Pembelian
     orderno: No Pesanan Tempatan (No LO)
     purchasedate: Tarikh Pesanan (Tarikh LO)

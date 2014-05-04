@@ -11,6 +11,21 @@
   %li= link_to (t "asset.placement"),      "#placement",   "data-toggle" => "tab"
   %li= link_to (t "asset.maintenance"),    "#maintenance", "data-toggle" => "tab"
   
-.tab-content
-  #home.tab-pane.fade.in.active
-  #profile.tab-pane.fade
+.tab-content.col-md-offset-1
+  #details.tab-pane.fade.in.active
+    %dl.dl-horizontal
+      %dt= t 'asset.assetcode'
+      %dd= @asset.assetcode
+      %dt= t 'asset.category'
+      %dd=# @asset.category.try(:description)
+      %dt= t 'asset.subcategory'
+      %dd= @asset.subcategory
+      %dt= t 'asset.typename'
+      %dd= @asset.typename
+      %dt= t 'asset.bookable'
+      %dd= @asset.bookable? ? (t "bookable_text") : (t 'no')
+        
+  #description.tab-pane.fade
+  #purchase.tab-pane.fade
+  #placement.tab-pane.fade
+  #maintenance.tab-pane.fade
