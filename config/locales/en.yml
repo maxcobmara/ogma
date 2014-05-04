@@ -24,6 +24,7 @@ en:
   activerecord:
     models:
       staff: Staff
+      asset: Asset
       student: Student
       location: Lokasi
     attributes:
@@ -105,6 +106,13 @@ en:
     
   asset:
     title: Assets
+    fixed: Fixed Assets
+    inventory: Inventory
+    details: Details
+    description: Description
+    purchase: Purchase
+    placement: Placement
+    maintenance: Maintenance
     new: Register New Asset
     list: Inventory
     create: Create New Asset

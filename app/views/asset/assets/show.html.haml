@@ -3,3 +3,14 @@
   %h1= @asset.assetcode
 
 = render 'shared/flashes'
+
+%ul.nav.nav-tabs
+  %li.active= link_to (t "asset.details"), "#details",     "data-toggle" => "tab"
+  %li= link_to (t "asset.description"),    "#description", "data-toggle" => "tab"
+  %li= link_to (t "asset.purchase"),       "#purchase",    "data-toggle" => "tab"
+  %li= link_to (t "asset.placement"),      "#placement",   "data-toggle" => "tab"
+  %li= link_to (t "asset.maintenance"),    "#maintenance", "data-toggle" => "tab"
+  
+.tab-content
+  #home.tab-pane.fade.in.active
+  #profile.tab-pane.fade

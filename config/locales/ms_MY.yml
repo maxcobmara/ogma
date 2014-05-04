@@ -3,6 +3,7 @@ ms_MY:
   activerecord:
     models: 
       staff: Kakitangan
+      asset: Aset
       student: Pelajar
       location: Lokasi
     attributes:
@@ -81,6 +82,13 @@ ms_MY:
     
   asset:
     title: Aset
+    fixed: Harta Modal
+    inventory: Inventori
+    details: Perincian
+    description: Deskripsi
+    purchase: Pembelian
+    placement: Penempatan
+    maintenance: Senggaraan
     new: Aset Baru
     list: Inventori
     create: Cipta Aset Baru
