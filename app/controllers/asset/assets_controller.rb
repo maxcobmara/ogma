@@ -4,8 +4,11 @@ class Asset::AssetsController < ApplicationController
   def index
     @search = Asset.search(params[:q])
     @assets = @search.result
-    @fixed_assets = @assets.fixed
-    @fixed_assets = @fixed_assets.page(params[:page]||1)
+    @fixed_assets = @assets.where(assettype: 1).page(params[:page]||1)
+    @inventories  = @assets.where(assettype: 2).page(params[:page]||1)
+  end
+  
+  def show
   end
   
   

@@ -15,6 +15,8 @@ Ogma::Application.routes.draw do
       collection do
         get   :fixed_assets
         post  :fixed_assets
+        get   :inventory
+        post  :inventory
       end
     end
   end

@@ -20,6 +20,9 @@ module ApplicationHelper
     link_to(name, '#', class: "add_fields", data: {id: id, fields: fields.gsub("\n", "")})
   end
   
+  def currency(value)
+    number_to_currency(value, :unit => "RM ", :separator => ".", :delimiter => ",", :precision => 2)
+  end
   def ringgols(money)
     number_to_currency(money, :unit => "RM ", :separator => ".", :delimiter => ",", :precision => 2)
   end

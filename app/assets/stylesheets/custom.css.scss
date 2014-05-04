@@ -197,7 +197,7 @@ table.ogma {
   td.date, th.date {text-align:center; width:80px;}
   td, th {border: 5px solid white;}
   thead {
-    th {padding:5px; font-weight:normal; vertical-align:top;
+    th {padding:10px 5px; font-weight:normal; vertical-align:top;
         a {color:white;}
       }
     tr {font-size:0.9em; 
@@ -208,7 +208,9 @@ table.ogma {
   tbody {
     tr {font-size:0.85em !important;}
     td.group{background-color: #999; color:#FFF; font-weight:bold; font-size:1.2em; padding: 5px 0; text-align:center;}
-    td {height:40px; padding:5px;}
+    td {height:35px; padding:5px;
+      &.number {text-align:right; padding-right:15px;}
+    }
     tr.search_row {input {font-size:0.9em !important;}
       .search_row {display:none;}}
   }
@@ -278,3 +280,5 @@ span.i {font-style:normal !important;}
 /* shows */
 .table_title {font-weight:bold; text-decoration:underline}
 .overdue, .overdue a {background-color:#FAFAFA; font-weight:bold; color:red;}
+
+.full_width{width:50%;}

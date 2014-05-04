@@ -7,24 +7,65 @@
     %li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'actions.new'))), '#'
   %ul.nav.navbar-nav.navbar-right
     %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "toga"
-    %li= link_to content_tag(:li, fa_icon("print", text: (t 'actions.print'))), "#"
+    %li.dropdown
+      %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#"}
+        = fa_icon "print", text: (t 'actions.print')
+        %b.caret
+      %ul.dropdown-menu
+        %li
+          %a{:href => "#"} KEW PA3
+        %li
+          %a{:href => "#"} KEW PA4
+        %li
+          %a{:href => "#"} KEW PA14
+
+
+%ul.nav.nav-tabs
+  %li.half_width.active= link_to "Fixed", "#home", "data-toggle" => "tab"
+  %li.half_width= link_to "Inventory", "#profile", "data-toggle" => "tab"
+  
+.search{style: "display:none;"}
+  = render "index_search"
+
+.tab-content
+  #home.tab-pane.fade.in.active
+    %table.table-striped.table-hover.ogma
+      %thead
+        %tr
+          %th= sort_link(@search, :assetcode, (t 'asset.assetcode'))
+          %th= sort_link(@search, :name, (t 'asset.name'))
+          %th= sort_link(@search, :purchasedate, (t 'asset.purchasedate'))
+          %th= sort_link(@search, :purchaseprice, (t 'asset.purchaseprice'))
+      %tbody
+        - @fixed_assets.each do |asset|
+          %tr
+            %td= link_to asset.assetcode, asset_asset_path(asset)
+            %td= asset.name
+            %td= asset.purchasedate
+            %td.number= currency(asset.purchaseprice)
+        
+    .right{style:"padding:0 30px; margin:0;"}= paginate @fixed_assets, :theme => 'twitter-bootstrap-3'
+  
+  
+  #profile.tab-pane.fade
+    %table.table-striped.table-hover.ogma
+      %thead
+        %tr
+          %th= sort_link(@search, :assetcode, (t 'asset.assetcode'))
+          %th= sort_link(@search, :name, (t 'asset.name'))
+          %th= sort_link(@search, :purchasedate, (t 'asset.purchasedate'))
+          %th= sort_link(@search, :purchaseprice, (t 'asset.purchaseprice'))
+      %tbody
+
+        - @inventories.each do |asset|
+          %tr
+            %td= asset.assetcode
+            %td= asset.name
+            %td= asset.purchasedate
+            %td.number= currency(asset.purchaseprice)
+        
+    .right{style:"padding:0 30px; margin:0;"}= paginate @inventories, :theme => 'twitter-bootstrap-3'
+
       
 .row
-  %table.table-striped.table-hover.ogma
-    %thead
-      %tr
-        %th= sort_link(@search, :assetcode, (t 'asset.assetcode'))
-        %th= sort_link(@search, :name, (t 'asset.name'))
-        %th= sort_link(@search, :purchasedate, (t 'asset.purchasedate'))
-        %th= sort_link(@search, :purchaseprice, (t 'asset.purchaseprice'))
-    %tbody
-      = render "index_search"
-      - @fixed_assets.each do |asset|
-        %tr
-          %td= asset.assetcode
-          %td= asset.name
-          %td= asset.purchasedate
-          %td= asset.purchaseprice
-          
-  .right{style:"padding:0 30px; margin:0;"}= paginate @fixed_assets, :theme => 'twitter-bootstrap-3'
   
