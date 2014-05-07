@@ -11,6 +11,18 @@ class Asset::AssetsController < ApplicationController
   def show
   end
   
+  def kewpa4
+    @assets = Asset.where(assettype: 1)
+    respond_to do |format|
+      format.pdf do
+        pdf = Kewpa4Pdf.new(@assets)
+        send_data pdf.render, filename: "kewpa4-{Date.today}",
+                              type: "application/pdf",
+                              disposition: "inline"
+      end
+    end
+  end
+  
   
   
   
@@ -24,4 +36,4 @@ class Asset::AssetsController < ApplicationController
     def asset_params
       params.require(:asset).permit(:location_id, :staff_id, :student_id, :keyaccept, :keyexpectedreturn, :keyreturned, :force_vacate, :student_icno, damages_attributes: [:id, :description,:reported_on,:document_id,:location_id])
     end
-end
+  end
