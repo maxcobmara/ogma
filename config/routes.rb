@@ -14,6 +14,7 @@ Ogma::Application.routes.draw do
     resources :assets do
       member do
         get :kewpa4
+        get :kewpa5
       end
       collection do
         get   :fixed_assets

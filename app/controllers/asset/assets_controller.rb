@@ -23,6 +23,18 @@ class Asset::AssetsController < ApplicationController
     end
   end
   
+  def kewpa5
+    @assets = Asset.where(assettype: 2)
+    respond_to do |format|
+      format.pdf do
+        pdf = Kewpa5Pdf.new(@assets)
+        send_data pdf.render, filename: "kewpa5-{Date.today}",
+                              type: "application/pdf",
+                              disposition: "inline"
+      end
+    end
+  end
+  
   
   
   
