@@ -1,0 +1,36 @@
+- model_class = Stationery
+.page-header
+  %h1= t('stationery.title')
+  
+.navbar.navbar-inverse{role: "navigation", style: "padding-right:40px;"}
+  %ul.nav.navbar-nav
+    %li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'actions.new'))), new_bulletin_path
+  %ul.nav.navbar-nav.navbar-right
+    %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "toga"
+    %li= link_to content_tag(:li, fa_icon("print", text: (t 'actions.print'))), "#", class: 'bogus'
+
+
+.row
+  %table.table-striped.table-hover.ogma
+    %thead
+      %tr
+        %th= (t 'stationery.code')
+        %th= (t 'stationery.category')
+        %th= (t 'stationery.quantity')
+        %th= (t 'stationery.max')
+        %th= (t 'stationery.min')
+
+    %tbody
+    =# render "index_search"
+    - @stationeries.each do |stationery|
+      %tr
+        %td= link_to stationery.code, asset_stationery_path(stationery)
+        %td= link_to stationery.category, asset_stationery_path(stationery)
+        %td
+          = stationery.current_quantity.to_i rescue 0
+          &nbsp; 
+          = stationery.unittype
+        %td= stationery.maxquantity.to_i
+        %td= stationery.minquantity.to_i
+
+  .right{style:"padding:0 30px; margin:0;"}= paginate @stationeries, :theme => 'twitter-bootstrap-3'

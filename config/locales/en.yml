@@ -134,7 +134,15 @@ en:
     engineno: "Engine No.:"
     registration: "Registration No."
     otherinfo: "Components & Accessories"
-    administered_by: "Administered By"  
+    administered_by: "Administered By"
+    
+  stationery:
+    title: Office Supplies
+    code: Item Code
+    category: Product Name
+    quantity: Current Quantity
+    max: Max Quantity
+    min: Min Quantity
   
        
   location:

@@ -48,4 +48,4 @@ class Asset::AssetsController < ApplicationController
     def asset_params
       params.require(:asset).permit(:location_id, :staff_id, :student_id, :keyaccept, :keyexpectedreturn, :keyreturned, :force_vacate, :student_icno, damages_attributes: [:id, :description,:reported_on,:document_id,:location_id])
     end
-  end
+end

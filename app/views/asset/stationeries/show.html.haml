@@ -1,0 +1,32 @@
+- model_class = Stationery
+.page-header
+  %h1= @stationery.category
+
+= render 'shared/flashes'
+
+%ul.nav.nav-tabs
+  %li.active= link_to (t "stationery.details"), "#details",   "data-toggle" => "tab"
+  %li= link_to (t "stationery.additions"),      "#additions", "data-toggle" => "tab"
+  %li= link_to (t "stationery.deductions"),     "#deductions","data-toggle" => "tab"
+  
+.tab-content.col-md-offset-1
+  %dl.dl-horizontal
+    %dt= t 'stationery.code'
+    %dd= @stationery.code
+    %dt= t 'stationery.category'
+    %dd= @stationery.category
+  #details.tab-pane.fade.in.active
+    %dl.dl-horizontal
+
+      %dt= t 'stationery.quantity'
+      %dd
+        = @stationery.current_quantity.to_i rescue 0
+        &nbsp;
+        = @stationery.unittype
+      %dt= t 'stationery.min'
+      %dd= @stationery.minquantity.to_i
+      %dt= t 'stationery.max'
+      %dd= @stationery.maxquantity.to_i
+        
+  #additions.tab-pane.fade
+  #deductions.tab-pane.fade

@@ -21,6 +21,7 @@ Ogma::Application.routes.draw do
         get :kewpa5
       end
     end
+    resources :stationeries
   end
 
   namespace :campus do
