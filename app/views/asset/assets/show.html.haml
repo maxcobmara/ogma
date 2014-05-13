@@ -9,7 +9,8 @@
   %li= link_to (t "asset.description"),    "#description", "data-toggle" => "tab"
   %li= link_to (t "asset.purchase"),       "#purchase",    "data-toggle" => "tab"
   %li= link_to (t "asset.placement"),      "#placement",   "data-toggle" => "tab"
-  %li= link_to (t "asset.maintenance"),    "#maintenance", "data-toggle" => "tab"
+  - if @asset.is_maintainable?
+    %li= link_to (t "asset.maintenance"),    "#maintenance", "data-toggle" => "tab"
   
 .tab-content.col-md-offset-1
   %dl.dl-horizontal
@@ -25,8 +26,12 @@
       %dd= @asset.typename
       %dt= t 'asset.bookable'
       %dd= @asset.bookable? ? (t "bookable_text") : (t 'no')
+      %dt= t 'asset.maintainable'
+      %dd= @asset.is_maintainable? ? (t "asset.maintainable_text") : (t 'no')
         
   #description.tab-pane.fade
   #purchase.tab-pane.fade
   #placement.tab-pane.fade
-  #maintenance.tab-pane.fade
+  - if @asset.is_maintainable?
+    #maintenance.tab-pane.fade
+      Maintenance

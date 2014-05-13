@@ -114,6 +114,8 @@ en:
     purchase: Purchase
     placement: Placement
     maintenance: Maintenance
+    maintainable: Maintainable
+    maintainable_text: Requires Maintenance
     new: Register New Asset
     create: Create New Asset
     assetcode: Registration Serial No
@@ -135,6 +137,8 @@ en:
     registration: "Registration No."
     otherinfo: "Components & Accessories"
     administered_by: "Administered By"
+    
+
     
   stationery:
     title: Office Supplies

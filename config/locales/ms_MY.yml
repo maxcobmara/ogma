@@ -90,6 +90,8 @@ ms_MY:
     purchase: Pembelian
     placement: Penempatan
     maintenance: Senggaraan
+    maintainable: Perlu Disenggara
+    maintainable_text: Memerlukan Senggaraan
     new: Aset Baru
     list: Inventori
     create: Cipta Aset Baru
