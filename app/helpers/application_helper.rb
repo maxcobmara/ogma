@@ -23,6 +23,7 @@ module ApplicationHelper
   def currency(value)
     number_to_currency(value, :unit => "RM ", :separator => ".", :delimiter => ",", :precision => 2)
   end
+  
   def ringgols(money)
     number_to_currency(money, :unit => "RM ", :separator => ".", :delimiter => ",", :precision => 2)
   end

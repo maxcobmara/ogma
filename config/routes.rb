@@ -12,15 +12,13 @@ Ogma::Application.routes.draw do
   
   namespace :asset do
     resources :assets do
-      member do
-        get :kewpa4
-        get :kewpa5
-      end
       collection do
         get   :fixed_assets
         post  :fixed_assets
         get   :inventory
         post  :inventory
+        get :kewpa4
+        get :kewpa5
       end
     end
   end
