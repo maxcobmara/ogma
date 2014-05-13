@@ -1,7 +1,8 @@
 class Kewpa5Pdf < Prawn::Document
-  def initialize(asset)
+  def initialize(asset, view)
     super({top_margin: 50, page_size: 'A4', page_layout: :portrait })
     @assets = asset
+    @view = view
     font "Times-Roman"
     text "KEW.PA-5", :align => :right, :size => 16, :style => :bold
     move_down 20
@@ -22,10 +23,10 @@ class Kewpa5Pdf < Prawn::Document
       columns(1).width = 125
       columns(2).borders = [:top, :right, :bottom]
       columns(3).align = :center
-      columns(4).align = :center
+      columns(4).align = :right
       self.row_colors = ["FEFEFE", "FFFFFF"]
       self.header = true
-      self.cell_style = { size: 10 }
+      self.cell_style = { size: 9 }
       self.width = 525
       header = true
     end
@@ -36,7 +37,7 @@ class Kewpa5Pdf < Prawn::Document
     header = [[ 'Bil', 'Keterangan Aset', "", 'Tarikh Perolehan', 'Harga Perolehan']]
     header +
       @assets.map do |asset|
-      ["#{counter += 1}", "#{asset.assetcode}", "#{asset.typename} #{asset.name} #{asset.modelname}", "#{asset.purchasedate}" , "#{asset.purchaseprice}"]
+      ["#{counter += 1}", "#{asset.assetcode}", "#{asset.typename} #{asset.name} #{asset.modelname}", "#{asset.purchasedate}" , @view.currency(asset.purchaseprice.to_f)]
     end
   end
 end

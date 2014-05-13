@@ -24,10 +24,10 @@ class Asset::AssetsController < ApplicationController
   end
   
   def kewpa5
-    @assets = Asset.where(assettype: 2)
+    @assets = Asset.where(assettype: 2).order(assetcode: :asc)
     respond_to do |format|
       format.pdf do
-        pdf = Kewpa5Pdf.new(@assets)
+        pdf = Kewpa5Pdf.new(@assets, view_context)
         send_data pdf.render, filename: "kewpa5-{Date.today}",
                               type: "application/pdf",
                               disposition: "inline"
