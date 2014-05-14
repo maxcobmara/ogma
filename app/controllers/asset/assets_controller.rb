@@ -38,6 +38,18 @@ class Asset::AssetsController < ApplicationController
     end
   end
   
+  def kewpa13
+    @assets = Asset.where('is_maintainable = ?', true).order(assetcode: :asc)
+    respond_to do |format|
+      format.pdf do
+        pdf = Kewpa13Pdf.new(@assets, view_context)
+        send_data pdf.render, filename: "kewpa13-{Date.today}",
+                              type: "application/pdf",
+                              disposition: "inline"
+      end
+    end
+  end
+  
   
   
   
