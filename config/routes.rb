@@ -19,6 +19,7 @@ Ogma::Application.routes.draw do
         post  :inventory
         get :kewpa4
         get :kewpa5
+        get :kewpa13
       end
     end
     resources :stationeries
