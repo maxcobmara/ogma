@@ -48,7 +48,7 @@
             %td= asset.name
             %td= asset.purchasedate
             %td.number= currency(asset.purchaseprice)
-            = render :partial => 'action_menu', :locals => { :asset => asset }
+            %td= link_to content_tag(:li, fa_icon("", text: (t 'actions.show'))), asset_asset_path(asset)
         
     .right{style:"padding:0 30px; margin:0;"}= paginate @fixed_assets, :theme => 'twitter-bootstrap-3'
   
@@ -61,6 +61,7 @@
           %th= sort_link(@search, :name, (t 'asset.name'))
           %th= sort_link(@search, :purchasedate, (t 'asset.purchasedate'))
           %th= sort_link(@search, :purchaseprice, (t 'asset.purchaseprice'))
+          %th.action_menu
       %tbody
 
         - @inventories.each do |asset|
@@ -69,6 +70,7 @@
             %td= asset.name
             %td= asset.purchasedate
             %td.number= currency(asset.purchaseprice)
+            %td= link_to content_tag(:li, fa_icon("", text: (t 'actions.show'))), asset_asset_path(asset)
         
     .right{style:"padding:0 30px; margin:0;"}= paginate @inventories, :theme => 'twitter-bootstrap-3'
 
