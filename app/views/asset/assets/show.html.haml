@@ -30,8 +30,56 @@
       %dd= @asset.is_maintainable? ? (t "asset.maintainable_text") : (t 'no')
         
   #description.tab-pane.fade
+    %dl.dl-horizontal
+      %dt= t 'asset.name'
+      %dd= @asset.name
+      %dt= t 'asset.manufacturer' 
+      %dd= @asset.manufacturer_id
+      %dt= t 'asset.country_id'
+      %dd= @asset.country_id
+      %dt= t 'asset.model' 
+      %dd= @asset.modelname
+      %dt= t 'asset.serial_no'
+      %dd= @asset.serialno
+      %dt= t 'asset.located_at'
+      %dd= @asset.location_id
+      %dt= t 'asset.assigned_to'
+      %dd= @asset.assignedto_id
+      %dt= t 'asset.status'
+      %dd= @asset.status
+      %dt= t 'asset.other_information'
+      %dd= @asset.otherinfo
+  
   #purchase.tab-pane.fade
+    %dl.dl-horizontal
+      %dt= t 'asset.orderno'
+      %dd= @asset.orderno
+      %dt= t 'asset.purchaseprice'
+      %dd= @asset.purchaseprice
+      %dt= t 'asset.purchasedate'
+      %dd= @asset.purchasedate
+      %dt= t 'asset.receiveddate'
+      %dd= @asset.receiveddate
+      %dt= t 'asset.receivedby'
+      %dd= @asset.receiver_id
+      %dt= t 'asset.suppliedby'
+      %dd= @asset.supplier_id
+	  
   #placement.tab-pane.fade
+    %table.table.table-condensed.table-hover{:style => "width: 50%; "}
+      %thead
+        %tr
+          %th= t 'asset.located_at'
+          %th= t 'asset.assigned_to'
+          %th= t 'asset.date'
+      %tbody
+        - for asset_placement in @asset.asset_placements
+          %tr
+            %td= check_kin {asset_placement.location_id} 
+            %td= asset_placement.staff_id
+            %td= asset_placement.reg_on
+
+
   - if @asset.is_maintainable?
     #maintenance.tab-pane.fade
       Maintenance
