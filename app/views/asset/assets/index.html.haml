@@ -40,6 +40,7 @@
           %th= sort_link(@search, :name, (t 'asset.name'))
           %th= sort_link(@search, :purchasedate, (t 'asset.purchasedate'))
           %th= sort_link(@search, :purchaseprice, (t 'asset.purchaseprice'))
+          %th.action_menu
       %tbody
         - @fixed_assets.each do |asset|
           %tr
@@ -47,6 +48,7 @@
             %td= asset.name
             %td= asset.purchasedate
             %td.number= currency(asset.purchaseprice)
+            = render :partial => 'action_menu', :locals => { :asset => asset }
         
     .right{style:"padding:0 30px; margin:0;"}= paginate @fixed_assets, :theme => 'twitter-bootstrap-3'
   
