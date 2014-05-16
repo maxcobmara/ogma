@@ -58,8 +58,112 @@
 			  
         
       #description.tab-pane.fade
+        %dl.dl-horizontal
+          .form-group
+            .col-sm-2.control-label
+              = f.label t 'asset.name', for: :name
+            .col-md-5
+              = f.text_field :name, class: 'form-control input-xxlarge' 
+			  
+          .form-group
+            .col-sm-2.control-label
+              = f.label t 'asset.manufacturer', for: :manufacturer_id
+            .col-md-5
+              = f.text_field :manufacturer_id, class: 'form-control input-xxlarge' 	   
+          .form-group
+            .col-sm-2.control-label
+              = f.label t 'asset.country_id', for: :country_id
+            .col-md-5
+              = f.text_field :country_id, class: 'form-control input-xxlarge' 	
+			  
+          .form-group
+            .col-sm-2.control-label
+              = f.label t 'asset.model', for: :modelname
+            .col-md-5
+              = f.text_field :modelname, class: 'form-control input-xxlarge' 
+			  
+          .form-group
+            .col-sm-2.control-label
+              = f.label t 'asset.serial_no', for: :serialno
+            .col-md-5
+              = f.text_field :serialno, class: 'form-control input-xxlarge' 			  
+          .form-group
+            .col-sm-2.control-label
+              = f.label t 'asset.located_at', for: :location_id
+            .col-md-5
+              = f.text_field :location_id, class: 'form-control input-xxlarge'
+
+          .form-group
+            .col-sm-2.control-label
+              = f.label t 'asset.assigned_to', for: :assignedto_id
+            .col-md-5
+              = f.text_field :assignedto_id, class: 'form-control input-xxlarge'
+			  	  
+          .form-group
+            .col-sm-2.control-label
+              = f.label t 'asset.status', for: :status
+            .col-md-5
+              = f.text_field :status, class: 'form-control input-xxlarge'
+
+          .form-group
+            .col-sm-2.control-label
+              = f.label t 'asset.other_information', for: :otherinfo
+            .col-md-5
+              = f.text_field :otherinfo, class: 'form-control input-xxlarge'
+			  
       #purchase.tab-pane.fade
+        %dl.dl-horizontal
+          .form-group
+            .col-sm-2.control-label
+              = f.label t 'asset.orderno', for: :orderno
+            .col-md-5
+              = f.text_field :orderno, class: 'form-control input-xxlarge'
+			  
+          .form-group
+            .col-sm-2.control-label
+              = f.label t 'asset.purchaseprice', for: :purchaseprice
+            .col-md-5
+              = f.text_field :purchaseprice, class: 'form-control input-xxlarge'
+			  
+          .form-group
+            .col-sm-2.control-label
+              = f.label t 'asset.purchasedate', for: :purchasedate
+            .col-md-5
+              = f.text_field :purchasedate, class: 'form-control input-xxlarge'
+			  
+          .form-group
+            .col-sm-2.control-label
+              = f.label t 'asset.receiveddate', for: :receiveddate
+            .col-md-5
+              = f.text_field :receiveddate, class: 'form-control input-xxlarge'
+			  			  
+          .form-group
+            .col-sm-2.control-label
+              = f.label t 'asset.receivedby', for: :receiver_id
+            .col-md-5
+              = f.text_field :receiver_id, class: 'form-control input-xxlarge'
+			  
+          .form-group
+            .col-sm-2.control-label
+              = f.label t 'asset.suppliedby', for: :supplier_id
+            .col-md-5
+              = f.text_field :supplier_id, class: 'form-control input-xxlarge'			  
+		
       #placement.tab-pane.fade
+        %table.table.table-condensed.table-hover{:style => "width: 50%; "}	
+          %thead	  
+            %tr
+              %th= t 'asset.located_at'
+              %th= t 'asset.assigned_to'
+              %th= t 'asset.date'
+          %tbody
+            - for asset_placement in @asset.asset_placements
+              %tr
+                %td= check_kin {asset_placement.location_id} 
+                %td= asset_placement.staff_id
+                %td= asset_placement.reg_on  
+			  
+			  
       - if @asset.is_maintainable?
         #maintenance.tab-pane.fade
           Maintenance
