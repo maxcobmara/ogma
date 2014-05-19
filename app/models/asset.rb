@@ -1,10 +1,10 @@
 class Asset < ActiveRecord::Base
+  
+  validates_presence_of :assignedto_id, :if => :bookable?
+  
   has_many :asset_placements, :dependent => :destroy
   accepts_nested_attributes_for :asset_placements, :allow_destroy => true , :reject_if => lambda { |a| a[:location_id].blank? }
   has_many  :locations, :through => :asset_placements
-  
-  
-  scope :fixed, where(assettype: 2)
   
   
 end

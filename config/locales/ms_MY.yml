@@ -92,6 +92,8 @@ ms_MY:
     maintenance: Senggaraan
     maintainable: Perlu Disenggara
     maintainable_text: Memerlukan Senggaraan
+    mark_lost: Tanda untuk Kehilangan/Lupus
+    mark_disposal: Tanda untuk Pembuangan
     new: Aset Baru
     list: Inventori
     create: Cipta Aset Baru

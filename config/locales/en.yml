@@ -116,6 +116,8 @@ en:
     maintenance: Maintenance
     maintainable: Maintainable
     maintainable_text: Requires Maintenance
+    mark_lost: Mark as Lost/Write Off
+    mark_disposal: Mark for Disposal
     new: Register New Asset
     create: Create New Asset
     assetcode: Registration Serial No

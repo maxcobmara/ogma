@@ -11,10 +11,11 @@
     = render 'shared/error_messages', object: f.object
 
     %ul.nav.nav-tabs
-      %li.active= link_to (t "asset.details"), "#details",     "data-toggle" => "tab"
-      %li= link_to (t "asset.description"),    "#description", "data-toggle" => "tab"
-      %li= link_to (t "asset.purchase"),       "#purchase",    "data-toggle" => "tab"
-      %li= link_to (t "asset.placement"),      "#placement",   "data-toggle" => "tab"
+      %li.active= link_to (t "asset.status"), "#status",  "data-toggle" => "tab"
+      %li= link_to (t "asset.details"),     "#details",       "data-toggle" => "tab"
+      %li= link_to (t "asset.description"), "#description", "data-toggle" => "tab"
+      %li= link_to (t "asset.purchase"),    "#purchase",    "data-toggle" => "tab"
+      %li= link_to (t "asset.placement"),   "#placement",   "data-toggle" => "tab"
       - if @asset.is_maintainable?
         %li= link_to (t "asset.maintenance"),    "#maintenance", "data-toggle" => "tab"
   
@@ -24,18 +25,55 @@
           = f.label t 'asset.assetcode', for: :assetcode
         .col-md-5
           = f.text_field :assetcode, class: 'form-control mandatory'
-      #details.tab-pane.fade.in.active
-        %dl.dl-horizontal
-          %dt= t 'asset.category'
-          %dd=# @asset.category.try(:description)
-          %dt= t 'asset.subcategory'
-          %dd= @asset.subcategory
-          %dt= t 'asset.typename'
-          %dd= @asset.typename
-          %dt= t 'asset.bookable'
-          %dd= @asset.bookable? ? (t "bookable_text") : (t 'no')
-          %dt= t 'asset.maintainable'
-          %dd= @asset.is_maintainable? ? (t "asset.maintainable_text") : (t 'no')
+          
+    
+      #status.tab-pane.fade.in.active
+        - if @asset.assettype == 1
+          .form-group
+            .col-sm-2.control-label
+              = f.label t 'asset.bookable', for: :bookable
+            .col-md-4
+              = f.check_box :bookable, class: 'form-control mandatory'
+              %p.help-block= t 'asset.bookable_text'
+            
+        .form-group
+          .col-sm-2.control-label
+            = f.label t 'asset.mark_lost', for: :mark_as_lost
+          .col-md-4
+            = f.check_box :mark_as_lost, class: 'form-control mandatory'
+            
+        .form-group
+          .col-sm-2.control-label
+            = f.label t 'asset.mark_disposal', for: :is_disposed
+          .col-md-4
+            = f.check_box :is_disposed, class: 'form-control mandatory'
+            
+      #details.tab-pane.fade
+        .form-group
+          .col-sm-2.control-label
+            = f.label t 'asset.category', for: :category_id
+          .col-md-5
+            =# f.collection_select :category_id, Assetcategory.find(:all, :conditions => ['parent_id IS ?', nil]), :id, :description, :include_blank => true, class: 'form-control mandatory'
+
+        .form-group
+          .col-sm-2.control-label
+            = f.label t 'asset.subcategory_name', for: :subcategory_name
+          .col-md-5
+            = f.text_field :subcategory, class: 'form-control'
+            
+        .form-group
+          .col-sm-2.control-label
+            = f.label t 'asset.typename', for: :typename
+          .col-md-5
+            = f.text_field :typename, class: 'form-control'
+            
+        .form-group
+          .col-sm-2.control-label
+            = f.label t 'asset.typename', for: :typename
+          .col-md-5
+            = f.text_field :typename, class: 'form-control'
+            
+    
         
       #description.tab-pane.fade
       #purchase.tab-pane.fade
