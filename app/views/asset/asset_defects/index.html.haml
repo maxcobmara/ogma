@@ -28,7 +28,7 @@
           %td= link_to defect.asset.assetcode, asset_asset_path(defect.asset.id)
           %td= "#{defect.asset.try(:typename)} - #{defect.asset.name} - #{defect.asset.modelname}"  
           %td= defect.asset.try(:serialno)
-          %td= defect.asset.asset_placements.last.try(:location).try(:location_list)
+          %td= link_to defect.asset.asset_placements.last.try(:location).try(:location_list), (campus_location_path(defect.asset.asset_placements.last.location.id)) rescue nil
           %td= defect.notes
          
 		
