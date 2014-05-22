@@ -92,6 +92,12 @@ class Location < ActiveRecord::Base
   end
   
   
+  #named shortcuts
+  def location_list
+     "#{combo_code}  #{name}"
+  end
+  
+  
 end
 
 # == Schema Information

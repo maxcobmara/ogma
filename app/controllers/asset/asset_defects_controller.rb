@@ -2,7 +2,9 @@ class Asset::AssetDefectsController < ApplicationController
   before_action :set_defective, only: [:show, :edit, :update, :destroy]
   
   def index
-    @defective = AssetDefect.order(code: :asc).page(params[:page]||1)
+    @search = AssetDefect.search(params[:q])
+    @assets = @search.result
+    @defective = @assets.order(created_at: :desc).page(params[:page]||1)
   end
   
   def show

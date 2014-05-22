@@ -116,6 +116,10 @@ ms_MY:
     registration: "No. Pendaftaran"
     otherinfo: "Komponen & Aksesori"
     
+    defect:
+      title: Aset Rosak
+      notes: Catatan
+    
   location:
     title: Lokasi
     code: Kod Lokasi

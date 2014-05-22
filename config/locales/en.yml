@@ -140,6 +140,10 @@ en:
     otherinfo: "Components & Accessories"
     administered_by: "Administered By"
     
+    defect:
+      title: Asset Defect
+      notes: Notes
+    
 
     
   stationery:
