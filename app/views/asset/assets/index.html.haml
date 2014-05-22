@@ -13,7 +13,7 @@
         %b.caret
       %ul.dropdown-menu
         %li
-          %a{:href => kewpa3_asset_assets_path(:format => 'pdf')} KEW PA3
+          %a KEW PA3
         %li
           %a{:href => kewpa4_asset_assets_path(:format => 'pdf')} KEW PA4
         %li
@@ -49,7 +49,8 @@
             %td= asset.purchasedate
             %td.number= currency(asset.purchaseprice)
             %td= link_to content_tag(:li, fa_icon("", text: (t 'actions.show'))), asset_asset_path(asset)
-        
+           
+			
     .right{style:"padding:0 30px; margin:0;"}= paginate @fixed_assets, :theme => 'twitter-bootstrap-3'
   
   
