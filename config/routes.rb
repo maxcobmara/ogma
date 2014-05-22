@@ -12,6 +12,9 @@ Ogma::Application.routes.draw do
   
   namespace :asset do
     resources :assets do
+      member do
+        get :kewpa3
+      end
       collection do
         get   :fixed_assets
         post  :fixed_assets
@@ -20,8 +23,8 @@ Ogma::Application.routes.draw do
         get :kewpa4
         get :kewpa5
         get :kewpa13
-        get :kewpa3
-      end
+
+      end   
     end
     resources :stationeries
   end

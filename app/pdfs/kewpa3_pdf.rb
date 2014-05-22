@@ -1,11 +1,12 @@
 class Kewpa3Pdf < Prawn::Document
-  def initialize(asset)
+  def initialize(asset, view)
     super({top_margin: 50, page_size: 'A4', page_layout: :portrait })
-    @assets = asset
+    @asset = asset
+    @view = view
 
     font "Times-Roman"
     text "KEW.PA-3", :align => :right, :size => 16, :style => :bold
-    text "(No. Siri Pendaftaran:", :align => :right, :size => 16
+    text "(No. Siri Pendaftaran: #{@asset.assetcode} )", :align => :right, :size => 14
     move_down 15
     text "DAFTAR INVENTORY", :align => :center, :size => 14, :style => :bold
     move_down 15
@@ -17,32 +18,51 @@ class Kewpa3Pdf < Prawn::Document
     make_table_penempatan
     make_table_pemeriksaan
     make_table_pelupusan
+    penem
   end
   
   def cop 
-    text "........................", :align => :center, :size => 14
-    text "Tandatangan Ketua Jabatan", :align => :center, :size => 14
-    move_down 5
-    text "Nama    :", :align => :left, :size => 14
-    text "Jawatan :", :align => :left, :size => 14
-    text "Tarikh  :", :align => :left, :size => 14
-    text "Cop     :", :align => :left, :size => 14
+    text "........................", :align => :center, :size => 11
+    text "Tandatangan Ketua Jabatan", :align => :center, :size => 11
+    move_down 3
+    text "Nama    :", :align => :left, :size => 11
+    text "Jawatan :", :align => :left, :size => 11
+    text "Tarikh  :", :align => :left, :size => 11
+    text "Cop     :", :align => :left, :size => 11
     
   end
     
   def make_tables1
     
-    data = [ [ "Kod Nasional", " "], [ "Kategori ", " "], [ "Sub Kategori", " "] ]
+    data = [ [ "Kod Nasional", " "], [ "Kategori ", "#{@asset.try(:assetcategoryies).try(:description)}"], [ "Sub Kategori", "#{@asset.subcategory} "] ]
        table(data, :column_widths => [130, 390])
           
-       data1 = [ ["Jenis", "", "Harga Perolehan Asal", ""], 
-                ["Kuantiti", "", "Tarikh Diterima", ""],
-                ["Unit Pengukuran", "", "No Pesanan Rasmi Kerajaan & Tarikh", ""],
-            ["Tempoh Jaminan", "", "",""] ]
+       data1 = [ ["Jenis", "#{@asset.typename}", "Harga Perolehan Asal", @view.currency(@asset.purchaseprice.to_f)], 
+                ["Kuantiti", "#{@asset.quantity}", "Tarikh Diterima", "#{@asset.receiveddate}"],
+                ["Unit Pengukuran", "#{@asset.quantity_type}", "No Pesanan Rasmi Kerajaan & Tarikh", "#{@asset.orderno} #{@asset.purchasedate}"],
+            ["Tempoh Jaminan", "#{@asset.warranty_length} ", "",""] ]
          table(data1, :column_widths => [130, 150, 120, 120]) 
          
-         data2 =[ ["Nama Pembekal Dan Alamat:", "cop" ] ]
-         table(data2, :column_widths => [180, 340]) 
+         
+
+         data2 =[ ["Nama Pembekal Dan Alamat:", "" ],
+                  ["-#{@asset.supplier_id}", "       ........................................." ],
+                  ["-#{@asset.supplier_id}", "       Tandatangan Ketua Jabatan" ],
+                  ["-#{@asset.supplier_id}", "Nama     :   " ],
+                  ["-#{@asset.supplier_id}", "Jawatan  :" ],
+                  ["-#{@asset.supplier_id}", "Tarikh   :" ],
+                  ["", "Cop      :" ],
+                ]
+         table(data2, :column_widths => [180, 340]) do
+         row(0).borders = [:top, :left, :right]
+         row(1).borders = [:left, :right]
+         row(2).borders = [:left, :right]
+         row(3).borders = [:left, :right]
+         row(4).borders = [:left, :right]
+         row(5).borders = [:left, :right]
+         row(6).borders = [:bottom, :left, :right]
+         
+         end
 
           move_down 5
   end
@@ -57,18 +77,22 @@ class Kewpa3Pdf < Prawn::Document
     
   end
   
-  data = [ ["Kuantiti", "", "", "", "", "", "", ""],
-           ["No Siri Pendaftaran", "", "", "", "", "", "", ""],
-           ["Lokasi", "", "", "", "", "", "", ""],
-           ["Tarikh", "", "", "", "", "", "", ""],
-           ["Nama Pegawai", "", "", "", "", "", "", ""],
-           ["Tandatangan", "", "", "", "", "", "", ""], ]
-           
-  table(data , :column_widths => [100, 60, 60, 60, 60, 60, 60, 60])
-  move_down 5
+
+  table(penem , :column_widths => [60,100, 110,70, 110, 70])
+  end
+  def penem
+  
+  header1 = [['Kuantiti', "No siri Pendaftaran", 'Lokasi', "Tarikh", "Nama Pegawai", "Tandatangan"]]
+  header1 +
+  @asset.asset_placements.map do |asset_placement|
+    [ "#{asset_placement.quantity}", "#{asset_placement.try(:asset).try(:assetcode)}","#{asset_placement.try(:location).try(:name)}", "#{asset_placement.reg_on}","#{asset_placement.try(:staff).try(:name)}","" ]
+ 
   end
   
+end
+
   def make_table_pemeriksaan
+    move_down 5
     header = [ ["PEMERIKSAAN"]]
     table(header , :column_widths => [520], ) do
     row(0).font_style = :bold
