@@ -27,6 +27,7 @@ Ogma::Application.routes.draw do
       end   
     end
     resources :stationeries
+    resources :asset_defects, as: :defects
   end
 
   namespace :campus do
