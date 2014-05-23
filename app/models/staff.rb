@@ -26,6 +26,8 @@ class Staff < ActiveRecord::Base
   belongs_to        :title,       :class_name => 'Title',       :foreign_key => 'titlecd_id'
   belongs_to        :staffgrade, :class_name => 'Employgrade',  :foreign_key => 'staffgrade_id'
   
+  has_many :asset, :foreign_key => "assignedto_id"
+  
   
   #validates_attachment_size         :photo, :less_than => 500.kilobytes
   #validates_attachment_content_type :photo, :content_type => ['image/jpeg', 'image/png']
