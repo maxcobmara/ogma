@@ -1,5 +1,6 @@
 = search_form_for [:examquestion, @search], url: exam_examquestions_path,  class: "form-inline" do |f|
   %tr.search_row.hidden
+    %td &nbsp;
     %td= f.text_field :subject_name_cont, size: 2, :class => "form-control" 
     %td= f.text_field :topic_name_cont, size: 2, :class => "form-control" 
     %td= f.text_field :questiontype_cont, size: 2, :class => "form-control"

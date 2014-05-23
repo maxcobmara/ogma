@@ -10,8 +10,8 @@ class Exam::ExamquestionsController < ApplicationController
     #@topic_exams = @examquestions.group_by { |t| t.topic_id }
     #-----in case-use these 4 lines-------
 
-    #current_user = User.find(11)    #maslinda 
-    current_user = User.find(72)    #izmohdzaki
+    current_user = User.find(11)    #maslinda 
+    #current_user = User.find(72)    #izmohdzaki
     @position_exist = current_user.staff.position
     if @position_exist  
       @lecturer_programme = current_user.staff.position.unit
@@ -20,24 +20,27 @@ class Exam::ExamquestionsController < ApplicationController
       end
       unless @programme.nil?
         @programme_id = @programme.id
+        @subject_ids_of_programme = Programme.find(@programme_id).descendants.at_depth(2).pluck(:id)
       else
         if @lecturer_programme == 'Commonsubject'
           @programme_id ='1'
         else
           @programme_id='0'
         end
+        @subject_ids_of_programme = Programme.all.at_depth(2).pluck(:id)
       end
-      #@examquestions = Examquestion.search2(@programme_id)                            #listing based on programme
-      #@programme_exams = @examquestions2.group_by {|t| t.subject.root} 
-      @subject_ids_of_programme = Programme.find(@programme_id).descendants.at_depth(2).pluck(:id)
+      #@examquestions = Examquestion.search2(@programme_id)                                 #listing based on programme
+      #@programme_exams = @examquestions.group_by {|t| t.subject.root} 
+      
     end 
  
     @search = Examquestion.search(params[:q])
-    @examquestions3 = @search.result                                                    #result of search   
+    @examquestions3 = @search.result                                                         #result of search   
     #Examquestion.search(:subject_id_in=>[75,1366])
     #@examquestions = @examquestions3.where(:subject_id => [75,1366])  
     @examquestions_prog = @examquestions3.where(:subject_id => @subject_ids_of_programme)    #select for current programme (of logged-in user)
     @examquestions = @examquestions_prog.order(subject_id: :asc).page(params[:page]||1)
+    @programme_exams = @examquestions.group_by {|t| t.subject.root} 
     
     respond_to do |format|
       format.html # index.html.erb

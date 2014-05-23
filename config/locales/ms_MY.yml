@@ -417,6 +417,7 @@ ms_MY:
     examquestion: 
       title: Penyediaan Soalan
       questiontype: Jenis
+      programme_id: Program
       subject_id: Subjek
       topic_id: Topik
       question: Soalan Peperiksaan
@@ -426,7 +427,7 @@ ms_MY:
       difficulty: Tahap Kesukaran
       qstatus: Status
       creator_id: Disediakan Oleh
-
+      total_questions: Jumlah Soalan
   date:
       formats:
         default: "%d %B %Y"

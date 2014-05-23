@@ -427,6 +427,7 @@ en:
     examquestion: 
       title: Examination Development
       questiontype: Type
+      programme_id: Programme
       subject_id: Subject
       topic_id: Topic
       question: Question
@@ -436,6 +437,7 @@ en:
       difficulty: Difficulty
       qstatus: Status
       creator_id: Created By
+      total_questions: Total Questions
   date:
     formats:
       default: "%d-%b-%Y"
