@@ -35,13 +35,13 @@ class Kewpa3Pdf < Prawn::Document
   def make_tables1
     
     data = [ [ "Kod Nasional", " "], [ "Kategori ", "#{@asset.try(:assetcategoryies).try(:description)}"], [ "Sub Kategori", "#{@asset.subcategory} "] ]
-       table(data, :column_widths => [130, 390])
+       table(data, :column_widths => [130, 390], :cell_style => { :size => 10})
           
        data1 = [ ["Jenis", "#{@asset.typename}", "Harga Perolehan Asal", @view.currency(@asset.purchaseprice.to_f)], 
-                ["Kuantiti", "#{@asset.quantity}", "Tarikh Diterima", "#{@asset.receiveddate}"],
-                ["Unit Pengukuran", "#{@asset.quantity_type}", "No Pesanan Rasmi Kerajaan & Tarikh", "#{@asset.orderno} #{@asset.purchasedate}"],
+                ["Kuantiti", "#{@asset.quantity}", "Tarikh Diterima", "#{@asset.receiveddate.strftime("%d/%m/%y")}"],
+                ["Unit Pengukuran", "#{@asset.quantity_type}", "No Pesanan Rasmi Kerajaan & Tarikh", "#{@asset.orderno} #{@asset.purchasedate.strftime("%d/%m/%y")}"],
             ["Tempoh Jaminan", "#{@asset.warranty_length} ", "",""] ]
-         table(data1, :column_widths => [130, 150, 120, 120]) 
+         table(data1, :column_widths => [130, 150, 120, 120], :cell_style => { :size => 10}) 
          
          
 
@@ -53,7 +53,7 @@ class Kewpa3Pdf < Prawn::Document
                   ["-#{@asset.supplier_id}", "Tarikh   :" ],
                   ["", "Cop      :" ],
                 ]
-         table(data2, :column_widths => [180, 340]) do
+         table(data2, :column_widths => [180, 340], :cell_style => { :size => 9}) do
          row(0).borders = [:top, :left, :right]
          row(1).borders = [:left, :right]
          row(2).borders = [:left, :right]
@@ -70,7 +70,7 @@ class Kewpa3Pdf < Prawn::Document
   
   def make_table_penempatan
     header = [ ["PENEMPATAN"]]
-    table(header , :column_widths => [520], ) do
+    table(header , :column_widths => [520]) do
     row(0).font_style = :bold
     row(0).align = :center
     row(0).background_color = 'FFE34D'
@@ -78,14 +78,16 @@ class Kewpa3Pdf < Prawn::Document
   end
   
 
-  table(penem , :column_widths => [60,100, 110,70, 110, 70])
+  table(penem , :column_widths => [60,100, 110,70, 110, 70], :cell_style => { :size => 8}) do
+    
+  end
   end
   def penem
   
   header1 = [['Kuantiti', "No siri Pendaftaran", 'Lokasi', "Tarikh", "Nama Pegawai", "Tandatangan"]]
   header1 +
   @asset.asset_placements.map do |asset_placement|
-    [ "#{asset_placement.quantity}", "#{asset_placement.try(:asset).try(:assetcode)}","#{asset_placement.try(:location).try(:name)}", "#{asset_placement.reg_on}","#{asset_placement.try(:staff).try(:name)}","" ]
+    [ "#{asset_placement.quantity}", "#{asset_placement.try(:asset).try(:assetcode)}","#{asset_placement.try(:location).try(:name)}", "#{asset_placement.reg_on.strftime("%d/%m/%y")}","#{asset_placement.try(:staff).try(:name)}","" ]
  
   end
   
@@ -94,7 +96,7 @@ end
   def make_table_pemeriksaan
     move_down 5
     header = [ ["PEMERIKSAAN"]]
-    table(header , :column_widths => [520], ) do
+    table(header , :column_widths => [520]) do
     row(0).font_style = :bold
     row(0).align = :center
     row(0).background_color = 'FFE34D'
@@ -106,7 +108,7 @@ end
            ["Nama Pemeriksa", "", "", "", "", "", "", ""],
            ["Tandatangan", "", "", "", "", "", "", ""] ]
            
-  table(data , :column_widths => [100, 60, 60, 60, 60, 60, 60, 60])
+  table(data , :column_widths => [100, 60, 60, 60, 60, 60, 60, 60], :cell_style => { :size => 9})
   move_down 5
   end
   
@@ -123,7 +125,7 @@ end
            ["Date", "", "", "", "", ""],
            ["Date", "", "", "", "", ""] ]
            
-  table(data , :column_widths => [88, 92, 92, 88, 88])
+  table(data , :column_widths => [88, 92, 92, 88, 88, 72], :cell_style => { :size => 9})
   end
 end
 
