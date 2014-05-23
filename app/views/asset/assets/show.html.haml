@@ -42,9 +42,9 @@
       %dt= t 'asset.serial_no'
       %dd= @asset.serialno
       %dt= t 'asset.located_at'
-      %dd= @asset.try(:locations).try(:code)
+      %dd= @asset.location.name
       %dt= t 'asset.assigned_to'
-      %dd= @asset.try(:staffs).try(:name)
+      %dd= @asset.staff.name
       %dt= t 'asset.status'
       %dd= @asset.status
       %dt= t 'asset.other_information'
@@ -55,11 +55,11 @@
       %dt= t 'asset.orderno'
       %dd= @asset.orderno
       %dt= t 'asset.purchaseprice'
-      %dd= @asset.purchaseprice
+      %dd= currency(@asset.purchaseprice.to_f)
       %dt= t 'asset.purchasedate'
-      %dd= @asset.purchasedate
+      %dd= @asset.purchasedate.strftime("%d/%m/%y")
       %dt= t 'asset.receiveddate'
-      %dd= @asset.receiveddate
+      %dd= @asset.receiveddate.strftime("%d/%m/%y")
       %dt= t 'asset.receivedby'
       %dd= @asset.receiver_id
       %dt= t 'asset.suppliedby'
@@ -75,9 +75,9 @@
       %tbody
         - for asset_placement in @asset.asset_placements
           %tr
-            %td= check_kin {asset_placement.location_id} 
-            %td= asset_placement.staff_id
-            %td= asset_placement.reg_on
+            %td= check_kin {asset_placement.location.name} 
+            %td= asset_placement.staff.name
+            %td= asset_placement.reg_on.strftime("%d/%m/%y")
 
 
   - if @asset.is_maintainable?
