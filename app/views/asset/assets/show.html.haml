@@ -55,11 +55,11 @@
       %dt= t 'asset.orderno'
       %dd= @asset.orderno
       %dt= t 'asset.purchaseprice'
-      %dd= @asset.purchaseprice
+      %dd= currency(@asset.purchaseprice.to_f)
       %dt= t 'asset.purchasedate'
-      %dd= @asset.purchasedate
+      %dd= @asset.purchasedate.strftime("%d/%m/%y")
       %dt= t 'asset.receiveddate'
-      %dd= @asset.receiveddate
+      %dd= @asset.receiveddate.strftime("%d/%m/%y")
       %dt= t 'asset.receivedby'
       %dd= @asset.receiver_id
       %dt= t 'asset.suppliedby'
@@ -77,7 +77,7 @@
           %tr
             %td= check_kin {asset_placement.location.name} 
             %td= asset_placement.staff.name
-            %td= asset_placement.reg_on
+            %td= asset_placement.reg_on.strftime("%d/%m/%y")
 
 
   - if @asset.is_maintainable?
