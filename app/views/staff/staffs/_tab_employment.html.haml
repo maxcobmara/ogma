@@ -30,11 +30,11 @@
     	</tr>
     	<tr>
     		<td class="leftcol"><label for="position_id"><%= t 'staff.position_id' %> :</label></td>
-    		<td><%=h @staff.position.blank? ? "-" : @staff.position.name %></td>
+    		<td><%#=h @staff.position.blank? ? "-" : @staff.position.name %></td>
     	</tr>
     	<tr>
     		<td class="leftcol"><label for="Reports To"><%= t 'staff.reports_to' %> :</label></td>
-    		<td><%=h @staff.try(:position).try(:parent).try(:name) %> - <%=h @staff.try(:position).try(:parent).try(:staff).try(:name)%></td>
+    		<td><%#=h @staff.try(:position).try(:parent).try(:name) %> - <%=h @staff.try(:position).try(:parent).try(:staff).try(:name)%></td>
     	</tr>
     	<tr>
     		<td class="leftcol"><label for="employstatus"><%= t 'staff.employstatus' %> :</label></td>
