@@ -42,9 +42,9 @@
       %dt= t 'asset.serial_no'
       %dd= @asset.serialno
       %dt= t 'asset.located_at'
-      %dd= @asset.location_id
+      %dd= @asset.try(:locations).try(:code)
       %dt= t 'asset.assigned_to'
-      %dd= @asset.assignedto_id
+      %dd= @asset.try(:staffs).try(:name)
       %dt= t 'asset.status'
       %dd= @asset.status
       %dt= t 'asset.other_information'
@@ -88,10 +88,9 @@
   .col-md-4.col-md-offset-2
     %hr
     .form-actions
-      = link_to content_tag(:i, "", :class => "fa fa-file "), kewpa3_asset_asset_path(@asset, format: "pdf"),
-                  {class: "btn btn-default", "data-toggle" => "tooltip", title: "KEW.PA 3 PDF"}
       = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), asset_assets_path, :class => 'btn btn-default'
       = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('.edit', :default => t("helpers.links.edit")), edit_asset_asset_path(@asset), :class => 'btn btn-primary'
+      = render :partial => 'action_menu', :locals => { :asset_assets => :asset_assets }
       = link_to content_tag(:i, "", :class => "fa fa-trash-o icon-white") + " " + t('.destroy', :default => t("helpers.links.destroy")), |
         asset_asset_path(@asset),                                                                                                    |
         :method => 'delete',                                                                                                           |
