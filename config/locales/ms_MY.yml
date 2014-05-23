@@ -6,6 +6,7 @@ ms_MY:
       asset: Aset
       student: Pelajar
       location: Lokasi
+      examquestion: Soalan Peperiksaan
     attributes:
       location:
         combo_code: Kod Lokasi
@@ -53,6 +54,7 @@ ms_MY:
     create: Cipta
     created: " telah berjaya disimpan."
     updated: " telah berjaya dikemaskini."
+    download_excel: Muatturun Fail Excel
     
   errors:
 
@@ -409,6 +411,21 @@ ms_MY:
   course:
     title: Kursus
     name: Nama Programme
+
+  exam:
+    title: Peperiksaan
+    examquestion: 
+      title: Penyediaan Soalan
+      questiontype: Jenis
+      subject_id: Subjek
+      topic_id: Topik
+      question: Soalan Peperiksaan
+      answer: Jawapan
+      marks: Markah
+      category: Kategori
+      difficulty: Tahap Kesukaran
+      qstatus: Status
+      creator_id: Disediakan Oleh
 
   date:
       formats:

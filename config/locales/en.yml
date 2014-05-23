@@ -26,10 +26,11 @@ en:
       staff: Staff
       asset: Asset
       student: Student
-      location: Lokasi
+      location: Location
+      examquestion: Examquestion
     attributes:
       location:
-        combo_code: Kod Lokasi
+        combo_code: Location Code
     errors:
         template:
           body: "There were problems with the following fields:"
@@ -77,7 +78,7 @@ en:
     create: Create
     created: " was successfully created."
     updated: " was successfully updated."
-    
+    download_excel: Download Excel
     
   errors:
   
@@ -421,6 +422,20 @@ en:
     title: Course
     name: Programme Name
 
+  exam:
+    title: Examination
+    examquestion: 
+      title: Examination Development
+      questiontype: Type
+      subject_id: Subject
+      topic_id: Topic
+      question: Question
+      answer: Answer
+      marks: Marks
+      category: Category
+      difficulty: Difficulty
+      qstatus: Status
+      creator_id: Created By
   date:
     formats:
       default: "%d-%b-%Y"
