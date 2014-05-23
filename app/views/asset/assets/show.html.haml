@@ -85,12 +85,14 @@
       Maintenance
       
 .row
-  .col-md-4.col-md-offset-2
+  .col-md-6.col-md-offset-2
     %hr
     .form-actions
       = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), asset_assets_path, :class => 'btn btn-default'
       = link_to content_tag(:i, "", :class => "fa fa-file ")+ " KEW PA.3", kewpa3_asset_asset_path(@asset, format: "pdf"),
         {class: "btn btn-default", "data-toggle" => "tooltip", title: "KEW.PA 3 PDF"}
+      = link_to content_tag(:i, "", :class => "fa fa-bug ")+ " Defect", '#',
+        {class: "btn btn-default", "data-toggle" => "tooltip", title: "Report Defect"}
       = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('.edit', :default => t("helpers.links.edit")), edit_asset_asset_path(@asset), :class => 'btn btn-primary'
       = link_to content_tag(:i, "", :class => "fa fa-trash-o icon-white") + " " + t('.destroy', :default => t("helpers.links.destroy")), |
         asset_asset_path(@asset),                                                                                                    |

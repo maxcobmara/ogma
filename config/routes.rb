@@ -6,6 +6,7 @@ Ogma::Application.routes.draw do
         get :borang_maklumat_staff
       end
     end
+    resources :positions
   end
 
   resources :ptbudgets

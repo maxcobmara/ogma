@@ -23,7 +23,7 @@ gem 'turbolinks', '~> 1.1.1'  # Turbolinks makes following links in your web app
 gem "haml", "~> 4.0.3"
 gem "kaminari", "~> 0.15.1"
 gem "bootstrap-kaminari-views", "~> 0.0.3"
-gem "font-awesome-rails", "~> 4.0.3.1"
+gem 'font-awesome-rails', '~> 4.1.0.0'
 gem "bootstrap-datepicker-rails", "~> 1.3.0.1"
 gem "bootstrap-select-rails", "~> 1.3.0.1"
 gem "bootstrap-switch-rails", "~> 2.0.2"

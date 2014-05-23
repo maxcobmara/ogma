@@ -2,7 +2,7 @@ class Staff < ActiveRecord::Base
   
   paginates_per 13
   
-  has_one           :position
+  has_many          :positions
   has_many          :tenants
   
   
