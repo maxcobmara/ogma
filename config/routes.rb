@@ -91,6 +91,17 @@ Ogma::Application.routes.draw do
     end
   end
   
+  namespace :exam do
+    resources :examquestions
+    resources :examsubquestions
+    resources :answerchoices
+    resources :examanswers
+    resources :shortessays
+    resources :booleanchoices
+    resources :booleananswers
+    resources :exams
+  end
+  
   devise_for :users
   resources :users
   root  'static_pages#home'

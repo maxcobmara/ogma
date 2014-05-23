@@ -1,0 +1,79 @@
+- model_class = Examquestion
+.page-header
+  %h1= t('exam.examquestion.title')#, :default => model_class.model_name.human.pluralize
+  
+.navbar.navbar-inverse{role: "navigation", style: "padding-right:40px;"}
+  %ul.nav.navbar-nav
+    %li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'actions.new'))), '#'
+    %li= link_to (t 'actions.download_excel'), exam_examquestions_path(format: "xls"), class: 'bogus'
+  %ul.nav.navbar-nav.navbar-right
+    %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "toga"
+    %li.toga= link_to content_tag(:li, fa_icon("print", text: (t 'actions.print'))), "#", class: 'bogus'  
+	
+.row
+
+  %table.table-striped.table-hover.ogma
+    %thead
+      %tr
+        %th &nbsp;
+        %th= sort_link(@search, :subject_id, (t 'exam.examquestion.subject_id'))
+        %th= sort_link(@search, :topic_id, (t 'exam.examquestion.topic_id'))
+        %th= sort_link(@search, :questiontype, (t 'exam.examquestion.questiontype'))
+        %th= sort_link(@search, :question, (t 'exam.examquestion.question'))
+        %th= sort_link(@search, :answer, (t 'exam.examquestion.answer'))
+        %th= sort_link(@search, :marks, (t 'exam.examquestion.marks'))
+        %th= sort_link(@search, :category, (t 'exam.examquestion.category'))
+        %th= sort_link(@search, :difficulty, (t 'exam.examquestion.difficulty'))
+        %th= sort_link(@search, :qstatus, (t 'exam.examquestion.qstatus'))
+        %th= sort_link(@search, :creator_id, (t 'exam.examquestion.creator_id'))
+        %th.action_menu
+    %tbody
+      = render "index_search"
+      - @programme_exams.each do |prog, examquestions|
+        %tr
+          %td.group{:colspan => "12"}
+            %span
+            - unless prog.blank?
+              = (t 'exam.examquestion.programme_id')+' : '+Programme.find(prog.id).name
+				
+        - examquestions.group_by{|t|t.subject_details}.sort.each do |subject_details, examquestions| 
+          %tr
+            %td.group{:colspan => "9"}
+              %span= (t 'exam.examquestion.subject_id')+' : '+subject_details
+            %td.group{:colspan => "3"}
+              %span= (t 'exam.examquestion.total_questions')+' = '+examquestions.count.to_s
+			  
+          - @groupbytopic=examquestions.group_by{|x|x.topic_id} 
+          - @groupbytopic.sort.each do |topic, allquestions|
+          - no=0		
+            %tr
+              %td.group{:colspan => "7"} 
+                %span= (t 'exam.examquestion.topic_id')+' : '+Programme.find(topic).subject_list #topic details    
+              %td.group{:colspan => "2"}
+                %span= Programme.find(topic).parent.code.to_s+' | '+topic.to_s
+              %td.group{:colspan => "3"} 
+                %span= (t 'exam.examquestion.total_questions')+' = '+allquestions.count.to_s
+			
+
+            - questions=allquestions.group_by{|t|t.questiontype}
+            - questions.each do |questiontype,questionbytype| 
+            - no+=1
+              - questionbytype.each do |question|
+                %tr
+                  %td= no
+                  %td= question.subject_details
+                  %td= question.topic.name
+                  %td= question.questiontype
+                  %td= simple_format(question.question)
+                  %td= question.answer
+                  %td= question.marks
+                  %td= question.category
+                  %td= question.render_difficulty
+                  %td= question.qstatus
+                  %td= question.creator_details
+                  %td= link_to content_tag(:li, fa_icon("", text: (t 'actions.show'))), exam_examquestion_path(question)
+        
+    .right{style:"padding:0 30px; margin:0;"}= paginate @examquestions, :theme => 'twitter-bootstrap-3'
+
+                  
+  

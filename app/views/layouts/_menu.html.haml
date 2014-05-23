@@ -156,12 +156,12 @@
           %li= link_to content_tag(:i, "", :class => "icon-numb") + "Personalised Time Table", '#'
 
     %li.icon.icon-left
-      = link_to content_tag(:i, "", :class => "icon-numb") + "Exams", '#'
+      = link_to content_tag(:i, "", :class => "icon-numb") + (t "exam.title"), '#'
       .mp-level
         %h2.icon Exams
         %a.mp-back{:href => "#"} Back
         %ul
-          %li= link_to content_tag(:i, "", :class => "icon-numb") + "Examination Development", '#'
+          %li= link_to content_tag(:i, "", :class => "icon-numb") + (t "exam.examquestion.title"), exam_examquestions_path
           %li= link_to content_tag(:i, "", :class => "icon-numb") + "Examination Maker", '#'
           %li= link_to content_tag(:i, "", :class => "icon-numb") + "Examination Management", '#'
           %li= link_to content_tag(:i, "", :class => "icon-numb") + "Feedback/Course Evaluation", '#'

@@ -1,6 +1,10 @@
 class Programme < ActiveRecord::Base
   has_ancestry :cache_depth => true
   
+  def subject_list
+      "#{code}" + " " + "#{name}"   
+  end
+  
 end
 
 # == Schema Information

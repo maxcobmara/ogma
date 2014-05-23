@@ -46,7 +46,7 @@ class Staff < ActiveRecord::Base
                                
   
 
-  
+    has_many :users
   #--------------------Declerations----------------------------------------------------
     def age
       Date.today.year - cobirthdt.year unless cobirthdt == nil
