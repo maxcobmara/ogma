@@ -89,8 +89,9 @@
     %hr
     .form-actions
       = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), asset_assets_path, :class => 'btn btn-default'
+      = link_to content_tag(:i, "", :class => "fa fa-file ")+ " KEW PA.3", kewpa3_asset_asset_path(@asset, format: "pdf"),
+        {class: "btn btn-default", "data-toggle" => "tooltip", title: "KEW.PA 3 PDF"}
       = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('.edit', :default => t("helpers.links.edit")), edit_asset_asset_path(@asset), :class => 'btn btn-primary'
-      = render :partial => 'action_menu', :locals => { :asset_assets => :asset_assets }
       = link_to content_tag(:i, "", :class => "fa fa-trash-o icon-white") + " " + t('.destroy', :default => t("helpers.links.destroy")), |
         asset_asset_path(@asset),                                                                                                    |
         :method => 'delete',                                                                                                           |
