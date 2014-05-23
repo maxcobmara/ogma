@@ -42,9 +42,9 @@
       %dt= t 'asset.serial_no'
       %dd= @asset.serialno
       %dt= t 'asset.located_at'
-      %dd= @asset.try(:locations).try(:code)
+      %dd= @asset.location.name
       %dt= t 'asset.assigned_to'
-      %dd= @asset.try(:staffs).try(:name)
+      %dd= @asset.staff.name
       %dt= t 'asset.status'
       %dd= @asset.status
       %dt= t 'asset.other_information'
@@ -75,8 +75,8 @@
       %tbody
         - for asset_placement in @asset.asset_placements
           %tr
-            %td= check_kin {asset_placement.location_id} 
-            %td= asset_placement.staff_id
+            %td= check_kin {asset_placement.location.name} 
+            %td= asset_placement.staff.name
             %td= asset_placement.reg_on
 
 

@@ -16,6 +16,7 @@ class Location < ActiveRecord::Base
   accepts_nested_attributes_for :damages, :allow_destroy => true, reject_if: proc { |damages| damages[:description].blank?}
   has_many :asset_placements
   has_many :assets, :through => :asset_placements
+  has_many :asset, :foreign_key => "location_id"
   
   
   def staff_name
