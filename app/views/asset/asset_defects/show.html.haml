@@ -6,7 +6,8 @@
 %ul.nav.nav-tabs
   %li.active= link_to (t "asset.details"), "#details",     "data-toggle" => "tab"
   %li= link_to (t "asset.defect.process"), "#process",     "data-toggle" => "tab"
-  %li= link_to (t "asset.purchase"),       "#purchase",    "data-toggle" => "tab"
+  - unless @defective.decision
+    %li= link_to (t "asset.defect.decision"), "#decision",    "data-toggle" => "tab"
   %li= link_to (t "asset.placement"),      "#placement",   "data-toggle" => "tab"
 
   
@@ -37,14 +38,10 @@
       %dt= t 'asset.defect.reported_by'
       %dd= @defective.is_processed? ? "Yes, by  " + @defective.processor.name.to_s + " on  " + (l(@defective.processed_on)).to_s : "No"
   
-  
-  
-  
-  
-  
-  
-  
-  
+  #decision.tab-pane.fade.in
+    %dl.dl-horizontal
+      %dt= t 'asset.defect.approval'
+      %dd= @defective.decision? ? "Yes, by  " + @asset_defect.confimer.name.to_s + " on  " + (l(@asset_defect.decision_on)).to_s : "No"
   
   
   

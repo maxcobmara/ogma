@@ -2,12 +2,17 @@ class Asset::AssetDefectsController < ApplicationController
   before_action :set_defective, only: [:show, :edit, :update, :destroy]
   
   def index
-    @search = AssetDefect.search(params[:q])
+    @search = AssetDefect.where.not(decision: true).search(params[:q])
     @assets = @search.result
     @defective = @assets.order(created_at: :desc).page(params[:page]||1)
   end
   
   def show
+  end
+  
+  def new
+    @defective = @asset.asset_defects.new(params[:asset_defect])
+    @campaign.start_date = Time.now
   end
   
   
