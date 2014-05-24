@@ -15,3 +15,17 @@ class Stationery < ActiveRecord::Base
     a - b
   end
 end
+
+# == Schema Information
+#
+# Table name: stationeries
+#
+#  category    :string(255)
+#  code        :string(255)
+#  created_at  :datetime
+#  id          :integer          not null, primary key
+#  maxquantity :decimal(, )
+#  minquantity :decimal(, )
+#  unittype    :string(255)
+#  updated_at  :datetime
+#

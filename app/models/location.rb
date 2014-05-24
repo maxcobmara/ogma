@@ -111,11 +111,13 @@ end
 #  code           :string(255)
 #  combo_code     :string(255)
 #  created_at     :datetime
+#  damaged        :boolean
 #  id             :integer          not null, primary key
 #  lclass         :integer
 #  name           :string(255)
 #  occupied       :boolean
 #  staffadmin_id  :integer
+#  status         :string(255)
 #  typename       :integer
 #  updated_at     :datetime
 #

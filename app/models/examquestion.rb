@@ -276,3 +276,47 @@ class Examquestion < ActiveRecord::Base
   end  
     
 end
+
+# == Schema Information
+#
+# Table name: examquestions
+#
+#  accuracy_component    :boolean
+#  accuracy_construct    :boolean
+#  accuracy_topic        :boolean
+#  answer                :text
+#  approvedt             :date
+#  approver_id           :integer
+#  bplreserve            :boolean
+#  bplsent               :boolean
+#  bplsentdt             :date
+#  category              :string(255)
+#  conform_curriculum    :boolean
+#  conform_opportunity   :boolean
+#  conform_specification :boolean
+#  construct             :string(255)
+#  created_at            :datetime
+#  createdt              :date
+#  creator_id            :integer
+#  diagram_content_type  :string(255)
+#  diagram_file_name     :string(255)
+#  diagram_file_size     :integer
+#  diagram_updated_at    :datetime
+#  difficulty            :string(255)
+#  editdt                :date
+#  editor_id             :integer
+#  fit_difficulty        :boolean
+#  fit_fairness          :boolean
+#  fit_important         :boolean
+#  id                    :integer          not null, primary key
+#  marks                 :decimal(, )
+#  programme_id          :integer
+#  qkeyword              :string(255)
+#  qstatus               :string(255)
+#  question              :text
+#  questiontype          :string(255)
+#  statusremark          :text
+#  subject_id            :integer
+#  topic_id              :integer
+#  updated_at            :datetime
+#

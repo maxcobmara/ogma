@@ -14,3 +14,16 @@ class Spmresult < ActiveRecord::Base
           [ "9G",9 ]
   ]
 end
+
+# == Schema Information
+#
+# Table name: spmresults
+#
+#  created_at    :datetime
+#  grade         :string(255)
+#  id            :integer          not null, primary key
+#  spm_subject   :string(255)
+#  spmsubject_id :integer
+#  student_id    :integer
+#  updated_at    :datetime
+#
