@@ -1,4 +1,4 @@
-class Kewpa2aPdf < Prawn::Document
+class Kewpa2Pdf < Prawn::Document
   def initialize(asset, view)
     super({top_margin: 50, page_size: 'A4', page_layout: :portrait })
     @asset = asset
@@ -20,6 +20,11 @@ class Kewpa2aPdf < Prawn::Document
     make_table_pemeriksaan
     make_table_pelupusan
     penem
+    kewpa2b
+    kewpa2b_make_tables1
+    kewpa2b_make_tables2
+
+
   end
   
   def cop 
@@ -141,7 +146,49 @@ end
            ["Date", "", "", "", "", ""] ]
            
   table(data , :column_widths => [88, 92, 92, 88, 88, 72], :cell_style => { :size => 8})
+  start_new_page
   end
+  
+  
+  def kewpa2b
+
+    font "Times-Roman"
+    text "KEW.PA-2", :align => :right, :size => 14, :style => :bold
+    move_down 10
+    text "DAFTAR HARTA MODAL", :align => :center, :size => 12, :style => :bold
+    move_down 10
+    text "BUTIR BUTIR PENAMBAHAN, PENGGANTIAN DAN NAIKTARAF", :align => :center, :size => 12
+    move_down 10
+    text "Bahagian A ", :align => :center, :size => 12, :style => :bold
+    move_down 5
+    
+  end
+  
+  def kewpa2b_make_tables1
+    
+    
+    header = [ ["Bil ", "Tarikh", "Butiran", "Tempoh Jaminan", "kos (RM)", " Nama & Tandatangan"]]
+    table(header , :column_widths => [30, 90, 100, 100, 100, 100], :cell_style => { :size => 10}) do
+    row(0).font_style = :bold
+    row(0).align = :center
+    row(0).background_color = 'FFE34D'
+  end
+ end   
+  
+ def kewpa2b_make_tables2
+   table(kewpa2b_line_item_rows, :column_widths => [30, 90, 100, 100, 100, 100], :cell_style => { :size => 10})
+ end
+ 
+ def kewpa2b_line_item_rows
+   counter = counter || 0
+
+   @asset.maints.map do |maint|
+     ["#{counter += 1}", "#{maint.created_at}", "#{maint.details} ", "#{maint.workorderno} ",
+       "#{maint.maintcost} ",""]
+   end
+ end 
+  
+  
 end
 
   
