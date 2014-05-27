@@ -18,12 +18,13 @@ class Kewpa13Pdf < Prawn::Document
     table line_item_rows do
       row(0).font_style = :bold
       row(0).background_color = 'FFE34D'
-      columns(0).width = 30
+      columns(0).width = 25
       columns(1).borders = [:top, :left, :bottom]
-      columns(1).width = 133
+      columns(1).width = 130
       columns(3).align = :center
       columns(4).align = :right
-      columns(4).width = 65
+      columns(4).width = 60
+      columns(5).width = 60
       self.row_colors = ["FEFEFE", "FFFFFF"]
       self.header = true
       self.cell_style = { size: 9 }
@@ -34,10 +35,10 @@ class Kewpa13Pdf < Prawn::Document
   
   def line_item_rows
     counter = counter || 0
-    header = [[ 'Bil', 'Keterangan Aset', 'Jenis / Jenama / Model', 'Lokasi Aset', 'Harga Perolehan']]
+    header = [[ 'Bil', 'Keterangan Aset', 'Jenis / Jenama / Model', 'Lokasi Aset', 'Harga Perolehan', 'Catatan']]
     header +
       @assets.map do |asset|
-      ["#{counter += 1}", "#{asset.assetcode}", "#{asset.typename} #{asset.name} #{asset.modelname}", "#{asset.asset_placements.last}", @view.currency(asset.purchaseprice.to_f)]
+      ["#{counter += 1}", "#{asset.assetcode}", "#{asset.typename} #{asset.name} #{asset.modelname}", "#{asset.try(:location).try(:name)}", @view.currency(asset.purchaseprice.to_f), "#{asset.try(:maint).try(:details)}" ]
     end
   end
 end
