@@ -3,6 +3,7 @@ class Kewpa2Pdf < Prawn::Document
     super({top_margin: 50, page_size: 'A4', page_layout: :portrait })
     @asset = asset
     @view = view
+ 
 
     font "Times-Roman"
     text "KEW.PA-2", :align => :right, :size => 14, :style => :bold
@@ -21,7 +22,6 @@ class Kewpa2Pdf < Prawn::Document
     make_table_pelupusan
     penem
     kewpa2b
-    kewpa2b_make_tables1
     kewpa2b_make_tables2
 
 
@@ -159,32 +159,28 @@ end
     move_down 10
     text "BUTIR BUTIR PENAMBAHAN, PENGGANTIAN DAN NAIKTARAF", :align => :center, :size => 12
     move_down 10
-    text "Bahagian A ", :align => :center, :size => 12, :style => :bold
+    text "Bahagian B ", :align => :center, :size => 12, :style => :bold
     move_down 5
     
   end
   
-  def kewpa2b_make_tables1
-    
-    
-    header = [ ["Bil ", "Tarikh", "Butiran", "Tempoh Jaminan", "kos (RM)", " Nama & Tandatangan"]]
-    table(header , :column_widths => [30, 90, 100, 100, 100, 100], :cell_style => { :size => 10}) do
+
+  
+ def kewpa2b_make_tables2
+   table(kewpa2b_line_item_rows, :column_widths => [30, 90, 100, 100, 100, 100], :cell_style => { :size => 10})do
     row(0).font_style = :bold
     row(0).align = :center
     row(0).background_color = 'FFE34D'
   end
- end   
-  
- def kewpa2b_make_tables2
-   table(kewpa2b_line_item_rows, :column_widths => [30, 90, 100, 100, 100, 100], :cell_style => { :size => 10})
  end
  
  def kewpa2b_line_item_rows
    counter = counter || 0
-
+   header1 = [["Bil ", "Tarikh", "Butiran", "Tempoh Jaminan", "kos (RM)", " Nama & Tandatangan"]]
+   header1 +
    @asset.maints.map do |maint|
      ["#{counter += 1}", "#{maint.created_at}", "#{maint.details} ", "#{maint.workorderno} ",
-       "#{maint.maintcost} ",""]
+       @view.currency(maint.maintcost.to_f),"#{maint.try(:asset).try(:staff).try(:name)}"]
    end
  end 
   
