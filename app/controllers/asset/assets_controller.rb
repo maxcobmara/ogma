@@ -63,31 +63,19 @@ class Asset::AssetsController < ApplicationController
     end
   end  
   
-  def kewpa2a
+  def kewpa2
     
      @asset = Asset.find(params[:id])
     respond_to do |format|
       format.pdf do
-        pdf = Kewpa2aPdf.new(@asset, view_context)
-        send_data pdf.render, filename: "kewpa2a-{Date.today}",
+        pdf = Kewpa2Pdf.new(@asset, view_context)
+        send_data pdf.render, filename: "kewpa2-{Date.today}",
                               type: "application/pdf",
                               disposition: "inline"
       end
     end
   end  
   
-  def kewpa2b
-    
-     @asset = Asset.find(params[:id])
-    respond_to do |format|
-      format.pdf do
-        pdf = Kewpa2bPdf.new(@asset, view_context)
-        send_data pdf.render, filename: "kewpa2b-{Date.today}",
-                              type: "application/pdf",
-                              disposition: "inline"
-      end
-    end
-  end 
   
   
   
