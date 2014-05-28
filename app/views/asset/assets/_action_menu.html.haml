@@ -4,7 +4,9 @@
    .span.caret
   %ul.dropdown-menu.pull-right.action_menu
    %li= link_to content_tag(:i, "", :class => "fa fa-file "), kewpa2_asset_asset_path(@asset, format: "pdf"),
-                  {class: "btn btn-default", "data-toggle" => "tooltip", title: "KEW.PA 2a PDF"}
+                  {class: "btn btn-default", "data-toggle" => "tooltip", title: "KEW.PA 2 PDF"}
+   %li= link_to content_tag(:i, "", :class => "fa fa-file "), kewpa14_asset_asset_path(@asset, format: "pdf"),
+                  {class: "btn btn-default", "data-toggle" => "tooltip", title: "KEW.PA 14 PDF"}
 		  
 
 
