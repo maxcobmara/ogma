@@ -27,6 +27,10 @@ body {}
 section {overflow: auto;}
 textarea {resize: vertical;}
 
+textarea#myNicEditor, textarea#examquestion_shortessays_attributes_0_subanswer, textarea#examquestion_shortessays_attributes_1_subanswer, textarea#examquestion_shortessays_attributes_2_subanswer {
+	width:470%;
+	height:100px;
+}
 
 .container {
 	position: relative;
@@ -282,4 +286,8 @@ span.i {font-style:normal !important;}
 .overdue, .overdue a {background-color:#FAFAFA; font-weight:bold; color:red;}
 .full_width{width:50%;}
 .tab-content {margin-bottom: 25px;}
+
+//for show_checklist (editing examquestion)
+.showform#subtable table {width: 100%; padding: 0; margin: 0;}
+
 

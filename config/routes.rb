@@ -86,7 +86,12 @@ Ogma::Application.routes.draw do
   end
   
   namespace :exam do
-    resources :examquestions
+    resources :examquestions do
+      collection do
+        get 'update_subjects', to: "examquestions#update_subjects" 
+        get 'update_topics', to: "examquestions#update_topics" 
+      end
+    end  
     resources :examsubquestions
     resources :answerchoices
     resources :examanswers
@@ -95,6 +100,7 @@ Ogma::Application.routes.draw do
     resources :booleananswers
     resources :exams
   end
+
   
   devise_for :users
   resources :users

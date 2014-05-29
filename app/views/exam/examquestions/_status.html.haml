@@ -1,0 +1,8 @@
+.row
+  .col-md-10.col-md-offset-1
+    .col-md-offset-2
+      .form-group
+        .col-sm-2.control-label
+          = f.label :qstatus
+        .col-md-4
+          = f.select :qstatus, options_for_select(@examquestion.status_workflow.collect {|v,i| [v] }, @examquestion.qstatus) 
