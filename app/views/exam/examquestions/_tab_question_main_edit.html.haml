@@ -1,0 +1,31 @@
+.col-md-offset-2
+  .form-group
+    .col-sm-2.control-label
+      = f.label :creator_id
+    .col-md-2
+      = f.collection_select :creator_id, Staff.find(:all, :order => 'name ASC', :conditions => ["id IN (?)", @examquestion.question_creator]), :id, :name, {:selected => @creator, :prompt => t('helpers.prompt.select_creator')}, {class: 'selectpicker', "data-width"=>"300px"}		
+	
+  .form-group
+    .col-sm-2.control-label
+      = f.label :programme_id
+    .col-md-6
+      = f.collection_select :programme_id, @programme_listing, :id, :programme_list, {:selected => @preselect_prog, :prompt => t('helpers.prompt.select_programme')}
+ 
+  .form-group.subject_field
+    .col-sm-2.control-label
+      = f.label :subject_id
+    .col-md-6
+      = f.collection_select :subject_id, @subjects, :id, :subject_list,{:prompt => t('helpers.prompt.select_subject')}
+	  
+  .form-group.topic_field
+    .col-sm-2.control-label
+      = f.label :topic_id
+    .col-md-6
+      = f.collection_select :topic_id, @topics, :id, :subject_list,{:prompt => t('helpers.prompt.select_topic')}
+	  
+	  
+  .form-group
+    .col-sm-2.control-label
+      =f.label :createdt
+    .col-md-3
+      = f.text_field :createdt, class: 'form-control mandatory', 'data-behaviour' => 'datepicker_today'

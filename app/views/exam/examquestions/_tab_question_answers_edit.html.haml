@@ -1,0 +1,119 @@
+.col-md-offset-2
+  .form-group
+    .col-sm-2.control-label
+      = f.label :questiontype
+    .col-md-4
+      = f.select :questiontype, Examquestion::QTYPE, :prompt=> t('helpers.prompt.select_questiontype')
+
+  //main - for all type of question
+  .p#main_question.box
+    .form-group
+      .col-sm-2.control-label
+        = f.label :diagram
+      .col-md-6
+        = f.file_field :diagram 
+    .form-group
+      .col-sm-2.control-label
+        = f.label :question
+      .col-md-6
+        = f.text_area :question, :id => 'myNicEditor'	
+
+  .p#MCQ.box
+    START of MCQ section ----------------------------------------
+    - @type="1"
+    .form-group
+      .col-sm-2.control-label
+        = f.label :answermcq
+      .col-md-6
+        .span_activate{:style => "display:block;"}
+          = render :partial => 'answerchoice_fields', :locals => {:f => f,:type=>@type}
+        .span_div{:style => "width:335px;text-align:right;"}
+          = f.check_box :activate, :id => 'check_activate', :checked=>true
+          Activate
+		  
+        // 1 for mcq & 2 for true/false, to recheck '2 for true/false' may no longer used?
+        = render :partial => 'examanswer_fields', :locals => {:f => f,:type=>@type} 
+
+        //answer field, table : examquestions - start
+        - ans = [["A", "A"],["B","B"],["C","C"],["D","D"]]
+    .form-group
+      .col-sm-2.control-label
+      .col-md-3
+        = f.select :answermcq, ans, :prompt=> t('helpers.prompt.select_mcq_answer')
+    END of MCQ section ----------------------------------------        
+
+  .p#SEQ.box
+    START of SEQ section ----------------------------------------
+    - @count=0
+    .form-group
+      .col-sm-2.control-label 
+        = f.label :subquestions
+      .col-md-10
+        = f.fields_for :shortessays do |builder| 
+          = render 'shortessay_fields', :f => builder,:locals=> { :index => @count} 
+          - @count+=1
+        /= link_to_add_fields image_tag("add.png", :border => 0, :title => 'Add Q'), f, :shortessays  - Add
+    END of SEQ section ----------------------------------------
+
+
+  .p#MEQ.box
+    MEQ section -- no specific requirement at this moment
+
+  .p#ACQ.box
+    ACQ section -- no specific requirement at this moment
+
+  .p#OSCI.box
+    OSCI section -- no specific requirement at this moment
+	
+  .p#OSCII.box
+    OSCII section -- no specific requirement at this moment
+
+  .p#OSCE.box
+    OSCE section -- no specific requirement at this moment
+
+  .p#OSPE.box
+    OSPE section -- no specific requirement at this moment
+
+  .p#VIVA.box
+    VIVA section -- no specific requirement at this moment
+
+  .P#TRUEFALSE.box
+    START of TRUE FALSE section ----------------------------------------
+    .form-group
+      .col-sm-2.control-label
+        %b= t 'exam.examquestion.booleanchoices'
+      .col-md-6
+        = render :partial => 'booleanchoice_fields', :locals => {:f => f}
+    .form-group
+      .col-sm-2.control-label
+        %b= t 'exam.examquestion.booleananswers'
+      .col-md-6
+        = render :partial => 'booleananswer_fields', :locals => {:f => f} 
+    END of TRUE FALSE section ----------------------------------------
+
+  /answer field for other than MCQ & SEQ (pls note TRUE FALSE requires this field)
+  .p#others_answer.box
+    .form-group
+      .col-sm-2.control-label
+        = f.label :answer
+      .col-md-6
+        = f.text_field :answer, :size => "60x7" 	
+	
+  /main_question2 - 'marks' label for all type of question
+  /main_question3 - 'total marks' label for SEQ only
+  .form-group
+    .col-sm-2.control-label
+      .p#main_question2.box
+        = f.label :marks
+      .p#main_question3.box
+        %b= t 'exam.examquestion.marks2'
+    .col-md-6
+      = f.text_field :marks, :size => 12 
+
+  /keyword field for other than MCQ & True/False
+  .p#others_keyword.box
+    .form-group
+      .col-sm-2.control-label
+        = f.label :qkeyword
+      .col-md-6
+        = f.text_area :qkeyword, :size => "60x3" 

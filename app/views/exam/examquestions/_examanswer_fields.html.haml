@@ -1,0 +1,63 @@
+/MCQ Question-start-examanswer for A,B,C,D
+- if @type && @type=="1"
+  A
+  = hidden_field "examquestion[examanswers_attributes][0]",:item, :value => "A" 
+  - unless @examquestion.id.nil? || @examquestion.id.blank?
+    - if (Examanswer.find(:all, :conditions=>['examquestion_id=?',@examquestion.id]).count) > 0 
+      = hidden_field "examquestion[examanswers_attributes][0]",:id, :value => @examquestion.examanswers[0].id
+      = text_field "examquestion[examanswers_attributes][0]",:answer_desc, :size=>60, :value=>@examquestion.examanswers[0].answer_desc 
+    - else 
+      - if @examquestion.questiontype=="MCQ"
+        = text_field "examquestion[examanswers_attributes][0]",:answer_desc, :size=>60
+  - else
+    - if @examquestion.questiontype=="MCQ" && @examquestion.examanswers[0]
+      = text_field "examquestion[examanswers_attributes][0]",:answer_desc, :size=>60, :value=>@examquestion.examanswers[0].answer_desc	
+    - else 
+      = text_field "examquestion[examanswers_attributes][0]",:answer_desc, :size=>60
+  %br
+  B
+  = hidden_field "examquestion[examanswers_attributes][1]",:item, :value => "B" 
+  - unless @examquestion.id.nil? || @examquestion.id.blank?
+    - if (Examanswer.find(:all, :conditions=>['examquestion_id=?',@examquestion.id]).count) > 0 
+      = hidden_field "examquestion[examanswers_attributes][1]",:id, :value => @examquestion.examanswers[1].id
+      = text_field "examquestion[examanswers_attributes][1]",:answer_desc, :size=>60, :value=>@examquestion.examanswers[1].answer_desc 
+    - else 
+      - if @examquestion.questiontype=="MCQ"
+        = text_field "examquestion[examanswers_attributes][1]",:answer_desc, :size=>60
+  - else
+    - if @examquestion.questiontype=="MCQ" && @examquestion.examanswers[1]
+      = text_field "examquestion[examanswers_attributes][1]",:answer_desc, :size=>60, :value=>@examquestion.examanswers[1].answer_desc	
+    - else 
+      = text_field "examquestion[examanswers_attributes][1]",:answer_desc, :size=>60
+  %br
+  C
+  = hidden_field "examquestion[examanswers_attributes][2]",:item, :value => "C" 
+  - unless @examquestion.id.nil? || @examquestion.id.blank?
+    - if (Examanswer.find(:all, :conditions=>['examquestion_id=?',@examquestion.id]).count) > 0 
+      = hidden_field "examquestion[examanswers_attributes][2]",:id, :value => @examquestion.examanswers[2].id
+      = text_field "examquestion[examanswers_attributes][2]",:answer_desc, :size=>60, :value=>@examquestion.examanswers[2].answer_desc 
+    - else 
+      - if @examquestion.questiontype=="MCQ"
+        = text_field "examquestion[examanswers_attributes][2]",:answer_desc, :size=>60
+  - else
+    - if @examquestion.questiontype=="MCQ" && @examquestion.examanswers[2]
+      = text_field "examquestion[examanswers_attributes][2]",:answer_desc, :size=>60, :value=>@examquestion.examanswers[2].answer_desc	
+    - else 
+      = text_field "examquestion[examanswers_attributes][2]",:answer_desc, :size=>60
+  %br
+  D
+  = hidden_field "examquestion[examanswers_attributes][3]",:item, :value => "D" 
+  - unless @examquestion.id.nil? || @examquestion.id.blank?
+    - if (Examanswer.find(:all, :conditions=>['examquestion_id=?',@examquestion.id]).count) > 0 
+      = hidden_field "examquestion[examanswers_attributes][3]",:id, :value => @examquestion.examanswers[3].id
+      = text_field "examquestion[examanswers_attributes][3]",:answer_desc, :size=>60, :value=>@examquestion.examanswers[3].answer_desc 
+    - else 
+      - if @examquestion.questiontype=="MCQ"
+        = text_field "examquestion[examanswers_attributes][3]",:answer_desc, :size=>60
+  - else
+    - if @examquestion.questiontype=="MCQ" && @examquestion.examanswers[3]
+      = text_field "examquestion[examanswers_attributes][3]",:answer_desc, :size=>60, :value=>@examquestion.examanswers[3].answer_desc	
+    - else 
+      = text_field "examquestion[examanswers_attributes][3]",:answer_desc, :size=>60
+- elsif @type && @type=="2"
+//OTHER THAN MCQ?

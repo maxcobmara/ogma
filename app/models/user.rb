@@ -4,7 +4,9 @@ class User < ActiveRecord::Base
   # :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
-   belongs_to :staff      
+         
+  belongs_to :staff   
+  has_and_belongs_to_many :roles   
 end
 
 # == Schema Information

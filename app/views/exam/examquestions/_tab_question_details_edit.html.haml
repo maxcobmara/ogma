@@ -1,0 +1,21 @@
+.col-md-offset-2
+  .form-group
+    .col-sm-2.control-label
+      =f.label :category
+    .col-md-3
+      = f.select :category, Examquestion::QCATEGORY, :prompt => t('helpers.prompt.select_category')
+
+  .form-group
+    .col-sm-2.control-label
+      = f.label :construct
+    .col-md-3
+      = f.text_field :construct, class: 'form-control', :size => 50
+
+  .form-group
+    .col-sm-2.control-label
+      =f.label :difficulty
+    .col-md-4
+      = f.select :difficulty, Examquestion::QLEVEL, :prompt => t('helpers.prompt.select_difficulty')
+
+  
+

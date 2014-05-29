@@ -1,0 +1,5 @@
+$('#examquestion_topic_id').empty();
+$('#examquestion_topic_id').append( $('<option>Select the Topic</option>'));
+<% @topics.each do |topic| %>
+	$('#examquestion_topic_id').append($('<option value="<%= topic.id %>"><%= topic.subject_list %></option>'));
+<% end %>

@@ -48,7 +48,7 @@ class Examquestion < ActiveRecord::Base
   attr_accessor :programme_id #9Apr2013 - rely on subject (root of subject[programme])
   #attr_accessor :question1,:question2,:question3,:question4,:questiona,:questionb,:questionc,:questiond
   
-  before_save :set_nil_if_not_activate, :set_subquestions_if_seq, :set_answer_for_mcq
+  before_save :set_nil_if_not_activate, :set_answer_for_mcq#, :set_subquestions_if_seq
   
   def set_nil_if_not_activate
       if self.id != nil   
@@ -67,13 +67,13 @@ class Examquestion < ActiveRecord::Base
       end
   end
   
-  def set_subquestions_if_seq   
-    if self.id == nil && questiontype=="SEQ" 
-        self.shortessays[0].item = "a"    #new 
-        self.shortessays[1].item = "b" 
-        self.shortessays[2].item = "c"
-    end
-  end
+  #def set_subquestions_if_seq   
+    #if self.id == nil && questiontype=="SEQ" 
+        #self.shortessays[0].item = "a"    #new 
+        #self.shortessays[1].item = "b" 
+        #self.shortessays[2].item = "c"
+    #end
+  #end
   
   def status_workflow
     flow = Array.new
@@ -93,7 +93,10 @@ class Examquestion < ActiveRecord::Base
   end
   
   def question_creator
-    programme = User.current_user.staff.position.unit
+    #programme = User.current_user.staff.position.unit - replace with : 2 lines (below)
+    current_user = User.find(11)  #current_user = User.find(11) - 11-maslinda, 72-izmohdzaki
+    programme = current_user.staff.position.unit 
+    
     programme_name = Programme.roots.map(&:name)
     creator_prog= Staff.find(:all, :joins=>:position, :conditions=>['unit IN(?)', programme_name]).map(&:id)
     if programme_name.include?(programme)
@@ -209,7 +212,7 @@ class Examquestion < ActiveRecord::Base
         [ "Edited", "Edited" ],
         [ "Approved", "Approved" ],
         [ "Reject at College", "Reject at College" ],
-        [ "Sent to KMM", "Sent to KMM" ],
+        [ "Sent to KKM", "Sent to KKM" ],
         [ "Re-Edit", "Re-Edit" ],
         [ "Rejected", "Rejected" ]
    ]
