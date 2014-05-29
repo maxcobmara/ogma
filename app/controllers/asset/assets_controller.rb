@@ -89,6 +89,20 @@ class Asset::AssetsController < ApplicationController
     end
   end  
   
+  def kewpa6
+    
+     @asset = Asset.find(params[:id])
+     @loanable = AssetLoan.find(:all, :conditions => ['asset_id=? AND is_approved!=?',params[:id], false], :order=>'returned_on ASC')
+    respond_to do |format|
+      format.pdf do
+        pdf = Kewpa6Pdf.new(@asset, view_context)
+        send_data pdf.render, filename: "kewpa6-{Date.today}",
+                              type: "application/pdf",
+                              disposition: "inline"
+      end
+    end
+  end 
+  
   
   
   
