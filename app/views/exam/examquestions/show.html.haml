@@ -26,27 +26,10 @@
           %img{:src => "http://placekitten.com/200/300"}/ 
     
     / display creation & status details & frequency of usage
-    .tab-content{style:"padding-top:1em"}
+    .tab-content{style:"padding-top:1em"}    
+      = render 'show_question_main'
       .col-md-8.col-md-offset-1
         %dl.dl-horizontal
-          %dt= t 'exam.examquestion.creator_id', :default => model_class.human_attribute_name(:creator_id) + ":"
-          %dd=h @examquestion.creator_id? ? @examquestion.creator_details : "" 
-		  
-          %dt= t 'exam.examquestion.programme_id', :default => model_class.human_attribute_name(:programme_id) + ":"
-          %dd=h @examquestion.subject_id? ?  @examquestion.subject.root.programme_list : ""  
-  
-          %dt= t 'exam.examquestion.subject_id', :default => model_class.human_attribute_name(:subject_id) + ":"
-          %dd=h @examquestion.subject_id? ? @examquestion.subject_details : ""
-			
-          %dt= t 'exam.examquestion.qstatus' , :default => model_class.human_attribute_name(:qstatus) + ":"
-          %dd
-            %b= t("exam.examquestion.#{@examquestion.qstatus.downcase.split.join.gsub(/-+/,"")}")
-            = t 'exam.examquestion.as_of' 
-            = @examquestion.updated_at.strftime("%d %B %Y, %l:%M:%S %p") unless @examquestion.updated_at.blank?
-
-          %dt= t 'exam.examquestion.created_at' , :default => model_class.human_attribute_name(:created) + ":"
-          %dd=@examquestion.created_at.strftime("%d %B %Y, %l:%M:%S %p") unless @examquestion.created_at.blank?
-   
           - if @examquestion.usage_frequency > 0  
             %dt= t'exam.examquestion.usage_frequency'
             %dd 

@@ -426,6 +426,7 @@ en:
     title: Examination
     examquestion: 
       new_title: New Examquestion
+      edit: Edit Examquestion
       title: Examination Development
       questiontype: Type
       programme_id: Programme
@@ -444,6 +445,7 @@ en:
       createdt: Creation Date
       mandatory: Mandatory
       question_details: Question Details
+      question_details2: Question Criteria
       question_answers: "Question & Answers"
       answermcq: Answer
       qkeyword: Keyword
@@ -465,10 +467,12 @@ en:
       booleanchoices: Boolean Choices
       booleananswers: Boolean Answers
       as_of: as of
+      edit: Edit Exam Question
       new: New
       created: Created
       submitted: Submitted
       edited: Edited
+      editing: Editing
       approved: Approved
       rejectatcollege: Reject At College
       senttokkm: Sent to KKM
@@ -480,11 +484,24 @@ en:
       approval_bpl_details: "Approval & BPL Details"
       bpl_details: Butiran BPL
       approver_id: Approver
-      statusremarks: Remarks
+      statusremark: Remark
       approvedt: Approval Date
       checklist: Checklist
       editdt: Edit Date
+      editor_id: Editor
       usage_frequency: Usage Frequency
+      conformity: Conformity
+      conform_curriculum: Curriculum
+      conform_specification: Specification
+      conform_opportunity: Opportunity
+      accuracy: Accuracy
+      accuracy_construct: Construct
+      accuracy_topic: Topic
+      accuracy_component: Component
+      fit: Fit
+      fit_difficulty: Difficulty
+      fit_important: Importance
+      fit_fairness: Fairness
 
   helpers:
     links:
@@ -514,8 +531,19 @@ en:
         bplsentdt: BPL Sent Date
         subquestions: "Subquestion(s) & Answer(s)"
         approver_id: Approver
-        statusremarks: Remarks
+        statusremark: Remark
         approvedt: Approval Date
+        conform_curriculum: Curriculum
+        conform_specification: Specification
+        conform_opportunity: Opportunity
+        accuracy_construct: Construct
+        accuracy_topic: Topic
+        accuracy_component: Component
+        fit_difficulty: Difficulty
+        fit_important: Importance
+        fit_fairness: Fairness
+        editor_id: Editor
+        editdt: Edit Date
 
     prompt:
       select_creator: Select Creator
