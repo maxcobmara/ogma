@@ -15,15 +15,20 @@ class Kewpa5Pdf < Prawn::Document
   def asset_list
     move_down 5
     
-    table line_item_rows do
+    table line_item_rows  do
       row(0).font_style = :bold
       row(0).background_color = 'FFE34D'
       columns(0).width = 30
       columns(1).borders = [:top, :left, :bottom]
       columns(1).width = 125
       columns(2).borders = [:top, :right, :bottom]
+      columns(2).width = 130
       columns(3).align = :center
+      columns(3).width = 55
       columns(4).align = :right
+      columns(4).width = 60
+      columns(5).width = 50
+      columns(5).align = :center
       self.row_colors = ["FEFEFE", "FFFFFF"]
       self.header = true
       self.cell_style = { size: 9 }
@@ -34,10 +39,13 @@ class Kewpa5Pdf < Prawn::Document
   
   def line_item_rows
     counter = counter || 0
-    header = [[ 'Bil', 'Keterangan Aset', "", 'Tarikh Perolehan', 'Harga Perolehan']]
+    header = [[ 'Bil', 'Keterangan Aset', "", 'Tarikh Perolehan', 'Harga Perolehan', 'Kuantiti','Harga Keseluruhan']]
     header +
       @assets.map do |asset|
-      ["#{counter += 1}", "#{asset.assetcode}", "#{asset.typename} #{asset.name} #{asset.modelname}", "#{asset.purchasedate}" , @view.currency(asset.purchaseprice.to_f)]
+        a = "#{asset.purchaseprice}"
+        b = "#{asset.quantity}"
+        total = a.to_i * b.to_i 
+      ["#{counter += 1}", "#{asset.assetcode}", "#{asset.typename} #{asset.name} #{asset.modelname}", "#{asset.purchasedate}" , @view.currency(asset.purchaseprice.to_f),"#{asset.quantity}", @view.currency(total.to_f)  ]
     end
   end
 end
