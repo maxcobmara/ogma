@@ -31,7 +31,11 @@ Ogma::Application.routes.draw do
       end   
     end
     resources :stationeries
-    resources :asset_defects,   as: :defects
+    resources :asset_defects,   as: :defects do
+      member do
+        get :kewpa9
+      end
+    end
     resources :asset_losses,    as: :losses
     resources :asset_disposals, as: :disposals
   end
