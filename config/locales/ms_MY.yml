@@ -411,6 +411,7 @@ ms_MY:
     title: Peperiksaan
     examquestion: 
       new_title: Soalan Baru
+      edit: Sunting Soalan
       title: Penyediaan Soalan
       questiontype: Jenis
       programme_id: Program
@@ -430,6 +431,7 @@ ms_MY:
       createdt: Tarikh Disediakan
       mandatory: Mandatori
       question_details: Butiran Soalan
+      question_details2: Kriteria Soalan
       question_answers: "Soalan & Jawapan"
       answermcq: Jawapan
       qkeyword: Kata Kunci
@@ -455,22 +457,36 @@ ms_MY:
       created: Telah Dicipta
       submitted: Telah Dihantar
       edited: Telah Disunting
+      editing: Sedang Disunting
       approved: Diluluskan
       rejectatcollege: Ditolak (di kolej)
       senttokkm: Dihantar ke KKM
       reedit: Sunting Semula
       rejected: Ditolak
       readyforapproval: Sedia Untuk Kelulusan
-      edit_details: Butiran Suntingan
+      edit_details: Butiran Semakan
       approval_details: Butiran Kelulusan
       approval_bpl_details: "Butiran Kelulusan & BPL"
       bpl_details: Butiran BPL
       approver_id: Diluluskan Oleh
-      statusremarks: Catatan
+      statusremark: Catatan
       approvedt: Tarikh Diluluskan
       checklist: Senarai Semak
-      editdt: Tarikh Suntingan
+      editdt: Tarikh Semakan
+      editor_id: Penyemak
       usage_frequency: Kekerapan Digunakan
+      conformity: Keakuran
+      conform_curriculum: Kurikulum
+      conform_specification: Spesifikasi
+      conform_opportunity: Peluang
+      accuracy: Ketepatan dan Kejelasan
+      accuracy_construct: Konstruk
+      accuracy_topic: Tajuk
+      accuracy_component: Komponen Item
+      fit: Kesesuaian
+      fit_difficulty: Kesukaran
+      fit_important: Penting
+      fit_fairness: Keadilan
  
   helpers:
     links:
@@ -500,8 +516,19 @@ ms_MY:
         bplsentdt: Tarikh Dihantar
         subquestions: "Subsoalan & Jawapan"
         approver_id: Diluluskan Oleh
-        statusremarks: Catatan
+        statusremark: Catatan
         approvedt: Tarikh Diluluskan
+        conform_curriculum: Kurikulum
+        conform_specification: Spesifikasi
+        conform_opportunity: Peluang
+        accuracy_construct: Konstruk
+        accuracy_topic: Tajuk
+        accuracy_component: Komponen Item
+        fit_difficulty: Kesukaran
+        fit_important: Penting
+        fit_fairness: Keadilan
+        editor_id: Penyemak
+        editdt: Tarikh Semakan
 
     prompt:
       select_creator: Pilih Penyedia Soalan

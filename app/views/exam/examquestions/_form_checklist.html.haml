@@ -1,17 +1,21 @@
-- model_class = Examquestion
-.col-md-8.col-md-offset-1
-  %dl.dl-horizontal
-	
-    %dt= t 'exam.examquestion.edit_details'
-    %dd
-      /=h @examquestion.qstatus
-      = t("exam.examquestion.#{@examquestion.qstatus.downcase.split.join.gsub(/-+/,"")}")
+.col-md-offset-2
+  .form-group
+    .col-sm-2.control-label
+      = f.label :editor_id
+    .col-md-6
+      = f.collection_select :editor_id, Staff.find(:all, :order => "staffgrade_id DESC", :conditions => ["id IN (?)", @examquestion.question_editor]), :id, :name, :include_blank => 'Please select editor', :selected => current_user.staff_id
 
-    %dt= t 'exam.examquestion.editor_id'
-    %dd=h @examquestion.editor_details
+  .form-group
+    .col-sm-2.control-label
+      = f.label :editdt
+    .col-md-2
+      = f.text_field :editdt, class: 'form-control', 'data-behaviour' => 'datepicker_today'
 
-    %dt= t 'exam.examquestion.checklist'
-    %dd
+  .form-group
+    .col-sm-2.control-label
+      %br
+      %b= t 'exam.examquestion.checklist'
+    .col-md-8
       .showform
         %table#subtable
           %thead
@@ -50,18 +54,26 @@
                 &nbsp;
               %td{:align => "center",:style=>"font-size:80%"}
                 =t'exam.examquestion.fit_fairness' 
-                &nbsp;
+              &nbsp;
             %tr
-              %td{:align => "center"}=h @examquestion.conform_curriculum? ? image_tag("tick.png") : image_tag("cross.png")
-              %td{:align => "center"}= h @examquestion.conform_specification? ? image_tag("tick.png") : image_tag("cross.png")
-              %td{:align => "center"}= h @examquestion.conform_opportunity? ? image_tag("tick.png") : image_tag("cross.png")
-              %td{:align => "center"}= h @examquestion.accuracy_construct? ? image_tag("tick.png") : image_tag("cross.png")
-              %td{:align => "center"}= h @examquestion.accuracy_topic? ? image_tag("tick.png") : image_tag("cross.png")
-              %td{:align => "center"}= h @examquestion.accuracy_component? ? image_tag("tick.png") : image_tag("cross.png")
-              %td{:align => "center"}= h @examquestion.fit_difficulty? ? image_tag("tick.png") : image_tag("cross.png")
-              %td{:align => "center"}= h @examquestion.fit_important? ? image_tag("tick.png") : image_tag("cross.png")
-              %td{:align => "center"}= h @examquestion.fit_fairness? ? image_tag("tick.png") : image_tag("cross.png")
-    %dt= t'exam.examquestion.editdt'
-    %dd=h l(@examquestion.editdt) unless @examquestion.editdt.blank? 
+              %td{:align => "center"}= f.check_box :conform_curriculum 
+              %td{:align => "center"}= f.check_box :conform_specification
+              %td{:align => "center"}= f.check_box :conform_opportunity
+              %td{:align => "center"}= f.check_box :accuracy_construct
+              %td{:align => "center"}= f.check_box :accuracy_topic
+              %td{:align => "center"}= f.check_box :accuracy_component
+              %td{:align => "center"}= f.check_box :fit_difficulty
+              %td{:align => "center"}= f.check_box :fit_important
+              %td{:align => "center"}= f.check_box :fit_fairness  
 
-  %dl.dl-horizontal
+/ This stuff is for subs
+/=f.fields_for :examsubquestions do |builder| 
+/= render 'examsubquestion_fields', :f => builder
+/%p= link_to_add_fields image_tag("add.png", :border => 0, :title => 'Add Q'), f, :examsubquestions %> - Add More 
+
+/MCQ Answers
+/Seq
+/Answer
+/=f.fields_for :exammcqanswers do |builder|
+/= render 'exammcqanswer_fields', :f => builder
+/%p=link_to_add_fields image_tag("add.png", :border => 0, :title => 'Add Q'), f, :exammcqanswers %> - Add More 

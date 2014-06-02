@@ -1,7 +1,6 @@
 - model_class = Examquestion
 .col-md-8.col-md-offset-1
   %dl.dl-horizontal
-    %BR
 
     %dt=t 'exam.examquestion.questiontype' , :default => model_class.human_attribute_name(:questiontype) + ":"
     %dd=h @examquestion.questiontype
@@ -38,6 +37,7 @@
           - for examanswer in @examquestion.examanswers.sort_by{|y|y.item}
             = examanswer.item
             = examanswer.answer_desc
+            %br
       /MCQ Question:answerchoices & examanswers - end
 
       /SEQ Question:shortessay (subquestions, submarks, subanswer) - start

@@ -1,6 +1,7 @@
 - model_class = Examquestion
 .col-md-8.col-md-offset-1
   %dl.dl-horizontal
+
     %dt= t 'exam.examquestion.approval_details'
     %dd 
       /=h @examquestion.qstatus
@@ -8,10 +9,10 @@
     %dt= t 'exam.examquestion.approver_id', :default => model_class.human_attribute_name(:approver_id) + ":"
     %dd=h @examquestion.approver_details 
 
-    %dt= t 'exam.examquestion.statusremarks', :default => model_class.human_attribute_name(:statusremarks) + ":"
+    %dt= t 'exam.examquestion.statusremark', :default => model_class.human_attribute_name(:statusremarks) + ":"
     %dd=h @examquestion.statusremark
 
     %dt= t 'exam.examquestion.approvedt', :default => model_class.human_attribute_name(:approvedt) + ":"
-    %dd
-      - if ["Approved", "Reserve for BPL"].include? (@examquestion.qstatus)
-        =h l(@examquestion.approvedt) unless @examquestion.approvedt.blank?
+    %dd=h l(@examquestion.approvedt) unless @examquestion.approvedt.blank?
+	
+  %dl.dl-horizontal

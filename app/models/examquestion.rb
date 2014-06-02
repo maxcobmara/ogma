@@ -111,7 +111,9 @@ class Examquestion < ActiveRecord::Base
   end
     
   def question_editor
-    programme = User.current_user.staff.position.unit
+    #programme = User.current_user.staff.position.unit --> requires log-in
+    current_user = User.find(72)  #current_user = User.find(72) - izmohdzaki, 11-maslinda
+    programme = current_user.staff.position.unit 
     unless subject_id.nil?
       if subject.root.name == programme
         editors = Position.find(:all,:conditions => ['unit=?',programme]).map(&:staff_id).compact
@@ -122,7 +124,7 @@ class Examquestion < ActiveRecord::Base
       programme_name = Programme.roots.map(&:name)    #must be among Academic Staff 
       editors = Staff.find(:all, :joins=>:position, :conditions=>['unit=? AND unit IN(?)', programme, programme_name]).map(&:id)
     end
-    editors   
+    editors
   end
   
   def question_approver #to assign question -> KP

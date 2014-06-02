@@ -1,0 +1,94 @@
+- model_class = Examquestion
+.page-header
+  %h1= t 'exam.examquestion.edit'
+= render 'shared/flashes'
+
+.row
+  = form_for [:exam, @examquestion],  :html => { :class => 'form-horizontal' } do |f| 
+    = render 'shared/error_messages', object: f.object
+    .col-md-10.col-md-offset-1
+      / Nav tabs
+      %ul.nav.nav-tabs
+        - if [nil, "New", "Submit", "Editing", "Re-Edit"].include? (@examquestion.qstatus) 
+          %li= link_to ((t 'exam.examquestion.mandatory')),"#mandatory_edit", "data-toggle" => "tab"
+          %li= link_to ((t 'exam.examquestion.question_details2')), "#question_details_edit", "data-toggle" => "tab"
+          %li= link_to ((t 'exam.examquestion.question_answers')), "#question_answers_edit", "data-toggle" => "tab"
+        - if ["Submit", "Editing", "Re-Edit","Ready For Approval", "For Approval", "Approved", "Reserve for BPL"].include? (@examquestion.qstatus)
+          %li.active= link_to ((t 'exam.examquestion.edit_details')), "#edit_details", "data-toggle" => "tab"
+        - if ["Ready For Approval", "For Approval","Approved", "Reserve for BPL"].include? (@examquestion.qstatus)
+          %li= link_to ((t 'exam.examquestion.approval_details')), "#approval_details", "data-toggle" => "tab"
+        - if ["Approved", "Reserve for BPL"].include? (@examquestion.qstatus)
+          %li= link_to ((t 'exam.examquestion.bpl_details')), "#bpl_details", "data-toggle" => "tab"
+
+      .tab-content{style:"padding-top:1em"}
+        /Staff Creates Question  
+        /partial (_form) = (tab_question_main_edit,tab_question_details_edit, tab_question_answers_edit) 
+        /partial (show_question) = show_question_main, show_question_details_answer
+        - if [nil, "New", "Submit", "Editing", "Re-Edit"].include? (@examquestion.qstatus) 
+          #mandatory_edit.tab-pane
+            %br
+            = render :partial => 'tab_question_main_edit', :locals => {:f => f}
+          #question_details_edit.tab-pane
+            %br
+            = render :partial => 'tab_question_details_edit', :locals => {:f => f}
+          #question_answers_edit.tab-pane
+            %br
+            = render :partial => 'tab_question_answers_edit', :locals => {:f => f}		
+        - else 
+          = render :partial => 'show_question_main'
+          = render :partial => 'show_question_details_answer'
+          
+        /Superior Edits Question
+        #edit_details.tab-pane.active
+          %br
+          - if ["Submit", "Editing", "Re-Edit"].include? (@examquestion.qstatus)
+            =render :partial => 'form_checklist', :locals => {:f => f}
+          - if ["Ready For Approval", "For Approval", "Approved", "Reserve for BPL"].include? (@examquestion.qstatus)
+            =render :partial => 'show_checklist'
+			
+        /Approval
+        #approval_details.tab-pane
+          %br
+            - if ["Ready For Approval", "For Approval"].include? (@examquestion.qstatus)
+              = render :partial => 'form_approval', :locals => {:f => f}
+            - if ["Approved", "Reserve for BPL"].include? (@examquestion.qstatus)
+              =render :partial => 'show_approval'
+
+        /BPL Details
+        #bpl_details.tab-pane
+          %br
+          - if ["Approved", "Reserve for BPL"].include? (@examquestion.qstatus)
+            .col-md-offset-2
+              .form-group
+                .col-sm-2.control-label
+                  &nbsp;
+                .col-md-2
+                  &nbsp;
+				  
+              .form-group
+                .col-sm-2.control-label
+                  = f.label :bplreserve
+                .col-md-2
+                  = f.check_box :bplreserve
+		
+              .form-group
+                .col-sm-2.control-label
+                  = f.label :bplsent
+                .col-md-2
+                  = f.check_box :bplsent
+			
+              .form-group
+                .col-sm-2.control-label
+                  = f.label :bplsentdt
+                .col-md-2
+                  = f.text_field :bplsentdt, class: 'form-control', 'data-behaviour' => 'datepicker_today' 
+
+    =render :partial => 'status', :locals => {:f => f} unless @examquestion.qstatus == "Approved"
+ 
+    .row
+      .form-group
+        .col-sm-offset-4.col-sm-1
+          = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), exam_examquestion_path(@examquestion), :class => 'btn btn-default'
+        .col-sm-2
+          = f.submit t('update'), class: "btn btn-primary"
+		 
