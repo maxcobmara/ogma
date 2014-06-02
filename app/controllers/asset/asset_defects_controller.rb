@@ -15,7 +15,17 @@ class Asset::AssetDefectsController < ApplicationController
     @campaign.start_date = Time.now
   end
   
-  
+  def kewpa9
+     @defective = AssetDefect.find(params[:id])
+     respond_to do |format|
+       format.pdf do
+         pdf = Kewpa9Pdf.new(@defective, view_context)
+         send_data pdf.render, filename: "kewpa9-{Date.today}",
+                               type: "application/pdf",
+                               disposition: "inline"
+       end
+     end
+   end
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_defective
