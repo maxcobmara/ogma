@@ -37,7 +37,12 @@ Ogma::Application.routes.draw do
       end
     end
     resources :asset_losses,    as: :losses
-    resources :asset_disposals, as: :disposals
+    resources :asset_disposals, as: :disposals do
+    member do
+      get :kewpa17
+      get :kewpa20
+    end
+  end
   end
 
   namespace :campus do
