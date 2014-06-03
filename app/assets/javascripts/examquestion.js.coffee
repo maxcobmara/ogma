@@ -8,7 +8,7 @@ bkLib.onDomLoaded ->
 	
 $(document).ready ->
   #onload, hide topics,although programme selected, subject not yet selected
-  $(".topic_field").hide();  									
+  #$(".topic_field").hide();  									
   
   #onload, hide DIV questions of all types  
   $('.box').hide();	#use this or 3 below lines
@@ -21,6 +21,12 @@ $(document).ready ->
     $(".subject_field").hide();  
   else
     $(".subject_field").show();
+ 
+  #onload, show topic if subject is selected only (logged-in by lecturer)
+  if ($('#examquestion_subject_id option:selected').val()=="")
+    $(".topic_field").hide();  
+  else
+    $(".topic_field").show();
     
   #at any time, if programme is selected, show subject field (subject selection field)	
   $('#examquestion_programme_id').on "change", ->
