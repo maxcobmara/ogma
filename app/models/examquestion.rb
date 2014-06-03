@@ -95,16 +95,16 @@ class Examquestion < ActiveRecord::Base
   def question_creator
     #programme = User.current_user.staff.position.unit - replace with : 2 lines (below)
     current_user = User.find(11)  #current_user = User.find(11) - 11-maslinda, 72-izmohdzaki
-    programme = current_user.staff.position.unit 
+    programme = current_user.staff.positions[0].unit
     
     programme_name = Programme.roots.map(&:name)
-    creator_prog= Staff.find(:all, :joins=>:position, :conditions=>['unit IN(?)', programme_name]).map(&:id)
+    creator_prog= Staff.find(:all, :joins=>:positions, :conditions=>['unit IN(?)', programme_name]).map(&:id)
     if programme_name.include?(programme)
-      creator = Staff.find(:all, :joins=>:position, :conditions=>['unit=? AND unit IN(?)', programme, programme_name]).map(&:id)
+      creator = Staff.find(:all, :joins=>:positions, :conditions=>['unit=? AND unit IN(?)', programme, programme_name]).map(&:id)
     else
       role_admin = Role.find_by_name('Administration')  #must have role as administrator
       staff_with_adminrole = User.find(:all, :joins=>:roles, :conditions=>['role_id=?',role_admin]).map(&:staff_id).compact.uniq 
-      creator_adm = Staff.find(:all, :joins=>:position, :conditions=>['staff_id IN(?)', staff_with_adminrole]).map(&:id)
+      creator_adm = Staff.find(:all, :joins=>:positions, :conditions=>['staff_id IN(?)', staff_with_adminrole]).map(&:id)
       creator=creator_prog+creator_adm
     end
     creator
@@ -113,7 +113,7 @@ class Examquestion < ActiveRecord::Base
   def question_editor
     #programme = User.current_user.staff.position.unit --> requires log-in
     current_user = User.find(72)  #current_user = User.find(72) - izmohdzaki, 11-maslinda
-    programme = current_user.staff.position.unit 
+    programme = current_user.staff.positions[0].unit
     unless subject_id.nil?
       if subject.root.name == programme
         editors = Position.find(:all,:conditions => ['unit=?',programme]).map(&:staff_id).compact
@@ -122,7 +122,7 @@ class Examquestion < ActiveRecord::Base
       end
     else
       programme_name = Programme.roots.map(&:name)    #must be among Academic Staff 
-      editors = Staff.find(:all, :joins=>:position, :conditions=>['unit=? AND unit IN(?)', programme, programme_name]).map(&:id)
+      editors = Staff.find(:all, :joins=>:positions, :conditions=>['unit=? AND unit IN(?)', programme, programme_name]).map(&:id)
     end
     editors
   end
@@ -133,7 +133,7 @@ class Examquestion < ActiveRecord::Base
     role_kp = Role.find_by_name('Programme Manager')  #must have role as Programme Manager
     staff_with_kprole = User.find(:all, :joins=>:roles, :conditions=>['role_id=?',role_kp]).map(&:staff_id).compact.uniq
     programme_name = Programme.roots.map(&:name)    #must be among Academic Staff 
-    approver = Staff.find(:all, :joins=>:position, :conditions=>['unit IN(?) AND staff_id IN(?)', programme_name, staff_with_kprole])
+    approver = Staff.find(:all, :joins=>:positions, :conditions=>['unit IN(?) AND staff_id IN(?)', programme_name, staff_with_kprole])
     approver   
   end
   

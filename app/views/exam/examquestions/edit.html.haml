@@ -10,7 +10,7 @@
       / Nav tabs
       %ul.nav.nav-tabs
         - if [nil, "New", "Submit", "Editing", "Re-Edit"].include? (@examquestion.qstatus) 
-          %li= link_to ((t 'exam.examquestion.mandatory')),"#mandatory_edit", "data-toggle" => "tab"
+          %li.active= link_to ((t 'exam.examquestion.mandatory')),"#mandatory_edit", "data-toggle" => "tab"
           %li= link_to ((t 'exam.examquestion.question_details2')), "#question_details_edit", "data-toggle" => "tab"
           %li= link_to ((t 'exam.examquestion.question_answers')), "#question_answers_edit", "data-toggle" => "tab"
         - if ["Submit", "Editing", "Re-Edit","Ready For Approval", "For Approval", "Approved", "Reserve for BPL"].include? (@examquestion.qstatus)
@@ -25,7 +25,7 @@
         /partial (_form) = (tab_question_main_edit,tab_question_details_edit, tab_question_answers_edit) 
         /partial (show_question) = show_question_main, show_question_details_answer
         - if [nil, "New", "Submit", "Editing", "Re-Edit"].include? (@examquestion.qstatus) 
-          #mandatory_edit.tab-pane
+          #mandatory_edit.tab-pane.active
             %br
             = render :partial => 'tab_question_main_edit', :locals => {:f => f}
           #question_details_edit.tab-pane
