@@ -5,6 +5,9 @@ bkLib.onDomLoaded ->
   nicEditors.editors.push new nicEditor(fullpanel: true).panelInstance(document.getElementById("examquestion_shortessays_attributes_1_subanswer"))
   nicEditors.editors.push new nicEditor(fullpanel: true).panelInstance(document.getElementById("examquestion_shortessays_attributes_2_subanswer"))
   return
+
+
+
 	
 $(document).ready ->
   #onload, hide topics,although programme selected, subject not yet selected
@@ -232,12 +235,16 @@ $(document).ready ->
     return	  
   ).change()
 
-  $("#check_activate").change ->
+  $("#examquestion_activate").change ->
     if $(this).prop("checked")
       $(".span_activate").show()
     else
       $(".span_activate").hide()
     return
 
-
+  PreviewImage = ->
+    oFReader = new FileReader()
+    oFReader.readAsDataURL document.getElementById("examquestion_diagram").files[0]
+    oFReader.onload = (oFREvent) ->
+      document.getElementById("uploadPreview").src = oFREvent.target.result
   
