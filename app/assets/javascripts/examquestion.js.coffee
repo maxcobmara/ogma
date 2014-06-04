@@ -247,4 +247,5 @@ $(document).ready ->
     oFReader.readAsDataURL document.getElementById("examquestion_diagram").files[0]
     oFReader.onload = (oFREvent) ->
       document.getElementById("uploadPreview").src = oFREvent.target.result
-  
+    return
+  document.getElementById("examquestion_diagram").addEventListener "change", PreviewImage, false

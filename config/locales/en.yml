@@ -506,6 +506,9 @@ en:
       fit_difficulty: Difficulty
       fit_important: Importance
       fit_fairness: Fairness
+      uploaded_file: "Uploaded File :"
+      current_diagram: Current Diagram
+      new_diagram: New Diagram
 
   helpers:
     links:
