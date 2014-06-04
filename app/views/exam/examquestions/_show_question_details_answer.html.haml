@@ -76,12 +76,12 @@
     /MCQ final ANSWER
     - if @examquestion.questiontype=="MCQ"
       %dt=t 'exam.examquestion.answermcq'
-      %dd=h @examquestion.answermcq 
+      %dd=h @examquestion.answer.to_s
 	
     /answer field for other than MCQ & SEQ 
     - if !(@examquestion.questiontype=="MCQ" || @examquestion.questiontype=="SEQ")
       %dt=t 'exam.examquestion.answer' , :default => model_class.human_attribute_name(:answer) + ":"
-      %dd=h @examquestion.answer
+      %dd=h @examquestion.answer  
 
     /main2 - for all type of question	
     %dt

@@ -66,7 +66,7 @@ class Exam::ExamquestionsController < ApplicationController
   def new
     @examquestion = Examquestion.new
     #@lecturer_programme = current_user.staff.position.unit     - replace with : 2 lines (below)
-    current_user = User.find(72)  #current_user = User.find(72) - izmohdzaki, 11-maslinda
+    current_user = User.find(11)  #current_user = User.find(72) - izmohdzaki, 11-maslinda
     @lecturer_programme = current_user.staff.positions[0].unit
     
     @creator = current_user.staff.id 
@@ -112,7 +112,7 @@ class Exam::ExamquestionsController < ApplicationController
   # GET /examquestions/1/edit
   def edit
     @examquestion = Examquestion.find(params[:id])
-    current_user = User.find(72)  #current_user = User.find(72) - izmohdzaki, 11-maslinda
+    current_user = User.find(11)  #current_user = User.find(72) - izmohdzaki, 11-maslinda
 		@creator = @examquestion.creator_id
     
     @lecturer_programme = current_user.staff.positions[0].unit      
@@ -143,7 +143,7 @@ class Exam::ExamquestionsController < ApplicationController
   def create
     @examquestion= Examquestion.new(examquestion_params)
     
-    current_user = User.find(72)  #current_user = User.find(72) - izmohdzaki, 11-maslinda    
+    current_user = User.find(11)  #current_user = User.find(72) - izmohdzaki, 11-maslinda    
     #--newly added--same as edit--required when incomplete data submitted
     @lecturer_programme = current_user.staff.positions[0].unit      
     if @lecturer_programme != 'Commonsubject'
@@ -239,29 +239,6 @@ class Exam::ExamquestionsController < ApplicationController
     end
   end
   
-  def view_subject
-    @lecturer_programme = current_user.staff.position.unit 
-    @programme_id = params[:programmeid]
-    unless @programme_id.blank? 
-      all_subject_ids = Programme.find(@programme_id).descendants.at_depth(2).map(&:id)
-      if @lecturer_programme == 'Commonsubject'
-        @subjects = Programme.find(:all, :conditions=>['id IN(?) AND course_type=?',all_subject_ids, @lecturer_programme],:order=>'ancestry ASC')  
-      else
-        #@subjects = Subject.find(:all, :joins => :programmes,:conditions => ['programme_id=?', @programme_id])
-        @subjects = Programme.find(:all, :conditions=>['id IN(?) AND course_type=?',all_subject_ids, 'Subject'],:order=>'ancestry ASC')  
-      end
-    end
-    render :partial => 'view_subject', :layout => false
-  end
-  
-  def view_topic
-    @subject_id = params[:subjectid]
-    unless @subject_id.blank? 
-      @topics = Programme.find(@subject_id).descendants.at_depth(3)
-    end
-    render :partial => 'view_topic', :layout => false
-  end
-  
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_examquestion
@@ -270,6 +247,6 @@ class Exam::ExamquestionsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def examquestion_params
-      params.require(:examquestion).permit(:subject_id, :questiontype, :question, :answer, :marks, :category, :qkeyword, :qstatus, :creator_id, :createdt, :difficulty, :statusremark, :editor_id, :editdt, :approver_id, :approvedt, :bplreserve, :bplsent, :bplsentdt, :diagram_file_name, :diagram_content_type, :diagram_file_size, :diagram_updated_at, :topic_id , :construct, :conform_curriculum, :conform_specification, :conform_opportunity, :accuracy_construct, :accuracy_topic, :accuracy_component, :fit_difficulty, :fit_important, :fit_fairness, :programme_id, answerchoices_attributes: [:id,:examquestion_id, :item, :description], examanswers_attributes: [:id,:examquestion_id,:item,:answer_desc], shortessays_attributes: [:id,:item,:subquestion,:submark,:subanswer, :examquestion_id, :keyword], booleanchoices_attributes: [:id, :examquestion_id,:item,:description], booleananswers_attributes: [:id,:examquestion_id, :item, :answer])
+      params.require(:examquestion).permit(:activate,:answermcq, :subject_id, :questiontype, :question, :answer, :marks, :category, :qkeyword, :qstatus, :creator_id, :createdt, :difficulty, :statusremark, :editor_id, :editdt, :approver_id, :approvedt, :bplreserve, :bplsent, :bplsentdt, :diagram_file_name, :diagram_content_type, :diagram_file_size, :diagram_updated_at, :topic_id , :construct, :conform_curriculum, :conform_specification, :conform_opportunity, :accuracy_construct, :accuracy_topic, :accuracy_component, :fit_difficulty, :fit_important, :fit_fairness, :programme_id, answerchoices_attributes: [:id,:examquestion_id, :item, :description], examanswers_attributes: [:id,:examquestion_id,:item,:answer_desc], shortessays_attributes: [:id,:item,:subquestion,:submark,:subanswer, :examquestion_id, :keyword], booleanchoices_attributes: [:id, :examquestion_id,:item,:description], booleananswers_attributes: [:id,:examquestion_id, :item, :answer])
     end
 end

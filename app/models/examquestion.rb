@@ -48,23 +48,26 @@ class Examquestion < ActiveRecord::Base
   attr_accessor :programme_id #9Apr2013 - rely on subject (root of subject[programme])
   #attr_accessor :question1,:question2,:question3,:question4,:questiona,:questionb,:questionc,:questiond
   
-  before_save :set_nil_if_not_activate, :set_answer_for_mcq#, :set_subquestions_if_seq
+  before_validation :set_nil_if_not_activate, :set_answer_for_mcq
+  #before_save :set_answer_for_mcq#, :set_subquestions_if_seq
   
   def set_nil_if_not_activate
-      if self.id != nil   
+     #if self.id != nil   
           if questiontype=="MCQ" && activate != "1" 
               self.answerchoices[0].description = "" if self.answerchoices[0]#.id !=nil
               self.answerchoices[1].description = "" if self.answerchoices[1]#.id !=nil
               self.answerchoices[2].description = "" if self.answerchoices[2]#.id !=nil
               self.answerchoices[3].description = "" if self.answerchoices[3]#.id !=nil
           end
-      end
+      #end
   end
   
   def set_answer_for_mcq
-      if answermcq !=nil
+      #if answermcq !=nil 
+      if questiontype=="MCQ" 
         self.answer=answermcq.to_s
       end
+        #end
   end
   
   #def set_subquestions_if_seq   
