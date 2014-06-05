@@ -11,6 +11,7 @@ class Asset < ActiveRecord::Base
   has_many :asset_defects
   has_many :maints
   has_many :asset_loans
+  has_many :asset_disposal
   
 end
 
