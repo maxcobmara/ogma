@@ -1,4 +1,5 @@
 class AssetDisposal < ActiveRecord::Base
+    belongs_to :asset
 end
 
 # == Schema Information

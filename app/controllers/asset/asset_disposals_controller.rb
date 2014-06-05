@@ -9,10 +9,10 @@ class Asset::AssetDisposalsController < ApplicationController
   end
   
   def kewpa17
-    @disposal = AssetDisposal.find(:all, :order => 'created_at DESC')
+    @disposals = AssetDisposal.find(:all, :order => 'created_at DESC')
     respond_to do |format|
       format.pdf do
-        pdf = Kewpa17df.new(@disposal, view_context)
+        pdf = Kewpa17Pdf.new(@disposals, view_context)
         send_data pdf.render, filename: "kewpa17-{Date.today}",
                               type: "application/pdf",
                               disposition: "inline"
@@ -23,7 +23,7 @@ class Asset::AssetDisposalsController < ApplicationController
     @disposal = AssetDisposal.find(:all, :order => 'created_at DESC')
     respond_to do |format|
       format.pdf do
-        pdf = Kewpa20df.new(@disposal, view_context)
+        pdf = Kewpa20Pdf.new(@disposal, view_context)
         send_data pdf.render, filename: "kewpa20-{Date.today}",
                               type: "application/pdf",
                               disposition: "inline"
