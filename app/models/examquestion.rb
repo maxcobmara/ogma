@@ -33,7 +33,8 @@ class Examquestion < ActiveRecord::Base
   has_attached_file :diagram,
                     :url => "/assets/examquestions/:id/:style/:basename.:extension",
                     :path => ":rails_root/public/assets/examquestions/:id/:style/:basename.:extension"
-                    
+  validates_attachment_size :diagram, :less_than => 5.megabytes  
+  validates_attachment_content_type :diagram, :content_type => ["image/jpg", "image/jpeg", "image/png", "image/gif"]                
                     #may require validation
                     
   validates_presence_of :subject_id, :topic_id, :questiontype, :question, :marks, :qstatus #17Apr2013,:answer #9Apr2013-compulsory for subject_id

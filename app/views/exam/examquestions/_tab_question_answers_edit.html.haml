@@ -5,20 +5,26 @@
     .col-md-4
       = f.select :questiontype, Examquestion::QTYPE, :prompt=> t('helpers.prompt.select_questiontype')
  
-  //preview image - here
-  .p
-    cak
-    %img#uploadPreview{:style=>"width: 100px; height:100px;"}/
-
-
   //main - for all type of question
   .p#main_question.box
+    - if @examquestion.diagram.exists? then
+      %dl.dl-horizontal
+        %dt= t 'exam.examquestion.current_diagram'
+        %dd
+          = image_tag @examquestion.diagram.url, :style=>"width: 100px; height:100px;" 
+          %br
+          %b= t'exam.examquestion.uploaded_file'
+          = @examquestion.diagram_file_name       
+    %dl.dl-horizontal
+      /preview diagram before upload
+      %dt= t 'exam.examquestion.new_diagram'
+      %dd
+        %img#uploadPreview{:src => "http://placekitten.com/200/300", :style=>"width: 100px; height:100px;"}/
     .form-group
       .col-sm-2.control-label
         = f.label :diagram
       .col-md-6
-        /= f.file_field :diagram 
-        = f.file_field :diagram, {:onchange =>"PreviewImage();"}
+        = f.file_field :diagram, class: 'form-control'
     .form-group
       .col-sm-2.control-label
         = f.label :question

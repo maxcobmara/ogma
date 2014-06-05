@@ -21,7 +21,7 @@
     .tab-content{style:"padding-top:1em"}
       .col-md-1
         - if @examquestion.diagram.exists? then
-          = image_tag @examquestion.diagram.url
+          = image_tag @examquestion.diagram.url, :style=>"width: 250px; height:300px;"
         - else
           %img{:src => "http://placekitten.com/200/300"}/ 
     

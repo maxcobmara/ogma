@@ -487,6 +487,9 @@ ms_MY:
       fit_difficulty: Kesukaran
       fit_important: Penting
       fit_fairness: Keadilan
+      uploaded_file: "Fail Dimuatnaik :"
+      current_diagram: Diagram Semasa
+      new_diagram: Diagram Baru
  
   helpers:
     links:

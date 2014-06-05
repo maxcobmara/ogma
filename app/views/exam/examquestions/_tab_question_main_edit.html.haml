@@ -2,7 +2,7 @@
   .form-group
     .col-sm-2.control-label
       = f.label :creator_id
-    .col-md-2
+    .col-md-6
       = f.collection_select :creator_id, Staff.find(:all, :order => 'name ASC', :conditions => ["id IN (?)", @examquestion.question_creator]), :id, :name, {:selected => @creator, :prompt => t('helpers.prompt.select_creator')}, {class: 'selectpicker', "data-width"=>"300px"}		
 
   .form-group
