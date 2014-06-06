@@ -11,20 +11,55 @@
       %dl.dl-horizontal
         %dt= t 'exam.examquestion.current_diagram'
         %dd
-          = image_tag @examquestion.diagram.url, :style=>"width: 100px; height:100px;" 
+          = image_tag @examquestion.diagram.url, :style=>"width: 100px; height:100px;"
+          /- img = Image.new "#{@examquestion.diagram.url}"
+          =@examquestion.diagram.url.split('?')[0]
+
           %br
+          /line 20 - 43 ...all works except for open..
+          /ref: http://railscasts.com/episodes/374-image-manipulation
+          /= File.absolute_path(@examquestion.diagram_file_name)
+          /overlay path ~ 
+          /= overlay_path = Rails.root.join("app/assets/images/tick.png")
+          /- overlay = Magick::Image.read(overlay_path).first
+          /%br
+          /img path ~ 
+          /= img_path = Rails.root.join("public"<<"#{@examquestion.diagram.url.split('?')[0]}")
+          /%br          
+          /img ~
+          /= img = Magick::Image.read(img_path).first
+          /- thumba = img.scale(60, 60)
+          /- thumba.write "thumbb.png"
+          /%br
+          /kecik ~
+          /= overlay.display
+          /%br
+          /kecik lagi ~
+          /= thumba.display 
+          /%br
+          /try~
+          /= open "thumbb.png"
+          /%br
+          /%br
           %b= t'exam.examquestion.uploaded_file'
           = @examquestion.diagram_file_name       
-    %dl.dl-horizontal
+    .form-group
       /preview diagram before upload
-      %dt= t 'exam.examquestion.new_diagram'
-      %dd
-        %img#uploadPreview{:src => "http://placekitten.com/200/300", :style=>"width: 100px; height:100px;"}/
+      .col-sm-2.control-label
+        %b= t 'exam.examquestion.new_diagram'
+      .col-md-6
+        %img#uploadPreview{:alt => (t 'exam.examquestion.browse_preview'), :style=>"width: 100px; height:100px;border: solid 1px; padding: 5px;"}/
+        /%img#uploadPreview{:src => "http://placekitten.com/200/300", :style=>"width: 100px; height:100px;"}/
     .form-group
       .col-sm-2.control-label
         = f.label :diagram
       .col-md-6
         = f.file_field :diagram, class: 'form-control'
+    .form-group
+      .col-sm-2.control-label
+        = f.label :diagram_caption
+      .col-md-6
+        = f.text_field :diagram_caption, class: 'form-control'
     .form-group
       .col-sm-2.control-label
         = f.label :question

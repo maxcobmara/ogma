@@ -84,7 +84,7 @@
                 .col-md-2
                   = f.text_field :bplsentdt, class: 'form-control', 'data-behaviour' => 'datepicker_today' 
 
-    =render :partial => 'status', :locals => {:f => f} unless @examquestion.qstatus == "Approved"
+      =render :partial => 'status', :locals => {:f => f} unless @examquestion.qstatus == "Approved"
  
     .row
       .form-group

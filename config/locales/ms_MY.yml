@@ -490,6 +490,8 @@ ms_MY:
       uploaded_file: "Fail Dimuatnaik :"
       current_diagram: Diagram Semasa
       new_diagram: Diagram Baru
+      browse_preview: "Pilih fail imej untuk PAPAR diagram baru di sini. "
+      diagram_caption: Tajuk Diagram
  
   helpers:
     links:
@@ -532,6 +534,7 @@ ms_MY:
         fit_fairness: Keadilan
         editor_id: Penyemak
         editdt: Tarikh Semakan
+        diagram_caption: Tajuk Diagram
 
     prompt:
       select_creator: Pilih Penyedia Soalan
