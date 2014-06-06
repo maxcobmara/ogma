@@ -1,18 +1,15 @@
-.row
-  .col-md-10.col-md-offset-1
-    / Nav tabs
-    %ul.nav.nav-tabs
-      %li.active= link_to ((t 'exam.examquestion.mandatory')),"#mandatory_edit", "data-toggle" => "tab"
-      %li= link_to ((t 'exam.examquestion.question_details2')), "#question_details_edit", "data-toggle" => "tab"
-      %li= link_to ((t 'exam.examquestion.question_answers')), "#question_answers_edit", "data-toggle" => "tab"
+%ul.nav.nav-tabs
+  %li.active= link_to ((t 'exam.examquestion.mandatory')),"#mandatory_edit", "data-toggle" => "tab"
+  %li= link_to ((t 'exam.examquestion.question_details2')), "#question_details_edit", "data-toggle" => "tab"
+  %li= link_to ((t 'exam.examquestion.question_answers')), "#question_answers_edit", "data-toggle" => "tab"
 
-    .tab-content{style:"padding-top:1em"}
-      #mandatory_edit.tab-pane.active
-        %br
-        = render :partial => 'tab_question_main_edit', :locals => {:f => f}
-      #question_details_edit.tab-pane
-        %br
-        = render :partial => 'tab_question_details_edit', :locals => {:f => f}
-      #question_answers_edit.tab-pane
-        %br
-        = render :partial => 'tab_question_answers_edit', :locals => {:f => f}		
+.tab-content{style:"padding-top:1em"}
+  #mandatory_edit.tab-pane.active
+    %br
+    = render :partial => 'tab_question_main_edit', :locals => {:f => f}
+  #question_details_edit.tab-pane
+    %br
+    = render :partial => 'tab_question_details_edit', :locals => {:f => f}
+  #question_answers_edit.tab-pane
+    %br
+    = render :partial => 'tab_question_answers_edit', :locals => {:f => f}		

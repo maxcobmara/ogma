@@ -509,6 +509,8 @@ en:
       uploaded_file: "Uploaded File :"
       current_diagram: Current Diagram
       new_diagram: New Diagram
+      browse_preview: "Browse an image file to PREVIEW new diagram here. "
+      diagram_caption: Diagram Caption
 
   helpers:
     links:
@@ -551,6 +553,7 @@ en:
         fit_fairness: Fairness
         editor_id: Editor
         editdt: Edit Date
+        diagram_caption: Diagram Caption
 
     prompt:
       select_creator: Select Creator
