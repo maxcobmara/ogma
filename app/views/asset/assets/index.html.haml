@@ -67,7 +67,7 @@
 
         - @inventories.each do |asset|
           %tr
-            %td= asset.assetcode
+            %td= link_to asset.assetcode, asset_asset_path(asset)
             %td= asset.name
             %td= asset.purchasedate
             %td.number= currency(asset.purchaseprice)

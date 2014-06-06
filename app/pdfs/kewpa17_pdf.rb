@@ -83,7 +83,7 @@ class Kewpa17Pdf < Prawn::Document
            c = "#{disposal.current_value}"
            d = "#{disposal.try(:asset).try(:quantity)}"
            totalcurrent = c.to_i * d.to_i 
-        ["#{counter += 1}", "", "#{disposal.try(:asset).try(:assetcode)} #{disposal.try(:asset).try(:name)}", "" , "#{disposal.try(:asset).try(:quantity)}","#{disposal.try(:asset).try(:purchasedate)}", 
+        ["#{counter += 1}", "", "#{disposal.try(:asset).try(:assetcode)} #{disposal.try(:asset).try(:name)}", "" , "#{disposal.try(:asset).try(:quantity)}","#{disposal.try(:asset).try(:purchasedate).strftime("%d/%m/%y")}", 
           "#{Date.today - disposal.try(:asset).try(:purchasedate)} days", "#{disposal.try(:asset).try(:purchaseprice)}", @view.currency(total.to_f), "#{disposal.current_value}", @view.currency(totalcurrent.to_f), "", "" ]
       end
 end
