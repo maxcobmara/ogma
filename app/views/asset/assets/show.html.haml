@@ -90,7 +90,7 @@
     .form-actions
       = link_to content_tag(:i, "", :class => "fa fa-arrow-left "), asset_assets_path, {class: "btn btn-default", "data-toggle" => "tooltip", title: "Asset Index"}
       = link_to content_tag(:i, "", :class => "fa fa-file "), kewpa3_asset_asset_path(@asset, format: "pdf"), {class: "btn btn-default", "data-toggle" => "tooltip", title: "KEW.PA 3 PDF"}
-      = link_to content_tag(:i, "", :class => "fa fa-bug ") , new_asset_disposal_path(:asset_id => @asset),{class: "btn btn-default", "data-toggle" => "tooltip", title: "Report Defect"}
+      = link_to content_tag(:i, "", :class => "fa fa-bug ") , new_asset_defect_path(:asset_id => @asset),{class: "btn btn-default", "data-toggle" => "tooltip", title: "Report Defect"}
       = link_to content_tag(:i, "", :class => "fa fa-edit") , edit_asset_asset_path(@asset),  {class: "btn btn-primary", "data-toggle" => "tooltip", title: t("actions.edit")}
       = link_to content_tag(:i, "", :class => "fa fa-trash-o icon-white"), |
         asset_asset_path(@asset),                                                                                                    |
