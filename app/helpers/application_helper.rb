@@ -28,6 +28,10 @@ module ApplicationHelper
     number_to_currency(money, :unit => "RM ", :separator => ".", :delimiter => ",", :precision => 2)
   end
   
+  def formatted_mykad(icno)
+    "#{icno[0,6]}-#{icno[6,2]}-#{icno[-4,4]}"
+  end
+  
   
   #legacy
   def sortable(column, title = nil)

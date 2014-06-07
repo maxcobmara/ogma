@@ -56,6 +56,7 @@ group :test do
   gem "selenium-webdriver", "~> 2.42.0"
   gem 'capybara', '~> 2.3.0'
   gem 'growl', '1.0.3'
+  gem "launchy", "~> 2.4.2"
 end
 
 group :doc do

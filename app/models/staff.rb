@@ -53,9 +53,7 @@ class Staff < ActiveRecord::Base
       Date.today.year - cobirthdt.year unless cobirthdt == nil
     end
  
-    def formatted_mykad
-      "#{icno[0,6]}-#{icno[6,2]}-#{icno[-4,4]}"
-    end
+
     
     def mykad_with_staff_name
       "#{formatted_mykad}  #{name}"
