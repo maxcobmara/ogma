@@ -307,6 +307,7 @@ end
 #  created_at            :datetime
 #  createdt              :date
 #  creator_id            :integer
+#  diagram_caption       :string(255)
 #  diagram_content_type  :string(255)
 #  diagram_file_name     :string(255)
 #  diagram_file_size     :integer

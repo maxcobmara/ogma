@@ -213,3 +213,25 @@ private
   end
   
 end
+
+# == Schema Information
+#
+# Table name: exams
+#
+#  course_id   :integer
+#  created_at  :datetime
+#  created_by  :integer
+#  description :text
+#  duration    :integer
+#  endtime     :time
+#  exam_on     :date
+#  full_marks  :integer
+#  id          :integer          not null, primary key
+#  klass_id    :integer
+#  name        :string(255)
+#  sequ        :string(255)
+#  starttime   :time
+#  subject_id  :integer
+#  topic_id    :integer
+#  updated_at  :datetime
+#

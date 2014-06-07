@@ -188,7 +188,7 @@ Ogma::Application.routes.draw do
   #   end
 end
 
-# == Route Map (Updated 2014-03-05 22:32)
+# == Route Map (Updated 2014-06-07 17:19)
 #
 #                                   Prefix Verb   URI Pattern                                         Controller#Action
 #        borang_maklumat_staff_staff_infos GET    /staff/staffs/borang_maklumat_staff(.:format)       staff/staffs#borang_maklumat_staff
@@ -200,6 +200,14 @@ end
 #                                          PATCH  /staff/staffs/:id(.:format)                         staff/staffs#update
 #                                          PUT    /staff/staffs/:id(.:format)                         staff/staffs#update
 #                                          DELETE /staff/staffs/:id(.:format)                         staff/staffs#destroy
+#                          staff_positions GET    /staff/positions(.:format)                          staff/positions#index
+#                                          POST   /staff/positions(.:format)                          staff/positions#create
+#                       new_staff_position GET    /staff/positions/new(.:format)                      staff/positions#new
+#                      edit_staff_position GET    /staff/positions/:id/edit(.:format)                 staff/positions#edit
+#                           staff_position GET    /staff/positions/:id(.:format)                      staff/positions#show
+#                                          PATCH  /staff/positions/:id(.:format)                      staff/positions#update
+#                                          PUT    /staff/positions/:id(.:format)                      staff/positions#update
+#                                          DELETE /staff/positions/:id(.:format)                      staff/positions#destroy
 #                                ptbudgets GET    /ptbudgets(.:format)                                ptbudgets#index
 #                                          POST   /ptbudgets(.:format)                                ptbudgets#create
 #                             new_ptbudget GET    /ptbudgets/new(.:format)                            ptbudgets#new
@@ -208,6 +216,62 @@ end
 #                                          PATCH  /ptbudgets/:id(.:format)                            ptbudgets#update
 #                                          PUT    /ptbudgets/:id(.:format)                            ptbudgets#update
 #                                          DELETE /ptbudgets/:id(.:format)                            ptbudgets#destroy
+#                       kewpa3_asset_asset GET    /asset/assets/:id/kewpa3(.:format)                  asset/assets#kewpa3
+#                       kewpa2_asset_asset GET    /asset/assets/:id/kewpa2(.:format)                  asset/assets#kewpa2
+#                      kewpa14_asset_asset GET    /asset/assets/:id/kewpa14(.:format)                 asset/assets#kewpa14
+#                       kewpa6_asset_asset GET    /asset/assets/:id/kewpa6(.:format)                  asset/assets#kewpa6
+#                fixed_assets_asset_assets GET    /asset/assets/fixed_assets(.:format)                asset/assets#fixed_assets
+#                                          POST   /asset/assets/fixed_assets(.:format)                asset/assets#fixed_assets
+#                   inventory_asset_assets GET    /asset/assets/inventory(.:format)                   asset/assets#inventory
+#                                          POST   /asset/assets/inventory(.:format)                   asset/assets#inventory
+#                      kewpa4_asset_assets GET    /asset/assets/kewpa4(.:format)                      asset/assets#kewpa4
+#                      kewpa5_asset_assets GET    /asset/assets/kewpa5(.:format)                      asset/assets#kewpa5
+#                     kewpa13_asset_assets GET    /asset/assets/kewpa13(.:format)                     asset/assets#kewpa13
+#                             asset_assets GET    /asset/assets(.:format)                             asset/assets#index
+#                                          POST   /asset/assets(.:format)                             asset/assets#create
+#                          new_asset_asset GET    /asset/assets/new(.:format)                         asset/assets#new
+#                         edit_asset_asset GET    /asset/assets/:id/edit(.:format)                    asset/assets#edit
+#                              asset_asset GET    /asset/assets/:id(.:format)                         asset/assets#show
+#                                          PATCH  /asset/assets/:id(.:format)                         asset/assets#update
+#                                          PUT    /asset/assets/:id(.:format)                         asset/assets#update
+#                                          DELETE /asset/assets/:id(.:format)                         asset/assets#destroy
+#                       asset_stationeries GET    /asset/stationeries(.:format)                       asset/stationeries#index
+#                                          POST   /asset/stationeries(.:format)                       asset/stationeries#create
+#                     new_asset_stationery GET    /asset/stationeries/new(.:format)                   asset/stationeries#new
+#                    edit_asset_stationery GET    /asset/stationeries/:id/edit(.:format)              asset/stationeries#edit
+#                         asset_stationery GET    /asset/stationeries/:id(.:format)                   asset/stationeries#show
+#                                          PATCH  /asset/stationeries/:id(.:format)                   asset/stationeries#update
+#                                          PUT    /asset/stationeries/:id(.:format)                   asset/stationeries#update
+#                                          DELETE /asset/stationeries/:id(.:format)                   asset/stationeries#destroy
+#                      kewpa9_asset_defect GET    /asset/asset_defects/:id/kewpa9(.:format)           asset/asset_defects#kewpa9
+#                            asset_defects GET    /asset/asset_defects(.:format)                      asset/asset_defects#index
+#                                          POST   /asset/asset_defects(.:format)                      asset/asset_defects#create
+#                         new_asset_defect GET    /asset/asset_defects/new(.:format)                  asset/asset_defects#new
+#                        edit_asset_defect GET    /asset/asset_defects/:id/edit(.:format)             asset/asset_defects#edit
+#                             asset_defect GET    /asset/asset_defects/:id(.:format)                  asset/asset_defects#show
+#                                          PATCH  /asset/asset_defects/:id(.:format)                  asset/asset_defects#update
+#                                          PUT    /asset/asset_defects/:id(.:format)                  asset/asset_defects#update
+#                                          DELETE /asset/asset_defects/:id(.:format)                  asset/asset_defects#destroy
+#                             asset_losses GET    /asset/asset_losses(.:format)                       asset/asset_losses#index
+#                                          POST   /asset/asset_losses(.:format)                       asset/asset_losses#create
+#                           new_asset_loss GET    /asset/asset_losses/new(.:format)                   asset/asset_losses#new
+#                          edit_asset_loss GET    /asset/asset_losses/:id/edit(.:format)              asset/asset_losses#edit
+#                               asset_loss GET    /asset/asset_losses/:id(.:format)                   asset/asset_losses#show
+#                                          PATCH  /asset/asset_losses/:id(.:format)                   asset/asset_losses#update
+#                                          PUT    /asset/asset_losses/:id(.:format)                   asset/asset_losses#update
+#                                          DELETE /asset/asset_losses/:id(.:format)                   asset/asset_losses#destroy
+#                  kewpa17_asset_disposals GET    /asset/asset_disposals/kewpa17(.:format)            asset/asset_disposals#kewpa17
+#                  kewpa20_asset_disposals GET    /asset/asset_disposals/kewpa20(.:format)            asset/asset_disposals#kewpa20
+#                   kewpa18_asset_disposal GET    /asset/asset_disposals/:id/kewpa18(.:format)        asset/asset_disposals#kewpa18
+#                   kewpa19_asset_disposal GET    /asset/asset_disposals/:id/kewpa19(.:format)        asset/asset_disposals#kewpa19
+#                          asset_disposals GET    /asset/asset_disposals(.:format)                    asset/asset_disposals#index
+#                                          POST   /asset/asset_disposals(.:format)                    asset/asset_disposals#create
+#                       new_asset_disposal GET    /asset/asset_disposals/new(.:format)                asset/asset_disposals#new
+#                      edit_asset_disposal GET    /asset/asset_disposals/:id/edit(.:format)           asset/asset_disposals#edit
+#                           asset_disposal GET    /asset/asset_disposals/:id(.:format)                asset/asset_disposals#show
+#                                          PATCH  /asset/asset_disposals/:id(.:format)                asset/asset_disposals#update
+#                                          PUT    /asset/asset_disposals/:id(.:format)                asset/asset_disposals#update
+#                                          DELETE /asset/asset_disposals/:id(.:format)                asset/asset_disposals#destroy
 #                   kewpa7_campus_location GET    /campus/locations/:id/kewpa7(.:format)              campus/locations#kewpa7
 #                         campus_locations GET    /campus/locations(.:format)                         campus/locations#index
 #                                          POST   /campus/locations(.:format)                         campus/locations#create
@@ -217,6 +281,14 @@ end
 #                                          PATCH  /campus/locations/:id(.:format)                     campus/locations#update
 #                                          PUT    /campus/locations/:id(.:format)                     campus/locations#update
 #                                          DELETE /campus/locations/:id(.:format)                     campus/locations#destroy
+#                  campus_location_damages GET    /campus/location_damages(.:format)                  campus/location_damages#index
+#                                          POST   /campus/location_damages(.:format)                  campus/location_damages#create
+#               new_campus_location_damage GET    /campus/location_damages/new(.:format)              campus/location_damages#new
+#              edit_campus_location_damage GET    /campus/location_damages/:id/edit(.:format)         campus/location_damages#edit
+#                   campus_location_damage GET    /campus/location_damages/:id(.:format)              campus/location_damages#show
+#                                          PATCH  /campus/location_damages/:id(.:format)              campus/location_damages#update
+#                                          PUT    /campus/location_damages/:id(.:format)              campus/location_damages#update
+#                                          DELETE /campus/location_damages/:id(.:format)              campus/location_damages#destroy
 #                           calendar_event GET    /events/:id/calendar(.:format)                      events#calendar
 #                                   events GET    /events(.:format)                                   events#index
 #                                          POST   /events(.:format)                                   events#create
@@ -242,6 +314,7 @@ end
 #                                          PATCH  /documents/:id(.:format)                            documents#update
 #                                          PUT    /documents/:id(.:format)                            documents#update
 #                                          DELETE /documents/:id(.:format)                            documents#destroy
+#                    autocomplete_students GET    /students/autocomplete(.:format)                    students#autocomplete
 #                                 students GET    /students(.:format)                                 students#index
 #                                          POST   /students(.:format)                                 students#create
 #                              new_student GET    /students/new(.:format)                             students#new
@@ -250,6 +323,13 @@ end
 #                                          PATCH  /students/:id(.:format)                             students#update
 #                                          PUT    /students/:id(.:format)                             students#update
 #                                          DELETE /students/:id(.:format)                             students#destroy
+#                 room_map_student_tenants GET    /student/tenants/room_map(.:format)                 student/tenants#room_map
+#               statistics_student_tenants GET    /student/tenants/statistics(.:format)               student/tenants#statistics
+#                   census_student_tenants GET    /student/tenants/census(.:format)                   student/tenants#census
+#               return_key_student_tenants GET    /student/tenants/return_key(.:format)               student/tenants#return_key
+#                                          POST   /student/tenants/return_key(.:format)               student/tenants#return_key
+#               empty_room_student_tenants GET    /student/tenants/empty_room(.:format)               student/tenants#empty_room
+#                                          POST   /student/tenants/empty_room(.:format)               student/tenants#empty_room
 #                          student_tenants GET    /student/tenants(.:format)                          student/tenants#index
 #                                          POST   /student/tenants(.:format)                          student/tenants#create
 #                       new_student_tenant GET    /student/tenants/new(.:format)                      student/tenants#new
@@ -270,6 +350,8 @@ end
 #        return_library_librarytransaction GET    /library/librarytransactions/:id/return(.:format)   library/librarytransactions#return
 # check_status_library_librarytransactions GET    /library/librarytransactions/check_status(.:format) library/librarytransactions#check_status
 #                                          POST   /library/librarytransactions/check_status(.:format) library/librarytransactions#check_status
+#      manager_library_librarytransactions GET    /library/librarytransactions/manager(.:format)      library/librarytransactions#manager
+#                                          POST   /library/librarytransactions/manager(.:format)      library/librarytransactions#manager
 #              library_librarytransactions GET    /library/librarytransactions(.:format)              library/librarytransactions#index
 #                                          POST   /library/librarytransactions(.:format)              library/librarytransactions#create
 #           new_library_librarytransaction GET    /library/librarytransactions/new(.:format)          library/librarytransactions#new
@@ -278,6 +360,72 @@ end
 #                                          PATCH  /library/librarytransactions/:id(.:format)          library/librarytransactions#update
 #                                          PUT    /library/librarytransactions/:id(.:format)          library/librarytransactions#update
 #                                          DELETE /library/librarytransactions/:id(.:format)          library/librarytransactions#destroy
+#       update_subjects_exam_examquestions GET    /exam/examquestions/update_subjects(.:format)       exam/examquestions#update_subjects
+#         update_topics_exam_examquestions GET    /exam/examquestions/update_topics(.:format)         exam/examquestions#update_topics
+#                       exam_examquestions GET    /exam/examquestions(.:format)                       exam/examquestions#index
+#                                          POST   /exam/examquestions(.:format)                       exam/examquestions#create
+#                    new_exam_examquestion GET    /exam/examquestions/new(.:format)                   exam/examquestions#new
+#                   edit_exam_examquestion GET    /exam/examquestions/:id/edit(.:format)              exam/examquestions#edit
+#                        exam_examquestion GET    /exam/examquestions/:id(.:format)                   exam/examquestions#show
+#                                          PATCH  /exam/examquestions/:id(.:format)                   exam/examquestions#update
+#                                          PUT    /exam/examquestions/:id(.:format)                   exam/examquestions#update
+#                                          DELETE /exam/examquestions/:id(.:format)                   exam/examquestions#destroy
+#                    exam_examsubquestions GET    /exam/examsubquestions(.:format)                    exam/examsubquestions#index
+#                                          POST   /exam/examsubquestions(.:format)                    exam/examsubquestions#create
+#                 new_exam_examsubquestion GET    /exam/examsubquestions/new(.:format)                exam/examsubquestions#new
+#                edit_exam_examsubquestion GET    /exam/examsubquestions/:id/edit(.:format)           exam/examsubquestions#edit
+#                     exam_examsubquestion GET    /exam/examsubquestions/:id(.:format)                exam/examsubquestions#show
+#                                          PATCH  /exam/examsubquestions/:id(.:format)                exam/examsubquestions#update
+#                                          PUT    /exam/examsubquestions/:id(.:format)                exam/examsubquestions#update
+#                                          DELETE /exam/examsubquestions/:id(.:format)                exam/examsubquestions#destroy
+#                       exam_answerchoices GET    /exam/answerchoices(.:format)                       exam/answerchoices#index
+#                                          POST   /exam/answerchoices(.:format)                       exam/answerchoices#create
+#                    new_exam_answerchoice GET    /exam/answerchoices/new(.:format)                   exam/answerchoices#new
+#                   edit_exam_answerchoice GET    /exam/answerchoices/:id/edit(.:format)              exam/answerchoices#edit
+#                        exam_answerchoice GET    /exam/answerchoices/:id(.:format)                   exam/answerchoices#show
+#                                          PATCH  /exam/answerchoices/:id(.:format)                   exam/answerchoices#update
+#                                          PUT    /exam/answerchoices/:id(.:format)                   exam/answerchoices#update
+#                                          DELETE /exam/answerchoices/:id(.:format)                   exam/answerchoices#destroy
+#                         exam_examanswers GET    /exam/examanswers(.:format)                         exam/examanswers#index
+#                                          POST   /exam/examanswers(.:format)                         exam/examanswers#create
+#                      new_exam_examanswer GET    /exam/examanswers/new(.:format)                     exam/examanswers#new
+#                     edit_exam_examanswer GET    /exam/examanswers/:id/edit(.:format)                exam/examanswers#edit
+#                          exam_examanswer GET    /exam/examanswers/:id(.:format)                     exam/examanswers#show
+#                                          PATCH  /exam/examanswers/:id(.:format)                     exam/examanswers#update
+#                                          PUT    /exam/examanswers/:id(.:format)                     exam/examanswers#update
+#                                          DELETE /exam/examanswers/:id(.:format)                     exam/examanswers#destroy
+#                         exam_shortessays GET    /exam/shortessays(.:format)                         exam/shortessays#index
+#                                          POST   /exam/shortessays(.:format)                         exam/shortessays#create
+#                      new_exam_shortessay GET    /exam/shortessays/new(.:format)                     exam/shortessays#new
+#                     edit_exam_shortessay GET    /exam/shortessays/:id/edit(.:format)                exam/shortessays#edit
+#                          exam_shortessay GET    /exam/shortessays/:id(.:format)                     exam/shortessays#show
+#                                          PATCH  /exam/shortessays/:id(.:format)                     exam/shortessays#update
+#                                          PUT    /exam/shortessays/:id(.:format)                     exam/shortessays#update
+#                                          DELETE /exam/shortessays/:id(.:format)                     exam/shortessays#destroy
+#                      exam_booleanchoices GET    /exam/booleanchoices(.:format)                      exam/booleanchoices#index
+#                                          POST   /exam/booleanchoices(.:format)                      exam/booleanchoices#create
+#                   new_exam_booleanchoice GET    /exam/booleanchoices/new(.:format)                  exam/booleanchoices#new
+#                  edit_exam_booleanchoice GET    /exam/booleanchoices/:id/edit(.:format)             exam/booleanchoices#edit
+#                       exam_booleanchoice GET    /exam/booleanchoices/:id(.:format)                  exam/booleanchoices#show
+#                                          PATCH  /exam/booleanchoices/:id(.:format)                  exam/booleanchoices#update
+#                                          PUT    /exam/booleanchoices/:id(.:format)                  exam/booleanchoices#update
+#                                          DELETE /exam/booleanchoices/:id(.:format)                  exam/booleanchoices#destroy
+#                      exam_booleananswers GET    /exam/booleananswers(.:format)                      exam/booleananswers#index
+#                                          POST   /exam/booleananswers(.:format)                      exam/booleananswers#create
+#                   new_exam_booleananswer GET    /exam/booleananswers/new(.:format)                  exam/booleananswers#new
+#                  edit_exam_booleananswer GET    /exam/booleananswers/:id/edit(.:format)             exam/booleananswers#edit
+#                       exam_booleananswer GET    /exam/booleananswers/:id(.:format)                  exam/booleananswers#show
+#                                          PATCH  /exam/booleananswers/:id(.:format)                  exam/booleananswers#update
+#                                          PUT    /exam/booleananswers/:id(.:format)                  exam/booleananswers#update
+#                                          DELETE /exam/booleananswers/:id(.:format)                  exam/booleananswers#destroy
+#                               exam_exams GET    /exam/exams(.:format)                               exam/exams#index
+#                                          POST   /exam/exams(.:format)                               exam/exams#create
+#                            new_exam_exam GET    /exam/exams/new(.:format)                           exam/exams#new
+#                           edit_exam_exam GET    /exam/exams/:id/edit(.:format)                      exam/exams#edit
+#                                exam_exam GET    /exam/exams/:id(.:format)                           exam/exams#show
+#                                          PATCH  /exam/exams/:id(.:format)                           exam/exams#update
+#                                          PUT    /exam/exams/:id(.:format)                           exam/exams#update
+#                                          DELETE /exam/exams/:id(.:format)                           exam/exams#destroy
 #                         new_user_session GET    /users/sign_in(.:format)                            devise/sessions#new
 #                             user_session POST   /users/sign_in(.:format)                            devise/sessions#create
 #                     destroy_user_session DELETE /users/sign_out(.:format)                           devise/sessions#destroy
@@ -305,4 +453,5 @@ end
 #                                     help GET    /help(.:format)                                     static_pages#help
 #                                    about GET    /about(.:format)                                    static_pages#about
 #                                  contact GET    /contact(.:format)                                  static_pages#contact
+#                                dashboard GET    /dashboard(.:format)                                static_pages#dashboard
 #

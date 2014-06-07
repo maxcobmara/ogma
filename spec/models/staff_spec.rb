@@ -1,5 +1,11 @@
 require 'spec_helper'
 
 describe Staff do
-  pending "add some examples to (or delete) #{__FILE__}"
+
+  before { @staff = Staff.new(name: "Example User", email: "user@example.com") }
+
+  subject { @staff }
+
+  it { should respond_to(:name) }
+  it { should respond_to(:email) }
 end

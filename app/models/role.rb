@@ -7,3 +7,14 @@ class Role < ActiveRecord::Base
     self.authname = name.parameterize.underscore
   end
 end
+
+# == Schema Information
+#
+# Table name: roles
+#
+#  authname   :string(255)
+#  created_at :datetime
+#  id         :integer          not null, primary key
+#  name       :string(255)
+#  updated_at :datetime
+#
