@@ -10,7 +10,7 @@
   %li= link_to (t "asset.purchase"),       "#purchase",    "data-toggle" => "tab"
   %li= link_to (t "asset.placement"),      "#placement",   "data-toggle" => "tab"
   - if @asset.is_maintainable?
-    %li= link_to (t "asset.maintenance"),    "#maintenance", "data-toggle" => "tab"
+    %li= link_to (t "asset.maintenance"),   "#maintenance", "data-toggle" => "tab"
   
 .tab-content.col-md-offset-1
   %dl.dl-horizontal
@@ -42,9 +42,9 @@
       %dt= t 'asset.serial_no'
       %dd= @asset.serialno
       %dt= t 'asset.located_at'
-      %dd= @asset.location.name
+      %dd= @asset.location.try(:name)
       %dt= t 'asset.assigned_to'
-      %dd= @asset.staff.name
+      %dd= @asset.staff.try(:name)
       %dt= t 'asset.status'
       %dd= @asset.status
       %dt= t 'asset.other_information'
@@ -57,11 +57,11 @@
       %dt= t 'asset.purchaseprice'
       %dd= currency(@asset.purchaseprice.to_f)
       %dt= t 'asset.purchasedate'
-      %dd= @asset.purchasedate.strftime("%d/%m/%y")
+      %dd= @asset.purchasedate.try(:strftime, "%d/%m/%y")
       %dt= t 'asset.receiveddate'
-      %dd= @asset.receiveddate.strftime("%d/%m/%y")
+      %dd= @asset.receiveddate.try(:strftime, "%d/%m/%y")
       %dt= t 'asset.receivedby'
-      %dd= @asset.receiver_id
+      %dd= @asset.receiver.try(:name)
       %dt= t 'asset.suppliedby'
       %dd= @asset.supplier_id
 	  
@@ -77,7 +77,7 @@
           %tr
             %td= check_kin {asset_placement.location.name} 
             %td= asset_placement.staff.name
-            %td= asset_placement.reg_on.strftime("%d/%m/%y")
+            %td= asset_placement.reg_on.try(:strftime, "%d/%m/%y")
 
 
   - if @asset.is_maintainable?

@@ -1,26 +1,26 @@
 source 'https://rubygems.org'
-ruby '2.0.0'
+ruby '2.1.1'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '4.0.4'
+gem 'rails', '4.0.5'
 gem "thin", "~> 1.6.2"
 gem "devise", "~> 3.2.4"
 gem 'pg', '~> 0.17.1'
 gem "paperclip", "~> 4.1.1"
-gem "ancestry", "~> 2.0.0"
-gem "ransack", "~> 1.1.0"
+gem "ancestry", "~> 2.1.0"
+gem "ransack", "~> 1.2.3"
 gem "prawn", "~> 1.0.0"
-gem "chartkick", "~> 1.2.2"
+gem "chartkick", "~> 1.2.4"
 #stuff for layout
 #gem "bootstrap-sass", "~> 3.0.3.0"
 gem 'sass-rails', '~> 4.0.0'
 gem 'uglifier', '~> 2.1.1'  # Use Uglifier as compressor for JavaScript assets
 gem 'coffee-rails', '~> 4.0.0'  # Use CoffeeScript for .js.coffee assets and views
 gem "jquery-ui-rails", "~> 4.1.1"
-gem "jquery-rails", "~> 3.0.4"  # Use jquery as the JavaScript library
+gem 'jquery-rails', '~> 3.1.0'  # Use jquery as the JavaScript library
 gem 'turbolinks', '~> 1.1.1'  # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
 #gem 'jbuilder', '~> 1.2'  # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
-gem "haml", "~> 4.0.3"
+gem "haml", "~> 4.0.5"
 gem "kaminari", "~> 0.15.1"
 gem "bootstrap-kaminari-views", "~> 0.0.3"
 gem 'font-awesome-rails', '~> 4.1.0.0'
@@ -46,14 +46,15 @@ group :development do
 end
 
 group :development, :test do
-  gem "rspec-rails", "~> 2.14.0"
-  gem 'guard-rspec', "~> 2.5.0"
+  gem 'rspec-rails', '~> 3.0.1'
+  gem 'guard-rspec', '~> 4.2.9'
   gem "faker"
 end
 
 group :test do
-  gem "selenium-webdriver", "~> 2.35.1"
-  gem "capybara", "~> 2.1.0"
+  gem 'factory_girl_rails', '~> 4.4.1'
+  gem "selenium-webdriver", "~> 2.42.0"
+  gem 'capybara', '~> 2.3.0'
   gem 'growl', '1.0.3'
 end
 

@@ -5,8 +5,11 @@ class Asset < ActiveRecord::Base
   has_many :asset_placements, :dependent => :destroy
   accepts_nested_attributes_for :asset_placements, :allow_destroy => true , :reject_if => lambda { |a| a[:location_id].blank? }
   has_many  :locations, :through => :asset_placements
-  belongs_to  :staff, :foreign_key => "assignedto_id"
-  belongs_to  :location, :foreign_key => "location_id"
+  
+  
+  belongs_to :location, :foreign_key => "location_id"
+  belongs_to :staff,    :class_name => 'Staff', :foreign_key => "assignedto_id"
+  belongs_to :receiver, :class_name => 'Staff', :foreign_key => 'receiver_id'
   
   has_many :asset_defects
   has_many :maints

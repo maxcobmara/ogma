@@ -26,7 +26,7 @@ class Staff < ActiveRecord::Base
   belongs_to        :title,       :class_name => 'Title',       :foreign_key => 'titlecd_id'
   belongs_to        :staffgrade, :class_name => 'Employgrade',  :foreign_key => 'staffgrade_id'
   
-  has_many :asset, :foreign_key => "assignedto_id"
+  has_many :assets, :foreign_key => "assignedto_id"
   has_many :reporters, :class_name => 'AssetDefect', :foreign_key => 'reported_by'
   
   
