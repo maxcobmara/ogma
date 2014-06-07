@@ -81,6 +81,9 @@ ms_MY:
     country_cd: "Kewarganegaraan"
     thumb: Kod ID Biometric
     
+  position:
+    index: Carta Organisasi
+    
     
   asset:
     title: Aset

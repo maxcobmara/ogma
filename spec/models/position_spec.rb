@@ -1,27 +1,17 @@
-class Position < ActiveRecord::Base
-  
-  before_save :set_combo_code, :titleize_name
-  has_ancestry :cache_depth => true
-  
-  validates_uniqueness_of :combo_code
-  validates_presence_of   :name
-  
-  belongs_to :staff
-  
-  def titleize_name
-    self.name = name.titleize
-  end
-  
-  def set_combo_code
-    if ancestry_depth == 0
-      self.combo_code = code
-    else
-      self.combo_code = parent.combo_code + "-" + code
-    end
-  end
-  
+require 'spec_helper'
+
+
+describe Position do
+
+  before  { @position = FactoryGirl.create(:position) }
+
+  subject { @position}
+
+  it { should respond_to(:name) }  
+  it { should be_valid }
   
 end
+
 
 # == Schema Information
 #

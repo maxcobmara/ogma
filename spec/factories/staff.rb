@@ -21,6 +21,11 @@ FactoryGirl.define do
     country_cd 1
     fileno {(0...8).map { (65 + rand(26)).chr }.join}
   end
+  
+  factory :position do
+    sequence(:name) { |n| "Position#{n} Orgchart" }
+    sequence(:code) { |n| "Code#{n}" }
+  end
 end
 
 

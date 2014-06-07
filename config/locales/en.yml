@@ -105,6 +105,9 @@ en:
     country_cd: "Nationality"
     thumb: Thumb ID Code
     
+  position:
+    index: Organisation Chart
+    
     
   asset:
     title: Assets
