@@ -1,0 +1,67 @@
+- model_class = Examquestion
+.col-md-8.col-md-offset-1
+  %dl.dl-horizontal
+	
+    %dt= t 'exam.examquestion.edit_details'
+    %dd
+      /=h @examquestion.qstatus
+      = t("exam.examquestion.#{@examquestion.qstatus.downcase.split.join.gsub(/-+/,"")}")
+
+    %dt= t 'exam.examquestion.editor_id'
+    %dd=h @examquestion.editor_details
+
+    %dt= t 'exam.examquestion.checklist'
+    %dd
+      .showform
+        %table#subtable
+          %thead
+            %tr
+              %th{:align => "center", :colspan => "3",:style=>"border-right:1px solid #FFFFFF;padding: 6px 6px 6px 12px;text-align:center;background: #E6E7E8;"}
+                %b=t 'exam.examquestion.conformity'
+              %th{:align => "center", :colspan => "3",:style=>"border-right:1px solid #FFFFFF;padding: 6px 6px 6px 12px;text-align:center;background: #E6E7E8;"}
+                %b=t 'exam.examquestion.accuracy'
+              %th{:align => "center", :colspan => "3",:style=>"border-right: 1px solid #FFFFFF;padding: 6px 6px 6px 12px;text-align:center;background: #E6E7E8;"}
+                %b=t 'exam.examquestion.fit'
+          %tbody
+            %tr
+              %td{:align => "center",:style=>"font-size:80%"}
+                =t'exam.examquestion.conform_curriculum' 
+                &nbsp;
+              %td{:align => "center",:style=>"font-size:80%"}
+                =t'exam.examquestion.conform_specification' 
+                &nbsp;
+              %td{:align => "center",:style=>"font-size:80%"}
+                =t'exam.examquestion.conform_opportunity' 
+                &nbsp;
+              %td{:align => "center",:style=>"font-size:80%"}
+                =t'exam.examquestion.accuracy_construct' 
+                &nbsp;
+              %td{:align => "center",:style=>"font-size:80%"}
+                =t'exam.examquestion.accuracy_topic' 
+                &nbsp;
+              %td{:align => "center",:style=>"font-size:80%"}
+                =t'exam.examquestion.accuracy_component' 
+                &nbsp;
+              %td{:align => "center",:style=>"font-size:80%"}
+                =t'exam.examquestion.fit_difficulty' 
+                &nbsp;
+              %td{:align => "center",:style=>"font-size:80%"}
+                =t'exam.examquestion.fit_important' 
+                &nbsp;
+              %td{:align => "center",:style=>"font-size:80%"}
+                =t'exam.examquestion.fit_fairness' 
+                &nbsp;
+            %tr
+              %td{:align => "center"}=h @examquestion.conform_curriculum? ? image_tag("tick.png") : image_tag("cross.png")
+              %td{:align => "center"}= h @examquestion.conform_specification? ? image_tag("tick.png") : image_tag("cross.png")
+              %td{:align => "center"}= h @examquestion.conform_opportunity? ? image_tag("tick.png") : image_tag("cross.png")
+              %td{:align => "center"}= h @examquestion.accuracy_construct? ? image_tag("tick.png") : image_tag("cross.png")
+              %td{:align => "center"}= h @examquestion.accuracy_topic? ? image_tag("tick.png") : image_tag("cross.png")
+              %td{:align => "center"}= h @examquestion.accuracy_component? ? image_tag("tick.png") : image_tag("cross.png")
+              %td{:align => "center"}= h @examquestion.fit_difficulty? ? image_tag("tick.png") : image_tag("cross.png")
+              %td{:align => "center"}= h @examquestion.fit_important? ? image_tag("tick.png") : image_tag("cross.png")
+              %td{:align => "center"}= h @examquestion.fit_fairness? ? image_tag("tick.png") : image_tag("cross.png")
+    %dt= t'exam.examquestion.editdt'
+    %dd=h l(@examquestion.editdt) unless @examquestion.editdt.blank? 
+
+  %dl.dl-horizontal

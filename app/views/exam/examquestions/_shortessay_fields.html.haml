@@ -1,0 +1,15 @@
+.form-group
+  .col-md-10
+    - @itemval=["a","b","c"]
+    = @itemval[@count]+"."
+    = f.hidden_field :item, :value => @itemval[@count]
+    = f.text_field :subquestion, :placeholder => (t 'exam.examquestion.subquestion')
+  .col-md-3
+    = f.text_field :submark, :placeholder => (t 'exam.examquestion.submark')  
+= t 'exam.examquestion.subanswer'
+= f.text_area :subanswer
+.form-group
+  .col-md-10  
+    = f.text_field :keyword, :placeholder => (t 'exam.examquestion.keyword')
+    = f.hidden_field :_destroy 
+    /= link_to_remove_fields image_tag("delete.png", :border => 0, :title => 'Remove'), f 

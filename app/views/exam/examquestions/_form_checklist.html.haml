@@ -1,0 +1,79 @@
+.col-md-offset-2
+  .form-group
+    .col-sm-2.control-label
+      = f.label :editor_id
+    .col-md-6
+      = f.collection_select :editor_id, Staff.find(:all, :order => "staffgrade_id DESC", :conditions => ["id IN (?)", @examquestion.question_editor]), :id, :name, :include_blank => 'Please select editor', :selected => current_user.staff_id
+
+  .form-group
+    .col-sm-2.control-label
+      = f.label :editdt
+    .col-md-2
+      = f.text_field :editdt, class: 'form-control', 'data-behaviour' => 'datepicker_today'
+
+  .form-group
+    .col-sm-2.control-label
+      %br
+      %b= t 'exam.examquestion.checklist'
+    .col-md-8
+      .showform
+        %table#subtable
+          %thead
+            %tr
+              %th{:align => "center", :colspan => "3",:style=>"border-right:1px solid #FFFFFF;padding: 6px 6px 6px 12px;text-align:center;background: #E6E7E8;"}
+                %b=t 'exam.examquestion.conformity'
+              %th{:align => "center", :colspan => "3",:style=>"border-right:1px solid #FFFFFF;padding: 6px 6px 6px 12px;text-align:center;background: #E6E7E8;"}
+                %b=t 'exam.examquestion.accuracy'
+              %th{:align => "center", :colspan => "3",:style=>"border-right: 1px solid #FFFFFF;padding: 6px 6px 6px 12px;text-align:center;background: #E6E7E8;"}
+                %b=t 'exam.examquestion.fit'
+          %tbody
+            %tr
+              %td{:align => "center",:style=>"font-size:80%"}
+                =t'exam.examquestion.conform_curriculum' 
+                &nbsp;
+              %td{:align => "center",:style=>"font-size:80%"}
+                =t'exam.examquestion.conform_specification' 
+                &nbsp;
+              %td{:align => "center",:style=>"font-size:80%"}
+                =t'exam.examquestion.conform_opportunity' 
+                &nbsp;
+              %td{:align => "center",:style=>"font-size:80%"}
+                =t'exam.examquestion.accuracy_construct' 
+                &nbsp;
+              %td{:align => "center",:style=>"font-size:80%"}
+                =t'exam.examquestion.accuracy_topic' 
+                &nbsp;
+              %td{:align => "center",:style=>"font-size:80%"}
+                =t'exam.examquestion.accuracy_component' 
+                &nbsp;
+              %td{:align => "center",:style=>"font-size:80%"}
+                =t'exam.examquestion.fit_difficulty' 
+                &nbsp;
+              %td{:align => "center",:style=>"font-size:80%"}
+                =t'exam.examquestion.fit_important' 
+                &nbsp;
+              %td{:align => "center",:style=>"font-size:80%"}
+                =t'exam.examquestion.fit_fairness' 
+              &nbsp;
+            %tr
+              %td{:align => "center"}= f.check_box :conform_curriculum 
+              %td{:align => "center"}= f.check_box :conform_specification
+              %td{:align => "center"}= f.check_box :conform_opportunity
+              %td{:align => "center"}= f.check_box :accuracy_construct
+              %td{:align => "center"}= f.check_box :accuracy_topic
+              %td{:align => "center"}= f.check_box :accuracy_component
+              %td{:align => "center"}= f.check_box :fit_difficulty
+              %td{:align => "center"}= f.check_box :fit_important
+              %td{:align => "center"}= f.check_box :fit_fairness  
+
+/ This stuff is for subs
+/=f.fields_for :examsubquestions do |builder| 
+/= render 'examsubquestion_fields', :f => builder
+/%p= link_to_add_fields image_tag("add.png", :border => 0, :title => 'Add Q'), f, :examsubquestions %> - Add More 
+
+/MCQ Answers
+/Seq
+/Answer
+/=f.fields_for :exammcqanswers do |builder|
+/= render 'exammcqanswer_fields', :f => builder
+/%p=link_to_add_fields image_tag("add.png", :border => 0, :title => 'Add Q'), f, :exammcqanswers %> - Add More 

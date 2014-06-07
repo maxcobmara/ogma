@@ -1,0 +1,71 @@
+.col-md-offset-2
+  .form-group
+    .col-sm-2.control-label
+      = f.label :creator_id
+    .col-md-6
+      = f.collection_select :creator_id, Staff.find(:all, :order => 'name ASC', :conditions => ["id IN (?)", @examquestion.question_creator]), :id, :name, {:selected => @creator, :prompt => t('helpers.prompt.select_creator')}, {class: 'selectpicker', "data-width"=>"300px"}		
+
+  .form-group
+    .col-sm-2.control-label
+      = f.label :programme_id
+    .col-md-6	  
+      - if @examquestion.id.nil? || @examquestion.id.blank?
+        - if @examquestion.subject_id && @examquestion.subject_id != 0
+          /lili
+          //RESUBMISSION of NEW record with 'subject_id' existance (when 'subject_id' exist, 'programme_id' MUST exist)
+          = f.collection_select :programme_id, @programme_listing, :id, :programme_list, {:selected => @examquestion.subject.root.id, :prompt => t('helpers.prompt.select_programme')}			  
+        - else
+          /kaka
+          /NEW record ('programme_id' is pre-selected for lecturers, but NO 'programme_id' for ADMIN)
+          //RESUBMISSION of NEW record with selected 'programme_id' BUT 'subject_id' is not selected
+          = f.collection_select :programme_id, @programme_listing, :id, :programme_list, {:selected => @examquestion.programme_id.to_i, :include_blank => t('helpers.prompt.select_programme')}         		
+      - else
+        /kuki
+        //EDIT of existing record
+        = f.collection_select :programme_id, @programme_listing, :id, :programme_list, {:selected => @examquestion.subject.root.id, :prompt => t('helpers.prompt.select_programme')}
+        	  
+  .form-group.subject_field
+    .col-sm-2.control-label
+      = f.label :subject_id
+    .col-md-6	  
+      - if @examquestion.id.nil? || @examquestion.id.blank?
+        - if @examquestion.subject_id && @examquestion.subject_id!=0
+          /lili2
+          //RESUBMISSION of NEW record with 'subject_id' existance (when 'subject_id' exist, 'programme_id' MUST exist)
+          = f.collection_select :subject_id, @subjects2, :id, :subject_list,{:prompt => t('helpers.prompt.select_subject'),:selected =>@examquestion.subject_id}
+        - else
+          /kaka2 ~
+          //NEW record (NO 'subject_id' BUT 'programme_id' must EXIST before SUBJECT FIELD can be displayed) 
+          //& RESUBMISSION of NEW record with selected 'programme_id' BUT 'subject_id' is not selected
+          = f.collection_select :subject_id, @subjects2, :id, :subject_list,{:include_blank => t('helpers.prompt.select_subject'),:selected =>@examquestion.subject_id}
+      - else
+        /kuki2
+        //EDIT of existing record
+        = f.collection_select :subject_id, @subjects1, :id, :subject_list,{:include_blank => t('helpers.prompt.select_subject'),:selected => @examquestion.subject_id}
+   
+  .form-group.topic_field
+    .col-sm-2.control-label
+      = f.label :topic_id
+    .col-md-6
+
+      - if @examquestion.id.nil? == true || @examquestion.id.blank? == true 
+        - if @examquestion.topic_id==0 || @examquestion.topic_id.nil? || @examquestion.topic_id.blank? 
+          /kaka3
+          //NEW record (NO 'topic_id' BUT 'programme_id' & 'subject_id' must EXIST before TP{OC FIELD can be displayed
+          //& RESUBMISSION of NEW record with selected 'programme_id' & 'subject_id' BUT 'topic_id' not yet selected
+          = f.collection_select :topic_id, @topics, :id, :subject_list,{:include_blank => t('helpers.prompt.select_topic')}
+        - else 
+          //RESUBMISSION of NEW record with 'topic_id' existance ('programme_id' & 'subject_id' MUST exist)
+          /lili3
+          = f.collection_select :topic_id, Programme.find(@examquestion.subject_id).descendants.at_depth(3).sort_by{|x|x.code}, :id, :subject_list, :include_blank=>t('helpers.prompt.select_topic'), :selected => @examquestion.topic_id 
+          /--topic EXIST, programme & subject EXIST
+      - else
+        /--else for existing examquestion (EDIT)
+        /kuki3
+        = f.collection_select :topic_id, @topics, :id, :subject_list, :include_blank=>t('helpers.prompt.select_topic'), :selected => @examquestion.topic_id
+ 
+  .form-group
+    .col-sm-2.control-label
+      =f.label :createdt
+    .col-md-3
+      = f.text_field :createdt, class: 'form-control mandatory', 'data-behaviour' => 'datepicker_today'

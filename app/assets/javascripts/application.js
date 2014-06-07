@@ -20,6 +20,7 @@
 //= require bigtext
 //= require jsapi
 //= require chartkick
+//= require nicEdit
 //= require_tree .
 
 $('.tenant').tooltip( {placement: 'right', container: 'body'});

@@ -9,6 +9,9 @@ class Asset < ActiveRecord::Base
   belongs_to  :location, :foreign_key => "location_id"
   
   has_many :asset_defects
+  has_many :maints
+  has_many :asset_loans
+  has_many :asset_disposal
   
 end
 

@@ -5,6 +5,13 @@ class Programme < ActiveRecord::Base
       "#{code}" + " " + "#{name}"   
   end
   
+  def programme_list
+    if is_root?
+      "#{course_type}" + " " + "#{name}"   
+    else
+    end
+  end
+  
 end
 
 # == Schema Information

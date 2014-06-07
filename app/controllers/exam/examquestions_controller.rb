@@ -12,9 +12,9 @@ class Exam::ExamquestionsController < ApplicationController
 
     current_user = User.find(11)    #maslinda 
     #current_user = User.find(72)    #izmohdzaki
-    @position_exist = current_user.staff.position
-    if @position_exist  
-      @lecturer_programme = current_user.staff.position.unit
+    @position_exist = current_user.staff.positions
+    if @position_exist
+      @lecturer_programme = current_user.staff.positions[0].unit
       unless @lecturer_programme.nil?
         @programme = Programme.find(:first,:conditions=>['name ILIKE (?) AND ancestry_depth=?',"%#{@lecturer_programme}%",0])
       end
@@ -65,26 +65,34 @@ class Exam::ExamquestionsController < ApplicationController
   # GET /examquestions/new.xml
   def new
     @examquestion = Examquestion.new
-    #--newly added
-    @lecturer_programme = current_user.staff.position.unit      
+    #@lecturer_programme = current_user.staff.position.unit     - replace with : 2 lines (below)
+    current_user = User.find(11)  #current_user = User.find(72) - izmohdzaki, 11-maslinda
+    @lecturer_programme = current_user.staff.positions[0].unit
+    
+    @creator = current_user.staff.id 
+    
     unless @lecturer_programme.nil?
       @programme = Programme.find(:first,:conditions=>['name ILIKE (?) AND ancestry_depth=?',"%#{@lecturer_programme}%",0])
     end
-    unless @programme.nil?
+    unless @programme.nil? #for lecturers
       @programme_listing = Programme.find(:all, :conditions=> ['id=?',@programme.id]).to_a
       @preselect_prog = @programme.id
       @all_subject_ids = Programme.find(@preselect_prog).descendants.at_depth(2).map(&:id)
       if @lecturer_programme == 'Commonsubject'
-        @subjectlist_preselect_prog = Programme.find(:all, :conditions=>['id IN(?) AND course_type=?',@all_subject_ids, @lecturer_programme],:order=>'ancestry ASC') 
+        @subjects2 = Programme.find(:all, :conditions=>['id IN(?) AND course_type=?',@all_subject_ids, @lecturer_programme],:order=>'ancestry ASC') 
       else
-        @subjectlist_preselect_prog = Programme.find(:all, :conditions=>['id IN(?) AND course_type=?',@all_subject_ids, 'Subject'], :order=>'ancestry ASC')  #'Subject' 
+        @subjects2 = Programme.find(:all, :conditions=>['id IN(?) AND course_type=?',@all_subject_ids, 'Subject'], :order=>'ancestry ASC')  #'Subject' 
+        #subjects2 - kaka2 (NEW)
       end
-    else
+    else #for admin
       @programme_listing = Programme.roots
+      @subjects2 = Programme.all.at_depth(2).sort #default for NEW record & resubmission of NEW record - refer kaka2
     end
-    #--newly added
-    #@examquestion.exammcqanswers.build
-    #@examquestion.examsubquestions.build
+    
+    #no topic will be displayed until subject is selected - below line required as DEFAULT value
+    @topics = Programme.all.at_depth(3).sort  
+    #refer examquestion.js.coffee (same for all, except for : when programme & subject are selected, topics will be populated accordingly)
+    
     3.times { @examquestion.shortessays.build }
     respond_to do |format|
       format.html # new.html.erb
@@ -92,95 +100,99 @@ class Exam::ExamquestionsController < ApplicationController
     end
   end
 
+  def update_subjects
+    programme = Programme.find(params[:programme_id])
+    @subjects = Programme.find(programme.id).descendants.at_depth(2).order(ancestry: :asc)
+  end
+
+  def update_topics
+    @topics = Programme.find(params[:subject_id]).descendants.at_depth(3).order(ancestry: :asc)
+  end
+  
   # GET /examquestions/1/edit
   def edit
     @examquestion = Examquestion.find(params[:id])
+    current_user = User.find(11)  #current_user = User.find(72) - izmohdzaki, 11-maslinda
+		@creator = @examquestion.creator_id
     
-    #--newly added--same as create--required during edit
-    @lecturer_programme = current_user.staff.position.unit      
-    if @lecturer_programme != 'Commonsubject'
-      @programme = Programme.find(:first,:conditions=>["name ILIKE (?) AND ancestry_depth=?","%#{@lecturer_programme}%",0])
+    @lecturer_programme = current_user.staff.positions[0].unit      
+    unless @lecturer_programme.nil?
+      @programme = Programme.find(:first,:conditions=>['name ILIKE (?) AND ancestry_depth=?',"%#{@lecturer_programme}%",0])
     end
+    
+    #NOTE : For ALL records, EDIT : @subjects1 & @topics always SELECTED (mandatory fields), (programme list - based on logged-in user)
     unless @programme.nil?  
       @programme_listing = Programme.find(:all, :conditions=> ['id=?',@programme.id]).to_a
       @preselect_prog = @programme.id
       @all_subject_ids = Programme.find(@preselect_prog).descendants.at_depth(2).map(&:id)
-      unless @examquestion.topic_id.nil?
-        @all_subjects1 = Programme.find(@examquestion.topic.root.id).descendants.at_depth(2).map(&:id)
-      else
-        @all_subjects2 = Programme.find(@examquestion.programme_id).descendants.at_depth(2).map(&:id)
-      end
       
       if @lecturer_programme == 'Commonsubject'
-        @subjectlist_preselect_prog = Programme.find(:all, :conditions=>['id IN(?) AND course_type=?',@all_subject_ids, @lecturer_programme],:order=>'ancestry ASC')
-        unless @examquestion.topic_id.nil?
-          @subjects1 = Programme.find(:all, :conditions=>['id IN(?) AND course_type=?',@all_subjects1, @lecturer_programme],:order=>'ancestry ASC')  
-        else
-          @subjects2 = Programme.find(:all, :conditions=>['id IN(?) AND course_type=?',@all_subjects2, @lecturer_programme],:order=>'ancestry ASC')  
-        end 
+        @subjects1 = Programme.find(:all, :conditions=>['id IN(?) AND course_type=?',@all_subjects_ids, @lecturer_programme],:order=>'ancestry ASC')  
       else
-        @subjectlist_preselect_prog = Programme.find(:all, :conditions=>['id IN(?) AND course_type=?',@all_subject_ids, 'Subject'],:order=>'ancestry ASC')  #'Subject' 
-        unless @examquestion.topic_id.nil?
-          @subjects1 = Programme.find(:all, :conditions=>['id IN(?) AND course_type=?',@all_subjects1, 'Subject'], :order=>'ancestry ASC')  
-        else
-          @subjects2 = Programme.find(:all, :conditions=>['id IN(?) AND course_type=?',@all_subjects2, 'Subject'], :order=>'ancestry ASC')  
-        end
+        @subjects1 = Programme.find(:all, :conditions=> ['id IN(?)',@all_subject_ids])
       end
     else  #for admin (has no programme in current_user.staff.position.unit)
       @programme_listing = Programme.roots
-      unless @examquestion.subject_id.nil? || @examquestion.subject_id.blank?   #if subject already selected
-        @subjects1 = Programme.find(@examquestion.subject.root_id).descendants.at_depth(2).sort_by{|x|x.ancestry}
-      else  # if subject not selected yet 
-        @subjects1 = Programme.find(:all, :conditions=>['ancestry_depth=?',2],:order=>'ancestry ASC')
-      end
+      @subjects1 = Programme.find(@examquestion.subject_id).root.descendants.at_depth(2).sort_by{|x|x.ancestry}
     end
-    #--newly added--same as create--required during edit
+    @topics = Programme.find(@examquestion.subject_id).descendants.at_depth(3).sort_by{|x|x.code}
   end
 
   # POST /examquestions
   # POST /examquestions.xml
   def create
-    @examquestion = Examquestion.new(params[:examquestion])
+    @examquestion= Examquestion.new(examquestion_params)
     
+    current_user = User.find(11)  #current_user = User.find(72) - izmohdzaki, 11-maslinda    
     #--newly added--same as edit--required when incomplete data submitted
-    @lecturer_programme = current_user.staff.position.unit      
+    @lecturer_programme = current_user.staff.positions[0].unit      
     if @lecturer_programme != 'Commonsubject'
       @programme = Programme.find(:first,:conditions=>["name ILIKE (?) AND ancestry_depth=?","%#{@lecturer_programme}%",0])
     end
-    unless @programme.nil?  
+    unless @programme.nil? #for lecturers
       @programme_listing = Programme.find(:all, :conditions=> ['id=?',@programme.id]).to_a
       @preselect_prog = @programme.id
-      @all_subject_ids = Programme.find(@preselect_prog).descendants.at_depth(2).map(&:id)
-      unless @examquestion.topic_id.nil?
-        @all_subjects1 = Programme.find(@examquestion.topic.root.id).descendants.at_depth(2).map(&:id)
-      else
-        @all_subjects2 = Programme.find(@examquestion.programme_id).descendants.at_depth(2).map(&:id)
-      end
-      
-      if @lecturer_programme == 'Commonsubject'
-        @subjectlist_preselect_prog = Programme.find(:all, :conditions=>['id IN(?) AND course_type=?',@all_subject_ids, @lecturer_programme],:order=>'ancestry ASC')
-        unless @examquestion.topic_id.nil?
-          @subjects1 = Programme.find(:all, :conditions=>['id IN(?) AND course_type=?',@all_subjects1, @lecturer_programme],:order=>'ancestry ASC')  
+      @all_subject_ids = Programme.find(@preselect_prog).descendants.at_depth(2).map(&:id)      
+      if @lecturer_programme == 'Commonsubject' #common subject lecturers
+        unless @examquestion.subject_id.nil? || @examquestion.subject_id.blank? || @examquestion.subject_id==0 
+          @subjects2 = Programme.find(:all, :conditions=>['id IN(?) AND course_type=?',@all_subjects1, @lecturer_programme],:order=>'ancestry ASC')
+          #to define topic later
         else
-          @subjects2 = Programme.find(:all, :conditions=>['id IN(?) AND course_type=?',@all_subjects2, @lecturer_programme],:order=>'ancestry ASC')  
+          @subjects2 = Programme.find(:all, :conditions=>['id IN(?) AND course_type=?',@all_subjects2, @lecturer_programme],:order=>'ancestry ASC')
+          #to define topic later
         end 
-      else
-        @subjectlist_preselect_prog = Programme.find(:all, :conditions=>['id IN(?) AND course_type=?',@all_subject_ids, 'Subject'],:order=>'ancestry ASC')   
-        unless @examquestion.topic_id.nil?
-          @subjects1 = Programme.find(:all, :conditions=>['id IN(?) AND course_type=?',@all_subjects1, 'Subject'],:order=>'ancestry ASC')  
+      else  #programme lecturers
+        #when SUBJECT is selected, @subjects2 - lili2 NEW (resubmission) & @topics - kaka3 NEW (resubmission)
+        @subjects2 = Programme.find(:all, :conditions=>['id IN(?) AND course_type=?',@all_subject_ids, 'Subject'],:order=>'ancestry ASC')   
+        unless @examquestion.subject_id.nil? || @examquestion.subject_id.blank? || @examquestion.subject_id==0 || @examquestion.subject_id=='Select the Subject' #if subject already selected
+          @topics = Programme.find(@examquestion.subject_id).descendants.at_depth(3)
         else
-          @subjects2 = Programme.find(:all, :conditions=>['id IN(?) AND course_type=?',@all_subjects2, 'Subject'],:order=>'ancestry ASC')  
+          @topics = Programme.find(@preselect_prog).descendants.at_depth(3) #default - still required, although TOPIC FIELD is hide
         end
+        #when SUBJECT is NOT selected, @subjects2 - kaka2 (NEW-resubmission), @topics - kaka3 (NEW-resubmission)
       end
-    else  
+    else #for admin
       @programme_listing = Programme.roots
+      unless @examquestion.subject_id.nil? || @examquestion.subject_id.blank? || @examquestion.subject_id==0 || @examquestion.subject_id=='Select the Subject' #if subject already selected
+        @subjects2 = Programme.find(@examquestion.subject.root_id).descendants.at_depth(2).sort_by{|x|x.ancestry}
+        @topics = Programme.find(@examquestion.subject_id).descendants.at_depth(3).sort
+      else  # if subject not selected yet 
+        #check if programme IS SELECTED (re-submit of new record)
+        if @examquestion.programme_id.nil? || @examquestion.programme_id.blank? #note : SUBJECT FIELD & TOPIC FIELD are hide
+          @subjects2= Programme.find(:all, :conditions=>['ancestry_depth=?',2],:order=>'ancestry ASC')
+          @topics = Programme.all.at_depth(3).sort  #refer examquestion.js.coffee
+        else
+          @subjects2 = Programme.find(@examquestion.programme_id).descendants.at_depth(2).sort_by{|x|x.ancestry}
+          @topics = Programme.find(@examquestion.programme_id).descendants.at_depth(3).sort
+        end
+      end      
     end
     #--newly added--same as edit--required when incomplete data submitted
-    
+   
     respond_to do |format|
       if @examquestion.save
         flash[:notice] = 'Examquestion was successfully created.'
-        format.html { redirect_to(@examquestion) }
+        format.html { redirect_to(exam_examquestion_path(@examquestion))}
         format.xml  { render :xml => @examquestion, :status => :created, :location => @examquestion }
       else
         format.html { render :action => "new" }
@@ -197,9 +209,9 @@ class Exam::ExamquestionsController < ApplicationController
     #@subject_exams = @examquestions.group_by { |t| t.subject_details }
 
     respond_to do |format|
-      if @examquestion.update_attributes(params[:examquestion])
+      if @examquestion.update(examquestion_params)
         flash[:notice] = 'Examquestion was successfully updated.'
-        format.html { redirect_to(@examquestion) }
+        format.html { redirect_to(exam_examquestion_path(@examquestion)) }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }
@@ -227,29 +239,6 @@ class Exam::ExamquestionsController < ApplicationController
     end
   end
   
-  def view_subject
-    @lecturer_programme = current_user.staff.position.unit 
-    @programme_id = params[:programmeid]
-    unless @programme_id.blank? 
-      all_subject_ids = Programme.find(@programme_id).descendants.at_depth(2).map(&:id)
-      if @lecturer_programme == 'Commonsubject'
-        @subjects = Programme.find(:all, :conditions=>['id IN(?) AND course_type=?',all_subject_ids, @lecturer_programme],:order=>'ancestry ASC')  
-      else
-        #@subjects = Subject.find(:all, :joins => :programmes,:conditions => ['programme_id=?', @programme_id])
-        @subjects = Programme.find(:all, :conditions=>['id IN(?) AND course_type=?',all_subject_ids, 'Subject'],:order=>'ancestry ASC')  
-      end
-    end
-    render :partial => 'view_subject', :layout => false
-  end
-  
-  def view_topic
-    @subject_id = params[:subjectid]
-    unless @subject_id.blank? 
-      @topics = Programme.find(@subject_id).descendants.at_depth(3)
-    end
-    render :partial => 'view_topic', :layout => false
-  end
-  
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_examquestion
@@ -258,6 +247,6 @@ class Exam::ExamquestionsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def examquestion_params
-      params.require(:examquestion).permit(:subject_id, :questiontype, :question, :answer, :marks, :category, :qkeyword, :qstatus, :creator_id, :createdt, :difficulty, :statusremark, :editor_id, :editdt, :approver_id, :approvedt, :bplreserve, :bplsent, :bplsentdt, :diagram_file_name, :diagram_content_type, :diagram_file_size, :diagram_updated_at, :topic_id , :construct, :conform_curriculum, :conform_specification, :conform_opportunity, :accuracy_construct, :accuracy_topic, :accuracy_component, :fit_difficulty, :fit_important, :fit_fairness, :programme_id)
+      params.require(:examquestion).permit(:activate,:answermcq, :subject_id, :questiontype, :question, :answer, :marks, :category, :qkeyword, :qstatus, :creator_id, :createdt, :difficulty, :statusremark, :editor_id, :editdt, :approver_id, :approvedt, :bplreserve, :bplsent, :bplsentdt, :diagram, :diagram_file_name, :diagram_content_type, :diagram_file_size, :diagram_updated_at, :diagram_caption, :topic_id , :construct, :conform_curriculum, :conform_specification, :conform_opportunity, :accuracy_construct, :accuracy_topic, :accuracy_component, :fit_difficulty, :fit_important, :fit_fairness, :programme_id, answerchoices_attributes: [:id,:examquestion_id, :item, :description], examanswers_attributes: [:id,:examquestion_id,:item,:answer_desc], shortessays_attributes: [:id,:item,:subquestion,:submark,:subanswer, :examquestion_id, :keyword], booleanchoices_attributes: [:id, :examquestion_id,:item,:description], booleananswers_attributes: [:id,:examquestion_id, :item, :answer])
     end
 end

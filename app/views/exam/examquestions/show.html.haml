@@ -1,0 +1,88 @@
+- model_class = Examquestion
+.page-header
+  %h1= t 'exam.examquestion.examquestion_details'
+= render 'shared/flashes'
+
+.row
+  .col-md-offset-1
+    / Nav tabs
+    %ul.nav.nav-tabs
+      %li.active= link_to (t 'exam.examquestion.question_details'),"#show_question_details_answer", "data-toggle" => "tab"
+      /hide nav tab for EDITING DETAILS
+      - if ["Submit", "Editing", "Ready For Approval", "Re-Edit", "For Approval", "Reserve for BPL" ].include? (@examquestion.qstatus)
+        %li= link_to ((t 'exam.examquestion.edit_details')), "#show_checklist", "data-toggle" => "tab"
+      /hide nav tab for APPROVAL DETAILS
+      - if ["Approved", "Reserve for BPL"].include? (@examquestion.qstatus) 
+        %li= link_to ((t 'exam.examquestion.approval_bpl_details')), "#show_approval_bpl", "data-toggle" => "tab" 
+      - elsif ["Ready For Approval", "Re-Edit", "For Approval", "Approved", "Reserve for BPL"].include? (@examquestion.qstatus)
+        %li= link_to ((t 'exam.examquestion.approval_details')), "#show_approval_bpl", "data-toggle" => "tab"
+
+    /display diagram if exist
+    .tab-content{style:"padding-top:1em"}
+      .col-md-1
+        - if @examquestion.diagram.exists? then
+          = image_tag @examquestion.diagram.url, :style=>"width: 250px; height:300px;"
+          %br
+          = @examquestion.diagram_caption
+        - else
+          %img{:src => "http://placekitten.com/200/300"}/ 
+    
+    / display creation & status details & frequency of usage
+    .tab-content{style:"padding-top:1em"}    
+      = render 'show_question_main'
+      .col-md-8.col-md-offset-1
+        %dl.dl-horizontal
+          - if @examquestion.usage_frequency > 0  
+            %dt= t'exam.examquestion.usage_frequency'
+            %dd 
+              - count=1
+              - @q_frequency[0].exams.each do |paper| 
+                =count.to_s+') '+paper.exam_on.strftime("%d %b %Y").to_s
+                =paper.name+'-'+paper.subject.subject_list
+                %br
+                - count+=1
+
+      #show_question_details_answer.tab-pane.active
+        %br
+        = render 'show_question_details_answer'
+
+      #show_checklist.tab-pane
+        %br
+        - if ["Submit", "Editing", "Ready For Approval", "Re-Edit", "For Approval", "Reserve for BPL" ].include? (@examquestion.qstatus)
+          = render 'show_checklist'
+
+      #show_approval_bpl.tab-pane
+        %br
+        - if ["Ready For Approval", "Re-Edit", "For Approval", "Approved", "Reserve for BPL"].include? (@examquestion.qstatus)
+          = render 'show_approval'
+          - if ["Approved", "Reserve for BPL"].include? (@examquestion.qstatus) 
+            .row
+              .col-md-8.col-md-offset-1
+                %dl.dl-horizontal
+                  %BR
+
+                  %dt= t 'exam.examquestion.bpl_details'
+                  %dd
+                    /=h @examquestion.qstatus
+                    = t("exam.examquestion.#{@examquestion.qstatus.downcase.split.join.gsub(/-+/,"")}")
+                  %dt= t 'exam.examquestion.bplreserve' , :default => model_class.human_attribute_name(:bplreserve) + ":"
+                  %dd=h @examquestion.bplreserve? ? image_tag("tick.png") : image_tag("cross.png")
+
+                  %dt= t 'exam.examquestion.bplsent' , :default => model_class.human_attribute_name(:bplsent) + ":"
+                  %dd=h @examquestion.bplsent? ? image_tag("tick.png") : image_tag("cross.png")
+	  
+                  %dt= t 'exam.examquestion.bplsentdt' , :default => model_class.human_attribute_name(:bplsentdt) + ":"
+                  %dd=h @examquestion.bplsent? ? @examquestion.bplsentdt : ""
+
+.row
+  .col-md-4.col-md-offset-3
+    %hr
+    .form-actions
+      = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), exam_examquestions_path, :class => 'btn btn-default'
+      = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('.edit', :default => t("helpers.links.edit")), edit_exam_examquestion_path(@examquestion),  :class => 'btn btn-primary' 
+      = link_to content_tag(:i, "", :class => "fa fa-trash-o icon-white") + " " + t('.destroy', :default => t("helpers.links.destroy")), |
+        exam_examquestion_path(@examquestion),                                                                                                    |
+        :method => 'delete',                                                                                                           |
+        :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },                   |
+        :class => 'btn btn-danger'
+		

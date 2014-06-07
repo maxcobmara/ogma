@@ -15,6 +15,9 @@ Ogma::Application.routes.draw do
     resources :assets do
       member do
         get :kewpa3
+        get :kewpa2
+        get :kewpa14
+        get :kewpa6
       end
       collection do
         get   :fixed_assets
@@ -28,9 +31,22 @@ Ogma::Application.routes.draw do
       end   
     end
     resources :stationeries
-    resources :asset_defects,   as: :defects
+    resources :asset_defects,   as: :defects do
+      member do
+        get :kewpa9
+      end
+    end
     resources :asset_losses,    as: :losses
-    resources :asset_disposals, as: :disposals
+    resources :asset_disposals, as: :disposals do
+    collection do
+      get :kewpa17
+      get :kewpa20
+    end
+    member do
+      get :kewpa18
+      get :kewpa19
+    end
+  end
   end
 
   namespace :campus do
@@ -93,7 +109,12 @@ Ogma::Application.routes.draw do
   end
   
   namespace :exam do
-    resources :examquestions
+    resources :examquestions do
+      collection do
+        get 'update_subjects', to: "examquestions#update_subjects" 
+        get 'update_topics', to: "examquestions#update_topics" 
+      end
+    end  
     resources :examsubquestions
     resources :answerchoices
     resources :examanswers
@@ -102,6 +123,7 @@ Ogma::Application.routes.draw do
     resources :booleananswers
     resources :exams
   end
+
   
   devise_for :users
   resources :users

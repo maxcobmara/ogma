@@ -56,7 +56,9 @@ class Kewpa3Pdf < Prawn::Document
          table(data2, :column_widths => [180, 340], :cell_style => { :size => 9}) do
          row(0).borders = [:top, :left, :right]
          row(1).borders = [:left, :right]
+         row(1).align = :center
          row(2).borders = [:left, :right]
+         row(2).align = :center
          row(3).borders = [:left, :right]
          row(4).borders = [:left, :right]
          row(5).borders = [:left, :right]

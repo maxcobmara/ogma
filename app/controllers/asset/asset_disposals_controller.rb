@@ -8,6 +8,29 @@ class Asset::AssetDisposalsController < ApplicationController
   def show
   end
   
+  def kewpa17
+    @disposals = AssetDisposal.find(:all, :order => 'created_at DESC')
+    respond_to do |format|
+      format.pdf do
+        pdf = Kewpa17Pdf.new(@disposals, view_context)
+        send_data pdf.render, filename: "kewpa17-{Date.today}",
+                              type: "application/pdf",
+                              disposition: "inline"
+      end
+    end
+  end
+  def kewpa20
+    @disposal = AssetDisposal.find(:all, :order => 'created_at DESC')
+    respond_to do |format|
+      format.pdf do
+        pdf = Kewpa20Pdf.new(@disposal, view_context)
+        send_data pdf.render, filename: "kewpa20-{Date.today}",
+                              type: "application/pdf",
+                              disposition: "inline"
+      end
+    end
+  end
+  
   
   private
     # Use callbacks to share common setup or constraints between actions.

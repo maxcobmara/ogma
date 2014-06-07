@@ -58,7 +58,6 @@ ms_MY:
     
   errors:
 
-  
   people:
     male: Lelaki
     female: Perempuan
@@ -359,14 +358,6 @@ ms_MY:
   sidebar:
     home: Rumah
     
-    
-    
-  helpers:
-    links:
-      new: Cipta
-      back: Terdahulu
-  
-  
   date:
     formats:
       default: "%d %B %Y"
@@ -419,19 +410,143 @@ ms_MY:
   exam:
     title: Peperiksaan
     examquestion: 
+      new_title: Soalan Baru
+      edit: Sunting Soalan
       title: Penyediaan Soalan
       questiontype: Jenis
       programme_id: Program
       subject_id: Subjek
       topic_id: Topik
-      question: Soalan Peperiksaan
+      question: Soalan 
+      question2: "Soalan Utama"
       answer: Jawapan
       marks: Markah
+      marks2: "Jumlah Markah"
       category: Kategori
-      difficulty: Tahap Kesukaran
+      construct: Konstruk
+      difficulty: Aras Kesukaran
       qstatus: Status
       creator_id: Disediakan Oleh
       total_questions: Jumlah Soalan
+      createdt: Tarikh Disediakan
+      mandatory: Mandatori
+      question_details: Butiran Soalan
+      question_details2: Kriteria Soalan
+      question_answers: "Soalan & Jawapan"
+      answermcq: Jawapan
+      qkeyword: Kata Kunci
+      qstatus: Status
+      bplreserve: Rizab untuk BPL
+      bplsent: Dihantar ke BPL
+      bplsentdt: Tarikh Dihantar
+      examquestion_details: Butiran Soalan Peperiksaan
+      question_creation: Penyediaan Soalan
+      question_status: Status Soalan
+      updated_at: Tarikh Kemaskini
+      created_at: Tarikh Disediakan
+      subquestion: Subsoalan
+      subanswer: Jawapan
+      submark: Markah
+      keyword: Kata Kunci
+      true1: BETUL
+      false1: SALAH
+      booleanchoices: Pilihan Boolean
+      booleananswers: Jawapan Boolean
+      as_of: pada
+      new: Baru
+      created: Telah Dicipta
+      submitted: Telah Dihantar
+      edited: Telah Disunting
+      editing: Sedang Disunting
+      approved: Diluluskan
+      rejectatcollege: Ditolak (di kolej)
+      senttokkm: Dihantar ke KKM
+      reedit: Sunting Semula
+      rejected: Ditolak
+      readyforapproval: Sedia Untuk Kelulusan
+      edit_details: Butiran Semakan
+      approval_details: Butiran Kelulusan
+      approval_bpl_details: "Butiran Kelulusan & BPL"
+      bpl_details: Butiran BPL
+      approver_id: Diluluskan Oleh
+      statusremark: Catatan
+      approvedt: Tarikh Diluluskan
+      checklist: Senarai Semak
+      editdt: Tarikh Semakan
+      editor_id: Penyemak
+      usage_frequency: Kekerapan Digunakan
+      conformity: Keakuran
+      conform_curriculum: Kurikulum
+      conform_specification: Spesifikasi
+      conform_opportunity: Peluang
+      accuracy: Ketepatan dan Kejelasan
+      accuracy_construct: Konstruk
+      accuracy_topic: Tajuk
+      accuracy_component: Komponen Item
+      fit: Kesesuaian
+      fit_difficulty: Kesukaran
+      fit_important: Penting
+      fit_fairness: Keadilan
+      uploaded_file: "Fail Dimuatnaik :"
+      current_diagram: Diagram Semasa
+      new_diagram: Diagram Baru
+      browse_preview: "Pilih fail imej untuk PAPAR diagram baru di sini. "
+      diagram_caption: Tajuk Diagram
+ 
+  helpers:
+    links:
+      new: Cipta
+      back: Terdahulu
+      edit: Sunting
+      destroy: Padam
+    label:
+      examquestion:
+        creator_id: Disediakan Oleh
+        programme_id: Program
+        subject_id: Subjek
+        topic_id: Topik
+        question: Soalan
+        createdt: Tarikh Disediakan
+        questiontype: Jenis Soalan
+        category: Kategori
+        construct: Konstruk
+        difficulty: Aras Kesukaran
+        answermcq: Jawapan
+        answer: Jawapan
+        marks: Markah
+        qkeyword: Kata Kunci
+        qstatus: Status
+        bplreserve: Rizab untuk BPL 
+        bplsent: Dihantar ke BPL
+        bplsentdt: Tarikh Dihantar
+        subquestions: "Subsoalan & Jawapan"
+        approver_id: Diluluskan Oleh
+        statusremark: Catatan
+        approvedt: Tarikh Diluluskan
+        conform_curriculum: Kurikulum
+        conform_specification: Spesifikasi
+        conform_opportunity: Peluang
+        accuracy_construct: Konstruk
+        accuracy_topic: Tajuk
+        accuracy_component: Komponen Item
+        fit_difficulty: Kesukaran
+        fit_important: Penting
+        fit_fairness: Keadilan
+        editor_id: Penyemak
+        editdt: Tarikh Semakan
+        diagram_caption: Tajuk Diagram
+
+    prompt:
+      select_creator: Pilih Penyedia Soalan
+      select_programme: Pilih Program
+      select_subject: Pilih Subjek
+      select_topic: Pilih Topik
+      select_questiontype: Pilih Jenis Soalan
+      select_category: Pilih Kategori
+      select_difficulty: Pilih Aras Kesukaran
+      select_mcq_answer: Pilih Jawapan
+      select_answer: Pilih Jawapan
+
   date:
       formats:
         default: "%d %B %Y"

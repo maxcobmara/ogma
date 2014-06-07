@@ -33,7 +33,8 @@ class Examquestion < ActiveRecord::Base
   has_attached_file :diagram,
                     :url => "/assets/examquestions/:id/:style/:basename.:extension",
                     :path => ":rails_root/public/assets/examquestions/:id/:style/:basename.:extension"
-                    
+  validates_attachment_size :diagram, :less_than => 5.megabytes  
+  validates_attachment_content_type :diagram, :content_type => ["image/jpg", "image/jpeg", "image/png", "image/gif"]                
                     #may require validation
                     
   validates_presence_of :subject_id, :topic_id, :questiontype, :question, :marks, :qstatus #17Apr2013,:answer #9Apr2013-compulsory for subject_id
@@ -48,32 +49,35 @@ class Examquestion < ActiveRecord::Base
   attr_accessor :programme_id #9Apr2013 - rely on subject (root of subject[programme])
   #attr_accessor :question1,:question2,:question3,:question4,:questiona,:questionb,:questionc,:questiond
   
-  before_save :set_nil_if_not_activate, :set_subquestions_if_seq, :set_answer_for_mcq
+  before_validation :set_nil_if_not_activate, :set_answer_for_mcq
+  #before_save :set_answer_for_mcq#, :set_subquestions_if_seq
   
   def set_nil_if_not_activate
-      if self.id != nil   
+     #if self.id != nil   
           if questiontype=="MCQ" && activate != "1" 
               self.answerchoices[0].description = "" if self.answerchoices[0]#.id !=nil
               self.answerchoices[1].description = "" if self.answerchoices[1]#.id !=nil
               self.answerchoices[2].description = "" if self.answerchoices[2]#.id !=nil
               self.answerchoices[3].description = "" if self.answerchoices[3]#.id !=nil
           end
-      end
+      #end
   end
   
   def set_answer_for_mcq
-      if answermcq !=nil
+      #if answermcq !=nil 
+      if questiontype=="MCQ" 
         self.answer=answermcq.to_s
       end
+        #end
   end
   
-  def set_subquestions_if_seq   
-    if self.id == nil && questiontype=="SEQ" 
-        self.shortessays[0].item = "a"    #new 
-        self.shortessays[1].item = "b" 
-        self.shortessays[2].item = "c"
-    end
-  end
+  #def set_subquestions_if_seq   
+    #if self.id == nil && questiontype=="SEQ" 
+        #self.shortessays[0].item = "a"    #new 
+        #self.shortessays[1].item = "b" 
+        #self.shortessays[2].item = "c"
+    #end
+  #end
   
   def status_workflow
     flow = Array.new
@@ -93,22 +97,27 @@ class Examquestion < ActiveRecord::Base
   end
   
   def question_creator
-    programme = User.current_user.staff.position.unit
+    #programme = User.current_user.staff.position.unit - replace with : 2 lines (below)
+    current_user = User.find(11)  #current_user = User.find(11) - 11-maslinda, 72-izmohdzaki
+    programme = current_user.staff.positions[0].unit
+    
     programme_name = Programme.roots.map(&:name)
-    creator_prog= Staff.find(:all, :joins=>:position, :conditions=>['unit IN(?)', programme_name]).map(&:id)
+    creator_prog= Staff.find(:all, :joins=>:positions, :conditions=>['unit IN(?)', programme_name]).map(&:id)
     if programme_name.include?(programme)
-      creator = Staff.find(:all, :joins=>:position, :conditions=>['unit=? AND unit IN(?)', programme, programme_name]).map(&:id)
+      creator = Staff.find(:all, :joins=>:positions, :conditions=>['unit=? AND unit IN(?)', programme, programme_name]).map(&:id)
     else
       role_admin = Role.find_by_name('Administration')  #must have role as administrator
       staff_with_adminrole = User.find(:all, :joins=>:roles, :conditions=>['role_id=?',role_admin]).map(&:staff_id).compact.uniq 
-      creator_adm = Staff.find(:all, :joins=>:position, :conditions=>['staff_id IN(?)', staff_with_adminrole]).map(&:id)
+      creator_adm = Staff.find(:all, :joins=>:positions, :conditions=>['staff_id IN(?)', staff_with_adminrole]).map(&:id)
       creator=creator_prog+creator_adm
     end
     creator
   end
     
   def question_editor
-    programme = User.current_user.staff.position.unit
+    #programme = User.current_user.staff.position.unit --> requires log-in
+    current_user = User.find(72)  #current_user = User.find(72) - izmohdzaki, 11-maslinda
+    programme = current_user.staff.positions[0].unit
     unless subject_id.nil?
       if subject.root.name == programme
         editors = Position.find(:all,:conditions => ['unit=?',programme]).map(&:staff_id).compact
@@ -117,9 +126,9 @@ class Examquestion < ActiveRecord::Base
       end
     else
       programme_name = Programme.roots.map(&:name)    #must be among Academic Staff 
-      editors = Staff.find(:all, :joins=>:position, :conditions=>['unit=? AND unit IN(?)', programme, programme_name]).map(&:id)
+      editors = Staff.find(:all, :joins=>:positions, :conditions=>['unit=? AND unit IN(?)', programme, programme_name]).map(&:id)
     end
-    editors   
+    editors
   end
   
   def question_approver #to assign question -> KP
@@ -128,7 +137,7 @@ class Examquestion < ActiveRecord::Base
     role_kp = Role.find_by_name('Programme Manager')  #must have role as Programme Manager
     staff_with_kprole = User.find(:all, :joins=>:roles, :conditions=>['role_id=?',role_kp]).map(&:staff_id).compact.uniq
     programme_name = Programme.roots.map(&:name)    #must be among Academic Staff 
-    approver = Staff.find(:all, :joins=>:position, :conditions=>['unit IN(?) AND staff_id IN(?)', programme_name, staff_with_kprole])
+    approver = Staff.find(:all, :joins=>:positions, :conditions=>['unit IN(?) AND staff_id IN(?)', programme_name, staff_with_kprole])
     approver   
   end
   
@@ -209,7 +218,7 @@ class Examquestion < ActiveRecord::Base
         [ "Edited", "Edited" ],
         [ "Approved", "Approved" ],
         [ "Reject at College", "Reject at College" ],
-        [ "Sent to KMM", "Sent to KMM" ],
+        [ "Sent to KKM", "Sent to KKM" ],
         [ "Re-Edit", "Re-Edit" ],
         [ "Rejected", "Rejected" ]
    ]

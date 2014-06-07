@@ -79,9 +79,9 @@ en:
     created: " was successfully created."
     updated: " was successfully updated."
     download_excel: Download Excel
-    
-  errors:
   
+  errors:
+
   people:
     male: male
     female: female
@@ -429,19 +429,143 @@ en:
   exam:
     title: Examination
     examquestion: 
+      new_title: New Examquestion
+      edit: Edit Examquestion
       title: Examination Development
       questiontype: Type
       programme_id: Programme
       subject_id: Subject
       topic_id: Topic
       question: Question
+      question2: "Main Question"
       answer: Answer
       marks: Marks
+      marks2: "Total Marks"
       category: Category
       difficulty: Difficulty
       qstatus: Status
       creator_id: Created By
       total_questions: Total Questions
+      createdt: Creation Date
+      mandatory: Mandatory
+      question_details: Question Details
+      question_details2: Question Criteria
+      question_answers: "Question & Answers"
+      answermcq: Answer
+      qkeyword: Keyword
+      qstatus: Status
+      bplreserve: Reserve for BPL
+      bplsent: BPL Sent
+      bplsentdt: BPL Sent Date
+      examquestion_details: Exam Question Details
+      question_creation: Question Creation
+      question_status: Question Status
+      updated_at: Updated At
+      created_at: Created At
+      subquestion: Subquestion
+      subanswer: Answer
+      submark: Marks
+      keyword: Keyword
+      true1: "TRUE"
+      false1: "FALSE"
+      booleanchoices: Boolean Choices
+      booleananswers: Boolean Answers
+      as_of: as of
+      edit: Edit Exam Question
+      new: New
+      created: Created
+      submitted: Submitted
+      edited: Edited
+      editing: Editing
+      approved: Approved
+      rejectatcollege: Reject At College
+      senttokkm: Sent to KKM
+      reedit: "Re-Edit"
+      rejected: Rejected
+      readyforapproval: Ready for Approval
+      edit_details: Edit Details
+      approval_details: Approval Details
+      approval_bpl_details: "Approval & BPL Details"
+      bpl_details: Butiran BPL
+      approver_id: Approver
+      statusremark: Remark
+      approvedt: Approval Date
+      checklist: Checklist
+      editdt: Edit Date
+      editor_id: Editor
+      usage_frequency: Usage Frequency
+      conformity: Conformity
+      conform_curriculum: Curriculum
+      conform_specification: Specification
+      conform_opportunity: Opportunity
+      accuracy: Accuracy
+      accuracy_construct: Construct
+      accuracy_topic: Topic
+      accuracy_component: Component
+      fit: Fit
+      fit_difficulty: Difficulty
+      fit_important: Importance
+      fit_fairness: Fairness
+      uploaded_file: "Uploaded File :"
+      current_diagram: Current Diagram
+      new_diagram: New Diagram
+      browse_preview: "Browse an image file to PREVIEW new diagram here. "
+      diagram_caption: Diagram Caption
+
+  helpers:
+    links:
+      new: New
+      back: Back
+      edit: Edit
+      destroy: Destroy
+    label:
+      examquestion:
+        creator_id: Creator 
+        programme_id: Programme
+        subject_id: Subject
+        topic_id: Topic
+        question: Question
+        createdt: Creation Date
+        questiontype: Question Type
+        category: Category
+        construct: Construct
+        difficulty: Difficulty
+        answermcq: Answer
+        answer: Answer
+        marks: Marks
+        qkeyword: Keyword
+        qstatus: Status
+        bplreserve: Reserve for BPL
+        bplsent: BPL Sent
+        bplsentdt: BPL Sent Date
+        subquestions: "Subquestion(s) & Answer(s)"
+        approver_id: Approver
+        statusremark: Remark
+        approvedt: Approval Date
+        conform_curriculum: Curriculum
+        conform_specification: Specification
+        conform_opportunity: Opportunity
+        accuracy_construct: Construct
+        accuracy_topic: Topic
+        accuracy_component: Component
+        fit_difficulty: Difficulty
+        fit_important: Importance
+        fit_fairness: Fairness
+        editor_id: Editor
+        editdt: Edit Date
+        diagram_caption: Diagram Caption
+
+    prompt:
+      select_creator: Select Creator
+      select_programme: Select Programme
+      select_subject: Select Subject
+      select_topic: Select Topic
+      select_questiontype: Select Question Type
+      select_category: Select Category
+      select_difficulty: Select Difficulty
+      select_mcq_answer: Select Answer
+      select_answer: Select Answer
+
   date:
     formats:
       default: "%d-%b-%Y"
@@ -477,3 +601,4 @@ en:
         precision: 2
         separator: '.'
         delimiter: ','
+

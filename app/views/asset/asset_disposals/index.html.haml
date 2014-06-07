@@ -1,1 +1,22 @@
-asset disposal index
+- model_class = AssetDisposal
+.page-header
+  %h1= t('asset.disposal')#, :default => model_class.model_name.human.pluralize
+  
+.navbar.navbar-inverse{role: "navigation", style: "padding-right:40px;"}
+  %ul.nav.navbar-nav
+    %li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'actions.new'))), '#'
+  %ul.nav.navbar-nav.navbar-right
+    %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "toga"
+    %li.dropdown
+      %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#"}
+        = fa_icon "print", text: (t 'actions.print')
+        %b.caret
+      %ul.dropdown-menu
+        %li
+          %a{:href => kewpa17_asset_disposals_path(:format => 'pdf')} KEW PA17
+        %li
+          %a{:href => kewpa20_asset_disposals_path(:format => 'pdf')} KEW PA20
+		  
+
+
+

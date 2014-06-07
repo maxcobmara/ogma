@@ -1,0 +1,17 @@
+- model_class = Examquestion
+.page-header
+  %h1= t 'exam.examquestion.new_title'
+ 
+= render 'shared/flashes'
+
+.row.fluid
+  = form_for [:exam ,@examquestion],  html: { multipart: true, class: 'form-horizontal' }  do |f| 
+    = render 'shared/error_messages', object: f.object
+    .col-md-offset-1
+      = render :partial => 'form', :locals => {:f => f}
+      = render :partial => 'status', :locals => {:f => f} unless @examquestion.qstatus == "Approved"
+      .form-group
+        .col-sm-offset-4.col-sm-1
+          = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), exam_examquestions_path, :class => 'btn btn-default'
+        .col-sm-2
+          = f.submit t('create'), class: "btn btn-primary"
