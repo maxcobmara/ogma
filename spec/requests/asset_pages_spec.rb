@@ -30,12 +30,28 @@ describe "asset pages" do
     it { should have_link("", href: asset_assets_path + "?locale=en")}
     it { should have_link("", href: kewpa2_asset_asset_path(@asset, format: "pdf") + "?locale=en")}
     it { should_not have_link("", href: kewpa3_asset_asset_path(@asset, format: "pdf") + "?locale=en")}
+    it { should have_link("", href: new_asset_defect_path(:asset_id => @asset) + "&locale=en")}
+    it { should have_link("", href: edit_asset_asset_path(@asset) + "?locale=en")}
+  end
+  
+  describe "Inventory Show Page" do
+    before { visit asset_asset_path(@inventory) }
+    it { should have_selector('h1', text: @inventory.assetcode) }
+    it { should have_link("Details",  href: '#details')}
+    it { should have_link("Description", href: '#description')}
+    it { should have_link("Purchase", href: '#purchase')}
+    it { should have_link("Place",    href: '#placement')}
+    it { should_not have_link("Maintenance",    href: '#maintenance')}
+    
+    it { should have_link("", href: asset_assets_path + "?locale=en")}
+    it { should_not have_link("", href: kewpa2_asset_asset_path(@inventory, format: "pdf") + "?locale=en")}
+    it { should have_link("", href: kewpa3_asset_asset_path(@inventory, format: "pdf") + "?locale=en")}
   end
   
   describe "Asset Edit Page" do
   end
   
-  
+ 
 end
 
 			

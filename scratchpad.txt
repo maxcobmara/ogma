@@ -1,6 +1,7 @@
 annotate --routes --position after --sort
 annotate --position after --sort --force -e tests,fixtures,factories
 
+rspec --format documentation
 
 psql -U postgres -d icms_kskb_development
 
