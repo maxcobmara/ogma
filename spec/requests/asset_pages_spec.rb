@@ -1,7 +1,8 @@
 require 'spec_helper'
 
 describe "asset pages" do
-  before  { @asset = FactoryGirl.create(:asset) }
+  before  { @asset = FactoryGirl.create(:fixed_asset) }
+  before  { @inventory = FactoryGirl.create(:inventory) }
   subject { page }
   
 
@@ -18,9 +19,17 @@ describe "asset pages" do
     #it { should have_link(@asset.assetcode, href: asset_asset_path(@asset) + "?locale=en" ); save_and_open_page }
   end
   
-  describe "Asset Show Page" do
+  describe "Fixed Asset Show Page" do
     before { visit asset_asset_path(@asset) }
     it { should have_selector('h1', text: @asset.assetcode) }
+    it { should have_link("Details",  href: '#details')}
+    it { should have_link("Description", href: '#description')}
+    it { should have_link("Purchase", href: '#purchase')}
+    it { should have_link("Place",    href: '#placement')}
+    
+    it { should have_link("", href: asset_assets_path + "?locale=en")}
+    it { should have_link("", href: kewpa2_asset_asset_path(@asset, format: "pdf") + "?locale=en")}
+    it { should_not have_link("", href: kewpa3_asset_asset_path(@asset, format: "pdf") + "?locale=en")}
   end
   
   describe "Asset Edit Page" do

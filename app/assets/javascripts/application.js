@@ -18,18 +18,20 @@
 //= require bootstrap-select
 //= require bootstrap-switch
 //= require bigtext
+//= require mlpushmenu
 //= require jsapi
 //= require chartkick
 //= require nicEdit
-//= require_tree .
+//= require classie
+
 
 $('.tenant').tooltip( {placement: 'right', container: 'body'});
 
 $(document).ready(function () {
-  $('.btn').tooltip( {placement: 'bottom', container: 'body'});  //pill tooltips
+    //pill tooltips
   $('.tipsy').tooltip({ placement: 'right'});
-  $('.tenant').tooltip( {placement: 'right', container: 'body'});
-  
+
+  $('.btn').tooltip( {placement: 'bottom', container: 'body'});
   $(".bogus").click(function (e) {
       alert("Sorry! Feature not yet implemented");
   });
