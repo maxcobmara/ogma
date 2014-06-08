@@ -5,6 +5,7 @@ describe "menu pages" do
   subject { page }
   it { should have_selector('h2', text: 'Staff')}
   it { should have_selector('h2', text: 'Assets')}
+  it { should have_link("Assets", href: asset_assets_path + "?locale=en" ) }
   it { should have_selector('h2', text: 'Locations')}
   it { should have_selector('h2', text: 'Students')}
   it { should have_link("Task & Responsibilities", href: staff_positions_path + "?locale=en" ) }

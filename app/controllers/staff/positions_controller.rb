@@ -2,7 +2,7 @@ class Staff::PositionsController < ApplicationController
   before_action :set_position, only: [:show, :edit, :update, :destroy]
   
   def index
-    @positions = Position.all
+    @positions = Position.order("combo_code ASC").where("ancestry_depth < ?", 2)
   end
   
   private

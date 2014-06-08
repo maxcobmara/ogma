@@ -1,6 +1,13 @@
 - model_class = Position
+= javascript_include_tag "jquery.jOrgChart"
+= stylesheet_link_tag    "jquery.jOrgChart", media: "all"
+
+
 .page-header
   %h1= t('position.index')#, :default => model_class.model_name.human.pluralize
   
-.row
-  = nested_groups(@positions.arrange)
+.orgchart
+  = @positions.inspect
+  .tree
+    = nested_groups(@positions.order("combo_code ASC").arrange)
+    
