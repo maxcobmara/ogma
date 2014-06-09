@@ -63,8 +63,8 @@ class Kewpa6Pdf < Prawn::Document
     header = [[ 'Bil', 'Nama Peminjam', 'Dikeluarkan', 'Jangka Dipulangkan', 'Tandatangan Peminjam', 'Tandatangan', 'Tarikh', 'Tandatangan', 'Tarikh','']]
     header +
       @asset.asset_loans.map do |asset_loan|
-      ["#{counter += 1}", "#{asset_loan.staff_id}", "#{asset_loan.loaned_on}", " #{asset_loan.expected_on}", "","#{asset_loan.loaned_by}", 
-        "#{asset_loan.approved_date}", "#{asset_loan.loan_officer}", "#{asset_loan.returned_on}", "" ]
+      ["#{counter += 1}", "#{asset_loan.staff_id}", "#{asset_loan.loaned_on.try(:strftime, "%d/%m/%y")}", " #{asset_loan.expected_on.try(:strftime, "%d/%m/%y")}", "","#{asset_loan.loaned_by}", 
+        "#{asset_loan.approved_date.try(:strftime, "%d/%m/%y")}", "#{asset_loan.loan_officer}", "#{asset_loan.returned_on.try(:strftime, "%d/%m/%y")}", "" ]
     end
   end
 end

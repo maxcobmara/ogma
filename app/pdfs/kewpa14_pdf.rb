@@ -32,7 +32,7 @@ class Kewpa14Pdf < Prawn::Document
   header1 = [['Tarikh', "Butir-Butir Kerja", "No Kontrak /Pesanan Kerajaan dan Tarikh", "Nama Syarikat /Jabatan Yang Menyelenggara", "Kos (RM)", "Nama & Tandatangan"]]
   header1 +
   @asset.maints.map do |maint|
-    [ "#{maint.created_at.strftime("%d/%m/%y")}", "#{maint.details}","#{maint.workorderno}",
+    [ "#{maint.created_at.try(:strftime, "%d/%m/%y")}", "#{maint.details}","#{maint.workorderno}",
       "#{maint.maintainer_id}",@view.currency(maint.maintcost.to_f), "#{maint.try(:asset).try(:staff).try(:name)}" ]
  
   end 

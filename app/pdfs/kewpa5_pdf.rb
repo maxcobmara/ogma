@@ -45,7 +45,7 @@ class Kewpa5Pdf < Prawn::Document
         a = "#{asset.purchaseprice}"
         b = "#{asset.quantity}"
         total = a.to_i * b.to_i 
-      ["#{counter += 1}", "#{asset.assetcode}", "#{asset.typename} #{asset.name} #{asset.modelname}", "#{asset.purchasedate}" , @view.currency(asset.purchaseprice.to_f),"#{asset.quantity}", @view.currency(total.to_f)  ]
+      ["#{counter += 1}", "#{asset.assetcode}", "#{asset.typename} #{asset.name} #{asset.modelname}", "#{asset.purchasedate.try(:strftime, "%d/%m/%y")}" , @view.currency(asset.purchaseprice.to_f),"#{asset.quantity}", @view.currency(total.to_f)  ]
     end
   end
 end
