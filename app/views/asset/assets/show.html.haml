@@ -95,7 +95,7 @@
 
       - elsif @asset.assettype == 2
         = link_to content_tag(:i, "", :class => "fa fa-file-pdf-o "), kewpa3_asset_asset_path(@asset, format: "pdf"), {class: "btn btn-default", "data-toggle" => "tooltip", title: "KEW.PA 3 PDF"}
-      = link_to content_tag(:i, "", :class => "fa fa-file-pdf-o "), kewpa6_asset_asset_path(@asset, format: "pdf"), {class: "btn btn-default", "data-toggle" => "tooltip", title: "KEW.PA 6 PDF"}
+      = link_to content_tag(:i, "", :class => "fa fa-file-pdf-o"), kewpa6_asset_asset_path(@asset, format: "pdf"), {class: "btn btn-default", "data-toggle" => "tooltip", title: "KEW.PA 6 PDF"}
       = link_to content_tag(:i, "", :class => "fa fa-edit") , edit_asset_asset_path(@asset),  {class: "btn btn-primary", "data-toggle" => "tooltip", title: t("actions.edit")}
       = link_to content_tag(:i, "", :class => "fa fa-trash-o icon-white"), |
         asset_asset_path(@asset),                                                                                                    |

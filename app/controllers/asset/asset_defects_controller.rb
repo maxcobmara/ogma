@@ -19,7 +19,7 @@ class Asset::AssetDefectsController < ApplicationController
   def update
     respond_to do |format|
       if @asset_defect.update(asset_defect_params)
-        format.html { redirect_to asset_defects_path, notice: 'Defect was successfully registered.' }
+        format.html { redirect_to asset_defect_path, notice: 'Defect was successfully registered.' }
         format.json { head :no_content }
       else
         format.html { render action: 'edit' }

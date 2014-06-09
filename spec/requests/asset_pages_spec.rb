@@ -72,6 +72,24 @@ describe "asset pages" do
     it { should have_selector(:link_or_button, "Create")}    
   end
   
+  describe "Report Defect Show Page" do
+  end
+  
+  describe "Report Defect Index Page" do
+    before { @asset_defect = FactoryGirl.create(:asset_defect)  }
+    before { visit asset_defects_path }
+    it { should have_selector('h1', text: "Asset Defect") }
+    it { should have_selector('th', text: 'Registration Serial No') }
+    it { should have_selector('th', text: 'Manufacturer/Brand') }
+    it { should have_selector('th', text: 'Serialno')}
+    it { should have_selector('th', text: 'Name')}
+    it { should have_selector('th', text: 'Notes')}
+    it { should_not have_selector(:link_or_button, "New")}
+    it { should have_selector(:link_or_button, "Search")}    
+    it { should have_selector(:link_or_button, "Print")}
+    it { should_not have_selector(:link_or_button, "News")}
+    it { should have_link(@asset_defect.asset.assetcode, href: asset_defect_path(@asset_defect) + "?locale=en" ); save_and_open_page }    
+  end
   #have_field(id, :type => 'textarea', :disabled => true)
   #(:link_or_button, arg1)
  
