@@ -20,7 +20,7 @@ class Kewpa9Pdf < Prawn::Document
              ["3. No Siri Pendaftaran", ": #{@defective.try(:asset).try(:assetcode)}"],
              ["4. Kos Penyelenggaraan Terdahulu", ": #{@defective.try(:asset).try(:maint).try(:maintcost)}"],
              ["5. Pengguna Terakhir", ": #{@defective.reporter.try(:name)}  #{@defective.reporter.try(:position_old)}"],
-             ["6. Tarikh Kerosakan", ": #{@defective.created_at.strftime("%d/%m/%y")}"],
+             ["6. Tarikh Kerosakan", ": #{@defective.created_at.try(:strftime, "%d/%m/%y")}"],
              ["7. Perihal Kerosakan", ":"],
              ["#{@defective.description}",""],
              ["8. Syor Pegawai Aset", ":"],
@@ -51,7 +51,7 @@ end
      
       text "Nama : #{@defective.processor.try(:name)}", :align => :left, :size => 14
       text "Jawatan : #{@defective.processor.try(:position).try(:name)}", :align => :left, :size => 14
-      text "Tarikh : #{@defective.processed_on.strftime("%d/%m/%y")}", :align => :left, :size => 14
+      text "Tarikh : #{@defective.processed_on..try(:strftime, "%d/%m/%y")}", :align => :left, :size => 14
       move_down 20
       text "Bahagian II (Keputusan Ketua Jabatan)", :align => :left, :size => 14
       text "- #{@defective.decision}", :align => :left, :size => 14

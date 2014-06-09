@@ -38,8 +38,8 @@ class Kewpa3Pdf < Prawn::Document
        table(data, :column_widths => [130, 390], :cell_style => { :size => 10})
           
        data1 = [ ["Jenis", "#{@asset.typename}", "Harga Perolehan Asal", @view.currency(@asset.purchaseprice.to_f)], 
-                ["Kuantiti", "#{@asset.quantity}", "Tarikh Diterima", "#{@asset.receiveddate.strftime("%d/%m/%y")}"],
-                ["Unit Pengukuran", "#{@asset.quantity_type}", "No Pesanan Rasmi Kerajaan & Tarikh", "#{@asset.orderno} #{@asset.purchasedate.strftime("%d/%m/%y")}"],
+                ["Kuantiti", "#{@asset.quantity}", "Tarikh Diterima", "#{@asset.receiveddate.try(:strftime, "%d/%m/%y")}"],
+                ["Unit Pengukuran", "#{@asset.quantity_type}", "No Pesanan Rasmi Kerajaan & Tarikh", "#{@asset.orderno} #{@asset.purchasedate.try(:strftime, "%d/%m/%y")}"],
             ["Tempoh Jaminan", "#{@asset.warranty_length} ", "",""] ]
          table(data1, :column_widths => [130, 150, 120, 120], :cell_style => { :size => 10}) 
          
@@ -89,7 +89,7 @@ class Kewpa3Pdf < Prawn::Document
   header1 = [['Kuantiti', "No siri Pendaftaran", 'Lokasi', "Tarikh", "Nama Pegawai", "Tandatangan"]]
   header1 +
   @asset.asset_placements.map do |asset_placement|
-    [ "#{asset_placement.quantity}", "#{asset_placement.try(:asset).try(:assetcode)}","#{asset_placement.try(:location).try(:name)}", "#{asset_placement.reg_on.strftime("%d/%m/%y")}","#{asset_placement.try(:staff).try(:name)}","" ]
+    [ "#{asset_placement.quantity}", "#{asset_placement.try(:asset).try(:assetcode)}","#{asset_placement.try(:location).try(:name)}", "#{asset_placement.reg_on.try(:strftime, "%d/%m/%y")}","#{asset_placement.try(:staff).try(:name)}","" ]
  
   end
   
