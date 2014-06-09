@@ -1154,7 +1154,6 @@ ActiveRecord::Schema.define(version: 20140605032625) do
     t.datetime "updated_at"
     t.string   "combo_code"
     t.integer  "ancestry_depth", default: 0
-    t.boolean  "damaged"
     t.string   "status"
   end
 

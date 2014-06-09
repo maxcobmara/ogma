@@ -38,7 +38,7 @@ class Kewpa4Pdf < Prawn::Document
     header = [[ 'Bil', 'Keterangan Aset', "", 'Tarikh Perolehan', 'Harga Perolehan']]
     header +
       @assets.map do |asset|
-      ["#{counter += 1}", "#{asset.assetcode}", "#{asset.typename} #{asset.name} #{asset.modelname}", "#{asset.purchasedate}", @view.currency(asset.purchaseprice.to_f)]
+      ["#{counter += 1}", "#{asset.assetcode}", "#{asset.typename} #{asset.name} #{asset.modelname}", "#{asset.purchasedate.try(:strftime, "%d/%m/%y")}", @view.currency(asset.purchaseprice.to_f)]
     end
   end
 end
