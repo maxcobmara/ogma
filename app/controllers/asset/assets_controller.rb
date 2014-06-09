@@ -14,6 +14,31 @@ class Asset::AssetsController < ApplicationController
   def edit
   end
   
+  def kewpa2
+    @asset = Asset.find(params[:id])
+    respond_to do |format|
+      format.pdf do
+        pdf = Kewpa2Pdf.new(@asset, view_context)
+        send_data pdf.render, filename: "kewpa2-{Date.today}",
+                              type: "application/pdf",
+                              disposition: "inline"
+      end
+    end
+  end
+
+  
+  def kewpa3
+    @asset = Asset.find(params[:id])
+    respond_to do |format|
+      format.pdf do
+        pdf = Kewpa3Pdf.new(@asset, view_context)
+        send_data pdf.render, filename: "kewpa3-{Date.today}",
+                              type: "application/pdf",
+                              disposition: "inline"
+      end
+    end
+  end
+  
   def kewpa4
     @assets = Asset.where(assettype: 1)
     respond_to do |format|
@@ -24,7 +49,7 @@ class Asset::AssetsController < ApplicationController
                               disposition: "inline"
       end
     end
-  end
+  end  
   
   def kewpa5
     @assets = Asset.where(assettype: 2).order(assetcode: :asc)
@@ -32,6 +57,19 @@ class Asset::AssetsController < ApplicationController
       format.pdf do
         pdf = Kewpa5Pdf.new(@assets, view_context)
         send_data pdf.render, filename: "kewpa5-{Date.today}",
+                              type: "application/pdf",
+                              disposition: "inline"
+      end
+    end
+  end
+  
+  def kewpa6
+    @asset = Asset.find(params[:id])
+    @loanable = AssetLoan.find(:all, :conditions => ['asset_id=? AND is_approved!=?',params[:id], false], :order=>'returned_on ASC')
+    respond_to do |format|
+      format.pdf do
+        pdf = Kewpa6Pdf.new(@asset, view_context)
+        send_data pdf.render, filename: "kewpa6-{Date.today}",
                               type: "application/pdf",
                               disposition: "inline"
       end
@@ -49,36 +87,9 @@ class Asset::AssetsController < ApplicationController
       end
     end
   end
-  
-  def kewpa3
-    
-     @asset = Asset.find(params[:id])
-    respond_to do |format|
-      format.pdf do
-        pdf = Kewpa3Pdf.new(@asset, view_context)
-        send_data pdf.render, filename: "kewpa3-{Date.today}",
-                              type: "application/pdf",
-                              disposition: "inline"
-      end
-    end
-  end  
-  
-  def kewpa2
-    
-     @asset = Asset.find(params[:id])
-    respond_to do |format|
-      format.pdf do
-        pdf = Kewpa2Pdf.new(@asset, view_context)
-        send_data pdf.render, filename: "kewpa2-{Date.today}",
-                              type: "application/pdf",
-                              disposition: "inline"
-      end
-    end
-  end  
 
   def kewpa14
-    
-     @asset = Asset.find(params[:id])
+    @asset = Asset.find(params[:id])
     respond_to do |format|
       format.pdf do
         pdf = Kewpa14Pdf.new(@asset, view_context)
@@ -88,23 +99,6 @@ class Asset::AssetsController < ApplicationController
       end
     end
   end  
-  
-  def kewpa6
-    
-     @asset = Asset.find(params[:id])
-     @loanable = AssetLoan.find(:all, :conditions => ['asset_id=? AND is_approved!=?',params[:id], false], :order=>'returned_on ASC')
-    respond_to do |format|
-      format.pdf do
-        pdf = Kewpa6Pdf.new(@asset, view_context)
-        send_data pdf.render, filename: "kewpa6-{Date.today}",
-                              type: "application/pdf",
-                              disposition: "inline"
-      end
-    end
-  end 
-  
-  
-  
   
   private
     # Use callbacks to share common setup or constraints between actions.
