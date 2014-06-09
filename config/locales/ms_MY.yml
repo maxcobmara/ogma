@@ -123,6 +123,8 @@ ms_MY:
     defect:
       title: Aset Rosak
       notes: Catatan
+      new: Lapuran Kerosakan Baru
+      description: Catatan
     
   location:
     title: Lokasi

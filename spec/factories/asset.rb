@@ -12,5 +12,9 @@ FactoryGirl.define do
       assettype 2
     end
   end
+  
+  factory :asset_defect do
+    association :asset, factory: :fixed_asset
+  end
 
 end

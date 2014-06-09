@@ -21,6 +21,7 @@ describe Asset do
   
 end
 
+
 # == Schema Information
 #
 # Table name: assets

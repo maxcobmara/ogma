@@ -60,6 +60,20 @@ describe "asset pages" do
   describe "Asset Edit Page" do
   end
   
+  describe "Inventory Edit Page" do
+  end
+  
+  describe "Report Defect Page" do
+    before { visit new_asset_defect_path(:asset_id => @asset) }
+    it { should have_selector('h1', text: "New Defect Report") }
+    it { should have_field("asset_defect[asset_show]", :disabled => true) }
+    it { should have_field("asset_defect[description]") }
+    it { should have_link("Back", href: asset_assets_path + "?locale=en")}
+    it { should have_selector(:link_or_button, "Create")}    
+  end
+  
+  #have_field(id, :type => 'textarea', :disabled => true)
+  #(:link_or_button, arg1)
  
 end
 

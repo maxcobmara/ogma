@@ -1,20 +1,27 @@
-- model_class = Bulletin
+- model_class = AssetDefect
 .page-header
   %h1
-    = t 'new_bulletin'
+    = t 'asset.defect.new'
 
 
 = render 'shared/flashes'
 
 .row
   = form_for @asset_defect, html: { multipart: true, class: 'form-horizontal' }  do |f| 
-    .col-md-offset-1
-      //= render :partial => 'form', :locals => {:f => f}
-      .form-group
-        .col-sm-offset-4.col-sm-1
-          = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), asset_assets_path, :class => 'btn btn-default'
-        .col-sm-2
-          = f.submit t('create'), class: "btn btn-primary"
+    .form-group
+      .col-sm-2.control-label
+        = f.label t 'asset.assetcode', for: :asset_show
+      .col-md-5
+        = f.text_field :asset_show, class: 'form-control mandatory', disabled: true, value: @asset_defect.asset.assetcode
+    .form-group
+      .col-sm-2.control-label
+        = f.label t 'asset.defect.description', for: :description
+      .col-md-5
+        = f.text_area :description, class: 'form-control'
+    .col-md-1.col-sm-offset-2
+      = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), asset_assets_path, :class => 'btn btn-default'
+    .col-md-2
+      = f.submit t('create'), class: "btn btn-primary"
 
 
 //= form_for [:asset, @asset_defect], url: asset_defect_path html: { multipart: true, class: 'form-horizontal' }  do |f| 
