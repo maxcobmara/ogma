@@ -13,8 +13,19 @@ class Asset::AssetDefectsController < ApplicationController
   def new
     @asset = Asset.find(params[:asset_id])
     @asset_defect = @asset.asset_defects.new(params[:asset_defect])
-    #@damage.save
-    
+    @asset_defect.save
+  end
+  
+  def update
+    respond_to do |format|
+      if @asset_defect.update(asset_defect_params)
+        format.html { redirect_to asset_defects_path, notice: 'Defect was successfully registered.' }
+        format.json { head :no_content }
+      else
+        format.html { render action: 'edit' }
+        format.json { render json: @asset_defect.errors, status: :unprocessable_entity }
+      end
+    end
   end
   
   def kewpa9
@@ -38,7 +49,7 @@ class Asset::AssetDefectsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def asset_defect_params
-      params.require(:asset_defect).permit(:description, damages_attributes: [:id, :description,:reported_on,:document_id,:location_id])
+      params.require(:asset_defect).permit(:description, :asset_id, :asset_show)
     end
 end
 
