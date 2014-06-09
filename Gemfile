@@ -57,6 +57,7 @@ group :test do
   gem 'capybara', '~> 2.3.0'
   gem 'growl', '1.0.3'
   gem "launchy", "~> 2.4.2"
+  gem 'database_cleaner', '~> 1.3.0'
 end
 
 group :doc do

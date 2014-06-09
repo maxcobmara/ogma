@@ -1,11 +1,12 @@
 require 'spec_helper'
 
 describe "staff pages" do
-  before  { @staff = FactoryGirl.create(:staff) }
+  
   subject { page }
   
 
   describe "Staff Index page" do
+    before  { @staff = FactoryGirl.create(:staff) }
     before { visit staff_infos_path }
     
     it { should have_selector('h1', text: 'List') }

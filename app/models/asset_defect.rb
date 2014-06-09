@@ -5,6 +5,8 @@ class AssetDefect < ActiveRecord::Base
   belongs_to :processor,  :class_name => 'Staff', :foreign_key => 'processed_by'
   belongs_to :confimer,   :class_name => 'Staff', :foreign_key => 'decision_by'
   
+  validates :asset, :presence => true
+  
   
 end
 
