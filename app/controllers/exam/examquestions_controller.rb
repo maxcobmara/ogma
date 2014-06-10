@@ -191,7 +191,7 @@ class Exam::ExamquestionsController < ApplicationController
    
     respond_to do |format|
       if @examquestion.save
-        flash[:notice] = 'Examquestion was successfully created.'
+        flash[:notice] = (t 'exam.examquestions.title')+(t 'actions.created')
         format.html { redirect_to(exam_examquestion_path(@examquestion))}
         format.xml  { render :xml => @examquestion, :status => :created, :location => @examquestion }
       else
@@ -210,7 +210,7 @@ class Exam::ExamquestionsController < ApplicationController
 
     respond_to do |format|
       if @examquestion.update(examquestion_params)
-        flash[:notice] = 'Examquestion was successfully updated.'
+        flash[:notice] = (t 'exam.examquestions.title')+(t 'actions.updated')
         format.html { redirect_to(exam_examquestion_path(@examquestion)) }
         format.xml  { head :ok }
       else

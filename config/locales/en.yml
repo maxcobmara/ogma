@@ -147,8 +147,6 @@ en:
     defect:
       title: Asset Defect
       notes: Notes
-      new: New Defect Report
-      description: Description
     
 
     
@@ -517,6 +515,27 @@ en:
       browse_preview: "Browse an image file to PREVIEW new diagram here. "
       diagram_caption: Diagram Caption
 
+    exams:
+      new_title: New Examination Maker
+      edit: Edit Examination Maker
+      title: Examination Maker
+      name: Examination Name 
+      description: Description
+      year_semester: "Year / Semester"
+      created_by: Creator
+      course_id: Programme
+      subject_id: Subject
+      klass_id: Class
+      exam_on: Date
+      duration: Duration
+      full_marks: Full Marks
+      starttime: Start Time
+      endtime: End Time
+      topic_id: Topic
+      sequ: Sequence
+      time: Time
+      remarks_bottom: " indicates incomplete examination paper. Add question/question template accordingly." 
+
   helpers:
     links:
       new: New
@@ -559,6 +578,20 @@ en:
         editor_id: Editor
         editdt: Edit Date
         diagram_caption: Diagram Caption
+      exams:
+        name: Examination Name 
+        description: Description
+        created_by: Creator
+        course_id: Programme
+        subject_id: Subject
+        klass_id: Class
+        exam_on: Date
+        duration: Duration
+        full_marks: Full Marks
+        starttime: Start Time
+        endtime: End Time
+        topic_id: Topic
+        sequ: Sequence  
 
     prompt:
       select_creator: Select Creator
