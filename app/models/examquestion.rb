@@ -21,6 +21,7 @@ class Examquestion < ActiveRecord::Base
   attr_accessor :activate, :answermcq
   
   scope :mcqq, -> { where(questiontype: 'MCQ')}
+  scope :meqq, -> { where(questiontype: 'MEQ')}
   scope :seqq, -> { where(questiontype: 'SEQ')}
   scope :acqq, -> { where(questiontype: 'ACQ')}
   scope :osci2q, -> { where(questiontype: 'OSCI')}
