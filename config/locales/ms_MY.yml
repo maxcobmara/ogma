@@ -500,6 +500,29 @@ ms_MY:
       new_diagram: Diagram Baru
       browse_preview: "Pilih fail imej untuk PAPAR diagram baru di sini. "
       diagram_caption: Tajuk Diagram
+
+    exams:
+      new_title: Set Kertas Soalan Peperiksaan Baru
+      edit: Sunting Set Kertas Soalan Peperiksaan
+      title: Set Kertas Soalan Peperiksaan
+      title2: Template Kertas Soalan Peperiksaan
+      name: Nama Peperiksaan
+      description: Deskripsi
+      year_semester: "Tahun / Semester"
+      created_by: Penyedia Soalan
+      course_id: Program
+      subject_id: Subjek
+      klass_id: Kelas
+      exam_on: Tarikh
+      duration: Tempoh
+      full_marks: Markah Penuh
+      starttime: Masa Mula
+      endtime: Masa Tamat
+      topic_id: Topik
+      sequ: Urutan
+      time: Masa
+      remarks_bottom: " merujuk kepada set kertas peperiksaan yang tidak lengkap. Sila tambah soalan/template soalan. "
+      set_sequence: " Sila tetapkan urutan untuk setiap soalan."
  
   helpers:
     links:
@@ -543,6 +566,20 @@ ms_MY:
         editor_id: Penyemak
         editdt: Tarikh Semakan
         diagram_caption: Tajuk Diagram
+      exams:
+        name: Examination Name 
+        description: Description
+        created_by: Creator
+        course_id: Programme
+        subject_id: Subject
+        klass_id: Class
+        exam_on: Date
+        duration: Duration
+        full_marks: Full Marks
+        starttime: Start Time
+        endtime: End Time
+        topic_id: Topic
+        sequ: Sequence  
 
     prompt:
       select_creator: Pilih Penyedia Soalan

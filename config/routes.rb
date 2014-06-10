@@ -120,7 +120,16 @@ Ogma::Application.routes.draw do
     resources :shortessays
     resources :booleanchoices
     resources :booleananswers
-    resources :exams
+    resources :exams do
+      #map.connect '/exams/exampaper', :controller => 'exams', :action => 'exampaper'
+      #map.connect '/exams/exampaper_separate', :controller => 'exams', :action => 'exampaper_separate'
+      #map.connect '/exams/exampaper_combine', :controller => 'exams', :action => 'exampaper_combine'
+      collection do
+        get 'exampaper', to: "exams#exampaper"
+        get 'exampaper_separate', to: "exams#exampaper_separate"
+        get 'exampaper_combine', to: "exams#exampaper_combine "
+      end
+    end
   end
 
   

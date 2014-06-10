@@ -51,7 +51,7 @@ end
      
       text "Nama : #{@defective.processor.try(:name)}", :align => :left, :size => 14
       text "Jawatan : #{@defective.processor.try(:position).try(:name)}", :align => :left, :size => 14
-      text "Tarikh : #{@defective.processed_on..try(:strftime, "%d/%m/%y")}", :align => :left, :size => 14
+      text "Tarikh : #{@defective.processed_on.try(:strftime, "%d/%m/%y")}", :align => :left, :size => 14
       move_down 20
       text "Bahagian II (Keputusan Ketua Jabatan)", :align => :left, :size => 14
       text "- #{@defective.decision}", :align => :left, :size => 14

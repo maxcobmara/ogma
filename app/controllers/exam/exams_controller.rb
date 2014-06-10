@@ -1,18 +1,20 @@
-class ExamsController < ApplicationController
+class Exam::ExamsController < ApplicationController
   before_action :set_exam, only: [:show, :edit, :update, :destroy]
   # GET /exams
   # GET /exams.xml
   def index
     #@exams = Exam.all
     ##----------
-    @position_exist = current_user.staff.position
+    current_user = User.find(11)    #maslinda 
+    #current_user = User.find(72)    #izmohdzaki
+    @position_exist = current_user.staff.positions
     if @position_exist  
-      @lecturer_programme = current_user.staff.position.unit
+      @lecturer_programme = current_user.staff.positions[0].unit
       unless @lecturer_programme.nil?
         @programme = Programme.find(:first,:conditions=>['name ILIKE (?) AND ancestry_depth=?',"%#{@lecturer_programme}%",0])
       end
       unless @programme.nil?
-        @programme_id = @programme.id #3 for Kejururawatan
+        @programme_id = @programme.id 
       else
         if @lecturer_programme == 'Commonsubject'
           @programme_id ='1'
@@ -20,9 +22,19 @@ class ExamsController < ApplicationController
           @programme_id='0'
         end
       end
-      @exams = Exam.search(@programme_id) 
+      @exams_all = Exam.search(@programme_id) 
+      @exams = @exams_all.order(subject_id: :asc).page(params[:page]||1)
+      
     end
     ##----------
+    
+    #ADDED-18June2013-extract from exammarks/_exam_listing.html.erb
+    @exam_ids_for_examtemplate = Examtemplate.pluck(:exam_id).uniq
+    @exam_ids_for_examquestions = Exam.find(:all,:joins=>:examquestions).map(&:id).uniq 
+    @complete_exampaper = Exam.where('id IN (?) OR id IN (?)',@exam_ids_for_examtemplate,@exam_ids_for_examquestions)
+    @ids_complete_exampaper = @complete_exampaper.pluck(:id) 
+    #ADDED-18June2013-extract from exammarks/_exam_listing.html.erb
+    
     respond_to do |format|
       format.html # index.html.erb
       format.xml  { render :xml => @exams }
@@ -123,7 +135,7 @@ class ExamsController < ApplicationController
     end   
     respond_to do |format|
       if @exam.save
-        flash[:notice] = 'Exam was successfully created.'
+        flash[:notice] = (t 'exam.exams.title')+(t 'actions.created')
         format.html { redirect_to (@exam) }
         format.xml  { render :xml => @exam, :status => :created, :location => @exam }
       else
@@ -155,7 +167,7 @@ class ExamsController < ApplicationController
     #----for template
       respond_to do |format|
         if @exam.update_attributes(params[:exam]) 
-          format.html { redirect_to(@exam, :notice => 'Exam template was successfully updated.') }
+          format.html { redirect_to(@exam, :notice => (t 'exam.exams.title')+(t 'actions.updated')) }
           format.xml  { head :ok }
           #format.xml  { render :xml => @exam, :status => :created, :location => @exam }
         else
@@ -168,7 +180,7 @@ class ExamsController < ApplicationController
       respond_to do |format|
         if @exam.update_attributes(params[:exam]) 
             if params[:exam][:seq]!=nil && ((params[:exam][:seq]).count ==  (params[:exam][:examquestion_ids]).count) 
-                format.html { redirect_to(@exam, :notice => 'Exam was successfully updated.') }
+                format.html { redirect_to(@exam, :notice => (t 'exam.exams.title2')+(t 'actions.updated')) }
                 format.xml  { head :ok }
                 #format.xml  { render :xml => @exam, :status => :created, :location => @exam }
             else
@@ -177,7 +189,7 @@ class ExamsController < ApplicationController
                 #-------for both situation--sequence fields are not available during questions addition
                 #-------sequence can only be set once after question is saved into exam----------------
         	      format.html {render :action => "edit"}
-        	      flash[:notice] = 'Exam was successfully updated. <b>Please set sequence for each question.</b>'
+        	      flash[:notice] = (t 'exam.exams.title2')+(t 'actions.updated')+'<b>'+(t 'exam.exams.set_sequence')+'</b>'
         	      format.xml  { head :ok }
         	      flash.discard        
                 #format.html { render :action => "edit" }
@@ -328,6 +340,7 @@ class ExamsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def exam_params
-      params.require(:exam).permit(:name, :description, :created_by, :course_id, :subject_id, :klass_id, :exam_on, :duration, :full_marks, :starttime, :endtime, :topic_id, :sequ, answerchoices_attributes: [:id,:examquestion_id, :item, :description], examanswers_attributes: [:id,:examquestion_id,:item,:answer_desc])
+      params.require(:exam).permit(:name, :description, :created_by, :course_id, :subject_id, :klass_id, :exam_on, :duration, :full_marks, :starttime, :endtime, :topic_id, :sequ)
+      #, answerchoices_attributes: [:id,:examquestion_id, :item, :description], examanswers_attributes: [:id,:examquestion_id,:item,:answer_desc])
     end
 end

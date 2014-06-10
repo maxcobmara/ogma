@@ -107,7 +107,50 @@ class Kewpa2Pdf < Prawn::Document
   header1 = [['Lokasi', "Tarikh", "Nama Pegawai", "Tandatangan"]]
   header1 +
   @asset.asset_placements.map do |asset_placement|
-    [ "#{asset_placement.try(:location).try(:name)}", "#{asset_placement.reg_on.try(:strftime, "%d/%m/%y")}","#{asset_placement.try(:staff).try(:name)}","" ]
+    a = "#{asset_placement.try(:staff).try(:name)}"
+    b = a.split("AL")[1]
+    c = a.split("AP")[1]
+    d = a.split("Binti")[1]
+    e = a.split("Bt")[1]
+    f = a.split("Bte")[1]
+    g = a.split("bt")[1]
+    h = a.split("binti")[1]
+    i = a.split("bin")[1]
+    j = a.split("b")[1]
+    k = a.split(" ")[1]
+    
+    
+    if b != nil 
+      staffname = a.split("AL")[0]
+    end
+      if c != nil 
+        staffname = a.split("AP")[0]
+      end
+        if d != nil 
+        staffname = a.split("Binti")[0]
+      end
+      if e != nil
+        staffname = a.split("Bt")[0]
+      end
+      if f != nil
+        staffname = a.split("Bte")[0]
+      end
+      if g != nil
+        staffname = a.split("bt")[0]
+      end
+      if h != nil
+        staffname = a.split("binti")[0]
+      end
+      if i != nil
+        staffname = a.split("bin")[0]
+      end
+      if j != nil
+        staffname = a.split("b")[0]
+      end
+      if k != nil
+        staffname = a.split(" ")[0]
+      end
+    [ "#{asset_placement.try(:location).try(:name)}", "#{asset_placement.reg_on.try(:strftime, "%d/%m/%y")}", staffname, "" ]
  
   end
   

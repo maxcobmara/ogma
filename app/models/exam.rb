@@ -40,7 +40,7 @@ class Exam < ActiveRecord::Base
     common_subject = Programme.find(:all, :conditions=>['course_type=?','Commonsubject']).map(&:id)
     if search 
       if search == '0'
-        @exams = Exam.find(:all)
+        @exams = Exam.all
       elsif search == '1'
         @exams = Exam.find(:all, :conditions => ["subject_id IN (?)", common_subject])
       else
@@ -49,7 +49,7 @@ class Exam < ActiveRecord::Base
         @exams = Exam.find(:all, :conditions=>['subject_id IN(?) AND subject_id NOT IN(?)',subject_of_programme, common_subject])
       end
     else
-       @exams = Exam.find(:all)
+       @exams = Exam.all
     end
   end
   
