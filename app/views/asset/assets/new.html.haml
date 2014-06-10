@@ -1,0 +1,74 @@
+- model_class = Asset
+.page-header
+  %h1
+    = t 'asset.new'
+
+
+= render 'shared/flashes'
+
+.row
+  = form_for [:asset, @asset], html: { class: 'form-horizontal' }  do |f| 
+    .form-group
+      .col-sm-2.control-label
+        = f.label t 'asset.assetcode', for: :asset_show
+      .col-md-8
+        %table.inline_display
+          %tr
+            %td KKM/BPL/010619/
+            %td= f.select :assettype, DropDown::ASSETTYPE, {prompt: "Select"}, class: 'selectpicker', "data-width" => "80px"
+            %td /
+            %td= f.date_select :receiveddate,  {:end_year => (Time.now.year+1), :order => [:year]}, class: 'selectpicker', "data-width" => "80px"
+            %td /
+            %td
+              .fixed_selector{style: "display:none; margin:0; padding-top:12px;"}
+                = f.text_field :cardno, class: "form-control", :default => (Asset.find_last_by_assettype(1)[:assetcode].split("/")[5].to_i + 1) rescue 0
+            %td
+              .inventory_selector{style: "display:none;  margin:0; padding-top:12px;"}
+                = f.text_field :cardno, class: "form-control", :default => (Asset.find_last_by_assettype(2)[:assetcode].split(/[\/\-]/)[6].to_i + 1) rescue 0
+            %td
+              .inventory_selector{style: "display:none;"}
+                \-
+            %td
+              .inventory_selector{style: "display:none;  margin:0; padding-top:12px;"}
+                = f.text_field :quantity, class: "form-control"
+        
+        .fixed_selector{style: "display:none;"}        
+          .alert.alert-info.alert-dismissable
+            %button.close{"aria-hidden" => "true", "data-dismiss" => "alert", :type => "button"} &times;
+            %strong Last Asset:
+            = Asset.where(assettype: 1).last[:assetcode] rescue 0
+            
+        .inventory_selector{style: "display:none;"}        
+          .alert.alert-info.alert-dismissable
+            %button.close{"aria-hidden" => "true", "data-dismiss" => "alert", :type => "button"} &times;
+            %strong Last Asset:
+            = Asset.where(assettype: 2).last[:assetcode] rescue 0
+            
+            
+    .form-group
+      .col-sm-2.control-label
+        = f.label t 'asset.category.title', for: :category_id
+      .col-md-4
+        = f.collection_select :category_id, Assetcategory.where('parent_id IS ?', nil), :id, :description, {prompt: "Select", :include_blank => true}, class: 'selectpicker'
+          
+            
+    .col-md-1.col-sm-offset-2
+      = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), asset_assets_path, :class => 'btn btn-default'
+    .col-md-2
+      = f.submit t('create'), class: "btn btn-primary"
+
+
+
+
+:javascript
+  $(document).ready(function(){
+    $('#asset_assettype').change(function() {
+      if($(this).val() == 1) {
+        $('.fixed_selector').show();
+  			$('.inventory_selector').hide();
+      }else if ($(this).val() == 2) {
+       	 $('.fixed_selector').hide();
+  			 $('.inventory_selector').show();
+      }
+  	});
+  });

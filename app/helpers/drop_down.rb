@@ -216,5 +216,11 @@ LOCATION_TYPE = [
         [ "Other",             9 ]
 ]
 
+ASSETTYPE = [
+           #  Displayed       stored in db
+           ["H",1],
+           ["I",2]
+]
+
 
 end

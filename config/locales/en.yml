@@ -149,6 +149,9 @@ en:
       notes: Notes
       new: New Defect Report
       description: Description
+      
+    category:
+      title: Asset Category
     
 
     

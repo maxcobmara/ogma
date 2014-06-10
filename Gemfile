@@ -25,7 +25,6 @@ gem "kaminari", "~> 0.15.1"
 gem "bootstrap-kaminari-views", "~> 0.0.3"
 gem 'font-awesome-rails', '~> 4.1.0.0'
 gem "bootstrap-datepicker-rails", "~> 1.3.0.1"
-gem "bootstrap-select-rails", "~> 1.3.0.1"
 gem "bootstrap-switch-rails", "~> 2.0.2"
 gem "modernizr-rails", "~> 2.6.2.3"
 #gem "jquery-ui-bootstrap-rails", "~> 0.0.2"

@@ -8,12 +8,11 @@
  * You're free to add application-wide styles to this file and they'll appear at the top of the
  * compiled file, but it's generally better to create a new file per style scope.
  *
- *= require font-awesome
+ *= require normalize
+ *= require menu
+ *= require icons
  *= require bootstrap
- *= require bootstrap-select
- *= require bootstrap-datepicker
- *= require datetimepicker
- *= require bootstrap3-switch
- *= require_self
- *= require_tree .
+ *= require bootstrap-select.min
+ *= require custom
+ *= require font-awesome
  */

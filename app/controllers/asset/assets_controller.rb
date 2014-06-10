@@ -14,6 +14,10 @@ class Asset::AssetsController < ApplicationController
   def edit
   end
   
+  def new
+    @asset = Asset.new
+  end
+  
   def kewpa2
     @asset = Asset.find(params[:id])
     respond_to do |format|

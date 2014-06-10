@@ -6,11 +6,13 @@ describe "asset pages" do
   before  { @asset_defect = FactoryGirl.create(:asset_defect)}
   subject { page }
   
-
   describe "Asset Index page" do
     before { visit asset_assets_path }
     
     it { should have_selector('h1', text: 'Assets') }
+    it { should have_link("New",    href: new_asset_asset_path + "?locale=en")}
+    it { should have_selector(:link_or_button, "Search")}    
+    it { should have_selector(:link_or_button, "Print")}
     it { should have_link("", href: kewpa4_asset_assets_path(:format => 'pdf') + "?locale=en")}
     it { should have_link("", href: kewpa5_asset_assets_path(:format => 'pdf') + "?locale=en")}
     it { should have_link("", href: kewpa13_asset_assets_path(:format => 'pdf') + "?locale=en")}
@@ -95,6 +97,19 @@ describe "asset pages" do
   #have_field(id, :type => 'textarea', :disabled => true)
   #(:link_or_button, arg1)
  
+end
+
+describe "Create Fixed Assets" do
+  let(:asset) { FactoryGirl.create(:asset) }
+  it "creates and saves fixed asset" do
+    visit asset_assets_path
+    page.should have_selector('h1', text: 'Assets')
+    page.should have_link("New")
+    save_and_open_page
+    click_link('New')
+    page.should have_selector('h1', text: "Register New Asset")
+    
+  end
 end
 
 			
