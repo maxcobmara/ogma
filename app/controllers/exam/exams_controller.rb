@@ -180,7 +180,7 @@ class Exam::ExamsController < ApplicationController
       respond_to do |format|
         if @exam.update_attributes(params[:exam]) 
             if params[:exam][:seq]!=nil && ((params[:exam][:seq]).count ==  (params[:exam][:examquestion_ids]).count) 
-                format.html { redirect_to(@exam, :notice => (t 'exam.exams.title')+(t 'actions.updated')) }
+                format.html { redirect_to(@exam, :notice => (t 'exam.exams.title2')+(t 'actions.updated')) }
                 format.xml  { head :ok }
                 #format.xml  { render :xml => @exam, :status => :created, :location => @exam }
             else
@@ -189,7 +189,7 @@ class Exam::ExamsController < ApplicationController
                 #-------for both situation--sequence fields are not available during questions addition
                 #-------sequence can only be set once after question is saved into exam----------------
         	      format.html {render :action => "edit"}
-        	      flash[:notice] = 'Exam was successfully updated. <b>Please set sequence for each question.</b>'
+        	      flash[:notice] = (t 'exam.exams.title2')+(t 'actions.updated')+'<b>'+(t 'exam.exams.set_sequence')+'</b>'
         	      format.xml  { head :ok }
         	      flash.discard        
                 #format.html { render :action => "edit" }

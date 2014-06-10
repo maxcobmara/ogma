@@ -519,6 +519,7 @@ en:
       new_title: New Examination Maker
       edit: Edit Examination Maker
       title: Examination Maker
+      title2: Examination Template 
       name: Examination Name 
       description: Description
       year_semester: "Year / Semester"
@@ -535,6 +536,7 @@ en:
       sequ: Sequence
       time: Time
       remarks_bottom: " indicates incomplete examination paper. Add question/question template accordingly." 
+      set_sequence: " Please set sequence for each question."
 
   helpers:
     links:
