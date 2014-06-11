@@ -1,0 +1,48 @@
+- model_class = Exam
+.col-md-8.col-md-offset-1
+  %dl.dl-horizontal
+    %BR
+    %dt= t 'exam.exams.name' , :default => model_class.human_attribute_name(:name) + ":"
+    %dd= h (Exam::EXAMTYPE.find_all{|disp, value| value == @exam.name}).map {|disp, value| disp}[0] 
+
+    %dt= t 'exam.exams.year_semester'
+    %dd= h @exam.subject_id? ? (t 'exam.exams.year')+@year + (t 'exam.exams.semester')+@exam.subject.parent.code.to_s : "" 
+
+    %dt= t 'exam.exams.course_id' , :default => model_class.human_attribute_name(:course_id) + ":"
+    %dd=h @exam.subject_id? ? @exam.subject.root.course_type+" "+@exam.subject.root.name : "" 
+		  
+    %dt= t 'exam.exams.subject_id' , :default => model_class.human_attribute_name(:subject_id) + ":"
+    %dd=h @exam.subject_id? ? @exam.subject.subject_list : ""
+ 
+    %dt= t 'exam.exams.created_by' , :default => model_class.human_attribute_name(:created_by) + ":"
+    %dd=h @exam.creator_details 
+
+    %dt= t 'exam.exams.exam_on' , :default => model_class.human_attribute_name(:exam_on) + ":exam_on"
+    %dd=h l(@exam.exam_on) unless @exam.exam_on.nil? 
+
+    %dt= t 'exam.exams.time' , :default => model_class.human_attribute_name(:starttime) + ":starttime"
+    %dd
+      =h @exam.try(:starttime).strftime('%H:%M %p')
+      - 
+      =h @exam.try(:endtime).strftime('%H:%M %p') 
+
+    %dt= t 'exam.exams.duration'
+    %dd 
+      =h (((@exam.endtime - @exam.starttime)/60) / 60).to_i 
+      &nbsp;hours
+      =h (((@exam.endtime - @exam.starttime)/60) % 60).to_i 
+      &nbsp;minutes
+
+    %dt= t 'exam.exams.full_marks', :default => model_class.human_attribute_name(:full_marks) + ":fullmarks"
+    %dd 
+      /11June2013-TEMPLATE
+      - @istemplate = @exam.klass_id 
+      - if @istemplate == 0 
+        - @grand_total = 0 
+        - @examtemplates = @exam.examtemplates
+        - @examtemplates.each do |examtemplate|
+          - @grand_total+= examtemplate.total_marks
+        = @grand_total.to_i
+      - else
+        = h @exam.total_marks
+      /11June2013-TEMPLATE

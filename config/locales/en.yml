@@ -523,10 +523,12 @@ en:
       name: Examination Name 
       description: Description
       year_semester: "Year / Semester"
+      year: "Year "
+      semester: "Semester "
       created_by: Creator
       course_id: Programme
       subject_id: Subject
-      klass_id: Class
+      klass_id: Template
       exam_on: Date
       duration: Duration
       full_marks: Full Marks
@@ -537,6 +539,10 @@ en:
       time: Time
       remarks_bottom: " indicates incomplete examination paper. Add question/question template accordingly." 
       set_sequence: " Please set sequence for each question."
+      exams_details: Examination Paper Details
+      questions_details: Questions Details
+      total_questions: Total Questions
+      not_selected: Not Selected
 
   helpers:
     links:

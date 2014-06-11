@@ -45,7 +45,13 @@ class Exam::ExamsController < ApplicationController
   # GET /exams/1.xml
   def show
     @exam = Exam.find(params[:id])
-
+    if @exam.subject_id!=nil && (@exam.subject.parent.code == '1' || @exam.subject.parent.code == '2')
+      @year = "1 / " 
+    elsif @exam.subject_id!=nil && (@exam.subject.parent.code == '3' || @exam.subject.parent.code == '4')
+     @year = "2 / "
+    elsif @exam.subject_id!=nil && (@exam.subject.parent.code == '5' || @exam.subject.parent.code == '6')
+     @year = "3 / "
+    end
     respond_to do |format|
       format.html # show.html.erb
       format.xml  { render :xml => @exam }
