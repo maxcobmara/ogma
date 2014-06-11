@@ -1,8 +1,10 @@
 class Kewpa9Pdf < Prawn::Document
-  def initialize(defective, view)
+  def initialize(defective, view , lead)
     super({top_margin: 50, page_size: 'A4', page_layout: :portrait })
     @defective = defective
     @view = view
+    @lead = lead 
+    
     font "Times-Roman"
     text "KEW.PA-9", :align => :right, :size => 16, :style => :bold
     move_down 20
@@ -57,8 +59,8 @@ end
       text "- #{@defective.decision}", :align => :left, :size => 14
       move_down 40
       text "Signature : ", :align => :left, :size => 14
-      text "Nama :", :align => :left, :size => 14
-      text "Jawatan :", :align => :left, :size => 14
+      text "Nama : #{@lead.try(:staff).try(:name)}", :align => :left, :size => 14
+      text "Jawatan : #{@lead.name}", :align => :left, :size => 14
       text "Tarikh :", :align => :left, :size => 14
   end
 end

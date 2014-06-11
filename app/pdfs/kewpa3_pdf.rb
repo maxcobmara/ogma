@@ -1,8 +1,9 @@
 class Kewpa3Pdf < Prawn::Document
-  def initialize(asset, view)
+  def initialize(asset, view, lead)
     super({top_margin: 50, page_size: 'A4', page_layout: :portrait })
     @asset = asset
     @view = view
+    @lead = lead
 
     font "Times-Roman"
     text "KEW.PA-3", :align => :right, :size => 16, :style => :bold
@@ -48,8 +49,8 @@ class Kewpa3Pdf < Prawn::Document
          data2 =[ ["Nama Pembekal Dan Alamat:", "" ],
                   ["-#{@asset.supplier_id}", "       ........................................." ],
                   ["-#{@asset.supplier_id}", "       Tandatangan Ketua Jabatan" ],
-                  ["-#{@asset.supplier_id}", "Nama     :   " ],
-                  ["-#{@asset.supplier_id}", "Jawatan  :" ],
+                  ["-#{@asset.supplier_id}", "Nama     : #{@lead.try(:staff).try(:name)}" ],
+                  ["-#{@asset.supplier_id}", "Jawatan  : #{@lead.name}" ],
                   ["-#{@asset.supplier_id}", "Tarikh   :" ],
                   ["", "Cop      :" ],
                 ]

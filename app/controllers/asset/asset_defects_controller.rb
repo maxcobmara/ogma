@@ -29,10 +29,11 @@ class Asset::AssetDefectsController < ApplicationController
   end
   
   def kewpa9
+    @lead = Position.find(1)
     @defective = AssetDefect.find(params[:id])
     respond_to do |format|
       format.pdf do
-        pdf = Kewpa9Pdf.new(@defective, view_context)
+        pdf = Kewpa9Pdf.new(@defective, view_context, @lead)
          send_data pdf.render, filename: "kewpa9-{Date.today}",
                                type: "application/pdf",
                                disposition: "inline"

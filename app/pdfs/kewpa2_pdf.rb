@@ -1,8 +1,9 @@
 class Kewpa2Pdf < Prawn::Document
-  def initialize(asset, view)
+  def initialize(asset, view, lead)
     super({top_margin: 50, page_size: 'A4', page_layout: :portrait })
     @asset = asset
     @view = view
+    @lead = lead
  
 
     font "Times-Roman"
@@ -12,7 +13,7 @@ class Kewpa2Pdf < Prawn::Document
     text "DAFTAR HARTA MODAL", :align => :center, :size => 12, :style => :bold
     move_down 10
     text "Kementerian/Jabatan   : Kolej Kesihatan Bersekutu Johor Bahru", :align => :left, :size => 12
-    text "Bahagian  :", :align => :left, :size => 12
+    text "Bahagian  : #{@asset.try(:location).try(:name)}", :align => :left, :size => 12
     text "Bahagian A ", :align => :center, :size => 12, :style => :bold
     move_down 5
     
@@ -59,8 +60,8 @@ class Kewpa2Pdf < Prawn::Document
                    ["", ""],
                    ["", "........................................................"],
                    ["","Tandatangan Ketua Jabatan"],
-                   ["", "Nama     : "],
-                   ["", "Jawatan  :"],
+                   ["", "Nama     : #{@lead.try(:staff).try(:name)}"],
+                   ["", "Jawatan  : #{@lead.name}"],
                    ["", "Tarikh   : "],
                    ["", "Cop      : "]]
 
@@ -104,7 +105,7 @@ class Kewpa2Pdf < Prawn::Document
   end
   def penem
   
-  header1 = [['Lokasi', "Tarikh", "Nama Pegawai", "Tandatangan"]]
+  header1 = [['Lokasi', "Tarikh", "Nama Staff/Penyelia", "Tandatangan"]]
   header1 +
   @asset.asset_placements.map do |asset_placement|
     a = "#{asset_placement.try(:staff).try(:name)}"
