@@ -514,6 +514,7 @@ en:
       new_diagram: New Diagram
       browse_preview: "Browse an image file to PREVIEW new diagram here. "
       diagram_caption: Diagram Caption
+      no_diagram: Nil
 
     exams:
       new_title: New Examination Maker

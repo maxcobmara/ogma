@@ -79,17 +79,9 @@
           %dt=t 'exam.exams.sequ'
           %dd=count+1
           /</center></td><td>
-          %dt=t 'exam.examquestion.question'
-          %dd=simple_format(current_question.question) 
-
-          %dt=t 'exam.examquestion.answer'
-          %dd=current_question.answer
-          /</td><td>
-          %dt=t 'exam.examquestion.marks'
-          %dd=current_question.marks 
-          %BR
-          /</td></tr>
-          /display quention-answer-mark set-end		
+		  
+          /display diagram, questions, answer, marks for EACH SET of question
+          = render 'sub_tab_questions_details', :examquestion => current_question	
 
         /END-WORKABLE ONE-FOR EXAMQUESTION-WITH SEQUENCE NO	
         /START-WORKABLE ONE-FOR EXAMQUESTION-WITHOUT SEQUENCE NO
@@ -113,15 +105,10 @@
           %dt=t 'exam.exams.sequ'
           %dd=t 'exam.exams.not_selected' 
           /</center></td><td>
-          %dt=t 'exam.examquestion.question'
-          %dd=simple_format(current_question.question)
-          %dt=t 'exam.examquestion.answer' 
-          %dd=current_question.answer 
-          /</td><td>
-          %dt=t 'exam.examquestion.marks'  
-          %dd=current_question.marks
-          /</td></tr>
-          %BR
+
+          /display diagram, questions, answer, marks for EACH SET of question
+          = render 'sub_tab_questions_details', :examquestion => current_question
+
         /END-WORKABLE ONE-FOR EXAMQUESTION-WITHOUT SEQUENCE NO
 				
         /DO NOT REMOVE yet- FOR CHECKING
@@ -158,56 +145,8 @@
               /</b></td></tr><tr><td><center>
             %dt=t 'exam.exams.sequ' 
             %dd=t 'exam.exams.not_selected'
-            %dt=t 'exam.examquestion.diagram'
-            %dd
-              /create & VIEW thumbnail here
-              - if examquestion.diagram.exists? then
-                - img_path = Rails.root.join("public"<<"#{examquestion.diagram.url.split('?')[0]}")
-                - img = Magick::Image.read(img_path).first
-                - thumba = img.scale(40, 40)
-                A
-                = a = examquestion.diagram.url
-                %br
-                B
-                = b = a.split('/')[5]
-                %br
-                C
-                = c = a.gsub!(b,'')
-                - thumba.write(Rails.root.join("public"<<"#{c}"<<"thumbnail.png"))
-                - thumba.write(Rails.root.join("app/assets/images/"<<"thumbnail_blue.png"))
-                /= examquestion.diagram.url.split('/')[0]
-                /- thumba.write "thumbb.png"
-                /= image_url("thumbb.png")
-                /= examquestion.diagram.url
-                /= image_tag image_url("thumbb.png")
-                /= image_tag thumba.image_url
-                /= thumba.display - require installation of x11 (but still just open up another small window?)
-                /- img_path = Rails.root.join("thumbb.png")
-                /- thumbnail = Magick::Image.read(img_path).first
-                ASAL
-                = examquestion.diagram.url
-                = image_tag examquestion.diagram.url
-                %br
-                /= image_tag "thumbb.png"
-                /= image_url(thumbnail)
-                /= image_tag image_url(thumbnail)
-                = image_tag image_url(thumba)
-                = image_tag image_url("thumbnail.png")
-                = image_tag image_path("thumbnail.png")
-                = image_tag "thumbnail_blue.png"
-                = image_url("thumbnail.png")
-                = image_path("thumbnail.png")
-                /= image_tag examquestion.diagram.url, :style=>"width: 50px; height:50px;"
-            /</center></td><td>
-            %dt=t 'exam.examquestion.question'
-            %dd= simple_format(examquestion.question)
-            /=raw sanitize(simple_format(examquestion.question), :tags => %w(br) )
-            %dt=t 'exam.examquestion.answer'
-            %dd= examquestion.answer
-            /=raw sanitize(simple_format(examquestion.answer), :tags => %w(br p) )
-            /</td></tr>
-            %dt=t 'exam.examquestion.marks'  
-            %dd=examquestion.marks              
-            %BR
 
+            /display diagram, questions, answer, marks for EACH SET of question
+            = render 'sub_tab_questions_details', :examquestion => examquestion
+     
       /first

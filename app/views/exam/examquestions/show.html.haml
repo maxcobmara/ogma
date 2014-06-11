@@ -21,7 +21,7 @@
     .tab-content{style:"padding-top:1em"}
       .col-md-1
         - if @examquestion.diagram.exists? then
-          = image_tag @examquestion.diagram.url, :style=>"width: 250px; height:300px;"
+          = image_tag @examquestion.diagram.url,:style => "border: solid 1px;"
           %br
           = @examquestion.diagram_caption
         - else
