@@ -1,0 +1,213 @@
+- model_class = Exam
+.col-md-8.col-md-offset-1
+  %dl.dl-horizontal
+    %BR 
+
+    - if @exam.klass_id == 0 
+      /Template section
+      %dt &nbsp;
+      %dd
+        %h4=t 'exam.exams.title2'
+	  
+      %dt &nbsp;
+      %dd=(t 'exam.exams.total_questions')+" / "+ (t 'exam.exams.full_marks')
+
+      - for examtemplate in @exam.examtemplates
+        %dt=h (Examquestion::QTYPE.find_all{|disp, value| value == examtemplate.questiontype}).map {|disp, value| disp}[0]
+        %dd
+          =h examtemplate.quantity 
+          &nbsp; / &nbsp;
+          =h examtemplate.total_marks     
+    - else 
+      /Complete examaker section
+      - @examquestions_by_type = @exam.examquestions.group_by{|x|x.questiontype} 
+      /first
+      /if SEQUENCE Exist
+      - if @exam.sequ!= nil 
+        - sequ = @exam.sequ.split(",")
+        - seq_questionid = [] 
+        - hash_seqid = Hash.new
+        - tosort_seqid = Hash.new
+        - select_questionid = [] 
+        - count = 0
+        			
+        /START-ASSIGN QUESTIONS WITH SEQUENCE INTO HASH & QUESTIONS WITHOUT SEQUENCE INTO ARRAY ACCORDINGLY
+        - @examquestions_by_type.each do |qtype,examquestions|
+          - for examquestion in examquestions 
+            /Sequ[count] :<%#= sequ[count]
+            /Examquestion_id : =examquestion.id
+            - if sequ[count] != "Select"
+              /--hash_seqid
+              - hash_seqid = {sequ[count] => examquestion.id}
+              /FORMAT:grades = { "Jane Doe" => 10, "Jim Doe" => 6 }
+              /<b>tosort_seqid</b>
+              - tosort_seqid = tosort_seqid.merge(hash_seqid)
+              /--merge shall replace value for same key
+            - else 
+              - select_questionid << examquestion.id
+            - count+=1 
+            
+        /for question with sequence-SORT by its' sequence
+        - tosort_seqid.sort_by{|k,v|k.to_i}.each do |x,y|
+          - seq_questionid << y
+        /for question with sequence-SORT by its' sequence
+        /END-ASSIGN QUESTIONS WITH SEQUENCE INTO HASH & QUESTIONS WITHOUT SEQUENCE INTO ARRAY ACCORDINGLY
+			 
+        /START-QUESTIONS WITH & WITHOUT SEQUENCE NO ACCORDINGLY
+        /START-WORKABLE ONE-FOR EXAMQUESTION-WITH SEQUENCE NO
+        - current_qtype = "MCQ"
+        - 0.upto(tosort_seqid.count-1) do |count|
+          - current_question = Examquestion.find(seq_questionid[count])
+          /display header-question type
+          - if count == 0 && current_qtype == current_question.questiontype 
+            /<tr><td colspan=3><b>
+            %dt &nbsp;
+            %dd
+              %h4=h (Examquestion::QTYPE.find_all{|disp, value| value == "MCQ"}).map {|disp, value| disp}[0]
+            /</b></td></tr>
+              
+          - elsif count > 0 && current_qtype != current_question.questiontype
+            /<tr><td colspan=3><b>
+            %dt &nbsp;
+            %dd
+              %h4=h (Examquestion::QTYPE.find_all{|disp, value| value == current_question.questiontype}).map {|disp, value| disp}[0]
+            /</b></td></tr>
+            - current_qtype = current_question.questiontype
+          /display header-question type
+          /display quention-answer-mark set-start
+          /<tr><td><center>
+          %dt=t 'exam.exams.sequ'
+          %dd=count+1
+          /</center></td><td>
+          %dt=t 'exam.examquestion.question'
+          %dd=simple_format(current_question.question) 
+
+          %dt=t 'exam.examquestion.answer'
+          %dd=current_question.answer
+          /</td><td>
+          %dt=t 'exam.examquestion.marks'
+          %dd=current_question.marks 
+          %BR
+          /</td></tr>
+          /display quention-answer-mark set-end		
+
+        /END-WORKABLE ONE-FOR EXAMQUESTION-WITH SEQUENCE NO	
+        /START-WORKABLE ONE-FOR EXAMQUESTION-WITHOUT SEQUENCE NO
+        - current_qtype2 = "MCQ"
+        - 0.upto(sequ.count-tosort_seqid.count-1) do |counter|
+          - current_question = Examquestion.find(select_questionid[counter])
+          - if counter == 0 && current_qtype2 == current_question.questiontype
+            /<tr><td colspan=3><b>
+            %dt &nbsp;
+            %dd
+              %h4=h (Examquestion::QTYPE.find_all{|disp, value| value == "MCQ"}).map {|disp, value| disp}[0]
+            /</b></td></tr>
+          - elsif counter > 0 && current_qtype2 != current_question.questiontype
+            /<tr><td colspan=3><b>
+            %dt &nbsp;
+            %dd
+              %h4=h (Examquestion::QTYPE.find_all{|disp, value| value == current_question.questiontype}).map {|disp, value| disp}[0]
+            /</b></td></tr>
+            - current_qtype2 = current_question.questiontype
+          /<tr><td><center>
+          %dt=t 'exam.exams.sequ'
+          %dd=t 'exam.exams.not_selected' 
+          /</center></td><td>
+          %dt=t 'exam.examquestion.question'
+          %dd=simple_format(current_question.question)
+          %dt=t 'exam.examquestion.answer' 
+          %dd=current_question.answer 
+          /</td><td>
+          %dt=t 'exam.examquestion.marks'  
+          %dd=current_question.marks
+          /</td></tr>
+          %BR
+        /END-WORKABLE ONE-FOR EXAMQUESTION-WITHOUT SEQUENCE NO
+				
+        /DO NOT REMOVE yet- FOR CHECKING
+        /all_q=[] 
+        /count_sequence = 0 
+        /all_q = Examquestion.find(:all, :conditions => ['id IN (?)', seq_questionid ]) 
+        /all_q.each do |qq| 
+        /hhh<br>all_q = qq.id ~ =qq.question
+
+        /all_q.group_by{|u|u.questiontype}.each do |type,ques|
+        /=h (Examquestion::QTYPE.find_all{|disp, value| value == type}).map {|disp, value| disp} 
+        /ques.each_with_index do |que, index|
+        /=que
+        /=que.id%>Sequence : =count_sequence+1
+        /Question : = que.question
+        /=raw sanitize(simple_format(examquestion.question), :tags => %w(br) ) 
+        /Answer : = que.answer =raw sanitize(simple_format(que.answer), :tags => %w(br p) )
+        /count_sequence+=1
+        /=que.marks%>
+        /DO NOT REMOVE - FOR CHECKING
+			
+        /END-QUESTIONS WITH & WITHOUT SEQUENCE NO ACCORDINGLY
+			
+      - else
+        /else for if @exam.sequ!= nil (SEQUENCE NEVER SET YET..first time data entry only:column sequence in exam table BLANK)
+        - @examquestions_by_type.each do |qtype,examquestions|
+          - examquestions.each_with_index do |examquestion, index|
+            - if index == 0
+              %dt &nbsp;
+              /<tr><td colspan=2><b>
+              /=h (Examquestion::QTYPE.find_all{|disp, value| value == examquestion_type}).map {|disp, value| disp}
+              %dd
+                %h4=h (Examquestion::QTYPE.find_all{|disp, value| value == examquestion.questiontype}).map {|disp, value| disp}[0]
+              /</b></td></tr><tr><td><center>
+            %dt=t 'exam.exams.sequ' 
+            %dd=t 'exam.exams.not_selected'
+            %dt=t 'exam.examquestion.diagram'
+            %dd
+              /create & VIEW thumbnail here
+              - if examquestion.diagram.exists? then
+                - img_path = Rails.root.join("public"<<"#{examquestion.diagram.url.split('?')[0]}")
+                - img = Magick::Image.read(img_path).first
+                - thumba = img.scale(40, 40)
+                A
+                = a = examquestion.diagram.url
+                %br
+                B
+                = b = a.split('/')[5]
+                %br
+                C
+                = c = a.gsub!(b,'')
+                - thumba.write(Rails.root.join("public"<<"#{c}"<<"thumbnail.png"))
+                - thumba.write(Rails.root.join("app/assets/images/"<<"thumbnail_blue.png"))
+                /= examquestion.diagram.url.split('/')[0]
+                /- thumba.write "thumbb.png"
+                /= image_url("thumbb.png")
+                /= examquestion.diagram.url
+                /= image_tag image_url("thumbb.png")
+                /= image_tag thumba.image_url
+                /= thumba.display - require installation of x11 (but still just open up another small window?)
+                /- img_path = Rails.root.join("thumbb.png")
+                /- thumbnail = Magick::Image.read(img_path).first
+                ASAL
+                = examquestion.diagram.url
+                = image_tag examquestion.diagram.url
+                %br
+                /= image_tag "thumbb.png"
+                /= image_url(thumbnail)
+                /= image_tag image_url(thumbnail)
+                = image_tag image_url(thumba)
+                = image_tag image_url("thumbnail.png")
+                = image_tag image_path("thumbnail.png")
+                = image_tag "thumbnail_blue.png"
+                = image_url("thumbnail.png")
+                = image_path("thumbnail.png")
+                /= image_tag examquestion.diagram.url, :style=>"width: 50px; height:50px;"
+            /</center></td><td>
+            %dt=t 'exam.examquestion.question'
+            %dd= simple_format(examquestion.question)
+            /=raw sanitize(simple_format(examquestion.question), :tags => %w(br) )
+            %dt=t 'exam.examquestion.answer'
+            %dd= examquestion.answer
+            /=raw sanitize(simple_format(examquestion.answer), :tags => %w(br p) )
+            /</td></tr>
+            %dt=t 'exam.examquestion.marks'  
+            %dd=examquestion.marks              
+            %BR
+
+      /first
