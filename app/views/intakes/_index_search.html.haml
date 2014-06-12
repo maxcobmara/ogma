@@ -1,0 +1,12 @@
+= search_form_for @search, url: students_path,  class: "form-inline" do |f|
+  %tr.search_row.hidden
+    %td= f.text_field :description_cont, size: 2,  :class => "form-control"
+    %td= f.text_field :register_on_gteq, class: 'form-control mandatory', 'data-behaviour' => 'datepicker_today'
+    %td= f.text_field :programme_name_cont, size: 2,  :class => "form-control"
+    %td= f.text_field :is_active_cont, size: 2,  :class => "form-control"
+    //%td= f.select :course_cont, options_from_collection_for_select(Student.all, "id", "course"), {include_blank: true}#, {class: 'selectpicker', "data-width"=>"350px"}
+    %td.input-group
+      /= f.text_field :race_cont, size: 2,  :class => "form-control"    	  
+      %span.input-group-btn
+        %button.btn.btn-sm.btn-default.right{:type => "submit"}
+          %i.fa.fa-search.fa-fw
