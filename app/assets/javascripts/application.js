@@ -16,7 +16,7 @@
 //= require bootstrap.min
 //= require bootstrap-select.min
 //= require activators
-//= jquery.datetimepicker
+//= require jquery.datetimepicker
 
 
 
