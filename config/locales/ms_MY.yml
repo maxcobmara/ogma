@@ -509,10 +509,12 @@ ms_MY:
       name: Nama Peperiksaan
       description: Deskripsi
       year_semester: "Tahun / Semester"
+      year: "Tahun "
+      semester: "Semester "
       created_by: Penyedia Soalan
       course_id: Program
       subject_id: Subjek
-      klass_id: Kelas
+      klass_id: Template
       exam_on: Tarikh
       duration: Tempoh
       full_marks: Markah Penuh
@@ -523,6 +525,10 @@ ms_MY:
       time: Masa
       remarks_bottom: " merujuk kepada set kertas peperiksaan yang tidak lengkap. Sila tambah soalan/template soalan. "
       set_sequence: " Sila tetapkan urutan untuk setiap soalan."
+      exams_details: Butiran Kertas Peperiksaan
+      questions_details: Butiran Soalan Peperiksaan
+      total_questions: Jumlah Soalan
+      not_selected: Belum Dipilih
  
   helpers:
     links:
