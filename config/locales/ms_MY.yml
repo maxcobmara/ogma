@@ -500,6 +500,7 @@ ms_MY:
       new_diagram: Diagram Baru
       browse_preview: "Pilih fail imej untuk PAPAR diagram baru di sini. "
       diagram_caption: Tajuk Diagram
+      no_diagram: Tiada
 
     exams:
       new_title: Set Kertas Soalan Peperiksaan Baru
@@ -528,7 +529,7 @@ ms_MY:
       exams_details: Butiran Kertas Peperiksaan
       questions_details: Butiran Soalan Peperiksaan
       total_questions: Jumlah Soalan
-      not_selected: Belum Dipilih
+      not_selected: Belum Ditentukan
  
   helpers:
     links:

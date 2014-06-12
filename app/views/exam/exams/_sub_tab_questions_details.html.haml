@@ -1,0 +1,107 @@
+- model_class = Exam
+%dt=t 'exam.examquestion.diagram'
+%dd
+  /VIEW thumbnail here
+  - if examquestion.diagram.exists? then
+    /METHOD 1:Using RMAGICK - open & read image from table examquestion, RESIZE using RMagick(scale) & saved into 'app/assets/images/'
+    /- img_path = Rails.root.join("public"<<"#{examquestion.diagram.url.split('?')[0]}")
+    /- img = Magick::Image.read(img_path).first
+    /- thumba = img.scale(40, 40)
+    /- thumba.write(Rails.root.join("app/assets/images/"<<"t_"<<"#{examquestion.diagram_file_name}"))
+    /= image_tag ("t_"+"#{examquestion.diagram_file_name}"),:style => "border: solid 1px;"
+	
+    /METHOD 2:Using RMAGICK  - open & read image from table examquestion, RESIZE using RMagick(thumbnail) & saved into 'app/assets/images/'
+    /- thumbnail = img.thumbnail(img.columns*0.09, img.rows*0.09)
+    /- thumbnail.write(Rails.root.join("app/assets/images/"<<"thumb_"<<"#{examquestion.diagram_file_name}"))
+    /= image_tag ("thumb_"+"#{examquestion.diagram_file_name}"),:style => "border: solid 1px;"
+
+    /METHOD 3:Retrieve saved IMAGE file (during upload[paperclip:already specify style :original &:small])
+    /= image_tag examquestion.diagram.url(:thumbnail),:style => "border: solid 1px;"
+    /= image_tag examquestion.diagram.url(:original),:style => "border: solid 1px;"
+    = link_to(image_tag(examquestion.diagram.url(:thumbnail), :style => "border: solid 1px;"), image_path(examquestion.diagram.url(:original)))
+  - else
+    =t 'exam.examquestion.no_diagram'
+	
+%dt=t 'exam.examquestion.diagram_caption'
+%dd= examquestion.diagram_caption
+/</center></td><td>
+
+%dt=t 'exam.examquestion.question'
+%dd
+  /=raw sanitize(simple_format(examquestion.question), :tags => %w(br) )
+  = simple_format(examquestion.question)
+
+  /MCQ Question:answerchoices & examanswers - start
+  - if examquestion.questiontype=="MCQ"
+    //if not exist at all OR exist but 1st item has no value-start (upto answerchoice.description)
+    - if examquestion.answerchoices.count != 0 && examquestion.answerchoices[0].description!=""
+      - for answerchoice in examquestion.answerchoices.sort_by{|x|x.item}
+        = answerchoice.item
+        = answerchoice.description
+        %br
+      %br
+    - for examanswer in examquestion.examanswers.sort_by{|y|y.item}
+      = examanswer.item
+      = examanswer.answer_desc
+      %br
+  /MCQ Question:answerchoices & examanswers - end
+
+  /SEQ Question:shortessay (subquestions, submarks, subanswer) - start
+  - if examquestion.questiontype=="SEQ"
+    - for shortessay in examquestion.shortessays.sort_by{|x|x.item}	
+      %br
+      %u= (t 'exam.examquestion.subquestion')+" "+shortessay.item+" :"
+      %br
+      =h shortessay.subquestion+" ("+ shortessay.submark.to_s+" "+(t 'exam.examquestion.marks')+")"
+      %br
+      %u= (t 'exam.examquestion.keyword')+" "+shortessay.item+" :"
+      %br
+      =h shortessay.keyword
+      %br
+      %u= (t 'exam.examquestion.subanswer')+" "+shortessay.item+" :"
+      %br
+      =h simple_format(shortessay.subanswer)
+  /SEQ Question:shortessay (subquestions, submarks, subanswer) - end
+
+  /TRUEFALSE Question:boolean choices & boolean answers - start
+  - if examquestion.questiontype=="TRUEFALSE"
+    %u= t 'exam.examquestion.booleanchoices'
+    %br
+    - for booleanchoice in examquestion.booleanchoices.sort_by{|x|x.item}
+      = booleanchoice.item+". "
+      = booleanchoice.description
+      %br
+    %u= t 'exam.examquestion.booleananswers'
+    %br
+    - for booleananswer in examquestion.booleananswers.sort_by{|y|y.item}
+      = booleananswer.item+". "
+      = booleananswer.answer
+      %br
+  /TRUEFALSE Question:boolean choices & boolean answers - end
+
+/MCQ final ANSWER
+- if examquestion.questiontype=="MCQ"
+  %dt=t 'exam.examquestion.answermcq'
+  %dd=h examquestion.answer.to_s
+ 
+/answer field for other than MCQ & SEQ 
+- if !(examquestion.questiontype=="MCQ" || examquestion.questiontype=="SEQ")
+  %dt=t 'exam.examquestion.answer' , :default => model_class.human_attribute_name(:answer) + ":"
+  %dd=h examquestion.answer 
+/=raw sanitize(simple_format(examquestion.answer), :tags => %w(br p) )
+/</td></tr>
+			
+/main2 - for all type of question	
+%dt
+  - if examquestion.questiontype=="SEQ" 
+    = t 'exam.examquestion.marks2' 
+  - else
+    = t 'exam.examquestion.marks' 
+%dd=h examquestion.marks
+
+//keyword field for other than MCQ & True/False
+- if !(examquestion.questiontype=="MCQ" || examquestion.questiontype=="TRUEFALSE")
+  %dt=t 'exam.examquestion.qkeyword' , :default => model_class.human_attribute_name(:qkeyword) + ":"
+  %dd=h examquestion.qkeyword
+
+%hr      
