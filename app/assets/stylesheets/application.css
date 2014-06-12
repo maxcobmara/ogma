@@ -15,4 +15,5 @@
  *= require bootstrap-select.min
  *= require custom
  *= require font-awesome
+ *= require jquery.datetimepicker
  */
