@@ -1,0 +1,36 @@
+.row
+  .col-md-10.col-md-offset-1
+    / Nav tabs
+    %ul.nav.nav-tabs
+      %li.active= link_to ((t 'intake.details')),"#intake_edit", "data-toggle" => "tab"
+
+    .tab-content{style:"padding-top:1em"}
+      #intake_edit.tab-pane.active
+        %br
+        .col-md-offset-2
+          .form-group
+            .col-sm-2.control-label
+              = f.label :programme_id
+            .col-md-3
+              = f.collection_select :programme_id, Programme.roots, :id, :programme_list, :include_blank => t('helpers.prompt.select_programme')		
+          .form-group
+            .col-sm-2.control-label
+              = f.label :name
+            .col-md-3
+              = f.text_field :name, class: 'form-control', :size => 20
+              &nbsp; (Eg.: Jan 2013, March 2013, July 2013)
+          .form-group
+            .col-sm-2.control-label
+              = f.label :description
+            .col-md-3
+              = f.text_field :description, class: 'form-control'
+          .form-group
+            .col-sm-2.control-label
+              = f.label :register_on
+            .col-md-3
+              = f.text_field :register_on, class: 'form-control', 'data-behaviour' => 'datepicker_today'
+          .form-group
+            .col-sm-2.control-label
+              = f.label :is_active
+            .col-md-3
+              = f.check_box :is_active

@@ -1,0 +1,39 @@
+- model_class = Intake
+.page-header
+  %h1= t('intake.title')#, :default => model_class.model_name.human.pluralize
+  
+.navbar.navbar-inverse{role: "navigation", style: "padding-right:40px;"}
+  %ul.nav.navbar-nav
+    %li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'actions.new'))), new_intake_path
+  %ul.nav.navbar-nav.navbar-right
+    %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "toga"
+    %li= link_to content_tag(:li, fa_icon("print", text: (t 'actions.print'))), "#", class: 'bogus'
+
+.row.filter{style: "display:none;"}
+  .col-md-2
+  
+  
+.row
+  %table.table-striped.table-hover.ogma
+    %thead
+      %tr
+        %th= sort_link(@search, :description, (t 'intake.description'))
+        %th= sort_link(@search, :register_on, (t 'intake.register_on'))
+        %th= sort_link(@search, :programme_id, (t 'intake.programme_id'))
+        %th= sort_link(@search, :is_active, (t 'intake.is_active'))
+
+    %tbody
+    = render "index_search"
+    - @intakes.each do |intakename,intakedetails|
+      %tr
+        %td.group{:colspan => "7", :style => "background-color:#EFF1F1;"}
+          %span{:style => "color:#218AFB;font-weight:bold;"}=h intakename 
+      - for details in intakedetails 
+        %tr	  
+          %td=h link_to details.description, intake_path(details)
+          %td=h details.register_on 
+          %td=h details.programme.programme_list
+          %td=h details.is_active? ? (image_tag "tick.png") : (image_tag "cross.png")
+
+  /.right{style:"padding:0 30px; margin:0;"}= paginate @intakes, :theme => 'twitter-bootstrap-3'
+	
