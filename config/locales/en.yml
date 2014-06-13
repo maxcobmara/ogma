@@ -553,18 +553,42 @@ en:
     create_timetable: Create Timetable
     create_intake: Create Intake
     create_academic_session: Create Academic Session
-
-  intake:
-    title: Intake
-    new: New Intake
-    edit: Editing Intake
-    details: Intake Details
-    name: "Month & Year"
-    description: Group
-    register_on: Registration Date
-    programme_id: Programme
-    is_active: Is Active		
-
+    intake:
+      title: Intake
+      new: New Intake
+      edit: Editing Intake
+      details: Intake Details
+      name: "Month & Year"
+      description: Group
+      register_on: Registration Date
+      programme_id: Programme
+      is_active: Is Active
+    timetable:
+      title: Timetable
+      new: New Timetable
+      edit: Edit Timetable
+      code: Code
+      name: Name  	  
+      description: Description
+      created_by: Created By
+      details: Timetable Details
+      add_details: Add Details
+      period_timings: Period Timings
+    timetable_period:
+      title: Timetable Period
+      period: Period
+      sequence: Sequence
+      day_name: Day
+      start_at: Start At
+      end_at: End At
+      is_break: Break
+    academic_session:
+      title: Academic Session
+      new: New Academic Session
+      edit: Edit Academic Session
+      details: Academic Session Details
+      semester: Semester
+      total_week: Total Week
 
   helpers:
     links:
@@ -627,7 +651,15 @@ en:
         description: Group
         register_on: Registration Date
         programme_id: Programme
-        is_active: Is Active  
+        is_active: Is Active
+      timetable:
+        code: Code
+        name: Name  	  
+        description: Description
+        created_by: Created By
+      academic_session:
+        semester: Semester
+        total_week: Total Week
 
     prompt:
       select_creator: Select Creator

@@ -138,9 +138,9 @@
               %h2.icon=(t "setup")
               %a.mp-back{:href => "#"}= t 'helpers.links.back'
               %ul
-                %li= link_to t("training.create_timetable"), '#'
-                %li= link_to t("training.create_intake"), intakes_path
-                %li= link_to t("training.create_academic_session"), '#'
+                %li= link_to t("training.create_timetable"), training_timetables_path
+                %li= link_to t("training.create_intake"), training_intakes_path
+                %li= link_to t("training.create_academic_session"), training_academic_sessions_path
           %li= link_to content_tag(:i, "", :class => "icon-numb") + "Time Table Entries", '#'
           %li= link_to content_tag(:i, "", :class => "icon-numb") + "Curriculum Management", '#'
           %li.icon.icon-left

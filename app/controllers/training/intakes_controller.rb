@@ -1,4 +1,4 @@
-class IntakesController < ApplicationController
+class Training::IntakesController < ApplicationController
   before_action :set_intake, only: [:show, :edit, :update, :destroy]
   # GET /intakes
   # GET /intakes.xml
@@ -49,8 +49,8 @@ class IntakesController < ApplicationController
     @intake = Intake.new(intake_params)
     respond_to do |format|
       if @intake.save
-        flash[:notice] = (t 'intake.title')+(t 'actions.created')
-        format.html { redirect_to(intake_path(@intake)) }
+        flash[:notice] = (t 'training.intake.title')+(t 'actions.created')
+        format.html { redirect_to(training_intake_path(@intake)) }
         format.xml  { render :xml => @intake, :status => :created, :location => @intake }
 
       else
@@ -67,7 +67,7 @@ class IntakesController < ApplicationController
 
     respond_to do |format|
       if @intake.update(intake_params)
-        format.html { redirect_to(@intake, :notice => (t 'intake.title')+(t 'actions.updated'))}
+        format.html { redirect_to(training_intake_path(@intake), :notice => (t 'training.intake.title')+(t 'actions.updated'))}
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }
@@ -87,8 +87,7 @@ class IntakesController < ApplicationController
       format.xml  { head :ok }
     end
   end
-  
-    
+   
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_intake

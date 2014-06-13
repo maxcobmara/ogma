@@ -1,0 +1,21 @@
+.row
+  .col-md-10.col-md-offset-1
+    / Nav tabs
+    %ul.nav.nav-tabs
+      %li.active= link_to ((t 'training.academic_session.details')),"#academic_session_edit", "data-toggle" => "tab"
+
+    .tab-content{style:"padding-top:1em"}
+      #academic_session_edit.tab-pane.active
+        %br
+        .col-md-offset-2
+          .form-group
+            .col-sm-2.control-label
+              = f.label :semester 
+            .col-md-3
+              = f.text_field :semester
+              %br (Eg.: 1/2013)
+          .form-group
+            .col-sm-2.control-label
+              = f.label :total_week
+            .col-md-3
+              = f.text_field :total_week

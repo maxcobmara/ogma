@@ -90,7 +90,15 @@ Ogma::Application.routes.draw do
 
 
   resources :bulletins
-  resources :intakes
+  
+  namespace :training do
+    resources :intakes
+    resources :timetables
+    resources :timetable_periods
+    resources :academic_sessions
+  end
+  
+
   
   namespace :library do
     resources :librarytransactions do

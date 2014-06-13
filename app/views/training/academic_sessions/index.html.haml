@@ -1,0 +1,29 @@
+- model_class = AcademicSession
+.page-header
+  %h1= t('training.academic_session.title')
+  
+.navbar.navbar-inverse{role: "navigation", style: "padding-right:40px;"}
+  %ul.nav.navbar-nav
+    %li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'actions.new'))), new_training_academic_session_path
+  %ul.nav.navbar-nav.navbar-right
+    %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "toga"
+    %li= link_to content_tag(:li, fa_icon("print", text: (t 'actions.print'))), "#", class: 'bogus'
+
+.row.filter{style: "display:none;"}
+  .col-md-2
+    
+.row
+  %table.table-striped.table-hover.ogma
+    %thead
+      %tr
+        %th= sort_link(@search, :semester, (t 'training.academic_session.semester'))
+        %th= sort_link(@search, :total_week, (t 'training.academic_session.total_week'))
+
+    %tbody
+    = render "index_search"
+    - @academic_sessions.each do |academic_session| 
+      %tr	  
+        %td=h link_to academic_session.semester, training_academic_session_path(academic_session) 
+        %td=h academic_session.total_week
+
+  .right{style:"padding:0 30px; margin:0;"}= paginate @academic_sessions, :theme => 'twitter-bootstrap-3'
