@@ -33,7 +33,8 @@ class Examquestion < ActiveRecord::Base
   
   has_attached_file :diagram,
                     :url => "/assets/examquestions/:id/:style/:basename.:extension",
-                    :path => ":rails_root/public/assets/examquestions/:id/:style/:basename.:extension"
+                    :path => ":rails_root/public/assets/examquestions/:id/:style/:basename.:extension", 
+                    :styles => { :original => "250x300>", :thumbnail => "50x60" } #default size of uploaded image
   validates_attachment_size :diagram, :less_than => 5.megabytes  
   validates_attachment_content_type :diagram, :content_type => ["image/jpg", "image/jpeg", "image/png", "image/gif"]                
                     #may require validation

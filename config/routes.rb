@@ -90,7 +90,7 @@ Ogma::Application.routes.draw do
 
 
   resources :bulletins
-
+  resources :intakes
   
   namespace :library do
     resources :librarytransactions do

@@ -67,6 +67,7 @@ en:
   notes: Notes
   create: Create
   no: No
+  setup: Set Up
   
   actions:
     new: New
@@ -519,6 +520,7 @@ en:
       new_diagram: New Diagram
       browse_preview: "Browse an image file to PREVIEW new diagram here. "
       diagram_caption: Diagram Caption
+      no_diagram: Nil
 
     exams:
       new_title: New Examination Maker
@@ -548,6 +550,26 @@ en:
       questions_details: Questions Details
       total_questions: Total Questions
       not_selected: Not Selected
+
+  training:
+    title: Training
+    new: New Training
+    edit: Editing Training
+    create_timetable: Create Timetable
+    create_intake: Create Intake
+    create_academic_session: Create Academic Session
+
+  intake:
+    title: Intake
+    new: New Intake
+    edit: Editing Intake
+    details: Intake Details
+    name: "Month & Year"
+    description: Group
+    register_on: Registration Date
+    programme_id: Programme
+    is_active: Is Active		
+
 
   helpers:
     links:
@@ -604,7 +626,13 @@ en:
         starttime: Start Time
         endtime: End Time
         topic_id: Topic
-        sequ: Sequence  
+        sequ: Sequence
+      intake:
+        name: "Month & Year"
+        description: Group
+        register_on: Registration Date
+        programme_id: Programme
+        is_active: Is Active  
 
     prompt:
       select_creator: Select Creator
