@@ -8,12 +8,10 @@ describe Event do
 
   it { should respond_to(:end_at) }
   it { should respond_to(:event_is_publik) }
-  it { should respond_to(:assignedto_id) }
   it { should respond_to(:eventname) }
   it { should respond_to(:location) }
   it { should respond_to(:officiated) }
   it { should respond_to(:participants) }
-  it { should respond_to(:engine_no) }
   it { should respond_to(:start_at) }
   
   it { should be_valid }

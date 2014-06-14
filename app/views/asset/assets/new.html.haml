@@ -21,10 +21,10 @@
             %td /
             %td
               .fixed_selector{style: "display:none; margin:0; padding-top:12px;"}
-                = f.text_field :cardno, class: "form-control", :default => (Asset.find_last_by_assettype(1)[:assetcode].split("/")[5].to_i + 1) rescue 0
+                = f.text_field :cardno, class: "form-control", :default => ( Asset.where(assettype: 1).last[:assetcode].split("/")[5].to_i + 1) rescue 0
             %td
               .inventory_selector{style: "display:none;  margin:0; padding-top:12px;"}
-                = f.text_field :cardno, class: "form-control", :default => (Asset.find_last_by_assettype(2)[:assetcode].split(/[\/\-]/)[6].to_i + 1) rescue 0
+                = f.text_field :cardno, class: "form-control", :default => ( Asset.where(assettype: 2).last[:assetcode].split(/[\/\-]/)[6].to_i + 1) rescue 0
             %td
               .inventory_selector{style: "display:none;"}
                 \-

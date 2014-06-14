@@ -380,7 +380,7 @@ en:
     upload_file: Upload File
 
   document:
-    list_of_document: List Of Documents
+    list_of_document: Document List
     serial_no: Serial No
     ref_no: Ref No
     category: Category

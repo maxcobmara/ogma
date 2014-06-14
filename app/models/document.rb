@@ -36,7 +36,8 @@ before_save :set_actionstaff2_to_blank_if_close_is_selected
 
   def filedocer
     suid = file_id
-    Cofile.find(:all, :select => "name", :conditions => {:id => suid}).map(&:name)
+    #Cofile.find(:all, :select => "name", :conditions => {:id => suid}).map(&:name)
+    Cofile.where(id: suid).pluck(:name)#:all, :select => "name", :conditions => {}).map(&:name)
   end
   
   #<% @admin = User.current_user.roles.map(&:id).include?(2) %>
@@ -91,22 +92,7 @@ before_save :set_actionstaff2_to_blank_if_close_is_selected
   validates_attachment_size :dataaction, :less_than => 5.megabytes
 
 
-#----------------Coded List----------------------------------- 
-CATEGORY = [
-        #  Displayed       stored in db
-        [ "Surat",      "1" ],
-        [ "Memo",       "2" ],
-        [ "Pekeliling", "3" ],
-        [ "Lain-Lain",  "4" ],
-        [ "e-Mel",      "5" ]
- ]
- 
- ACTION = [
-         #  Displayed       stored in db
-         [ "Segera","1" ],
-         [ "Biasa","2" ],
-         [ "Makluman", "3" ]
-  ]
+
   
   def stafffiled_details 
     stafffilled.mykad_with_staff_name

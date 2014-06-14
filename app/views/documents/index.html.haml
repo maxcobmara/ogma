@@ -34,10 +34,10 @@
         %tr
           %td.centre= link_to document.serialno, document_path(document)
           %td= document.refno
-          %td.centre= (Document::CATEGORY.find_all{|disp, value| value == document.category.to_s}).map {|disp, value| disp} [0]
+          %td.centre= (DropDown::DOCUMENT_CATEGORY.find_all{|disp, value| value == document.category.to_s}).map {|disp, value| disp} [0]
           %td= document.title
-          %td.centre= l(document.letterdt)
-          %td.centre= l(document.letterxdt)
+          %td.centre= document.letterdt.try(:strftime, "%d %B %Y" )
+          %td.centre= document.letterxdt.try(:strftime, "%d %B %Y" )
           %td= document.from
           %td/
           - document.staffs.each_with_index do |doc_recepient,ind|

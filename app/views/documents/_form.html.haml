@@ -22,7 +22,7 @@
     .col-sm-2.control-label
       = f.label t 'document.category'  , for: :category
     .col-md-4
-      = f.select :category, Document::CATEGORY, :class => "compulsory" , :prompt => "Select"
+      = f.select :category, DropDown::DOCUMENT_CATEGORY, :class => "compulsory" , :prompt => "Select"
 		  
   .form-group
     .col-sm-2.control-label
