@@ -5,6 +5,7 @@ require 'rspec/rails'
 require 'rspec/autorun'
 require 'capybara/rspec'
 require 'capybara/rails'
+require 'factory_girl'
 #require 'zip/zip'
 
 # Requires supporting ruby files with custom matchers and macros, etc,

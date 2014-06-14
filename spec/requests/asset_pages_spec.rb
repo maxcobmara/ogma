@@ -105,7 +105,6 @@ describe "Create Fixed Assets" do
     visit asset_assets_path
     page.should have_selector('h1', text: 'Assets')
     page.should have_link("New")
-    save_and_open_page
     click_link('New')
     page.should have_selector('h1', text: "Register New Asset")
     
