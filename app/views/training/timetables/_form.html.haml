@@ -1,0 +1,61 @@
+.row
+  .col-md-10.col-md-offset-1
+    / Nav tabs
+    %ul.nav.nav-tabs
+      %li.active= link_to ((t 'training.timetable.details')),"#timetable_edit", "data-toggle" => "tab"
+
+    .tab-content{style:"padding-top:1em"}
+      #timetable_edit.tab-pane.active
+        %br
+        .col-md-offset-2
+          .form-group
+            .col-sm-2.control-label
+              = f.label :code
+            .col-md-3
+              = f.text_field :code, class: 'form-control'
+          .form-group
+            .col-sm-2.control-label
+              = f.label :name
+            .col-md-3
+              = f.text_field :name, class: 'form-control'
+          .form-group
+            .col-sm-2.control-label
+              = f.label :description
+            .col-md-3
+              = f.text_field :description, class: 'form-control'
+          .form-group
+            .col-sm-2.control-label
+              = f.label :created_by
+            .col-md-3
+              = f.collection_select :created_by, Staff.where('id =?', current_user.staff.id), :id, :name, :include_blank => t('helpers.prompt.select_creator')	
+              /= f.collection_select :created_by, Staff.find(:all, :conditions => ['id =?', User.current_user.staff_id.to_i]), :id, :name
+          .form-group
+            .col-lg-offset-2.col-lg-8
+              .col-md-2
+                %b= t'training.timetable_period.period'
+              .col-md-2
+                %b= t'training.timetable_period.day_name'
+              .col-md-2
+                %b= t'training.timetable_period.start_at'
+              .col-md-2
+                %b= t'training.timetable_period.end_at'
+              .col-md-2
+                %b= t'training.timetable_period.is_break'
+              .col-md-2
+                %b= t'helpers.links.destroy'
+              = f.fields_for :timetable_periods do |builder|
+                = render 'timetable_period_fields', f: builder
+              = link_to_add_fields (t 'training.timetable.add_details'), f, :timetable_periods
+
+
+
+
+/- f.fields_for :timetable_periods do |builder| 
+/= render 'timetable_period_fields', :f => builder
+/%br
+/= link_to_add_fields image_tag("add.png", :border => 0, :title => 'Add More'), f, :timetable_periods
+/Add More
+
+
+
+

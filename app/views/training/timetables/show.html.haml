@@ -1,0 +1,68 @@
+- model_class = Timetable
+.page-header
+  %h1= t 'training.timetable.title'
+= render 'shared/flashes'
+
+.row
+  .col-md-offset-1
+    / Nav tabs
+    %ul.nav.nav-tabs
+      %li.active= link_to (t 'training.timetable.details'),"#timetable_details", "data-toggle" => "tab"
+
+    / display 
+    .tab-content{style:"padding-top:1em"}
+      #timetable_details.tab-pane.active  
+        .col-md-8.col-md-offset-1
+          %dl.dl-horizontal
+            %BR
+            %dt= t'training.timetable.code'
+            %dd=h @timetable.code 
+
+            %dt= t'training.timetable.name'
+            %dd=h @timetable.name
+
+            %dt= t'training.timetable.description'
+            %dd=h @timetable.description
+
+            %dt= t'training.timetable.created_by'
+            %dd=h @timetable.creator.name
+            %hr
+            %dt &nbsp;
+            %dd
+              %b=t 'training.timetable.period_timings'
+
+          /- @hello = (@timetable.timetable_periods.maximum("sequence")).to_i
+          /- @timetable.timetable_periods.in_groups_of(7, false) do |row_things|   //in group of seven (depends on how many sessions in a day, may vary)
+          - @timetable.timetable_periods.in_groups_of(10, false) do |row_things|
+            .showform
+              %table#subtable
+                %tr
+                  %td{:align => "center", :style=>"border-right:1px solid #FFFFFF;padding: 6px 6px 6px 6px;text-align:center;background: #E6E7E8;font-size:11px;font-weight: bold;"}= (TimetablePeriod::DAY_CHOICE.find_all{|disp, value| value == (row_things.map(&:day_name)[0]) }).map {|disp, value| disp}[0]
+                  - for periods in row_things
+                    - if periods.day_name == 1
+                      %td{:align => "center", :style=>"border-right:1px solid #FFFFFF;padding: 6px 6px 6px 6px;text-align:center;background: #E6E7E8;font-size:10px;"}
+                        %b= periods.sequence
+                        %BR= periods.start_at.try(:strftime, "%H:%m %P")+" - "
+                        = periods.end_at.try(:strftime, "%H:%m %P") 
+                        %BR= periods.is_break? ? "Break" : "" 
+							
+                  - for periods in row_things
+                    - if periods.day_name == 2
+                      %td{:align => "center", :style=>"border-right:1px solid #FFFFFF;padding: 6px 6px 6px 6px;text-align:center;background: #E6E7E8;font-size:10px;"}
+                        %b= periods.sequence
+                        %BR= periods.start_at.try(:strftime, "%H:%m %P")+" - "
+                        = periods.end_at.try(:strftime, "%H:%m %P") 
+                        %BR= periods.is_break? ? "Break" : "" 
+
+.row
+  .col-md-4.col-md-offset-3
+    %hr
+    .form-actions
+      = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), training_timetables_path, :class => 'btn btn-default'
+      = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('.edit', :default => t("helpers.links.edit")), edit_training_timetable_path(@timetable),  :class => 'btn btn-primary' 
+      = link_to content_tag(:i, "", :class => "fa fa-trash-o icon-white") + " " + t('.destroy', :default => t("helpers.links.destroy")), |
+        training_timetable_path(@timetable),                                                                                                    |
+        :method => 'delete',                                                                                                           |
+        :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },                   |
+        :class => 'btn btn-danger'
+

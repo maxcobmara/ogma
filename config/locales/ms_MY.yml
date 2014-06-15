@@ -536,20 +536,72 @@ ms_MY:
     title: Latihan
     new: Latihan Baru
     edit: Sunting Latihan
-    create_timetable: Cipta Rangka Jadual Waktu
+    create_timetable: Cipta Jadual Waktu
     create_intake: Cipta Pengambilan
     create_academic_session: Cipta Sesi Akademik
-
-  intake:
-    title: Sesi Pengambilan
-    new: Sesi Pengambilan Baru
-    edit: Sunting Sesi Pengambilan
-    details: Butiran Pengambilan
-    name: "Bulan & Tahun"
-    description: Kumpulan
-    register_on: Tarikh Pendaftaran
-    programme_id: Program
-    is_active: "Aktif?"	
+    timetable_entries: Kemasukan Jadual Waktu
+    intake:
+      title: Sesi Pengambilan
+      new: Sesi Pengambilan Baru
+      edit: Sunting Sesi Pengambilan
+      details: Butiran Pengambilan
+      name: "Bulan & Tahun"
+      description: Kumpulan
+      register_on: Tarikh Pendaftaran
+      programme_id: Program
+      is_active: "Aktif?"	
+    timetable:
+      title: Jadual Waktu
+      new: Jadual Waktu Baru
+      edit: Sunting Jadual Waktu
+      code: Kod
+      name: Nama 	  	  
+      description: Deskripsi
+      created_by: Disediakan Oleh
+      details: Butiran Jadual Waktu
+      add_details: Tambah Butiran
+      period_timings: Turutan Sesi Pembelajaran
+    timetable_period:
+      title: Sesi Pembelajaran
+      period: Sesi
+      sequence: Turutan
+      day_name: Hari
+      start_at: Masa Mula
+      end_at: Masa Tamat
+      is_break: Rehat 
+    academic_session:
+      title: Sesi Akademik
+      new: Sesi Akademik Baru
+      edit: Sunting Sesi Akademik
+      details: Butiran Sesi Akademik
+      semester: Semester
+      total_week: Bilangan Minggu
+    weeklytimetable:
+      title: Jadual Waktu Mingguan
+      new: Jadual Waktu Mingguan Baru
+      edit: Sunting Jadual Waktu Mingguan
+      details: Butiran Jadual Waktu Mingguan
+      programme_id: Program
+      intake_id: Kumpulan
+      #group_id: Kumpulan
+      startdate: Tarikh Mula
+      enddate: Tarikh Akhir
+      semester: Semester
+      prepared_by: Disediakan Oleh
+      endorsed_by: Diluluskan Oleh
+      format1: "Format (Isnin - Khamis)"
+      format2: "Format (Jumaat)"
+      week: Minggu
+      is_submitted: "Dihantar ?"
+      submitted_on: Tarikh Dihantar
+      hod_approved: Kelulusan Ketua Jabatan
+      hod_approved_on: Tarikh Kelulusan Ketua Jabatan
+      hod_rejected: Ditolak Ketua Jabatan
+      hod_rejected_on: Tarikh Ditolak Ketua Jabatan
+      reason: Sebab
+      is_returned: " - Dipulangkan" 					  
+      is_resubmitted: " -  Dihantar Semula"
+      is_approved: "Diluluskan ?"
 
   helpers:
     links:
@@ -612,7 +664,34 @@ ms_MY:
         description: Kumpulan
         register_on: Tarikh Pendaftaran
         programme_id: Program
-        is_active: "Aktif?"	
+        is_active: "Aktif?"
+      timetable:
+        code: Kod
+        name: Nama 	  	  
+        description: Deskripsi
+        created_by: Disediakan Oleh
+      academic_session:
+        semester: Semester
+        total_week: Bilangan Minggu
+      weeklytimetable:
+        programme_id: Program
+        intake_id: Kumpulan
+        #group_id: Kumpulan
+        startdate: Tarikh Mula
+        enddate: Tarikh Akhir
+        semester: Semester
+        prepared_by: Disediakan Oleh
+        endorsed_by: Diluluskan Oleh
+        format1: "Format (Isnin - Khamis)"
+        format2: "Format (Jumaat)"
+        week: Minggu
+        is_submitted: Telah Dihantar
+        submitted_on: Tarikh Dihantar
+        hod_approved: Kelulusan Ketua Jabatan
+        hod_approved_on: Tarikh Kelulusan Ketua Jabatan
+        hod_rejected: Ditolak Ketua Jabatan
+        hod_rejected_on: Tarikh Ditolak Ketua Jabatan
+        reason: Sebab
 
     prompt:
       select_creator: Pilih Penyedia Soalan
