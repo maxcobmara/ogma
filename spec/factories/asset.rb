@@ -19,5 +19,12 @@ FactoryGirl.define do
   factory :asset_defect do
     association :asset, factory: :fixed_asset
   end
+  
+  factory :stationery do
+    #category "some_name"
+    #code "some_code"
+    sequence(:category) { |n| "category#{n}" }
+    sequence(:code) { |n| "code#{n}" }
+  end
 
 end

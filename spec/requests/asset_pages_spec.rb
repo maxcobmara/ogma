@@ -94,8 +94,8 @@ describe "asset pages" do
     it { should have_selector(:link_or_button, "Print")}
     #it { should have_link((@asset_defect.asset.assetcode).to_s, href: asset_defect_path(@asset_defect.id) + "?locale=en" )}
   end
-  #have_field(id, :type => 'textarea', :disabled => true)
-  #(:link_or_button, arg1)
+  
+
  
 end
 
@@ -110,5 +110,23 @@ describe "Create Fixed Assets" do
     
   end
 end
+
+###### Stationery Pages
+describe "stationery Pages" do
+  
+  before  { @stationery = FactoryGirl.create(:stationery)}
+  subject { page }
+  
+  describe "Stationery Index page" do
+    before { visit asset_stationeries_path }
+    
+    it { should have_selector('h1', text: 'Office Supplies') }
+  end
+
+
+end
+
+#have_field(id, :type => 'textarea', :disabled => true)
+#(:link_or_button, arg1)
 
 			

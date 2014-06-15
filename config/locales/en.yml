@@ -41,7 +41,7 @@ en:
             blank: "cant't be blank"
             not_a_number: "is not number"
             too_short: "is too short (minimum is {{count}} characters)"
-            taken: "telah terpakai"
+            taken: "must be unique"
             illegal_char: contains illegal characters
             invalid: is invalid
   
