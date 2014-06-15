@@ -539,6 +539,7 @@ ms_MY:
     create_timetable: Cipta Jadual Waktu
     create_intake: Cipta Pengambilan
     create_academic_session: Cipta Sesi Akademik
+    timetable_entries: Kemasukan Jadual Waktu
     intake:
       title: Sesi Pengambilan
       new: Sesi Pengambilan Baru
@@ -575,6 +576,32 @@ ms_MY:
       details: Butiran Sesi Akademik
       semester: Semester
       total_week: Bilangan Minggu
+    weeklytimetable:
+      title: Jadual Waktu Mingguan
+      new: Jadual Waktu Mingguan Baru
+      edit: Sunting Jadual Waktu Mingguan
+      details: Butiran Jadual Waktu Mingguan
+      programme_id: Program
+      intake_id: Kumpulan
+      #group_id: Kumpulan
+      startdate: Tarikh Mula
+      enddate: Tarikh Akhir
+      semester: Semester
+      prepared_by: Disediakan Oleh
+      endorsed_by: Diluluskan Oleh
+      format1: "Format (Isnin - Khamis)"
+      format2: "Format (Jumaat)"
+      week: Minggu
+      is_submitted: "Dihantar ?"
+      submitted_on: Tarikh Dihantar
+      hod_approved: Kelulusan Ketua Jabatan
+      hod_approved_on: Tarikh Kelulusan Ketua Jabatan
+      hod_rejected: Ditolak Ketua Jabatan
+      hod_rejected_on: Tarikh Ditolak Ketua Jabatan
+      reason: Sebab
+      is_returned: " - Dipulangkan" 					  
+      is_resubmitted: " -  Dihantar Semula"
+      is_approved: "Diluluskan ?"
 
   helpers:
     links:
@@ -646,6 +673,25 @@ ms_MY:
       academic_session:
         semester: Semester
         total_week: Bilangan Minggu
+      weeklytimetable:
+        programme_id: Program
+        intake_id: Kumpulan
+        #group_id: Kumpulan
+        startdate: Tarikh Mula
+        enddate: Tarikh Akhir
+        semester: Semester
+        prepared_by: Disediakan Oleh
+        endorsed_by: Diluluskan Oleh
+        format1: "Format (Isnin - Khamis)"
+        format2: "Format (Jumaat)"
+        week: Minggu
+        is_submitted: Telah Dihantar
+        submitted_on: Tarikh Dihantar
+        hod_approved: Kelulusan Ketua Jabatan
+        hod_approved_on: Tarikh Kelulusan Ketua Jabatan
+        hod_rejected: Ditolak Ketua Jabatan
+        hod_rejected_on: Tarikh Ditolak Ketua Jabatan
+        reason: Sebab
 
     prompt:
       select_creator: Pilih Penyedia Soalan
