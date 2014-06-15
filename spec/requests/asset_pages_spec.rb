@@ -99,15 +99,18 @@ describe "asset pages" do
  
 end
 
-describe "Create Fixed Assets" do
-  let(:asset) { FactoryGirl.create(:asset) }
-  it "creates and saves fixed asset" do
-    visit asset_assets_path
-    page.should have_selector('h1', text: 'Assets')
-    page.should have_link("New")
-    click_link('New')
-    page.should have_selector('h1', text: "Register New Asset")
-    
+describe "Fixed Assets Damage cycle" do
+  context "Create Fixed Asset" do
+    let(:asset) { FactoryGirl.create(:asset) }
+    it "creates and saves fixed asset" do
+      visit asset_assets_path
+      click_link('New')
+      page.should have_selector('h1', text: "Register New Asset")
+      select("H", from: "asset[assettype]" )
+      select(Time.now.year, from: "asset[receiveddate(1i)]" )
+      #page.should have_xpath %q(//*[@data-id="asset_assettype"])
+      #page.should have_xpath %q(//*["asset_assettype"])
+    end
   end
 end
 
@@ -121,8 +124,15 @@ describe "stationery Pages" do
     before { visit asset_stationeries_path }
     
     it { should have_selector('h1', text: 'Office Supplies') }
+    it { should have_selector(:link_or_button, "New")}
+    it { should have_selector(:link_or_button, "Search")}    
+    it { should have_selector(:link_or_button, "Print")}
+    it { should have_selector('th', text: 'Item Code') }
+    it { should have_selector('th', text: 'Product Name') }
+    it { should have_selector('th', text: 'Current Quantity')}
+    it { should have_selector('th', text: 'Max Quantity')}
+    it { should have_selector('th', text: 'Min Quantity')}
   end
-
 
 end
 

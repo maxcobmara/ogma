@@ -15,7 +15,7 @@
         %table.inline_display
           %tr
             %td KKM/BPL/010619/
-            %td= f.select :assettype, DropDown::ASSETTYPE, {prompt: "Select"}, class: 'selectpicker', "data-width" => "80px"
+            %td= f.select :assettype, DropDown::ASSETTYPE, {prompt: "Select", id: "asset_type_select"}, class: 'selectpicker', "data-width" => "80px"
             %td /
             %td= f.date_select :receiveddate,  {:end_year => (Time.now.year+1), :order => [:year]}, class: 'selectpicker', "data-width" => "80px"
             %td /
@@ -47,7 +47,7 @@
             
     .form-group
       .col-sm-2.control-label
-        = f.label t 'asset.category.title', for: :category_id
+        = f.label t 'asset.category', for: :category_id
       .col-md-4
         = f.collection_select :category_id, Assetcategory.where('parent_id IS ?', nil), :id, :description, {prompt: "Select", :include_blank => true}, class: 'selectpicker'
           
