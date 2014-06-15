@@ -36,14 +36,11 @@ describe "document pages" do
   end
   
   describe "Document Edit Page" do
-    before { visit document_path(@document)}   
-    it {should have_selector('h1', text: "#{@document.refno} : #{@document.title.capitalize}")}
-    it { should have_selector(:link_or_button, "Action Details")}    
-    it { should have_selector(:link_or_button, "Document Details")}
+    before { visit edit_document_path(@document)}   
+    it {should have_selector('h1', text: "Edit #{@document.refno} : #{@document.title.capitalize}")}
     
     it { should have_selector(:link_or_button, "Back")}    
-    it { should have_selector(:link_or_button, "Edit")}    
-    it { should have_selector(:link_or_button, "Destroy")}    
+    it { should have_selector(:link_or_button, "Update")}    
   end
   
 end
