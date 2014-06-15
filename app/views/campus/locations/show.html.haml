@@ -33,21 +33,17 @@
         %dt= t 'location.code', :default => model_class.human_attribute_name(:code) + ":"
         %dd= @location.combo_code
 
-      %dl.dl-horizontal
         %dt= t 'location.name', :default =>  model_class.human_attribute_name(:name) + ":"
         %dd= @location.name 
 
-      %dl.dl-horizontal
         %dt= t 'class', :default =>  model_class.human_attribute_name(:class) + ":"
         %dd= t "location_categories.#{location_category(@location)}"
       
-      - if @location.administrator
-        %dl.dl-horizontal
+        - if @location.administrator
           %dt= t 'location.administrator', :default =>  model_class.human_attribute_name(:administrator) + ":"
           %dd= @location.administrator.try(:name)
       
-      - if @location.typename
-        %dl.dl-horizontal
+        - if @location.typename
           %dt= t 'type', :default =>  model_class.human_attribute_name(:type) + ":"
           %dd= (DropDown::LOCATION_TYPE.find_all{|disp, value| value == @location.typename}).map {|disp, value| disp}[0]
     

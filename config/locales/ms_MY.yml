@@ -124,6 +124,11 @@ ms_MY:
     defect:
       title: Aset Rosak
       notes: Catatan
+      new: Lapuran Kerosakan Baru
+      description: Catatan
+      
+    category:
+      title: Asset Category
     
   location:
     title: Lokasi

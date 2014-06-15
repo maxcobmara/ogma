@@ -14,11 +14,17 @@ class Asset::AssetsController < ApplicationController
   def edit
   end
   
+  def new
+    @asset = Asset.new
+  end
+  
   def kewpa2
+    #@lead = Position.find(1).try(:staff).try(:name)
+    @lead = Position.find(1)
     @asset = Asset.find(params[:id])
     respond_to do |format|
       format.pdf do
-        pdf = Kewpa2Pdf.new(@asset, view_context)
+        pdf = Kewpa2Pdf.new(@asset, view_context, @lead)
         send_data pdf.render, filename: "kewpa2-{Date.today}",
                               type: "application/pdf",
                               disposition: "inline"
@@ -28,10 +34,11 @@ class Asset::AssetsController < ApplicationController
 
   
   def kewpa3
+    @lead = Position.find(1)
     @asset = Asset.find(params[:id])
     respond_to do |format|
       format.pdf do
-        pdf = Kewpa3Pdf.new(@asset, view_context)
+        pdf = Kewpa3Pdf.new(@asset, view_context, @lead)
         send_data pdf.render, filename: "kewpa3-{Date.today}",
                               type: "application/pdf",
                               disposition: "inline"
