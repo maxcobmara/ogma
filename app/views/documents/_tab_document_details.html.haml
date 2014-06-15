@@ -3,13 +3,13 @@
   %dl.dl-horizontal
 
     %dt= t 'document.category' , :default => model_class.human_attribute_name(:category) + ":"
-    %dd= (Document::CATEGORY.find_all{|disp, value| value == @document.category.to_s}).map {|disp, value| disp} [0]
+    %dd= (DropDown::DOCUMENT_CATEGORY.find_all{|disp, value| value == @document.category.to_s}).map {|disp, value| disp} [0]
 
     %dt= t 'document.letterdt' , :default => model_class.human_attribute_name(:letterdt) + ":"
-    %dd= l(@document.letterdt)
+    %dd= @document.letterdt.try(:strftime, "%d %b %Y" )
 		  
     %dt= t 'document.letterxdt' , :default => model_class.human_attribute_name(:letterxdt) + ":"
-    %dd= l(@document.letterxdt)
+    %dd= @document.letterxdt.try(:strftime, "%d %b %Y" )
     
     %dt= t 'document.from' , :default => model_class.human_attribute_name(:from) + ":"
     %dd= @document.from

@@ -6,7 +6,7 @@
   %ul.nav.navbar-nav
     %li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'actions.new'))), new_document_path
   %ul.nav.navbar-nav.navbar-right
-    %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "toga"
+    %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "index_search_bar"
     %li= link_to content_tag(:li, fa_icon("print", text: (t 'actions.print'))), "#", class: 'bogus'
 
 .row
@@ -32,12 +32,12 @@
           %span= filedocer [0]
       - for document in documents
         %tr
-          %td.centre= link_to document.serialno, document_path(document)
-          %td= document.refno
+          %td= document.serialno
+          %td= link_to document.refno, document_path(document)
           %td.centre= (DropDown::DOCUMENT_CATEGORY.find_all{|disp, value| value == document.category.to_s}).map {|disp, value| disp} [0]
           %td= document.title
-          %td.centre= document.letterdt.try(:strftime, "%d %B %Y" )
-          %td.centre= document.letterxdt.try(:strftime, "%d %B %Y" )
+          %td.centre= document.letterdt.try(:strftime, "%d %b %Y" )
+          %td.centre= document.letterxdt.try(:strftime, "%d %b %Y" )
           %td= document.from
           %td/
           - document.staffs.each_with_index do |doc_recepient,ind|
@@ -48,3 +48,4 @@
 			
   .right{style:"padding:0 30px; margin:0;"}= paginate @documents_pagi, :theme => 'twitter-bootstrap-3'
   
+:javascript

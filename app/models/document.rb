@@ -105,11 +105,7 @@ before_save :set_actionstaff2_to_blank_if_close_is_selected
   def file_details 
     cofile.file_no_and_name
   end
-  
-  def doc_details
-    "#{refno}"+" | "+"#{title.capitalize}"
-  end
-  
+    
   def doc_details_date 
     "#{refno}"+" : "+"#{title.capitalize}"+" - "+"#{letterdt}"
   end

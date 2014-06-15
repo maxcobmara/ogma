@@ -11,6 +11,7 @@ describe Document do
   it { should respond_to(:title) }
   it { should respond_to(:from) }
   it { should respond_to(:category) }
+  it { should respond_to(:stafffiled_id) }
   it { should be_valid }
   
   
@@ -19,8 +20,28 @@ describe Document do
     it { should_not be_valid }
   end
   
-  describe "when icno is not present" do
+  describe "when refno is not present" do
     before { @document.refno = nil }
+    it { should_not be_valid }
+  end
+  
+  describe "when Category is not present" do
+    before { @document.category = nil }
+    it { should_not be_valid }
+  end
+  
+  describe "when Title is not present" do
+    before { @document.title = nil }
+    it { should_not be_valid }
+  end
+  
+  describe "when From is not present" do
+    before { @document.from = nil }
+    it { should_not be_valid }
+  end
+  
+  describe "when Filed By is not present" do
+    before { @document.stafffiled_id = nil }
     it { should_not be_valid }
   end
   

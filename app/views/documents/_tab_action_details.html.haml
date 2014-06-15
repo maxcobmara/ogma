@@ -13,7 +13,7 @@
         %br
 
     %dt= t 'document.circulate_minute_date' , :default => model_class.human_attribute_name(:cc1date) + ":"
-    %dd= l(@document.cc1date)
+    %dd= @document.cc1date.try(:strftime, "%d %b %Y" )
 
     %dt= t 'document.action_type' , :default => model_class.human_attribute_name(:action) + ":"
     %dd= (DropDown::DOCUMENT_ACTION.find_all{|disp, value| value == @document.cctype_id.to_s}).map {|disp, value| disp} [0]
