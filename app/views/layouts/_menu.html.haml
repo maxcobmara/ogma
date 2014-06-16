@@ -127,21 +127,21 @@
           %li= link_to content_tag(:i, "", :class => "icon-numb") + "Counselling", '#'
 
     %li.icon.icon-left
-      = link_to content_tag(:i, "", :class => "icon-numb") + "Training", '#'
+      = link_to content_tag(:i, "", :class => "icon-numb") +  t("training.title"), '#'
       .mp-level
-        %h2.icon Training
-        %a.mp-back{:href => "#"} Back
+        %h2.icon= t ("training.title")
+        %a.mp-back{:href => "#"}= t 'helpers.links.back'
         %ul
           %li.icon.icon-left
-            = link_to "Set Up", '#'
+            = link_to (t "setup"), '#'
             .mp-level
-              %h2.icon Set Up
+              %h2.icon=(t "setup")
               %a.mp-back{:href => "#"}= t 'helpers.links.back'
               %ul
-                %li= link_to "Create Timetable", '#'
-                %li= link_to "Create Intakes", '#'
-                %li= link_to "Create Academic Session", '#'
-          %li= link_to content_tag(:i, "", :class => "icon-numb") + "Time Table Entries", '#'
+                %li= link_to t("training.create_timetable"), training_timetables_path
+                %li= link_to t("training.create_intake"), training_intakes_path
+                %li= link_to t("training.create_academic_session"), training_academic_sessions_path
+          %li= link_to content_tag(:i, "", :class => "icon-numb") + t("training.timetable_entries"), training_weeklytimetables_path
           %li= link_to content_tag(:i, "", :class => "icon-numb") + "Curriculum Management", '#'
           %li.icon.icon-left
             = link_to "Lesson Plan", '#'
@@ -159,7 +159,7 @@
       = link_to content_tag(:i, "", :class => "icon-numb") + (t "exam.title"), '#'
       .mp-level
         %h2.icon Exams
-        %a.mp-back{:href => "#"} Back
+        %a.mp-back{:href => "#"}= t 'helpers.links.back'
         %ul
           %li= link_to content_tag(:i, "", :class => "icon-numb") + (t "exam.examquestion.title"), exam_examquestions_path
           %li= link_to content_tag(:i, "", :class => "icon-numb") + (t "exam.exams.title"), exam_exams_path

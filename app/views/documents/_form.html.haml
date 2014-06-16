@@ -22,21 +22,19 @@
     .col-sm-2.control-label
       = f.label t 'document.category'  , for: :category
     .col-md-4
-      = f.select :category, Document::CATEGORY, :class => "compulsory" , :prompt => "Select"
+      = f.select :category, DropDown::DOCUMENT_CATEGORY, {:prompt => "Select"}, class: 'selectpicker mandatory'
 		  
   .form-group
     .col-sm-2.control-label
       = f.label t 'document.letterdt' , for: :letterdt
     .col-md-3
-      = f.text_field :letterdt, class: 'form-control mandatory', 'data-behaviour' => 'datepicker_before' 
-      -#= f.date_select :letterdt, :start_year => 2010, :end_year => 2020, :order => [:day, :month, :year]
+      = f.text_field :letterdt, class: 'form-control date_picker'
 
   .form-group
     .col-sm-2.control-label
       = f.label t 'document.letterxdt'  , for: :letterxdt
     .col-md-3
-      = f.text_field :letterxdt, class: 'form-control mandatory', 'data-behaviour' => 'datepicker_before' 
-      -#= f.date_select :letterxdt, :start_year => 2010, :end_year => 2020, :order => [:day, :month, :year]
+      = f.text_field :letterxdt, class: 'form-control date_picker'
 
   .form-group
     .col-sm-2.control-label
@@ -48,14 +46,14 @@
     .col-sm-2.control-label
       = f.label t 'document.stafffiled_id' , for: :prepared_by
     .col-md-3
-      = f.collection_select :stafffiled_id, Staff.find(:all, :order => :name), :id, :name, {:include_blank => true}, {class: 'selectpicker', "data-width"=>"350px"}
+      = f.collection_select :stafffiled_id, Staff.order(name: :asc), :id, :name, {:include_blank => true}, {class: 'selectpicker', "data-width"=>"350px"}
       = f.hidden_field :prepared_by, :value=>current_user
 		  
   .form-group
     .col-sm-2.control-label
       = f.label t 'document.file_no'   , for: :file_id
     .col-md-6
-      = f.collection_select :file_id, Cofile.find(:all, :order => :cofileno), :id, :file_no_and_name, {:include_blank => true}, {class: 'selectpicker', "data-width"=>"500px"}
+      = f.collection_select :file_id, Cofile.order(cofileno: :asc), :id, :file_no_and_name, {:include_blank => true}, {class: 'selectpicker', "data-width"=>"500px"}
 		  
 		  
   .form-group
@@ -94,14 +92,13 @@
     .col-sm-2.control-label
       = f.label  t 'document.circulate_minute_date' , for: :cc1date
     .col-md-3
-      = f.text_field :cc1date, class: 'form-control mandatory', 'data-behaviour' => 'datepicker_before' 
-      -#= f.date_select :cc1date, :start_year => 2010, :end_year => 2020, :order => [:day, :month, :year]
+      = f.text_field :cc1date, class: 'form-control mandatory date_picker'
 		  
   .form-group
     .col-sm-2.control-label
       = f.label t 'document.action_type' , for: :cctype_id
     .col-md-4
-      = f.select :cctype_id, Document::ACTION, :prompt => "Select"
+      = f.select :cctype_id, DropDown::DOCUMENT_ACTION, {:prompt => "Select"}, class: 'selectpicker'
 		  
   .form-group
     .col-sm-2.control-label

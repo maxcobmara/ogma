@@ -1,0 +1,62 @@
+- model_class = Weeklytimetable
+.page-header
+  %h1= t('training.weeklytimetable.title')
+  
+.navbar.navbar-inverse{role: "navigation", style: "padding-right:40px;"}
+  %ul.nav.navbar-nav
+    %li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'actions.new'))), new_training_weeklytimetable_path
+  %ul.nav.navbar-nav.navbar-right
+    %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "toga"
+    %li= link_to content_tag(:li, fa_icon("print", text: (t 'actions.print'))), "#", class: 'bogus'
+
+.row.filter{style: "display:none;"}
+  .col-md-2
+   
+.row
+  %table.table-striped.table-hover.ogma
+    %thead
+      %tr
+        %th= sort_link(@search, :programme_id, (t 'training.weeklytimetable.programme_id'))
+        %th= sort_link(@search, :intake_id, (t 'training.weeklytimetable.intake_id'))
+        %th= sort_link(@search, :startdate, (t 'training.weeklytimetable.startdate'))
+        %th= sort_link(@search, :end_date, (t 'training.weeklytimetable.enddate'))
+        %th= sort_link(@search, :semester, (t 'training.weeklytimetable.semester'))
+        %th= sort_link(@search, :prepared_by, (t 'training.weeklytimetable.prepared_by'))
+        %th= sort_link(@search, :is_submitted, (t 'training.weeklytimetable.is_submitted'))
+        %th= sort_link(@search, :hod_approved, (t 'training.weeklytimetable.is_approved'))
+
+    %tbody
+    = render "index_search"
+    - @weeklytimetables.group_by{|x|x.programme_id}.each do |p,weeklytimetables|
+      - weeklytimetables.each do |weeklytimetable|
+        %tr
+          %td=h link_to weeklytimetable.schedule_programme.programme_list, training_weeklytimetable_path(weeklytimetable)     
+          %td=h weeklytimetable.schedule_intake.group_with_intake_name
+          %td=h weeklytimetable.startdate 
+          %td=h weeklytimetable.enddate
+          %td=h weeklytimetable.academic_semester.semester
+          %td=h weeklytimetable.try(:schedule_creator).name 
+          %td
+            =h weeklytimetable.is_submitted? ? image_tag("tick.png") : image_tag("cross.png") 
+            - if weeklytimetable.hod_rejected==true && weeklytimetable.is_submitted==nil 
+              = t 'training.weeklytimetable.is_returned'	
+            - elsif weeklytimetable.hod_rejected==true && weeklytimetable.is_submitted==true 
+              = t 'training.weeklytimetable.is_resubmitted'
+          %td
+            =h weeklytimetable.hod_approved? ? image_tag("tick.png") : image_tag("cross.png") 
+            =h weeklytimetable.hod_rejected? ? "- Rejected" : "" 
+
+  .right{style:"padding:0 30px; margin:0;"}= paginate @weeklytimetables, :theme => 'twitter-bootstrap-3'
+
+
+
+/ if (weeklytimetable.is_submitted != true && weeklytimetable.prepared_by == current_user.staff_id) || (weeklytimetable.prepared_by == current_user.staff_id && weeklytimetable.hod_rejected? == true && weeklytimetable.is_submitted==nil) 
+/= link_to image_tag("edit.png", :border => 0, :title => 'Edit'), :action => 'edit', :id => weeklytimetable
+/elsif (weeklytimetable.is_submitted == true && weeklytimetable.endorsed_by == current_user.staff_id && weeklytimetable.hod_approved!= true)  %>
+/link_to image_tag("approval.png", :border => 0), :action => 'edit', :id => weeklytimetable 
+
+
+/= link_to image_tag("printer.png", :border => 0, :title => 'General Timetable'), :action => 'general_timetable', :id => weeklytimetable 
+
+
+

@@ -3,6 +3,10 @@ class Intake < ActiveRecord::Base
   has_many   :students
   has_many   :weeklytimetables  #20March2013
   has_many   :lessonplans, :class_name => 'LessonPlan', :foreign_key=>'intake_id' 
+  
+  def group_with_intake_name
+    "#{description}"+' (Intake '+"#{name}"+')'
+  end  
 end
 
 # == Schema Information

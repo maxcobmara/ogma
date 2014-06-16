@@ -15,16 +15,16 @@
         %table.inline_display
           %tr
             %td KKM/BPL/010619/
-            %td= f.select :assettype, DropDown::ASSETTYPE, {prompt: "Select"}, class: 'selectpicker', "data-width" => "80px"
+            %td= f.select :assettype, DropDown::ASSETTYPE, {prompt: "Select", id: "asset_type_select"}, class: 'selectpicker', "data-width" => "80px"
             %td /
             %td= f.date_select :receiveddate,  {:end_year => (Time.now.year+1), :order => [:year]}, class: 'selectpicker', "data-width" => "80px"
             %td /
             %td
               .fixed_selector{style: "display:none; margin:0; padding-top:12px;"}
-                = f.text_field :cardno, class: "form-control", :default => (Asset.find_last_by_assettype(1)[:assetcode].split("/")[5].to_i + 1) rescue 0
+                = f.text_field :cardno, class: "form-control", :default => ( Asset.where(assettype: 1).last[:assetcode].split("/")[5].to_i + 1) rescue 0
             %td
               .inventory_selector{style: "display:none;  margin:0; padding-top:12px;"}
-                = f.text_field :cardno, class: "form-control", :default => (Asset.find_last_by_assettype(2)[:assetcode].split(/[\/\-]/)[6].to_i + 1) rescue 0
+                = f.text_field :cardno, class: "form-control", :default => ( Asset.where(assettype: 2).last[:assetcode].split(/[\/\-]/)[6].to_i + 1) rescue 0
             %td
               .inventory_selector{style: "display:none;"}
                 \-
@@ -47,7 +47,7 @@
             
     .form-group
       .col-sm-2.control-label
-        = f.label t 'asset.category.title', for: :category_id
+        = f.label t 'asset.category', for: :category_id
       .col-md-4
         = f.collection_select :category_id, Assetcategory.where('parent_id IS ?', nil), :id, :description, {prompt: "Select", :include_blank => true}, class: 'selectpicker'
           

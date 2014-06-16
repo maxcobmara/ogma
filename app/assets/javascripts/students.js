@@ -1,9 +1,9 @@
-$j(document).ready(function(){
-  $j('#student_race2').change(function() {
-    if($j(this).val() == 21) {
-      $j('.bong').show();
+$(document).ready(function(){
+  $('#student_race2').change(function() {
+    if($(this).val() == 21) {
+      $('.bong').show();
     }else {
-         $j('.bong').hide();
+         $('.bong').hide();
    }
    });
 });

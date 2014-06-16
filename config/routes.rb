@@ -90,6 +90,20 @@ Ogma::Application.routes.draw do
 
 
   resources :bulletins
+  
+  namespace :training do
+    resources :intakes
+    resources :timetables
+    resources :timetable_periods
+    resources :academic_sessions
+    resources :weeklytimetables do
+      collection do
+        get 'general_timetable', to: "weeklytimetables#general_timetable"
+        get 'personalize_timetable', to: "weeklytimetables#personalize_timetable"
+      end
+    end
+  end
+  
 
   
   namespace :library do

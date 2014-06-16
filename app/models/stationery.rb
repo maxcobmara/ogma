@@ -1,6 +1,9 @@
 class Stationery < ActiveRecord::Base
-  validates_presence_of :category
-  validates_uniqueness_of :category, :code
+  
+  
+  
+  validates :category, presence: true, uniqueness: true
+  validates_uniqueness_of :code
   
   has_many :addsuppliers, :foreign_key => 'supplier_id' , :dependent => :destroy
   accepts_nested_attributes_for :addsuppliers, :allow_destroy => true
@@ -10,8 +13,8 @@ class Stationery < ActiveRecord::Base
   
   
   def current_quantity
-    a = Addsupplier.sum(:quantity, :conditions => ["supplier_id = ?", id])
-    b = Usesupply.sum(:quantity, :conditions => ["supplier_id = ?", id])
+    a = Addsupplier.where(supplier_id: id).sum(:quantity)
+    b = Usesupply.where(supplier_id: id).sum(:quantity)
     a - b
   end
 end

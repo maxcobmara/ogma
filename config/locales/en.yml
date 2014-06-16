@@ -41,7 +41,7 @@ en:
             blank: "cant't be blank"
             not_a_number: "is not number"
             too_short: "is too short (minimum is {{count}} characters)"
-            taken: "telah terpakai"
+            taken: "must be unique"
             illegal_char: contains illegal characters
             invalid: is invalid
   
@@ -67,6 +67,7 @@ en:
   notes: Notes
   create: Create
   no: No
+  setup: Set Up
   
   actions:
     new: New
@@ -150,8 +151,8 @@ en:
       new: New Defect Report
       description: Description
       
-    category:
-      title: Asset Category
+    #category:
+      #title: Asset Category
     
 
     
@@ -379,7 +380,7 @@ en:
     upload_file: Upload File
 
   document:
-    list_of_document: List Of Documents
+    list_of_document: Document List
     serial_no: Serial No
     ref_no: Ref No
     category: Category
@@ -550,6 +551,77 @@ en:
       total_questions: Total Questions
       not_selected: Not Selected
 
+  training:
+    title: Training
+    new: New Training
+    edit: Editing Training
+    create_timetable: Create Timetable
+    create_intake: Create Intake
+    create_academic_session: Create Academic Session
+    timetable_entries: Timetable Entries
+    intake:
+      title: Intake
+      new: New Intake
+      edit: Editing Intake
+      details: Intake Details
+      name: "Month & Year"
+      description: Group
+      register_on: Registration Date
+      programme_id: Programme
+      is_active: Is Active
+    timetable:
+      title: Timetable
+      new: New Timetable
+      edit: Edit Timetable
+      code: Code
+      name: Name  	  
+      description: Description
+      created_by: Created By
+      details: Timetable Details
+      add_details: Add Details
+      period_timings: Period Timings
+    timetable_period:
+      title: Timetable Period
+      period: Period
+      sequence: Sequence
+      day_name: Day
+      start_at: Start At
+      end_at: End At
+      is_break: Break
+    academic_session:
+      title: Academic Session
+      new: New Academic Session
+      edit: Edit Academic Session
+      details: Academic Session Details
+      semester: Semester
+      total_week: Total Week
+    weeklytimetable:
+      title: Weekly Timetable
+      new: New Weekly Timetable
+      edit: Edit Weekly Timetable
+      details: Weekly Timetable Details
+      programme_id: Programme
+      intake_id: Group
+      #group_id: Group
+      startdate: Start Date
+      enddate: End Date
+      semester: Semester
+      prepared_by: Prepared By
+      endorsed_by: Endorsed By
+      format1: "Format (Monday - Thursday"
+      format2: "Format (Friday)"
+      week: Week
+      is_submitted: "Submitted ?"
+      submitted_on: Submission Date
+      hod_approved: HOD Approval
+      hod_approved_on: Approval Date
+      hod_rejected: HOD Rejection
+      hod_rejected_on: Rejecttion Date
+      reason: Reason
+      is_returned: " - Dipulangkan" 					  
+      is_resubmitted: " -  Dihantar Semula"
+      is_approved: "Approved ?"
+
   helpers:
     links:
       new: New
@@ -605,7 +677,40 @@ en:
         starttime: Start Time
         endtime: End Time
         topic_id: Topic
-        sequ: Sequence  
+        sequ: Sequence
+      intake:
+        name: "Month & Year"
+        description: Group
+        register_on: Registration Date
+        programme_id: Programme
+        is_active: Is Active
+      timetable:
+        code: Code
+        name: Name  	  
+        description: Description
+        created_by: Created By
+      academic_session:
+        semester: Semester
+        total_week: Total Week
+      weeklytimetable:
+        programme_id: Programme
+        intake_id: Group
+        #group_id: Group
+        startdate: Start Date
+        enddate: End Date
+        semester: Semester
+        prepared_by: Prepared By
+        endorsed_by: Endorsed By
+        format1: "Format (Monday - Thursday"
+        format2: "Format (Friday)"
+        week: Week
+        is_submitted: "Submitted ?"
+        submitted_on: Submission Date
+        hod_approved: HOD Approval
+        hod_approved_on: Approval Date
+        hod_rejected: HOD Rejection
+        hod_rejected_on: Rejecttion Date
+        reason: Reason
 
     prompt:
       select_creator: Select Creator

@@ -2,7 +2,7 @@
 .page-header
   %h1
     = t 'edit'
-    = @document.doc_details
+    #{@document.refno} :  #{@document.title.capitalize}
 
 = render 'shared/flashes'
 

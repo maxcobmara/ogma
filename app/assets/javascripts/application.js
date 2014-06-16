@@ -13,10 +13,7 @@
 //= require jquery
 //= require jquery.ui.autocomplete
 //= require jquery_ujs
-//= require bootstrap.min
-//= require bootstrap-select.min
-//= require activators
-//= require jquery.datetimepicker
+//= require_tree
 
 
 
