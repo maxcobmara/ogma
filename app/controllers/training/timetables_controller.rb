@@ -49,11 +49,10 @@ class Training::TimetablesController < ApplicationController
   # POST /timetables.xml
   def create
 #raise params.inspect
-    @timetable = Timetable.new(params[:timetable])
-
+    @timetable = Timetable.new(timetable_params)
     respond_to do |format|
       if @timetable.save
-        format.html { redirect_to(@timetable, :notice => (t 'training.timetable.title')+(t 'actions.created')) }
+        format.html { redirect_to(training_timetable_path(@timetable), :notice => (t 'training.timetable.title')+(t 'actions.created')) }
         format.xml  { render :xml => @timetable, :status => :created, :location => @timetable }
       else
         format.html { render :action => "new" }
