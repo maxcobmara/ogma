@@ -2,7 +2,7 @@
   /.form-inline{role: "form"}
   /.form-group
   .col-md-2
-    = f.select :sequence, 1..9
+    = f.select :sequence, 1..12
   .col-md-2
     = f.select :day_name, TimetablePeriod::DAY_CHOICE, :prompt => "Select"
   .col-md-2    
@@ -11,15 +11,7 @@
     = f.time_select :end_at, :minute_step => 15, class: 'timepicker'
   .col-md-2
     = f.check_box :is_break
-    Break
+    =t 'training.weeklytimetable.break'
   .col-md-2
     = f.hidden_field :_destroy
     = link_to_remove_fields (fa_icon "trash-o"), f     
-
-/<%= f.select :sequence, 1..9  %>
-/<%= f.select :day_name, TimetablePeriod::DAY_CHOICE, :prompt => "Select"  %>
-/<%= f.time_select :start_at, :minute_step => 15 %>
-/<%= f.time_select :end_at, :minute_step => 15 %>
-/<%= f.check_box :is_break %> <label> Break</label>
-/<%= f.hidden_field :_destroy %>
-/<%= link_to_remove_fields image_tag("delete.png", :border => 0, :title => 'Remove'), f %>

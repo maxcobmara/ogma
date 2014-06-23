@@ -1,0 +1,138 @@
+- model_class = Weeklytimetable
+- break_format1 = @weeklytimetable.timetable_monthurs.timetable_periods.pluck(:is_break)
+- break_format2 = @weeklytimetable.timetable_friday.timetable_periods.pluck(:is_break)
+.col-md-8.col-md-offset-1
+  %br
+
+  .showform
+    %table#subtable
+      /Header - sequence & time period (Sunday - Wednesday)  
+      - @weeklytimetable.timetable_monthurs.timetable_periods.in_groups_of(@count1, false) do |row_things|
+        %tr
+          %th{:align => "center", :style=>"border:1px solid black; text-align:center; padding:4px; vertical-align:middle;background-color:#FEE;font-size:12px;"} 
+            &nbsp;
+          - for periods in row_things
+            %th{:align => "center", :style=>"border:1px solid black; text-align:center; padding:4px;background-color:#FEE;font-size:12px;"} 
+              =periods.sequence
+              %BR= periods.start_at.try(:strftime, "%H:%m%P")+" - "+ periods.end_at.try(:strftime, "%H:%m%P")
+
+        /Day & date column (Sunday - Wednesday) - row starts after timeslot header
+        - daycount=4
+        - 1.upto(daycount) do |row|
+          %tr
+            %td{:align =>"center", :style=> "border:1px solid black;text-align:center; padding:4px; vertical-align:middle;font-size:12px;"} 
+              - if row==1
+                =@weeklytimetable.startdate.try(:strftime, "%A")
+                %br=@weeklytimetable.startdate.try(:strftime, "%d-%b-%Y")
+              - elsif row==2
+                =(@weeklytimetable.startdate+1).try(:strftime, "%A")
+                %br=(@weeklytimetable.startdate+1).try(:strftime, "%d-%b-%Y")
+              - elsif row==3
+                =(@weeklytimetable.startdate+2).try(:strftime, "%A")
+                %br=(@weeklytimetable.startdate+2).try(:strftime, "%d-%b-%Y")
+              - elsif row==4
+                =(@weeklytimetable.startdate+3).try(:strftime, "%A")
+                %br=(@weeklytimetable.startdate+3).try(:strftime, "%d-%b-%Y")
+
+            /Content - (Sunday - Wednesday)
+            /span BREAK fields & display CLASSES fields accordingly - col (column) starts after day/date column
+            - 1.upto(@count1) do |col|
+              - if break_format1[col-1]==true && row==1
+                %td{:align =>"center", :rowspan=>"#{daycount}", :style=>"border:1px solid black; text-align:center; padding:4px;vertical-align:middle;font-size:12px;" } 
+                  =t 'training.weeklytimetable.break'
+              - elsif break_format1[col-1]==true && row!=1
+                /do-not-remove : should not have any field or value
+              - elsif break_format1[col-1]==false
+                %td{:align=>"center", :style=>"border:1px solid black; text-align:center; padding:4px;font-size:12px;"}
+                  - @weeklytimetable.weeklytimetable_details.each do |xx|
+                    - if xx.day2 == row && xx.time_slot2 == col 
+                      %b
+                        - if xx.weeklytimetable_topic.ancestry_depth == 4 
+                          = xx.weeklytimetable_topic.parent.parent.code
+                          %br= xx.weeklytimetable_topic.parent.name
+                        - else
+                          = xx.weeklytimetable_topic.parent.code
+                          %br= xx.weeklytimetable_topic.name
+                        = xx.weeklytimetable_lecturer.name
+                        %br= xx.weeklytimetable_location.name
+                        = "(K)" if xx.lecture_method == 1
+                        = "(T)" if xx.lecture_method == 2
+                        = "(A)" if xx.lecture_method == 3
+
+      /Header for FRIDAY (fixed - 5 time slot) - duration for 2 last columns = 2 hours each, span of ABOVE 2 columns[Sun-Wednesday])
+      /if just 1 hour slot exist for evening session, span columns accordingly
+      //HOLD FIRST
+      /break_tospan, if exceed 1 hour
+      /- spanla=[]
+      /- @weeklytimetable.timetable_friday.timetable_periods.each do |period|
+      /- if period.is_break==true && period.duration>60
+      /- spanla << period.sequence
+      /= spanla
+      //HOLD FIRST
+      - break_tospan=4	
+      - classes_tospan=[5,7]
+      - span_count="2"
+      - @weeklytimetable.timetable_friday.timetable_periods.in_groups_of(@count2, false) do |row_things|
+        %tr
+          %th{:align=>"center", :style=>"border:1px solid black; text-align:center; padding:4px; vertical-align:middle;background-color:#FEE;font-size:12px;"}
+            &nbsp;
+            - colfriday=1
+          - for periods in row_things
+            - if colfriday == break_tospan || colfriday == classes_tospan[0] || colfriday == classes_tospan[1] 
+              %th{:colspan=>span_count, :style=>"border:1px solid black; text-align:center; padding:4px;background-color:#FEE;font-size:12px;"}
+                %b=periods.sequence
+                %BR= periods.start_at.try(:strftime, "%H:%m%P")+" - "+ periods.end_at.try(:strftime, "%H:%m%P")
+            - else
+              %th{:align=>"center", :style=>"border:1px solid black; text-align:center; padding:4px;background-color:#FEE;font-size:12px;"} 
+                =periods.sequence
+                %BR= periods.start_at.try(:strftime, "%H:%m%P")+" - "+ periods.end_at.try(:strftime, "%H:%m%P")
+            -colfriday+=1
+
+        /Content for Friday-(start) - COMPULSORY long break on the fouth time slot
+        %tr
+          %td{:align=>"center", :style=>"border:1px solid black;text-align:center; padding:4px; vertical-align:middle;font-size:12px;"}
+            =@weeklytimetable.enddate.try(:strftime, "%A")
+            %br=@weeklytimetable.enddate.try(:strftime, "%d-%b-%Y")
+            - 1.upto(@count2) do |col2|
+              - if break_format2[col2-1]==true
+                /BREAK columns
+                - if col2 == break_tospan
+                  %td{:colspan=>span_count, :align=>"center", :style=>"border:1px solid black;text-align:center; padding:4px; vertical-align:middle;font-size:12px;"}
+                    =t 'training.weeklytimetable.break'
+                - else
+                  %td{:align=>"center", :style=>"border:1px solid black;text-align:center; padding:4px; vertical-align:middle;font-size:12px;"}
+                    =t 'training.weeklytimetable.break' 
+              - elsif break_format2[col2-1]==false 
+                /Non-break columns        
+                - if col2 == classes_tospan[0] || col2 == classes_tospan[1] 
+                  %td{:colspan=>span_count, :align=>"center", :style=>"border:1px solid black;text-align:center; padding:4px; vertical-align:middle;font-size:12px;"}
+                    - @weeklytimetable.weeklytimetable_details.each do |xx|
+                      - if xx.is_friday == true && xx.time_slot == @column_count_monthur+col2 
+                        %b
+                          - if xx.weeklytimetable_topic.ancestry_depth == 4
+                            = xx.weeklytimetable_topic.parent.parent.code 
+                            %br= xx.weeklytimetable_topic.parent.name 
+                          - else
+                            = xx.weeklytimetable_topic.parent.code
+                            %br= xx.weeklytimetable_topic.name 
+                          = xx.weeklytimetable_lecturer.name 
+                          %br= xx.weeklytimetable_location.name
+                          = "(K)" if xx.lecture_method == 1
+                          = "(T)" if xx.lecture_method == 2
+                          = "(A)" if xx.lecture_method == 3
+                - else
+                  %td{:align=>"center", :style=>"border:1px solid black;text-align:center; padding:4px; vertical-align:middle;"}
+                    - @weeklytimetable.weeklytimetable_details.each do |xx|
+                      - if xx.is_friday == true && xx.time_slot == @column_count_monthur+count4
+                        %b
+                          - if xx.weeklytimetable_topic.ancestry_depth == 4
+                            = xx.weeklytimetable_topic.parent.parent.code
+                            %br= xx.weeklytimetable_topic.parent.name
+                          - else
+                            = xx.weeklytimetable_topic.parent.code
+                            %br= xx.weeklytimetable_topic.name 
+                          = xx.weeklytimetable_lecturer.name 
+                          %br= xx.weeklytimetable_location.name
+                          = "(K)" if xx.lecture_method == 1
+                          = "(T)" if xx.lecture_method == 2
+                          = "(A)" if xx.lecture_method == 3 

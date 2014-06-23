@@ -31,9 +31,8 @@
             %dd
               %b=t 'training.timetable.period_timings'
 
-          /- @hello = (@timetable.timetable_periods.maximum("sequence")).to_i
-          /- @timetable.timetable_periods.in_groups_of(7, false) do |row_things|   //in group of seven (depends on how many sessions in a day, may vary)
-          - @timetable.timetable_periods.in_groups_of(10, false) do |row_things|
+          - period_count = @timetable.timetable_periods.count
+          - @timetable.timetable_periods.in_groups_of(period_count, false) do |row_things|
             .showform
               %table#subtable
                 %tr
