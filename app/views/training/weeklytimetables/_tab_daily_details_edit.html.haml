@@ -5,7 +5,6 @@
 - break_format2 = @weeklytimetable.timetable_friday.timetable_periods.pluck(:is_break)
 .col-md-8.col-md-offset-1
   %br
-
   .showform
     %table#subtable
       /Header(row) : sequence & time period (Sunday - Wednesday)  
@@ -89,7 +88,6 @@
                 /Non-break columns
                 - if classes_tospan.include?(col2)
                   %td{:colspan=>span_count, :align=>"center", :style=>"border:1px solid black;text-align:center; padding:4px; vertical-align:middle;font-size:12px;"}
-                    lulu
                     = render 'subtab_class_details_edit', {:f => f, :colno =>col2, :rowno=>0}
                     /- @weeklytimetable.weeklytimetable_details.each do |xx|
                     /- if xx.is_friday == true && xx.time_slot == @count1+col2 
@@ -97,13 +95,7 @@
             
                 - else
                   %td{:align=>"center", :style=>"border:1px solid black;text-align:center; padding:4px; vertical-align:middle;font-size:12px"}
-                    lala 
                     = render 'subtab_class_details_edit', {:f => f, :colno =>col2, :rowno=>0}
                     /- @weeklytimetable.weeklytimetable_details.each do |xx|
                     /- if xx.is_friday == true && xx.time_slot == @count1+col2
                     /%b= render 'subtab_class_details_edit', {:xx=>xx, :f => f, :colno =>col2, :rowno=>0}
-
-
-/= f.fields_for :weeklytimetable_details do |builder| 
-/= render 'weeklytimetable_detail_fields',  :f => builder 
-/= link_to_add_fields image_tag("add.png", :border => 0, :title => 'Add More'), f, :weeklytimetable_details 
