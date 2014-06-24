@@ -76,6 +76,8 @@ class Training::WeeklytimetablesController < ApplicationController
 
   # GET /weeklytimetables/1/edit
   def edit
+    current_user = User.find(11)    #maslinda 
+    #current_user = User.find(72)    #izmohdzaki
     @weeklytimetable = Weeklytimetable.find(params[:id])
   end
 
@@ -86,7 +88,7 @@ class Training::WeeklytimetablesController < ApplicationController
 
     respond_to do |format|
       if @weeklytimetable.save
-        format.html { redirect_to(@weeklytimetable, :notice => 'Weeklytimetable was successfully created.') }
+        format.html { redirect_to(training_weeklytimetable_path(@weeklytimetable), :notice => (t 'training.weeklytimetable.title')+(t 'actions.created')) }
         format.xml  { render :xml => @weeklytimetable, :status => :created, :location => @weeklytimetable }
       else
         format.html { render :action => "new" }
@@ -103,8 +105,8 @@ class Training::WeeklytimetablesController < ApplicationController
     @weeklytimetable = Weeklytimetable.find(params[:id])
     
     respond_to do |format|
-      if @weeklytimetable.update_attributes(params[:weeklytimetable])
-        format.html { redirect_to(@weeklytimetable, :notice => 'Weeklytimetable was successfully updated.') }
+      if @weeklytimetable.update(weeklytimetable_params)
+        format.html { redirect_to(training_weeklytimetable_path(@weeklytimetable), :notice => (t 'training.weeklytimetable.title')+(t 'actions.created')) }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }
@@ -163,7 +165,7 @@ class Training::WeeklytimetablesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def weeklytimetable_params
-      params.require(:weeklytimetable).permit(:programme_id, :intake_id, :group_id, :startdate, :enddate, :semester, :prepared_by, :endorsed_by, :format1, :format2, :week, :is_submitted, :submitted_on, :hod_approved, :hod_approved_on, :hod_rejected, :hod_rejected_on, :reason)
+      params.require(:weeklytimetable).permit(:programme_id, :intake_id, :group_id, :startdate, :enddate, :semester, :prepared_by, :endorsed_by, :format1, :format2, :week, :is_submitted, :submitted_on, :hod_approved, :hod_approved_on, :hod_rejected, :hod_rejected_on, :reason, weeklytimetable_details_attributes: [:id,:topic, :time_slot, :lecturer_id, :weeklytimetable_id, :day2, :is_friday, :time_slot2, :location, :lecture_method])
     end
   
 end

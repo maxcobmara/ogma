@@ -1,0 +1,11 @@
+- if xx.weeklytimetable_topic.ancestry_depth == 4 
+  = xx.weeklytimetable_topic.parent.parent.code
+  %br= xx.weeklytimetable_topic.parent.name
+- else
+  = xx.weeklytimetable_topic.parent.code
+  %br= xx.weeklytimetable_topic.name
+= xx.weeklytimetable_lecturer.name
+%br= xx.weeklytimetable_location.name
+= "(K)" if xx.lecture_method == 1
+= "(T)" if xx.lecture_method == 2
+= "(A)" if xx.lecture_method == 3

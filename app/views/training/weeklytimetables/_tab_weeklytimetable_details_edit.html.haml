@@ -1,0 +1,55 @@
+.col-md-offset-2
+  .form-group
+    .col-sm-2.control-label
+      = f.label :programme_id
+    .col-md-3
+      /= f.collection_select :programme_id, Programme.roots, :id, :programme_list, :include_blank => (t 'helpers.prompt.select_programme')
+       
+  .form-group
+    .col-sm-2.control-label
+      = f.label :intake_id
+    .col-md-3
+      = f.collection_select :intake_id, Intake.all, :id, :programme_group_intake, :include_blank=> (t 'helpers.prompt.select_intake')
+       
+  .form-group
+    .col-sm-2.control-label
+      = f.label :startdate
+    .col-md-3
+      = f.text_field :startdate, class: 'form-control', 'data-behaviour' => 'datepicker_today'
+       
+  .form-group
+    .col-sm-2.control-label
+      = f.label :enddate
+    .col-md-3
+      = f.text_field :enddate, class: 'form-control', 'data-behaviour' => 'datepicker_today'
+ 
+  .form-group
+    .col-sm-2.control-label
+      = f.label :semester
+    .col-md-3
+      = f.collection_select :semester, AcademicSession.find(:all,:order=>'created_at DESC'), :id, :semester, :include_blank => (t 'helpers.prompt.select_semester')
+       
+  .form-group
+    .col-sm-2.control-label
+      = f.label :week
+    .col-md-3
+      = f.text_field :week, class: 'form-control'
+
+  .form-group
+    .col-sm-2.control-label
+      = f.label :prepared_by
+    .col-md-3
+      /= f.collection_select :prepared_by, Staff.find(:all, :conditions => ['id =?', User.current_user.staff_id] ), :id, :name 
+      = f.collection_select :prepared_by, Staff.find(:all, :conditions => ['id =?', current_user.staff_id] ), :id, :name 
+
+  .form-group
+    .col-sm-2.control-label
+      = f.label :format1
+    .col-md-3
+      = f.collection_select :format1, Timetable.all, :id, :name, :include_blank => (t 'helpers.prompt.select_format')
+	  
+  .form-group
+    .col-sm-2.control-label
+      = f.label :format2
+    .col-md-3
+      = f.collection_select :format2, Timetable.all, :id, :name, :include_blank => (t 'helpers.prompt.select_format')

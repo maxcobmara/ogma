@@ -1,1 +1,14 @@
-inside partial form
+.row
+  .col-md-10.col-md-offset-1
+    / Nav tabs
+    %ul.nav.nav-tabs
+      %li.active= link_to ((t 'training.weeklytimetable.details')),"#weeklytimetable_details", "data-toggle" => "tab"
+      %li= link_to ((t 'training.weeklytimetable.daily_details')), "#daily_details", "data-toggle" => "tab"
+
+    .tab-content{style:"padding-top:1em"}
+      #weeklytimetable_details.tab-pane.active
+        %br
+        = render :partial => 'tab_weeklytimetable_details_edit', :locals => {:f => f}
+      #daily_details.tab-pane
+        %br
+        = render :partial => 'tab_daily_details_edit', :locals => {:f => f}
