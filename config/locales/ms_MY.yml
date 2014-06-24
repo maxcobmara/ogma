@@ -82,7 +82,16 @@ ms_MY:
     country_cd: "Kewarganegaraan"
     thumb: Kod ID Biometric
     
+    training:
+      budget: 
+        title: Belanjawan Latihan
+        start: Mula Tahun Fiskal
+        budget: Jumlah
+        used: Digunakan
+        balance: Baki
+    
   position:
+    title: "Tugas & Tanggungjawab"
     index: Carta Organisasi
     
     

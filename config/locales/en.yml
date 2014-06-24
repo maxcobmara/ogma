@@ -106,7 +106,16 @@ en:
     country_cd: "Nationality"
     thumb: Thumb ID Code
     
+    training:
+      budget: 
+        title: Training Budget
+        start: Fiscal Year
+        budget: Budget
+        used: Used
+        balance: Balance
+    
   position:
+    title: "Tasks & Responsibilities"
     index: Organisation Chart
     
     

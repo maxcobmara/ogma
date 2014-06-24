@@ -19,7 +19,7 @@
                 %li= link_to "Status", '#'
                 %li= link_to "Report - Monthly Listing", '#'  
           %li= link_to "Staff Appraisal", '#'
-          %li= link_to "Task & Responsibilities", staff_positions_path
+          %li= link_to t('position.title'), staff_positions_path
           %li.icon.icon-left
             = link_to "Staff Leave", '#'
             .mp-level
@@ -43,7 +43,7 @@
               %h2.icon Professional <BR> Development
               %a.mp-back{:href => "#"}= t 'helpers.links.back'
               %ul
-                %li= link_to "Training Budget", ptbudgets_path
+                %li= link_to t('staff.training.budget.title'), staff_training_budgets_path
                 %li= link_to "Training Courses", '#'
                 %li= link_to "Training Schedule", '#'
                 %li= link_to "Apply for Training", '#'

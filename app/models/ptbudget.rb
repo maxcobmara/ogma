@@ -2,18 +2,15 @@ class Ptbudget < ActiveRecord::Base
   
   validates_presence_of :fiscalstart, :budget
   
-  def fiscal_end
-#    fiscalstart + 1.year - 1.day
-  end
+
   
   def used_budget
-    budstart = fiscalstart
-    budend = fiscal_end
-    Ptschedule.sum(:final_price, :conditions => ["start >=? AND start <=?", budstart, fiscal_end])
+    #Ptschedule.sum(:final_price, :conditions => ["start >=? AND start <=?", budstart, fiscal_end])
+    Ptschedule.where("start >=? AND start <?", fiscalstart, fiscalstart + 1.year).sum(:final_price)
   end
   
   def budget_balance
- #   budget-used_budget
+    budget-used_budget
   end
   
   def next_budget_date

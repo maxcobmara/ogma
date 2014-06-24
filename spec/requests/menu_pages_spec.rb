@@ -8,5 +8,6 @@ describe "menu pages" do
   it { should have_link("Assets", href: asset_assets_path + "?locale=en" ) }
   it { should have_selector('h2', text: 'Locations')}
   it { should have_selector('h2', text: 'Students')}
-  it { should have_link("Task & Responsibilities", href: staff_positions_path + "?locale=en" ) }
+  it { should have_link(I18n.t('position.title'), href: staff_positions_path + "?locale=en" ) }
+  it { should have_link(I18n.t('staff.training.budget.title'), href: staff_training_budgets_path + "?locale=en" ) }
 end
