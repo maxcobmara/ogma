@@ -4,7 +4,7 @@ describe "staff training pages" do
   before  { @budget = FactoryGirl.create(:ptbudget) }
   subject { page }
   
-  describe "Training Budget page" do
+  describe "Staff Training Budget Index page" do
     before { visit staff_training_budgets_path }
     
     it { should have_selector('h1', text: I18n.t('staff.training.budget.title')) }

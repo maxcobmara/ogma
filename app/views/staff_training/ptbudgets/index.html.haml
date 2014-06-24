@@ -19,7 +19,7 @@
     - @ptbudgets.each do |budget|
       %tbody
         %tr
-          %td= link_to l(budget.fiscalstart) + ' ~ ' + fiscal_end(budget), staff_training_budget_path(budget)
+          %td= link_to fiscal_range(budget), staff_training_budget_path(budget)
           %td= ringgols(budget.budget)
           %td= ringgols(budget.used_budget)
           %td= ringgols(budget.budget_balance)
