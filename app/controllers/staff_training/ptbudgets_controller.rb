@@ -1,4 +1,4 @@
-class PtbudgetsController < ApplicationController
+class StaffTraining::PtbudgetsController < ApplicationController
   helper_method :sort_column, :sort_direction
   before_action :set_ptbudget, only: [:show, :edit, :update, :destroy]
   #filter_resource_access

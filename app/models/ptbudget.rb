@@ -1,9 +1,6 @@
 class Ptbudget < ActiveRecord::Base
   
-  validates_presence_of :fiscalstart, :budget, :used_budget, :budget_balance
-  #Addsupplier.sum(:quantity, :conditions => ["supplier_id = ?", id])
-
-    belongs_to :staff,  :foreign_key => 'fiscalstart' 
+  validates_presence_of :fiscalstart, :budget
   
   def fiscal_end
 #    fiscalstart + 1.year - 1.day

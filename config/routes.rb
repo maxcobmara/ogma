@@ -9,7 +9,9 @@ Ogma::Application.routes.draw do
     resources :positions
   end
 
-  resources :ptbudgets
+  namespace :staff_training do
+    resources :ptbudgets
+  end
   
   namespace :asset do
     resources :assets do
