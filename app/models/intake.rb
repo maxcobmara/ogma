@@ -7,6 +7,11 @@ class Intake < ActiveRecord::Base
   def group_with_intake_name
     "#{description}"+' (Intake '+"#{name}"+')'
   end  
+  
+  def programme_group_intake
+    "#{description}"+" ("+"#{name}"+")"+" | "+"#{programme.name}"
+  end
+  
 end
 
 # == Schema Information

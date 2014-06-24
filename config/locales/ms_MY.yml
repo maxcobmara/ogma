@@ -684,8 +684,8 @@ ms_MY:
         semester: Semester
         prepared_by: Disediakan Oleh
         endorsed_by: Diluluskan Oleh
-        format1: "Format (Isnin - Khamis)"
-        format2: "Format (Jumaat)"
+        format1: "Format (Ahad - Rabu)"
+        format2: "Format (Khamis)"
         week: Minggu
         is_submitted: Telah Dihantar
         submitted_on: Tarikh Dihantar
@@ -705,6 +705,9 @@ ms_MY:
       select_difficulty: Pilih Aras Kesukaran
       select_mcq_answer: Pilih Jawapan
       select_answer: Pilih Jawapan
+      select_intake: Pilik Sesi Pengambilan
+      select_semester: Pilih Semester
+      select_format: Pilih Format Jadual Waktu
 
   date:
       formats:

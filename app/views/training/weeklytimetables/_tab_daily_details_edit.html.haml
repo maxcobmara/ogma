@@ -1,4 +1,6 @@
 - model_class = Weeklytimetable
+- @count1=@weeklytimetable.timetable_monthurs.timetable_periods.count
+- @count2=@weeklytimetable.timetable_friday.timetable_periods.count 
 - break_format1 = @weeklytimetable.timetable_monthurs.timetable_periods.pluck(:is_break)
 - break_format2 = @weeklytimetable.timetable_friday.timetable_periods.pluck(:is_break)
 .col-md-8.col-md-offset-1
@@ -14,7 +16,7 @@
           - for periods in row_things
             %th{:align => "center", :style=>"border:1px solid black; text-align:center; padding:4px;background-color:#FEE;font-size:12px;"} 
               =periods.sequence
-              %BR= periods.timing
+              %BR= periods.timing			  
 
         /Day & date(column) : (Sunday - Wednesday) - row starts after timeslot header
         - daycount=4
@@ -44,9 +46,10 @@
                 /do-not-remove : should not have any field or value
               - elsif break_format1[col-1]==false
                 %td{:align=>"center", :style=>"border:1px solid black; text-align:center; padding:4px;font-size:12px;"}
-                  - @weeklytimetable.weeklytimetable_details.each do |xx|
-                    - if xx.day2 == row && xx.time_slot2 == col 
-                      %b= render 'subtab_class_details', {:xx=>xx}
+                  = render 'subtab_class_details_edit', {:f => f, :colno =>col, :rowno=>row}
+                  /- @weeklytimetable.weeklytimetable_details.each do |xx|
+                  /- if xx.day2 == row && xx.time_slot2 == col 
+                  /%b= render 'subtab_class_details_edit', {:xx=>xx, :f => f, :colno =>col, :rowno=>row}
 
       /Header(row) : sequence & time period FRIDAY (fixed - 5 time slot)-duration for 2 last columns = 2 hours each, span ABOVE 2 columns
       - break_tospan=4	
@@ -86,11 +89,21 @@
                 /Non-break columns
                 - if classes_tospan.include?(col2)
                   %td{:colspan=>span_count, :align=>"center", :style=>"border:1px solid black;text-align:center; padding:4px; vertical-align:middle;font-size:12px;"}
-                    - @weeklytimetable.weeklytimetable_details.each do |xx|
-                      - if xx.is_friday == true && xx.time_slot == @count1+col2 
-                        %b= render 'subtab_class_details', {:xx=>xx}               
+                    lulu
+                    = render 'subtab_class_details_edit', {:f => f, :colno =>col2, :rowno=>0}
+                    /- @weeklytimetable.weeklytimetable_details.each do |xx|
+                    /- if xx.is_friday == true && xx.time_slot == @count1+col2 
+                    /%b= render 'subtab_class_details_edit', {:xx=>xx, :f => f, :colno =>col2, :rowno=>0}
+            
                 - else
-                  %td{:align=>"center", :style=>"border:1px solid black;text-align:center; padding:4px; vertical-align:middle;"}
-                    - @weeklytimetable.weeklytimetable_details.each do |xx|
-                      - if xx.is_friday == true && xx.time_slot == @count1+col2
-                        %b= render 'subtab_class_details', {:xx=>xx}
+                  %td{:align=>"center", :style=>"border:1px solid black;text-align:center; padding:4px; vertical-align:middle;font-size:12px"}
+                    lala 
+                    = render 'subtab_class_details_edit', {:f => f, :colno =>col2, :rowno=>0}
+                    /- @weeklytimetable.weeklytimetable_details.each do |xx|
+                    /- if xx.is_friday == true && xx.time_slot == @count1+col2
+                    /%b= render 'subtab_class_details_edit', {:xx=>xx, :f => f, :colno =>col2, :rowno=>0}
+
+
+/= f.fields_for :weeklytimetable_details do |builder| 
+/= render 'weeklytimetable_detail_fields',  :f => builder 
+/= link_to_add_fields image_tag("add.png", :border => 0, :title => 'Add More'), f, :weeklytimetable_details 

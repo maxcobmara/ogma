@@ -703,8 +703,8 @@ en:
         semester: Semester
         prepared_by: Prepared By
         endorsed_by: Endorsed By
-        format1: "Format (Monday - Thursday"
-        format2: "Format (Friday)"
+        format1: "Format (Sunday - Wednesday)"
+        format2: "Format (Thursday)"
         week: Week
         is_submitted: "Submitted ?"
         submitted_on: Submission Date
@@ -724,6 +724,9 @@ en:
       select_difficulty: Select Difficulty
       select_mcq_answer: Select Answer
       select_answer: Select Answer
+      select_intake: Select Intake
+      select_semester: Select Semester
+      select_format: Select Timetable Format
 
   date:
     formats:

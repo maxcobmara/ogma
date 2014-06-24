@@ -13,9 +13,8 @@
               - for periods in row_things
                 %td{:align => "center", :style=>"border-right:1px solid #FFFFFF;padding: 6px 6px 6px 6px;text-align:center;background: #E6E7E8;font-size:10px;"}
                   %b= periods.sequence
-                  %BR= periods.start_at.try(:strftime, "%H:%m %P")+" - "
-                  = periods.end_at.try(:strftime, "%H:%m %P") 
-                  %BR= periods.is_break? ? "Break" : ""
+                  %br= periods.timing
+                  %br= periods.is_break? ? "Break" : ""
 
   %dl.dl-horizontal
     %dt= t 'training.weeklytimetable.format2' , :default => model_class.human_attribute_name(:format2) + ":"
@@ -29,6 +28,5 @@
               - for periods in row_things
                 %td{:align => "center", :style=>"border-right:1px solid #FFFFFF;padding: 6px 6px 6px 6px;text-align:center;background: #E6E7E8;font-size:10px;"}
                   %b= periods.sequence
-                  %BR= periods.start_at.try(:strftime, "%H:%m %P")+" - "
-                  = periods.end_at.try(:strftime, "%H:%m %P") 
-                  %BR= periods.is_break? ? "Break" : ""
+                  %br= periods.timing
+                  %br= periods.is_break? ? "Break" : ""

@@ -1,0 +1,49 @@
+- @weeklytimetable.weeklytimetable_details.each do |xx|
+  - if (xx.day2 == rowno && xx.time_slot2 == colno) || (xx.is_friday == true && xx.time_slot == @count1+colno)
+    - if xx.weeklytimetable_topic.ancestry_depth == 4 
+      = xx.weeklytimetable_topic.parent.parent.code
+      %br= xx.weeklytimetable_topic.parent.name
+    - else
+      = xx.weeklytimetable_topic.parent.code
+      %br= xx.weeklytimetable_topic.name
+    = xx.weeklytimetable_lecturer.name
+    %br= xx.weeklytimetable_location.name
+    = "(K)" if xx.lecture_method == 1
+    = "(T)" if xx.lecture_method == 2
+    = "(A)" if xx.lecture_method == 3
+    /id for weeklytimetable_details
+    %br
+      weeklytimetable_details ID :
+      = xx.id
+weeklytimetable ID : 
+=@weeklytimetable.id
+
+- @timeslot = @weeklytimetable.timetable_monthurs.timetable_periods.pluck(is_break: :false)
+- @timeslot2 = @weeklytimetable.timetable_friday.timetable_periods.pluck(is_break: :false)
+	
+= f.collection_select :programme_id, Programme.roots, :id, :programme_list, :include_blank => (t 'helpers.prompt.select_programme')
+
+/set date & time slot based on column & row value (based on selected format1 & format2)
+/=day2=rowno
+
+/thursday
+- if rowno==0 
+  =timeslot2=0
+  =timeslot=@count1+colno
+  =ind = @count1*(4)+colno
+  /= collection_select(:weeklytimetable, :weeklytimetable_details, @timeslot, :id, :timing, :include_blank => (t 'helpers.prompt.select_timeslot')) 
+  =select_tag "weeklytimetable_details_attributes[#{ind}][lecture_method]", options_for_select(WeeklytimetableDetail::CLASS_METHOD)
+  /=select_tag "weeklytimetable[weeklytimetable_details_attributes][#{ind}][lecture_method]", options_for_select(WeeklytimetableDetail::CLASS_METHOD)
+- else
+  /sun-wed
+  =timeslot2=colno
+  =timeslot=0 
+  =ind = @count1*(rowno-1)+colno
+  /= collection_select(:weeklytimetable, :weeklytimetable_details, @timeslot2, :id, :timing, :include_blank => (t 'helpers.prompt.select_timeslot')) 
+  =select_tag "weeklytimetable_details_attributes[#{ind}][lecture_method]", options_for_select(WeeklytimetableDetail::CLASS_METHOD)
+  /=select_tag "weeklytimetable[weeklytimetable_details_attributes][#{ind}][lecture_method]", options_for_select(WeeklytimetableDetail::CLASS_METHOD)
+  /= f.select :lecture_method, WeeklytimetableDetail::CLASS_METHOD, :include_blank => "Select" 
+  
+  
+  //to CHECK CATECHUMEN - for multiple edit (examination management, grades, exammarks - edit_multiple)
+  /=select_tag "scores_attributes[#{score_count}][type_id]", options_for_select(Score::E_TYPES,score_x.type_id)
