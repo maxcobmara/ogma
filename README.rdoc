@@ -10,3 +10,4 @@ Contributors welcomed, especially for tests
 
 == License
 GNU General Public License v3 (GPL-3)
+Licenses for libraries to their respective owners
