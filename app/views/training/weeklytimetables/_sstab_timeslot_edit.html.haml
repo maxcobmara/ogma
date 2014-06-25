@@ -1,0 +1,19 @@
+- if rowno==0 
+  /thursday
+  -timeslot2=0
+  -timeslot=@count1+colno
+  -@ind = @count1*(4)+colno	
+  = hidden_field_tag "weeklytimetable[weeklytimetable_details_attributes][#{@ind}][is_friday]",true  
+- else
+  /sun-wed
+  -timeslot2=colno
+  -timeslot=0 
+  -@ind = @count1*(rowno-1)+colno-1
+  = hidden_field_tag "weeklytimetable[weeklytimetable_details_attributes][#{@ind}][is_friday]",false
+  
+/timeslot & timeslot2
+=hidden_field_tag "weeklytimetable[weeklytimetable_details_attributes][#{@ind}][time_slot]",timeslot
+=hidden_field_tag "weeklytimetable[weeklytimetable_details_attributes][#{@ind}][time_slot2]",timeslot2
+
+/day2
+=hidden_field_tag "weeklytimetable[weeklytimetable_details_attributes][#{@ind}][day2]",rowno

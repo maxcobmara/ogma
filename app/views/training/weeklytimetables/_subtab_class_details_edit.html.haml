@@ -2,59 +2,62 @@
 - @timeslot = @weeklytimetable.timetable_monthurs.timetable_periods.where('is_break is false')
 - @timeslot2 = @weeklytimetable.timetable_friday.timetable_periods.where('is_break is false')
 
+/PART A - timeslots WITHOUT VALUES
+/---------------------------------
+/1a-available time slots - Sun-Wed
+- atsw=all_timeslot_sun_wed = @timeslot.pluck(:sequence)
+- rev_all_timeslot_sun_wed = atsw+atsw.map{|x|x+=7}+atsw.map{|x|x+=(7*2)}+atsw.map{|x|x+=(7*3)}
 
+/1b-available time slots - Thurs
+- all_timeslot_thurs = @timeslot2.pluck(:sequence)
+- rev_all_timeslot_thurs = all_timeslot_thurs.map{|x|x+@count1}
 
+/2a-START-existing time slot - Sun-Wed
+- exist_timeslot_sun_wed = @weeklytimetable.weeklytimetable_details.where('time_slot2 !=?',0).pluck(:time_slot2)
+- exist_day2_sun_wed = @weeklytimetable.weeklytimetable_details.where('day2 !=?',0).pluck(:day2)
+
+/rev_exist_slot = revised all existing slot, sample : weeklytimetable ID = 4
+/(eg. 4 days with 7 timeslot => [1, 3, 4, 6, 7, 8, 10, 11, 13, 14, 15, 17, 18, 20, 21, 22, 24, 25, 27, 28])
+- rev_exist_slot=[]
+- 0.upto(exist_timeslot_sun_wed.count-1) do |ind_slot_day|
+  - if exist_day2_sun_wed[ind_slot_day] == 1
+    - rev_exist_slot<<exist_timeslot_sun_wed[ind_slot_day]
+  - else 
+    - rev_exist_slot<<exist_timeslot_sun_wed[ind_slot_day]+7*(exist_day2_sun_wed[ind_slot_day]-1)
+/2a-END-existing time slot - Sun-Wed
+
+/2b-existing time slots - Thurs
+- exist_timeslot_thurs = @weeklytimetable.weeklytimetable_details.where('time_slot !=?',0).pluck(:time_slot)
+- exist_day2_thurs = 0
+
+/3a-empty time slots - Sun-Wed
+- empty_slot= rev_all_timeslot_sun_wed - rev_exist_slot
+
+/4a-display EMPTY FIELDS for Sun - Wed 
+- 0.upto(empty_slot.count-1) do |ind_empty|
+  - if empty_slot[ind_empty]==colno+(rowno-1)*7  && (empty_slot[ind_empty]>=rowno && empty_slot[ind_empty]<=rowno*7)
+    = render 'sstab_class_edit',{:rowno=>rowno,:colno=>colno}
+
+/4b-display EMPTY FIELDS for Thursday
+- if exist_timeslot_thurs.include?(colno+@count1)==false && rowno==exist_day2_thurs  
+  = render 'sstab_class_edit', {:rowno=>rowno,:colno=>colno}
+ 
+/PART B - timeslots WITH VALUES
+/------------------------------
 - @weeklytimetable.weeklytimetable_details.each do |xx|
   - if (xx.day2 == rowno && xx.time_slot2 == colno) || (xx.is_friday == true && rowno==0 && xx.time_slot == @count1+colno)
-    /timeslot WITH VALUES
-    - if xx.weeklytimetable_topic.ancestry_depth == 4 
-      = xx.weeklytimetable_topic.parent.parent.code
-      %br= xx.weeklytimetable_topic.parent.name
-    - else
-      = xx.weeklytimetable_topic.parent.code
-      %br= xx.weeklytimetable_topic.name
-    = xx.weeklytimetable_lecturer.name
-    %br= xx.weeklytimetable_location.name
-    = "(K)" if xx.lecture_method == 1
-    = "(T)" if xx.lecture_method == 2
-    = "(A)" if xx.lecture_method == 3
-    %br  
-    /thursday
-    - if rowno==0 
-      -timeslot2=0
-      -timeslot=@count1+colno
-      -ind = @count1*(4)+colno
-      =hidden_field_tag "weeklytimetable[weeklytimetable_details_attributes][#{ind}][id]", xx.id
-      =hidden_field_tag "weeklytimetable[weeklytimetable_details_attributes][#{ind}][timeslot]",timeslot				
-    - else
-      /sun-wed
-      -timeslot2=colno
-      -timeslot=0 
-      -ind = @count1*(rowno-1)+colno-1
-      =hidden_field_tag "weeklytimetable[weeklytimetable_details_attributes][#{ind}][timeslot]",timeslot
-      =hidden_field_tag "weeklytimetable[weeklytimetable_details_attributes][#{ind}][timeslot2]",timeslot2
+    = render 'sstab_class_edit2', {:xx=>xx,:rowno=>rowno,:colno=>colno}
+    /- if xx.weeklytimetable_topic.ancestry_depth == 4 
+    /= xx.weeklytimetable_topic.parent.parent.code
+    /%br= xx.weeklytimetable_topic.parent.name
+    /- else
+    /= xx.weeklytimetable_topic.parent.code
+    /%br= xx.weeklytimetable_topic.name
+    /= xx.weeklytimetable_lecturer.name
+    /%br= xx.weeklytimetable_location.name
+    /= "(K)" if xx.lecture_method == 1
+    /= "(T)" if xx.lecture_method == 2
+    /= "(A)" if xx.lecture_method == 3
+    /%br  
+    /UNREMARK above line to display details
 
-    /topic (sem-subject-topic)
-    =select_tag "weeklytimetable[weeklytimetable_details_attributes][#{ind}][topic]", options_from_collection_for_select(@semester_subject_topic_list, :id,:semester_subject_topic, xx.topic), :prompt=>(t 'helpers.prompt.select_sem_subject_topic')
-
-    /lecturer_id
-    =select_tag "weeklytimetable[weeklytimetable_details_attributes][#{ind}][lecturer_id]", options_from_collection_for_select(Staff.joins(:positions).where('positions.name=?','Pengajar').sort_by(&:name), :id,:name, xx.lecturer_id), :prompt=>(t 'helpers.prompt.select_lecturer')
-	
-    /location
-    =select_tag "weeklytimetable[weeklytimetable_details_attributes][#{ind}][location]", options_from_collection_for_select(Weeklytimetable.location_list.sort_by{|x|x.name}, :id, :name, xx.location), :prompt=>(t 'helpers.prompt.select_location')
-	
-    /lecture method
-    = select_tag "weeklytimetable[weeklytimetable_details_attributes][#{ind}][lecture_method]", options_for_select(WeeklytimetableDetail::CLASS_METHOD,  xx.lecture_method), :prompt=> (t 'helpers.method.select_lecture_method')
-
-    /weeklytimetable_details ID
-    =text_field_tag "weeklytimetable[weeklytimetable_details_attributes][#{ind}][id]",xx.id
-  
-  /pending
-  /- else
-  /- if (xx.day2 != rowno && xx.time_slot2!=colno)
-  /rowno
-  /=rowno
-  /colno
-  /=colno
-  /=xx.day2.nil?
-    

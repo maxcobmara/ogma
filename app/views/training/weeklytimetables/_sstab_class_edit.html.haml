@@ -1,0 +1,17 @@
+=render "sstab_timeslot_edit", {:rowno=>rowno, :colno=>colno}
+
+/topic (sem-subject-topic)
+= t'training.weeklytimetable_detail.topic'
+=select_tag "weeklytimetable[weeklytimetable_details_attributes][#{@ind}][topic]", options_from_collection_for_select(@semester_subject_topic_list, :id,:semester_subject_topic), :prompt=>(t 'helpers.prompt.select_sem_subject_topic')
+
+/lecturer_id
+= t 'training.weeklytimetable_detail.lecturer_id'
+=select_tag "weeklytimetable[weeklytimetable_details_attributes][#{@ind}][lecturer_id]", options_from_collection_for_select(Staff.joins(:positions).where('positions.name=?','Pengajar').sort_by(&:name), :id,:name), :prompt=>(t 'helpers.prompt.select_lecturer')
+	
+/location
+= t 'training.weeklytimetable_detail.location'
+=select_tag "weeklytimetable[weeklytimetable_details_attributes][#{@ind}][location]", options_from_collection_for_select(Weeklytimetable.location_list.sort_by{|x|x.name}, :id, :name), :prompt=>(t 'helpers.prompt.select_location')
+	
+/lecture method
+= t 'training.weeklytimetable_detail.lecture_method'
+= select_tag "weeklytimetable[weeklytimetable_details_attributes][#{@ind}][lecture_method]", options_for_select(WeeklytimetableDetail::CLASS_METHOD), :prompt=> (t 'helpers.method.select_lecture_method')
