@@ -106,7 +106,7 @@ class Training::WeeklytimetablesController < ApplicationController
     
     respond_to do |format|
       if @weeklytimetable.update(weeklytimetable_params)
-        format.html { redirect_to(training_weeklytimetable_path(@weeklytimetable), :notice => (t 'training.weeklytimetable.title')+(t 'actions.created')) }
+        format.html { redirect_to(training_weeklytimetable_path(@weeklytimetable), :notice => (t 'training.weeklytimetable.title')+(t 'actions.updated')) }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }
