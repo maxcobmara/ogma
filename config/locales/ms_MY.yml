@@ -717,6 +717,10 @@ ms_MY:
       select_intake: Pilik Sesi Pengambilan
       select_semester: Pilih Semester
       select_format: Pilih Format Jadual Waktu
+      select_lecture_method: Pilih Kaedah Pembelajaran
+      select_sem_subject_topic: Pilih Sem-Subjek|Topik
+      select_location: Pilih Lokasi
+      select_lecturer: Pilih Pengajar
 
   date:
       formats:
