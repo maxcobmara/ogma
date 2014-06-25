@@ -1,12 +1,12 @@
-== README
+= README
 
-= Ogma 
+== Ogma 
 Campus + Learning Management
 for
 Ruby 2.x Rails 4.x
 
-= Contributing
+== Contributing
 Contributors welcomed, especially for tests
 
-= License
+== License
 GNU General Public License v3 (GPL-3)
