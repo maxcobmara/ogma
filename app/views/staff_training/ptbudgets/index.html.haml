@@ -4,7 +4,7 @@
 
 .navbar.navbar-inverse{role: "navigation", style: "padding-right:40px;"}
   %ul.nav.navbar-nav
-    %li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'actions.new'))), new_staff_training_budget_path
+    %li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'actions.new'))), new_staff_training_ptbudget_path
   %ul.nav.navbar-nav.navbar-right
     %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "toga"
     %li= link_to content_tag(:li, fa_icon("print", text: (t 'actions.print'))), "#", class: 'bogus'
@@ -19,7 +19,7 @@
     - @ptbudgets.each do |budget|
       %tbody
         %tr
-          %td= link_to fiscal_range(budget), staff_training_budget_path(budget)
+          %td= link_to fiscal_range(budget), staff_training_ptbudget_path(budget)
           %td= ringgols(budget.budget)
           %td= ringgols(budget.used_budget)
           %td= ringgols(budget.budget_balance)

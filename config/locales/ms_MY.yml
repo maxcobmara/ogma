@@ -89,6 +89,7 @@ ms_MY:
         budget: Jumlah
         used: Digunakan
         balance: Baki
+        new: Belanjawan Latihan Staff Baru
     
   position:
     title: "Tugas & Tanggungjawab"

@@ -7,8 +7,8 @@ class StaffTraining::PtbudgetsController < ApplicationController
   def index
     @search = Ptbudget.search(params[:q])
     @ptbudgets = @search.result
+    @budgets = @ptbudgets
     @ptbudgets = @ptbudgets.page(params[:page]||1)
-    #@ptbudgets_filtered = Ptbudget.find(:all, :order => psort_column + ' ' + sort_direction ,:conditions => ['fiscal_end LIKE ? or budget ILIKE ? ', "%#{params[:search]}%", "%#{params[:search]}%"])
   end
 
   # GET /ptbudgets/1
@@ -26,6 +26,7 @@ class StaffTraining::PtbudgetsController < ApplicationController
   # GET /ptbudgets/new.xml
   def new
     @ptbudget = Ptbudget.new
+    @ptbudget.fiscalstart = Ptbudget.last.fiscalstart + 1.year
 
     respond_to do |format|
       format.html # new.html.erb
@@ -41,16 +42,15 @@ class StaffTraining::PtbudgetsController < ApplicationController
   # POST /ptbudgets
   # POST /ptbudgets.xml
   def create
-    @ptbudget = Ptbudget.new(params[:ptbudget])
+    @ptbudget = Ptbudget.new(ptbudget_params)
 
     respond_to do |format|
       if @ptbudget.save
-        flash[:notice] = 'A new budget was successfully created.'
-        format.html { redirect_to(@ptbudget) }
-        format.xml  { render :xml => @ptbudget, :status => :created, :location => @ptbudget }
+        format.html { redirect_to staff_training_ptbudgets_path(@ptbudget), notice: 'A new event was successfully created.' }
+        format.json { render action: 'show', status: :created, location: @ptbudget }
       else
-        format.html { render :action => "new" }
-        format.xml  { render :xml => @ptbudget.errors, :status => :unprocessable_entity }
+        format.html { render action: 'new' }
+        format.json { render json: @ptbudget.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -89,6 +89,7 @@ private
     # Use callbacks to share common setup or constraints between actions.
     def set_ptbudget
       @ptbudget = Ptbudget.find(params[:id])
+      @budget = @ptbudget
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

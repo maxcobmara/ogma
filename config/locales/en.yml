@@ -38,7 +38,7 @@ en:
             one: "1 errors prohibited this {{model}} from being saved"
             other: "{{count}} prohibited this {{model}} from being saved"
         messages:
-            blank: "cant't be blank"
+            blank: "can't be blank"
             not_a_number: "is not number"
             too_short: "is too short (minimum is {{count}} characters)"
             taken: "must be unique"
@@ -113,6 +113,7 @@ en:
         budget: Budget
         used: Used
         balance: Balance
+        new: New Training Budget
     
   position:
     title: "Tasks & Responsibilities"
