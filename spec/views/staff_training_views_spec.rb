@@ -24,4 +24,13 @@ describe "staff training pages" do
     it { should have_selector('h1', text: I18n.t('staff.training.budget.new')) }
   end
   
+  describe "Staff Training Budget Show page" do
+    before { visit staff_training_ptbudget_path(@budget) }
+    
+    it { should have_selector('h1', text: budget_range(@budget)) }
+    it { should have_selector(:link_or_button, "Back")}    
+    it { should have_selector(:link_or_button, "Edit")}    
+    it { should have_selector(:link_or_button, "Destroy")}    
+  end
+  
 end

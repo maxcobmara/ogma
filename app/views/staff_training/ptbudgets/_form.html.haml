@@ -1,14 +1,13 @@
 .col-md-offset-1
   .form-group
-    .col-sm-2.control-label
-      = f.label t 'staff.training.budget.budget', for: :budget
+    %label.col-sm-2.control-label= f.label t 'staff.training.budget.budget', for: :budget
     .col-md-3
       .input-group
         .input-group-addon $
         = f.text_field :budget, class: 'form-control mandatory'
       
   .form-group
-    .col-sm-2.control-label
-      = f.label t 'staff.training.budget.start', for: :fiscalstart
+    %label.col-sm-2.control-label= f.label t 'staff.training.budget.start', for: :fiscalstart
     .col-md-3
       = f.text_field :fiscalstart, class: 'form-control mandatory date_picker '
+

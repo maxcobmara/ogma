@@ -79,7 +79,7 @@ class StaffTraining::PtbudgetsController < ApplicationController
     @ptbudget.destroy
 
     respond_to do |format|
-      format.html { redirect_to(ptbudgets_url) }
+      format.html { redirect_to(staff_training_ptbudgets_path) }
       format.xml  { head :ok }
     end
   end
