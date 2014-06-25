@@ -736,6 +736,10 @@ en:
       select_intake: Select Intake
       select_semester: Select Semester
       select_format: Select Timetable Format
+      select_lecture_method: Select Lecture Method
+      select_sem_subject_topic: Select Sem-Subject|Topic
+      select_location: Select Location
+      select_lecturer: Select Lecturer
 
   date:
     formats:

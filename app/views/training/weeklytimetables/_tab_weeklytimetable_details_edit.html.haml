@@ -3,7 +3,7 @@
     .col-sm-2.control-label
       = f.label :programme_id
     .col-md-3
-      /= f.collection_select :programme_id, Programme.roots, :id, :programme_list, :include_blank => (t 'helpers.prompt.select_programme')
+      = f.collection_select :programme_id, Programme.roots, :id, :programme_list, :include_blank => (t 'helpers.prompt.select_programme')
        
   .form-group
     .col-sm-2.control-label
