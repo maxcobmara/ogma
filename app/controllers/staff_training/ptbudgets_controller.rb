@@ -26,7 +26,7 @@ class StaffTraining::PtbudgetsController < ApplicationController
   # GET /ptbudgets/new.xml
   def new
     @ptbudget = Ptbudget.new
-    @ptbudget.fiscalstart = Ptbudget.last.fiscalstart + 1.year
+    @ptbudget.fiscalstart = Ptbudget.last.fiscalstart + 1.year rescue Date.today
 
     respond_to do |format|
       format.html # new.html.erb

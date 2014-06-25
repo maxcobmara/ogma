@@ -1,12 +1,11 @@
 require 'spec_helper'
 
-describe "staff training pages" do
-  before  { @budget = FactoryGirl.create(:ptbudget) }
-  subject { page }
-  
-  describe "Create New Training Budget" do
-    before { visit staff_training_budgets_path }
-    click "New"
+describe "Staff Training Cycle " do
+  context "Create New Training Budget" do
+    let(:ptbudget) { FactoryGirl.create(:ptbudget) }
+    it "creates and saves budget" do
+      visit staff_training_ptbudgets_path
+      click_link('New')
+    end
   end
-  
 end
