@@ -49,7 +49,7 @@
                 %li= link_to "all", 'asset/assets/kewpa4.pdf'
                 - yeartab = Asset.find(:all, :select => :assetcode).map(&:assetcode).map{|d| d.split("/")[4]}.uniq
                 - yeartab.each do |yeartab|
-                  %li= link_to "20#{yeartab}"
+                  %li= link_to "20#{yeartab}", :controller => 'asset/assets', :action => "kewpa4", :search => "#{yeartab}", :format => 'pdf'
 
 		    
 		  
@@ -65,7 +65,7 @@
                 %li= link_to "all", 'asset/assets/kewpa5.pdf'
                 - yeartab = Asset.find(:all, :select => :assetcode).map(&:assetcode).map{|d| d.split("/")[4]}.uniq
                 - yeartab.each do |yeartab|
-                  %li= link_to "20#{yeartab}"		  		  
+                  %li= link_to "20#{yeartab}", :controller => 'asset/assets', :action => "kewpa5", :search => "#{yeartab}", :format => 'pdf'	  		  
 		  
         %tr
           %td KEW.PA-6
