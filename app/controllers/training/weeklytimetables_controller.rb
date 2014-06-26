@@ -95,7 +95,7 @@ class Training::WeeklytimetablesController < ApplicationController
   # POST /weeklytimetables
   # POST /weeklytimetables.xml
   def create
-    @weeklytimetable = Weeklytimetable.new(params[:weeklytimetable])
+    @weeklytimetable = Weeklytimetable.new(weeklytimetable_params)
 
     respond_to do |format|
       if @weeklytimetable.save

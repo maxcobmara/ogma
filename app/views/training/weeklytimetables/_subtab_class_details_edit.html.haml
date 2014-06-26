@@ -1,8 +1,9 @@
+- @special = @count1
 /PART A - timeslots WITHOUT VALUES
 /---------------------------------
 /1a-available time slots - Sun-Wed
 - atsw=all_timeslot_sun_wed = @timeslot.pluck(:sequence)
-- rev_all_timeslot_sun_wed = atsw+atsw.map{|x|x+=7}+atsw.map{|x|x+=(7*2)}+atsw.map{|x|x+=(7*3)}
+- rev_all_timeslot_sun_wed = atsw+atsw.map{|x|x+=@special}+atsw.map{|x|x+=(@special*2)}+atsw.map{|x|x+=(@special*3)}
 
 /1b-available time slots - Thurs
 - all_timeslot_thurs = @timeslot2.pluck(:sequence)
@@ -19,7 +20,7 @@
   - if exist_day2_sun_wed[ind_slot_day] == 1
     - rev_exist_slot<<exist_timeslot_sun_wed[ind_slot_day]
   - else 
-    - rev_exist_slot<<exist_timeslot_sun_wed[ind_slot_day]+7*(exist_day2_sun_wed[ind_slot_day]-1)
+    - rev_exist_slot<<exist_timeslot_sun_wed[ind_slot_day]+@special*(exist_day2_sun_wed[ind_slot_day]-1)
 /2a-END-existing time slot - Sun-Wed
 
 /2b-existing time slots - Thurs
@@ -31,8 +32,14 @@
 
 /4a-display EMPTY FIELDS for Sun - Wed 
 - 0.upto(empty_slot.count-1) do |ind_empty|
-  - if empty_slot[ind_empty]==colno+(rowno-1)*7  && (empty_slot[ind_empty]>=rowno && empty_slot[ind_empty]<=rowno*7)
+  - if empty_slot[ind_empty]==colno+(rowno-1)*@special && (empty_slot[ind_empty]>=rowno && empty_slot[ind_empty]<=rowno*@special)
     = render 'sstab_class_edit',{:rowno=>rowno,:colno=>colno}
+
+/just in case
+/=colno
+/- if colno==@count1 
+/= render 'sstab_class_edit',{:rowno=>rowno,:colno=>colno}
+
 
 /4b-display EMPTY FIELDS for Thursday
 - if exist_timeslot_thurs.include?(colno+@count1)==false && rowno==exist_day2_thurs  
