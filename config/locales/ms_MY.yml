@@ -604,11 +604,13 @@ ms_MY:
       is_approved: "Diluluskan ?"
       daily_details: Butiran Harian
       break: REHAT
+      hod: Ketua Jabatan
     weeklytimetable_detail:
       topic: Topik
       lecturer_id: Pengajar      
       location: Lokasi
       lecture_method: Kaedah
+      remove: "Buang?"
 
   helpers:
     links:

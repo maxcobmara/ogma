@@ -78,7 +78,18 @@ class Training::WeeklytimetablesController < ApplicationController
   def edit
     current_user = User.find(11)    #maslinda 
     #current_user = User.find(72)    #izmohdzaki
+    #start-remove from partial : tab_daily_details_edit
+    @count1=@weeklytimetable.timetable_monthurs.timetable_periods.count
+    @count2=@weeklytimetable.timetable_friday.timetable_periods.count 
+    @break_format1 = @weeklytimetable.timetable_monthurs.timetable_periods.pluck(:is_break)
+    @break_format2 = @weeklytimetable.timetable_friday.timetable_periods.pluck(:is_break)
     @weeklytimetable = Weeklytimetable.find(params[:id])
+    #start-remove from partial : tab_daily_details_edit
+    #start-remove from partial : subtab_class_details_edit
+    @semester_subject_topic_list = Programme.find(@weeklytimetable.programme_id).descendants.where('ancestry_depth=? OR ancestry_depth=?',3,4).sort_by(&:combo_code)		
+    @timeslot = @weeklytimetable.timetable_monthurs.timetable_periods.where('is_break is false')
+    @timeslot2 = @weeklytimetable.timetable_friday.timetable_periods.where('is_break is false')
+    #start-remove from partial : subtab_class_details_edit  
   end
 
   # POST /weeklytimetables
@@ -165,7 +176,7 @@ class Training::WeeklytimetablesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def weeklytimetable_params
-      params.require(:weeklytimetable).permit(:programme_id, :intake_id, :group_id, :startdate, :enddate, :semester, :prepared_by, :endorsed_by, :format1, :format2, :week, :is_submitted, :submitted_on, :hod_approved, :hod_approved_on, :hod_rejected, :hod_rejected_on, :reason, weeklytimetable_details_attributes: [:id,:topic, :time_slot, :lecturer_id, :weeklytimetable_id, :day2, :is_friday, :time_slot2, :location, :lecture_method])
+      params.require(:weeklytimetable).permit(:programme_id, :intake_id, :group_id, :startdate, :enddate, :semester, :prepared_by, :endorsed_by, :format1, :format2, :week, :is_submitted, :submitted_on, :hod_approved, :hod_approved_on, :hod_rejected, :hod_rejected_on, :reason, weeklytimetable_details_attributes: [:id,:topic, :time_slot, :lecturer_id, :weeklytimetable_id, :day2, :is_friday, :time_slot2, :location, :lecture_method, :subject])
     end
   
 end

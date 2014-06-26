@@ -4,6 +4,7 @@ class Weeklytimetable < ActiveRecord::Base
   
   #before_save :set_semester
   before_save :set_to_nil_where_false
+  before_save :manual_remove_details_if_mark, prepend: true
   
   belongs_to :schedule_programme, :class_name => 'Programme',       :foreign_key => 'programme_id'
   belongs_to :schedule_semester,  :class_name => 'Programme',       :foreign_key => 'semester'
@@ -15,10 +16,27 @@ class Weeklytimetable < ActiveRecord::Base
   belongs_to :academic_semester,  :class_name => 'AcademicSession', :foreign_key => 'semester'
   
   has_many :weeklytimetable_details, :dependent => :destroy
-  accepts_nested_attributes_for :weeklytimetable_details,  :reject_if => lambda { |a| a[:topic].blank? }#,:allow_destroy => true
+  accepts_nested_attributes_for :weeklytimetable_details,  :reject_if => lambda { |a| a[:topic].blank? } #,:allow_destroy => true
   
   validates_presence_of :programme_id, :semester, :intake_id, :format1, :format2
   validate :approved_or_rejected
+  
+  def manual_remove_details_if_mark
+    weeklytimetable_details.each do |wd|
+      unless (wd.id.nil? || wd.id.blank?)
+        #START-best ever - working one
+        #if wd.id == 12
+          #db_wd = Weeklytimetable.find(id).weeklytimetable_details.where('id=?',12)[0]
+          #db_wd.destroy if wd.m_remove="1" || wd.m_remove==1
+        #end 
+        #END-best ever - working one
+        if wd.subject==1 || wd.subject=="1"
+            db_wd = Weeklytimetable.find(id).weeklytimetable_details.where('id=?',wd.id)[0]
+            db_wd.destroy
+        end
+      end
+    end
+  end
   
   #attr_accessor :subject_id  #for testing grouped programme (subject)
   #before logic
@@ -50,7 +68,10 @@ class Weeklytimetable < ActiveRecord::Base
   end
   
   def hods  
-      hod = User.current_user.staff.position.parent
+      #hod = User.current_user.staff.position.parent
+      current_user = User.find(11)    #maslinda 
+      #current_user = User.find(72)    #izmohdzaki
+      hod = current_user.staff.positions[0].parent
       approver = Position.find(:all, :select => "staff_id", :conditions => ["id IN (?)", hod]).map(&:staff_id)
     
       #Ketua Program - ancestry_depth.2

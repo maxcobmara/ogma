@@ -3,15 +3,17 @@ class WeeklytimetableDetail < ActiveRecord::Base
    before_save :set_day_time_slot_for_non_selected
    #before_save :set_false_if_topic_not_exist 
 
-   before_destroy :check_student_attendance
+   #before_destroy :check_student_attendance  #####to UNREMARK when student attendance is ready****************************   26JUNE2014
    
    belongs_to :weeklytimetable,     :foreign_key => 'weeklytimetable_id'
    belongs_to :weeklytimetable_subject,   :class_name => 'Programme',   :foreign_key => 'subject' #starting 25March2013-no longer use
    belongs_to :weeklytimetable_topic,     :class_name => 'Programme',   :foreign_key => 'topic'
    belongs_to :weeklytimetable_lecturer,  :class_name => 'Staff',       :foreign_key => 'lecturer_id'
    belongs_to :weeklytimetable_location,  :class_name => 'Location',    :foreign_key => 'location'
-   has_one    :lessonplan,                :class_name => 'LessonPlan',  :foreign_key => 'schedule', :dependent => :nullify #31OCT2013 - :dependent => :destroy
+   #has_one    :lessonplan,                :class_name => 'LessonPlan',  :foreign_key => 'schedule', :dependent => :nullify #31OCT2013 - :dependent => :destroy #####to UNREMARK when student attendance is ready******  26JUNE2014
    has_many   :student_attendances
+   
+   attr_accessor :m_remove
    
    #validates_uniqueness_of :lecturer_id, :time_slot, :time_slot2, :day2, :is_friday, :scope => :weeklytimetable_id
    validates_presence_of :lecturer_id, :lecture_method, :if => :topic?#,:time_slot, :time_slot2, :day2, :is_friday, :location,
@@ -107,5 +109,15 @@ class WeeklytimetableDetail < ActiveRecord::Base
            ["Teori",    2],
            ["Amali",  3]
      ]
+     
+     #25March2013==========
+  private
+     
+     def check_student_attendance
+       student_attendance_exist = StudentAttendance.find(:all, :conditions=>['weeklytimetable_details_id=?',id])
+       if student_attendance_exist.count>0
+         return false
+       end
+     end
 
 end

@@ -1,7 +1,3 @@
-- @semester_subject_topic_list = Programme.find(@weeklytimetable.programme_id).descendants.where('ancestry_depth=? OR ancestry_depth=?',3,4).sort_by(&:combo_code)		
-- @timeslot = @weeklytimetable.timetable_monthurs.timetable_periods.where('is_break is false')
-- @timeslot2 = @weeklytimetable.timetable_friday.timetable_periods.where('is_break is false')
-
 /PART A - timeslots WITHOUT VALUES
 /---------------------------------
 /1a-available time slots - Sun-Wed
