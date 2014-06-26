@@ -1,0 +1,22 @@
+.col-md-offset-2
+  .form-group
+    .col-sm-2.control-label
+      = f.label :is_submitted
+    .col-md-4
+      = f.check_box :is_submitted, :id => 'check_submitted'
+      .p#span_submitted{:style=>"display:none;"}
+        = Date.today.try(:strftime, "%d %b %Y")
+  .form-group
+    .col-sm-2.control-label
+      %b= t 'training.weeklytimetable.hod'
+    .col-md-4
+      = f.collection_select :endorsed_by, Staff.find(:all, :conditions => ["id IN (?)", @weeklytimetable.hods]), :id, :name, :include_blank => true 
+
+  - if @weeklytimetable.hod_rejected == true
+    .form-group
+      .col-sm-2.control-label
+        %font{:color=>"red"}Reason for Rejection
+      .col-md-4
+        =h simple_format(@weeklytimetable.reason)
+
+  

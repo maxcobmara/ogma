@@ -1,26 +1,25 @@
 =render "sstab_timeslot_edit", {:rowno=>rowno, :colno=>colno}
 
 /topic (sem-subject-topic)
-= t 'training.weeklytimetable_detail.topic'
-=select_tag "weeklytimetable[weeklytimetable_details_attributes][#{@ind}][topic]", options_from_collection_for_select(@semester_subject_topic_list, :id,:semester_subject_topic, xx.topic), :prompt=>(t 'helpers.prompt.select_sem_subject_topic')
+%font{:color => "green"}= t 'training.weeklytimetable_detail.topic'
+=select_tag "weeklytimetable[weeklytimetable_details_attributes][#{@ind}][topic]",content_tag(:option,'select one',:value=>"0")+options_from_collection_for_select(@semester_subject_topic_list, :id,:semester_subject_topic, xx.topic)
+/:prompt=>(t 'helpers.prompt.select_sem_subject_topic')
 
 /lecturer_id
-= t 'training.weeklytimetable_detail.lecturer_id'	
+%font{:color => "green"}= t 'training.weeklytimetable_detail.lecturer_id'	
 =select_tag "weeklytimetable[weeklytimetable_details_attributes][#{@ind}][lecturer_id]", options_from_collection_for_select(Staff.joins(:positions).where('positions.name=?','Pengajar').sort_by(&:name), :id,:name, xx.lecturer_id), :prompt=>(t 'helpers.prompt.select_lecturer')
 	
 /location
-= t 'training.weeklytimetable_detail.location'
+%font{:color => "green"}= t 'training.weeklytimetable_detail.location'
 =select_tag "weeklytimetable[weeklytimetable_details_attributes][#{@ind}][location]", options_from_collection_for_select(Weeklytimetable.location_list.sort_by{|x|x.name}, :id, :name, xx.location), :prompt=>(t 'helpers.prompt.select_location')
 	
 /lecture method
-= t 'training.weeklytimetable_detail.lecture_method'
+%font{:color => "green"}= t 'training.weeklytimetable_detail.lecture_method'
 = select_tag "weeklytimetable[weeklytimetable_details_attributes][#{@ind}][lecture_method]", options_for_select(WeeklytimetableDetail::CLASS_METHOD,  xx.lecture_method), :prompt=> (t 'helpers.method.select_lecture_method')
+
+/destroy?
+%font{:color => "red"}=t 'training.weeklytimetable_detail.remove'
+= select_tag "weeklytimetable[weeklytimetable_details_attributes][#{@ind}][subject]", content_tag(:option,'Maintain',:value=>'0')+options_for_select([['Remove', '1']])
 
 /weeklytimetable_details ID
 =hidden_field_tag "weeklytimetable[weeklytimetable_details_attributes][#{@ind}][id]",xx.id
-
-/destroy?
-/= text_field_tag "weeklytimetable[weeklytimetable_details_attributes][#{@ind}][destroy]"
-
-/= text_field "weeklytimetable[weeklytimetable_details_attributes][#{@ind}]", :_destroy 
-= check_box "weeklytimetable[weeklytimetable_details_attributes][#{@ind}]",:_destroy

@@ -12,3 +12,6 @@
       #daily_details.tab-pane
         %br
         = render :partial => 'tab_daily_details_edit', :locals => {:f => f}
+        %BR
+      .col-md-8.col-md-offset-1
+        =render :partial => 'submission', :locals => {:f => f}

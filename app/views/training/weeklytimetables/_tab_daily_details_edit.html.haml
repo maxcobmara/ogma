@@ -1,8 +1,4 @@
 - model_class = Weeklytimetable
-- @count1=@weeklytimetable.timetable_monthurs.timetable_periods.count
-- @count2=@weeklytimetable.timetable_friday.timetable_periods.count 
-- break_format1 = @weeklytimetable.timetable_monthurs.timetable_periods.pluck(:is_break)
-- break_format2 = @weeklytimetable.timetable_friday.timetable_periods.pluck(:is_break)
 .col-md-8.col-md-offset-1
   %br
   .showform
@@ -38,12 +34,12 @@
             /Content - (Sunday - Wednesday)
             /span BREAK fields & display CLASSES fields accordingly - col (column) starts after day/date column
             - 1.upto(@count1) do |col|
-              - if break_format1[col-1]==true && row==1
+              - if @break_format1[col-1]==true && row==1
                 %td{:align =>"center", :rowspan=>"#{daycount}", :style=>"border:1px solid black; text-align:center; padding:4px;vertical-align:middle;font-size:12px;" } 
                   =t 'training.weeklytimetable.break'
-              - elsif break_format1[col-1]==true && row!=1
+              - elsif @break_format1[col-1]==true && row!=1
                 /do-not-remove : should not have any field or value
-              - elsif break_format1[col-1]==false
+              - elsif @break_format1[col-1]==false
                 %td{:align=>"center", :style=>"border:1px solid black; text-align:center; padding:4px;font-size:12px;"}
                   = render 'subtab_class_details_edit', {:f => f, :colno =>col, :rowno=>row}
 
@@ -73,7 +69,7 @@
             =@weeklytimetable.enddate.try(:strftime, "%A")
             %br=@weeklytimetable.enddate.try(:strftime, "%d-%b-%Y")
             - 1.upto(@count2) do |col2|
-              - if break_format2[col2-1]==true
+              - if @break_format2[col2-1]==true
                 /BREAK columns
                 - if col2 == break_tospan
                   %td{:colspan=>span_count, :align=>"center", :style=>"border:1px solid black;text-align:center; padding:4px; vertical-align:middle;font-size:12px;"}
@@ -81,7 +77,7 @@
                 - else
                   %td{:align=>"center", :style=>"border:1px solid black;text-align:center; padding:4px; vertical-align:middle;font-size:12px;"}
                     =t 'training.weeklytimetable.break' 
-              - elsif break_format2[col2-1]==false 
+              - elsif @break_format2[col2-1]==false 
                 /Non-break columns
                 - if classes_tospan.include?(col2)
                   %td{:colspan=>span_count, :align=>"center", :style=>"border:1px solid black;text-align:center; padding:4px; vertical-align:middle;font-size:12px;"}
