@@ -614,6 +614,11 @@ ms_MY:
       is_approved: "Diluluskan ?"
       daily_details: Butiran Harian
       break: REHAT
+    weeklytimetable_detail:
+      topic: Topik
+      lecturer_id: Pengajar      
+      location: Lokasi
+      lecture_method: Kaedah
 
   helpers:
     links:

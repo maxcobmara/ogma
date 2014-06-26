@@ -633,6 +633,11 @@ en:
       is_approved: "Approved ?"
       daily_details: Daily Details
       break: BREAK
+    weeklytimetable_detail:
+      topic: Topic
+      lecturer_id: Lecturer     
+      location: Location
+      lecture_method: Method
 
   helpers:
     links:

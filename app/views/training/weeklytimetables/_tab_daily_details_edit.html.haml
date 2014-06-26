@@ -46,9 +46,6 @@
               - elsif break_format1[col-1]==false
                 %td{:align=>"center", :style=>"border:1px solid black; text-align:center; padding:4px;font-size:12px;"}
                   = render 'subtab_class_details_edit', {:f => f, :colno =>col, :rowno=>row}
-                  /- @weeklytimetable.weeklytimetable_details.each do |xx|
-                  /- if xx.day2 == row && xx.time_slot2 == col 
-                  /%b= render 'subtab_class_details_edit', {:xx=>xx, :f => f, :colno =>col, :rowno=>row}
 
       /Header(row) : sequence & time period FRIDAY (fixed - 5 time slot)-duration for 2 last columns = 2 hours each, span ABOVE 2 columns
       - break_tospan=4	
@@ -88,14 +85,8 @@
                 /Non-break columns
                 - if classes_tospan.include?(col2)
                   %td{:colspan=>span_count, :align=>"center", :style=>"border:1px solid black;text-align:center; padding:4px; vertical-align:middle;font-size:12px;"}
-                    = render 'subtab_class_details_edit', {:f => f, :colno =>col2, :rowno=>0}
-                    /- @weeklytimetable.weeklytimetable_details.each do |xx|
-                    /- if xx.is_friday == true && xx.time_slot == @count1+col2 
-                    /%b= render 'subtab_class_details_edit', {:xx=>xx, :f => f, :colno =>col2, :rowno=>0}
-            
+                    = render 'subtab_class_details_edit', {:colno =>col2, :rowno=>0}      
                 - else
                   %td{:align=>"center", :style=>"border:1px solid black;text-align:center; padding:4px; vertical-align:middle;font-size:12px"}
-                    = render 'subtab_class_details_edit', {:f => f, :colno =>col2, :rowno=>0}
-                    /- @weeklytimetable.weeklytimetable_details.each do |xx|
-                    /- if xx.is_friday == true && xx.time_slot == @count1+col2
-                    /%b= render 'subtab_class_details_edit', {:xx=>xx, :f => f, :colno =>col2, :rowno=>0}
+                    = render 'subtab_class_details_edit', {:colno =>col2, :rowno=>0}
+

@@ -1,6 +1,8 @@
 class WeeklytimetableDetail < ActiveRecord::Base
    
    before_save :set_day_time_slot_for_non_selected
+   #before_save :set_false_if_topic_not_exist 
+
    before_destroy :check_student_attendance
    
    belongs_to :weeklytimetable,     :foreign_key => 'weeklytimetable_id'
@@ -12,7 +14,7 @@ class WeeklytimetableDetail < ActiveRecord::Base
    has_many   :student_attendances
    
    #validates_uniqueness_of :lecturer_id, :time_slot, :time_slot2, :day2, :is_friday, :scope => :weeklytimetable_id
-   validates_presence_of :location, :lecturer_id, :topic#,:time_slot, :time_slot2, :day2, :is_friday
+   validates_presence_of :lecturer_id, :lecture_method, :if => :topic?#,:time_slot, :time_slot2, :day2, :is_friday, :location,
    def set_day_time_slot_for_non_selected
        if is_friday == true
          self.day2 = 0
@@ -22,6 +24,12 @@ class WeeklytimetableDetail < ActiveRecord::Base
          self.time_slot = 0
        end 
    end
+   
+   #def set_false_if_topic_not_exist
+     #if self.topic.blank?
+       #return false
+       #end
+   #end
    
    def get_date_for_lesson_plan
      sdate = Weeklytimetable.find(weeklytimetable_id).startdate

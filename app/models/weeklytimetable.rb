@@ -15,7 +15,7 @@ class Weeklytimetable < ActiveRecord::Base
   belongs_to :academic_semester,  :class_name => 'AcademicSession', :foreign_key => 'semester'
   
   has_many :weeklytimetable_details, :dependent => :destroy
-  accepts_nested_attributes_for :weeklytimetable_details, :allow_destroy => true#, :reject_if => lambda { |a| a[:start_at].blank? }
+  accepts_nested_attributes_for :weeklytimetable_details,  :reject_if => lambda { |a| a[:topic].blank? }#,:allow_destroy => true
   
   validates_presence_of :programme_id, :semester, :intake_id, :format1, :format2
   validate :approved_or_rejected
@@ -36,7 +36,7 @@ class Weeklytimetable < ActiveRecord::Base
    end
     
   end
-  
+
   #def self.search(search)
     #if search         
       #@weeklytimetables = Weeklytimetable.find(:all,:conditions => ['programme_id=?', search])
