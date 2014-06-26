@@ -47,6 +47,17 @@ class Asset::AssetsController < ApplicationController
   end
   
   def kewpa4
+    if params[:search]
+      @assets = Asset.find(:all, :conditions => ['substring(assetcode, 18, 2 ) =? AND assettype =?', "#{params[:search]}", 1])
+      respond_to do |format|
+        format.pdf do
+          pdf = Kewpa4Pdf.new(@assets, view_context)
+          send_data pdf.render, filename: "kewpa4-{Date.today}",
+                                type: "application/pdf",
+                                disposition: "inline"
+                 end
+             end
+        else
     @assets = Asset.where(assettype: 1)
     respond_to do |format|
       format.pdf do
@@ -56,9 +67,21 @@ class Asset::AssetsController < ApplicationController
                               disposition: "inline"
       end
     end
-  end  
+  end
+end  
   
   def kewpa5
+    if params[:search]
+      @assets = Asset.find(:all, :conditions => ['substring(assetcode, 18, 2 ) =? AND assettype =?', "#{params[:search]}", 2])
+      respond_to do |format|
+        format.pdf do
+          pdf = Kewpa5Pdf.new(@assets, view_context)
+          send_data pdf.render, filename: "kewpa5-{Date.today}",
+                                type: "application/pdf",
+                                disposition: "inline"
+        end
+      end
+    else
     @assets = Asset.where(assettype: 2).order(assetcode: :asc)
     respond_to do |format|
       format.pdf do
@@ -69,6 +92,7 @@ class Asset::AssetsController < ApplicationController
       end
     end
   end
+end
   
   def kewpa6
     @asset = Asset.find(params[:id])
