@@ -24,12 +24,6 @@ class Weeklytimetable < ActiveRecord::Base
   def manual_remove_details_if_mark
     weeklytimetable_details.each do |wd|
       unless (wd.id.nil? || wd.id.blank?)
-        #START-best ever - working one
-        #if wd.id == 12
-          #db_wd = Weeklytimetable.find(id).weeklytimetable_details.where('id=?',12)[0]
-          #db_wd.destroy if wd.m_remove="1" || wd.m_remove==1
-        #end 
-        #END-best ever - working one
         if wd.subject==1 || wd.subject=="1"
             db_wd = Weeklytimetable.find(id).weeklytimetable_details.where('id=?',wd.id)[0]
             db_wd.destroy
