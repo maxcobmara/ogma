@@ -6,6 +6,8 @@
 
   .showform
     %table#subtable
+      - daycount=4	
+      - weekdays_end = @weeklytimetable.startdate.to_date+4.days
       /Header(row) : sequence & time period (Sunday - Wednesday)  
       - @weeklytimetable.timetable_monthurs.timetable_periods.in_groups_of(@count1, false) do |row_things|
         %tr
@@ -17,22 +19,11 @@
               %BR= periods.timing
 
         /Day & date(column) : (Sunday - Wednesday) - row starts after timeslot header
-        - daycount=4
         - 1.upto(daycount) do |row|
           %tr
             %td{:align =>"center", :style=> "border:1px solid black;text-align:center; padding:4px; vertical-align:middle;font-size:12px;"} 
-              - if row==1
-                =@weeklytimetable.startdate.try(:strftime, "%A")
-                %br=@weeklytimetable.startdate.try(:strftime, "%d-%b-%Y")
-              - elsif row==2
-                =(@weeklytimetable.startdate+1).try(:strftime, "%A")
-                %br=(@weeklytimetable.startdate+1).try(:strftime, "%d-%b-%Y")
-              - elsif row==3
-                =(@weeklytimetable.startdate+2).try(:strftime, "%A")
-                %br=(@weeklytimetable.startdate+2).try(:strftime, "%d-%b-%Y")
-              - elsif row==4
-                =(@weeklytimetable.startdate+3).try(:strftime, "%A")
-                %br=(@weeklytimetable.startdate+3).try(:strftime, "%d-%b-%Y")
+              =(@weeklytimetable.startdate+(row-1)).try(:strftime, "%A")
+              %br=(@weeklytimetable.startdate+(row-1)).try(:strftime, "%d-%b-%Y")
 
             /Content - (Sunday - Wednesday)
             /span BREAK fields & display CLASSES fields accordingly - col (column) starts after day/date column
@@ -71,8 +62,8 @@
         /Content for Friday-(start) - COMPULSORY long break on the fouth time slot
         %tr
           %td{:align=>"center", :style=>"border:1px solid black;text-align:center; padding:4px; vertical-align:middle;font-size:12px;"}
-            =@weeklytimetable.enddate.try(:strftime, "%A")
-            %br=@weeklytimetable.enddate.try(:strftime, "%d-%b-%Y")
+            =weekdays_end.try(:strftime, "%A")
+            %br=weekdays_end.try(:strftime, "%d-%b-%Y")
             - 1.upto(@count2) do |col2|
               - if break_format2[col2-1]==true
                 /BREAK columns
@@ -94,3 +85,37 @@
                     - @weeklytimetable.weeklytimetable_details.each do |xx|
                       - if xx.is_friday == true && xx.time_slot == @count1+col2
                         %b= render 'subtab_class_details', {:xx=>xx}
+
+      /Header(row) : sequence & time period (ADDITIONAL - Weekends classes)
+      - weekdays_end = @weeklytimetable.startdate.to_date+4.days
+      - daycount2 = (@weeklytimetable.enddate.to_date - weekdays_end).to_i 
+      - if daycount2 > 0
+        - @weeklytimetable.timetable_monthurs.timetable_periods.in_groups_of(@count1, false) do |row_things|
+          %tr
+            %th{:align => "center", :style=>"border:1px solid black; text-align:center; padding:4px; vertical-align:middle;background-color:#FEE;font-size:12px;"} 
+              &nbsp;
+            - for periods in row_things
+              %th{:align => "center", :style=>"border:1px solid black; text-align:center; padding:4px;background-color:#FEE;font-size:12px;"} 
+                =periods.sequence
+                %BR= periods.timing
+				
+          /Day & date(column) : (ADDITIONAL - Weekends classes) - row starts after timeslot header
+          - 1.upto(daycount2) do |row2|
+            %tr
+              %td{:align =>"center", :style=> "border:1px solid black;text-align:center; padding:4px; vertical-align:middle;font-size:12px;"} 
+                =(weekdays_end+row2).try(:strftime, "%A")
+                %br=(weekdays_end+row2).try(:strftime, "%d-%b-%Y")
+
+              /Content - (ADDITIONAL - Weekends classes)
+              /span BREAK fields & display CLASSES fields accordingly - col (column) starts after day/date column
+              - 1.upto(@count1) do |col2|
+                - if break_format1[col2-1]==true && row2==1
+                  %td{:align =>"center", :rowspan=>"#{daycount2}", :style=>"border:1px solid black; text-align:center; padding:4px;vertical-align:middle;font-size:12px;" } 
+                    =t 'training.weeklytimetable.break'
+                - elsif break_format1[col2-1]==true && row2!=1
+                  /do-not-remove : should not have any field or value
+                - elsif break_format1[col2-1]==false
+                  %td{:align=>"center", :style=>"border:1px solid black; text-align:center; padding:4px;font-size:12px;"}
+                    - @weeklytimetable.weeklytimetable_details.each do |xx|
+                      - if xx.day2 == row2+daycount+1 && xx.time_slot2 == col2 
+                        %b= render 'subtab_class_details', {:xx=>xx}    
