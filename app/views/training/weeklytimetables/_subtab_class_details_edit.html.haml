@@ -79,7 +79,8 @@
 /4c-display EMPTY FIELDS for Weekends
 - if daycount_check==1 || daycount_check==2
   - 0.upto(empty_slot_weekend.count-1) do |ind_empty_weekend|
-    - if empty_slot_weekend[ind_empty_weekend]==33+(rowno-6)*7+colno
+    /- if empty_slot_weekend[ind_empty_weekend]==33+(rowno-6)*7+colno
+    - if empty_slot_weekend[ind_empty_weekend]==(@special*4+@count2)+(rowno-6)*7+colno
       = render 'sstab_class_edit',{:rowno=>rowno,:colno=>colno}
  
 /PART B - timeslots WITH VALUES - note, in (xx.day2!=5 || xx.day2!=6) => 0:Thurs, 1-4:Sun-Wed, 5:Friday, 6:Saturday
