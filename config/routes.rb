@@ -54,6 +54,7 @@ Ogma::Application.routes.draw do
     resources :locations do
       member do
         get :kewpa7
+        get :kewpa10
       end
     end
     resources :location_damages
