@@ -615,6 +615,7 @@ ms_MY:
       daily_details: Butiran Harian
       break: REHAT
       hod: Ketua Jabatan
+      compulsory_fields: Medan - medan yang wajib diisi
     weeklytimetable_detail:
       topic: Topik
       lecturer_id: Pengajar      
@@ -729,6 +730,8 @@ ms_MY:
       select_sem_subject_topic: Pilih Sem-Subjek|Topik
       select_location: Pilih Lokasi
       select_lecturer: Pilih Pengajar
+      maintain: Dikekalkan
+      remove: Dibuang
 
   date:
       formats:

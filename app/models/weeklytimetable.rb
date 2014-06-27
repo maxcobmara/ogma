@@ -4,7 +4,7 @@ class Weeklytimetable < ActiveRecord::Base
   
   #before_save :set_semester
   before_save :set_to_nil_where_false
-  before_save :manual_remove_details_if_mark, prepend: true
+  before_save :manual_remove_details_if_marked, prepend: true
   
   belongs_to :schedule_programme, :class_name => 'Programme',       :foreign_key => 'programme_id'
   belongs_to :schedule_semester,  :class_name => 'Programme',       :foreign_key => 'semester'
@@ -16,17 +16,17 @@ class Weeklytimetable < ActiveRecord::Base
   belongs_to :academic_semester,  :class_name => 'AcademicSession', :foreign_key => 'semester'
   
   has_many :weeklytimetable_details, :dependent => :destroy
-  accepts_nested_attributes_for :weeklytimetable_details,  :reject_if => lambda { |a| a[:topic].blank? } #,:allow_destroy => true
-  
+  accepts_nested_attributes_for :weeklytimetable_details, :reject_if => proc {|a|a['topic'].blank? || a['lecturer_id'].blank? || a['lecture_method'].blank?} 
+
   validates_presence_of :programme_id, :semester, :intake_id, :format1, :format2
   validate :approved_or_rejected
   
-  def manual_remove_details_if_mark
+  def manual_remove_details_if_marked
     weeklytimetable_details.each do |wd|
       unless (wd.id.nil? || wd.id.blank?)
         if wd.subject==1 || wd.subject=="1"
-            db_wd = Weeklytimetable.find(id).weeklytimetable_details.where('id=?',wd.id)[0]
-            db_wd.destroy
+          db_wd = Weeklytimetable.find(id).weeklytimetable_details.where('id=?',wd.id)[0]
+          db_wd.destroy
         end
       end
     end

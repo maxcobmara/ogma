@@ -2,6 +2,8 @@
 .col-md-8.col-md-offset-1
   %br
   .showform
+    %font{:color=>"blue"}* 
+    =t'training.weeklytimetable.compulsory_fields'
     %table#subtable
       /Header(row) : sequence & time period (Sunday - Wednesday)  
       - @weeklytimetable.timetable_monthurs.timetable_periods.in_groups_of(@count1, false) do |row_things|

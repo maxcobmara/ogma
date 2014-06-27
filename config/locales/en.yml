@@ -634,6 +634,7 @@ en:
       daily_details: Daily Details
       break: BREAK
       hod: Head of Department
+      compulsory_fields: Indicates compulsory fields
     weeklytimetable_detail:
       topic: Topic
       lecturer_id: Lecturer     
@@ -748,6 +749,8 @@ en:
       select_sem_subject_topic: Select Sem-Subject|Topic
       select_location: Select Location
       select_lecturer: Select Lecturer
+      maintain: Maintain
+      remove: Remove
 
   date:
     formats:
