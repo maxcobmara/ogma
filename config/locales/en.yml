@@ -724,7 +724,7 @@ en:
         format1: "Format (Sunday - Wednesday)"
         format2: "Format (Thursday)"
         week: Week
-        is_submitted: "Submitted ?"
+        is_submitted: "Submit ?"
         submitted_on: Submission Date
         hod_approved: HOD Approval
         hod_approved_on: Approval Date

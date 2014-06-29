@@ -17,6 +17,8 @@
           Click 'Create' to activate timetable formating @ create 'apply format' button here?
         %BR
       .col-md-8.col-md-offset-1
+        = render :partial => 'submission', :locals => {:f => f}
         /- if @weeklytimetable.is_submitted == true && @weeklytimetable.endorsed_by == User.current_user.staff_id 
         - if @weeklytimetable.is_submitted == true && @weeklytimetable.endorsed_by == current_user.staff_id 
-          = render :partial => 'submission', :locals => {:f => f}
+          Baru papar APPROVAL kat sini!
+         
