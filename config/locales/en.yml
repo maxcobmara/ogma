@@ -635,6 +635,8 @@ en:
       break: BREAK
       hod: Head of Department
       compulsory_fields: Indicates compulsory fields
+      activate_format: "Klik 'Create' to activate timetable formating."
+      submission_approval: "Submission & Approval"
     weeklytimetable_detail:
       topic: Topic
       lecturer_id: Lecturer     
@@ -648,6 +650,8 @@ en:
       back: Back
       edit: Edit
       destroy: Destroy
+      approve: Approve
+      edit_admin: "Edit (Admin)"
     label:
       examquestion:
         creator_id: Creator 
