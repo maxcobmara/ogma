@@ -64,9 +64,8 @@ class Weeklytimetable < ActiveRecord::Base
   def hods  
       #hod = User.current_user.staff.position.parent
       current_user = User.find(11)    #maslinda 
-      #current_user = User.find(72)    #izmohdzaki
-      hod = current_user.staff.positions[0].parent
-      approver = Position.find(:all, :select => "staff_id", :conditions => ["id IN (?)", hod]).map(&:staff_id)
+      #current_user = User.find(72)    #izmohdzaki      
+      approver = Position.where('tasks_main like? or (tasks_other like? and is_acting=?) or unit=?', "%Ketua Program%", "%Ketua Program%",true, Programme.find(programme_id).name).pluck(:staff_id).compact
     
       #Ketua Program - ancestry_depth.2
       #hod = Position.find(:all, :conditions => ["ancestry=?","1/2"])

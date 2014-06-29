@@ -1,3 +1,9 @@
+/- if (@weeklytimetable.is_submitted != true && @weeklytimetable.prepared_by == User.current_user.staff_id) || (@weeklytimetable.prepared_by == User.current_user.staff_id && @weeklytimetable.hod_rejected? == true && weeklytimetable.is_submitted==nil) 
+- a1_condition = (@weeklytimetable.id.nil? || @weeklytimetable.id.blank?) || (@weeklytimetable.prepared_by == current_user.staff_id && @weeklytimetable.is_submitted != true) || (@weeklytimetable.prepared_by == current_user.staff_id && @weeklytimetable.hod_rejected? == true )
+/- elsif (weeklytimetable.is_submitted == true && weeklytimetable.endorsed_by == User.current_user.staff_id && weeklytimetable.hod_approved!= true) 
+- b1_condition = (@weeklytimetable.is_submitted == true && @weeklytimetable.endorsed_by == current_user.staff_id && @weeklytimetable.hod_approved!= true) 
+- c_condition = (@is_admin==true)
+
 - model_class = Weeklytimetable
 .page-header
   %h1=t 'training.weeklytimetable.title'
@@ -49,15 +55,14 @@
     .form-actions
       = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), training_weeklytimetables_path, :class => 'btn btn-default'
 
-      - if (@weeklytimetable.is_submitted != true && @weeklytimetable.prepared_by == current_user.staff_id) || (@weeklytimetable.prepared_by == current_user.staff_id && @weeklytimetable.hod_rejected? == true && @weeklytimetable.is_submitted==nil)
-        /- if (@weeklytimetable.is_submitted != true && @weeklytimetable.prepared_by == User.current_user.staff_id) || (@weeklytimetable.prepared_by == User.current_user.staff_id && @weeklytimetable.hod_rejected? == true && weeklytimetable.is_submitted==nil) 
+      - if a1_condition
+
         = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('.edit', :default => t("helpers.links.edit")), edit_training_weeklytimetable_path(@weeklytimetable),  :class => 'btn btn-primary'        
         
-      - elsif (@weeklytimetable.is_submitted == true && @weeklytimetable.endorsed_by == current_user.staff_id && @weeklytimetable.hod_approved!= true) 
-        /- elsif (weeklytimetable.is_submitted == true && weeklytimetable.endorsed_by == User.current_user.staff_id && weeklytimetable.hod_approved!= true) 
+      - elsif b1_condition
         = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('.edit', :default => t("helpers.links.approve")), edit_training_weeklytimetable_path(@weeklytimetable),  :class => 'btn btn-primary' 
 		
-      - elsif (@is_admin==true) 
+      - elsif c_condition
         = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('.edit', :default => t("helpers.links.edit_admin")), edit_training_weeklytimetable_path(@weeklytimetable),  :class => 'btn btn-primary' 
 
       = link_to content_tag(:i, "", :class => "fa fa-trash-o icon-white") + " " + t('.destroy', :default => t("helpers.links.destroy")), |

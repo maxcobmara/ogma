@@ -10,7 +10,8 @@
     %ul.nav.nav-tabs
       %li.active= link_to ((t 'training.weeklytimetable.details')),"#weeklytimetable_details", "data-toggle" => "tab"
       %li= link_to ((t 'training.weeklytimetable.daily_details')), "#daily_details", "data-toggle" => "tab"
-      %li= link_to ((t 'training.weeklytimetable.submission_approval')), "#submit_approve", "data-toggle" => "tab"
+      - unless @weeklytimetable.id.nil? || @weeklytimetable.id.blank?
+        %li= link_to ((t 'training.weeklytimetable.submission_approval')), "#submit_approve", "data-toggle" => "tab"
 
     .tab-content{style:"padding-top:1em"}
       #weeklytimetable_details.tab-pane.active
@@ -35,6 +36,4 @@
           = render :partial => 'submission', :locals => {:f => f}
         - if b_condition 
           =render :partial => 'approval', :locals => {:f => f} 
-		 
-		 
  

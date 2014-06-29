@@ -753,6 +753,7 @@ en:
       select_sem_subject_topic: Select Sem-Subject|Topic
       select_location: Select Location
       select_lecturer: Select Lecturer
+      select_hod: "Select HOD / Approver"
       maintain: Maintain
       remove: Remove
 
