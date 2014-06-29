@@ -616,6 +616,8 @@ ms_MY:
       break: REHAT
       hod: Ketua Jabatan
       compulsory_fields: Medan - medan yang wajib diisi
+      activate_format: "Klik 'Tambah Data' untuk aktifkan format jadual waktu."
+      submission_approval: "Penghantaran & Kelulusan"
     weeklytimetable_detail:
       topic: Topik
       lecturer_id: Pengajar      
@@ -629,6 +631,8 @@ ms_MY:
       back: Terdahulu
       edit: Sunting
       destroy: Padam
+      approve: Kelulusan
+      edit_admin : "Sunting (Pentadbir)"
     label:
       examquestion:
         creator_id: Disediakan Oleh
@@ -730,6 +734,7 @@ ms_MY:
       select_sem_subject_topic: Pilih Sem-Subjek|Topik
       select_location: Pilih Lokasi
       select_lecturer: Pilih Pengajar
+      select_hod: "Pilih Ketua Jabatan / Pelulus"
       maintain: Dikekalkan
       remove: Dibuang
 

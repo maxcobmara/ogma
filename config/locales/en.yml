@@ -635,6 +635,8 @@ en:
       break: BREAK
       hod: Head of Department
       compulsory_fields: Indicates compulsory fields
+      activate_format: "Klik 'Create' to activate timetable formating."
+      submission_approval: "Submission & Approval"
     weeklytimetable_detail:
       topic: Topic
       lecturer_id: Lecturer     
@@ -648,6 +650,8 @@ en:
       back: Back
       edit: Edit
       destroy: Destroy
+      approve: Approve
+      edit_admin: "Edit (Admin)"
     label:
       examquestion:
         creator_id: Creator 
@@ -724,7 +728,7 @@ en:
         format1: "Format (Sunday - Wednesday)"
         format2: "Format (Thursday)"
         week: Week
-        is_submitted: "Submitted ?"
+        is_submitted: "Submit ?"
         submitted_on: Submission Date
         hod_approved: HOD Approval
         hod_approved_on: Approval Date
@@ -749,6 +753,7 @@ en:
       select_sem_subject_topic: Select Sem-Subject|Topic
       select_location: Select Location
       select_lecturer: Select Lecturer
+      select_hod: "Select HOD / Approver"
       maintain: Maintain
       remove: Remove
 

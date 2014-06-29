@@ -44,6 +44,10 @@ class Training::WeeklytimetablesController < ApplicationController
   # GET /weeklytimetables/1
   # GET /weeklytimetables/1.xml
   def show
+    current_user = User.find(11)    #maslinda 
+    #current_user = User.find(72)    #izmohdzaki
+    roles = current_user.roles.pluck(:id)
+    @is_admin = roles.include?(2)
     @weeklytimetable = Weeklytimetable.find(params[:id])
 
     respond_to do |format|
@@ -78,6 +82,8 @@ class Training::WeeklytimetablesController < ApplicationController
   def edit
     current_user = User.find(11)    #maslinda 
     #current_user = User.find(72)    #izmohdzaki
+    roles = current_user.roles.pluck(:id)
+    @is_admin = roles.include?(2)
     #start-remove from partial : tab_daily_details_edit
     @count1=@weeklytimetable.timetable_monthurs.timetable_periods.count
     @count2=@weeklytimetable.timetable_friday.timetable_periods.count 
