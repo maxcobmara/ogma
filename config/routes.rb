@@ -11,6 +11,7 @@ Ogma::Application.routes.draw do
 
   namespace :staff_training do
     resources :ptbudgets
+    resources :ptcourses
   end
   
   namespace :asset do
