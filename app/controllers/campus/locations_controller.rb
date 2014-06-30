@@ -90,6 +90,18 @@ class Campus::LocationsController < ApplicationController
       end
     end
   end
+  def kewpa11
+    @location = Location.find(params[:id])
+    @assets = Asset.where(assettype: 2)
+    respond_to do |format|
+      format.pdf do
+        pdf = Kewpa11Pdf.new(@location, view_context, @assets)
+        send_data pdf.render, filename: "kewpa11-{Date.today}",
+                              type: "application/pdf",
+                              disposition: "inline"
+      end
+    end
+  end
   
   private
     # Use callbacks to share common setup or constraints between actions.
