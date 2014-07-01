@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140605032625) do
+ActiveRecord::Schema.define(version: 20140701025819) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -38,7 +38,14 @@ ActiveRecord::Schema.define(version: 20140605032625) do
   add_index "accessions", ["accession_no"], name: "index_accessions_on_accession_no", using: :btree
   add_index "accessions", ["id"], name: "index_accessions_on_id", using: :btree
 
-  create_table "addbooks", force: true do |t|
+  create_table "address_book_items", force: true do |t|
+    t.integer  "address_book_id"
+    t.string   "item"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "address_books", force: true do |t|
     t.string   "name"
     t.string   "phone"
     t.string   "address"
@@ -46,13 +53,6 @@ ActiveRecord::Schema.define(version: 20140605032625) do
     t.string   "web"
     t.string   "fax"
     t.string   "shortname"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "address_book_items", force: true do |t|
-    t.integer  "address_book_id"
-    t.string   "item"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

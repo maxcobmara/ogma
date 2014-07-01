@@ -8,3 +8,23 @@
   %ul.nav.navbar-nav.navbar-right
     %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "toga"
     %li= link_to content_tag(:li, fa_icon("print", text: (t 'actions.print'))), "#", class: 'bogus'
+    
+    
+%table.table-striped.table-hover.ogma
+  %thead
+    %tr
+      %th= t('staff.training.course.name')
+      %th= t('staff.training.course.provider')
+      %th= t('staff.training.course.duration')
+      %th= t('staff.training.course.cost')
+      %th= t('staff.training.course.description')
+      %th= t('staff.training.course.approval')
+    - @ptcourses.each do |course|
+      %tbody
+        %tr
+          %td= link_to course.name, staff_training_ptcourse_path(course)
+          %td= course.provider.try(:name)
+          %td= course.duration
+          %td= truncate(course.description, :length => 50, :omission => (link_to '... [more]', ptcourse))
+          %td= ptcourse.approved? ? "Approved" : ""
+          

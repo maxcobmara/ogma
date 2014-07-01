@@ -114,6 +114,14 @@ en:
         used: Used
         balance: Balance
         new: New Training Budget
+      course:
+        title: Staff Training Courses
+        name: Course
+        description: Description
+        costs: Cost
+        provider: Provider
+        approval: Approval
+
     
   position:
     title: "Tasks & Responsibilities"

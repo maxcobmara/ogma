@@ -90,6 +90,14 @@ ms_MY:
         used: Digunakan
         balance: Baki
         new: Belanjawan Latihan Staff Baru
+        
+      course:
+        title: Kursus Kakitangan
+        name: Kursus
+        description: Deskripsi
+        costs: Harga
+        provider: Pengendali
+        approval: Kelulusan
     
   position:
     title: "Tugas & Tanggungjawab"
