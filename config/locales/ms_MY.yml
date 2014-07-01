@@ -92,6 +92,7 @@ ms_MY:
         new: Belanjawan Latihan Staff Baru
         
       course:
+        new: Kursus Staff Baru
         title: Kursus Kakitangan
         name: Kursus
         course_type: Jenis Kursus
@@ -100,6 +101,9 @@ ms_MY:
         description: Deskripsi
         costs: Harga
         approval: Kelulusan
+        
+      schedule:
+        title: Jadual Kursus Staf
         
     
   position:

@@ -1,9 +1,9 @@
-class StaffTraining::PtcoursesController < ApplicationController
+class StaffTraining::PtschedulesController < ApplicationController
   
-  before_action :set_ptcourse, only: [:show, :edit, :update, :destroy]
+  before_action :set_ptschedule, only: [:show, :edit, :update, :destroy]
 
   def index
-    @ptcourses = Ptcourse.all
+    @ptschedules = Ptschedule.all
   end
   
   def show

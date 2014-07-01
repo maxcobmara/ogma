@@ -115,6 +115,7 @@ en:
         balance: Balance
         new: New Training Budget
       course:
+        new: New Staff Training Course
         title: Staff Training Courses
         name: Course
         course_type: Course Type
@@ -123,6 +124,8 @@ en:
         description: Description
         costs: Cost
         approval: Approval
+      schedule:
+        title: Staff Training Course Schedule
 
     
   position:

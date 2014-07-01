@@ -3,6 +3,7 @@ require 'spec_helper'
 describe "staff training pages" do
   before  { @budget = FactoryGirl.create(:ptbudget) }
   before  { @course = FactoryGirl.create(:ptcourse) }
+  before  { @ptschedule = FactoryGirl.create(:ptschedule) }
   subject { page }
   
   describe "Staff Training Budget Index page" do
@@ -49,6 +50,13 @@ describe "staff training pages" do
     #it { should have_link( budget_range(@budget), href: staff_training_ptbudget_path(@budget) + "?locale=en") }
   end
   
+  describe "Staff Training Course New page" do
+    before { visit new_staff_training_ptcourse_path }
+    it { should have_selector('h1', text: I18n.t('staff.training.course.new')) }
+    it { should have_selector(:link_or_button, "Back")}    
+    it { should have_selector(:link_or_button, "Create")}    
+  end
+  
   describe "Staff Training Course Show page" do
     before { visit staff_training_ptcourse_path(@course) }
     
@@ -58,4 +66,21 @@ describe "staff training pages" do
     it { should have_selector(:link_or_button, "Destroy")}    
   end
   
+  describe "Staff Training Course Edit page" do
+    before { visit edit_staff_training_ptcourse_path(@course) }
+    
+    it { should have_selector('h1', text: @course.name) }
+    #it { should have_selector(:link_or_button, "Save")}    
+  end
+  
+  describe "Staff Training Schedule Index page" do
+    before { visit staff_training_ptschedules_path }
+    
+    it { should have_selector('h1', text: I18n.t('staff.training.schedule.title')) }
+    it { should_not have_selector(:link_or_button, "New")}    
+    it { should have_selector(:link_or_button, "Search")}    
+    it { should have_selector(:link_or_button, "Print")}
+    it { should have_css('div.calendar_list')}
+    #it { should have_link( budget_range(@budget), href: staff_training_ptbudget_path(@budget) + "?locale=en") }
+  end
 end
