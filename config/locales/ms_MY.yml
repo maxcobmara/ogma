@@ -94,10 +94,13 @@ ms_MY:
       course:
         title: Kursus Kakitangan
         name: Kursus
+        course_type: Jenis Kursus
+        provider: Pengendali
+        duration: Tempoh
         description: Deskripsi
         costs: Harga
-        provider: Pengendali
         approval: Kelulusan
+        
     
   position:
     title: "Tugas & Tanggungjawab"

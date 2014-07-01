@@ -200,14 +200,14 @@ module DropDown
        [ "External Short Course",10 ],
        [ "Seminar",              15 ],
        [ "Certificate",          20 ],
-       [ "Diploma/Others",       25 ],
+       [ "Diploma/Others",       25 ]
   ]
   
   DURATION_TYPE = [
        #  Displayed       stored in db
        [ "Days",  1 ],
        [ "Months",2 ],
-       [ "Years", 3 ],
+       [ "Years", 3 ]
   ]
 
   LOCATION_CATEGORIES = [

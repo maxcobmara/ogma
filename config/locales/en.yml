@@ -117,9 +117,11 @@ en:
       course:
         title: Staff Training Courses
         name: Course
+        course_type: Course Type
+        provider: Provider
+        duration: Duration
         description: Description
         costs: Cost
-        provider: Provider
         approval: Approval
 
     

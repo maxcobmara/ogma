@@ -25,6 +25,6 @@
           %td= link_to course.name, staff_training_ptcourse_path(course)
           %td= course.provider.try(:name)
           %td= course.duration
-          %td= truncate(course.description, :length => 50, :omission => (link_to '... [more]', ptcourse))
-          %td= ptcourse.approved? ? "Approved" : ""
+          %td= truncate(course.description, :length => 50, :omission => (link_to '... [more]', staff_training_ptcourse_path(course)))
+          %td= course.approved? ? "Approved" : ""
           

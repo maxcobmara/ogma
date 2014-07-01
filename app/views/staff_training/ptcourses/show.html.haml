@@ -1,0 +1,44 @@
+- model_class = Ptcourse
+.page-header
+  %h1= @ptcourse.name
+= render 'shared/flashes'
+
+
+.row
+  .col-md-offset-1
+    %dl.dl-horizontal
+      %dt= t 'staff.training.course.name', :default => model_class.human_attribute_name(:budget) + ":"
+      %dd= @ptcourse.name
+      
+      %dt= t 'staff.training.course.course_type', :default => model_class.human_attribute_name(:course_type) + ":"
+      %dd=# (DropDown::STAFF_COURSE_TYPE.find_all{|disp, value| value == @ptcourse.course_type}).map {|disp, value| disp}
+
+      %dt= t 'staff.training.course.provider', :default => model_class.human_attribute_name(:provider) + ":"
+      %dd= @ptcourse.provider.try(:name)
+      
+      %dt= t 'staff.training.course.duration', :default => model_class.human_attribute_name(:duration) + ":"
+      %dd
+        = @ptcourse.duration
+        = (DropDown::DURATION_TYPE.find_all{|disp, value| value == @ptcourse.duration}).map {|disp, value| disp}
+        
+      
+      %dt= t 'staff.training.course.description', :default => model_class.human_attribute_name(:description) + ":"
+      %dd= @ptcourse.description
+      
+      %dt= t 'staff.training.course.cost', :default => model_class.human_attribute_name(:cost) + ":"
+      %dd= ringgols(@ptcourse.cost)
+      
+      %dt= t 'staff.training.course.status', :default => model_class.human_attribute_name(:status) + ":"
+      %dd= @ptcourse.approved? ? "Approved" : "Not Approved"
+      
+.row
+  .col-md-4.col-md-offset-2
+    %hr
+    .form-actions
+      = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), staff_training_ptcourses_path, :class => 'btn btn-default'
+      = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('.edit', :default => t("helpers.links.edit")), edit_staff_training_ptcourse_path(@ptcourse), :class => 'btn btn-primary'
+      = link_to content_tag(:i, "", :class => "fa fa-trash-o icon-white") + " " + t('.destroy', :default => t("helpers.links.destroy")), |
+        staff_training_ptcourse_path(@ptcourse),                                                                                                    |
+        :method => 'delete',                                                                                                           |
+        :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },                   |
+        :class => 'btn btn-danger'
