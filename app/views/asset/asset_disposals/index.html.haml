@@ -16,7 +16,31 @@
           %a{:href => kewpa17_asset_disposals_path(:format => 'pdf')} KEW PA17
         %li
           %a{:href => kewpa20_asset_disposals_path(:format => 'pdf')} KEW PA20
-		  
+
+.search{style: "display:none;"}
+  //= render "index_search"
+
+.row
+  %table.table-striped.table-hover.ogma
+    %thead
+      %tr
+        %th= t('asset.assetcode')
+        %th= t('asset.name')
+        %th Quantity
+        %th Purchase Date
+        %th Current Value
+        %th Opinion						
+    %tbody
+      - @disposals.each do |disposal|
+        %tr
+          %td= link_to disposal.asset.assetcode, asset_disposal_path(disposal)
+          %td= "#{disposal.asset.try(:typename)} - #{disposal.asset.name} - #{disposal.asset.modelname}"  
+          %td= disposal.asset.try(:quantity)
+          %td= disposal.asset.try(:purchasedate).strftime("%d %b %Y")
+          %td= ringgols(disposal.current_value)
+          %td= disposal.justify1_disposal		  		  		  
+         
+		
 
 
 
