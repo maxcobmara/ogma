@@ -77,7 +77,7 @@ describe "staff training pages" do
     before { visit staff_training_ptschedules_path }
     
     it { should have_selector('h1', text: I18n.t('staff.training.schedule.title')) }
-    it { should_not have_selector(:link_or_button, "New")}    
+    #it { should_not have_selector(:link_or_button, "New")}    
     it { should have_selector(:link_or_button, "Search")}    
     it { should have_selector(:link_or_button, "Print")}
     it { should have_css('div.calendar_list')}

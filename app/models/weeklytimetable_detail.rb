@@ -122,3 +122,22 @@ class WeeklytimetableDetail < ActiveRecord::Base
 
 
 end
+
+# == Schema Information
+#
+# Table name: weeklytimetable_details
+#
+#  created_at         :datetime
+#  day2               :integer
+#  id                 :integer          not null, primary key
+#  is_friday          :boolean
+#  lecture_method     :integer
+#  lecturer_id        :integer
+#  location           :integer
+#  subject            :integer
+#  time_slot          :integer
+#  time_slot2         :integer
+#  topic              :integer
+#  updated_at         :datetime
+#  weeklytimetable_id :integer
+#

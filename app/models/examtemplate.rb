@@ -13,3 +13,16 @@ class Examtemplate < ActiveRecord::Base
   scope :truefalseq, -> { where(questiontype: 'TRUEFALSE')}
 
 end
+
+# == Schema Information
+#
+# Table name: examtemplates
+#
+#  created_at   :datetime
+#  exam_id      :integer
+#  id           :integer          not null, primary key
+#  quantity     :integer
+#  questiontype :string(255)
+#  total_marks  :decimal(, )
+#  updated_at   :datetime
+#

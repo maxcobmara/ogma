@@ -100,3 +100,30 @@ class Weeklytimetable < ActiveRecord::Base
   end
   
 end
+
+# == Schema Information
+#
+# Table name: weeklytimetables
+#
+#  created_at      :datetime
+#  enddate         :date
+#  endorsed_by     :integer
+#  format1         :integer
+#  format2         :integer
+#  group_id        :integer
+#  hod_approved    :boolean
+#  hod_approved_on :date
+#  hod_rejected    :boolean
+#  hod_rejected_on :date
+#  id              :integer          not null, primary key
+#  intake_id       :integer
+#  is_submitted    :boolean
+#  prepared_by     :integer
+#  programme_id    :integer
+#  reason          :string(255)
+#  semester        :integer
+#  startdate       :date
+#  submitted_on    :date
+#  updated_at      :datetime
+#  week            :integer
+#

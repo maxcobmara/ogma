@@ -76,9 +76,9 @@ class WeeklytimetableDetailsController < ApplicationController
     @weeklytimetable_detail = WeeklytimetableDetail.find(params[:id])
     #@weeklytimetable_detail.destroy
     if @weeklytimetable_detail.destroy
-      flash[:notice] => 'WeeklytimetableDetail was succesfully removed'
+#      flash[:notice] => 'WeeklytimetableDetail was succesfully removed'
     else
-      flash[:error] => 'Removal of Weeklytimetable Details is forbidden, due to existance in Student Attendance module.'
+#      flash[:error] => 'Removal of Weeklytimetable Details is forbidden, due to existance in Student Attendance module.'
     end
     respond_to do |format|
       format.html { redirect_to(weeklytimetable_details_url) }

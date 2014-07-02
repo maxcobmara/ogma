@@ -111,7 +111,6 @@ end
 #  code           :string(255)
 #  combo_code     :string(255)
 #  created_at     :datetime
-#  damaged        :boolean
 #  id             :integer          not null, primary key
 #  lclass         :integer
 #  name           :string(255)

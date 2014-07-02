@@ -9,8 +9,8 @@ FactoryGirl.define do
   end
   
   factory :ptschedule do
-    #association :course, class: "Ptcourse", factory: :ptcourse
-    ptcourse_id 1
+    association :course, factory: :ptcourse
+    #, class: "Ptcourse", factory: :ptcourse
     start {Time.at(rand * Time.now.to_f)}
     location "location name"
     min_participants 1
