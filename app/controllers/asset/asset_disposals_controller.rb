@@ -2,7 +2,8 @@ class Asset::AssetDisposalsController < ApplicationController
   before_action :set_disposed, only: [:show, :edit, :update, :destroy]
   
   def index
-    @disposals = AssetDisposal.order(code: :asc).page(params[:page]||1)
+    /@disposals = AssetDisposal.order(code: :asc).page(params[:page]||1)/
+    @disposals = AssetDisposal.all
   end
   
   def show
