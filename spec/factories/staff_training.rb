@@ -17,5 +17,8 @@ FactoryGirl.define do
     max_participants 20
   end
   
+  factory :ptdo do
+  end
+  
   
 end
