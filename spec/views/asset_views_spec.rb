@@ -95,7 +95,6 @@ describe "asset pages" do
     #it { should have_link((@asset_defect.asset.assetcode).to_s, href: asset_defect_path(@asset_defect.id) + "?locale=en" )}
   end
   
-
  
 end
 
