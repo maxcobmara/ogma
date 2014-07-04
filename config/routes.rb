@@ -46,6 +46,7 @@ Ogma::Application.routes.draw do
         get :kewpa20
       end
       member do
+        get :kewpa16
         get :kewpa18
         get :kewpa19
       end
