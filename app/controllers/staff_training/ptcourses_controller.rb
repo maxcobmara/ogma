@@ -34,8 +34,8 @@ class StaffTraining::PtcoursesController < ApplicationController
   # PATCH/PUT /compounds/1.json
   def update
     respond_to do |format|
-      if @ptcourse.update(compound_params)
-        format.html { redirect_to @ptcourse, notice: 'Course was successfully updated.' }
+      if @ptcourse.update(ptcourse_params)
+        format.html { redirect_to staff_training_ptcourse_path(@ptcourse), notice: 'Course was successfully updated.' }
         format.json { head :no_content }
       else
         format.html { render action: 'edit' }
@@ -63,8 +63,22 @@ class StaffTraining::PtcoursesController < ApplicationController
 
       # Never trust parameters from the scary internet, only allow the white list through.
       def ptcourse_params
-        params.require(:ptcourse).permit(:fiscalstart, :budget, :used_budget, :budget_balance)
+        params.require(:ptcourse).permit(:cost, :course_type, :description, :duration, :duration_type, :name, :provider_id)
       end
   
   
 end
+
+
+#  approved      :boolean
+#  cost          :decimal(, )
+#  course_type   :integer
+#  created_at    :datetime
+#  description   :text
+#  duration      :decimal(, )
+#  duration_type :integer
+#  id            :integer          not null, primary key
+#  name          :string(255)
+#  proponent     :string(255)
+#  provider_id   :integer
+#  updated_at    :datetime

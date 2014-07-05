@@ -9,15 +9,17 @@
     %li= link_to content_tag(:li, fa_icon("print", text: (t 'actions.print'))), "#", class: 'bogus'
     
 
-.row    
-  - @ptschedules.each do |scheduled|
-    .calendar_list
-      .col-md-1
-        %span.day= scheduled.start.try(:strftime, "%d")
-        %span.month= scheduled.start.try(:strftime, "%b")
-      .col-md-7
-        %span.title= scheduled.course.try(:name)
-        %span.description= scheduled.course.try(:description)
-        %span.footer= scheduled.course.provider.try(:name)
-      .col-md-1
-        clicky
+   
+- @ptschedules.each do |scheduled|
+  .row.calendar_list
+    .col-md-1.date
+      %span.day= scheduled.start.try(:strftime, "%d")
+      %span.month= scheduled.start.try(:strftime, "%b")
+    .col-md-9.details
+      %span.title= scheduled.course.try(:name)
+      %br
+      %p.description= scheduled.course.try(:description)
+      %br
+      %span.footer= scheduled.course.provider.try(:name)
+    .col-md-1
+      clicky

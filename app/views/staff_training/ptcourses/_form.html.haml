@@ -5,28 +5,29 @@
       = f.text_field :name, class: 'form-control mandatory'
       
   .form-group
-    %label.col-sm-2.control-label= f.label t 'staff.training.course.name', for: :name
+    %label.col-sm-2.control-label= f.label t 'staff.training.course.course_type', for: :name
     .col-md-3
       = f.select :course_type, DropDown::STAFF_COURSE_TYPE, {prompt: "Select"}, class: 'selectpicker'
       
   .form-group
-    %label.col-sm-2.control-label= f.label t 'staff.training.budget.provider', for: :provider
+    %label.col-sm-2.control-label= f.label t 'staff.training.course.provider', for: :provider
     .col-md-5
       = f.collection_select :provider_id, AddressBook.all, :id, :name, {:prompt => "Select" }, class: 'selectpicker'
       
   .form-group
-    %label.col-sm-2.control-label= f.label t 'staff.training.budget.duration', for: :provider
-    .col-md-3
+    %label.col-sm-2.control-label= f.label t 'staff.training.course.duration', for: :provider
+    .col-md-1
       = f.text_field :duration, class: 'form-control'
+    .col-md-2
       = f.select :duration_type, DropDown::DURATION_TYPE, {prompt: "Select"}, class: 'selectpicker'
       
   .form-group
     %label.col-sm-2.control-label= f.label t 'staff.training.course.description', for: :name
-    .col-md-3
+    .col-md-6
       = f.text_area :description, class: 'form-control', rows: "6"
       
   .form-group
-    %label.col-sm-2.control-label= f.label t 'staff.training.budget.cost', for: :cost
+    %label.col-sm-2.control-label= f.label t 'staff.training.course.costs', for: :cost
     .col-md-3
       .input-group
         .input-group-addon $

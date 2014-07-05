@@ -3,7 +3,7 @@ class StaffTraining::PtschedulesController < ApplicationController
   before_action :set_ptschedule, only: [:show, :edit, :update, :destroy]
 
   def index
-    @ptschedules = Ptschedule.all
+    @ptschedules = Ptschedule.where('start >= ?', Date.today).order("start ASC")
   end
   
   def show

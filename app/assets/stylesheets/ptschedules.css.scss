@@ -1,0 +1,27 @@
+/*
+    .calendar_list
+      .col-md-1.date
+        %span.day= scheduled.start.try(:strftime, "%d")
+        %span.month= scheduled.start.try(:strftime, "%b")
+      .col-md-7
+        %span.title= scheduled.course.try(:name)
+        %span.description= scheduled.course.try(:description)
+        %span.footer= scheduled.course.provider.try(:name)
+      .col-md-1
+
+*/
+
+.calendar_list {
+  &:hover {background-color:#EFEFEF;}
+  margin-left: 40px;
+  padding: 15px 10px;
+  .date {
+    border-left: 6px solid #34495e;
+    .day {padding:0; margin:0;font-size:3.25em;}
+    .month {padding:0; margin:0;font-size:2em; align: right;}
+  }
+  .details {padding-top:8px;
+    .title { font-weight:bold; font-size:1.25em;}
+    .description {font-size:0.9em; line-height:1; }
+  }
+}

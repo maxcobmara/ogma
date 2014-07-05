@@ -1,7 +1,3 @@
-
-
-
-
 $(document).ready(function(e) {
   $('.selectpicker').selectpicker();
   $('.tenant').tooltip( {placement: 'right', container: 'body'});
@@ -12,6 +8,10 @@ $(document).ready(function(e) {
    timepicker:false,
    	format:'Y-m-d',
    	formatDate:'Y-m-d'
+  });
+  
+  $(".bogus").click(function (e) {
+      alert("Sorry! Feature not yet implemented");
   });
    
 

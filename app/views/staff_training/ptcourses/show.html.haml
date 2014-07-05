@@ -11,15 +11,15 @@
       %dd= @ptcourse.name
       
       %dt= t 'staff.training.course.course_type', :default => model_class.human_attribute_name(:course_type) + ":"
-      %dd=# (DropDown::STAFF_COURSE_TYPE.find_all{|disp, value| value == @ptcourse.course_type}).map {|disp, value| disp}
+      %dd= (DropDown::STAFF_COURSE_TYPE.find_all{|disp, value| value == @ptcourse.course_type}).map {|disp, value| disp}[0]
 
       %dt= t 'staff.training.course.provider', :default => model_class.human_attribute_name(:provider) + ":"
       %dd= @ptcourse.provider.try(:name)
       
       %dt= t 'staff.training.course.duration', :default => model_class.human_attribute_name(:duration) + ":"
       %dd
-        = @ptcourse.duration
-        = (DropDown::DURATION_TYPE.find_all{|disp, value| value == @ptcourse.duration}).map {|disp, value| disp}
+        = number_with_precision(@ptcourse.duration, precision: 0)
+        = (DropDown::DURATION_TYPE.find_all{|disp, value| value == @ptcourse.duration_type}).map {|disp, value| disp}[0]
         
       
       %dt= t 'staff.training.course.description', :default => model_class.human_attribute_name(:description) + ":"
