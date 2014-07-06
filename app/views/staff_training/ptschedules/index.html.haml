@@ -15,11 +15,21 @@
     .col-md-1.date
       %span.day= scheduled.start.try(:strftime, "%d")
       %span.month= scheduled.start.try(:strftime, "%b")
-    .col-md-9.details
+    .col-md-8.details
       %span.title= scheduled.course.try(:name)
       %br
       %p.description= scheduled.course.try(:description)
+      %span.footer
+        = scheduled.location
+        = scheduled.course.provider.try(:name)
+    .col-md-1.badges
+      //TODO do a max min http://codepen.io/bamf/pen/gqzcI
+      .badge
+        Max
+        = scheduled.max_participants
       %br
-      %span.footer= scheduled.course.provider.try(:name)
+      .badge
+        Min
+        = scheduled.min_participants
     .col-md-1
       clicky

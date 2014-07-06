@@ -101,9 +101,11 @@ ms_MY:
         description: Deskripsi
         costs: Harga
         approval: Kelulusan
-        
+        schedule: Jadualkan Kursus
       schedule:
         title: Jadual Kursus Staf
+      do:
+        title: Apply For Training
         
     
   position:

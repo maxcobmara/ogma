@@ -33,9 +33,17 @@ describe Ptschedule do
     before { @ptschedule.min_participants = nil }
     it { should_not be_valid }
   end
-  describe "when name is not present" do
+  describe "when max is not present" do
     before { @ptschedule.max_participants = nil }
     it { should_not be_valid }
+  end
+  
+  describe "min should be less than max" do
+    before { @ptschedule.max_participants = 10}
+    before { @ptschedule.min_participants = 20}
+
+    it { should_not be_valid }
+    #@ptschedule.errors[:min_participants].should include("must be less than or equal to #{@ptschedule.max_participants}")
   end
   
 end

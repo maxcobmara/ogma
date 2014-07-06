@@ -11,7 +11,7 @@
       %dd= @ptcourse.name
       
       %dt= t 'staff.training.course.course_type', :default => model_class.human_attribute_name(:course_type) + ":"
-      %dd= (DropDown::STAFF_COURSE_TYPE.find_all{|disp, value| value == @ptcourse.course_type}).map {|disp, value| disp}[0]
+      %dd= course_type(@ptcourse)
 
       %dt= t 'staff.training.course.provider', :default => model_class.human_attribute_name(:provider) + ":"
       %dd= @ptcourse.provider.try(:name)
@@ -19,7 +19,7 @@
       %dt= t 'staff.training.course.duration', :default => model_class.human_attribute_name(:duration) + ":"
       %dd
         = number_with_precision(@ptcourse.duration, precision: 0)
-        = (DropDown::DURATION_TYPE.find_all{|disp, value| value == @ptcourse.duration_type}).map {|disp, value| disp}[0]
+        = duration_type(@ptcourse)
         
       
       %dt= t 'staff.training.course.description', :default => model_class.human_attribute_name(:description) + ":"
@@ -36,6 +36,10 @@
     %hr
     .form-actions
       = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), staff_training_ptcourses_path, :class => 'btn btn-default'
+      - unless @ptcourse.approved?
+        = link_to content_tag(:i, "", :class => "fa fa-check-square-o ") , '#',{class: "btn btn-default bogus", "data-toggle" => "tooltip", title: t('staff.training.course.approval')}
+      - else
+        = link_to content_tag(:i, "", :class => "fa fa-calendar-o ") , new_staff_training_ptschedule_path(:ptschedule_id => @ptcourse),{class: "btn btn-default", "data-toggle" => "tooltip", title: t('staff.training.course.schedule')}
       = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('.edit', :default => t("helpers.links.edit")), edit_staff_training_ptcourse_path(@ptcourse), :class => 'btn btn-primary'
       = link_to content_tag(:i, "", :class => "fa fa-trash-o icon-white") + " " + t('.destroy', :default => t("helpers.links.destroy")), |
         staff_training_ptcourse_path(@ptcourse),                                                                                                    |

@@ -80,7 +80,7 @@ describe "staff training pages" do
     #it { should_not have_selector(:link_or_button, "New")}    
     it { should have_selector(:link_or_button, "Search")}    
     it { should have_selector(:link_or_button, "Print")}
-    it { should have_css('div.calendar_list')}
+    #it { should have_css('div.calendar_list')}
     #it { should have_link( budget_range(@budget), href: staff_training_ptbudget_path(@budget) + "?locale=en") }
   end
   
@@ -91,9 +91,6 @@ describe "staff training pages" do
     #it { should_not have_selector(:link_or_button, "New")}    
     it { should have_selector(:link_or_button, "Search")}    
     it { should have_selector(:link_or_button, "Print")}
-    it { should have_selector('th', text: I18n.t('staff.training.course.name')) }
-    it { should have_selector('th', text: I18n.t('staff.training.do.applicant')) }
-    it { should have_selector('th', text: I18n.t('staff.training.do.status')) }
     #it { should have_link( budget_range(@budget), href: staff_training_ptbudget_path(@budget) + "?locale=en") }
     
     #TODO have a my training chart

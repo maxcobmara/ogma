@@ -13,6 +13,7 @@ Ogma::Application.routes.draw do
     resources :ptbudgets
     resources :ptcourses
     resources :ptschedules
+    resources :ptdos
   end
   
   namespace :asset do

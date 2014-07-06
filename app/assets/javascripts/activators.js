@@ -1,4 +1,5 @@
 $(document).ready(function(e) {
+  $('.btn').tooltip( {placement: 'bottom', container: 'body'});
   $('.selectpicker').selectpicker();
   $('.tenant').tooltip( {placement: 'right', container: 'body'});
   $('.index_search_bar').click(function() {	   

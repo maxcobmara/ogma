@@ -8,4 +8,12 @@ module  StaffTraining::PtbudgetsHelper
     budget.fiscalstart.strftime("%d %B %Y") + ' ~ ' + fiscal_end(budget)
   end
   
+  def course_type(course)
+    (DropDown::STAFF_COURSE_TYPE.find_all{|disp, value| value == course.course_type}).map {|disp, value| disp}[0]
+  end
+  
+  def duration_type(course)
+    (DropDown::DURATION_TYPE.find_all{|disp, value| value == course.duration_type}).map {|disp, value| disp}[0]
+  end
+  
 end

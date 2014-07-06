@@ -6,6 +6,11 @@ class Ptschedule < ActiveRecord::Base
   validates_presence_of :ptcourse_id, :message => "Please Select Course"
   validates_presence_of :start, :location, :min_participants, :max_participants
   
+  validates :max_participants, :numericality => { :less_than_or_equal_to => 999 }
+  validates :min_participants, :numericality => { :greater_than => 0, :less_than_or_equal_to => :max_participants }, :unless => 'max_participants.nil?'
+  
+
+  
 end
 
 # == Schema Information

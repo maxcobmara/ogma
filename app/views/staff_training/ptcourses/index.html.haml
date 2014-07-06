@@ -24,8 +24,10 @@
         %tr
           %td= link_to course.name, staff_training_ptcourse_path(course)
           %td= course.provider.try(:name)
-          %td= course.duration
-          %td= ringgols(course.cost)
+          %td
+            = number_with_precision(course.duration, precision: 0)
+            = duration_type(course)
+          %td.number= ringgols(course.cost)
           %td= truncate(course.description, :length => 80) {link_to '... [more]', staff_training_ptcourse_path(course)}
           %td= course.approved? ? "Approved" : ""
           
