@@ -42,15 +42,15 @@ Ogma::Application.routes.draw do
     end
     resources :asset_losses,    as: :losses
     resources :asset_disposals, as: :disposals do
-      collection do
-        get :kewpa17
-        get :kewpa20
-      end
       member do
         get :kewpa16
         get :kewpa18
         get :kewpa19
       end
+      collection do
+        get :kewpa17
+        get :kewpa20
+      end     
     end
   end
 

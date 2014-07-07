@@ -1,7 +1,7 @@
 class Kewpa19Pdf < Prawn::Document
   def initialize(disposal, view)
     super({top_margin: 50, page_size: 'A4', page_layout: :portrait })
-    @disposals = disposal
+    @disposal = disposal
     @view = view
     font "Times-Roman"
     text "KEW.PA-19", :align => :right, :size => 16, :style => :bold

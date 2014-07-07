@@ -29,6 +29,10 @@ class Staff < ActiveRecord::Base
   has_many :assets, :foreign_key => "assignedto_id"
   has_many :reporters, :class_name => 'AssetDefect', :foreign_key => 'reported_by'
   
+  has_many :asset_disposal, :foreign_key => 'disposed_by'
+  has_many :processors, :class_name => 'AssetDisposal', :foreign_key => 'checked_by'
+  has_many :verifiers,  :class_name => 'AssetDisposal', :foreign_key => 'verified_by'
+  has_many :revaluers,  :class_name => 'AssetDisposal', :foreign_key => 'revalued_by'
   
   #validates_attachment_size         :photo, :less_than => 500.kilobytes
   #validates_attachment_content_type :photo, :content_type => ['image/jpeg', 'image/png']
