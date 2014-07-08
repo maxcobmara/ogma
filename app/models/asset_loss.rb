@@ -1,4 +1,8 @@
 class AssetLoss < ActiveRecord::Base
+  
+  belongs_to :location
+  belongs_to :asset
+  belongs_to :document
 end
 
 # == Schema Information

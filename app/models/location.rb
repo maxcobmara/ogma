@@ -17,6 +17,7 @@ class Location < ActiveRecord::Base
   has_many :asset_placements
   has_many :assets, :through => :asset_placements
   has_many :asset, :foreign_key => "location_id"
+  has_many :asset_loss
   
   
   def staff_name
