@@ -8,6 +8,29 @@ class Asset::AssetLossesController < ApplicationController
   def show
   end
   
+  def kewpa28
+   @asset_loss = AssetLoss.find(params[:id])
+    respond_to do |format|
+      format.pdf do
+        pdf = Kewpa28Pdf.new(@asset, view_context)
+        send_data pdf.render, filename: "kewpa28-{Date.today}",
+                              type: "application/pdf",
+                              disposition: "inline"
+      end
+    end
+  end
+  
+  def kewpa30
+   @asset_loss = AssetLoss.find(params[:id])
+    respond_to do |format|
+      format.pdf do
+        pdf = Kewpa30Pdf.new(@asset, view_context)
+        send_data pdf.render, filename: "kewpa30-{Date.today}",
+                              type: "application/pdf",
+                              disposition: "inline"
+      end
+    end
+  end
   
   private
     # Use callbacks to share common setup or constraints between actions.
