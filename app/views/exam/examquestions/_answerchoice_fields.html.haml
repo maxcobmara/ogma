@@ -24,7 +24,7 @@
   II&nbsp;&nbsp;
   = hidden_field "examquestion[answerchoices_attributes][1]",:item, :value => "II"
   - unless @examquestion.id.nil? || @examquestion.id.blank?
-    - if (Answerchoice.where(examquestion_id: @examquestion.id).count) > 0 
+    - if (Answerchoice.where(examquestion_id: @examquestion.id).count) > 1 
       /EDIT examquestion with existing answerchoices
       = hidden_field "examquestion[answerchoices_attributes][1]",:id, :value => @examquestion.answerchoices[1].id 
       = text_field "examquestion[answerchoices_attributes][1]",:description, :size=>60, :value=>@examquestion.answerchoices[1].description      
@@ -45,7 +45,7 @@
   III&nbsp;
   = hidden_field "examquestion[answerchoices_attributes][2]",:item, :value => "III"
   - unless @examquestion.id.nil? || @examquestion.id.blank?
-    - if (Answerchoice.where(examquestion_id: @examquestion.id).count) > 0 
+    - if (Answerchoice.where(examquestion_id: @examquestion.id).count) > 2 
       /EDIT examquestion with existing answerchoices
       = hidden_field "examquestion[answerchoices_attributes][2]",:id, :value => @examquestion.answerchoices[2].id 
       = text_field "examquestion[answerchoices_attributes][2]",:description, :size=>60, :value=>@examquestion.answerchoices[2].description      
@@ -66,7 +66,7 @@
   IV&nbsp;
   = hidden_field "examquestion[answerchoices_attributes][3]",:item, :value => "IV"
   - unless @examquestion.id.nil? || @examquestion.id.blank?
-    - if (Answerchoice.where(examquestion_id: @examquestion.id).count) > 0 
+    - if (Answerchoice.where(examquestion_id: @examquestion.id).count) > 3 
       /EDIT examquestion with existing answerchoices
       = hidden_field "examquestion[answerchoices_attributes][3]",:id, :value => @examquestion.answerchoices[3].id 
       = text_field "examquestion[answerchoices_attributes][3]",:description, :size=>60, :value=>@examquestion.answerchoices[3].description      

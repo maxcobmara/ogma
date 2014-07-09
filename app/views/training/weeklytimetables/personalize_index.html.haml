@@ -1,0 +1,57 @@
+- model_class = Weeklytimetable
+.page-header
+  %h1= t('training.weeklytimetable.personalize_timetable')
+  
+.navbar.navbar-inverse{role: "navigation", style: "padding-right:40px;"}
+  %ul.nav.navbar-nav
+    /%li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'actions.new'))), new_training_weeklytimetable_path
+  %ul.nav.navbar-nav.navbar-right
+    %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "toga"
+    %li= link_to content_tag(:li, fa_icon("print", text: (t 'actions.print'))), "#", class: 'bogus'
+
+.row.filter{style: "display:none;"}
+  .col-md-2
+   
+.row
+  %table.table-striped.table-hover.ogma
+    %thead
+      %tr
+        /%th= sort_link(@search, :programme_id, (t 'training.weeklytimetable.programme_id'))
+        /%th= sort_link(@search, :intake_id, (t 'training.weeklytimetable.intake_id'))
+        /%th= sort_link(@search, :startdate, (t 'training.weeklytimetable.startdate'))
+        /%th= sort_link(@search, :end_date, (t 'training.weeklytimetable.enddate'))
+        /%th= sort_link(@search, :semester, (t 'training.weeklytimetable.semester'))
+        %th= (t 'training.weeklytimetable.programme_id')
+        %th= (t 'training.weeklytimetable.intake_id')
+        %th= (t 'training.weeklytimetable.startdate')
+        %th= (t 'training.weeklytimetable.enddate')
+        %th= (t 'training.weeklytimetable.semester')
+
+    - all_combine = []
+    - @weeklytimetables_details.each do |x|
+      - all_combine << Weeklytimetable.find(x.weeklytimetable.id)
+    - @personalize = all_combine.group_by{|t|t.startdate}
+    /=h current_user.id
+    %tbody
+    /= render "index_search"
+    - @personalize.each do |sdate, items2|
+      - items2.each_with_index do |item, index|
+        - if index==0
+          %tr
+            /%td=h link_to weeklytimetable.schedule_programme.programme_list, training_weeklytimetable_path(weeklytimetable)     
+            %td=h link_to item.schedule_programme.programme_list, personalize_show_training_weeklytimetable_path(sdate)
+            %td=h item.schedule_intake.group_with_intake_name
+            %td=h sdate.try(:strftime, "%d %b %Y")
+            %td=h item.try(:enddate).try(:strftime, "%d %b %Y")
+            %td=h item.academic_semester.semester
+
+
+  /.right{style:"padding:0 30px; margin:0;"}= paginate @weeklytimetables, :theme => 'twitter-bootstrap-3'
+
+/= &nbsp;
+/= item.schedule_intake.group_with_intake_name
+/=sdate
+/= item.enddate
+/= item.academic_semester.semester
+/= link_to image_tag("document.png", :border => 0, :title => 'Show'), :action => 'personalize_show', :id => sdate
+

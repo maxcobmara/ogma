@@ -558,6 +558,9 @@ ms_MY:
       questions_details: Butiran Soalan Peperiksaan
       total_questions: Jumlah Soalan
       not_selected: Belum Ditentukan
+      separate_combine: Muka Depan
+      separate_combine_text: "S merujuk kepada muka depan kertas soalan yang BERASINGAN bagi satu set kertas soalan, manakala C merujuk kepada GABUNGAN satu muka depan bagi satu set kertas soalan."
+      notes: "Nota :"
 
   training:
     title: Latihan
@@ -635,6 +638,10 @@ ms_MY:
       compulsory_fields: Medan - medan yang wajib diisi
       activate_format: "Klik 'Tambah Data' untuk aktifkan format jadual waktu."
       submission_approval: "Penghantaran & Kelulusan"
+      personalize_timetable: Jadual Waktu Mingguan Pengajar
+      lecturer_name: Nama Pengajar
+      intake: Ambilan
+
     weeklytimetable_detail:
       topic: Topik
       lecturer_id: Pengajar      

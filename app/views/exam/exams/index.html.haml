@@ -41,7 +41,7 @@
             %th=(t 'exam.exams.created_by')
             %th=(t 'exam.exams.duration')
             %th=(t 'exam.exams.full_marks')
-            %th.action_menu.group{:colspan => "2"}
+            %th=(t 'exam.exams.separate_combine')
 
         %tbody
           /= render "index_search"
@@ -58,7 +58,7 @@
                 - @year = "3 / "
               %tr
                 %td
-                  =h (Exam::EXAMTYPE.find_all{|disp, value| value == exam.name}).map {|disp, value| disp}[0]
+                  = link_to (DropDown::EXAMTYPE.find_all{|disp, value| value == exam.name}).map {|disp, value| disp}[0], exam_exam_path(exam)
                   - if exam.klass_id == 0
                     %span{:style=>"color:blue;"}
                       (Template)
@@ -66,13 +66,11 @@
                   - else
                     %span{:style=>"color:red;"}
                       *
-                %td=h exam.subject_id? ? @year + exam.subject.parent.code.to_s : "" 
+                %td{:align=>"center"}=h exam.subject_id? ? @year + exam.subject.parent.code.to_s : "" 
                 %td=h exam.subject_id? ? exam.subject.root.course_type+" "+exam.subject.root.name : ""  
                 %td=h exam.subject_id? ? exam.subject.subject_list : ""
-                %td=h (exam.exam_on.blank? ? "-" : exam.exam_on.strftime("%d-%b-%Y"))  
-                %td
-                  =h exam.try(:starttime).strftime('%H:%M %p') 
-                  =h exam.try(:endtime).strftime('%H:%M %p') 
+                %td=h (exam.exam_on.blank? ? "-" : exam.exam_on.try(:strftime, "%d %b %Y"))  
+                %td=h exam.timing
                 %td=h exam.creator_details 
                 %td
                   =h (((exam.endtime - exam.starttime)/60) / 60).to_i  
@@ -80,7 +78,7 @@
                   =h (((exam.endtime - exam.starttime)/60) % 60).to_i
                   &nbsp;mins
                   /%td=h exam.try(:full_marks)
-                %td
+                %td{:align=>"center"}
                   /11June2013-TEMPLATE
                   - @istemplate = exam.klass_id
                   - if @istemplate == 0
@@ -91,18 +89,21 @@
                     = @grand_total.to_i
                   - else 
                     =h exam.total_marks
-                %td
+                %td{:align=>"center"}
                   - if exam.sequ!=nil
                     - sequ = exam.sequ.split(",")
                   - if sequ!=nil && sequ.uniq.length == sequ.length &&  (exam.subject.root.id == 3 || exam.subject.root.id == 5 || exam.subject.root.id == 6 || exam.subject.root.id == 7 || exam.subject.root.id == 8 || exam.subject.root.id == 9 || exam.subject.root.id == 10 || exam.subject.root.id == 11 || exam.subject.root.id == 12 || exam.subject.root.id == 13 || exam.subject.root.id == 14)
                     S
                   - if sequ!=nil && sequ.uniq.length == sequ.length && (exam.subject.root.id == 1 || exam.subject.root.id == 2 || exam.subject.root.id == 4)
                     C
-                %td= link_to content_tag(:li, fa_icon("", text: (t 'actions.show'))), exam_exam_path(exam)
-
-    %br				  
-    %span{:style=>"color:red;"}
-      *
-    = t 'exam.exams.remarks_bottom'
+    %br= t 'exam.exams.notes'
+    %ol
+      %li				  
+        %span{:style=>"color:red;"}
+          *
+        = t 'exam.exams.remarks_bottom'
+      %li
+        %b= t('exam.exams.separate_combine')
+        =" - "+t('exam.exams.separate_combine_text')
 
     .right{style:"padding:0 30px; margin:0;"}= paginate @exams, :theme => 'twitter-bootstrap-3'
