@@ -541,6 +541,9 @@ ms_MY:
       questions_details: Butiran Soalan Peperiksaan
       total_questions: Jumlah Soalan
       not_selected: Belum Ditentukan
+      separate_combine: Muka Depan
+      separate_combine_text: "S merujuk kepada muka depan kertas soalan yang BERASINGAN bagi satu set kertas soalan, manakala C merujuk kepada GABUNGAN satu muka depan bagi satu set kertas soalan."
+      notes: "Nota :"
 
   training:
     title: Latihan

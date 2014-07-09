@@ -560,6 +560,9 @@ en:
       questions_details: Questions Details
       total_questions: Total Questions
       not_selected: Not Selected
+      separate_combine: Cover
+      separate_combine_text: "S refers to SEPARATED covers of examination paper, whereas C refers to COMBINED / Single cover of examination paper."
+      notes: "Remark :"
 
   training:
     title: Training

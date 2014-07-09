@@ -15,7 +15,7 @@
     %dd Topic
 	  
     %dt=t 'exam.examquestion.difficulty' , :default => model_class.human_attribute_name(:difficulty) + ":"
-    %dd=h (Examquestion::QLEVEL.find_all{|disp, value| value == @examquestion.difficulty}).map {|disp, value| disp}[0]
+    %dd=h (DropDown::QLEVEL.find_all{|disp, value| value == @examquestion.difficulty}).map {|disp, value| disp}[0]
 
     %dt
       - if @examquestion.questiontype=="SEQ" 

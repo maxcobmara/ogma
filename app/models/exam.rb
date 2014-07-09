@@ -164,18 +164,9 @@ class Exam < ActiveRecord::Base
   
   #--12June2013
   
-  #----------------Coded List----------------------------------- 
-  EXAMTYPE = [
-            #  Displayed       stored in db
-               [ "Peperiksaan Pertengahan Semester",      "M" ],
-               [ "Peperiksaan Akhir Semester",            "F" ],
-               [ "Peperiksaan Ulangan",                   "R" ]
-  ]
-  PAPERTYPE =[
-           #  Displayed       stored in db
-              ["Template",        0],
-              ["Complete Exam",  1]
-  ]
+  def timing
+    "#{starttime.try(:strftime, "%l:%M %P")}"+" - "+"#{endtime.try(:strftime, "%l:%M %P")}"
+  end 
 
 private
 

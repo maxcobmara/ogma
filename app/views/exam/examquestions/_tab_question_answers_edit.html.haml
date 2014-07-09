@@ -3,7 +3,7 @@
     .col-sm-2.control-label
       = f.label :questiontype
     .col-md-4
-      = f.select :questiontype, Examquestion::QTYPE, :prompt=> t('helpers.prompt.select_questiontype')
+      = f.select :questiontype, DropDown::QTYPE, :prompt=> t('helpers.prompt.select_questiontype')
  
   //main - for all type of question
   .p#main_question.box
