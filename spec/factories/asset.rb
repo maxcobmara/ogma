@@ -20,6 +20,10 @@ FactoryGirl.define do
     association :asset, factory: :fixed_asset
   end
   
+  factory :asset_disposal do
+    association :asset, factory: :fixed_asset
+  end
+  
   factory :stationery do
     #category "some_name"
     #code "some_code"
