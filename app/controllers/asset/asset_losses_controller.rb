@@ -12,8 +12,20 @@ class Asset::AssetLossesController < ApplicationController
    @asset_loss = AssetLoss.find(params[:id])
     respond_to do |format|
       format.pdf do
-        pdf = Kewpa28Pdf.new(@asset, view_context)
+        pdf = Kewpa28Pdf.new(@asset_loss, view_context)
         send_data pdf.render, filename: "kewpa28-{Date.today}",
+                              type: "application/pdf",
+                              disposition: "inline"
+      end
+    end
+  end
+  
+  def kewpa29
+   @asset_loss = AssetLoss.find(params[:id])
+    respond_to do |format|
+      format.pdf do
+        pdf = Kewpa29Pdf.new(@asset_loss, view_context)
+        send_data pdf.render, filename: "kewpa29-{Date.today}",
                               type: "application/pdf",
                               disposition: "inline"
       end
@@ -24,8 +36,22 @@ class Asset::AssetLossesController < ApplicationController
    @asset_loss = AssetLoss.find(params[:id])
     respond_to do |format|
       format.pdf do
-        pdf = Kewpa30Pdf.new(@asset, view_context)
+        pdf = Kewpa30Pdf.new(@asset_loss, view_context)
         send_data pdf.render, filename: "kewpa30-{Date.today}",
+                              type: "application/pdf",
+                              disposition: "inline"
+      end
+    end
+  end
+  
+  def kewpa31
+    @lead = Position.find(1)
+   @document_id = params[:id]
+   @asset_losses = AssetLoss.find(:all, :conditions=>['document_id=?', @document_id], :order => 'created_at DESC') 
+    respond_to do |format|
+      format.pdf do
+        pdf = Kewpa31Pdf.new(@asset_losses, view_context, @lead)
+        send_data pdf.render, filename: "kewpa31-{Date.today}",
                               type: "application/pdf",
                               disposition: "inline"
       end
