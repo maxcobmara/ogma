@@ -28,10 +28,15 @@
       %th= t('campus.address.title')
       %th= t('campus.address.title')
       %th= t('campus.address.title')
-    - @address_books.each do |budget|
+    - @address_books.each do |contact|
       %tbody
         %tr
-          %td= link_to fiscal_range(budget), staff_training_ptbudget_path(budget)
-          %td= ringgols(budget.budget)
-          %td= ringgols(budget.used_budget)
-          %td= ringgols(budget.budget_balance)
+          %td= link_to contact.shortname, campus_address_book_path(contact)
+          %td= contact.name
+          %td
+            = contact.address
+            = contact.phone
+            = contact.fax
+          %td
+            = contact.mail
+            = contact.web
