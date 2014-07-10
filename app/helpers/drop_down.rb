@@ -292,4 +292,25 @@ module DropDown
          [ "Re-Edit", "Re-Edit" ],
          [ "Rejected", "Rejected" ]
     ]
+     
+    DAY_CHOICE = [
+         #  Displayed       stored in db
+         [ "Sun-Wed",  1 ],
+         [ "Thurs",    2 ]
+    ]
+    
+    DAY_LIST = [
+            #  Displayed       stored in db
+            ["Monday",     1],
+            ["Tuesday",    2],
+            ["Wednesday",  3],
+            ["Thursday",   4]
+    ]
+    
+    CLASS_METHOD = [
+            #  Displayed       stored in db
+            ["Kuliah",     1],
+            ["Teori",    2],
+            ["Amali",  3]
+    ]
 end

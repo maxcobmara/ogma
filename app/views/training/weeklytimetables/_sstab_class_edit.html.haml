@@ -17,4 +17,4 @@
 /lecture method
 = t 'training.weeklytimetable_detail.lecture_method'
 %font{:color=>"blue"}*
-= select_tag "weeklytimetable[weeklytimetable_details_attributes][#{@ind}][lecture_method]", options_for_select(WeeklytimetableDetail::CLASS_METHOD), :prompt=> (t 'helpers.prompt.select_lecture_method')
+= select_tag "weeklytimetable[weeklytimetable_details_attributes][#{@ind}][lecture_method]", options_for_select(DropDown::CLASS_METHOD), :prompt=> (t 'helpers.prompt.select_lecture_method')
