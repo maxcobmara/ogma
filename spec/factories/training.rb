@@ -17,7 +17,7 @@ FactoryGirl.define do
     name {Date.new(2014,rand(1..12),1).strftime("%b")+" "+(Date.today.year+rand(1..3)).to_s}
     description {rand(1..1000)}
     register_on {Date.today+(366*rand()).to_f}
-    programme_id 1
+    association :programme, factory: :programme
     is_active {rand(2) == 1}
     monthyear_intake {Date.new(Date.today.year+rand(1..3), [1,3,7,9].sample, 1)}
     #monthyear_intake {Date.new(Date.today.year+rand(1..3), [1,3,7,9][rand([1,3,7,9].length)], 1)}  

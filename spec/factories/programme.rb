@@ -3,6 +3,7 @@ FactoryGirl.define do
   factory :programme do
     sequence(:code) { |n| "0#{n}" }
     sequence(:ancestry_depth) {|n| "#{n}"}
+    sequence(:name) { |n| "Programme_#{n}"}
     #sequence(:ancesttry) { |n| "#{n}"}
     #sequence(:combo_code) { |n| "0#{n}-"+code}
   end
