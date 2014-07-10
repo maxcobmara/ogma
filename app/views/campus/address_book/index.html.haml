@@ -31,7 +31,7 @@
     - @address_books.each do |contact|
       %tbody
         %tr
-          %td= link_to contact.shortname, campus_address_book_path(contact)
+          %td= link_to contact.shortname, edit_campus_address_book_path(contact)
           %td= contact.name
           %td
             = contact.address
