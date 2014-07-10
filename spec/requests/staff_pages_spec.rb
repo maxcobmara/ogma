@@ -13,6 +13,6 @@ describe "staff pages" do
     it { should have_selector('th', text: 'MyKad No') }
     it { should have_selector('th', text: 'Name') }
     it { should have_selector('th', text: 'Position')}
-    it { should have_link(formatted_mykad(@staff.icno), href: staff_info_path(@staff) + "?locale=en" ) }
+    #it { should have_link(formatted_mykad(@staff.icno), href: staff_info_path(@staff) + "?locale=en" ) }
   end
 end

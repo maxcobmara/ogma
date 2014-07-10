@@ -8,3 +8,18 @@ class TimetablePeriod < ActiveRecord::Base
   end 
   
 end
+
+# == Schema Information
+#
+# Table name: timetable_periods
+#
+#  created_at   :datetime
+#  day_name     :integer
+#  end_at       :time
+#  id           :integer          not null, primary key
+#  is_break     :boolean
+#  sequence     :integer
+#  start_at     :time
+#  timetable_id :integer
+#  updated_at   :datetime
+#

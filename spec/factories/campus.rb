@@ -27,5 +27,9 @@ FactoryGirl.define do
     location 1
     association :owner, factory: :staff
   end
+  
+  factory :address_book do
+    sequence(:name) { |n| "external_co_#{n}" }
+  end
 end
 

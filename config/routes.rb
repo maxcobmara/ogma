@@ -11,6 +11,9 @@ Ogma::Application.routes.draw do
 
   namespace :staff_training do
     resources :ptbudgets
+    resources :ptcourses
+    resources :ptschedules
+    resources :ptdos
   end
   
   namespace :asset do
@@ -37,16 +40,26 @@ Ogma::Application.routes.draw do
         get :kewpa9
       end
     end
-    resources :asset_losses,    as: :losses
+    resources :asset_losses,    as: :losses do
+    member do
+      get :kewpa28
+      get :kewpa29
+      get :kewpa30
+    end
+    collection do
+      get :kewpa31
+    end
+  end
     resources :asset_disposals, as: :disposals do
-      collection do
-        get :kewpa17
-        get :kewpa20
-      end
       member do
+        get :kewpa16
         get :kewpa18
         get :kewpa19
       end
+      collection do
+        get :kewpa17
+        get :kewpa20
+      end     
     end
   end
 
@@ -54,6 +67,8 @@ Ogma::Application.routes.draw do
     resources :locations do
       member do
         get :kewpa7
+        get :kewpa10
+        get :kewpa11
       end
     end
     resources :location_damages

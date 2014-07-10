@@ -1,8 +1,16 @@
 class Ptschedule < ActiveRecord::Base
-  belongs_to :ptcourse
+
+  has_many :ptdos, :dependent => :destroy
+  belongs_to :course, :class_name => 'Ptcourse', foreign_key: 'ptcourse_id'
+  
   validates_presence_of :ptcourse_id, :message => "Please Select Course"
   validates_presence_of :start, :location, :min_participants, :max_participants
-  has_many :ptdos, :dependent => :destroy
+  
+  validates :max_participants, :numericality => { :less_than_or_equal_to => 999 }
+  validates :min_participants, :numericality => { :greater_than => 0, :less_than_or_equal_to => :max_participants }, :unless => 'max_participants.nil?'
+  
+
+  
 end
 
 # == Schema Information

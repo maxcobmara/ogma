@@ -17,6 +17,7 @@ class Location < ActiveRecord::Base
   has_many :asset_placements
   has_many :assets, :through => :asset_placements
   has_many :asset, :foreign_key => "location_id"
+  has_many :asset_loss
   
   
   def staff_name
@@ -111,7 +112,6 @@ end
 #  code           :string(255)
 #  combo_code     :string(255)
 #  created_at     :datetime
-#  damaged        :boolean
 #  id             :integer          not null, primary key
 #  lclass         :integer
 #  name           :string(255)

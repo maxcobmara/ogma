@@ -56,16 +56,27 @@ class Kewpa20Pdf < Prawn::Document
       ["","","","","","","",""]]
       
       table(data1, :column_widths => [30, 100, 80, 80,50,60,50], :cell_style => { :size => 9}) do
+        row(0).height = 20
+        row(1).height = 20
+        row(2).height = 20
+        row(3).height = 20
       self.width = 525
     end
     end
   end
   def line_item_rows
-
-  
+    asal = current = jualan = pindahan = musnah = lain = 0
+    @disposals.map do |disposal|
+      asal+=disposal.asset.purchaseprice.to_f
+      current+=disposal.current_value.to_f
+      musnah += disposal.current_value if disposal.disposal_type == "discard"
+      jualan += disposal.current_value if disposal.disposal_type == "sold"
+      pindahan += disposal.current_value if disposal.disposal_type == "transfer"
+      lain += disposal.current_value if ((disposal.disposal_type != "transfer") && (disposal.disposal_type != "sold") && (disposal.disposal_type != "discard") )
+    end
       header = [[ 'Bil', 'KEMENTERIAN/ JABATAN', "JUMLAH NILAI PEROLEHAN ASAL (RM)", 'HASIL PELUPUSAN (RM)', 'JUALAN', 'PINDAHAN','MUSNAH',
         'KAEDAH LAIN'],
-        ["1", "Kolej Sains Kesihatan Bersekutu Johor Bahru", "", "" , "","", "", ""  ]]
+        ["1", "Kolej Sains Kesihatan Bersekutu Johor Bahru", @view.currency(asal.to_f), @view.currency(current.to_f) , @view.currency(musnah.to_f), @view.currency(jualan.to_f), @view.currency(pindahan.to_f), @view.currency(lain.to_f)  ]]
         
 end
 

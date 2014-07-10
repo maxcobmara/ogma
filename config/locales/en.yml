@@ -114,6 +114,22 @@ en:
         used: Used
         balance: Balance
         new: New Training Budget
+      course:
+        new: New Staff Training Course
+        title: Staff Training Courses
+        name: Course
+        course_type: Course Type
+        provider: Provider
+        duration: Duration
+        description: Description
+        costs: Cost
+        approval: Approval
+        schedule: Schedule Course
+      schedule:
+        title: Staff Training Course Schedule
+      do:
+        title: Apply For Training
+
     
   position:
     title: "Tasks & Responsibilities"

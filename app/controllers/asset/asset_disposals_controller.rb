@@ -2,7 +2,8 @@ class Asset::AssetDisposalsController < ApplicationController
   before_action :set_disposed, only: [:show, :edit, :update, :destroy]
   
   def index
-    @disposals = AssetDisposal.order(code: :asc).page(params[:page]||1)
+    /@disposals = AssetDisposal.order(code: :asc).page(params[:page]||1)/
+    @disposals = AssetDisposal.all
   end
   
   def show
@@ -31,7 +32,41 @@ class Asset::AssetDisposalsController < ApplicationController
     end
   end
   
+  def kewpa16
+    @disposal = AssetDisposal.find(params[:id])
+    respond_to do |format|
+      format.pdf do
+        pdf = Kewpa16Pdf.new(@disposal, view_context)
+        send_data pdf.render, filename: "kewpa16-{Date.today}",
+                              type: "application/pdf",
+                              disposition: "inline"
+      end
+    end
+  end
   
+  def kewpa18
+    @disposal = AssetDisposal.find(params[:id])
+    respond_to do |format|
+      format.pdf do
+        pdf = Kewpa18Pdf.new(@disposal, view_context)
+        send_data pdf.render, filename: "kewpa18-{Date.today}",
+                              type: "application/pdf",
+                              disposition: "inline"
+      end
+    end
+  end
+
+  def kewpa19
+    @disposal = AssetDisposal.find(params[:id])
+    respond_to do |format|
+      format.pdf do
+        pdf = Kewpa19Pdf.new(@disposal, view_context)
+        send_data pdf.render, filename: "kewpa19-{Date.today}",
+                              type: "application/pdf",
+                              disposition: "inline"
+      end
+    end
+  end
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_disposed

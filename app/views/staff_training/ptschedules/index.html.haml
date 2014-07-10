@@ -1,0 +1,35 @@
+- model_class = Ptschedule
+.page-header
+  %h1= t('staff.training.schedule.title')
+
+.navbar.navbar-inverse{role: "navigation", style: "padding-right:40px;"}
+  %ul.nav.navbar-nav
+  %ul.nav.navbar-nav.navbar-right
+    %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "toga"
+    %li= link_to content_tag(:li, fa_icon("print", text: (t 'actions.print'))), "#", class: 'bogus'
+    
+
+   
+- @ptschedules.each do |scheduled|
+  .row.calendar_list
+    .col-md-1.date
+      %span.day= scheduled.start.try(:strftime, "%d")
+      %span.month= scheduled.start.try(:strftime, "%b")
+    .col-md-8.details
+      %span.title= scheduled.course.try(:name)
+      %br
+      %p.description= scheduled.course.try(:description)
+      %span.footer
+        = scheduled.location
+        = scheduled.course.provider.try(:name)
+    .col-md-1.badges
+      //TODO do a max min http://codepen.io/bamf/pen/gqzcI
+      .badge
+        Max
+        = scheduled.max_participants
+      %br
+      .badge
+        Min
+        = scheduled.min_participants
+    .col-md-1
+      clicky

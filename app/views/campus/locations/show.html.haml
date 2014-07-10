@@ -65,6 +65,10 @@
               - if @location.assets.exists?
                 = link_to content_tag(:i, "", :class => "fa fa-file "), kewpa7_campus_location_path(@location, format: "pdf"),
                   {class: "btn btn-default", "data-toggle" => "tooltip", title: "KEW.PA 7 PDF"}
+                = link_to content_tag(:i, "", :class => "fa fa-file "), kewpa10_campus_location_path(@location, format: "pdf"),
+                  {class: "btn btn-default", "data-toggle" => "tooltip", title: "KEW.PA 10 PDF"}
+                = link_to content_tag(:i, "", :class => "fa fa-file "), kewpa11_campus_location_path(@location, format: "pdf"),
+                  {class: "btn btn-default", "data-toggle" => "tooltip", title: "KEW.PA 11 PDF"}				  				  
               = link_to content_tag(:i, "", :class => "fa fa-edit"), edit_campus_location_path(@location),
                  {class: "btn btn-primary", "data-toggle" => "tooltip", title: t("actions.edit")}
             .btn-group  

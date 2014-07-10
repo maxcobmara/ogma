@@ -90,6 +90,23 @@ ms_MY:
         used: Digunakan
         balance: Baki
         new: Belanjawan Latihan Staff Baru
+        
+      course:
+        new: Kursus Staff Baru
+        title: Kursus Kakitangan
+        name: Kursus
+        course_type: Jenis Kursus
+        provider: Pengendali
+        duration: Tempoh
+        description: Deskripsi
+        costs: Harga
+        approval: Kelulusan
+        schedule: Jadualkan Kursus
+      schedule:
+        title: Jadual Kursus Staf
+      do:
+        title: Apply For Training
+        
     
   position:
     title: "Tugas & Tanggungjawab"
