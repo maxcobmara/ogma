@@ -13,7 +13,7 @@
       %dd=(t 'exam.exams.total_questions')+" / "+ (t 'exam.exams.full_marks')
 
       - for examtemplate in @exam.examtemplates
-        %dt=h (Examquestion::QTYPE.find_all{|disp, value| value == examtemplate.questiontype}).map {|disp, value| disp}[0]
+        %dt=h (DropDown::QTYPE.find_all{|disp, value| value == examtemplate.questiontype}).map {|disp, value| disp}[0]
         %dd
           =h examtemplate.quantity 
           &nbsp; / &nbsp;
@@ -63,14 +63,14 @@
             /<tr><td colspan=3><b>
             %dt &nbsp;
             %dd
-              %h4=h (Examquestion::QTYPE.find_all{|disp, value| value == "MCQ"}).map {|disp, value| disp}[0]
+              %h4=h (DropDown::QTYPE.find_all{|disp, value| value == "MCQ"}).map {|disp, value| disp}[0]
             /</b></td></tr>
               
           - elsif count > 0 && current_qtype != current_question.questiontype
             /<tr><td colspan=3><b>
             %dt &nbsp;
             %dd
-              %h4=h (Examquestion::QTYPE.find_all{|disp, value| value == current_question.questiontype}).map {|disp, value| disp}[0]
+              %h4=h (DropDown::QTYPE.find_all{|disp, value| value == current_question.questiontype}).map {|disp, value| disp}[0]
             /</b></td></tr>
             - current_qtype = current_question.questiontype
           /display header-question type
@@ -92,13 +92,13 @@
             /<tr><td colspan=3><b>
             %dt &nbsp;
             %dd
-              %h4=h (Examquestion::QTYPE.find_all{|disp, value| value == "MCQ"}).map {|disp, value| disp}[0]
+              %h4=h (DropDown::QTYPE.find_all{|disp, value| value == "MCQ"}).map {|disp, value| disp}[0]
             /</b></td></tr>
           - elsif counter > 0 && current_qtype2 != current_question.questiontype
             /<tr><td colspan=3><b>
             %dt &nbsp;
             %dd
-              %h4=h (Examquestion::QTYPE.find_all{|disp, value| value == current_question.questiontype}).map {|disp, value| disp}[0]
+              %h4=h (DropDown::QTYPE.find_all{|disp, value| value == current_question.questiontype}).map {|disp, value| disp}[0]
             /</b></td></tr>
             - current_qtype2 = current_question.questiontype
           /<tr><td><center>
@@ -141,7 +141,7 @@
               /<tr><td colspan=2><b>
               /=h (Examquestion::QTYPE.find_all{|disp, value| value == examquestion_type}).map {|disp, value| disp}
               %dd
-                %h4=h (Examquestion::QTYPE.find_all{|disp, value| value == examquestion.questiontype}).map {|disp, value| disp}[0]
+                %h4=h (DropDown::QTYPE.find_all{|disp, value| value == examquestion.questiontype}).map {|disp, value| disp}[0]
               /</b></td></tr><tr><td><center>
             %dt=t 'exam.exams.sequ' 
             %dd=t 'exam.exams.not_selected'

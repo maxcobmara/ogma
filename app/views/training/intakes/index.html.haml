@@ -30,7 +30,7 @@
       - for details in intakedetails 
         %tr	  
           %td=h link_to details.description, training_intake_path(details)
-          %td=h details.register_on 
+          %td=h details.try(:register_on).try(:strftime, "%d %b %Y") 
           %td=h details.programme.programme_list
           %td=h details.is_active? ? (image_tag "tick.png") : (image_tag "cross.png")
 

@@ -1,6 +1,6 @@
 - model_class = Exam
 .page-header
-  %h1=h (Exam::EXAMTYPE.find_all{|disp, value| value == @exam.name}).map {|disp, value| disp}[0]
+  %h1=h (DropDown::EXAMTYPE.find_all{|disp, value| value == @exam.name}).map {|disp, value| disp}[0]
 = render 'shared/flashes'
 
 .row

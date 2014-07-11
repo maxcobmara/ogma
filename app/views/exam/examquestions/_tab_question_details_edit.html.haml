@@ -3,7 +3,7 @@
     .col-sm-2.control-label
       =f.label :category
     .col-md-3
-      = f.select :category, Examquestion::QCATEGORY, :prompt => t('helpers.prompt.select_category')
+      = f.select :category, DropDown::QCATEGORY, :prompt => t('helpers.prompt.select_category')
 
   .form-group
     .col-sm-2.control-label
@@ -15,7 +15,7 @@
     .col-sm-2.control-label
       =f.label :difficulty
     .col-md-4
-      = f.select :difficulty, Examquestion::QLEVEL, :prompt => t('helpers.prompt.select_difficulty')
+      = f.select :difficulty, DropDown::QLEVEL, :prompt => t('helpers.prompt.select_difficulty')
 
   
 

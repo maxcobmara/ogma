@@ -25,7 +25,7 @@
         %th= sort_link(@search, :difficulty, (t 'exam.examquestion.difficulty'))
         %th= sort_link(@search, :qstatus, (t 'exam.examquestion.qstatus'))
         %th= sort_link(@search, :creator_id, (t 'exam.examquestion.creator_id'))
-        %th.action_menu
+
     %tbody
       = render "index_search"
       - @programme_exams.each do |prog, examquestions|
@@ -53,14 +53,13 @@
               %td.group{:colspan => "3"} 
                 %span= (t 'exam.examquestion.total_questions')+' = '+allquestions.count.to_s
 			
-
             - questions=allquestions.group_by{|t|t.questiontype}
-            - questions.each do |questiontype,questionbytype| 
-            - no+=1
+            - questions.each do |questiontype,questionbytype|            
               - questionbytype.each do |question|
+                - no+=1
                 %tr
                   %td= no
-                  %td= question.subject_details
+                  %td= link_to question.subject_details, exam_examquestion_path(question)
                   %td= question.topic.name
                   %td= question.questiontype
                   %td= simple_format(question.question)
@@ -70,7 +69,6 @@
                   %td= question.render_difficulty
                   %td= question.qstatus
                   %td= question.creator_details
-                  %td= link_to content_tag(:li, fa_icon("", text: (t 'actions.show'))), exam_examquestion_path(question)
         
     .right{style:"padding:0 30px; margin:0;"}= paginate @examquestions, :theme => 'twitter-bootstrap-3'
 

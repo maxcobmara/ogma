@@ -171,59 +171,10 @@ class Examquestion < ActiveRecord::Base
    def self.find_main
       Staff.find(:all, :condition => ['staff_id IS NULL'])
    end
-   
-   
-   
+      
    def render_difficulty
-     (Examquestion::QLEVEL.find_all{|disp, value| value == difficulty }).map {|disp, value| disp}[0]
+     (DropDown::QLEVEL.find_all{|disp, value| value == difficulty }).map {|disp, value| disp}[0]
    end
-   
-   QTYPE = [
-          #  Displayed       stored in db
-          [ "Objektif - MCQ", "MCQ" ],
-          [ "Subjektif - MEQ","MEQ" ],
-          [ "Subjektif - SEQ","SEQ" ],
-          [ "ACQ",            "ACQ" ],
-          [ "OSCI",           "OSCI" ],
-          [ "OSCII",          "OSCII" ],
-          [ "OSCE",           "OSCE"],  #10Apr2013-newly added - to confirm
-          [ "OSPE",           "OSPE"],  #10Apr2013-newly added - to confirm
-          [ "VIVA",           "VIVA"],   #10Apr2013-newly added - to confirm
-          [ "Objektif - True/False",  "TRUEFALSE"]   #10Apr2013-newly added - to confirm
-          
-   ]
-   
-   QCATEGORY = [
-           #  Displayed       stored in db
-           [ "Recall","Recall" ],
-           [ "Comprehension","Comprehension" ],
-           [ "Application", "Application" ],
-           [ "Analysis", "Analysis" ],
-           [ "Synthesis", "Synthesis" ]
-    ]
-    
-    QLEVEL = [
-             #  Displayed       stored in db
-             [ "(R) Easy | Mudah","1" ],
-             [ "(S) Intermediate | Pertengahan","2" ],
-             [ "(T) Difficult | Sukar", "3" ]
-    ]
-  
-
-
-
-
-    QSTATUS = [
-        #  Displayed       stored in db
-        [ "Created","Created" ],
-        [ "Submitted","Submitted" ],
-        [ "Edited", "Edited" ],
-        [ "Approved", "Approved" ],
-        [ "Reject at College", "Reject at College" ],
-        [ "Sent to KKM", "Sent to KKM" ],
-        [ "Re-Edit", "Re-Edit" ],
-        [ "Rejected", "Rejected" ]
-   ]
    
   def subject_details
      if subject.blank? 

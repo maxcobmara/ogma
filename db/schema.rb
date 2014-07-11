@@ -38,23 +38,17 @@ ActiveRecord::Schema.define(version: 20140701025819) do
   add_index "accessions", ["accession_no"], name: "index_accessions_on_accession_no", using: :btree
   add_index "accessions", ["id"], name: "index_accessions_on_id", using: :btree
 
-  create_table "address_book_items", force: true do |t|
-    t.integer  "address_book_id"
-    t.string   "item"
+  create_table "address_books", id: false, force: true do |t|
+    t.integer  "id",                     null: false
+    t.string   "name",       limit: nil
+    t.string   "phone",      limit: nil
+    t.string   "address",    limit: nil
+    t.string   "mail",       limit: nil
+    t.string   "web",        limit: nil
+    t.string   "fax",        limit: nil
     t.datetime "created_at"
     t.datetime "updated_at"
-  end
-
-  create_table "address_books", force: true do |t|
-    t.string   "name"
-    t.string   "phone"
-    t.string   "address"
-    t.string   "mail"
-    t.string   "web"
-    t.string   "fax"
-    t.string   "shortname"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.string   "shortname",  limit: nil
   end
 
   create_table "addsuppliers", force: true do |t|
@@ -450,6 +444,23 @@ ActiveRecord::Schema.define(version: 20140701025819) do
     t.datetime "updated_at"
   end
 
+  create_table "average_courses", force: true do |t|
+    t.integer  "lecturer_id"
+    t.integer  "programme_id"
+    t.string   "dissactifaction"
+    t.string   "recommend_for_improvement"
+    t.string   "summary_evaluation"
+    t.string   "evaluate_category"
+    t.string   "support_justify"
+    t.integer  "principal_id"
+    t.date     "principal_date"
+    t.integer  "subject_id"
+    t.integer  "delivery_quality"
+    t.integer  "lecturer_knowledge"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "bankaccounts", force: true do |t|
     t.integer  "staff_id"
     t.integer  "student_id"
@@ -582,6 +593,14 @@ ActiveRecord::Schema.define(version: 20140701025819) do
     t.datetime "updated_at"
   end
 
+  create_table "courseevaluations", force: true do |t|
+    t.integer  "student_id"
+    t.integer  "programme_id"
+    t.integer  "subject_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "curriculumsearches", force: true do |t|
     t.integer  "programme_id"
     t.integer  "semester"
@@ -676,6 +695,36 @@ ActiveRecord::Schema.define(version: 20140701025819) do
     t.string   "evactivity"
     t.string   "actlevel"
     t.date     "actdt"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "evaluate_courses", force: true do |t|
+    t.integer  "course_id"
+    t.integer  "subject_id"
+    t.integer  "staff_id"
+    t.integer  "student_id"
+    t.date     "evaluate_date"
+    t.string   "comment"
+    t.integer  "ev_obj"
+    t.integer  "ev_knowledge"
+    t.integer  "ev_deliver"
+    t.integer  "ev_content"
+    t.integer  "ev_tool"
+    t.integer  "ev_topic"
+    t.integer  "ev_work"
+    t.integer  "ev_note"
+    t.string   "invite_lec"
+    t.integer  "average_course_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "evaluatecoursesearches", force: true do |t|
+    t.integer  "programme_id"
+    t.integer  "subject_id"
+    t.date     "evaldate"
+    t.integer  "lecturer_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

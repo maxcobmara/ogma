@@ -5,7 +5,7 @@ describe "event pages" do
   subject { page }
   
 
-  describe "Staff Index page" do
+  describe "Event Index page" do
     before  { @event = FactoryGirl.create(:event) }
     before { visit events_path }
     
