@@ -1,6 +1,7 @@
 class Campus::AddressBooksController < ApplicationController
   
   def index
-    @address_books = AddressBook.search(params[:search])
+    @search = params[:search]
+    @address_books = AddressBook.where('name ILIKE ?', "#{@search}%")
   end
 end

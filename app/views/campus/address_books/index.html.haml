@@ -14,7 +14,7 @@
   %li= link_to "ALL", campus_address_books_path
   - alphatab = Array('A' .. 'Z')
   - alphatab.each do |alphatab|
-    - add_exist = AddressBook.count(:all, :conditions => ['name ILIKE ?', "#{alphatab}%"])
+    - add_exist = AddressBook.where('name ILIKE ?', "#{alphatab}%").count
     - if add_exist < 1
       %li= alphatab
     - else
@@ -24,19 +24,19 @@
 %table.table-striped.table-hover.ogma
   %thead
     %tr
+      %th= t('campus.address.name')
       %th= t('campus.address.title')
       %th= t('campus.address.title')
       %th= t('campus.address.title')
-      %th= t('campus.address.title')
-    - @address_books.each do |contact|
-      %tbody
-        %tr
-          %td= link_to contact.shortname, edit_campus_address_book_path(contact)
-          %td= contact.name
-          %td
-            = contact.address
-            = contact.phone
-            = contact.fax
-          %td
-            = contact.mail
-            = contact.web
+  - @address_books.each do |contact|
+    %tbody
+      %tr
+        %td= link_to contact.name, edit_campus_address_book_path(contact)
+        %td= contact.name
+        %td
+          = contact.address
+          = contact.phone
+          = contact.fax
+        %td
+          = contact.mail
+          = contact.web

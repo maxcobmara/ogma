@@ -659,6 +659,9 @@ en:
       location: Location
       lecture_method: Method
       remove: "Remove?"
+      
+  campus:
+    address:
 
   helpers:
     links:
