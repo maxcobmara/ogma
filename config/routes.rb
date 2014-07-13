@@ -72,6 +72,7 @@ Ogma::Application.routes.draw do
       end
     end
     resources :location_damages
+    resources :address_books
   end
   
   resources :events do
