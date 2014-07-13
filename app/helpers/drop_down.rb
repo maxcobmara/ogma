@@ -255,5 +255,78 @@ module DropDown
            [ "Makluman", "3" ]
     ]
 
-
+    EXAMTYPE = [
+              #  Displayed       stored in db
+                 [ "Peperiksaan Pertengahan Semester",      "M" ],
+                 [ "Peperiksaan Akhir Semester",            "F" ],
+                 [ "Peperiksaan Ulangan",                   "R" ]
+    ]
+    PAPERTYPE =[
+             #  Displayed       stored in db
+                ["Template",        0],
+                ["Complete Exam",  1]
+    ]
+       
+    QTYPE = [
+           #  Displayed       stored in db
+           [ "Objektif - MCQ", "MCQ" ],
+           [ "Subjektif - MEQ","MEQ" ],
+           [ "Subjektif - SEQ","SEQ" ],
+           [ "ACQ",            "ACQ" ],
+           [ "OSCI",           "OSCI" ],
+           [ "OSCII",          "OSCII" ],
+           [ "OSCE",           "OSCE"],  #10Apr2013-newly added - to confirm
+           [ "OSPE",           "OSPE"],  #10Apr2013-newly added - to confirm
+           [ "VIVA",           "VIVA"],   #10Apr2013-newly added - to confirm
+           [ "Objektif - True/False",  "TRUEFALSE"]   #10Apr2013-newly added - to confirm          
+    ]
+   
+    QCATEGORY = [
+            #  Displayed       stored in db
+            [ "Recall","Recall" ],
+            [ "Comprehension","Comprehension" ],
+            [ "Application", "Application" ],
+            [ "Analysis", "Analysis" ],
+            [ "Synthesis", "Synthesis" ]
+     ]
+    
+     QLEVEL = [
+              #  Displayed       stored in db
+              [ "(R) Easy | Mudah","1" ],
+              [ "(S) Intermediate | Pertengahan","2" ],
+              [ "(T) Difficult | Sukar", "3" ]
+     ]
+  
+     QSTATUS = [
+         #  Displayed       stored in db
+         [ "Created","Created" ],
+         [ "Submitted","Submitted" ],
+         [ "Edited", "Edited" ],
+         [ "Approved", "Approved" ],
+         [ "Reject at College", "Reject at College" ],
+         [ "Sent to KKM", "Sent to KKM" ],
+         [ "Re-Edit", "Re-Edit" ],
+         [ "Rejected", "Rejected" ]
+    ]
+     
+    DAY_CHOICE = [
+         #  Displayed       stored in db
+         [ "Sun-Wed",  1 ],
+         [ "Thurs",    2 ]
+    ]
+    
+    DAY_LIST = [
+            #  Displayed       stored in db
+            ["Monday",     1],
+            ["Tuesday",    2],
+            ["Wednesday",  3],
+            ["Thursday",   4]
+    ]
+    
+    CLASS_METHOD = [
+            #  Displayed       stored in db
+            ["Kuliah",     1],
+            ["Teori",    2],
+            ["Amali",  3]
+    ]
 end

@@ -88,26 +88,12 @@ class WeeklytimetableDetail < ActiveRecord::Base
    end
    
    def render_class_method
-     (WeeklytimetableDetail::CLASS_METHOD.find_all{|disp, value| value == lecture_method}).map {|disp, value| disp}
+     (DropDown::CLASS_METHOD.find_all{|disp, value| value == lecture_method}).map {|disp, value| disp}
    end
    
    def subject_day_time_class_method
       "#{subject_day_time}"+ " ("+"#{render_class_method}"+")"
    end
-
-   DAY_LIST = [
-           #  Displayed       stored in db
-           ["Monday",     1],
-           ["Tuesday",    2],
-           ["Wednesday",  3],
-           ["Thursday",   4]
-     ]
-    CLASS_METHOD = [
-           #  Displayed       stored in db
-           ["Kuliah",     1],
-           ["Teori",    2],
-           ["Amali",  3]
-     ]
      
      #25March2013==========
   private
@@ -119,8 +105,6 @@ class WeeklytimetableDetail < ActiveRecord::Base
        end
      end
      
-
-
 end
 
 # == Schema Information
@@ -141,3 +125,4 @@ end
 #  updated_at         :datetime
 #  weeklytimetable_id :integer
 #
+

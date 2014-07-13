@@ -6,7 +6,7 @@ gem 'rails', '4.0.5'
 gem "thin", "~> 1.6.2"
 gem "devise", "~> 3.2.4"
 gem 'pg', '~> 0.17.1'
-gem "paperclip", "~> 4.1.1"
+gem 'paperclip', '~> 4.2.0'
 gem "ancestry", "~> 2.1.0"
 gem "ransack", "~> 1.2.3"
 gem "prawn", "~> 1.0.0"

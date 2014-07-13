@@ -1,11 +1,5 @@
 class TimetablePeriod < ActiveRecord::Base
-  belongs_to :timetable
-  
-  DAY_CHOICE = [
-       #  Displayed       stored in db
-       [ "Sun-Wed",  1 ],
-       [ "Thurs",    2 ]
-  ]
+  belongs_to :timetable, :foreign_key => 'timetable_id'
   
   def timing
     #"#{start_at.strftime("%l:%M %p")}"+" -"+"#{end_at.strftime("%l:%M %p")}"

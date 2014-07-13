@@ -576,6 +576,9 @@ en:
       questions_details: Questions Details
       total_questions: Total Questions
       not_selected: Not Selected
+      separate_combine: Cover
+      separate_combine_text: "S refers to SEPARATED covers of examination paper, whereas C refers to COMBINED / Single cover of examination paper."
+      notes: "Remark :"
 
   training:
     title: Training
@@ -653,6 +656,10 @@ en:
       compulsory_fields: Indicates compulsory fields
       activate_format: "Klik 'Create' to activate timetable formating."
       submission_approval: "Submission & Approval"
+      personalize_timetable: Personalize Weekly Timetables
+      lecturer_name: Lecturer Name
+      intake: Intake	  
+
     weeklytimetable_detail:
       topic: Topic
       lecturer_id: Lecturer     
