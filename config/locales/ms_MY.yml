@@ -649,6 +649,14 @@ ms_MY:
       lecture_method: Kaedah
       remove: "Buang?"
 
+  campus:
+    address: 
+      title: Buku Alamat
+      shortname: Nama Ringkas
+      name: Nama
+      address: Alamat
+      internet: Internet
+
   helpers:
     links:
       new: Cipta

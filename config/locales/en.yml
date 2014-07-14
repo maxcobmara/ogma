@@ -668,7 +668,14 @@ en:
       remove: "Remove?"
       
   campus:
-    address:
+    address: 
+      title: Address Book
+      shortname: Short Name
+      name: Name
+      address: Address
+      internet: Internet
+
+
 
   helpers:
     links:

@@ -2,25 +2,18 @@ development:
   adapter: postgresql
   encoding: unicode
   database: ogma_development
+  username: postgres
+  password: password
+  encoding: UTF8
   pool: 5
-  username: diaarezz
-  password: 12345
-  host: localhost
+  timeout: 5000
 
 test:
   adapter: postgresql
   encoding: unicode
   database: ogma_test
+  username: postgres
+  password: password
+  encoding: UTF8
   pool: 5
-  username: diaarezz
-  password: 12345
-  host: localhost
-
-production:
-  adapter: postgresql
-  encoding: unicode
-  database: ogma_production
-  pool: 5
-  username: diaarezz
-  password: 12345
-  host: localhost
+  timeout: 5000

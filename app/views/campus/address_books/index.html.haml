@@ -24,15 +24,15 @@
 %table.table-striped.table-hover.ogma
   %thead
     %tr
+      %th= t('campus.address.short_name')
       %th= t('campus.address.name')
-      %th= t('campus.address.title')
-      %th= t('campus.address.title')
-      %th= t('campus.address.title')
+      %th= t('campus.address.address')
+      %th= t('campus.address.internet')
   - @address_books.each do |contact|
     %tbody
       %tr
+        %td= contact.shortname
         %td= link_to contact.name, edit_campus_address_book_path(contact)
-        %td= contact.name
         %td
           = contact.address
           = contact.phone

@@ -1,0 +1,53 @@
+.row.fluid
+  = form_for [:campus, @address_book], :html => { :class => 'form-horizontal' }  do |f| 
+    = render 'shared/error_messages', object: f.object
+    .col-md-offset-1
+      .form-group
+        %label.col-sm-2.control-label= f.label t 'campus.address.short_name', for: :short_name
+        .col-md-3
+          = f.text_field :name, class: 'form-control'
+          
+      .form-group
+        %label.col-sm-2.control-label= f.label t 'campus.address.name', for: :name
+        .col-md-6
+          = f.text_field :shortname, class: 'form-control mandatory'
+          
+      .form-group
+        %label.col-sm-2.control-label= f.label t 'campus.address.phone', for: :phone
+        .col-md-3
+          = f.text_field :phone, class: 'form-control'
+          
+      .form-group
+        %label.col-sm-2.control-label= f.label t 'campus.address.fax', for: :fax
+        .col-md-3
+          = f.text_field :fax, class: 'form-control'
+          
+      .form-group
+        %label.col-sm-2.control-label= f.label t 'campus.address.mail', for: :mail
+        .col-md-3
+          = f.text_field :mail, class: 'form-control'
+          
+      .form-group
+        %label.col-sm-2.control-label= f.label t 'campus.address.web', for: :web
+        .col-md-3
+          = f.text_field :web, class: 'form-control'
+      
+      .form-group
+        %label.col-sm-2.control-label= f.label t 'staff.training.course.address', for: :address
+        .col-md-6
+          = f.text_area :address, class: 'form-control', rows: "6"
+      
+      .form-group
+        .col-sm-offset-3.col-sm-1
+          = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), campus_address_books_path, :class => 'btn btn-default'
+        .col-md-2
+          = f.submit t('update'), class: "btn btn-primary"
+
+        - unless @address_book.new_record?  
+          .col-md-2
+            = link_to content_tag(:i, "", :class => "fa fa-trash-o icon-white") + " " + t('.destroy', :default => t("helpers.links.destroy")), |
+              campus_address_book_path(@address_book),                                                                                                    |
+              :method => 'delete',                                                                                                           |
+              :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },                   |
+              :class => 'btn btn-danger'
+          
