@@ -44,7 +44,11 @@ en:
             taken: "must be unique"
             illegal_char: contains illegal characters
             invalid: is invalid
-  
+        models:
+          ptschedule:
+            attributes:
+              min_participants:
+                less_than_or_equal_to: Max shoud be more than Min
   #common
   search:  Search
   datelabel: Date
@@ -126,7 +130,12 @@ en:
         approval: Approval
         schedule: Schedule Course
       schedule:
+        new: Schedule a Course
         title: Staff Training Course Schedule
+        start: Start Date
+        participants: Participants
+        location: Location
+        price: Price
       do:
         title: Apply For Training
 

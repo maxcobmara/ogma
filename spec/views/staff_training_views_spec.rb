@@ -83,6 +83,13 @@ describe "staff training pages" do
     #it { should have_css('div.calendar_list')}
     #it { should have_link( budget_range(@budget), href: staff_training_ptbudget_path(@budget) + "?locale=en") }
   end
+
+  describe "Staff Training Schedule New page" do
+    before { visit new_staff_training_ptschedule_path(ptcourse_id: @ptschedule.ptcourse_id) }
+    
+    it { should have_selector('h1', text: I18n.t('staff.training.schedule.new')) }   
+    it { should have_selector(:link_or_button, "Create")}    
+  end
   
   describe "Staff Training Request Index page" do
     before { visit staff_training_ptdos_path }

@@ -126,7 +126,7 @@ module DropDown
 
   ]
 
-  QTYPE = [
+  QUALIFICATION_LEVEL = [
        #  Displayed       stored in db
        [ "Sekolah Rendah", 17 ],
        [ "PMR/SRP dan setaraf", 16],

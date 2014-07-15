@@ -1,0 +1,30 @@
+.col-md-offset-1
+  .form-group
+    %label.col-sm-2.control-label= f.label t 'staff.training.course.name', for: :name
+    .col-md-3
+      = @ptschedule.course.name
+
+  .form-group
+    %label.col-sm-2.control-label= f.label t 'staff.training.schedule.start', for: :start
+    .col-md-2
+      = f.text_field :start, class: 'form-control date_picker '
+
+  .form-group
+    %label.col-sm-2.control-label= f.label t 'staff.training.schedule.participants', for: :min_participants
+    .col-md-1
+      = f.text_field :min_participants, class: 'form-control', placeholder: "Min"
+    .col-md-1
+      = f.text_field :max_participants, class: 'form-control', placeholder: "Max"
+
+
+  .form-group
+    %label.col-sm-2.control-label= f.label t 'staff.training.schedule.location', for: :location
+    .col-md-4
+      = f.text_field :location, class: 'form-control'
+
+  .form-group
+    %label.col-sm-2.control-label= f.label t 'staff.training.schedule.price', for: :final_price
+    .col-md-2
+      .input-group
+        .input-group-addon $
+        = f.text_field :final_price, class: 'form-control'

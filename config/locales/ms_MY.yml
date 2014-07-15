@@ -23,7 +23,11 @@ ms_MY:
             taken: "telah terpakai"
             illegal_char: contains illegal characters
             invalid: is invalid
-  
+        models:
+          ptschedule:
+            attributes:
+              min_participants:
+                less_than_or_equal_to: Maxima harus melebihi Minima
   search:  Cari
   datelabel: Tarikh
   years_label: tahun
@@ -103,7 +107,12 @@ ms_MY:
         approval: Kelulusan
         schedule: Jadualkan Kursus
       schedule:
+        new: Penjadualan Baru
         title: Jadual Kursus Staf
+        start: Tarikh Mula
+        participants: Peserta 
+        location: Lokasi
+        price: Harga
       do:
         title: Apply For Training
         

@@ -10,22 +10,26 @@ class StaffTraining::PtschedulesController < ApplicationController
   end
   
   def new
-    @ptcourse = Ptcourse.new
+    @ptcourse = Ptcourse.find(params[:ptcourse_id])
+    @ptschedule = @ptcourse.scheduled.new(params[:ptschedule])
+    #3@ptschedule.save
+    #@ptcourse = Ptcourse.new
+    @@ptschedule = @ptschedule
   end
   
   def edit
   end
   
   def create
-    @ptcourse = Ptcourse.new(compound_params)
+    @ptschedule = Ptschedule.new(ptschedule_params)
 
     respond_to do |format|
-      if @ptcourse.save
-        format.html { redirect_to @ptcourse, notice: 'Course was successfully created.' }
-        format.json { render action: 'show', status: :created, location: @ptcourse }
+      if @ptschedule.save
+        format.html { redirect_to staff_training_ptschedules_path, notice: 'Course was successfully scheduled.' }
+        format.json { render action: 'show', status: :created, location: @ptschedule }
       else
         format.html { render action: 'new' }
-        format.json { render json: @ptcourse.errors, status: :unprocessable_entity }
+        format.json { render json: @ptschedule.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -34,12 +38,12 @@ class StaffTraining::PtschedulesController < ApplicationController
   # PATCH/PUT /compounds/1.json
   def update
     respond_to do |format|
-      if @ptcourse.update(compound_params)
-        format.html { redirect_to @ptcourse, notice: 'Course was successfully updated.' }
+      if @ptschedule.update(ptschedule_params)
+        format.html { redirect_to staff_training_ptschedules_path, notice: 'Course was successfully re-scheduled.' }
         format.json { head :no_content }
       else
         format.html { render action: 'edit' }
-        format.json { render json: @ptcourse.errors, status: :unprocessable_entity }
+        format.json { render json: @ptschedule.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -47,9 +51,9 @@ class StaffTraining::PtschedulesController < ApplicationController
   # DELETE /compounds/1
   # DELETE /compounds/1.json
   def destroy
-    @ptcourse.destroy
+    @ptschedule.destroy
     respond_to do |format|
-      format.html { redirect_to compounds_url }
+      format.html { redirect_to staff_training_ptschedules_url }
       format.json { head :no_content }
     end
   end
@@ -57,14 +61,15 @@ class StaffTraining::PtschedulesController < ApplicationController
   
   private
       # Use callbacks to share common setup or constraints between actions.
-      def set_ptcourse
-        @ptcourse = Ptcourse.find(params[:id])
+      def set_ptschedule
+        @ptschedule = Ptschedule.find(params[:id])
       end
 
       # Never trust parameters from the scary internet, only allow the white list through.
-      def ptcourse_params
-        params.require(:ptcourse).permit(:fiscalstart, :budget, :used_budget, :budget_balance)
+      def ptschedule_params
+        params.require(:ptschedule).permit(:location, :max_participants, :min_participants, :ptcourse_id, :start, :final_price, :budget_ok )
       end
   
   
 end
+
