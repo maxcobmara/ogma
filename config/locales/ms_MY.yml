@@ -656,6 +656,10 @@ ms_MY:
       name: Nama
       address: Alamat
       internet: Internet
+      phone: Phone No.
+      fax: Fax No
+      mail: Email
+      web: Web 
 
   helpers:
     links:

@@ -46,7 +46,8 @@ class StaffTraining::PtbudgetsController < ApplicationController
 
     respond_to do |format|
       if @ptbudget.save
-        format.html { redirect_to staff_training_ptbudgets_path(@ptbudget), notice: 'A new event was successfully created.' }
+        flash[:notice] = 'Budget successfully created.'
+        format.html { redirect_to staff_training_ptbudgets_path(@ptbudget)}
         format.json { render action: 'show', status: :created, location: @ptbudget }
       else
         format.html { render action: 'new' }

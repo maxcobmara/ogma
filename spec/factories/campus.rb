@@ -29,7 +29,6 @@ FactoryGirl.define do
   end
   
   factory :address_book do
-    sequence(:id) { |n| n }
     sequence(:name) { |n| "external_co_#{n}" }
   end
 end

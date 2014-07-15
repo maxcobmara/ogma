@@ -674,6 +674,13 @@ en:
       name: Name
       address: Address
       internet: Internet
+      phone: Phone No.
+      fax: Fax No
+      mail: Email
+      web: Web 
+      
+
+
 
 
 

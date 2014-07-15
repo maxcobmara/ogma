@@ -17,11 +17,11 @@ class StaffTraining::PtcoursesController < ApplicationController
   end
   
   def create
-    @ptcourse = Ptcourse.new(compound_params)
+    @ptcourse = Ptcourse.new(ptcourse_params)
 
     respond_to do |format|
       if @ptcourse.save
-        format.html { redirect_to @ptcourse, notice: 'Course was successfully created.' }
+        format.html { redirect_to staff_training_ptcourse_path(@ptcourse), notice: 'Course was successfully created.' }
         format.json { render action: 'show', status: :created, location: @ptcourse }
       else
         format.html { render action: 'new' }
@@ -44,12 +44,14 @@ class StaffTraining::PtcoursesController < ApplicationController
     end
   end
 
+
   # DELETE /compounds/1
   # DELETE /compounds/1.json
   def destroy
     @ptcourse.destroy
     respond_to do |format|
-      format.html { redirect_to compounds_url }
+      flash[:notice] = 'Course is deleted'
+      format.html { redirect_to staff_training_ptcourses_path }
       format.json { head :no_content }
     end
   end
@@ -63,7 +65,7 @@ class StaffTraining::PtcoursesController < ApplicationController
 
       # Never trust parameters from the scary internet, only allow the white list through.
       def ptcourse_params
-        params.require(:ptcourse).permit(:cost, :course_type, :description, :duration, :duration_type, :name, :provider_id)
+        params.require(:ptcourse).permit(:cost, :course_type, :description, :duration, :duration_type, :name, :provider_id, :approved)
       end
   
   

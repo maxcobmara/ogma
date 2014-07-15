@@ -3,7 +3,7 @@
     = render 'shared/error_messages', object: f.object
     .col-md-offset-1
       .form-group
-        %label.col-sm-2.control-label= f.label t 'campus.address.short_name', for: :short_name
+        %label.col-sm-2.control-label= f.label t 'campus.address.shortname', for: :short_name
         .col-md-3
           = f.text_field :name, class: 'form-control'
           
@@ -33,12 +33,12 @@
           = f.text_field :web, class: 'form-control'
       
       .form-group
-        %label.col-sm-2.control-label= f.label t 'staff.training.course.address', for: :address
+        %label.col-sm-2.control-label= f.label t 'campus.address.address', for: :address
         .col-md-6
           = f.text_area :address, class: 'form-control', rows: "6"
       
       .form-group
-        .col-sm-offset-3.col-sm-1
+        .col-sm-offset-2.col-sm-1
           = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), campus_address_books_path, :class => 'btn btn-default'
         .col-md-2
           = f.submit t('update'), class: "btn btn-primary"

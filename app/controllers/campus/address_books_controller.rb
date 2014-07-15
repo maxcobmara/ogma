@@ -3,7 +3,7 @@ class Campus::AddressBooksController < ApplicationController
   before_action :set_address_book, only: [:show, :edit, :update, :destroy]
   
   def index
-    @address_books = AddressBook.where(name: params[:search])
+    @address_books = AddressBook.where('name ILIKE ?', "#{params[:search]}%")
   end
 
   def new
@@ -21,7 +21,8 @@ class Campus::AddressBooksController < ApplicationController
 
     respond_to do |format|
       if @address_book.save
-        format.html { redirect_to campus_address_books_path, notice: 'Contact was successfully created.' }
+        flash[:notice] = 'Contact successfully created.'
+        format.html { redirect_to campus_address_books_path}
         format.json { render action: 'show', status: :created, location: @address_book }
       else
         format.html { render action: 'new' }

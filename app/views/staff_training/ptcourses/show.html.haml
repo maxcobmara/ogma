@@ -37,7 +37,7 @@
     .form-actions
       = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), staff_training_ptcourses_path, :class => 'btn btn-default'
       - unless @ptcourse.approved?
-        = link_to content_tag(:i, "", :class => "fa fa-check-square-o ") , '#',{class: "btn btn-default bogus", "data-toggle" => "tooltip", title: t('staff.training.course.approval')}
+        = link_to content_tag(:i, "", :class => "fa fa-check-square-o "), staff_training_ptcourse_path(@ptcourse, :ptcourse => {approved: true}), {method: :put, :confirm => "Approve Course?", class: "btn btn-default", "data-toggle" => "tooltip", title: t('staff.training.course.approval')}
       - else
         = link_to content_tag(:i, "", :class => "fa fa-calendar-o ") , new_staff_training_ptschedule_path(:ptschedule_id => @ptcourse),{class: "btn btn-default", "data-toggle" => "tooltip", title: t('staff.training.course.schedule')}
       = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('.edit', :default => t("helpers.links.edit")), edit_staff_training_ptcourse_path(@ptcourse), :class => 'btn btn-primary'
@@ -46,3 +46,8 @@
         :method => 'delete',                                                                                                           |
         :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },                   |
         :class => 'btn btn-danger'
+
+
+
+
+
