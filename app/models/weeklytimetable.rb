@@ -292,6 +292,213 @@ class Weeklytimetable < ActiveRecord::Base
     end
   end
   
+  def self.empty_slot(timeslot,weeklytimetable,special)
+    #1a-available time slots - Sun-Wed
+    atsw = timeslot.pluck(:sequence)
+    rev_all_timeslot_sun_wed = atsw+atsw.map{|x|x+=special}+atsw.map{|x|x+=(special*2)}+atsw.map{|x|x+=(special*3)}
+
+    #0a-NEW weekdays (sun-wed)
+    new_timeslot_sun_wed=[]
+    new_day2_sun_wed=[]
+    weeklytimetable.weeklytimetable_details.each do |xy|
+      if xy.id.nil? || xy.id.blank?
+        if xy.day2!=0 && (xy.day2!=5 || xy.day2!=6)
+          new_timeslot_sun_wed<<xy.time_slot2
+          new_day2_sun_wed<< xy.day2
+        end
+      end
+    end
+    
+    #2a-START-existing time slot - Sun-Wed
+    exist_timeslot_sun_wed = weeklytimetable.weeklytimetable_details.where('time_slot2 !=? and (day2!=? or day2!=?)',0,5,6).pluck(:time_slot2)
+    exist_day2_sun_wed = weeklytimetable.weeklytimetable_details.where('day2 !=? and (day2!=? or day2!=?)',0,5,6).pluck(:day2)
+
+    #rev_exist_slot = revised all existing slot, sample : weeklytimetable ID = 4
+    #(eg. 4 days with 7 timeslot => [1, 3, 4, 6, 7, 8, 10, 11, 13, 14, 15, 17, 18, 20, 21, 22, 24, 25, 27, 28])
+    rev_exist_slot=[]
+    0.upto(exist_timeslot_sun_wed.count-1) do |ind_slot_day|
+      if exist_day2_sun_wed[ind_slot_day] == 1
+        rev_exist_slot<<exist_timeslot_sun_wed[ind_slot_day]
+      else 
+        rev_exist_slot<<exist_timeslot_sun_wed[ind_slot_day]+special*(exist_day2_sun_wed[ind_slot_day]-1)
+      end
+    end
+    #new added to the same array-refer item (0a)	
+    0.upto(new_timeslot_sun_wed.count-1) do |ind_slot_day|
+      if new_day2_sun_wed[ind_slot_day] == 1
+        rev_exist_slot<<new_timeslot_sun_wed[ind_slot_day]
+      else
+        rev_exist_slot<<new_timeslot_sun_wed[ind_slot_day]+special*(new_day2_sun_wed[ind_slot_day]-1)
+      end
+    end
+    #2a-END-existing time slot - Sun-Wed
+
+    #3a-empty time slots - Sun-Wed
+    empty_slot= rev_all_timeslot_sun_wed - rev_exist_slot
+  
+  end
+  
+  def self.exist_timeslot_thurs(timeslot2,weeklytimetable,count1)
+    #1b-available time slots - Thurs
+    all_timeslot_thurs = timeslot2.pluck(:sequence)
+    rev_all_timeslot_thurs = all_timeslot_thurs.map{|x|x+count1}
+
+    #0b-NEW thursday
+    new_timeslot_thurs=[]
+    new_day2_thurs = 0  
+    weeklytimetable.weeklytimetable_details.each do |xy|
+      if xy.id.nil? || xy.id.blank?
+        if xy.time_slot != 0
+          new_timeslot_thurs<<xy.time_slot
+        end
+      end
+    end
+    
+    #2b-existing time slots - Thurs
+    exist_timeslot_thurs = weeklytimetable.weeklytimetable_details.where('time_slot !=?',0).pluck(:time_slot)
+    #exist_day2_thurs = 0
+    #new added to the same array-refer item (0c)
+    if new_timeslot_thurs.count>0
+      0.upto(new_timeslot_thurs.count-1) do |ind_slot_thurs|
+        exist_timeslot_thurs<<new_timeslot_thurs[ind_slot_thurs]
+      end
+    end
+    exist_timeslot_thurs
+    
+  end
+  
+  def self.empty_slot_weekend(timeslot,weeklytimetable,daycount_check)
+    atsw = timeslot.pluck(:sequence)
+    #1c-available time slots - Weekends
+    if daycount_check==1
+      #rev_all_timeslot_weekend = atsw.map{|x|x+=(@special*4)}
+      rev_all_timeslot_weekend = atsw.map{|x|x+=(7*4+5)}
+    elsif daycount_check==2
+      # rev_all_timeslot_weekend = [34,36,37,39,40,41,43,44,46,47]
+      rev_all_timeslot_weekend = atsw.map{|x|x+=(7*4+5)}+atsw.map{|x|x+=(7*5+5)}
+      #atsw.map{|x|x+=(@special*4)}+atsw.map{|x|x+=(@special*5)}
+    end
+    #0c-NEW weekends
+    new_timeslot_1stday_weekend=[]
+    new_timeslot_2ndday_weekend=[]
+    new_day2_weekend=[] 
+    weeklytimetable.weeklytimetable_details.each do |xy|
+      if xy.id.nil? || xy.id.blank?
+        if xy.day2==6 || xy.day2==7
+          new_day2_weekend<< xy.day2
+          if xy.day2==6
+            new_timeslot_1stday_weekend<<xy.time_slot2
+          elsif xy.day2==7
+            new_timeslot_2ndday_weekend<<xy.time_slot2
+          end
+        end
+      end
+    end
+    new_timeslot_weekend=new_timeslot_1stday_weekend+new_timeslot_2ndday_weekend.map{|y|y+=7}
+
+    #2c-START-existing time slot - Weekends
+    exist_timeslot_1stday_weekend = weeklytimetable.weeklytimetable_details.where('day2=?',6).pluck(:time_slot2) 
+    exist_timeslot_2ndday_weekend = weeklytimetable.weeklytimetable_details.where('day2=?',7).pluck(:time_slot2) 
+    exist_timeslot_weekend = exist_timeslot_1stday_weekend+exist_timeslot_2ndday_weekend.map{|y|y+=7}
+    exist_day2_weekend = weeklytimetable.weeklytimetable_details.where('day2=? or day2=?',6,7).pluck(:day2)
+
+    rev_exist_slot_weekend=[]
+    if exist_timeslot_weekend.count>0
+      0.upto(exist_timeslot_weekend.count-1) do |ind_slot_weekend|
+        if exist_day2_weekend==[]
+          nothing yet
+        elsif exist_day2_weekend[ind_slot_weekend] == 1
+          rev_exist_slot_weekend<<exist_timeslot_weekend[ind_slot_weekend] 
+        else
+          rev_exist_slot_weekend<<exist_timeslot_weekend[ind_slot_weekend]+(@special*4)+(@count2)
+        end
+      end
+    end
+    #new added to the same array-refer item (0c)
+    if new_timeslot_weekend.count>0
+      0.upto(new_timeslot_weekend.count-1) do |ind_slot_weekend|
+        if new_day2_weekend==[]
+          nothing yet
+        elsif new_day2_weekend[ind_slot_weekend] == 1
+          rev_exist_slot_weekend<<new_timeslot_weekend[ind_slot_weekend] 
+        else
+          rev_exist_slot_weekend<<new_timeslot_weekend[ind_slot_weekend]+(@special*4)+(@count2)
+        end
+      end
+    end
+    
+    #3c-empty time slots - Weekends
+    if daycount_check==1 || daycount_check==2
+      #if exist_timeslot_weekend.count>0
+      if rev_exist_slot_weekend.count>0
+        empty_slot_weekend = rev_all_timeslot_weekend - rev_exist_slot_weekend
+      else
+        empty_slot_weekend = rev_all_timeslot_weekend
+      end
+    end
+    empty_slot_weekend
+  end
+  
+  def self.assign_error_items(weeklytimetable,item_type)
+    weekdays_slots = weeklytimetable.timetable_monthurs.timetable_periods
+    thursday_slots = weeklytimetable.timetable_friday.timetable_periods	
+
+    a_eday2=[]
+    a_etimeslot=[]
+    a_etimeslot2=[]
+    a_eis_friday=[]
+
+    if (weeklytimetable.set_error_slot).is_a? Array
+      weeklytimetable.set_error_slot.each do |eslot|
+        
+        eyear=(eslot.split(" ")[0]).split("")[-4,4].join
+        emonth=eslot.split("")[2,3].join
+        eday=eslot.split("")[0,2].join
+        edate = Date.new(eyear.to_i,Date::ABBR_MONTHNAMES.index(emonth),eday.to_i)
+        estart_at = eslot.split(" ")[1].split("-")[0].to_time.strftime("%H:%M%p")
+        eend_at = eslot.split(" ")[1].split("-")[1].to_time.strftime("%H:%M%p")
+        
+        if item_type==3      
+          weekdays_slots.each do |slot|
+            if slot.start_at.strftime("%H:%M%p")==estart_at && slot.end_at.strftime("%H:%M%p")==eend_at && slot.day_name==1
+              a_etimeslot2<<slot.id
+              a_etimeslot<<0
+            end
+          end
+        end
+        if item_type==2 
+          thursday_slots.each do |slot|
+            if slot.start_at.strftime("%H:%M%p")==estart_at && slot.end_at.strftime("%H:%M%p")==eend_at && slot.day_name==2
+              a_etimeslot<<slot.id
+              a_etimeslot2<<0
+            end
+          end
+        end
+        
+        if item_type==4 || item_type==1
+          diff_day=(weeklytimetable.startdate-edate).to_i
+          eday2=1 if diff_day==0
+          eday2=2 if diff_day==1
+          eday2=3 if diff_day==2
+          eday2=4 if diff_day==3
+          eday2=0 if diff_day==4
+          eday2=6 if diff_day==5
+          eday2=7 if diff_day==6
+          if item_type==1
+            a_eday2<<eday2
+          end
+          eis_friday=true if diff_day==4
+          eis_friday=false if (diff_day==0||diff_day==1||diff_day==2||diff_day==3||diff_day==5||diff_day==6||diff_day==7)
+          a_eis_friday<<eis_friday
+        end
+      end
+    end
+    return a_eday2 if item_type==1
+    return a_etimeslot if item_type==2
+    return a_etimeslot2 if item_type==3
+    return a_eis_friday if item_type==4
+  end
+  
 end
 
 # == Schema Information
