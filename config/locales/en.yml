@@ -658,7 +658,10 @@ en:
       submission_approval: "Submission & Approval"
       personalize_timetable: Personalize Weekly Timetables
       lecturer_name: Lecturer Name
-      intake: Intake	  
+      intake: Intake
+      date_time: "Date & Time : "
+      duplicate_lecturer: "Lecturer can only be scheduled to One class at One time. Time slots with error(s) :" 
+      duplicate_lecturer2: "Re-select Lecturer."
 
     weeklytimetable_detail:
       topic: Topic

@@ -20,9 +20,10 @@
 %font{:color=>"blue"}*
 = select_tag "weeklytimetable[weeklytimetable_details_attributes][#{@ind}][lecture_method]", options_for_select(DropDown::CLASS_METHOD,  xx.lecture_method), :prompt=> (t 'helpers.prompt.select_lecture_method')
 
-/destroy?
-%font{:color => "red"}=t 'training.weeklytimetable_detail.remove'
-= select_tag "weeklytimetable[weeklytimetable_details_attributes][#{@ind}][subject]", content_tag(:option,"#{t'helpers.prompt.maintain'}",:value=>'0')+options_for_select([["#{t'helpers.prompt.remove'}", '1']])
+- unless xx.id.nil?|| xx.id.blank?
+  /destroy?
+  %font{:color => "red"}=t 'training.weeklytimetable_detail.remove'
+  = select_tag "weeklytimetable[weeklytimetable_details_attributes][#{@ind}][subject]", content_tag(:option,"#{t'helpers.prompt.maintain'}",:value=>'0')+options_for_select([["#{t'helpers.prompt.remove'}", '1']])
 
-/weeklytimetable_details ID
-=hidden_field_tag "weeklytimetable[weeklytimetable_details_attributes][#{@ind}][id]",xx.id
+  /weeklytimetable_details ID
+  =hidden_field_tag "weeklytimetable[weeklytimetable_details_attributes][#{@ind}][id]",xx.id
