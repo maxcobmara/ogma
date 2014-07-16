@@ -44,8 +44,8 @@
       %dd= "2. #{@disposed.justify2_disposal}"
       %dd= "3. #{@disposed.justify3_disposal}"	  	  
       %dt Lembaga Pemeriksa
-      %dd= "1. #{@disposed.inspect1or}"	 	
-      %dd= "2. #{@disposed.inspect2or}"	
+      %dd= "1. #{@disposed.inspect1or.name}"	 	
+      %dd= "2. #{@disposed.inspect2or.name}"	
 	  
   #value.tab-pane.fade.in
     %dl.dl-horizontal
@@ -72,7 +72,7 @@
         %dt Method
         %dd= "#{@disposed.discard_options} at #{@disposed.discard_location} on #{@disposed.discarded_on.try(:strftime, "%d/%m/%y")} "   
         %dt Witnessed By
-        %dd= "#{@disposed.discardw1tness.try(:staff).try(:name)} AND #{@disposed.discardw2tness.try(:staff).try(:name)}"				
+        %dd= "#{@disposed.discard_witness1.name} AND #{@disposed.discard_witness2.name}"				
       - elsif @disposed.disposal_type == "stock"	  
       - elsif @disposed.disposal_type == "others"
         %dt Method	
@@ -85,12 +85,12 @@
     %hr
     .form-actions
       = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), asset_disposal_path, :class => 'btn btn-default'
-      = link_to content_tag(:i, "", :class => "fa fa-file-pdf-o"), kewpa16_asset_disposal_path(@disposal, format: "pdf"), {class: "btn btn-default", "data-toggle" => "tooltip", title: "KEW.PA 16 PDF"}
-      = link_to content_tag(:i, "", :class => "fa fa-file-pdf-o"), kewpa18_asset_disposal_path(@disposal, format: "pdf"), {class: "btn btn-default", "data-toggle" => "tooltip", title: "KEW.PA 18 PDF"}
-      = link_to content_tag(:i, "", :class => "fa fa-file-pdf-o"), kewpa19_asset_disposal_path(@disposal, format: "pdf"), {class: "btn btn-default", "data-toggle" => "tooltip", title: "KEW.PA 19 PDF"}	  	  
-      = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('.edit', :default => t("helpers.links.edit")), edit_asset_disposal_path(@disposal), :class => 'btn btn-primary'
+      = link_to content_tag(:i, "", :class => "fa fa-file-pdf-o"), kewpa16_asset_disposal_path(@disposed, format: "pdf"), {class: "btn btn-default", "data-toggle" => "tooltip", title: "KEW.PA 16 PDF"}
+      = link_to content_tag(:i, "", :class => "fa fa-file-pdf-o"), kewpa18_asset_disposal_path(@disposed, format: "pdf"), {class: "btn btn-default", "data-toggle" => "tooltip", title: "KEW.PA 18 PDF"}
+      = link_to content_tag(:i, "", :class => "fa fa-file-pdf-o"), kewpa19_asset_disposal_path(@disposed, format: "pdf"), {class: "btn btn-default", "data-toggle" => "tooltip", title: "KEW.PA 19 PDF"}	  	  
+      = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('.edit', :default => t("helpers.links.edit")), edit_asset_disposal_path(@disposed), :class => 'btn btn-primary'
       = link_to content_tag(:i, "", :class => "fa fa-trash-o icon-white") + " " + t('.destroy', :default => t("helpers.links.destroy")), |
-        asset_disposal_path(@disposal),                                                                                                    |
+        asset_disposal_path(@disposed),                                                                                                    |
         :method => 'delete',                                                                                                           |
         :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },                   |
         :class => 'btn btn-danger'

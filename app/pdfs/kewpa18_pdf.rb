@@ -7,16 +7,17 @@ class Kewpa18Pdf < Prawn::Document
     text "KEW.PA-18", :align => :right, :size => 16, :style => :bold
     move_down 20
     text "KEMENTERIAN/JABATAN : KKM/KSKBJB", :align => :left, :size => 14
+    move_down 20
     text "SIJIL PENYAKSIAN PEMUSNAHAN ASET ALIH KERAJAAN MALAYSIA", :align => :center, :size => 14, :style => :bold
     move_down 20
     text "Disahkan aset seperti maklumat berikut telah dimusnahkan", :align => :left, :size => 14
-    move_down 20
-    text_box "Jenis Aset : ", :size => 14, :at =>[100,250]
-    text_box "Kuantiti : ", :size => 14, :at =>[100,230]
-    text_box "Secara : ", :size => 14, :at =>[100,210]
-    text_box "Tarikh : ", :size => 14, :at =>[100,190]
-    text_box "Tempat : ", :size => 14, :at =>[100,170]
     move_down 40
+    text "Jenis Aset :  #{@disposal.try(:asset).try(:typename)} #{@disposal.try(:asset).try(:name)} #{@disposal.try(:asset).try(:modelname)}", :align => :left, :size => 14, :indent_paragraphs => 50
+    text "Kuantiti   :  #{@disposal.quantity} ", :align => :left, :size => 14, :indent_paragraphs => 50
+    text "Secara     :  #{@disposal.discard_options}", :align => :left, :size => 14, :indent_paragraphs => 50
+    text "Tarikh     :  #{@disposal.discarded_on.try(:strftime, "%d/%m/%y")}", :align => :left, :size => 14, :indent_paragraphs => 50
+    text "Tempat     :  #{@disposal.discard_location}", :align => :left, :size => 14, :indent_paragraphs => 50
+    move_down 80
     table1
    
   end
@@ -27,9 +28,9 @@ class Kewpa18Pdf < Prawn::Document
     data1 = [["", "", "",""],
              ["Tandatangan", "","Tandatangan"],
              ["","","",""],
-             ["Nama :","","Nama :"],
-             ["Jawatan :", "","Jawatan :",""],
-             ["Tarikh","","Tarikh",""],
+             ["Nama : #{@disposal.discard_witness1.name}","","Nama : #{@disposal.discard_witness2.name}"],
+             ["Jawatan : #{@disposal.discard_witness1.positions.name}", "","Jawatan : #{@disposal.discard_witness2.positions.name}",""],
+             ["Tarikh : #{@disposal.discarded_on.try(:strftime, "%d/%m/%y")}","","Tarikh : #{@disposal.discarded_on.try(:strftime, "%d/%m/%y")}",""],
              ["Cop :","","Cop :", ""]]
              
     table(data1, :column_widths => [180, 80, 180], :cell_style => { :size => 7})  do
