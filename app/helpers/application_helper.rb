@@ -71,4 +71,12 @@ module ApplicationHelper
       return "Empty"
     end
   end
+  
+  def check_kin_blank
+    begin
+      return yield
+    rescue
+      return ""
+    end
+  end
 end

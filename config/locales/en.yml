@@ -671,14 +671,21 @@ en:
       date_time: "Date & Time : "
       duplicate_lecturer: "Lecturer can only be scheduled to One class at One time. Time slots with error(s) :" 
       duplicate_lecturer2: "Re-select Lecturer."
-
     weeklytimetable_detail:
       topic: Topic
       lecturer_id: Lecturer     
       location: Location
       lecture_method: Method
       remove: "Remove?"
-      
+    programme:
+      title: Curriculum Management 
+      new: New Curriculum Item
+      edit: Edit Curriculum Item
+      combo_code: Combo Code
+      duration: Duration
+      credits: Credits
+      status: Status
+ 
   campus:
     address: 
       title: Address Book
@@ -787,6 +794,11 @@ en:
         hod_rejected: HOD Rejection
         hod_rejected_on: Rejecttion Date
         reason: Reason
+      programme:
+        combo_code: Combo Code
+        duration: Duration
+        credits: Credits
+        status: Status
 
     prompt:
       select_creator: Select Creator

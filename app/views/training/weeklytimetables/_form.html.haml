@@ -1,8 +1,11 @@
 /@is_admin conditions ADDED
 /- if (@weeklytimetable.prepared_by == User.current_user.staff_id && @weeklytimetable.is_submitted != true) || (@weeklytimetable.prepared_by == User.current_user.staff_id && @weeklytimetable.hod_rejected? == true )
-- a_condition = (@weeklytimetable.id.nil? || @weeklytimetable.id.blank?) || (@weeklytimetable.prepared_by == current_user.staff_id && @weeklytimetable.is_submitted != true) || (@weeklytimetable.prepared_by == current_user.staff_id && @weeklytimetable.hod_rejected? == true ) || (@is_admin==true && @weeklytimetable.is_submitted != true)
+/- a_condition = (@weeklytimetable.id.nil? || @weeklytimetable.id.blank?) || (@weeklytimetable.prepared_by == current_user.staff_id && @weeklytimetable.is_submitted != true) || (@weeklytimetable.prepared_by == current_user.staff_id && @weeklytimetable.hod_rejected? == true ) || (@is_admin==true && @weeklytimetable.is_submitted != true)
+- a_condition = (@weeklytimetable.id.nil? || @weeklytimetable.id.blank?) || (@weeklytimetable.prepared_by == @staffid && @weeklytimetable.is_submitted != true) || (@weeklytimetable.prepared_by == current_user.staff_id && @weeklytimetable.hod_rejected? == true ) || (@is_admin==true && @weeklytimetable.is_submitted != true)
+
 /- if @weeklytimetable.is_submitted == true && @weeklytimetable.endorsed_by == User.current_user.staff_id 
-- b_condition = (@weeklytimetable.is_submitted == true && @weeklytimetable.endorsed_by == current_user.staff_id) || (@is_admin==true && @weeklytimetable.is_submitted == true)
+/- b_condition = (@weeklytimetable.is_submitted == true && @weeklytimetable.endorsed_by == current_user.staff_id) || (@is_admin==true && @weeklytimetable.is_submitted == true)
+- b_condition = (@weeklytimetable.is_submitted == true && @weeklytimetable.endorsed_by == @staffid) || (@is_admin==true && @weeklytimetable.is_submitted == true)
 
 .row
   .col-md-10.col-md-offset-1

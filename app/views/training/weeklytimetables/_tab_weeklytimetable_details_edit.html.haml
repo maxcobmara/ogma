@@ -27,7 +27,7 @@
     .col-sm-2.control-label
       = f.label :semester
     .col-md-3
-      = f.collection_select :semester, AcademicSession.find(:all,:order=>'created_at DESC'), :id, :semester, :include_blank => (t 'helpers.prompt.select_semester')
+      = f.collection_select :semester, AcademicSession.all.order('created_at DESC'), :id, :semester, :include_blank => (t 'helpers.prompt.select_semester')
        
   .form-group
     .col-sm-2.control-label
@@ -40,7 +40,8 @@
       = f.label :prepared_by
     .col-md-3
       /= f.collection_select :prepared_by, Staff.find(:all, :conditions => ['id =?', User.current_user.staff_id] ), :id, :name 
-      = f.collection_select :prepared_by, Staff.find(:all, :conditions => ['id =?', current_user.staff_id] ), :id, :name 
+      /= f.collection_select :prepared_by, Staff.find(:all, :conditions => ['id =?', current_user.staff_id] ), :id, :name 
+      = f.collection_select :prepared_by, Staff.where(id:@staffid), :id, :name 
 
   .form-group
     .col-sm-2.control-label

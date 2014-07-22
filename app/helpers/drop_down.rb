@@ -329,4 +329,20 @@ module DropDown
             ["Teori",    2],
             ["Amali",  3]
     ]
+    
+    COURSE_STATUS = [
+         #  Displayed       stored in db
+         [ "Major",     1 ],
+         [ "Minor",     2 ],
+         [ "Elective",  3 ]
+    ]
+
+    DURATION_TYPES = [
+         #  Displayed       stored in db
+         [ "Hours",      0 ],
+         [ "Days",       1 ],
+         [ "Weeks",      7 ],
+         [ "Months",     30 ],
+         [ "Years",      365 ]
+    ]
 end

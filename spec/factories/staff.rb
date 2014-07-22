@@ -21,6 +21,7 @@ FactoryGirl.define do
     country_cd 1
     fileno {(0...8).map { (65 + rand(26)).chr }.join}
     #association :users, factory: :user not ready
+    #association :timetables, factory: :timetable
   end
   
   factory :position do

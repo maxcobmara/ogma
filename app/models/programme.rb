@@ -1,5 +1,25 @@
 class Programme < ActiveRecord::Base
+  before_save :set_combo_code
   has_ancestry :cache_depth => true
+
+  #scope :by_semester, -> { where(course_type: 'Semester')}
+  
+  def set_combo_code
+    if ancestry_depth == 0
+      self.combo_code = code
+    else
+      self.combo_code = parent.combo_code + "-" + code
+    end
+  end
+  
+  def tree_nd
+    if is_root?
+      gls = ""
+    else
+      gls = "class=\"child-of-node-#{parent_id}\""
+    end
+    gls
+  end
   
   def subject_list
       "#{code}" + " " + "#{name}"   
@@ -18,6 +38,10 @@ class Programme < ActiveRecord::Base
     elsif ancestry_depth == 4
       ">>Sem #{parent.parent.parent.code}"+"-"+"#{parent.parent.code}"+" | "+"#{code} "+"#{name}"
     end
+  end
+  
+  def code_course_type_name  #for subject, topic & subtopic in Tree View
+    "#{code} #{course_type} #{name}"
   end
   
 end

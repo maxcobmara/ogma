@@ -24,14 +24,52 @@ FactoryGirl.define do
   end
   
   factory :timetable_period do 
-    #timetable_id 1 
-    association :timetable, factory: :timetable
+    timetable_id 1 
+    #association :timetable, factory: :timetable
     sequence(:sequence) { rand(1..15) }     #NOTE - field name is 'sequence'
     day_name { rand(1..7) }
     end_at {Time.at(rand * Time.now.to_f)}
     start_at {Time.at(rand * Time.now.to_f)}
     is_break {rand(2) == 1}
   end
+  
+  factory :programme do
+    sequence(:code) { |n| "0#{n}" }
+    sequence(:ancestry_depth) {|n| "#{n}"}
+    sequence(:name) { |n| "Programme_#{n}"}
+    sequence(:course_type) { |n| "Course Type #{n}"}
+    #sequence(:ancestry) { |n| "#{n}"}
+    #sequence(:combo_code) { |n| "0#{n}-"+code}
+  end
+  
+    #if programme --> course type diploma/pos basik/diploma lanjutan && ancestry depth=0
+    #if programme --> course type semester ancestry_depth=1
+    
+    factory :weeklytimetable do
+      #programme_id 1
+      intake_id 1
+      association :schedule_programme, factory: :programme
+      #association :intake, factory: :intake
+      startdate {Date.today+(366*rand()).to_f}
+      enddate {Date.today+(366*rand())+(4*rand()).to_f}
+      semester {rand(6)}
+      #prepared_by 1
+      #endorsed_by 1
+      #format1 1
+      #format2 2
+      association :schedule_creator, factory: :staff
+      association :schedule_approver, factory: :staff
+      association :timetable_monthurs, factory: :timetable
+      association :timetable_friday, factory: :timetable
+      week {rand(26)}
+      is_submitted {rand(2) == 1}
+      submitted_on {Date.today+(366*rand()).to_f}
+      hod_approved {rand(2) == 1}
+      hod_approved_on {Date.today+(366*rand()).to_f}
+      hod_rejected {rand(2) == 1}
+      hod_rejected_on {Date.today+(366*rand()).to_f}
+      reason "Some Reasons"
+    end
   
 end
 
