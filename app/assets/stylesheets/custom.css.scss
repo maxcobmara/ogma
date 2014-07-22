@@ -284,6 +284,37 @@ table.inline_display {
   td {padding: 1px 2px;}
 }
 
+//Curriculum Management - tree view
+#header_tree, #programme_tree, #semester_tree, #subject_tree, #topic_tree, #subtopic_tree, #subsubtopic_tree {
+	 list-style: none; 
+}
+
+#header_tree {
+	font-size:0.9em; color:white; background-color:#3574C4; padding:10px 5px;
+	li span.combo_code { width: 40%; }
+	li span.credits { position:absolute; left:750px; }
+	li span.status { position:absolute; left:850px; text-align:right; }
+	li span.duration { position:absolute; left:950px; }
+}
+
+//#programme_tree, #semester_tree { background-color: #f9f9f9; }
+#programme_tree li span.Collapsable{ font-size:1.0em;  }
+#semester_tree, #subject_tree, #topic_tree, #subtopic_free, #subsubtopic_tree{ li span.Collapsable{ font-size:0.9em; }} 
+
+#programme_tree, #semester_tree , #subject_tree, #topic_tree, #subtopic_tree, #subsubtopic_tree{
+	li span.Collapsable
+	{
+		span.programme_list{ width: 750px;}
+		span.credits{ position:absolute; left:750px; }
+		span.status{ position:absolute; left:850px; }
+		span.duration{ position:absolute; left:950px; }
+	}
+	
+}
+
+
+
+
 
 
 

@@ -10,7 +10,7 @@
     .col-sm-2.control-label
       %b= t 'training.weeklytimetable.hod'
     .col-md-4
-      = f.collection_select :endorsed_by, Staff.find(:all, :conditions => ["id IN (?)", @weeklytimetable.hods], :order=> 'name ASC'), :id, :name, :include_blank => (t 'helpers.prompt.select_hod')
+      = f.collection_select :endorsed_by, Staff.where('id IN (?)', @weeklytimetable.hods).order('name ASC'), :id, :name, :include_blank => (t 'helpers.prompt.select_hod')
 
   - if @weeklytimetable.hod_rejected == true
     .form-group

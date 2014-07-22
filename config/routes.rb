@@ -110,6 +110,7 @@ Ogma::Application.routes.draw do
   resources :bulletins
   
   namespace :training do
+    resources :programmes
     resources :intakes
     resources :timetables
     resources :timetable_periods

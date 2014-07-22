@@ -142,7 +142,7 @@
                 %li= link_to t("training.create_intake"), training_intakes_path
                 %li= link_to t("training.create_academic_session"), training_academic_sessions_path
           %li= link_to content_tag(:i, "", :class => "icon-numb") + t("training.timetable_entries"), training_weeklytimetables_path
-          %li= link_to content_tag(:i, "", :class => "icon-numb") + "Curriculum Management", '#'
+          %li= link_to content_tag(:i, "", :class => "icon-numb") + t("training.programme.title"), training_programmes_path
           %li.icon.icon-left
             = link_to "Lesson Plan", '#'
             .mp-level

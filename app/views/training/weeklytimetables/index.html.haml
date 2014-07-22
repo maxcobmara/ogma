@@ -31,11 +31,11 @@
       - weeklytimetables.each do |weeklytimetable|
         %tr
           %td=h link_to weeklytimetable.schedule_programme.programme_list, training_weeklytimetable_path(weeklytimetable)     
-          %td=h weeklytimetable.schedule_intake.group_with_intake_name
+          %td=h weeklytimetable.try(:schedule_intake).try(:group_with_intake_name)
           %td=h weeklytimetable.try(:startdate).try(:strftime, "%d %b %Y") 
           %td=h weeklytimetable.try(:enddate).try(:strftime, "%d %b %Y") 
-          %td=h weeklytimetable.academic_semester.semester
-          %td=h weeklytimetable.try(:schedule_creator).name 
+          %td=h weeklytimetable.try(:academic_semester).try(:semester)
+          %td=h weeklytimetable.try(:schedule_creator).try(:name) 
           %td
             =h weeklytimetable.is_submitted? ? image_tag("tick.png") : image_tag("cross.png") 
             - if weeklytimetable.hod_rejected==true && weeklytimetable.is_submitted==nil 

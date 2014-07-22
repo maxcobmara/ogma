@@ -34,6 +34,13 @@ class Staff < ActiveRecord::Base
   has_many :verifiers,  :class_name => 'AssetDisposal', :foreign_key => 'verified_by'
   has_many :revaluers,  :class_name => 'AssetDisposal', :foreign_key => 'revalued_by'
   
+  has_many :timetables  #creator
+  #links to Model Weeklytimetables-20March2013
+  has_many :prepared_weekly_schedules, :class_name => 'Weeklytimetable', :foreign_key => 'prepared_by', :dependent => :nullify
+  has_many :endorsed_weekly_schedules, :class_name => 'Weeklytimetable', :foreign_key => 'endorsed_by', :dependent => :nullify
+  #links to Model Weeklytimetables-21March2013
+  has_many :weekly_schedule_details, :class_name => 'WeeklytimetableDetail', :foreign_key => 'lecturer_id', :dependent => :nullify
+  
   #validates_attachment_size         :photo, :less_than => 500.kilobytes
   #validates_attachment_content_type :photo, :content_type => ['image/jpeg', 'image/png']
  #---------------Validations------------------------------------------------

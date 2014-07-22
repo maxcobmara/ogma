@@ -1,7 +1,9 @@
 /- if (@weeklytimetable.is_submitted != true && @weeklytimetable.prepared_by == User.current_user.staff_id) || (@weeklytimetable.prepared_by == User.current_user.staff_id && @weeklytimetable.hod_rejected? == true && weeklytimetable.is_submitted==nil) 
-- a1_condition = (@weeklytimetable.id.nil? || @weeklytimetable.id.blank?) || (@weeklytimetable.prepared_by == current_user.staff_id && @weeklytimetable.is_submitted != true) || (@weeklytimetable.prepared_by == current_user.staff_id && @weeklytimetable.hod_rejected? == true )
+/- a1_condition = (@weeklytimetable.id.nil? || @weeklytimetable.id.blank?) || (@weeklytimetable.prepared_by == current_user.staff_id && @weeklytimetable.is_submitted != true) || (@weeklytimetable.prepared_by == current_user.staff_id && @weeklytimetable.hod_rejected? == true )
+- a1_condition = (@weeklytimetable.id.nil? || @weeklytimetable.id.blank?) || (@weeklytimetable.prepared_by == @staffid && @weeklytimetable.is_submitted != true) || (@weeklytimetable.prepared_by == @staffid && @weeklytimetable.hod_rejected? == true )
 /- elsif (weeklytimetable.is_submitted == true && weeklytimetable.endorsed_by == User.current_user.staff_id && weeklytimetable.hod_approved!= true) 
-- b1_condition = (@weeklytimetable.is_submitted == true && @weeklytimetable.endorsed_by == current_user.staff_id && @weeklytimetable.hod_approved!= true) 
+/- b1_condition = (@weeklytimetable.is_submitted == true && @weeklytimetable.endorsed_by == current_user.staff_id && @weeklytimetable.hod_approved!= true) 
+- b1_condition = (@weeklytimetable.is_submitted == true && @weeklytimetable.endorsed_by == @staffid && @weeklytimetable.hod_approved!= true) 
 - c_condition = (@is_admin==true)
 
 - model_class = Weeklytimetable
@@ -9,8 +11,7 @@
   %h1=t 'training.weeklytimetable.title'
   
 = render 'shared/flashes'
-- @count1=@weeklytimetable.timetable_monthurs.timetable_periods.count
-- @count2=@weeklytimetable.timetable_friday.timetable_periods.count 
+
 .row
   .col-md-offset-1
     / Nav tabs
@@ -21,10 +22,10 @@
       .col-md-8.col-md-offset-1
         %dl.dl-horizontal
           %dt= t 'training.weeklytimetable.programme_id' , :default => model_class.human_attribute_name(:programme_id) + ":"
-          %dd= @weeklytimetable.schedule_programme.programme_list
+          %dd= @weeklytimetable.try(:schedule_programme).try(:programme_list)
       
           %dt= t 'training.weeklytimetable.intake_id' , :default => model_class.human_attribute_name(:intake_id) + ":"
-          %dd= @weeklytimetable.schedule_intake.group_with_intake_name
+          %dd= @weeklytimetable.try(:schedule_intake).try(:group_with_intake_name)
 		  
           %dt= t 'training.weeklytimetable.startdate' , :default => model_class.human_attribute_name(:startdate) + ":"
           %dd= @weeklytimetable.startdate.try(:strftime, "%d %b %Y") 
@@ -33,10 +34,11 @@
           %dd= @weeklytimetable.enddate.try(:strftime, "%d %b %Y") 
 
           %dt= t 'training.weeklytimetable.semester' , :default => model_class.human_attribute_name(:semester) + ":"
-          %dd= @weeklytimetable.academic_semester.semester.split("/").join(" / ")
-
+          %dd 
+            - sem = @weeklytimetable.academic_semester.try(:semester)
+            = sem.nil? ? "" : sem.split("/").join(" / ")
           %dt= t 'training.weeklytimetable.week' , :default => model_class.human_attribute_name(:week) + ":"
-          %dd= @weeklytimetable.week.to_s+" / "+@weeklytimetable.academic_semester.total_week.to_s
+          %dd= @weeklytimetable.week.to_s+" / "+@weeklytimetable.academic_semester.try(:total_week).to_s
 
           %dt= t 'training.weeklytimetable.prepared_by' , :default => model_class.human_attribute_name(:prepared_by) + ":"
           %dd= @weeklytimetable.schedule_creator.name

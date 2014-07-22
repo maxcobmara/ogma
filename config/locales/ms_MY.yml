@@ -653,13 +653,20 @@ ms_MY:
       date_time: "Tarikh & Masa : "
       duplicate_lecturer: "Pengajar hanya boleh mengajar Satu kelas pada satu-satu masa. Slot masa dengan ralat :" 
       duplicate_lecturer2: "Pilih semula Pengajar."
-
     weeklytimetable_detail:
       topic: Topik
       lecturer_id: Pengajar      
       location: Lokasi
       lecture_method: Kaedah
       remove: "Buang?"
+    programme:
+      title: Sukatan Kurikulum
+      new: Sukatan Kurikulum Baru
+      edit: Sunting Sukatan Kurikulum
+      combo_code: Kod Kombo
+      duration: Jangka Masa
+      credits: Kredit
+      status: Status
 
   campus:
     address: 
@@ -764,6 +771,11 @@ ms_MY:
         hod_rejected: Ditolak Ketua Jabatan
         hod_rejected_on: Tarikh Ditolak Ketua Jabatan
         reason: Sebab
+      programme:
+        combo_code: Kod Kombo
+        duration: Jangka Masa
+        credits: Kredit
+        status: Status
 
     prompt:
       select_creator: Pilih Penyedia Soalan

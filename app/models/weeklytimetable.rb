@@ -236,7 +236,13 @@ class Weeklytimetable < ActiveRecord::Base
       self.hod_approved_on	= nil
     end
     
-    if hod_rejected == true && endorsed_by == User.current_user.staff_id
+    #current_user = User.find(11)    #maslinda 
+    #current_user = User.find(72)    #izmohdzaki
+    #staff_id = 25 maslinda
+    #staff_id = 84 izmohdzaki
+    #staff_id = 72 chin wan king
+    
+    if hod_rejected == true && endorsed_by == 25 #84 #current_user.staff_id # User.current_user.staff_id
       self.is_submitted = nil
    end
     
@@ -255,22 +261,23 @@ class Weeklytimetable < ActiveRecord::Base
   end
   
   def hods  
-      #hod = User.current_user.staff.position.parent
-      current_user = User.find(11)    #maslinda 
-      #current_user = User.find(72)    #izmohdzaki      
-      approver = Position.where('tasks_main like? or (tasks_other like? and is_acting=?) or unit=?', "%Ketua Program%", "%Ketua Program%",true, Programme.find(programme_id).name).pluck(:staff_id).compact
-    
-      #Ketua Program - ancestry_depth.2
-      #hod = Position.find(:all, :conditions => ["ancestry=?","1/2"])
+      ##hod = User.current_user.staff.position.parent
+      #current_user = User.find(11)    #maslinda 
+      ##current_user = User.find(72)    #izmohdzaki      
+      #approver = Position.where('tasks_main like? or (tasks_other like? and is_acting=?) or unit=?', "%Ketua Program%", "%Ketua Program%",true, Programme.find(programme_id).name).pluck(:staff_id).compact
+      approver = Position.where('tasks_main like? or (tasks_other like? and is_acting=?) or unit=?', "%Ketua Program%", "%Ketua Program%",true, "Radiografi").pluck(:staff_id).compact
       
-      #if User.current_user.staff.position.root_id == User.current_user.staff.position.parent_id
-        #hod = User.current_user.staff.position.root_id
-        #approver = Position.find(:all, :select => "staff_id", :conditions => ["id IN (?)", hod]).map(&:staff_id)
-      #else
-        #hod = User.current_user.staff.position.root.child_ids
-        #approver = Position.find(:all, :select => "staff_id", :conditions => ["id IN (?)", hod]).map(&:staff_id)
-      #end
-      #approver
+      ##Ketua Program - ancestry_depth.2
+      ##hod = Position.find(:all, :conditions => ["ancestry=?","1/2"])
+      
+      ##if User.current_user.staff.position.root_id == User.current_user.staff.position.parent_id
+        ##hod = User.current_user.staff.position.root_id
+        ##approver = Position.find(:all, :select => "staff_id", :conditions => ["id IN (?)", hod]).map(&:staff_id)
+      ##else
+        ##hod = User.current_user.staff.position.root.child_ids
+        ##approver = Position.find(:all, :select => "staff_id", :conditions => ["id IN (?)", hod]).map(&:staff_id)
+      ##end
+      ##approver
   end
   
   def self.location_list
@@ -287,8 +294,10 @@ class Weeklytimetable < ActiveRecord::Base
   end
   
   def approved_or_rejected
-    if hod_approved.blank? == false && hod_rejected.blank? == false
-        errors.add_to_base("Please choose either to approve or reject this weekly timetable")
+    #if is_submitted==true && submitted_on.blank? == false && hod_approved.blank? == false && hod_rejected.blank? == false
+    #is_submitted is true and submitted_on is not null and hod_approved is null and hod_rejected is null
+    if is_submitted==true and submitted_on!=nil and hod_approved==nil and hod_rejected==nil
+      errors.add(:base, "Please choose either to approve or reject this weekly timetable")
     end
   end
   
