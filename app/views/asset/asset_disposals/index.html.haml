@@ -28,6 +28,7 @@
         %th= t('asset.name')
         %th Quantity
         %th Purchase Date
+        %th Disposal Date		
         %th Current Value
         %th Opinion						
     %tbody
@@ -37,6 +38,7 @@
           %td= "#{disposal.asset.try(:typename)} - #{disposal.asset.name} - #{disposal.asset.modelname}"  
           %td= disposal.asset.try(:quantity)
           %td= disposal.asset.try(:purchasedate).strftime("%d %b %Y")
+          %td= disposal.disposed_on.try(:strftime, "%d %b %Y")		  
           %td= ringgols(disposal.current_value)
           %td= disposal.justify1_disposal		  		  		  
          
