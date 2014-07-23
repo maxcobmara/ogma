@@ -2,7 +2,13 @@ class Asset::AssetLossesController < ApplicationController
   before_action :set_defective, only: [:show, :edit, :update, :destroy]
   
   def index
-    @lost_assets = AssetLoss.order(code: :asc).page(params[:page]||1)
+    # @lost_assets = AssetLoss.order(code: :asc).page(params[:page]||1)
+    @asset_losses = AssetLoss.find(:all, :order => 'lost_at DESC')
+        @asset_losses_group_writeoff = @asset_losses.group_by{|x|x.document_id}
+        respond_to do |format|
+          format.html # index.html.erb
+          format.xml  { render :xml => @asset_losses }
+        end
   end
   
   def show
