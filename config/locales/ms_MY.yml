@@ -120,7 +120,28 @@ ms_MY:
   position:
     title: "Tugas & Tanggungjawab"
     index: Carta Organisasi
-    
+       
+  staff_attendance:
+    title: Kedatangan Staf
+    flag: Flag
+    thumb_id: Nama Staf
+    logged_in: Masa Masuk		
+    logged_out: Masa Keluar
+    shift: Masa Anjal
+    late: Datang Lewat
+    early: Pulang Awal
+    action: Tindakan
+    ignore: Abaikan
+    logged_at: Masa Log
+    log_type: Jenis Log
+    reason: Sebab
+    trigger: Trigger
+    approved_by: Diluluskan Oleh
+    is_approved: "Diluluskan?"
+    approved_on: Tarikh Kelulusan
+    status: Status
+    review: Ulasan
+    date: "Tarikh : "
     
   asset:
     title: Aset

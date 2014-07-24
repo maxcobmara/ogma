@@ -41,6 +41,12 @@ class Staff < ActiveRecord::Base
   #links to Model Weeklytimetables-21March2013
   has_many :weekly_schedule_details, :class_name => 'WeeklytimetableDetail', :foreign_key => 'lecturer_id', :dependent => :nullify
   
+  belongs_to :staff_shift, :foreign_key => 'staff_shift_id'
+  #has_one  :staff_shift2, :class_name => 'StaffShift' 
+  #links to Model Staff Attendances
+  has_many :attendingstaffs,    :class_name => 'StaffAttendance', :foreign_key => 'thumb_id', :primary_key => 'thumb_id'#, :dependent => :destroy #attendance staff name
+  has_many :approvers,          :class_name => 'StaffAttendance', :foreign_key => 'approved_by' # approver name
+  
   #validates_attachment_size         :photo, :less_than => 500.kilobytes
   #validates_attachment_content_type :photo, :content_type => ['image/jpeg', 'image/png']
  #---------------Validations------------------------------------------------
@@ -63,14 +69,20 @@ class Staff < ActiveRecord::Base
     def age
       Date.today.year - cobirthdt.year unless cobirthdt == nil
     end
- 
-
-    
+   
     def mykad_with_staff_name
       "#{formatted_mykad}  #{name}"
     end  
     
-
+    def shift_for_staff
+      ssft = StaffShift.find(:first, :conditions=> ['id=?',staff_shift_id])
+      if ssft == nil
+        "-"
+      else
+        ssft.start_end
+      end
+    end
+    
 end
 
 # == Schema Information

@@ -1,0 +1,11 @@
+= search_form_for @search, url: staff_staff_attendances_path,  class: "form-inline" do |f|
+  %tr.search_row.hidden
+    %td= f.text_field :attended_name_cont, size: 2,  :class => "form-control"
+    %td= f.text_field :logged_at_cont, size: 2,  :class => "form-control"
+    %td= f.text_field :attended_staff_shift_start_at_matches, size: 2,  :class => "form-control"
+    /late, early, action, ignore
+
+    %td.input-group
+      %span.input-group-btn
+        %button.btn.btn-sm.btn-default.right{:type => "submit"}
+          %i.fa.fa-search.fa-fw

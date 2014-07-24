@@ -144,7 +144,28 @@ en:
     title: "Tasks & Responsibilities"
     index: Organisation Chart
     
-    
+  staff_attendance:
+    title: Staff Attendance
+    flag: Flag
+    thumb_id: Staff Name
+    logged_in: "Logged-In"		
+    logged_out: "Logged-Out"
+    shift: Shift
+    late: Late
+    early: Early
+    action: Action
+    ignore: Ignore
+    logged_at: Logged At
+    log_type: Log Type
+    reason: Reason
+    trigger: Trigger
+    approved_by: Approved By
+    is_approved: "Approved?"
+    approved_on: Approved On
+    status: Status
+    review: Review
+    date: "Date : "
+
   asset:
     title: Assets
     fixed: Fixed Assets
