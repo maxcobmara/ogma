@@ -7,6 +7,12 @@ Ogma::Application.routes.draw do
       end
     end
     resources :positions
+    resources :staff_attendances do
+      collection do
+        put 'actionable', to: "staff_attendances#actionable"
+        #map.resources :staff_attendances, :collection => { :actionable => :put }
+      end
+    end
   end
 
   namespace :staff_training do

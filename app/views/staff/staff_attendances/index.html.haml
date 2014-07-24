@@ -1,0 +1,125 @@
+- model_class = StaffAttendance
+.page-header
+  %h1= t('staff_attendance.title')
+  
+.navbar.navbar-inverse{role: "navigation", style: "padding-right:40px;"}
+  %ul.nav.navbar-nav
+    %li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'actions.new'))), new_staff_staff_attendance_path
+  %ul.nav.navbar-nav.navbar-right
+    %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "toga"
+    %li= link_to content_tag(:li, fa_icon("print", text: (t 'actions.print'))), "#", class: 'bogus'
+
+.row.filter{style: "display:none;"}
+  .col-md-2
+ 
+/=@unit_names.count
+/=@staff_ids.count
+/=@thumb_ids.count
+/%br
+/=@unit_names
+/=@staff_ids
+/=@attendances_count=0
+-sa_by_units=[]
+- 0.upto(@thumb_ids.count-1) do |ind|
+  - sa_by_units[ind]=[]
+  
+%br 
+- @ooo.each do |dt,sats|
+  = dt
+  %br
+  - sats.each do |sat|
+    - @thumb_ids.each_with_index do |tis,index|	
+      - if tis.include?(sat.thumb_id)
+        - sa_by_units[index]<<sat
+        = sat.logged_at
+        /= index
+/%br=sa_by_units.count
+
+/%br
+/- sa_by_units.each_with_index do |staff_att,indx|
+/= @unit_names[indx]
+/%br=staff_att.count
+/%br
+/- staff_att.each do |satt|
+/= satt
+
+/%br
+/%br
+/%br
+/=@staff_attendances3a.count
+/=@staff_attendances3b.count
+.row
+  %table.table-striped.table-hover.ogma
+    %thead
+      %tr
+        %th=t 'staff.staff_attendance.flag'
+        %th= sort_link(@search, :thumb_id, (t 'staff_attendance.thumb_id'))
+        %th= sort_link(@search, :logged_at, (t 'staff_attendance.logged_in'))
+        %th= sort_link(@search, :logged_at, (t 'staff_attendance.logged_out'))
+        %th= sort_link(@search, :shift, (t 'staff_attendance.shift'))
+        %th= sort_link(@search, :late, (t 'staff_attendance.late'))
+        %th= sort_link(@search, :early, (t 'staff_attendance.early'))
+        %th= sort_link(@search, :action, (t 'staff_attendance.action'))
+        %th= sort_link(@search, :ignore, (t 'staff_attendance.ignore'))
+    %tbody
+      = render "index_search"
+      = form_tag actionable_staff_staff_attendances_path, :method => :put do
+        - @ooo.each do |date, staff_attendances|
+          %tr
+            %td{:colspan=>"9"}
+              = t 'staff_attendance.date'
+              %b=date.to_date.try(:strftime, "%d %b %Y")
+          - dept_name=""
+          - staff_attendances.each do |sa|          
+            - @thumb_ids.each_with_index do |tis,index|
+              - if tis.include?(sa.thumb_id)
+                - if dept_name != @unit_names[index]
+                  %tr
+                    %td{:colspan=>"9"}=dept_name=@unit_names[index]
+                %tr
+                  %td
+                    =h sa.r_u_late == "flag" ? image_tag("flag_red.png") : "" 
+                    =h sa.r_u_early == "flag" ? image_tag("flag_red.png") : "" 
+                  %td=h link_to sa.attended.try(:name), staff_staff_attendance_path(sa)     
+                  %td{:style=>"text-align: center;"}=h sa.log_type == "I" ? sa.logged_at.in_time_zone('UTC').strftime('%l:%M %P') : "" 
+                  %td{:style=>"text-align: center;"}
+                    - if sa.log_type == "O" || sa.log_type == "o"
+                      =h sa.logged_at.in_time_zone('UTC').strftime('%l:%M %P')
+                  %td=h Staff.where('thumb_id=?',sa.thumb_id).try(:shift_for_staff) 
+                  %td{:style=>"text-align: center;"}
+                    - if sa.log_type == "I" 
+                      - if sa.late_early=="-"
+                        %font{:color=> "black"}-
+                      - else
+                        %font{:color=> "red"}= sa.late_early 
+                    - else
+                      %font{:color=> "black"}-
+                  %td{:style=>"text-align: center;"}
+                    - if sa.log_type == "O" 
+                      - if sa.late_early=="-"
+                        %font{:color=> "black"}-
+                      - else
+                        %font{:color=> "red"}= sa.late_early 
+                    - else 
+                      %font{:color=> "black"}-
+                  %td
+                    - if sa.trigger == nil && sa.r_u_late == "flag"
+                      = check_box_tag "triggers[]", sa.id
+                    - elsif sa.trigger == nil && sa.r_u_early == "flag"
+                      = check_box_tag "triggers[]", sa.id
+                    - elsif sa.trigger == true  
+                      = image_tag("user_go.png")
+                  %td
+                    - if sa.trigger == nil && sa.r_u_late == "flag"
+                      = check_box_tag "ignores[]", sa.id
+                    - elsif sa.trigger == nil && sa.r_u_early == "flag"
+                      = check_box_tag "ignores[]", sa.id
+                    - elsif sa.trigger == false
+                      = image_tag("tick.png")
+        %tr
+          %td{:colspan=>"4"} &nbsp;
+          %td{:colspan=>"2"}= submit_tag "save action"
+          %td{:colspan=>"3"}
+        
+		
+  .right{style:"padding:0 30px; margin:0;"}= paginate @staff_attendances, :theme => 'twitter-bootstrap-3'
