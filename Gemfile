@@ -8,7 +8,8 @@ gem "devise", "~> 3.2.4"
 gem 'pg', '~> 0.17.1'
 gem 'paperclip', '~> 4.2.0'
 gem "ancestry", "~> 2.1.0"
-gem "ransack", "~> 1.2.3"
+#gem "ransack", "~> 1.2.3"
+gem 'ransack', github: 'activerecord-hackery/ransack'#, branch: 'rails-4.1'
 gem "prawn", "~> 1.0.0"
 gem "chartkick", "~> 1.2.4"
 #stuff for layout

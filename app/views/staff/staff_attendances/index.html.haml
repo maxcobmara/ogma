@@ -11,43 +11,7 @@
 
 .row.filter{style: "display:none;"}
   .col-md-2
- 
-/=@unit_names.count
-/=@staff_ids.count
-/=@thumb_ids.count
-/%br
-/=@unit_names
-/=@staff_ids
-/=@attendances_count=0
--sa_by_units=[]
-- 0.upto(@thumb_ids.count-1) do |ind|
-  - sa_by_units[ind]=[]
-  
-%br 
-- @ooo.each do |dt,sats|
-  = dt
-  %br
-  - sats.each do |sat|
-    - @thumb_ids.each_with_index do |tis,index|	
-      - if tis.include?(sat.thumb_id)
-        - sa_by_units[index]<<sat
-        = sat.logged_at
-        /= index
-/%br=sa_by_units.count
 
-/%br
-/- sa_by_units.each_with_index do |staff_att,indx|
-/= @unit_names[indx]
-/%br=staff_att.count
-/%br
-/- staff_att.each do |satt|
-/= satt
-
-/%br
-/%br
-/%br
-/=@staff_attendances3a.count
-/=@staff_attendances3b.count
 .row
   %table.table-striped.table-hover.ogma
     %thead
@@ -64,62 +28,83 @@
     %tbody
       = render "index_search"
       = form_tag actionable_staff_staff_attendances_path, :method => :put do
-        - @ooo.each do |date, staff_attendances|
-          %tr
-            %td{:colspan=>"9"}
-              = t 'staff_attendance.date'
-              %b=date.to_date.try(:strftime, "%d %b %Y")
-          - dept_name=""
-          - staff_attendances.each do |sa|          
+        - @ooo.each do |date, staff_attendances|       
+          /create new array (& group by unit) for every new date
+          - @groupped_sa = Array.new(@thumb_ids.count) { Array.new }
+          - staff_attendances.each do |sas|     
             - @thumb_ids.each_with_index do |tis,index|
-              - if tis.include?(sa.thumb_id)
-                - if dept_name != @unit_names[index]
-                  %tr
-                    %td{:colspan=>"9"}=dept_name=@unit_names[index]
-                %tr
-                  %td
-                    =h sa.r_u_late == "flag" ? image_tag("flag_red.png") : "" 
-                    =h sa.r_u_early == "flag" ? image_tag("flag_red.png") : "" 
-                  %td=h link_to sa.attended.try(:name), staff_staff_attendance_path(sa)     
-                  %td{:style=>"text-align: center;"}=h sa.log_type == "I" ? sa.logged_at.in_time_zone('UTC').strftime('%l:%M %P') : "" 
-                  %td{:style=>"text-align: center;"}
-                    - if sa.log_type == "O" || sa.log_type == "o"
-                      =h sa.logged_at.in_time_zone('UTC').strftime('%l:%M %P')
-                  %td=h Staff.where('thumb_id=?',sa.thumb_id).try(:shift_for_staff) 
-                  %td{:style=>"text-align: center;"}
-                    - if sa.log_type == "I" 
-                      - if sa.late_early=="-"
-                        %font{:color=> "black"}-
-                      - else
-                        %font{:color=> "red"}= sa.late_early 
+              - if tis.include?(sas.thumb_id)
+                - @groupped_sa[index]<<sas   
+          /display date
+          %tr
+            %td{:colspan=>"9", :style=>"font-weight: bold; background-color: #D8D8D8;"}
+              = t 'staff_attendance.date'
+              =date.to_date.try(:strftime, "%d %b %Y")
+          /display unit & its corresponding staff attendances
+          - @groupped_sa.each_with_index do |g_sa,ind|
+            - if g_sa.count>0 || (g_sa.count==0 &&(params[:q]==nil || (params[:q][:keyword_search]==nil)))  
+              %tr
+                %td{:colspan=>"9",:style=>"color: green;font-weight: bold;"}
+                  = t 'staff_attendance.unit'
+                  =@unit_names[ind]
+                  /= g_sa.count
+            - g_sa.each do |sa|
+              %tr
+                %td{:style=>"text-align: center;"}
+                  =h sa.r_u_late == "flag" ? image_tag("flag_red.png") : "" 
+                  =h sa.r_u_early == "flag" ? image_tag("flag_red.png") : "" 
+                %td
+                  =h link_to sa.attended.try(:name), staff_staff_attendance_path(sa)      
+                  (
+                  =h sa.id
+                  )
+                %td{:style=>"text-align: center;"}=h sa.log_type == "I" ? sa.logged_at.in_time_zone('UTC').strftime('%l:%M %P') : "" 
+                %td{:style=>"text-align: center;"}
+                  - if sa.log_type == "O" || sa.log_type == "o"
+                    =h sa.logged_at.in_time_zone('UTC').strftime('%l:%M %P')
+                %td{:style=>"text-align: center;"}=h Staff.where('thumb_id=?',sa.thumb_id).first.try(:shift_for_staff) 
+                %td{:style=>"text-align: center;"}
+                  - if sa.log_type == "I" 
+                    - if sa.late_early=="-"
+                      %font{:color=> "black"}-
                     - else
+                      %font{:color=> "red"}= sa.late_early 
+                  - else
+                    %font{:color=> "black"}-
+                %td{:style=>"text-align: center;"}
+                  - if sa.log_type == "O" 
+                    - if sa.late_early=="-"
                       %font{:color=> "black"}-
-                  %td{:style=>"text-align: center;"}
-                    - if sa.log_type == "O" 
-                      - if sa.late_early=="-"
-                        %font{:color=> "black"}-
-                      - else
-                        %font{:color=> "red"}= sa.late_early 
-                    - else 
-                      %font{:color=> "black"}-
-                  %td
-                    - if sa.trigger == nil && sa.r_u_late == "flag"
-                      = check_box_tag "triggers[]", sa.id
-                    - elsif sa.trigger == nil && sa.r_u_early == "flag"
-                      = check_box_tag "triggers[]", sa.id
-                    - elsif sa.trigger == true  
-                      = image_tag("user_go.png")
-                  %td
-                    - if sa.trigger == nil && sa.r_u_late == "flag"
-                      = check_box_tag "ignores[]", sa.id
-                    - elsif sa.trigger == nil && sa.r_u_early == "flag"
-                      = check_box_tag "ignores[]", sa.id
-                    - elsif sa.trigger == false
-                      = image_tag("tick.png")
+                    - else
+                      %font{:color=> "red"}= sa.late_early 
+                  - else 
+                    %font{:color=> "black"}-
+                %td{:style=>"text-align: center;"}
+                  - if sa.trigger == nil && sa.r_u_late == "flag"
+                    = check_box_tag "triggers[]", sa.id
+                  - elsif sa.trigger == nil && sa.r_u_early == "flag"
+                    = check_box_tag "triggers[]", sa.id
+                  - elsif sa.trigger == true  
+                    = image_tag("user_go.png")
+                %td{:style=>"text-align: center;"}
+                  - if sa.trigger == nil && sa.r_u_late == "flag"
+                    = check_box_tag "ignores[]", sa.id
+                  - elsif sa.trigger == nil && sa.r_u_early == "flag"
+                    = check_box_tag "ignores[]", sa.id
+                  - elsif sa.trigger == false
+                    = image_tag("tick.png")
+       
         %tr
           %td{:colspan=>"4"} &nbsp;
           %td{:colspan=>"2"}= submit_tag "save action"
           %td{:colspan=>"3"}
-        
-		
+        		
   .right{style:"padding:0 30px; margin:0;"}= paginate @staff_attendances, :theme => 'twitter-bootstrap-3'
+
+:javascript
+  
+$(document).ready(function(){
+  $('.toga').click(function() {
+    $('.search_row').toggle(); 
+  });
+})
