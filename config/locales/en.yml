@@ -148,7 +148,7 @@ en:
     title: Staff Attendance
     flag: Flag
     thumb_id: Staff Name
-    logged_in: "Logged-In"		
+    logged_in: "Logged-In"
     logged_out: "Logged-Out"
     shift: Shift
     late: Late
@@ -165,6 +165,10 @@ en:
     status: Status
     review: Review
     date: "Date : "
+    unit: "Unit : "
+    unit_not_define: Not Updated
+    from: "From :"
+    to: "To :"
 
   asset:
     title: Assets
@@ -677,7 +681,7 @@ en:
       hod_rejected: HOD Rejection
       hod_rejected_on: Rejecttion Date
       reason: Reason
-      is_returned: " - Dipulangkan" 					  
+      is_returned: " - Dipulangkan"
       is_resubmitted: " -  Dihantar Semula"
       is_approved: "Approved ?"
       daily_details: Daily Details
@@ -839,6 +843,7 @@ en:
       select_location: Select Location
       select_lecturer: Select Lecturer
       select_hod: "Select HOD / Approver"
+      all_unit: "All Department / Unit"
       maintain: Maintain
       remove: Remove
 

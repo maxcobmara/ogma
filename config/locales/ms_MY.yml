@@ -142,7 +142,11 @@ ms_MY:
     status: Status
     review: Ulasan
     date: "Tarikh : "
-    
+    unit: "Unit : "
+    unit_not_define: Belum Dikemaskini
+    from: "Dari :"
+    to: "Hingga :"
+
   asset:
     title: Aset
     fixed: Harta Modal
@@ -609,7 +613,7 @@ ms_MY:
       description: Kumpulan
       register_on: Tarikh Pendaftaran
       programme_id: Program
-      is_active: "Aktif?"	
+      is_active: "Aktif?"
     timetable:
       title: Jadual Waktu
       new: Jadual Waktu Baru
@@ -659,7 +663,7 @@ ms_MY:
       hod_rejected: Ditolak Ketua Jabatan
       hod_rejected_on: Tarikh Ditolak Ketua Jabatan
       reason: Sebab
-      is_returned: " - Dipulangkan" 					  
+      is_returned: " - Dipulangkan"
       is_resubmitted: " -  Dihantar Semula"
       is_approved: "Diluluskan ?"
       daily_details: Butiran Harian
@@ -816,6 +820,7 @@ ms_MY:
       select_location: Pilih Lokasi
       select_lecturer: Pilih Pengajar
       select_hod: "Pilih Ketua Jabatan / Pelulus"
+      all_unit: "Semua Jabatan / Unit"
       maintain: Dikekalkan
       remove: Dibuang
 

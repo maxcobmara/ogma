@@ -7,7 +7,48 @@ class StaffAttendance < ActiveRecord::Base
   
   validates_presence_of :reason
   
-  def self.is_controlled
+  # define scope
+  def self.keyword_search(query) 
+    thumb_ids=StaffAttendance.get_thumb_ids_unit_names(1)
+    where('thumb_id IN(?) and logged_at >? and logged_at<?',  thumb_ids[query.to_i],'2012-09-30','2012-11-01') 
+    
+    #where('thumb_id IN(?) and logged_at >? and logged_at<?', all_thumb_ids, '2012-09-30','2012-11-01')  	#not working
+    #where('thumb_id IN(?)',  thumb_ids[query.to_i])												#best working one
+    #where(thumb_id: query)																	#working one
+    #where('thumb_id IN(?)', [756,757]) if query=='1'												#also works nicely
+  end
+
+  # whitelist the scope
+  def self.ransackable_scopes(auth_object = nil)
+    [:keyword_search]
+  end
+
+  def self.staff_with_unit_groupbyunit
+    Staff.joins(:positions).where('unit is not null and unit!=?',"").group_by{|x|x.positions.first.unit}
+  end
+  
+  def self.get_thumb_ids_unit_names(val)
+    a=StaffAttendance.staff_with_unit_groupbyunit
+    thmb=[] if val==1
+    uname=[] if val==2
+    uname_thmb=[] if val==3
+    count=0
+    a.each do |u_name,staffs|
+	thmb<<staffs.map(&:thumb_id).compact if val==1
+	uname<<u_name if val==2
+	if val==3
+	    u_t=[]
+	    u_t<<u_name<<count
+	    uname_thmb<<u_t 
+	    count+=1
+	end
+    end
+    return thmb if val==1
+    return uname if val==2
+    return uname_thmb if val==3
+  end 
+      
+    def self.is_controlled
     find(:all, :order => 'logged_at DESC', :limit => 10000)
   end
   #--shift?
@@ -183,7 +224,8 @@ class StaffAttendance < ActiveRecord::Base
     if mins.size == 1
       mins = "0" + mins
     end
-    timmy = ((logged_at.hour - 8).to_s + mins).to_i
+    #timmy = ((logged_at.hour - 8).to_s + mins).to_i			#previously 8 hours difference?
+    timmy = ((logged_at.hour - 0).to_s + mins).to_i
   end
   
   #--added use for r_u_late & late_early
@@ -192,7 +234,8 @@ class StaffAttendance < ActiveRecord::Base
     shift= Staff.where('thumb_id=?', 774).first.staff_shift_id
     
 		if shift != nil
-		  shift_start = StaffShift.find(shift).start_at
+		  #shift_start = StaffShift.find(shift).start_at
+		  shift_start = StaffShift.where(id: shift).first.start_at
 		  (shift_start.strftime('%H').to_i * 100) + shift_start.strftime('%M').to_i
 		else
 		  800 #830 -> (800 -- 8.00 am) 
@@ -203,7 +246,8 @@ class StaffAttendance < ActiveRecord::Base
     #shift = Staff.find(:first, :conditions => ['thumb_id=?',thumb_id]).staff_shift_id 
     shift = Staff.where('thumb_id=?', 774).first.staff_shift_id    
 		if shift != nil
-		  shift_end = StaffShift.find(shift).end_at
+		  #shift_end = StaffShift.find(shift).end_at
+		  shift_end = StaffShift.where(id: shift).first.end_at
 		  #(shift_end.strftime('%H').to_i * 100) + shift_end.strftime('%M').to_i  #(shift_end.strftime('%H').to_i)* 100 + shift_end.strftime('%M').to_i
 		  (shift_end.strftime('%H%M').to_i)
 		else
@@ -224,7 +268,8 @@ class StaffAttendance < ActiveRecord::Base
         #----
         #shift = Staff.find(:first, :conditions => ['thumb_id=?',thumb_id]).staff_shift_id 
         shift = Staff.where('thumb_id=?', 774).first.staff_shift_id
-    		minit_shift = (StaffShift.find(shift).start_at.min) if shift != nil
+    	#minit_shift = (StaffShift.find(shift).start_at.min) if shift != nil
+    	minit_shift = (StaffShift.where(id: shift).first.start_at.min) if shift != nil
         
         
         if timmy2 > starting_shift && self.trigger != false           #if 822 > 730 && self.trigger != false
@@ -254,7 +299,7 @@ class StaffAttendance < ActiveRecord::Base
             late
             ######
         else
-            "-"#  "punctual-masuk" 
+            "-"#"punctual #{timmy2} ~ #{starting_shift}"#  "punctual-masuk" 
         end
     #----------------------end---------for logged-in
     elsif log_type == 'O' 
@@ -262,14 +307,18 @@ class StaffAttendance < ActiveRecord::Base
       #shift = Staff.find(:first, :conditions => ['thumb_id=?',thumb_id]).staff_shift_id 
       shift = Staff.where('thumb_id=?', 774).first.staff_shift_id
   		if shift != nil
-  		    shift_end = StaffShift.find(shift).end_at
+  		    #shift_end = StaffShift.find(shift).end_at
+  		    shift_end = StaffShift.where(id: shift).first.end_at
   		    #==================
-  		    minit_shift = (StaffShift.find(shift).end_at.min)
+  		    #minit_shift = (StaffShift.find(shift).end_at.min)
+  		    minit_shift = (StaffShift.where(id: shift).first.end_at.min)
     		  if minit_shift == 0  
-    			    jam = ( (StaffShift.find(shift).end_at.strftime('%H').to_i) - 8)-1
+    			    #jam = ( (StaffShift.find(shift).end_at.strftime('%H').to_i) - 8)-1
+    			    jam = ( (StaffShift.where(id: shift).first.end_at.strftime('%H').to_i) - 8)-1
     			    minit = 60
     		  else
-    		      jam = (StaffShift.find(shift).end_at.strftime('%H').to_i) - 8
+    		      #jam = (StaffShift.find(shift).end_at.strftime('%H').to_i) - 8
+    		      jam = (StaffShift.where(id: shift).first.end_at.strftime('%H').to_i) - 8
     		      minit = minit_shift
     		  end
   		    #==================
@@ -284,11 +333,13 @@ class StaffAttendance < ActiveRecord::Base
         mins = "0" + mins
       end
       ##*****
-      timmy_jam = ((logged_at.in_time_zone('UTC').strftime('%H')).to_i)-8 #logged_at.hour.to_s
+      timmy_jam = ((logged_at.in_time_zone('UTC').strftime('%H')).to_i)-8 #logged_at.hour.to_s		#previously 8 hours difference?
+      #timmy_jam = ((logged_at.in_time_zone('UTC').strftime('%H')).to_i)-0 #logged_at.hour.to_s
       timmy_minutes = mins.to_i
       ##*****
       timmy = (logged_at.in_time_zone('UTC').strftime('%H%M')).to_i   #giving this format 1800 @ #0840 -> 840
-      if timmy < ending_shift && self.trigger != false && timmy2 < 0  #(&& timmy2 < 0)to work with logout at time after 12:00 midnight --> 00:00hrs
+      #note : (below) - previously using 24-hours format
+      if timmy < ending_shift && self.trigger != false #&& timmy2 < 0  #(&& timmy2 < 0)to work with logout at time after 12:00 midnight --> 00:00hrs
           #DO NOT REMOVE YET-below-working one!
           #early = "#{ending_shift} ~ #{timmy}" + " minutes" + "<BR>JAM_SHIFT:#{jam} MINIT_SHIFT:#{minit_shift} MINIT:#{minit}"+"<BR>TIMMYJAM:#{timmy_jam} TIMMYMINUTES:#{timmy_minutes}"
           jam_diff = (jam - timmy_jam)
@@ -321,11 +372,11 @@ class StaffAttendance < ActiveRecord::Base
               end
               "QQQQ<font color=red>"+early+"</font>"
             else 
-              "-"#  "puntual-balik (without staff_shift)" 
+              "-"#"puntual-balik (without staff_shift) #{timmy} #{ending_shift} #{timmy2}" 
             end
              
           else  #for cases - with staff_shift
-            "-" #  "punctual-balik (with staff_shift)"
+            "-"#"punctual-balik (with staff_shift) #{timmy} #{ending_shift} #{timmy2}"
           end
           #TEMPORARY SOLUTION ------@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
       end

@@ -3,253 +3,27 @@ class Staff::StaffAttendancesController < ApplicationController
   
   # GET /staff_attendances
   # GET /staff_attendances.xml
-  def index
-    #---
-    submit_val = params[:submit_button1]
-    @dept_select = params[:dept_select]
-    if @dept_select == "Teknologi Maklumat"
-        @staffthumb = params[:staffthumb1] 
-    elsif @dept_select == "Perhotelan" 
-        @staffthumb = params[:staffthumb2] 
-    elsif @dept_select == "Perpustakaan"
-        @staffthumb = params[:staffthumb3] 
-    elsif @dept_select == "Kaunter"
-        @staffthumb = params[:staffthumb4] 
-    elsif @dept_select == "Kejuruteraan"     #elsif @dept_select == "Pembangunan"
-        @staffthumb = params[:staffthumb5] 
-    elsif @dept_select == "Kewangan & Stor"
-        @staffthumb = params[:staffthumb6] 
-    elsif @dept_select == "Perkhidmatan"
-        @staffthumb = params[:staffthumb7] 
-    elsif @dept_select == "Pentadbiran Am"
-        @staffthumb = params[:staffthumb8] 
-    elsif @dept_select == "Radiografi"
-        @staffthumb = params[:staffthumb9] 
-    elsif @dept_select == "Kejururawatan"
-        @staffthumb = params[:staffthumb10] 
-    elsif @dept_select == "Jurupulih Perubatan Anggota (Fisioterapi)"
-        @staffthumb = params[:staffthumb11] 
-    elsif @dept_select == "Jurupulih Perubatan Cara Kerja"
-        @staffthumb = params[:staffthumb12] 
-    elsif @dept_select == "Penolong Pegawai Perubatan"
-        @staffthumb = params[:staffthumb13] 
-    elsif @dept_select == "Pengkhususan"       #elsif @dept_select == "Pos Basik"
-        @staffthumb = params[:staffthumb14] 
-    elsif @dept_select == "Sains Perubatan Asas"
-        @staffthumb = params[:staffthumb15] 
-    elsif @dept_select == "Anatomi & Fisiologi"
-        @staffthumb = params[:staffthumb16] 
-    elsif @dept_select == "Sains Tingkahlaku"
-        @staffthumb = params[:staffthumb17] 
-    elsif @dept_select == "Komunikasi & Sains Pengurusan"
-        @staffthumb = params[:staffthumb18] 
-    elsif @dept_select == "Pembangunan Pelatih"
-        @staffthumb = params[:staffthumb19] 
-    elsif @dept_select == "Khidmat Sokongan Pelatih"
-        @staffthumb = params[:staffthumb20] 
-    elsif @dept_select == "Kokurikulum"
-        @staffthumb = params[:staffthumb21] 
-    elsif @dept_select == "Ketua Unit Penilaian & Kualiti"  
-        @staffthumb = params[:staffthumb22] 
-    end
-    
-    
-    #---if search by date---------------------------------------------------------------------------------------------------------
-    if submit_val == "Search"
-        @aa=params[:search_from][:"(1i)"] 
-        @bb=params[:search_from][:"(2i)"]
-        @cc=params[:search_from][:"(3i)"]
-        if @aa!='' && @bb!='' && @cc!=''
-            if @cc=='1'||@cc=='2'||@cc=='3'||@cc=='4'||@cc=='5'||@cc=='6'||@cc=='7'||@cc=='8'||@cc=='9'
-                 @cc='0'+@cc
-            end
-            if @bb=='1'||@bb=='2'||@bb=='3'||@bb=='4'||@bb=='5'||@bb=='6'||@bb=='7'||@bb=='8'||@bb=='9'
-                 @bb='0'+@bb
-            end
-            @dadidu=@aa+'-'+@bb+'-'+@cc
-        else
-            @dadidu=''
-        end
-
-        @dd=params[:search_to][:"(1i)"] 
-        @ee=params[:search_to][:"(2i)"]
-        @ff=params[:search_to][:"(3i)"]
-        if @dd!='' && @ee!='' && @ff!=''
-            if @ff=='1'||@ff=='2'||@ff=='3'||@ff=='4'||@ff=='5'||@ff=='6'||@ff=='7'||@ff=='8'||@ff=='9'
-                  @ff='0'+@ff
-            end
-            if @ee=='1'||@ee=='2'||@ee=='3'||@ee=='4'||@ee=='5'||@ee=='6'||@ee=='7'||@ee=='8'||@ee=='9'
-                 @ee='0'+@ee
-            end
-            @dadidu2=@dd+'-'+@ee+'-'+@ff  
-        else
-            @dadidu2=''
-        end
-        #@dept_select = params[:dept_select]
-    
-        
-        params[:search_from]=nil  #this line is required
-        params[:search_to]=nil    #this line is required
-        
-        ##27June2013-refer - add extra 1 day before & 1 day after
-        @dadidu_ori= @dadidu
-        @dadidu2_ori= @dadidu2
-        @dadidu = (@dadidu.to_date-1.day).to_s
-        @dadidu2 = (@dadidu2.to_date+1.day).to_s
-        ##27June2013-refer 
-         
-        #insert here....
-        if (@dadidu=='' && @dadidu2=='')||(@dadidu==nil && @dadidu2==nil)
-            #@documents = Document.find(:all)backup dulu
-        elsif @dadidu!='' && @dadidu2 ==''
-            #@documents = Document.find(:all, :conditions=> ['letterxdt=?',"#{@dadidu}"])
-            #@abababa = StaffAttendance.find(:all,:conditions=> ['logged_at>=?',"2012-10-15"])
-            @abababa = StaffAttendance.find(:all,:conditions=> ['logged_at>=?',"#{@dadidu}"])
-            @selected_date = @dadidu
-        elsif @dadidu2!='' && @dadidu ==''
-            @abababa = StaffAttendance.find(:all,:conditions=> ['logged_at>=?',"#{@dadidu2}"])
-            @selected_date = @dadidu2
-        elsif @dadidu!='' && @dadidu2!=''
-            #@documents = Document.find(:all, :conditions=> ["letterxdt>=? AND letterxdt<=?","#{@dadidu}","#{@dadidu2}"])
-            #@documents = Document.find(:all, :conditions=> ['letterdt=?',"2013-04-01"])  #for testing
-            @abababa = StaffAttendance.find(:all,:conditions=> ['logged_at>=? AND logged_at<=?',"#{@dadidu}","#{@dadidu2}"])
-            #@staff_attendances = StaffAttendance.find(:all,:conditions=> ['logged_at>=? AND logged_at<=?',"#{@dadidu}","#{@dadidu2}"]).paginate(:per_page => 50, :page => params[:page])
-            @selected_date = @dadidu
-            @selected_date2 = @dadidu2
-        end
-        #@document_files = @documents.group_by { |t| t.filedocer }
-        #insert above....
-      
-        #@selected_date = @dadidu #'2012-10-01' #'2012-10-1' 
-        @staff_attendances = @abababa#.paginate(:per_page => 100, :page => params[:page])
-        @staff_attendance_days = @staff_attendances.group_by {|t| t.group_by_thingy }  
-
-        @ooo = @abababa.group_by {|t| t.group_by_thingy }
-        
-    #end
-
-    #---if search by date-----------------------------------------------------------------------------------------------------
-  else
-    #yg asal=============
-    #@staff_attendances = StaffAttendance.is_controlled.paginate(:per_page => 50, :page => params[:page])    
-    @staff_attendances = StaffAttendance.page(params[:page]||1)
-    @staff_attendance_days = @staff_attendances.group_by {|t| t.group_by_thingy }  
-    @ooo = StaffAttendance.is_controlled.group_by {|t| t.group_by_thingy }     
-    #yg asal=============
-  end
-    #@dept_names=["Teknologi Maklumat","Perhotelan","Perpustakaan","Kaunter","Pembangunan","Kewangan & Stor","Perkhidmatan","Pentadbiran Am","Radiografi","Kejururawatan","Jurupulih Perubatan Anggota (Fisioterapi)","Jurupulih Perubatan Cara Kerja","Penolong Pegawai Perubatan","Pos Basik","Sains Perubatan Asas","Anatomi & Fisiologi","Sains Tingkahlaku","Komunikasi & Sains Pengurusan","Pembangunan Pelatih","Khidmat Sokongan Pelatih","Kokurikulum","Ketua Unit Penilaian & Kualiti"]
-    @dept_names=["Teknologi Maklumat","Perhotelan","Perpustakaan","Kaunter","Kejuruteraan","Kewangan & Stor","Perkhidmatan","Pentadbiran Am","Radiografi","Kejururawatan","Jurupulih Perubatan Anggota (Fisioterapi)","Jurupulih Perubatan Cara Kerja","Penolong Pegawai Perubatan","Pengkhususan","Sains Perubatan Asas","Anatomi & Fisiologi","Sains Tingkahlaku","Komunikasi & Sains Pengurusan","Pembangunan Pelatih","Khidmat Sokongan Pelatih","Kokurikulum","Ketua Unit Penilaian & Kualiti"]  
-    @position_staff_ids = []  
-    @staff_in_department = []
-    @test_department = []
-    @testalldepartmenttgroup = []
-    0.upto(21) do |countt|
-        #@position_staff_ids << Position.find(:first, :conditions=>['unit=?',@dept_names[countt]], :order=>'id ASC').subtree.map(&:staff_id).uniq.delete_if{|x|x==nil}  
-        #starting 23Feb2014 - Positon table - unit value - compulsory for staff (which work) under unit? (task & responsibilites format change)
-        @position_staff_ids << Position.find(:all, :conditions=>['unit=?',@dept_names[countt]], :order=>'id ASC').map(&:staff_id).uniq.delete_if{|x|x==nil}    
-    end
-    0.upto(21) do |countt2|
-        @staff_in_department << Staff.find(:all,:select=>:thumb_id,:conditions=>['id in (?)',@position_staff_ids[countt2]]).map(&:thumb_id)
-    end
-    0.upto(21) do |countt3|
-        @test_department << StaffAttendance.find(:all,:order => 'logged_at DESC', :limit => 10000, :conditions=>['thumb_id in (?)', @staff_in_department[countt3] ])#.paginate(:per_page => 50, :page => params[:page])
-    end 
-    0.upto(21) do |countt4|
-        @testalldepartmenttgroup<< @test_department[countt4].group_by {|t| t.group_by_thingy }
-    end
-    
-    if submit_val == "Search"
-        #set value at above 
-        #@selected_date = "2012-10-01"#@dadidu.to_s
-        #if @selected_date2!='' && @selected_date !='' #@dadidu!='' && @dadidu2!='' #@selected_date2
-          #@days_count = (@selected_date2.to_date-@selected_date.to_date).to_i
-          #@next_date = @selected_date
-           
-        #end
-    else
-      @selected_date = params[:id]
-    end
-    if @selected_date.blank?
-      @selected_date = "2012-10-16" #default to first page
-    end
-    
-    @selected_rec_by_date=[]
-    for testalldeptgroup in @testalldepartmenttgroup
-      
-        @loop_date = @selected_date
-        bil=0
-        
-        if submit_val ==  "Search" && @dadidu!='' && @dadidu2!=''
-          @days_count = ((@dadidu2.to_date )- (@dadidu.to_date)).to_i
-          #ADDD
-          #0.upto(@days_count) do |count| 
-              #@selected_rec_by_date[count] = []
-          #end
-          #ADDD
-          0.upto(@days_count) do |count| 
-		          testalldeptgroup.each do |d,k|
-				          if d == @loop_date                                             # if d == @loop_date    #"2012-10-15" #date
-				              @selected_rec_by_date << k        #will retrieve existing record only...
-				              #@selected_rec_by_date[count] << k 
-				          end
-				    
-			        end
-			        @loop_date = (@loop_date.to_date.tomorrow.strftime("%Y-%m-%d")).to_s #@selected_date2 #"2012-10-02"#@loop_date.to_date.tomorrow.strftime("%d-%m-%y")
-		      end
-          
-        else
-          #0.upto(1) do |count| 
-		          testalldeptgroup.each do |d,k|
-				          if d == @loop_date   #if d == @loop_date # "2012-10-15" #date
-				              @selected_rec_by_date << k
-				          end
-				    
-			        end
-			        #@loop_date = "2012-10-02"#@loop_date.to_date.tomorrow.strftime("%d-%m-%y")
-		      #end
-        end
-		end
-   
-    #BEST BACKUP-> #@test_itdept = StaffAttendance.find(:all,:order => 'logged_at DESC', :limit => 10000, :conditions=>['thumb_id in (?)',Staff.find(:all,:select=>:thumb_id,:conditions=>['id in (?)',Position.find(:first, :conditions=>['unit=?',"Teknologi Maklumat"]).subtree.map(&:staff_id)]).map(&:thumb_id) ]).paginate(:per_page => 50, :page => params[:page])
-  
-    #dept = Position.find(:first, :conditions=>['unit=?',"Teknologi Maklumat"]).subtree.map(&:staff_id)
-    #dept2 = Position.find(:first, :conditions=>['unit=?',"Perhotelan"]).subtree.map(&:staff_id)
-
-    #staffs_in_dept = Staff.find(:all,:select=>:thumb_id,:conditions=>['id in (?)',dept]).map(&:thumb_id)
-    #staffs_in_dept2 = Staff.find(:all,:select=>:thumb_id,:conditions=>['id in (?)',dept2]).map(&:thumb_id)
-    
-    #@test_itdept = StaffAttendance.find(:all,:order => 'logged_at DESC', :limit => 10000, :conditions=>['thumb_id in (?)',staffs_in_dept ]).paginate(:per_page => 50, :page => params[:page])
-    #@test_hoteldept = StaffAttendance.find(:all,:order => 'logged_at DESC', :limit => 10000, :conditions=>['thumb_id in (?)',staffs_in_dept2 ]).paginate(:per_page => 50, :page => params[:page])
-     
-    #@test_itdept_group = @test_itdept.group_by {|t| t.group_by_thingy }
-    #@test_hoteldept_group = @test_hoteldept.group_by {|t| t.group_by_thingy }
-    
+  def index 
     @mylate_attendances = StaffAttendance.find_mylate
     @approvelate_attendances = StaffAttendance.find_approvelate
+    
+    @thumb_ids =  StaffAttendance.get_thumb_ids_unit_names(1)
+    @unit_names = StaffAttendance.get_thumb_ids_unit_names(2)
 
-    #TEST NEW ONE-chup
-    @staffs_with_unit_groupbyunit=Staff.joins(:positions).where('unit is not null and unit!=?',"").group_by{|x|x.positions.first.unit}
-    @staff_ids_IT_unit=Staff.joins(:positions).where('unit is not null').group_by{|x|x.positions.first.unit}['Teknologi Maklumat'].map(&:id)
-    @staffs_with_unit_groupbyunit=Staff.joins(:positions).where('unit is not null and unit!=?',"").group_by{|x|x.positions.first.unit}
-    @unit_names=[]
-    @staff_ids=[]
-    @thumb_ids=[]
-    @staffs_with_unit_groupbyunit.each do |unit_name, staffs|
-      @unit_names<<unit_name
-      @staff_ids<<staffs.map(&:id)
-      @thumb_ids<<staffs.map(&:thumb_id)
-    end
     @all_thumb_ids = []
     @thumb_ids.each do |thumb_ids|
       @all_thumb_ids+= thumb_ids
-    end       
+    end  
+
     @search = StaffAttendance.search(params[:q])
     @staff_attendances2 = @search.result
-    @staff_attendances3a = @staff_attendances2.where('logged_at >? and logged_at<?','2012-09-30','2012-11-01')    
-    @staff_attendances3b = @staff_attendances2.where('logged_at >? and logged_at<? and thumb_id IN (?)','2012-09-30','2012-11-01',@all_thumb_ids)
-    @staff_attendances = @staff_attendances3b.order(logged_at: :desc).page(params[:page]||1)
-    @ooo = @staff_attendances.group_by {|t| t.group_by_thingy }  
-
+    #hack for ALL unit
+    if params[:q]==nil || (params[:q][:keyword_search]==nil)
+      @staff_attendances2 = @staff_attendances2.where('logged_at >? and logged_at<? and thumb_id IN(?)','2012-09-30','2012-11-01',@all_thumb_ids)
+    end
+    @staff_attendances = @staff_attendances2.order(logged_at: :desc,thumb_id: :asc).page(params[:page]||1)
+    @ooo = @staff_attendances.group_by {|t| t.group_by_thingy }
+   
     respond_to do |format|
       format.html # index.html.erb
       format.xml  { render :xml => @staff_attendances }

@@ -83,6 +83,7 @@ class Staff < ActiveRecord::Base
       end
     end
     
+    
 end
 
 # == Schema Information
