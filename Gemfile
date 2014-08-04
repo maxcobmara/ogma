@@ -32,6 +32,7 @@ gem "modernizr-rails", "~> 2.6.2.3"
 gem "whenever", "~> 0.9.2", require: false
 #gem 'rmagick', #, :git=>'http://github.com/rmagick/rmagick.git'
 gem 'rmagick', '2.13.2', :require => 'RMagick'
+gem "roo"
 group :assets do
   
 end
