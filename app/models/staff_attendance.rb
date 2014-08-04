@@ -1,11 +1,25 @@
 class StaffAttendance < ActiveRecord::Base
+  include Spreadsheet2
   
   # befores, relationships, validations, before logic, validation logic, 
   #controller searches, variables, lists, relationship checking
   belongs_to :attended, :class_name => 'Staff', :foreign_key => 'thumb_id', :primary_key => 'thumb_id'
   belongs_to :approver, :class_name => 'Staff', :foreign_key => 'approved_by'
   
-  validates_presence_of :reason
+  attr_accessor :userid, :checktime, :checktype, :name, :birthday	#from excel
+  
+  #validates_presence_of :reason
+  
+  def self.import(file) 
+    spreadsheet = Spreadsheet2.open_spreadsheet(file)  				#open/read excel file
+    result = Spreadsheet2.update_attendance(spreadsheet)				#update attendance record
+    Spreadsheet2.update_thumb_id(spreadsheet)						#update thumb_id
+    return result
+  end
+  
+  def self.messages(import_result) 
+    Spreadsheet2.msg_import(import_result)
+  end
   
   # define scope
   def self.keyword_search(query) 
@@ -14,8 +28,8 @@ class StaffAttendance < ActiveRecord::Base
     
     #where('thumb_id IN(?) and logged_at >? and logged_at<?', all_thumb_ids, '2012-09-30','2012-11-01')  	#not working
     #where('thumb_id IN(?)',  thumb_ids[query.to_i])												#best working one
-    #where(thumb_id: query)																	#working one
-    #where('thumb_id IN(?)', [756,757]) if query=='1'												#also works nicely
+    #where(thumb_id: query)																#working one
+    #where('thumb_id IN(?)', [756,757]) if query=='1'											#also works nicely
   end
 
   # whitelist the scope
@@ -34,12 +48,12 @@ class StaffAttendance < ActiveRecord::Base
     uname_thmb=[] if val==3
     count=0
     a.each do |u_name,staffs|
-	thmb<<staffs.map(&:thumb_id).compact if val==1
-	uname<<u_name if val==2
+	thmb<< staffs.map(&:thumb_id).compact if val==1
+	uname<< u_name if val==2
 	if val==3
 	    u_t=[]
-	    u_t<<u_name<<count
-	    uname_thmb<<u_t 
+	    u_t<< u_name<< count
+	    uname_thmb << u_t 
 	    count+=1
 	end
     end
@@ -48,7 +62,7 @@ class StaffAttendance < ActiveRecord::Base
     return uname_thmb if val==3
   end 
       
-    def self.is_controlled
+  def self.is_controlled
     find(:all, :order => 'logged_at DESC', :limit => 10000)
   end
   #--shift?

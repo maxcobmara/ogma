@@ -10,10 +10,14 @@ Ogma::Application.routes.draw do
     resources :staff_attendances do
       collection do
         put 'actionable', to: "staff_attendances#actionable"
-        #map.resources :staff_attendances, :collection => { :actionable => :put }
+	post 'import'
+	get 'import_excel', to: "staff_attendances#import_excel"
       end
     end
   end
+
+  match '/public/excel_format/staff_attendance_import.xls', to: 'staff/staff_attendances#download_excel_format', via: 'get', target: '_self'
+
 
   namespace :staff_training do
     resources :ptbudgets

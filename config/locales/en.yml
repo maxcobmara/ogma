@@ -84,7 +84,10 @@ en:
     created: " was successfully created."
     updated: " was successfully updated."
     download_excel: Download Excel
-  
+    import_excel: Import Excel
+    imported: " was/were successfully imported"
+    records: " record(s)"
+    import_failed: " - import failed "
   errors:
 
   people:
@@ -169,6 +172,15 @@ en:
     unit_not_define: Not Updated
     from: "From :"
     to: "To :"
+    import_excel: Import Staff Attendance From Excel File
+    imported: Imported
+    and: " and "
+    year_exceed: " (record(s) exceed allowed year range : "
+    year_exceed2: "Data exceed allowed year range :"
+    exist_records: " (record(s) already exist)"
+    exist_records2: "Record(s) already exist :"
+    log_in: Log In
+    log_out: Log Out
 
   asset:
     title: Assets

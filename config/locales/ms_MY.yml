@@ -60,6 +60,10 @@ ms_MY:
     created: " telah berjaya disimpan."
     updated: " telah berjaya dikemaskini."
     download_excel: Muatturun Fail Excel
+    import_excel: Import Excel
+    imported: " telah berjaya diimport"
+    records: " rekod"
+    import_failed: " gagal diimport"
     
   errors:
 
@@ -146,6 +150,14 @@ ms_MY:
     unit_not_define: Belum Dikemaskini
     from: "Dari :"
     to: "Hingga :"
+    import_excel: Import Kedatangan Staf Dari Fail Excel
+    and: " dan "
+    year_exceed: " (di luar julat tahun yang dibenarkan : "
+    year_exceed2: "Data di luar julat tahun yang dibenarkan :"
+    exist_records: " (rekod telah wujud)"
+    exist_records2: "Rekod telah wujud:"
+    log_in: Log Masuk
+    log_out: Log Keluar
 
   asset:
     title: Aset

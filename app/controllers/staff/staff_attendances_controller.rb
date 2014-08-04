@@ -29,7 +29,34 @@ class Staff::StaffAttendancesController < ApplicationController
       format.xml  { render :xml => @staff_attendances }
     end
   end
-
+   
+  #start - import excel
+  def import_excel
+  end
+  
+  def import
+      a=StaffAttendance.import(params[:file]) 
+      msg=StaffAttendance.messages(a)     
+      if a[:sye].count>0 || a[:ser].count>0
+	@invalid_year = a[:sye]
+	@exist_records = a[:ser]
+        respond_to do |format|
+          flash[:notice] = msg
+          format.html { render action: 'import_excel' }
+          flash.discard
+        end
+      else
+	respond_to do |format|
+	  format.html {redirect_to staff_staff_attendances_url, notice: msg}
+	end
+      end
+  end
+  
+  def download_excel_format
+    send_file ("#{::Rails.root.to_s}/public/excel_format/staff_attendance_import.xls")
+  end
+  #end - import excel
+  
   # GET /staff_attendances/1
   # GET /staff_attendances/1.xml
   def show
