@@ -15,6 +15,9 @@ class Employgrade < ActiveRecord::Base
     "#{name}  (#{booboo})"
   end
   
+  def gred_no
+    "#{name[1,2]}"
+  end
   
   GROUP = [
        [ "Pengurusan & Professional", 1 ],

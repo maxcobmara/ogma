@@ -2,25 +2,27 @@ class StaffAttendance < ActiveRecord::Base
   include Spreadsheet2
   
   # befores, relationships, validations, before logic, validation logic, 
-  #controller searches, variables, lists, relationship checking
+  # controller searches, variables, lists, relationship checking
   belongs_to :attended, :class_name => 'Staff', :foreign_key => 'thumb_id', :primary_key => 'thumb_id'
   belongs_to :approver, :class_name => 'Staff', :foreign_key => 'approved_by'
   
-  attr_accessor :userid, :checktime, :checktype, :name, :birthday	#from excel
+  attr_accessor :userid, :checktime, :checktype, :name, :birthday, :defaultdeptid, :deptid, :deptname	#from excel
   
   #validates_presence_of :reason
   
   def self.import(file) 
     spreadsheet = Spreadsheet2.open_spreadsheet(file)  				#open/read excel file
-    result = Spreadsheet2.update_attendance(spreadsheet)				#update attendance record
-    Spreadsheet2.update_thumb_id(spreadsheet)						#update thumb_id
+    result = Spreadsheet2.update_attendance(spreadsheet)				#update attendance record - table : staff_attendances
+    staff_dept = Spreadsheet2.update_thumb_id(spreadsheet)			#update thumb_id - table : staffs & return staff_id & deptid
+    dept_list = Spreadsheet2.load_dept(spreadsheet)					#load department id & names fr excel {1: "KSKB",2: "Pengurusan Pentadbiran"}
+    Spreadsheet2.match_dept_unit(staff_dept,dept_list)
     return result
   end
   
   def self.messages(import_result) 
     Spreadsheet2.msg_import(import_result)
   end
-  
+   
   # define scope
   def self.keyword_search(query) 
     thumb_ids=StaffAttendance.get_thumb_ids_unit_names(1)
@@ -28,8 +30,8 @@ class StaffAttendance < ActiveRecord::Base
     
     #where('thumb_id IN(?) and logged_at >? and logged_at<?', all_thumb_ids, '2012-09-30','2012-11-01')  	#not working
     #where('thumb_id IN(?)',  thumb_ids[query.to_i])												#best working one
-    #where(thumb_id: query)																#working one
-    #where('thumb_id IN(?)', [756,757]) if query=='1'											#also works nicely
+    #where(thumb_id: query)																	#working one
+    #where('thumb_id IN(?)', [756,757]) if query=='1'												#also works nicely
   end
 
   # whitelist the scope
@@ -38,7 +40,10 @@ class StaffAttendance < ActiveRecord::Base
   end
 
   def self.staff_with_unit_groupbyunit
-    Staff.joins(:positions).where('unit is not null and unit!=?',"").group_by{|x|x.positions.first.unit}
+    #Staff.joins(:positions).where('unit is not null and unit!=?',"").group_by{|x|x.positions.first.unit}
+    #Staff.joins(:positions).where('unit is not null and unit!=?',"").order('positions.combo_code ASC').group_by{|x|x.positions.first.unit}
+    #Staff.joins(:positions,:staffgrade).where('unit is not null and unit!=?',"").order('group_id, positions.combo_code ASC').group_by{|x|x.positions.first.unit}	#best ever
+    Staff.joins(:positions,:staffgrade).where('unit is not null and unit!=?',"").sort_by{|u|u.staffgrade.gred_no}.reverse!.group_by{|x|x.positions.first.unit} #better
   end
   
   def self.get_thumb_ids_unit_names(val)
@@ -61,7 +66,7 @@ class StaffAttendance < ActiveRecord::Base
     return uname if val==2
     return uname_thmb if val==3
   end 
-      
+  
   def self.is_controlled
     find(:all, :order => 'logged_at DESC', :limit => 10000)
   end
