@@ -14,6 +14,9 @@
 
 .row.filter{style: "display:none;"}
   .col-md-2
+/=@unit_names
+/%br
+/=@thumb_ids
 
 .row
   %table.table-striped.table-hover.ogma
@@ -34,15 +37,17 @@
         - @ooo.each do |date, staff_attendances|       
           /create new array (& group by unit) for every new date
           - @groupped_sa = Array.new(@thumb_ids.count) { Array.new }
-          - staff_attendances.each do |sas|     
+          - staff_attendances.each do |sas|    
             - @thumb_ids.each_with_index do |tis,index|
               - if tis.include?(sas.thumb_id)
-                - @groupped_sa[index]<<sas   
+                - @groupped_sa[index]<<sas
+
           /display date
           %tr
             %td{:colspan=>"9", :style=>"font-weight: bold; background-color: #D8D8D8;"}
               = t 'staff_attendance.date'
               =date.to_date.try(:strftime, "%d %b %Y")
+ 
           /display unit & its corresponding staff attendances
           - @groupped_sa.each_with_index do |g_sa,ind|
             - if g_sa.count>0 || (g_sa.count==0 &&(params[:q]==nil || (params[:q][:keyword_search]==nil)))  

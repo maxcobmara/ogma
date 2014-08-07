@@ -50,17 +50,17 @@ class Staff < ActiveRecord::Base
   #validates_attachment_size         :photo, :less_than => 500.kilobytes
   #validates_attachment_content_type :photo, :content_type => ['image/jpeg', 'image/png']
  #---------------Validations------------------------------------------------
- validates :icno, presence: true, numericality: true, length: { is: 12 }, uniqueness: true
+# validates :icno, presence: true, numericality: true, length: { is: 12 }, uniqueness: true							#temp remark-staff attendance-5Aug2014  staff_nothumb.save! will fail
   #validates_numericality_of :icno#, :kwspcode
   #validates_length_of       :icno, :is =>12
-  validates_presence_of     :name, :coemail, :code, :appointdt #appointment date must exist be4 can apply leave
-  validates_uniqueness_of   :fileno, :coemail, :code
+  #validates_presence_of     :name, :coemail, :code, :appointdt #appointment date must exist be4 can apply leave		#temp remark-staff attendance-5Aug2014
+  #validates_uniqueness_of   :fileno, :coemail, :code														#temp remark-staff attendance-5Aug2014
   #validates_format_of       :name, :with => /^[a-zA-Z'`\/\.\@\ ]+$/, :message => I18n.t('activerecord.errors.messages.illegal_char') #add allowed chars between bracket
-  validates_presence_of     :cobirthdt, :addr, :poskod_id, :staffgrade_id, :statecd, :country_cd, :fileno
+ # validates_presence_of     :cobirthdt, :addr, :poskod_id, :staffgrade_id, :statecd, :country_cd, :fileno					#temp remark-staff attendance-5Aug2014
   #validates_length_of      :cooftelno, :is =>10
   #validates_length_of      :cooftelext, :is =>5
-  validates_length_of       :addr, :within => 1..180,:too_long => "Address Too Long"
-  validate :coemail, format: { with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\Z/i, :message => I18n.t('activerecord.errors.messages.invalid') }
+  #validates_length_of       :addr, :within => 1..180,:too_long => "Address Too Long"								#temp remark-staff attendance-5Aug2014
+  #validate :coemail, format: { with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\Z/i, :message => I18n.t('activerecord.errors.messages.invalid') }		#temp remark-staff attendance-5Aug2014
                                
   
 

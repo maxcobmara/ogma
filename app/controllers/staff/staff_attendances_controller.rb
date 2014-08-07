@@ -15,8 +15,14 @@ class Staff::StaffAttendancesController < ApplicationController
       @all_thumb_ids+= thumb_ids
     end  
 
+    #load & match department - note thumb_id sama, but dept -> unit name in positions
+    
+    #dept_list = Spreadsheet2.load_department(spreadsheet)
+    #@dept_list=StaffAttendance.departments
+	
     @search = StaffAttendance.search(params[:q])
     @staff_attendances2 = @search.result
+    
     #hack for ALL unit
     if params[:q]==nil || (params[:q][:keyword_search]==nil)
       @staff_attendances2 = @staff_attendances2.where('logged_at >? and logged_at<? and thumb_id IN(?)','2012-09-30','2012-11-01',@all_thumb_ids)
