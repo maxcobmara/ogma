@@ -110,7 +110,7 @@
                     = image_tag("tick.png")
                     
           /display unit name for non-exist sa
-          - if @hula == @last_person_oftheday
+          - if @hula == @last_person_oftheday && (params[:q]==nil || (params[:q][:keyword_search]==nil))
             - @groupped_sa_fornodata=Array.new(@thumb_ids.count) { Array.new }
             - @group_sa_current_date.each do |stfa|
               - @thumb_ids.each_with_index do |tis,index|

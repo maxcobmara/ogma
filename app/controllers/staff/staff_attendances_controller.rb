@@ -22,11 +22,6 @@ class Staff::StaffAttendancesController < ApplicationController
     if params[:q]==nil || (params[:q][:keyword_search]==nil)
       @staff_attendances2 = @staff_attendances2.where('logged_at >? and logged_at<? and thumb_id IN(?)','2012-09-30','2012-11-01',@all_thumb_ids)
     end
-
-    #@lookup2={}
-    #@thumb_ids.each_with_index do |unit, ind|		#unit shall contains collection of thumb ids in each unit
-	#@lookup2[unit]=ind						# [1,2,3,4]
-    #end
     
     @groupped_by_date = @staff_attendances2.group_by{|r|r.group_by_thingy}	#Active Records : relations
     @lookup={}
