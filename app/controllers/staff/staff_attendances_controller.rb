@@ -14,11 +14,6 @@ class Staff::StaffAttendancesController < ApplicationController
     @thumb_ids.each do |thumb_ids|
       @all_thumb_ids+= thumb_ids
     end  
-
-    #load & match department - note thumb_id sama, but dept -> unit name in positions
-    
-    #dept_list = Spreadsheet2.load_department(spreadsheet)
-    #@dept_list=StaffAttendance.departments
 	
     @search = StaffAttendance.search(params[:q])
     @staff_attendances2 = @search.result
@@ -27,9 +22,36 @@ class Staff::StaffAttendancesController < ApplicationController
     if params[:q]==nil || (params[:q][:keyword_search]==nil)
       @staff_attendances2 = @staff_attendances2.where('logged_at >? and logged_at<? and thumb_id IN(?)','2012-09-30','2012-11-01',@all_thumb_ids)
     end
-    @staff_attendances = @staff_attendances2.order(logged_at: :desc,thumb_id: :asc).page(params[:page]||1)
+
+    #@lookup2={}
+    #@thumb_ids.each_with_index do |unit, ind|		#unit shall contains collection of thumb ids in each unit
+	#@lookup2[unit]=ind						# [1,2,3,4]
+    #end
+    
+    @groupped_by_date = @staff_attendances2.group_by{|r|r.group_by_thingy}	#Active Records : relations
+    @lookup={}
+    @all_thumb_ids.each_with_index do |item, index|
+	@lookup[item]=index
+    end
+    @dategroup_then_unit=[]
+    @groupped_by_date.each do |date2,sas2|
+      sort_unit=sas2.sort_by{|item2| @lookup.fetch(item2.thumb_id)}
+      @dategroup_then_unit<< sort_unit
+    end
+    @keluar_balik=[]
+    @dategroup_then_unit.each do |sorted_date|
+	sorted_date.each do |sorted_unit|
+	  @keluar_balik<< sorted_unit
+	end
+    end
+        
+    @staff_attendances = Kaminari.paginate_array(@keluar_balik).page(params[:page]||1)    
     @ooo = @staff_attendances.group_by {|t| t.group_by_thingy }
-   
+
+    #Normal Array (diff fr @gropped_by_date)
+    #group all attendances by DATE first for use - to determine last SA record of the day
+    @group_sa_by_day=@keluar_balik.group_by{|t|t.group_by_thingy}	
+    
     respond_to do |format|
       format.html # index.html.erb
       format.xml  { render :xml => @staff_attendances }

@@ -40,10 +40,10 @@ class StaffAttendance < ActiveRecord::Base
   end
 
   def self.staff_with_unit_groupbyunit
-    #Staff.joins(:positions).where('unit is not null and unit!=?',"").group_by{|x|x.positions.first.unit}
+    Staff.joins(:positions).where('unit is not null and unit!=?',"").group_by{|x|x.positions.first.unit}
     #Staff.joins(:positions).where('unit is not null and unit!=?',"").order('positions.combo_code ASC').group_by{|x|x.positions.first.unit}
     #Staff.joins(:positions,:staffgrade).where('unit is not null and unit!=?',"").order('group_id, positions.combo_code ASC').group_by{|x|x.positions.first.unit}	#best ever
-    Staff.joins(:positions,:staffgrade).where('unit is not null and unit!=?',"").sort_by{|u|u.staffgrade.gred_no}.reverse!.group_by{|x|x.positions.first.unit} #better
+    #Staff.joins(:positions,:staffgrade).where('unit is not null and unit!=?',"").sort_by{|u|u.staffgrade.gred_no}.reverse!.group_by{|x|x.positions.first.unit} #better
   end
   
   def self.get_thumb_ids_unit_names(val)
@@ -66,7 +66,9 @@ class StaffAttendance < ActiveRecord::Base
     return uname if val==2
     return uname_thmb if val==3
   end 
-  
+  def ttt
+    [749, 747, 752, 748, 825, 8945, 835, 35366, 35360, 774, 756, 757, 758, 35362, 769, 763, 766, 839, 759, 762, 35178, 803, 820, 822, 800, 8919, 848, 791, 793, 817, 0, 805, 761, 765, 721, 35180, 35177, 35198, 35201, 798, 830, 778, 819, 828]
+  end
   def self.is_controlled
     find(:all, :order => 'logged_at DESC', :limit => 10000)
   end
@@ -198,24 +200,26 @@ class StaffAttendance < ActiveRecord::Base
   end
   
   def r_u_late
-    mins = logged_at.min.to_s
-		#---
-		#shift = Staff.find(:first, :conditions => ['thumb_id=?',thumb_id]).staff_shift_id 
-		#if shift != nil
-		  #shift_start = StaffShift.find(shift).start_at
-		  #starting_time = (shift_start.strftime('%H').to_i * 100) + shift_start.strftime('%M').to_i
-		#else
-		  #starting_time = 830
-		#end
-		#---
-    if mins.size == 1
-      mins = "0" + mins
-    end
-    timmy = ((logged_at.hour - 8).to_s + mins).to_i
-    if timmy > starting_shift && self.trigger != false    #if timmy > starting_time && self.trigger != false  #if timmy > 830 && self.trigger != false
-      "flag"
-    else 
-    end
+    if log_type=="I"
+	mins = logged_at.min.to_s
+		    #---
+		    #shift = Staff.find(:first, :conditions => ['thumb_id=?',thumb_id]).staff_shift_id 
+		    #if shift != nil
+			#shift_start = StaffShift.find(shift).start_at
+			#starting_time = (shift_start.strftime('%H').to_i * 100) + shift_start.strftime('%M').to_i
+		    #else
+			#starting_time = 830
+		    #end
+		    #---
+	if mins.size == 1
+	  mins = "0" + mins
+	end
+	timmy = ((logged_at.hour - 0).to_s + mins).to_i			#timmy = ((logged_at.hour - 8).to_s + mins).to_i
+	if timmy > starting_shift && self.trigger != false    #if timmy > starting_time && self.trigger != false  #if timmy > 830 && self.trigger != false
+	  "flag"
+	else 
+	end
+    end	#end for log_type=="I"
   end
   
   def r_u_early
@@ -356,6 +360,7 @@ class StaffAttendance < ActiveRecord::Base
       #timmy_jam = ((logged_at.in_time_zone('UTC').strftime('%H')).to_i)-0 #logged_at.hour.to_s
       timmy_minutes = mins.to_i
       ##*****
+                #=h sa.logged_at.in_time_zone('UTC').strftime('%l:%M %P')
       timmy = (logged_at.in_time_zone('UTC').strftime('%H%M')).to_i   #giving this format 1800 @ #0840 -> 840
       #note : (below) - previously using 24-hours format
       if timmy < ending_shift && self.trigger != false #&& timmy2 < 0  #(&& timmy2 < 0)to work with logout at time after 12:00 midnight --> 00:00hrs
@@ -369,9 +374,9 @@ class StaffAttendance < ActiveRecord::Base
           if jam_diff > 0 && minit_diff <= 0 
               early = "#{jam_diff} hours"
           elsif jam_diff > 0 && minit_diff > 0 
-              early = "#{jam_diff} hours #{minit_diff} minutes"
+              early = "#{jam_diff} hours #{minit_diff} minutes"+timmy.to_s+ timmy_jam.to_s+timmy_minutes.to_s
           elsif minit_diff > 0 && jam_diff <= 0
-              early ="#{minit_diff} minutes"
+              early ="#{minit_diff} minutes" 
           end
 
           early

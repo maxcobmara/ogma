@@ -17,6 +17,7 @@
 /=@unit_names
 /%br
 /=@thumb_ids
+/- @group_sa_by_day=@keluar_balik.group_by{|t|t.group_by_thingy}
 
 .row
   %table.table-striped.table-hover.ogma
@@ -37,20 +38,26 @@
         - @ooo.each do |date, staff_attendances|       
           /create new array (& group by unit) for every new date
           - @groupped_sa = Array.new(@thumb_ids.count) { Array.new }
-          - staff_attendances.each do |sas|    
+         
+          /for displaying name of unit without attendance data
+          - @hula= staff_attendances[staff_attendances.count-1].thumb_id
+          - @last_person_oftheday=@group_sa_by_day[date].last.thumb_id
+          - @group_sa_current_date = @group_sa_by_day[date]
+          
+          - staff_attendances.each_with_index do |sas,nos|    
             - @thumb_ids.each_with_index do |tis,index|
               - if tis.include?(sas.thumb_id)
                 - @groupped_sa[index]<<sas
-
+            
           /display date
           %tr
             %td{:colspan=>"9", :style=>"font-weight: bold; background-color: #D8D8D8;"}
               = t 'staff_attendance.date'
               =date.to_date.try(:strftime, "%d %b %Y")
- 
+          
           /display unit & its corresponding staff attendances
           - @groupped_sa.each_with_index do |g_sa,ind|
-            - if g_sa.count>0 || (g_sa.count==0 &&(params[:q]==nil || (params[:q][:keyword_search]==nil)))  
+            - if g_sa.count>0 
               %tr
                 %td{:colspan=>"9",:style=>"color: green;font-weight: bold;"}
                   = t 'staff_attendance.unit'
@@ -101,12 +108,27 @@
                     = check_box_tag "ignores[]", sa.id
                   - elsif sa.trigger == false
                     = image_tag("tick.png")
+                    
+          /display unit name for non-exist sa
+          - if @hula == @last_person_oftheday
+            - @groupped_sa_fornodata=Array.new(@thumb_ids.count) { Array.new }
+            - @group_sa_current_date.each do |stfa|
+              - @thumb_ids.each_with_index do |tis,index|
+                - if tis.include?(stfa.thumb_id)
+                  - @groupped_sa_fornodata[index]<< stfa
+            - @groupped_sa_fornodata.each_with_index do |g_sa2,ind2|
+              - if g_sa2.count == 0              
+                %tr
+                  %td{:colspan=>"9",:style=>"color: green;font-weight: bold;"}
+                    = t 'staff_attendance.unit'
+                    = @unit_names[ind2]
+
        
         %tr
           %td{:colspan=>"4"} &nbsp;
           %td{:colspan=>"2"}= submit_tag "save action"
           %td{:colspan=>"3"}
-        		
+                        
   .right{style:"padding:0 30px; margin:0;"}= paginate @staff_attendances, :theme => 'twitter-bootstrap-3'
 
 :javascript
