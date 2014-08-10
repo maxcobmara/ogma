@@ -26,10 +26,11 @@ class StaffAttendance < ActiveRecord::Base
   # define scope
   def self.keyword_search(query) 
     thumb_ids=StaffAttendance.get_thumb_ids_unit_names(1)
-    where('thumb_id IN(?) and logged_at >? and logged_at<?',  thumb_ids[query.to_i],'2012-09-30','2012-11-01') 
+    #where('thumb_id IN(?) and logged_at >? and logged_at<?',  thumb_ids[query.to_i],'2012-09-30','2012-11-01') 
+    where('thumb_id IN(?)',  thumb_ids[query.to_i])
     
-    #where('thumb_id IN(?) and logged_at >? and logged_at<?', all_thumb_ids, '2012-09-30','2012-11-01')  	#not working
-    #where('thumb_id IN(?)',  thumb_ids[query.to_i])												#best working one
+    #where('thumb_id IN(?) and logged_at >? and logged_at<?', all_thumb_ids, '2012-09-30','2012-11-01')  		#not working
+    #where('thumb_id IN(?)',  thumb_ids[query.to_i])													#best working one
     #where(thumb_id: query)																	#working one
     #where('thumb_id IN(?)', [756,757]) if query=='1'												#also works nicely
   end

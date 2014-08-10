@@ -18,7 +18,11 @@
 /%br
 /=@thumb_ids
 /- @group_sa_by_day=@keluar_balik.group_by{|t|t.group_by_thingy}
-
+/-  @groupped_by_date.sort.reverse.each do |dd|
+/  %br=dd[0]
+/=@staff_attendances2.count
+/=@startdate
+/=@enddate
 .row
   %table.table-striped.table-hover.ogma
     %thead

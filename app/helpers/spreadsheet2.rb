@@ -64,12 +64,30 @@ module Spreadsheet2
       dept_excel = row2["defaultdeptid"].to_i
       
       #insert thumb_id for staff with no thumb_id 
-      staff_nothumb = Staff.where('thumb_id is null and name ILIKE ?', "%#{name_excel}%").first		
-      if staff_nothumb.nil? == false && birthday_excel
-	staff_birthday = staff_nothumb.icno[0,6].to_s
-	if birthday_excel == staff_birthday
-	  staff_nothumb.thumb_id = thumbid_excel
-	  staff_nothumb.save!
+      staff_nothumb = Staff.where('thumb_id is null and name ILIKE ?', "%#{name_excel}%").first
+      if staff_nothumb.nil? == false && thumbid_excel
+	
+	#Method 1: Insert thumb_id (when Birthday in excel matched the 1st 6 char of icno in Staffs table) 
+	#Thumb_id won't be saved if data differs, eg: thumb_id=794 (09/01/1981 vs 810901...)
+	if birthday_excel
+	  staff_birthday = staff_nothumb.icno[0,6].to_s
+	  if birthday_excel == staff_birthday
+	    staff_nothumb.thumb_id = thumbid_excel
+	    staffsave=staff_nothumb.save!
+	  end
+	end
+    
+	#Method 2: Insert thumb_id when UNIT in Positions table exist & valid (if method 1 not applied)
+	#UNIT must exist in Positions table OR 
+	unless staffsave
+	  staff_nothumb2 = Staff.where('thumb_id is null and name ILIKE ?', "%#{name_excel}%").first
+	  position_staff_nothumb = Position.where(staff_id: staff_nothumb.id).first
+	  unit_of_staff_nothumb = position_staff_nothumb.unit if position_staff_nothumb
+	  if unit_of_staff_nothumb!=nil
+	     valid_unit = StaffAttendance.get_thumb_ids_unit_names(2).include?(unit_of_staff_nothumb)   
+	     staff_nothumb.thumb_id = thumbid_excel 
+	     staff_nothumb.save! if valid_unit 
+	  end
 	end
       end
       
