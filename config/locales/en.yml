@@ -179,6 +179,8 @@ en:
     year_exceed2: "Data exceed allowed year range :"
     exist_records: " (record(s) already exist)"
     exist_records2: "Record(s) already exist :"
+    no_user: "(record(s) : 'thumbid' has no matching user/staff)"
+    no_user2: "No matching staff / user for Thumb Id(s) : "
     log_in: Log In
     log_out: Log Out
 

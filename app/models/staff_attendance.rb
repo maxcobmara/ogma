@@ -12,8 +12,8 @@ class StaffAttendance < ActiveRecord::Base
   
   def self.import(file) 
     spreadsheet = Spreadsheet2.open_spreadsheet(file)  				#open/read excel file
-    result = Spreadsheet2.update_attendance(spreadsheet)				#update attendance record - table : staff_attendances
     staff_dept = Spreadsheet2.update_thumb_id(spreadsheet)			#update thumb_id - table : staffs & return staff_id & deptid
+    result = Spreadsheet2.update_attendance(spreadsheet)				#update attendance record - table : staff_attendances    
     dept_list = Spreadsheet2.load_dept(spreadsheet)					#load department id & names fr excel {1: "KSKB",2: "Pengurusan Pentadbiran"}
     Spreadsheet2.match_dept_unit(staff_dept,dept_list)
     return result
