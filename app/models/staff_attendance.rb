@@ -66,7 +66,16 @@ class StaffAttendance < ActiveRecord::Base
     return thmb if val==1
     return uname if val==2
     return uname_thmb if val==3
-  end 
+  end
+  
+  def self.thumb_ids_all
+    thumb_ids =  StaffAttendance.get_thumb_ids_unit_names(1)
+    all_thumb_ids = []
+    thumb_ids.each do |thumb_ids|
+      all_thumb_ids+= thumb_ids
+    end
+    all_thumb_ids
+  end
 
   def self.is_controlled
     find(:all, :order => 'logged_at DESC', :limit => 10000)
