@@ -20,13 +20,12 @@ class Staff::StaffAttendancesController < ApplicationController
     
     #hack for ALL unit
     if params[:q]==nil || (params[:q][:keyword_search]==nil)
-      @staff_attendances2 = @staff_attendances2.where('logged_at >? and logged_at<? and thumb_id IN(?)','2012-09-30','2012-11-01',@all_thumb_ids)
+      #@staff_attendances2 = @staff_attendances2.where('logged_at >? and logged_at<? and thumb_id IN(?)','2012-09-30','2012-11-01',@all_thumb_ids)
+      #@staff_attendances2 = StaffAttendance.where('logged_at >? and logged_at<? and thumb_id IN(?)','2012-12-31','2014-12-01', @all_thumb_ids)
+      @startdate = (Date.today.end_of_year-3.year).strftime('%Y-%m-%d')		#'2011-12-31'
+      @enddate = (Date.today+1.day).strftime('%Y-%m-%d')				#'2014-08-10'					
+      @staff_attendances2 = @staff_attendances2.where('logged_at >? and logged_at<? and thumb_id IN(?)',@startdate,@enddate,@all_thumb_ids)
     end
-
-    #@lookup2={}
-    #@thumb_ids.each_with_index do |unit, ind|		#unit shall contains collection of thumb ids in each unit
-	#@lookup2[unit]=ind						# [1,2,3,4]
-    #end
     
     @groupped_by_date = @staff_attendances2.group_by{|r|r.group_by_thingy}	#Active Records : relations
     @lookup={}
@@ -34,7 +33,7 @@ class Staff::StaffAttendancesController < ApplicationController
 	@lookup[item]=index
     end
     @dategroup_then_unit=[]
-    @groupped_by_date.each do |date2,sas2|
+    @groupped_by_date.sort.reverse.each do |date2,sas2|
       sort_unit=sas2.sort_by{|item2| @lookup.fetch(item2.thumb_id)}
       @dategroup_then_unit<< sort_unit
     end
@@ -65,9 +64,10 @@ class Staff::StaffAttendancesController < ApplicationController
   def import
       a=StaffAttendance.import(params[:file]) 
       msg=StaffAttendance.messages(a)     
-      if a[:sye].count>0 || a[:ser].count>0
+      if a[:sye].count>0 || a[:ser].count>0 || a[:snu].count>0
 	@invalid_year = a[:sye]
 	@exist_records = a[:ser]
+	@no_user = a[:snu]
         respond_to do |format|
           flash[:notice] = msg
           format.html { render action: 'import_excel' }

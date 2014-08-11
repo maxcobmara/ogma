@@ -156,6 +156,8 @@ ms_MY:
     year_exceed2: "Data di luar julat tahun yang dibenarkan :"
     exist_records: " (rekod telah wujud)"
     exist_records2: "Rekod telah wujud:"
+    no_user: "(data 'thumbid' : tiada pengguna / staf yang sepadan)"
+    no_user2: "Tiada Pengguna / Staf sepadan bagi data Thumb Id  : "
     log_in: Log Masuk
     log_out: Log Keluar
 

@@ -59,3 +59,24 @@
             - else
               = t 'staff_attendance.log_in'
 %br
+- if @no_user && @no_user.count>0
+  %h5{:style => "color: red; font-weight: bold;"}=t 'staff_attendance.no_user2'
+  %table.table-striped.table-hover.ogma{:style => "width: 60%; "}
+    %thead
+      %tr
+        %th &nbsp;
+        %th= t 'staff_attendance.thumb_ id'
+        %th= t 'staff_attendance.logged_at'
+        %th= t 'staff_attendance.log_type'
+    %tbody
+      - @no_user.each_with_index do |nu,index3|
+        %tr
+          %td= index3+1
+          %td= nu.userid.to_i
+          %td= nu.checktime
+          %td
+            - if nu.checktype == "O" || nu.checktype == "o"
+              = t 'staff_attendance.log_out'
+            - else
+              = t 'staff_attendance.log_in'
+%br

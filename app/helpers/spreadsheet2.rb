@@ -9,46 +9,8 @@ module Spreadsheet2
     end
   end 
   
-  #import staff attendance from excel - sheet name: 'CHECKINOUT' (userid, checktime, checktype)
-  def self.update_attendance(spreadsheet)  
-    spreadsheet.default_sheet = 'CHECKINOUT'
-    header = spreadsheet.row(1) 
-    sa_exist=[]
-    sa_ye=[]
-    sa_recs=[]
-    (2..spreadsheet.last_row).each do |i|
-      row = Hash[[header, spreadsheet.row(i)].transpose] 
-      le_date = row["checktime"].split(" ")[0].split("/")
-      le_year = le_date[2].to_i
-      le_month = le_date[1].to_i
-      le_day = le_date[0].to_i
-      le_time = row["checktime"].split(" ")[1].split(":")
-      le_hour = le_time[0].to_i
-      le_minute = le_time[1].to_i
-      le_second = le_time[2].to_i
-      if le_year>=Date.today.year-2
-	  logged_excel = DateTime.new(le_year,le_month,le_day,le_hour,le_minute,le_second).strftime('%Y-%m-%d %H:%M:%S')
-	  staff_attendance = StaffAttendance.where(thumb_id: row["userid"].to_i, logged_at: logged_excel).first || StaffAttendance.new
-	  if staff_attendance.id.nil? || staff_attendance.id.blank?
-	    staff_attendance.logged_at = logged_excel
-	    staff_attendance.thumb_id = row["userid"].to_i    
-	    staff_attendance.log_type = row["checktype"]
-	    staff_attendance.save!
-	    sa_recs << staff_attendance
-	  else
-	    staff_attendance.attributes = row.to_hash.slice("userid","checktime","checktype")
-	    sa_exist << staff_attendance
-	  end
-      else
-	  sa_yex=StaffAttendance.new
-	  sa_yex.attributes = row.to_hash.slice("userid","checktime","checktype")
-	  sa_ye << sa_yex
-      end
-    end
-    result={:sas=>sa_recs, :ser=>sa_exist, :sye=>sa_ye}
-  end  
-  
-  #import (update) thumb_id from excel & collect staff_id & dept_id - sheet name: 'USERINFO' (userid, name, birthday, defaultdeptid)
+   
+  #1-import (update) thumb_id from excel & collect staff_id & dept_id - sheet name: 'USERINFO' (userid, name, birthday, defaultdeptid)
   def self.update_thumb_id(spreadsheet)
     userinfo_sheet = spreadsheet.sheet('USERINFO')
     header2 = userinfo_sheet.row(1)
@@ -64,12 +26,30 @@ module Spreadsheet2
       dept_excel = row2["defaultdeptid"].to_i
       
       #insert thumb_id for staff with no thumb_id 
-      staff_nothumb = Staff.where('thumb_id is null and name ILIKE ?', "%#{name_excel}%").first		
-      if staff_nothumb.nil? == false && birthday_excel
-	staff_birthday = staff_nothumb.icno[0,6].to_s
-	if birthday_excel == staff_birthday
-	  staff_nothumb.thumb_id = thumbid_excel
-	  staff_nothumb.save!
+      staff_nothumb = Staff.where('thumb_id is null and name ILIKE ?', "%#{name_excel}%").first
+      if staff_nothumb.nil? == false && thumbid_excel
+	
+	#Method 1: Insert thumb_id (when Birthday in excel matched the 1st 6 char of icno in Staffs table) 
+	#Thumb_id won't be saved if data differs, eg: thumb_id=794 (09/01/1981 vs 810901...)
+	if birthday_excel
+	  staff_birthday = staff_nothumb.icno[0,6].to_s
+	  if birthday_excel == staff_birthday
+	    staff_nothumb.thumb_id = thumbid_excel
+	    staffsave=staff_nothumb.save!
+	  end
+	end
+    
+	#Method 2: Insert thumb_id when UNIT in Positions table exist & valid (if method 1 not applied)
+	#UNIT must exist in Positions table OR 
+	unless staffsave
+	  staff_nothumb2 = Staff.where('thumb_id is null and name ILIKE ?', "%#{name_excel}%").first
+	  position_staff_nothumb = Position.where(staff_id: staff_nothumb.id).first
+	  unit_of_staff_nothumb = position_staff_nothumb.unit if position_staff_nothumb
+	  if unit_of_staff_nothumb!=nil
+	     valid_unit = StaffAttendance.get_thumb_ids_unit_names(2).include?(unit_of_staff_nothumb)   
+	     staff_nothumb.thumb_id = thumbid_excel 
+	     staff_nothumb.save! if valid_unit 
+	  end
 	end
       end
       
@@ -104,6 +84,56 @@ module Spreadsheet2
     end	#end for (2..userinfo_s...
     stf_dept
   end
+ 
+  #2-import staff attendance from excel - sheet name: 'CHECKINOUT' (userid, checktime, checktype)
+  def self.update_attendance(spreadsheet)  
+    spreadsheet.default_sheet = 'CHECKINOUT'
+    header = spreadsheet.row(1) 
+    sa_exist=[]
+    sa_ye=[]
+    sa_recs=[]
+    sa_nouser=[]
+    (2..spreadsheet.last_row).each do |i|
+      row = Hash[[header, spreadsheet.row(i)].transpose] 
+      le_date = row["checktime"].split(" ")[0].split("/")
+      le_year = le_date[2].to_i
+      le_month = le_date[1].to_i
+      le_day = le_date[0].to_i
+      le_time = row["checktime"].split(" ")[1].split(":")
+      le_hour = le_time[0].to_i
+      le_minute = le_time[1].to_i
+      le_second = le_time[2].to_i
+      userid_excel = row["userid"].to_i 
+      thumbid_exist = (Staff.all.pluck(:thumb_id).compact-[0]).include?(userid_excel)
+      #Conditions : 2 years before-upto current year & thumb_id must exist in STAFFs table-COMPULSORY to avoid thumprint data from being saved w/o user
+      #Note: upon 'running' Spreadsheet2.update_thumb_id(spreadsheet) will insert/update 'thumb_id' in Staffs table as of 'USERINFO' worksheet)
+      if le_year>=Date.today.year-2  
+	  if thumbid_exist
+	      logged_excel = DateTime.new(le_year,le_month,le_day,le_hour,le_minute,le_second).strftime('%Y-%m-%d %H:%M:%S') 
+	      staff_attendance = StaffAttendance.where(thumb_id: row["userid"].to_i, logged_at: logged_excel).first || StaffAttendance.new
+	      if staff_attendance.id.nil? || staff_attendance.id.blank?
+		staff_attendance.logged_at = logged_excel
+		staff_attendance.thumb_id = userid_excel  
+		staff_attendance.log_type = row["checktype"]
+		staff_attendance.save!
+		sa_recs << staff_attendance
+	      else
+		staff_attendance.attributes = row.to_hash.slice("userid","checktime","checktype")
+		sa_exist << staff_attendance
+	      end
+	  else
+	     sa_nouser_exist=StaffAttendance.new
+	     sa_nouser_exist.attributes = row.to_hash.slice("userid","checktime","checktype")
+	     sa_nouser << sa_nouser_exist
+	  end
+      else
+	  sa_yex=StaffAttendance.new
+	  sa_yex.attributes = row.to_hash.slice("userid","checktime","checktype")
+	  sa_ye << sa_yex
+      end
+    end
+    result={:sas=>sa_recs, :ser=>sa_exist, :sye=>sa_ye, :snu=>sa_nouser}
+  end  
   
   #load dept from excel - sheet name: 'DEPARTMENTS' (deptid,deptname)
   def self.load_dept(spreadsheet)
@@ -122,15 +152,25 @@ module Spreadsheet2
   #messages for import excel (success & failed)
   def self.msg_import(a)
     msg=""    
-    msg+=a[:sas].count.to_s+(I18n.t 'actions.records')+(I18n.t 'actions.imported') if a[:sas].count>0
+    #imported
+    if a[:sas].count>0
+      msg+=a[:sas].count.to_s+(I18n.t 'actions.records')+(I18n.t 'actions.imported') 
+      msg+=(I18n.t 'staff_attendance.and') if (a[:ser].count>0 || a[:sye].count>0 || a[:snu].count>0)
+    end
+    #failed : SA existed
     msg+=a[:ser].count.to_s+(I18n.t 'actions.records')+(I18n.t 'actions.import_failed')+(I18n.t 'staff_attendance.exist_records') if a[:ser].count>0
-    if (a[:sas].count>0 && a[:sye].count>0) || (a[:ser].count>0 && a[:sye].count>0)
+    if (a[:ser].count>0 && a[:sye].count>0 || a[:ser].count>0 && a[:snu].count>0)
       msg+=(I18n.t 'staff_attendance.and')
     end
+    #failed : Year exceed (current year-2)
     msg+=a[:sye].count.to_s+(I18n.t 'actions.records')+(I18n.t 'actions.import_failed')+(I18n.t 'staff_attendance.year_exceed')+"#{Date.today.year-2}-#{Date.today.year})" if a[:sye].count>0
+     if (a[:sye].count>0 && a[:ne].count>0)
+      msg+=(I18n.t 'staff_attendance.and')
+    end
+    #failed : No User registered for supplied thumb_id (in CHECKINOUT worksheet)
+    msg+=a[:snu].count.to_s+(I18n.t 'actions.records')+(I18n.t 'actions.import_failed')+(I18n.t 'staff_attendance.no_user') if a[:snu].count>0
     msg  
   end
-  
   
   # Compare, MATCH dept fr excel & update unit in positions
   def self.match_dept_unit(staffdept,deptlist)							#deptlist = {1: "KSKB", 2: "Pengurusan Pentadbiran"}
