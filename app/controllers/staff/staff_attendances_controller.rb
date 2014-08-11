@@ -9,23 +9,30 @@ class Staff::StaffAttendancesController < ApplicationController
     
     @thumb_ids =  StaffAttendance.get_thumb_ids_unit_names(1)
     @unit_names = StaffAttendance.get_thumb_ids_unit_names(2)
-
-    @all_thumb_ids = []
-    @thumb_ids.each do |thumb_ids|
-      @all_thumb_ids+= thumb_ids
-    end  
+    @all_thumb_ids = StaffAttendance.thumb_ids_all
 	
+    #Part 1 - Ransack Search
     @search = StaffAttendance.search(params[:q])
     @staff_attendances2 = @search.result
     
+    #ERROR 'Key Not Found' will arise, for EXISTING THUMBPRINT W/O matching user/staff
+    #(at line : sort_unit=sas2.sort_by{|item2| @lookup.fetch(item2.thumb_id)})
+    #(Restriction for NEW import excel already included - refer Spreadsheet2.update_thumb_id)
+    #Restrict retrieval of invalid EXISTING SA (thumbprint record w/o matching user/staff) as below line::::STAFF NOT EXIST? (for thumb_id)
+    #try hack for RANSACK result only - KSKB server not OK
+    @staff_attendances2 = @staff_attendances2.where('thumb_id IN(?)', @all_thumb_ids) if @staff_attendances2!=nil
+    #end part 1
+    
+    #Part 2 - Other than Ransack
     #hack for ALL unit
     if params[:q]==nil || (params[:q][:keyword_search]==nil)
       #@staff_attendances2 = @staff_attendances2.where('logged_at >? and logged_at<? and thumb_id IN(?)','2012-09-30','2012-11-01',@all_thumb_ids)
       #@staff_attendances2 = StaffAttendance.where('logged_at >? and logged_at<? and thumb_id IN(?)','2012-12-31','2014-12-01', @all_thumb_ids)
       @startdate = (Date.today.end_of_year-3.year).strftime('%Y-%m-%d')		#'2011-12-31'
-      @enddate = (Date.today+1.day).strftime('%Y-%m-%d')				#'2014-08-10'					
+      @enddate = (Date.today+1.day).strftime('%Y-%m-%d')				#'2014-08-10'
       @staff_attendances2 = @staff_attendances2.where('logged_at >? and logged_at<? and thumb_id IN(?)',@startdate,@enddate,@all_thumb_ids)
     end
+    #end part 2
     
     @groupped_by_date = @staff_attendances2.group_by{|r|r.group_by_thingy}	#Active Records : relations
     @lookup={}
