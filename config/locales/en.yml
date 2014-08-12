@@ -157,6 +157,10 @@ en:
     
   staff_attendance:
     title: Staff Attendance
+    new: New Staff Attendance
+    edit: Edit Staff Attendance
+    details: Staff Attendance Details
+    approval: "Late / Early Return Approval"
     flag: Flag
     thumb_id: Staff Name
     logged_in: "Logged-In"
@@ -855,6 +859,15 @@ en:
         duration: Duration
         credits: Credits
         status: Status
+      staff_attendance:
+        thumb_id: Thumb Id
+        logged_at: Logged At
+        log_type: Log Type
+        reason: Reason
+        trigger: Trigger
+        approved_by: Approved By
+        is_approved: "Approved?"
+        approved_on: Approved On
 
     prompt:
       select_creator: Select Creator
@@ -874,6 +887,8 @@ en:
       select_location: Select Location
       select_lecturer: Select Lecturer
       select_hod: "Select HOD / Approver"
+      select_thumb_id: "Select Thumb Id | Staff (Department / Unit)"
+      select_log_type: Select Log Type
       all_unit: "All Department / Unit"
       maintain: Maintain
       remove: Remove

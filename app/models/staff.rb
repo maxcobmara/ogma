@@ -66,8 +66,13 @@ class Staff < ActiveRecord::Base
 
     has_many :users
   #--------------------Declerations----------------------------------------------------
+    
     def age
       Date.today.year - cobirthdt.year unless cobirthdt == nil
+    end
+    
+    def formatted_mykad
+    "#{icno[0,6]}-#{icno[6,2]}-#{icno[-4,4]}"
     end
    
     def mykad_with_staff_name
@@ -83,7 +88,9 @@ class Staff < ActiveRecord::Base
       end
     end
     
-    
+    def thumb_id_with_name_unit
+      "#{thumb_id} |  #{name} (#{positions.first.unit})"
+    end
 end
 
 # == Schema Information

@@ -135,6 +135,10 @@ ms_MY:
        
   staff_attendance:
     title: Kedatangan Staf
+    new: Kedatangan Staf Baru
+    edit: Sunting Kedatangan Staf
+    details: Butiran Kedatangan Staf
+    approval: "Kelulusan Datang Lewat / Pulang Awal"
     flag: Flag
     thumb_id: Nama Staf
     logged_in: Masa Masuk		
@@ -832,6 +836,15 @@ ms_MY:
         duration: Jangka Masa
         credits: Kredit
         status: Status
+      staff_attendance:
+        thumb_id: Thumb Id
+        logged_at: Masa Log
+        log_type: Jenis log
+        reason: Sebab
+        trigger: Trigger
+        approved_by: Diluluskan Oleh
+        is_approved: "Diluluskan?"
+        approved_on: Tarikh Kelulusan   
 
     prompt:
       select_creator: Pilih Penyedia Soalan
@@ -851,6 +864,8 @@ ms_MY:
       select_location: Pilih Lokasi
       select_lecturer: Pilih Pengajar
       select_hod: "Pilih Ketua Jabatan / Pelulus"
+      select_thumb_id: "Pilih Thumb Id | Staf (Jabatan / Unit)"
+      select_log_type: Pilih Jenis Log
       all_unit: "Semua Jabatan / Unit"
       maintain: Dikekalkan
       remove: Dibuang

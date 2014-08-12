@@ -135,11 +135,13 @@ class Staff::StaffAttendancesController < ApplicationController
   # POST /staff_attendances
   # POST /staff_attendances.xml
   def create
-    @staff_attendance = StaffAttendance.new(params[:staff_attendance])
+    #raise params.inspect
+    @staff_attendance = StaffAttendance.new(staff_attendance_params)
 
     respond_to do |format|
       if @staff_attendance.save
-        format.html { redirect_to(@staff_attendance, :notice => 'StaffAttendance was successfully created.') }
+        #format.html { redirect_to(staff_staff_attendance, :notice => 'StaffAttendance was successfully created.') }
+	format.html {redirect_to staff_staff_attendances_url, notice: t('staff_attendance.title')+t('actions.created')}
         format.xml  { render :xml => @staff_attendance, :status => :created, :location => @staff_attendance }
       else
         format.html { render :action => "new" }

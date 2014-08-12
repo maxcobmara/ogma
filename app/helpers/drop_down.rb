@@ -345,4 +345,11 @@ module DropDown
          [ "Months",     30 ],
          [ "Years",      365 ]
     ]
+    
+    LOGTYPE = [
+	# Displayed        stored in db
+        [ I18n.t('staff_attendance.log_in'),        'I' ],
+        [ I18n.t('staff_attendance.log_out'),      'O' ]
+      ]
+    
 end
