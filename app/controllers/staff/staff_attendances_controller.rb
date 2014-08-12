@@ -11,7 +11,7 @@ class Staff::StaffAttendancesController < ApplicationController
     @unit_names = StaffAttendance.get_thumb_ids_unit_names(2)
     @all_thumb_ids = StaffAttendance.thumb_ids_all
 	
-    #Part 1 - Ransack Search
+    #Part 1 - Ransack Search 
     @search = StaffAttendance.search(params[:q])
     @staff_attendances2 = @search.result
     
@@ -25,9 +25,22 @@ class Staff::StaffAttendancesController < ApplicationController
     
     #Part 2 - Other than Ransack
     #hack for ALL unit
-    if params[:q]==nil || (params[:q][:keyword_search]==nil)
-      #@staff_attendances2 = @staff_attendances2.where('logged_at >? and logged_at<? and thumb_id IN(?)','2012-09-30','2012-11-01',@all_thumb_ids)
-      #@staff_attendances2 = StaffAttendance.where('logged_at >? and logged_at<? and thumb_id IN(?)','2012-12-31','2014-12-01', @all_thumb_ids)
+    #if params[:q]==nil  ||  (params[:q][:keyword_search]==nil)
+	#@staff_attendances2 = @staff_attendances2.where('logged_at >? and logged_at<? and thumb_id IN(?)','2012-09-30','2012-11-01',@all_thumb_ids)
+	#@staff_attendances2 = StaffAttendance.where('logged_at >? and logged_at<? and thumb_id IN(?)','2012-12-31','2014-12-01', @all_thumb_ids)
+    #end
+    #end part 2
+    
+    if params[:q]==nil  || (params[:q][:keyword_search]==nil) 
+      #part 1 : records for latest 2 months
+      #(a) From menu -> Staff | Staff Attendance | Staff Attendance
+      #(b) Search for ALL department - w/o date (result: latest 2 months)
+      @startdate = (Date.today.end_of_month-3.month).strftime('%Y-%m-%d')		#'2014-05-31'
+      @enddate = (Date.today+1.day).strftime('%Y-%m-%d')					#'2014-08-10' 
+      @staff_attendances2 = @staff_attendances2.where('logged_at >? and logged_at<? and thumb_id IN(?)',@startdate,@enddate,@all_thumb_ids)
+    elsif params[:q]!=nil && (params[:q][:keyword_search]!=nil)
+      #part 2 : records starting current date upto 2 years in reverse
+      #Search by ONE department - w/o date (result: latest 2 years)
       @startdate = (Date.today.end_of_year-3.year).strftime('%Y-%m-%d')		#'2011-12-31'
       @enddate = (Date.today+1.day).strftime('%Y-%m-%d')				#'2014-08-10'
       @staff_attendances2 = @staff_attendances2.where('logged_at >? and logged_at<? and thumb_id IN(?)',@startdate,@enddate,@all_thumb_ids)

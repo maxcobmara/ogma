@@ -66,6 +66,14 @@ ms_MY:
     import_failed: " gagal diimport"
     
   errors:
+  
+  views:
+    pagination:
+      first: Pertama
+      next: Seterusnya
+      previous: Sebelum
+      truncate: Senarai Pendek
+      last: Terakhir
 
   people:
     male: Lelaki
@@ -160,7 +168,16 @@ ms_MY:
     no_user2: "Tiada Pengguna / Staf sepadan bagi data Thumb Id  : "
     log_in: Log Masuk
     log_out: Log Keluar
-
+    excel_format: Format Excel
+    date_range1: "Carian 'Semua Jabatan / Unit' - Rekod kedatangan bagi kemasukan julat tarikh (dalam 2 bulan terakhir)"
+    date_range2: "Carian mengikut Jabatan / Unit - Rekod kedatangan bagi kemasukan julat tarikh (dalam 2 tahun terakhir)"
+    conditions: "Syarat - syarat bagi fail Excel"
+    allowed_date_range: "Julat tarikh yang dibenarkan : "
+    must_not_exist: Rekod kedatangan mestilah BELUM wujud dalam ICMS
+    must_match: "'Thumb Id' mesti mempunyai padanan Pengguna / Staf (ICMS / Fail Excel)"
+    hours: " jam "
+    minutes: " minit "
+    
   asset:
     title: Aset
     fixed: Harta Modal

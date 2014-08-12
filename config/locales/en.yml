@@ -90,6 +90,14 @@ en:
     import_failed: " - import failed "
   errors:
 
+  views:
+    pagination:
+      first: First
+      next: Next
+      previous: Previous
+      truncate: Truncate
+      last: Last
+      
   people:
     male: male
     female: female
@@ -183,7 +191,16 @@ en:
     no_user2: "No matching staff / user for Thumb Id(s) : "
     log_in: Log In
     log_out: Log Out
-
+    excel_format: Excel Format
+    date_range1: "Searching 'All Department / Unit' - Attendance records for selected date range (within the latest 2 months)"
+    date_range2: "Searching by Department / Unit - Attendance records for selected date range (within the latest 2 years)"
+    conditions: Conditions for Excel File
+    allowed_date_range: "Allowed Date Range : "
+    must_not_exist: Attendance Record must NOT exist in ICMS
+    must_match: "'Thumb Id' must have matching User / Staff (ICMS / Excel File)"
+    hours: " hours "
+    minutes: " minutes "
+    
   asset:
     title: Assets
     fixed: Fixed Assets
