@@ -156,8 +156,8 @@ class Staff::StaffAttendancesController < ApplicationController
     @staff_attendance = StaffAttendance.find(params[:id])
 
     respond_to do |format|
-      if @staff_attendance.update_attributes(params[:staff_attendance])
-        format.html { redirect_to(@staff_attendance, :notice => 'StaffAttendance was successfully updated.') }
+      if @staff_attendance.update(staff_attendance_params)
+        format.html { redirect_to(staff_staff_attendance_path(@staff_attendance), :notice => (t 'staff_attendance.title')+(t 'actions.updated'))}
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }

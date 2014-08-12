@@ -1,0 +1,17 @@
+- model_class = StaffAttendance
+.page-header
+  %h1= t 'staff_attendance.edit'
+
+= render 'shared/flashes'
+
+.row
+  = form_for [:staff, @staff_attendance],  :html => { :class => 'form-horizontal' } do |f| 
+    = render 'shared/error_messages', object: f.object
+    = render :partial => 'form', :locals => {:f => f}
+    .row
+      .form-group
+        .col-md-1.col-md-offset-2
+          = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), staff_staff_attendance_path(@staff_attendance), :class => 'btn btn-default'
+        .col-md-2
+          .div{style: "margin-left:-40px;"}
+            = f.submit t('update'), class: "btn btn-primary"

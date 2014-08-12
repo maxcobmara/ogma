@@ -162,7 +162,7 @@ en:
     details: Staff Attendance Details
     approval: "Late / Early Return Approval"
     flag: Flag
-    thumb_id: Staff Name
+    thumb_id: Staff 
     logged_in: "Logged-In"
     logged_out: "Logged-Out"
     shift: Shift
@@ -860,7 +860,7 @@ en:
         credits: Credits
         status: Status
       staff_attendance:
-        thumb_id: Thumb Id
+        thumb_id: Staff
         logged_at: Logged At
         log_type: Log Type
         reason: Reason
