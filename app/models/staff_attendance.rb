@@ -3,12 +3,26 @@ class StaffAttendance < ActiveRecord::Base
   
   # befores, relationships, validations, before logic, validation logic, 
   # controller searches, variables, lists, relationship checking
+  
+  before_save :update_trigger_isapproved
+  
   belongs_to :attended, :class_name => 'Staff', :foreign_key => 'thumb_id', :primary_key => 'thumb_id'
   belongs_to :approver, :class_name => 'Staff', :foreign_key => 'approved_by'
   
   attr_accessor :userid, :checktime, :checktype, :name, :birthday, :defaultdeptid, :deptid, :deptname	#from excel
   
   #validates_presence_of :reason
+      
+  def update_trigger_isapproved
+    if id.nil?|| id.blank? 
+      if trigger=="0" || trigger==false
+	self.trigger=nil
+      end 
+      if (is_approved=="0" || is_approved==false)
+	self.is_approved=nil
+      end
+    end
+  end  
   
   def self.import(file) 
     spreadsheet = Spreadsheet2.open_spreadsheet(file)  				#open/read excel file

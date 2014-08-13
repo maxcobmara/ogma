@@ -14,6 +14,15 @@
     .form-group
       .col-md-4.col-md-offset-2
         = link_to (t 'staff_attendance.excel_format'), '/public/excel_format/staff_attendance_import.xls', :action => 'download_excel_format'
+
+%br
+%h4=t('staff_attendance.conditions')
+%ul
+  %li 
+    =t('staff_attendance.allowed_date_range')
+    = (Date.today.end_of_year-2.year).beginning_of_year.strftime('%d %b %Y').to_s+" - "+(Date.today).strftime('%d %b %Y').to_s
+  %li=t('staff_attendance.must_not_exist')
+  %li=t('staff_attendance.must_match')
  
 %br
 - if @invalid_year &&@invalid_year.count>0

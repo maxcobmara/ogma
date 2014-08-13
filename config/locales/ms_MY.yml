@@ -66,6 +66,14 @@ ms_MY:
     import_failed: " gagal diimport"
     
   errors:
+  
+  views:
+    pagination:
+      first: Pertama
+      next: Seterusnya
+      previous: Sebelum
+      truncate: Senarai Pendek
+      last: Terakhir
 
   people:
     male: Lelaki
@@ -127,8 +135,12 @@ ms_MY:
        
   staff_attendance:
     title: Kedatangan Staf
+    new: Kedatangan Staf Baru
+    edit: Sunting Kedatangan Staf
+    details: Butiran Kedatangan Staf
+    approval: "Kelulusan Datang Lewat / Pulang Awal"
     flag: Flag
-    thumb_id: Nama Staf
+    thumb_id: Staf
     logged_in: Masa Masuk		
     logged_out: Masa Keluar
     shift: Masa Anjal
@@ -160,7 +172,16 @@ ms_MY:
     no_user2: "Tiada Pengguna / Staf sepadan bagi data Thumb Id  : "
     log_in: Log Masuk
     log_out: Log Keluar
-
+    excel_format: Format Excel
+    date_range1: "Carian 'Semua Jabatan / Unit' - Rekod kedatangan bagi kemasukan julat tarikh (dalam 2 bulan terakhir)"
+    date_range2: "Carian mengikut Jabatan / Unit - Rekod kedatangan bagi kemasukan julat tarikh (dalam 2 tahun terakhir)"
+    conditions: "Syarat - syarat bagi fail Excel"
+    allowed_date_range: "Julat tarikh yang dibenarkan : "
+    must_not_exist: Rekod kedatangan mestilah BELUM wujud dalam ICMS
+    must_match: "'Thumb Id' mesti mempunyai padanan Pengguna / Staf (ICMS / Fail Excel)"
+    hours: " jam "
+    minutes: " minit "
+    
   asset:
     title: Aset
     fixed: Harta Modal
@@ -815,6 +836,15 @@ ms_MY:
         duration: Jangka Masa
         credits: Kredit
         status: Status
+      staff_attendance:
+        thumb_id: Staf
+        logged_at: Masa Log
+        log_type: Jenis log
+        reason: Sebab
+        trigger: Trigger
+        approved_by: Diluluskan Oleh
+        is_approved: "Diluluskan?"
+        approved_on: Tarikh Kelulusan   
 
     prompt:
       select_creator: Pilih Penyedia Soalan
@@ -834,6 +864,8 @@ ms_MY:
       select_location: Pilih Lokasi
       select_lecturer: Pilih Pengajar
       select_hod: "Pilih Ketua Jabatan / Pelulus"
+      select_thumb_id: "Pilih Thumb Id | Staf (Jabatan / Unit)"
+      select_log_type: Pilih Jenis Log
       all_unit: "Semua Jabatan / Unit"
       maintain: Dikekalkan
       remove: Dibuang
