@@ -161,6 +161,9 @@ en:
     edit: Edit Staff Attendance
     details: Staff Attendance Details
     approval: "Late / Early Return Approval"
+    reject_approve: Reject or Approve
+    approve: Approve
+    reject: Reject
     flag: Flag
     thumb_id: Staff 
     logged_in: "Logged-In"
@@ -204,6 +207,24 @@ en:
     must_match: "'Thumb Id' must have matching User / Staff (ICMS / Excel File)"
     hours: " hours "
     minutes: " minutes "
+ 
+  attendance:
+    list: "Manage Lateness & Early Return"
+    new: "New Attendance (Lateness / Early Return)"
+    edit: "Edit Attendance (Lateness / Early Return)"
+    details: Attendance Details
+    late_to_approve: People Late I need to approve
+    early_return_to_approve:  "People Early (Return) I need to approve"
+    days_iam_late: Days I am Late
+    days_iam_early: "Days I am Early (Return)"
+    manage_lateness_earlyreturn: "Manage Lateness & Early Return"
+    staff_id: Staff
+    attdate: Date
+    time_in: Time In
+    time_out: Time Out
+    reason: Reason
+    approve_id: Approver
+    approvestatus: Approval Status
     
   asset:
     title: Assets
@@ -868,6 +889,14 @@ en:
         approved_by: Approved By
         is_approved: "Approved?"
         approved_on: Approved On
+      attendance:
+        staff_id: Staff
+        attdate: Date
+        time_in: Time In
+        time_out: Time Out
+        reason: Reason
+        approve_id: Approver
+        approvestatus: Approval Status
 
     prompt:
       select_creator: Select Creator

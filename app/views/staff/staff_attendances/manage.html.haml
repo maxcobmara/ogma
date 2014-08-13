@@ -1,0 +1,92 @@
+-model_class = Attendance
+.page-header
+  %h1= t('attendance.title')
+= render 'shared/flashes'
+  
+.navbar.navbar-inverse{role: "navigation", style: "padding-right:40px;"}
+  %ul.nav.navbar-nav
+    %li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'actions.new'))), new_staff_attendance_path
+  %ul.nav.navbar-nav.navbar-right
+    %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "toga"
+    %li= link_to content_tag(:li, fa_icon("print", text: (t 'actions.print'))), "#", class: 'bogus'
+
+.row
+  %table.table-striped.table-hover.ogma
+    %thead
+      %tr
+        %th=t 'attendance.attdate'		# sort_link(@search, :attdate, (t 'attendance.attdate'))
+        %th=t 'attendance.time_in'		# sort_link(@search, :time_in, (t 'attendance.time_in'))
+        %th=t 'attendance.time_out'		# sort_link(@search, :time_out, (t 'attendance.time_out'))
+        %th=t 'attendance.staff_id'		# sort_link(@search, :staff_id, (t 'attendance.staff_id'))
+        %th=t 'attendance.reason'		# sort_link(@search, :reason, (t 'attendance.reason'))
+        %th=t 'attendance.approve_id'	# sort_link(@search, :approve_id, (t 'attendance.approve_id'))
+        %th=t 'attendance.approvestatus'	# sort_link(@search, :approvestatus, (t 'attendance.approvestatus'))
+    %tbody
+      /= render "index_search"
+      %tr
+        %td{:colspan=>"7",:style=>"font-weight: bold; background-color: #D8D8D8;"}=t 'attendance.late_to_approve'
+
+      - if @approvelate_attendances.size > 0
+        - for attendance in @approvelate_attendances
+          %tr
+            %td=h attendance.logged_at.in_time_zone('UTC').strftime('%d-%m-%Y')
+            %td=h attendance.logged_at.in_time_zone('UTC').strftime('%H:%M:%S') 
+            %td &nbsp;
+            %td=h attendance.attended.name 
+            %td=h attendance.reason? ? attendance.reason : "Not Submitted Yet"
+            %td= attendance.try(:approvedby).try(:name) if attendance.is_approved == true
+            %td
+              - if attendance.reason? && attendance.is_approved == nil
+                = link_to image_tag("approval.png", :border => 0, :title => 'Approval'), :action => 'approve', :id => attendance
+              - elsif attendance.is_approved == true  
+                = image_tag("tick.png") 
+              - elsif attendance.is_approved == false  
+                = image_tag("cross.png")
+      %tr
+        %td{:colspan=>"7",:style=>"font-weight: bold; background-color: #D8D8D8;"}=t 'attendance.early_return_to_approve'
+      -  if @approveearly_attendances.size > 0
+        - for attendance in @approveearly_attendances
+          %tr
+            %td=h attendance.logged_at.in_time_zone('UTC').strftime('%d-%m-%Y')
+            %td &nbsp;
+            %td=h attendance.logged_at.in_time_zone('UTC').strftime('%H:%M:%S')
+            %td=h attendance.attended.name
+            %td=h attendance.reason? ? attendance.reason : "Not Submitted Yet"
+            %td= attendance.try(:approvedby).try(:name) if attendance.is_approved == true 
+            %td
+              - if attendance.reason? && attendance.is_approved == nil
+                = link_to image_tag("approval.png", :border => 0, :title => 'Approval'), :action => 'approve', :id => attendance
+              - elsif attendance.is_approved == true
+                = image_tag("tick.png")
+              - elsif attendance.is_approved == false
+                = image_tag("cross.png")
+        
+      %tr
+        %td{:colspan=>"7",:style=>"font-weight: bold; background-color: #D8D8D8;"}=t 'attendance.days_iam_late'
+      - for attendance in @mylate_attendances
+        %tr
+          %td=h link_to attendance.logged_at.in_time_zone('UTC').strftime('%d-%m-%Y'), :action=>'edit', :id=> attendance
+          %td=h attendance.logged_at.in_time_zone('UTC').strftime('%H:%M:%S') 
+          %td &nbsp;
+          %td &nbsp;
+          %td=h attendance.approved_by.blank? ? "Reason not submitted" : attendance.reason
+          %td=h attendance.approved_by.blank? ? "" : attendance.try(:approver).try(:staff_name_with_position)
+          %td &nbsp;
+          /- if permitted_to? :destroy, @attendance 
+          /  = link_to image_tag("delete.png", :border => 0, :title => 'Delete'), attendance, :confirm => 'Are you sure?', :method => :delete 
+
+      %tr
+        %td{:colspan=>"7",:style=>"font-weight: bold; background-color: #D8D8D8;"}=t 'attendance.days_iam_early'
+      - for attendance in @myearly_attendances
+        %tr
+          %td=h link_to attendance.logged_at.in_time_zone('UTC').strftime('%d-%m-%Y'), :action=>'edit', :id=> attendance
+          %td &nbsp;
+          %td=h attendance.logged_at.in_time_zone('UTC').strftime('%H:%M:%S') 
+          %td &nbsp;
+          %td=h attendance.approved_by.blank? ? "Reason not submitted" : attendance.reason
+          %td=h attendance.approved_by.blank? ? "" : attendance.try(:approver).try(:staff_name_with_position)
+          %td &nbsp;
+          /- if permitted_to? :destroy, @attendance 
+          /  = link_to image_tag("delete.png", :border => 0, :title => 'Delete'), attendance, :confirm => 'Are you sure?', :method => :delete 
+        
+ 

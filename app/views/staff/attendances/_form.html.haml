@@ -1,0 +1,49 @@
+.row
+  .col-md-10.col-md-offset-1
+    / Nav tabs
+    %ul.nav.nav-tabs
+      %li.active= link_to ((t 'attendance.details')),"#attendance_edit", "data-toggle" => "tab"
+
+    .tab-content{style:"padding-top:1em"}
+      #attendance_edit.tab-pane.active
+        %br
+        .col-md-offset-2
+          .form-group
+            .col-sm-2.control-label
+              = f.label :staff_id 
+            .col-md-3
+              = f.collection_select :staff_id, Staff.joins(:positions).where("thumb_id is not null and thumb_id!=? and (positions.unit is not null or positions.unit=?) ",0,"").order(name: :asc), :id, :thumb_id_with_name_unit, { :prompt => t('helpers.prompt.select_thumb_id')}, {class: 'selectpicker', "data-width"=>"320px"}
+          .form-group
+            .col-sm-2.control-label
+              = f.label :attdate
+            .col-md-3
+              = f.text_field :attdate, :class=>'date-picker2'
+          .form-group
+            .col-sm-2.control-label
+              = f.label :time_in
+            .col-md-3
+              = f.text_field :time_in, :class=>'time-picker'
+          .form-group
+            .col-sm-2.control-label
+              = f.label :time_out
+            .col-md-3
+              = f.text_field :time_out, :class=>'time-picker'
+          .form-group
+            .col-sm-2.control-label
+              = f.label :reason
+            .col-md-3
+              = f.text_area :reason, :size => "50X3"
+ 
+:javascript  
+  $('.date-picker2').datetimepicker({
+   timepicker:false,
+     format: "Y-m-d",
+     autoclose: true
+   }); 
+   
+  $('.time-picker').datetimepicker({
+   timepicker:true,
+   datepicker:false,
+     format: "H:i:s",
+     autoclose: true
+   });    

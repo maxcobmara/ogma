@@ -71,7 +71,7 @@ ms_MY:
     pagination:
       first: Pertama
       next: Seterusnya
-      previous: Sebelum
+      previous: Terdahulu
       truncate: Senarai Pendek
       last: Terakhir
 
@@ -139,6 +139,9 @@ ms_MY:
     edit: Sunting Kedatangan Staf
     details: Butiran Kedatangan Staf
     approval: "Kelulusan Datang Lewat / Pulang Awal"
+    reject_approve: Diluluskan atau Ditolak
+    approve: Diluluskan
+    reject: Ditolak
     flag: Flag
     thumb_id: Staf
     logged_in: Masa Masuk		
@@ -181,6 +184,24 @@ ms_MY:
     must_match: "'Thumb Id' mesti mempunyai padanan Pengguna / Staf (ICMS / Fail Excel)"
     hours: " jam "
     minutes: " minit "
+  
+  attendance:
+    title: "Pengurusan Datang Lambat & Pulang Awal"
+    new: "Kedatangan Baru (Datang Lambat / Pulang Awal)"
+    details: Butiran Kedatangan 
+    edit: "Sunting Kedatangan (Datang Lambat / Pulang Awal)"
+    late_to_approve: "Kelulusan Staf dalam Jabatan / Unit yang Datang Lambat"
+    early_return_to_approve:  "Kelulusan Staf dalam Jabatan / Unit yang Pulang Awal"
+    days_iam_late: "Senarai Kedatangan Lambat Datang (sendiri)"
+    days_iam_early:  "Senarai Kedatangan Pulang Awal (sendiri)"
+    manage_lateness_earlyreturn: "Pengurusan Datang Lambat & Pulang Awal"
+    staff_id: Staf
+    attdate: Tarikh
+    time_in: Masa Datang
+    time_out: Masa Pulang
+    reason: Sebab
+    approve_id: Pelulus
+    approvestatus: Status Kelulusan
     
   asset:
     title: Aset
@@ -844,7 +865,15 @@ ms_MY:
         trigger: Trigger
         approved_by: Diluluskan Oleh
         is_approved: "Diluluskan?"
-        approved_on: Tarikh Kelulusan   
+        approved_on: Tarikh Kelulusan
+      attendance:
+        staff_id: Staf
+        attdate: Tarikh
+        time_in: Masa Datang
+        time_out: Masa Pulang
+        reason: Sebab
+        approve_id: Pelulus
+        approvestatus: Status Kelulusan
 
     prompt:
       select_creator: Pilih Penyedia Soalan

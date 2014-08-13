@@ -1,0 +1,62 @@
+- model_class = StaffAttendance
+.page-header
+  %h1= t 'staff_attendance.approval'
+= render 'shared/flashes'
+
+.row
+  = form_for [:staff, @staff_attendance],  :html => { :class => 'form-horizontal' } do |f| 
+    = render 'shared/error_messages', object: f.object
+ 
+    .col-md-10.col-md-offset-1
+      / Nav tabs
+      %ul.nav.nav-tabs
+        %li.active= link_to ((t 'staff_attendance.details')),"#staff_attendance_details", "data-toggle" => "tab"
+        %li=link_to ((t 'staff_attendance.approval')),"#staff_attendance_approval", "data-toggle" => "tab"
+
+      .tab-content{style:"padding-top:1em"}
+        #staff_attendance_details.tab-pane.active
+          = render :partial => 'show', :locals => {:f => f}
+        #staff_attendance_approval.tab-pane
+          %br
+          .col-md-offset-2
+            .form-group
+              .col-sm-2.control-label
+                =t 'staff_attendance.reject_approve'
+              .col-md-3
+                = t 'staff_attendance.approve'
+                = f.radio_button :is_approved,'true' , :id => 'approval_true' , :class => 'radio_approve'
+                = t 'staff_attendance.reject'
+                = f.radio_button :is_approved,'false', :id => 'approval_false', :class => 'radio_approve'
+          .col-md-offset-2
+            .form-group
+              .col-sm-2.control-label         
+                &nbsp;
+              .col-md-3
+                %p.approve_time{:style=>"display: none;"}
+                  On:
+                  = f.text_field :approved_on, :class=>'date-picker2'
+                
+    .row
+      .form-group
+        .col-md-1.col-md-offset-2
+          = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), staff_staff_attendance_path(@staff_attendance), :class => 'btn btn-default'
+        .col-md-2
+          .div{style: "margin-left:-40px;"}
+            = f.submit t('update'), class: "btn btn-primary"		 
+
+:javascript  
+
+  $('.date-picker2').datetimepicker({
+   timepicker:false,
+     format: "Y-m-d",
+     autoclose: true
+   });    
+
+  /below - nt working yet
+  $(document).ready(function(){ 
+    $('.radio_approve').change(function() {  
+      $('.approve_time').show();  
+       });
+    });
+
+
