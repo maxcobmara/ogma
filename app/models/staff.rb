@@ -91,6 +91,19 @@ class Staff < ActiveRecord::Base
     def thumb_id_with_name_unit
       "#{thumb_id} |  #{name} (#{positions.first.unit})"
     end
+      
+    def staff_name_with_position
+      "#{name}  (#{position_for_staff})"
+    end
+    
+    def position_for_staff
+      if positions.blank?
+        "-"
+      else
+        positions[0].name
+      end
+    end
+
 end
 
 # == Schema Information

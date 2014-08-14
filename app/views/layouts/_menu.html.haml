@@ -9,13 +9,13 @@
         %ul
           %li= link_to "Staff Information", staff_infos_path
           %li.icon.icon-left
-            = link_to "Staff Attendance", '#'
+            = link_to t('staff_attendance.title'), '#'
             .mp-level
               %h2.icon Staff Attendance
               %a.mp-back{:href => "#"}= t 'helpers.links.back'
               %ul
-                %li= link_to "Manage Lateness Early Return", '#'
-                %li= link_to "Staff Attendance", staff_staff_attendances_path
+                %li= link_to t('attendance.manage_lateness_earlyreturn'), '/attendance/manage'
+                %li= link_to t('staff_attendance.title'), staff_staff_attendances_path
                 %li= link_to "Status", '#'
                 %li= link_to "Report - Monthly Listing", '#'  
           %li= link_to "Staff Appraisal", '#'
