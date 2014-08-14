@@ -197,6 +197,8 @@ ms_MY:
     advise_trigger: "Di laman senarai Kedatangan Staf, tandakan checkbox 'Tindakan' & click 'Simpan Tindakan' untuk aktifkan borang 'Kenyataan Fingerprint'"
     list1: Senarai Kedatangan
     list2: "Senarai Lewat/Awal"
+    status_puncard: Laporan Status Kad Tebuk
+    unit_department: "Unit / Jabatan"
   
   attendance:
     title: "Pengurusan Datang Lambat & Pulang Awal"

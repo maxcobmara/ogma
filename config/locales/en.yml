@@ -220,6 +220,8 @@ en:
     advise_trigger: "In Staff Attendance listing, tick 'Action' checkbox & click 'Save Action' to activate 'Fingerprint Statement' form"
     list1: Attendance List
     list2: "Late/Early Return List"
+    status_punchcard: Punch Card Status Report
+    unit_department: "Unit / Department"
  
   attendance:
     list: "Manage Lateness & Early Return"
