@@ -3,7 +3,6 @@
     / Nav tabs
     %ul.nav.nav-tabs
       %li.active= link_to ((t 'staff_attendance.details')),"#staff_attendance_edit", "data-toggle" => "tab"
-      %li=link_to ((t 'staff_attendance.approval')),"#staff_attendance_approval", "data-toggle" => "tab"
 
     .tab-content{style:"padding-top:1em"}
       #staff_attendance_edit.tab-pane.active
@@ -24,36 +23,12 @@
               = f.label :log_type
             .col-md-3
               = f.select :log_type, DropDown::LOGTYPE, {:prompt => t('helpers.prompt.select_log_type')},{ class: 'selectpicker', "data-width"=>'160px'}
-      #staff_attendance_approval.tab-pane
-        %br
-        .col-md-offset-2
-          .form-group
-            .col-sm-2.control-label
-              = f.label :reason
-            .col-md-3
-              = f.text_field :reason
           .form-group
             .col-sm-2.control-label
               = f.label :trigger
             .col-md-3
               = f.check_box :trigger
-          .form-group
-            .col-sm-2.control-label
-              = f.label :approved_by
-            .col-md-3
-              = f.collection_select :approved_by, Staff.joins(:positions).where("thumb_id is not null and thumb_id!=? and (positions.unit is not null or positions.unit=?) ",0,"").order(name: :asc), :id, :mykad_with_staff_name, { :prompt => t('helpers.prompt.select_staff')}, {class: 'selectpicker', "data-width"=>"320px"}
-          .form-group
-            .col-sm-2.control-label
-              = f.label :is_approved
-            .col-md-3
-              = f.check_box :is_approved
-          .form-group
-            .col-sm-2.control-label
-              = f.label :approved_on
-            .col-md-3
-              = f.text_field :approved_on, :class=>'date-picker2'
- 
-
+                
 :javascript  
   $('.date-picker').datetimepicker({
    timepicker:true,

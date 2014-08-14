@@ -8,45 +8,29 @@
     / Nav tabs
     %ul.nav.nav-tabs
       %li.active= link_to (t 'staff_attendance.details'),"#staff_attendance_details", "data-toggle" => "tab"
-      %li=link_to ((t 'staff_attendance.approval')),"#staff_attendance_approval", "data-toggle" => "tab"
+      %li=link_to (t 'staff_attendance.fingerprint'),"#staff_fingerprint", "data-toggle" => "tab"
+      %li=link_to (t 'staff_attendance.approval'),"#staff_attendance_approval", "data-toggle" => "tab"
 
     / display 
     .tab-content{style:"padding-top:1em"}
       #staff_attendance_details.tab-pane.active  
-        .col-md-8.col-md-offset-1
-          %dl.dl-horizontal
-            %dt= t'staff_attendance.thumb_id'
-            %dd=h @staff_attendance.try(:attended).try(:thumb_id_with_name_unit)
-
-            %dt= t'staff_attendance.logged_at'
-            %dd=h @staff_attendance.try(:logged_at).try(:strftime,  '%d %b %Y %H:%M:%S %P')
-            
-            %dt= t'staff_attendance.log_type'
-            %dd=h (DropDown::LOGTYPE.find_all{|disp, value| value == @staff_attendance.log_type }).map {|disp, value| disp}[0]
+        = render 'tab_staff_attendance_details'
+      #staff_fingerprint.tab-pane
+        = render 'tab_staff_fingerprint'
       #staff_attendance_approval.tab-pane
-        .col-md-8.col-md-offset-1
-          %dl.dl-horizontal
-            %dt= t'staff_attendance.reason'
-            %dd=h @staff_attendance.reason
-
-            %dt= t'staff_attendance.trigger'
-            %dd=h @staff_attendance.trigger
-            
-            %dt= t'staff_attendance.approved_by'
-            %dd=h @staff_attendance.try(:approver).try(:name)
-            
-            %dt= t'staff_attendance.is_approved'
-            %dd=h @staff_attendance.is_approved? ? image_tag("tick.png") : image_tag("cross.png")
-            
-            %dt= t'staff_attendance.approved_on'
-            %dd=h @staff_attendance.try(:approved_on).try(:strftime, '%d %b %Y')
+        = render 'tab_staff_approval'
 
 .row
-  .col-md-4.col-md-offset-3
+  .col-md-7.col-md-offset-2
     %hr
     .form-actions
-      = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), staff_staff_attendances_path, :class => 'btn btn-default'
-      = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('.edit', :default => t("helpers.links.edit")), edit_staff_staff_attendance_path(@staff_attendance),  :class => 'btn btn-primary' 
+      = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('staff_attendance.list1'), staff_staff_attendances_path, :class => 'btn btn-default'
+      = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('staff_attendance.list2'), '/attendance/manage/', :class => 'btn btn-default'
+      - if @staff_attendance.trigger? 
+        = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('staff_attendance.fingerprint'), edit_staff_staff_attendance_path(@staff_attendance),  :class => 'btn btn-primary' 
+      - if @staff_attendance.status || (@staff_attendance.reason && @staff_attendance.reason!="")
+        = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('staff_attendance.approval2'),  '/attendance/approve?id='"#{@staff_attendance.id}",  :class => 'btn btn-primary' 
+      
       = link_to content_tag(:i, "", :class => "fa fa-trash-o icon-white") + " " + t('.destroy', :default => t("helpers.links.destroy")), |
         staff_staff_attendance_path(@staff_attendance),                                                                                                    |
         :method => 'delete',                                                                                                           |

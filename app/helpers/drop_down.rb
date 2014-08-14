@@ -352,4 +352,13 @@ module DropDown
         [ I18n.t('staff_attendance.log_out'),      'O' ]
       ]
     
+    TRIGGER_STATUS = [
+	# Displayed       stored in db
+        [ I18n.t('staff_attendance.outstation'), 1],
+        [ I18n.t('staff_attendance.official'), 2],
+        [ I18n.t('staff_attendance.forgot'), 3],
+        [ I18n.t('staff_attendance.early_late'), 4],
+        [ I18n.t('staff_attendance.others'), 5]
+      ]
+    
 end

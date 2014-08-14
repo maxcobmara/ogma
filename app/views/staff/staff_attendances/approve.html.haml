@@ -10,39 +10,44 @@
     .col-md-10.col-md-offset-1
       / Nav tabs
       %ul.nav.nav-tabs
-        %li.active= link_to ((t 'staff_attendance.details')),"#staff_attendance_details", "data-toggle" => "tab"
-        %li=link_to ((t 'staff_attendance.approval')),"#staff_attendance_approval", "data-toggle" => "tab"
-
+        %li= link_to ((t 'staff_attendance.details')),"#staff_attendance_details", "data-toggle" => "tab"
+        %li=link_to ((t 'staff_attendance.fingerprint')),"#staff_fingerprint", "data-toggle" => "tab"
+        %li.active=link_to ((t 'staff_attendance.approval')),"#staff_attendance_approval", "data-toggle" => "tab"
+        
       .tab-content{style:"padding-top:1em"}
-        #staff_attendance_details.tab-pane.active
-          = render :partial => 'show', :locals => {:f => f}
-        #staff_attendance_approval.tab-pane
+        #staff_attendance_details.tab-pane
+          = render 'tab_staff_attendance_details'
+        #staff_fingerprint.tab-pane
+          = render :partial => 'tab_staff_fingerprint'
+        #staff_attendance_approval.tab-pane.active
           %br
           .col-md-offset-2
             .form-group
               .col-sm-2.control-label
-                =t 'staff_attendance.reject_approve'
+                = f.label :approved_by
               .col-md-3
-                = t 'staff_attendance.approve'
-                = f.radio_button :is_approved,'true' , :id => 'approval_true' , :class => 'radio_approve'
-                = t 'staff_attendance.reject'
-                = f.radio_button :is_approved,'false', :id => 'approval_false', :class => 'radio_approve'
-          .col-md-offset-2
+                = f.collection_select :approved_by, Staff.joins(:positions).where("thumb_id is not null and thumb_id!=? and (positions.unit is not null or positions.unit=?) ",0,"").order(name: :asc), :id, :mykad_with_staff_name, { :prompt => t('helpers.prompt.select_staff')}, {class: 'selectpicker', "data-width"=>"320px"}
             .form-group
-              .col-sm-2.control-label         
-                &nbsp;
+              .col-sm-2.control-label
+                = f.label :is_approved
               .col-md-3
-                %p.approve_time{:style=>"display: none;"}
-                  On:
-                  = f.text_field :approved_on, :class=>'date-picker2'
-                
+                = f.check_box :is_approved
+            .form-group
+              .col-sm-2.control-label
+                = f.label :approved_on
+              .col-md-3
+                = f.text_field :approved_on, :class=>'date-picker2'
+
     .row
-      .form-group
-        .col-md-1.col-md-offset-2
-          = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), staff_staff_attendance_path(@staff_attendance), :class => 'btn btn-default'
-        .col-md-2
-          .div{style: "margin-left:-40px;"}
-            = f.submit t('update'), class: "btn btn-primary"		 
+      .col-md-7.col-md-offset-3
+        .form-group
+          .col-md-1
+            = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")),  '/attendance/manage/', :class => 'btn btn-default'
+          .col-md-1.col-md-offset-1
+            = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('actions.show'), staff_staff_attendance_path(@staff_attendance), :class => 'btn btn-default'
+          .col-md-3.col-md-offset-1
+            /.div{style: "margin-left:-40px;"}
+            = f.submit t('update'), class: "btn btn-primary"
 
 :javascript  
 

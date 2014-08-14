@@ -1,0 +1,17 @@
+.col-md-8.col-md-offset-1
+  %dl.dl-horizontal
+    %dt= t'staff_attendance.thumb_id'
+    %dd=h @staff_attendance.try(:attended).try(:thumb_id_with_name_unit)
+
+    %dt= t'staff_attendance.logged_at'
+    %dd=h @staff_attendance.try(:logged_at).try(:strftime,  '%d %b %Y %H:%M:%S %P')
+            
+    %dt= t'staff_attendance.log_type'
+    %dd=h (DropDown::LOGTYPE.find_all{|disp, value| value == @staff_attendance.log_type }).map {|disp, value| disp}[0] 
+    
+    %dt= t'staff_attendance.trigger'
+    %dd
+      =h @staff_attendance.trigger? ? image_tag("tick.png") : image_tag("cross.png")
+      =h @staff_attendance.trigger? ? "" : t('staff_attendance.advise_trigger')
+    %br
+
