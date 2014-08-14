@@ -38,7 +38,7 @@ class Kewpa13Pdf < Prawn::Document
     header = [[ 'Bil', 'Keterangan Aset', 'Jenis / Jenama / Model', 'Lokasi Aset', 'Harga Perolehan', 'Catatan']]
     header +
       @assets.map do |asset|
-      ["#{counter += 1}", "#{asset.assetcode}", "#{asset.typename} #{asset.name} #{asset.modelname}", "#{asset.try(:location).try(:name)}", @view.currency(asset.purchaseprice.to_f), "#{asset.try(:maint).try(:details)}" ]
+      ["#{counter += 1}", "#{asset.assetcode}", "#{asset.typename} #{asset.name} #{asset.modelname}", "#{asset.try(:location).try(:name)}", @view.currency(asset.purchaseprice.to_f), "#{asset.remark}" ]
     end
   end
 end
