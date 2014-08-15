@@ -194,10 +194,12 @@ ms_MY:
     forgot: Terlupa
     early_late: "Datang Lewat / Pulang Awal"
     others: "Lain - lain"
-    advise_trigger: "Di laman senarai Kedatangan Staf, tandakan checkbox 'Tindakan' & click 'Simpan Tindakan' untuk aktifkan borang 'Kenyataan Fingerprint'"
+    advise_trigger1: "Datang Lewat : "
+    advise_trigger3: "Tandakan kotak semak 'Tindakan' (untuk aktifkan borang 'Kenyataan Fingerprint') atau kotak semak 'Abaikan' dan klik ikon 'Simpan Tindakan' di laman senarai Kedatangan Staf"
+    advise_trigger2: "Pulang Awal : "
     list1: Senarai Kedatangan
     list2: "Senarai Lewat/Awal"
-    status_puncard: Laporan Status Kad Tebuk
+    status_puncard: Laporan Status Kad Perakam Waktu (KPW)
     unit_department: "Unit / Jabatan"
   
   attendance:

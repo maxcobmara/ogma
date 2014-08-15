@@ -7,11 +7,16 @@
     %dd=h @staff_attendance.try(:logged_at).try(:strftime,  '%d %b %Y %H:%M:%S %P')
             
     %dt= t'staff_attendance.log_type'
-    %dd=h (DropDown::LOGTYPE.find_all{|disp, value| value == @staff_attendance.log_type }).map {|disp, value| disp}[0] 
+    %dd=h (DropDown::LOGTYPE.find_all{|disp, value| value == @staff_attendance.log_type.upcase }).map {|disp, value| disp}[0] 
     
-    %dt= t'staff_attendance.trigger'
-    %dd
-      =h @staff_attendance.trigger? ? image_tag("tick.png") : image_tag("cross.png")
-      =h @staff_attendance.trigger? ? "" : t('staff_attendance.advise_trigger')
-    %br
-
+    /- if (@staff_attendance.trigger == nil &&@staff_attendance .r_u_late == "flag") || (@staff_attendance.trigger == nil && @staff_attendance.r_u_early == "flag")
+    - if @staff_attendance.r_u_late == "flag" || @staff_attendance.r_u_early == "flag"
+      %dt= t'staff_attendance.trigger'
+      %dd
+        =h @staff_attendance.trigger? ? image_tag("tick.png") : image_tag("cross.png")
+        - if @staff_attendance.r_u_late == "flag" 
+          =t('staff_attendance.advise_trigger1')+@staff_attendance.late_early
+        - elsif @staff_attendance.r_u_early == "flag" 
+          =t('staff_attendance.advise_trigger2')+@staff_attendance.late_early
+        %br=t('staff_attendance.advise_trigger3')
+      %br

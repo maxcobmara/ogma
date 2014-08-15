@@ -8,27 +8,31 @@
     / Nav tabs
     %ul.nav.nav-tabs
       %li.active= link_to (t 'staff_attendance.details'),"#staff_attendance_details", "data-toggle" => "tab"
-      %li=link_to (t 'staff_attendance.fingerprint'),"#staff_fingerprint", "data-toggle" => "tab"
-      %li=link_to (t 'staff_attendance.approval'),"#staff_attendance_approval", "data-toggle" => "tab"
+      - if @staff_attendance.trigger==true
+        %li=link_to (t 'staff_attendance.fingerprint'),"#staff_fingerprint", "data-toggle" => "tab"
+      - if @staff_attendance.trigger==true
+        %li=link_to (t 'staff_attendance.approval'),"#staff_attendance_approval", "data-toggle" => "tab"
 
     / display 
     .tab-content{style:"padding-top:1em"}
       #staff_attendance_details.tab-pane.active  
         = render 'tab_staff_attendance_details'
-      #staff_fingerprint.tab-pane
-        = render 'tab_staff_fingerprint'
-      #staff_attendance_approval.tab-pane
-        = render 'tab_staff_approval'
+      - if @staff_attendance.trigger==true
+        #staff_fingerprint.tab-pane
+          = render 'tab_staff_fingerprint'
+        #staff_attendance_approval.tab-pane
+          = render 'tab_staff_approval'
 
 .row
   .col-md-7.col-md-offset-2
     %hr
     .form-actions
       = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('staff_attendance.list1'), staff_staff_attendances_path, :class => 'btn btn-default'
-      = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('staff_attendance.list2'), '/attendance/manage/', :class => 'btn btn-default'
-      - if @staff_attendance.trigger? 
+      - if @staff_attendance.r_u_late == "flag" || @staff_attendance.r_u_early == "flag"
+        = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('staff_attendance.list2'), '/attendance/manage/', :class => 'btn btn-default'
+      - if @staff_attendance.trigger==true
         = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('staff_attendance.fingerprint'), edit_staff_staff_attendance_path(@staff_attendance),  :class => 'btn btn-primary' 
-      - if @staff_attendance.status || (@staff_attendance.reason && @staff_attendance.reason!="")
+      - if @staff_attendance.trigger==true && (@staff_attendance.status || (@staff_attendance.reason && @staff_attendance.reason!=""))
         = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('staff_attendance.approval2'),  '/attendance/approve?id='"#{@staff_attendance.id}",  :class => 'btn btn-primary' 
       
       = link_to content_tag(:i, "", :class => "fa fa-trash-o icon-white") + " " + t('.destroy', :default => t("helpers.links.destroy")), |

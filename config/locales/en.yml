@@ -217,7 +217,9 @@ en:
     forgot: Forgot
     early_late: "Lateness / Early Return"
     others: Others
-    advise_trigger: "In Staff Attendance listing, tick 'Action' checkbox & click 'Save Action' to activate 'Fingerprint Statement' form"
+    advise_trigger1: "Lateness : "
+    advise_trigger3: "Tick 'Action' checkbox (to activate 'Fingerprint Statement') or 'Ignore' checkbox and click 'Save Action' icon in Staff Attendance listing"
+    advise_trigger2: "Early Return : "
     list1: Attendance List
     list2: "Late/Early Return List"
     status_punchcard: Punch Card Status Report
