@@ -223,6 +223,7 @@ en:
     list1: Attendance List
     list2: "Late/Early Return List"
     status_punchcard: Punch Card Status Report
+    status_pcard: Punch Card Status
     unit_department: "Unit / Department"
  
   attendance:
