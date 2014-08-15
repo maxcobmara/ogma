@@ -5,7 +5,7 @@
   
 .navbar.navbar-inverse{role: "navigation", style: "padding-right:40px;"}
   %ul.nav.navbar-nav.navbar-right
-    %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "toga"
+    %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: 'bogus'
     %li= link_to content_tag(:li, fa_icon("print", text: (t 'actions.print'))), "#", class: 'bogus'
 
 /- @all_dates_staffs = StaffAttendance.find(:all, :conditions =>['logged_at>=? and logged_at<?',"2012-05-07","2012-10-16"], :order => 'logged_at ASC')

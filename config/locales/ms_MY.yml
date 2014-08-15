@@ -199,7 +199,8 @@ ms_MY:
     advise_trigger2: "Pulang Awal : "
     list1: Senarai Kedatangan
     list2: "Senarai Lewat/Awal"
-    status_puncard: Laporan Status Kad Perakam Waktu (KPW)
+    status_punchcard: Laporan Status Kad Perakam Waktu (KPW)
+    status_pcard: Status Kad Perakam Waktu
     unit_department: "Unit / Jabatan"
   
   attendance:
