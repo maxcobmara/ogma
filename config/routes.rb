@@ -146,8 +146,6 @@ Ogma::Application.routes.draw do
     end
   end
   
-
-  
   namespace :library do
     resources :librarytransactions do
       member do
@@ -161,8 +159,16 @@ Ogma::Application.routes.draw do
         post  :manager
       end
     end
+    resources :books do
+      collection do
+	post 'import'
+	get 'import_excel', to: "books#import_excel"
+      end
+    end
   end
   
+  match '/public/excel_format/books_import.xls', to: 'library/books#download_excel_format', via: 'get', target: '_self'
+
   namespace :exam do
     resources :examquestions do
       collection do

@@ -470,6 +470,7 @@ en:
       book_details: Book Details
       tagno: Tag No
       classddc: Class No (DDC/LC)
+      classlcc: "Class No (LC) / (NLM)"
       title: Title
       language: Language
       author: Author
@@ -501,8 +502,20 @@ en:
       receiveddate: Receive Date
       receiver_id: Received By
       supplier_id: Supplier
-     
-
+      open_shelf: Open Shelf
+      red_spot: Red Spot
+      no_image: No Image
+      isbn: ISBN
+      others: Others
+      book2: Book
+      magazine: Magazine
+      available: Available
+      on_loan: "On-loan"
+      fixed: Fixed
+      disposed: Disposed
+      image: Image
+      require_update: "Physical Description (Require Update?)"
+      
   buletin:
     list: List of Bulletins
     headline: Headline
@@ -936,6 +949,8 @@ en:
       select_hod: "Select HOD / Approver"
       select_thumb_id: "Select Thumb Id | Staff (Department / Unit)"
       select_log_type: Select Log Type
+      select_mediatype: Select Media Type
+      select_status: Select Status
       all_unit: "All Department / Unit"
       maintain: Maintain
       remove: Remove
