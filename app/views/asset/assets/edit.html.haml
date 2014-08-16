@@ -182,8 +182,27 @@
 			  
       - if @asset.is_maintainable?
         #maintenance.tab-pane.fade
-          Maintenance
-          
+          .form-group
+            .col-sm-2.control-label
+              = f.label t 'asset.note', for: :remark
+            .col-md-5
+              = f.text_field :remark, class: 'form-control input-xxlarge' 
+			  
+          %table.table.table-condensed.table-hover{:style => "width: 50%; "}
+            %thead
+              %tr
+                %th Maintainer
+                %th Work Order  
+                %th Cost
+                %th Details
+            %tbody	  
+              - for maint in @asset.maints	  
+                %tr
+                  %td= maint.maintainer_id  
+                  %td= maint.workorderno
+                  %td= maint.maintcost
+                  %td= maint.details
+			  
       .col-md-offset-1
         //= render :partial => 'form', :locals => {:f => f}
         .form-group

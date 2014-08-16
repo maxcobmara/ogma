@@ -11,6 +11,18 @@ class Asset::AssetsController < ApplicationController
   def show
   end
   
+  def update
+    respond_to do |format|
+      if @asset.update(asset_params)
+        format.html { redirect_to asset_asset_path(@asset), notice: (t 'asset.title')+(t 'actions.updated')  }
+        format.json { head :no_content }
+      else
+        format.html { render action: 'edit' }
+        format.json { render json: @asset.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+  
   def edit
   end
   
@@ -139,6 +151,6 @@ end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def asset_params
-      params.require(:asset).permit(:location_id, :staff_id, :student_id, :keyaccept, :keyexpectedreturn, :keyreturned, :force_vacate, :student_icno, damages_attributes: [:id, :description,:reported_on,:document_id,:location_id])
+      params.require(:asset).permit(:location_id, :staff_id, :student_id, :keyaccept, :keyexpectedreturn, :keyreturned, :force_vacate, :student_icno, :remark, :purchaseprice, damages_attributes: [:id, :description,:reported_on,:document_id,:location_id])
     end
 end
