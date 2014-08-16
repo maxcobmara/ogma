@@ -3,6 +3,46 @@ class Book < ActiveRecord::Base
   belongs_to :addbook, :foreign_key => 'supplier_id'
   has_many  :accessions, :dependent => :destroy
   accepts_nested_attributes_for :accessions, :reject_if => lambda { |a| a[:accession_no].blank? }, :allow_destroy =>true
+  
+   #-----------Attach Photo---------------
+  has_attached_file :photo,
+                    :url => "/assets/books/:id/:style/:basename.:extension",
+                    :path => ":rails_root/public/assets/books/:id/:style/:basename.:extension"
+  validates_attachment_size :photo, :less_than => 500.kilobytes
+  validates_attachment_content_type :photo, :content_type => ['image/jpeg', 'image/png']    
+  
+  def book_quantity
+      Accession.where(book_id: id).count
+  end
+  
+  # define scope media type
+  def self.mediatype_search(query) 
+    where(mediatype: query)
+  end
+  
+  # define scope status
+  def self.status_search(query)
+    where(status: query)
+  end
+  
+  #define scope accessionno
+  def self.accessionno_search(query)
+    a=where(accessionno: query)
+    if a!=nil
+      book_of_acc = a
+    else
+      book_of_acc = Accession.where(accession_no: query).first.book
+    end
+    book_of_acc
+  end
+    
+  # whitelist the scope
+  def self.ransackable_scopes(auth_object = nil)
+    [:mediatype_search]
+    [:status_search]
+    [:accessionno_search]
+  end
+  
 end
 
 # == Schema Information

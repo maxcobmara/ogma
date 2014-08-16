@@ -427,6 +427,7 @@ ms_MY:
       book_details: Butiran Buku
       tagno: No Bilangan
       classddc: No Kelas (DDC/LC)
+      classlcc: No Panggilan
       title: Tajuk
       language: Bahasa
       author: Penulis
@@ -438,7 +439,7 @@ ms_MY:
       publish_location: Tempat Terbitan
       links: Pautan Ruangan Elektonik
       bookcode: Kod Perpustakaan
-      accessionno: No Pencapaian
+      accessionno: No Perolehan
       catsource: Sumber Katalog Untuk
       classno: No Kelas
       description: Huraian Fizikal
@@ -458,6 +459,19 @@ ms_MY:
       receiveddate: Tarikh Diterima
       receiver_id: Diterima Oleh
       supplier_id: Pembekal
+      open_shelf: Rak Terbuka
+      red_spot: Red Spot
+      no_image: Tiada Imej
+      isbn: ISBN
+      others: "Lain - lain"
+      book2: Buku
+      magazine: Majalah
+      available: Ada
+      on_loan: Dipinjam
+      fixed: Dibaiki
+      disposed: Dilupus
+      image: Imej
+      require_update: "Deskripsi Fizikal (Perlu Dikemaskini?)"
   
   buletin:
     list: Senarai Buletin
@@ -913,6 +927,8 @@ ms_MY:
       select_hod: "Pilih Ketua Jabatan / Pelulus"
       select_thumb_id: "Pilih Thumb Id | Staf (Jabatan / Unit)"
       select_log_type: Pilih Jenis Log
+      select_mediatype: Pilih Jenis Media
+      select_status: Pilih Status
       all_unit: "Semua Jabatan / Unit"
       maintain: Dikekalkan
       remove: Dibuang
