@@ -64,6 +64,7 @@ ms_MY:
     imported: " telah berjaya diimport"
     records: " rekod"
     import_failed: " gagal diimport"
+    save_action: Simpan Tindakan
     
   errors:
   
@@ -135,10 +136,11 @@ ms_MY:
        
   staff_attendance:
     title: Kedatangan Staf
-    new: Kedatangan Staf Baru
+    new: Kedatangan Staf (Baru)
     edit: Sunting Kedatangan Staf
-    details: Butiran Kedatangan Staf
+    details: Butiran Kedatangan
     approval: "Kelulusan Datang Lewat / Pulang Awal"
+    approval2: Kelulusan
     reject_approve: Diluluskan atau Ditolak
     approve: Diluluskan
     reject: Ditolak
@@ -184,6 +186,22 @@ ms_MY:
     must_match: "'Thumb Id' mesti mempunyai padanan Pengguna / Staf (ICMS / Fail Excel)"
     hours: " jam "
     minutes: " minit "
+    fingerprint_statement: Kenyataan Fingerprint
+    fingerprint: Fingerprint
+    date_time: "Tarikh & Masa"
+    outstation: Luar Kawasan
+    official: Urusan Rasmi
+    forgot: Terlupa
+    early_late: "Datang Lewat / Pulang Awal"
+    others: "Lain - lain"
+    advise_trigger1: "Datang Lewat : "
+    advise_trigger3: "Tandakan kotak semak 'Tindakan' (untuk aktifkan borang 'Kenyataan Fingerprint') atau kotak semak 'Abaikan' dan klik ikon 'Simpan Tindakan' di laman senarai Kedatangan Staf"
+    advise_trigger2: "Pulang Awal : "
+    list1: Senarai Kedatangan
+    list2: "Senarai Lewat/Awal"
+    status_punchcard: Laporan Status Kad Perakam Waktu (KPW)
+    status_pcard: Status Kad Perakam Waktu
+    unit_department: "Unit / Jabatan"
   
   attendance:
     title: "Pengurusan Datang Lambat & Pulang Awal"

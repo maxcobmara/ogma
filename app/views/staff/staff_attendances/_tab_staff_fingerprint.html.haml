@@ -1,0 +1,8 @@
+.col-md-8.col-md-offset-1
+  %dl.dl-horizontal
+    %dt= t'staff_attendance.status'
+    %dd=(DropDown::TRIGGER_STATUS.find_all{|disp, value| value == @staff_attendance.status }).map {|disp, value| disp}[0]
+    
+    %dt= t'staff_attendance.reason'
+    %dd=h @staff_attendance.reason 
+    %br

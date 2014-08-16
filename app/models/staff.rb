@@ -89,7 +89,11 @@ class Staff < ActiveRecord::Base
     end
     
     def thumb_id_with_name_unit
-      "#{thumb_id} |  #{name} (#{positions.first.unit})"
+      if positions.blank?
+	"#{thumb_id} | #{name}"
+      else
+      "#{thumb_id} |  #{name} (#{positions.first.unit})" 
+      end
     end
       
     def staff_name_with_position
@@ -103,6 +107,26 @@ class Staff < ActiveRecord::Base
         positions[0].name
       end
     end
+    
+    def staff_thumb
+      "#{name}  (thumb id : #{thumb_id})"
+    end  
+    
+      
+  def render_unit
+    if positions.blank? 
+      "Staff not exist in Task & Responsibilities"
+    elsif positions.first.is_root?
+        "Pengarah"
+    elsif positions
+      if positions.first.unit.blank?
+        "#{positions.first.name}"                  #display position name instead - must be somebody!
+      else
+        "#{positions.first.unit}"                  #   "#{position.unit} - 3"
+      end
+    end
+  end
+
 
 end
 

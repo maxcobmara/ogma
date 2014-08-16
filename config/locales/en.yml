@@ -88,6 +88,7 @@ en:
     imported: " was/were successfully imported"
     records: " record(s)"
     import_failed: " - import failed "
+    save_action: Save Action
   errors:
 
   views:
@@ -159,8 +160,9 @@ en:
     title: Staff Attendance
     new: New Staff Attendance
     edit: Edit Staff Attendance
-    details: Staff Attendance Details
+    details: Attendance Details
     approval: "Late / Early Return Approval"
+    approval2: Approval
     reject_approve: Reject or Approve
     approve: Approve
     reject: Reject
@@ -207,6 +209,22 @@ en:
     must_match: "'Thumb Id' must have matching User / Staff (ICMS / Excel File)"
     hours: " hours "
     minutes: " minutes "
+    fingerprint_statement: Fingerprint Statement
+    fingerprint: Fingerprint
+    date_time: "Date & Time"
+    outstation: Outstation
+    official: Official
+    forgot: Forgot
+    early_late: "Lateness / Early Return"
+    others: Others
+    advise_trigger1: "Lateness : "
+    advise_trigger3: "Tick 'Action' checkbox (to activate 'Fingerprint Statement') or 'Ignore' checkbox and click 'Save Action' icon in Staff Attendance listing"
+    advise_trigger2: "Early Return : "
+    list1: Attendance List
+    list2: "Late/Early Return List"
+    status_punchcard: Punch Card Status Report
+    status_pcard: Punch Card Status
+    unit_department: "Unit / Department"
  
   attendance:
     list: "Manage Lateness & Early Return"

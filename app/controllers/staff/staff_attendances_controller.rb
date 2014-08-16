@@ -202,14 +202,31 @@ class Staff::StaffAttendancesController < ApplicationController
     redirect_to :back
   end
   
-  def status
-    @thismonthreds = StaffAttendance.this_month_red
-    @lastmonthreds = StaffAttendance.last_month_red
-    @prevmonthreds = StaffAttendance.previous_month_red
+  def status  
+    #@all_dates_staffs = StaffAttendance.find(:all, :conditions =>['logged_at>=? and logged_at<?',"2012-05-07","2012-10-16"], :order => 'logged_at ASC')
+    @all_dates_staffs = StaffAttendance.find(:all, :conditions =>['logged_at>=? and logged_at<?',"2012-05-07","2014-01-01"], :order => 'logged_at ASC')   
+    @logged_at_list =[] 
+    for all_dates_staff in @all_dates_staffs.map(&:logged_at)
+      @logged_at_list << all_dates_staff.in_time_zone('UTC').to_date.beginning_of_month.to_s
+    end 
+    @title_for_month= @logged_at_list.uniq 
+    @all_thumbs = @all_dates_staffs.map(&:thumb_id).uniq.sort
+    @staff_info = Staff.find(:all, :conditions=> ['thumb_id IN (?)',@all_thumbs], :order=>'thumb_id ASC', :select=>"thumb_id, name,id")
+    @staff_thumb = Staff.find(:all, :conditions=> ['thumb_id IN (?)',@all_thumbs], :order=>'thumb_id ASC').map(&:thumb_id) 
+    #for checking : @staff_name = Staff.find(:all, :conditions=> ['thumb_id IN (?)',@all_thumbs], :order=>'thumb_id ASC').map(&:staff_thumb) 
+    @all_dates = @all_dates_staffs.group_by{|x|x.thumb_id}
+
+    #StaffAttendance.find(:all, :conditions => ["trigger IS TRUE AND is_approved IS FALSE AND thumb_id =? AND logged_at>=? AND logged_at<?", 773, "2012-10-01", "2012-11-01"], :order => 'logged_at DESC').count
+    #StaffAttendance.find(:all, :conditions => ["trigger IS TRUE AND is_approved IS FALSE AND thumb_id =? AND logged_at>=? AND logged_at<?", 772, "2012-10-01", "2012-11-01"], :order => 'logged_at DESC').count
+    @year_group = @title_for_month.group_by{|x|x.to_date.year}
+
+    #@thismonthreds = StaffAttendance.this_month_red
+    #@lastmonthreds = StaffAttendance.last_month_red
+    #@prevmonthreds = StaffAttendance.previous_month_red
     
-    @thismonthgreens = StaffAttendance.this_month_green
-    @lastmonthgreens = StaffAttendance.last_month_green
-    @prevmonthgreens = StaffAttendance.previous_month_green
+    #@thismonthgreens = StaffAttendance.this_month_green
+    #@lastmonthgreens = StaffAttendance.last_month_green
+    #@prevmonthgreens = StaffAttendance.previous_month_green
   end
   
   def report
