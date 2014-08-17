@@ -167,7 +167,7 @@ Ogma::Application.routes.draw do
     end
   end
   
-  match '/public/excel_format/books_import.xls', to: 'library/books#download_excel_format', via: 'get', target: '_self'
+  match '/public/excel_format/book_import.xls', to: 'library/books#download_excel_format', via: 'get', target: '_self'
 
   namespace :exam do
     resources :examquestions do

@@ -515,6 +515,8 @@ en:
       disposed: Disposed
       image: Image
       require_update: "Physical Description (Require Update?)"
+      excel_format: Excel Format
+      import_excel: Import Book From Excel File
       
   buletin:
     list: List of Bulletins
