@@ -62,6 +62,7 @@ ms_MY:
     download_excel: Muatturun Fail Excel
     import_excel: Import Excel
     imported: " telah berjaya diimport"
+    imported2: "Rekod - rekod berjaya diimport : "
     records: " rekod"
     import_failed: " gagal diimport"
     save_action: Simpan Tindakan
@@ -138,6 +139,7 @@ ms_MY:
     title: Kedatangan Staf
     new: Kedatangan Staf (Baru)
     edit: Sunting Kedatangan Staf
+    list: Senarai Kedatangan Staf
     details: Butiran Kedatangan
     approval: "Kelulusan Datang Lewat / Pulang Awal"
     approval2: Kelulusan
@@ -173,8 +175,8 @@ ms_MY:
     year_exceed2: "Data di luar julat tahun yang dibenarkan :"
     exist_records: " (rekod telah wujud)"
     exist_records2: "Rekod telah wujud:"
-    no_user: "(data 'thumbid' : tiada pengguna / staf yang sepadan)"
-    no_user2: "Tiada Pengguna / Staf sepadan bagi data Thumb Id  : "
+    no_user: "(tiada pengguna / staf yang sepadan)"
+    no_user2: "Tiada Pengguna / Staf sepadan (masukkan/kemaskini data 'icno', bagi worksheet 'USERINFO' dalam fail Excel) "
     log_in: Log Masuk
     log_out: Log Keluar
     excel_format: Format Excel
@@ -183,7 +185,7 @@ ms_MY:
     conditions: "Syarat - syarat bagi fail Excel"
     allowed_date_range: "Julat tarikh yang dibenarkan : "
     must_not_exist: Rekod kedatangan mestilah BELUM wujud dalam ICMS
-    must_match: "'Thumb Id' mesti mempunyai padanan Pengguna / Staf (ICMS / Fail Excel)"
+    must_match: "No Mykad (no IC) dalam fail Excel mestilah sepadan dengan No Mykad (no IC) dalam ICMS"
     hours: " jam "
     minutes: " minit "
     fingerprint_statement: Kenyataan Fingerprint

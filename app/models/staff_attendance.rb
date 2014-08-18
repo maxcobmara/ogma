@@ -9,7 +9,7 @@ class StaffAttendance < ActiveRecord::Base
   belongs_to :attended, :class_name => 'Staff', :foreign_key => 'thumb_id', :primary_key => 'thumb_id'
   belongs_to :approver, :class_name => 'Staff', :foreign_key => 'approved_by'
   
-  attr_accessor :userid, :checktime, :checktype, :name, :birthday, :defaultdeptid, :deptid, :deptname	#from excel
+  attr_accessor :userid, :checktime, :checktype, :name, :birthday, :defaultdeptid, :deptid, :deptname, :thumbid, :icno	#from excel
   
   #validates_presence_of :reason
       
@@ -27,7 +27,8 @@ class StaffAttendance < ActiveRecord::Base
   def self.import(file) 
     spreadsheet = Spreadsheet2.open_spreadsheet(file)  				#open/read excel file
     staff_dept = Spreadsheet2.update_thumb_id(spreadsheet)			#update thumb_id - table : staffs & return staff_id & deptid
-    result = Spreadsheet2.update_attendance(spreadsheet)				#update attendance record - table : staff_attendances    
+    userid_thumbid = Spreadsheet2.userid_thumbid(spreadsheet)			#just retrieve match of userid & thumbid
+    result = Spreadsheet2.update_attendance(spreadsheet,userid_thumbid)				#update attendance record - table : staff_attendances    
     dept_list = Spreadsheet2.load_dept(spreadsheet)					#load department id & names fr excel {1: "KSKB",2: "Pengurusan Pentadbiran"}
     Spreadsheet2.match_dept_unit(staff_dept,dept_list)
     return result
@@ -97,7 +98,7 @@ class StaffAttendance < ActiveRecord::Base
   #--shift?
   def self.find_mylate  
     #staffshift_id = Staff.find(:first, :conditions => ['thumb_id=?', User.current_user.staff.thumb_id]).staff_shift_id
-    staffshift_id = Staff.where('thumb_id=?', 774).first.staff_shift_id
+    staffshift_id = Staff.where('thumb_id=?', 5658).first.staff_shift_id
     
     if staffshift_id != nil
       start_time = StaffShift.find(staffshift_id).start_at.strftime("%H:%M") 
@@ -112,14 +113,14 @@ class StaffAttendance < ActiveRecord::Base
   end
   def self.find_myearly
     #staffshift_id = Staff.find(:first, :conditions => ['thumb_id=?', User.current_user.staff.thumb_id]).staff_shift_id
-    staffshift_id = Staff.where('thumb_id=?', 774).first.staff_shift_id
+    staffshift_id = Staff.where('thumb_id=?', 5658).first.staff_shift_id
     if staffshift_id != nil
         end_time = StaffShift.find(staffshift_id).end_at.strftime("%H:%M") 
     else
         end_time = "17:00"
     end
     #TESTING-OK:
-    find(:all, :conditions => ["trigger is null AND log_type =? AND thumb_id=? AND logged_at::time < ?", "O", 772, "18:00" ], :order => 'logged_at')
+    find(:all, :conditions => ["trigger is null AND log_type =? AND thumb_id=? AND logged_at::time < ?", "O", 5171, "18:00" ], :order => 'logged_at')
     #SEPATUTNYA:
     #find(:all, :conditions => ["trigger=? AND log_type =? AND thumb_id=? AND logged_at::time < ?", true, "O", User.current_user.staff.thumb_id, end_time ], :order => 'logged_at')
     #where("trigger=? AND log_type =? AND thumb_id=? AND logged_at::time < ?", true, "O", 774, end_time).order(:logged_at)
@@ -129,7 +130,7 @@ class StaffAttendance < ActiveRecord::Base
   #--shift?
   def i_have_a_thumb
     if User.current_user.staff.thumb_id == nil
-      772
+      5658
     else
       User.current_user.staff.thumb_id
     end
@@ -303,7 +304,7 @@ class StaffAttendance < ActiveRecord::Base
   def starting_shift
     shift = Staff.where(thumb_id: thumb_id).first.staff_shift_id 
     if shift==nil
-      shift= Staff.where(thumb_id: 774).first.staff_shift_id
+      shift= Staff.where(thumb_id: 5658).first.staff_shift_id
     end
     
 		if shift != nil
@@ -318,7 +319,7 @@ class StaffAttendance < ActiveRecord::Base
   def ending_shift        #return this format -> 1800
     shift = Staff.where(thumb_id: thumb_id).first.staff_shift_id 
     if shift == nil
-      shift = Staff.where(thumb_id: 774).first.staff_shift_id    
+      shift = Staff.where(thumb_id: 5658).first.staff_shift_id    
     end
 		if shift != nil
 		  #shift_end = StaffShift.find(shift).end_at
@@ -343,7 +344,7 @@ class StaffAttendance < ActiveRecord::Base
         #----
         shift = Staff.where(thumb_id: thumb_id).first.staff_shift_id 
 	if shift== nil
-	    shift = Staff.where(thumb_id: 774).first.staff_shift_id
+	    shift = Staff.where(thumb_id: 5658).first.staff_shift_id
 	end
     	#minit_shift = (StaffShift.find(shift).start_at.min) if shift != nil
     	minit_shift = (StaffShift.where(id: shift).first.start_at.min) if shift != nil
@@ -384,7 +385,7 @@ class StaffAttendance < ActiveRecord::Base
       #shift = Staff.find(:first, :conditions => ['thumb_id=?',thumb_id]).first.staff_shift_id 
       shift = Staff.where(thumb_id: thumb_id).first.staff_shift_id
       if shift==nil
-	  shift = Staff.where(thumb_id: 774).first.staff_shift_id
+	  shift = Staff.where(thumb_id: 5658).first.staff_shift_id
       end
   		if shift != nil
   		    #shift_end = StaffShift.find(shift).end_at

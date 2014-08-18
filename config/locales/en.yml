@@ -86,6 +86,7 @@ en:
     download_excel: Download Excel
     import_excel: Import Excel
     imported: " was/were successfully imported"
+    imported2: "Successful imported record(s) : "
     records: " record(s)"
     import_failed: " - import failed "
     save_action: Save Action
@@ -160,6 +161,7 @@ en:
     title: Staff Attendance
     new: New Staff Attendance
     edit: Edit Staff Attendance
+    list: Staff Attendance List
     details: Attendance Details
     approval: "Late / Early Return Approval"
     approval2: Approval
@@ -196,8 +198,8 @@ en:
     year_exceed2: "Data exceed allowed year range :"
     exist_records: " (record(s) already exist)"
     exist_records2: "Record(s) already exist :"
-    no_user: "(record(s) : 'thumbid' has no matching user/staff)"
-    no_user2: "No matching staff / user for Thumb Id(s) : "
+    no_user: "(record(s) has no matching user/staff)"
+    no_user2: "No matching staff / user (insert/update 'icno' of worksheet 'USERINFO' in excel file )"
     log_in: Log In
     log_out: Log Out
     excel_format: Excel Format
@@ -206,7 +208,7 @@ en:
     conditions: Conditions for Excel File
     allowed_date_range: "Allowed Date Range : "
     must_not_exist: Attendance Record must NOT exist in ICMS
-    must_match: "'Thumb Id' must have matching User / Staff (ICMS / Excel File)"
+    must_match: "'MyKad no (IC no) in Excel file must match with MyKad no (IC no) in ICMS"
     hours: " hours "
     minutes: " minutes "
     fingerprint_statement: Fingerprint Statement
