@@ -5,7 +5,6 @@ class Library::BooksController < ApplicationController
   # GET /books
   # GET /books.xml
   def index
-    #@books = Book.search(params[:search]).paginate(:per_page => 10, :page => params[:page])
     @search = Book.search(params[:q])
     @books2 = @search.result
     @books = @books2.order(title: :asc).page(params[:page]||1)
@@ -22,21 +21,24 @@ class Library::BooksController < ApplicationController
   
   def import
       a=Book.import(params[:file]) 
-      msg=Book.messages(a)     
-      if a[:sye].count>0 || a[:ser].count>0 || a[:snu].count>0
-	@invalid_year = a[:sye]
-	@exist_records = a[:ser]
-	@no_user = a[:snu]
-        respond_to do |format|
-          flash[:notice] = msg
+      #msg=Book.messages(a)     
+      
+      if a[:svb].count>0 || a[:sva].count>0 || a[:rmb].count>0
+	@saved_books=a[:svb]
+	@saved_accessions=a[:sva]
+	@removed_books=a[:rmb]
+	
+	respond_to do |format|
+	    format.html {redirect_to library_books_url, notice: "Imported!"}
+	end
+      else
+	respond_to do |format|
+          flash[:notice] = "Nothing Imported" #msg
           format.html { render action: 'import_excel' }
           flash.discard
         end
-      else
-	respond_to do |format|
-	  format.html {redirect_to library_books_url, notice: msg}
-	end
       end
+
   end
   
   def download_excel_format
@@ -126,7 +128,7 @@ class Library::BooksController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def book_params
-      params.require(:book).permit(:tagno, :controlno,:isbn,:bookcode,:accessionno,:catsource,:classlcc,:classddc,:title,:author,:publisher,:description, :loantype,:mediatype,:status,:series,:location,:topic,:orderno,:purchaseprice,:purchasedate,:receiveddate,:receiver_id,:supplier_id,:issn, :edition, :photo_file_name, :photo_content_type,:photo_file_size,:photo_updated_at, :publish_date,:publish_location, :language, :links, :subject, :quantity, :roman, :size, :pages, :bibliography,:indice,:notes,:backuproman)
+      params.require(:book).permit(:tagno, :controlno,:isbn,:bookcode,:accessionno,:catsource,:classlcc,:classddc,:title,:author,:publisher,:description, :loantype,:mediatype,:status,:series,:location,:topic,:orderno,:purchaseprice,:purchasedate,:receiveddate,:receiver_id,:supplier_id,:issn, :edition, :photo_file_name, :photo_content_type,:photo_file_size,:photo_updated_at, :publish_date,:publish_location, :language, :links, :subject, :quantity, :roman, :size, :pages, :bibliography,:indice,:notes,:backuproman,:finance_source)
     end
   
 end

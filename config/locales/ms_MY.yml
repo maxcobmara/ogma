@@ -472,6 +472,8 @@ ms_MY:
       disposed: Dilupus
       image: Imej
       require_update: "Deskripsi Fizikal (Perlu Dikemaskini?)"
+      excel_format: Format Excel
+      import_excel: Import Buku Dari Fail Excel
   
   buletin:
     list: Senarai Buletin
