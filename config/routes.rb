@@ -14,10 +14,14 @@ Ogma::Application.routes.draw do
 	get 'import_excel', to: "staff_attendances#import_excel"
       end
     end
+    resources :attendances
   end
 
+  match '/attendance/manage', to: 'staff/staff_attendances#manage', via: 'get'
+  match '/attendance/status/', to: 'staff/staff_attendances#status', via: 'get'
+  match '/attendance/approve/', to: 'staff/staff_attendances#approve', via: 'get'
+  match '/attendance/report', to: 'staff/staff_attendances#report', via: 'get'
   match '/public/excel_format/staff_attendance_import.xls', to: 'staff/staff_attendances#download_excel_format', via: 'get', target: '_self'
-
 
   namespace :staff_training do
     resources :ptbudgets
@@ -142,8 +146,6 @@ Ogma::Application.routes.draw do
     end
   end
   
-
-  
   namespace :library do
     resources :librarytransactions do
       member do
@@ -157,8 +159,16 @@ Ogma::Application.routes.draw do
         post  :manager
       end
     end
+    resources :books do
+      collection do
+	post 'import'
+	get 'import_excel', to: "books#import_excel"
+      end
+    end
   end
   
+  match '/public/excel_format/book_import.xls', to: 'library/books#download_excel_format', via: 'get', target: '_self'
+
   namespace :exam do
     resources :examquestions do
       collection do

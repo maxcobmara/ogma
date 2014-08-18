@@ -1,0 +1,98 @@
+- model_class = StaffAttendance
+.page-header
+  %h1= t 'staff_attendance.fingerprint_statement'
+= render 'shared/flashes'
+
+.row
+  = form_for [:staff, @staff_attendance],  :html => { :class => 'form-horizontal' } do |f| 
+    = render 'shared/error_messages', object: f.object
+ 
+    .col-md-10.col-md-offset-1
+      / Nav tabs
+      %ul.nav.nav-tabs
+        %li= link_to ((t 'staff_attendance.details')),"#staff_attendance_details", "data-toggle" => "tab"
+        %li.active=link_to ((t 'staff_attendance.fingerprint')),"#staff_fingerprint", "data-toggle" => "tab"
+        
+      .tab-content{style:"padding-top:1em"}
+        #staff_attendance_details.tab-pane
+          = render 'tab_staff_attendance_details'
+        #staff_fingerprint.tab-pane.active
+          %br
+          .col-md-offset-2
+            .form-group
+              .col-sm-2.control-label
+                = f.label :status
+              .col-md-3
+                %table
+                  %tbody
+                    %tr
+                      %td{:style=>"padding: 0 6px 0 0;"}= f.radio_button :status, 2, :id => 'loanmode', :class => 'radio_discard_options'
+                      %td= t 'staff_attendance.official'
+                    %tr
+                      %td{:style=>"padding: 0 6px 0 0;"}= f.radio_button :status, 3, :id => 'loanmode', :class => 'radio_discard_options'
+                      %td= t 'staff_attendance.forgot'
+                    %tr
+                      %td{:style=>"padding: 0 6px 0 0;"}= f.radio_button :status, 5, :id => 'loanmode',  :class => 'radio_discard_options'
+                      %td= t 'staff_attendance.others'
+            .form-group
+              .col-sm-2.control-label
+                = f.label :reason
+              .col-md-3
+                = f.text_area :reason, :size => "50x3"
+
+    .row
+      .col-md-7.col-md-offset-3
+        .form-group
+          .col-md-1
+            = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), '/attendance/manage/', :class => 'btn btn-default'
+          .col-md-1.col-md-offset-1
+            = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('actions.show'), staff_staff_attendance_path(@staff_attendance), :class => 'btn btn-default'
+          .col-md-3.col-md-offset-1
+            /.div{style: "margin-left:-40px;"}
+            = f.submit t('update'), class: "btn btn-primary"	 
+
+:javascript  
+
+  $('.date-picker2').datetimepicker({
+   timepicker:false,
+     format: "Y-m-d",
+     autoclose: true
+   });    
+
+
+    
+
+/= f.radio_button :status, 1,	:id => 'loanmode',  :class => 'radio_discard_options' %>
+/ t 'attendance.outstation' %></label>
+
+
+/= f.radio_button :status, 4,	:id => 'loanmode',  :class => 'radio_discard_options' %>
+/= t 'attendance.early_late' %></label>
+
+
+			
+/		  <%# if User.current_user.staff.position.is_root? == false %>
+/				<%# if User.current_user.staff.position.parent.staff_id!=nil %>
+/					<%#= f.hidden_field :approved_by, :value => User.current_user.staff.position.parent.staff_id %>
+/				<%# else %>
+/					<!--those who has no superior?
+/<!--require tester confirmation
+/<!--
+/					<tr><td class="leftcol"><%#= t 'attendance.approve_id' %></td>
+/					<td><%#= f.collection_select :approved_by, Staff.find(:all, :order=> :name), :id, :name, :include_blank => "Select Approving Officer" %>
+/						<%#= f.collection_select :approved_by, Staff.find( User.current_user.staff_id).position.ancestors, :id, :staff_name, :include_blank => true %></td></tr>	    	
+/				<%# end %>
+/		  <%# else %>
+/		  <%# end -%>
+		
+/			</table>
+/	</div>
+/	<BR/>
+
+/ <p>
+/    <%= f.submit 'Update' %>
+/  </p>
+/<% end %>
+
+/<%= link_to 'Show', @staff_attendance %> |
+/<%= link_to 'Back', '/attendance/manage/' %>

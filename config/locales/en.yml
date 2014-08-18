@@ -88,8 +88,17 @@ en:
     imported: " was/were successfully imported"
     records: " record(s)"
     import_failed: " - import failed "
+    save_action: Save Action
   errors:
 
+  views:
+    pagination:
+      first: First
+      next: Next
+      previous: Previous
+      truncate: Truncate
+      last: Last
+      
   people:
     male: male
     female: female
@@ -149,8 +158,16 @@ en:
     
   staff_attendance:
     title: Staff Attendance
+    new: New Staff Attendance
+    edit: Edit Staff Attendance
+    details: Attendance Details
+    approval: "Late / Early Return Approval"
+    approval2: Approval
+    reject_approve: Reject or Approve
+    approve: Approve
+    reject: Reject
     flag: Flag
-    thumb_id: Staff Name
+    thumb_id: Staff 
     logged_in: "Logged-In"
     logged_out: "Logged-Out"
     shift: Shift
@@ -183,7 +200,50 @@ en:
     no_user2: "No matching staff / user for Thumb Id(s) : "
     log_in: Log In
     log_out: Log Out
-
+    excel_format: Excel Format
+    date_range1: "Searching 'All Department / Unit' - Attendance records for selected date range (within the latest 2 months)"
+    date_range2: "Searching by Department / Unit - Attendance records for selected date range (within the latest 2 years)"
+    conditions: Conditions for Excel File
+    allowed_date_range: "Allowed Date Range : "
+    must_not_exist: Attendance Record must NOT exist in ICMS
+    must_match: "'Thumb Id' must have matching User / Staff (ICMS / Excel File)"
+    hours: " hours "
+    minutes: " minutes "
+    fingerprint_statement: Fingerprint Statement
+    fingerprint: Fingerprint
+    date_time: "Date & Time"
+    outstation: Outstation
+    official: Official
+    forgot: Forgot
+    early_late: "Lateness / Early Return"
+    others: Others
+    advise_trigger1: "Lateness : "
+    advise_trigger3: "Tick 'Action' checkbox (to activate 'Fingerprint Statement') or 'Ignore' checkbox and click 'Save Action' icon in Staff Attendance listing"
+    advise_trigger2: "Early Return : "
+    list1: Attendance List
+    list2: "Late/Early Return List"
+    status_punchcard: Punch Card Status Report
+    status_pcard: Punch Card Status
+    unit_department: "Unit / Department"
+ 
+  attendance:
+    list: "Manage Lateness & Early Return"
+    new: "New Attendance (Lateness / Early Return)"
+    edit: "Edit Attendance (Lateness / Early Return)"
+    details: Attendance Details
+    late_to_approve: People Late I need to approve
+    early_return_to_approve:  "People Early (Return) I need to approve"
+    days_iam_late: Days I am Late
+    days_iam_early: "Days I am Early (Return)"
+    manage_lateness_earlyreturn: "Manage Lateness & Early Return"
+    staff_id: Staff
+    attdate: Date
+    time_in: Time In
+    time_out: Time Out
+    reason: Reason
+    approve_id: Approver
+    approvestatus: Approval Status
+    
   asset:
     title: Assets
     fixed: Fixed Assets
@@ -410,6 +470,7 @@ en:
       book_details: Book Details
       tagno: Tag No
       classddc: Class No (DDC/LC)
+      classlcc: "Class No (LC) / (NLM)"
       title: Title
       language: Language
       author: Author
@@ -441,8 +502,22 @@ en:
       receiveddate: Receive Date
       receiver_id: Received By
       supplier_id: Supplier
-     
-
+      open_shelf: Open Shelf
+      red_spot: Red Spot
+      no_image: No Image
+      isbn: ISBN
+      others: Others
+      book2: Book
+      magazine: Magazine
+      available: Available
+      on_loan: "On-loan"
+      fixed: Fixed
+      disposed: Disposed
+      image: Image
+      require_update: "Physical Description (Require Update?)"
+      excel_format: Excel Format
+      import_excel: Import Book From Excel File
+      
   buletin:
     list: List of Bulletins
     headline: Headline
@@ -838,6 +913,23 @@ en:
         duration: Duration
         credits: Credits
         status: Status
+      staff_attendance:
+        thumb_id: Staff
+        logged_at: Logged At
+        log_type: Log Type
+        reason: Reason
+        trigger: Trigger
+        approved_by: Approved By
+        is_approved: "Approved?"
+        approved_on: Approved On
+      attendance:
+        staff_id: Staff
+        attdate: Date
+        time_in: Time In
+        time_out: Time Out
+        reason: Reason
+        approve_id: Approver
+        approvestatus: Approval Status
 
     prompt:
       select_creator: Select Creator
@@ -857,6 +949,10 @@ en:
       select_location: Select Location
       select_lecturer: Select Lecturer
       select_hod: "Select HOD / Approver"
+      select_thumb_id: "Select Thumb Id | Staff (Department / Unit)"
+      select_log_type: Select Log Type
+      select_mediatype: Select Media Type
+      select_status: Select Status
       all_unit: "All Department / Unit"
       maintain: Maintain
       remove: Remove

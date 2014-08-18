@@ -164,7 +164,7 @@ module Spreadsheet2
     end
     #failed : Year exceed (current year-2)
     msg+=a[:sye].count.to_s+(I18n.t 'actions.records')+(I18n.t 'actions.import_failed')+(I18n.t 'staff_attendance.year_exceed')+"#{Date.today.year-2}-#{Date.today.year})" if a[:sye].count>0
-     if (a[:sye].count>0 && a[:ne].count>0)
+     if (a[:sye].count>0 && a[:snu].count>0)
       msg+=(I18n.t 'staff_attendance.and')
     end
     #failed : No User registered for supplied thumb_id (in CHECKINOUT worksheet)

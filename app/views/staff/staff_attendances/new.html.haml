@@ -1,0 +1,17 @@
+- model_class = StaffAttendance
+.page-header
+  %h1= t 'staff_attendance.new'
+
+= render 'shared/flashes'
+
+.row.fluid
+  = form_for [:staff, @staff_attendance], html: { multipart: true, class: 'form-horizontal' }  do |f| 
+    = render 'shared/error_messages', object: f.object
+    = render :partial => 'form', :locals => {:f => f}
+	
+    .col-md-offset-1
+      .form-group
+        .col-sm-offset-2.col-sm-1
+          = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), staff_staff_attendances_path, :class => 'btn btn-default'
+        .col-sm-offset-1.col-sm-2
+          = f.submit t('create'), class: "btn btn-primary"

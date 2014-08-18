@@ -1,8 +1,122 @@
 class Book < ActiveRecord::Base
-  belongs_to :staff  , :foreign_key => 'receiver_id'
+  
+  before_save :update_tag_no, :extract_roman_into_size_pages
+  
+  belongs_to :staff, :foreign_key => 'receiver_id'
   belongs_to :addbook, :foreign_key => 'supplier_id'
   has_many  :accessions, :dependent => :destroy
   accepts_nested_attributes_for :accessions, :reject_if => lambda { |a| a[:accession_no].blank? }, :allow_destroy =>true
+  
+  attr_accessor :no_perolehan, :no_panggilan, :pengarang, :judul_utama, :edisi, :isbn_e, :bahasa, :tajuk_perkara, :imprint, :ms_indeks, :ms_bibliografi, :deskripsi_fizikal, :harga_rm, :sumber_kewangan, :lokasi, :catitan		#from excel (no_perolehan=accession_no, no_panggilan=classlcc)
+
+  #-----------Attach Photo---------------
+  has_attached_file :photo,
+			      :url => "/assets/books/:id/:style/:basename.:extension",
+			      :path => ":rails_root/public/assets/books/:id/:style/:basename.:extension"
+  validates_attachment_size :photo, :less_than => 500.kilobytes
+  validates_attachment_content_type :photo, :content_type => ['image/jpeg', 'image/png']    
+  
+  def update_tag_no
+     if tagno == nil
+	if Book.last.tagno == nil
+	  self.tagno=1
+	else
+	  self.tagno = (Book.last.tagno.to_i+1).to_s
+	end
+     end 
+  end
+  
+  def extract_roman_into_size_pages
+     self.backuproman = roman if id.nil? || id.blank?			#only for existing one
+     roman_list=LibraryHelper.roman_list2
+     
+     #roman, size, pages
+     if roman != nil 
+	if roman.include?(",") 
+	  ar = roman.split(',')
+	elsif roman.include?(";") 
+	  ar = roman.split(';')
+	elsif roman.include?(":")
+	  ar = roman.split(':')
+	else
+	    r2=roman.lstrip[-2,2]
+	    if r2=="ms"
+		self.pages=roman.lstrip
+	    elsif r2=="cm"
+		self.size=roman.lstrip
+	    elsif r2!="ms" || r2!="cm"
+	        if roman_list.include?(roman.lstrip)
+		    self.roman=roman.lstrip
+		else
+		    self.roman=''
+		end
+	    end
+	end    
+	if ar
+	   ar.each do |a|
+	     a2= a.lstrip[-2,2]
+	      if a2=="ms"
+		  self.pages=a.lstrip
+	      elsif a2=="cm"
+		  self.size=a.lstrip
+	      elsif a2!="ms" || a2!="cm"
+		  if roman_list.include?(a.lstrip)
+		    self.roman=a.lstrip
+		  else
+		    self.roman=''
+		  end
+	      end
+	   end	
+	   if self.roman==self.backuproman && ar.count>1
+	     self.roman=nil	#force nil for nothing
+	   end
+	end
+      end
+      
+  end 
+  
+  def book_quantity
+      Accession.where(book_id: id).count
+  end
+  
+  # define scope media type
+  def self.mediatype_search(query) 
+    where(mediatype: query)
+  end
+  
+  # define scope status
+  def self.status_search(query)
+    where(status: query)
+  end
+  
+  #define scope accessionno
+  def self.accessionno_search(query)
+    a=where(accessionno: query)
+    if a!=nil
+      book_of_acc = a
+    else
+      book_of_acc = Accession.where(accession_no: query).first.book
+    end
+    book_of_acc
+  end
+    
+  # whitelist the scope
+  def self.ransackable_scopes(auth_object = nil)
+    [:mediatype_search]
+    [:status_search]
+    [:accessionno_search]
+  end
+  
+  def self.import(file) 
+    spreadsheet = Spreadsheet2.open_spreadsheet(file) 
+    result = LibraryHelper.update_book_accession(spreadsheet)
+    return result
+  end
+  
+  #def self.messages(import_result) 
+    #SpreadsheetBook.msg_import(import_result)
+  #end
+  
 end
 
 # == Schema Information

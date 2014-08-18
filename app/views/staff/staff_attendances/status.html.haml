@@ -1,0 +1,69 @@
+-model_class = StaffAttendance
+.page-header
+  %h1= t('staff_attendance.status_punchcard')
+= render 'shared/flashes'
+  
+.navbar.navbar-inverse{role: "navigation", style: "padding-right:40px;"}
+  %ul.nav.navbar-nav.navbar-right
+    %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: 'bogus'
+    %li= link_to content_tag(:li, fa_icon("print", text: (t 'actions.print'))), "#", class: 'bogus'
+
+.row
+  %table.table-striped.table-hover.ogma
+    %thead
+      %tr
+        %th{:rowspan=>"2"} No
+        %th{:rowspan=>"2"}=t 'staff_attendance.thumb_id'		# sort_link(@search, :time_in, (t 'attendance.time_in'))
+        %th{:rowspan=>"2"}=t 'staff_attendance.unit_department'	# sort_link(@search, :time_out, (t 'attendance.time_out'))
+        - @year_group.each do |years, months|
+          %th{:colspan=>"#{months.count}", :style=>"text-align: center;"}=years
+      %tr
+        - @year_group.each do |y,m|
+          - m.each do |month2|
+            %th=month2.to_date.strftime("%b")
+
+    %tbody
+      /= render "index_search"
+      - @all_dates.keys.sort.each_with_index do |thumbid, index|
+        %tr
+          %td=index+1
+          %td
+            - unless @staff_thumb.include?(@all_thumbs[index])
+              %font{:color=>"red"}Staff not exist in Staff Info (thumb_id : "#{@all_thumbs[index]}")
+            - else
+              - @staff_info.each do |staff| 
+                = staff.staff_thumb if staff.thumb_id == @all_thumbs[index]
+          %td
+            - unless @staff_thumb.include?(@all_thumbs[index])
+              %font{:color=>"red"}No record
+            - else
+              - @staff_info.each do |staff|
+                = staff.render_unit if staff.thumb_id == @all_thumbs[index]
+       
+          - @all_begin_months = []
+          - for dailydate in @all_dates[thumbid].map(&:logged_at)
+            - @all_begin_months << dailydate.in_time_zone('UTC').to_date.beginning_of_month.to_s     
+            - @in_column = []
+            - count_status = 0 
+            - for every_month_begin in @all_begin_months.uniq
+              - if count_status == 0
+                - previous_stat = 1
+                - previous_status = StaffAttendance.monthly_colour_status(every_month_begin, thumbid,previous_stat)
+              - else
+                - previous_status = StaffAttendance.monthly_colour_status(every_month_begin, thumbid,previous_stat)
+              - 0.upto(@title_for_month.count-1) do |count2|
+                - if every_month_begin == @title_for_month[count2]
+                  - @in_column[count2] = previous_status
+
+              - previous_stat = previous_status
+              - count_status+=1
+
+          - 0.upto(@title_for_month.count-1) do |count2| 
+            - if @in_column[count2] == 1
+              %td{:style=>"background:#F7F3A4;text-align:center;"}K
+            - elsif @in_column[count2] == 2 
+              %td{:style=>"background:#7C8;text-align:center;"}H
+            - elsif @in_column[count2] == 3
+              %td{:style=>"background:#F77;text-align:center;"}M
+            - else
+              %td &nbsp;

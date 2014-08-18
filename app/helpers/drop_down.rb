@@ -345,4 +345,58 @@ module DropDown
          [ "Months",     30 ],
          [ "Years",      365 ]
     ]
+    
+    LOGTYPE = [
+	# Displayed        stored in db
+        [ I18n.t('staff_attendance.log_in'),        'I' ],
+        [ I18n.t('staff_attendance.log_out'),      'O' ]
+      ]
+    
+    TRIGGER_STATUS = [
+	# Displayed       stored in db
+        [ I18n.t('staff_attendance.outstation'), 1],
+        [ I18n.t('staff_attendance.official'), 2],
+        [ I18n.t('staff_attendance.forgot'), 3],
+        [ I18n.t('staff_attendance.early_late'), 4],
+        [ I18n.t('staff_attendance.others'), 5]
+      ]
+    
+    # library resources (book)
+    
+  LOAN = [
+        #  Displayed       stored in db 
+        [ I18n.t('library.book.open_shelf') ],
+        [ I18n.t('library.book.red_spot')]
+  ]
+  
+  LANGUAGE = [
+        #  Displayed       stored in db
+        [ "English", "EN" ],
+        [ "Bahasa Malaysia", "ms_MY" ],
+        [ I18n.t('library.book.others'), "lain"]
+  ]
+  
+  MEDIA = [
+         #  Displayed       stored in db
+         [ I18n.t('library.book.book2'),1 ],
+         [ I18n.t('library.book.magazine'),2 ],
+         [ "DVD", 3 ],
+         [ "CD", 4]
+  ]
+  
+  STATUS = [
+          #  Displayed       stored in db
+          [ I18n.t('library.book.available'),1 ],
+          [ I18n.t('library.book.on_loan'),2 ],
+          [ I18n.t('library.book.fixed'), 3 ],
+          [ I18n.t('library.book.disposed'), 4 ]
+] 
+  CATSOURCE = [
+          #  Displayed       stored in db
+          [ "Perustakaan Negara",1 ],
+          [ "Amazon.com",2 ],
+          [ "Others",3 ]
+]
+  
+    
 end

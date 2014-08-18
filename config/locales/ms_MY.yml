@@ -64,8 +64,17 @@ ms_MY:
     imported: " telah berjaya diimport"
     records: " rekod"
     import_failed: " gagal diimport"
+    save_action: Simpan Tindakan
     
   errors:
+  
+  views:
+    pagination:
+      first: Pertama
+      next: Seterusnya
+      previous: Terdahulu
+      truncate: Senarai Pendek
+      last: Terakhir
 
   people:
     male: Lelaki
@@ -127,8 +136,16 @@ ms_MY:
        
   staff_attendance:
     title: Kedatangan Staf
+    new: Kedatangan Staf (Baru)
+    edit: Sunting Kedatangan Staf
+    details: Butiran Kedatangan
+    approval: "Kelulusan Datang Lewat / Pulang Awal"
+    approval2: Kelulusan
+    reject_approve: Diluluskan atau Ditolak
+    approve: Diluluskan
+    reject: Ditolak
     flag: Flag
-    thumb_id: Nama Staf
+    thumb_id: Staf
     logged_in: Masa Masuk		
     logged_out: Masa Keluar
     shift: Masa Anjal
@@ -160,7 +177,50 @@ ms_MY:
     no_user2: "Tiada Pengguna / Staf sepadan bagi data Thumb Id  : "
     log_in: Log Masuk
     log_out: Log Keluar
-
+    excel_format: Format Excel
+    date_range1: "Carian 'Semua Jabatan / Unit' - Rekod kedatangan bagi kemasukan julat tarikh (dalam 2 bulan terakhir)"
+    date_range2: "Carian mengikut Jabatan / Unit - Rekod kedatangan bagi kemasukan julat tarikh (dalam 2 tahun terakhir)"
+    conditions: "Syarat - syarat bagi fail Excel"
+    allowed_date_range: "Julat tarikh yang dibenarkan : "
+    must_not_exist: Rekod kedatangan mestilah BELUM wujud dalam ICMS
+    must_match: "'Thumb Id' mesti mempunyai padanan Pengguna / Staf (ICMS / Fail Excel)"
+    hours: " jam "
+    minutes: " minit "
+    fingerprint_statement: Kenyataan Fingerprint
+    fingerprint: Fingerprint
+    date_time: "Tarikh & Masa"
+    outstation: Luar Kawasan
+    official: Urusan Rasmi
+    forgot: Terlupa
+    early_late: "Datang Lewat / Pulang Awal"
+    others: "Lain - lain"
+    advise_trigger1: "Datang Lewat : "
+    advise_trigger3: "Tandakan kotak semak 'Tindakan' (untuk aktifkan borang 'Kenyataan Fingerprint') atau kotak semak 'Abaikan' dan klik ikon 'Simpan Tindakan' di laman senarai Kedatangan Staf"
+    advise_trigger2: "Pulang Awal : "
+    list1: Senarai Kedatangan
+    list2: "Senarai Lewat/Awal"
+    status_punchcard: Laporan Status Kad Perakam Waktu (KPW)
+    status_pcard: Status Kad Perakam Waktu
+    unit_department: "Unit / Jabatan"
+  
+  attendance:
+    title: "Pengurusan Datang Lambat & Pulang Awal"
+    new: "Kedatangan Baru (Datang Lambat / Pulang Awal)"
+    details: Butiran Kedatangan 
+    edit: "Sunting Kedatangan (Datang Lambat / Pulang Awal)"
+    late_to_approve: "Kelulusan Staf dalam Jabatan / Unit yang Datang Lambat"
+    early_return_to_approve:  "Kelulusan Staf dalam Jabatan / Unit yang Pulang Awal"
+    days_iam_late: "Senarai Kedatangan Lambat Datang (sendiri)"
+    days_iam_early:  "Senarai Kedatangan Pulang Awal (sendiri)"
+    manage_lateness_earlyreturn: "Pengurusan Datang Lambat & Pulang Awal"
+    staff_id: Staf
+    attdate: Tarikh
+    time_in: Masa Datang
+    time_out: Masa Pulang
+    reason: Sebab
+    approve_id: Pelulus
+    approvestatus: Status Kelulusan
+    
   asset:
     title: Aset
     fixed: Harta Modal
@@ -367,6 +427,7 @@ ms_MY:
       book_details: Butiran Buku
       tagno: No Bilangan
       classddc: No Kelas (DDC/LC)
+      classlcc: No Panggilan
       title: Tajuk
       language: Bahasa
       author: Penulis
@@ -378,7 +439,7 @@ ms_MY:
       publish_location: Tempat Terbitan
       links: Pautan Ruangan Elektonik
       bookcode: Kod Perpustakaan
-      accessionno: No Pencapaian
+      accessionno: No Perolehan
       catsource: Sumber Katalog Untuk
       classno: No Kelas
       description: Huraian Fizikal
@@ -398,6 +459,21 @@ ms_MY:
       receiveddate: Tarikh Diterima
       receiver_id: Diterima Oleh
       supplier_id: Pembekal
+      open_shelf: Rak Terbuka
+      red_spot: Red Spot
+      no_image: Tiada Imej
+      isbn: ISBN
+      others: "Lain - lain"
+      book2: Buku
+      magazine: Majalah
+      available: Ada
+      on_loan: Dipinjam
+      fixed: Dibaiki
+      disposed: Dilupus
+      image: Imej
+      require_update: "Deskripsi Fizikal (Perlu Dikemaskini?)"
+      excel_format: Format Excel
+      import_excel: Import Buku Dari Fail Excel
   
   buletin:
     list: Senarai Buletin
@@ -815,6 +891,23 @@ ms_MY:
         duration: Jangka Masa
         credits: Kredit
         status: Status
+      staff_attendance:
+        thumb_id: Staf
+        logged_at: Masa Log
+        log_type: Jenis log
+        reason: Sebab
+        trigger: Trigger
+        approved_by: Diluluskan Oleh
+        is_approved: "Diluluskan?"
+        approved_on: Tarikh Kelulusan
+      attendance:
+        staff_id: Staf
+        attdate: Tarikh
+        time_in: Masa Datang
+        time_out: Masa Pulang
+        reason: Sebab
+        approve_id: Pelulus
+        approvestatus: Status Kelulusan
 
     prompt:
       select_creator: Pilih Penyedia Soalan
@@ -834,6 +927,10 @@ ms_MY:
       select_location: Pilih Lokasi
       select_lecturer: Pilih Pengajar
       select_hod: "Pilih Ketua Jabatan / Pelulus"
+      select_thumb_id: "Pilih Thumb Id | Staf (Jabatan / Unit)"
+      select_log_type: Pilih Jenis Log
+      select_mediatype: Pilih Jenis Media
+      select_status: Pilih Status
       all_unit: "Semua Jabatan / Unit"
       maintain: Dikekalkan
       remove: Dibuang

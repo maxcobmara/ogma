@@ -66,8 +66,13 @@ class Staff < ActiveRecord::Base
 
     has_many :users
   #--------------------Declerations----------------------------------------------------
+    
     def age
       Date.today.year - cobirthdt.year unless cobirthdt == nil
+    end
+    
+    def formatted_mykad
+    "#{icno[0,6]}-#{icno[6,2]}-#{icno[-4,4]}"
     end
    
     def mykad_with_staff_name
@@ -83,7 +88,46 @@ class Staff < ActiveRecord::Base
       end
     end
     
+    def thumb_id_with_name_unit
+      if positions.blank?
+	"#{thumb_id} | #{name}"
+      else
+      "#{thumb_id} |  #{name} (#{positions.first.unit})" 
+      end
+    end
+      
+    def staff_name_with_position
+      "#{name}  (#{position_for_staff})"
+    end
     
+    def position_for_staff
+      if positions.blank?
+        "-"
+      else
+        positions[0].name
+      end
+    end
+    
+    def staff_thumb
+      "#{name}  (thumb id : #{thumb_id})"
+    end  
+    
+      
+  def render_unit
+    if positions.blank? 
+      "Staff not exist in Task & Responsibilities"
+    elsif positions.first.is_root?
+        "Pengarah"
+    elsif positions
+      if positions.first.unit.blank?
+        "#{positions.first.name}"                  #display position name instead - must be somebody!
+      else
+        "#{positions.first.unit}"                  #   "#{position.unit} - 3"
+      end
+    end
+  end
+
+
 end
 
 # == Schema Information
