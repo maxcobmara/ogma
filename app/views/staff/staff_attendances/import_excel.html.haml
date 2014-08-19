@@ -1,6 +1,7 @@
 - model_class = StaffAttendance
 .page-header
   %h1= t('staff_attendance.import_excel')
+  %br=link_to (t 'staff_attendance.list'), staff_staff_attendances_path
 = render 'shared/flashes'
   
 %br
@@ -25,6 +26,34 @@
   %li=t('staff_attendance.must_match')
  
 %br
+- if @success && @success.count>0
+  %h5{:style => "color: green; font-weight: bold;"}=t 'actions.imported2'
+  %table.table-striped.table-hover.ogma{:style => "width: 60%; "}
+    %thead
+      %tr
+        %th &nbsp;
+        %th= t 'staff_attendance.thumb_ id'
+        %th= t 'staff_attendance.logged_at'
+        %th= t 'staff_attendance.log_type'
+        %th= t 'staff_attendance.name'
+    %tbody
+      - @success.each_with_index do |su,index2|
+        %tr
+          %td= index2+1
+          %td
+            = su.thumb_id
+            (
+            =su.userid.to_i
+            )
+          %td= su.logged_at
+          %td
+            - if su.checktype == "O" || su.checktype == "o"
+              = t 'staff_attendance.log_out'
+            - else
+              = t 'staff_attendance.log_in'
+          %td=su.attended.name
+ 
+%br
 - if @invalid_year &&@invalid_year.count>0
   %h5{:style => "color: red; font-weight: bold;"}=t 'staff_attendance.year_exceed2'
   %table.table-striped.table-hover.ogma{:style => "width: 60%; "}
@@ -38,7 +67,11 @@
       - @invalid_year.each_with_index do |iy, index|
         %tr
           %td= index+1
-          %td= iy.userid.to_i
+          %td
+            = iy.thumb_id
+            (
+            =iy.userid.to_i
+            )
           %td= iy.checktime
           %td
             - if iy.checktype == "O" || iy.checktype == "o"
@@ -56,17 +89,23 @@
         %th= t 'staff_attendance.thumb_ id'
         %th= t 'staff_attendance.logged_at'
         %th= t 'staff_attendance.log_type'
+        %th= t 'staff_attendance.name'
     %tbody
       - @exist_records.each_with_index do |er,index2|
         %tr
           %td= index2+1
-          %td= er.userid.to_i
+          %td
+            = er.thumb_id
+            (
+            =er.userid.to_i
+            )
           %td= er.checktime
           %td
             - if er.checktype == "O" || er.checktype == "o"
               = t 'staff_attendance.log_out'
             - else
               = t 'staff_attendance.log_in'
+          %td=er.attended.name
 %br
 - if @no_user && @no_user.count>0
   %h5{:style => "color: red; font-weight: bold;"}=t 'staff_attendance.no_user2'
@@ -81,7 +120,11 @@
       - @no_user.each_with_index do |nu,index3|
         %tr
           %td= index3+1
-          %td= nu.userid.to_i
+          %td
+            = nu.thumb_id
+            (
+            =nu.userid.to_i
+            )
           %td= nu.checktime
           %td
             - if nu.checktype == "O" || nu.checktype == "o"
