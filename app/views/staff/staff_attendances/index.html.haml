@@ -79,6 +79,9 @@
                   (
                   =h sa.id
                   )
+                  (
+                  =h sa.thumb_id
+                  )
                 %td{:style=>"text-align: center;"}=h sa.log_type == "I" ? sa.logged_at.in_time_zone('UTC').strftime('%l:%M %P') : "" 
                 %td{:style=>"text-align: center;"}
                   - if sa.log_type == "O" || sa.log_type == "o"

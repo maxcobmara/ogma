@@ -83,11 +83,12 @@ class Staff::StaffAttendancesController < ApplicationController
   
   def import
       a=StaffAttendance.import(params[:file]) 
-      msg=StaffAttendance.messages(a)     
+      msg=StaffAttendance.messages(a)  
       if a[:sye].count>0 || a[:ser].count>0 || a[:snu].count>0
 	@invalid_year = a[:sye]
 	@exist_records = a[:ser]
 	@no_user = a[:snu]
+	@success = a[:sas] if a[:sas].count>0
         respond_to do |format|
           flash[:notice] = msg
           format.html { render action: 'import_excel' }
