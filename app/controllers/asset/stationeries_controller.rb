@@ -8,6 +8,9 @@ class Asset::StationeriesController < ApplicationController
   def show
   end
   
+  def edit
+  end
+  
   def kewps13
     @lead = Position.find(1)
     @stationeries = Stationery.order(code: :asc)
