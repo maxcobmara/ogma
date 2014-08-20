@@ -6,8 +6,21 @@ class Library::BooksController < ApplicationController
   # GET /books.xml
   def index
     @search = Book.search(params[:q])
+    @media=params[:q][:mediatype_search] if params[:q]
+    @status=params[:q][:status_search] if params[:q]
     @books2 = @search.result
+    @books2 = @books2.mediatype_search(@media.to_i) if @media
+    @books2 = @books2.status_search(@status.to_i) if @status
     @books = @books2.order(title: :asc).page(params[:page]||1)
+    @result_by_accession=Accession.where('accession_no ILIKE (?)', "%#{@search.accessionno_search}%").pluck(:accession_no)  if @search.accessionno_search 
+   
+    @searched_accession = Accession.where('book_id IN (?)', @books2.pluck(:id))				#3 (Book id 1298 ) 10003, 10004, 10005 
+    @all_accessions = @searched_accession.sort_by(&:accession_no).sort_by(&:book_id)		#pg 3 consist of 7 records only --> 3 accession records w/o book (25+25+7)
+    #@all_accessions = Accession.all.sort_by(&:accession_no)							#pg 3 consist of 10 records (25+25+10)
+    #@accessions_by_book =@all_accessions.group_by(&:book_id)						#dah paginate yg asal - group by book id	#just for checking
+    @accessions = Kaminari.paginate_array(@all_accessions).page(params[:page]||1)    
+    @acc_by_book = @accessions.group_by(&:book_id)
+
     respond_to do |format|
       format.html # index.html.erb
       format.js #1Apr2013
@@ -29,7 +42,7 @@ class Library::BooksController < ApplicationController
 	@removed_books=a[:rmb]
 	
 	respond_to do |format|
-	    format.html {redirect_to library_books_url, notice: "Imported!"}
+	    format.html {redirect_to library_books_url, notice: @saved_books.count.to_s+t('actions.records')+t('actions.imported_updated')}
 	end
       else
 	respond_to do |format|

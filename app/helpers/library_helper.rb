@@ -24,13 +24,13 @@ module LibraryHelper
       row = Hash[[header, spreadsheet.row(i)].transpose] 
       
       #retrieve UNIQUE fields for a book first   
-      callno=row["no_panggilan"]
+      callno=row["no_panggilan"].to_s
       auth=row["pengarang"]
       title2=row["judul_utama"]
-      isbn2=row["isbn_e"]
+      isbn2=row["isbn_e"].to_s
     
       #retrieve other SINGLE column(s) of SINGLE value
-      accno=row["no_perolehan"].to_i.to_s.rjust(10,"0")	#convert into 10 digits format
+      accno=row["no_perolehan"].to_i.to_s.rjust(10,"0").to_s	#convert into 10 digits format
       edition2=row["edisi"]
       language2=row["bahasa"]
       subject2=row["tajuk_perkara"]
@@ -44,7 +44,7 @@ module LibraryHelper
       #retrieve other SINGLE column(s) for MULTIPLE values
       #(a)imprint=publish_location, publisher, publish_date 
       imprint2=row["imprint"]
-      if imprint2.include?(",")
+      if imprint2 && imprint2.include?(",")
 	  pub_loc=imprint2.split(",")[0]
 	  pub=imprint2.split(",")[1].lstrip if imprint2.split(",")[1]!=nil
 	  pub_dt=imprint2.split(",")[2].lstrip if imprint2.split(",")[2]!=nil
@@ -52,17 +52,17 @@ module LibraryHelper
       #(b)physical_desc/roman=roman, size,pages : data distributed during save action, refer --> before_save :extract_roman_into_size_pages
       roman2=row["deskripsi_fizikal"]
       
-      book_recs = Book.where(classlcc: callno, author: auth, title: title2, isbn: isbn2)
+      book_recs = Book.where(classlcc: callno, author: auth, isbn: isbn2, title: title2)	#
       book_rec = book_recs.first || Book.new
-      if book_rec.id.nil? || book_rec.id.blank? 	
+      #if book_rec.id.nil? || book_rec.id.blank? 	
 	  #new book
 	  book_rec.classlcc=callno
 	  book_rec.author=auth
 	  book_rec.title=title2
 	  book_rec.isbn=isbn2
-      else
+      #else
 	#existing book
-      end
+      #end
       
       #for both - if no value exist yet (first row of excel file affected, but preceeding row of the same row not affected)
       if book_rec.edition.nil? || book_rec.edition.blank?
@@ -93,12 +93,15 @@ module LibraryHelper
       
       #for previous WRONG saved records
       if book_recs.count>1
-	  book_rec_a=[]
-	  book_rec_a<< book_rec.id
-	  book_rec_ids_to_remove = book_recs.pluck(:id)-book_rec_a
-	  book_recs_to_remove = where('id IN (?)', book_rec_ids_to_remove)
-	  book_recs_to_remove.each do |book_rem|
-	      book_rem.destroy
+	  #book_rec_a=[]
+	  #book_rec_a<< book_rec.id
+	  #book_rec_ids_to_remove = book_recs.pluck(:id)-book_rec_a
+	 book_rec_ids_to_remove = book_recs.pluck(:id)-book_rec.pluck(:id)
+	  if book_rec_ids_to_remove.count>0
+	      book_recs_to_remove = Book.where('id IN (?)', book_rec_ids_to_remove)
+	      book_recs_to_remove.each do |book_rem|
+		  book_rem.destroy
+	      end
 	  end
       end
       

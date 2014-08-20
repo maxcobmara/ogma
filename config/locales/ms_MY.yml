@@ -63,6 +63,7 @@ ms_MY:
     import_excel: Import Excel
     imported: " telah berjaya diimport"
     imported2: "Rekod - rekod berjaya diimport : "
+    imported_updated: " telah berjaya diimport/dikemaskini"
     records: " rekod"
     import_failed: " gagal diimport"
     save_action: Simpan Tindakan
@@ -476,6 +477,9 @@ ms_MY:
       require_update: "Deskripsi Fizikal (Perlu Dikemaskini?)"
       excel_format: Format Excel
       import_excel: Import Buku Dari Fail Excel
+      excel_conditions: Syarat Fail Excel
+      condition_line: "'Header' (baris pertama) fail Excel mestilah menggunakan nama / terma seperti di bawah :"
+      use_mark: "(Nota Tambahan : Gunakan samada (,) or (:) or (;) di antara No Roman, Jumlah Muka Surat and Ketebalan of book)"
   
   buletin:
     list: Senarai Buletin
