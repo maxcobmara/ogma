@@ -87,6 +87,7 @@ en:
     import_excel: Import Excel
     imported: " was/were successfully imported"
     imported2: "Successful imported record(s) : "
+    imported_updated: " was/were successfully imported/updated"
     records: " record(s)"
     import_failed: " - import failed "
     save_action: Save Action
@@ -519,6 +520,9 @@ en:
       require_update: "Physical Description (Require Update?)"
       excel_format: Excel Format
       import_excel: Import Book From Excel File
+      excel_conditions: Excel File Conditions
+      condition_line: "Header (first line) of an Excel file must use names / terms as below :"
+      use_mark: "(Addional Notes : Use either (,) or (:) or (;) in between Roman No, Total Pages and Thickness of book)"
       
   buletin:
     list: List of Bulletins

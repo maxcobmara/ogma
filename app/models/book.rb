@@ -81,23 +81,18 @@ class Book < ActiveRecord::Base
   
   # define scope media type
   def self.mediatype_search(query) 
-    where(mediatype: query)
+    where(mediatype: query.to_i)
+    #where(mediatype: 1)
   end
   
   # define scope status
   def self.status_search(query)
-    where(status: query)
+    where(status: query.to_i)
   end
   
   #define scope accessionno
   def self.accessionno_search(query)
-    a=where(accessionno: query)
-    if a!=nil
-      book_of_acc = a
-    else
-      book_of_acc = Accession.where(accession_no: query).first.book
-    end
-    book_of_acc
+    Book.joins(:accessions).where('accessions.accession_no ILIKE(?)', "%#{query}%")
   end
     
   # whitelist the scope
