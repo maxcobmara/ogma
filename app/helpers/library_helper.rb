@@ -100,6 +100,13 @@ module LibraryHelper
 	  if book_rec_ids_to_remove.count>0
 	      book_recs_to_remove = Book.where('id IN (?)', book_rec_ids_to_remove)
 	      book_recs_to_remove.each do |book_rem|
+		  total_accs = book_rem.accessions.count
+		  if total_accs>0
+		      book_rem.accessions.each do |b_rem_acc|
+			b_rem_acc.book_id = book_rec.id
+			b_rem_acc.save!
+		      end
+		  end
 		  book_rem.destroy
 	      end
 	  end
