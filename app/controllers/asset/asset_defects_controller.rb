@@ -10,6 +10,9 @@ class Asset::AssetDefectsController < ApplicationController
   def show
   end
   
+  def edit
+  end
+  
   def new
     @asset = Asset.find(params[:asset_id])
     @asset_defect = @asset.asset_defects.new(params[:asset_defect])
