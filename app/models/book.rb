@@ -18,14 +18,14 @@ class Book < ActiveRecord::Base
   
   def update_tag_no
      if tagno == nil
-	if Book.last.tagno == nil
-	  self.tagno=1
+        if Book.all.count>0 
+	    self.tagno = (Book.last.tagno.to_i+1).to_s if Book.last.tagno
 	else
-	  self.tagno = (Book.last.tagno.to_i+1).to_s
+	    self.tagno=1
 	end
      end 
   end
-  
+
   def extract_roman_into_size_pages
      self.backuproman = roman if id.nil? || id.blank?			#only for existing one
      roman_list=LibraryHelper.roman_list2
@@ -82,7 +82,6 @@ class Book < ActiveRecord::Base
   # define scope media type
   def self.mediatype_search(query) 
     where(mediatype: query.to_i)
-    #where(mediatype: 1)
   end
   
   # define scope status
@@ -108,9 +107,13 @@ class Book < ActiveRecord::Base
     return result
   end
   
-  #def self.messages(import_result) 
-    #SpreadsheetBook.msg_import(import_result)
-  #end
+  def self.messages(import_result) 
+    LibraryHelper.msg_import(import_result)
+  end
+  
+  def self.messages2(import_result) 
+    LibraryHelper.msg_import2(import_result)
+  end
   
 end
 

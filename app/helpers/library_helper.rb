@@ -12,6 +12,16 @@ module LibraryHelper
       end   
       roman_numerals
   end
+
+  def self.all_digits(str)
+    str[/[0-9]+/] == str
+  end
+
+  def self.all_letters(str)
+    # Use 'str[/[a-zA-Z]*/] == str' to let all_letters
+    # yield true for the empty string
+    str[/[a-zA-Z]+/] == str
+  end
   
   def self.update_book_accession(spreadsheet)
     spreadsheet.default_sheet = spreadsheet.sheets.first 
@@ -19,83 +29,136 @@ module LibraryHelper
     saved_books=[]
     saved_accessions=[]
     removed_books=[]
+    wrong_price_types=[]
+    books_wo_acc=[]
+    #duplicate_acc=[]
+    duplicate_acc=1
     
     (2..spreadsheet.last_row).each do |i|
       row = Hash[[header, spreadsheet.row(i)].transpose] 
       
-      #retrieve UNIQUE fields for a book first   
-      callno=row["no_panggilan"].to_s
+      #retrieve UNIQUE fields of a book
+      #additional Float check required for numbers-only data
+      #lstrip required for string to remove leading/preceeding spaces
+      callno=row["no_panggilan"]     
+      if callno.is_a? Float
+	callno=callno.to_i.to_s
+      elsif callno.is_a? String
+	callno=callno.lstrip if callno
+      end
       auth=row["pengarang"]
+      if auth.is_a? String
+	auth=auth.lstrip if auth
+      end
       title2=row["judul_utama"]
-      isbn2=row["isbn_e"].to_s
-    
-      #retrieve other SINGLE column(s) of SINGLE value
-      accno=row["no_perolehan"].to_i.to_s.rjust(10,"0").to_s	#convert into 10 digits format
-      edition2=row["edisi"]
-      language2=row["bahasa"]
-      subject2=row["tajuk_perkara"]
-      indice2=row["ms_indeks"]
-      bibliography2=row["ms_bibliografi"]
-      purchaseprice2=row["harga_rm"]
-      finance_source2=row["sumber_kewangan"]
-      location2=row["lokasi"]
-      notes2=row["catitan"]
+      if title2.is_a? String
+	title2=title2.lstrip if title2
+      end
+      isbn2=row["isbn_e"]
+      if isbn2.is_a? Float
+	isbn2=isbn2.to_i.to_s
+      end
       
-      #retrieve other SINGLE column(s) for MULTIPLE values
-      #(a)imprint=publish_location, publisher, publish_date 
+      #accession no format : 10 digits (etc: 0000000001)
+      accno=row["no_perolehan"].to_i.to_s.rjust(10,"0").to_s
+      
+      #imprint=publish_location, publisher, publish_date 
       imprint2=row["imprint"]
       if imprint2 && imprint2.include?(",")
-	  pub_loc=imprint2.split(",")[0]
-	  pub=imprint2.split(",")[1].lstrip if imprint2.split(",")[1]!=nil
-	  pub_dt=imprint2.split(",")[2].lstrip if imprint2.split(",")[2]!=nil
+	pub_loc=imprint2.split(",")[0]
+	pub=imprint2.split(",")[1].lstrip if imprint2.split(",")[1]!=nil
+	pub_dt=imprint2.split(",")[2].lstrip if imprint2.split(",")[2]!=nil
       end
-      #(b)physical_desc/roman=roman, size,pages : data distributed during save action, refer --> before_save :extract_roman_into_size_pages
-      roman2=row["deskripsi_fizikal"]
       
-      book_recs = Book.where(classlcc: callno, author: auth, isbn: isbn2, title: title2)	#
+      #price from excel - numbers or 'Sumbangan' 
+      purchaseprice3=row["harga_rm"]
+      if (purchaseprice3.is_a? Float) || (purchaseprice3.is_a? Numeric)		#In Excel : format cell -> Number = In Postgresql : Numeric
+	 purchaseprice2=purchaseprice3
+      elsif purchaseprice3.is_a? Integer
+	purchaseprice2=purchaseprice3.to_f
+      elsif purchaseprice3.is_a? String
+	pprice = LibraryHelper.all_letters(purchaseprice3) if purchaseprice3
+	pprice2 = LibraryHelper.all_digits(purchaseprice3) if purchaseprice3
+	if pprice
+	  if purchaseprice3.downcase.include?("sumb")
+	    purchaseprice2=0.0
+	  else
+	    #wrong values will be ignored
+	  end
+	end
+	if pprice2
+	    purchaseprice2=purchaseprice3.to_f
+	end
+      elsif purchaseprice3.is_a? Date
+	wrong_price_types << accno
+      end
+      
+      #notes from excel - integer or comp/supplier's name?
+      notes3=row["catitan"]
+      if notes3.is_a? String
+	notes_num=LibraryHelper.all_digits(notes3) if notes3
+	if notes_num
+	  notes2=notes3.to_i.to_s
+	else
+	  notes2=notes3
+	end
+      elsif notes3.is_a? Numeric
+	notes2=notes3.to_i.to_s
+      end
+      
+      #based on above UNIQUE fields, retrieve existing record(s) Or create new
+      book_recs = Book.where(classlcc: callno, author: auth, isbn: isbn2, title: title2)
       book_rec = book_recs.first || Book.new
-      #if book_rec.id.nil? || book_rec.id.blank? 	
-	  #new book
-	  book_rec.classlcc=callno
-	  book_rec.author=auth
-	  book_rec.title=title2
-	  book_rec.isbn=isbn2
-      #else
-	#existing book
-      #end
+       
+      #columns in excel - title & accno MUST EXIST
+      if title2 && accno
+	
+	#exsiting record - data remains unchange
+	book_rec.classlcc=callno
+	book_rec.author=auth
+	book_rec.title=title2
+	book_rec.isbn=isbn2
       
-      #for both - if no value exist yet (first row of excel file affected, but preceeding row of the same row not affected)
-      if book_rec.edition.nil? || book_rec.edition.blank?
-	  book_rec.edition=edition2
-      end
-      if book_rec.language.nil? || book_rec.language.blank?
-	  book_rec.language=language2
-      end
-      if book_rec.subject.nil? || book_rec.subject.blank?
-	  book_rec.subject=subject2
-      end
-      if book_rec.publish_date.nil? || book_rec.publish_date.blank?
-	  book_rec.publish_date=pub_dt
-      end
-      if book_rec.publish_location.nil? || book_rec.publish_location.blank?
-	  book_rec.publish_location=pub_loc
-      end
-      if book_rec.publisher.nil? || book_rec.publisher.blank?
-	  book_rec.publisher=pub
-      end
-      if book_rec.backuproman.nil? || book_rec.backuproman.blank?
-	  book_rec.backuproman=roman2
-      end
-      if book_rec.roman.nil? || book_rec.roman.blank?
-	  book_rec.roman=roman2
-      end
-      book_rec.save!
+	book_rec.attributes = row.to_hash.slice("edisi","bahasa","tajuk_perkara","ms_indeks","ms_bibliografi","sumber_kewangan","lokasi","deskripsi_fizikal")
       
-      #for previous WRONG saved records
+	book_rec.edition=book_rec.edisi
+	book_rec.language=book_rec.bahasa
+	book_rec.subject=book_rec.tajuk_perkara
+	book_rec.indice=book_rec.ms_indeks
+	book_rec.bibliography=book_rec.ms_bibliografi
+	book_rec.finance_source=book_rec.sumber_kewangan
+	book_rec.location=book_rec.lokasi
+     
+	#imprint data
+	book_rec.publish_date=pub_dt
+	book_rec.publish_location=pub_loc
+	book_rec.publisher=pub
+      
+	#physical_desc/roman=roman no, size, pages : data distributed during save action, refer --> before_save :extract_roman_into_size_pages
+	book_rec.backuproman=book_rec.deskripsi_fizikal
+	book_rec.roman=book_rec.deskripsi_fizikal
+      
+	book_rec.purchaseprice = purchaseprice2 if purchaseprice2
+	book_rec.notes=notes2 if notes2
+
+	book_rec.save!
+
+	#update Or create Accession(s) for saved book_rec
+	accession_rec = Accession.where(accession_no: accno).first || Accession.new
+	if accession_rec.id.nil? || accession_rec.id.blank?
+	  accession_rec.accession_no=accno
+	  accession_rec.book_id=book_rec.id
+	  accession_rec.save!
+	else		#accession no already exist (in Accessions table)
+	  books_wo_acc << "("+duplicate_acc.to_s+") "+book_rec.title[0,15]+"(#{accno}) "
+	end
+
+      end #end for if title2 && accno
+      
+      #for previous WRONG saved records (existing), ignore the first found book record (A) and retrieve the rest (B)
+      #for each (B) book record, if accession(s) exist, set its corresponding accession(s) to (A) (copy book_id)
+      #remove (B) book records
       if book_recs.count>1
-	  #book_rec_a=[]
-	  #book_rec_a<< book_rec.id
-	  #book_rec_ids_to_remove = book_recs.pluck(:id)-book_rec_a
 	 book_rec_ids_to_remove = book_recs.pluck(:id)-book_rec.pluck(:id)
 	  if book_rec_ids_to_remove.count>0
 	      book_recs_to_remove = Book.where('id IN (?)', book_rec_ids_to_remove)
@@ -111,20 +174,41 @@ module LibraryHelper
 	      end
 	  end
       end
-      
-      #check if row exist in Accession
-      accession_rec = Accession.where(accession_no: accno).first || Accession.new
-      if accession_rec.id.nil? || accession_rec.id.blank?
-	  accession_rec.accession_no=accno
-	  accession_rec.book_id=book_rec.id
-	  accession_rec.save!
-      end
-      
+     
+      #collect records for messaging purposes
       saved_books << book_rec
       saved_accessions << accession_rec
       removed_books << book_rem if book_recs.count>1
+      
     end
-    result={:svb=>saved_books, :sva=>saved_accessions,:rmb=>removed_books}
+    result={:svb=>saved_books, :sva=>saved_accessions,:rmb=>removed_books, :wpt=> wrong_price_types, :bwoacc=>books_wo_acc}
+  end
+  
+  def self.msg_import(a) 
+    if a[:svb].count>0 || a[:rmb].count>0# || a[:sva].count>0 
+      msg="" 
+      if a[:svb].count>0
+	msg+=a[:svb].count.to_s+(I18n.t 'actions.records')+(I18n.t 'actions.imported_updated') 
+      end
+      if a[:rmb].count>0
+	msg+=(I18n.t'library.book.and')+a[:rmb].count.to_s+(I18n.t'library.book.book2')+(I18n.t 'actions.removed') 
+      end 
+    end
+    msg
+  end
+  
+  def self.msg_import2(a) 
+    msg=""  
+    #wrong price type 
+    if a[:wpt].count>0
+      stt=""
+      a[:wpt].each_with_index do |wp,ind|
+	stt+="(#{ind+1}) #{wp}"
+	stt+=", " if ind+1<a[:wpt].count
+      end
+      msg+=(I18n.t'library.book.wrong_price_types')+(I18n.t'library.book.wrong_price_types2')+stt
+    end
+    msg
   end
       
 end

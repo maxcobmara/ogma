@@ -2,7 +2,7 @@
 .page-header
   %h1= t('library.book.list')
 = render 'shared/flashes'
-  
+
 .navbar.navbar-inverse{role: "navigation", style: "padding-right:40px;"}
   %ul.nav.navbar-nav
     %li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'actions.new'))), new_library_book_path
@@ -27,35 +27,22 @@
         %th= sort_link(@search, :location, (t 'library.book.location'))
         %th= sort_link(@search, :status, (t 'library.book.status'))
         %th{:style=>"width: 10px;"}= t 'library.book.require_update'
-        /Physical Description - amendment required
     
     %tbody
       = render "index_search"
-      /= @accessions_by_book.count
-      /- @accessions_by_book.each do |bookid, accession2|
-      /  %B
-      /    =accession2.count
-      /    (Book id
-      /    =bookid
-      /    )
-      /  - accession2.each do |acc|
-      /    =acc.accession_no
-      /    =acc.book.try(:mediatype)
-      /    =acc.book.try(:title)
-      /    =acc.book.try(:author)
-      /    =acc.book.try(:isbn)
-      /    %br
-      /%BR CHUP CHUP
+      - if @book_wo_acc.count>0
+        %tr
+          %td{:colspan=>"2"} &nbsp;
+          %td{:colspan=>"8", :style=>"color: red; text-decoration: underline;"}=@book_wo_acc.count.to_s+" "+t('library.book.book_wo_acc2')
+      - @book_wo_acc.each_with_index do |bk,ind|
+        %tr
+          %td{:colspan=>"2"} &nbsp;
+          %td=h link_to (ind+1).to_s+") "+bk.title, library_book_path(bk)
+          %td{:colspan=>"3"} &nbsp;
+          %td{:style=>"color:red;"}=t'library.book.acc_not_exist'
+          %td{:colspan=>"4"} &nbsp;
+            
       - @acc_by_book.each do |bookid3, acc3|
-        /%B
-        /  - if acc3.first.book
-        /    =acc3.count
-        /    (Book id
-        /    =bookid3
-        /    )
-        /  - else
-        /    Book of these Accessions already remove from Book table, but book_id still exist in Accession table.
-        /    %br
         - acc3.each_with_index do |acc,index2|
           - if (@search.accessionno_search && @result_by_accession.include?(acc.accession_no)) || !@search.accessionno_search
             %tr
@@ -81,67 +68,8 @@
                 - if acc.book.roman != nil 
                   - if acc.book.roman.include?(';') || acc.book.roman.include?(':') || acc.book.roman.include?(',')
                     &#10003;
-              /%br
-          
-        /- @books.each do |book|
-        /- if book.accessions.count != 0  
-        /  - book.accessions.each_with_index do |accession_item, index|
-        /    - if (@search.accessionno_search &&  @result_by_accession.include?(accession_item.accession_no)) || !@search.accessionno_search
-        /      %tr
-        /        %td=h (DropDown::MEDIA.find_all{|disp, value| value == book.mediatype}).map {|disp, value| disp}[0] 
-        /        %td
-        /          - if book.photo_file_name == nil
-        /            =t 'book.no_image'
-        /            =book.id
-        /          - else
-        /            =image_tag book.photo.url, :class =>'list-image'
-        /        %td=h link_to book.title, library_book_path(book)    
-        /        %td=h book.author
-        /        %td=h book.isbn
-        /        %td{:style=>"text-align: center;"} 
-        /          =h book.book_quantity if index == 0 && !@search.accessionno_search
-        /          = 1 if @search.accessionno_search
-        /        %td{:style=>"text-align: center;"}=h accession_item.accession_no
-        /        %td=h book.classlcc
-        /        %td=h book.location
-        /        %td{:style=>"text-align: center;"}=h (DropDown::STATUS.find_all{|disp, value| value == book.status}).map {|disp, value| disp}[0]
-        /        %td{:style=>"text-align: center;"}
-        /          /2Apr2013-check roman column, if data already distribute into 3 columns:roman, size & pages
-        /          - if book.roman != nil 
-        /            - if book.roman.include?(';') || book.roman.include?(':') || book.roman.include?(',')
-        /              &#10003;
-
-        /- else 
-        /  /one copy for each title
-        /  %tr
-        /    %td=h (DropDown::MEDIA.find_all{|disp, value| value == book.mediatype}).map {|disp, value| disp}[0]
-        /    %td
-        /      - if book.photo_file_name == nil
-        /        =t 'book.no_image'
-        /      - else
-        /        =image_tag book.photo.url, :class =>'list-image'
-        /    %td=h link_to book.title, library_book_path(book)
-        /    %td=h book.author
-        /    %td=h book.isbn
-        /    %td{:style=>"text-align: center;"}=h book.book_quantity
-        /    %td{:style=>"text-align: center;"}
-        /      - if book.accessions.count <= 0 #temporary display from books table
-        /        =h book.accessionno
-        /      - else
-        /        =book.accessions.first.accession_no
-        /    %td=h book.classlcc
-        /    %td=h book.location
-        /    %td{:style=>"text-align: center;"}=h (DropDown::STATUS.find_all{|disp, value| value == book.status}).map {|disp, value| disp}[0]
-        /    %td{:style=>"text-align: center;"}
-        /      /2Apr2013-check roman column, if data already distribute into 3 columns:roman, size & pages
-        /      - if book.roman != nil 
-        /        - if book.roman.include?(';') || book.roman.include?(':') || book.roman.include?(',')
-        /          &#10003;
-                        
+                         
   .right{style:"padding:0 30px; margin:0;"}= paginate @accessions, :theme => 'twitter-bootstrap-3'
-  
-  /.right{style:"padding:0 30px; margin:0;"}= paginate @books, :theme => 'twitter-bootstrap-3'
-
 
 :javascript
   
