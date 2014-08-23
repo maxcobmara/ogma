@@ -1,5 +1,5 @@
 class Library::BooksController < ApplicationController
-  
+ 
   before_action :set_book, only: [:show, :edit, :update, :destroy]
   
   # GET /books
@@ -20,6 +20,9 @@ class Library::BooksController < ApplicationController
     #@accessions_by_book =@all_accessions.group_by(&:book_id)						#dah paginate yg asal - group by book id	#just for checking
     @accessions = Kaminari.paginate_array(@all_accessions).page(params[:page]||1)    
     @acc_by_book = @accessions.group_by(&:book_id)
+    
+    #retrieve book without accession no
+    @book_wo_acc=Book.where('id NOT IN(?)', Accession.all.pluck(:book_id).uniq)
 
     respond_to do |format|
       format.html # index.html.erb
@@ -34,24 +37,24 @@ class Library::BooksController < ApplicationController
   
   def import
       a=Book.import(params[:file]) 
-      #msg=Book.messages(a)     
-      
-      if a[:svb].count>0 || a[:sva].count>0 || a[:rmb].count>0
-	@saved_books=a[:svb]
-	@saved_accessions=a[:sva]
-	@removed_books=a[:rmb]
-	
+      msg=Book.messages(a)
+      msg2=Book.messages2(a)      
+      msg3=I18n.t'library.book.book_wo_acc'
+      if a[:svb].count>0 || a[:sva].count>0 || a[:rmb].count>0 || a[:wpt].count>0 || a[:bwoacc].count>0
 	respond_to do |format|
-	    format.html {redirect_to library_books_url, notice: @saved_books.count.to_s+t('actions.records')+t('actions.imported_updated')}
+	   flash[:notice] = msg
+	   flash[:error] = msg2
+	   flash[:error] = msg3
+	   format.html {redirect_to library_books_url}
+	   #flash.discard
 	end
       else
 	respond_to do |format|
-          flash[:notice] = "Nothing Imported" #msg
+          flash[:notice] = "Nothing Imported"
           format.html { render action: 'import_excel' }
           flash.discard
         end
       end
-
   end
   
   def download_excel_format

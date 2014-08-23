@@ -522,7 +522,14 @@ en:
       import_excel: Import Book From Excel File
       excel_conditions: Excel File Conditions
       condition_line: "Header (first line) of an Excel file must use names / terms as below :"
-      use_mark: "(Addional Notes : Use either (,) or (:) or (;) in between Roman No, Total Pages and Thickness of book)"
+      use_mark: "(Additional Notes : Use either (,) or (:) or (;) in between Roman No (eg: ix), Total Pages (250ms) and Thickness of a book (20cm))"
+      wrong_price_types: "Note : Cell format for 'harga_rm' column is INVALID. Use 'Number : General' cell format type and RE-IMPORT EXCEL FILE."
+      wrong_price_types2: " Errors found (in Excel file) for records with these Accession Nos : "
+      valid_price: "(Additional Notes : Use 'Number : General' cell format type and re-import Excel file. Data with value 'Sumbangan' / 'sumb.' will be saved as 0.0)"
+      book_wo_acc: "Note : Accession No must be UNIQUE. Edit 'Book' accordingly."
+      book_wo_acc2: Books WIthout Accession No
+      acc_not_exist: "Not Exist"
+      acc_must_unique: "(Additional Notes : Accession No must UNIQUE)"
       
   buletin:
     list: List of Bulletins

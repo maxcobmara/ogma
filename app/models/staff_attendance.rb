@@ -26,16 +26,16 @@ class StaffAttendance < ActiveRecord::Base
   
   def self.import(file) 
     spreadsheet = Spreadsheet2.open_spreadsheet(file)  				#open/read excel file
-    staff_dept = Spreadsheet2.update_thumb_id(spreadsheet)			#update thumb_id - table : staffs & return staff_id & deptid
-    userid_thumbid = Spreadsheet2.userid_thumbid(spreadsheet)			#just retrieve match of userid & thumbid
-    result = Spreadsheet2.update_attendance(spreadsheet,userid_thumbid)				#update attendance record - table : staff_attendances    
-    dept_list = Spreadsheet2.load_dept(spreadsheet)					#load department id & names fr excel {1: "KSKB",2: "Pengurusan Pentadbiran"}
-    Spreadsheet2.match_dept_unit(staff_dept,dept_list)
+    staff_dept = StaffAttendanceHelper.update_thumb_id(spreadsheet)			#update thumb_id - table : staffs & return staff_id & deptid
+    userid_thumbid = StaffAttendanceHelper.userid_thumbid(spreadsheet)			#just retrieve match of userid & thumbid
+    result = StaffAttendanceHelper.update_attendance(spreadsheet,userid_thumbid)				#update attendance record - table : staff_attendances    
+    dept_list = StaffAttendanceHelper.load_dept(spreadsheet)					#load department id & names fr excel {1: "KSKB",2: "Pengurusan Pentadbiran"}
+    StaffAttendanceHelper.match_dept_unit(staff_dept,dept_list)
     return result
   end
   
   def self.messages(import_result) 
-    Spreadsheet2.msg_import(import_result)
+    StaffAttendanceHelper.msg_import(import_result)
   end
    
   # define scope
