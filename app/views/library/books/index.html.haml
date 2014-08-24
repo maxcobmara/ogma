@@ -37,7 +37,9 @@
       - @book_wo_acc.each_with_index do |bk,ind|
         %tr
           %td{:colspan=>"2"} &nbsp;
-          %td=h link_to (ind+1).to_s+") "+bk.title, library_book_path(bk)
+          %td
+            =h link_to (ind+1).to_s+") "+bk.title, library_book_path(bk)
+            =h link_to "EDIT","http://#{request.host}:3000/books/#{bk.id}/edit"  
           %td{:colspan=>"3"} &nbsp;
           %td{:style=>"color:red;"}=t'library.book.acc_not_exist'
           %td{:colspan=>"4"} &nbsp;
