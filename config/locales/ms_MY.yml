@@ -479,7 +479,8 @@ ms_MY:
       import_excel: Import Buku Dari Fail Excel
       excel_conditions: Syarat Fail Excel
       condition_line: "'Header' (baris pertama) fail Excel mestilah menggunakan nama / terma seperti di bawah :"
-      use_mark: "(Nota Tambahan : Gunakan samada (,) atau (:) atau (;) di antara No Roman (cth: ix), Jumlah Muka Surat (cth: 56ms) dan Ketebalan buku (cth: 20cm))"
+      use_mark: "(Nota Tambahan : Gunakan samada (,) atau (:) atau (;) di antara No Roman, Jumlah Muka Surat dan Ketebalan buku (cth: ix,56ms,20cm))"
+      use_mark2: "(Nota Tambahan : Gunakan samada (,) atau (:) atau (;) di antara Lokasi Diterbitkan, Penerbit dan Tahun Diterbitkan (cth: Edinburgh,Churchill Livingstone,1983))"
       wrong_price_types: "Nota : Format sel bagi lajur 'harga_rm' (Harga Buku) adalah TIDAK SAH. Gunakan format sel 'Number : General' dan IMPORT SEMULA FAIL EXCEL."
       wrong_price_types2: " Ralat pada baris rekod (fail Excel) dengan No Perolehan berikut : "
       valid_price: "(Nota Tambahan : Gunakan format sel 'Number : General'. Data dengan nilai 'Sumbangan' / 'sumb.' akan disimpan sebagai 0.0)"
@@ -487,6 +488,7 @@ ms_MY:
       book_wo_acc2: Buku Tanpa No Perolehan
       acc_not_exist: Tidak Wujud
       acc_must_unique: "(Nota Tambahan : No Perolehan mestilah UNIK)"
+      use_language: "(Nota Tambahan : Gunakan 'ing' or 'en' for Bahasa Inggeris, use 'mel' or 'ms_MY' for Bahasa Malaysia)"
   
   buletin:
     list: Senarai Buletin

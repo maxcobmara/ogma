@@ -62,12 +62,43 @@ module LibraryHelper
       #accession no format : 10 digits (etc: 0000000001)
       accno=row["no_perolehan"].to_i.to_s.rjust(10,"0").to_s
       
+      #language
+      language2=row["bahasa"]
+      language2=language2.downcase if language2
+      if language2
+	if language2.include?("ing") || language2.include?("en")
+	  language2="EN"
+	elsif language2.include?("mel") || language2.include?("ms_MY")
+	  language2="ms_MY"
+	else
+	  language2="lain"
+	end
+      end
+      
+      #bibliography - integer (1 page only) or 1-2 or includes
+      bibliography3=row["ms_bibliografi"]
+      if bibliography3.is_a? String
+	biblio_num=LibraryHelper.all_digits(bibliography3) if bibliography3
+	if biblio_num
+	  bibliography2=bibliography3.to_i.to_s
+	else
+	  bibliography2=bibliography3
+	end
+      elsif bibliography3.is_a? Numeric
+	bibliography2=bibliography3.to_i.to_s
+      end
+      
       #imprint=publish_location, publisher, publish_date 
       imprint2=row["imprint"]
-      if imprint2 && imprint2.include?(",")
-	pub_loc=imprint2.split(",")[0]
-	pub=imprint2.split(",")[1].lstrip if imprint2.split(",")[1]!=nil
-	pub_dt=imprint2.split(",")[2].lstrip if imprint2.split(",")[2]!=nil
+      if imprint2
+	sepa="," if imprint2.include?(",") && imprint2.count(",")==2    
+	sepa=";" if imprint2.include?(";") && imprint2.count(";")==2  
+	sepa=":" if imprint2.include?(":") && imprint2.count(":")==2
+	if sepa
+	  pub_loc=imprint2.split(sepa)[0]
+	  pub=imprint2.split(sepa)[1].lstrip if imprint2.split(sepa)[1]!=nil
+	  pub_dt=imprint2.split(sepa)[2].lstrip if imprint2.split(sepa)[2]!=nil
+	end
       end
       
       #price from excel - numbers or 'Sumbangan' 
@@ -119,16 +150,20 @@ module LibraryHelper
 	book_rec.title=title2
 	book_rec.isbn=isbn2
       
-	book_rec.attributes = row.to_hash.slice("edisi","bahasa","tajuk_perkara","ms_indeks","ms_bibliografi","sumber_kewangan","lokasi","deskripsi_fizikal")
+	book_rec.attributes = row.to_hash.slice("edisi","tajuk_perkara","ms_indeks","sumber_kewangan","lokasi","deskripsi_fizikal")
       
 	book_rec.edition=book_rec.edisi
-	book_rec.language=book_rec.bahasa
 	book_rec.subject=book_rec.tajuk_perkara
 	book_rec.indice=book_rec.ms_indeks
-	book_rec.bibliography=book_rec.ms_bibliografi
 	book_rec.finance_source=book_rec.sumber_kewangan
 	book_rec.location=book_rec.lokasi
      
+	#language
+	book_rec.language=language2
+	
+	#bibliography
+	book_rec.bibliography=bibliography2
+	
 	#imprint data
 	book_rec.publish_date=pub_dt
 	book_rec.publish_location=pub_loc

@@ -39,7 +39,7 @@ class Library::BooksController < ApplicationController
       a=Book.import(params[:file]) 
       msg=Book.messages(a)
       msg2=Book.messages2(a)      
-      msg3=I18n.t'library.book.book_wo_acc'
+      msg3=I18n.t'library.book.book_wo_acc' if a[:bwoacc].count>0
       if a[:svb].count>0 || a[:sva].count>0 || a[:rmb].count>0 || a[:wpt].count>0 || a[:bwoacc].count>0
 	respond_to do |format|
 	   flash[:notice] = msg
