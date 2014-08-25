@@ -924,6 +924,8 @@ ms_MY:
         reason: Sebab
         approve_id: Pelulus
         approvestatus: Status Kelulusan
+      asset:
+        note: Catatan
 
     prompt:
       select_creator: Pilih Penyedia Soalan

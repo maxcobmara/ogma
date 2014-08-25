@@ -68,9 +68,11 @@ class Campus::LocationsController < ApplicationController
   
   def kewpa7
     @location = Location.find(params[:id])
+    @asset_admin = Role.where(id:11).first.users.where('login=?',"norasikin").first 		#temp
     respond_to do |format|
       format.pdf do
-        pdf = Kewpa7Pdf.new(@location, current_user)
+        #pdf = Kewpa7Pdf.new(@location, current_user)
+	pdf = Kewpa7Pdf.new(@location, @asset_admin)
         send_data pdf.render, filename: "order_#{@location.combo_code}",
                               type: "application/pdf",
                               disposition: "inline"
@@ -80,10 +82,11 @@ class Campus::LocationsController < ApplicationController
   
   def kewpa10
     @location = Location.find(params[:id])
-    @assets = Asset.where(assettype: 1)
+    #@assets = Asset.where(assettype: 1)
+    
     respond_to do |format|
       format.pdf do
-        pdf = Kewpa10Pdf.new(@location, view_context, @assets)
+        pdf = Kewpa10Pdf.new(@location, view_context)#, @assets)
         send_data pdf.render, filename: "kewpa10-{Date.today}",
                               type: "application/pdf",
                               disposition: "inline"
@@ -92,10 +95,11 @@ class Campus::LocationsController < ApplicationController
   end
   def kewpa11
     @location = Location.find(params[:id])
-    @assets = Asset.where(assettype: 2)
+    #@assets = Asset.where(assettype: 2)
+    
     respond_to do |format|
       format.pdf do
-        pdf = Kewpa11Pdf.new(@location, view_context, @assets)
+        pdf = Kewpa11Pdf.new(@location, view_context)#, @assets)
         send_data pdf.render, filename: "kewpa11-{Date.today}",
                               type: "application/pdf",
                               disposition: "inline"

@@ -946,6 +946,8 @@ en:
         reason: Reason
         approve_id: Approver
         approvestatus: Approval Status
+      asset:
+        note: Remark
 
     prompt:
       select_creator: Select Creator

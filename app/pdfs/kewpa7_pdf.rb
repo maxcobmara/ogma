@@ -1,8 +1,9 @@
 class Kewpa7Pdf < Prawn::Document
   def initialize(location, current_user)
-    super({top_margin: 50, page_size: 'A4', page_layout: :portrait })
+    super({top_margin: 40, page_size: 'A4', page_layout: :portrait })
     @location = location
-    @current_user = current_user
+    #@current_user = current_user
+    @asset_admin = current_user
     font "Times-Roman"
     text "KEW.PA-7", :align => :right, :size => 16, :style => :bold
     move_down 20
@@ -10,10 +11,12 @@ class Kewpa7Pdf < Prawn::Document
     description
     asset_list
     signature_block
+    row_only_block
+    note_block
   end
   
   def description
-    move_down 45
+    move_down 15
     data = [["BAHAGIAN", ":", "KSKB JOHOR" ],["LOKASI", ":", "#{@location.combo_code} - #{@location.name}"]]
     table(data, :width => 250, :cell_style => {:border_color => "FFFFFF"})
   end
@@ -31,23 +34,31 @@ class Kewpa7Pdf < Prawn::Document
       columns(3).align = :center
       self.row_colors = ["FEFEFE", "FFFFFF"]
       self.header = true
-      self.cell_style = { size: 10 }
+      self.cell_style = { size: 10, height:20 }
       self.width = 525
       header = true
+      
     end
   end
   
   def line_item_rows
     counter = counter || 0
     header = [[ 'Bil', 'Keterangan Aset', "", 'Quantity']]
-    header +
-    @location.assets.map do |asset|
-      ["#{counter += 1}", "#{asset.assetcode}", "#{asset.typename} #{asset.name} #{asset.modelname}", 1]
+    a= 
+       @location.asset_placements.map do |asset_placement|
+      ["#{counter += 1}", "#{asset_placement.asset.assetcode}", "#{asset_placement.asset.typename} #{asset_placement.asset.name} #{asset_placement.asset.modelname}","#{asset_placement.quantity}"] 
+      end
+    b=[]
+    0.upto(14-@location.asset_placements.count-1) do |count|
+      b+= [ ["","","",""]]
     end
+  
+    header+a+b
+      
   end
   
   def signature_block
-    move_down 50
+    move_down 20
     table signature_block_content do
       self.width = 525
       row(1).padding = [ 40,0,0,24]
@@ -60,9 +71,43 @@ class Kewpa7Pdf < Prawn::Document
     [["(a) Disediakan oleh :", "(b) Disahkan oleh :"],
      ["#{'.'*40}", "#{'.'*40}"],
      ["Tandatangan", "Tandatangan"],
-     ["Nama : #{@current_user.try(:staff).try(:name)}", "Nama : #{@location.try(:administrator).try(:name)}"],
-     ["Jawatan : #{@current_user.try(:staff).try(:position).try(:name)}", "Jawatan : #{@location.try(:position).try(:name)}"],
-     ["Tarikh : #{Date.today}", "Tarikh : #{Date.today}"]
+     ["Nama : #{@asset_admin.try(:staff).try(:name)}", "Nama : #{@location.try(:administrator).try(:name)}"],
+     ["Jawatan : #{@asset_admin.try(:staff).try(:positions).first.try(:name)}", "Jawatan : #{@location.try(:position).try(:name)}"],
+     ["Tarikh : #{Date.today.strftime('%d-%m-%Y')}", "Tarikh : #{Date.today.strftime('%d-%m-%Y')}"]
     ]
   end  
+  
+  def row_only_block
+    table row_only_block_content do
+      rows(0).borders=[:bottom]
+      self.cell_style = { size: 5, height:10 }
+      self.width = 520
+    end
+  end
+  
+  def row_only_block_content
+    [[""]]
+  end
+  
+  def note_block
+    move_down 10
+    table note_block_content do
+      columns(0).width = 50
+      columns(1).width = 25
+      self.width = 525
+      self.cell_style ={:border_color=>"FFFFFF"}
+      self.cell_style = { size: 10, height:20 }
+    end
+  end
+  
+  def note_block_content
+    [["Nota:","a) ", "Disediakan oleh Pegawai Aset"],
+     ["","b) ","Pegawai yang mengesahkan ialah pegawai yang bertanggujawab"],
+     ["","","ke atas aset berkenaan contohnya :"],
+     ["","","i) Lokasi bilik Setiausaha Bahagian - disahkan oleh Setiausaha Bahagian"],
+     ["","","ii) Lokasi bilik mesyuarat - disahkan oleh pegawai yang menguruskan bilik mesyuarat"],
+     ["","c) ","Dikemaskini apabila terdapat perubahan kuantiti, lokasi atau pegawai bertanggujawab"]
+     ]
+  end
+  
 end
