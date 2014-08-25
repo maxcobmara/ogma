@@ -177,7 +177,7 @@ ms_MY:
     exist_records: " (rekod telah wujud)"
     exist_records2: "Rekod telah wujud:"
     no_user: "(tiada pengguna / staf yang sepadan)"
-    no_user2: "Tiada Pengguna / Staf sepadan (masukkan/kemaskini data 'icno', bagi worksheet 'USERINFO' dalam fail Excel) "
+    no_user2: "Tiada Pengguna / Staf sepadan (masukkan/kemaskini data 'icno', bagi worksheet 'USERINFO' dalam fail Excel DAN pastikan data 'No MyKad' dan 'THUMB ID' dalam ICMS-Maklumat Staf adalah berpadanan)"
     log_in: Log Masuk
     log_out: Log Keluar
     excel_format: Format Excel
@@ -205,6 +205,7 @@ ms_MY:
     status_punchcard: Laporan Status Kad Perakam Waktu (KPW)
     status_pcard: Status Kad Perakam Waktu
     unit_department: "Unit / Jabatan"
+    user_not_exist: "Pengguna / Staf Tidak Wujud"
   
   attendance:
     title: "Pengurusan Datang Lambat & Pulang Awal"

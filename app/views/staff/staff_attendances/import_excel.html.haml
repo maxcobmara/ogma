@@ -51,7 +51,7 @@
               = t 'staff_attendance.log_out'
             - else
               = t 'staff_attendance.log_in'
-          %td=su.attended.name
+          %td=su.attended.nil? ? t('staff_attendance.user_not_exist') : su.attended.name 
  
 %br
 - if @invalid_year &&@invalid_year.count>0
@@ -105,7 +105,7 @@
               = t 'staff_attendance.log_out'
             - else
               = t 'staff_attendance.log_in'
-          %td=er.attended.name
+          %td=er.attended.nil? ? t('staff_attendance.user_not_exist') : er.attended.name
 %br
 - if @no_user && @no_user.count>0
   %h5{:style => "color: red; font-weight: bold;"}=t 'staff_attendance.no_user2'

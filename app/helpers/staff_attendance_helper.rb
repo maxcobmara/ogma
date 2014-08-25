@@ -182,7 +182,7 @@ module StaffAttendanceHelper
       #Conditions : 2 years before-upto current year & thumb_id must exist in STAFFs table-COMPULSORY to avoid thumprint data from being saved w/o user
       #Note: upon 'running' Spreadsheet2.update_thumb_id(spreadsheet) will insert/update 'thumb_id' in Staffs table as of 'USERINFO' worksheet)
       if le_year>=Date.today.year-2  && logdate < Date.today-1.day
-	  if thumbid_exist
+	  #if thumbid_exist
 	      #logged_excel = DateTime.new(le_year,le_month,le_day,le_hour,le_minute,le_second).strftime('%Y-%m-%d %H:%M:%S') 
 	      staff_attendance = StaffAttendance.where(thumb_id: @thumbid_excel2, logged_at: logged_excel).first || StaffAttendance.new
 	      if staff_attendance.id.nil? || staff_attendance.id.blank?
@@ -198,12 +198,16 @@ module StaffAttendanceHelper
 		staff_attendance.checktime = logged_excel
 		sa_exist << staff_attendance
 	      end
-	  else
-	     sa_nouser_exist=StaffAttendance.new
-	     sa_nouser_exist.attributes = row.to_hash.slice("userid", "checktype")
-	     sa_nouser_exist.thumb_id =@thumbid_excel2 if valid_ut
-	     sa_nouser_exist.checktime = logged_excel
-	     sa_nouser << sa_nouser_exist
+	  #else
+	     #sa_nouser_exist=StaffAttendance.new
+	     #sa_nouser_exist.attributes = row.to_hash.slice("userid", "checktype")
+	     #sa_nouser_exist.thumb_id =@thumbid_excel2 if valid_ut
+	     #sa_nouser_exist.checktime = logged_excel
+	     #sa_nouser << sa_nouser_exist
+	  #end
+	  #FOR MSG - saved fingerprint data, even though there's NO MATCHING USER / STAFF
+	  unless thumbid_exist
+	    sa_nouser << staff_attendance
 	  end
       else
 	  sa_yex=StaffAttendance.new
