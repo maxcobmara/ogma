@@ -200,7 +200,7 @@ en:
     exist_records: " (record(s) already exist)"
     exist_records2: "Record(s) already exist :"
     no_user: "(record(s) has no matching user/staff)"
-    no_user2: "No matching staff / user (insert/update 'icno' of worksheet 'USERINFO' in excel file )"
+    no_user2: "No matching staff / user (insert/update 'icno' of worksheet 'USERINFO' in excel file AND make sure 'MyKad No' and 'THUMB ID' data in ICMS - Staff Info are matching)"
     log_in: Log In
     log_out: Log Out
     excel_format: Excel Format
@@ -228,6 +228,7 @@ en:
     status_punchcard: Punch Card Status Report
     status_pcard: Punch Card Status
     unit_department: "Unit / Department"
+    user_not_exist: "User / Staff Not Exist"
  
   attendance:
     list: "Manage Lateness & Early Return"
