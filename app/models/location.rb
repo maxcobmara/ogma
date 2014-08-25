@@ -8,15 +8,13 @@ class Location < ActiveRecord::Base
   validates_presence_of  :code, :name
   validates :combo_code, uniqueness: true
   
-  
-  
   belongs_to  :administrator, :class_name => 'Staff', :foreign_key => 'staffadmin_id'
   has_many  :tenants, :dependent => :destroy
   has_many  :damages, :class_name => 'LocationDamage', :foreign_key => 'location_id', :dependent => :destroy
   accepts_nested_attributes_for :damages, :allow_destroy => true, reject_if: proc { |damages| damages[:description].blank?}
   has_many :asset_placements
   has_many :assets, :through => :asset_placements
-  has_many :asset, :foreign_key => "location_id"
+  #has_many :asset, :foreign_key => "location_id" --> not required - refer line 15 & 16
   has_many :asset_loss
   
   

@@ -1,9 +1,9 @@
 class Kewpa11Pdf < Prawn::Document
-  def initialize(location, view, asset)
+  def initialize(location, view)#, asset)
     super({top_margin: 50, page_size: 'A4', page_layout: :portrait })
     @location = location
     @view = view
-    @assets = asset
+    #@assets = asset
     font "Times-Roman"
     text "KEW.PA-11", :align => :right, :size => 16, :style => :bold
     move_down 20
@@ -62,8 +62,9 @@ class Kewpa11Pdf < Prawn::Document
     header = [[ '', '', "Ya", 'Tidak',"Ya","Tidak","Mengikut Rekod", "Sebenar","Mengikut Rekod","Sebenar","Inventori",""]]
     header +
     
-    @location.asset.map do |asset|
-      ["#{counter += 1}", "#{asset.name}","", "","","","#{asset.try(:location).try(:name)}","", "#{asset.quantity}","","",""]
+    #@location.asset.map do |asset|
+    @location.asset_placements.p_inventory.map do |asset_placement|
+      ["#{counter += 1}", "#{asset_placement.asset.name}","", "","","","#{asset_placement.try(:location).try(:name)}","", "#{asset_placement.quantity}","","",""]
     end
    end
    def make_table2
