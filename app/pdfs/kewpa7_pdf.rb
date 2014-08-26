@@ -29,7 +29,7 @@ class Kewpa7Pdf < Prawn::Document
       row(0).background_color = 'FFE34D'
       columns(0).width = 30
       columns(1).borders = [:top, :left, :bottom]
-      columns(1).width = 125
+      columns(1).width = 140
       columns(2).borders = [:top, :right, :bottom]
       columns(3).align = :center
       self.row_colors = ["FEFEFE", "FFFFFF"]
