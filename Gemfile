@@ -10,7 +10,7 @@ gem 'paperclip', '~> 4.2.0'
 gem "ancestry", "~> 2.1.0"
 #gem "ransack", "~> 1.2.3"
 #gem 'ransack', github: 'activerecord-hackery/ransack'#, branch: 'rails-4.1'
-gem 'ransack', :path=>'vendor/ransack'
+gem 'ransack', :path=>'vendor/ransack', branch: 'rails-4.1'
 gem "prawn", "~> 1.0.0"
 gem "chartkick", "~> 1.2.4"
 #stuff for layout
