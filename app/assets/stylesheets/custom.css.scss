@@ -91,7 +91,7 @@ p {
 
 
 /* header */
-.topnav {height:40px; padding-top:5px;
+.topnav {height:40px; padding:5px 30px 5px 30px; z-index:9000; background-color:#FFF;
   a {color:#606060; font-size:1.3em; padding-right:5px;}
   a:hover{color:#606060; background-color:white; font-size:1.3em;}
 }
