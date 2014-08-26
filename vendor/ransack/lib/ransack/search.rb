@@ -8,18 +8,18 @@ module Ransack
 
     attr_reader :base, :context
 
-    delegate :object, :klass, to: :context
+    delegate :object, :klass, :to => :context
     delegate :new_grouping, :new_condition,
              :build_grouping, :build_condition,
-             :translate, to: :base
+             :translate, :to => :base
 
     def initialize(object, params = {}, options = {})
       params = {} unless params.is_a?(Hash)
       (params ||= {})
       .delete_if { |k, v| [*v].all? { |i| i.blank? && i != false } }
-      @context = Context.for(object, options)
+      @context = options[:context] || Context.for(object, options)
       @context.auth_object = options[:auth_object]
-      @base = Nodes::Grouping.new(@context, 'and')
+      @base = Nodes::Grouping.new(@context, options[:grouping] || 'and')
       @scope_args = {}
       build(params.with_indifferent_access)
     end
@@ -32,10 +32,12 @@ module Ransack
       collapse_multiparameter_attributes!(params).each do |key, value|
         if ['s', 'sorts'].include?(key)
           send("#{key}=", value)
-        elsif @context.ransackable_scope?(key, @context.object)
-          add_scope(key, value)
         elsif base.attribute_method?(key)
           base.send("#{key}=", value)
+        elsif @context.ransackable_scope?(key, @context.object)
+          add_scope(key, value)
+        elsif !Ransack.options[:ignore_unknown_conditions]
+          raise ArgumentError, "Invalid search term #{key}"
         end
       end
       self
@@ -60,7 +62,8 @@ module Ransack
       when String
         self.sorts = [args]
       else
-        raise ArgumentError, "Invalid argument (#{args.class}) supplied to sorts="
+        raise ArgumentError,
+        "Invalid argument (#{args.class}) supplied to sorts="
       end
     end
     alias :s= :sorts=

@@ -26,8 +26,7 @@ module Ransack
           table   = attr.arel_attribute.relation.table_name
 
           schema_cache = @engine.connection.schema_cache
-          raise "No table named #{table} exists" unless schema_cache.
-            table_exists?(table)
+          raise "No table named #{table} exists" unless schema_cache.table_exists?(table)
           schema_cache.columns_hash(table)[name].type
         end
 
@@ -79,7 +78,55 @@ module Ransack
           end
         end
 
-      private
+        if ::ActiveRecord::VERSION::STRING >= '4.1'
+
+          def join_associations
+            raise NotImplementedError,
+            "ActiveRecord 4.1 and later does not use join_associations. Use join_sources."
+          end
+
+          # All dependent Arel::Join nodes used in the search query
+          #
+          # This could otherwise be done as `@object.arel.join_sources`, except
+          # that ActiveRecord's build_joins sets up its own JoinDependency.
+          # This extracts what we need to access the joins using our existing
+          # JoinDependency to track table aliases.
+          #
+          def join_sources
+            base = Arel::SelectManager.new(@object.engine, @object.table)
+            joins = @join_dependency.join_constraints(@object.joins_values)
+            joins.each do |aliased_join|
+              base.from(aliased_join)
+            end
+            base.join_sources
+          end
+
+        else
+
+          # All dependent JoinAssociation items used in the search query
+          #
+          # Deprecated: this goes away in ActiveRecord 4.1. Use join_sources.
+          #
+          def join_associations
+            @join_dependency.join_associations
+          end
+
+          def join_sources
+            base = Arel::SelectManager.new(@object.engine, @object.table)
+            joins = @object.joins_values
+            joins.each do |assoc|
+              assoc.join_to(base)
+            end
+            base.join_sources
+          end
+
+        end
+
+        def alias_tracker
+          @join_dependency.alias_tracker
+        end
+
+        private
 
         def get_parent_and_attribute_name(str, parent = @base)
           attr_name = nil
@@ -93,12 +140,10 @@ module Ransack
               segments.pop) && segments.size > 0 && !found_assoc do
               assoc, klass = unpolymorphize_association(segments.join('_'))
               if found_assoc = get_association(assoc, parent)
-                join = build_or_find_association(
-                  found_assoc.name, parent, klass
-                )
+                join = build_or_find_association(found_assoc.name, parent, klass)
                 parent, attr_name = get_parent_and_attribute_name(
                   remainder.join('_'), join
-                )
+                  )
               end
             end
           end
@@ -123,13 +168,13 @@ module Ransack
         # Checkout active_record/relation/query_methods.rb +build_joins+ for
         # reference. Lots of duplicated code maybe we can avoid it
         def build_join_dependency(relation)
-          buckets = relation.joins_values.flatten.group_by do |join|
+          buckets = relation.joins_values.group_by do |join|
             case join
             when String
               'string_join'
             when Hash, Symbol, Array
               'association_join'
-            when ::ActiveRecord::Associations::JoinDependency
+            when JoinDependency, JoinDependency::JoinAssociation
               'stashed_join'
             when Arel::Nodes::Join
               'join_node'
@@ -159,46 +204,76 @@ module Ransack
             join_dependency.alias_tracker.aliases[join.left.name.downcase] = 1
           end
 
-          join_dependency
+          if ::ActiveRecord::VERSION::STRING >= '4.1'
+            join_dependency
+          else
+            join_dependency.graft(*stashed_association_joins)
+          end
         end
 
-        def build_or_find_association(name, parent = @base, klass = nil)
-          found_association = @join_dependency
-          .join_root.children.detect do |assoc|
-            assoc.reflection.name == name &&
-            (@associations_pot.nil? || @associations_pot[assoc] == parent) &&
-            (!klass || assoc.reflection.klass == klass)
-          end
+        if ::ActiveRecord::VERSION::STRING >= '4.1'
 
-          unless found_association
-            jd = JoinDependency.new(
-              parent.base_klass,
-              Polyamorous::Join.new(name, @join_type, klass),
-              []
-            )
-            found_association = jd.join_root.children.last
-            associations found_association, parent
+          def build_or_find_association(name, parent = @base, klass = nil)
+            found_association = @join_dependency.join_root.children
+            .detect do |assoc|
+              assoc.reflection.name == name &&
+              (@associations_pot.nil? || @associations_pot[assoc] == parent) &&
+              (!klass || assoc.reflection.klass == klass)
+            end
 
-            # TODO maybe we dont need to push associations here, we could loop
-            # through the @associations_pot instead
-            @join_dependency.join_root.children.push found_association
-
-            # Builds the arel nodes properly for this association
-            @join_dependency.send(
-              :construct_tables!, jd.join_root, found_association
+            unless found_association
+              jd = JoinDependency.new(
+                parent.base_klass,
+                Polyamorous::Join.new(name, @join_type, klass),
+                []
               )
+              found_association = jd.join_root.children.last
+              associations found_association, parent
 
-            # Leverage the stashed association functionality in AR
-            @object = @object.joins(jd)
+              # TODO maybe we dont need to push associations here, we could loop
+              # through the @associations_pot instead
+              @join_dependency.join_root.children.push found_association
+
+              # Builds the arel nodes properly for this association
+              @join_dependency.send(
+                :construct_tables!, jd.join_root, found_association
+                )
+
+              # Leverage the stashed association functionality in AR
+              @object = @object.joins(jd)
+            end
+            found_association
           end
 
-          found_association
+          def associations(assoc, parent)
+            @associations_pot ||= {}
+            @associations_pot[assoc] = parent
+          end
+
+        else
+
+          def build_or_find_association(name, parent = @base, klass = nil)
+            found_association = @join_dependency.join_associations
+            .detect do |assoc|
+              assoc.reflection.name == name &&
+              assoc.parent == parent &&
+              (!klass || assoc.reflection.klass == klass)
+            end
+            unless found_association
+              @join_dependency.send(
+                :build,
+                Polyamorous::Join.new(name, @join_type, klass),
+                parent
+               )
+              found_association = @join_dependency.join_associations.last
+              # Leverage the stashed association functionality in AR
+              @object = @object.joins(found_association)
+            end
+            found_association
+          end
+
         end
 
-        def associations(assoc, parent)
-          @associations_pot ||= {}
-          @associations_pot[assoc] = parent
-        end
       end
     end
   end

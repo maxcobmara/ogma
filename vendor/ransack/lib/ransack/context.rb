@@ -2,7 +2,7 @@ require 'ransack/visitor'
 
 module Ransack
   class Context
-    attr_reader :search, :object, :klass, :base, :engine, :arel_visitor
+    attr_reader :object, :klass, :base, :engine, :arel_visitor
     attr_accessor :auth_object, :search_key
 
     class << self
@@ -36,10 +36,17 @@ module Ransack
       @join_dependency = join_dependency(@object)
       @join_type = options[:join_type] || Arel::OuterJoin
       @search_key = options[:search_key] || Ransack.options[:search_key]
-      @base = @join_dependency.join_root
-      @engine = @base.base_klass.arel_engine
+
+      if ::ActiveRecord::VERSION::STRING >= "4.1"
+        @base = @join_dependency.join_root
+        @engine = @base.base_klass.arel_engine
+      else
+        @base = @join_dependency.join_base
+        @engine = @base.arel_engine
+      end
+
       @default_table = Arel::Table.new(
-        @base.table_name, as: @base.aliased_table_name, engine: @engine
+        @base.table_name, :as => @base.aliased_table_name, :engine => @engine
         )
       @bind_pairs = Hash.new do |hash, key|
         parent, attr_name = get_parent_and_attribute_name(key.to_s)
@@ -54,7 +61,9 @@ module Ransack
         obj
       elsif obj.respond_to? :klass
         obj.klass
-      elsif obj.respond_to? :base_klass
+      elsif obj.respond_to? :active_record  # Rails 3
+        obj.active_record
+      elsif obj.respond_to? :base_klass     # Rails 4
         obj.base_klass
       else
         raise ArgumentError, "Don't know how to klassify #{obj.inspect}"
@@ -159,5 +168,8 @@ module Ransack
       traverse(str).ransortable_attributes(auth_object)
     end
 
+    def searchable_associations(str = '')
+      traverse(str).ransackable_associations(auth_object)
+    end
   end
 end
