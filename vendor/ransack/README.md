@@ -57,8 +57,8 @@ same reasons:
 gem 'ransack', github: 'activerecord-hackery/ransack', branch: 'rails-4'
 ```
 
-Last but definitely not least, an experimental [Rails 4.2 branch](https://github.com/activerecord-hackery/ransack/tree/rails-4.2)
-is available:
+Last but definitely not least, an experimental [Rails 4.2 branch](https://github.com/activerecord-hackery/ransack/tree/rails-4.2) is
+available for those on the edge:
 
 ```ruby
 gem 'ransack', github: 'activerecord-hackery/ransack', branch: 'rails-4.2'
@@ -195,11 +195,9 @@ end
                         html: { method: :post } do |f| %>
 ```
 
-Once you've done so, you can make use of the helpers in
-[Ransack::Helpers::FormBuilder](lib/ransack/helpers/form_builder.rb) to
+Once you've done so, you can make use of the helpers in [Ransack::Helpers::FormBuilder](lib/ransack/helpers/form_builder.rb) to
 construct much more complex search forms, such as the one on the
-[demo page](http://ransack-demo.heroku.com) (source code
-[here](https://github.com/activerecord-hackery/ransack_demo)).
+[demo page](http://ransack-demo.heroku.com) (source code [here](https://github.com/activerecord-hackery/ransack_demo)).
 
 ### Ransack #search method
 
