@@ -42,7 +42,7 @@
       %dt= t 'asset.serial_no'
       %dd= @asset.serialno
       %dt= t 'asset.located_at'
-      %dd=@asset.asset_placements.last.location.try(:name)
+      %dd=@asset.try(:asset_placements).last.try(:location).try(:name)
       %dt= t 'asset.assigned_to'
       %dd= @asset.staff.try(:name)
       %dt= t 'asset.status'
