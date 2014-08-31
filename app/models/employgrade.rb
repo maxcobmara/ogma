@@ -7,12 +7,12 @@ class Employgrade < ActiveRecord::Base
   
   validates_uniqueness_of :name, :scope => :group_id
   
-  def booboo
+  def grade_group
     (Employgrade::GROUP.find_all{|disp, value| value == group_id}).map {|disp, value| disp}
   end
   
   def name_and_group
-    "#{name}  (#{booboo})"
+    "#{name}  (#{grade_group[0]})"
   end
   
   def gred_no

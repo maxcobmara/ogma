@@ -1,0 +1,13 @@
+.col-md-9.col-md-offset-1
+  %dl.dl-horizontal
+    - for qualification in @staff.qualifications
+      %hr
+      %dt= t('staff.qualifications.level_id') + ":"
+      %dd
+        %strong= (DropDown::QUALIFICATION_LEVEL.find_all{|disp, value| value == qualification.level_id}).map {|disp, value| disp}[0]
+
+      %dt= t 'staff.qname' + ":"
+      %dd= qualification.qname
+
+      %dt= t 'staff.institute' + ":"
+      %dd= qualification.institute

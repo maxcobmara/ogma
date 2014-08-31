@@ -10,10 +10,10 @@
     / Nav tabs
     %ul.nav.nav-tabs
       %li.active= link_to "Info", "#info", "data-toggle" => "tab"
-      %li= link_to "Personal",    "#personal",    "data-toggle" => "tab"
-      %li= link_to "Employment",  "#employment",  "data-toggle" => "tab"
-      %li
-        %a{"data-toggle" => "tab", :href => "#profile"} t 'student.students.stelno'
+      %li= link_to t('staff.personal_details'),    "#personal",    "data-toggle" => "tab"
+      %li= link_to t('staff.employment_details'),  "#employment",  "data-toggle" => "tab"
+      %li= link_to t('staff.qualifications.title'),  "#qualifications",  "data-toggle" => "tab"
+
       %li
         %a{"data-toggle" => "tab", :href => "#messages"} Messages
       %li
@@ -42,12 +42,15 @@
       #employment.tab-pane
         %br
         = render 'tab_employment'
+      #qualifications.tab-pane
+        %br
+        = render 'tab_qualifications'
       #settings.tab-pane ...    
       
 
       
 .row
-  .col-md-4.col-md-offset-3
+  .col-md-4.col-md-offset-4
     %hr
     .form-actions
       = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), staff_infos_path, :class => 'btn btn-default'

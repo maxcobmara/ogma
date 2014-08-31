@@ -85,6 +85,7 @@ ms_MY:
     student: Pelajar
   
   staff:
+    list: Senarai Staf
     icno: "No MyKad"
     name: "Nama"
     coemail: "Emel"
@@ -100,6 +101,91 @@ ms_MY:
     statecd: "Tempat Lahir"
     country_cd: "Kewarganegaraan"
     thumb: Kod ID Biometric
+
+    personal_details: Butir Peribadi
+    code: Kod Kakitangan
+    thumb: Thumb ID
+    shift: Waktu Anjal
+    fileno: No Fail Peribadi
+    cobirthdt: Tarikh Lahir
+    birthcertno: No Surat Beranak
+    age: Umur
+    bloodtype: Jenis Darah
+    gender: Jantina
+    coemail: Emel
+    cooftelno: Telefon (Pejabat)
+    phonecell: Telefon (HP)
+    phonehome: Telefon (H)
+    poskod_id: Poskod
+    address: Alamat
+    mrtlstatuscd: Status Kahwin
+    statecd: Tempat Lahir
+    race: Bangsa
+    religion: Agama
+    country_cd: Kewarganegaraan
+    transportclass_id: Kelas Kenderaan
+    upload: Muat Naik Gambar
+
+    employment_details: Butir Perkerjaan
+    employscheme: Skim Perjawatan
+    staffgrade_id: Gred Jawatan
+    employstatus: Status Perkerjaan
+    appointstatus: Status Lantikan
+    appointdt: Tarikh Lantikan Pertama
+    schemedt: Tarikh Lantikan ke Skim Sekarang
+    confirmdt: Tarikh Sah Perkhidmatan
+    posconfirmdate: Tarikh Sah Ke Jawatan Sekarang
+    pension_confirm_date: Tarikh Perakuan Pencen
+    wealth_decleration_date: Tarikh Terkini Istytihar Harta
+    promotion_date: Tarikh Naik Pangkat/Memangku
+    reconfirmation_date: Tarikh Sah Semula (opsyen)
+    current_grade_date: Tarikh Sah Ke Gred Sekarang
+    starting_salary: Gaji Permulaan
+
+    appointby: Pihak Berkuasa Melantik
+    svchead: Ketua Perkhidmatan
+    svctype: Jenis Perkhidmatan
+    pensionstat: Status Pencen
+    pensiondt: Tarikh Pencen
+    uniformstat: Status Pakaian Seragam
+    position_id: Jawatan
+    reports_to: Melapor Kepada
+
+    qualifications: 
+      title:  Kelayakan
+      level_id: Tahap
+      qname: Kelayakan
+      institute: Institusi
+
+    loan:
+      loans: Pinjaman
+      ltype: Jenis Pinjaman
+      accno: No Akaun Pinjaman
+      startdt: Tarikh Diluluskan
+      durationmn: Tempoh
+      deductions: Ansuran Bulanan
+      amount: Jumlah Pembiayaan
+      firstdate: Tarikh Mula Potongan
+      enddate: Tarikh Akhir Potongan
+      enddeduction: Amaun Ansuran Bulan Terakhir
+
+    finance: Butir Kewangan
+    kwspcode: No KWSP 
+    taxcode: No Cukai 
+    
+    bank:
+      banks: Butiran Akaun Bank
+      bankname: Bank
+      bankaccno: No Akaun 
+      bankacctype: Jenis Akaun
+
+    emergency: Maklumat Waris Terdekat
+    kintype_id: Hubungan
+    kinbirthdt: Tarikh Lahir
+    kinmykadno: No MyKad
+    phone: Telefon
+    kinaddr: Alamat
+    profession: Jawatan
     
     training:
       budget: 

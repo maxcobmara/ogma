@@ -108,21 +108,92 @@ en:
     student: Student
   
   staff:
-    icno: "MyKad No"
-    name: "Name"
-    coemail: "Email"
-    code: "Staff Code"
-    fileno: "File No"
-    position: "Position"
+    list: Staff List
+    personal_details: Personal Details
+    code: Staff Code
+    thumb: Thumb ID
+    shift: Staff Shift
+    fileno: Personal File No
     cobirthdt: Date Of Birth
-    bloodtype: "Blood Type"
-    addr: "Address"
-    poskod_id: "Poskod"
-    mrtlstatuscd: "Marital Status"
-    staffgrade_id: "Staff Grade"
-    statecd: "State of Birth"
-    country_cd: "Nationality"
-    thumb: Thumb ID Code
+    birthcertno: Birth Cert No
+    age: Age
+    bloodtype: Blood Type
+    gender: Gender
+    coemail: Email
+    cooftelno: Telephone (Office)
+    phonecell: Telephone (HP)
+    phonehome: Telephone (H)
+    poskod_id: Post Code
+    address: Address
+    mrtlstatuscd: Marital Status
+    statecd: State of Birth
+    race: Race
+    religion: Religion
+    country_cd: Nationality
+    transportclass_id: Transport Class
+    upload: Upload Photo
+
+    employment_details: Employment Details
+    employscheme: Employment Scheme
+    staffgrade_id: Staff Grade
+    employstatus: Employment Status
+    appointstatus: Appointment Status
+    appointdt: Appointment Date
+    schemedt: Appointment To Scheme
+    confirmdt: Confirmation Date
+    posconfirmdate: Position Confirmation Date
+    pension_confirm_date: Pension Confirmation Date
+    wealth_decleration_date: Date of Latest Wealth Decleration
+    promotion_date: Last Promotion Date
+    reconfirmation_date: 'Reconfirmation Date (Option)'
+    current_grade_date: Date of Confirmation to Current Grade
+    starting_salary: Starting Salary
+
+    appointby: Appointed By
+    svchead: Head Of Service
+    svctype: Type Of Service
+    pensionstat: Pension Status
+    pensiondt: Pension Date
+    uniformstat: Uniform Status
+    position_id: Position
+    reports_to: Reports To
+
+    qualifications: 
+      title: Qualifications
+      level_id: Level
+      qname: Qualification
+      institute: Institute
+
+    loan:
+      loans: Loans
+      ltype: Loan For
+      accno: Loan Account No
+      startdt: Approval Date
+      durationmn: Duration
+      deductions: Monthly Installments
+      amount: Loan Amount
+      firstdate: Start Date
+      enddate: End Date
+      enddeduction: Last Month Installment
+      
+
+    finance: Finance Details
+    kwspcode: EPF No
+    taxcode: Tax No
+    
+    bank:
+      banks: Bank Accounts
+      bankname: Bank
+      bankaccno: Account No
+      bankacctype: Account Type
+
+    emergency: Emergency Contact Information
+    kintype_id: Relationship
+    kinbirthdt: DOB
+    kinmykadno: MyKad No
+    phone: Telephone
+    kinaddr: Address
+    profession: Profession
     
     training:
       budget: 
