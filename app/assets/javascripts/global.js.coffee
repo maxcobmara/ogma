@@ -9,6 +9,15 @@ jQuery ->
     regexp = new RegExp($(this).data('id'), 'g')
     $(this).before($(this).data('fields').replace(regexp, time))
     event.preventDefault()
+
+  $(".load_search_bar").click ->
+    $(".search_bar").toggle()
+    return
+
+  $ ->
+  $("#q_reset").click ->
+    $(".search-field").val('')
+
     
       
   $ ()->

@@ -75,7 +75,7 @@ ms_MY:
       first: Pertama
       next: Seterusnya
       previous: Terdahulu
-      truncate: Senarai Pendek
+      truncate: "&hellip;"
       last: Terakhir
 
   people:

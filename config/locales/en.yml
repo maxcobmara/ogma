@@ -98,7 +98,7 @@ en:
       first: First
       next: Next
       previous: Previous
-      truncate: Truncate
+      truncate: "&hellip;"
       last: Last
       
   people:

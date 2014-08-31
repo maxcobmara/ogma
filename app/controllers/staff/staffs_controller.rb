@@ -6,7 +6,7 @@ class Staff::StaffsController < ApplicationController
   # GET /staffs.json
   def index
     @search = Staff.search(params[:q])
-    @staffs = @search.result
+    @staffs = @search.result.includes(:positions)
     @staffs = @staffs.page(params[:page]||1)
     @infos = @staffs
   end

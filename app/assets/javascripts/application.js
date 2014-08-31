@@ -14,9 +14,3 @@
 //= require jquery.ui.autocomplete
 //= require jquery_ujs
 //= require_tree
-
-
-
-
-
-

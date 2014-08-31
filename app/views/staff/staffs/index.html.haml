@@ -6,10 +6,12 @@
   %ul.nav.navbar-nav
     %li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'actions.new'))), '#'
   %ul.nav.navbar-nav.navbar-right
-    %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "toga"
+    %li= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "load_search_bar"
     %li= link_to content_tag(:li, fa_icon("print", text: (t 'actions.print'))), "#"
-      
 
+.row.search_bar{style: "display:none;"}
+  = render "search_bar"
+      
 .row
   //.right{style:"padding:0 30px; margin:0;"}= paginate @staffs, :theme => 'twitter-bootstrap-3', :pagination_class => "pagination-sm"
   %table.table-striped.table-hover.ogma
@@ -19,7 +21,6 @@
         %th= sort_link(@search, :name, (t 'staff.name'))
         %th{style: "width:33%;"}= sort_link(@search, :staff_position_name,(t 'staff.position'))
     %tbody
-      = render "index_search"
       - @staffs.each do |staff|
         %tr
           %td= link_to formatted_mykad(staff.icno), staff_info_path(staff)
