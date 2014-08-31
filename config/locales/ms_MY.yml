@@ -157,8 +157,8 @@ ms_MY:
       qname: Kelayakan
       institute: Institusi
 
-    loan:
-      loans: Pinjaman
+    loans:
+      title: Pinjaman
       ltype: Jenis Pinjaman
       accno: No Akaun Pinjaman
       startdt: Tarikh Diluluskan
@@ -169,12 +169,13 @@ ms_MY:
       enddate: Tarikh Akhir Potongan
       enddeduction: Amaun Ansuran Bulan Terakhir
 
-    finance: Butir Kewangan
-    kwspcode: No KWSP 
-    taxcode: No Cukai 
+    finance: 
+      title: Butir Kewangan
+      kwspcode: No KWSP 
+      taxcode: No Cukai 
     
-    bank:
-      banks: Butiran Akaun Bank
+    banks:
+      title: Butiran Akaun Bank
       bankname: Bank
       bankaccno: No Akaun 
       bankacctype: Jenis Akaun

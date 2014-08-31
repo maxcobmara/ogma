@@ -164,8 +164,8 @@ en:
       qname: Qualification
       institute: Institute
 
-    loan:
-      loans: Loans
+    loans:
+      title: Loans
       ltype: Loan For
       accno: Loan Account No
       startdt: Approval Date
@@ -177,12 +177,13 @@ en:
       enddeduction: Last Month Installment
       
 
-    finance: Finance Details
-    kwspcode: EPF No
-    taxcode: Tax No
+    finance: 
+      title: Finance Details
+      kwspcode: EPF No
+      taxcode: Tax No
     
-    bank:
-      banks: Bank Accounts
+    banks:
+      title: Bank Accounts
       bankname: Bank
       bankaccno: Account No
       bankacctype: Account Type

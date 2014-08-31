@@ -13,6 +13,10 @@
       %li= link_to t('staff.personal_details'),    "#personal",    "data-toggle" => "tab"
       %li= link_to t('staff.employment_details'),  "#employment",  "data-toggle" => "tab"
       %li= link_to t('staff.qualifications.title'),  "#qualifications",  "data-toggle" => "tab"
+      %li= link_to t('staff.finance.title'),  "#finance",  "data-toggle" => "tab"
+      %li= link_to t('staff.loans.title'),  "#loans",  "data-toggle" => "tab"
+
+
 
       %li
         %a{"data-toggle" => "tab", :href => "#messages"} Messages
@@ -45,6 +49,12 @@
       #qualifications.tab-pane
         %br
         = render 'tab_qualifications'
+      #finance.tab-pane
+        %br
+        = render 'tab_finance'
+      #loans.tab-pane
+        %br
+        = render 'tab_loans'
       #settings.tab-pane ...    
       
 
