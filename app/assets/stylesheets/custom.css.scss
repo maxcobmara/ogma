@@ -295,6 +295,9 @@ table.inline_display {
 	li span.credits { position:absolute; left:750px; }
 	li span.status { position:absolute; left:850px; text-align:right; }
 	li span.duration { position:absolute; left:950px; }
+	li span.lecture{ position:absolute; left:1100px; }
+	li span.tutorial{ position:absolute; left:1200px; }
+	li span.practical{ position:absolute; left:1300px; }
 }
 
 //#programme_tree, #semester_tree { background-color: #f9f9f9; }
@@ -308,6 +311,9 @@ table.inline_display {
 		span.credits{ position:absolute; left:750px; }
 		span.status{ position:absolute; left:850px; }
 		span.duration{ position:absolute; left:950px; }
+		span.lecture{ position:absolute; left:1100px; }
+		span.tutorial{ position:absolute; left:1200px; }
+		span.practical{ position:absolute; left:1300px; }
 	}
 	
 }

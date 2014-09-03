@@ -3,7 +3,9 @@ class Programme < ActiveRecord::Base
   has_ancestry :cache_depth => true
 
   #scope :by_semester, -> { where(course_type: 'Semester')}
-  
+  def code2
+    code.to_i
+  end
   def set_combo_code
     if ancestry_depth == 0
       self.combo_code = code
