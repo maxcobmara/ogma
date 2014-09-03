@@ -44,7 +44,7 @@
     %dd= (DropDown::APPOINTMENT.find_all{|disp, value| value == @staff.appointstatus.to_s}).map {|disp, value| disp}[0]
 
     %dt= t 'staff.appointdt', :default => model_class.human_attribute_name(:appointdt) + ":"
-    %dd= l(@staff.appointdt)
+    %dd= l(@staff.appointdt) rescue '-'
 
     %dt= t 'staff.schemedt', :default => model_class.human_attribute_name(:schemedt) + ":"
     %dd= l(@staff.schemedt) rescue '-'
