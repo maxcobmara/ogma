@@ -1,5 +1,5 @@
 .row.fluid
-  = form_for c, url: staff_info_path(@info), :html => { :class => 'form-horizontal' }  do |f| 
+  = form_for [:staff, @info], url: staff_info_path(@info), :html => { :class => 'form-horizontal' }  do |f| 
     = render 'shared/error_messages', object: f.object
     .col-md-offset-1
       .form-group
@@ -13,7 +13,7 @@
         .col-sm-2.control-label
           = f.label t 'staff.name', for: :name
         .col-md-1
-          = f.collection_select :titlecd_id, Title.find(:all), :id, :name, {:include_blank => true}, {class: 'selectpicker', "data-width"=>"80px"}
+          = f.collection_select :titlecd_id, Title.all, :id, :name, {:include_blank => true}, {class: 'selectpicker', "data-width"=>"80px"}
         .col-md-5
           = f.text_field :name, class: 'form-control mandatory'
           

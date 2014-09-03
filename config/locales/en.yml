@@ -112,10 +112,13 @@ en:
   staff:
     list: Staff List
     personal_details: Personal Details
+    icno: MyKad No
+    name: Name
     code: Staff Code
     thumb: Thumb ID
     shift: Staff Shift
     fileno: Personal File No
+    position: Position
     cobirthdt: Date Of Birth
     birthcertno: Birth Cert No
     age: Age
