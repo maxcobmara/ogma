@@ -96,7 +96,7 @@ module DropDown
    [ "Jabatan Perpustakaan Negara","jpn" ]    
   ]
 
-  KTYPE = [
+  KIN_TYPE = [
     #  Displayed       stored in db
     [ "Isteri",1 ],
     [ "Suami",2 ],

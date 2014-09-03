@@ -188,13 +188,14 @@ en:
       bankaccno: Account No
       bankacctype: Account Type
 
-    emergency: Emergency Contact Information
-    kintype_id: Relationship
-    kinbirthdt: DOB
-    kinmykadno: MyKad No
-    phone: Telephone
-    kinaddr: Address
-    profession: Profession
+    contacts: 
+      emergency: Emergency Contact Information
+      kintype_id: Relationship
+      kinbirthdt: DOB
+      kinmykadno: MyKad No
+      phone: Telephone
+      kinaddr: Address
+      profession: Profession
     
     training:
       budget: 

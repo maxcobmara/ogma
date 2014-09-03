@@ -10,11 +10,12 @@
     / Nav tabs
     %ul.nav.nav-tabs
       %li.active= link_to "Info", "#info", "data-toggle" => "tab"
-      %li= link_to t('staff.personal_details'),    "#personal",    "data-toggle" => "tab"
-      %li= link_to t('staff.employment_details'),  "#employment",  "data-toggle" => "tab"
-      %li= link_to t('staff.qualifications.title'),  "#qualifications",  "data-toggle" => "tab"
-      %li= link_to t('staff.finance.title'),  "#finance",  "data-toggle" => "tab"
-      %li= link_to t('staff.loans.title'),  "#loans",  "data-toggle" => "tab"
+      %li= link_to t('staff.personal_details'),     "#personal",        "data-toggle" => "tab"
+      %li= link_to t('staff.employment_details'),   "#employment",      "data-toggle" => "tab"
+      %li= link_to t('staff.qualifications.title'), "#qualifications",  "data-toggle" => "tab"
+      %li= link_to t('staff.finance.title'),        "#finance",         "data-toggle" => "tab"
+      %li= link_to t('staff.loans.title'),          "#loans",           "data-toggle" => "tab"
+      %li= link_to t('staff.contacts.emergency'),   "#contacts",        "data-toggle" => "tab"
 
 
 
@@ -55,6 +56,9 @@
       #loans.tab-pane
         %br
         = render 'tab_loans'
+      #contacts.tab-pane
+        %br
+        = render 'tab_contacts'
       #settings.tab-pane ...    
       
 

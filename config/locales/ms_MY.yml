@@ -180,13 +180,14 @@ ms_MY:
       bankaccno: No Akaun 
       bankacctype: Jenis Akaun
 
-    emergency: Maklumat Waris Terdekat
-    kintype_id: Hubungan
-    kinbirthdt: Tarikh Lahir
-    kinmykadno: No MyKad
-    phone: Telefon
-    kinaddr: Alamat
-    profession: Jawatan
+    contacts: 
+      emergency: Maklumat Waris Terdekat
+      kintype_id: Hubungan
+      kinbirthdt: Tarikh Lahir
+      kinmykadno: No MyKad
+      phone: Telefon
+      kinaddr: Alamat
+      profession: Jawatan
     
     training:
       budget: 
