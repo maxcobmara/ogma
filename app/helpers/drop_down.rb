@@ -325,26 +325,58 @@ module DropDown
     
     CLASS_METHOD = [
             #  Displayed       stored in db
-            ["Kuliah",     1],
-            ["Teori",    2],
-            ["Amali",  3]
+            [I18n.t('training.programme.kuliah'),     1],
+            [I18n.t('training.programme.tutorial'),    2],
+            [I18n.t('training.programme.amali'),  3]
     ]
     
     COURSE_STATUS = [
          #  Displayed       stored in db
-         [ "Major",     1 ],
-         [ "Minor",     2 ],
-         [ "Elective",  3 ]
+         [ I18n.t('training.programme.major'),     1 ],
+         [ I18n.t('training.programme.minor'),     2 ],
+         [ I18n.t('training.programme.elective'),  3 ]
     ]
 
     DURATION_TYPES = [
          #  Displayed       stored in db
-         [ "Hours",      0 ],
-         [ "Days",       1 ],
-         [ "Weeks",      7 ],
-         [ "Months",     30 ],
-         [ "Years",      365 ]
+         [ I18n.t('training.programme.hours'),      0 ],
+         [ I18n.t('training.programme.days'),       1 ],
+         [ I18n.t('training.programme.weeks'),      7 ],
+         [ I18n.t('training.programme.months'),     30 ],
+         [ I18n.t('training.programme.years'),      365 ]
     ]
+    
+    COURSE_TYPES_PROG =  [
+      # Displayed	stored in db
+      ['Diploma','Diploma'],
+      ['Pos Basik','Pos Basik'],
+      ['Diploma Lanjutan','Diploma Lanjutan']
+    ]
+    
+    COURSE_TYPES_SUB = [
+      # Displayed	stored in db
+       [I18n.t('training.programme.semester'),'Semester'],
+       [I18n.t('training.programme.subject'),'Subject'],
+       [I18n.t('training.programme.commonsubject'),'Commonsubject'],
+       [I18n.t('training.programme.topic'),'Topic'],
+       [I18n.t('training.programme.subtopic'), 'Subtopic']
+      ]
+    
+    COURSE_TYPES = [
+       ['Diploma','Diploma'],
+       ['Pos Basik','Pos Basik'],
+       ['Diploma Lanjutan','Diploma Lanjutan'],
+       [I18n.t('training.programme.semester'),'Semester'],
+       [I18n.t('training.programme.subject'),'Subject'],
+       [I18n.t('training.programme.commonsubject'),'Commonsubject'],
+       [I18n.t('training.programme.topic'),'Topic'],
+       [I18n.t('training.programme.subtopic'), 'Subtopic']
+      ]
+
+    LECTURE_TIME = [
+      [I18n.t('training.programme.hours'), 1],
+      [I18n.t('training.programme.minutes'), 2]
+      ]
     
     LOGTYPE = [
 	# Displayed        stored in db
