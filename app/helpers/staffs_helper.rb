@@ -1,17 +1,4 @@
 module StaffsHelper
-
-
-
-MARITAL_STATUS = [
-     #  Displayed       stored in db
-     [ "Tidak Pernah Berkahwin",1 ],
-     [ "Berkahwin",2 ],
-     [ "Balu", 3 ],
-     [ "Duda", 4],
-     [ "Bercerai", 5 ],
-     [ "Berpisah", 6 ],
-     [ "Tiada Maklumat", 9 ]
-]
    
 BLOOD_TYPE = [
     #  Displayed       stored in db
@@ -54,12 +41,7 @@ NATIONALITY = [
      [ "Penduduk Tetap", 3],
 ]
 
-STATUS = [
-      #  Displayed       stored in db
-      [ "Tetap",1 ],
-      [ "Sementara",2 ],
-      [ "Sambilan",3 ]
-]
+
 
 APPOINTMENT = [
      #  Displayed       stored in db

@@ -1,1 +1,28 @@
-loan
+.col-md-9.col-md-offset-1
+  %dl.dl-horizontal
+    - for loan in @staff.loans
+      %hr
+      %dt= t('staff.loans.ltype') + ":"
+      %dd
+        %strong= (DropDown::LOAN_TYPE.find_all{|disp, value| value == loan.ltype }).map {|disp, value| disp}[0]
+
+      %dt= t('staff.loans.accno') + ":"
+      %dd= loan.accno
+
+      %dt= t('staff.loans.startdt') + ":"
+      %dd= l(@staff.schemedt) rescue '-'
+
+      %dt= t('staff.loans.durationmn') + ":"
+      %dd  #{loan.durationmn} Months
+
+      %dt= t('staff.loans.deductions') + ":"
+      %dd= ringgols(loan.deductions)
+
+      %dt= t('staff.loans.firstdate') + ":"
+      %dd= l(@staff.firstdate) rescue '-'
+
+      %dt= t('staff.loans.enddate') + ":"
+      %dd= l(@staff.enddate) rescue '-'
+
+      %dt= t('staff.loans.enddeduction') + ":"
+      %dd= ringgols(loan.enddeduction)

@@ -62,7 +62,7 @@ module DropDown
    [ "Penduduk Tetap", 3],
   ]
 
-  STATUS = [
+  STAFF_STATUS = [
     #  Displayed       stored in db
     [ "Tetap",1 ],
     [ "Sementara",2 ],
@@ -142,15 +142,6 @@ module DropDown
    [ "Doktor Falsafah (Ph.D)",1 ],
    [ "Lain Lain", 99 ]
   ]
-
-  BANKTYPE = [
-    #  Displayed       stored in db
-    [ "Simpanan",1 ],
-    [ "Simpanan Bersama",2 ],
-    [ "Semasa",3 ],
-    [ "Simpanan Tetap",4 ],
-  ]
-
   
 
   UNIFORM = [
@@ -188,7 +179,7 @@ module DropDown
         [ "Female","2"]
   ]
 
-  LTYPE = [
+  LOAN_TYPE = [
            #  Displayed       stored in db
            [ "Perumahan", 1 ],
            [ "Kenderaan", 2 ],

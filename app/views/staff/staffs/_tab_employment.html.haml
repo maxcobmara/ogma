@@ -38,7 +38,7 @@
       = @staff.positions.first.try(:parent).try(:staff).try(:name)
 
     %dt= t 'staff.employstatus', :default => model_class.human_attribute_name(:employstatus) + ":"
-    %dd= (DropDown::STATUS.find_all{|disp, value| value == @staff.employstatus}).map {|disp, value| disp}[0]
+    %dd= (DropDown::STAFF_STATUS.find_all{|disp, value| value == @staff.employstatus}).map {|disp, value| disp}[0]
 
     %dt= t 'staff.appointstatus', :default => model_class.human_attribute_name(:appointstatus) + ":"
     %dd= (DropDown::APPOINTMENT.find_all{|disp, value| value == @staff.appointstatus.to_s}).map {|disp, value| disp}[0]
