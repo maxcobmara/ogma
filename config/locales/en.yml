@@ -72,9 +72,11 @@ en:
   create: Create
   no: No
   setup: Set Up
+  select: Select
   
   actions:
     new: New
+    new_node: New Node
     search: Search
     print: Print
     show: Show
@@ -882,11 +884,36 @@ en:
     programme:
       title: Curriculum Management 
       new: New Curriculum Item
+      new_programme: New Programme
       edit: Edit Curriculum Item
-      combo_code: Combo Code
+      combo_code: "Combo Code  |  Programme / Subject / Topic Name"
+      code: Code
+      code2: Combo Code
+      name: Name
+      course_type: Course Type
       duration: Duration
       credits: Credits
       status: Status
+      remarks: "Click at Programme / Subject / Topic NAME to hide / display COMBO CODE and its' subitem list. Next click at COMBO CODE to show details"
+      method: Lecture Method
+      practical:: Practical
+      tutorial: Tutorial
+      lecture: Lecture
+      semester: Semester
+      subject: Subject
+      commonsubject: Common Subject
+      topic: Topic
+      subtopic: Subtopic
+      hours: Hours
+      minutes: Minutes
+      days: Days
+      weeks: Weeks
+      months: Months
+      years: Years
+      major: Major
+      minor: Minor
+      elective: Elective
+      #click NAME for Show link & subitem list
  
   campus:
     address: 
@@ -1001,6 +1028,12 @@ en:
         duration: Duration
         credits: Credits
         status: Status
+        method: Teaching Method
+        course_type: Course Type
+        name: Name
+        lecture: Lecture
+        tutorial: Tutorial
+        practical: Practical
       staff_attendance:
         thumb_id: Staff
         logged_at: Logged At
@@ -1043,6 +1076,9 @@ en:
       select_log_type: Select Log Type
       select_mediatype: Select Media Type
       select_status: Select Status
+      select_course_type: Select Course Type
+      select_duration: Select Duration Type
+      select_credit: Select Credit
       all_unit: "All Department / Unit"
       maintain: Maintain
       remove: Remove

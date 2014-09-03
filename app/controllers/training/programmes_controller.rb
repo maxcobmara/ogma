@@ -64,8 +64,8 @@ class Training::ProgrammesController < ApplicationController
     @programme = Programme.find(params[:id])
 
     respond_to do |format|
-      if @programme.update_attributes(params[:programme])
-        format.html { redirect_to(@programme, :notice => 'Programme was successfully updated.') }
+      if @programme.update(programme_params)
+        format.html { redirect_to(training_programme_url, :notice => t('training.programme.title')+t('actions.updated')) }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }
@@ -99,6 +99,6 @@ class Training::ProgrammesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def programme_params
-      params.require(:programme).permit(:code, :combo_code, :name, :course_type, :ancestry, :ancestry_depth, :objective, :duration, :duration_type, :credits, :status)
+      params.require(:programme).permit(:code, :combo_code, :name, :course_type, :ancestry, :ancestry_depth, :objective, :duration, :duration_type, :credits, :status, :lecture, :tutorial, :practical, :lecture_time, :tutorial_time, :practical_time)
     end
 end
