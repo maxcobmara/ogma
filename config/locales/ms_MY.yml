@@ -62,6 +62,7 @@ ms_MY:
     create: Cipta
     created: " telah berjaya disimpan."
     updated: " telah berjaya dikemaskini."
+    removed: " telah berjaya dibuang."
     download_excel: Muatturun Fail Excel
     import_excel: Import Excel
     imported: " telah berjaya diimport"
