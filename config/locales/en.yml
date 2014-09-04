@@ -918,7 +918,20 @@ en:
       major: Major
       minor: Minor
       elective: Elective
-      #click NAME for Show link & subitem list
+    topicdetail:
+      title: Topic Detail
+      new: New Topic Detail
+      edit: Edit Topic Detail
+      subject: Subject
+      topic: Topic
+      version_no: Version No
+      duration: "Duration (Total Hours)"
+      theory: Lecture
+      practical: Practical
+      tutorial: Tutorial
+      prepared_by: Prepared By
+      caution1: "Removed topic or subtopic (Curriculum Management) - before 31st October 2013"
+      caution2: "Removed topic or subtopic (Curriculum Management) - 31st October 2013 onwards"
  
   campus:
     address: 

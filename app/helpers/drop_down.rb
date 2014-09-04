@@ -356,15 +356,26 @@ module DropDown
        [I18n.t('training.programme.subtopic'), 'Subtopic']
       ]
     
+    #COURSE_TYPES = [
+    #   ['Diploma','Diploma'],
+    #   ['Pos Basik','Pos Basik'],
+    #   ['Diploma Lanjutan','Diploma Lanjutan'],
+    #   [I18n.t('training.programme.semester'),'Semester'],
+    #   [I18n.t('training.programme.subject'),'Subject'],
+    #  [I18n.t('training.programme.commonsubject'),'Commonsubject'],
+    #   [I18n.t('training.programme.topic'),'Topic'],
+     #  [I18n.t('training.programme.subtopic'), 'Subtopic']
+     # ]
+    
     COURSE_TYPES = [
        ['Diploma','Diploma'],
        ['Pos Basik','Pos Basik'],
        ['Diploma Lanjutan','Diploma Lanjutan'],
-       [I18n.t('training.programme.semester'),'Semester'],
-       [I18n.t('training.programme.subject'),'Subject'],
-       [I18n.t('training.programme.commonsubject'),'Commonsubject'],
-       [I18n.t('training.programme.topic'),'Topic'],
-       [I18n.t('training.programme.subtopic'), 'Subtopic']
+       ['Semester','Semester'],
+       ['Subject','Subject'],
+       ['Commonsubject','Commonsubject'],
+       ['Topic','Topic'],
+       ['Subtopic', 'Subtopic']
       ]
 
     LECTURE_TIME = [

@@ -4,10 +4,8 @@ class Training::ProgrammesController < ApplicationController
   # GET /programmes.xml
   def index
     @programmes = Programme.all.order(:combo_code)
-
-    @search = Programme.search(params[:q])
-    @programmes = @search.result
-    #@programmes = @programmes.page(params[:page]||1)  #pagination removed - as this will limit entry of all programmes
+    #@search = Programme.search(params[:q])
+    #@programmes = @search.result
 
     respond_to do |format|
       format.html # index.html.erb

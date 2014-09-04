@@ -6,7 +6,7 @@
   %ul.nav.navbar-nav
     %li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'training.programme.new_programme'))), new_training_programme_path
   %ul.nav.navbar-nav.navbar-right
-    %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "toga"
+    /%li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "toga"
     %li= link_to content_tag(:li, fa_icon("print", text: (t 'actions.print'))), "#", class: 'bogus'
 
 .row.filter{style: "display:none;"}
@@ -16,15 +16,14 @@
    
 .row
   %table.table-striped.table-hover.ogma
-    /%thead
+    %thead
     /%tr
     /%th= sort_link(@search, :code, (t 'training.programme.combo_code'))
     /%th= sort_link(@search, :name, (t 'training.programme.duration'))
     /%th= sort_link(@search, :description, (t 'training.programme.credits'))
     /%th= sort_link(@search, :created_by, (t 'training.programme.status'))
-
     %tbody
-      = render "index_search"
+      /= render "index_search"
       /- @programmes.each do |timetable| 
       /%tr
       /%td=h link_to timetable.combo_code, training_timetable_path(timetable)     
@@ -197,6 +196,10 @@
   $(".Collapsable").click(toggle);
   $(".Collapsable").each(toggle);
   
-			  
-
-			  
+:javascript
+$(document).ready(function(){
+  $('.toga').click(function() {
+    $('.search_row').toggle(); 
+  });
+})
+  
