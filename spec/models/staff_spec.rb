@@ -15,12 +15,12 @@ describe Staff do
   it { should be_valid }
   
   describe "when name is not present" do
-    before { @staff.name = "" }
+    before { @staff.name = nil }
     it { should_not be_valid }
   end
   
   describe "when icno is not present" do
-    before { @staff.icno = "" }
+    before { @staff.icno = nil }
     it { should_not be_valid }
   end
 end

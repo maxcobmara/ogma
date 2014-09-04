@@ -1,15 +1,34 @@
 class Staff < ActiveRecord::Base
   
   paginates_per 13
+
+  validates :icno, presence: true#, numericality: true, length: { is: 12 }, uniqueness: true
+  validates_presence_of     :name, :coemail, :code, :appointdt #appointment date must exist be4 can apply leave
+
+
+  belongs_to :title,        :class_name => 'Title',           :foreign_key => 'titlecd_id'
+  belongs_to :staffgrade,   :class_name => 'Employgrade',     :foreign_key => 'staffgrade_id'
+  belongs_to :staff_shift,  :foreign_key => 'staff_shift_id'
   
-  has_many          :positions
-  has_many          :tenants
+  has_many  :positions
+  has_many  :tenants
   
+  has_many :assets, :foreign_key => "assignedto_id"
+  has_many :reporters, :class_name => 'AssetDefect', :foreign_key => 'reported_by'
   
-  has_attached_file :photo,
-                    :url => "/assets/staffs/:id/:style/:basename.:extension",
-                    :path => ":rails_root/public/assets/staffs/:id/:style/:basename.:extension"#, :styles => {:thumb => "40x60"}
-                    
+  has_many :asset_disposal, :foreign_key => 'disposed_by'
+  has_many :processors, :class_name => 'AssetDisposal', :foreign_key => 'checked_by'
+  has_many :verifiers,  :class_name => 'AssetDisposal', :foreign_key => 'verified_by'
+  has_many :revaluers,  :class_name => 'AssetDisposal', :foreign_key => 'revalued_by'
+  
+  has_many :timetables
+  has_many :prepared_weekly_schedules, :class_name => 'Weeklytimetable', :foreign_key => 'prepared_by', :dependent => :nullify
+  has_many :endorsed_weekly_schedules, :class_name => 'Weeklytimetable', :foreign_key => 'endorsed_by', :dependent => :nullify
+  has_many :weekly_schedule_details, :class_name => 'WeeklytimetableDetail', :foreign_key => 'lecturer_id', :dependent => :nullify
+
+  has_many :attendingstaffs,    :class_name => 'StaffAttendance', :foreign_key => 'thumb_id', :primary_key => 'thumb_id'#, :dependent => :destroy #attendance staff name
+  has_many :approvers,          :class_name => 'StaffAttendance', :foreign_key => 'approved_by' # approver name
+
   has_many          :qualifications, :dependent => :destroy
   accepts_nested_attributes_for :qualifications, :allow_destroy => true, :reject_if => lambda { |a| a[:level_id].blank? }
   
@@ -22,30 +41,16 @@ class Staff < ActiveRecord::Base
   has_many          :kins, :dependent => :destroy
   accepts_nested_attributes_for :kins, :reject_if => lambda { |a| a[:kintype_id].blank? }
   
+  has_attached_file :photo,
+                    :url => "/assets/staffs/:id/:style/:basename.:extension",
+                    :path => ":rails_root/public/assets/staffs/:id/:style/:basename.:extension"#, :styles => {:thumb => "40x60"}
+                    
   
-  belongs_to        :title,       :class_name => 'Title',       :foreign_key => 'titlecd_id'
-  belongs_to        :staffgrade, :class_name => 'Employgrade',  :foreign_key => 'staffgrade_id'
   
-  has_many :assets, :foreign_key => "assignedto_id"
-  has_many :reporters, :class_name => 'AssetDefect', :foreign_key => 'reported_by'
   
-  has_many :asset_disposal, :foreign_key => 'disposed_by'
-  has_many :processors, :class_name => 'AssetDisposal', :foreign_key => 'checked_by'
-  has_many :verifiers,  :class_name => 'AssetDisposal', :foreign_key => 'verified_by'
-  has_many :revaluers,  :class_name => 'AssetDisposal', :foreign_key => 'revalued_by'
   
-  has_many :timetables  #creator
-  #links to Model Weeklytimetables-20March2013
-  has_many :prepared_weekly_schedules, :class_name => 'Weeklytimetable', :foreign_key => 'prepared_by', :dependent => :nullify
-  has_many :endorsed_weekly_schedules, :class_name => 'Weeklytimetable', :foreign_key => 'endorsed_by', :dependent => :nullify
-  #links to Model Weeklytimetables-21March2013
-  has_many :weekly_schedule_details, :class_name => 'WeeklytimetableDetail', :foreign_key => 'lecturer_id', :dependent => :nullify
   
-  belongs_to :staff_shift, :foreign_key => 'staff_shift_id'
-  #has_one  :staff_shift2, :class_name => 'StaffShift' 
-  #links to Model Staff Attendances
-  has_many :attendingstaffs,    :class_name => 'StaffAttendance', :foreign_key => 'thumb_id', :primary_key => 'thumb_id'#, :dependent => :destroy #attendance staff name
-  has_many :approvers,          :class_name => 'StaffAttendance', :foreign_key => 'approved_by' # approver name
+
   
   #validates_attachment_size         :photo, :less_than => 500.kilobytes
   #validates_attachment_content_type :photo, :content_type => ['image/jpeg', 'image/png']
@@ -53,7 +58,7 @@ class Staff < ActiveRecord::Base
 # validates :icno, presence: true, numericality: true, length: { is: 12 }, uniqueness: true							#temp remark-staff attendance-5Aug2014  staff_nothumb.save! will fail
   #validates_numericality_of :icno#, :kwspcode
   #validates_length_of       :icno, :is =>12
-  #validates_presence_of     :name, :coemail, :code, :appointdt #appointment date must exist be4 can apply leave		#temp remark-staff attendance-5Aug2014
+  #
   #validates_uniqueness_of   :fileno, :coemail, :code														#temp remark-staff attendance-5Aug2014
   #validates_format_of       :name, :with => /^[a-zA-Z'`\/\.\@\ ]+$/, :message => I18n.t('activerecord.errors.messages.illegal_char') #add allowed chars between bracket
  # validates_presence_of     :cobirthdt, :addr, :poskod_id, :staffgrade_id, :statecd, :country_cd, :fileno					#temp remark-staff attendance-5Aug2014

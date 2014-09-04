@@ -1,9 +1,4 @@
 FactoryGirl.define do
-
-  sequence(:icno) do |n|
-    @ic_nos ||= rand(10 ** 12).to_s
-    #@ic_nos[n]
-  end
   
   # Staffs
   factory :staff do
