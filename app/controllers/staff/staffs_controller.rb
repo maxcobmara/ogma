@@ -65,6 +65,20 @@ class Staff::StaffsController < ApplicationController
     end
   end
 
+  def borang_maklumat_staff
+
+    @staff = Staff.find(params[:id])
+    respond_to do |format|
+      format.pdf do
+        pdf = Borang_maklumat_staffPdf.new(@staff, view_context)
+        send_data pdf.render, filename: "borang_maklumat_staff-{Date.today}",
+                              type: "application/pdf",
+                              disposition: "inline"
+      end
+    end
+  end
+  
+  
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_staff
