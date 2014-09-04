@@ -1,6 +1,8 @@
 class Programme < ActiveRecord::Base
   before_save :set_combo_code
   has_ancestry :cache_depth => true
+  
+  validates_uniqueness_of :combo_code
 
   #scope :by_semester, -> { where(course_type: 'Semester')}
   def code2

@@ -45,11 +45,10 @@ class Training::ProgrammesController < ApplicationController
   # POST /programmes
   # POST /programmes.xml
   def create
-    @programme = Programme.new(params[:programme])
-
+    @programme = Programme.new(programme_params)
     respond_to do |format|
       if @programme.save
-        format.html { redirect_to(@programme, :notice => 'Programme was successfully created.') }
+        format.html { redirect_to(training_programme_path(@programme), :notice => t('training.programme.title')+t('actions.created')) }
         format.xml  { render :xml => @programme, :status => :created, :location => @programme }
       else
         format.html { render :action => "new" }
@@ -80,13 +79,13 @@ class Training::ProgrammesController < ApplicationController
     @programme = Programme.find(params[:id])
     #@programme.destroy
     if @programme.destroy
-      flash[:notice] = 'Programme was successfully removed.'
+      flash[:notice] = t('training.programme.title')+t('actions.removed')
     else
       flash[:error] = 'Removal of Subject/Topic is forbidden, due to existance of Subject/Topic in Examquestion.'
     end  
 
     respond_to do |format|
-      format.html { redirect_to(programmes_url) }
+      format.html { redirect_to(training_programmes_url) }
       format.xml  { head :ok }
     end
   end
@@ -99,6 +98,6 @@ class Training::ProgrammesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def programme_params
-      params.require(:programme).permit(:code, :combo_code, :name, :course_type, :ancestry, :ancestry_depth, :objective, :duration, :duration_type, :credits, :status, :lecture, :tutorial, :practical, :lecture_time, :tutorial_time, :practical_time)
+      params.require(:programme).permit(:parent_id, :code, :combo_code, :name, :course_type, :ancestry, :ancestry_depth, :objective, :duration, :duration_type, :credits, :status, :lecture, :tutorial, :practical, :lecture_time, :tutorial_time, :practical_time)
     end
 end

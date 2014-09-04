@@ -1,3 +1,4 @@
+= f.hidden_field :parent_id
 .col-md-offset-1
   .form-group
     .col-sm-2.control-label
@@ -8,7 +9,7 @@
         %tr
           %td{:style=>"padding: 0 6px 0 0;"}=h @programme.is_root? ? "" : @programme.parent.combo_code + "-" 
           %td{:style=>"padding: 0 6px 0 0;"}= f.text_field :code, :size => '8', class: 'form-control'
-      
+  
   .form-group
     .col-sm-2.control-label
       = f.label :course_type
@@ -61,19 +62,12 @@
 
 $(document).ready(function(){
   $('#programme_course_type').on('change',function() {
-    if(this.value=='Topic'){
-      $('.bbb').show();
-      $('.bbb2').show();
-      }
+    if(this.value=='Topic')
+      $('.bbb').show(); 
     else if(this.value=='Subtopic')
-    {
       $('.bbb').show();
-      $('.bbb2').show();
-      }
-    else{
+    else
       $('.bbb').hide();
-      $('.bbb2').hide();
-      }
   }).trigger('change');
 });
 
