@@ -914,7 +914,21 @@ ms_MY:
       major: Major
       minor: Minor
       elective: Elektif
-
+    topicdetail:
+      title: Butiran Topik
+      new: Butiran Topik Baru
+      edit: Sunting Butiran Topik
+      subject: Subjek
+      topic: Topik
+      version_no: Versi
+      duration: "Durasi (Jumlah Jam)"
+      theory: Kuliah
+      practical: Amali
+      tutorial: Tutorial
+      prepared_by: Disediakan Oleh
+      caution1: "Topic atau Subtopic telah dibuang dari Sukatan Kurikulum - sebelum 31Oktober 2013"
+      caution2: "Topik atau Subtopik telah dibuang dari Sukatan Kurikulum - bermula 31 Oktober 2013"
+      
   campus:
     address: 
       title: Buku Alamat

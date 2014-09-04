@@ -133,6 +133,7 @@ Ogma::Application.routes.draw do
     resources :timetables
     resources :timetable_periods
     resources :academic_sessions
+    resources :topicdetails
     resources :weeklytimetables do
       member do
         get :personalize_show
