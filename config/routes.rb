@@ -2,7 +2,7 @@ Ogma::Application.routes.draw do
   
   namespace :staff do
     resources :staffs, as: :infos do
-      collection do
+      member do
         get :borang_maklumat_staff
       end
     end
