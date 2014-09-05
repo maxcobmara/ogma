@@ -7,6 +7,9 @@ Ogma::Application.routes.draw do
       end
     end
     resources :positions
+<<<<<<< HEAD
+    resources :staff_appraisals
+=======
     resources :staff_attendances do
       collection do
         put 'actionable', to: "staff_attendances#actionable"
@@ -15,6 +18,7 @@ Ogma::Application.routes.draw do
       end
     end
     resources :attendances
+>>>>>>> upstream/master
   end
 
   match '/attendance/manage', to: 'staff/staff_attendances#manage', via: 'get'
@@ -29,6 +33,7 @@ Ogma::Application.routes.draw do
     resources :ptschedules
     resources :ptdos
   end
+  
   
   namespace :asset do
     resources :assets do
