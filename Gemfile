@@ -12,6 +12,7 @@ gem "ancestry", "~> 2.1.0"
 #gem 'ransack', github: 'activerecord-hackery/ransack'#, branch: 'rails-4.1'
 gem 'ransack', :path=>'vendor/ransack', branch: 'rails-4.1'
 gem "prawn", "~> 1.2.1"
+gem 'prawn-table', '~> 0.1.1'
 gem "chartkick", "~> 1.3.2"
 #stuff for layout
 #gem "bootstrap-sass", "~> 3.0.3.0"
