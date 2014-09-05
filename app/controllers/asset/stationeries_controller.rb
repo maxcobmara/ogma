@@ -8,6 +8,21 @@ class Asset::StationeriesController < ApplicationController
   def show
   end
   
+  def edit
+  end
+  
+  def kewps13
+    @lead = Position.find(1)
+    @stationeries = Stationery.order(code: :asc)
+    respond_to do |format|
+      format.pdf do
+        pdf = Kewps13Pdf.new(@stationeries, view_context, @lead)
+        send_data pdf.render, filename: "kewps13-{Date.today}",
+                              type: "application/pdf",
+                              disposition: "inline"
+      end
+    end
+  end
   
   private
     # Use callbacks to share common setup or constraints between actions.

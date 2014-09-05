@@ -29,4 +29,52 @@
       %dd= @stationery.maxquantity.to_i
         
   #additions.tab-pane.fade
+    %table.table.table-condensed.table-hover
+      %thead
+        %tr
+          %th LPO No
+          %th Supplier Name
+          %th Quantity
+          %th Price per Unit
+          %th Total
+          %th Received Date
+      %tbody
+        - for addsuppliers in @stationery.addsuppliers	
+        - cost = addsuppliers.unitcost * addsuppliers.quantity.to_i	  
+          %tr 
+            %td= addsuppliers.lpono 
+            %td= addsuppliers.document
+            %td= addsuppliers.quantity.to_i
+            %td= ringgols(addsuppliers.unitcost)
+            %td= ringgols(cost)
+            %td= addsuppliers.received.try(:strftime,"%d %b %Y")
+		  
   #deductions.tab-pane.fade
+    %table.table.table-condensed.table-hover
+      %thead
+        %tr
+          %th Issues By
+          %th Received By
+          %th Quantity
+          %th Issue Date
+
+      %tbody
+        - for usesupplies in @stationery.usesupplies 
+          %tr 
+            %td= usesupplies.issuedby
+            %td= usesupplies.receivedby
+            %td= usesupplies.quantity.to_i
+            %td= usesupplies.issuedate.try(:strftime, "%d %b %Y")
+			
+.row
+  .col-md-6.col-md-offset-2
+    %hr
+    .form-actions
+      = link_to content_tag(:i, "", :class => "fa fa-arrow-left "), asset_stationeries_path, {class: "btn btn-default", "data-toggle" => "tooltip", title: "Office Supplies Index"}
+
+      = link_to content_tag(:i, "", :class => "fa fa-edit") , edit_asset_stationery_path(@stationery),  {class: "btn btn-primary", "data-toggle" => "tooltip", title: t("actions.edit")}
+      = link_to content_tag(:i, "", :class => "fa fa-trash-o icon-white"), |
+        asset_stationeries_path(@stationery),                                                                                                    |
+        :method => 'delete',                                                                                                           |
+        :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },                   |
+        :class => 'btn btn-danger', "data-toggle" => "tooltip", title: t("actions.delete")			

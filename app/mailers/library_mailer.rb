@@ -1,5 +1,5 @@
 class LibraryMailer < ActionMailer::Base
-  default from: "icms.kskb.jb@gmail.com"
+  default from: "pustakabistari_kskbjb@yahoo.com"
   
   def library_student_late_reminder(email, transactions)
     @transactions = transactions

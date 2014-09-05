@@ -72,9 +72,11 @@ en:
   create: Create
   no: No
   setup: Set Up
+  select: Select
   
   actions:
     new: New
+    new_node: New Node
     search: Search
     print: Print
     show: Show
@@ -83,10 +85,25 @@ en:
     create: Create
     created: " was successfully created."
     updated: " was successfully updated."
+    removed: " was successfully removed."
     download_excel: Download Excel
-  
+    import_excel: Import Excel
+    imported: " was/were successfully imported"
+    imported2: "Successful imported record(s) : "
+    imported_updated: " was/were successfully imported/updated"
+    records: " record(s)"
+    import_failed: " - import failed "
+    save_action: Save Action
   errors:
 
+  views:
+    pagination:
+      first: First
+      next: Next
+      previous: Previous
+      truncate: "&hellip;"
+      last: Last
+      
   people:
     male: male
     female: female
@@ -94,21 +111,97 @@ en:
     student: Student
   
   staff:
-    icno: "MyKad No"
-    name: "Name"
-    coemail: "Email"
-    code: "Staff Code"
-    fileno: "File No"
-    position: "Position"
+    list: Staff List
+    personal_details: Personal Details
+    icno: MyKad No
+    name: Name
+    code: Staff Code
+    thumb: Thumb ID
+    shift: Staff Shift
+    fileno: Personal File No
+    position: Position
     cobirthdt: Date Of Birth
-    bloodtype: "Blood Type"
-    addr: "Address"
-    poskod_id: "Poskod"
-    mrtlstatuscd: "Marital Status"
-    staffgrade_id: "Staff Grade"
-    statecd: "State of Birth"
-    country_cd: "Nationality"
-    thumb: Thumb ID Code
+    birthcertno: Birth Cert No
+    age: Age
+    bloodtype: Blood Type
+    gender: Gender
+    coemail: Email
+    cooftelno: Telephone (Office)
+    phonecell: Telephone (HP)
+    phonehome: Telephone (H)
+    poskod_id: Post Code
+    address: Address
+    mrtlstatuscd: Marital Status
+    statecd: State of Birth
+    race: Race
+    religion: Religion
+    country_cd: Nationality
+    transportclass_id: Transport Class
+    upload: Upload Photo
+
+    employment_details: Employment Details
+    employscheme: Employment Scheme
+    staffgrade_id: Staff Grade
+    employstatus: Employment Status
+    appointstatus: Appointment Status
+    appointdt: Appointment Date
+    schemedt: Appointment To Scheme
+    confirmdt: Confirmation Date
+    posconfirmdate: Position Confirmation Date
+    pension_confirm_date: Pension Confirmation Date
+    wealth_decleration_date: Date of Latest Wealth Decleration
+    promotion_date: Last Promotion Date
+    reconfirmation_date: 'Reconfirmation Date (Option)'
+    current_grade_date: Date of Confirmation to Current Grade
+    starting_salary: Starting Salary
+
+    appointby: Appointed By
+    svchead: Head Of Service
+    svctype: Type Of Service
+    pensionstat: Pension Status
+    pensiondt: Pension Date
+    uniformstat: Uniform Status
+    position_id: Position
+    reports_to: Reports To
+
+    qualifications: 
+      title: Qualifications
+      level_id: Level
+      qname: Qualification
+      institute: Institute
+
+    loans:
+      title: Loans
+      ltype: Loan For
+      accno: Loan Account No
+      startdt: Approval Date
+      durationmn: Duration
+      deductions: Monthly Installments
+      amount: Loan Amount
+      firstdate: Start Date
+      enddate: End Date
+      enddeduction: Last Month Installment
+      
+
+    finance: 
+      title: Finance Details
+      kwspcode: EPF No
+      taxcode: Tax No
+    
+    banks:
+      title: Bank Accounts
+      bankname: Bank
+      bankaccno: Account No
+      bankacctype: Account Type
+
+    contacts: 
+      emergency: Emergency Contact Information
+      kintype_id: Relationship
+      kinbirthdt: DOB
+      kinmykadno: MyKad No
+      phone: Telephone
+      kinaddr: Address
+      profession: Profession
     
     training:
       budget: 
@@ -144,6 +237,95 @@ en:
     title: "Tasks & Responsibilities"
     index: Organisation Chart
     
+  staff_attendance:
+    title: Staff Attendance
+    new: New Staff Attendance
+    edit: Edit Staff Attendance
+    list: Staff Attendance List
+    details: Attendance Details
+    approval: "Late / Early Return Approval"
+    approval2: Approval
+    reject_approve: Reject or Approve
+    approve: Approve
+    reject: Reject
+    flag: Flag
+    thumb_id: Staff 
+    logged_in: "Logged-In"
+    logged_out: "Logged-Out"
+    shift: Shift
+    late: Late
+    early: Early
+    action: Action
+    ignore: Ignore
+    logged_at: Logged At
+    log_type: Log Type
+    reason: Reason
+    trigger: Trigger
+    approved_by: Approved By
+    is_approved: "Approved?"
+    approved_on: Approved On
+    status: Status
+    review: Review
+    date: "Date : "
+    unit: "Unit : "
+    unit_not_define: Not Updated
+    from: "From :"
+    to: "To :"
+    import_excel: Import Staff Attendance From Excel File
+    imported: Imported
+    and: " and "
+    year_exceed: " (record(s) exceed allowed year range : "
+    year_exceed2: "Data exceed allowed year range :"
+    exist_records: " (record(s) already exist)"
+    exist_records2: "Record(s) already exist :"
+    no_user: "(record(s) has no matching user/staff)"
+    no_user2: "No matching staff / user (insert/update 'icno' of worksheet 'USERINFO' in excel file AND make sure 'MyKad No' and 'THUMB ID' data in ICMS - Staff Info are matching)"
+    log_in: Log In
+    log_out: Log Out
+    excel_format: Excel Format
+    date_range1: "Searching 'All Department / Unit' - Attendance records for selected date range (within the latest 2 months)"
+    date_range2: "Searching by Department / Unit - Attendance records for selected date range (within the latest 2 years)"
+    conditions: Conditions for Excel File
+    allowed_date_range: "Allowed Date Range : "
+    must_not_exist: Attendance Record must NOT exist in ICMS
+    must_match: "'MyKad no (IC no) in Excel file must match with MyKad no (IC no) in ICMS"
+    hours: " hours "
+    minutes: " minutes "
+    fingerprint_statement: Fingerprint Statement
+    fingerprint: Fingerprint
+    date_time: "Date & Time"
+    outstation: Outstation
+    official: Official
+    forgot: Forgot
+    early_late: "Lateness / Early Return"
+    others: Others
+    advise_trigger1: "Lateness : "
+    advise_trigger3: "Tick 'Action' checkbox (to activate 'Fingerprint Statement') or 'Ignore' checkbox and click 'Save Action' icon in Staff Attendance listing"
+    advise_trigger2: "Early Return : "
+    list1: Attendance List
+    list2: "Late/Early Return List"
+    status_punchcard: Punch Card Status Report
+    status_pcard: Punch Card Status
+    unit_department: "Unit / Department"
+    user_not_exist: "User / Staff Not Exist"
+ 
+  attendance:
+    list: "Manage Lateness & Early Return"
+    new: "New Attendance (Lateness / Early Return)"
+    edit: "Edit Attendance (Lateness / Early Return)"
+    details: Attendance Details
+    late_to_approve: People Late I need to approve
+    early_return_to_approve:  "People Early (Return) I need to approve"
+    days_iam_late: Days I am Late
+    days_iam_early: "Days I am Early (Return)"
+    manage_lateness_earlyreturn: "Manage Lateness & Early Return"
+    staff_id: Staff
+    attdate: Date
+    time_in: Time In
+    time_out: Time Out
+    reason: Reason
+    approve_id: Approver
+    approvestatus: Approval Status
     
   asset:
     title: Assets
@@ -371,6 +553,7 @@ en:
       book_details: Book Details
       tagno: Tag No
       classddc: Class No (DDC/LC)
+      classlcc: "Class No (LC) / (NLM)"
       title: Title
       language: Language
       author: Author
@@ -402,8 +585,34 @@ en:
       receiveddate: Receive Date
       receiver_id: Received By
       supplier_id: Supplier
-     
-
+      open_shelf: Open Shelf
+      red_spot: Red Spot
+      no_image: No Image
+      isbn: ISBN
+      others: Others
+      book2: Book
+      magazine: Magazine
+      available: Available
+      on_loan: "On-loan"
+      fixed: Fixed
+      disposed: Disposed
+      image: Image
+      require_update: "Physical Description (Require Update?)"
+      excel_format: Excel Format
+      import_excel: Import Book From Excel File
+      excel_conditions: Excel File Conditions
+      condition_line: "Header (first line) of an Excel file must use names / terms as below :"
+      use_mark: "(Additional Notes : Use either (,) or (:) or (;) in between Roman No, Total Pages and Thickness of a book (eg: ix,56ms,20cm))"
+      use_mark2: "(Additional Notes : Use either (,) or (:) or (;) in between Publish Location, Publisher dan Year Published (eg: Edinburgh,Churchill Livingstone,1983))"
+      wrong_price_types: "Note : Cell format for 'harga_rm' column is INVALID. Use 'Number : General' cell format type and RE-IMPORT EXCEL FILE."
+      wrong_price_types2: " Errors found (in Excel file) for records with these Accession Nos : "
+      valid_price: "(Additional Notes : Use 'Number : General' cell format type. Data with value 'Sumbangan' / 'sumb.' will be saved as 0.0)"
+      book_wo_acc: "Note : Accession No must be UNIQUE. Edit 'Book' accordingly."
+      book_wo_acc2: Books WIthout Accession No
+      acc_not_exist: "Not Exist"
+      acc_must_unique: "(Additional Notes : Accession No must UNIQUE)"
+      use_language: "(Additional Notes : Use 'ing' or 'en' for English, use 'mel' or 'ms_MY' for Malay)"
+      
   buletin:
     list: List of Bulletins
     headline: Headline
@@ -656,7 +865,7 @@ en:
       hod_rejected: HOD Rejection
       hod_rejected_on: Rejecttion Date
       reason: Reason
-      is_returned: " - Dipulangkan" 					  
+      is_returned: " - Dipulangkan"
       is_resubmitted: " -  Dihantar Semula"
       is_approved: "Approved ?"
       daily_details: Daily Details
@@ -667,15 +876,63 @@ en:
       submission_approval: "Submission & Approval"
       personalize_timetable: Personalize Weekly Timetables
       lecturer_name: Lecturer Name
-      intake: Intake	  
-
+      intake: Intake
+      date_time: "Date & Time : "
+      duplicate_lecturer: "Lecturer can only be scheduled to One class at One time. Time slots with error(s) :" 
+      duplicate_lecturer2: "Re-select Lecturer."
     weeklytimetable_detail:
       topic: Topic
       lecturer_id: Lecturer     
       location: Location
       lecture_method: Method
       remove: "Remove?"
-      
+    programme:
+      title: Curriculum Management 
+      new: New Curriculum Item
+      new_programme: New Programme
+      edit: Edit Curriculum Item
+      combo_code: "Combo Code  |  Programme / Subject / Topic Name"
+      code: Code
+      code2: Combo Code
+      name: Name
+      course_type: Course Type
+      duration: Duration
+      credits: Credits
+      status: Status
+      remarks: "Click at Programme / Subject / Topic NAME to hide / display COMBO CODE and its' subitem list. Next click at COMBO CODE to show details"
+      method: Lecture Method
+      practical:: Practical
+      tutorial: Tutorial
+      lecture: Lecture
+      semester: Semester
+      subject: Subject
+      commonsubject: Common Subject
+      topic: Topic
+      subtopic: Subtopic
+      hours: Hours
+      minutes: Minutes
+      days: Days
+      weeks: Weeks
+      months: Months
+      years: Years
+      major: Major
+      minor: Minor
+      elective: Elective
+    topicdetail:
+      title: Topic Detail
+      new: New Topic Detail
+      edit: Edit Topic Detail
+      subject: Subject
+      topic: Topic
+      version_no: Version No
+      duration: "Duration (Total Hours)"
+      theory: Lecture
+      practical: Practical
+      tutorial: Tutorial
+      prepared_by: Prepared By
+      caution1: "Removed topic or subtopic (Curriculum Management) - before 31st October 2013"
+      caution2: "Removed topic or subtopic (Curriculum Management) - 31st October 2013 onwards"
+ 
   campus:
     address: 
       title: Address Book
@@ -784,6 +1041,36 @@ en:
         hod_rejected: HOD Rejection
         hod_rejected_on: Rejecttion Date
         reason: Reason
+      programme:
+        combo_code: Combo Code
+        duration: Duration
+        credits: Credits
+        status: Status
+        method: Teaching Method
+        course_type: Course Type
+        name: Name
+        lecture: Lecture
+        tutorial: Tutorial
+        practical: Practical
+      staff_attendance:
+        thumb_id: Staff
+        logged_at: Logged At
+        log_type: Log Type
+        reason: Reason
+        trigger: Trigger
+        approved_by: Approved By
+        is_approved: "Approved?"
+        approved_on: Approved On
+      attendance:
+        staff_id: Staff
+        attdate: Date
+        time_in: Time In
+        time_out: Time Out
+        reason: Reason
+        approve_id: Approver
+        approvestatus: Approval Status
+      asset:
+        note: Remark
 
     prompt:
       select_creator: Select Creator
@@ -803,6 +1090,14 @@ en:
       select_location: Select Location
       select_lecturer: Select Lecturer
       select_hod: "Select HOD / Approver"
+      select_thumb_id: "Select Thumb Id | Staff (Department / Unit)"
+      select_log_type: Select Log Type
+      select_mediatype: Select Media Type
+      select_status: Select Status
+      select_course_type: Select Course Type
+      select_duration: Select Duration Type
+      select_credit: Select Credit
+      all_unit: "All Department / Unit"
       maintain: Maintain
       remove: Remove
 

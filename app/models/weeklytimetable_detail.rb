@@ -12,8 +12,7 @@ class WeeklytimetableDetail < ActiveRecord::Base
    belongs_to :weeklytimetable_location,  :class_name => 'Location',    :foreign_key => 'location'
    #has_one    :lessonplan,                :class_name => 'LessonPlan',  :foreign_key => 'schedule', :dependent => :nullify #31OCT2013 - :dependent => :destroy #####to UNREMARK when student attendance is ready******  26JUNE2014
    has_many   :student_attendances
-      
-   #validates_uniqueness_of :lecturer_id, :time_slot, :time_slot2, :day2, :is_friday, :scope => :weeklytimetable_id
+         
    #validates_presence_of :lecturer_id, :lecture_method, :if => :topic?#,:time_slot, :time_slot2, :day2, :is_friday, :location,
  
    def set_day_time_slot_for_non_selected
@@ -25,12 +24,12 @@ class WeeklytimetableDetail < ActiveRecord::Base
          self.time_slot = 0
        end 
    end
-   
+
    #def set_false_if_topic_not_exist
      #if self.topic.blank?
        #return false
        #end
-   #end
+   #end  
    
    def get_date_for_lesson_plan
      sdate = Weeklytimetable.find(weeklytimetable_id).startdate
@@ -104,6 +103,8 @@ class WeeklytimetableDetail < ActiveRecord::Base
          return false
        end
      end
+     
+    
      
 end
 

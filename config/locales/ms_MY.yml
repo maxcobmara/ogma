@@ -35,6 +35,7 @@ ms_MY:
   action: Tindakan
   back: Kembali
   new: Cipta
+  edit: Sunting
   update: Kemaskini
   control: Tindakan
   addmore: "Tambah Rekod"
@@ -48,9 +49,11 @@ ms_MY:
   create: Tambah Data
   no: Tidak
   setup: Data Asas
+  select: Pilih
  
   actions:
     new: Baru
+    new_node: Nod Baru
     search: Cari
     print: Cetak
     show: Pamer
@@ -59,9 +62,25 @@ ms_MY:
     create: Cipta
     created: " telah berjaya disimpan."
     updated: " telah berjaya dikemaskini."
+    removed: " telah berjaya dibuang."
     download_excel: Muatturun Fail Excel
+    import_excel: Import Excel
+    imported: " telah berjaya diimport"
+    imported2: "Rekod - rekod berjaya diimport : "
+    imported_updated: " telah berjaya diimport/dikemaskini"
+    records: " rekod"
+    import_failed: " gagal diimport"
+    save_action: Simpan Tindakan
     
   errors:
+  
+  views:
+    pagination:
+      first: Pertama
+      next: Seterusnya
+      previous: Terdahulu
+      truncate: "&hellip;"
+      last: Terakhir
 
   people:
     male: Lelaki
@@ -70,6 +89,7 @@ ms_MY:
     student: Pelajar
   
   staff:
+    list: Senarai Staf
     icno: "No MyKad"
     name: "Nama"
     coemail: "Emel"
@@ -85,6 +105,93 @@ ms_MY:
     statecd: "Tempat Lahir"
     country_cd: "Kewarganegaraan"
     thumb: Kod ID Biometric
+
+    personal_details: Butir Peribadi
+    code: Kod Kakitangan
+    thumb: Thumb ID
+    shift: Waktu Anjal
+    fileno: No Fail Peribadi
+    cobirthdt: Tarikh Lahir
+    birthcertno: No Surat Beranak
+    age: Umur
+    bloodtype: Jenis Darah
+    gender: Jantina
+    coemail: Emel
+    cooftelno: Telefon (Pejabat)
+    phonecell: Telefon (HP)
+    phonehome: Telefon (H)
+    poskod_id: Poskod
+    address: Alamat
+    mrtlstatuscd: Status Kahwin
+    statecd: Tempat Lahir
+    race: Bangsa
+    religion: Agama
+    country_cd: Kewarganegaraan
+    transportclass_id: Kelas Kenderaan
+    upload: Muat Naik Gambar
+
+    employment_details: Butir Perkerjaan
+    employscheme: Skim Perjawatan
+    staffgrade_id: Gred Jawatan
+    employstatus: Status Perkerjaan
+    appointstatus: Status Lantikan
+    appointdt: Tarikh Lantikan Pertama
+    schemedt: Tarikh Lantikan ke Skim Sekarang
+    confirmdt: Tarikh Sah Perkhidmatan
+    posconfirmdate: Tarikh Sah Ke Jawatan Sekarang
+    pension_confirm_date: Tarikh Perakuan Pencen
+    wealth_decleration_date: Tarikh Terkini Istytihar Harta
+    promotion_date: Tarikh Naik Pangkat/Memangku
+    reconfirmation_date: Tarikh Sah Semula (opsyen)
+    current_grade_date: Tarikh Sah Ke Gred Sekarang
+    starting_salary: Gaji Permulaan
+
+    appointby: Pihak Berkuasa Melantik
+    svchead: Ketua Perkhidmatan
+    svctype: Jenis Perkhidmatan
+    pensionstat: Status Pencen
+    pensiondt: Tarikh Pencen
+    uniformstat: Status Pakaian Seragam
+    position_id: Jawatan
+    reports_to: Melapor Kepada
+
+    qualifications: 
+      title:  Kelayakan
+      level_id: Tahap
+      qname: Kelayakan
+      institute: Institusi
+
+    loans:
+      title: Pinjaman
+      ltype: Jenis Pinjaman
+      accno: No Akaun Pinjaman
+      startdt: Tarikh Diluluskan
+      durationmn: Tempoh
+      deductions: Ansuran Bulanan
+      amount: Jumlah Pembiayaan
+      firstdate: Tarikh Mula Potongan
+      enddate: Tarikh Akhir Potongan
+      enddeduction: Amaun Ansuran Bulan Terakhir
+
+    finance: 
+      title: Butir Kewangan
+      kwspcode: No KWSP 
+      taxcode: No Cukai 
+    
+    banks:
+      title: Butiran Akaun Bank
+      bankname: Bank
+      bankaccno: No Akaun 
+      bankacctype: Jenis Akaun
+
+    contacts: 
+      emergency: Maklumat Waris Terdekat
+      kintype_id: Hubungan
+      kinbirthdt: Tarikh Lahir
+      kinmykadno: No MyKad
+      phone: Telefon
+      kinaddr: Alamat
+      profession: Jawatan
     
     training:
       budget: 
@@ -120,7 +227,95 @@ ms_MY:
   position:
     title: "Tugas & Tanggungjawab"
     index: Carta Organisasi
-    
+       
+  staff_attendance:
+    title: Kedatangan Staf
+    new: Kedatangan Staf (Baru)
+    edit: Sunting Kedatangan Staf
+    list: Senarai Kedatangan Staf
+    details: Butiran Kedatangan
+    approval: "Kelulusan Datang Lewat / Pulang Awal"
+    approval2: Kelulusan
+    reject_approve: Diluluskan atau Ditolak
+    approve: Diluluskan
+    reject: Ditolak
+    flag: Flag
+    thumb_id: Staf
+    logged_in: Masa Masuk		
+    logged_out: Masa Keluar
+    shift: Masa Anjal
+    late: Datang Lewat
+    early: Pulang Awal
+    action: Tindakan
+    ignore: Abaikan
+    logged_at: Masa Log
+    log_type: Jenis Log
+    reason: Sebab
+    trigger: Trigger
+    approved_by: Diluluskan Oleh
+    is_approved: "Diluluskan?"
+    approved_on: Tarikh Kelulusan
+    status: Status
+    review: Ulasan
+    date: "Tarikh : "
+    unit: "Unit : "
+    unit_not_define: Belum Dikemaskini
+    from: "Dari :"
+    to: "Hingga :"
+    import_excel: Import Kedatangan Staf Dari Fail Excel
+    and: " dan "
+    year_exceed: " (di luar julat tahun yang dibenarkan : "
+    year_exceed2: "Data di luar julat tahun yang dibenarkan :"
+    exist_records: " (rekod telah wujud)"
+    exist_records2: "Rekod telah wujud:"
+    no_user: "(tiada pengguna / staf yang sepadan)"
+    no_user2: "Tiada Pengguna / Staf sepadan (masukkan/kemaskini data 'icno', bagi worksheet 'USERINFO' dalam fail Excel DAN pastikan data 'No MyKad' dan 'THUMB ID' dalam ICMS-Maklumat Staf adalah berpadanan)"
+    log_in: Log Masuk
+    log_out: Log Keluar
+    excel_format: Format Excel
+    date_range1: "Carian 'Semua Jabatan / Unit' - Rekod kedatangan bagi kemasukan julat tarikh (dalam 2 bulan terakhir)"
+    date_range2: "Carian mengikut Jabatan / Unit - Rekod kedatangan bagi kemasukan julat tarikh (dalam 2 tahun terakhir)"
+    conditions: "Syarat - syarat bagi fail Excel"
+    allowed_date_range: "Julat tarikh yang dibenarkan : "
+    must_not_exist: Rekod kedatangan mestilah BELUM wujud dalam ICMS
+    must_match: "No Mykad (no IC) dalam fail Excel mestilah sepadan dengan No Mykad (no IC) dalam ICMS"
+    hours: " jam "
+    minutes: " minit "
+    fingerprint_statement: Kenyataan Fingerprint
+    fingerprint: Fingerprint
+    date_time: "Tarikh & Masa"
+    outstation: Luar Kawasan
+    official: Urusan Rasmi
+    forgot: Terlupa
+    early_late: "Datang Lewat / Pulang Awal"
+    others: "Lain - lain"
+    advise_trigger1: "Datang Lewat : "
+    advise_trigger3: "Tandakan kotak semak 'Tindakan' (untuk aktifkan borang 'Kenyataan Fingerprint') atau kotak semak 'Abaikan' dan klik ikon 'Simpan Tindakan' di laman senarai Kedatangan Staf"
+    advise_trigger2: "Pulang Awal : "
+    list1: Senarai Kedatangan
+    list2: "Senarai Lewat/Awal"
+    status_punchcard: Laporan Status Kad Perakam Waktu (KPW)
+    status_pcard: Status Kad Perakam Waktu
+    unit_department: "Unit / Jabatan"
+    user_not_exist: "Pengguna / Staf Tidak Wujud"
+  
+  attendance:
+    title: "Pengurusan Datang Lambat & Pulang Awal"
+    new: "Kedatangan Baru (Datang Lambat / Pulang Awal)"
+    details: Butiran Kedatangan 
+    edit: "Sunting Kedatangan (Datang Lambat / Pulang Awal)"
+    late_to_approve: "Kelulusan Staf dalam Jabatan / Unit yang Datang Lambat"
+    early_return_to_approve:  "Kelulusan Staf dalam Jabatan / Unit yang Pulang Awal"
+    days_iam_late: "Senarai Kedatangan Lambat Datang (sendiri)"
+    days_iam_early:  "Senarai Kedatangan Pulang Awal (sendiri)"
+    manage_lateness_earlyreturn: "Pengurusan Datang Lambat & Pulang Awal"
+    staff_id: Staf
+    attdate: Tarikh
+    time_in: Masa Datang
+    time_out: Masa Pulang
+    reason: Sebab
+    approve_id: Pelulus
+    approvestatus: Status Kelulusan
     
   asset:
     title: Aset
@@ -328,6 +523,7 @@ ms_MY:
       book_details: Butiran Buku
       tagno: No Bilangan
       classddc: No Kelas (DDC/LC)
+      classlcc: No Panggilan
       title: Tajuk
       language: Bahasa
       author: Penulis
@@ -339,7 +535,7 @@ ms_MY:
       publish_location: Tempat Terbitan
       links: Pautan Ruangan Elektonik
       bookcode: Kod Perpustakaan
-      accessionno: No Pencapaian
+      accessionno: No Perolehan
       catsource: Sumber Katalog Untuk
       classno: No Kelas
       description: Huraian Fizikal
@@ -359,6 +555,33 @@ ms_MY:
       receiveddate: Tarikh Diterima
       receiver_id: Diterima Oleh
       supplier_id: Pembekal
+      open_shelf: Rak Terbuka
+      red_spot: Red Spot
+      no_image: Tiada Imej
+      isbn: ISBN
+      others: "Lain - lain"
+      book2: Buku
+      magazine: Majalah
+      available: Ada
+      on_loan: Dipinjam
+      fixed: Dibaiki
+      disposed: Dilupus
+      image: Imej
+      require_update: "Deskripsi Fizikal (Perlu Dikemaskini?)"
+      excel_format: Format Excel
+      import_excel: Import Buku Dari Fail Excel
+      excel_conditions: Syarat Fail Excel
+      condition_line: "'Header' (baris pertama) fail Excel mestilah menggunakan nama / terma seperti di bawah :"
+      use_mark: "(Nota Tambahan : Gunakan samada (,) atau (:) atau (;) di antara No Roman, Jumlah Muka Surat dan Ketebalan buku (cth: ix,56ms,20cm))"
+      use_mark2: "(Nota Tambahan : Gunakan samada (,) atau (:) atau (;) di antara Lokasi Diterbitkan, Penerbit dan Tahun Diterbitkan (cth: Edinburgh,Churchill Livingstone,1983))"
+      wrong_price_types: "Nota : Format sel bagi lajur 'harga_rm' (Harga Buku) adalah TIDAK SAH. Gunakan format sel 'Number : General' dan IMPORT SEMULA FAIL EXCEL."
+      wrong_price_types2: " Ralat pada baris rekod (fail Excel) dengan No Perolehan berikut : "
+      valid_price: "(Nota Tambahan : Gunakan format sel 'Number : General'. Data dengan nilai 'Sumbangan' / 'sumb.' akan disimpan sebagai 0.0)"
+      book_wo_acc: "Nota : No Perolehan mestilah UNIK. Sunting Buku untuk kemaskini No Perolehan"
+      book_wo_acc2: Buku Tanpa No Perolehan
+      acc_not_exist: Tidak Wujud
+      acc_must_unique: "(Nota Tambahan : No Perolehan mestilah UNIK)"
+      use_language: "(Nota Tambahan : Gunakan 'ing' or 'en' for Bahasa Inggeris, use 'mel' or 'ms_MY' for Bahasa Malaysia)"
   
   buletin:
     list: Senarai Buletin
@@ -588,7 +811,7 @@ ms_MY:
       description: Kumpulan
       register_on: Tarikh Pendaftaran
       programme_id: Program
-      is_active: "Aktif?"	
+      is_active: "Aktif?"
     timetable:
       title: Jadual Waktu
       new: Jadual Waktu Baru
@@ -638,7 +861,7 @@ ms_MY:
       hod_rejected: Ditolak Ketua Jabatan
       hod_rejected_on: Tarikh Ditolak Ketua Jabatan
       reason: Sebab
-      is_returned: " - Dipulangkan" 					  
+      is_returned: " - Dipulangkan"
       is_resubmitted: " -  Dihantar Semula"
       is_approved: "Diluluskan ?"
       daily_details: Butiran Harian
@@ -650,14 +873,62 @@ ms_MY:
       personalize_timetable: Jadual Waktu Mingguan Pengajar
       lecturer_name: Nama Pengajar
       intake: Ambilan
-
+      date_time: "Tarikh & Masa : "
+      duplicate_lecturer: "Pengajar hanya boleh mengajar Satu kelas pada satu-satu masa. Slot masa dengan ralat :" 
+      duplicate_lecturer2: "Pilih semula Pengajar."
     weeklytimetable_detail:
       topic: Topik
       lecturer_id: Pengajar      
       location: Lokasi
       lecture_method: Kaedah
       remove: "Buang?"
-
+    programme:
+      title: Sukatan Kurikulum
+      new: Sukatan Kurikulum Baru
+      new_programme: Program Baru
+      edit: Sunting Sukatan Kurikulum
+      combo_code: "Kod Kombo  |  Nama Program / Subjek / Topik"
+      code: Kod
+      code2: Kod Kombo
+      name: Nama
+      course_type: Jenis Kurikulum
+      duration: Jangka Masa
+      credits: Kredit
+      status: Status
+      remarks: "Klik pada NAMA Program / Subjek / Topik untuk papar KOMBO KOD dan senarai subitem di bawahnya. Seterusnya klik pada KOD KOMBO untuk ke laman Pamer"
+      method: Kaedah Pengajaran
+      practical: Amali
+      tutorial: Tutorial
+      lecture: Kuliah
+      semester: Semester
+      subject: Subjek
+      commonsubject: Subjek Asas
+      topic: Topik
+      subtopic: Subtopik
+      hours: Jam
+      minutes: Minit
+      days: Hari
+      weeks: Minggu
+      months: Bulan
+      years: Tahun
+      major: Major
+      minor: Minor
+      elective: Elektif
+    topicdetail:
+      title: Butiran Topik
+      new: Butiran Topik Baru
+      edit: Sunting Butiran Topik
+      subject: Subjek
+      topic: Topik
+      version_no: Versi
+      duration: "Durasi (Jumlah Jam)"
+      theory: Kuliah
+      practical: Amali
+      tutorial: Tutorial
+      prepared_by: Disediakan Oleh
+      caution1: "Topic atau Subtopic telah dibuang dari Sukatan Kurikulum - sebelum 31Oktober 2013"
+      caution2: "Topik atau Subtopik telah dibuang dari Sukatan Kurikulum - bermula 31 Oktober 2013"
+      
   campus:
     address: 
       title: Buku Alamat
@@ -736,7 +1007,7 @@ ms_MY:
         is_active: "Aktif?"
       timetable:
         code: Kod
-        name: Nama 	  	  
+        name: Nama
         description: Deskripsi
         created_by: Disediakan Oleh
       academic_session:
@@ -761,6 +1032,36 @@ ms_MY:
         hod_rejected: Ditolak Ketua Jabatan
         hod_rejected_on: Tarikh Ditolak Ketua Jabatan
         reason: Sebab
+      programme:
+        combo_code: Kod Kombo
+        duration: Jangka Masa
+        credits: Kredit
+        status: Status
+        method: Kaedah Pengajaran
+        course_type: Jenis Kurikulum
+        name: Nama
+        lecture: Kuliah
+        tutorial: Tutorial
+        practical: Amali
+      staff_attendance:
+        thumb_id: Staf
+        logged_at: Masa Log
+        log_type: Jenis log
+        reason: Sebab
+        trigger: Trigger
+        approved_by: Diluluskan Oleh
+        is_approved: "Diluluskan?"
+        approved_on: Tarikh Kelulusan
+      attendance:
+        staff_id: Staf
+        attdate: Tarikh
+        time_in: Masa Datang
+        time_out: Masa Pulang
+        reason: Sebab
+        approve_id: Pelulus
+        approvestatus: Status Kelulusan
+      asset:
+        note: Catatan
 
     prompt:
       select_creator: Pilih Penyedia Soalan
@@ -780,6 +1081,14 @@ ms_MY:
       select_location: Pilih Lokasi
       select_lecturer: Pilih Pengajar
       select_hod: "Pilih Ketua Jabatan / Pelulus"
+      select_thumb_id: "Pilih Thumb Id | Staf (Jabatan / Unit)"
+      select_log_type: Pilih Jenis Log
+      select_mediatype: Pilih Jenis Media
+      select_status: Pilih Status
+      select_course_type: Pilih Jenis Item
+      select_duration: Pilih Jenis Jangka Masa
+      select_credit: Pilih Jumlah Kredit
+      all_unit: "Semua Jabatan / Unit"
       maintain: Dikekalkan
       remove: Dibuang
 

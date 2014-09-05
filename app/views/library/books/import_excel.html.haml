@@ -1,0 +1,47 @@
+- model_class = Book
+.page-header
+  %h1= t('library.book.import_excel')
+= render 'shared/flashes'
+  
+%br
+= form_tag import_library_books_path, multipart: true do
+  .row
+    .form-group
+      .col-md-4.col-md-offset-2
+        = file_field_tag :file
+      .col-md-1
+        = submit_tag "Import", :class => 'btn btn-primary'
+    .form-group
+      .col-md-4.col-md-offset-2
+        = link_to (t 'library.book.excel_format'), '/public/excel_format/book_import.xls', :action => 'download_excel_format'
+%br
+%h4=t('library.book.excel_conditions')
+
+%br=t('library.book.condition_line')
+%ol
+  %li 
+    no_perolehan
+    =t('library.book.acc_must_unique')
+  %li no_panggilan
+  %li pengarang
+  %li judul_utama
+  %li edisi
+  %li isbn_e
+  %li 
+    bahasa
+    =t('library.book.use_language')
+  %li tajuk_perkara
+  %li 
+    imprint
+    =t('library.book.use_mark2')
+  %li ms_indeks
+  %li ms_bibliografi
+  %li 
+    deskripsi_fizikal
+    =t('library.book.use_mark')
+  %li 
+    harga_rm
+    =t('library.book.valid_price')
+  %li sumber_kewangan
+  %li lokasi
+  %li catitan

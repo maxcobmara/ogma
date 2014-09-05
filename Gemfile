@@ -2,15 +2,17 @@ source 'https://rubygems.org'
 ruby '2.1.1'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '4.0.5'
+gem 'rails', '4.1.5'
 gem "thin", "~> 1.6.2"
-gem "devise", "~> 3.2.4"
+gem "devise", "~> 3.3.0"
 gem 'pg', '~> 0.17.1'
 gem 'paperclip', '~> 4.2.0'
 gem "ancestry", "~> 2.1.0"
-gem "ransack", "~> 1.2.3"
-gem "prawn", "~> 1.0.0"
-gem "chartkick", "~> 1.2.4"
+#gem "ransack", "~> 1.2.3"
+#gem 'ransack', github: 'activerecord-hackery/ransack'#, branch: 'rails-4.1'
+gem 'ransack', :path=>'vendor/ransack', branch: 'rails-4.1'
+gem "prawn", "~> 1.2.1"
+gem "chartkick", "~> 1.3.2"
 #stuff for layout
 #gem "bootstrap-sass", "~> 3.0.3.0"
 gem 'sass-rails', '~> 4.0.0'
@@ -21,9 +23,9 @@ gem 'jquery-rails', '~> 3.1.0'  # Use jquery as the JavaScript library
 gem 'turbolinks', '~> 1.1.1'  # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
 #gem 'jbuilder', '~> 1.2'  # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem "haml", "~> 4.0.5"
-gem "kaminari", "~> 0.15.1"
+gem "kaminari", "~> 0.16.1"
 gem "bootstrap-kaminari-views", "~> 0.0.3"
-gem 'font-awesome-rails', '~> 4.1.0.0'
+gem 'font-awesome-rails', '~> 4.2.0.0'
 gem "bootstrap-datepicker-rails", "~> 1.3.0.1"
 gem "bootstrap-switch-rails", "~> 2.0.2"
 gem "modernizr-rails", "~> 2.6.2.3"
@@ -31,6 +33,7 @@ gem "modernizr-rails", "~> 2.6.2.3"
 gem "whenever", "~> 0.9.2", require: false
 #gem 'rmagick', #, :git=>'http://github.com/rmagick/rmagick.git'
 gem 'rmagick', '2.13.2', :require => 'RMagick'
+gem "roo"
 group :assets do
   
 end

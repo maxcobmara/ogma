@@ -1,7 +1,8 @@
 development:
   adapter: postgresql
   encoding: unicode
-  database: ogma_development
+  database: icms_kskb_development
+  host: localhost
   username: postgres
   password: password
   encoding: UTF8
@@ -12,6 +13,7 @@ test:
   adapter: postgresql
   encoding: unicode
   database: ogma_test
+  host: localhost
   username: postgres
   password: password
   encoding: UTF8

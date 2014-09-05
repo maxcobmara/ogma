@@ -1,0 +1,149 @@
+- model_class = StaffAttendance
+.page-header
+  %h1= t('staff_attendance.title')
+= render 'shared/flashes'
+
+%div{:style=>"font-size:10px;"}
+  =@startdate.to_s+" - "+@enddate.to_s
+  
+.navbar.navbar-inverse{role: "navigation", style: "padding-right:40px;"}
+  %ul.nav.navbar-nav
+    %li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'actions.new'))), new_staff_staff_attendance_path
+  %ul.nav.navbar-nav
+    %li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'actions.import_excel'))), import_excel_staff_staff_attendances_path     
+  %ul.nav.navbar-nav.navbar-right
+    %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "toga"
+    %li= link_to content_tag(:li, fa_icon("print", text: (t 'actions.print'))), "#", class: 'bogus'
+  
+/.row.filter{style: "display:none;"}
+/  .col-md-2
+/=@unit_names
+/%br
+/=@thumb_ids
+/- @group_sa_by_day=@keluar_balik.group_by{|t|t.group_by_thingy}
+/-  @groupped_by_date.sort.reverse.each do |dd|
+/  %br=dd[0]
+/=@staff_attendances2.count
+
+.row
+  %table.table-striped.table-hover.ogma
+    %thead
+      %tr
+        %th=t 'staff.staff_attendance.flag'
+        %th= sort_link(@search, :thumb_id, (t 'staff_attendance.thumb_id'))
+        %th= sort_link(@search, :logged_at, (t 'staff_attendance.logged_in'))
+        %th= sort_link(@search, :logged_at, (t 'staff_attendance.logged_out'))
+        %th= sort_link(@search, :shift, (t 'staff_attendance.shift'))
+        %th= sort_link(@search, :late, (t 'staff_attendance.late'))
+        %th= sort_link(@search, :early, (t 'staff_attendance.early'))
+        %th= sort_link(@search, :action, (t 'staff_attendance.action'))
+        %th= sort_link(@search, :ignore, (t 'staff_attendance.ignore'))
+    %tbody
+      = render "index_search"
+      = form_tag actionable_staff_staff_attendances_path, :method => :put do
+        - @ooo.each do |date, staff_attendances|       
+          /create new array (& group by unit) for every new date
+          - @groupped_sa = Array.new(@thumb_ids.count) { Array.new }
+         
+          /for displaying name of unit without attendance data
+          - @hula= staff_attendances[staff_attendances.count-1].thumb_id
+          - @last_person_oftheday=@group_sa_by_day[date].last.thumb_id
+          - @group_sa_current_date = @group_sa_by_day[date]
+          
+          - staff_attendances.each_with_index do |sas,nos|    
+            - @thumb_ids.each_with_index do |tis,index|
+              - if tis.include?(sas.thumb_id)
+                - @groupped_sa[index]<<sas
+            
+          /display date
+          %tr
+            %td{:colspan=>"9", :style=>"font-weight: bold; background-color: #D8D8D8;"}
+              = t 'staff_attendance.date'
+              =date.to_date.try(:strftime, "%d %b %Y")
+          
+          /display unit & its corresponding staff attendances
+          - @groupped_sa.each_with_index do |g_sa,ind|
+            - if g_sa.count>0 
+              %tr
+                %td{:colspan=>"9",:style=>"color: green;font-weight: bold;"}
+                  = t 'staff_attendance.unit'
+                  =@unit_names[ind]
+                  /= g_sa.count
+            - g_sa.each do |sa|
+              %tr
+                %td{:style=>"text-align: center;"}
+                  =h sa.r_u_late == "flag" ? image_tag("flag_red.png") : "" 
+                  =h sa.r_u_early == "flag" ? image_tag("flag_red.png") : "" 
+                %td
+                  =h link_to sa.attended.try(:name), staff_staff_attendance_path(sa)      
+                  (
+                  =h sa.id
+                  )
+                  (
+                  =h sa.thumb_id
+                  )
+                %td{:style=>"text-align: center;"}=h sa.log_type == "I" ? sa.logged_at.in_time_zone('UTC').strftime('%l:%M %P') : "" 
+                %td{:style=>"text-align: center;"}
+                  - if sa.log_type == "O" || sa.log_type == "o"
+                    =h sa.logged_at.in_time_zone('UTC').strftime('%l:%M %P')
+                %td{:style=>"text-align: center;"}=h Staff.where('thumb_id=?',sa.thumb_id).first.try(:shift_for_staff) 
+                %td{:style=>"text-align: center;"}
+                  - if sa.log_type == "I" 
+                    - if sa.late_early=="-"
+                      %font{:color=> "black"}-
+                    - else
+                      %font{:color=> "red"}= sa.late_early 
+                  - else
+                    %font{:color=> "black"}-
+                %td{:style=>"text-align: center;"}
+                  - if sa.log_type == "O" 
+                    - if sa.late_early=="-"
+                      %font{:color=> "black"}-
+                    - else
+                      %font{:color=> "red"}= sa.late_early 
+                  - else 
+                    %font{:color=> "black"}-
+                %td{:style=>"text-align: center;"}
+                  - if sa.trigger == nil && sa.r_u_late == "flag"
+                    = check_box_tag "triggers[]", sa.id
+                  - elsif sa.trigger == nil && sa.r_u_early == "flag"
+                    = check_box_tag "triggers[]", sa.id
+                  - elsif sa.trigger == true  
+                    = image_tag("user_go.png")
+                %td{:style=>"text-align: center;"}
+                  - if sa.trigger == nil && sa.r_u_late == "flag"
+                    = check_box_tag "ignores[]", sa.id
+                  - elsif sa.trigger == nil && sa.r_u_early == "flag"
+                    = check_box_tag "ignores[]", sa.id
+                  - elsif sa.trigger == false
+                    = image_tag("tick.png")
+                    
+          /display unit name for non-exist sa
+          - if @hula == @last_person_oftheday && (params[:q]==nil || (params[:q][:keyword_search]==nil))
+            - @groupped_sa_fornodata=Array.new(@thumb_ids.count) { Array.new }
+            - @group_sa_current_date.each do |stfa|
+              - @thumb_ids.each_with_index do |tis,index|
+                - if tis.include?(stfa.thumb_id)
+                  - @groupped_sa_fornodata[index]<< stfa
+            - @groupped_sa_fornodata.each_with_index do |g_sa2,ind2|
+              - if g_sa2.count == 0              
+                %tr
+                  %td{:colspan=>"9",:style=>"color: green;font-weight: bold;"}
+                    = t 'staff_attendance.unit'
+                    = @unit_names[ind2]
+
+       
+        %tr
+          %td{:colspan=>"4"} &nbsp;
+          %td{:colspan=>"2"}= submit_tag t('actions.save_action')
+          %td{:colspan=>"3"}
+                        
+  .right{style:"padding:0 30px; margin:0;"}= paginate @staff_attendances, :theme => 'twitter-bootstrap-3'
+
+:javascript
+  
+$(document).ready(function(){
+  $('.toga').click(function() {
+    $('.search_row').toggle(); 
+  });
+})

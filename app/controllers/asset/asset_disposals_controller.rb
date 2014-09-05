@@ -57,10 +57,11 @@ class Asset::AssetDisposalsController < ApplicationController
   end
 
   def kewpa19
+    @lead = Position.find(1)
     @disposal = AssetDisposal.find(params[:id])
     respond_to do |format|
       format.pdf do
-        pdf = Kewpa19Pdf.new(@disposal, view_context)
+        pdf = Kewpa19Pdf.new(@disposal, view_context, @lead)
         send_data pdf.render, filename: "kewpa19-{Date.today}",
                               type: "application/pdf",
                               disposition: "inline"

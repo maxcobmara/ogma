@@ -17,7 +17,7 @@
             %td KKM/BPL/010619/
             %td= f.select :assettype, DropDown::ASSETTYPE, {prompt: "Select", id: "asset_type_select"}, class: 'selectpicker', "data-width" => "80px"
             %td /
-            %td= f.date_select :receiveddate,  {:end_year => (Time.now.year+1), :order => [:year]}, class: 'selectpicker', "data-width" => "80px"
+            %td= f.date_select :receiveddate,  {:end_year => (Time.now.year+1), :order => [:year], id: "asset_receiveddate_select"}, class: 'selectpicker', "data-width" => "80px"
             %td /
             %td
               .fixed_selector{style: "display:none; margin:0; padding-top:12px;"}
@@ -32,11 +32,8 @@
               .inventory_selector{style: "display:none;  margin:0; padding-top:12px;"}
                 = f.text_field :quantity, class: "form-control"
         
-        .fixed_selector{style: "display:none;"}        
-          .alert.alert-info.alert-dismissable
-            %button.close{"aria-hidden" => "true", "data-dismiss" => "alert", :type => "button"} &times;
-            %strong Last Asset:
-            = Asset.where(assettype: 1).last[:assetcode] rescue 0
+        #show_partial
+          = render 'show_last_asset'
             
         .inventory_selector{style: "display:none;"}        
           .alert.alert-info.alert-dismissable
@@ -56,6 +53,7 @@
       = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), asset_assets_path, :class => 'btn btn-default'
     .col-md-2
       = f.submit t('create'), class: "btn btn-primary"
+      
 
 
 

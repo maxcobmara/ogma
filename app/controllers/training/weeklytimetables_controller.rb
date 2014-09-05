@@ -4,11 +4,12 @@ class Training::WeeklytimetablesController < ApplicationController
   # GET /weeklytimetables.xml
   def index
     #@weeklytimetables = Weeklytimetable.all
-    current_user = User.find(11)    #maslinda 
+    #current_user = User.find(11)    #maslinda 
     #current_user = User.find(72)    #izmohdzaki
-    @position_exist = current_user.staff.positions
+    @position_exist = Staff.where(id:25)[0].try(:positions)  #current_user.staff.positions
     if @position_exist  
-      @lecturer_programme = current_user.staff.positions[0].unit
+      #@lecturer_programme = current_user.staff.positions[0].unit
+      @lecturer_programme = Staff.where(id:25)[0].positions.try(:unit) 
       unless @lecturer_programme.nil?
         @programme = Programme.find(:first,:conditions=>['name ILIKE (?) AND ancestry_depth=?',"%#{@lecturer_programme}%",0])
       end
@@ -47,11 +48,15 @@ class Training::WeeklytimetablesController < ApplicationController
   # GET /weeklytimetables/1
   # GET /weeklytimetables/1.xml
   def show
-    current_user = User.find(11)    #maslinda 
+    #current_user = User.find(11)    #maslinda 
     #current_user = User.find(72)    #izmohdzaki
-    roles = current_user.roles.pluck(:id)
-    @is_admin = roles.include?(2)
+    #roles = current_user.roles.pluck(:id)
     @weeklytimetable = Weeklytimetable.find(params[:id])
+    @count1=@weeklytimetable.timetable_monthurs.timetable_periods.count
+    @count2=@weeklytimetable.timetable_friday.timetable_periods.count 
+    @staffid=25
+    roles = Role.joins(:users).where('users.id=?',11).pluck(:id).uniq
+    @is_admin = roles.include?(2)
 
     respond_to do |format|
       format.html # show.html.erb
@@ -79,7 +84,7 @@ class Training::WeeklytimetablesController < ApplicationController
   def new
     @weeklytimetable = Weeklytimetable.new
     #@weeklytimetable.weeklytimetable_details.build
-
+    @staffid = 25
     respond_to do |format|
       format.html # new.html.erb
       format.xml  { render :xml => @weeklytimetable }
@@ -92,6 +97,7 @@ class Training::WeeklytimetablesController < ApplicationController
     #current_user = User.find(72)    #izmohdzaki
     roles = current_user.roles.pluck(:id)
     @is_admin = roles.include?(2)
+    @staffid = 25
     #start-remove from partial : tab_daily_details_edit
     @count1=@weeklytimetable.timetable_monthurs.timetable_periods.count
     @count2=@weeklytimetable.timetable_friday.timetable_periods.count 
@@ -128,6 +134,19 @@ class Training::WeeklytimetablesController < ApplicationController
     #raise params.inspect
 
     @weeklytimetable = Weeklytimetable.find(params[:id])
+    
+    #start-copy from edit
+    @count1=@weeklytimetable.timetable_monthurs.timetable_periods.count
+    @count2=@weeklytimetable.timetable_friday.timetable_periods.count 
+    @break_format1 = @weeklytimetable.timetable_monthurs.timetable_periods.pluck(:is_break)
+    @break_format2 = @weeklytimetable.timetable_friday.timetable_periods.pluck(:is_break)
+    @weeklytimetable = Weeklytimetable.find(params[:id])
+    #start-remove from partial : tab_daily_details_edit
+    #start-remove from partial : subtab_class_details_edit
+    @semester_subject_topic_list = Programme.find(@weeklytimetable.programme_id).descendants.where('ancestry_depth=? OR ancestry_depth=?',3,4).sort_by(&:combo_code)		
+    @timeslot = @weeklytimetable.timetable_monthurs.timetable_periods.where('is_break is false')
+    @timeslot2 = @weeklytimetable.timetable_friday.timetable_periods.where('is_break is false')
+    #start-copy from edit
     
     respond_to do |format|
       if @weeklytimetable.update(weeklytimetable_params)

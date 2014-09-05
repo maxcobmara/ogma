@@ -1,0 +1,184 @@
+<div class="box">
+	<!-- Box Head -->
+	<div class="box-head">
+		<h2 class="left">Curriculum Management</h2>
+		<div class="right">
+	  </div>
+	</div>
+</div>
+
+<div class="indextree">
+<table id="tree" style="width:100%">
+	<thead>
+	  <tr>
+	    <th width=50%>Combo code</th>
+			<th width=10%>Credits</th>
+			<th width=10%>Status</th>
+			<th width=10%>Duration</th>
+			<th colspan=4 class="ac">Control</th>
+	  </tr>
+	</thead>
+
+	<tbody>
+		<% @programmes.each do |programme| %>
+	  <tr id="node-<%= (programme.id) %>" <%= programme.tree_nd %>>
+	    <td><%=h programme.code %> &nbsp; &nbsp; &nbsp;
+			<% if programme.course_type == 'Subject' || programme.course_type == 'Topic' || programme.course_type == 'Subtopic' %>
+					<% else %>
+						<%=h programme.course_type %>  &nbsp; &nbsp; 
+					<% end %>
+					<%=h programme.name %></td>
+			<td><% if programme.credits == 0 %><%else%><%=h programme.credits %><%end%></td>
+			<td><%=h check_kin_blank {(DropDown::COURSE_STATUS.find_all{|disp, value| value == programme.status}).map {|disp, value| disp} }%></td>
+			<td><%=h programme.duration %> <%=h check_kin_blank {(DropDown::DURATION_TYPES.find_all{|disp, value| value == programme.duration_type}).map {|disp, value| disp} }%>
+			<td width=10%><%#= link_to "(+)", new_programme_path(:parent_id => programme)%></td>
+      <td width=10px><%#= link_to image_tag("document.png", :border => 0), :action => 'show', :id => programme %></td>
+      <td width=10px><%#= link_to image_tag("edit.png", :border => 0), :action => 'edit', :id => programme %></td>
+      <td width=10px><%#= link_to image_tag("delete.png",   :border => 0, :title => 'Delete'), programme, :confirm => 'Are you sure?', :method => :delete %></td>
+	  </tr>
+		<% end %>
+	</tbody>
+</table>
+<br /><br />
+
+<br /><br />
+
+
+<ul>
+    <li><span class="Collapsable">Programme</span><ul>
+        <li><span class="Collapsable">Semester</span><ul>
+        	<li><span class="Collapsable">Subject</span><ul>
+            	<li><span class="Collapsable">Topic 1</span></li>
+            	<li><span class="Collapsable">Topic  2</span></li>
+            	<li><span class="Collapsable">Topic 3</span></li>
+            	<li><span class="Collapsable">Topic 4</span><ul>
+					<li><span class="Collapsable">SubTopic 1</span></li>
+					<li><span class="Collapsable">SubTopic 2</span></li>
+					<li><span class="Collapsable">SubTopic 3</span></li>
+				</ul>
+				</li>
+        	</ul>
+			</li>
+		</ul>
+		</li>
+	</ul>
+	</li>
+</ul>
+
+<ul>
+	<% @programmes.group_by(&:root).each do |course,programmes| %>
+    <li><span class="Collapsable">
+			<%=course.programme_list %>
+			<% if course.credits != 0 %>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<%=h course.credits %><%end%>
+			<%=h check_kin_blank {(DropDown::COURSE_STATUS.find_all{|disp, value| value == course.status}).map {|disp, value| disp} }[0]%>
+			<%=h course.duration %> <%=h check_kin_blank {(DropDown::DURATION_TYPES.find_all{|disp, value| value == course.duration_type}).map {|disp, value| disp} }[0]%>
+		</span><ul>
+		<% programmes.each do |programme| %>
+		<% programme.descendants.at_depth(1).sort_by(&:code).each do |semester|%>
+        <li><span class="Collapsable">
+			<%if semester.course_type=='Semester'%>Semester <%end%><%=semester.name%>
+			<% if semester.credits != 0 %>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<%=h semester.credits %><%end%>
+			<%=h check_kin_blank {(DropDown::COURSE_STATUS.find_all{|disp, value| value == semester.status}).map {|disp, value| disp} }[0]%>
+			<%=h semester.duration %> <%=h check_kin_blank {(DropDown::DURATION_TYPES.find_all{|disp, value| value == semester.duration_type}).map {|disp, value| disp} }[0]%>
+		</span><ul>
+			<% semester.descendants.at_depth(2).each do |subject|%>
+        	<li><span class="Collapsable">
+				<%=subject.code_course_type_name%>
+				<% if subject.credits != 0 %>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<%=h subject.credits %><%end%>
+				<%=h check_kin_blank {(DropDown::COURSE_STATUS.find_all{|disp, value| value == subject.status}).map {|disp, value| disp} }[0]%>
+				<%=h subject.duration %> <%=h check_kin_blank {(DropDown::DURATION_TYPES.find_all{|disp, value| value == subject.duration_type}).map {|disp, value| disp} }[0]%>
+			</span><ul>
+				<% subject.descendants.at_depth(3).sort_by(&:code).each do |topic|%>
+            	<li><span class="Collapsable">
+					<%=topic.subject_list%>
+					<% if topic.credits != 0 %>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<%=h topic.credits %><%end%>
+					<%=h check_kin_blank {(DropDown::COURSE_STATUS.find_all{|disp, value| value == topic.status}).map {|disp, value| disp} }[0]%>
+					<%=h topic.duration %> <%=h check_kin_blank {(DropDown::DURATION_TYPES.find_all{|disp, value| value == topic.duration_type}).map {|disp, value| disp} }[0]%>
+				</span><ul>
+					<% topic.descendants.at_depth(4).each do |subtopic| %>
+					<li><span class="Collapsable">
+						<%=subtopic.code_course_type_name%>
+						<% if subtopic.credits != 0 %>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<%=h subtopic.credits %><%end%>
+						<%=h check_kin_blank {(DropDown::COURSE_STATUS.find_all{|disp, value| value == subtopic.status}).map {|disp, value| disp} }[0]%>
+						<%=h subtopic.duration %> <%=h check_kin_blank {(DropDown::DURATION_TYPES.find_all{|disp, value| value == subtopic.duration_type}).map {|disp, value| disp} }[0]%>
+					</span></li>	
+					<% end %>
+				</ul>
+				</li>
+				<% end %>
+        	</ul>
+			</li>
+			<% end %>
+		</ul>
+		</li>
+		<% end %>
+		<% end %>
+	</ul>
+	</li>
+	<% end %>
+</ul>
+
+<ul>
+    <li><span class="Collapsable">item 1</span><ul>
+        <li><span class="Collapsable">item 1</span></li>
+        <li><span class="Collapsable">item 2</span><ul>
+            <li><span class="Collapsable">item 1</span></li>
+            <li><span class="Collapsable">item 2</span></li>
+            <li><span class="Collapsable">item 3</span></li>
+            <li><span class="Collapsable">item 4</span></li>
+        </ul>
+        </li>
+        <li><span class="Collapsable">item 3</span></li>
+        <li><span class="Collapsable">item 4</span><ul>
+            <li><span class="Collapsable">item 1</span></li>
+            <li><span class="Collapsable">item 2</span></li>
+            <li><span class="Collapsable">item 3</span></li>
+            <li><span class="Collapsable">item 4</span></li>
+        </ul>
+        </li>
+    </ul>
+    </li>
+    <li><span class="Collapsable">item 2</span><ul>
+        <li><span class="Collapsable">item 1</span></li>
+        <li><span class="Collapsable">item 2</span></li>
+        <li><span class="Collapsable">item 3</span></li>
+        <li><span class="Collapsable">item 4</span></li>
+    </ul>
+    </li>
+    <li><span class="Collapsable">item 3</span><ul>
+        <li><span class="Collapsable">item 1</span></li>
+        <li><span class="Collapsable">item 2</span></li>
+        <li><span class="Collapsable">item 3</span></li>
+        <li><span class="Collapsable">item 4</span></li>
+    </ul>
+    </li>
+    <li><span class="Collapsable">item 4</span></li>
+</ul>
+
+
+
+<%#= link_to 'New programme', new_programme_path %>
+
+</div>
+
+<script type="text/javascript">
+
+//$(document).ready(function()  {
+  //$("#tree").treeTable();
+  //});
+
+
+</script>
+
+<script type="text/javascript">
+	var toggle = function () {
+
+        $(this).parent().children().toggle();
+        $(this).toggle();
+
+    };
+
+	$(".Collapsable").click(toggle);
+	$(".Collapsable").each(toggle);
+
+</script>

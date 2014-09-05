@@ -9,7 +9,7 @@ $(document).ready(function(){
 			 }	
 			});
 
-			$j("input[id='check_submitted']").each(function() {  
+			$("input[id='check_submitted']").each(function() {  
 			 if($('#check_submitted').is(':checked')) { 
 			    $("#span_submitted").show("highlight"); 
 			 }else		{

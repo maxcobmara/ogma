@@ -1,0 +1,19 @@
+.col-md-9.col-md-offset-1
+  %dl.dl-horizontal
+    %dt= t('staff.finance.kwspcode') + ":"
+    %dd= @staff.kwspcode
+
+    %dt= t('staff.finance.taxcode') + ":"
+    %dd= @staff.taxcode
+
+    - for bankaccount in @staff.bankaccounts
+      %hr
+      %dt= t('staff.banks.long_name') + ":"
+      %dd
+        %strong= bankaccount.bank.long_name
+
+      %dt= t('staff.banks.account_no') + ":"
+      %dd= bankaccount.account_no
+
+      %dt= t('staff.banks.bankacctype') + ":"
+      %dd= (DropDown::BANKTYPE.find_all{|disp, value| value == bankaccount.account_type }).map {|disp, value| disp}[0]

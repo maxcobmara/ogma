@@ -39,8 +39,8 @@ class Kewpa3Pdf < Prawn::Document
        table(data, :column_widths => [130, 390], :cell_style => { :size => 10})
           
        data1 = [ ["Jenis", "#{@asset.typename}", "Harga Perolehan Asal", @view.currency(@asset.purchaseprice.to_f)], 
-                ["Kuantiti", "#{@asset.quantity}", "Tarikh Diterima", "#{@asset.receiveddate.try(:strftime, "%d/%m/%y")}"],
-                ["Unit Pengukuran", "#{@asset.quantity_type}", "No Pesanan Rasmi Kerajaan & Tarikh", "#{@asset.orderno} #{@asset.purchasedate.try(:strftime, "%d/%m/%y")}"],
+                ["Kuantiti", "#{@asset.quantity}", "Tarikh Diterima", "#{@asset.receiveddate.try(:strftime, "%d-%m-%Y")}"],
+                ["Unit Pengukuran", "#{@asset.quantity_type}", "No Pesanan Rasmi Kerajaan & Tarikh", "#{@asset.orderno} #{@asset.purchasedate.try(:strftime, "%d-%m-%Y")}"],
             ["Tempoh Jaminan", "#{@asset.warranty_length} ", "",""] ]
          table(data1, :column_widths => [130, 150, 120, 120], :cell_style => { :size => 10}) 
          
@@ -91,8 +91,10 @@ class Kewpa3Pdf < Prawn::Document
   header1 +
   @asset.asset_placements.map do |asset_placement|
     a = "#{asset_placement.try(:staff).try(:name)}"
-    b = a.split("AL")[1]
-    c = a.split("AP")[1]
+    race = "#{asset_placement.try(:staff).try(:race)}".to_i
+    religion = "#{asset_placement.try(:staff).try(:religion)}".to_i
+    b = a.split("A/L")[1]
+    c = a.split("A/P")[1]
     d = a.split("Binti")[1]
     e = a.split("Bt")[1]
     f = a.split("Bte")[1]
@@ -102,39 +104,29 @@ class Kewpa3Pdf < Prawn::Document
     j = a.split("b")[1]
     k = a.split(" ")[1]
     
-    
     if b != nil 
-      staffname = a.split("AL")[0]
+      staffname = a.split("A/L")[0]
+    elsif c != nil 
+      staffname = a.split("A/P")[0]
+    elsif d != nil 
+      staffname = a.split("Binti")[0]
+    elsif e != nil
+      staffname = a.split("Bt")[0]
+    elsif f != nil
+      staffname = a.split("Bte")[0]
+    elsif g != nil
+      staffname = a.split("bt")[0]
+    elsif h != nil
+      staffname = a.split("binti")[0]
+    elsif i != nil
+      staffname = a.split("bin")[0]
+    elsif j != nil
+      staffname = a.split("b")[0]
+    elsif k!= nil
+      staffname= a.split(" ")[0,3].join(" ") if (race==2 || religion==4)
     end
-      if c != nil 
-        staffname = a.split("AP")[0]
-      end
-        if d != nil 
-        staffname = a.split("Binti")[0]
-      end
-      if e != nil
-        staffname = a.split("Bt")[0]
-      end
-      if f != nil
-        staffname = a.split("Bte")[0]
-      end
-      if g != nil
-        staffname = a.split("bt")[0]
-      end
-      if h != nil
-        staffname = a.split("binti")[0]
-      end
-      if i != nil
-        staffname = a.split("bin")[0]
-      end
-      if j != nil
-        staffname = a.split("b")[0]
-      end
-      if k != nil
-        staffname = a.split(" ")[0]
-      end
     
-    [ "#{asset_placement.quantity}", "#{asset_placement.try(:asset).try(:assetcode)}","#{asset_placement.try(:location).try(:name)}", "#{asset_placement.reg_on.try(:strftime, "%d/%m/%y")}", staffname ,"" ]
+    [ "#{asset_placement.quantity}", "#{asset_placement.try(:asset).try(:assetcode)}","#{asset_placement.try(:location).try(:name)}", "#{asset_placement.reg_on.try(:strftime, "%d/%m/%Y")}", staffname ,"" ]
  
   end
   

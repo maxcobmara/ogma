@@ -2,14 +2,14 @@ class AssetDisposal < ActiveRecord::Base
     belongs_to :asset
     
     belongs_to :document
-    belongs_to :inspect1or, :class_name => 'Staff', :foreign_key => 'examiner_staff1'
+     belongs_to :inspect1or, :class_name => 'Staff', :foreign_key => 'examiner_staff1'
       belongs_to :inspect2or, :class_name => 'Staff', :foreign_key => 'examiner_staff2'
       belongs_to :processor, :class_name => 'Staff', :foreign_key => 'checked_by'
       belongs_to :verifier,  :class_name => 'Staff', :foreign_key => 'verified_by'
       belongs_to :revaluer,  :class_name => 'Staff', :foreign_key => 'revalued_by'
       belongs_to :staff, :foreign_key => 'disposed_by'
-      belongs_to :discardw1tness,  :class_name => 'Staff', :foreign_key => 'discard_witness_1'
-      belongs_to :discardw2tness,  :class_name => 'Staff', :foreign_key => 'discard_witness_2'
+      belongs_to :discard_witness1,  :class_name => 'Staff', :foreign_key => 'discard_witness_1'
+      belongs_to :discard_witness2,  :class_name => 'Staff', :foreign_key => 'discard_witness_2'
     
     
     def age

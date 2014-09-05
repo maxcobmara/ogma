@@ -1,0 +1,10 @@
+= search_form_for @search, url: training_programmes_path,  class: "form-inline" do |f|
+  %tr.search_row{style: "display: none;"}
+    %td= f.text_field :combo_code_cont, size: 2,  :class => "form-control"
+    %td= f.text_field :credits_cont, size: 2,  :class => "form-control"
+    %td= f.text_field :status_cont, size: 2,  :class => "form-control"
+    %td= f.text_field :duration_cont, size: 2,  :class => "form-control"
+    %td.input-group
+      %span.input-group-btn
+        %button.btn.btn-sm.btn-default.right{:type => "submit"}
+          %i.fa.fa-search.fa-fw

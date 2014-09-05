@@ -2,13 +2,30 @@ Ogma::Application.routes.draw do
   
   namespace :staff do
     resources :staffs, as: :infos do
-      collection do
+      member do
         get :borang_maklumat_staff
       end
     end
     resources :positions
+<<<<<<< HEAD
     resources :staff_appraisals
+=======
+    resources :staff_attendances do
+      collection do
+        put 'actionable', to: "staff_attendances#actionable"
+	post 'import'
+	get 'import_excel', to: "staff_attendances#import_excel"
+      end
+    end
+    resources :attendances
+>>>>>>> upstream/master
   end
+
+  match '/attendance/manage', to: 'staff/staff_attendances#manage', via: 'get'
+  match '/attendance/status/', to: 'staff/staff_attendances#status', via: 'get'
+  match '/attendance/approve/', to: 'staff/staff_attendances#approve', via: 'get'
+  match '/attendance/report', to: 'staff/staff_attendances#report', via: 'get'
+  match '/public/excel_format/staff_attendance_import.xls', to: 'staff/staff_attendances#download_excel_format', via: 'get', target: '_self'
 
   namespace :staff_training do
     resources :ptbudgets
@@ -36,7 +53,11 @@ Ogma::Application.routes.draw do
         get :kewpa13
       end   
     end
-    resources :stationeries
+    resources :stationeries do
+    collection do
+      get :kewps13
+    end
+  end
     resources :asset_defects,   as: :defects do
       member do
         get :kewpa9
@@ -112,10 +133,12 @@ Ogma::Application.routes.draw do
   resources :bulletins
   
   namespace :training do
+    resources :programmes
     resources :intakes
     resources :timetables
     resources :timetable_periods
     resources :academic_sessions
+    resources :topicdetails
     resources :weeklytimetables do
       member do
         get :personalize_show
@@ -128,8 +151,6 @@ Ogma::Application.routes.draw do
       end
     end
   end
-  
-
   
   namespace :library do
     resources :librarytransactions do
@@ -144,8 +165,16 @@ Ogma::Application.routes.draw do
         post  :manager
       end
     end
+    resources :books do
+      collection do
+	post 'import'
+	get 'import_excel', to: "books#import_excel"
+      end
+    end
   end
   
+  match '/public/excel_format/book_import.xls', to: 'library/books#download_excel_format', via: 'get', target: '_self'
+
   namespace :exam do
     resources :examquestions do
       collection do

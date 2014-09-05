@@ -10,10 +10,15 @@
     / Nav tabs
     %ul.nav.nav-tabs
       %li.active= link_to "Info", "#info", "data-toggle" => "tab"
-      %li= link_to "Personal",    "#personal",    "data-toggle" => "tab"
-      %li= link_to "Employment",  "#employment",  "data-toggle" => "tab"
-      %li
-        %a{"data-toggle" => "tab", :href => "#profile"} t 'student.students.stelno'
+      %li= link_to t('staff.personal_details'),     "#personal",        "data-toggle" => "tab"
+      %li= link_to t('staff.employment_details'),   "#employment",      "data-toggle" => "tab"
+      %li= link_to t('staff.qualifications.title'), "#qualifications",  "data-toggle" => "tab"
+      %li= link_to t('staff.finance.title'),        "#finance",         "data-toggle" => "tab"
+      %li= link_to t('staff.loans.title'),          "#loans",           "data-toggle" => "tab"
+      %li= link_to t('staff.contacts.emergency'),   "#contacts",        "data-toggle" => "tab"
+
+
+
       %li
         %a{"data-toggle" => "tab", :href => "#messages"} Messages
       %li
@@ -42,19 +47,32 @@
       #employment.tab-pane
         %br
         = render 'tab_employment'
+      #qualifications.tab-pane
+        %br
+        = render 'tab_qualifications'
+      #finance.tab-pane
+        %br
+        = render 'tab_finance'
+      #loans.tab-pane
+        %br
+        = render 'tab_loans'
+      #contacts.tab-pane
+        %br
+        = render 'tab_contacts'
       #settings.tab-pane ...    
       
 
       
 .row
-  .col-md-4.col-md-offset-3
+  .col-md-4.col-md-offset-4
     %hr
     .form-actions
-      = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), staff_infos_path, :class => 'btn btn-default'
-      = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('.edit', :default => t("helpers.links.edit")), edit_staff_info_path(@info), :class => 'btn btn-primary'
-      = link_to content_tag(:i, "", :class => "fa fa-trash-o icon-white") + " " + t('.destroy', :default => t("helpers.links.destroy")), |
+      = link_to content_tag(:i, "", class: "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), staff_infos_path, class: 'btn btn-default'
+      = link_to content_tag(:i, "", class: "fa fa-file-pdf-o"), borang_maklumat_staff_staff_info_path(@staff, format: "pdf"), class: "btn btn-default", "data-toggle" => "tooltip", title: "Borang Maklumat Staff"
+      = link_to content_tag(:i, "", class: "fa fa-edit") + " " + t('.edit', :default => t("helpers.links.edit")), edit_staff_info_path(@staff), class: 'btn btn-primary'
+      = link_to content_tag(:i, "", class: "fa fa-trash-o icon-white") + " " + t('.destroy', :default => t("helpers.links.destroy")), |
         staff_info_path(@staff),                                                                                                    |
         :method => 'delete',                                                                                                           |
         :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },                   |
-        :class => 'btn btn-danger'
+        class: 'btn btn-danger'
               

@@ -31,5 +31,11 @@ FactoryGirl.define do
   factory :address_book do
     sequence(:name) { |n| "external_co_#{n}" }
   end
-end
 
+  factory :bulletin do
+    headline {"Headline"}
+    content {"this is conent"}
+    association :staff, factory: :staff
+    publishdt {Time.at(rand * Time.now.to_f)}
+  end
+end

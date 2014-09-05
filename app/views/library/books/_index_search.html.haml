@@ -1,0 +1,18 @@
+= search_form_for @search, url: library_books_path,  class: "form-inline" do |f|
+  %tr.search_row{style: "display:none;"}  
+    %td= select_tag('q[mediatype_search]',options_for_select(DropDown::MEDIA),:prompt=>t("helpers.prompt.select_mediatype"))
+    %td &nbsp;
+    %td= f.text_field :title_cont, size: 2,  :class => "form-control"
+    %td= f.text_field :author_cont, size: 2,  :class => "form-control"
+    %td= f.text_field :isbn_cont, size: 2,  :class => "form-control"
+    %td &nbsp;
+    %td=f.text_field :accessionno_search, size: 2, :class => "form-control"
+    %td= f.text_field :classlcc_cont, size: 2, :class => "form-control"
+    %td= f.text_field :location_cont, size: 2, :class => "form-control"
+    %td= select_tag('q[status_search]',options_for_select(DropDown::STATUS),:prompt=>t("helpers.prompt.select_status"))
+    
+    %td.input-group
+      %span.input-group-btn
+        %button.btn.btn-sm.btn-default.right{:type => "submit"}
+          %i.fa.fa-search.fa-fw
+ 

@@ -1,9 +1,4 @@
 FactoryGirl.define do
-
-  sequence(:icno) do |n|
-    @ic_nos ||= rand(10 ** 12).to_s
-    #@ic_nos[n]
-  end
   
   # Staffs
   factory :staff do
@@ -21,11 +16,26 @@ FactoryGirl.define do
     country_cd 1
     fileno {(0...8).map { (65 + rand(26)).chr }.join}
     #association :users, factory: :user not ready
+    #association :timetables, factory: :timetable
   end
   
   factory :position do
     sequence(:name) { |n| "Position#{n} Orgchart" }
     sequence(:code) { |n| "Code#{n}" }
+  end
+  
+  factory :staff_attendance do
+    #sequence(:thumb_id) { |n| }
+    association :attended, factory: :staff
+    logged_at {Time.at(rand * Time.now.to_f)}
+    log_type "Some Type"
+    reason "Some Reason"
+    trigger {rand(2) == 1}
+    association :approver, factory: :staff
+    is_approved {rand(2) == 1}
+    approved_on {Date.today+(366*rand()).to_f}
+    status 1
+    review "Some Review"
   end
 end
 

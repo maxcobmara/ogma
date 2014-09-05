@@ -42,7 +42,7 @@
       %dt= t 'asset.serial_no'
       %dd= @asset.serialno
       %dt= t 'asset.located_at'
-      %dd= @asset.location.try(:name)
+      %dd=@asset.try(:asset_placements).last.try(:location).try(:name)
       %dt= t 'asset.assigned_to'
       %dd= @asset.staff.try(:name)
       %dt= t 'asset.status'
@@ -76,14 +76,30 @@
         - for asset_placement in @asset.asset_placements
           %tr
             %td= check_kin {asset_placement.location.name} 
-            %td= asset_placement.staff.name
+            %td= asset_placement.staff.try(:name)
             %td= asset_placement.reg_on.try(:strftime, "%d/%m/%y")
 
 
   - if @asset.is_maintainable?
     #maintenance.tab-pane.fade
-      Maintenance
-
+      %dt Note
+      %dd= @asset.remark
+	  
+      %table.table.table-condensed.table-hover{:style => "width: 50%; "}
+        %thead
+          %tr
+            %th Maintainer
+            %th Work Order  
+            %th Cost
+            %th Details
+        %tbody	  
+          - for maint in @asset.maints	  
+            %tr
+              %td= maint.maintainer_id  
+              %td= maint.workorderno
+              %td= maint.maintcost
+              %td= maint.details
+		    
 .row
   .col-md-6.col-md-offset-2
     %hr

@@ -1,0 +1,43 @@
+.row
+  .col-md-10.col-md-offset-1
+    / Nav tabs
+    %ul.nav.nav-tabs
+      %li.active= link_to ((t 'staff_attendance.details')),"#staff_attendance_edit", "data-toggle" => "tab"
+
+    .tab-content{style:"padding-top:1em"}
+      #staff_attendance_edit.tab-pane.active
+        %br
+        .col-md-offset-2
+          .form-group
+            .col-sm-2.control-label
+              = f.label :thumb_id 
+            .col-md-3
+              = f.collection_select :thumb_id, Staff.joins(:positions).where("thumb_id is not null and thumb_id!=? and (positions.unit is not null or positions.unit=?) ",0,"").order(name: :asc), :thumb_id, :thumb_id_with_name_unit, { :prompt => t('helpers.prompt.select_thumb_id')}, {class: 'selectpicker', "data-width"=>"320px"}
+          .form-group
+            .col-sm-2.control-label
+              = f.label :logged_at
+            .col-md-3
+              = f.text_field :logged_at, :class=>'date-picker'
+          .form-group
+            .col-sm-2.control-label
+              = f.label :log_type
+            .col-md-3
+              = f.select :log_type, DropDown::LOGTYPE, {:prompt => t('helpers.prompt.select_log_type')},{ class: 'selectpicker', "data-width"=>'160px'}
+          .form-group
+            .col-sm-2.control-label
+              = f.label :trigger
+            .col-md-3
+              = f.check_box :trigger
+                
+:javascript  
+  $('.date-picker').datetimepicker({
+   timepicker:true,
+     format: "Y-m-d H:i:s",
+     autoclose: true
+   }); 
+   
+  $('.date-picker2').datetimepicker({
+   timepicker:false,
+     format: "Y-m-d",
+     autoclose: true
+   });    

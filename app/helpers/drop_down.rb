@@ -35,142 +35,136 @@ module DropDown
   ]
        
   STATECD = [
-      #  Displayed       stored in db
-      [ "Johor",         1 ],
-      [ "Kedah",    2 ],
-      [ "Kelantan", 3 ],
-      [ "Melaka", 4],
-      [ "Negeri Sembilan", 5 ],
-      [ "Pahang", 6 ],
-      [ "Pulau Pinang", 7 ],
-      [ "Perak", 8 ], 
-      [ "Perlis", 9 ],
-      [ "Selangor", 10 ], 
-      [ "Terengganu", 11 ], 
-      [ "Sabah", 12 ], 
-      [ "Sarawak", 13 ],
-      [ "Wilayah Persekutuan Kuala Lumpur", 14 ],
-      [ "Wilayah Persekutuan Labuan", 15 ],
-      [ "Wilayah Persekutuan Putrajaya", 16 ],
-      [ "Luar Negara", 98 ],       
+    #  Displayed       stored in db
+    [ "Johor",         1 ],
+    [ "Kedah",    2 ],
+    [ "Kelantan", 3 ],
+    [ "Melaka", 4],
+    [ "Negeri Sembilan", 5 ],
+    [ "Pahang", 6 ],
+    [ "Pulau Pinang", 7 ],
+    [ "Perak", 8 ], 
+    [ "Perlis", 9 ],
+    [ "Selangor", 10 ], 
+    [ "Terengganu", 11 ], 
+    [ "Sabah", 12 ], 
+    [ "Sarawak", 13 ],
+    [ "Wilayah Persekutuan Kuala Lumpur", 14 ],
+    [ "Wilayah Persekutuan Labuan", 15 ],
+    [ "Wilayah Persekutuan Putrajaya", 16 ],
+    [ "Luar Negara", 98 ],       
   ]
 
   NATIONALITY = [
-       #  Displayed       stored in db
-       [ "Warganegara",1],
-       [ "Bukan Warganegara",2],
-       [ "Penduduk Tetap", 3],
+   #  Displayed       stored in db
+   [ "Warganegara",1],
+   [ "Bukan Warganegara",2],
+   [ "Penduduk Tetap", 3],
   ]
 
-  STATUS = [
-        #  Displayed       stored in db
-        [ "Tetap",1 ],
-        [ "Sementara",2 ],
-        [ "Sambilan",3 ]
+  STAFF_STATUS = [
+    #  Displayed       stored in db
+    [ "Tetap",1 ],
+    [ "Sementara",2 ],
+    [ "Sambilan",3 ]
   ]
 
   APPOINTMENT = [
-       #  Displayed       stored in db
-       [ "Sandangan Tetap","1" ],
-       [ "Sandangan Sementara","2" ],
-       [ "Memangku Dengan Tujuan Naik Pangkat","3" ],
-       [ "Memangku Bukan Dengan Tujuan Naik Pangkat","4" ],
-       [ "Tanggung Kerja","5" ],
-       [ "Sandangan Khas Untuk Penyandang","6" ],
-       [ "Sandangan Sambilan","7" ],
-       [ "Sandangan Khidmat Singkat","8" ]
-
-
+   #  Displayed       stored in db
+   [ "Sandangan Tetap","1" ],
+   [ "Sandangan Sementara","2" ],
+   [ "Memangku Dengan Tujuan Naik Pangkat","3" ],
+   [ "Memangku Bukan Dengan Tujuan Naik Pangkat","4" ],
+   [ "Tanggung Kerja","5" ],
+   [ "Sandangan Khas Untuk Penyandang","6" ],
+   [ "Sandangan Sambilan","7" ],
+   [ "Sandangan Khidmat Singkat","8" ]
   ]
 
   APPOINTED = [
-       #  Displayed       stored in db
-       [ "Kementerian Kesihatan Malaysia","kkm" ],
-       [ "Suruhanjaya Perkhidmatan Awam","spa" ],
-       [ "Jabatan Perkhidmatan Awam","jpa" ]
-     
+   #  Displayed       stored in db
+   [ "Kementerian Kesihatan Malaysia","kkm" ],
+   [ "Suruhanjaya Perkhidmatan Awam","spa" ],
+   [ "Jabatan Perkhidmatan Awam","jpa" ]  
   ]
 
   HOS = [
-       #  Displayed       stored in db
-       [ "Suruhanjaya Perkhidmatan Awam","spa" ],
-       [ "Kementerian Kesihatan Malaysia","kkm" ],
-       [ "Jabatan Perkhidmatan Awam","jpa" ],
-       [ "Jabatan Perpustakaan Negara","jpn" ]
-     
+   #  Displayed       stored in db
+   [ "Suruhanjaya Perkhidmatan Awam","spa" ],
+   [ "Kementerian Kesihatan Malaysia","kkm" ],
+   [ "Jabatan Perkhidmatan Awam","jpa" ],
+   [ "Jabatan Perpustakaan Negara","jpn" ]    
   ]
 
-  KTYPE = [
-          #  Displayed       stored in db
-          [ "Isteri",1 ],
-          [ "Suami",2 ],
-          [ "Ibu", 3 ],
-          [ "Bapa", 4 ],
-          [ "Anak", 5 ],
-          [ "Nenek", 9 ],
-          [ "Saudara Kandung", 11 ],
-          [ "Penjaga", 12 ],
-          [ "Bekas Isteri", 13 ],
-          [ "Bekas Suami", 14 ],
-          [ "Penjamin I", 98 ],
-          [ "Penjamin II", 99 ]
-   ]
+  KIN_TYPE = [
+    #  Displayed       stored in db
+    [ "Isteri",1 ],
+    [ "Suami",2 ],
+    [ "Ibu", 3 ],
+    [ "Bapa", 4 ],
+    [ "Anak", 5 ],
+    [ "Nenek", 9 ],
+    [ "Saudara Kandung", 11 ],
+    [ "Penjaga", 12 ],
+    [ "Bekas Isteri", 13 ],
+    [ "Bekas Suami", 14 ],
+    [ "Penjamin I", 98 ],
+    [ "Penjamin II", 99 ]
+  ]
  
 
   PENSION = [
-       #  Displayed       stored in db
-       [ "Berpencen", "1"],
-       [ "Pilihan KWSP", "2"],
-       [ "Belum Memilih", "3"],
-       [ "Tidak Layak Memilih","4"]
-
+   #  Displayed       stored in db
+   [ "Berpencen", "1"],
+   [ "Pilihan KWSP", "2"],
+   [ "Belum Memilih", "3"],
+   [ "Tidak Layak Memilih","4"]
   ]
 
   QUALIFICATION_LEVEL = [
-       #  Displayed       stored in db
-       [ "Sekolah Rendah", 17 ],
-       [ "PMR/SRP dan setaraf", 16],
-       [ "SPM/SPVM dan setaraf", 15 ],
-       [ "Senior Cambridge Cert", 14 ],
-       [ "STPM dan setaraf", 13 ],
-       [ "Sijil", 12 ],
-       [ "Diploma", 11 ],
-       [ "Diploma Lanjutan", 10 ],
-       [ "Diploma Lepasan Ijazah", 9 ],
-       [ "Sarjana Muda", 8 ],
-       [ "Sarjana Muda Kepujian", 7 ],
-       [ "Sarjana Persuratan", 6 ],
-       [ "Sarjana Sastera", 5 ],
-       [ "Sarjana Sains", 4 ],
-       [ "Sarjana Perubatan", 3 ],
-       [ "Lepasan Sarjana",2 ],
-       [ "Doktor Falsafah (Ph.D)",1 ],
-       [ "Lain Lain", 99 ]
+   #  Displayed       stored in db
+   [ "Sekolah Rendah", 17 ],
+   [ "PMR/SRP dan setaraf", 16],
+   [ "SPM/SPVM dan setaraf", 15 ],
+   [ "Senior Cambridge Cert", 14 ],
+   [ "STPM dan setaraf", 13 ],
+   [ "Sijil", 12 ],
+   [ "Diploma", 11 ],
+   [ "Diploma Lanjutan", 10 ],
+   [ "Diploma Lepasan Ijazah", 9 ],
+   [ "Sarjana Muda", 8 ],
+   [ "Sarjana Muda Kepujian", 7 ],
+   [ "Sarjana Persuratan", 6 ],
+   [ "Sarjana Sastera", 5 ],
+   [ "Sarjana Sains", 4 ],
+   [ "Sarjana Perubatan", 3 ],
+   [ "Lepasan Sarjana",2 ],
+   [ "Doktor Falsafah (Ph.D)",1 ],
+   [ "Lain Lain", 99 ]
   ]
+  
 
   UNIFORM = [
-        #  Displayed       stored in db
-        [ "Dibekalkan/Tidak dibekalkan", "1" ],
-        [ "Tarikh Akhir di beri", "2" ],
-        [ "Elaun Pakaian Panas/Pakaian Istiadat", "3" ]
-
-
+    #  Displayed       stored in db
+    [ "Dibekalkan/Tidak dibekalkan", "1" ],
+    [ "Tarikh Akhir di beri", "2" ],
+    [ "Elaun Pakaian Panas/Pakaian Istiadat", "3" ]
   ]
 
   RACE = [
-        #  Displayed       stored in db
-        [ "Malay",1 ],
-        [ "Chinese",2 ],
-        [ "India",3 ],
-        [ "Others",4 ],
+    #  Displayed       stored in db
+    [ "Malay",1 ],
+    [ "Chinese",2 ],
+    [ "India",3 ],
+    [ "Others",4 ],
   ]
 
   RELIGION = [
-        #  Displayed       stored in db
-        [ "Islam",1],
-        [ "Buddha",2 ],
-        [ "Hindu",3 ],
-        [ "Others",4 ]
+    #  Displayed       stored in db
+    [ "Islam",1],
+    [ "Buddha",2 ],
+    [ "Hindu",3 ],
+    [ "Others",4 ]
   ]
 
   TOS = [
@@ -185,7 +179,7 @@ module DropDown
         [ "Female","2"]
   ]
 
-  LTYPE = [
+  LOAN_TYPE = [
            #  Displayed       stored in db
            [ "Perumahan", 1 ],
            [ "Kenderaan", 2 ],
@@ -325,8 +319,121 @@ module DropDown
     
     CLASS_METHOD = [
             #  Displayed       stored in db
-            ["Kuliah",     1],
-            ["Teori",    2],
-            ["Amali",  3]
+            [I18n.t('training.programme.kuliah'),     1],
+            [I18n.t('training.programme.tutorial'),    2],
+            [I18n.t('training.programme.amali'),  3]
     ]
+    
+    COURSE_STATUS = [
+         #  Displayed       stored in db
+         [ I18n.t('training.programme.major'),     1 ],
+         [ I18n.t('training.programme.minor'),     2 ],
+         [ I18n.t('training.programme.elective'),  3 ]
+    ]
+
+    DURATION_TYPES = [
+         #  Displayed       stored in db
+         [ I18n.t('training.programme.hours'),      0 ],
+         [ I18n.t('training.programme.days'),       1 ],
+         [ I18n.t('training.programme.weeks'),      7 ],
+         [ I18n.t('training.programme.months'),     30 ],
+         [ I18n.t('training.programme.years'),      365 ]
+    ]
+    
+    COURSE_TYPES_PROG =  [
+      # Displayed	stored in db
+      ['Diploma','Diploma'],
+      ['Pos Basik','Pos Basik'],
+      ['Diploma Lanjutan','Diploma Lanjutan']
+    ]
+    
+    COURSE_TYPES_SUB = [
+      # Displayed	stored in db
+       [I18n.t('training.programme.semester'),'Semester'],
+       [I18n.t('training.programme.subject'),'Subject'],
+       [I18n.t('training.programme.commonsubject'),'Commonsubject'],
+       [I18n.t('training.programme.topic'),'Topic'],
+       [I18n.t('training.programme.subtopic'), 'Subtopic']
+      ]
+    
+    #COURSE_TYPES = [
+    #   ['Diploma','Diploma'],
+    #   ['Pos Basik','Pos Basik'],
+    #   ['Diploma Lanjutan','Diploma Lanjutan'],
+    #   [I18n.t('training.programme.semester'),'Semester'],
+    #   [I18n.t('training.programme.subject'),'Subject'],
+    #  [I18n.t('training.programme.commonsubject'),'Commonsubject'],
+    #   [I18n.t('training.programme.topic'),'Topic'],
+     #  [I18n.t('training.programme.subtopic'), 'Subtopic']
+     # ]
+    
+    COURSE_TYPES = [
+       ['Diploma','Diploma'],
+       ['Pos Basik','Pos Basik'],
+       ['Diploma Lanjutan','Diploma Lanjutan'],
+       ['Semester','Semester'],
+       ['Subject','Subject'],
+       ['Commonsubject','Commonsubject'],
+       ['Topic','Topic'],
+       ['Subtopic', 'Subtopic']
+      ]
+
+    LECTURE_TIME = [
+      [I18n.t('training.programme.hours'), 1],
+      [I18n.t('training.programme.minutes'), 2]
+      ]
+    
+    LOGTYPE = [
+	# Displayed        stored in db
+        [ I18n.t('staff_attendance.log_in'),        'I' ],
+        [ I18n.t('staff_attendance.log_out'),      'O' ]
+      ]
+    
+    TRIGGER_STATUS = [
+	# Displayed       stored in db
+        [ I18n.t('staff_attendance.outstation'), 1],
+        [ I18n.t('staff_attendance.official'), 2],
+        [ I18n.t('staff_attendance.forgot'), 3],
+        [ I18n.t('staff_attendance.early_late'), 4],
+        [ I18n.t('staff_attendance.others'), 5]
+      ]
+    
+    # library resources (book)
+    
+  LOAN = [
+        #  Displayed       stored in db 
+        [ I18n.t('library.book.open_shelf') ],
+        [ I18n.t('library.book.red_spot')]
+  ]
+  
+  LANGUAGE = [
+        #  Displayed       stored in db
+        [ "English", "EN" ],
+        [ "Bahasa Malaysia", "ms_MY" ],
+        [ I18n.t('library.book.others'), "lain"]
+  ]
+  
+  MEDIA = [
+         #  Displayed       stored in db
+         [ I18n.t('library.book.book2'),1 ],
+         [ I18n.t('library.book.magazine'),2 ],
+         [ "DVD", 3 ],
+         [ "CD", 4]
+  ]
+  
+  STATUS = [
+          #  Displayed       stored in db
+          [ I18n.t('library.book.available'),1 ],
+          [ I18n.t('library.book.on_loan'),2 ],
+          [ I18n.t('library.book.fixed'), 3 ],
+          [ I18n.t('library.book.disposed'), 4 ]
+] 
+  CATSOURCE = [
+          #  Displayed       stored in db
+          [ "Perustakaan Negara",1 ],
+          [ "Amazon.com",2 ],
+          [ "Others",3 ]
+]
+  
+    
 end

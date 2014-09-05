@@ -1,0 +1,14 @@
+= search_form_for @search, url: training_topicdetails_path,  class: "form-inline" do |f|
+  %tr.search_row{style: "display: none;"}
+    %td=f.text_field :subject_search, size: 2, :class => "form-control"
+    %td= f.text_field :subject_topic_name_cont, size: 2,  :class => "form-control"
+    %td
+    %td
+    %td
+    %td
+    %td
+    %td.input-group
+      = f.text_field :topic_creator_name_cont, size: 2,  :class => "form-control"
+      %span.input-group-btn
+        %button.btn.btn-sm.btn-default.right{:type => "submit"}
+          %i.fa.fa-search.fa-fw

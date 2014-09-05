@@ -1,0 +1,32 @@
+= search_form_for @search, url: staff_staff_attendances_path,  class: "form-inline" do |f|
+  %tr.search_row{style: "display:none;"}
+    %td &nbsp;
+    %td
+      %br= select_tag('q[keyword_search]',options_for_select(StaffAttendance.get_thumb_ids_unit_names(3)),:prompt=>t("helpers.prompt.all_unit"))
+      /= f.text_field :keyword_search
+      /= select_tag('q[thumb_id_in][]',options_for_select([ [@unit_names[2],y[2]],[@unit_names[3], '756,757'] ] ) )   
+    %td
+      = t('staff_attendance.from')
+      = f.text_field :logged_at_gt, :size=> 2,  :class =>  'date-picker'
+    %td
+      = t('staff_attendance.to')
+      = f.text_field :logged_at_lteq, :size=>2,  :class => 'date-picker'
+    /%td= f.text_field :attended_staff_shift_start_at_matches, size: 2,  :class => "form-control"
+    /late, early, action, ignore
+    %td.input-group
+      %span.input-group-btn
+        %button.btn.btn-sm.btn-default.right{:type => "submit"}
+          %i.fa.fa-search.fa-fw
+    %td{:colspan=>"3"}
+      %ul
+        %li=t('staff_attendance.date_range1')
+        %li=t('staff_attendance.date_range2')
+
+:javascript  
+  $('.date-picker').datetimepicker({
+   timepicker:true,
+     format: "Y-m-d H:i:s",
+     autoclose: true
+   });    
+   
+ 

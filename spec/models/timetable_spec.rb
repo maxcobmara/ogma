@@ -3,6 +3,10 @@ require 'spec_helper'
 describe Timetable do
 
   before { @timetable = FactoryGirl.create(:timetable) }
+  #before { @timetable2 = FactoryGirl.create(:timetable) }
+  #create 2 timetable records in order to match with 1 weeklytimetable
+  #before { @timetable = FactoryGirl.create(:timetable, id: 1) }
+  #before { @timetable2 = FactoryGirl.create(:timetable, id: 2) }
   
   subject { @timetable }
   

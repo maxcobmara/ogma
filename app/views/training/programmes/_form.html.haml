@@ -1,0 +1,79 @@
+= f.hidden_field :parent_id
+.col-md-offset-1
+  .form-group
+    .col-sm-2.control-label
+      = f.label :combo_code
+    .col-md-5
+      /= f.text_field :combo_code, :size => '6' ,class: 'form-control'
+      %table
+        %tr
+          %td{:style=>"padding: 0 6px 0 0;"}=h @programme.is_root? ? "" : @programme.parent.combo_code + "-" 
+          %td{:style=>"padding: 0 6px 0 0;"}= f.text_field :code, :size => '8', class: 'form-control'
+  
+  .form-group
+    .col-sm-2.control-label
+      = f.label :course_type
+    .col-md-9
+      - if @programme.parent_id == nil
+        = f.select :course_type,DropDown::COURSE_TYPES_PROG,{:prompt => t('helpers.prompt.select_course_type')},{ class: 'selectpicker', "data-width"=>'160px'} 
+      - else
+        %table
+          %tr
+            %td{:style=>"padding: 0 12px 0 0;  vertical-align: top;"}= f.select :course_type, DropDown::COURSE_TYPES_SUB,{:prompt => t('helpers.prompt.select_course_type')},{ class: 'selectpicker', "data-width"=>'160px'} 
+            %td.bbb{:style=>"padding: 0 12px 0 0;"}= f.label :lecture
+            %td.bbb{:style=>"padding: 0 12px 0 0;"}= f.text_field :lecture, :size=>'2', class: 'form-control'
+            %td.bbb{:style=>"padding: 0 12px 0 0;"}= f.select :lecture_time, DropDown::LECTURE_TIME,{:prompt =>t('select')},{ class: 'selectpicker', "data-width"=>'80px'} 
+            %td.bbb{:style=>"padding: 0 12px 0 0;"}=f.label :tutorial
+            %td.bbb{:style=>"padding: 0 12px 0 0;"}= f.text_field :tutorial, :size=>'2', class: 'form-control'
+            %td.bbb{:style=>"padding: 0 12px 0 0;"}= f.select :tutorial_time, DropDown::LECTURE_TIME,{:prompt =>t('select')},{ class: 'selectpicker', "data-width"=>'80px'} 
+            %td.bbb{:style=>"padding: 0 12px 0 0;"}=f.label :practical
+            %td.bbb{:style=>"padding: 0 12px 0 0;"}= f.text_field :practical, :size=>'2', class: 'form-control'
+            %td.bbb{:style=>"padding: 0 12px 0 0;"}= f.select :practical_time, DropDown::LECTURE_TIME,{:prompt =>t('select')},{ class: 'selectpicker', "data-width"=>'80px'} 
+   
+  .form-group
+    .col-sm-2.control-label
+      = f.label :name
+    .col-md-5
+      = f.text_field :name, :size => '50' , class: 'form-control'
+  
+  .form-group
+    .col-sm-2.control-label
+      = f.label :duration
+    .col-md-3
+      %table
+        %tr
+          %td{:style=>"padding: 0 6px 0 0;"}= f.text_field :duration, :size=>'3', class: 'form-control'
+          %td{:style=>"padding: 0 6px 0 0;"}= f.select :duration_type, DropDown::DURATION_TYPES,{:prompt => t('helpers.prompt.select_duration')},{ class: 'selectpicker', "data-width"=>'200px'}
+
+  .form-group
+    .col-sm-2.control-label
+      = f.label :credits
+    .col-md-3
+      = f.select :credits, 0..8 ,{:prompt => t('helpers.prompt.select_credit')},{ class: 'selectpicker', "data-width"=>'160px'} 
+      
+  .form-group
+    .col-sm-2.control-label
+      = f.label :status
+    .col-md-3
+      = f.select :status, DropDown::COURSE_STATUS,{:prompt => t('helpers.prompt.select_status')},{ class: 'selectpicker', "data-width"=>'160px'} 
+
+
+:javascript
+
+$(document).ready(function(){
+  $('#programme_course_type').on('change',function() {
+    if(this.value=='Topic')
+      $('.bbb').show(); 
+    else if(this.value=='Subtopic')
+      $('.bbb').show();
+    else
+      $('.bbb').hide();
+  }).trigger('change');
+});
+
+/on change - http://stackoverflow.com/questions/21584752/want-to-show-hide-div-based-on-dropdown-box-selection
+
+/on load - trigger je - http://stackoverflow.com/questions/18063686/show-hide-div-section-onchange-and-onload-with-javascript
+
+      
+/<font size=-2>* <strong>TOPIC DETAILS</strong> will be automatically created upon creation/update of topic/subtopic.</font></td></tr> 
