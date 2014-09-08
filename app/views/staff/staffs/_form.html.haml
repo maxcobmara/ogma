@@ -4,6 +4,7 @@
     %ul.nav.nav-tabs
       %li.active= link_to "Info", "#info", "data-toggle" => "tab"
       %li= link_to t('staff.personal_details'),     "#personal",        "data-toggle" => "tab"
+      %li= link_to t('staff.photo'),                "#upload_photo",    "data-toggle" => "tab"
       %li= link_to t('staff.employment_details'),   "#employment",      "data-toggle" => "tab"
       %li= link_to t('staff.qualifications.title'), "#qualifications",  "data-toggle" => "tab"
       %li= link_to t('staff.finance.title'),        "#finance",         "data-toggle" => "tab"
@@ -22,66 +23,147 @@
     .tab-content{style:"padding-top:1em"}
       #info.tab-pane.active
         .col-md-offset-2
-        .form-group
-          .col-sm-2.control-label
-            = f.label t 'staff.icno', for: :icno
-          .col-md-2
-            = f.text_field :icno, class: 'form-control mandatory'
-            .help-block.small Format:79XXXXXXXXXX
-            
-        .form-group
-          .col-sm-2.control-label
-            = f.label t 'staff.name', for: :name
-          .col-md-4
-            .input-group
-              = f.collection_select :titlecd_id, Title.all, :id, :name, {:include_blank => true}, {class: 'selectpicker', "data-width"=>"80px"}
-              = f.text_field :name, class: 'form-control mandatory'
-            
-        .form-group
-          .col-sm-2.control-label
-            = f.label t 'staff.code', for: :code
-          .col-md-3
-            = f.text_field :code, class: 'form-control mandatory'
-            
-        .form-group
-          .col-sm-2.control-label
-            = f.label t 'staff.fileno', for: :fileno
-          .col-md-2
-            = f.text_field :fileno, class: 'form-control mandatory'
-            
-        .form-group
-          .col-sm-2.control-label
-            = f.label t 'staff.coemail', for: :coemail
-          .col-md-4
-            = f.text_field :coemail, class: 'form-control mandatory'
-            
-        .form-group
-          .col-sm-2.control-label
-            = f.label t 'staff.cobirthdt', for: :cobirthdt
-          .col-md-2
-            = f.text_field :cobirthdt, class: 'form-control mandatory date_picker'#, 'data-behaviour' => 'datepicker_dob'
-            
-
-        .hidden          
           .form-group
             .col-sm-2.control-label
-              = f.label t 'staff.thumb', for: :thumb_id
-            .col-md-1
-              = f.text_field :thumb_id, class: 'form-control mandatory'
+              = f.label t 'staff.icno', for: :icno
+            .col-md-2
+              = f.text_field :icno, class: 'form-control mandatory'
+              .help-block.small Format:79XXXXXXXXXX
               
-        .form-group
-          .col-sm-offset-2.col-sm-2
-            = f.submit t('update'), class: "btn btn-primary"
+          .form-group
+            .col-sm-2.control-label
+              = f.label t 'staff.name', for: :name
+            .col-md-4
+              .input-group
+                = f.collection_select :titlecd_id, Title.all, :id, :name, {:include_blank => true}, {class: 'selectpicker', "data-width"=>"80px"}
+                = f.text_field :name, class: 'form-control mandatory'
+              
+          .form-group
+            .col-sm-2.control-label
+              = f.label t 'staff.code', for: :code
+            .col-md-3
+              = f.text_field :code, class: 'form-control mandatory'
+              
+          .form-group
+            .col-sm-2.control-label
+              = f.label t 'staff.fileno', for: :fileno
+            .col-md-2
+              = f.text_field :fileno, class: 'form-control mandatory'
+              
+          .form-group
+            .col-sm-2.control-label
+              = f.label t 'staff.coemail', for: :coemail
+            .col-md-4
+              = f.text_field :coemail, class: 'form-control mandatory'
+              
+          .form-group
+            .col-sm-2.control-label
+              = f.label t 'staff.cobirthdt', for: :cobirthdt
+            .col-md-2
+              = f.text_field :cobirthdt, class: 'form-control mandatory date_picker'#, 'data-behaviour' => 'datepicker_dob'
+              
+
+          .hidden          
+            .form-group
+              .col-sm-2.control-label
+                = f.label t 'staff.thumb', for: :thumb_id
+              .col-md-1
+                = f.text_field :thumb_id, class: 'form-control mandatory'
+
+          .form-group
+            .col-sm-offset-2.col-sm-2
+              = f.submit t('update'), class: "btn btn-primary"
 
 
 
 
 
       #personal.tab-pane
-        %br
-        .form-group
-          .col-sm-offset-2.col-sm-2
-            = f.submit t('update'), class: "btn btn-primary"
+        .col-md-offset-2
+          .form-group
+            .col-sm-2.control-label
+              = f.label t 'staff.shift', for: :staff_shift_id
+            .col-md-4
+              = f.collection_select :staff_shift_id, StaffShift.all, :id, :start_end, {:include_blank => true}, {class: 'selectpicker', "data-width"=>"80px"}
+
+          .form-group
+            .col-sm-2.control-label
+              = f.label t 'staff.birthcertno', for: :birthcertno
+            .col-md-4
+              = f.text_field :birthcertno, class: 'form-control'
+
+          .form-group
+            .col-sm-2.control-label
+              = f.label t 'staff.bloodtype', for: :bloodtype
+            .col-md-4
+              = f.select :bloodtype, DropDown::BLOOD_TYPE, {:include_blank => true, :prompt => "Select"}, {class: 'selectpicker', "data-width"=>"80px"}
+
+
+    <tr>
+      <td class="leftcol"><label for="gender"><b><%= t 'staff.gender' %></b></label></td>
+      <td><%= f.radio_button :gender,'1' %><%= t 'people.male' %>&nbsp; &nbsp;<%= f.radio_button :gender,'2' %><%= t 'people.female' %></td>
+    </tr>
+    <tr>
+      <td class="leftcol"><label for="cooftelno"><b><%= t 'staff.cooftelno' %></b></label></td>
+      <td><%= f.text_field :cooftelno, :size => 14 %>
+              <label for="cooftelext">Ext.</label>
+              <%= f.text_field :cooftelext, :size => 5 %></td>
+    </tr>
+    <tr>
+      <td class="leftcol"><label for="phonecell"><b><%= t 'staff.phonecell' %></b></label></td>
+      <td><%= f.text_field :phonecell, :size => 14 %></td>
+    </tr>
+    <tr>
+      <td class="leftcol"><label for="phonehome"><b><%= t 'staff.phonehome' %></b></label></td>
+      <td><%= f.text_field :phonehome, :size => 14 %></td>
+    </tr>
+    <tr>
+      <td class="leftcol"><label for="addr"><b><%= t 'staff.address' %></b></label><font color="red"> * </font></td>
+      <td><%= f.text_area :addr, :size => "40x5" %></td>
+    </tr>
+    <tr>
+      <td class="leftcol"><label for="poskod_id"><b><%= t 'staff.poskod_id' %></b></label><font color="red"> * </font></td>
+      <td><%= f.text_field :poskod_id %></td></tr>
+    <tr>
+      <td class="leftcol"><label for="mrtlstatuscd"><b><%= t 'staff.mrtlstatuscd' %></b></label></td>
+      <td><%= f.select :mrtlstatuscd, 
+                       Staff::MARITAL_STATUS,
+                       :prompt => "Select"  %></td>
+    </tr>
+    <tr>
+      <td class="leftcol"><label for="statecd"><b><%= t 'staff.statecd' %></b></label><font color="red"> * </font></td>
+      <td><%= f.select :statecd, 
+                        Staff::STATECD,
+                       :prompt => "Select"  %></td>
+    </tr>
+    <tr>
+      <td class="leftcol"><label for="race"><b><%= t 'staff.race' %></b></label></td>
+      <td><%= f.select :race, 
+                        Staff::RACE,
+                       :prompt => "Select"  %></td>
+    </tr>
+    <tr>
+      <td class="leftcol"><label for="religion"><b><%= t 'staff.religion' %></b></label></td>
+      <td><%= f.select :religion, 
+                        Staff::RELIGION,
+                       :prompt => "Select"  %></td>
+    </tr>
+    <tr>
+      <td class="leftcol"><label for="country_cd"><b><%= t 'staff.country_cd' %></b></label><font color="red"> * </font></td>
+      <td><%= f.select :country_cd, 
+                       Staff::NATIONALITY,
+                       :prompt => "Select" %></td>
+    </tr>
+    <tr>
+      <td class="leftcol"><label for="transportclass_id"><b><%= t 'staff.transportclass_id' %></b></td>
+      <td><%= f.select :transportclass_id, options_for_select(('A'..'F'), @staff.transportclass_id) %>
+        <font size=-2>(Salary|Vehicle cc - <strong>A</strong> : RM2625.45-|1400cc-, <strong>B</strong> : RM2330.00-|1000cc-, <strong>C</strong> : RM1820.75-|-999, <strong>D</strong> : -RM1820.74|175cc-, <strong>E</strong> : -RM1820.74|-174cc)</font>
+      </td>
+    </tr>
+        .col-md-offset-2
+          .form-group
+            .col-sm-offset-2.col-sm-2
+              = f.submit t('update'), class: "btn btn-primary"
       #employment.tab-pane
         %br
         =# render 'tab_employment'
@@ -104,3 +186,17 @@
 
           
           
+ 
+  
+    <tr>
+      <td class="leftcol"><label for="upload"><b><%= t 'staff.upload' %></b></label></td>
+      <td>
+        <% if f.object.photo!=nil %>Current file is : <%= f.object.photo_file_name %>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <%= link_to (t 'document.download'), f.object.photo.url %>||
+        <%= link_to "ALT", f.object.photo.url %>
+        <% end%>
+        <%= f.file_field :photo %>
+      </td>
+    </tr>
+  </table>
