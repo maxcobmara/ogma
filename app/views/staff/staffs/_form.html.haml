@@ -132,7 +132,7 @@
             .col-sm-2.control-label
               = f.label t 'staff.addr', for: :addr
             .col-md-4
-              = f.text_area :addr, class: "form-control" rows: "5"
+              = f.text_area :addr, class: "form-control", rows: "5"
               
           .form-group
             .col-sm-2.control-label
@@ -191,11 +191,9 @@
             .col-sm-2.control-label
               = f.label t 'staff.upload', for: :upload
             .col-md-2
-              - if f.object.photo!=nil
+              - if f.object.photo!= nil
                 Current file is : #{f.object.photo_file_name}
                 = link_to (t 'document.download'), f.object.photo.url
-                \||
-              	= link_to "ALT", f.object.photo.url
 
               = f.file_field :photo              
               
@@ -371,7 +369,7 @@
           .col-sm-2= t 'staff.bank.bankacctype'
           
         - f.fields_for :bankaccounts do |builder|
-      	  = render 'bankaccount_fields', :f => builder
+          = render 'bankaccount_fields', :f => builder
         .row
           = link_to_add_fields image_tag("add.png", :border => 0, :title => t('addmore')), f, :bankaccounts
           = t 'addmore'
@@ -417,8 +415,7 @@
           .col-sm-4 Address
           %hr
         - f.fields_for :kins do |builder|
-          .row
-      		  = render 'kin_fields', :f => builder
+          = render 'kin_fields', :f => builder
         .row
           = link_to_add_fields image_tag("add.png", :border => 0, :title => t('addmore')), f, :kins
           = t 'addmore'
