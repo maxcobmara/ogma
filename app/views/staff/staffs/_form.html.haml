@@ -4,7 +4,7 @@
     %ul.nav.nav-tabs
       %li.active= link_to "Info", "#info", "data-toggle" => "tab"
       %li= link_to t('staff.personal_details'),     "#personal",        "data-toggle" => "tab"
-      %li= link_to t('staff.photo_upload'),         "#personal",        "data-toggle" => "tab"
+      %li= link_to t('staff.photo_upload'),         "#photo_upload",    "data-toggle" => "tab"
       %li= link_to t('staff.employment_details'),   "#employment",      "data-toggle" => "tab"
       %li= link_to t('staff.qualifications.title'), "#qualifications",  "data-toggle" => "tab"
       %li= link_to t('staff.finance.title'),        "#finance",         "data-toggle" => "tab"
@@ -71,9 +71,9 @@
               .col-md-1
                 = f.text_field :thumb_id, class: 'form-control mandatory'
               
-        .form-group
-          .col-sm-offset-2.col-sm-2
-            = f.submit t('update'), class: "btn btn-primary"
+          .form-group
+            .col-sm-offset-2.col-sm-2
+              = f.submit t('update'), class: "btn btn-primary"
 
 
       //photo upload pane
@@ -82,8 +82,8 @@
           .form-group
             .col-sm-2.control-label
               = f.label t 'staff.shift', for: :shift
-            .col-md-2
-              = f.collection_select :staff_shift_id, StaffShift.all, :id, :start_end, {:include_blank => true}, {class: 'selectpicker', "data-width"=>"80px"}
+            .col-md-3
+              = f.collection_select :staff_shift_id, StaffShift.all, :id, :start_end, {:include_blank => true}, {class: 'selectpicker', "data-width"=>"auto"}
                             
           .form-group
             .col-sm-2.control-label
@@ -100,21 +100,27 @@
           .form-group
             .col-sm-2.control-label
               = f.label t 'staff.gender', for: :gender
-            .col-md-4
-              = f.radio_button :gender,'1'
-              = t 'people.male'
-              \&nbsp; &nbsp;
-              = f.radio_button :gender,'2'
-              = t 'people.female'
+            .col-md-7
+              .form-inline
+                .form-group
+                  = t 'people.male'
+                  = f.radio_button :gender,'1'
+                .form-group
+                  = t 'people.female'
+                  = f.radio_button :gender,'2'
+                
               
           .form-group
             .col-sm-2.control-label
               = f.label t 'staff.cooftelno', for: :cooftelno
-            .col-md-5
-              .input-group
-                = f.text_field :cooftelno, class: 'form-control'
-                = f.label "Ext.", for: :cooftelext
-                = f.text_field :cooftelext, class: 'form-control'
+            .col-md-9
+              .form-inline
+                .form-group
+                  = f.label t 'staff.cooftelno', for: :cooftelno
+                  = f.text_field :cooftelno, class: 'form-control'
+                .form-group
+                  = f.label "Ext"
+                  = f.text_field :cooftelext, class: 'form-control'
                 
           .form-group
             .col-sm-2.control-label
@@ -144,44 +150,46 @@
             .col-sm-2.control-label
               = f.label t 'staff.mrtlstatuscd', for: :mrtlstatuscd
             .col-md-2
-              = f.select :bloodtype, DropDown::MARITAL_STATUS, {prompt: "Select"}, {class: 'selectpicker', "data-width"=>"80px"}
+              = f.select :bloodtype, DropDown::MARITAL_STATUS, {prompt: "Select"}, {class: 'selectpicker', "data-width"=>"auto"}
               
           .form-group
             .col-sm-2.control-label
               = f.label t 'staff.statecd', for: :statecd
             .col-md-2
-              = f.select :statecd, DropDown::STATECD, {prompt: "Select"}, {class: 'selectpicker', "data-width"=>"80px"}
+              = f.select :statecd, DropDown::STATECD, {prompt: "Select"}, {class: 'selectpicker', "data-width"=>"auto"}
               
           .form-group
             .col-sm-2.control-label
               = f.label t 'staff.race', for: :race
             .col-md-2
-              = f.select :race, DropDown::RACE, {prompt: "Select"}, {class: 'selectpicker', "data-width"=>"80px"}
+              = f.select :race, DropDown::RACE, {prompt: "Select"}, {class: 'selectpicker', "data-width"=>"auto"}
               
           .form-group
             .col-sm-2.control-label
               = f.label t 'staff.religion', for: :religion
             .col-md-2
-              = f.select :religion, DropDown::RELIGION, {prompt: "Select"}, {class: 'selectpicker', "data-width"=>"80px"}
+              = f.select :religion, DropDown::RELIGION, {prompt: "Select"}, {class: 'selectpicker', "data-width"=>"auto"}
               
           .form-group
             .col-sm-2.control-label
               = f.label t 'staff.country_cd', for: :country_cd
             .col-md-2
               //= country_select("vehicle_manufacturer", "country", [ "Malaysia", "Korea", "Germany" ])
-              = f.select :country_cd, DropDown::NATIONALITY, {prompt: "Select"}, {class: 'selectpicker', "data-width"=>"80px"}
+              = f.select :country_cd, DropDown::NATIONALITY, {prompt: "Select"}, {class: 'selectpicker', "data-width"=>"autos"}
               
           .form-group
             .col-sm-2.control-label
               = f.label t 'staff.transportclass_id', for: :transportclass_id
-            .col-md-2
-              = f.select :transportclass_id, options_for_select(('A'..'F'), @staff.transportclass_id), {prompt: "Select"}, {class: 'selectpicker', "data-width"=>"80px"}
-              = f.text_field :icno, class: 'form-control mandatory'
-              .help-block.small (Salary|Vehicle cc - <strong>A</strong> : RM2625.45-|1400cc-, <strong>B</strong> : RM2330.00-|1000cc-, <strong>C</strong> : RM1820.75-|-999, <strong>D</strong> : -RM1820.74|175cc-, <strong>E</strong> : -RM1820.74|-174cc)
+            .col-md-7
+              .form-inline
+                .form-group
+                  = f.select :transportclass_id, options_for_select(('A'..'F'), @staff.transportclass_id), {prompt: "Select"}, {class: 'selectpicker', "data-width"=>"auto"}
+                  = f.text_field :icno, class: 'form-control mandatory'
+                  .help-block.small (Salary|Vehicle cc - <strong>A</strong> : RM2625.45-|1400cc-, <strong>B</strong> : RM2330.00-|1000cc-, <strong>C</strong> : RM1820.75-|-999, <strong>D</strong> : -RM1820.74|175cc-, <strong>E</strong> : -RM1820.74|-174cc)
 
-        .form-group
-          .col-sm-offset-2.col-sm-2
-            = f.submit t('update'), class: "btn btn-primary"                
+          .form-group
+            .col-sm-offset-2.col-sm-2
+              = f.submit t('update'), class: "btn btn-primary"                
 
       //photo upload pane
       #photo_upload.tab-pane
@@ -210,20 +218,20 @@
             .col-sm-2.control-label
               = f.label t 'staff.staffgrade_id', for: :staffgrade_id
             .col-md-2
-              = f.collection_select :staffgrade_id, Employgrade.order('name'), :id, :name_and_group, {include_blank: true}, {class: 'selectpicker', "data-width"=>"80px"}
+              = f.collection_select :staffgrade_id, Employgrade.order('name'), :id, :name_and_group, {include_blank: true}, {class: 'selectpicker', "data-width"=>"auto"}
               //additional filters :conditions => ["id != ?",@travelrequest.treplace.id || @travelrequest.staffid.id]
               
           .form-group
             .col-sm-2.control-label
               = f.label t 'staff.employstatus', for: :employstatus
             .col-md-2
-              = f.select :employstatus, DropDown::STAFF_STATUS, {include_blank: true, prompt: "Select"}, {class: 'selectpicker', "data-width"=>"80px"}
+              = f.select :employstatus, DropDown::STAFF_STATUS, {include_blank: true, prompt: "Select"}, {class: 'selectpicker', "data-width"=>"auto"}
               
           .form-group
             .col-sm-2.control-label
               = f.label t 'staff.appointstatus', for: :appointstatus
             .col-md-2
-              = f.select :appointstatus, DropDown::APPOINTMENT, {include_blank: true, prompt: "Select"}, {class: 'selectpicker', "data-width"=>"80px"}
+              = f.select :appointstatus, DropDown::APPOINTMENT, {include_blank: true, prompt: "Select"}, {class: 'selectpicker', "data-width"=>"auto"}
               
           .form-group
             .col-sm-2.control-label
@@ -247,7 +255,7 @@
             .col-sm-2.control-label
               = f.label t 'staff.pensionstat', for: :pensionstat
             .col-md-2
-              = f.select :pensionstat, DropDown::PENSION, {include_blank: true, prompt: "Select"}, {class: 'selectpicker', "data-width"=>"80px"}
+              = f.select :pensionstat, DropDown::PENSION, {include_blank: true, prompt: "Select"}, {class: 'selectpicker', "data-width"=>"auto"}
               
           .form-group
             .col-sm-2.control-label
@@ -295,7 +303,7 @@
           .form-group
             .col-sm-2.control-label
               = f.label t 'staff.starting_salary', for: :starting_salary
-            .col-md-4
+            .col-md-3
               .input-group
                 .input-group-addon RM
                 = f.text_field :starting_salary, class: 'form-control'
@@ -304,29 +312,29 @@
             .col-sm-2.control-label
               = f.label t 'staff.appointby', for: :appointby
             .col-md-2
-              = f.select :appointby, DropDown::APPOINTED, {include_blank: true, prompt: "Select"}, {class: 'selectpicker', "data-width"=>"80px"}
+              = f.select :appointby, DropDown::APPOINTED, {include_blank: true, prompt: "Select"}, {class: 'selectpicker', "data-width"=>"auto"}
               
           .form-group
             .col-sm-2.control-label
               = f.label t 'staff.svchead', for: :svchead
             .col-md-2
-              = f.select :appointby, DropDown::HOS, {include_blank: true, prompt: "Select"}, {class: 'selectpicker', "data-width"=>"80px"}
+              = f.select :appointby, DropDown::HOS, {include_blank: true, prompt: "Select"}, {class: 'selectpicker', "data-width"=>"auto"}
               
           .form-group
             .col-sm-2.control-label
               = f.label t 'staff.svctype', for: :svctype
             .col-md-2
-              = f.select :svctype, DropDown::TOS, {include_blank: true, prompt: "Select"}, {class: 'selectpicker', "data-width"=>"80px"}
+              = f.select :svctype, DropDown::TOS, {include_blank: true, prompt: "Select"}, {class: 'selectpicker', "data-width"=>"auto"}
               
           .form-group
             .col-sm-2.control-label
               = f.label t 'staff.uniformstat', for: :uniformstat
             .col-md-2
-              = f.select :uniformstat, DropDown::UNIFORM, {include_blank: true, prompt: "Select"}, {class: 'selectpicker', "data-width"=>"80px"}      
+              = f.select :uniformstat, DropDown::UNIFORM, {include_blank: true, prompt: "Select"}, {class: 'selectpicker', "data-width"=>"auto"}      
               
-        .form-group
-          .col-sm-offset-2.col-sm-2
-            = f.submit t('update'), class: "btn btn-primary"
+          .form-group
+            .col-sm-offset-2.col-sm-2
+              = f.submit t('update'), class: "btn btn-primary"
 
 
     
@@ -335,16 +343,12 @@
           .col-sm-offset-2.col-sm-2= t 'staff.level_id'
           .col-sm-3= t 'staff.qname'
           .col-sm-4= t 'staff.institute'
-          %hr
         - f.fields_for :qualifications do |builder|
           = render 'qualification_fields', :f => builder
-        .row
-          = link_to_add_fields image_tag("add.png", :border => 0, :title => t('addmore')), f, :qualifications
-          = t 'addmore'
-          
-        .form-group
-          .col-sm-offset-2.col-sm-2
-            = f.submit t('update'), class: "btn btn-primary"
+        
+        .col-sm-offset-2.col-sm-2
+          = link_to_add_fields content_tag(:i, "", class: "fa fa-plus-square"), f, :qualifications
+          = f.submit t('update'), class: "btn btn-primary"
 
 
       #finance.tab-pane
