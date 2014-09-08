@@ -1,0 +1,7 @@
+.row.fields
+  .col-sm-offset-2.col-sm-2= f.select :level_id, DropDown::QTYPE, {include_blank: true, prompt: "Select Qualification Level"}, {class: 'selectpicker', "data-width"=>"80px"}
+  .col-sm-2= f.text_field :qname, class: 'form-control date_picker', placeholder: 'Qualification Name'
+  .col-sm-4= f.text_field :institute, :placeholder => 'Institute Name'
+  .col-sm-1
+    = f.hidden_field :_destroy
+    = link_to image_tag("delete.png", :border => 0, :title => 'Remove'), class: "remove_fields"

@@ -1,0 +1,22 @@
+.row.fields
+  .col-sm-offset-1.col-sm-1= f.select :ltype, DropDown::LOAN_TYPE, {prompt: "Select Loan Type"}, {class: 'selectpicker', "data-width"=>"80px"}
+  .col-sm-1= f.text_field :accno,       :placeholder => "account_no", class: 'form-control'
+  .col-sm-1= f.text_field :startdt,     :placeholder => "start",      class: 'form-control date_picker'
+  .col-sm-1= f.text_field :durationmn,  :placeholder => "Months Duration", class: 'form-control'
+  .col-sm-1
+    .input-group
+      .input-group-addon RM
+      = f.text_field :amount, placeholder: t('staff.loans.amount'), class: 'form-control'
+  .col-sm-1
+    .input-group
+      .input-group-addon RM
+      = f.text_field :deductions, placeholder: t('staff.loans.deductions'), class: 'form-control'
+  .col-sm-1= f.text_field :firstdate,   :placeholder => "firstdate",    class: 'form-control date_picker'
+  .col-sm-1= f.text_field :enddate,     :placeholder => "enddate",      class: 'form-control date_picker'
+  .col-sm-1
+    .input-group
+      .input-group-addon RM
+      = f.text_field :enddeduction, placeholder: t('staff.loans.enddeduction'), class: 'form-control'
+  .col-sm-1
+    = f.hidden_field :_destroy
+    = link_to image_tag("delete.png", :border => 0, :title => 'Remove'), class: "remove_fields"

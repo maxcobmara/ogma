@@ -1,0 +1,7 @@
+.row.fields
+  .col-sm-offset-2.col-sm-1= f.collection_select :bank_id, Bank.all, :id, :long_name, :include_blank => true, {class: 'selectpicker', "data-width"=>"80px"}
+  .col-sm-2= f.text_field :account_no, :size => 20, :placeholder => "account_no"
+  .col-sm-2= f.select :account_type, DropDown::BANKTYPE, {prompt: "Select"}, {class: 'selectpicker', "data-width"=>"80px"}
+  .col-sm-1
+    = f.hidden_field :_destroy
+    = link_to image_tag("delete.png", :border => 0, :title => 'Remove'), class: "remove_fields"
