@@ -13,4 +13,5 @@
 //= require jquery
 //= require jquery.ui.autocomplete
 //= require jquery_ujs
+//= require nicEdit
 //= require_tree

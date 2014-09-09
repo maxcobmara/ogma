@@ -104,13 +104,13 @@ class Examquestion < ActiveRecord::Base
     programme = current_user.staff.positions[0].unit
     
     programme_name = Programme.roots.map(&:name)
-    creator_prog= Staff.find(:all, :joins=>:positions, :conditions=>['unit IN(?)', programme_name]).map(&:id)
+    creator_prog= Staff.joins(:positions).where('unit IN(?)', programme_name).map(&:id)
     if programme_name.include?(programme)
-      creator = Staff.find(:all, :joins=>:positions, :conditions=>['unit=? AND unit IN(?)', programme, programme_name]).map(&:id)
+      creator = Staff.joins(:positions).where('unit=? AND unit IN(?)', programme, programme_name).map(&:id)
     else
       role_admin = Role.find_by_name('Administration')  #must have role as administrator
-      staff_with_adminrole = User.find(:all, :joins=>:roles, :conditions=>['role_id=?',role_admin]).map(&:staff_id).compact.uniq 
-      creator_adm = Staff.find(:all, :joins=>:positions, :conditions=>['staff_id IN(?)', staff_with_adminrole]).map(&:id)
+      staff_with_adminrole = User.joins(:roles).where('role_id=?',role_admin).map(&:staff_id).compact.uniq 
+      creator_adm = Staff.joins(:positions).where('staff_id IN(?)', staff_with_adminrole).map(&:id)
       creator=creator_prog+creator_adm
     end
     creator
@@ -122,13 +122,13 @@ class Examquestion < ActiveRecord::Base
     programme = current_user.staff.positions[0].unit
     unless subject_id.nil?
       if subject.root.name == programme
-        editors = Position.find(:all,:conditions => ['unit=?',programme]).map(&:staff_id).compact
+        editors = Position.where('unit=?',programme).map(&:staff_id).compact
       else
-        editors = Position.find(:all,:conditions => ['unit=?',subject.root.name]).map(&:staff_id).compact
+        editors = Position.where('unit=?',subject.root.name).map(&:staff_id).compact
       end
     else
       programme_name = Programme.roots.map(&:name)    #must be among Academic Staff 
-      editors = Staff.find(:all, :joins=>:positions, :conditions=>['unit=? AND unit IN(?)', programme, programme_name]).map(&:id)
+      editors = Staff.joins(:positions).where('unit=? AND unit IN(?)', programme, programme_name).map(&:id)
     end
     editors
   end
@@ -213,7 +213,7 @@ class Examquestion < ActiveRecord::Base
      
   #10Apr2013      
   def usage_frequency
-      Examquestion.find(:all, :joins=>:exams,:conditions=>['examquestion_id=?',id]).count
+      Examquestion.joins(:exams).where('examquestion_id=?',id).count
   end
   #10Apr2013 
   

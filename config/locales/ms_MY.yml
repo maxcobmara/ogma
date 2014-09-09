@@ -919,15 +919,29 @@ ms_MY:
       new: Butiran Topik Baru
       edit: Sunting Butiran Topik
       subject: Subjek
-      topic: Topik
+      topic_code: Topik
       version_no: Versi
       duration: "Durasi (Jumlah Jam)"
+      #caution1: "Topic atau Subtopic telah dibuang dari Sukatan Kurikulum - sebelum 31Oktober 2013"
+      #caution2: "Topik atau Subtopik telah dibuang dari Sukatan Kurikulum - bermula 31 Oktober 2013"
+      descriptions: Deskripsi
+      objctives: Objektif
+      contents: Kandungan
+      training_notes: Nota Latihan
       theory: Kuliah
       practical: Amali
       tutorial: Tutorial
       prepared_by: Disediakan Oleh
-      caution1: "Topic atau Subtopic telah dibuang dari Sukatan Kurikulum - sebelum 31Oktober 2013"
-      caution2: "Topik atau Subtopik telah dibuang dari Sukatan Kurikulum - bermula 31 Oktober 2013"
+      hours_minutes: " (Jam : Minit)"
+      add_details: Tambah Butiran
+    trainingnote:
+      document: Fail
+      release: Keluaran
+      title: Tajuk
+      version: Versi
+      current_file: "Fail Semasa : "
+      download: Muatturun
+      or: Atau pilih semula fail
       
   campus:
     address: 
@@ -1062,6 +1076,27 @@ ms_MY:
         approvestatus: Status Kelulusan
       asset:
         note: Catatan
+      topicdetail:
+        subject: Subjek
+        topic_code: Topik
+        version_no: Versi
+        duration: "Durasi"
+        duration2: " (Jumlah Jam - Kuliah / Tutorial / Praktikal)"
+        descriptions: Deskripsi
+        objctives: Objektif
+        contents: Kandungan
+        training_notes: Nota Latihan
+        theory: Kuliah
+        practical: Amali
+        tutorial: Tutorial
+        prepared_by: Disediakan Oleh
+        hours_minutes: " (Jam : Minit)"
+        training_notes: Nota Latihan
+      trainingnote:
+        document: Fail
+        release: Keluaran
+        title: Tajuk
+        version: Versi
 
     prompt:
       select_creator: Pilih Penyedia Soalan

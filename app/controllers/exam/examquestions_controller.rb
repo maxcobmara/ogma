@@ -16,9 +16,9 @@ class Exam::ExamquestionsController < ApplicationController
     if @position_exist
       @lecturer_programme = current_user.staff.positions[0].unit
       unless @lecturer_programme.nil?
-        @programme = Programme.find(:first,:conditions=>['name ILIKE (?) AND ancestry_depth=?',"%#{@lecturer_programme}%",0])
+        @programme = Programme.where('name ILIKE (?) AND ancestry_depth=?',"%#{@lecturer_programme}%",0)
       end
-      unless @programme.nil?
+      unless @programme#.nil? 
         @programme_id = @programme.id
         @subject_ids_of_programme = Programme.find(@programme_id).descendants.at_depth(2).pluck(:id)
       else
@@ -54,7 +54,7 @@ class Exam::ExamquestionsController < ApplicationController
   # GET /examquestions/1.xml
   def show
     @examquestion = Examquestion.find(params[:id])
-    @q_frequency=Examquestion.find(:all, :joins=>:exams,:conditions=>['examquestion_id=?',(params[:id])])
+    @q_frequency=Examquestion.joins(:exams).where('examquestion_id=?',(params[:id]))
     respond_to do |format|
       format.html # show.html.erb
       format.xml  { render :xml => @examquestion }
@@ -72,16 +72,16 @@ class Exam::ExamquestionsController < ApplicationController
     @creator = current_user.staff.id 
     
     unless @lecturer_programme.nil?
-      @programme = Programme.find(:first,:conditions=>['name ILIKE (?) AND ancestry_depth=?',"%#{@lecturer_programme}%",0])
+      @programme = Programme.where('name ILIKE (?) AND ancestry_depth=?',"%#{@lecturer_programme}%",0)
     end
-    unless @programme.nil? #for lecturers
-      @programme_listing = Programme.find(:all, :conditions=> ['id=?',@programme.id]).to_a
+    unless @programme#.nil? #for lecturers
+      @programme_listing = Programme.where(id: @programme.id).to_a
       @preselect_prog = @programme.id
       @all_subject_ids = Programme.find(@preselect_prog).descendants.at_depth(2).map(&:id)
       if @lecturer_programme == 'Commonsubject'
-        @subjects2 = Programme.find(:all, :conditions=>['id IN(?) AND course_type=?',@all_subject_ids, @lecturer_programme],:order=>'ancestry ASC') 
+        @subjects2 = Programme.where('id IN(?) AND course_type=?',@all_subject_ids, @lecturer_programme).order('ancestry ASC') 
       else
-        @subjects2 = Programme.find(:all, :conditions=>['id IN(?) AND course_type=?',@all_subject_ids, 'Subject'], :order=>'ancestry ASC')  #'Subject' 
+        @subjects2 = Programme.where('id IN(?) AND course_type=?',@all_subject_ids, 'Subject').order('ancestry ASC')  #'Subject' 
         #subjects2 - kaka2 (NEW)
       end
     else #for admin
@@ -117,25 +117,28 @@ class Exam::ExamquestionsController < ApplicationController
     
     @lecturer_programme = current_user.staff.positions[0].unit      
     unless @lecturer_programme.nil?
-      @programme = Programme.find(:first,:conditions=>['name ILIKE (?) AND ancestry_depth=?',"%#{@lecturer_programme}%",0])
+      @programme = Programme.where('name ILIKE (?) AND ancestry_depth=?',"%#{@lecturer_programme}%",0)
     end
     
     #NOTE : For ALL records, EDIT : @subjects1 & @topics always SELECTED (mandatory fields), (programme list - based on logged-in user)
-    unless @programme.nil?  
-      @programme_listing = Programme.find(:all, :conditions=> ['id=?',@programme.id]).to_a
+    unless @programme#.nil?  
+      @programme_listing = Programme.where('id=?',@programme.id).to_a
       @preselect_prog = @programme.id
       @all_subject_ids = Programme.find(@preselect_prog).descendants.at_depth(2).map(&:id)
       
       if @lecturer_programme == 'Commonsubject'
-        @subjects1 = Programme.find(:all, :conditions=>['id IN(?) AND course_type=?',@all_subjects_ids, @lecturer_programme],:order=>'ancestry ASC')  
+        @subjects1 = Programme.where('id IN(?) AND course_type=?',@all_subjects_ids, @lecturer_programme).order('ancestry ASC')  
       else
-        @subjects1 = Programme.find(:all, :conditions=> ['id IN(?)',@all_subject_ids])
+        @subjects1 = Programme.where('id IN(?)',@all_subject_ids)
       end
     else  #for admin (has no programme in current_user.staff.position.unit)
       @programme_listing = Programme.roots
       @subjects1 = Programme.find(@examquestion.subject_id).root.descendants.at_depth(2).sort_by{|x|x.ancestry}
     end
     @topics = Programme.find(@examquestion.subject_id).descendants.at_depth(3).sort_by{|x|x.code}
+    
+    
+   
   end
 
   # POST /examquestions
@@ -150,7 +153,7 @@ class Exam::ExamquestionsController < ApplicationController
       @programme = Programme.find(:first,:conditions=>["name ILIKE (?) AND ancestry_depth=?","%#{@lecturer_programme}%",0])
     end
     unless @programme.nil? #for lecturers
-      @programme_listing = Programme.find(:all, :conditions=> ['id=?',@programme.id]).to_a
+      @programme_listing = Programme.where('id=?',@programme.id).to_a
       @preselect_prog = @programme.id
       @all_subject_ids = Programme.find(@preselect_prog).descendants.at_depth(2).map(&:id)      
       if @lecturer_programme == 'Commonsubject' #common subject lecturers
@@ -208,6 +211,33 @@ class Exam::ExamquestionsController < ApplicationController
     @examquestion = Examquestion.find(params[:id])
     #@subject_exams = @examquestions.group_by { |t| t.subject_details }
 
+    #from edit - start----------------------required when validation failed
+    current_user = User.find(11)  #current_user = User.find(72) - izmohdzaki, 11-maslinda
+		@creator = @examquestion.creator_id
+    
+    @lecturer_programme = current_user.staff.positions[0].unit      
+    unless @lecturer_programme.nil?
+      @programme = Programme.where('name ILIKE (?) AND ancestry_depth=?',"%#{@lecturer_programme}%",0)
+    end
+    
+    #NOTE : For ALL records, EDIT : @subjects1 & @topics always SELECTED (mandatory fields), (programme list - based on logged-in user)
+    unless @programme#.nil?  
+      @programme_listing = Programme.where('id=?',@programme.id).to_a
+      @preselect_prog = @programme.id
+      @all_subject_ids = Programme.find(@preselect_prog).descendants.at_depth(2).map(&:id)
+      
+      if @lecturer_programme == 'Commonsubject'
+        @subjects1 = Programme.where('id IN(?) AND course_type=?',@all_subjects_ids, @lecturer_programme).order('ancestry ASC')  
+      else
+        @subjects1 = Programme.where('id IN(?)',@all_subject_ids)
+      end
+    else  #for admin (has no programme in current_user.staff.position.unit)
+      @programme_listing = Programme.roots
+      @subjects1 = Programme.find(@examquestion.subject_id).root.descendants.at_depth(2).sort_by{|x|x.ancestry}
+    end
+    @topics = Programme.find(@examquestion.subject_id).descendants.at_depth(3).sort_by{|x|x.code}
+    #from edit - end----------------------required when validation failed
+    
     respond_to do |format|
       if @examquestion.update(examquestion_params)
         flash[:notice] = (t 'exam.examquestion.title')+(t 'actions.updated')

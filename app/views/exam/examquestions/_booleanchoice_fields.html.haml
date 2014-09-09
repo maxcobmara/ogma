@@ -2,7 +2,7 @@
 A
 = hidden_field "examquestion[booleanchoices_attributes][0]",:item, :value => "A"
 - unless @examquestion.id.nil? || @examquestion.id.blank?
-  - if (Booleanchoice.find(:all, :conditions=>['examquestion_id=?',@examquestion.id]).count) > 0 
+  - if (Booleanchoice.where('examquestion_id=?',@examquestion.id).count) > 0 
     = hidden_field "examquestion[booleanchoices_attributes][0]",:id, :value => @examquestion.booleanchoices[0].id
     = text_field "examquestion[booleanchoices_attributes][0]",:description, :size=>60, :value=>@examquestion.booleanchoices[0].description
   - else
@@ -20,7 +20,7 @@ A
 B
 = hidden_field "examquestion[booleanchoices_attributes][1]",:item, :value => "B"
 - unless @examquestion.id.nil? || @examquestion.id.blank?
-  - if (Booleanchoice.find(:all, :conditions=>['examquestion_id=?',@examquestion.id]).count) > 0 
+  - if (Booleanchoice.where('examquestion_id=?',@examquestion.id).count) > 0 
     = hidden_field "examquestion[booleanchoices_attributes][1]",:id, :value => @examquestion.booleanchoices[1].id
     = text_field "examquestion[booleanchoices_attributes][1]",:description, :size=>60, :value=>@examquestion.booleanchoices[1].description
   - else
@@ -38,7 +38,7 @@ B
 C
 = hidden_field "examquestion[booleanchoices_attributes][2]",:item, :value => "C"
 - unless @examquestion.id.nil? || @examquestion.id.blank?
-  - if (Booleanchoice.find(:all, :conditions=>['examquestion_id=?',@examquestion.id]).count) > 0 
+  - if (Booleanchoice.where('examquestion_id=?',@examquestion.id).count) > 0 
     = hidden_field "examquestion[booleanchoices_attributes][2]",:id, :value => @examquestion.booleanchoices[2].id
     = text_field "examquestion[booleanchoices_attributes][2]",:description, :size=>60, :value=>@examquestion.booleanchoices[2].description
   - else
@@ -56,7 +56,7 @@ C
 D
 = hidden_field "examquestion[booleanchoices_attributes][3]",:item, :value => "D"
 - unless @examquestion.id.nil? || @examquestion.id.blank?
-  - if (Booleanchoice.find(:all, :conditions=>['examquestion_id=?',@examquestion.id]).count) > 0 
+  - if (Booleanchoice.where('examquestion_id=?',@examquestion.id).count) > 0 
     = hidden_field "examquestion[booleanchoices_attributes][3]",:id, :value => @examquestion.booleanchoices[3].id
     = text_field "examquestion[booleanchoices_attributes][3]",:description, :size=>60, :value=>@examquestion.booleanchoices[3].description
   - else
@@ -74,7 +74,7 @@ D
 E
 = hidden_field "examquestion[booleanchoices_attributes][4]",:item, :value => "E"
 - unless @examquestion.id.nil? || @examquestion.id.blank?
-  - if (Booleanchoice.find(:all, :conditions=>['examquestion_id=?',@examquestion.id]).count) > 0 
+  - if (Booleanchoice.where('examquestion_id=?',@examquestion.id).count) > 0 
     = hidden_field "examquestion[booleanchoices_attributes][4]",:id, :value => @examquestion.booleanchoices[4].id
     = text_field "examquestion[booleanchoices_attributes][4]",:description, :size=>60, :value=>@examquestion.booleanchoices[4].description
   - else

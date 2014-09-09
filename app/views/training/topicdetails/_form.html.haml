@@ -1,1 +1,129 @@
+.row
+  .col-md-10.col-md-offset-1
+    / Nav tabs
+    %ul.nav.nav-tabs
+      %li.active= link_to ((t 'training.topicdetail.descriptions')),"#topic_details_edit", "data-toggle" => "tab"
+      %li= link_to ((t 'training.topicdetail.training_notes')),"#training_notes_edit", "data-toggle" => "tab"
+
+    .tab-content{style:"padding-top:1em"}
+      .col-md-offset-2
+        /.form-group
+        /  .col-sm-2.control-label
+        /    = f.label :programme_id
+        /  .col-md-6	  
+        /    - if @topicdetail.id.nil? || @topicdetail.id.blank?
+        /      - if @topicdetail.subject_id && @topicdetail.subject_id != 0
+        /        /re-submit(new) - subject exist (when 'subject_id' exist, 'programme_id' MUST exist)
+        /        = f.collection_select :programme_id, @programme_listing, :id, :programme_list, {:selected => @topicdetail.subject.root.id, :prompt => t('helpers.prompt.select_programme')}, {:class=> "prog"}
+        /      - else
+        /        /new - lecturer (programme preselected), admin - no programme
+        /        /re-submit(new) - program exist but no subject
+        /        = f.collection_select :programme_id, @programme_listing, :id, :programme_list, {:selected => @topicdetail.programme_id.to_i, :include_blank => t('helpers.prompt.select_programme')}        
+        /    - else
+        /      /exist
+        /      = Programme.where(id: @topicdetail).first.root.name
+              
+        /.form-group
+        /  .col-sm-2.control-label
+        /    = f.label :subject_id
+        /  .col-md-6	  
+        /    - if @topicdetail.id.nil? || @topicdetail.id.blank?
+        /      - if @topicdetail.subject_id && @topicdetail.subject_id!=0
+        /        /re-submit(new) - - subject exist (when 'subject_id' exist, 'programme_id' MUST exist)
+        /        = f.collection_select :subject_id, @subjects2, :id, :subject_list,{:prompt => t('helpers.prompt.select_subject'),:selected =>@topicdetail.subject_id}
+        /      - else
+        /        /new OR re-submit(new) : (same conditions - program exist but no subject)
+        /        = f.collection_select :subject_id, @subjects2, :id, :subject_list,{:include_blank => t('helpers.prompt.select_subject'),:selected =>@topicdetail.subject_id}
+        /    - else
+        /      /exist
+        /      = Programme.where(id: @topicdetail).first.ancestors.at_depth(2).name
+   
+        /.form-group
+        /  .col-sm-2.control-label
+        /    = f.label :topic_code
+        /  .col-md-6
+        /    - if @topicdetail.id.nil? == true || @topicdetail.id.blank? == true 
+        /      - if @topicdetail.topic_code==0 || @topicdetail.topic_code.nil? || @topicdetail.topic_code.blank? 
+        /        /new OR re-submit(new) : (same conditions - program & subject exist but no topic)
+        /        = f.collection_select :topic_code, @semester_subject_topic_list, :id, :semester_subject_topic,{:prompt =>t('select')},{ class: 'selectpicker', "data-width"=>'500px'}   
+        /      - else 
+        /        /re-submit (new)
+        /        = f.collection_select :topic_code, @semester_subject_topic_list, :id, :semester_subject_topic,{:prompt =>t('select'), :selected => @topicdetail.topic_code},{ class: 'selectpicker', "data-width"=>'500px'}   
+        /    - else
+        /      /exist
+        /      =@topicdetail.subject_topic.name
+        
+        .form-group
+          .col-sm-2.control-label
+            = f.label :topic_code
+          .col-md-3
+            = f.collection_select :topic_code, @semester_subject_topic_list, :id, :semester_subject_topic,{:prompt =>t('select')},{ class: 'selectpicker', "data-width"=>'500px'}   
+      #topic_details_edit.tab-pane.active
+        %br
+        .col-md-offset-2   
+          .form-group
+            .col-sm-2.control-label
+              =f.label :duration
+            .col-md-9
+              = @topicdetail.duration_lecture_tutorial_practical if @topicdetail.subject_topic
+              %b= t('helpers.label.topicdetail.duration2')
+          .form-group
+            .col-sm-2.control-label
+              = f.label :version_no
+            .col-md-3
+              = f.text_field :version_no, class: 'form-control'
+          .form-group
+            .col-sm-2.control-label
+              = f.label :objctives
+            .col-md-3
+              = f.text_area :objctives, class: 'form-control',  :id => 'myNicEditor1' 
+          .form-group
+            .col-sm-2.control-label
+              = f.label :contents
+            .col-md-3
+              = f.text_area :contents, class: 'form-control', :id=> 'myNicEditor2'
+          .form-group
+            .col-sm-2.control-label
+              = f.label :prepared_by
+            .col-md-9
+              = f.collection_select :prepared_by, Staff.joins(:positions).where('positions.name=?','Pengajar').order('name ASC'), :id, :name, {:prompt =>t('helpers.prompt.select_lecturer')},{ class: 'selectpicker', "data-width"=>'230px'} 
+
+      #training_notes_edit.tab-pane
+        %br
+        .col-md-offset-2
+          .form-group
+            .col-sm-2.control-label
+              = f.label :training_notes
+            .col-md-6
+              - @index=0
+              = f.fields_for :trainingnotes do |p|
+                = render 'trainingnote_fields', :f => p
+              .row  
+                = link_to_add_fields t('training.topicdetail.add_details'), f, :trainingnotes, "",  t('training.topicdetail.add_details')  
+          
+/= f.fields_for :trainingnotes do |builder|
+/  = render 'trainingnote_fields', :f => builder, :locals=>{:aaa=> params[:topic_code],:index=>@index }
+/= link_to_add_fields (t 'training.topicdetail.add_details'), f, :trainingnotes
+    
+/this one works for EDIT existing record - ALL TOPICS INCLUDED
+/selection LIMITS to CURRENT topic & topics with NO topicdetail
+
+/only works for ADD new record
+/selection LIMITS to topics with NO topicdetail
+/# @semester_subject_topic_list = Programme.find(:all,:conditions=>['(ancestry_depth=? OR ancestry_depth=?) AND id NOT IN(?)',3,4,Topicdetail.all.map(&:topic_code).uniq], :order=>:combo_code)
+
+:javascript
+
+//<![CDATA[
+bkLib.onDomLoaded(function() {
+  new nicEditor().panelInstance('myNicEditor1');
+  new nicEditor().panelInstance('myNicEditor2');
+});
+//]]>
+
+  function add_fields(link, association, content) {  
+    var new_id = new Date().getTime();  
+    var regexp = new RegExp("new_" + association, "g");  
+    $(link).parent().before(content.replace(regexp, new_id));  
+  }
  
