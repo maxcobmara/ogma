@@ -2,7 +2,7 @@
   .col-md-offset-1
     / Nav tabs
     %ul.nav.nav-tabs
-      %li.active= link_to "Info", "#info", "data-toggle" => "tab"
+      %li= link_to "Info", "#info", "data-toggle" => "tab"
       %li= link_to t('staff.personal_details'),     "#personal",        "data-toggle" => "tab"
       %li= link_to t('staff.photo_upload'),         "#photo_upload",    "data-toggle" => "tab"
       %li= link_to t('staff.employment_details'),   "#employment",      "data-toggle" => "tab"
@@ -23,7 +23,7 @@
     .tab-content{style:"padding-top:1em"}
     
       //Info Tab
-      #info.tab-pane.active
+      #info.tab-pane
         .col-md-offset-2
           .form-group
             .col-sm-2.control-label
@@ -353,24 +353,28 @@
 
       #finance.tab-pane
         .row
-          .col-md-offset-2
+          .col-md-offset-1
             //TODO Show picture as well              
             .form-group
               .col-sm-2.control-label
-                = f.label t 'staff.kwspcode', for: :kwspcode
+                = f.label t 'staff.finance.kwspcode', for: :kwspcode
               .col-md-3
                 = f.text_field :kwspcode, class: 'form-control'
               
             .form-group
               .col-sm-2.control-label
-                = f.label t 'staff.taxcode', for: :taxcode
+                = f.label t 'staff.finance.taxcode', for: :taxcode
               .col-md-3
                 = f.text_field :taxcode, class: 'form-control'
                 
+            .form-group
+              .col-sm-2.control-label
+                = f.label t 'staff.banks.title'
+                
         .row
-          .col-sm-offset-2.col-sm-1= t 'staff.banks.bankname'
-          .col-sm-2= t 'staff.bank.bankaccno'
+          .col-sm-offset-2.col-sm-2= t 'staff.banks.bankaccno'
           .col-sm-2= t 'staff.bank.bankacctype'
+          .col-sm-3= t 'staff.bank.bankname'
           
         - f.fields_for :bankaccounts do |builder|
           = render 'bankaccount_fields', :f => builder
@@ -417,7 +421,6 @@
           .col-sm-1= t 'staff.phone'
           .col-sm-2 Profession
           .col-sm-4 Address
-          %hr
         - f.fields_for :kins do |builder|
           = render 'kin_fields', :f => builder
         .row

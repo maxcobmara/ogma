@@ -1,7 +1,10 @@
-.row.fields
-  .col-sm-offset-2.col-sm-1= f.collection_select :bank_id, Bank.all, :id, :long_name, {include_blank: true}, {class: 'selectpicker', "data-width"=>"80px"}
-  .col-sm-2= f.text_field :account_no, :size => 20, :placeholder => "account_no"
-  .col-sm-2= f.select :account_type, DropDown::BANKTYPE, {prompt: "Select"}, {class: 'selectpicker', "data-width"=>"80px"}
-  .col-sm-1
-    = f.hidden_field :_destroy
-    = link_to image_tag("delete.png", :border => 0, :title => 'Remove'), class: "remove_fields"
+%fieldset
+  = f.hidden_field :_destroy
+  .row
+    .col-sm-offset-2.col-sm-2= f.text_field :account_no, placeholder: "account_no", class: 'form-control'
+    .col-sm-2= f.select :account_type, DropDown::BANKTYPE, {prompt: "Select"}, {class: 'selectpicker', "data-width"=>"240px"}
+    .col-sm-3= f.collection_select :bank_id, Bank.all, :id, :long_name, {include_blank: true}, {class: 'selectpicker', "data-width"=>"auto"}
+    .col-sm-1
+      = link_to content_tag(:i, "", class: "fa fa-trash-o"), data: {"data-toggle" => "tooltip", title: "Delete"}, class: "btn btn-danger remove_fields"
+  :javascript
+    $('.selectpicker').selectpicker('render');
