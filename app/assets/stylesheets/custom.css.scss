@@ -176,7 +176,7 @@ input {height: auto !important;}
 
 input[type=checkbox] {width:13px; height:13px; *overflow: hidden; }
 .form-group {
-	padding: 1em 0;
+	padding: 0.5em 0;
 }
 
 
@@ -249,7 +249,13 @@ ul.ui-autocomplete {
   }
 } 
 
+
+/* forms */
 .datepicker {z-index: 1151 !important;}
+.form-inline .form-group{
+    margin-left: 0;
+    margin-right: 0;
+}
 
 
 span.i {font-style:normal !important;}

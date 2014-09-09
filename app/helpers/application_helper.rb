@@ -10,6 +10,8 @@ module ApplicationHelper
     end
   end
   
+ 
+  
   #nested_attribute_helper
   #def link_to_add_fields(name, f, association)
     #new_object = f.object.send(association).klass.new
@@ -28,9 +30,9 @@ module ApplicationHelper
     link_to name, "#", :onclick => h("add_fields(this, \"#{association}\", \"#{escape_javascript(fields)}\")"), :class => cssClass, :title => title 
   end
   
-  #def link_to_remove_fields(name, f)
-   # f.hidden_field(:_destroy) + link_to_function(name, "remove_fields(this)")
-  #end
+  def link_to_remove_fields(name, f)
+    f.hidden_field(:_destroy) + link_to_function(name, "remove_fields(this)")
+  end
   
   def currency(value)
     number_to_currency(value, :unit => "RM ", :separator => ".", :delimiter => ",", :precision => 2)

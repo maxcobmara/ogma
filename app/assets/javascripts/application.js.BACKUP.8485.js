@@ -13,7 +13,10 @@
 //= require jquery
 //= require jquery.ui.autocomplete
 //= require jquery_ujs
+<<<<<<< HEAD
 //= require nicEdit
+//= require_tree
+=======
 //= require_tree
 
 // See http://stackoverflow.com/a/16984739/64904
@@ -48,3 +51,4 @@ $(function() {
     }
   });
 });
+>>>>>>> 77ff41961b56534c14dbe311ff291422d9fc6e7e
