@@ -74,7 +74,7 @@ class Asset::AssetsController < ApplicationController
   
   def kewpa4
     if params[:search]
-      @assets = Asset.find(:all, :conditions => ['substring(assetcode, 18, 2 ) =? AND assettype =?', "#{params[:search]}", 1])
+      @assets = Asset.where('substring(assetcode, 18, 2 ) =? AND assettype =?', "#{params[:search]}", 1)
       respond_to do |format|
         format.pdf do
           pdf = Kewpa4Pdf.new(@assets, view_context)
@@ -84,7 +84,7 @@ class Asset::AssetsController < ApplicationController
                  end
              end
         else
-    @assets = Asset.where(assettype: 1)
+    @assets = Asset.find(assettype: 1)
     respond_to do |format|
       format.pdf do
         pdf = Kewpa4Pdf.new(@assets, view_context)
@@ -98,7 +98,7 @@ end
   
   def kewpa5
     if params[:search]
-      @assets = Asset.find(:all, :conditions => ['substring(assetcode, 18, 2 ) =? AND assettype =?', "#{params[:search]}", 2])
+      @assets = Asset.where('substring(assetcode, 18, 2 ) =? AND assettype =?', "#{params[:search]}", 2)
       respond_to do |format|
         format.pdf do
           pdf = Kewpa5Pdf.new(@assets, view_context)
@@ -108,7 +108,7 @@ end
         end
       end
     else
-    @assets = Asset.where(assettype: 2).order(assetcode: :asc)
+    @assets = Asset.find(assettype: 2).order(assetcode: :asc)
     respond_to do |format|
       format.pdf do
         pdf = Kewpa5Pdf.new(@assets, view_context)
@@ -122,7 +122,7 @@ end
   
   def kewpa6
     @asset = Asset.find(params[:id])
-    @loanable = AssetLoan.find(:all, :conditions => ['asset_id=? AND is_approved!=?',params[:id], false], :order=>'returned_on ASC')
+    @loanable = AssetLoan.where('asset_id=? AND is_approved!=?',params[:id], false, :order=>'returned_on ASC')
     respond_to do |format|
       format.pdf do
         pdf = Kewpa6Pdf.new(@asset, view_context)
