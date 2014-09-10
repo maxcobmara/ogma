@@ -3,7 +3,7 @@
   A
   = hidden_field "examquestion[examanswers_attributes][0]",:item, :value => "A" 
   - unless @examquestion.id.nil? || @examquestion.id.blank?
-    - if (Examanswer.find(:all, :conditions=>['examquestion_id=?',@examquestion.id]).count) > 0 
+    - if (Examanswer.where('examquestion_id=?',@examquestion.id).count) > 0 
       = hidden_field "examquestion[examanswers_attributes][0]",:id, :value => @examquestion.examanswers[0].id
       = text_field "examquestion[examanswers_attributes][0]",:answer_desc, :size=>60, :value=>@examquestion.examanswers[0].answer_desc 
     - else 
@@ -18,7 +18,7 @@
   B
   = hidden_field "examquestion[examanswers_attributes][1]",:item, :value => "B" 
   - unless @examquestion.id.nil? || @examquestion.id.blank?
-    - if (Examanswer.find(:all, :conditions=>['examquestion_id=?',@examquestion.id]).count) > 0 
+    - if (Examanswer.where('examquestion_id=?',@examquestion.id).count) > 0 
       = hidden_field "examquestion[examanswers_attributes][1]",:id, :value => @examquestion.examanswers[1].id
       = text_field "examquestion[examanswers_attributes][1]",:answer_desc, :size=>60, :value=>@examquestion.examanswers[1].answer_desc 
     - else 
@@ -33,7 +33,7 @@
   C
   = hidden_field "examquestion[examanswers_attributes][2]",:item, :value => "C" 
   - unless @examquestion.id.nil? || @examquestion.id.blank?
-    - if (Examanswer.find(:all, :conditions=>['examquestion_id=?',@examquestion.id]).count) > 0 
+    - if (Examanswer.where('examquestion_id=?',@examquestion.id).count) > 0 
       = hidden_field "examquestion[examanswers_attributes][2]",:id, :value => @examquestion.examanswers[2].id
       = text_field "examquestion[examanswers_attributes][2]",:answer_desc, :size=>60, :value=>@examquestion.examanswers[2].answer_desc 
     - else 
@@ -48,7 +48,7 @@
   D
   = hidden_field "examquestion[examanswers_attributes][3]",:item, :value => "D" 
   - unless @examquestion.id.nil? || @examquestion.id.blank?
-    - if (Examanswer.find(:all, :conditions=>['examquestion_id=?',@examquestion.id]).count) > 0 
+    - if (Examanswer.where('examquestion_id=?',@examquestion.id).count) > 0 
       = hidden_field "examquestion[examanswers_attributes][3]",:id, :value => @examquestion.examanswers[3].id
       = text_field "examquestion[examanswers_attributes][3]",:answer_desc, :size=>60, :value=>@examquestion.examanswers[3].answer_desc 
     - else 

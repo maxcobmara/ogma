@@ -1,4 +1,5 @@
 class Training::TopicdetailsController < ApplicationController
+  before_action :set_topicdetail, only: [:show, :edit, :update, :destroy]
   # GET /topicdetails
   # GET /topicdetails.xml
   def index 
@@ -30,19 +31,28 @@ class Training::TopicdetailsController < ApplicationController
   # GET /topicdetails/new.xml
   def new
     @topicdetail = Topicdetail.new
-    @lecturer_programme = current_user.staff.position.unit
-    unless @lecturer_programme.nil?
-      @programme = Programme.find(:first,:conditions=>['name ILIKE (?) AND ancestry_depth=?',"%#{@lecturer_programme}%",0])
-    end
-    unless @programme.nil?
-      @programme_id = @programme.id 
-      @topic_programme = Programme.find(@programme_id).descendants.at_depth(3)
-      @subtopic_programme = Programme.find(@programme_id).descendants.at_depth(4)
-      @topic_subtopic = @topic_programme + @subtopic_programme
-      @semester_subject_topic_list = Programme.find(:all,:conditions=>['id IN(?) AND id NOT IN(?)',@topic_subtopic, Topicdetail.all.map(&:topic_code).compact.uniq], :order=>:combo_code)
-    else
-      @semester_subject_topic_list = Programme.find(:all,:conditions=>['ancestry_depth=? OR ancestry_depth=?',3,4], :order=>:combo_code)
-    end
+    #@semester_subject_topic_list = Programme.where('ancestry_depth=? OR ancestry_depth=? AND id NOT IN(?)',3,4,Topicdetail.all.map(&:topic_code).uniq).order(:combo_code)
+    
+    #existing topicdetail matching programme (topic/subtopic)
+    @exist_valid_topicdetails_ids=Programme.joins(:topic_details).where('course_type=? or course_type=?','Topic','Subtopic').pluck(:id)
+    @semester_subject_topic_list = Programme.where('course_type=? or course_type=? and id not in (?)','Topic','Subtopic',@exist_valid_topicdetails_ids).sort_by{|x|x.parent}
+    
+    #@programme_listing = Programme.roots
+    #@subjects2 = Programme.all.at_depth(2).sort 
+    
+    #@lecturer_programme = current_user.staff.position.unit
+    #unless @lecturer_programme.nil?
+      #@programme = Programme.find(:first,:conditions=>['name ILIKE (?) AND ancestry_depth=?',"%#{@lecturer_programme}%",0])
+    #end
+    #unless @programme.nil?
+      #@programme_id = @programme.id 
+      #@topic_programme = Programme.find(@programme_id).descendants.at_depth(3)
+      #@subtopic_programme = Programme.find(@programme_id).descendants.at_depth(4)
+      #@topic_subtopic = @topic_programme + @subtopic_programme
+      #@semester_subject_topic_list = Programme.find(:all,:conditions=>['id IN(?) AND id NOT IN(?)',@topic_subtopic, Topicdetail.all.map(&:topic_code).compact.uniq], :order=>:combo_code)
+    #else
+      #@semester_subject_topic_list = Programme.find(:all,:conditions=>['ancestry_depth=? OR ancestry_depth=?',3,4], :order=>:combo_code)
+    #end
     respond_to do |format|
       format.html # new.html.erb
       format.xml  { render :xml => @topicdetail }
@@ -52,6 +62,8 @@ class Training::TopicdetailsController < ApplicationController
   # GET /topicdetails/1/edit
   def edit
     @topicdetail = Topicdetail.find(params[:id])
+    @semester_subject_topic_list = Programme.where(id: @topicdetail.topic_code)
+    #@semester_subject_topic_list = Programme.where('ancestry_depth=? OR ancestry_depth=? AND id NOT IN(?) OR id=?',3,4,Topicdetail.all.map(&:topic_code).uniq,@topicdetail.topic_code).order(:combo_code)
   end
 
   # POST /topicdetails
@@ -77,7 +89,7 @@ class Training::TopicdetailsController < ApplicationController
 
     respond_to do |format|
       if @topicdetail.update(topicdetail_params)
-        format.html { redirect_to(training_topicdetail_url, :notice => t('training.topicdetail.title')+t('actions.created')) }
+        format.html { redirect_to(training_topicdetail_url, :notice => t('training.topicdetail.title')+t('actions.updated')) }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }
@@ -98,7 +110,6 @@ class Training::TopicdetailsController < ApplicationController
     end
   end
   
-   
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_topicdetail
@@ -107,7 +118,7 @@ class Training::TopicdetailsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def topicdetail_params
-      params.require(:topicdetail).permit(:topic_name, :topic_code, :duration, :version_no, :objctives, :contents, :theory, :tutorial, :practical, :prepared_by)
+      params.require(:topicdetail).permit(:topic_name, :topic_code, :duration, :version_no, :objctives, :contents, :theory, :tutorial, :practical, :prepared_by, trainingnotes_attributes: [:id, :release, :title, :version, :document, :_destroy])
     end
     
 end

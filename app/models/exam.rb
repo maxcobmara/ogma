@@ -37,7 +37,7 @@ class Exam < ActiveRecord::Base
   end
   
   def self.search(search)
-    common_subject = Programme.find(:all, :conditions=>['course_type=?','Commonsubject']).map(&:id)
+    common_subject = Programme.where('course_type=?','Commonsubject').map(&:id)
     if search 
       if search == '0'
         @exams = Exam.all
@@ -63,25 +63,25 @@ class Exam < ActiveRecord::Base
   
   #10Apr2013
   def total_marks   #to confirm full marks calculation - based on questiontype & exam paper format..
-      sum = Exam.find(:all, :joins => :examquestions, :conditions=>['exam_id=? and questiontype=?', id, 'MCQ']).count 
-      seq_count = Exam.find(:all, :joins => :examquestions, :conditions=>['exam_id=? and questiontype=?', id, 'SEQ']).count 
+      sum = Exam.joins(:examquestions).where('exam_id=? and questiontype=?', id, 'MCQ').count 
+      seq_count = Exam.joins(:examquestions).where('exam_id=? and questiontype=?', id, 'SEQ').count 
       
-      meq_q = Exam.find(:all, :joins => :examquestions, :conditions=>['exam_id=? and questiontype=?', id, 'MEQ'],:select=>'marks').map{|x|x.marks}  
+      meq_q = Exam.joins(:examquestions).where('exam_id=? and questiontype=?', id, 'MEQ').pluck(:marks)#.map{|x|x.marks}  
       sum_meq=0
       meq_q.each do |t|
         sum_meq+=t.to_i
       end
-      acq_q = Exam.find(:all, :joins => :examquestions, :conditions=>['exam_id=? and questiontype=?', id, 'ACQ'],:select=>'marks').map{|x|x.marks}  
+      acq_q = Exam.joins(:examquestions).where('exam_id=? and questiontype=?', id, 'ACQ').pluck(:marks)#.map{|x|x.marks}  
       sum_acq=0
       acq_q.each do |t|
         sum_acq+=t.to_i
       end 
-      osci_q = Exam.find(:all, :joins => :examquestions, :conditions=>['exam_id=? and questiontype=?', id, 'OSCI'],:select=>'marks').map{|x|x.marks}  
+      osci_q = Exam.joins(:examquestions).where('exam_id=? and questiontype=?', id, 'OSCI').pluck(:marks)#.map{|x|x.marks}  
       sum_osci=0
       osci_q.each do |t|
         sum_osci+=t.to_i
       end
-      oscii_q = Exam.find(:all, :joins => :examquestions, :conditions=>['exam_id=? and questiontype=?', id, 'OSCII'],:select=>'marks').map{|x|x.marks}  
+      oscii_q = Exam.joins(:examquestions).where('exam_id=? and questiontype=?', id, 'OSCII').pluck(:marks)#.map{|x|x.marks}  
       sum_oscii=0 
       oscii_q.each do |t|
         sum_oscii+=t.to_i

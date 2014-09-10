@@ -1,0 +1,39 @@
+%fieldset
+  = f.hidden_field :_destroy
+  .row
+    .col-sm-8
+      - if f.object.document_file_name
+        %b=t('training.trainingnote.current_file')
+        = f.object.document_file_name
+        %br
+        = link_to (t 'training.trainingnote.download'), f.object.document.url
+        ||
+        = link_to "ALT", f.object.document.url 
+        %b=t('training.trainingnote.or')
+      - else
+        = f.label :document
+    .col-sm-4
+      %br
+      = f.label :release
+  .row
+    .col-sm-8
+      = f.file_field :document, class: 'form-control'
+    .col-sm-4
+      = f.text_field :release,  class: 'input-date'
+  .row 
+    .col-sm-8
+      = f.label :title
+      = f.text_field :title, :placeholder => 'Tajuk', :size => '5', class: 'form-control'
+    .col-sm-2
+      = f.label :version
+      = f.text_field :version, :placeholder => 'Versi', :size => '2', class: 'form-control'
+    .col-sm-1
+      /= link_to image_tag("delete.png", :border => 0, :title => 'Remove'), class: "remove_fields"
+      = link_to content_tag(:i, "", class: "fa fa-trash-o"), data: {"data-toggle" => "tooltip", title: "Delete"}, class: "btn btn-danger remove_fields"
+
+  :javascript
+    $('.input-date').datetimepicker({
+     timepicker:false,
+       format: "Y-m-d",
+       autoclose: true
+     });
