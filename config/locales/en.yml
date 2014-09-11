@@ -919,6 +919,7 @@ en:
       minor: Minor
       elective: Elective
     topicdetail:
+      create: Create Topic Detail
       title: Topic Detail
       new: New Topic Detail
       edit: Edit Topic Detail
@@ -946,6 +947,48 @@ en:
       current_file: "Current file : "
       download: Download
       or: Or reselect file
+    lesson_plan:
+      title: Lesson Plan
+      reporting: Lesson and Learning Activity Report
+      new: New Lesson Plan
+      edit: Edit Lesson Plan
+      lecturer: Lecturer
+      intake_id: Intake
+      student_qty: Total of Student
+      semester: Semester
+      topic: Topic
+      lecture_date: Lecture Date
+      start_time: Start Time
+      end_time: End Time
+      reference: Reference
+      is_submitted: "Submitted?"
+      submitted_on: Submission Date
+      hod_approved: HOD Approval
+      hod_approved2: Head of Department Approval
+      hod_approved_on: Approval Date
+      hod_rejected: Head of Department Rejection
+      hod_rejected_on: Rejection Date
+      prerequisites: Prerequisites
+      year: Tahun
+      reason: Reason
+      prepared_by: Prepared By
+      endorsed_by: Endorsed By
+      #condition_is_good: 
+      #condition_isnotgood:
+      condition_desc: "Condition Description (Class)"
+      training_aids: Training Aids
+      summary: Summary
+      total_absent: Total Absent
+      report_submit: "Report Submitted?"
+      report_submit_on: Report Submission Date
+      report_endorsed: "Report Endorsed?"
+      report_endorsed_on: Report Endorsement Date
+      report_summary: Report Summary
+      schedule: Timetable
+      checked: Checked
+      not_checked: Not Checked
+      y1: Yes
+      n1: No
  
   campus:
     address: 
@@ -1106,6 +1149,39 @@ en:
         release: Release
         title: Title
         version: Version
+      lesson_plan:
+        lecturer: Lecturer
+        intake_id: Intake
+        student_qty: Total of Student
+        semester: Semester
+        topic: Topic
+        lecture_date: Lecture Date
+        start_time: Start Time
+        end_time: End Time
+        reference: Reference
+        is_submitted: "Submitted?"
+        submitted_on: Submission Date
+        hod_approved2: Head of Department Approval
+        hod_approved_on: Approval Date
+        hod_rejected: Head of Department Rejection
+        hod_rejected_on: Rejection Date
+        prerequisites: Prerequisites
+        year: Tahun
+        reason: Reason
+        prepared_by: Prepared By
+        endorsed_by: Endorsed By
+        #condition_is_good: 
+        #condition_isnotgood:
+        condition_desc: "Condition Description (Class)"
+        training_aids: Training Aids
+        summary: Summary
+        total_absent: Total Absent
+        report_submit: "Report Submitted?"
+        report_submit_on: Report Submission Date
+        report_endorsed: "Report Endorsed?"
+        report_endorsed_on: Report Endorsement Date
+        report_summary: Report Summary
+        schedule: Timetable
 
     prompt:
       select_creator: Select Creator

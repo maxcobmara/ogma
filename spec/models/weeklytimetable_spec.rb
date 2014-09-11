@@ -27,5 +27,12 @@ describe Weeklytimetable do
   it { should respond_to(:reason) }
   
   it { should be_valid }    
+  
+  #validates_presence_of :programme_id, :semester, :intake_id, :format1, :format2;
+  
+   describe "when programme_id is not present" do
+    before { @weeklytimetable.programme_id = nil }
+    it { should_not be_valid }
+  end
 
 end

@@ -109,7 +109,7 @@ class StaffAttendance < ActiveRecord::Base
     #TESTING OK:
     #find(:all, :conditions => ["trigger is null AND log_type =? AND thumb_id=? AND logged_at::time > ?", "I", Staff.where(id:25).first.thumb_id, "07:00" ], :order => 'logged_at')
     #SEPATUTNYA:
-    find(:all, :conditions => ["trigger=? AND log_type =? AND thumb_id=? AND logged_at::time > ?", true, "I", Staff.where(id:25).first.thumb_id, start_time ], :order => 'logged_at')
+   where("trigger=? AND log_type =? AND thumb_id=? AND logged_at::time > ?", true, "I", Staff.where(id:25).first.thumb_id, start_time).order('logged_at')
   end
   def self.find_myearly
     #staffshift_id = Staff.find(:first, :conditions => ['thumb_id=?', User.current_user.staff.thumb_id]).staff_shift_id
