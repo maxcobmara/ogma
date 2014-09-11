@@ -122,7 +122,7 @@ end
   
   def kewpa6
     @asset = Asset.find(params[:id])
-    @loanable = AssetLoan.where('asset_id=? AND is_approved!=?',params[:id], false, :order=>'returned_on ASC')
+    @loanable = AssetLoan.where('asset_id=? AND is_approved!=?',params[:id], false).order(assetcode: :asc)
     respond_to do |format|
       format.pdf do
         pdf = Kewpa6Pdf.new(@asset, view_context)
