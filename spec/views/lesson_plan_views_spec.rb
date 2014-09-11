@@ -5,7 +5,7 @@
    before { @lesson_plan = FactoryGirl.create(:lesson_plan) }
    subject { page }
    
-   #unremark - belows lines  - line  20 onwards (test for index page)
+   #unremark - belows lines  - line  20 onwards (test for index page) - require current_user to work
    #Errors arised :
      #13) Lesson Plan Pages Lesson Plan Index page 
      #Failure/Error: before { visit training_lesson_plans_path }

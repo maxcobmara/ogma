@@ -87,7 +87,15 @@ class Training::LessonPlansController < ApplicationController
   
   def lesson_plan
       @lesson_plan = LessonPlan.find(params[:id])
-      render :layout => 'report'
+      #render :layout => 'report'
+      #respond_to do |format|
+      #format.pdf do
+        #pdf = Borang_maklumat_staffPdf.new(@staff, view_context)
+        #send_data pdf.render, filename: "borang_maklumat_staff-{Date.today}",
+                              #type: "application/pdf",
+                              #disposition: "inline"
+      #end
+    #end
   end
   
   def lessonplan_reporting
@@ -95,11 +103,23 @@ class Training::LessonPlansController < ApplicationController
       
   end
   def index_report
-      @lesson_plans = LessonPlan.where('hod_approved=?', true)
+      #@lesson_plans = LessonPlan.where('hod_approved=?', true) 
+      @search = LessonPlan.search(params[:q])
+      @lesson_plans2 = @search.result.where('hod_approved=?', true)
+      @lesson_plans3 = @lesson_plans2.sort_by{|t|t.lecturer} 
+      @lesson_plans =  Kaminari.paginate_array(@lesson_plans3).page(params[:page]||1) 
   end
-  def lesson_plan_report
+  def lesson_report
       @lesson_plan = LessonPlan.find(params[:id])
-      render :layout => 'report'
+      #render :layout => 'report'
+      #respond_to do |format|
+      #format.pdf do
+        #pdf = Borang_maklumat_staffPdf.new(@staff, view_context)
+        #send_data pdf.render, filename: "borang_maklumat_staff-{Date.today}",
+                              #type: "application/pdf",
+                              #disposition: "inline"
+      #end
+    #end
   end
   
   private

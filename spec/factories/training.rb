@@ -125,7 +125,7 @@ FactoryGirl.define do
       report_summary "Some Summary"
       association :schedule_item, factory: :weeklytimetable_detail
       #sequence(:schedule) { |n| "#{n}" }
-      #depends on relationship with weeklytimetable_details table
+      #depends on relationship with weeklytimetable_detail table
     end
   
 end

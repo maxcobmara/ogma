@@ -54,13 +54,13 @@ class WeeklytimetableDetail < ActiveRecord::Base
    def get_start_time
      timeslot = time_slot2 if is_friday == false || is_friday == nil
      timeslot = time_slot if is_friday == true 
-     "#{TimetablePeriod.find(timeslot).start_at.strftime("%H:%M %p")}"
+     "#{TimetablePeriod.find(timeslot).start_at.strftime("%l:%M %p")}"
    end   
    
    def get_end_time
      timeslot = time_slot2 if is_friday == false || is_friday == nil
      timeslot = time_slot if is_friday == true 
-     "#{TimetablePeriod.find(timeslot).end_at.strftime("%H:%M %p")}"
+     "#{TimetablePeriod.find(timeslot).end_at.strftime("%l:%M %p")}"
    end   
    
    def get_time_slot

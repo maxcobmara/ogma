@@ -137,6 +137,10 @@ Ogma::Application.routes.draw do
     resources :academic_sessions
     resources :topicdetails
     resources :lesson_plans do
+      member do
+	get :lesson_report
+	get :lesson_plan
+      end
       collection do
 	get :index_report
       end

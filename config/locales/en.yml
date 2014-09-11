@@ -949,9 +949,12 @@ en:
       or: Or reselect file
     lesson_plan:
       title: Lesson Plan
+      title2: Lesson and Learning
       reporting: Lesson and Learning Activity Report
       new: New Lesson Plan
       edit: Edit Lesson Plan
+      descriptions: Descriptions
+      methodologies: Methodologies
       lecturer: Lecturer
       intake_id: Intake
       student_qty: Total of Student
@@ -973,22 +976,34 @@ en:
       reason: Reason
       prepared_by: Prepared By
       endorsed_by: Endorsed By
+      location: Location
+      class_condition: Class Condition
+      reason_condition: "Reason(s) (If non-satisfactory)"
       #condition_is_good: 
       #condition_isnotgood:
       condition_desc: "Condition Description (Class)"
+      satisfactory: Satisfactory
+      not_satisfactory: Not Satisfactory
       training_aids: Training Aids
+      lecturer_review: Lecturer Review
+      tpa_hod_review: "TPA/Head of Programme Review"
+      awaiting_review: "Awaiting review by TPA / Head of Programme"
       summary: Summary
       total_absent: Total Absent
       report_submit: "Report Submitted?"
       report_submit_on: Report Submission Date
-      report_endorsed: "Report Endorsed?"
-      report_endorsed_on: Report Endorsement Date
+      report_endorsed: "Report Reviewed?"
+      report_endorsed_on: Report Review Date
       report_summary: Report Summary
       schedule: Timetable
-      checked: Checked
-      not_checked: Not Checked
-      y1: Yes
-      n1: No
+      trainingnotes: Training Notes
+      content_subtopic: "Content / Subtopic"
+      lecturer_activity: Lecturer Activity
+      student_activity: Student Activity
+      evaluation: Evaluation
+      time: Time
+      group: Group
+      schedule_removed: "Schedule was not defined or removed. Please select a schedule."
  
   campus:
     address: 
@@ -1015,6 +1030,8 @@ en:
       destroy: Destroy
       approve: Approve
       edit_admin: "Edit (Admin)"
+      back_lesson_plan: Lesson Plan List
+      back_lesson_report: Lesson Report List
     label:
       examquestion:
         creator_id: Creator 

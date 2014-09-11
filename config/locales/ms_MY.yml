@@ -945,9 +945,12 @@ ms_MY:
       or: Atau pilih semula fail
     lesson_plan:
       title: Pelan Pengajaran
+      title2: Pengajaran dan Pembelajaran
       reporting: Laporan Aktiviti Pengajaran dan Pembelajaran
       new: Pelan Pengajaran Baru
       edit: Sunting Pelan Pengajaran
+      descriptions: Deskripsi
+      methodologies: Metodologi
       lecturer: Pensyarah
       intake_id: Ambilan
       student_qty: Jumlah Pelatih
@@ -966,14 +969,22 @@ ms_MY:
       hod_rejected: Penolakan Ketua Jabatan
       hod_rejected_on: Tarikh Penolakan
       prerequisites: "Pra-Syarat"
-      year: Year
+      year: Tahun
       reason: Sebab
       prepared_by: Disediakan Oleh
       endorsed_by: Kelulusan Oleh
+      location: Lokasi
+      class_condition: Keadaan Kelas
+      reason_condition: "Sebab (Jika tidak Memuaskan)"
       #condition_is_good: 
       #condition_isnotgood:
       condition_desc: "Deskripsi Keadaan Kelas"
-      training_aids: Alan Bantuan Mengajar
+      satisfactory: Memuaskan
+      not_satisfactory: Tidak Memuaskan
+      training_aids: Alatan Bantuan Mengajar
+      lecturer_review: Ulasan Pengajar
+      tpa_hod_review: "Ulasan TPA / Ketua Program"
+      awaiting_review: "Menunggu Ulasan oleh TPA / Ketua Program"
       summary: "Ringkasan (Ulasan)"
       total_absent: Jumlah Tidak Hadir
       report_submit: "Laporan Telah Dihantar?"
@@ -982,10 +993,14 @@ ms_MY:
       report_endorsed_on: Tarikh Kelulusan Laporan
       report_summary: "Ringkasan Laporan (Ulasan)"
       schedule: Jadual Waktu
-      checked: Disemak
-      not_checked: Tidak Disemak
-      y1: Ya
-      n1: Tidak
+      trainingnotes: Nota Latihan
+      content_subtopic: "Kandungan / Subtopik"
+      lecturer_activity: Aktiviti Pengajar
+      student_activity: Aktiviti Pelatih
+      evaluation: Penilaian
+      time: Masa
+      group: Kumpulan
+      schedule_removed: "Jadual Waktu tidak dipilih atau telah dikeluarkan. Sila pilih Jadual Waktu."
       
   campus:
     address: 
@@ -1007,6 +1022,8 @@ ms_MY:
       destroy: Padam
       approve: Kelulusan
       edit_admin : "Sunting (Pentadbir)"
+      back_lesson_plan: Senarai Pelan Pengajaran
+      back_lesson_report: Senarai Laporan Pengajaran
     label:
       examquestion:
         creator_id: Disediakan Oleh

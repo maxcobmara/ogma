@@ -1,0 +1,40 @@
+- model_class=LessonPlan
+.col-md-8.col-md-offset-1
+  %dl.dl-horizontal
+    %dt=t 'training.lesson_plan.student_qty', :default => model_class.human_attribute_name(:student_qty)+":"
+    %dd=h @lesson_plan.student_qty 
+            
+    %dt=t 'training.lesson_plan.year', :default => model_class.human_attribute_name(:year)+":"
+    %dd=h @lesson_plan.year
+            
+    %dt=t 'training.lesson_plan.semester', :default => model_class.human_attribute_name(:semester)+":"
+    %dd=h @lesson_plan.semester
+            
+    %dt=t 'training.lesson_plan.topic', :default => model_class.human_attribute_name(:topic)+":"
+    %dd=h @lesson_plan.try(:schedule_item).try(:weeklytimetable_topic).try(:full_parent)
+
+    %dt=t 'training.lesson_plan.lecture_title', :default => model_class.human_attribute_name(:lecture_title)+":"
+    %dd=h @lesson_plan.lecture_title
+            
+    %dt=t 'training.lesson_plan.lecture_date', :default => model_class.human_attribute_name(:lecture_date)+":"
+    %dd=h @lesson_plan.try(:schedule_item).try(:get_date_for_lesson_plan)
+              
+    %dt=t 'training.lesson_plan.start_time', :default => model_class.human_attribute_name(:start_time)+":"
+    %dd=h @lesson_plan.try(:schedule_item).try(:get_start_time)
+            
+    %dt=t 'training.lesson_plan.end_time', :default => model_class.human_attribute_name(:end_time)+":"
+    %dd=h @lesson_plan.try(:schedule_item).try(:get_end_time)
+            
+    %dt=t 'training.lesson_plan.prerequisites', :default => model_class.human_attribute_name(:prerequisites)+":"
+    %dd=h @lesson_plan.prerequisites
+            
+    %dt=t 'training.lesson_plan.objective', :default => model_class.human_attribute_name(:prerequisites)+":"
+    %dd=h check_kin {simple_format(@lesson_plan.try(:schedule_item).try(:weeklytimetable_topic).try(:topic_details).last.objctives)}
+        
+    %dt=t 'training.lesson_plan.reference', :default => model_class.human_attribute_name(:reference)+":"
+    %dd=h @lesson_plan.reference
+            
+    %dt=t 'training.lesson_plan.trainingnotes', :default => model_class.human_attribute_name(:trainingnotes)+":"
+    %dd
+      - @lesson_plan.trainingnotes.each_with_index do |trainingnote, count|
+        =count.to_s+") "+trainingnote.title+" : "+trainingnote.document_file_name 

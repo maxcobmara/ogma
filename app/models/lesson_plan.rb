@@ -1,6 +1,7 @@
 class LessonPlan < ActiveRecord::Base
   
-  #before_save :set_to_nil_where_false,:assign_topic_intake_id, :copy_attached_doc_trainingnotes
+  #hide before_save to pass rspec - requires current_user to work
+  before_save :set_to_nil_where_false,:assign_topic_intake_id, :copy_attached_doc_trainingnotes
 
   belongs_to :lessonplan_owner,   :class_name => 'Staff',                 :foreign_key => 'lecturer'
   belongs_to :lessonplan_creator, :class_name => 'Staff',                 :foreign_key => 'prepared_by'
@@ -126,6 +127,15 @@ class LessonPlan < ActiveRecord::Base
       approver = Staff.find(:all, :joins=>:position, :conditions=>['unit=? AND staff_id IN(?)', programme_name, staff_with_kprole])
       approver  
   end
+  
+  def self.start_end_time(l)
+    "#{l.start_meth.strftime('%H:%M') }"+" - "+"#{l.end_meth.strftime('%H:%M %p') }"
+  end
+  
+  def self.start_end_time_in_minutes(l)
+    "("+"#{ (((l.end_meth - l.start_meth )/60 ) % 60).to_i }"+" minutes)"
+  end
+  
 end
 
 #
