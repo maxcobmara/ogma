@@ -1,0 +1,64 @@
+- model_class = LessonPlan
+.page-header
+  %h1= t('training.lesson_plan.reporting')
+  
+.navbar.navbar-inverse{role: "navigation", style: "padding-right:40px;"}
+  %ul.nav.navbar-nav
+    /%li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'actions.new'))), new_training_lesson_plan_path
+  %ul.nav.navbar-nav.navbar-right
+    %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "toga"
+    %li= link_to content_tag(:li, fa_icon("print", text: (t 'actions.print'))), "#", class: 'bogus'
+
+.row.filter{style: "display:none;"}
+  .col-md-2
+   
+.row
+  %table.table-striped.table-hover.ogma
+    %thead
+      %tr
+        %th= sort_link(@search, :lecturer, (t 'training.lesson_plan.lecturer'))
+        %th= sort_link(@search, :intake, (t 'training.lesson_plan.intake'))
+        %th= t 'training.lesson_plan.student_qty'
+        %th= t 'training.lesson_plan.year'
+        %th= t 'training.lesson_plan.semester'
+        %th= sort_link(@search, :topic, (t 'training.lesson_plan.topic'))
+        %th= sort_link(@search, :lecture_title, (t 'training.lesson_plan.lecture_title'))
+        %th= sort_link(@search, :lecture_date, (t 'training.lesson_plan.lecture_date'))
+        %th= t 'training.lesson_plan.start_time'
+        %th= t 'training.lesson_plan.end_time'
+        %th= sort_link(@search, :report_submit, (t 'training.lesson_plan.report_submit'))
+        %th= sort_link(@search, :report_endorsed, (t 'training.lesson_plan.report_endorsed'))
+            
+    %tbody
+    = render "index_search2"
+    
+    - current_roles=[]
+    - current_user.roles.each do |x|
+      - current_roles << x.name
+        
+    - @lesson_plans.each do |lesson_plan|
+      /- if (lesson_plan.lecturer == User.current_user.staff_id) || (lesson_plan.endorsed_by == User.current_user.staff_id) ||(current_roles.include? 'Administration')|| (lesson_plan.lecturer == User.current_user.staff_id)
+      - if (lesson_plan.lecturer == current_user.staff_id) || (lesson_plan.endorsed_by == current_user.staff_id) ||(current_roles.include? 'Administration')|| (lesson_plan.lecturer == current_user.staff_id)
+        %tr
+          %td=h link_to lesson_plan.lessonplan_owner.name, training_lesson_plan_path(lesson_plan)
+          %td=h lesson_plan.lessonplan_intake.name
+          %td=h lesson_plan.student_qty
+          %td=h lesson_plan.year
+          %td=h lesson_plan.semester
+          %td=h lesson_plan.schedule_item.try(:weeklytimetable_topic).try(:subject_list)
+          %td=h lesson_plan.lecture_title
+          %td=h lesson_plan.try(:lecture_date).try(:strftime, '%d %b %Y')
+          %td=h lesson_plan.try(:start_time).try(:strftime, '%H:%M')
+          %td=h lesson_plan.try(:end_time).try(:strftime, '%H:%M')
+          %td=h lesson_plan.is_submitted? ? image_tag("tick.png") : image_tag("cross.png")
+          %td=h lesson_plan.report_endorsed? ? image_tag("tick.png") : image_tag("cross.png") 
+
+  .right{style:"padding:0 30px; margin:0;"}= paginate @lesson_plans, :theme => 'twitter-bootstrap-3'
+
+
+:javascript
+$(document).ready(function(){
+  $('.toga').click(function() {
+    $('.search_row').toggle(); 
+  });
+})

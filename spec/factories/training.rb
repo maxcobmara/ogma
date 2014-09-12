@@ -70,6 +70,63 @@ FactoryGirl.define do
       hod_rejected_on {Date.today+(366*rand()).to_f}
       reason "Some Reasons"
     end
+    
+    factory :weeklytimetable_detail do
+      
+      association :weeklytimetable_subject, factory: :programme
+      association :weeklytimetable_topic, factory: :programme
+      time_slot {[0,8,10,12].sample}
+      association :weeklytimetable_lecturer, factory: :staff
+      association :weeklytimetable, factory: :weeklytimetable
+      day2 {[1,2,3,4,6,7].sample}
+      is_friday {rand(2) == 1}
+      time_slot2 {rand(0..7)}
+      location "Some location"
+      #association :weeklytimetable_location, factory: :location
+      lecture_method {rand(1..3)}
+      
+    end
+    
+    factory :lesson_plan do
+      association :lessonplan_owner, factory: :staff
+      association :lessonplan_intake, factory: :intake
+      sequence(:student_qty) { |n| "#{n}" }
+      semester {rand(1..6)}
+      topic {|n| "#{n}"}#depends on relationship with weeklytimetable_details table
+      lecture_title "Some Lecture Title"
+      lecture_date {Date.today+(366*rand()).to_f}
+      start_time {Time.at(rand * Time.now.to_f)}
+      end_time {Time.at(rand * Time.now.to_f)}
+      reference "Some Reference"
+      is_submitted {rand(2) == 1}
+      submitted_on {Date.today+(366*rand()).to_f}
+      hod_approved {rand(2) == 1}
+      hod_approved_on {Date.today+(366*rand()).to_f}
+      hod_rejected {rand(2) == 1}
+      hod_rejected_on {Date.today+(366*rand()).to_f}
+      data_file_name "Some Name"
+      data_content_type { |n| "Some Content Type #{n}"}
+      data_file_size {rand(5242880)}
+      data_updated_ot {Date.today+(366*rand()).to_f}
+      prerequisites "Some prerequisite"
+      year {rand(1..3)}
+      reason "Some Reason"
+      association :endorser, factory: :staff
+      condition_isgood {rand(2) == 1}
+      condition_isnotgood {rand(2) == 1}
+      condition_desc "Some conditon description"
+      training_aids "Some Training Aids"
+      summary "Some Summary"
+      sequence(:total_absent) {|n| "#{n}"}
+      report_submit {rand(2) == 1}
+      report_submit_on {Date.today+(366*rand()).to_f}
+      report_endorsed {rand(2) == 1}
+      report_endorsed_on {Date.today+(366*rand()).to_f}
+      report_summary "Some Summary"
+      association :schedule_item, factory: :weeklytimetable_detail
+      #sequence(:schedule) { |n| "#{n}" }
+      #depends on relationship with weeklytimetable_detail table
+    end
   
 end
 

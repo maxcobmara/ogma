@@ -1,0 +1,24 @@
+- model_class = LessonPlan
+.col-md-9.col-md-offset-1
+  %dl.dl-horizontal
+    - @lesson_plan.lessonplan_methodologies.each do |l| 
+      %hr
+      %dt= t 'training.lesson_plan.time'
+      %dd
+        =h LessonPlan.start_end_time(l)
+        =h LessonPlan.start_end_time_in_minutes(l)
+              
+      %dt=t 'training.lesson_plan.content_subtopic'
+      %dd= simple_format(l.content)
+              
+      %dt=t 'training.lesson_plan.lecturer_activity'
+      %dd= simple_format(l.lecturer_activity) 
+              
+      %dt=t 'training.lesson_plan.student_activity'
+      %dd= simple_format(l.student_activity) 
+              
+      %dt=t 'training.lesson_plan.training_aids'
+      %dd= simple_format(l.training_aids) 
+              
+      %dt=t 'training.lesson_plan.evaluation'
+      %dd= simple_format(l.evaluation)

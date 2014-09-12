@@ -915,6 +915,7 @@ ms_MY:
       minor: Minor
       elective: Elektif
     topicdetail:
+      create: Cipta Butiran Topik
       title: Butiran Topik
       new: Butiran Topik Baru
       edit: Sunting Butiran Topik
@@ -942,6 +943,64 @@ ms_MY:
       current_file: "Fail Semasa : "
       download: Muatturun
       or: Atau pilih semula fail
+    lesson_plan:
+      title: Pelan Pengajaran
+      title2: Pengajaran dan Pembelajaran
+      reporting: Laporan Aktiviti Pengajaran dan Pembelajaran
+      new: Pelan Pengajaran Baru
+      edit: Sunting Pelan Pengajaran
+      descriptions: Deskripsi
+      methodologies: Metodologi
+      lecturer: Pensyarah
+      intake_id: Ambilan
+      student_qty: Jumlah Pelatih
+      semester: Semester
+      topic: Topik
+      lecture_title: Tajuk Kuliah
+      lecture_date: Tarikh Kuliah
+      start_time: Masa Mula
+      end_time: Masa Tamat
+      reference: Rujukan
+      is_submitted: "Telah Dihantar?"
+      submitted_on: Tarikh Dihantar
+      hod_approved: Kelulusan Atasan
+      hod_approved2: Kelulusan Ketua Jabatan
+      hod_approved_on: Tarikh Kelulusan
+      hod_rejected: Penolakan Ketua Jabatan
+      hod_rejected_on: Tarikh Penolakan
+      prerequisites: "Pra-Syarat"
+      year: Tahun
+      reason: Sebab
+      prepared_by: Disediakan Oleh
+      endorsed_by: Kelulusan Oleh
+      location: Lokasi
+      class_condition: Keadaan Kelas
+      reason_condition: "Sebab (Jika tidak Memuaskan)"
+      #condition_is_good: 
+      #condition_isnotgood:
+      condition_desc: "Deskripsi Keadaan Kelas"
+      satisfactory: Memuaskan
+      not_satisfactory: Tidak Memuaskan
+      training_aids: Alatan Bantuan Mengajar
+      lecturer_review: Ulasan Pengajar
+      tpa_hod_review: "Ulasan TPA / Ketua Program"
+      awaiting_review: "Menunggu Ulasan oleh TPA / Ketua Program"
+      summary: "Ringkasan (Ulasan)"
+      total_absent: Jumlah Tidak Hadir
+      report_submit: "Laporan Telah Dihantar?"
+      report_submit_on: Tarikh Hantar Laporan
+      report_endorsed: "Laporan telah Diluluskan?"
+      report_endorsed_on: Tarikh Kelulusan Laporan
+      report_summary: "Ringkasan Laporan (Ulasan)"
+      schedule: Jadual Waktu
+      trainingnotes: Nota Latihan
+      content_subtopic: "Kandungan / Subtopik"
+      lecturer_activity: Aktiviti Pengajar
+      student_activity: Aktiviti Pelatih
+      evaluation: Penilaian
+      time: Masa
+      group: Kumpulan
+      schedule_removed: "Jadual Waktu tidak dipilih atau telah dikeluarkan. Sila pilih Jadual Waktu."
       
   campus:
     address: 
@@ -963,6 +1022,8 @@ ms_MY:
       destroy: Padam
       approve: Kelulusan
       edit_admin : "Sunting (Pentadbir)"
+      back_lesson_plan: Senarai Pelan Pengajaran
+      back_lesson_report: Senarai Laporan Pengajaran
     label:
       examquestion:
         creator_id: Disediakan Oleh
@@ -1097,6 +1158,40 @@ ms_MY:
         release: Keluaran
         title: Tajuk
         version: Versi
+      lesson_plan:
+        lecturer: Pensyarah
+        intake_id: Ambilan
+        student_qty: Jumlah Pelatih
+        semester: Semester
+        topic: Topik
+        lecture_title: Tajuk Kuliah
+        lecture_date: Tarikh Kuliah
+        start_time: Masa Mula
+        end_time: Masa Tamat
+        reference: Rujukan
+        is_submitted: "Telah Dihantar?"
+        submitted_on: Tarikh Dihantar
+        hod_approved2: Kelulusan Ketua Jabatan
+        hod_approved_on: Tarikh Kelulusan
+        hod_rejected: Penolakan Ketua Jabatan
+        hod_rejected_on: Tarikh Penolakan
+        prerequisites: "Pra-Syarat"
+        year: Year
+        reason: Sebab
+        prepared_by: Disediakan Oleh
+        endorsed_by: Kelulusan Oleh
+        #condition_is_good: 
+        #condition_isnotgood:
+        condition_desc: "Deskripsi Keadaan Kelas"
+        training_aids: Alan Bantuan Mengajar
+        summary: "Ringkasan (Ulasan)"
+        total_absent: Jumlah Tidak Hadir
+        report_submit: "Laporan Telah Dihantar?"
+        report_submit_on: Tarikh Hantar Laporan
+        report_endorsed: "Laporan telah Diluluskan?"
+        report_endorsed_on: Tarikh Kelulusan Laporan
+        report_summary: "Ringkasan Laporan (Ulasan)"
+        schedule: Jadual Waktu
 
     prompt:
       select_creator: Pilih Penyedia Soalan

@@ -5,7 +5,7 @@ class Intake < ActiveRecord::Base
   has_many   :lessonplans, :class_name => 'LessonPlan', :foreign_key=>'intake_id' 
   
   def group_with_intake_name
-    "#{description}"+' (Intake '+"#{name}"+')'
+    "#{description}"+' ('+I18n.t('training.intake.title')+" #{name}"+')'
   end  
   
   def programme_group_intake

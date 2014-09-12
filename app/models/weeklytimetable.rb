@@ -51,9 +51,9 @@ class Weeklytimetable < ActiveRecord::Base
     #test grab lecturers of NEW 'weeklytimetable_details' (not yet saved) & re-selected lecturer of EXISTING 'weeklytimetable_details'
     weeklytimetable_details.each do |wd|
       if (wd.id.nil? || wd.id.blank?)
-        new_lecturer<<wd.lecturer_id
+        new_lecturer<< wd.lecturer_id
       else
-        new_lecturer<<wd.lecturer_id
+        new_lecturer<< wd.lecturer_id
       end
     end
        
@@ -140,9 +140,9 @@ class Weeklytimetable < ActiveRecord::Base
       splitter3 = j.split(" ")
       #NEW record (weeklytimetable_detail) - ALL NEW record (weeklytimetable_detail) won't be saved (including redundant one) unless...
       if splitter3.count==3 #'removed?'(subject field) NOT EXIST for new records (==id.nil?||==id.blank?)
-        cdp<<([splitter3[0]]+[splitter3[1]]+["0"]+[splitter3[2]]).join(" ")
+        cdp<< ([splitter3[0]]+[splitter3[1]]+["0"]+[splitter3[2]]).join(" ")
       else
-        cdp<<j
+        cdp<< j
       end
     end
     #-end-this part is to avoid system from taking incomplete 'current_date_period' (subject NOT exist) into account
@@ -163,7 +163,7 @@ class Weeklytimetable < ActiveRecord::Base
             if (splitter2[2]==0 || splitter2[2]=="0")   #not marked for removal 
               count_e+=1
               if item_count>=2 && count_e>=2
-                error_slots<<splitter2[0]+" "+splitter2[1]#+item_count.to_s+count_e.to_s+"yoyo"
+                error_slots<< splitter2[0]+" "+splitter2[1]#+item_count.to_s+count_e.to_s+"yoyo"
               end
             elsif splitter2[2]==1 || splitter2[2]=="1"  #marked for removal
               #count_marked+=1
@@ -193,7 +193,7 @@ class Weeklytimetable < ActiveRecord::Base
             if (splitter2[2]==0 || splitter2[2]=="0")   #not marked for removal 
               count_e+=1
               if item_count>=2 && count_e>=2
-                error_slots<<splitter2[0]+" "+splitter2[1]#+item_count.to_s+count_e.to_s+"yaya"
+                error_slots<< splitter2[0]+" "+splitter2[1]#+item_count.to_s+count_e.to_s+"yaya"
               end
             elsif splitter2[2]==1 || splitter2[2]=="1"  #marked for removal
               #count_marked+=1
@@ -209,7 +209,7 @@ class Weeklytimetable < ActiveRecord::Base
 
     count_errors+=error_slots.count
     error_slots.each do |es|
-      @all_error_slots<<es#+"yiyi"
+      @all_error_slots<< es#+"yiyi"
     end
     error_lines=""
     @all_error_slots.each_with_index do |error_line,ind|
@@ -312,7 +312,7 @@ class Weeklytimetable < ActiveRecord::Base
     weeklytimetable.weeklytimetable_details.each do |xy|
       if xy.id.nil? || xy.id.blank?
         if xy.day2!=0 && (xy.day2!=5 || xy.day2!=6)
-          new_timeslot_sun_wed<<xy.time_slot2
+          new_timeslot_sun_wed<< xy.time_slot2
           new_day2_sun_wed<< xy.day2
         end
       end
@@ -327,17 +327,17 @@ class Weeklytimetable < ActiveRecord::Base
     rev_exist_slot=[]
     0.upto(exist_timeslot_sun_wed.count-1) do |ind_slot_day|
       if exist_day2_sun_wed[ind_slot_day] == 1
-        rev_exist_slot<<exist_timeslot_sun_wed[ind_slot_day]
+        rev_exist_slot<< exist_timeslot_sun_wed[ind_slot_day]
       else 
-        rev_exist_slot<<exist_timeslot_sun_wed[ind_slot_day]+special*(exist_day2_sun_wed[ind_slot_day]-1)
+        rev_exist_slot<< exist_timeslot_sun_wed[ind_slot_day]+special*(exist_day2_sun_wed[ind_slot_day]-1)
       end
     end
     #new added to the same array-refer item (0a)	
     0.upto(new_timeslot_sun_wed.count-1) do |ind_slot_day|
       if new_day2_sun_wed[ind_slot_day] == 1
-        rev_exist_slot<<new_timeslot_sun_wed[ind_slot_day]
+        rev_exist_slot<< new_timeslot_sun_wed[ind_slot_day]
       else
-        rev_exist_slot<<new_timeslot_sun_wed[ind_slot_day]+special*(new_day2_sun_wed[ind_slot_day]-1)
+        rev_exist_slot<< new_timeslot_sun_wed[ind_slot_day]+special*(new_day2_sun_wed[ind_slot_day]-1)
       end
     end
     #2a-END-existing time slot - Sun-Wed
@@ -358,7 +358,7 @@ class Weeklytimetable < ActiveRecord::Base
     weeklytimetable.weeklytimetable_details.each do |xy|
       if xy.id.nil? || xy.id.blank?
         if xy.time_slot != 0
-          new_timeslot_thurs<<xy.time_slot
+          new_timeslot_thurs<< xy.time_slot
         end
       end
     end
@@ -369,7 +369,7 @@ class Weeklytimetable < ActiveRecord::Base
     #new added to the same array-refer item (0c)
     if new_timeslot_thurs.count>0
       0.upto(new_timeslot_thurs.count-1) do |ind_slot_thurs|
-        exist_timeslot_thurs<<new_timeslot_thurs[ind_slot_thurs]
+        exist_timeslot_thurs<< new_timeslot_thurs[ind_slot_thurs]
       end
     end
     exist_timeslot_thurs
@@ -396,9 +396,9 @@ class Weeklytimetable < ActiveRecord::Base
         if xy.day2==6 || xy.day2==7
           new_day2_weekend<< xy.day2
           if xy.day2==6
-            new_timeslot_1stday_weekend<<xy.time_slot2
+            new_timeslot_1stday_weekend<< xy.time_slot2
           elsif xy.day2==7
-            new_timeslot_2ndday_weekend<<xy.time_slot2
+            new_timeslot_2ndday_weekend<< xy.time_slot2
           end
         end
       end
@@ -417,9 +417,9 @@ class Weeklytimetable < ActiveRecord::Base
         if exist_day2_weekend==[]
           nothing yet
         elsif exist_day2_weekend[ind_slot_weekend] == 1
-          rev_exist_slot_weekend<<exist_timeslot_weekend[ind_slot_weekend] 
+          rev_exist_slot_weekend<< exist_timeslot_weekend[ind_slot_weekend] 
         else
-          rev_exist_slot_weekend<<exist_timeslot_weekend[ind_slot_weekend]+(@special*4)+(@count2)
+          rev_exist_slot_weekend<< exist_timeslot_weekend[ind_slot_weekend]+(@special*4)+(@count2)
         end
       end
     end
@@ -429,9 +429,9 @@ class Weeklytimetable < ActiveRecord::Base
         if new_day2_weekend==[]
           nothing yet
         elsif new_day2_weekend[ind_slot_weekend] == 1
-          rev_exist_slot_weekend<<new_timeslot_weekend[ind_slot_weekend] 
+          rev_exist_slot_weekend<< new_timeslot_weekend[ind_slot_weekend] 
         else
-          rev_exist_slot_weekend<<new_timeslot_weekend[ind_slot_weekend]+(@special*4)+(@count2)
+          rev_exist_slot_weekend<< new_timeslot_weekend[ind_slot_weekend]+(@special*4)+(@count2)
         end
       end
     end
@@ -470,16 +470,16 @@ class Weeklytimetable < ActiveRecord::Base
         if item_type==3      
           weekdays_slots.each do |slot|
             if slot.start_at.strftime("%H:%M%p")==estart_at && slot.end_at.strftime("%H:%M%p")==eend_at && slot.day_name==1
-              a_etimeslot2<<slot.id
-              a_etimeslot<<0
+              a_etimeslot2<< slot.id
+              a_etimeslot<< 0
             end
           end
         end
         if item_type==2 
           thursday_slots.each do |slot|
             if slot.start_at.strftime("%H:%M%p")==estart_at && slot.end_at.strftime("%H:%M%p")==eend_at && slot.day_name==2
-              a_etimeslot<<slot.id
-              a_etimeslot2<<0
+              a_etimeslot<< slot.id
+              a_etimeslot2<< 0
             end
           end
         end
@@ -494,11 +494,11 @@ class Weeklytimetable < ActiveRecord::Base
           eday2=6 if diff_day==5
           eday2=7 if diff_day==6
           if item_type==1
-            a_eday2<<eday2
+            a_eday2<< eday2
           end
           eis_friday=true if diff_day==4
           eis_friday=false if (diff_day==0||diff_day==1||diff_day==2||diff_day==3||diff_day==5||diff_day==6||diff_day==7)
-          a_eis_friday<<eis_friday
+          a_eis_friday<< eis_friday
         end
       end
     end

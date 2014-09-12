@@ -1,0 +1,28 @@
+= search_form_for @search, url: index_report_training_lesson_plans_path,  class: "form-inline" do |f|
+  %tr.search_row{style: "display: none;"}
+    %td= f.text_field :lessonplan_owner_name_cont, size: 2,  :class => "form-control"
+    %td= f.text_field :lessonplan_intake_name_cont, size: 2,  :class => "form-control"
+    %td &nbsp;
+    %td &nbsp;
+    %td &nbsp;
+    %td= f.text_field :schedule_item_weeklytimetable_topic_name_cont, size:2, :class => "form-control"
+    %td= f.text_field :lecture_title_cont, size:2, :class => "form-control"
+    %td= f.text_field :lecture_date_gteq, :size=> 2,  :class =>  'date-picker'
+    %td &nbsp;
+    %td &nbsp;
+    %td= select_tag('q[report_submit_null]',options_for_select([['Yes',0],['No',1]]), class: 'selectpicker',"data-width"=>'60px')
+    /above (Submitted, 0 is not null = True [also for false], Not Submitted, 1- Null
+    /in system - value restricted to True??, if edit & not submit
+    %td
+      .input-group
+        =select_tag('q[report_endorsed_null]', options_for_select([['Yes',0],['No',1]]), class: 'selectpicker',"data-width"=>'60px') 
+        %span.input-group-btn
+          %button.btn.btn-sm.btn-default.right{:type => "submit"}
+            %i.fa.fa-search.fa-fw
+       
+  :javascript
+    $('.date-picker').datetimepicker({
+     timepicker:false,
+       format: "Y-m-d",
+       autoclose: true
+     });

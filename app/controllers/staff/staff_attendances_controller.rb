@@ -203,15 +203,15 @@ class Staff::StaffAttendancesController < ApplicationController
   
   def status  
     #@all_dates_staffs = StaffAttendance.find(:all, :conditions =>['logged_at>=? and logged_at<?',"2012-05-07","2012-10-16"], :order => 'logged_at ASC')
-    @all_dates_staffs = StaffAttendance.find(:all, :conditions =>['logged_at>=? and logged_at<?',"2012-05-07","2014-01-01"], :order => 'logged_at ASC')   
+    @all_dates_staffs = StaffAttendance.where('logged_at>=? and logged_at<?',"2012-05-07","2014-01-01").order('logged_at ASC')   
     @logged_at_list =[] 
     for all_dates_staff in @all_dates_staffs.map(&:logged_at)
       @logged_at_list << all_dates_staff.in_time_zone('UTC').to_date.beginning_of_month.to_s
     end 
     @title_for_month= @logged_at_list.uniq 
     @all_thumbs = @all_dates_staffs.map(&:thumb_id).uniq.sort
-    @staff_info = Staff.find(:all, :conditions=> ['thumb_id IN (?)',@all_thumbs], :order=>'thumb_id ASC', :select=>"thumb_id, name,id")
-    @staff_thumb = Staff.find(:all, :conditions=> ['thumb_id IN (?)',@all_thumbs], :order=>'thumb_id ASC').map(&:thumb_id) 
+    @staff_info = Staff.where('thumb_id IN (?)',@all_thumbs).order('thumb_id ASC').select("thumb_id, name,id")
+    @staff_thumb = Staff.where('thumb_id IN (?)',@all_thumbs).order('thumb_id ASC').map(&:thumb_id) 
     #for checking : @staff_name = Staff.find(:all, :conditions=> ['thumb_id IN (?)',@all_thumbs], :order=>'thumb_id ASC').map(&:staff_thumb) 
     @all_dates = @all_dates_staffs.group_by{|x|x.thumb_id}
 

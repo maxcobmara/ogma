@@ -1,0 +1,32 @@
+= search_form_for @search, url: training_lesson_plans_path,  class: "form-inline" do |f|
+  %tr.search_row{style: "display: none;"}
+    %td= f.text_field :lessonplan_owner_name_cont, size: 2,  :class => "form-control"
+    %td= f.text_field :lessonplan_intake_name_cont, size: 2,  :class => "form-control"
+    %td &nbsp;
+    %td &nbsp;
+    %td &nbsp;
+    %td= f.text_field :schedule_item_weeklytimetable_topic_name_cont, size:2, :class => "form-control"
+    %td= f.text_field :lecture_title_cont, size:2, :class => "form-control"
+    %td= f.text_field :lecture_date_gteq, :size=> 2,  :class =>  'date-picker'
+    %td &nbsp;
+    %td &nbsp;
+    %td= select_tag('q[is_submitted_eq]',options_for_select([['Yes',true],['No',false]]),class: 'selectpicker',"data-width"=>'100px')
+    /%td=select_tag('q[hod_approved_eq]', options_for_select([['Hod Approved','true'],['Rejected','false']]))
+    %td=select_tag('q[hod_approved_null]', options_for_select([['Checked',0],['Not Checked',1]]), class: 'selectpicker',"data-width"=>'100px')
+    /above - checked & not checked term used (Checked - True or False, Not Checked - Null), change to False (direct in table, to see effect)
+    /but fr system - value are restricted to True or Null (even value is null, Hod Rejected might be true)
+    %td
+      .input-group
+        = select_tag('q[report_submit_null]',options_for_select([['Yes',0],['No',1]]), class: 'selectpicker',"data-width"=>'60px')
+        /above (Submitted, 0 is not null = True [also for false], Not Submitted, 1- Null
+        /in system - value restricted to True?? 
+        %span.input-group-btn
+          %button.btn.btn-sm.btn-default.right{:type => "submit"}
+            %i.fa.fa-search.fa-fw
+       
+  :javascript
+    $('.date-picker').datetimepicker({
+     timepicker:false,
+       format: "Y-m-d",
+       autoclose: true
+     });

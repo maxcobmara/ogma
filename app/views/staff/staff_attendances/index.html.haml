@@ -86,7 +86,7 @@
                 %td{:style=>"text-align: center;"}
                   - if sa.log_type == "O" || sa.log_type == "o"
                     =h sa.logged_at.in_time_zone('UTC').strftime('%l:%M %P')
-                %td{:style=>"text-align: center;"}=h Staff.where('thumb_id=?',sa.thumb_id).first.try(:shift_for_staff) 
+                %td{:style=>"text-align: center;"}=h Staff.where('thumb_id=?',sa.thumb_id).try(:shift_for_staff) 
                 %td{:style=>"text-align: center;"}
                   - if sa.log_type == "I" 
                     - if sa.late_early=="-"

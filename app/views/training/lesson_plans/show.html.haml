@@ -1,0 +1,81 @@
+- model_class = LessonPlan
+.page-header
+  %h1=t 'training.lesson_plan.title2'
+ 
+= render 'shared/flashes'
+
+.row
+  .col-md-offset-1
+    / Nav tabs
+    %ul.nav.nav-tabs
+      %li.active= link_to (t 'training.lesson_plan.descriptions'),"#lesson_plan_descriptions", "data-toggle" => "tab"
+      %li=link_to (t 'training.lesson_plan.methodologies'), "#lesson_plan_methodologies", "data-toggle" => "tab"
+      - if @lesson_plan.report_submit == true 
+        /will only appear when lesson & learn report already submited
+        %li=link_to (t 'training.lesson_plan.reporting'), "#lesson_reporting", "data-toggle" => "tab"
+
+    / display 
+    .tab-content{style:"padding-top:1em"}
+      .col-md-8.col-md-offset-1
+        %dl.dl-horizontal
+          %dt= t 'training.lesson_plan.lecturer', :default => model_class.human_attribute_name(:lecturer) + ":"
+          %dd=h @lesson_plan.lessonplan_owner.name
+          
+          %dt= t 'training.lesson_plan.intake_id', :default => model_class.human_attribute_name(:intake_id)+":"
+          %dd
+            - @weeklytmetabledetails = WeeklytimetableDetail.all.map(&:id).uniq
+            - if @weeklytmetabledetails.include?(@lesson_plan.schedule) 
+              =t 'training.lesson_plan.group'
+              =h @lesson_plan.schedule_item.weeklytimetable.schedule_intake.group_with_intake_name
+            - else
+              %font{:color=>"red"}=t('training.lesson_plan.schedule_removed')
+        
+      #lesson_plan_descriptions.tab-pane.active
+        %br
+        =render 'tab_descriptions'
+        
+      #lesson_plan_methodologies.tab-pane
+        %br
+        =render 'tab_methodologies'
+        
+      #lesson_reporting.tab-pane
+        %br
+        = render 'tab_reporting'
+  
+.row
+  .col-md-6.col-md-offset-3
+    %hr
+    .form-actions
+      = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('helpers.links.back_lesson_plan'), training_lesson_plans_path, :class => 'btn btn-default'
+      - if @lesson_plan.report_submit == true
+        = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('helpers.links.back_lesson_report'), index_report_training_lesson_plans_path, :class => 'btn btn-default'
+      
+      = link_to content_tag(:i, "", class: "fa fa-file-pdf-o"), lesson_plan_training_lesson_plan_path(@lesson_plan, format: "pdf"), class: "btn btn-default", "data-toggle" => "tooltip", title: t('training.lesson_plan.title')  
+      
+      = link_to content_tag(:i, "", class: "fa fa-file-pdf-o"), lesson_report_training_lesson_plan_path(@lesson_plan, format: "pdf"), class: "btn btn-default", "data-toggle" => "tooltip", title: t('training.lesson_plan.reporting')  
+      
+      = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('helpers.links.edit'), edit_training_lesson_plan_path(@lesson_plan),  :class => 'btn btn-primary' 
+      
+      /start- links to EDIT (+approval) page - pending
+      /fr index : lesson_plan
+      - if (@lesson_plan.is_submitted != true && @lesson_plan.lecturer == current_user.staff_id) || (@lesson_plan.lecturer == current_user.staff_id && @lesson_plan.hod_rejected? == true && @lesson_plan.is_submitted==nil) || (@lesson_plan.is_submitted == false && @lesson_plan.lecturer == current_user.staff_id) || (@lesson_plan.is_submitted == nil && @lesson_plan.lecturer == current_user.staff_id) 
+        /= link_to image_tag("edit.png", :border => 0, :title => 'Edit'), :action => 'edit', :id => lesson_plan
+        Edit Lesson PLAN (Lecturer)
+      - elsif (@lesson_plan.is_submitted == true && @lesson_plan.endorsed_by == current_user.staff_id && @lesson_plan.hod_approved != true) 
+        /= link_to image_tag("approval.png", :border => 0), :action => 'edit', :id => lesson_plan
+        Approve Lesson PLAN (HOD)
+      
+      /fr index_report : lesson_report
+      - if (@lesson_plan.report_submit != true && @lesson_plan.prepared_by == current_user.staff_id) || (@lesson_plan.prepared_by == current_user.staff_id && @lesson_plan.hod_rejected? == true && @lesson_plan.report_submit==nil) || (@lesson_plan.report_submit == false&&@lesson_plan.lecturer == current_user.staff_id) || (@lesson_plan.report_submit == nil && @lesson_plan.lecturer == current_user.staff_id)
+        /= link_to image_tag("edit.png", :border => 0, :title => 'Edit'), :action => 'lessonplan_reporting', :id => lesson_plan
+        Edit Lesson REPORT (Lecturer)
+      - elsif (@lesson_plan.report_submit == true && @lesson_plan.endorsed_by == current_user.staff_id && (@lesson_plan.report_endorsed != true||lesson_plan.report_endorsed==false))
+        /= link_to image_tag("approval.png", :border => 0), :action => 'lessonplan_reporting', :id => lesson_plan
+        Endorse Lesson REPORT (HOD)
+      /end- links to EDIT (+approval) page - pending
+      
+      = link_to content_tag(:i, "", :class => "fa fa-trash-o icon-white") + " " + t('helpers.links.destroy'), |
+        training_lesson_plan_path(@lesson_plan),                                                                                                    |
+        :method => 'delete',                                                                                                           |
+        :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },                   |
+        :class => 'btn btn-danger'
