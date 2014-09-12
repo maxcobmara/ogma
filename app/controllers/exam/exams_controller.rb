@@ -11,9 +11,9 @@ class Exam::ExamsController < ApplicationController
     if @position_exist  
       @lecturer_programme = current_user.staff.positions[0].unit
       unless @lecturer_programme.nil?
-        @programme = Programme.find(:first,:conditions=>['name ILIKE (?) AND ancestry_depth=?',"%#{@lecturer_programme}%",0])
+        @programme = Programme.where('name ILIKE (?) AND ancestry_depth=?',"%#{@lecturer_programme}%",0)
       end
-      unless @programme.nil?
+      unless @programme#.nil?
         @programme_id = @programme.id 
       else
         if @lecturer_programme == 'Commonsubject'
@@ -30,7 +30,7 @@ class Exam::ExamsController < ApplicationController
     
     #ADDED-18June2013-extract from exammarks/_exam_listing.html.erb
     @exam_ids_for_examtemplate = Examtemplate.pluck(:exam_id).uniq
-    @exam_ids_for_examquestions = Exam.find(:all,:joins=>:examquestions).map(&:id).uniq 
+    @exam_ids_for_examquestions = Exam.joins(:examquestions).map(&:id).uniq 
     @complete_exampaper = Exam.where('id IN (?) OR id IN (?)',@exam_ids_for_examtemplate,@exam_ids_for_examquestions)
     @ids_complete_exampaper = @complete_exampaper.pluck(:id) 
     #ADDED-18June2013-extract from exammarks/_exam_listing.html.erb
@@ -63,18 +63,18 @@ class Exam::ExamsController < ApplicationController
   def new
     @exam = Exam.new
     #--newly added
-    @lecturer_programme = current_user.staff.position.unit      
+    @lecturer_programme = current_user.staff.positions[0].unit      
     unless @lecturer_programme.nil?
-      @programme = Programme.find(:first,:conditions=>['name ILIKE (?) AND ancestry_depth=?',"%#{@lecturer_programme}%",0])
+      @programme = Programme.where('name ILIKE (?) AND ancestry_depth=?',"%#{@lecturer_programme}%",0).first
     end
     unless @programme.nil?
-      @programme_listing = Programme.find(:all, :conditions=> ['id=?',@programme.id]).to_a
+      @programme_listing = Programme.where('id=?',@programme.id).to_a
       @preselect_prog = @programme.id
       @all_subject_ids = Programme.find(@preselect_prog).descendants.at_depth(2).map(&:id)
-      @subjectlist_preselect_prog = Programme.find(:all, :conditions=>['id IN(?) AND course_type=?',@all_subject_ids, 'Subject'])  #'Subject' 
+      @subjectlist_preselect_prog = Programme.where('id IN(?) AND course_type=?',@all_subject_ids, 'Subject')  #'Subject' 
     else  #if programme not pre-selected (Commonsubject lecturer)
       if @lecturer_programme == 'Commonsubject' #Commonsubject LECTURER have no selected programme
-        @subjectlist_preselect_prog = Programme.find(:all, :conditions=>['course_type=?','Commonsubject'])
+        @subjectlist_preselect_prog = Programme.where('course_type=?','Commonsubject')
       end
       @programme_listing = Programme.roots
       @subjectlist_preselect_prog = Programme.at_depth(2)
@@ -90,12 +90,12 @@ class Exam::ExamsController < ApplicationController
   def edit
     @exam = Exam.find(params[:id])
     @programme_id = @exam.subject.root.id
-    @lecturer_programme = current_user.staff.position.unit  
+    @lecturer_programme = current_user.staff.positions[0].unit  
     all_subject_ids = Programme.find(@programme_id).descendants.at_depth(2).map(&:id)
     if @lecturer_programme == 'Commonsubject'
-      @subjects = Programme.find(:all, :conditions=>['id IN(?) AND course_type=?',all_subject_ids, @lecturer_programme])  
+      @subjects = Programme.where('id IN(?) AND course_type=?',all_subject_ids, @lecturer_programme)  
     else
-      @subjects = Programme.find(:all, :conditions=>['id IN(?) AND course_type=?',all_subject_ids, 'Subject'])  #'Subject' 
+      @subjects = Programme.where('id IN(?) AND course_type=?',all_subject_ids, 'Subject')  #'Subject' 
     end
   end
 
@@ -163,9 +163,9 @@ class Exam::ExamsController < ApplicationController
     @lecturer_programme = current_user.staff.position.unit  
     all_subject_ids = Programme.find(@programme_id).descendants.at_depth(2).map(&:id)
     if @lecturer_programme == 'Commonsubject'
-      @subjects = Programme.find(:all, :conditions=>['id IN(?) AND course_type=?',all_subject_ids, @lecturer_programme])  
+      @subjects = Programme.where('id IN(?) AND course_type=?',all_subject_ids, @lecturer_programme)  
     else
-      @subjects = Programme.find(:all, :conditions=>['id IN(?) AND course_type=?',all_subject_ids, 'Subject'])  #'Subject' 
+      @subjects = Programme.where('id IN(?) AND course_type=?',all_subject_ids, 'Subject')  #'Subject' 
     end
     ###----subject + common subject
     
@@ -290,9 +290,9 @@ class Exam::ExamsController < ApplicationController
     unless @programme_id.blank? 
       all_subject_ids = Programme.find(@programme_id).descendants.at_depth(2).map(&:id)
       if @lecturer_programme == 'Commonsubject'
-        @subjects = Programme.find(:all, :conditions=>['id IN(?) AND course_type=?',all_subject_ids, @lecturer_programme])  
+        @subjects = Programme.where('id IN(?) AND course_type=?',all_subject_ids, @lecturer_programme)  
       else
-        @subjects = Programme.find(:all, :conditions=>['id IN(?) AND course_type=?',all_subject_ids, 'Subject'])  #'Subject' 
+        @subjects = Programme.where('id IN(?) AND course_type=?',all_subject_ids, 'Subject')  #'Subject' 
       end
       #@subjects = Programme.find(@programme_id).descendants.at_depth(2)
     end
@@ -306,9 +306,9 @@ class Exam::ExamsController < ApplicationController
     unless @programme_id.blank? 
       all_subject_ids = Programme.find(@programme_id).descendants.at_depth(2).map(&:id)
       if @lecturer_programme == 'Commonsubject'
-        @subjects = Programme.find(:all, :conditions=>['id IN(?) AND course_type=?',all_subject_ids, @lecturer_programme])  
+        @subjects = Programme.where('id IN(?) AND course_type=?',all_subject_ids, @lecturer_programme)  
       else
-        @subjects = Programme.find(:all, :conditions=>['id IN(?) AND course_type=?',all_subject_ids, 'Subject'])  #'Subject' 
+        @subjects = Programme.where('id IN(?) AND course_type=?',all_subject_ids, 'Subject')  #'Subject' 
       end
       #@subjects = Programme.find(@programme_id).descendants.at_depth(2)
     end
@@ -329,10 +329,10 @@ class Exam::ExamsController < ApplicationController
     @topic_id = params[:topicid]
     unless (@topic_id.blank? && @exam_id.blank?) || @topic_id ==""
       #@questions = Examquestion.find(:all, :conditions => ['subject_id=?',@subject_id])
-      @questions = Examquestion.find(:all, :conditions => ['topic_id=? and bplreserve is not true and bplsent is not true', @topic_id])
+      @questions = Examquestion.where('topic_id=? and bplreserve is not true and bplsent is not true', @topic_id)
       @questions_group = @questions.group_by{|x|x.questiontype}
       #@questions2 = Examquestion.find(:all, :conditions => ['subject_id!=?',@subject_id])
-      @questions2 = Examquestion.find(:all, :conditions => ['topic_id!=? and bplreserve is not true and bplsent is not true',@topic_id])
+      @questions2 = Examquestion.where('topic_id!=? and bplreserve is not true and bplsent is not true',@topic_id)
       @questions_group2 = @questions2.group_by{|x|x.questiontype}
     end
     render :partial => 'view_questions', :layout => false

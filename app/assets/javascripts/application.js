@@ -13,6 +13,7 @@
 //= require jquery
 //= require jquery.ui.autocomplete
 //= require jquery_ujs
+//= require nicEdit
 //= require_tree
 
 // See http://stackoverflow.com/a/16984739/64904

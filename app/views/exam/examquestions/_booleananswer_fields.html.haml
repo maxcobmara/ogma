@@ -4,7 +4,7 @@
 A
 = hidden_field "examquestion[booleananswers_attributes][0]",:item, :value => "A" 
 - unless @examquestion.id.nil? || @examquestion.id.blank?
-  - if (Booleanchoice.find(:all, :conditions=>['examquestion_id=?',@examquestion.id]).count) > 0 
+  - if (Booleanchoice.where('examquestion_id=?',@examquestion.id).count) > 0 
     = hidden_field "examquestion[booleananswers_attributes][0]",:id, :value => @examquestion.booleananswers[0].id
     = select_tag "examquestion[booleananswers_attributes][0][answer]", "<option>#{(t 'helpers.prompt.select_answer')}</option>".html_safe+options_for_select(@boolean_answer,@examquestion.booleananswers[0].answer.to_s) 
   - else
@@ -23,7 +23,7 @@ A
 B
 = hidden_field "examquestion[booleananswers_attributes][1]",:item, :value => "B" 
 - unless @examquestion.id.nil? || @examquestion.id.blank?
-  - if (Booleanchoice.find(:all, :conditions=>['examquestion_id=?',@examquestion.id]).count) > 0 
+  - if (Booleanchoice.where('examquestion_id=?',@examquestion.id).count) > 0 
     = hidden_field "examquestion[booleananswers_attributes][1]",:id, :value => @examquestion.booleananswers[1].id
     = select_tag "examquestion[booleananswers_attributes][1][answer]", "<option>#{(t 'helpers.prompt.select_answer')}</option>".html_safe+options_for_select(@boolean_answer,@examquestion.booleananswers[1].answer.to_s) 
   - else
@@ -42,7 +42,7 @@ B
 C
 = hidden_field "examquestion[booleananswers_attributes][2]",:item, :value => "C" 
 - unless @examquestion.id.nil? || @examquestion.id.blank?
-  - if (Booleanchoice.find(:all, :conditions=>['examquestion_id=?',@examquestion.id]).count) > 0 
+  - if (Booleanchoice.where('examquestion_id=?',@examquestion.id).count) > 0 
     = hidden_field "examquestion[booleananswers_attributes][2]",:id, :value => @examquestion.booleananswers[2].id
     = select_tag "examquestion[booleananswers_attributes][2][answer]", "<option>#{(t 'helpers.prompt.select_answer')}</option>".html_safe+options_for_select(@boolean_answer,@examquestion.booleananswers[0].answer.to_s) 
   - else
@@ -61,7 +61,7 @@ C
 D
 = hidden_field "examquestion[booleananswers_attributes][3]",:item, :value => "D" 
 - unless @examquestion.id.nil? || @examquestion.id.blank?
-  - if (Booleanchoice.find(:all, :conditions=>['examquestion_id=?',@examquestion.id]).count) > 0 
+  - if (Booleanchoice.where('examquestion_id=?',@examquestion.id).count) > 0 
     = hidden_field "examquestion[booleananswers_attributes][3]",:id, :value => @examquestion.booleananswers[3].id
     = select_tag "examquestion[booleananswers_attributes][3][answer]", "<option>#{(t 'helpers.prompt.select_answer')}</option>".html_safe+options_for_select(@boolean_answer,@examquestion.booleananswers[0].answer.to_s) 
   - else
@@ -80,7 +80,7 @@ D
 E
 = hidden_field "examquestion[booleananswers_attributes][4]",:item, :value => "E" 
 - unless @examquestion.id.nil? || @examquestion.id.blank?
-  - if (Booleanchoice.find(:all, :conditions=>['examquestion_id=?',@examquestion.id]).count) > 0 
+  - if (Booleanchoice.where('examquestion_id=?',@examquestion.id).count) > 0 
     = hidden_field "examquestion[booleananswers_attributes][4]",:id, :value => @examquestion.booleananswers[4].id
     = select_tag "examquestion[booleananswers_attributes][4][answer]", "<option>#{(t 'helpers.prompt.select_answer')}</option>".html_safe+options_for_select(@boolean_answer,@examquestion.booleananswers[0].answer.to_s) 
   - else

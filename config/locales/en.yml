@@ -923,15 +923,29 @@ en:
       new: New Topic Detail
       edit: Edit Topic Detail
       subject: Subject
-      topic: Topic
+      topic_code: Topic
       version_no: Version No
       duration: "Duration (Total Hours)"
+      #caution1: "Removed topic or subtopic (Curriculum Management) - before 31st October 2013"
+      #caution2: "Removed topic or subtopic (Curriculum Management) - 31st October 2013 onwards"
+      descriptions: Descriptions
+      objctives: Objectives
+      contents:
+      training_notes: Training Notes
       theory: Lecture
       practical: Practical
       tutorial: Tutorial
       prepared_by: Prepared By
-      caution1: "Removed topic or subtopic (Curriculum Management) - before 31st October 2013"
-      caution2: "Removed topic or subtopic (Curriculum Management) - 31st October 2013 onwards"
+      hours_minutes: " (Hours : Minutes)"
+      add_details: Add Details
+    trainingnote:
+      document: File
+      release: Release
+      title: Title
+      version: Version
+      current_file: "Current file : "
+      download: Download
+      or: Or reselect file
  
   campus:
     address: 
@@ -1071,6 +1085,27 @@ en:
         approvestatus: Approval Status
       asset:
         note: Remark
+      topicdetail:
+        subject: Subject
+        topic_code: Topic
+        version_no: Version No
+        duration: "Duration"
+        duration2: " (Total Hours - Lecture / Tutorial / Practical)"
+        descriptions: Descriptions
+        objctives: Objectives
+        contents:
+        training_notes: Training Notes
+        theory: Lecture
+        practical: Practical
+        tutorial: Tutorial
+        prepared_by: Prepared By
+        hours_minutes: " (Hours : Minutes)"
+        training_notes: Training Notes
+      trainingnote:
+        document: File
+        release: Release
+        title: Title
+        version: Version
 
     prompt:
       select_creator: Select Creator
