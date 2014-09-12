@@ -1,0 +1,10 @@
+%fieldset
+  = f.hidden_field :_destroy
+  .row
+    .col-sm-offset-2.col-sm-2= f.text_field :account_no, placeholder: "account_no", class: 'form-control'
+    .col-sm-2= f.select :account_type, DropDown::BANKTYPE, {prompt: "Select"}, {class: 'selectpicker', "data-width"=>"240px"}
+    .col-sm-3= f.collection_select :bank_id, Bank.all, :id, :long_name, {include_blank: true}, {class: 'selectpicker', "data-width"=>"auto"}
+    .col-sm-1
+      = link_to content_tag(:i, "", class: "fa fa-trash-o"), data: {"data-toggle" => "tooltip", title: "Delete"}, class: "btn btn-danger remove_fields"
+  :javascript
+    $('.selectpicker').selectpicker('render');
