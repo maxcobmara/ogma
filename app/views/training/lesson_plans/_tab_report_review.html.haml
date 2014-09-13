@@ -1,0 +1,8 @@
+- model_class=LessonPlan
+.col-md-8.col-md-offset-1
+  %dl.dl-horizontal
+    %dt=t 'training.lesson_plan.tpa_hod_review'
+    %dd= simple_format(@lesson_plan.report_summary)
+    
+    %dt=t 'training.lesson_plan.report_endorsed_on'
+    %dd= @lesson_plan.try(:report_endorsed_on).try(:strftime, '%d %b %Y')

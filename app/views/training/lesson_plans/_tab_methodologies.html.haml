@@ -1,7 +1,7 @@
 - model_class = LessonPlan
 .col-md-9.col-md-offset-1
   %dl.dl-horizontal
-    - @lesson_plan.lessonplan_methodologies.each do |l| 
+    - @lesson_plan.lessonplan_methodologies.sort_by{|x|x.start_meth}.each do |l| 
       %hr
       %dt= t 'training.lesson_plan.time'
       %dd

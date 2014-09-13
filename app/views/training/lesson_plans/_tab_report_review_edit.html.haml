@@ -1,0 +1,32 @@
+.col-md-6.col-md-offset-2
+  .form-group
+    .col-sm-2.control-label
+      =f.label :report_endorsed
+    .col-md-6
+      = f.check_box :report_endorsed , :id => 'check_submitted'
+  .form-group
+    .col-sm-2.control-label
+      %b= t 'training.lesson_plan.tpa_hod_review'
+    .col-md-6
+      = f.text_area :report_summary, class: 'form-control'    
+      #span_submitted{:style=>"display: none;"}
+      = Date.today.strftime('%d %b %Y')
+
+/:javascript
+/$(document).ready(function(){
+/  $("input[id='check_submitted']").change(function() {  
+/    if($('#check_submitted').is(':checked')) { 
+/      $("#span_submitted").show("highlight"); 
+/    }else{
+/      $("#span_submitted").hide(""); 
+/    }
+/  });
+
+/  $("input[id='check_submitted']").each(function() {  
+/    if($('#check_submitted').is(':checked')) { 
+/      $("#span_submitted").show("highlight"); 
+/    }else{
+/      $("#span_submitted").hide(""); 
+/    }
+/  });
+/}); 

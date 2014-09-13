@@ -21,3 +21,9 @@
 
     %dt=t 'training.lesson_plan.report_summary', :default => model_class.human_attribute_name(:report_summary)+":"
     %dd=h @lesson_plan.report_summary? ? @lesson_plan.report_summary : (t 'training.lesson_plan.awaiting_review')
+         
+    %dt=t 'training.lesson_plan.report_submit', :default=> model_class.human_attribute_name(:report_submit)+":"
+    %dd=h @lesson_plan.report_submit? ? image_tag("tick.png") : image_tag("cross.png")
+
+    %dt=t 'training.lesson_plan.endorsed_by', :default=> model_class.human_attribute_name(:endorsed_by)+":"
+    %dd=h @lesson_plan.try(:endorser).try(:name)

@@ -940,6 +940,9 @@ en:
       hours_minutes: " (Hours : Minutes)"
       add_details: Add Details
     trainingnote:
+      title2: Training Notes
+      new: New Training Note
+      edit: Edit Training Note
       document: File
       release: Release
       title: Title
@@ -951,6 +954,7 @@ en:
       title: Lesson Plan
       title2: Lesson and Learning
       reporting: Lesson and Learning Activity Report
+      report: Report
       new: New Lesson Plan
       edit: Edit Lesson Plan
       descriptions: Descriptions
@@ -964,6 +968,7 @@ en:
       start_time: Start Time
       end_time: End Time
       reference: Reference
+      submission: "Plan Submission & Approval"
       is_submitted: "Submitted?"
       submitted_on: Submission Date
       hod_approved: HOD Approval
@@ -971,6 +976,7 @@ en:
       hod_approved_on: Approval Date
       hod_rejected: Head of Department Rejection
       hod_rejected_on: Rejection Date
+      rejection_reason: "Reason(s) for Rejection"
       prerequisites: Prerequisites
       year: Tahun
       reason: Reason
@@ -990,6 +996,7 @@ en:
       awaiting_review: "Awaiting review by TPA / Head of Programme"
       summary: Summary
       total_absent: Total Absent
+      report_review: Report Review
       report_submit: "Report Submitted?"
       report_submit_on: Report Submission Date
       report_endorsed: "Report Reviewed?"
@@ -998,12 +1005,18 @@ en:
       schedule: Timetable
       trainingnotes: Training Notes
       content_subtopic: "Content / Subtopic"
+      content: Content
       lecturer_activity: Lecturer Activity
       student_activity: Student Activity
       evaluation: Evaluation
       time: Time
       group: Group
       schedule_removed: "Schedule was not defined or removed. Please select a schedule."
+      no_attachment_yet: "No Attachment yet. Click 'Browse' to Upload File."
+      exist_attachment: "Existing Attachment. Click 'Browse' to Change File."
+      to: to
+      status: Approval Status
+    
  
   campus:
     address: 
@@ -1168,9 +1181,19 @@ en:
         version: Version
       lesson_plan:
         lecturer: Lecturer
-        intake_id: Intake
+        schedule: Timetable
+        #intake_id: Intake
+        prerequisites: Prerequisites
         student_qty: Total of Student
+        year: Year
         semester: Semester
+        reference: Reference
+        current_attachment: Current Training Note
+        add_exist_notes:  Additional Training Notes
+        remark: "For additional Training Notes, should you found there's no suitable EXISTING training notes available for selection, add NEW training note(s) in topic details (menu : Training | Lesson Plan | Create Topic Details) accordingly. Refresh this page to retrieve LATEST list of additional training notes."
+        add_notes: Add Notes
+        note_title: "Attachment / Current Training Note Title"
+        methodologies: Methodologies
         topic: Topic
         lecture_date: Lecture Date
         start_time: Start Time
@@ -1178,27 +1201,28 @@ en:
         reference: Reference
         is_submitted: "Submitted?"
         submitted_on: Submission Date
+        hod_approved: HOD Approval
         hod_approved2: Head of Department Approval
         hod_approved_on: Approval Date
         hod_rejected: Head of Department Rejection
         hod_rejected_on: Rejection Date
-        prerequisites: Prerequisites
-        year: Tahun
         reason: Reason
         prepared_by: Prepared By
         endorsed_by: Endorsed By
         #condition_is_good: 
         #condition_isnotgood:
+        class_condition: Class Condition
         condition_desc: "Condition Description (Class)"
         training_aids: Training Aids
         summary: Summary
         total_absent: Total Absent
-        report_submit: "Report Submitted?"
+        lecturer_review: Lecturer Review
+        report_submit: "Submit Report?"
         report_submit_on: Report Submission Date
-        report_endorsed: "Report Endorsed?"
+        report_endorsed: "Endorse Report?"
         report_endorsed_on: Report Endorsement Date
         report_summary: Report Summary
-        schedule: Timetable
+        
 
     prompt:
       select_creator: Select Creator
@@ -1212,6 +1236,7 @@ en:
       select_answer: Select Answer
       select_intake: Select Intake
       select_semester: Select Semester
+      select_year: Select Year
       select_format: Select Timetable Format
       select_lecture_method: Select Lecture Method
       select_sem_subject_topic: Select Sem-Subject|Topic
@@ -1225,6 +1250,9 @@ en:
       select_course_type: Select Course Type
       select_duration: Select Duration Type
       select_credit: Select Credit
+      select_schedule: Select Schedule
+      select_exist_note: Select Existing Training Notes
+      select_hod: Select Head of Department
       all_unit: "All Department / Unit"
       maintain: Maintain
       remove: Remove

@@ -144,15 +144,15 @@
           %li= link_to content_tag(:i, "", :class => "icon-numb") + t("training.timetable_entries"), training_weeklytimetables_path
           %li= link_to content_tag(:i, "", :class => "icon-numb") + t("training.programme.title"), training_programmes_path
           %li.icon.icon-left
-            = link_to "Lesson Plan", '#'
+            = link_to t('training.lesson_plan.title'), '#'
             .mp-level
-              %h2.icon Lesson Plan
+              %h2.icon=t("training.lesson_plan.title")
               %a.mp-back{:href => "#"}= t 'helpers.links.back'
               %ul
                 %li= link_to t('training.topicdetail.create'), training_topicdetails_path
                 %li= link_to t('training.lesson_plan.title'), training_lesson_plans_path
                 %li= link_to t('training.lesson_plan.reporting'), index_report_training_lesson_plans_path
-          %li= link_to content_tag(:i, "", :class => "icon-numb") + "Training Notes", '#'
+          %li= link_to content_tag(:i, "", :class => "icon-numb") + t('training.trainingnote.title2'), '#'
           %li= link_to content_tag(:i, "", :class => "icon-numb") + "Personalised Time Table", personalize_index_training_weeklytimetables_path
 		  
     %li.icon.icon-left

@@ -18,6 +18,10 @@ class Training::LessonPlansController < ApplicationController
   # GET /lesson_plans/1.xml
   def show
     @lesson_plan = LessonPlan.find(params[:id])
+    @current_roles=[]
+    current_user.roles.each do |x|
+      @current_roles << x.name
+    end
 
     respond_to do |format|
       format.html # show.html.erb
@@ -29,6 +33,10 @@ class Training::LessonPlansController < ApplicationController
   # GET /lesson_plans/new.xml
   def new
     @lesson_plan = LessonPlan.new
+    @current_roles=[]
+    current_user.roles.each do |x|
+      @current_roles << x.name
+    end
 
     respond_to do |format|
       format.html # new.html.erb
@@ -39,13 +47,16 @@ class Training::LessonPlansController < ApplicationController
   # GET /lesson_plans/1/edit
   def edit
     @lesson_plan = LessonPlan.find(params[:id])
+    @current_roles=[]
+    current_user.roles.each do |x|
+      @current_roles << x.name
+    end
   end
 
   # POST /lesson_plans
   # POST /lesson_plans.xml
   def create
-    @lesson_plan = LessonPlan.new(params[:lesson_plan])
-
+    @lesson_plan = LessonPlan.new(lesson_plan_params)
     respond_to do |format|
       if @lesson_plan.save
         format.html { redirect_to(training_lesson_plan_path(@lesson_plan), :notice => t('training.lesson_plan.title')+t('actions.created')) }
@@ -60,7 +71,12 @@ class Training::LessonPlansController < ApplicationController
   # PUT /lesson_plans/1
   # PUT /lesson_plans/1.xml
   def update
+    #raise params.inspect
     @lesson_plan = LessonPlan.find(params[:id])
+    @current_roles=[]
+    current_user.roles.each do |x|
+      @current_roles << x.name
+    end 
 
     respond_to do |format|
       if @lesson_plan.update(lesson_plan_params)
@@ -111,6 +127,10 @@ class Training::LessonPlansController < ApplicationController
   end
   def lesson_report
       @lesson_plan = LessonPlan.find(params[:id])
+      @current_roles=[]
+      current_user.roles.each do |x|
+	@current_roles << x.name
+      end
       #render :layout => 'report'
       #respond_to do |format|
       #format.pdf do
@@ -131,7 +151,7 @@ class Training::LessonPlansController < ApplicationController
   
   # Never trust parameters from the scary internet, only allow the white list through.
   def lesson_plan_params
-    params.require(:lesson_plan).permit(:lecturer, :intake_id, :student_qty, :semester, :topic, :lecture_title, :lecture_date, :start_time, :end_time, :reference, :is_submitted, :submitted_on, :hod_approved, :hod_approved_on, :hod_rejected, :hod_rejected_on, :data_file_name, :data_content_type, :data_file_size, :data_updated_ot, :prerequisites, :year, :reason, :prepared_by, :endorsed_by, :condition_isgood, :condition_isnotgood, :condition_desc, :training_aids, :summary, :total_absent, :report_submit, :report_submit_on, :report_endorsed, :report_endorsed_on, :report_summary, :schedule,  lessonplan_methodologies_attributes: [:id,:content,:lecturer_activity, :student_activity, :training_aids, :evaluation, :start_meth, :end_meth, :_destroy] )
+    params.require(:lesson_plan).permit(:lecturer, :intake_id, :student_qty, :semester, :topic, :lecture_title, :lecture_date, :start_time, :end_time, :reference, :is_submitted, :submitted_on, :hod_approved, :hod_approved_on, :hod_rejected, :hod_rejected_on, :data, :prerequisites, :year, :reason, :prepared_by, :endorsed_by, :condition_isgood, :condition_isnotgood, :condition_desc, :training_aids, :summary, :total_absent, :report_submit, :report_submit_on, :report_endorsed, :report_endorsed_on, :report_summary, :schedule,  lessonplan_methodologies_attributes: [:id,:content,:lecturer_activity, :student_activity, :training_aids, :evaluation, :start_meth, :end_meth, :_destroy], lesson_plan_trainingnotes_attributes: [:id,:_destroy,:lesson_plan_id,:trainingnote_id], trainingnotes_attributes: [:id,:_destroy,:document,:timetable_id,:staff_id,:title] )
   end
   
 end

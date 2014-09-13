@@ -1,0 +1,57 @@
+.col-md-offset-2   
+  .form-group
+    .col-sm-2.control-label
+      = f.label :prerequisites
+    .col-md-6
+      = f.text_field :prerequisites, class: 'form-control'         
+  .form-group
+    .col-sm-2.control-label
+      = f.label :student_qty
+    .col-md-3
+      = f.text_field :student_qty,  class: 'form-control'
+  .form-group
+    .col-sm-2.control-label
+      = f.label :year
+    .col-md-9
+      = f.select :year, 1..3, {:prompt=>t('helpers.prompt.select_year')},{ class: 'selectpicker', "data-width"=>'150px'}
+  .form-group
+    .col-sm-2.control-label
+      = f.label :semester
+    .col-md-9
+      = f.select :semester, 1..6, {:prompt=>t('helpers.prompt.select_semester')},{ class: 'selectpicker', "data-width"=>'150px'}
+  .form-group
+    .col-sm-2.control-label
+      = f.label :reference
+    .col-md-6
+      = f.text_area :reference, class: 'form-control',  :id => 'myNicEditor3' 
+  .form-group
+    .col-sm-2.control-label
+      = f.label :current_attachment
+    .col-md-6
+      /THIS ONE WILL SAVE TRAINING NOTES IN lesson_plans table instead of trainingnotes table.
+      - if @lesson_plan.data.exists? then
+        =t 'training.lesson_plan.exist_attachment'
+        = @lesson_plan.data_file_name
+        &nbsp;&nbsp;&nbsp;
+        = link_to (t 'document.download'), @lesson_plan.data.url
+        ||
+        = link_to "ALT", @lesson_plan.data.url
+        - @title_fr_trainingnotes = Trainingnote.find_by_timetable_id(@lesson_plan.schedule).title
+      - else
+        =t 'training.lesson_plan.no_attachment_yet'
+        - @title_fr_trainingnotes =''
+              
+      = f.file_field :data, class: 'form-control'
+      = f.text_field :title, :placeholder =>t('helpers.label.lesson_plan.note_title'), :value=>@title_fr_trainingnotes, class: 'form-control'
+  .form-group
+    .col-sm-2.control-label
+      = f.label :add_exist_notes
+    .col-md-6
+      /select & save selected corresponding note
+      = f.fields_for :lesson_plan_trainingnotes do |p|
+        = render 'lesson_plan_trainingnote_fields', :f => p
+      %br
+      .row  
+        = link_to_add_fields t('helpers.label.lesson_plan.add_notes'), f, :lesson_plan_trainingnotes, "",  t('helpers.label.lesson_plan.add_notes')
+      %br
+      %font{:color=>"green"}=t 'helpers.label.lesson_plan.remark'
