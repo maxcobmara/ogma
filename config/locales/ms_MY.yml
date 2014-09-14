@@ -940,12 +940,15 @@ ms_MY:
       new: Nota Latihan Baru
       edit: Sunting Nota Latihan
       document: Fail
+      reference: Rujukan
       release: Keluaran
       title: Tajuk
       version: Versi
       current_file: "Fail Semasa : "
       download: Muatturun
+      file_name: Nama Fail
       or: Atau pilih semula fail
+      topic_subtopic: "Topik / Subtopik"
     lesson_plan:
       title: Pelan Pengajaran
       title2: Pengajaran dan Pembelajaran

@@ -136,6 +136,7 @@ Ogma::Application.routes.draw do
     resources :timetable_periods
     resources :academic_sessions
     resources :topicdetails
+    resources :trainingnotes
     resources :lesson_plans do
       member do
 	get :lesson_report

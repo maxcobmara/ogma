@@ -944,12 +944,17 @@ en:
       new: New Training Note
       edit: Edit Training Note
       document: File
+      reference: Reference
       release: Release
       title: Title
       version: Version
       current_file: "Current file : "
       download: Download
+      file_name: File Name
       or: Or reselect file
+      topic_subtopic: "Topic / Subtopic"
+      programme: Programme
+      subject: Subject
     lesson_plan:
       title: Lesson Plan
       title2: Lesson and Learning

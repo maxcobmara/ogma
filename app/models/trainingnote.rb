@@ -29,7 +29,7 @@ class Trainingnote < ActiveRecord::Base
     #end
   end
   
-  def subject_topic
+  def subject_topic2 #subject_topic -> refer relationship line above
     if topicdetail_id!= nil       #view subject code, topic & title of notes
       topic_id = Topicdetail.find(topicdetail_id).topic_code
       if topic_id!=nil   

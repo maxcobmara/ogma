@@ -3,7 +3,22 @@
   # GET /trainingnotes
   # GET /trainingnotes.xml
   def index
-    @trainingnotes = Trainingnote.all.order(:topicdetail_id)#:order => 'topic_id')
+    #@trainingnotes = Trainingnote.all.order(:topicdetail_id)#:order => 'topic_id')
+    
+    @search = Trainingnote.search(params[:q])
+    @trainingnotes2 = @search.result
+    #@trainingnotes3 = @trainingnotes2.order(:topicdetail_id)
+                
+    by_subject  =@trainingnotes2.where('topicdetail_id is not null').group_by{|x|x.topicdetail.subject_topic}  
+    arr_w_topic=[]
+    by_subject.each do |tns|
+      arr_w_topic<< tns
+    end
+    wo_topic = @trainingnotes2.where('topicdetail_id is null')
+    combine = arr_w_topic+wo_topic
+    @trainingnotes_lala = Kaminari.paginate_array(combine).page(params[:page]||1) 
+    
+    #@trainingnotes =  Kaminari.paginate_array(@trainingnotes3).page(params[:page]||1) 
 
     respond_to do |format|
       format.html # index.html.erb
@@ -87,11 +102,12 @@
     private
     # Use callbacks to share common setup or constraints between actions.
     def set_trainingnote
-      @topicdetail = Topicdetail.find(params[:id])
+      @trainingnote= Trainingnote.find(params[:id])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def trainingnote_params
-      params.require(:trainingnote).permit(:timetable_id, :reference, :version, :staff_id, :release, :document_file_name, :document_content_type, :document_file_size, :document_updated_at, :topicdetail_id)
+      params.require(:trainingnote).permit(:timetable_id, :title, :reference, :version, :staff_id, :release, :document, :topicdetail_id)
+       #params.require(:trainingnote).permit(:timetable_id, :reference, :version, :staff_id, :release, :document_file_name, :document_content_type, :document_file_size, :document_updated_at, :topicdetail_id)
     end
 end
