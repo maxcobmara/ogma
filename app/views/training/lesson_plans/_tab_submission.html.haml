@@ -1,0 +1,24 @@
+- model_class=LessonPlan
+.col-md-8.col-md-offset-1
+  %dl.dl-horizontal
+    %dt=t 'training.lesson_plan.is_submitted', :default => model_class.human_attribute_name(:is_submitted)+":"
+    %dd=h @lesson_plan.is_submitted? ? image_tag("tick.png") : image_tag("cross.png")
+    
+    %dt=t 'training.lesson_plan.submitted_on', :default => model_class.human_attribute_name(:submitted_on)+":"
+    %dd=h @lesson_plan.try(:submitted_on).try(:strftime, '%d %b %Y')
+    
+    %dt=t 'training.lesson_plan.endorsed_by', :default => model_class.human_attribute_name(:endorsed_by)+":"
+    %dd=h @lesson_plan.try(:endorser).try(:name)
+   
+    /note Null values
+    %dt=t 'training.lesson_plan.status'
+    - if @lesson_plan.hod_approved== true
+      %dd= image_tag("tick.png")
+    - elsif @lesson_plan.hod_rejected == true
+      %dd= image_tag("cross.png")
+      
+      %dt=t 'training.lesson_plan.rejection_reason', :default => model_class.human_attribute_name(:reason)+":"
+      %dd
+        %font{:color=>"red"}=h simple_format(@lesson_plan.reason)
+
+ 

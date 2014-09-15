@@ -28,13 +28,23 @@
     %dt=t 'training.lesson_plan.prerequisites', :default => model_class.human_attribute_name(:prerequisites)+":"
     %dd=h @lesson_plan.prerequisites
             
-    %dt=t 'training.lesson_plan.objective', :default => model_class.human_attribute_name(:prerequisites)+":"
+    %dt=t 'training.topicdetail.objctives'
     %dd=h check_kin {simple_format(@lesson_plan.try(:schedule_item).try(:weeklytimetable_topic).try(:topic_details).last.objctives)}
         
     %dt=t 'training.lesson_plan.reference', :default => model_class.human_attribute_name(:reference)+":"
-    %dd=h @lesson_plan.reference
+    %dd
+      %table
+        %tr
+          %td=h simple_format(@lesson_plan.reference)
             
     %dt=t 'training.lesson_plan.trainingnotes', :default => model_class.human_attribute_name(:trainingnotes)+":"
+    %dd=@lesson_plan.data.exists? ? @lesson_plan.data_file_name : "-"
+    
+    %dt=t 'helpers.label.lesson_plan.add_exist_notes'
     %dd
-      - @lesson_plan.trainingnotes.each_with_index do |trainingnote, count|
-        =count.to_s+") "+trainingnote.title+" : "+trainingnote.document_file_name 
+      %table
+        %tr
+          %td
+            - @lesson_plan.trainingnotes.each_with_index do |trainingnote, count|
+              =(count+1).to_s+". "+trainingnote.title+" : "+trainingnote.document_file_name 
+              %br

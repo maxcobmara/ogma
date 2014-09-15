@@ -282,7 +282,7 @@ class Weeklytimetable < ActiveRecord::Base
   
   def self.location_list
     @ll=[] 
-		@lecture_location = Location.find(:first, :conditions=>['code=?', 'C']).descendants 
+		@lecture_location = Location.where('code=?', 'C').first.descendants 
 		@lecture_location.each do |kk| 
 			if (kk.id == 89)||(kk.id == 90)||(kk.id == 906)||(kk.id == 907) ||(kk.id == 910)||(kk.id == 911)||(kk.id == 912)||(kk.id == 913) 
 			   #do nothing

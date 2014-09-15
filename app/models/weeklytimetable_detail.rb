@@ -66,7 +66,7 @@ class WeeklytimetableDetail < ActiveRecord::Base
    def get_time_slot
       timeslot = time_slot2 if is_friday == false || is_friday == nil
       timeslot = time_slot if is_friday == true 
-      stime = "#{TimetablePeriod.find(timeslot).start_at.strftime("%H:%M %p")}"+"-"+"#{TimetablePeriod.find(timeslot).end_at.strftime("%H:%M %p")}"
+      stime = "#{TimetablePeriod.find(timeslot).start_at.strftime("%l:%M %p")}"+"-"+"#{TimetablePeriod.find(timeslot).end_at.strftime("%l:%M %p")}"
    end
    
    def day_time_slot
@@ -75,6 +75,10 @@ class WeeklytimetableDetail < ActiveRecord::Base
    
    def day_time_slot2
       "#{get_date_day_of_schedule}"+" | "+"#{get_time_slot}"
+   end
+   
+   def day_time_slot3
+     "#{weeklytimetable_lecturer.name[0,10]}"+" | "+"#{day_time_slot}"
    end
    
    def subject_day_time

@@ -936,22 +936,29 @@ ms_MY:
       hours_minutes: " (Jam : Minit)"
       add_details: Tambah Butiran
     trainingnote:
+      title2: Nota Latihan
+      new: Nota Latihan Baru
+      edit: Sunting Nota Latihan
       document: Fail
+      reference: Rujukan
       release: Keluaran
       title: Tajuk
       version: Versi
       current_file: "Fail Semasa : "
       download: Muatturun
+      file_name: Nama Fail
       or: Atau pilih semula fail
+      topic_subtopic: "Topik / Subtopik"
     lesson_plan:
       title: Pelan Pengajaran
       title2: Pengajaran dan Pembelajaran
       reporting: Laporan Aktiviti Pengajaran dan Pembelajaran
+      report: Laporan
       new: Pelan Pengajaran Baru
       edit: Sunting Pelan Pengajaran
       descriptions: Deskripsi
       methodologies: Metodologi
-      lecturer: Pensyarah
+      lecturer: Pengajar
       intake_id: Ambilan
       student_qty: Jumlah Pelatih
       semester: Semester
@@ -961,6 +968,7 @@ ms_MY:
       start_time: Masa Mula
       end_time: Masa Tamat
       reference: Rujukan
+      submission: "Penghantaran & Kelulusan Pelan"
       is_submitted: "Telah Dihantar?"
       submitted_on: Tarikh Dihantar
       hod_approved: Kelulusan Atasan
@@ -968,6 +976,7 @@ ms_MY:
       hod_approved_on: Tarikh Kelulusan
       hod_rejected: Penolakan Ketua Jabatan
       hod_rejected_on: Tarikh Penolakan
+      rejection_reason: Sebab Penolakan
       prerequisites: "Pra-Syarat"
       year: Tahun
       reason: Sebab
@@ -987,6 +996,7 @@ ms_MY:
       awaiting_review: "Menunggu Ulasan oleh TPA / Ketua Program"
       summary: "Ringkasan (Ulasan)"
       total_absent: Jumlah Tidak Hadir
+      report_review: Semakan Laporan
       report_submit: "Laporan Telah Dihantar?"
       report_submit_on: Tarikh Hantar Laporan
       report_endorsed: "Laporan telah Diluluskan?"
@@ -995,13 +1005,18 @@ ms_MY:
       schedule: Jadual Waktu
       trainingnotes: Nota Latihan
       content_subtopic: "Kandungan / Subtopik"
+      content: Kandungan
       lecturer_activity: Aktiviti Pengajar
       student_activity: Aktiviti Pelatih
       evaluation: Penilaian
       time: Masa
       group: Kumpulan
       schedule_removed: "Jadual Waktu tidak dipilih atau telah dikeluarkan. Sila pilih Jadual Waktu."
-      
+      no_attachment_yet: "Tiada Nota dilampirkan. Klik 'Browse' untuk muatnaik fail."
+      exist_attachment: "Nota dilampirkan. Klik 'Browse' untuk tukar fail."
+      to: hingga
+      status: Status Kelulusan
+
   campus:
     address: 
       title: Buku Alamat
@@ -1041,7 +1056,7 @@ ms_MY:
         marks: Markah
         qkeyword: Kata Kunci
         qstatus: Status
-        bplreserve: Rizab untuk BPL 
+        bplreserve: Rizab untuk BPL  Lesson Plan
         bplsent: Dihantar ke BPL
         bplsentdt: Tarikh Dihantar
         subquestions: "Subsoalan & Jawapan"
@@ -1159,10 +1174,20 @@ ms_MY:
         title: Tajuk
         version: Versi
       lesson_plan:
-        lecturer: Pensyarah
-        intake_id: Ambilan
+        lecturer: Pengajar
+        schedule: Jadual Waktu
+        #intake_id: Ambilan
         student_qty: Jumlah Pelatih
+        prerequisites: "Pra-syarat"
+        year: Tahun
         semester: Semester
+        reference: Rujukan
+        current_attachment: Nota Latihan Semasa
+        add_exist_notes: Nota Latihan Tambahan
+        remark: "Untuk Nota Latihan tambahan, sekiranya nota latihan yang bersesuaian tiada dalam pilihan, sila tambah nota BARU dalam Butiran Topik berkaitan terlebih dahulu (menu : Latihan | Pelan Pengajaran | Cipta Butiran Topik). Muat semula(refresh) laman ini untuk senarai TERKINI nota latihan tambahan."
+        add_notes: Tambah Nota
+        note_title: "Tajuk Lampiran / Nota Latihan Semasa"
+        methodologies: Metodologi
         topic: Topik
         lecture_title: Tajuk Kuliah
         lecture_date: Tarikh Kuliah
@@ -1171,27 +1196,27 @@ ms_MY:
         reference: Rujukan
         is_submitted: "Telah Dihantar?"
         submitted_on: Tarikh Dihantar
+        hod_approved: Kelulusan Ketua Jabatan
         hod_approved2: Kelulusan Ketua Jabatan
         hod_approved_on: Tarikh Kelulusan
         hod_rejected: Penolakan Ketua Jabatan
         hod_rejected_on: Tarikh Penolakan
-        prerequisites: "Pra-Syarat"
-        year: Year
         reason: Sebab
         prepared_by: Disediakan Oleh
         endorsed_by: Kelulusan Oleh
         #condition_is_good: 
         #condition_isnotgood:
+        class_condition: Keadaan Kelas
         condition_desc: "Deskripsi Keadaan Kelas"
         training_aids: Alan Bantuan Mengajar
         summary: "Ringkasan (Ulasan)"
+        lecturer_review: Ulasan Pengajar
         total_absent: Jumlah Tidak Hadir
-        report_submit: "Laporan Telah Dihantar?"
+        report_submit: "Hantar Laporan?"
         report_submit_on: Tarikh Hantar Laporan
-        report_endorsed: "Laporan telah Diluluskan?"
+        report_endorsed: "Luluskan Laporan?"
         report_endorsed_on: Tarikh Kelulusan Laporan
         report_summary: "Ringkasan Laporan (Ulasan)"
-        schedule: Jadual Waktu
 
     prompt:
       select_creator: Pilih Penyedia Soalan
@@ -1205,6 +1230,7 @@ ms_MY:
       select_answer: Pilih Jawapan
       select_intake: Pilik Sesi Pengambilan
       select_semester: Pilih Semester
+      select_year: Pilih Tahun
       select_format: Pilih Format Jadual Waktu
       select_lecture_method: Pilih Kaedah Pembelajaran
       select_sem_subject_topic: Pilih Sem-Subjek|Topik
@@ -1218,6 +1244,9 @@ ms_MY:
       select_course_type: Pilih Jenis Item
       select_duration: Pilih Jenis Jangka Masa
       select_credit: Pilih Jumlah Kredit
+      select_schedule: Pilih Jadual Waktu
+      select_exist_note: Pilih Nota Latihan Sedia Ada
+      select_hod: Pilih Ketua Jabatan
       all_unit: "Semua Jabatan / Unit"
       maintain: Dikekalkan
       remove: Dibuang

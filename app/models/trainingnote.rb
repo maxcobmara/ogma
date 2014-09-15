@@ -29,4 +29,22 @@ class Trainingnote < ActiveRecord::Base
     #end
   end
   
+  def subject_topic2 #subject_topic -> refer relationship line above
+    if topicdetail_id!= nil       #view subject code, topic & title of notes
+      topic_id = Topicdetail.find(topicdetail_id).topic_code
+      if topic_id!=nil   
+        topic_list = Programme.at_depth(3).map(&:id)
+        subject_list = Programme.at_depth(2).map(&:id)
+        subject_id = Programme.find(topic_id).parent.id
+        if topic_list.include?(topic_id)==true && subject_list.include?(subject_id)==true
+          "#{Programme.find(Topicdetail.find(topicdetail_id).topic_code).parent.code}| #{Programme.find(Topicdetail.find(topicdetail_id).topic_code).name} - #{title}"
+        end
+      else
+        "#{title}"
+      end      
+    else
+      "#{title}"
+    end
+  end
+  
 end

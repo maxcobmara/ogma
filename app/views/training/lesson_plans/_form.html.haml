@@ -1,1 +1,60 @@
+.row
+  .col-md-10.col-md-offset-1
+    / Nav tabs
+    %ul.nav.nav-tabs
+      %li.active= link_to (t 'training.lesson_plan.descriptions'),"#lesson_plan_descriptions", "data-toggle" => "tab"
+      %li=link_to (t 'training.lesson_plan.methodologies'), "#lesson_plan_methodologies", "data-toggle" => "tab"
+      %li=link_to (t 'training.lesson_plan.submission'), "#lesson_plan_submission", "data-toggle" => "tab"
+      
+    .tab-content{style:"padding-top:1em"}
+      .col-md-offset-2 
+        .form-group
+          .col-sm-2.control-label
+            = f.label :lecturer
+          .col-md-3
+            = f.collection_select :lecturer, Staff.joins(:positions).where('positions.name=?','Pengajar').order('name ASC'), :id, :name, {:include_blank =>t('helpers.prompt.select_lecturer')},{class: 'selectpicker', "data-width"=>'230px'} 
+      .col-md-offset-2 
+        .form-group
+          .col-sm-2.control-label
+            = f.label :schedule
+          .col-md-3
+            - if @current_roles.include?('Administration')
+              /admin
+              - @lessonplan_schedule = LessonPlan.all.map(&:schedule).uniq.compact
+              = f.collection_select :schedule, WeeklytimetableDetail.all.sort_by{|x|x.weeklytimetable_lecturer.name}, :id, :day_time_slot3, {:include_blank=>t('helpers.prompt.select_schedule')},{ class: 'selectpicker', "data-width"=>'550px'}
+            - else
+              /lecturer
+              - if @lesson_plan && !@lesson_plan.schedule
+                - @lessonplan_schedule = LessonPlan.all.map(&:schedule).uniq.compact
+                = f.collection_select :schedule, WeeklytimetableDetail.where('lecturer_id=? AND id NOT IN (?)', current_user.staff_id,@lessonplan_schedule), :id, :day_time_slot, {:include_blank=>t('helpers.prompt.select_schedule')},{ class: 'selectpicker', "data-width"=>'550px'}
+              - else
+                = f.collection_select :schedule, WeeklytimetableDetail.where('lecturer_id=?', current_user.staff_id), :id, :day_time_slot, {:include_blank=>t('helpers.prompt.select_schedule')},{class: 'selectpicker', "data-width"=>'550px'}
+
+      #lesson_plan_descriptions.tab-pane.active
+        %br
+        = render 'tab_descriptions_edit.html.haml', :f => f
+
+      #lesson_plan_methodologies.tab-pane
+        %br
+        = render 'tab_methodologies_edit.html.haml', :f => f
+        
+      #lesson_plan_submission.tab-pane
+        %br
+        = render 'tab_submission_edit.html.haml', :f => f 
+              
+:javascript
+
+//<![CDATA[
+bkLib.onDomLoaded(function() {
+  new nicEditor().panelInstance('myNicEditor3');
+  new nicEditor().panelInstance('myNicEditor4');
+});
+//]]>
+
+  function add_fields(link, association, content) {  
+    var new_id = new Date().getTime();  
+    var regexp = new RegExp("new_" + association, "g");  
+    $(link).parent().before(content.replace(regexp, new_id));  
+  }
+  
  
