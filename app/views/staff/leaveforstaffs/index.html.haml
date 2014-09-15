@@ -1,0 +1,37 @@
+- model_class = Leaveforstaff
+.page-header
+  %h1= t('leaveforstaff.list')#, :default => model_class.model_name.human.pluralize
+  
+.navbar.navbar-inverse{role: "navigation", style: "padding-right:40px;"}
+  %ul.nav.navbar-nav
+    %li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'actions.new'))), '#'
+  %ul.nav.navbar-nav.navbar-right
+    %li= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "load_search_bar"
+    %li= link_to content_tag(:li, fa_icon("print", text: (t 'actions.print'))), "#"
+	
+.search{style: "display:none;"}
+  //= render "index_search"
+  
+.row
+  %table.table-striped.table-hover.ogma
+    %thead
+      %tr
+        %th Staff ID	
+        %th Leave Type
+        %th From
+        %th To
+        %th Reason
+        %th Duration
+        %th Replacement
+		
+    %tbody
+    - @leaveforstaffs.each do |leaveforstaff|
+      %tr
+        %td= leaveforstaff.applicant.try(:mykad_with_staff_name)
+        %td= (Leaveforstaff::STAFFLEAVETYPE.find_all{|disp, value| value == leaveforstaff.leavetype}).map {|disp, value| disp}
+        %td= leaveforstaff.leavestartdate.strftime("%a, %d %b")
+        %td= leaveforstaff.leavenddate.strftime("%a, %d %b")
+        %td= leaveforstaff.reason
+        %td= leaveforstaff.leave_for
+        %td= leaveforstaff.replacement_id.blank? ? "None" : leaveforstaff.replacement.name
+

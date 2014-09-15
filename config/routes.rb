@@ -9,6 +9,7 @@ Ogma::Application.routes.draw do
     resources :positions
     resources :staff_appraisals
     resources :staff_appraisal
+    resources :leaveforstaffs
     resources :staff_attendances do
       collection do
         put 'actionable', to: "staff_attendances#actionable"
