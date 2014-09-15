@@ -53,9 +53,10 @@
                 - if acc.book
                   - if acc.book.photo_file_name == nil
                     =t 'book.no_image'
-                    /=acc.book.id
                   - else
-                    =image_tag acc.book.photo.url, :class =>'list-image'
+                    /=image_tag "http://localhost:3000/assets/books/21001/original/display%20div%20of%20selected%20menu%20item%20ON%20LOAD.png?1410749822"
+                    //acc.book.photo.url GIVING THIS-assets/books/21001/original/no_cover_thumb.png?1410753027 
+                    =image_tag "http://#{request.host}:3000"+acc.book.photo.url, :width => '57px'  
               %td=h link_to acc.book.title, library_book_path(acc.book)
               %td=acc.book.try(:author)
               %td=acc.book.try(:isbn)
