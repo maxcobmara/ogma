@@ -1,0 +1,58 @@
+.col-md-6.col-md-offset-2
+  .form-group
+    .col-sm-2.control-label
+      = f.label :total_absent
+    .col-md-2
+      = f.text_field :total_absent, class: 'form-control'         
+  .form-group
+    .col-sm-2.control-label
+      = f.label :class_condition
+    .col-md-6
+      = f.check_box :condition_isgood, :id => 'check_hod_accept' 
+      = t 'training.lesson_plan.satisfactory'
+      #span_hod_endorse{:style=>"display: none;"}
+      = f.check_box :condition_isnotgood, :id => 'check_hod_reject'
+      = t 'training.lesson_plan.not_satisfactory'
+      #span_hod_endorse2{:style=>"display: none;"}
+        = f.text_area :condition_desc, :col=>30, :rows=> 3, :placeholder => "State reasons."
+  .form-group
+    .col-sm-2.control-label
+      = f.label :training_aids
+    .col-md-6
+      = f.text_area :training_aids, class: 'form-control'
+  .form-group
+    .col-sm-2.control-label
+      = f.label :lecturer_review
+    .col-md-6
+      = f.text_area :summary, class: 'form-control'
+  .form-group
+    .col-sm-2.control-label
+      = f.label :report_submit
+    .col-md-6
+      = f.check_box :report_submit , :id => 'check_submitted' 
+      #span_submitted{:style=>"display: none;"}
+        = Date.today.strftime('%d %b %Y')
+  .form-group
+    .col-sm-2.control-label
+      = f.label :endorsed_by
+    .col-md-6
+      = f.collection_select :endorsed_by, Staff.where("id IN (?)", @lesson_plan.hods).order(name: :asc), :id, :name, {:selected => @lesson_plan.endorsed_by},{class: 'selectpicker', "data-width"=>'230px'}
+
+:javascript
+    /$(document).ready(function(){
+    /  //HOD reject
+    /  $("input[id='check_hod_reject']").change(function() {  
+    /    if($('#check_hod_reject').is(':checked')) { 
+    /      $("#span_hod_endorse2").show("highlight"); 
+    /    }else{
+    /      $("#span_hod_endorse2").hide(""); 
+    /    }	
+    /  });
+    /  $("input[id='check_hod_reject']").each(function() {  
+    /    if($('#check_hod_reject').is(':checked')) { 
+    /      $("#span_hod_endorse2").show("highlight"); 
+    /    }else{
+    /      $("#span_hod_endorse2").hide(""); 
+    /    }
+    /  });
+    /});

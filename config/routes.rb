@@ -8,6 +8,11 @@ Ogma::Application.routes.draw do
     end
     resources :positions
     resources :staff_appraisals
+<<<<<<< HEAD
+=======
+    resources :staff_appraisal
+    resources :leaveforstaffs
+>>>>>>> upstream/master
     resources :staff_attendances do
       collection do
         put 'actionable', to: "staff_attendances#actionable"
@@ -136,6 +141,7 @@ Ogma::Application.routes.draw do
     resources :timetable_periods
     resources :academic_sessions
     resources :topicdetails
+    resources :trainingnotes
     resources :lesson_plans do
       member do
 	get :lesson_report

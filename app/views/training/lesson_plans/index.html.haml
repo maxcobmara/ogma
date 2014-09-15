@@ -51,10 +51,6 @@
           =h lesson_plan.hod_rejected? ? "- Rejected" : ""
         %td
           =h lesson_plan.report_submit? ? image_tag("tick.png") : image_tag("cross.png")
-          /- if lesson_plan.hod_approved == true && lesson_plan.report_submit != true && lesson_plan.lecturer == User.current_user.staff_id
-          - if lesson_plan.hod_approved == true && lesson_plan.report_submit != true && lesson_plan.lecturer == current_user.staff_id
-            %span{:style=>"font-size:9px;text-align:right;"}
-              = link_to 'Create Report', :action => 'lessonplan_reporting', :id => lesson_plan
 
   .right{style:"padding:0 30px; margin:0;"}= paginate @lesson_plans, :theme => 'twitter-bootstrap-3'
  

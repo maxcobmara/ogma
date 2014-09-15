@@ -1,0 +1,9 @@
+.col-md-offset-2
+  .form-group
+    .col-sm-2.control-label
+      = f.label :methodologies
+    .col-md-6
+      = f.fields_for :lessonplan_methodologies do |p|
+        = render 'lessonplan_methodology_fields', :f => p
+      .row  
+        = link_to_add_fields t('training.topicdetail.add_details'), f, :lessonplan_methodologies, "",  t('training.topicdetail.add_details') 
