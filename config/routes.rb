@@ -12,6 +12,9 @@ Ogma::Application.routes.draw do
 =======
     resources :staff_appraisal
     resources :leaveforstaffs
+<<<<<<< HEAD
+>>>>>>> upstream/master
+=======
 >>>>>>> upstream/master
     resources :staff_attendances do
       collection do
