@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140903044931) do
+ActiveRecord::Schema.define(version: 20140912000001) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -1163,6 +1163,25 @@ ActiveRecord::Schema.define(version: 20140903044931) do
   add_index "locations", ["combo_code"], name: "index_locations_on_combo_code", using: :btree
   add_index "locations", ["id"], name: "index_locations_on_id", using: :btree
 
+  create_table "logins", force: true do |t|
+    t.string   "login",                     limit: 40
+    t.string   "name",                      limit: 100, default: ""
+    t.string   "email",                     limit: 100
+    t.string   "crypted_password",          limit: 40
+    t.string   "salt",                      limit: 40
+    t.string   "remember_token",            limit: 40
+    t.datetime "remember_token_expires_at"
+    t.integer  "staff_id"
+    t.integer  "student_id"
+    t.boolean  "isstaff"
+    t.string   "icno"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "logins", ["id"], name: "index_logins_on_id", using: :btree
+  add_index "logins", ["login"], name: "index_logins_on_login", unique: true, using: :btree
+
   create_table "maints", force: true do |t|
     t.integer  "asset_id"
     t.integer  "maintainer_id"
@@ -2144,25 +2163,6 @@ ActiveRecord::Schema.define(version: 20140903044931) do
     t.date    "tdate"
     t.text    "details"
   end
-
-  create_table "users", force: true do |t|
-    t.string   "login",                     limit: 40
-    t.string   "name",                      limit: 100, default: ""
-    t.string   "email",                     limit: 100
-    t.string   "crypted_password",          limit: 40
-    t.string   "salt",                      limit: 40
-    t.string   "remember_token",            limit: 40
-    t.datetime "remember_token_expires_at"
-    t.integer  "staff_id"
-    t.integer  "student_id"
-    t.boolean  "isstaff"
-    t.string   "icno"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "users", ["id"], name: "index_users_on_id", using: :btree
-  add_index "users", ["login"], name: "index_users_on_login", unique: true, using: :btree
 
   create_table "usesupplies", force: true do |t|
     t.integer  "supplier_id"

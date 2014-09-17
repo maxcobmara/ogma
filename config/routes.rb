@@ -12,14 +12,8 @@ Ogma::Application.routes.draw do
       end
     end
     resources :staff_appraisals
-<<<<<<< HEAD
-=======
     resources :staff_appraisal
     resources :leaveforstaffs
-<<<<<<< HEAD
->>>>>>> upstream/master
-=======
->>>>>>> upstream/master
     resources :staff_attendances do
       collection do
         put 'actionable', to: "staff_attendances#actionable"
