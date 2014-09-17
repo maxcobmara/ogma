@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140912000001) do
+ActiveRecord::Schema.define(version: 20140912000002) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -1182,6 +1182,11 @@ ActiveRecord::Schema.define(version: 20140912000001) do
   add_index "logins", ["id"], name: "index_logins_on_id", using: :btree
   add_index "logins", ["login"], name: "index_logins_on_login", unique: true, using: :btree
 
+  create_table "logins_roles", id: false, force: true do |t|
+    t.integer "role_id"
+    t.integer "login_id"
+  end
+
   create_table "maints", force: true do |t|
     t.integer  "asset_id"
     t.integer  "maintainer_id"
@@ -1398,11 +1403,6 @@ ActiveRecord::Schema.define(version: 20140912000001) do
     t.string   "authname"
     t.datetime "created_at"
     t.datetime "updated_at"
-  end
-
-  create_table "roles_users", id: false, force: true do |t|
-    t.integer "role_id"
-    t.integer "user_id"
   end
 
   create_table "rxparts", force: true do |t|
