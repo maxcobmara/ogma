@@ -130,6 +130,7 @@ Ogma::Application.routes.draw do
         post :empty_room
       end
     end
+    resources :student_discipline_cases 
   end
 
 

@@ -435,5 +435,15 @@ module DropDown
           [ "Others",3 ]
 ]
   
-    
+  
+  #student discipline cases  
+   STATUS = [
+         #  Displayed       stored in db
+         [ "New","New" ],
+         [ "Open","Open" ],
+         [ "No Case","No Case" ],
+         [ "Closed", "Closed" ],
+         [ "Refer to BPL", "Refer to BPL" ]
+    ]
+      
 end
