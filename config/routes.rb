@@ -6,7 +6,11 @@ Ogma::Application.routes.draw do
         get :borang_maklumat_staff
       end
     end
-    resources :positions
+    resources :positions do
+      collection do
+        get :maklumat_perjawatan
+      end
+    end
     resources :staff_appraisals
 <<<<<<< HEAD
 =======
