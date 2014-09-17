@@ -5,6 +5,18 @@ class Staff::PositionsController < ApplicationController
     @positions = Position.order("combo_code ASC").where("ancestry_depth < ?", 2)
   end
   
+  def maklumat_perjawatan
+    @positions = Position.order("combo_code ASC")
+    respond_to do |format|
+      format.pdf do
+        pdf = Maklumat_perjawatanPdf.new(@positions, view_context)
+        send_data pdf.render, filename: "maklumat_perjawatan-{Date.today}",
+                              type: "application/pdf",
+                              disposition: "inline"
+      end
+    end
+  end
+  
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_position
