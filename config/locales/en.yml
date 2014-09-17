@@ -408,6 +408,7 @@ en:
       reported_on: Reported On 
     
   student:
+    title: Student
     name: Student Name 
     icno: MyKad No.
     male: Male
@@ -485,14 +486,28 @@ en:
       mandatory: Mandatory
       subject: Subject
       grade: Grade
-
-
-
-
- 
- 
-  
-
+    student_discipline_case:
+      title: Student Discipline Case
+      title2: Discipline Cases
+      new: New Student Discipline Case
+      edit: Edit Student Discipline Case
+      new_case: New Case 
+      case: The Case
+      status: Status
+      programme: Programme
+      year_semester: "Year / Semester"
+      matrix_no: Matrix No
+      student_id: Student Name
+      description: Details
+      reported_on: Reported On
+      file_id: File Reference
+      location_id: Location
+      counselor_feedback: Counselor Feedback
+      year: Year
+      not_related: Not Related
+      all : All records
+      counseling: Counseling
+      
   cofile:
     index: List
     cofileno: Cofile No

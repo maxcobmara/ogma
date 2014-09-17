@@ -389,6 +389,7 @@ ms_MY:
       reported_on: Tarikh Dilaporkan
     
   student:
+    title: Pelajar
     name: Nama Pelajar
     icno: No MyKad
     male: Lelaki
@@ -461,7 +462,27 @@ ms_MY:
       guarantor: Keputusan SPM
       contact_information: Maklumat Perhubungan dan Penjamin
       mandatory: Mandatori
-
+    student_discipline_case:
+      title: Kes Disiplin Pelajar
+      title2: Kes Disiplin
+      new: Kes Baru Disiplin Pelajar
+      edit: Sunting Kes Displin Pelajar
+      new_case: Kes Baru Disiplin
+      case: Kes Disipline
+      status: Status
+      programme: Program
+      year_semester: "Tahun / Semester"
+      matrix_no: No Marik
+      student_id: Nama Pelajar
+      description: Butiran
+      reported_on: Tarikh Laporan
+      file_id: Rujukan Fail
+      location_id: Lokasi
+      counselor_feedback: Maklum Balas Kaunselor
+      year: Tahun
+      not_related: Tidak Berkaitan
+      all: Semua rekod
+      counseling: Kaunseling
 
   cofile:
     index: Senarai
