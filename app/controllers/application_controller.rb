@@ -8,7 +8,7 @@ class ApplicationController < ActionController::Base
   
   #set current user for development
   def current_user
-    User.first
+    Login.first
   end
   private
 
