@@ -222,7 +222,41 @@ ms_MY:
         price: Harga
       do:
         title: Apply For Training
-        
+    travel_request:
+      title: Permohonan Perjalanan
+      for_approval: Kelulusan Permohonan Perjalanan 
+      my_travel_request: Permohonan Perjalanan Individu
+      new: Permohonan Perjalanan Baru
+      edit: Sunting Permohonan Perjalanan
+      staff_id: Nama Staf
+      document_id: Dokumen Rujukan
+      purpose: Tujuan
+      staff_course_conducted_id: Kursus Kendalian
+      destination: Destinasi
+      depart_at: Masa Berlepas
+      return_at: Masa Pulang
+      own_car: Kereta Sendiri
+      own_car_notes: Sebab
+      dept_car: Kenderaan Jabatan
+      others_car: Kenderaan Staf Lain
+      taxi: Teksi
+      bus: Bas
+      train: Keretapi
+      plane: Kapal Terbang
+      other: "Lain-lain"
+      other_desc: "Lain-lain Deskripsi"
+      is_submitted: "Telah Dihantar?"
+      submitted_on: Tarikh Hantar
+      replaced_by: Staf Gantian
+      mileage: Batuan
+      mileage_replace: Gantian Batuan
+      hod_id: Ketua Jabatan
+      hod_accept: Penerimaan Ketua Jabatan
+      hod_accept_on: Tarikh Penerimaan Ketua Jabatan
+      travel_claim_id: Tuntutan Perjalanan
+      is_travel_log_complete: "Log Perjalanan Lengkap?"
+      log_mileage: Log Batuan
+      log_fare: Log Tambang
     
   position:
     title: "Tugas & Tanggungjawab"
