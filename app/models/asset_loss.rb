@@ -3,6 +3,8 @@ class AssetLoss < ActiveRecord::Base
   belongs_to :location
   belongs_to :asset
   belongs_to :document
+  belongs_to :hod,              :class_name => 'Staff', :foreign_key => 'endorsed_hod_by'
+  belongs_to :handled_by,       :class_name => 'Staff', :foreign_key => 'last_handled_by' 
 end
 
 # == Schema Information

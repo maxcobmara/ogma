@@ -1,5 +1,5 @@
 class Asset::AssetLossesController < ApplicationController
-  before_action :set_defective, only: [:show, :edit, :update, :destroy]
+
   
   def index
     # @lost_assets = AssetLoss.order(code: :asc).page(params[:page]||1)
@@ -12,6 +12,7 @@ class Asset::AssetLossesController < ApplicationController
   end
   
   def show
+    @asset_loss = AssetLoss.find(params[:id])
   end
   
   def kewpa28

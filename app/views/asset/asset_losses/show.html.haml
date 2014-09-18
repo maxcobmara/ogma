@@ -1,0 +1,70 @@
+- model_class = AssetLoss
+.page-header
+  %h1= @asset_loss.try(:asset).try(:assetcode)
+= render 'shared/flashes'
+
+%ul.nav.nav-tabs
+  %li.active= link_to "Asset Loss Management - Details", "#details",     "data-toggle" => "tab"
+  %li= link_to "Asset Loss Management - Initial", "#value",     "data-toggle" => "tab"
+
+  
+
+.tab-content.col-md-offset-1
+  %dl.dl-horizontal
+    %dt= t 'asset.assetcode'
+    %dd= @asset_loss.try(:asset).try(:assetcode)
+  #details.tab-pane.fade.in.active
+    %dl.dl-horizontal
+      %dt Internal Loss Report Code :
+      %dd= @asset_loss.try(:report_code)
+      %dt  Head of Dept :
+      %dd= @asset_loss.hod.staff_name_with_position
+      %dt Endorsed by Head of Department On :
+      %dd= @asset_loss.try(:endorsed_on).try(:strftime,"%d-%b-%Y")
+
+  #value.tab-pane.fade.in
+    %dl.dl-horizontal
+      %dt Lost Type
+      %dd= @asset_loss.try(:loss_type)
+      %dt Purchase Date
+      %dd= check_kin {tarikh(@asset_loss.asset.purchasedate)}
+      %dt Purchase Price
+      %dd= check_kin {ringgols(@asset_loss.asset.purchaseprice)}
+      %dt Lost Location :
+      %dd= check_kin {@asset_loss.location.location_list}
+      %dt Loss Date & Time :
+      %dd= @asset_loss.try(:lost_at).try(:strftime,"%I:%M%p  %d-%b-%Y")
+      %dt How did loss happen? :
+      %dd= @asset_loss.try(:how_desc)
+      %dt Last Handled By :
+      %dd= check_kin {@asset_loss.handled_by.staff_name_with_position }
+      %dt Is there a case? :
+      %dd= @asset_loss.try(:is_prima_facie?) ? "Yes" : "No" 
+      %dt Any action against staff required?:
+      %dd= @asset_loss.try(:is_staff_action?) ? "Yes" : "No"
+      %dt Police Report :
+      %dd= @asset_loss.try(:is_police_report_made?) ? ("Yes, Police Report No :" +  @asset_loss.try(:police_report_code )) : "No"
+      %dt Preventive measures :
+      %dd= @asset_loss.try(:preventive_measures)
+      %dt New measures ?:
+      %dd= @asset_loss.try(:new_measures)
+      %dt Other Notes :
+      %dd= @asset_loss.try(:notes)
+	  
+.row
+  .col-md-4.col-md-offset-2
+    %hr
+    .form-actions
+      = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), asset_losses_path, :class => 'btn btn-default'
+      = link_to content_tag(:i, "", :class => "fa fa-file-pdf-o"), kewpa28_asset_loss_path(@asset_loss, format: "pdf"), {class: "btn btn-default", "data-toggle" => "tooltip", title: "KEW.PA 28 PDF"}
+      = link_to content_tag(:i, "", :class => "fa fa-file-pdf-o"), kewpa29_asset_loss_path(@asset_loss, format: "pdf"), {class: "btn btn-default", "data-toggle" => "tooltip", title: "KEW.PA 29 PDF"}
+      = link_to content_tag(:i, "", :class => "fa fa-file-pdf-o"), kewpa30_asset_loss_path(@asset_loss, format: "pdf"), {class: "btn btn-default", "data-toggle" => "tooltip", title: "KEW.PA 30 PDF"}
+      = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('.edit', :default => t("helpers.links.edit")), edit_asset_loss_path(@asset_loss), :class => 'btn btn-primary'
+      = link_to content_tag(:i, "", :class => "fa fa-trash-o icon-white") + " " + t('.destroy', :default => t("helpers.links.destroy")), |
+        asset_loss_path(@asset_loss),                                                                                                    |
+        :method => 'delete',                                                                                                           |
+        :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },                   |
+        :class => 'btn btn-danger'
+
+	  
+
