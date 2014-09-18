@@ -1,5 +1,6 @@
 Ogma::Application.routes.draw do
   
+  devise_for :users
   namespace :staff do
     resources :staffs, as: :infos do
       member do
@@ -215,9 +216,7 @@ Ogma::Application.routes.draw do
     end
   end
 
-  
-  devise_for :users
-  resources :users
+  resources :logins
   root  'static_pages#home'
   match '/help',    to: 'static_pages#help',    via: 'get'
   match '/about',   to: 'static_pages#about',   via: 'get'
