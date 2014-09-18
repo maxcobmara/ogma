@@ -1,5 +1,6 @@
 Ogma::Application.routes.draw do
   
+  devise_for :users
   namespace :staff do
     resources :staffs, as: :infos do
       member do
