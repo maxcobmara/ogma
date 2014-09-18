@@ -20,8 +20,8 @@ class Kewpa29Pdf < Prawn::Document
     text " PELANTIKAN JAWATANKUASA PENYIASAT KEHILANGAN ASET ALIH KERAJAAN", :align => :left, :size => 14, :style => :bold
     move_down 30
     text " Saya sebagai Pegawai Pengawal dengan ini melantik tuan/puan sebagai
-    Pengerusi/Ahli Jawatankuasa Penyiasat untuk menyiasat kehilangan  
-    #{"."*100 } (nama aset) di  #{"."*60} (Kementerian/Jabatan/PTJ)
+    Pengerusi/Ahli Jawatankuasa Penyiasat untuk menyiasat kehilangan  ...
+    #{@asset_loss.try(:asset).try(:name)} #{@asset_loss.try(:asset).try(:modelname)}.. (nama aset) di  #{"."*60} (Kementerian/Jabatan/PTJ)
     mulai dari tarikh surat ini. (No. Rujukan Laporan Awal  #{'.'*40} ) ", :align => :left, :size => 14
     move_down 30
     text "2.    Tuan/Puan adalah diberi kuasa untuk menjalankan siasatan dengan mendapatkan
