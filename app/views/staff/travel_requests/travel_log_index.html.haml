@@ -1,0 +1,47 @@
+- model_class = TravelRequest
+.page-header
+  %h1= t('staff.travel_request.my_travel_logs')
+  
+.navbar.navbar-inverse{role: "navigation", style: "padding-right:40px;"}
+  %ul.nav.navbar-nav
+    %li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'actions.new'))), new_staff_travel_request_path
+  %ul.nav.navbar-nav.navbar-right
+    %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "toga"
+    %li= link_to content_tag(:li, fa_icon("print", text: (t 'actions.print'))), "#", class: 'bogus'
+
+.row.filter{style: "display:none;"}
+  .col-md-2
+    
+.row
+  %table.table-striped.table-hover.ogma
+    %thead
+      %tr
+        %th= sort_link(@search, :document_id, (t 'staff.travel_request.document_id'))
+        %th= sort_link(@search, :staff_id, (t 'staff.travel_request.staff_id'))
+        %th=  sort_link(@search, :destination,(t 'staff.travel_request.destination'))
+        %th= sort_link(@search, :depart_at, (t 'staff.travel_request.depart_at'))
+        %th= sort_link(@search, :return_at, (t 'staff.travel_request.return_at'))
+        %th= sort_link(@search, :purpose, (t 'staff.travel_request.purpose'))
+        %th=sort_link(@search, :hod_accept, (t 'staff.travel_request.hod_accept'))
+        
+    %tbody
+    = render "index_search2"
+        
+    - @my_approved_requests.each do |approved_request|
+      %tr
+        %td=h approved_request.try(:document).try(:refno)
+        %td=h link_to approved_request.applicant.try(:staff_name_with_position), staff_travel_request_path(approved_request)
+        %td=h approved_request.destination
+        %td=h approved_request.depart_at.try(:strftime, '%d %b %Y %l:%M %P')
+        %td=h approved_request.return_at.try(:strftime, '%d %b %Y %l:%M %P')
+        %td=h approved_request.document.title
+        %td=h approved_request.hod_accept? ? image_tag("tick.png") : "-"
+                
+  .right{style:"padding:0 30px; margin:0;"}= paginate @my_approved_requests, :theme => 'twitter-bootstrap-3'
+ 
+:javascript
+$(document).ready(function(){
+  $('.toga').click(function() {
+    $('.search_row').toggle(); 
+  });
+})year

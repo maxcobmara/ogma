@@ -22,13 +22,12 @@ class TravelRequest < ActiveRecord::Base
   
   #controller searches
   def self.in_need_of_approval
-    where('hod_id = ? AND is_submitted = ? AND (hod_accept IS ? OR hod_accept = ?)', 25, true, nil, false)
-    #current_user.staff_id   ..login
+    where('hod_id = ? AND is_submitted = ? AND (hod_accept IS ? OR hod_accept = ?)', Login.first.staff_id, true, nil, false)
+    #to revised current_user.staff_id, current_user.try(:login), login 
   end
   
   def self.my_travel_requests
-      where(staff_id: 25)
-      #current_user.staff_id
+      where(staff_id:  Login.first.staff_id)
   end
   
 end
