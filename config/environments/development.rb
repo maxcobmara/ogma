@@ -28,5 +28,5 @@ Ogma::Application.configure do
   config.assets.debug = true
   
   #devise config
-  config.action_mailer.default_url_options = { :host => 'localhost:3000' }
+  config.action_mailer.default_url_options = { :host => 'localhost:3003' }
 end
