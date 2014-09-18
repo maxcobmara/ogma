@@ -6,4 +6,5 @@ describe StaffAppraisal do
 
   subject { @staff_appraisal }
   
+end
   #it { should respond_to(:) }
