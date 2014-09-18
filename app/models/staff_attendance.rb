@@ -120,7 +120,7 @@ class StaffAttendance < ActiveRecord::Base
         end_time = "17:00"
     end
     #TESTING-OK:
-    find(:all, :conditions => ["trigger is null AND log_type =? AND thumb_id=? AND logged_at::time < ?", "O", 5171, "18:00" ], :order => 'logged_at')
+    where("trigger is null AND log_type =? AND thumb_id=? AND logged_at::time < ?", "O", 5171, "18:00").order(:logged_at)
     #SEPATUTNYA:
     #find(:all, :conditions => ["trigger=? AND log_type =? AND thumb_id=? AND logged_at::time < ?", true, "O", User.current_user.staff.thumb_id, end_time ], :order => 'logged_at')
     #where("trigger=? AND log_type =? AND thumb_id=? AND logged_at::time < ?", true, "O", 774, end_time).order(:logged_at)

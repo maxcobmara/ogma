@@ -1,0 +1,67 @@
+- model_class = TravelRequest
+.page-header
+  %h1= t('staff.travel_request.title')
+  
+.navbar.navbar-inverse{role: "navigation", style: "padding-right:40px;"}
+  %ul.nav.navbar-nav
+    %li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'actions.new'))), new_staff_travel_request_path
+  %ul.nav.navbar-nav.navbar-right
+    %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "toga"
+    %li= link_to content_tag(:li, fa_icon("print", text: (t 'actions.print'))), "#", class: 'bogus'
+
+.row.filter{style: "display:none;"}
+  .col-md-2
+    
+.row
+  %table.table-striped.table-hover.ogma
+    %thead
+      %tr
+        %th= sort_link(@search, :document_id, (t 'staff.travel_request.document_id'))
+        %th= sort_link(@search, :staff_id, (t 'staff.travel_request.staff_id'))
+        %th=  sort_link(@search, :destination,(t 'staff.travel_request.destination'))
+        %th= sort_link(@search, :depart_at, (t 'staff.travel_request.depart_at'))
+        %th= sort_link(@search, :return_at, (t 'staff.travel_request.return_at'))
+        %th= sort_link(@search, :purpose, (t 'staff.travel_request.purpose'))
+        %th= sort_link(@search, :is_submitted, (t 'staff.travel_request.is_submitted'))
+        %th=sort_link(@search, :hod_accept, (t 'staff.travel_request.hod_accept'))
+        
+    %tbody
+    = render "index_search"
+    %tr
+      %td{:colspan=>"8",:style=>"font-weight: bold; background-color: #D8D8D8;"}=t 'staff.travel_request.for_approval'
+        
+    -  @for_approvals.each do |for_approval|
+      %tr
+        %td=h for_approval.try(:document).try(:refno)
+        %td=h link_to for_approval.applicant.try(:staff_name_with_position), staff_travel_request_path(for_approval)
+        %td=h for_approval.destination
+        %td=h for_approval.depart_at.try(:strftime, '%d %b %Y %l:%M %P')
+        %td=h for_approval.return_at.try(:strftime, '%d %b %Y %l:%M %P')
+        %td=h for_approval.document.title
+        %td=h for_approval.is_submitted? ? image_tag("tick.png") : image_tag("cross.png") 
+        %td=h for_approval.hod_accept? ? image_tag("tick.png") : image_tag("cross.png")
+    
+    %tr
+      %td{:colspan=>"8",:style=>"font-weight: bold; background-color: #D8D8D8;"}=t 'staff.travel_request.my_travel_request'
+        
+    -  @travel_requests.each do |travel_request|
+      %tr
+        %td=h travel_request.try(:document).try(:refno)
+        %td=h link_to travel_request.applicant.try(:staff_name_with_position), staff_travel_request_path(travel_request)
+        %td=h travel_request.destination
+        %td=h travel_request.depart_at.try(:strftime, '%d %b %Y %l:%M %P')
+        %td=h travel_request.return_at.try(:strftime, '%d %b %Y %l:%M %P')
+        %td=h travel_request.document.title
+        %td=h travel_request.is_submitted? ? image_tag("tick.png") : image_tag("cross.png") 
+        %td=h travel_request.hod_accept? ? image_tag("tick.png") : image_tag("cross.png")
+                
+  /.right{style:"padding:0 30px; margin:0;"}= paginate @for_approvals, :theme => 'twitter-bootstrap-3'
+ 
+:javascript
+$(document).ready(function(){
+  $('.toga').click(function() {
+    $('.search_row').toggle(); 
+  });
+})year
+
+ 

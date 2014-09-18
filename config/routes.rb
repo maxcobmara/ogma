@@ -22,6 +22,7 @@ Ogma::Application.routes.draw do
       end
     end
     resources :attendances
+    resources :travel_requests
   end
 
   match '/attendance/manage', to: 'staff/staff_attendances#manage', via: 'get'
