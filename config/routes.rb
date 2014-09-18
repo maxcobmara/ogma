@@ -23,7 +23,11 @@ Ogma::Application.routes.draw do
       end
     end
     resources :attendances
-    resources :travel_requests
+    resources :travel_requests do 
+      collection do
+	get :travel_log_index
+      end
+    end
   end
 
   match '/attendance/manage', to: 'staff/staff_attendances#manage', via: 'get'

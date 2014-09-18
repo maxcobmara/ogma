@@ -87,7 +87,9 @@
   end
   
   def travel_log_index
-    @my_approved_requests = TravelRequest.find(:all, :conditions => ['staff_id =? AND hod_accept=?', Login.current_login.staff_id, true])
+    @search = TravelRequest.search(params[:q])
+    @my_approved_requests = @search.result.where('staff_id =? AND hod_accept=?', Login.first.staff_id, true)
+    @my_approved_requests = @my_approved_requests.page(params[:page]||1)
 
     respond_to do |format|
       format.html # index.html.erb
