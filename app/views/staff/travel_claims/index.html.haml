@@ -1,0 +1,30 @@
+- model_class = TravelClaim
+.page-header
+  %h1= t('Lists of Travel Claims')
+  
+.navbar.navbar-inverse{role: "navigation", style: "padding-right:40px;"}
+  %ul.nav.navbar-nav
+    %li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'actions.new'))), "#"
+  %ul.nav.navbar-nav.navbar-right
+    %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "toga"
+    %li= link_to content_tag(:li, fa_icon("print", text: (t 'actions.print'))), "#", class: 'bogus'
+
+.row.filter{style: "display:none;"}
+  .col-md-2
+  
+.row
+  %table.table-striped.table-hover.ogma
+    %thead
+      %tr
+        %th="Month"
+        %th="Name"
+        %th="Total"
+        %th="Status"
+   
+    %tbody   
+    -@travel_claims.each do |travel_claims|
+      %tr
+        %td=h travel_claim.claim_month.strftime("%B %Y")
+        %td=h travel_claim.staff.name
+        %td=h travel_claim.total_claims
+        %td=h travel_claim.my_claim_status.titleize
