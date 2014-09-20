@@ -1,0 +1,88 @@
+.col-md-offset-2   
+  .form-group
+    .col-sm-2.control-label
+      = f.label :destination
+    .col-md-4
+      = f.text_field :destination, class: 'form-control'      
+  .form-group
+    .col-sm-2.control-label
+      = f.label :depart_at
+    .col-md-2
+      = f.text_field :depart_at,  :class =>  'date-picker form-control'
+  .form-group
+    .col-sm-2.control-label
+      = f.label :return_at
+    .col-md-2
+      = f.text_field :return_at,  :class =>  'date-picker form-control'
+  .form-group
+    .col-sm-2.control-label
+      %b= t 'staff.travel_request.transport_choice'
+    .col-md-6
+      .row
+        .col-sm-1
+          = f.check_box :own_car,:id => 'mycar',  :class => 'tt'
+        .col-sm-2
+          = f.label :own_car
+        .col-sm-1
+          = f.check_box :dept_car, :id => 'offcar', :class => 'tt'
+        .col-sm-2
+          = f.label :office_car
+        .col-sm-1
+          = f.check_box :others_car, :id => 'othcar', :class => 'tt'
+        .col-sm-3
+          = f.label :others_car
+      #tr_my_car
+        = f.text_field :own_car_notes, :size => '40', :placeholder => t('helpers.label.travel_request.own_car_notes'), class: 'form-control'
+  .form-group
+    .col-sm-2.control-label
+      =f.label :mileage_desc
+    .col-md-6
+      .row
+        .col-sm-1
+          = f.radio_button :mileage, true, :id => 'mileage',  :class => 'radio_mileage' 
+        .col-sm-3
+          = f.label :mileage
+        .col-sm-1
+          = f.radio_button :mileage, false,	:id => 'mileage',  :class => 'radio_mileage' 
+        .col-sm-6
+          = f.label :mileage_replace
+          %font{:size=>'-2'}
+            (Gantian tambang keretapi atau kapal terbang)
+  .form-group
+    .col-sm-2.control-label
+      =f.label :public_transport
+    .col-md-6
+      .row
+        .col-sm-1
+          = f.check_box :taxi
+        .col-sm-2
+          = f.label :taxi
+        .col-sm-1
+          = f.check_box :bus
+        .col-sm-1
+          = f.label :bus
+        .col-sm-1
+          = f.check_box :train
+        .col-sm-2
+          = f.label :train
+        .col-sm-1
+          = f.check_box :plane
+        .col-sm-3
+          = f.label :plane
+      .row
+        .col-sm-1
+          = f.check_box :other
+        .col-sm-6
+          = f.label :other
+      #tr_public_others
+        = f.text_field :other_desc, :size => '40', :placeholder => t('helpers.label.travel_request.other_desc'), class: 'form-control'
+       
+  :javascript
+    $('.date-picker').datetimepicker({
+     timepicker:true,
+       format: "Y-m-d H:i",
+       step: 15,
+       defaultSeconds: 0,
+       autoclose: true
+     }); 
+

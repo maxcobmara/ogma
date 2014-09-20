@@ -1,0 +1,91 @@
+- model_class = TravelRequest
+.page-header
+  %h1=t 'staff.travel_request.log_details'
+
+= render 'shared/flashes'
+
+.row
+  = form_for [:staff, @travel_request], html: { multipart: true, class: 'form-horizontal' }  do |f| 
+    = render 'shared/error_messages', object: f.object
+    = hidden_field_tag :redirect_location, '/travel_requests/logs'
+    .row
+      .col-md-offset-1
+        / Nav tabs
+        %ul.nav.nav-tabs
+          %li= link_to (t 'staff.travel_request.details'),"#travel_request_details", "data-toggle" => "tab"
+          %li=link_to (t 'staff.travel_request.submission'), "#travel_request_submission", "data-toggle" => "tab"
+          %li=link_to (t 'staff.travel_request.approval'), "#travel_request_approval", "data-toggle" => "tab" if @travel_request.is_submitted == true
+          %li.active=link_to (t 'staff.travel_request.log_details'), "#travel_logs_details_edit", "data-toggle" => "tab" if @travel_request.staff_id == Login.first.staff_id &&  @travel_request.hod_accept == true 
+
+        / display 
+        .tab-content{style:"padding-top:1em"}
+          .col-md-8.col-md-offset-1
+            %dl.dl-horizontal
+              %dt= t 'staff.travel_request.staff_id', :default => model_class.human_attribute_name(:staff_id) + ":"
+              %dd=h @travel_request.applicant.staff_name_with_position unless @travel_request.applicant.blank?
+          
+              %dt= t 'staff.travel_request.document_id', :default => model_class.human_attribute_name(:document_id)+":"
+              %dd=h @travel_request.reference_document
+
+          #travel_request_details.tab-pane
+            %br
+            =render 'tab_details'
+        
+          #travel_request_submission.tab-pane
+            %br
+            =render 'tab_submission'
+            
+          #travel_request_approval.tab-pane
+            %br
+            =render 'tab_approval'
+        
+          #travel_logs_details_edit.tab-pane.active
+            %BR
+            %BR
+            .col-md-8.col-md-offset-1
+              %br
+              .row
+                .col-sm-2= t 'staff.travel_request.date'
+                .col-sm-1= t 'staff.travel_request.start' 
+                .col-sm-1= t 'staff.travel_request.finish'
+                .col-sm-3= t 'staff.travel_request.destination'
+                .col-sm-2= t 'staff.travel_request.mileage_desc_km' 
+                .col-sm-2= t 'staff.travel_request.mileage_value_rm'
+                %hr
+              = f.fields_for :travel_claim_logs do |builder|
+                = render 'travel_claim_log_fields', :f => builder
+              %br
+              .row
+                /= link_to_add_fields image_tag("add.png", :border => 0, :title => t('addmore')), f, :travel_claim_logs
+                = link_to_add_fields t('helpers.label.travel_request.add_log'), f, :travel_claim_logs, "",  t('helpers.label.travel_request.add_log')
+              %br  
+              .row
+                .col-sm-2=t 'staff.travel_request.total'
+                .col-sm-5 &nbsp;
+                .col-sm-2 
+                  = @travel_log.total_mileage_request 
+                  km
+                .col-sm-2= ringgols(@travel_log.total_km_money_request)
+                
+    %br        
+    .row
+      .form-group
+        .col-md-1.col-md-offset-2
+          = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), staff_travel_request_path(@travel_request), :class => 'btn btn-default'
+        .col-md-2
+          .div{style: "margin-left:-40px;"}
+            = f.submit t('update'), class: "btn btn-primary"
+
+:javascript
+  function add_fields(link, association, content) {  
+    var new_id = new Date().getTime();  
+    var regexp = new RegExp("new_" + association, "g");  
+    $(link).parent().before(content.replace(regexp, new_id));  
+  }
+  
+  
+
+ 
+
+
+ 

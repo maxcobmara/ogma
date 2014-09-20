@@ -1,0 +1,49 @@
+.col-md-offset-2
+  .form-group
+    .col-sm-2.control-label
+      = f.label :approved_mileage
+    .col-md-6
+      .row
+        .col-sm-1
+          = f.radio_button :mileage_replace, true, :id => 'approved_mileage',  :class => 'radio_appr_mileage' 
+        .col-sm-3
+          = f.label :mileage
+        .col-sm-1
+          = f.radio_button :mileage_replace, false, :id => 'approved_mileage',  :class => 'radio_appr_mileage' 
+        .col-sm-6
+          = f.label :mileage_replace
+          %font{:size=>'-2',} 
+            (Gantian tambang keretapi atau kapal terbang)
+  .form-group
+    .col-sm-2.control-label
+      = f.label :hod_accept
+    .col-md-6
+      = f.check_box :hod_accept, :id => 'check_hod_accept' 
+      #span_hod_endorse{:style=>"display: none;"}
+        = f.text_field :hod_accept_on, :class => 'date_picker form-control'
+
+  :javascript
+    $('.date-picker').datetimepicker({
+     timepicker:true,
+       format: "Y-m-d H:i",
+       step: 15,
+       defaultSeconds: 0,
+       autoclose: true
+     }); 
+
+/    $(document).ready(function(){
+/      $("input[id='check_hod_accept']").change(function() {  
+/        if($('#check_hod_accept').is(':checked')) { 
+/          $("#span_hod_endorse").show("highlight"); 
+/        }else{
+/          $("#span_hod_endorse").hide(""); 
+/        }
+/      });
+/      $("input[id='check_hod_accept']").each(function() {  
+/        if($('#check_hod_accept').is(':checked')) { 
+/          $("#span_hod_endorse").show("highlight"); 
+/        }else{
+/          $("#span_hod_endorse").hide(""); 
+/        }
+/      });
+/    });

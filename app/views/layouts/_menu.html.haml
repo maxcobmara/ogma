@@ -29,9 +29,9 @@
                 %li= link_to "Apply", '#'
                 %li= link_to t("List/Approve"), staff_leaveforstaffs_path
           %li.icon.icon-left
-            = link_to "Claims", '#'
+            = link_to t('staff.travel_claim.title'), '#'
             .mp-level
-              %h2.icon Claims
+              %h2.icon=t 'staff.travel_claim.title'
               %a.mp-back{:href => "#"}= t 'helpers.links.back'
               %ul
                 %li= link_to t('staff.travel_request.title'), staff_travel_requests_path
