@@ -1,1 +1,130 @@
- 
+.row
+  .col-md-10.col-md-offset-1
+    / Nav tabs
+    %ul.nav.nav-tabs
+      %li.active= link_to (t 'staff.travel_request.details'),"#travel_request_details_edit", "data-toggle" => "tab"
+      %li=link_to (t 'staff.travel_request.submission'), "#travel_request_submission_edit", "data-toggle" => "tab"
+      /%li=link_to (t 'staff.travel_request.approval'), "#travel_request_approval_edit", "data-toggle" => "tab"  if @travel_request.is_submitted == true 
+      /&& @travel_request.hod_id == Login.first.staff_id (approval - must current user must be HOD)
+      
+    .tab-content{style:"padding-top:1em"}
+      .col-md-offset-2 
+        .form-group
+          .col-sm-2.control-label
+            = f.label :staff_id
+          .col-md-3
+            = f.collection_select :staff_id, Staff.all.order(name: :asc), :id,  :staff_name_with_position, {:include_blank =>t('helpers.prompt.select_staff'), :selected=>Login.first.staff_id},{class: 'selectpicker', "data-width"=>'320px'} 
+        .form-group
+          .col-sm-2.control-label
+            = f.label :document_id
+          .col-md-3
+            = f.collection_select :document_id, Document.all, :id, :title, {:include_blank=>t('helpers.prompt.select_document')}, {class: 'selectpicker', "data-width"=>'320px'}
+            /= text_field_with_auto_complete :travel_request, :document_refno, {:class => 'compulsory'}, { :url => formatted_documents_path(:js), :method => :get, :with => "'search4=' + element.value"}
+    
+      #travel_request_details_edit.tab-pane.active
+        %br
+        = render 'tab_details_edit', :f => f
+        
+      #travel_request_submission_edit.tab-pane
+        %br
+        = render 'tab_submission_edit', :f => f
+      
+      /#travel_request_approval_edit.tab-pane
+      /  %br
+      /  = render 'tab_approval_edit', :f=>f
+    
+:javascript
+
+//<![CDATA[
+bkLib.onDomLoaded(function() {
+  new nicEditor().panelInstance('myNicEditor3');
+  new nicEditor().panelInstance('myNicEditor4');
+});
+//]]>
+
+  function add_fields(link, association, content) {  
+    var new_id = new Date().getTime();  
+    var regexp = new RegExp("new_" + association, "g");  
+    $(link).parent().before(content.replace(regexp, new_id));  
+  }
+
+/  $(document).ready(function(){
+/    $("input[class='tt']").change(function() {  
+/      if($('#publik').is(':checked')) { 
+/        $("#tr_public_trans").show("highlight"); 
+/        $("#tr_my_car").hide(""); 
+/      }else if ($j('#mycar').is(':checked')){
+/        $("#tr_public_trans").hide(""); 
+/        $("#tr_my_car").show("appear");
+/        $("#tr_public_others").hide(""); 
+/      }else{
+/        $("#tr_public_trans").hide(""); 
+/        $("#tr_my_car").hide("");
+/        $("#tr_public_others").hide(""); 
+/      }
+/    });
+/    $("input[class='tt']").each(function() {  
+/      if($('#publik').is(':checked')) { 
+/        $("#tr_public_trans").show("highlight"); 
+/        $("#tr_my_car").hide(""); 
+/      }else if ($('#mycar').is(':checked')){
+/        $("#tr_public_trans").hide(""); 
+/        $("#tr_my_car").show("highlight");
+/        $("#tr_public_others").hide(""); 
+/      }else{
+/        $("#tr_public_trans").hide(""); 
+/        $("#tr_my_car").hide("");
+/        $("#tr_public_others").hide(""); 
+/      }
+/    });
+//show substuff    
+/    $("input[id='other_transport']").change(function() {  
+/      if($('#other_transport').is(':checked')) { 
+/        $("#tr_public_others").show("appear"); 
+/      }else{
+/        $("#tr_public_others").hide(""); 
+/      }
+/    });
+
+/    $j("input[id='other_transport']").each(function() {  
+/      if($('#other_transport').is(':checked')) { 
+/        $("#tr_public_others").show("highlight"); 
+/      }else{
+/        $("#tr_public_others").hide(""); 
+/      }
+/    });
+
+//show submit date
+/    $("input[id='check_submitted']").change(function() {  
+/      if($('#check_submitted').is(':checked')) { 
+/        $("#span_submitted").show("highlight"); 
+/      }else{
+/        $("#span_submitted").hide(""); 
+/      }
+/    });
+
+/    $("input[id='check_submitted']").each(function() {  
+/      if($('#check_submitted').is(':checked')) { 
+/        $("#span_submitted").show("highlight"); 
+/      }else{
+/        $("#span_submitted").hide(""); 
+/      }
+/    });
+
+//HOD endorse
+/    $("input[id='check_hod_accept']").change(function() {  
+/      if($('#check_hod_accept').is(':checked')) { 
+/        $("#span_hod_endorse").show("highlight"); 
+/      }else{
+/        $("#span_hod_endorse").hide(""); 
+/      }
+/    });
+
+/    $("input[id='check_hod_accept']").each(function() {  
+/      if($('#check_hod_accept').is(':checked')) { 
+/        $("#span_hod_endorse").show("highlight"); 
+/      }else{
+/        $("#span_hod_endorse").hide(""); 
+/      }
+/    });
+/  });

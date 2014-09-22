@@ -1,0 +1,16 @@
+- model_class=TravelRequest
+.col-md-8.col-md-offset-1
+  %dl.dl-horizontal    
+        
+    %dt=t 'staff.travel_request.approved_mileage'
+    %dd
+      =t 'staff.travel_request.mileage'
+      =h @travel_request.mileage? ? image_tag("tick.png") : image_tag("cross.png")
+      =t 'staff.travel_request.mileage_replace'
+      %font{:size=>'-2'}
+        (Gantian tambang keretapi atau kapal terbang)
+      =h @travel_request.mileage_replace? ? image_tag("tick.png") : image_tag("cross.png") 
+      
+    %dt=t 'staff.travel_request.hod_accept', :default => model_class.human_attribute_name(:hod_accepted)+":"
+    %dd
+      =h @travel_request.hod_accept? ? image_tag("tick.png")+t('staff.travel_request.on2')+ @travel_request.hod_accept_on.try(:strftime, '%d %b %Y').to_s+t( 'staff.travel_request.by')+@travel_request.headofdept.try(:staff_name_with_position) : image_tag("cross.png") 

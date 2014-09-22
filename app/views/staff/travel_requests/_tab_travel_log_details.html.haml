@@ -1,0 +1,33 @@
+- model_class=TravelRequest
+.col-md-8.col-md-offset-1
+  %dl.dl-horizontal
+    %dt=t 'staff.travel_request.log_details'
+    %dd
+      %b
+        =t 'staff.travel_request.date' 
+        &nbsp;&nbsp;|&nbsp;&nbsp;
+        =t 'staff.travel_request.start'
+        &nbsp;&nbsp;|&nbsp;&nbsp;
+        =t 'staff.travel_request.finish'
+        &nbsp;&nbsp;|&nbsp;&nbsp;
+        =t 'staff.travel_request.destination'
+        &nbsp;&nbsp;|&nbsp;&nbsp;
+        =t 'staff.travel_request.mileage_desc_km'
+        &nbsp;&nbsp;|&nbsp;&nbsp;
+        =t 'staff.travel_request.mileage_value_rm'
+      
+    - if @travel_request.travel_claim_logs && @travel_request.staff_id == Login.first.staff_id && @travel_request.hod_accept == true
+      - @travel_request.travel_claim_logs.each do |travel_log|
+        %dt &nbsp;
+        %dd
+          = travel_log.travel_on.try(:strftime, '%d %b %Y')
+          &nbsp;&nbsp;|&nbsp;&nbsp;
+          = travel_log.start_at.strftime('%H:%M %p')
+          &nbsp;&nbsp;|&nbsp;&nbsp;
+          = travel_log.finish_at.strftime('%H:%M %p')
+          &nbsp;&nbsp;|&nbsp;&nbsp;
+          = travel_log.destination
+          &nbsp;&nbsp;|&nbsp;&nbsp;
+          = travel_log.mileage
+          &nbsp;&nbsp;|&nbsp;&nbsp;
+          = travel_log.km_money

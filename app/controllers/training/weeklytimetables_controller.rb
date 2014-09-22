@@ -55,7 +55,7 @@ class Training::WeeklytimetablesController < ApplicationController
     @count1=@weeklytimetable.timetable_monthurs.timetable_periods.count
     @count2=@weeklytimetable.timetable_friday.timetable_periods.count 
     @staffid=25
-    roles = Role.joins(:users).where('users.id=?',11).pluck(:id).uniq
+    roles = Role.joins(:logins).where('logins.id=?',11).pluck(:id).uniq
     @is_admin = roles.include?(2)
 
     respond_to do |format|
@@ -93,7 +93,7 @@ class Training::WeeklytimetablesController < ApplicationController
 
   # GET /weeklytimetables/1/edit
   def edit
-    current_user = User.find(11)    #maslinda 
+    current_user = Login.find(11)#User.find(11)    #maslinda 
     #current_user = User.find(72)    #izmohdzaki
     roles = current_user.roles.pluck(:id)
     @is_admin = roles.include?(2)

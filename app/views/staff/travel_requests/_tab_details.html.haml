@@ -1,0 +1,45 @@
+- model_class=TravelRequest
+.col-md-8.col-md-offset-1
+  %dl.dl-horizontal
+    %dt=t 'staff.travel_request.destination'
+    %dd=h @travel_request.destination
+    
+    %dt= t 'staff.travel_request.depart_at' 
+    %dd=h @travel_request.depart_at.try(:strftime, '%d %B %Y %l:%M %P') 
+  
+    %dt=t 'staff.travel_request.return_at'
+    %dd=h @travel_request.return_at.try(:strftime, '%d %B %Y %l:%M %P') 
+
+    %hr
+    
+    %dt=t 'staff.travel_request.transport_choice'
+    %dd
+      =t 'staff.travel_request.own_car'
+      =h @travel_request.own_car? ? image_tag("tick.png") : image_tag("cross.png") + ' ' + @travel_request.own_car_notes
+      =t 'staff.travel_request.dept_car'
+      =h @travel_request.dept_car? ? image_tag("tick.png") : image_tag("cross.png")
+      =t 'staff.travel_request.others_car'
+      =h @travel_request.others_car? ? image_tag("tick.png") : image_tag("cross.png")
+     
+    %dt=t 'staff.travel_request.public_transport'
+    %dd
+      =t 'staff.travel_request.taxi'
+      =h @travel_request.taxi? ? 	image_tag("tick.png") : image_tag("cross.png")
+      =t 'staff.travel_request.bus'
+      =h @travel_request.bus? ? 	image_tag("tick.png") : image_tag("cross.png") 
+      =t 'staff.travel_request.train'
+      =h @travel_request.train? ? image_tag("tick.png") : image_tag("cross.png") 
+      =t 'staff.travel_request.plane'
+      =h @travel_request.plane? ? image_tag("tick.png") : image_tag("cross.png") 
+      =t 'staff.travel_request.other'
+      =h @travel_request.other? ? image_tag("tick.png") : image_tag("cross.png") + ' ' + @travel_request.other_desc 
+    
+    - unless @travel_request.hod_accept == true
+      %dt=t 'staff.travel_request.mileage_desc'
+      %dd
+        =t 'staff.travel_request.mileage'
+        =h @travel_request.mileage? ? image_tag("tick.png") : image_tag("cross.png")
+        =t 'staff.travel_request.mileage_replace'
+        %font{:size=>'-2'}
+          (Gantian tambang keretapi atau kapal terbang)
+        =h @travel_request.mileage_replace? ? image_tag("tick.png") : image_tag("cross.png") 

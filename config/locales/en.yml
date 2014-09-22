@@ -241,14 +241,23 @@ en:
       staff_id: Staff Name
       document_id: Document Ref No
       purpose: Purpose
-      staff_course_conducted_id: Course Conducted By
+      details: Details
+      submission: Submission
+      approval: Approval
+      submission_approval: "Submission & Approval"
+      log_details: Log Details
+      log_details2: Log Details
+      dated: " dated : "
+      #staff_course_conducted_id: Course Conducted By
       destination: Destination
       depart_at: Depart At
       return_at: Return At
+      transport_choice: Transport Choice
       own_car: Own Car
       own_car_notes: Reason
       dept_car: Department Vehicle
       others_car: Others Vehicle
+      public_transport: Public Transport
       taxi: Taxi
       bus: Bus
       train: Train
@@ -258,7 +267,11 @@ en:
       is_submitted: "Submitted?"
       submitted_on: Submitted On
       replaced_by: Replacement Staff
-      mileage: Mileage
+      approved_mileage: Approved Mileage
+      mileage_desc: Mileage
+      mileage_desc_km: "Mileage (KM)"
+      mileage_value_rm: "Value (RM)"
+      mileage: Mileage Allowance
       mileage_replace: Mileage Replacement
       hod_id: Head of Department
       hod_accept: HOD Acceptance
@@ -267,6 +280,15 @@ en:
       is_travel_log_complete: "Travel Log Complete?"
       log_mileage: Log Mileage
       log_fare: Log Fare
+      on2: " on "
+      by: " by "
+      date: Date
+      start: Start
+      finish: End
+      total: Total
+
+    travel_claim:
+      title: Travel Claims
       
       
   position:
@@ -1101,6 +1123,8 @@ en:
       edit_admin: "Edit (Admin)"
       back_lesson_plan: Lesson Plan List
       back_lesson_report: Lesson Report List
+      back_travel_request: Travel Request List
+      back_travel_log: Travel Log List
     label:
       examquestion:
         creator_id: Creator 
@@ -1278,7 +1302,33 @@ en:
         report_endorsed: "Endorse Report?"
         report_endorsed_on: Report Endorsement Date
         report_summary: Report Summary
-        
+      travel_request:
+        staff_id: Staff
+        document_id: Reference Document
+        destination: Destination
+        depart_at: Departure At
+        return_at: Return At
+        own_car: Own Car
+        office_car: Office Car
+        others_car: Others Car
+        own_car_notes: "Reasos (for using own car)"
+        approved_mileage: Approved Mileage
+        mileage: Mileage Allowance
+        mileage_replace: Mileage Replacement
+        mileage_desc: Mileage
+        public_transport: Public Transport
+        taxi: Taxi
+        bus: Bus
+        train: Train
+        plane: Plane
+        other: Others
+        other_desc: "Describe Others (public transport)"
+        is_submitted: "Submit ?"
+        replaced_by: Replacement Staff
+        hod_id: Head of Department
+        hod_accept: HOD Acceptance
+        hod_accept_on: HOD Acceptance Date
+        add_log: Add Log
 
     prompt:
       select_creator: Select Creator
@@ -1309,6 +1359,8 @@ en:
       select_schedule: Select Schedule
       select_exist_note: Select Existing Training Notes
       select_hod: Select Head of Department
+      select_document: Select Document
+      select_staff: Select Staff
       all_unit: "All Department / Unit"
       maintain: Maintain
       remove: Remove
