@@ -1,7 +1,7 @@
 class Appraisal_formPdf < Prawn::Document
   def initialize(staff_appraisal, view)
     super({top_margin: 50, page_size: 'A4', page_layout: :portrait })
-    @staff_appraisal = staff_appraisal
+    @staff_appraisals = staff_appraisal
     @view = view
     font "Times-Roman"
     text "BORANG J.P.A. (Prestasi) ", :align => :right, :size => 12, :style => :bold
@@ -169,12 +169,117 @@ end
 
 def bahagian3
   
+  text "BAHAGIAN III - PENGHASILAN KERJA ( Wajaran 50% )", :align => :left, :size => 12, :style => :bold     
+  text "Pegawai Penilai dikehendaki memberikan penilaian berdasarkan pencapaian kerja sebenar PYD berbanding dengan SKT yang ditetapkan. 
+  Penilaian hendaklah berasaskan kepada penjelasan setiap kriteria yang dinyatakan di bawah dengan menggunakan skala 1 
+  hingga 10 :", :align => :left, :size => 12
   
-  
-  
+  data1 = [["", "KRITERIA (Dinilai berasaskan SKT)", "PPP", "PPK"],
+           ["1.", "   KUANTITI HASIL KERJA", "", ""],
+           ["","Kuantiti hasil kerja seperti jumlah bilangan, kadar, kekerapan dan sebagainya berbanding dengan sasaran kuantiti 
+             kerja yang ditetapkan.", "" , "" ],
+             ["2. ","  KUALITI HASIL KERJA", "",""],
+             ["2.1. Dinilai dari segi kesempurnaan, teratur dan kemas.", "",""],
+             ["2.2. Dinilai dari segi usaha dan inisiatif untuk mencapai kesempurnaan hasil kerja.","",""],
+             ["3. ","  KETEPATAN MASA","",""],
+             ["","Kebolehan menghasilkan kerja atau melaksanakan tugas dalam tempoh masa yang ditetapkan.","",""],
+             ["4. ","  KEBERKESANAN HASIL KERJA", "",""],
+             ["","Dinilai dari segi memenuhi kehendak 'stake-holder' atau pelanggan.","",""],
+             ["", "Jumlah markah mengikut wajaran","",""]]
+             
+       table(data1 , :column_widths => [100,100,100], :cell_style => { :size => 11}) do
+         row(0).font_style = :bold
+         self.row_colors = ["FEFEFE", "FFFFFF"]
+
+       end 
 end
 
+def bahagian4
+  
+  text "BAHAGIAN IV - PENGETAHUAN DAN KEMAHIRAN ( Wajaran 25% )", :align => :left, :size => 12, :style => :bold     
+  text "Pegawai Penilai dikehendaki memberikan penilaian berasaskan kepada penjelasan setiap kriteria yang 
+  dinyatakan di bawah dengan menggunakan skala 1 hingga 10:", :align => :left, :size => 12
+  
+  data1 = [["", "KRITERIA ", "PPP", "PPK"],
+           ["1.", "  ILMU PENGETAHUAN DAN KEMAHIRAN DALAM BIDANG KERJA", "", ""],
+           ["","Mempunyai ilmu pengetahuan dan kemahiran/kepakaran dalam menghasilkan kerja meliputi kebolehan mengenalpasti, 
+             menganalisis serta menyelesaikan masalah.", "" , "" ],
+             ["2. ","  PELAKSANAAN DASAR, PERATURAN DAN ARAHAN PENTADBIRAN", "",""],
+             ["","Kebolehan menghayati dan melaksanakan dasar, peraturan dan arahan pentadbiran berkaitan dengan bidang tugasnya.", "",""],
+             ["3. ","  KUANTITI HASIL KERJA","",""],
+             ["","Kuantiti hasil kerja seperti jumlah bilangan, kadar, kekerapan dan sebagainya berbanding dengan sasaran 
+               kuantiti kerja yang ditetapkan.","",""],
+             ["", "Jumlah markah mengikut wajaran","",""]]
+             
+       table(data1 , :column_widths => [100,100,100], :cell_style => { :size => 11}) do
+         row(0).font_style = :bold
+         self.row_colors = ["FEFEFE", "FFFFFF"]
 
+       end 
+end
 
+def bahagian5
+  
+  text "BAHAGIAN V - KUALITI PERIBADI ( Wajaran 20% )", :align => :left, :size => 12, :style => :bold     
+  text "Pegawai Penilai dikehendaki memberikan penilaian berasaskan kepada penjelasan setiap kriteria yang 
+  dinyatakan di bawah dengan menggunakan skala 1 hingga 10:", :align => :left, :size => 12
+  
+  data1 = [["", "KRITERIA (Dinilai berasaskan SKT)", "PPP", "PPK"],
+           ["1.", "  KEBOLEHAN MENGELOLA", "", ""],
+           ["","Keupayaan dan kebolehan menggembleng segala sumber dalam kawalannya seperti kewangan, tenaga manusia,
+             peralatan dan maklumat bagi merancang mengatur, membahagi dan mengendalikan sesuatu tugas untuk mencapai objektif 
+             organisasi.", "" , "" ],
+             ["2. ","   DISIPLIN", "",""],
+             ["","Mempunyai daya kawalan diri dari segi mental dan fizikal termasuk mematuhi peraturan, menepati masa, 
+               menunaikan janji dan bersifat sabar.", "",""],
+             ["3. ","   PROAKTIF DAN INOVATIF","",""],
+             ["","Kebolehan menjangka kemungkinan, mencipta dan mengeluarkan idea baru serta membuat pembaharuan bagi 
+               mempertingkatkan kualiti dan produktiviti organisasi.","",""],
+             ["4. ","   JALINAN HUBUNGAN DAN KERJASAMA","",""],
+             [""," Kebolehan pegawai dalam mewujudkan suasana kerjasama yang harmoni dan mesra serta boleh menyesuaikan diri dalam semua keadaan.","",""],
+             ["", "Jumlah markah mengikut wajaran","",""]]
+             
+       table(data1 , :column_widths => [100,100,100], :cell_style => { :size => 11}) do
+         row(0).font_style = :bold
+         self.row_colors = ["FEFEFE", "FFFFFF"]
+
+       end 
+end
+
+def bahagian6
+  
+  text "BAHAGIAN VI - KEGIATAN DAN SUMBANGAN DI LUAR TUGAS RASMI ( Wajaran 5% )", :align => :left, :size => 12, :style => :bold  
+  text "(Sukan/Pertubuhan/Sumbangan Kreatif)", :align => :left, :size => 12
+  text "Berasaskan maklumat di Bahagian II perenggan 1, Pegawai Penilai dikehendaki memberi penilaian dengan menggunakan 
+  skala 1 hingga 10. TIada sebarang markah boleh diberikan (kosong) jika PYD tidak mencatat kegiatan atau 
+  sumbangannya.", :align => :left, :size => 12
+  
+  data1 = [[ "", "Peringkat Komuniti / Jabatan / Daerah / Negeri / Negara / Antarabangsa", "PPP", "PPK"],
+             ["","Jumlah markah mengikut wajaran","",""]]
+             
+       table(data1 , :column_widths => [100,100,100], :cell_style => { :size => 11}) do
+         row(0).font_style = :bold
+         self.row_colors = ["FEFEFE", "FFFFFF"]
+
+       end 
+end
+
+def bahagian7
+  
+  text "BAHAGIAN VII - JUMLAH MARKAH KESELURUHAN", :align => :left, :size => 12, :style => :bold  
+  text "Pegawai Penilai dikehendaki mencatatkan jumlah markah keseluruhan yang diperolehi oleh PYD dalam bentuk peratus 
+  (%) berdasarkan jumlah markah bagi setiap Bahagian yang diberi markah.", :align => :left, :size => 12
+
+  
+  data1 = [[ "", "PPP(%)", "PPK(%)", "MARKAH PURATA (%)"],
+            ["", "", "", "(untuk diisi oleh Urus Setia PPSM)"]
+             ["MARKAH KESELURUHAN"," ","",""]]
+             
+       table(data1 , :column_widths => [100,100,100], :cell_style => { :size => 11}) do
+         row(0).font_style = :bold
+         self.row_colors = ["FEFEFE", "FFFFFF"]
+
+       end 
+end
 
 end
