@@ -12,7 +12,11 @@ Ogma::Application.routes.draw do
         get :maklumat_perjawatan
       end
     end
-    resources :staff_appraisals
+    resources :staff_appraisals do
+      collection do 
+        get :appraisal_form
+      end
+    end
     resources :staff_appraisal
     resources :leaveforstaffs
     resources :travel_claims

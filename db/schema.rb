@@ -2165,11 +2165,8 @@ ActiveRecord::Schema.define(version: 20140918024044) do
   end
 
   create_table "users", force: true do |t|
-    t.string   "login",                  default: "", null: false
     t.string   "email",                  default: "", null: false
     t.string   "encrypted_password",     default: "", null: false
-    t.integer  "userable_id"
-    t.string   "userable_type"
     t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
@@ -2184,7 +2181,6 @@ ActiveRecord::Schema.define(version: 20140918024044) do
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
-  add_index "users", ["userable_id", "userable_type"], name: "index_users_on_userable_id_and_userable_type", using: :btree
 
   create_table "usesupplies", force: true do |t|
     t.integer  "supplier_id"
