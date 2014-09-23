@@ -419,15 +419,25 @@ en:
     registration: "Registration No."
     otherinfo: "Components & Accessories"
     administered_by: "Administered By"
+    serialno: Serial No
     
     defect:
       title: Asset Defect
       notes: Notes
       new: New Defect Report
       description: Description
+      process: Process
+      decision: Decision
+      reported_by: Reported By
+      processed_by: "Processed?"
+      action_type: Action Type
+      recommendation: Recommendation
+      recommendation_submitted: "Recommendation Submitted?"
+      approval: Approval
       
-    #category:
-      #title: Asset Category
+    category:
+      title: Asset Category
+      type_model_name: "Type / Model / Name"
     
 
     

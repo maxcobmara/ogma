@@ -8,7 +8,7 @@
   %li= link_to (t "asset.defect.process"), "#process",     "data-toggle" => "tab"
   - unless @defective.decision
     %li= link_to (t "asset.defect.decision"), "#decision",    "data-toggle" => "tab"
-  %li= link_to (t "asset.placement"),      "#placement",   "data-toggle" => "tab"
+  /%li= link_to (t "asset.placement"),      "#placement",   "data-toggle" => "tab"
 
   
 .tab-content.col-md-offset-1
@@ -17,7 +17,7 @@
     %dd= @defective.asset.assetcode
   #details.tab-pane.fade.in.active
     %dl.dl-horizontal
-      %dt= t 'asset.category'
+      %dt= t 'asset.category.type_model_name'
       %dd= "#{@defective.asset.typename} : #{@defective.asset.name} : #{@defective.asset.modelname}" 
       %dt= t 'asset.serialno'
       %dd= @defective.asset.serialno
@@ -35,7 +35,7 @@
       %dd= @defective.recommendation
       %dt= t 'asset.defect.recommendation_submitted'
       %dd= @defective.description
-      %dt= t 'asset.defect.reported_by'
+      %dt= t 'asset.defect.processed_by'
       %dd= @defective.is_processed? ? "Yes, by  " + @defective.processor.name.to_s + " on  " + (l(@defective.processed_on)).to_s : "No"
   
   #decision.tab-pane.fade.in

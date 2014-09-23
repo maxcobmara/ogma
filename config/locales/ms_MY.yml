@@ -408,15 +408,25 @@ ms_MY:
     engineno: "No. Enjin"
     registration: "No. Pendaftaran"
     otherinfo: "Komponen & Aksesori"
+    serialno: "No. Siri"
     
     defect:
       title: Aset Rosak
       notes: Catatan
       new: Lapuran Kerosakan Baru
       description: Catatan
+      process: Proses
+      decision: Keputusan
+      reported_by: Dilaporkan Oleh
+      processed_by: "Diproses?"
+      action_type: Jenis Tindakan
+      recommendation: Cadangan 
+      recommendation_submitted: "Cadangan Dihantar?"
+      approval: Kelulusan
       
     category:
-      title: Asset Category
+      title: Kategori Aset
+      type_model_name: "Jenis / Model / Nama"
     
   location:
     title: Lokasi
