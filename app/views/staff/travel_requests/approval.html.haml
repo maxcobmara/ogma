@@ -1,0 +1,49 @@
+- model_class = TravelRequest
+.page-header
+  %h1=t 'staff.travel_request.approval'
+
+= render 'shared/flashes'
+
+.row
+  = form_for [:staff, @travel_request], html: { multipart: true, class: 'form-horizontal' }  do |f| 
+    = render 'shared/error_messages', object: f.object
+    = hidden_field_tag :redirect_location, staff_travel_requests_path 
+    .row
+      .col-md-offset-1
+        / Nav tabs
+        %ul.nav.nav-tabs
+          %li= link_to (t 'staff.travel_request.details'),"#travel_request_details", "data-toggle" => "tab"
+          %li=link_to (t 'staff.travel_request.submission'), "#travel_request_submission", "data-toggle" => "tab"
+          %li.active=link_to (t 'staff.travel_request.approval'), "#travel_request_approval_edit", "data-toggle" => "tab"  if @travel_request.is_submitted == true 
+
+        / display 
+        .tab-content{style:"padding-top:1em"}
+          .col-md-8.col-md-offset-1
+            %dl.dl-horizontal
+              %dt= t 'staff.travel_request.staff_id', :default => model_class.human_attribute_name(:staff_id) + ":"
+              %dd=h @travel_request.applicant.staff_name_with_position unless @travel_request.applicant.blank?
+          
+              %dt= t 'staff.travel_request.document_id', :default => model_class.human_attribute_name(:document_id)+":"
+              %dd=h @travel_request.reference_document
+
+          #travel_request_details.tab-pane
+            %br
+            =render 'tab_details'
+        
+          #travel_request_submission.tab-pane
+            %br
+            = render 'tab_submission'
+
+          #travel_request_approval_edit.tab-pane.active
+            .col-md-10
+              %br
+              = render 'tab_approval_edit', :f=>f
+
+    %br
+    .row
+      .form-group
+        .col-md-1.col-md-offset-2
+          = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), staff_travel_request_path(@travel_request), :class => 'btn btn-default'
+        .col-md-2
+          .div{style: "margin-left:-40px;"}
+            = f.submit t('update'), class: "btn btn-primary"

@@ -9,7 +9,7 @@ class DocumentsController < ApplicationController
     @documents_pagi = @documents.page(params[:page]||1) 
   end
 
-  # GET /documents/1
+   # GET /documents/1
    # GET /documents/1.xml
    def show
    end

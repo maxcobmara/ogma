@@ -232,24 +232,37 @@ ms_MY:
       staff_id: Nama Staf
       document_id: Dokumen Rujukan
       purpose: Tujuan
-      staff_course_conducted_id: Kursus Kendalian
+      details: Butiran
+      submission: Penghantaran
+      approval: Kelulusan
+      submission_approval: "Penghantaran & Kelulusan"
+      log_details: Log Perjalanan
+      log_details2: Butiran Log
+      dated: " bertarikh : "
+      #staff_course_conducted_id: Kursus Kendalian
       destination: Destinasi
       depart_at: Masa Berlepas
       return_at: Masa Pulang
+      transport_choice: Pilihan Pengangkutan
       own_car: Kereta Sendiri
       own_car_notes: Sebab
       dept_car: Kenderaan Jabatan
       others_car: Kenderaan Staf Lain
+      public_transport: Kenderaan Awam
       taxi: Teksi
       bus: Bas
       train: Keretapi
       plane: Kapal Terbang
       other: "Lain-lain"
-      other_desc: "Lain-lain Deskripsi"
+      other_desc: "Deskripsi Lain-lain"
       is_submitted: "Telah Dihantar?"
       submitted_on: Tarikh Hantar
       replaced_by: Staf Gantian
-      mileage: Batuan
+      approved_mileage: Batuan yang Diluluskan
+      mileage_desc: Batuan 
+      mileage_desc_km: "Batuan (KM)"
+      mileage_value_rm: "Nilai (RM)"
+      mileage: Elaun Batuan
       mileage_replace: Gantian Batuan
       hod_id: Ketua Jabatan
       hod_accept: Penerimaan Ketua Jabatan
@@ -258,6 +271,15 @@ ms_MY:
       is_travel_log_complete: "Log Perjalanan Lengkap?"
       log_mileage: Log Batuan
       log_fare: Log Tambang
+      on2: " pada "
+      by: " oleh "
+      date: Tarikh
+      start: Dari
+      finish: Ke
+      total: Jumlah
+
+    travel_claim:
+      title: Tuntutan Perjalanan
     
   position:
     title: "Tugas & Tanggungjawab"
@@ -1095,6 +1117,9 @@ ms_MY:
       edit_admin : "Sunting (Pentadbir)"
       back_lesson_plan: Senarai Pelan Pengajaran
       back_lesson_report: Senarai Laporan Pengajaran
+      back_travel_request: Senarai Permohonan Perjalanan
+      back_travel_log: Senarai Log Perjalanan
+      
     label:
       examquestion:
         creator_id: Disediakan Oleh
@@ -1273,6 +1298,33 @@ ms_MY:
         report_endorsed: "Luluskan Laporan?"
         report_endorsed_on: Tarikh Kelulusan Laporan
         report_summary: "Ringkasan Laporan (Ulasan)"
+      travel_request:
+        staff_id: Staf
+        document_id: Dokumen Rujukan
+        destination: Destinasi
+        depart_at: Masa Bertolak
+        return_at: Masa Balik
+        own_car: Kenderaan Sendiri
+        office_car: Kenderaan Pejabat
+        others_car: Kenderaan Staf Lain
+        own_car_notes: "Sebab (menggunakan kenderaan sendiri)"
+        approved_mileage: Batuan yang Diluluskan
+        mileage: Elaun Batuan
+        mileage_replace: Gantian Batuan
+        mileage_desc: Batuan
+        public_transport: Kenderaan Awam
+        taxi: Teksi
+        bus: Bas
+        train: Keretapi
+        plane: Kapal Terbang
+        other: "Lain-lain"
+        other_desc: "Lain - lain kenderaan awam, sila nyatakan"
+        is_submitted: "Hantar ?"
+        replaced_by: Staf Gantian
+        hod_id: Ketua Jabatan
+        hod_accept: Penerimaan Ketua Jabatan
+        hod_accept_on: Tarikh Penerimaan Ketua Jabatan
+        add_log: Tambah Log
 
     prompt:
       select_creator: Pilih Penyedia Soalan
@@ -1303,6 +1355,8 @@ ms_MY:
       select_schedule: Pilih Jadual Waktu
       select_exist_note: Pilih Nota Latihan Sedia Ada
       select_hod: Pilih Ketua Jabatan
+      select_document: Pilih Dokumen Rujukan
+      select_staff: Pilih Staf
       all_unit: "Semua Jabatan / Unit"
       maintain: Dikekalkan
       remove: Dibuang

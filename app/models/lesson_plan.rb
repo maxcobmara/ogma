@@ -121,10 +121,11 @@ class LessonPlan < ActiveRecord::Base
       #hod = User.current_user.staff.position.parent
       #approver = Position.find(:all, :select => "staff_id", :conditions => ["id IN (?)", hod]).map(&:staff_id)
       role_kp = Role.find_by_name('Programme Manager')  #must have role as Programme Manager
-      staff_with_kprole = User.joins(:roles).where('role_id=?',role_kp).pluck(:staff_id).compact.uniq
+      staff_with_kprole = Login.joins(:roles).where('role_id=?',role_kp).pluck(:staff_id).compact.uniq
+				    #User.joins(:roles).where('role_id=?',role_kp).pluck(:staff_id).compact.uniq
       #programme_name = Programme.roots.map(&:name)    #must be among Academic Staff 
       #approver = Staff.find(:all, :joins=>:position, :conditions=>['unit IN(?) AND staff_id IN(?)', programme_name, staff_with_kprole])
-      current_user = User.find(11) #####
+      current_user = Login.first #User.find(11) #####
       programme_name = current_user.staff.positions[0].unit
       if Programme.roots.pluck(:name).include?(programme_name)
 	approver = Staff.joins(:positions).where('unit=? AND staff_id IN(?)', programme_name, staff_with_kprole).pluck(:id).uniq

@@ -1,0 +1,19 @@
+.col-md-offset-2   
+  .form-group
+    .col-sm-2.control-label
+      = f.label :is_submitted
+    .col-md-4
+      = f.check_box :is_submitted, :id => 'check_submitted'  
+    #span_submitted{:style=>"display: none;"}
+      = Date.today.strftime('%d %b %Y')
+  .form-group
+    .col-sm-2.control-label
+      = f.label :replaced_by
+    .col-md-4
+      = f.collection_select :replaced_by, Staff.where("id IN (?)", @travel_request.repl_staff), :id, :name,{ :include_blank => t('helpers.prompt.select_staff') },{class: 'selectpicker', "data-width"=>'320px'} 
+  .form-group
+    .col-sm-2.control-label
+      = f.label :hod_id
+    .col-md-4
+      = f.collection_select :hod_id, Staff.where("id IN (?)", @travel_request.hods).order(name: :asc), :id, :name, {:include_blank => t('helpers.prompt.select_hod')}, {class: 'selectpicker', "data-width"=>'320px'} 
+

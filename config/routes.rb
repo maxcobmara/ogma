@@ -19,6 +19,7 @@ Ogma::Application.routes.draw do
     end
     resources :staff_appraisal
     resources :leaveforstaffs
+    resources :travel_claims
     resources :staff_attendances do
       collection do
         put 'actionable', to: "staff_attendances#actionable"
@@ -28,12 +29,17 @@ Ogma::Application.routes.draw do
     end
     resources :attendances
     resources :travel_requests do 
+      member do
+	get :travel_log
+	get :approval
+      end
       collection do
 	get :travel_log_index
       end
     end
   end
-
+  
+  match '/travel_requests/logs', to: 'staff/travel_requests#travel_log_index', via: 'get'
   match '/attendance/manage', to: 'staff/staff_attendances#manage', via: 'get'
   match '/attendance/status/', to: 'staff/staff_attendances#status', via: 'get'
   match '/attendance/approve/', to: 'staff/staff_attendances#approve', via: 'get'
