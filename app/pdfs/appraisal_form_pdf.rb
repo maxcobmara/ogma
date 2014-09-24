@@ -165,6 +165,11 @@ end
      
      data1 = [["",""],
            [ "Tandatangan PYD", "Tarikh"]] 
+           
+           table(data1 , :column_widths => [150,150], :cell_style => { :size => 11}) do
+             row(0).font_style = :bold
+             self.row_colors = ["FEFEFE", "FFFFFF"]
+           end
 end
 
 def bahagian3
@@ -280,6 +285,168 @@ def bahagian7
          self.row_colors = ["FEFEFE", "FFFFFF"]
 
        end 
+end
+
+def bahagian8
+  
+  text "BAHAGIAN VIII - ULASAN KESELURUHAN DAN PENGESAHAN OLEH PEGAWAI PENILAI PERTAMA", :align => :left, :size => 12, :style => :bold  
+  text "1.  Tempoh PYD bertugas di bawah pengawasan: Tahun ... Bulan ....", :align => :left, :size => 12
+  text "2.  Penilai Pertama hendaklah memberi ulasan keseluruhan prestasi PYD.", :align => :left, :size => 12
+  text "(i)  Prestasi keseluruhan.", :align => :left, :size => 12
+  text "..............", :align => :left, :size => 12
+  text "(ii)  Kemajuan kerjaya.", :align => :left, :size => 12
+  text "..............", :align => :left, :size => 12
+  text "3.  Adalah disahkan bahawa prestasi pegawai ini telah dimaklumkan kepada PYD.", :align => :left, :size => 12
+  
+  data1 = [[ "Nama PPP :", "....."],
+            ["Jawatan :", "......"]
+             ["Kementerian /Jabatan : ","....."]
+           ["No. K.P : ","....."]]
+             
+       table(data1 , :column_widths => [100,200], :cell_style => { :size => 11}) do
+         self.row_colors = ["FEFEFE", "FFFFFF"]
+     move_down 5
+       end 
+       
+       data1 = [["",""],
+             [ "Tandatangan PPP", "Tarikh"]] 
+           
+             table(data1 , :column_widths => [150,150], :cell_style => { :size => 11}) do
+               row(0).font_style = :bold
+               self.row_colors = ["FEFEFE", "FFFFFF"]
+             end
+      move_down 5      
+end
+
+def bahagian9
+  
+  text "BAHAGIAN IX - ULASAN KESELURUHAN OLEH PEGAWAI PENILAI KEDUA", :align => :left, :size => 12, :style => :bold  
+  text "1.  Tempoh PYD bertugas di bawah pengawasan: Tahun ... Bulan ....", :align => :left, :size => 12
+  text "2.  Penilai Pertama hendaklah memberi ulasan keseluruhan prestasi PYD.", :align => :left, :size => 12
+  text "..............", :align => :left, :size => 12
+  
+  data1 = [[ "Nama PPK :", "....."],
+            ["Jawatan :", "......"]
+             ["Kementerian /Jabatan : ","....."]
+           ["No. K.P : ","....."]]
+             
+       table(data1 , :column_widths => [100,200], :cell_style => { :size => 11}) do
+         self.row_colors = ["FEFEFE", "FFFFFF"]
+     move_down 5
+       end 
+       
+       data1 = [["",""],
+             [ "Tandatangan PPP", "Tarikh"]] 
+           
+             table(data1 , :column_widths => [150,150], :cell_style => { :size => 11}) do
+               row(0).font_style = :bold
+               self.row_colors = ["FEFEFE", "FFFFFF"]
+             end
+      move_down 5      
+end
+
+def lampiranA
+  
+  text "LAMPIRAN 'A", :align => :right, :size => 12, :style => :bold 
+  text "SASARAN KERJA TAHUNAN", :align => :center, :size => 12, :style => :bold 
+  
+  
+  
+  data = [["PERINGATAN"],
+         ["Pegawai Yang Dinilai (PYD) dan Pegawai Penilaian Pertama (PPP) 
+           hendaklah memberi perhatian kepada perkara-perkara berikut sebelum dan semasa melengkapkan borang ini:" ]]
+ 
+  table(data , :column_widths => [400], :cell_style => { :size => 10}) do
+   row(0).borders = [:left, :right, :top]
+   row(1).borders = [:left, :right]
+   row(0).font_style = :bold
+   row(0).background_color = 'FFE34D'
+
+  end 
+  
+  data1 = [['	i.', "PYD dan PPD hendaklah berbincang bersama dalam membuat penetapan Sasaran Kerja Tahunan 
+    (SKT) dan menurunkan tandatangan di ruangan yang ditetapkan di Bahagian I"],
+    ["ii.","SKT yang ditetapkan hendaklah mengandungi sekurang-kurangnya satu petunjuk prestasi iaitu sama ada kuantiti, kualiti,
+       masa atau kos bergantung kepada kesesuaian sesuatu aktiviti/projek:"],
+    ["iii.", "SKT yang telah ditetapkan pada awal tahun hendaklah dikaji semula di pertengahan tahun, 
+      SKT yang digugurkan atau ditambah hendaklah dicatatkan di ruangan Bahagian II"],
+      ["	iv.", "PYD dan PPP hendaklah membuat laporan dan ulasan keseluruhan pencapaian SKT pada akhir 
+        tahun serta menurunkan tandatangan di ruangan yang ditetapkan di Bahagian III; dan"],
+      ["v.", "sila rujuk Panduan Penyediaan Sasaran Kerja Tahunan (SKT) untuk mendapat keterangan lanjut."]]
+    
+        table1(data , :column_widths => [30,370], :cell_style => { :size => 10}) do
+         row(0).borders = [:left, :right]
+         row(1).borders = [:left, :right]
+         row(2).borders = [:left, :right]
+         row(3).borders = [:left, :right]
+         row(4).borders = [:left, :right, :buttom]
+         row(0).background_color = 'FFE34D'
+    end
+    move_down 20 
+end
+
+def lampiranA1
+  
+  text "BAHAGIAN I -  MAKLUMAT PEGAWAI", :align => :left, :size => 12, :style => :bold  
+  text "(PYD dan PPP hendaklah berbincang bersama sebelum menetapkan SKT dan petunjuk prestasinya)", :align => :left, :size => 12  
+  
+  
+  data = [["Bil", "Ringkasan Aktiviti/Projek", "Petunjuk Prestasi"]]
+  
+  data1 = [["",""],
+        [ "Tandatangan PYD", "Tandatangan PPP"],
+        ["Tarikh :", "Tarikh : "]] 
+      
+        table(data1 , :column_widths => [150,150], :cell_style => { :size => 11}) do
+          row(0).font_style = :bold
+          self.row_colors = ["FEFEFE", "FFFFFF"]
+        end 
+  
+end
+
+def lampiranA2
+  
+  text "BAHAGIAN II -  Kajian Semula Sasaran Kerja Tahun Pertengahan Tahun", :align => :left, :size => 12, :style => :bold  
+  text "1.   Aktiviti/Projek Yang Ditambah", :align => :left, :size => 12  
+  text "(PYD hendaklah menyeneraikan aktiviti/projek yang ditambah berserta petunjuk prestasinya setelah berbincang dengan PPP)", :align => :left, :size => 12  
+  
+  
+  data = [["Bil", "Ringkasan Aktiviti/Projek", "Petunjuk Prestasi"]]
+  
+  text "BAHAGIAN II - Kajian Semula Sasaran Kerja Tahun Pertengahan Tahun", :align => :left, :size => 12, :style => :bold 
+  text "1.   Aktiviti/Projek Yang Digugurkan", :align => :left, :size => 12, :style => :bold 
+  text "(PYD hendaklah menyeneraikan aktiviti/projek yang digugurkan setelah berbincang dengan PPP)", :align => :left, :size => 12, :style => :bold 
+  
+  data = [["Bil", "Ringkasan Aktiviti/Projek"]]
+  
+    
+end
+
+def lampiranA3
+  
+  text "BAHAGIAN III -  Laporan dan Ulasan Keseluruhan Pencapaian Sasaran Kerja Tahunan Pada Akhir 
+                        Tahun Oleh PYD dan PPP", :align => :left, :size => 12, :style => :bold  
+                        
+  text "1.   Laporan/Ulasan Oleh PYD", :align => :left, :size => 12  
+
+    data = [["  "]]
+  
+  text "2.   Laporan/Ulasan Oleh PPP", :align => :left, :size => 12, :style => :bold 
+  
+  data1 = [["  "]]
+  
+  
+  
+  data2 = [["",""],
+        [ "Tandatangan PYD", "Tandatangan PPP"],
+        ["Tarikh :", "Tarikh : "]] 
+      
+        table(data2 , :column_widths => [150,150], :cell_style => { :size => 11}) do
+          row(0).font_style = :bold
+          self.row_colors = ["FEFEFE", "FFFFFF"]
+        end 
+  
+    
 end
 
 end
