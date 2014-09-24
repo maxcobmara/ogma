@@ -5,9 +5,8 @@
 
 %ul.nav.nav-tabs
   %li.active= link_to (t "asset.details"), "#details",     "data-toggle" => "tab"
-  %li= link_to "Re-Value", "#value",     "data-toggle" => "tab"
-  %li= link_to "Disposal Details", "#disposalditails",     "data-toggle" => "tab"
-  
+  %li= link_to (t "asset.disposal.revalue_title"), "#value",     "data-toggle" => "tab"
+  %li= link_to (t "asset.disposal.details"), "#disposaldetails",     "data-toggle" => "tab"
 
 .tab-content.col-md-offset-1
   %dl.dl-horizontal
@@ -15,70 +14,76 @@
     %dd= @disposed.asset.assetcode
   #details.tab-pane.fade.in.active
     %dl.dl-horizontal
-      %dt= t 'asset.category'
+      %dt= t 'asset.category.type_model_name'
       %dd= "#{@disposed.asset.typename} : #{@disposed.asset.name} : #{@disposed.asset.modelname}" 
-      %dt  Age
+      %dt= t 'asset.disposal.age'
       %dd= @disposed.try(:age)  
       %dt= t 'asset.serialno'
       %dd= @disposed.asset.serialno
-      %dt Usage
+      %dt= t 'asset.disposal.usage'
       %dd= "#{@disposed.running_hours} Hrs Or #{@disposed.mileage} Km "
-      %dt Duration Used
+      %dt= t 'asset.disposal.duration_used'
       %dd= @disposed.try(:age)
-      %dt Current Condition 
+      %dt= t 'asset.disposal.current_condition'
       %dd= @disposed.current_condition  
-      %dt Current Value
+      %dt= t 'asset.disposal.current_value'
       %dd= currency(@disposed.current_value.to_f) 
-      %dt Estimated Repair Cost
+      %dt= t 'asset.disposal.estimated_repair_cost'
       %dd= currency(@disposed.est_repair_cost.to_f)	  	  
-      %dt Estimated Value After Repair
+      %dt= t 'asset.disposal.estimated_value_after_repair'
       %dd= currency(@disposed.est_value_post_repair.to_f) 	  
-      %dt Estimated Time to Next Failure if repaired (Month)
+      %dt= t 'asset.disposal.estimated_next_failure'
       %dd= @disposed.est_time_next_fail	  	  
-      %dt repair Needed
-      %dd= "1. #{@disposed.repair1_needed}"	  
-      %dd= "2. #{@disposed.repair2_needed}"	
-      %dd= "3. #{@disposed.repair3_needed}"		  	  	  
-      %dt Justification For Disposal
-      %dd= "1. #{@disposed.justify1_disposal}"	
+      %dt= t 'asset.disposal.repair_needed'
+      %dd= "1. #{@disposed.repair1_needed}"
+      %dt &nbsp;
+      %dd= "2. #{@disposed.repair2_needed}"
+      %dt &nbsp;
+      %dd= "3. #{@disposed.repair3_needed}"
+      %dt= t 'asset.disposal.justification_disposal'
+      %dd= "1. #{@disposed.justify1_disposal}"
+      %dt &nbsp;
       %dd= "2. #{@disposed.justify2_disposal}"
-      %dd= "3. #{@disposed.justify3_disposal}"	  	  
-      %dt Lembaga Pemeriksa
-      %dd= "1. #{@disposed.inspect1or.name}"	 	
-      %dd= "2. #{@disposed.inspect2or.name}"	
-	  
+      %dt &nbsp;
+      %dd= "3. #{@disposed.justify3_disposal}"  
+      %dt= t 'asset.disposal.board_examiners'
+      %dd= "1. #{@disposed.inspect1or.try(:name)}"
+      %dt &nbsp;
+      %dd= "2. #{@disposed.inspect2or.try(:name)}"
+  
   #value.tab-pane.fade.in
     %dl.dl-horizontal
-      %dt New Value
+      %dt= t 'asset.disposal.revalue'
       %dd= @disposed.revalue
-      %dt Re Valued By
+      %dt= t 'asset.disposal.revalued_by'
       %dd= @disposed.revaluer.try(:staff).try(:name)
-      %dt Re Valued On
+      %dt= t 'asset.disposal.revalued_on'
       %dd= @disposed.revalued_on
-	  
-  #disposalditails.tab-pane.fade.in
+  
+  #disposaldetails.tab-pane.fade.in
     %dl.dl-horizontal
-      %dt Approval
-      %dd= "#{@disposed.try(:document).try(:refno)} #{@disposed.try(:document).try(:title)} #{@disposed.try(:document).try(:letterdt)}"
-      %dt Disposed
-      %dd= @disposed.disposal_type
+      %dt= t 'asset.disposal.approval_ref'
+      %dd= "#{@disposed.try(:document).try(:refno)} #{@disposed.try(:document).try(:title)} #{@disposed.try(:document).try(:letterdt).try(:strftime, '%d %b %Y')}"
+      %dt=(t 'asset.disposal.disposal_type')
+      %dd=@disposed.disposaltype
       - if @disposed.disposal_type == "transfer"
-        %dt Transferred To	
+        %dt= t 'asset.disposal.receiver_name'
         %dt= @disposed.receiver_name
       - elsif @disposed.disposal_type == "sold"
-        %dt Receipt No
-        %dd= @disposed.documentation_no	
-      - elsif @disposed.disposal_type == "discard"	 
-        %dt Method
-        %dd= "#{@disposed.discard_options} at #{@disposed.discard_location} on #{@disposed.discarded_on.try(:strftime, "%d/%m/%y")} "   
-        %dt Witnessed By
-        %dd= "#{@disposed.discard_witness1.name} AND #{@disposed.discard_witness2.name}"				
-      - elsif @disposed.disposal_type == "stock"	  
+        %dt= t 'asset.disposal.receipt_no'
+        %dd= @disposed.documentation_no
+      - elsif @disposed.disposal_type == "discard"	
+        %dt= t 'asset.disposal.discard_options'
+        %dd= "#{@disposed.discardoption} at #{@disposed.discard_location} on #{@disposed.discarded_on.try(:strftime, '%d %b %Y')} "   
+        %dt= t 'asset.disposal.discard_witness_by'
+        %dd= "#{@disposed.discard_witness1.try(:name)} AND #{@disposed.discard_witness2.try(:name)}"
       - elsif @disposed.disposal_type == "others"
-        %dt Method	
-        %dd= @disposed.type_others_desc.titleze	   						  
-      %dt Confirmed By
-      %dd= "#{@disposed.disposed_by.try(:staff).try(:name)} On  #{@disposed.disposed_on}"
+        %dt= t 'asset.disposal.type_others_desc'
+        %dd= @disposed.type_others_desc.titleze
+      - elsif @disposed.disposal_type == "stock"
+        
+      %dt= t 'asset.disposal.disposed_by'
+      %dd= "#{@disposed.disposed_by.try(:staff).try(:name)} On  #{@disposed.disposed_on.try(:strftime, '%d %b %Y')}"
 	  
 .row
   .col-md-4.col-md-offset-2

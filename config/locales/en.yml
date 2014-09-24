@@ -438,10 +438,54 @@ en:
       recommendation: Recommendation
       recommendation_submitted: "Recommendation Submitted?"
       approval: Approval
+    
+    disposal:
+      title: Asset Disposal
+      new: New Asset Disposal
+      edit: Edit Asset Disposal
+      details: Disposal Details
+      revalue_title: "Re-Value"
+      quantity: Quantity
+      purchase_date: Purchase Date
+      disposed_on: Disposal Date
+      current_value: Current Value
+      justify1_disposal: Justification
+      age: Age
+      usage: Usage
+      duration_used: Duration Used
+      current_condition: Current Condition
+      estimated_repair_cost: Estimated Repair Cost
+      estimated_value_after_repair: Estimated Value After Repair
+      estimated_next_failure: "Estimated Time to Next Failure if repaired (Month)"
+      repair_needed: Repair Needed
+      justification_disposal: Justification For Disposal
+      board_examiners: Board of Examiners
+      revalue: "Current Value (New)"
+      revalued_by: "Re-Valued By"
+      revalued_on: "Re-Valued On"
+      approval_ref: Approval Reference
+      disposal_type: Disposal Type
+      receiver_name: Receiver
+      receipt_no: Receipt No
+      discard_options: Discard Method
+      discard_witness_by: Discard Witnesses
+      type_others_desc: Other Discard method
+      disposed_by: Confirmed By
+      transfer: Transfer
+      sold: Sold
+      discard: Discard
+      bury: Bury
+      burn: Burn
+      throw: Throw
+      sink: Sink
+      
+    loss:
+      title: "Loss & write Offs"
       
     category:
       title: Asset Category
       type_model_name: "Type / Model / Name"
+      type_name_model: "Type / Name / Model"
     
 
     

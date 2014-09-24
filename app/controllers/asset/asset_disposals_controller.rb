@@ -3,7 +3,9 @@ class Asset::AssetDisposalsController < ApplicationController
   
   def index
     /@disposals = AssetDisposal.order(code: :asc).page(params[:page]||1)/
-    @disposals = AssetDisposal.all
+    @search = AssetDisposal.search(params[:q])
+    @disposals = @search.result
+    @disposals = @disposals.page(params[:page]||1)  
   end
   
   def show

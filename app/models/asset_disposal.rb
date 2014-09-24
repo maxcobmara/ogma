@@ -1,19 +1,39 @@
 class AssetDisposal < ActiveRecord::Base
     belongs_to :asset
-    
     belongs_to :document
-     belongs_to :inspect1or, :class_name => 'Staff', :foreign_key => 'examiner_staff1'
-      belongs_to :inspect2or, :class_name => 'Staff', :foreign_key => 'examiner_staff2'
-      belongs_to :processor, :class_name => 'Staff', :foreign_key => 'checked_by'
-      belongs_to :verifier,  :class_name => 'Staff', :foreign_key => 'verified_by'
-      belongs_to :revaluer,  :class_name => 'Staff', :foreign_key => 'revalued_by'
-      belongs_to :staff, :foreign_key => 'disposed_by'
-      belongs_to :discard_witness1,  :class_name => 'Staff', :foreign_key => 'discard_witness_1'
-      belongs_to :discard_witness2,  :class_name => 'Staff', :foreign_key => 'discard_witness_2'
+    belongs_to :inspect1or, :class_name => 'Staff', :foreign_key => 'examiner_staff1'
+    belongs_to :inspect2or, :class_name => 'Staff', :foreign_key => 'examiner_staff2'
+    belongs_to :processor, :class_name => 'Staff', :foreign_key => 'checked_by'
+    belongs_to :verifier,  :class_name => 'Staff', :foreign_key => 'verified_by'
+    belongs_to :revaluer,  :class_name => 'Staff', :foreign_key => 'revalued_by'
+    belongs_to :staff, :foreign_key => 'disposed_by'
+    belongs_to :discard_witness1,  :class_name => 'Staff', :foreign_key => 'discard_witness_1'
+    belongs_to :discard_witness2,  :class_name => 'Staff', :foreign_key => 'discard_witness_2'
     
+    #define scope - asset(typename, name, modelname)
+    def self.typemodelname_search(query)
+      asset_ids = Asset.where('typename ILIKE(?) or name ILIKE(?) or modelname ILIKE(?)', "%#{query}%","%#{query}%","%#{query}%").pluck(:id)
+      return AssetDisposal.where('asset_id IN (?)', asset_ids)
+    end
     
-    def age
-     
+   # whitelist the scope
+    def self.ransackable_scopes(auth_object = nil)
+      [:typemodelname_search]
+    end
+    
+    def disposaltype
+      disposetype=I18n.t('asset.disposal.transfer') if disposal_type == 'transfer'
+      disposetype=I18n.t('asset.disposal.sold') if disposal_type == 'sold'
+      disposetype=I18n.t('asset.disposal.discard') if disposal_type == 'discard'
+      disposetype
+    end
+    
+    def discardoption
+      discardopt=I18n.t('asset.disposal.bury') if discard_options == 'bury'
+      discardopt=I18n.t('asset.disposal.burn') if discard_options == 'burn'
+      discardopt=I18n.t('asset.disposal.throw') if discard_options == 'throw'
+      discardopt=I18n.t('asset.disposal.sink') if discard_options == 'sink'
+      discardopt
     end
 end
 
