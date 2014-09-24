@@ -427,9 +427,13 @@ en:
       new: New Defect Report
       description: Description
       process: Process
+      repair: Repair
+      dispose: Dispose
       decision: Decision
       reported_by: Reported By
-      processed_by: "Processed?"
+      is_processed: "Processed?"
+      processed_by: Processed By
+      processed_on: Processed On
       action_type: Action Type
       recommendation: Recommendation
       recommendation_submitted: "Recommendation Submitted?"

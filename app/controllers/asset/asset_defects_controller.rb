@@ -22,7 +22,7 @@ class Asset::AssetDefectsController < ApplicationController
   def update
     respond_to do |format|
       if @asset_defect.update(asset_defect_params)
-        format.html { redirect_to asset_defect_path, notice: 'Defect was successfully registered.' }
+        format.html { redirect_to asset_defect_path, notice: t('asset.defect.title')+t('actions.updated')}
         format.json { head :no_content }
       else
         format.html { render action: 'edit' }
@@ -53,7 +53,7 @@ class Asset::AssetDefectsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def asset_defect_params
-      params.require(:asset_defect).permit(:description, :asset_id, :asset_show)
+      params.require(:asset_defect).permit(:description, :asset_id, :asset_show, :reported_by, :notes,:process_type, :recommendation, :is_processed, :processed_by, :processed_on, :decision, :decision_by, :decision_on)
     end
 end
 

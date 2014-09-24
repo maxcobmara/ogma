@@ -416,9 +416,13 @@ ms_MY:
       new: Lapuran Kerosakan Baru
       description: Catatan
       process: Proses
+      repair: Baiki
+      dispose: Buang
       decision: Keputusan
       reported_by: Dilaporkan Oleh
-      processed_by: "Diproses?"
+      is_processed: "Diproses?"
+      processed_by: Diproses Oleh
+      processed_on: Diproses Pada
       action_type: Jenis Tindakan
       recommendation: Cadangan 
       recommendation_submitted: "Cadangan Dihantar?"
@@ -435,7 +439,7 @@ ms_MY:
     name: Nama
     administrator: Ditadbir oleh
     select_admin: "Pilih Pentadbir"
-    has_assets: "Lokasi ini punyai asset, kelik di sini untuk lihat/sorok"
+    has_assets: "Lokasi ini punyai asset, klik di sini untuk lihat/sorok"
     
     
     location_categories:
