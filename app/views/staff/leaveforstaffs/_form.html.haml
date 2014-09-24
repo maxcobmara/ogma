@@ -1,0 +1,58 @@
+.row
+  .col-md-10.col-md-offset-1
+    / Nav tabs
+    %ul.nav.nav-tabs
+      %li.active= link_to (t 'staff.leaveforstaff.details'),"#leaveforstaff_details_edit", "data-toggle" => "tab"
+
+      
+    .tab-content{style:"padding-top:1em"}
+      .col-md-offset-2 
+        .form-group
+          .col-sm-2.control-label
+            = f.label :staff_id
+          .col-md-3
+            = f.collection_select :staff_id, Staff.all.order(name: :asc), :id,  :staff_name_with_position, {:include_blank =>t('helpers.prompt.select_staff'), :selected=>Login.first.staff_id},{class: 'selectpicker', "data-width"=>'320px'}
+			
+        .form-group
+          .col-sm-2.control-label
+            = f.label :leavetype
+          .col-md-3
+            = f.select :leavetype, Leaveforstaff::STAFFLEAVETYPE, :prompt => "Select", class: 'form-control mandatory'
+			
+        .form-group
+          .col-sm-2.control-label
+            = f.label :leavestartdate
+          .col-md-3
+            = f.text_field :leavestartdate, :order => [:day, :month, :year], :default => 2.days.from_now,  :class =>  'date-picker form-control'
+			
+        .form-group
+          .col-sm-2.control-label
+            = f.label :leavenddate
+          .col-md-3
+            = f.text_field :leavenddate, :order => [:day, :month, :year], :default => 3.days.from_now,  :class =>  'date-picker form-control'
+			
+        .form-group
+          .col-sm-2.control-label
+            = f.label :reason
+          .col-md-3
+            = f.text_field :reason , class: 'form-control'
+			
+        .form-group
+          .col-sm-2.control-label
+            = f.label :notes
+          .col-md-3
+            = f.text_area :notes, :size => "30x5", class: 'form-control'
+
+  
+  :javascript
+    $('.date-picker').datetimepicker({
+     timepicker:true,
+       format: "d-m-Y",
+       step: 15,
+       defaultSeconds: 0,
+       autoclose: true
+     });
+  
+    
+ 
+
