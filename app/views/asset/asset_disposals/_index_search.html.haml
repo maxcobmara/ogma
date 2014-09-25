@@ -1,0 +1,25 @@
+= search_form_for @search, url: asset_disposals_path,  class: "form-inline" do |f|
+  %tr.search_row{style: "display: none;"}
+    %td=f.text_field :asset_assetcode_cont, size: 2, :class => "form-control"
+    %td=f.text_field :typemodelname_search, size: 2, :class => "form-control"
+    %td=f.text_field :asset_quantity_eq, size: 2, :class => "form-control"
+    %td
+      .col-sm-6=f.text_field :asset_purchasedate_gteq, class: 'date-picker form-control', placeholder: 'From'
+      .col-sm-6=f.text_field :asset_purchasedate_lteq, class: 'date-picker form-control', placeholder: 'To'
+    %td
+      .col-md-6=f.text_field :disposed_on_gteq, class:  'date-picker form-control', placeholder: 'From'
+      .col-md-6=f.text_field :disposed_on_lteq, class:  'date-picker form-control', placeholder: 'To'
+    %td=f.text_field :current_value_eq, size: 2, :class => "form-control"
+    %td
+      .input-group
+        =f.text_field :justify1_disposal_cont, size: 2, :class => "form-control"
+        %span.input-group-btn
+          %button.btn.btn-sm.btn-default.right{:type => "submit"}
+            %i.fa.fa-search.fa-fw
+       
+  :javascript
+    $('.date-picker').datetimepicker({
+     timepicker:false,
+       format: "Y-m-d",
+       autoclose: true
+     }); 

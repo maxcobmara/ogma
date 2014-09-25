@@ -1,0 +1,10 @@
+= search_form_for @search, url: asset_defects_path,  class: "form-inline" do |f|
+  %tr.search_row{style: "display: none;"}
+    %td= f.text_field :asset_assetcode_cont, size: 2,  :class => "form-control"
+    %td= f.text_field :asset_name_cont, size: 2,  :class => "form-control"
+    %td= f.text_field :asset_serialno_cont, size: 2,  :class => "form-control"
+    %td= f.text_field :asset_locations_name_cont, size:2, :class => "form-control"
+    %td.input-group
+      %span.input-group-btn
+        %button.btn.btn-sm.btn-default.right{:type => "submit"}
+          %i.fa.fa-search.fa-fw

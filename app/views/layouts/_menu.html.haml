@@ -65,9 +65,9 @@
         %ul
           %li= link_to content_tag(:i, "", :class => "icon-numb") + "Assets", asset_assets_path
           %li= link_to content_tag(:i, "", :class => "icon-numb") + "Office Supplies", asset_stationeries_path
-          %li= link_to content_tag(:i, "", :class => "icon-numb") + "Defects", asset_defects_path
-          %li= link_to content_tag(:i, "", :class => "icon-numb") + "Loss & write Offs", asset_losses_path
-          %li= link_to content_tag(:i, "", :class => "icon-numb") + "Disposal", asset_disposals_path
+          %li= link_to content_tag(:i, "", :class => "icon-numb") + (t "asset.defect.title"), asset_defects_path
+          %li= link_to content_tag(:i, "", :class => "icon-numb") + (t "asset.loss.title"), asset_losses_path
+          %li= link_to content_tag(:i, "", :class => "icon-numb") + (t "asset.disposal.title"), asset_disposals_path
           %li.icon.icon-left
             = link_to "Asset Loan", '#'
             .mp-level

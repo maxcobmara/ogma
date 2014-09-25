@@ -37,7 +37,7 @@
         %td=h for_approval.destination
         %td=h for_approval.depart_at.try(:strftime, '%d %b %Y %l:%M %P')
         %td=h for_approval.return_at.try(:strftime, '%d %b %Y %l:%M %P')
-        %td=h for_approval.document.title
+        %td=h for_approval.document.try(:title)
         %td=h for_approval.is_submitted? ? image_tag("tick.png") : image_tag("cross.png") 
         %td=h for_approval.hod_accept? ? image_tag("tick.png") : image_tag("cross.png")
     
@@ -51,7 +51,7 @@
         %td=h travel_request.destination
         %td=h travel_request.depart_at.try(:strftime, '%d %b %Y %l:%M %P')
         %td=h travel_request.return_at.try(:strftime, '%d %b %Y %l:%M %P')
-        %td=h travel_request.document.title
+        %td=h travel_request.document.try(:title)
         %td=h travel_request.is_submitted? ? image_tag("tick.png") : image_tag("cross.png") 
         %td=h travel_request.hod_accept? ? image_tag("tick.png") : image_tag("cross.png")
                 
@@ -62,6 +62,6 @@ $(document).ready(function(){
   $('.toga').click(function() {
     $('.search_row').toggle(); 
   });
-})year
+});
 
  

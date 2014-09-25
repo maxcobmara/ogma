@@ -4,8 +4,6 @@
     = t 'edit'
     = @defective.asset.assetcode
 
-
-
 .row
   = form_for @defective,  html: { multipart: true, class: 'form-horizontal' }  do |f| 
     = render 'shared/error_messages', object: f.object
@@ -14,7 +12,7 @@
       %li.active= link_to (t "asset.details"), "#details",   "data-toggle" => "tab"
       %li= link_to (t "asset.defect.process"),      "#process", "data-toggle" => "tab"
       %li= link_to (t "asset.defect.decision"),     "#decision","data-toggle" => "tab"
-      %li= link_to (t "asset.placement"),     "#placement","data-toggle" => "tab"
+      /%li= link_to (t "asset.placement"),     "#placement","data-toggle" => "tab"
 
     .tab-content.col-md-offset-1
       %dl.dl-horizontal
@@ -24,7 +22,7 @@
 		    	  
       #details.tab-pane.fade.in.active
         %dl.dl-horizontal
-          %dt= t 'asset.category'
+          %dt= t 'asset.category.type_model_name'
           %dd= "#{@defective.asset.typename} : #{@defective.asset.name} : #{@defective.asset.modelname}" 
           %dt= t 'asset.serialno'
           %dd= @defective.asset.serialno
@@ -39,57 +37,71 @@
           .col-sm-2.control-label
             = f.label t 'asset.defect.reported_by', for: :reporter
           .col-md-4
-            = f.collection_select :reporter, Staff.find(:all), :id, :name, :html_options => {:class => 'selectpicker'}
-			
-      #process.tab-pane.fade.in.active
+            = f.collection_select :reporter, Staff.all.order(name: :asc), :id, :name, {:include_blank =>t('helpers.prompt.select_staff'), :selected =>@defective.reported_by},{class: 'selectpicker', "data-width"=>'230px'} 
+
+      #process.tab-pane.fade.in
         .form-group
           .col-sm-2.control-label
             = f.label t 'asset.defect.action_type', for: :process_type
           .col-md-4
-            = f.text_field :process_type, class: 'form-control'
-			
+            .row
+              .col-sm-1
+                = f.radio_button :process_type, "repair", :id => 'button_repair',  :class => 'radio_action_type' 
+              .col-sm-2
+                = t 'asset.defect.repair'
+              .col-sm-1
+                = f.radio_button :process_type, "dispose", :id => 'button_dispose', :class => 'radio_action_type' 
+              .col-sm-2
+                = t 'asset.defect.dispose'
+
         .form-group
           .col-sm-2.control-label
             = f.label t 'asset.defect.recommendation', for: :recommendation
           .col-md-4
             = f.text_field :recommendation, class: 'form-control'
-			
+
+        /.form-group
+        /  .col-sm-2.control-label
+        /    = f.label t 'asset.defect.recommendation_submitted', for: :description
+        /  .col-md-4
+        /    = f.text_field :description, class: 'form-control'
+
         .form-group
           .col-sm-2.control-label
-            = f.label t 'asset.defect.recommendation_submitted', for: :description
-          .col-md-4
-            = f.text_field :description, class: 'form-control'
-			
-        .form-group
-          .col-sm-2.control-label
-            = f.label t 'asset.defect.reported_by', for: :is_processed
+            = f.label t 'asset.defect.is_processed', for: :is_processed
           .col-md-4
             = f.check_box :is_processed, class: 'form-control'
-			
+
         .form-group
           .col-sm-2.control-label
-            = f.label t 'asset.defect.reported_by', for: :is_processed
+            = f.label t 'asset.defect.processed_by', for: :processor
           .col-md-4
-            = f.collection_select :processor, Staff.find(:all), :id, :name, :html_options => {:class => 'selectpicker'}
-			
+            = f.collection_select :processor, Staff.all.order(name: :asc), :id, :name, {:include_blank =>t('helpers.prompt.select_staff'), :selected=>@defective.processed_by},{class: 'selectpicker', "data-width"=>'230px'} 
+
         .form-group
           .col-sm-2.control-label
-            = f.label t 'asset.defect.reported_by', for: :is_processed
+            = f.label t 'asset.defect.processed_on', for: :processed_on
           .col-md-4
-            = f.text_field :processed_on, class: 'form-control'
-			
-      #decision.tab-pane.fade.in.active
+            = f.text_field :processed_on, class: 'date-picker form-control'
+
+      #decision.tab-pane.fade.in
         .form-group
           .col-sm-2.control-label
             = f.label t 'asset.defect.approval', for: :decision
           .col-md-4
             = f.check_box :decision, class: 'form-control'
-			
-						
+
       .col-md-offset-1
-        //= render :partial => 'form', :locals => {:f => f}
         .form-group
           .col-sm-offset-4.col-sm-1
             = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), asset_defects_path(@defective), :class => 'btn btn-default'
           .col-sm-2
             = f.submit t('update'), class: "btn btn-primary" 
+
+      
+  :javascript
+    $('.date-picker').datetimepicker({
+     timepicker:false,
+       format: "Y-m-d",
+       autoclose: true
+     });

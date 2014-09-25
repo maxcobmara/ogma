@@ -8,10 +8,6 @@
     %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "toga"
     %li= link_to content_tag(:li, fa_icon("print", text: (t 'actions.print'))), "#", class: 'bogus'
 
-  
-.search{style: "display:none;"}
-  //= render "index_search"
-
 .row
   %table.table-striped.table-hover.ogma
     %thead
@@ -19,17 +15,23 @@
         %th= sort_link(@search, :asset_assetcode, (t 'asset.assetcode'))
         %th= sort_link(@search, :asset_name, (t 'asset.name'))
         %th= sort_link(@search, :asset_serialno, (t 'asset.serialno'))
-        %th= sort_link(@search, :asset_location_location_name, (t 'location.name'))
+        %th= sort_link(@search, :asset_location_location_name, (t 'location.title'))
         %th= (t 'asset.defect.notes')
     %tbody
-      - @defective.each do |defect|
-        %tr
-          %td= link_to defect.asset.assetcode, asset_defect_path(defect)
-          %td= "#{defect.asset.try(:typename)} - #{defect.asset.name} - #{defect.asset.modelname}"  
-          %td= defect.asset.try(:serialno)
-          %td= link_to defect.asset.asset_placements.last.try(:location).try(:location_list), (campus_location_path(defect.asset.asset_placements.last.location.id)) rescue nil
-          %td= defect.id
+    = render "index_search"
+    - @defective.each do |defect|
+      %tr
+        %td= link_to defect.asset.assetcode, asset_defect_path(defect)
+        %td= "#{defect.asset.try(:typename)} - #{defect.asset.name} - #{defect.asset.modelname}"  
+        %td= defect.asset.try(:serialno)
+        %td= link_to defect.asset.asset_placements.last.try(:location).try(:location_list), (campus_location_path(defect.asset.asset_placements.last.location.id)) rescue nil
+        %td= defect.id
          
-		
   .right{style:"padding:0 30px; margin:0;"}= paginate @defective, :theme => 'twitter-bootstrap-3'
-  
+
+:javascript
+$(document).ready(function(){
+  $('.toga').click(function() {
+    $('.search_row').toggle(); 
+  });
+});
