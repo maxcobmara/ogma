@@ -2,10 +2,11 @@
   .form-group
     .col-sm-2.control-label
       = f.label :is_submitted
-    .col-md-4
+    .col-md-1
       = f.check_box :is_submitted, :id => 'check_submitted'  
-    #span_submitted{:style=>"display: none;"}
-      = Date.today.strftime('%d %b %Y')
+    .col-md-2
+      #span_submitted{:style=>"display: none;"}
+        = Date.today.strftime('%d %b %Y')
   .form-group
     .col-sm-2.control-label
       = f.label :replaced_by
@@ -16,4 +17,23 @@
       = f.label :hod_id
     .col-md-4
       = f.collection_select :hod_id, Staff.where("id IN (?)", @travel_request.hods).order(name: :asc), :id, :name, {:include_blank => t('helpers.prompt.select_hod')}, {class: 'selectpicker', "data-width"=>'320px'} 
+
+:javascript
+
+$(document).ready(function(){
+  $("input[id='check_submitted']").change(function() {  
+    if($('#check_submitted').is(':checked')) { 
+      $("#span_submitted").show("highlight"); 
+    }else{
+      $("#span_submitted").hide(""); 
+    }
+  });
+  $("input[id='check_submitted']").each(function() {  
+    if($('#check_submitted').is(':checked')) { 
+      $("#span_submitted").show("highlight"); 
+    }else{
+    $("#span_submitted").hide(""); 
+    }
+  });
+});
 

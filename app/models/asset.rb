@@ -19,6 +19,10 @@ class Asset < ActiveRecord::Base
   scope :hm, -> { where(assettype: 1)}
   scope :inv, -> {where(assettype: 2)}
   
+  def code_asset
+    "#{assetcode} - #{name}"
+  end
+  
 end
 
 # == Schema Information

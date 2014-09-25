@@ -17,33 +17,27 @@
   .form-group
     .col-sm-2.control-label
       = f.label :hod_accept
-    .col-md-6
+    .col-md-1
       = f.check_box :hod_accept, :id => 'check_hod_accept' 
+    .col-md-2
       #span_hod_endorse{:style=>"display: none;"}
         = f.text_field :hod_accept_on, :class => 'date_picker form-control'
 
-  :javascript
-    $('.date-picker').datetimepicker({
-     timepicker:true,
-       format: "Y-m-d H:i",
-       step: 15,
-       defaultSeconds: 0,
-       autoclose: true
-     }); 
+:javascript
 
-/    $(document).ready(function(){
-/      $("input[id='check_hod_accept']").change(function() {  
-/        if($('#check_hod_accept').is(':checked')) { 
-/          $("#span_hod_endorse").show("highlight"); 
-/        }else{
-/          $("#span_hod_endorse").hide(""); 
-/        }
-/      });
-/      $("input[id='check_hod_accept']").each(function() {  
-/        if($('#check_hod_accept').is(':checked')) { 
-/          $("#span_hod_endorse").show("highlight"); 
-/        }else{
-/          $("#span_hod_endorse").hide(""); 
-/        }
-/      });
-/    });
+$(document).ready(function(){
+  $("input[id='check_hod_accept']").change(function() {  
+    if($('#check_hod_accept').is(':checked')) { 
+      $("#span_hod_endorse").show("highlight"); 
+    }else{
+      $("#span_hod_endorse").hide(""); 
+    }
+  });
+  $("input[id='check_hod_accept']").each(function() {  
+    if($('#check_hod_accept').is(':checked')) { 
+      $("#span_hod_endorse").show("highlight"); 
+    }else{
+      $("#span_hod_endorse").hide(""); 
+    }
+  });
+});

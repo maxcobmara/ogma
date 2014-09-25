@@ -35,6 +35,13 @@ class AssetDisposal < ActiveRecord::Base
       discardopt=I18n.t('asset.disposal.sink') if discard_options == 'sink'
       discardopt
     end
+    
+    def for_disposal
+      exist_disposed=AssetDisposal.all.pluck(:asset_id)
+      defective_for_dispose=AssetDefect.where('process_type=? and decision=?', 'dispose', true).pluck(:asset_id)
+      return defective_for_dispose-exist_disposed
+    end
+    
 end
 
 # == Schema Information

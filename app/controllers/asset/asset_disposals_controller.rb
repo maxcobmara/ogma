@@ -8,6 +8,10 @@ class Asset::AssetDisposalsController < ApplicationController
     @disposals = @disposals.page(params[:page]||1)  
   end
   
+  def new
+    @disposal = AssetDisposal.new
+  end
+  
   def show
   end
   

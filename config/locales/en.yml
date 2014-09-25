@@ -1387,6 +1387,14 @@ en:
         hod_accept: HOD Acceptance
         hod_accept_on: HOD Acceptance Date
         add_log: Add Log
+        
+      asset_disposal:
+        asset_id: Asset
+        current_condition: Asset Condition
+        usage: Usage
+        est_repair_cost: Estimated Repair Cost
+        est_value_post_repair: Estimated Value After Repair
+        est_time_next_fail: Estimated Time to Next Failure
 
     prompt:
       select_creator: Select Creator
@@ -1419,6 +1427,7 @@ en:
       select_hod: Select Head of Department
       select_document: Select Document
       select_staff: Select Staff
+      select_marked_asset: Select Marked Asset For Approval
       all_unit: "All Department / Unit"
       maintain: Maintain
       remove: Remove
