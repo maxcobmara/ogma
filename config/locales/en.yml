@@ -1395,6 +1395,11 @@ en:
         est_repair_cost: Estimated Repair Cost
         est_value_post_repair: Estimated Value After Repair
         est_time_next_fail: Estimated Time to Next Failure
+        examiner1: "1. Examiner Name (Tick if STAFF)"
+        examiner2: "2. Examiner Name (Tick if STAFF)"
+        is_checked: "Checked?"
+        checked_by: Checked By
+        verified_by: Verified By
 
     prompt:
       select_creator: Select Creator
