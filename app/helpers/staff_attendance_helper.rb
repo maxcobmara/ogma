@@ -56,7 +56,7 @@ module StaffAttendanceHelper
 	
 	#Method 1: Insert thumb_id (when icno in excel matched with icno in Staffs table)
 	  staff_nothumb.thumb_id = thumbid_excel
-	  staffsave=staff_nothumb.save!
+	  staffsave=staff_nothumb.save
     
 	#Method 2: Insert thumb_id when UNIT in Positions table exist & valid (if method 1 not applied)
 	#UNIT must exist in Positions table OR 
@@ -67,7 +67,7 @@ module StaffAttendanceHelper
 	  if unit_of_staff_nothumb!=nil
 	     valid_unit = StaffAttendance.get_thumb_ids_unit_names(2).include?(unit_of_staff_nothumb)   
 	     staff_nothumb.thumb_id = thumbid_excel 
-	     staff_nothumb.save! if valid_unit 
+	     staff_nothumb.save if valid_unit 
 	  end
 	end
       end
@@ -75,7 +75,7 @@ module StaffAttendanceHelper
       #Method 3: UPDATE thumb_id (YG BETUL) to recover previously wrong define column of thumbid Vs userid
       if staff_withumb && thumbid_excel
 	staff_withumb.thumb_id = thumbid_excel if staff_withumb.thumb_id != thumbid_excel
-	staff_withumb.save!
+	staff_withumb.save
       end
       
       ##collect ids for all staff (as excel but must also exist in positions table)
@@ -190,7 +190,7 @@ module StaffAttendanceHelper
 		staff_attendance.thumb_id = @thumbid_excel2 if valid_ut
 		staff_attendance.log_type = row["checktype"]
 		staff_attendance.userid = row["userid"]
-		staff_attendance.save!
+		staff_attendance.save
 		sa_recs << staff_attendance
 	      else
 		staff_attendance.attributes = row.to_hash.slice("userid", "checktype")
@@ -264,7 +264,7 @@ module StaffAttendanceHelper
       spost=Position.where(staff_id: k).order('combo_code ASC').first		#retrieve higher position for those with multiple positions
       if spost && deptlist[v]=="Pengurusan Tertinggi"					#==Pengurusan Tertinggi
 	 spost.unit=deptlist[v]										#should override all other unit terms for all "Timbalan... & Pengarah"
-	 spost.save!
+	 spost.save
       end
 	
       if spost && (spost.unit==nil || spost.unit=="" )
@@ -327,7 +327,7 @@ module StaffAttendanceHelper
 	  #==DIswastakan / Logistik
 	  
 	end #end for if include
-	spost.save!	
+	spost.save	
       elsif spost && (spost.unit!=nil || spost.unit!="" ) && deptlist[v]=="Pengkhususan"
 	exist_unit = spost.unit										#retrieve existing unit
 	exist_main_tasks = spost.tasks_main.to_s							#retrieve existing main tasks
@@ -340,7 +340,7 @@ module StaffAttendanceHelper
 	else
 	  spost.tasks_main = exist_unit+" " + exist_main_tasks 
 	end
-	spost.save!
+	spost.save
       end	#end for if spost exist      
     end	#end for staffdept
   end 

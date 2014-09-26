@@ -98,7 +98,8 @@ class StaffAttendance < ActiveRecord::Base
   #--shift?
   def self.find_mylate  
     #staffshift_id = Staff.find(:first, :conditions => ['thumb_id=?', User.current_user.staff.thumb_id]).staff_shift_id
-    staffshift_id = Staff.where('thumb_id=?', 5658).first.staff_shift_id
+    #staffshift_id = Staff.where('thumb_id=?', 5658).first.staff_shift_id
+    staffshift_id = Login.first.staff.staff_shift_id
     
     if staffshift_id != nil
       start_time = StaffShift.find(staffshift_id).start_at.strftime("%H:%M") 
@@ -113,7 +114,8 @@ class StaffAttendance < ActiveRecord::Base
   end
   def self.find_myearly
     #staffshift_id = Staff.find(:first, :conditions => ['thumb_id=?', User.current_user.staff.thumb_id]).staff_shift_id
-    staffshift_id = Staff.where('thumb_id=?', 5658).first.staff_shift_id
+    #staffshift_id = Staff.where('thumb_id=?', 5658).first.staff_shift_id
+    staffshift_id = Login.first.staff.staff_shift_id
     if staffshift_id != nil
         end_time = StaffShift.find(staffshift_id).end_at.strftime("%H:%M") 
     else
@@ -304,7 +306,8 @@ class StaffAttendance < ActiveRecord::Base
   def starting_shift
     shift = Staff.where(thumb_id: thumb_id).first.staff_shift_id 
     if shift==nil
-      shift= Staff.where(thumb_id: 5658).first.staff_shift_id
+      #shift= Staff.where(thumb_id: 5658).first.staff_shift_id
+      shift = Login.first.staff.staff_shift_id
     end
     
 		if shift != nil
@@ -319,7 +322,8 @@ class StaffAttendance < ActiveRecord::Base
   def ending_shift        #return this format -> 1800
     shift = Staff.where(thumb_id: thumb_id).first.staff_shift_id 
     if shift == nil
-      shift = Staff.where(thumb_id: 5658).first.staff_shift_id    
+      #shift = Staff.where(thumb_id: 5658).first.staff_shift_id    
+      shift = Login.first.staff.staff_shift_id
     end
 		if shift != nil
 		  #shift_end = StaffShift.find(shift).end_at
@@ -344,7 +348,8 @@ class StaffAttendance < ActiveRecord::Base
         #----
         shift = Staff.where(thumb_id: thumb_id).first.staff_shift_id 
 	if shift== nil
-	    shift = Staff.where(thumb_id: 5658).first.staff_shift_id
+	    #shift = Staff.where(thumb_id: 5658).first.staff_shift_id
+	  shift = Login.first.staff.staff_shift_id
 	end
     	#minit_shift = (StaffShift.find(shift).start_at.min) if shift != nil
     	minit_shift = (StaffShift.where(id: shift).first.start_at.min) if shift != nil
@@ -385,7 +390,8 @@ class StaffAttendance < ActiveRecord::Base
       #shift = Staff.find(:first, :conditions => ['thumb_id=?',thumb_id]).first.staff_shift_id 
       shift = Staff.where(thumb_id: thumb_id).first.staff_shift_id
       if shift==nil
-	  shift = Staff.where(thumb_id: 5658).first.staff_shift_id
+	  #shift = Staff.where(thumb_id: 5658).first.staff_shift_id
+	   shift= Login.first.staff.staff_shift_id
       end
   		if shift != nil
   		    #shift_end = StaffShift.find(shift).end_at
@@ -530,12 +536,12 @@ class StaffAttendance < ActiveRecord::Base
   
   #--27June2013-refer .../monthly_weekly_report.html.erb...thumb_id (array)
   def self.count_non_approved(thumb_id, start_date,end_date)
-    find(:all, :conditions => ["trigger=? AND is_approved =? AND thumb_id IN (?) AND logged_at>=? AND logged_at<?", true, false, thumb_id, start_date, end_date], :order => 'logged_at DESC')
+    where("trigger=? AND is_approved =? AND thumb_id IN (?) AND logged_at>=? AND logged_at<?", true, false, thumb_id, start_date, end_date).order(logged_at: :desc)
   end
   
   #--1July2013.../status.html.erb..thumb_id(1 person)
   def self.count_non_approved_monthly(thumb_id, start_date,end_date)
-    find(:all, :conditions => ["trigger IS TRUE AND is_approved IS FALSE AND thumb_id =? AND logged_at>=? AND logged_at<?", thumb_id, start_date, end_date], :order => 'logged_at DESC')
+    where("trigger IS TRUE AND is_approved IS FALSE AND thumb_id =? AND logged_at>=? AND logged_at<?", thumb_id, start_date, end_date).order(logged_at: :desc)
     #find(:all, :conditions => ["trigger=? AND is_approved =? AND thumb_id IN (?) AND logged_at>=? AND logged_at<?", true, false, thumb_id, start_date, end_date], :order => 'logged_at DESC')
     
   end

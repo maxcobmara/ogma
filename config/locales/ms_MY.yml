@@ -430,7 +430,7 @@ ms_MY:
       
     disposal:
       title: Pelupusan Aset
-      new: Pelupusan Baru
+      new: "Pelupusan Baru (Aset)"
       edit: Sunting Pelupusan Aset
       details: Perincian Pelupusan
       revalue_title: Penilaian Semula
@@ -1384,6 +1384,19 @@ ms_MY:
         hod_accept_on: Tarikh Penerimaan Ketua Jabatan
         add_log: Tambah Log
 
+      asset_disposal:
+        asset_id: Asset
+        current_condition: Keadaan Aset
+        usage: Penggunaan
+        est_repair_cost: Anggaran Kos Penyelenggaraan Semasa
+        est_value_post_repair: Anggaran Nilai Selepas Diperbaiki
+        est_time_next_fail: Anggaran Tahan Selepas Diperbaiki
+        examiner1: "1. Nama Pemeriksa (Pilih kotak semak jika STAF)"
+        examiner2: "2. Nama Pemeriksa (Pilih kotak semak jika STAF)"
+        is_checked: "Disemak?"
+        checked_by: Disemak Oleh
+        verified_by: Disahkan Oleh
+
     prompt:
       select_creator: Pilih Penyedia Soalan
       select_programme: Pilih Program
@@ -1415,6 +1428,7 @@ ms_MY:
       select_hod: Pilih Ketua Jabatan
       select_document: Pilih Dokumen Rujukan
       select_staff: Pilih Staf
+      select_marked_asset: Pilih Aset Untuk Pelupusan
       all_unit: "Semua Jabatan / Unit"
       maintain: Dikekalkan
       remove: Dibuang

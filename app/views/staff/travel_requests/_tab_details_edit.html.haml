@@ -8,12 +8,12 @@
     .col-sm-2.control-label
       = f.label :depart_at
     .col-md-2
-      = f.text_field :depart_at,  :class =>  'date-picker form-control'
+      = f.text_field :depart_at,  :class =>  'datetime_picker form-control'
   .form-group
     .col-sm-2.control-label
       = f.label :return_at
     .col-md-2
-      = f.text_field :return_at,  :class =>  'date-picker form-control'
+      = f.text_field :return_at,  :class =>  'datetime_picker form-control'
   .form-group
     .col-sm-2.control-label
       %b= t 'staff.travel_request.transport_choice'
@@ -34,16 +34,16 @@
       #tr_my_car
         = f.text_field :own_car_notes, :size => '40', :placeholder => t('helpers.label.travel_request.own_car_notes'), class: 'form-control'
   .form-group
-    .col-sm-2.control-label
-      =f.label :mileage_desc
+    .col-sm-2.control-label 
+      #tr_mileage=f.label :mileage_desc
     .col-md-6
-      .row
+      .row#tr_mileage2
         .col-sm-1
-          = f.radio_button :mileage, true, :id => 'mileage',  :class => 'radio_mileage' 
+          = f.radio_button :mileage, true
         .col-sm-3
           = f.label :mileage
         .col-sm-1
-          = f.radio_button :mileage, false,	:id => 'mileage',  :class => 'radio_mileage' 
+          = f.radio_button :mileage, false
         .col-sm-6
           = f.label :mileage_replace
           %font{:size=>'-2'}
@@ -71,18 +71,49 @@
           = f.label :plane
       .row
         .col-sm-1
-          = f.check_box :other
+          = f.check_box :other, :id => 'other_transport' 
         .col-sm-6
           = f.label :other
       #tr_public_others
         = f.text_field :other_desc, :size => '40', :placeholder => t('helpers.label.travel_request.other_desc'), class: 'form-control'
-       
-  :javascript
-    $('.date-picker').datetimepicker({
-     timepicker:true,
-       format: "Y-m-d H:i",
-       step: 15,
-       defaultSeconds: 0,
-       autoclose: true
-     }); 
+     
+:javascript
 
+$(document).ready(function(){
+  $("input[class='tt']").change(function() {  
+    if($('#mycar').is(':checked')){
+      $("#tr_my_car").show("appear");
+      $("#tr_mileage").show("appear");
+      $("#tr_mileage2").show("appear");
+    }else{
+      $("#tr_my_car").hide("");
+      $("#tr_mileage").hide("");
+      $("#tr_mileage2").hide("");
+    }
+  });
+  $("input[class='tt']").each(function() {  
+    if($('#mycar').is(':checked')){
+      $("#tr_my_car").show("highlight");
+      $("#tr_mileage").show("highlight");
+      $("#tr_mileage2").show("highlight");
+    }else{
+      $("#tr_my_car").hide("");
+      $("#tr_mileage").hide("");
+      $("#tr_mileage2").hide("");
+    }
+  });
+  $("input[id='other_transport']").change(function() {  
+    if($('#other_transport').is(':checked')) { 
+      $("#tr_public_others").show("appear"); 
+    }else{
+      $("#tr_public_others").hide(""); 
+    }
+  });
+  $("input[id='other_transport']").each(function() {  
+    if($('#other_transport').is(':checked')) { 
+      $("#tr_public_others").show("highlight"); 
+    }else{
+      $("#tr_public_others").hide(""); 
+    }
+  });
+});

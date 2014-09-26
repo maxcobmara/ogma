@@ -10,7 +10,18 @@ $(document).ready(function(e) {
    	format:'Y-m-d',
    	formatDate:'Y-m-d'
   });
-  
+  $('.datetime_picker').datetimepicker({
+    timepicker:true,
+    format: "Y-m-d H:i",
+    step: 15,
+    defaultSeconds: 0,
+    autoclose: true
+  });
+  $('.time_picker').datetimepicker({
+     datepicker:false,
+       format:'H:i',
+       step:5,
+    });
   $(".bogus").click(function (e) {
       alert("Sorry! Feature not yet implemented");
   });

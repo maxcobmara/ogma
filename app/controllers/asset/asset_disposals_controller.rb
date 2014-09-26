@@ -8,7 +8,31 @@ class Asset::AssetDisposalsController < ApplicationController
     @disposals = @disposals.page(params[:page]||1)  
   end
   
+  def new
+    @disposal = AssetDisposal.new
+  end
+  
+  # POST /asset_disposals
+  # POST /asset_disposals.xml
+  def create
+    @disposal = AssetDisposal.new(asset_disposal_params)
+    respond_to do |format|
+      if @disposal.save
+        format.html { redirect_to(asset_disposal_path(@disposal), :notice => t('asset.disposal.title')+t('actions.created')) }
+        format.xml  { render :xml => @disposal, :status => :created, :location => @disposal}
+      else
+        format.html { render :action => "new" }
+        format.xml  { render :xml => @disposal.errors, :status => :unprocessable_entity }
+      end
+    end
+  end
+  
   def show
+    @disposed = AssetDisposal.find(params[:id])
+    respond_to do |format|
+      format.html # show.html.erb
+      format.xml  { render :xml => @disposed }
+    end
   end
   
   def kewpa17
@@ -78,6 +102,7 @@ class Asset::AssetDisposalsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def asset_disposal_params
-      params.require(:asset_disposal).permit(:code, :category, :unittype, :maxquantity, :minquantity, damages_attributes: [:id, :description,:reported_on,:document_id,:location_id])
+      params.require(:asset_disposal).permit(:asset_id, :description, :running_hours, :mileage, :current_condition,:current_value, :est_repair_cost,:est_value_post_repair, :est_time_next_fail, :repair1_need, :repair2_need,:repair3_need,:justify1_disposal, :justify2_disposal,:justify3_disposal,:is_checked, :checked_on, :is_verfied,:verified_on, :revalue, :revalued_by,:revalued_on, :document_id, :disposal_type,:type_others_desc, :discard_option,:receiver_name,:documentation_no, :is_disposed, :inform_hod,:disposed_by, :disposed_on, :is_discarded, :discarded_on, :discard_location, :discard_witness_1, :discard_witness_2, :checked_by, :verified_by, :examiner1, :examiner2, :is_staff1, :is_staff2, :examiner_staff1,:examiner_staff2, :witness_outsider1, :witness_outsider2,:witness_is_staff1, :witness_is_staff2)
+      #:code, :category, :unittype, :maxquantity, :minquantity, damages_attributes: [:id, :description,:reported_on,:document_id,:location_id])
     end
 end

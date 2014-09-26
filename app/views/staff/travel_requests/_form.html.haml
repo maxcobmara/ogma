@@ -4,8 +4,6 @@
     %ul.nav.nav-tabs
       %li.active= link_to (t 'staff.travel_request.details'),"#travel_request_details_edit", "data-toggle" => "tab"
       %li=link_to (t 'staff.travel_request.submission'), "#travel_request_submission_edit", "data-toggle" => "tab"
-      /%li=link_to (t 'staff.travel_request.approval'), "#travel_request_approval_edit", "data-toggle" => "tab"  if @travel_request.is_submitted == true 
-      /&& @travel_request.hod_id == Login.first.staff_id (approval - must current user must be HOD)
       
     .tab-content{style:"padding-top:1em"}
       .col-md-offset-2 
@@ -28,10 +26,6 @@
       #travel_request_submission_edit.tab-pane
         %br
         = render 'tab_submission_edit', :f => f
-      
-      /#travel_request_approval_edit.tab-pane
-      /  %br
-      /  = render 'tab_approval_edit', :f=>f
     
 :javascript
 
@@ -48,83 +42,5 @@ bkLib.onDomLoaded(function() {
     $(link).parent().before(content.replace(regexp, new_id));  
   }
 
-/  $(document).ready(function(){
-/    $("input[class='tt']").change(function() {  
-/      if($('#publik').is(':checked')) { 
-/        $("#tr_public_trans").show("highlight"); 
-/        $("#tr_my_car").hide(""); 
-/      }else if ($j('#mycar').is(':checked')){
-/        $("#tr_public_trans").hide(""); 
-/        $("#tr_my_car").show("appear");
-/        $("#tr_public_others").hide(""); 
-/      }else{
-/        $("#tr_public_trans").hide(""); 
-/        $("#tr_my_car").hide("");
-/        $("#tr_public_others").hide(""); 
-/      }
-/    });
-/    $("input[class='tt']").each(function() {  
-/      if($('#publik').is(':checked')) { 
-/        $("#tr_public_trans").show("highlight"); 
-/        $("#tr_my_car").hide(""); 
-/      }else if ($('#mycar').is(':checked')){
-/        $("#tr_public_trans").hide(""); 
-/        $("#tr_my_car").show("highlight");
-/        $("#tr_public_others").hide(""); 
-/      }else{
-/        $("#tr_public_trans").hide(""); 
-/        $("#tr_my_car").hide("");
-/        $("#tr_public_others").hide(""); 
-/      }
-/    });
-//show substuff    
-/    $("input[id='other_transport']").change(function() {  
-/      if($('#other_transport').is(':checked')) { 
-/        $("#tr_public_others").show("appear"); 
-/      }else{
-/        $("#tr_public_others").hide(""); 
-/      }
-/    });
 
-/    $j("input[id='other_transport']").each(function() {  
-/      if($('#other_transport').is(':checked')) { 
-/        $("#tr_public_others").show("highlight"); 
-/      }else{
-/        $("#tr_public_others").hide(""); 
-/      }
-/    });
 
-//show submit date
-/    $("input[id='check_submitted']").change(function() {  
-/      if($('#check_submitted').is(':checked')) { 
-/        $("#span_submitted").show("highlight"); 
-/      }else{
-/        $("#span_submitted").hide(""); 
-/      }
-/    });
-
-/    $("input[id='check_submitted']").each(function() {  
-/      if($('#check_submitted').is(':checked')) { 
-/        $("#span_submitted").show("highlight"); 
-/      }else{
-/        $("#span_submitted").hide(""); 
-/      }
-/    });
-
-//HOD endorse
-/    $("input[id='check_hod_accept']").change(function() {  
-/      if($('#check_hod_accept').is(':checked')) { 
-/        $("#span_hod_endorse").show("highlight"); 
-/      }else{
-/        $("#span_hod_endorse").hide(""); 
-/      }
-/    });
-
-/    $("input[id='check_hod_accept']").each(function() {  
-/      if($('#check_hod_accept').is(':checked')) { 
-/        $("#span_hod_endorse").show("highlight"); 
-/      }else{
-/        $("#span_hod_endorse").hide(""); 
-/      }
-/    });
-/  });
