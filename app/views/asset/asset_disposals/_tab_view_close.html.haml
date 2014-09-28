@@ -1,0 +1,4 @@
+%dl.dl-horizontal
+  %dt= t 'asset.disposal.disposed_by'
+  %dd= "#{@disposed.staff.try(:name)} On  #{@disposed.disposed_on.try(:strftime, '%d %b %Y')}" 
+

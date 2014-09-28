@@ -4,11 +4,26 @@ class AssetDisposal < ActiveRecord::Base
     belongs_to :inspect1or, :class_name => 'Staff', :foreign_key => 'examiner_staff1'
     belongs_to :inspect2or, :class_name => 'Staff', :foreign_key => 'examiner_staff2'
     belongs_to :processor, :class_name => 'Staff', :foreign_key => 'checked_by'
+    #belongs_to :actioner, :class_name => 'Staff', :foreign_key => 'disposed_by'
     belongs_to :verifier,  :class_name => 'Staff', :foreign_key => 'verified_by'
     belongs_to :revaluer,  :class_name => 'Staff', :foreign_key => 'revalued_by'
     belongs_to :staff, :foreign_key => 'disposed_by'
     belongs_to :discard_witness1,  :class_name => 'Staff', :foreign_key => 'discard_witness_1'
     belongs_to :discard_witness2,  :class_name => 'Staff', :foreign_key => 'discard_witness_2'
+    
+    validates :asset_id, presence: true
+    validates :examiner_staff1, presence: true, :if => :is_staff1?
+    validates :examiner_staff2, presence: true, :if => :is_staff2?
+    validates :checked_by, :checked_on, :verified_by, presence: true, :if => :check_checked?
+    validates :type_others_desc, presence: true, :if => :disposaltype_others?
+    
+    def check_checked?
+      is_checked == true
+    end
+    
+    def disposaltype_others?
+      !type_others_desc.nil? || !type_others_desc.blank?
+    end
     
     #define scope - asset(typename, name, modelname)
     def self.typemodelname_search(query)
@@ -25,6 +40,8 @@ class AssetDisposal < ActiveRecord::Base
       disposetype=I18n.t('asset.disposal.transfer') if disposal_type == 'transfer'
       disposetype=I18n.t('asset.disposal.sold') if disposal_type == 'sold'
       disposetype=I18n.t('asset.disposal.discard') if disposal_type == 'discard'
+      disposetype=I18n.t('asset.disposal.stock') if disposal_type == 'stock'
+      disposetype=I18n.t('asset.disposal.others') if disposal_type == 'others'
       disposetype
     end
     
@@ -39,7 +56,11 @@ class AssetDisposal < ActiveRecord::Base
     def for_disposal
       exist_disposed=AssetDisposal.all.pluck(:asset_id)
       defective_for_dispose=AssetDefect.where('process_type=? and decision=?', 'dispose', true).pluck(:asset_id)
-      return defective_for_dispose-exist_disposed
+      if id.nil? || id.blank?
+        return defective_for_dispose-exist_disposed
+      else
+        return defective_for_dispose-exist_disposed+[asset_id]
+      end
     end
     
 end

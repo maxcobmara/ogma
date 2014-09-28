@@ -2,17 +2,20 @@
   .col-md-10.col-md-offset-1
     / Nav tabs
     %ul.nav.nav-tabs
-      %li.active= link_to (t "asset.details"), "#details", "data-toggle" => "tab"
-      %li= link_to (t "asset.disposal.revalue_title"), "#value", "data-toggle" => "tab"
-      %li= link_to (t "asset.disposal.details"), "#disposaldetails", "data-toggle" => "tab"
-      
+      %li.active= link_to (t "asset.disposal.details"), "#details", "data-toggle" => "tab"
+      - if @disposal.is_checked
+        %li= link_to (t "asset.disposal.revalue_title"), "#value", "data-toggle" => "tab"
+        %li= link_to (t "asset.disposal.approval_details"), "#disposaldetails", "data-toggle" => "tab"
+      - if @disposed.is_disposed
+        %li=link_to (t "asset.disposal.verification_details"), "#verification", "data-toggle" => "tab"
+        %li=link_to (t "asset.disposal.view_close"), "#viewclose", "data-toggle" => "tab"
     .tab-content{style:"padding-top:1em"}
       .col-md-offset-2 
         .form-group
           .col-sm-2.control-label
             = f.label :asset_id
-          .col-md-3
-            = f.collection_select :asset_id, Asset.where('id IN (?)',@disposal.for_disposal).order(assetcode: :asc), :id, :code_asset, {:include_blank =>t('helpers.prompt.select_marked_asset')},{class: 'selectpicker', "data-width"=>'230px'} 
+          .col-md-5
+            = f.collection_select :asset_id, Asset.where('id IN (?)',@disposal.for_disposal).order(assetcode: :asc), :id, :code_asset, {:include_blank =>t('helpers.prompt.select_marked_asset'), :selected => @disposal.asset_id},{class: 'selectpicker', "data-width"=>'550px'} 
 
       #details.tab-pane.active
         %br
@@ -25,7 +28,14 @@
       #disposaldetails.tab-pane
         %br
         = render 'tab_disposaldetails_edit.html.haml', :f => f 
-              
+        
+      #verification.tab-pane
+        %br
+        = render 'tab_verification_edit.html.haml', :f => f
+
+      #viewclose.tab-pane.fade.in
+        = render 'tab_view_close_edit', :f => f
+
 :javascript
 
 //<![CDATA[

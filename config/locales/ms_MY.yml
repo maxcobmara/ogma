@@ -412,27 +412,31 @@ ms_MY:
     
     defect:
       title: Aset Rosak
+      details: Perincian Kerosakan
       notes: Catatan
-      new: Lapuran Kerosakan Baru
+      new: Laporan Kerosakan Baru
       description: Catatan
       process: Proses
       repair: Baiki
       dispose: Lupus
-      decision: Keputusan
       reported_by: Dilaporkan Oleh
-      is_processed: "Diproses?"
+      is_processed: "Hantar Cadangan?"
       processed_by: Diproses Oleh
       processed_on: Diproses Pada
+      decision: Keputusan
+      decision_by: Keputusan Oleh
+      decision_on: Diputuskan Pada
       action_type: Jenis Tindakan
       recommendation: Cadangan 
-      recommendation_submitted: "Cadangan Dihantar?"
       approval: Kelulusan
-      
+
     disposal:
       title: Pelupusan Aset
       new: "Pelupusan Baru (Aset)"
       edit: Sunting Pelupusan Aset
       details: Perincian Pelupusan
+      approval_details: Kelulusan Pelupusan
+      verification_details: Pengesahan Ketua Jabatan
       revalue_title: Penilaian Semula
       quantity: Kuantiti
       purchase_date: Tarikh Belian
@@ -449,6 +453,9 @@ ms_MY:
       repair_needed: Penambahbaikan Yang Perlu
       justification_disposal: Justifikasi Pelupusan Aset
       board_examiners: Lembaga Pemeriksa
+      is_checked: "Disemak / Diproses?"
+      is_verified: "Disahkan"
+      is_disposed: Hantar untuk Pengesahan Ketua Jabatan
       revalue: "Nilai Semasa (Baru)"
       revalued_by: Penilaian Semula Oleh
       revalued_on: Penilaian Semula Pada
@@ -459,14 +466,17 @@ ms_MY:
       discard_options: Kaedah Pemusnahan
       discard_witness_by: "Saksi - Saksi Pemusnahan Aset"
       type_others_desc: Kaedah Pemusnahan Lain
-      disposed_by: Disahkan Oleh
       transfer: "Pindahan / Hadiah"
       sold: Jualan
       discard: Musnah
+      stock: Stok
+      others: Lain-lain Kaedah
       bury: Tanam
       burn: Bakar
       throw: Buang
       sink: Tenggelam
+      view_close: "Semak & Tutup"
+      disposed_by: Disemak dan Ditutup Oleh
  
     loss:
       title: "Kehilangan & Hapus Kira"
@@ -1385,17 +1395,33 @@ ms_MY:
         add_log: Tambah Log
 
       asset_disposal:
-        asset_id: Asset
+        asset_id: Aset
         current_condition: Keadaan Aset
         usage: Penggunaan
+        current_value: Nilai Semasa
         est_repair_cost: Anggaran Kos Penyelenggaraan Semasa
         est_value_post_repair: Anggaran Nilai Selepas Diperbaiki
         est_time_next_fail: Anggaran Tahan Selepas Diperbaiki
         examiner1: "1. Nama Pemeriksa (Pilih kotak semak jika STAF)"
         examiner2: "2. Nama Pemeriksa (Pilih kotak semak jika STAF)"
         is_checked: "Disemak?"
+        is_verified: "Disahkan?"
         checked_by: Disemak Oleh
-        verified_by: Disahkan Oleh
+        disposed_by: Disemak dan Ditutup Oleh
+        disposed_on: Tarikh Pelupusan
+        verified_by: Akan Disahkan Oleh
+        revalue: "Nilai Semasa (Baru)"
+        revalued_by: Penilaian Semula Oleh
+        revalued_on: Penilaian Semula Pada
+        document_id: Rujukan Kelulusan
+        disposal_type: Kaedah Pelupusan
+        receiver_name: Penerima
+        location: Lokasi
+        discarded_on: Dimusnahkan Pada
+        witness1: "1. Nama Saksi (Pilih kotak semak jika STAF)"
+        witness2: "2. Nama Saksi (Pilih kotak semak jika STAF)"
+        is_disposed: Hantar Untuk Pengesahan Ketua Jabatan
+
 
     prompt:
       select_creator: Pilih Penyedia Soalan

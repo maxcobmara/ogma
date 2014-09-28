@@ -1,0 +1,32 @@
+.col-md-offset-2 
+  .form-group
+    .col-sm-2.control-label
+      = f.label :is_verified
+    .col-sm-1
+      = f.check_box :is_verified, :id => 'is_verified' 
+    .col-sm-2.span_verified_on{:style=> "display: block;"}
+      = f.text_field :verified_on, class: 'date_picker form-control'
+ 
+:javascript
+
+$(document).ready(function(){
+  $("input[id='is_verified']").change(function() {  
+    if($('#is_verified').is(':checked')) { 
+      $(".span_verified_on").show("highlight"); 
+      $(".span_verified_off").hide(""); 
+    }else{
+      $(".span_verified_on").hide(""); 
+      $(".span_verified_off").show("highlight"); 
+    }
+  });
+
+  $("input[id='is_verified']").each(function() {  
+    if($('#is_verified').is(':checked')) { 
+      $(".span_verified_on").show("highlight"); 
+      $(".span_verified_off").hide(""); 
+    }else{
+      $(".span_verified_on").hide(""); 
+      $(".span_verified_off").show("highlight"); 
+    }
+  });
+});

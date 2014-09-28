@@ -1,1 +1,16 @@
- 
+.col-md-offset-2 
+  .form-group
+    .col-sm-2.control-label
+      = f.label :revalued_by
+    .col-md-3
+      = f.collection_select :revalued_by, Staff.all.order(name: :asc), :id, :staff_name_with_position, {:include_blank =>t('helpers.prompt.select_staff'), :selected=>@disposal.revalued_by},{class: 'selectpicker', "data-width"=>'357px'} 
+  .form-group
+    .col-sm-2.control-label
+      = f.label :revalue
+    .col-md-2
+      = f.text_field :revalue, class: 'form-control', placeholder: 'RM'
+  .form-group
+    .col-sm-2.control-label
+      = f.label :revalued_on
+    .col-md-2
+      = f.text_field :revalued_on, class: 'date_picker form-control'

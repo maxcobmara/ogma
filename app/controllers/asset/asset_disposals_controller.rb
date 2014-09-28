@@ -27,6 +27,23 @@ class Asset::AssetDisposalsController < ApplicationController
     end
   end
   
+  def edit
+    @disposal = AssetDisposal.find(params[:id])
+  end
+  
+  def update
+    @disposal = AssetDisposal.find(params[:id])  
+    respond_to do |format|
+      if @disposal.update(asset_disposal_params)
+        format.html { redirect_to asset_disposal_path, notice: t('asset.disposal.title')+t('actions.updated')}
+        format.json { head :no_content }
+      else
+        format.html { render action: 'edit' }
+        format.json { render json: @asset_disposal.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+  
   def show
     @disposed = AssetDisposal.find(params[:id])
     respond_to do |format|
