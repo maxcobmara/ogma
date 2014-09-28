@@ -1,37 +1,38 @@
-%dl.dl-horizontal
-  %dt= t 'asset.category.type_model_name'
-  %dd= "#{@disposed.asset.typename} : #{@disposed.asset.name} : #{@disposed.asset.modelname}" 
-  %dt= t 'asset.serialno'
-  %dd= @disposed.asset.serialno
-  %dt= t 'asset.disposal.usage'
-  %dd= "#{@disposed.running_hours} Hrs Or #{@disposed.mileage} Km "
-  %dt= t 'asset.disposal.duration_used'
-  %dd= @disposed.try(:age)
-  %dt= t 'asset.disposal.current_condition'
-  %dd= @disposed.current_condition  
-  %dt= t 'asset.disposal.current_value'
-  %dd= currency(@disposed.current_value.to_f) 
-  %dt= t 'asset.disposal.estimated_repair_cost'
-  %dd= currency(@disposed.est_repair_cost.to_f)	  	  
-  %dt= t 'asset.disposal.estimated_value_after_repair'
-  %dd= currency(@disposed.est_value_post_repair.to_f) 	  
-  %dt= t 'asset.disposal.estimated_next_failure'
-  %dd= @disposed.est_time_next_fail	  	  
-  %dt= t 'asset.disposal.repair_needed'
-  %dd= "1. #{@disposed.repair1_needed}"
-  %dt &nbsp;
-  %dd= "2. #{@disposed.repair2_needed}"
-  %dt &nbsp;
-  %dd= "3. #{@disposed.repair3_needed}"
-  %dt= t 'asset.disposal.justification_disposal'
-  %dd= "1. #{@disposed.justify1_disposal}"
-  %dt &nbsp;
-  %dd= "2. #{@disposed.justify2_disposal}"
-  %dt &nbsp;
-  %dd= "3. #{@disposed.justify3_disposal}"  
-  %dt= t 'asset.disposal.board_examiners'
-  %dd= "1. #{@disposed.inspect1or.try(:name)}"
-  %dt &nbsp;
-  %dd= "2. #{@disposed.inspect2or.try(:name)}"
-  %dt= t 'asset.disposal.is_checked'
-  %dd= @disposed.is_checked? ? "Yes, "+@disposed.processor.name+" on "+@disposed.checked_on.strftime('%d %b %Y') : "No" 
+.col-md-8.col-md-offset-1
+  %dl.dl-horizontal
+    %dt= t 'asset.category.type_model_name'
+    %dd= "#{@disposed.asset.typename} : #{@disposed.asset.name} : #{@disposed.asset.modelname}" 
+    %dt= t 'asset.serialno'
+    %dd= @disposed.asset.serialno
+    %dt= t 'asset.disposal.usage'
+    %dd= "#{@disposed.running_hours} Hrs Or #{@disposed.mileage} Km "
+    %dt= t 'asset.disposal.duration_used'
+    %dd= @disposed.try(:age)
+    %dt= t 'asset.disposal.current_condition'
+    %dd= @disposed.current_condition  
+    %dt= t 'asset.disposal.current_value'
+    %dd= currency(@disposed.current_value.to_f) 
+    %dt= t 'asset.disposal.estimated_repair_cost'
+    %dd= currency(@disposed.est_repair_cost.to_f)	  	  
+    %dt= t 'asset.disposal.estimated_value_after_repair'
+    %dd= currency(@disposed.est_value_post_repair.to_f) 	  
+    %dt= t 'asset.disposal.estimated_next_failure'
+    %dd= @disposed.est_time_next_fail	  	  
+    %dt= t 'asset.disposal.repair_needed'
+    %dd= "1. #{@disposed.repair1_needed}"
+    %dt &nbsp;
+    %dd= "2. #{@disposed.repair2_needed}"
+    %dt &nbsp;
+    %dd= "3. #{@disposed.repair3_needed}"
+    %dt= t 'asset.disposal.justification_disposal'
+    %dd= "1. #{@disposed.justify1_disposal}"
+    %dt &nbsp;
+    %dd= "2. #{@disposed.justify2_disposal}"
+    %dt &nbsp;
+    %dd= "3. #{@disposed.justify3_disposal}"  
+    %dt= t 'asset.disposal.board_examiners'
+    %dd= "1. #{@disposed.inspect1or.try(:name)}"
+    %dt &nbsp;
+    %dd= "2. #{@disposed.inspect2or.try(:name)}"
+    %dt= t 'asset.disposal.is_checked'
+    %dd= @disposed.is_checked? ? "Yes, "+@disposed.processor.name+" on "+@disposed.checked_on.strftime('%d %b %Y') : "No" 

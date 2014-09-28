@@ -22,7 +22,7 @@ class AssetDisposal < ActiveRecord::Base
     end
     
     def disposaltype_others?
-      !type_others_desc.nil? || !type_others_desc.blank?
+      disposal_type=='others'
     end
     
     #define scope - asset(typename, name, modelname)

@@ -44,6 +44,26 @@ class Asset::AssetDisposalsController < ApplicationController
     end
   end
   
+  def revalue
+    @disposal = AssetDisposal.find(params[:id])
+    @disposed = @disposal
+  end
+  
+  def dispose
+    @disposal = AssetDisposal.find(params[:id])
+    @disposed = @disposal
+  end
+  
+  def verify
+    @disposal = AssetDisposal.find(params[:id])
+    @disposed = @disposal
+  end
+  
+  def view_close
+    @disposal = AssetDisposal.find(params[:id])
+    @disposed = @disposal
+  end
+  
   def show
     @disposed = AssetDisposal.find(params[:id])
     respond_to do |format|

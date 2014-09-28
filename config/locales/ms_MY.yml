@@ -1182,6 +1182,10 @@ ms_MY:
       edit: Sunting
       destroy: Padam
       approve: Kelulusan
+      revalue: Penilaian Semula
+      dispose: Pelupusan
+      verify: Pengesahan Ketua Jabatan
+      view_close: "Semak & Tutup"
       edit_admin : "Sunting (Pentadbir)"
       back_lesson_plan: Senarai Pelan Pengajaran
       back_lesson_report: Senarai Laporan Pengajaran

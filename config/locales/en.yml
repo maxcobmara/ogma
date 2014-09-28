@@ -1175,11 +1175,6 @@ en:
       fax: Fax No
       mail: Email
       web: Web 
-      
-
-
-
-
 
   helpers:
     links:
@@ -1189,6 +1184,10 @@ en:
       destroy: Destroy
       approve: Approve
       edit_admin: "Edit (Admin)"
+      revalue: Revalue
+      dispose: Dispose
+      verify: HOD Verification
+      view_close: "View & Close"
       back_lesson_plan: Lesson Plan List
       back_lesson_report: Lesson Report List
       back_travel_request: Travel Request List

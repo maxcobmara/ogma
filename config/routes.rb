@@ -97,6 +97,10 @@ Ogma::Application.routes.draw do
         get :kewpa16
         get :kewpa18
         get :kewpa19
+        get :revalue
+        get :dispose
+	get :verify
+	get :view_close
       end
       collection do
         get :kewpa17

@@ -3,12 +3,7 @@
     / Nav tabs
     %ul.nav.nav-tabs
       %li.active= link_to (t "asset.disposal.details"), "#details", "data-toggle" => "tab"
-      - if @disposal.is_checked
-        %li= link_to (t "asset.disposal.revalue_title"), "#value", "data-toggle" => "tab"
-        %li= link_to (t "asset.disposal.approval_details"), "#disposaldetails", "data-toggle" => "tab"
-      - if @disposed.is_disposed
-        %li=link_to (t "asset.disposal.verification_details"), "#verification", "data-toggle" => "tab"
-        %li=link_to (t "asset.disposal.view_close"), "#viewclose", "data-toggle" => "tab"
+    / display
     .tab-content{style:"padding-top:1em"}
       .col-md-offset-2 
         .form-group
@@ -19,36 +14,4 @@
 
       #details.tab-pane.active
         %br
-        = render 'tab_details_edit.html.haml', :f => f
-
-      #value.tab-pane
-        %br
-        = render 'tab_value_edit.html.haml', :f => f
-        
-      #disposaldetails.tab-pane
-        %br
-        = render 'tab_disposaldetails_edit.html.haml', :f => f 
-        
-      #verification.tab-pane
-        %br
-        = render 'tab_verification_edit.html.haml', :f => f
-
-      #viewclose.tab-pane.fade.in
-        = render 'tab_view_close_edit', :f => f
-
-:javascript
-
-//<![CDATA[
-bkLib.onDomLoaded(function() {
-  new nicEditor().panelInstance('myNicEditor3');
-  new nicEditor().panelInstance('myNicEditor4');
-});
-//]]>
-
-  function add_fields(link, association, content) {  
-    var new_id = new Date().getTime();  
-    var regexp = new RegExp("new_" + association, "g");  
-    $(link).parent().before(content.replace(regexp, new_id));  
-  }
-  
- 
+        = render 'tab_details_edit', :f => f
