@@ -33,12 +33,23 @@ class Asset::AssetDisposalsController < ApplicationController
   
   def update
     @disposal = AssetDisposal.find(params[:id])  
+    editingpage = params[:asset_disposal][:editing_page]
     respond_to do |format|
       if @disposal.update(asset_disposal_params)
         format.html { redirect_to asset_disposal_path, notice: t('asset.disposal.title')+t('actions.updated')}
         format.json { head :no_content }
       else
-        format.html { render action: 'edit' }
+	if editingpage=="verify"
+	  format.html { render action: 'verify'}
+	elsif editingpage=="dispose"
+	  format.html { render action: 'dispose'}
+	elsif editingpage=="revalue"
+	  format.html { render action: 'revalue'}
+	elsif editingpage=="view_close"
+	  format.html { render action: 'view_close'}
+	else 
+          format.html { render action: 'edit' }
+	end
         format.json { render json: @asset_disposal.errors, status: :unprocessable_entity }
       end
     end
@@ -139,7 +150,7 @@ class Asset::AssetDisposalsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def asset_disposal_params
-      params.require(:asset_disposal).permit(:asset_id, :description, :running_hours, :mileage, :current_condition,:current_value, :est_repair_cost,:est_value_post_repair, :est_time_next_fail, :repair1_need, :repair2_need,:repair3_need,:justify1_disposal, :justify2_disposal,:justify3_disposal,:is_checked, :checked_on, :is_verfied,:verified_on, :revalue, :revalued_by,:revalued_on, :document_id, :disposal_type,:type_others_desc, :discard_option,:receiver_name,:documentation_no, :is_disposed, :inform_hod,:disposed_by, :disposed_on, :is_discarded, :discarded_on, :discard_location, :discard_witness_1, :discard_witness_2, :checked_by, :verified_by, :examiner1, :examiner2, :is_staff1, :is_staff2, :examiner_staff1,:examiner_staff2, :witness_outsider1, :witness_outsider2,:witness_is_staff1, :witness_is_staff2)
+      params.require(:asset_disposal).permit(:asset_id, :description, :running_hours, :mileage, :current_condition,:current_value, :est_repair_cost,:est_value_post_repair, :est_time_next_fail, :repair1_need, :repair2_need,:repair3_need,:justify1_disposal, :justify2_disposal,:justify3_disposal,:is_checked, :checked_on, :is_verified,:verified_on, :revalue, :revalued_by,:revalued_on, :document_id, :disposal_type,:type_others_desc, :discard_option,:receiver_name,:documentation_no, :is_disposed, :inform_hod,:disposed_by, :disposed_on, :is_discarded, :discarded_on, :discard_location, :discard_witness_1, :discard_witness_2, :checked_by, :verified_by, :examiner1, :examiner2, :is_staff1, :is_staff2, :examiner_staff1,:examiner_staff2, :witness_outsider1, :witness_outsider2,:witness_is_staff1, :witness_is_staff2)
       #:code, :category, :unittype, :maxquantity, :minquantity, damages_attributes: [:id, :description,:reported_on,:document_id,:location_id])
     end
 end

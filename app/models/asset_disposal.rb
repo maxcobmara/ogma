@@ -14,12 +14,18 @@ class AssetDisposal < ActiveRecord::Base
     validates :asset_id, presence: true
     validates :examiner_staff1, presence: true, :if => :is_staff1?
     validates :examiner_staff2, presence: true, :if => :is_staff2?
-    validates :checked_by, :checked_on, :verified_by, presence: true, :if => :check_checked?
+    validates :checked_by, :checked_on, :verified_by, presence: true, :if => :is_checked?
     validates :type_others_desc, presence: true, :if => :disposaltype_others?
+    validates :verified_on, presence: true, :if => :is_verified?
+    validates :revalued_on, presence: true, :if => :revalue?
+    validates :disposed_by, presence: true, :if => :disposed_on?
+    validates :disposed_on, presence: true, :if => :disposed_by?
     
-    def check_checked?
-      is_checked == true
-    end
+    attr_accessor :editing_page
+    
+    #def check_checked?
+      #is_checked == true
+    #end
     
     def disposaltype_others?
       disposal_type=='others'

@@ -9,6 +9,7 @@
 .row
   = form_for @disposal, html: { multipart: true, class: 'form-horizontal' }  do |f| 
     = render 'shared/error_messages', object: f.object
+    = f.hidden_field :editing_page, :value=>'revalue'
     .row
       .col-md-offset-1
         / Nav tabs
