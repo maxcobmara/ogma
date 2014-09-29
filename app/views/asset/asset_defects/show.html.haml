@@ -14,37 +14,29 @@
     %dt= t 'asset.assetcode'
     %dd= @defective.asset.assetcode
   #details.tab-pane.fade.in.active
-    %dl.dl-horizontal
-      %dt= t 'asset.category.type_model_name'
-      %dd= "#{@defective.asset.typename} : #{@defective.asset.name} : #{@defective.asset.modelname}" 
-      %dt= t 'asset.serialno'
-      %dd= @defective.asset.serialno
-      %dt= t 'asset.defect.description'
-      %dd= @defective.description
-      %dt= t 'asset.defect.reported_by'
-      %dd= link_to @defective.reporter.try(:name), (staff_info_path(@defective.reporter)) rescue nil
+    = render 'tab_details'
    
   #process.tab-pane.fade.in
-    %dl.dl-horizontal
-      %dt= t 'asset.defect.action_type'
-      %dd= @defective.process_type.try(:titleize)
-      %dt= t 'asset.defect.recommendation'
-      %dd= @defective.recommendation
-      %dt= t 'asset.defect.processed_by'
-      %dd= @defective.is_processed? ? "Yes, by  " + @defective.processor.name.to_s + " on  " + (l(@defective.processed_on)).to_s : "No"
+    = render 'tab_process'
   
   #decision.tab-pane.fade.in
-    %dl.dl-horizontal
-      %dt= t 'asset.defect.approval'
-      %dd= @defective.decision? ? "Yes, by  " + @asset_defect.confimer.name.to_s + " on  " + (l(@asset_defect.decision_on)).to_s : "No"
+    = render 'tab_decision'
 
 .row
-  .col-md-4.col-md-offset-2
+  .col-md-6.col-md-offset-2
     %hr
     .form-actions
       = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), asset_defects_path, :class => 'btn btn-default'
       = link_to content_tag(:i, "", :class => "fa fa-file-pdf-o"), kewpa9_asset_defect_path(@defective, format: "pdf"), {class: "btn btn-default", "data-toggle" => "tooltip", title: "KEW.PA 9 PDF"}
-      = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('.edit', :default => t("helpers.links.edit")), edit_asset_defect_path(@defective), :class => 'btn btn-primary'
+      
+      - if (@defective.exist_count==1)|| ((@defective.exist_count>1)&&(@defective.marked_dispose_count==0))||((@defective.exist_count>1)&&(@defective.marked_dispose_count>0)&&(@defective.marked_dispose_inc) )
+        /edit details
+        = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('.edit', :default => t("helpers.links.edit")), edit_asset_defect_path(@defective), :class => 'btn btn-primary'
+        /process defective
+        = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('.process', :default => t("helpers.links.process")), process2_asset_defect_path(@defective), :class => 'btn btn-primary' 
+        /approve process
+      - if @defective.is_processed
+        = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('.decision', :default => t("helpers.links.decision")), decision_asset_defect_path(@defective), :class => 'btn btn-primary'
       = link_to content_tag(:i, "", :class => "fa fa-trash-o icon-white") + " " + t('.destroy', :default => t("helpers.links.destroy")), |
         asset_defect_path(@defective),                                                                                                    |
         :method => 'delete',                                                                                                           |

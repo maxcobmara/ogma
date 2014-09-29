@@ -80,6 +80,8 @@ Ogma::Application.routes.draw do
     resources :asset_defects,   as: :defects do
       member do
         get :kewpa9
+        get :process2
+        get :decision
       end
     end
     resources :asset_losses,    as: :losses do

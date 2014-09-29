@@ -9,13 +9,14 @@
 .row
   = form_for @disposal, html: { multipart: true, class: 'form-horizontal' }  do |f| 
     = render 'shared/error_messages', object: f.object
+    = f.hidden_field :editing_page, :value=>'dispose'
     .row
       .col-md-offset-1
         / Nav tabs
         %ul.nav.nav-tabs
           %li= link_to (t "asset.disposal.details"), "#details", "data-toggle" => "tab"
           - if @disposal.is_checked
-            - if !@disposal.document_id && !@disposal.is_disposed && !@disposal.disposed_by
+            - if @disposal.revalue && @disposal.revalued_on
               %li= link_to (t "asset.disposal.revalue_title"), "#value", "data-toggle" => "tab"
             %li.active= link_to (t "asset.disposal.approval_details"), "#disposaldetails_edit", "data-toggle" => "tab"
         / display 

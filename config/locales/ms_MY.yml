@@ -1182,6 +1182,8 @@ ms_MY:
       edit: Sunting
       destroy: Padam
       approve: Kelulusan
+      process: Proses
+      decision: Keputusan
       revalue: Penilaian Semula
       dispose: Pelupusan
       verify: Pengesahan Ketua Jabatan

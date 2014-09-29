@@ -8,7 +8,7 @@
     %ul.nav.nav-tabs
       %li.active= link_to (t "asset.disposal.details"), "#details",     "data-toggle" => "tab"
       - if @disposed.is_checked
-        - if @disposed.revalue && @disposed.revalued_by && @disposed.revalued_on
+        - if @disposed.revalue && @disposed.revalued_on
           %li= link_to (t "asset.disposal.revalue_title"), "#value",     "data-toggle" => "tab"
         %li= link_to (t "asset.disposal.approval_details"), "#disposaldetails",     "data-toggle" => "tab"
       - if @disposed.is_disposed
@@ -55,7 +55,7 @@
         /verification - HOD
         = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('.edit', :default => t("helpers.links.verify")), verify_asset_disposal_path(@disposed), :class => 'btn btn-primary'
         /view_close
-        - if @disposed.disposed_by && @disposed.disposed_on
+        - if @disposed.is_verified && @disposed.verified_on
           = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('.edit', :default => t("helpers.links.view_close")), view_close_asset_disposal_path(@disposed), :class => 'btn btn-primary'   
         = link_to content_tag(:i, "", :class => "fa fa-trash-o icon-white") + " " + t('.destroy', :default => t("helpers.links.destroy")), |
         asset_disposal_path(@disposed),                                                                                                    |

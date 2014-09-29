@@ -1,4 +1,5 @@
 .col-md-8.col-md-offset-1
   %dl.dl-horizontal
     %dt= t 'asset.disposal.is_verified'
-    %dd= "#{@disposed.verifier.try(:name)} On  #{@disposed.verified_on.try(:strftime, '%d %b %Y')}" 
+    /%dd= "#{@disposed.verifier.try(:name)} On  #{@disposed.verified_on.try(:strftime, '%d %b %Y')}" 
+    %dd= @disposed.is_verified? ? "Yes, by "+@disposed.verifier.name+" on "+l(@disposed.verified_on) : "No"

@@ -9,6 +9,7 @@
 .row
   = form_for @disposal, html: { multipart: true, class: 'form-horizontal' }  do |f| 
     = render 'shared/error_messages', object: f.object
+    = f.hidden_field :editing_page, :value=> 'view_close'
     .row
       .col-md-offset-1
         / Nav tabs
@@ -20,7 +21,7 @@
             %li= link_to (t "asset.disposal.approval_details"), "#disposaldetails", "data-toggle" => "tab"
           - if @disposed.is_disposed
             %li=link_to (t "asset.disposal.verification_details"), "#verification", "data-toggle" => "tab"
-            - if @disposed.disposed_by && @disposed.disposed_on
+            - if @disposed.is_verified && @disposed.verified_on
               %li.active=link_to (t "asset.disposal.view_close"), "#viewclose_edit", "data-toggle" => "tab"
         / display 
         .tab-content{style:"padding-top:1em"}

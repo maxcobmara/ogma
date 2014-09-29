@@ -1,0 +1,7 @@
+%dl.dl-horizontal
+  %dt= t 'asset.defect.action_type'
+  %dd= @defective.processtype
+  %dt= t 'asset.defect.recommendation'
+  %dd= @defective.recommendation
+  %dt= t 'asset.defect.processed_by'
+  %dd= @defective.is_processed? ? "Yes, by  " + @defective.processor.name.to_s + " on  " + (l(@defective.processed_on)).to_s : "No"
