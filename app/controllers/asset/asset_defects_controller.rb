@@ -14,6 +14,14 @@ class Asset::AssetDefectsController < ApplicationController
   def edit
   end
   
+  def decision
+    @defective = AssetDefect.find(params[:id])
+  end
+  
+  def process2
+    @defective = AssetDefect.find(params[:id])
+  end
+  
   def new
     @asset = Asset.find(params[:asset_id])
     @asset_defect = @asset.asset_defects.new(params[:asset_defect])
@@ -21,12 +29,19 @@ class Asset::AssetDefectsController < ApplicationController
   end
   
   def update
+    editingpage = params[:asset_defect][:editing_page]
     respond_to do |format|
       if @asset_defect.update(asset_defect_params)
         format.html { redirect_to asset_defect_path, notice: t('asset.defect.title')+t('actions.updated')}
         format.json { head :no_content }
       else
-        format.html { render action: 'edit' }
+        if editingpage=="process2"
+          format.html { render action: 'process2'}
+        elsif editingpage=="decision"
+          format.html { render action: 'decision'}
+        else
+          format.html { render action: 'edit' }
+        end
         format.json { render json: @asset_defect.errors, status: :unprocessable_entity }
       end
     end

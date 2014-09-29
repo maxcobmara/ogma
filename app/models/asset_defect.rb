@@ -1,21 +1,16 @@
 class AssetDefect < ActiveRecord::Base
+  include AssetDefectsHelper
   
   belongs_to :asset
   belongs_to :reporter,   :class_name => 'Staff', :foreign_key => 'reported_by'
   belongs_to :processor,  :class_name => 'Staff', :foreign_key => 'processed_by'
-  belongs_to :confimer,   :class_name => 'Staff', :foreign_key => 'decision_by'
+  belongs_to :confirmer,   :class_name => 'Staff', :foreign_key => 'decision_by'
   
   validates :asset, :presence => true
-  validates :processed_by, :process_type, :processed_on, presence: true, :if => :check_processed?
-  validates :decision_by, :decision_on, presence: true, :if => :check_decision?
+  validates :processed_by, :process_type, :processed_on, presence: true, :if => :is_processed
+  validates :decision_by, :decision_on, presence: true, :if => :decision
   
-  def check_processed?
-    is_processed == true
-  end
-  
-  def check_decision?
-    decision == true
-  end
+  attr_accessor :editing_page
   
 end
 

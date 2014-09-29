@@ -1,0 +1,17 @@
+%dl.dl-horizontal
+  %dt= t 'asset.category.type_model_name'
+  %dd= "#{@defective.asset.typename} : #{@defective.asset.name} : #{@defective.asset.modelname}" 
+  %dt= t 'asset.serialno'
+  %dd= @defective.asset.serialno
+  
+.form-group
+  .col-sm-2.control-label
+    = f.label t 'asset.defect.description', for: :description
+  .col-md-4
+    = f.text_field :description, class: 'form-control'
+
+.form-group
+  .col-sm-2.control-label
+    = f.label t 'asset.defect.reported_by', for: :reported_by
+  .col-md-4
+    = f.collection_select :reported_by, Staff.all.order(name: :asc), :id, :name, {:include_blank =>t('helpers.prompt.select_staff'), :selected =>@defective.reported_by},{class: 'selectpicker', "data-width"=>'230px'}  

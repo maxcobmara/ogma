@@ -1,24 +1,34 @@
 - model_class = AssetDefect
 .page-header
   %h1
-    = t 'edit'
+    = t 'asset.defect.decision'
     = @defective.asset.assetcode
 
 .row
   = form_for @defective,  html: { multipart: true, class: 'form-horizontal' }  do |f| 
     = render 'shared/error_messages', object: f.object
+    = f.hidden_field :editing_page, :value=>'decision'
 
     %ul.nav.nav-tabs
-      %li.active= link_to (t "asset.defect.details"), "#details_edit",   "data-toggle" => "tab"
+      %li= link_to (t "asset.defect.details"), "#details",   "data-toggle" => "tab"
+      %li= link_to (t "asset.defect.process"), "#process", "data-toggle" => "tab"
+      - if @defective.is_processed
+        %li.active= link_to (t "asset.defect.decision"), "#decision_edit","data-toggle" => "tab"
 
     .tab-content.col-md-offset-1
       %dl.dl-horizontal
         %dt= t 'asset.assetcode'
         %dd= @defective.asset.assetcode
 
-      #details_edit.tab-pane.fade.in.active
+      #details.tab-pane.fade.in
+        = render 'tab_details'
+
+      #process.tab-pane.fade.in
+        =  render 'tab_process'
+
+      #decision_edit.tab-pane.fade.in.active
         %br
-        = render 'tab_details_edit', :f => f
+        = render 'tab_decision_edit', :f => f
 
       .col-md-offset-1
         .form-group
@@ -26,3 +36,4 @@
             = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), asset_defects_path(@defective), :class => 'btn btn-default'
           .col-sm-2
             = f.submit t('update'), class: "btn btn-primary" 
+ 

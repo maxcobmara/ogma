@@ -1,0 +1,36 @@
+.form-group
+  .col-sm-2.control-label
+    = f.label t 'asset.defect.action_type', for: :process_type
+  .col-md-4
+    .row
+      .col-sm-1
+        = f.radio_button :process_type, "repair", :id => 'button_repair',  :class => 'radio_action_type' 
+      .col-sm-2
+        = t 'asset.defect.repair'
+      .col-sm-1
+        = f.radio_button :process_type, "dispose", :id => 'button_dispose', :class => 'radio_action_type' 
+      .col-sm-2
+        = t 'asset.defect.dispose'
+.form-group
+  .col-sm-2.control-label
+    = f.label t 'asset.defect.recommendation', for: :recommendation
+  .col-md-4
+    = f.text_field :recommendation, class: 'form-control'
+
+.form-group
+  .col-sm-2.control-label
+    = f.label t 'asset.defect.is_processed', for: :is_processed
+  .col-md-4
+    = f.check_box :is_processed, class: 'form-control'
+
+.form-group
+  .col-sm-2.control-label
+    = f.label t 'asset.defect.processed_by', for: :processed_by
+  .col-md-4
+    = f.collection_select :processed_by, Staff.all.order(name: :asc), :id, :name, {:include_blank =>t('helpers.prompt.select_staff'), :selected=>@defective.processed_by},{class: 'selectpicker', "data-width"=>'230px'} 
+
+.form-group
+  .col-sm-2.control-label
+    = f.label t 'asset.defect.processed_on', for: :processed_on
+  .col-md-2
+    = f.text_field :processed_on, class: 'date_picker form-control' 
