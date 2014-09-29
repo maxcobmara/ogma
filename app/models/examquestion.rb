@@ -100,7 +100,8 @@ class Examquestion < ActiveRecord::Base
   
   def question_creator
     #programme = User.current_user.staff.position.unit - replace with : 2 lines (below)
-    current_user = User.find(11)  #current_user = User.find(11) - 11-maslinda, 72-izmohdzaki
+    #current_user = User.find(11)  #current_user = User.find(11) - 11-maslinda, 72-izmohdzaki
+    current_user = Login.first
     programme = current_user.staff.positions[0].unit
     
     programme_name = Programme.roots.map(&:name)
@@ -109,7 +110,7 @@ class Examquestion < ActiveRecord::Base
       creator = Staff.joins(:positions).where('unit=? AND unit IN(?)', programme, programme_name).map(&:id)
     else
       role_admin = Role.find_by_name('Administration')  #must have role as administrator
-      staff_with_adminrole = User.joins(:roles).where('role_id=?',role_admin).map(&:staff_id).compact.uniq 
+      staff_with_adminrole = Login.joins(:roles).where('role_id=?',role_admin).map(&:staff_id).compact.uniq
       creator_adm = Staff.joins(:positions).where('staff_id IN(?)', staff_with_adminrole).map(&:id)
       creator=creator_prog+creator_adm
     end
@@ -118,7 +119,8 @@ class Examquestion < ActiveRecord::Base
     
   def question_editor
     #programme = User.current_user.staff.position.unit --> requires log-in
-    current_user = User.find(72)  #current_user = User.find(72) - izmohdzaki, 11-maslinda
+    #current_user = User.find(72)  #current_user = User.find(72) - izmohdzaki, 11-maslinda
+    current_user = Login.first
     programme = current_user.staff.positions[0].unit
     unless subject_id.nil?
       if subject.root.name == programme
