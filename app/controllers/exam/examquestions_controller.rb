@@ -10,8 +10,9 @@ class Exam::ExamquestionsController < ApplicationController
     #@topic_exams = @examquestions.group_by { |t| t.topic_id }
     #-----in case-use these 4 lines-------
 
-    current_user = User.find(11)    #maslinda 
+    #current_user = User.find(11)    #maslinda 
     #current_user = User.find(72)    #izmohdzaki
+    current_user = Login.first
     @position_exist = current_user.staff.positions
     if @position_exist
       @lecturer_programme = current_user.staff.positions[0].unit
@@ -66,7 +67,9 @@ class Exam::ExamquestionsController < ApplicationController
   def new
     @examquestion = Examquestion.new
     #@lecturer_programme = current_user.staff.position.unit     - replace with : 2 lines (below)
-    current_user = User.find(11)  #current_user = User.find(72) - izmohdzaki, 11-maslinda
+    #current_user = User.find(11)  #current_user = User.find(72) - izmohdzaki, 11-maslinda
+    #current_user = Login.first
+    current_user = Login.find(72)
     @lecturer_programme = current_user.staff.positions[0].unit
     
     @creator = current_user.staff.id 
@@ -74,9 +77,9 @@ class Exam::ExamquestionsController < ApplicationController
     unless @lecturer_programme.nil?
       @programme = Programme.where('name ILIKE (?) AND ancestry_depth=?',"%#{@lecturer_programme}%",0)
     end
-    unless @programme#.nil? #for lecturers
-      @programme_listing = Programme.where(id: @programme.id).to_a
-      @preselect_prog = @programme.id
+    unless @programme.count==0#.nil? #for lecturers
+      @programme_listing = Programme.where(id: @programme.first.id).to_a
+      @preselect_prog = @programme.first.id
       @all_subject_ids = Programme.find(@preselect_prog).descendants.at_depth(2).map(&:id)
       if @lecturer_programme == 'Commonsubject'
         @subjects2 = Programme.where('id IN(?) AND course_type=?',@all_subject_ids, @lecturer_programme).order('ancestry ASC') 
@@ -112,8 +115,9 @@ class Exam::ExamquestionsController < ApplicationController
   # GET /examquestions/1/edit
   def edit
     @examquestion = Examquestion.find(params[:id])
-    current_user = User.find(11)  #current_user = User.find(72) - izmohdzaki, 11-maslinda
-		@creator = @examquestion.creator_id
+    #current_user = User.find(11)  #current_user = User.find(72) - izmohdzaki, 11-maslinda
+    current_user = Login.first
+    @creator = @examquestion.creator_id
     
     @lecturer_programme = current_user.staff.positions[0].unit      
     unless @lecturer_programme.nil?
@@ -146,27 +150,29 @@ class Exam::ExamquestionsController < ApplicationController
   def create
     @examquestion= Examquestion.new(examquestion_params)
     
-    current_user = User.find(11)  #current_user = User.find(72) - izmohdzaki, 11-maslinda    
+    #current_user = User.find(11)  #current_user = User.find(72) - izmohdzaki, 11-maslinda
+    #current_user = Login.first
+    current_user = Login.find(72)
     #--newly added--same as edit--required when incomplete data submitted
     @lecturer_programme = current_user.staff.positions[0].unit      
     if @lecturer_programme != 'Commonsubject'
-      @programme = Programme.find(:first,:conditions=>["name ILIKE (?) AND ancestry_depth=?","%#{@lecturer_programme}%",0])
+      @programme = Programme.where('name ILIKE (?) AND ancestry_depth=?',"%#{@lecturer_programme}%",0)
     end
-    unless @programme.nil? #for lecturers
-      @programme_listing = Programme.where('id=?',@programme.id).to_a
-      @preselect_prog = @programme.id
+    unless @programme.count==0 #.nil? #for lecturers
+      @programme_listing = Programme.where('id=?',@programme.first.id).to_a
+      @preselect_prog = @programme.first.id
       @all_subject_ids = Programme.find(@preselect_prog).descendants.at_depth(2).map(&:id)      
       if @lecturer_programme == 'Commonsubject' #common subject lecturers
         unless @examquestion.subject_id.nil? || @examquestion.subject_id.blank? || @examquestion.subject_id==0 
-          @subjects2 = Programme.find(:all, :conditions=>['id IN(?) AND course_type=?',@all_subjects1, @lecturer_programme],:order=>'ancestry ASC')
+          @subjects2 = Programme.where('id IN(?) AND course_type=?',@all_subjects1, @lecturer_programme).order(ancestry: :asc)
           #to define topic later
         else
-          @subjects2 = Programme.find(:all, :conditions=>['id IN(?) AND course_type=?',@all_subjects2, @lecturer_programme],:order=>'ancestry ASC')
+          @subjects2 = Programme.where('id IN(?) AND course_type=?',@all_subjects2, @lecturer_programme).order(ancestry: :asc)
           #to define topic later
         end 
       else  #programme lecturers
         #when SUBJECT is selected, @subjects2 - lili2 NEW (resubmission) & @topics - kaka3 NEW (resubmission)
-        @subjects2 = Programme.find(:all, :conditions=>['id IN(?) AND course_type=?',@all_subject_ids, 'Subject'],:order=>'ancestry ASC')   
+        @subjects2 = Programme.where('id IN(?) AND course_type=?',@all_subject_ids, 'Subject').order(ancestry: :asc)
         unless @examquestion.subject_id.nil? || @examquestion.subject_id.blank? || @examquestion.subject_id==0 || @examquestion.subject_id=='Select the Subject' #if subject already selected
           @topics = Programme.find(@examquestion.subject_id).descendants.at_depth(3)
         else
@@ -182,7 +188,7 @@ class Exam::ExamquestionsController < ApplicationController
       else  # if subject not selected yet 
         #check if programme IS SELECTED (re-submit of new record)
         if @examquestion.programme_id.nil? || @examquestion.programme_id.blank? #note : SUBJECT FIELD & TOPIC FIELD are hide
-          @subjects2= Programme.find(:all, :conditions=>['ancestry_depth=?',2],:order=>'ancestry ASC')
+          @subjects2= Programme.where(ancestry_depth:2).order(ancestry: :asc)
           @topics = Programme.all.at_depth(3).sort  #refer examquestion.js.coffee
         else
           @subjects2 = Programme.find(@examquestion.programme_id).descendants.at_depth(2).sort_by{|x|x.ancestry}
@@ -212,8 +218,9 @@ class Exam::ExamquestionsController < ApplicationController
     #@subject_exams = @examquestions.group_by { |t| t.subject_details }
 
     #from edit - start----------------------required when validation failed
-    current_user = User.find(11)  #current_user = User.find(72) - izmohdzaki, 11-maslinda
-		@creator = @examquestion.creator_id
+    #current_user = User.find(11)  #current_user = User.find(72) - izmohdzaki, 11-maslinda
+    current_user = Login.first
+    @creator = @examquestion.creator_id
     
     @lecturer_programme = current_user.staff.positions[0].unit      
     unless @lecturer_programme.nil?
@@ -255,7 +262,7 @@ class Exam::ExamquestionsController < ApplicationController
   def destroy
     @examquestion = Examquestion.find(params[:id])
     #22Apr2013--avoid deletion of examquestion that exist in exams-temp
-    @exist_in_exam = Exam.find(:all, :joins=>:examquestions, :conditions=> ['examquestion_id=?',params[:id]]).count
+    @exist_in_exam =  Exam.joins(:examquestions).where('examquestion_id=?',1).count
     if @exist_in_exam == 0
         @examquestion.destroy
     else
