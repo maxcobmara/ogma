@@ -3,88 +3,41 @@
   %h1= @disposed.asset.assetcode
 = render 'shared/flashes'
 
-%ul.nav.nav-tabs
-  %li.active= link_to (t "asset.details"), "#details",     "data-toggle" => "tab"
-  %li= link_to (t "asset.disposal.revalue_title"), "#value",     "data-toggle" => "tab"
-  %li= link_to (t "asset.disposal.details"), "#disposaldetails",     "data-toggle" => "tab"
-
-.tab-content.col-md-offset-1
-  %dl.dl-horizontal
-    %dt= t 'asset.assetcode'
-    %dd= @disposed.asset.assetcode
-  #details.tab-pane.fade.in.active
-    %dl.dl-horizontal
-      %dt= t 'asset.category.type_model_name'
-      %dd= "#{@disposed.asset.typename} : #{@disposed.asset.name} : #{@disposed.asset.modelname}" 
-      %dt= t 'asset.serialno'
-      %dd= @disposed.asset.serialno
-      %dt= t 'asset.disposal.usage'
-      %dd= "#{@disposed.running_hours} Hrs Or #{@disposed.mileage} Km "
-      %dt= t 'asset.disposal.duration_used'
-      %dd= @disposed.try(:age)
-      %dt= t 'asset.disposal.current_condition'
-      %dd= @disposed.current_condition  
-      %dt= t 'asset.disposal.current_value'
-      %dd= currency(@disposed.current_value.to_f) 
-      %dt= t 'asset.disposal.estimated_repair_cost'
-      %dd= currency(@disposed.est_repair_cost.to_f)	  	  
-      %dt= t 'asset.disposal.estimated_value_after_repair'
-      %dd= currency(@disposed.est_value_post_repair.to_f) 	  
-      %dt= t 'asset.disposal.estimated_next_failure'
-      %dd= @disposed.est_time_next_fail	  	  
-      %dt= t 'asset.disposal.repair_needed'
-      %dd= "1. #{@disposed.repair1_needed}"
-      %dt &nbsp;
-      %dd= "2. #{@disposed.repair2_needed}"
-      %dt &nbsp;
-      %dd= "3. #{@disposed.repair3_needed}"
-      %dt= t 'asset.disposal.justification_disposal'
-      %dd= "1. #{@disposed.justify1_disposal}"
-      %dt &nbsp;
-      %dd= "2. #{@disposed.justify2_disposal}"
-      %dt &nbsp;
-      %dd= "3. #{@disposed.justify3_disposal}"  
-      %dt= t 'asset.disposal.board_examiners'
-      %dd= "1. #{@disposed.inspect1or.try(:name)}"
-      %dt &nbsp;
-      %dd= "2. #{@disposed.inspect2or.try(:name)}"
-  
-  #value.tab-pane.fade.in
-    %dl.dl-horizontal
-      %dt= t 'asset.disposal.revalue'
-      %dd= @disposed.revalue
-      %dt= t 'asset.disposal.revalued_by'
-      %dd= @disposed.revaluer.try(:staff).try(:name)
-      %dt= t 'asset.disposal.revalued_on'
-      %dd= @disposed.revalued_on
-  
-  #disposaldetails.tab-pane.fade.in
-    %dl.dl-horizontal
-      %dt= t 'asset.disposal.approval_ref'
-      %dd= "#{@disposed.try(:document).try(:refno)} #{@disposed.try(:document).try(:title)} #{@disposed.try(:document).try(:letterdt).try(:strftime, '%d %b %Y')}"
-      %dt=(t 'asset.disposal.disposal_type')
-      %dd=@disposed.disposaltype
-      - if @disposed.disposal_type == "transfer"
-        %dt= t 'asset.disposal.receiver_name'
-        %dt= @disposed.receiver_name
-      - elsif @disposed.disposal_type == "sold"
-        %dt= t 'asset.disposal.receipt_no'
-        %dd= @disposed.documentation_no
-      - elsif @disposed.disposal_type == "discard"	
-        %dt= t 'asset.disposal.discard_options'
-        %dd= "#{@disposed.discardoption} at #{@disposed.discard_location} on #{@disposed.discarded_on.try(:strftime, '%d %b %Y')} "   
-        %dt= t 'asset.disposal.discard_witness_by'
-        %dd= "#{@disposed.discard_witness1.try(:name)} AND #{@disposed.discard_witness2.try(:name)}"
-      - elsif @disposed.disposal_type == "others"
-        %dt= t 'asset.disposal.type_others_desc'
-        %dd= @disposed.type_others_desc.titleze
-      - elsif @disposed.disposal_type == "stock"
-        
-      %dt= t 'asset.disposal.disposed_by'
-      %dd= "#{@disposed.disposed_by.try(:staff).try(:name)} On  #{@disposed.disposed_on.try(:strftime, '%d %b %Y')}"
-	  
 .row
-  .col-md-4.col-md-offset-2
+  .col-md-offset-1
+    %ul.nav.nav-tabs
+      %li.active= link_to (t "asset.disposal.details"), "#details",     "data-toggle" => "tab"
+      - if @disposed.is_checked
+        - if @disposed.revalue && @disposed.revalued_by && @disposed.revalued_on
+          %li= link_to (t "asset.disposal.revalue_title"), "#value",     "data-toggle" => "tab"
+        %li= link_to (t "asset.disposal.approval_details"), "#disposaldetails",     "data-toggle" => "tab"
+      - if @disposed.is_disposed
+        %li=link_to (t "asset.disposal.verification_details"), "#verification", "data-toggle" => "tab" 
+        - if @disposed.disposed_by && @disposed.disposed_on
+          %li=link_to (t "asset.disposal.view_close"), "#viewclose", "data-toggle" => "tab"
+
+    .tab-content
+      .col-md-8.col-md-offset-1
+        %dl.dl-horizontal
+          %dt= t 'asset.assetcode'
+          %dd= @disposed.asset.assetcode
+      #details.tab-pane.fade.in.active
+        = render 'tab_details'
+  
+      #value.tab-pane.fade.in
+        = render 'tab_value'
+  
+      #disposaldetails.tab-pane.fade.in
+        = render 'tab_disposaldetails'
+    
+      #verification.tab-pane.fade.in
+        = render 'tab_verification'
+    
+      #viewclose.tab-pane.fade.in
+        = render 'tab_view_close'
+    
+.row
+  .col-md-8.col-md-offset-2
     %hr
     .form-actions
       = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), asset_disposals_path, :class => 'btn btn-default'
@@ -92,7 +45,19 @@
       = link_to content_tag(:i, "", :class => "fa fa-file-pdf-o"), kewpa18_asset_disposal_path(@disposed, format: "pdf"), {class: "btn btn-default", "data-toggle" => "tooltip", title: "KEW.PA 18 PDF"}
       = link_to content_tag(:i, "", :class => "fa fa-file-pdf-o"), kewpa19_asset_disposal_path(@disposed, format: "pdf"), {class: "btn btn-default", "data-toggle" => "tooltip", title: "KEW.PA 19 PDF"}	  	  
       = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('.edit', :default => t("helpers.links.edit")), edit_asset_disposal_path(@disposed), :class => 'btn btn-primary'
-      = link_to content_tag(:i, "", :class => "fa fa-trash-o icon-white") + " " + t('.destroy', :default => t("helpers.links.destroy")), |
+      - if @disposed.is_checked
+        /revalue
+        - if !@disposed.document_id && !@disposed.is_disposed && !@disposed.disposed_by
+          = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('.edit', :default => t("helpers.links.revalue")), revalue_asset_disposal_path(@disposed), :class => 'btn btn-primary'
+        /disposaldetails (disposal approval)
+        = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('.edit', :default => t("helpers.links.dispose")), dispose_asset_disposal_path(@disposed), :class => 'btn btn-primary'
+      - if @disposed.is_disposed
+        /verification - HOD
+        = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('.edit', :default => t("helpers.links.verify")), verify_asset_disposal_path(@disposed), :class => 'btn btn-primary'
+        /view_close
+        - if @disposed.disposed_by && @disposed.disposed_on
+          = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('.edit', :default => t("helpers.links.view_close")), view_close_asset_disposal_path(@disposed), :class => 'btn btn-primary'   
+        = link_to content_tag(:i, "", :class => "fa fa-trash-o icon-white") + " " + t('.destroy', :default => t("helpers.links.destroy")), |
         asset_disposal_path(@disposed),                                                                                                    |
         :method => 'delete',                                                                                                           |
         :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },                   |

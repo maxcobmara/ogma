@@ -1,0 +1,23 @@
+.col-md-8.col-md-offset-1
+  %dl.dl-horizontal
+    %dt= t 'asset.disposal.approval_ref'
+    %dd= "#{@disposed.try(:document).try(:refno)} #{@disposed.try(:document).try(:title)} #{@disposed.try(:document).try(:letterdt).try(:strftime, '%d %b %Y')}"
+    %dt=(t 'asset.disposal.disposal_type')
+    %dd=@disposed.disposaltype
+    - if @disposed.disposal_type == "transfer"
+      %dt= t 'asset.disposal.receiver_name'
+      %dt= @disposed.receiver_name
+    - elsif @disposed.disposal_type == "sold"
+      %dt= t 'asset.disposal.receipt_no'
+      %dd= @disposed.documentation_no
+    - elsif @disposed.disposal_type == "discard"	
+      %dt= t 'asset.disposal.discard_options'
+      %dd= "#{@disposed.discardoption} at #{@disposed.discard_location} on #{@disposed.discarded_on.try(:strftime, '%d %b %Y')} "   
+      %dt= t 'asset.disposal.discard_witness_by'
+      %dd= "#{@disposed.discard_witness1.try(:name)} AND #{@disposed.discard_witness2.try(:name)}"
+    - elsif @disposed.disposal_type == "others"
+      %dt= t 'asset.disposal.type_others_desc'
+      %dd= @disposed.type_others_desc.capitalize
+    - elsif @disposed.disposal_type == "stock"      
+    %dt= t 'asset.disposal.is_disposed'
+    %dd= @disposed.is_disposed? ? image_tag("tick.png") : image_tag("cross.png")

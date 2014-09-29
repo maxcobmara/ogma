@@ -4,9 +4,9 @@
 = render 'shared/flashes'
 
 %ul.nav.nav-tabs
-  %li.active= link_to (t "asset.details"), "#details",     "data-toggle" => "tab"
+  %li.active= link_to (t "asset.defect.details"), "#details",     "data-toggle" => "tab"
   %li= link_to (t "asset.defect.process"), "#process",     "data-toggle" => "tab"
-  - unless @defective.decision
+  - if @defective.is_processed
     %li= link_to (t "asset.defect.decision"), "#decision",    "data-toggle" => "tab"
 
 .tab-content.col-md-offset-1
@@ -30,8 +30,6 @@
       %dd= @defective.process_type.try(:titleize)
       %dt= t 'asset.defect.recommendation'
       %dd= @defective.recommendation
-      %dt= t 'asset.defect.recommendation_submitted'
-      %dd= @defective.description
       %dt= t 'asset.defect.processed_by'
       %dd= @defective.is_processed? ? "Yes, by  " + @defective.processor.name.to_s + " on  " + (l(@defective.processed_on)).to_s : "No"
   

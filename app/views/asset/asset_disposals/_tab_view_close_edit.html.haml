@@ -1,0 +1,11 @@
+.col-md-offset-2 
+  .form-group       
+    .col-sm-2.control-label
+      = f.label :disposed_by
+    .col-md-4
+      = f.collection_select :disposed_by, Staff.all.order(name: :asc), :id, :staff_name_with_position, {:include_blank =>t('helpers.prompt.select_staff'), :selected=>@disposal.disposed_by},{class: 'selectpicker', "data-width"=>'357px'}
+  .form-group
+    .col-sm-2.control-label
+      = f.label :disposed_on
+    .col-md-2
+      = f.text_field :disposed_on, class: 'date_picker form-control'

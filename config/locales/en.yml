@@ -423,20 +423,22 @@ en:
     
     defect:
       title: Asset Defect
+      details: Defect Details
       notes: Notes
       new: New Defect Report
       description: Description
       process: Process
       repair: Repair
       dispose: Dispose
-      decision: Decision
       reported_by: Reported By
-      is_processed: "Processed?"
+      is_processed: "Submit Recommendation?"
       processed_by: Processed By
       processed_on: Processed On
+      decision: Decision
+      decision_by: Decision By
+      decision_on: Decided On
       action_type: Action Type
       recommendation: Recommendation
-      recommendation_submitted: "Recommendation Submitted?"
       approval: Approval
     
     disposal:
@@ -444,6 +446,8 @@ en:
       new: New Asset Disposal
       edit: Edit Asset Disposal
       details: Disposal Details
+      approval_details: Disposal Approval
+      verification_details: HOD Verification
       revalue_title: "Re-Value"
       quantity: Quantity
       purchase_date: Purchase Date
@@ -460,6 +464,9 @@ en:
       repair_needed: Repair Needed
       justification_disposal: Justification For Disposal
       board_examiners: Board of Examiners
+      is_checked: "Check / Process?"
+      is_verified: "Verified?"
+      is_disposed: Send to HOD for Verification
       revalue: "Current Value (New)"
       revalued_by: "Re-Valued By"
       revalued_on: "Re-Valued On"
@@ -470,17 +477,20 @@ en:
       discard_options: Discard Method
       discard_witness_by: Discard Witnesses
       type_others_desc: Other Discard method
-      disposed_by: Confirmed By
       transfer: Transfer
       sold: Sold
       discard: Discard
+      stock: Stock
+      others: Other Method
       bury: Bury
       burn: Burn
       throw: Throw
       sink: Sink
+      view_close: "View & Close"
+      disposed_by: View and Close By
       
     loss:
-      title: "Loss & write Offs"
+      title: "Loss & Write Offs"
       
     category:
       title: Asset Category
@@ -1165,11 +1175,6 @@ en:
       fax: Fax No
       mail: Email
       web: Web 
-      
-
-
-
-
 
   helpers:
     links:
@@ -1179,6 +1184,10 @@ en:
       destroy: Destroy
       approve: Approve
       edit_admin: "Edit (Admin)"
+      revalue: Revalue
+      dispose: Dispose
+      verify: HOD Verification
+      view_close: "View & Close"
       back_lesson_plan: Lesson Plan List
       back_lesson_report: Lesson Report List
       back_travel_request: Travel Request List
@@ -1392,14 +1401,30 @@ en:
         asset_id: Asset
         current_condition: Asset Condition
         usage: Usage
+        current_value: Current Value
         est_repair_cost: Estimated Repair Cost
         est_value_post_repair: Estimated Value After Repair
         est_time_next_fail: Estimated Time to Next Failure
         examiner1: "1. Examiner Name (Tick if STAFF)"
         examiner2: "2. Examiner Name (Tick if STAFF)"
         is_checked: "Checked?"
+        is_verified: "Verify?"
         checked_by: Checked By
-        verified_by: Verified By
+        disposed_by: View and Close By
+        disposed_on: Disposal Date
+        verified_by: To Be Verified By
+        revalue: "Current Value (New)"
+        revalued_by: "Re-Valued By"
+        revalued_on: "Re-Valued On"
+        document_id: Approval Reference
+        disposal_type: Disposal Type
+        receiver_name: Receiver
+        location: Location
+        discarded_on: Discarded On
+        witness1: "1. Witness Name (Tick if STAFF)"
+        witness2: "2. Witness Name (Tick if STAFF)"
+        is_disposed: Send to HOD for Verification
+        
 
     prompt:
       select_creator: Select Creator

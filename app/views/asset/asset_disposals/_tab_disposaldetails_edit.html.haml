@@ -1,1 +1,208 @@
- 
+.col-md-offset-2 
+  .form-group
+    .col-sm-2.control-label
+      = f.label :document_id
+    .col-md-6
+      = f.collection_select :document_id, Document.all.order(refno: :asc), :id, :refno, {:include_blank =>t('helpers.prompt.select_document'), :selected=>@disposal.document_id},{class: 'selectpicker', "data-width"=>'450px'} 
+  .form-group
+    .col-sm-2.control-label
+      = f.label :disposal_type
+    .row
+      .col-sm-1= f.radio_button :disposal_type, "transfer",:id => 'button_transfer',:class => 'radio_disposal_type' 
+      .col-sm-1= t 'asset.disposal.transfer'
+      .col-sm-1= f.radio_button :disposal_type, "sold", :id => 'button_sold',  :class => 'radio_disposal_type'
+      .col-sm-1= t 'asset.disposal.sold'
+      .col-sm-1= f.radio_button :disposal_type, "discard", :id => 'button_discard', :class => 'radio_disposal_type'
+      .col-sm-1= t 'asset.disposal.discard'
+      .col-sm-1= f.radio_button :disposal_type, "stock",:id => 'button_stock',   :class => 'radio_disposal_type'
+      .col-sm-1= t 'asset.disposal.stock'
+  .form-group
+    .col-sm-2.control-label 
+      &nbsp;
+    .row
+      .col-sm-1= f.radio_button :disposal_type, "others",  :id => 'button_others',  :class => 'radio_disposal_type'
+      .col-sm-1= t 'asset.disposal.others'
+      .col-sm-4.others_item{:style=>"display: none;"}
+        = f.text_field :type_others_desc, class: 'form-control', placeholder: "Describe other method"
+  .form-group.transfer_item{:style=>"display: none;"}
+    .col-sm-2.control-label
+      = f.label :receiver_name
+    .col-md-4
+      = f.text_field :receiver_name, class: 'form-control'
+  .form-group.sold_item{:style=>"display: none;"}
+    .col-sm-2.control-label
+      %b= t 'asset.disposal.receipt_no'
+    .col-md-5
+      = f.text_field :documentation_no, class: 'form-control'
+  .form-group.discard_item{:style=>"display: block;"}
+    .col-sm-2.control-label
+      %b= t 'asset.disposal.discard_options'
+    .row
+      .col-sm-1= f.radio_button :discard_options, "bury", :id => 'button_bury',  :class => 'radio_discard_options'
+      .col-sm-1= t 'asset.disposal.bury'
+      .col-sm-1= f.radio_button :discard_options, "burn", :id => 'button_burn',  :class => 'radio_discard_options' 
+      .col-sm-1= t 'asset.disposal.burn'
+      .col-sm-1= f.radio_button :discard_options, "throw", :id => 'button_throw', :class => 'radio_discard_options'
+      .col-sm-1= t 'asset.disposal.throw'
+      .col-sm-1= f.radio_button :discard_options, "sink", :id => 'button_sink',  :class => 'radio_discard_options'
+      .col-sm-1= t 'asset.disposal.sink'
+  .form-group.discard_item{:style=>"display: none;"}
+    .col-sm-2.control-label
+      = f.label :location
+    .col-md-5
+      = f.text_field :discard_location, class: 'form-control'
+  .form-group.discard_item{:style=>"display: none;"}
+    .col-sm-2.control-label
+      = f.label :discarded_on
+    .col-md-2
+      = f.text_field :discarded_on, class: 'date_picker form-control'      
+  .form-group.discard_item{:style=>"display: none;"}
+    .col-sm-2.control-label
+      = f.label :witness1
+    .col-md-1
+      = f.check_box :witness_is_staff1, :id => 'witness_is_staff1'
+    .col-md-4
+      .span_wstaff1_on{:style=>"display: none;"}
+        = f.collection_select :discard_witness_1, Staff.all.order(name: :asc), :id, :staff_name_with_position, {:include_blank =>t('helpers.prompt.select_staff'), :selected=>@disposal.discard_witness_1},{class: 'selectpicker', "data-width"=>'357px'} 
+      .span_wstaff1_off{:style=>"display: none;"}
+        = f.text_field :witness_outsider1, class: 'form-control'
+  .form-group.discard_item{:style=>"display: none;"}
+    .col-sm-2.control-label
+      = f.label :witness2
+    .col-md-1
+      = f.check_box :witness_is_staff2, :id => 'witness_is_staff2'
+    .col-md-4
+      .span_wstaff1_on{:style=>"display: none;"}
+        = f.collection_select :discard_witness_2, Staff.all.order(name: :asc), :id, :staff_name_with_position, {:include_blank =>t('helpers.prompt.select_staff'), :selected=>@disposal.discard_witness_2},{class: 'selectpicker', "data-width"=>'357px'} 
+      .span_wstaff1_off{:style=>"display: none;"}
+        = f.text_field :witness_outsider2, class: 'form-control'
+  .form-group
+    .col-sm-2.control-label
+      = f.label :is_disposed
+    .col-sm-1
+      = f.check_box :is_disposed, :id => 'is_disposed' 
+    /.col-sm-2.span_disposed_on{:style=> "display: block;"}
+    /  = f.text_field :disposed_on, class: 'date_picker form-control'
+
+:javascript
+
+$(document).ready(function(){ 
+  $("input[class='radio_disposal_type']").change(function() {  
+    if($('#button_transfer').is(':checked')) { 
+      $(".transfer_item").show("slide");
+      $(".sold_item").hide("puff");
+      $(".discard_item").hide("puff");
+      $(".others_item").hide("puff");
+    }else if ($('#button_sold').is(':checked')){
+      $(".transfer_item").hide("puff");
+      $(".sold_item").show("puff");
+      $(".discard_item").hide("puff");
+      $(".others_item").hide("puff");
+    }else if($('#button_discard').is(':checked')){
+      $(".transfer_item").hide("puff");
+      $(".sold_item").hide("puff");
+      $(".discard_item").show("puff");
+      $(".span_wstaff2_off").show("puff");
+      $(".span_wstaff2_on").hide("puff");
+      $(".span_wstaff1_off").show("puff");
+      $(".span_wstaff1_on").hide("puff");
+      $(".others_item").hide("puff");
+    }else if ($('#button_stock').is(':checked')){
+      $(".transfer_item").hide("puff");
+      $(".sold_item").hide("puff");
+      $(".discard_item").hide("puff");
+      $(".others_item").hide("puff");
+    }else if ($('#button_others').is(':checked')){
+      $(".transfer_item").hide("puff");
+      $(".sold_item").hide("puff");
+      $(".discard_item").hide("puff");
+      $(".others_item").show("puff");
+    }
+  });
+
+  $("input[class='radio_disposal_type']").each(function() {  
+    if($('#button_transfer').is(':checked')) { 
+      $(".transfer_item").show("slide");
+      $(".sold_item").hide("puff");
+      $(".discard_item").hide("puff");
+      $(".others_item").hide("puff");
+    }else if ($('#button_sold').is(':checked')){
+      $(".transfer_item").hide("puff");
+      $(".sold_item").show("puff");
+      $(".discard_item").hide("puff");
+      $(".others_item").hide("puff");
+    }else if($('#button_discard').is(':checked')){
+      $(".transfer_item").hide("puff");
+      $(".sold_item").hide("puff");
+      $(".discard_item").show("puff");
+      $(".others_item").hide("puff");
+    }else if ($('#button_stock').is(':checked')){
+      $(".transfer_item").hide("puff");
+      $(".sold_item").hide("puff");
+      $(".discard_item").hide("puff");
+      $(".others_item").hide("puff");
+    }else if ($('#button_others').is(':checked')){
+      $(".transfer_item").hide("puff");
+      $(".sold_item").hide("puff");
+      $(".discard_item").hide("puff");
+      $(".others_item").show("puff");
+    }
+  });
+
+/  $("input[id='is_disposed']").change(function() {  
+/    if($('#is_disposed').is(':checked')) { 
+/      $(".span_disposed_on").show("highlight"); 
+/    }else{
+/      $(".span_disposed_on").hide(""); 
+/    }
+/  });
+
+  $("input[id='is_disposed']").each(function() {  
+    if($('#is_disposed').is(':checked')) { 
+      $(".span_disposed_on").show("highlight"); 
+    }else{
+      $(".span_disposed_on").hide(""); 
+    }
+  });
+
+  $("input[id='witness_is_staff2']").change(function() {  
+    if($('#witness_is_staff2').is(':checked')) { 
+      $(".span_wstaff2_on").show("highlight"); 
+      $(".span_wstaff2_off").hide(""); 
+    }else{
+      $(".span_wstaff2_on").hide(""); 
+      $(".span_wstaff2_off").show("highlight"); 
+    }
+  });
+
+  $("input[id='witness_is_staff2']").each(function() {  
+    if($('#witness_is_staff2').is(':checked')) { 
+      $(".span_wstaff2_on").show("highlight"); 
+      $(".span_wstaff2_off").hide(""); 
+    }else{
+      $(".span_wstaff2_on").hide(""); 
+      $(".span_wstaff2_off").show("highlight"); 
+    }
+  });
+
+  $("input[id='witness_is_staff1']").change(function() {  
+    if($('#witness_is_staff1').is(':checked')) { 
+      $(".span_wstaff1_on").show("highlight"); 
+      $(".span_wstaff1_off").hide(""); 
+    }else{
+      $(".span_wstaff1_on").hide(""); 
+      $(".span_wstaff1_off").show("highlight"); 
+    }
+  });
+
+  $("input[id='witness_is_staff1']").each(function() {  
+    if($('#witness_is_staff1').is(':checked')) { 
+      $(".span_wstaff1_on").show("highlight"); 
+      $(".span_wstaff1_off").hide(""); 
+    }else{
+      $(".span_wstaff1_on").hide(""); 
+      $(".span_wstaff1_off").show("highlight"); 
+    }
+  });
+
+});

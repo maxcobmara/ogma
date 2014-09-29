@@ -6,7 +6,16 @@ class AssetDefect < ActiveRecord::Base
   belongs_to :confimer,   :class_name => 'Staff', :foreign_key => 'decision_by'
   
   validates :asset, :presence => true
+  validates :processed_by, :process_type, :processed_on, presence: true, :if => :check_processed?
+  validates :decision_by, :decision_on, presence: true, :if => :check_decision?
   
+  def check_processed?
+    is_processed == true
+  end
+  
+  def check_decision?
+    decision == true
+  end
   
 end
 
