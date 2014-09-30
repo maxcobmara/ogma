@@ -277,6 +277,7 @@ ms_MY:
       start: Dari
       finish: Ke
       total: Jumlah
+      code: Kod Permohonan Perjalanan
 
     travel_claim:
       title: Tuntutan Perjalanan
@@ -1400,6 +1401,7 @@ ms_MY:
         hod_accept: Penerimaan Ketua Jabatan
         hod_accept_on: Tarikh Penerimaan Ketua Jabatan
         add_log: Tambah Log
+        code: Kod Permohonan Perjalanan
 
       asset_disposal:
         asset_id: Aset

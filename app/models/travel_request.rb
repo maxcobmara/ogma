@@ -57,6 +57,15 @@ class TravelRequest < ActiveRecord::Base
       approver
   end
   
+  def gcode(generated_code)
+    if id.nil? || id.blank?
+      @gcode = generated_code
+    else
+      @gcode = code
+    end
+    @gcode
+  end
+  
   #autocomplete
   #def document_refno
     #document.refno if document

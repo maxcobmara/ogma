@@ -286,6 +286,7 @@ en:
       start: Start
       finish: End
       total: Total
+      code: Travel Request Code
 
     travel_claim:
       title: Travel Claims
@@ -1399,6 +1400,7 @@ en:
         hod_accept: HOD Acceptance
         hod_accept_on: HOD Acceptance Date
         add_log: Add Log
+        code: Travel Request Code
         
       asset_disposal:
         asset_id: Asset
