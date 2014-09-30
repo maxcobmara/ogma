@@ -495,7 +495,7 @@ en:
     category:
       title: Asset Category
       type_model_name: "Type / Model / Name"
-      type_name_model: "Type / Name / Model"
+      type_name_model: "Type - Brand - Model"
     
 
     
@@ -1182,6 +1182,7 @@ en:
       back: Back
       edit: Edit
       destroy: Destroy
+      cancel: Cancel
       approve: Approve
       process: Process
       decision: Decision

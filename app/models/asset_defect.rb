@@ -12,6 +12,17 @@ class AssetDefect < ActiveRecord::Base
   
   attr_accessor :editing_page
   
+  #define scope - asset(typename, name, modelname)
+  def self.typemodelname_search(query)
+    asset_ids = Asset.where('typename ILIKE(?) or name ILIKE(?) or modelname ILIKE(?)', "%#{query}%","%#{query}%","%#{query}%").pluck(:id)
+    return AssetDefect.where('asset_id IN (?)', asset_ids)
+  end
+    
+  # whitelist the scope
+  def self.ransackable_scopes(auth_object = nil)
+    [:typemodelname_search]
+  end
+  
 end
 
 # == Schema Information

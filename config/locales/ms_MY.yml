@@ -411,7 +411,7 @@ ms_MY:
     serialno: "No. Siri"
     
     defect:
-      title: Aset Rosak
+      title: Kerosakan Aset
       details: Perincian Kerosakan
       notes: Catatan
       new: Laporan Kerosakan Baru
@@ -484,7 +484,7 @@ ms_MY:
     category:
       title: Kategori Aset
       type_model_name: "Jenis / Model / Nama"
-      type_name_model: "Jenis / Nama / Model"
+      type_name_model: "Jenis - Jenama - Model"
     
   location:
     title: Lokasi
@@ -1181,6 +1181,7 @@ ms_MY:
       back: Terdahulu
       edit: Sunting
       destroy: Padam
+      cancel: Batal
       approve: Kelulusan
       process: Proses
       decision: Keputusan

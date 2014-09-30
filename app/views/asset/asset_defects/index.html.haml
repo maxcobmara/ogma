@@ -13,10 +13,10 @@
     %thead
       %tr
         %th= sort_link(@search, :asset_assetcode, (t 'asset.assetcode'))
-        %th= sort_link(@search, :asset_name, (t 'asset.name'))
+        %th= t('asset.category.type_name_model')
         %th= sort_link(@search, :asset_serialno, (t 'asset.serialno'))
         %th= sort_link(@search, :asset_location_location_name, (t 'location.title'))
-        %th= (t 'asset.defect.notes')
+        %th= t('asset.defect.notes')
     %tbody
     = render "index_search"
     - @defective.each do |defect|
