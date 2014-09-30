@@ -26,10 +26,10 @@ class Staff::StaffAppraisalsController < ApplicationController
   
   def appraisal_form
 
-    @staff_appraisals = StaffAppraisal.find(params[:id])
+    @staff_appraisal = StaffAppraisal.find(params[:id])
     respond_to do |format|
       format.pdf do
-        pdf = Appraisal_formPdf.new(@staff_appraisals, view_context)
+        pdf = Appraisal_formPdf.new(@staff_appraisal, view_context)
         send_data pdf.render, filename: "appraisal_form-{Date.today}",
                               type: "application/pdf",
                               disposition: "inline"
