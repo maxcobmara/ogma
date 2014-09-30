@@ -1,22 +1,33 @@
 class Appraisal_formPdf < Prawn::Document
   def initialize(staff_appraisal, view)
     super({top_margin: 50, page_size: 'A4', page_layout: :portrait })
-    @staff_appraisals = staff_appraisal
+    @staff_appraisal = staff_appraisal
     @view = view
     font "Times-Roman"
-    text "BORANG J.P.A. (Prestasi) ", :align => :right, :size => 12, :style => :bold
+    text "BORANG J.P.A. (Prestasi) #{@staff_appraisal.person_type}", :align => :right, :size => 12, :style => :bold
     text "SULIT", :align => :left, :size => 12
-    text "No. K.P", :align => :right, :size => 12, :style => :bold
+    text "No. K.P : #{@staff_appraisal.appraised.formatted_mykad}", :align => :right, :size => 12, :style => :bold
     move_down 10
     text "KERAJAAN MALAYSIA", :align => :center, :size => 12, :style => :bold   
     move_down 10
     text "LAPORAN PENILAIAN PRESTASI", :align => :center, :size => 12, :style => :bold    
-    text "PEGAWAI KUMPULAN SOKONGAN (1)", :align => :center, :size => 12, :style => :bold 
-    text "Tahun ", :align => :center, :size => 10, :style => :bold 
+    text "PEGAWAI KUMPULAN #{@staff_appraisal.person_type_description}", :align => :center, :size => 12, :style => :bold 
+    text "Tahun #{(@staff_appraisal.evaluation_year).year}", :align => :center, :size => 10, :style => :bold 
     move_down 10
     tajuk1
-    tajuk2
-    jawatan
+    bahagian1
+    bahagian2
+    bahagian3
+    bahagian4
+    bahagian5
+    bahagian6
+    bahagian7
+    bahagian8
+    bahagian9
+    lampiranA
+    lampiranA1
+    lampiranA2
+    lampiranA3
    
   end
   
@@ -58,9 +69,9 @@ class Appraisal_formPdf < Prawn::Document
     text "BAHAGIAN 1 - MAKLUMAT PEGAWAI", :align => :left, :size => 12, :style => :bold     
     text "(Diisi oleh PYD)", :align => :left, :size => 12
     
-    data1 = [['	i.', "Nama : "],
-      ["ii.","Jawatan dan Gred : "],
-      ["iii.", "Kementerian/Jabatan :"]]
+    data1 = [['	i.', "Nama : #{@staff_appraisal.appraised.name} "],
+      ["ii.","Jawatan dan Gred : #{@staff_appraisal.appraised.position.name} .. #{@staff_appraisal.appraised.staffgrade.name}"],
+      ["iii.", "Kementerian/Jabatan : Kolej Sains Kesihatan Bersekutu Johor Bahru"]]
       
           table1(data , :column_widths => [30,370], :cell_style => { :size => 10}) do
            row(0).borders = [:left, :right, :top]
@@ -101,8 +112,8 @@ end
       header = [[ 'Senarai kegiatan/aktiviti/sumbangan', 'Peringkat kegiatan/aktiviti/sumbangan
 (nyatakan jawatan atau pencapaian)']]
       header +
-        @assets.map do |asset|
-        ["#{counter += 1}", "#{asset.assetcode}", "#{asset.purchasedate.try(:strftime, "%d/%m/%y")}", @view.currency(asset.purchaseprice.to_f)]
+        @staff_appraisals.map do |evactivities|
+        ["#{counter += 1}", "#{evactivity.evactivity}", "#{(Evactivity::EVACT.find_all{|disp, value| value == evactivity.actlevel}).map {|disp, value| disp}}"]
       end
     end  
      move_down 10
@@ -130,8 +141,8 @@ end
        counter = counter || 0
        header = [[ 'Nama Latihan (Nyatakan sijil jika ada)', 'Tarikh/Tempoh', ' Tempat']]
        header +
-         @assets.map do |asset|
-         ["#{counter += 1}", "#{asset.assetcode}", "#{asset.purchasedate.try(:strftime, "%d/%m/%y")}", @view.currency(asset.purchaseprice.to_f)]
+         @staff_appraisal.staff_id.map do |ptdo|
+         ["#{counter += 1}", "#{ptdo.ptschedule.ptcourse.name}", "#{ptdo.ptschedule.start.try(:strftime, "%d/%m/%y")}", "#{ptdo.ptschedule.location}"]
        end
      end   
      move_down 5
@@ -155,15 +166,15 @@ end
        counter = counter || 0
        header = [[ 'Nama/Bidang Latihan', 'Sebab Diperlukan']]
        header +
-         @assets.map do |asset|
-         ["#{counter += 1}", "#{asset.assetcode}", "#{asset.purchasedate.try(:strftime, "%d/%m/%y")}", @view.currency(asset.purchaseprice.to_f)]
+         @staff_appraisal.trainneeds.map do |trainneed|
+         ["#{counter += 1}", "#{trainneed.name}", "#{trainneed.reason}"]
        end
      end       
      move_down 5  
     text "Saya mengesahkan bahawa semua kenyataan di atas adalah benar.", :align => :left, :size => 12 
      move_down 5   
      
-     data1 = [["",""],
+     data1 = [["#{@staff_appraisal.appraised.name}"," #{@staff_appraisal.submit_for_evaluation_on}"],
            [ "Tandatangan PYD", "Tarikh"]] 
            
            table(data1 , :column_widths => [150,150], :cell_style => { :size => 11}) do
@@ -182,15 +193,15 @@ def bahagian3
   data1 = [["", "KRITERIA (Dinilai berasaskan SKT)", "PPP", "PPK"],
            ["1.", "   KUANTITI HASIL KERJA", "", ""],
            ["","Kuantiti hasil kerja seperti jumlah bilangan, kadar, kekerapan dan sebagainya berbanding dengan sasaran kuantiti 
-             kerja yang ditetapkan.", "" , "" ],
+             kerja yang ditetapkan.", "#{@staff_appraisal.e1g1q1}" , "#{@staff_appraisal.e2g1q1}" ],
              ["2. ","  KUALITI HASIL KERJA", "",""],
-             ["2.1. Dinilai dari segi kesempurnaan, teratur dan kemas.", "",""],
-             ["2.2. Dinilai dari segi usaha dan inisiatif untuk mencapai kesempurnaan hasil kerja.","",""],
+             ["2.1. Dinilai dari segi kesempurnaan, teratur dan kemas.", "#{@staff_appraisal.e1g1q1}","#{@staff_appraisal.e2g1q2}"],
+             ["2.2. Dinilai dari segi usaha dan inisiatif untuk mencapai kesempurnaan hasil kerja.","#{@staff_appraisal.e1g1q3 }","#{@staff_appraisal.e2g1q3}"],
              ["3. ","  KETEPATAN MASA","",""],
-             ["","Kebolehan menghasilkan kerja atau melaksanakan tugas dalam tempoh masa yang ditetapkan.","",""],
+             ["","Kebolehan menghasilkan kerja atau melaksanakan tugas dalam tempoh masa yang ditetapkan.","#{@staff_appraisal.e1g1q4}","#{@staff_appraisal.e2g1q4}"],
              ["4. ","  KEBERKESANAN HASIL KERJA", "",""],
-             ["","Dinilai dari segi memenuhi kehendak 'stake-holder' atau pelanggan.","",""],
-             ["", "Jumlah markah mengikut wajaran","",""]]
+             ["","Dinilai dari segi memenuhi kehendak 'stake-holder' atau pelanggan.","#{@staff_appraisal.e1g1q5}","#{@staff_appraisal.e2g1q5}"],
+             ["", "Jumlah markah mengikut wajaran","#{@staff_appraisal.e1g1_total} x 50 = #{@staff_appraisal.e1g1_percent } / 50","#{@staff_appraisal.e1g2_total} x 50 = #{@staff_appraisal.e2g1_percent} / 50"]]
              
        table(data1 , :column_widths => [100,100,100], :cell_style => { :size => 11}) do
          row(0).font_style = :bold
@@ -208,13 +219,14 @@ def bahagian4
   data1 = [["", "KRITERIA ", "PPP", "PPK"],
            ["1.", "  ILMU PENGETAHUAN DAN KEMAHIRAN DALAM BIDANG KERJA", "", ""],
            ["","Mempunyai ilmu pengetahuan dan kemahiran/kepakaran dalam menghasilkan kerja meliputi kebolehan mengenalpasti, 
-             menganalisis serta menyelesaikan masalah.", "" , "" ],
+             menganalisis serta menyelesaikan masalah.", "#{@staff_appraisal.e1g2q1}" , "#{@staff_appraisal.e2g2q1}" ],
              ["2. ","  PELAKSANAAN DASAR, PERATURAN DAN ARAHAN PENTADBIRAN", "",""],
-             ["","Kebolehan menghayati dan melaksanakan dasar, peraturan dan arahan pentadbiran berkaitan dengan bidang tugasnya.", "",""],
+             ["","Kebolehan menghayati dan melaksanakan dasar, peraturan dan arahan pentadbiran berkaitan dengan bidang tugasnya.", "#{@staff_appraisal.e1g2q2}","#{@staff_appraisal.e2g2q2}"],
              ["3. ","  KUANTITI HASIL KERJA","",""],
              ["","Kuantiti hasil kerja seperti jumlah bilangan, kadar, kekerapan dan sebagainya berbanding dengan sasaran 
-               kuantiti kerja yang ditetapkan.","",""],
-             ["", "Jumlah markah mengikut wajaran","",""]]
+               kuantiti kerja yang ditetapkan.","#{@staff_appraisal.e2g2q3}","#{@staff_appraisal.e2g2q3}"],
+             ["", "Jumlah markah mengikut wajaran","#{@staff_appraisal.e1g2_total} x 25 = #{@staff_appraisal.e1g2_percent} / 30",
+               "#{@staff_appraisal.e2g2_total} x 25 = #{@staff_appraisal.e2g2_percent} / 30"]]
              
        table(data1 , :column_widths => [100,100,100], :cell_style => { :size => 11}) do
          row(0).font_style = :bold
@@ -259,10 +271,12 @@ def bahagian6
   skala 1 hingga 10. TIada sebarang markah boleh diberikan (kosong) jika PYD tidak mencatat kegiatan atau 
   sumbangannya.", :align => :left, :size => 12
   
-  data1 = [[ "", "Peringkat Komuniti / Jabatan / Daerah / Negeri / Negara / Antarabangsa", "PPP", "PPK"],
-             ["","Jumlah markah mengikut wajaran","",""]]
+  data1 = [ ["", " ", "PPP","PPK"],
+    [ "", "Peringkat Komuniti / Jabatan / Daerah / Negeri / Negara / Antarabangsa", "#{@staff_appraisal.e1g4 }", "#{@staff_appraisal.e2g3q1}"],
+             ["","Jumlah markah mengikut wajaran","#{@staff_appraisal.e1g4} x 5 #{(@staff_appraisal.e1g4_percent)} / 10",
+               "#{@staff_appraisal.e2g4} x 5 #{(@staff_appraisal.e2g4_percent)} / 10"]]
              
-       table(data1 , :column_widths => [100,100,100], :cell_style => { :size => 11}) do
+       table(data1 , :column_widths => [20,100,100], :cell_style => { :size => 11}) do
          row(0).font_style = :bold
          self.row_colors = ["FEFEFE", "FFFFFF"]
 
@@ -278,7 +292,8 @@ def bahagian7
   
   data1 = [[ "", "PPP(%)", "PPK(%)", "MARKAH PURATA (%)"],
             ["", "", "", "(untuk diisi oleh Urus Setia PPSM)"]
-             ["MARKAH KESELURUHAN"," ","",""]]
+             ["MARKAH KESELURUHAN","#{number_with_precision(@staff_appraisal.e1_total, :precision => 2) }",
+               "#{number_with_precision(@staff_appraisal.e2_total,:precision => 2)}","#{number_with_precision(@staff_appraisal.t1t2_average, :precision => 2)}"]]
              
        table(data1 , :column_widths => [100,100,100], :cell_style => { :size => 11}) do
          row(0).font_style = :bold
@@ -290,25 +305,25 @@ end
 def bahagian8
   
   text "BAHAGIAN VIII - ULASAN KESELURUHAN DAN PENGESAHAN OLEH PEGAWAI PENILAI PERTAMA", :align => :left, :size => 12, :style => :bold  
-  text "1.  Tempoh PYD bertugas di bawah pengawasan: Tahun ... Bulan ....", :align => :left, :size => 12
+  text "1.  Tempoh PYD bertugas di bawah pengawasan: Tahun #{@staff_appraisal.e1_years} Bulan #{@staff_appraisal.e1_months}", :align => :left, :size => 12
   text "2.  Penilai Pertama hendaklah memberi ulasan keseluruhan prestasi PYD.", :align => :left, :size => 12
   text "(i)  Prestasi keseluruhan.", :align => :left, :size => 12
-  text "..............", :align => :left, :size => 12
+  text "#{@staff_appraisal.e1_performance}..............", :align => :left, :size => 12
   text "(ii)  Kemajuan kerjaya.", :align => :left, :size => 12
-  text "..............", :align => :left, :size => 12
+  text "#{@staff_appraisal.e1_progress}..............", :align => :left, :size => 12
   text "3.  Adalah disahkan bahawa prestasi pegawai ini telah dimaklumkan kepada PYD.", :align => :left, :size => 12
   
-  data1 = [[ "Nama PPP :", "....."],
-            ["Jawatan :", "......"]
-             ["Kementerian /Jabatan : ","....."]
-           ["No. K.P : ","....."]]
+  data1 = [[ "Nama PPP :", "#{@staff_appraisal.eval1_officer.name}"],
+            ["Jawatan :", "#{@staff_appraisal.eval1_officer.position.name}"]
+             ["Kementerian /Jabatan : ","Kolej Sains Kesihatan Bersekutu Johor Bahru"]
+           ["No. K.P : ","#{@staff_appraisal.eval1_officer.formatted_mykad}"]]
              
        table(data1 , :column_widths => [100,200], :cell_style => { :size => 11}) do
          self.row_colors = ["FEFEFE", "FFFFFF"]
      move_down 5
        end 
        
-       data1 = [["",""],
+       data1 = [["#{@staff_appraisal.eval1_officer.name}","#{@staff_appraisal.submit_e2_on.try(:strftime, "%d/%m/%y")}"],
              [ "Tandatangan PPP", "Tarikh"]] 
            
              table(data1 , :column_widths => [150,150], :cell_style => { :size => 11}) do
@@ -321,21 +336,21 @@ end
 def bahagian9
   
   text "BAHAGIAN IX - ULASAN KESELURUHAN OLEH PEGAWAI PENILAI KEDUA", :align => :left, :size => 12, :style => :bold  
-  text "1.  Tempoh PYD bertugas di bawah pengawasan: Tahun ... Bulan ....", :align => :left, :size => 12
+  text "1.  Tempoh PYD bertugas di bawah pengawasan: Tahun #{@staff_appraisal.e2_years} Bulan #{@staff_appraisal.e2_months}", :align => :left, :size => 12
   text "2.  Penilai Pertama hendaklah memberi ulasan keseluruhan prestasi PYD.", :align => :left, :size => 12
-  text "..............", :align => :left, :size => 12
+  text "#{@staff_appraisal.e2_performance}..............", :align => :left, :size => 12
   
-  data1 = [[ "Nama PPK :", "....."],
-            ["Jawatan :", "......"]
-             ["Kementerian /Jabatan : ","....."]
-           ["No. K.P : ","....."]]
+  data1 = [[ "Nama PPK :", "#{@staff_appraisal.eval2_officer.name}"],
+            ["Jawatan :", "#{@staff_appraisal.eval2_officer.position.name}"]
+             ["Kementerian /Jabatan : ","Kolej Sains Kesihatan Bersekutu Johor Bahru"]
+           ["No. K.P : ","#{@staff_appraisal.eval2_officer.formatted_mykad}"]]
              
        table(data1 , :column_widths => [100,200], :cell_style => { :size => 11}) do
          self.row_colors = ["FEFEFE", "FFFFFF"]
      move_down 5
        end 
        
-       data1 = [["",""],
+       data1 = [["#{@staff_appraisal.eval2_officer.name}","#{@staff_appraisal.is_completed_on.try(:strftime, "%d/%m/%y")}"],
              [ "Tandatangan PPP", "Tarikh"]] 
            
              table(data1 , :column_widths => [150,150], :cell_style => { :size => 11}) do
@@ -391,11 +406,26 @@ def lampiranA1
   text "(PYD dan PPP hendaklah berbincang bersama sebelum menetapkan SKT dan petunjuk prestasinya)", :align => :left, :size => 12  
   
   
-  data = [["Bil", "Ringkasan Aktiviti/Projek", "Petunjuk Prestasi"]]
+  def table_lampiranA1
+    
+    table(line_item_rows3 , :column_widths => [30,150,150], :cell_style => { :size => 11}) do
+      row(0).font_style = :bold
+      self.row_colors = ["FEFEFE", "FFFFFF"]
+      
+    end
+  end
   
-  data1 = [["",""],
+  def line_item_rows3
+    counter = counter || 0
+    header = [["Bil", "Ringkasan Aktiviti/Projek", "Petunjuk Prestasi"]]
+    header +
+      @staff_appraisal.staff_appraisal_skts.find(:all, :order => :priority).map do |staff_appraisal_skt|
+      ["#{counter += 1}", "#{staff_appraisal_skt.description}", "#{staff_appraisal_skt.indicator}"]
+    end
+  
+  data1 = [["#{@staff_appraisal.appraised.name}","#{@staff_appraisal.eval1_officer.name}"],
         [ "Tandatangan PYD", "Tandatangan PPP"],
-        ["Tarikh :", "Tarikh : "]] 
+        ["Tarikh : #{@staff_appraisal.skt_submit_on.try(:strftime, "%d/%m/%y")}", "Tarikh : #{@staff_appraisal.skt_endorsed_on.try(:strftime, "%d/%m/%y")}"]] 
       
         table(data1 , :column_widths => [150,150], :cell_style => { :size => 11}) do
           row(0).font_style = :bold
@@ -413,11 +443,53 @@ def lampiranA2
   
   data = [["Bil", "Ringkasan Aktiviti/Projek", "Petunjuk Prestasi"]]
   
+  table(data , :column_widths => [30, 150,150], :cell_style => { :size => 11}) do
+    row(0).font_style = :bold
+    self.row_colors = ["FEFEFE", "FFFFFF"]
+  end 
+  
+  def table_lampiranA2
+    
+    table(line_item_rows3 , :column_widths => [30,150,150], :cell_style => { :size => 11}) do
+      row(0).font_style = :bold
+      self.row_colors = ["FEFEFE", "FFFFFF"]
+      
+    end
+  end
+  
+  def line_item_rows3
+    counter = counter || 0
+    header = [["Bil", "(Senaraikan Aktiviti/projek)", "(Kuantiti/Kualiti/Masa/Kos)"]]
+    header +
+      @staff_appraisal.staff_appraisal_skts.map do |staff_appraisal_skt|
+        if @staff_appraisal.is_skt_submit == true && @staff_appraisal.is_skt_endorsed == true
+      ["#{counter += 1}", "#{staff_appraisal_skt.description}", "#{staff_appraisal_skt.indicator}"]
+    end
+    end
+  
   text "BAHAGIAN II - Kajian Semula Sasaran Kerja Tahun Pertengahan Tahun", :align => :left, :size => 12, :style => :bold 
   text "1.   Aktiviti/Projek Yang Digugurkan", :align => :left, :size => 12, :style => :bold 
   text "(PYD hendaklah menyeneraikan aktiviti/projek yang digugurkan setelah berbincang dengan PPP)", :align => :left, :size => 12, :style => :bold 
   
   data = [["Bil", "Ringkasan Aktiviti/Projek"]]
+  def table_lampiranAa3
+    
+    table(line_item_rows3 , :column_widths => [30,150], :cell_style => { :size => 11}) do
+      row(0).font_style = :bold
+      self.row_colors = ["FEFEFE", "FFFFFF"]
+      
+    end
+  end
+  
+  def line_item_rows3
+    counter = counter || 0
+    header = [["Bil", "Aktiviti/Projek"]]
+    header +
+      @staff_appraisal.staff_appraisal_skts.find(:all, :order => :priority).map do |staff_appraisal_skt|
+        if staff_appraisal_skt.is_dropped == true
+      ["#{counter += 1}", "#{staff_appraisal_skt.description}"]
+    end
+  end
   
     
 end
@@ -429,17 +501,24 @@ def lampiranA3
                         
   text "1.   Laporan/Ulasan Oleh PYD", :align => :left, :size => 12  
 
-    data = [["  "]]
+    data = [["#{ @staff_appraisal.skt_pyd_report}"]]
+    table(data, :column_widths => [150], :cell_style => { :size => 11}) do
+      self.row_colors = ["FEFEFE", "FFFFFF"]    
+    end
   
   text "2.   Laporan/Ulasan Oleh PPP", :align => :left, :size => 12, :style => :bold 
   
-  data1 = [["  "]]
+  data1 = [[" #{@staff_appraisal.skt_ppp_report} "]]
+  table(data1, :column_widths => [150], :cell_style => { :size => 11}) do
+    self.row_colors = ["FEFEFE", "FFFFFF"]    
+  end
   
   
   
-  data2 = [["",""],
+  data2 = [["#{@staff_appraisal.appraised.name}","#{@staff_appraisal.eval1_officer.name}"],
         [ "Tandatangan PYD", "Tandatangan PPP"],
-        ["Tarikh :", "Tarikh : "]] 
+        ["Tarikh : #{@staff_appraisal.skt_pyd_report_on.try(:strftime, "%d/%m/%y")}", 
+          "Tarikh : #{@staff_appraisal.skt_ppp_report_on.try(:strftime, "%d/%m/%y")}"]] 
       
         table(data2 , :column_widths => [150,150], :cell_style => { :size => 11}) do
           row(0).font_style = :bold
