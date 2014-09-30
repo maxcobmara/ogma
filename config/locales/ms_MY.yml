@@ -277,6 +277,7 @@ ms_MY:
       start: Dari
       finish: Ke
       total: Jumlah
+      code: Kod Permohonan Perjalanan
 
     travel_claim:
       title: Tuntutan Perjalanan
@@ -411,7 +412,7 @@ ms_MY:
     serialno: "No. Siri"
     
     defect:
-      title: Aset Rosak
+      title: Kerosakan Aset
       details: Perincian Kerosakan
       notes: Catatan
       new: Laporan Kerosakan Baru
@@ -484,7 +485,7 @@ ms_MY:
     category:
       title: Kategori Aset
       type_model_name: "Jenis / Model / Nama"
-      type_name_model: "Jenis / Nama / Model"
+      type_name_model: "Jenis - Jenama - Model"
     
   location:
     title: Lokasi
@@ -1181,6 +1182,7 @@ ms_MY:
       back: Terdahulu
       edit: Sunting
       destroy: Padam
+      cancel: Batal
       approve: Kelulusan
       process: Proses
       decision: Keputusan
@@ -1399,6 +1401,7 @@ ms_MY:
         hod_accept: Penerimaan Ketua Jabatan
         hod_accept_on: Tarikh Penerimaan Ketua Jabatan
         add_log: Tambah Log
+        code: Kod Permohonan Perjalanan
 
       asset_disposal:
         asset_id: Aset

@@ -3,7 +3,6 @@
   %h1
     = t 'asset.defect.new'
 
-
 = render 'shared/flashes'
 
 .row
@@ -20,9 +19,6 @@
       .col-md-5
         = f.text_area :description, class: 'form-control'
     .col-md-1.col-sm-offset-2
-      = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), asset_assets_path, :class => 'btn btn-default'
+      = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.cancel', :default => t("helpers.links.cancel")), asset_assets_path, :class => 'btn btn-default'
     .col-md-2
       = f.submit t('create'), class: "btn btn-primary"
-
-
-//= form_for [:asset, @asset_defect], url: asset_defect_path html: { multipart: true, class: 'form-horizontal' }  do |f| 

@@ -9,6 +9,11 @@
       .col-md-offset-2 
         .form-group
           .col-sm-2.control-label
+            =f.label :code
+          .col-md-2
+            =f.text_field :code, :value =>@travel_request.gcode(@generated_code), class: 'form-control', readonly: 'readonly'
+        .form-group
+          .col-sm-2.control-label
             = f.label :staff_id
           .col-md-3
             = f.collection_select :staff_id, Staff.all.order(name: :asc), :id,  :staff_name_with_position, {:include_blank =>t('helpers.prompt.select_staff'), :selected=>Login.first.staff_id},{class: 'selectpicker', "data-width"=>'320px'} 

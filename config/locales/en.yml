@@ -286,6 +286,7 @@ en:
       start: Start
       finish: End
       total: Total
+      code: Travel Request Code
 
     travel_claim:
       title: Travel Claims
@@ -495,7 +496,7 @@ en:
     category:
       title: Asset Category
       type_model_name: "Type / Model / Name"
-      type_name_model: "Type / Name / Model"
+      type_name_model: "Type - Brand - Model"
     
 
     
@@ -1182,6 +1183,7 @@ en:
       back: Back
       edit: Edit
       destroy: Destroy
+      cancel: Cancel
       approve: Approve
       process: Process
       decision: Decision
@@ -1398,6 +1400,7 @@ en:
         hod_accept: HOD Acceptance
         hod_accept_on: HOD Acceptance Date
         add_log: Add Log
+        code: Travel Request Code
         
       asset_disposal:
         asset_id: Asset

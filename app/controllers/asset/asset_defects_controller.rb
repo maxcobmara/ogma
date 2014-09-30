@@ -25,7 +25,19 @@ class Asset::AssetDefectsController < ApplicationController
   def new
     @asset = Asset.find(params[:asset_id])
     @asset_defect = @asset.asset_defects.new(params[:asset_defect])
-    @asset_defect.save
+  end
+  
+  def create
+    @asset_defect = AssetDefect.new(asset_defect_params)
+    respond_to do |format|
+      if @asset_defect.save
+        format.html { redirect_to @asset_defect, notice: (t 'asset.defect.title')+(t 'actions.created') }
+        format.json { render action: 'show', status: :created, location: @asset_defect }
+      else
+        format.html { render action: 'new'}
+        format.json { render json: @asset_defect.errors, status: :unprocessable_entity }
+      end
+    end
   end
   
   def update
