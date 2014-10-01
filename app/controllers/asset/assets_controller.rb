@@ -73,7 +73,7 @@ class Asset::AssetsController < ApplicationController
   end
   
   def kewpa4
-    if params[:search]
+    unless params[:search] == '0'
       @assets = Asset.where('substring(assetcode, 18, 2 ) =? AND assettype =?', "#{params[:search]}", 1)
       respond_to do |format|
         format.pdf do
@@ -84,7 +84,7 @@ class Asset::AssetsController < ApplicationController
                  end
              end
         else
-    @assets = Asset.find(assettype: 1)
+    @assets = Asset.where(assettype: 1)
     respond_to do |format|
       format.pdf do
         pdf = Kewpa4Pdf.new(@assets, view_context)
@@ -97,7 +97,7 @@ class Asset::AssetsController < ApplicationController
 end  
   
   def kewpa5
-    if params[:search]
+    unless params[:search] == '0'
       @assets = Asset.where('substring(assetcode, 18, 2 ) =? AND assettype =?', "#{params[:search]}", 2)
       respond_to do |format|
         format.pdf do
@@ -108,7 +108,7 @@ end
         end
       end
     else
-    @assets = Asset.find(assettype: 2).order(assetcode: :asc)
+    @assets = Asset.where(assettype: 2)
     respond_to do |format|
       format.pdf do
         pdf = Kewpa5Pdf.new(@assets, view_context)
