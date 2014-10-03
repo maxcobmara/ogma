@@ -1,4 +1,6 @@
 class AssetDisposal < ActiveRecord::Base
+    include AssetDisposalsHelper
+  
     belongs_to :asset
     belongs_to :document
     belongs_to :inspect1or, :class_name => 'Staff', :foreign_key => 'examiner_staff1'
@@ -11,7 +13,7 @@ class AssetDisposal < ActiveRecord::Base
     belongs_to :discard_witness1,  :class_name => 'Staff', :foreign_key => 'discard_witness_1'
     belongs_to :discard_witness2,  :class_name => 'Staff', :foreign_key => 'discard_witness_2'
     
-    validates :asset_id, presence: true
+    validates :asset_id, :current_value, presence: true
     validates :examiner_staff1, presence: true, :if => :is_staff1?
     validates :examiner_staff2, presence: true, :if => :is_staff2?
     validates :checked_by, :checked_on, :verified_by, presence: true, :if => :is_checked?
@@ -22,10 +24,6 @@ class AssetDisposal < ActiveRecord::Base
     validates :disposed_on, presence: true, :if => :disposed_by?
     
     attr_accessor :editing_page
-    
-    #def check_checked?
-      #is_checked == true
-    #end
     
     def disposaltype_others?
       disposal_type=='others'
@@ -40,23 +38,6 @@ class AssetDisposal < ActiveRecord::Base
    # whitelist the scope
     def self.ransackable_scopes(auth_object = nil)
       [:typemodelname_search]
-    end
-    
-    def disposaltype
-      disposetype=I18n.t('asset.disposal.transfer') if disposal_type == 'transfer'
-      disposetype=I18n.t('asset.disposal.sold') if disposal_type == 'sold'
-      disposetype=I18n.t('asset.disposal.discard') if disposal_type == 'discard'
-      disposetype=I18n.t('asset.disposal.stock') if disposal_type == 'stock'
-      disposetype=I18n.t('asset.disposal.others') if disposal_type == 'others'
-      disposetype
-    end
-    
-    def discardoption
-      discardopt=I18n.t('asset.disposal.bury') if discard_options == 'bury'
-      discardopt=I18n.t('asset.disposal.burn') if discard_options == 'burn'
-      discardopt=I18n.t('asset.disposal.throw') if discard_options == 'throw'
-      discardopt=I18n.t('asset.disposal.sink') if discard_options == 'sink'
-      discardopt
     end
     
     def for_disposal

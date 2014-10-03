@@ -71,6 +71,7 @@ ms_MY:
     records: " rekod"
     import_failed: " gagal diimport"
     save_action: Simpan Tindakan
+    check_all: "Pilih kotak semak ini untuk MEMILIH atau MENYAHPILIH SEMUA rekod bagi cetakan KEW.PA-17 dan KEW.PA-20."
     
   errors:
   
