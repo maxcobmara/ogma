@@ -24,7 +24,7 @@
       %tbody 
         - @staff_appraisals.each do |appraised|
           %tr
-            %td= appraised.appraised.formatted_mykad
+            %td= link_to appraised.appraised.formatted_mykad, staff_staff_appraisal_path(appraised)
             %td= appraised.appraised.name
             %td= appraised.appraised.position_for_staff
             %td= appraised.evaluation_year.strftime('%Y')
