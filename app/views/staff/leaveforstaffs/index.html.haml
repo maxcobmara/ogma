@@ -27,7 +27,7 @@
     %tbody
     - @leaveforstaffs.each do |leaveforstaff|
       %tr
-        %td= leaveforstaff.applicant.try(:mykad_with_staff_name)
+        %td= link_to leaveforstaff.applicant.try(:mykad_with_staff_name), staff_leaveforstaff_path(leaveforstaff)
         %td= (Leaveforstaff::STAFFLEAVETYPE.find_all{|disp, value| value == leaveforstaff.leavetype}).map {|disp, value| disp}
         %td= leaveforstaff.leavestartdate.strftime("%a, %d %b")
         %td= leaveforstaff.leavenddate.strftime("%a, %d %b")
