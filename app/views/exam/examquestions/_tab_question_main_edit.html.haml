@@ -75,4 +75,7 @@
     .col-sm-2.control-label
       =f.label :createdt
     .col-md-2
-      = f.text_field :createdt, class: 'date_picker form-control mandatory'
+      - if @examquestion.id.nil? || @examquestion.id.blank?
+        = f.text_field :createdt, class: 'date_picker form-control mandatory'
+      - else
+        = f.text_field :createdt, class: 'form-control', readonly: 'readonly'
