@@ -55,8 +55,8 @@ class Examquestion < ActiveRecord::Base
   #before_save :set_answer_for_mcq#, :set_subquestions_if_seq
 
   def set_nil_if_not_activate
-     #if self.id != nil
-          if questiontype=="MCQ" && activate != "1"
+     #if self.id != nil   
+          if questiontype=="MCQ" && activate != "1" 
               self.answerchoices[0].description = "" if self.answerchoices[0]#.id !=nil
               self.answerchoices[1].description = "" if self.answerchoices[1]#.id !=nil
               self.answerchoices[2].description = "" if self.answerchoices[2]#.id !=nil
@@ -64,10 +64,10 @@ class Examquestion < ActiveRecord::Base
           end
       #end
   end
-
+  
   def set_answer_for_mcq
-      #if answermcq !=nil
-      if questiontype=="MCQ"
+      #if answermcq !=nil 
+      if questiontype=="MCQ" 
         self.answer=answermcq.to_s
       end
         #end
@@ -88,7 +88,7 @@ class Examquestion < ActiveRecord::Base
     #current_user = User.find(11)  #current_user = User.find(11) - 11-maslinda, 72-izmohdzaki
     current_user = Login.first
     programme = current_user.staff.positions[0].unit
-
+    
     programme_name = Programme.roots.map(&:name)
     creator_prog= Staff.joins(:positions).where('unit IN(?)', programme_name).map(&:id)
     if programme_name.include?(programme)
@@ -101,7 +101,7 @@ class Examquestion < ActiveRecord::Base
     end
     creator
   end
-
+    
   def question_editor
     #programme = User.current_user.staff.position.unit --> requires log-in
     #current_user = User.find(72)  #current_user = User.find(72) - izmohdzaki, 11-maslinda
@@ -114,59 +114,59 @@ class Examquestion < ActiveRecord::Base
         editors = Position.where('unit=?',subject.root.name).map(&:staff_id).compact
       end
     else
-      programme_name = Programme.roots.map(&:name)    #must be among Academic Staff
+      programme_name = Programme.roots.map(&:name)    #must be among Academic Staff 
       editors = Staff.joins(:positions).where('unit=? AND unit IN(?)', programme, programme_name).map(&:id)
     end
     editors
   end
-
+  
   def question_approver #to assign question -> KP
-    ###latest finding - as of Mei-Jul/Aug 2013 - approver should be at Ketua Program level ONLY (own programme @ other programme)###
-
+    ###latest finding - as of Mei-Jul/Aug 2013 - approver should be at Ketua Program level ONLY (own programme @ other programme)### 
+    
     role_kp = Role.find_by_name('Programme Manager')  #must have role as Programme Manager
-    staff_with_kprole = User.find(:all, :joins=>:roles, :conditions=>['role_id=?',role_kp]).map(&:staff_id).compact.uniq
-    programme_name = Programme.roots.map(&:name)    #must be among Academic Staff
-    approver = Staff.find(:all, :joins=>:positions, :conditions=>['unit IN(?) AND staff_id IN(?)', programme_name, staff_with_kprole])
-    approver
+    staff_with_kprole = Login.joins(:roles).where('role_id=?',role_kp).pluck(:staff_id).compact.uniq
+    programme_name = Programme.roots.map(&:name)    #must be among Academic Staff 
+    approver = Staff.joins(:positions).where('unit IN(?) AND staff_id IN(?)', programme_name, staff_with_kprole).pluck(:staff_id)
+    approver   
   end
-
-
+  
+  
   def self.search2(search2)
-    common_subject = Programme.find(:all, :conditions=>['course_type=?','Commonsubject']).map(&:id)
-    if search2
+    common_subject = Programmewhere('course_type=?','Commonsubject').pluck(:id)
+    if search2 
       if search2 == '0'
-        @examquestions = Examquestion.find(:all)
+        @examquestions = Examquestion.all
       elsif search2 == '1'
-        @examquestions = Examquestion.find(:all, :conditions => ["subject_id IN (?)", common_subject])
+        @examquestions = Examquestion.where("subject_id IN (?)", common_subject)
       else
         subject_of_program = Programme.find(search2).descendants.at_depth(2).map(&:id)
-        @examquestions = Examquestion.find(:all, :conditions => ["subject_id IN (?) and subject_id NOT IN (?)", subject_of_program, common_subject])
+        @examquestions = Examquestion.where("subject_id IN (?) and subject_id NOT IN (?)", subject_of_program, common_subject)
       end
     else
-       @examquestions = Examquestion.find(:all)
+       @examquestions = Examquestion.all
     end
   end
-
+  
   #def self.find_main
   #    Examquestion.find(:all, :condition => ['staff_id IS NULL'])
  # end
-
+  
    def self.find_main
-     Subject.find(:all, :condition => ['subject_id IS NULL'])
+     Subject.where('subject_id IS NULL')
    end
-
+   
    def self.find_main
-      Staff.find(:all, :condition => ['staff_id IS NULL'])
+      Staff.where('staff_id IS NULL')
    end
-
+      
    def render_difficulty
      (DropDown::QLEVEL.find_all{|disp, value| value == difficulty }).map {|disp, value| disp}[0]
    end
-
+   
   def subject_details
-     if subject.blank?
+     if subject.blank? 
        "None Assigned"
-     else
+     else 
        subject.subject_list
      end
   end
@@ -184,8 +184,8 @@ class Examquestion < ActiveRecord::Base
     if editor.blank?
       "None Assigned"
     elsif editor_id?
-      editor.mykad_with_staff_name
-    else
+      editor.staff_name_with_position
+    else 
       "None Assigned"
     end
   end

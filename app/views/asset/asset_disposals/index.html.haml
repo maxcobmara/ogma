@@ -1,48 +1,94 @@
 - model_class = AssetDisposal
 .page-header
   %h1= t('asset.disposal.title')#, :default => model_class.model_name.human.pluralize
-  
-.navbar.navbar-inverse{role: "navigation", style: "padding-right:40px;"}
-  %ul.nav.navbar-nav
-    %li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'actions.new'))), new_asset_disposal_path
-  %ul.nav.navbar-nav.navbar-right
-    %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "toga"
-    %li.dropdown
-      %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#"}
-        = fa_icon "print", text: (t 'actions.print')
-        %b.caret
-      %ul.dropdown-menu
-        %li
-          %a{:href => kewpa17_asset_disposals_path(:format => 'pdf')} KEW PA17
-        %li
-          %a{:href => kewpa20_asset_disposals_path(:format => 'pdf')} KEW PA20
 
-.row
-  %table.table-striped.table-hover.ogma
-    %thead
-      %tr
-        %th=sort_link(@search, :asset_assetcode,  t('asset.assetcode'))
-        %th=t('asset.category.type_name_model')
-        %th= t('asset.disposal.quantity')
-        %th{:width => "200px"}= sort_link(@search, :asset_purchasedate, t('asset.disposal.purchase_date'))
-        %th{:width => "200px"}= sort_link(@search, :disposed_on, t('asset.disposal.disposed_on'))
-        %th= sort_link(@search, :current_value, t('asset.disposal.current_value'))
-        %th= t('asset.disposal.justify1_disposal')
-    %tbody
-    = render "index_search"
-    - @disposals.each do |disposal|
-      %tr
-        %td= link_to disposal.asset.assetcode, asset_disposal_path(disposal)
-        %td= "#{disposal.asset.try(:typename)} - #{disposal.asset.name} - #{disposal.asset.modelname}"  
-        %td= disposal.asset.try(:quantity)
-        %td= disposal.asset.try(:purchasedate).strftime("%d %b %Y")
-        %td= disposal.disposed_on.try(:strftime, "%d %b %Y")
-        %td= ringgols(disposal.current_value)
-        %td= disposal.justify1_disposal
-        
+= form_tag kewpa17_20_asset_disposals_path(:format => 'pdf'), :method => 'get' , :id => 'form1' do
+  .navbar.navbar-inverse{role: "navigation", style: "padding-right:40px;"}
+    %ul.nav.navbar-nav
+      %li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'actions.new'))), new_asset_disposal_path
+    %ul.nav.navbar-nav.navbar-right
+      %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "toga"
+      %li.dropdown
+        %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#"}
+          = fa_icon "print", text: (t 'actions.print')
+          %b.caret
+        %ul.dropdown-menu
+          %li
+            = submit_tag 'KEW.PA-17', class: "btn btn-link"
+          %li
+            = submit_tag 'KEW.PA-20', class: "btn btn-link"
+
+  .row
+    %table.table-striped.table-hover.ogma
+      %thead
+        %tr
+          %th &nbsp;
+          %th=sort_link(@search, :asset_assetcode,  t('asset.assetcode'))
+          %th=t('asset.category.type_name_model')
+          %th= t('asset.disposal.quantity')
+          %th{:width => "200px"}= sort_link(@search, :asset_purchasedate, t('asset.disposal.purchase_date'))
+          %th{:width => "200px"}= sort_link(@search, :disposed_on, t('asset.disposal.disposed_on'))
+          %th= sort_link(@search, :current_value, t('asset.disposal.current_value'))
+          %th= t('asset.disposal.justify1_disposal')
+      %tbody
+        = render "index_search"     
+        - count=0
+        - @disposals.each do |disposal|
+          %tr
+            %td{:style=>"text-align: center;"}= check_box_tag "disposal_ids[]", disposal.id, true, :id => "disposalidss_#{count}"
+            %td= link_to disposal.asset.assetcode, asset_disposal_path(disposal)
+            %td= "#{disposal.asset.try(:typename)} - #{disposal.asset.name} - #{disposal.asset.modelname}"  
+            %td= disposal.qty
+            %td= disposal.asset.try(:purchasedate).strftime("%d %b %Y")
+            %td= disposal.disposed_on.try(:strftime, "%d %b %Y")
+            %td= ringgols(disposal.total_current_value)
+            %td= disposal.justify1_disposal
+            - count+=1
+      
+    .row
+      %br
+      %span{:style=>"position: absolute; left: 40px;"}
+        = check_box_tag :check_all
+        = t('actions.check_all')
+      %br
+
 :javascript
 $(document).ready(function(){
   $('.toga').click(function() {
     $('.search_row').toggle(); 
   });
-});
+  
+  var default_check = document.getElementById('check_all');
+  default_check.checked = true;
+  
+  $("input[id='check_all']").change(function() {  
+    var checkbox = document.getElementsByName('disposal_ids[]')
+    if($('#check_all').is(':checked')) { 
+      for (var j=0; j<checkbox.length; j++) {
+        var cc = document.getElementById('disposalidss_'+j)
+        cc.checked = true;
+      }
+    }else{
+      for (var j=0; j<checkbox.length; j++) {
+        var cc = document.getElementById('disposalidss_'+j)
+        cc.checked = false;
+      }
+    }
+  });
+
+  $("input[id='check_all']").each(function() {  
+    var checkbox = document.getElementsByName('disposal_ids[]')
+    if($('#check_all').is(':checked')) { 
+      for (var j=0; j<checkbox.length; j++) {
+        var cc = document.getElementById('disposalidss_'+j)
+        cc.checked = true;
+      }
+    }else{
+      for (var j=0; j<checkbox.length; j++) {
+        var cc = document.getElementById('disposalidss_'+j)
+        cc.checked = false;
+      }
+    }
+  });
+
+};

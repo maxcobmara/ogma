@@ -22,9 +22,9 @@
         %th="Status"
    
     %tbody   
-    -@travel_claims.each do |travel_claims|
+    -@travel_claims.each do |travel_claim|
       %tr
-        %td=h travel_claim.claim_month.strftime("%B %Y")
+        %td=h travel_claim.claim_month.strftime("%B %Y") unless travel_claim.claim_month.blank?
         %td=h travel_claim.staff.name
         %td=h travel_claim.total_claims
         %td=h travel_claim.my_claim_status.titleize

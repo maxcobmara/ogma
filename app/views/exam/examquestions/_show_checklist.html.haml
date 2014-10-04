@@ -1,7 +1,6 @@
 - model_class = Examquestion
-.col-md-8.col-md-offset-1
+.col-md-8.col-md-offset-2
   %dl.dl-horizontal
-	
     %dt= t 'exam.examquestion.edit_details'
     %dd
       /=h @examquestion.qstatus
@@ -64,4 +63,3 @@
     %dt= t'exam.examquestion.editdt'
     %dd=h l(@examquestion.editdt) unless @examquestion.editdt.blank? 
 
-  %dl.dl-horizontal

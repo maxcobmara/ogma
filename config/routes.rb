@@ -107,6 +107,7 @@ Ogma::Application.routes.draw do
       collection do
         get :kewpa17
         get :kewpa20
+	get :kewpa17_20
       end     
     end
   end
