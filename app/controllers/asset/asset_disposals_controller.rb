@@ -83,8 +83,31 @@ class Asset::AssetDisposalsController < ApplicationController
     end
   end
   
+  def kewpa17_20
+    commit = params[:commit]
+    if params[:disposal_ids]
+      disposed_ids = params[:disposal_ids]
+      dpids=[]
+      disposed_ids.each do |dp|
+        dpids << dp.to_i
+      end    
+    end
+    if commit == 'KEW.PA-17' && dpids
+      redirect_to  kewpa17_asset_disposals_path(:format => 'pdf', :disposalids => dpids)
+    elsif commit == 'KEW.PA-20' && dpids
+      redirect_to kewpa20_asset_disposals_path(:format => 'pdf', :disposalids => dpids)
+    else
+      redirect_to asset_disposals_path
+      #flash[:notice]=> "No record selected"
+    end
+  end
+
   def kewpa17
-    @disposals = AssetDisposal.order('created_at DESC')
+    if params[:disposalids]
+      @disposals = AssetDisposal.where('id IN(?)', params[:disposalids]).order(created_at: :desc)
+    else
+      @disposals = AssetDisposal.order('created_at DESC')
+    end
     respond_to do |format|
       format.pdf do
         pdf = Kewpa17Pdf.new(@disposals, view_context)
@@ -94,11 +117,16 @@ class Asset::AssetDisposalsController < ApplicationController
       end
     end
   end
+  
   def kewpa20
-    @disposal = AssetDisposal.order('created_at DESC')
+     if params[:disposalids]
+      @disposals = AssetDisposal.where('id IN(?)', params[:disposalids]).order(created_at: :desc)
+    else
+      @disposals = AssetDisposal.order('created_at DESC')
+    end
     respond_to do |format|
       format.pdf do
-        pdf = Kewpa20Pdf.new(@disposal, view_context)
+        pdf = Kewpa20Pdf.new(@disposals, view_context)
         send_data pdf.render, filename: "kewpa20-{Date.today}",
                               type: "application/pdf",
                               disposition: "inline"

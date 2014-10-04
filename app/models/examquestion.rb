@@ -139,26 +139,26 @@ class Examquestion < ActiveRecord::Base
     ###latest finding - as of Mei-Jul/Aug 2013 - approver should be at Ketua Program level ONLY (own programme @ other programme)### 
     
     role_kp = Role.find_by_name('Programme Manager')  #must have role as Programme Manager
-    staff_with_kprole = User.find(:all, :joins=>:roles, :conditions=>['role_id=?',role_kp]).map(&:staff_id).compact.uniq
+    staff_with_kprole = Login.joins(:roles).where('role_id=?',role_kp).pluck(:staff_id).compact.uniq
     programme_name = Programme.roots.map(&:name)    #must be among Academic Staff 
-    approver = Staff.find(:all, :joins=>:positions, :conditions=>['unit IN(?) AND staff_id IN(?)', programme_name, staff_with_kprole])
+    approver = Staff.joins(:positions).where('unit IN(?) AND staff_id IN(?)', programme_name, staff_with_kprole).pluck(:staff_id)
     approver   
   end
   
   
   def self.search2(search2)
-    common_subject = Programme.find(:all, :conditions=>['course_type=?','Commonsubject']).map(&:id)
+    common_subject = Programmewhere('course_type=?','Commonsubject').pluck(:id)
     if search2 
       if search2 == '0'
-        @examquestions = Examquestion.find(:all)
+        @examquestions = Examquestion.all
       elsif search2 == '1'
-        @examquestions = Examquestion.find(:all, :conditions => ["subject_id IN (?)", common_subject])
+        @examquestions = Examquestion.where("subject_id IN (?)", common_subject)
       else
         subject_of_program = Programme.find(search2).descendants.at_depth(2).map(&:id)
-        @examquestions = Examquestion.find(:all, :conditions => ["subject_id IN (?) and subject_id NOT IN (?)", subject_of_program, common_subject])
+        @examquestions = Examquestion.where("subject_id IN (?) and subject_id NOT IN (?)", subject_of_program, common_subject)
       end
     else
-       @examquestions = Examquestion.find(:all)
+       @examquestions = Examquestion.all
     end
   end
   
@@ -167,11 +167,11 @@ class Examquestion < ActiveRecord::Base
  # end
   
    def self.find_main
-     Subject.find(:all, :condition => ['subject_id IS NULL'])
+     Subject.where('subject_id IS NULL')
    end
    
    def self.find_main
-      Staff.find(:all, :condition => ['staff_id IS NULL'])
+      Staff.where('staff_id IS NULL')
    end
       
    def render_difficulty
@@ -199,7 +199,7 @@ class Examquestion < ActiveRecord::Base
     if editor.blank?
       "None Assigned"
     elsif editor_id?
-      editor.mykad_with_staff_name
+      editor.staff_name_with_position
     else 
       "None Assigned"
     end

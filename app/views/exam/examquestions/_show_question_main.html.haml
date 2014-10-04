@@ -19,7 +19,7 @@
     %dd
       %b= t("exam.examquestion.#{@examquestion.qstatus.downcase.split.join.gsub(/-+/,"")}")
       = t 'exam.examquestion.as_of' 
-      = @examquestion.updated_at.strftime("%d %B %Y, %l:%M:%S %p") unless @examquestion.updated_at.blank?
+      = @examquestion.updated_at.to_time.getlocal.strftime("%d %B %Y, %l:%M:%S %p") unless @examquestion.updated_at.blank?
 
     %dt= t 'exam.examquestion.created_at' , :default => model_class.human_attribute_name(:created) + ":"
-    %dd=@examquestion.created_at.strftime("%d %B %Y, %l:%M:%S %p") unless @examquestion.created_at.blank?
+    %dd=@examquestion.created_at.to_time.getlocal.strftime("%d %B %Y, %l:%M:%S %p") unless @examquestion.created_at.blank?
