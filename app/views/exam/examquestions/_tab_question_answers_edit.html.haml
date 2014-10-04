@@ -3,8 +3,8 @@
     .col-sm-2.control-label
       = f.label :questiontype
     .col-md-4
-      = f.select :questiontype, DropDown::QTYPE, :prompt=> t('helpers.prompt.select_questiontype')
- 
+      = f.select :questiontype, DropDown::QTYPE, {:prompt=> t('helpers.prompt.select_questiontype')}, {class: 'selectpicker'}
+
   //main - for all type of question
   .p#main_question.box
     - if @examquestion.diagram.exists? then
@@ -14,7 +14,7 @@
           = image_tag @examquestion.diagram.url,:style => "border: solid 1px;"
           %br
           %b= t'exam.examquestion.uploaded_file'
-          = @examquestion.diagram_file_name       
+          = @examquestion.diagram_file_name
     .form-group
       /preview diagram before upload
       .col-sm-2.control-label
@@ -36,7 +36,7 @@
       .col-sm-2.control-label
         = f.label :question
       .col-md-6
-        = f.text_area :question, :id => 'myNicEditor'	
+        = f.text_area :question, :id => 'myNicEditor'
 
   .p#MCQ.box
     START of MCQ section ----------------------------------------
@@ -50,9 +50,9 @@
         .span_div{:style => "width:335px;text-align:right;"}
           = f.check_box :activate, :id => 'examquestion_activate', :checked=>true
           Activate
-		  
+
         // 1 for mcq & 2 for true/false, to recheck '2 for true/false' may no longer used?
-        = render :partial => 'examanswer_fields', :locals => {:f => f,:type=>@type} 
+        = render :partial => 'examanswer_fields', :locals => {:f => f,:type=>@type}
 
     .form-group
       .col-sm-2.control-label
@@ -60,18 +60,18 @@
         //answer field, table : examquestions - start
         - ans = ['A','B','C','D']
         - @mcqanswer = @examquestion.answer.to_s if !@examquestion.id.nil?
-        = f.select :answermcq, ans, {:include_blank=> t('helpers.prompt.select_mcq_answer'),:selected=> @mcqanswer}
-    END of MCQ section ----------------------------------------        
+        = f.select :answermcq, ans, {:include_blank=> t('helpers.prompt.select_mcq_answer'),:selected=> @mcqanswer}, {class: 'selectpicker'}
+    END of MCQ section ----------------------------------------
 
   .p#SEQ.box
     START of SEQ section ----------------------------------------
     - @count=0
     .form-group
-      .col-sm-2.control-label 
+      .col-sm-2.control-label
         = f.label :subquestions
       .col-md-10
-        = f.fields_for :shortessays do |builder| 
-          = render 'shortessay_fields', :f => builder,:locals=> { :index => @count} 
+        = f.fields_for :shortessays do |builder|
+          = render 'shortessay_fields', :f => builder,:locals=> { :index => @count}
           - @count+=1
         /= link_to_add_fields image_tag("add.png", :border => 0, :title => 'Add Q'), f, :shortessays  - Add
     END of SEQ section ----------------------------------------
@@ -85,7 +85,7 @@
 
   .p#OSCI.box
     OSCI section -- no specific requirement at this moment
-	
+
   .p#OSCII.box
     OSCII section -- no specific requirement at this moment
 
@@ -109,7 +109,7 @@
       .col-sm-2.control-label
         %b= t 'exam.examquestion.booleananswers'
       .col-md-6
-        = render :partial => 'booleananswer_fields', :locals => {:f => f} 
+        = render :partial => 'booleananswer_fields', :locals => {:f => f}
     END of TRUE FALSE section ----------------------------------------
 
   /answer field for other than MCQ & SEQ (pls note TRUE FALSE requires this field)
@@ -118,8 +118,8 @@
       .col-sm-2.control-label
         = f.label :answer
       .col-md-6
-        = f.text_field :answer, :size => "60x7" 	
-	
+        = f.text_field :answer, class: 'form-control'
+
   /main_question2 - 'marks' label for all type of question
   /main_question3 - 'total marks' label for SEQ only
   .form-group
@@ -128,8 +128,8 @@
         = f.label :marks
       .p#main_question3.box
         %b= t 'exam.examquestion.marks2'
-    .col-md-6
-      = f.text_field :marks, :size => 12 
+    .col-md-2
+      = f.text_field :marks, class: 'form-control'
 
   /keyword field for other than MCQ & True/False
   .p#others_keyword.box
@@ -137,4 +137,6 @@
       .col-sm-2.control-label
         = f.label :qkeyword
       .col-md-6
-        = f.text_area :qkeyword, :size => "60x3" 
+        = f.text_area :qkeyword, :size => "60x3"
+
+  = render :partial => 'status', :locals => {:f => f} unless @examquestion.qstatus == "Approved"
