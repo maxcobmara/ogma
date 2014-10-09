@@ -1,6 +1,5 @@
-.col-md-offset-2
-  .form-group
-    .col-sm-2.control-label
-      = f.label :qstatus
-    .col-md-2
-      = f.select :qstatus, options_for_select(@examquestion.status_workflow.collect {|v,i| [v] }, @examquestion.qstatus)
+.form-group
+  .col-sm-2.control-label
+    = f.label :qstatus
+  .col-md-2
+    = f.select :qstatus, options_for_select(status_workflow(@examquestion.qstatus)), {}, {class: 'selectpicker'}

@@ -9,7 +9,7 @@
     .col-sm-2.control-label
       = f.label :approver_id
     .col-md-6
-      = f.collection_select :approver_id, Staff.find(:all, :order => :name, :conditions => ["id IN (?)", @examquestion.question_approver]), :id, :name, :include_blank => 'Please select approver', :selected => current_user.staff_id
+      = f.collection_select :approver_id, Staff.where("id IN (?)", @examquestion.question_approver).order(:name), :id, :name, :include_blank => 'Please select approver', :selected => current_user.staff_id
       /= f.collection_select :approver_id, Staff.find(:all, :order => :name, :conditions => ["id IN (?)", @examquestion.question_approver]), :id, :name, :include_blank => true
       /= f.collection_select :approver_id, Staff.find(:all, :order => :name), :id, :name, :include_blank => true 
 
@@ -23,4 +23,4 @@
     .col-sm-2.control-label
       = f.label :approvedt
     .col-md-2
-      = f.text_field :approvedt, class: 'form-control', 'data-behaviour' => 'datepicker_today'
+      = f.text_field :approvedt, class: 'date_picker form-control'

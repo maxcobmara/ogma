@@ -67,12 +67,12 @@ class Kewpa20Pdf < Prawn::Document
   def line_item_rows
     asal = current = jualan = pindahan = musnah = lain = 0
     @disposals.map do |disposal|
-      asal+=disposal.asset.purchaseprice.to_f
-      current+=disposal.current_value.to_f
-      musnah += disposal.current_value if disposal.disposal_type == "discard"
-      jualan += disposal.current_value if disposal.disposal_type == "sold"
-      pindahan += disposal.current_value if disposal.disposal_type == "transfer"
-      lain += disposal.current_value if ((disposal.disposal_type != "transfer") && (disposal.disposal_type != "sold") && (disposal.disposal_type != "discard") )
+      asal+=disposal.asset.purchaseprice.to_f*disposal.qty
+      current+=disposal.total_current_value
+      musnah += disposal.total_current_value if disposal.disposal_type == "discard"
+      jualan += disposal.total_current_value if disposal.disposal_type == "sold"
+      pindahan += disposal.total_current_value if disposal.disposal_type == "transfer"
+      lain += disposal.total_current_value if ((disposal.disposal_type != "transfer") && (disposal.disposal_type != "sold") && (disposal.disposal_type != "discard") )
     end
       header = [[ 'Bil', 'KEMENTERIAN/ JABATAN', "JUMLAH NILAI PEROLEHAN ASAL (RM)", 'HASIL PELUPUSAN (RM)', 'JUALAN', 'PINDAHAN','MUSNAH',
         'KAEDAH LAIN'],

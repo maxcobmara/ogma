@@ -94,6 +94,8 @@ en:
     records: " record(s)"
     import_failed: " - import failed "
     save_action: Save Action
+    check_all: "Tick to SELECT or DESELECT ALL records for printing of KEW.PA-17 and KEW.PA-20."
+    
   errors:
 
   views:
