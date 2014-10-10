@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 ruby '2.1.1'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '4.1.5'
+gem 'rails', '4.1.6'
 gem "thin", "~> 1.6.2"
 gem "devise", "~> 3.3.0"
 gem 'pg', '~> 0.17.1'
@@ -37,7 +37,7 @@ gem "whenever", "~> 0.9.2", require: false
 gem 'rmagick', '2.13.2', :require => 'RMagick'
 gem "roo"
 group :assets do
-  
+
 end
 
 # See https://github.com/sstephenson/execjs#readme for more supported runtimes
