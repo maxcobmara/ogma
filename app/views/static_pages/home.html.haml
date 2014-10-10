@@ -1,12 +1,4 @@
-.row
- .col-md-5.loginspace{:style => "height:120px;"}
-  .content.clearfix
-   .block
-
-
-.center.hero-unit
-
-.home_page
+.row.home_page
  .row.title
   .col-md-6
    //{:style => "background:#F99;"}
@@ -22,6 +14,8 @@
     Projek pembinaan KSKBJB telah mula dirancang dalam Rancangan Malaysia keâ8 dan telah dilaksanakan dalam Rancangan Malaysia ke-9  dengan mempunyai keluasan tapak seluas 30 ekar (menggunakan sebahagian daripada lot tanah Hospital Permai). KSKBJB merangkumi Blok Pentadbiran, Pusat Sumber, Blok Akademik yang merangkumi Dewan Kuliah, Auditorium dan Makmal Keterampilan. Disamping itu juga, turut disediakan 3 Blok Asrama Pelatih, Kafeteria, Surau dan Blok Kediaman Kakitangan serta kemudahan infrastruktur untuk aktiviti riadah turut disediakan. Ini telah menjadikan kompleks ini kompleks yang serba lengkap. KSKBJB telah diserahkan secara rasmi kepada Bahagian Pengurusan Latihan, Kementerian Kesihatan Malaysia (KKM) pada 1 Jun 2010 dan proses perpindahan daripada Kolej Kejuruawatan Johor Bahru dan Kolej Radiografi Johor Bahru yang berada di Hospital Sultanah Aminah telah dilaksanakan secara berperingkat dan selesai sepenuhnya pada 15 Jun 2010.
  .row.buttons
   .col-md-1.col-md-offset-3
+   %i.fa.fa-sign-in.fa-4x
+  .col-md-1
    %i.fa.fa-bullhorn.fa-4x
   .col-md-1
    %i.fa.fa-calendar.fa-4x
@@ -34,9 +28,26 @@
  .row.login
   .col-md-3.col-md-offset-3
    %h1 Login
+   = form_for(resource, :as => resource_name, :url => session_path(resource_name), class: 'form-horizontal', role: 'form') do |f|
+    .form-group
+     %label.sr-only{:for => "login_email"} Email address
+     = f.text_field :email, placeholder: "Email", class: "form-control", type: "email", id: "login_email" #=> (t 'home.email')
+    .form-group
+     %label.sr-only{:for => "login_password"} Password
+     = f.password_field :password, placeholder: "Password", class: "form-control", type: "password", id: "login_password" #=> (t 'home.password')
+    .col-md-7
+     - if devise_mapping.rememberable?
+      .checkbox
+       = f.check_box :remember_me, :type => "checkbox"
+       = f.label :remember_me
+    .col-md-5
+     = f.submit "Sign-In", :class => "btn btn-primary", :type => "submit", style: "float:right; margin-top:10px; margin-right: -15px" #(t 'home.signin')
   .col-md-2.signup
    %h1 Signup
-
+   %p Don't have a login? Sign-up right now by clicking on the awesome button
+   %br
+   .btn This is a button
+   %br
 
 
 

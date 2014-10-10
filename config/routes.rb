@@ -1,6 +1,5 @@
 Ogma::Application.routes.draw do
-  
-  devise_for :users
+
   namespace :staff do
     resources :staffs, as: :infos do
       member do
@@ -13,7 +12,7 @@ Ogma::Application.routes.draw do
       end
     end
     resources :staff_appraisals do
-      collection do 
+      collection do
         get :appraisal_form
       end
     end
@@ -28,7 +27,7 @@ Ogma::Application.routes.draw do
       end
     end
     resources :attendances
-    resources :travel_requests do 
+    resources :travel_requests do
       member do
 	get :travel_log
 	get :approval
@@ -38,7 +37,7 @@ Ogma::Application.routes.draw do
       end
     end
   end
-  
+
   match '/travel_requests/logs', to: 'staff/travel_requests#travel_log_index', via: 'get'
   match '/attendance/manage', to: 'staff/staff_attendances#manage', via: 'get'
   match '/attendance/status/', to: 'staff/staff_attendances#status', via: 'get'
@@ -52,8 +51,8 @@ Ogma::Application.routes.draw do
     resources :ptschedules
     resources :ptdos
   end
-  
-  
+
+
   namespace :asset do
     resources :assets do
       member do
@@ -70,7 +69,7 @@ Ogma::Application.routes.draw do
         get :kewpa4
         get :kewpa5
         get :kewpa13
-      end   
+      end
     end
     resources :stationeries do
     collection do
@@ -108,7 +107,7 @@ Ogma::Application.routes.draw do
         get :kewpa17
         get :kewpa20
 	get :kewpa17_20
-      end     
+      end
     end
   end
 
@@ -123,24 +122,24 @@ Ogma::Application.routes.draw do
     resources :location_damages
     resources :address_books
   end
-  
+
   resources :events do
     member do
       get :calendar
     end
   end
-  
+
   resources :cofiles
-  
+
   resources :documents
-  
+
   resources :students do
     collection do
       get :autocomplete
     end
   end
 
-    
+
   namespace :student do
     resources :tenants do
       collection do
@@ -154,12 +153,12 @@ Ogma::Application.routes.draw do
       end
     end
     resources :student_discipline_cases
-    resources :leaveforstudents 
+    resources :leaveforstudents
   end
 
 
   resources :bulletins
-  
+
   namespace :training do
     resources :programmes
     resources :intakes
@@ -189,7 +188,7 @@ Ogma::Application.routes.draw do
       end
     end
   end
-  
+
   namespace :library do
     resources :librarytransactions do
       member do
@@ -210,16 +209,16 @@ Ogma::Application.routes.draw do
       end
     end
   end
-  
+
   match '/public/excel_format/book_import.xls', to: 'library/books#download_excel_format', via: 'get', target: '_self'
 
   namespace :exam do
     resources :examquestions do
       collection do
-        get 'update_subjects', to: "examquestions#update_subjects" 
-        get 'update_topics', to: "examquestions#update_topics" 
+        get 'update_subjects', to: "examquestions#update_subjects"
+        get 'update_topics', to: "examquestions#update_topics"
       end
-    end  
+    end
     resources :examsubquestions
     resources :answerchoices
     resources :examanswers
@@ -238,7 +237,11 @@ Ogma::Application.routes.draw do
     end
   end
 
+  devise_for :users
+  resources :users
   resources :logins
+
+
   root  'static_pages#home'
   match '/help',    to: 'static_pages#help',    via: 'get'
   match '/about',   to: 'static_pages#about',   via: 'get'
@@ -286,7 +289,7 @@ Ogma::Application.routes.draw do
   #       get 'recent', on: :collection
   #     end
   #   end
-  
+
   # Example resource route with concerns:
   #   concern :toggleable do
   #     post 'toggle'

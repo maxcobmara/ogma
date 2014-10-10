@@ -8,10 +8,6 @@
     %span{:style => "font-size:0.9em"}= current_user.email
   -else
     %a#sign_in_trigger{:href => "#"}= fa_icon "sign-in", text: ""
-
-
-  %span{:style => "font-size:0.9em"}= current_user.try(:login)
-
   %div{:style => "float:right;"}
     - if I18n.locale == I18n.default_locale
       = link_to image_tag("MY.png", :border => 0, :title => 'Bahasa Malaysia'), locale: "ms_MY"
