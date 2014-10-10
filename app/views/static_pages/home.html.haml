@@ -2,30 +2,51 @@
  .col-md-5.loginspace{:style => "height:120px;"}
   .content.clearfix
    .block
- .col-md-3.piclogo{:style => "float:right; height:120px; background:#DDD;"} 
-  logo
-  
+
+
 .center.hero-unit
- %h1 Welcome to Ogma
+
+.home_page
+ .row.title
+  .col-md-6
+   //{:style => "background:#F99;"}
+   %h1 Welcome to
+   //TODO when database available use #college.name
+   %h2  Kolej Sains Kesihatan Bersekutu
+  .col-md-3
+  .col-md-3.piclogo{:style => "float:right; height:120px; background:#999;"}
+   logo
+ .row.title
+  .col-md-4
+   %p
+    Projek pembinaan KSKBJB telah mula dirancang dalam Rancangan Malaysia keâ8 dan telah dilaksanakan dalam Rancangan Malaysia ke-9  dengan mempunyai keluasan tapak seluas 30 ekar (menggunakan sebahagian daripada lot tanah Hospital Permai). KSKBJB merangkumi Blok Pentadbiran, Pusat Sumber, Blok Akademik yang merangkumi Dewan Kuliah, Auditorium dan Makmal Keterampilan. Disamping itu juga, turut disediakan 3 Blok Asrama Pelatih, Kafeteria, Surau dan Blok Kediaman Kakitangan serta kemudahan infrastruktur untuk aktiviti riadah turut disediakan. Ini telah menjadikan kompleks ini kompleks yang serba lengkap. KSKBJB telah diserahkan secara rasmi kepada Bahagian Pengurusan Latihan, Kementerian Kesihatan Malaysia (KKM) pada 1 Jun 2010 dan proses perpindahan daripada Kolej Kejuruawatan Johor Bahru dan Kolej Radiografi Johor Bahru yang berada di Hospital Sultanah Aminah telah dilaksanakan secara berperingkat dan selesai sepenuhnya pada 15 Jun 2010.
+ .row.buttons
+  .col-md-1.col-md-offset-3
+   %i.fa.fa-bullhorn.fa-4x
+  .col-md-1
+   %i.fa.fa-calendar.fa-4x
+  .col-md-1
+   %i.fa.fa-question.fa-4x
+  .col-md-1
+   %i.fa.fa-envelope-o.fa-4x
+  .col-md-1
+   %i.fa.fa-code.fa-4x
+ .row.login
+  .col-md-3.col-md-offset-3
+   %h1 Login
+  .col-md-2.signup
+   %h1 Signup
+
+
+
+
+
+.row
  %h2
   This is the home page for the
-  %a{:href => "https://github.com/maxcobmara/ogma"} Ogma : New ICMS
-  %br
-  = link_to  t("dashboard.dashboard"), dashboard_path
+  %a{:href => "https://github.com/maxcobmara/ogma"} New ICMS : Ogma
 
   %BR
   %br <BR/>
-  /= link_to "Sign up now!", new_user_registration_path, class: "btn btn-primary" 
+  /= link_to "Sign up now!", new_user_registration_path, class: "btn btn-primary"
 = link_to image_tag("powered_by_rails.png", alt: "Rails"), 'http://rubyonrails.org/'
-
-
-
-
-
-
-
-
-
-
-
-

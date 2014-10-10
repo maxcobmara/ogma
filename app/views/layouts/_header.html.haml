@@ -1,8 +1,15 @@
 .topnav.navbar-fixed-top
   =link_to (fa_icon "square"), "http://#{request.host}:3000"
-  =link_to (fa_icon "home"), root_url
-  %a#trigger.menu-trigger{:href => "#"}= fa_icon "bars", text: ""
-  =link_to (fa_icon "tachometer"), dashboard_path
+  - if user_signed_in?
+    =link_to (fa_icon "home"), root_url
+    %a#trigger.menu-trigger{:href => "#"}= fa_icon "bars", text: ""
+    %a{:href => destroy_user_session_path, 'data-method' => :delete}= fa_icon "sign-out", text: ""
+    =link_to (fa_icon "tachometer"), dashboard_path
+    %span{:style => "font-size:0.9em"}= current_user.email
+  -else
+    %a#sign_in_trigger{:href => "#"}= fa_icon "sign-in", text: ""
+
+
   %span{:style => "font-size:0.9em"}= current_user.try(:login)
 
   %div{:style => "float:right;"}
@@ -10,5 +17,3 @@
       = link_to image_tag("MY.png", :border => 0, :title => 'Bahasa Malaysia'), locale: "ms_MY"
     - else
       = link_to image_tag("GB.png", :border => 0, :title => 'English'), locale: "en"
- 
-//touch

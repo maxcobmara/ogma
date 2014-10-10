@@ -1,0 +1,30 @@
+.home_page {
+ .title {
+  background-color: #F5F5F5;
+  h1 {
+   font-size: 5em;
+   text-align: left;
+   padding: 60px 0 0 30px; margin: 0;
+  }
+  h2 {
+   font-size: 3em;
+   text-align: left;
+   padding: 0 0 0 30px;
+  }
+  p {
+   padding: 0 0 50px 30px;
+   font-size: 0.9em;
+   line-height: 1;
+   text-align: justify;
+   text-justify: inter-word;
+  }
+ }
+ .buttons {
+  padding: 50px 0;
+ }
+ .login {
+  h1, h2 {text-align: left;}
+  .signup {border-left: 1px solid red;}
+ }
+
+}
