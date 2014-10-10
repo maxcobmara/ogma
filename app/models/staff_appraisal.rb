@@ -1,5 +1,4 @@
 class StaffAppraisal < ActiveRecord::Base
-<<<<<<< HEAD
   
   before_validation :set_year_to_start
    before_save :set_to_nil_where_false, :set_number_of_questions, :when_ppp_is_ppk
@@ -41,7 +40,7 @@ class StaffAppraisal < ActiveRecord::Base
     	   "Submitted by PPP for Evaluation  to PPK"
      end
    end
-=======
+   
  before_validation :set_year_to_start  
  
  belongs_to :appraised,      :class_name => 'Staff', :foreign_key => 'staff_id'
@@ -70,6 +69,5 @@ class StaffAppraisal < ActiveRecord::Base
    end
  end
  
->>>>>>> upstream/master
  
 end
