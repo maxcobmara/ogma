@@ -13,5 +13,6 @@ class StaticPagesController < ApplicationController
   end
 
   def dashboard
+   @bulletins = Bulletin.order(publishdt: :desc).limit(10)
   end
 end

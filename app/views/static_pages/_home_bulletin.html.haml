@@ -1,6 +1,6 @@
-#quote-carousel.carousel.slide{"data-ride" => "carousel", style: "padding:0 0 20px 0;margin:0;"}
+#quote-carousel.carousel.slide{"data-ride" => "carousel"}
  - slide_index = Array(0...@bulletins.count)
- %ol.carousel-indicators{style: "margin-bottom:-10px;"}
+ %ol.carousel-indicators
   - slide_index.each do |index|
    - if index == 0; is_active = "active"; end
    %li{class: "#{is_active}", "data-slide-to" => "#{index}", "data-target" => "#quote-carousel"}
@@ -9,12 +9,12 @@
   - @bulletins.each do |bulletin|
    - if counter == 0; is_active = "active"; end
    .item{class: "#{is_active}"}
-    .panel.panel-info
-     .panel-heading= bulletin.headline
-     .panel-body{:style => "min-height:120px"}= bulletin.content
-     .panel-body{:style => "min-height:100px"}
+    .col-md-3
+     %h1= bulletin.headline.upcase
+    .col-md-9
+     .content= bulletin.content
+     .data
       - if bulletin.data.exists? then
        = link_to (t 'bulletin.download'), bulletin.data.url
-      -else
-       %br
+      - else
    - counter += 1
