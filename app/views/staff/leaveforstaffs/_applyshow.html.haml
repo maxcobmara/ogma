@@ -1,0 +1,23 @@
+.col-md-offset-2   
+  %br
+    %dt= t 'staffleave.staff_id'
+    %dd=h @leaveforstaff.applicant.mykad_with_staff_name
+	
+    %dt= t 'staffleave.leavetype'
+    %dd=h (Leaveforstaff::STAFFLEAVETYPE.find_all{|disp, value| value == @leaveforstaff.leavetype}).map {|disp, value| disp}
+	
+    %dt From :
+    %dd=h @leaveforstaff.leavestartdate.strftime("%d - %b - %Y") "" @leaveforstaff.show_to_day "For" @leaveforstaff.leave_for "day"
+	
+    %dt= t 'staffleave.reason'
+    %dd=h  @leaveforstaff.reason
+	
+    %dt= t 'staffleave.notes'
+    %dd=h @leaveforstaff.notes
+
+      
+
+  
+    
+ 
+

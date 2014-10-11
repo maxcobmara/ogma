@@ -16,7 +16,11 @@ Ogma::Application.routes.draw do
         get :appraisal_form
       end
     end
-    resources :staff_appraisal
+    resources :staff_appraisal do
+      member do
+        get :appraisal_form
+      end
+    end
     resources :leaveforstaffs
     resources :travel_claims
     resources :staff_attendances do
