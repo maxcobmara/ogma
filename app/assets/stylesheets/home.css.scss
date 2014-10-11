@@ -29,4 +29,12 @@
   .signup {border-left: 1px solid red; margin-left:50px;}
  }
 
+ .home_bulletin {
+  background-color: #222;
+  .item {
+   h1 {font-size: 7.5em; color: #D5D5D5; border-right: 6px solid red;}
+   .content {color: white; font-size: 3em; padding: 100px 30px 10px 30px;}
+  }
+ }
+
 }
