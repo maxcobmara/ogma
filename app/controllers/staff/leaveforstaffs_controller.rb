@@ -7,6 +7,9 @@ class Staff::LeaveforstaffsController < ApplicationController
   def show
   end
   
+  def create
+  end
+  
   def new
     @leaveforstaffs = Leaveforstaff.new
 

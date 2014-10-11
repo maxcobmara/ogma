@@ -5,8 +5,17 @@ class Staff::StaffAppraisalsController < ApplicationController
     @staff_appraisals = @staff_appraisals.page(params[:page]||1)
   end
   
+
   def show
+    @staff_appraisal = StaffAppraisal.find(params[:id])
+
+    respond_to do |format|
+      format.html # show.html.erb
+      format.xml  { render :xml => @staff_appraisal }
+      format.js
+    end
   end
+
   
   def new
   @staff_appraisals = StaffAppraisal.new
