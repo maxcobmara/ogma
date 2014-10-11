@@ -60,9 +60,6 @@
  .row.home_bulletin
   = render 'bulletin'
 
-.row
 
- %BR
- %br <BR/>
- /= link_to "Sign up now!", new_user_registration_path, class: "btn btn-primary"
- = link_to image_tag("powered_by_rails.png", alt: "Rails"), 'http://rubyonrails.org/'
+ .row.developers
+  =render 'about'
