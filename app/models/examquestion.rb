@@ -132,7 +132,7 @@ class Examquestion < ActiveRecord::Base
   
   
   def self.search2(search2)
-    common_subject = Programmewhere('course_type=?','Commonsubject').pluck(:id)
+    common_subject = Programme.where('course_type=?','Commonsubject').pluck(:id)
     if search2 
       if search2 == '0'
         @examquestions = Examquestion.all
