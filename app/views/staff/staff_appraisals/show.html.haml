@@ -2,10 +2,16 @@
 .page-header
   %h1=t 'staff.staff_appraisal.Staff_Appraisal'
   
-
 = render 'shared/flashes'
 
-
+  .tform
+    = render :partial => 'show_start', :locals => {:f => f}
+    = render :partial => 'show_skt', :locals => {:f => f}
+    - if @staff_appraisal.is_skt_ppp_report_done == true
+      = render :partial => 'show_activity', :locals => {:f => f}
+    - if @staff_appraisal.is_submit_for_evaluation == true
+      = render :partial => 'show_eval_17'
+      = render :partial => 'show_eval_review'
 
 
 .row
