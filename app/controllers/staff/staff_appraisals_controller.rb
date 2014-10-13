@@ -18,7 +18,12 @@ class Staff::StaffAppraisalsController < ApplicationController
 
   
   def new
-  @staff_appraisals = StaffAppraisal.new
+    @staff_appraisal = StaffAppraisal.new
+
+    respond_to do |format|
+      format.html # new.html.erb
+      format.xml  { render :xml => @staff_appraisal }
+    end
   end
   
   def edit
