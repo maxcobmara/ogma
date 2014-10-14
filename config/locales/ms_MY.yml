@@ -282,7 +282,20 @@ ms_MY:
 
     travel_claim:
       title: Tuntutan Perjalanan
-    
+   
+  leaveforstaff:
+    title: Butir Cuti
+    details: Maklumat Cuti
+    approve_leave: Kelulusan Cuti
+    list: Senarai Staff
+    id: Nama dan No IC
+    leavetype: Jenis Cuti
+    from: Daripada
+    to: Sehingga
+    reason: Sebab
+    duration: Jangka Masa
+    replacement: Penggantian
+
   position:
     title: "Tugas & Tanggungjawab"
     index: Carta Organisasi
