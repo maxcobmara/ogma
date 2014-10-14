@@ -292,7 +292,19 @@ en:
 
     travel_claim:
       title: Travel Claims
-      
+
+  leaveforstaff:
+    title: Show Leave
+    details: Leave Details
+    approve_leave: Approve Leave
+    list: List of Staff
+    id: Staff Name and IC No
+    leavetype: Leave Type
+    from: Start Date
+    to: End Date
+    reason: Reason
+    duration: Duration
+    replacement: Replacement    
       
   position:
     title: "Tasks & Responsibilities"

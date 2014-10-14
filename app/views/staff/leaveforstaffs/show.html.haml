@@ -1,46 +1,41 @@
 - model_class = Leaveforstaff
 .page-header
-  %h1=t 'staff.travel_request.title'
+  %h1=t 'leaveforstaff.title'
 
 = render 'shared/flashes'
 
-.row
-  .col-md-offset-1
-    / Nav tabs
-    %ul.nav.nav-tabs
-      %li.active= link_to (t 'staff.staffleave.details'),"#applyshow", "data-toggle" => "tab"
-      %li= link_to (t 'staff.staffleave.approve_leave'), "#approve_leave", "data-toggle" => "tab"
+%ul.nav.nav-tabs
+  %li.active= link_to (t 'leaveforstaff.details'),"#applyshow", "data-toggle" => "tab"
+  %li= link_to (t 'leaveforstaff.approve_leave'), "#approve_leave", "data-toggle" => "tab"
 	  
-	  
-#applyshow.tab-pane.active
-  %br
-  =render 'applyshow'
-		  
-    %dt= t 'staffleave.replacement_id'
-    %dd=h @leaveforstaff.replacement_id.blank? ? "" : @leaveforstaff.replacement.name
+.tab-content.col-md-offset-1
+  %dl.dl-horizontal
+    %dt 
+    %dd
+	 
+  #applyshow.tab-pane.fade.in.active
+    %br
+      = render 'applyshow'
+		  		  
+  #approve_leave.tab-pane.fade
+    %dl.dl-horizontal
+      %dt= t 'staffleave.approval1'
+      %dd=h @leaveforstaff.approval1? ? "Approved" : "Not Approved"
           
-    %dt= t 'staffleave.entitlement'
-    %dd=h @leaveforstaff.leave_balance  @leaveforstaff.cuti_rehat_entitlement
+      %dt= t 'staffleave.approval1_id'
+      %dd=h @leaveforstaff.approval1_id.blank? ? "" : @leaveforstaff.seconder.name
 		  
-#approve_leave.tab-pane.active
-  %br 
-    %dt= t 'staffleave.approval1'
-    %dd=h @leaveforstaff.approval1? ? "Approved" : "Not Approved"
-          
-    %dt= t 'staffleave.approval1_id'
-    %dd=h @leaveforstaff.approval1_id.blank? ? "" : @leaveforstaff.seconder.name
+      %dt= t 'staffleave.approval1date'
+      %dd=h @leaveforstaff.approval1date
 		  
-    %dt= t 'staffleave.approval1date'
-    %dd=h @leaveforstaff.approval1date
+      %dt= t 'staffleave.approver2'
+      %dd=h @leaveforstaff.approver2? ? "Approved" : "Not Approved"
 		  
-    %dt= t 'staffleave.approver2'
-    %dd=h @leaveforstaff.approver2? ? "Approved" : "Not Approved"
+      %dt= t 'staffleave.approval2_id'
+      %dd=h  @leaveforstaff.approval2_id.blank? ? "Not Required" : @leaveforstaff.endorser
 		  
-    %dt= t 'staffleave.approval2_id'
-    %dd=h  @leaveforstaff.approval2_id.blank? ? "Not Required" : @leaveforstaff.endorser
-		  
-    %dt= t 'staffleave.approval2date'
-    %dd=h @leaveforstaff.approval2date
+      %dt= t 'staffleave.approval2date'
+      %dd=h @leaveforstaff.approval2date
           
 		  
 .row
