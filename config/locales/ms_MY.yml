@@ -282,20 +282,7 @@ ms_MY:
 
     travel_claim:
       title: Tuntutan Perjalanan
-   
-  leaveforstaff:
-    title: Butir Cuti
-    details: Maklumat Cuti
-    approve_leave: Kelulusan Cuti
-    list: Senarai Staff
-    id: Nama dan No IC
-    leavetype: Jenis Cuti
-    from: Daripada
-    to: Sehingga
-    reason: Sebab
-    duration: Jangka Masa
-    replacement: Penggantian
- 
+
     staff_appraisal:
       title: Penilaian Prestasi
       new: Penilaian Prestasi Baru
@@ -419,7 +406,20 @@ ms_MY:
       pppid: 'Nama PPP'
       title_part9: Bahagian IX - Ulasan Keseluruhan Oleh Pegawai Penilai Kedua
       part9_desc: 'PPK hendaklah memberi ulasan keseluruhan pencapaian PYD berasaskan ulasan keseluruhan oleh PPP'
-      ppkid: 'Name Pegawai Penilai Kedua (PPK)'
+      ppkid: 'Name Pegawai Penilai Kedua (PPK)'      
+      
+  leaveforstaff:
+    title: Butir Cuti
+    details: Maklumat Cuti
+    approve_leave: Kelulusan Cuti
+    list: Senarai Staff
+    id: Nama dan No IC
+    leavetype: Jenis Cuti
+    from: Daripada
+    to: Sehingga
+    reason: Sebab
+    duration: Jangka Masa
+    replacement: Penggantian
   
   position:
     title: "Tugas & Tanggungjawab"
