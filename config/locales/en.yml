@@ -105,7 +105,7 @@ en:
       previous: Previous
       truncate: "&hellip;"
       last: Last
-    
+      
   people:
     male: male
     female: female
@@ -492,6 +492,18 @@ en:
         g3q2_text : "Kebolehan menghayati dan melaksanakan dasar, peraturan dan arahan pentadbiran berkaitan dengan bidang tugasnya."
         g3q3_title: "&nbsp;&nbsp;KEBERKESANAN KOMUNIKASI" 
         g3q3_text : "Kebolehan menyampaikan maksud, pendapat, kefahaman atau arahan"
+  leaveforstaff:
+    title: Show Leave
+    details: Leave Details
+    approve_leave: Approve Leave
+    list: List of Staff
+    id: Staff Name and IC No
+    leavetype: Leave Type
+    from: Start Date
+    to: End Date
+    reason: Reason
+    duration: Duration
+    replacement: Replacement    
       
   position:
     title: "Tasks & Responsibilities"

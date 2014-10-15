@@ -5,6 +5,7 @@ ruby '2.1.1'
 gem 'rails', '4.1.6'
 gem "thin", "~> 1.6.2"
 gem "devise", "~> 3.3.0"
+gem 'declarative_authorization', '~> 0.5.7'
 gem 'pg', '~> 0.17.1'
 gem 'paperclip', '~> 4.2.0'
 gem "ancestry", "~> 2.1.0"
@@ -15,6 +16,9 @@ gem "prawn", "~> 1.2.1"
 gem 'prawn-table', '~> 0.1.1'
 gem "chartkick", "~> 1.3.2"
 gem 'country_select', '~> 2.0.0'
+
+
+
 #stuff for layout
 #gem "bootstrap-sass", "~> 3.0.3.0"
 gem 'sass-rails', '~> 4.0.0'
@@ -36,8 +40,11 @@ gem "whenever", "~> 0.9.2", require: false
 #gem 'rmagick', #, :git=>'http://github.com/rmagick/rmagick.git'
 gem 'rmagick', '2.13.2', :require => 'RMagick'
 gem "roo"
-group :assets do
 
+
+
+
+group :assets do
 end
 
 # See https://github.com/sstephenson/execjs#readme for more supported runtimes

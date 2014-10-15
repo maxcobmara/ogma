@@ -77,7 +77,4 @@ class Staff::StaffAppraisalsController < ApplicationController
       evactivities_attributes: [:id,:_destroy, :evaldt, :evactivity, :actlevel, :actdt], trainneeds_attributes: [:id,:_destroy, :name, :reason, :confirmedby_id, :evaluation_id])
     end
   
-  
-  
-    
 end
