@@ -295,6 +295,7 @@ en:
 
   leaveforstaff:
     title: Show Leave
+    edit: Edit Leave
     details: Leave Details
     approve_leave: Approve Leave
     list: List of Staff

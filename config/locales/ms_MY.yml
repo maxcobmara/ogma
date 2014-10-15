@@ -285,6 +285,7 @@ ms_MY:
    
   leaveforstaff:
     title: Butir Cuti
+    edit: Sunting Permohonan Cuti
     details: Maklumat Cuti
     approve_leave: Kelulusan Cuti
     list: Senarai Staff

@@ -445,5 +445,23 @@ module DropDown
          [ "Closed", "Closed" ],
          [ "Refer to BPL", "Refer to BPL" ]
     ]
+    
+    STAFFLEAVETYPE = [
+             #  Displayed       stored in db
+             [ "Cuti Rehat",1 ],
+             [ "Cuti Sakit",2],
+             [ "Cuti Tanpa Rekod",3 ],
+             [ "Cuti Separuh Gaji",4 ],
+             [ "Cuti Tanpa Gaji",5 ],
+             [ "Cuti Bersalin",6 ],
+             [ "Cuti Haji",7 ]
+     ]
+     
+     FILTERS = [
+       {:scope => "relevant",        :label => "All"},
+       {:scope => "mine",       :label => "My Leave"},
+       {:scope => "forsupport", :label => "For My Support"},
+       {:scope => "forapprove", :label => "For My Approval"}
+       ]
       
 end

@@ -4,10 +4,10 @@
     %dd=h @leaveforstaff.applicant.mykad_with_staff_name
 	
     %dt= t 'staffleave.leavetype'
-    %dd=h (Leaveforstaff::STAFFLEAVETYPE.find_all{|disp, value| value == @leaveforstaff.leavetype}).map {|disp, value| disp} [0]
+    %dd=h (DropDown::STAFFLEAVETYPE.find_all{|disp, value| value == @leaveforstaff.leavetype}).map {|disp, value| disp} [0]
 	
     %dt From :
-    %dd=h @leaveforstaff.leavestartdate.strftime("%d - %b - %Y") 
+    %dd=h @leaveforstaff.leavestartdate.try(:strftime, "%d - %b - %Y") 
 	
     %dt= t 'staffleave.reason'
     %dd=h  @leaveforstaff.reason
