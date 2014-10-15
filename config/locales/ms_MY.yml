@@ -543,12 +543,22 @@ ms_MY:
     purchasedate: Tarikh Pesanan (Tarikh LO)
     purchaseprice: Harga Beli
     receiveddate: Tarikh Terima
+    receivedby: Diterima Oleh
+    suppliedby: Dibekalkan Oleh
+    manufacturer: Pembuat
     country_id: Negara Pembuat
+    located_at: Lokasi Aset
+    assigned_to: Pegawai Bertanggungjawab
+    model: Model
+    serial_no: "No. Siri"
+    status: Status
+    other_information: Lain-Lain Maklumat
+    date: Tarikh
     engine: "Jenis & No Enjin"
     engineno: "No. Enjin"
     registration: "No. Pendaftaran"
     otherinfo: "Komponen & Aksesori"
-    serialno: "No. Siri"
+    #serialno: "No. Siri"
     
     defect:
       title: Kerosakan Aset
@@ -625,6 +635,12 @@ ms_MY:
       title: Kategori Aset
       type_model_name: "Jenis / Model / Nama"
       type_name_model: "Jenis - Jenama - Model"
+    
+    maint:
+      maintainer_id: Penyelenggara
+      workorderno: "No. Perintah Kerja"
+      maintcost: Kos Senggaraan
+      details: Butiran
     
   location:
     title: Lokasi

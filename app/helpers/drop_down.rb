@@ -474,4 +474,11 @@ module DropDown
        [ "Years", 3 ],
    ]
    
+   #Assetcategory
+  ASSETTYPE = [
+             #  Displayed       stored in db
+             ["Harta",1],
+             ["Inventory",2]
+  ]
+   
 end

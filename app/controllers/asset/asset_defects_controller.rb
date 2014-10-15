@@ -44,7 +44,7 @@ class Asset::AssetDefectsController < ApplicationController
     editingpage = params[:asset_defect][:editing_page]
     respond_to do |format|
       if @asset_defect.update(asset_defect_params)
-        format.html { redirect_to asset_defect_path, notice: t('asset.defect.title')+t('actions.updated')}
+        format.html { redirect_to asset_defect_path, notice: (t 'asset.defect.title')+(t 'actions.updated')}
         format.json { head :no_content }
       else
         if editingpage=="process2"
@@ -69,6 +69,16 @@ class Asset::AssetDefectsController < ApplicationController
                                type: "application/pdf",
                                disposition: "inline"
       end
+    end
+  end
+  
+  def destroy
+    @asset_defect = AssetDefect.find(params[:id])
+    @asset_defect.destroy
+
+    respond_to do |format|
+      format.html { redirect_to(asset_defects_url)}
+      format.xml  { head :ok }
     end
   end
    

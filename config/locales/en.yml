@@ -627,13 +627,23 @@ en:
     purchasedate: Local Order Date (LO Date)
     purchaseprice: Purchase Price
     receiveddate: Received Date
+    receivedby: Received By
+    suppliedby: Supplied By
+    manufacturer: Manufacturer
     country_id: Country of Manufacture
+    located_at: Located At
+    assigned_to: Assigned To
+    model: Model
+    serial_no: Serial No
+    status: Status
+    other_information: Other Information
+    date: Date
     engine: "Engine Type & No"
     engineno: "Engine No.:"
     registration: "Registration No."
     otherinfo: "Components & Accessories"
     administered_by: "Administered By"
-    serialno: Serial No
+    #serialno: Serial No
     
     defect:
       title: Asset Defect
@@ -711,7 +721,11 @@ en:
       type_model_name: "Type / Model / Name"
       type_name_model: "Type - Brand - Model"
     
-
+    maint:
+      maintainer_id: Maintainer
+      workorderno: "Work Order No"
+      maintcost: Maintainance Cost
+      details: Details
     
   stationery:
     title: Office Supplies
