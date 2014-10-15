@@ -1,0 +1,62 @@
+.col-md-10.col-md-offset-1 
+  .form-group
+    .col-md-7
+      %b= t 'evaluation.form.title_part9' 
+    .col-md-1
+      &nbsp;
+    %hr
+.col-md-10.col-md-offset-2 
+  .form-group
+    .col-sm-2.control-label
+      = t 'evaluation.form.part8_desc'
+    .col-md-1
+      = f.select :e2_years, 0..21, {},{class: 'selectpicker',  "data-width"=>'70px'} 
+    .col-md-1
+      = t 'years_label' 
+    .col-md-1
+      = f.select :e2_months, 0..11, {},{class: 'selectpicker',  "data-width"=>'70px'} 
+    .col-md-1
+      = t 'months_label' 
+.col-md-10.col-md-offset-2
+  .form-group
+    .col-sm-2.control-label
+      = t 'evaluation.form.part9_desc'
+    .col-md-6
+      = f.text_area :e2_performance, :size => '50x5', class: 'form-control'
+  .form-group
+    .col-sm-2.control-label
+      = t 'evaluation.form.ppkid'
+    .col-md-6
+      = @staff_appraisal.eval2_officer.name
+  .form-group
+    .col-sm-2.control-label
+      = f.label :is_complete
+    .col-md-1
+      = f.check_box :is_complete, :id => 'is_complete'
+    .col-md-2
+      #span_is_complete{:style=>"display: none;"}
+        = f.text_field :is_completed_on, :class => 'date_picker form-control'   
+  .form-group
+    .col-sm-2
+      &nbsp;
+    .col-md-5
+      = t 'evaluation.form.lock'
+        
+:javascript
+
+$(document).ready(function(){
+  $("input[id='is_complete']").change(function() {  
+    if($('#is_complete').is(':checked')) { 
+      $("#span_is_complete").show("highlight"); 
+    }else{
+      $("#span_is_complete").hide(""); 
+    }
+  });
+  $("input[id='is_complete']").each(function() {  
+    if($('#is_complete').is(':checked')) { 
+      $("#span_is_complete").show("highlight"); 
+    }else{
+      $("#span_is_complete").hide(""); 
+    }
+  });
+});

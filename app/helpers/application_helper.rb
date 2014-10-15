@@ -31,7 +31,11 @@ module ApplicationHelper
   end
 
   def link_to_remove_fields(name, f)
-    f.hidden_field(:_destroy) + link_to_function(name, "remove_fields(this)")
+    #f.hidden_field(:_destroy) + link_to_function(name, "remove_fields(this)")
+    #f.hidden_field(:_destroy)+( link_to name, "#",  :onclick=>h("remove_fields($(this),\"#{f.object_name}\")") )
+    f.hidden_field(:_destroy)+( link_to name, "#",  :onclick=>h("remove_fields($(this),\"#{f}\")") )
+    #link_to name, "#",  :onclick=>h("remove_fields($(this),\"#{f.object_name}\")") 
+    #link_to name, "#",  :onclick=>h("remove_fields($(this),\"#{f.object_name}[_destroy]}\")") 
   end
 
   def currency(value)

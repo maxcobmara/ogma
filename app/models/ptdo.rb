@@ -1,4 +1,6 @@
 class Ptdo < ActiveRecord::Base
+  belongs_to  :ptschedule
+  belongs_to  :staff
 end
 
 # == Schema Information

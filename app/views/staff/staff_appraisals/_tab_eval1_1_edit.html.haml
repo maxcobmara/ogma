@@ -1,0 +1,212 @@
+.col-md-10.col-md-offset-1
+  .row
+    .col-sm-3
+      %b= t 'evaluation.form.title_part3'
+    .col-sm-1
+      %b PPP
+    .col-sm-7
+      %b= t 'evaluation.form.description'
+    %hr
+  .row
+    .col-md-3= (t 'evaluation.form.one')+(t 'evaluation.form.quantity')
+    .col-md-1= f.text_field :e1g1q1, :class => "g1",  :placeholder => 0
+    .col-md-7= t 'evaluation.form.quantity_desc' 
+  .row
+    .col-md-3= (t 'evaluation.form.two')+(t 'evaluation.form.quality')
+    .col-md-1= f.text_field :e1g1q2, :class => "g1",  :placeholder => 0 
+    .col-md-7= t 'evaluation.form.quanlity_desc1' 
+  .row
+    .col-md-3 &nbsp;
+    .col-md-1= f.text_field :e1g1q3, :class => "g1",  :placeholder => 0 
+    .col-md-7= t 'evaluation.form.quanlity_desc2' 
+  .row
+    .col-md-3= (t 'evaluation.form.three')+(t 'evaluation.form.ontime')
+    .col-md-1= f.text_field :e1g1q4, :class => "g1",  :placeholder => 0 
+    .col-md-7= t 'evaluation.form.ontime_desc' 
+  .row
+    .col-md-3= (t 'evaluation.form.four')+(t 'evaluation.form.effective')
+    .col-md-1= f.text_field :e1g1q5, :class => "g1",  :placeholder => 0 
+    .col-md-7= t 'evaluation.form.effective_desc'
+  %br
+  .row
+    .col-md-3= t 'evaluation.form.total'
+    .col-md-1= f.text_field :e1g1_total, readonly: 'readonly', class:'form-control'
+    .col-md-1 
+      x 50 = 
+    .col-md-1
+      = f.text_field :e1g1_percent, readonly: 'readonly', class:'form-control'
+    .col-md-1
+      = t 'evaluation.form.percent'
+  .row
+    .col-md-3 &nbsp;
+    .col-md-1= (@staff_appraisal.g1_questions)*10
+    .col-md-7 &nbsp;
+  %br
+  .row
+    .col-sm-3
+      %b= t 'evaluation.form.title_part4b'
+    .col-sm-1
+      %b PPP
+    .col-sm-7
+      %b= t 'evaluation.form.description'
+    %hr
+  .row
+    .col-md-3= (t 'evaluation.form.one')+(t 'evaluation.form.management')
+    .col-md-1= f.text_field :e1g2q1, :class => "e1g2", :placeholder => 0
+    .col-md-7= t 'evaluation.form.management_desc'
+  .row
+    .col-md-3= (t 'evaluation.form.two')+(t 'evaluation.form.discipline')
+    .col-md-1= f.text_field :e1g2q2, :class => "e1g2",  :placeholder => 0 
+    .col-md-7= t 'evaluation.form.discipline_desc' 
+  .row
+    .col-md-3= (t 'evaluation.form.three')+(t 'evaluation.form.proactive')
+    .col-md-1= f.text_field :e1g2q3, :class => "e1g2", :placeholder => 0
+    .col-md-7= t 'evaluation.form.proactive_desc'
+  .row
+    .col-md-3= (t 'evaluation.form.four')+(t 'evaluation.form.relate')
+    .col-md-1= f.text_field :e1g2q4, :class => "e1g2", :placeholder => 0
+    .col-md-7= t 'evaluation.form.relate_desc'
+  %br
+  .row
+    .col-md-3= t 'evaluation.form.total'
+    .col-md-1= f.text_field :e1g2_total, readonly: 'readonly', class:'form-control'
+    .col-md-1 
+      x 25 = 
+    .col-md-1
+      = f.text_field :e1g2_percent, readonly: 'readonly', class:'form-control'
+    .col-md-1
+      = t 'evaluation.form.percent'
+  .row
+    .col-md-3 &nbsp;
+    .col-md-1= (@staff_appraisal.g2_questions)*10
+    .col-md-7 &nbsp;
+  %br
+  .row
+    .col-sm-3
+      %b= t 'evaluation.form.title_part5b'
+    .col-sm-1
+      %b PPP
+    .col-sm-7
+      %b= t 'evaluation.form.description'
+    %br
+    %hr
+  .row
+    .col-md-3= (t 'evaluation.form.one')+(t 'evaluation.form.knowledge')
+    .col-md-1= f.text_field :e1g3q1, :class => "e1g3",  :placeholder => 0 
+    .col-md-7= t 'evaluation.form.knowledge_desc'
+  .row
+    .col-md-3= (t 'evaluation.form.two')+(t 'evaluation.form.rules')
+    .col-md-1= f.text_field :e1g3q2, :class => "e1g3",  :placeholder => 0 
+    .col-md-7= t 'evaluation.form.rules_desc'
+  .row
+    .col-md-3= (t 'evaluation.form.three')+(t 'evaluation.form.communication')
+    .col-md-1= f.text_field :e1g3q3, :class => "e1g3", :placeholder => 0 
+    .col-md-7= t 'evaluation.form.communication_desc' 
+  %br
+  .row
+    .col-md-3= t 'evaluation.form.total'
+    .col-md-1= f.text_field :e1g3_total, readonly: 'readonly', class:'form-control'
+    .col-md-1 
+      x 20 = 
+    .col-md-1
+      = f.text_field :e1g3_percent, readonly: 'readonly', class:'form-control'
+    .col-md-1
+      = t 'evaluation.form.percent'
+  .row
+    .col-md-3 &nbsp;
+    .col-md-1= (@staff_appraisal.g3_questions)*10 
+    .col-md-7 &nbsp;
+  %br
+  .row
+    .col-sm-3
+      %b= t 'evaluation.form.title_part6'
+    .col-sm-1
+      %b PPP
+    .col-sm-7
+      %b= t 'evaluation.form.description'
+    %hr
+  .row
+    .col-md-3= t 'evaluation.form.parttwo'
+    .col-md-1
+      = f.text_field :e1g4, :class => "e1g4", :placeholder => 0
+      x 5 =
+      = f.text_field :e1g4_percent, readonly: 'readonly', class:'form-control'
+      = t 'evaluation.form.percent'
+    .col-md-7
+      = t 'evaluation.form.parttwo_desc'
+  %br
+  .row
+    .col-sm-3
+      %b= t 'evaluation.form.total'
+    .col-sm-1
+      %b PPP
+    .col-sm-7
+      %b= t 'evaluation.form.description'
+    %hr
+  .row
+    .col-md-3
+      = t 'evaluation.form.total'
+    .col-md-1
+      = f.text_field :e1_total, readonly: 'readonly', class:'form-control'
+    .col-md-7
+      = t 'evaluation.form.total_percent'
+  %br   
+
+:javascript
+$(document).ready(function(){
+  $(".g1").keyup(function() {  
+    var e1g1q1 = $("#staff_appraisal_e1g1q1").val();
+    var e1g1q2 = $("#staff_appraisal_e1g1q2").val();
+    var e1g1q3 = $("#staff_appraisal_e1g1q3").val();
+    var e1g1q4 = $("#staff_appraisal_e1g1q4").val();
+    var e1g1q5 = $("#staff_appraisal_e1g1q5").val();
+    
+    var ansP = document.getElementById("staff_appraisal_e1g1_percent");
+    ansP.value = (((e1g1q1*1) + (e1g1q2*1) + (e1g1q3*1) + (e1g1q4*1) + (e1g1q5*1))*0.02)*50;
+
+    var ansG = document.getElementById("staff_appraisal_e1g1_total");
+    ansG.value = (e1g1q1*1) + (e1g1q2*1) + (e1g1q3*1) + (e1g1q4*1) + (e1g1q5*1);
+  });
+
+  $(".e1g2").keyup(function() {  
+    var e1g2q1 = $("#staff_appraisal_e1g2q1").val();
+    var e1g2q2 = $("#staff_appraisal_e1g2q2").val();
+    var e1g2q3 = $("#staff_appraisal_e1g2q3").val();
+    var e1g2q4 = $("#staff_appraisal_e1g2q4").val();
+
+    var ansH = document.getElementById("staff_appraisal_e1g2_total");
+    ansH.value = (e1g2q1*1) + (e1g2q2*1) + (e1g2q3*1) + (e1g2q4*1);
+
+    var ansK = document.getElementById("staff_appraisal_e1g2_percent");
+    ansK.value = (((e1g2q1*1) + (e1g2q2*1) + (e1g2q3*1)  + (e1g2q4*1))*0.025)*25;
+  });
+
+  $(".e1g3").keyup(function() {  
+    var e1g3q1 = $("#staff_appraisal_e1g3q1").val();
+    var e1g3q2 = $("#staff_appraisal_e1g3q2").val();
+    var e1g3q3 = $("#staff_appraisal_e1g3q3").val();
+
+    var ansL = document.getElementById("staff_appraisal_e1g3_total");
+    ansL.value = (e1g3q1*1) + (e1g3q2*1) + (e1g3q3*1);
+
+    var ansM = document.getElementById("staff_appraisal_e1g3_percent");
+    ansM.value = (((e1g3q1*1) + (e1g3q2*1) + (e1g3q3*1))*0.0333333333)*20;			
+  });
+
+  $(".e1g4").keyup(function() {  
+    var e1g4q1 = $("#staff_appraisal_e1g4").val();
+
+    var ansN = document.getElementById("staff_appraisal_e1g4_percent");
+    ansN.value = ((e1g4q1*1)/10)*5;
+  });
+
+  $(".g1,.e1g2,.e1g3,.e1g4").keyup(function() {  
+    var sub1 = $("#staff_appraisal_e1g1_percent").val();
+    var sub2 = $("#staff_appraisal_e1g2_percent").val();
+    var sub3 = $("#staff_appraisal_e1g3_percent").val();
+    var sub4 = $("#staff_appraisal_e1g4_percent").val();
+
+    var ansQ = document.getElementById("staff_appraisal_e1_total");
+    ansQ.value = (sub1*1) + (sub2*1) + (sub3*1) + (sub4*1);
+  });
+});

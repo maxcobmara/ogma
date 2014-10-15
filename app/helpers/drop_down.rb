@@ -446,4 +446,32 @@ module DropDown
          [ "Refer to BPL", "Refer to BPL" ]
     ]
       
+   #evactivities (staff appraisal)
+   EVACT = [
+          #  Displayed       stored in db
+          [ "Komuniti","1" ],
+          [ "Jabatan","2" ],
+          [ "Daerah", "3" ],
+          [ "Negeri", "4" ],
+          [ "Negera", "5" ],
+          [ "Antarabangsa", "9" ]
+   ]
+   
+   #ptcourse
+    COURSE_TYPE = [
+       #  Displayed       stored in db
+       [ "In-House",              5 ],
+       [ "External Short Course",10 ],
+       [ "Seminar",              15 ],
+       [ "Certificate",          20 ],
+       [ "Diploma/Others",       25 ],
+   ]
+  
+   DUR_TYPE = [
+       #  Displayed       stored in db
+       [ "Days",  1 ],
+       [ "Months",2 ],
+       [ "Years", 3 ],
+   ]
+   
 end
