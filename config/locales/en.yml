@@ -494,6 +494,7 @@ en:
         g3q3_text : "Kebolehan menyampaikan maksud, pendapat, kefahaman atau arahan"
   leaveforstaff:
     title: Show Leave
+    edit: Edit Leave
     details: Leave Details
     approve_leave: Approve Leave
     list: List of Staff

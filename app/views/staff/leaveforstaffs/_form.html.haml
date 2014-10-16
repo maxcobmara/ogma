@@ -2,7 +2,7 @@
   .col-md-10.col-md-offset-1
     / Nav tabs
     %ul.nav.nav-tabs
-      %li.active= link_to (t 'staff.leaveforstaff.details'),"#leaveforstaff_details_edit", "data-toggle" => "tab"
+      %li.active= link_to (t 'leaveforstaff.details'),"#leaveforstaff_details_edit", "data-toggle" => "tab"
 
       
     .tab-content{style:"padding-top:1em"}
@@ -17,7 +17,7 @@
           .col-sm-2.control-label
             = f.label :leavetype
           .col-md-3
-            = f.select :leavetype, Leaveforstaff::STAFFLEAVETYPE, :prompt => "Select", class: 'form-control mandatory'
+            = f.select :leavetype, DropDown::STAFFLEAVETYPE, :prompt => "Select", class: 'form-control mandatory'
 			
         .form-group
           .col-sm-2.control-label
