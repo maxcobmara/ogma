@@ -9,16 +9,38 @@
     .col-sm-2= f.text_field :km_money, placeholder: 'Value in RM', class: 'form-control'
     .col-sm-1
       = link_to content_tag(:i, "", class: "fa fa-trash-o"), data: {"data-toggle" => "tooltip", title: "Delete"}, class: "btn btn-danger remove_fields"
-      
-  :javascript
+      = link_to_remove_fields image_tag("delete.png", :border => 0, :title => 'Remove'), f 
+      /= link_to content_tag(:i,"", class: "fa-fa-trash-o"), '#', :onclick => '$(this).parent().parent().hide()', title: "Delete", class: "btn btn-danger remove_fields"
+      = link_to content_tag(:i,"", class: "fa-fa-trash-o"), '#', :onclick => 'rmv_field($(this))', title: "Delete", class: "btn btn-danger remove_fields"
+      /= link_to content_tag(:i,"", class: "fa-fa-trash-o"), '#', :onclick => 'rmv_field($(this).parent().parent(),#{f.object_name})', title: "Delete", class: "btn btn-danger remove_fields"
+        
+      = f.object_name
+      = f.object_id
+      = f.object.id
 
-    $('.date_picker').datetimepicker({
-     timepicker:false,
-       format: "Y-m-d",
-       autoclose: true
-     });
-    $('.time_picker').datetimepicker({
-     datepicker:false,
-       format:'H:i',
-       step:5,
-    });
+:javascript
+  
+  $(document).ready(function(){
+  });
+  
+  function rmv_field(curr_fieldset) {
+    $(curr_fieldset).parent().parent().hide();
+  }
+
+  $('.date_picker').datetimepicker({
+    timepicker:false,
+    format:'Y-m-d',
+    formatDate:'Y-m-d'
+  });
+  $('.time_picker').datetimepicker({
+    datepicker:false,
+    format:'H:i',
+    step:5,
+  });
+
+  function remove_fields(link,fm) {
+    $(link).parent().parent().hide();
+    $(fm).$("input[type=hidden]").value = "1";
+  }
+/document.getElementByName(fm+'[_destroy]').val()=true;
+/$(fm).value= '1';

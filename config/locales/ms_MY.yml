@@ -282,9 +282,135 @@ ms_MY:
 
     travel_claim:
       title: Tuntutan Perjalanan
-   
+
+    staff_appraisal:
+      title: Penilaian Prestasi
+      new: Penilaian Prestasi Baru
+      edit: Sunting Penilaian Prestasi
+      skt: "SKT"
+      skt_endorse: "Kelulusan SKT"
+      skt_review_staff: "Kajian Semula SKT & Laporan PYD"
+      skt_review_eval1: "SKT - Laporan & Ulasan PPP"
+      activity: Aktiviti
+      eval1_1_17_41: "Pemarkahan (PPP)"
+      eval1_review: Semakan
+      eval2_1_17_41: "Pemarkahan (PPK)"
+      eval2_review: Penilaian Prestasi
+        
+    evactivity:
+      actdt: Tarikh
+      
+  evaluation:
+    #common:
+    skt: 
+      title: "Lampiran A : Bahagian I - Penetapan Sasaran Kerja Tahunan"
+      description: "Deskripsi Aktiviti & Projek"
+      performance: Penunjuk Prestasi
+      priority: Keutamaan
+      submit_notify: "Penghantaran SKT akan dimaklumkan kepada Pegawai Penilai Pertama (PPP) dan tiada suntingan boleh dibuat ke atas rekod ini lagi."
+      endorse_notify: "Sebaik sahaja diluluskan, tiada suntingan boleh dibuat ke atas rekod ini lagi."
+      submit_report: "Penghantaran laporan akan dimaklumkan kepada Pegawai Penilai Pertama (PPP) dan tiada sutingan boleh dibuat ke atas rekod ini lagi."
+      skt_ppp_report: "Sebaik SKT selesai, Pegawai Penilai Pertama (PPP) akan dimaklumkan dan tiada suntingan boleh dibuat ke atas rekod ini lagi."
+
+
+    skt_review:
+      title: "Lampiran A : Bahagian II - Kajian Semula Sasaran Kerja Tahunan Pertengahan Tahun"
+      drop: "Aktiviti / Projek Yang Digugurkan"
+      add: "Aktiviti / Projek Yang Ditambah"
+      drop2: Gugur
+      title3: "Lampiran A : Bahagian III - Laporan & Ulasan"
+      #pyd_report: "1. Laporan Oleh PYD"
+      #ppp_report: "2. Laporan Oleh PPP"
+      #yellow_form:
+      #  quantity: 1. WORK OUTPUT QUANTITY
+    
+    form:
+      description: Deskripsi
+      level: Peringkat
+      training_name: Nama Latihan
+      type: Jenis
+      date: Tarikh
+      duration: Tempoh
+      reason: Sebab
+      days: Hari
+      total: Jumlah
+      percent: "%"
+      division: "/ "
+      #total_percent: "Peratus [Bahagian II 50% dan Bahagian III 50%]"
+      total_percent: "Pegawai Penilai dikehendaki mencatatkan jumlah markah keseluruhan yang diperolehi oleh PYD dalam bentuk peratus (%) berdasarkan jumlah markah bagi setiap Bahagian yang diberi markah."
+      one: "1. "
+      two: "2. "
+      three: "3. "
+      four: "4. "
+      five: "5. "
+      submit_ppk: "Sebaik selesai ulasan keseluruhan dan pengesahan, Pegawai Penilai Kedua (PPK) akan dimaklumkan dan tiada suntingan boleh dibuat ke atas rekod ini lagi."
+      lock: "Sebaik selesai keseluruhan Penilaian Prestasi, tiada suntingan boleh dibuat ke atas rekod ini lagi."
+      list: Senarai Penilai
+      create: Cipta Penilai Baru
+      new: Penilai Baru
+      title_part1: 'Bahagian 1: Butiran Kakitangan (diisi oleh PYD)'
+      name: Nama Kakitangan
+      icno: MyKad No
+      position: Jawatan Kakitangan
+      evaluationdate: Tarikh Penilaian
+      remark: Anda tidak mempunyai pegawai atasan di dalam sistem. Hubungi pengurusan sistem (system administrator) untuk bantuan.
+      ppp: First Evaluating Officer (PPP)
+      ppk: Second Evaluating Officer (PPK)
+      title_partIIa: 'Bahagian IIa - Kegiatan'
+      label_001: '1. Kegiatan dan Sumbangan Di Luar Tugas Rasmi'
+      label_002: 'Senaraikan kegiatan dan sumbangan di luar tugas rasmi seperti sukan /pertubuhan /sumbangan kreatif di peringkat Komuniti /Jabatan/Daerah/Negeri/Negara /Antarabangsa yang berfaedah kepada Organisasi/Komuniti/Negara pada tahun yang dinilai.'
+      title_part2b: 'Bahagian IIb:  Latihan'
+      label_003: '(i) Senaraikan program latihan (seminar,kursus,bengkel dan lain-lain) yang dihadiri dalam tahun yang dinilai'
+      label_004: '(ii) Senaraikan latihan yang diperlukan.'
+      parttwodate: Tarikh
+      label_005: Kriteria Evaluasi
+      title_part3: 'Bahagian III: Penghasilan Kerja (50%)'
+      quantity: KUANTITI HASIL KERJA
+      quantity_desc: 'Kuantiti hasil kerja seperti jumlah,bilangan,kadar,kekerapan dan sebagainya berbanding dengan sasaran kuantiti kerja yang ditetapkan.'
+      quality: KUALITI HASIL KERJA
+      quanlity_desc1: '1. Dinilai dari segi kesempurnaan,teratur dan kemas.'
+      quanlity_desc2: '2. Dinilai dari segi usaha dan inisiatif untuk mencapai kesempurnaan hasil kerja.'
+      ontime: KETEPATAN MASA
+      ontime_desc: 'Kebolehan menghasilkan kerja atau melaksanakan tugas dalam tempoh masa yang ditetapkan.'
+      effective: KEBERKESANAN HASIL KERJA
+      effective_desc: 'Dinilai dari segi memenuhi kehendak stake-holder atau pelanggan.'
+      title_part4: 'Bahagian IV: Pengetahuan dan Kemahiran (25%)'
+      title_part5b: 'Bahagian V: Pengetahuan dan Kemahiran (20%)'
+      knowledge: ILMU PENGETAHUAN DAN KEMAHIRAN DALAM BIDANG KERJA
+      knowledge_desc: 'Mempunyai ilmu pengetahuan dan kemahiran/kepakaran dalam menghasilkan kerja meliputi kebolehan mengenalpasti, menganalisis serta menyelesaikan masalah.'
+      rules: PELAKSANAAN DASAR PERATURAN DAN ARAHAN PENTADBIRAN
+      rules_desc: 'Kebolehan menghayati dan melaksanakan dasar, peraturan dan arahan pentadbiran berkaitan dengan bidang tugasnya.'
+      communication: KEBERKESANAN KOMUNIKASI
+      communication_desc: 'Kebolehan menyampaikan maksud,pendapat,kefahaman atau arahan secara lisan dan tulisan berkaitan denganbidang tugas merangkumi penguasaan menggunakan tatabahasa dan persembahan yang baik.'
+      title_part4b: 'Bahagian IV: Kualiti Peribadi (25%)'
+      title_part5: 'Bahagian V: Kualiti Peribadi (20%)'
+      leadership: CIRI-CIRI PEMIMPIN
+      leadership_desc: 'Mempunyai wawasan, komitment, kebolehan, membuat, keputusan, menggerak dan memberi dorongan kepada pegawai ke arah pencapaian objecktif orgnisasi.'
+      management: KEBOLEHAN MENGELOLA
+      management_desc: 'Keupayaan dan kebolehan menggembleng segala sumber dalam kawalannya seperti kewangan, tenaga manusia, peralatan dan maklumat bagi merancang,mengatur,membahagi dan mengendalikan sesuatu tugas untuk mencapai objective organisasi.'
+      discipline: DISIPLIN
+      discipline_desc: 'Mempunyai daya kawal diri dari segi mental dan fizikal termasuk mematuhi peraturan, menepati masa,menunaikan janji dan bersifat sabar.'
+      proactive: PROAKTIF DAN INOVATIF
+      proactive_desc: 'Kebolehan menjangka kemungkinan,mencipta dan mengeluarkan idea baru serta membuat pembaharuan bagi mempertingkatkan kualiti dan produktiviti organisasi.'
+      relate: JALINAN HUBUNGAN DAN KERJASAMA 
+      relate_desc: 'Kebolehan pegawai dalam mewujudkan suasana kerjasama yang harmoni dan mesra serta boleh menyesuaikan diri dalam semua keadaan.'
+      title_part6: 'Bahagian VI: Sumbangan (5%)'
+      parttwo: KEGIATAN DAN SUMBANGAN DI LUAR TUGAS RASMI 
+      parttwo_desc: 'Berasaskan maklumat di Bahagian II perenggan 1,Pegawai Penilai dikehendaki memberi penilaian dengan menggunakan skala 1 hingga 10. Tiada sebarang markah boleh diberikan (kosong) jika PYD tidak mencatat kegiatan atau sumbangannya.'
+      title_part8: 'Bahagian VIII: Ulasan Keseluruhan Dan Pengesahan Oleh Pegawai Penilai Pertama'
+      part8_desc: 'Tempoh PYD bertugas di bawah pengawasan '
+      part8i_desc: 'Penilai Pertama hendaklah memberi ulasan keseluruhan prestasi PYD'
+      part8i: '(i) Prestasi Keseluruhan'
+      part8ii: '(ii) Kemajuan Kerjaya'
+      ppp_statement: 'Adalah disahkan bahawa prestasi pegawai ini telah dimaklumkan kepada PYD'
+      pppid: 'Nama PPP'
+      title_part9: Bahagian IX - Ulasan Keseluruhan Oleh Pegawai Penilai Kedua
+      part9_desc: 'PPK hendaklah memberi ulasan keseluruhan pencapaian PYD berasaskan ulasan keseluruhan oleh PPP'
+      ppkid: 'Name Pegawai Penilai Kedua (PPK)'      
+      
   leaveforstaff:
     title: Butir Cuti
+    edit: Sunting Permohonan Cuti
     details: Maklumat Cuti
     approve_leave: Kelulusan Cuti
     list: Senarai Staff
@@ -295,7 +421,7 @@ ms_MY:
     reason: Sebab
     duration: Jangka Masa
     replacement: Penggantian
-
+  
   position:
     title: "Tugas & Tanggungjawab"
     index: Carta Organisasi
@@ -418,12 +544,22 @@ ms_MY:
     purchasedate: Tarikh Pesanan (Tarikh LO)
     purchaseprice: Harga Beli
     receiveddate: Tarikh Terima
+    receivedby: Diterima Oleh
+    suppliedby: Dibekalkan Oleh
+    manufacturer: Pembuat
     country_id: Negara Pembuat
+    located_at: Lokasi Aset
+    assigned_to: Pegawai Bertanggungjawab
+    model: Model
+    serial_no: "No. Siri"
+    status: Status
+    other_information: Lain-Lain Maklumat
+    date: Tarikh
     engine: "Jenis & No Enjin"
     engineno: "No. Enjin"
     registration: "No. Pendaftaran"
     otherinfo: "Komponen & Aksesori"
-    serialno: "No. Siri"
+    #serialno: "No. Siri"
     
     defect:
       title: Kerosakan Aset
@@ -500,6 +636,12 @@ ms_MY:
       title: Kategori Aset
       type_model_name: "Jenis / Model / Nama"
       type_name_model: "Jenis - Jenama - Model"
+    
+    maint:
+      maintainer_id: Penyelenggara
+      workorderno: "No. Perintah Kerja"
+      maintcost: Kos Senggaraan
+      details: Butiran
     
   location:
     title: Lokasi
@@ -1417,6 +1559,20 @@ ms_MY:
         add_log: Tambah Log
         code: Kod Permohonan Perjalanan
 
+      staff_appraisal:
+        staff_id: Staf
+        evaluation_year: Tahun Penilaian
+        is_skt_submit: Hantar SKT untuk Kelulusan
+        is_skt_endorsed: Luluskan SKT
+        add_activity: Tambah Aktiviti
+        skt_pyd_report: "1. Laporan Oleh PYD"
+        is_skt_pyd_report_done: Hantar kepada PPP untuk Laporan
+        skt_ppp_report: "2. Laporan Oleh PPP"
+        is_skt_ppp_report_done: "Laporan Selesai?"
+        add_training: Tambah Latihan
+        is_submit_e2: Hantar untuk Pemarkahan oleh PPK
+        is_complete: "Penilaian Prestasi Selesai?"
+        
       asset_disposal:
         asset_id: Aset
         current_condition: Keadaan Aset
@@ -1478,6 +1634,7 @@ ms_MY:
       select_document: Pilih Dokumen Rujukan
       select_staff: Pilih Staf
       select_marked_asset: Pilih Aset Untuk Pelupusan
+      select_level: Pilih Peringkat
       all_unit: "Semua Jabatan / Unit"
       maintain: Dikekalkan
       remove: Dibuang

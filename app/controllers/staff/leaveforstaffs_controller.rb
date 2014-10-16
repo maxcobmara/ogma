@@ -13,23 +13,52 @@ class Staff::LeaveforstaffsController < ApplicationController
     end
   end
   
+  def edit
+    @leaveforstaff = Leaveforstaff.find(params[:id])
+  end
+  
+  def update
+    @leaveforstaff = Leaveforstaff.find(params[:id])
+
+    respond_to do |format|
+      if @leaveforstaff.update(leaveforstaff_params)
+        format.html { redirect_to(params[:redirect_location], :notice =>t('actions.updated')) }
+        format.xml  { head :ok }
+      
+      else
+        format.html { render :action => "edit" }
+        format.xml  { render :xml => @leaveforstaff.errors, :status => :unprocessable_entity }
+      end
+    end
+  end
+  
   def create
-      @leaveforstaffs = Leaveforstaff.new(leaveforstaff_params)
+      @leaveforstaff = Leaveforstaff.new(leaveforstaff_params)
 
       respond_to do |format|
-        if @leaveforstaffs.save
+        if @leaveforstaff.save
           flash[:notice] = 'Leaveforstaff was successfully created.'
-          format.html { redirect_to(@leaveforstaffs) }
-          format.xml  { render :xml => @leaveforstaffs, :status => :created, :location => @leaveforstaffs }
+          format.html { redirect_to(staff_leaveforstaff_path(@leaveforstaff)) }
+          format.xml  { render :xml => @leaveforstaff, :status => :created, :location => @leaveforstaff }
         else
           format.html { render :action => "new" }
-          format.xml  { render :xml => @leaveforstaffs.errors, :status => :unprocessable_entity }
+          format.xml  { render :xml => @leaveforstaff.errors, :status => :unprocessable_entity }
         end
       end
     end
 
     # PUT /leaveforstaffs/1
     # PUT /leaveforstaffs/1.xml
+    
+    def destroy
+      @leaveforstaff = Leaveforstaff.find(params[:id])
+      @leaveforstaff.destroy
+
+      respond_to do |format|
+        format.html { redirect_to(staff_leaveforstaffs_url) }
+        format.xml  { head :ok }
+      end
+    end
   
   def new
     @leaveforstaffs = Leaveforstaff.new
@@ -48,6 +77,6 @@ end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def leaveforstaff_params
-      params.require(:leaveforstaff).permit(:staff_id, :leavetype, :reason, :notes, :approval1)
+      params.require(:leaveforstaff).permit(:staff_id, :leavetype, :leavestartdate, :leavenddate, :reason, :notes, :approval1)
     end
 end

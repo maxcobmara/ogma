@@ -28,9 +28,9 @@
     - @leaveforstaffs.each do |leaveforstaff|
       %tr
         %td= link_to leaveforstaff.applicant.try(:mykad_with_staff_name), staff_leaveforstaff_path(leaveforstaff)
-        %td= (Leaveforstaff::STAFFLEAVETYPE.find_all{|disp, value| value == leaveforstaff.leavetype}).map {|disp, value| disp} [0]
-        %td= leaveforstaff.leavestartdate.strftime("%a, %d %b")
-        %td= leaveforstaff.leavenddate.strftime("%a, %d %b")
+        %td= (DropDown::STAFFLEAVETYPE.find_all{|disp, value| value == leaveforstaff.leavetype}).map {|disp, value| disp} [0]
+        %td= leaveforstaff.leavestartdate.try(:strftime, "%a, %d %b")
+        %td= leaveforstaff.leavenddate.try(:strftime, "%a, %d %b")
         %td= leaveforstaff.reason
         %td= leaveforstaff.leave_for
         %td= leaveforstaff.replacement_id.blank? ? "None" : leaveforstaff.replacement.name

@@ -51,4 +51,4 @@
     .col-sm-2.control-label
       = f.label t 'events.cb', for: :staff_name
     .col-md-2
-      = f.collection_select :createdby, Staff.find(:all), :id, :name, {:include_blank => true}, {class: 'selectpicker', "data-width"=>"300px"}
+      = f.collection_select :createdby, Staff.all, :id, :name, {:include_blank => true}, {class: 'selectpicker', "data-width"=>"300px"}

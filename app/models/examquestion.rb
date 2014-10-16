@@ -123,8 +123,8 @@ class Examquestion < ActiveRecord::Base
   def question_approver #to assign question -> KP
     ###latest finding - as of Mei-Jul/Aug 2013 - approver should be at Ketua Program level ONLY (own programme @ other programme)### 
     
-    role_kp = Role.find_by_name('Programme Manager')  #must have role as Programme Manager
-    staff_with_kprole = Login.joins(:roles).where('role_id=?',role_kp).pluck(:staff_id).compact.uniq
+    role_kp = Role.where(name: 'Programme Manager').pluck(:id) #must have role as Programme Manager
+    staff_with_kprole = Login.joins(:roles).where('role_id IN(?)',role_kp).pluck(:staff_id).compact.uniq
     programme_name = Programme.roots.map(&:name)    #must be among Academic Staff 
     approver = Staff.joins(:positions).where('unit IN(?) AND staff_id IN(?)', programme_name, staff_with_kprole).pluck(:staff_id)
     approver   

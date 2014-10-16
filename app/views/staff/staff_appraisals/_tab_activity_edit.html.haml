@@ -1,0 +1,86 @@
+.col-md-8.col-md-offset-1
+  /Part IIa - 1. Activities (Activities & Contributions Outside of Official Duties)
+  %b=t 'evaluation.form.title_partIIa'
+  .row
+    .col-sm-7= t 'evaluation.form.label_001'
+    .col-sm-3= t 'evaluation.form.level'
+    %hr
+  = f.fields_for :evactivities do |builder|
+    = render 'evactivity_fields', :f => builder
+  %br
+  .row
+    /= link_to_add_fields image_tag("add.png", :border => 0, :title => t('addmore')), f, :travel_claim_logs
+    = link_to_add_fields t('helpers.label.staff_appraisal.add_activity'), f, :evactivities, "",  t('helpers.label.staff_appraisal.add_activity')
+  %br
+  
+  /Part IIb - i) List Attended Training
+  %b=t 'evaluation.form.title_part2b'
+  %BR
+  %b=t 'evaluation.form.label_003'
+  .row
+    .col-sm-5= t 'evaluation.form.training_name'
+    .col-sm-3= t 'evaluation.form.type'
+    .col-sm-2= t 'evaluation.form.date'
+    .col-sm-2= t 'evaluation.form.duration'
+    %hr
+    
+  /- for ptdo in Ptdo.find(:all, :conditions => ['staff_id = ?', Login.current_login.staff_id]) 
+  - for ptdo in Ptdo.where(staff_id: 25) 
+    - if ptdo.ptschedule.start.year==@staff_appraisal.evaluation_year.year
+      .row
+        .col-sm-5= ptdo.ptschedule.course.name 
+        .col-sm-3= (DropDown::COURSE_TYPE.find_all{|disp, value| value == ptdo.ptschedule.course.course_type}).map {|disp, value| disp}[0]
+        .col-sm-2= l(ptdo.ptschedule.start) 
+        .col-sm-2
+          = ptdo.ptschedule.course.duration
+          = t 'evaluation.form.days'
+  %br
+
+  /Part IIb - ii) List of Training Needed
+  %b=t 'evaluation.form.label_004'
+  .row
+    .col-sm-7= t 'evaluation.form.training_name'
+    .col-sm-3= t 'evaluation.form.reason'
+    %hr
+  = f.fields_for :trainneeds do |builder|
+    = render 'trainneed_fields', :f => builder
+  %br
+  .row
+    /= link_to_add_fields image_tag("add.png", :border => 0, :title => t('addmore')), f, :travel_claim_logs
+    = link_to_add_fields t('helpers.label.staff_appraisal.add_training'), f, :trainneeds, "",  t('helpers.label.staff_appraisal.add_training')
+  %br
+
+.col-md-10.col-md-offset-2 
+  .form-group
+    .col-sm-2.control-label
+      = f.label :is_skt_pyd_report_done
+    .col-md-1
+      = f.check_box :is_submit_for_evaluation, :id => 'submit_for_evaluation1' 
+    .col-md-2
+      #span_submit1{:style=>"display: none;"}
+        = f.text_field  :submit_for_evaluation_on, :class => 'date_picker form-control'   
+  .form-group
+    .col-sm-2
+      &nbsp;
+    .col-md-5
+      = t 'evaluation.skt.submit_report'
+  %br
+
+:javascript
+$(document).ready(function(){
+  $("input[id='submit_for_evaluation1']").change(function() {  
+    if($('#submit_for_evaluation1').is(':checked')) { 
+      $("#span_submit1").show("highlight"); 
+    }else{
+      $("#span_submit1").hide(""); 
+    }
+  });
+
+  $("input[id='submit_for_evaluation1']").each(function() {  
+    if($('#submit_for_evaluation1').is(':checked')) { 
+      $("#span_submit1").show("highlight"); 
+    }else{
+      $("#span_submit1").hide(""); 
+    }
+  });
+});
