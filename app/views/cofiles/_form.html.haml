@@ -24,7 +24,7 @@
     .col-sm-2.control-label
       = f.label t 'cofile.owner', for: :owner
     .col-md-4
-      = f.collection_select :owner_id, Staff.find(:all), :id, :mykad_with_staff_name, {:include_blank => true}, {class: 'selectpicker', "data-width"=>"350px"}
+      = f.collection_select :owner_id, Staff.all, :id, :mykad_with_staff_name, {:include_blank => true}, {class: 'selectpicker', "data-width"=>"350px"}
 
   .form-group
     .col-sm-2.control-label
@@ -38,9 +38,9 @@
       = f.label t 'cofile.onloan_to', for: :onloan_to
     .col-md-2
       - if @cofile.onloanxdt == nil
-        = f.collection_select :staffloan_id, Staff.find(:all), :id, :mykad_with_staff_name,{:include_blank => true}, {class: 'selectpicker', "data-width"=>"350px"}
+        = f.collection_select :staffloan_id, Staff.all, :id, :mykad_with_staff_name,{:include_blank => true}, {class: 'selectpicker', "data-width"=>"350px"}
       - else
-        = f.collection_select :staffloan_id, Staff.find(:all), :id, :mykad_with_staff_name, {:include_blank => true}, {class: 'selectpicker', "data-width"=>"350px"}
+        = f.collection_select :staffloan_id, Staff.all, :id, :mykad_with_staff_name, {:include_blank => true}, {class: 'selectpicker', "data-width"=>"350px"}
 		
 		
   .form-group#loaneddate{:style => "visibility:hidden"}

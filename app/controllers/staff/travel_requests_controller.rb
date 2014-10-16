@@ -61,6 +61,7 @@
   # PUT /travel_requests/1
   # PUT /travel_requests/1.xml
   def update
+    raise params.inspect
     @travel_request = TravelRequest.find(params[:id])
 
     respond_to do |format|

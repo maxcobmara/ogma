@@ -56,23 +56,21 @@
       #details.tab-pane.fade.in.active
         .form-group
           .col-sm-2.control-label
-            = f.label t 'asset.category', for: :category_id
+            = f.label t 'asset.category.title', for: :category_id
           .col-md-5
-            //TODO: enable Assetcategory model
-            =# f.collection_select :category_id, Assetcategory.find(:all, :conditions => ['parent_id IS ?', nil]), :id, :description, :include_blank => true, class: 'form-control mandatory'
-			  
-          .form-group
-            .col-sm-2.control-label
-              = f.label t 'asset.subcategory_name', for: :subcategory_name
-            .col-md-5
-              = f.text_field :subcategory, class: 'form-control'
+            = f.collection_select :category_id, Assetcategory.where('parent_id IS ?', nil), :id, :description, {:prompt => "Select"}, class: 'selectpicker mandatory'
+  
+        .form-group
+          .col-sm-2.control-label
+            = f.label t 'asset.subcategory_name', for: :subcategory_name
+          .col-md-5
+            = f.text_field :subcategory, class: 'form-control'
 
-          .form-group
-            .col-sm-2.control-label
-              = f.label t 'asset.typename', for: :typename
-            .col-md-5
-              = f.text_field :typename, class: 'form-control'
-			  
+        .form-group
+          .col-sm-2.control-label
+            = f.label t 'asset.typename', for: :typename
+          .col-md-5
+            = f.text_field :typename, class: 'form-control'  
 
       #description.tab-pane.fade
         .form-group
@@ -191,10 +189,10 @@
           %table.table.table-condensed.table-hover{:style => "width: 50%; "}
             %thead
               %tr
-                %th Maintainer
-                %th Work Order  
-                %th Cost
-                %th Details
+                %th= t 'asset.maint.maintainer_id'
+                %th= t 'asset.maint.workorderno' 
+                %th= t 'asset.maint.maintcost' 
+                %th= t 'asset.maint.details' 
             %tbody	  
               - for maint in @asset.maints	  
                 %tr

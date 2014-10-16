@@ -44,6 +44,16 @@ class Asset::AssetsController < ApplicationController
     end
   end
   
+  def destroy
+    @asset = Asset.find(params[:id])
+    @asset.destroy
+
+    respond_to do |format|
+      format.html { redirect_to(asset_assets_url) }
+      format.xml  { head :ok }
+    end
+  end
+  
   def kewpa2
     #@lead = Position.find(1).try(:staff).try(:name)
     @lead = Position.find(1)

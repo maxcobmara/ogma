@@ -16,7 +16,7 @@
     .col-sm-2.control-label
       = f.label t 'buletin.posted_by', for: :postedby_id
     .col-md-5
-      = f.collection_select :postedby_id, Staff.find(:all), :id, :name, {:include_blank => true}, {class: 'selectpicker', "data-width"=>"300px"}
+      = f.collection_select :postedby_id, Staff.all, :id, :name, {:include_blank => true}, {class: 'selectpicker', "data-width"=>"300px"}
 		  
   .form-group
     .col-sm-2.control-label

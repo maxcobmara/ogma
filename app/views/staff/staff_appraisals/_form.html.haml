@@ -1,0 +1,93 @@
+.row
+  .col-md-10.col-md-offset-1
+    / Nav tabs
+    %ul.nav.nav-tabs
+      %li.active= link_to (t 'staff.staff_appraisal.skt'),"#skt", "data-toggle" => "tab"
+      %li=link_to (t 'staff.staff_appraisal.skt_endorse'), "#skt_endorse", "data-toggle" => "tab"
+      %li=link_to (t 'staff.staff_appraisal.skt_review_staff'), "#skt_review_staff", "data-toggle" => "tab"
+      %li=link_to (t 'staff.staff_appraisal.skt_review_eval1'), "#skt_review_eval1", "data-toggle" => "tab"
+      %li=link_to (t 'staff.staff_appraisal.activity'), "#activity", "data-toggle" => "tab"
+      %li=link_to (t 'staff.staff_appraisal.eval1_1_17_41'), "#eval1_1_17_14", "data-toggle" => "tab"
+      %li=link_to (t 'staff.staff_appraisal.eval1_review'), "#eval1_review", "data-toggle" => "tab"
+      %li=link_to (t 'staff.staff_appraisal.eval2_1_17_41'), "#eval2_1_17_14", "data-toggle" => "tab"
+      %li=link_to (t 'staff.staff_appraisal.eval2_review'), "#eval2_review", "data-toggle" => "tab"
+      
+    .tab-content{style:"padding-top:1em"}
+      .col-md-offset-2
+        .form-group
+          .col-md-6.col-md-offset-2
+            %b=t 'evaluation.form.title_part1'
+          .col-md-2
+            &nbsp;
+      .col-md-offset-2 
+        .form-group
+          .col-sm-2.control-label
+            = f.label :staff_id
+          .col-md-6 
+            = f.collection_select :staff_id, Staff.where('id = ?', @staff_appraisal.staff_id).order('name ASC'), :id, :mykad_with_staff_name, {:include_blank =>t('helpers.prompt.select_staff')},{class: 'selectpicker',  "data-width"=>'330px'} 
+            /= f.collection_select :staff_id, Staff.where('id = ?', Login.current_login.staff_id).order('name ASC'), :id, :mykad_with_staff_name, {:include_blank =>t('helpers.prompt.select_staff')},{class: 'selectpicker', "data-width"=>'230px'} 
+            
+      .col-md-offset-2 
+        .form-group
+          .col-sm-2.control-label
+            = f.label :evaluation_year
+          .col-md-2
+            = f.text_field :evaluation_year, class: 'date_picker form-control'
+            
+      #skt.tab-pane.active
+        %br
+        = render 'tab_skt_edit', :f => f
+  
+      #skt_endorse.tab-pane
+        %br
+        = render 'tab_skt_endorse_edit', :f => f
+        
+      #skt_review_staff.tab-pane
+        %br
+        = render 'tab_skt_review_staff_edit', :f => f 
+
+      #skt_review_eval1.tab-pane
+        %br
+        = render 'tab_skt_review_eval1_edit', :f => f
+ 
+      #activity.tab-pane
+        %br
+        = render 'tab_activity_edit', :f => f
+
+      #eval1_1_17_14.tab-pane
+        %br
+        - if @staff_appraisal.person_type == 5
+          = render 'tab_eval1_1_edit', :f => f
+        - elsif @staff_appraisal.person_type == 4
+          = render 'tab_eval1_17_edit', :f => f
+        - elsif @staff_appraisal.person_type == 3
+          = render 'tab_eval1_41_edit', :f => f
+
+      #eval1_review.tab-pane
+        %br
+        = render 'tab_eval1_review_edit', :f => f
+      #eval2_1_17_14.tab-pane
+        %br
+        - if @staff_appraisal.person_type == 5
+          = render 'tab_eval2_1_edit', :f => f
+        - elsif @staff_appraisal.person_type == 4
+          = render 'tab_eval2_17_edit', :f => f
+        - elsif @staff_appraisal.person_type == 3  
+          = render 'tab_eval2_41_edit', :f => f
+      #eval2_review.tab-pane
+        = render 'tab_eval2_review_edit', :f => f
+              
+:javascript
+
+//<![CDATA[
+bkLib.onDomLoaded(function() {
+  new nicEditor().panelInstance('myNicEditor3');
+  new nicEditor().panelInstance('myNicEditor4');
+});
+//]]>
+
+  function add_fields(link, association, content) {  
+    var new_id = new Date().getTime();  
+    var regexp = new RegExp("new_" + association, "g");  
+    $(link).parent().before(content.replace(regexp, new_id));  
+  }
