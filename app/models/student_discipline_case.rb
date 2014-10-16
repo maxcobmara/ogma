@@ -62,17 +62,6 @@ class StudentDisciplineCase < ActiveRecord::Base
     	
   	end
   end
-  
-
-    
-  # Data Stuff-----------------------------------------------
-  INFRACTION = [
-         #  Displayed       stored in db
-         [ "Merokok", 1  ],
-         [ "Ponteng Kelas", 2 ],
-         [ "Bergaduh", 3 ],
-         [ "Lain Lain", 4 ]
-      ]
     
     def status_workflow
     flow = Array.new

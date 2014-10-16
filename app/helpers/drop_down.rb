@@ -226,13 +226,6 @@ module DropDown
           [ "Other",             9 ]
   ]
 
-  ASSETTYPE = [
-             #  Displayed       stored in db
-             ["H",1],
-             ["I",2]
-  ]
-  
-
   DOCUMENT_CATEGORY = [
           #  Displayed       stored in db
           [ "Surat",      "1" ],
@@ -437,7 +430,7 @@ module DropDown
   
   
   #student discipline cases  
-   STATUS = [
+   SDCSTATUS = [
          #  Displayed       stored in db
          [ "New","New" ],
          [ "Open","Open" ],
@@ -445,6 +438,14 @@ module DropDown
          [ "Closed", "Closed" ],
          [ "Refer to BPL", "Refer to BPL" ]
     ]
+   
+  INFRACTION = [
+         #  Displayed       stored in db
+         [ "Merokok", 1  ],
+         [ "Ponteng Kelas", 2 ],
+         [ "Bergaduh", 3 ],
+         [ "Lain Lain", 4 ]
+      ]
     
     STAFFLEAVETYPE = [
              #  Displayed       stored in db
@@ -495,7 +496,7 @@ module DropDown
    #Assetcategory
   ASSETTYPE = [
              #  Displayed       stored in db
-             ["Harta",1],
+             ["Harta Modal",1],
              ["Inventory",2]
   ]
    

@@ -22,6 +22,7 @@ FactoryGirl.define do
   
   factory :asset_disposal do
     association :asset, factory: :fixed_asset
+    current_value 1
   end
   
   factory :stationery do

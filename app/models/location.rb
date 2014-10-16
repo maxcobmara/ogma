@@ -66,7 +66,7 @@ class Location < ActiveRecord::Base
         c.save!
       end
     #required when damaged room is repaired
-    elsif (occupied == false && status="_damage") 
+    elsif (occupied == false && status=="_damage") 
       status_type = "empty"
       if typename == 2
         bed_type = "student_bed_female"

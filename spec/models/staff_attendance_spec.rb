@@ -20,9 +20,12 @@ describe StaffAttendance do
   it { should be_valid }
   
   describe "when reason is not present" do
-    before { @staff_attendance.reason = "" }
+    before do
+      @staff_attendance.reason = nil
+      @staff_attendance.trigger = true
+      @staff_attendance.status = 1
+    end
     it { should_not be_valid }
   end
 
 end
-
