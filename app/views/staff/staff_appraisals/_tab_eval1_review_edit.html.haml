@@ -1,0 +1,114 @@
+.col-md-10.col-md-offset-1 
+  .form-group
+    .col-md-7
+      %b= t 'evaluation.form.title_part8'
+    .col-md-1
+      &nbsp;
+    %hr
+.col-md-10.col-md-offset-2 
+  .form-group
+    .col-sm-2.control-label
+      = t 'evaluation.form.part8_desc'
+    .col-md-1
+      = f.select :e1_years, 0..21, {},{class: 'selectpicker',  "data-width"=>'70px'} 
+    .col-md-1
+      = t 'years_label' 
+    .col-md-1
+      = f.select :e1_months, 0..11, {},{class: 'selectpicker',  "data-width"=>'70px'} 
+    .col-md-1
+      = t 'months_label' 
+.col-md-10.col-md-offset-1 
+  .form-group
+    .col-md-6
+      %b= t 'evaluation.form.part8i_desc'
+    .col-md-2
+      &nbsp;
+.col-md-10.col-md-offset-2
+  .form-group
+    .col-sm-2.control-label
+      = t 'evaluation.form.part8i' 
+    .col-md-6
+      = f.text_area :e1_performance, :size => '50x5', class: 'form-control'
+  .form-group
+    .col-sm-2.control-label
+      = t 'evaluation.form.part8ii' 
+    .col-md-6
+      = f.text_area :e1_progress, :size => '50x5', class: 'form-control'
+.col-md-10.col-md-offset-1
+  .form-group
+    .col-md-6
+      %font{:style=>"color: green; font-weight: bold;"}= t 'evaluation.form.ppp_statement'
+    .col-md-2
+      &nbsp;
+.col-md-10.col-md-offset-2
+  .form-group
+    .col-sm-2.control-label
+      = t 'evaluation.form.pppid'
+    .col-md-6
+      = @staff_appraisal.eval1_officer.name
+      
+  /- if Login.current_login.staff.position.is_root? == false
+  - if @staff_appraisal
+    /PPP section
+    .form-group
+      .col-sm-2.control-label
+        = f.label :is_submit_e2
+      .col-md-1
+        = f.check_box :is_submit_e2, :id => 'submit_for_evaluation2'
+      .col-md-2
+        #span_submit2{:style=>"display: none;"}
+          = f.text_field :submit_e2_on, :class => 'date_picker form-control'   
+    .form-group
+      .col-sm-2
+        &nbsp;
+      .col-md-5
+        = t 'evaluation.form.submit_ppk'
+        
+    /PPK section
+  - else
+    =render :partial => 'eval2_review', :locals => {:f => f} 
+  %br
+
+/<table width=100%>
+/  <% if Login.current_login.staff.position.is_root? == false %>
+/	<tr>
+/	  <td class="leftcolwide"><label for="submit_for_appraisal1_on"></label></td>
+/		<td><% %>
+/				<SPAN id="" style="display: none;"><%= f.date_select :, :order => [:day, :month, :year], :default => Date.today %></SPAN></td>
+/		<td class="pagenote"></td>
+/	</tr>
+	
+/	<% else %>
+/		<%=render :partial => 'eval2_review', :locals => {:f => f} %>
+/		/<tr>
+/		/ <td class="leftcolwide"><label for="is_complete">Evaluation is complete</label></td>
+/		/	<td><%#= f.check_box :is_complete, :id => 'is_complete' %>
+/		/			<SPAN id="span_is_complete" style="display: none;"><%#= f.date_select :is_completed_on, :order => [:day, :month, :year], :default => Date.today %></SPAN></td>
+/		/	<td class="pagenote">Clicking on complete will lock this record <BR/> and disables your editing this record further</td>
+/		/</tr>
+/	/<tr>
+/		<td colspan=3>Your are unable to submit this to PPK as they are outside the scope of this campus</td>
+/	/</tr>
+/	<% end -%>
+/</table>
+
+
+:javascript
+
+$(document).ready(function(){
+  $("input[id='submit_for_evaluation2']").change(function() {  
+    if($('#submit_for_evaluation2').is(':checked')) { 
+      $("#span_submit2").show("highlight"); 
+    }else{
+      $("#span_submit2").hide(""); 
+    }
+  });
+
+  $("input[id='submit_for_evaluation2']").each(function() {  
+    if($('#submit_for_evaluation2').is(':checked')) { 
+      $("#span_submit2").show("highlight"); 
+    }else{
+      $("#span_submit2").hide(""); 
+    }
+  });
+});

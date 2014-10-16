@@ -445,5 +445,58 @@ module DropDown
          [ "Closed", "Closed" ],
          [ "Refer to BPL", "Refer to BPL" ]
     ]
+    
+    STAFFLEAVETYPE = [
+             #  Displayed       stored in db
+             [ "Cuti Rehat",1 ],
+             [ "Cuti Sakit",2],
+             [ "Cuti Tanpa Rekod",3 ],
+             [ "Cuti Separuh Gaji",4 ],
+             [ "Cuti Tanpa Gaji",5 ],
+             [ "Cuti Bersalin",6 ],
+             [ "Cuti Haji",7 ]
+     ]
+     
+     FILTERS = [
+       {:scope => "relevant",        :label => "All"},
+       {:scope => "mine",       :label => "My Leave"},
+       {:scope => "forsupport", :label => "For My Support"},
+       {:scope => "forapprove", :label => "For My Approval"}
+       ]
       
+   #evactivities (staff appraisal)
+   EVACT = [
+          #  Displayed       stored in db
+          [ "Komuniti","1" ],
+          [ "Jabatan","2" ],
+          [ "Daerah", "3" ],
+          [ "Negeri", "4" ],
+          [ "Negera", "5" ],
+          [ "Antarabangsa", "9" ]
+   ]
+   
+   #ptcourse
+    COURSE_TYPE = [
+       #  Displayed       stored in db
+       [ "In-House",              5 ],
+       [ "External Short Course",10 ],
+       [ "Seminar",              15 ],
+       [ "Certificate",          20 ],
+       [ "Diploma/Others",       25 ],
+   ]
+  
+   DUR_TYPE = [
+       #  Displayed       stored in db
+       [ "Days",  1 ],
+       [ "Months",2 ],
+       [ "Years", 3 ],
+   ]
+   
+   #Assetcategory
+  ASSETTYPE = [
+             #  Displayed       stored in db
+             ["Harta",1],
+             ["Inventory",2]
+  ]
+   
 end

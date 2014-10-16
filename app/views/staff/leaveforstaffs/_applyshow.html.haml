@@ -1,13 +1,13 @@
 .col-md-offset-2   
-  %br
+  %horizontal
     %dt= t 'staffleave.staff_id'
     %dd=h @leaveforstaff.applicant.mykad_with_staff_name
 	
     %dt= t 'staffleave.leavetype'
-    %dd=h (Leaveforstaff::STAFFLEAVETYPE.find_all{|disp, value| value == @leaveforstaff.leavetype}).map {|disp, value| disp}
+    %dd=h (DropDown::STAFFLEAVETYPE.find_all{|disp, value| value == @leaveforstaff.leavetype}).map {|disp, value| disp} [0]
 	
     %dt From :
-    %dd=h @leaveforstaff.leavestartdate.strftime("%d - %b - %Y") "" @leaveforstaff.show_to_day "For" @leaveforstaff.leave_for "day"
+    %dd=h @leaveforstaff.leavestartdate.try(:strftime, "%d - %b - %Y") 
 	
     %dt= t 'staffleave.reason'
     %dd=h  @leaveforstaff.reason
@@ -15,7 +15,11 @@
     %dt= t 'staffleave.notes'
     %dd=h @leaveforstaff.notes
 
-      
+    %dt= t 'staffleave.replacement_id'
+    %dd=h @leaveforstaff.replacement_id.blank? ? "" : @leaveforstaff.replacement.name 
+	
+    %dt= t 'staffleave.entitlement'
+    %dd=h @leaveforstaff.cuti_rehat_entitlement
 
   
     

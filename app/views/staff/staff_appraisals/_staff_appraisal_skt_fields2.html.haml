@@ -1,0 +1,10 @@
+.row
+  .col-sm-1
+    =f.object.priority 
+  .col-sm-5
+    =f.object.description 
+  .col-sm-5
+    =f.object.indicator
+  .col-sm-1 
+    =f.check_box :is_dropped 
+=f.hidden_field :dropped_on, :default => Date.today  

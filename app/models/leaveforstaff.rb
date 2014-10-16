@@ -2,7 +2,7 @@ class Leaveforstaff < ActiveRecord::Base
   
   
   
-  before_save :save_my_approvers
+ # before_save :save_my_approvers
   
 
     belongs_to :applicant,    :class_name => 'Staff', :foreign_key => 'staff_id'
@@ -28,13 +28,6 @@ class Leaveforstaff < ActiveRecord::Base
     #named_scope :forsupport,  :conditions =>  ["approval1_id=? AND approval1 IS ?", User.current_user.staff_id, nil]
     #named_scope :forapprove,  :conditions =>  ["approval2_id=? AND approver2 IS ? AND approval1=?", User.current_user.staff_id, nil, true]
 
-
-    FILTERS = [
-      {:scope => "relevant",        :label => "All"},
-      {:scope => "mine",       :label => "My Leave"},
-      {:scope => "forsupport", :label => "For My Support"},
-      {:scope => "forapprove", :label => "For My Approval"}
-      ]
 
   
     def self.find_main
@@ -136,14 +129,5 @@ class Leaveforstaff < ActiveRecord::Base
       sibs - applicant
     end
   
-  STAFFLEAVETYPE = [
-           #  Displayed       stored in db
-           [ "Cuti Rehat",1 ],
-           [ "Cuti Sakit",2],
-           [ "Cuti Tanpa Rekod",3 ],
-           [ "Cuti Separuh Gaji",4 ],
-           [ "Cuti Tanpa Gaji",5 ],
-           [ "Cuti Bersalin",6 ],
-           [ "Cuti Haji",7 ]
-   ]
+
   end

@@ -5,7 +5,7 @@
 = render 'shared/flashes'
 
 .row.fluid
-  = form_for [:staff, @leaveforstaffs], html: { class: 'form-horizontal' }  do |f| 
+  = form_for [:staff, @leaveforstaff], html: { class: 'form-horizontal' }  do |f| 
     = render 'shared/error_messages', object: f.object
     = hidden_field_tag :redirect_location, staff_leaveforstaffs_path
     

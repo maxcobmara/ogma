@@ -45,12 +45,11 @@ class Staff < ActiveRecord::Base
                     :url => "/assets/staffs/:id/:style/:basename.:extension",
                     :path => ":rails_root/public/assets/staffs/:id/:style/:basename.:extension"#, :styles => {:thumb => "40x60"}
                     
-  
-  
-  
-  
-  
-
+  #Link to model Staff Appraisal                                                      
+  has_many :appraisals,     :class_name => 'StaffAppraisal', :foreign_key => 'staff_id', :dependent => :destroy
+  has_many :eval1_officers, :class_name => 'StaffAppraisal', :foreign_key => 'eval1_by'
+  has_many :eval2_officers, :class_name => 'StaffAppraisal', :foreign_key => 'eval2_by'
+ 
   
   #validates_attachment_size         :photo, :less_than => 500.kilobytes
   #validates_attachment_content_type :photo, :content_type => ['image/jpeg', 'image/png']

@@ -16,21 +16,21 @@
   %table.table-striped.table-hover.ogma
     %thead
       %tr
-        %th Staff ID	
-        %th Leave Type
-        %th From
-        %th To
-        %th Reason
-        %th Duration
-        %th Replacement
+        %th= t('leaveforstaff.id')
+        %th= t('leaveforstaff.leavetype')
+        %th= t('leaveforstaff.from') 
+        %th= t('leaveforstaff.to') 
+        %th= t('leaveforstaff.reason') 
+        %th= t('leaveforstaff.duration') 
+        %th= t('leaveforstaff.replacement') 
 		
     %tbody
     - @leaveforstaffs.each do |leaveforstaff|
       %tr
         %td= link_to leaveforstaff.applicant.try(:mykad_with_staff_name), staff_leaveforstaff_path(leaveforstaff)
-        %td= (Leaveforstaff::STAFFLEAVETYPE.find_all{|disp, value| value == leaveforstaff.leavetype}).map {|disp, value| disp}
-        %td= leaveforstaff.leavestartdate.strftime("%a, %d %b")
-        %td= leaveforstaff.leavenddate.strftime("%a, %d %b")
+        %td= (DropDown::STAFFLEAVETYPE.find_all{|disp, value| value == leaveforstaff.leavetype}).map {|disp, value| disp} [0]
+        %td= leaveforstaff.leavestartdate.try(:strftime, "%a, %d %b")
+        %td= leaveforstaff.leavenddate.try(:strftime, "%a, %d %b")
         %td= leaveforstaff.reason
         %td= leaveforstaff.leave_for
         %td= leaveforstaff.replacement_id.blank? ? "None" : leaveforstaff.replacement.name
