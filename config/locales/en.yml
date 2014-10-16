@@ -729,13 +729,15 @@ en:
       details: Details
     
   stationery:
-    title: Office Supplies
+    title: List Office Supplies
     code: Item Code
     category: Product Name
     quantity: Current Quantity
     max: Max Quantity
     min: Min Quantity
-  
+    details: Details
+    additions: Additions
+    deductions: Deductions
        
   location:
     title: Location
