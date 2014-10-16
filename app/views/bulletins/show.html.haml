@@ -8,10 +8,10 @@
   .col-md-8.col-md-offset-1
     %dl.dl-horizontal
       %dt= t 'buletin.headline', :default => model_class.human_attribute_name(:headline) + ":"
-      %dd= @bulletin.headline
+      %dd= wrap(@bulletin.headline)
       
       %dt= t 'buletin.content', :default => model_class.human_attribute_name(:content) + ":"
-      %dd=  @bulletin.content
+      %dd=  wrap(@bulletin.content)
     
       %dt= t 'buletin.posted_by', :default => model_class.human_attribute_name(:postedby_id) + ":"
       %dd= check_kin {@bulletin.staff.mykad_with_staff_name}

@@ -47,6 +47,7 @@
       = f.label t 'document.stafffiled_id' , for: :prepared_by
     .col-md-3
       = f.collection_select :stafffiled_id, Staff.order(name: :asc), :id, :name, {:include_blank => true}, {class: 'selectpicker', "data-width"=>"350px"}
+      = f.collection_select :stafffiled_id, Staff.find(:all, :order => :name), :id, :name, {:selects => current_user}, {class: 'selectpicker', "data-width"=>"350px"}
       = f.hidden_field :prepared_by, :value=>current_user
 		  
   .form-group
@@ -64,7 +65,7 @@
         = @document.data_file_name
         \#{link_to (t 'document.download'), @document.data.url}
       - else
-      No Attachment yet
+        No Attachment yet
 
   .form-group
     .col-sm-2.control-label

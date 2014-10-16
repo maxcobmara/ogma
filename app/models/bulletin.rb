@@ -4,7 +4,7 @@ class Bulletin < ActiveRecord::Base
 
   belongs_to :staff,  :foreign_key => 'postedby_id' 
   # validates_format_of    :headline, :with => /^[a-zA-Z'` ]+$/, :message => "contains illegal characters"
-  
+  validates_length_of :content, :maximum => 500
   #-------------Upload Document---------------#
    
    has_attached_file :data,

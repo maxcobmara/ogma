@@ -95,7 +95,17 @@ class Document < ActiveRecord::Base
   def to_name=(name)
 	  self.staffs = Staff.find_by_name(name) unless name.blank?
   end
-
+  
+  def self.set_recipient(recipients)
+    	recipient_no_wspace = recipients.gsub(/(\s+, +|,\s+|\s+,)/,',')     #remove whitespace
+    	@to_name_A = recipient_no_wspace.split(",") 											  #will become - ["Saadah","Sulijah"]
+    	@to_id_A = []
+      @to_name_A.each do |to_name|
+      	aa = Staff.find_by_name(to_name).id										            #result(sample)- ["1","7"]
+        @to_id_A << aa.to_i
+      end
+      return @to_id_A
+  end
 
   
 end

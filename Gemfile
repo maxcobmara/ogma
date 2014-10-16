@@ -20,7 +20,7 @@ gem 'country_select', '~> 2.0.0'
 
 
 #stuff for layout
-#gem "bootstrap-sass", "~> 3.0.3.0"
+gem "bootstrap-sass", "~> 3.0.3.0"
 gem 'sass-rails', '~> 4.0.0'
 gem 'uglifier', '~> 2.1.1'  # Use Uglifier as compressor for JavaScript assets
 gem 'coffee-rails', '~> 4.0.0'  # Use CoffeeScript for .js.coffee assets and views
@@ -35,6 +35,9 @@ gem 'font-awesome-rails', '~> 4.2.0.0'
 gem "bootstrap-datepicker-rails", "~> 1.3.0.1"
 gem "bootstrap-switch-rails", "~> 2.0.2"
 gem "modernizr-rails", "~> 2.6.2.3"
+
+
+gem "bootstrap-datetimepicker-rails", "~> 0.0.11"
 #gem "jquery-ui-bootstrap-rails", "~> 0.0.2"
 gem "whenever", "~> 0.9.2", require: false
 #gem 'rmagick', #, :git=>'http://github.com/rmagick/rmagick.git'
