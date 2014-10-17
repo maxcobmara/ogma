@@ -7,8 +7,19 @@ describe AssetDisposal do
   subject { @asset_disposal }
 
   it { should respond_to(:asset_id) }
+  it { should respond_to(:current_value)}
   
   it { should be_valid }
+  
+  describe "when asset is not present" do
+    before {@asset_disposal.asset_id= nil}
+    it { should_not be_valid }
+  end
+  
+   describe "when current value is not present" do
+    before {@asset_disposal.current_value= nil}
+    it { should_not be_valid }
+  end
   
 end
 

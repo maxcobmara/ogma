@@ -1,4 +1,4 @@
-class Addsupplier < ActiveRecord::Base
+class StationeryAdd < ActiveRecord::Base
   belongs_to :stationery
 end
 

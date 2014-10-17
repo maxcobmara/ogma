@@ -11,6 +11,20 @@ class Asset::StationeriesController < ApplicationController
   def edit
   end
   
+  def update
+    @stationery = Stationery.find(params[:id])
+
+    respond_to do |format|
+      if @stationery.update(stationery_params)
+        format.html { redirect_to asset_stationery_path, notice: (t 'stationery.title')+(t 'actions.updated')}
+        format.xml  { head :ok }
+      else
+        format.html { render :action => "edit" }
+        format.xml  { render :xml => @stationery.errors, :status => :unprocessable_entity }
+      end
+    end
+  end
+  
   def kewps13
     @lead = Position.find(1)
     @stationeries = Stationery.order(code: :asc)

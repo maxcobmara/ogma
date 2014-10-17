@@ -105,7 +105,8 @@ FactoryGirl.define do
       hod_rejected {rand(2) == 1}
       hod_rejected_on {Date.today+(366*rand()).to_f}
       data_file_name "Some Name"
-      data_content_type { |n| "Some Content Type #{n}"}
+      #data_content_type { |n| "Some Content Type #{n}"}
+      data_content_type "text/plain"
       data_file_size {rand(5242880)}
       data_updated_ot {Date.today+(366*rand()).to_f}
       prerequisites "Some prerequisite"

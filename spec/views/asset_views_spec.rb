@@ -71,7 +71,7 @@ describe "asset pages" do
     it { should have_selector('h1', text: "New Defect Report") }
     it { should have_field("asset_defect[asset_show]", :disabled => true) }
     it { should have_field("asset_defect[description]") }
-    it { should have_link("Back", href: asset_assets_path + "?locale=en")}
+    it { should have_link(I18n.t("helpers.links.cancel"), href: asset_assets_path + "?locale=en")}
     it { should have_selector(:link_or_button, "Create")}    
   end
   
@@ -85,9 +85,9 @@ describe "asset pages" do
     
     it { should have_selector('h1', text: "Asset Defect") }
     it { should have_selector('th', text: 'Registration Serial No') }
-    it { should have_selector('th', text: 'Manufacturer/Brand') }
+    it { should have_selector('th', text: I18n.t('asset.category.type_name_model')) }
     it { should have_selector('th', text: 'Serialno')}
-    it { should have_selector('th', text: 'Name')}
+    it { should have_selector('th', text: I18n.t('location.title'))}
     it { should have_selector('th', text: 'Notes')}
     it { should have_selector(:link_or_button, "New")}
     it { should have_selector(:link_or_button, "Search")}    
