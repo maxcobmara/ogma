@@ -27,7 +27,7 @@
     .col-sm-2.control-label
       = t 'evaluation.form.ppkid'
     .col-md-6
-      = @staff_appraisal.eval2_officer.name
+      = @staff_appraisal.eval2_officer.try(:name)
   .form-group
     .col-sm-2.control-label
       = f.label :is_complete
