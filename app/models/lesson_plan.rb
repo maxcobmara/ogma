@@ -14,7 +14,7 @@ class LessonPlan < ActiveRecord::Base
   accepts_nested_attributes_for :lessonplan_methodologies, :allow_destroy => true#, :reject_if => lambda { |a| a[:start_at].blank? }
   
   #validate :approved_or_rejected, :satisfy_or_notsatisfy
-  #validates_presence_of :schedule    #hide on 31st October 2013
+  validates_presence_of :schedule    #hide on 31st October 2013
   
   #trial section------------
   has_many :lesson_plan_trainingnotes
@@ -44,7 +44,7 @@ class LessonPlan < ActiveRecord::Base
       self.hod_approved_on= nil
     end
     
-    if hod_rejected == true && endorsed_by == current_user.staff_id #User.current_user.staff_id
+    if hod_rejected == true && endorsed_by == 25#current_user.staff_id #User.current_user.staff_id
       self.is_submitted = nil
    end
    
@@ -83,14 +83,16 @@ class LessonPlan < ActiveRecord::Base
    end
   #---------------------------
    def copy_attached_doc_trainingnotes
-     current_user = User.find(11)  #####
+     #TO REVISE - once user matched with staff ready
+     #current_user = User.find(11)  ##### 
+     #current_user = Login.find(11) Maslinda
      if data
          notes_for_lessonplan = Trainingnote.new     
          notes_for_lessonplan.document_file_name = data_file_name
          notes_for_lessonplan.document_content_type = data_content_type
          notes_for_lessonplan.document_file_size = data_file_size
          notes_for_lessonplan.timetable_id = schedule
-         notes_for_lessonplan.staff_id = current_user.staff_id
+         notes_for_lessonplan.staff_id = 25 #current_user.staff_id
          notes_for_lessonplan.title = title
 
          #check if topicdetails for topic of selected schedule really exist 

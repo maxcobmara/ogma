@@ -18,5 +18,10 @@ describe WeeklytimetableDetail do
   it { should respond_to(:lecture_method)}
  
   it { should be_valid }    
+  
+  describe "when weeklytimetable is not present" do
+    before { @weeklytimetable_detail.weeklytimetable_id = nil }
+    it { should_not be_valid}
+  end
 
 end
