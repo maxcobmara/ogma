@@ -1,10 +1,10 @@
 - model_class = TravelClaim
 .page-header
-  %h1= t('Lists of Travel Claims')
+  %h1= t 'staff.travel_claim.title'
   
 .navbar.navbar-inverse{role: "navigation", style: "padding-right:40px;"}
   %ul.nav.navbar-nav
-    %li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'actions.new'))), "#"
+    %li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'actions.new'))), new_staff_travel_claim_path
   %ul.nav.navbar-nav.navbar-right
     %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "toga"
     %li= link_to content_tag(:li, fa_icon("print", text: (t 'actions.print'))), "#", class: 'bogus'
@@ -16,15 +16,25 @@
   %table.table-striped.table-hover.ogma
     %thead
       %tr
-        %th="Month"
-        %th="Name"
-        %th="Total"
-        %th="Status"
+        %th= sort_link(@search, :claim_month, (t 'staff.travel_claim.month_year'))
+        %th= sort_link(@search, :staff_id, (t 'staff.travel_claim.name'))
+        %th= sort_link(@search, :total, (t 'staff.travel_claim.total'))
+        %th Status
    
     %tbody   
-    -@travel_claims.each do |travel_claim|
+    = render "index_search"
+    - @travel_claims.each do |travel_claim|
       %tr
-        %td=h travel_claim.claim_month.strftime("%B %Y") unless travel_claim.claim_month.blank?
+        %td=link_to travel_claim.claim_month.try(:strftime,'%B %Y'), staff_travel_claim_path(travel_claim)
         %td=h travel_claim.staff.name
-        %td=h travel_claim.total_claims
-        %td=h travel_claim.my_claim_status.titleize
+        %td=h travel_claim.try(:total_claims)
+        %td
+          /hide first - current_user not ready
+          /=h travel_claim.my_claim_status.titleize
+
+:javascript
+$(document).ready(function(){
+  $('.toga').click(function() {
+    $('.search_row').toggle(); 
+  });
+});

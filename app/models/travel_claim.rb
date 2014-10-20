@@ -85,11 +85,11 @@ class TravelClaim < ActiveRecord::Base
   end
   
   def total_claims 
-     receipts + allowas + value_km == nil
+     receipts + allowas + value_km
   end
    
   def receipts
-    other_claims_total + public_transport_totals == nil
+    other_claims_total + public_transport_totals
   end
   
   def allowas

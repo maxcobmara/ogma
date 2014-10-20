@@ -292,6 +292,12 @@ en:
 
     travel_claim:
       title: Travel Claims
+      new: New Travel Claim
+      edit: Edit Travel Claim
+      month_year: "Month & Year"
+      name: Name
+      total: Total
+      
 
     staff_appraisal:
       title: Staff Appraisal
