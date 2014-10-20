@@ -196,8 +196,8 @@ class Staff::StaffAttendancesController < ApplicationController
   end
     
   def actionable
-    StaffAttendance.update_all(["trigger=?", true], :id => params[:triggers])
-    StaffAttendance.update_all(["trigger =?", false], :id => params[:ignores])
+    StaffAttendance.where(id: params[:triggers]).update_all(trigger: true)
+    StaffAttendance.where(id: params[:ignores]).update_all(trigger: false)
     redirect_to :back
   end
   

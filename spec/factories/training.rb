@@ -24,8 +24,8 @@ FactoryGirl.define do
   end
   
   factory :timetable_period do 
-    timetable_id 1 
-    #association :timetable, factory: :timetable
+    #timetable_id 1 
+    association :timetable, factory: :timetable
     sequence(:sequence) { rand(1..15) }     #NOTE - field name is 'sequence'
     day_name { rand(1..7) }
     end_at {Time.at(rand * Time.now.to_f)}
@@ -37,7 +37,8 @@ FactoryGirl.define do
     sequence(:code) { |n| "0#{n}" }
     sequence(:ancestry_depth) {|n| "#{n}"}
     sequence(:name) { |n| "Programme_#{n}"}
-    sequence(:course_type) { |n| "Course Type #{n}"}
+    #sequence(:course_type) { |n| "Course Type #{n}"} 
+    course_type {["Diploma", "Pos Basik Diploma Lanjutan", "Semester", "Subject", "Commonsubject", "Topic", "Subtopic"].sample}
     #sequence(:ancestry) { |n| "#{n}"}
     #sequence(:combo_code) { |n| "0#{n}-"+code}
   end
@@ -53,10 +54,6 @@ FactoryGirl.define do
       startdate {Date.today+(366*rand()).to_f}
       enddate {Date.today+(366*rand())+(4*rand()).to_f}
       semester {rand(6)}
-      #prepared_by 1
-      #endorsed_by 1
-      #format1 1
-      #format2 2
       association :schedule_creator, factory: :staff
       association :schedule_approver, factory: :staff
       association :timetable_monthurs, factory: :timetable
@@ -72,19 +69,17 @@ FactoryGirl.define do
     end
     
     factory :weeklytimetable_detail do
-      
       association :weeklytimetable_subject, factory: :programme
       association :weeklytimetable_topic, factory: :programme
-      time_slot {[0,8,10,12].sample}
       association :weeklytimetable_lecturer, factory: :staff
       association :weeklytimetable, factory: :weeklytimetable
       day2 {[1,2,3,4,6,7].sample}
       is_friday {rand(2) == 1}
-      time_slot2 {rand(0..7)}
+      association :fridayslot, factory: :timetable_period
+      association :monthurslot, factory: :timetable_period
       location "Some location"
       #association :weeklytimetable_location, factory: :location
       lecture_method {rand(1..3)}
-      
     end
     
     factory :lesson_plan do
@@ -105,7 +100,8 @@ FactoryGirl.define do
       hod_rejected {rand(2) == 1}
       hod_rejected_on {Date.today+(366*rand()).to_f}
       data_file_name "Some Name"
-      data_content_type { |n| "Some Content Type #{n}"}
+      #data_content_type { |n| "Some Content Type #{n}"}
+      data_content_type "text/plain"
       data_file_size {rand(5242880)}
       data_updated_ot {Date.today+(366*rand()).to_f}
       prerequisites "Some prerequisite"
@@ -124,8 +120,6 @@ FactoryGirl.define do
       report_endorsed_on {Date.today+(366*rand()).to_f}
       report_summary "Some Summary"
       association :schedule_item, factory: :weeklytimetable_detail
-      #sequence(:schedule) { |n| "#{n}" }
-      #depends on relationship with weeklytimetable_detail table
     end
   
 end

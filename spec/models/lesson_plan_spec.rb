@@ -44,5 +44,15 @@ describe LessonPlan do
   it { should respond_to(:schedule) }  
   
   it { should be_valid }    
+  
+   describe "when attachment format is not valid" do
+    before { @lesson_plan.data_content_type = "Other type"}
+    it { should_not be_valid }
+  end
+  
+  describe "when weeklytimetable details (schedule) is not present" do
+    before { @lesson_plan.schedule = nil }
+    it { should_not be_valid}
+  end
 
 end

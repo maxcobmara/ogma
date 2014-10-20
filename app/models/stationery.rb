@@ -1,20 +1,18 @@
 class Stationery < ActiveRecord::Base
   
-  
-  
   validates :category, presence: true, uniqueness: true
   validates_uniqueness_of :code
   
-  has_many :addsuppliers, :foreign_key => 'supplier_id' , :dependent => :destroy
-  accepts_nested_attributes_for :addsuppliers, :allow_destroy => true
+  has_many :stationery_adds, :foreign_key => 'stationery_id' , :dependent => :destroy
+  accepts_nested_attributes_for :stationery_adds, :allow_destroy => true
   
-  has_many :usesupplies, :foreign_key => 'supplier_id', :dependent => :destroy
-  accepts_nested_attributes_for :usesupplies, :allow_destroy => true
+  has_many :stationery_uses, :foreign_key => 'stationery_id', :dependent => :destroy
+  accepts_nested_attributes_for :stationery_uses, :allow_destroy => true
   
   
   def current_quantity
-    a = Addsupplier.where(supplier_id: id).sum(:quantity)
-    b = Usesupply.where(supplier_id: id).sum(:quantity)
+    a = StationeryAdd.where(stationery_id: id).sum(:quantity)
+    b = StationeryUse.where(stationery_id: id).sum(:quantity)
     a - b
   end
 end

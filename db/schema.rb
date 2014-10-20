@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140930043330) do
+ActiveRecord::Schema.define(version: 20141016073418) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -53,17 +53,6 @@ ActiveRecord::Schema.define(version: 20140930043330) do
     t.string   "web"
     t.string   "fax"
     t.string   "shortname"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "addsuppliers", force: true do |t|
-    t.integer  "supplier_id"
-    t.string   "lpono"
-    t.string   "document"
-    t.decimal  "quantity"
-    t.decimal  "unitcost"
-    t.date     "received"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -1717,6 +1706,27 @@ ActiveRecord::Schema.define(version: 20140930043330) do
     t.datetime "updated_at"
   end
 
+  create_table "stationery_adds", force: true do |t|
+    t.integer  "stationery_id"
+    t.string   "lpono"
+    t.string   "document"
+    t.decimal  "quantity"
+    t.decimal  "unitcost"
+    t.date     "received"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "stationery_uses", force: true do |t|
+    t.integer  "stationery_id"
+    t.integer  "issuedby"
+    t.integer  "receivedby"
+    t.decimal  "quantity"
+    t.date     "issuedate"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "student_attendances", force: true do |t|
     t.integer  "student_id"
     t.boolean  "attend"
@@ -2186,16 +2196,6 @@ ActiveRecord::Schema.define(version: 20140930043330) do
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
   add_index "users", ["userable_id", "userable_type"], name: "index_users_on_userable_id_and_userable_type", using: :btree
-
-  create_table "usesupplies", force: true do |t|
-    t.integer  "supplier_id"
-    t.integer  "issuedby"
-    t.integer  "receivedby"
-    t.decimal  "quantity"
-    t.date     "issuedate"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
 
   create_table "weeklytimetable_details", force: true do |t|
     t.integer  "subject"

@@ -60,15 +60,15 @@
               %th Total
               %th Received Date
           %tbody
-            - for addsuppliers in @stationery.addsuppliers
-            - cost = addsuppliers.unitcost * addsuppliers.quantity.to_i	
+            - for stationery_add in @stationery.stationery_adds
+            - cost = stationery_add.unitcost * stationery_add.quantity.to_i	
               %tr
-                %td= addsuppliers.lpono 
-                %td= addsuppliers.document
-                %td= addsuppliers.quantity.to_i
-                %td= ringgols(addsuppliers.unitcost)
+                %td= stationery_add.lpono 
+                %td= stationery_add.document
+                %td= stationery_add.quantity.to_i
+                %td= ringgols(stationery_add.unitcost)
                 %td= ringgols(cost)
-                %td= addsuppliers.received.try(:strftime,"%d %b %Y")						
+                %td= stationery_add.received.try(:strftime,"%d %b %Y")						
 
       #deductions.tab-pane.fade.in.active
         %table.table.table-condensed.table-hover{:style => "width: 50%; "}	
@@ -79,12 +79,12 @@
               %th Quantity
               %th Issue Date
           %tbody
-            - for usesupplies in @stationery.usesupplies 
+            - for stationery_use in @stationery.stationery_uses
               %tr
-                %td= usesupplies.issuedby
-                %td= usesupplies.receivedby
-                %td= usesupplies.quantity.to_i
-                %td= usesupplies.issuedate.try(:strftime, "%d %b %Y")
+                %td= stationery_use.issuedby
+                %td= stationery_use.receivedby
+                %td= stationery_use.quantity.to_i
+                %td= stationery_use.issuedate.try(:strftime, "%d %b %Y")
 				
       .col-md-offset-1
         //= render :partial => 'form', :locals => {:f => f}

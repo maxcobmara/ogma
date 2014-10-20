@@ -17,6 +17,13 @@ $(document).ready(function(e) {
     defaultSeconds: 0,
     autoclose: true
   });
+  $('.datetime_picker2').datetimepicker({
+    timepicker:true,
+    format: "Y-m-d H:i",
+    step: 1,
+    defaultSeconds: 0,
+    autoclose: true
+  });
   $('.time_picker').datetimepicker({
      datepicker:false,
        format:'H:i',

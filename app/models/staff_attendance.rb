@@ -11,7 +11,15 @@ class StaffAttendance < ActiveRecord::Base
   
   attr_accessor :userid, :checktime, :checktype, :name, :birthday, :defaultdeptid, :deptid, :deptname, :thumbid, :icno	#from excel
   
-  #validates_presence_of :reason
+  validates_presence_of :reason, :if => :fingerprint_issued?        
+  
+  def fingerprint_issued?
+    if trigger && trigger==true  && status != nil
+      return true
+    else
+      return false
+    end
+  end
       
   def update_trigger_isapproved
     if id.nil?|| id.blank? 

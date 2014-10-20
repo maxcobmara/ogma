@@ -642,7 +642,18 @@ ms_MY:
       workorderno: "No. Perintah Kerja"
       maintcost: Kos Senggaraan
       details: Butiran
-    
+
+  stationery:
+    title: Senarai Keperluan Pejabat
+    code: Kod Barang
+    category: Nama Produk
+    quantity: Kuantiti Semasa
+    max: Max Kuantiti
+    min: Min Kuantiti
+    details: Keperluan Pejabat
+    additions: Penambahan
+    deductions: Pengurangan
+
   location:
     title: Lokasi
     code: Kod Lokasi

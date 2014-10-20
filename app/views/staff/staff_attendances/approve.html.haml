@@ -30,13 +30,20 @@
             .form-group
               .col-sm-2.control-label
                 = f.label :is_approved
-              .col-md-3
-                = f.check_box :is_approved
-            .form-group
-              .col-sm-2.control-label
-                = f.label :approved_on
-              .col-md-3
-                = f.text_field :approved_on, :class=>'date-picker2'
+              .col-md-1
+                = f.radio_button :is_approved, 'true' , :id => 'approval_true' , :class => 'radio_approve' 
+              .col-md-1
+                = t 'staff_attendance.approve'
+              .col-md-1
+                = f.radio_button :is_approved, 'false', :id => 'approval_false', :class => 'radio_approve' 
+              .col-md-1
+                = t 'staff_attendance.reject'
+            .approve_time{:style=>"display: none;"}
+              .form-group
+                .col-sm-2.control-label
+                  = f.label :approved_on
+                .col-md-2
+                  = f.text_field :approved_on, :class=>'date_picker form-control'
 
     .row
       .col-md-7.col-md-offset-3
@@ -49,19 +56,12 @@
             /.div{style: "margin-left:-40px;"}
             = f.submit t('update'), class: "btn btn-primary"
 
-:javascript  
+:javascript
 
-  $('.date-picker2').datetimepicker({
-   timepicker:false,
-     format: "Y-m-d",
-     autoclose: true
-   });    
-
-  /below - nt working yet
-  $(document).ready(function(){ 
-    $('.radio_approve').change(function() {  
-      $('.approve_time').show();  
-       });
-    });
+$(document).ready(function(){ 
+  $('.radio_approve').change(function() {  
+    $('.approve_time').show();  
+  });
+});
 
 

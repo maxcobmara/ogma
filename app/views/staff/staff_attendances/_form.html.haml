@@ -16,8 +16,8 @@
           .form-group
             .col-sm-2.control-label
               = f.label :logged_at
-            .col-md-3
-              = f.text_field :logged_at, :class=>'date-picker'
+            .col-md-2
+              = f.text_field :logged_at, :class=>'datetime_picker2 form-control'
           .form-group
             .col-sm-2.control-label
               = f.label :log_type
@@ -28,16 +28,4 @@
               = f.label :trigger
             .col-md-3
               = f.check_box :trigger
-                
-:javascript  
-  $('.date-picker').datetimepicker({
-   timepicker:true,
-     format: "Y-m-d H:i:s",
-     autoclose: true
-   }); 
-   
-  $('.date-picker2').datetimepicker({
-   timepicker:false,
-     format: "Y-m-d",
-     autoclose: true
-   });    
+ 

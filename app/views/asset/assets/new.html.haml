@@ -15,7 +15,7 @@
         %table.inline_display
           %tr
             %td KKM/BPL/010619/
-            %td= f.select :assettype, DropDown::ASSETTYPE, {prompt: "Select", id: "asset_type_select"}, class: 'selectpicker', "data-width" => "80px"
+            %td= f.select :assettype, DropDown::ASSETTYPES, {prompt: "Select", id: "asset_type_select"}, class: 'selectpicker', "data-width" => "80px"
             %td /
             %td= f.date_select :receiveddate,  {:end_year => (Time.now.year+1), :order => [:year], id: "asset_receiveddate_select"}, class: 'selectpicker', "data-width" => "80px"
             %td /
@@ -40,33 +40,27 @@
             %button.close{"aria-hidden" => "true", "data-dismiss" => "alert", :type => "button"} &times;
             %strong Last Asset:
             = Asset.where(assettype: 2).last[:assetcode] rescue 0
-            
-            
+                     
     .form-group
       .col-sm-2.control-label
-        = f.label t 'asset.category', for: :category_id
+        = f.label t 'asset.category.title', for: :category_id
       .col-md-4
         = f.collection_select :category_id, Assetcategory.where('parent_id IS ?', nil), :id, :description, {prompt: "Select", :include_blank => true}, class: 'selectpicker'
-          
             
     .col-md-1.col-sm-offset-2
       = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), asset_assets_path, :class => 'btn btn-default'
     .col-md-2
       = f.submit t('create'), class: "btn btn-primary"
       
-
-
-
-
 :javascript
-  $(document).ready(function(){
-    $('#asset_assettype').change(function() {
-      if($(this).val() == 1) {
-        $('.fixed_selector').show();
-  			$('.inventory_selector').hide();
-      }else if ($(this).val() == 2) {
-       	 $('.fixed_selector').hide();
-  			 $('.inventory_selector').show();
-      }
-  	});
+$(document).ready(function(){
+  $('#asset_assettype').change(function() {
+    if($(this).val() == 1) {
+      $('.fixed_selector').show();
+      $('.inventory_selector').hide();
+    }else if($(this).val() == 2) {
+      $('.fixed_selector').hide();
+      $('.inventory_selector').show();
+    }
   });
+});
