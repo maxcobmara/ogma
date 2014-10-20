@@ -166,6 +166,7 @@ en:
     position_id: Position
     reports_to: Reports To
 
+
     qualifications: 
       title: Qualifications
       level_id: Level

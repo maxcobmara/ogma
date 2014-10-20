@@ -347,7 +347,8 @@
           = render 'qualification_fields', :f => builder
         
         .col-sm-offset-2.col-sm-2
-          = link_to_add_fields content_tag(:i, "", class: "fa fa-plus-square"), f, :qualifications
+          /= link_to_add_fields content_tag(:i, "", class: "fa fa-plus-square"), f, :qualifications
+          = link_to_add_fields t('addmore'), f, :qualifications, "",  t('addmore')
           = f.submit t('update'), class: "btn btn-primary"
 
 
@@ -379,8 +380,9 @@
         - f.fields_for :bankaccounts do |builder|
           = render 'bankaccount_fields', :f => builder
         .row
-          = link_to_add_fields image_tag("add.png", :border => 0, :title => t('addmore')), f, :bankaccounts
-          = t 'addmore'
+          /= link_to_add_fields image_tag("add.png", :border => 0, :title => t('addmore')), f, :bankaccounts
+          = link_to_add_fields t('addmore'), f, :bankaccounts, "",  t('addmore')
+
         
         .form-group
           .col-sm-offset-2.col-sm-2
@@ -404,8 +406,9 @@
         - f.fields_for :loans do |builder|
           = render 'loan_fields', :f => builder
         .row
-          = link_to_add_fields image_tag("add.png", :border => 0, :title => t('addmore')), f, :loans
-          = t 'addmore'
+          /= link_to_add_fields image_tag("add.png", :border => 0, :title => t('addmore')), f, :loans
+          = link_to_add_fields t('addmore'), f, :loans, "",  t('addmore')
+
         
         .form-group
           .col-sm-offset-2.col-sm-2
@@ -424,15 +427,21 @@
         - f.fields_for :kins do |builder|
           = render 'kin_fields', :f => builder
         .row
-          = link_to_add_fields image_tag("add.png", :border => 0, :title => t('addmore')), f, :kins
-          = t 'addmore'
+          /= link_to_add_fields image_tag("add.png", :border => 0, :title => t('addmore')), f, :kins
+          = link_to_add_fields t('addmore'), f, :kins, "",  t('addmore')
+
         
         .form-group
           .col-sm-offset-2.col-sm-2
             = f.submit t('update'), class: "btn btn-primary"
 
 
-
+:javascript
+  function add_fields(link, association, content) {  
+    var new_id = new Date().getTime();  
+    var regexp = new RegExp("new_" + association, "g");  
+    $(link).parent().before(content.replace(regexp, new_id));  
+  }
 
 
 
