@@ -23,3 +23,14 @@
         %th Submitted?
         %th Approved?
         %th Approved By
+		
+    %tbody
+    - @leaveforstudents.each do |leaveforstudent|
+      %tr
+        %td= leaveforstudent.student_details
+        %td= leaveforstudent.leavetype
+        %td= leaveforstudent.requestdate
+        %td= leaveforstudent.leave_startdate
+        %td= leaveforstudent.studentsubmit? ? "Submitted" : ""
+        %td= leaveforstudent.approved? ? "Approved" : ""
+        %td= leaveforstudent.staff_id? ? leaveforstudent.approver_details : ""
