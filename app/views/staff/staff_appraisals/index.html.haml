@@ -1,6 +1,6 @@
 - model_class = StaffAppraisal
 .page-header
-  %h1= t('staff.lists of appraisals')#, :default => model_class.model_name.human.pluralize
+  %h1= t('staff.staff_appraisal.title')#, :default => model_class.model_name.human.pluralize
   
 .navbar.navbar-inverse{role: "navigation", style: "padding-right:40px;"}
   %ul.nav.navbar-nav
@@ -18,7 +18,7 @@
         %th{style: "width:20%;"}= sort_link(@search, :icno, (t 'staff.icno'))
         %th= sort_link(@search, :name, (t 'staff.name'))
         %th{style: "width:20%;"}= sort_link(@search, :staff_position_name,(t 'staff.position'))
-        %th{style: "width:10%;"}= sort_link(@search, :evaluate, (t 'evaluation.form.evaluation year'))
+        %th{style: "width:10%;"}= sort_link(@search, :evaluate, (t 'helpers.label.staff_appraisal.evaluation_year'))
         %th= sort_link(@search, :status, (t 'staff_appraisal.status'))
 		
       %tbody 
