@@ -500,4 +500,10 @@ module DropDown
              ["Inventory",2]
   ]
    
+  ASSETTYPES = [
+             # Displayed        stored in db
+             ["H",1],
+             ["I",2]
+   ]
+  
 end
