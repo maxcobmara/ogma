@@ -1,3 +1,3 @@
 %dl.dl-horizontal
   %dt= t 'asset.defect.approval'
-  %dd= @defective.decision? ? "Yes, by  " + @asset_defect.confimer.name.to_s + " on  " + (l(@asset_defect.decision_on)).to_s : "No" 
+  %dd= @defective.decision? ? "Yes, by  " + @asset_defect.confirmer.name.to_s + " on  " + (l(@asset_defect.decision_on)).to_s : "No" 
