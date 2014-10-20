@@ -15,6 +15,21 @@ class Student::LeaveforstudentsController < ApplicationController
       format.html # new.html.erb
       format.xml  { render :xml => @leaveforstudents }
   end
+  
+  def create
+    @leaveforstudent = Leaveforstudent.new(params[:leaveforstudent])
+
+    respond_to do |format|
+      if @leaveforstudent.save
+        flash[:notice] = 'Leaveforstudent was successfully created.'
+        format.html { redirect_to(@leaveforstudent) }
+        format.xml  { render :xml => @leaveforstudent, :status => :created, :location => @leaveforstudent }
+      else
+        format.html { render :action => "new" }
+        format.xml  { render :xml => @leaveforstudent.errors, :status => :unprocessable_entity }
+      end
+    end
+  end
 end
 
   #private

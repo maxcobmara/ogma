@@ -1,0 +1,50 @@
+.row
+  .col-md-10.col-md-offset-1
+    / Nav tabs
+    %ul.nav.nav-tabs
+      %li.active= link_to (t 'staff.staff_appraisal.staff details'),"#show_start", "data-toggle" => "tab"
+      %li=link_to (t 'staff.staff_appraisal.skt'), "#show_skt", "data-toggle" => "tab"
+      %li=link_to (t 'staff.staff_appraisal.activity'), "#show_activity", "data-toggle" => "tab"
+      %li=link_to (t 'staff.staff_appraisal.evaluation & review'), "#show_eval_17", "data-toggle" => "tab"
+      -#%li=link_to (t 'staff.staff_appraisal.review'), "show_eval_review", "data-toggle" => "tab"
+
+      
+    .tab-content{style:"padding-top:1em"}
+
+            
+      #show_start.tab-pane.active
+        %br
+        = render 'tab_show_start', :f => f
+  
+      #show_skt.tab-pane
+        %br
+        /= render 'tab_show_skt', :f => f
+        
+      #show_activity.tab-pane
+        %br
+        = render 'tab_show_activity', :f => f 
+
+      #show_eval_17.tab-pane
+        %br
+        = render 'tab_show_eval_17', :f => f
+ 
+      -##show_eval_review.tab-pane
+        -#%br
+        -#= render 'tab_show_eval_review', :f => f
+
+
+              
+:javascript
+
+//<![CDATA[
+bkLib.onDomLoaded(function() {
+  new nicEditor().panelInstance('myNicEditor3');
+  new nicEditor().panelInstance('myNicEditor4');
+});
+//]]>
+
+  function add_fields(link, association, content) {  
+    var new_id = new Date().getTime();  
+    var regexp = new RegExp("new_" + association, "g");  
+    $(link).parent().before(content.replace(regexp, new_id));  
+  }

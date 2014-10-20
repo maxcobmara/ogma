@@ -1,0 +1,57 @@
+.col-md-offset-2 
+  .form-group
+    .col-sm-2.control-label
+      = f.label :"Student Name:"
+    .col-md-2
+      = f.collection_select :student_id, Student.all.order(name: :asc), :id, :formatted_mykad_and_student_name, {:include_blank =>t('helpers.prompt.select_student'), :selected=>Login.first.student_id},{class: 'selectpicker', "data-width"=>'320px'} 
+  
+  .form-group
+    .col-sm-2.control-label
+      = f.label :"leave type:"
+    .col-md-2
+      = f.select :leavetype, Leaveforstudent::STUDENTLEAVETYPE,:prompt => "Select", class: 'form-control' 
+  
+  .form-group
+    .col-sm-2.control-label
+      = f.label :"request date:"
+    .col-md-4 
+      = f.text_field :requestdate, class: 'date_picker form-control'
+  
+  .form-group
+    .col-sm-2.control-label
+      = f.label :"reason:"
+    .col-md-4
+      = f.text_field :reason, class: 'form-control'
+	  
+  .form-group
+    .col-sm-2.control-label
+      = f.label :"address:"
+    .col-md-4
+      = f.text_area :address, class: 'form-control'
+  
+  .form-group
+    .col-sm-2.control-label
+      = f.label :"telephone no:"
+    .col-md-4
+      = f.text_field :telno, class: 'form-control'
+  
+  .form-group
+    .col-sm-2.control-label
+      = f.label :"start date:"
+    .col-md-4 
+      = f.text_field :leave_startdate, class: 'date_picker form-control'
+  
+  .form-group
+    .col-sm-2.control-label
+      = f.label :"end date:"
+    .col-md-4 
+      = f.text_field :leave_enddate, class: 'date_picker form-control'
+
+  .form-group
+    .col-sm-2.control-label
+      = f.label :"submit for approval:"
+    .col-md-1 
+      = f.check_box :studentsubmit, class: 'form-control'
+   
+	
+	
