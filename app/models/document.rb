@@ -25,7 +25,10 @@ class Document < ActiveRecord::Base
   validates_attachment_size :data, :less_than => 5.megabytes
   validates_presence_of :serialno, :refno, :category, :title, :from, :stafffiled_id#,:letterdt, :letterxdt, :sender,
 
-
+  def doc_details
+     "#{refno}"+" : "+"#{title.capitalize}"
+  end
+  
   #5Apr2013
   def self.set_serialno(id)
     if id
@@ -72,7 +75,7 @@ class Document < ActiveRecord::Base
   end
     
   def doc_details_date 
-    "#{refno}"+" : "+"#{title.capitalize}"+" - "+"#{letterdt}"
+    doc_details+" - "+"#{letterdt}"
   end
     
 

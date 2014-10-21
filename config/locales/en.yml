@@ -278,6 +278,8 @@ en:
       hod_id: Head of Department
       hod_accept: HOD Acceptance
       hod_accept_on: HOD Acceptance Date
+      hod_not_accept: Not Accepted by HOD
+      travel_dates: Travel Dates
       travel_claim_id: Travel Claim
       is_travel_log_complete: "Travel Log Complete?"
       log_mileage: Log Mileage
@@ -297,7 +299,25 @@ en:
       month_year: "Month & Year"
       name: Name
       total: Total
-      
+      request_travel_log: "Travel Request & Log"
+      claims_details: Claims Details
+      claims_approval: Approval
+      staff_id: Staff Name
+      allowance: Allowance
+      receipts: Receipts
+      advance: Advance
+      type: Type
+      days: Days
+      value: "Value (RM)"
+      receipt_no: Receipt No
+      total: Total
+      current_total: Current Total
+      claimable_total: Claimable Total
+      yes2: "Yes, "
+      no2: "No"
+      is_submitted: "Submitted?"
+      is_approved: "Approved?"
+      to_be_approved_by: To be Approved by
 
     staff_appraisal:
       title: Staff Appraisal
