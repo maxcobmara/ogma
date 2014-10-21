@@ -7,8 +7,21 @@ describe AssetDefect do
   subject { @asset_defect }
 
   it { should respond_to(:asset_id) }
+  it { should respond_to(:reported_by)}
   
   it { should be_valid }
+  
+  describe "when asset is not present" do
+    before { @asset_defect.asset_id = nil }
+    it { should_not be_valid}
+  end
+  
+  describe "when reporter is not present" do
+    before { @asset_defect.reported_by = nil }
+    it { should_not be_valid}
+  end
+  
+  #validates :asset_id, :reported_by, :presence => true
   
 end
 

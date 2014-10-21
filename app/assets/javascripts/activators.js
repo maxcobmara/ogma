@@ -28,7 +28,15 @@ $(document).ready(function(e) {
      datepicker:false,
        format:'H:i',
        step:5,
-    });
+  });
+  $('.monthyear_picker').datetimepicker({
+      format: "Y-m-d",
+      timepicker: false,
+      autoclose: true,
+      onSelectDate: function(dp, $input) {
+        $input.val($input.val().substr(0,8) + '01');
+      }
+  });
   $(".bogus").click(function (e) {
       alert("Sorry! Feature not yet implemented");
   });

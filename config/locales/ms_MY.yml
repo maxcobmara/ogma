@@ -283,6 +283,11 @@ ms_MY:
 
     travel_claim:
       title: Tuntutan Perjalanan
+      new: Tuntutan Perjalanan Baru
+      edit: Sunting Tuntutan Perjalanan
+      month_year: "Bulan & Tahun"
+      name: Nama
+      total: Jumlah
 
     staff_appraisal:
       title: Penilaian Prestasi
