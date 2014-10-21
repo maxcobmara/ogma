@@ -269,6 +269,8 @@ ms_MY:
       hod_id: Ketua Jabatan
       hod_accept: Penerimaan Ketua Jabatan
       hod_accept_on: Tarikh Penerimaan Ketua Jabatan
+      hod_not_accept: Tidak Diterima/Diluluskan oleh Ketua Jabatan
+      travel_dates: Tarikh Perjalanan
       travel_claim_id: Tuntutan Perjalanan
       is_travel_log_complete: "Log Perjalanan Lengkap?"
       log_mileage: Log Batuan
@@ -277,7 +279,7 @@ ms_MY:
       by: " oleh "
       date: Tarikh
       start: Dari
-      finish: Ke
+      finish: Hingga
       total: Jumlah
       code: Kod Permohonan Perjalanan
 
@@ -288,6 +290,25 @@ ms_MY:
       month_year: "Bulan & Tahun"
       name: Nama
       total: Jumlah
+      request_travel_log: "Permohonan & Log Perjalanan"
+      claims_details: Butiran Tuntutan
+      claims_approval: Kelulusan
+      staff_id: Nama Staf
+      allowance: Elaun
+      receipts: Resit
+      advance: Pendahuluan
+      type: Jenis
+      days: Hari
+      value: "Nilai (RM)"
+      receipt_no: "No. Resit"
+      total: Jumlah
+      current_total: Jumlah Semasa
+      claimable_total: Jumlah Boleh Dituntut
+      yes2: "Ya, "
+      no2: "Tidak"
+      is_submitted: "Dihantar?"
+      is_approved: "Diluluskan?"
+      to_be_approved_by: Kelulusan Oleh
 
     staff_appraisal:
       title: Penilaian Prestasi
