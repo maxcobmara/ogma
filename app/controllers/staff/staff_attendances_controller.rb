@@ -179,6 +179,45 @@ class Staff::StaffAttendancesController < ApplicationController
     end
   end
   
+  def laporan_bulanan_punchcard
+
+    @staff_attendance = StaffAttendance.where(params[:id]) 
+    respond_to do |format|
+      format.pdf do
+        pdf = Laporan_bulanan_punchcardPdf.new(@staff_attendance, view_context)
+        send_data pdf.render, filename: "laporan_bulanan_punchcard-{Date.today}",
+                              type: "application/pdf",
+                              disposition: "inline"
+      end
+    end
+  end
+  
+  def laporan_mingguan_punchcard
+
+    @staff_attendance = StaffAttendance.where(params[:id]) 
+    respond_to do |format|
+      format.pdf do
+        pdf = Laporan_mingguan_punchcardPdf.new(@staff_attendance, view_context)
+        send_data pdf.render, filename: "laporan_mingguan_punchcard-{Date.today}",
+                              type: "application/pdf",
+                              disposition: "inline"
+      end
+    end
+  end
+ 
+  def laporan_harian_punchcard
+
+    @staff_attendance = StaffAttendance.where(params[:id]) 
+    respond_to do |format|
+      format.pdf do
+        pdf = Laporan_harian_punchcardPdf.new(@staff_attendance, view_context)
+        send_data pdf.render, filename: "laporan_harian_punchcard-{Date.today}",
+                              type: "application/pdf",
+                              disposition: "inline"
+      end
+    end
+  end
+  
   def manage
     @mylate_attendances = StaffAttendance.find_mylate
     @myearly_attendances = StaffAttendance.find_myearly

@@ -78,8 +78,7 @@ class Staff::AttendancesController < ApplicationController
   
   def approve
     @attendance = Attendance.find(params[:id])
-  end
-  
+  end 
   
 
   # DELETE /attendances/1
