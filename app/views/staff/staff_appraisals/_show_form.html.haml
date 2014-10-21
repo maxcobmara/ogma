@@ -2,35 +2,57 @@
   .col-md-10.col-md-offset-1
     / Nav tabs
     %ul.nav.nav-tabs
-      %li.active= link_to (t 'staff.staff_appraisal.staff details'),"#show_start", "data-toggle" => "tab"
-      %li=link_to (t 'staff.staff_appraisal.skt'), "#show_skt", "data-toggle" => "tab"
+      /%li.active= link_to (t 'staff.staff_appraisal.skt'),"#show_start", "data-toggle" => "tab"
+      %li.active= link_to (t 'staff.staff_appraisal.skt'), "#show_skt", "data-toggle" => "tab"
       %li=link_to (t 'staff.staff_appraisal.activity'), "#show_activity", "data-toggle" => "tab"
-      %li=link_to (t 'staff.staff_appraisal.evaluation & review'), "#show_eval_17", "data-toggle" => "tab"
-      -#%li=link_to (t 'staff.staff_appraisal.review'), "show_eval_review", "data-toggle" => "tab"
+      %li=link_to (t 'staff.staff_appraisal.evaluation_performance'), "#show_eval_1_17_41", "data-toggle" => "tab"
+      %li=link_to (t 'staff.staff_appraisal.review'), "#show_eval_review", "data-toggle" => "tab"
 
       
     .tab-content{style:"padding-top:1em"}
-
+      .col-md-8.col-md-offset-1
+        %h4= t 'evaluation.form.title_part1'
+        %dl.dl-horizontal
+          %dt= t 'evaluation.form.name'
+          %dd
+            = h @staff_appraisal.appraised.mykad_with_staff_name
+            \- (#{h @staff_appraisal.appraised.staffgrade.name})
+	  
+          %dt= t 'position.name'
+          %dd= h @staff_appraisal.appraised.positions[0].try(:name)
+	  
+          %dt= t 'evaluation.form.evaluationdate'
+          %dd= h (@staff_appraisal.evaluation_year).year
+    
+          - if @staff_appraisal.is_skt_submit == true
+            %dt= t 'helpers.label.staff_appraisal.is_skt_submit' 
+            %dd= h l(@staff_appraisal.skt_submit_on)
+          - if @staff_appraisal.is_skt_endorsed == true
+            %dt= t 'helpers.label.staff_appraisal.endorsement_on' 
+            %dd
+              = h l(@staff_appraisal.skt_submit_on)
+              by #{h @staff_appraisal.eval1_officer.name}
             
-      #show_start.tab-pane.active
+      #show_skt.tab-pane.active
         %br
-        = render 'tab_show_start', :f => f
-  
-      #show_skt.tab-pane
-        %br
-        /= render 'tab_show_skt', :f => f
+        = render 'tab_show_skt'
         
       #show_activity.tab-pane
         %br
-        = render 'tab_show_activity', :f => f 
+        = render 'tab_show_activity'
 
-      #show_eval_17.tab-pane
+      #show_eval_1_17_41.tab-pane
         %br
-        = render 'tab_show_eval_17', :f => f
+        - if @staff_appraisal.person_type == 5
+          = render 'tab_show_eval_1'
+        - elsif @staff_appraisal.person_type == 4
+          = render 'tab_show_eval_17'
+        - elsif @staff_appraisal.person_type == 3
+          = render 'tab_show_eval_41'
  
-      -##show_eval_review.tab-pane
-        -#%br
-        -#= render 'tab_show_eval_review', :f => f
+      #show_eval_review.tab-pane
+        %br
+        = render 'tab_show_eval_review'
 
 
               
