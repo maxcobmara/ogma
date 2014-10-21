@@ -28,6 +28,9 @@ Ogma::Application.routes.draw do
         put 'actionable', to: "staff_attendances#actionable"
 	post 'import'
 	get 'import_excel', to: "staff_attendances#import_excel"
+  get :laporan_bulanan_punchcard
+  get :laporan_mingguan_punchcard
+  get :laporan_harian_punchcard
       end
     end
     resources :attendances
