@@ -7,7 +7,7 @@ class TravelRequest < ActiveRecord::Base
   belongs_to :replacement,  :class_name => 'Staff', :foreign_key => 'replaced_by'
   belongs_to :headofdept,   :class_name => 'Staff', :foreign_key => 'hod_id'
   
-  belongs_to :travel_claim
+  belongs_to :travel_claim, :foreign_key => 'travel_claim_id'
   belongs_to :document
   
   validates_presence_of :staff_id, :destination, :depart_at, :return_at
@@ -132,6 +132,10 @@ class TravelRequest < ActiveRecord::Base
   def total_km_money_request
     #other_claims_total + public_transport_totals
     travel_claim_logs.sum(:km_money)
+  end
+  
+  def travel_dates
+    "#{depart_at.try(:strftime, "%d %b %Y")}"+" - "+"#{ return_at.try(:strftime, "%d %b %Y") }"
   end
   
 end
