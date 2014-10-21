@@ -245,9 +245,13 @@ Ogma::Application.routes.draw do
   end
 
   devise_for :users
-  resources :users
+  resources :users do
+   member do
+    get  :link
+    post :link
+   end
+  end
   resources :logins
-
 
   root  'static_pages#home'
   match '/help',    to: 'static_pages#help',    via: 'get'
