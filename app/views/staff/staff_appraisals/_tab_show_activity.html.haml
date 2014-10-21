@@ -1,64 +1,49 @@
-&nbsp
-%fieldset
-  %legend.togvis= t 'evaluation.form.title_partIIa'
-  %table{:width => "100%"}
-    %tr
-      %td.leftcol{:colspan => "2"}= t 'evaluation.form.label_001'
-    %tr
-      %td{:colspan => "2"}
-        %table{:width => "90%"}
-          %tr
-            %th Date
-            %th Activity
-            %th Level
-          - for evactivity in @staff_appraisal.evactivities
-            %tr
-              %td
-                -#- evactivity.actdt.blank? ? "-" : l(evactivity.actdt)
-      -#%td= evactivity.evactivity
-      -#%td= (Evactivity::EVACT.find_all{|disp, value| value == evactivity.actlevel}).map {|disp, value| disp}
+.col-md-9.col-md-offset-1
+  %h4= t 'evaluation.form.title_partIIa'
+  = t 'evaluation.form.label_001'
+  %dl.dl-horizontal
+    - for evactivity in @staff_appraisal.evactivities
+      %dt= t 'evaluation.form.date'
+      %dd= l(evactivity.actdt) if evactivity.actdt.blank? == false
 
-&nbsp
-%fieldset
-  %legend.togvis= t 'evaluation.form.title_part2b'
-  %table{:width => "100%"}
-    %tr
-      %td.leftcol{:colspan => "2"}= t 'evaluation.form.label_003'
-    %tr
-      %td{:colspan => "2"}
-        %table{:width => "90%"}
-          %tr
-            %th Name
-            %th Type
-            %th Date
-            %th Duration
-          -#- for ptdo in Ptdo.find(:all, :conditions => ['staff_id = ?', @staff_appraisal.appraised])
-            -#- if ptdo.ptschedule.start.year==@staff_appraisal.evaluation_year.year
-              %tr
-                %td= ptdo.ptschedule.ptcourse.name
-                %td= (Ptcourse::COURSE_TYPE.find_all{|disp, value| value == ptdo.ptschedule.ptcourse.course_type}).map {|disp, value| disp}
-                %td= l(ptdo.ptschedule.start)
-                %td
-                  = ptdo.ptschedule.ptcourse.duration
-                  Days 
-    %tr
-      %td.leftcol{:colspan => "2"}= t 'evaluation.form.label_004'
-    %tr
-      %td{:colspan => "2"}
-        %table{:width => "90%"}
-          %tr
-            %th Activity
-            %th Reason
-          - for trainneed in @staff_appraisal.trainneeds
-            %tr
-              %td= trainneed.name
-              %td= trainneed.reason
+      %dt= t 'staff.staff_appraisal.activity'
+      %dd= evactivity.evactivity
+	  
+      %dt= t 'evaluation.form.level'
+      %dd= (DropDown::EVACT.find_all{|disp, value| value == evactivity.actlevel}).map {|disp, value| disp}[0]
+      %hr
 
-&nbsp
-%fieldset
-  %legend.togvis Submission
-  %table{:width => "100%"}
-    %tr
-      %td.leftcol
-        %label{:for => "submit_for_appraisal1_on"} Submit for evaluation
-      %td= h @staff_appraisal.is_submit_for_evaluation? ? "Yes, on " + l(@staff_appraisal.submit_for_evaluation_on)   : "No"
+  %h4= t 'evaluation.form.title_part2b'
+  = t 'evaluation.form.label_003'
+  %dl.dl-horizontal 
+    - for ptdo in Ptdo.where('staff_id = ?',@staff_appraisal.appraised)
+      - if ptdo.ptschedule.start.year==@staff_appraisal.evaluation_year.year
+        %dt= t 'evaluation.form.training_name'
+        %dd= ptdo.ptschedule.course.name
+        	 
+        %dt= t 'evaluation.form.type'
+        %dd= (DropDown::COURSE_TYPE.find_all{|disp, value| value == ptdo.ptschedule.course.course_type}).map {|disp, value| disp}[0]
+        
+        %dt= t 'evaluation.form.date'
+        %dd= l(ptdo.ptschedule.start)
+   
+        %dt= t 'evaluation.form.duration'
+        %dd
+          = ptdo.ptschedule.course.duration
+          = t 'evaluation.form.days'
+        %hr
+
+  = t 'evaluation.form.label_004'
+  %dl.dl-horizontal
+    - for trainneed in @staff_appraisal.trainneeds
+      %dt= t 'evaluation.form.training_name'
+      %dd= trainneed.name
+      
+      %dt= t 'evaluation.form.reason'
+      %dd= trainneed.reason
+
+
+  %h4= t 'staff.staff_appraisal.submission'
+  %dl.dl-horizontal
+    %dt= t 'helpers.label.staff_appraisal.is_skt_pyd_report_done'
+    %dd= h @staff_appraisal.is_submit_for_evaluation? ? "Yes, on " + l(@staff_appraisal.submit_for_evaluation_on)   : "No"

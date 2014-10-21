@@ -45,6 +45,10 @@ module ApplicationHelper
   def ringgols(money)
     number_to_currency(money, :unit => "RM ", :separator => ".", :delimiter => ",", :precision => 2)
   end
+  
+  def pukka(points)
+    number_with_precision(points, precision: 1)
+  end
 
   def formatted_mykad(icno)
     "#{icno[0,6]}-#{icno[6,2]}-#{icno[-4,4]}"

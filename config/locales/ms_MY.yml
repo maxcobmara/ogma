@@ -298,10 +298,15 @@ ms_MY:
       skt_review_staff: "Kajian Semula SKT & Laporan PYD"
       skt_review_eval1: "SKT - Laporan & Ulasan PPP"
       activity: Aktiviti
+      evaluation_performance: Pemarkahan
       eval1_1_17_41: "Pemarkahan (PPP)"
       eval1_review: Semakan
       eval2_1_17_41: "Pemarkahan (PPK)"
       eval2_review: Penilaian Prestasi
+      review: Penilaian Prestasi
+      submission: Penghantaran
+      endorsed_on_ppp: Kelulusan PPP pada
+      endorsed_on_ppk: Kelulusan PPK pada
         
     evactivity:
       actdt: Tarikh
@@ -331,6 +336,7 @@ ms_MY:
       #  quantity: 1. WORK OUTPUT QUANTITY
     
     form:
+      title_part1: 'Bahagian 1: Butiran Kakitangan (diisi oleh PYD)'
       description: Deskripsi
       level: Peringkat
       training_name: Nama Latihan
@@ -431,6 +437,7 @@ ms_MY:
   position:
     title: "Tugas & Tanggungjawab"
     index: Carta Organisasi
+    name: Jawatan
        
   staff_attendance:
     title: Kedatangan Staf
@@ -1580,6 +1587,7 @@ ms_MY:
         staff_id: Staf
         evaluation_year: Tahun Penilaian
         is_skt_submit: Hantar SKT untuk Kelulusan
+        endorsement_on: Tarikh Kelulusan
         is_skt_endorsed: Luluskan SKT
         add_activity: Tambah Aktiviti
         skt_pyd_report: "1. Laporan Oleh PYD"

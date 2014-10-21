@@ -1,82 +1,77 @@
-/ Part VIII
-%h2
-  = t 'evaluation.form.title_part8'
+.col-md-9.col-md-offset-1
   - if @staff_appraisal.is_submit_e2 == true
-    .right
-      Endorsed on #{l(@staff_appraisal.submit_e2_on)}
-%table{:width => "90%"}
-  %tr{:valign => "bottom"}
-    %td.leftcolwide
-      %label{:for => "pppyears"}= t 'evaluation.form.part8_desc'
-    %td
-      = @staff_appraisal.e1_years
-      \ 
-      %label= t 'years_label'
-      \      
-      \#{@staff_appraisal.e1_months}  
-      %label= t 'months_label'
-      %br/
-      %br/
-    %td
-  %tr
-    %td{:colspan => "3"}
-      %label{:for => "pppoverall"}
-        %b= t 'evaluation.form.part8i_desc'
-  %tr
-    %td.leftcolwide
-      %label{:for => "pppoverall"}= t 'evaluation.form.part8i'
-    %td{:colspan => "2"}= h @staff_appraisal.e1_performance
-  %tr
-    %td.leftcolwide
-      %label{:for => "pppadvancemet"}= t 'evaluation.form.part8ii'
-    %td{:colspan => "2"}= @staff_appraisal.e1_progress
+    %h4= t 'evaluation.form.title_part8'
+    %dl.dl-horizontal
+      %dt= t 'staff.staff_appraisal.endorsed_on_ppp'
+      %dd= l(@staff_appraisal.submit_e2_on)
+         
+      %dt= t 'evaluation.form.part8_desc'
+      %dd 
+        = @staff_appraisal.e1_years
+        = t 'years_label'
+        = @staff_appraisal.e1_months
+        = t 'months_label'
+      %br
+    %b= t 'evaluation.form.part8i_desc'
+    %dl.dl-horizontal
+      %dt= t 'evaluation.form.part8i'
+      %dd= h @staff_appraisal.e1_performance
+	  
+      %dt= t 'evaluation.form.part8ii'
+      %dd= @staff_appraisal.e1_progress
+	  
   - if @staff_appraisal.is_submit_e2 == true
-    %tr
-      %td{:colspan => "3"}
-        = t 'evaluation.form.ppp_statement'
-        on #{l(@staff_appraisal.submit_e2_on)}
-  %tr
-    %td.leftcolwide
-      %label{:for => "ppp_id"}= t 'evaluation.form.pppid'
-    %td= h @staff_appraisal.eval1_officer.name
-    %td
+    %br
+    %font{:style=>"color: green; font-weight: bold;"}
+      = t 'evaluation.form.ppp_statement'
+      on #{l(@staff_appraisal.submit_e2_on)}
+    %dl.dl-horizontal  
+      %dt= t 'evaluation.form.pppid'
+      %dd= h @staff_appraisal.eval1_officer.name
+
   - if @staff_appraisal.is_submit_e2 != nil
-    / Part VIII
-    %h2
-      = t 'evaluation.form.title_part9'
-      - if @staff_appraisal.is_complete == true
-        .right
-          Endorsed on #{l(@staff_appraisal.is_completed_on)}
-    %table{:width => "90%"}
-      %tr{:valign => "bottom"}
-        %td.leftcolwide
-          %label{:for => "PPKyears"}= t 'evaluation.form.part8_desc'
-        %td
+    %br
+    %h4= t 'evaluation.form.title_part9'
+    - if @staff_appraisal.is_complete == true
+      %dl.dl-horizontal
+        %dt= t 'staff.staff_appraisal.endorsed_on_ppk'
+        %dd= l(@staff_appraisal.is_completed_on)
+		
+        %dt= t 'evaluation.form.part8_desc'
+        %dd 
           = h @staff_appraisal.e2_years
-          \ 
-          %label= t 'years_label'
-          \      
-          \#{h @staff_appraisal.e2_months}  
-          %label
-            = t 'months_label'
-            %br/
-            %br/
-        %td
-      %tr
-        %td.leftcolwide
-          %label{:for => "PPKoverall"}= t 'evaluation.form.part9_desc'
-        %td{:colspan => "2"}= h @staff_appraisal.e2_performance
-      - if @staff_appraisal.is_complete == true
-        %tr
-          %td{:colspan => "3"}
-      %tr
-        %td.leftcolwide
-          %label{:for => "ppp_id"}= t 'evaluation.form.pppid'
-        %td= h @staff_appraisal.eval1_officer.name
-        %td
-      %tr
-        %td.leftcolwide
-          %label{:for => "PPK_id"}= t 'evaluation.form.ppkid'
-        %td
-          = h @staff_appraisal.eval2_officer.blank? ? "-" : @staff_appraisal.eval2_officer.name
-        %td
+          = t 'years_label'
+          = h @staff_appraisal.e2_months
+          = t 'months_label'
+		  
+        %dt= t 'evaluation.form.part9_desc'
+        %dd= h @staff_appraisal.e2_performance 
+		
+  - if @staff_appraisal.is_complete == true
+    %dl.dl-horizontal
+      %dt= t 'evaluation.form.pppid'
+      %dd= h @staff_appraisal.eval1_officer.name
+	
+      %dt= t 'evaluation.form.ppkid'
+      %dd= h @staff_appraisal.eval2_officer.blank? ? "-" : @staff_appraisal.eval2_officer.name
+      %hr
+
+
+
+        
+ 
+ 
+  
+ 
+        
+        
+      
+	  
+	  
+       
+        
+       
+	   
+       
+          
+        

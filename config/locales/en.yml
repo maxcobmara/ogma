@@ -309,10 +309,15 @@ en:
       skt_review_staff: "SKT Review & PYD Report"
       skt_review_eval1: "SKT - PPP Report & Evaluation"
       activity: Activity
+      evaluation_performance: Performance Evaluation
       eval1_1_17_41: "Performance Evaluation (1st)"
       eval1_review: Review
       eval2_1_17_41: "Performance Evaluation (2nd)"
       eval2_review: Performance Review
+      review: Performance Review
+      submission: Submission
+      endorsed_on_ppp: Endorsed by PPP on
+      endorsed_on_ppk: Endorse by PPK on
     
     evactivity:
       actdt: Date
@@ -342,6 +347,7 @@ en:
       
       
     form:
+      title_part1:  'Part 1: Staff Details (filled by PYD)'
       description: Description
       level: Level
       training_name: Training Name
@@ -516,6 +522,7 @@ en:
   position:
     title: "Tasks & Responsibilities"
     index: Organisation Chart
+    name: Position
     
   staff_attendance:
     title: Staff Attendance
@@ -1643,6 +1650,7 @@ en:
         staff_id: Staff
         evaluation_year: Evaluation Year
         is_skt_submit: Submit for Endorsement
+        endorsement_on: Endorsement On
         is_skt_endorsed: Endorse SKT
         add_activity: Add Activity
         skt_pyd_report: "1. Report By PYD"
