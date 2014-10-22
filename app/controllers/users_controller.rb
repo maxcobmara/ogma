@@ -1,7 +1,10 @@
 class UsersController < ApplicationController
 
  def link
-  @user = current_user
+  if user_signed_in?
+   @user = current_user
+   @entity = Staff.where(coemail: current_user.email).first || Staff.where(semail: current_user.email).first
+  end
  end
 
  private

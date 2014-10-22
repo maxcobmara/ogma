@@ -1,12 +1,15 @@
 .page-header
 
-.row
- - if Staff.where(coemail: current_user.email).count > 0 || Staff.where(semail: current_user.email).count > 0
-  .alert.alert-info
-   Your login email matches the following account :
-   %strong #{Staff.where(coemail: current_user.email).first.name || Student.where(semail: current_user.email).first.name}.
-   Click here to link these accounts
-   = Staff.where(coemail: current_user.email).first.id
+- if user_signed_in?
+ .row
+  - if Staff.where(coemail: current_user.email).count > 0 || Staff.where(semail: current_user.email).count > 0
+   .alert.alert-info
+    Your login email matches the following account :
+    %strong #{Staff.where(coemail: current_user.email).first.name || Student.where(semail: current_user.email).first.name}.
+    Click
+    = link_to 'here', link_user_path(current_user)
+    to link these accounts
+
 
 .row
  .col-md-3
