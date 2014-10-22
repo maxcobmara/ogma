@@ -22,7 +22,12 @@ Ogma::Application.routes.draw do
       end
     end
     resources :leaveforstaffs
-    resources :travel_claims
+    resources :travel_claims do 
+      member do
+	get :check
+	get :approve
+      end
+    end
     resources :staff_attendances do
       collection do
         put 'actionable', to: "staff_attendances#actionable"

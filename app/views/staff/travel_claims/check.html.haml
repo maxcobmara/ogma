@@ -1,0 +1,56 @@
+- model_class = TravelClaim
+.page-header
+  %h1= t 'staff.travel_claim.check'
+
+= render 'shared/flashes'
+
+.row
+  = form_for [:staff, @travel_claim], html: { multipart: true, class: 'form-horizontal' }  do |f| 
+    = render 'shared/error_messages', object: f.object
+
+    .col-md-offset-1
+      / Nav tabs
+      %ul.nav.nav-tabs
+        %li= link_to (t 'staff.travel_claim.request_travel_log'),"#travel_request_log", "data-toggle" => "tab"
+        %li.active= link_to (t 'staff.travel_claim.claims_verification'),"#claims_verification", "data-toggle" => "tab"
+
+      / display 
+      .tab-content{style:"padding-top:1em"}
+        .col-md-8.col-md-offset-1
+          %dl.dl-horizontal
+            %dt= t 'staff.travel_claim.month_year', :default => model_class.human_attribute_name(:claim_month) + ":"
+            %dd=h @travel_claim.claim_month.strftime("%B %Y") 
+          
+            %dt= t 'staff.travel_claim.staff_id', :default => model_class.human_attribute_name(:staff_id) + ":"
+            %dd=h @travel_claim.staff.staff_name_with_position unless @travel_claim.staff.blank?
+        
+        #travel_request_log.tab-pane
+          - for travel_request in @travel_claim.travel_requests
+            = render 'tab_travel_request_log', :travel_request => travel_request
+          .col-md-10.col-md-offset-1
+            %dl.dl-horizontal
+            %hr
+          .col-md-10.col-md-offset-3
+            .row
+              .col-md-6 
+                %br
+                %b=t 'staff.travel_request.total'
+              .col-md-1
+                %br
+                %font{:style=>"font-weight:bold; text-decoration:underline;"}=@travel_claim.total_mileage 
+              .col-md-1
+                %br
+                %font{:style=>"font-weight:bold; text-decoration:underline;"}= ringgols(@travel_claim.total_km_money) 
+        
+        #claims_verification.tab-pane.active
+          %br
+          =render 'tab_claims_details_check', :f=> f
+          =render 'tab_claims_verification', :f=>f
+          
+        .col-md-8.col-md-offset-1
+          %BR
+          .form-group
+            .col-sm-offset-2.col-sm-2
+              = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), staff_travel_claim_path(@travel_claim), :class => 'btn btn-default'
+            .col-sm-2
+              = f.submit t('process'), class: "btn btn-primary"

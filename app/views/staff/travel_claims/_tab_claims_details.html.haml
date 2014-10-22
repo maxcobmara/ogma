@@ -78,15 +78,4 @@
       %font{:style=>"font-weight:bold; text-decoration:underline;"}= ringgols(@travel_claim.receipts)    
 
 /ADVANCE section
-.col-md-10.col-md-offset-1
-  %dl.dl-horizontal
-    %hr
-    
-    %dt=(t 'staff.travel_claim.advance').upcase
-    %dd &nbsp;
-      
-    %dt=t 'staff.travel_claim.current_total' 
-    %dd= ringgols(@travel_claim.total_claims) 
-    
-    %dt=t 'staff.travel_claim.claimable_total'
-    %dd= ringgols(@travel_claim.to_be_paid)
+= render 'tab_advance'

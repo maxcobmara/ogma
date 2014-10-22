@@ -59,6 +59,7 @@ en:
   new: New
   update: Update
   control: Control
+  process: Process
   thank: "Staff was successfully created"
   addmore: "Add More"
   submit: Submit
@@ -73,6 +74,7 @@ en:
   no: No
   setup: Set Up
   select: Select
+  check: Check
   
   actions:
     new: New
@@ -297,13 +299,19 @@ en:
       title: Travel Claims
       new: New Travel Claim
       edit: Edit Travel Claim
+      check: Finance Check Travel Claim
       month_year: "Month & Year"
       name: Name
       total: Total
       request_travel_log: "Travel Request & Log"
       claims_details: Claims Details
+      submission: Submission to Finance
+      claims_verification: Finance Verification
       claims_approval: Approval
       staff_id: Staff Name
+      include_travel_request: Include Travel Request
+      include: Include
+      misc_allowances: "Meal Allowance / Daily Allowance / Lodging Allowance"
       allowance: Allowance
       receipts: Receipts
       advance: Advance
@@ -319,7 +327,14 @@ en:
       is_submitted: "Submitted?"
       is_approved: "Approved?"
       to_be_approved_by: To be Approved by
-
+      check_status: Finance Check Status
+      note_by_finance: Note By Finance Staff
+      submit_notify: Clicking on submit notifies claims officer and disables your editing this record further
+      verification: Verification
+      return_to_staff: Return to Staff
+      verified_ok: Verified OK
+      approve_notify: Clicking on Approves shall approve this claim
+      
     staff_appraisal:
       title: Staff Appraisal
       new: New Staff Appraisal
@@ -1460,6 +1475,7 @@ en:
       back_lesson_report: Lesson Report List
       back_travel_request: Travel Request List
       back_travel_log: Travel Log List
+      finance_check: Finance Check
     label:
       examquestion:
         creator_id: Creator 
@@ -1665,6 +1681,14 @@ en:
         hod_accept_on: HOD Acceptance Date
         add_log: Add Log
         code: Travel Request Code
+        
+      travel_claim:
+        claim_month: "Month & Year"
+        staff_id: Staff Name
+        is_submitted: "Submit?"
+        is_returned: "Resubmit?"
+        is_approved: "Approved?"
+        approved_by: Approval By
 
       staff_appraisal:
         staff_id: Staff

@@ -15,7 +15,7 @@ class TravelRequest < ActiveRecord::Base
   validate :validate_end_date_before_start_date
   validates_presence_of :replaced_by, :if => :check_submit?
   validates_presence_of :hod_id,      :if => :check_submit?
-  
+  validates_presence_of :hod_accept_on, :if => :hod_accept?
   
   has_many :travel_claim_logs, :dependent => :destroy
   accepts_nested_attributes_for :travel_claim_logs, :reject_if => lambda { |a| a[:destination].blank? }, :allow_destroy =>true

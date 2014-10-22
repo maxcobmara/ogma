@@ -1,0 +1,13 @@
+/ADVANCE section
+.col-md-8.col-md-offset-1
+  %dl.dl-horizontal
+    %hr
+    
+    %dt=(t 'staff.travel_claim.advance').upcase
+    %dd= ringgols(@travel_claim.advance)
+      
+    %dt=t 'staff.travel_claim.current_total' 
+    %dd= ringgols(@travel_claim.total_claims) 
+    
+    %dt=t 'staff.travel_claim.claimable_total'
+    %dd= ringgols(@travel_claim.to_be_paid) 

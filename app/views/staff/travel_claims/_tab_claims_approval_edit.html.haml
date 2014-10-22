@@ -1,0 +1,40 @@
+.col-md-6.col-md-offset-2
+  .form-group
+    .col-sm-2.control-label
+      = f.label :is_approved
+    .col-md-1
+      = f.check_box :is_approved, :id => 'approve1'
+    .col-md-2
+      .span_submit1{:style=>"display:none;"}
+        = f.text_field :approved_on, class: 'date_picker form-control'
+  .span_submit1{:style=>"display:none;"}
+    .form-group
+      .col-sm-2.control-label 
+        &nbsp;
+      .col-md-6
+        = t 'staff.travel_claim.approve_notify'
+  .form-group
+    .col-sm-2.control-label
+      = f.label :approved_by
+    .col-md-6
+      /= f.collection_select :approved_by, Staff.where(id: Login.current_login.staff_id), :id, :name
+      =f.collection_select :approved_by, Staff.all, :id, :name, {:include_blank=>t('select'), :selected=>98},{class: 'selectpicker', "data-width"=>"220px"}
+      /Confirmation
+
+:javascript
+$(document).ready(function(){
+  $("input[id='approve1']").change(function() {  
+    if($('#approve1').is(':checked')) { 
+      $(".span_submit1").show("highlight"); 
+    }else{
+      $(".span_submit1").hide(""); 
+    }
+  });
+  $("input[id='approve1']").each(function() {  
+    if($('#approve1').is(':checked')) { 
+      $(".span_submit1").show("highlight"); 
+    }else{
+      $(".span_submit1").hide(""); 
+    }
+  });
+});
