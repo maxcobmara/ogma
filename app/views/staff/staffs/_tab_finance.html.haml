@@ -10,7 +10,7 @@
       %hr
       %dt= t('staff.banks.long_name') + ":"
       %dd
-        %strong= bankaccount.bank.long_name
+        %strong= bankaccount.bank.try(:long_name)
 
       %dt= t('staff.banks.account_no') + ":"
       %dd= bankaccount.account_no
