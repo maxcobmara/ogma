@@ -61,11 +61,11 @@ class Staff::LeaveforstaffsController < ApplicationController
     end
   
   def new
-    @leaveforstaffs = Leaveforstaff.new
+    @leaveforstaff = Leaveforstaff.new
 
     respond_to do |format|
       format.html # new.html.erb
-      format.xml  { render :xml => @leaveforstaffs }
+      format.xml  { render :xml => @leaveforstaff }
   end
 end
 

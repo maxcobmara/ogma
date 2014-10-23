@@ -1,0 +1,19 @@
+.col-md-8.col-md-offset-2
+  %BR
+  .row
+    .col-md-6
+      %b=t 'staff.travel_claim.include_travel_request'
+  .row
+    .col-md-1=t 'staff.travel_claim.include'
+    .col-md-3=t 'staff.travel_request.document_id'
+    .col-md-2=t 'staff.travel_request.destination'
+    .col-md-2=t 'staff.travel_request.purpose'
+    .col-md-3=t 'staff.travel_request.travel_dates'
+    %hr
+  - for travel_request in @my_approved_unclaimed_requests 
+    .row
+      .col-md-1=check_box_tag "travel_claim[travel_request_ids][]", travel_request.id, @travel_claim.travel_requests.include?(travel_request) 
+      .col-md-3=check_kin {travel_request.document.refno}
+      .col-md-2=travel_request.destination 
+      .col-md-2=check_kin {travel_request.document.title} 
+      .col-md-3=travel_request.travel_dates

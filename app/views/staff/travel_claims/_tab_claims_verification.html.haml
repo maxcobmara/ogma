@@ -1,0 +1,20 @@
+.col-md-6.col-md-offset-2
+  .form-group
+    .col-sm-2.control-label
+      = f.label :is_submitted
+    .col-md-6
+      =h @travel_claim.is_submitted? ? "Yes" + " on   " + l(@travel_claim.submitted_on).to_s : "No"
+  .form-group
+    .col-sm-2.control-label
+      = f.label (t 'staff.travel_claim.verification')
+    .col-md-2
+      = f.radio_button :is_checked, 'false' 
+      = t 'staff.travel_claim.return_to_staff'
+    .col-md-2
+      = f.radio_button :is_checked, 'true'  
+      = t 'staff.travel_claim.verified_ok'
+  .form-group
+    .col-sm-2.control-label
+      = f.label (t 'staff.travel_claim.note_by_finance')
+    .col-md-8
+      =f.text_field :notes, class: 'form-control'

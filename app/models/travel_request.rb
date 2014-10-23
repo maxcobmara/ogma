@@ -1,7 +1,7 @@
 class TravelRequest < ActiveRecord::Base
   # befores, relationships, validations, before logic, validation logic, 
   #controller searches, variables, lists, relationship checking
-  before_save :set_to_nil_where_false, :set_total
+  before_save :set_to_nil_where_false, :set_total, :set_mileage_nil_when_not_own_car
   
   belongs_to :applicant,    :class_name => 'Staff', :foreign_key => 'staff_id'
   belongs_to :replacement,  :class_name => 'Staff', :foreign_key => 'replaced_by'
@@ -15,7 +15,7 @@ class TravelRequest < ActiveRecord::Base
   validate :validate_end_date_before_start_date
   validates_presence_of :replaced_by, :if => :check_submit?
   validates_presence_of :hod_id,      :if => :check_submit?
-  
+  validates_presence_of :hod_accept_on, :if => :hod_accept?
   
   has_many :travel_claim_logs, :dependent => :destroy
   accepts_nested_attributes_for :travel_claim_logs, :reject_if => lambda { |a| a[:destination].blank? }, :allow_destroy =>true
@@ -89,6 +89,14 @@ class TravelRequest < ActiveRecord::Base
     if !mycar?#own_car == false 
       self.own_car_notes =''
       self.mileage = nil
+    end
+  end
+  
+  def set_mileage_nil_when_not_own_car
+    #true for mileage allowance
+    #false for mileage replacement
+    unless own_car
+      self.mileage_replace = nil
     end
   end
   

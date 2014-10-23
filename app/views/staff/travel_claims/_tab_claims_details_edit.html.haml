@@ -1,0 +1,49 @@
+.col-md-8.col-md-offset-1
+        
+  /Allowances section
+  %BR
+  %b= t 'staff.travel_claim.misc_allowances'
+  .row
+    .col-sm-2= t 'staff.travel_claim.days'
+    .col-sm-3= t 'staff.travel_claim.type' 
+    .col-sm-2= t 'staff.travel_claim.value'
+    .col-sm-3= t 'staff.travel_claim.receipt_no'
+    %hr
+  = f.fields_for :travel_claim_allowances do |builder|
+    = render 'travel_claim_allowance_fields', :f => builder
+  %br
+  .row
+    /= link_to_add_fields image_tag("add.png", :border => 0, :title => t('addmore')), f, :travel_claim_allowances
+    = link_to_add_fields t('addmore'), f, :travel_claim_allowances, "",  t('addmore')
+          
+  /Receipt section
+  %br
+  %b= t 'staff.travel_claim.receipts'
+  .row
+    .col-sm-3= t 'staff.travel_claim.type' 
+    .col-sm-3= t 'staff.travel_claim.receipt_no'
+    .col-sm-2= t 'staff.travel_claim.value'
+    %hr
+  = f.fields_for :travel_claim_receipts do |builder|
+    = render 'travel_claim_receipt_fields', :f => builder
+  %br
+  .row
+    /= link_to_add_fields image_tag("add.png", :border => 0, :title => t('addmore')), f, :travel_claim_receipts
+    = link_to_add_fields t('addmore'), f, :travel_claim_receipts, "",  t('addmore')
+  %hr   
+
+/Advance section
+.col-md-6.col-md-offset-2
+  - if @checklist == 0
+    .form-group
+      .col-sm-2.control-label
+        %b= (t 'staff.travel_claim.advance').upcase
+      .col-md-3
+        .input-group
+          .input-group-addon RM
+          = f.text_field :advance, class: 'form-control'
+
+.col-md-8.col-md-offset-1
+  %hr
+%BR
+
