@@ -268,6 +268,7 @@ ms_MY:
       mileage_value_rm: "Nilai (RM)"
       mileage: Elaun Batuan
       mileage_replace: Gantian Batuan
+      train_plane_replacement: "(Gantian tambang keretapi atau kapal terbang)"
       hod_id: Ketua Jabatan
       hod_accept: Penerimaan Ketua Jabatan
       hod_accept_on: Tarikh Penerimaan Ketua Jabatan
@@ -1728,6 +1729,13 @@ ms_MY:
       # Used in date_select and datime_select.
 #      order: [ :day, :month, :year ]
     
+  time:
+    formats:
+      default:  "%l:%M %p"
+      short: "%l:%M %p"
+    am: pagi
+    pm: petang    
+
   number:
     currency:
       format:
