@@ -1,0 +1,32 @@
+.col-md-8.col-md-offset-1   
+  /Allowances section
+  %BR
+  %b= t 'staff.travel_claim.misc_allowances'
+  .row
+    .col-sm-1= t 'staff.travel_claim.days'
+    .col-sm-2= t 'staff.travel_claim.type' 
+    .col-sm-2= t 'staff.travel_claim.value'
+    .col-sm-2= t 'staff.travel_claim.receipt_no'
+    .col-sm-5= t 'check'
+    %hr 
+  = f.fields_for :travel_claim_allowances do |builder|
+    = render 'travel_claim_allowance_fields', :f => builder
+  %br      
+  /Receipt section
+  %br
+  %b= t 'staff.travel_claim.receipts'
+  .row
+    .col-sm-3= t 'staff.travel_claim.type' 
+    .col-sm-2= t 'staff.travel_claim.receipt_no'
+    .col-sm-2= t 'staff.travel_claim.value'
+    .col-sm-5= t 'check'
+    %hr
+  = f.fields_for :travel_claim_receipts do |builder|
+    = render 'travel_claim_receipt_fields', :f => builder
+
+/Advance Section    
+=render 'tab_advance' 
+
+.col-md-8.col-md-offset-1
+  %hr
+%BR

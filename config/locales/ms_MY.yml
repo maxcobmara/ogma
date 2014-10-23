@@ -38,6 +38,7 @@ ms_MY:
   edit: Sunting
   update: Kemaskini
   control: Tindakan
+  process: Proses
   addmore: "Tambah Rekod"
   submit: Hantar
   print: Cetak
@@ -50,6 +51,7 @@ ms_MY:
   no: Tidak
   setup: Data Asas
   select: Pilih
+  check: Semak
  
   actions:
     new: Baru
@@ -287,13 +289,20 @@ ms_MY:
       title: Tuntutan Perjalanan
       new: Tuntutan Perjalanan Baru
       edit: Sunting Tuntutan Perjalanan
+      check: Semakan Kewangan Tuntutan Perjalanan
+      approve: Kelulusan Tuntutan Perjalanan
       month_year: "Bulan & Tahun"
       name: Nama
       total: Jumlah
       request_travel_log: "Permohonan & Log Perjalanan"
       claims_details: Butiran Tuntutan
+      submission: Penghantaran ke Unit Kewangan
+      claims_verification: Semakan Kewangan
       claims_approval: Kelulusan
       staff_id: Nama Staf
+      include_travel_request: Sertakan Permohonan Perjalanan
+      include: Sertakan
+      misc_allowances: "Elaun Makan / Elaun Harian / Elaun Penginapan"
       allowance: Elaun
       receipts: Resit
       advance: Pendahuluan
@@ -309,6 +318,13 @@ ms_MY:
       is_submitted: "Dihantar?"
       is_approved: "Diluluskan?"
       to_be_approved_by: Kelulusan Oleh
+      check_status: Status Semakan
+      note_by_finance: Nota dari Staf Kewangan
+      submit_notify: Penghantaran Tuntutan Perjalanan akan dimaklumkan kepada Staf Kewangan dan tiada suntingan boleh dibuat ke atas rekod ini lagi
+      verification: Pengesahan
+      return_to_staff: Pulangkan kepada Staf
+      verified_ok: Disahkan Lengkap
+      approve_notify: Klik pada kotak semak untuk meluluskan Tuntutan Perjalanan ini
 
     staff_appraisal:
       title: Penilaian Prestasi
@@ -1396,6 +1412,7 @@ ms_MY:
       back_lesson_report: Senarai Laporan Pengajaran
       back_travel_request: Senarai Permohonan Perjalanan
       back_travel_log: Senarai Log Perjalanan
+      finance_check: Semakan Kewangan
       
     label:
       examquestion:
@@ -1603,6 +1620,14 @@ ms_MY:
         hod_accept_on: Tarikh Penerimaan Ketua Jabatan
         add_log: Tambah Log
         code: Kod Permohonan Perjalanan
+      
+      travel_claim:
+        claim_month: "Bulan & Tahun"
+        staff_id: Nama Staf
+        is_submitted: "Hantar?"
+        is_returned: "Hantar Semula?"
+        is_approved: "Diluluskan?"
+        approved_by: DIluluskan Oleh
 
       staff_appraisal:
         staff_id: Staf

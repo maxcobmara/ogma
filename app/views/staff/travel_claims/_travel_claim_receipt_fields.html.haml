@@ -1,0 +1,26 @@
+%fieldset
+  - if @checklist == 0
+    = f.hidden_field :_destroy
+    .row
+      .col-sm-3= f.select :expenditure_type, DropDown::RECEIPTTYPE,{:include_blank => (t 'select')},{class: 'selectpicker'}
+      .col-sm-3= f.text_field :receipt_code, class: 'form-control'
+      .col-sm-2= f.text_field :amount, class: 'form-control'
+      .col-sm-1
+        = link_to content_tag(:i, "", class: "fa fa-trash-o"), data: {"data-toggle" => "tooltip", title: "Delete"}, class: "btn btn-danger remove_fields"
+  - else
+    .row
+      .col-sm-3=h (DropDown::RECEIPTTYPE.find_all{|disp, value| value == f.object.expenditure_type}).map {|disp, value| disp} [0]
+      .col-sm-2= f.object.receipt_code 
+      .col-sm-2=  ringgols(f.object.amount)
+      .col-sm-1
+        = f.radio_button :checker, 'true' 
+        OK
+      .col-sm-1
+        = f.radio_button :checker, 'false'
+        Query
+      .col-sm-3= f.text_field :checker_notes, class: 'form-control' 
+
+:javascript
+$(document).ready(function(){
+   $('.selectpicker').selectpicker();
+});
