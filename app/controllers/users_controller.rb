@@ -3,7 +3,7 @@ class UsersController < ApplicationController
  def link
   if user_signed_in?
    @user = current_user
-   @entity = Staff.where(coemail: current_user.email).first || Staff.where(semail: current_user.email).first
+   @entity = Staff.where(coemail: current_user.email).first || Student.where(semail: current_user.email).first
   end
  end
 
