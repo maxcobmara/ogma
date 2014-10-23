@@ -278,6 +278,7 @@ en:
       mileage_value_rm: "Value (RM)"
       mileage: Mileage Allowance
       mileage_replace: Mileage Replacement
+      train_plane_replacement: "(Train or plane fares replacement)"
       hod_id: Head of Department
       hod_accept: HOD Acceptance
       hod_accept_on: HOD Acceptance Date

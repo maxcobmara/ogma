@@ -8,7 +8,7 @@
       =h @travel_request.mileage? ? image_tag("tick.png") : image_tag("cross.png")
       =t 'staff.travel_request.mileage_replace'
       %font{:size=>'-2'}
-        (Gantian tambang keretapi atau kapal terbang)
+        = t 'staff.travel_request.train_plane_replacement'
       =h @travel_request.mileage_replace? ? image_tag("tick.png") : image_tag("cross.png") 
       
     %dt=t 'staff.travel_request.hod_accept', :default => model_class.human_attribute_name(:hod_accepted)+":"
