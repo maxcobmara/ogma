@@ -2,7 +2,7 @@
 
 - if user_signed_in?
  .row
-  - if Staff.where(coemail: current_user.email).count > 0 || Staff.where(semail: current_user.email).count > 0
+  - if Staff.where(coemail: current_user.email).count > 0 || Student.where(semail: current_user.email).count > 0
    .alert.alert-info
     Your login email matches the following account :
     %strong #{Staff.where(coemail: current_user.email).first.name || Student.where(semail: current_user.email).first.name}.
