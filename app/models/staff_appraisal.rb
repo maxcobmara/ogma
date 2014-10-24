@@ -16,13 +16,14 @@ class StaffAppraisal < ActiveRecord::Base
    has_many :trainneeds, :foreign_key => 'evaluation_id', :dependent => :destroy
    accepts_nested_attributes_for :trainneeds, :allow_destroy => true, :reject_if => lambda { |a| a[:name].blank? }
   
+   validates_presence_of :evaluation_year
    validates_uniqueness_of :evaluation_year, :scope => :staff_id, :message => "Your evaluation for this year already exists"
   
    def evaluation_status
      if is_skt_submit != true
        "SKT being formulated"
      elsif is_complete == true
-    		"Staff Appraisal complete"
+       "Staff Appraisal complete"
      elsif is_skt_submit == true && is_skt_endorsed != true
        "SKT awaiting PPP endorsement"
      elsif is_skt_submit == true && is_skt_endorsed == true && is_skt_pyd_report_done != true
@@ -39,7 +40,7 @@ class StaffAppraisal < ActiveRecord::Base
    end   
  
    def set_year_to_start
-     self.evaluation_year = evaluation_year.at_beginning_of_year
+     self.evaluation_year = evaluation_year.to_date.at_beginning_of_year  if evaluation_year
    end
  
    def evaluation_status
@@ -65,25 +66,25 @@ class StaffAppraisal < ActiveRecord::Base
    #before logic
   def set_to_nil_where_false
     if is_skt_submit != true
-      self.skt_submit_on	= nil
+      self.skt_submit_on= nil
     end 
     if is_skt_endorsed != true
-      self.skt_endorsed_on	= nil
+      self.skt_endorsed_on= nil
     end
     if is_skt_pyd_report_done != true
-      self.skt_pyd_report_on	= nil
+      self.skt_pyd_report_on= nil
     end
     if is_skt_ppp_report_done != true
-      self.skt_ppp_report_on	= nil
+      self.skt_ppp_report_on= nil
     end
     if is_submit_for_evaluation == false
-      self.submit_for_evaluation_on	= nil
+      self.submit_for_evaluation_on= nil
     end
     if is_submit_e2 == false
-      self.submit_e2_on	= nil
+      self.submit_e2_on= nil
     end
     if is_complete == false
-      self.is_completed_on	= nil
+      self.is_completed_on= nil
     end
   end
    

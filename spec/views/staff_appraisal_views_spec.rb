@@ -21,4 +21,21 @@ describe "Staff Appraisal pages" do
       it { should have_selector('th', text: "Status")}
       it { should have_link(formatted_mykad(@staff_appraisal.appraised.icno), staff_staff_appraisal_path(@staff_appraisal.appraised) + "?locale=en") }
     end
+   
+    
+  describe "Staff Appraisal Show Page" do
+    before { visit staff_staff_appraisal_path(@staff_appraisal)}   
+    it {should have_selector('h1', text: I18n.t('staff.staff_appraisal.title'))}
+    it { should have_selector(:link_or_button, I18n.t( 'staff.staff_appraisal.skt'))}    
+    it { should have_selector(:link_or_button, I18n.t('staff.staff_appraisal.activity'))}
+    it { should have_selector(:link_or_button, I18n.t('staff.staff_appraisal.evaluation_performance'))}
+    it { should have_selector(:link_or_button, I18n.t('staff.staff_appraisal.review'))}
+    
+    it { should have_selector(:link_or_button, I18n.t('back'))}    
+    it { should have_selector(:link_or_button, I18n.t('actions.edit'))}    
+    it { should have_selector(:link_or_button, I18n.t('helpers.links.destroy'))}    
+  end
+    
+    
+    
 end

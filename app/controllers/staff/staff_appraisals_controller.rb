@@ -33,6 +33,16 @@ class Staff::StaffAppraisalsController < ApplicationController
   end
   
   def create
+    @staff_appraisal = StaffAppraisal.new(staff_appraisal_params)
+    respond_to do |format|
+      if @staff_appraisal.save
+        format.html { redirect_to(staff_staff_appraisal_path(@staff_appraisal), :notice =>t('staff.staff_appraisal.title')+t('actions.created')) }
+        format.xml  { render :xml => @staff_appraisal, :status => :created, :location => @staff_appraisal}
+      else
+        format.html { render :action => "new" }
+        format.xml  { render :xml => @staff_appraisal.errors, :status => :unprocessable_entity }
+      end
+    end
   end
   
   def update
