@@ -97,6 +97,7 @@ en:
     import_failed: " - import failed "
     save_action: Save Action
     check_all: "Tick to SELECT or DESELECT ALL records for printing of KEW.PA-17 and KEW.PA-20."
+    all_records: All Records
     
   errors:
 
@@ -115,6 +116,7 @@ en:
     student: Student
   
   staff:
+    title: Staff
     list: Staff List
     personal_details: Personal Details
     icno: MyKad No
@@ -354,6 +356,14 @@ en:
       submission: Submission
       endorsed_on_ppp: Endorsed by PPP on
       endorsed_on_ppk: Endorse by PPK on
+      skt_being_formulated: SKT being formulated
+      staff_appraisal_complete: Staff Appraisal complete
+      skt_awaiting_ppp_endorsement: SKT awaiting PPP endorsement
+      skt_review: SKT Review
+      ready_for_ppp_skt_report: Ready for PPP SKT Report
+      ppp_report_complete: PPP Report complete
+      submitted_for_evaluation_by_ppp: Submitted for Evaluation by PPP
+      submitted_by_ppp_for_evaluation_to_PPK: Submitted by PPP for Evaluation to PPK
     
     evactivity:
       actdt: Date

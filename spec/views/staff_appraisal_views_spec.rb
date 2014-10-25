@@ -12,8 +12,8 @@ describe "Staff Appraisal pages" do
     before { visit staff_staff_appraisals_path }
       it { should have_selector('h1', text: I18n.t('staff.staff_appraisal.title')) }
       it { should have_link("New",    href: new_staff_staff_appraisal_path + "?locale=en")}
-      it { should have_selector(:link_or_button, "Search")}    
-      it { should have_selector(:link_or_button, "Print")}
+      it { should have_selector(:link_or_button, I18n.t('actions.search'))}    
+      it { should have_selector(:link_or_button, I18n.t('actions.print'))}
       it { should have_selector('th', text: I18n.t('staff.icno')) }
       it { should have_selector('th', text: I18n.t('staff.name')) }
       it { should have_selector('th', text: I18n.t('staff.position'))}
