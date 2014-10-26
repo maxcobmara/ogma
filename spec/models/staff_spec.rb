@@ -11,6 +11,7 @@ describe Staff do
   it { should respond_to(:icno) }
   it { should respond_to(:code) }
   it { should respond_to(:appointdt) }
+  it { should respond_to(:staffgrade_id)}
   
   it { should be_valid }
   

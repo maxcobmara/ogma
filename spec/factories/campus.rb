@@ -19,7 +19,7 @@ FactoryGirl.define do
     sequence(:from) { |n| "from_#{n}" }
     category { Array(1..5).sample }
     association :stafffilled, factory: :staff
-    cofile
+    association :cofile, factory: :cofile
   end
   
   factory :cofile do

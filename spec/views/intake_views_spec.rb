@@ -13,7 +13,7 @@ describe "Intake pages" do
     it {should have_selector('th', text: I18n.t('training.intake.register_on')) }
     it {should have_selector('th', text: I18n.t('training.intake.programme_id')) }
     it {should have_selector('th', text: I18n.t('training.intake.is_active')) }
-    it { should have_link(@intake.description), href: training_intake_path(@intake) + "?locale=en" }
+    it { should have_link(@intake.description, href: training_intake_path(@intake) + "?locale=en") }
       
   end
   

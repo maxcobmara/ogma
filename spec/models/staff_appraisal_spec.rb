@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe StaffAppraisal do
 
-  before  { @staff_appraisal = FactoryGirl.create(:staff_appraisal) }
+  before { @staff_appraisal = FactoryGirl.create(:staff_appraisal) }
 
   subject { @staff_appraisal }
   
@@ -92,12 +92,12 @@ describe StaffAppraisal do
   end
   
   describe "appraisal for this year already exist" do
-    before do
-      @staff_appraisal.evaluation_year='2010-01-01'
+    before do 
+      @staff_appraisal.evaluation_year="2010-01-01"
       @staff_appraisal.staff_id=1
-      @staff_appraisal2.eavaluation_year='2010-01-01'
-      @staff_appraisal2.staff_id=1
+      @staff_appraisal2 = FactoryGirl.create(:staff_appraisal, evaluation_year: "2010-01-01", staff_id: 1)
     end
+    it { should_not be_valid}
   end
   
 end

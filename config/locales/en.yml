@@ -251,9 +251,10 @@ en:
       details: Details
       submission: Submission
       approval: Approval
+      approval2: HOD Approval
       submission_approval: "Submission & Approval"
       log_details: Log Details
-      log_details2: Log Details
+      log_details2: Details of Log
       dated: " dated : "
       #staff_course_conducted_id: Course Conducted By
       destination: Destination
