@@ -16,74 +16,104 @@ class StaffAppraisal < ActiveRecord::Base
    has_many :trainneeds, :foreign_key => 'evaluation_id', :dependent => :destroy
    accepts_nested_attributes_for :trainneeds, :allow_destroy => true, :reject_if => lambda { |a| a[:name].blank? }
   
+   validates_presence_of :evaluation_year
    validates_uniqueness_of :evaluation_year, :scope => :staff_id, :message => "Your evaluation for this year already exists"
-  
+
+   # define scope
+   def self.status_search(query) 
+     if query == '1'
+       evalstatus = where('is_skt_submit !=?', true)
+     elsif query == '2'
+       evalstatus = where('is_complete=?', true) 
+     elsif query == '3'
+       evalstatus = where('is_skt_submit =? AND is_skt_endorsed is null', true) 
+     elsif query == '4'
+       evalstatus = where('is_skt_submit =? AND is_skt_endorsed =? AND is_skt_pyd_report_done is null',  true,  true) 
+     elsif query == '5'
+       evalstatus = where('is_skt_pyd_report_done =? AND is_skt_ppp_report_done is null', true) 
+     elsif query == '6'
+       evalstatus = where('is_skt_pyd_report_done =? AND is_skt_ppp_report_done =? AND is_submit_for_evaluation is null', true, true)
+     elsif query == '7'
+       evalstatus = where('is_skt_ppp_report_done =? AND is_submit_for_evaluation =? AND is_submit_e2 is null',  true, true) 
+     elsif query == '8'
+       evalstatus = where('is_submit_for_evaluation =? AND is_submit_e2 =? AND is_complete is null', true, true) 
+     else
+       evalstatus = StaffAppraisal.all
+     end 
+     evalstatus
+   end
+
+   # whitelist the scope
+   def self.ransackable_scopes(auth_object = nil)
+     [:status_search]
+   end 
+      
    def evaluation_status
      if is_skt_submit != true
-       "SKT being formulated"
+       I18n.t('staff.staff_appraisal.skt_being_formulated')
      elsif is_complete == true
-    		"Staff Appraisal complete"
+       I18n.t('staff.staff_appraisal.staff_appraisal_complete')
      elsif is_skt_submit == true && is_skt_endorsed != true
-       "SKT awaiting PPP endorsement"
+       I18n.t('staff.staff_appraisal.skt_awaiting_ppp_endorsement')
      elsif is_skt_submit == true && is_skt_endorsed == true && is_skt_pyd_report_done != true
-       "SKT Review"
+       I18n.t('staff.staff_appraisal.skt_review')
      elsif is_skt_pyd_report_done == true && is_skt_ppp_report_done != true
-       "Ready for PPP SKT Report"
+       I18n.t('staff.staff_appraisal.ready_for_ppp_skt_report')
      elsif is_skt_pyd_report_done == true && is_skt_ppp_report_done == true && is_submit_for_evaluation != true
-       "PPP Report complete"
+       I18n.t('staff.staff_appraisal.ppp_report_complete')
      elsif is_skt_ppp_report_done == true && is_submit_for_evaluation == true && is_submit_e2 != true
-       "Submitted for Evaluation by PPP"
-    	elsif is_submit_for_evaluation == true && is_submit_e2 == true
-    	   "Submitted by PPP for Evaluation  to PPK"
+       I18n.t('staff.staff_appraisal.submitted_for_evaluation_by_ppp')
+    elsif is_submit_for_evaluation == true && is_submit_e2 == true
+       I18n.t('staff.staff_appraisal.submitted_by_ppp_for_evaluation_to_PPK')
      end
    end   
  
    def set_year_to_start
-     self.evaluation_year = evaluation_year.at_beginning_of_year
+     self.evaluation_year = evaluation_year.to_date.at_beginning_of_year  if evaluation_year
    end
  
-   def evaluation_status
-     if is_skt_submit != true
-       "SKT being formulated"
-     elsif is_complete == true
-       "Staff Appraisal complete"
-     elsif is_skt_submit == true && is_skt_endorsed != true
-       "SKT awaiting PPP endorsement"
-     elsif is_skt_submit == true && is_skt_endorsed == true && is_skt_pyd_report_done != true
-       "SKT Review"
-     elsif is_skt_pyd_report_done == true && is_skt_ppp_report_done != true
-       "Ready for PPP SKT Report"
-     elsif is_skt_pyd_report_done == true && is_skt_ppp_report_done == true && is_submit_for_evaluation != true
-       "PPP Report complete"
-     elsif is_skt_ppp_report_done == true && is_submit_for_evaluation == true && is_submit_e2 != true
-       "Submitted for Evaluation by PPP"
-     elsif is_submit_for_evaluation == true && is_submit_e2 == true
-       "Submitted by PPP for Evaluation  to PPK"
-     end
-   end
+   #def evaluation_status
+     #if is_skt_submit != true
+    #   "SKT being formulated"
+     #elsif is_complete == true
+      # "Staff Appraisal complete"
+     #elsif is_skt_submit == true && is_skt_endorsed != true
+      # "SKT awaiting PPP endorsement"
+     #elsif is_skt_submit == true && is_skt_endorsed == true && is_skt_pyd_report_done != true
+      # "SKT Review"
+     #elsif is_skt_pyd_report_done == true && is_skt_ppp_report_done != true
+      # "Ready for PPP SKT Report"
+     #elsif is_skt_pyd_report_done == true && is_skt_ppp_report_done == true && is_submit_for_evaluation != true
+      # "PPP Report complete"
+    # elsif is_skt_ppp_report_done == true && is_submit_for_evaluation == true && is_submit_e2 != true
+     #  "Submitted for Evaluation by PPP"
+     #elsif is_submit_for_evaluation == true && is_submit_e2 == true
+      # "Submitted by PPP for Evaluation  to PPK"
+     #end
+  # end
  
    #before logic
   def set_to_nil_where_false
     if is_skt_submit != true
-      self.skt_submit_on	= nil
+      self.skt_submit_on= nil
     end 
     if is_skt_endorsed != true
-      self.skt_endorsed_on	= nil
+      self.skt_endorsed_on= nil
     end
     if is_skt_pyd_report_done != true
-      self.skt_pyd_report_on	= nil
+      self.skt_pyd_report_on= nil
     end
     if is_skt_ppp_report_done != true
-      self.skt_ppp_report_on	= nil
+      self.skt_ppp_report_on= nil
     end
     if is_submit_for_evaluation == false
-      self.submit_for_evaluation_on	= nil
+      self.submit_for_evaluation_on= nil
     end
     if is_submit_e2 == false
-      self.submit_e2_on	= nil
+      self.submit_e2_on= nil
     end
     if is_complete == false
-      self.is_completed_on	= nil
+      self.is_completed_on= nil
     end
   end
    

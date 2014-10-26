@@ -74,6 +74,7 @@ ms_MY:
     import_failed: " gagal diimport"
     save_action: Simpan Tindakan
     check_all: "Pilih kotak semak ini untuk MEMILIH atau MENYAHPILIH SEMUA rekod bagi cetakan KEW.PA-17 dan KEW.PA-20."
+    all_records: Semua Rekod
     
   errors:
   
@@ -92,6 +93,7 @@ ms_MY:
     student: Pelajar
   
   staff:
+    title: Staf
     list: Senarai Staf
     icno: "No MyKad"
     name: "Nama"
@@ -345,6 +347,14 @@ ms_MY:
       submission: Penghantaran
       endorsed_on_ppp: Kelulusan PPP pada
       endorsed_on_ppk: Kelulusan PPK pada
+      skt_being_formulated: SKT sedang dijana
+      staff_appraisal_complete: Penilaian Prestasi selesai
+      skt_awaiting_ppp_endorsement: SKT menunggu pengesahan PPP
+      skt_review: Rumusan SKT
+      ready_for_ppp_skt_report: SKT Sedia untuk laporan PPP
+      ppp_report_complete: Laporan PPP selesai
+      submitted_for_evaluation_by_ppp: Dihantar untuk penilaian PPP
+      submitted_by_ppp_for_evaluation_to_PPK: Dihantar oleh PPP utuk peniaian PPK
         
     evactivity:
       actdt: Tarikh

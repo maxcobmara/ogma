@@ -86,5 +86,19 @@ describe StaffAppraisal do
   
   it { should be_valid }
   
+  describe "evaluation year is not present" do
+    before { @staff_appraisal.evaluation_year=nil}
+    it {should_not be_valid}
+  end
+  
+  describe "appraisal for this year already exist" do
+    before do
+      @staff_appraisal.evaluation_year='2010-01-01'
+      @staff_appraisal.staff_id=1
+      @staff_appraisal2.eavaluation_year='2010-01-01'
+      @staff_appraisal2.staff_id=1
+    end
+  end
+  
 end
   

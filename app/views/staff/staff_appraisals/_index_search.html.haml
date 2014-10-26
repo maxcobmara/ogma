@@ -1,0 +1,12 @@
+= search_form_for @search, url: staff_staff_appraisals_path,  class: "form-inline" do |f|
+  %tr.search_row{style: "display: none;"}
+    %td=f.text_field :appraised_icno_cont, :size=> 2,  class:  'form-control'
+    %td=f.text_field :appraised_name_cont, :size=> 2,  class:  'form-control'
+    %td=f.text_field :appraised_positions_name_cont, size: 2, class: 'form-control'
+    %td=f.text_field :evaluation_year_eq, size: 2, class: 'year_picker form-control'
+    %td
+      .input-group
+        =select_tag('q[status_search]', options_for_select([[t('actions.all_records'),'0'],[t('staff.staff_appraisal.skt_being_formulated'),'1'],[t('staff.staff_appraisal.staff_appraisal_complete'),'2'],[t('staff.staff_appraisal.skt_awaiting_ppp_endorsement'),'3'],[ t('staff.staff_appraisal.skt_review'),'4'],[t('staff.staff_appraisal.ready_for_ppp_skt_report'),'5'],[t('staff.staff_appraisal.ppp_report_complete'),'6'],[t('staff.staff_appraisal.submitted_for_evaluation_by_ppp'),'7'],[t('staff.staff_appraisal.submitted_by_ppp_for_evaluation_to_PPK'),'8']]), class: 'selectpicker',"data-width"=>'60px') 
+        %span.input-group-btn
+          %button.btn.btn-sm.btn-default.right{:type => "submit"}
+            %i.fa.fa-search.fa-fw

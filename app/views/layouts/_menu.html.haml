@@ -2,12 +2,12 @@
   %h2.icon.icon-world Menu
   %ul
     %li.icon.icon-left
-      = link_to "Staff", '#'
+      = link_to t('staff.title'), '#'
       .mp-level
-        %h2.icon Staff
-        %a.mp-back{:href => "#"} Back
+        %h2.icon=t('staff.title')
+        %a.mp-back{:href => "#"}=t('back')
         %ul
-          %li= link_to "Staff Information", staff_infos_path
+          %li= link_to t('staff.list'), staff_infos_path
           %li.icon.icon-left
             = link_to t('staff_attendance.title'), '#'
             .mp-level
@@ -18,7 +18,7 @@
                 %li= link_to t('staff_attendance.title'), staff_staff_attendances_path
                 %li= link_to t('staff_attendance.status_pcard'), '/attendance/status'
                 %li= link_to "Report - Monthly Listing", '#'  
-          %li= link_to t('Staff Appraisal'), staff_staff_appraisals_path
+          %li= link_to t('staff.staff_appraisal.title'), staff_staff_appraisals_path
           %li= link_to t('position.title'), staff_positions_path
           %li.icon.icon-left
             = link_to "Staff Leave", '#'
@@ -61,7 +61,7 @@
       = link_to content_tag(:i, "", :class => "icon-numb") + "Assets", '#'
       .mp-level
         %h2.icon Assets
-        %a.mp-back{:href => "#"} Back
+        %a.mp-back{:href => "#"}=t('back')
         %ul
           %li= link_to content_tag(:i, "", :class => "icon-numb") + "Assets", asset_assets_path
           %li= link_to content_tag(:i, "", :class => "icon-numb") + "Office Supplies", asset_stationeries_path
@@ -103,7 +103,7 @@
       = link_to content_tag(:i, "", :class => "icon-numb") + "E-Filing", '#'
       .mp-level
         %h2.icon E-Filing
-        %a.mp-back{:href => "#"} Back
+        %a.mp-back{:href => "#"}=t('back')
         %ul
           %li= link_to content_tag(:i, "", :class => "icon-numb") + "Campus Info", '#'
           %li= link_to content_tag(:i, "", :class => "icon-numb") + "Campus Events", events_path
@@ -118,7 +118,7 @@
       = link_to content_tag(:i, "", :class => "icon-numb") + t("student.title"), '#'
       .mp-level
         %h2.icon=t "student.title"
-        %a.mp-back{:href => "#"} Back
+        %a.mp-back{:href => "#"}=t('back')
         %ul
           %li= link_to content_tag(:i, "", :class => "icon-numb") + "Student Info", students_path
           %li= link_to content_tag(:i, "", :class => "icon-numb") + "Student Leave", student_leaveforstudents_path
@@ -172,7 +172,7 @@
       = link_to (fa_icon "book", text: (t "library.title")), '#'
       .mp-level
         %h2.icon= fa_icon "book", text: (t "library.title")
-        %a.mp-back{:href => "#"} Back
+        %a.mp-back{:href => "#"} =t('back')
         %ul
           %li= link_to content_tag(:i, "", :class => "icon-numb") + "Rules & Regulations", '#'
           %li= link_to content_tag(:i, "", :class => "icon-numb") + (t "library.transaction.title"), library_librarytransactions_path
@@ -185,7 +185,7 @@
       = link_to content_tag(:i, "", :class => "icon-numb") + "Administration", '#'
       .mp-level
         %h2.icon Administration
-        %a.mp-back{:href => "#"} Back
+        %a.mp-back{:href => "#"} =t('back')
         %ul
           %li= link_to content_tag(:i, "", :class => "icon-numb") + "Users", '#'
           %li= link_to content_tag(:i, "", :class => "icon-numb") + "Roles", '#'
