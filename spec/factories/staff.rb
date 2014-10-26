@@ -10,7 +10,6 @@ FactoryGirl.define do
     cobirthdt {Time.at(rand * Time.now.to_f)}
     addr "Some Address"
     poskod_id {rand(10 ** 5).to_s}
-    staffgrade_id 1 #make factory
     statecd 1
     country_id 1
     country_cd 1
@@ -123,6 +122,55 @@ FactoryGirl.define do
     evaluation_total 1.0
     is_complete {rand(2)==1}
     is_completed_on {Date.today+(366*rand()).to_f}
+  end
+  
+  factory :travel_request do
+    association :applicant, factory: :staff
+    association :replacement, factory: :staff
+    association :headofdept, factory: :staff
+    association :travel_claim, factory: :travel_claim
+    association :document, factory: :document
+    destination "Some destination"
+    depart_at {DateTime.now-2.days}
+    return_at {DateTime.now-1.days}
+    #depart_at {DateTime.now-(366*rand()).to_f}
+    #return_at {DateTime.now-(366*rand()).to_f}
+    own_car {rand(2)==1}
+    own_car_notes "Some notes"
+    dept_car {rand(2)==1}
+    others_car {rand(2)==1}
+    taxi {rand(2)==1}
+    bus {rand(2)==1}
+    train {rand(2)==1}
+    plane {rand(2)==1}
+    other {rand(2)==1}
+    other_desc "Some description"
+    is_submitted {rand(2)==1}
+    submitted_on {Date.today+(366*rand()).to_f}
+    mileage {rand(2)==1}
+    mileage_replace {rand(2)==1}
+    hod_accept {rand(2)==1}
+    hod_accept_on {Date.today+(366*rand()).to_f}
+    is_travel_log_complete {rand(2)==1}
+    log_mileage {rand(0..2500).to_f}
+    log_fare {rand(0..5000).to_f}
+    code "Some code"
+  end
+  
+  factory :travel_claim do
+    association :staff, factory: :staff
+    association :approver, factory: :staff
+    claim_month {Date.today-(366*rand()).to_f}
+    advance {rand(0..1000).to_f}
+    total {rand(0..5000).to_f}
+    is_submitted {rand(2)==1}
+    submitted_on {Date.today+(366*rand()).to_f}
+    is_checked {rand(2)==1}
+    is_returned {rand(2)==1}
+    checked_on {Date.today+(366*rand()).to_f}
+    notes "Some notes"
+    is_approved {rand(2)==1}
+    approved_on {Date.today+(366*rand()).to_f}
   end
   
 end

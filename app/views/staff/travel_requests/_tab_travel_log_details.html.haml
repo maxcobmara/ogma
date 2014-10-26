@@ -16,7 +16,8 @@
         &nbsp;&nbsp;|&nbsp;&nbsp;
         =t 'staff.travel_request.mileage_value_rm'
       
-    - if @travel_request.travel_claim_logs && @travel_request.staff_id == Login.first.staff_id && @travel_request.hod_accept == true
+    - if @travel_request.travel_claim_logs && @travel_request.staff_id == 25 && @travel_request.hod_accept == true
+      /- if @travel_request.travel_claim_logs && @travel_request.staff_id == Login.first.staff_id && @travel_request.hod_accept == true
       - @travel_request.travel_claim_logs.each do |travel_log|
         %dt &nbsp;
         %dd

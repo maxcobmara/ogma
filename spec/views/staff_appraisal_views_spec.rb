@@ -19,7 +19,7 @@ describe "Staff Appraisal pages" do
       it { should have_selector('th', text: I18n.t('staff.position'))}
       it { should have_selector('th', text: I18n.t('helpers.label.staff_appraisal.evaluation_year'))}
       it { should have_selector('th', text: "Status")}
-      it { should have_link(formatted_mykad(@staff_appraisal.appraised.icno), staff_staff_appraisal_path(@staff_appraisal.appraised) + "?locale=en") }
+      it { should have_link(formatted_mykad(@staff_appraisal.appraised.icno), href: staff_staff_appraisal_path(@staff_appraisal) + "?locale=en") }
     end
    
     
@@ -35,7 +35,19 @@ describe "Staff Appraisal pages" do
     it { should have_selector(:link_or_button, I18n.t('actions.edit'))}    
     it { should have_selector(:link_or_button, I18n.t('helpers.links.destroy'))}    
   end
+  
+  describe "Staff Appraisal New page" do
+    before { visit new_staff_staff_appraisal_path }
+    it { should have_selector('h1', text: I18n.t('staff.staff_appraisal.new')) }
+    it { should have_selector(:link_or_button, I18n.t('.back'))}    
+    it { should have_selector(:link_or_button, I18n.t('create'))}    
+  end
     
+  describe "Staff Appraisal Edit page" do
+    before { visit edit_staff_staff_appraisal_path(@staff_appraisal)}
+    it { should have_selector('h1', text: I18n.t('staff.staff_appraisal.edit')) }
+    it { should have_selector(:link_or_button, I18n.t('.back'))}  
+    it { should have_selector(:link_or_button, I18n.t('update'))}
+  end
     
-    
-end
+end 

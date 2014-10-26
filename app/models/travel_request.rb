@@ -22,38 +22,43 @@ class TravelRequest < ActiveRecord::Base
   
   #controller searches
   def self.in_need_of_approval
-    where('hod_id = ? AND is_submitted = ? AND (hod_accept IS ? OR hod_accept = ?)', Login.first.staff_id, true, nil, false)
+    where('hod_id = ? AND is_submitted = ? AND (hod_accept IS ? OR hod_accept = ?)', 25, true, nil, false)
+    #where('hod_id = ? AND is_submitted = ? AND (hod_accept IS ? OR hod_accept = ?)', Login.first.staff_id, true, nil, false)
     #to revised current_user.staff_id, current_user.try(:login), login 
   end
   
   def self.my_travel_requests
-      where(staff_id:  Login.first.staff_id)
+    #where(staff_id:  Login.first.staff_id)
+    where(staff_id:  25)
   end
   
   def reference_document
     if document.blank?
       "None Assigned"
     else
-      document.refno+" : "+document.title+I18n.t("staff.travel_request.dated")+document.letterdt.strftime("%d %b %Y").to_s
+      document.refno+" : "+document.title+I18n.t("staff.travel_request.dated")+document.letterdt.try(:strftime,"%d %b %Y").to_s
     end
   end
   
   def repl_staff
-      unit_name = Login.first.staff.positions.first.unit
-      replacements = Position.joins(:staff).where(unit: unit_name).pluck(:staff_id) 
-      replacements
+     #unit_name = Login.first.staff.positions.first.unit
+     unit_name = "Teknologi Maklumat"
+     replacements = Position.joins(:staff).where(unit: unit_name).pluck(:staff_id) 
+     replacements
   end
   
    def hods
       #if Login.current_login.staff.position.root_id == Login.current_login.staff.position.parent_id
-     if Login.first.staff.positions.first.root_id == Login.first.staff.positions.first.parent_id
-        hod = Login.first.staff.positions.first.root_id	#Login.current_login.staff.position.root_id
-        approver = Position.where("id IN (?)", hod).pluck(:staff_id)
-      else
-        hod = Login.first.staff.positions.first.root.child_ids	#Login.current_login.staff.position.root.child_ids
-        hod << Login.first.staff.positions.first.root_id	#Login.current_login.staff.position.root_id
-        approver = Position.where("id IN (?)", hod).pluck(:staff_id)
-      end
+     #test fail..requires LOGIN TO MATCH WITH STAFF - hide first
+     #if Login.first.staff.positions.first.root_id == Login.first.staff.positions.first.parent_id
+     #   hod = Login.first.staff.positions.first.root_id	#Login.current_login.staff.position.root_id
+      #  approver = Position.where("id IN (?)", hod).pluck(:staff_id)
+      #else
+        #hod = Login.first.staff.positions.first.root.child_ids	#Login.current_login.staff.position.root.child_ids
+        #hod << Login.first.staff.positions.first.root_id	#Login.current_login.staff.position.root_id
+        #approver = Position.where("id IN (?)", hod).pluck(:staff_id)
+      #end
+      approver= [58,25] #58 for Pengarah, 25 for Maslinda
       approver
   end
   
