@@ -1046,6 +1046,7 @@ ms_MY:
     budgetb: Baki
     budget_details: Maklumat Bajet Latihan Tahunan
     new: Latihan Bajet Tahunan Baru
+    edit: Kemaskini Belanja Latihan Tahunan
     
   course:
     title: Kursus
