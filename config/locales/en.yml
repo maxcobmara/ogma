@@ -1107,6 +1107,7 @@ en:
     budgetb: Balance
     budget_details: Annual Training Budget Details
     new: New Annual Training Budget
+    edit: Editing Annual Training Budget
     
   course:
     title: Course
