@@ -1,10 +1,15 @@
 require 'spec_helper'
 
 describe "Travel Request pages" do
+ 
+  before { @staff = FactoryGirl.create(:staff) }
+  before { @replacement = FactoryGirl.create(:staff) }
+  before { @hod = FactoryGirl.create(:staff) }
   
-  #before { @applicant = FactoryGirl.create(:staff) }
-  #before { @travel_request = FactoryGirl.create(:travel_request, applicant: @applicant, is_submitted: true, hod_accept: true) }
-  before { @travel_request = FactoryGirl.create(:travel_request, staff_id: 25, is_submitted: true, hod_accept: true) }
+  before { @vehicle = FactoryGirl.create(:vehicle, reg_no: "JJJ1234", staff_id: @staff.id) }
+  before { @vehicle2 = FactoryGirl.create(:vehicle, reg_no: "JKK 4545", staff_id: @staff.id)}
+ 
+  before { @travel_request = FactoryGirl.create(:travel_request, is_submitted: true, hod_accept: true, applicant: @staff, replacement: @replacement, headofdept: @hod) }
   
   subject { page }
 
@@ -24,8 +29,7 @@ describe "Travel Request pages" do
       it { should have_selector('th', text: I18n.t('staff.travel_request.hod_accept')) } 
       it { should have_link(@travel_request.applicant.try(:staff_name_with_position), href: staff_travel_request_path(@travel_request) + "?locale=en") }                                    
     end
-   
-    
+
   describe "Travel Request Show Page" do
     before { visit staff_travel_request_path(@travel_request)}   
       it {should have_selector('h1', text: I18n.t('staff.travel_request.title'))}

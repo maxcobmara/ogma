@@ -1,7 +1,7 @@
 class TravelRequest < ActiveRecord::Base
   # befores, relationships, validations, before logic, validation logic, 
   #controller searches, variables, lists, relationship checking
-  before_save :set_to_nil_where_false, :set_total, :set_mileage_nil_when_not_own_car
+  before_save :set_to_nil_where_false, :set_total, :set_mileage_nil_when_not_own_car, :set_own_car_false_if_no_car_registered
   
   belongs_to :applicant,    :class_name => 'Staff', :foreign_key => 'staff_id'
   belongs_to :replacement,  :class_name => 'Staff', :foreign_key => 'replaced_by'
@@ -19,6 +19,8 @@ class TravelRequest < ActiveRecord::Base
   
   has_many :travel_claim_logs, :dependent => :destroy
   accepts_nested_attributes_for :travel_claim_logs, :reject_if => lambda { |a| a[:destination].blank? }, :allow_destroy =>true
+  
+  attr_accessor :staff_own_car
   
   #controller searches
   def self.in_need_of_approval
@@ -110,6 +112,11 @@ class TravelRequest < ActiveRecord::Base
     self.log_fare = total_km_money_request
   end
   
+  def set_own_car_false_if_no_car_registered
+    if applicant.vehicles.blank? && own_car==true
+      self.own_car = false
+    end
+  end
   
   #validation logic
   def validate_end_date_before_start_date
@@ -119,7 +126,7 @@ class TravelRequest < ActiveRecord::Base
   end
   
   def mycar?
-    own_car == true
+    own_car == true && (!applicant.blank? && !applicant.vehicles.blank?)
   end
   
   def check_submit?

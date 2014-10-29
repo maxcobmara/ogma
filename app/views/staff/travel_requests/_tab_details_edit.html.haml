@@ -16,7 +16,7 @@
       = f.text_field :return_at,  :class =>  'datetime_picker form-control'
   .form-group
     .col-sm-2.control-label
-      %b= t 'staff.travel_request.transport_choice'
+      =f.label  t 'staff.travel_request.transport_choice'
     .col-md-6
       .row
         .col-sm-1
@@ -32,22 +32,46 @@
         .col-sm-3
           = f.label :others_car
       #tr_my_car
-        = f.text_field :own_car_notes, :size => '40', :placeholder => t('helpers.label.travel_request.own_car_notes'), class: 'form-control'
+        /display own car notes & registered vehicle (if any + it's transport class)
+        - unless Staff.where(id:25)[0].vehicles.blank?
+          .row
+            .col-sm-11= f.text_field :own_car_notes, :placeholder => t('helpers.label.travel_request.own_car_notes'), class: 'form-control'
+          .row
+            .col-sm-3
+              %b=t 'staff.vehicles.reg_no'
+            - staffvehicle = Staff.where(id:25)[0].vehicles[0].reg_no
+            .col-sm-3= f.text_field :staff_own_car, :value => staffvehicle, :readonly => 'readonly', class: 'form-control'
+            .col-sm-3=f.label t 'staff.transportclass_id'
+            - applicant = Staff.where(id:25)[0]
+            - vehicleid = applicant.vehicles[0].id
+            - currentsalary = applicant.current_salary
+            - abc = TravelClaimsTransportGroup.abcrate
+            - de = TravelClaimsTransportGroup.derate
+            /- mid = TravelClaimsTransportGroup.midsal
+            - mid = 1820.75
+            .col-sm-2=f.text_field :tpt_class,:value=>TravelClaimsTransportGroup.transport_class(vehicleid, currentsalary, abc, de, mid), :readonly => 'readonly', class: 'form-control'
+        - else
+          You have NO registered vehicle in this system
+         
+          /= f.collection_select :staff_own_car, Staff.where(id:25)[0].cars, :id, :reg_no, {:include_blank =>t('select')},{class: 'selectpicker', "data-width"=>'100px'}
+          /pending by current logged-in staff
   .form-group
     .col-sm-2.control-label 
-      #tr_mileage=f.label :mileage_desc
+      - unless Staff.where(id:25)[0].vehicles.blank?
+        #tr_mileage=f.label :mileage_desc
     .col-md-6
-      .row#tr_mileage2
-        .col-sm-1
-          = f.radio_button :mileage, true
-        .col-sm-3
-          = f.label :mileage
-        .col-sm-1
-          = f.radio_button :mileage, false
-        .col-sm-6
-          = f.label :mileage_replace
-          %font{:size=>'-2'}
-            = t 'staff.travel_request.train_plane_replacement'
+      - unless Staff.where(id:25)[0].vehicles.blank?
+        .row#tr_mileage2
+          .col-sm-1
+            = f.radio_button :mileage, true
+          .col-sm-3
+            = f.label :mileage
+          .col-sm-1
+            = f.radio_button :mileage, false
+          .col-sm-6
+            = f.label :mileage_replace
+            %font{:size=>'-2'}
+              = t 'staff.travel_request.train_plane_replacement'
   .form-group
     .col-sm-2.control-label
       =f.label :public_transport
