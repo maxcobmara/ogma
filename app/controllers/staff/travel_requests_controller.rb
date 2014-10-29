@@ -114,7 +114,7 @@
   end
   
   def travel_request_params
-    params.require(:travel_request).permit(:staff_id, :document_id, :staff_course_conducted_id, :destination, :depart_at, :return_at, :own_car, :own_car_notes, :dept_car, :others_car, :taxi, :bus, :train, :plane, :other, :other_desc, :is_submitted, :submitted_on, :replaced_by, :mileage, :mileage_replace, :hod_id, :hod_accept, :hod_accept_on, :travel_claim_id, :is_travel_log_complete, :log_mileage, :log_fare, :code, :car_id, travel_claim_logs_attributes: [:id, :travel_request_id, :travel_on, :start_at, :finish_at, :destination, :mileage, :km_money, :checker, :checker_notes,:_destroy])
+    params.require(:travel_request).permit(:staff_id, :document_id, :staff_course_conducted_id, :destination, :depart_at, :return_at, :own_car, :own_car_notes, :dept_car, :others_car, :taxi, :bus, :train, :plane, :other, :other_desc, :is_submitted, :submitted_on, :replaced_by, :mileage, :mileage_replace, :hod_id, :hod_accept, :hod_accept_on, :travel_claim_id, :is_travel_log_complete, :log_mileage, :log_fare, :code, travel_claim_logs_attributes: [:id, :travel_request_id, :travel_on, :start_at, :finish_at, :destination, :mileage, :km_money, :checker, :checker_notes,:_destroy])
   end
   
 end
