@@ -21,7 +21,7 @@
           %dd=h @travel_request.code
           
           %dt= t 'staff.travel_request.staff_id', :default => model_class.human_attribute_name(:staff_id) + ":"
-          %dd=h @travel_request.applicant.staff_name_with_position unless @travel_request.applicant.blank?
+          %dd=h @travel_request.applicant.staff_name_with_position_grade_unit unless @travel_request.applicant.blank?
           
           %dt= t 'staff.travel_request.document_id', :default => model_class.human_attribute_name(:document_id)+":"
           %dd=h @travel_request.reference_document

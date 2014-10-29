@@ -103,7 +103,31 @@ class Staff < ActiveRecord::Base
     def staff_name_with_position
       "#{name}  (#{position_for_staff})"
     end
+
+    def staff_name_with_position_grade
+      "#{name}  (#{position_for_staff}-#{grade_for_staff})"
+    end
+
+    def staff_name_with_position_grade_unit
+      "#{name}  (#{position_for_staff}-#{grade_for_staff}-#{unit_for_staff})"
+    end
+
+    def unit_for_staff
+      if positions.blank?
+        "-"
+      else
+        "#{positions[0].try(:unit)}"
+      end
+    end
     
+    def grade_for_staff
+      if positions.blank?
+        "-"
+      else
+        "#{positions[0].staffgrade.try(:name)}"
+      end
+    end
+
     def position_for_staff
       if positions.blank?
         "-"

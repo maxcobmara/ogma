@@ -39,21 +39,22 @@ class TravelRequest < ActiveRecord::Base
   end
   
   def repl_staff
-      unit_name = Login.first.staff.positions.first.unit
+      unit_name = "Teknologi Maklumat"#Login.first.staff.positions.first.unit
       replacements = Position.joins(:staff).where(unit: unit_name).pluck(:staff_id) 
       replacements
   end
   
    def hods
       #if Login.current_login.staff.position.root_id == Login.current_login.staff.position.parent_id
-     if Login.first.staff.positions.first.root_id == Login.first.staff.positions.first.parent_id
-        hod = Login.first.staff.positions.first.root_id	#Login.current_login.staff.position.root_id
-        approver = Position.where("id IN (?)", hod).pluck(:staff_id)
-      else
-        hod = Login.first.staff.positions.first.root.child_ids	#Login.current_login.staff.position.root.child_ids
-        hod << Login.first.staff.positions.first.root_id	#Login.current_login.staff.position.root_id
-        approver = Position.where("id IN (?)", hod).pluck(:staff_id)
-      end
+     #if Login.first.staff.positions.first.root_id == Login.first.staff.positions.first.parent_id
+        #hod = Login.first.staff.positions.first.root_id	#Login.current_login.staff.position.root_id
+        #approver = Position.where("id IN (?)", hod).pluck(:staff_id)
+      #else
+        #hod = Login.first.staff.positions.first.root.child_ids	#Login.current_login.staff.position.root.child_ids
+        #hod << Login.first.staff.positions.first.root_id	#Login.current_login.staff.position.root_id
+        #approver = Position.where("id IN (?)", hod).pluck(:staff_id)
+      #end
+      approver = [25,58]
       approver
   end
   
