@@ -1,6 +1,6 @@
 - model_class = Leaveforstudent
 .page-header
-  %h1= t('leaveforstudent.student leave list')#, :default => model_class.model_name.human.pluralize
+  %h1= t('leaveforstudent.student leave list')
   
 .navbar.navbar-inverse{role: "navigation", style: "padding-right:40px;"}
   %ul.nav.navbar-nav
@@ -25,9 +25,9 @@
         %th Approved By
 		
     %tbody
-    - @leaveforstudents.each do |leaveforstudent|
+    - @leaveforstudent.each do |leaveforstudent|
       %tr
-        %td= leaveforstudent.student_details
+        %td= link_to leaveforstudent.student_details, student_leaveforstudent_path(leaveforstudent)
         %td= leaveforstudent.leavetype
         %td= leaveforstudent.requestdate
         %td= leaveforstudent.leave_startdate

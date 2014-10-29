@@ -1,0 +1,35 @@
+.col-md-offset-2   
+  %dl.dl-horizontal 
+    %dt= t 'leaveforstudent.Student Name:'
+    %dd=h @leaveforstudent.student_id.blank? ? "No Student" : @leaveforstudent.student.formatted_mykad_and_student_name
+	
+    %dt= t 'leaveforstudent.leave type:'
+    %dd=h @leaveforstudent.leavetype
+	
+    %dt request date:
+    %dd=h @leaveforstudent.requestdate.strftime("%d - %b - %Y")
+	
+    %dt= t 'leaveforstudent.reason:'
+    %dd=h  @leaveforstudent.reason
+	
+    %dt= t 'leaveforstudent.Address:'
+    %dd=h @leaveforstudent.address
+
+    %dt= t 'leaveforstudent.Telephone No:'
+    %dd=h @leaveforstudent.telno 
+	
+    %dt= t 'leaveforstudent.Start Date:'
+    %dd=h @leaveforstudent.leave_startdate.strftime("%a, %d %b")
+    
+    %dt=t 'leaveforstudent.end date:'  
+    %dd=h @leaveforstudent.leave_enddate.strftime("%a, %d %b %Y")
+	
+    %dt= t 'leaveforstudent.Submit for Approval:'
+    %dd=h @leaveforstudent.studentsubmit? ? "Submitted" : "Not Submitted"
+
+
+
+  
+    
+ 
+
