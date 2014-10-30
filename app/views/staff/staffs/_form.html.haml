@@ -1,3 +1,8 @@
+- if @info.new_record? == true
+  - url = new_staff_info_path
+- else
+  - url = staff_info_path(@info)
+
 .row
   .col-md-offset-1
     / Nav tabs
@@ -11,8 +16,17 @@
       %li= link_to t('staff.loans.title'),          "#loans",           "data-toggle" => "tab"
       %li= link_to t('staff.contacts.emergency'),   "#contacts",        "data-toggle" => "tab"
 
+
+
+
+.row.fluid
+  = form_for [:staff, @info], url: staff_info_path(@info), :html => { :class => 'form-horizontal' }  do |f| 
+    = render 'shared/error_messages', object: f.object
+
+
     / Tab panes
     .tab-content{style:"padding-top:1em"}
+    
       //Info Tab
       #info.tab-pane.active
         .col-md-offset-2
@@ -404,6 +418,12 @@
         .row
           /= link_to_add_fields image_tag("add.png", :border => 0, :title => t('addmore')), f, :kins
           = link_to_add_fields t('addmore'), f, :kins, "",  t('addmore')
+
+        
+        .form-group
+          .col-sm-offset-2.col-sm-2
+            = f.submit t('update'), class: "btn btn-primary"
+
 
 :javascript
   function add_fields(link, association, content) {  

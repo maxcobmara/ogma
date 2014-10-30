@@ -4,10 +4,9 @@
     .col-md-3
       .input-group
         .input-group-addon $
-        = f.text_field :budget, class: 'form-control mandatory'
+        = f.text_field :budget, class: 'form-control mandatory', :placeholder => 'RM', :size => 12
       
   .form-group
     %label.col-sm-2.control-label= f.label t 'staff.training.budget.start', for: :fiscalstart
     .col-md-3
       = f.text_field :fiscalstart, class: 'form-control mandatory date_picker '
-

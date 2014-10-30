@@ -4,6 +4,7 @@
 
 = render 'shared/flashes'
 
+<<<<<<< HEAD
 .row.fluid
   = form_for [:staff, @info], url: new_staff_info_path(@info), :html => { :class => 'form-horizontal' }  do |f| 
     = render 'shared/error_messages', object: f.object
@@ -21,3 +22,7 @@
 
 
 
+=======
+//= f.submit (t 'icms.submit')
+//= link_to (t 'icms.back'), staffs_path
+>>>>>>> 496e774b4a79f73eed7ed632ab2c0c7fd342cd63
