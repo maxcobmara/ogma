@@ -33,7 +33,7 @@ class Student::LeaveforstudentsController < ApplicationController
 
   # GET /leaveforstudents/1/edit
   def edit
-    #@leaveforstudent = Leaveforstudent.find(params[:id])
+    @leaveforstudent = Leaveforstudent.find(params[:id])
   end
 
   # POST /leaveforstudents
@@ -81,4 +81,9 @@ class Student::LeaveforstudentsController < ApplicationController
       format.xml  { head :ok }
     end
   end
+  
+  def approve
+    @sleaveforstudent = Leaveforstudent.find(params[:id])
+  end
 end
+

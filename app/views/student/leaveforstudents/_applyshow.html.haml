@@ -27,7 +27,18 @@
     %dt= t 'leaveforstudent.Submit for Approval:'
     %dd=h @leaveforstudent.studentsubmit? ? "Submitted" : "Not Submitted"
 
-
+.row
+  .col-md-4.col-md-offset-2
+    %hr
+    .form-actions
+      = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), student_leaveforstudents_path, :class => 'btn btn-default'
+      = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('.edit', :default => t("helpers.links.edit")), edit_student_leaveforstudent_path(@leaveforstudent), :class => 'btn btn-primary'
+      = link_to content_tag(:i, "", :class => "fa fa-trash-o icon-white") + " " + t('helpers.links.destroy'), |
+        student_leaveforstudent_path(@leaveforstudent),                                                                                                    |
+        :method => 'delete',                                                                                                           |
+        :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },                   |
+        :class => 'btn btn-danger'
+        
 
   
     
