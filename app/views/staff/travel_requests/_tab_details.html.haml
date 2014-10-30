@@ -15,15 +15,8 @@
     %dt=t 'staff.travel_request.transport_choice'
     %dd
       =t 'staff.travel_request.own_car'
-      - applicant = @travel_request.applicant
-      - abc = TravelClaimsTransportGroup.abcrate
-      - de = TravelClaimsTransportGroup.derate
-      /- mid = TravelClaimsTransportGroup.midsal
-      - mid = 1820.75
-      - if !applicant.vehicles.blank? && @travel_request.own_car?
-        - staffvehicle = applicant.vehicles[0].reg_no
-        - applicant_tptroup = TravelClaimsTransportGroup.transport_class(applicant.vehicles[0].id, applicant.current_salary, abc, de, mid)
-        =image_tag("tick.png")+'('+staffvehicle+' '+ t('staff.transportclass_id')+' : '+applicant_tptroup+') '
+      - if !@travel_request.applicant.vehicles.blank? && @travel_request.own_car?
+        =image_tag("tick.png")+'('+@travel_request.applicant.vehicles[0].reg_no+' '+ t('staff.transportclass_id')+' : '+@travel_request.transport_class+') '
       - else
         =image_tag("cross.png") 
       =t 'staff.travel_request.dept_car'
@@ -31,7 +24,7 @@
       =t 'staff.travel_request.others_car'
       =h @travel_request.others_car? ? image_tag("tick.png") : image_tag("cross.png")
     
-    - if !applicant.vehicles.blank? && @travel_request.own_car?
+    - if !@travel_request.applicant.vehicles.blank? && @travel_request.own_car?
       %dt=t 'staff.travel_request.own_car_notes'
       %dd=h @travel_request.own_car_notes
     

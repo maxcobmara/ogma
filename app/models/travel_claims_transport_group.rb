@@ -9,7 +9,7 @@ class TravelClaimsTransportGroup < ActiveRecord::Base
   end
   
   #def self.midsal
-    #where(id: 3)[0].salary_low
+    #where(id: 3).first.salary_low
   #end
   
   def self.transport_class(car_id, current_salary, abc_rate, de_rate, mid_salary)
