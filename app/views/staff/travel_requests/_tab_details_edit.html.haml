@@ -42,14 +42,7 @@
             - staffvehicle = Staff.where(id:25)[0].vehicles[0].reg_no
             .col-sm-3= f.text_field :staff_own_car, :value => staffvehicle, :readonly => 'readonly', class: 'form-control'
             .col-sm-3=f.label t 'staff.transportclass_id'
-            - applicant = Staff.where(id:25)[0]
-            - vehicleid = applicant.vehicles[0].id
-            - currentsalary = applicant.current_salary
-            - abc = TravelClaimsTransportGroup.abcrate
-            - de = TravelClaimsTransportGroup.derate
-            /- mid = TravelClaimsTransportGroup.midsal
-            - mid = 1820.75
-            .col-sm-2=f.text_field :tpt_class,:value=>TravelClaimsTransportGroup.transport_class(vehicleid, currentsalary, abc, de, mid), :readonly => 'readonly', class: 'form-control'
+            .col-sm-2=f.text_field :tpt_class,:value=>@travel_request.transport_class, :readonly => 'readonly', class: 'form-control'
         - else
           You have NO registered vehicle in this system
          

@@ -158,4 +158,24 @@ class TravelRequest < ActiveRecord::Base
     "#{depart_at.try(:strftime, "%d %b %Y")}"+" - "+"#{ return_at.try(:strftime, "%d %b %Y") }"
   end
   
+  def transport_class
+    abc = TravelClaimsTransportGroup.abcrate
+    de = TravelClaimsTransportGroup.derate
+    mid = 1820.75
+    if applicant.nil? || applicant.blank?
+      app2 = Staff.where(id:25).first
+      if app2.vehicles && app2.vehicles.count>0
+        TravelClaimsTransportGroup.transport_class(app2.vehicles.first.id, app2.current_salary, abc, de, mid)
+      else
+        'Z'
+      end
+    else
+      if applicant.vehicles && applicant.vehicles.count>0
+        TravelClaimsTransportGroup.transport_class(applicant.vehicles.first.id, applicant.current_salary, abc, de, mid)
+      else
+        'Z'
+      end
+    end
+  end
+  
 end

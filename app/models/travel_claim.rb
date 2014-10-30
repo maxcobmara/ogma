@@ -139,68 +139,46 @@ class TravelClaim < ActiveRecord::Base
     end
   end
   
+  def transport_class
+    abc = TravelClaimsTransportGroup.abcrate
+    de = TravelClaimsTransportGroup.derate
+    mid = 1820.75
+    if staff.vehicles && staff.vehicles.count>0
+      TravelClaimsTransportGroup.transport_class(staff.vehicles.first.id, staff.current_salary, abc, de, mid)
+    else
+       'Z'
+    end
+  end
   
   def sen_per_km500  #hack into a db
-    if staff.transportclass_id == 'A'
-      70
-    elsif staff.transportclass_id == 'B'
-      60
-    elsif staff.transportclass_id == 'C'
-      50
-    elsif staff.transportclass_id == 'D'
-      45
-    elsif staff.transportclass_id == 'E'  
-      40
-    else 
+    if transport_class == 'Z'
       0
+    else
+      TravelClaimMileageRate.km_by_group(500, transport_class)*100
     end
   end
   
   def sen_per_km1000
-    if staff.transportclass_id == 'A'
-      65
-    elsif staff.transportclass_id == 'B'
-      55
-    elsif staff.transportclass_id == 'C'
-      45
-    elsif staff.transportclass_id == 'D'
-      40
-    elsif staff.transportclass_id == 'E'  
-      35
-    else 
+    if transport_class == 'Z'
       0
+    else
+      TravelClaimMileageRate.km_by_group(1000, transport_class)*100
     end
   end
   
   def sen_per_km1700
-    if staff.transportclass_id == 'A'
-      55
-    elsif staff.transportclass_id == 'B'
-      50
-    elsif staff.transportclass_id == 'C'
-      40
-    elsif staff.transportclass_id == 'D'
-      35
-    elsif staff.transportclass_id == 'E'  
-      30
-    else 
+    if transport_class == 'Z'
       0
+    else
+      TravelClaimMileageRate.km_by_group(1700, transport_class)*100
     end
   end
   
   def sen_per_kmmo
-    if staff.transportclass_id == 'A'
-      50
-    elsif staff.transportclass_id == 'B'
-      45
-    elsif staff.transportclass_id == 'C'
-      35
-    elsif staff.transportclass_id == 'D'
-      30
-    elsif staff.transportclass_id == 'E'  
-      25
-    else 
+    if transport_class == 'Z'
       0
+    else
+      TravelClaimMileageRate.km_by_group(99999, transport_class)*100
     end
   end
   
