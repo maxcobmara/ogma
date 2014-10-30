@@ -62,9 +62,9 @@ class StaffTraining::PtbudgetsController < ApplicationController
     @ptbudget = Ptbudget.find(params[:id])
 
     respond_to do |format|
-      if @ptbudget.update_attributes(params[:ptbudget])
+      if @ptbudget.update_attributes(ptbudget_params)
         flash[:notice] = 'Your training budget was successfully updated.'
-        format.html { redirect_to(@ptbudget) }
+        format.html { redirect_to(staff_training_ptbudgets_path(@ptbudget)) }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }

@@ -34,5 +34,15 @@ describe Weeklytimetable do
     before { @weeklytimetable.programme_id = nil }
     it { should_not be_valid }
   end
+  
+  describe "when format1 is not present" do
+    before {@weeklytimetable.format1 = nil }
+    it { should_not be_valid }
+  end
+  
+  describe "when format2 is not present" do
+    before {@weeklytimetable.format2 = nil }
+    it { should_not be_valid }
+  end
 
 end

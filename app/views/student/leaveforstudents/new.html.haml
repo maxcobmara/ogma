@@ -1,0 +1,16 @@
+- provide(:title, 'Leave For Student')
+- model_class = Leaveforstudent
+.page-header
+  %h1 New Leave For Student
+= render 'shared/flashes'
+.row.fluid
+  = form_for [:student, @leaveforstudent], html: { multipart: true, class: 'form-horizontal' }  do |f| 
+    = render 'shared/error_messages', object: f.object
+    = render :partial => 'form', :locals => {:f => f}
+	
+    .col-md-offset-1
+      .form-group
+        .col-sm-offset-2.col-sm-1
+          = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), student_leaveforstudents_path, :class => 'btn btn-default'
+        .col-sm-offset-1.col-sm-2
+          = f.submit t('create'), class: "btn btn-primary"

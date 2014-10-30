@@ -48,6 +48,10 @@ textarea#myNicEditor2{width:200%; height:100px;}
 
 
 .centre {text-align: center;}
+.crosshairs {
+    text-align: center;
+    padding-top: 10%;
+}
 .right {float:right;}
 
 .center h1 {
@@ -59,7 +63,7 @@ textarea#myNicEditor2{width:200%; height:100px;}
 		&:hover, &:focus {
 			color: #fff;
 			outline: none;
-		}	
+		}
 	}
 	h2 {color: #f7f7f7; }
 }
@@ -196,9 +200,9 @@ table.ogma {
     th {padding:10px 5px; font-weight:normal; vertical-align:top;
         a {color:white;}
       }
-    tr {font-size:0.9em; 
+    tr {font-size:0.9em;
         color:white; background-color:#3574C4;}
-    
+
     th.action {padding:5px; vertical-align:middle; text-align:center; }
   }
   tbody {
@@ -247,7 +251,7 @@ ul.ui-autocomplete {
       background-color: #FFFCB2;
     }
   }
-} 
+}
 
 
 /* forms */
@@ -295,7 +299,7 @@ table.inline_display {
 
 //Curriculum Management - tree view
 #header_tree, #programme_tree, #semester_tree, #subject_tree, #topic_tree, #subtopic_tree, #subsubtopic_tree {
-	 list-style: none; 
+	 list-style: none;
 }
 
 #header_tree {
@@ -311,7 +315,7 @@ table.inline_display {
 
 //#programme_tree, #semester_tree { background-color: #f9f9f9; }
 #programme_tree li span.Collapsable{ font-size:1.0em;  }
-#semester_tree, #subject_tree, #topic_tree, #subtopic_free, #subsubtopic_tree{ li span.Collapsable{ font-size:0.9em; }} 
+#semester_tree, #subject_tree, #topic_tree, #subtopic_free, #subsubtopic_tree{ li span.Collapsable{ font-size:0.9em; }}
 
 #programme_tree, #semester_tree , #subject_tree, #topic_tree, #subtopic_tree, #subsubtopic_tree{
 	li span.Collapsable
@@ -324,12 +328,5 @@ table.inline_display {
 		span.tutorial{ position:absolute; left:1200px; }
 		span.practical{ position:absolute; left:1300px; }
 	}
-	
+
 }
-
-
-
-
-
-
-

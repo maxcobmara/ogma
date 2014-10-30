@@ -59,6 +59,7 @@ en:
   new: New
   update: Update
   control: Control
+  process: Process
   thank: "Staff was successfully created"
   addmore: "Add More"
   submit: Submit
@@ -73,6 +74,7 @@ en:
   no: No
   setup: Set Up
   select: Select
+  check: Check
   
   actions:
     new: New
@@ -95,6 +97,7 @@ en:
     import_failed: " - import failed "
     save_action: Save Action
     check_all: "Tick to SELECT or DESELECT ALL records for printing of KEW.PA-17 and KEW.PA-20."
+    all_records: All Records
     
   errors:
 
@@ -113,6 +116,7 @@ en:
     student: Student
   
   staff:
+    title: Staff
     list: Staff List
     personal_details: Personal Details
     icno: MyKad No
@@ -165,6 +169,7 @@ en:
     uniformstat: Uniform Status
     position_id: Position
     reports_to: Reports To
+
 
     qualifications: 
       title: Qualifications
@@ -246,9 +251,10 @@ en:
       details: Details
       submission: Submission
       approval: Approval
+      approval2: HOD Approval
       submission_approval: "Submission & Approval"
       log_details: Log Details
-      log_details2: Log Details
+      log_details2: Details of Log
       dated: " dated : "
       #staff_course_conducted_id: Course Conducted By
       destination: Destination
@@ -275,9 +281,12 @@ en:
       mileage_value_rm: "Value (RM)"
       mileage: Mileage Allowance
       mileage_replace: Mileage Replacement
+      train_plane_replacement: "(Train or plane fares replacement)"
       hod_id: Head of Department
       hod_accept: HOD Acceptance
       hod_accept_on: HOD Acceptance Date
+      hod_not_accept: Not Accepted by HOD
+      travel_dates: Travel Dates
       travel_claim_id: Travel Claim
       is_travel_log_complete: "Travel Log Complete?"
       log_mileage: Log Mileage
@@ -292,7 +301,44 @@ en:
 
     travel_claim:
       title: Travel Claims
-
+      new: New Travel Claim
+      edit: Edit Travel Claim
+      check: Finance Check Travel Claim
+      month_year: "Month & Year"
+      name: Name
+      total: Total
+      request_travel_log: "Travel Request & Log"
+      claims_details: Claims Details
+      submission: Submission to Finance
+      claims_verification: Finance Verification
+      claims_approval: Approval
+      staff_id: Staff Name
+      include_travel_request: Include Travel Request
+      include: Include
+      misc_allowances: "Meal Allowance / Daily Allowance / Lodging Allowance"
+      allowance: Allowance
+      receipts: Receipts
+      advance: Advance
+      type: Type
+      days: Days
+      value: "Value (RM)"
+      receipt_no: Receipt No
+      total: Total
+      current_total: Current Total
+      claimable_total: Claimable Total
+      yes2: "Yes, "
+      no2: "No"
+      is_submitted: "Submitted?"
+      is_approved: "Approved?"
+      to_be_approved_by: To be Approved by
+      check_status: Finance Check Status
+      note_by_finance: Note By Finance Staff
+      submit_notify: Clicking on submit notifies claims officer and disables your editing this record further
+      verification: Verification
+      return_to_staff: Return to Staff
+      verified_ok: Verified OK
+      approve_notify: Clicking on Approves shall approve this claim
+      
     staff_appraisal:
       title: Staff Appraisal
       new: New Staff Appraisal
@@ -302,10 +348,23 @@ en:
       skt_review_staff: "SKT Review & PYD Report"
       skt_review_eval1: "SKT - PPP Report & Evaluation"
       activity: Activity
+      evaluation_performance: Performance Evaluation
       eval1_1_17_41: "Performance Evaluation (1st)"
       eval1_review: Review
       eval2_1_17_41: "Performance Evaluation (2nd)"
       eval2_review: Performance Review
+      review: Performance Review
+      submission: Submission
+      endorsed_on_ppp: Endorsed by PPP on
+      endorsed_on_ppk: Endorse by PPK on
+      skt_being_formulated: SKT being formulated
+      staff_appraisal_complete: Staff Appraisal complete
+      skt_awaiting_ppp_endorsement: SKT awaiting PPP endorsement
+      skt_review: SKT Review
+      ready_for_ppp_skt_report: Ready for PPP SKT Report
+      ppp_report_complete: PPP Report complete
+      submitted_for_evaluation_by_ppp: Submitted for Evaluation by PPP
+      submitted_by_ppp_for_evaluation_to_PPK: Submitted by PPP for Evaluation to PPK
     
     evactivity:
       actdt: Date
@@ -335,6 +394,7 @@ en:
       
       
     form:
+      title_part1:  'Part 1: Staff Details (filled by PYD)'
       description: Description
       level: Level
       training_name: Training Name
@@ -509,6 +569,7 @@ en:
   position:
     title: "Tasks & Responsibilities"
     index: Organisation Chart
+    name: Position
     
   staff_attendance:
     title: Staff Attendance
@@ -1046,6 +1107,7 @@ en:
     budgetb: Balance
     budget_details: Annual Training Budget Details
     new: New Annual Training Budget
+    edit: Editing Annual Training Budget
     
   course:
     title: Course
@@ -1426,6 +1488,7 @@ en:
       back_lesson_report: Lesson Report List
       back_travel_request: Travel Request List
       back_travel_log: Travel Log List
+      finance_check: Finance Check
     label:
       examquestion:
         creator_id: Creator 
@@ -1631,11 +1694,20 @@ en:
         hod_accept_on: HOD Acceptance Date
         add_log: Add Log
         code: Travel Request Code
+        
+      travel_claim:
+        claim_month: "Month & Year"
+        staff_id: Staff Name
+        is_submitted: "Submit?"
+        is_returned: "Resubmit?"
+        is_approved: "Approved?"
+        approved_by: Approval By
 
       staff_appraisal:
         staff_id: Staff
         evaluation_year: Evaluation Year
         is_skt_submit: Submit for Endorsement
+        endorsement_on: Endorsement On
         is_skt_endorsed: Endorse SKT
         add_activity: Add Activity
         skt_pyd_report: "1. Report By PYD"

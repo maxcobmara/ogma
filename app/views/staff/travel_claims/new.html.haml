@@ -1,0 +1,27 @@
+- model_class = TravelClaim
+.page-header
+  %h1=t('staff.travel_claim.new') 
+  
+= render 'shared/flashes'
+
+.row.fluid
+  = form_for [:staff, @travel_claim], html: { class: 'form-horizontal' }  do |f| 
+    = render 'shared/error_messages', object: f.object
+    
+    /- @my_approved_unclaimed_requests = TravelRequest.where('staff_id =? AND hod_accept=?', Login.current_login.staff_id, true)
+    - @my_approved_unclaimed_requests = TravelRequest.where('staff_id =? AND hod_accept=?', 25, true)
+    /- @my_approved_unclaimed_requests = TravelRequest.where('staff_id =? AND hod_accept=? AND travel_claim_id=?', 25, true, nil)
+    /93 - Salinah Salleh
+    
+    - if @my_approved_unclaimed_requests.count < 1 
+      You have no approved travel requests for processing
+    - else      
+      = render :partial => 'form', :locals => {:f => f}        
+
+    .col-md-offset-1
+      .form-group
+        .col-sm-offset-2.col-sm-1
+          = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), staff_travel_claims_path, :class => 'btn btn-default'
+        .col-sm-offset-1.col-sm-2
+          = f.submit t('create'), class: "btn btn-primary"
+

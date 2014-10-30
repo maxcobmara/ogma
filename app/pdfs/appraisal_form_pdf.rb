@@ -11,88 +11,98 @@ class Appraisal_formPdf < Prawn::Document
     text "KERAJAAN MALAYSIA", :align => :center, :size => 12, :style => :bold   
     move_down 10
     text "LAPORAN PENILAIAN PRESTASI", :align => :center, :size => 12, :style => :bold    
-    text "PEGAWAI KUMPULAN #{@staff_appraisal.person_type_description}", :align => :center, :size => 12, :style => :bold 
+    text "PEGAWAI KUMPULAN #{@staff_appraisal.try(:person_type_description)}", :align => :center, :size => 12, :style => :bold 
     text "Tahun #{(@staff_appraisal.evaluation_year).year}", :align => :center, :size => 10, :style => :bold 
     move_down 10
     tajuk1
     bahagian1
-    bahagian2
-    bahagian3
-    bahagian4
-    bahagian5
-    bahagian6
-    bahagian7
-    bahagian8
-    bahagian9
-    lampiranA
-    lampiranA1
-    lampiranA2
-    lampiranA3
+    bahagian2a
+    table_bahagian2
+    bahagian2b
+    table_latihan2b
+    bahagian2b2
+    table_latihan3
+    bahagian2b3
+    #bahagian3  #line 203
+    #bahagian4
+    #bahagian5
+    #bahagian6
+    #bahagian7
+    #bahagian8
+    #bahagian9
+    #lampiranA
+    #lampiranA1
+    #lampiranA2
+    #lampiranA3
    
   end
   
   def tajuk1
     data = [["PERINGATAN"],
-           ["Pegawai Penilai (PP) iaitu Pegawai Penilai Pertama (PPP) dan Pegawai Penilai Kedua (PPK) serta Pegawai Yang Dinilai (PYD) hendaklah 
-             memberi perhatian kepada perkara-perkara berikut sebelum dan semasa membuat penilaian:" ]]
+           ["Pegawai Penilai (PP) iaitu Pegawai Penilai Pertama (PPP) dan Pegawai Penilai Kedua (PPK) serta Pegawai Yang Dinilai (PYD) hendaklah memberi perhatian kepada perkara-perkara berikut sebelum dan semasa membuat penilaian:" ]]
    
-    table(data , :column_widths => [400], :cell_style => { :size => 10}) do
+    table(data , :column_widths => [520], :cell_style => { :size => 10}) do
+      row(0).align = :center
      row(0).borders = [:left, :right, :top]
      row(1).borders = [:left, :right]
      row(0).font_style = :bold
-     row(0).background_color = 'FFE34D'
 
     end 
     
-    data1 = [['	i.', "PYD hendaklah melengkapkan maklumat di Bahagian I di bawah dan Bahagian I dalam borang 
-      Sasaran Kerja Tahunan (SKT) seperti di Lampiran 'A' pada awal tahun;"],
+    data1 = [['	i.', "PYD hendaklah melengkapkan maklumat di Bahagian I di bawah dan Bahagian I dalam borang Sasaran Kerja Tahunan (SKT) seperti di Lampiran 'A' pada awal tahun;"],
       ["ii.","PYD hendaklah melengkapkan Bahagian II manakala PP hendaklah melengkapkan Bahagian III hingga Bahagian IX pada akhir tahun penilaian;"],
-      ["iii.", "PYD dan PP hendaklah merujuk Panduan Pelaksanaan Sistem Penilaian Prestasi Anggota Perkhidmatan Awam Malaysia (Tahun 2002) 
-        sekiranya memerlukan keterangan lanjut semasa mengisi Borang Laporan Penilaian Prestasi Tahunan (LNPT) dan membuat penilaian;"],
+      ["iii.", "PYD dan PP hendaklah merujuk Panduan Pelaksanaan Sistem Penilaian Prestasi Anggota Perkhidmatan Awam Malaysia (Tahun 2002) sekiranya memerlukan keterangan lanjut semasa mengisi Borang Laporan Penilaian Prestasi Tahunan (LNPT) dan membuat penilaian;"],
         ["	iv.", "PP hendaklah menggunakan Skala Penilaian Prestasi seperti di Lampiran 'B'; dan"],
-        ["v.", "PPP hendaklah memaklumkan kepada PYD langkah-langkah meningkatkan prestasi/kemajuan kerjaya yang perlu dilakukan 
-          sebelum menandatangani di ruangan Bahagian VIII."]]
+        ["v.", "PPP hendaklah memaklumkan kepada PYD langkah-langkah meningkatkan prestasi/kemajuan kerjaya yang perlu dilakukan sebelum menandatangani di ruangan Bahagian VIII."]]
       
-          table1(data , :column_widths => [30,370], :cell_style => { :size => 10}) do
-           row(0).borders = [:left, :right]
-           row(1).borders = [:left, :right]
-           row(2).borders = [:left, :right]
-           row(3).borders = [:left, :right]
-           row(4).borders = [:left, :right, :buttom]
-           row(0).background_color = 'FFE34D'
+          table(data1, :column_widths => [30,490], :cell_style => { :size => 10}) do
+           row(0).column(0).borders = [:left]
+           row(0).column(1).borders = [:right]
+           row(1).column(0).borders = [:left]
+           row(1).column(1).borders = [:right]
+           row(2).column(0).borders = [:left]
+           row(2).column(1).borders = [:right]
+           row(3).column(0).borders = [:left]
+           row(3).column(1).borders = [:right]
+           row(4).column(0).borders = [:left, :bottom]
+           row(4).column(1).borders = [:right, :bottom]
       end
-      move_down 20
+      move_down 40
   end
   
   def bahagian1
-    
+
     text "BAHAGIAN 1 - MAKLUMAT PEGAWAI", :align => :left, :size => 12, :style => :bold     
     text "(Diisi oleh PYD)", :align => :left, :size => 12
-    
+    move_down 20
     data1 = [['	i.', "Nama : #{@staff_appraisal.appraised.name} "],
-      ["ii.","Jawatan dan Gred : #{@staff_appraisal.appraised.position.name} .. #{@staff_appraisal.appraised.staffgrade.name}"],
+      ["ii.","Jawatan dan Gred : #{@staff_appraisal.appraised.positions[0].try(:name)} .. #{@staff_appraisal.appraised.staffgrade.name}"],
       ["iii.", "Kementerian/Jabatan : Kolej Sains Kesihatan Bersekutu Johor Bahru"]]
       
-          table1(data , :column_widths => [30,370], :cell_style => { :size => 10}) do
-           row(0).borders = [:left, :right, :top]
-           row(1).borders = [:left, :right]
-           row(2).borders = [:left, :right, :buttom]
-           row(0).background_color = 'FFE34D'
+          table(data1 , :column_widths => [30,490], :cell_style => { :size => 10}) do
+          row(0).column(0).borders = [:left, :top]
+          row(0).column(1).borders = [:right, :top]
+          row(1).column(0).borders = [:left]
+          row(1).column(1).borders = [:right]
+          row(2).column(0).borders = [:left, :bottom]
+          row(2).column(1).borders = [:right, :bottom]
+           
      end
      move_down 20
 end
   
-  def bahagian2
-    
+  
+  def bahagian2a
+    start_new_page
     text "BAHAGIAN II - KEGIATAN DAN SUMBANGAN DI LUAR TUGAS RASMI/LATIHAN", :align => :left, :size => 12, :style => :bold     
     text "(Diisi oleh PYD)", :align => :left, :size => 12
-    move_down 10
+    move_down 20
     text "1. KEGIATAN DAN SUMBANGAN DI LUAR TUGAS RASMI", :align => :left, :size => 12, :style => :bold     
-    move_down 5
+    move_down 10
     text "Senaraikan kegiatan dan sumbangan di luar tugas rasmi seperti sukan/pertubuhan/sumbangan kreatif di 
-    peringkat Komuniti/Jabatan/Daerah/Negeri/Negara/Antarabangsa yang berfaedah kepada Organisasi/Komuniti/Negara 
-    pada tahun yang dinilai.", :align => :left, :size => 12
-    move_down 5
+    peringkat Komuniti/Jabatan/Daerah/Negeri/Negara/Antarabangsa yang berfaedah kepada Organisasi/Komuniti/Negara pada tahun yang dinilai.", :align => :left, :size => 12
+    move_down 10
+ end
     
     def table_bahagian2
     
@@ -109,22 +119,23 @@ end
     
     def line_item_rows
       counter = counter || 0
-      header = [[ 'Senarai kegiatan/aktiviti/sumbangan', 'Peringkat kegiatan/aktiviti/sumbangan
-(nyatakan jawatan atau pencapaian)']]
+      header = [[ 'Senarai kegiatan/aktiviti/sumbangan', 'Peringkat kegiatan/aktiviti/sumbangan (nyatakan jawatan atau pencapaian)']]
       header +
-        @staff_appraisals.map do |evactivities|
-        ["#{counter += 1}", "#{evactivity.evactivity}", "#{(Evactivity::EVACT.find_all{|disp, value| value == evactivity.actlevel}).map {|disp, value| disp}}"]
+        @staff_appraisal.evactivities.map do |evactivity|
+        ["#{evactivity.evactivity}", "#{(DropDown::EVACT.find_all{|disp, value| value == evactivity.actlevel}).map {|disp, value| disp}[0]}"]
       end
     end  
-     move_down 10
+  
+    def bahagian2b
+     move_down 30
      
     text "2. Latihan", :align => :left, :size => 12, :style => :bold   
-    move_down 5
-    text "	i.	Senaraikan program latihan (seminar, kursus, bengkel dan lain-lain) yang dihadiri 
-    dalam tahun yang dinilai.", :align => :left, :size => 12
-     move_down 5
-    
-     def table_latihan2
+    move_down 10
+    text "	i.	Senaraikan program latihan (seminar, kursus, bengkel dan lain-lain) yang dihadiri dalam tahun yang dinilai.", :align => :left, :size => 12
+     move_down 10
+   end
+   
+     def table_latihan2b
     
        table line_item_rows2 do
          row(0).font_style = :bold
@@ -141,13 +152,16 @@ end
        counter = counter || 0
        header = [[ 'Nama Latihan (Nyatakan sijil jika ada)', 'Tarikh/Tempoh', ' Tempat']]
        header +
-         @staff_appraisal.staff_id.map do |ptdo|
-         ["#{counter += 1}", "#{ptdo.ptschedule.ptcourse.name}", "#{ptdo.ptschedule.start.try(:strftime, "%d/%m/%y")}", "#{ptdo.ptschedule.location}"]
+         Ptdo.where('staff_id = ?',@staff_appraisal.appraised).map do |ptdo|
+         ["#{ptdo.ptschedule.course.name}", "#{ptdo.ptschedule.start.try(:strftime, "%d/%m/%y")}", "#{ptdo.ptschedule.location}"]
        end
      end   
-     move_down 5
+     
+     def bahagian2b2
+     move_down 20
     text " ii. Senaraikan latihan yang diperlukan.", :align => :left, :size => 12
-     move_down 5
+     move_down 10
+   end
      
      def table_latihan3
     
@@ -167,24 +181,27 @@ end
        header = [[ 'Nama/Bidang Latihan', 'Sebab Diperlukan']]
        header +
          @staff_appraisal.trainneeds.map do |trainneed|
-         ["#{counter += 1}", "#{trainneed.name}", "#{trainneed.reason}"]
+         [ "#{trainneed.name}", "#{trainneed.reason}"]
        end
-     end       
-     move_down 5  
+     end  
+     
+     def bahagian2b3     
+     move_down 30
     text "Saya mengesahkan bahawa semua kenyataan di atas adalah benar.", :align => :left, :size => 12 
-     move_down 5   
+     move_down 20
      
      data1 = [["#{@staff_appraisal.appraised.name}"," #{@staff_appraisal.submit_for_evaluation_on}"],
            [ "Tandatangan PYD", "Tarikh"]] 
            
-           table(data1 , :column_widths => [150,150], :cell_style => { :size => 11}) do
+           table(data1 , :column_widths => [250,250], :cell_style => { :size => 11}) do
              row(0).font_style = :bold
+             row(1).borders = [ ] 
              self.row_colors = ["FEFEFE", "FFFFFF"]
            end
 end
 
 def bahagian3
-  
+  start_new_page
   text "BAHAGIAN III - PENGHASILAN KERJA ( Wajaran 50% )", :align => :left, :size => 12, :style => :bold     
   text "Pegawai Penilai dikehendaki memberikan penilaian berdasarkan pencapaian kerja sebenar PYD berbanding dengan SKT yang ditetapkan. 
   Penilaian hendaklah berasaskan kepada penjelasan setiap kriteria yang dinyatakan di bawah dengan menggunakan skala 1 
@@ -291,7 +308,7 @@ def bahagian7
 
   
   data1 = [[ "", "PPP(%)", "PPK(%)", "MARKAH PURATA (%)"],
-            ["", "", "", "(untuk diisi oleh Urus Setia PPSM)"]
+            ["", "", "", "(untuk diisi oleh Urus Setia PPSM)"],
              ["MARKAH KESELURUHAN","#{number_with_precision(@staff_appraisal.e1_total, :precision => 2) }",
                "#{number_with_precision(@staff_appraisal.e2_total,:precision => 2)}","#{number_with_precision(@staff_appraisal.t1t2_average, :precision => 2)}"]]
              
@@ -314,8 +331,8 @@ def bahagian8
   text "3.  Adalah disahkan bahawa prestasi pegawai ini telah dimaklumkan kepada PYD.", :align => :left, :size => 12
   
   data1 = [[ "Nama PPP :", "#{@staff_appraisal.eval1_officer.name}"],
-            ["Jawatan :", "#{@staff_appraisal.eval1_officer.position.name}"]
-             ["Kementerian /Jabatan : ","Kolej Sains Kesihatan Bersekutu Johor Bahru"]
+            ["Jawatan :", "#{@staff_appraisal.eval1_officer.position.name}"],
+             ["Kementerian /Jabatan : ","Kolej Sains Kesihatan Bersekutu Johor Bahru"],
            ["No. K.P : ","#{@staff_appraisal.eval1_officer.formatted_mykad}"]]
              
        table(data1 , :column_widths => [100,200], :cell_style => { :size => 11}) do
@@ -341,8 +358,8 @@ def bahagian9
   text "#{@staff_appraisal.e2_performance}..............", :align => :left, :size => 12
   
   data1 = [[ "Nama PPK :", "#{@staff_appraisal.eval2_officer.name}"],
-            ["Jawatan :", "#{@staff_appraisal.eval2_officer.position.name}"]
-             ["Kementerian /Jabatan : ","Kolej Sains Kesihatan Bersekutu Johor Bahru"]
+            ["Jawatan :", "#{@staff_appraisal.eval2_officer.position.name}"],
+             ["Kementerian /Jabatan : ","Kolej Sains Kesihatan Bersekutu Johor Bahru"],
            ["No. K.P : ","#{@staff_appraisal.eval2_officer.formatted_mykad}"]]
              
        table(data1 , :column_widths => [100,200], :cell_style => { :size => 11}) do
@@ -422,6 +439,7 @@ def lampiranA1
       @staff_appraisal.staff_appraisal_skts.find(:all, :order => :priority).map do |staff_appraisal_skt|
       ["#{counter += 1}", "#{staff_appraisal_skt.description}", "#{staff_appraisal_skt.indicator}"]
     end
+  end
   
   data1 = [["#{@staff_appraisal.appraised.name}","#{@staff_appraisal.eval1_officer.name}"],
         [ "Tandatangan PYD", "Tandatangan PPP"],
@@ -525,7 +543,8 @@ def lampiranA3
           self.row_colors = ["FEFEFE", "FFFFFF"]
         end 
   
-    
+ end   
+end
+end
 end
 
-end

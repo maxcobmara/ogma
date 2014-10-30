@@ -12,22 +12,25 @@ Ogma::Application.routes.draw do
       end
     end
     resources :staff_appraisals do
-      collection do
-        get :appraisal_form
-      end
-    end
-    resources :staff_appraisal do
       member do
         get :appraisal_form
       end
     end
     resources :leaveforstaffs
-    resources :travel_claims
+    resources :travel_claims do 
+      member do
+	get :check
+	get :approve
+      end
+    end
     resources :staff_attendances do
       collection do
         put 'actionable', to: "staff_attendances#actionable"
 	post 'import'
 	get 'import_excel', to: "staff_attendances#import_excel"
+  get :laporan_bulanan_punchcard
+  get :laporan_mingguan_punchcard
+  get :laporan_harian_punchcard
       end
     end
     resources :attendances
@@ -242,9 +245,13 @@ Ogma::Application.routes.draw do
   end
 
   devise_for :users
-  resources :users
+  resources :users do
+   member do
+    get  :link
+    post :link
+   end
+  end
   resources :logins
-
 
   root  'static_pages#home'
   match '/help',    to: 'static_pages#help',    via: 'get'

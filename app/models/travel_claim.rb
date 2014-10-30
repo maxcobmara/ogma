@@ -18,7 +18,7 @@ class TravelClaim < ActiveRecord::Base
   accepts_nested_attributes_for :travel_claim_allowances, :reject_if => lambda { |a| a[:amount].blank? }, :allow_destroy =>true
   
   validates_uniqueness_of :claim_month, :scope => :staff_id, :message => "You already have claims for this month"
-
+  
   def set_to_nil_where_false
   	#--4Jan2013
   	#if is_checked == false
@@ -31,9 +31,9 @@ class TravelClaim < ActiveRecord::Base
       self.submitted_on	= Date.today
       if is_returned == true
       		
-     end
+      end
     else
-     self.submitted_on	= nil
+      self.submitted_on	= nil
     end
   end
   
@@ -42,36 +42,36 @@ class TravelClaim < ActiveRecord::Base
   end
   
   def my_claim_status
-     if staff_id == User.current_user.staff_id && is_submitted != true 
-       "editing"
+    if staff_id == User.current_user.staff_id && is_submitted != true 
+      "editing"
     #----4Jan2012
-     elsif staff_id != User.current_user.staff_id && is_submitted != true	#add-in to make sure it work with - those HACK part in index page - to differentiate with "editing" & login as finance staff
-    "editing by staff"
+    elsif staff_id != User.current_user.staff_id && is_submitted != true	#add-in to make sure it work with - those HACK part in index page - to differentiate with "editing" & login as finance staff
+     "editing by staff"
     #----4Jan2012
     elsif staff_id == User.current_user.staff_id && is_submitted == true && is_checked == nil
-     "submitted"
+      "submitted"
     elsif staff_id != User.current_user.staff_id && is_submitted == true && is_checked == nil
-     "for checking"
+      "for checking"
     elsif staff_id == User.current_user.staff_id && is_submitted == true && is_checked == false && is_returned != true
-     "returned"
+      "returned"
     elsif staff_id == User.current_user.staff_id && is_submitted == true && is_checked == false && is_returned == true
-     "resubmitted to finance"
+      "resubmitted to finance"
     #----4Jan2013
     elsif staff_id != User.current_user.staff_id && is_submitted == true && is_checked == false	&& is_returned != true #&& is_returned != true	#for status viewing or "status not known" will appear if login as finance staff!
-    "returned to staff for amendment"
+      "returned to staff for amendment"
     #----4Jan2013
     elsif is_submitted == true && is_checked == true && is_approved != true
-     "processed"
+      "processed"
     elsif is_submitted == true && is_checked == true && is_approved == true
-     "approved"
+      "approved"
     #----4Jan2012
     elsif staff_id != User.current_user.staff_id && is_submitted == true && is_checked != true && is_returned == true 	#for status viewing only or "status not known" will appear if login as finance staff!
-     "amended and resubmit for finance check"
+      "amended and resubmit for finance check"
     #----4Jan2012
     else
-     "status not known"
+      "status not known"
     end    
-   end
+  end
   
   
   

@@ -18,6 +18,7 @@ FactoryGirl.define do
   
   factory :asset_defect do
     association :asset, factory: :fixed_asset
+    association :reporter, factory: :staff
   end
   
   factory :asset_disposal do

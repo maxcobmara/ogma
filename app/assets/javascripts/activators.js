@@ -3,7 +3,7 @@ $(document).ready(function(e) {
   $('.selectpicker').selectpicker();
   $('.tenant').tooltip( {placement: 'right', container: 'body'});
   $('.index_search_bar').click(function() {	   
-     $('.search_row').toggleClass('hidden'); 
+     $('.search_row').toggle(); 
   });
   $('.date_picker').datetimepicker({
    timepicker:false,
@@ -28,7 +28,23 @@ $(document).ready(function(e) {
      datepicker:false,
        format:'H:i',
        step:5,
-    });
+  });
+  $('.monthyear_picker').datetimepicker({
+      format: "Y-m-d",
+      timepicker: false,
+      autoclose: true,
+      onSelectDate: function(dp, $input) {
+        $input.val($input.val().substr(0,8) + '01');
+      }
+  });
+  $('.year_picker').datetimepicker({
+      format: "Y-m-d",
+      timepicker: false,
+      autoclose: true,
+      onSelectDate: function(dp, $input) {
+        $input.val($input.val().substr(0,4) + '-01-01');
+      }
+  });
   $(".bogus").click(function (e) {
       alert("Sorry! Feature not yet implemented");
   });

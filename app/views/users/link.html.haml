@@ -1,0 +1,18 @@
+- model_class = User
+.page-header
+ %h1 Link User to Entity
+
+= render 'shared/flashes'
+
+.row
+ .col-md-3.col-md-offset-2
+  .well
+   = current_user.email
+ .col-md-1
+  .crosshairs
+   .btn.btn-primary
+    .i= fa_icon "link"
+ .col-md-3
+  .well
+   = @entity.name
+   = @entity.icno

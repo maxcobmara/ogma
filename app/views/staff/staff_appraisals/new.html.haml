@@ -1,5 +1,63 @@
 - model_class = StaffAppraisal
 .page-header
-  %h1
-    = t('staff_appraisals.new')
-    = render 'shared/flashes'
+  %h1= t 'staff.staff_appraisal.new'
+
+= render 'shared/flashes'
+
+.row
+  = form_for [:staff, @staff_appraisal], html: { multipart: true, class: 'form-horizontal' }  do |f| 
+    = render 'shared/error_messages', object: f.object
+    
+    .row
+      .col-md-10.col-md-offset-1
+        / Nav tabs
+        %ul.nav.nav-tabs
+          %li.active= link_to (t 'staff.staff_appraisal.skt'),"#skt", "data-toggle" => "tab"
+        
+        .tab-content{style:"padding-top:1em"}
+          .col-md-offset-2
+            .form-group
+              .col-md-6.col-md-offset-2
+                %b=t 'evaluation.form.title_part1'
+              .col-md-2
+                &nbsp;
+          .col-md-offset-2 
+            .form-group
+              .col-sm-2.control-label
+                = f.label :staff_id
+              .col-md-6 
+                = f.collection_select :staff_id, Staff.all.order('name ASC'), :id, :mykad_with_staff_name, {:include_blank =>t('helpers.prompt.select_staff')},{class: 'selectpicker',  "data-width"=>'330px'} 
+                /= f.collection_select :staff_id, Staff.where('id = ?', Login.current_login.staff_id).order('name ASC'), :id, :mykad_with_staff_name, {:include_blank =>t('helpers.prompt.select_staff')},{class: 'selectpicker', "data-width"=>'230px'}   
+          .col-md-offset-2 
+            .form-group
+              .col-sm-2.control-label
+                = f.label :evaluation_year
+              .col-md-2
+                = f.text_field :evaluation_year, class: 'date_picker form-control'
+            
+          #skt.tab-pane.active
+            %br
+            = render 'tab_skt_edit', :f => f
+      
+    .row
+      .form-group
+        .col-md-1.col-md-offset-2
+          = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), staff_staff_appraisals_path, :class => 'btn btn-default'
+        .col-md-2
+          .div{style: "margin-left:-40px;"}
+            = f.submit t('create'), class: "btn btn-primary"
+              
+:javascript
+
+//<![CDATA[
+bkLib.onDomLoaded(function() {
+  new nicEditor().panelInstance('myNicEditor3');
+  new nicEditor().panelInstance('myNicEditor4');
+});
+//]]>
+
+  function add_fields(link, association, content) {  
+    var new_id = new Date().getTime();  
+    var regexp = new RegExp("new_" + association, "g");  
+    $(link).parent().before(content.replace(regexp, new_id));  
+  }

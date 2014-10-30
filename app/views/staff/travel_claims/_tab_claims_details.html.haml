@@ -1,0 +1,81 @@
+.col-md-10.col-md-offset-1
+  %dl.dl-horizontal
+    %hr
+
+    %dt=(t 'staff.travel_claim.allowance').upcase
+    %dd
+      %b
+        =t 'staff.travel_claim.type' 
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        =t 'staff.travel_claim.days'
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;
+        =t 'staff.travel_claim.value'
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        =t 'staff.travel_claim.receipt_no'
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        =t 'staff.travel_claim.total'
+
+.col-md-10.col-md-offset-3
+  - for travel_claim_allowance in @travel_claim.travel_claim_allowances
+    .row
+      .col-md-2=h (DropDown::ALLOWANCETYPE.find_all{|disp, value| value == travel_claim_allowance.expenditure_type}).map {|disp, value| disp}[0]
+      .col-md-1= travel_claim_allowance.quantity 
+      .col-md-1= ringgols(travel_claim_allowance.amount)
+      .col-md-1= travel_claim_allowance.receipt_code
+      .col-md-1= ringgols(travel_claim_allowance.total) 
+  .row
+    .col-md-5
+      %br
+      %b=t 'staff.travel_request.total'
+    .col-md-1
+      %br
+      %font{:style=>"font-weight:bold; text-decoration:underline;"}= ringgols(@travel_claim.allowas)
+
+/RECEIPTS section
+.col-md-10.col-md-offset-1
+  %dl.dl-horizontal
+    %hr
+
+    %dt=(t 'staff.travel_claim.receipts').upcase
+    %dd
+      %b
+        =t 'staff.travel_claim.type' 
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        =t 'staff.travel_claim.receipt_no'
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        =t 'staff.travel_claim.value'
+
+.col-md-10.col-md-offset-3
+  - for travel_claim_receipt in @travel_claim.travel_claim_receipts.where('expenditure_type IN (?)', (1..88) )
+    .row
+      .col-md-3=h (DropDown::RECEIPTTYPE.find_all{|disp, value| value == travel_claim_receipt.expenditure_type}).map {|disp, value| disp}[0]
+      .col-md-2= travel_claim_receipt.receipt_code
+      .col-md-1= ringgols(travel_claim_receipt.amount)
+
+  - for travel_claim_receipt in @travel_claim.travel_claim_receipts.where('expenditure_type = ?', 99)
+    .row
+      .col-md-2
+        =h (DropDown::RECEIPTTYPE.find_all{|disp, value| value == travel_claim_receipt.expenditure_type}).map {|disp, value| disp} 
+        (
+        = ringgols(travel_claim_receipt.amount)
+        )
+      .col-md-2= travel_claim_receipt.receipt_code
+      .col-md-1= ringgols(travel_claim_receipt.exchange_loss)
+  .row
+    .col-md-5
+      %br
+      %b=t 'staff.travel_request.total'
+    .col-md-1
+      %br
+      %font{:style=>"font-weight:bold; text-decoration:underline;"}= ringgols(@travel_claim.receipts)    
+
+/ADVANCE section
+= render 'tab_advance'

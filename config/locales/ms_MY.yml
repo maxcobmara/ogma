@@ -38,6 +38,7 @@ ms_MY:
   edit: Sunting
   update: Kemaskini
   control: Tindakan
+  process: Proses
   addmore: "Tambah Rekod"
   submit: Hantar
   print: Cetak
@@ -50,6 +51,7 @@ ms_MY:
   no: Tidak
   setup: Data Asas
   select: Pilih
+  check: Semak
  
   actions:
     new: Baru
@@ -72,6 +74,7 @@ ms_MY:
     import_failed: " gagal diimport"
     save_action: Simpan Tindakan
     check_all: "Pilih kotak semak ini untuk MEMILIH atau MENYAHPILIH SEMUA rekod bagi cetakan KEW.PA-17 dan KEW.PA-20."
+    all_records: Semua Rekod
     
   errors:
   
@@ -90,6 +93,7 @@ ms_MY:
     student: Pelajar
   
   staff:
+    title: Staf
     list: Senarai Staf
     icno: "No MyKad"
     name: "Nama"
@@ -155,6 +159,7 @@ ms_MY:
     uniformstat: Status Pakaian Seragam
     position_id: Jawatan
     reports_to: Melapor Kepada
+    
 
     qualifications: 
       title:  Kelayakan
@@ -236,6 +241,7 @@ ms_MY:
       details: Butiran
       submission: Penghantaran
       approval: Kelulusan
+      approval2: Kelulusan Ketua Jabatan
       submission_approval: "Penghantaran & Kelulusan"
       log_details: Log Perjalanan
       log_details2: Butiran Log
@@ -265,9 +271,12 @@ ms_MY:
       mileage_value_rm: "Nilai (RM)"
       mileage: Elaun Batuan
       mileage_replace: Gantian Batuan
+      train_plane_replacement: "(Gantian tambang keretapi atau kapal terbang)"
       hod_id: Ketua Jabatan
       hod_accept: Penerimaan Ketua Jabatan
       hod_accept_on: Tarikh Penerimaan Ketua Jabatan
+      hod_not_accept: Tidak Diterima/Diluluskan oleh Ketua Jabatan
+      travel_dates: Tarikh Perjalanan
       travel_claim_id: Tuntutan Perjalanan
       is_travel_log_complete: "Log Perjalanan Lengkap?"
       log_mileage: Log Batuan
@@ -276,12 +285,50 @@ ms_MY:
       by: " oleh "
       date: Tarikh
       start: Dari
-      finish: Ke
+      finish: Hingga
       total: Jumlah
       code: Kod Permohonan Perjalanan
 
     travel_claim:
       title: Tuntutan Perjalanan
+      new: Tuntutan Perjalanan Baru
+      edit: Sunting Tuntutan Perjalanan
+      check: Semakan Kewangan Tuntutan Perjalanan
+      approve: Kelulusan Tuntutan Perjalanan
+      month_year: "Bulan & Tahun"
+      name: Nama
+      total: Jumlah
+      request_travel_log: "Permohonan & Log Perjalanan"
+      claims_details: Butiran Tuntutan
+      submission: Penghantaran ke Unit Kewangan
+      claims_verification: Semakan Kewangan
+      claims_approval: Kelulusan
+      staff_id: Nama Staf
+      include_travel_request: Sertakan Permohonan Perjalanan
+      include: Sertakan
+      misc_allowances: "Elaun Makan / Elaun Harian / Elaun Penginapan"
+      allowance: Elaun
+      receipts: Resit
+      advance: Pendahuluan
+      type: Jenis
+      days: Hari
+      value: "Nilai (RM)"
+      receipt_no: "No. Resit"
+      total: Jumlah
+      current_total: Jumlah Semasa
+      claimable_total: Jumlah Boleh Dituntut
+      yes2: "Ya, "
+      no2: "Tidak"
+      is_submitted: "Dihantar?"
+      is_approved: "Diluluskan?"
+      to_be_approved_by: Kelulusan Oleh
+      check_status: Status Semakan
+      note_by_finance: Nota dari Staf Kewangan
+      submit_notify: Penghantaran Tuntutan Perjalanan akan dimaklumkan kepada Staf Kewangan dan tiada suntingan boleh dibuat ke atas rekod ini lagi
+      verification: Pengesahan
+      return_to_staff: Pulangkan kepada Staf
+      verified_ok: Disahkan Lengkap
+      approve_notify: Klik pada kotak semak untuk meluluskan Tuntutan Perjalanan ini
 
     staff_appraisal:
       title: Penilaian Prestasi
@@ -292,10 +339,23 @@ ms_MY:
       skt_review_staff: "Kajian Semula SKT & Laporan PYD"
       skt_review_eval1: "SKT - Laporan & Ulasan PPP"
       activity: Aktiviti
+      evaluation_performance: Pemarkahan
       eval1_1_17_41: "Pemarkahan (PPP)"
       eval1_review: Semakan
       eval2_1_17_41: "Pemarkahan (PPK)"
       eval2_review: Penilaian Prestasi
+      review: Penilaian Prestasi
+      submission: Penghantaran
+      endorsed_on_ppp: Kelulusan PPP pada
+      endorsed_on_ppk: Kelulusan PPK pada
+      skt_being_formulated: SKT sedang dijana
+      staff_appraisal_complete: Penilaian Prestasi selesai
+      skt_awaiting_ppp_endorsement: SKT menunggu pengesahan PPP
+      skt_review: Rumusan SKT
+      ready_for_ppp_skt_report: SKT Sedia untuk laporan PPP
+      ppp_report_complete: Laporan PPP selesai
+      submitted_for_evaluation_by_ppp: Dihantar untuk penilaian PPP
+      submitted_by_ppp_for_evaluation_to_PPK: Dihantar oleh PPP utuk peniaian PPK
         
     evactivity:
       actdt: Tarikh
@@ -325,6 +385,7 @@ ms_MY:
       #  quantity: 1. WORK OUTPUT QUANTITY
     
     form:
+      title_part1: 'Bahagian 1: Butiran Kakitangan (diisi oleh PYD)'
       description: Deskripsi
       level: Peringkat
       training_name: Nama Latihan
@@ -425,6 +486,7 @@ ms_MY:
   position:
     title: "Tugas & Tanggungjawab"
     index: Carta Organisasi
+    name: Jawatan
        
   staff_attendance:
     title: Kedatangan Staf
@@ -984,6 +1046,7 @@ ms_MY:
     budgetb: Baki
     budget_details: Maklumat Bajet Latihan Tahunan
     new: Latihan Bajet Tahunan Baru
+    edit: Kemaskini Belanja Latihan Tahunan
     
   course:
     title: Kursus
@@ -1362,6 +1425,7 @@ ms_MY:
       back_lesson_report: Senarai Laporan Pengajaran
       back_travel_request: Senarai Permohonan Perjalanan
       back_travel_log: Senarai Log Perjalanan
+      finance_check: Semakan Kewangan
       
     label:
       examquestion:
@@ -1569,11 +1633,20 @@ ms_MY:
         hod_accept_on: Tarikh Penerimaan Ketua Jabatan
         add_log: Tambah Log
         code: Kod Permohonan Perjalanan
+      
+      travel_claim:
+        claim_month: "Bulan & Tahun"
+        staff_id: Nama Staf
+        is_submitted: "Hantar?"
+        is_returned: "Hantar Semula?"
+        is_approved: "Diluluskan?"
+        approved_by: DIluluskan Oleh
 
       staff_appraisal:
         staff_id: Staf
         evaluation_year: Tahun Penilaian
         is_skt_submit: Hantar SKT untuk Kelulusan
+        endorsement_on: Tarikh Kelulusan
         is_skt_endorsed: Luluskan SKT
         add_activity: Tambah Aktiviti
         skt_pyd_report: "1. Laporan Oleh PYD"
@@ -1668,6 +1741,13 @@ ms_MY:
       # Used in date_select and datime_select.
 #      order: [ :day, :month, :year ]
     
+  time:
+    formats:
+      default:  "%l:%M %p"
+      short: "%l:%M %p"
+    am: pagi
+    pm: petang    
+
   number:
     currency:
       format:

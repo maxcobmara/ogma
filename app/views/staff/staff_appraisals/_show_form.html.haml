@@ -1,0 +1,71 @@
+.row
+  .col-md-10.col-md-offset-1
+    / Nav tabs
+    %ul.nav.nav-tabs
+      %li.active= link_to (t 'staff.staff_appraisal.skt'), "#show_skt", "data-toggle" => "tab"
+      %li=link_to (t 'staff.staff_appraisal.activity'), "#show_activity", "data-toggle" => "tab"
+      %li=link_to (t 'staff.staff_appraisal.evaluation_performance'), "#show_eval_1_17_41", "data-toggle" => "tab"
+      %li=link_to (t 'staff.staff_appraisal.review'), "#show_eval_review", "data-toggle" => "tab"
+
+      
+    .tab-content{style:"padding-top:1em"}
+      .col-md-8.col-md-offset-1
+        %h4= t 'evaluation.form.title_part1'
+        %dl.dl-horizontal
+          %dt= t 'evaluation.form.name'
+          %dd
+            = h @staff_appraisal.appraised.mykad_with_staff_name
+            \- (#{h @staff_appraisal.appraised.staffgrade.name})
+  
+          %dt= t 'position.name'
+          %dd= h @staff_appraisal.appraised.positions[0].try(:name)
+  
+          %dt= t 'evaluation.form.evaluationdate'
+          %dd= h (@staff_appraisal.evaluation_year).year
+    
+          - if @staff_appraisal.is_skt_submit == true
+            %dt= t 'helpers.label.staff_appraisal.is_skt_submit' 
+            %dd=h @staff_appraisal.skt_submit_on.try(:strftime, '%d %b %Y')
+          - if @staff_appraisal.is_skt_endorsed == true
+            %dt= t 'helpers.label.staff_appraisal.endorsement_on' 
+            %dd
+              =h @staff_appraisal.skt_endorsed_on.try(:strftime, '%d %b %Y')
+              by #{h @staff_appraisal.eval1_officer.name}
+            
+      #show_skt.tab-pane.active
+        %br
+        = render 'tab_show_skt'
+        
+      #show_activity.tab-pane
+        %br
+        = render 'tab_show_activity'
+
+      #show_eval_1_17_41.tab-pane
+        %br
+        - if @staff_appraisal.person_type == 5
+          = render 'tab_show_eval_1'
+        - elsif @staff_appraisal.person_type == 4
+          = render 'tab_show_eval_17'
+        - elsif @staff_appraisal.person_type == 3
+          = render 'tab_show_eval_41'
+ 
+      #show_eval_review.tab-pane
+        %br
+        = render 'tab_show_eval_review'
+
+
+              
+:javascript
+
+//<![CDATA[
+bkLib.onDomLoaded(function() {
+  new nicEditor().panelInstance('myNicEditor3');
+  new nicEditor().panelInstance('myNicEditor4');
+});
+//]]>
+
+  function add_fields(link, association, content) {  
+    var new_id = new Date().getTime();  
+    var regexp = new RegExp("new_" + association, "g");  
+    $(link).parent().before(content.replace(regexp, new_id));  
+  }

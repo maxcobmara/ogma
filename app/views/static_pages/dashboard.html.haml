@@ -1,28 +1,39 @@
 .page-header
-  
+
+- if user_signed_in?
+ .row
+  - if Staff.where(coemail: current_user.email).count > 0 || Student.where(semail: current_user.email).count > 0
+   .alert.alert-info
+    Your login email matches the following account :
+    %strong #{Staff.where(coemail: current_user.email).first.name || Student.where(semail: current_user.email).first.name}.
+    Click
+    = link_to 'here', link_user_path(current_user)
+    to link these accounts
+
+
 .row
-  .col-md-3
-    .row
-      .panel.panel-danger
-        .panel-heading Notifications
-        .panel-body
-          Notifications Go Here
-          
-    .row{:style => "background-color:#D0E8F5;"} 
-      = render 'bulletin'
+ .col-md-3
+  .row
+   .panel.panel-danger
+    .panel-heading Notifications
+    .panel-body
+     Notifications Go Here
 
-  .col-md-6
-    .panel.panel-warning
-      .panel-heading Day Calendar
-      .panel-body{:style => "min-height:150px;"}
-        Calendar Goes Here <BR>
-        - @bulletins.each do |bulletin|
-          = bulletin.content
-        
+  .row{:style => "background-color:#D0E8F5;"}
+   = render 'bulletin'
 
-  
-  .col-md-3.centre
-    .panel.panel-info
-      .panel-heading Events
-      .panel-body
-        We'll put events stuff here
+ .col-md-6
+  .panel.panel-warning
+   .panel-heading Day Calendar
+   .panel-body{:style => "min-height:150px;"}
+    Calendar Goes Here <BR>
+    - @bulletins.each do |bulletin|
+     = bulletin.content
+
+
+
+ .col-md-3.centre
+  .panel.panel-info
+   .panel-heading Events
+   .panel-body
+    We'll put events stuff here

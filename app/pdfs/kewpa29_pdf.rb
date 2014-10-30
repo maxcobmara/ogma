@@ -32,9 +32,9 @@ class Kewpa29Pdf < Prawn::Document
     yang dilampirkan. Laporan ini mestilah dikembalikan sebelum #{'.'*40} (tarikh).", :align => :left, :size => 14
     move_down 80
     
-    text "Tandatangan           :	", :align => :left, :size => 14
-    text "Nama Pegawai Pengawal :	", :align => :left, :size => 14
-    text "Kementerian/Jabatan   :	", :align => :left, :size => 14
+    text "Tandatangan           :	#{'.'*40} ", :align => :left, :size => 14
+    text "Nama Pegawai Pengawal :	#{'.'*40} ", :align => :left, :size => 14
+    text "Kementerian/Jabatan   :	#{'.'*40} ", :align => :left, :size => 14
     move_down 40
     text "s.k  Ketua Setiausaha Perbendaharaan Malaysia	", :align => :left, :size => 14
     

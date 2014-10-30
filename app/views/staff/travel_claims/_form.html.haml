@@ -1,0 +1,84 @@
+.row
+  .col-md-offset-1
+    / Nav tabs
+    %ul.nav.nav-tabs
+      /- if @travel_claim.my_claim_status == "editing" || @travel_claim.my_claim_status == "returned" 
+      %li.active= link_to (t 'staff.travel_claim.request_travel_log'),"#travel_request_log_edit", "data-toggle" => "tab"
+      %li= link_to (t 'staff.travel_claim.claims_details'),"#claims_details_edit", "data-toggle" => "tab"
+      %li=link_to (t 'staff.travel_claim.submission'),"#claims_submission", "data-toggle" => "tab"
+      
+    .tab-content{style:"padding-top:1em"}
+      .col-md-6.col-md-offset-2
+        .form-group
+          .col-sm-2.control-label
+            = f.label :claim_month
+          .col-md-2
+            - if @my_approved_unclaimed_requests != nil 
+              = f.text_field :claim_month, class: 'monthyear_picker form-control' 
+            - else
+              = f.text_field :claim_month, class:  ' form-control', readonly: 'readonly'  
+          .col-md-3
+            - unless @my_approved_unclaimed_requests != nil 
+              (
+              = @travel_claim.claim_month.strftime("%b %Y")
+              )
+      .col-md-6.col-md-offset-2
+        .form-group
+          .col-sm-2.control-label
+            = f.label :staff_id
+          .col-md-3
+            = f.collection_select :staff_id, Staff.all.order(name: :asc), :id,  :staff_name_with_position, {:include_blank =>t('helpers.prompt.select_staff'), :selected=>25},{class: 'selectpicker', "data-width"=>'350px',}
+            /= f.collection_select :staff_id, Staff.all.order(name: :asc), :id,  :staff_name_with_position, {:include_blank =>t('helpers.prompt.select_staff'), :selected=>Login.first.staff_id},{class: 'selectpicker', "data-width"=>'350px',}
+
+      #travel_request_log_edit.tab-pane.active
+        - if @my_approved_unclaimed_requests != nil 
+          /.col-md-10.col-md-offset-1
+          /  %dl.dl-horizontal
+          /  %hr
+          = render 'tab_travel_request_log_edit', :f => f
+        - else
+          - for travel_request in @travel_claim.travel_requests
+            = render 'tab_travel_request_log', :travel_request => travel_request 
+        
+      #claims_details_edit.tab-pane
+        - @checklist = 0
+        = render 'tab_claims_details_edit', :f => f
+        
+      #claims_submission.tab-pane
+        = render 'tab_claims_submission', :f => f
+
+%br
+
+:javascript
+
+//<![CDATA[
+bkLib.onDomLoaded(function() {
+  new nicEditor().panelInstance('myNicEditor3');
+  new nicEditor().panelInstance('myNicEditor4');
+});
+//]]>
+
+  function add_fields(link, association, content) {  
+    var new_id = new Date().getTime();  
+    var regexp = new RegExp("new_" + association, "g");  
+    $(link).parent().before(content.replace(regexp, new_id));  
+  }
+
+
+
+
+
+/-  if @travel_claim.my_claim_status == "editing" || @travel_claim.my_claim_status == "returned" 
+/      %h2
+/        Edit travel claims for 
+/        =h @travel_claim.claim_month.strftime("%B %Y") 
+/      = render :partial => 'form2', :locals =nclaimed_requests != n> {:f => f}
+/    -  if @travel_claim.approved_by == Login.current_login.staff_id 
+/      %h2 
+/        Approving travel claims for 
+/        =h @travel_claim.staff.name
+/        =h @travel_claim.claim_month.strftime("%B %Y") 
+/        =render :partial => 'show_main', :locals => {:f => f} 
+/        = render :partial => 'approval', :locals => {:f => f} 
+/   - if @travel_claim.my_claim_status == "returned"
+/      =h @travel_claim.notes 

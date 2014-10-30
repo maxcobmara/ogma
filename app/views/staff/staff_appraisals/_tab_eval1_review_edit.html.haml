@@ -45,7 +45,7 @@
     .col-sm-2.control-label
       = t 'evaluation.form.pppid'
     .col-md-6
-      = @staff_appraisal.eval1_officer.name
+      = @staff_appraisal.eval1_officer.try(:name)
       
   /- if Login.current_login.staff.position.is_root? == false
   - if @staff_appraisal

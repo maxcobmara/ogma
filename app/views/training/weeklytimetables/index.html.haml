@@ -30,7 +30,7 @@
     - @weeklytimetables.group_by{|x|x.programme_id}.each do |p,weeklytimetables|
       - weeklytimetables.each do |weeklytimetable|
         %tr
-          %td=h link_to weeklytimetable.schedule_programme.programme_list, training_weeklytimetable_path(weeklytimetable)     
+          %td=h link_to weeklytimetable.try(:schedule_programme).try(:programme_list), training_weeklytimetable_path(weeklytimetable)     
           %td=h weeklytimetable.try(:schedule_intake).try(:group_with_intake_name)
           %td=h weeklytimetable.try(:startdate).try(:strftime, "%d %b %Y") 
           %td=h weeklytimetable.try(:enddate).try(:strftime, "%d %b %Y") 

@@ -500,4 +500,41 @@ module DropDown
              ["Inventory",2]
   ]
    
+  ASSETTYPES = [
+             # Displayed        stored in db
+             ["H",1],
+             ["I",2]
+   ]
+  
+  #TravelClaimReceipt
+  RECEIPTTYPE = [
+        #  Displayed       stored in db
+        [ "Transport",   00 ],
+        [ "- Teksi",      11 ],
+        [ "- Bas",        12 ],
+        [ "- Keretapi",   13 ],
+        [ "- Feri",       14 ],
+        [ "- Kapal Terbang",15 ],
+        [ "---------------",19 ],
+        
+        [ "Miscellaneous",   40 ],
+        [ "-  Tol",        41 ],
+        [ "-  Tempat Letak Kereta",42 ],
+        [ "-  Dobi",       43 ],
+        [ "-  Pos",        44 ],
+        [ "-  Telefon/Teleks/Fax",45 ],
+        [ "-  Exchanged",   99 ]
+  ]
+  
+  ALLOWANCETYPE = [
+        #  Displayed       stored in db
+        [ "Elaun Makan",21 ],
+        [ "Elaun Makan (S/S)",22 ],
+        [ "Elaun Harian",23 ],
+        [ "Elaun Lodging",31 ],
+        [ "Sewa Hotel",32 ],
+        [ "Cukai Kerajaan",33 ]
+  ]
+ 
+  
 end

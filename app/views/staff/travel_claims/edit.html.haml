@@ -1,0 +1,19 @@
+- model_class = TravelClaim
+.page-header
+  %h1= t 'staff.travel_claim.edit'
+
+= render 'shared/flashes'
+
+.row
+  = form_for [:staff, @travel_claim], html: { multipart: true, class: 'form-horizontal' }  do |f| 
+    = render 'shared/error_messages', object: f.object
+    = hidden_field_tag :redirect_location, staff_travel_claims_path 
+    = render :partial => 'form', :locals =>{:f=>f}
+
+    .row 
+      .form-group
+        .col-md-1.col-md-offset-2
+          = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), staff_travel_claim_path(@travel_claim), :class => 'btn btn-default'
+        .col-md-2
+          .div{style: "margin-left:-40px;"}
+            = f.submit t('update'), class: "btn btn-primary"

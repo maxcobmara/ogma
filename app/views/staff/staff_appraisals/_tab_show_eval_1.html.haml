@@ -1,0 +1,199 @@
+.col-md-10.col-md-offset-1
+  %br
+  .row
+    .col-sm-3
+      %b= t 'evaluation.form.title_part3'
+    .col-sm-1
+      %b PPP
+    .col-sm-1
+      %b PPK
+    .col-sm-6
+      %b= t 'evaluation.form.description'
+      =@staff_appraisal.id
+    %hr
+  .row
+    .col-md-3= (t 'evaluation.form.one')+(t 'evaluation.form.quantity')
+    .col-md-1
+      = h @staff_appraisal.e1g1q1
+    .col-md-1= h @staff_appraisal.e2g1q1
+    .col-md-6= t 'evaluation.form.quantity_desc' 
+  .row
+    .col-md-3= (t 'evaluation.form.two')+(t 'evaluation.form.quality')
+    .col-md-1= h @staff_appraisal.e1g1q2
+    .col-md-1= h @staff_appraisal.e2g1q2
+    .col-md-6= t 'evaluation.form.quanlity_desc1' 
+  .row
+    .col-md-3 &nbsp;
+    .col-md-1= h @staff_appraisal.e1g1q3
+    .col-md-1= h @staff_appraisal.e2g1q3
+    .col-md-6= t 'evaluation.form.quanlity_desc2' 
+  .row
+    .col-md-3= (t 'evaluation.form.three')+(t 'evaluation.form.ontime')
+    .col-md-1= h @staff_appraisal.e1g1q4
+    .col-md-1= h @staff_appraisal.e2g1q4
+    .col-md-6= t 'evaluation.form.ontime_desc' 
+  .row
+    .col-md-3= (t 'evaluation.form.four')+(t 'evaluation.form.effective')
+    .col-md-1= h @staff_appraisal.e1g1q5
+    .col-md-1= h @staff_appraisal.e2g1q5
+    .col-md-6= t 'evaluation.form.effective_desc'
+  %br
+  .row
+    .col-md-3= t 'evaluation.form.total'
+    .col-md-1= h @staff_appraisal.e1g1_total
+    .col-md-1= h @staff_appraisal.e2g1_total
+    .col-md-1 
+      x 50 = 
+    .col-md-1
+      /= f.text_field :e2g1_percent, readonly: 'readonly', class:'form-control'
+      = pukka(@staff_appraisal.e2g1_percent)
+    .col-md-1
+      = t 'evaluation.form.percent'
+  .row
+    .col-md-3 &nbsp;
+    .col-md-1=(t 'evaluation.form.division')+((@staff_appraisal.g1_questions)*10).to_s
+    .col-md-1=(t 'evaluation.form.division')+((@staff_appraisal.g1_questions)*10).to_s
+    .col-md-6 &nbsp;
+  %br
+  .row
+    .col-sm-3
+      %b= t 'evaluation.form.title_part4b'
+    .col-sm-1
+      %b PPP
+    .col-sm-1
+      %b PPK
+    .col-sm-6
+      %b= t 'evaluation.form.description'
+    %hr
+  .row
+    .col-md-3= (t 'evaluation.form.one')+(t 'evaluation.form.management')
+    .col-md-1= h @staff_appraisal.e1g2q1
+    .col-md-1= h @staff_appraisal.e2g2q1
+    .col-md-6= t 'evaluation.form.management_desc'
+  .row
+    .col-md-3= (t 'evaluation.form.two')+(t 'evaluation.form.discipline')
+    .col-md-1= h @staff_appraisal.e1g2q2
+    .col-md-1= h @staff_appraisal.e2g2q2
+    .col-md-6= t 'evaluation.form.discipline_desc' 
+  .row
+    .col-md-3= (t 'evaluation.form.three')+(t 'evaluation.form.proactive')
+    .col-md-1= h @staff_appraisal.e1g2q3
+    .col-md-1= h @staff_appraisal.e2g2q3
+    .col-md-6= t 'evaluation.form.proactive_desc'
+  .row
+    .col-md-3= (t 'evaluation.form.four')+(t 'evaluation.form.relate')
+    .col-md-1
+      /= f.text_field :e1g2q4, readonly: 'readonly', class:'form-control'
+      = h @staff_appraisal.e1g2q4
+    .col-md-1
+      /= f.text_field :e2g2q4, :class => "e2g2", :placeholder => 0
+      = h @staff_appraisal.e2g2q4
+    .col-md-6= t 'evaluation.form.relate_desc'
+  %br
+  .row
+    .col-md-3= t 'evaluation.form.total'
+    .col-md-1= h @staff_appraisal.e1g2_total
+    .col-md-1= h @staff_appraisal.e2g2_total
+    .col-md-1 
+      x 25 = 
+    .col-md-1
+      /= f.text_field :e2g2_percent, readonly: 'readonly', class:'form-control'
+      = pukka(@staff_appraisal.e2g2_percent)
+    .col-md-1
+      = t 'evaluation.form.percent'
+  .row
+    .col-md-3 &nbsp;
+    .col-md-1=(t 'evaluation.form.division')+((@staff_appraisal.g2_questions)*10).to_s
+    .col-md-1=(t 'evaluation.form.division')+((@staff_appraisal.g2_questions)*10).to_s
+    .col-md-6 &nbsp;
+  %br
+  .row
+    .col-sm-3
+      %b= t 'evaluation.form.title_part5b'
+    .col-sm-1
+      %b PPP
+    .col-sm-1
+      %b PPK
+    .col-sm-6
+      %b= t 'evaluation.form.description'
+    %br
+    %hr
+  .row
+    .col-md-3= (t 'evaluation.form.one')+(t 'evaluation.form.knowledge')
+    .col-md-1= h @staff_appraisal.e1g3q1
+    .col-md-1= h @staff_appraisal.e2g3q1
+    .col-md-6= t 'evaluation.form.knowledge_desc'
+  .row
+    .col-md-3= (t 'evaluation.form.two')+(t 'evaluation.form.rules')
+    .col-md-1= h @staff_appraisal.e1g3q2
+    .col-md-1= h @staff_appraisal.e2g3q2
+    .col-md-6= t 'evaluation.form.rules_desc'
+  .row
+    .col-md-3= (t 'evaluation.form.three')+(t 'evaluation.form.communication')
+    .col-md-1= h @staff_appraisal.e1g3q3
+    .col-md-1= h @staff_appraisal.e2g3q3
+    .col-md-6= t 'evaluation.form.communication_desc' 
+  %br
+  .row
+    .col-md-3= t 'evaluation.form.total'
+    .col-md-1= h @staff_appraisal.e1g3_total
+    .col-md-1= h @staff_appraisal.e2g3_total
+    .col-md-1 
+      x 20 = 
+    .col-md-1
+      /= f.text_field :e2g3_percent, readonly: 'readonly', class:'form-control'
+      = pukka(@staff_appraisal.e2g3_percent)
+    .col-md-1
+      = t 'evaluation.form.percent'
+  .row
+    .col-md-3 &nbsp;
+    .col-md-1=(t 'evaluation.form.division')+((@staff_appraisal.g3_questions)*10).to_s
+    .col-md-1=(t 'evaluation.form.division')+((@staff_appraisal.g3_questions)*10).to_s
+    .col-md-6 &nbsp;
+  %br
+  .row
+    .col-sm-3
+      %b= t 'evaluation.form.title_part6'
+    .col-sm-1
+      %b PPP
+    .col-sm-1
+      %b PPK
+    .col-sm-6
+      %b= t 'evaluation.form.description'
+    %hr
+  .row
+    .col-md-3= t 'evaluation.form.parttwo'
+    .col-md-1
+      = h @staff_appraisal.e1g4
+      x 5 =
+      = h @staff_appraisal.e2g4
+      = t 'evaluation.form.percent'
+    .col-md-1
+      /= f.text_field :e2g4, :class => "e2g4", :placeholder => 0
+      = h @staff_appraisal.e2g4
+      x 5 =
+      /= f.text_field :e2g4_percent, readonly: 'readonly', class:'form-control'
+      = pukka(@staff_appraisal.e2g4_percent)
+      = t 'evaluation.form.percent'
+    .col-md-6
+      = t 'evaluation.form.parttwo_desc'
+  %br
+  .row
+    .col-sm-3
+      %b= t 'evaluation.form.total'
+    .col-sm-1
+      %b PPP
+    .col-sm-1
+      %b PPK
+    .col-sm-7
+      %b= t 'evaluation.form.description'
+    %hr
+  .row
+    .col-md-3
+      = t 'evaluation.form.total'
+    .col-md-1= pukka(@staff_appraisal.e1_total)
+    .col-md-1
+      = pukka(@staff_appraisal.e2_total)
+    .col-md-6
+      = t 'evaluation.form.total_percent'
+  %br   

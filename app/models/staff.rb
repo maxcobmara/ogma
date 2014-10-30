@@ -1,5 +1,5 @@
 class Staff < ActiveRecord::Base
-  
+
   paginates_per 13
 
   validates :icno, presence: true#, numericality: true, length: { is: 12 }, uniqueness: true
@@ -9,18 +9,20 @@ class Staff < ActiveRecord::Base
   belongs_to :title,        :class_name => 'Title',           :foreign_key => 'titlecd_id'
   belongs_to :staffgrade,   :class_name => 'Employgrade',     :foreign_key => 'staffgrade_id'
   belongs_to :staff_shift,  :foreign_key => 'staff_shift_id'
-  
+
+  has_many :users, as: :userable
+
   has_many  :positions
   has_many  :tenants
-  
+
   has_many :assets, :foreign_key => "assignedto_id"
   has_many :reporters, :class_name => 'AssetDefect', :foreign_key => 'reported_by'
-  
+
   has_many :asset_disposal, :foreign_key => 'disposed_by'
   has_many :processors, :class_name => 'AssetDisposal', :foreign_key => 'checked_by'
   has_many :verifiers,  :class_name => 'AssetDisposal', :foreign_key => 'verified_by'
   has_many :revaluers,  :class_name => 'AssetDisposal', :foreign_key => 'revalued_by'
-  
+
   has_many :timetables
   has_many :prepared_weekly_schedules, :class_name => 'Weeklytimetable', :foreign_key => 'prepared_by', :dependent => :nullify
   has_many :endorsed_weekly_schedules, :class_name => 'Weeklytimetable', :foreign_key => 'endorsed_by', :dependent => :nullify
@@ -31,26 +33,31 @@ class Staff < ActiveRecord::Base
 
   has_many          :qualifications, :dependent => :destroy
   accepts_nested_attributes_for :qualifications, :allow_destroy => true, :reject_if => lambda { |a| a[:level_id].blank? }
-  
+
   has_many          :loans, :dependent => :destroy
   accepts_nested_attributes_for :loans, :reject_if => lambda { |a| a[:ltype].blank? }
-  
+
   has_many          :bankaccounts, :dependent => :destroy
   accepts_nested_attributes_for :bankaccounts, :reject_if => lambda { |a| a[:account_no].blank? }
-  
+
   has_many          :kins, :dependent => :destroy
   accepts_nested_attributes_for :kins, :reject_if => lambda { |a| a[:kintype_id].blank? }
-  
+
   has_attached_file :photo,
                     :url => "/assets/staffs/:id/:style/:basename.:extension",
                     :path => ":rails_root/public/assets/staffs/:id/:style/:basename.:extension"#, :styles => {:thumb => "40x60"}
-                    
-  #Link to model Staff Appraisal                                                      
+
+
+  #Link to model Staff Appraisal
   has_many :appraisals,     :class_name => 'StaffAppraisal', :foreign_key => 'staff_id', :dependent => :destroy
   has_many :eval1_officers, :class_name => 'StaffAppraisal', :foreign_key => 'eval1_by'
   has_many :eval2_officers, :class_name => 'StaffAppraisal', :foreign_key => 'eval2_by'
- 
-  
+
+  #Link to Model travel_claim
+  has_many :travel_claims, :dependent => :destroy
+  has_many :approvers,           :class_name => 'TravelClaim',      :foreign_key => 'approved_by'
+
+
   #validates_attachment_size         :photo, :less_than => 500.kilobytes
   #validates_attachment_content_type :photo, :content_type => ['image/jpeg', 'image/png']
  #---------------Validations------------------------------------------------
@@ -65,24 +72,24 @@ class Staff < ActiveRecord::Base
   #validates_length_of      :cooftelext, :is =>5
   #validates_length_of       :addr, :within => 1..180,:too_long => "Address Too Long"								#temp remark-staff attendance-5Aug2014
   #validate :coemail, format: { with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\Z/i, :message => I18n.t('activerecord.errors.messages.invalid') }		#temp remark-staff attendance-5Aug2014
-                               
-  
 
-    has_many :users
+
+
+
   #--------------------Declerations----------------------------------------------------
-    
+
     def age
       Date.today.year - cobirthdt.year unless cobirthdt == nil
     end
-    
+
     def formatted_mykad
     "#{icno[0,6]}-#{icno[6,2]}-#{icno[-4,4]}"
     end
-   
+
     def mykad_with_staff_name
       "#{formatted_mykad}  #{name}"
-    end  
-    
+    end
+
     def shift_for_staff
       ssft = StaffShift.find(:first, :conditions=> ['id=?',staff_shift_id])
       if ssft == nil
@@ -91,15 +98,15 @@ class Staff < ActiveRecord::Base
         ssft.start_end
       end
     end
-    
+
     def thumb_id_with_name_unit
       if positions.blank?
 	"#{thumb_id} | #{name}"
       else
-      "#{thumb_id} |  #{name} (#{positions.first.unit})" 
+      "#{thumb_id} |  #{name} (#{positions.first.unit})"
       end
     end
-      
+
     def staff_name_with_position
       "#{name}  (#{position_for_staff})"
     end
@@ -127,7 +134,7 @@ class Staff < ActiveRecord::Base
         "#{positions[0].staffgrade.try(:name)}"
       end
     end
-
+    
     def position_for_staff
       if positions.blank?
         "-"
@@ -135,14 +142,14 @@ class Staff < ActiveRecord::Base
         positions[0].name
       end
     end
-    
+
     def staff_thumb
       "#{name}  (thumb id : #{thumb_id})"
-    end  
-    
-      
+    end
+
+
   def render_unit
-    if positions.blank? 
+    if positions.blank?
       "Staff not exist in Task & Responsibilities"
     elsif positions.first.is_root?
         "Pengarah"
