@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141016073418) do
+ActiveRecord::Schema.define(version: 20141027093221) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -1674,6 +1674,7 @@ ActiveRecord::Schema.define(version: 20141016073418) do
     t.string   "phonehome"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.decimal  "current_salary"
   end
 
   add_index "staffs", ["icno"], name: "index_staffs_on_icno", using: :btree
@@ -2196,6 +2197,13 @@ ActiveRecord::Schema.define(version: 20141016073418) do
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
   add_index "users", ["userable_id", "userable_type"], name: "index_users_on_userable_id_and_userable_type", using: :btree
+
+  create_table "vehicles", force: true do |t|
+    t.string  "type_model"
+    t.string  "reg_no"
+    t.integer "cylinder_capacity"
+    t.integer "staff_id"
+  end
 
   create_table "weeklytimetable_details", force: true do |t|
     t.integer  "subject"

@@ -1,7 +1,7 @@
 %fieldset
   = f.hidden_field :_destroy
   .row
-    .col-sm-offset-2.col-sm-2= f.select :level_id, DropDown::QTYPE, {prompt: "Select Qualification Level"}, {class: 'selectpicker', "data-width"=>"auto"}
+    .col-sm-2= f.select :level_id, DropDown::QTYPE, {prompt: "Select Qualification Level"}, {class: 'selectpicker', "data-width"=>"auto"}
     .col-sm-2= f.text_field :qname,     placeholder: 'Qualification Name',  class: 'form-control'
     .col-sm-4= f.text_field :institute, placeholder: 'Institute Name',      class: 'form-control'
     .col-sm-1

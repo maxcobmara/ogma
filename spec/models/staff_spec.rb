@@ -12,6 +12,7 @@ describe Staff do
   it { should respond_to(:code) }
   it { should respond_to(:appointdt) }
   it { should respond_to(:staffgrade_id)}
+  it { should respond_to(:current_salary)}
   
   it { should be_valid }
   
@@ -23,6 +24,11 @@ describe Staff do
   describe "when icno is not present" do
     before { @staff.icno = nil }
     it { should_not be_valid }
+  end
+  
+  describe "when current salary is not present" do
+    before { @staff.current_salary=nil }
+    it { should_not be_valid}
   end
 end
 

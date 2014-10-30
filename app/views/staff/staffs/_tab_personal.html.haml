@@ -40,6 +40,19 @@
     %dt= t 'staff.country_cd', :default => model_class.human_attribute_name(:country_cd) + ":"
     %dd= (DropDown::NATIONALITY.find_all{|disp, value| value == @staff.country_cd}).map {|disp, value| disp}[0]
 
-    %dt= t 'staff.transportclass_id', :default => model_class.human_attribute_name(:transportclass_id) + ":"
-    %dd= @staff.transportclass_id
+    - for vehicle in @staff.vehicles
+      %hr
+      %dt= t('staff.vehicles.type_model') + ":"
+      %dd= vehicle.type_model
+
+      %dt= t('staff.vehicles.reg_no') + ":"
+      %dd= vehicle.reg_no
+
+      %dt= t('staff.vehicles.cylinder_capacity') + ":"
+      %dd= vehicle.cylinder_capacity
+
+      %dt= t 'staff.transportclass_id', :default => model_class.human_attribute_name(:transportclass_id) + ":"
+      %dd
+        = @staff.transport_class(vehicle.id)
+        /= @staff.transportclass_id
 

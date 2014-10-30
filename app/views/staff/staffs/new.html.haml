@@ -3,7 +3,26 @@
   %h1= t 'staff.new'
 
 = render 'shared/flashes'
-= render 'form'
 
+<<<<<<< HEAD
+.row.fluid
+  = form_for [:staff, @info], url: new_staff_info_path(@info), :html => { :class => 'form-horizontal' }  do |f| 
+    = render 'shared/error_messages', object: f.object
+    = render 'form', :f => f
+
+    %br
+    .row
+      .form-group
+        .col-md-1.col-md-offset-2
+          = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), staff_infos_path, :class => 'btn btn-default'
+        .col-md-2
+          .div{style: "margin-left:-40px;"}
+            = f.submit t('create'), class: "btn btn-primary"
+
+
+
+
+=======
 //= f.submit (t 'icms.submit')
 //= link_to (t 'icms.back'), staffs_path
+>>>>>>> 496e774b4a79f73eed7ed632ab2c0c7fd342cd63

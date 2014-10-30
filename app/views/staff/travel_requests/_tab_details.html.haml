@@ -15,18 +15,25 @@
     %dt=t 'staff.travel_request.transport_choice'
     %dd
       =t 'staff.travel_request.own_car'
-      =h @travel_request.own_car? ? image_tag("tick.png") : image_tag("cross.png") + ' ' + @travel_request.own_car_notes
+      - if !@travel_request.applicant.vehicles.blank? && @travel_request.own_car?
+        =image_tag("tick.png")+'('+@travel_request.applicant.vehicles[0].reg_no+' '+ t('staff.transportclass_id')+' : '+@travel_request.transport_class+') '
+      - else
+        =image_tag("cross.png") 
       =t 'staff.travel_request.dept_car'
       =h @travel_request.dept_car? ? image_tag("tick.png") : image_tag("cross.png")
       =t 'staff.travel_request.others_car'
       =h @travel_request.others_car? ? image_tag("tick.png") : image_tag("cross.png")
-     
+    
+    - if !@travel_request.applicant.vehicles.blank? && @travel_request.own_car?
+      %dt=t 'staff.travel_request.own_car_notes'
+      %dd=h @travel_request.own_car_notes
+    
     %dt=t 'staff.travel_request.public_transport'
     %dd
       =t 'staff.travel_request.taxi'
-      =h @travel_request.taxi? ? 	image_tag("tick.png") : image_tag("cross.png")
+      =h @travel_request.taxi? ? image_tag("tick.png") : image_tag("cross.png")
       =t 'staff.travel_request.bus'
-      =h @travel_request.bus? ? 	image_tag("tick.png") : image_tag("cross.png") 
+      =h @travel_request.bus? ? image_tag("tick.png") : image_tag("cross.png") 
       =t 'staff.travel_request.train'
       =h @travel_request.train? ? image_tag("tick.png") : image_tag("cross.png") 
       =t 'staff.travel_request.plane'

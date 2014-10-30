@@ -1,9 +1,10 @@
-= search_form_for [:staff, @search], url: staff_infos_path, class: "form-inline" do |f|
-  .col-lg-5.col-lg-offset-4{style: "margin-right: -50px;"}
-    = f.text_field :icno_cont, class: "form-control search-field", type: "text", placeholder: t('staff.icno')
-    = f.text_field :name_cont, class: "form-control search-field", type: "search", placeholder: t('staff.name')
-    = f.text_field :positions_name_cont, class: "form-control search-field", type: "search", placeholder: t('staff.position')
-  .col-lg-1
-    = f.submit "Search", class: "btn btn-primary"
-  .col-lg-1
-    = f.submit "Clear", :name => nil, :id => :q_reset, class: "btn btn-warning"
+= search_form_for @search, url:  staff_infos_path,  class: "form-inline" do |f|
+  %tr.search_row{style: "display: none;"}
+    %td=f.text_field :icno_cont, :size=> 2,  class:  'form-control'
+    %td=f.text_field :name_cont, :size=> 2,  class:  'form-control'
+    %td
+      .input-group
+        =f.text_field :positions_name_cont, size: 2, class: 'form-control'
+        %span.input-group-btn
+          %button.btn.btn-sm.btn-default.right{:type => "submit"}
+            %i.fa.fa-search.fa-fw

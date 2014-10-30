@@ -19,16 +19,19 @@ class Staff::StaffsController < ApplicationController
   # GET /staffs/new
   def new
     @info = Staff.new
+    @info.vehicles.build
   end
 
   # GET /staffs/1/edit
   def edit
+    @info = Staff.find(params[:id])
+    @info.vehicles.build if @info.vehicles && @info.vehicles.count==0
   end
 
   # POST /staffs
   # POST /staffs.json
   def create
-    @staff = Staff.new(staff_params)
+    @info = Staff.new(staff_params)
 
     respond_to do |format|
       if @staff.save
@@ -44,8 +47,9 @@ class Staff::StaffsController < ApplicationController
   # PATCH/PUT /staffs/1
   # PATCH/PUT /staffs/1.json
   def update
+    @info = Staff.find(params[:id])
     respond_to do |format|
-      if @staff.update(staff_params)
+      if @info.update(staff_params)
         format.html { redirect_to staff_info_path, notice: 'Staff was successfully updated.' }
         format.json { head :no_content }
       else
@@ -77,8 +81,8 @@ class Staff::StaffsController < ApplicationController
       end
     end
   end
-
-
+  
+  
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_staff
@@ -88,6 +92,14 @@ class Staff::StaffsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def staff_params
-      params.require(:staff).permit(:icno, :name, :code, :fileno, :coemail, :cobirthdt, :thumb_id)
+      params.require(:staff).permit(:icno, :name, :code, :fileno, :coemail, :cobirthdt, :thumb_id, :starting_salary, :current_salary, :transportclass_id, :addr, :appointby, :appointdt, :appointstatus, :att_colour, :birthcertno, :bloodtype, :confirmdt, :cooftelext , :cooftelno, :country_cd, :country_id, :created_at              , :employscheme, :employstatus, :gender, :kwspcode , :mrtlstatuscd, :pension_confirm_date, :pensiondt,:pensionstat, :phonecell, :phonehome, :photo, :posconfirmdate, :position_old, :poskod_id, :promotion_date, :race, :reconfirmation_date, :religion, :schemedt, :staff_shift_id, :staffgrade_id, :starting_salary, :statecd, :svchead, :svctype, :taxcode, :time_group_id, :titlecd_id, :to_current_grade_date, :uniformstat, :updated_at, :wealth_decleration_date, qualifications_attributes: [:id, :_destroy, :level_id, :qname, :institute_id, :institute],vehicles_attributes: [:id, :_destroy, :type_model, :reg_no, :cylinder_capacity] )
     end
 end
+
+#  bank                    :string(255)
+#  bankaccno               :string(255)
+#  bankacctype             :string(255)
+#  transportclass_id       :string(255)
+
+
+
