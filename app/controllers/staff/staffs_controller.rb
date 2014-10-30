@@ -18,7 +18,7 @@ class Staff::StaffsController < ApplicationController
 
   # GET /staffs/new
   def new
-    @staff = Staff.new
+    @info = Staff.new
   end
 
   # GET /staffs/1/edit
@@ -77,8 +77,8 @@ class Staff::StaffsController < ApplicationController
       end
     end
   end
-  
-  
+
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_staff
