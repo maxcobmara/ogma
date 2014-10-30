@@ -5,10 +5,10 @@
     .col-sm-2.control-label
       =f.label t 'student.students.grade'
 
-	  
-  .form-group	  
+
+  .form-group
     .col-sm-8.control-label
       = f.fields_for :spmresults do |builder|
         = render 'spmresult_fields', :f => builder
- 
-      = link_to_add_fields fa_icon("asterisk", text: (t 'actions.new'), :border => 0), f, :spmresults
+
+      = link_to_add_fields (fa_icon("asterisk", text: (t 'actions.new'), :border => 0)), f, :spmresults, "", "text"
