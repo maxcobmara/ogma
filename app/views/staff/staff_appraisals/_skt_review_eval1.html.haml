@@ -1,0 +1,44 @@
+.row
+  .col-md-10.col-md-offset-1
+    / Nav tabs 
+    %ul.nav.nav-tabs
+      %li= link_to (t 'staff.staff_appraisal.skt'),"#skt", "data-toggle" => "tab"  
+      %li=link_to (t 'staff.staff_appraisal.skt_endorse'), "#skt_endorse", "data-toggle" => "tab"
+      %li=link_to (t 'staff.staff_appraisal.skt_review_staff'), "#skt_review_staff", "data-toggle" => "tab"
+      %li.active=link_to (t 'staff.staff_appraisal.skt_review_eval1'), "#skt_review_eval1", "data-toggle" => "tab"
+
+    .tab-content{style:"padding-top:1em"}
+      %br
+      = render 'tab_show_start'
+            
+      #skt.tab-pane
+        %br
+        = render 'tab_show_skt_1'
+        
+      #skt_endorse.tab-pane
+        %br
+        = render 'tab_skt_endorse'
+        
+      #skt_review_staff.tab-pane
+        %br
+        = render 'tab_show_skt_review'
+        
+      #skt_review_eval1.tab-pane.active
+        = render 'tab_skt_review_eval1_edit', :f => f
+
+
+:javascript
+
+//<![CDATA[
+bkLib.onDomLoaded(function() {
+  new nicEditor().panelInstance('myNicEditor3');
+  new nicEditor().panelInstance('myNicEditor4');
+});
+//]]>
+
+  function add_fields(link, association, content) {  
+    var new_id = new Date().getTime();  
+    var regexp = new RegExp("new_" + association, "g");  
+    $(link).parent().before(content.replace(regexp, new_id));  
+  } 
+ 

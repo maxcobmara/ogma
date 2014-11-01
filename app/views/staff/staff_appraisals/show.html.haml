@@ -15,7 +15,8 @@
     .form-actions
       = link_to content_tag(:i, "", class: "fa fa-arrow-left ") + " " + t('back', :default => t("helpers.links.back")), staff_staff_appraisals_path, class: 'btn btn-default'    
       = link_to content_tag(:i, "", class: "fa fa-file-pdf-o"), appraisal_form_staff_staff_appraisal_path(@staff_appraisal, format: "pdf"), class: "btn btn-default", "data-toggle" => "tooltip", title: "Appraisal Form" 
-      = link_to content_tag(:i, "", class: "fa fa-edit") + " " + t('actions.edit', :default => t("helpers.links.edit")), edit_staff_staff_appraisal_path(@staff_appraisal), class: 'btn btn-primary'
+      -  if @staff_appraisal.edit_icon != "noedit" 
+        = link_to content_tag(:i, "", class: "fa fa-edit") + " " + t('actions.edit', :default => t("helpers.links.edit")), edit_staff_staff_appraisal_path(@staff_appraisal), class: 'btn btn-primary'
       = link_to content_tag(:i, "", :class => "fa fa-trash-o icon-white") + " " + t('helpers.links.destroy'), |
       staff_staff_appraisal_path(@staff_appraisal),                                                                                                    |
       :method => 'delete',                                                                                                           |

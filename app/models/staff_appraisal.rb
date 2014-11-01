@@ -116,7 +116,32 @@ class StaffAppraisal < ActiveRecord::Base
       self.is_completed_on= nil
     end
   end
-   
+  
+  #logic to set editable
+  def edit_icon
+    if evaluation_status == "SKT awaiting PPP endorsement" #&& staff_id == Login.current_login.staff_id
+      "noedit"
+    elsif evaluation_status == "SKT awaiting PPP endorsement" #&& eval1_by == Login.current_login.staff_id
+      "approval.png"
+    elsif evaluation_status == "SKT Review" #&& eval1_by == Login.current_login.staff_id
+      "noedit"
+    elsif evaluation_status == "Ready for PPP SKT Report" #&& staff_id == Login.current_login.staff_id
+      "noedit"
+    elsif evaluation_status == "PPP Report complete" #&& eval1_by == Login.current_login.staff_id
+      "noedit"
+    elsif evaluation_status == "Submitted for Evaluation by PPP" #&& staff_id == Login.current_login.staff_id
+      "noedit"
+    elsif evaluation_status == "Submitted for Evaluation by PPP to PPK" #&& staff_id == Login.current_login.staff_id
+      "noedit"
+    elsif evaluation_status == "Submitted by PPP for Evaluation  to PPK" #&& eval1_by == Login.current_login.staff_id
+      "noedit"
+    elsif is_complete == true
+      "noedit"
+    else
+      "edit.png"
+    end
+  end
+  
   def set_number_of_questions
     self.g1_questions = 5
     if appraised.staffgrade.name.last(2).to_i <= 16
