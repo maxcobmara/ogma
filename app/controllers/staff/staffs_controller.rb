@@ -30,19 +30,18 @@ class Staff::StaffsController < ApplicationController
 
   # POST /staffs
   # POST /staffs.json
-  def create
-    @info = Staff.new(staff_params)
-
-    respond_to do |format|
-      if @staff.save
-        format.html { redirect_to @staff, notice: 'Staff was successfully created.' }
-        format.json { render action: 'show', status: :created, location: @staff }
-      else
-        format.html { render action: 'new' }
-        format.json { render json: @staff.errors, status: :unprocessable_entity }
-      end
+ def create
+  @staff = Staff.new(staff_params)
+  respond_to do |format|
+    if @staff.save
+      format.html { redirect_to @staff, notice: 'Staff was successfully created.' }
+      format.json { render action: 'show', status: :created, location: @staff }
+    else
+      format.html { render action: 'new' }
+      format.json { render json: @staff.errors, status: :unprocessable_entity }
     end
   end
+end
 
   # PATCH/PUT /staffs/1
   # PATCH/PUT /staffs/1.json

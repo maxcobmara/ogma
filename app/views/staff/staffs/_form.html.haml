@@ -17,10 +17,8 @@
       %li= link_to t('staff.contacts.emergency'),   "#contacts",        "data-toggle" => "tab"
 
 
-
-
 .row.fluid
-  = form_for [:staff, @info], url: staff_info_path(@info), :html => { :class => 'form-horizontal' }  do |f| 
+  = form_for [:staff, @info], url: url, :html => { :class => 'form-horizontal' }  do |f| 
     = render 'shared/error_messages', object: f.object
 
 
@@ -76,6 +74,11 @@
               .col-md-1
                 = f.text_field :thumb_id, class: 'form-control mandatory'
 
+          .form-group
+            .col-sm-offset-2.col-sm-2
+              = f.submit t('update'), class: "btn btn-primary"
+              
+              
       //photo upload pane
       #personal.tab-pane
         .col-md-offset-2
@@ -108,7 +111,8 @@
                 .form-group
                   = t 'people.female'
                   = f.radio_button :gender,'2'
-                   
+             
+
           .form-group
             .col-sm-2.control-label
               = f.label t 'staff.cooftelno', for: :cooftelno
@@ -197,6 +201,10 @@
             /= link_to_add_fields content_tag(:i, "", class: "fa fa-plus-square"), f, :vehicles
             /= link_to_add_fields t('addmore'), f, :vehicles, "",  t('addmore')
 
+          .form-group
+            .col-sm-offset-2.col-sm-2
+              = f.submit t('update', class: "btn btn-primary")
+            
       //photo upload pane
       #photo_upload.tab-pane
         .col-md-offset-2
@@ -209,7 +217,11 @@
                 Current file is : #{f.object.photo_file_name}
                 = link_to (t 'document.download'), f.object.photo.url
 
-              = f.file_field :photo              
+              = f.file_field :photo
+             
+          .form-group
+            .col-sm-offset-2.col-sm-2
+              = f.submit t('update', class: "btn btn-primary")
 
       //employment pane
       #employment.tab-pane
@@ -340,21 +352,24 @@
               = f.label t 'staff.uniformstat', for: :uniformstat
             .col-md-2
               = f.select :uniformstat, DropDown::UNIFORM, {include_blank: true, prompt: "Select"}, {class: 'selectpicker', "data-width"=>"auto"}      
+
+          .form-group
+            .col-sm-offset-2.col-sm-2
+              = f.submit t('update', class: "btn btn-primary")
                 
       #qualifications.tab-pane
-        .col-md-8.col-sm-offset-2
-          .row
-            .col-sm-2= t 'staff.level_id'
-            .col-sm-3= t 'staff.qname'
-            .col-sm-4= t 'staff.institute'
-            %hr
-          = f.fields_for :qualifications do |builder|
-            = render 'qualification_fields', :f => builder
+        .row
+          .col-sm-offset-2.col-sm-2= t 'staff.level_id'
+          .col-sm-3= t 'staff.qname'
+          .col-sm-4= t 'staff.institute'
+        = f.fields_for :qualifications do |builder|
+          = render 'qualification_fields', :f => builder
         
-          .col-sm-2
+          .col-sm-offset-2.col-sm-2
             /= link_to_add_fields content_tag(:i, "", class: "fa fa-plus-square"), f, :qualifications
             = link_to_add_fields t('addmore'), f, :qualifications, "",  t('addmore')
-
+            = f.submit t('update'), class: "btn btn-primary"
+            
       #finance.tab-pane
         .row
           .col-md-offset-1
@@ -375,17 +390,20 @@
               .col-sm-2.control-label
                 = f.label t 'staff.banks.title'
         
-        .col-md-8.col-sm-offset-2
-          .row
-            .col-sm-2= t 'staff.banks.bankaccno'
-            .col-sm-2= t 'staff.bank.bankacctype'
-            .col-sm-3= t 'staff.bank.bankname'
-            %hr
-          = f.fields_for :bankaccounts do |builder|
-            = render 'bankaccount_fields', :f => builder
-          .row
-            /= link_to_add_fields image_tag("add.png", :border => 0, :title => t('addmore')), f, :bankaccounts
-            = link_to_add_fields t('addmore'), f, :bankaccounts, "",  t('addmore')
+        .row
+          .col-sm-offset-2.col-sm-2= t 'staff.banks.bankaccno'
+          .col-sm-2= t 'staff.bank.bankacctype'
+          .col-sm-3= t 'staff.bank.bankname'
+
+        = f.fields_for :bankaccounts do |builder|
+          = render 'bankaccount_fields', :f => builder
+        .row
+          /= link_to_add_fields image_tag("add.png", :border => 0, :title => t('addmore')), f, :bankaccounts
+          = link_to_add_fields t('addmore'), f, :bankaccounts, "",  t('addmore')
+          
+        .form-group
+          .col-sm-offset-2.col-sm-2
+            = f.submit t('update', class: "btn btn-primary")
         
       #loans.tab-pane
         .row
@@ -398,13 +416,17 @@
           .col-sm-1= t 'staff.loans.firstdate'
           .col-sm-1= t 'staff.loans.enddate'
           .col-sm-1= t 'staff.loans.enddeduction'
-
+          %hr
         = f.fields_for :loans do |builder|
           = render 'loan_fields', :f => builder
         .row
           /= link_to_add_fields image_tag("add.png", :border => 0, :title => t('addmore')), f, :loans
           = link_to_add_fields t('addmore'), f, :loans, "",  t('addmore')
-           
+
+        .form-group
+          .col-sm-offset-2.col-sm-2
+            = f.submit t('update', class: "btn btn-primary")
+          
       #contacts.tab-pane
         .row
           .col-sm-offset-1.col-sm-1= t 'staff.kintype_id'
@@ -426,10 +448,10 @@
 
 
 :javascript
-  function add_fields(link, association, content) {  
-    var new_id = new Date().getTime();  
-    var regexp = new RegExp("new_" + association, "g");  
-    $(link).parent().before(content.replace(regexp, new_id));  
+  function add_fields(link, association, content) {
+    var new_id = new Date().getTime();
+    var regexp = new RegExp("new_" + association, "g");
+    $(link).parent().before(content.replace(regexp, new_id));
   }
 
 
