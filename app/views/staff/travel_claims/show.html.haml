@@ -35,11 +35,15 @@
               %b=t 'staff.travel_request.total'
             .col-md-1
               %br
-              %font{:style=>"font-weight:bold; text-decoration:underline;"}=@travel_claim.total_mileage 
+              %font{:style=>"font-weight:normal; text-decoration:underline;"}
+                =@travel_claim.total_mileage 
+                %br 
             .col-md-1
               %br
               %font{:style=>"font-weight:bold; text-decoration:underline;"}= ringgols(@travel_claim.total_km_money) 
-              
+        
+        =render 'tab_mileage_table'   
+            
       #claims_details.tab-pane
         %br
         =render 'tab_claims_details'

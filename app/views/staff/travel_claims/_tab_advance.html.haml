@@ -7,7 +7,8 @@
     %dd= ringgols(@travel_claim.advance)
       
     %dt=t 'staff.travel_claim.current_total' 
-    %dd= ringgols(@travel_claim.total_claims) 
+    %dd
+      %font{:style=>"font-weight: bold;"}= ringgols(@travel_claim.total_claims) 
     
     %dt=t 'staff.travel_claim.claimable_total'
     %dd= ringgols(@travel_claim.to_be_paid) 

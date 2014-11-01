@@ -30,7 +30,6 @@ class TravelClaim < ActiveRecord::Base
     if is_submitted == true
       self.submitted_on	= Date.today
       if is_returned == true
-      		
       end
     else
       self.submitted_on	= nil
@@ -89,7 +88,7 @@ class TravelClaim < ActiveRecord::Base
   end
    
   def receipts
-    other_claims_total + public_transport_totals
+    other_claims_total + public_transport_totals #public_transport_totals=all public transport receipts+total_km_money
   end
   
   def allowas
@@ -165,7 +164,7 @@ class TravelClaim < ActiveRecord::Base
       TravelClaimMileageRate.km_by_group(1000, transport_class)*100
     end
   end
-  
+
   def sen_per_km1700
     if transport_class == 'Z'
       0
@@ -217,57 +216,71 @@ class TravelClaim < ActiveRecord::Base
   #allowances
   
   def allowance_totals
-    travel_claim_allowances.sum(:total, :conditions => ["expenditure_type IN (?)", [21,22,23] ])
+    #travel_claim_allowances.sum(:total, :conditions => ["expenditure_type IN (?)", [21,22,23] ])
+    travel_claim_allowances.where("expenditure_type IN (?)", [21,22,23] ).sum(:total)
   end
   
   def hotel_totals
-    travel_claim_allowances.sum(:total, :conditions => ["expenditure_type IN (?)", [31,32,33] ])
+    #travel_claim_allowances.sum(:total, :conditions => ["expenditure_type IN (?)", [31,32,33] ])
+    travel_claim_allowances.where("expenditure_type IN (?)", [31,32,33] ).sum(:total)
   end
   
   
   
   #public transport
   def taxi_receipts
-    travel_claim_receipts.find(:all, :select => 'receipt_code', :conditions => ["expenditure_type = ?", 11]).map(&:receipt_code).join(", ")
+    #travel_claim_receipts.find(:all, :select => 'receipt_code', :conditions => ["expenditure_type = ?", 11]).map(&:receipt_code).join(", ")
+    travel_claim_receipts.where(expenditure_type: 11).map(&:receipt_code).join(", ")
   end
   def taxi_receipts_total
-    (travel_claim_receipts.sum(:amount, :conditions => ["expenditure_type = ?", 11])) + total_km_money
+    #(travel_claim_receipts.sum(:amount, :conditions => ["expenditure_type = ?", 11])) + total_km_money
+    (travel_claim_receipts.where(expenditure_type: 11).sum(:amount)) + total_km_money     #taxi (receipts) + taxi (in log details)
   end
   
   def bus_receipts
-    travel_claim_receipts.find(:all, :select => 'receipt_code', :conditions => ["expenditure_type = ?", 12]).map(&:receipt_code).join(", ")
+    #travel_claim_receipts.find(:all, :select => 'receipt_code', :conditions => ["expenditure_type = ?", 12]).map(&:receipt_code).join(", ")
+    travel_claim_receipts.where(expenditure_type: 12).map(&:receipt_code).join(", ")
   end
   def bus_receipts_total
-    travel_claim_receipts.sum(:amount, :conditions => ["expenditure_type = ?", 12])
+    #travel_claim_receipts.sum(:amount, :conditions => ["expenditure_type = ?", 12])
+    travel_claim_receipts.where(expenditure_type: 12).sum(:amount)
   end
   
   def train_receipts
-    travel_claim_receipts.find(:all, :select => 'receipt_code', :conditions => ["expenditure_type = ?", 13]).map(&:receipt_code).join(", ")
+    #travel_claim_receipts.find(:all, :select => 'receipt_code', :conditions => ["expenditure_type = ?", 13]).map(&:receipt_code).join(", ")
+    travel_claim_receipts.where(expenditure_type: 13).map(&:receipt_code).join(", ")
   end
   def train_receipts_total
-    travel_claim_receipts.sum(:amount, :conditions => ["expenditure_type = ?", 13])
+    #travel_claim_receipts.sum(:amount, :conditions => ["expenditure_type = ?", 13])
+    travel_claim_receipts.where(expenditure_type: 13).sum(:amount)
   end
   
   def ferry_receipts
-    travel_claim_receipts.find(:all, :select => 'receipt_code', :conditions => ["expenditure_type = ?", 14]).map(&:receipt_code).join(", ")
+   # travel_claim_receipts.find(:all, :select => 'receipt_code', :conditions => ["expenditure_type = ?", 14]).map(&:receipt_code).join(", ")
+    travel_claim_receipts.where(expenditure_type: 14).map(&:receipt_code).join(", ")
   end
   def ferry_receipts_total
-    travel_claim_receipts.sum(:amount, :conditions => ["expenditure_type = ?", 14])
+    #travel_claim_receipts.sum(:amount, :conditions => ["expenditure_type = ?", 14])
+    travel_claim_receipts.where(expenditure_type:14) .sum(:amount)
   end
   
   def plane_receipts
-    travel_claim_receipts.find(:all, :select => 'receipt_code', :conditions => ["expenditure_type = ?", 15]).map(&:receipt_code).join(", ")
+    #travel_claim_receipts.find(:all, :select => 'receipt_code', :conditions => ["expenditure_type = ?", 15]).map(&:receipt_code).join(", ")
+    travel_claim_receipts.where(expenditure_type: 15).map(&:receipt_code).join(", ")
   end
   def plane_receipts_total
-    travel_claim_receipts.sum(:amount, :conditions => ["expenditure_type = ?", 15])
+    #travel_claim_receipts.sum(:amount, :conditions => ["expenditure_type = ?", 15])
+    travel_claim_receipts.where(expenditure_type: 15).sum(:amount)
   end
   
   def public_transport_totals
-    (travel_claim_receipts.sum(:amount, :conditions => ["expenditure_type IN (?)", [11,12,13,14,15] ])) + total_km_money
+   # (travel_claim_receipts.sum(:amount, :conditions => ["expenditure_type IN (?)", [11,12,13,14,15] ])) + total_km_money
+    (travel_claim_receipts.where("expenditure_type IN (?)", [11,12,13,14,15]).sum(:amount)) + total_km_money
   end
   
   def exchange_loss_totals
-    travel_claim_receipts.sum(:amount, :conditions => ["expenditure_type = ?", 99 ]) * 0.03
+    #travel_claim_receipts.sum(:amount, :conditions => ["expenditure_type = ?", 99 ]) * 0.03
+    travel_claim_receipts.where(expenditure_type: 99).sum(:amount) * 0.03
   end
   
 
@@ -275,42 +288,61 @@ class TravelClaim < ActiveRecord::Base
   
   #Other 
   def toll_receipts
-    travel_claim_receipts.find(:all, :select => 'receipt_code', :conditions => ["expenditure_type = ?", 41]).map(&:receipt_code).join(", ")
+    #travel_claim_receipts.find(:all, :select => 'receipt_code', :conditions => ["expenditure_type = ?", 41]).map(&:receipt_code).join(", ")
+    travel_claim_receipts.where(expenditure_type: 41).map(&:receipt_code).join(", ")
   end
   def toll_receipts_total
-    travel_claim_receipts.sum(:amount, :conditions => ["expenditure_type = ?", 41])
+    #travel_claim_receipts.sum(:amount, :conditions => ["expenditure_type = ?", 41])
+    travel_claim_receipts.where(expenditure_type: 41).sum(:amount)
   end
   
   def parking_receipts
-    travel_claim_receipts.find(:all, :select => 'receipt_code', :conditions => ["expenditure_type = ?", 42]).map(&:receipt_code).join(", ")
+    #travel_claim_receipts.find(:all, :select => 'receipt_code', :conditions => ["expenditure_type = ?", 42]).map(&:receipt_code).join(", ")
+    travel_claim_receipts.where(expenditure_type: 42).map(&:receipt_code).join(", ")
   end
   def parking_receipts_total
-    travel_claim_receipts.sum(:amount, :conditions => ["expenditure_type = ?", 42])
+    #travel_claim_receipts.sum(:amount, :conditions => ["expenditure_type = ?", 42])
+    travel_claim_receipts.where(expenditure_type = ?", 42)
   end
   
   def laundry_receipts
-    travel_claim_receipts.find(:all, :select => 'receipt_code', :conditions => ["expenditure_type = ?", 43]).map(&:receipt_code).join(", ")
+    #travel_claim_receipts.find(:all, :select => 'receipt_code', :conditions => ["expenditure_type = ?", 43]).map(&:receipt_code).join(", ")
+    travel_claim_receipts.where(expenditure_type: 43).map(&:receipt_code).join(", ")
   end
   def laundry_receipts_total
-    travel_claim_receipts.sum(:amount, :conditions => ["expenditure_type = ?", 43])
+    #travel_claim_receipts.sum(:amount, :conditions => ["expenditure_type = ?", 43])
+    travel_claim_receipts.where(expenditure_type: 43).sum(:amount)
   end
   
   def pos_receipts
-    travel_claim_receipts.find(:all, :select => 'receipt_code', :conditions => ["expenditure_type = ?", 44]).map(&:receipt_code).join(", ")
+    #travel_claim_receipts.find(:all, :select => 'receipt_code', :conditions => ["expenditure_type = ?", 44]).map(&:receipt_code).join(", ")
+    travel_claim_receipts.where(expenditure_type: 44).map(&:receipt_code).join(", ")
   end
   def pos_receipts_total
-    travel_claim_receipts.sum(:amount, :conditions => ["expenditure_type = ?", 44])
+   # travel_claim_receipts.sum(:amount, :conditions => ["expenditure_type = ?", 44])
+    travel_claim_receipts.where(expenditure_type: 44).sum(:amount)
   end
   
   def comms_receipts
-    travel_claim_receipts.find(:all, :select => 'receipt_code', :conditions => ["expenditure_type = ?", 45]).map(&:receipt_code).join(", ")
+   # travel_claim_receipts.find(:all, :select => 'receipt_code', :conditions => ["expenditure_type = ?", 45]).map(&:receipt_code).join(", ")
+    travel_claim_receipts.where(expenditure_type: 45).map(&:receipt_code).join(", ")
   end
   def comms_receipts_total
-    travel_claim_receipts.sum(:amount, :conditions => ["expenditure_type = ?", 45])
+    #travel_claim_receipts.sum(:amount, :conditions => ["expenditure_type = ?", 45])
+    travel_claim_receipts.where(expenditure_type: 45).sum(:amount)
   end
   
   def other_claims_total
-    travel_claim_receipts.sum(:amount, :conditions => ["expenditure_type IN (?)", [41,42,43,44,45] ]) + exchange_loss_totals
+    #travel_claim_receipts.sum(:amount, :conditions => ["expenditure_type IN (?)", [41,42,43,44,45] ]) + exchange_loss_totals
+    travel_claim_receipts.where("expenditure_type IN (?)", [41,42,43,44,45] ).sum(:amount) + exchange_loss_totals
+  end
+  
+  def public_receipt_only
+    travel_claim_receipts.where("expenditure_type IN (?)", [11,12,13,14,15]).sum(:amount)
+  end
+  
+  def public_receipt_and_other_claims_receipt
+    other_claims_total + public_receipt_only
   end
   
   def total_mileage

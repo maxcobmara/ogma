@@ -337,6 +337,11 @@ ms_MY:
       return_to_staff: Pulangkan kepada Staf
       verified_ok: Disahkan Lengkap
       approve_notify: Klik pada kotak semak untuk meluluskan Tuntutan Perjalanan ini
+      for: "Bagi :"
+      first_500: 500 km pertama 
+      km1701_and_above: "1,701 km dan seterusnya"
+      cent_per_km: "sen / km :"
+      travel_log_val_rm_public_receipt_other_claims : "(Nilai log perjalanan (RM) + Resit Pengangkutan Awam) + Jumlah Lain-lain Tuntutan"
 
     staff_appraisal:
       title: Penilaian Prestasi

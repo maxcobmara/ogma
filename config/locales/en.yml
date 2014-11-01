@@ -346,6 +346,11 @@ en:
       return_to_staff: Return to Staff
       verified_ok: Verified OK
       approve_notify: Clicking on Approves shall approve this claim
+      for: "For :"
+      first_500: First 500 km
+      km1701_and_above: "1,701 km and above"
+      cent_per_km: "cent / km :"
+      travel_log_val_rm_public_receipt_other_claims : "(Travel Log Value (RM) + Public Transport Receipts) + Total Other Claims"
       
     staff_appraisal:
       title: Staff Appraisal
