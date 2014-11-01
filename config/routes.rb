@@ -161,7 +161,11 @@ Ogma::Application.routes.draw do
       end
     end
     resources :student_discipline_cases
-    resources :leaveforstudents
+    resources :leaveforstudents do
+      member do
+        get :approve
+      end
+    end
   end
 
 

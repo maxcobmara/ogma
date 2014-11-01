@@ -7,7 +7,7 @@ class Position < ActiveRecord::Base
   validates_presence_of   :name
   
   belongs_to :staff
-  belongs_to :staff_grade
+  belongs_to :staffgrade, :class_name => 'Employgrade'
   
   def titleize_name
     self.name = name.titleize

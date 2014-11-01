@@ -38,7 +38,7 @@
             .col-sm-2.control-label
               = f.label t 'asset.maintainable', for: :is_maintainable
             .col-md-5
-              = f.check_box :bookable, class: 'form-control'
+              = f.check_box :is_maintainable, class: 'form-control'
                
       
         .form-group
@@ -105,13 +105,13 @@
           .col-sm-2.control-label
             = f.label t 'asset.located_at', for: :location_id
           .col-md-5
-            = f.text_field :location_id, class: 'form-control input-xxlarge'
+            = f.collection_select :location_id, Location.all.order(combo_code: :asc), :id, :location_list, {:include_blank => true}, {class: 'selectpicker', "data-width"=>'410px'}
 
         .form-group
           .col-sm-2.control-label
             = f.label t 'asset.assigned_to', for: :assignedto_id
           .col-md-5
-            = f.text_field :assignedto_id, class: 'form-control input-xxlarge'
+            = f.collection_select :assignedto_id, Staff.all.order(name: :asc), :id,  :staff_name_with_position, {:include_blank => true}, {class: 'selectpicker', "data-width"=>'410px'}
 		  	  
         .form-group
           .col-sm-2.control-label
@@ -143,13 +143,13 @@
             .col-sm-2.control-label
               = f.label t 'asset.purchasedate', for: :purchasedate
             .col-md-5
-              = f.text_field :purchasedate, class: 'form-control input-xxlarge'
+              = f.text_field :purchasedate, :order => [:day, :month, :year], :default => 1.days.from_now,  :class =>  'date-picker form-control'
 			  
           .form-group
             .col-sm-2.control-label
               = f.label t 'asset.receiveddate', for: :receiveddate
             .col-md-5
-              = f.text_field :receiveddate, class: 'form-control input-xxlarge'
+              = f.text_field :receiveddate, :order => [:day, :month, :year], :default => 1.days.from_now,  :class =>  'date-picker form-control'
 			  			  
           .form-group
             .col-sm-2.control-label
@@ -208,6 +208,16 @@
             = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), asset_asset_path(@asset), :class => 'btn btn-default'
           .col-sm-2
             = f.submit t('update'), class: "btn btn-primary" 
+			
+    :javascript
+      $('.date-picker').datetimepicker({
+       timepicker:true,
+         format: "d-m-Y",
+         step: 15,
+         defaultSeconds: 0,
+         autoclose: true
+       });
+	
 
 
 //.col-md-offset-1
