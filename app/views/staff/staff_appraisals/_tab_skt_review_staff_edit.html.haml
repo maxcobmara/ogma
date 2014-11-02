@@ -10,7 +10,7 @@
     %hr
   = f.fields_for :staff_appraisal_skts do |builder|
     - if builder.object.description.blank? != true && builder.object.half == 1 
-      = render 'staff_appraisal_skt_fields2', :f => builder
+      = render 'staff_appraisal_skt_fields', :f => builder
   %br
   %b=t 'evaluation.skt_review.add'
   .row

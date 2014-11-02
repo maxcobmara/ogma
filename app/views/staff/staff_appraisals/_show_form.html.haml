@@ -3,19 +3,25 @@
     / Nav tabs
     %ul.nav.nav-tabs
       %li.active= link_to (t 'staff.staff_appraisal.skt'), "#show_skt", "data-toggle" => "tab"
-      %li=link_to (t 'staff.staff_appraisal.activity'), "#show_activity", "data-toggle" => "tab"
-      %li=link_to (t 'staff.staff_appraisal.evaluation_performance'), "#show_eval_1_17_41", "data-toggle" => "tab"
-      %li=link_to (t 'staff.staff_appraisal.review'), "#show_eval_review", "data-toggle" => "tab"
-
-      
+      - if @staff_appraisal.evaluation_status == t('staff.staff_appraisal.submitted_for_evaluation_by_ppp') || @staff_appraisal.evaluation_status == t('staff.staff_appraisal.submitted_by_ppp_for_evaluation_to_PPK') || @staff_appraisal.evaluation_status == t('staff.staff_appraisal.staff_appraisal_complete')
+        %li=link_to (t 'staff.staff_appraisal.activity'), "#show_activity", "data-toggle" => "tab"  
+      - if @staff_appraisal.evaluation_status == t('staff.staff_appraisal.submitted_by_ppp_for_evaluation_to_PPK') || @staff_appraisal.evaluation_status == t('staff.staff_appraisal.staff_appraisal_complete')
+        %li=link_to (t 'staff.staff_appraisal.evaluation_performance'), "#show_eval_1_17_41", "data-toggle" => "tab"  
+      - if @staff_appraisal.evaluation_status == t('staff.staff_appraisal.submitted_by_ppp_for_evaluation_to_PPK') || @staff_appraisal.evaluation_status == t('staff.staff_appraisal.staff_appraisal_complete')
+        %li=link_to (t 'staff.staff_appraisal.review'), "#show_eval_review", "data-toggle" => "tab" 
+          
     .tab-content{style:"padding-top:1em"}
       .col-md-8.col-md-offset-1
-        %h4= t 'evaluation.form.title_part1'
+        %br
+        .col-md-6
+          %b= t 'evaluation.form.title_part1'
+        %hr
+        
         %dl.dl-horizontal
           %dt= t 'evaluation.form.name'
           %dd
             = h @staff_appraisal.appraised.mykad_with_staff_name
-            \- (#{h @staff_appraisal.appraised.staffgrade.name})
+            \- (#{h @staff_appraisal.appraised.staffgrade.try(:name)})
   
           %dt= t 'position.name'
           %dd= h @staff_appraisal.appraised.positions[0].try(:name)
@@ -29,29 +35,30 @@
           - if @staff_appraisal.is_skt_endorsed == true
             %dt= t 'helpers.label.staff_appraisal.endorsement_on' 
             %dd
-              =h @staff_appraisal.skt_endorsed_on.try(:strftime, '%d %b %Y')
-              by #{h @staff_appraisal.eval1_officer.name}
+              =h @staff_appraisal.skt_endorsed_on.try(:strftime, '%d %b %Y')+t('by2')+@staff_appraisal.eval1_officer.try(:name)
             
       #show_skt.tab-pane.active
         %br
         = render 'tab_show_skt'
-        
-      #show_activity.tab-pane
-        %br
-        = render 'tab_show_activity'
+      
+      - if @staff_appraisal.evaluation_status == t('staff.staff_appraisal.submitted_for_evaluation_by_ppp') || @staff_appraisal.evaluation_status == t('staff.staff_appraisal.submitted_by_ppp_for_evaluation_to_PPK') || @staff_appraisal.evaluation_status == t('staff.staff_appraisal.staff_appraisal_complete')
+        #show_activity.tab-pane
+          %br
+          = render 'tab_show_activity'
 
-      #show_eval_1_17_41.tab-pane
-        %br
-        - if @staff_appraisal.person_type == 5
-          = render 'tab_show_eval_1'
-        - elsif @staff_appraisal.person_type == 4
-          = render 'tab_show_eval_17'
-        - elsif @staff_appraisal.person_type == 3
-          = render 'tab_show_eval_41'
- 
-      #show_eval_review.tab-pane
-        %br
-        = render 'tab_show_eval_review'
+      - if @staff_appraisal.evaluation_status == t('staff.staff_appraisal.submitted_for_evaluation_by_ppp') || @staff_appraisal.evaluation_status == t('staff.staff_appraisal.submitted_by_ppp_for_evaluation_to_PPK') || @staff_appraisal.evaluation_status == t('staff.staff_appraisal.staff_appraisal_complete')
+        #show_eval_1_17_41.tab-pane
+          %br
+          - if @staff_appraisal.person_type == 5
+            = render 'tab_show_eval_1'
+          - elsif @staff_appraisal.person_type == 4
+            = render 'tab_show_eval_17'
+          - elsif @staff_appraisal.person_type == 3
+            = render 'tab_show_eval_41'
+      - if @staff_appraisal.evaluation_status == t('staff.staff_appraisal.submitted_by_ppp_for_evaluation_to_PPK') || @staff_appraisal.evaluation_status == t('staff.staff_appraisal.staff_appraisal_complete')
+        #show_eval_review.tab-pane
+          %br
+          = render 'tab_show_eval_review'
 
 
               

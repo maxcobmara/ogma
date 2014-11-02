@@ -75,6 +75,9 @@ en:
   setup: Set Up
   select: Select
   check: Check
+  yes_on: "Yes, on "
+  no2: No
+  by2: " by "
   
   actions:
     new: New

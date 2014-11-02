@@ -1,12 +1,14 @@
 .col-md-9.col-md-offset-1
-  %h4= t 'evaluation.skt.title'
+  %br
+  .col-md-9
+    %b= t 'evaluation.skt.title'
+  %hr
+
   %dl.dl-horizontal
-    - just_a_counter = 0
     - for staff_appraisal_skt in @staff_appraisal.staff_appraisal_skts.where('half =?', 1).order(priority: :asc)
-      - just_a_counter += 1
       
-      %dt S/N
-      %dd= just_a_counter
+      %dt=t 'evaluation.skt.priority'
+      %dd= staff_appraisal_skt.priority
       
       %dt= t 'evaluation.skt.description'
       - if staff_appraisal_skt.is_dropped == true
