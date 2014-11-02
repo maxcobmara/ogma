@@ -75,7 +75,26 @@
       %b=t 'staff.travel_request.total'
     .col-md-1
       %br
-      %font{:style=>"font-weight:bold; text-decoration:underline;"}= ringgols(@travel_claim.receipts)    
+      %font{:style=>"font-weight:bold; text-decoration:underline;"}= ringgols(@travel_claim.public_receipt_and_other_claims_receipt)
+      
+/Log value RM (receipt) + Above RECEIPTS TOTAL section
+.col-md-10.col-md-offset-1
+  %dl.dl-horizontal
+    %hr
+
+    %dt=t 'staff.travel_request.total'
+    %dd
+      = ringgols(@travel_claim.receipts)
+      \=
+      (
+      =ringgols(@travel_claim.total_km_money)
+      +
+      =ringgols(@travel_claim.public_receipt_only)
+      ) + 
+      =ringgols(@travel_claim.other_claims_total)
+    %dt &nbsp;
+    %dd=t 'staff.travel_claim.travel_log_val_rm_public_receipt_other_claims'
+      
 
 /ADVANCE section
 = render 'tab_advance'

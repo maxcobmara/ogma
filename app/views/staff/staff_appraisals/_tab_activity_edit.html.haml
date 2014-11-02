@@ -50,21 +50,22 @@
     = link_to_add_fields t('helpers.label.staff_appraisal.add_training'), f, :trainneeds, "",  t('helpers.label.staff_appraisal.add_training')
   %br
 
-.col-md-10.col-md-offset-2 
-  .form-group
-    .col-sm-2.control-label
-      = f.label :is_skt_pyd_report_done
-    .col-md-1
-      = f.check_box :is_submit_for_evaluation, :id => 'submit_for_evaluation1' 
-    .col-md-2
-      #span_submit1{:style=>"display: none;"}
-        = f.text_field  :submit_for_evaluation_on, :class => 'date_picker form-control'   
-  .form-group
-    .col-sm-2
-      &nbsp;
-    .col-md-5
-      = t 'evaluation.skt.submit_report'
-  %br
+.col-md-10  
+  .col-md-10.col-md-offset-2 
+    .form-group
+      .col-sm-2.control-label
+        = f.label :is_skt_pyd_report_done
+      .col-md-1
+        = f.check_box :is_submit_for_evaluation, :id => 'submit_for_evaluation1' 
+      .col-md-2
+        #span_submit1{:style=>"display: none;"}
+          = f.text_field  :submit_for_evaluation_on, :class => 'date_picker form-control'   
+    .form-group
+      .col-sm-2
+        &nbsp;
+      .col-md-5
+        = t 'evaluation.skt.submit_report'
+    %br
 
 :javascript
 $(document).ready(function(){

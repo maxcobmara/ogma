@@ -1,0 +1,10 @@
+.col-md-9.col-md-offset-1 
+  %dl.dl-horizontal  
+    - if @staff_appraisal.is_skt_submit == true && @staff_appraisal.is_skt_endorsed == true	  
+      - if @staff_appraisal.is_skt_ppp_report_done ==  true
+         
+        %dt= t 'helpers.label.staff_appraisal.skt_ppp_report'
+        %dd= h @staff_appraisal.skt_ppp_report
+        
+        %dt= t 'helpers.label.staff_appraisal.is_skt_ppp_report_done'
+        %dd= h @staff_appraisal.is_skt_ppp_report_done? ? "Yes, on " + l(@staff_appraisal.skt_ppp_report_on)   : "No" 

@@ -1,0 +1,81 @@
+.row
+  .col-md-10.col-md-offset-1
+    / Nav tabs 
+    %ul.nav.nav-tabs
+      %li= link_to (t 'staff.staff_appraisal.skt'),"#skt", "data-toggle" => "tab"  
+      %li=link_to (t 'staff.staff_appraisal.skt_endorse'), "#skt_endorse", "data-toggle" => "tab"
+      %li=link_to (t 'staff.staff_appraisal.skt_review_staff'), "#skt_review_staff", "data-toggle" => "tab"
+      %li=link_to (t 'staff.staff_appraisal.skt_review_eval1'), "#skt_review_eval1", "data-toggle" => "tab"
+      %li=link_to (t 'staff.staff_appraisal.activity'), "#activity", "data-toggle" => "tab"
+      %li=link_to (t 'staff.staff_appraisal.eval1_1_17_41'), "#eval1_1_17_14", "data-toggle" => "tab"
+      %li=link_to (t 'staff.staff_appraisal.eval1_review'), "#eval1_review", "data-toggle" => "tab" 
+      %li.active=link_to (t 'staff.staff_appraisal.eval2_1_17_41'), "#eval2_1_17_14", "data-toggle" => "tab"
+      %li=link_to (t 'staff.staff_appraisal.eval2_review'), "#eval2_review", "data-toggle" => "tab"
+
+    .tab-content{style:"padding-top:1em"}
+      %br
+      = render 'tab_show_start'
+            
+      #skt.tab-pane
+        %br
+        = render 'tab_show_skt_1'
+        
+      #skt_endorse.tab-pane
+        %br
+        = render 'tab_skt_endorse'
+        
+      #skt_review_staff.tab-pane
+        %br
+        = render 'tab_show_skt_review'
+        
+      #skt_review_eval1.tab-pane
+        = render 'tab_show_skt_review_eval1'
+        
+      #activity.tab-pane
+        = render 'tab_show_activity'
+        
+      #eval1_1_17_14.tab-pane
+        %br
+        - if @staff_appraisal.person_type == 5
+          = render 'tab_show_eval_1'
+        - elsif @staff_appraisal.person_type == 4
+          = render 'tab_show_eval_17'
+        - elsif @staff_appraisal.person_type == 3
+          = render 'tab_show_eval_41'
+      #eval1_review.tab-pane
+        %br
+        = render 'tab_show_eval_review', :f => f
+
+      #eval2_1_17_14.tab-pane.active
+        %br
+          - if @staff_appraisal.person_type == 5
+            = render 'tab_eval2_1_edit', :f => f
+          - elsif @staff_appraisal.person_type == 4
+            = render 'tab_eval2_17_edit', :f => f
+          - elsif @staff_appraisal.person_type == 3  
+            = render 'tab_eval2_41_edit', :f => f
+          %br
+
+      #eval2_review.tab-pane
+        = render 'tab_eval2_review_edit', :f => f
+          
+:javascript
+
+//<![CDATA[
+bkLib.onDomLoaded(function() {
+  new nicEditor().panelInstance('myNicEditor3');
+  new nicEditor().panelInstance('myNicEditor4');
+});
+//]]>
+
+  function add_fields(link, association, content) {  
+    var new_id = new Date().getTime();  
+    var regexp = new RegExp("new_" + association, "g");  
+    $(link).parent().before(content.replace(regexp, new_id));  
+  } 
+ 
+ 
+
+
+
+
