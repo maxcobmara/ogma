@@ -78,14 +78,17 @@ class Borang_maklumat_staffPdf < Prawn::Document
                  ["36. Tarikh Naik Pangkat/Memangku", ": #{@staff.promotion_date.try(:strftime, "%d/%m/%y")}"],
                  ["37. Tarikh Sah Semula (Opsyen)", ": #{@staff.reconfirmation_date.try(:strftime, "%d/%m/%y")}"],
                  ["38. Tarikh Sah Ke Gred Sekarang", ": #{@staff.to_current_grade_date.try(:strftime, "%d/%m/%y")}"],
-                 ["39. Gaji Permulaan", @view.currency(@staff.starting_salary.to_f)],
-                 ["40. Pihak Berkuasa Melantik", ": #{(DropDown::APPOINTED.find_all{|disp, value| value == @staff.appointby }).map {|disp, value| disp}[0]}"],
-                 ["41. Ketua Perkhidmatan", ": #{(DropDown::HOS.find_all{|disp, value| value == @staff.svchead }).map {|disp, value| disp}[0]}"],
-                 ["42. Jenis Perkhidmatan", ": #{(DropDown::TOS.find_all{|disp, value| value == @staff.svctype }).map {|disp, value| disp}[0]}"],
-                 ["43. Status Pencen", ": #{(DropDown::PENSION.find_all{|disp, value| value == @staff.pensionstat}).map {|disp, value| disp}[0]}"],
-                 ["44. Tarikh Berpencen", ": #{@staff.pensiondt.try(:strftime, "%d/%m/%y")}"],
-                 ["45. Tarikh Perakuan Pencen",": #{@staff.pension_confirm_date.try(:strftime, "%d/%m/%y")}"],
-                 ["46. Status Pakaian Seragam", ": #{(DropDown::UNIFORM.find_all{|disp, value| value == @staff.uniformstat }).map {|disp, value| disp}[0]}"]]
+                 ["39. No. Gaji",": #{@staff.salary_no}"],
+                 ["40. Gaji Permulaan", ": #{ @view.currency(@staff.starting_salary.to_f)}"],
+                 ["41. Gaji Semasa",": #{@view.currency(@staff.current_salary.to_f)}" ],
+                 ["42. Kelas Kenderaan",": #{@staff.transport_class}"],
+                 ["43. Pihak Berkuasa Melantik", ": #{(DropDown::APPOINTED.find_all{|disp, value| value == @staff.appointby }).map {|disp, value| disp}[0]}"],
+                 ["44. Ketua Perkhidmatan", ": #{(DropDown::HOS.find_all{|disp, value| value == @staff.svchead }).map {|disp, value| disp}[0]}"],
+                 ["45. Jenis Perkhidmatan", ": #{(DropDown::TOS.find_all{|disp, value| value == @staff.svctype }).map {|disp, value| disp}[0]}"],
+                 ["46. Status Pencen", ": #{(DropDown::PENSION.find_all{|disp, value| value == @staff.pensionstat}).map {|disp, value| disp}[0]}"],
+                 ["47. Tarikh Berpencen", ": #{@staff.pensiondt.try(:strftime, "%d/%m/%y")}"],
+                 ["48. Tarikh Perakuan Pencen",": #{@staff.pension_confirm_date.try(:strftime, "%d/%m/%y")}"],
+                 ["49. Status Pakaian Seragam", ": #{(DropDown::UNIFORM.find_all{|disp, value| value == @staff.uniformstat }).map {|disp, value| disp}[0]}"]]
             
                  table(data, :column_widths => [150, 250], :cell_style => { :size => 11})  do
                    a = 0
@@ -118,7 +121,7 @@ class Borang_maklumat_staffPdf < Prawn::Document
   
             def qualification
   
-            header1 = [["47. Tahap Akademik", "Kelayakan", " Institusi"],
+            header1 = [["50. Tahap Akademik", "Kelayakan", " Institusi"],
                         ["", "", ""]]
             header1 +
             @staff.qualifications.map do |qualification|
@@ -146,7 +149,7 @@ class Borang_maklumat_staffPdf < Prawn::Document
 
           def loan
 
-          header1 = [["48. Loan", "No Akaun"," Tarikh Pinjaman", "Tempoh Bayaran Balik", "Ansuran bulanan"],
+          header1 = [["51. Loan", "No Akaun"," Tarikh Pinjaman", "Tempoh Bayaran Balik", "Ansuran bulanan"],
                       ["", "", "", "", ""]]
           header1 +
           @staff.loans.map do |loan|
@@ -161,8 +164,8 @@ class Borang_maklumat_staffPdf < Prawn::Document
               def table3
       
                 data =[["Butiran Kewangan", ""],
-                      ["49. EPF No", ": #{@staff.kwspcode}"],
-                      ["50. Tax No", ": #{@staff.taxcode}"]]
+                      ["52. EPF No", ": #{@staff.kwspcode}"],
+                      ["53. Tax No", ": #{@staff.taxcode}"]]
             
                       table(data, :column_widths => [150, 250], :cell_style => { :size => 11})  do
                         a = 0
@@ -197,13 +200,13 @@ class Borang_maklumat_staffPdf < Prawn::Document
 
                            def waris
 
-                           header1 = [["52. Waris", "Nama"," Kad No", "No Telefon", "Alamat"],
+                           header1 = [["54. Waris", "Nama"," Kad No", "No Telefon", "Alamat"],
                                        ["", "", "", "", ""]]
                            header1 +
                            @staff.kins.map do |kin|
    
-                             [ "Loan Type : #{(DropDown::KIN_TYPE.find_all{|disp, value| value == kin.kintype_id }).map {|disp, value| disp}[0]}",
-                             ": #{kin.try(:name)}",": #{kin.mykadno}", " : #{kin.phone}", "#{kin.kinaddr}"]
+                             [ "Hubungan : #{(DropDown::KIN_TYPE.find_all{|disp, value| value == kin.kintype_id }).map {|disp, value| disp}[0]}",
+                             " #{kin.try(:name)}",": #{kin.mykadno}", " : #{kin.phone}", "#{kin.kinaddr}"]
 
                            end
 

@@ -171,6 +171,17 @@ class Staff < ActiveRecord::Base
       end
     end
   end
+  
+  def transport_class
+    abc = TravelClaimsTransportGroup.abcrate
+    de = TravelClaimsTransportGroup.derate
+    mid = 1820.75
+    if vehicles && vehicles.count>0
+      TravelClaimsTransportGroup.transport_class(vehicles.first.id, current_salary, abc, de, mid)
+    else
+      'Z' #no vehicles?
+    end
+  end
 
 end
 

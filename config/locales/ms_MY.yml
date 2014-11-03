@@ -52,6 +52,9 @@ ms_MY:
   setup: Data Asas
   select: Pilih
   check: Semak
+  yes_on: "Ya, pada "
+  no2: Tidak
+  by2: " oleh "
  
   actions:
     new: Baru
@@ -153,6 +156,8 @@ ms_MY:
     current_grade_date: Tarikh Sah Ke Gred Sekarang
     starting_salary: Gaji Permulaan
     current_salary: Gaji Semasa
+    salary_no: No Gaji
+    allowance: Jumlah Elaun Tetap
 
     appointby: Pihak Berkuasa Melantik
     svchead: Ketua Perkhidmatan
@@ -1660,7 +1665,7 @@ ms_MY:
         evaluation_year: Tahun Penilaian
         is_skt_submit: Hantar SKT untuk Kelulusan
         endorsement_on: Tarikh Kelulusan
-        is_skt_endorsed: Luluskan SKT
+        is_skt_endorsed: Kelulusan SKT
         add_activity: Tambah Aktiviti
         skt_pyd_report: "1. Laporan Oleh PYD"
         is_skt_pyd_report_done: Hantar kepada PPP untuk Laporan

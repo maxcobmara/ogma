@@ -312,7 +312,13 @@
                 = f.label t 'staff.to_current_grade_date', for: :to_current_grade_date
               .col-md-2
                 = f.text_field :to_current_grade_date, class: 'form-control date_picker'
-                
+
+          .form-group
+            .col-sm-2.control-label
+              = f.label t 'staff.salary_no', for: :salary_no
+            .col-md-3
+              = f.text_field :salary_no, class: 'form-control'
+                                
           .form-group
             .col-sm-2.control-label
               = f.label t 'staff.starting_salary', for: :starting_salary
@@ -328,6 +334,14 @@
               .input-group
                 .input-group-addon RM
                 = f.text_field :current_salary, class: 'form-control'
+
+          .form-group
+            .col-sm-2.control-label
+              = f.label t 'staff.allowance', for: :allowance
+            .col-md-3
+              .input-group
+                .input-group-addon RM
+                = f.text_field :allowance, class: 'form-control'
                 
           .form-group
             .col-sm-2.control-label

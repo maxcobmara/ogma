@@ -75,6 +75,9 @@ en:
   setup: Set Up
   select: Select
   check: Check
+  yes_on: "Yes, on "
+  no2: No
+  by2: " by "
   
   actions:
     new: New
@@ -163,6 +166,8 @@ en:
     current_grade_date: Date of Confirmation to Current Grade
     starting_salary: Starting Salary
     current_salary: Current Salary
+    salary_no: Salary No
+    allowance: Total Fixed Allowance
 
     appointby: Appointed By
     svchead: Head Of Service
