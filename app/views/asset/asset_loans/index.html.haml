@@ -1,0 +1,64 @@
+- model_class = AssetLoan
+.page-header
+  %h1= t('asset.loan.title')#, :default => model_class.model_name.human.pluralize
+  
+.navbar.navbar-inverse{role: "navigation", style: "padding-right:40px;"}
+  %ul.nav.navbar-nav
+    %li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'actions.new'))), new_asset_loan_path
+  %ul.nav.navbar-nav.navbar-right
+    %li= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "index_search_bar"
+    %li= link_to content_tag(:li, fa_icon("print", text: (t 'actions.print'))), "#"
+      
+.row
+  //.right{style:"padding:0 30px; margin:0;"}= paginate @staffs, :theme => 'twitter-bootstrap-3', :pagination_class => "pagination-sm"
+  %table.table-striped.table-hover.ogma
+    %thead
+      %tr
+        %th= sort_link(@search, :asset_id, (t 'asset.loan.asset_id'))
+        %th= sort_link(@search, :reasons, (t 'asset.loan.loaner_reasons'))
+        %th= t 'asset.loan.owner_responsible_unit'
+        %th= t 'asset.loan.request_return_date'
+        %th= sort_link(@search, :approved_date, (t 'asset.loan.approved_date'))
+        %th= sort_link(@search, :status, "Status")
+    %tbody
+      = render "search_bar"
+      - @asset_loans.each do |asset_loan|
+        %tr
+          %td= link_to asset_loan.asset.code_asset, asset_loan_path(asset_loan)
+          %td
+            /current login - as maslinda (login_id = 11)
+            / <% unless current_login.staff == asset_loan.staff %>
+            - current_login_roles = Login.joins(:roles).where(id:11).pluck('roles.id').uniq
+            - unless asset_loan.staff == Staff.where(id: 25)
+              =h asset_loan.staff.name
+            - else
+              %b=asset_loan.staff.name if current_login_roles.include?(11)
+            %br= asset_loan.reasons.capitalize
+          %td
+            =h asset_loan.asset.assignedto.name unless asset_loan.asset.assignedto.blank?
+            %br
+              %b=h asset_loan.asset.assignedto.positions.first.unit unless asset_loan.asset.assignedto.positions.blank?
+          %td  
+            =h asset_loan.loaned_on.try(:strftime, '%d %b %Y')
+            %br=h asset_loan.expected_on.try(:strftime, '%d %b %Y')
+          %td
+            - if asset_loan.is_approved == true
+              = h asset_loan.approved_date.try(:strftime, '%d %b %Y')
+            - elsif asset_loan.is_approved == false
+              %span{:style => "font-weight:bold;color:red;"}=t 'asset.loan.rejected'
+            - else
+              %span{:style => "font-weight:bold;color:green;"}=t 'asset.loan.pending'
+          %td
+            - if asset_loan.is_approved == true && asset_loan.is_returned != true 
+              = t 'asset.loan.onloan'
+              - if asset_loan.expected_on == Date.today
+                %br
+                  %span{:style =>"font-weight:bold; color:red;"}=t 'asset.loan.due_date'
+              - elsif asset_loan.expected_on < Date.today
+                %br
+                  %span{:style=>"font-weight:bold; color:red;"}=t 'asset.loan.overdue'
+            - elsif asset_loan.is_approved == true && asset_loan.is_returned == true
+              = t 'asset.loan.is_returned'   
+          
+  .right{style:"padding:0 30px; margin:0;"}= paginate @asset_loans, :theme => 'twitter-bootstrap-3'
+

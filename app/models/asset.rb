@@ -9,6 +9,7 @@ class Asset < ActiveRecord::Base
   #belongs_to :location, :foreign_key => "location_id" --> not required - refer line 5
   belongs_to :staff,    :class_name => 'Staff', :foreign_key => "assignedto_id"
   belongs_to :receiver, :class_name => 'Staff', :foreign_key => 'receiver_id'
+  belongs_to :assignedto,   :class_name => 'Staff', :foreign_key => 'assignedto_id'
   
   belongs_to :category,     :class_name => 'Assetcategory', :foreign_key => 'category_id'
   has_many :asset_defects

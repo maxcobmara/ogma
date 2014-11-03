@@ -796,6 +796,22 @@ en:
     loss:
       title: "Loss & Write Offs"
       
+    loan:
+      title: Asset Loan
+      new: New Asset Loan
+      edit: Edit Asset Loan
+      application: Loan Asset Application
+      asset_id: Asset
+      owner_responsible_unit: "Owner / Responsible Unit"
+      request_return_date: "Requested for / To be returned on"
+      loaner_reasons: "Loaned by / Reasons"
+      rejected: Rejected 
+      pending: Pending
+      onloan: On loan
+      is_returned: Is returned
+      due_date: Due date
+      overdue: Overdue
+      
     category:
       title: Asset Category
       type_model_name: "Type / Model / Name"
