@@ -711,6 +711,23 @@ ms_MY:
  
     loss:
       title: "Kehilangan & Hapus Kira"
+    
+    loan:
+      title: Peminjaman Aset
+      new: Peminjaman Baru Aset
+      edit: Sunting Peminjaman Aset
+      application: Permohonan Pinjaman
+      asset_id: Aset
+      loaner_reasons: "Peminjam / Sebab Peminjaman"
+      owner_responsible_unit:  "Pegawai / Unit Bertanggungjawab"
+      request_return_date: "Tarikh mula / Tarikh Tamat"
+      rejected: Ditolak
+      pending: Sedang diproses
+      onloan: Sedang dipinjam
+      is_returned: Telah dipulangkan
+      due_date: Tarikh akhir
+      overdue: Tamat tempoh
+     
       
     category:
       title: Kategori Aset

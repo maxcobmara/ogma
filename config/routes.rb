@@ -117,6 +117,8 @@ Ogma::Application.routes.draw do
 	get :kewpa17_20
       end
     end
+    resources :asset_loans, as: :loans do
+    end
   end
 
   namespace :campus do
