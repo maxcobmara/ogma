@@ -1,4 +1,5 @@
 class Student::LeaveforstudentsController < ApplicationController
+  before_action :set_leaveforstudent, only: [:show, :edit, :update, :destroy]
 
   def index
     @leaveforstudent = Leaveforstudent.all
@@ -44,7 +45,7 @@ class Student::LeaveforstudentsController < ApplicationController
     respond_to do |format|
       if @leaveforstudent.save
         flash[:notice] = 'Leaveforstudent was successfully created.'
-        format.html { redirect_to(@leaveforstudent) }
+        format.html { redirect_to student_leaveforstudents_path }
         format.xml  { render :xml => @leaveforstudent, :status => :created, :location => @leaveforstudent }
       else
         format.html { render :action => "new" }
@@ -59,9 +60,9 @@ class Student::LeaveforstudentsController < ApplicationController
     @leaveforstudent = Leaveforstudent.find(params[:id])
 
     respond_to do |format|
-      if @leaveforstudent.update_attributes(params[:leaveforstudent])
+      if @leaveforstudent.update_attributes(leaveforstudent_params)
         flash[:notice] = 'Leaveforstudent was successfully updated.'
-        format.html { redirect_to(@leaveforstudent) }
+        format.html { redirect_to student_leaveforstudents_path }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }
@@ -77,13 +78,24 @@ class Student::LeaveforstudentsController < ApplicationController
     @leaveforstudent.destroy
 
     respond_to do |format|
-      format.html { redirect_to(leaveforstudents_url) }
+      format.html { redirect_to student_leaveforstudents_path }
       format.xml  { head :ok }
     end
   end
   
   def approve
-    @sleaveforstudent = Leaveforstudent.find(params[:id])
+    @leaveforstudent = Leaveforstudent.find(params[:id])
   end
+  
+  private
+    # Use callbacks to share common setup or constraints between actions.
+    def set_leaveforstudent
+      @leaveforstudent = Leaveforstudent.find(params[:id])
+    end
+
+    # Never trust parameters from the scary internet, only allow the white list through.
+    def leaveforstudent_params
+      params.require(:leaveforstudent).permit(:student_id, :leavetype, :requestdate, :reason, :address, :telno, :leave_startdate, :leave_enddate, :studentsubmit, :approved, :staff_id, :staff_id, :approvedate)
+    end
 end
 
