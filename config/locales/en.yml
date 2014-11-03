@@ -802,15 +802,22 @@ en:
       edit: Edit Asset Loan
       application: Loan Asset Application
       asset_id: Asset
-      owner_responsible_unit: "Owner / Responsible Unit"
-      request_return_date: "Requested for / To be returned on"
-      loaner_reasons: "Loaned by / Reasons"
+      staff_id: Loaned by
+      reasons: Reasons
+      loaned_by: Responsible Staff
+      responsible_unit: Unit
+      requested_for: Requested for 
+      returned_date: To be returned on
+      approved_date: Approve on
+      separator_slash: " / "
       rejected: Rejected 
       pending: Pending
       onloan: On loan
       is_returned: Is returned
       due_date: Due date
       overdue: Overdue
+      assetcode_name: Asset code or name
+      staff_name: Staff name
       
     category:
       title: Asset Category

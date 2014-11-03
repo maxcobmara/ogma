@@ -718,17 +718,23 @@ ms_MY:
       edit: Sunting Peminjaman Aset
       application: Permohonan Pinjaman
       asset_id: Aset
-      loaner_reasons: "Peminjam / Sebab Peminjaman"
-      owner_responsible_unit:  "Pegawai / Unit Bertanggungjawab"
-      request_return_date: "Tarikh mula / Tarikh Tamat"
+      staff_id: Peminjam
+      reasons: Sebab Peminjaman
+      loaned_by: Pegawai 
+      separator_slash: " / "
+      responsible_unit: Unit Bertanggungjawab
+      requested_for: Tarikh Mula
+      returned_date: Tarikh Tamat
+      approved_date: Diluluskan pada
       rejected: Ditolak
       pending: Sedang diproses
       onloan: Sedang dipinjam
       is_returned: Telah dipulangkan
       due_date: Tarikh akhir
       overdue: Tamat tempoh
-     
-      
+      assetcode_name: Kod atau nama aset
+      staff_name: Nama staf
+
     category:
       title: Kategori Aset
       type_model_name: "Jenis / Model / Nama"

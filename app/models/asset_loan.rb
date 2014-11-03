@@ -3,13 +3,13 @@ class AssetLoan < ActiveRecord::Base
   before_save :set_staff_when_blank, :set_loaned_by
   
   belongs_to :asset, :foreign_key => 'asset_id'
-  belongs_to :staff   #staff_id
+  belongs_to :staff, :foreign_key => 'staff_id'   #peminjam / loaner
   belongs_to :owner, :class_name => 'Staff', :foreign_key => 'loaned_by'
   belongs_to :loanofficer,   :class_name => 'Staff', :foreign_key => 'loan_officer'
   belongs_to :hodept,   :class_name => 'Staff', :foreign_key => 'hod'
   belongs_to :receivedpfficer, :class_name => 'Staff', :foreign_key => 'received_officer'
   
-  validates_presence_of :reasons, :if => :must_assign_if_external?   #16July2013
+  validates_presence_of :reasons, :if => :must_assign_if_external?   
   
   #scope :myloan, -> { where(staff_id: Login.current_login.staff_id)}
   scope :internal, -> { where(loantype: 1)}
@@ -18,6 +18,17 @@ class AssetLoan < ActiveRecord::Base
   scope :pending, -> { where('is_approved IS NULL AND loan_officer IS NULL')}
   scope :rejected, -> { where('is_approved IS FALSE' )}
   scope :overdue, -> { where('is_approved IS TRUE AND is_returned IS NULL AND expected_on>=?',Date.today )}
+  
+  # define scope
+  def self.keyword_search(query) 
+    asset_ids = Asset.where('assetcode ILIKE (?) OR name ILIKE(?)', "%#{query}%", "%#{query}%").pluck(:id).uniq
+    where('asset_id IN(?)', asset_ids)
+  end
+
+  # whitelist the scope
+  def self.ransackable_scopes(auth_object = nil)
+    [:keyword_search]
+  end
   
   def must_assign_if_external?  #16July2013
     loantype==2 

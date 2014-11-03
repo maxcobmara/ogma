@@ -1,10 +1,16 @@
 = search_form_for @search, url:  asset_loans_path,  class: "form-inline" do |f|
   %tr.search_row{style: "display: none;"}
-    %td=f.text_field :asset_name_cont, :size=> 2,  class:  'form-control'
-    %td=f.text_field :reasons_cont, :size=> 2,  class:  'form-control'
-    %td &nbsp;
-    %td &nbsp;
-    %td=f.text_field :approved_date_eq, class: 'date_picker form-control'
+    %td=f.text_field :keyword_search, placeholder: (t 'asset.loan.assetcode_name'), class: 'form-control'  
+    %td
+      =f.text_field :staff_name_cont, placeholder:  (t 'asset.loan.staff_name'), class: 'form-control'
+      =f.text_field :reasons_cont, placeholder: (t 'asset.loan.reasons'), class: 'form-control'
+    %td 
+      =f.text_field :asset_assignedto_name_cont, placeholder: (t 'asset.loan.loaned_by'), class: 'form-control'
+      =f.text_field :asset_assignedto_positions_unit_cont, placeholder: (t 'asset.loan.responsible_unit'), class: 'form-control'
+    %td
+      =f.text_field :approved_date_eq, class: 'date_picker form-control', placeholder: (t 'asset.loan.requested_for'), class: 'form-control'
+      =f.text_field :expected_on_eq, class: 'date_picker form-control', placeholder: (t 'asset.loan.returned_date'), class: 'form-control'
+    %td=f.text_field :approved_date_eq, class: 'date_picker form-control', placeholder: (t 'asset.loan.approved_date'), class: 'form-control'
     %td
       .input-group
         select status
