@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141027093221) do
+ActiveRecord::Schema.define(version: 20141103005841) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -1675,6 +1675,8 @@ ActiveRecord::Schema.define(version: 20141027093221) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.decimal  "current_salary"
+    t.decimal  "allowance"
+    t.string   "salary_no"
   end
 
   add_index "staffs", ["icno"], name: "index_staffs_on_icno", using: :btree

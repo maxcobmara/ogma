@@ -52,7 +52,6 @@
       %dd= vehicle.cylinder_capacity
 
       %dt= t 'staff.transportclass_id', :default => model_class.human_attribute_name(:transportclass_id) + ":"
-      %dd
-        = @staff.transport_class(vehicle.id)
-        /= @staff.transportclass_id
+      %dd= @staff.transport_class
+      /= @staff.transportclass_id
 
