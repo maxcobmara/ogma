@@ -67,7 +67,21 @@
                   km
                 .col-sm-2= ringgols(@travel_log.total_km_money_request)
                 
-    %br        
+          .col-md-8.col-md-offset-0
+            %dl.dl-horizontal
+              %i
+                %small
+                  %dt=t 'staff.travel_request.note'
+              .row
+                %i
+                  %small=t 'staff.travel_request.mileage_field'
+              .row
+                .col-md-8.col-md-offset-2
+                  .col-md-1
+                  %i
+                    %small=t 'staff.travel_request.value_field'
+                
+    %hr        
     .row
       .form-group
         .col-md-1.col-md-offset-2

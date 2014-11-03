@@ -1,0 +1,33 @@
+%h3 Approve Staff Leave
+
+.row
+  = form_for [:student, @leaveforstudent],  :html => { :class => 'form-horizontal' } do |f| 
+    = render 'shared/error_messages', object: f.object
+  
+  .col-md-offset-2 
+    .form-group
+      .col-sm-2.control-label
+        = f.label :"Approve Student Leave:"
+      .col-md-2
+        = f.radio_button :approved,'false'
+        = f.radio_button :approved,'true'
+  
+    .form-group
+      .col-sm-2.control-label
+        = f.label :"Approved By:"
+      .col-md-2
+        = f.collection_select :staff_id, Staff.all.order(name: :asc), :id,  :staff_name_with_position, {:include_blank =>t('helpers.prompt.select_staff'), :selected=>Login.first.staff_id},{class: 'selectpicker', "data-width"=>'320px'}
+  
+      .form-group
+        .col-sm-2.control-label
+          = f.label :"Approved On:"
+        .col-md-4 
+          = f.date_select :approvedate, :order => [:day, :month, :year]
+  
+  .row
+    .form-group
+      .col-md-1.col-md-offset-2
+        = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), student_leaveforstudent_path(@leaveforstudent), :class => 'btn btn-default'
+      .col-md-2
+        .div{style: "margin-left:-40px;"}
+          = f.submit t('update'), class: "btn btn-primary"

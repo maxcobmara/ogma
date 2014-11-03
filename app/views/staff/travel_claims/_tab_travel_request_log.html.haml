@@ -13,6 +13,11 @@
     %dt=t 'staff.travel_request.travel_dates'
     %dd=travel_request.travel_dates
     
+    - if travel_request.own_car? && !travel_request.applicant.vehicles.blank?
+      %dt=t 'staff.travel_request.own_car'
+      %dd=travel_request.applicant.vehicles[0].reg_no+' '+ t('staff.transportclass_id')+' : '+travel_request.transport_class
+        
+    
     %dt=t 'staff.travel_request.log_details'
     %dd
       %b

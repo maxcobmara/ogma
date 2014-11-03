@@ -31,8 +31,8 @@
 
   - if @staff_appraisal.is_submit_e2 != nil
     %br
-    %h4= t 'evaluation.form.title_part9'
     - if @staff_appraisal.is_complete == true
+      %h4= t 'evaluation.form.title_part9'
       %dl.dl-horizontal
         %dt= t 'staff.staff_appraisal.endorsed_on_ppk'
         %dd= l(@staff_appraisal.is_completed_on)

@@ -1,29 +1,30 @@
-.col-md-10.col-md-offset-1 
-  .form-group
-    .col-md-6
-      %b=t 'evaluation.skt_review.title3'
-    .col-md-2
-      &nbsp;
-.col-md-10.col-md-offset-2 
-  .form-group
-    .col-sm-2.control-label
-      = f.label :skt_ppp_report
-    .col-md-6
-      = f.text_area :skt_ppp_report, :size => '70x6'
-  .form-group
-    .col-sm-2.control-label
-      = f.label :is_skt_ppp_report_done
-    .col-md-1
-      = f.check_box :is_skt_ppp_report_done, :id => 'is_skt_ppp_report_done' 
-    .col-md-2
-      #span_skt_ppp_report_on{:style=>"display: none;"}
-        = f.text_field :skt_ppp_report_on, :class => 'date_picker form-control'   
-  .form-group
-    .col-sm-2
-      &nbsp;
-    .col-md-5
-      = t 'evaluation.skt.skt_ppp_report'
-  %br
+.col-md-10
+  .col-md-10.col-md-offset-1 
+    .form-group
+      .col-md-6
+        %b=t 'evaluation.skt_review.title3'
+      .col-md-2
+        &nbsp;
+  .col-md-10.col-md-offset-2 
+    .form-group
+      .col-sm-2.control-label
+        = f.label :skt_ppp_report
+      .col-md-6
+        = f.text_area :skt_ppp_report, :size => '70x6'
+    .form-group
+      .col-sm-2.control-label
+        = f.label :is_skt_ppp_report_done
+      .col-md-1
+        = f.check_box :is_skt_ppp_report_done, :id => 'is_skt_ppp_report_done' 
+      .col-md-2
+        #span_skt_ppp_report_on{:style=>"display: none;"}
+          = f.text_field :skt_ppp_report_on, :class => 'date_picker form-control'   
+    .form-group
+      .col-sm-2
+        &nbsp;
+      .col-md-5
+        = t 'evaluation.skt.skt_ppp_report'
+    %br
 
 :javascript
 $(document).ready(function(){

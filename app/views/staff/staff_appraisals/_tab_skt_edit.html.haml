@@ -14,22 +14,24 @@
     /= link_to_add_fields image_tag("add.png", :border => 0, :title => t('addmore')), f, :travel_claim_logs
     = link_to_add_fields t('helpers.label.staff_appraisal.add_activity'), f, :staff_appraisal_skts, "",  t('helpers.label.staff_appraisal.add_activity')
   %br  
-  
-.col-md-10.col-md-offset-2 
-  .form-group
-    .col-sm-2.control-label
-      = f.label :is_skt_submit
-    .col-md-1
-      = f.check_box :is_skt_submit, :id => 'is_skt_submit'
-    .col-md-2
-      #span_skt_submit{:style=>"display: none;"}
-        = f.text_field :skt_submit_on, :class => 'date_picker form-control'   
-  .form-group
-    .col-sm-2
-      &nbsp;
-    .col-md-5
-      = t 'evaluation.skt.submit_notify'
-  %br
+    
+/.col-md-10.col-md-offset-2 
+.col-md-10
+  .col-md-10.col-md-offset-2
+    .form-group
+      .col-sm-2.control-label
+        = f.label :is_skt_submit
+      .col-md-1
+        = f.check_box :is_skt_submit, :id => 'is_skt_submit'
+      .col-md-2
+        #span_skt_submit{:style=>"display: none;"}
+          = f.text_field :skt_submit_on, :class => 'date_picker form-control'   
+    .form-group
+      .col-sm-2
+        &nbsp;
+      .col-md-5
+        = t 'evaluation.skt.submit_notify'
+    %br
         
   /113 - Pn Nabila, 58 - Tn Hj Mohd Zulkiflie (dah tukar Pengarah?)
   /- if Login.current_login.staff.position.is_root? == true -> wait 4 login/user - staff relationship revised, assume - PYD : Maslinda (staff_id=25)

@@ -1,1 +1,19 @@
-edit here
+- model_class = Leaveforstudent
+.page-header
+  %h1= t 'leaveforstudent.edit'
+
+= render 'shared/flashes'
+
+.row
+  = form_for [:student, @leaveforstudent], html: { multipart: true, class: 'form-horizontal' }  do |f| 
+    = render 'shared/error_messages', object: f.object
+    = hidden_field_tag :redirect_location, student_leaveforstudent_path
+    = render :partial => 'form', :locals => {:f => f}
+    .row
+      .form-group
+        .col-md-1.col-md-offset-2
+          = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), student_leaveforstudent_path(@leaveforstudent), :class => 'btn btn-default'
+        .col-md-2
+          .div{style: "margin-left:-40px;"}
+            = f.submit t('update'), class: "btn btn-primary"
+ 

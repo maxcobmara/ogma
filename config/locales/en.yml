@@ -118,6 +118,8 @@ en:
   staff:
     title: Staff
     list: Staff List
+    new: New Staff
+    edit: Edit Staff
     personal_details: Personal Details
     icno: MyKad No
     name: Name
@@ -160,6 +162,7 @@ en:
     reconfirmation_date: 'Reconfirmation Date (Option)'
     current_grade_date: Date of Confirmation to Current Grade
     starting_salary: Starting Salary
+    current_salary: Current Salary
 
     appointby: Appointed By
     svchead: Head Of Service
@@ -168,9 +171,14 @@ en:
     pensiondt: Pension Date
     uniformstat: Uniform Status
     position_id: Position
-    reports_to: Reports To
+    reports_to: Reports To 
 
-
+    vehicles:
+      title: Vehicle Details
+      type_model: "Vehicle Type / Model"
+      reg_no: Registration No
+      cylinder_capacity: "Cc (Cylinder Capacity)"
+    
     qualifications: 
       title: Qualifications
       level_id: Level
@@ -298,6 +306,9 @@ en:
       finish: End
       total: Total
       code: Travel Request Code
+      note: "Note :"
+      mileage_field: "Mileage(KM) field: State the mileage for those who bring their own vehicles only"
+      value_field: "Value(RM) field: State the number of taxi fares only"
 
     travel_claim:
       title: Travel Claims
@@ -338,6 +349,11 @@ en:
       return_to_staff: Return to Staff
       verified_ok: Verified OK
       approve_notify: Clicking on Approves shall approve this claim
+      for: "For :"
+      first_500: First 500 km
+      km1701_and_above: "1,701 km and above"
+      cent_per_km: "cent / km :"
+      travel_log_val_rm_public_receipt_other_claims : "(Travel Log Value (RM) + Public Transport Receipts) + Total Other Claims"
       
     staff_appraisal:
       title: Staff Appraisal

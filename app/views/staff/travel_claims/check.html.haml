@@ -41,6 +41,7 @@
               .col-md-1
                 %br
                 %font{:style=>"font-weight:bold; text-decoration:underline;"}= ringgols(@travel_claim.total_km_money) 
+          =render 'tab_mileage_table'   
         
         #claims_verification.tab-pane.active
           %br

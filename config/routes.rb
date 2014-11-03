@@ -43,6 +43,7 @@ Ogma::Application.routes.draw do
 	get :travel_log_index
       end
     end
+    resources :vehicles
   end
 
   match '/travel_requests/logs', to: 'staff/travel_requests#travel_log_index', via: 'get'
@@ -160,7 +161,11 @@ Ogma::Application.routes.draw do
       end
     end
     resources :student_discipline_cases
-    resources :leaveforstudents
+    resources :leaveforstudents do
+      member do
+        get :approve
+      end
+    end
   end
 
 

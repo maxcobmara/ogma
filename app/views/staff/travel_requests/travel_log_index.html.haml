@@ -34,7 +34,7 @@
         %td=h approved_request.destination
         %td=h approved_request.depart_at.try(:strftime, '%d %b %Y %l:%M %P')
         %td=h approved_request.return_at.try(:strftime, '%d %b %Y %l:%M %P')
-        %td=h approved_request.document.title
+        %td=h approved_request.document.try(:title)
         %td=h approved_request.hod_accept? ? image_tag("tick.png") : "-"
                 
   .right{style:"padding:0 30px; margin:0;"}= paginate @my_approved_requests, :theme => 'twitter-bootstrap-3'
