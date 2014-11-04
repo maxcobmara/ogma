@@ -118,6 +118,10 @@ Ogma::Application.routes.draw do
       end
     end
     resources :asset_loans, as: :loans do
+      member do
+	get :approve
+	get :lampiran
+      end
     end
   end
 

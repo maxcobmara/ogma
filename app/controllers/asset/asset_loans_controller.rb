@@ -4,7 +4,7 @@ class Asset::AssetLoansController < ApplicationController
   # GET /asset_loans
   # GET /asset_loans.xml
   def index
-    @asset_loans = AssetLoan.all.order(:asset_id)
+    #@asset_loans = AssetLoan.all.order(:asset_id)
     
     @search = AssetLoan.search(params[:q])
     @asset_loans = @search.result
