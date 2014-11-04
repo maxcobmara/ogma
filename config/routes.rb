@@ -141,7 +141,11 @@ Ogma::Application.routes.draw do
 
   resources :cofiles
 
-  resources :documents
+  resources :documents do
+    collection do
+      get :document_report
+    end
+  end
 
   resources :students do
     collection do

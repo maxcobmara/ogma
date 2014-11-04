@@ -58,6 +58,18 @@ class DocumentsController < ApplicationController
        render :layout => 'report'
    end
 
+   def document_report
+     @search = Document.search(params[:q])
+     @documents = @search.result
+     respond_to do |format|
+       format.pdf do
+         pdf = Document_reportPdf.new(@documents, view_context)
+         send_data pdf.render, filename: "document_report-{Date.today}",
+                               type: "application/pdf",
+                               disposition: "inline"
+       end
+     end
+   end
 
    # POST /documents
    # POST /documents.xml
