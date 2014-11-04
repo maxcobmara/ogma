@@ -311,6 +311,9 @@ en:
       finish: End
       total: Total
       code: Travel Request Code
+      note: "Note :"
+      mileage_field: "Mileage(KM) field: State the mileage for those who bring their own vehicles only"
+      value_field: "Value(RM) field: State the number of taxi fares only"
 
     travel_claim:
       title: Travel Claims

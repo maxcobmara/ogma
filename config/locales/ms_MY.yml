@@ -301,6 +301,9 @@ ms_MY:
       finish: Hingga
       total: Jumlah
       code: Kod Permohonan Perjalanan
+      note: "Nota:"
+      mileage_field: "Ruangan Batuan(KM): Nyatakan jarak km bagi yang membawa kenderaan sendiri sahaja"
+      value_field: "Ruangan Nilai(RM): Nyatakan jumlah tambang teksi sahaja"
 
     travel_claim:
       title: Tuntutan Perjalanan
