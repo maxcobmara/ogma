@@ -74,8 +74,8 @@
               %h2.icon=t('asset.loan.title')
               %a.mp-back{:href => "#"}= t 'helpers.links.back'
               %ul
-                %li= link_to t('asset.loan.application'), asset_loans_path
-                %li= link_to "Assets on Loan", '#'
+                %li= link_to t('asset.loan.application'), '#'
+                %li= link_to t('asset.loan.asset_on_loan'), asset_loans_path
           %li= link_to content_tag(:i, "", :class => "icon-numb") + "Report / Downloads", "/asset_report"
 
     %li.icon.icon-left

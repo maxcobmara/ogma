@@ -1,1 +1,48 @@
- 
+- model_class = AssetLoan
+.page-header
+  %h1= @asset_loan.asset.assetcode
+= render 'shared/flashes'
+
+%ul.nav.nav-tabs
+  %li.active= link_to (t "asset.loan.request"), "#request",     "data-toggle" => "tab"
+  %li= link_to (t "asset.loan.approval"), "#approval",     "data-toggle" => "tab" if @asset_loan.is_approved != nil 
+  %li= link_to (t "asset.loan.return"), "#return",    "data-toggle" => "tab" if @asset_loan.is_returned == true 
+
+.tab-content.col-md-offset-1
+  %dl.dl-horizontal
+    %dt= t 'asset.assetcode'
+    %dd= @asset_loan.asset.assetcode
+     
+    %dt=(t 'asset.loan.loaned_by')+(t 'asset.loan.separator_slash')+(t 'asset.loan.responsible_unit')
+    %dd=h @asset_loan.owner.try(:name)+(t 'asset.loan.separator_slash')+@asset_loan.asset.assignedto.try(:positions).first.try(:unit).to_s
+    
+  #request.tab-pane.fade.in.active
+    = render 'tab_show_request'
+    
+  - if @asset_loan.is_approved != nil
+    #approval.tab-pane.fade.in
+      = render 'tab_show_approval' 
+  
+  - if @asset_loan.is_returned == true 
+    #return.tab-pane.fade.in
+      = render 'tab_show_return' 
+
+.row
+  .col-md-6.col-md-offset-2
+    %hr
+    .form-actions
+      = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), asset_loans_path, :class => 'btn btn-default'
+      - if @asset_loan.is_approved == nil
+        /edit details
+        = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('.edit', :default => t("helpers.links.edit")), edit_asset_loan_path(@asset_loan), :class => 'btn btn-primary'
+      - if @asset_loan.loantype == 2 
+        = link_to content_tag(:i, "", :class => "fa fa-file-pdf-o"), lampiran_asset_loan_path(@asset_loan, format: "pdf"), {class: "btn btn-default", "data-toggle" => "tooltip", title: "Lampiran A PDF"}
+      /Approval process
+      /- if @asset_loan.is_approved == nil && @asset_loan.loaned_by == Login.current_login.staff_id
+      - if @asset_loan.is_approved == nil
+        = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('.approve', :default => t("helpers.links.approve")), approve_asset_loan_path(@asset_loan), :class => 'btn btn-primary'
+      = link_to content_tag(:i, "", :class => "fa fa-trash-o icon-white") + " " + t('.destroy', :default => t("helpers.links.destroy")), |
+        asset_loan_path(@asset_loan),                                                                                                    |
+        :method => 'delete',                                                                                                           |
+        :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },                   |
+        :class => 'btn btn-danger'
