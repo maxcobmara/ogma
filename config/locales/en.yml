@@ -799,6 +799,29 @@ en:
     loss:
       title: "Loss & Write Offs"
       
+    loan:
+      title: Asset Loan
+      new: New Asset Loan
+      edit: Edit Asset Loan
+      application: Loan Asset Application
+      asset_id: Asset
+      staff_id: Loaned by
+      reasons: Reasons
+      loaned_by: Responsible Staff
+      responsible_unit: Unit
+      requested_for: Requested for 
+      returned_date: To be returned on
+      approved_date: Approve on
+      separator_slash: " / "
+      rejected: Rejected 
+      pending: Pending
+      onloan: On loan
+      is_returned: Is returned
+      due_date: Due date
+      overdue: Overdue
+      assetcode_name: Asset code or name
+      staff_name: Staff name
+      
     category:
       title: Asset Category
       type_model_name: "Type / Model / Name"

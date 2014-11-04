@@ -535,6 +535,17 @@ module DropDown
         [ "Sewa Hotel",32 ],
         [ "Cukai Kerajaan",33 ]
   ]
+  
+  LOAN_FILTERS = [
+    {:scope => "all",       :label => "All"},
+    {:scope => "myloan",    :label => "My Loan"},
+    {:scope => "internal",  :label => "Internal"},
+    {:scope => "external",  :label => "External"},
+    {:scope => "onloan",    :label => "On Loan"},
+    {:scope => "pending",   :label => "Pending"},
+    {:scope => "rejected",  :label => "Rejected"},
+    {:scope => "overdue",   :label => "Due/Overdue"}
+  ]
  
   
 end
