@@ -1,18 +1,19 @@
-.col-md-10.col-md-offset-2 
-  .form-group
-    .col-sm-2.control-label
-      = f.label :is_skt_endorsed
-    .col-md-1
-      = f.check_box :is_skt_endorsed, :id => 'is_skt_endorsed'
-    .col-md-2
-      #span_skt_endorse{:style=>"display: none;"}
-        = f.text_field :skt_endorsed_on, :class => 'date_picker form-control'   
-  .form-group
-    .col-sm-2
-      &nbsp;
-    .col-md-5
-      = t 'evaluation.skt.endorse_notify'
-  %br
+.col-md-10
+  .col-md-10.col-md-offset-2 
+    .form-group
+      .col-sm-2.control-label
+        = f.label :is_skt_endorsed
+      .col-md-1
+        = f.check_box :is_skt_endorsed, :id => 'is_skt_endorsed'
+      .col-md-2
+        #span_skt_endorse{:style=>"display: none;"}
+          = f.text_field :skt_endorsed_on, :class => 'date_picker form-control'   
+    .form-group
+      .col-sm-2
+        &nbsp;
+      .col-md-5
+        = t 'evaluation.skt.endorse_notify'
+    %br
   
   /113 - Pn Nabila, 58 - Tn Hj Mohd Zulkiflie (dah tukar Pengarah?)
   /- if Login.current_login.staff.position.is_root? == true -> wait 4 login/user - staff relationship revised, assume - PYD : Maslinda (staff_id=25)

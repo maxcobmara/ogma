@@ -1,9 +1,12 @@
 class Staff < ActiveRecord::Base
 
   paginates_per 13
+  
+  has_many :vehicles, :dependent => :destroy
+  accepts_nested_attributes_for :vehicles, :allow_destroy => true, :reject_if => lambda {|a| a[:cylinder_capacity].blank? }#|| a[:reg_no].blank?}
 
   validates :icno, presence: true#, numericality: true, length: { is: 12 }, uniqueness: true
-  validates_presence_of     :name, :coemail, :code, :appointdt #appointment date must exist be4 can apply leave
+  validates_presence_of     :name, :coemail, :code, :appointdt, :current_salary #appointment date must exist be4 can apply leave, salary - for transport class
 
 
   belongs_to :title,        :class_name => 'Title',           :foreign_key => 'titlecd_id'
@@ -42,7 +45,7 @@ class Staff < ActiveRecord::Base
 
   has_many          :kins, :dependent => :destroy
   accepts_nested_attributes_for :kins, :reject_if => lambda { |a| a[:kintype_id].blank? }
-
+ 
   has_attached_file :photo,
                     :url => "/assets/staffs/:id/:style/:basename.:extension",
                     :path => ":rails_root/public/assets/staffs/:id/:style/:basename.:extension"#, :styles => {:thumb => "40x60"}
@@ -57,6 +60,13 @@ class Staff < ActiveRecord::Base
   has_many :travel_claims, :dependent => :destroy
   has_many :approvers,           :class_name => 'TravelClaim',      :foreign_key => 'approved_by'
 
+  #links to Model TravelRequest
+  #has_many :staffs,             :class_name => 'TravelRequest', :foreign_key => 'staff_id', :dependent => :destroy #staff name
+  #has_many :replacements, :class_name => 'TravelRequest', :foreign_key => 'replaced_by' #replacement name
+  #has_many :headofdepts,  :class_name => 'TravelRequest', :foreign_key => 'hod_id' #hod
+  has_many :travelrequests, :class_name => 'TravelRequest'
+  has_many :replacor_travelstaff, :class_name => 'TravelRequest'
+  has_many :travelrequest_approver, :class_name => 'TravelRequest'
 
   #validates_attachment_size         :photo, :less_than => 500.kilobytes
   #validates_attachment_content_type :photo, :content_type => ['image/jpeg', 'image/png']
@@ -111,6 +121,30 @@ class Staff < ActiveRecord::Base
       "#{name}  (#{position_for_staff})"
     end
 
+    def staff_name_with_position_grade
+      "#{name}  (#{position_for_staff}-#{grade_for_staff})"
+    end
+
+    def staff_name_with_position_grade_unit
+      "#{name}  (#{position_for_staff}-#{grade_for_staff}-#{unit_for_staff})"
+    end
+
+    def unit_for_staff
+      if positions.blank?
+        "-"
+      else
+        "#{positions[0].try(:unit)}"
+      end
+    end
+    
+    def grade_for_staff
+      if positions.blank?
+        "-"
+      else
+        "#{positions[0].staffgrade.try(:name)}"
+      end
+    end
+    
     def position_for_staff
       if positions.blank?
         "-"
@@ -137,7 +171,17 @@ class Staff < ActiveRecord::Base
       end
     end
   end
-
+  
+  def transport_class
+    abc = TravelClaimsTransportGroup.abcrate
+    de = TravelClaimsTransportGroup.derate
+    mid = 1820.75
+    if vehicles && vehicles.count>0
+      TravelClaimsTransportGroup.transport_class(vehicles.first.id, current_salary, abc, de, mid)
+    else
+      'Z' #no vehicles?
+    end
+  end
 
 end
 

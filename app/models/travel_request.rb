@@ -1,7 +1,7 @@
 class TravelRequest < ActiveRecord::Base
   # befores, relationships, validations, before logic, validation logic, 
   #controller searches, variables, lists, relationship checking
-  before_save :set_to_nil_where_false, :set_total, :set_mileage_nil_when_not_own_car
+  before_save :set_to_nil_where_false, :set_total, :set_mileage_nil_when_not_own_car, :set_own_car_false_if_no_car_registered
   
   belongs_to :applicant,    :class_name => 'Staff', :foreign_key => 'staff_id'
   belongs_to :replacement,  :class_name => 'Staff', :foreign_key => 'replaced_by'
@@ -19,6 +19,8 @@ class TravelRequest < ActiveRecord::Base
   
   has_many :travel_claim_logs, :dependent => :destroy
   accepts_nested_attributes_for :travel_claim_logs, :reject_if => lambda { |a| a[:destination].blank? }, :allow_destroy =>true
+  
+  attr_accessor :staff_own_car
   
   #controller searches
   def self.in_need_of_approval
@@ -41,14 +43,16 @@ class TravelRequest < ActiveRecord::Base
   end
   
   def repl_staff
-     #unit_name = Login.first.staff.positions.first.unit
-     unit_name = "Teknologi Maklumat"
-     replacements = Position.joins(:staff).where(unit: unit_name).pluck(:staff_id) 
-     replacements
+      unit_name = "Teknologi Maklumat"#Login.first.staff.positions.first.unit
+      replacements = Position.joins(:staff).where(unit: unit_name).pluck(:staff_id) 
+      replacements
   end
   
    def hods
       #if Login.current_login.staff.position.root_id == Login.current_login.staff.position.parent_id
+     #if Login.first.staff.positions.first.root_id == Login.first.staff.positions.first.parent_id
+        #hod = Login.first.staff.positions.first.root_id	#Login.current_login.staff.position.root_id
+        #approver = Position.where("id IN (?)", hod).pluck(:staff_id)
      #test fail..requires LOGIN TO MATCH WITH STAFF - hide first
      #if Login.first.staff.positions.first.root_id == Login.first.staff.positions.first.parent_id
      #   hod = Login.first.staff.positions.first.root_id	#Login.current_login.staff.position.root_id
@@ -58,7 +62,8 @@ class TravelRequest < ActiveRecord::Base
         #hod << Login.first.staff.positions.first.root_id	#Login.current_login.staff.position.root_id
         #approver = Position.where("id IN (?)", hod).pluck(:staff_id)
       #end
-      approver= [58,25] #58 for Pengarah, 25 for Maslinda
+
+      approver = [25,58]
       approver
   end
   
@@ -110,6 +115,11 @@ class TravelRequest < ActiveRecord::Base
     self.log_fare = total_km_money_request
   end
   
+  def set_own_car_false_if_no_car_registered
+    if applicant.vehicles.blank? && own_car==true
+      self.own_car = false
+    end
+  end
   
   #validation logic
   def validate_end_date_before_start_date
@@ -119,7 +129,7 @@ class TravelRequest < ActiveRecord::Base
   end
   
   def mycar?
-    own_car == true
+    own_car == true && (!applicant.blank? && !applicant.vehicles.blank?)
   end
   
   def check_submit?
@@ -149,6 +159,26 @@ class TravelRequest < ActiveRecord::Base
   
   def travel_dates
     "#{depart_at.try(:strftime, "%d %b %Y")}"+" - "+"#{ return_at.try(:strftime, "%d %b %Y") }"
+  end
+  
+  def transport_class
+    abc = TravelClaimsTransportGroup.abcrate
+    de = TravelClaimsTransportGroup.derate
+    mid = 1820.75
+    if applicant.nil? || applicant.blank?
+      app2 = Staff.where(id:25).first
+      if app2.vehicles && app2.vehicles.count>0
+        TravelClaimsTransportGroup.transport_class(app2.vehicles.first.id, app2.current_salary, abc, de, mid)
+      else
+        'Z'
+      end
+    else
+      if applicant.vehicles && applicant.vehicles.count>0
+        TravelClaimsTransportGroup.transport_class(applicant.vehicles.first.id, applicant.current_salary, abc, de, mid)
+      else
+        'Z'
+      end
+    end
   end
   
 end

@@ -10,7 +10,7 @@
     %hr
   = f.fields_for :staff_appraisal_skts do |builder|
     - if builder.object.description.blank? != true && builder.object.half == 1 
-      = render 'staff_appraisal_skt_fields2', :f => builder
+      = render 'staff_appraisal_skt_fields', :f => builder
   %br
   %b=t 'evaluation.skt_review.add'
   .row
@@ -32,26 +32,27 @@
       %b=t 'evaluation.skt_review.title3'
     .col-md-2
       &nbsp;
-.col-md-10.col-md-offset-2 
-  .form-group
-    .col-sm-2.control-label
-      = f.label :skt_pyd_report
-    .col-md-6
-      = f.text_area :skt_pyd_report, :size => '70x6' 
-  .form-group
-    .col-sm-2.control-label
-      = f.label :is_skt_pyd_report_done
-    .col-md-1
-      = f.check_box :is_skt_pyd_report_done, :id => 'is_skt_pyd_report_done' 
-    .col-md-2
-      #span_skt_pyd_report_on{:style=>"display: none;"}
-        = f.text_field :skt_pyd_report_on, :class => 'date_picker form-control'   
-  .form-group
-    .col-sm-2
-      &nbsp;
-    .col-md-5
-      = t 'evaluation.skt.submit_report'
-  %br
+.col-md-10
+  .col-md-10.col-md-offset-2 
+    .form-group
+      .col-sm-2.control-label
+        = f.label :skt_pyd_report
+      .col-md-6
+        = f.text_area :skt_pyd_report, :size => '70x6' 
+    .form-group
+      .col-sm-2.control-label
+        = f.label :is_skt_pyd_report_done
+      .col-md-1
+        = f.check_box :is_skt_pyd_report_done, :id => 'is_skt_pyd_report_done' 
+      .col-md-2
+        #span_skt_pyd_report_on{:style=>"display: none;"}
+          = f.text_field :skt_pyd_report_on, :class => 'date_picker form-control'   
+    .form-group
+      .col-sm-2
+        &nbsp;
+      .col-md-5
+        = t 'evaluation.skt.submit_report'
+    %br
 
 :javascript
 $(document).ready(function(){

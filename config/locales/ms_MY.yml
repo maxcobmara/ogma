@@ -52,6 +52,9 @@ ms_MY:
   setup: Data Asas
   select: Pilih
   check: Semak
+  yes_on: "Ya, pada "
+  no2: Tidak
+  by2: " oleh "
  
   actions:
     new: Baru
@@ -95,6 +98,8 @@ ms_MY:
   staff:
     title: Staf
     list: Senarai Staf
+    new: Staf Baru
+    edit: Sunting Staf
     icno: "No MyKad"
     name: "Nama"
     coemail: "Emel"
@@ -150,6 +155,9 @@ ms_MY:
     reconfirmation_date: Tarikh Sah Semula (opsyen)
     current_grade_date: Tarikh Sah Ke Gred Sekarang
     starting_salary: Gaji Permulaan
+    current_salary: Gaji Semasa
+    salary_no: No Gaji
+    allowance: Jumlah Elaun Tetap
 
     appointby: Pihak Berkuasa Melantik
     svchead: Ketua Perkhidmatan
@@ -160,6 +168,11 @@ ms_MY:
     position_id: Jawatan
     reports_to: Melapor Kepada
     
+    vehicles:
+      title: Butiran Kenderaan
+      type_model: "Jenis / Model Kenderaan"
+      reg_no: "No. Pendaftaran"
+      cylinder_capacity: "Cc (Sukatan Silinder)"
 
     qualifications: 
       title:  Kelayakan
@@ -329,6 +342,11 @@ ms_MY:
       return_to_staff: Pulangkan kepada Staf
       verified_ok: Disahkan Lengkap
       approve_notify: Klik pada kotak semak untuk meluluskan Tuntutan Perjalanan ini
+      for: "Bagi :"
+      first_500: 500 km pertama 
+      km1701_and_above: "1,701 km dan seterusnya"
+      cent_per_km: "sen / km :"
+      travel_log_val_rm_public_receipt_other_claims : "(Nilai log perjalanan (RM) + Resit Pengangkutan Awam) + Jumlah Lain-lain Tuntutan"
 
     staff_appraisal:
       title: Penilaian Prestasi
@@ -1647,7 +1665,7 @@ ms_MY:
         evaluation_year: Tahun Penilaian
         is_skt_submit: Hantar SKT untuk Kelulusan
         endorsement_on: Tarikh Kelulusan
-        is_skt_endorsed: Luluskan SKT
+        is_skt_endorsed: Kelulusan SKT
         add_activity: Tambah Aktiviti
         skt_pyd_report: "1. Laporan Oleh PYD"
         is_skt_pyd_report_done: Hantar kepada PPP untuk Laporan

@@ -1,14 +1,21 @@
 %fieldset
   = f.hidden_field :_destroy
-  .row
-    .col-sm-1= f.select :priority, 1..5, {:include_blank=>"-"}, {class: 'form-control'}
-    .col-sm-5= f.text_field :description, placeholder: 'Activity / Project', class: 'form-control'
-    .col-sm-5= f.text_field :indicator, placeholder: 'Quantity / Quality / Time / Cost', class: 'form-control'
-    .col-sm-1
-      = link_to content_tag(:i, "", class: "fa fa-trash-o"), data: {"data-toggle" => "tooltip", title: "Delete"}, class: "btn btn-danger remove_fields"
-      /= link_to_remove_fields image_tag("delete.png", :border => 0, :title => 'Remove'), f 
-      /= link_to content_tag(:i,"", class: "fa-fa-trash-o"), '#', :onclick => 'rmv_field($(this))', title: "Delete", class: "btn btn-danger remove_fields"
-
+  - if f.object.description.blank? != true && f.object.half == 1 
+    .row
+      .col-sm-1= f.text_field :priority, :value=>f.object.priority, class: 'form-control', readonly: 'readonly'
+      .col-sm-5= f.text_field :description, :value=> f.object.description, class: 'form-control', readonly: 'readonly'
+      .col-sm-5= f.text_field :indicator, :value=> f.object.indicator, class: 'form-control', readonly: 'readonly'
+      .col-sm-1=f.check_box :is_dropped 
+  - else
+    .row 
+      .col-sm-1= f.select :priority, 1..5, {:include_blank=>"-"}, {class: 'form-control'}
+      .col-sm-5= f.text_field :description, placeholder: 'Activity / Project', class: 'form-control'
+      .col-sm-5= f.text_field :indicator, placeholder: 'Quantity / Quality / Time / Cost', class: 'form-control'
+      .col-sm-1
+        = link_to content_tag(:i, "", class: "fa fa-trash-o"), data: {"data-toggle" => "tooltip", title: "Delete"}, class: "btn btn-danger remove_fields"
+        /= link_to_remove_fields image_tag("delete.png", :border => 0, :title => 'Remove'), f 
+        /= link_to content_tag(:i,"", class: "fa-fa-trash-o"), '#', :onclick => 'rmv_field($(this))', title: "Delete", class: "btn btn-danger remove_fields"
+        = f.hidden_field :is_dropped, :value=> "0"
 :javascript
   
   function rmv_field(curr_fieldset) {

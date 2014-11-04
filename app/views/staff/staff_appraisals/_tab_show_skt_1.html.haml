@@ -1,0 +1,21 @@
+.col-md-9.col-md-offset-1
+  %br
+  .col-md-9
+    %b= t 'evaluation.skt.title'
+  %hr
+
+  %dl.dl-horizontal
+    - for staff_appraisal_skt in @staff_appraisal.staff_appraisal_skts.where('half =?', 1).order(priority: :asc)
+      
+      %dt=t 'evaluation.skt.priority'
+      %dd= staff_appraisal_skt.priority
+      
+      %dt= t 'evaluation.skt.description'
+      - if staff_appraisal_skt.is_dropped == true
+        %dd{:style => "text-decoration: line-through;"}= staff_appraisal_skt.description
+      - else
+        %dd= staff_appraisal_skt.description
+
+      %dt= t 'evaluation.skt.performance'
+      %dd= staff_appraisal_skt.indicator
+      %hr 

@@ -1,5 +1,8 @@
 .col-md-9.col-md-offset-1
-  %h4= t 'evaluation.form.title_partIIa'
+  %br
+  .col-md-8
+    %b= t 'evaluation.form.title_partIIa'
+  %hr
   = t 'evaluation.form.label_001'
   %dl.dl-horizontal
     - for evactivity in @staff_appraisal.evactivities
@@ -13,7 +16,10 @@
       %dd= (DropDown::EVACT.find_all{|disp, value| value == evactivity.actlevel}).map {|disp, value| disp}[0]
       %hr
 
-  %h4= t 'evaluation.form.title_part2b'
+  %br
+  .col-md-8
+    %b= t 'evaluation.form.title_part2b'
+  %hr
   = t 'evaluation.form.label_003'
   %dl.dl-horizontal 
     - for ptdo in Ptdo.where('staff_id = ?',@staff_appraisal.appraised)
@@ -42,8 +48,13 @@
       %dt= t 'evaluation.form.reason'
       %dd= trainneed.reason
 
-
-  %h4= t 'staff.staff_appraisal.submission'
+  %br
+  .col-md-8
+    %b= t 'staff.staff_appraisal.submission'
+  %hr
+  
   %dl.dl-horizontal
     %dt= t 'helpers.label.staff_appraisal.is_skt_pyd_report_done'
-    %dd= h @staff_appraisal.is_submit_for_evaluation? ? "Yes, on " + l(@staff_appraisal.submit_for_evaluation_on)   : "No"
+    %dd= h @staff_appraisal.is_submit_for_evaluation? ? t('yes_on') + l(@staff_appraisal.submit_for_evaluation_on)   : t('no2')
+
+  %br

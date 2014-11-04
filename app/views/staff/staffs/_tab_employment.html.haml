@@ -67,8 +67,17 @@
     %dt= t 'staff.current_grade_date', :default => model_class.human_attribute_name(:current_grade_date) + ":"
     %dd= l(@staff.current_grade_date) rescue '-'
 
+    %dt= t 'staff.salary_no', :default => model_class.human_attribute_name(:salary_no) + ":"
+    %dd=@staff.salary_no
+    
     %dt= t 'staff.starting_salary', :default => model_class.human_attribute_name(:starting_salary) + ":"
     %dd= ringgols(@staff.starting_salary)
+    
+    %dt= t 'staff.current_salary', :default => model_class.human_attribute_name(:current_salary) + ":"
+    %dd= ringgols(@staff.current_salary)
+    
+    %dt= t 'staff.allowance', :default => model_class.human_attribute_name(:allowance) + ":"
+    %dd= ringgols(@staff.allowance)
 
     %dt= t 'staff.appointby', :default => model_class.human_attribute_name(:appointby) + ":"
     %dd= (DropDown::APPOINTED.find_all{|disp, value| value == @staff.appointby }).map {|disp, value| disp}[0]

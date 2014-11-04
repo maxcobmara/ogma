@@ -1,0 +1,15 @@
+.col-md-9.col-md-offset-1 
+  %br
+  .col-md-9
+    %b=t 'evaluation.skt_review.title3'
+  %hr
+  
+  %dl.dl-horizontal 
+    %dt= t 'helpers.label.staff_appraisal.skt_ppp_report'
+    %dd= h @staff_appraisal.skt_ppp_report
+
+    %dt= t 'helpers.label.staff_appraisal.is_skt_ppp_report_done'
+    %dd= h @staff_appraisal.is_skt_ppp_report_done? ? t('yes_on') + (@staff_appraisal.skt_ppp_report_on.try(:strftime, '%d %b %Y')) : t('no2')
+    %br 
+
+

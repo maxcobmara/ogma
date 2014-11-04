@@ -1,8 +1,13 @@
+- if @info.new_record? == true
+  - url = new_staff_info_path
+- else
+  - url = staff_info_path(@info)
+
 .row
   .col-md-offset-1
     / Nav tabs
     %ul.nav.nav-tabs
-      %li= link_to "Info", "#info", "data-toggle" => "tab"
+      %li.active= link_to "Info", "#info", "data-toggle" => "tab"
       %li= link_to t('staff.personal_details'),     "#personal",        "data-toggle" => "tab"
       %li= link_to t('staff.photo_upload'),         "#photo_upload",    "data-toggle" => "tab"
       %li= link_to t('staff.employment_details'),   "#employment",      "data-toggle" => "tab"
@@ -12,10 +17,8 @@
       %li= link_to t('staff.contacts.emergency'),   "#contacts",        "data-toggle" => "tab"
 
 
-
-
 .row.fluid
-  = form_for [:staff, @info], url: staff_info_path(@info), :html => { :class => 'form-horizontal' }  do |f| 
+  = form_for [:staff, @info], url: url, :html => { :class => 'form-horizontal' }  do |f| 
     = render 'shared/error_messages', object: f.object
 
 
@@ -23,7 +26,7 @@
     .tab-content{style:"padding-top:1em"}
     
       //Info Tab
-      #info.tab-pane
+      #info.tab-pane.active
         .col-md-offset-2
           .form-group
             .col-sm-2.control-label
@@ -70,12 +73,12 @@
                 = f.label t 'staff.thumb', for: :thumb_id
               .col-md-1
                 = f.text_field :thumb_id, class: 'form-control mandatory'
-              
+
           .form-group
             .col-sm-offset-2.col-sm-2
               = f.submit t('update'), class: "btn btn-primary"
-
-
+              
+              
       //photo upload pane
       #personal.tab-pane
         .col-md-offset-2
@@ -108,8 +111,8 @@
                 .form-group
                   = t 'people.female'
                   = f.radio_button :gender,'2'
-                
-              
+             
+
           .form-group
             .col-sm-2.control-label
               = f.label t 'staff.cooftelno', for: :cooftelno
@@ -176,21 +179,32 @@
             .col-md-2
               //= country_select("vehicle_manufacturer", "country", [ "Malaysia", "Korea", "Germany" ])
               = f.select :country_cd, DropDown::NATIONALITY, {prompt: "Select"}, {class: 'selectpicker', "data-width"=>"autos"}
-              
+
           .form-group
             .col-sm-2.control-label
-              = f.label t 'staff.transportclass_id', for: :transportclass_id
-            .col-md-7
-              .form-inline
-                .form-group
-                  = f.select :transportclass_id, options_for_select(('A'..'F'), @staff.transportclass_id), {prompt: "Select"}, {class: 'selectpicker', "data-width"=>"auto"}
-                  = f.text_field :icno, class: 'form-control mandatory'
-                  .help-block.small (Salary|Vehicle cc - <strong>A</strong> : RM2625.45-|1400cc-, <strong>B</strong> : RM2330.00-|1000cc-, <strong>C</strong> : RM1820.75-|-999, <strong>D</strong> : -RM1820.74|175cc-, <strong>E</strong> : -RM1820.74|-174cc)
+              = f.label t 'staff.vehicles.title'
+              
+        /staff car
+        .col-md-8.col-sm-offset-2
+          %br
+          .row
+            .col-sm-5= t 'staff.vehicles.type_model'
+            .col-sm-2= t 'staff.vehicles.reg_no'
+            .col-sm-2= t 'staff.vehicles.cylinder_capacity'
+            %hr
+          = f.fields_for :vehicles do |builder|
+            = render 'vehicle_fields', :f => builder
+        
+          .help-block.small (Salary|Vehicle cc - <strong>A</strong> : RM2625.45-|1400cc-, <strong>B</strong> : RM2330.00-|1000cc-, <strong>C</strong> : RM1820.75-|-999, <strong>D</strong> : -RM1820.74|175cc-, <strong>E</strong> : -RM1820.74|-174cc)
+          .col-sm-2
+            /working one - 2nd line - hide first (limit to one & only 1 car per staff)
+            /= link_to_add_fields content_tag(:i, "", class: "fa fa-plus-square"), f, :vehicles
+            /= link_to_add_fields t('addmore'), f, :vehicles, "",  t('addmore')
 
           .form-group
             .col-sm-offset-2.col-sm-2
-              = f.submit t('update'), class: "btn btn-primary"                
-
+              = f.submit t('update', class: "btn btn-primary")
+            
       //photo upload pane
       #photo_upload.tab-pane
         .col-md-offset-2
@@ -203,12 +217,11 @@
                 Current file is : #{f.object.photo_file_name}
                 = link_to (t 'document.download'), f.object.photo.url
 
-              = f.file_field :photo              
-              
-        .form-group
-          .col-sm-offset-2.col-sm-2
-            = f.submit t('update'), class: "btn btn-primary"
-
+              = f.file_field :photo
+             
+          .form-group
+            .col-sm-offset-2.col-sm-2
+              = f.submit t('update', class: "btn btn-primary")
 
       //employment pane
       #employment.tab-pane
@@ -299,7 +312,13 @@
                 = f.label t 'staff.to_current_grade_date', for: :to_current_grade_date
               .col-md-2
                 = f.text_field :to_current_grade_date, class: 'form-control date_picker'
-                
+
+          .form-group
+            .col-sm-2.control-label
+              = f.label t 'staff.salary_no', for: :salary_no
+            .col-md-3
+              = f.text_field :salary_no, class: 'form-control'
+                                
           .form-group
             .col-sm-2.control-label
               = f.label t 'staff.starting_salary', for: :starting_salary
@@ -307,6 +326,22 @@
               .input-group
                 .input-group-addon RM
                 = f.text_field :starting_salary, class: 'form-control'
+          
+          .form-group
+            .col-sm-2.control-label
+              = f.label t 'staff.current_salary', for: :current_salary
+            .col-md-3
+              .input-group
+                .input-group-addon RM
+                = f.text_field :current_salary, class: 'form-control'
+
+          .form-group
+            .col-sm-2.control-label
+              = f.label t 'staff.allowance', for: :allowance
+            .col-md-3
+              .input-group
+                .input-group-addon RM
+                = f.text_field :allowance, class: 'form-control'
                 
           .form-group
             .col-sm-2.control-label
@@ -331,27 +366,24 @@
               = f.label t 'staff.uniformstat', for: :uniformstat
             .col-md-2
               = f.select :uniformstat, DropDown::UNIFORM, {include_blank: true, prompt: "Select"}, {class: 'selectpicker', "data-width"=>"auto"}      
-              
+
           .form-group
             .col-sm-offset-2.col-sm-2
-              = f.submit t('update'), class: "btn btn-primary"
-
-
-    
+              = f.submit t('update', class: "btn btn-primary")
+                
       #qualifications.tab-pane
         .row
           .col-sm-offset-2.col-sm-2= t 'staff.level_id'
           .col-sm-3= t 'staff.qname'
           .col-sm-4= t 'staff.institute'
-        - f.fields_for :qualifications do |builder|
+        = f.fields_for :qualifications do |builder|
           = render 'qualification_fields', :f => builder
         
-        .col-sm-offset-2.col-sm-2
-          /= link_to_add_fields content_tag(:i, "", class: "fa fa-plus-square"), f, :qualifications
-          = link_to_add_fields t('addmore'), f, :qualifications, "",  t('addmore')
-          = f.submit t('update'), class: "btn btn-primary"
-
-
+          .col-sm-offset-2.col-sm-2
+            /= link_to_add_fields content_tag(:i, "", class: "fa fa-plus-square"), f, :qualifications
+            = link_to_add_fields t('addmore'), f, :qualifications, "",  t('addmore')
+            = f.submit t('update'), class: "btn btn-primary"
+            
       #finance.tab-pane
         .row
           .col-md-offset-1
@@ -371,25 +403,21 @@
             .form-group
               .col-sm-2.control-label
                 = f.label t 'staff.banks.title'
-                
+        
         .row
           .col-sm-offset-2.col-sm-2= t 'staff.banks.bankaccno'
           .col-sm-2= t 'staff.bank.bankacctype'
           .col-sm-3= t 'staff.bank.bankname'
-          
-        - f.fields_for :bankaccounts do |builder|
+
+        = f.fields_for :bankaccounts do |builder|
           = render 'bankaccount_fields', :f => builder
         .row
           /= link_to_add_fields image_tag("add.png", :border => 0, :title => t('addmore')), f, :bankaccounts
           = link_to_add_fields t('addmore'), f, :bankaccounts, "",  t('addmore')
-
-        
+          
         .form-group
           .col-sm-offset-2.col-sm-2
-            = f.submit t('update'), class: "btn btn-primary"
-            
-                
-              
+            = f.submit t('update', class: "btn btn-primary")
         
       #loans.tab-pane
         .row
@@ -403,19 +431,16 @@
           .col-sm-1= t 'staff.loans.enddate'
           .col-sm-1= t 'staff.loans.enddeduction'
           %hr
-        - f.fields_for :loans do |builder|
+        = f.fields_for :loans do |builder|
           = render 'loan_fields', :f => builder
         .row
           /= link_to_add_fields image_tag("add.png", :border => 0, :title => t('addmore')), f, :loans
           = link_to_add_fields t('addmore'), f, :loans, "",  t('addmore')
 
-        
         .form-group
           .col-sm-offset-2.col-sm-2
-            = f.submit t('update'), class: "btn btn-primary"
-            
-            
-            
+            = f.submit t('update', class: "btn btn-primary")
+          
       #contacts.tab-pane
         .row
           .col-sm-offset-1.col-sm-1= t 'staff.kintype_id'
@@ -424,7 +449,7 @@
           .col-sm-1= t 'staff.phone'
           .col-sm-2 Profession
           .col-sm-4 Address
-        - f.fields_for :kins do |builder|
+        = f.fields_for :kins do |builder|
           = render 'kin_fields', :f => builder
         .row
           /= link_to_add_fields image_tag("add.png", :border => 0, :title => t('addmore')), f, :kins
@@ -437,10 +462,10 @@
 
 
 :javascript
-  function add_fields(link, association, content) {  
-    var new_id = new Date().getTime();  
-    var regexp = new RegExp("new_" + association, "g");  
-    $(link).parent().before(content.replace(regexp, new_id));  
+  function add_fields(link, association, content) {
+    var new_id = new Date().getTime();
+    var regexp = new RegExp("new_" + association, "g");
+    $(link).parent().before(content.replace(regexp, new_id));
   }
 
 

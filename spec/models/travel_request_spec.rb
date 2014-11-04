@@ -1,8 +1,10 @@
 require 'spec_helper'
 
 describe TravelRequest do
-  
-  before { @travel_request = FactoryGirl.create(:travel_request)}
+  before { @staff = FactoryGirl.create(:staff) }
+  before { @vehicle = FactoryGirl.create(:vehicle, reg_no: "JJJ1234", staff_id: @staff.id) }
+  before { @vehicle2 = FactoryGirl.create(:vehicle, reg_no: "JKK 4545", staff_id: @staff.id)}
+  before { @travel_request = FactoryGirl.create(:travel_request, staff_id: @staff.id)}
   
   subject {@travel_request }
   
@@ -37,7 +39,7 @@ describe TravelRequest do
   
   it { should be_valid }
   
-  describe "staff (claimant) is not present" do
+  describe "applicant is not present" do
     before { @travel_request.staff_id=nil}
     it {should_not be_valid}
   end
@@ -57,9 +59,10 @@ describe TravelRequest do
     it {should_not be_valid}
   end
   
-  describe "own car notes is not present when own car is selected" do
+  describe "own car notes is not present when own car is selected and vehicle registered(in staff module)" do
     before do
       @travel_request.own_car=true
+      @travel_request.applicant.vehicles.blank? == false
       @travel_request.own_car_notes=nil
     end
     it {should_not be_valid}

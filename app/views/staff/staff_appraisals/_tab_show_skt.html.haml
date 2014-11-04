@@ -1,67 +1,7 @@
-.col-md-9.col-md-offset-1
-  %h4= t 'evaluation.skt.title'
-  %dl.dl-horizontal
-    - just_a_counter = 0
-    - for staff_appraisal_skt in @staff_appraisal.staff_appraisal_skts.where('half =?', 1).order(priority: :asc)
-      - just_a_counter += 1
-      
-      %dt S/N
-      %dd= just_a_counter
-      
-      %dt= t 'evaluation.skt.description'
-      - if staff_appraisal_skt.is_dropped == true
-        %dd{:style => "text-decoration: line-through;"}= staff_appraisal_skt.description
-      - else
-        %dd= staff_appraisal_skt.description
-
-      %dt= t 'evaluation.skt.performance'
-      %dd= staff_appraisal_skt.indicator
-      %hr
-	  
-  - if @staff_appraisal.is_skt_submit == true && @staff_appraisal.is_skt_endorsed == true
-    %h4= t 'evaluation.skt_review.title'
-
-    %i= t 'evaluation.skt_review.add'
-    %dl.dl-horizontal     
-      - just_a_counter = 0
-      - for staff_appraisal_skt in @staff_appraisal.staff_appraisal_skts.where('half = ?', 2).order(priority: :asc)
-        - just_a_counter += 1
-        %dt S/N
-        %dd= just_a_counter
-		  
-        %dt= t 'evaluation.skt.description'
-        %dd= staff_appraisal_skt.description
-		  
-        %dt= t 'evaluation.skt.performance'
-        %dd= staff_appraisal_skt.indicator
-      
-    %i= t 'evaluation.skt_review.drop'
-    %dl.dl-horizontal     
-      - just_a_counter = 0
-      - for staff_appraisal_skt in @staff_appraisal.staff_appraisal_skts.where('is_dropped = ?', true).order(priority: :asc)
-        - just_a_counter += 1
-        %dt S/N
-        %dd= just_a_counter
-		  
-        %dt= t 'evaluation.skt.description'
-        %dd= staff_appraisal_skt.description
-		  
-        %dt= t 'evaluation.skt.performance'
-        %dd= staff_appraisal_skt.indicator 
-		
-		
-    %h4= t 'evaluation.skt_review.title3'
-    %dl.dl-horizontal 
-      %dt= t 'helpers.label.staff_appraisal.skt_pyd_report'
-      %dd= h @staff_appraisal.skt_pyd_report
-
-      %dt= t 'helpers.label.staff_appraisal.is_skt_pyd_report_done'
-      %dd= h @staff_appraisal.is_skt_pyd_report_done? ? "Yes, on " + l(@staff_appraisal.skt_pyd_report_on) : "No"
-	  
-      - if @staff_appraisal.is_skt_ppp_report_done ==  true
-        
-        %dt= t 'helpers.label.staff_appraisal.skt_ppp_report'
-        %dd= h @staff_appraisal.skt_ppp_report
-        
-        %dt= t 'helpers.label.staff_appraisal.is_skt_ppp_report_done'
-        %dd= h @staff_appraisal.is_skt_ppp_report_done? ? "Yes, on " + l(@staff_appraisal.skt_ppp_report_on)   : "No"
+= render 'tab_show_skt_1'
+- if (@staff_appraisal.is_skt_submit == true && @staff_appraisal.is_skt_endorsed == true) || @staff_appraisal.evaluation_status == t('staff.staff_appraisal.staff_appraisal_complete')
+  = render 'tab_show_skt_endorse' 
+- if @staff_appraisal.evaluation_status == t('staff.staff_appraisal.ready_for_ppp_skt_report') || @staff_appraisal.evaluation_status == t('staff.staff_appraisal.ppp_report_complete') || @staff_appraisal.evaluation_status == t('staff.staff_appraisal.submitted_for_evaluation_by_ppp') || @staff_appraisal.evaluation_status == t('staff.staff_appraisal.ppp_report_complete') || @staff_appraisal.evaluation_status == t('staff.staff_appraisal.submitted_by_ppp_for_evaluation_to_PPK') || @staff_appraisal.evaluation_status == t('staff.staff_appraisal.staff_appraisal_complete')
+  =render 'tab_show_skt_review'  
+- if @staff_appraisal.evaluation_status == t('staff.staff_appraisal.ppp_report_complete') || @staff_appraisal.evaluation_status == t('staff.staff_appraisal.submitted_for_evaluation_by_ppp') || @staff_appraisal.evaluation_status == t('staff.staff_appraisal.submitted_by_ppp_for_evaluation_to_PPK') || @staff_appraisal.evaluation_status == t('staff.staff_appraisal.staff_appraisal_complete')
+  = render 'tab_show_skt_review_eval1'
