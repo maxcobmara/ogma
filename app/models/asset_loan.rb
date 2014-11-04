@@ -17,17 +17,36 @@ class AssetLoan < ActiveRecord::Base
   scope :onloan, -> { where('is_approved IS TRUE AND is_returned IS NOT TRUE')}
   scope :pending, -> { where('is_approved IS NULL AND loan_officer IS NULL')}
   scope :rejected, -> { where('is_approved IS FALSE' )}
-  scope :overdue, -> { where('is_approved IS TRUE AND is_returned IS NULL AND expected_on>=?',Date.today )}
+  scope :overdue, -> { where('is_approved IS TRUE AND is_returned IS NULL AND expected_on<?',Date.today)}
   
   # define scope
   def self.keyword_search(query) 
     asset_ids = Asset.where('assetcode ILIKE (?) OR name ILIKE(?)', "%#{query}%", "%#{query}%").pluck(:id).uniq
     where('asset_id IN(?)', asset_ids)
   end
+  
+  def self.status_search(query)
+    if query == '1'
+      loanstatus = where('is_approved IS TRUE AND is_returned IS NOT TRUE')
+    elsif query == '2'
+      loanstatus = where('is_approved IS NULL AND loan_officer IS NULL')
+    elsif query == '3'
+      loanstatus = where('is_approved IS FALSE' )
+    elsif query == '4'
+      loanstatus =  where('is_approved IS TRUE AND is_returned IS NULL AND expected_on<?',Date.today)
+    elsif query == '5'
+      loanstatus = where('is_approved IS TRUE AND is_returned IS NULL AND expected_on=?',Date.today)
+    elsif query == '6'
+      loanstatus = where('is_approved IS TRUE AND is_returned IS TRUE')
+    else
+      loanstatus = AssetLoan.all
+    end 
+    loanstatus
+  end
 
   # whitelist the scope
   def self.ransackable_scopes(auth_object = nil)
-    [:keyword_search]
+    [:keyword_search, :status_search]
   end
   
   def must_assign_if_external?  #16July2013

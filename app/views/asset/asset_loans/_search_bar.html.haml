@@ -13,8 +13,7 @@
     %td=f.text_field :approved_date_eq, class: 'date_picker form-control', placeholder: (t 'asset.loan.approved_date'), class: 'form-control'
     %td
       .input-group
-        select status
-        /=f.text_field :positions_name_cont, size: 2, class: 'form-control'
+        =select_tag('q[status_search]', options_for_select([[t('actions.all_records'),'0'],[t('asset.loan.onloan'),'1'],[t('asset.loan.pending'),'2'],[t('asset.loan.rejected'),'3'],[ t('asset.loan.overdue'),'4'],[ t('asset.loan.due_date'),'5'],[ t('asset.loan.is_returned'),'6']]), class: 'selectpicker',"data-width"=>'60px') 
         %span.input-group-btn
           %button.btn.btn-sm.btn-default.right{:type => "submit"}
             %i.fa.fa-search.fa-fw

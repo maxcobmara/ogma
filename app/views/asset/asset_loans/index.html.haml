@@ -25,9 +25,10 @@
           = t 'asset.loan.separator_slash'
           = sort_link(@search, :expected_on, (t 'asset.loan.returned_date'))
         %th= sort_link(@search, :approved_date, (t 'asset.loan.approved_date'))
-        %th= sort_link(@search, :status, "Status")
+        %th Status
     %tbody
       = render "search_bar"
+      /to revised later - upon completion of roles assignment - Admin, Asset Admin & Owner+Responsible Unit (index list)
       - @asset_loans.each do |asset_loan|
         %tr
           %td= link_to asset_loan.asset.code_asset, asset_loan_path(asset_loan)
