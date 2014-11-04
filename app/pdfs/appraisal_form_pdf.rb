@@ -23,20 +23,28 @@ class Appraisal_formPdf < Prawn::Document
     bahagian2b2
     table_latihan3
     bahagian2b3
-    bahagian3  #line 203
-    bahagian4  #line 274
-    bahagian5 #line 336
-    bahagian6 #line 406
-    bahagian7 #line 434
-    bahagian8 #line 456
-    bahagian9 #504
-    lampiranA #line 542
-    lampiranA1 #line 587
-    table_lampiranA1 #line 593
-    lampiranA1a #line 613
-    lampiranA2
+    bahagian3  #line 
+    if @staff_appraisal.person_type == 4
+    bahagian4_4 #line 
+    bahagian5_4  #line 422
+    elsif @staff_appraisal.person_type == 5
+    bahagian4_5
+    bahagian5_5
+    elsif @staff_appraisal.person_type == 3
+    bahagian4_3 #line 351
+    bahagian5_3
+  end
+    bahagian6 #line 686
+    bahagian7 
+    bahagian8 #line 736
+    bahagian9 
+    lampiranA #line 822
+    lampiranA1 
+    table_lampiranA1 
+    lampiranA1a 
+    lampiranA2 #line 916
     table_lampiranA2
-    lampiranA2b #line 666
+    lampiranA2b #line 933
     table_lampiranAa3
     lampiranA3
    
@@ -205,6 +213,7 @@ end
            end
 end
 
+
 def bahagian3
   start_new_page
   text "BAHAGIAN III - PENGHASILAN KERJA ( Wajaran 50% )", :align => :left, :size => 12, :style => :bold   
@@ -280,7 +289,7 @@ def bahagian3
        move_down 30  
 end
 
-def bahagian4
+def bahagian4_4
   
   text "BAHAGIAN IV - PENGETAHUAN DAN KEMAHIRAN ( Wajaran 25% )", :align => :left, :size => 12, :style => :bold  
   move_down 20     
@@ -293,7 +302,7 @@ def bahagian4
              ["2. ","  PELAKSANAAN DASAR, PERATURAN DAN ARAHAN PENTADBIRAN", "",""],
              ["","Kebolehan menghayati dan melaksanakan dasar, peraturan dan arahan pentadbiran berkaitan dengan bidang tugasnya.", "#{@staff_appraisal.e1g2q2}","#{@staff_appraisal.e2g2q2}"],
              ["3. ","  KUANTITI HASIL KERJA","",""],
-             ["","Kuantiti hasil kerja seperti jumlah bilangan, kadar, kekerapan dan sebagainya berbanding dengan sasaran kuantiti kerja yang ditetapkan.","#{@staff_appraisal.e2g2q3}","#{@staff_appraisal.e2g2q3}"],
+             ["","Kuantiti hasil kerja seperti jumlah bilangan, kadar, kekerapan dan sebagainya berbanding dengan sasaran kuantiti kerja yang ditetapkan.","#{@staff_appraisal.e1g2q3}","#{@staff_appraisal.e2g2q3}"],
              ["", "Jumlah markah mengikut wajaran","#{@staff_appraisal.e1g2_total} x 25 = #{@staff_appraisal.e1g2_percent} / 30",
                "#{@staff_appraisal.e2g2_total} x 25 = #{@staff_appraisal.e2g2_percent} / 30"]]
              
@@ -339,7 +348,135 @@ def bahagian4
        move_down 30  
 end
 
-def bahagian5
+def bahagian4_3
+  
+  text "BAHAGIAN IV - PENGETAHUAN DAN KEMAHIRAN ( Wajaran 25% )", :align => :left, :size => 12, :style => :bold  
+  move_down 20     
+  text "Pegawai Penilai dikehendaki memberikan penilaian berasaskan kepada penjelasan setiap kriteria yang dinyatakan di bawah dengan menggunakan skala 1 hingga 10:", :align => :left, :size => 12
+  move_down 10
+  
+  data1 = [["", "KRITERIA ", "PPP", "PPK"],
+           ["1.", "  ILMU PENGETAHUAN DAN KEMAHIRAN DALAM BIDANG KERJA", "", ""],
+           ["","Mempunyai ilmu pengetahuan dan kemahiran/kepakaran dalam menghasilkan kerja meliputi kebolehan mengenalpasti, menganalisis serta menyelesaikan masalah.", "#{@staff_appraisal.e1g2q1}" , "#{@staff_appraisal.e2g2q1}" ],
+             ["2. ","  PELAKSANAAN DASAR, PERATURAN DAN ARAHAN PENTADBIRAN", "",""],
+             ["","Kebolehan menghayati dan melaksanakan dasar, peraturan dan arahan pentadbiran berkaitan dengan bidang tugasnya.", "#{@staff_appraisal.e1g2q2}","#{@staff_appraisal.e2g2q2}"],
+             ["3. "," KEBERKESANAN KOMUNIKASI","",""],
+             ["","Kebolehan menyampaikan maksud, pendapat, kefahaman atau arahan secara lisan dan tulisan berkaitan dengan bidang tugas merangkumi penguasaan bahasa melalui tulisan dan lisan dengan menggunakan tatabahasa dan persembahan yang baik","#{@staff_appraisal.e1g2q3}","#{@staff_appraisal.e2g2q3}"],
+             ["", "Jumlah markah mengikut wajaran","#{@staff_appraisal.e1g2_total} x 25 = #{@staff_appraisal.e1g2_percent} / 30",
+               "#{@staff_appraisal.e2g2_total} x 25 = #{@staff_appraisal.e2g2_percent} / 30"]]
+             
+       table(data1 , :column_widths => [30, 250,100,100], :cell_style => { :size => 10}) do
+         row(0).column(1).align = :center
+         column(2).align = :center  
+         column(3).align = :center 
+         row(0).column(0).borders = [:left, :top]
+         row(0).column(1).borders = [:right, :top]
+         row(1).column(0).borders = [:left, :top]
+         row(1).column(1).borders = [:right, :top]
+         row(1).column(2).borders = [ :top ]
+         row(1).font_style = :bold
+         row(1).column(3).borders = [:right, :left, :top]
+         row(2).column(0).borders = [:left]
+         row(2).column(1).borders = [:right]
+         row(2).column(2).borders = [ ]
+         row(2).column(3).borders = [:right, :left]
+         row(3).column(0).borders = [:left, :top]
+         row(3).column(1).borders = [:right, :top]
+         row(3).column(2).borders = [ :top ]
+         row(3).column(3).borders = [:right, :left, :top]
+         row(3).font_style = :bold
+         row(4).column(0).borders = [:left]
+         row(4).column(1).borders = [:right]
+         row(4).column(2).borders = [ ]
+         row(4).column(3).borders = [:right, :left]
+         row(5).column(0).borders = [:left, :top]
+         row(5).column(1).borders = [:right, :top]
+         row(5).column(2).borders = [ :top ]
+         row(5).column(3).borders = [:right, :left, :top]
+         row(5).font_style = :bold
+         row(6).column(0).borders = [:left]
+         row(6).column(1).borders = [:right]
+         row(6).column(2).borders = [ ]
+         row(6).column(3).borders = [:right, :left]
+         row(7).column(0).borders = [:left, :top, :bottom]
+         row(7).column(1).borders = [:right, :top, :bottom]
+         row(0).font_style = :bold
+         self.row_colors = ["FEFEFE", "FFFFFF"]
+
+       end 
+       move_down 30  
+end
+
+def bahagian4_5
+  text "BAHAGIAN IV - KUALITI PERIBADI ( Wajaran 25% )", :align => :left, :size => 12, :style => :bold 
+  move_down 20 
+  text "Pegawai Penilai dikehendaki memberikan penilaian berasaskan kepada penjelasan setiap kriteria yang dinyatakan di bawah dengan menggunakan skala 1 hingga 10:", :align => :left, :size => 12
+  move_down 20
+  
+  data1 = [["", "KRITERIA ", "PPP", "PPK"],
+           ["1.", "  KEBOLEHAN MENGELOLA", "", ""],
+           ["","Keupayaan dan kebolehan menggembleng segala sumber dalam kawalannya seperti kewangan, tenaga manusia,peralatan dan maklumat bagi merancang mengatur, membahagi dan mengendalikan sesuatu tugas untuk mencapai objektif organisasi.", "#{@staff_appraisal.e1g2q1}" , "#{@staff_appraisal.e2g2q1}" ],
+             ["2. ","  DISIPLIN", "",""],
+             ["","Mempunyai daya kawalan diri dari segi mental dan fizikal termasuk mematuhi peraturan, menepati masa, menunaikan janji dan bersifat sabar.", "#{@staff_appraisal.e1g2q2}","#{@staff_appraisal.e2g2q2}"],
+             ["3. ","  PROAKTIF DAN INOVATIF","",""],
+             ["","Kebolehan menjangka kemungkinan, mencipta dan mengeluarkan idea baru serta membuat pembaharuan bagi mempertingkatkan kualiti dan produktiviti organisasi.","#{@staff_appraisal.e1g2q3}","#{@staff_appraisal.e2g2q3}"],
+             ["4. ","  JALINAN HUBUNGAN DAN KERJASAMA","",""],
+             ["","Kebolehan pegawai dalam mewujudkan suasana kerjasama yang harmoni dan mesra serta boleh menyesuaikan diri dalam semua keadaan.","#{@staff_appraisal.e1g2q4}","#{@staff_appraisal.e2g2q4}"],
+             ["", "Jumlah markah mengikut wajaran","#{@staff_appraisal.e1g2_total} / 30 x 25 = #{@staff_appraisal.e1g2_percent} ",
+               "#{@staff_appraisal.e2g2_total} / 30 x 25 = #{@staff_appraisal.e2g2_percent}"]]
+               
+               table(data1 , :column_widths => [30, 250,100,100], :cell_style => { :size => 10}) do
+                 row(0).column(1).align = :center
+                 column(2).align = :center  
+                 column(3).align = :center 
+                 row(0).column(0).borders = [:left, :top]
+                 row(0).column(1).borders = [:right, :top]
+                 row(1).column(0).borders = [:left, :top]
+                 row(1).column(1).borders = [:right, :top]
+                 row(1).column(2).borders = [ :top ]
+                 row(1).font_style = :bold
+                 row(1).column(3).borders = [:right, :left, :top]
+                 row(2).column(0).borders = [:left]
+                 row(2).column(1).borders = [:right]
+                 row(2).column(2).borders = [ ]
+                 row(2).column(3).borders = [:right, :left]
+                 row(3).column(0).borders = [:left, :top]
+                 row(3).column(1).borders = [:right, :top]
+                 row(3).column(2).borders = [ :top ]
+                 row(3).column(3).borders = [:right, :left, :top]
+                 row(3).font_style = :bold
+                 row(4).column(0).borders = [:left]
+                 row(4).column(1).borders = [:right]
+                 row(4).column(2).borders = [ ]
+                 row(4).column(3).borders = [:right, :left]
+                 row(5).column(0).borders = [:left, :top]
+                 row(5).column(1).borders = [:right, :top]
+                 row(5).column(2).borders = [ :top ]
+                 row(5).column(3).borders = [:right, :left, :top]
+                 row(5).font_style = :bold
+                 row(6).column(0).borders = [:left]
+                 row(6).column(1).borders = [:right]
+                 row(6).column(2).borders = [ ]
+                 row(6).column(3).borders = [:right, :left]
+                 row(7).column(0).borders = [:left, :top]
+                 row(7).column(1).borders = [:right, :top]
+                 row(7).column(2).borders = [ :top ]
+                 row(7).column(3).borders = [:right, :left, :top]
+                 row(7).font_style = :bold
+                 row(8).column(0).borders = [:left]
+                 row(8).column(1).borders = [:right]
+                 row(8).column(2).borders = [ ]
+                 row(8).column(3).borders = [:right, :left]
+                 row(9).column(0).borders = [:left, :top, :bottom]
+                 row(9).column(1).borders = [:right, :top, :bottom]
+                 row(0).font_style = :bold
+                 self.row_colors = ["FEFEFE", "FFFFFF"]
+
+               end 
+  move_down 20   
+end
+
+def bahagian5_4
   
   text "BAHAGIAN V - KUALITI PERIBADI ( Wajaran 20% )", :align => :left, :size => 12, :style => :bold    
   move_down 20   
@@ -348,14 +485,14 @@ def bahagian5
   
   data1 = [["", "KRITERIA (Dinilai berasaskan SKT)", "PPP", "PPK"],
            ["1.", "  KEBOLEHAN MENGELOLA", "", ""],
-           ["","Keupayaan dan kebolehan menggembleng segala sumber dalam kawalannya seperti kewangan, tenaga manusia, peralatan dan maklumat bagi merancang mengatur, membahagi dan mengendalikan sesuatu tugas untuk mencapai objektif organisasi.", "" , "" ],
+           ["","Keupayaan dan kebolehan menggembleng segala sumber dalam kawalannya seperti kewangan, tenaga manusia, peralatan dan maklumat bagi merancang mengatur, membahagi dan mengendalikan sesuatu tugas untuk mencapai objektif organisasi.", "#{@staff_appraisal.e1g3q1}" , "#{@staff_appraisal.e2g3q1}" ],
              ["2. ","   DISIPLIN", "",""],
-             ["","Mempunyai daya kawalan diri dari segi mental dan fizikal termasuk mematuhi peraturan, menepati masa, menunaikan janji dan bersifat sabar.", "",""],
+             ["","Mempunyai daya kawalan diri dari segi mental dan fizikal termasuk mematuhi peraturan, menepati masa, menunaikan janji dan bersifat sabar.", "#{@staff_appraisal.e1g3q2}","#{@staff_appraisal.e2g3q2}"],
              ["3. ","   PROAKTIF DAN INOVATIF","",""],
-             ["","Kebolehan menjangka kemungkinan, mencipta dan mengeluarkan idea baru serta membuat pembaharuan bagi mempertingkatkan kualiti dan produktiviti organisasi.","",""],
+             ["","Kebolehan menjangka kemungkinan, mencipta dan mengeluarkan idea baru serta membuat pembaharuan bagi mempertingkatkan kualiti dan produktiviti organisasi.","#{@staff_appraisal.e1g3q3}","#{@staff_appraisal.e2g3q3}"],
              ["4. ","   JALINAN HUBUNGAN DAN KERJASAMA","",""],
-             [""," Kebolehan pegawai dalam mewujudkan suasana kerjasama yang harmoni dan mesra serta boleh menyesuaikan diri dalam semua keadaan.","",""],
-             ["", "Jumlah markah mengikut wajaran","",""]]
+             [""," Kebolehan pegawai dalam mewujudkan suasana kerjasama yang harmoni dan mesra serta boleh menyesuaikan diri dalam semua keadaan.","#{@staff_appraisal.e1g3q4}","#{@staff_appraisal.e2g3q4}"],
+             ["", "Jumlah markah mengikut wajaran","#{@staff_appraisal.e1g3_total} / 50 x 20 = #{@staff_appraisal.e1g3_percent}","#{@staff_appraisal.e2g3_total} / 50 x 20 = #{@staff_appraisal.e2g3_percent}"]]
              
        table(data1 , :column_widths => [30, 250,100,100], :cell_style => { :size => 10}) do
          row(0).font_style = :bold
@@ -402,6 +539,144 @@ def bahagian5
          row(8).column(3).borders = [:right, :left]
          row(9).column(0).borders = [:left, :top, :bottom]
          row(9).column(1).borders = [:right, :top, :bottom]
+         self.row_colors = ["FEFEFE", "FFFFFF"]
+
+       end 
+       move_down 40   
+end
+
+def bahagian5_5
+  
+  text "BAHAGIAN V - KUALITI PERIBADI ( Wajaran 20% )", :align => :left, :size => 12, :style => :bold    
+  move_down 20   
+  text "Pegawai Penilai dikehendaki memberikan penilaian berasaskan kepada penjelasan setiap kriteria yang dinyatakan di bawah dengan menggunakan skala 1 hingga 10:", :align => :left, :size => 12
+  move_down 20  
+  
+  data1 = [["", "KRITERIA (Dinilai berasaskan SKT)", "PPP", "PPK"],
+           ["1.", "  ILMU PENGETAHUAN DAN KEMAHIRAN DALAM BIDANG KERJA", "", ""],
+           ["","Mempunyai ilmu pengetahuan dan kemahiran/kepakaran dalam menghasilkan kerja meliputi kebolehan mengenalpasti, menganalisis serta menyelesaikan masalah.", "#{@staff_appraisal.e1g3q1}" , "#{@staff_appraisal.e2g3q1}" ],
+             ["2. "," PELAKSANAAN PERATURAN DAN ARAHAN PENTADBIRAN", "",""],
+             ["","Kebolehan menghayati dan melaksanakan dasar, peraturan dan arahan pentadbiran berkaitan dengan bidang tugasnya.", "#{@staff_appraisal.e1g3q2}","#{@staff_appraisal.e2g3q2}"],
+             ["3. ","KEBERKESANAN KOMUNIKASI","",""],
+             ["","Kebolehan menyampaikan maksud, pendapat, kefahaman atau arahan","#{@staff_appraisal.e1g3q3}","#{@staff_appraisal.e2g3q3}"],
+             ["", "Jumlah markah mengikut wajaran","#{@staff_appraisal.e1g3_total} / 50 x 20 = #{@staff_appraisal.e1g3_percent}","#{@staff_appraisal.e2g3_total} / 50 x 20 = #{@staff_appraisal.e2g3_percent}"]]
+             
+       table(data1 , :column_widths => [30, 250,100,100], :cell_style => { :size => 10}) do
+         row(0).font_style = :bold
+         row(1).font_style = :bold
+         row(0).column(1).align = :center
+         column(2).align = :center  
+         column(3).align = :center 
+         row(0).column(0).borders = [:left, :top]
+         row(0).column(1).borders = [:right, :top]
+         row(1).column(0).borders = [:left, :top]
+         row(1).column(1).borders = [:right, :top]
+         row(1).column(2).borders = [ :top ]
+         row(1).column(3).borders = [:right, :left, :top]
+         row(2).column(0).borders = [:left]
+         row(2).column(1).borders = [:right]
+         row(2).column(2).borders = [ ]
+         row(2).column(3).borders = [:right, :left]
+         row(3).column(0).borders = [:left, :top]
+         row(3).column(1).borders = [:right, :top]
+         row(3).column(2).borders = [ :top ]
+         row(3).column(3).borders = [:right, :left, :top]
+         row(3).font_style = :bold
+         row(4).column(0).borders = [:left]
+         row(4).column(1).borders = [:right]
+         row(4).column(2).borders = [ ]
+         row(4).column(3).borders = [:right, :left]
+         row(5).column(0).borders = [:left, :top]
+         row(5).column(1).borders = [:right, :top]
+         row(5).column(2).borders = [ :top ]
+         row(5).column(3).borders = [:right, :left, :top]
+         row(5).font_style = :bold
+         row(6).column(0).borders = [:left]
+         row(6).column(1).borders = [:right]
+         row(6).column(2).borders = [ ]
+         row(6).column(3).borders = [:right, :left]
+         row(7).column(0).borders = [:left, :top, :bottom]
+         row(7).column(1).borders = [:right, :top, :bottom]
+         self.row_colors = ["FEFEFE", "FFFFFF"]
+
+       end 
+       move_down 40   
+end
+
+def bahagian5_3
+  
+  text "BAHAGIAN V - KUALITI PERIBADI ( Wajaran 20% )", :align => :left, :size => 12, :style => :bold    
+  move_down 20   
+  text "Pegawai Penilai dikehendaki memberikan penilaian berasaskan kepada penjelasan setiap kriteria yang dinyatakan di bawah dengan menggunakan skala 1 hingga 10:", :align => :left, :size => 12
+  move_down 20  
+  
+  data1 = [["", "KRITERIA (Dinilai berasaskan SKT)", "PPP", "PPK"],
+           ["1.", "  CIRI-CIRI PEMIMPIN", "", ""],
+           [" ", " Mempunyai wawasan, komitmen, kebolehan membuat keputusan, menggerak dan memberi dorongan kepada pegawai ke arah pencapaian objektif organisasi.", "#{@staff_appraisal.e1g3q1 }", "#{@staff_appraisal.e2g3q1 }"],
+           ["1.", "  KEBOLEHAN MENGELOLA", "", ""],
+           ["","Keupayaan dan kebolehan menggembleng segala sumber dalam kawalannya seperti kewangan, tenaga manusia, peralatan dan maklumat bagi merancang mengatur, membahagi dan mengendalikan sesuatu tugas untuk mencapai objektif organisasi.", "#{@staff_appraisal.e1g3q2 }" , "#{@staff_appraisal.e2g3q2 }" ],
+             ["2. ","   DISIPLIN", "",""],
+             ["","Mempunyai daya kawalan diri dari segi mental dan fizikal termasuk mematuhi peraturan, menepati masa, menunaikan janji dan bersifat sabar.", "#{@staff_appraisal.e1g3q3 }","#{@staff_appraisal.e2g3q3 }"],
+             ["3. ","   PROAKTIF DAN INOVATIF","",""],
+             ["","Kebolehan menjangka kemungkinan, mencipta dan mengeluarkan idea baru serta membuat pembaharuan bagi mempertingkatkan kualiti dan produktiviti organisasi.","#{@staff_appraisal.e1g3q4 }","#{@staff_appraisal.e2g3q4 }"],
+             ["4. ","   JALINAN HUBUNGAN DAN KERJASAMA","",""],
+             [""," Kebolehan pegawai dalam mewujudkan suasana kerjasama yang harmoni dan mesra serta boleh menyesuaikan diri dalam semua keadaan.","#{@staff_appraisal.e1g3q5 }","#{@staff_appraisal.e2g3q5 }"],
+             ["", "Jumlah markah mengikut wajaran","#{@staff_appraisal.e1g3_total } / 50 x 20 = #{@staff_appraisal.e1g3_percent}","#{@staff_appraisal.e2g3_total } / 50 x 20 = #{@staff_appraisal.e2g3_percent}"]]
+             
+       table(data1 , :column_widths => [30, 250,100,100], :cell_style => { :size => 10}) do
+         row(0).font_style = :bold
+         row(1).font_style = :bold
+         row(0).column(1).align = :center
+         column(2).align = :center  
+         column(3).align = :center 
+         row(0).column(0).borders = [:left, :top]
+         row(0).column(1).borders = [:right, :top]
+         row(1).column(0).borders = [:left, :top]
+         row(1).column(1).borders = [:right, :top]
+         row(1).column(2).borders = [ :top ]
+         row(1).column(3).borders = [:right, :left, :top]
+         row(2).column(0).borders = [:left]
+         row(2).column(1).borders = [:right]
+         row(2).column(2).borders = [ ]
+         row(2).column(3).borders = [:right, :left]
+         row(3).column(0).borders = [:left, :top]
+         row(3).column(1).borders = [:right, :top]
+         row(3).column(2).borders = [ :top ]
+         row(3).column(3).borders = [:right, :left, :top]
+         row(3).font_style = :bold
+         row(4).column(0).borders = [:left]
+         row(4).column(1).borders = [:right]
+         row(4).column(2).borders = [ ]
+         row(4).column(3).borders = [:right, :left]
+         row(5).column(0).borders = [:left, :top]
+         row(5).column(1).borders = [:right, :top]
+         row(5).column(2).borders = [ :top ]
+         row(5).column(3).borders = [:right, :left, :top]
+         row(5).font_style = :bold
+         row(6).column(0).borders = [:left]
+         row(6).column(1).borders = [:right]
+         row(6).column(2).borders = [ ]
+         row(6).column(3).borders = [:right, :left]
+         row(7).column(0).borders = [:left, :top]
+         row(7).column(1).borders = [:right, :top]
+         row(7).column(2).borders = [ :top ]
+         row(7).column(3).borders = [:right, :left, :top]
+         row(7).font_style = :bold
+         row(8).column(0).borders = [:left]
+         row(8).column(1).borders = [:right]
+         row(8).column(2).borders = [ ]
+         row(8).column(3).borders = [:right, :left]
+         row(9).column(0).borders = [:left, :top]
+         row(9).column(1).borders = [:right, :top]
+         row(9).column(2).borders = [ :top ]
+         row(9).column(3).borders = [:right, :left, :top]
+         row(9).font_style = :bold
+         row(10).column(0).borders = [:left]
+         row(10).column(1).borders = [:right]
+         row(10).column(2).borders = [ ]
+         row(10).column(3).borders = [:right, :left]
+         row(11).column(0).borders = [:left, :top, :bottom]
+         row(11).column(1).borders = [:right, :top, :bottom]
          self.row_colors = ["FEFEFE", "FFFFFF"]
 
        end 
@@ -515,10 +790,10 @@ def bahagian9
   text "2.  Penilai Pertama hendaklah memberi ulasan keseluruhan prestasi PYD.", :align => :left, :size => 12
   text "#{@staff_appraisal.e2_performance}..............", :align => :left, :size => 12, :indent_paragraphs => 30
   move_down 20
-  data1 = [[ "Nama PPK :", "#{@staff_appraisal.eval2_officer.name}"],
-            ["Jawatan :", "#{@staff_appraisal.eval2_officer.positions.name}"],
+  data1 = [[ "Nama PPK :", "#{@staff_appraisal.eval2_officer.try(:name)}"],
+            ["Jawatan :", "#{@staff_appraisal.eval2_officer.try(:positions).try(:name)}"],
              ["Kementerian /Jabatan : ","Kolej Sains Kesihatan Bersekutu Johor Bahru"],
-           ["No. K.P : ","#{@staff_appraisal.eval2_officer.formatted_mykad}"]]
+           ["No. K.P : ","#{@staff_appraisal.eval2_officer.try(:formatted_mykad)}"]]
              
        table(data1 , :column_widths => [100,330], :cell_style => { :size => 11}) do
          row(0).column(0).borders = [:left, :top]
@@ -533,7 +808,7 @@ def bahagian9
        end 
       move_down 10
        
-       data1 = [["#{@staff_appraisal.eval2_officer.name}","#{@staff_appraisal.is_completed_on.try(:strftime, "%d/%m/%y")}"],
+       data1 = [["#{@staff_appraisal.eval2_officer.try(:name)}","#{@staff_appraisal.is_completed_on.try(:strftime, "%d/%m/%y")}"],
              [ "Tandatangan PPP", "Tarikh"]] 
            
              table(data1 , :column_widths => [200,200], :cell_style => { :size => 11}) do
