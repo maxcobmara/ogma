@@ -48,7 +48,7 @@
                 %li= link_to "Training Schedule", staff_training_ptschedules_path
                 %li= link_to "Apply for Training", '#', class: 'bogus'
                 %li= link_to "Application Status", '#', class: 'bogus'
-          %li= link_to "Status & Movement", '#'
+          %li= link_to t('staff.travel_request.status_movement'), staff_travel_requests_path
           %li.icon.icon-left
             = link_to "Reports", '#'
             .mp-level
@@ -69,13 +69,13 @@
           %li= link_to content_tag(:i, "", :class => "icon-numb") + (t "asset.loss.title"), asset_losses_path
           %li= link_to content_tag(:i, "", :class => "icon-numb") + (t "asset.disposal.title"), asset_disposals_path
           %li.icon.icon-left
-            = link_to "Asset Loan", '#'
-            .mp-level
-              %h2.icon Asset Loan
+            = link_to t('asset.loan.title'), '#'
+            .mp-level 
+              %h2.icon=t('asset.loan.title')
               %a.mp-back{:href => "#"}= t 'helpers.links.back'
               %ul
-                %li= link_to "Loan Asset Application", '#'
-                %li= link_to "Assets on Loan", '#'
+                %li= link_to t('asset.loan.application'), '#'
+                %li= link_to t('asset.loan.asset_on_loan'), asset_loans_path
           %li= link_to content_tag(:i, "", :class => "icon-numb") + "Report / Downloads", "/asset_report"
 
     %li.icon.icon-left

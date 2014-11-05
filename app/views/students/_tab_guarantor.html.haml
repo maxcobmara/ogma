@@ -1,7 +1,7 @@
 - model_class = Student	  
   
 - puid = @student.id
-- garantor = Kin.find(:all, :conditions => ["student_id = ? AND kintype_id = ? ", puid,  98])
+- garantor = Kin.where("student_id = ? AND kintype_id = ? ", puid,  98)
 - garantor.each do |e|
   .col-md-8.col-md-offset-1
     %dl.dl-horizontal
@@ -21,7 +21,7 @@
       %BR
  
 - puid = @student.id
-- garantor = Kin.find(:all, :conditions => ["student_id = ? AND kintype_id = ? ", puid,  99 ])
+- garantor = Kin.where("student_id = ? AND kintype_id = ? ", puid,  99) #find(:all, :conditions => ["student_id = ? AND kintype_id = ? ", puid,  99 ])
 - garantor.each do |e|	  	  
   .col-md-8.col-md-offset-1
     %dl.dl-horizontal

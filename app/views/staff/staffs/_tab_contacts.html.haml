@@ -2,7 +2,7 @@
   %dl.dl-horizontal
     - for kin in @staff.kins
       %hr
-      %dt= t('staff.loans.ltype') + ":"
+      %dt= t('staff.contacts.kintype_id') + ":"
       %dd
         %strong= (DropDown::KIN_TYPE.find_all{|disp, value| value == kin.kintype_id }).map {|disp, value| disp}[0]
 

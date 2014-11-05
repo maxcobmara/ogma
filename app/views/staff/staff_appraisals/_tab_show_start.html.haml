@@ -1,5 +1,9 @@
 .col-md-8.col-md-offset-1
-  %h4= t 'evaluation.form.title_part1'
+  %br
+  .col-md-8
+    %b= t 'evaluation.form.title_part1'
+  %hr
+
   %dl.dl-horizontal
     %dt= t 'evaluation.form.name'
     %dd
@@ -18,7 +22,6 @@
     - if @staff_appraisal.is_skt_endorsed == true
       %dt= t 'helpers.label.staff_appraisal.endorsement_on' 
       %dd
-        =h @staff_appraisal.skt_endorsed_on.try(:strftime, '%d %b %Y')
-        by #{h @staff_appraisal.eval1_officer.name}
+        =h @staff_appraisal.skt_endorsed_on.try(:strftime, '%d %b %Y')+t('by2')+@staff_appraisal.eval1_officer.try(:name)
 
   %br

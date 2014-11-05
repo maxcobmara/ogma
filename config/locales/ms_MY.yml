@@ -52,6 +52,10 @@ ms_MY:
   setup: Data Asas
   select: Pilih
   check: Semak
+  yes_on: "Ya, pada "
+  no2: Tidak
+  by2: " oleh "
+  return: Pemulangan
  
   actions:
     new: Baru
@@ -153,6 +157,8 @@ ms_MY:
     current_grade_date: Tarikh Sah Ke Gred Sekarang
     starting_salary: Gaji Permulaan
     current_salary: Gaji Semasa
+    salary_no: No Gaji
+    allowance: Jumlah Elaun Tetap
 
     appointby: Pihak Berkuasa Melantik
     svchead: Ketua Perkhidmatan
@@ -299,6 +305,7 @@ ms_MY:
       note: "Nota:"
       mileage_field: "Ruangan Batuan(KM): Nyatakan jarak km bagi yang membawa kenderaan sendiri sahaja"
       value_field: "Ruangan Nilai(RM): Nyatakan jumlah tambang teksi sahaja"
+      status_movement: "Status & Pergerakan"
 
     travel_claim:
       title: Tuntutan Perjalanan
@@ -715,7 +722,45 @@ ms_MY:
       loss_location: Tempat Kehilangan
       loss_date_time: Tarikh dan Masa Kehilangan
       treasury_approval: No. Rujukan Kelulusan Perbendaharaan
-      
+    
+    loan:
+      title: Peminjaman Aset
+      new: Peminjaman Baru Aset
+      edit: Sunting Peminjaman Aset
+      application: Permohonan Pinjaman
+      asset_on_loan: Senarai Pinjaman Aset
+      approve_loan: Kelulusan Pinjaman 
+      asset_id: Aset
+      staff_id: Peminjam
+      reasons: Sebab Peminjaman
+      loaned_by: Pegawai 
+      separator_slash: " / "
+      responsible_unit: Unit Bertanggungjawab
+      requested_for: Tarikh Mula
+      returned_date: Tarikh Tamat
+      approved_date: Diluluskan pada
+      rejected: Ditolak
+      pending: Sedang diproses
+      onloan: Sedang dipinjam
+      is_returned: Telah dipulangkan
+      is_approved: "Diluluskan?"
+      notify_hod: Makluman Ketua Jabatan
+      due_date: Tarikh akhir
+      overdue: Tamat tempoh
+      assetcode_name: Kod atau nama aset
+      staff_name: Nama staf
+      loantype: Jenis Pinjaman
+      internal: Dalaman
+      external: Luaran
+      request: Perincian Pinjaman
+      approval: Kelulusan
+      return: Pemulangan item
+      remarks: Catatan
+      released_on: "Dikeluarkan pada  "
+      loan_officer: Pegawai Pengeluar
+      approve: Luluskan
+      reject: Ditolak
+
     category:
       title: Kategori Aset
       type_model_name: "Jenis / Model / Nama"
@@ -1448,6 +1493,7 @@ ms_MY:
       back_travel_request: Senarai Permohonan Perjalanan
       back_travel_log: Senarai Log Perjalanan
       finance_check: Semakan Kewangan
+      return: Pemulangan
       
     label:
       examquestion:
@@ -1669,7 +1715,7 @@ ms_MY:
         evaluation_year: Tahun Penilaian
         is_skt_submit: Hantar SKT untuk Kelulusan
         endorsement_on: Tarikh Kelulusan
-        is_skt_endorsed: Luluskan SKT
+        is_skt_endorsed: Kelulusan SKT
         add_activity: Tambah Aktiviti
         skt_pyd_report: "1. Laporan Oleh PYD"
         is_skt_pyd_report_done: Hantar kepada PPP untuk Laporan
