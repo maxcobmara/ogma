@@ -709,6 +709,12 @@ ms_MY:
  
     loss:
       title: "Kehilangan & Hapus Kira"
+      loss_type: Jenis Kehilangan
+      est_value: Nilai Anggaran
+      asset_name: Nama Aset
+      loss_location: Tempat Kehilangan
+      loss_date_time: Tarikh dan Masa Kehilangan
+      treasury_approval: No. Rujukan Kelulusan Perbendaharaan
       
     category:
       title: Kategori Aset

@@ -472,7 +472,7 @@ module DropDown
           [ "Jabatan","2" ],
           [ "Daerah", "3" ],
           [ "Negeri", "4" ],
-          [ "Negera", "5" ],
+          [ "Negara", "5" ],
           [ "Antarabangsa", "9" ]
    ]
    

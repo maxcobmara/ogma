@@ -6,7 +6,7 @@
   %ul.nav.navbar-nav
     %li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'actions.new'))), new_asset_asset_path
   %ul.nav.navbar-nav.navbar-right
-    %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "toga"
+    %li= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "index_search_bar"
     %li.dropdown
       %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#"}
         = fa_icon "print", text: (t 'actions.print')
@@ -26,9 +26,6 @@
   %li.half_width.active= link_to (t 'asset.fixed'), "#home", "data-toggle" => "tab"
   %li.half_width= link_to (t 'asset.inventory'), "#profile", "data-toggle" => "tab"
   
-.search{style: "display:none;"}
-  = render "index_search"
-
 .tab-content
   #home.tab-pane.fade.in.active
     %table.table-striped.table-hover.ogma
@@ -39,19 +36,17 @@
           %th= sort_link(@search, :purchasedate, (t 'asset.purchasedate'))
           %th= sort_link(@search, :purchaseprice, (t 'asset.purchaseprice'))
 
-      %tbody
-        - @fixed_assets.each do |asset|
-          %tr
-            %td= link_to asset.assetcode, asset_asset_path(asset)
-            %td= asset.name
-            %td= asset.purchasedate
-            %td.number= currency(asset.purchaseprice)
+          %tbody
+            = render "search_asset_bar"
+            - @fixed_assets.each do |asset|
+              %tr
+                %td= link_to asset.assetcode, asset_asset_path(asset)
+                %td= asset.name
+                %td= asset.purchasedate
+                %td.number= currency(asset.purchaseprice)
 
-           
-			
     .right{style:"padding:0 30px; margin:0;"}= paginate @fixed_assets, :theme => 'twitter-bootstrap-3'
-  
-  
+        
   #profile.tab-pane.fade
     %table.table-striped.table-hover.ogma
       %thead
@@ -62,13 +57,16 @@
           %th= sort_link(@search, :purchaseprice, (t 'asset.purchaseprice'))
 
       %tbody
-
+        = render "search_asset_bar"
         - @inventories.each do |asset|
           %tr
             %td= link_to asset.assetcode, asset_asset_path(asset)
             %td= asset.name
             %td= asset.purchasedate
             %td.number= currency(asset.purchaseprice)
-
         
     .right{style:"padding:0 30px; margin:0;"}= paginate @inventories, :theme => 'twitter-bootstrap-3'
+    
+
+    
+  

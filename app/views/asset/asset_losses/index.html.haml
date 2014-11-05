@@ -6,26 +6,27 @@
   %ul.nav.navbar-nav
     %li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'actions.new'))), '#'
   %ul.nav.navbar-nav.navbar-right
-    %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "toga"
+    %li= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "index_search_bar"
     %li.dropdown
       %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#"}
         = fa_icon "print", text: (t 'actions.print')
-
-.search{style: "display:none;"}
-  //= render "index_search"
-
+        
+.row.filter{style: "display:none;"}
+  .col-md-2
+  
 .row
   %table.table-striped.table-hover.ogma
     %thead
       %tr
         %th 
-        %th Lost Type	
-        %th Estimated Value
-        %th Asset Name
-        %th Lost Location 
-        %th Loss Date $ Time
-        %th Treasury Approval Ref No
+        %th=t 'asset.loss.loss_type'
+        %th= sort_link(@search, :est_value, (t 'asset.loss.est_value'))
+        %th= sort_link(@search, :asset_name, (t 'asset.loss.asset_name'))
+        %th= sort_link(@search, :location_name, (t 'asset.loss.loss_location')) 
+        %th= sort_link(@search, :lost_at, (t 'asset.loss.loss_date_time'))
+        %th= sort_link(@search, :document_refno, (t 'asset.loss.treasury_approval'))
     %tbody
+      = render "index_search"
       - @asset_losses.each do |asset_loss|
         %tr
           %td= check_box_tag "asset_loss_ids[]", asset_loss.id, :class => "check"
@@ -34,4 +35,6 @@
           %td= link_to "#{asset_loss.asset.try(:typename)} - #{asset_loss.asset.name} - #{asset_loss.asset.modelname}", asset_loss_path(asset_loss) 
           %td= asset_loss.try(:location).try(:name)	  
           %td= asset_loss.lost_at.strftime('%d %b %Y - %H:%M') unless asset_loss.lost_at.nil?
-          %td= asset_loss.try(:document).try(:refno) 
+          %td= asset_loss.try(:document).try(:refno)
+          
+
