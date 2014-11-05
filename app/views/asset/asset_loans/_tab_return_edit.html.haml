@@ -1,1 +1,37 @@
- 
+.col-md-6.col-md-offset-2
+  .form-group
+    .col-sm-2.control-label
+      = f.label t 'asset.loan.is_returned', for: :is_returned
+    .col-md-1
+      = f.check_box :is_returned
+    .col-md-2
+      %span.return_it{:style=> "display: none;"}
+        = f.text_field :returned_on, class: 'date_picker form-control'
+
+  .form-group
+    .col-sm-2.control-label.return_it{:style=> "display: none;"}
+      =f.label t 'asset.loan.remarks', for: :remarks
+    .col-md-6.return_it{:style=> "display: none;"}
+      = f.text_area :remarks, :size=>'60x4' , class: 'form-control'
+
+/= f.hidden_field :received_officer, :value => current_login.staff_id  
+= f.hidden_field :received_officer, :value => 25
+%br
+
+:javascript
+$(document).ready(function(){
+  $("input[id='asset_loan_is_returned']").change(function() {  
+    if($('#asset_loan_is_returned').is(':checked')) { 
+      $(".return_it").show("highlight"); 
+    }else {
+      $(".return_it").hide(""); 
+    }
+  });
+  $("input[id='asset_loan_is_returned']").each(function() {  
+    if($('#asset_loan_is_returned').is(':checked')) { 
+      $(".return_it").show("highlight"); 
+    }else{
+      $(".return_it").hide(""); 
+    }
+  });
+});

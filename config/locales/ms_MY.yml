@@ -55,6 +55,7 @@ ms_MY:
   yes_on: "Ya, pada "
   no2: Tidak
   by2: " oleh "
+  return: Pemulangan
  
   actions:
     new: Baru
@@ -722,6 +723,7 @@ ms_MY:
       edit: Sunting Peminjaman Aset
       application: Permohonan Pinjaman
       asset_on_loan: Senarai Pinjaman Aset
+      approve_loan: Kelulusan Pinjaman 
       asset_id: Aset
       staff_id: Peminjam
       reasons: Sebab Peminjaman
@@ -749,6 +751,9 @@ ms_MY:
       return: Pemulangan item
       remarks: Catatan
       released_on: "Dikeluarkan pada  "
+      loan_officer: Pegawai Pengeluar
+      approve: Luluskan
+      reject: Ditolak
 
     category:
       title: Kategori Aset
@@ -1482,6 +1487,7 @@ ms_MY:
       back_travel_request: Senarai Permohonan Perjalanan
       back_travel_log: Senarai Log Perjalanan
       finance_check: Semakan Kewangan
+      return: Pemulangan
       
     label:
       examquestion:

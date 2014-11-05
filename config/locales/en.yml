@@ -78,6 +78,7 @@ en:
   yes_on: "Yes, on "
   no2: No
   by2: " by "
+  return: Return
   
   actions:
     new: New
@@ -806,6 +807,7 @@ en:
       edit: Edit Asset Loan
       application: Loan Asset Application
       asset_on_loan: Asset On Loan
+      approve_loan: Loan Approval
       asset_id: Asset
       staff_id: Loaned by
       reasons: Reasons
@@ -833,6 +835,9 @@ en:
       return: Return of item
       remarks: Remarks
       release_on: "Released on  "
+      loan_officer: Loan Officer
+      approve: Approve
+      reject: Reject
       
     category:
       title: Asset Category
@@ -1545,6 +1550,8 @@ en:
       back_travel_request: Travel Request List
       back_travel_log: Travel Log List
       finance_check: Finance Check
+      return: Return
+
     label:
       examquestion:
         creator_id: Creator 
