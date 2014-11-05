@@ -82,10 +82,16 @@ class AssetLoan < ActiveRecord::Base
   end
    
   def unit_members
-    exist_unit_of_staff_in_position = Position.where('unit is not null and staff_id is not null').pluck(:staff_id).uniq
-    if exist_unit_of_staff_in_position.include?(self.loaned_by)
-      current_unit = Position.where(staff_id: self.loaned_by).unit
-      unit_members = Position.where(unit: unit_hod).pluck(:staff_id).uniq-[nil]
+    #exist_unit_of_staff_in_position = Position.where('unit is not null and staff_id is not null').pluck(:staff_id).uniq
+    exist_unit_of_staff_in_position = Position.where('unit is not null and staff_id=?',self.loaned_by).pluck(:staff_id).uniq
+    #if exist_unit_of_staff_in_position.include?(self.loaned_by)
+    if exist_unit_of_staff_in_position.count > 0
+      current_unit = Position.where(staff_id: self.loaned_by).try(:unit)
+      if current_unit
+        unit_members = Position.where(unit: current_unit).pluck(:staff_id).uniq-[nil]
+      else
+        unit_members =[]
+      end
     else
       unit_members = []#Position.where(unit: 'Teknologi Maklumat').pluck(:staff_id).uniq-[nil]  
     end

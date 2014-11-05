@@ -1,21 +1,22 @@
-%dl.dl-horizontal
+.col-md-10.col-md-offset-1
+  %dl.dl-horizontal
 
-  %dt=t 'asset.loan.staff_id'
-  %dd= link_to @asset_loan.staff.try(:name), (staff_info_path(@asset_loan.staff_id)) rescue nil
+    %dt=t 'asset.loan.staff_id'
+    %dd= link_to @asset_loan.staff.try(:name), (staff_info_path(@asset_loan.staff_id)) rescue nil
   
-  %dt=t 'asset.loan.reasons'
-  %dd=h @asset_loan.reasons
+    %dt=t 'asset.loan.reasons'
+    %dd=h @asset_loan.reasons
   
-  %dt=t 'asset.loan.requested_for'
-  %dd=h @asset_loan.approved_date.try(:strftime, '%d %b %Y')
+    %dt=t 'asset.loan.requested_for'
+    %dd=h @asset_loan.approved_date.try(:strftime, '%d %b %Y')
 
-  %dt= t 'asset.loan.returned_date'
-  %dd=h @asset_loan.expected_on.try(:strftime, '%d %b %Y')
+    %dt= t 'asset.loan.returned_date'
+    %dd=h @asset_loan.expected_on.try(:strftime, '%d %b %Y')
   
-  %dt=t 'asset.loan.loantype'
-  %dd
-    - if @asset_loan.loantype==1
-      = t 'asset.loan.internal'
-    - elsif @asset_loan.loantype==2
-      = t 'asset.loan.external'
+    %dt=t 'asset.loan.loantype'
+    %dd
+      - if @asset_loan.loantype==1
+        = t 'asset.loan.internal'
+      - elsif @asset_loan.loantype==2
+        = t 'asset.loan.external'
       
