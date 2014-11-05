@@ -1,0 +1,61 @@
+.col-md-6.col-md-offset-2
+  .form-group
+    .col-sm-2.control-label
+      = f.label t 'asset.loan.is_approved', for: :is_approved
+    .col-md-6
+      .row
+        .col-md-1= f.radio_button :is_approved, true, :id => 'is_approved_true'  , :class => 'approval' 
+        .col-md-2= t 'asset.loan.approve'
+        .col-md-1= f.radio_button :is_approved, false, :id => 'is_approved_false' , :class => 'approval' 
+        .col-md-2= t 'asset.loan.reject'
+  .form-group
+    .col-sm-2.control_label
+      = f.label t 'asset.loan.approved_date', for: :approved_date
+    .col-md-4
+      = f.text_field :approved_date, class: 'date_picker form-control', :value => Date.today
+  .form-group
+    .col-sm-2.control-label
+      = f.label t 'asset.loan.loan_officer', for: :loan_officer
+    .col-md-4
+      = Staff.where(id:25).first.name
+      /=h current_login.staff.name 
+      = f.hidden_field :loan_officer, :value => 25
+      /= f.hidden_field :loan_officer, :value=>current_login.staff_id 
+  .form-group
+    .col-sm-2.control-label#notify_hod
+      = f.label t 'asset.loan.notify_hod', for: :notify_hod
+      
+    .col-md-4#notify_hod
+      - @unit_members = @asset_loan.unit_members 
+      - if @asset_loan.loantype == 1
+        - if @unit_members.count==1 
+          = f.collection_select :hod, Staff.where('id=?',@unit_members[0]), :id, :name, {:include_blank=> t('helpers.prompt.select_staff')},{class: 'selectpicker', "data-width"=>'350px'}
+          /= f.collection_select :staff_id, Staff.all.order(name: :asc), :id, :name, {:include_blank =>t('helpers.prompt.select_staff'), :selected=>@asset_loan.staff_id},{class: 'selectpicker', "data-width"=>'350px'}    
+        - elsif @unit_members.count>1
+          = f.collection_select :hod, Staff.find(:all, :conditions => ['id IN (?)', @unit_members]), :id, :name
+        - else
+          /to revised later - for now - if unit members not exist, use Pn Nabilah
+          = f.collection_select :hod, Staff.where(id: 113), :id, :name, {:include_blank =>t('helpers.prompt.select_staff'), :selected=>113},{class: 'selectpicker', "data-width"=>'350px'}   
+      - elsif @asset_loan.loantype == 2
+        /for external - fixed must inform Pengarah
+        = f.collection_select :hod, Staff.where(id: 58), :id, :name, {:include_blank =>t('helpers.prompt.select_staff'), :selected=>58},{class: 'selectpicker', "data-width"=>'350px'}    
+
+:javascript
+
+$(document).ready(function(){ 
+  $("input[class='approval']").each(function() {  
+    if($('#is_approved_true').is(':checked')) { 
+      $("#notify_hod").show("highlight");
+    }else if ($j('#is_approved_false').is(':checked')){
+      $("#notify_hod").hide("highlight");
+    }
+  });
+
+  $("input[class='approval']").change(function() {  
+    if($('#is_approved_true').is(':checked')) { 
+      $("#notify_hod").show("highlight");
+    }else if ($('#is_approved_false').is(':checked')){
+      $("#notify_hod").hide("highlight");
+    }
+  });
+});

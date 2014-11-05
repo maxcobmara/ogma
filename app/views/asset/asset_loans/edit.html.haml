@@ -1,49 +1,54 @@
 - model_class = AssetLoan
 .page-header
   %h1
-    = t 'edit'
+    = t 'edit' if @asset_loan.is_approved == nil
+    = t 'asset.loan.return' if @asset_loan.is_approved == true
     = @asset_loan.asset.assetcode
     - @unit_members = @asset_loan.unit_members
 .row
   = form_for @asset_loan,  html: { multipart: true, class: 'form-horizontal' }  do |f| 
     = render 'shared/error_messages', object: f.object
-
-    %ul.nav.nav-tabs
-      %li.active= link_to (t "asset.loan.request"), "#request_edit",  "data-toggle" => "tab" 
-      / to revise - LINK FOR APPROVAL - if login as peminjam OR login as unit_members of responsible unit
-      /- elsif (@asset_loan.is_approved == true && @asset_loan.loaned_by == Login.current_login.staff_id) || (@asset_loan.is_approved == true && @unit_members.include?(current_login.staff_id))
-      - if @asset_loan.is_approved == true
-        %li=link_to (t "asset.loan.approval"), "#approval", "data-toggle" => "tab"
-        %li=link_to (t "asset.loan.return"), "#return", "data-toggle" => "tab"
+ 
+    .col-md-offset-1
+      / Nav tabs
+      %ul.nav.nav-tabs
+        %li.active= link_to (t "asset.loan.request"), "#request_edit",  "data-toggle" => "tab" 
+        / to revise - LINK FOR APPROVAL - if login as peminjam OR login as unit_members of responsible unit
+        /- elsif (@asset_loan.is_approved == true && @asset_loan.loaned_by == Login.current_login.staff_id) || (@asset_loan.is_approved == true && @unit_members.include?(current_login.staff_id))
+        - if @asset_loan.is_approved == true
+          %li=link_to (t "asset.loan.approval"), "#approval", "data-toggle" => "tab"
+          %li=link_to (t "asset.loan.return"), "#return", "data-toggle" => "tab"
       
-    .tab-content.col-md-offset-1
-      %dl.dl-horizontal
-        %dt= t 'asset.assetcode'
-        %dd= @asset_loan.asset.assetcode
+      /display
+      .tab-content{style:"padding-top:1em"}
+        .col-md-8.col-md-offset-1
+          %dl.dl-horizontal
+            %dt= t 'asset.assetcode'
+            %dd= @asset_loan.asset.assetcode
         
-        %dt=(t 'asset.loan.loaned_by')+(t 'asset.loan.separator_slash')+(t 'asset.loan.responsible_unit')
-        %dd
-          =h @asset_loan.owner.try(:name)+(t 'asset.loan.separator_slash')+@asset_loan.asset.assignedto.try(:positions).first.try(:unit).to_s
-
-      #request_edit.tab-pane.fade.in.active
-        %br
-        - if @asset_loan.is_approved == nil 
-          = render 'tab_request_edit', :f => f
-        - elsif @asset_loan.is_approved == true
-          = render 'tab_show_request'
+            %dt=(t 'asset.loan.loaned_by')+(t 'asset.loan.separator_slash')+(t 'asset.loan.responsible_unit')
+            %dd=h @asset_loan.owner.try(:name)+(t 'asset.loan.separator_slash')+@asset_loan.asset.assignedto.try(:positions).first.try(:unit).to_s
+            %br
+        #request_edit.tab-pane.fade.in.active 
+          %br
+          - if @asset_loan.is_approved == nil 
+            = render 'tab_request_edit', :f => f
+          - elsif @asset_loan.is_approved == true
+            = render 'tab_show_request'
       
-      - if @asset_loan.is_approved == true
-        #approval.tab-pane.fade 
-          %br
-          = render 'tab_show_approval'
+        - if @asset_loan.is_approved == true
+          #approval.tab-pane.fade 
+            %br
+            = render 'tab_show_approval'
 
-        #return.tab-pane.fade
-          %br
-          = render 'tab_return_edit', :f => f
+          #return.tab-pane.fade
+            %br
+            = render 'tab_return_edit', :f => f
 
-      .col-md-offset-1
+      .col-md-8.col-md-offset-1
+        %BR
         .form-group
-          .col-sm-offset-4.col-sm-1
+          .col-sm-offset-1.col-sm-2
             = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), asset_loan_path(@asset_loan), :class => 'btn btn-default'
           .col-sm-2
             = f.submit t('update'), class: "btn btn-primary" 
