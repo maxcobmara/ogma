@@ -2,17 +2,18 @@
 
 - if user_signed_in?
  .row
-  - if Staff.where(coemail: current_user.email).count > 0 || Student.where(semail: current_user.email).count > 0
-   .alert.alert-info
-    - staffexist = Staff.where(coemail: current_user.email).first
-    - studentexist = Student.where(semail: current_user.email).first
-    Your login email matches the following account :
-    %strong #{staffexist.try(:name) || studentexist.try(:name)}
-    - if studentexist.nil?
-     - existing = staffexist.id
-    - elsif staffexist.nil?
-     - existing = studentexist.id
-    - unless User.all.pluck(:userable_id).include?(existing)
+  - staffexist = Staff.where(coemail: current_user.email)
+  - studentexist = Student.where(semail: current_user.email)
+  - if studentexist.first.nil?
+   - existing = staffexist
+  - elsif staffexist.first.nil?
+   - existing = studentexist
+  - unless User.all.pluck(:userable_id).include?(existing.first.id)
+   - if existing.count > 0
+    .alert.alert-info
+     Your login email matches the following account :
+     %strong #{existing.first.name}
+    
      Click
      = link_to 'here', link_user_path(current_user)
      to link these accounts
