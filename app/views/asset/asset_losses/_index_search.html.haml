@@ -1,0 +1,17 @@
+= search_form_for @search, url:  asset_losses_path,  class: "form-inline" do |f|
+  %tr.search_row{style: "display: none;"}
+    %td &nbsp;
+    %td &nbsp;
+    %td=f.text_field :est_value_cont, :size=> 2,  class:  'form-control'
+    %td=f.text_field :asset_name_cont, :size=> 2,  class:  'form-control'
+    %td=f.text_field :location_name_cont, :size=> 2,  class:  'form-control'
+    %td=f.text_field :lost_at_cont, :size=> 2,  class:  'form-control'
+    %td
+      .input-group
+        =f.text_field :document_refno_cont, size: 2,  class:  'form-control'
+        %span.input-group-btn
+          %button.btn.btn-sm.btn-default.right{:type => "submit"}
+            %i.fa.fa-search.fa-fw
+          
+          
+     

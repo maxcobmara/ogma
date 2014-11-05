@@ -800,6 +800,12 @@ en:
       
     loss:
       title: "Loss & Write Offs"
+      loss_type: Loss Type
+      est_value: Estimated Value
+      asset_name: Asset Name
+      loss_location: Loss Location
+      loss_date_time: "Loss Date & Time"
+      treasury_approval: Treasury Approval Ref No
       
     loan:
       title: Asset Loan

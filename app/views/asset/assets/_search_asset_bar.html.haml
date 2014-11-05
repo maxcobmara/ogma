@@ -1,0 +1,11 @@
+= search_form_for @search, url:  asset_assets_path,  class: "form-inline" do |f|
+  %tr.search_row{style: "display: none;"}
+    %td= f.text_field :assetcode_cont, size: 2,  :class => "form-control"
+    %td= f.text_field :name_cont, size: 8,  :class => "form-control"
+    %td= f.text_field :purchasedate_cont, size: 8, :class => "form-control"
+    %td
+      .input-group
+        = f.text_field :purchaseprice_cont, size: 8, :class => "form-control"
+        %span.input-group-btn
+          %button.btn.btn-sm.btn-default.right{:type => "submit"}
+            %i.fa.fa-search.fa-fw
