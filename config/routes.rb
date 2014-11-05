@@ -117,6 +117,12 @@ Ogma::Application.routes.draw do
 	get :kewpa17_20
       end
     end
+    resources :asset_loans, as: :loans do
+      member do
+	get :approve
+	get :lampiran
+      end
+    end
   end
 
   namespace :campus do
@@ -139,7 +145,11 @@ Ogma::Application.routes.draw do
 
   resources :cofiles
 
-  resources :documents
+  resources :documents do
+    collection do
+      get :document_report
+    end
+  end
 
   resources :students do
     collection do

@@ -301,6 +301,9 @@ ms_MY:
       finish: Hingga
       total: Jumlah
       code: Kod Permohonan Perjalanan
+      note: "Nota:"
+      mileage_field: "Ruangan Batuan(KM): Nyatakan jarak km bagi yang membawa kenderaan sendiri sahaja"
+      value_field: "Ruangan Nilai(RM): Nyatakan jumlah tambang teksi sahaja"
 
     travel_claim:
       title: Tuntutan Perjalanan
@@ -711,7 +714,41 @@ ms_MY:
  
     loss:
       title: "Kehilangan & Hapus Kira"
-      
+    
+    loan:
+      title: Peminjaman Aset
+      new: Peminjaman Baru Aset
+      edit: Sunting Peminjaman Aset
+      application: Permohonan Pinjaman
+      asset_on_loan: Senarai Pinjaman Aset
+      asset_id: Aset
+      staff_id: Peminjam
+      reasons: Sebab Peminjaman
+      loaned_by: Pegawai 
+      separator_slash: " / "
+      responsible_unit: Unit Bertanggungjawab
+      requested_for: Tarikh Mula
+      returned_date: Tarikh Tamat
+      approved_date: Diluluskan pada
+      rejected: Ditolak
+      pending: Sedang diproses
+      onloan: Sedang dipinjam
+      is_returned: Telah dipulangkan
+      is_approved: "Diluluskan?"
+      notify_hod: Makluman Ketua Jabatan
+      due_date: Tarikh akhir
+      overdue: Tamat tempoh
+      assetcode_name: Kod atau nama aset
+      staff_name: Nama staf
+      loantype: Jenis Pinjaman
+      internal: Dalaman
+      external: Luaran
+      request: Perincian Pinjaman
+      approval: Kelulusan
+      return: Pemulangan item
+      remarks: Catatan
+      released_on: "Dikeluarkan pada  "
+
     category:
       title: Kategori Aset
       type_model_name: "Jenis / Model / Nama"

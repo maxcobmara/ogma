@@ -1,0 +1,32 @@
+.form-group
+  .col-sm-2.control-label
+    = f.label t 'asset.loan.staff_id', for: :staff_id
+  .col-md-4
+    = f.collection_select :staff_id, Staff.all.order(name: :asc), :id, :name, {:include_blank =>t('helpers.prompt.select_staff'), :selected=>@asset_loan.staff_id},{class: 'selectpicker', "data-width"=>'230px'}               
+.form-group
+  .col-sm-2.control-label
+    = f.label t 'asset.loan.reasons', for: :reasons
+  .col-md-4
+    = f.text_field :reasons, class: 'form-control'
+.form-group
+  .col-sm-2.control-label
+    = f.label t 'asset.loan.requested_for', for: :loaned_on
+  .col-md-2
+    = f.text_field :loaned_on, class: 'date_picker form-control'
+.form-group
+  .col-sm-2.control-label
+    = f.label t 'asset.loan.returned_date'
+  .col-md-2
+    = f.text_field :expected_on, class: 'date_picker form-control'  
+.form-group
+  .col-sm-2.control-label
+    = f.label t 'asset.loan.loantype', for: :loantype
+  .col-md-4
+    .row
+      /= f.radio_button :process_type, "repair", :id => 'button_repair', :class => 'radio_action_type' 
+      /= f.radio_button :process_type, "dispose", :id => 'button_dispose', :class => 'radio_action_type' 
+      .col-md-1= f.radio_button :loantype, 1, :id => 'loanmodeinternal',  :class => 'radio_action_options'
+      .col-md-2= t 'asset.loan.internal'
+      .col-md-1= f.radio_button :loantype, 2, :id => 'loanmodexternal',  :class => 'radio_action_options'
+      .col-md-2= t 'asset.loan.external'
+

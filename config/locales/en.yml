@@ -311,6 +311,9 @@ en:
       finish: End
       total: Total
       code: Travel Request Code
+      note: "Note :"
+      mileage_field: "Mileage(KM) field: State the mileage for those who bring their own vehicles only"
+      value_field: "Value(RM) field: State the number of taxi fares only"
 
     travel_claim:
       title: Travel Claims
@@ -795,6 +798,40 @@ en:
       
     loss:
       title: "Loss & Write Offs"
+      
+    loan:
+      title: Asset Loan
+      new: New Asset Loan
+      edit: Edit Asset Loan
+      application: Loan Asset Application
+      asset_on_loan: Asset On Loan
+      asset_id: Asset
+      staff_id: Loaned by
+      reasons: Reasons
+      loaned_by: Responsible Staff
+      responsible_unit: Unit
+      requested_for: Requested for 
+      returned_date: To be returned on
+      approved_date: Approve on
+      separator_slash: " / "
+      rejected: Rejected 
+      pending: Pending
+      onloan: On loan
+      is_returned: Is returned
+      is_approved: "Approved?"
+      notfy_hod: Notify HOD
+      due_date: Due date
+      overdue: Overdue
+      assetcode_name: Asset code or name
+      staff_name: Staff name
+      loantype: Loan Type
+      internal: Internal
+      external: External
+      request: Loan Details
+      approval: Approval
+      return: Return of item
+      remarks: Remarks
+      release_on: "Released on  "
       
     category:
       title: Asset Category
