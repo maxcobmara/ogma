@@ -112,7 +112,15 @@ en:
       previous: Previous
       truncate: "&hellip;"
       last: Last
-      
+
+  role:
+    title: List of Roles
+    new: New Role
+    edit: Edit Role
+    name: Name
+    details: Details
+    caption: Role
+
   people:
     male: male
     female: female

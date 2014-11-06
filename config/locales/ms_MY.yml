@@ -89,6 +89,14 @@ ms_MY:
       previous: Terdahulu
       truncate: "&hellip;"
       last: Terakhir
+  
+  role:
+    title: Senarai Peranan
+    new: Peranan Baru
+    edit: Sunting Peranan
+    name: Nama
+    details: Perincian
+    caption: Peranan
 
   people:
     male: Lelaki
