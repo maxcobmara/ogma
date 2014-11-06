@@ -1,5 +1,5 @@
 - provide(:title, "KEWPA Download / Link List")
-- yeartab = Asset.pluck(:assetcode).map{|d| d.split("/")[4]}.uniq
+- yeartab = Asset.pluck(:assetcode).map{|d| d.try(:split, "/")[4]}.uniq
 .page-header
   %h1 KEW PA Download / Link List
 
