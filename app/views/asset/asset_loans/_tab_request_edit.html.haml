@@ -1,9 +1,13 @@
+- if @asset_loan.new_record? == true
+  - loaner = current_user.userable_id
+- else
+  - loaner = @asset_loan.staff_id
 .col-md-6.col-md-offset-2
   .form-group
     .col-sm-2.control-label
       = f.label t 'asset.loan.staff_id', for: :staff_id
     .col-md-4
-      = f.collection_select :staff_id, Staff.all.order(name: :asc), :id, :name, {:include_blank =>t('helpers.prompt.select_staff'), :selected=>@asset_loan.staff_id},{class: 'selectpicker', "data-width"=>'350px'}               
+      = f.collection_select :staff_id, Staff.all, :id, :name, {:include_blank =>t('helpers.prompt.select_staff'), :selected=>loaner},{class: 'selectpicker', "data-width"=>'350px'}               
   .form-group
     .col-sm-2.control-label
       = f.label t 'asset.loan.reasons', for: :reasons
@@ -22,6 +26,7 @@
   .form-group
     .col-sm-2.control-label
       = f.label t 'asset.loan.loantype', for: :loantype
+      %br
     .col-md-6
       .row
         .col-md-1= f.radio_button :loantype, 1, :id => 'loanmodeinternal',  :class => 'radio_action_options'

@@ -7,7 +7,7 @@ class Asset < ActiveRecord::Base
   has_many  :locations, :through => :asset_placements
   
   #belongs_to :location, :foreign_key => "location_id" --> not required - refer line 5
-  belongs_to :staff,    :class_name => 'Staff', :foreign_key => "assignedto_id"
+  #belongs_to :staff,    :class_name => 'Staff', :foreign_key => "assignedto_id"
   belongs_to :receiver, :class_name => 'Staff', :foreign_key => 'receiver_id'
   belongs_to :assignedto,   :class_name => 'Staff', :foreign_key => 'assignedto_id'
   
@@ -23,6 +23,10 @@ class Asset < ActiveRecord::Base
   
   def code_asset
     "#{assetcode} - #{name}"
+  end
+  
+  def code_typename_name_modelname_serialno
+    "#{assetcode} - #{typename} - #{name} - #{modelname} - #{serialno} "
   end
   
 end

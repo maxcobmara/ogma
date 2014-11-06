@@ -754,6 +754,9 @@ ms_MY:
       loan_officer: Pegawai Pengeluar
       approve: Luluskan
       reject: Ditolak
+      loanable: Senarai Aset Boleh Dipinjam
+      available: "Sedia dipinjam?"
+      apply: Mohon pinjaman
 
     category:
       title: Kategori Aset

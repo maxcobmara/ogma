@@ -4,19 +4,9 @@ class Asset::AssetLoansController < ApplicationController
   # GET /asset_loans
   # GET /asset_loans.xml
   def index
-    #@asset_loans = AssetLoan.all.order(:asset_id)
-    
     @search = AssetLoan.search(params[:q])
     @asset_loans = @search.result
     @asset_loans = @asset_loans.order(created_at: :desc).page(params[:page]||1)
-    
-    #@asset_loans = AssetLoan.borrowings 
-    #@filters = Dropdown::LOAN_FILTERS
-     # if params[:show] && @filters.collect{|f| f[:scope]}.include?(params[:show])
-       #   @asset_loans = AssetLoan.send(params[:show])#.paginate(:order => :assetcode, :per_page => 30, :page => params[:page])
-      #else
-       #   @asset_loans = AssetLoan.all.order(:asset_id)#(:all,:conditions => ['id NOT IN (?) and assetcode ILIKE ? or name ILIKE ? ', loaned, "#{search2}%", "#{search2}%"])#.paginate(:order => :assetcode,  :per_page => 30, :page => params[:page])    
-     # end
     
     respond_to do |format|
       format.html # index.html.erb
@@ -54,11 +44,11 @@ class Asset::AssetLoansController < ApplicationController
   # POST /asset_loans
   # POST /asset_loans.xml
   def create
-    @asset_loan = AssetLoan.new(params[:asset_loan])
+    @asset_loan = AssetLoan.new(asset_loan_params)
 
     respond_to do |format|
       if @asset_loan.save
-        format.html { redirect_to(@asset_loan, :notice => t('asset.loan.title')+t('actons.created')) }
+        format.html { redirect_to @asset_loan, :notice => t('asset.loan.title')+t('actions.created') }
         format.xml  { render :xml => @asset_loan, :status => :created, :location => @asset_loan }
       else
         format.html { render :action => "new" }
@@ -66,6 +56,7 @@ class Asset::AssetLoansController < ApplicationController
       end
     end
   end
+  
 
   # PUT /asset_loans/1
   # PUT /asset_loans/1.xml

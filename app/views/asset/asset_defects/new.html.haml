@@ -7,6 +7,7 @@
 
 .row
   = form_for @asset_defect, html: { multipart: true, class: 'form-horizontal' }  do |f| 
+    = render 'shared/error_messages', object: f.object
     = f.hidden_field :asset_id
     .form-group
       .col-sm-2.control-label

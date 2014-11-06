@@ -44,7 +44,7 @@
       %dt= t 'asset.located_at'
       %dd=@asset.try(:asset_placements).last.try(:location).try(:name)
       %dt= t 'asset.assigned_to'
-      %dd= @asset.staff.try(:name)
+      %dd= @asset.assignedto.try(:name)
       %dt= t 'asset.status'
       %dd= @asset.status
       %dt= t 'asset.other_information'

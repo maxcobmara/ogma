@@ -838,6 +838,9 @@ en:
       loan_officer: Loan Officer
       approve: Approve
       reject: Reject
+      loanable: Loanable Assets
+      available: "Available?"
+      apply: Apply to loan
       
     category:
       title: Asset Category

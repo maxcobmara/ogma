@@ -74,6 +74,7 @@ Ogma::Application.routes.draw do
         post  :fixed_assets
         get   :inventory
         post  :inventory
+	get :loanables
         get :kewpa4
         get :kewpa5
         get :kewpa13
