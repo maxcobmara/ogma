@@ -1,6 +1,6 @@
 = search_form_for @search, url: student_student_discipline_cases_path,  class: "form-inline" do |f|
   %tr.search_row{style: "display: none;"}
-    %td= select_tag('q[status_cont_any]', options_for_select(DropDown::STATUS+[['Refer to TPHEP','Refer to TPHEP']]))
+    %td= select_tag('q[status_cont_any]', options_for_select(DropDown::SDCSTATUS+[['Refer to TPHEP','Refer to TPHEP']]), {class: 'selectpicker', "data-width"=>"100px"})
     %td= f.text_field :student_course_name_cont, size: 2, class: 'form-control'
     %td &nbsp;
     %td= f.text_field :student_matrixno_cont, size: 2, class: 'form-control'
@@ -11,7 +11,7 @@
     %td= f.text_field :location_name_cont, size:2, class: 'form-control'
     %td
       .input-group
-        = select_tag('q[action_type_cont_any]',options_for_select([[t('student.student_discipline_case.all'), ''],[t('student.student_discipline_case.counseling'), 'counseling']]  ) )  
+        = select_tag('q[action_type_cont_any]',options_for_select([[t('student.student_discipline_case.all'), ''],[t('student.student_discipline_case.counseling'), 'counseling']]), {class: 'selectpicker', "data-width"=>"100px"} )  
         %span.input-group-btn
           %button.btn.btn-sm.btn-default.right{:type => "submit"}
             %i.fa.fa-search.fa-fw

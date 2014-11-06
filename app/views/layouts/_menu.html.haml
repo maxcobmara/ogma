@@ -74,7 +74,7 @@
               %h2.icon=t('asset.loan.title')
               %a.mp-back{:href => "#"}= t 'helpers.links.back'
               %ul
-                %li= link_to t('asset.loan.application'), '#'
+                %li= link_to t('asset.loan.application'), loanables_asset_assets_path
                 %li= link_to t('asset.loan.asset_on_loan'), asset_loans_path
           %li= link_to content_tag(:i, "", :class => "icon-numb") + "Report / Downloads", "/asset_report"
 
@@ -188,7 +188,7 @@
         %a.mp-back{:href => "#"} =t('back')
         %ul
           %li= link_to content_tag(:i, "", :class => "icon-numb") + "Users", '#'
-          %li= link_to content_tag(:i, "", :class => "icon-numb") + "Roles", '#'
+          %li= link_to content_tag(:i, "", :class => "icon-numb") + t('role.title'), roles_path
           %li= link_to content_tag(:i, "", :class => "icon-numb") + "Pages", '#'
           %li= link_to content_tag(:i, "", :class => "icon-numb") + "Address Book", campus_address_books_path
           %li.icon.icon-left

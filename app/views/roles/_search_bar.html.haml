@@ -1,0 +1,7 @@
+= search_form_for @search, url:  roles_path,  class: "form-inline" do |f|
+  %tr.search_row{style: "display: none;"}
+    %td=f.text_field :name_cont, :size=> 2,  class:  'form-control'
+    %td
+      %span.input-group-btn
+        %button.btn.btn-sm.btn-default.right{:type => "submit"}
+          %i.fa.fa-search.fa-fw 

@@ -1,1 +1,47 @@
- 
+- model_class = AssetLoan
+.page-header
+  %h1
+    = t 'asset.loan.new'
+
+= render 'shared/flashes'
+
+.row
+  = form_for @asset_loan, html: { multipart: true, class: 'form-horizontal' }  do |f| 
+    = render 'shared/error_messages', object: f.object
+    = f.hidden_field :asset_id
+    = f.hidden_field :staff_id, :value => current_user.userable_id
+    
+    .col-md-offset-1
+      / Nav tabs
+      %ul.nav.nav-tabs
+        %li.active= link_to (t "asset.loan.request"), "#request",  "data-toggle" => "tab" 
+      
+      /display
+      .tab-content{style:"padding-top:1em"}
+        .col-md-8.col-md-offset-1
+          %dl.dl-horizontal
+            %dt= t 'asset.assetcode'
+            %dd= @asset_loan.asset.code_typename_name_modelname_serialno
+    
+            %dt= t('asset.loan.loaned_by')+t('asset.loan.separator_slash')+t('asset.loan.responsible_unit')
+            %dd= @asset_loan.asset.assignedto.try(:name)+t('asset.loan.separator_slash')+@asset_loan.asset.assignedto.try(:positions).first.try(:unit)
+            %br
+            
+        #request.tab-pane.fade.in.active 
+          %br
+          = render 'tab_request_edit', :f => f
+         
+    .row 
+      .col-md-10
+        .col-md-1.col-sm-offset-4
+          = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.cancel', :default => t("helpers.links.cancel")), loanables_asset_assets_path, :class => 'btn btn-default'
+        .col-md-2
+          = f.submit t('create'), class: "btn btn-primary"
+    
+
+   
+
+
+
+
+
