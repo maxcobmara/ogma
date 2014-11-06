@@ -6,7 +6,7 @@
   %ul.nav.navbar-nav
     %li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'actions.new'))), new_student_student_discipline_case_path
   %ul.nav.navbar-nav.navbar-right
-    %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "toga"
+    %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class:  "index_search_bar"
     %li= link_to content_tag(:li, fa_icon("print", text: (t 'actions.print'))), "#", class: 'bogus'
 
 .row.filter{style: "display:none;"}
@@ -51,11 +51,5 @@
             = t('student.student_discipline_case.not_related')
          
   .right{style:"padding:0 30px; margin:0;"}= paginate @student_discipline_cases, :theme => 'twitter-bootstrap-3'
- 
-:javascript
-$(document).ready(function(){
-  $('.toga').click(function() {
-    $('.search_row').toggle(); 
-  });
-})year
+
 

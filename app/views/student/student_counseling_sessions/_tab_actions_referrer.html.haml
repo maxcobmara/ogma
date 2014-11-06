@@ -1,0 +1,40 @@
+.col-md-10.col-md-offset-1
+  %dl.dl-horizontal
+  
+    %dt
+      =t 'student.student_counseling_session.actions_referrer1'
+      %br=t 'student.student_counseling_session.actions_referrer2'
+    %dd=h @student_counseling_session.student_discipline_case.action if !@student_counseling_session.case_id.blank? 
+    %br
+    
+    %dt
+      =t 'student.student_counseling_session.action_counselor1'
+      %br=t 'student.student_counseling_session.action_counselor2'
+    %dd=@student_counseling_session.remark 
+    %br
+    
+    - @case_id = @student_counseling_session.case_id
+    - @all_sessions = StudentCounselingSession.where(case_id: @case_id)
+    - @other_sessions = StudentCounselingSession.where('case_id=? AND id!=?',@case_id,@student_counseling_session.id).order(confirmed_at: :asc)
+    - @session_count = @all_sessions.count  
+    
+    - if @session_count>1
+      %dt
+        =t 'student.student_counseling_session.related_sessions1'
+        %br=t 'student.student_counseling_session.related_sessions2'
+      %dd
+        - @other_sessions.each_with_index do |session,index| 
+          =(index+1).to_s+") "+session.confirmed_at.try(:strftime, "%d %b %y, %l:%M %P")
+          %br
+          .col-md-2
+            %hr
+      
+      %dt=t 'student.student_counseling_session.total_session'
+      %dd=@session_count
+    %br
+    
+    - unless @student_counseling_session.student_discipline_case.counselor_feedback== nil|| @student_counseling_session.student_discipline_case.counselor_feedback==''
+      %dt
+        =t 'student.student_counseling_session.counselor_feedback1'
+        %br=t 'student.student_counseling_session.counselor_feedback2'
+      %dd=@student_counseling_session.student_discipline_case.counselor_feedback

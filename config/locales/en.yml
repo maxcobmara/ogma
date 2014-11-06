@@ -976,6 +976,7 @@ en:
       mandatory: Mandatory
       subject: Subject
       grade: Grade
+
     student_discipline_case:
       title: Student Discipline Case
       title2: Discipline Cases
@@ -997,6 +998,45 @@ en:
       not_related: Not Related
       all : All records
       counseling: Counseling
+      
+    student_counseling_session:
+      title: Student Counseling Session
+      title: Counseling Session
+      new: New Student Counseling Session
+      edit: Edit Student Counseling Session
+      involuntary: Involuntary
+      session_complete: Session is complete
+      appointment_not_confirmed: Appointment is not confirmed
+      appointment_confirmed: Appointment is confirmed
+      appointments: Appointments
+      sessions: Sessions
+      matrix_no: Matrix No
+      student_id: Student Name
+      programme: Programme
+      year_semester: "Year / Semester"
+      appointment_for: Appointment for
+      duration: "Duration (Minutes)"
+      is_confirmed: "Confirmed?"
+      feedback_referrer: Feedback to Referrer
+      not_related: Not Related
+      appointment: Appointment
+      session_notes: Session Notes
+      actions_referrer: "Action by TPHEP (Referrer) & Counselor"
+      actions_referrer1: Action by TPHEP
+      actions_referrer2: " (Referrer) & Counselor"
+      alt_dates: Suggest Alternative Dates
+      c_scope: Scope of session
+      c_type: Type of session
+      confirmed_at: Confirmed at
+      issue_desc: Issue description
+      suggestions: Suggestions made to student
+      action_counselor1: "Action by Counselor "
+      action_counselor2: "(Feedback for this session)"
+      related_sessions1: Other related 
+      related_sessions2: counseling sessions
+      total_session: Total session for this case
+      counselor_feedback1: "Action by Counselor - Summary/"
+      counselor_feedback2: "Feedback(FINAL) to referrer/TPHEP"
       
   cofile:
     index: List
