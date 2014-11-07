@@ -95,6 +95,7 @@ ms_MY:
     new: Peranan Baru
     edit: Sunting Peranan
     name: Nama
+    description: Deskripsi
     details: Perincian
     caption: Peranan
 

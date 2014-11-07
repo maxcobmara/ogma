@@ -118,6 +118,7 @@ en:
     new: New Role
     edit: Edit Role
     name: Name
+    description: Description
     details: Details
     caption: Role
 
