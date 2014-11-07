@@ -121,6 +121,8 @@ en:
     description: Description
     details: Details
     caption: Role
+    system_roles: System roles
+    contact_developers: " : Please contact developers if you require more roles."
 
   people:
     male: male

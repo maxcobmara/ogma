@@ -98,6 +98,8 @@ ms_MY:
     description: Deskripsi
     details: Perincian
     caption: Peranan
+    system_roles: Peranan dalam sistem
+    contact_developers: " : Sila hubungi pihak pembangun untuk peranan tambahan."
 
   people:
     male: Lelaki

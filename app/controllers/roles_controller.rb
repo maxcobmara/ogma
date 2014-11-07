@@ -13,47 +13,9 @@ class RolesController < ApplicationController
     end
   end
 
-  # GET /roles/1
-  # GET /roles/1.xml
-  def show
-    @role = Role.find(params[:id])
-
-    respond_to do |format|
-      format.html # show.html.erb
-      format.xml  { render :xml => @role }
-    end
-  end
-
-  # GET /roles/new
-  # GET /roles/new.xml
-  def new
-    @role = Role.new
-
-    respond_to do |format|
-      format.html # new.html.erb
-      format.xml  { render :xml => @role }
-    end
-  end
-
   # GET /roles/1/edit
   def edit
     @role = Role.find(params[:id])
-  end
-
-  # POST /roles
-  # POST /roles.xml
-  def create
-    @role = Role.new(role_params)
-
-    respond_to do |format|
-      if @role.save
-         format.html { redirect_to @role, :notice =>t('role.caption')+t('actions.created') }
-        format.xml  { render :xml => @role, :status => :created, :location => @role }
-      else
-        format.html { render :action => "new" }
-        format.xml  { render :xml => @role.errors, :status => :unprocessable_entity }
-      end
-    end
   end
 
   # PUT /roles/1
@@ -63,24 +25,12 @@ class RolesController < ApplicationController
 
     respond_to do |format|
       if @role.update(role_params)
-        format.html { redirect_to @role, :notice =>t('role.caption')+t('actions.updated')}
+        format.html { redirect_to roles_path, :notice =>t('role.caption')+t('actions.updated')}
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }
         format.xml  { render :xml => @role.errors, :status => :unprocessable_entity }
       end
-    end
-  end
-
-  # DELETE /roles/1
-  # DELETE /roles/1.xml
-  def destroy
-    @role = Role.find(params[:id])
-    @role.destroy
-
-    respond_to do |format|
-      format.html { redirect_to(roles_url) }
-      format.xml  { head :ok }
     end
   end
   
@@ -92,6 +42,6 @@ class RolesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def role_params
-      params.require(:role).permit(:name, :authname)
+      params.require(:role).permit(:name, :authname, :description)
     end
 end
