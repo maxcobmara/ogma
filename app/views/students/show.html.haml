@@ -57,6 +57,7 @@
     %hr
     .form-actions
       = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), students_path, :class => 'btn btn-default'
+      = link_to content_tag(:i, "", class: "fa fa-file-pdf-o"), borang_maklumat_pelajar_student_path(@student, format: "pdf"), class: "btn btn-default", "data-toggle" => "tooltip", title: "Borang Maklumat Pelajar"
       = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('.edit', :default => t("helpers.links.edit")), edit_student_path(@student),  :class => 'btn btn-primary' 
       = link_to content_tag(:i, "", :class => "fa fa-trash-o icon-white") + " " + t('.destroy', :default => t("helpers.links.destroy")), |
         student_path(@student),                                                                                                    |

@@ -155,6 +155,9 @@ Ogma::Application.routes.draw do
     collection do
       get :autocomplete
     end
+    member do
+      get :borang_maklumat_pelajar
+    end
   end
 
 
