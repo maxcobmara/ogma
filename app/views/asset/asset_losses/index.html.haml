@@ -4,7 +4,7 @@
   
 .navbar.navbar-inverse{role: "navigation", style: "padding-right:40px;"}
   %ul.nav.navbar-nav
-    %li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'actions.new'))), '#'
+    %li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'actions.new'))), new_asset_loss_path
   %ul.nav.navbar-nav.navbar-right
     %li= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "index_search_bar"
     %li.dropdown
@@ -18,7 +18,7 @@
   %table.table-striped.table-hover.ogma
     %thead
       %tr
-        %th 
+        %th &nbsp;
         %th=t 'asset.loss.loss_type'
         %th= sort_link(@search, :est_value, (t 'asset.loss.est_value'))
         %th= sort_link(@search, :asset_name, (t 'asset.loss.asset_name'))
@@ -27,12 +27,12 @@
         %th= sort_link(@search, :document_refno, (t 'asset.loss.treasury_approval'))
     %tbody
       = render "index_search"
-      - @asset_losses.each do |asset_loss|
+      - @asset_loss.each do |asset_loss|
         %tr
           %td= check_box_tag "asset_loss_ids[]", asset_loss.id, :class => "check"
           %td= asset_loss.loss_type.capitalize
           %td= ringgols(asset_loss.est_value)
-          %td= link_to "#{asset_loss.asset.try(:typename)} - #{asset_loss.asset.name} - #{asset_loss.asset.modelname}", asset_loss_path(asset_loss) 
+          %td= link_to asset_loss.asset.code_asset, asset_loss_path(asset_loss) 
           %td= asset_loss.try(:location).try(:name)	  
           %td= asset_loss.lost_at.strftime('%d %b %Y - %H:%M') unless asset_loss.lost_at.nil?
           %td= asset_loss.try(:document).try(:refno)

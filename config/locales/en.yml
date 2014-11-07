@@ -699,7 +699,7 @@ en:
     mark_disposal: Mark for Disposal
     new: Register New Asset
     create: Create New Asset
-    assetcode: Registration Serial No
+    assetcode: Registration Serial No 
     cardno: Card No
     name: Manufacturer/Brand
     category: Category
@@ -806,6 +806,40 @@ en:
       loss_location: Loss Location
       loss_date_time: "Loss Date & Time"
       treasury_approval: Treasury Approval Ref No
+      details: "Asset Loss Management - Details"
+      initial: "Asset Loss Management - Initial"
+      report_code: Internal Loss Report Code 
+      hod: Head of Dept 
+      endorsed: Endorsed by Head of Department On 
+      purchasedate: Purchase Date 
+      purchaseprice: Purchase Price
+      how: "How did loss happen?" 
+      last: Last Handled By
+      case: "Is there a case?"
+      any_action: "Any action against staff required?"
+      police_report: Police Report
+      preventive_measures: Preventive Measures
+      new_measures: New Preventive Measures
+      other_notes: Other Notes
+      new: New Asset Loss
+      register: Register Asset Loss
+      actions: Actions
+      yes: Yes
+      no: No
+      is_submit_to_hod: Submit to HOD
+      report_no: Report No.  
+      why_no_report: Reason
+      loss_location_long: Actual place where loss occured
+      loss_date_time: Date and time loss was realized
+      how_long: Describe how loss occured
+      last_long: Name of the person to last handle missing object
+      case_long: "Yes, if it is thought that a staff is prima facie responsible for the loss"
+      police_report_long: Has a police report been made in accordance with AP315
+      police_report_yes: "If yes, state police report number"
+      police_report_no: "If no police report made, please state reason"
+      preventive_measures_long: Steps taken to prevent loss from occuring
+      new_measures_long: What steps will be taken to prevent recurrent cases
+      other_notes_long: Other notes(if any)
       
     loan:
       title: Asset Loan

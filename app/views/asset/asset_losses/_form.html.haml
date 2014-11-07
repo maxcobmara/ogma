@@ -1,0 +1,150 @@
+.row
+  .col-md-10.col-md-offset-1
+    / Nav tabs
+    %ul.nav.nav-tabs
+      %li.active= link_to (t "asset.loss.register"), "#register", "data-toggle" => "tab"
+      %li= link_to (t "asset.loss.actions"), "#actions", "data-toggle" => "tab"
+      
+    / Tab Panes
+    .tab-content{style:"padding-top:1em"}
+      
+      // Register Tab
+      #register.tab-pane.fade.in.active
+        .col-md-offset-2
+          .form-group
+            .col-sm-2.control-label
+              = f.label t 'asset.loss.report_code', for: :report_code
+            .col-md-2
+              = f.text_field :report_code, class: 'form-control mandatory'
+              
+              = f.hidden_field :loss_type, :value=> 'asset'
+         
+          .form-group
+            .col-sm-2.control-label
+              = f.label t 'asset.loss.asset_name', for: :asset_id
+            .col-md-2
+              = f.collection_select :asset_id, Asset.where('mark_as_lost is true'), :id, :code_asset, {:include_blank =>true},{class: 'selectpicker', "data-width"=>'550px'} 
+                
+          .form-group
+            .col-sm-2.control-label
+              = f.label t 'asset.loss.loss_location', for: :location_id
+            .col-md-4
+              = f.collection_select :location_id, Location.all.order(combo_code: :asc), :id, :location_list, {:include_blank => true}, {class: 'selectpicker', "data-width"=>'410px'}
+              .help-block.small= t('asset.loss.loss_location_long')
+              
+          .form-group
+            .col-sm-2.control-label
+              = f.label t 'asset.loss.loss_date_time', for: :lost_at
+            .col-md-2
+              = f.text_field :lost_at, :order => [:day, :month, :year], class: 'date_picker form-control'
+              
+          .form-group
+            .col-sm-2.control-label
+              = f.label t 'asset.loss.how', for: :how_desc
+            .col-md-4
+              = f.text_area :how_desc, class: "form-control", rows: "5"
+              
+          .form-group
+            .col-sm-2.control-label
+              = f.label t 'asset.loss.last', for: :last_handled_by
+            .col-md-2
+              = f.collection_select :last_handled_by, Staff.all.order(name: :asc), :id,  :staff_name_with_position, {:include_blank => true}, {class: 'selectpicker', "data-width"=>'410px'}
+              
+          .form-group
+            .col-sm-2.control-label
+              = f.label t 'asset.loss.case', for: :is_prima_facie
+            .col-md-7
+              .form-inline
+                .form-group
+                  = t 'asset.loss.yes'
+                  = f.radio_button :is_prima_facie, true
+                .form-group
+                  = t 'asset.loss.no'
+                  = f.radio_button :is_prima_facie, false
+                  
+          .form-group
+            .col-sm-2.control-label
+              = f.label t 'asset.loss.any_action', for: :is_staff_action
+            .col-md-7
+              .form-inline
+                .form-group
+                  = t 'asset.loss.yes'
+                  = f.radio_button :is_staff_action, true
+                .form-group
+                  = t 'asset.loss.no'
+                  = f.radio_button :is_staff_action, false
+      
+      //Actions tab            
+      #actions.tab-pane
+        .col-md-offset-2
+          .form-group
+            .col-sm-2.control-label
+              = f.label t 'asset.loss.police_report', for: :is_police_report_made
+            .col-md-7
+              .form-inline
+                .form-group
+                  = t 'asset.loss.yes'
+                  = f.radio_button :is_police_report_made, true, id: 'yes', class: 'radio_report'
+                .form-group
+                  = t 'asset.loss.no'
+                  = f.radio_button :is_police_report_made, false, id:'no', class: 'radio_report'
+          .form-group
+            .col-sm-2.control-label
+              .span_yes{:style=>"display: none;"}
+                = f.label t  'asset.loss.report_no'
+            .col-md-2
+              = f.text_field :police_report_code, class: 'form-control'
+            .col-sm-2.control-label
+              .span_yes{:style=>"display: none;"}
+                = f.label t 'asset.loss.why_no_report'
+            .col-md-2
+              = f.text_field :why_no_report, class: 'form-control'
+                      
+          .form-group
+            .col-sm-2.control-label
+              = f.label t 'asset.loss.preventive_measures', for: :preventive_measures
+            .col-md-4
+              = f.text_area :preventive_measures, class: "form-control", rows: "5"
+              
+          .form-group
+            .col-sm-2.control-label
+              = f.label t 'asset.loss.new_measures', for: :new_measures
+            .col-md-4
+              = f.text_area :new_measures, class: "form-control", rows: "5"
+              
+          .form-group
+            .col-sm-2.control-label
+              = f.label t 'asset.loss.other_notes', for: :notes
+            .col-md-4
+              = f.text_area :notes, class: "form-control", rows: "5"
+              
+          .form-group
+            .col-sm-2.control-label
+              = f.label t 'asset.loss.is_submit_to_hod', for: :is_submit_to_hod
+            .col-md-2
+              = f.check_box :is_submit_to_hod
+              
+:javascript
+
+$(document).ready(function(){
+  $("input[class='radio_report']").each(function() {  
+    if($('#no').is(':checked')) { 
+      $(".span_yes").hide("highlight");
+      $(".span_no").show("highlight");  
+    }else if ($('#yes').is(':checked')) {
+      $(".span_yes").show("highlight");
+      $(".span_no").hide("highlight");
+    }
+  });
+  
+  $("input[class='radio_report']").change(function() {  
+    if($('#no').is(':checked')) { 
+      $(".span_yes").hide("highlight");
+      $(".span_no").show("highlight");  
+    }else if ($('#yes').is(':checked')) {
+      $(".span_yes").show("highlight");
+      $(".span_no").hide("highlight");
+    }
+  });
+});
+      
