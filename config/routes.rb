@@ -74,6 +74,7 @@ Ogma::Application.routes.draw do
         post  :fixed_assets
         get   :inventory
         post  :inventory
+	get :loanables
         get :kewpa4
         get :kewpa5
         get :kewpa13
@@ -270,7 +271,8 @@ Ogma::Application.routes.draw do
    end
   end
   resources :logins
-
+  resources :roles
+  
   root  'static_pages#home'
   match '/help',    to: 'static_pages#help',    via: 'get'
   match '/about',   to: 'static_pages#about',   via: 'get'

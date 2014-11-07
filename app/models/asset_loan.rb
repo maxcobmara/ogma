@@ -9,7 +9,7 @@ class AssetLoan < ActiveRecord::Base
   belongs_to :hodept,   :class_name => 'Staff', :foreign_key => 'hod'
   belongs_to :receivedofficer, :class_name => 'Staff', :foreign_key => 'received_officer'
   
-  validates_presence_of :loantype
+  validates_presence_of :loantype, :loaned_on
   validates_presence_of :reasons, :if => :must_assign_if_external?   
   validates_presence_of :hod, :if => :is_approved?
   validates_presence_of :returned_on, :received_officer, :if => :is_returned?

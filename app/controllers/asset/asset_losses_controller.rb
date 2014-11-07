@@ -2,6 +2,8 @@ class Asset::AssetLossesController < ApplicationController
 
   
   def index
+    @search = AssetLoss.search(params[:q])
+    @asset_loss = @search.result
     # @lost_assets = AssetLoss.order(code: :asc).page(params[:page]||1)
     @asset_losses = AssetLoss.order('lost_at DESC')
         @asset_losses_group_writeoff = @asset_losses.group_by{|x|x.document_id}
@@ -16,10 +18,11 @@ class Asset::AssetLossesController < ApplicationController
   end
   
   def kewpa28
+    @lead = Position.find(1)
    @asset_loss = AssetLoss.find(params[:id])
     respond_to do |format|
       format.pdf do
-        pdf = Kewpa28Pdf.new(@asset_loss, view_context)
+        pdf = Kewpa28Pdf.new(@asset_loss, view_context, @lead)
         send_data pdf.render, filename: "kewpa28-{Date.today}",
                               type: "application/pdf",
                               disposition: "inline"

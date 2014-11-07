@@ -28,7 +28,7 @@
         %th= sort_link(@search, :counselor_feedback, (t 'student.student_discipline_case.counselor_feedback'))
         
     %tbody
-    = render "index_search"
+    = render "search_bar"
     
     - @student_discipline_cases.each do |student_discipline_case|
       %tr

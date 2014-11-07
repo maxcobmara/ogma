@@ -1,0 +1,43 @@
+- model_class = Asset
+.page-header
+  %h1= t('asset.loan.application')
+  
+.navbar.navbar-inverse{role: "navigation", style: "padding-right:40px;"}
+  %ul.nav.navbar-nav.navbar-right
+    %li= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "index_search_bar"
+    %li= link_to content_tag(:li, fa_icon("print", text: (t 'actions.print'))), "#"
+      
+.row
+  %table.table-striped.table-hover.ogma
+    %thead
+      %tr
+        %th= sort_link(@search, :assetcode, (t 'asset.assetcode'))
+        %th= sort_link(@search, :typename, (t 'asset.typename'))
+        %th= sort_link(@search, :name, (t 'asset.name'))
+        %th= sort_link(@search, :modelname, (t 'asset.model'))
+        %th= sort_link(@search, :serialno, (t 'asset.serial_no'))
+        %th
+          = sort_link(@search, :loaned_by, (t 'asset.loan.loaned_by'))
+          = t('asset.loan.separator_slash')
+          = sort_link(@search, :responsible_unit, (t 'asset.loan.responsible_unit'))
+        %th= t('asset.loan.available')
+    %tbody
+      = render "search_bar2"
+      - @loanables.each do |loanable|
+        %tr
+          %td=h loanable.assetcode 
+          %td=h loanable.typename
+          %td=h loanable.name
+          %td=h loanable.modelname
+          %td=h loanable.serialno
+          %td=h loanable.assignedto.try(:name)+ t('asset.loan.separator_slash')+loanable.assignedto.try(:positions).first.try(:unit)
+          %td
+            /- unless loanable.assignedto.blank?
+            /  - unless loanable.assignedto.positions.first.blank? 
+            /    - unless loanable.assignedto.positions.first.unit.blank?
+            /      = link_to image_tag("login_go.png", :border => 0, :title => 'Apply to Loan'), new_asset_loan_path(:asset_id => loanable) 
+                  
+            - if loanable.assignedto.positions.first.unit!=nil
+              = link_to t('asset.loan.apply'), new_asset_loan_path(:asset_id => loanable) 
+                  
+  .right{style:"padding:0 30px; margin:0;"}= paginate @loanables, :theme => 'twitter-bootstrap-3'

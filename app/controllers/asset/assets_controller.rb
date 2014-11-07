@@ -167,6 +167,14 @@ end
     end
   end  
   
+  def loanables
+   loaned = AssetLoan.where('is_returned IS NOT true').pluck(:asset_id)
+   loaned = [0] if @loaned == []    
+   @search = Asset.search(params[:q])
+   @loanables = @search.result.where('bookable = ? and assets.id NOT IN (?) ', true, loaned)
+   @loanables = @loanables.order(assetcode: :asc).page(params[:page]||1)    
+  end
+  
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_asset

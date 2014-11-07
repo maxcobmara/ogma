@@ -5,14 +5,18 @@
 = render 'shared/flashes'
 
 .row
- .col-md-3.col-md-offset-2
-  .well
-   = current_user.email
- .col-md-1
-  .crosshairs
-   .btn.btn-primary
-    .i= fa_icon "link"
- .col-md-3
-  .well
-   = @entity.name
-   = @entity.icno
+ = form_for @user, html: { class: 'form-horizontal' }  do |f| 
+  = render 'shared/error_messages', object: f.object
+  = f.hidden_field :userable_id, :value => @entity.id
+  = f.hidden_field :userable_type, :value => @entity.class.name
+  .col-md-3.col-md-offset-2
+   .well
+    = current_user.email
+  .col-md-1
+   .crosshairs
+    = button_tag(type: 'submit', class: "btn btn-primary") do
+     .i= fa_icon "link"
+  .col-md-3
+   .well
+    = @entity.name
+    = @entity.icno
