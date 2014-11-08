@@ -627,7 +627,7 @@ ms_MY:
     new: Aset Baru
     list: Inventori
     create: Cipta Aset Baru
-    assetcode: No Siri Pendaftaran 
+    assetcode: No Siri Pendaftaran  
     cardno: No Kad
     name: Jenama
     category: Kategori
@@ -733,6 +733,40 @@ ms_MY:
       loss_location: Tempat Kehilangan
       loss_date_time: Tarikh dan Masa Kehilangan
       treasury_approval: No. Rujukan Kelulusan Perbendaharaan
+      details: "Pengurusan Kehilangan Aset - Maklumat"
+      initial: "Pengurusan Kehilangan Aset - Awalan"
+      report_code: Laporan Kod Kehilangan Dalaman 
+      hod: Ketua Jabatan 
+      endorsed: Disahkan oleh Ketua Jabatan pada
+      purchasedate: Tarikh Pembelian 
+      purchaseprice: Harga Pembelian
+      how: "Bagaimana kehilangan berlaku?" 
+      last: Kakitangan Terakhir Menggunakan
+      case: "Kes perlu di buka?"
+      any_action: "Tindakan ke atas staff diperlukan?"
+      police_report: Membuat Laporan Polis
+      preventive_measures: Langkah Pencegahan
+      new_measures: Langkah Pencegahan Baru
+      other_notes: Catatan Lain
+      new: Kehilangan Aset Baru
+      register: Daftar Kehilangan Aset
+      actions: Tindakan
+      is_submit_to_hod: Hantar kepada Ketua Jabatan
+      yes: Ya
+      no: Tidak
+      report_no: "No. Laporan"
+      why_no_report: Sebab-sebab
+      loss_location_long: Tempat sebenar dimana kehilangan berlaku
+      loss_date_time: Tarikh dan masa kehilangan berlaku
+      how_long: Terangkan bagaimana kehilangan berlaku
+      last_long: Nama dan jawatan pegawai yang terakhir menyimpan barang yang hilang
+      case_long: "Ya, jika ia berfikir bahawa kakitangan adalah prima facie terhadap kehilangan"
+      police_report_long: Membuat laporan polis selaras dengan AP315
+      police_report_yes: "Jika ya, nyatakan nombor laporan polis"
+      police_report_no: "Jika tiada laporan dibuat, nyatakan sebab"
+      preventive_measures_long: Langkah berjaga-jaga yang telah diambil untuk mengelakkan kehilangan berlaku
+      new_measures_long: Apakah langkah-langkah yang akan diambil untuk mencegah kejadian berulang
+      other_notes_long: Catatan lain sekiranya ada
     
     loan:
       title: Peminjaman Aset

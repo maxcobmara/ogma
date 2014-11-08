@@ -1,54 +1,54 @@
 - model_class = AssetLoss
 .page-header
-  %h1= @asset_loss.try(:asset).try(:assetcode)
+  %h1= @asset_loss.asset.assetcode
 = render 'shared/flashes'
 
-%ul.nav.nav-tabs
-  %li.active= link_to "Asset Loss Management - Details", "#details",     "data-toggle" => "tab"
-  %li= link_to "Asset Loss Management - Initial", "#value",     "data-toggle" => "tab"
-
-  
+.row
+  .col-md-offset-1
+    %ul.nav.nav-tabs
+      %li.active= link_to (t 'asset.loss.details'), "#details",     "data-toggle" => "tab"
+      %li= link_to (t 'asset.loss.initial'), "#initial",     "data-toggle" => "tab"
 
 .tab-content.col-md-offset-1
   %dl.dl-horizontal
     %dt= t 'asset.assetcode'
-    %dd= @asset_loss.try(:asset).try(:assetcode)
+    %dd= @asset_loss.asset.assetcode
   #details.tab-pane.fade.in.active
     %dl.dl-horizontal
-      %dt Internal Loss Report Code :
+      %dt= t 'asset.loss.report_code'
       %dd= @asset_loss.try(:report_code)
-      %dt  Head of Dept :
+      %dt= t 'asset.loss.hod'
       %dd= @asset_loss.hod.staff_name_with_position
-      %dt Endorsed by Head of Department On :
+      %dt= t 'asset.loss.endorsed'
       %dd= @asset_loss.try(:endorsed_on).try(:strftime,"%d-%b-%Y")
 
-  #value.tab-pane.fade.in
+  #initial.tab-pane.fade.in
     %dl.dl-horizontal
-      %dt Lost Type
+      %dt= t 'asset.loss.loss_type'
       %dd= @asset_loss.try(:loss_type)
-      %dt Purchase Date
+      %dt= t 'asset.loss.purchasedate'
       %dd= check_kin {tarikh(@asset_loss.asset.purchasedate)}
-      %dt Purchase Price
+      %dt= t 'asset.loss.purchaseprice'
       %dd= check_kin {ringgols(@asset_loss.asset.purchaseprice)}
-      %dt Lost Location :
+      %dt= t 'asset.loss.loss_location'
       %dd= check_kin {@asset_loss.location.location_list}
-      %dt Loss Date & Time :
+      %dt= t 'asset.loss.loss_date_time'
       %dd= @asset_loss.try(:lost_at).try(:strftime,"%I:%M%p  %d-%b-%Y")
-      %dt How did loss happen? :
+      %dt= t 'asset.loss.how'
       %dd= @asset_loss.try(:how_desc)
-      %dt Last Handled By :
+      %dt= t 'asset.loss.last'
       %dd= check_kin {@asset_loss.handled_by.staff_name_with_position }
-      %dt Is there a case? :
+      %dt= t 'asset.loss.case'
       %dd= @asset_loss.try(:is_prima_facie?) ? "Yes" : "No" 
-      %dt Any action against staff required?:
+      %dt= t 'asset.loss.any_action'
       %dd= @asset_loss.try(:is_staff_action?) ? "Yes" : "No"
-      %dt Police Report :
+      %dt= t 'asset.loss.police_report'
       %dd= @asset_loss.try(:is_police_report_made?) ? ("Yes, Police Report No :" +  @asset_loss.try(:police_report_code )) : "No"
-      %dt Preventive measures :
+      %dt= t 'asset.loss.preventive_measures'
       %dd= @asset_loss.try(:preventive_measures)
-      %dt New measures ?:
+      %dt= t 'asset.loss.new_measures'
       %dd= @asset_loss.try(:new_measures)
-      %dt Other Notes :
+      %dt= t 'asset.loss.other_notes'
       %dd= @asset_loss.try(:notes)
 	  
 .row

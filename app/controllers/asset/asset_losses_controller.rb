@@ -13,6 +13,10 @@ class Asset::AssetLossesController < ApplicationController
         end
   end
   
+  def new
+    @asset_loss = AssetLoss.new
+  end
+  
   def show
     @asset_loss = AssetLoss.find(params[:id])
   end
