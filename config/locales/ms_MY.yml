@@ -95,8 +95,11 @@ ms_MY:
     new: Peranan Baru
     edit: Sunting Peranan
     name: Nama
+    description: Deskripsi
     details: Perincian
     caption: Peranan
+    system_roles: Peranan dalam sistem
+    contact_developers: " : Sila hubungi pihak pembangun untuk peranan tambahan."
 
   people:
     male: Lelaki
@@ -895,6 +898,7 @@ ms_MY:
       guarantor: Keputusan SPM
       contact_information: Maklumat Perhubungan dan Penjamin
       mandatory: Mandatori
+
     student_discipline_case:
       title: Kes Disiplin Pelajar
       title2: Kes Disiplin
@@ -916,10 +920,49 @@ ms_MY:
       not_related: Tidak Berkaitan
       all: Semua rekod
       counseling: Kaunseling
+      
+    student_counseling_session:
+      title: Sesi Kaunseling Pelajar
+      title2: Sesi Kaunseling
+      new: Sesi Kaunseling Pelajar Baru
+      edit: Sunting Sesi Kaunseling Pelajar
+      involuntary: Tanpa sukarela
+      session_complete: Sesi telah selesai
+      appointment_not_confirmed: Temujanji belum disahkan
+      appointment_confirmed: Temujanji telah disahkan
+      appointments: Temujanji
+      sessions: Sesi Kaunseling
+      matrix_no: "No. Matrik"
+      student_id: Nama Pelajar
+      programme: Program
+      year_semester: "Tahun / Semester"
+      appointment_for: Temujanji pada
+      duration: "Jangka Masa (Minit)"
+      is_confirmed: "Disahkan?"
+      feedback_referrer: Maklumbalas kepada Perujuk
+      not_related: Tidak Berkaitan
+      appointment: Temujanji
+      session_notes: Nota Sesi Kaunseling
+      actions_referrer: "Tindakan oleh TPHEP (Perujuk) & Kaunselor"
+      actions_referrer1: Tindakan oleh TPHEP
+      actions_referrer2: "(Perujuk) & Kaunselor"
+      alt_dates: Cadangan tarikh alternatif
+      c_scope: Skop sesi kaunseling
+      c_type: Jenis sesi kaunseling
+      confirmed_at: Disahkan pada
+      issue_desc: Deskripsi Isu
+      suggestions: Cadangan kepada pelajar
+      action_counselor1: "Tindakan kaunselor "
+      action_counselor2: "(Maklumbalas bagi sesi ini)"
+      related_sessions1: Sesi kaunseling lain
+      related_sessions2: " (yang berkaitan)"
+      total_session: Jumlah sesi bagi kes ini
+      counselor_feedback1: "Tindakan kaunselor - Rumusan/"
+      counselor_feedback2: "Maklumbalas(AKHIR) kepada perujuk/TPHEP"
 
   cofile:
     index: Senarai
-    cofileno: No Fail
+    cofileno: No Fail 
     name: Nama Fail
     location: Lokasi
     owner: Pemilik
