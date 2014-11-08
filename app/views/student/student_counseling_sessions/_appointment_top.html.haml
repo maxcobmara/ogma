@@ -1,0 +1,28 @@
+.col-md-8.col-md-offset-1
+  %dl.dl-horizontal
+    %dt=t 'student.counseling.student_id'
+    %dd
+      =h @student_counseling_session.student.formatted_mykad_and_student_name 
+      %font{:style=>"color: red;"}*
+
+      %dt=t 'student.counseling.appointment_for'
+      %dd=@student_counseling_session.requested_at.try(:strftime, "%d %b %y, %l:%M %P")
+   
+      %dt=t 'student.counseling.c_scope'
+      %dd
+        - if @student_counseling_session.c_scope=="personal"
+          = t 'student.counseling.personal'
+        - elsif @student_counseling_session.c_scope=="academic"
+          = t 'student.counseling.academic'
+        - elsif @student_counseling_session.c_scope=="case"
+          = t 'student.counseling.case'
+          /= link_to (t 'student.counseling.case'), student_student_discipline_case_path(StudentDisciplineCase.where(id:@student_counseling_session.case_id).first)
+
+      %dt=t 'student.counseling.c_type'
+      %dd
+        - if @student_counseling_session.c_type=='voluntary'
+          = t 'student.counseling.voluntary'
+        - elsif @student_counseling_session.c_type=='involuntary'
+          = t 'student.counseling.involuntary'       
+      %dt=t 'student.counseling.is_confirmed'
+      %dd=@student_counseling_session.is_confirmed==true ? (t 'confirmed_on')+" "+@student_counseling_session.confirmed_at.try(:strftime, "%d %b %Y, %l:%M %P")  : ""

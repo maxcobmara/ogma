@@ -4,14 +4,14 @@
   =h appointment.c_type == 'involuntary' ? image_tag("flag_red.png") : ""  
 %td=h appointment.student.programme_for_student2 if appointment.student.course_id <15 
 %td=h strip_tags(Student.year_and_sem(appointment.student.intake)) 
-%td=h appointment.is_confirmed? ?  appointment.confirmed_at.strftime("%d %b %y, %l:%M %P") :  appointment.requested_at.strftime("%d %b %y, %l:%M %P")
+%td=h appointment.is_confirmed? ?  appointment.confirmed_at.try(:strftime, "%d %b %y, %l:%M %P") :  appointment.requested_at.try(:strftime,"%d %b %y, %l:%M %P")
 %td=h appointment.duration
 %td=h appointment.is_confirmed? ? image_tag("tick.png") : ""  
 - if appointment.c_scope == "case" && !appointment.case_id.blank? 
   - if count==0   
     %td{:rowspan=>appointments.count, :style=>"text-align:center;"}
-      =h appointment.student_discipline_case.counselor_feedback.blank? ? (link_to image_tag("add.png", :border => 0, :title => 'Create new appointment') + "Add", new_student_counseling_session_path(:caseid => appointment.case_id)) : image_tag("tick.png")  
-      = link_to image_tag("printer.png", :border => 0, :title => 'Feedback Referrer'), :action => 'feedback_referrer', :id => appointment.case_id if !appointment.student_discipline_case.counselor_feedback.blank?
+      =h appointment.student_discipline_case.counselor_feedback.blank? ? (link_to image_tag("add.png", :border => 0, :title => 'Create new appointment') + "Add", new_student_student_counseling_session_path(:caseid => appointment.case_id)) : image_tag("tick.png")  
+      = link_to  t('student.couseling.feedback_referrer'), :action => 'feedback_referrer', :id => appointment.case_id if !appointment.student_discipline_case.counselor_feedback.blank?
     - count+=1
 - else
-  %td{:style=>"text-align:center;"}= t 'student.student_counseling_session.not_related'
+  %td{:style=>"text-align:center;"}= t 'student.counseling.not_related'

@@ -59,11 +59,11 @@ class Student::StudentCounselingSessionsController < ApplicationController
   # POST /student_counseling_sessions
   # POST /student_counseling_sessions.xml
   def create
-    @student_counseling_session = StudentCounselingSession.new(params[:student_counseling_session])
+    @student_counseling_session = StudentCounselingSession.new(student_counseling_session_params)
 
     respond_to do |format|
       if @student_counseling_session.save
-        format.html { redirect_to(@student_counseling_session, :notice => 'StudentCounselingSession was successfully created.') }
+        format.html { redirect_to(student_student_counseling_session_url(@student_counseling_session), :notice =>  t('student.counseling.title')+t('actions.created')) }
         format.xml  { render :xml => @student_counseling_session, :status => :created, :location => @student_counseling_session }
       else
         format.html { render :action => "new" }
@@ -87,8 +87,8 @@ class Student::StudentCounselingSessionsController < ApplicationController
       @abc.save
     end
     respond_to do |format|
-      if @student_counseling_session.update_attributes(params[:student_counseling_session])
-        format.html { redirect_to(@student_counseling_session, :notice => 'StudentCounselingSession was successfully updated.') }
+      if @student_counseling_session.update(student_counseling_session_params)
+        format.html { redirect_to(student_student_counseling_session_url(@student_counseling_session), :notice => t('student.counseling.title')+t('actions.updated')) }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }
@@ -109,6 +109,10 @@ class Student::StudentCounselingSessionsController < ApplicationController
     end
   end
   
+  def feedback
+    @student_counseling_session = StudentCounselingSession.find(params[:id])
+  end
+  
   def feedback_referrer 
     @sessions_by_case = StudentCounselingSession.where('case_id=?',params[:id]).order(confirmed_at: :asc)
     @case_details = StudentDisciplineCase.find(params[:id])
@@ -119,7 +123,7 @@ class Student::StudentCounselingSessionsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_student_counseling_session
-      @studen_discipline_case = StudentCounselingSession.find(params[:id])
+      @student_counseling_session = StudentCounselingSession.find(params[:id])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

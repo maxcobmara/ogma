@@ -1,0 +1,85 @@
+.col-md-offset-2
+  .form-group
+    .col-sm-2.control-label
+      = f.label t 'student.counseling.student_id', for: :student_id
+    .col-md-5
+      - if @case_id!= nil || @case_id!= nil 
+        = f.hidden_field :case_id, :value => @case_id
+        = f.collection_select :student_id, Student.all.order(icno: :asc), :id, :formatted_mykad_and_student_name, {:selected=> StudentDisciplineCase.find(@case_id).student_id}, {class: 'selectpicker', "data-width"=>"400px"}
+      - else
+        = f.collection_select :student_id, Student.all.order(icno: :asc), :id, :formatted_mykad_and_student_name, {:include_blank=>t('helpers.prompt.select_student')}, {class: 'selectpicker', "data-width"=>"400px"}
+    .col-md-1
+      %font{style: "color: red;"} *
+  .form-group
+    .col-sm-2.control-label
+      = f.label t 'student.counseling.appointment_for', for: :requested_at
+    .col-md-3
+      = f.text_field :requested_at, class: 'datetime_picker2 form-control'
+  .form-group
+    .col-sm-2.control-label
+      = f.label t 'student.counseling.duration', for: :duration
+    .col-md-1
+      = f.text_field :duration, class: 'form-control'
+  .form-group
+    .col-sm-2.control-label
+      = f.label t 'student.counseling.alt_dates', for: :alternative_dates
+    .col-md-4
+      = f.text_area :alt_dates, size: "50x4", class: 'form-control'
+  .form-group
+    .col-sm-2.control-label
+      = f.label t 'student.counseling.c_scope', for: :scope_of_session
+    .col-md-4
+      .row
+        .col-md-1= f.radio_button :c_scope, "personal", :id => 'c_case_personal', :class => 'radio_c_scope'
+        .col-md-2= t 'student.counseling.personal'
+        .col-md-1= f.radio_button :c_scope, "academic", :id => 'c_case_academic', :class => 'radio_c_scope' 
+        .col-md-2= t 'student.counseling.academic'
+        - if @case_id!= nil || @case_id!= ''
+          .col-md-1= f.radio_button :c_scope, "case", :id => 'c_case_case', :class => 'radio_c_scope', :checked => "checked"
+          .col-md-2
+            = t 'student.counseling.case' 
+            /= link_to (t 'student.counseling.case'), student_student_discipline_case_path(StudentDisciplineCase.where(id:@case_id).first)
+          
+        - else
+          .col-md-1= f.radio_button :c_scope, "case", :id => 'c_case_case', :class => 'radio_c_scope'
+          .col-md-2= t 'student.counseling.case'   
+        /counseling appointment (of type case=student discipline case) MUST BE created VIA student discipline case module, action by TPHEP (counseling / refer to BPL-as FLOW, step (3))  [FLOW: (1)Staff report a case+assign HOD (2)HOD decide-no case,advise or refer to TPHEP (3) Action by TPHEP-counseling]
+  .form-group
+    .col-sm-2.control-label
+      = f.label t 'student.counseling.c_type', for: :session_type
+    .col-md-4
+      .row
+        .col-md-1= f.radio_button :c_type, "voluntary", :id => 'c_type_voluntary', :class => 'radio_c_type'
+        .col-md-2= t 'student.counseling.voluntary'
+        - if @case_id!= nil || @case_id!= ''
+          .col-md-1= f.radio_button :c_type, "involuntary", :id => 'c_type_involuntary', :class => 'radio_c_type',:checked => "checked" 
+        - else
+          .col-md-1= f.radio_button :c_type, "involuntary", :id => 'c_type_involuntary', :class => 'radio_c_type'
+        .col-md-2=t 'student.counseling.involuntary'          
+  .form-group
+    .col-sm-2.control-label
+      = f.label t 'student.counseling.is_confirmed', for: :is_confirmed
+    .col-md-1
+      = f.check_box :is_confirmed, :id => 'box_confirm' 
+    .col-md-2
+      #confirmed_date{:style=>"display: none;"}
+        = f.text_field :confirmed_at, :class => 'date_picker form-control'
+     
+:javascript
+
+$(document).ready(function(){
+  $("input[id='box_confirm']").change(function() {  
+    if($('#box_confirm').is(':checked')) { 
+      $("#confirmed_date").show("highlight"); 
+    }else{
+      $("#confirmed_date").hide(""); 
+    }
+  });
+  $("input[id='box_confirm']").each(function() {  
+    if($('#box_confirm').is(':checked')) { 
+      $("#confirmed_date").show("highlight"); 
+    }else{
+      $("#confirmed_date").hide(""); 
+    }
+  });
+});

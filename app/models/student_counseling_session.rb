@@ -1,22 +1,28 @@
 class StudentCounselingSession < ActiveRecord::Base
   # befores, relationships, validations, before logic, validation logic, 
   #controller searches, variables, lists, relationship checking
-  before_save :set_to_nil_where_false
+  #before_save :set_to_nil_where_false
   
   belongs_to :student
   belongs_to :student_discipline_case, :foreign_key => 'case_id'
-  #belongs_to :created_by, :polymorphic => true,  :foreign_key => 'created_by'
   
   validates_presence_of :student_id
+  validates_presence_of :confirmed_at, :if => :is_confirmed?
   
   attr_accessor :feedback,:feedback_this, :feedback_final
   
   #before logic
-  def set_to_nil_where_false
-    if is_confirmed == false
-      self.confirmed_at= nil
-    end
-  end
+  #def set_to_nil_where_false
+   # if is_confirmed == false
+   #   self.confirmed_at= nil
+   # end
+  #end
+  
+  #def date_confirmed_present?
+    #if is_confirmed == true
+      #return false
+    #end
+  #end
   
   def self.find_appointment#(search)
     if search
