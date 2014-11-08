@@ -80,6 +80,19 @@ class StudentsController < ApplicationController
       end
     end
   end
+  
+  def borang_maklumat_pelajar
+
+    @student= Student.find(params[:id])
+    respond_to do |format|
+      format.pdf do
+        pdf = Borang_maklumat_pelajarPdf.new(@student, view_context)
+        send_data pdf.render, filename: "borang_maklumat_pelajar-{Date.today}",
+                              type: "application/pdf",
+                              disposition: "inline"
+      end
+    end
+  end
 
     
     
