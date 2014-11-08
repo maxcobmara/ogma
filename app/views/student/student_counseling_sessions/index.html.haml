@@ -1,5 +1,5 @@
-=@appointments.count
-=@session_dones.count
+/=@appointments.count
+/=@session_dones.count
 
 - model_class = StudentCounselingSession
 .page-header
@@ -30,14 +30,14 @@
   %table.table-hover.ogma
     %thead
       %tr
-        %th= sort_link(@search, :matrix_no, (t 'student.counseling.matrix_no'))
-        %th= sort_link(@search, :student_id, (t 'student.counseling.student_id'))
-        %th= sort_link(@search, :programme, (t 'student.counseling.programme'))
+        %th= sort_link(@search, :student_matrixno, (t 'student.counseling.matrix_no'))
+        %th= sort_link(@search, :student_name, (t 'student.counseling.student_id'))
+        %th= sort_link(@search, :student_course_name, (t 'student.counseling.programme'))
         %th= t 'student.counseling.year_semester'
-        %th= sort_link(@search, :appointment_for, (t 'student.counseling.appointment_for'))
+        %th= sort_link(@search, :confirmed_at, (t 'student.counseling.appointment_for'))
         %th{:style=>"width: 90px;"}=sort_link(@search, :duration, (t 'student.counseling.duration'))
         %th= sort_link(@search, :is_confirmed, (t 'student.counseling.is_confirmed'))
-        %th= sort_link(@search, :feedback_referrer, (t 'student.counseling.feedback_referrer'))
+        %th=t 'student.counseling.feedback_referrer'
         
     %tbody
       = render "search_bar"
@@ -69,7 +69,7 @@
                 =h session_done.c_type == 'involuntary' ? image_tag("flag_red.png") : "" 
               %td=h session_done.student.programme_for_student2 if session_done.student.course_id <15 
               %td=h strip_tags(Student.year_and_sem(session_done.student.intake))
-              %td=h session_done.confirmed_at.try(:strftime,"%d %b %Y, %l:%M %P") 
+              %td=h session_done.confirmed_at.try(:getlocal).try(:strftime,"%d %b %Y, %l:%M %P") 
               %td=h session_done.duration
               %td=h session_done.is_confirmed? ? image_tag("tick.png") : ""  
               - if session_done.c_scope == "case" && !session_done.case_id.blank? 

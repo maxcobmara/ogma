@@ -1,1 +1,18 @@
- 
+= search_form_for @search, url:  student_student_counseling_sessions_path,  class: "form-inline" do |f|
+  %tr.search_row{style: "display: none;"}
+    %td=f.text_field :student_matrixno_cont, :size=> 2,  class:  'form-control'
+    %td=f.text_field :student_name_cont, :size=> 2,  class:  'form-control'
+    %td=f.text_field :student_course_name_cont, :size=> 2,  class:  'form-control'
+    %td &nbsp;
+    %td
+      =f.text_field :confirmed_at_search, :size => 2, placeholder: (t 'student.counseling.on_byday'), class: 'datetime_picker2 form-control'
+      =f.hidden_field :confirmed_at_cont
+    %td &nbsp;
+    %td= select_tag('q[is_confirmed_eq]',options_for_select([[t('actions.all_records'),''],[t('confirmed'),true],[t('not_confirmed'),false]]),class: 'selectpicker',"data-width"=>'100px')
+    %td
+      .input-group
+        /=f.text_field :positions_name_cont, size: 2, class: 'form-control'
+        = select_tag('q[case_id_not_null]',options_for_select([[t('actions.all_records'),''],[t('student.counseling.case_reference'),1],[t('student.counseling.not_related'),0]]),class: 'selectpicker',"data-width"=>'100px')
+        %span.input-group-btn
+          %button.btn.btn-sm.btn-default.right{:type => "submit"}
+            %i.fa.fa-search.fa-fw

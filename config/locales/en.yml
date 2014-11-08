@@ -1033,7 +1033,7 @@ en:
       alt_dates: Suggest Alternative Dates
       c_scope: Scope of session
       c_type: Type of session
-      confirmed_at: Confirmed at
+      confirmed_at: Confirmed session at
       issue_desc: Issue description
       suggestions: Suggestions made to student
       action_counselor1: "Action by Counselor "
@@ -1052,6 +1052,8 @@ en:
       additional_session: To have another counseling session
       statement_add_session: "In Index, under column 'Feedback to Referrer (* case)', click 'Add Session' for additional counseling session to current discipline case."
       add_session: Add Session
+      on_byday: "on (by day)"
+      case_reference: Discipline Case Reference
       
   cofile:
     index: List

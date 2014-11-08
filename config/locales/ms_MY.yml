@@ -946,7 +946,7 @@ ms_MY:
       alt_dates: Cadangan tarikh alternatif
       c_scope: Skop sesi kaunseling
       c_type: Jenis sesi kaunseling
-      confirmed_at: Disahkan pada
+      confirmed_at: Disahkan temujanji pada
       issue_desc: Deskripsi Isu
       suggestions: Cadangan kepada pelajar
       action_counselor1: "Tindakan kaunselor "
@@ -965,6 +965,8 @@ ms_MY:
       additional_session: Perlukan sesi kaunseling lagi
       statement_add_session: "Dalam laman Indeks, di bawah lajur 'Maklumbalas kepada Perujuk (* kes)', klik 'Tambah Sesi' untuk sesi kaunseling tambahan bagi kes disiplin ini."
       add_session: Tambah Sesi
+      on_byday: "pada (mengikut hari)"
+      case_reference: Rujukan Kes Disiplin
 
   cofile:
     index: Senarai

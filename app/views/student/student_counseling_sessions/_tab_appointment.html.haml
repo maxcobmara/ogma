@@ -7,10 +7,10 @@
       %font{:style=>"color: red;"}*
    
     %dt=t 'student.counseling.appointment_for'
-    %dd=@student_counseling_session.requested_at.try(:strftime, "%d %b %Y, %l:%M %P")
+    %dd=@student_counseling_session.requested_at.try(:getlocal).try(:strftime, "%d %b %Y, %l:%M %P")
 
     %dt=t 'student.counseling.duration'
-    %dd=@student_counseling_session.duration.to_s+" Minutes"
+    %dd=@student_counseling_session.duration
     
     %dt=t 'student.counseling.alt_dates'
     %dd=@student_counseling_session.alt_dates
@@ -35,5 +35,5 @@
     %dd=@student_counseling_session.is_confirmed? ? t('confirmed') : t('not_confirmed')
     
     %dt=t 'student.counseling.confirmed_at'
-    %dd=@student_counseling_session.confirmed_at.try(:strftime, "%d %b %Y, %l:%M %P") 
+    %dd=@student_counseling_session.confirmed_at.try(:getlocal).try(:strftime, "%d %b %Y, %l:%M %P") 
      

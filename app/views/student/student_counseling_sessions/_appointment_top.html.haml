@@ -5,8 +5,9 @@
       =h @student_counseling_session.student.formatted_mykad_and_student_name 
       %font{:style=>"color: red;"}*
 
+      /session already confirmed, display 'confirmed_at' instead of 'requested_at'
       %dt=t 'student.counseling.appointment_for'
-      %dd=@student_counseling_session.requested_at.try(:strftime, "%d %b %y, %l:%M %P")
+      %dd=@student_counseling_session.confirmed_at.try(:getlocal).try(:strftime, "%d %b %y, %l:%M %P")
    
       %dt=t 'student.counseling.c_scope'
       %dd
@@ -24,5 +25,3 @@
           = t 'student.counseling.voluntary'
         - elsif @student_counseling_session.c_type=='involuntary'
           = t 'student.counseling.involuntary'       
-      %dt=t 'student.counseling.is_confirmed'
-      %dd=@student_counseling_session.is_confirmed==true ? (t 'confirmed_on')+" "+@student_counseling_session.confirmed_at.try(:strftime, "%d %b %Y, %l:%M %P")  : ""
