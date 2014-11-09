@@ -297,7 +297,16 @@ table.inline_display {
   td {padding: 1px 2px;}
 }
 
-//Curriculum Management - tree view
+//dashboard
+.notifications {
+ font-size: 0.9em;
+ a {color: #888;}
+ ul {
+  li {border-bottom: solid 1px #DDD;}
+ }
+}
+
+//TODO: move to own css file <modelname.css> //Curriculum Management - tree view
 #header_tree, #programme_tree, #semester_tree, #subject_tree, #topic_tree, #subtopic_tree, #subsubtopic_tree {
 	 list-style: none;
 }

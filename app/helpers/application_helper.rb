@@ -34,8 +34,8 @@ module ApplicationHelper
     #f.hidden_field(:_destroy) + link_to_function(name, "remove_fields(this)")
     #f.hidden_field(:_destroy)+( link_to name, "#",  :onclick=>h("remove_fields($(this),\"#{f.object_name}\")") )
     f.hidden_field(:_destroy)+( link_to name, "#",  :onclick=>h("remove_fields($(this),\"#{f}\")") )
-    #link_to name, "#",  :onclick=>h("remove_fields($(this),\"#{f.object_name}\")") 
-    #link_to name, "#",  :onclick=>h("remove_fields($(this),\"#{f.object_name}[_destroy]}\")") 
+    #link_to name, "#",  :onclick=>h("remove_fields($(this),\"#{f.object_name}\")")
+    #link_to name, "#",  :onclick=>h("remove_fields($(this),\"#{f.object_name}[_destroy]}\")")
   end
 
   def currency(value)
@@ -45,7 +45,7 @@ module ApplicationHelper
   def ringgols(money)
     number_to_currency(money, :unit => "RM ", :separator => ".", :delimiter => ",", :precision => 2)
   end
-  
+
   def pukka(points)
     number_with_precision(points, precision: 1)
   end
@@ -107,5 +107,9 @@ module ApplicationHelper
 
   def devise_mapping
     @devise_mapping ||= Devise.mappings[:user]
+  end
+
+  def is_staff?
+   current_user.userable_type == 'Staff'
   end
 end

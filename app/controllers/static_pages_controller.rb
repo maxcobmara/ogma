@@ -1,4 +1,6 @@
 class StaticPagesController < ApplicationController
+  helper Notifications
+
   def home
    @bulletins = Bulletin.order(publishdt: :desc).limit(10)
   end
