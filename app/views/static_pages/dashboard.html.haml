@@ -29,7 +29,8 @@
    .panel.panel-danger
     .panel-heading Notifications
     .panel-body.notifications{style: "padding:0;"}
-     = render 'notifications'
+     - if is_staff?
+      = render 'staff_notifications'
 
   .row{:style => "background-color:#D0E8F5;"}
    = render 'bulletin'
