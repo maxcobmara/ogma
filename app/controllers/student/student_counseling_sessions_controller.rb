@@ -116,7 +116,15 @@ class Student::StudentCounselingSessionsController < ApplicationController
   def feedback_referrer 
     @sessions_by_case = StudentCounselingSession.where('case_id=?',params[:id]).order(confirmed_at: :asc)
     @case_details = StudentDisciplineCase.find(params[:id])
-    render :layout => 'report'
+    #render :layout => 'report'
+    respond_to do |format|
+       format.pdf do
+         pdf = Feedback_referrerPdf.new(@sessions_by_case, view_context, @case_details)
+         send_data pdf.render, filename: "feedback_referrer-{Date.today}",
+                               type: "application/pdf",
+                               disposition: "inline"
+       end
+     end
   end
   
   

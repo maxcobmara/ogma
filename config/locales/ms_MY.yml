@@ -967,6 +967,7 @@ ms_MY:
       add_session: Tambah Sesi
       on_byday: "pada (mengikut hari)"
       case_reference: Rujukan Kes Disiplin
+      display_feedback: Papar Maklumbalas
 
   cofile:
     index: Senarai

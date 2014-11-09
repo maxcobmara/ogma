@@ -175,6 +175,9 @@ Ogma::Application.routes.draw do
     resources :student_counseling_sessions do
       member do
 	get :feedback
+	#get :feedback_referrer
+      end
+      collection do
 	get :feedback_referrer
       end
     end

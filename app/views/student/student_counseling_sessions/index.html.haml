@@ -74,9 +74,12 @@
               %td=h session_done.is_confirmed? ? image_tag("tick.png") : ""  
               - if session_done.c_scope == "case" && !session_done.case_id.blank? 
                 - if count2==0
-                  %td{:rowspan=>session_dones.count, :style=>"text-align:center;"}
-                    =h session_done.student_discipline_case.counselor_feedback.blank? ? (link_to t('student.counseling.add_session'), new_student_student_counseling_session_path(:caseid => session_done.case_id)) : image_tag("tick.png") 
-                    = link_to t('student.counseling.feedback_referrer'), :action => 'feedback_referrer', :id => session_done.case_id if !session_done.student_discipline_case.counselor_feedback.blank?
+                  %td{:rowspan=>session_dones.count, :style=>"text-align:center; vertical-align: middle"}
+                    - if session_done.student_discipline_case.counselor_feedback.blank?  
+                      =link_to t('student.counseling.add_session'), new_student_student_counseling_session_path(:caseid => session_done.case_id)
+                    - else
+                      %b=t('student.counseling.session_complete')
+                      %br= link_to t('student.counseling.display_feedback'), feedback_referrer_student_student_counseling_sessions_path(:format =>'pdf',:id=>session_done.case_id )
                   - count2+=1
               - else
                 %td{:style=>"text-align: center;"}= t 'student.counseling.not_related'

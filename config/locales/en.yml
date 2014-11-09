@@ -1054,6 +1054,7 @@ en:
       add_session: Add Session
       on_byday: "on (by day)"
       case_reference: Discipline Case Reference
+      display_feedback: Display Feeback
       
   cofile:
     index: List
