@@ -79,6 +79,9 @@ en:
   no2: No
   by2: " by "
   return: Return
+  confirmed: Confirmed
+  confirmed_on: Confirmed on
+  not_confirmed: Not Confirmed
   
   actions:
     new: New
@@ -1042,7 +1045,7 @@ en:
       all : All records
       counseling: Counseling
       
-    student_counseling_session:
+    counseling:
       title: Student Counseling Session
       title: Counseling Session
       new: New Student Counseling Session
@@ -1060,7 +1063,7 @@ en:
       appointment_for: Appointment for
       duration: "Duration (Minutes)"
       is_confirmed: "Confirmed?"
-      feedback_referrer: Feedback to Referrer
+      feedback_referrer: "Feedback to Referrer (* case)"
       not_related: Not Related
       appointment: Appointment
       session_notes: Session Notes
@@ -1070,7 +1073,7 @@ en:
       alt_dates: Suggest Alternative Dates
       c_scope: Scope of session
       c_type: Type of session
-      confirmed_at: Confirmed at
+      confirmed_at: Confirmed session at
       issue_desc: Issue description
       suggestions: Suggestions made to student
       action_counselor1: "Action by Counselor "
@@ -1080,6 +1083,18 @@ en:
       total_session: Total session for this case
       counselor_feedback1: "Action by Counselor - Summary/"
       counselor_feedback2: "Feedback(FINAL) to referrer/TPHEP"
+      include_this: " (including this session)"
+      personal: Personal
+      academic: Academic
+      case: Case
+      voluntary: Voluntary
+      complete_session: Complete sessions
+      additional_session: To have another counseling session
+      statement_add_session: "In Index, under column 'Feedback to Referrer (* case)', click 'Add Session' for additional counseling session to current discipline case."
+      add_session: Add Session
+      on_byday: "on (by day)"
+      case_reference: Discipline Case Reference
+      display_feedback: Display Feeback
       
   cofile:
     index: List
@@ -1937,6 +1952,7 @@ en:
       select_staff: Select Staff
       select_marked_asset: Select Marked Asset For Approval
       select_level: Select Level
+      select_student: Select Student
       all_unit: "All Department / Unit"
       maintain: Maintain
       remove: Remove

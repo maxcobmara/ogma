@@ -1,0 +1,97 @@
+.col-md-offset-2
+  .form-group
+    .col-sm-2.control-label
+      %b= t 'student.counseling.actions_referrer1'
+      %br
+      %b= t 'student.counseling.actions_referrer2'
+    .col-md-4 
+      =h @student_counseling_session.student_discipline_case.action if !@student_counseling_session.case_id.blank?
+      
+  .form-group
+    .col-sm-2.control-label
+      %b= t 'student.counseling.action_counselor1'
+      %br
+      %b= t 'student.counseling.action_counselor2'
+    .col-md-1
+      - if @student_counseling_session.remark == nil
+        = f.check_box :feedback_this, :id => 'ind_feedback'
+      - else
+        = f.check_box :feedback_this,	:id => 'ind_feedback',:checked=>"checked"
+    .col-md-4
+      .feedback_item{:style=>"display:none;"}
+        = f.text_area :remark, :size => "50x6", class: 'form-control'
+      /END-add remark for feedback into student_counseling_session table (for each individual counseling session-1 student_discipline_case may have 1 or more counselling session)
+
+      /START-add remark for FINAL feedback into student_discipline_case table (for all associated counseling session)
+  .form-group
+    .col-sm-2.control-label &nbsp;
+    - if @student_counseling_session.student_discipline_case.counselor_feedback== nil || @student_counseling_session.student_discipline_case.counselor_feedback=='' 
+      .col-md-1= f.radio_button :feedback, 1,:id => 'final_feedback',  :class => 'radio_feedback'
+      .col-md-2= t 'student.counseling.complete_session'
+      - if @student_counseling_session.student_discipline_case.counselor_feedback== nil
+        .col-md-1= f.radio_button :feedback, 2,:id => 'cou',  :class => 'radio_feedback'
+      - elsif @student_counseling_session.student_discipline_case.counselor_feedback=='' 
+        .col-md-1= f.radio_button :feedback, 2,:id => 'cou',  :class => 'radio_feedback', :checked=> true
+      .col-md-3= t 'student.counseling.additional_session'
+    - else
+      .col-md-1= f.radio_button :feedback, 1,:id => 'final_feedback',  :class => 'radio_feedback', :checked=>true
+      .col-md-2= t 'student.counseling.complete_session'
+      .col-md-1= f.radio_button :feedback, 2,:id => 'cou',  :class => 'radio_feedback' 
+      .col-md-3= t 'student.counseling.additional_session'
+
+  .finalfeedback_item{:style=>"display:none;"}
+    .form-group
+      .col-sm-2.control-label
+        %b= t 'student.counseling.counselor_feedback1'
+        %br
+        %b= t 'student.counseling.counselor_feedback2'
+      .col-md-4
+        = f.text_area :feedback_final, :size => "50x6", :value => @student_counseling_session.student_discipline_case.counselor_feedback, class: 'form-control'
+
+  .cou_item{:style=>"display:none;"}
+    .form-group
+      .col-sm-2.control-label &nbsp;
+      .col-md-6
+        /if required to display anything
+        =t 'student.counseling.statement_add_session'
+        /END-add remark for FINAL feedback into student_discipline_case table (for all associated counseling session)
+
+:javascript
+
+$(document).ready(function(){
+  $("input[id='ind_feedback']").change(function() {  
+    if($('#ind_feedback').is(':checked')) { 
+      $(".feedback_item").show(); 
+    }else{
+      $(".feedback_item").hide(); 
+    }s
+  });
+
+  $("input[id='ind_feedback']").each(function() {  
+    if($('#ind_feedback').is(':checked')) { 
+      $(".feedback_item").show(); 
+    }else{
+      $(".feedback_item").hide(); 
+    }
+  });
+
+  $("input[class='radio_feedback']").change(function() {  
+    if($('#final_feedback').is(':checked')) { 
+      $(".finalfeedback_item").show("highlight");
+      $(".cou_item").hide();
+    }else if ($('#cou').is(':checked')){
+      $(".finalfeedback_item").hide();
+      $(".cou_item").show();
+    }
+  });
+
+  $("input[class='radio_feedback']").each(function() {  
+    if($('#final_feedback').is(':checked')) { 
+      $(".finalfeedback_item").show("highlight");
+      $(".cou_item").hide();
+    }else if ($('#cou').is(':checked')){
+      $(".finalfeedback_item").hide();
+      $(".cou_item").show();
+    }
+  });
+});	

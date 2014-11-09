@@ -56,6 +56,9 @@ ms_MY:
   no2: Tidak
   by2: " oleh "
   return: Pemulangan
+  confirmed: Disahkan
+  confirmed_on: Disahkan pada
+  not_confirmed: Belum Disahkan
  
   actions:
     new: Baru
@@ -955,7 +958,7 @@ ms_MY:
       all: Semua rekod
       counseling: Kaunseling
       
-    student_counseling_session:
+    counseling:
       title: Sesi Kaunseling Pelajar
       title2: Sesi Kaunseling
       new: Sesi Kaunseling Pelajar Baru
@@ -973,7 +976,7 @@ ms_MY:
       appointment_for: Temujanji pada
       duration: "Jangka Masa (Minit)"
       is_confirmed: "Disahkan?"
-      feedback_referrer: Maklumbalas kepada Perujuk
+      feedback_referrer: "Maklumbalas kepada Perujuk (* kes)"
       not_related: Tidak Berkaitan
       appointment: Temujanji
       session_notes: Nota Sesi Kaunseling
@@ -983,7 +986,7 @@ ms_MY:
       alt_dates: Cadangan tarikh alternatif
       c_scope: Skop sesi kaunseling
       c_type: Jenis sesi kaunseling
-      confirmed_at: Disahkan pada
+      confirmed_at: Disahkan temujanji pada
       issue_desc: Deskripsi Isu
       suggestions: Cadangan kepada pelajar
       action_counselor1: "Tindakan kaunselor "
@@ -992,7 +995,19 @@ ms_MY:
       related_sessions2: " (yang berkaitan)"
       total_session: Jumlah sesi bagi kes ini
       counselor_feedback1: "Tindakan kaunselor - Rumusan/"
-      counselor_feedback2: "Maklumbalas(AKHIR) kepada perujuk/TPHEP"
+      counselor_feedback2: "Maklumbalas kepada perujuk/TPHEP"
+      include_this: " (termasuk sesi kaunseling ini)"
+      personal: Peribadi
+      academic: Akademik
+      case: Kes
+      voluntary: Sukarela
+      complete_session: Sesi kaunseling selesai
+      additional_session: Perlukan sesi kaunseling lagi
+      statement_add_session: "Dalam laman Indeks, di bawah lajur 'Maklumbalas kepada Perujuk (* kes)', klik 'Tambah Sesi' untuk sesi kaunseling tambahan bagi kes disiplin ini."
+      add_session: Tambah Sesi
+      on_byday: "pada (mengikut hari)"
+      case_reference: Rujukan Kes Disiplin
+      display_feedback: Papar Maklumbalas
 
   cofile:
     index: Senarai
@@ -1875,6 +1890,7 @@ ms_MY:
       select_staff: Pilih Staf
       select_marked_asset: Pilih Aset Untuk Pelupusan
       select_level: Pilih Peringkat
+      select_student: Pilih Pelajar
       all_unit: "Semua Jabatan / Unit"
       maintain: Dikekalkan
       remove: Dibuang

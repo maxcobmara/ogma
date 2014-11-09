@@ -1,13 +1,13 @@
 class StudentCounselingSession < ActiveRecord::Base
   # befores, relationships, validations, before logic, validation logic, 
   #controller searches, variables, lists, relationship checking
-  before_save :set_to_nil_where_false
+  before_save :set_to_nil_where_false, :set_date_to_notimezone
   
   belongs_to :student
   belongs_to :student_discipline_case, :foreign_key => 'case_id'
-  #belongs_to :created_by, :polymorphic => true,  :foreign_key => 'created_by'
   
   validates_presence_of :student_id
+  validates_presence_of :confirmed_at, :if => :is_confirmed?
   
   attr_accessor :feedback,:feedback_this, :feedback_final
   
@@ -16,6 +16,22 @@ class StudentCounselingSession < ActiveRecord::Base
     if is_confirmed == false
       self.confirmed_at= nil
     end
+  end
+  
+  def set_date_to_notimezone
+    self.requested_at = requested_at-8.hours if requested_at!=nil
+    self.confirmed_at = confirmed_at-8.hours if confirmed_at!=nil
+  end
+  
+  # define scope
+  def self.confirmed_at_search(query) 
+    #where('confirmed_at >=? AND confirmed_at<?',query.to_date-8.hours, "2014-11-30 10:11")
+    where('confirmed_at >=? AND confirmed_at<?',query.to_date-8.hours, query.to_date+1.days-8.hours)
+  end
+
+  # whitelist the scope
+  def self.ransackable_scopes(auth_object = nil)
+    [:confirmed_at_search]
   end
   
   def self.find_appointment#(search)
