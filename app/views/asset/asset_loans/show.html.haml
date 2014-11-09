@@ -39,7 +39,7 @@
       
       /Lampiran A for external loan type
       - if @asset_loan.loantype == 2 
-        = link_to content_tag(:i, "", :class => "fa fa-file-pdf-o"), lampiran_asset_loan_path(@asset_loan, format: "pdf"), {class: "btn btn-default", "data-toggle" => "tooltip", title: "Lampiran A PDF"}
+        = link_to content_tag(:i, "", :class => "fa fa-file-pdf-o"), lampiran_a_asset_loan_path(@asset_loan, format: "pdf"), {class: "btn btn-default", "data-toggle" => "tooltip", title: "Lampiran A PDF"}
       
       - if @asset_loan.is_approved == nil && @asset_loan.is_returned != true
         /edit details - request & approval are editable

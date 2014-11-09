@@ -121,7 +121,7 @@ Ogma::Application.routes.draw do
     resources :asset_loans, as: :loans do
       member do
 	get :approve
-	get :lampiran
+	get :lampiran_a
       end
     end
   end
@@ -174,11 +174,10 @@ Ogma::Application.routes.draw do
     resources :student_discipline_cases
     resources :student_counseling_sessions do
       member do
-	get :feedback
-	#get :feedback_referrer
+        get :feedback
       end
       collection do
-	get :feedback_referrer
+        get :feedback_referrer
       end
     end
     resources :leaveforstudents do
