@@ -90,9 +90,16 @@ class Asset::AssetLoansController < ApplicationController
     @asset_loan = AssetLoan.find(params[:id])
   end
   
-  def lampiran
-    @asset_loan = AssetLoan.find(params[:id]) #search(params[:search])
-    render :layout => 'report'
+  def lampiran_a
+    @asset_loan = AssetLoan.find(params[:id]) 
+    respond_to do |format|
+       format.pdf do
+         pdf = Lampiran_aPdf.new(@asset_loan, view_context)
+         send_data pdf.render, filename: "lampiran_a-{Date.today}",
+                               type: "application/pdf",
+                               disposition: "inline"
+       end
+     end
   end
   
   private

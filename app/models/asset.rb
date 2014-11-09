@@ -29,6 +29,13 @@ class Asset < ActiveRecord::Base
     "#{assetcode} - #{typename} - #{name} - #{modelname} - #{serialno} "
   end
   
+  def code_typename_serial_no
+    "#{assetcode} - #{typename} - #{serialno} "
+  end
+  
+  def name_modelname
+    "#{name} - #{modelname} "
+  end
 end
 
 # == Schema Information
