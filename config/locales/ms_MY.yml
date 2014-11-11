@@ -757,7 +757,7 @@ ms_MY:
       is_submit_to_hod: Hantar kepada Ketua Jabatan
       yes: Ya
       no: Tidak
-      report_no: "No. Laporan"
+      report_no: "Nombor Laporan"
       why_no_report: Sebab-sebab
       loss_location_long: Tempat sebenar dimana kehilangan berlaku
       loss_date_time: Tarikh dan masa kehilangan berlaku

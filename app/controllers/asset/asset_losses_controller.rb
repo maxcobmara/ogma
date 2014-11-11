@@ -17,8 +17,47 @@ class Asset::AssetLossesController < ApplicationController
     @asset_loss = AssetLoss.new
   end
   
+  def create
+    @asset_loss = AssetLoss.new(asset_loss_params)
+    respond_to do |format|
+      if @asset_loss.save
+        format.html { redirect_to @asset_loss, notice: 'A new asset lost was successfully created.' }
+        format.json { render action: 'show', status: :created, location: @asset_loss }
+      else
+        format.html { render action: 'new' }
+        format.json { render json: @asset_loss.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+  
   def show
     @asset_loss = AssetLoss.find(params[:id])
+  end
+  
+  def edit
+    @asset_loss = AssetLoss.find(params[:id])
+  end
+  
+  def update
+    @asset_loss = AssetLoss.find(params[:id])
+    respond_to do |format|
+      if @asset_loss.update(asset_loss_params)
+        format.html { redirect_to asset_loss_path, notice: 'An asset was successfully updated.' }
+        format.json { head :no_content }
+      else
+        format.html { render action: 'edit' }
+        format.json { render json: @asset_loss.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+  
+  def destroy
+    @asset_loss = AssetLoss.find(params[:id])
+    @asset_loss.destroy
+    respond_to do |format|
+      format.html { redirect_to(asset_losses_url) }
+      format.xml  { head :ok }
+    end
   end
   
   def kewpa28
@@ -80,6 +119,10 @@ class Asset::AssetLossesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def asset_loss_params
-      params.require(:asset_defect).permit(:code, :category, :unittype, :maxquantity, :minquantity, damages_attributes: [:id, :description,:reported_on,:document_id,:location_id])
+      params.require(:asset_loss).permit(:asset_id, :cash_type, :created_at, :document_id, :endorsed_hod_by, :endorsed_on, :est_value, :form_type, :how_desc, :id, 
+        :investigated_by, :investigation_code, :investigation_completed_on, :is_police_report_made, :is_prima_facie, :is_rule_broken, :is_staff_action, :is_submit_to_hod, 
+        :is_used, :is_writeoff, :last_handled_by, :location_id, :loss_type, :lost_at, :new_measures, :notes, :ownership, :police_action_status, :police_report_code, 
+        :prev_action_enforced_by, :preventive_action_dept, :preventive_measures, :recommendations, :report_code, :rules_broken_desc, :security_code, :security_officer_id,
+        :security_officer_notes, :surcharge_notes, :updated_at, :value_federal, :value_state, :why_no_report)
     end
 end

@@ -23,7 +23,7 @@
             .col-sm-2.control-label
               = f.label t 'asset.loss.asset_name', for: :asset_id
             .col-md-2
-              = f.collection_select :asset_id, Asset.where('mark_as_lost is true'), :id, :code_asset, {:include_blank =>true},{class: 'selectpicker', "data-width"=>'550px'} 
+              = f.collection_select :asset_id, Asset.where('mark_as_lost is true'), :id, :code_asset, {:include_blank =>true},{class: 'selectpicker', "data-width"=>'410px'} 
                 
           .form-group
             .col-sm-2.control-label
@@ -35,20 +35,23 @@
           .form-group
             .col-sm-2.control-label
               = f.label t 'asset.loss.loss_date_time', for: :lost_at
-            .col-md-2
-              = f.text_field :lost_at, :order => [:day, :month, :year], class: 'date_picker form-control'
+            .col-md-4
+              = f.text_field :lost_at, :order => [:day, :month, :year,], class: 'datetime_picker form-control'
+              .help-block.small= t('asset.loss.loss_date_time')
               
           .form-group
             .col-sm-2.control-label
               = f.label t 'asset.loss.how', for: :how_desc
             .col-md-4
               = f.text_area :how_desc, class: "form-control", rows: "5"
+              .help-block.small= t('asset.loss.how_long')
               
           .form-group
             .col-sm-2.control-label
               = f.label t 'asset.loss.last', for: :last_handled_by
-            .col-md-2
+            .col-md-4
               = f.collection_select :last_handled_by, Staff.all.order(name: :asc), :id,  :staff_name_with_position, {:include_blank => true}, {class: 'selectpicker', "data-width"=>'410px'}
+              .help-block.small= t('asset.loss.last_long')
               
           .form-group
             .col-sm-2.control-label
@@ -61,6 +64,7 @@
                 .form-group
                   = t 'asset.loss.no'
                   = f.radio_button :is_prima_facie, false
+                .help-block.small= t('asset.loss.case_long')
                   
           .form-group
             .col-sm-2.control-label
@@ -88,35 +92,45 @@
                 .form-group
                   = t 'asset.loss.no'
                   = f.radio_button :is_police_report_made, false, id:'no', class: 'radio_report'
+                .help-block.small= t('asset.loss.police_report_long')
+                  
           .form-group
             .col-sm-2.control-label
               .span_yes{:style=>"display: none;"}
                 = f.label t  'asset.loss.report_no'
-            .col-md-2
-              = f.text_field :police_report_code, class: 'form-control'
-            .col-sm-2.control-label
+            .col-md-4
               .span_yes{:style=>"display: none;"}
+                = f.text_field :police_report_code, placeholder: 'Police Report No.', class: 'form-control'
+                .help-block.small= t('asset.loss.police_report_yes')
+          .form-group
+            .col-sm-2.control-label
+              .span_no{:style=>"display: none;"}
                 = f.label t 'asset.loss.why_no_report'
-            .col-md-2
-              = f.text_field :why_no_report, class: 'form-control'
+            .col-md-4
+              .span_no{:style=>"display: none;"}
+                = f.text_area :why_no_report, class: 'form-control', rows: "5"
+                .help-block.small= t('asset.loss.police_report_no')
                       
           .form-group
             .col-sm-2.control-label
               = f.label t 'asset.loss.preventive_measures', for: :preventive_measures
             .col-md-4
               = f.text_area :preventive_measures, class: "form-control", rows: "5"
+              .help-block.small= t('asset.loss.preventive_measures_long')
               
           .form-group
             .col-sm-2.control-label
               = f.label t 'asset.loss.new_measures', for: :new_measures
             .col-md-4
               = f.text_area :new_measures, class: "form-control", rows: "5"
+              .help-block.small= t('asset.loss.new_measures_long')
               
           .form-group
             .col-sm-2.control-label
               = f.label t 'asset.loss.other_notes', for: :notes
             .col-md-4
               = f.text_area :notes, class: "form-control", rows: "5"
+              .help-block.small= t('asset.loss.other_notes_long')
               
           .form-group
             .col-sm-2.control-label
@@ -147,4 +161,3 @@ $(document).ready(function(){
     }
   });
 });
-      

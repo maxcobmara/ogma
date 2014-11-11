@@ -18,7 +18,7 @@
       %dt= t 'asset.loss.report_code'
       %dd= @asset_loss.try(:report_code)
       %dt= t 'asset.loss.hod'
-      %dd= @asset_loss.hod.staff_name_with_position
+      %dd= @asset_loss.try(:endorsed_hod_by)
       %dt= t 'asset.loss.endorsed'
       %dd= @asset_loss.try(:endorsed_on).try(:strftime,"%d-%b-%Y")
 
