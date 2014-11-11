@@ -35,7 +35,7 @@ class Asset::AssetsController < ApplicationController
 
     respond_to do |format|
       if @asset.save
-        format.html { redirect_to @asset, notice: 'A new asset was successfully created.' }
+        format.html { redirect_to asset_asset_path(@asset), notice: 'A new asset was successfully created.' }
         format.json { render action: 'show', status: :created, location: @asset }
       else
         format.html { render action: 'new' }
