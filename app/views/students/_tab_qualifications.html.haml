@@ -7,8 +7,8 @@
       = h (DropDown::QTYPE.find_all{|disp, value| value == qualification.level_id}).map {|disp, value| disp}[0]
       \:
   %dt
-    = h qualification.qname
-    \&nbsp &nbsp from &nbsp &nbsp #{h qualification.institute}
+    = h qualification.try(:qname)
+    \&nbsp &nbsp from &nbsp &nbsp #{h qualification.try(:institute)}
 	
 .col-md-8.col-md-offset-2	
   %BR	

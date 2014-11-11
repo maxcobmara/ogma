@@ -34,7 +34,7 @@
       - student_course.group_by(&:course).each do |course, students|
         %tr
           %td.group{:colspan => "12", :style => "background-color:#E5E4E2;"}
-            %span{:style => "color:#black;font-weight:bold;font-size:14px"}= link_to course.name, "#", class: 'bogus'	  
+            %span{:style => "color:#black;font-weight:bold;font-size:14px"}= link_to course.try(:name), "#", class: 'bogus'	  
         - for student in students
           %tr	  
             %td= link_to student.formatted_mykad, student_path(student)

@@ -60,8 +60,17 @@ class StudentsController < ApplicationController
   # POST /students
   # POST /students.xml
   def create
-    @student = Student.new(params[:student])
+    @student = Student.new(student_params)
 
+    respond_to do |format|
+      if @student.save
+        format.html { redirect_to @student, notice: 'A new student was successfully created.' }
+        format.json { render action: 'show', status: :created, location: @student }
+      else
+        format.html { render action: 'new' }
+        format.json { render json: @student.errors, status: :unprocessable_entity }
+      end
+    end
   end
 
   # PUT /students/1
@@ -70,7 +79,7 @@ class StudentsController < ApplicationController
     @student = Student.find(params[:id])
 
     respond_to do |format|
-      if @student.update_attributes(params[:student])
+      if @student.update_attributes(student_params)
         flash[:notice] = 'Student was successfully updated.'
         format.html { redirect_to(@student) }
         format.xml  { head :ok }
@@ -104,7 +113,7 @@ class StudentsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def student_params
-      params.require(:student).permit(:icno, :name, :sstatus, :stelno, :ssponsor, :gender, :sbirthdt, :mrtlstatuscd, :intake,:course_id)
+      params.require(:student).permit(:address, :address_posbasik, :allergy, :bloodtype, :course_id, :course_remarks, :created_at, :disease, :end_training, :gender, :group_id, :icno, :id, :intake, :intake_id, :matrixno, :medication, :mrtlstatuscd, :name, :offer_letter_serial, :photo_content_type, :photo_file_name, :photo_file_size, :photo_updated_at, :physical, :race, :race2, :regdate, :remarks, :sbirthdt, :semail, :specialisation, :specilisation, :ssponsor, :sstatus, :stelno, :updated_at)
     end
 
     def sort_column
