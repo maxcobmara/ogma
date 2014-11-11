@@ -59,6 +59,10 @@ ms_MY:
   confirmed: Disahkan
   confirmed_on: Disahkan pada
   not_confirmed: Belum Disahkan
+  submitted: Telah dihantar
+  not_submitted: Belum dihantar
+  approved: Diluluskan
+  not_approved: Belum Diluluskan
  
   actions:
     new: Baru
@@ -901,6 +905,7 @@ ms_MY:
       empty_room: Kosongkan Bilik
       damage: Kerosakan oleh Pelajar
     students:
+      title: Maklumat Pelajar
       list: Senarai Maklumat Pelajar
       formatted_mykad: No Mykad
       name: Nama
@@ -946,6 +951,26 @@ ms_MY:
       guarantor: Keputusan SPM
       contact_information: Maklumat Perhubungan dan Penjamin
       mandatory: Mandatori
+    
+    leaveforstudent:
+      title: Cuti Pelajar
+      list: Senarai Cuti Pelajar
+      leave_details: Perincian Cuti
+      approve_leave: Kelulusan CUti
+      student_id: Nama Pelajar
+      leavetype: Jenis Cuti
+      requestdate: Tarikh Mohon Cuti
+      reason: Sebab
+      address: Alamat
+      telno: "No. Telefon"
+      leave_startdate: Tarikh Cuti Bermula
+      leave_enddate: Tarikh Cuti Berakhir
+      studentsubmit: "Dihantar?"
+      submit_approval: Hantar untuk kelulusan
+      approved: "Diluluskan?"
+      staff_id: Pelulus
+      approvedate: Tarikh diluluskan
+      notes: Nota
 
     student_discipline_case:
       title: Kes Disiplin Pelajar

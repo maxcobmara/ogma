@@ -82,6 +82,10 @@ en:
   confirmed: Confirmed
   confirmed_on: Confirmed on
   not_confirmed: Not Confirmed
+  submitted: Submitted
+  not_submitted: Not Submitted
+  approved: Approved
+  not_approved: Not Approved
   
   actions:
     new: New
@@ -985,6 +989,7 @@ en:
       
       
     students:
+      title: Student Info
       list: Student Info List
       formatted_mykad: MyKad No
       name: Name
@@ -1033,6 +1038,26 @@ en:
       mandatory: Mandatory
       subject: Subject
       grade: Grade
+      
+    leaveforstudent:
+      title: Student Leave
+      list: Student Leave List
+      leave_details: Leave Details
+      approve_leave: Leave Approval
+      student_id: Student Name
+      leavetype: Leave Type
+      requestdate: Request Date
+      reason: Reason
+      address: Address
+      telno: Telephone No
+      leave_startdate: On Leave Starting
+      leave_enddate: Leave End Date
+      studentsubmit: "Submitted?"
+      submit_approval: Submit for approval
+      approved: "Approved?"
+      staff_id: Approved By
+      approvedate: Approval Date
+      notes: Notes
 
     student_discipline_case:
       title: Student Discipline Case
@@ -1058,7 +1083,7 @@ en:
       
     counseling:
       title: Student Counseling Session
-      title: Counseling Session
+      title2: Counseling Session
       new: New Student Counseling Session
       edit: Edit Student Counseling Session
       involuntary: Involuntary

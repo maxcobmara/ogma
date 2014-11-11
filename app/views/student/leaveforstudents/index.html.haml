@@ -1,6 +1,6 @@
 - model_class = Leaveforstudent
 .page-header
-  %h1= t('leaveforstudent.student leave list')
+  %h1= t('student.leaveforstudent.list')
   
 .navbar.navbar-inverse{role: "navigation", style: "padding-right:40px;"}
   %ul.nav.navbar-nav
@@ -16,13 +16,13 @@
   %table.table-striped.table-hover.ogma
     %thead
       %tr
-        %th Student Name	
-        %th Leave Type
-        %th Request Date
-        %th On Leave Starting
-        %th Submitted?
-        %th Approved?
-        %th Approved By
+        %th=t 'student.leaveforstudent.student_id'
+        %th=t 'student.leaveforstudent.leavetype'
+        %th=t 'student.leaveforstudent.requestdate'
+        %th=t 'student.leaveforstudent.leave_startdate'
+        %th=t 'student.leaveforstudent.studentsubmit'
+        %th=t 'student.leaveforstudent.approved'
+        %th=t 'student.leaveforstudent.staff_id'
 		
     %tbody
     - @leaveforstudent.each do |leaveforstudent|
