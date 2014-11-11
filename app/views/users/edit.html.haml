@@ -1,0 +1,36 @@
+- model_class = User
+.page-header
+  %h1= t 'user.edit'
+
+= render 'shared/flashes'
+
+.row
+  = form_for [@user], html: { multipart: true, class: 'edit_form', id: 'form1'}, remote: true  do |f| 
+    = render 'shared/error_messages', object: f.object
+    = render :partial => 'form', :locals => {:f => f}
+    
+    .row
+      .form-group
+        .col-md-1.col-md-offset-2
+          = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), users_path, :class => 'btn btn-default'
+        .col-md-2
+          .div{style: "margin-left:-40px;"}
+            = f.submit t('update'), class: "btn btn-primary"
+ 
+       
+:javascript
+
+$(function(){
+  $('.edit_form input[type=submit]').remove();
+  $('.edit_form input[type=checkbox]').click(function(){
+    $("#form1").submit();
+  });
+});
+
+/alert($(this).val());  - value of checkbox (role_id)
+/$(function(){
+/  $('.edit_form input[type=submit]').remove();
+/  $('.edit_form input[type=checkbox]').click(function(){
+/    alert($(this).val());
+/  });
+/});

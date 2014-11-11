@@ -187,7 +187,7 @@
         %h2.icon Administration
         %a.mp-back{:href => "#"} =t('back')
         %ul
-          %li= link_to content_tag(:i, "", :class => "icon-numb") + "Users", '#'
+          %li= link_to content_tag(:i, "", :class => "icon-numb") + t('user.title'), users_path
           %li= link_to content_tag(:i, "", :class => "icon-numb") + t('role.title'), roles_path
           %li= link_to content_tag(:i, "", :class => "icon-numb") + "Pages", '#'
           %li= link_to content_tag(:i, "", :class => "icon-numb") + "Address Book", campus_address_books_path

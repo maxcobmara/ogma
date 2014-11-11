@@ -1,0 +1,61 @@
+- model_class = User
+.row
+  .col-md-offset-1
+    / Nav tabs
+    %ul.nav.nav-tabs
+      %li.active= link_to (t 'user.details'),"#user_details_edit", "data-toggle" => "tab"
+      
+    .tab-content{style:"padding-top:1em"}
+      .col-md-8.col-md-offset-1
+        %dl.dl-horizontal
+          %dt= t 'user.userable_id', :default => model_class.human_attribute_name(:userable_id) + ":"
+          %dd=h @user.userable_type == "Staff" ? @user.userable.try(:staff_name_with_position) : @user.userable.try(:formatted_mykad_and_student_name)
+          
+          %dt= t 'user.userable_type', :default => model_class.human_attribute_name(:userable_type)+":"
+          %dd=h @user.userable_type
+      
+      #user_details_edit.tab-pane.active
+        .col-md-10
+          %br
+          .col-md-offset-2
+            .form-group
+              .col-sm-2.control-label
+                = f.label t 'user.roles', for: :roles
+              .col-md-8
+                %br
+                .row
+                  .col-md-5{:style=> "font-style: italic; text-decoration:underline;"}=t 'user.available_roles'
+                  .col-md-4{:style=> "font-style: italic; text-decoration:underline;"}=t 'user.assigned_roles'
+                .row
+                  .col-md-5
+                    %br
+                    - count_role=0
+                    - for role in Role.all.order(id: :asc)
+                      .row
+                        .col-md-9= (count_role+=1).to_s+") "+role.name 
+                        .col-md-1= check_box_tag "user[role_ids][]", role.id, @user.roles.include?(role)
+                      
+                  .col-md-4
+                    %br
+                    #testing
+                      - count_role2=0
+                      - for user_role in @user.roles.order(id: :asc) 
+                        = (count_role2+=1).to_s+") "+user_role.name
+                        %font{:style=> "font-size: 22px"}
+                          &nbsp;
+                        %br
+          %BR
+       
+:javascript
+
+/if CLASS FOR FORM IS edit_form
+/$(function(){
+/  $('.edit_form input[type=checkbox]').click(function(){
+/    alert('tak mau c lain plak');
+/  });
+/});
+
+/if CLASS FOR CHECKBOX IS tick_role
+/  $("input[type=checkbox]").click(function(){
+/    alert('caca');
+/  });
