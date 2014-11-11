@@ -276,6 +276,7 @@ Ogma::Application.routes.draw do
    member do
     get  :link
     post :link
+    put :complete
    end
   end
   resources :logins

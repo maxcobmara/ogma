@@ -5,4 +5,5 @@ class User < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable
 
   belongs_to :userable, polymorphic: true
+  has_and_belongs_to_many :roles
 end

@@ -1,0 +1,6 @@
+$("#testing").empty();
+<% count_role=0 %>
+<% for role in @user.roles.order(id: :asc) %>
+  $("#testing").append("<div style='height: 12px; vertical-align: top'>");
+  $("#testing").append("<%= (count_role+=1).to_s+") "+ role.name %></div><br>");             
+<% end %>

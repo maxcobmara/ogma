@@ -92,6 +92,17 @@ ms_MY:
       previous: Terdahulu
       truncate: "&hellip;"
       last: Terakhir
+      
+  user:
+    title: Senarai Pengguna
+    edit: Sunting Peranan Pengguna
+    userable_id: Nama Pengguna
+    email: Email
+    userable_type: Kategori Pengguna
+    roles: Peranan
+    details: Perincian Pengguna
+    available_roles: Peranan sedia ada
+    assigned_roles: Peranan diperuntukkan
   
   role:
     title: Senarai Peranan

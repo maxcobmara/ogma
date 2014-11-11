@@ -3,6 +3,8 @@ class Role < ActiveRecord::Base
   
   before_save  :underscore_name
   
+  has_and_belongs_to_many :users
+  
   def underscore_name
     self.authname = name.parameterize.underscore
   end
