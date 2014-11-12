@@ -1,4 +1,23 @@
 %ul.nav.nav-pills.nav-stacked{role: "tablist"}
  - if leave_notifications > 0
   %li= link_to content_tag(:span, "#{leave_notifications}", class: "badge") + "  Leave application for approval", staff_leaveforstaffs_path
-  %li= link_to content_tag(:span, "#{leave_notifications}", class: "badge") + "  Leave application for approval", staff_leaveforstaffs_path
+ - if my_leave_approvals.size > 0
+  - counter = 0
+  - my_leave_approvals.each do |leave|
+   %li= link_to "Your leave request for #{leave[1]} has been approved", staff_leaveforstaff_path("#{leave[0]}")
+ - if skts_endorse_ready > 0
+  %li= link_to content_tag(:span, "#{skts_endorse_ready}", class: "badge") + " Staff SKT ready for endorsement", staff_staff_appraisals_path
+ - if skt_review_ready > 0
+  %li= link_to content_tag(:span, "#{skt_review_ready}", class: "badge") + " Staff SKT ready for Annual Review", staff_staff_appraisals_path
+ - if appraisal_requests > 0
+  %li= link_to content_tag(:span, "#{appraisal_requests}", class: "badge") + " Staff appraisal for processing", staff_staff_appraisals_path
+ - if late_require_approval > 0
+  %li= link_to content_tag(:span, "#{late_require_approval}", class: "badge") + " Late/early attendance for approval", attendance_manage_path
+ - if late_need_a_reason > 0
+  %li= link_to content_tag(:span, "#{late_need_a_reason}", class: "badge") + " Late/early attendance require reason submission", attendance_manage_path
+ - if travel_request_needs_approval > 0
+  %li= link_to content_tag(:span, "#{travel_request_needs_approval}", class: "badge") + " Travel request that requires your approval", staff_travel_requests_path
+ - if my_leave_approvals.size > 0
+  - counter = 0
+  - your_travel_approved.each do |travel|
+   %li= link_to "Your travel request for #{travel[1].strftime("%b-%d")} has been approved", staff_travel_request_path("#{travel[0]}")
