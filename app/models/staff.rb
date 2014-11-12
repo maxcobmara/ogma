@@ -99,6 +99,10 @@ class Staff < ActiveRecord::Base
     def mykad_with_staff_name
       "#{formatted_mykad}  #{name}"
     end
+    
+    def mykad_with_staff_name_position_grade
+      "#{formatted_mykad}  #{name} (#{position_for_staff}-#{grade_for_staff})"
+    end
 
     def shift_for_staff
       ssft = StaffShift.find(:first, :conditions=> ['id=?',staff_shift_id])
