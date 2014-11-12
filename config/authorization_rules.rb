@@ -9,6 +9,18 @@ privileges do
 end
 
 authorization do
+
+
+ role :librarian do
+   has_permission_on :books, :to => [:manage, :extend, :return]
+   has_permission_on :librarytransactions , :to => [:manage, :extend, :extend2,:return,:return2, :check_availability, :form_try, :multiple_edit,:check_availability2,:multiple_update]#,:accession_list]
+   has_permission_on :students, :to => :index
+   has_permission_on :booksearches, :to => :read
+   has_permission_on :librarytransactionsearches, :to => :read
+ end
+
+
+
 end
 
 =begin

@@ -6,4 +6,10 @@ class User < ActiveRecord::Base
 
   belongs_to :userable, polymorphic: true
   has_and_belongs_to_many :roles
+
+  def role_symbols
+   roles.map do |role|
+    role.authname.to_sym
+   end
+  end
 end

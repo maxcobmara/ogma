@@ -17,7 +17,7 @@
                 %li= link_to t('attendance.manage_lateness_earlyreturn'), '/attendance/manage'
                 %li= link_to t('staff_attendance.title'), staff_staff_attendances_path
                 %li= link_to t('staff_attendance.status_pcard'), '/attendance/status'
-                %li= link_to "Report - Monthly Listing", '#'  
+                %li= link_to "Report - Monthly Listing", '#'
           %li= link_to t('staff.staff_appraisal.title'), staff_staff_appraisals_path
           %li= link_to t('position.title'), staff_positions_path
           %li.icon.icon-left
@@ -55,7 +55,7 @@
               %h2.icon Reports
               %a.mp-back{:href => "#"}= t 'helpers.links.back'
               %ul
-                %li= link_to "Maklumat Perjawatan", '/staff/positions/maklumat_perjawatan.pdf'        
+                %li= link_to "Maklumat Perjawatan", '/staff/positions/maklumat_perjawatan.pdf'
 
     %li.icon.icon-left
       = link_to content_tag(:i, "", :class => "icon-numb") + "Assets", '#'
@@ -70,7 +70,7 @@
           %li= link_to content_tag(:i, "", :class => "icon-numb") + (t "asset.disposal.title"), asset_disposals_path
           %li.icon.icon-left
             = link_to t('asset.loan.title'), '#'
-            .mp-level 
+            .mp-level
               %h2.icon=t('asset.loan.title')
               %a.mp-back{:href => "#"}= t 'helpers.links.back'
               %ul
@@ -96,7 +96,7 @@
                 %li= link_to (t "student.tenant.list"), student_tenants_path
                 %li= link_to (t "student.tenant.return_key"), return_key_student_tenants_path
                 %li= link_to (t "student.tenant.statistics"), statistics_student_tenants_path
-                  
+
           %li= link_to content_tag(:i, "", :class => "icon-numb") + "Location Tree", '#'
 
     %li.icon.icon-left
@@ -154,7 +154,7 @@
                 %li= link_to t('training.lesson_plan.reporting'), index_report_training_lesson_plans_path
           %li= link_to content_tag(:i, "", :class => "icon-numb") + t('training.trainingnote.title2'), training_trainingnotes_path
           %li= link_to content_tag(:i, "", :class => "icon-numb") + "Personalised Time Table", personalize_index_training_weeklytimetables_path
-		  
+
     %li.icon.icon-left
       = link_to content_tag(:i, "", :class => "icon-numb") + (t "exam.title"), '#'
       .mp-level
@@ -175,8 +175,9 @@
         %a.mp-back{:href => "#"}=t('back')
         %ul
           %li= link_to content_tag(:i, "", :class => "icon-numb") + "Rules & Regulations", '#'
-          %li= link_to content_tag(:i, "", :class => "icon-numb") + (t "library.transaction.title"), library_librarytransactions_path
-          %li= link_to content_tag(:i, "", :class => "icon-numb") + (t "library.transaction.manager"), manager_library_librarytransactions_path
+          - permitted_to? :manage, :librarytransactions do
+            %li= link_to content_tag(:i, "", :class => "icon-numb") + (t "library.transaction.title"), library_librarytransactions_path
+            %li= link_to content_tag(:i, "", :class => "icon-numb") + (t "library.transaction.manager"), manager_library_librarytransactions_path
           %li= link_to content_tag(:i, "", :class => "icon-numb") + (t "library.book.list"), library_books_path
           %li= link_to content_tag(:i, "", :class => "icon-numb") + "Analysis", '#'
           %li= link_to content_tag(:i, fa_icon("bar-chart-o", text: "Statistics")), '#'
@@ -204,7 +205,3 @@
                 %li= link_to "Banks", '#'
                 %li= link_to "Asset Categories", '#'
           %li= link_to content_tag(:i, "", :class => "icon-numb") + "Release Notes", '#'
-
-
-
-
