@@ -1,32 +1,35 @@
 - model_class = Role
 .page-header
   %h1= t('role.title')#, :default => model_class.model_name.human.pluralize
-  
+
 .navbar.navbar-inverse{role: "navigation", style: "padding-right:40px;"}
   %ul.nav.navbar-nav.navbar-right
     %li= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "index_search_bar"
     %li= link_to content_tag(:li, fa_icon("print", text: (t 'actions.print'))), "#", class: "bogus"
-  
+
 .row
+  .col-md-12
+    .alert.alert-warning
+      %strong=t 'role.system_roles'
+      =t 'role.contact_developers'
   %table.table-striped.table-hover.ogma
     %thead
       %tr
         %th{style: "width:20%;"}= sort_link(@search, :name, (t 'role.name'))
         %th{style: "width:40%;"}= sort_link(@search, :description, (t 'role.description'))
-        %th
 
-      %tbody 
+      %tbody
         = render "search_bar"
         - @roles.each do |role|
           %tr
             %td= link_to role.name, edit_role_path(role)
             %td= role.description
-            %td &nbsp;
-  
+
     .right{style:"padding:0 30px; margin:0;"}= paginate @roles, :theme => 'twitter-bootstrap-3'
 
 .row
-  .bg-info.text-info{style: "margin:20px; padding-left:10px; width: 35%; height: 60px;"} 
+  //are these custom styles or do we use them elsewhere also?
+  .bg-info.text-info{style: "margin:20px; padding-left:10px; width: 35%; height: 60px;"}
     %br
       %b=t 'role.system_roles'
       =t 'role.contact_developers'

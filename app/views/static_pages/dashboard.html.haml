@@ -1,6 +1,7 @@
 .page-header
 
 - if user_signed_in?
+ = render 'shared/flashes'
  .row
   - staffexist = Staff.where(coemail: current_user.email)
   - studentexist = Student.where(semail: current_user.email)

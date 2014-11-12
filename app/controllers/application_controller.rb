@@ -4,6 +4,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
 
   before_filter :set_locale
+  before_filter { |c| Authorization.current_user = c.current_user }
   helper :bootstrap_icon, :devise
 
   #set current user for development
@@ -27,5 +28,10 @@ class ApplicationController < ActionController::Base
 
     def default_url_options(options = {})
       {locale: I18n.locale}
+    end
+
+    def permission_denied
+      flash[:error] = "Sorry, you are not allowed to access that page."
+      redirect_to dashboard_path
     end
 end
