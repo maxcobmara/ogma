@@ -770,8 +770,6 @@ ms_MY:
       register: Daftar Kehilangan Aset
       actions: Tindakan
       is_submit_to_hod: Hantar kepada Ketua Jabatan
-      yes: Ya
-      no: Tidak
       report_no: "Nombor Laporan"
       why_no_report: Sebab-sebab
       loss_location_long: Tempat sebenar dimana kehilangan berlaku
@@ -785,6 +783,9 @@ ms_MY:
       preventive_measures_long: Langkah berjaga-jaga yang telah diambil untuk mengelakkan kehilangan berlaku
       new_measures_long: Apakah langkah-langkah yang akan diambil untuk mencegah kejadian berulang
       other_notes_long: Catatan lain sekiranya ada
+      brand: Jenama
+      model: Model
+      receive_date: Tarikh Terima
     
     loan:
       title: Peminjaman Aset
