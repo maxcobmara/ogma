@@ -26,7 +26,7 @@
               .col-sm-2.control-label
                 = f.label :staff_id
               .col-md-6 
-                = f.collection_select :staff_id, Staff.all.order('name ASC'), :id, :mykad_with_staff_name, {:include_blank =>t('helpers.prompt.select_staff')},{class: 'selectpicker',  "data-width"=>'330px'} 
+                = f.collection_select :staff_id, Staff.all.order('name ASC'), :id, :mykad_with_staff_name_position_grade, {:include_blank =>t('helpers.prompt.select_staff')},{class: 'selectpicker',  "data-width"=>'460px'} 
                 /= f.collection_select :staff_id, Staff.where('id = ?', Login.current_login.staff_id).order('name ASC'), :id, :mykad_with_staff_name, {:include_blank =>t('helpers.prompt.select_staff')},{class: 'selectpicker', "data-width"=>'230px'}   
           .col-md-offset-2 
             .form-group

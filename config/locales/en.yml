@@ -853,8 +853,6 @@ en:
       new: New Asset Loss
       register: Register Asset Loss
       actions: Actions
-      yes: Yes
-      no: No
       is_submit_to_hod: Submit to HOD
       report_no: Report No.  
       why_no_report: Reason
@@ -869,6 +867,9 @@ en:
       preventive_measures_long: Steps taken to prevent loss from occuring
       new_measures_long: What steps will be taken to prevent recurrent cases
       other_notes_long: Other notes(if any)
+      brand: Brand
+      model: Model
+      receive_date: Receive Date
       
     loan:
       title: Asset Loan

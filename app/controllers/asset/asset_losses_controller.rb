@@ -5,12 +5,12 @@ class Asset::AssetLossesController < ApplicationController
     @search = AssetLoss.search(params[:q])
     @asset_loss = @search.result
     # @lost_assets = AssetLoss.order(code: :asc).page(params[:page]||1)
-    @asset_losses = AssetLoss.order('lost_at DESC')
-        @asset_losses_group_writeoff = @asset_losses.group_by{|x|x.document_id}
-        respond_to do |format|
-          format.html # index.html.erb
-          format.xml  { render :xml => @asset_losses }
-        end
+    #@asset_losses = AssetLoss.order('lost_at DESC')
+        #@asset_losses_group_writeoff = @asset_losses.group_by{|x|x.document_id}
+        #respond_to do |format|
+          #format.html # index.html.erb
+          #format.xml  { render :xml => @asset_losses }
+          #end
   end
   
   def new

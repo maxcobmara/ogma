@@ -12,13 +12,13 @@
 .tab-content.col-md-offset-1
   %dl.dl-horizontal
     %dt= t 'asset.assetcode'
-    %dd= @asset_loss.asset.assetcode
+    %dd= link_to @asset_loss.asset.try(:assetcode), (asset_asset_path(@asset_loss.asset_id)) rescue nil
   #details.tab-pane.fade.in.active
     %dl.dl-horizontal
       %dt= t 'asset.loss.report_code'
       %dd= @asset_loss.try(:report_code)
       %dt= t 'asset.loss.hod'
-      %dd= @asset_loss.try(:endorsed_hod_by)
+      %dd= @asset_loss.hod.staff_name_with_position
       %dt= t 'asset.loss.endorsed'
       %dd= @asset_loss.try(:endorsed_on).try(:strftime,"%d-%b-%Y")
 
@@ -26,6 +26,12 @@
     %dl.dl-horizontal
       %dt= t 'asset.loss.loss_type'
       %dd= @asset_loss.try(:loss_type)
+      %dt= t 'asset.loss.brand'
+      %dd= @asset_loss.try(:asset).try(:name)
+      %dt= t 'asset.loss.model'
+      %dd= @asset_loss.try(:asset).try(:modelname)
+      %dt= t 'asset.loss.receive_date'
+      %dd= @asset_loss.try(:asset).try(:receiveddate)
       %dt= t 'asset.loss.purchasedate'
       %dd= check_kin {tarikh(@asset_loss.asset.purchasedate)}
       %dt= t 'asset.loss.purchaseprice'
