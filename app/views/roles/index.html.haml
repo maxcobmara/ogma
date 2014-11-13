@@ -26,10 +26,3 @@
             %td= role.description
 
     .right{style:"padding:0 30px; margin:0;"}= paginate @roles, :theme => 'twitter-bootstrap-3'
-
-.row
-  //are these custom styles or do we use them elsewhere also?
-  .bg-info.text-info{style: "margin:20px; padding-left:10px; width: 35%; height: 60px;"}
-    %br
-      %b=t 'role.system_roles'
-      =t 'role.contact_developers'

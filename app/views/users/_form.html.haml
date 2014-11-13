@@ -14,35 +14,18 @@
       .panel-heading
         %h3.panel-title=t 'user.assigned_roles'
       .panel-body
-        - count_role2=0
-        .row#testing
-          //#still need to remove rows on left
+        #testing
           - for user_role in @user.roles.order(id: :asc)
-            .col-md-12
-              = (count_role2+=1).to_s+") "+user_role.name
-              <BR>
+            .row
+              .col-md-12
+                =user_role.name
+              
   .col-md-3.col-md-offset-2
     .panel.panel-default
       .panel-heading
         %h3.panel-title=t 'user.available_roles'
       .panel-body
-        - count_role=0
         - for role in Role.all.order(id: :asc)
           .row
-            .col-md-9= (count_role+=1).to_s+") "+role.name  #dont need numbers as they do not match left to right.
+            .col-md-9= role.name  
             .col-md-1= check_box_tag "user[role_ids][]", role.id, @user.roles.include?(role)
-
-
-:javascript
-
-/if CLASS FOR FORM IS edit_form
-/$(function(){
-/  $('.edit_form input[type=checkbox]').click(function(){
-/    alert('tak mau c lain plak');
-/  });
-/});
-
-/if CLASS FOR CHECKBOX IS tick_role
-/  $("input[type=checkbox]").click(function(){
-/    alert('caca');
-/  });
