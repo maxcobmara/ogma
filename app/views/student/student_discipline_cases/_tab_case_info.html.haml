@@ -1,0 +1,50 @@
+- model_class=StudentDisciplineCase
+.col-md-8.col-md-offset-1
+  %dl.dl-horizontal
+    %dt=t 'student.discipline.case_created_on', :default => model_class.human_attribute_name(:case_created_on)+":"
+    %dd=h @student_discipline_case.case_created_on.try(:strftime, '%d %b %Y')
+    
+    %dt=t 'student.discipline.file_id', :default => model_class.human_attribute_name(:file_id)+":"
+    %dd=h @student_discipline_case.file_id.blank? ? "No File" : @student_discipline_case.cofile.file_no_and_name 
+    
+    %dt=t 'student.discipline.investigation_notes', :default => model_class.human_attribute_name(:investigation_notes)+":"
+    %dd=h @student_discipline_case.investigation_notes
+    
+    %dt=t 'student.discipline.action_type', :default => model_class.human_attribute_name(:action_type)+":"
+    %dd=h @student_discipline_case.action_type.try(:titleize)
+    
+    - if @student_discipline_case.action_type == "no_case"
+      %dt=t 'student.discipline.closed_at_college_on', :default => model_class.human_attribute_name(:closed_at_college_on)+":"
+      %dd=h @student_discipline_case.closed_at_college_on.try(:strftime, '%d %b %Y')
+    
+    - if @student_discipline_case.action_type == "advise"
+      %dt=t 'student.discipline.other_info', :default => model_class.human_attribute_name(:other_info)+":"
+      %dd=h @student_discipline_case.other_info 
+      
+    -  if @student_discipline_case.action_type == "counseling" 
+      %dt=t 'student.discipline.counseling_session', :default => model_class.human_attribute_name(:counseling_session)+":"
+      %dd &nbsp;
+      %br
+      - count=0
+      .col-md-12.col-md-offset-1
+        .row
+          .col-md-1 No
+          .col-md-2=t 'student.counseling.appointment_for'
+          .col-md-3=t 'student.counseling.confirmed_at'
+          .col-md-3=t 'student.discipline.counselor_feedback'
+          .col-md-3=t 'student.counseling.session_notes'
+          %hr
+        - for student_counseling_session in @student_discipline_case.student_counseling_sessions 
+          .row
+            .col-md-1= count+=1
+            .col-md-2=h student_counseling_session.requested_at.strftime("%d %b %y, %l:%M %p")  
+            .col-md-3=h student_counseling_session.confirmed_at.strftime("%d %b %y, %l:%M %p")  if student_counseling_session.is_confirmed == true
+            .col-md-3=h student_counseling_session.remark 
+            .col-md-3= (link_to t('view'), :action => 'show', :controller=> 'student_counseling_sessions',:id => student_counseling_session.id) if !student_counseling_session.remark.blank? 
+          %br
+      %dt=t 'student.discipline.final_counselor_feedback', :default => model_class.human_attribute_name(:final_counselor_feedback)+":"
+      %dd=h @student_discipline_case.counselor_feedback
+    
+    - if @student_discipline_case.action_type == "Ref TPHEP"
+      %dt=t 'student.discipline.notified', :default => model_class.human_attribute_name(:notified)+":"
+      %dd=h @student_discipline_case.tphep.try(:name)+(t 'on2')+(@student_discipline_case.assigned2_on.try(:strftime, '%d %b %Y')).to_s

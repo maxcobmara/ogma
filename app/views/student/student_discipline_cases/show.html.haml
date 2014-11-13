@@ -1,0 +1,63 @@
+- model_class = StudentDisciplineCase
+.page-header
+  %h1= t('student.discipline.title')
+ 
+= render 'shared/flashes'
+
+.row
+  .col-md-offset-1
+    / Nav tabs
+    %ul.nav.nav-tabs
+      %li.active= link_to (t 'student.discipline.report_details'),"#report_details", "data-toggle" => "tab"
+      %li=link_to ((t 'student.discipline.case_info')+" ("+@student_discipline_case.status+")"), "#case_info", "data-toggle" => "tab"  if ["Open", "Closed", "No Case", "Refer to TPHEP", "Refer to BPL"].include? (@student_discipline_case.status) 
+      %li=link_to (t 'student.discipline.action_details'), "#action_taken", "data-toggle" => "tab" if ["Open", "Closed", "Refer to TPHEP", "Refer to BPL"].include? (@student_discipline_case.status) 
+      /- if ["Closed","Refer to BPL"].include? (@student_discipline_case.status)  
+      - if ["Refer to BPL"].include? (@student_discipline_case.status) 
+        %li=link_to (t 'student.discipline.refer_to_bpl'), "#refer_to_bpl", "data-toggle" => "tab" 
+
+    / display 
+    .tab-content{style:"padding-top:1em"}
+      .col-md-8.col-md-offset-1
+        %dl.dl-horizontal
+          %dt= t 'student.discipline.reported_by', :default => model_class.human_attribute_name(:reported_by) + ":"
+          %dd=h @student_discipline_case.reporter_details
+          
+          %dt= t 'student.discipline.reported_on', :default => model_class.human_attribute_name(:reported_on) + ":"
+          %dd=h @student_discipline_case.reported_on.try(:strftime, "%d %b %Y")
+          
+          %dt= t 'student.discipline.student_id', :default => model_class.human_attribute_name(:student_id)+":"
+          %dd=h @student_discipline_case.student.try(:matrix_name)
+        
+      #report_details.tab-pane.active
+        %br
+        =render 'tab_details'
+      
+      - if ["Open", "Closed", "No Case", "Refer to TPHEP", "Refer to BPL"].include? (@student_discipline_case.status) 
+        #case_info.tab-pane
+          %br
+          =render 'tab_case_info'
+      
+      - if ["Open", "Closed", "Refer to TPHEP", "Refer to BPL"].include? (@student_discipline_case.status) 
+        #action_taken.tab-pane
+          %br
+          =render 'tab_action_taken'
+       
+      /- if ["Closed","Refer to BPL"].include? (@student_discipline_case.status)  
+      - if ["Refer to BPL"].include? (@student_discipline_case.status) 
+        #refer_to_bpl.tab-pane
+          %br
+          = render 'tab_refer_to_bpl'
+
+.row
+  .col-md-7.col-md-offset-2
+    %hr
+    .form-actions
+      = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('helpers.links.back'), student_student_discipline_cases_path, :class => 'btn btn-default'  
+      /for edit
+      /- if (@student_discipline_case.status=="New" && @student_discipline_case.assigned_to == current_login.staff_id) || (@student_discipline_case.status == "Refer to TPHEP" && @student_discipline_case.assigned2_to == current_login.staff_id)
+      = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('actions.edit'), edit_student_student_discipline_case_path(@student_discipline_case),  :class => 'btn btn-primary' 
+      = link_to content_tag(:i, "", :class => "fa fa-trash-o icon-white") + " " + t('helpers.links.destroy'), |
+        student_student_discipline_case_path(@student_discipline_case),                                                                                                    |
+        :method => 'delete',                                                                                                           |
+        :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },                   |
+        :class => 'btn btn-danger'

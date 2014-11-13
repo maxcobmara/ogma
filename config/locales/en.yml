@@ -86,6 +86,7 @@ en:
   not_submitted: Not Submitted
   approved: Approved
   not_approved: Not Approved
+  view: View
   
   actions:
     new: New
@@ -1060,7 +1061,7 @@ en:
       approvedate: Approval Date
       notes: Notes
 
-    student_discipline_case:
+    discipline:
       title: Student Discipline Case
       title2: Discipline Cases
       new: New Student Discipline Case
@@ -1081,6 +1082,32 @@ en:
       not_related: Not Related
       all : All records
       counseling: Counseling
+      report_details: Report Details
+      reported_by: Reported By
+      address: Address
+      room_no: Location
+      intake: Intake
+      infraction_id: Infraction
+      case_info: Case Info
+      case_created_on: Case Created On
+      investigation_notes: Investigation Summary
+      action_type: Action Type
+      closed_at_college_on : "Date Closed (College)"
+      other_info: Advice given
+      counseling_session: Couseling Session Details
+      counselor_feedback: "Counselor's Feedback"
+      final_counselor_feedback: "Summary/Final Feedback from Counselor"
+      notified: Notified
+      action_details: Action Details
+      action: Action
+      refer_to_bpl: Refer to BPL
+      sent_to_board_on: Date Sent To BPL
+      board_meeting_on: Date JTKP
+      board_decision: JTKP Decision
+      board_decision_on: Date JTKP Decision
+      appeal_on: Appeal Date
+      appeal_decision: Appeal Decision
+      appeal_decision_on: Appeal Decision Date
       
     counseling:
       title: Student Counseling Session

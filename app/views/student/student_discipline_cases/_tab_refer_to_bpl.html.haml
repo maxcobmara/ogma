@@ -1,0 +1,27 @@
+- model_class=StudentDisciplineCase
+.col-md-8.col-md-offset-1
+  %dl.dl-horizontal
+    %dt=t 'student.discipline.sent_to_board_on', :default => model_class.human_attribute_name(:sent_to_board_on)+":"
+    %dd=@student_discipline_case.sent_to_board_on.try(:strftime, '%d %b %Y')
+    
+    %dt=t 'student.discipline.board_meeting_on', :default => model_class.human_attribute_name(:board_meeting_on)+":"
+    %dd=@student_discipline_case.board_meeting_on.try(:strftime, '%d %b %Y')
+    
+    %dt=t 'student.discipline.board_decision', :default => model_class.human_attribute_name(:board_decision)+":"
+    %dd=h @student_discipline_case.board_decision 
+    
+    %dt=t 'student.discipline.board_decision_on', :default => model_class.human_attribute_name(:board_decision_on)+":"
+    %dd=@student_discipline_case.board_decision_on.try(:strftime, '%d %b %Y')
+    
+    %dt=t 'student.discipline.appeal_on', :default => model_class.human_attribute_name(:appeal_on)+":"
+    %dd=@student_discipline_case.appeal_on.try(:strftime, '%d %b %Y')
+    
+    %dt=t 'student.discipline.appeal_decision', :default => model_class.human_attribute_name(:appeal_decision)+":"
+    %dd=h @student_discipline_case.appeal_decision 
+    
+    %dt=t 'student.discipline.appeal_decision_on', :default => model_class.human_attribute_name(:appeal_decision_on)+":"
+    %dd=@student_discipline_case.appeal_decision_on.try(:strftime, '%d %b %Y')
+    
+    %dt Status
+    %dd=h @student_discipline_case.status 
+

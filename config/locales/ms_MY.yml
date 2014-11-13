@@ -63,6 +63,7 @@ ms_MY:
   not_submitted: Belum dihantar
   approved: Diluluskan
   not_approved: Belum Diluluskan
+  view: Papar
  
   actions:
     new: Baru
@@ -973,7 +974,7 @@ ms_MY:
       approvedate: Tarikh diluluskan
       notes: Nota
 
-    student_discipline_case:
+    discipline:
       title: Kes Disiplin Pelajar
       title2: Kes Disiplin
       new: Kes Baru Disiplin Pelajar
@@ -994,6 +995,32 @@ ms_MY:
       not_related: Tidak Berkaitan
       all: Semua rekod
       counseling: Kaunseling
+      report_details: Perincian Laporan
+      reported_by: Pelapor
+      address: Alamat
+      room_no: Lokasi
+      intake: Ambilan
+      infraction_id: Kesalahan
+      case_info: Butiran Kes
+      case_created_on: Kes Direkodkan Pada
+      investigation_notes: Ringkasan Siasatan
+      action_type: Jenis Tindakan
+      closed_at_college_on : "Tarikh ditutup (Kolej)"
+      other_info: Nasihat yang Diberikan
+      counseling_session: Perincian Sesi Kaunseling
+      counselor_feedback: Maklumbalas Kaunselor
+      final_counselor_feedback: "Ringkasan/Maklumbalas Akhir Kaunselor"
+      notified: Notifikasi
+      action_details: Perincian Tindakan
+      action: Tindakan
+      refer_to_bpl: Rujuk ke BPL
+      sent_to_board_on: Tarikh Hantar ke  BPL
+      board_meeting_on: Tarikh JTKP
+      board_decision: Keputusan JTKP 
+      board_decision_on: Tarikh Keputusan JTKP
+      appeal_on: Tarikh Rayuan
+      appeal_decision: Keputusan Rayuan
+      appeal_decision_on: Tarikh Keputusan Rayuan
       
     counseling:
       title: Sesi Kaunseling Pelajar
