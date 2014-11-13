@@ -22,8 +22,8 @@
   - your_travel_approved.each do |travel|
    %li= link_to "Your travel request for #{travel[1].strftime("%b-%d")} has been approved", staff_travel_request_path("#{travel[0]}")
 
- //TODO Add authorisation filter for asset notifications
- - if asset_with_defects > 0
-  %li= link_to content_tag(:span, "#{asset_with_defects}", class: "badge") + "  Defect reports require processing", asset_asset_defects_path
- - if defect_actions_for_approval > 0
-  %li= link_to content_tag(:span, "#{defect_actions_for_approval}", class: "badge") + " Defect reports for decision", asset_asset_defects_path
+ - permitted_to? :manage, :asset_defects do
+  - if asset_with_defects > 0
+   %li= link_to content_tag(:span, "#{asset_with_defects}", class: "badge") + "  Defect reports require processing", asset_asset_defects_path
+  - if defect_actions_for_approval > 0
+   %li= link_to content_tag(:span, "#{defect_actions_for_approval}", class: "badge") + " Defect reports for decision", asset_asset_defects_path

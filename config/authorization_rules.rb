@@ -92,6 +92,14 @@ authorization do
    end
  end
 
+
+ #Group Assets  -------------------------------------------------------------------------------
+ role :asset_administrator do
+   has_permission_on :assets, :to => :manage
+   has_permission_on :asset_defects, :to =>[:manage, :kewpa9] #3nov2013
+   has_permission_on :assetsearches, :to => :read
+ end
+
  role :librarian do
    has_permission_on :books, :to => [:manage, :extend, :return]
    has_permission_on :librarytransactions , :to => [:manage, :extend, :extend2,:return,:return2, :check_availability, :form_try, :multiple_edit,:check_availability2,:multiple_update]#,:accession_list]
