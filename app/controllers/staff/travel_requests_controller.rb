@@ -69,7 +69,13 @@
         format.xml  { head :ok }
       
       else
-        format.html { render :action => "edit" }
+	if params[:task] && params[:task]=="1"
+	  format.html {render :action => "travel_log"}
+	elsif params[:task] && params[:task]=="2"
+	   format.html {render :action => "approval"}
+	else
+          format.html { render :action => "edit" }
+	end
         format.xml  { render :xml => @travel_request.errors, :status => :unprocessable_entity }
       end
     end
@@ -99,8 +105,10 @@
   end
   
   def travel_log
-     @travel_log = TravelRequest.find(params[:id])
-     @travel_request =  @travel_log
+     #@travel_log = TravelRequest.find(params[:id])
+    # @travel_request =  @travel_log
+    @travel_request = TravelRequest.find(params[:id])
+    @travel_request.travel_claim_logs.build
   end
   
   def approval
@@ -111,6 +119,7 @@
   
   def set_travel_request
     @travel_request = TravelRequest.find(params[:id])
+    @travel_log = @travel_request
   end
   
   def travel_request_params

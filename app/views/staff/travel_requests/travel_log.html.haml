@@ -6,8 +6,9 @@
 
 .row
   = form_for [:staff, @travel_request], html: { multipart: true, class: 'form-horizontal' }  do |f| 
-    = render 'shared/error_messages', object: f.object
+    = render 'shared/error_messages',   object: f.object
     = hidden_field_tag :redirect_location, '/travel_requests/logs'
+    = hidden_field_tag :task, "1"
     .row
       .col-md-offset-1
         / Nav tabs
@@ -23,7 +24,6 @@
             %dl.dl-horizontal
               %dt= t 'staff.travel_request.staff_id', :default => model_class.human_attribute_name(:staff_id) + ":"
               %dd=h @travel_request.applicant.staff_name_with_position unless @travel_request.applicant.blank?
-          
               %dt= t 'staff.travel_request.document_id', :default => model_class.human_attribute_name(:document_id)+":"
               %dd=h @travel_request.reference_document
 
@@ -63,9 +63,9 @@
                 .col-sm-2=t 'staff.travel_request.total'
                 .col-sm-5 &nbsp;
                 .col-sm-2 
-                  = @travel_log.total_mileage_request 
+                  = @travel_request.total_mileage_request 
                   km
-                .col-sm-2= ringgols(@travel_log.total_km_money_request)
+                .col-sm-2= ringgols(@travel_request.total_km_money_request)
                 
           .col-md-8.col-md-offset-0
             %dl.dl-horizontal
