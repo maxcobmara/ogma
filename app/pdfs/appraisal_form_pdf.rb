@@ -1,9 +1,10 @@
 class Appraisal_formPdf < Prawn::Document
   def initialize(staff_appraisal, view)
-    super({top_margin: 50, page_size: 'A4', page_layout: :portrait })
+    super({top_margin: 50, left_margin: 38, page_size: 'A4', page_layout: :portrait})
     @staff_appraisal = staff_appraisal
     @view = view
-    font "Times-Roman"
+    #font " "
+
     text "BORANG J.P.A. (Prestasi) #{@staff_appraisal.person_type}", :align => :right, :size => 12, :style => :bold
     text "SULIT", :align => :left, :size => 12
     text "No. K.P : #{@staff_appraisal.appraised.formatted_mykad}", :align => :right, :size => 12, :style => :bold
@@ -47,7 +48,18 @@ class Appraisal_formPdf < Prawn::Document
     lampiranA2b #line 933
     table_lampiranAa3
     lampiranA3
-   
+    
+    
+    string = " <page>"
+      # Green page numbers 1 to 7
+      options = { :at => [bounds.right - 395, 0],
+                  :width => 150,
+                  :align => :right,
+                  :page_filter => (1..8),
+                  :start_count_at => 1,
+                  :color => "010000" }
+      number_pages string, options
+    
   end
   
   def tajuk1
@@ -86,7 +98,7 @@ class Appraisal_formPdf < Prawn::Document
   def bahagian1
 
     text "BAHAGIAN 1 - MAKLUMAT PEGAWAI", :align => :left, :size => 12, :style => :bold     
-    text "(Diisi oleh PYD)", :align => :left, :size => 12
+    text "(Diisi oleh PYD)", :align => :left, :size => 12, :indent_paragraphs => 30
     move_down 20
     data1 = [['	i.', "Nama : #{@staff_appraisal.appraised.name} "],
       ["ii.","Jawatan dan Gred : #{@staff_appraisal.appraised.positions[0].try(:name)} .. #{@staff_appraisal.appraised.staffgrade.name}"],
@@ -108,12 +120,11 @@ end
   def bahagian2a
     start_new_page
     text "BAHAGIAN II - KEGIATAN DAN SUMBANGAN DI LUAR TUGAS RASMI/LATIHAN", :align => :left, :size => 12, :style => :bold     
-    text "(Diisi oleh PYD)", :align => :left, :size => 12
+    text "(Diisi oleh PYD)", :align => :left, :size => 12, :indent_paragraphs => 20
     move_down 20
     text "1. KEGIATAN DAN SUMBANGAN DI LUAR TUGAS RASMI", :align => :left, :size => 12, :style => :bold     
     move_down 10
-    text "Senaraikan kegiatan dan sumbangan di luar tugas rasmi seperti sukan/pertubuhan/sumbangan kreatif di 
-    peringkat Komuniti/Jabatan/Daerah/Negeri/Negara/Antarabangsa yang berfaedah kepada Organisasi/Komuniti/Negara pada tahun yang dinilai.", :align => :left, :size => 12
+    text "Senaraikan kegiatan dan sumbangan di luar tugas rasmi seperti sukan/pertubuhan/sumbangan kreatif di peringkat Komuniti/Jabatan/Daerah/Negeri/Negara/Antarabangsa yang berfaedah kepada Organisasi/Komuniti/Negara pada tahun yang dinilai.", :align => :left, :size => 12
     move_down 10
  end
     
@@ -209,6 +220,7 @@ end
            table(data1 , :column_widths => [250,250], :cell_style => { :size => 11}) do
              row(0).font_style = :bold
              row(1).borders = [ ] 
+             row(1).align = :center
              self.row_colors = ["FEFEFE", "FFFFFF"]
            end
 end
@@ -300,11 +312,8 @@ def bahagian4_4
            ["1.", "  ILMU PENGETAHUAN DAN KEMAHIRAN DALAM BIDANG KERJA", "", ""],
            ["","Mempunyai ilmu pengetahuan dan kemahiran/kepakaran dalam menghasilkan kerja meliputi kebolehan mengenalpasti, menganalisis serta menyelesaikan masalah.", "#{@staff_appraisal.e1g2q1}" , "#{@staff_appraisal.e2g2q1}" ],
              ["2. ","  PELAKSANAAN DASAR, PERATURAN DAN ARAHAN PENTADBIRAN", "",""],
-             ["","Kebolehan menghayati dan melaksanakan dasar, peraturan dan arahan pentadbiran berkaitan dengan bidang tugasnya.", "#{@staff_appraisal.e1g2q2}","#{@staff_appraisal.e2g2q2}"],
-             ["3. ","  KUANTITI HASIL KERJA","",""],
-             ["","Kuantiti hasil kerja seperti jumlah bilangan, kadar, kekerapan dan sebagainya berbanding dengan sasaran kuantiti kerja yang ditetapkan.","#{@staff_appraisal.e1g2q3}","#{@staff_appraisal.e2g2q3}"],
-             ["", "Jumlah markah mengikut wajaran","#{@staff_appraisal.e1g2_total} x 25 = #{@staff_appraisal.e1g2_percent} / 30",
-               "#{@staff_appraisal.e2g2_total} x 25 = #{@staff_appraisal.e2g2_percent} / 30"]]
+             ["","Kebolehan menghayati dan melaksanakan dasar, peraturan dan arahan pentadbiran berkaitan dengan bidang tugasnya.", "#{@staff_appraisal.e1g2q2}","#{@staff_appraisal.e2g2q2}"]]
+        
              
        table(data1 , :column_widths => [30, 250,100,100], :cell_style => { :size => 10}) do
          row(0).column(1).align = :center
@@ -326,26 +335,44 @@ def bahagian4_4
          row(3).column(2).borders = [ :top ]
          row(3).column(3).borders = [:right, :left, :top]
          row(3).font_style = :bold
-         row(4).column(0).borders = [:left]
-         row(4).column(1).borders = [:right]
-         row(4).column(2).borders = [ ]
-         row(4).column(3).borders = [:right, :left]
-         row(5).column(0).borders = [:left, :top]
-         row(5).column(1).borders = [:right, :top]
-         row(5).column(2).borders = [ :top ]
-         row(5).column(3).borders = [:right, :left, :top]
-         row(5).font_style = :bold
-         row(6).column(0).borders = [:left]
-         row(6).column(1).borders = [:right]
-         row(6).column(2).borders = [ ]
-         row(6).column(3).borders = [:right, :left]
-         row(7).column(0).borders = [:left, :top, :bottom]
-         row(7).column(1).borders = [:right, :top, :bottom]
+         row(4).column(0).borders = [:left, :bottom]
+         row(4).column(1).borders = [:right,:bottom]
+         row(4).column(2).borders = [:right,:bottom]
+         row(4).column(3).borders = [:right,:bottom]
          row(0).font_style = :bold
          self.row_colors = ["FEFEFE", "FFFFFF"]
 
        end 
-       move_down 30  
+       start_new_page
+       
+       data2 = [["", "KRITERIA (Dinilai berasaskan SKT)", "PPP", "PPK"],
+                 ["3. ","  KUANTITI HASIL KERJA","",""],
+                 ["","Kuantiti hasil kerja seperti jumlah bilangan, kadar, kekerapan dan sebagainya berbanding dengan sasaran kuantiti kerja yang ditetapkan.","#{@staff_appraisal.e1g2q3}","#{@staff_appraisal.e2g2q3}"],
+                 ["", "Jumlah markah mengikut wajaran","#{@staff_appraisal.e1g2_total} x 25 = #{@staff_appraisal.e1g2_percent} / 30",
+                   "#{@staff_appraisal.e2g2_total} x 25 = #{@staff_appraisal.e2g2_percent} / 30"]]
+                   
+                   table(data2 , :column_widths => [30, 250,100,100], :cell_style => { :size => 10}) do
+                     row(0).column(1).align = :center
+                     column(2).align = :center  
+                     column(3).align = :center 
+                     row(0).column(0).borders = [:left, :top]
+                     row(0).column(1).borders = [:right, :top]
+                     row(1).column(0).borders = [:left, :top]
+                     row(1).column(1).borders = [:right, :top]
+                     row(1).column(2).borders = [ :top ]
+                     row(1).font_style = :bold
+                     row(1).column(3).borders = [:right, :left, :top]
+                     row(2).column(0).borders = [:left]
+                     row(2).column(1).borders = [:right]
+                     row(2).column(2).borders = [ ]
+                     row(2).column(3).borders = [:right, :left]
+                     row(3).column(0).borders = [:left, :top, :bottom]
+                     row(3).column(1).borders = [:right, :top, :bottom]
+                     row(0).font_style = :bold
+                     self.row_colors = ["FEFEFE", "FFFFFF"]
+
+                   end 
+                   move_down 30 
 end
 
 def bahagian4_3
@@ -359,11 +386,7 @@ def bahagian4_3
            ["1.", "  ILMU PENGETAHUAN DAN KEMAHIRAN DALAM BIDANG KERJA", "", ""],
            ["","Mempunyai ilmu pengetahuan dan kemahiran/kepakaran dalam menghasilkan kerja meliputi kebolehan mengenalpasti, menganalisis serta menyelesaikan masalah.", "#{@staff_appraisal.e1g2q1}" , "#{@staff_appraisal.e2g2q1}" ],
              ["2. ","  PELAKSANAAN DASAR, PERATURAN DAN ARAHAN PENTADBIRAN", "",""],
-             ["","Kebolehan menghayati dan melaksanakan dasar, peraturan dan arahan pentadbiran berkaitan dengan bidang tugasnya.", "#{@staff_appraisal.e1g2q2}","#{@staff_appraisal.e2g2q2}"],
-             ["3. "," KEBERKESANAN KOMUNIKASI","",""],
-             ["","Kebolehan menyampaikan maksud, pendapat, kefahaman atau arahan secara lisan dan tulisan berkaitan dengan bidang tugas merangkumi penguasaan bahasa melalui tulisan dan lisan dengan menggunakan tatabahasa dan persembahan yang baik","#{@staff_appraisal.e1g2q3}","#{@staff_appraisal.e2g2q3}"],
-             ["", "Jumlah markah mengikut wajaran","#{@staff_appraisal.e1g2_total} x 25 = #{@staff_appraisal.e1g2_percent} / 30",
-               "#{@staff_appraisal.e2g2_total} x 25 = #{@staff_appraisal.e2g2_percent} / 30"]]
+             ["","Kebolehan menghayati dan melaksanakan dasar, peraturan dan arahan pentadbiran berkaitan dengan bidang tugasnya.", "#{@staff_appraisal.e1g2q2}","#{@staff_appraisal.e2g2q2}"]]
              
        table(data1 , :column_widths => [30, 250,100,100], :cell_style => { :size => 10}) do
          row(0).column(1).align = :center
@@ -385,33 +408,51 @@ def bahagian4_3
          row(3).column(2).borders = [ :top ]
          row(3).column(3).borders = [:right, :left, :top]
          row(3).font_style = :bold
-         row(4).column(0).borders = [:left]
-         row(4).column(1).borders = [:right]
-         row(4).column(2).borders = [ ]
-         row(4).column(3).borders = [:right, :left]
-         row(5).column(0).borders = [:left, :top]
-         row(5).column(1).borders = [:right, :top]
-         row(5).column(2).borders = [ :top ]
-         row(5).column(3).borders = [:right, :left, :top]
-         row(5).font_style = :bold
-         row(6).column(0).borders = [:left]
-         row(6).column(1).borders = [:right]
-         row(6).column(2).borders = [ ]
-         row(6).column(3).borders = [:right, :left]
-         row(7).column(0).borders = [:left, :top, :bottom]
-         row(7).column(1).borders = [:right, :top, :bottom]
+         row(4).column(0).borders = [:left, :bottom]
+         row(4).column(1).borders = [:right,:bottom]
+         row(4).column(2).borders = [:right,:bottom]
+         row(4).column(3).borders = [:right,:bottom]
          row(0).font_style = :bold
          self.row_colors = ["FEFEFE", "FFFFFF"]
 
        end 
-       move_down 30  
+       start_new_page
+       
+       data2 = [["", "KRITERIA (Dinilai berasaskan SKT)", "PPP", "PPK"],
+                 ["3. "," KEBERKESANAN KOMUNIKASI","",""],
+                 ["","Kebolehan menyampaikan maksud, pendapat, kefahaman atau arahan secara lisan dan tulisan berkaitan dengan bidang tugas merangkumi penguasaan bahasa melalui tulisan dan lisan dengan menggunakan tatabahasa dan persembahan yang baik","#{@staff_appraisal.e1g2q3}","#{@staff_appraisal.e2g2q3}"],
+                 ["", "Jumlah markah mengikut wajaran","#{@staff_appraisal.e1g2_total} x 25 = #{@staff_appraisal.e1g2_percent} / 30",
+                   "#{@staff_appraisal.e2g2_total} x 25 = #{@staff_appraisal.e2g2_percent} / 30"]]
+                   
+                   table(data2 , :column_widths => [30, 250,100,100], :cell_style => { :size => 10}) do
+                     row(0).column(1).align = :center
+                     column(2).align = :center  
+                     column(3).align = :center 
+                     row(0).column(0).borders = [:left, :top]
+                     row(0).column(1).borders = [:right, :top]
+                     row(1).column(0).borders = [:left, :top]
+                     row(1).column(1).borders = [:right, :top]
+                     row(1).column(2).borders = [ :top ]
+                     row(1).font_style = :bold
+                     row(1).column(3).borders = [:right, :left, :top]
+                     row(2).column(0).borders = [:left]
+                     row(2).column(1).borders = [:right]
+                     row(2).column(2).borders = [ ]
+                     row(2).column(3).borders = [:right, :left]
+                     row(3).column(0).borders = [:left, :top, :bottom]
+                     row(3).column(1).borders = [:right, :top, :bottom]
+                     row(0).font_style = :bold
+                     self.row_colors = ["FEFEFE", "FFFFFF"]
+
+                   end 
+                   move_down 40  
 end
 
 def bahagian4_5
   text "BAHAGIAN IV - KUALITI PERIBADI ( Wajaran 25% )", :align => :left, :size => 12, :style => :bold 
-  move_down 20 
+  move_down 10 
   text "Pegawai Penilai dikehendaki memberikan penilaian berasaskan kepada penjelasan setiap kriteria yang dinyatakan di bawah dengan menggunakan skala 1 hingga 10:", :align => :left, :size => 12
-  move_down 20
+  move_down 5
   
   data1 = [["", "KRITERIA ", "PPP", "PPK"],
            ["1.", "  KEBOLEHAN MENGELOLA", "", ""],
@@ -419,11 +460,7 @@ def bahagian4_5
              ["2. ","  DISIPLIN", "",""],
              ["","Mempunyai daya kawalan diri dari segi mental dan fizikal termasuk mematuhi peraturan, menepati masa, menunaikan janji dan bersifat sabar.", "#{@staff_appraisal.e1g2q2}","#{@staff_appraisal.e2g2q2}"],
              ["3. ","  PROAKTIF DAN INOVATIF","",""],
-             ["","Kebolehan menjangka kemungkinan, mencipta dan mengeluarkan idea baru serta membuat pembaharuan bagi mempertingkatkan kualiti dan produktiviti organisasi.","#{@staff_appraisal.e1g2q3}","#{@staff_appraisal.e2g2q3}"],
-             ["4. ","  JALINAN HUBUNGAN DAN KERJASAMA","",""],
-             ["","Kebolehan pegawai dalam mewujudkan suasana kerjasama yang harmoni dan mesra serta boleh menyesuaikan diri dalam semua keadaan.","#{@staff_appraisal.e1g2q4}","#{@staff_appraisal.e2g2q4}"],
-             ["", "Jumlah markah mengikut wajaran","#{@staff_appraisal.e1g2_total} / 30 x 25 = #{@staff_appraisal.e1g2_percent} ",
-               "#{@staff_appraisal.e2g2_total} / 30 x 25 = #{@staff_appraisal.e2g2_percent}"]]
+             ["","Kebolehan menjangka kemungkinan, mencipta dan mengeluarkan idea baru serta membuat pembaharuan bagi mempertingkatkan kualiti dan produktiviti organisasi.","#{@staff_appraisal.e1g2q3}","#{@staff_appraisal.e2g2q3}"]]
                
                table(data1 , :column_widths => [30, 250,100,100], :cell_style => { :size => 10}) do
                  row(0).column(1).align = :center
@@ -454,26 +491,45 @@ def bahagian4_5
                  row(5).column(2).borders = [ :top ]
                  row(5).column(3).borders = [:right, :left, :top]
                  row(5).font_style = :bold
-                 row(6).column(0).borders = [:left]
-                 row(6).column(1).borders = [:right]
-                 row(6).column(2).borders = [ ]
-                 row(6).column(3).borders = [:right, :left]
-                 row(7).column(0).borders = [:left, :top]
-                 row(7).column(1).borders = [:right, :top]
-                 row(7).column(2).borders = [ :top ]
-                 row(7).column(3).borders = [:right, :left, :top]
-                 row(7).font_style = :bold
-                 row(8).column(0).borders = [:left]
-                 row(8).column(1).borders = [:right]
-                 row(8).column(2).borders = [ ]
-                 row(8).column(3).borders = [:right, :left]
-                 row(9).column(0).borders = [:left, :top, :bottom]
-                 row(9).column(1).borders = [:right, :top, :bottom]
+                 row(6).column(0).borders = [:left, :bottom]
+                 row(6).column(1).borders = [:right,:bottom]
+                 row(6).column(2).borders = [:right,:bottom]
+                 row(6).column(3).borders = [:right,:bottom]
                  row(0).font_style = :bold
+    
                  self.row_colors = ["FEFEFE", "FFFFFF"]
 
                end 
-  move_down 20   
+               start_new_page
+       
+               data2 = [["", "KRITERIA (Dinilai berasaskan SKT)", "PPP", "PPK"],
+               ["4. ","  JALINAN HUBUNGAN DAN KERJASAMA","",""],
+               ["","Kebolehan pegawai dalam mewujudkan suasana kerjasama yang harmoni dan mesra serta boleh menyesuaikan diri dalam semua keadaan.","#{@staff_appraisal.e1g2q4}","#{@staff_appraisal.e2g2q4}"],
+               ["", "Jumlah markah mengikut wajaran","#{@staff_appraisal.e1g2_total} / 30 x 25 = #{@staff_appraisal.e1g2_percent} ",
+                 "#{@staff_appraisal.e2g2_total} / 30 x 25 = #{@staff_appraisal.e2g2_percent}"]]
+                   
+                           table(data2 , :column_widths => [30, 250,100,100], :cell_style => { :size => 10}) do
+                             row(0).column(1).align = :center
+                             column(2).align = :center  
+                             column(3).align = :center 
+                             row(0).column(0).borders = [:left, :top]
+                             row(0).column(1).borders = [:right, :top]
+                             row(1).column(0).borders = [:left, :top]
+                             row(1).column(1).borders = [:right, :top]
+                             row(1).column(2).borders = [ :top ]
+                             row(1).font_style = :bold
+                             row(1).column(3).borders = [:right, :left, :top]
+                             row(2).column(0).borders = [:left]
+                             row(2).column(1).borders = [:right]
+                             row(2).column(2).borders = [ ]
+                             row(2).column(3).borders = [:right, :left]
+                             row(3).column(0).borders = [:left, :top, :bottom]
+                             row(3).column(1).borders = [:right, :top, :bottom]
+                             row(0).font_style = :bold
+                             self.row_colors = ["FEFEFE", "FFFFFF"]
+
+                           end 
+                           move_down 40    
 end
 
 def bahagian5_4
@@ -684,7 +740,7 @@ def bahagian5_3
 end
 
 def bahagian6
-  
+  start_new_page
   text "BAHAGIAN VI - KEGIATAN DAN SUMBANGAN DI LUAR TUGAS RASMI ( Wajaran 5% )", :align => :left, :size => 12, :style => :bold  
   text "(Sukan/Pertubuhan/Sumbangan Kreatif)", :align => :left, :size => 12
   move_down 20   
@@ -713,7 +769,7 @@ def bahagian6
 end
 
 def bahagian7
-  start_new_page
+
   text "BAHAGIAN VII - JUMLAH MARKAH KESELURUHAN", :align => :left, :size => 12, :style => :bold  
   move_down 20
   text "Pegawai Penilai dikehendaki mencatatkan jumlah markah keseluruhan yang diperolehi oleh PYD dalam bentuk peratus (%) berdasarkan jumlah markah bagi setiap Bahagian yang diberi markah.", :align => :left, :size => 12
@@ -738,17 +794,18 @@ def bahagian8
   text "BAHAGIAN VIII - ULASAN KESELURUHAN DAN PENGESAHAN OLEH PEGAWAI PENILAI PERTAMA", :align => :left, :size => 12, :style => :bold  
   move_down 20
   text "1.  Tempoh PYD bertugas di bawah pengawasan: Tahun #{@staff_appraisal.e1_years} Bulan #{@staff_appraisal.e1_months}", :align => :left, :size => 12
-  move_down 5
+  move_down 10
   text "2.  Penilai Pertama hendaklah memberi ulasan keseluruhan prestasi PYD.", :align => :left, :size => 12
-  move_down 5
+  move_down 10
   text "(i)  Prestasi keseluruhan.", :align => :left, :size => 12
-  move_down 5
+  move_down 10
   text "#{@staff_appraisal.e1_performance}..............", :align => :left, :size => 12, :indent_paragraphs => 30
   move_down 10
   text "(ii)  Kemajuan kerjaya.", :align => :left, :size => 12
-  move_down 5
+  move_down 10
   text "#{@staff_appraisal.e1_progress}..............", :align => :left, :size => 12, :indent_paragraphs => 30
   move_down 10
+  start_new_page
   text "3.  Adalah disahkan bahawa prestasi pegawai ini telah dimaklumkan kepada PYD.", :align => :left, :size => 12
   move_down 20
   data1 = [[ "Nama PPP :", "#{@staff_appraisal.eval1_officer.name}"],
@@ -776,13 +833,14 @@ def bahagian8
              table(data1 , :column_widths => [200,200], :cell_style => { :size => 11}) do
                row(0).font_style = :bold
                row(1).borders = [ ]
+               row(1).align = :center
                self.row_colors = ["FEFEFE", "FFFFFF"]
              end
-      move_down 80    
+      move_down 40    
 end
 
 def bahagian9
-  start_new_page
+
   text "BAHAGIAN IX - ULASAN KESELURUHAN OLEH PEGAWAI PENILAI KEDUA", :align => :left, :size => 12, :style => :bold  
   move_down 20
   text "1.  Tempoh PYD bertugas di bawah pengawasan: Tahun #{@staff_appraisal.e2_years} Bulan #{@staff_appraisal.e2_months}", :align => :left, :size => 12
@@ -814,6 +872,7 @@ def bahagian9
              table(data1 , :column_widths => [200,200], :cell_style => { :size => 11}) do
                row(0).font_style = :bold
                row(1).borders = [ ]
+               row(1).align = :center
                self.row_colors = ["FEFEFE", "FFFFFF"]
              end
       move_down 80 
@@ -896,7 +955,9 @@ def lampiranA1
       
         table(data1 , :column_widths => [200,200], :cell_style => { :size => 11}) do
           row(1).borders = [ ]
+          row(1).align = :center
           row(2).borders = [ ]
+          row(2).align = :center
           row(0).font_style = :bold
           self.row_colors = ["FEFEFE", "FFFFFF"]
         end 
@@ -904,7 +965,7 @@ def lampiranA1
 end
 
 def lampiranA2
-  
+  start_new_page
   text "BAHAGIAN II -  Kajian Semula Sasaran Kerja Tahun Pertengahan Tahun", :align => :left, :size => 12, :style => :bold  
   move_down 20
   text "1.   Aktiviti/Projek Yang Ditambah", :align => :left, :size => 12, :style => :bold    
@@ -990,7 +1051,9 @@ def lampiranA3
         table(data2 , :column_widths => [150,150], :cell_style => { :size => 11}) do
           row(0).font_style = :bold
           row(1).borders = [ ]
+          row(1).align = :center
           row(2).borders = [ ]
+          row(2).align = :center
           self.row_colors = ["FEFEFE", "FFFFFF"]
         end 
   
