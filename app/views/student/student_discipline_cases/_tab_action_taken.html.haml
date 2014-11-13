@@ -1,0 +1,14 @@
+- model_class=StudentDisciplineCase
+.col-md-8.col-md-offset-1
+  %dl.dl-horizontal
+    %dt=t 'student.discipline.action', :default => model_class.human_attribute_name(:action)+":" 
+    %dd=h @student_discipline_case.action
+    
+    %dt=t 'student.discipline.closed_at_college_on', :default => model_class.human_attribute_name(:closed_at_college_on)+":" 
+    %dd= @student_discipline_case.closed_at_college_on.try(:strftime, '%d %b %Y')
+    
+    %dt=t 'student.discipline.room_no', :default => model_class.human_attribute_name(:room_no)+":" 
+    %dd=h @student_discipline_case.room_no
+    
+    %dt=t 'student.discipline.other_info', :default => model_class.human_attribute_name(:other_info)+":" 
+    %dd=h @student_discipline_case.other_info

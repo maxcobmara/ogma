@@ -23,9 +23,9 @@
         %dd
           = travel_log.travel_on.try(:strftime, '%d %b %Y')
           &nbsp;&nbsp;|&nbsp;&nbsp;
-          = travel_log.start_at.strftime('%H:%M %p')
+          = travel_log.start_at.try(:strftime, '%H:%M %p')
           &nbsp;&nbsp;|&nbsp;&nbsp;
-          = travel_log.finish_at.strftime('%H:%M %p')
+          = travel_log.finish_at.try(:strftime, '%H:%M %p')
           &nbsp;&nbsp;|&nbsp;&nbsp;
           = travel_log.destination
           &nbsp;&nbsp;|&nbsp;&nbsp;

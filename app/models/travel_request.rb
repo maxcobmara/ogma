@@ -19,6 +19,7 @@ class TravelRequest < ActiveRecord::Base
   
   has_many :travel_claim_logs, :dependent => :destroy
   accepts_nested_attributes_for :travel_claim_logs, :reject_if => lambda { |a| a[:destination].blank? }, :allow_destroy =>true
+  validates_associated :travel_claim_logs#, :message=>"data is not complete."
   
   attr_accessor :staff_own_car
   

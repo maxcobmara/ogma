@@ -1,0 +1,24 @@
+- model_class=StudentDisciplineCase
+.col-md-8.col-md-offset-1
+  %dl.dl-horizontal
+    %dt=t 'student.discipline.matrix_no', :default => model_class.human_attribute_name(:matrix_no)+":"
+    %dd=h @student_discipline_case.student.try(:matrixno)
+    
+    %dt=t 'student.discipline.address', :default => model_class.human_attribute_name(:address)+":"
+    %dd=h @student_discipline_case.student.try(:address)
+    
+    %dt=t 'student.discipline.room_no', :default => model_class.human_attribute_name(:room_no)+":"
+    %dd=@student_discipline_case.try(:room_no)
+    
+    %dt=t 'student.discipline.programme', :default => model_class.human_attribute_name(:programme)+":"
+    %dd=h @student_discipline_case.student.try(:course).try(:name)
+    
+    %dt=t 'student.discipline.intake', :default => model_class.human_attribute_name(:intake)+":"
+    %dd=h @student_discipline_case.student.intake.try(:strftime, "%B %Y") 
+    
+    %dt=t 'student.discipline.infraction_id', :default => model_class.human_attribute_name(:infraction)+":"
+    %dd=h (DropDown::INFRACTION.find_all{|disp, value| value == @student_discipline_case.infraction_id}).map {|disp, value| disp}[0]
+    
+    -  if @student_discipline_case.infraction_id == 4 
+      %dt=t 'student.discipline.description'
+      %dd=h @student_discipline_case.description

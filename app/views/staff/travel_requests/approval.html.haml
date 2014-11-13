@@ -8,6 +8,7 @@
   = form_for [:staff, @travel_request], html: { multipart: true, class: 'form-horizontal' }  do |f| 
     = render 'shared/error_messages', object: f.object
     = hidden_field_tag :redirect_location, staff_travel_requests_path 
+    = hidden_field_tag :task, "2"
     .row
       .col-md-offset-1
         / Nav tabs

@@ -94,7 +94,7 @@ class StudentDisciplineCase < ActiveRecord::Base
 
     def reporter_details 
           suid = Array(reported_by)
-          exists = Staff.find(:all, :select => "id").map(&:id)
+          exists = Staff.all.pluck(:id)
           checker = suid & exists     
 
           if reported_by == nil

@@ -1,6 +1,6 @@
 - model_class = StudentDisciplineCase
 .page-header
-  %h1= t('student.student_discipline_case.title')
+  %h1= t('student.discipline.title')
   
 .navbar.navbar-inverse{role: "navigation", style: "padding-right:40px;"}
   %ul.nav.navbar-nav
@@ -16,16 +16,16 @@
   %table.table-striped.table-hover.ogma
     %thead
       %tr
-        %th= sort_link(@search, :status, (t 'student.student_discipline_case.status'))
-        %th{:width=>'230px'}= sort_link(@search, :programme, (t 'student.student_discipline_case.programme'))
-        %th{:width=>'80px'}= t 'student.student_discipline_case.year_semester'
-        %th= sort_link(@search, :matrix_no, (t 'student.student_discipline_case.matrix_no'))
-        %th= sort_link(@search, :student_id, (t 'student.student_discipline_case.student_id'))
-        %th= sort_link(@search, :description, (t 'student.student_discipline_case.description'))
-        %th= sort_link(@search, :reported_on, (t 'student.student_discipline_case.reported_on'))
-        %th= sort_link(@search, :file_id, (t 'student.student_discipline_case.file_id'))
-        %th=sort_link(@search, :location_id, (t 'student.student_discipline_case.location_id'))
-        %th= sort_link(@search, :counselor_feedback, (t 'student.student_discipline_case.counselor_feedback'))
+        %th= sort_link(@search, :status, (t 'student.discipline.status'))
+        %th{:width=>'230px'}= sort_link(@search, :programme, (t 'student.discipline.programme'))
+        %th{:width=>'80px'}= t 'student.discipline.year_semester'
+        %th= sort_link(@search, :matrix_no, (t 'student.discipline.matrix_no'))
+        %th= sort_link(@search, :student_id, (t 'student.discipline.student_id'))
+        %th= sort_link(@search, :description, (t 'student.discipline.description'))
+        %th= sort_link(@search, :reported_on, (t 'student.discipline.reported_on'))
+        %th= sort_link(@search, :file_id, (t 'student.discipline.file_id'))
+        %th=sort_link(@search, :location_id, (t 'student.discipline.location_id'))
+        %th= sort_link(@search, :counselor_feedback, (t 'student.discipline.counselor_feedback'))
         
     %tbody
     = render "search_bar"
@@ -48,7 +48,7 @@
             =h student_discipline_case.counselor_feedback? ? image_tag("tick.png") : image_tag("cross.png")
             /= link_to image_tag("printer.png", :border => 0, :title => 'Feedback Referrer'),:controller=>:student_counseling_sessions ,:action => 'feedback_referrer', :id => student_discipline_case.id if !student_discipline_case.counselor_feedback.blank? %>
           - else
-            = t('student.student_discipline_case.not_related')
+            = t('student.discipline.not_related')
          
   .right{style:"padding:0 30px; margin:0;"}= paginate @student_discipline_cases, :theme => 'twitter-bootstrap-3'
 

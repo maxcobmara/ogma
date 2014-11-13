@@ -98,7 +98,7 @@ class Student < ActiveRecord::Base
 			  end
 		  end
 
-		  I18n.t("student.student_discipline_case.year")+" #{@year}, Semester #{@semester}"
+		  I18n.t("student.discipline.year")+" #{@year}, Semester #{@semester}"
 
   end
 
