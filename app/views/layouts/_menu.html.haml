@@ -1,61 +1,62 @@
 .mp-level
   %h2.icon.icon-world Menu
   %ul
-    %li.icon.icon-left
-      = link_to t('staff.title'), '#'
-      .mp-level
-        %h2.icon=t('staff.title')
-        %a.mp-back{:href => "#"}=t('back')
-        %ul
-          %li= link_to t('staff.list'), staff_infos_path
-          %li.icon.icon-left
-            = link_to t('staff_attendance.title'), '#'
-            .mp-level
-              %h2.icon Staff Attendance
-              %a.mp-back{:href => "#"}= t 'helpers.links.back'
-              %ul
-                %li= link_to t('attendance.manage_lateness_earlyreturn'), '/attendance/manage'
-                %li= link_to t('staff_attendance.title'), staff_staff_attendances_path
-                %li= link_to t('staff_attendance.status_pcard'), '/attendance/status'
-                %li= link_to "Report - Monthly Listing", '#'
-          %li= link_to t('staff.staff_appraisal.title'), staff_staff_appraisals_path
-          %li= link_to t('position.title'), staff_positions_path
-          %li.icon.icon-left
-            = link_to "Staff Leave", '#'
-            .mp-level
-              %h2.icon Staff Leave
-              %a.mp-back{:href => "#"}= t 'helpers.links.back'
-              %ul
-                %li= link_to "Apply", new_staff_leaveforstaff_path
-                %li= link_to t("List/Approve"), staff_leaveforstaffs_path
-          %li.icon.icon-left
-            = link_to t('staff.travel_claim.title'), '#'
-            .mp-level
-              %h2.icon=t 'staff.travel_claim.title'
-              %a.mp-back{:href => "#"}= t 'helpers.links.back'
-              %ul
-                %li= link_to t('staff.travel_request.title'), staff_travel_requests_path
-                %li= link_to t('staff.travel_request.my_travel_logs'), travel_log_index_staff_travel_requests_path
-                %li= link_to t('staff.travel_claim.title'), staff_travel_claims_path
-          %li.icon.icon-left
-            = link_to ("Professional <BR> Development").html_safe, '#'
-            .mp-level
-              %h2.icon Professional <BR> Development
-              %a.mp-back{:href => "#"}= t 'helpers.links.back'
-              %ul
-                %li= link_to t('staff.training.budget.title'), staff_training_ptbudgets_path
-                %li= link_to "Training Courses", staff_training_ptcourses_path
-                %li= link_to "Training Schedule", staff_training_ptschedules_path
-                %li= link_to "Apply for Training", '#', class: 'bogus'
-                %li= link_to "Application Status", '#', class: 'bogus'
-          %li= link_to t('staff.travel_request.status_movement'), staff_travel_requests_path
-          %li.icon.icon-left
-            = link_to "Reports", '#'
-            .mp-level
-              %h2.icon Reports
-              %a.mp-back{:href => "#"}= t 'helpers.links.back'
-              %ul
-                %li= link_to "Maklumat Perjawatan", '/staff/positions/maklumat_perjawatan.pdf'
+    - permitted_to? :menu, :staffs do
+      %li.icon.icon-left
+        = link_to t('staff.title'), '#'
+        .mp-level
+          %h2.icon=t('staff.title')
+          %a.mp-back{:href => "#"}=t('back')
+          %ul
+            %li= link_to t('staff.list'), staff_infos_path
+            %li.icon.icon-left
+              = link_to t('staff_attendance.title'), '#'
+              .mp-level
+                %h2.icon Staff Attendance
+                %a.mp-back{:href => "#"}= t 'helpers.links.back'
+                %ul
+                  %li= link_to t('attendance.manage_lateness_earlyreturn'), '/attendance/manage'
+                  %li= link_to t('staff_attendance.title'), staff_staff_attendances_path
+                  %li= link_to t('staff_attendance.status_pcard'), '/attendance/status'
+                  %li= link_to "Report - Monthly Listing", '#'
+            %li= link_to t('staff.staff_appraisal.title'), staff_staff_appraisals_path
+            %li= link_to t('position.title'), staff_positions_path
+            %li.icon.icon-left
+              = link_to "Staff Leave", '#'
+              .mp-level
+                %h2.icon Staff Leave
+                %a.mp-back{:href => "#"}= t 'helpers.links.back'
+                %ul
+                  %li= link_to "Apply", new_staff_leaveforstaff_path
+                  %li= link_to t("List/Approve"), staff_leaveforstaffs_path
+            %li.icon.icon-left
+              = link_to t('staff.travel_claim.title'), '#'
+              .mp-level
+                %h2.icon=t 'staff.travel_claim.title'
+                %a.mp-back{:href => "#"}= t 'helpers.links.back'
+                %ul
+                  %li= link_to t('staff.travel_request.title'), staff_travel_requests_path
+                  %li= link_to t('staff.travel_request.my_travel_logs'), travel_log_index_staff_travel_requests_path
+                  %li= link_to t('staff.travel_claim.title'), staff_travel_claims_path
+            %li.icon.icon-left
+              = link_to ("Professional <BR> Development").html_safe, '#'
+              .mp-level
+                %h2.icon Professional <BR> Development
+                %a.mp-back{:href => "#"}= t 'helpers.links.back'
+                %ul
+                  %li= link_to t('staff.training.budget.title'), staff_training_ptbudgets_path
+                  %li= link_to "Training Courses", staff_training_ptcourses_path
+                  %li= link_to "Training Schedule", staff_training_ptschedules_path
+                  %li= link_to "Apply for Training", '#', class: 'bogus'
+                  %li= link_to "Application Status", '#', class: 'bogus'
+            %li= link_to t('staff.travel_request.status_movement'), staff_travel_requests_path
+            %li.icon.icon-left
+              = link_to "Reports", '#'
+              .mp-level
+                %h2.icon Reports
+                %a.mp-back{:href => "#"}= t 'helpers.links.back'
+                %ul
+                  %li= link_to "Maklumat Perjawatan", '/staff/positions/maklumat_perjawatan.pdf'
 
     %li.icon.icon-left
       = link_to content_tag(:i, "", :class => "icon-numb") + "Assets", '#'

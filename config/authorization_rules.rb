@@ -1,6 +1,6 @@
 privileges do
   privilege :approve,:includes => [:read, :update]
-  privilege :manage, :includes => [:create, :read, :update, :delete, :core, :approve, :menu]
+  privilege :manage, :includes => [:create, :read, :update, :delete, :approve, :menu]
   privilege :menu,   :includes => [:index]
   privilege :read,   :includes => [:index, :show]
   privilege :create, :includes => :new
@@ -10,6 +10,87 @@ end
 
 authorization do
 
+ role :administration do
+   has_omnipotence
+   has_permission_on :authorization_rules, :to => :read
+ end
+
+ #Group Staff
+
+ role :staff do
+   has_permission_on [:attendances, :assets, :documents],     :to => :menu              # Access for Menus
+   has_permission_on :staffs, :to => [:show, :menu]                                     # A staff see the staff list
+   has_permission_on :staffs, :to => [:edit, :update, :menu] do
+     if_attribute :id => is {current_user.userable.id}                                  # but only sees himself
+   end
+   has_permission_on :ptdos, :to => :create                                             # A staff can register for training session
+   has_permission_on :ptdos, :to => :index do
+     if_attribute :staff_id => is {current_user.userable.id}                            # but onle see his own registrations
+   end
+
+   has_permission_on :attendances, :to => [:index, :show, :new, :create, :edit, :update] do
+     if_attribute :staff_id => is {current_user.userable.id}
+   end
+   has_permission_on :attendances, :to => [:index, :show, :approve, :update] do
+       if_attribute :approve_id => is {current_user.userable.id}
+   end
+
+   has_permission_on :staff_appraisals, :to => :create
+   has_permission_on :staff_appraisals, :to => :manage, :join_by => :or do
+       if_attribute :staff_id => is {current_user.userable.id}
+       if_attribute :eval1_by => is {current_user.userable.id}
+       if_attribute :eval2_by => is {current_user.userable.id}
+   end
+
+   has_permission_on :leaveforstaffs, :to => :create
+   has_permission_on :leaveforstaffs, :to => [:index, :show, :edit, :update] do
+     if_attribute :staff_id => is {current_user.userable.id}
+   end
+   has_permission_on :leaveforstaffs, :to => [:index, :show, :approve1, :update] do
+       if_attribute :approval1_id => is {current_user.userable.id}
+   end
+   has_permission_on :leaveforstaffs, :to => [:index, :show, :approve2, :update] do
+       if_attribute :approval2_id => is {current_user.userable.id}
+   end
+   has_permission_on :ptdos, :to => :delete do
+       if_attribute :staff_id => is {current_user.userable.id}
+   end
+
+   has_permission_on :asset_defects, :to => :create
+   has_permission_on :asset_defects, :to => [:read, :update]  do
+       if_attribute :reported_by => is {current_user.userable.id}
+   end
+   has_permission_on :asset_defects, :to => [:manage]  do
+       if_attribute :decision_by => is {current_user.userable.id}
+   end
+
+   has_permission_on :documents, :to => [:approve,:menu], :join_by => :or do
+       if_attribute :stafffiled_id => is {current_user.userable.id}
+       if_attribute :cc1staff_id => is {current_user.userable.id}
+       if_attribute :cc2staff_id => is {current_user.userable.id}
+   end
+
+   #to works in travel request..28 August 2013
+   #has_permission_on :documents, :to => :index
+
+
+   has_permission_on :student_discipline_cases, :to => :create
+   has_permission_on :student_discipline_cases, :to => :approve do
+     if_attribute :assigned_to => is {current_user.userable.id}
+   end
+   has_permission_on :student_discipline_cases, :to => :manage do
+     if_attribute :assigned2_to => is {current_user.userable.id}
+   end
+   has_permission_on :student_discipline_cases, :to => :read, :join_by => :or do
+     if_attribute :reported_by => is {current_user.userable.id}
+     if_attribute :assigned_to => is {current_user.userable.id}
+     if_attribute :assigned2_to => is {current_user.userable.id}
+   end
+
+   has_permission_on :librarytransactions, :to => :read do
+     if_attribute :staff_id => is {current_user.userable.id}
+   end
+ end
 
  role :librarian do
    has_permission_on :books, :to => [:manage, :extend, :return]

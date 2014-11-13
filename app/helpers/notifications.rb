@@ -9,7 +9,7 @@ module Notifications
 
  def current_staff
   if is_staff?
-   Staff.find(current_staff_id)
+   current_user.userable
   end
  end
 

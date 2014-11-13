@@ -7,7 +7,7 @@ class User < ActiveRecord::Base
   belongs_to :userable, polymorphic: true
   has_and_belongs_to_many :roles
 
-  def self.keyword_search(query) 
+  def self.keyword_search(query)
    staff_ids=Staff.where('name ILIKE(?)', "%#{query}%").pluck(:id)
    student_ids=Student.where('name ILIKE(?)', "%#{query}%").pluck(:id)
    where('(userable_id IN(?) and userable_type=?) OR userable_id IN(?) and userable_type=? ', staff_ids, "Staff", student_ids, "Student")
@@ -18,7 +18,8 @@ class User < ActiveRecord::Base
    [:keyword_search]
   end
 
-  
+
+
   def role_symbols
    roles.map do |role|
     role.authname.to_sym
