@@ -57,6 +57,15 @@ module Notifications
   TravelRequest.where(staff_id: current_staff_id).where(hod_accept: true).where('depart_at > ? AND depart_at <?', Date.today - 1.month, Date.today).pluck(:id, :depart_at)
  end
 
+ def asset_with_defects
+  AssetDefect.where(is_processed: nil).where(processed_by: nil).where('decision_by !=?', current_staff_id ).count
+ end
+
+ def defect_actions_for_approval
+  AssetDefect.where(decision_by: current_staff_id).where(is_processed: true).where(decision: nil).count
+ end
+
+
 
 
 end
@@ -64,16 +73,6 @@ end
 
 =begin
 <!-- Notification on Asset Defect -->
-
-	<% asset_with_defects = AssetDefect.count(:all, :conditions => ['is_processed IS ? AND processed_by IS ? AND decision_by !=?', nil, nil, Login.current_login.staff_id ]) %>
-	<% if asset_with_defects > 0 %>
-		<%= link_to "#{asset_with_defects} Defect reports require processing", { :controller => "asset_defects", :action => "index" } %><br/>
-	<% end %>
-
-	<% defect_action_for_approval = AssetDefect.count(:all, :conditions => ['is_processed = ? AND decision_by =? AND decision IS ?', true, Login.current_login.staff_id, nil]) %>
-	<% if defect_action_for_approval > 0 %>
-		<%= link_to "#{defect_action_for_approval} Defect reports for decision", { :controller => "asset_defects", :action => "index" } %><br/>
-	<% end %>
 
 	<!-- Notification on Losses -->
 	<% permitted_to? :manage, :assets do %>
