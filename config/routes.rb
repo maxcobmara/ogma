@@ -281,6 +281,7 @@ Ogma::Application.routes.draw do
   end
   resources :logins
   resources :roles
+  resources :banks
   
   root  'static_pages#home'
   match '/help',    to: 'static_pages#help',    via: 'get'

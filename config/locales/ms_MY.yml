@@ -97,6 +97,19 @@ ms_MY:
       previous: Terdahulu
       truncate: "&hellip;"
       last: Terakhir
+  
+  administration:
+    title: Pentadbiran
+    
+  support:
+    title: Jadual Sokongan
+    
+  banks:
+    title: Bank
+    list: Senarai Bank
+    short_name: Nama Pendek
+    long_name: Nama Panjang
+    active: Aktif
       
   user:
     title: Senarai Pengguna
@@ -787,6 +800,7 @@ ms_MY:
       brand: Jenama
       model: Model
       receive_date: Tarikh Terima
+      quantity: Kuantiti
     
     loan:
       title: Peminjaman Aset
@@ -842,6 +856,7 @@ ms_MY:
 
   stationery:
     title: Senarai Keperluan Pejabat
+    title_menu: Bekalan Pejabat
     code: Kod Barang
     category: Nama Produk
     quantity: Kuantiti Semasa
