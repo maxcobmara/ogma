@@ -18,7 +18,7 @@
       %dt= t 'asset.loss.report_code'
       %dd= @asset_loss.try(:report_code)
       %dt= t 'asset.loss.hod'
-      %dd= @asset_loss.hod.staff_name_with_position
+      %dd= @asset_loss.try(:hod).try(:staff_name_with_position)
       %dt= t 'asset.loss.endorsed'
       %dd= @asset_loss.try(:endorsed_on).try(:strftime,"%d-%b-%Y")
 
@@ -26,6 +26,8 @@
     %dl.dl-horizontal
       %dt= t 'asset.loss.loss_type'
       %dd= @asset_loss.try(:loss_type)
+      %dt= t 'asset.loss.quantity'
+      %dd= @asset_loss.try(:asset).try(:quantity)
       %dt= t 'asset.loss.brand'
       %dd= @asset_loss.try(:asset).try(:name)
       %dt= t 'asset.loss.model'

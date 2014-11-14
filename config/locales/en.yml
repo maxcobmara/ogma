@@ -120,6 +120,19 @@ en:
       previous: Previous
       truncate: "&hellip;"
       last: Last
+  
+  administration:
+    title: Administration
+    
+  support:
+    title: Support Tables
+    
+  banks:
+    title: Banks
+    list: Lists of Banks
+    short_name: Short Name
+    long_name: Long Name
+    active: Active
       
   user:
     title: List of Users
@@ -871,6 +884,7 @@ en:
       brand: Brand
       model: Model
       receive_date: Receive Date
+      quantity: Quantity
       
     loan:
       title: Asset Loan
@@ -926,6 +940,7 @@ en:
     
   stationery:
     title: List Office Supplies
+    title_menu: Office Supplies
     code: Item Code
     category: Product Name
     quantity: Current Quantity
