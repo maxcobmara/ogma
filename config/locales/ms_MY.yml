@@ -979,15 +979,16 @@ ms_MY:
       title2: Kes Disiplin
       new: Kes Baru Disiplin Pelajar
       edit: Sunting Kes Displin Pelajar
-      new_case: Kes Baru Disiplin
-      case: Kes Disipline
+      new_case: Kes Disiplin Baru
+      case: Kes Disiplin
       status: Status
       programme: Program
       year_semester: "Tahun / Semester"
       matrix_no: No Marik
       student_id: Nama Pelajar
       description: Butiran
-      reported_on: Tarikh Laporan
+      reported_on: Tarikh Dilaporkan
+      assigned_to: Dihantar kepada Ketua Jabatan
       file_id: Rujukan Fail
       location_id: Lokasi
       counselor_feedback: Maklum Balas Kaunselor
@@ -1021,6 +1022,10 @@ ms_MY:
       appeal_on: Tarikh Rayuan
       appeal_decision: Keputusan Rayuan
       appeal_decision_on: Tarikh Keputusan Rayuan
+      description: "Jika Lain-lain, Sila Nyatakan"
+      assigned2_to: Makluman kepada Ketua Jabatan
+      assigned2_on: Tarikh Makluman
+      counseling_request: Permohonan Kaunseling
       
     counseling:
       title: Sesi Kaunseling Pelajar

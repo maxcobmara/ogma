@@ -1,0 +1,62 @@
+- model_class = StudentDisciplineCase
+.page-header
+  %h1=t 'student.discipline.action_details'
+
+= render 'shared/flashes'
+
+.row
+  = form_for [:student, @student_discipline_case], html: { multipart: true, class: 'form-horizontal' }  do |f| 
+    = render 'shared/error_messages', object: f.object
+    = hidden_field_tag :redirect_location, student_student_discipline_cases_path 
+
+    .row
+      .col-md-offset-1
+        / Nav tabs
+        %ul.nav.nav-tabs
+          %li= link_to (t 'student.discipline.report_details'),"#report_details", "data-toggle" => "tab"
+          %li=link_to (t 'student.discipline.case_info'), "#case_info", "data-toggle" => "tab" 
+          %li=link_to (t 'student.discipline.action_details'), "#action_taken", "data-toggle" => "tab" 
+          %li.active=link_to (t 'student.discipline.refer_to_bpl'), "#refer_to_bpl_edit", "data-toggle" => "tab"  if @student_discipline_case.status == "Refer to BPL" 
+          
+        / display 
+        .tab-content{style:"padding-top:1em"}
+          .col-md-8.col-md-offset-1
+            %dl.dl-horizontal
+              %dt= t 'student.discipline.reported_by', :default => model_class.human_attribute_name(:reported_by) + ":"
+              %dd=h @student_discipline_case.reporter_details
+   
+              %dt= t 'student.discipline.reported_on', :default => model_class.human_attribute_name(:reported_on) + ":"
+              %dd=h @student_discipline_case.reported_on.try(:strftime, "%d %b %Y")
+          
+              %dt= t 'student.discipline.student_id', :default => model_class.human_attribute_name(:student_id)+":"
+              %dd=h @student_discipline_case.student.try(:matrix_name)
+
+          #report_details.tab-pane
+            %br
+            =render 'tab_details'
+            
+          - if (["Refer to TPHEP"].include? (@student_discipline_case.status)) && (@student_discipline_case.assigned2_to == @current_user.userable_id || @current_user.roles.pluck(:name).include?("Administration"))
+            #case_info.tab-pane
+              %br
+              = render 'tab_case_info'
+
+          #action_taken.tab-pane
+            %br
+            = render 'tab_action_taken'
+              
+          #refer_to_bpl_edit.tab-pane.active
+            .col-md-10
+              %br
+              = render 'tab_refer_to_bpl_edit', :f=>f   
+          .col-md-10
+            %br
+            = render 'status', :f => f
+
+    %br
+    .row
+      .form-group
+        .col-md-1.col-md-offset-2
+          = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), student_student_discipline_case_path(@student_discipline_case), :class => 'btn btn-default'
+        .col-md-2
+          .div{style: "margin-left:-40px;"}
+            = f.submit t('update'), class: "btn btn-primary"

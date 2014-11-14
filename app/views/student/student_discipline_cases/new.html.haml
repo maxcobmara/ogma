@@ -1,4 +1,4 @@
-- model_class = TravelRequest
+- model_class = StudentDisciplineCase
 .page-header
   %h1= t('student.discipline.new')
   
@@ -9,7 +9,7 @@
     = render 'shared/error_messages', object: f.object
     = hidden_field_tag :redirect_location, student_student_discipline_cases_path 
     
-    /= render :partial => 'form', :locals => {:f => f}        
+    = render :partial => 'form_start', :locals => {:f => f}        
 
     .col-md-offset-1
       .form-group

@@ -1,0 +1,88 @@
+.row
+  .col-md-10.col-md-offset-1
+    / Nav tabs
+    %ul.nav.nav-tabs
+      %li.active= link_to (t 'student.discipline.report_details'),"#report_details", "data-toggle" => "tab"
+
+    .tab-content{style:"padding-top:1em"}
+      .col-md-offset-2 
+        .form-group
+          .col-sm-2.control-label
+            =f.label t 'student.discipline.reported_by' ,for: :reported_by
+          .col-md-2
+            = f.collection_select :reported_by, Staff.all.order(name: :asc), :id,  :staff_name_with_position_grade, {:prompt =>t('helpers.prompt.select_staff'), :selected=>@current_user.userable_id},{class: 'selectpicker', "data-width"=>'460px'}
+        .form-group
+          .col-sm-2.control-label
+            = f.label t 'student.discipline.student_id', for: :student_id
+          .col-md-3
+            = f.collection_select :student_id, Student.where('end_training>?',Date.today).order(icno: :asc), :id, :formatted_mykad_and_student_name, {:prompt => t('helpers.prompt.select_student')},{class: 'selectpicker', "data-width"=>'460px'}
+        .form-group
+          .col-sm-2.control-label
+            = f.label t 'student.discipline.infraction_id', for: :infraction_id
+          .col-md-2
+            = f.select :infraction_id, DropDown::INFRACTION, {:prompt => t('select')}, {class: 'form-control'}
+        .form-group#tr_description{style: "display: none;"}
+          .col-sm-2.control-label
+            = f.label t 'student.discipline.description', for: :description
+          .col-md-4
+            = f.text_area :description, :size => "45x5" 
+        .form-group
+          .col-sm-2.control-label
+            = f.label t 'student.discipline.location_id', for: :location_id
+          .col-md-3 
+            = f.collection_select :location_id, Location.all, :id, :location_list,{:prompt => t('select')}, {class: 'form-control'}
+        .form-group
+          .col-sm-2.control-label
+            = f.label t 'student.discipline.reported_on', for: :reported_on
+          .col-md-2
+            = f.text_field :reported_on, class: 'date_picker form-control'
+        .form-group
+          .col-sm-2.control-label
+            = f.label t 'student.discipline.assigned_to', for: :assigned_to
+          .col-md-3
+            = f.collection_select :assigned_to, Staff.where('id IN (?)', @myhod), :id, :name, {:prompt => t('helpers.prompt.select_hod')},{class: 'selectpicker'}
+
+        = f.hidden_field :assigned_on, :value => Date.today
+        = f.fields_for :student_counseling_sessions do |builder| 
+          = builder.hidden_field :c_scope, :value => "case"
+          = builder.hidden_field :c_type, :value => "involuntary"
+
+      = render 'status', :f => f
+
+:javascript
+
+$(document).ready(function(){ 
+  $("#student_discipline_case_infraction_id").change(function() {  
+    if($("#student_discipline_case_infraction_id").val() == '4') { 
+      $("#tr_description").show("slide"); 
+    }else{
+      $("#tr_description").hide("");
+    }
+  });
+
+  $("#student_discipline_case_infraction_id").each(function() {  
+    if($("#student_discipline_case_infraction_id").val() == '4') { 
+      $("#tr_description").show("slide"); 
+    }else{
+      $("#tr_description").hide("");
+    }
+  });
+
+});
+
+/  $("input[id='student_discipline_case_is_assigned']").change(function() {  
+/    if($('#student_discipline_case_is_assigned').is(':checked')) { 
+/      $(".assign_it").show("highlight"); 
+/    }else{
+/      $(".assign_it").hide(""); 
+/    }
+/  });
+
+/  $("input[id='student_discipline_case_is_assigned']").each(function() {  
+/    if($('#student_discipline_case_is_assigned').is(':checked')) { 
+/      $(".assign_it").show("highlight"); 
+/    }else{
+/      $(".assign_it").hide(""); 
+/    }
+/  });
+

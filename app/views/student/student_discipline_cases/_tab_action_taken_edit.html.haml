@@ -1,0 +1,129 @@
+.col-md-offset-2   
+  .form-group
+    .col-sm-2.control-label
+      = f.label  t 'student.discipline.action_type', for: :action_type
+    .col-md-1= f.radio_button :action_type, "counseling",	:id => 'co', :class => 'radio_action_type' 
+    .col-md-1 Counseling
+    .col-md-1= f.radio_button :action_type, "Ref to BPL", 	:id => 'bpl', :class => 'radio_action_type'
+    .col-md-2 Refer to BPL 
+
+  .form-group.co_item{style: "display: none;"}
+    .col-sm-2.control-label
+      = f.label t 'student.discipline.action', for: :action_done
+    .col-md-5
+      = f.text_area :action, :size => "40x5"
+ 
+  .form-group.co_item{style: "display: none;"}
+    = f.fields_for :student_counseling_sessions do |builder|
+      .col-sm-2.control-label
+        = f.label t 'student.discipline.counseling_request', for: :counseling_request
+      .col-md-2
+        = builder.text_field :requested_at, class: 'datetime_picker3 form-control'
+        = builder.hidden_field :student_id, :value => @student_discipline_case.student_id
+        = builder.hidden_field :case_id, :value => @student_discipline_case.id
+      
+  .form-group.co_item{style: "display: none;"}
+    .col-sm-2.control-label
+      = f.label t 'student.discipline.closed_at_college_on', for: :closed_at_college_on
+    .col-md-2
+      = f.text_field :closed_at_college_on, class: 'date_picker form-control'
+
+  .form-group.bpl_item{style: "display: none;"}
+    .col-sm-2.control-label
+      = f.label t 'student.discipline.sent_to_board_on'
+    .col-md-2
+      = f.text_field :sent_to_board_on, class: 'date_picker form-control'
+
+  /add in status assignment here? 19 dec 2012
+  /=render :partial => 'status', :locals => {:f => f} 
+  /compulsory to hv this - for refer to BPL partial to works
+  /add in status assignment here? 19 dec 2012
+  
+ 
+:javascript
+
+$(document).ready(function(){ 
+  $("input[class='radio_action_type']").change(function() {  
+    if($('#nc').is(':checked')) { 
+      $("#nc_item").show();
+      $("#ja_item").hide();
+      $(".co_item").hide();
+      $(".au_item").hide();
+ 
+      var ansM = document.getElementById("student_discipline_case_status");
+      ansM.value = "Closed";
+
+    }else if ($('#ja').is(':checked')){
+      $("#nc_item").hide();
+      $("#ja_item").show();
+      $(".co_item").hide();
+      $(".au_item").hide();
+ 
+      var ansM = document.getElementById("student_discipline_case_status");
+      ansM.value = "Closed";
+ 
+    }else if ($('#au').is(':checked')){
+      $("#nc_item").hide();
+      $("#ja_item").hide();
+      $(".co_item").hide();
+      $(".au_item").show();
+      $(".bpl_item").hide();
+
+      var ansM = document.getElementById("student_discipline_case_status");
+      ansM.value = "Refer to TPHEP";
+ 
+    }else if($('#co').is(':checked')){
+      $("#nc_item").hide();
+      $("#ja_item").hide();
+      $(".co_item").show();
+      $(".au_item").hide();
+      $(".bpl_item").hide();
+
+      var ansM = document.getElementById("student_discipline_case_status");
+      ansM.value = "Closed";
+    
+    }else if ($('#bpl').is(':checked')){
+      $("#nc_item").hide();
+      $("#ja_item").hide();
+      $(".co_item").hide();
+      $(".au_item").hide();
+      $(".bpl_item").show();
+
+      var ansM = document.getElementById("student_discipline_case_status");
+      ansM.value = "Refer to BPL";
+    }
+  });
+
+  $("input[class='radio_action_type']").each(function() {  
+    if($('#nc').is(':checked')) { 
+      $("#nc_item").show();
+      $("#ja_item").hide();
+      $(".co_item").hide();
+      $(".au_item").hide();
+    }else if ($('#ja').is(':checked')){
+      $("#nc_item").hide();
+      $("#ja_item").show();
+      $(".co_item").hide();
+      $(".au_item").hide();
+    }else if ($('#au').is(':checked')){
+      $("#nc_item").hide();
+      $("#ja_item").hide();
+      $(".co_item").hide();
+      $(".au_item").show();
+      $(".bpl_item").hide();
+    }else if($('#co').is(':checked')){
+      $("#nc_item").hide();
+      $("#ja_item").hide();
+      $(".co_item").show();
+      $(".au_item").hide();
+      $(".bpl_item").hide();
+    }else if ($('#bpl').is(':checked')){
+      $("#nc_item").hide();
+      $("#ja_item").hide();
+      $(".co_item").hide();
+      $(".au_item").hide();
+      $(".bpl_item").show();
+    }
+  });
+
+});

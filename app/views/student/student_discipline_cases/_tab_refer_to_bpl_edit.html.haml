@@ -1,0 +1,42 @@
+.col-md-offset-2   
+  .form-group
+    .col-sm-2.control-label
+      = f.label t 'student.discipline.board_meeting_on', for: :board_meeting_date
+    .col-md-2
+      = f.text_field :board_meeting_on, class: 'date_picker form-control'
+  .form-group
+    .col-sm-2.control-label
+      = f.label t 'student.discipline.board_decision', for: :board_decision
+    .col-md-5
+      = f.text_area :board_decision, :size => "40x5", class: 'form-control'
+  .form-group
+    .col-sm-2.control-label
+      = f.label t 'student.discipline.board_decision_on', for: :board_decision_on
+    .col-md-2
+      = f.text_field :board_decision_on, class: 'date_picker form-control'
+  .form-group
+    .col-sm-2.control-label
+      = f.label t 'student.discipline.appeal_on', for: :appeal_on
+    .col-md-2
+      = f.text_field :appeal_on, class: 'date_picker form-control'
+  .form-group
+    .col-sm-2.control-label
+      = f.label t 'student.discipline.appeal_decision', for: :appeal_decision
+    .col-md-5
+      = f.text_area :appeal_decision, :size => "40x5", class: 'form-control'
+  .form-group
+    .col-sm-2.control-label
+      = f.label t 'student.discipline.appeal_decision_on', for: :appeal_decision_on
+    .col-md-2
+      = f.text_field :appeal_decision_on, class: 'date_picker form-control'
+  .form-group
+    .col-sm-2.control-label
+      = f.label t 'student.discipline.action', for: :action_taken
+    .col-md-5
+      = f.text_area :action, :size => "40x5", class: 'form-control'
+
+/  .form-group.co_item{style: "display: none;" }
+/    .col-sm-2.control-label
+/      = f.label t 'student.discipline.closed_at_college_on', for: :closed_at_college_on
+/    .col-md-2
+/      = f.text_field :closed_at_college_on, class: 'date_picker form-control'

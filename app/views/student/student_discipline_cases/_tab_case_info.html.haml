@@ -37,8 +37,8 @@
         - for student_counseling_session in @student_discipline_case.student_counseling_sessions 
           .row
             .col-md-1= count+=1
-            .col-md-2=h student_counseling_session.requested_at.strftime("%d %b %y, %l:%M %p")  
-            .col-md-3=h student_counseling_session.confirmed_at.strftime("%d %b %y, %l:%M %p")  if student_counseling_session.is_confirmed == true
+            .col-md-2=h student_counseling_session.requested_at.try(:strftime, "%d %b %y, %l:%M %p")  
+            .col-md-3=h student_counseling_session.confirmed_at.try(:strftime, "%d %b %y, %l:%M %p") if student_counseling_session.is_confirmed == true
             .col-md-3=h student_counseling_session.remark 
             .col-md-3= (link_to t('view'), :action => 'show', :controller=> 'student_counseling_sessions',:id => student_counseling_session.id) if !student_counseling_session.remark.blank? 
           %br
