@@ -675,6 +675,7 @@ ms_MY:
     engineno: "No. Enjin"
     registration: "No. Pendaftaran"
     otherinfo: "Komponen & Aksesori"
+    quantity: Kuantiti
     #serialno: "No. Siri"
     
     defect:

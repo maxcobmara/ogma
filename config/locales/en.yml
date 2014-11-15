@@ -759,6 +759,7 @@ en:
     registration: "Registration No."
     otherinfo: "Components & Accessories"
     administered_by: "Administered By"
+    quantity: Quantity
     #serialno: Serial No
     
     defect:
