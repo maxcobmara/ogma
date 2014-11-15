@@ -23,11 +23,15 @@
             %td= link_to user.email, edit_user_path(user)
             %td=h user.userable.try(:name)
             %td
-              =h user.userable_type=="Staff" ? (t 'staff.title') : (t 'student.title')
               - if user.userable_type == "Staff" 
+                = (t 'staff.title') 
                 \-
                 - for position in user.userable.positions
                   = position.name
+              - elsif user.userable_type == "Student"
+                = (t 'student.title')
+              - else
+                =(t 'user.user_not_link_entity')
             %td
               - count_role=0
               - for role in user.roles

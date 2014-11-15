@@ -1,9 +1,10 @@
 class Kewpa7Pdf < Prawn::Document
-  def initialize(location, current_user)
+  def initialize(location, current_user, asset_placements)
     super({top_margin: 40, page_size: 'A4', page_layout: :portrait })
     @location = location
     #@current_user = current_user
     @asset_admin = current_user
+    @asset_placements = asset_placements
     font "Times-Roman"
     text "KEW.PA-7", :align => :right, :size => 16, :style => :bold
     move_down 20
@@ -45,11 +46,11 @@ class Kewpa7Pdf < Prawn::Document
     counter = counter || 0
     header = [[ 'Bil', 'Keterangan Aset', "", 'Quantity']]
     a= 
-       @location.asset_placements.map do |asset_placement|
-      ["#{counter += 1}", "#{asset_placement.asset.assetcode}", "#{asset_placement.asset.typename} #{asset_placement.asset.name} #{asset_placement.asset.modelname}","#{asset_placement.quantity}"] 
+       @asset_placements.map do |asset_placement|
+      ["#{counter += 1}", "#{asset_placement.asset.assetcode}", "#{asset_placement.asset.typename} #{asset_placement.asset.name} #{asset_placement.asset.modelname}","#{asset_placement.asset.assettype==1 ? 1 : asset_placement.quantity}"] 
       end
     b=[]
-    0.upto(14-@location.asset_placements.count-1) do |count|
+    0.upto(14-@asset_placements.count-1) do |count|
       b+= [ ["","","",""]]
     end
   
@@ -71,8 +72,8 @@ class Kewpa7Pdf < Prawn::Document
     [["(a) Disediakan oleh :", "(b) Disahkan oleh :"],
      ["#{'.'*40}", "#{'.'*40}"],
      ["Tandatangan", "Tandatangan"],
-     ["Nama : #{@asset_admin.try(:staff).try(:name)}", "Nama : #{@location.try(:administrator).try(:name)}"],
-     ["Jawatan : #{@asset_admin.try(:staff).try(:positions).first.try(:name)}", "Jawatan : #{@location.try(:position).try(:name)}"],
+     ["Nama : #{@asset_admin.try(:userable).try(:name)}", "Nama : #{@location.try(:administrator).try(:name)}"],
+     ["Jawatan : #{@asset_admin.try(:userable).try(:positions).try(:first).try(:name)}", "Jawatan : #{@location.try(:position).try(:name)}"],
      ["Tarikh : #{Date.today.strftime('%d-%m-%Y')}", "Tarikh : #{Date.today.strftime('%d-%m-%Y')}"]
     ]
   end  

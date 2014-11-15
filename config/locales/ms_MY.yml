@@ -108,6 +108,7 @@ ms_MY:
     details: Perincian Pengguna
     available_roles: Peranan sedia ada
     assigned_roles: Peranan diperuntukkan
+    user_not_link_entity: "Pengguna belum disuaipadan dengan mana-mana entiti"
   
   role:
     title: Senarai Peranan

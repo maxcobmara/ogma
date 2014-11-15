@@ -131,6 +131,7 @@ en:
     details: User Details
     available_roles: Available Roles
     assigned_roles: Assigned Roles
+    user_not_link_entity: User not yet link with any entity
 
   role:
     title: List of Roles
