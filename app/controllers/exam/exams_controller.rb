@@ -30,13 +30,6 @@ class Exam::ExamsController < ApplicationController
     #@search = Exam.search(params[:q])
     #@exams = @search.result       
     
-    #ADDED-18June2013-extract from exammarks/_exam_listing.html.erb
-    @exam_ids_for_examtemplate = Examtemplate.pluck(:exam_id).uniq
-    @exam_ids_for_examquestions = Exam.joins(:examquestions).map(&:id).uniq 
-    @complete_exampaper = Exam.where('id IN (?) OR id IN (?)',@exam_ids_for_examtemplate,@exam_ids_for_examquestions)
-    @ids_complete_exampaper = @complete_exampaper.pluck(:id) 
-    #ADDED-18June2013-extract from exammarks/_exam_listing.html.erb
-    
     respond_to do |format|
       format.html # index.html.erb
       format.xml  { render :xml => @exams }
@@ -105,7 +98,7 @@ class Exam::ExamsController < ApplicationController
   # POST /exams
   # POST /exams.xml
   def create
-    @exam = Exam.new(params[:exam])
+    @exam = Exam.new(exam_params)
     @create_type = params[:submit_button]             #10June2013-pm
     #if @create_type == "Create"
         #respond_to do |format|
@@ -137,15 +130,16 @@ class Exam::ExamsController < ApplicationController
         #end
     #10June2013-----  
     #end  
-    if @create_type == "Create"
+    
+    if @create_type == t('exam.exams.create_exam')
         @exam.klass_id = 1  #added for use in E-Query & Report Manager (27Jul2013)
-    elsif @create_type == "Create Template"
+    elsif @create_type == t('exam.exams.create_template')
         @exam.klass_id = 0
     end   
     respond_to do |format|
       if @exam.save
         flash[:notice] = (t 'exam.exams.title')+(t 'actions.created')
-        format.html { redirect_to (@exam) }
+        format.html { redirect_to (exam_exam_path(@exam)) }
         format.xml  { render :xml => @exam, :status => :created, :location => @exam }
       else
         format.html { render :action => "new" }

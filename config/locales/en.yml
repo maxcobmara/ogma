@@ -1477,6 +1477,8 @@ en:
       notes: "Remark :"
       in_minutes: in minutes
       by_semester: by semester
+      create_exam: Add Exam Data
+      create_template: Add Exam Template
 
   training:
     title: Training

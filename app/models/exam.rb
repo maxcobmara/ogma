@@ -12,7 +12,7 @@ class Exam < ActiveRecord::Base
   attr_accessor :own_car, :dept_car,:programme_id #18Apr2013-programme_id used in views/exams/new.html.erb #9Apr2013-use course_id (temp) to capture semester (year as well)
   attr_accessor :programme_filter, :subject_filter, :topic_filter, :seq
   
-  validates_presence_of :programme_id,:subject_id, :name
+  validates_presence_of :subject_id, :name  #programme_id
   validates_uniqueness_of :name, :scope => "subject_id", :message => " - Examination of selected exam type (name) for selected subject already exist."
   validate :sequence_must_be_selected, :sequence_must_be_unique #,:sequence_must_increment_by_one
   
@@ -90,12 +90,18 @@ class Exam < ActiveRecord::Base
   end
   
   def set_full_marks
-    if klass_id == 0
-      self.full_marks = examtemplates.sum(:total_marks).to_i
-    elsif klass_id==1
-      self.full_marks = total_marks
+    unless id.nil? || id.blank?
+      if klass_id == 0
+        self.full_marks = examtemplates.sum(:total_marks).to_i
+      elsif klass_id==1
+        self.full_marks = total_marks
+      end
     end
   end
+  
+  #def full_marks(exampaper_id)
+      #Examquestion.sum(:marks,:joins=>:exammakers, :conditions => ["exammaker_id=?", exampaper_id]).to_f
+  #end 
   
   def self.search2(search)
     common_subject = Programme.where('course_type=?','Commonsubject').map(&:id)
@@ -213,11 +219,7 @@ class Exam < ActiveRecord::Base
   def programme_of_exammaker
     "#{Programme.find(subject_id).root.programme_coursetype_name }"
   end 
-  
-  def full_marks(exampaper_id)
-      Examquestion.sum(:marks,:joins=>:exammakers, :conditions => ["exammaker_id=?", exampaper_id]).to_f
-  end 
-  
+ 
   def examtypename
      (Exam::EXAMTYPE.find_all{|disp, value| value == name}).map {|disp, value| disp}
   	#Exam::EXAMTYPE[("#{name}".to_i)-1][0].to_s	    #Exam::EXAMTYPE[("#{examtype}".to_i)-1][0].to_s	
@@ -226,8 +228,51 @@ class Exam < ActiveRecord::Base
   #--12June2013
   
   def timing
-    "#{starttime.try(:strftime, "%l:%M %P")}"+" - "+"#{endtime.try(:strftime, "%l:%M %P")}"
+    "#{starttime.try(:strftime, "%l:%M %P")}"+" - "+"#{endtime.try(:strftime, "%l:%M %P")}" if starttime!=nil && endtime!=nil
   end 
+  
+  def syear 
+     if subject_id!=nil && (subject.parent.code == '1' || subject.parent.code == '2')
+       studentyear = "1 / " 
+     elsif subject_id!=nil && (subject.parent.code == '3' || subject.parent.code == '4')
+       studentyear = "2 / "
+     elsif subject_id!=nil && (subject.parent.code == '5' || subject.parent.code == '6')
+       studentyear = "3 / "
+     end
+     studentyear
+  end
+  
+  def ids_complete_exampaper
+    exam_ids_for_examtemplate = Examtemplate.pluck(:exam_id).uniq
+    exam_ids_for_examquestions = Exam.joins(:examquestions).map(&:id).uniq 
+    complete_exampaper = Exam.where('id IN (?) OR id IN (?)', exam_ids_for_examtemplate, exam_ids_for_examquestions)
+    ids_complete_exampaper = complete_exampaper.pluck(:id) 
+    ids_complete_exampaper
+  end
+  
+  def separate_cover
+    #[3,5,6,7,8,9,10,11,12,13,14]
+    dip_cover=Programme.where('(name=? or name=?) and course_type=?',"Kejururawatan", "Radiografi","Diploma").pluck(:id)
+    pb_cover=Programme.where('(name=? or name=? or name=? or name=? or name=? or name=? ) and course_type=?',"Perioperating", "Orthopedik", "Onkologi", "Perawatan Rapi", "Perawatan Renal","Perawatan Psikiatri", "Pos Basik").pluck(:id)
+    diplanjut_cover=Programme.where('(name=? or name=?) and course_type=?',
+    "Kebidanan", "Pengimejan Perubatan (Pengimejan Payudara)", "Diploma Lanjutan").pluck(:id)
+    cover=dip_cover+pb_cover+diplanjut_cover
+  end
+  
+  def combine_cover
+    #[1,2,4]
+    cover=Programme.where('(name=? or name=? or name=?) and course_type=?', "Jurupulih Perubatan Cara Kerja", "Jurupulih Perubatan Anggota (Fisioterapi)", "Penolong Pegawai Perubatan", "Diploma").pluck(:id)
+    cover
+  end
+  
+  def creator_list
+    pensyarah = Position.where(name: "Pengajar").pluck(:staff_id)
+    lecturer_users = Role.joins(:users).where(name: "Lecturer").pluck(:user_id)
+    lecturers = User.where('id IN(?)', lecturer_users).pluck(:userable_id)
+    admin_users = Role.joins(:users).where(name: "Administration").pluck(:user_id)
+    admins = User.where('id IN(?)', admin_users).pluck(:userable_id)
+    creator_ids = pensyarah+lecturers+admins
+  end
 
 private
 

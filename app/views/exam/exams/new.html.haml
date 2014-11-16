@@ -1,1 +1,22 @@
- 
+- model_class = Exam
+.page-header
+  %h1=t('exam.exams.new_title') 
+  
+= render 'shared/flashes'
+
+.row.fluid
+  = form_for [:exam, @exam], html: { class: 'form-horizontal' }  do |f| 
+    = render 'shared/error_messages', object: f.object
+    = hidden_field_tag :redirect_location, exam_exams_path 
+    
+    = render :partial => 'new_form', :locals => {:f => f}        
+
+    .col-md-offset-1
+      .form-group
+        .col-sm-offset-2.col-sm-1
+          = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), exam_exams_path, :class => 'btn btn-default'
+        .col-sm-3
+          = f.submit t('exam.exams.create_exam'),  :name=> :submit_button, class: "btn btn-primary"
+        .col-sm-3
+          = f.submit t('exam.exams.create_template'),  :name=> :submit_button, class: "btn btn-primary"
+          

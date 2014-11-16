@@ -1416,6 +1416,8 @@ ms_MY:
       notes: "Nota :"
       in_minutes: dalam minit
       by_semester: semester
+      create_exam: Tambah Data Set Peperiksaan
+      create_template: Tambah Data Template Peperiksaan
 
   training:
     title: Latihan
