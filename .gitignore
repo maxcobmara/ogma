@@ -32,6 +32,6 @@ public/assets/notes/*
 public/assets/staffs/*
 public/assets/students/*
 public/system/**
-public/excel_format/*.xls
+public/excel_format_local/*.xls
 tmp/
 tmp/**/*

@@ -143,41 +143,39 @@
             .col-sm-2.control-label
               = f.label t 'asset.purchasedate', for: :purchasedate
             .col-md-5
-              = f.text_field :purchasedate, :order => [:day, :month, :year], :default => 1.days.from_now,  :class =>  'date-picker form-control'
+              = f.text_field :purchasedate, :order => [:day, :month, :year], :default => 1.days.from_now,  :class =>  'datetime_picker form-control'
 			  
           .form-group
             .col-sm-2.control-label
               = f.label t 'asset.receiveddate', for: :receiveddate
             .col-md-5
-              = f.text_field :receiveddate, :order => [:day, :month, :year], :default => 1.days.from_now,  :class =>  'date-picker form-control'
+              = f.text_field :receiveddate, :order => [:day, :month, :year], :default => 1.days.from_now,  :class =>  'datetime_picker form-control'
 			  			  
           .form-group
             .col-sm-2.control-label
               = f.label t 'asset.receivedby', for: :receiver_id
             .col-md-5
               = f.text_field :receiver_id, class: 'form-control input-xxlarge'
-			  
+  
           .form-group
             .col-sm-2.control-label
               = f.label t 'asset.suppliedby', for: :supplier_id
             .col-md-5
               = f.text_field :supplier_id, class: 'form-control input-xxlarge'			  
-		
+
       #placement.tab-pane.fade
-        %table.table.table-condensed.table-hover{:style => "width: 50%; "}	
-          %thead	  
-            %tr
-              %th= t 'asset.located_at'
-              %th= t 'asset.assigned_to'
-              %th= t 'asset.date'
-          %tbody
-            - for asset_placement in @asset.asset_placements
-              %tr
-                %td= check_kin {asset_placement.location_id} 
-                %td= asset_placement.staff_id
-                %td= asset_placement.reg_on  
-			  
-			  
+        .row
+          .col-sm-2=f.label t 'asset.located_at', for: :located_at
+          .col-sm-2=f.label t 'asset.assigned_to', for: :assigned_to
+          .col-sm-2=f.label t 'asset.date', for: :date_assigned
+          .col-sm-1=f.label (t 'asset.quantity')+" (/"+@asset.quantity.to_s+")", for: :quantity
+
+        = f.fields_for :asset_placements do |builder|
+          = render 'asset_placement_fields', :f => builder
+        .row
+          /= link_to_add_fields image_tag("add.png", :border => 0, :title => t('addmore')), f, :asset_placements
+          = link_to_add_fields t('addmore'), f, :asset_placements, "",  t('addmore')
+        
       - if @asset.is_maintainable?
         #maintenance.tab-pane.fade
           .form-group
@@ -208,16 +206,14 @@
             = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), asset_asset_path(@asset), :class => 'btn btn-default'
           .col-sm-2
             = f.submit t('update'), class: "btn btn-primary" 
-			
-    :javascript
-      $('.date-picker').datetimepicker({
-       timepicker:true,
-         format: "d-m-Y",
-         step: 15,
-         defaultSeconds: 0,
-         autoclose: true
-       });
-	
+       
+:javascript
+
+  function add_fields(link, association, content) {
+    var new_id = new Date().getTime();
+    var regexp = new RegExp("new_" + association, "g");
+    $(link).parent().before(content.replace(regexp, new_id));
+  }
 
 
 //.col-md-offset-1

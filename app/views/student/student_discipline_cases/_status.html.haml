@@ -1,0 +1,11 @@
+.col-md-offset-2   
+  .form-group
+    .col-sm-2.control-label
+      = f.label :status
+    .col-md-2
+      - if @student_discipline_case.status != nil && @student_discipline_case.status == "Closed" 
+        Closed
+        /elsif @student_discipline_case.status != nil && @student_discipline_case.status == "Refer to TPHEP"
+        /Refer to TPHEP
+      - else	
+        = f.select :status, options_for_select(@student_discipline_case.status_workflow.collect {|v,i| [v] }, @student_discipline_case.status), {:prompt => t('select')}, {class: 'form-control'}

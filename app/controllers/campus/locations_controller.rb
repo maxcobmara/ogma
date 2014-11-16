@@ -68,11 +68,21 @@ class Campus::LocationsController < ApplicationController
   
   def kewpa7
     @location = Location.find(params[:id])
-    @asset_admin = Role.where(id:11).first.users.where('login=?',"norasikin").first 		#temp
+    placements = AssetPlacement.where(location_id:params[:id]).order(:asset_id, reg_on: :asc).group_by(&:asset_id)
+    pp=[]
+    placements.each do |asset, details|
+      count=0
+      details.each do |d|
+        pp << d.id if count==0  #pp - capture asset_placement ids
+        count+=1
+      end
+    end
+    @asset_placements = AssetPlacement.where('id IN(?)', pp)
+    #@asset_admin = Role.where(id:11).first.users.where('login=?',"norasikin").first 		#temp
+    @asset_admin = Role.where(name: "Asset Administrator").first.users.first
     respond_to do |format|
       format.pdf do
-        #pdf = Kewpa7Pdf.new(@location, current_user)
-	pdf = Kewpa7Pdf.new(@location, @asset_admin)
+        pdf = Kewpa7Pdf.new(@location, @asset_admin, @asset_placements)
         send_data pdf.render, filename: "order_#{@location.combo_code}",
                               type: "application/pdf",
                               disposition: "inline"
@@ -82,11 +92,20 @@ class Campus::LocationsController < ApplicationController
   
   def kewpa10
     @location = Location.find(params[:id])
-    #@assets = Asset.where(assettype: 1)
+    placements = AssetPlacement.where(location_id:params[:id]).order(:asset_id, reg_on: :asc).group_by(&:asset_id)
+    pp=[]
+    placements.each do |asset, details|
+      count=0
+      details.each do |d|
+        pp << d.id if count==0  #pp - capture asset_placement ids
+        count+=1
+      end
+    end
+    @asset_placements = AssetPlacement.where('id IN(?)', pp)
     
     respond_to do |format|
       format.pdf do
-        pdf = Kewpa10Pdf.new(@location, view_context)#, @assets)
+        pdf = Kewpa10Pdf.new(@location, view_context, @asset_placements)
         send_data pdf.render, filename: "kewpa10-{Date.today}",
                               type: "application/pdf",
                               disposition: "inline"

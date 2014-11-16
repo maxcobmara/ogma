@@ -51,10 +51,10 @@ class Student::StudentDisciplineCasesController < ApplicationController
   # POST /student_discipline_cases.xml
   def create
     @student_discipline_case = StudentDisciplineCase.new(student_discipline_case_params)
-    @myhod = Position.find(:all, :conditions => ['tasks_main ILIKE (?)', "%Ketua Program%"], :select => :staff_id).map(&:staff_id)
+    @myhod = Position.where('tasks_main ILIKE (?)', "%Ketua Program%").pluck(:staff_id)
     respond_to do |format|
       if @student_discipline_case.save
-        format.html { redirect_to(student_student_discipline_case_path(@student_discipline_case), :notice => (t 'student.student_discipline_case.new_case')+(t 'actions.created') )}
+        format.html { redirect_to(student_student_discipline_case_path(@student_discipline_case), :notice => (t 'student.discipline.new_case')+(t 'actions.created') )}
         format.xml  { render :xml => @student_discipline_case, :status => :created, :location => @student_discipline_case }
       else
         format.html { render :action => "new" }
@@ -72,7 +72,7 @@ class Student::StudentDisciplineCasesController < ApplicationController
 
     respond_to do |format|
       if @student_discipline_case.update(student_discipline_case_params)
-        format.html { redirect_to(student_student_discipline_case_path(@student_discipline_case), :notice => (t 'student.student_discipline_case.case')+t('actions.updated')) }
+        format.html { redirect_to(student_student_discipline_case_path(@student_discipline_case), :notice => (t 'student.discipline.case')+t('actions.updated')) }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }
@@ -93,6 +93,15 @@ class Student::StudentDisciplineCasesController < ApplicationController
     end
   end
   
+  def actiontaken
+    @student_discipline_case = StudentDisciplineCase.find(params[:id]) 
+    @student_discipline_case.student_counseling_sessions.build if @student_discipline_case.student_counseling_sessions.count==0
+  end
+
+  def referbpl
+    @student_discipline_case = StudentDisciplineCase.find(params[:id]) 
+  end
+  
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_student_discipline_case
@@ -101,7 +110,7 @@ class Student::StudentDisciplineCasesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def student_discipline_case_params
-      params.require(:student_discipline_case).permit(:reported_by, :student_id, :infraction_id, :description, :reported_on, :assigned_to, :assigned_on, :status, :file_id, :investigation, :action_type, :other_info, :case_created, :action, :location_id, :assigned2_to, :assigned2_on, :is_innocent, :closed_at_college_on, :sent_to_board_on, :board_meeting_on, :board_decision_on, :board_decision, :appeal_on, :appeal_decision, :appeal_decision_on, :counselor_feedback)
+      params.require(:student_discipline_case).permit(:reported_by, :student_id, :infraction_id, :description, :reported_on, :assigned_to, :assigned_on, :status, :file_id, :investigation, :action_type, :other_info, :case_created, :action, :location_id, :assigned2_to, :assigned2_on, :is_innocent, :closed_at_college_on, :sent_to_board_on, :board_meeting_on, :board_decision_on, :board_decision, :appeal_on, :appeal_decision, :appeal_decision_on, :counselor_feedback, student_counseling_sessions_attributes: [:id, :destroy, :requested_at, :student_id, :case_id])
     end
   
 end

@@ -174,7 +174,12 @@ Ogma::Application.routes.draw do
         post :empty_room
       end
     end
-    resources :student_discipline_cases
+    resources :student_discipline_cases do
+      member do
+        get :actiontaken
+	get :referbpl
+      end
+    end
     resources :student_counseling_sessions do
       member do
         get :feedback

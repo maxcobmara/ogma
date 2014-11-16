@@ -1,52 +1,33 @@
+- model_class = StudentDisciplineCase
 .row
-  .col-md-10.col-md-offset-1
+  .col-md-offset-1
     / Nav tabs
     %ul.nav.nav-tabs
-      %li.active= link_to (t 'staff.travel_request.details'),"#travel_request_details_edit", "data-toggle" => "tab"
-      %li=link_to (t 'staff.travel_request.submission'), "#travel_request_submission_edit", "data-toggle" => "tab"
-      
+      %li= link_to (t 'student.discipline.report_details'),"#report_details", "data-toggle" => "tab"
+      /- if ["Open", "Closed", "No Case", "Refer to TPHEP", "Refer to BPL"].include? (@student_discipline_case.status) 
+      - if ["New", "Open"].include? (@student_discipline_case.status)
+        %li.active=link_to (t 'student.discipline.case_info'), "#case_info_edit", "data-toggle" => "tab" 
+
     .tab-content{style:"padding-top:1em"}
-      .col-md-offset-2 
-        .form-group
-          .col-sm-2.control-label
-            =f.label :code
-          .col-md-2
-            =f.text_field :code, :value =>@travel_request.gcode(@generated_code), class: 'form-control', readonly: 'readonly'
-        .form-group
-          .col-sm-2.control-label
-            = f.label :staff_id
-          .col-md-3
-            = f.collection_select :staff_id, Staff.all.order(name: :asc), :id,  :staff_name_with_position_grade, {:include_blank =>t('helpers.prompt.select_staff'), :selected=>25},{class: 'selectpicker', "data-width"=>'460px'} 
-            /= f.collection_select :staff_id, Staff.all.order(name: :asc), :id,  :staff_name_with_position, {:include_blank =>t('helpers.prompt.select_staff'), :selected=>Login.first.staff_id},{class: 'selectpicker', "data-width"=>'320px'} 
-        .form-group
-          .col-sm-2.control-label
-            = f.label :document_id
-          .col-md-3
-            = f.collection_select :document_id, Document.all.order(refno: :asc), :id, :doc_details_date, {:include_blank=>t('helpers.prompt.select_document')}, {class: 'selectpicker', "data-width"=>'460px'}
-            /= text_field_with_auto_complete :travel_request, :document_refno, {:class => 'compulsory'}, { :url => formatted_documents_path(:js), :method => :get, :with => "'search4=' + element.value"}
-    
-      #travel_request_details_edit.tab-pane.active
+      .col-md-8.col-md-offset-1
+        %dl.dl-horizontal
+          %dt= t 'student.discipline.reported_by', :default => model_class.human_attribute_name(:reported_by) + ":"
+          %dd=h @student_discipline_case.reporter_details
+          
+          %dt= t 'student.discipline.reported_on', :default => model_class.human_attribute_name(:reported_on) + ":"
+          %dd=h @student_discipline_case.reported_on.try(:strftime, "%d %b %Y")
+          
+          %dt= t 'student.discipline.student_id', :default => model_class.human_attribute_name(:student_id)+":"
+          %dd=h @student_discipline_case.student.try(:matrix_name)
+
+      #report_details.tab-pane
         %br
-        = render 'tab_details_edit', :f => f
-        
-      #travel_request_submission_edit.tab-pane
-        %br
-        = render 'tab_submission_edit', :f => f
-    
-:javascript
-
-//<![CDATA[
-bkLib.onDomLoaded(function() {
-  new nicEditor().panelInstance('myNicEditor3');
-  new nicEditor().panelInstance('myNicEditor4');
-});
-//]]>
-
-  function add_fields(link, association, content) {  
-    var new_id = new Date().getTime();  
-    var regexp = new RegExp("new_" + association, "g");  
-    $(link).parent().before(content.replace(regexp, new_id));  
-  }
-
-
-
+        =render 'tab_details'
+      /- if ["Open", "Closed", "No Case", "Refer to TPHEP", "Refer to BPL"].include? (@student_discipline_case.status) 
+      - if ["New", "Open"].include? (@student_discipline_case.status)
+        #case_info_edit.tab-pane.active
+          .col-md-10
+            %br
+            = render 'tab_case_info_edit', :f=>f
+      
+%br

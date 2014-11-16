@@ -72,13 +72,18 @@
           %th= t 'asset.located_at'
           %th= t 'asset.assigned_to'
           %th= t 'asset.date'
+          %th= t 'asset.quantity'
       %tbody
         - for asset_placement in @asset.asset_placements
           %tr
             %td= check_kin {asset_placement.location.name} 
             %td= asset_placement.staff.try(:name)
             %td= asset_placement.reg_on.try(:strftime, "%d/%m/%y")
-
+            %td=h asset_placement.asset.assettype==2 ? asset_placement.quantity : 1
+        %tr
+          %td{colspan: 3} &nbsp;
+          %td
+            %b=@asset.asset_placements.sum(:quantity).to_s+" / "+@asset.quantity.to_s if asset_placement.asset.assettype==2
 
   - if @asset.is_maintainable?
     #maintenance.tab-pane.fade

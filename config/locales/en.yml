@@ -144,6 +144,7 @@ en:
     details: User Details
     available_roles: Available Roles
     assigned_roles: Assigned Roles
+    user_not_link_entity: User not yet link with any entity
 
   role:
     title: List of Roles
@@ -771,6 +772,7 @@ en:
     registration: "Registration No."
     otherinfo: "Components & Accessories"
     administered_by: "Administered By"
+    quantity: Quantity
     #serialno: Serial No
     
     defect:
@@ -1090,6 +1092,7 @@ en:
       student_id: Student Name
       description: Details
       reported_on: Reported On
+      assigned_to: Assign to Programme Head
       file_id: File Reference
       location_id: Location
       counselor_feedback: Counselor Feedback
@@ -1123,6 +1126,10 @@ en:
       appeal_on: Appeal Date
       appeal_decision: Appeal Decision
       appeal_decision_on: Appeal Decision Date
+      description: "If Others, Please Specify"
+      assigned2_to: Notify HOD
+      assigned2_on: Notify HOD Date
+      counseling_request: Counseling request
       
     counseling:
       title: Student Counseling Session

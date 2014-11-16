@@ -10,7 +10,8 @@
     %ul.nav.nav-tabs
       %li.active= link_to (t 'student.discipline.report_details'),"#report_details", "data-toggle" => "tab"
       %li=link_to ((t 'student.discipline.case_info')+" ("+@student_discipline_case.status+")"), "#case_info", "data-toggle" => "tab"  if ["Open", "Closed", "No Case", "Refer to TPHEP", "Refer to BPL"].include? (@student_discipline_case.status) 
-      %li=link_to (t 'student.discipline.action_details'), "#action_taken", "data-toggle" => "tab" if ["Open", "Closed", "Refer to TPHEP", "Refer to BPL"].include? (@student_discipline_case.status) 
+      %li=link_to (t 'student.discipline.action_details'), "#action_taken", "data-toggle" => "tab" if (["Open", "Closed", "Refer to TPHEP", "Refer to BPL"].include? (@student_discipline_case.status)) && (@student_discipline_case.assigned2_to == @current_user.userable_id || @current_user.roles.pluck(:name).include?("Administration"))
+      
       /- if ["Closed","Refer to BPL"].include? (@student_discipline_case.status)  
       - if ["Refer to BPL"].include? (@student_discipline_case.status) 
         %li=link_to (t 'student.discipline.refer_to_bpl'), "#refer_to_bpl", "data-toggle" => "tab" 
@@ -53,9 +54,15 @@
     %hr
     .form-actions
       = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('helpers.links.back'), student_student_discipline_cases_path, :class => 'btn btn-default'  
-      /for edit
-      /- if (@student_discipline_case.status=="New" && @student_discipline_case.assigned_to == current_login.staff_id) || (@student_discipline_case.status == "Refer to TPHEP" && @student_discipline_case.assigned2_to == current_login.staff_id)
-      = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('actions.edit'), edit_student_student_discipline_case_path(@student_discipline_case),  :class => 'btn btn-primary' 
+      - if ["New", "Open"].include? (@student_discipline_case.status)
+        = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('actions.edit'), edit_student_student_discipline_case_path(@student_discipline_case),  :class => 'btn btn-primary' 
+
+      - if (["Refer to TPHEP"].include? (@student_discipline_case.status)) && (@student_discipline_case.assigned2_to == @current_user.userable_id || @current_user.roles.pluck(:name).include?("Administration"))
+        = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('student.discipline.action_details'), actiontaken_student_student_discipline_case_path(@student_discipline_case),  :class => 'btn btn-primary'
+      
+      - if @student_discipline_case.status == "Refer to BPL" 
+        = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('student.discipline.refer_to_bpl'), referbpl_student_student_discipline_case_path(@student_discipline_case), :class => 'btn btn-primary' 
+      
       = link_to content_tag(:i, "", :class => "fa fa-trash-o icon-white") + " " + t('helpers.links.destroy'), |
         student_student_discipline_case_path(@student_discipline_case),                                                                                                    |
         :method => 'delete',                                                                                                           |
