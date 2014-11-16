@@ -3,8 +3,8 @@
     %td=f.text_field :document_refno_cont, size: 2, :class => "form-control"
     %td=f.text_field :applicant_name_cont, size: 2, :class => "form-control"
     %td=f.text_field :destination_cont, size: 2, :class => "form-control"
-    %td=f.text_field :depart_at_gteq, :size=> 2,  :class =>  'date-picker select-picker'
-    %td=f.text_field :return_at_gteq, :size=> 2,  :class =>  'date-picker'
+    %td=f.text_field :depart_at_gteq, :size=> 2,  :class =>  'datetime_picker form-control'
+    %td=f.text_field :return_at_gteq, :size=> 2,  :class =>  'datetime_picker form-control'
     %td=f.text_field :document_title_cont, size: 2, :class => "form-control"
     %td= select_tag('q[is_submitted_eq]',options_for_select([['All Records',''],['Submitted',true],['Not Submitted',false]]),class: 'selectpicker',"data-width"=>'100px')
     %td
@@ -13,12 +13,4 @@
         %span.input-group-btn
           %button.btn.btn-sm.btn-default.right{:type => "submit"}
             %i.fa.fa-search.fa-fw
-       
-  :javascript
-    $('.date-picker').datetimepicker({
-     timepicker:true,
-       format: "Y-m-d H:i",
-       step: 15,
-       defaultSeconds: 0,
-       autoclose: true
-     }); 
+

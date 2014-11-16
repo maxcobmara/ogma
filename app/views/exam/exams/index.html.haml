@@ -7,7 +7,7 @@
     %li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'actions.new'))), new_exam_exam_path
     %li= link_to (t 'actions.download_excel'), exam_exams_path(format: "xls"), class: 'bogus'
   %ul.nav.navbar-nav.navbar-right
-    %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: 'bogus'
+    %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: 'index_search_bar'
     %li.toga= link_to content_tag(:li, fa_icon("print", text: (t 'actions.print'))), "#", class: 'bogus'  
 
 - unless @position_exist
@@ -19,32 +19,34 @@
     Programme / Unit is not defined. <br>
   - else
     .row
+      .col-md-12
+        .alert.alert-warning
+          %strong= t 'exam.exams.notes'
+          %ol
+            %li
+              %span{:style=>"color:red;"}= "* "
+              =t('exam.exams.remarks_bottom')
+            %li
+              %strong= t('exam.exams.separate_combine')
+              =" - "+t('exam.exams.separate_combine_text')
       %table.table-striped.table-hover.ogma
         %thead
           %tr
-            /%th &nbsp;
-            /%th= sort_link(@search, :name_cont, (t 'exam.exams.name'))
-            /%th= sort_link(@search, :___, (t 'exam.exams.year_semester'))
-            /%th= sort_link(@search, :course_id, (t 'exam.exams.course_id'))
-            /%th= sort_link(@search, :subject_id, (t 'exam.exams.subject_id'))
-            /%th= sort_link(@search, :exam_on, (t 'exam.exams.exam_on'))
-            /%th= sort_link(@search, :starttime, (t 'exam.exams.time'))
-            /%th= sort_link(@search, :created_by, (t 'exam.exams.created_by'))
-            /%th= sort_link(@search, :duration, (t 'exam.exams.duration'))
-            /%th= sort_link(@search, :full_marks, (t 'exam.exams.full_marks'))
-            %th=(t 'exam.exams.name')
+            %th= sort_link(@search, :name_cont, (t 'exam.exams.name'))
             %th=(t 'exam.exams.year_semester')
             %th=(t 'exam.exams.course_id')
             %th=(t 'exam.exams.subject_id')
-            %th=(t 'exam.exams.exam_on')
-            %th=(t 'exam.exams.time')
-            %th=(t 'exam.exams.created_by')
+            %th= sort_link(@search, :exam_on, (t 'exam.exams.exam_on'))
+            %th= sort_link(@search, :starttime, (t 'exam.exams.time'))
+            %th= sort_link(@search, :created_by, (t 'exam.exams.created_by'))
+            /%th= sort_link(@search, :duration, (t 'exam.exams.duration'))
             %th=(t 'exam.exams.duration')
+            /%th= sort_link(@search, :full_marks, (t 'exam.exams.full_marks'))
             %th=(t 'exam.exams.full_marks')
             %th=(t 'exam.exams.separate_combine')
 
         %tbody
-          /= render "index_search"
+          = render "search_bar"
           /- @programme_exams.each do |prog, examquestions|
           - @exams.group_by{|x|x.subject.root}.each do |programme, exams|
             - exams.each do |exam|
@@ -73,20 +75,15 @@
                 %td=h exam.timing
                 %td=h exam.creator_details 
                 %td
-                  =h (((exam.endtime - exam.starttime)/60) / 60).to_i  
-                  &nbsp;hours
-                  =h (((exam.endtime - exam.starttime)/60) % 60).to_i
-                  &nbsp;mins
-                  /%td=h exam.try(:full_marks)
+                  - if exam.duration!=nil
+                    =h (exam.duration/60).to_i.to_s+" hours "+(exam.duration%60).to_i.to_s+" mins"
+                  - else
+                    =h (((exam.endtime - exam.starttime)/60) / 60).to_i.to_s+" hours "+ (((exam.endtime - exam.starttime)/60) % 60).to_i.to_s+" mins"
                 %td{:align=>"center"}
                   /11June2013-TEMPLATE
                   - @istemplate = exam.klass_id
                   - if @istemplate == 0
-                    - @grand_total = 0
-                    - @examtemplates = exam.examtemplates 
-                    - @examtemplates.each do |examtemplate|
-                      - @grand_total+= examtemplate.total_marks
-                    = @grand_total.to_i
+                    = exam.examtemplates.sum(:total_marks).to_i
                   - else 
                     =h exam.total_marks
                 %td{:align=>"center"}
@@ -96,14 +93,6 @@
                     S
                   - if sequ!=nil && sequ.uniq.length == sequ.length && (exam.subject.root.id == 1 || exam.subject.root.id == 2 || exam.subject.root.id == 4)
                     C
-    %br= t 'exam.exams.notes'
-    %ol
-      %li				  
-        %span{:style=>"color:red;"}
-          *
-        = t 'exam.exams.remarks_bottom'
-      %li
-        %b= t('exam.exams.separate_combine')
-        =" - "+t('exam.exams.separate_combine_text')
+
 
     .right{style:"padding:0 30px; margin:0;"}= paginate @exams, :theme => 'twitter-bootstrap-3'

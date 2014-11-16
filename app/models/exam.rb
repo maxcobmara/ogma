@@ -7,7 +7,7 @@ class Exam < ActiveRecord::Base
   has_many :examtemplates, :dependent => :destroy #10June2013
   accepts_nested_attributes_for :examtemplates, :reject_if => lambda { |a| a[:quantity].blank? }
   
-  before_save :set_sequence
+  before_save :set_sequence, :set_duration, :set_full_marks
   
   attr_accessor :own_car, :dept_car,:programme_id #18Apr2013-programme_id used in views/exams/new.html.erb #9Apr2013-use course_id (temp) to capture semester (year as well)
   attr_accessor :programme_filter, :subject_filter, :topic_filter, :seq
@@ -19,6 +19,41 @@ class Exam < ActiveRecord::Base
   #remark : validation for:validates_uniqueness_of :name, :scope => "subject_id", 
   #-> exam must unique for each subject, academic session, name(exam type) in full set @ template.
   #eg. Final paper(exam_type) of subject A(subject) for session Jan-Jun2013(academic session) - can EXIST only ONCE (template @ full set).
+  
+  # define scope
+  def self.subject_search(query) 
+    subject_ids = Programme.where('(code ILIKE(?) or name ILIKE(?)) and ancestry_depth=?', "%#{query}%", "%#{query}%",2).pluck(:id)
+    where('subject_id IN(?)', subject_ids)
+  end
+  
+  def self.programme_search(query)
+    programme_ids = Programme.where('(code ILIKE(?) or name ILIKE(?)) and ancestry_depth=?', "%#{query}%", "%#{query}%",0).pluck(:id)
+    all_subjects_ids=Exam.all.pluck(:subject_id)
+    aa=[]
+    all_subjects_ids.each do |sbj|
+      if programme_ids.include?(Programme.where(id:sbj).first.root_id)
+        aa<< sbj
+      end
+    end
+    where('subject_id IN(?)', aa)
+  end
+  
+  def self.semester_search(query)
+    semester_ids = Programme.where(code: "#{query}").pluck(:id)
+    all_subjects_ids=Exam.all.pluck(:subject_id)
+    bb=[]
+    all_subjects_ids.each do |sbj|
+      if semester_ids.include?(Programme.where(id:sbj).first.parent_id)
+        bb<< sbj
+      end
+    end
+    where('subject_id IN(?)', bb)
+  end
+
+  # whitelist the scope
+  def self.ransackable_scopes(auth_object = nil)
+    [:subject_search, :programme_search, :semester_search]
+  end
   
   def set_sequence
     if seq!= nil
@@ -36,7 +71,33 @@ class Exam < ActiveRecord::Base
     end
   end
   
-  def self.search(search)
+  def set_duration
+    if starttime!=nil && endtime!=nil
+      starthour=starttime.hour*60
+      if starttime.min!=nil 
+        startminute=starttime.min 
+      else
+        startminute=0
+      end
+      endhour=endtime.hour*60
+      if endtime.min!=nil 
+        endminute=endtime.min 
+      else
+        endminute=0
+      end
+      self.duration = ((endhour+endminute) - (starthour+startminute)).to_i
+    end
+  end
+  
+  def set_full_marks
+    if klass_id == 0
+      self.full_marks = examtemplates.sum(:total_marks).to_i
+    elsif klass_id==1
+      self.full_marks = total_marks
+    end
+  end
+  
+  def self.search2(search)
     common_subject = Programme.where('course_type=?','Commonsubject').map(&:id)
     if search 
       if search == '0'

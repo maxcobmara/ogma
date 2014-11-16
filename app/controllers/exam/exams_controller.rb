@@ -5,11 +5,9 @@ class Exam::ExamsController < ApplicationController
   def index
     #@exams = Exam.all
     ##----------
-    current_user = User.find(11)    #maslinda 
-    #current_user = User.find(72)    #izmohdzaki
-    @position_exist = current_user.staff.positions
+    @position_exist = @current_user.userable.positions
     if @position_exist  
-      @lecturer_programme = current_user.staff.positions[0].unit
+      @lecturer_programme = @current_user.userable.positions[0].unit
       unless @lecturer_programme.nil?
         @programme = Programme.where('name ILIKE (?) AND ancestry_depth=?',"%#{@lecturer_programme}%",0)
       end
@@ -22,11 +20,15 @@ class Exam::ExamsController < ApplicationController
           @programme_id='0'
         end
       end
-      @exams_all = Exam.search(@programme_id) 
-      @exams = @exams_all.order(subject_id: :asc).page(params[:page]||1)
+      #@exams_all = Exam.search(@programme_id) 
+      @search = Exam.search(params[:q])
+      @exams = @search.result.search2(@programme_id)
+      @exams = @exams.order(subject_id: :asc).page(params[:page]||1)
       
     end
     ##----------
+    #@search = Exam.search(params[:q])
+    #@exams = @search.result       
     
     #ADDED-18June2013-extract from exammarks/_exam_listing.html.erb
     @exam_ids_for_examtemplate = Examtemplate.pluck(:exam_id).uniq
@@ -63,7 +65,7 @@ class Exam::ExamsController < ApplicationController
   def new
     @exam = Exam.new
     #--newly added
-    @lecturer_programme = current_user.staff.positions[0].unit      
+    @lecturer_programme = @current_user.userable.positions[0].unit      
     unless @lecturer_programme.nil?
       @programme = Programme.where('name ILIKE (?) AND ancestry_depth=?',"%#{@lecturer_programme}%",0).first
     end
@@ -90,7 +92,8 @@ class Exam::ExamsController < ApplicationController
   def edit
     @exam = Exam.find(params[:id])
     @programme_id = @exam.subject.root.id
-    @lecturer_programme = current_user.staff.positions[0].unit  
+    #@lecturer_programme = current_user.staff.positions[0].unit  
+    @lecturer_programme = @current_user.userable.positions[0].unit  
     all_subject_ids = Programme.find(@programme_id).descendants.at_depth(2).map(&:id)
     if @lecturer_programme == 'Commonsubject'
       @subjects = Programme.where('id IN(?) AND course_type=?',all_subject_ids, @lecturer_programme)  
@@ -160,7 +163,7 @@ class Exam::ExamsController < ApplicationController
     
     ###----subject + common subject
     @programme_id = @exam.subject.root.id
-    @lecturer_programme = current_user.staff.position.unit  
+    @lecturer_programme = @current_user.userable.positions.first.unit  
     all_subject_ids = Programme.find(@programme_id).descendants.at_depth(2).map(&:id)
     if @lecturer_programme == 'Commonsubject'
       @subjects = Programme.where('id IN(?) AND course_type=?',all_subject_ids, @lecturer_programme)  
@@ -172,8 +175,9 @@ class Exam::ExamsController < ApplicationController
     if @exam.klass_id == 0
     #----for template
       respond_to do |format|
-        if @exam.update_attributes(params[:exam]) 
-          format.html { redirect_to(@exam, :notice => (t 'exam.exams.title')+(t 'actions.updated')) }
+        #if @exam.update_attributes(params[:exam]) 
+        if @exam.update_attributes(exam_params)
+          format.html { redirect_to(exam_exam_path(@exam.id), :notice => (t 'exam.exams.title')+(t 'actions.updated')) }
           format.xml  { head :ok }
           #format.xml  { render :xml => @exam, :status => :created, :location => @exam }
         else
@@ -184,7 +188,8 @@ class Exam::ExamsController < ApplicationController
     #----for template  
     else
       respond_to do |format|
-        if @exam.update_attributes(params[:exam]) 
+        #if @exam.update_attributes(params[:exam]) 
+        if @exam.update_attributes(exam_params)
             if params[:exam][:seq]!=nil && ((params[:exam][:seq]).count ==  (params[:exam][:examquestion_ids]).count) 
                 format.html { redirect_to(@exam, :notice => (t 'exam.exams.title2')+(t 'actions.updated')) }
                 format.xml  { head :ok }

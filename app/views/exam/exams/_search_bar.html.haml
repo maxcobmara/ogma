@@ -1,0 +1,29 @@
+= search_form_for [:exam, @search], url: exam_exams_path,  class: "form-inline" do |f|
+  %tr.search_row{style: "display: none;"}
+    %td=select_tag('q[name_eq]',options_for_select([[(t 'actions.all_records'),''],[(t 'exam.midsem'), "M"],[(t 'exam.final'),"F"], [(t 'exam.repeat'),"R"]]),class: 'selectpicker',"data-width"=>'100px')
+    %td= f.text_field :semester_search, size: 2, class: 'form-control', placeholder: t('exam.exams.by_semester')
+    %td= f.text_field :programme_search, size: 2, class: 'form-control'
+    %td= f.text_field :subject_search, class: 'form-control'
+    %td= f.text_field :exam_on_eq, class: 'date_picker form-control'
+    %td= f.text_field :starttime_eq, class: 'time_picker2 form-control'
+    %td= f.text_field :creator_name_cont, class: 'form-control'
+    %td= f.text_field :duration_eq, class: 'form-control', placeholder: t('exam.exams.in_minutes')
+    %td= f.text_field :full_marks_eq, size: 8,  class: 'form-control'
+    %td
+      .input-group
+        /= f.text_field :creator_name_cont, size: 8,  class: 'form-control'
+        %span.input-group-btn
+          %button.btn.btn-sm.btn-default.right{:type => "submit"}
+            %i.fa.fa-search.fa-fw
+
+/difficulty - temporary : search by nos - 1,2,3
+
+/%th= sort_link(@search, :name_cont, (t 'exam.exams.name'))
+/%th= sort_link(@search, :___, (t 'exam.exams.year_semester'))
+/%th= sort_link(@search, :course_id, (t 'exam.exams.course_id'))
+/%th= sort_link(@search, :subject_id, (t 'exam.exams.subject_id'))
+/%th= sort_link(@search, :exam_on, (t 'exam.exams.exam_on'))
+/%th= sort_link(@search, :starttime, (t 'exam.exams.time'))
+/%th= sort_link(@search, :created_by, (t 'exam.exams.created_by'))
+/%th= sort_link(@search, :duration, (t 'exam.exams.duration'))
+/%th= sort_link(@search, :full_marks, (t 'exam.exams.full_marks'))

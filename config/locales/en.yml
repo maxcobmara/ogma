@@ -1356,6 +1356,9 @@ en:
 
   exam:
     title: Examination
+    midsem: Mid Semester
+    inal: Final
+    repeat: Repeat
     examquestion: 
       new_title: New Examquestion
       edit: Edit Examquestion
@@ -1472,6 +1475,8 @@ en:
       separate_combine: Cover
       separate_combine_text: "S refers to SEPARATED covers of examination paper, whereas C refers to COMBINED / Single cover of examination paper."
       notes: "Remark :"
+      in_minutes: in minutes
+      by_semester: by semester
 
   training:
     title: Training
@@ -1992,6 +1997,7 @@ en:
 
     prompt:
       select_creator: Select Creator
+      select_editor: Select Editor
       select_programme: Select Programme
       select_subject: Select Subject
       select_topic: Select Topic
