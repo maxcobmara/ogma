@@ -1,0 +1,17 @@
+- model_class = Bank
+.page-header
+  %h1= t 'banks.new'
+  
+= render 'shared/flashes'
+
+.row.fluid
+  = form_for @bank, html: { multipart: true, class: 'form-horizontal' }  do |f| 
+    = render 'shared/error_messages', object: f.object
+    = render :partial => 'form', :locals => {:f => f}
+	
+    .col-md-offset-1
+      .form-group
+        .col-sm-offset-2.col-sm-1
+          = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), banks_path(@bank), :class => 'btn btn-default'
+        .col-sm-offset-0.col-sm-2
+          = f.submit t('create'), class: "btn btn-primary"

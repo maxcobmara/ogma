@@ -110,6 +110,11 @@ ms_MY:
     short_name: Nama Pendek
     long_name: Nama Panjang
     active: Aktif
+    details: Maklumat Bank
+    new: Bank Baru
+    edit: Sunting Bank
+    new_flash: "Bank baru berjaya dicipta."
+    update_flash: "Bank berjaya dikemaskini."
       
   user:
     title: Senarai Pengguna

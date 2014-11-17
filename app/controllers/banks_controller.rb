@@ -1,10 +1,11 @@
 class BanksController < ApplicationController
+  before_action :set_bank, only: [:show, :edit, :update, :destroy]
   # GET /banks
   # GET /banks.xml
   def index
     @search = Bank.search(params[:q])
     @bank = @search.result
-
+    @bank = @bank.page(params[:page]||1)
     @banks = Bank.order(short_name: :asc)
   end
 
@@ -17,11 +18,6 @@ class BanksController < ApplicationController
   # GET /banks/new.xml
   def new
     @bank = Bank.new
-
-    respond_to do |format|
-      format.html # new.html.erb
-      format.xml  { render :xml => @bank }
-    end
   end
 
   # GET /banks/1/edit
@@ -32,16 +28,15 @@ class BanksController < ApplicationController
   # POST /banks
   # POST /banks.xml
   def create
-    @bank = Bank.new(params[:bank])
-
+    @bank = Bank.new(bank_params)
+    
     respond_to do |format|
       if @bank.save
-        flash[:notice] = 'Bank was successfully created.'
-        format.html { redirect_to(@bank) }
-        format.xml  { render :xml => @bank, :status => :created, :location => @bank }
+        format.html { redirect_to @bank, notice:t('banks.new_flash')}
+        format.json { render action: 'show', status: :created, location: @bank }
       else
-        format.html { render :action => "new" }
-        format.xml  { render :xml => @bank.errors, :status => :unprocessable_entity }
+        format.html { render action: 'new' }
+        format.json { render json: @bank.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -52,13 +47,12 @@ class BanksController < ApplicationController
     @bank = Bank.find(params[:id])
 
     respond_to do |format|
-      if @bank.update_attributes(params[:bank])
-        flash[:notice] = 'Bank was successfully updated.'
-        format.html { redirect_to(@bank) }
-        format.xml  { head :ok }
+      if @bank.update(bank_params)
+        format.html { redirect_to @bank, notice:t('banks.update_flash') }
+        format.json { head :no_content }
       else
-        format.html { render :action => "edit" }
-        format.xml  { render :xml => @bank.errors, :status => :unprocessable_entity }
+        format.html { render action: 'edit' }
+        format.json { render json: @bank.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -66,13 +60,22 @@ class BanksController < ApplicationController
   # DELETE /banks/1
   # DELETE /banks/1.xml
   def destroy
-    @bank = Bank.find(params[:id])
     @bank.destroy
-
     respond_to do |format|
-      format.html { redirect_to(banks_url) }
-      format.xml  { head :ok }
+      format.html { redirect_to banks_url }
+      format.json { head :no_content }
     end
   end
+
+
+  private
+    # Use callbacks to share common setup or constraints between actions.
+    def set_bank
+      @bank = Bank.find(params[:id])
+    end
+
+    # Never trust parameters from the scary internet, only allow the white list through.
+    def bank_params
+      params.require(:bank).permit(:active, :created_at, :id, :long_name, :short_name, :updated_at)
+    end
 end
-  

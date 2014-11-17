@@ -24,7 +24,7 @@
         %th= sort_link(@search, :asset_name, (t 'asset.loss.asset_name'))
         %th= sort_link(@search, :location_name, (t 'asset.loss.loss_location')) 
         %th= sort_link(@search, :lost_at, (t 'asset.loss.loss_date_time'))
-        %th= sort_link(@search, :document_refno, (t 'asset.loss.treasury_approval'))
+        %th{style: "width:33%;"}= sort_link(@search, :document_refno, (t 'asset.loss.treasury_approval'))
     %tbody
       = render "index_search"
       - @asset_loss.each do |asset_loss|
