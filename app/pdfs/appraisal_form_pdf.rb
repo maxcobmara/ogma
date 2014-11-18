@@ -4,11 +4,60 @@ class Appraisal_formPdf < Prawn::Document
     @staff_appraisal = staff_appraisal
     @view = view
     #font " "
+    def color_4
+    #fill_color "FAFAD2" 
+    #fill_rectangle [-40, 900], 1200, 1000
+ 
+                fill_color 'FAFAD2'
+                fill_and_stroke_rectangle [-40, 900], 1200, 1000
+                fill_color '000000'
 
-    text "BORANG J.P.A. (Prestasi) #{@staff_appraisal.person_type}", :align => :right, :size => 12, :style => :bold
+  end
+  def color_3
+              
+              fill_color 'BBEEBB'
+              fill_and_stroke_rectangle [-40, 900], 1200, 1000
+              fill_color '000000'
+
+end
+  def color_5
+
+              fill_color 'FAF0E6'
+              fill_and_stroke_rectangle [-40, 900], 1200, 1000
+              fill_color '000000'
+
+end
+def color
+   if @staff_appraisal.person_type == 4
+      color_4
+      
+    elsif @staff_appraisal.person_type == 5
+      color_5
+      
+    elsif @staff_appraisal.person_type == 3
+      color_3
+    end
+ end
+    color   
+    text "BORANG J.P.A. (Prestasi) #{@staff_appraisal.person_type}", :align => :right, :size => 12, :style => :bold, :color => "010000"
     text "SULIT", :align => :left, :size => 12
+    
     text "No. K.P : #{@staff_appraisal.appraised.formatted_mykad}", :align => :right, :size => 12, :style => :bold
+    #bounding_box([430, 730], :width => 100) do
+     #     text "#{@staff_appraisal.appraised.formatted_mykad}"
+      #          stroke_bounds
+       # end
     move_down 10
+    if @staff_appraisal.person_type == 4
+       image "#{Rails.root}/app/assets/images/kerajaan4.png", :position => :center
+      
+     elsif @staff_appraisal.person_type == 5
+       image "#{Rails.root}/app/assets/images/kerajaan5.png", :position => :center
+      
+     elsif @staff_appraisal.person_type == 3
+       image "#{Rails.root}/app/assets/images/kerajaan3.png", :position => :center
+     end
+    
     text "KERAJAAN MALAYSIA", :align => :center, :size => 12, :style => :bold   
     move_down 10
     text "LAPORAN PENILAIAN PRESTASI", :align => :center, :size => 12, :style => :bold    
@@ -31,7 +80,7 @@ class Appraisal_formPdf < Prawn::Document
     elsif @staff_appraisal.person_type == 5
     bahagian4_5
     bahagian5_5
-    elsif @staff_appraisal.person_type == 3
+    elsif @staff_appraisal.person_type == 3   
     bahagian4_3 #line 351
     bahagian5_3
   end
@@ -71,6 +120,7 @@ class Appraisal_formPdf < Prawn::Document
      row(0).borders = [:left, :right, :top]
      row(1).borders = [:left, :right]
      row(0).font_style = :bold
+     self.row_colors = ["FEFEFE", "FFFFFF"]
 
     end 
     
@@ -91,6 +141,7 @@ class Appraisal_formPdf < Prawn::Document
            row(3).column(1).borders = [:right]
            row(4).column(0).borders = [:left, :bottom]
            row(4).column(1).borders = [:right, :bottom]
+           self.row_colors = ["FEFEFE", "FFFFFF"]
       end
       move_down 40
   end
@@ -111,6 +162,7 @@ class Appraisal_formPdf < Prawn::Document
           row(1).column(1).borders = [:right]
           row(2).column(0).borders = [:left, :bottom]
           row(2).column(1).borders = [:right, :bottom]
+          self.row_colors = ["FEFEFE", "FFFFFF","FEFEFE", "FFFFFF"]
            
      end
      move_down 20
@@ -119,6 +171,7 @@ end
   
   def bahagian2a
     start_new_page
+    color
     text "BAHAGIAN II - KEGIATAN DAN SUMBANGAN DI LUAR TUGAS RASMI/LATIHAN", :align => :left, :size => 12, :style => :bold     
     text "(Diisi oleh PYD)", :align => :left, :size => 12, :indent_paragraphs => 20
     move_down 20
@@ -131,6 +184,7 @@ end
     def table_bahagian2
     
       table line_item_rows do
+        row(0).background_color = 'FFFFFF'
         row(0).font_style = :bold
         self.row_colors = ["FEFEFE", "FFFFFF"]
         self.header = true
@@ -162,6 +216,7 @@ end
      def table_latihan2b
     
        table line_item_rows2 do
+         row(0).background_color = 'FFFFFF'
          row(0).font_style = :bold
          self.row_colors = ["FEFEFE", "FFFFFF"]
          self.header = true
@@ -190,6 +245,7 @@ end
      def table_latihan3
     
        table line_item_rows3 do
+         row(0).background_color = 'FFFFFF'
          row(0).font_style = :bold
          self.row_colors = ["FEFEFE", "FFFFFF"]
          self.header = true
@@ -221,13 +277,14 @@ end
              row(0).font_style = :bold
              row(1).borders = [ ] 
              row(1).align = :center
-             self.row_colors = ["FEFEFE", "FFFFFF"]
+             row(0).background_color = 'FFFFFF'
            end
 end
 
 
 def bahagian3
   start_new_page
+  color
   text "BAHAGIAN III - PENGHASILAN KERJA ( Wajaran 50% )", :align => :left, :size => 12, :style => :bold   
   move_down 20  
   text "Pegawai Penilai dikehendaki memberikan penilaian berdasarkan pencapaian kerja sebenar PYD berbanding dengan SKT yang ditetapkan. Penilaian hendaklah berasaskan kepada penjelasan setiap kriteria yang dinyatakan di bawah dengan menggunakan skala 1 hingga 10 :", :align => :left, :size => 12
@@ -344,6 +401,7 @@ def bahagian4_4
 
        end 
        start_new_page
+       color
        
        data2 = [["", "KRITERIA (Dinilai berasaskan SKT)", "PPP", "PPK"],
                  ["3. ","  KUANTITI HASIL KERJA","",""],
@@ -417,6 +475,7 @@ def bahagian4_3
 
        end 
        start_new_page
+       color
        
        data2 = [["", "KRITERIA (Dinilai berasaskan SKT)", "PPP", "PPK"],
                  ["3. "," KEBERKESANAN KOMUNIKASI","",""],
@@ -501,6 +560,7 @@ def bahagian4_5
 
                end 
                start_new_page
+               color
        
                data2 = [["", "KRITERIA (Dinilai berasaskan SKT)", "PPP", "PPK"],
                ["4. ","  JALINAN HUBUNGAN DAN KERJASAMA","",""],
@@ -741,6 +801,7 @@ end
 
 def bahagian6
   start_new_page
+  color
   text "BAHAGIAN VI - KEGIATAN DAN SUMBANGAN DI LUAR TUGAS RASMI ( Wajaran 5% )", :align => :left, :size => 12, :style => :bold  
   text "(Sukan/Pertubuhan/Sumbangan Kreatif)", :align => :left, :size => 12
   move_down 20   
@@ -806,6 +867,7 @@ def bahagian8
   text "#{@staff_appraisal.e1_progress}..............", :align => :left, :size => 12, :indent_paragraphs => 30
   move_down 10
   start_new_page
+  color
   text "3.  Adalah disahkan bahawa prestasi pegawai ini telah dimaklumkan kepada PYD.", :align => :left, :size => 12
   move_down 20
   data1 = [[ "Nama PPP :", "#{@staff_appraisal.eval1_officer.name}"],
@@ -834,7 +896,7 @@ def bahagian8
                row(0).font_style = :bold
                row(1).borders = [ ]
                row(1).align = :center
-               self.row_colors = ["FEFEFE", "FFFFFF"]
+               row(0).background_color = 'FFFFFF'
              end
       move_down 40    
 end
@@ -873,13 +935,14 @@ def bahagian9
                row(0).font_style = :bold
                row(1).borders = [ ]
                row(1).align = :center
-               self.row_colors = ["FEFEFE", "FFFFFF"]
+               row(0).background_color = 'FFFFFF'
              end
       move_down 80 
 end
 
 def lampiranA
   start_new_page
+  color
   text "LAMPIRAN 'A", :align => :right, :size => 12, :style => :bold 
   move_down 20
   text "SASARAN KERJA TAHUNAN", :align => :center, :size => 12, :style => :bold 
@@ -894,6 +957,7 @@ def lampiranA
     row(0).column(0).borders = [:left, :right, :top]
     row(1).column(0).borders = [:left, :right]
    row(0).font_style = :bold
+   self.row_colors = ["FEFEFE", "FFFFFF"]  
 
   end 
   
@@ -919,6 +983,7 @@ def lampiranA
        row(3).column(1).borders = [:right]
        row(4).column(0).borders = [:left, :bottom]
        row(4).column(1).borders = [:right, :bottom]
+       self.row_colors = ["FEFEFE", "FFFFFF"]  
     end
     move_down 60 
 end
@@ -959,18 +1024,19 @@ def lampiranA1
           row(2).borders = [ ]
           row(2).align = :center
           row(0).font_style = :bold
-          self.row_colors = ["FEFEFE", "FFFFFF"]
+          row(0).background_color = 'FFFFFF'
         end 
         move_down 40
 end
 
 def lampiranA2
   start_new_page
+  color
   text "BAHAGIAN II -  Kajian Semula Sasaran Kerja Tahun Pertengahan Tahun", :align => :left, :size => 12, :style => :bold  
   move_down 20
   text "1.   Aktiviti/Projek Yang Ditambah", :align => :left, :size => 12, :style => :bold    
   text "(PYD hendaklah menyeneraikan aktiviti/projek yang ditambah berserta petunjuk prestasinya setelah berbincang dengan PPP)", :align => :left, :size => 12  
-  move_down 10
+  move_down 5
   
 end
   
@@ -992,12 +1058,12 @@ end
   end
     
  def lampiranA2b
-   move_down 40 
+   move_down 30 
   text "BAHAGIAN II - Kajian Semula Sasaran Kerja Tahun Pertengahan Tahun", :align => :left, :size => 12, :style => :bold 
   move_down 20
   text "1.   Aktiviti/Projek Yang Digugurkan", :align => :left, :size => 12, :style => :bold 
   text "(PYD hendaklah menyeneraikan aktiviti/projek yang digugurkan setelah berbincang dengan PPP)", :align => :left, :size => 12
-  move_down 10
+  move_down 5
 
   
 end
@@ -1023,9 +1089,8 @@ end
 end
 
 def lampiranA3
-  move_down 40
-  text "BAHAGIAN III -  Laporan dan Ulasan Keseluruhan Pencapaian Sasaran Kerja Tahunan Pada Akhir 
-                        Tahun Oleh PYD dan PPP", :align => :left, :size => 12, :style => :bold  
+  move_down 20
+  text "BAHAGIAN III -  Laporan dan Ulasan Keseluruhan Pencapaian Sasaran Kerja Tahunan Pada Akhir Tahun Oleh PYD dan PPP", :align => :left, :size => 12, :style => :bold  
      move_down 20                   
   text "1.   Laporan/Ulasan Oleh PYD", :align => :left, :size => 12, :style => :bold    
 
@@ -1033,7 +1098,7 @@ def lampiranA3
     table(data, :column_widths => [250], :cell_style => { :size => 11}) do
       self.row_colors = ["FEFEFE", "FFFFFF"]    
     end
-  move_down 20
+  move_down 10
   text "2.   Laporan/Ulasan Oleh PPP", :align => :left, :size => 12, :style => :bold 
   
   data1 = [[" #{@staff_appraisal.skt_ppp_report} "]]
@@ -1042,7 +1107,7 @@ def lampiranA3
   end
   
   
-  move_down 20
+  move_down 10
   data2 = [["#{@staff_appraisal.appraised.name}","#{@staff_appraisal.eval1_officer.name}"],
         [ "Tandatangan PYD", "Tandatangan PPP"],
         ["Tarikh : #{@staff_appraisal.skt_pyd_report_on.try(:strftime, "%d/%m/%y")}", 
@@ -1054,7 +1119,7 @@ def lampiranA3
           row(1).align = :center
           row(2).borders = [ ]
           row(2).align = :center
-          self.row_colors = ["FEFEFE", "FFFFFF"]
+          row(0).background_color = 'FFFFFF'
         end 
   
  end   
