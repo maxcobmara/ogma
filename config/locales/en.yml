@@ -133,6 +133,11 @@ en:
     short_name: Short Name
     long_name: Long Name
     active: Active
+    details: Bank Details
+    new: New Banks
+    edit: Edit Bank
+    new_flash: "New bank was successfully created"
+    update_flash: "Bank was successfully updated."
       
   user:
     title: List of Users

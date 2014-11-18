@@ -34,7 +34,7 @@
           %th= sort_link(@search, :assetcode, (t 'asset.assetcode'))
           %th= sort_link(@search, :name, (t 'asset.name'))
           %th= sort_link(@search, :purchasedate, (t 'asset.purchasedate'))
-          %th= sort_link(@search, :purchaseprice, (t 'asset.purchaseprice'))
+          %th{style: "width:33%;"}= sort_link(@search, :purchaseprice, (t 'asset.purchaseprice'))
 
           %tbody
             = render "search_asset_bar"
@@ -54,7 +54,7 @@
           %th= sort_link(@search, :assetcode, (t 'asset.assetcode'))
           %th= sort_link(@search, :name, (t 'asset.name'))
           %th= sort_link(@search, :purchasedate, (t 'asset.purchasedate'))
-          %th= sort_link(@search, :purchaseprice, (t 'asset.purchaseprice'))
+          %th{style: "width:33%;"}= sort_link(@search, :purchaseprice, (t 'asset.purchaseprice'))
 
       %tbody
         = render "search_asset_bar"

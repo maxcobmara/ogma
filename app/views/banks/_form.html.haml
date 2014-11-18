@@ -1,0 +1,24 @@
+.row
+  .col-md-offset-2
+    .form-group
+      .col-sm-2.control-label
+        = f.label t 'banks.short_name', for: :short_name
+      .col-md-2
+        = f.text_field :short_name, class: 'form-control'
+        
+    .form-group
+      .col-sm-2.control-label
+        = f.label t 'banks.long_name', for: :long_name
+      .col-md-2
+        = f.text_field :long_name, class: 'form-control'
+        
+    .form-group
+      .col-sm-2.control-label
+        = f.label t 'banks.active', for: :active
+      .col-md-2
+        = f.check_box :active
+        
+        
+    
+        
+        
