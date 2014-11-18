@@ -83,7 +83,7 @@
         %tr
           %td{colspan: 3} &nbsp;
           %td
-            %b=@asset.asset_placements.sum(:quantity).to_s+" / "+@asset.quantity.to_s if asset_placement.asset.assettype==2
+            %b=@asset.asset_placements.sum(:quantity).to_s+" / "+@asset.quantity.to_s if @asset.assettype==2
 
   - if @asset.is_maintainable?
     #maintenance.tab-pane.fade

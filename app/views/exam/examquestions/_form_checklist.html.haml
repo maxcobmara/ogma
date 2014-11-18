@@ -3,7 +3,7 @@
     .col-sm-2.control-label
       = f.label :editor_id
     .col-md-6
-      = f.collection_select :editor_id, Staff.where('id IN (?)', @examquestion.question_editor).order('staffgrade_id DESC'), :id, :name, :include_blank => 'Please select editor'
+      = f.collection_select :editor_id, Staff.where('id IN (?)', @examquestion.question_editor).order('staffgrade_id DESC'), :id, :name, {:prompt => t('helpers.prompt.select_editor')}, {class: 'selectpicker', "data-width"=>"300px"}
 
   .form-group
     .col-sm-2.control-label

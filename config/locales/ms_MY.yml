@@ -1310,6 +1310,9 @@ ms_MY:
 
   exam:
     title: Peperiksaan
+    midsem: Petengahan
+    final: Akhir
+    repeat: Ulangan
     examquestion: 
       new_title: Soalan Baru
       edit: Sunting Soalan
@@ -1426,6 +1429,10 @@ ms_MY:
       separate_combine: Muka Depan
       separate_combine_text: "S merujuk kepada muka depan kertas soalan yang BERASINGAN bagi satu set kertas soalan, manakala C merujuk kepada GABUNGAN satu muka depan bagi satu set kertas soalan."
       notes: "Nota :"
+      in_minutes: dalam minit
+      by_semester: semester
+      create_exam: Tambah Data Set Peperiksaan
+      create_template: Tambah Data Template Peperiksaan
 
   training:
     title: Latihan
@@ -1945,6 +1952,7 @@ ms_MY:
 
     prompt:
       select_creator: Pilih Penyedia Soalan
+      select_editor: Pilih Penyunting
       select_programme: Pilih Program
       select_subject: Pilih Subjek
       select_topic: Pilih Topik

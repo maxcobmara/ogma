@@ -81,7 +81,16 @@ class Examquestion < ActiveRecord::Base
     #end
   #end
 
+  # define scope
+  def self.keyword_search(query) 
+    subject_ids = Programme.where('code ILIKE(?) or name ILIKE(?)', "%#{query}%", "%#{query}%").pluck(:id)
+    where('subject_id IN(?)', subject_ids)
+  end
 
+  # whitelist the scope
+  def self.ransackable_scopes(auth_object = nil)
+    [:keyword_search]
+  end
 
   def question_creator
     #programme = User.current_user.staff.position.unit - replace with : 2 lines (below)

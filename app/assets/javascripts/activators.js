@@ -36,6 +36,15 @@ $(document).ready(function(e) {
        format:'H:i',
        step:5,
   });
+  $('.time_picker2').datetimepicker({
+     datepicker:false,
+     format:'H:i',
+     step:15,
+     autoclose: true,
+     onSelectDate: function(dp, $input) {
+        $input.val($input.val()+ ':00');
+      }
+  });
   $('.monthyear_picker').datetimepicker({
       format: "Y-m-d",
       timepicker: false,
