@@ -2,44 +2,44 @@
   .col-md-10.col-md-offset-1
     / Nav tabs
     %ul.nav.nav-tabs
-      %li.active= link_to (t 'leaveforstaff.details'),"#leaveforstaff_details_edit", "data-toggle" => "tab"
+      %li.active= link_to (t 'staff_leave.details'),"#leaveforstaff_details_edit", "data-toggle" => "tab"
 
       
     .tab-content{style:"padding-top:1em"}
       .col-md-offset-2 
         .form-group
           .col-sm-2.control-label
-            = f.label :staff_id
+            = f.label t 'staff_leave.name', for: :staff_id
           .col-md-3
-            = f.collection_select :staff_id, Staff.all.order(name: :asc), :id,  :staff_name_with_position, {:include_blank =>t('helpers.prompt.select_staff'), :selected=>Login.first.staff_id},{class: 'selectpicker', "data-width"=>'320px'}
+            = f.collection_select :staff_id, Staff.all.order(name: :asc), :id,  :staff_name_with_position, {:include_blank =>t('helpers.prompt.select_staff'), :selected=>Login.first.staff_id},{class: 'selectpicker', "data-width"=>'440px'}
 			
         .form-group
           .col-sm-2.control-label
-            = f.label :leavetype
+            = f.label t 'staff_leave.leavetype', for: :leavetype
           .col-md-3
             = f.select :leavetype, DropDown::STAFFLEAVETYPE, :prompt => "Select", class: 'form-control mandatory'
 			
         .form-group
           .col-sm-2.control-label
-            = f.label :leavestartdate
+            = f.label t 'staff_leave.from', for: :leavestartdate
           .col-md-3
             = f.text_field :leavestartdate, :order => [:day, :month, :year], :default => 2.days.from_now,  :class =>  'date-picker form-control'
 			
         .form-group
           .col-sm-2.control-label
-            = f.label :leavenddate
+            = f.label t 'staff_leave.to', for: :leavenddate
           .col-md-3
             = f.text_field :leavenddate, :order => [:day, :month, :year], :default => 3.days.from_now,  :class =>  'date-picker form-control'
 			
         .form-group
           .col-sm-2.control-label
-            = f.label :reason
+            = f.label t 'staff_leave.reason', for: :reason
           .col-md-3
             = f.text_field :reason , class: 'form-control'
 			
         .form-group
           .col-sm-2.control-label
-            = f.label :notes
+            = f.label t 'staff_leave.notes', for: :notes
           .col-md-3
             = f.text_area :notes, :size => "30x5", class: 'form-control'
 

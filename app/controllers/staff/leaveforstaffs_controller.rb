@@ -2,7 +2,9 @@ class Staff::LeaveforstaffsController < ApplicationController
   before_action :set_leaveforstaff, only: [:show, :edit, :update, :destroy]
   
   def index
- @leaveforstaffs = Leaveforstaff.all    
+    @leaveforstaffs = Leaveforstaff.all
+    @search = Leaveforstaff.search(params[:q])
+    @leaveforstaffs = @search.result 
   end
   def show
     @leaveforstaff = Leaveforstaff.find(params[:id])
@@ -19,15 +21,13 @@ class Staff::LeaveforstaffsController < ApplicationController
   
   def update
     @leaveforstaff = Leaveforstaff.find(params[:id])
-
     respond_to do |format|
       if @leaveforstaff.update(leaveforstaff_params)
-        format.html { redirect_to(params[:redirect_location], :notice =>t('actions.updated')) }
-        format.xml  { head :ok }
-      
+        format.html { redirect_to staff_leaveforstaff_path, notice:t('staff_leave.update_notice')}
+        format.json { head :no_content }
       else
-        format.html { render :action => "edit" }
-        format.xml  { render :xml => @leaveforstaff.errors, :status => :unprocessable_entity }
+        format.html { render action: 'edit' }
+        format.json { render json: @leaveforstaff.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -37,7 +37,7 @@ class Staff::LeaveforstaffsController < ApplicationController
 
       respond_to do |format|
         if @leaveforstaff.save
-          flash[:notice] = 'Leaveforstaff was successfully created.'
+          flash[:notice]=t 'staff_leave.new_notice'
           format.html { redirect_to(staff_leaveforstaff_path(@leaveforstaff)) }
           format.xml  { render :xml => @leaveforstaff, :status => :created, :location => @leaveforstaff }
         else
@@ -77,6 +77,7 @@ end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def leaveforstaff_params
-      params.require(:leaveforstaff).permit(:staff_id, :leavetype, :leavestartdate, :leavenddate, :reason, :notes, :approval1)
+      params.require(:leaveforstaff).permit(:id, :staff_id, :leavetype, :leavestartdate, :leavenddate, :leavedays, :reason, :notes, :repalcement_id, :submit, 
+                                            :approval1, :approval1_id, :approval1date, :approver2, :approver2_id, :approval2date, :created_at, :updated_at)
     end
 end
