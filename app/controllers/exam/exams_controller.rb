@@ -6,27 +6,27 @@ class Exam::ExamsController < ApplicationController
   def index
     #@exams = Exam.all
     ##----------
-    #@position_exist = @current_user.userable.positions
-    #if @position_exist  
-      #@lecturer_programme = @current_user.userable.positions[0].unit
-      #unless @lecturer_programme.nil?
-       # @programme = Programme.where('name ILIKE (?) AND ancestry_depth=?',"%#{@lecturer_programme}%",0)
-      #end
-     # unless @programme#.nil?
-       # @programme_id = @programme.id 
-      #else
-        #if @lecturer_programme == 'Commonsubject'
-          #@programme_id ='1'
-        #else
-          #@programme_id='0'
-        #end
-      #end
+    @position_exist = @current_user.userable.positions
+    if @position_exist  
+      @lecturer_programme = @current_user.userable.positions[0].unit
+      unless @lecturer_programme.nil?
+        @programme = Programme.where('name ILIKE (?) AND ancestry_depth=?',"%#{@lecturer_programme}%",0)
+      end
+      unless @programme.nil? 
+        @programme_id = @programme.try(:first).try(:id)
+      else
+        if @lecturer_programme == 'Commonsubject'
+          @programme_id ='1'
+        else
+          @programme_id='0'
+        end
+      end
       #@exams_all = Exam.search(@programme_id) 
       @search = Exam.search(params[:q])
-      @exams = @search.result#.search2(@programme_id)
+      @exams = @search.result.search2(@programme_id)
       @exams = @exams.order(subject_id: :asc).page(params[:page]||1)
       
-    #end
+    end
     ##----------
     #@search = Exam.search(params[:q])
     #@exams = @search.result       
