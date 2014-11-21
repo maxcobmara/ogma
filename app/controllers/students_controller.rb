@@ -90,6 +90,28 @@ class StudentsController < ApplicationController
     end
   end
   
+  def kumpulan_etnik
+    @student = Student.all
+    respond_to do |format|
+      format.pdf do
+        pdf = Kumpulan_etnikPdf.new(@student, view_context)
+        send_data pdf.render, filename: "kumpulan_etnik-{Date.today}",
+                              type: "application/pdf",
+                              disposition: "inline"
+      end
+    end
+  end
+  
+  def destroy
+    @student = Student.find(params[:id])
+    @student.destroy
+
+    respond_to do |format|
+      format.html { redirect_to(students_url) }
+      format.xml  { head :ok }
+    end
+  end
+  
   def borang_maklumat_pelajar
 
     @student= Student.find(params[:id])

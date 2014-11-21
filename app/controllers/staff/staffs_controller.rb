@@ -20,6 +20,11 @@ class Staff::StaffsController < ApplicationController
   def new
     @info = Staff.new
     @info.vehicles.build
+    
+    respond_to do |format|
+      format.html # new.html.erb
+      format.xml  { render :xml => @info }
+  end
   end
 
   # GET /staffs/1/edit

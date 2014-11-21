@@ -7,7 +7,13 @@
     %li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'actions.new'))), new_student_path
   %ul.nav.navbar-nav.navbar-right
     %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "toga"
-    %li= link_to content_tag(:li, fa_icon("print", text: (t 'actions.print'))), "#", class: 'bogus'
+    %li.dropdown
+      %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#"}
+        = fa_icon "print", text: (t 'actions.print')
+        %b.caret
+      %ul.dropdown-menu
+        %li
+          %a{:href => kumpulan_etnik_students_path(:format => 'pdf')} Kumpulan
 
 .row.filter{style: "display:none;"}
   .col-md-2

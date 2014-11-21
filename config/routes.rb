@@ -155,6 +155,7 @@ Ogma::Application.routes.draw do
   resources :students do
     collection do
       get :autocomplete
+      get :kumpulan_etnik
     end
     member do
       get :borang_maklumat_pelajar
