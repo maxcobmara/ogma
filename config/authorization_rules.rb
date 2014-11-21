@@ -108,7 +108,27 @@ authorization do
    has_permission_on :librarytransactionsearches, :to => :read
  end
 
+ #Group Trainings ----------------------------------------------------------------------------read(index, show), menu(inc index), update(inc edit), approve(read, update)
+ role :lecturer do
+   has_permission_on [:examquestions, :exams], :to => :menu
+   
+   has_permission_on :exams, :to =>:manage do
+     if_attribute :created_by => is {current_user.userable.id}
+   end
+   #has_permission_on :examquestions, :to => :read do
+     #if_attribute :creator_id => is {current_user.userable.id}
+   #end
+   #has_permission_on :examquestions, :to =>[:read, :update] do
+     #if_attribute :editor_id => is {current_user.userable.id}
+   #end
+   #has_permission_on :examquestions, :to => :manage do
+     #if_attribute :approver_id => is {current_user.userable.id}
+   #end
+ end
 
+ role :programme_manager do
+   has_permission_on [:examquestions, :exams], :to => :manage
+ end
 
 end
 
