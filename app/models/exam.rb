@@ -109,11 +109,11 @@ class Exam < ActiveRecord::Base
       if search == '0'
         @exams = Exam.all
       elsif search == '1'
-        @exams = Exam.find(:all, :conditions => ["subject_id IN (?)", common_subject])
+        @exams = Exam.where("subject_id IN (?)", common_subject)
       else
         subject_of_programme = Programme.find(search).descendants.at_depth(2).map(&:id)
         #@exams = Exam.find(:all, :conditions => ["subject_id IN (?) and subject_id NOT IN (?)", subject_of_program, common_subject])
-        @exams = Exam.find(:all, :conditions=>['subject_id IN(?) AND subject_id NOT IN(?)',subject_of_programme, common_subject])
+        @exams = Exam.where('subject_id IN(?) AND subject_id NOT IN(?)',subject_of_programme, common_subject)
       end
     else
        @exams = Exam.all

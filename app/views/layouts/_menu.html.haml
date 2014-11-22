@@ -156,17 +156,20 @@
           %li= link_to content_tag(:i, "", :class => "icon-numb") + t('training.trainingnote.title2'), training_trainingnotes_path
           %li= link_to content_tag(:i, "", :class => "icon-numb") + "Personalised Time Table", personalize_index_training_weeklytimetables_path
 
-    %li.icon.icon-left
-      = link_to content_tag(:i, "", :class => "icon-numb") + (t "exam.title"), '#'
-      .mp-level
-        %h2.icon Exams
-        %a.mp-back{:href => "#"}= t 'helpers.links.back'
-        %ul
-          %li= link_to content_tag(:i, "", :class => "icon-numb") + (t "exam.examquestion.title"), exam_examquestions_path
-          %li= link_to content_tag(:i, "", :class => "icon-numb") + (t "exam.exams.title"), exam_exams_path
-          %li= link_to content_tag(:i, "", :class => "icon-numb") + "Examination Management", '#'
-          %li= link_to content_tag(:i, "", :class => "icon-numb") + "Feedback/Course Evaluation", '#'
-          %li= link_to content_tag(:i, "", :class => "icon-numb") + "Examination Analysis", '#'
+    - permitted_to? :menu, :exam_exams do
+      %li.icon.icon-left
+        = link_to content_tag(:i, "", :class => "icon-numb") + (t "exam.title"), '#'
+        .mp-level
+          %h2.icon Exams
+          %a.mp-back{:href => "#"}= t 'helpers.links.back'
+          %ul
+            - permitted_to? :menu, :examquestions do
+              %li= link_to content_tag(:i, "", :class => "icon-numb") + (t "exam.examquestion.title"), exam_examquestions_path
+            - permitted_to? :menu, :exam_exams do
+              %li= link_to content_tag(:i, "", :class => "icon-numb") + (t "exam.exams.title"), exam_exams_path
+            %li= link_to content_tag(:i, "", :class => "icon-numb") + "Examination Management", '#'
+            %li= link_to content_tag(:i, "", :class => "icon-numb") + "Feedback/Course Evaluation", '#'
+            %li= link_to content_tag(:i, "", :class => "icon-numb") + "Examination Analysis", '#'
 
     %li.icon.icon-left
       //= link_to content_tag(:i, "", :class => "book") + (t "library.title"), '#'

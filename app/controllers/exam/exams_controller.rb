@@ -1,4 +1,5 @@
 class Exam::ExamsController < ApplicationController
+  filter_resource_access
   before_action :set_exam, only: [:show, :edit, :update, :destroy]
   # GET /exams
   # GET /exams.xml
@@ -11,8 +12,8 @@ class Exam::ExamsController < ApplicationController
       unless @lecturer_programme.nil?
         @programme = Programme.where('name ILIKE (?) AND ancestry_depth=?',"%#{@lecturer_programme}%",0)
       end
-      unless @programme#.nil?
-        @programme_id = @programme.id 
+      unless @programme.nil? 
+        @programme_id = @programme.try(:first).try(:id)
       else
         if @lecturer_programme == 'Commonsubject'
           @programme_id ='1'
