@@ -624,19 +624,46 @@ en:
         g3q2_text : "Kebolehan menghayati dan melaksanakan dasar, peraturan dan arahan pentadbiran berkaitan dengan bidang tugasnya."
         g3q3_title: "&nbsp;&nbsp;KEBERKESANAN KOMUNIKASI" 
         g3q3_text : "Kebolehan menyampaikan maksud, pendapat, kefahaman atau arahan"
-  leaveforstaff:
+        
+  staff_leave:
+    leave: Staff Leave
+    apply: Apply
+    listapprove: "List/Approve"
     title: Show Leave
     edit: Edit Leave
+    new: New Leave For Staff
     details: Leave Details
-    approve_leave: Approve Leave
+    approve_leave: Leave Approval
     list: List of Staff
     id: Staff Name and IC No
+    name: Staff Name
     leavetype: Leave Type
     from: Start Date
     to: End Date
+    for: For
+    days: Days
     reason: Reason
+    notes: Notes
     duration: Duration
-    replacement: Replacement    
+    replacement: Replacement Staff
+    entitlement: Balance of Entitled Leave
+    id_or: IC No or Name
+    rest_leave: Rest Leave
+    sick_leave: Sick Leave
+    unrecord_leave: Unrecorded Leave
+    partial_leave: Partially Paid Leave
+    unpaid_leave: Unpaid Leave
+    maternity_leave: Maternity Leave
+    hajj_leave: Hajj Leave
+    approval: Approval
+    approval_name: Name of Approver
+    approve_date: Date Approved
+    endorsed: "Endorsed?"
+    endorsed_name: Endorsed By
+    endorsed_date: Date Endorsed
+    new_notice: A new leave for staff has successfully created
+    update_notice: A leave has successfully updated
+      
       
   position:
     title: "Tasks & Responsibilities"

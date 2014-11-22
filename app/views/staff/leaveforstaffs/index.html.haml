@@ -1,12 +1,12 @@
 - model_class = Leaveforstaff
 .page-header
-  %h1= t('leaveforstaff.list')#, :default => model_class.model_name.human.pluralize
+  %h1= t('staff_leave.list')#, :default => model_class.model_name.human.pluralize
   
 .navbar.navbar-inverse{role: "navigation", style: "padding-right:40px;"}
   %ul.nav.navbar-nav
     %li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'actions.new'))), new_staff_leaveforstaff_path
   %ul.nav.navbar-nav.navbar-right
-    %li= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "load_search_bar"
+    %li= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "index_search_bar"
     %li= link_to content_tag(:li, fa_icon("print", text: (t 'actions.print'))), "#"
 	
 .search{style: "display:none;"}
@@ -16,22 +16,23 @@
   %table.table-striped.table-hover.ogma
     %thead
       %tr
-        %th= t('leaveforstaff.id')
-        %th= t('leaveforstaff.leavetype')
-        %th= t('leaveforstaff.from') 
-        %th= t('leaveforstaff.to') 
-        %th= t('leaveforstaff.reason') 
-        %th= t('leaveforstaff.duration') 
-        %th= t('leaveforstaff.replacement') 
+        %th= sort_link(@search, :staff_id, t('staff_leave.id'))
+        %th= sort_link(@search, :leavetype, t('staff_leave.leavetype'))
+        %th= sort_link(@search, :leavestartdate, t('staff_leave.from')) + ("/") + sort_link(@search, :leavenddate, t('staff_leave.to')) 
+        %th= sort_link(@search, :leavedays, t('staff_leave.duration')) 
+        %th= sort_link(@search, :reason, t('staff_leave.reason')) 
+        %th{style: "width:23%;"}= sort_link(@search, :replacement_id, t('staff_leave.replacement')) 
 		
     %tbody
-    - @leaveforstaffs.each do |leaveforstaff|
-      %tr
-        %td= link_to leaveforstaff.applicant.try(:mykad_with_staff_name), staff_leaveforstaff_path(leaveforstaff)
-        %td= (DropDown::STAFFLEAVETYPE.find_all{|disp, value| value == leaveforstaff.leavetype}).map {|disp, value| disp} [0]
-        %td= leaveforstaff.leavestartdate.try(:strftime, "%a, %d %b")
-        %td= leaveforstaff.leavenddate.try(:strftime, "%a, %d %b")
-        %td= leaveforstaff.reason
-        %td= leaveforstaff.leave_for
-        %td= leaveforstaff.replacement_id.blank? ? "None" : leaveforstaff.replacement.name
+      = render "index_search"
+      - @leaveforstaffs.each do |leaveforstaff|
+        %tr
+          %td= link_to leaveforstaff.applicant.try(:mykad_with_staff_name), staff_leaveforstaff_path(leaveforstaff)
+          %td= (DropDown::STAFFLEAVETYPE.find_all{|disp, value| value == leaveforstaff.leavetype}).map {|disp, value| disp} [0]
+          %td
+            = leaveforstaff.leavestartdate.try(:strftime, '%d %b %Y')
+            %br= leaveforstaff.leavenddate.try(:strftime, '%d %b %Y')
+          %td= leaveforstaff.leave_for.to_s + (" ") +   (t 'staff_leave.days')
+          %td= leaveforstaff.reason
+          %td= leaveforstaff.replacement_id.blank? ? "None" : leaveforstaff.replacement.name
 

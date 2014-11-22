@@ -28,7 +28,15 @@ class Leaveforstaff < ActiveRecord::Base
     #named_scope :forsupport,  :conditions =>  ["approval1_id=? AND approval1 IS ?", User.current_user.staff_id, nil]
     #named_scope :forapprove,  :conditions =>  ["approval2_id=? AND approver2 IS ? AND approval1=?", User.current_user.staff_id, nil, true]
 
-
+    def self.keyword_search(query) 
+      staff_ids = Staff.where('icno ILIKE (?) OR name ILIKE(?)', "%#{query}%", "%#{query}%").pluck(:id).uniq
+      where('staff_id IN(?)', staff_ids)
+    end
+    
+    def self.ransackable_scopes(auth_object = nil)
+      [:keyword_search]
+    end
+  
   
     def self.find_main
       Staff.find(:all, :condition => ["staff_id=? OR approval1_id=? OR approval2_id=?", User.current_user.staff_id, User.current_user.staff_id, User.current_user.staff_id])
@@ -76,7 +84,7 @@ class Leaveforstaff < ActiveRecord::Base
       if (leavenddate - leavestartdate) == 0
         ""
       else
-        " -- " + (leavenddate.strftime("%d %b %Y")).to_s
+        (" ") + (leavenddate.strftime("%d %b %Y")).to_s
       end
     end
   

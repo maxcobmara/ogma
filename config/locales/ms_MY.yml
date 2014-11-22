@@ -541,19 +541,44 @@ ms_MY:
       part9_desc: 'PPK hendaklah memberi ulasan keseluruhan pencapaian PYD berasaskan ulasan keseluruhan oleh PPP'
       ppkid: 'Name Pegawai Penilai Kedua (PPK)'      
       
-  leaveforstaff:
-    title: Butir Cuti
+  staff_leave:
+    leave: Cuti Staf
+    apply: Permohonan
+    listapprove: "Senarai/Kelulusan"
+    title: Butiran Cuti
     edit: Sunting Permohonan Cuti
+    new: Cuti Baru Untuk Staf
     details: Maklumat Cuti
     approve_leave: Kelulusan Cuti
-    list: Senarai Staff
+    list: Senarai Staf
     id: Nama dan No IC
+    name: Nama Staf
     leavetype: Jenis Cuti
     from: Daripada
     to: Sehingga
+    for: Selama
+    days: Hari
     reason: Sebab
+    notes: Nota
     duration: Jangka Masa
-    replacement: Penggantian
+    replacement: Staf Ganti
+    entitlement: Baki Cuti Rehat
+    id_or: No IC atau Nama
+    rest_leave: Cuti Rehat
+    sick_leave: Cuti Sakit
+    unrecord_leave: Cuti Tanpa Rekod
+    partial_leave: Cuti Separuh Gaji
+    unpaid_leave: Cuti Tanpa Gaji
+    maternity_leave: Cuti Bersalin  
+    hajj_leave: Cuti Haji
+    approval: Diluluskan?
+    approval_name: Nama Yang Meluluskan
+    approve_date: Tarikh diluluskan
+    endorsed: Disahkan?
+    endorsed_name: Disahkah Oleh
+    endorsed_date: Tarikh Disahkan
+    new_notice: Cuti baru untuk staf berjaya dicipta
+    update_notice: Cuti berjaya dikemaskini 
   
   position:
     title: "Tugas & Tanggungjawab"

@@ -1,45 +1,70 @@
 - model_class = Leaveforstaff
 .page-header
-  %h1=t 'leaveforstaff.title'
+  %h1= @leaveforstaff.applicant.name
 
 = render 'shared/flashes'
 
-%ul.nav.nav-tabs
-  %li.active= link_to (t 'leaveforstaff.details'),"#applyshow", "data-toggle" => "tab"
-  %li= link_to (t 'leaveforstaff.approve_leave'), "#approve_leave", "data-toggle" => "tab"
+.row
+  .col-md-offset-1
+    %ul.nav.nav-tabs
+      %li.active= link_to (t 'staff_leave.details'),"#apply", "data-toggle" => "tab"
+      %li= link_to (t 'staff_leave.approve_leave'), "#approve", "data-toggle" => "tab"
 	  
 .tab-content.col-md-offset-1
-  %dl.dl-horizontal
-    %dt 
-    %dd
-	 
-  #applyshow.tab-pane.fade.in.active
-    %br
-      = render 'applyshow'
+  #apply.tab-pane.fade.in.active
+    .col-md-8.col-md-offset-1
+      %dl.dl-horizontal
+        %dt= t 'staff_leave.name'
+        %dd= @leaveforstaff.applicant.mykad_with_staff_name
+	
+        %dt= t 'staff_leave.leavetype'
+        %dd= (DropDown::STAFFLEAVETYPE.find_all{|disp, value| value == @leaveforstaff.leavetype}).map {|disp, value| disp} [0]
+	
+        %dt= t 'staff_leave.from' 
+        %dd= @leaveforstaff.leavestartdate.try(:strftime, "%d %b %Y")
+        
+        %dt= t 'staff_leave.to' 
+        %dd= @leaveforstaff.show_to_day
+        
+        %dt= t 'staff_leave.for' 
+        %dd= @leaveforstaff.leave_for.to_s + (" ")+(t 'staff_leave.days')
+	
+        %dt= t 'staff_leave.reason'
+        %dd= @leaveforstaff.reason
+	
+        %dt= t 'staff_leave.notes'
+        %dd= @leaveforstaff.notes
+
+        %dt= t 'staff_leave.replacement'
+        %dd= @leaveforstaff.replacement_id.blank? ? "" : @leaveforstaff.replacement.name 
+	
+        %dt= t 'staff_leave.entitlement'
+        %dd= @leaveforstaff.cuti_rehat_entitlement
 		  		  
-  #approve_leave.tab-pane.fade
-    %dl.dl-horizontal
-      %dt= t 'staffleave.approval1'
-      %dd=h @leaveforstaff.approval1? ? "Approved" : "Not Approved"
+  #approve.tab-pane.fade
+    .col-md-8.col-md-offset-1
+      %dl.dl-horizontal
+        %dt= t 'staff_leave.approval'
+        %dd=h @leaveforstaff.approval1? ? "Approved" : "Not Approved"
           
-      %dt= t 'staffleave.approval1_id'
-      %dd=h @leaveforstaff.approval1_id.blank? ? "" : @leaveforstaff.seconder.name
+        %dt= t 'staff_leave.approval_name'
+        %dd=h @leaveforstaff.approval1_id.blank? ? "" : @leaveforstaff.seconder.name
 		  
-      %dt= t 'staffleave.approval1date'
-      %dd=h @leaveforstaff.approval1date
+        %dt= t 'staff_leave.approve_date'
+        %dd=h @leaveforstaff.approval1date
 		  
-      %dt= t 'staffleave.approver2'
-      %dd=h @leaveforstaff.approver2? ? "Approved" : "Not Approved"
+        %dt= t 'staff_leave.endorsed'
+        %dd=h @leaveforstaff.approver2? ? "Approved" : "Not Approved"
 		  
-      %dt= t 'staffleave.approval2_id'
-      %dd=h  @leaveforstaff.approval2_id.blank? ? "Not Required" : @leaveforstaff.endorser
+        %dt= t 'staff_leave.endorsed_name'
+        %dd=h  @leaveforstaff.approval2_id.blank? ? "Not Required" : @leaveforstaff.endorser
 		  
-      %dt= t 'staffleave.approval2date'
-      %dd=h @leaveforstaff.approval2date
+        %dt= t 'staff_leave.endorsed_date'
+        %dd=h @leaveforstaff.approval2date
           
 		  
 .row
-  .col-md-4.col-md-offset-2
+  .col-md-6.col-md-offset-3
     %hr
     .form-actions
       = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), staff_leaveforstaffs_path, :class => 'btn btn-default'
