@@ -169,7 +169,9 @@ class Exam::ExamquestionsController < ApplicationController
       @programme_listing = Programme.roots
       unless @examquestion.subject_id.nil? || @examquestion.subject_id.blank? || @examquestion.subject_id==0 || @examquestion.subject_id=='Select the Subject' #if subject already selected
         @subjects2 = Programme.find(@examquestion.subject.root_id).descendants.at_depth(2).sort_by{|x|x.ancestry}
-        @topics = Programme.find(@examquestion.subject_id).descendants.at_depth(3).sort
+        @topics = Programme.find(@examquestion.subject_id).descendants.at_depth(3).s
+Tarikh Disediakan
+ort
       else  # if subject not selected yet 
         #check if programme IS SELECTED (re-submit of new record)
         if @examquestion.programme_id.nil? || @examquestion.programme_id.blank? #note : SUBJECT FIELD & TOPIC FIELD are hide
@@ -253,7 +255,7 @@ class Exam::ExamquestionsController < ApplicationController
     #22Apr2013--avoid deletion of examquestion that exist in exams
     
     respond_to do |format|
-      format.html { redirect_to(examquestions_url) }
+      format.html { redirect_to(exam_examquestions_url) }
       format.xml  { head :ok }
     end
   end
