@@ -7,6 +7,7 @@
   #mandatory_edit.tab-pane.active
     %br
     = render :partial => 'tab_question_main_edit', :locals => {:f => f}
+    = render :partial => 'status', :locals => {:f => f} 
   #question_details_edit.tab-pane
     %br
     = render :partial => 'tab_question_details_edit', :locals => {:f => f}

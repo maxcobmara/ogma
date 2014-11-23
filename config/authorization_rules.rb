@@ -108,26 +108,40 @@ authorization do
    has_permission_on :librarytransactionsearches, :to => :read
  end
 
- #Group Trainings ----------------------------------------------------------------------------read(index, show), menu(inc index), update(inc edit), approve(read, update)
+ #Group Trainings ------------------------------------------------------------read(index, show), menu(inc index), update(inc edit), approve(read, update), manage(crud,approve,menu)
  role :lecturer do
-   has_permission_on [:examquestions, :exam_exams], :to => :menu
+   has_permission_on [:exam_examquestions, :exam_exams], :to => [:menu, :read, :create]
    
-   has_permission_on :exam_exams, :to =>:manage do
-     if_attribute :created_by => is {current_user.userable.id}
+   has_permission_on :exam_exams, :to =>[:manage] do
+     if_attribute :created_by => is {user.userable.id}
    end
-   #has_permission_on :examquestions, :to => :read do
-     #if_attribute :creator_id => is {current_user.userable.id}
-   #end
-   #has_permission_on :examquestions, :to =>[:read, :update] do
-     #if_attribute :editor_id => is {current_user.userable.id}
-   #end
-   #has_permission_on :examquestions, :to => :manage do
-     #if_attribute :approver_id => is {current_user.userable.id}
-   #end
+   has_permission_on :exam_examquestions, :to =>:update, :join_by => :and do
+     if_attribute :creator_id => is {user.userable.id}
+     if_attribute :qstatus => is {"New"}
+   end
+   #any other lecturer from the same programme can be an EDITOR
+   has_permission_on :exam_examquestions, :to =>:update, :join_by => :and do
+     if_attribute :creator_id => is_not {user.userable.id}
+     if_attribute :qstatus => is {"Submit"}
+   end
+   #if EDITOR hold record first, for later editing, must be the same person
+   has_permission_on :exam_examquestions, :to => :update, :join_by => :and do
+     if_attribute :editor_id => is {user.userable.id}
+     if_attribute :qstatus => is {"Editing"}
+   end
+   #HOD can approve although not assigned - role:programme_manager
+   has_permission_on :exam_examquestions, :to => :manage do
+     if_attribute :approver_id => is {user.userable.id}
+   end
+   #Ready for approval - HOD classify as Re-Edit, return to editor
+   has_permission_on :exam_examquestions, :to =>:update, :join_by => :and do
+     if_attribute :editor_id => is {user.userable.id}
+     if_attribute :qstatus => is {"Re-Edit"}
+   end
  end
 
  role :programme_manager do
-   has_permission_on [:examquestions, :exam_exams], :to => :manage
+   has_permission_on [:exam_examquestions, :exam_exams], :to => :manage
  end
 
 end

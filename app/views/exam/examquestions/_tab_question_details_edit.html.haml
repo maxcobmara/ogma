@@ -17,4 +17,4 @@
     .col-md-4
       = f.select :difficulty, DropDown::QLEVEL, {:prompt => t('helpers.prompt.select_difficulty')}, {class: 'selectpicker'}
 
-  = render :partial => 'status', :locals => {:f => f} unless @examquestion.qstatus == "Approved"
+  /= render :partial => 'status', :locals => {:f => f} if @examquestion.qstatus != "Approved"

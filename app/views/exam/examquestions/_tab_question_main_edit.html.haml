@@ -80,4 +80,4 @@
       - else
         = f.text_field :createdt, class: 'form-control', readonly: 'readonly'
 
-  = render :partial => 'status', :locals => {:f => f} unless @examquestion.qstatus == "Approved"
+  /= render :partial => 'status', :locals => {:f => f} if @examquestion.qstatus != "Approved" && (@examquestion.qstatus == "New" && !@examquestion.id)

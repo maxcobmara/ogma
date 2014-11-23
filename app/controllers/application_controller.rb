@@ -11,6 +11,14 @@ class ApplicationController < ActionController::Base
   #def current_user
     #Login.first
   #end
+  
+  ### http://stackoverflow.com/questions/19861067/activemodelforbiddenattributeserror-in-commentscontrollercreate?rq=1
+  before_filter do
+    resource = controller_name.singularize.to_sym
+    method = "#{resource}_params"
+    params[resource] &&= send(method) if respond_to?(method, true)
+  end
+  ###
 
   def after_sign_in_path_for(resource)
    '/dashboard'
