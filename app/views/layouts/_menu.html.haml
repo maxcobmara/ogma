@@ -163,7 +163,7 @@
           %h2.icon Exams
           %a.mp-back{:href => "#"}= t 'helpers.links.back'
           %ul
-            - permitted_to? :menu, :examquestions do
+            - permitted_to? :menu, :exam_examquestions do
               %li= link_to content_tag(:i, "", :class => "icon-numb") + (t "exam.examquestion.title"), exam_examquestions_path
             - permitted_to? :menu, :exam_exams do
               %li= link_to content_tag(:i, "", :class => "icon-numb") + (t "exam.exams.title"), exam_exams_path

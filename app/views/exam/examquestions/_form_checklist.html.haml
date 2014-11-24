@@ -3,7 +3,7 @@
     .col-sm-2.control-label
       = f.label :editor_id
     .col-md-6
-      = f.collection_select :editor_id, Staff.where('id IN (?)', @examquestion.question_editor).order('staffgrade_id DESC'), :id, :name, {:prompt => t('helpers.prompt.select_editor')}, {class: 'selectpicker', "data-width"=>"300px"}
+      = f.collection_select :editor_id, Staff.where('id IN (?)', @examquestion.question_editor).order('staffgrade_id DESC'), :id, :name, {:prompt => t('helpers.prompt.select_editor'), :selected => @current_user.userable_id}, {class: 'selectpicker', "data-width"=>"300px"}
 
   .form-group
     .col-sm-2.control-label
@@ -65,6 +65,14 @@
               %td{:align => "center"}= f.check_box :fit_difficulty
               %td{:align => "center"}= f.check_box :fit_important
               %td{:align => "center"}= f.check_box :fit_fairness  
+
+  //copied from partial : form_approval.html.haml in order to assign HOD accordingly - start (4 authorization)
+  .form-group
+    .col-sm-2.control-label
+      = f.label :approver_id
+    .col-md-6
+      = f.collection_select :approver_id, Staff.where("id IN (?)", @examquestion.question_approver).order(:name), :id, :name, {:include_blank => 'Please select approver'},{class: 'selectpicker', "data-width"=>"230px"}
+  //copied from partial : form_approval.html.haml in order to assign HOD accordingly - end
 
 / This stuff is for subs
 /=f.fields_for :examsubquestions do |builder| 

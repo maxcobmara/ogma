@@ -1,0 +1,20 @@
+- model_class = Examquestion
+.col-md-8.col-md-offset-2
+  %dl.dl-horizontal
+
+    %dt=t 'exam.examquestion.questiontype' , :default => model_class.human_attribute_name(:questiontype) + ":"
+    %dd=h @examquestion.questiontype
+
+    %dt=t 'exam.examquestion.category' , :default => model_class.human_attribute_name(:category) + ":"
+    %dd=h @examquestion.category
+  
+    %dt=t 'exam.examquestion.construct' , :default => model_class.human_attribute_name(:construct) + ":"
+    %dd=h @examquestion.construct
+
+    %dt=t 'exam.examquestion.topic_id' , :default => model_class.human_attribute_name(:topic_id) + ":"
+    %dd Topic
+
+    %dt=t 'exam.examquestion.difficulty' , :default => model_class.human_attribute_name(:difficulty) + ":"
+    %dd=h (DropDown::QLEVEL.find_all{|disp, value| value == @examquestion.difficulty}).map {|disp, value| disp}[0]
+
+    %BR

@@ -10,12 +10,12 @@
       /.col-md-10.col-md-offset-1
       / Nav tabs
       %ul.nav.nav-tabs
-        - if [nil, "New", "Submit", "Editing", "Re-Edit"].include? (@examquestion.qstatus) 
-          %li.active= link_to ((t 'exam.examquestion.mandatory')),"#mandatory_edit", "data-toggle" => "tab"
-          %li= link_to ((t 'exam.examquestion.question_details2')), "#question_details_edit", "data-toggle" => "tab"
-          %li= link_to ((t 'exam.examquestion.question_answers')), "#question_answers_edit", "data-toggle" => "tab"
+        /- if [nil, "New", "Submit", "Editing", "Re-Edit"].include? (@examquestion.qstatus) 
+        %li.active= link_to ((t 'exam.examquestion.mandatory')),"#mandatory_edit", "data-toggle" => "tab"
+        %li= link_to ((t 'exam.examquestion.question_details2')), "#question_details_edit", "data-toggle" => "tab"
+        %li= link_to ((t 'exam.examquestion.question_answers')), "#question_answers_edit", "data-toggle" => "tab"
         - if ["Submit", "Editing", "Re-Edit","Ready For Approval", "For Approval", "Approved", "Reserve for BPL"].include? (@examquestion.qstatus)
-          %li.active= link_to ((t 'exam.examquestion.edit_details')), "#edit_details", "data-toggle" => "tab"
+          %li= link_to ((t 'exam.examquestion.edit_details')), "#edit_details", "data-toggle" => "tab"
         - if ["Ready For Approval", "For Approval","Approved", "Reserve for BPL"].include? (@examquestion.qstatus)
           %li= link_to ((t 'exam.examquestion.approval_details')), "#approval_details", "data-toggle" => "tab"
         - if ["Approved", "Reserve for BPL"].include? (@examquestion.qstatus)
@@ -25,28 +25,38 @@
         /Staff Creates Question  
         /partial (_form) = (tab_question_main_edit,tab_question_details_edit, tab_question_answers_edit) 
         /partial (show_question) = show_question_main, show_question_details_answer
-        - if [nil, "New", "Submit", "Editing", "Re-Edit"].include? (@examquestion.qstatus) 
-          #mandatory_edit.tab-pane.active
-            %br
+        #mandatory_edit.tab-pane.active
+          %br
+          - if [nil, "New", "Submit", "Editing", "Re-Edit"].include? (@examquestion.qstatus) 
             = render :partial => 'tab_question_main_edit', :locals => {:f => f}
-          #question_details_edit.tab-pane
-            %br
+          - else
+            = render :partial => 'show_question_main'
+
+          =render :partial => 'status', :locals => {:f => f} unless @examquestion.qstatus == "Approved"
+          /=render :partial => 'status', :locals => {:f => f} if (@examquestion.qstatus == "New" && !@examquestion.id) && @examquestion.qstatus != "Approved" 
+
+        #question_details_edit.tab-pane
+          %br
+          - if [nil, "New", "Submit", "Editing", "Re-Edit"].include? (@examquestion.qstatus) 
             = render :partial => 'tab_question_details_edit', :locals => {:f => f}
-          #question_answers_edit.tab-pane
-            %br
+          - else
+            = render :partial => 'show_question_details'
+
+        #question_answers_edit.tab-pane
+          %br
+          - if [nil, "New", "Submit", "Editing", "Re-Edit"].include? (@examquestion.qstatus) 
             = render :partial => 'tab_question_answers_edit', :locals => {:f => f}		
-        - else 
-          = render :partial => 'show_question_main'
-          = render :partial => 'show_question_details_answer'
-          
+          - else 
+            = render :partial => 'show_question_answer'
+
         /Superior Edits Question
-        #edit_details.tab-pane.active
+        #edit_details.tab-pane
           %br
           - if ["Submit", "Editing", "Re-Edit"].include? (@examquestion.qstatus)
             =render :partial => 'form_checklist', :locals => {:f => f}
           - if ["Ready For Approval", "For Approval", "Approved", "Reserve for BPL"].include? (@examquestion.qstatus)
             =render :partial => 'show_checklist'
-			
+
         /Approval
         #approval_details.tab-pane
           %br
@@ -65,27 +75,24 @@
                   &nbsp;
                 .col-md-2
                   &nbsp;
-				  
+  
               .form-group
                 .col-sm-2.control-label
                   = f.label :bplreserve
                 .col-md-2
                   = f.check_box :bplreserve
-		
+
               .form-group
                 .col-sm-2.control-label
                   = f.label :bplsent
                 .col-md-2
                   = f.check_box :bplsent
-			
+
               .form-group
                 .col-sm-2.control-label
                   = f.label :bplsentdt
                 .col-md-2
                   = f.text_field :bplsentdt, class: 'form-control', 'data-behaviour' => 'datepicker_today' 
-
-      /=render :partial => 'status', :locals => {:f => f} unless @examquestion.qstatus == "Approved"
-      =render :partial => 'status', :locals => {:f => f} if @examquestion.qstatus == "New" && !@examquestion.id
  
     .row
       .form-group

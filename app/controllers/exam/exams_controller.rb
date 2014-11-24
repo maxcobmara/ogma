@@ -12,7 +12,7 @@ class Exam::ExamsController < ApplicationController
       unless @lecturer_programme.nil?
         @programme = Programme.where('name ILIKE (?) AND ancestry_depth=?',"%#{@lecturer_programme}%",0)
       end
-      unless @programme.nil? 
+      unless @programme.nil? || @programme.count==0
         @programme_id = @programme.try(:first).try(:id)
       else
         if @lecturer_programme == 'Commonsubject'
@@ -63,7 +63,7 @@ class Exam::ExamsController < ApplicationController
     unless @lecturer_programme.nil?
       @programme = Programme.where('name ILIKE (?) AND ancestry_depth=?',"%#{@lecturer_programme}%",0).first
     end
-    unless @programme.nil?
+    unless @programme.nil? || @programme.count==0
       @programme_listing = Programme.where('id=?',@programme.id).to_a
       @preselect_prog = @programme.id
       @all_subject_ids = Programme.find(@preselect_prog).descendants.at_depth(2).map(&:id)

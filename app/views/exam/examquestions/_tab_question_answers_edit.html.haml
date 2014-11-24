@@ -139,4 +139,4 @@
       .col-md-6
         = f.text_area :qkeyword, :size => "60x3"
 
-  = render :partial => 'status', :locals => {:f => f} unless @examquestion.qstatus == "Approved"
+  /= render :partial => 'status', :locals => {:f => f} if @examquestion.qstatus != "Approved"
