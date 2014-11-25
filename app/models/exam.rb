@@ -159,7 +159,7 @@ class Exam < ActiveRecord::Base
   end
   
   def render_full_name
-    (Exam::EXAMTYPE.find_all{|disp, value| value == name}).map {|disp, value| disp}
+    (DropDown::EXAMTYPE.find_all{|disp, value| value == name}).map {|disp, value| disp}[0]
   end  
   
   def exam_name_date
@@ -202,7 +202,7 @@ class Exam < ActiveRecord::Base
   #--12June2013
   
   def render_examtype
-    (Exam::EXAMTYPE.find_all{|disp, value| value == name}).map {|disp, value| disp}
+    (DropDown::EXAMTYPE.find_all{|disp, value| value == name}).map {|disp, value| disp}
     #(Exam::EXAMTYPE.find_all{|disp, value| value == examtype}).map {|disp, value| disp}
   end
   
@@ -221,7 +221,7 @@ class Exam < ActiveRecord::Base
   end 
  
   def examtypename
-     (Exam::EXAMTYPE.find_all{|disp, value| value == name}).map {|disp, value| disp}
+     (DropDown::EXAMTYPE.find_all{|disp, value| value == name}).map {|disp, value| disp}
   	#Exam::EXAMTYPE[("#{name}".to_i)-1][0].to_s	    #Exam::EXAMTYPE[("#{examtype}".to_i)-1][0].to_s	
   end
   

@@ -110,7 +110,7 @@ authorization do
 
  #Group Trainings ------------------------------------------------------------read(index, show), menu(inc index), update(inc edit), approve(read, update), manage(crud,approve,menu)
  role :lecturer do
-   has_permission_on [:exam_examquestions, :exam_exams], :to => [:menu, :read, :create]
+   has_permission_on [:exam_examquestions, :exam_exams, :exam_exammarks], :to => [:menu, :read, :create]
    
    has_permission_on :exam_exams, :to =>[:manage] do
      if_attribute :created_by => is {user.userable.id}
@@ -141,7 +141,7 @@ authorization do
  end
 
  role :programme_manager do
-   has_permission_on [:exam_examquestions, :exam_exams], :to => :manage
+   has_permission_on [:exam_examquestions, :exam_exams, :exam_exammarks], :to => :manage
  end
 
 end

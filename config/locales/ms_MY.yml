@@ -85,7 +85,8 @@ ms_MY:
     records: " rekod"
     import_failed: " gagal diimport"
     save_action: Simpan Tindakan
-    check_all: "Pilih kotak semak ini untuk MEMILIH atau MENYAHPILIH SEMUA rekod bagi cetakan KEW.PA-17 dan KEW.PA-20."
+    check_all: "Pilih kotak semak ini untuk MEMILIH atau MENYAHPILIH SEMUA rekod"
+    check_all2: "Pilih kotak semak ini untuk MEMILIH atau MENYAHPILIH SEMUA rekod bagi cetakan KEW.PA-17 dan KEW.PA-20."
     all_records: Semua Rekod
     
   errors:
@@ -1343,6 +1344,8 @@ ms_MY:
     midsem: Petengahan
     final: Akhir
     repeat: Ulangan
+    management: Pengurusan Peperiksaan
+    result: Keputusan Peperiksaan
     examquestion: 
       new_title: Soalan Baru
       edit: Sunting Soalan
@@ -1463,6 +1466,26 @@ ms_MY:
       by_semester: semester
       create_exam: Tambah Data Set Peperiksaan
       create_template: Tambah Data Template Peperiksaan
+    
+    exammark:
+      title: Markah Kertas Peperiksaan
+      new: Markah Baru Kertas Peperiksaan
+      edit: Sunting Markah Kertas Peperiksaan
+      student_id: Pelajar
+      exam_id: Kertas Peperiksaan
+      total_mcq: Jumlah Markah
+      icno: "No. MyKad"
+      remarks: Catatan
+      
+    grade:
+      title: Gred Peperiksaan
+      new: Gred Peperiksaan Baru
+      edit: Sunting Gred Peperiksaan
+    
+    examresult:
+      title: Keputusan Peperiksaan Mengikut Program
+      title2: Keputusan Mengikut Program
+      exam_slip: Slip Keputusan
 
   training:
     title: Latihan
