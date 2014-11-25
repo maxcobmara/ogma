@@ -1,0 +1,87 @@
+.row
+  .col-md-10.col-md-offset-1
+    / Nav tabs
+    %ul.nav.nav-tabs
+      %li.active= link_to ((t 'exam.exammark.exammark_details')),"#exammark_details", "data-toggle" => "tab"
+      
+    .tab-content{style:"padding-top:1em"}
+      #exammark_details.tab-pane.active
+        %br
+        .col-md-offset-2 
+          .form-group
+            .col-sm-2.control-label
+              =f.label t 'exam.exammark.exam_id', for: :exam_id
+            .col-md-3
+              = f.collection_select :exam_id, @exams_list, :id, :exam_name_subject_date,{:include_blank =>t('select')},{class: 'selectpicker', "data-width"=>'300px'} 
+          .form-group
+            .col-sm-2.control-label
+              = f.label  t 'exam.exammark.student_id', for: :student_id
+            .col-md-4
+              = f.collection_select :student_id, @students_list, :id, :matrix_name, {:include_blank=>t('select'), :selected=>@exammark.student_id}, {class: 'selectpicker', "data-width"=>'300px'} 
+              
+          - if @exammark.new_record? == false 
+            .form-group
+              .col-sm-2.control-label
+                = f.label t 'exam.exammark.marks', for: :marks
+              .col-md-6
+                - if @exammark.exampaper.klass_id == 0
+                  (number_with_precision(@exammark.total_marks,2).to_s+t('asset.loan.separator_slash')+ number_with_precision(@exammark.exampaper.examtemplates.map(&:total_marks).inject{|sum, x|sum+x},2) )
+                - else
+                  /################################################
+                  %table.table
+                    - @examquestions = @exammark.exampaper.examquestions
+                    %thead
+                      %tr
+                        %th=t 'exam.examquestion.questiontype'
+                        %th No
+                        %th=t 'exam.exammark.question'
+                        %th=t 'exam.exammark.mark'
+                    %tbody
+                      - if @exammark
+                        /retrieve existing marks first
+                        /- @marks_for_questions = Mark.where(exammark_id: @exammark.id).order(created_at: :asc)
+                        - @current_mark = @exammark.total_mcq
+                        - @marks_for_questions = Mark.where(exammark_id: @exammark.id).sort_by{|x|x.created_at} 
+
+                        /start-display MCQ questions details
+                        - if @examquestions.mcqq.count > 0
+                          - if @exammark
+                            - @exist_mark = @current_mark
+                          - else
+                            - @exist_mark = 0.00
+                          %tr
+                            %td MCQ
+                            %td
+                              - 1.upto(@examquestions.mcqq.count) do |no|
+                                =no
+                                %br
+                            %td
+                              - for examquestion in @examquestions.mcqq
+                                =examquestion.question
+                                %br
+                            %td
+                              - marks_ary = @examquestions.mcqq.pluck(:marks) 
+                              - @mcq_totalmarks = marks_ary.inject{|sum,x|sum+x}
+                              /=number_with_precision(@exammark.total_mcq,precision: 2)  
+                              = text_field_tag "exammark[total_mcq]",number_with_precision(@exist_mark,:precision=>2) ,:id=>"total_mcq1" , :size=>4,  :class=>'g1'
+                              \/ 
+                              =number_with_precision(@mcq_totalmarks, precision: 2) 
+
+/for use in below JS
+= hidden_field_tag "exammark[trial1]", nil, :class=>'k1'
+= hidden_field_tag "exammark[trial2]", @examquestions.mcqq.count, :class=>'k1'
+= hidden_field_tag "exammark[trial3]", @examquestions.count 
+- if @exammark
+  =hidden_field_tag "exammark[total_mcq_in_exammark_single]", @exammark.total_mcq 
+  
+:javascript
+$(document).ready(function(){
+  $(".k1").keyup(function() {  
+    var trial1 = $("#exammark_trial1").val();
+    var trial2 = $("#exammark_trial2").val();
+    var ansP2 = document.getElementById("exammark_trial3");
+    ansP2.value = (trial1*1)+(trial2*1) 
+  });
+});
+            
+/display form for marks entering here (form display upon selection of exam (exam paper))

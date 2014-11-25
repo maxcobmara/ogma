@@ -115,6 +115,7 @@ authorization do
    has_permission_on :exam_exams, :to =>[:manage] do
      if_attribute :created_by => is {user.userable.id}
    end
+   
    has_permission_on :exam_examquestions, :to =>:update, :join_by => :and do
      if_attribute :creator_id => is {user.userable.id}
      if_attribute :qstatus => is {"New"}
@@ -138,6 +139,11 @@ authorization do
      if_attribute :editor_id => is {user.userable.id}
      if_attribute :qstatus => is {"Re-Edit"}
    end
+   
+   has_permission_on :exam_exammarks, :to => :update do
+     if_attribute :exam_id => is_in {user.exams_of_programme}
+   end
+   
  end
 
  role :programme_manager do

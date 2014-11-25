@@ -44,15 +44,61 @@ class Exam::ExammarksController < ApplicationController
   end
   
   def new
+    @position_exist = @current_user.userable.positions
+    if @position_exist  
+      @lecturer_programme = @current_user.userable.positions[0].unit
+      unless @lecturer_programme.nil?
+        @programme = Programme.where('name ILIKE (?) AND ancestry_depth=?',"%#{@lecturer_programme}%",0)
+      end
+      unless @programme.nil? || @programme.count==0
+        @programme_id = @programme.first.id
+        @students_list = Student.where(course_id: @programme_id).order(matrixno: :asc)
+        subjects_ids = Programme.where(id: @programme_id).first.descendants.at_depth(2).pluck(:id)
+        @exams_list = Exam.where('subject_id IN(?)', subjects_ids).order(name: :asc, subject_id: :asc)
+      else
+        @students_list = Student.all.order(matrixno: :asc)
+        @exams_list = Exam.all.order(name: :asc, subject_id: :asc)
+      end
+    end
   end
   
   def edit
+    @position_exist = @current_user.userable.positions
+    if @position_exist  
+      @lecturer_programme = @current_user.userable.positions[0].unit
+      unless @lecturer_programme.nil?
+        @programme = Programme.where('name ILIKE (?) AND ancestry_depth=?',"%#{@lecturer_programme}%",0)
+      end
+      unless @programme.nil? || @programme.count==0
+        @programme_id = @programme.first.id
+        @students_list = Student.where(course_id: @programme_id).order(matrixno: :asc)
+        subjects_ids = Programme.where(id: @programme_id).first.descendants.at_depth(2).pluck(:id)
+        @exams_list = Exam.where('subject_id IN(?)', subjects_ids).order(name: :asc, subject_id: :asc)
+      else
+        @students_list = Student.all.order(matrixno: :asc)
+        @exams_list = Exam.all.order(name: :asc, subject_id: :asc)
+      end
+    end
   end
   
   def create
   end
   
+  # PUT /exammarks/1
+  # PUT /exammarks/1.xml
   def update
+    @exammark = Exammark.find(params[:id])
+    @exammark.total_mcq = params[:exammark][:total_mcq] #5June2013-added refer exammark.rb(set_total_mcq) & _form.html.haml(rev 26Nov14)
+    
+    respond_to do |format|
+      if @exammark.update(exammark_params)
+        format.html { redirect_to(exam_exammark_path(@exammark), :notice => 'Exammark was successfully updated.') }
+        format.xml  { head :ok }
+      else
+        format.html { render :action => "edit" }
+        format.xml  { render :xml => @exammark.errors, :status => :unprocessable_entity }
+      end
+    end
   end
   
   def destroy
