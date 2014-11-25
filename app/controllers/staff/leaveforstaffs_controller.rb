@@ -5,7 +5,13 @@ class Staff::LeaveforstaffsController < ApplicationController
     @leaveforstaffs = Leaveforstaff.all
     @search = Leaveforstaff.search(params[:q])
     @leaveforstaffs = @search.result 
+    
+    respond_to do |format|
+      format.html # show.html.erb
+      format.xml  { render :xml => @leaveforstaff }
+    end
   end
+  
   def show
     @leaveforstaff = Leaveforstaff.find(params[:id])
 
@@ -68,6 +74,14 @@ class Staff::LeaveforstaffsController < ApplicationController
       format.xml  { render :xml => @leaveforstaff }
   end
 end
+
+  def processing_level_1
+    @leaveforstaff = Leaveforstaff.find(params[:id])
+  end
+  
+  def processing_level_2
+    @leaveforstaff = Leaveforstaff.find(params[:id])
+  end
 
   private
     # Use callbacks to share common setup or constraints between actions.

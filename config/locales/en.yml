@@ -629,12 +629,12 @@ en:
     leave: Staff Leave
     apply: Apply
     listapprove: "List/Approve"
-    title: Show Leave
-    edit: Edit Leave
+    title: Staff Leave
+    edit: Edit Staff Leave
     new: New Leave For Staff
-    details: Leave Details
-    approve_leave: Leave Approval
-    list: List of Staff
+    details: Details
+    approve_leave: Approval
+    list: Staff Leave List
     id: Staff Name and IC No
     name: Staff Name
     leavetype: Leave Type
@@ -663,6 +663,7 @@ en:
     endorsed_date: Date Endorsed
     new_notice: A new leave for staff has successfully created
     update_notice: A leave has successfully updated
+    for_approval: For Approval
       
       
   position:

@@ -21,7 +21,7 @@
         %th= sort_link(@search, :leavestartdate, t('staff_leave.from')) + ("/") + sort_link(@search, :leavenddate, t('staff_leave.to')) 
         %th= sort_link(@search, :leavedays, t('staff_leave.duration')) 
         %th= sort_link(@search, :reason, t('staff_leave.reason')) 
-        %th{style: "width:23%;"}= sort_link(@search, :replacement_id, t('staff_leave.replacement')) 
+        %th{style: "width:13%;"}= sort_link(@search, :replacement_id, t('staff_leave.replacement')) 
 		
     %tbody
       = render "index_search"
@@ -35,4 +35,4 @@
           %td= leaveforstaff.leave_for.to_s + (" ") +   (t 'staff_leave.days')
           %td= leaveforstaff.reason
           %td= leaveforstaff.replacement_id.blank? ? "None" : leaveforstaff.replacement.name
-
+         

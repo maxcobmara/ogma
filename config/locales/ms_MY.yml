@@ -545,12 +545,12 @@ ms_MY:
     leave: Cuti Staf
     apply: Permohonan
     listapprove: "Senarai/Kelulusan"
-    title: Butiran Cuti
-    edit: Sunting Permohonan Cuti
+    title: Cuti Staf
+    edit: Sunting Permohonan Cuti Staf
     new: Cuti Baru Untuk Staf
-    details: Maklumat Cuti
-    approve_leave: Kelulusan Cuti
-    list: Senarai Staf
+    details: Butiran 
+    approve_leave: Kelulusan 
+    list: Senarai Cuti Staf
     id: Nama dan No IC
     name: Nama Staf
     leavetype: Jenis Cuti
@@ -579,6 +579,7 @@ ms_MY:
     endorsed_date: Tarikh Disahkan
     new_notice: Cuti baru untuk staf berjaya dicipta
     update_notice: Cuti berjaya dikemaskini 
+    for_approval: Untuk Kelulusan
   
   position:
     title: "Tugas & Tanggungjawab"
