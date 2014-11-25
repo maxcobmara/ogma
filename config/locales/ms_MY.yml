@@ -1476,6 +1476,10 @@ ms_MY:
       total_mcq: Jumlah Markah
       icno: "No. MyKad"
       remarks: Catatan
+      exammark_details: Butiran Markah Peperiksaan
+      marks: Markah Peperiksaan
+      mark: Markah
+      question: Soalan
       
     grade:
       title: Gred Peperiksaan

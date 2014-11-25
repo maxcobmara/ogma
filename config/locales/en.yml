@@ -1539,6 +1539,10 @@ en:
       total_mcq: Total Marks
       icno: MyKad No
       remarks: Remarks
+      exammark_details: Examination Marks Details
+      marks: Examination Marks
+      mark: Marks
+      question: Question
     
     grade:
       title: Examination Grades

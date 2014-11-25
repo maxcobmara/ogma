@@ -17,7 +17,6 @@
         %th= sort_link(@search, :student_id, (t 'exam.exammark.student_id'))
         %th= t 'exam.exammark.icno'
         %th= sort_link(@search, :total_mcq, (t 'exam.exammark.total_mcq'))
-        %th= t 'exam.exammark.remark'
 
     %tbody
       = render "search_bar"
@@ -38,7 +37,6 @@
             %td= link_to exammark.studentmark.matrix_name, exam_exammark_path(exammark)
             %td=h exammark.studentmark.icno
             %td=number_with_precision(exammark.total_marks,:precision=>2)
-            %td &nbsp;
 
   %span{:style=>"position: absolute; left: 40px;"}
     = check_box_tag :check_all
@@ -47,7 +45,6 @@
 
   /--for multiple edit-14Apr2013--
   /= submit_tag "Edit Checked", :name => :exammark_submit_button
-
         
   .right{style:"padding:0 30px; margin:0;"}= paginate @exammarks, :theme => 'twitter-bootstrap-3'
 

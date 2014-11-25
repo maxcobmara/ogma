@@ -32,7 +32,7 @@ class Exammark < ActiveRecord::Base
   
   def total_marks
     if self.id
-      return Mark.sum(:student_mark, :conditions => ["exammark_id=?", self.id])+total_mcq.to_i
+      return Mark.where(exammark_id: self.id).sum(:student_mark)+total_mcq.to_i
     else
       @total_marks	#any input by user will be ignored either edit form or new (including re-submission-invalid data)
        #value assigned from partial..(1) single entry(_form.html.erb-line 44-47) (2) multiple entry(_form_by_paper.html.erb-line88-91)

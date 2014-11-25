@@ -43,6 +43,28 @@ class Exam::ExammarksController < ApplicationController
     end
   end
   
+  def new
+  end
+  
+  def edit
+  end
+  
+  def create
+  end
+  
+  def update
+  end
+  
+  def destroy
+    @exammark = Exammark.find(params[:id])
+    @exammark.destroy
+
+    respond_to do |format|
+      format.html { redirect_to(exam_exammarks_url) }
+      format.xml  { head :ok }
+    end
+  end
+  
   private
    # Use callbacks to share common setup or constraints between actions.
     def set_exammark
