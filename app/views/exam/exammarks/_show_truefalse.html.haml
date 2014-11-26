@@ -1,0 +1,16 @@
+%tr
+  - if count == 0
+    %td{:rowspan=>"#{@examquestions.truefalseq.count}"} TRUE or FALSE
+  %td=count+1
+  %td=simple_format(@examquestions.truefalseq[count].question)
+  %td
+    - if task==1
+      = @marks_for_questions[count2].student_mark
+    - elsif task==2
+      = text_field "exammark[marks_attributes][#{count2}]",:student_mark, :value=>number_with_precision(@exist_mark,:precision=>2), :size=>4, :class=>'he1' 
+      /HIDDEN FIELD FOR ID OF EXISTING RECORD-edit existing record instead of creating a new one
+      - if @exammark && @marks_for_questions.count!=0
+        = hidden_field "exammark[marks_attributes][#{count2}]", :id, :value => @marks_for_questions[count2].id
+  %td
+    \/ 
+    =number_with_precision(@examquestions.truefalseq[count].marks,precision: 2)

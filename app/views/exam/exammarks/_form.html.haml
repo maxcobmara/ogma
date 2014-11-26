@@ -39,7 +39,6 @@
                     %tbody
                       - if @exammark
                         /retrieve existing marks first
-                        /- @marks_for_questions = Mark.where(exammark_id: @exammark.id).order(created_at: :asc)
                         - @current_mark = @exammark.total_mcq
                         - @marks_for_questions = Mark.where(exammark_id: @exammark.id).sort_by{|x|x.created_at} 
 
@@ -49,24 +48,73 @@
                             - @exist_mark = @current_mark
                           - else
                             - @exist_mark = 0.00
-                          %tr
-                            %td MCQ
-                            %td
-                              - 1.upto(@examquestions.mcqq.count) do |no|
-                                =no
-                                %br
-                            %td
-                              - for examquestion in @examquestions.mcqq
-                                =examquestion.question
-                                %br
-                            %td
-                              - marks_ary = @examquestions.mcqq.pluck(:marks) 
-                              - @mcq_totalmarks = marks_ary.inject{|sum,x|sum+x}
-                              /=number_with_precision(@exammark.total_mcq,precision: 2)  
-                              = text_field_tag "exammark[total_mcq]",number_with_precision(@exist_mark,:precision=>2) ,:id=>"total_mcq1" , :size=>4,  :class=>'g1'
-                              \/ 
-                              =number_with_precision(@mcq_totalmarks, precision: 2) 
+                          = render 'show_mcq', :task=>2, :exist_mark=>@exist_mark
+                          
+                        /start-display MEQ questions details
+                        - count2 = 0
+                        - if @examquestions.meqq.count > 0
+                          - 0.upto(@examquestions.meqq.count-1) do |count|
+                            = render 'mark_exist', :count2=>count2
+                            = render 'show_meq', :count=>count, :count2=>count2, :task=>2
+                            - count2+=1
 
+                        /start-display SEQ questions details
+                        - if @examquestions.seqq.count > 0 
+                          - 0.upto(@examquestions.seqq.count-1) do |count| 
+                            = render 'mark_exist', :count2=>count2
+                            = render 'show_seq', :count=>count, :count2=>count2, :task=>2
+                            - count2+=1 
+
+                        /start-display ACQ questions details
+                        - if @examquestions.acqq.count > 0 
+                          - 0.upto(@examquestions.acqq.count-1) do |count|
+                            = render 'mark_exist', :count2=>count2
+                            = render 'show_acq', :count=>count, :count2=>count2,  :task=>2
+                            - count2+=1 
+                        
+                        /start-display OSCI questions details
+                        - if @examquestions.osci2q.count > 0
+                          - 0.upto(@examquestions.osci2q.count-1) do |count|
+                            = render 'mark_exist', :count2=>count2
+                            = render 'show_osci', :count=>count, :count2=>count2, :task=>2
+                            - count2+=1 
+                
+                        /start-display OSCII questions details
+                        - if @examquestions.osci3q.count > 0                 
+                          - 0.upto(@examquestions.osci3q.count-1) do |count|
+                            = render 'mark_exist', :count2=>count2
+                            = render 'show_oscii', :count=>count, :count2=>count2, :task=>2
+                            - count2+=1 
+                  
+                        /start-display OSCE questions details
+                        - if @examquestions.osceq.count > 0
+                          - 0.upto(@examquestions.osceq.count-1) do |count|
+                            = render 'mark_exist', :count2=>count2
+                            = render 'show_osce', :count=>count, :count2=>count2, :task=>2
+                            - count2+=1
+ 
+                        /start-display OSPE questions details
+                        - if @examquestions.ospeq.count > 0
+                          - 0.upto(@examquestions.ospeq.count-1) do |count|
+                            = render 'mark_exist', :count2=>count2
+                            = render 'show_ospe', :count=>count, :count2=>count2, :task=>2
+                            - count2+=1
+ 
+                        /start-display VIVA questions details
+                        - if @examquestions.vivaq.count > 0 
+                          - 0.upto(@examquestions.vivaq.count-1) do |count|
+                            = render 'mark_exist', :count2=>count2
+                            = render 'show_viva', :count=>count, :count2=>count2, :task=>2
+                            - count2+=1
+
+                        /start-display TRUEFALSE questions details
+                        - if @examquestions.truefalseq.count > 0
+                          - 0.upto(@examquestions.truefalseq.count-1) do |count| 
+                            = render 'mark_exist', :count2=>count2
+                            = render 'show_truefalse', :count=>count, :count2=>count2, :task=>2
+                            - count2+=1
+                      
+                        
 /for use in below JS
 = hidden_field_tag "exammark[trial1]", nil, :class=>'k1'
 = hidden_field_tag "exammark[trial2]", @examquestions.mcqq.count, :class=>'k1'

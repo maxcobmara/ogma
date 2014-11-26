@@ -118,6 +118,6 @@ class Exam::ExammarksController < ApplicationController
     end
     # Never trust parameters from the scary internet, only allow the white list through.
     def exammark_params
-      params.require(:exammark).permit(:student_id, :exam_id, :total_mcq)
+      params.require(:exammark).permit(:student_id, :exam_id, :total_mcq, marks_attributes: [:id,:exammark_id, :student_mark])
     end
 end
