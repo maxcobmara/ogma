@@ -18,7 +18,12 @@ class User < ActiveRecord::Base
    [:keyword_search]
   end
 
-
+  def exams_of_programme
+    unit_of_staff = userable.positions.first.unit	 #User.where(id: self.id).first.userable.positions.first.unit
+    programme_of_staff = Programme.where('name ILIKE(?)', "%#{unit_of_staff}%").at_depth(0).first
+    subjects_ids = programme_of_staff.descendants.at_depth(2).pluck(:id)
+    return Exam.where('subject_id IN(?)', subjects_ids).pluck(:id)
+  end
 
   def role_symbols
    roles.map do |role|

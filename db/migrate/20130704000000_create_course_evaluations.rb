@@ -1,5 +1,5 @@
 class CreateCourseEvaluations < ActiveRecord::Migration
-  def self.upv
+  def self.up
     create_table :courseevaluations do |t|
       t.integer  :student_id
       t.integer  :programme_id
