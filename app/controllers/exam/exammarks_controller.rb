@@ -89,11 +89,18 @@ class Exam::ExammarksController < ApplicationController
   def create
     @exammark = Exammark.new(exammark_params)
     examid = params[:exammark][:exam_id]
-    questions_count = Exam.where(id: examid).first.examquestions.count
+    is_template = Exam.where(id: examid).first.klass_id
+    if is_template==1
+      questions_count = Exam.where(id: examid).first.examquestions.count
+    else
+      #questions_count = Exam.where(id: examid).first.examtemplates.count
+      qty_ary = Exam.where(id: examid).first.examtemplates.pluck(:quantity)
+      questions_count = qty_ary.inject{|sum,x|sum+x}
+    end
     0.upto(questions_count-1) do
       @exammark.marks.build
     end
-    
+ 
     @position_exist = @current_user.userable.positions
     if @position_exist  
       @lecturer_programme = @current_user.userable.positions[0].unit

@@ -1,16 +1,27 @@
 %tr
   - if count == 0
-    %td{:rowspan=>"#{@examquestions.acqq.count}"} ACQ
+    - if @examquestions.count>0
+      %td{:rowspan=>"#{@examquestions.acqq.count}"} ACQ
+    - elsif @examtemplates.count>0
+      %td{:rowspan=>"#{@examtemplates.acqq[0].quantity}"} ACQ
   %td=count+1
-  %td=@examquestions.acqq[count].question
+  %td
+    =@examquestions.acqq[count].question if @examquestions.count>0
+    - if @examtemplates
+      \-
   %td
     - if task==1
       = number_with_precision(@marks_for_questions[count2].student_mark, precision: 2)
     - elsif task==2
-      = text_field "exammark[marks_attributes][#{count2}]", :student_mark,:value=>number_with_precision(@exist_mark,:precision=>2) , :size=>4, :class=>'he'
+      = text_field "exammark[marks_attributes][#{count2}]", :student_mark,:value=>number_with_precision(@exist_mark,:precision=>2) , :size=>2, :class=>'form-control'
       /HIDDEN FIELD FOR ID OF EXISTING RECORD-edit existing record instead of creating a new one
       - if @exammark  && @marks_for_questions.count!=0
         = hidden_field "exammark[marks_attributes][#{count2}]", :id, :value => @marks_for_questions[count2].id
   %td
     \/ 
-    =number_with_precision(@examquestions.acqq[count].marks, precision: 2)
+    - if @examquestions.count>0
+      =number_with_precision(@examquestions.acqq[count].marks, precision: 2)
+    - else
+      =number_with_precision(@examtemplates.acqq[0].total_marks/@examtemplates.acqq[0].quantity, precision: 2)
+
+

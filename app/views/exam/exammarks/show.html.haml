@@ -18,10 +18,10 @@
           %dt= t 'exam.exammark.exam_id'
           %dd
             =h @exammark.exampaper.exam_name_subject_date
-            - @istemplate = @exammark.exampaper.klass_id 
-            - if @istemplate == 0
-              %span{:style=>"color:blue;"}(Template)
-    
+            - @istemplate = @exammark.exampaper.klass_id
+            - if @istemplate == 0 
+              (Template)
+
       #exammark_details.tab-pane.active
         %br
         = render 'show_marks'

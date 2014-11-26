@@ -1,20 +1,30 @@
 %tr
   %td MCQ
   %td
-    - 1.upto(@examquestions.mcqq.count) do |no|
-      =no
-      %br
+    - if @examquestions.count>0
+      - 1.upto(@examquestions.mcqq.count) do |no|
+        =no
+        %br
+    - else
+      \-
   %td
-    - for examquestion in @examquestions.mcqq
-      =examquestion.question
-      %br
+    - if @examquestions.count>0
+      - for examquestion in @examquestions.mcqq
+        =examquestion.question
+        %br
+    - else
+      \-
   %td
-    - marks_ary = @examquestions.mcqq.pluck(:marks) 
+    - if @examquestions.count>0
+      - marks_ary = @examquestions.mcqq.pluck(:marks)
+    - else
+      - marks_ary = @examtemplates.mcqq.pluck(:total_marks) 
     - @mcq_totalmarks = marks_ary.inject{|sum,x|sum+x}
     - if task==1
       =number_with_precision(@exammark.total_mcq,precision: 2)  
     - elsif task==2
-      = text_field_tag "exammark[total_mcq]",number_with_precision(@exist_mark,:precision=>2) ,:id=>"total_mcq1" , :size=>4,  :class=>'g1'
+      = text_field_tag "exammark[total_mcq]",number_with_precision(@exist_mark,:precision=>2) ,:id=>"total_mcq1" , :size=>2,  :class=>'form-control'
   %td
     \/ 
     =number_with_precision(@mcq_totalmarks, precision: 2) 
+
