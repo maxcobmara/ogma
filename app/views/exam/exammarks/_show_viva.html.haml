@@ -5,7 +5,7 @@
   %td=simple_format(@examquestions.vivaq[count].question)
   %td
     - if task==1
-      = @marks_for_questions[count2].student_mark
+      = number_with_precision(@marks_for_questions[count2].student_mark, precision: 2)
     - elsif task==2
       = text_field "exammark[marks_attributes][#{count2}]",:student_mark, :value=>number_with_precision(@exist_mark, :precision=>2), :size=>4, :class=>'he1' 
       /HIDDEN FIELD FOR ID OF EXISTING RECORD-edit existing record instead of creating a new one

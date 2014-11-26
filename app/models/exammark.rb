@@ -33,13 +33,13 @@ class Exammark < ActiveRecord::Base
   def set_total_mcq
     if total_mcq==nil   #5June2013-added-calculate here if not assign in _view_marks_form(otal_mcq==nil)
       count=0
-      @examquestions = Exam.find(:first, :conditions=>['id=?', exam_id]).examquestions
+      @examquestions = Exam.where(id: exam_id).first.examquestions
       @examquestions.each do |x|
          if x.questiontype=="MCQ"
            count+=1
          end
       end
-      @allmarks = Mark.find(:all, :conditions => ["exammark_id=?", self.id])
+      @allmarks = Mark.where(exammark_id: self.id)
       @sum_mcq = 0
       @allmarks.each_with_index do |y, index|
          if index< count

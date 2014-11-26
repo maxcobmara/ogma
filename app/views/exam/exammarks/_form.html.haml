@@ -116,11 +116,12 @@
                       
                         
 /for use in below JS
-= hidden_field_tag "exammark[trial1]", nil, :class=>'k1'
-= hidden_field_tag "exammark[trial2]", @examquestions.mcqq.count, :class=>'k1'
-= hidden_field_tag "exammark[trial3]", @examquestions.count 
-- if @exammark
-  =hidden_field_tag "exammark[total_mcq_in_exammark_single]", @exammark.total_mcq 
+- if @exammark.new_record? == false 
+  = hidden_field_tag "exammark[trial1]", nil, :class=>'k1'
+  = hidden_field_tag "exammark[trial2]", @examquestions.mcqq.count, :class=>'k1'
+  = hidden_field_tag "exammark[trial3]", @examquestions.count 
+  - if @exammark
+    =hidden_field_tag "exammark[total_mcq_in_exammark_single]", @exammark.total_mcq 
   
 :javascript
 $(document).ready(function(){
