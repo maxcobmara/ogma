@@ -16,7 +16,12 @@ Ogma::Application.routes.draw do
         get :appraisal_form
       end
     end
-    resources :leaveforstaffs
+    resources :leaveforstaffs do
+      member do
+        get :processing_level_1
+        get :processing_level_2
+      end
+    end
     resources :travel_claims do 
       member do
         get :check

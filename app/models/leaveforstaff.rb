@@ -114,7 +114,7 @@ class Leaveforstaff < ActiveRecord::Base
   
     def leave_balance
       accumulated_leave = 0
-      leavedays = Leaveforstaff.find(:all, :conditions=>['staff_id=? AND leavetype=?',applicant, 1])
+      leavedays = Leaveforstaff.where(['staff_id=? AND leavetype=?',applicant, 1])
       leavedays.each do |leave|
         accumulated_leave+=leave.leavenddate+1-leave.leavestartdate
       end
@@ -131,8 +131,8 @@ class Leaveforstaff < ActiveRecord::Base
     end
   
     def repl_staff
-      sibpos = applicant.position.sibling_ids
-      sibs   = Position.find(:all, :select => "staff_id", :conditions => ["id IN (?)", sibpos]).map(&:staff_id)
+      sibpos = applicant.positions.sibling_ids
+      sibs   = Position.where(select: "staff_id", conditions: ["id IN (?)", sibpos]).map(&:staff_id)
       applicant = Array(staff_id)
       sibs - applicant
     end

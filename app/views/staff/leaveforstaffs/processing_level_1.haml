@@ -1,0 +1,50 @@
+- model_class = Leaveforstaff
+.page-header
+  %h1= t 'staff_leave.approve1'
+  
+= render 'shared/flashes'
+
+.row
+  = form_for [:staff, @leaveforstaff], html: { multipart: true, class: 'form-horizontal' }  do |f| 
+    = render 'shared/error_messages', object: f.object
+    
+    .row
+      .col-md-offset-1
+        %ul.nav.nav-tabs
+          %li.active= link_to (t 'staff_leave.approve_leave'), "#approve", "data-toggle" => "tab"
+
+        .col-md-8.col-md-offset-1
+          %dl.dl-horizontal
+            = render 'applyshow'
+            
+            .form-group
+              .col-sm-2.control-label
+                = f.label t 'staff_leave.replacement', for: :replacement_id
+              .col-md-4
+                /= f.collection_select :replacement_id, Staff.where("id IN (?)", @leaveforstaff.repl_staff), :id, :name, {:include_blank => true}, {class: 'selectpicker', "data-width"=>'410px'}
+                
+            .form-group
+              .col-sm-2.control-label
+                = f.label t 'staff_leave.approval', for: :approval1
+              .col-md-7
+                .form-inline
+                  .form-group
+                    = t 'staff_leave.approve'
+                    = f.radio_button :approval1, true
+                  .form-group
+                    = t 'staff_leave.reject'
+                    = f.radio_button :approval1, false
+                    
+            .form-group
+              .col-sm-2.control-label
+                = f.label t 'staff_leave.approval1date', for: :approval1date
+              .col-md-4
+                = f.text_field :approval1date, :order => [:day, :month, :year,], :default => DateTime.now, class: 'date_picker form-control'        
+            
+        .col-md-8.col-md-offset-1
+          %BR
+            .form-group
+              .col-sm-offset-2.col-sm-1
+                = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), staff_leaveforstaff_path(@leaveforstaff), :class => 'btn btn-default'
+              .col-sm-2
+                = f.submit t('update'), class: "btn btn-primary" 

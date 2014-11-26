@@ -1,0 +1,50 @@
+- model_class = Leaveforstaff
+.page-header
+  %h1= t 'staff_leave.approve2'
+  
+= render 'shared/flashes'
+
+.row
+  = form_for [:staff, @leaveforstaff], html: { multipart: true, class: 'form-horizontal' }  do |f| 
+    = render 'shared/error_messages', object: f.object
+    
+    .row
+      .col-md-offset-1
+        %ul.nav.nav-tabs
+          %li.active= link_to (t 'staff_leave.approve_leave'), "#approve", "data-toggle" => "tab"
+
+        .col-md-8.col-md-offset-1
+          %dl.dl-horizontal
+            = render 'applyshow'
+            %BR
+              %dt= t 'staff_leave.replacement'
+              %dd= @leaveforstaff.replacement_id.blank? ? "" : @leaveforstaff.replacement.name 
+              
+              %dt= t 'staff_leave.approval'
+              %dd= @leaveforstaff.approval1?to_s ? "Approved" : "Not Approved" + ("on") +  @leaveforstaff.seconder.name + ("by") + @leaveforstaff.approval1date.try(:strftime, "%d %b %Y")
+                
+            .form-group
+              .col-sm-3.control-label
+                = f.label t 'staff_leave.approval', for: :approver2
+              .col-md-7
+                .form-inline
+                  .form-group
+                    = t 'staff_leave.approve'
+                    = f.radio_button :approver2, true
+                  .form-group
+                    = t 'staff_leave.reject'
+                    = f.radio_button :approver2, false
+                    
+            .form-group
+              .col-sm-2.control-label
+                = f.label t 'staff_leave.approval2date', for: :approval2date
+              .col-md-4
+                = f.text_field :approval2date, :order => [:day, :month, :year,], :default => DateTime.now, class: 'date_picker form-control' 
+            
+        .col-md-8.col-md-offset-1
+          %BR
+            .form-group
+              .col-sm-offset-2.col-sm-1
+                = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), staff_leaveforstaff_path(@leaveforstaff), :class => 'btn btn-default'
+              .col-sm-2
+                = f.submit t('update'), class: "btn btn-primary"   
