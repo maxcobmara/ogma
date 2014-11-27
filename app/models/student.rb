@@ -205,13 +205,13 @@ class Student < ActiveRecord::Base
    def self.get_student_by_intake_gender_race(main_semester, main_year, gender, programme, race)
      intake_start = Student.get_intake(main_semester, main_year, programme)
      intake_end = intake_start.end_of_month
-     return Student.find(:all, :conditions => ['intake >=? AND intake<=? AND course_id=? AND race2=? AND gender=?',intake_start, intake_end, programme, race, gender])
+     return Student.where('intake >=? AND intake<=? AND course_id=? AND race2=? AND gender=?',intake_start, intake_end, programme, race, gender)
    end
 
    def self.get_student_by_intake_gender(main_semester, main_year, gender, programme)
      intake_start = Student.get_intake(main_semester, main_year, programme)
      intake_end = intake_start.end_of_month
-     return Student.find(:all, :conditions => ['intake >=? AND intake<=? AND course_id=? AND gender=? AND race2 IS NOT NULL',intake_start, intake_end, programme, gender])
+     return Student.where('intake >=? AND intake<=? AND course_id=? AND gender=? AND race2 IS NOT NULL',intake_start, intake_end, programme, gender)
    end
 
    def self.get_student_by_6intake(programme) #return all students for these 6 intake - valid & invalid
@@ -227,7 +227,7 @@ class Student < ActiveRecord::Base
      intake_end5 = intake_start5.end_of_month
      intake_start6 = Student.get_intake(2, 3, programme)
      intake_end6 = intake_start6.end_of_month
-     return Student.find(:all, :conditions => ['((intake >=? AND intake<=?) OR (intake >=? AND intake<=?) OR (intake >=? AND intake<=?) OR (intake >=? AND intake<=?) OR (intake >=? AND intake<=?) OR (intake >=? AND intake<=?)) AND course_id=?',intake_start1, intake_end1,intake_start2, intake_end2, intake_start3, intake_end3, intake_start4, intake_end4,intake_start5, intake_end5,intake_start6, intake_end6,programme])
+     return Student.where('((intake >=? AND intake<=?) OR (intake >=? AND intake<=?) OR (intake >=? AND intake<=?) OR (intake >=? AND intake<=?) OR (intake >=? AND intake<=?) OR (intake >=? AND intake<=?)) AND course_id=?',intake_start1, intake_end1,intake_start2, intake_end2, intake_start3, intake_end3, intake_start4, intake_end4,intake_start5, intake_end5,intake_start6, intake_end6,programme)
    end
 
 # ------------------------------code for repeating field qualification---------------------------------------------------
