@@ -2,7 +2,7 @@ class Leaveforstaff < ActiveRecord::Base
   
   
   
- # before_save :save_my_approvers
+    before_save :save_my_approvers
   
 
     belongs_to :applicant,    :class_name => 'Staff', :foreign_key => 'staff_id'
@@ -43,7 +43,7 @@ class Leaveforstaff < ActiveRecord::Base
     end
   
     def save_my_approvers
-      if applicant.position.nil?
+      if applicant.positions.nil?
       else
         if approval1_id == nil
           self.approval1_id = set_approver1
@@ -55,18 +55,18 @@ class Leaveforstaff < ActiveRecord::Base
     end
   
     def set_approver1
-      if applicant.position.parent.staff.id == []
+      if applicant.positions.first.parent.staff.id == []
         approver1 = nil
       else
-        approver1 = applicant.position.parent.staff.id
+        approver1 = applicant.positions.first.parent.staff.id
       end    
     end
   
     def set_approver2
-      if applicant.position.parent.is_root?
+      if applicant.positions.first.parent.is_root?
         approver2 = 0
       else
-        approver2 = applicant.position.parent.parent.staff.id
+        approver2 = applicant.positions.first.parent.parent.staff.id
       end
     end
   
@@ -114,7 +114,7 @@ class Leaveforstaff < ActiveRecord::Base
   
     def leave_balance
       accumulated_leave = 0
-      leavedays = Leaveforstaff.where(['staff_id=? AND leavetype=?',applicant, 1])
+      leavedays = Leaveforstaff.where('staff_id=? AND leavetype=?',applicant, 1)
       leavedays.each do |leave|
         accumulated_leave+=leave.leavenddate+1-leave.leavestartdate
       end
@@ -131,8 +131,9 @@ class Leaveforstaff < ActiveRecord::Base
     end
   
     def repl_staff
-      sibpos = applicant.positions.sibling_ids
-      sibs   = Position.where(select: "staff_id", conditions: ["id IN (?)", sibpos]).map(&:staff_id)
+      sibpos = applicant.positions.first.sibling_ids
+      dept   = applicant.positions.first.unit
+      sibs   = Position.where(["id IN (?) AND unit=?" , sibpos,dept]).pluck(:staff_id)
       applicant = Array(staff_id)
       sibs - applicant
     end

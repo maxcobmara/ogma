@@ -49,7 +49,9 @@
     .form-actions
       = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), staff_leaveforstaffs_path, :class => 'btn btn-default'
       = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('.edit', :default => t("helpers.links.edit")), edit_staff_leaveforstaff_path(@leaveforstaff), :class => 'btn btn-primary'
+      /- if @current_user.userable_id == @leaveforstaff.approval1_id
       = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('helpers.links.approve'), processing_level_1_staff_leaveforstaff_path(@leaveforstaff),  :class => 'btn btn-primary'
+      /- if @current_user.userable_id == @leaveforstaff.approval2_id
       = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('helpers.links.approve'), processing_level_2_staff_leaveforstaff_path(@leaveforstaff),  :class => 'btn btn-primary'
       = link_to content_tag(:i, "", :class => "fa fa-trash-o icon-white") + " " + t('helpers.links.destroy'), |
         staff_leaveforstaff_path(@leaveforstaff),                                                                                                    |

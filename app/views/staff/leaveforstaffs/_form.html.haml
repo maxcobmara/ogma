@@ -11,13 +11,13 @@
           .col-sm-2.control-label
             = f.label t 'staff_leave.name', for: :staff_id
           .col-md-3
-            = f.collection_select :staff_id, Staff.all.order(name: :asc), :id,  :staff_name_with_position, {:include_blank =>t('helpers.prompt.select_staff'), :selected=>Login.first.staff_id},{class: 'selectpicker', "data-width"=>'440px'}
+            = f.collection_select :staff_id, Staff.all.order(name: :asc), :id,  :staff_name_with_position, {:include_blank =>t('helpers.prompt.select_staff'), :selected=>@current_user.userable_id},{class: 'selectpicker mandatory', "data-width"=>'440px'}
 			
         .form-group
           .col-sm-2.control-label
             = f.label t 'staff_leave.leavetype', for: :leavetype
           .col-md-3
-            = f.select :leavetype, DropDown::STAFFLEAVETYPE, :prompt => "Select", class: 'form-control mandatory'
+            = f.select :leavetype, DropDown::STAFFLEAVETYPE, {:include_blank =>t('helpers.prompt.select_leave_type')} , {class: 'form-control mandatory'}
 			
         .form-group
           .col-sm-2.control-label

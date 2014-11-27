@@ -561,7 +561,7 @@ ms_MY:
     reason: Sebab
     notes: Nota
     duration: Jangka Masa
-    replacement: Staf Ganti
+    replacement: Staf Gantian
     entitlement: Baki Cuti Rehat
     id_or: No IC atau Nama
     rest_leave: Cuti Rehat
@@ -580,6 +580,13 @@ ms_MY:
     new_notice: Cuti baru untuk staf berjaya dicipta
     update_notice: Cuti berjaya dikemaskini 
     for_approval: Untuk Kelulusan
+    approve_staff_leave: Kelulusan Cuti Staf
+    approve_by_date: Tarikh Meluluskan
+    decision: Keputusan
+    approve: Meluluskan
+    reject: Menolak
+    by: oleh
+    on: pada
   
   position:
     title: "Tugas & Tanggungjawab"
@@ -2011,6 +2018,7 @@ ms_MY:
       all_unit: "Semua Jabatan / Unit"
       maintain: Dikekalkan
       remove: Dibuang
+      select_leave_type: Pilih Jenis Cuti
 
   date:
       formats:

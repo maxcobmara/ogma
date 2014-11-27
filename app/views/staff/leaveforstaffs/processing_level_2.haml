@@ -1,6 +1,6 @@
 - model_class = Leaveforstaff
 .page-header
-  %h1= t 'staff_leave.approve2'
+  %h1= t 'staff_leave.approve_staff_leave'
   
 = render 'shared/flashes'
 
@@ -20,8 +20,8 @@
               %dt= t 'staff_leave.replacement'
               %dd= @leaveforstaff.replacement_id.blank? ? "" : @leaveforstaff.replacement.name 
               
-              %dt= t 'staff_leave.approval'
-              %dd= @leaveforstaff.approval1?to_s ? "Approved" : "Not Approved" + ("on") +  @leaveforstaff.seconder.name + ("by") + @leaveforstaff.approval1date.try(:strftime, "%d %b %Y")
+              %dt= t 'staff_leave.decision'
+              %dd= @leaveforstaff.approval1? ? t("staff_leave.approve") + t("staff_leave.by") +  @leaveforstaff.seconder.name + t("staff_leave.on") + @leaveforstaff.approval1date.try(:strftime, "%d %b %Y") : t("staff_leave.reject") 
                 
             .form-group
               .col-sm-3.control-label
@@ -36,9 +36,9 @@
                     = f.radio_button :approver2, false
                     
             .form-group
-              .col-sm-2.control-label
-                = f.label t 'staff_leave.approval2date', for: :approval2date
-              .col-md-4
+              .col-sm-3.control-label
+                = f.label t 'staff_leave.approve_by_date', for: :approval2date
+              .col-md-2
                 = f.text_field :approval2date, :order => [:day, :month, :year,], :default => DateTime.now, class: 'date_picker form-control' 
             
         .col-md-8.col-md-offset-1
@@ -46,5 +46,5 @@
             .form-group
               .col-sm-offset-2.col-sm-1
                 = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), staff_leaveforstaff_path(@leaveforstaff), :class => 'btn btn-default'
-              .col-sm-2
+              .col-sm-offset-1.col-sm-2
                 = f.submit t('update'), class: "btn btn-primary"   
