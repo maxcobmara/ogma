@@ -5,20 +5,11 @@ class Staff::LeaveforstaffsController < ApplicationController
     @leaveforstaffs = Leaveforstaff.all
     @search = Leaveforstaff.search(params[:q])
     @leaveforstaffs = @search.result 
-    
-    respond_to do |format|
-      format.html # show.html.erb
-      format.xml  { render :xml => @leaveforstaff }
-    end
+    @leaveforstaffs = @leaveforstaffs.page(params[:page]||1)
   end
   
   def show
     @leaveforstaff = Leaveforstaff.find(params[:id])
-
-    respond_to do |format|
-      format.html # show.html.erb
-      format.xml  { render :xml => @leaveforstaff }
-    end
   end
   
   def edit
@@ -77,6 +68,7 @@ end
 
   def processing_level_1
     @leaveforstaff = Leaveforstaff.find(params[:id])
+    LeaveforstaffsMailer.staff_leave_notification(@leaveforstaff).deliver
   end
   
   def processing_level_2
@@ -91,7 +83,7 @@ end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def leaveforstaff_params
-      params.require(:leaveforstaff).permit(:id, :staff_id, :leavetype, :leavestartdate, :leavenddate, :leavedays, :reason, :notes, :repalcement_id, :submit, 
+      params.require(:leaveforstaff).permit(:id, :staff_id, :leavetype, :leavestartdate, :leavenddate, :leavedays, :reason, :notes, :replacement_id, :submit, 
                                             :approval1, :approval1_id, :approval1date, :approver2, :approver2_id, :approval2date, :created_at, :updated_at)
     end
 end

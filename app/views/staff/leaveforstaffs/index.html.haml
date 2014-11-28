@@ -20,8 +20,8 @@
         %th= sort_link(@search, :leavetype, t('staff_leave.leavetype'))
         %th= sort_link(@search, :leavestartdate, t('staff_leave.from')) + ("/") + sort_link(@search, :leavenddate, t('staff_leave.to')) 
         %th= sort_link(@search, :leavedays, t('staff_leave.duration')) 
-        %th= sort_link(@search, :reason, t('staff_leave.reason')) 
-        %th{style: "width:13%;"}= sort_link(@search, :replacement_id, t('staff_leave.replacement')) 
+        %th= sort_link(@search, :reason, t('staff_leave.reason'))
+        %th{style: "width:13%;"}= sort_link(@search, :replacement_id, t('staff_leave.replacement'))  
 		
     %tbody
       = render "index_search"
@@ -36,3 +36,4 @@
           %td= leaveforstaff.reason
           %td= leaveforstaff.replacement_id.blank? ? "None" : leaveforstaff.replacement.name
          
+  .right{style:"padding:0 30px; margin:0;"}= paginate @leaveforstaffs, :theme => 'twitter-bootstrap-3'

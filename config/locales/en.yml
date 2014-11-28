@@ -665,6 +665,13 @@ en:
     new_notice: A new leave for staff has successfully created
     update_notice: A leave has successfully updated
     for_approval: For Approval
+    approve_staff_leave: Approve Staff Leave
+    approve_by_date: Approve By Date
+    decision: Decision
+    approve: Approve
+    reject: Reject
+    by: by
+    on: on
       
       
   position:
@@ -2110,6 +2117,7 @@ en:
       all_unit: "All Department / Unit"
       maintain: Maintain
       remove: Remove
+      select_leave_type: Select Leave Type
 
   date:
     formats:
