@@ -91,11 +91,15 @@ class StudentsController < ApplicationController
   end
   
   def kumpulan_etnik
-    @programme_id = 3
+    @programme_id = params[:programme].to_i
+    #@programme_id = Student.where('course_id=?',@programmes_id )  
+    
+    #@programme_id = 3
     students_all_6intakes = Student.get_student_by_6intake(@programme_id)
     @students_6intakes_ids = students_all_6intakes.map(&:id)
     students_all_6intakes_count = students_all_6intakes.count
     @valid = Student.where('course_id=? AND race2 IS NOT NULL AND id IN(?)',@programme_id, @students_6intakes_ids)
+    
     @student = Student.all
     respond_to do |format|
       format.pdf do
