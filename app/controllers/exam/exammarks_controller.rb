@@ -44,6 +44,7 @@ class Exam::ExammarksController < ApplicationController
   end
   
   def new
+    @exammark = Exammark.new
     @position_exist = @current_user.userable.positions
     if @position_exist  
       @lecturer_programme = @current_user.userable.positions[0].unit
@@ -59,6 +60,10 @@ class Exam::ExammarksController < ApplicationController
         @students_list = Student.all.order(matrixno: :asc)
         @exams_list = Exam.all.order(name: :asc, subject_id: :asc)
       end
+    end
+    respond_to do |format|
+      format.html # new.html.erb
+      format.xml  { render :xml => @exammark }
     end
   end
   
@@ -82,6 +87,47 @@ class Exam::ExammarksController < ApplicationController
   end
   
   def create
+    @exammark = Exammark.new(exammark_params)
+    examid = params[:exammark][:exam_id]
+    is_template = Exam.where(id: examid).first.klass_id
+    if is_template==1
+      questions_count = Exam.where(id: examid).first.examquestions.count
+    else
+      #questions_count = Exam.where(id: examid).first.examtemplates.count
+      qty_ary = Exam.where(id: examid).first.examtemplates.pluck(:quantity)
+      questions_count = qty_ary.inject{|sum,x|sum+x}
+    end
+    0.upto(questions_count-1) do
+      @exammark.marks.build
+    end
+ 
+    @position_exist = @current_user.userable.positions
+    if @position_exist  
+      @lecturer_programme = @current_user.userable.positions[0].unit
+      unless @lecturer_programme.nil?
+        @programme = Programme.where('name ILIKE (?) AND ancestry_depth=?',"%#{@lecturer_programme}%",0)
+      end
+      unless @programme.nil? || @programme.count==0
+        @programme_id = @programme.first.id
+        @students_list = Student.where(course_id: @programme_id).order(matrixno: :asc)
+        subjects_ids = Programme.where(id: @programme_id).first.descendants.at_depth(2).pluck(:id)
+        @exams_list = Exam.where('subject_id IN(?)', subjects_ids).order(name: :asc, subject_id: :asc)
+      else
+        @students_list = Student.all.order(matrixno: :asc)
+        @exams_list = Exam.all.order(name: :asc, subject_id: :asc)
+      end
+    end
+   
+    respond_to do |format|
+      if @exammark.save
+        flash[:notice] = (t 'exam.exammark.title')+(t 'actions.created')
+        format.html { redirect_to(edit_exam_exammark_path(@exammark), :notice =>t('exam.exammark.title')+t('actions.created')) }
+        format.xml  { render :xml => @exammark }
+      else
+        format.html { render :action => "new" }
+        format.xml  { render :xml => @exammark.errors, :status => :unprocessable_entity }     
+      end
+    end
   end
   
   # PUT /exammarks/1
@@ -92,7 +138,7 @@ class Exam::ExammarksController < ApplicationController
     
     respond_to do |format|
       if @exammark.update(exammark_params)
-        format.html { redirect_to(exam_exammark_path(@exammark), :notice => 'Exammark was successfully updated.') }
+        format.html { redirect_to(exam_exammark_path(@exammark), :notice => t('exam.exammark.title')+t('actions.updated')) }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }
@@ -118,6 +164,6 @@ class Exam::ExammarksController < ApplicationController
     end
     # Never trust parameters from the scary internet, only allow the white list through.
     def exammark_params
-      params.require(:exammark).permit(:student_id, :exam_id, :total_mcq)
+      params.require(:exammark).permit(:student_id, :exam_id, :total_mcq, marks_attributes: [:id,:exammark_id, :student_mark])
     end
 end

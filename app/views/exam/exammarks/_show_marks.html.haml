@@ -4,12 +4,15 @@
 
     %dt= t 'exam.exammark.marks' , :default => model_class.human_attribute_name(:marks) + ":"
     %dd
-      - if @exammark.exampaper.klass_id == 0
-        (number_with_precision(@exammark.total_marks,2).to_s+t('asset.loan.separator_slash')+ number_with_precision(@exammark.exampaper.examtemplates.map(&:total_marks).inject{|sum, x|sum+x},2) )
+      - unless (@exammark.exampaper.klass_id == 1|| @exammark.exampaper.klass_id == 0)
+        =number_with_precision(@exammark.total_marks, precision: 2)
+        \/
+        =number_with_precision(@exammark.exampaper.examtemplates.pluck(:total_marks).inject{|sum, x|sum+x}, precision: 2) 
       - else
         /################################################
         %table.table
           - @examquestions = @exammark.exampaper.examquestions
+          - @examtemplates = Exam.where(id: @exammark.exam_id).first.examtemplates
           %thead
             %tr
               %th=t 'exam.examquestion.questiontype'
@@ -18,152 +21,101 @@
               %th=t 'exam.exammark.mark'
           %tbody
             - if @exammark
-              - @marks_for_questions = Mark.where(exammark_id: @exammark.id).order(created_at: :asc)
+              - @marks_for_questions = Mark.where(exammark_id: @exammark.id).sort_by{|x|x.created_at}
  
               /start-display MCQ questions details
-              - if @examquestions.mcqq.count > 0
-                %tr
-                  %td MCQ
-                  %td
-                    - 1.upto(@examquestions.mcqq.count) do |no|
-                      =no
-                      %br
-                  %td
-                    - for examquestion in @examquestions.mcqq
-                      =examquestion.question
-                      %br
-                  %td
-                    - marks_ary = @examquestions.mcqq.pluck(:marks) 
-                    - @mcq_totalmarks = marks_ary.inject{|sum,x|sum+x}
-                    =number_with_precision(@exammark.total_mcq,precision: 2)  
-                    \/ 
-                    =number_with_precision(@mcq_totalmarks, precision: 2) 
+              - if @examquestions.mcqq.count > 0 || @examtemplates.mcqq[0].quantity > 0
+                = render 'show_mcq', :task=>1
 
               /start-display MEQ questions details
               - count2 = 0
-              - if @examquestions.meqq.count > 0 
-                - 0.upto(@examquestions.meqq.count-1) do |count|
-                  %tr
-                    - if count == 0
-                      %td{:rowspan=>"#{@examquestions.meqq.count}"} MEQ
-                    %td=count+1
-                    %td=@examquestions.meqq[count2].question
-                    %td
-                      =@marks_for_questions[count2].student_mark 
-                      \/ 
-                      =number_with_precision(@examquestions.meqq[count2].marks,2)
-                  count2+=1
+              - if @examquestions.meqq.count > 0 || @examtemplates.meqq[0].quantity > 0
+                - if @examquestions.meqq.count > 0
+                  - meq_count = @examquestions.meqq.count-1
+                - else
+                  - meq_count = @examtemplates.meqq[0].try(:quantity)-1
+                - 0.upto(meq_count) do |count|
+                  = render 'show_meq', :count=>count, :count2=>count2, :task=>1
+                  - count2+=1
                 
               /start-display SEQ questions details
-              - if @examquestions.seqq.count > 0 
-                - 0.upto(@examquestions.seqq.count-1) do |count| 
-                  %tr
-                    - if count == 0 
-                      %td{:rowspan=>"#{@examquestions.seqq.count}"} SEQ
-                    %td=count+1
-                    %td=@examquestions.seqq[count].question
-                    %td
-                      = @exammark.marks[count2].student_mark
-                      \/
-                      =number_with_precision(@examquestions.seqq[count].marks, precision: 2)
+              - if @examquestions.seqq.count > 0 || @examtemplates.seqq[0].quantity > 0
+                - if @examquestions.seqq.count > 0
+                  - seq_count = @examquestions.seqq.count-1
+                - else
+                  - seq_count = @examtemplates.seqq[0].quantity-1 
+                - 0.upto(seq_count) do |count| 
+                  = render 'show_seq', :count=>count, :count2=>count2, :task=>1
                   - count2+=1 
                 
               /start-display ACQ questions details
-              - if @examquestions.acqq.count > 0 
-                - 0.upto(@examquestions.acqq.count-1) do |count|
-                  %tr
-                    - if count == 0
-                      %td{:rowspan=>"#{@examquestions.acqq.count}"} ACQ
-                    %td=count+1
-                    %td=@examquestions.acqq[count].question
-                    %td
-                      = @exammark.marks[count2].student_mark 
-                      \/ 
-                      =number_with_precision(@examquestions.acqq[count].marks, precision: 2)
+              - if @examquestions.acqq.count > 0 || @examtemplates.acqq[0].quantity > 0 
+                - if @examquestions.acqq.count > 0
+                  - acq_count = @examquestions.acqq.count-1
+                - else
+                  - acq_count = @examtemplates.acqq[0].quantity-1
+                - 0.upto(acq_count) do |count|
+                  = render 'show_acq', :count=>count, :count2=>count2, :task=>1
                   - count2+=1 
                 
               /start-display OSCI questions details
-              - if @examquestions.osci2q.count > 0 
-                - 0.upto(@examquestions.osci2q.count-1) do |count|
-                  %tr
-                    - if count == 0 
-                      %td{:rowspan=>"#{@examquestions.osci2q.count}"}OSCE
-                    %td=count+1
-                    %td=@examquestions.osci2q[count].question
-                    %td
-                      = @exammark.marks[count2].student_mark 
-                      \/ 
-                      =number_with_precision(@examquestions.osci2q[count].marks,2)
+              - if @examquestions.osci2q.count > 0 || @examtemplates.osci2q[0].quantity > 0
+                - if @examquestions.osci2q.count > 0
+                  - osci_count = @examquestions.osci2q.count-1 
+                - else
+                  - osci_count = @examtemplates.osci2q[0].quantity-1        
+                - 0.upto(osci_count) do |count|
+                  = render 'show_osci', :count=>count, :count2=>count2, :task=>1
                   - count2+=1 
                 
               /start-display OSCII questions details
-              - if @examquestions.osci3q.count > 0
-                - 0.upto(@examquestions.osci3q.count-1) do |count|
-                  %tr
-                    - if count == 0
-                      %td{:rowspan=>"#{@examquestions.osci3q.count}"} OSCE
-                    %td=count+1
-                    %td=@examquestions.osci3q[count].question
-                    %td
-                      = @exammark.marks[count2].student_mark
-                      \/ 
-                      =number_with_precision(@examquestions.osci3q[count].marks,2)
+              - if @examquestions.osci3q.count > 0 || @examtemplates.osci3q[0].quantity > 0  
+                - if @examquestions.osci3q.count > 0
+                  - oscii_count = @examquestions.osci3q.count-1
+                - else
+                  - oscii_count = @examtemplates.osci3q[0].quantity-1
+                - 0.upto(oscii_count) do |count|
+                  = render 'show_oscii', :count=>count, :count2=>count2, :task=>1
                   - count2+=1
 
               /start-display OSCE questions details
-              - if @examquestions.osceq.count > 0
-                - 0.upto(@examquestions.osceq.count-1) do |count| 
-                  %tr
-                    - if count == 0
-                      %td{:rowspan=>"#{@examquestions.osceq.count}"} OSCE
-                    %td=count+1
-                    %td=@examquestions.osceq[count].question
-                    %td
-                      = @exammark.marks[count2].student_mark 
-                      \/ 
-                      =number_with_precision(@examquestions.osceq[count].marks,2) 
+              - if @examquestions.osceq.count > 0 || @examtemplates.osceq[0].quantity > 0   
+                - if @examquestions.osceq.count > 0
+                  - osce_count = @examquestions.osceq.count-1 
+                - else
+                  - osce_count = @examtemplates.osceq[0].quantity-1
+                - 0.upto(osce_count) do |count|
+                  = render 'show_osce', :count=>count, :count2=>count2, :task=>1
                   - count2+=1
 
               /start-display OSPE questions details
-              - if @examquestions.ospeq.count > 0
-                - 0.upto(@examquestions.ospeq.count-1) do |count|
-                  %tr
-                    - if count == 0
-                      %td{rowspan=>"#{@examquestions.ospeq.count}"} OSPE
-                    %td=count+1
-                    %td=@examquestions.ospeq[count].question
-                    %td
-                      = @exammark.marks[count2].student_mark
-                      \/
-                      =number_with_precision(@examquestions.ospeq[count].marks,2) 
+              - if @examquestions.ospeq.count > 0 || @examtemplates.ospeq[0].quantity > 0   
+                - if @examquestions.ospeq.count > 0
+                  - ospe_count = @examquestions.ospeq.count-1
+                - else
+                  - ospe_count = @examtemplates.ospeq[0].quantity-1
+                - 0.upto(ospe_count) do |count|
+                  = render 'show_ospe', :count=>count, :count2=>count2, :task=>1
                   - count2+=1
 
               /start-display VIVA questions details
-              - if @examquestions.vivaq.count > 0 
-                - 0.upto(@examquestions.vivaq.count-1) do |count|
-                  %tr
-                    - if count == 0
-                      %td{:style=>"rowspan='#{@examquestions.vivaq.count}'"} VIVA
-                    %td=count+1
-                    %td=@examquestions.vivaq[count].question
-                    %td
-                      = @exammark.marks[count2].student_mark 
-                      \/ 
-                      =number_with_precision(@examquestions.vivaq[count].marks,2) 
+              - if @examquestions.vivaq.count > 0 || @examtemplates.vivaq[0].quantity > 0 
+                - if @examquestions.vivaq.count > 0
+                  - viva_count = @examquestions.vivaq.count-1 
+                - else
+                  - viva_count = @examtemplates.vivaq[0].quantity-1 
+                - 0.upto(viva_count) do |count|
+                  = render 'show_viva', :count=>count, :count2=>count2, :task=>1
                   - count2+=1
                 
               /start-display TRUEFALSE questions details
-              - if @examquestions.truefalseq.count > 0 
-                - 0.upto(@examquestions.truefalseq.count-1) do |count| 
-                  %tr
-                    - if count == 0
-                      %td{:rowspan=>"#{@examquestions.truefalseq.count}"} TRUE or FALSE
-                    %td=count+1
-                    %td=@examquestions.truefalseq[count].question
-                    %td
-                      = @exammark.marks[count2].student_mark 
-                      \/ 
-                      =number_with_precision(@examquestions.truefalseq[count].marks,2)
+              - if @examquestions.truefalseq.count > 0 || @examtemplates.truefalseq[0].quantity > 0  
+                - if @examquestions.truefalseq.count > 0
+                  - truefalse_count = @examquestions.truefalseq.count-1 
+                - else
+                  - truefalse_count = @examtemplates.truefalseq[0].quantity-1 
+                - 0.upto(truefalse_count) do |count| 
+                  = render 'show_truefalse', :count=>count, :count2=>count2, :task=>1
                   - count2+=1
                 
               %tr
@@ -173,7 +125,11 @@
                   %b=t 'exam.exammark.total_mcq'
                 %td
                   = number_with_precision(@exammark.total_marks, precision: 2)
+                %td
                   \/ 
-                  =number_with_precision(@examquestions.all.map(&:marks).inject{|sum, x|sum+x}, precision: 2)
+                  - if @examquestions.count > 0
+                    =number_with_precision(@examquestions.all.map(&:marks).inject{|sum, x|sum+x}, precision: 2)
+                  - else
+                    =number_with_precision(@examtemplates.all.map(&:total_marks).inject{|sum, x|sum+x}, precision: 2)
 
         /################################################

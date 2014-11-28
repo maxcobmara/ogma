@@ -140,7 +140,7 @@ authorization do
      if_attribute :qstatus => is {"Re-Edit"}
    end
    
-   has_permission_on :exam_exammarks, :to => :update do
+   has_permission_on :exam_exammarks, :to =>[:update, :delete] do
      if_attribute :exam_id => is_in {user.exams_of_programme}
    end
    

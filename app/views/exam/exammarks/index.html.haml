@@ -10,6 +10,10 @@
     %li.toga= link_to content_tag(:li, fa_icon("print", text: (t 'actions.print'))), "#", class: 'bogus'  
 
 .row
+  .col-md-12
+    .alert.alert-warning
+      = check_box_tag :check_all
+      = t('actions.check_all')
   %table.table-striped.table-hover.ogma
     %thead
       %tr
@@ -31,17 +35,12 @@
                 %span= (t 'exam.exammark.exam_id')+' : '+Exam.find(exammarks_group).full_exam_name   
                 - @istemplate = exammark.exampaper.klass_id
                 - if @istemplate == 0 
-                  %span{style="color:blue;"}(Template)
+                  %span{:style=>"color:blue;"}(Template)
           %tr
             %td{:style=>"text-align: center;"}= check_box_tag "exammark_ids[]", exammark.id, true, :id => "exammarkidss_#{index}"
             %td= link_to exammark.studentmark.matrix_name, exam_exammark_path(exammark)
             %td=h exammark.studentmark.icno
-            %td=number_with_precision(exammark.total_marks,:precision=>2)
-
-  %span{:style=>"position: absolute; left: 40px;"}
-    = check_box_tag :check_all
-    = t('actions.check_all')
-  %br          
+            %td=number_with_precision(exammark.total_marks, precision: 2)  
 
   /--for multiple edit-14Apr2013--
   /= submit_tag "Edit Checked", :name => :exammark_submit_button
