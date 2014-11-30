@@ -1,0 +1,49 @@
+- model_class = Exammark
+.page-header
+  %h1= t 'exam.exammark.multiple_edit'
+= render 'shared/flashes'
+
+- @exampaper_of_exammarks = @exammarks.map(&:exam_id).uniq.count
+
+- if @exampaper_of_exammarks==1
+  .row
+    = form_tag update_multiple_exam_exammarks_path, :id => "form1", :html => {:method => :put} do |f|
+      = hidden_field_tag :redirect_location, exam_exammarks_path  
+      
+      .col-md-offset-1
+        / Nav tabs
+        %ul.nav.nav-tabs
+          %li.active= link_to ((t 'exam.exammark.exammark_details')),"#exammark_details", "data-toggle" => "tab"
+
+        / display 
+        .tab-content{style:"padding-top:1em"}
+          .col-md-8.col-md-offset-1
+            %dl.dl-horizontal
+              %dt= t 'exam.exammark.exam_id'
+              %dd
+                =h @exammarks[0].exampaper.full_exam_name
+                - @istemplate = @exammarks[0].exampaper.klass_id
+                - if @istemplate == 0 
+                  (Template)
+    
+          #exammark_details.tab-pane.active
+            .col-md-11
+              %br
+              = render :partial => 'form_multiple', :f=>f
+    
+      .col-md-offset-1  
+        .form-group
+          .col-sm-offset-3.col-sm-1
+            = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), exam_exammarks_path, :class => 'btn btn-default'
+          .col-sm-2
+            = submit_tag t('update'), :name => :grade_submit_button, class: "btn btn-primary"         
+- else
+  .row
+    .col-md-12
+      .alert.alert-info
+        = t 'exam.exammark.student_same_exam'
+  .row
+    .col-md-offset-1  
+      .form-group
+        .col-sm-offset-3.col-sm-1
+          = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), exam_exammarks_path, :class => 'btn btn-default'

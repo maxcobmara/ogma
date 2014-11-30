@@ -87,6 +87,10 @@ en:
   approved: Approved
   not_approved: Not Approved
   view: View
+  edit_checked: Edit Checked Records
+  newrecord_type: Record Type
+  single: Single Record
+  multiple: Multiple Records
   
   actions:
     new: New
@@ -1542,6 +1546,7 @@ en:
       title: Marks by Examination Papers
       new: New Marks by Examination Paper
       edit: Edit Marks by Examination Paper
+      multiple_edit: Marks by Examination Paper (Multiple Edit)
       student_id: Student
       exam_id: Examination Paper
       total_mcq: Total Marks
@@ -1551,6 +1556,20 @@ en:
       marks: Examination Marks
       mark: Marks
       question: Question
+      student_same_exam: Please select students with the same Examimation Paper for multiple edit.
+      total_mcq: Total MCQ
+      true_false: "TRUE/"
+      true_false2: FALSE
+      total: Total
+      summative: Summative
+      select_one: "Please select at least 1 record for editing."
+      multiple_updated: "All examination marks were successfully updated!"
+      multiple_created: "Records were successfully created. Enter examination marks accordingly."
+      intake: Student Intake
+      exam_compulsory: "Examination Paper is compulsory!"
+      new_multiple: New Multiple Marks
+      programme: Programme
+      marks_intakes_exist: 'Exammarks for student(s) of selected Intakes already exist. Delete / edit records accordingly.'
     
     grade:
       title: Examination Grades

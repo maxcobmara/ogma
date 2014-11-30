@@ -8,7 +8,7 @@ class Exammark < ActiveRecord::Base
   validates_presence_of   :student_id, :exam_id
   validates_uniqueness_of :student_id, :scope => :exam_id, :message => " - Mark of this exam for selected student already exist. Please edit/delete existing mark accordingly."
   
-  attr_accessor :total_marks, :subject_id, :intake_id,:trial1,:trial2, :total_marks_view, :trial3, :total_mcq_in_exammark_single, :trial4
+  attr_accessor :total_marks, :subject_id, :intake_id,:trial1,:trial2, :total_marks_view, :trial3, :total_mcq_in_exammark_single, :trial4, :newrecord_type
   
   # define scope
   def self.keyword_search(query)
@@ -43,7 +43,11 @@ class Exammark < ActiveRecord::Base
       @sum_mcq = 0
       @allmarks.each_with_index do |y, index|
          if index< count
-           @sum_mcq +=y.student_mark
+           unless y.student_mark.nil?
+             @sum_mcq +=y.student_mark
+           else
+             @sum_mcq+=0
+           end
          end
       end
       if self.total_mcq != 0 && @sum_mcq == 0     #in case - only total MCQ entered instead of entering each of MCQ marks
@@ -62,6 +66,65 @@ class Exammark < ActiveRecord::Base
     end
   end
 
+  #14March2013 - rev 17June2013 - rev 30Nov14
+  def self.set_intake_group(examyear,exammonth,semester,cuser)    #semester refers to semester of selected subject - subject taken by student of semester???
+    @unit_dept = cuser.userable.positions.first.unit
+
+     #if exammonth.to_i <= 7
+     if (@unit_dept && @unit_dept == "Kebidanan" && exammonth.to_i <= 9) || (@unit_dept && @unit_dept != "Kebidanan" && exammonth.to_i <= 7)                                                  # for 1st semester-month: Jan-July, exam should be between Feb-July
+        @current_sem = 1 
+        @current_year = examyear 
+        if (semester.to_i-1) % 2 == 0                                                                                 # modulus-no balance
+          @intake_year = @current_year.to_i-((semester.to_i-1)/2) 
+          @intake_sem = @current_sem 
+        elsif (semester.to_i-1) % 2 != 0                                                                             # modulus-with balance
+          #29June2013-@intake_year = @current_year.to_i-((semester.to_i+1)%2)           #@intake_year = @current_year.to_i-((semester.to_i+1)%2) --> giving error : 2043/2
+          #29June2013-------------------OK
+          if (semester.to_i+1)/2 > 3  
+            @intake_year = @current_year.to_i-((semester.to_i+1)%2)-2
+          elsif (semester.to_i+1)/2 > 2
+            @intake_year = @current_year.to_i-((semester.to_i+1)%2)-1
+          elsif (semester.to_i+1)/2 > 1
+            @intake_year = @current_year.to_i-((semester.to_i+1)%2)
+          end  
+          #29June2013-------------------
+          @intake_sem = @current_sem + 1 
+        end 
+     elsif (@unit_dept && @unit_dept == "Kebidanan" && exammonth.to_i > 9) || (@unit_dept && @unit_dept != "Kebidanan" && exammonth.to_i > 7)                                                  # 2nd semester starts on July-Dec- exam should be between August-Dec
+     #elsif exammonth.to_i > 7
+        @current_sem = 2 
+        @current_year = examyear
+        if (semester.to_i-1) % 2 == 0  
+          @intake_year = @current_year.to_i-((semester.to_i-1)/2).to_i
+          @intake_sem = @current_sem 
+        elsif (semester.to_i-1) % 2 != 0                                                                             # modulus-with balance
+          #29June2013-@intake_year = @current_year.to_i-((semester.to_i-1)%2).to_i      # (hasil bahagi bukan baki..)..cth semester 6 
+           #29June2013-------------------
+            if (semester.to_i+1)/2 > 3  
+              @intake_year = @current_year.to_i-((semester.to_i+1)%2)-2
+            elsif (semester.to_i+1)/2 > 2
+              @intake_year = @current_year.to_i-((semester.to_i+1)%2)-1
+            elsif (semester.to_i+1)/2 > 1
+              @intake_year = @current_year.to_i-((semester.to_i+1)%2)
+            end  
+            #29June2013-------------------
+          @intake_sem = @current_sem - 1
+        end 
+     end
+     #return @intake_sem.to_s+'/'+@intake_year.to_s   #giving this format -->  2/2012  --> previously done on examresult(2012)
+
+     if @intake_sem == 1 
+       @intake_month = '03' if @unit_dept && @unit_dept == "Kebidanan"
+       @intake_month = '01' if @unit_dept && @unit_dept != "Kebidanan"
+     elsif @intake_sem == 2
+       @intake_month = '09' if @unit_dept && @unit_dept == "Kebidanan"
+       @intake_month = '07' if @unit_dept && @unit_dept != "Kebidanan"
+     end
+
+     return @intake_year.to_s+'-'+@intake_month+'-01'  #giving this format -->  2/2012
+  end
+  #14March2013
+  
   def self.search2(search)
     common_subject = Programme.where('course_type=?','Commonsubject').pluck(:id)
     if search 
@@ -125,5 +188,25 @@ class Exammark < ActiveRecord::Base
     end
   end
   #11June2013------updated 23June2013
+  
+  def self.get_valid_exams
+    e_full_ids=Exam.where(klass_id: 1).pluck(:id)
+    e_w_exist_questions_ids = Exam.joins(:examquestions).where('exam_id IN(?)',e_full_ids).pluck(:exam_id).uniq
+    e_template_ids=Exam.where(klass_id: 0).pluck(:id)
+    e_w_exist_templates_ids = Examtemplate.where('exam_id IN(?)', e_template_ids).pluck(:exam_id).uniq
+    return e_w_exist_questions_ids+e_w_exist_templates_ids 
+  end
+  
+  def get_questions_count(examid)
+    is_template = Exam.where(id: examid).first.klass_id
+    if is_template==1
+      questions_count = Exam.where(id: examid).first.examquestions.count
+    elsif is_template==0
+      qty_ary = Exam.where(id: examid).first.examtemplates.pluck(:quantity) 
+      group_qty = qty_ary-[qty_ary[0]]
+      questions_count = group_qty.sum  #total questions other than MCQ type
+    end
+    questions_count
+  end
   
 end
