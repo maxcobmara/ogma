@@ -272,10 +272,17 @@ Ogma::Application.routes.draw do
       collection do
         get 'exampaper', to: "exams#exampaper"
         get 'exampaper_separate', to: "exams#exampaper_separate"
-        get 'exampaper_combine', to: "exams#exampaper_combine "
+        get 'exampaper_combine', to: "exams#exampaper_combine"
       end
     end
-    resources :exammarks
+    resources :exammarks do
+      collection do
+        put 'edit_multiple'
+        post 'update_multiple'
+        put 'new_multiple'
+        post 'create_multiple'
+      end
+    end
     resources :grades
     resources :examresults
   end

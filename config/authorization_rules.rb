@@ -140,14 +140,15 @@ authorization do
      if_attribute :qstatus => is {"Re-Edit"}
    end
    
-   has_permission_on :exam_exammarks, :to =>[:update, :delete] do
+   has_permission_on :exam_exammarks, :to =>[:update, :delete, :edit_multiple, :update_multiple, :new_multiple, :create_multiple] do
      if_attribute :exam_id => is_in {user.exams_of_programme}
    end
    
  end
 
  role :programme_manager do
-   has_permission_on [:exam_examquestions, :exam_exams, :exam_exammarks], :to => :manage
+   has_permission_on [:exam_examquestions, :exam_exams], :to => :manage
+   has_permission_on :exam_exammarks, :to => [:manage, :edit_multiple, :update_multiple, :new_multiple, :create_multiple]
  end
 
 end

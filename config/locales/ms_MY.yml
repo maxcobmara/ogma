@@ -64,6 +64,10 @@ ms_MY:
   approved: Diluluskan
   not_approved: Belum Diluluskan
   view: Papar
+  edit_checked: Sunting Rekod Dipilih
+  newrecord_type: Jenis Rekod
+  single: Rekod Individu
+  multiple: Rekod Pukal
  
   actions:
     new: Baru
@@ -1471,6 +1475,7 @@ ms_MY:
       title: Markah Kertas Peperiksaan
       new: Markah Baru Kertas Peperiksaan
       edit: Sunting Markah Kertas Peperiksaan
+      multiple_edit: "Markah Kertas Peperiksaan (Suntingan Pukal)"
       student_id: Pelajar
       exam_id: Kertas Peperiksaan
       total_mcq: Jumlah Markah
@@ -1480,6 +1485,20 @@ ms_MY:
       marks: Markah Peperiksaan
       mark: Markah
       question: Soalan
+      student_same_exam: Hanya markah pelajar bagi Kertas Peperiksaan yang sama dibenarkan untuk suntingan secara pukal.
+      total_mcq: Jumlah MCQ
+      true_false: "BETUL/"
+      true_false2: SALAH
+      total: Jumlah
+      summative: Sumatif
+      select_one: "Sila pilih sekurang-kurangnya 1 rekod untuk disunting."
+      multiple_updated: "Kesemua markah peperiksaan telah berjaya dikemaskini!"
+      multiple_created: "Rekod telah berjaya disimpan. Masukkan markah peperiksaan berkenaan!"
+      intake: Ambilan Pelajar
+      exam_compulsory: "Kertas Peperiksaan mestilah dipilih!"
+      new_multiple: "Markah Baru (Pukal)"
+      programme: Program
+      marks_intakes_exist: 'Markah peperiksaan pelajar bagi Ambilan yang dipilih telah wujud. Padam / sunting rekod berkenaan.'
       
     grade:
       title: Gred Peperiksaan
