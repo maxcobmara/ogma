@@ -10,6 +10,12 @@ $(document).ready(function(e) {
    	format:'Y-m-d',
    	formatDate:'Y-m-d'
   });
+  $('.date_picker_after').datetimepicker({
+   timepicker:false,
+   	format:'Y-m-d',
+   	formatDate:'Y-m-d',
+        minDate: 0
+  });
   $('.datetime_picker').datetimepicker({
     timepicker:true,
     format: "Y-m-d H:i",

@@ -14,7 +14,8 @@ class Tenant < ActiveRecord::Base
 
   def student_icno=(icno)
     icno2 = icno.split(" ")[0]
-    self.student = Student.find_or_create_by_icno(icno2) if icno2.present?
+    #self.student = Student.find_or_create_by_icno(icno2) if icno2.present?
+    self.student = Student.find_or_create_by(icno: icno2) if icno2.present?
   end
   
   def save_my_vars

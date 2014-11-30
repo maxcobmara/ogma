@@ -54,7 +54,8 @@ class Location < ActiveRecord::Base
       bed_type = "student_bed_male"
     end
     @occupied_location_ids = Tenant.where("keyreturned IS ? AND force_vacate != ?", nil, true).pluck(:location_id)
-    if occupied == true || (parent.occupied == true && parent.status== "_empty")
+    #if occupied == true || (parent.occupied == true && parent.status== "_empty") - this line will failed if location is a building
+    if occupied == true || (parent.nil? == false && parent.occupied == true && parent.status== "_empty") # if building, lclass will be updated as 1? - suppose 4
       status_type = "damage"
       if typename == 2|| typename == 8
         bed_type = "bed"
