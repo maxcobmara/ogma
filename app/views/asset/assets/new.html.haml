@@ -15,7 +15,7 @@
         %table.inline_display
           %tr
             %td KKM/BPL/010619/
-            %td= f.select :assettype, DropDown::ASSETTYPES, {prompt: "Select", id: "asset_type_select"}, class: 'selectpicker', "data-width" => "80px"
+            %td= f.select :assettype, DropDown::ASSETTYPES, {prompt: "Select", id: "asset_type_select"}, {class: 'selectpicker mandatory', "data-width"=>"80px"}
             %td /
             %td= f.date_select :receiveddate,  {:end_year => (Time.now.year+1), :order => [:year], id: "asset_receiveddate_select"}, class: 'selectpicker', "data-width" => "80px"
             %td /

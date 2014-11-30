@@ -1,6 +1,7 @@
 class Asset < ActiveRecord::Base
   
   validates_presence_of :assignedto_id, :if => :bookable?
+  validates_presence_of     :assettype
   
   has_many :asset_placements, :dependent => :destroy
   accepts_nested_attributes_for :asset_placements, :allow_destroy => true , :reject_if => lambda { |a| a[:location_id].blank? }
