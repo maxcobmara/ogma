@@ -1,8 +1,6 @@
 - model_class = Student
 .col-md-8.col-md-offset-1
   %dl.dl-horizontal
-    %BR
-
     %dt= t 'student.students.sstatus' , :default => model_class.human_attribute_name(:sstatus) + ":"
     %dd= @student.sstatus
 
@@ -29,11 +27,11 @@
     %dt= t 'student.students.mrtlstatuscd' , :default => model_class.human_attribute_name(:mrtlstatuscd) + ":"
     %dd= (Student::MARITAL_STATUS.find_all{|disp, value| value == @student.mrtlstatuscd.to_s}).map {|disp, value| disp} [0]
 
-    %dt= t 'student.students.race' , :default => model_class.human_attribute_name(:race) + ":"
-    %dd= (Student::RACE.find_all{|disp, value| value == @student.race.to_s}).map {|disp, value| disp} [0]
+    %dt= t 'student.students.race' , :default => model_class.human_attribute_name(:race2) + ":"
+    %dd= (Student::RACE.find_all{|disp, value| value == @student.race2.to_i}).map {|disp, value| disp} [0]
    
     - if @student.race2 == 21
-      %dt= t 'student.students.etnic'
+      %dt= t 'student.students.ethnic'
       %dd= h @student.race
 	
     %dt= t 'student.students.semail' , :default => model_class.human_attribute_name(:semail) + ":"

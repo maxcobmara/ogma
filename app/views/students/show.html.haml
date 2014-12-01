@@ -1,6 +1,6 @@
 - model_class = Student
 .page-header
-  %h1= @student.formatted_mykad
+  %h1= @student.name
 = render 'shared/flashes'
 
 
@@ -14,13 +14,14 @@
       %li= link_to ((t 'student.students.qualifications')), "#qualifications", "data-toggle" => "tab"
       %li= link_to ((t 'student.students.guarantor')),"#guarantor","data-toggle" => "tab"
       %li= link_to ((t 'student.students.contact_information')), "#contact_information", "data-toggle" => "tab"
+      
     .tab-content{style:"padding-top:1em"}
       .col-md-1
         - if @student.photo.exists? then
           = image_tag @student.photo.url
         - else
-          %img{:src => "http://placekitten.com/200/300"}/ 
-    .tab-content{style:"padding-top:1em"}
+          %img{:src => "http://placekitten.com/150/200"}/
+  
       .col-md-8.col-md-offset-1
         %dl.dl-horizontal
           %dt= t 'student.students.formatted_mykad' , :default => model_class.human_attribute_name(:serialno) + ":"

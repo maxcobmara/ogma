@@ -6,8 +6,6 @@
 - thekins.each do |e|
   .col-md-8.col-md-offset-1
     %dl.dl-horizontal
-      %BR
-	  
       %dt= t 'student.students.kinaddr' , :default => model_class.human_attribute_name(:kintype_id) + ":"
       %dd= (DropDown::KIN_TYPE.find_all{|disp, value| value == e.kintype_id}).map {|disp, value| disp} [0]
 	  

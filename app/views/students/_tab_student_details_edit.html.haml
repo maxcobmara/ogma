@@ -27,19 +27,10 @@
 
   .form-group
     .col-sm-2.control-label
-      = f.label t 'student.students.etnic', for: :etnic
+      = f.label t 'student.students.ethnic', for: :race
     .col-md-3
       = f.text_field :race, class: 'form-control'
-
-
-
-  .form-group#bong{:style => "display: none;"}
-    .col-sm-2.control-label
-      =f.label t 'student.students.etnic', for: :race
-    .col-md-4
-      =f.text_field :race #class: 'selectpicker', "data-width"=>"350px"
  
-
   .form-group
     .col-sm-2.control-label
       =f.label t 'student.students.offer_letter_serial', for: :offer_letter_serial

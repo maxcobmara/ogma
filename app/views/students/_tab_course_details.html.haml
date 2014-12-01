@@ -1,17 +1,11 @@
 - model_class = Student
 .col-md-8.col-md-offset-1
   %dl.dl-horizontal
-    %BR
-
     %dt= t 'student.students.course_id' , :default => model_class.human_attribute_name(:course_id) + ":"
-    %dd= @student.course_id.blank? ? " " : @student.course_id
+    %dd= @student.course_id.blank? ? " " : @student.course.try(:code_course_type_name)
 		
-	
     %dt= t 'student.students.intake_id' , :default => model_class.human_attribute_name(:intake_id) + ":"
     %dd= @student.intake.blank? ? "-" : @student.intake.strftime("%B %Y")
 		  
-    %dt= t 'student.students.address' , :default => model_class.human_attribute_name(:address) + ":"
-    %dd= @student.address
- 
     %dt= t 'student.students.remarks' , :default => model_class.human_attribute_name(:address_posbasik) + ":"
     %dd= @student.course_remarks
