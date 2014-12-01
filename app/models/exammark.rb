@@ -200,7 +200,8 @@ class Exammark < ActiveRecord::Base
   def get_questions_count(examid)
     is_template = Exam.where(id: examid).first.klass_id
     if is_template==1
-      questions_count = Exam.where(id: examid).first.examquestions.count
+      questions_count = Examquestion.joins(:exams).where('exam_id=? and questiontype!=?', examid, "MCQ").count
+                                    #Exam.where(id: examid).first.examquestions.count
     elsif is_template==0
       qty_ary = Exam.where(id: examid).first.examtemplates.pluck(:quantity) 
       group_qty = qty_ary-[qty_ary[0]]

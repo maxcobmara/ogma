@@ -53,7 +53,17 @@
         = f.fields_for :damages do |builder|
           - if (builder.object.id!=nil && builder.object.document_id==1) || builder.object.id==nil
             = render 'damage_fields', f: builder
-        = link_to_add_fields (t 'fuel_issueds.add_details'), f, :damages
+        /= link_to_add_fields (t 'fuel_issueds.add_details'), f, :damages
+        = link_to_add_fields t('fuel_issueds.add_details'), f, :damages, "",  ""
+
+    
+:javascript
+
+  function add_fields(link, association, content) {  
+    var new_id = new Date().getTime();  
+    var regexp = new RegExp("new_" + association, "g");  
+    $(link).parent().before(content.replace(regexp, new_id));  
+  }
 
       
       

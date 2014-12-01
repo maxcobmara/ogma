@@ -1560,6 +1560,7 @@ en:
       total_mcq: Total MCQ
       true_false: "TRUE/"
       true_false2: FALSE
+      true_false1: "TRUE/FALSE"
       total: Total
       summative: Summative
       select_one: "Please select at least 1 record for editing."
