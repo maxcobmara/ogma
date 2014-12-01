@@ -166,7 +166,6 @@ authorization do
     #has_permission_on :books, :to => :core
   end
 
-end
 
 end
 
