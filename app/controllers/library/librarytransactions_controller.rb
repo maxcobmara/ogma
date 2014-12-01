@@ -2,6 +2,7 @@ class Library::LibrarytransactionsController < ApplicationController
 
   before_action :set_librarytransaction, only: [:show, :edit, :update, :destroy]
   filter_access_to :manager, :require => :manage
+  filter_access_to :index
 
   def index
     @filters = Librarytransaction::FILTERS

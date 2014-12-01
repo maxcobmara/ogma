@@ -87,9 +87,13 @@ authorization do
      if_attribute :assigned2_to => is {current_user.userable.id}
    end
 
-   has_permission_on :librarytransactions, :to => :read do
-     if_attribute :staff_id => is {current_user.userable.id}
-   end
+   #disable this part first - suppose in index, view only - transaction where current_user is a borrower - but ALL record are displayed when this part is enable
+   #has_permission_on :library_librarytransactions, :to => :read do
+     #if_attribute :staff_id => is {current_user.userable.id}
+   #end
+   
+   has_permission_on :library_books, :to => :read
+   
  end
 
 
@@ -98,14 +102,6 @@ authorization do
    has_permission_on :assets, :to => :manage
    has_permission_on :asset_defects, :to =>[:manage, :kewpa9] #3nov2013
    has_permission_on :assetsearches, :to => :read
- end
-
- role :librarian do
-   has_permission_on :books, :to => [:manage, :extend, :return]
-   has_permission_on :librarytransactions , :to => [:manage, :extend, :extend2,:return,:return2, :check_availability, :form_try, :multiple_edit,:check_availability2,:multiple_update]#,:accession_list]
-   has_permission_on :students, :to => :index
-   has_permission_on :booksearches, :to => :read
-   has_permission_on :librarytransactionsearches, :to => :read
  end
 
  #Group Trainings ------------------------------------------------------------read(index, show), menu(inc index), update(inc edit), approve(read, update), manage(crud,approve,menu)
@@ -154,8 +150,8 @@ authorization do
  #Group Library   -------------------------------------------------------------------------------
 
   role :librarian do
-    #has_permission_on :books, :to => [:manage, :extend, :return]
-    has_permission_on :librarytransactions, :to => [:manage, :extend, :extend2,:return,:return2, :check_availability, :form_try, :multiple_edit,:check_availability2,:multiple_update]#,:accession_list]
+    has_permission_on :library_books, :to => [:manage, :extend, :return]
+    has_permission_on :library_librarytransactions, :to => [:manage, :extend, :extend2,:return,:return2, :check_availability, :form_try, :multiple_edit,:check_availability2,:multiple_update]#,:accession_list]
     #has_permission_on :students, :to => :index
     #has_permission_on :booksearches, :to => :read
     #has_permission_on :librarytransactionsearches, :to => :read
@@ -163,7 +159,7 @@ authorization do
 
   role :guest do
     #has_permission_on :users, :to => :create
-    #has_permission_on :books, :to => :core
+    has_permission_on :library_books, :to => :read
   end
 
 
