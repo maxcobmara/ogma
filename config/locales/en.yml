@@ -1102,6 +1102,7 @@ en:
       mandatory: Mandatory
       subject: Subject
       grade: Grade
+      new: New Student
       
     leaveforstudent:
       title: Student Leave
@@ -2138,6 +2139,10 @@ en:
       maintain: Maintain
       remove: Remove
       select_leave_type: Select Leave Type
+      select_student_status: Select Student Status
+      select_sponsor: Select Sponsor
+      select_maritial_status: Select Maritial Status
+      select_race: Select Race
 
   date:
     formats:
