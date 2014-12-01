@@ -1,6 +1,6 @@
 class Leaveforstaff < ActiveRecord::Base
   
-  
+    paginates_per 10  
   
     before_save :save_my_approvers
   

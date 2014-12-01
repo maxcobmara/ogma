@@ -29,4 +29,15 @@ Ogma::Application.configure do
   
   #devise config
   config.action_mailer.default_url_options = { :host => 'localhost:3003' }
+  config.action_mailer.raise_delivery_errors = true
+  config.action_mailer.perform_deliveries = true
+  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.smtp_settings = {
+  :address              => "smtp.mail.yahoo.com",
+  :port                 => 587,
+  :domain               => "yahoo.com",
+  :user_name            => "pustakabistari_kskbjb@yahoo.com",
+  :password             => "kskbjb8173",
+  :authentication       => :plain,
+  :enable_starttls_auto => true }
 end
