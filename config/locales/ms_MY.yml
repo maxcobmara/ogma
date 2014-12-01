@@ -961,6 +961,7 @@ ms_MY:
       empty_room: Pemulangan Kunci
       empty_room: Kosongkan Bilik
       damage: Kerosakan oleh Pelajar
+      
     students:
       title: Maklumat Pelajar
       list: Senarai Maklumat Pelajar
@@ -981,7 +982,7 @@ ms_MY:
       etnic: Etnik
       semail: Emel
       regdate: Tarikh Pendaftaran
-      offer_letter_serial: No. Surat Tawaran
+      offer_letter_serial: No Surat Tawaran
       course_id: Program
       remarks: Catatan
       physical: Fizikal
@@ -1008,6 +1009,9 @@ ms_MY:
       guarantor: Keputusan SPM
       contact_information: Maklumat Perhubungan dan Penjamin
       mandatory: Mandatori
+      subject: Subjek
+      grade: Gred
+      new: Pelajar Baru
     
     leaveforstudent:
       title: Cuti Pelajar
@@ -2019,6 +2023,10 @@ ms_MY:
       maintain: Dikekalkan
       remove: Dibuang
       select_leave_type: Pilih Jenis Cuti
+      select_student_status: Pilih Status Pelajar
+      select_sponsor: Pilih Penaja
+      select_maritial_status: Pilih Status Perkahwinan
+      select_race: Pilih Bangsa
 
   date:
       formats:

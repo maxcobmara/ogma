@@ -20,16 +20,9 @@
 
   .form-group
     .col-sm-2.control-label
-      =f.label t 'student.students.sbirthd', for: :sbirthdt
-    .col-md-4
-      = f.text_field :sbirthdt, class: 'form-control', 'data-behaviour' => 'datepicker_today'
- 
-
-  .form-group
-    .col-sm-2.control-label
       =f.label t 'student.students.race', for: :race2
     .col-md-2 
-      = f.select :race2, Student::RACE, :prompt => "Select", class: 'form-control'
+      = f.select :race2, Student::RACE, {:include_blank =>t('helpers.prompt.select_race')} , {class: 'form-control'} 
       %font{:color => "blue"} Previous race entered: #{@student.race.blank? ? "" : @student.race}
 
   .form-group
