@@ -1248,7 +1248,10 @@ ms_MY:
       book_wo_acc2: Buku Tanpa No Perolehan
       acc_not_exist: Tidak Wujud
       acc_must_unique: "(Nota Tambahan : No Perolehan mestilah UNIK)"
-      use_language: "(Nota Tambahan : Gunakan 'ing' or 'en' for Bahasa Inggeris, use 'mel' or 'ms_MY' for Bahasa Malaysia)"
+      use_language: "(Nota Tambahan : Gunakan 'ing' atau 'en' for Bahasa Inggeris, use 'mel' atau 'ms_MY' for Bahasa Malaysia)"
+      bibliography: Bibliografi
+      indice: Indeks
+      photo: "Muka depan (kulit buku)"
   
   buletin:
     list: Senarai Buletin

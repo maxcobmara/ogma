@@ -1,0 +1,22 @@
+%fieldset
+  = f.hidden_field :_destroy
+  .row
+    .col-sm-2.col-md-offset-2= f.text_field :accession_no, :class => 'form-control'
+    .col-sm-1
+      = link_to content_tag(:i, "", class: "fa fa-trash-o"), data: {"data-toggle" => "tooltip", title: "Delete"}, class: "btn btn-danger remove_fields"
+ 
+:javascript
+  
+  $(document).ready(function(){
+  });
+  
+  function rmv_field(curr_fieldset) {
+    $(curr_fieldset).parent().parent().hide();
+  }
+
+  function remove_fields(link,fm) {
+    $(link).parent().parent().hide();
+    $(fm).$("input[type=hidden]").value = "1";
+  }
+/document.getElementByName(fm+'[_destroy]').val()=true;
+/$(fm).value= '1';

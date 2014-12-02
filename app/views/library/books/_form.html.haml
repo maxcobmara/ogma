@@ -1,0 +1,63 @@
+.row
+  .col-md-10.col-md-offset-1
+    / Nav tabs
+    %ul.nav.nav-tabs
+      %li.active= link_to (t 'library.book.book_details'),"#book_details_edit", "data-toggle" => "tab"
+      %li=link_to (t 'library.book.accessionno'), "#accessionno_details_edit", "data-toggle" => "tab"
+      %li=link_to (t 'library.book.purchase_info'), "#purchase_details_edit", "data-toggle" => "tab"
+      
+    .tab-content{style:"padding-top:1em"}
+      .col-md-offset-2 
+        .form-group
+          .col-sm-2.control-label
+            %b ISBN
+          .col-md-4
+            = f.text_field :isbn, class: 'form-control'
+        .form-group
+          .col-sm-2.control-label
+            =  f.label t 'library.book.title', for: :title
+          .col-md-4
+            = f.text_area :title, :size => '60x2', class: 'form-control'
+            /= f.collection_select :staff_id, Staff.all.order(name: :asc), :id,  :staff_name_with_position_grade, {:include_blank =>t('helpers.prompt.select_staff'), :selected=>25},{class: 'selectpicker', "data-width"=>'460px'}        
+    
+      #book_details_edit.tab-pane.active
+        %br
+        = render 'tab_details_edit', :f => f
+         
+      #accessionno_details_edit.tab-pane
+        %BR
+        .col-md-8.col-md-offset-1
+          %br
+          .row
+            .col-sm-2.col-md-offset-2= t 'library.book.accessionno'
+           
+            %hr
+          = f.fields_for :accessions do |builder|
+            = render 'accession_fields', :f => builder
+          %br
+          .row
+            /= link_to_add_fields image_tag("add.png", :border => 0, :title => t('addmore')), f, :travel_claim_logs
+            = link_to_add_fields t('.add_more'), f, :accessions, "",  ""
+          %br
+
+      #purchase_details_edit.tab-pane
+        %br
+        = render 'tab_purchase_info_edit', :f => f
+    
+:javascript
+
+//<![CDATA[
+bkLib.onDomLoaded(function() {
+  new nicEditor().panelInstance('myNicEditor3');
+  new nicEditor().panelInstance('myNicEditor4');
+});
+//]]>
+
+  function add_fields(link, association, content) {  
+    var new_id = new Date().getTime();  
+    var regexp = new RegExp("new_" + association, "g");  
+    $(link).parent().before(content.replace(regexp, new_id));  
+  }
+
+
+

@@ -1338,6 +1338,9 @@ en:
       acc_not_exist: "Not Exist"
       acc_must_unique: "(Additional Notes : Accession No must UNIQUE)"
       use_language: "(Additional Notes : Use 'ing' or 'en' for English, use 'mel' or 'ms_MY' for Malay)"
+      bibliography: 
+      indice: Index
+      photo: Cover page
       
   buletin:
     list: List of Bulletins

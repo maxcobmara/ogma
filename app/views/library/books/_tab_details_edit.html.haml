@@ -1,0 +1,140 @@
+.col-md-offset-2 
+  .form-group
+    .col-sm-2.control-label
+      = f.label  t 'library.book.catsource', for: :catalogue_source
+    .col-md-2
+      = f.select :catsource, DropDown::CATSOURCE,{:include_blank =>t('select')},{class: 'selectpicker', "data-width"=>'160px'}
+  .form-group
+    .col-sm-2.control-label
+      %b= (t 'library.book.classno')+" (NLM) / (DDC)"
+     
+    .col-md-3
+      = f.text_field :classlcc, class:'form-control'
+  .form-group
+    .col-sm-2.control-label
+      = f.label t 'library.book.language', for: :book_language
+    .col-md-2
+      = f.select :language, DropDown::LANGUAGE,{:include_blank =>t('select')},{class: 'selectpicker', "data-width"=>'160px'}
+  .form-group
+    .col-sm-2.control-label
+      = f.label  t 'library.book.author', for: :author
+    .col-md-4
+      = f.text_area :author, :size => '60x2', class: 'form-control'
+  .form-group
+    .col-sm-2.control-label
+      = f.label t 'library.book.subject', for: :subject
+    .col-md-4
+      = f.text_area :subject, :size => '60x6', class: 'form-control'
+  .form-group
+    .col-sm-2.control-label
+      =f.label t 'library.book.publisher', for: :publisher
+    .col-md-4
+      = f.text_field :publisher , class: 'form-control'
+
+  .form-group
+    .col-sm-2.control-label
+      = f.label t 'library.book.publish_date', for: :publish_date
+    .col-md-2
+      = f.text_field :publish_date, :placeholder => "YYYY", class: 'form-control'
+  .form-group
+    .col-sm-2.control-label
+      = f.label t 'library.book.publish_location', for: :publish_location
+    .col-md-4
+      = f.text_field :publish_location, class: 'form-control'
+  .form-group
+    .col-sm-2.control-label
+      = f.label t 'library.book.roman', for: :roman
+    .col-md-2
+      = f.text_field :roman, class: 'form-control'
+  .form-group
+    .col-sm-2.control-label
+      = f.label t 'library.book.size', for: :size
+    .col-md-2
+      = f.text_field :size, class: 'form-control'
+  .form-group
+    .col-sm-2.control-label
+      = f.label t 'library.book.pages', for: :pages
+    .col-md-2
+      = f.text_field :pages, class: 'form-control'
+  .form-group
+    .col-sm-2.control-label
+      = f.label t 'library.book.bibliography', for: :bibliography
+    .col-md-4
+      = f.text_field :bibliography, class: 'form-control'
+  .form-group
+    .col-sm-2.control-label
+      = f.label t 'library.book.indice', for: :indice
+    .col-md-2
+      = f.text_field :indice, class: 'form-control'
+  .form-group
+    .col-sm-2.control-label
+      = f.label t 'library.book.notes', for: :notes
+    .col-md-4
+      = f.text_field :notes, class: 'form-control'
+  .form-group
+    .col-sm-2.control-label
+      = f.label t 'library.book.loan_type', for: :loan_type
+    .col-md-2    
+      = f.select :loantype, DropDown::LOAN,{:include_blank =>t('select')},{class: 'selectpicker', "data-width"=>'160px'}
+  .form-group
+    .col-sm-2.control-label
+      = f.label t 'library.book.mediatype', for: :mediatype
+    .col-md-2
+      = f.select :mediatype, DropDown::MEDIA,{:include_blank =>t('select')},{class: 'selectpicker', "data-width"=>'160px'}
+  .form-group
+    .col-sm-2.control-label
+      = f.label "Status", for: :status
+    .col-md-2   
+      = f.select :status, DropDown::STATUS,{:include_blank =>t('select')},{class: 'selectpicker', "data-width"=>'160px'}
+  .form-group
+    .col-sm-2.control-label
+      = f.label t 'library.book.series', for: :series
+    .col-md-2
+      = f.text_field :series, class: 'form-control'
+  .form-group
+    .col-sm-2.control-label
+      = f.label t 'library.book.location', for: :location
+    .col-md-2    
+      = f.text_field :location, class: 'form-control'
+  .form-group
+    .col-sm-2.control-label
+      = f.label t 'library.book.edition', for: :edition
+    .col-md-2
+      = f.text_field :edition, class: 'form-control'
+  /.form-group
+  /  .col-sm-2.control-label
+  /    Upload Book Image
+  /  .col-md-2    
+  /    = f.file_field :photo %
+  /    %span{:style:"font-size:0.9em; font-family: courier"}
+  /    =h @book.photo_file_name unless @book.photo_file_name.blank? +" - "
+  /    =h (@book.photo_file_size/1024) unless @book.photo_file_name.blank? 
+  /    Kb
+  
+  - if @book.photo.exists? then
+    %dl.dl-horizontal
+      %dt= t 'exam.examquestion.current_diagram'
+      %dd
+        = image_tag @book.photo.url,:style => "border: solid 1px;"
+        %br
+        %b= t'exam.examquestion.uploaded_file'
+        = @book.photo_file_name
+  .form-group
+    /preview photo before upload
+    .col-sm-2.control-label
+      %b= t 'exam.examquestion.new_diagram'
+    .col-md-6
+      %img#uploadPreviewbook{:alt => (t 'exam.examquestion.browse_preview'), :style=>"width: 100px; height:100px;border: solid 1px; padding: 5px;"}/
+      /%img#uploadPreviewbook{:src => "http://placekitten.com/200/300", :style=>"width: 100px; height:100px;"}/
+  .form-group
+    .col-sm-2.control-label
+      = f.label t 'library.book.photo', for: :photo
+    .col-md-6
+      = f.file_field :photo, class: 'form-control'
+
+  .form-group
+    .col-sm-2.control-label
+      = f.label t 'library.book.links', for: :links
+    .col-md-4
+      = f.text_area :links, :size => '60x6', class: 'form-control'
+ 
