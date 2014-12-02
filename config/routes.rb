@@ -26,6 +26,7 @@ Ogma::Application.routes.draw do
       member do
         get :check
         get :approve
+        get :claimprint
       end
     end
     resources :staff_attendances do
