@@ -12,18 +12,28 @@ class Exam::ExammarksController < ApplicationController
     if position_exist  
       lecturer_programme = @current_user.userable.positions[0].unit
       unless lecturer_programme.nil?
-        programme = Programme.where('name ILIKE (?) AND ancestry_depth=?',"%#{lecturer_programme}%",0)
+        programme = Programme.where('name ILIKE (?) AND ancestry_depth=?',"%#{lecturer_programme}%",0)  if !(lecturer_programme=="Pos Basik" || lecturer_programme=="Diploma Lanjutan")
       end
       unless programme.nil? || programme.count==0
         programme_id = programme.try(:first).try(:id)
         subjects_ids = Programme.where(id: programme_id).first.descendants.at_depth(2).pluck(:id)
         @exams_list = Exam.where('subject_id IN(?) and id IN(?)', subjects_ids, valid_exams).order(name: :asc, subject_id: :asc)
       else
-        @exams_list = Exam.where('id IN(?)', valid_exams).order(name: :asc, subject_id: :asc)
+        tasks_main = @current_user.userable.positions[0].tasks_main
         if lecturer_programme == 'Commonsubject'
           programme_id ='1'
+          @exams_list = Exam.where('id IN(?)', valid_exams).order(name: :asc, subject_id: :asc)
+        elsif (lecturer_programme == 'Pos Basik' || lecturer_programme == "Diploma Lanjutan") && tasks_main!=nil
+          allposbasic_prog = Programme.where('course_type=? or course_type=?', "Pos Basik", "Diploma Lanjutan").pluck(:name)  #Onkologi, Perioperating, Kebidanan etc
+          for basicprog in allposbasic_prog
+            lecturer_basicprog_name = basicprog if tasks_main.include?(basicprog)==true
+          end
+          programme_id=Programme.where(name: lecturer_basicprog_name, ancestry_depth: 0).first.id
+          subject_ids = Programme.where(id: programme_id).first.descendants.at_depth(2).pluck(:id)
+          @exams_list = Exam.where('subject_id IN(?) and id IN(?)', subject_ids, valid_exams).order(name: :asc, subject_id: :asc)
         else
           programme_id='0'
+          @exams_list = Exam.where('id IN(?)', valid_exams).order(name: :asc, subject_id: :asc)
         end
       end
       @search = Exammark.search(params[:q])
@@ -119,7 +129,7 @@ class Exam::ExammarksController < ApplicationController
     if position_exist  
       @lecturer_programme = @current_user.userable.positions[0].unit
       unless @lecturer_programme.nil?
-        programme = Programme.where('name ILIKE (?) AND ancestry_depth=?',"%#{@lecturer_programme}%",0)
+        programme = Programme.where('name ILIKE (?) AND ancestry_depth=?',"%#{@lecturer_programme}%",0)  if !(@lecturer_programme=="Pos Basik" || @lecturer_programme=="Diploma Lanjutan")
       end
       unless @programme.nil? || @programme.count == 0
         @programme_id = @programme.id
@@ -127,7 +137,7 @@ class Exam::ExammarksController < ApplicationController
         @dept_unit_prog = Programme.where(id: @programme_id).first.programme_list
         @intakes_lt = @student_list.pluck(:intake).uniq
       else
-        #for administrator & Commonsubject lecturer : to assign programme, based on selected exampaper 
+        #for administrator, Posbasik, Diploma Lanjutan & Commonsubject lecturer : to assign programme, based on selected exampaper 
         if @examid
           @dept_unit = Programme.find(Exam.find(@examid).subject_id).root
           @dept_unit_prog = @dept_unit.programme_list
@@ -212,7 +222,7 @@ class Exam::ExammarksController < ApplicationController
       if position_exist  
         lecturer_programme = @current_user.userable.positions[0].unit
         unless lecturer_programme.nil?
-          programme = Programme.where('name ILIKE (?) AND ancestry_depth=?',"%#{lecturer_programme}%",0)
+          programme = Programme.where('name ILIKE (?) AND ancestry_depth=?',"%#{lecturer_programme}%",0) if !(lecturer_programme=="Pos Basik" || lecturer_programme=="Diploma Lanjutan")
         end
         unless programme.nil? || programme.count==0
           programme_id = programme.first.id
@@ -220,8 +230,17 @@ class Exam::ExammarksController < ApplicationController
           subjects_ids = Programme.where(id: programme_id).first.descendants.at_depth(2).pluck(:id)
           @exams_list = Exam.where('subject_id IN(?) and id IN(?)', subjects_ids, valid_exams).order(name: :asc, subject_id: :asc)
         else
-          @students_list = Student.all.order(matrixno: :asc)
-          @exams_list = Exam.where('id IN(?)', valid_exams).order(name: :asc, subject_id: :asc)
+          tasks_main = @current_user.userable.positions[0].tasks_main
+          if (lecturer_programme == 'Pos Basik' || lecturer_programme == "Diploma Lanjutan") && tasks_main!=nil
+            allposbasic_prog = Programme.where('course_type=? or course_type=?', "Pos Basik", "Diploma Lanjutan").pluck(:name)  #Onkologi, Perioperating, Kebidanan etc
+            for basicprog in allposbasic_prog
+              lecturer_basicprog_name = basicprog if tasks_main.include?(basicprog)==true
+            end
+            programme_id=Programme.where(name: lecturer_basicprog_name, ancestry_depth: 0).first.id
+            subject_ids = Programme.where(id: programme_id).first.descendants.at_depth(2).pluck(:id)
+            @exams_list = Exam.where('subject_id IN(?) and id IN(?)', subject_ids, valid_exams).order(name: :asc, subject_id: :asc)
+            @students_list = Student.where(course_id: programme_id).order(matrixno: :asc)
+          end
         end
       end
     end

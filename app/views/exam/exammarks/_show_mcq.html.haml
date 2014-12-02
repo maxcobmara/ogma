@@ -1,30 +1,45 @@
-%tr
-  %td MCQ
-  %td
-    - if @examquestions.count>0
-      - 1.upto(@examquestions.mcqq.count) do |no|
-        =no
-        %br
-    - else
+- if @examquestions.count>0
+  %tr
+    %td{:rowspan=>"#{@examquestions.mcqq.count}"}MCQ
+    %td 1
+    %td
+      - if @examquestions.count>0
+        =simple_format(@examquestions.mcqq[0].question)
+      /- else
+      /  \-
+    %td{:rowspan=>"#{@examquestions.mcqq.count}"}
+      - if @examquestions.count>0
+        - marks_ary = @examquestions.mcqq.pluck(:marks)
+      /- else
+      /  - marks_ary = @examtemplates.mcqq.pluck(:total_marks) 
+      - @mcq_totalmarks = marks_ary.inject{|sum,x|sum+x}
+      - if task==1
+        =number_with_precision(@exammark.total_mcq,precision: 2)  
+      - elsif task==2
+        = text_field_tag "exammark[total_mcq]",number_with_precision(@exist_mark,:precision=>2) ,:id=>"total_mcq1" , :size=>2,  :class=>'form-control'
+    %td{:rowspan=>"#{@examquestions.mcqq.count}"}
+      \/ 
+      =number_with_precision(@mcq_totalmarks, precision: 2) 
+  - 1.upto(@examquestions.mcqq.count-1) do |no|
+    %tr
+      %td=no+1
+      %td=simple_format(@examquestions.mcqq[no].question)
+ 
+- else
+  %tr
+    %td MCQ
+    %td="1 - "+@examtemplates.mcqq[0].quantity.to_s 
+    %td 
       \-
-  %td
-    - if @examquestions.count>0
-      - for examquestion in @examquestions.mcqq
-        =examquestion.question
-        %br
-    - else
-      \-
-  %td
-    - if @examquestions.count>0
-      - marks_ary = @examquestions.mcqq.pluck(:marks)
-    - else
+    %td
       - marks_ary = @examtemplates.mcqq.pluck(:total_marks) 
-    - @mcq_totalmarks = marks_ary.inject{|sum,x|sum+x}
-    - if task==1
-      =number_with_precision(@exammark.total_mcq,precision: 2)  
-    - elsif task==2
-      = text_field_tag "exammark[total_mcq]",number_with_precision(@exist_mark,:precision=>2) ,:id=>"total_mcq1" , :size=>2,  :class=>'form-control'
-  %td
-    \/ 
-    =number_with_precision(@mcq_totalmarks, precision: 2) 
-
+      - @mcq_totalmarks = marks_ary.inject{|sum,x|sum+x}
+      - if task==1
+        =number_with_precision(@exammark.total_mcq,precision: 2)  
+      - elsif task==2
+        = text_field_tag "exammark[total_mcq]",number_with_precision(@exist_mark,:precision=>2) ,:id=>"total_mcq1" , :size=>2,  :class=>'form-control'
+    %td
+      \/ 
+      =number_with_precision(@mcq_totalmarks, precision: 2) 
+  
+    

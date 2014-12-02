@@ -12,13 +12,18 @@
             .col-sm-2.control-label
               =f.label t 'exam.exammark.exam_id', for: :exam_id
             .col-md-8
-              = f.collection_select :exam_id, @exams_list, :id, :exam_name_subject_date,{:include_blank =>t('select')},{class: 'selectpicker', "data-width"=>'550px'} 
-                
+              - if @exammark.new_record? == true
+                = f.collection_select :exam_id, @exams_list, :id, :exam_name_subject_date,{:include_blank =>t('select')},{class: 'selectpicker', "data-width"=>'550px'} 
+              - else
+                = @exammark.exampaper.exam_name_subject_date
           .form-group
             .col-sm-2.control-label
               = f.label  t 'exam.exammark.student_id', for: :student_id
             .col-md-4
-              = f.collection_select :student_id, @students_list, :id, :matrix_name, {:include_blank=>t('select'), :selected=>@exammark.student_id}, {class: 'selectpicker', "data-width"=>'400px'} 
+              - if @exammark.new_record? == true
+                = f.collection_select :student_id, @students_list, :id, :matrix_name, {:include_blank=>t('select'), :selected=>@exammark.student_id}, {class: 'selectpicker', "data-width"=>'400px'} 
+              - else
+                = @exammark.studentmark.matrix_name
 
           - if @exammark.new_record? == false 
             .form-group

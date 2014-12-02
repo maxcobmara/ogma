@@ -10,15 +10,6 @@
     %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: 'index_search_bar'
     %li.toga= link_to content_tag(:li, fa_icon("print", text: (t 'actions.print'))), "#", class: 'bogus'  
 
-  /- unless @position_exist
-  /  You have no position assigned yet.
-  /  %br
-  /  Please contact administrator.
-  /- else 
-
-  /- if @lecturer_programme.nil? || @lecturer_programme.blank?
-  /  Programme / Unit is not defined. <br>
-  /- else
 .row
   .col-md-12
     .alert.alert-warning
@@ -30,6 +21,11 @@
         %li
           %strong= t('exam.exams.separate_combine')
           =" - "+t('exam.exams.separate_combine_text')
+
+  /=@programme_id
+  /= @lecturer_programme
+  /= @tasks_main
+
   %table.table-striped.table-hover.ogma
     %thead
       %tr
