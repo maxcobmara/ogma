@@ -1454,7 +1454,7 @@ ms_MY:
       klass_id: Template
       exam_on: Tarikh
       duration: Tempoh
-      full_marks: Markah Penuh
+      total_marks: Markah Penuh
       starttime: Masa Mula
       endtime: Masa Tamat
       topic_id: Topik
@@ -1464,7 +1464,7 @@ ms_MY:
       set_sequence: " Sila tetapkan urutan untuk setiap soalan."
       exams_details: Butiran Kertas Peperiksaan
       questions_details: Butiran Soalan Peperiksaan
-      total_questions: Jumlah Soalan
+      quantity: Jumlah Soalan
       not_selected: Belum Ditentukan
       separate_combine: Muka Depan
       separate_combine_text: "S merujuk kepada muka depan kertas soalan yang BERASINGAN bagi satu set kertas soalan, manakala C merujuk kepada GABUNGAN satu muka depan bagi satu set kertas soalan."
@@ -1473,6 +1473,7 @@ ms_MY:
       by_semester: semester
       create_exam: Tambah Data Set Peperiksaan
       create_template: Tambah Data Template Peperiksaan
+      marks_each: "MCQ - 1 markah/setiap satu, MEQ - 20 markah/setiap satu, SEQ - 10 markah/setiap satu"
     
     exammark:
       title: Markah Kertas Peperiksaan

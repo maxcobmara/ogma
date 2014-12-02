@@ -108,7 +108,7 @@ authorization do
  role :lecturer do
    has_permission_on [:exam_examquestions, :exam_exams, :exam_exammarks], :to => [:menu, :read, :create]
    
-   has_permission_on :exam_exams, :to =>[:manage] do
+   has_permission_on :exam_exams, :to =>:manage do
      if_attribute :created_by => is {user.userable.id}
    end
    

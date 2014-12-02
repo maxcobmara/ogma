@@ -1517,7 +1517,7 @@ en:
       klass_id: Template
       exam_on: Date
       duration: Duration
-      full_marks: Full Marks
+      total_marks: Full Marks
       starttime: Start Time
       endtime: End Time
       topic_id: Topic
@@ -1527,7 +1527,7 @@ en:
       set_sequence: " Please set sequence for each question."
       exams_details: Examination Paper Details
       questions_details: Questions Details
-      total_questions: Total Questions
+      quantity: Total Questions
       not_selected: Not Selected
       separate_combine: Cover
       separate_combine_text: "S refers to SEPARATED covers of examination paper, whereas C refers to COMBINED / Single cover of examination paper."
@@ -1536,6 +1536,7 @@ en:
       by_semester: by semester
       create_exam: Add Exam Data
       create_template: Add Exam Template
+      marks_each: "MCQ - 1 marks/each, MEQ - 20 marks/each, SEQ - 10 marks/each"
 
     exammark:
       title: Marks by Examination Papers

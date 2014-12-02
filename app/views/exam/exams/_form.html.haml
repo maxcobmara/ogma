@@ -1,0 +1,43 @@
+- model_class = Exam
+.row
+  .col-md-offset-1
+    / Nav tabs
+    %ul.nav.nav-tabs
+      %li.active= link_to ((t 'exam.exams.exams_details')),"#exams_details", "data-toggle" => "tab"
+      %li= link_to ((t 'exam.exams.questions_details')), "#questions_details_edit", "data-toggle" => "tab"
+
+    / display 
+    .tab-content{style:"padding-top:1em"}
+      #exams_details.tab-pane.active
+        %br
+        = render 'show_exam'
+        
+      #questions_details_edit.tab-pane
+        - if @exam.klass_id == 0 
+          .col-md-8.col-md-offset-1
+            %br
+            %h4=t 'exam.exams.title2'
+            .row
+              .col-sm-3= t 'exam.examquestion.questiontype'
+              .col-sm-2= t 'exam.exams.quantity' 
+              .col-sm-2= t 'exam.exams.total_marks'
+ 
+            %hr
+            = f.fields_for :examtemplates do |builder|
+              = render 'examtemplate_fields', :f => builder
+            
+            %BR
+            .row
+              /= link_to_add_fields image_tag("add.png", :border => 0, :title => t('addmore')), f, :examtemplates
+              = link_to_add_fields t('addmore'), f, :examtemplates, "",  ""
+            %br
+              %font{:style=>"size:-2"}=t 'exam.exams.marks_each'
+            %br
+            
+
+:javascript
+  function add_fields(link, association, content) {
+    var new_id = new Date().getTime();
+    var regexp = new RegExp("new_" + association, "g");
+    $(link).parent().before(content.replace(regexp, new_id));
+  }
