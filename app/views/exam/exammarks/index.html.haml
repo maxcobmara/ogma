@@ -28,18 +28,18 @@
     /  = t('actions.check_all')
     /  .col-md-2= submit_tag t('edit_checked'), :name => :exammark_submit_button, class: "btn btn-default"
     
-    = form_tag edit_multiple_exam_exammarks_path, :method => :put , :id => "form1" do
-      %table.table-striped.table-hover.ogma
-        %thead
-          %tr
-            %th{:style=>"width:20px;"} &nbsp;
-            %th= sort_link(@search, :student_id, (t 'exam.exammark.student_id'))
-            %th= t 'exam.exammark.icno'
-            %th= sort_link(@search, :total_mcq, (t 'exam.exammark.total_mcq'))
+    
+    %table.table-striped.table-hover.ogma
+      %thead
+        %tr
+          %th{:style=>"width:20px;"} &nbsp;
+          %th= sort_link(@search, :student_id, (t 'exam.exammark.student_id'))
+          %th= t 'exam.exammark.icno'
+          %th= sort_link(@search, :total_mcq, (t 'exam.exammark.total_mcq'))
 
-        %tbody
-          = render "search_bar"
-      
+      %tbody
+        = render "search_bar"
+        = form_tag edit_multiple_exam_exammarks_path, :method => :put , :id => "form1" do
           - index2=0
           - @exammarks_group.sort.each do |exammarks_group, exammarks|
             - exammarks.sort_by{|x|x.studentmark.name}.each_with_index do |exammark,index|
@@ -59,21 +59,21 @@
                 %td=number_with_precision(exammark.total_marks, precision: 2)  
               - index2+=1
       
-    /.row
-    /   /%span{:style=>"position: absolute; left: 40px;"}
-    /  .form-group
-    /    .col-sm-2= submit_tag t('edit_checked'), :name => :exammark_submit_button, class: "btn btn-default"
-    /    .col-md-4
-    /      = check_box_tag :check_all
-    /      = t('actions.check_all')
+          /.row
+          /   /%span{:style=>"position: absolute; left: 40px;"}
+          /  .form-group
+          /    .col-sm-2= submit_tag t('edit_checked'), :name => :exammark_submit_button, class: "btn btn-default"
+          /    .col-md-4
+          /      = check_box_tag :check_all
+          /      = t('actions.check_all')
     
-    %br
-    %table
-      %tr
-        %td{:style=> "width:200px; text-align: right; padding:5px;"}
-          = submit_tag t('edit_checked'), :name => :exammark_submit_button, class: "btn btn-default"
-        %td{:style=>"padding:5px;"}= check_box_tag :check_all
-        %td{:style=>"padding:5px;"}= t('actions.check_all')   
+          %br
+          %table
+            %tr
+              %td{:style=> "width:200px; text-align: right; padding:5px;"}
+                = submit_tag t('edit_checked'), :name => :exammark_submit_button, class: "btn btn-default"
+              %td{:style=>"padding:5px;"}= check_box_tag :check_all
+              %td{:style=>"padding:5px;"}= t('actions.check_all')   
         
   .right{style:"padding:0 30px; margin:0;"}= paginate @exammarks, :theme => 'twitter-bootstrap-3'
 
