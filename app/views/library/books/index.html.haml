@@ -5,13 +5,15 @@
 
 .navbar.navbar-inverse{role: "navigation", style: "padding-right:40px;"}
   %ul.nav.navbar-nav
-    %li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'actions.new'))), new_library_book_path
+    - permitted_to? :create, :library_books do
+      %li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'actions.new'))), new_library_book_path
   %ul.nav.navbar-nav
-    %li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'actions.import_excel'))), import_excel_library_books_path     
+    - permitted_to? :create, :library_books do
+      %li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'actions.import_excel'))), import_excel_library_books_path     
   %ul.nav.navbar-nav.navbar-right
-    %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "toga"		#bogus first
+    %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: 'index_search_bar'
     %li= link_to content_tag(:li, fa_icon("print", text: (t 'actions.print'))), "#", class: 'bogus'
-/=@accessions.count
+
 .row
   %table.table-striped.table-hover.ogma
     %thead
@@ -33,13 +35,14 @@
       - if @book_wo_acc.count>0
         %tr
           %td{:colspan=>"2"} &nbsp;
-          %td{:colspan=>"8", :style=>"color: red; text-decoration: underline;"}=@book_wo_acc.count.to_s+" "+t('library.book.book_wo_acc2')
+          %td{:colspan=>"9", :style=>"color: red; text-decoration: underline;"}=@book_wo_acc.count.to_s+" "+t('library.book.book_wo_acc2')
       - @book_wo_acc.each_with_index do |bk,ind|
         %tr
           %td{:colspan=>"2"} &nbsp;
           %td
             =h link_to (ind+1).to_s+") "+bk.title, library_book_path(bk)
-            =h link_to "EDIT","http://#{request.host}:3000/books/#{bk.id}/edit"  
+            - permitted_to? :update, :library_books do
+              =h link_to "EDIT","http://#{request.host}:3000/books/#{bk.id}/edit"  
           %td{:colspan=>"3"} &nbsp;
           %td{:style=>"color:red;"}=t'library.book.acc_not_exist'
           %td{:colspan=>"4"} &nbsp;

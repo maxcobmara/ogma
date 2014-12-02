@@ -41,7 +41,6 @@ class Examquestion < ActiveRecord::Base
 
   validates_presence_of :subject_id, :topic_id, :questiontype, :question, :marks, :qstatus #17Apr2013,:answer #9Apr2013-compulsory for subject_id
 
-
   #has_many :examsubquestions, :dependent => :destroy
   #accepts_nested_attributes_for :examsubquestions, :reject_if => lambda { |a| a[:question].blank? }
 
@@ -51,8 +50,21 @@ class Examquestion < ActiveRecord::Base
   attr_accessor :programme_id #9Apr2013 - rely on subject (root of subject[programme])
   #attr_accessor :question1,:question2,:question3,:question4,:questiona,:questionb,:questionc,:questiond
 
-  before_validation :set_nil_if_not_activate, :set_answer_for_mcq
+  before_validation :set_nil_if_not_activate, :set_answer_for_mcq, :set_approvedt_if_approved, :set_details_editing_for_approval
   #before_save :set_answer_for_mcq#, :set_subquestions_if_seq
+  
+  def set_details_editing_for_approval
+     if qstatus == "Editing" || qstatus == "Ready For Approval"
+       self.editor_id = current_user.userable_id if editor_id.blank? || editor_id.nil?
+       self.editdt = Date.today.strftime('%Y-%m-%d')
+     end
+  end
+  
+  def set_approvedt_if_approved
+    if qstatus == "Approved" && (approvedt.blank? || approvedt.nil?)
+      self.approvedt = Date.today.strftime('%Y-%m-%d')
+    end
+  end
 
   def set_nil_if_not_activate
      #if self.id != nil   
@@ -81,7 +93,16 @@ class Examquestion < ActiveRecord::Base
     #end
   #end
 
+  # define scope
+  def self.keyword_search(query) 
+    subject_ids = Programme.where('code ILIKE(?) or name ILIKE(?)', "%#{query}%", "%#{query}%").pluck(:id)
+    where('subject_id IN(?)', subject_ids)
+  end
 
+  # whitelist the scope
+  def self.ransackable_scopes(auth_object = nil)
+    [:keyword_search]
+  end
 
   def question_creator
     #programme = User.current_user.staff.position.unit - replace with : 2 lines (below)
@@ -209,7 +230,7 @@ class Examquestion < ActiveRecord::Base
     subq=[]
     shortessays2.each do |y|
       unless y.subquestion.nil? || y.subquestion.blank?
-        subq<<"("+y.item.to_s+") "+y.subquestion+" ("+y.submark.to_s+") ["+y.subanswer.to_s+"]"
+        subq<< "("+y.item.to_s+") "+y.subquestion+" ("+y.submark.to_s+") ["+y.subanswer.to_s+"]"
       end
     end
     subq.to_s

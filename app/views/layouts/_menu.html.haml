@@ -156,17 +156,38 @@
           %li= link_to content_tag(:i, "", :class => "icon-numb") + t('training.trainingnote.title2'), training_trainingnotes_path
           %li= link_to content_tag(:i, "", :class => "icon-numb") + "Personalised Time Table", personalize_index_training_weeklytimetables_path
 
-    %li.icon.icon-left
-      = link_to content_tag(:i, "", :class => "icon-numb") + (t "exam.title"), '#'
-      .mp-level
-        %h2.icon Exams
-        %a.mp-back{:href => "#"}= t 'helpers.links.back'
-        %ul
-          %li= link_to content_tag(:i, "", :class => "icon-numb") + (t "exam.examquestion.title"), exam_examquestions_path
-          %li= link_to content_tag(:i, "", :class => "icon-numb") + (t "exam.exams.title"), exam_exams_path
-          %li= link_to content_tag(:i, "", :class => "icon-numb") + "Examination Management", '#'
-          %li= link_to content_tag(:i, "", :class => "icon-numb") + "Feedback/Course Evaluation", '#'
-          %li= link_to content_tag(:i, "", :class => "icon-numb") + "Examination Analysis", '#'
+    - permitted_to? :menu, :exam_exams do
+      %li.icon.icon-left
+        = link_to content_tag(:i, "", :class => "icon-numb") + (t "exam.title"), '#'
+        .mp-level
+          %h2.icon Exams
+          %a.mp-back{:href => "#"}= t 'helpers.links.back'
+          %ul
+            - permitted_to? :menu, :exam_examquestions do
+              %li= link_to content_tag(:i, "", :class => "icon-numb") + (t "exam.examquestion.title"), exam_examquestions_path
+            - permitted_to? :menu, :exam_exams do
+              %li= link_to content_tag(:i, "", :class => "icon-numb") + (t "exam.exams.title"), exam_exams_path
+            %li.icon.icon-left
+              = link_to (t "exam.management"), '#'
+              .mp-level
+                %h2.icon= t "exam.management"
+                %a.mp-back{:href => "#"}= t 'helpers.links.back'
+                %ul
+                  - permitted_to? :menu, :exam_exammarks do
+                    %li= link_to (t "exam.exammark.title"), exam_exammarks_path
+                  %li= link_to (t "exam.grade.title"), exam_grades_path
+                  %li.icon.icon-left
+                    = link_to (t "exam.result"), '#'
+                    .mp-level
+                      %h2.icon= t "exam.result"
+                      %a.mp-back{:href => "#"}= t 'helpers.links.back'
+                      %ul
+                        %li= link_to (t "exam.examresult.title2"), exam_examresults_path
+                        %li= link_to (t "exam.examresult.exam_slip"), "#"
+            
+            /%li= link_to content_tag(:i, "", :class => "icon-numb") + "Examination Management", '#'
+            %li= link_to content_tag(:i, "", :class => "icon-numb") + "Feedback/Course Evaluation", '#'
+            %li= link_to content_tag(:i, "", :class => "icon-numb") + "Examination Analysis", '#'
 
     %li.icon.icon-left
       //= link_to content_tag(:i, "", :class => "book") + (t "library.title"), '#'
@@ -176,10 +197,12 @@
         %a.mp-back{:href => "#"}=t('back')
         %ul
           %li= link_to content_tag(:i, "", :class => "icon-numb") + "Rules & Regulations", '#'
-          - permitted_to? :manage, :librarytransactions do
+          - permitted_to? :read, :library_librarytransactions do 
             %li= link_to content_tag(:i, "", :class => "icon-numb") + (t "library.transaction.title"), library_librarytransactions_path
+          - permitted_to? :manage, :library_librarytransactions do
             %li= link_to content_tag(:i, "", :class => "icon-numb") + (t "library.transaction.manager"), manager_library_librarytransactions_path
-          %li= link_to content_tag(:i, "", :class => "icon-numb") + (t "library.book.list"), library_books_path
+          - permitted_to? :read, :library_books do  
+            %li= link_to content_tag(:i, "", :class => "icon-numb") + (t "library.book.list"), library_books_path
           %li= link_to content_tag(:i, "", :class => "icon-numb") + "Analysis", '#'
           %li= link_to content_tag(:i, fa_icon("bar-chart-o", text: "Statistics")), '#'
 

@@ -10,6 +10,12 @@ $(document).ready(function(e) {
    	format:'Y-m-d',
    	formatDate:'Y-m-d'
   });
+  $('.date_picker_after').datetimepicker({
+   timepicker:false,
+   	format:'Y-m-d',
+   	formatDate:'Y-m-d',
+        minDate: 0
+  });
   $('.datetime_picker').datetimepicker({
     timepicker:true,
     format: "Y-m-d H:i",
@@ -35,6 +41,15 @@ $(document).ready(function(e) {
      datepicker:false,
        format:'H:i',
        step:5,
+  });
+  $('.time_picker2').datetimepicker({
+     datepicker:false,
+     format:'H:i',
+     step:15,
+     autoclose: true,
+     onSelectDate: function(dp, $input) {
+        $input.val($input.val()+ ':00');
+      }
   });
   $('.monthyear_picker').datetimepicker({
       format: "Y-m-d",

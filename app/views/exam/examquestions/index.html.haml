@@ -7,9 +7,9 @@
     %li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'actions.new'))), new_exam_examquestion_path
     %li= link_to (t 'actions.download_excel'), exam_examquestions_path(format: "xls"), class: 'bogus'
   %ul.nav.navbar-nav.navbar-right
-    %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "toga"
+    %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "index_search_bar"
     %li.toga= link_to content_tag(:li, fa_icon("print", text: (t 'actions.print'))), "#", class: 'bogus'  
-	
+
 .row
   %table.table-striped.table-hover.ogma
     %thead
@@ -27,21 +27,21 @@
         %th= sort_link(@search, :creator_id, (t 'exam.examquestion.creator_id'))
 
     %tbody
-      = render "index_search"
+      = render "search_bar"
       - @programme_exams.each do |prog, examquestions|
         %tr
           %td.group{:colspan => "12"}
             %span
             - unless prog.blank?
               = (t 'exam.examquestion.programme_id')+' : '+Programme.find(prog.id).name
-				
+
         - examquestions.group_by{|t|t.subject_details}.sort.each do |subject_details, examquestions| 
           %tr
             %td.group{:colspan => "9"}
               %span= (t 'exam.examquestion.subject_id')+' : '+subject_details
             %td.group{:colspan => "3"}
               %span= (t 'exam.examquestion.total_questions')+' = '+examquestions.count.to_s
-			  
+
           - @groupbytopic=examquestions.group_by{|x|x.topic_id} 
           - @groupbytopic.sort.each do |topic, allquestions|
           - no=0		
@@ -52,7 +52,7 @@
                 %span= Programme.find(topic).parent.code.to_s+' | '+topic.to_s
               %td.group{:colspan => "3"} 
                 %span= (t 'exam.examquestion.total_questions')+' = '+allquestions.count.to_s
-			
+
             - questions=allquestions.group_by{|t|t.questiontype}
             - questions.each do |questiontype,questionbytype|            
               - questionbytype.each do |question|
@@ -70,7 +70,7 @@
                   %td= question.qstatus
                   %td= question.creator_details
         
-    .right{style:"padding:0 30px; margin:0;"}= paginate @examquestions, :theme => 'twitter-bootstrap-3'
+  .right{style:"padding:0 30px; margin:0;"}= paginate @examquestions, :theme => 'twitter-bootstrap-3'
 
                   
   

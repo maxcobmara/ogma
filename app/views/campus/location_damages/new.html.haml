@@ -15,7 +15,7 @@
     .form-group
       %label.col-sm-2.control-label{:for => "reported_on"}= t 'location.damage.reported_on'
       .col-md-2
-        = f.text_field :reported_on, type: "text", :class => 'form-control', 'data-behaviour' => 'datepicker_today'
+        = f.text_field :reported_on, type: "text", :class => 'form-control date_picker_after'
       
     
     .form-group

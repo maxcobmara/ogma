@@ -1,7 +1,6 @@
 - model_class = Exam
 .col-md-8.col-md-offset-1
   %dl.dl-horizontal
-    %BR
     %dt= t 'exam.exams.name' , :default => model_class.human_attribute_name(:name) + ":"
     %dd= h (DropDown::EXAMTYPE.find_all{|disp, value| value == @exam.name}).map {|disp, value| disp}[0] 
 
@@ -18,28 +17,22 @@
     %dd=h @exam.creator_details 
 
     %dt= t 'exam.exams.exam_on' , :default => model_class.human_attribute_name(:exam_on) + ":exam_on"
-    %dd=h l(@exam.exam_on) unless @exam.exam_on.nil? 
+    %dd=h @exam.exam_on.try(:strftime, '%d %b %Y')
 
     %dt= t 'exam.exams.time' , :default => model_class.human_attribute_name(:starttime) + ":starttime"
     %dd=h @exam.timing
      
     %dt= t 'exam.exams.duration'
-    %dd 
-      =h (((@exam.endtime - @exam.starttime)/60) / 60).to_i 
-      &nbsp;hours
-      =h (((@exam.endtime - @exam.starttime)/60) % 60).to_i 
-      &nbsp;minutes
+    %dd
+      - if @exam.duration!=nil
+        =h (@exam.duration/60).to_i.to_s+" hours "+(@exam.duration%60).to_i.to_s+" mins"
+      - else
+        =h (((@exam.endtime - @exam.starttime)/60) / 60).to_i.to_s+" hours "+(((@exam.endtime - @exam.starttime)/60) % 60).to_i.to_s+" minutes"
 
     %dt= t 'exam.exams.full_marks', :default => model_class.human_attribute_name(:full_marks) + ":fullmarks"
-    %dd 
-      /11June2013-TEMPLATE
-      - @istemplate = @exam.klass_id 
-      - if @istemplate == 0 
-        - @grand_total = 0 
-        - @examtemplates = @exam.examtemplates
-        - @examtemplates.each do |examtemplate|
-          - @grand_total+= examtemplate.total_marks
-        = @grand_total.to_i
+    %dd
+      / is examtemplate when @istemplate =0
+      - if @exam.klass_id  == 0 
+        = @exam.examtemplates.sum(:total_marks).to_i
       - else
         = h @exam.total_marks
-      /11June2013-TEMPLATE

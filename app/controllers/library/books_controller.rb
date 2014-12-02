@@ -1,6 +1,7 @@
 class Library::BooksController < ApplicationController
- 
+  
   before_action :set_book, only: [:show, :edit, :update, :destroy]
+  filter_resource_access
   
   # GET /books
   # GET /books.xml

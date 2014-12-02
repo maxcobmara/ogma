@@ -4,15 +4,17 @@
   
 .navbar.navbar-inverse{role: "navigation", style: "padding-right:40px;"}
   %ul.nav.navbar-nav
-    %li= link_to content_tag(:li, fa_icon("gear", text: (t 'library.transaction.manager'))), manager_library_librarytransactions_path
-    %li= link_to content_tag(:li, fa_icon("info-circle", text: (t 'library.check.status'))), check_status_library_librarytransactions_path
+    - permitted_to? :manage, :library_librarytransactions do
+      %li= link_to content_tag(:li, fa_icon("gear", text: (t 'library.transaction.manager'))), manager_library_librarytransactions_path
+    - permitted_to? [:check_availability, :check_availability2], :library_librarytransactions do
+      %li= link_to content_tag(:li, fa_icon("info-circle", text: (t 'library.check.status'))), check_status_library_librarytransactions_path
   %ul.nav.navbar-nav.navbar-right
     %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'search'))), "#", class: "toga"
     %li= link_to content_tag(:li, fa_icon("print", text: (t 'print'))), "#"
       
 .row.filter{style: "display:none;"}
   .col-md-2
-    = select_tag_for_filter("library_librarytransactions", @filters, params) 
+    /= select_tag_for_filter("library_librarytransactions", @filters, params) 
 
 
 .row

@@ -3,7 +3,7 @@
     .col-sm-2.control-label
       = f.label t 'student.students.icno', for: :icno
     .col-md-2
-      = f.text_field :icno, class: 'form-control mandatory', :size => 12
+      = f.text_field :icno, class: 'form-control mandatory', maxlength:12
       .help-block.small Format:79XXXXXXXXXX
 
   .form-group
@@ -62,5 +62,5 @@
     .col-sm-2.control-label
       =f.label t 'student.students.intake_id', for: :intake
     .col-md-2
-      = f.text_field :intake, class: 'form-control mandatory', 'data-behaviour' => 'datepicker_today'
+      = f.text_field :intake, class: 'form-control date_picker mandatory', 'data-behaviour' => 'datepicker_today'
 

@@ -8,6 +8,13 @@
   %ul.nav.navbar-nav.navbar-right
     %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "index_search_bar"
     %li= link_to content_tag(:li, fa_icon("print", text: (t 'actions.print'))), "#", class: 'bogus'
+    %li.dropdown
+      %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#"}
+        = fa_icon "print", text: (t 'actions.print')
+        %b.caret
+      %ul.dropdown-menu
+        %li
+          /%a{:href => kumpulan_etnik_students_path(:format => 'pdf')} Kumpulan
 
 .row.filter{style: "display:none;"}
   .col-md-2
@@ -47,6 +54,12 @@
 
         //%td{:width => "10px"}= link_to fa_icon("eye", :border => 0), :action => 'show', :id => student
         //%td{:width => "10px"}= link_to fa_icon("trash-o", :border => 0, :title => 'Delete'), student, :confirm => 'Are you sure?', :method => :delete
+  .right
+    - @programme_diploma_only = Programme.where('ancestry_depth=? AND course_type=?',0,'Diploma')
+    = form_tag(:action => :kumpulan_etnik,:format => 'pdf') do
+      = select_tag('programme', options_from_collection_for_select(@programme_diploma_only,:id, :programme_list))
+      = submit_tag "Ethnic Listing by Programme", :name => :list_submit_button, :class => 'btn btn-primary'
+  
   .right{style:"padding:0 30px; margin:0;"}= paginate @students, :theme => 'twitter-bootstrap-3'
   
   

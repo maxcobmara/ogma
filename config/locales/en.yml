@@ -87,6 +87,10 @@ en:
   approved: Approved
   not_approved: Not Approved
   view: View
+  edit_checked: Edit Checked Records
+  newrecord_type: Record Type
+  single: Single Record
+  multiple: Multiple Records
   
   actions:
     new: New
@@ -108,7 +112,8 @@ en:
     records: " record(s)"
     import_failed: " - import failed "
     save_action: Save Action
-    check_all: "Tick to SELECT or DESELECT ALL records for printing of KEW.PA-17 and KEW.PA-20."
+    check_all: "Tick to SELECT or DESELECT ALL records."
+    check_all2: "Tick to SELECT or DESELECT ALL records for printing of KEW.PA-17 and KEW.PA-20."
     all_records: All Records
     
   errors:
@@ -1412,6 +1417,11 @@ en:
 
   exam:
     title: Examination
+    midsem: Mid Semester
+    inal: Final
+    repeat: Repeat
+    management: Examination Management
+    result: Examination Result
     examquestion: 
       new_title: New Examquestion
       edit: Edit Examquestion
@@ -1528,6 +1538,50 @@ en:
       separate_combine: Cover
       separate_combine_text: "S refers to SEPARATED covers of examination paper, whereas C refers to COMBINED / Single cover of examination paper."
       notes: "Remark :"
+      in_minutes: in minutes
+      by_semester: by semester
+      create_exam: Add Exam Data
+      create_template: Add Exam Template
+
+    exammark:
+      title: Marks by Examination Papers
+      new: New Marks by Examination Paper
+      edit: Edit Marks by Examination Paper
+      multiple_edit: Marks by Examination Paper (Multiple Edit)
+      student_id: Student
+      exam_id: Examination Paper
+      total_mcq: Total Marks
+      icno: MyKad No
+      remarks: Remarks
+      exammark_details: Examination Marks Details
+      marks: Examination Marks
+      mark: Marks
+      question: Question
+      student_same_exam: Please select students with the same Examimation Paper for multiple edit.
+      total_mcq: Total MCQ
+      true_false: "TRUE/"
+      true_false2: FALSE
+      true_false1: "TRUE/FALSE"
+      total: Total
+      summative: Summative
+      select_one: "Please select at least 1 record for editing."
+      multiple_updated: "All examination marks were successfully updated!"
+      multiple_created: "Records were successfully created. Enter examination marks accordingly."
+      intake: Student Intake
+      exam_compulsory: "Examination Paper is compulsory!"
+      new_multiple: New Multiple Marks
+      programme: Programme
+      marks_intakes_exist: 'Exammarks for student(s) of selected Intakes already exist. Delete / edit records accordingly.'
+    
+    grade:
+      title: Examination Grades
+      new: New Examination Grade
+      edit: Edit Examination Grade
+    
+    examresult:
+      title: Examination Result by Programme
+      title2: Result By Programme
+      exam_slip: Examination Result Slip
 
   training:
     title: Training
@@ -2048,6 +2102,7 @@ en:
 
     prompt:
       select_creator: Select Creator
+      select_editor: Select Editor
       select_programme: Select Programme
       select_subject: Select Subject
       select_topic: Select Topic

@@ -1,4 +1,5 @@
 class Exam::ExamquestionsController < ApplicationController
+  filter_resource_access
   before_action :set_examquestion, only: [:show, :edit, :update, :destroy]
   # GET /examquestions
   # GET /examquestions.xml
@@ -10,17 +11,14 @@ class Exam::ExamquestionsController < ApplicationController
     #@topic_exams = @examquestions.group_by { |t| t.topic_id }
     #-----in case-use these 4 lines-------
 
-    #current_user = User.find(11)    #maslinda 
-    #current_user = User.find(72)    #izmohdzaki
-    current_user = Login.first
-    @position_exist = current_user.staff.positions
+    @position_exist = @current_user.userable.positions
     if @position_exist
-      @lecturer_programme = current_user.staff.positions[0].unit
+      @lecturer_programme = @current_user.userable.positions[0].unit
       unless @lecturer_programme.nil?
         @programme = Programme.where('name ILIKE (?) AND ancestry_depth=?',"%#{@lecturer_programme}%",0)
       end
-      unless @programme#.nil? 
-        @programme_id = @programme.id
+      unless @programme.nil? || @programme.count==0
+        @programme_id = @programme.try(:first).try(:id)
         @subject_ids_of_programme = Programme.find(@programme_id).descendants.at_depth(2).pluck(:id)
       else
         if @lecturer_programme == 'Commonsubject'
@@ -66,19 +64,14 @@ class Exam::ExamquestionsController < ApplicationController
   # GET /examquestions/new.xml
   def new
     @examquestion = Examquestion.new
-    #@lecturer_programme = current_user.staff.position.unit     - replace with : 2 lines (below)
-    #current_user = User.find(11)  #current_user = User.find(72) - izmohdzaki, 11-maslinda
-    #current_user = Login.first
-    current_user = Login.find(72)
-    @lecturer_programme = current_user.staff.positions[0].unit
-    
-    @creator = current_user.staff.id 
+    @lecturer_programme = @current_user.userable.positions[0].unit
+    @creator = @current_user.userable_id
     
     unless @lecturer_programme.nil?
       @programme = Programme.where('name ILIKE (?) AND ancestry_depth=?',"%#{@lecturer_programme}%",0)
     end
-    unless @programme.count==0#.nil? #for lecturers
-      @programme_listing = Programme.where(id: @programme.first.id).to_a
+    unless @programme.nil? || @programme.count==0
+      @programme_listing = Programme.where(id: @programme.try(:first).try(:id)).to_a
       @preselect_prog = @programme.first.id
       @all_subject_ids = Programme.find(@preselect_prog).descendants.at_depth(2).map(&:id)
       if @lecturer_programme == 'Commonsubject'
@@ -115,17 +108,15 @@ class Exam::ExamquestionsController < ApplicationController
   # GET /examquestions/1/edit
   def edit
     @examquestion = Examquestion.find(params[:id])
-    #current_user = User.find(11)  #current_user = User.find(72) - izmohdzaki, 11-maslinda
-    current_user = Login.first
     @creator = @examquestion.creator_id
     
-    @lecturer_programme = current_user.staff.positions[0].unit      
+    @lecturer_programme = @current_user.userable.positions[0].unit      
     unless @lecturer_programme.nil?
       @programme = Programme.where('name ILIKE (?) AND ancestry_depth=?',"%#{@lecturer_programme}%",0)
     end
     
     #NOTE : For ALL records, EDIT : @subjects1 & @topics always SELECTED (mandatory fields), (programme list - based on logged-in user)
-    unless @programme#.nil?  
+    unless @programme.nil?  || @programme.count==0 
       @programme_listing = Programme.where('id=?',@programme.id).to_a
       @preselect_prog = @programme.id
       @all_subject_ids = Programme.find(@preselect_prog).descendants.at_depth(2).map(&:id)
@@ -140,9 +131,6 @@ class Exam::ExamquestionsController < ApplicationController
       @subjects1 = Programme.find(@examquestion.subject_id).root.descendants.at_depth(2).sort_by{|x|x.ancestry}
     end
     @topics = Programme.find(@examquestion.subject_id).descendants.at_depth(3).sort_by{|x|x.code}
-    
-    
-   
   end
 
   # POST /examquestions
@@ -150,15 +138,12 @@ class Exam::ExamquestionsController < ApplicationController
   def create
     @examquestion= Examquestion.new(examquestion_params)
     
-    #current_user = User.find(11)  #current_user = User.find(72) - izmohdzaki, 11-maslinda
-    #current_user = Login.first
-    current_user = Login.find(72)
     #--newly added--same as edit--required when incomplete data submitted
-    @lecturer_programme = current_user.staff.positions[0].unit      
+    @lecturer_programme = @current_user.userable.positions[0].unit      
     if @lecturer_programme != 'Commonsubject'
       @programme = Programme.where('name ILIKE (?) AND ancestry_depth=?',"%#{@lecturer_programme}%",0)
     end
-    unless @programme.count==0 #.nil? #for lecturers
+    unless @programme.nil? || @programme.count==0 
       @programme_listing = Programme.where('id=?',@programme.first.id).to_a
       @preselect_prog = @programme.first.id
       @all_subject_ids = Programme.find(@preselect_prog).descendants.at_depth(2).map(&:id)      
@@ -184,7 +169,9 @@ class Exam::ExamquestionsController < ApplicationController
       @programme_listing = Programme.roots
       unless @examquestion.subject_id.nil? || @examquestion.subject_id.blank? || @examquestion.subject_id==0 || @examquestion.subject_id=='Select the Subject' #if subject already selected
         @subjects2 = Programme.find(@examquestion.subject.root_id).descendants.at_depth(2).sort_by{|x|x.ancestry}
-        @topics = Programme.find(@examquestion.subject_id).descendants.at_depth(3).sort
+        @topics = Programme.find(@examquestion.subject_id).descendants.at_depth(3).s
+Tarikh Disediakan
+ort
       else  # if subject not selected yet 
         #check if programme IS SELECTED (re-submit of new record)
         if @examquestion.programme_id.nil? || @examquestion.programme_id.blank? #note : SUBJECT FIELD & TOPIC FIELD are hide
@@ -216,19 +203,16 @@ class Exam::ExamquestionsController < ApplicationController
     #raise params.inspect
     @examquestion = Examquestion.find(params[:id])
     #@subject_exams = @examquestions.group_by { |t| t.subject_details }
-
     #from edit - start----------------------required when validation failed
-    #current_user = User.find(11)  #current_user = User.find(72) - izmohdzaki, 11-maslinda
-    current_user = Login.first
     @creator = @examquestion.creator_id
     
-    @lecturer_programme = current_user.staff.positions[0].unit      
+    @lecturer_programme = @current_user.userable.positions[0].unit      
     unless @lecturer_programme.nil?
       @programme = Programme.where('name ILIKE (?) AND ancestry_depth=?',"%#{@lecturer_programme}%",0)
     end
     
     #NOTE : For ALL records, EDIT : @subjects1 & @topics always SELECTED (mandatory fields), (programme list - based on logged-in user)
-    unless @programme#.nil?  
+    unless @programme.nil? || @programme.count==0 
       @programme_listing = Programme.where('id=?',@programme.id).to_a
       @preselect_prog = @programme.id
       @all_subject_ids = Programme.find(@preselect_prog).descendants.at_depth(2).map(&:id)
@@ -271,7 +255,7 @@ class Exam::ExamquestionsController < ApplicationController
     #22Apr2013--avoid deletion of examquestion that exist in exams
     
     respond_to do |format|
-      format.html { redirect_to(examquestions_url) }
+      format.html { redirect_to(exam_examquestions_url) }
       format.xml  { head :ok }
     end
   end

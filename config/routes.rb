@@ -24,28 +24,28 @@ Ogma::Application.routes.draw do
     end
     resources :travel_claims do 
       member do
-	get :check
-	get :approve
+        get :check
+        get :approve
       end
     end
     resources :staff_attendances do
       collection do
         put 'actionable', to: "staff_attendances#actionable"
-	post 'import'
-	get 'import_excel', to: "staff_attendances#import_excel"
-  get :laporan_bulanan_punchcard
-  get :laporan_mingguan_punchcard
-  get :laporan_harian_punchcard
+        post 'import'
+        get 'import_excel', to: "staff_attendances#import_excel"
+        get :laporan_bulanan_punchcard
+        get :laporan_mingguan_punchcard
+        get :laporan_harian_punchcard
       end
     end
     resources :attendances
     resources :travel_requests do
       member do
-	get :travel_log
-	get :approval
+        get :travel_log
+        get :approval
       end
       collection do
-	get :travel_log_index
+        get :travel_log_index
       end
     end
     resources :vehicles
@@ -79,7 +79,7 @@ Ogma::Application.routes.draw do
         post  :fixed_assets
         get   :inventory
         post  :inventory
-	get :loanables
+        get :loanables
         get :kewpa4
         get :kewpa5
         get :kewpa13
@@ -114,19 +114,19 @@ Ogma::Application.routes.draw do
         get :kewpa19
         get :revalue
         get :dispose
-	get :verify
-	get :view_close
+        get :verify
+        get :view_close
       end
       collection do
         get :kewpa17
         get :kewpa20
-	get :kewpa17_20
+        get :kewpa17_20
       end
     end
     resources :asset_loans, as: :loans do
       member do
-	get :approve
-	get :lampiran_a
+        get :approve
+        get :lampiran_a
       end
     end
   end
@@ -160,6 +160,8 @@ Ogma::Application.routes.draw do
   resources :students do
     collection do
       get :autocomplete
+      get :kumpulan_etnik
+      post :kumpulan_etnik
     end
     member do
       get :borang_maklumat_pelajar
@@ -182,7 +184,7 @@ Ogma::Application.routes.draw do
     resources :student_discipline_cases do
       member do
         get :actiontaken
-	get :referbpl
+        get :referbpl
       end
     end
     resources :student_counseling_sessions do
@@ -213,11 +215,11 @@ Ogma::Application.routes.draw do
     resources :trainingnotes
     resources :lesson_plans do
       member do
-	get :lesson_report
-	get :lesson_plan
+        get :lesson_report
+        get :lesson_plan
       end
       collection do
-	get :index_report
+        get :index_report
       end
     end
     resources :weeklytimetables do
@@ -276,9 +278,19 @@ Ogma::Application.routes.draw do
       collection do
         get 'exampaper', to: "exams#exampaper"
         get 'exampaper_separate', to: "exams#exampaper_separate"
-        get 'exampaper_combine', to: "exams#exampaper_combine "
+        get 'exampaper_combine', to: "exams#exampaper_combine"
       end
     end
+    resources :exammarks do
+      collection do
+        put 'edit_multiple'
+        post 'update_multiple'
+        put 'new_multiple'
+        post 'create_multiple'
+      end
+    end
+    resources :grades
+    resources :examresults
   end
 
   devise_for :users

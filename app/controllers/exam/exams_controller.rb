@@ -1,20 +1,19 @@
 class Exam::ExamsController < ApplicationController
+  filter_resource_access
   before_action :set_exam, only: [:show, :edit, :update, :destroy]
   # GET /exams
   # GET /exams.xml
   def index
     #@exams = Exam.all
     ##----------
-    current_user = User.find(11)    #maslinda 
-    #current_user = User.find(72)    #izmohdzaki
-    @position_exist = current_user.staff.positions
+    @position_exist = @current_user.userable.positions
     if @position_exist  
-      @lecturer_programme = current_user.staff.positions[0].unit
+      @lecturer_programme = @current_user.userable.positions[0].unit
       unless @lecturer_programme.nil?
         @programme = Programme.where('name ILIKE (?) AND ancestry_depth=?',"%#{@lecturer_programme}%",0)
       end
-      unless @programme#.nil?
-        @programme_id = @programme.id 
+      unless @programme.nil? || @programme.count==0
+        @programme_id = @programme.try(:first).try(:id)
       else
         if @lecturer_programme == 'Commonsubject'
           @programme_id ='1'
@@ -22,18 +21,15 @@ class Exam::ExamsController < ApplicationController
           @programme_id='0'
         end
       end
-      @exams_all = Exam.search(@programme_id) 
-      @exams = @exams_all.order(subject_id: :asc).page(params[:page]||1)
+      #@exams_all = Exam.search(@programme_id) 
+      @search = Exam.search(params[:q])
+      @exams = @search.result.search2(@programme_id)
+      @exams = @exams.order(subject_id: :asc).page(params[:page]||1)
       
     end
     ##----------
-    
-    #ADDED-18June2013-extract from exammarks/_exam_listing.html.erb
-    @exam_ids_for_examtemplate = Examtemplate.pluck(:exam_id).uniq
-    @exam_ids_for_examquestions = Exam.joins(:examquestions).map(&:id).uniq 
-    @complete_exampaper = Exam.where('id IN (?) OR id IN (?)',@exam_ids_for_examtemplate,@exam_ids_for_examquestions)
-    @ids_complete_exampaper = @complete_exampaper.pluck(:id) 
-    #ADDED-18June2013-extract from exammarks/_exam_listing.html.erb
+    #@search = Exam.search(params[:q])
+    #@exams = @search.result       
     
     respond_to do |format|
       format.html # index.html.erb
@@ -63,11 +59,11 @@ class Exam::ExamsController < ApplicationController
   def new
     @exam = Exam.new
     #--newly added
-    @lecturer_programme = current_user.staff.positions[0].unit      
+    @lecturer_programme = @current_user.userable.positions[0].unit      
     unless @lecturer_programme.nil?
       @programme = Programme.where('name ILIKE (?) AND ancestry_depth=?',"%#{@lecturer_programme}%",0).first
     end
-    unless @programme.nil?
+    unless @programme.nil? #|| @programme.count==0
       @programme_listing = Programme.where('id=?',@programme.id).to_a
       @preselect_prog = @programme.id
       @all_subject_ids = Programme.find(@preselect_prog).descendants.at_depth(2).map(&:id)
@@ -90,7 +86,8 @@ class Exam::ExamsController < ApplicationController
   def edit
     @exam = Exam.find(params[:id])
     @programme_id = @exam.subject.root.id
-    @lecturer_programme = current_user.staff.positions[0].unit  
+    #@lecturer_programme = current_user.staff.positions[0].unit  
+    @lecturer_programme = @current_user.userable.positions[0].unit  
     all_subject_ids = Programme.find(@programme_id).descendants.at_depth(2).map(&:id)
     if @lecturer_programme == 'Commonsubject'
       @subjects = Programme.where('id IN(?) AND course_type=?',all_subject_ids, @lecturer_programme)  
@@ -102,7 +99,7 @@ class Exam::ExamsController < ApplicationController
   # POST /exams
   # POST /exams.xml
   def create
-    @exam = Exam.new(params[:exam])
+    @exam = Exam.new(exam_params)
     @create_type = params[:submit_button]             #10June2013-pm
     #if @create_type == "Create"
         #respond_to do |format|
@@ -134,15 +131,16 @@ class Exam::ExamsController < ApplicationController
         #end
     #10June2013-----  
     #end  
-    if @create_type == "Create"
+    
+    if @create_type == t('exam.exams.create_exam')
         @exam.klass_id = 1  #added for use in E-Query & Report Manager (27Jul2013)
-    elsif @create_type == "Create Template"
+    elsif @create_type == t('exam.exams.create_template')
         @exam.klass_id = 0
     end   
     respond_to do |format|
       if @exam.save
         flash[:notice] = (t 'exam.exams.title')+(t 'actions.created')
-        format.html { redirect_to (@exam) }
+        format.html { redirect_to (exam_exam_path(@exam)) }
         format.xml  { render :xml => @exam, :status => :created, :location => @exam }
       else
         format.html { render :action => "new" }
@@ -160,7 +158,7 @@ class Exam::ExamsController < ApplicationController
     
     ###----subject + common subject
     @programme_id = @exam.subject.root.id
-    @lecturer_programme = current_user.staff.position.unit  
+    @lecturer_programme = @current_user.userable.positions.first.unit  
     all_subject_ids = Programme.find(@programme_id).descendants.at_depth(2).map(&:id)
     if @lecturer_programme == 'Commonsubject'
       @subjects = Programme.where('id IN(?) AND course_type=?',all_subject_ids, @lecturer_programme)  
@@ -172,8 +170,9 @@ class Exam::ExamsController < ApplicationController
     if @exam.klass_id == 0
     #----for template
       respond_to do |format|
-        if @exam.update_attributes(params[:exam]) 
-          format.html { redirect_to(@exam, :notice => (t 'exam.exams.title')+(t 'actions.updated')) }
+        #if @exam.update_attributes(params[:exam]) 
+        if @exam.update_attributes(exam_params)
+          format.html { redirect_to(exam_exam_path(@exam.id), :notice => (t 'exam.exams.title')+(t 'actions.updated')) }
           format.xml  { head :ok }
           #format.xml  { render :xml => @exam, :status => :created, :location => @exam }
         else
@@ -184,7 +183,8 @@ class Exam::ExamsController < ApplicationController
     #----for template  
     else
       respond_to do |format|
-        if @exam.update_attributes(params[:exam]) 
+        #if @exam.update_attributes(params[:exam]) 
+        if @exam.update_attributes(exam_params)
             if params[:exam][:seq]!=nil && ((params[:exam][:seq]).count ==  (params[:exam][:examquestion_ids]).count) 
                 format.html { redirect_to(@exam, :notice => (t 'exam.exams.title2')+(t 'actions.updated')) }
                 format.xml  { head :ok }

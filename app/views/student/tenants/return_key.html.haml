@@ -74,7 +74,7 @@
                   .form-group
                     %label.col-sm-3.control-label{:for => "keyreturned"}= t 'student.tenant.key.returned'
                     .col-md-4
-                      = f.text_field :keyreturned, type: "text", :class => 'form-control', 'data-behaviour' => 'datepicker_after'
+                      = f.text_field :keyreturned, type: "text", :class => 'form-control date_picker_after'
 							
                   .form-group.returned
                     %label.col-sm-3.control-label{:for => "force_vacate"}= t 'student.tenant.vacate'
@@ -87,8 +87,9 @@
                       = f.fields_for :damages do |builder|
                         - if (builder.object.id!=nil && builder.object.document_id==2) || builder.object.id==nil
                           = render 'damage_fields', f: builder
-                      = link_to_add_fields ("Add Details"), f, :damages
-					                        
+                      /= link_to_add_fields ("Add Details"), f, :damages
+                      = link_to_add_fields t('Add Details'), f, :damages, "",  ""
+                       
                   .form-group.returned
                     .col-sm-offset-3.col-sm-4
                       = f.submit t('student.tenant.return_key'), class: "btn btn-primary", id: "save"
@@ -98,3 +99,9 @@
      $('#save').hide();
      $('.returned').toggle();
   });
+ 
+  function add_fields(link, association, content) {  
+    var new_id = new Date().getTime();  
+    var regexp = new RegExp("new_" + association, "g");  
+    $(link).parent().before(content.replace(regexp, new_id));  
+  }

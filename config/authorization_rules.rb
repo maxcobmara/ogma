@@ -87,9 +87,13 @@ authorization do
      if_attribute :assigned2_to => is {current_user.userable.id}
    end
 
-   has_permission_on :librarytransactions, :to => :read do
-     if_attribute :staff_id => is {current_user.userable.id}
-   end
+   #disable this part first - suppose in index, view only - transaction where current_user is a borrower - but ALL record are displayed when this part is enable
+   #has_permission_on :library_librarytransactions, :to => :read do
+     #if_attribute :staff_id => is {current_user.userable.id}
+   #end
+   
+   has_permission_on :library_books, :to => :read
+   
  end
 
 
@@ -100,14 +104,63 @@ authorization do
    has_permission_on :assetsearches, :to => :read
  end
 
- role :librarian do
-   has_permission_on :books, :to => [:manage, :extend, :return]
-   has_permission_on :librarytransactions , :to => [:manage, :extend, :extend2,:return,:return2, :check_availability, :form_try, :multiple_edit,:check_availability2,:multiple_update]#,:accession_list]
-   has_permission_on :students, :to => :index
-   has_permission_on :booksearches, :to => :read
-   has_permission_on :librarytransactionsearches, :to => :read
+ #Group Trainings ------------------------------------------------------------read(index, show), menu(inc index), update(inc edit), approve(read, update), manage(crud,approve,menu)
+ role :lecturer do
+   has_permission_on [:exam_examquestions, :exam_exams, :exam_exammarks], :to => [:menu, :read, :create]
+   
+   has_permission_on :exam_exams, :to =>[:manage] do
+     if_attribute :created_by => is {user.userable.id}
+   end
+   
+   has_permission_on :exam_examquestions, :to =>:update, :join_by => :and do
+     if_attribute :creator_id => is {user.userable.id}
+     if_attribute :qstatus => is {"New"}
+   end
+   #any other lecturer from the same programme can be an EDITOR
+   has_permission_on :exam_examquestions, :to =>:update, :join_by => :and do
+     if_attribute :creator_id => is_not {user.userable.id}
+     if_attribute :qstatus => is {"Submit"}
+   end
+   #if EDITOR hold record first, for later editing, must be the same person
+   has_permission_on :exam_examquestions, :to => :update, :join_by => :and do
+     if_attribute :editor_id => is {user.userable.id}
+     if_attribute :qstatus => is {"Editing"}
+   end
+   #HOD can approve although not assigned - role:programme_manager
+   has_permission_on :exam_examquestions, :to => :manage do
+     if_attribute :approver_id => is {user.userable.id}
+   end
+   #Ready for approval - HOD classify as Re-Edit, return to editor
+   has_permission_on :exam_examquestions, :to =>:update, :join_by => :and do
+     if_attribute :editor_id => is {user.userable.id}
+     if_attribute :qstatus => is {"Re-Edit"}
+   end
+   
+   has_permission_on :exam_exammarks, :to =>[:update, :delete, :edit_multiple, :update_multiple, :new_multiple, :create_multiple] do
+     if_attribute :exam_id => is_in {user.exams_of_programme}
+   end
+   
  end
 
+ role :programme_manager do
+   has_permission_on [:exam_examquestions, :exam_exams], :to => :manage
+   has_permission_on :exam_exammarks, :to => [:manage, :edit_multiple, :update_multiple, :new_multiple, :create_multiple]
+ end
+ 
+ #Group Library   -------------------------------------------------------------------------------
+
+  role :librarian do
+    has_permission_on :library_books, :to => [:manage, :extend, :return]
+    has_permission_on :library_librarytransactions, :to => [:manage, :extend, :extend2,:return,:return2, :check_availability, :form_try, :multiple_edit,:check_availability2,:multiple_update]#,:accession_list]
+    #has_permission_on :students, :to => :index
+    #has_permission_on :booksearches, :to => :read
+    #has_permission_on :librarytransactionsearches, :to => :read
+  end
+
+  role :guest do
+    #has_permission_on :users, :to => :create
+    has_permission_on :library_books, :to => :read
+  end
 
 
 end

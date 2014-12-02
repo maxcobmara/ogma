@@ -1,0 +1,116 @@
+- model_class = Exammark
+.page-header
+  %h1= t('exam.exammark.title')#, :default => model_class.model_name.human.pluralize
+  
+.navbar.navbar-inverse{role: "navigation", style: "padding-right:40px;"}
+  %ul.nav.navbar-nav
+    %li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'actions.new'))), new_exam_exammark_path
+  %ul.nav.navbar-nav.navbar-right
+    %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "index_search_bar"
+    %li.toga= link_to content_tag(:li, fa_icon("print", text: (t 'actions.print'))), "#", class: 'bogus'  
+
+= render 'shared/flashes'
+
+/= form_tag :action => 'new_multiple', class: "form-inline" do
+= form_tag new_multiple_exam_exammarks_path, :method => :put , :id => "form2" do
+  .form-group
+    .col-md-3
+      .input-group
+        .input-group-addon
+          Exam Paper
+        = select_tag('examid', options_from_collection_for_select(@exams_list, :id, :exam_code_date_type), class: "form-control", width: "50px;") 
+    .col-md-2
+      = submit_tag t('exam.exammark.new_multiple'), :subject_id => nil, class: "btn btn-default"
+        
+.row
+  .col-md-12
+    /.alert.alert-warning
+    /  = check_box_tag :check_all
+    /  = t('actions.check_all')
+    /  .col-md-2= submit_tag t('edit_checked'), :name => :exammark_submit_button, class: "btn btn-default"
+    
+    = form_tag edit_multiple_exam_exammarks_path, :method => :put , :id => "form1" do
+      %table.table-striped.table-hover.ogma
+        %thead
+          %tr
+            %th{:style=>"width:20px;"} &nbsp;
+            %th= sort_link(@search, :student_id, (t 'exam.exammark.student_id'))
+            %th= t 'exam.exammark.icno'
+            %th= sort_link(@search, :total_mcq, (t 'exam.exammark.total_mcq'))
+
+        %tbody
+          = render "search_bar"
+      
+          - index2=0
+          - @exammarks_group.sort.each do |exammarks_group, exammarks|
+            - exammarks.sort_by{|x|x.studentmark.name}.each_with_index do |exammark,index|
+              /--STAND BY:HIDE THIS LINE & LINE 149 to view ALL EXAM marks
+              /-if (@dept_unit==exammark.exampaper.subject.root.name) ||(@current_login_roles.include?(2))||@kupk == "yes"
+              - if index == 0
+                %tr
+                  %td.group{:colspan => "8"} 
+                    %span= (t 'exam.exammark.exam_id')+' : '+Exam.find(exammarks_group).full_exam_name   
+                    - @istemplate = exammark.exampaper.klass_id
+                    - if @istemplate == 0 
+                      %span{:style=>"color:blue;"}(Template)
+              %tr
+                %td{:style=>"text-align: center;"}= check_box_tag "exammark_ids[]", exammark.id, true, :id => "exammarkidss_#{index2}"
+                %td= link_to exammark.studentmark.matrix_name, exam_exammark_path(exammark)
+                %td=h exammark.studentmark.icno
+                %td=number_with_precision(exammark.total_marks, precision: 2)  
+              - index2+=1
+      
+    /.row
+    /   /%span{:style=>"position: absolute; left: 40px;"}
+    /  .form-group
+    /    .col-sm-2= submit_tag t('edit_checked'), :name => :exammark_submit_button, class: "btn btn-default"
+    /    .col-md-4
+    /      = check_box_tag :check_all
+    /      = t('actions.check_all')
+    
+    %br
+    %table
+      %tr
+        %td{:style=> "width:200px; text-align: right; padding:5px;"}
+          = submit_tag t('edit_checked'), :name => :exammark_submit_button, class: "btn btn-default"
+        %td{:style=>"padding:5px;"}= check_box_tag :check_all
+        %td{:style=>"padding:5px;"}= t('actions.check_all')   
+        
+  .right{style:"padding:0 30px; margin:0;"}= paginate @exammarks, :theme => 'twitter-bootstrap-3'
+
+:javascript
+$(document).ready(function(){
+  var default_check = document.getElementById('check_all');
+  default_check.checked = true;
+  
+  $("input[id='check_all']").change(function() {  
+    var checkbox = document.getElementsByName('exammark_ids[]')
+    if($('#check_all').is(':checked')) { 
+      for (var j=0; j<checkbox.length; j++) {
+        var cc = document.getElementById('exammarkidss_'+j)
+        cc.checked = true;
+      }
+    }else{
+      for (var j=0; j<checkbox.length; j++) {
+        var cc = document.getElementById('exammarkidss_'+j)
+        cc.checked = false;
+      }
+    }
+  });
+
+  $("input[id='check_all']").each(function() {  
+    var checkbox = document.getElementsByName('exammark_ids[]')
+    if($('#check_all').is(':checked')) { 
+      for (var j=0; j<checkbox.length; j++) {
+        var cc = document.getElementById('exammarkidss_'+j)
+        cc.checked = true;
+      }
+    }else{
+      for (var j=0; j<checkbox.length; j++) {
+        var cc = document.getElementById('exammarkidss_'+j)
+        cc.checked = false;
+      }
+    }
+  });
+  
+});

@@ -1,0 +1,177 @@
+.row
+  .col-md-10.col-md-offset-1
+    / Nav tabs
+    %ul.nav.nav-tabs
+      %li.active= link_to ((t 'exam.exammark.exammark_details')),"#exammark_details", "data-toggle" => "tab"
+      
+    .tab-content{style:"padding-top:1em"}
+      #exammark_details.tab-pane.active
+        %br
+        .col-md-offset-2 
+          .form-group
+            .col-sm-2.control-label
+              =f.label t 'exam.exammark.exam_id', for: :exam_id
+            .col-md-8
+              = f.collection_select :exam_id, @exams_list, :id, :exam_name_subject_date,{:include_blank =>t('select')},{class: 'selectpicker', "data-width"=>'550px'} 
+                
+          .form-group
+            .col-sm-2.control-label
+              = f.label  t 'exam.exammark.student_id', for: :student_id
+            .col-md-4
+              = f.collection_select :student_id, @students_list, :id, :matrix_name, {:include_blank=>t('select'), :selected=>@exammark.student_id}, {class: 'selectpicker', "data-width"=>'400px'} 
+
+          - if @exammark.new_record? == false 
+            .form-group
+              .col-sm-2.control-label
+                = f.label t 'exam.exammark.marks', for: :marks
+              .col-md-6
+                - unless (@exammark.exampaper.klass_id == 1 || @exammark.exampaper.klass_id == 0)
+                  =number_with_precision(@exammark.total_marks, precision: 2)
+                  \/
+                  =number_with_precision(@exammark.exampaper.examtemplates.pluck(:total_marks).inject{|sum, x|sum+x}, precision: 2) 
+                  
+                - else
+                  /################################################
+                  %table.table
+                    - @examquestions = @exammark.exampaper.examquestions
+                    - @examtemplates = Exam.where(id: @exammark.exam_id).first.examtemplates
+                    %thead
+                      %tr
+                        %th=t 'exam.examquestion.questiontype'
+                        %th No
+                        %th=t 'exam.exammark.question'
+                        %th=t 'exam.exammark.mark'
+                    %tbody
+                      - if @exammark
+                        /retrieve existing marks first
+                        - @current_mark = @exammark.total_mcq
+                        - @marks_for_questions = Mark.where(exammark_id: @exammark.id).sort_by{|x|x.created_at} 
+
+                        /start-display MCQ questions details
+                        - if @examquestions.mcqq.count > 0 || @examtemplates.mcqq.count > 0
+                          - if @exammark
+                            - @exist_mark = @current_mark
+                          - else
+                            - @exist_mark = 0.00
+                          = render 'show_mcq', :task=>2, :exist_mark=>@exist_mark
+                          
+                        /start-display MEQ questions details
+                        - count2 = 0
+                        - if @examquestions.meqq.count > 0 || @examtemplates.meqq.count > 0
+                          - if @examquestions.meqq.count > 0
+                            - meq_count = @examquestions.meqq.count-1 
+                          - else
+                            - meq_count = @examtemplates.meqq[0].quantity-1 
+                          - 0.upto(meq_count) do |count|
+                            = render 'mark_exist', :count2=>count2
+                            = render 'show_meq', :count=>count, :count2=>count2, :task=>2
+                            - count2+=1
+
+                        /start-display SEQ questions details
+                        - if @examquestions.seqq.count > 0 || @examtemplates.seqq.count > 0
+                          - if @examquestions.seqq.count > 0
+                            - seq_count = @examquestions.seqq.count-1 
+                          - else
+                            - seq_count = @examtemplates.seqq[0].quantity-1 
+                          - 0.upto(seq_count) do |count| 
+                            = render 'mark_exist', :count2=>count2
+                            = render 'show_seq', :count=>count, :count2=>count2, :task=>2
+                            - count2+=1 
+
+                        /start-display ACQ questions details
+                        - if @examquestions.acqq.count > 0 || @examtemplates.acqq.count > 0
+                          - if @examquestions.acqq.count > 0
+                            - acq_count = @examquestions.acqq.count-1 
+                          - else
+                            - acq_count = @examtemplates.acqq[0].quantity-1
+                          - 0.upto(acq_count) do |count|
+                            = render 'mark_exist', :count2=>count2
+                            = render 'show_acq', :count=>count, :count2=>count2,  :task=>2
+                            - count2+=1 
+                        
+                        /start-display OSCI questions details
+                        - if @examquestions.osci2q.count > 0 || @examtemplates.osci2q.count > 0
+                          - if @examquestions.osci2q.count > 0
+                            - osci_count = @examquestions.osci2q.count-1
+                          - else
+                            - osci_count = @examtemplates.osci2q[0].quantity-1
+                          - 0.upto(osci_count) do |count|
+                            = render 'mark_exist', :count2=>count2
+                            = render 'show_osci', :count=>count, :count2=>count2, :task=>2
+                            - count2+=1 
+                
+                        /start-display OSCII questions details
+                        - if @examquestions.osci3q.count > 0 || @examtemplates.osci3q.count > 0 
+                          - if @examquestions.osci3q.count > 0 
+                            - oscii_count = @examquestions.osci3q.count-1 
+                          - else
+                            - oscii_count = @examtemplates.osci3q[0].quantity-1
+                          - 0.upto(oscii_count) do |count|
+                            = render 'mark_exist', :count2=>count2
+                            = render 'show_oscii', :count=>count, :count2=>count2, :task=>2
+                            - count2+=1 
+                  
+                        /start-display OSCE questions details
+                        - if @examquestions.osceq.count > 0 || @examtemplates.osceq.count > 0   
+                          - if @examquestions.osceq.count > 0
+                            - osce_count = @examquestions.osceq.count-1 
+                          - else
+                            - osce_count = @examtemplates.osceq[0].quantity-1 
+                          - 0.upto(osce_count) do |count|
+                            = render 'mark_exist', :count2=>count2
+                            = render 'show_osce', :count=>count, :count2=>count2, :task=>2
+                            - count2+=1
+ 
+                        /start-display OSPE questions details
+                        - if @examquestions.ospeq.count > 0 || @examtemplates.ospeq.count> 0
+                          - if @examquestions.ospeq.count > 0
+                            - ospe_count = @examquestions.ospeq.count-1 
+                          - else
+                            - ospe_count = @examtemplates.ospeq[0].quantity-1
+                          - 0.upto(ospe_count) do |count|
+                            = render 'mark_exist', :count2=>count2
+                            = render 'show_ospe', :count=>count, :count2=>count2, :task=>2
+                            - count2+=1
+ 
+                        /start-display VIVA questions details
+                        - if @examquestions.vivaq.count > 0 || @examtemplates.vivaq.count > 0
+                          - if @examquestions.vivaq.count > 0
+                            - viva_count = @examquestions.vivaq.count-1 
+                          - else
+                            - viva_count = @examtemplates.vivaq[0].quantity-1
+                          - 0.upto(viva_count) do |count|
+                            = render 'mark_exist', :count2=>count2
+                            = render 'show_viva', :count=>count, :count2=>count2, :task=>2
+                            - count2+=1
+
+                        /start-display TRUEFALSE questions details
+                        - if @examquestions.truefalseq.count > 0 || @examtemplates.truefalseq.count > 0   
+                          - if @examquestions.truefalseq.count > 0
+                            - truefalse_count = @examquestions.truefalseq.count-1
+                          - else
+                            - truefalse_count = @examtemplates.truefalseq[0].quantity-1
+                          - 0.upto(truefalse_count) do |count| 
+                            = render 'mark_exist', :count2=>count2
+                            = render 'show_truefalse', :count=>count, :count2=>count2, :task=>2
+                            - count2+=1
+
+                        
+/for use in below JS
+/- if @exammark.new_record? == false 
+/  = hidden_field_tag "exammark[trial1]", nil, :class=>'k1'
+/  = hidden_field_tag "exammark[trial2]", @examquestions.mcqq.count, :class=>'k1'
+/  = hidden_field_tag "exammark[trial3]", @examquestions.count 
+/  - if @exammark
+/    =hidden_field_tag "exammark[total_mcq_in_exammark_single]", @exammark.total_mcq 
+  
+/:javascript
+/$(document).ready(function(){
+/  $(".k1").keyup(function() {  
+/    var trial1 = $("#exammark_trial1").val();
+/    var trial2 = $("#exammark_trial2").val();
+/    var ansP2 = document.getElementById("exammark_trial3");
+/    ansP2.value = (trial1*1)+(trial2*1) 
+/  });
+/});
+            
+/display form for marks entering here (form display upon selection of exam (exam paper))

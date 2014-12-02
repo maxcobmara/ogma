@@ -90,6 +90,37 @@ class StudentsController < ApplicationController
     end
   end
   
+  def kumpulan_etnik
+    @programme_id = params[:programme].to_i
+    #@programme_id = Student.where('course_id=?',@programmes_id )  
+    
+    #@programme_id = 3
+    students_all_6intakes = Student.get_student_by_6intake(@programme_id)
+    @students_6intakes_ids = students_all_6intakes.map(&:id)
+    students_all_6intakes_count = students_all_6intakes.count
+    @valid = Student.where('course_id=? AND race2 IS NOT NULL AND id IN(?)',@programme_id, @students_6intakes_ids)
+    
+    @student = Student.all
+    respond_to do |format|
+      format.pdf do
+        pdf = Kumpulan_etnikPdf.new(@student, view_context, @programme_id, @students_6intakes_ids, @valid)
+        send_data pdf.render, filename: "kumpulan_etnik-{Date.today}",
+                              type: "application/pdf",
+                              disposition: "inline"
+      end
+    end
+  end
+  
+  def destroy
+    @student = Student.find(params[:id])
+    @student.destroy
+
+    respond_to do |format|
+      format.html { redirect_to(students_url) }
+      format.xml  { head :ok }
+    end
+  end
+  
   def borang_maklumat_pelajar
 
     @student= Student.find(params[:id])

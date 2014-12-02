@@ -1,0 +1,26 @@
+%tr
+  - if count == 0 
+    - if @examquestions.count>0
+      %td{:rowspan=>"#{@examquestions.osci2q.count}"}OSCI
+    - elsif @examtemplates.count>0
+      %td{:rowspan=>"#{@examtemplates.osci2q[0].quantity}"}OSCI
+  %td=count+1
+  %td
+    - if @examquestions.count>0
+      =simple_format(@examquestions.osci2q[count].question) 
+    - else
+      \-
+  %td
+    - if task==1
+      = number_with_precision(@marks_for_questions[count2].student_mark, precision: 2)
+    - elsif task==2
+      = text_field "exammark[marks_attributes][#{count2}]",:student_mark, :value=>number_with_precision(@exist_mark,:precision=>2) , :size=>2, :class=>'form-control'
+      /HIDDEN FIELD FOR ID OF EXISTING RECORD-edit existing record instead of creating a new one
+      - if @exammark && @marks_for_questions.count!=0
+        = hidden_field "exammark[marks_attributes][#{count2}]", :id, :value => @marks_for_questions[count2].id
+  %td
+    \/ 
+    - if @examquestions.count>0
+      =number_with_precision(@examquestions.osci2q[count].marks, precision: 2) 
+    - else
+      =number_with_precision(@examtemplates.osci2q[0].total_marks/@examtemplates.osci2q[0].quantity, precision: 2)

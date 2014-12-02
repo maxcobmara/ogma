@@ -23,3 +23,5 @@
 
     %dt= t 'exam.examquestion.created_at' , :default => model_class.human_attribute_name(:created) + ":"
     %dd=@examquestion.created_at.to_time.getlocal.strftime("%d %B %Y, %l:%M:%S %p") unless @examquestion.created_at.blank?
+    
+    %BR

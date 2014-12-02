@@ -32,7 +32,7 @@
             .col-sm-2.control-label
               = f.label t 'staff.icno', for: :icno
             .col-md-2
-              = f.text_field :icno, class: 'form-control mandatory'
+              = f.text_field :icno, class: 'form-control mandatory', maxlength: 12
               .help-block.small Format:79XXXXXXXXXX
             
           .form-group
