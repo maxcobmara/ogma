@@ -14,12 +14,13 @@ class Librarytransaction < ActiveRecord::Base
   
   #18May2013-compulsory to have this method in order for autocomplete field to work
 
+  #scope :borrowed, -> {where("returned = ? OR returned IS ?", false, nil)}
   
-  #scope :all,       :conditions => [ "id IS NOT ?", nil ]
+  ##scope :all,       :conditions => [ "id IS NOT ?", nil ]
   scope :borrowed,  lambda{where("returned = ? OR returned IS ?", false, nil)}
-  #scope :returned,  :conditions => ["returned = ? AND returneddate > ?", true, 8.days.ago]
-  scope :overdue,   lambda{where("returnduedate < ? AND returneddate IS ?", 1.day.ago, nil)}
-  #scope :overdue, lambda { |time| { :conditions => ["returnduedate < ? AND returneddate !=?", Time.now, nil] } }
+  ##scope :returned,  :conditions => ["returned = ? AND returneddate > ?", true, 8.days.ago]
+  #scope :overdue,   lambda{where("returnduedate < ? AND returneddate IS ?", 1.day.ago, nil)}
+  ##scope :overdue, lambda { |time| { :conditions => ["returnduedate < ? AND returneddate !=?", Time.now, nil] } }
   
   FILTERS = [
     #{:scope => "all",        :label => "Semua transaksi"},   #All 
