@@ -28,8 +28,8 @@ class Kewpa18Pdf < Prawn::Document
     data1 = [["", "", "",""],
              ["Tandatangan", "","Tandatangan"],
              ["","","",""],
-             ["Nama : #{@disposal.discard_witness1.name}","","Nama : #{@disposal.discard_witness2.name}"],
-             ["Jawatan : #{@disposal.discard_witness1.positions.name}", "","Jawatan : #{@disposal.discard_witness2.positions.name}",""],
+             ["Nama : #{@disposal.discard_witness1.try(:name)}","","Nama : #{@disposal.discard_witness2.try(:name)}"],
+             ["Jawatan : #{@disposal.discard_witness1.try(:positions).try(:first).try(:name)}", "","Jawatan : #{@disposal.discard_witness2.try(:positions).try(:first).try(:name)}",""],
              ["Tarikh : #{@disposal.discarded_on.try(:strftime, "%d/%m/%y")}","","Tarikh : #{@disposal.discarded_on.try(:strftime, "%d/%m/%y")}",""],
              ["Cop :","","Cop :", ""]]
              
