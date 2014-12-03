@@ -194,6 +194,7 @@ ms_MY:
     country_cd: Kewarganegaraan
     transportclass_id: Kelas Kenderaan
     upload: Muat Naik Gambar
+    professional_development: Pembangunan Profesional
 
     employment_details: Butir Perkerjaan
     employscheme: Skim Perjawatan
@@ -294,8 +295,34 @@ ms_MY:
         participants: Peserta 
         location: Lokasi
         price: Harga
-      do:
-        title: Apply For Training
+      application_status:
+        title: Status Permohonan
+        training_request: Permintaan Latihan  
+        schedule: Jadual
+        course_name: Nama Kursus
+        staff_name: Nama Staf
+        status: Status
+        enter_number: Masukkan Nombor
+        ic_or_name: IC atau Nama Staf
+        app_reject: Permohonan Ditolak
+        await_unit_app: Menunggu Kelulusan Unit
+        app_by_unit_head: "Diluluskan oleh Ketua Unit, menunggu kelulusan Ketua Jabatan"
+        app_by_dept_head: "Diluluskan oleh Ketua Jabatan, menunggu kelulusan Pengarah"
+        all_app_comp: Semua kelulusan lengkap
+        report_submit: Laporan telah dihantar
+        status_not_available: Status tidak tersedia
+        staff_training_details: Maklumat Latihan Staf
+        details: Maklumat
+        date: Tarikh
+        justification: Justifikasi
+        unit_review: Unit Kajian 
+        unit_approve: Unit Meluluskan
+        dept_review: Jabatan Kajian
+        dept_approve: Jabatan Meluluskan
+        replacement_staff: Staf Gantian
+        final_approve: Kelulusan Akhir
+        trainee_report: Laporan Pelatih
+        
     travel_request:
       title: Permohonan Perjalanan
       for_approval: Kelulusan Permohonan Perjalanan 
