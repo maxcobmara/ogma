@@ -3,15 +3,17 @@ class ClaimprintPdf < Prawn::Document
     super({top_margin: 50, page_size: 'A4', page_layout: :portrait })
     @travel_claim = travel_claim
     @view = view
+
     
     font "Times-Roman"
     text "LAMPIRAN A", :align => :right, :size => 12, :style => :bold
     move_down 15
     text "KENYATAAN TUNTUTAN PERJALANAN DALAM NEGERI", :align => :center, :size => 12, :style => :bold
     move_down 10
-    text "BAGI BULAN :  #{@travel_claim.claim_month.strftime("%b").upcase}        TAHUN: #{@travel_claim.claim_month.strftime("%Y")}", :align => :center, :size => 12, :style => :bold
+    text "BAGI BULAN :  #{@travel_claim.claim_month.try(:strftime,"%b").upcase}        TAHUN: #{@travel_claim.claim_month.try(:strftime,"%Y")}", :align => :center, :size => 12, :style => :bold
     move_down 10
     table1
+    tuntutan
     elaun
     awam
     makan
@@ -83,7 +85,89 @@ class ClaimprintPdf < Prawn::Document
 
 
 end
+def tuntutan
+  
+ @travel_claim.try(:travel_requests).try(:map) do |travel_request|
 
+  start_new_page
+  text "SENARAI TUNTUTAN", :align => :center, :size => 12, :style => :bold
+  move_down 15
+  
+  data1 = [["", "", "KENYATAAN TUNTUTAN","","" ],
+           [" ", "Waktu","","",""]]
+  
+           table(data1, :column_widths => [60, 120 ,210 , 70, 80], :cell_style => { :size => 10}) do
+             self.width = 540
+             row(0).background_color = 'FFE34D'
+             row(1).background_color = 'FFE34D'
+             row(0).align = :center
+             row(1).align = :center
+             row(0).column(0).borders = [ :bottom, :top, :left]
+             row(0).column(1).borders = [ :bottom, :top]
+             row(0).column(2).borders = [ :bottom, :top]
+             row(0).column(3).borders = [ :bottom, :top]
+             row(0).column(4).borders = [ :bottom, :top, :right]
+             row(1).column(0).borders = [  :top, :left, :right]
+             row(1).column(2).borders = [  :top, :left, :right]
+             row(1).column(3).borders = [  :top, :left, :right]
+             row(1).column(4).borders = [  :top, :left, :right]
+           end
+           
+           data2 =  [["Tarikh", "Bertolak", "Sampai","Tujuan/Tempat","Jarak (Km)","Tambang (RM)"]]
+  
+                    table(data2, :column_widths => [60, 60, 60 ,210 , 70, 80], :cell_style => { :size => 10}) do
+                      self.width = 540
+                      row(0).background_color = 'FFE34D'
+                      row(0).align = :center
+                      row(0).column(0).borders = [ :bottom, :left, :right]
+                      row(0).column(3).borders = [ :bottom, :left, :right]
+                      row(0).column(4).borders = [ :bottom, :left, :right]
+                      row(0).column(5).borders = [ :bottom, :left, :right]
+                    end
+                    
+                    data3 =  [[" TUJUAN"],
+                               ["No. Rujukan : #{travel_request.document.refno} bertarikh #{travel_request.document.letterdt}"],
+                               ["Tajuk : #{travel_request.document.title}"],
+                               ["Tarikh : #{travel_request.depart_at.try(:strftime,"%d-%m-%Y")} - #{travel_request.return_at.try(:strftime,"%d-%m-%Y")}"]]
+              
+                             table(data3, :column_widths => [540], :cell_style => { :size => 8}) do
+                               self.width = 540
+                               row(0).column(0).borders = [ :top, :left, :right]
+                               row(1).column(0).borders = [ :left, :right]
+                               row(2).column(0).borders = [ :left, :right]
+                               row(3).column(0).borders = [ :bottom, :left, :right]
+                               row(0).height = 16.5
+                               row(1).height = 16.5
+                               row(2).height = 16.5
+                               row(3).height = 16.5
+                             end
+                    @log = travel_request.travel_claim_logs
+                    if @log.count > 0         
+                data4 = 
+                 @log.map do |travel_log|
+                ["#{travel_log.travel_on.try(:strftime, '%d %b %Y')} #{travel_log.travel_on.strftime("(%A)")}", "#{travel_log.start_at.try(:strftime,"%l:%M%p")}", "#{travel_log.finish_at.try(:strftime,"%l:%M%p")}","#{travel_log.destination}","#{travel_log.mileage}", @view.currency(travel_log.km_money.to_f)]
+              end
+            else
+              data4 = [["","","","","",""]]
+            end
+                table(data4, :column_widths => [60, 60, 60 ,210 , 70, 80], :cell_style => { :size => 10}) do
+                  self.width = 540
+                  
+                end
+                
+                data5 =  [["Totals", "", "#{travel_request.log_mileage}",@view.currency(travel_request.log_fare.to_f) ],
+                          ["Total KM", "", "#{@travel_claim.total_mileage}", @view.currency(@travel_claim.total_km_money.to_f) ]]
+  
+                         table(data5, :column_widths => [60, 330 , 70, 80], :cell_style => { :size => 10}) do
+                           self.width = 540
+                         end        
+                
+    text "Nota :", :align => :left, :size => 10, :style => :bold
+    text "Ruangan 'JARAK' : Nyatakan jarak km bagi membawa kenderan sendiri sahaja", :align => :left, :size => 10, :style => :bold
+    text "Ruangan 'JUMLAH': Nyatakan jumlah tambang teksi sahaja", :align => :left, :size => 10, :style => :bold
+                             
+end
+end
   def elaun
     start_new_page
     data1 = [["TUNTUTAN ELAUN PERJALANAN KENDERAAN" ],
@@ -155,9 +239,7 @@ end
   
   def makan
     
-    data = [[""," TUNTUTAN ELAUN MAKAN/ELAUN HARIAN", ""],
-            ["2 X	Elaun Harian sebanyak", "", ""],
-            [" ", "JUMLAH :", ""]]
+    data = [[""," TUNTUTAN ELAUN MAKAN/ELAUN HARIAN", ""]]
             
             table(data, :column_widths => [170, 270, 100], :cell_style => { :size => 10}) do
               row(0).background_color = 'FFE34D'
@@ -166,32 +248,74 @@ end
               row(0).column(0).borders = [ :bottom, :top, :left]
               row(0).column(1).borders = [ :bottom, :top]
               row(0).column(2).borders = [ :bottom, :top, :right]
-              row(1).column(0).borders = [ :top, :left]
-              row(1).column(1).borders = [ ]
-              row(1).column(2).borders = [ :right]
-              row(2).column(0).borders = [ :left,  :bottom]
-              row(2).column(1).borders = [ :bottom ]
-              row(2).column(2).borders = [  :bottom, :right]
             end
+           @tct = @travel_claim.travel_claim_allowances.where('expenditure_type IN (?)', [21,22,23])
+           if @tct.count > 0
+            data2 = 
+             @tct.map do |travel_claim_allowance|
+            ["#{travel_claim_allowance.quantity} x #{travel_claim_allowance.allow_expend_type} sebanyak",  "RM #{travel_claim_allowance.amount} hari", "RM #{travel_claim_allowance.total}"]
+          end
+        else
+          data2 = [["", "", ""]]
+        end
+            table(data2, :column_widths => [170, 270, 100], :cell_style => { :size => 10}) do
+            self.width = 540
+            row(0).column(0).borders = [ :top, :left]
+            row(0).column(1).borders = [ ]
+            row(0).column(2).borders = [ :right]
+              
+            end
+            
+            data3 = [[" ", "JUMLAH :", @view.currency(@travel_claim.allowance_totals.to_f)]]
+             table(data3, :column_widths => [170, 270, 100], :cell_style => { :size => 10}) do
+               self.width = 540
+               row(0).column(0).borders = [ :left,  :bottom]
+               row(0).column(1).borders = [ :bottom ]
+               row(0).column(2).borders = [  :bottom, :right]
+           end
+            
+            
+            
             move_down 10
   end
   
   def hotel
     
-    data = [[""," TUNTUTAN BAYARAN SEWA HOTEL(BSH) / ELAUN LOJING", ""],
-            [" ", "JUMLAH :", ""]]
+    data = [[""," TUNTUTAN BAYARAN SEWA HOTEL(BSH) / ELAUN LOJING", ""]]
             
-            table(data, :column_widths => [140, 300, 100],  :cell_style => { :size => 10}) do
+            table(data, :column_widths => [150, 290, 100],  :cell_style => { :size => 10}) do
               row(0).background_color = 'FFE34D'
               self.width = 540
               row(1).align = :center
               row(0).column(0).borders = [ :bottom, :top, :left]
               row(0).column(1).borders = [ :bottom, :top]
               row(0).column(2).borders = [ :bottom, :top, :right]
-              row(1).column(0).borders = [ :left,  :bottom]
-              row(1).column(1).borders = [ :bottom ]
-              row(1).column(2).borders = [  :bottom, :right]
             end
+            @tca =@travel_claim.travel_claim_allowances.where('expenditure_type IN (?)', [31,32,33])
+            if @tca.count > 0
+               data2 = 
+               @tca.map do |travel_claim_allowance|
+               ["#{travel_claim_allowance.quantity} x #{travel_claim_allowance.allow_expend_type} sebanyak",  "RM #{travel_claim_allowance.amount} hari", "RM #{travel_claim_allowance.total}"]
+             end
+            else
+               data2 = [["", "",""]]
+            end
+            
+            table(data2, :column_widths => [170, 270, 100], :cell_style => { :size => 10}) do
+              self.width = 540
+              row(0).column(0).borders = [ :top, :left]
+              row(0).column(1).borders = [ ]
+              row(0).column(2).borders = [ :right]  
+            end
+            
+            data3 = [[" ", "JUMLAH :", @view.currency(@travel_claim.hotel_totals.to_f)]]
+             table(data3, :column_widths => [170, 270, 100], :cell_style => { :size => 10}) do
+               self.width = 540
+               row(0).column(0).borders = [ :left,  :bottom]
+               row(0).column(1).borders = [ :bottom ]
+               row(0).column(2).borders = [  :bottom, :right]
+           end
+            
             move_down 10
   end
   
@@ -254,7 +378,7 @@ end
             ["(c) Perbelanjaan yang bertanda (*) berjumlah sebanyak RM #{@travel_claim.total_claims} telah sebenarnya dilakukan dan dibayar oleh saya ;"],
             ["(d) Panggilan telefon sebanyak RM #{@travel_claim.comms_receipts_total}  dibuat atas urusan rasmi; dan"],
             ["(e) Butir-butir seperti yang dinyatakan di atas adalah benar dan saya bertanggungjawab terhadapnya"],
-            ["Tarikh  #{@travel_claim.submitted_on.strftime("%d-%m-%Y")}"],
+            ["Tarikh  #{@travel_claim.try(:submitted_on).try(:strftime,"%d-%m-%Y")}"],
             ["#{@travel_claim.staff.name}  "],
             [" #{@travel_claim.staff.positions.name} "]]
             
@@ -282,7 +406,7 @@ end
     
     data = [[" PENGESAHAN"],
             ["Adalah disahkan bahawa perjalanan tersebut adalah atas urusan rasmi"],
-            ["Tarikh: #{@travel_claim.approved_on}"],
+            ["Tarikh: #{@travel_claim.approved_on.try(:strftime,"%d-%m-%Y")}"],
             ["Nama: #{@travel_claim.approver.name unless  @travel_claim.approver.blank? }"],
             ["Jawatan: #{@travel_claim.approver.try(:position).try(:name)}"]]
             
