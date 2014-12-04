@@ -175,14 +175,14 @@
                 %ul
                   - permitted_to? :menu, :exam_exammarks do
                     %li= link_to (t "exam.exammark.title"), exam_exammarks_path
-                  %li= link_to (t "exam.grade.title"), exam_grades_path
+                  %li= link_to (t "exam.grade.title"), "#"
                   %li.icon.icon-left
                     = link_to (t "exam.result"), '#'
                     .mp-level
                       %h2.icon= t "exam.result"
                       %a.mp-back{:href => "#"}= t 'helpers.links.back'
                       %ul
-                        %li= link_to (t "exam.examresult.title2"), exam_examresults_path
+                        %li= link_to (t "exam.examresult.title2"), "#"
                         %li= link_to (t "exam.examresult.exam_slip"), "#"
             
             /%li= link_to content_tag(:i, "", :class => "icon-numb") + "Examination Management", '#'

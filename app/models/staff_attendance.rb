@@ -103,41 +103,31 @@ class StaffAttendance < ActiveRecord::Base
   def self.is_controlled
     find(:all, :order => 'logged_at DESC', :limit => 10000)
   end
-  #--shift?
-  def self.find_mylate  
-    #staffshift_id = Staff.find(:first, :conditions => ['thumb_id=?', User.current_user.staff.thumb_id]).staff_shift_id
-    #staffshift_id = Staff.where('thumb_id=?', 5658).first.staff_shift_id
-    staffshift_id = Login.first.staff.staff_shift_id
-    
+
+  def self.find_mylate(current_user)
+    staffshift_id = current_user.userable.staff_shift_id
+    thumb_id = current_user.userable.thumb_id
     if staffshift_id != nil
       start_time = StaffShift.find(staffshift_id).start_at.strftime("%H:%M") 
     else
       start_time = "08:00"
     end
+    where("trigger=? AND log_type =? AND thumb_id=? AND logged_at::time > ?", true, "I", thumb_id, start_time).order('logged_at')
     #find(:all, :conditions => ["trigger=? AND log_type =? AND thumb_id=? AND logged_at::time > ?", true, "I", User.current_user.staff.thumb_id, start_time ], :order => 'logged_at')
-    #TESTING OK:
-    #find(:all, :conditions => ["trigger is null AND log_type =? AND thumb_id=? AND logged_at::time > ?", "I", Staff.where(id:25).first.thumb_id, "07:00" ], :order => 'logged_at')
-    #SEPATUTNYA:
-   where("trigger=? AND log_type =? AND thumb_id=? AND logged_at::time > ?", true, "I", Staff.where(id:25).first.thumb_id, start_time).order('logged_at')
   end
-  def self.find_myearly
-    #staffshift_id = Staff.find(:first, :conditions => ['thumb_id=?', User.current_user.staff.thumb_id]).staff_shift_id
-    #staffshift_id = Staff.where('thumb_id=?', 5658).first.staff_shift_id
-    staffshift_id = Login.first.staff.staff_shift_id
+  
+  def self.find_myearly(current_user)
+    staffshift_id = current_user.userable.staff_shift_id
+    thumb_id = current_user.userable.thumb_id
     if staffshift_id != nil
         end_time = StaffShift.find(staffshift_id).end_at.strftime("%H:%M") 
     else
         end_time = "17:00"
     end
-    #TESTING-OK:
-    where("trigger is null AND log_type =? AND thumb_id=? AND logged_at::time < ?", "O", 5171, "18:00").order(:logged_at)
-    #SEPATUTNYA:
-    #find(:all, :conditions => ["trigger=? AND log_type =? AND thumb_id=? AND logged_at::time < ?", true, "O", User.current_user.staff.thumb_id, end_time ], :order => 'logged_at')
-    #where("trigger=? AND log_type =? AND thumb_id=? AND logged_at::time < ?", true, "O", 774, end_time).order(:logged_at)
-    #asal--below
+    where("trigger=? AND log_type =? AND thumb_id=? AND logged_at::time < ?", true, "O", thumb_id, end_time).order(:logged_at)
     #find(:all, :conditions => ["trigger=? AND log_type =? AND thumb_id=? AND logged_at::time < ?", true, "O", User.current_user.staff.thumb_id, "17:00" ], :order => 'logged_at')
   end
-  #--shift?
+  
   def i_have_a_thumb
     if User.current_user.staff.thumb_id == nil
       5658
@@ -146,14 +136,12 @@ class StaffAttendance < ActiveRecord::Base
     end
   end 
   
-  def self.find_approvelate
-    all.where("trigger=? AND log_type =? AND thumb_id IN (?)", true, "I", peeps).order('logged_at DESC')
+  def self.find_approvelate(current_user)
+    all.where("trigger=? AND log_type =? AND thumb_id IN (?)", true, "I", peeps(current_user)).order('logged_at DESC')
   end
   
-  def self.find_approveearly
-    #TESTING OK:
-    #all.where("trigger is null AND log_type =? AND thumb_id IN (?)","O", peeps2).order('logged_at DESC')
-    all.where("trigger=? AND log_type =? AND thumb_id IN (?)",true ,"O", peeps2).order('logged_at DESC')
+  def self.find_approveearly(current_user)
+    all.where("trigger=? AND log_type =? AND thumb_id IN (?)",true ,"O", peeps2(current_user)).order('logged_at DESC')
   end
   
   def self.this_month_red
@@ -204,41 +192,76 @@ class StaffAttendance < ActiveRecord::Base
     arr
   end
   
-  
-  
-  
-  #Position.find(:all, :select => "staff_id", :conditions => ["id IN (?)", User.current_user.staff.position.child_ids]).map(&:staff_id)
-  
-  #User.current_user.staff.position.child_ids
-  #Position.find(:all, :select => "staff_id", :conditions => ["id IN (?)", possibles]).map(&:staff_id)
-  
-  def self.peeps
-    ##mystaff = User.current_user.staff.position.child_ids 
-    #mystaff = Staff.where(id:25)[0].positions[0].child_ids
-    #mystaffids = Position.find(:all, :select => "staff_id", :conditions => ["id IN (?)", mystaff]).map(&:staff_id)
-    #thumbs = Staff.find(:all, :select => :thumb_id, :conditions => ["id IN (?)", mystaffids]).map(&:thumb_id)
-    myunit = Position.where(staff_id: 25).first.unit
-    myancestry=Position.where(staff_id: 25).first.ancestry
-    mycombocode=Position.where(staff_id: 25).first.combo_code
-    #thumbs = Staff.joins(:positions).where('unit=? and ancestry>?',myunit, myancestry).pluck(:thumb_id) #additional conditions required ####ancestry
-    #thumbs=Staff.joins(:positions).where('unit=? and combo_code>?','Teknologi Maklumat','1-03-02').pluck(:thumb_id)
-    thumbs = Staff.joins(:positions).where('unit=? and combo_code>?',myunit,mycombocode).pluck(:thumb_id)
+  def self.peeps(current_user)
+    ###mystaff = User.current_user.staff.position.child_ids 
+    ##mystaff = Staff.where(id:25)[0].positions[0].child_ids
+    ##mystaffids = Position.find(:all, :select => "staff_id", :conditions => ["id IN (?)", mystaff]).map(&:staff_id)
+    ##thumbs = Staff.find(:all, :select => :thumb_id, :conditions => ["id IN (?)", mystaffids]).map(&:thumb_id)
+    
+    #myunit = Position.where(staff_id: 25).first.unit
+    #myancestry=Position.where(staff_id: 25).first.ancestry
+    #mycombocode=Position.where(staff_id: 25).first.combo_code
+    ##thumbs = Staff.joins(:positions).where('unit=? and ancestry>?',myunit, myancestry).pluck(:thumb_id) #additional conditions required ####ancestry
+    ##thumbs=Staff.joins(:positions).where('unit=? and combo_code>?','Teknologi Maklumat','1-03-02').pluck(:thumb_id)
+    #thumbs = Staff.joins(:positions).where('unit=? and combo_code>?',myunit,mycombocode).pluck(:thumb_id)
+    
+    #works for all units incl. Posbasik, Subjek Asas as long as UNIT column are using the same value
+    mystaffid = current_user.userable.id
+    myposition = Position.where(staff_id: mystaffid).first
+    myunit = myposition.unit
+    mycombocode = myposition.combo_code
+    myancestry = myposition.ancestry_depth
+    myisacting = myposition.is_acting
+    #menanggung tugas ?? ancestry_depth might be the same value as their siblings!
+    if myisacting == true
+      allmytask= myposition.tasks_other+" "+myposition.tasks_main
+      acting_title1 = "Ketua Subjek "+myunit.strip
+      actitle_title2 = "Ketua Program "+myunit.strip
+      if allmytask.include?(acting_title1) || allmytask.include?(acting_title2)
+        #to remove current_user's thumbid
+        mythumbid = current_user.userable.thumb_id
+        thumbs =  Staff.joins(:positions).where('unit=? and (combo_code>? or ancestry_depth>=?)', myunit, mycombocode, myancestry).pluck(:thumb_id)-Array(mythumbid)
+      end
+    else
+      thumbs = Staff.joins(:positions).where('unit=? and (combo_code>? or ancestry_depth>?)', myunit, mycombocode, myancestry).pluck(:thumb_id)
+    end
   end
 
-  def self.peeps2
-    #mystaff = User.current_user.staff.position.child_ids 
-    ##mystaff = User.current_user.staff.position.child_ids  #position_ids for mystaff
-    ##myotherstaff--added-if no superior(act as approver for staff who has no superior)
-    ##myotherstaff = StaffAttendance.find(:all,:select=>:thumb_id,:conditions=>['approved_by=?',User.current_user.staff_id]).map(&:thumb_id) ##position_ids for myotherstaff
-    ##mystaffids = Position.find(:all, :select => "staff_id", :conditions => ["id IN (?)", mystaff+myotherstaff]).map(&:staff_id)
-    #mystaffids = Position.find(:all, :select => "staff_id", :conditions => ["id IN (?)", mystaff]).map(&:staff_id)
-    #thumbs = Staff.find(:all, :select => :thumb_id, :conditions => ["id IN (?)", mystaffids]).map(&:thumb_id)
+  def self.peeps2(current_user)
+    ##mystaff = User.current_user.staff.position.child_ids 
+    ###mystaff = User.current_user.staff.position.child_ids  #position_ids for mystaff
+    ###myotherstaff--added-if no superior(act as approver for staff who has no superior)
+    ###myotherstaff = StaffAttendance.find(:all,:select=>:thumb_id,:conditions=>['approved_by=?',User.current_user.staff_id]).map(&:thumb_id) ##position_ids for myotherstaff
+    ###mystaffids = Position.find(:all, :select => "staff_id", :conditions => ["id IN (?)", mystaff+myotherstaff]).map(&:staff_id)
+    ##mystaffids = Position.find(:all, :select => "staff_id", :conditions => ["id IN (?)", mystaff]).map(&:staff_id)
+    ##thumbs = Staff.find(:all, :select => :thumb_id, :conditions => ["id IN (?)", mystaffids]).map(&:thumb_id)
     
-    myunit = Position.where(staff_id: 25).first.unit
-    myancestry=Position.where(staff_id: 25).first.ancestry
-    mycombocode=Position.where(staff_id: 25).first.combo_code
-    #thumbs = Staff.joins(:positions).where('unit=? and ancestry>?',myunit, myancestry).pluck(:thumb_id) #additional conditions required ####ancestry
-    thumbs = Staff.joins(:positions).where('unit=? and combo_code>?',myunit,mycombocode).pluck(:thumb_id)
+    #myunit = Position.where(staff_id: 25).first.unit
+    #myancestry=Position.where(staff_id: 25).first.ancestry
+    #mycombocode=Position.where(staff_id: 25).first.combo_code
+    ##thumbs = Staff.joins(:positions).where('unit=? and ancestry>?',myunit, myancestry).pluck(:thumb_id) #additional conditions required ####ancestry
+    #thumbs = Staff.joins(:positions).where('unit=? and combo_code>?',myunit,mycombocode).pluck(:thumb_id)
+    
+    #works for all unit except for Posbasik & Diploma Lanjutan
+    mystaffid = current_user.userable.id
+    myposition = Position.where(staff_id: mystaffid).first
+    myunit = myposition.unit
+    mycombocode = myposition.combo_code
+    myancestry = myposition.ancestry_depth
+    #thumbs = Staff.joins(:positions).where('unit=? and (combo_code>? or ancestry_depth>?)', myunit, mycombocode, myancestry).pluck(:thumb_id)
+    myisacting = myposition.is_acting
+    if myisacting == true
+      allmytask= myposition.tasks_other+" "+myposition.tasks_main
+      acting_title1 = "Ketua Subjek "+myunit.strip
+      actitle_title2 = "Ketua Program "+myunit.strip
+      if allmytask.include?(acting_title1) || allmytask.include?(acting_title2)
+        #to remove current_user's thumbid
+        mythumbid = current_user.userable.thumb_id
+        thumbs =  Staff.joins(:positions).where('unit=? and (combo_code>? or ancestry_depth>=?)', myunit, mycombocode, myancestry).pluck(:thumb_id)-Array(mythumbid)
+      end
+    else
+      thumbs = Staff.joins(:positions).where('unit=? and (combo_code>? or ancestry_depth>?)', myunit, mycombocode, myancestry).pluck(:thumb_id)
+    end
   end
     
   def attendee_details 

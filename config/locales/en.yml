@@ -748,7 +748,7 @@ en:
     user_not_exist: "User / Staff Not Exist"
  
   attendance:
-    list: "Manage Lateness & Early Return"
+    title: "Manage Lateness & Early Return"
     new: "New Attendance (Lateness / Early Return)"
     edit: "Edit Attendance (Lateness / Early Return)"
     details: Attendance Details
