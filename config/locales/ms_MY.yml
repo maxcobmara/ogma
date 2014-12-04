@@ -297,7 +297,7 @@ ms_MY:
         price: Harga
       application_status:
         title: Status Permohonan
-        training_request: Permintaan Latihan  
+        training_request: Senarai Permintaan Latihan  
         schedule: Jadual
         course_name: Nama Kursus
         staff_name: Nama Staf
@@ -315,13 +315,17 @@ ms_MY:
         details: Maklumat
         date: Tarikh
         justification: Justifikasi
-        unit_review: Unit Kajian 
-        unit_approve: Unit Meluluskan
-        dept_review: Jabatan Kajian
-        dept_approve: Jabatan Meluluskan
+        unit_review: Ulasan Unit
+        unit_decision: Keputusan Unit
+        dept_review: Ulasan Jabatan
+        dept_decision: Keputusan Jabatan
         replacement_staff: Staf Gantian
         final_approve: Kelulusan Akhir
         trainee_report: Laporan Pelatih
+        approve: Meluluskan
+        approved: Diluluskan
+        reject: Menolak
+        rejected: Ditolak
         
     travel_request:
       title: Permohonan Perjalanan

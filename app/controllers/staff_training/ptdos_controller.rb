@@ -20,16 +20,15 @@ class StaffTraining::PtdosController < ApplicationController
   end
   
   def create
-    @ptdo = Ptdo.new(params[:ptdo])
+    @ptdo = Ptdo.new(ptdo_params)
 
     respond_to do |format|
       if @ptdo.save
-        flash[:notice] = 'Ptdo was successfully created.'
-        format.html { redirect_to(@ptdo) }
-        format.xml  { render :xml => @ptdo, :status => :created, :location => @ptdo }
+        format.html { redirect_to @ptdo, notice: 'Apply for training was successfully created.' }
+        format.json { render action: 'show', status: :created, location: @ptdo }
       else
-        format.html { render :action => "new" }
-        format.xml  { render :xml => @ptdo.errors, :status => :unprocessable_entity }
+        format.html { render action: 'new' }
+        format.json { render json: @ptdo.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -38,13 +37,12 @@ class StaffTraining::PtdosController < ApplicationController
     @ptdo = Ptdo.find(params[:id])
 
     respond_to do |format|
-      if @ptdo.update_attributes(params[:ptdo])
-        flash[:notice] = 'Ptdo was successfully updated.'
-        format.html { redirect_to(@ptdo) }
-        format.xml  { head :ok }
+      if @ptdo.update(ptdo_params)
+        format.html { redirect_to @ptdo, notice: 'Apply for training was successfully updated.' }
+        format.json { head :no_content }
       else
-        format.html { render :action => "edit" }
-        format.xml  { render :xml => @ptdo.errors, :status => :unprocessable_entity }
+        format.html { render action: 'edit' }
+        format.json { render json: @ptdo.errors, status: :unprocessable_entity }
       end
     end
   end

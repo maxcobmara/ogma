@@ -307,7 +307,7 @@ en:
         price: Price
       application_status:
         title: Application Status 
-        training_request: Training Request
+        training_request: Training Requests List
         schedule: Schedule
         course_name: Course Name
         staff_name: Staff Name
@@ -326,12 +326,16 @@ en:
         date: Date
         justification: Justification
         unit_review: Unit Review
-        unit_approve: Unit Approve
+        unit_decision: Unit Decision
         dept_review: Department Review
-        dept_approve: Department Approve
+        dept_decision: Department Decision
         replacement_staff: Staff Replacement
         final_approve: Final Approve
         trainee_report: Trainee Report
+        approve: Approve
+        approved: Approved
+        reject: Reject
+        rejected: Rejected
         
               
     travel_request:
