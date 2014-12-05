@@ -175,6 +175,7 @@ ms_MY:
     code: Kod Kakitangan
     thumb: Thumb ID
     shift: Waktu Anjal
+    shift_start: " bermula "
     fileno: No Fail Peribadi
     cobirthdt: Tarikh Lahir
     birthcertno: No Surat Beranak
@@ -228,7 +229,11 @@ ms_MY:
       type_model: "Jenis / Model Kenderaan"
       reg_no: "No. Pendaftaran"
       cylinder_capacity: "Cc (Sukatan Silinder)"
-
+    
+    shift_histories:
+      title: Sejarah Waktu Anjal
+      deactivate_date: Tarikh Aktif
+    
     qualifications: 
       title:  Kelayakan
       level_id: Tahap

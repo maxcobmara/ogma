@@ -2,12 +2,8 @@ class Staff < ActiveRecord::Base
 
   paginates_per 13
   
-  has_many :vehicles, :dependent => :destroy
-  accepts_nested_attributes_for :vehicles, :allow_destroy => true, :reject_if => lambda {|a| a[:cylinder_capacity].blank? }#|| a[:reg_no].blank?}
-
   validates :icno, presence: true#, numericality: true, length: { is: 12 }, uniqueness: true
   validates_presence_of     :name, :coemail, :code, :appointdt, :current_salary #appointment date must exist be4 can apply leave, salary - for transport class
-
 
   belongs_to :title,        :class_name => 'Title',           :foreign_key => 'titlecd_id'
   belongs_to :staffgrade,   :class_name => 'Employgrade',     :foreign_key => 'staffgrade_id'
@@ -17,6 +13,12 @@ class Staff < ActiveRecord::Base
 
   has_many  :positions
   has_many  :tenants
+  
+  has_many :vehicles, :dependent => :destroy
+  accepts_nested_attributes_for :vehicles, :allow_destroy => true, :reject_if => lambda {|a| a[:cylinder_capacity].blank? }#|| a[:reg_no].blank?}
+    
+  has_many :shift_histories, :dependent => :destroy
+  accepts_nested_attributes_for :shift_histories, :reject_if => lambda {|a| a[:deactivate_date].blank?}
 
   has_many :assets, :foreign_key => "assignedto_id"
   has_many :reporters, :class_name => 'AssetDefect', :foreign_key => 'reported_by'
@@ -83,11 +85,19 @@ class Staff < ActiveRecord::Base
   #validates_length_of       :addr, :within => 1..180,:too_long => "Address Too Long"								#temp remark-staff attendance-5Aug2014
   #validate :coemail, format: { with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\Z/i, :message => I18n.t('activerecord.errors.messages.invalid') }		#temp remark-staff attendance-5Aug2014
 
-
-
-
   #--------------------Declerations----------------------------------------------------
-
+  
+   def create_shift_history_nodate(saved_shift, current_shift, new_deactivate_date)
+      new_shift = ShiftHistory.new
+      new_shift.shift_id = saved_shift #should save history not new one
+      new_shift.deactivate_date = Date.today
+      new_shift.staff_id =self.id #for checking = (current_shift.to_s+"0"+saved_shift.to_s).to_i
+      new_shift.save
+      #By default, 'deactivate_date is hidden && 'if 'deactivate_date' is blank - no 'shift history' will be saved'
+      #If 'staff_shift_id' CHANGED - 'deactivate_date' will be displayed - if date is entered record will be saved & vice versa.
+      #create/save 'shift history' here by giving default value as Date.today for condition when 'staff_shift_id' is changed but 'deactivate_date' not entered.
+    end 
+  
     def age
       Date.today.year - cobirthdt.year unless cobirthdt == nil
     end
