@@ -31,6 +31,7 @@ class Staff::StaffsController < ApplicationController
   def edit
     @info = Staff.find(params[:id])
     @info.vehicles.build if @info.vehicles && @info.vehicles.count==0
+    @info.shift_histories.build if @info.staff_shift_id!=nil
   end
 
   # POST /staffs
@@ -52,6 +53,11 @@ end
   # PATCH/PUT /staffs/1.json
   def update
     @info = Staff.find(params[:id])
+    c_shift = params[:staff][:staff_shift_id]
+    s_shift = params[:staff][:shift_histories_attributes]["#{@info.shift_histories.count}"][:shift_id]
+    new_ddate= params[:staff][:shift_histories_attributes]["#{@info.shift_histories.count}"][:deactivate_date]
+    @info.create_shift_history_nodate(s_shift, c_shift, new_ddate) if (c_shift!=s_shift) && new_ddate==""
+    
     respond_to do |format|
       if @info.update(staff_params)
         format.html { redirect_to staff_info_path, notice: 'Staff was successfully updated.' }
@@ -96,7 +102,7 @@ end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def staff_params
-      params.require(:staff).permit(:icno, :name, :code, :fileno, :coemail, :cobirthdt, :thumb_id, :starting_salary, :current_salary, :allowance, :salary_no, :transportclass_id, :addr, :appointby, :appointdt, :appointstatus, :att_colour, :birthcertno, :bloodtype, :confirmdt, :cooftelext , :cooftelno, :country_cd, :country_id, :created_at, :employscheme, :employstatus, :gender, :kwspcode , :mrtlstatuscd, :pension_confirm_date, :pensiondt,:pensionstat, :phonecell, :phonehome, :photo, :posconfirmdate, :position_old, :poskod_id, :promotion_date, :race, :reconfirmation_date, :religion, :schemedt, :staff_shift_id, :staffgrade_id, :starting_salary, :statecd, :svchead, :svctype, :taxcode, :time_group_id, :titlecd_id, :to_current_grade_date, :uniformstat, :updated_at, :wealth_decleration_date, qualifications_attributes: [:id, :_destroy, :level_id, :qname, :institute_id, :institute],vehicles_attributes: [:id, :_destroy, :type_model, :reg_no, :cylinder_capacity] )
+      params.require(:staff).permit(:icno, :name, :code, :fileno, :coemail, :cobirthdt, :thumb_id, :starting_salary, :current_salary, :allowance, :salary_no, :transportclass_id, :addr, :appointby, :appointdt, :appointstatus, :att_colour, :birthcertno, :bloodtype, :confirmdt, :cooftelext , :cooftelno, :country_cd, :country_id, :created_at, :employscheme, :employstatus, :gender, :kwspcode , :mrtlstatuscd, :pension_confirm_date, :pensiondt,:pensionstat, :phonecell, :phonehome, :photo, :posconfirmdate, :position_old, :poskod_id, :promotion_date, :race, :reconfirmation_date, :religion, :schemedt, :staff_shift_id, :staffgrade_id, :starting_salary, :statecd, :svchead, :svctype, :taxcode, :time_group_id, :titlecd_id, :to_current_grade_date, :uniformstat, :updated_at, :wealth_decleration_date, qualifications_attributes: [:id, :_destroy, :level_id, :qname, :institute_id, :institute],vehicles_attributes: [:id, :_destroy, :type_model, :reg_no, :cylinder_capacity], shift_histories_attributes: [:shift_id, :deactivate_date] ) #without id & destroy
     end
 end
 

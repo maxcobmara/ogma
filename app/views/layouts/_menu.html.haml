@@ -123,7 +123,8 @@
         %ul
           %li= link_to content_tag(:i, "", :class => "icon-numb") + t("student.students.title"), students_path
           %li= link_to content_tag(:i, "", :class => "icon-numb") + t("student.leaveforstudent.title"), student_leaveforstudents_path
-          %li= link_to content_tag(:i, "", :class => "icon-numb") + "Attendance", '#'
+          - permitted_to? :manage, :student_student_attendances do
+            %li= link_to content_tag(:i, "", :class => "icon-numb") + t("student.attendance.title2"), student_student_attendances_path
           %li= link_to content_tag(:i, "", :class => "icon-numb") + t("student.discipline.title2"), student_student_discipline_cases_path
           %li= link_to content_tag(:i, "", :class => "icon-numb") + t("student.counseling.title2"), student_student_counseling_sessions_path
 
@@ -175,14 +176,14 @@
                 %ul
                   - permitted_to? :menu, :exam_exammarks do
                     %li= link_to (t "exam.exammark.title"), exam_exammarks_path
-                  %li= link_to (t "exam.grade.title"), exam_grades_path
+                  %li= link_to (t "exam.grade.title"), "#"
                   %li.icon.icon-left
                     = link_to (t "exam.result"), '#'
                     .mp-level
                       %h2.icon= t "exam.result"
                       %a.mp-back{:href => "#"}= t 'helpers.links.back'
                       %ul
-                        %li= link_to (t "exam.examresult.title2"), exam_examresults_path
+                        %li= link_to (t "exam.examresult.title2"), "#"
                         %li= link_to (t "exam.examresult.exam_slip"), "#"
             
             /%li= link_to content_tag(:i, "", :class => "icon-numb") + "Examination Management", '#'

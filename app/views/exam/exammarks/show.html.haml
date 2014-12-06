@@ -12,15 +12,15 @@
     .tab-content{style:"padding-top:1em"}
       .col-md-8.col-md-offset-1
         %dl.dl-horizontal
-          %dt=t 'exam.exammark.student_id'
-          %dd=h @exammark.studentmark.matrix_name
-          
           %dt= t 'exam.exammark.exam_id'
           %dd
             =h @exammark.exampaper.exam_name_subject_date
             - @istemplate = @exammark.exampaper.klass_id
             - if @istemplate == 0 
               (Template)
+        
+          %dt=t 'exam.exammark.student_id'
+          %dd=h @exammark.studentmark.matrix_name
 
       #exammark_details.tab-pane.active
         %br

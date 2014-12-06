@@ -547,5 +547,22 @@ module DropDown
     {:scope => "overdue",   :label => "Due/Overdue"}
   ]
  
+ #Student Attendance 
+   ABSENT_REASON = [
+          #  Displayed       stored in db
+          [ "Cuti Sakit","1" ],
+          [ "Kecemasan","2" ],
+          [ "Biasa", "3" ]
+   ]
+   
+   ABSENT_ACTION = [
+          #   Displayed     stored in db
+         ["Kaunseling","1"],
+         ["Ganti Cuti","2"],
+         ["Tunjuk Sebab","3"],
+         ["Amaran","4"],
+         ["Tatatertib","5"],
+         ["Hadir Kelas Gantian","6"]
+     ]
   
 end

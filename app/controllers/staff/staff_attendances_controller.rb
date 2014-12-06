@@ -4,8 +4,8 @@ class Staff::StaffAttendancesController < ApplicationController
   # GET /staff_attendances
   # GET /staff_attendances.xml
   def index 
-    @mylate_attendances = StaffAttendance.find_mylate
-    @approvelate_attendances = StaffAttendance.find_approvelate
+    @mylate_attendances = StaffAttendance.find_mylate(@current_user)
+    @approvelate_attendances = StaffAttendance.find_approvelate(@current_user)
     
     @thumb_ids =  StaffAttendance.get_thumb_ids_unit_names(1)
     @unit_names = StaffAttendance.get_thumb_ids_unit_names(2)
@@ -219,10 +219,10 @@ class Staff::StaffAttendancesController < ApplicationController
   end
   
   def manage
-    @mylate_attendances = StaffAttendance.find_mylate
-    @myearly_attendances = StaffAttendance.find_myearly
-    @approvelate_attendances = StaffAttendance.find_approvelate
-    @approveearly_attendances = StaffAttendance.find_approveearly
+    @mylate_attendances = StaffAttendance.find_mylate(@current_user)
+    @myearly_attendances = StaffAttendance.find_myearly(@current_user)
+    @approvelate_attendances = StaffAttendance.find_approvelate(@current_user)
+    @approveearly_attendances = StaffAttendance.find_approveearly(@current_user)
 
     respond_to do |format|
       format.html # index.html.erb

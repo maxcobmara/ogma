@@ -108,7 +108,7 @@ authorization do
  role :lecturer do
    has_permission_on [:exam_examquestions, :exam_exams, :exam_exammarks], :to => [:menu, :read, :create]
    
-   has_permission_on :exam_exams, :to =>[:manage] do
+   has_permission_on :exam_exams, :to =>:manage do
      if_attribute :created_by => is {user.userable.id}
    end
    
@@ -139,6 +139,8 @@ authorization do
    has_permission_on :exam_exammarks, :to =>[:update, :delete, :edit_multiple, :update_multiple, :new_multiple, :create_multiple] do
      if_attribute :exam_id => is_in {user.exams_of_programme}
    end
+   
+   has_permission_on :student_student_attendances, :to => :manage
    
  end
 

@@ -5,7 +5,7 @@
     %dd= h (DropDown::EXAMTYPE.find_all{|disp, value| value == @exam.name}).map {|disp, value| disp}[0] 
 
     %dt= t 'exam.exams.year_semester'
-    %dd= h @exam.subject_id? ? (t 'exam.exams.year')+@year + (t 'exam.exams.semester')+@exam.subject.parent.code.to_s : "" 
+    %dd= h @exam.subject_id? ? (t 'exam.exams.year')+@year.to_s + (t 'exam.exams.semester')+@exam.subject.parent.code.to_s : "" 
 
     %dt= t 'exam.exams.course_id' , :default => model_class.human_attribute_name(:course_id) + ":"
     %dd=h @exam.subject_id? ? @exam.subject.root.course_type+" "+@exam.subject.root.name : "" 
@@ -29,7 +29,7 @@
       - else
         =h (((@exam.endtime - @exam.starttime)/60) / 60).to_i.to_s+" hours "+(((@exam.endtime - @exam.starttime)/60) % 60).to_i.to_s+" minutes"
 
-    %dt= t 'exam.exams.full_marks', :default => model_class.human_attribute_name(:full_marks) + ":fullmarks"
+    %dt= t 'exam.exams.total_marks', :default => model_class.human_attribute_name(:total_marks) + ":total_marks"
     %dd
       / is examtemplate when @istemplate =0
       - if @exam.klass_id  == 0 

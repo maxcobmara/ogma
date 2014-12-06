@@ -184,6 +184,7 @@ en:
     code: Staff Code
     thumb: Thumb ID
     shift: Staff Shift
+    shift_start: " starting "
     fileno: Personal File No
     position: Position
     cobirthdt: Date Of Birth
@@ -238,6 +239,10 @@ en:
       type_model: "Vehicle Type / Model"
       reg_no: Registration No
       cylinder_capacity: "Cc (Cylinder Capacity)"
+      
+    shift_histories:
+      title: Shift Histories
+      deactivate_date: Activate Date
     
     qualifications: 
       title: Qualifications
@@ -756,7 +761,7 @@ en:
     user_not_exist: "User / Staff Not Exist"
  
   attendance:
-    list: "Manage Lateness & Early Return"
+    title: "Manage Lateness & Early Return"
     new: "New Attendance (Lateness / Early Return)"
     edit: "Edit Attendance (Lateness / Early Return)"
     details: Attendance Details
@@ -1226,7 +1231,34 @@ en:
       on_byday: "on (by day)"
       case_reference: Discipline Case Reference
       display_feedback: Display Feeback
-      
+    
+    attendance:
+      title: Student Attendance
+      title2: Attendance
+      student_id: Student
+      attend: "Attend?"
+      reason: Reason
+      action_taken: Action Taken
+      action_close: "Action Close?"
+      intake: Intake
+      class_schedule: "Class / Schedule"
+      student_intake: "Student Intake : "
+      subject: "Subject : "
+      topic: "Topic : "
+      date: "Date : "
+      time: "Time : "
+      lecturer: "Lecturer : "
+      all_records: All Records
+      all_class: "All Classes / Schedules"
+      all_intakes: All Intakes
+      attend2: Atttend
+      absent: Absent
+      complete: Yes
+      incomplete: No
+      new_multiple_intake: "New Multiple (by Intake)"
+      new_multiple_schedule: "New Multiple (by Schedule)"
+      edit_remark: "For multiple edit, select students from the same Class / Schedule OR students from multiple Classes / Schedules of the same Intake."
+
   cofile:
     index: List
     cofileno: Cofile No
@@ -1346,6 +1378,9 @@ en:
       acc_not_exist: "Not Exist"
       acc_must_unique: "(Additional Notes : Accession No must UNIQUE)"
       use_language: "(Additional Notes : Use 'ing' or 'en' for English, use 'mel' or 'ms_MY' for Malay)"
+      bibliography: 
+      indice: Index
+      photo: Cover page
       
   buletin:
     list: List of Bulletins
@@ -1522,7 +1557,7 @@ en:
       klass_id: Template
       exam_on: Date
       duration: Duration
-      full_marks: Full Marks
+      total_marks: Full Marks
       starttime: Start Time
       endtime: End Time
       topic_id: Topic
@@ -1532,7 +1567,7 @@ en:
       set_sequence: " Please set sequence for each question."
       exams_details: Examination Paper Details
       questions_details: Questions Details
-      total_questions: Total Questions
+      quantity: Total Questions
       not_selected: Not Selected
       separate_combine: Cover
       separate_combine_text: "S refers to SEPARATED covers of examination paper, whereas C refers to COMBINED / Single cover of examination paper."
@@ -1541,6 +1576,7 @@ en:
       by_semester: by semester
       create_exam: Add Exam Data
       create_template: Add Exam Template
+      marks_each: "MCQ - 1 marks/each, MEQ - 20 marks/each, SEQ - 10 marks/each"
 
     exammark:
       title: Marks by Examination Papers

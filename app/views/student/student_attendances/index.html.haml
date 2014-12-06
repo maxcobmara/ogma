@@ -1,0 +1,161 @@
+- model_class = Exammark
+.page-header
+  %h1= t('student.attendance.title')#, :default => model_class.model_name.human.pluralize
+  
+.navbar.navbar-inverse{role: "navigation", style: "padding-right:40px;"}
+  %ul.nav.navbar-nav
+    %li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'actions.new'))), new_student_student_attendance_path
+  %ul.nav.navbar-nav.navbar-right
+    %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "index_search_bar"
+    %li.toga= link_to content_tag(:li, fa_icon("print", text: (t 'actions.print'))), "#", class: 'bogus'  
+
+= render 'shared/flashes'
+
+.row
+  .col-md-6
+    = form_tag new_multiple_student_student_attendances_path, :method => :put , :id => "form2" do
+      /= hidden_field_tag( "new_type","3" )
+      .form-group
+        .col-md-6
+          .input-group
+            .input-group-addon
+              = t 'student.attendance.intake'
+            = select_tag('intake', options_from_collection_for_select(@intake_list2,:intake, :intake_acryn_prog), class: "form-control", width: "50px;") 
+        .col-md-4
+          = submit_tag t('student.attendance.new_multiple_intake'), :subject_id => nil, class: "btn btn-default"
+
+  .col-md-6
+    = form_tag new_multiple_student_student_attendances_path, :method => :put , :id => "form3" do
+      /= hidden_field_tag( "new_type","2" )
+      .form-group
+        .col-md-8
+          .input-group
+            .input-group-addon
+              = t 'student.attendance.class_schedule'
+            = select_tag('classid', options_from_collection_for_select(@schedule_list, :id, :subject_day_time), class: "form-control", width: "50px;") 
+        .col-md-4
+          = submit_tag t('student.attendance.new_multiple_schedule'), :subject_id => nil, class: "btn btn-default"
+
+.row
+  .col-md-12
+    %table.table-striped.table-hover.ogma
+      %thead
+        %tr
+          %th{:style=>"width:20px;"} &nbsp;
+          %th= sort_link(@search, :student_id, (t 'student.attendance.student_id'))
+          %th= t 'student.attendance.attend'
+          %th= t 'student.attendance.reason'
+          %th= t 'student.attendance.action_taken'
+          %th= t 'student.attendance.action_close'
+
+      %tbody
+        = render "search_bar"
+        /edit multiple - based on selection (MUST by same classes, Must by classes of same(1) intake), others - error shall arise
+        = form_tag edit_multiple_student_student_attendances_path, :method => :put , :id => "form1" do
+          - index2=0
+          - @student_attendances_intake.each do |intake, student_attendances|
+            - @studentattendance_ids=student_attendances.map(&:id)
+            %tr
+              %td.group{:colspan => "6"} 
+                = (t 'student.attendance.student_intake').upcase 
+                =intake.to_date.strftime("%b %Y").upcase 
+            
+            - student_attendances.group_by{|xx|xx.weeklytimetable_details_id}.each do |classes_schedule| 
+              - if classes_schedule[0] != nil 
+                %tr
+                  %td.group{:colspan => "6"} 
+                    =t('student.attendance.subject')+WeeklytimetableDetail.find(classes_schedule[0]).weeklytimetable_topic.full_parent+" | "+t('student.attendance.topic')+ WeeklytimetableDetail.find(classes_schedule[0]).weeklytimetable_topic.subject_list
+                    %br
+                    =t('student.attendance.date')+WeeklytimetableDetail.find(classes_schedule[0]).get_date_day_of_schedule+" | "+t('student.attendance.time')
+                    - if (WeeklytimetableDetail.find(classes_schedule[0])).time_slot==0 
+                      =TimetablePeriod.find(WeeklytimetableDetail.find(classes_schedule[0]).time_slot2).timing
+                    - else
+                      =TimetablePeriod.find(WeeklytimetableDetail.find(classes_schedule[0]).time_slot).timing 
+                    =" | "+t('student.attendance.lecturer')  
+                    =h (WeeklytimetableDetail.find(classes_schedule[0])).weeklytimetable_lecturer.name 
+              - else
+                %tr
+                  %td.group{:colspan => "5"}
+                   
+              - classes_schedule[1].sort_by{|x|x.student.name}.each do |student_attendance|
+                %tr
+                  %td
+                    = check_box_tag "student_attendance_ids[]", student_attendance.id, true, :id => "student_attendanceidss_#{index2}"    
+                  %td=link_to student_attendance.student.matrix_name, student_student_attendance_path(student_attendance)
+                  %td
+                    - if student_attendance.attend == true
+                      &#10003;
+                    - else
+                      = t 'student.attendance.attend2'
+                  %td
+                    - if student_attendance.attend == true 
+                    - else
+                      - if student_attendance.reason != 0 || student_attendance.reason != nil 
+                        =h ((DropDown::ABSENT_REASON.find_all{|disp, value| value == student_attendance.reason}).map {|disp, value| disp}).first
+                  %td
+                    - if student_attendance.attend == true
+                    - else
+                      - if student_attendance.reason != 0 || student_attendance.reason != nil 
+                        =h ((DropDown::ABSENT_ACTION.find_all{|disp, value| value == student_attendance.action}).map {|disp, value| disp}).first
+                  %td
+                    - if student_attendance.attend == true
+                    - else
+                      - if student_attendance.status != 0 || student_attendance.status != nil
+                        - if student_attendance.status=="Yes"
+                          = t 'student.attendance.complete'
+                        - elsif student_attendance.status=="No"
+                          = t 'student.attendance.incomplete'
+                  - index2+=1    
+         
+          .row
+            %table
+              %tr
+                %td{:style=> "width:200px; text-align: right; padding:5px;"}
+                  = submit_tag t('edit_checked'), :name => :student_attendance_submit_button, class: "btn btn-default"
+                %td{:style=>"padding:5px;"}= check_box_tag :check_all
+                %td{:style=>"padding:5px;"}= t('actions.check_all') 
+              %tr
+                %td{:colspan=>"3", :style=> "padding-left:55px;",}= t('student.attendance.edit_remark')
+        
+  .right{style:"padding:0 30px; margin:0;"}= paginate @student_attendances, :theme => 'twitter-bootstrap-3'
+
+:javascript
+$(document).ready(function(){
+  var default_check = document.getElementById('check_all');
+  default_check.checked = true;
+  
+  $("input[id='check_all']").change(function() {  
+    var checkbox = document.getElementsByName('student_attendance_ids[]')
+    if($('#check_all').is(':checked')) { 
+      for (var j=0; j<checkbox.length; j++) {
+        var cc = document.getElementById('student_attendanceidss_'+j)
+        cc.checked = true;
+      }
+    }else{
+      for (var j=0; j<checkbox.length; j++) {
+        var cc = document.getElementById('student_attendanceidss_'+j)
+        cc.checked = false;
+      }
+    }
+  });
+
+  $("input[id='check_all']").each(function() {  
+    var checkbox = document.getElementsByName('student_attendance_ids[]')
+    if($('#check_all').is(':checked')) { 
+      for (var j=0; j<checkbox.length; j++) {
+        var cc = document.getElementById('student_attendanceidss_'+j)
+        cc.checked = true;
+      }
+    }else{
+      for (var j=0; j<checkbox.length; j++) {
+        var cc = document.getElementById('student_attendanceidss_'+j)
+        cc.checked = false;
+      }
+    }
+  });
+  
+});
+
+  
+ 
+ 

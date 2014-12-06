@@ -1,0 +1,59 @@
+.col-md-8.col-md-offset-1
+  %dl.dl-horizontal
+    %dt= t 'library.book.catsource' 
+    %dd=h (DropDown::CATSOURCE.find_all{|disp, value| value == @book.catsource.to_i}).map {|disp, value| disp}[0]
+          
+    %dt
+      = t 'library.book.classno' 
+      (NLM) \/ (DDC)
+    %dd=h @book.classlcc 
+          
+    %dt= t 'library.book.language' 
+    %dd=h (DropDown::LANGUAGE.find_all{|disp, value| value == @book.language}).map {|disp, value| disp} [0]
+          
+    %dt= t 'library.book.author' 
+    %dd=h @book.author 
+          
+    %dt= t 'library.book.subject' 
+    %dd=h @book.subject 
+          
+    %dt= t 'library.book.publisher' 
+    %dd=h @book.publisher 
+          
+    %dt= t 'library.book.publish_date'
+    %dd=h @book.publish_date
+          
+    %dt= t 'library.book.publish_location'
+    %dd=h @book.publish_location 
+          
+    %dt= t 'library.book.roman' 
+    %dd=h @book.roman
+          
+    %dt= t 'library.book.size' 
+    %dd=h @book.size 
+          
+    %dt= t 'library.book.pages'
+    %dd=h @book.pages
+          
+    %dt= t 'library.book.loan_type' 
+    %dd=h (DropDown::LOAN.find_all{|disp, value| value == @book.loantype}).map {|disp, value| disp}[0]
+          
+    %dt= t 'library.book.mediatype' 
+    %dd=h (DropDown::MEDIA.find_all{|disp, value| value == @book.mediatype}).map {|disp, value| disp}[0]
+          
+    %dt Status
+    %dd=h (DropDown::STATUS.find_all{|disp, value| value == @book.status}).map {|disp, value| disp}[0]
+          
+    %dt= t 'library.book.series' 
+    %dd=h @book.series
+          
+    %dt= t 'library.book.location'
+    %dd=h @book.location
+          
+    %dt= t 'library.book.edition' 
+    %dd=h @book.edition 
+          
+    %dt= t 'library.book.links'
+    %dd
+      =@book.links 
+      /= auto_link(@book.links)  - note : to do - auto_link is deprecated in Rails 3.1

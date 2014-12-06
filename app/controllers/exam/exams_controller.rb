@@ -10,13 +10,20 @@ class Exam::ExamsController < ApplicationController
     if @position_exist  
       @lecturer_programme = @current_user.userable.positions[0].unit
       unless @lecturer_programme.nil?
-        @programme = Programme.where('name ILIKE (?) AND ancestry_depth=?',"%#{@lecturer_programme}%",0)
+        @programme = Programme.where('name ILIKE (?) AND ancestry_depth=?',"%#{@lecturer_programme}%",0) if !(@lecturer_programme=="Pos Basik" || @lecturer_programme=="Diploma Lanjutan")
       end
       unless @programme.nil? || @programme.count==0
         @programme_id = @programme.try(:first).try(:id)
       else
+        @tasks_main = @current_user.userable.positions[0].tasks_main
         if @lecturer_programme == 'Commonsubject'
           @programme_id ='1'
+        elsif (@lecturer_programme == 'Pos Basik' || @lecturer_programme == "Diploma Lanjutan") && @tasks_main!=nil
+          @allposbasic_prog = Programme.where('course_type=? or course_type=?', "Pos Basik", "Diploma Lanjutan").pluck(:name)  #Onkologi, Perioperating, Kebidanan etc
+          for basicprog in @allposbasic_prog
+            lecturer_basicprog_name = basicprog if @tasks_main.include?(basicprog)==true
+          end
+          @programme_id=Programme.where(name: lecturer_basicprog_name, ancestry_depth: 0).first.id
         else
           @programme_id='0'
         end
@@ -346,7 +353,7 @@ class Exam::ExamsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def exam_params
-      params.require(:exam).permit(:name, :description, :created_by, :course_id, :subject_id, :klass_id, :exam_on, :duration, :full_marks, :starttime, :endtime, :topic_id, :sequ)
+      params.require(:exam).permit(:name, :description, :created_by, :course_id, :subject_id, :klass_id, :exam_on, :duration, :full_marks, :starttime, :endtime, :topic_id, :sequ, examtemplates_attributes: [:id, :_destroy, :questiontype, :quantity, :total_marks])
       #, answerchoices_attributes: [:id,:examquestion_id, :item, :description], examanswers_attributes: [:id,:examquestion_id,:item,:answer_desc])
     end
 end
