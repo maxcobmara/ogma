@@ -58,6 +58,7 @@
     %hr
     .form-actions
       = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('helpers.links.back'), staff_travel_claims_path, :class => 'btn btn-default'
+      = link_to content_tag(:i, "", class: "fa fa-file-pdf-o"), claimprint_staff_travel_claim_path(@travel_claim, format: "pdf"), class: "btn btn-default", "data-toggle" => "tooltip", title: "Print Claim"
       = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('helpers.links.edit'), edit_staff_travel_claim_path(@travel_claim),  :class => 'btn btn-primary' 
       = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('helpers.links.finance_check'), check_staff_travel_claim_path(@travel_claim),  :class => 'btn btn-primary'
       = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('helpers.links.approve'), approve_staff_travel_claim_path(@travel_claim),  :class => 'btn btn-primary'

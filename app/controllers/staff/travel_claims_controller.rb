@@ -90,6 +90,20 @@ class Staff::TravelClaimsController < ApplicationController
     end
   end
   
+  def claimprint
+
+    @travel_claim = TravelClaim.find(params[:id])
+   #@travelclaimlog = TravelClaimLog.where('travel_request_id =?', travel_request.id )
+    respond_to do |format|
+      format.pdf do
+        pdf = ClaimprintPdf.new(@travel_claim, view_context)
+        send_data pdf.render, filename: "claimprint-{Date.today}",
+                              type: "application/pdf",
+                              disposition: "inline"
+      end
+    end
+  end
+  
   private
   
   def set_travel_claim
