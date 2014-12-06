@@ -195,6 +195,7 @@ ms_MY:
     country_cd: Kewarganegaraan
     transportclass_id: Kelas Kenderaan
     upload: Muat Naik Gambar
+    professional_development: Pembangunan Profesional
 
     employment_details: Butir Perkerjaan
     employscheme: Skim Perjawatan
@@ -299,8 +300,38 @@ ms_MY:
         participants: Peserta 
         location: Lokasi
         price: Harga
-      do:
-        title: Apply For Training
+      application_status:
+        title: Status Permohonan
+        training_request: Senarai Permintaan Latihan  
+        schedule: Jadual
+        course_name: Nama Kursus
+        staff_name: Nama Staf
+        status: Status
+        enter_number: Masukkan Nombor
+        ic_or_name: IC atau Nama Staf
+        app_reject: Permohonan Ditolak
+        await_unit_app: Menunggu Kelulusan Unit
+        app_by_unit_head: "Diluluskan oleh Ketua Unit, menunggu kelulusan Ketua Jabatan"
+        app_by_dept_head: "Diluluskan oleh Ketua Jabatan, menunggu kelulusan Pengarah"
+        all_app_comp: Semua kelulusan lengkap
+        report_submit: Laporan telah dihantar
+        status_not_available: Status tidak tersedia
+        staff_training_details: Maklumat Latihan Staf
+        details: Maklumat
+        date: Tarikh
+        justification: Justifikasi
+        unit_review: Ulasan Unit
+        unit_decision: Keputusan Unit
+        dept_review: Ulasan Jabatan
+        dept_decision: Keputusan Jabatan
+        replacement_staff: Staf Gantian
+        final_approve: Kelulusan Akhir
+        trainee_report: Laporan Pelatih
+        approve: Meluluskan
+        approved: Diluluskan
+        reject: Menolak
+        rejected: Ditolak
+        
     travel_request:
       title: Permohonan Perjalanan
       for_approval: Kelulusan Permohonan Perjalanan 
@@ -971,6 +1002,7 @@ ms_MY:
       empty_room: Pemulangan Kunci
       empty_room: Kosongkan Bilik
       damage: Kerosakan oleh Pelajar
+      
     students:
       title: Maklumat Pelajar
       list: Senarai Maklumat Pelajar
@@ -988,10 +1020,10 @@ ms_MY:
       sbirthd: Tarikh Lahir
       age: Umur
       mrtlstatuscd: Status Kahwin
-      etnic: Etnik
+      ethnic: Etnik
       semail: Emel
       regdate: Tarikh Pendaftaran
-      offer_letter_serial: No. Surat Tawaran
+      offer_letter_serial: No Surat Tawaran
       course_id: Program
       remarks: Catatan
       physical: Fizikal
@@ -1018,6 +1050,9 @@ ms_MY:
       guarantor: Keputusan SPM
       contact_information: Maklumat Perhubungan dan Penjamin
       mandatory: Mandatori
+      subject: Subjek
+      grade: Gred
+      new: Pelajar Baru
     
     leaveforstudent:
       title: Cuti Pelajar
@@ -2110,6 +2145,10 @@ ms_MY:
       maintain: Dikekalkan
       remove: Dibuang
       select_leave_type: Pilih Jenis Cuti
+      select_student_status: Pilih Status Pelajar
+      select_sponsor: Pilih Penaja
+      select_maritial_status: Pilih Status Perkahwinan
+      select_race: Pilih Bangsa
 
   date:
       formats:

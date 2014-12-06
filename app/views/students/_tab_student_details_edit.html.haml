@@ -20,33 +20,19 @@
 
   .form-group
     .col-sm-2.control-label
-      =f.label t 'student.students.sbirthd', for: :sbirthdt
-    .col-md-4
-      = f.text_field :sbirthdt, class: 'form-control', 'data-behaviour' => 'datepicker_today'
- 
-
-  .form-group
-    .col-sm-2.control-label
       =f.label t 'student.students.race', for: :race2
     .col-md-2 
-      = f.select :race2, Student::RACE, :prompt => "Select", class: 'form-control'
+      = f.select :race2, Student::RACE, {:include_blank =>t('helpers.prompt.select_race')} , {class: 'form-control'}
       %font{:color => "blue"} Previous race entered: #{@student.race.blank? ? "" : @student.race}
 
   .form-group
     .col-sm-2.control-label
-      = f.label t 'student.students.etnic', for: :etnic
-    .col-md-3
-      = f.text_field :race, class: 'form-control'
-
-
-
-  .form-group#bong{:style => "display: none;"}
-    .col-sm-2.control-label
-      =f.label t 'student.students.etnic', for: :race
-    .col-md-4
-      =f.text_field :race #class: 'selectpicker', "data-width"=>"350px"
+      .bong{:style=> "display: none;"}
+        = f.label t 'student.students.ethnic', for: :race
+    .col-md-2
+      .bong{:style=> "display: none;"}
+        = f.text_field :race, class: 'form-control'
  
-
   .form-group
     .col-sm-2.control-label
       =f.label t 'student.students.offer_letter_serial', for: :offer_letter_serial
@@ -56,17 +42,28 @@
   .form-group
     .col-sm-2.control-label
       =f.label t 'student.students.upload', for: :upload
-    .col-md-4
+    .col-md-3
       =f.file_field :photo, class: 'form-control'
 
   .form-group
     .col-sm-2.control-label
       =f.label t 'student.students.semail', for: :semail
-    .col-md-4
+    .col-md-3
       =f.text_field :semail, class: 'form-control', 'data-behaviour' => 'datepicker_today'
   
   .form-group
     .col-sm-2.control-label
       =f.label t 'student.students.regdate', for: :regdate
-    .col-md-4
-      =f.text_field :regdate, class: 'form-control', 'data-behaviour' => 'datepicker_today'
+    .col-md-2
+      =f.text_field :regdate, class: 'form-control date_picker', 'data-behaviour' => 'datepicker_today'
+      
+:javascript
+$(document).ready(function(){
+  $('#student_race2').change(function() {
+    if($(this).val() == 21) {
+      $('.bong').show();
+    }else {
+         $('.bong').hide();
+   }
+   });
+});

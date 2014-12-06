@@ -205,6 +205,7 @@ en:
     country_cd: Nationality
     transportclass_id: Transport Class
     upload: Upload Photo
+    professional_development: Professional Development
 
     employment_details: Employment Details
     employscheme: Employment Scheme
@@ -309,8 +310,39 @@ en:
         participants: Participants
         location: Location
         price: Price
-      do:
-        title: Apply For 
+      application_status:
+        title: Application Status 
+        training_request: Training Requests List
+        schedule: Schedule
+        course_name: Course Name
+        staff_name: Staff Name
+        status: Status
+        enter_number: Enter Number
+        ic_or_name: IC or Staff Name
+        app_reject: Application Rejected
+        await_unit_app: Awaiting Unit Approval
+        app_by_unit_head: "Approved by Unit head, awaiting Dept approval"
+        app_by_dept_head: "Approved by Dept head, awaiting Pengarah approval"
+        all_app_comp: All approvals complete
+        report_submit: Report Submitted
+        status_not_available: Status Not Available
+        staff_training_details: Staff Training Details
+        details: Details
+        date: Date
+        justification: Justification
+        unit_review: Unit Review
+        unit_decision: Unit Decision
+        dept_review: Department Review
+        dept_decision: Department Decision
+        replacement_staff: Staff Replacement
+        final_approve: Final Approve
+        trainee_report: Trainee Report
+        approve: Approve
+        approved: Approved
+        reject: Reject
+        rejected: Rejected
+        
+              
     travel_request:
       title: Travel Request
       for_approval: Travel Request For Approval
@@ -1074,7 +1106,7 @@ en:
       sbirthd: Date Of Birth
       age: Age
       mrtlstatuscd: Marital Status
-      etnic: Etnic
+      ethnic: Ethnic
       semail: Email
       regdate: Registration Date
       offer_letter_serial: Offer Letter No
@@ -1107,6 +1139,7 @@ en:
       mandatory: Mandatory
       subject: Subject
       grade: Grade
+      new: New Student
       
     leaveforstudent:
       title: Student Leave
@@ -2174,6 +2207,10 @@ en:
       maintain: Maintain
       remove: Remove
       select_leave_type: Select Leave Type
+      select_student_status: Select Student Status
+      select_sponsor: Select Sponsor
+      select_maritial_status: Select Maritial Status
+      select_race: Select Race
 
   date:
     formats:

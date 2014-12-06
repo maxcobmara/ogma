@@ -2,7 +2,7 @@
 .page-header
   %h1
     = t 'edit'
-    = @student.formatted_mykad
+    = @student.name
 
 = render 'shared/flashes'
 
@@ -12,7 +12,7 @@
     = render :partial => 'form', :locals => {:f => f}
     .row
       .form-group
-        .col-md-1.col-md-offset-2
+        .col-md-1.col-md-offset-4
           = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), student_path(@student), :class => 'btn btn-default'
         .col-md-2
           .div{style: "margin-left:-40px;"}

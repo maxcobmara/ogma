@@ -1,0 +1,14 @@
+= search_form_for @search, url: staff_training_ptdos_path,  class: "form-inline" do |f|
+  %tr.search_row{style: "display: none;"}
+    %td=f.text_field :ptschedule_id_eq, placeholder: (t 'staff.training.application_status.enter_number'), class: 'form-control' 
+    %td=f.text_field :ptschedule_course_name_cont, size: 2,  class:  'form-control'
+    %td=f.text_field :keyword_search, placeholder: (t 'staff.training.application_status.ic_or_name'), class: 'form-control' 
+    %td
+      .input-group
+        =select_tag('q[status_search]', options_for_select([[t('actions.all_records'),'0'],[t('staff.training.application_status.app_reject'),'1'],[t('staff.training.application_status.await_unit_app'),'2'],[t('staff.training.application_status.app_by_unit_head'),'3'],[ t('staff.training.application_status.app_by_dept_head'),'4'],[ t('staff.training.application_status.all_app_comp'),'5'],[ t('staff.training.application_status.report_submit'),'6'],[t('staff.training.application_status.status_not_available'),'7']]), class: 'selectpicker',"data-width"=>'60px') 
+        %span.input-group-btn
+          %button.btn.btn-sm.btn-default.right{:type => "submit"}
+            %i.fa.fa-search.fa-fw
+          
+          
+     

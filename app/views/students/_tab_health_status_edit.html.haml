@@ -27,7 +27,7 @@
     .col-sm-2.control-label
       = f.label t 'student.students.bloodtype', for: :bloodtype
     .col-md-3
-      = f.select :bloodtype, Student::BLOOD_TYPE, :prompt => "Select"
+      = f.select :bloodtype, Student::BLOOD_TYPE, {:include_blank =>t('select')}  , {class: 'selectpicker', "data-width"=>"auto"}
        
   .form-group
     .col-sm-2.control-label

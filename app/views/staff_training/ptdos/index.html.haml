@@ -1,10 +1,31 @@
 - model_class = Ptdo
 .page-header
-  %h1= t('staff.training.do.title')
+  %h1= t('staff.training.application_status.training_request')
+= render 'shared/flashes'
 
 .navbar.navbar-inverse{role: "navigation", style: "padding-right:40px;"}
   %ul.nav.navbar-nav
+    %li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'actions.new'))), "#", class: 'bogus'
   %ul.nav.navbar-nav.navbar-right
-    %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "toga"
+    %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "index_search_bar"
     %li= link_to content_tag(:li, fa_icon("print", text: (t 'actions.print'))), "#", class: 'bogus'
+
+%table.table-striped.table-hover.ogma
+  %thead
+    %tr
+      %th= sort_link(@search, :ptschedule_id, t('staff.training.application_status.schedule'))
+      %th= sort_link(@search, :ptcourse_id, t('staff.training.application_status.course_name'))
+      %th= sort_link(@search, :staff_id, t('staff.training.application_status.staff_name'))
+      %th{style: "width:20%;"}=t ('staff.training.application_status.status')
+      
+  %tbody
+    = render "index_search"
+    - @ptdos.each do |ptdo|
+      %tr
+        %td= link_to ("Group by ") + ptdo.ptschedule_id.to_s, staff_training_ptdo_path(ptdo)
+        %td= ptdo.try(:ptschedule).try(:course).try(:name)
+        %td= ptdo.applicant_details
+        %td= ptdo.apply_dept_status
+      
+        
     

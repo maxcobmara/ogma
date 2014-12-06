@@ -1,0 +1,61 @@
+- model_class = Ptdo
+.page-header
+  %h1= t ('staff.training.application_status.staff_training_details')
+
+= render 'shared/flashes'
+
+
+.row
+  .col-md-offset-1
+    / Nav tabs
+    %ul.nav.nav-tabs
+      %li.active= link_to (t'staff.training.application_status.details'), "#details", "data-toggle" => "tab"
+
+    / Tab panes
+    .tab-content{style:"padding-top:1em"}
+      #details.tab-pane.active
+        .col-md-8.col-md-offset-1
+          %dl.dl-horizontal
+            %dt= t 'staff.training.application_status.course_name'
+            %dd= h @ptdo.ptschedule.try(:course).try(:name)
+
+            %dt= t 'staff.training.application_status.date'
+            %dd= h @ptdo.ptschedule.start
+
+            %dt= t 'staff.training.application_status.staff_name'
+            %dd= link_to @ptdo.applicant_details, (staff_info_path(@ptdo.staff_id)) rescue nil
+            
+            %br
+            %dt= t 'staff.training.application_status.justification'
+            %dd= h @ptdo.justification
+
+            %dt= t 'staff.training.application_status.unit_review'
+            %dd= h @ptdo.unit_review
+
+            %dt= t 'staff.training.application_status.unit_decision'
+            %dd= h @ptdo.unit_approve? ? t('staff.training.application_status.approved') :  t('staff.training.application_status.rejected')
+            
+            %br
+            %dt= t 'staff.training.application_status.dept_review'
+            %dd= h @ptdo.dept_review
+            
+            %dt= t 'staff.training.application_status.dept_decision'
+            %dd= h @ptdo.dept_approve? ? t('staff.training.application_status.approved') :  t('staff.training.application_status.rejected')
+            
+            %dt= t 'staff.training.application_status.replacement_staff'
+            %dd= h @ptdo.replacement.try(:name)
+            
+            %br
+            %dt= t 'staff.training.application_status.final_approve'
+            %dd= h @ptdo.final_approve? ? t('staff.training.application_status.approved') :  t('staff.training.application_status.rejected')
+            
+            %dt= t 'staff.training.application_status.trainee_report'
+            %dd= h @ptdo.trainee_report
+            
+.row
+  .col-md-4.col-md-offset-4
+    %hr
+    .form-actions
+      = link_to content_tag(:i, "", class: "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), staff_training_ptdos_path, class: 'btn btn-default'
+      = link_to content_tag(:i, "", class: "fa fa-edit") + " " + t('.edit', :default => t("helpers.links.edit")), "#", class: 'btn btn-primary'
+              
