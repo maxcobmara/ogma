@@ -1,6 +1,7 @@
 class Student::StudentAttendancesController < ApplicationController
   before_action :set_student_attendance, only: [:show, :edit, :update, :destroy]
-
+  before_action :set_schedule_student_list, only: [:new]
+  
   # GET /student_attendances
   # GET /student_attendances.xml
   def index
@@ -54,10 +55,53 @@ class Student::StudentAttendancesController < ApplicationController
   end
   
   def new
+    @student_attendance = StudentAttendance.new
   end
   
   def edit
     @student_attendance = StudentAttendance.find(params[:id])
+  end
+  
+  # PUT /student_attendances/1
+  # PUT /student_attendances/1.xml
+  def create
+    @student_attendance = StudentAttendance.new(student_attendance_params)
+    respond_to do |format|
+      if @student_attendance.save
+        format.html { redirect_to(student_student_attendance_path(@student_attendance), :notice =>t('student.attendance.title')+t('actions.created')) }
+        format.xml  { head :ok }
+      else
+        format.html { render :action => "new" }
+        format.xml  { render :xml => @student_attendance.errors, :status => :unprocessable_entity }
+      end
+    end
+  end
+  
+  # PUT /student_attendances/1
+  # PUT /student_attendances/1.xml
+  def update
+    @student_attendance = StudentAttendance.find(params[:id])
+    respond_to do |format|
+      if @student_attendance.update(student_attendance_params)
+        format.html { redirect_to(student_student_attendance_path(@student_attendance), :notice =>t('student.attendance.title')+t('actions.updated')) }
+        format.xml  { head :ok }
+      else
+        format.html { render :action => "edit" }
+        format.xml  { render :xml => @student_attendance.errors, :status => :unprocessable_entity }
+      end
+    end
+  end
+  
+  # DELETE /student_attendances/1
+  # DELETE /student_attendances/1.xml
+  def destroy
+    @student_attendance = StudentAttendance.find(params[:id])
+    @student_attendance.destroy
+
+    respond_to do |format|
+      format.html { redirect_to(student_student_attendances_url) }
+      format.xml  { head :ok }
+    end
   end
     
   def new_multiple
@@ -71,6 +115,25 @@ class Student::StudentAttendancesController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_student_attendance
       @student_attendance = StudentAttendance.find(params[:id])
+    end
+    
+    def set_schedule_student_list
+      position_exist = @current_user.userable.positions
+      if position_exist  
+        lecturer_programme = @current_user.userable.positions[0].unit
+        unless lecturer_programme.nil?
+          programme = Programme.where('name ILIKE (?) AND ancestry_depth=?',"%#{lecturer_programme}%",0)  if !(lecturer_programme=="Pos Basik" || lecturer_programme=="Diploma Lanjutan")
+        end
+        unless programme.nil? || programme.count==0
+          programme_id = programme.try(:first).try(:id)
+          topics_ids_this_prog = Programme.find(programme_id).descendants.at_depth(3).map(&:id)
+          @student_list = Student.where('course_id=?',programme_id )
+        else
+          topics_ids_this_prog = Programme.at_depth(3).map(&:id)  
+          @student_list= Student.all
+        end
+        @schedule_list = WeeklytimetableDetail.where('topic IN(?)',topics_ids_this_prog).order(:topic)
+      end
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
