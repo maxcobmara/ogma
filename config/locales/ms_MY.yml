@@ -1134,6 +1134,33 @@ ms_MY:
       on_byday: "pada (mengikut hari)"
       case_reference: Rujukan Kes Disiplin
       display_feedback: Papar Maklumbalas
+      
+    attendance:
+      title: Kedatangan Pelajar
+      title2: Kedatangan
+      student_id: Pelajar
+      attend: Kehadiran
+      reason: Sebab
+      action_taken: Tindakan Diambil
+      action_close: "Tindakan Selesai?"
+      intake: Ambilan
+      class_schedule: "Kelas / Jadual Waktu"
+      student_intake: "Ambilan Pelajar : "
+      subject: "Subjek : "
+      topic: "Topik : "
+      date: "Tarikh : "
+      time: "Masa : "
+      lecturer: "Pengajar : "
+      all_records: Semua Rekod
+      all_class: "Semua Kelas / Jadual"
+      all_intakes: Semua Ambilan
+      attend2: Hadir
+      absent: Tidak Hadir
+      complete: Ya
+      incomplete: Tidak
+      new_multiple_intake: "Kedatangan Baru (Ambilan)"
+      new_multiple_schedule: "Kedatangan Baru (Jadual)"
+      edit_remark: "Bagi suntingan (pukal), pilih pelajar dari Kelas / Jadual yang sama ATAU pelajar dari beberapa Kelas / Jadual dari sesi Ambilan yang sama."
 
   cofile:
     index: Senarai

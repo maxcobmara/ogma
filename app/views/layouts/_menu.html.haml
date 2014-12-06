@@ -123,7 +123,8 @@
         %ul
           %li= link_to content_tag(:i, "", :class => "icon-numb") + t("student.students.title"), students_path
           %li= link_to content_tag(:i, "", :class => "icon-numb") + t("student.leaveforstudent.title"), student_leaveforstudents_path
-          %li= link_to content_tag(:i, "", :class => "icon-numb") + "Attendance", '#'
+          - permitted_to? :manage, :student_student_attendances do
+            %li= link_to content_tag(:i, "", :class => "icon-numb") + t("student.attendance.title2"), student_student_attendances_path
           %li= link_to content_tag(:i, "", :class => "icon-numb") + t("student.discipline.title2"), student_student_discipline_cases_path
           %li= link_to content_tag(:i, "", :class => "icon-numb") + t("student.counseling.title2"), student_student_counseling_sessions_path
 

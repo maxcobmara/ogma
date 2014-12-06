@@ -140,6 +140,8 @@ authorization do
      if_attribute :exam_id => is_in {user.exams_of_programme}
    end
    
+   has_permission_on :student_student_attendances, :to => :manage
+   
  end
 
  role :programme_manager do

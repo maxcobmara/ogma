@@ -61,7 +61,7 @@
     %dd 
       = @staff.staff_shift.start_end
       %b=t 'staff.shift_start'
-      = @staff.shift_histories.order(created_at: :desc).first.deactivate_date
+      = @staff.shift_histories.order(created_at: :desc).first.deactivate_date.try(:strftime, '%d %b %Y')
     
     %dt= t 'staff.shift_histories.title'
     %dd
@@ -73,7 +73,7 @@
               = shift.staff_shift.start_end
               - if ind!=shifthistories.count-1
                 %b=t 'staff.shift_start'
-                = shifthistories[ind-1].deactivate_date
+                = shifthistories[ind-1].deactivate_date.try(:strftime, '%d %b %Y')
               %br
       
 

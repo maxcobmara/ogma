@@ -1223,7 +1223,34 @@ en:
       on_byday: "on (by day)"
       case_reference: Discipline Case Reference
       display_feedback: Display Feeback
-      
+    
+    attendance:
+      title: Student Attendance
+      title2: Attendance
+      student_id: Student
+      attend: "Attend?"
+      reason: Reason
+      action_taken: Action Taken
+      action_close: "Action Close?"
+      intake: Intake
+      class_schedule: "Class / Schedule"
+      student_intake: "Student Intake : "
+      subject: "Subject : "
+      topic: "Topic : "
+      date: "Date : "
+      time: "Time : "
+      lecturer: "Lecturer : "
+      all_records: All Records
+      all_class: "All Classes / Schedules"
+      all_intakes: All Intakes
+      attend2: Atttend
+      absent: Absent
+      complete: Yes
+      incomplete: No
+      new_multiple_intake: "New Multiple (by Intake)"
+      new_multiple_schedule: "New Multiple (by Schedule)"
+      edit_remark: "For multiple edit, select students from the same Class / Schedule OR students from multiple Classes / Schedules of the same Intake."
+
   cofile:
     index: List
     cofileno: Cofile No

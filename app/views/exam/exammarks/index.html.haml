@@ -17,7 +17,7 @@
     .col-md-3
       .input-group
         .input-group-addon
-          Exam Paper
+          = t 'exam.exammark.exam_id'
         = select_tag('examid', options_from_collection_for_select(@exams_list, :id, :exam_code_date_type), class: "form-control", width: "50px;") 
     .col-md-2
       = submit_tag t('exam.exammark.new_multiple'), :subject_id => nil, class: "btn btn-default"
