@@ -85,8 +85,8 @@
                   %td
                     - if student_attendance.attend == true
                       &#10003;
-                    - else
-                      = t 'student.attendance.attend2'
+                    - elsif student_attendance.attend == false
+                      = t 'student.attendance.absent'
                   %td
                     - if student_attendance.attend == true 
                     - else

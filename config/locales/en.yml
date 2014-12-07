@@ -1281,6 +1281,8 @@ en:
       date: "Date : "
       time: "Time : "
       lecturer: "Lecturer : "
+      attendance_details: Attendance Details
+      date_time_subject_topic: "Date | Time | Subject-Topic "
       all_records: All Records
       all_class: "All Classes / Schedules"
       all_intakes: All Intakes
