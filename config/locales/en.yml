@@ -1252,7 +1252,11 @@ en:
       new_multiple_intake: "New Multiple (by Intake)"
       new_multiple_schedule: "New Multiple (by Schedule)"
       edit_remark: "For multiple edit, select students from the same Class / Schedule OR students from multiple Classes / Schedules of the same Intake."
-
+      multiple_edit: "Student Attendances (Multiple Edit)"
+      class_schedule_details: "Class / Schedule Details"
+      reason_action_close: "Select Reason / Action Taken / Action Closed?"
+      remark: Remark
+      
   cofile:
     index: List
     cofileno: Cofile No

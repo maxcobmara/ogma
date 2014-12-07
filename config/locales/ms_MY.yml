@@ -1151,6 +1151,7 @@ ms_MY:
       date: "Tarikh : "
       time: "Masa : "
       lecturer: "Pengajar : "
+      intake2: "Ambilan : "
       attendance_details: Butiran Kedatangan
       date_time_subject_topic: "Tarikh | Masa | Subjek-Topik "
       all_records: Semua Rekod
@@ -1163,7 +1164,11 @@ ms_MY:
       new_multiple_intake: "Kedatangan Baru (Ambilan)"
       new_multiple_schedule: "Kedatangan Baru (Jadual)"
       edit_remark: "Bagi suntingan (pukal), pilih pelajar dari Kelas / Jadual yang sama ATAU pelajar dari beberapa Kelas / Jadual bagi sesi Ambilan yang sama."
-
+      multiple_edit: "Kedatangan Pelajar (Suntingan Pukal)"
+      class_schedule_details: "Butiran Kelas / Jadual Waktu"
+      reason_action_close: "Pilih Sebab / Tindakan Diambil / Tindakan Selesai?"
+      remark: Catatan
+      
   cofile:
     index: Senarai
     cofileno: No Fail 
