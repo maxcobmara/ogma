@@ -16,10 +16,22 @@ class Borang_maklumat_pelajarPdf < Prawn::Document
     table1
     table2
     table3
+    
+    @q = @student.qualifications
+    if @q.count > 0
     table4
+  end
+      
+    puid = @student.id
+    @garantor = Kin.where("student_id = ? AND kintype_id = ? ", puid,  98 )
+    if @garantor.count > 0
     table5
+  end
+    puid = @student.id
+    @thekins = Kin.where("student_id = ? AND kintype_id != ? AND kintype_id != ? ", puid,  98, 99)
+     if @thekins.count > 0
     table6
-  
+  end
   end
   
   def table1
@@ -110,18 +122,31 @@ class Borang_maklumat_pelajarPdf < Prawn::Document
                     row(0).borders = []
                   end
                   
+                  @q = @student.qualifications
+                  
+                  if @q.count > 0
                   data2 = 
                    @student.qualifications.map do |qualification|
                   ["#{(DropDown::QTYPE.find_all{|disp, value| value == qualification.level_id}).map {|disp, value| disp}[0]} ", ": #{qualification.try(:qname)} dari #{qualification.institute}"]
                 end
+              else
+                data2 = [["",""]]
+              end
                 table(data2, :column_widths => [150, 250], :cell_style => { :size => 10}) do
                 row(0).borders = []
                 end
                 
+                @spm = @student.spmresults.map
+                
+                if @spm.count > 0
                 data3 = 
                  @student.spmresults.map do |spmresult|
                 ["#{spmresult.spm_subject}  ", "- #{spmresult.grade} "]
               end
+            else 
+              data3 = [["",""]]
+            end
+            
               table(data3, :column_widths => [150, 250], :cell_style => { :size => 10}) do
                 a = 0
                 b = 13
@@ -152,28 +177,40 @@ class Borang_maklumat_pelajarPdf < Prawn::Document
                    end
                    
                 puid = @student.id
-                garantor = Kin.where("student_id = ? AND kintype_id = ? ", puid,  98 )
-                   
+                @garantor = Kin.where("student_id = ? AND kintype_id = ? ", puid,  98 )
+                 
+                if @garantor.count > 0
                    data2 = 
-                    garantor.map do |e|
+                    @garantor.map do |e|
                    ["b. Nama", ": #{e.name} "]
                  end
+               else
+                 data2 = [["", ""]]
+               end
                  table(data2, :column_widths => [150, 250], :cell_style => { :size => 10}) do
                    row(0).borders = []
                  end
                  
+                 if @garantor.count > 0
                  data3 = 
-                  garantor.map do |e|
+                  @garantor.map do |e|
                  ["c. MyKad No", ": #{e.mykadno} "]
                end
+           else
+             data3 = [["", ""]]
+           end
                table(data3, :column_widths => [150, 250], :cell_style => { :size => 10}) do
                  row(0).borders = []
                end
                
+               if @garantor.count > 0
                add = 
-                garantor.map do |e|
+                @garantor.map do |e|
                ["d. Alamat", ": #{e.kinaddr} "]
              end
+           else
+             add = [["", ""]]
+           end
              table(add, :column_widths => [150, 250], :cell_style => { :size => 10}) do
                row(0).borders = []
              end
@@ -185,28 +222,40 @@ class Borang_maklumat_pelajarPdf < Prawn::Document
              
              
              puid = @student.id
-             garantor1 = Kin.where("student_id = ? AND kintype_id = ? ", puid,  99)
+             @garantor1 = Kin.where("student_id = ? AND kintype_id = ? ", puid,  99)
              
+              if @garantor1.count > 0
              nama = 
-              garantor1.map do |e|
+              @garantor1.map do |e|
              ["f. Nama", ": #{e.name} "]
            end
+         else
+           nama = [["", ""]]
+         end
            table(nama, :column_widths => [150, 250], :cell_style => { :size => 10}) do
              row(0).borders = []
            end
            
+           if @garantor1.count > 0
            kadno = 
-            garantor1.map do |e|
+            @garantor1.map do |e|
            ["g. MyKad No", ": #{e.mykadno} "]
          end
+       else
+         kadno = [["", ""]]
+       end
          table(kadno, :column_widths => [150, 250], :cell_style => { :size => 10}) do
            row(0).borders = []
          end
          
+         if @garantor1.count > 0
          add2 = 
-          garantor1.map do |e|
+          @garantor1.map do |e|
          ["h. Alamat", ": #{e.kinaddr} "]
        end
+     else
+       add2 = [["", ""]]
+     end
        table(add2, :column_widths => [150, 250], :cell_style => { :size => 10}) do
          row(0).borders = []
        end
@@ -227,44 +276,64 @@ class Borang_maklumat_pelajarPdf < Prawn::Document
                 end
                 
                 puid = @student.id
-                thekins = Kin.where("student_id = ? AND kintype_id != ? AND kintype_id != ? ", puid,  98, 99)
+                @thekins = Kin.where("student_id = ? AND kintype_id != ? AND kintype_id != ? ", puid,  98, 99)
                 
+                if @thekins.count > 0
                 data5 = 
-                 thekins.map do |e|
+                 @thekins.map do |e|
                 ["a. Hubungan", ": #{(DropDown::KIN_TYPE.find_all{|disp, value| value == e.kintype_id}).map {|disp, value| disp} [0]} "]
               end
+            else
+              data5 = [["", ""]]
+            end    
               table(data5, :column_widths => [150, 250], :cell_style => { :size => 10}) do
                 row(0).borders = []
               end
                 
+                if @thekins.count > 0
                 data1 = 
-                 thekins.map do |e|
+                 @thekins.map do |e|
                 ["b. Nama", ": #{e.name} "]
               end
+            else
+              data1 = [["", ""]]
+            end 
               table(data1, :column_widths => [150, 250], :cell_style => { :size => 10}) do
                 row(0).borders = []
               end
               
+              if @thekins.count > 0
               data2 = 
-               thekins.map do |e|
+               @thekins.map do |e|
               ["c. Tarikh Lahir", ": #{e.kinbirthdt} "]
             end
+          else
+            data2 = [["", ""]]
+          end 
             table(data2, :column_widths => [150, 250], :cell_style => { :size => 10}) do
               row(0).borders = []
             end
             
+            if @thekins.count > 0
             data3 = 
-             thekins.map do |e|
+             @thekins.map do |e|
             ["d. No Telefon", ": #{e.phone} "]
           end
+        else
+          data3 = [["", ""]]
+        end 
           table(data3, :column_widths => [150, 250], :cell_style => { :size => 10}) do
             row(0).borders = []
           end
           
+          if @thekins.count > 0
           data4 = 
-           thekins.map do |e|
+           @thekins.map do |e|
           ["e. Alamat", ": #{e.kinaddr} "]
         end
+      else
+        data4 = [["", ""]]
+      end 
         table(data4, :column_widths => [150, 250], :cell_style => { :size => 10}) do
           row(0).borders = []
         end
