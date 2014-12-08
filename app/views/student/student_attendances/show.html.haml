@@ -26,7 +26,23 @@
                 = t 'student.attendance.attend2'
               - elsif @student_attendance.attend==false
                 = t 'student.attendance.absent'
-              
+                
+            - if @student_attendance.attend==false
+              %dt=t 'student.attendance.reason'
+              %dd=h ((DropDown::ABSENT_REASON.find_all{|disp, value| value == @student_attendance.reason}).map {|disp, value| disp}).first
+            
+              %dt=t 'student.attendance.action_taken'
+              %dd=h ((DropDown::ABSENT_ACTION.find_all{|disp, value| value == @student_attendance.action}).map {|disp, value| disp}).first
+            
+              %dt=t 'student.attendance.action_close'
+              %dd
+                - if @student_attendance.status == "Yes"
+                  =t 'student.attendance.complete'
+                - elsif @student_attendance.status == "No"
+                  =t 'student.attendance.incomplete'
+
+              %dt=t 'student.attendance.remark'
+              %dd=h @student_attendance.remark
          
 .row
   .col-md-4.col-md-offset-4
