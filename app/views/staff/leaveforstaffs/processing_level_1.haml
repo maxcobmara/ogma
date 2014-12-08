@@ -26,7 +26,7 @@
                 
               .form-group
                 .col-sm-3.control-label
-                  = f.label t 'staff_leave.approval', for: :approval1
+                  = f.label t 'staff_leave.approver_decision', for: :approval1
                 .col-md-7
                   .form-inline
                     .form-group
@@ -47,5 +47,5 @@
             .form-group
               .col-sm-offset-2.col-sm-1
                 = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), staff_leaveforstaff_path(@leaveforstaff), :class => 'btn btn-default'
-              .col-sm-offset-1.col-sm-2
+              .col-sm-offset-0.col-sm-2
                 = f.submit t('update'), class: "btn btn-primary" 

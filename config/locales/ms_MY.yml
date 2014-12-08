@@ -612,10 +612,10 @@ ms_MY:
     unpaid_leave: Cuti Tanpa Gaji
     maternity_leave: Cuti Bersalin  
     hajj_leave: Cuti Haji
-    approval: Diluluskan?
+    approver_decision: Keputusan Pelulus
     approval_name: Nama Yang Meluluskan
-    approve_date: Tarikh diluluskan
-    endorsed: Disahkan?
+    approve_date: Tarikh Diluluskan
+    endorser_decision: Keputusan Pengesah
     endorsed_name: Disahkah Oleh
     endorsed_date: Tarikh Disahkan
     new_notice: Cuti baru untuk staf berjaya dicipta
@@ -623,6 +623,7 @@ ms_MY:
     for_approval: Untuk Kelulusan
     approve_staff_leave: Kelulusan Cuti Staf
     approve_by_date: Tarikh Meluluskan
+    endorse_by_date: Tarikh Pengesahan
     decision: Keputusan
     approve: Meluluskan
     reject: Menolak
@@ -918,7 +919,7 @@ ms_MY:
       remarks: Catatan
       released_on: "Dikeluarkan pada  "
       loan_officer: Pegawai Pengeluar
-      approve: Luluskan
+      approve: Meluluskan
       reject: Ditolak
       loanable: Senarai Aset Boleh Dipinjam
       available: "Sedia dipinjam?"
@@ -1853,6 +1854,7 @@ ms_MY:
       back_travel_log: Senarai Log Perjalanan
       finance_check: Semakan Kewangan
       return: Pemulangan
+      endorse: Pengesahan
       
     label:
       examquestion:
