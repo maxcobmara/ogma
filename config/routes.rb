@@ -204,7 +204,7 @@ Ogma::Application.routes.draw do
     resources :student_attendances do
       collection do
         put 'edit_multiple'
-        #post 'update_multiple'
+        post 'update_multiple'
         put 'new_multiple'
         #post 'create_multiple'
       end

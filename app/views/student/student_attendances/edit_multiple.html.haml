@@ -1,0 +1,73 @@
+- model_class = StudentAttendance
+.page-header
+  %h1= t 'student.attendance.multiple_edit'
+= render 'shared/flashes'
+
+/- @exampaper_of_exammarks = @exammarks.map(&:exam_id).uniq.count
+- @classsession_of_studentattendances = @studentattendances.map(&:weeklytimetable_details_id).uniq.count 
+- index2 = 0
+/- if @exampaper_of_exammarks==1
+
+.row
+  = form_tag update_multiple_student_student_attendances_path, :id => "form1", :html => {:method => :put} do |f|
+    = hidden_field_tag :redirect_location, student_student_attendances_path  
+    /.row      
+    .col-md-offset-1
+      / Nav tabs
+      %ul.nav.nav-tabs
+        %li.active= link_to ((t 'student.attendance.attendance_details')),"#attendance_details", "data-toggle" => "tab"
+
+      / display 
+      .tab-content{style:"padding-top:1em"}
+        .col-md-8.col-md-offset-1
+          /%dl.dl-horizontal
+          /  %dt= t 'student.attendance.exam_id'
+          /  %dd
+          %table
+            - @studentattendances_group.each do |student, studentattendances|   
+              - if index2 == 0
+                %tr
+                  %th{:colspan=>"#{studentattendances.count*2}"}= t 'student.attendance.class_schedule_details'
+                %tr
+                  - studentattendances.sort_by{|u|u.weeklytimetable_detail.get_time_slot}.each_with_index do |studentattendance, index|
+                    - @one_student_atts_count=studentattendances.count
+                    - @one_student_atts=studentattendances.sort_by{|u|u.weeklytimetable_detail.get_time_slot}
+                    %td{:style => "padding: 10px;"}=index+1
+                    %td
+                      =t 'student.attendance.subject'+studentattendance.weeklytimetable_detail.weeklytimetable_topic.full_parent
+                      %br
+                      =t 'student.attendance.topic'+studentattendance.weeklytimetable_detail.weeklytimetable_topic.subject_list
+                      %br
+                      =t 'student.attendance.date'+studentattendance.weeklytimetable_detail.get_date_day_of_schedule+" "+t('student.attendance.time')
+                      - if studentattendance.weeklytimetable_detail.time_slot==0 
+                        =TimetablePeriod.find(studentattendance.weeklytimetable_detail.time_slot2).timing
+                      - else
+                        =TimetablePeriod.find(studentattendance.weeklytimetable_detail.time_slot).timing
+                      %br
+                      =t 'student.attendance.lecturer'+studentattendance.weeklytimetable_detail.weeklytimetable_lecturer.name 
+                      %br
+                      =t 'student.attendance.intake2'+studentattendance.weeklytimetable_detail.weeklytimetable.schedule_intake.name 
+                - index2+=1                    
+
+    
+        #attendance_details.tab-pane.active
+          .col-md-11
+            %br
+            = render :partial => 'form_multiple', :f=>f
+    
+    .col-md-offset-1  
+      .form-group
+        .col-sm-offset-3.col-sm-1
+          = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), student_student_attendances_path, :class => 'btn btn-default'
+        .col-sm-2
+          = submit_tag t('update'), :name => :student_attendance_submit_button, class: "btn btn-primary"         
+/- else
+/.row
+/  .col-md-12
+/    .alert.alert-info
+/      = t 'student.attendance.student_same_exam'
+/.row
+/  .col-md-offset-1  
+/    .form-group
+/      .col-sm-offset-3.col-sm-1
+/        = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), exam_exammarks_path, :class => 'btn btn-default'

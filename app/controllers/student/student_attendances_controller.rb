@@ -1,4 +1,5 @@
 class Student::StudentAttendancesController < ApplicationController
+  filter_access_to :all
   before_action :set_student_attendance, only: [:show, :edit, :update, :destroy]
   before_action :set_schedule_student_list, only: [:new]
   
@@ -107,8 +108,143 @@ class Student::StudentAttendancesController < ApplicationController
   def new_multiple
   end
   
-  #def edit_multiple
-  #end
+  def edit_multiple
+    studentattendanceids = params[:student_attendance_ids]
+    unless studentattendanceids.blank? 
+      @studentattendances = StudentAttendance.find(studentattendanceids)
+      ##
+      @studentattendances_group = @studentattendances.group_by{|x|x.student_id} 
+      @time_slot_main_count = @studentattendances.group_by{|u|u.weeklytimetable_detail.get_time_slot}.count
+      @studentattendances_group.each do |s,sa|
+        @time_slot_each_count = sa.group_by{|u|u.weeklytimetable_detail.get_time_slot}.count 
+        if @time_slot_each_count != @time_slot_main_count
+          @time_slot_match ="no"
+        end
+      end
+      if ((@studentattendances.count % @studentattendances_group.count) == 0) 
+        if (@time_slot_match =="no")
+          flash[:notice] = "Please select student attendances of the same schedule / class."
+          redirect_to student_attendances_path
+        else
+          if @time_slot_main_count > 3
+            flash[:notice] = "Maximum schedules / classes selection of student attendances for 'Edit by Schedule / Class' is three(3)."
+            redirect_to student_attendances_path
+          else
+            @student_count = @studentattendances.map(&:student_id).uniq.count
+            #@edit_type = params[:student_attendance_submit_button] 
+            edit_type = params[:student_attendance_submit_button]
+            if edit_type == t('edit_checked') 
+              ## continue multiple edit (including subject edit here) --> refer view
+            end
+          end 
+        end
+      else flash[:notice] = t 'exam.exammark.select_one'
+	#
+        flash[:notice] = "Please select complete combination of student attendances for each schedule / class."
+        redirect_to student_student_attendances_path
+      end
+      ##
+    end
+  end
+  
+  
+  def update_multiple
+    #raise params.inspect
+    submit_val = params[:applychange]
+    @studentattendance_ids = params[:student_attendance_ids]	
+    @attends = params[:attends] 
+    @reasons = params[:reasons]
+    @actions = params[:actions]
+    @statuss = params[:statuss]
+    @remarks = params[:remarks]
+    @weeklytimetable_details_ids = params[:weeklytimetable_details_ids]
+    @studentattendances = StudentAttendance.find(@studentattendance_ids)  
+    @studentattendances_group = @studentattendances.group_by{|x|x.student_id} 
+      
+    #####
+    if submit_val == 'Apply Schedule / Classes'
+      if @weeklytimetable_details_ids != nil
+        @studentattendances_group.each do |student_id, studentattendances|  
+          studentattendances.each_with_index do |studentattendance, no|
+            studentattendance.weeklytimetable_details_id = @weeklytimetable_details_ids[no.to_s]
+            studentattendance.save
+          end
+        end
+      end
+
+      respond_to do |format|
+        #flash[:notice] = "Updated changes for formative score details!"
+        format.html {render :action => "edit_multiple_intake"}
+        flash[:notice] = "<b>Classes/Schedule</b> are selected/updated. You may view/print <b>Attendance Form </b>(c/w date & time slot). <br>To update <b>student attendance</b>, check/uncheck check boxes accordingly and click <b>submit</b>."
+        format.xml  { head :ok }
+        flash.discard
+      end
+    else
+      ##### 
+      #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@      											 
+      #@studentattendances.sort_by{|x|x.student.name}.each_with_index do |student_attendance, index| 
+        #if @attends && @attends[index.to_s]!=nil
+          #student_attendance.attend = true
+        #else
+          #student_attendance.attend = false
+         #end
+        #student_attendance.save 
+      #end	
+ 
+      #start-for edit_multiple.html.erb--------
+      if !@weeklytimetable_details_ids
+        @next2 = 0
+        @sa_sort_then_group = @studentattendances.sort_by{|y|y.student.name}.group_by{|x|x.student_id} 
+
+        @sa_sort_then_group.each do |student_id, studentattendances| 
+          studentattendances.sort_by{|u|u.weeklytimetable_detail.get_time_slot}.each_with_index do |studentattendance, no2|
+            if @attends && @attends[(no2+@next2).to_s]!=nil
+              studentattendance.attend = true
+            else
+              studentattendance.attend = false
+              if @reasons && @reasons[(no2+@next2).to_s] != nil
+                studentattendance.reason = @reasons[(no2+@next2).to_s]
+                studentattendance.action = @actions[(no2+@next2).to_s]
+                studentattendance.status = @statuss[(no2+@next2).to_s]
+                studentattendance.remark = @remarks[(no2+@next2).to_s]
+              end
+            end
+            studentattendance.save 
+            if no2 == studentattendances.count-1 #2 
+              @next2 = @next2+no2+1 
+            end
+          end #end for studentattendance.sort_by....
+        end #end for @sa_sort_the_group...
+
+      end
+      #end-for edit_multiple.html.erb--------
+
+      #start-for edit_multiple_intake.html.erb--------
+      @next = 0
+      if @weeklytimetable_details_ids != nil
+        @studentattendances_group.each do |student_id, studentattendances|  
+          studentattendances.each_with_index do |studentattendance, no|
+            studentattendance.weeklytimetable_details_id = @weeklytimetable_details_ids[no.to_s]
+            if @attends && @attends[(no+@next).to_s]!=nil   #if @attends && @attends[no.to_s]!=nil
+              studentattendance.attend = true
+            else
+              studentattendance.attend = false
+            end
+            studentattendance.save 
+            if no == studentattendances.count-1 #2 
+              @next = @next+no+1 
+            end 
+          end
+        end
+      end
+      #end-for edit_multiple_intake.html.erb--------
+     
+      flash[:notice] = "Updated student attendance!"
+      redirect_to student_student_attendances_path
+      #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+      
+    end 
+  end   #--end of def update_multiple
   
 
   private
