@@ -692,10 +692,10 @@ en:
     unpaid_leave: Unpaid Leave
     maternity_leave: Maternity Leave
     hajj_leave: Hajj Leave
-    approval: Approval
+    approver_decision: Approver Decision
     approval_name: Name of Approver
     approve_date: Date Approved
-    endorsed: "Endorsed?"
+    endorser_decision: Endorser Decision
     endorsed_name: Endorsed By
     endorsed_date: Date Endorsed
     new_notice: A new leave for staff has successfully created
@@ -703,6 +703,7 @@ en:
     for_approval: For Approval
     approve_staff_leave: Approve Staff Leave
     approve_by_date: Approve By Date
+    endorse_by_date: Endorse By Date
     decision: Decision
     approve: Approve
     reject: Reject
@@ -1873,6 +1874,7 @@ en:
       back_travel_log: Travel Log List
       finance_check: Finance Check
       return: Return
+      endorse: Endorse
 
     label:
       examquestion:

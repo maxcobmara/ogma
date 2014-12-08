@@ -1,6 +1,6 @@
 - model_class = Leaveforstaff
 .page-header
-  %h1= t 'staff_leave.title'
+  %h1= @leaveforstaff.applicant.mykad_with_staff_name 
 
 = render 'shared/flashes'
 
@@ -15,6 +15,7 @@
     .col-md-8.col-md-offset-1
       %dl.dl-horizontal
         = render 'applyshow'
+        %br
         %dt= t 'staff_leave.replacement'
         %dd= @leaveforstaff.replacement_id.blank? ? "" : @leaveforstaff.replacement.name 
 	
@@ -24,17 +25,18 @@
   #approve.tab-pane.fade
     .col-md-8.col-md-offset-1
       %dl.dl-horizontal
-        %dt= t 'staff_leave.approval'
-        %dd=h @leaveforstaff.approval1? ? "Approved" : "Not Approved"
+        %dt= t 'staff_leave.approver_decision'
+        %dd=h @leaveforstaff.approval1? ? (t 'staff_leave.approve') : (t 'staff_leave.reject')
           
         %dt= t 'staff_leave.approval_name'
         %dd=h @leaveforstaff.approval1_id.blank? ? "" : @leaveforstaff.seconder.name
 		  
         %dt= t 'staff_leave.approve_date'
         %dd=h @leaveforstaff.approval1date
+        %br
 		  
-        %dt= t 'staff_leave.endorsed'
-        %dd=h @leaveforstaff.approver2? ? "Approved" : "Not Approved"
+        %dt= t 'staff_leave.endorser_decision'
+        %dd=h @leaveforstaff.approver2? ? (t 'staff_leave.approve') : (t 'staff_leave.reject')
 		  
         %dt= t 'staff_leave.endorsed_name'
         %dd=h  @leaveforstaff.approval2_id.blank? ? "Not Required" : @leaveforstaff.endorser
@@ -52,7 +54,7 @@
       /- if @current_user.userable_id == @leaveforstaff.approval1_id
       = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('helpers.links.approve'), processing_level_1_staff_leaveforstaff_path(@leaveforstaff),  :class => 'btn btn-primary'
       /- if @current_user.userable_id == @leaveforstaff.approval2_id
-      = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('helpers.links.approve'), processing_level_2_staff_leaveforstaff_path(@leaveforstaff),  :class => 'btn btn-primary'
+      = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('helpers.links.endorse'), processing_level_2_staff_leaveforstaff_path(@leaveforstaff),  :class => 'btn btn-primary'
       = link_to content_tag(:i, "", :class => "fa fa-trash-o icon-white") + " " + t('helpers.links.destroy'), |
         staff_leaveforstaff_path(@leaveforstaff),                                                                                                    |
         :method => 'delete',                                                                                                           |

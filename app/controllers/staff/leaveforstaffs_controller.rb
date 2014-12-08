@@ -30,32 +30,29 @@ class Staff::LeaveforstaffsController < ApplicationController
   end
   
   def create
-      @leaveforstaff = Leaveforstaff.new(leaveforstaff_params)
+    @leaveforstaff = Leaveforstaff.new(leaveforstaff_params)
 
-      respond_to do |format|
-        if @leaveforstaff.save
-          LeaveforstaffsMailer.staff_leave_notification(@leaveforstaff).deliver
-          format.html { redirect_to(staff_leaveforstaff_path(@leaveforstaff), notice:t('staff_leave.new_notice'))}
-          format.xml  { render :xml => @leaveforstaff, :status => :created, :location => @leaveforstaff }
-        else
-          format.html { render :action => "new" }
-          format.xml  { render :xml => @leaveforstaff.errors, :status => :unprocessable_entity }
-        end
+    respond_to do |format|
+      if @leaveforstaff.save
+        LeaveforstaffsMailer.staff_leave_notification(@leaveforstaff).deliver
+        format.html { redirect_to(staff_leaveforstaff_path(@leaveforstaff), notice:t('staff_leave.new_notice'))}
+        format.xml  { render :xml => @leaveforstaff, :status => :created, :location => @leaveforstaff }
+      else
+        format.html { render :action => "new" }
+        format.xml  { render :xml => @leaveforstaff.errors, :status => :unprocessable_entity }
       end
     end
+  end
+   
+  def destroy
+    @leaveforstaff = Leaveforstaff.find(params[:id])
+    @leaveforstaff.destroy
 
-    # PUT /leaveforstaffs/1
-    # PUT /leaveforstaffs/1.xml
-    
-    def destroy
-      @leaveforstaff = Leaveforstaff.find(params[:id])
-      @leaveforstaff.destroy
-
-      respond_to do |format|
-        format.html { redirect_to(staff_leaveforstaffs_url) }
-        format.xml  { head :ok }
-      end
+    respond_to do |format|
+      format.html { redirect_to(staff_leaveforstaffs_url) }
+      format.xml  { head :ok }
     end
+  end
   
   def new
     @leaveforstaff = Leaveforstaff.new
@@ -63,12 +60,15 @@ class Staff::LeaveforstaffsController < ApplicationController
     respond_to do |format|
       format.html # new.html.erb
       format.xml  { render :xml => @leaveforstaff }
+    end
   end
-end
 
   def processing_level_1
     @leaveforstaff = Leaveforstaff.find(params[:id])
-    LeaveforstaffsMailer.staff_leave_notification(@leaveforstaff).deliver
+    
+    if @leaveforstaff.save
+      LeaveforstaffsMailer.approve_leave_notification(@leaveforstaff, @staff).deliver 
+    end    
   end
   
   def processing_level_2
