@@ -28,9 +28,30 @@
               .col-md-offset-2 
                 .form-group
                   .col-sm-2.control-label
-                    = f.label t 'student.attendance.attend'
+                    = f.label t 'student.attendance.attend', for: :attend
                   .col-md-2
                     = f.check_box :attend 
+                - unless @student_attendance.attend == true
+                  .form-group
+                    .col-sm-2.control-label
+                      = f.label t 'student.attendance.reason'
+                    .col-md-2
+                      = f.select :reason, DropDown::ABSENT_REASON, {:prompt=>t('select')}, {class: 'selectpicker', "data-width"=>"200px"}
+                  .form-group
+                    .col-sm-2.control-label
+                      = f.label t 'student.attendance.action_taken'
+                    .col-md-2
+                      = f.select :action, DropDown::ABSENT_ACTION, {:prompt=>t('select')}, {class: 'selectpicker', "data-width"=>"200px"}
+                  .form-group
+                    .col-sm-2.control-label
+                      = f.label t 'student.attendance.action_close'
+                    .col-md-2
+                      = f.select :status, [[t('student.attendance.complete'),'Yes'],[t('student.attendance.incomplete'),'No']], {:prompt=>t('select')}, {class: 'selectpicker', "data-width"=>"200px"}
+                  .form-group
+                    .col-sm-2.control-label
+                      = f.label t 'student.attendance.remark'
+                    .col-md-4
+                      = f.text_field :remark, class: 'form-control'
 
     %br
     .row

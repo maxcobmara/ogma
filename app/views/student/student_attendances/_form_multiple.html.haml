@@ -11,7 +11,7 @@
 /      .col-sm-2.control-label
 /        %b= t 'exam.exammark.title'
 /      .col-md-6
-/        = text_field_tag "exammark_ids[]", 7, class: 'form-control'
+/        = text_field_tag "exammark_ids[]", 7, class: 'form-control' 
 %table.table
   %tr
     %th No
@@ -27,6 +27,7 @@
               - else
                 &nbsp;&nbsp;
             =index4
+            &nbsp;
         - index3+=1
 
   - count = 0 
@@ -36,7 +37,7 @@
     - one_student_atts_count=studentattendances.count
     %tr
       %td=count+=1
-      %td= Student.find(student_id).name
+      %td= Student.find(student_id).matrix_name
       %td
         %table
           %tr
@@ -53,31 +54,32 @@
                 - else
                   = check_box_tag "attends[#{no+@next}]", true
                 /= check_box_tag "attends[#{no+@next}]", true, studentattendance.attend, :id => "attendss_#{no+@next}" 
-              %td{:style=>"padding-left: 15px; width: 80px;"}
-                - if studentattendance.attend == true
-                  &nbsp;
-                - else
-                  = t('select')+" :"
-              %td{:style=>"padding-left: 5px; width: 115px;"}
-                - if studentattendance.attend == true
-                  &nbsp;
-                - else
-                  = select_tag("reasons[#{no+@next}]", options_for_select([[(t 'student.attendance.reason'),'0']]+DropDown::ABSENT_REASON, studentattendance.reason), {class: 'selectpicker', "data-width"=>"100px"})
-              %td{:style=>"padding-left: 5px; width: 165px;"}
-                - if studentattendance.attend == true
-                  &nbsp;
-                - else
-                  = select_tag("actions[#{no+@next}]", options_for_select([[(t 'student.attendance.action_taken'),'0']]+DropDown::ABSENT_ACTION, studentattendance.action), {class: 'selectpicker', "data-width"=>"150px"})
-              %td{:style=>"padding-left: 5px; width: 165px;"}
-                - if studentattendance.attend == true
-                  &nbsp;
-                - else
-                  =select_tag("statuss[#{no+@next}]", options_for_select([[(t 'student.attendance.action_close'),'0'],[(t 'student.attendance.complete'),'Yes'],[(t 'student.attendance.incomplete'),'No']], studentattendance.status), {class: 'selectpicker', "data-width"=>"150px"})
-              %td{:style=>"padding-left: 5px; width: 100px;"}
-                - if studentattendance.attend == true
-                  &nbsp;
-                - else
-                  = text_field_tag "remarks[#{no+@next}]", studentattendance.remark, class: 'form-control', placeholder: t('student.attendance.remark')
+              - if @time_slot_main_count==1
+                %td{:style=>"padding-left: 15px; width: 80px;"}
+                  - if studentattendance.attend == true
+                    &nbsp;
+                  - else
+                    = t('select')+" :"
+                %td{:style=>"padding-left: 5px; width: 115px;"}
+                  - if studentattendance.attend == true
+                    &nbsp;
+                  - else
+                    = select_tag("reasons[#{no+@next}]", options_for_select([[(t 'student.attendance.reason'),'0']]+DropDown::ABSENT_REASON, studentattendance.reason), {class: 'selectpicker', "data-width"=>"100px"})
+                %td{:style=>"padding-left: 5px; width: 165px;"}
+                  - if studentattendance.attend == true
+                    &nbsp;
+                  - else
+                    = select_tag("actions[#{no+@next}]", options_for_select([[(t 'student.attendance.action_taken'),'0']]+DropDown::ABSENT_ACTION, studentattendance.action), {class: 'selectpicker', "data-width"=>"150px"})
+                %td{:style=>"padding-left: 5px; width: 165px;"}
+                  - if studentattendance.attend == true
+                    &nbsp;
+                  - else
+                    =select_tag("statuss[#{no+@next}]", options_for_select([[(t 'student.attendance.action_close'),'0'],[(t 'student.attendance.complete'),'Yes'],[(t 'student.attendance.incomplete'),'No']], studentattendance.status), {class: 'selectpicker', "data-width"=>"150px"})
+                %td{:style=>"padding-left: 5px; width: 100px;"}
+                  - if studentattendance.attend == true
+                    &nbsp;
+                  - else
+                    = text_field_tag "remarks[#{no+@next}]", studentattendance.remark, class: 'form-control', placeholder: t('student.attendance.remark')
 
               - if no == one_student_atts_count-1 
                 - @next = @next+no+1

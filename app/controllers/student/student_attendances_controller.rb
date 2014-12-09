@@ -106,6 +106,31 @@ class Student::StudentAttendancesController < ApplicationController
   end
     
   def new_multiple
+    @classid = params["classid"]
+    @student_attendances = Array.new(5) { StudentAttendance.new }
+    #view data accordingly - new_multiple.html.haml
+  end
+  
+  def create_multiple
+    @create_type = params[:new_submit]
+    #if @create_type == t('student.attendance.create_by_class')   
+      @new_type = "2"
+      #************************
+      @student_attendances_all = params[:student_attendances]  
+      @student_attendances = params[:student_attendances].values.collect {|student_attendance| StudentAttendance.new(student_attendance) }
+    
+      if @student_attendances.all?(&:valid?) 
+        @student_attendances.each(&:save!)  # ref: to retrieve each value - http://railsforum.com/viewtopic.php?id=11557 (Dazen2 007-10-07 05:27:42) 
+        flash[:notice] = t('student.attendance.multiple_created')
+        redirect_to :action => 'index'
+      else                       
+        flash[:error] = t('student.attendance.data_invalid')
+        render :action => 'new'
+        flash.discard
+      end
+      #************************
+    #elsif @create_type == t('student.attendance.create_by_intake')
+    #end
   end
   
   def edit_multiple
@@ -123,24 +148,22 @@ class Student::StudentAttendancesController < ApplicationController
       end
       if ((@studentattendances.count % @studentattendances_group.count) == 0) 
         if (@time_slot_match =="no")
-          flash[:notice] = "Please select student attendances of the same schedule / class."
-          redirect_to student_attendances_path
+          flash[:notice] = t('student.attendance.same_class_schedule')
+          redirect_to student_student_attendances_path
         else
-          if @time_slot_main_count > 3
-            flash[:notice] = "Maximum schedules / classes selection of student attendances for 'Edit by Schedule / Class' is three(3)."
-            redirect_to student_attendances_path
+          if @time_slot_main_count > 6
+            flash[:notice] = t('student.attendance.max_class_multiple_edit')
+            redirect_to student_student_attendances_path
           else
             @student_count = @studentattendances.map(&:student_id).uniq.count
-            #@edit_type = params[:student_attendance_submit_button] 
             edit_type = params[:student_attendance_submit_button]
             if edit_type == t('edit_checked') 
-              ## continue multiple edit (including subject edit here) --> refer view
+              ## continue multiple edit (including subject edit here) --> refer view (edit_multiple & form_multiple)
             end
           end 
         end
-      else flash[:notice] = t 'exam.exammark.select_one'
-	#
-        flash[:notice] = "Please select complete combination of student attendances for each schedule / class."
+      else
+        flash[:notice] = t('student.attendance.complete_combination')
         redirect_to student_student_attendances_path
       end
       ##
@@ -149,7 +172,6 @@ class Student::StudentAttendancesController < ApplicationController
   
   
   def update_multiple
-    #raise params.inspect
     submit_val = params[:applychange]
     @studentattendance_ids = params[:student_attendance_ids]	
     @attends = params[:attends] 
@@ -164,7 +186,7 @@ class Student::StudentAttendancesController < ApplicationController
     #####
     if submit_val == 'Apply Schedule / Classes'
       if @weeklytimetable_details_ids != nil
-        @studentattendances_group.each do |student_id, studentattendances|  
+        @studentattendances_group.each do |student_id, studentattendances|  asset = Asset.find(params[:asset_id])
           studentattendances.each_with_index do |studentattendance, no|
             studentattendance.weeklytimetable_details_id = @weeklytimetable_details_ids[no.to_s]
             studentattendance.save
@@ -181,15 +203,7 @@ class Student::StudentAttendancesController < ApplicationController
       end
     else
       ##### 
-      #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@      											 
-      #@studentattendances.sort_by{|x|x.student.name}.each_with_index do |student_attendance, index| 
-        #if @attends && @attends[index.to_s]!=nil
-          #student_attendance.attend = true
-        #else
-          #student_attendance.attend = false
-         #end
-        #student_attendance.save 
-      #end	
+      #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@  
  
       #start-for edit_multiple.html.erb--------
       if !@weeklytimetable_details_ids
@@ -239,7 +253,7 @@ class Student::StudentAttendancesController < ApplicationController
       end
       #end-for edit_multiple_intake.html.erb--------
      
-      flash[:notice] = "Updated student attendance!"
+      flash[:notice] = t('student.attendance.multiple_updated')
       redirect_to student_student_attendances_path
       #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
       
