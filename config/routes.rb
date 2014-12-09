@@ -206,11 +206,10 @@ Ogma::Application.routes.draw do
         put 'edit_multiple'
         post 'update_multiple'
         put 'new_multiple'
-        #post 'create_multiple'
+        post 'create_multiple'
       end
     end
   end
-
 
   resources :bulletins
 

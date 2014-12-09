@@ -1210,15 +1210,22 @@ ms_MY:
       new_multiple_intake: "Kedatangan Baru (Ambilan)"
       new_multiple_schedule: "Kedatangan Baru (Jadual)"
       edit_remark: "Bagi suntingan (pukal), pilih pelajar dari Kelas / Jadual yang sama ATAU pelajar dari beberapa Kelas / Jadual bagi sesi Ambilan(serta Program) yang sama."
-      multiple_edit: "Kedatangan Pelajar (Suntingan Pukal)"
+      multiple_new: "Kedatangan Baru Pelajar (Pukal)"
+      multiple_created: "Kedatangan Baru Pelajar telah berjaya disimpan."
+      create_by_class: "Tambah Data (Mengikut Kelas)"
+      create_by_intake: "Tambah Data (Mengikut Ambilan)"
+      data_invalid: "Data yang dikemukakan adalah tidak sah."
+      no_student_available: "Tiada data pelajar bagi sesi Ambilan ini."
+      attendance_exist: "Kedatangan Pelajar bagi jadual / kelas yang dipilih (bagi sesi Ambilan semasa) telah wujud. Sekiranya perlu menambah pelajar dari sesi Ambilan lain (ulang subjek / kelas dll), gunakan pautan 'Baru' (laman indeks) untuk setiap kemasukan pelajar."
+      multiple_edit: "Kedatangan Pelajar (Suntingan Pukal)."
       multiple_updated: "Kedatangan Pelajar telah berjaya dikemaskini."
-      class_schedule_details: "Butiran Kelas / Jadual Waktu"
+      class_schedule_details: "Butiran Kelas / Jadual Waktu."
       reason_action_close: "Pilih Sebab / Tindakan Diambil / Tindakan Selesai?"
       remark: Catatan
       same_class_schedule: "Sila pilih kedatangan pelajar dari jadual / kelas yang sama ATAU dari beberapa jadual / kelas bagi satu sesi Ambilan(serta Program) yang sama."
       max_class_multiple_edit: "Jumlah maksima jadual / kelas bagi suntingan (pukal) kedatangan pelajar ialah enam (6) jadual / kelas (5 pelajar tiap kelas)."
-      complete_combination: "Sila pilih kombinasi lengkap kehadiran pelajar bagi setiap jadual / kelas. (Catatan : Hanya 30 rekod kehadiran dibenarkan bagi suntingan (pukal) iaitu bagi : 2 kelas - 15 pelajar/kelas, 3 kelas - 10 pelajar/kelas, 4 kelas - 7 pelajar/kelas, 5 kelas - 6 pelajar/kelas, 6 kelas - 5 pelajar. Pastikan juga kesemua pelajar bagi kelas-kelas yang dipilih mestilah sama)."
-      edit_absent_by_class: "Sila sunting kehadiran pelajar mengikut jadual / kelas masing-masing untuk kemasukan butiran 'Ketidakhadiran' (sebab, tindakan diambil, tindakan selesai dan catatan)."
+      complete_combination: "Sila pilih kombinasi lengkap kedatangan pelajar bagi setiap jadual / kelas. (Catatan : Hanya 30 rekod kedatangan dibenarkan bagi suntingan (pukal) iaitu bagi : 2 kelas - 15 pelajar/kelas, 3 kelas - 10 pelajar/kelas, 4 kelas - 7 pelajar/kelas, 5 kelas - 6 pelajar/kelas, 6 kelas - 5 pelajar. Pastikan juga kesemua pelajar bagi kelas-kelas yang dipilih mestilah sama)."
+      edit_absent_by_class: "Sila sunting kehadiran pelajar mengikut jadual / kelas masing-masing untuk kemasukan butiran 'Kedatangan' (sebab, tindakan diambil, tindakan selesai dan catatan)."
       
   cofile:
     index: Senarai

@@ -312,9 +312,9 @@ module DropDown
     
     CLASS_METHOD = [
             #  Displayed       stored in db
-            [I18n.t('training.programme.kuliah'),     1],
+            [I18n.t('training.programme.lecture'),     1],
             [I18n.t('training.programme.tutorial'),    2],
-            [I18n.t('training.programme.amali'),  3]
+            [I18n.t('training.programme.practical'),  3]
     ]
     
     COURSE_STATUS = [

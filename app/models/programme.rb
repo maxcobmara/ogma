@@ -57,6 +57,10 @@ class Programme < ActiveRecord::Base
     "#{parent.code}"+" - "+"#{parent.name}"
   end
   
+  def programme_coursetype_name
+     "#{root.course_type}"+" "+"#{root.name}"
+  end
+  
   def code_course_type_name  #for subject, topic & subtopic in Tree View
     "#{code} #{course_type} #{name}"
   end

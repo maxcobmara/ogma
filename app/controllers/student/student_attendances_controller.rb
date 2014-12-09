@@ -106,6 +106,31 @@ class Student::StudentAttendancesController < ApplicationController
   end
     
   def new_multiple
+    @classid = params["classid"]
+    @student_attendances = Array.new(5) { StudentAttendance.new }
+    #view data accordingly - new_multiple.html.haml
+  end
+  
+  def create_multiple
+    @create_type = params[:new_submit]
+    #if @create_type == t('student.attendance.create_by_class')   
+      @new_type = "2"
+      #************************
+      @student_attendances_all = params[:student_attendances]  
+      @student_attendances = params[:student_attendances].values.collect {|student_attendance| StudentAttendance.new(student_attendance) }
+    
+      if @student_attendances.all?(&:valid?) 
+        @student_attendances.each(&:save!)  # ref: to retrieve each value - http://railsforum.com/viewtopic.php?id=11557 (Dazen2 007-10-07 05:27:42) 
+        flash[:notice] = t('student.attendance.multiple_created')
+        redirect_to :action => 'index'
+      else                       
+        flash[:error] = t('student.attendance.data_invalid')
+        render :action => 'new'
+        flash.discard
+      end
+      #************************
+    #elsif @create_type == t('student.attendance.create_by_intake')
+    #end
   end
   
   def edit_multiple
@@ -161,7 +186,7 @@ class Student::StudentAttendancesController < ApplicationController
     #####
     if submit_val == 'Apply Schedule / Classes'
       if @weeklytimetable_details_ids != nil
-        @studentattendances_group.each do |student_id, studentattendances|  
+        @studentattendances_group.each do |student_id, studentattendances|  asset = Asset.find(params[:asset_id])
           studentattendances.each_with_index do |studentattendance, no|
             studentattendance.weeklytimetable_details_id = @weeklytimetable_details_ids[no.to_s]
             studentattendance.save
