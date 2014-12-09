@@ -1,5 +1,5 @@
 class CreateExaminationAnalyses < ActiveRecord::Migration
-  def self.up   
+  def self.up
     create_table :examanalyses do |t|
       t.integer  :exam_id
       t.integer  :gradeA
@@ -16,6 +16,7 @@ class CreateExaminationAnalyses < ActiveRecord::Migration
       t.timestamps
     end
 
+
     create_table :examanalysissearches do |t|
       t.string   :examtype
       t.integer  :subject_id
@@ -24,7 +25,7 @@ class CreateExaminationAnalyses < ActiveRecord::Migration
       t.integer  :programme_id
       t.timestamps
     end
-    
+  
     create_table :examquestionanalyses do |t|
       t.integer  :examquestion_id
       t.integer  :count

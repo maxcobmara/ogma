@@ -14,7 +14,6 @@ class CreateAdmins < ActiveRecord::Migration
       t.string   :icno
       t.timestamps
     end
-
     add_index :users, [:login], :name => "index_users_on_login", :unique => true
     
     create_table :roles do |t|
@@ -27,7 +26,7 @@ class CreateAdmins < ActiveRecord::Migration
       t.integer :role_id
       t.integer :user_id
     end
-    
+
     create_table :pages do |t|
       t.string   :name
       t.string   :title
@@ -40,7 +39,7 @@ class CreateAdmins < ActiveRecord::Migration
       t.string   :action_name
       t.string   :controller_name
       t.timestamps
-    end
+    end   
   end
   
   def self.down

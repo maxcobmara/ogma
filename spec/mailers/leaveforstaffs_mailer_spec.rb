@@ -1,4 +1,4 @@
-require "rails_helper"
+require "spec_helper"
 
 RSpec.describe LeaveforstaffsMailer, :type => :mailer do
   describe "staff_leave_notification" do
