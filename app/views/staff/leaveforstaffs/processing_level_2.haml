@@ -13,19 +13,19 @@
         %ul.nav.nav-tabs
           %li.active= link_to (t 'staff_leave.approve_leave'), "#approve", "data-toggle" => "tab"
 
-        .col-md-8.col-md-offset-1
+        .col-md-7.col-md-offset-1
           %dl.dl-horizontal
             = render 'applyshow'
             %BR
               %dt= t 'staff_leave.replacement'
               %dd= @leaveforstaff.replacement_id.blank? ? "" : @leaveforstaff.replacement.name 
               
-              %dt= t 'staff_leave.approver_decision'
-              %dd= @leaveforstaff.approval1? ? t("staff_leave.approve") + t("staff_leave.by") +  @leaveforstaff.seconder.name + t("staff_leave.on") + @leaveforstaff.approval1date.try(:strftime, "%d %b %Y") : t("staff_leave.reject") 
+              %dt= t 'staff_leave.endorser_decision'
+              %dd= @leaveforstaff.approval1?.to_s ? t("staff_leave.approved") + (" ") + t("staff_leave.by") + (" ") +  @leaveforstaff.seconder.name  + (" ") + t("staff_leave.onn")  + (" ") + @leaveforstaff.approval1date.try(:strftime, "%d %b %Y") : t("staff_leave.rejected") 
                 
             .form-group
               .col-sm-3.control-label
-                = f.label t 'staff_leave.endorser_decision', for: :approver2
+                = f.label t 'staff_leave.approver_decision', for: :approver2
               .col-md-7
                 .form-inline
                   .form-group
@@ -37,14 +37,14 @@
                     
             .form-group
               .col-sm-3.control-label
-                = f.label t 'staff_leave.endorse_by_date', for: :approval2date
+                = f.label t 'staff_leave.approve_by_date', for: :approval2date
               .col-md-2
                 = f.text_field :approval2date, :order => [:day, :month, :year,], :default => DateTime.now, class: 'date_picker form-control' 
             
-        .col-md-8.col-md-offset-1
+        .col-md-5.col-md-offset-1
           %BR
             .form-group
-              .col-sm-offset-2.col-sm-1
+              .col-sm-offset-2.col-sm-2
                 = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), staff_leaveforstaff_path(@leaveforstaff), :class => 'btn btn-default'
-              .col-sm-offset-0.col-sm-2
+              .col-sm-offset-0.col-sm-3
                 = f.submit t('update'), class: "btn btn-primary"   

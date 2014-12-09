@@ -20,28 +20,28 @@
         %dd= @leaveforstaff.replacement_id.blank? ? "" : @leaveforstaff.replacement.name 
 	
         %dt= t 'staff_leave.entitlement'
-        %dd= @leaveforstaff.cuti_rehat_entitlement    
+        %dd= @leaveforstaff.try(:cuti_rehat_entitlement)
 		  		  
   #approve.tab-pane.fade
     .col-md-8.col-md-offset-1
       %dl.dl-horizontal
-        %dt= t 'staff_leave.approver_decision'
-        %dd=h @leaveforstaff.approval1? ? (t 'staff_leave.approve') : (t 'staff_leave.reject')
+        %dt= t 'staff_leave.endorser_decision'
+        %dd=h @leaveforstaff.approval1? ? (t 'staff_leave.support') : (t 'staff_leave.reject')
           
-        %dt= t 'staff_leave.approval_name'
+        %dt= t 'staff_leave.endorsed_name'
         %dd=h @leaveforstaff.approval1_id.blank? ? "" : @leaveforstaff.seconder.name
 		  
-        %dt= t 'staff_leave.approve_date'
+        %dt= t 'staff_leave.endorsed_date'
         %dd=h @leaveforstaff.approval1date
         %br
 		  
-        %dt= t 'staff_leave.endorser_decision'
+        %dt= t 'staff_leave.approver_decision'
         %dd=h @leaveforstaff.approver2? ? (t 'staff_leave.approve') : (t 'staff_leave.reject')
 		  
-        %dt= t 'staff_leave.endorsed_name'
+        %dt= t 'staff_leave.approval_name'
         %dd=h  @leaveforstaff.approval2_id.blank? ? "Not Required" : @leaveforstaff.endorser
 		  
-        %dt= t 'staff_leave.endorsed_date'
+        %dt= t 'staff_leave.approve_date'
         %dd=h @leaveforstaff.approval2date
           
 		  
@@ -52,9 +52,9 @@
       = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), staff_leaveforstaffs_path, :class => 'btn btn-default'
       = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('.edit', :default => t("helpers.links.edit")), edit_staff_leaveforstaff_path(@leaveforstaff), :class => 'btn btn-primary'
       /- if @current_user.userable_id == @leaveforstaff.approval1_id
-      = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('helpers.links.approve'), processing_level_1_staff_leaveforstaff_path(@leaveforstaff),  :class => 'btn btn-primary'
+      = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('helpers.links.endorse'), processing_level_1_staff_leaveforstaff_path(@leaveforstaff),  :class => 'btn btn-primary'
       /- if @current_user.userable_id == @leaveforstaff.approval2_id
-      = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('helpers.links.endorse'), processing_level_2_staff_leaveforstaff_path(@leaveforstaff),  :class => 'btn btn-primary'
+      = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('helpers.links.approve'), processing_level_2_staff_leaveforstaff_path(@leaveforstaff),  :class => 'btn btn-primary'
       = link_to content_tag(:i, "", :class => "fa fa-trash-o icon-white") + " " + t('helpers.links.destroy'), |
         staff_leaveforstaff_path(@leaveforstaff),                                                                                                    |
         :method => 'delete',                                                                                                           |

@@ -20,6 +20,7 @@ class Staff::LeaveforstaffsController < ApplicationController
     @leaveforstaff = Leaveforstaff.find(params[:id])
     respond_to do |format|
       if @leaveforstaff.update(leaveforstaff_params)
+        LeaveforstaffsMailer.approve_leave_notification(@leaveforstaff).deliver
         format.html { redirect_to staff_leaveforstaff_path, notice:t('staff_leave.update_notice')}
         format.json { head :no_content }
       else
@@ -64,11 +65,7 @@ class Staff::LeaveforstaffsController < ApplicationController
   end
 
   def processing_level_1
-    @leaveforstaff = Leaveforstaff.find(params[:id])
-    
-    if @leaveforstaff.save
-      LeaveforstaffsMailer.approve_leave_notification(@leaveforstaff, @staff).deliver 
-    end    
+    @leaveforstaff = Leaveforstaff.find(params[:id]) 
   end
   
   def processing_level_2

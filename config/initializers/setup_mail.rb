@@ -1,9 +1,9 @@
 ActionMailer::Base.smtp_settings = {
-  :address              => "smtp.mail.yahoo.com",
+  :address              => "smtp.gmail.com",
   :port                 => 587,
-  :domain               => "yahoo.com",
-  :user_name            => "pustakabistari_kskbjb@yahoo.com",
-  :password             => "kskbjb8173",
+  :domain               => "gmail.com",
+  :user_name            => "icms.kskb.jb@gmail.com",
+  :password             => "Maslinda",
   :authentication       => :plain,
   :enable_starttls_auto => true
 }

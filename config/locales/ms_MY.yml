@@ -615,20 +615,23 @@ ms_MY:
     approver_decision: Keputusan Pelulus
     approval_name: Nama Yang Meluluskan
     approve_date: Tarikh Diluluskan
-    endorser_decision: Keputusan Pengesah
-    endorsed_name: Disahkah Oleh
-    endorsed_date: Tarikh Disahkan
+    endorser_decision: Keputusan Sokongan Ketua Unit
+    endorsed_name: Disokong Oleh
+    endorsed_date: Tarikh Disokong
     new_notice: Cuti baru untuk staf berjaya dicipta
     update_notice: Cuti berjaya dikemaskini 
     for_approval: Untuk Kelulusan
     approve_staff_leave: Kelulusan Cuti Staf
     approve_by_date: Tarikh Meluluskan
-    endorse_by_date: Tarikh Pengesahan
+    endorse_by_date: Tarikh Sokongan
     decision: Keputusan
     approve: Meluluskan
     reject: Menolak
+    support: Menyokong
     by: oleh
-    on: pada
+    onn: pada
+    approved: Diluluskan
+    rejected: Ditolak
   
   position:
     title: "Tugas & Tanggungjawab"
@@ -1854,7 +1857,7 @@ ms_MY:
       back_travel_log: Senarai Log Perjalanan
       finance_check: Semakan Kewangan
       return: Pemulangan
-      endorse: Pengesahan
+      endorse: Sokongan
       
     label:
       examquestion:
