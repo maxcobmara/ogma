@@ -33,11 +33,12 @@ Ogma::Application.configure do
   config.action_mailer.perform_deliveries = true
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.smtp_settings = {
-  :address              => "smtp.mail.yahoo.com",
-  :port                 => 587,
-  :domain               => "yahoo.com",
-  :user_name            => "pustakabistari_kskbjb@yahoo.com",
-  :password             => "kskbjb8173",
-  :authentication       => :plain,
-  :enable_starttls_auto => true }
+    :address              => "smtp.gmail.com",
+    :port                 => 587,
+    :domain               => "gmail.com",
+    :user_name            => "icms.kskb.jb@gmail.com",
+    :password             => "Maslinda",
+    :authentication       => :plain,
+    :enable_starttls_auto => true
+  }
 end

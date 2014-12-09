@@ -701,7 +701,7 @@ en:
     approver_decision: Approver Decision
     approval_name: Name of Approver
     approve_date: Date Approved
-    endorser_decision: Endorser Decision
+    endorser_decision: Head of Dept Decision
     endorsed_name: Endorsed By
     endorsed_date: Date Endorsed
     new_notice: A new leave for staff has successfully created
@@ -714,7 +714,9 @@ en:
     approve: Approve
     reject: Reject
     by: by
-    on: on
+    onn: on
+    approved: Approved
+    rejected: Rejected
       
       
   position:
