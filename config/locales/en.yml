@@ -454,6 +454,17 @@ en:
       km1701_and_above: "1,701 km and above"
       cent_per_km: "cent / km :"
       travel_log_val_rm_public_receipt_other_claims : "(Travel Log Value (RM) + Public Transport Receipts) + Total Other Claims"
+      editing: editing
+      editing_staff: editing by staff
+      submitted: submitted
+      for_checking: for checking
+      returned: returned
+      resubmitted_finance: resubmitted to finance
+      returned_staff: returned to staff for amendment
+      processed: processed
+      approved: approved
+      amended_resubmit: amended and resubmit for finance check
+      status_not_known: status not known
       
     staff_appraisal:
       title: Staff Appraisal

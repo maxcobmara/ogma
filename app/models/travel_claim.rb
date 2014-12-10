@@ -40,36 +40,37 @@ class TravelClaim < ActiveRecord::Base
     self.total = total_claims
   end
   
-  def my_claim_status
-    if staff_id == User.current_user.staff_id && is_submitted != true 
-      "editing"
+  def my_claim_status(current_user)
+    if staff_id ==current_user.userable.id && is_submitted != true 
+      I18n.t("staff.travel_claim.editing")
     #----4Jan2012
-    elsif staff_id != User.current_user.staff_id && is_submitted != true	#add-in to make sure it work with - those HACK part in index page - to differentiate with "editing" & login as finance staff
-     "editing by staff"
+    elsif staff_id != current_user.userable.id && is_submitted != true	#add-in to make sure it work with - those HACK part in index page - to differentiate with "editing" & login as finance staff
+     I18n.t("staff.travel_claim.editing_staff")
     #----4Jan2012
-    elsif staff_id == User.current_user.staff_id && is_submitted == true && is_checked == nil
-      "submitted"
-    elsif staff_id != User.current_user.staff_id && is_submitted == true && is_checked == nil
-      "for checking"
-    elsif staff_id == User.current_user.staff_id && is_submitted == true && is_checked == false && is_returned != true
-      "returned"
-    elsif staff_id == User.current_user.staff_id && is_submitted == true && is_checked == false && is_returned == true
-      "resubmitted to finance"
+    elsif staff_id == current_user.userable.id && is_submitted == true && is_checked == nil
+      I18n.t("staff.travel_claim.submitted")
+    elsif staff_id != current_user.userable.id && is_submitted == true && is_checked == nil
+      I18n.t("staff.travel_claim.for_checking")
+    elsif staff_id == current_user.userable.id && is_submitted == true && is_checked == false && is_returned != true
+      I18n.t("staff.travel_claim.returned")
+    elsif staff_id == current_user.userable.id && is_submitted == true && is_checked == false && is_returned == true
+      I18n.t("staff.travel_claim.resubmitted_finance")
     #----4Jan2013
-    elsif staff_id != User.current_user.staff_id && is_submitted == true && is_checked == false	&& is_returned != true #&& is_returned != true	#for status viewing or "status not known" will appear if login as finance staff!
-      "returned to staff for amendment"
+    elsif staff_id != current_user.userable.id && is_submitted == true && is_checked == false	&& is_returned != true #&& is_returned != true	#for status viewing or "status not known" will appear if login as finance staff!
+      I18n.t("staff.travel_claim.returned_staff")
     #----4Jan2013
     elsif is_submitted == true && is_checked == true && is_approved != true
-      "processed"
+      I18n.t("staff.travel_claim.processed")
     elsif is_submitted == true && is_checked == true && is_approved == true
-      "approved"
+      I18n.t("staff.travel_claim.approved")
     #----4Jan2012
-    elsif staff_id != User.current_user.staff_id && is_submitted == true && is_checked != true && is_returned == true 	#for status viewing only or "status not known" will appear if login as finance staff!
-      "amended and resubmit for finance check"
+    elsif staff_id != current_user.userable.id && is_submitted == true && is_checked != true && is_returned == true 	#for status viewing only or "status not known" will appear if login as finance staff!
+      I18n.t("staff.travel_claim.amended_resubmit")
     #----4Jan2012
     else
-      "status not known"
+      I18n.t("staff.travel_claim.status_not_known")
     end    
+
   end
   
   

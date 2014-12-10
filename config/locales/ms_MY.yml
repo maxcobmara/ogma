@@ -444,6 +444,17 @@ ms_MY:
       km1701_and_above: "1,701 km dan seterusnya"
       cent_per_km: "sen / km :"
       travel_log_val_rm_public_receipt_other_claims : "(Nilai log perjalanan (RM) + Resit Pengangkutan Awam) + Jumlah Lain-lain Tuntutan"
+      editing: sedang disunting
+      editing_staff: sedang disunting oleh staff
+      submitted: dihantar
+      for_checking: untuk semakan
+      returned: dipulangkan
+      resubmitted_finance: dihantar semula untuk semakan kewangan
+      returned_staff: dipulangkan kepada staf untuk dibaiki
+      processed: diproses
+      approved: diluluskan
+      amended_resubmit: telah diperbaiki dan dihantar semula untuk semakan kewangan
+      status_not_known: status tidak diketahui
 
     staff_appraisal:
       title: Penilaian Prestasi
