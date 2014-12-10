@@ -78,6 +78,7 @@ en:
   yes_on: "Yes, on "
   no2: No
   by2: " by "
+  on2: " on "
   return: Return
   confirmed: Confirmed
   confirmed_on: Confirmed on
@@ -712,8 +713,6 @@ en:
     decision: Decision
     approve: Approve
     reject: Reject
-    by: by
-    onn: on
     approved: Approved
     rejected: Rejected
       
