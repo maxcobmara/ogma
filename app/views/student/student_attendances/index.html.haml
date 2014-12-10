@@ -13,20 +13,20 @@
 
 .row
   .col-md-6
-    = form_tag new_multiple_student_student_attendances_path, :method => :put , :id => "form2" do
-      /= hidden_field_tag( "new_type","3" )
+    = form_tag new_multiple_intake_student_student_attendances_path, :method => :put , :id => "form2" do
+      = hidden_field_tag( "new_type","3" )
       .form-group
         .col-md-6
           .input-group
             .input-group-addon
               = t 'student.attendance.intake'
-            = select_tag('intake', options_from_collection_for_select(@intake_list2,:intake, :intake_acryn_prog), class: "form-control", width: "50px;") 
+            = select_tag('intake', options_from_collection_for_select(@intake_list2,:intake_course, :intake_acryn_prog), class: "form-control", width: "50px;") 
         .col-md-4
           = submit_tag t('student.attendance.new_multiple_intake'), :subject_id => nil, class: "btn btn-default"
 
   .col-md-6
     = form_tag new_multiple_student_student_attendances_path, :method => :put , :id => "form3" do
-      /= hidden_field_tag( "new_type","2" )
+      = hidden_field_tag( "new_type","2" )
       .form-group
         .col-md-8
           .input-group

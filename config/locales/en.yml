@@ -91,6 +91,7 @@ en:
   newrecord_type: Record Type
   single: Single Record
   multiple: Multiple Records
+  no3: No
   
   actions:
     new: New
@@ -1277,6 +1278,7 @@ en:
       action_close: "Action Close?"
       programme: Programme
       intake: Intake
+      tick_attend: " Tick if attend"
       class_schedule: "Class / Schedule"
       student_intake: "Student Intake : "
       subject: "Subject : "
@@ -1284,6 +1286,8 @@ en:
       date: "Date : "
       time: "Time : "
       lecturer: "Lecturer : "
+      intake2: "Intake : "
+      other_intake: "Other Intake (if any)"
       attendance_details: Attendance Details
       date_time_subject_topic: "Date | Time | Subject-Topic "
       all_records: All Records
@@ -1297,12 +1301,16 @@ en:
       new_multiple_schedule: "New Multiple (by Schedule)"
       edit_remark: "For multiple edit, select students from the same Class / Schedule OR students from multiple Classes / Schedules of the same Intake(and Programme)."
       multiple_new: "Student Attendances (Multiple New)"
+      multiple_new_intake: "Student Attendances by Intake (Multiple New)"
       multiple_created: "Student Attendances are successfully created."
       create_by_class: "Add Data (By Class)"
       create_by_intake: "Add Data (By Intake)"
       data_invalid: "Data supplied are invalid."
       no_student_available: "No student available for this intake."
+      no_schedule_available: "No schedule / class available for this intake."
+      att_exist: "Attendance of this student for above class already exist."
       attendance_exist: "Student Attendances for selected schedule / class (of current Intake) already exist. Should you require to add student from other Intake (repeat class etc), use 'New' (Index page) link per student entry."
+      attendance_exist_not_default_intake: "Above existing student attendance(s) are NOT from default Intake of selected Schedule / Class. Should you require to add more student (repeat class etc), use 'New' (Index page) link per student entry."
       multiple_edit: "Student Attendances (Multiple Edit)"
       multiple_updated: "Student Attendances are successfully updated."
       class_schedule_details: "Class / Schedule Details"

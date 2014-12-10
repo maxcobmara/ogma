@@ -1,7 +1,7 @@
 class Student::StudentAttendancesController < ApplicationController
   filter_access_to :all
   before_action :set_student_attendance, only: [:show, :edit, :update, :destroy]
-  before_action :set_schedule_student_list, only: [:new]
+  before_action :set_schedule_student_list, only: [:new, :create, :new_multiple_intake]
   
   # GET /student_attendances
   # GET /student_attendances.xml
@@ -32,7 +32,7 @@ class Student::StudentAttendancesController < ApplicationController
       @exist_timetable_attendances_raw.each do |x|
         @exist_timetable_attendances << [x.subject_day_time, x.id]
       end
-      #-----
+      
       #for ALL existing student attendance (BY INTAKE)
       @intake_list3=[]
       @exist_attendance_students = StudentAttendance.all.map(&:student_id).uniq
@@ -40,7 +40,6 @@ class Student::StudentAttendancesController < ApplicationController
       @exist_intake_attendances_raw.sort_by(&:course_id).each do |y|
         @intake_list3 << [(y.intake.strftime("%b %Y")+" "+Programme.where(id: y.course_id).first.name), (y.intake.to_s+","+y.course_id.to_s)]
       end
-      #----
       
       @search = StudentAttendance.search(params[:q])
       @student_attendances = @search.result
@@ -98,7 +97,6 @@ class Student::StudentAttendancesController < ApplicationController
   def destroy
     @student_attendance = StudentAttendance.find(params[:id])
     @student_attendance.destroy
-
     respond_to do |format|
       format.html { redirect_to(student_student_attendances_url) }
       format.xml  { head :ok }
@@ -106,38 +104,72 @@ class Student::StudentAttendancesController < ApplicationController
   end
     
   def new_multiple
+    @create_type = params[:new_submit]
     @classid = params["classid"]
     @student_attendances = Array.new(5) { StudentAttendance.new }
-    #view data accordingly - new_multiple.html.haml
+    #view data accordingly - new_multiple.html.haml 
+    @selected_class = WeeklytimetableDetail.find(@classid)
+    @subject_name = @selected_class.weeklytimetable_topic.parent.name 
+    @programmeid = @selected_class.weeklytimetable_topic.root.id 
+    @iii = @selected_class.weeklytimetable.schedule_intake.monthyear_intake
+    @student_intake = Student.where('course_id=? AND intake>=? AND intake <?',@programmeid,@iii,@iii.to_date+1.day)
+    @student_att_exist = StudentAttendance.where('weeklytimetable_details_id=?', @classid)
+    @student_ids_att_exist = @student_att_exist.pluck(:student_id)
+    @student_list = Student.where('course_id=? AND intake>=? AND intake <? and id NOT IN(?)',@programmeid,@iii,@iii.to_date+1.day, @student_ids_att_exist)
+    @student_listing = @student_list if @student_list.count > 0
+    @student_listing = @student_intake if @student_list.count==0 && @student_ids_att_exist.count ==0 && @student_intake.count>0 
+  end
+  
+  def new_multiple_intake
+    @create_type = params[:new_submit]
+    @intake = params["intake"]
+    @student_attendances = Array.new(5) { StudentAttendance.new }
+    @programme_id =@intake.split(",")[1]
+    @iii=@intake.split(",")[0]
+    @intake_of_prog_id = Intake.where(programme_id: @programme_id, monthyear_intake: @iii.to_date).first.id
+    topics_ids_this_prog = Programme.find(@programme_id).descendants.at_depth(3).map(&:id)
+    #@schedule_list = WeeklytimetableDetail.where('topic IN(?)',topics_ids_this_prog).order(:topic)
+    @schedule_list = WeeklytimetableDetail.joins(:weeklytimetable).where('topic IN(?) and intake_id=?',topics_ids_this_prog, @intake_of_prog_id).order(:topic)
+    @student_list = Student.where('course_id=? AND intake>=? AND intake <?',@programme_id.to_i,@iii.to_date,@iii.to_date+1.day)
   end
   
   def create_multiple
     @create_type = params[:new_submit]
-    #if @create_type == t('student.attendance.create_by_class')   
+    if @create_type == t('student.attendance.create_by_class')   
       @new_type = "2"
-      #************************
       @student_attendances_all = params[:student_attendances]  
       @student_attendances = params[:student_attendances].values.collect {|student_attendance| StudentAttendance.new(student_attendance) }
-    
       if @student_attendances.all?(&:valid?) 
         @student_attendances.each(&:save!)  # ref: to retrieve each value - http://railsforum.com/viewtopic.php?id=11557 (Dazen2 007-10-07 05:27:42) 
         flash[:notice] = t('student.attendance.multiple_created')
         redirect_to :action => 'index'
       else                       
         flash[:error] = t('student.attendance.data_invalid')
-        render :action => 'new'
+        render :action => 'new_multiple'
         flash.discard
       end
-      #************************
-    #elsif @create_type == t('student.attendance.create_by_intake')
-    #end
+
+    elsif @create_type == t('student.attendance.create_by_intake')
+      @new_type = "3"
+      @intake = params["intake"]
+      @student_attendances_all = params[:student_attendances]  
+      @student_attendances = params[:student_attendances].values.collect {|student_attendance| StudentAttendance.new(student_attendance) }    
+      if @student_attendances.all?(&:valid?) 
+        @student_attendances.each(&:save!) # ref: to retrieve each value of --> http://railsforum.com/viewtopic.php?id=11557 (Dazen2 007-10-07 05:27:42)
+        params[:student_attendance_ids] = @student_attendances.map(&:id)
+        flash[:notice] = t('student.attendance.multiple_created')
+        redirect_to :action => 'index'
+      else      
+        redirect_to(student_student_attendances_path(:programme_id => 1), :notice=> t('student.attendance.data_invalid'))
+      end
+    end
+    
   end
   
   def edit_multiple
     studentattendanceids = params[:student_attendance_ids]
     unless studentattendanceids.blank? 
       @studentattendances = StudentAttendance.find(studentattendanceids)
-      ##
       @studentattendances_group = @studentattendances.group_by{|x|x.student_id} 
       @time_slot_main_count = @studentattendances.group_by{|u|u.weeklytimetable_detail.get_time_slot}.count
       @studentattendances_group.each do |s,sa|
@@ -146,6 +178,7 @@ class Student::StudentAttendancesController < ApplicationController
           @time_slot_match ="no"
         end
       end
+      
       if ((@studentattendances.count % @studentattendances_group.count) == 0) 
         if (@time_slot_match =="no")
           flash[:notice] = t('student.attendance.same_class_schedule')
@@ -166,7 +199,7 @@ class Student::StudentAttendancesController < ApplicationController
         flash[:notice] = t('student.attendance.complete_combination')
         redirect_to student_student_attendances_path
       end
-      ##
+ 
     end
   end
   
@@ -195,7 +228,6 @@ class Student::StudentAttendancesController < ApplicationController
       end
 
       respond_to do |format|
-        #flash[:notice] = "Updated changes for formative score details!"
         format.html {render :action => "edit_multiple_intake"}
         flash[:notice] = "<b>Classes/Schedule</b> are selected/updated. You may view/print <b>Attendance Form </b>(c/w date & time slot). <br>To update <b>student attendance</b>, check/uncheck check boxes accordingly and click <b>submit</b>."
         format.xml  { head :ok }

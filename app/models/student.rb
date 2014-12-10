@@ -36,6 +36,10 @@ class Student < ActiveRecord::Base
   #has_many :sdiciplines, :foreign_key => 'student_id'
   #has_many :std, :class_name => 'Sdicipline', :foreign_key => 'student_id'
 
+  def intake_course
+    "#{intake}"+","+"#{course_id}"
+  end
+  
   def student_list
     "#{icno}"+" "+"#{name}"
 
