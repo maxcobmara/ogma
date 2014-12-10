@@ -45,7 +45,7 @@
                   /display new form if attendance not created yet (within this intake only)
                   - if @student_list.count > 0 || (@student_list.count==0 && @student_ids_att_exist.count ==0 && @student_intake.count>0)
                     %BR
-                    %table
+                    %table.table.table-bordered
                       %tr
                         %th{:style => "width: 50px;"} No
                         %th{:style => "width: 400px;"}= t 'student.attendance.student_id'

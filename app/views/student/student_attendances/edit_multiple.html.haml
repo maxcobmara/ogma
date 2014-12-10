@@ -24,43 +24,9 @@
             %br
             %table.table.table-bordered
               - @studentattendances_group.each do |student, studentattendances|   
+                - @sas = studentattendances.sort_by{|u|u.weeklytimetable_detail.get_time_slot}
                 - if index2 == 0
-                  %tr
-                    %th{:colspan=>"#{studentattendances.count*2};"}= t 'student.attendance.class_schedule_details'
-                  %tr
-                    %td{:style => "width:100px; padding:5px;"} &nbsp;
-                    - studentattendances.sort_by{|u|u.weeklytimetable_detail.get_time_slot}.each_with_index do |studentattendance, index|
-                      - @one_student_atts_count=studentattendances.count
-                      - @one_student_atts=studentattendances.sort_by{|u|u.weeklytimetable_detail.get_time_slot}
-                      %td{:style => "width:250px; font-weight: bold; padding:5px;"}=index+1               
-                  %tr
-                    %td{:style => "width:100px;"}=t('student.attendance.subject')
-                    - studentattendances.sort_by{|u|u.weeklytimetable_detail.get_time_slot}.each_with_index do |studentattendance, index|
-                      %td{:style => "width:250px; padding:5px;"}=studentattendance.weeklytimetable_detail.weeklytimetable_topic.full_parent
-                  %tr
-                    %td{:style => "width:100px;;"}=t('student.attendance.topic')
-                    - studentattendances.sort_by{|u|u.weeklytimetable_detail.get_time_slot}.each_with_index do |studentattendance, index|
-                      %td{:style => "width:250px; padding:5px;"}=studentattendance.weeklytimetable_detail.weeklytimetable_topic.subject_list
-                  %tr
-                    %td{:style => "width:100px; padding:5px;"}=t('student.attendance.date')
-                    - studentattendances.sort_by{|u|u.weeklytimetable_detail.get_time_slot}.each_with_index do |studentattendance, index|
-                      %td{:style => "width:250px; padding:5px;"}=studentattendance.weeklytimetable_detail.get_date_day_of_schedule+" "
-                  %tr
-                    %td{:style => "width:100px; padding:5px; "}=t('student.attendance.time')
-                    - studentattendances.sort_by{|u|u.weeklytimetable_detail.get_time_slot}.each_with_index do |studentattendance, index|
-                      %td{:style => "width:250px; padding:5px;"}
-                        - if studentattendance.weeklytimetable_detail.time_slot==0 
-                          =TimetablePeriod.find(studentattendance.weeklytimetable_detail.time_slot2).timing
-                        - else
-                          =TimetablePeriod.find(studentattendance.weeklytimetable_detail.time_slot).timing
-                  %tr
-                    %td{:style => "width:100px; padding:5px;"}=t('student.attendance.lecturer')
-                    - studentattendances.sort_by{|u|u.weeklytimetable_detail.get_time_slot}.each_with_index do |studentattendance, index|
-                      %td{:style => "width:250px; padding:5px;"}=studentattendance.weeklytimetable_detail.weeklytimetable_lecturer.name 
-                  %tr
-                    %td{:style => "width:100px; padding:5px;"}=t('student.attendance.intake2')
-                    - studentattendances.sort_by{|u|u.weeklytimetable_detail.get_time_slot}.each_with_index do |studentattendance, index|
-                      %td{:style => "width:250px; padding:5px;"}=studentattendance.weeklytimetable_detail.weeklytimetable.schedule_intake.name 
+                  = render 'sa_schedule_legend'
                   - index2+=1  
           
             %font{style: "color: blue;"}=t('student.attendance.edit_absent_by_class') unless @time_slot_main_count==1

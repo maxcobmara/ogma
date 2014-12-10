@@ -1309,8 +1309,9 @@ en:
       no_student_available: "No student available for this intake."
       no_schedule_available: "No schedule / class available for this intake."
       att_exist: "Attendance of this student for above class already exist."
-      attendance_exist: "Student Attendances for selected schedule / class (of current Intake) already exist. Should you require to add student from other Intake (repeat class etc), use 'New' (Index page) link per student entry."
+      attendance_exist: "Student Attendances for selected schedule / class (of current Intake) already exist. Should you require to add student from other Intake (repeat class etc), use 'New' link (Index page) per student entry."
       attendance_exist_not_default_intake: "Above existing student attendance(s) are NOT from default Intake of selected Schedule / Class. Should you require to add more student (repeat class etc), use 'New' (Index page) link per student entry."
+      intake_not_exist: ": Has no matching Intake record in Intakes listing (refer menu : Training | Setup | Create Intake)."
       multiple_edit: "Student Attendances (Multiple Edit)"
       multiple_updated: "Student Attendances are successfully updated."
       class_schedule_details: "Class / Schedule Details"
@@ -1783,7 +1784,7 @@ en:
       status: Status
       remarks: "Click at Programme / Subject / Topic NAME to hide / display COMBO CODE and its' subitem list. Next click at COMBO CODE to show details"
       method: Lecture Method
-      practical:: Practical
+      practical: Practical
       tutorial: Tutorial
       lecture: Lecture
       semester: Semester

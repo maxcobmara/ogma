@@ -1224,6 +1224,7 @@ ms_MY:
       att_exist: "Kedatangan pelajar bagi kelas di atas telah wujud."
       attendance_exist: "Kedatangan Pelajar bagi jadual / kelas yang dipilih (bagi sesi Ambilan semasa) telah wujud. Sekiranya perlu menambah pelajar dari sesi Ambilan lain (ulang subjek / kelas dll), gunakan pautan 'Baru' (laman indeks) untuk setiap kemasukan pelajar."
       attendance_exist_not_default_intake: "Kedatangan pelajar yang telah wujud di atas adalah BUKAN daripada sesi Ambilan lalai(default) bagi Jadual / Kelas yang dipilih. Sekiranya perlu menambah lagi pelajar  (ulang subjek / kelas dll),  gunakan pautan 'Baru' (laman indeks) untuk setiap kemasukan pelajar."
+      intake_not_exist: ": Tiada data Ambilan yang sepadan dalam senarai Ambilan (rujuk menu : Latihan | Data Asas | Pengambilan)"
       multiple_edit: "Kedatangan Pelajar (Suntingan Pukal)."
       multiple_updated: "Kedatangan Pelajar telah berjaya dikemaskini."
       class_schedule_details: "Butiran Kelas / Jadual Waktu."

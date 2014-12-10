@@ -125,12 +125,19 @@ class Student::StudentAttendancesController < ApplicationController
     @intake = params["intake"]
     @student_attendances = Array.new(5) { StudentAttendance.new }
     @programme_id =@intake.split(",")[1]
-    @iii=@intake.split(",")[0]
-    @intake_of_prog_id = Intake.where(programme_id: @programme_id, monthyear_intake: @iii.to_date).first.id
-    topics_ids_this_prog = Programme.find(@programme_id).descendants.at_depth(3).map(&:id)
-    #@schedule_list = WeeklytimetableDetail.where('topic IN(?)',topics_ids_this_prog).order(:topic)
-    @schedule_list = WeeklytimetableDetail.joins(:weeklytimetable).where('topic IN(?) and intake_id=?',topics_ids_this_prog, @intake_of_prog_id).order(:topic)
-    @student_list = Student.where('course_id=? AND intake>=? AND intake <?',@programme_id.to_i,@iii.to_date,@iii.to_date+1.day)
+    @iii=@intake.split(",")[0]   #Intake data from Student table
+    @intake_list = Intake.where(programme_id: @programme_id, monthyear_intake: @iii.to_date)
+    if @intake_list.count > 0
+      @intake_of_prog_id = @intake_list.first.id
+      topics_ids_this_prog = Programme.find(@programme_id).descendants.at_depth(3).map(&:id)
+      #@schedule_list = WeeklytimetableDetail.where('topic IN(?)',topics_ids_this_prog).order(:topic)
+      @schedule_list = WeeklytimetableDetail.joins(:weeklytimetable).where('topic IN(?) and intake_id=?',topics_ids_this_prog, @intake_of_prog_id).order(:topic)
+      @student_list = Student.where('course_id=? AND intake>=? AND intake <?',@programme_id.to_i,@iii.to_date,@iii.to_date+1.day)
+    else
+      #weeklytimetable details must exist, whereby it's weeklytimetable contains intake_id (from INTAKE table)
+      entered_item = Programme.find(@programme_id).programme_list+", "+t('student.attendance.intake')+" "+@iii.to_date.strftime('%b %Y')+" "
+      redirect_to(student_student_attendances_path, :notice=>entered_item+t('student.attendance.intake_not_exist'))
+    end
   end
   
   def create_multiple
