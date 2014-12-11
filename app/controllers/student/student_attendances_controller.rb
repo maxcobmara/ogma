@@ -104,6 +104,38 @@ class Student::StudentAttendancesController < ApplicationController
       format.xml  { head :ok }
     end
   end
+  
+  def student_attendan_form
+    @programme_id = 3            #params[:programme].to_i
+    @student = Student.where('course_id=?',@programme_id )  
+    
+    
+   # @student = Student.all
+    respond_to do |format|
+      format.pdf do
+        pdf = Student_attendan_formPdf.new(@student, view_context, @programme_id)
+        send_data pdf.render, filename: "student_attendan_form-{Date.today}",
+                              type: "application/pdf",
+                              disposition: "inline"
+      end
+    end
+  end
+  
+  def examination_slip
+    @programme_id = 3            #params[:programme].to_i
+    @student =   35 #Student.where('course_id=?',@programme_id )  
+    
+    
+   # @student = Student.all
+    respond_to do |format|
+      format.pdf do
+        pdf = Examination_slipPdf.new(@student, view_context, @programme_id)
+        send_data pdf.render, filename: "Examination_slip-{Date.today}",
+                              type: "application/pdf",
+                              disposition: "inline"
+      end
+    end
+  end
     
   def new_multiple
     @classid = params["classid"]
