@@ -158,12 +158,14 @@
           %li= link_to content_tag(:i, "", :class => "icon-numb") + "Personalised Time Table", personalize_index_training_weeklytimetables_path
 
     - permitted_to? :menu, :exam_exams do
+      /- permitted_to? :menu, :exam_evaluate_courses do
       %li.icon.icon-left
         = link_to content_tag(:i, "", :class => "icon-numb") + (t "exam.title"), '#'
         .mp-level
           %h2.icon Exams
           %a.mp-back{:href => "#"}= t 'helpers.links.back'
           %ul
+            /- permitted_to? :menu, :exam_exams do
             - permitted_to? :menu, :exam_examquestions do
               %li= link_to content_tag(:i, "", :class => "icon-numb") + (t "exam.examquestion.title"), exam_examquestions_path
             - permitted_to? :menu, :exam_exams do
@@ -187,8 +189,10 @@
                         %li= link_to (t "exam.examresult.exam_slip"), "#"
             
             /%li= link_to content_tag(:i, "", :class => "icon-numb") + "Examination Management", '#'
-            %li= link_to content_tag(:i, "", :class => "icon-numb") + (t "exam.evaluate_course.title"), exam_evaluate_courses_path
-            %li= link_to content_tag(:i, "", :class => "icon-numb") + "Examination Analysis", '#'
+            - permitted_to? :index, :exam_evaluate_courses do
+              %li= link_to content_tag(:i, "", :class => "icon-numb") + (t "exam.evaluate_course.title"), exam_evaluate_courses_path
+            - permitted_to? :menu, :exam_exams do
+              %li= link_to content_tag(:i, "", :class => "icon-numb") + "Examination Analysis", '#'
 
     %li.icon.icon-left
       //= link_to content_tag(:i, "", :class => "book") + (t "library.title"), '#'

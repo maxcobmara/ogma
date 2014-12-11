@@ -4,7 +4,9 @@ class EvaluateCourse < ActiveRecord::Base
   belongs_to :subjectevaluate,   :class_name => 'Programme',   :foreign_key => 'subject_id'
   belongs_to :staffevaluate,     :class_name => 'Staff',     :foreign_key => 'staff_id'
   
-  validates_presence_of :evaluate_date, :staff_id, :course_id, :subject_id, :ev_obj, :ev_knowledge, :ev_deliver, :ev_content, :ev_tool, :ev_topic, :ev_work, :ev_note#,:student_id 
+  validates_presence_of :evaluate_date, :course_id, :subject_id, :ev_obj, :ev_knowledge, :ev_deliver, :ev_content, :ev_tool, :ev_topic, :ev_work, :ev_note#,:student_id 
+  
+  validate :validate_staff_or_invitation_lecturer_must_exist
   
   # define scope
   def self.programme_subject_search(query) 
@@ -75,6 +77,26 @@ class EvaluateCourse < ActiveRecord::Base
     "#{course_evaluate} | #{lecturer_evaluate} | #{subject_evaluate} "
   end
   
+  def self.search2(programmeid)
+    if programmeid.is_a? String
+      userable_id = programmeid.split(",")[1]
+      evaluate_courses = EvaluateCourse.where(student_id: userable_id)
+    else
+      if programmeid==0
+        evaluate_courses = EvaluateCourse.all
+      else
+        evaluate_courses = EvaluateCourse.where(course_id: programmeid)
+      end
+    end
+    evaluate_courses
+  end
+  
+  private
+    def validate_staff_or_invitation_lecturer_must_exist
+      if (staff_id.nil? || staff_id.blank?) && (invite_lec.nil? || invite_lec.blank?)
+        errors.add(I18n.t('exam.evaluate_course.staff_id'), I18n.t('exam.evaluate_course.staff_invitation_must_exist')) 
+      end 
+    end
   
   
 end

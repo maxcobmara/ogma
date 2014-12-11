@@ -1,0 +1,75 @@
+.col-md-10.col-md-offset-1
+  %table.table.table-bordered
+    %tr
+      %th{:colspan=>"5"}=t 'exam.evaluate_course.evaluation_scale'
+    %tr
+      %td{:width=>"80px;"} 0 &#x2194;  1 
+      %td{:width=>"80px;"} 2 &#x2194;  3 
+      %td{:width=>"80px;"} 4 &#x2194;  5 
+      %td{:width=>"80px;"} 6 &#x2194;  7
+      %td{:width=>"80px;"} 8 &#x2194;  9 
+    %tr
+      %td=t 'exam.evaluate_course.unsatisfactory'   
+      %td=t 'exam.evaluate_course.average'    
+      %td=t 'exam.evaluate_course.satisfactory'    
+      %td=t 'exam.evaluate_course.good'    
+      %td=t 'exam.evaluate_course.excellent'    
+
+.col-md-12
+  %table.table.table-bordered
+    %tr
+      %th{:width=>"20px;"} No
+      %th{:width=>"300px;"}= t 'exam.evaluate_course.description'
+      %th{:colspan=>"9"}= t 'exam.evaluate_course.score'
+    %tr
+      %td{:colspan=>"2"}
+      - 1.upto(9) do |count|
+        %td=count
+    %tr
+      %td{:width=>"20px;"} 1
+      %td{:width=>"300px;"}=t 'exam.evaluate_course.objective_achieved'
+      - 1.upto(9) do |count|
+        %td{:width=>"20px;"}
+          = f.radio_button :ev_obj,"#{count}"
+    %tr
+      %td 2
+      %td=t 'exam.evaluate_course.lecturer_knowledge'
+      - 1.upto(9) do |count|
+        %td{:width=>"20px;"}
+          = f.radio_button :ev_knowledge,"#{count}"          
+    %tr
+      %td 3
+      %td=t 'exam.evaluate_course.lecturer_q_achievement'
+      - 1.upto(9) do |count|
+        %td{:width=>"20px;"}
+          = f.radio_button :ev_deliver,"#{count}"
+    %tr
+      %td 4
+      %td=t 'exam.evaluate_course.content'
+      - 1.upto(9) do |count|
+        %td{:width=>"20px;"}
+          = f.radio_button :ev_content,"#{count}"          
+    %tr
+      %td 5
+      %td=t 'exam.evaluate_course.training_aids_quality'
+      - 1.upto(9) do |count|
+        %td{:width=>"20px;"}
+          = f.radio_button :ev_tool,"#{count}"        
+    %tr
+      %td 6
+      %td=t 'exam.evaluate_course.suitability_topic_sequence'
+      - 1.upto(9) do |count|
+        %td{:width=>"20px;"}
+          = f.radio_button :ev_topic,"#{count}"           
+    %tr
+      %td 7
+      %td=t 'exam.evaluate_course.effectiveness_teaching_learning'
+      - 1.upto(9) do |count|
+        %td{:width=>"20px;"}
+          = f.radio_button :ev_work,"#{count}"
+    %tr
+      %td 8
+      %td=t 'exam.evaluate_course.benefit_notes'
+      - 1.upto(9) do |count|
+        %td{:width=>"20px;"}
+          = f.radio_button :ev_note,"#{count}"

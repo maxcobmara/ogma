@@ -1632,14 +1632,39 @@ ms_MY:
       exam_slip: Slip Keputusan
     
     evaluate_course:
-      title: Penilaian Program
-      new: Penilaian Baru Program
-      edit: Sunting Penilaian Program
+      title: "Penilaian Program (Pengajar)"
+      new: "Penilaian Baru Program (Pengajar)"
+      edit: "Sunting Penilaian Program (Pengajar)"
       student_id: Pelajar
       staff_id: Pengajar
+      course_id: Program
+      subject_id: Subjek
       programme_subject: "Program - Subjek"
       programme_or_subject: Program atau Subjek
       evaluate_date: Tarikh Penilaian
+      appraisal_details: Butiran Penilaian
+      invite_lec: Pengajar Jemputan
+      comment: Komen
+      description: Perkara
+      score: Skor
+      objective_achieved: "Pencapaian objektif pelajaran."
+      lecturer_knowledge: "Pengetahuan pensyarah tentang pelajaran yang diajar."
+      lecturer_q_achievement: "Mutu pencapaian pensyarah."
+      content: "Isi kandungan pelajaran"
+      training_aids_quality: "Mutu alat pandang dengar yang digunakan."
+      suitability_topic_sequence: "Kesesuaian turutan topik dalam jadual."
+      effectiveness_teaching_learning: "Keberkesanan pengajaran dan pembelajaran (interaksi antara pensyarah dan pelajar)."
+      benefit_notes: "Faedah bahan/nota yang diedarkan"
+      evaluation_scale: Skala Penilaian
+      unsatisfactory: Tidak Memuaskan 
+      average: Sederhana 
+      satisfactory: Memuaskan 
+      good: Baik 
+      excellent: Sangat Baik
+      staff_invitation_must_exist: " : samada Pengajar (staf) ATAU Pensyarah Jemputan mestilah diisi."
+      must_student: " mestilah diisi oleh pelajar sahaja."
+      update_course_student_info: "Sila kemaskini data 'Program' (tab : Butiran Kursus) dalam laman Maklumat Pelajar."
+      kp_which_programme: "Ketua Program mesti mempunyai data 'Unit' dalam laman Tugas & Tanggungjawab (Perjawatan)."
 
   training:
     title: Latihan

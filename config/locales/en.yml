@@ -1693,15 +1693,39 @@ en:
       exam_slip: Examination Result Slip
     
     evaluate_course:
-      title: Course Evaluation
-      new: New Course Evaluation
-      edit: Edit Course Evaluation
+      title: "Course Evaluation (Lecturer)"
+      new: "New Course Evaluation (Lecturer)"
+      edit: "Edit Course Evaluation (Lecturer)"
       student_id: Student
       staff_id: Lecturer
+      course_id: Programme
+      subject_id: Subject
       programme_subject: "Programme - Subject"
       programme_or_subject: Programme or Subject
       evaluate_date: Evaluation Date
-      
+      appraisal_details: Appraisal Details
+      invite_lec: Invitation Lecturer
+      comment: Comment
+      description: Description
+      score: Score
+      objective_achieved: "Lesson objectives achievement."
+      lecturer_knowledge: "Lecturer's knowledge on lesson being taught."
+      lecturer_q_achievement: "Quality of lecturer's achievement."
+      content: "Content of lesson."
+      training_aids_quality: "Quality of training aids in use."
+      suitability_topic_sequence: "Suitability of topic sequence in schedule."
+      effectiveness_teaching_learning: "Effectiveness of teaching and learning (interaction between lecturer and student)."
+      benefit_notes: "Benefit of distributed material / notes."
+      evaluation_scale: Evaluation Scale
+      unsatisfactory: Unsatisfactory
+      average: Average
+      satisfactory: Satisfactory
+      good: Good
+      excellent: Excellent
+      staff_invitation_must_exist: " : either Lecturer (staff) OR Invitation Lecturer must exist."
+      must_student: " must be filled-in by student only."
+      update_course_student_info: "Please update 'Programme' (tab : Course Details) in Student Information page."
+      kp_which_programme: "Programme Manager must have 'Unit' in Task & Responsibilities (Positions)."
 
   training:
     title: Training
