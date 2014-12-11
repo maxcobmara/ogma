@@ -1201,8 +1201,11 @@ ActiveRecord::Schema.define(version: 20141204124118) do
     t.string   "combo_code"
     t.integer  "ancestry_depth", default: 0
     t.string   "status"
-    t.boolean  "damaged"
   end
+
+  add_index "locations", ["ancestry"], name: "index_locations_on_ancestry", using: :btree
+  add_index "locations", ["combo_code"], name: "index_locations_on_combo_code", using: :btree
+  add_index "locations", ["id"], name: "index_locations_on_id", using: :btree
 
   create_table "logins", force: true do |t|
     t.string   "login",                     limit: 40
@@ -2245,8 +2248,11 @@ ActiveRecord::Schema.define(version: 20141204124118) do
   end
 
   create_table "users", force: true do |t|
+    t.string   "login",                  default: "", null: false
     t.string   "email",                  default: "", null: false
     t.string   "encrypted_password",     default: "", null: false
+    t.integer  "userable_id"
+    t.string   "userable_type"
     t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
@@ -2261,6 +2267,7 @@ ActiveRecord::Schema.define(version: 20141204124118) do
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
+  add_index "users", ["userable_id", "userable_type"], name: "index_users_on_userable_id_and_userable_type", using: :btree
 
   create_table "vehicles", force: true do |t|
     t.string  "type_model"

@@ -203,6 +203,8 @@ Ogma::Application.routes.draw do
     end
     resources :student_attendances do
       collection do
+        get :student_attendan_form
+        get :examination_slip
         put 'edit_multiple'
         post 'update_multiple'
         put 'new_multiple'
