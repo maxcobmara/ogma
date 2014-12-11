@@ -140,6 +140,7 @@ authorization do
      if_attribute :exam_id => is_in {user.exams_of_programme}
    end
    
+   has_permission_on :exam_evaluate_courses, :to => :manage
    has_permission_on :student_student_attendances, :to => :manage
    
  end
@@ -147,6 +148,7 @@ authorization do
  role :programme_manager do
    has_permission_on [:exam_examquestions, :exam_exams], :to => :manage
    has_permission_on :exam_exammarks, :to => [:manage, :edit_multiple, :update_multiple, :new_multiple, :create_multiple]
+   has_permission_on :exam_evaluate_courses, :to => :manage
  end
  
  #Group Library   -------------------------------------------------------------------------------
@@ -159,6 +161,14 @@ authorization do
     #has_permission_on :librarytransactionsearches, :to => :read
   end
 
+#Group Student --------------------------------------------------------------------------------
+  role :student do
+      has_permission_on :exam_evaluate_courses, :to => :create
+      has_permission_on :exam_evaluate_courses, :to => :menu do
+        if_attribute :student_id => is {user.userable.id}  #student
+      end
+  end
+  
   role :guest do
     #has_permission_on :users, :to => :create
     has_permission_on :library_books, :to => :read

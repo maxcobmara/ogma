@@ -187,7 +187,7 @@
                         %li= link_to (t "exam.examresult.exam_slip"), "#"
             
             /%li= link_to content_tag(:i, "", :class => "icon-numb") + "Examination Management", '#'
-            %li= link_to content_tag(:i, "", :class => "icon-numb") + "Feedback/Course Evaluation", '#'
+            %li= link_to content_tag(:i, "", :class => "icon-numb") + (t "exam.evaluate_course.title"), exam_evaluate_courses_path
             %li= link_to content_tag(:i, "", :class => "icon-numb") + "Examination Analysis", '#'
 
     %li.icon.icon-left

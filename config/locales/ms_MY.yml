@@ -1630,6 +1630,16 @@ ms_MY:
       title: Keputusan Peperiksaan Mengikut Program
       title2: Keputusan Mengikut Program
       exam_slip: Slip Keputusan
+    
+    evaluate_course:
+      title: Penilaian Program
+      new: Penilaian Baru Program
+      edit: Sunting Penilaian Program
+      student_id: Pelajar
+      staff_id: Pengajar
+      programme_subject: "Program - Subjek"
+      programme_or_subject: Program atau Subjek
+      evaluate_date: Tarikh Penilaian
 
   training:
     title: Latihan

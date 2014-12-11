@@ -1691,6 +1691,17 @@ en:
       title: Examination Result by Programme
       title2: Result By Programme
       exam_slip: Examination Result Slip
+    
+    evaluate_course:
+      title: Course Evaluation
+      new: New Course Evaluation
+      edit: Edit Course Evaluation
+      student_id: Student
+      staff_id: Lecturer
+      programme_subject: "Programme - Subject"
+      programme_or_subject: Programme or Subject
+      evaluate_date: Evaluation Date
+      
 
   training:
     title: Training
