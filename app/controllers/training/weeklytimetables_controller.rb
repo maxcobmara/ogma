@@ -171,6 +171,19 @@ class Training::WeeklytimetablesController < ApplicationController
     end
   end
   
+  def weekly_timetable
+
+    @weeklytimetable = Weeklytimetable.find(params[:id])
+    respond_to do |format|
+      format.pdf do
+        pdf = Weekly_timetablePdf.new(@weeklytimetable, view_context)
+        send_data pdf.render, filename: "timetable_blank-{Date.today}",
+                              type: "application/pdf",
+                              disposition: "inline"
+      end
+    end
+  end
+  
   #23March2013
   def general_timetable
     @weeklytimetable = Weeklytimetable.find(params[:id])
