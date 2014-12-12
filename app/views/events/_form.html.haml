@@ -2,16 +2,16 @@
   .form-group
     .col-sm-2.control-label
       = f.label t 'events.en', for: :eventname
-    .col-md-5
+    .col-md-3
       = f.text_field :eventname, class: 'form-control mandatory'
 
 
   .form-group
     .col-sm-2.control-label
       = f.label t 'events.sd', for: :start_at
-    .col-md-3
+    .col-md-2
       .input-group.datetimepicker.date
-        = f.text_field :start_at, :class => 'form-control', "data-format" => "yyyy/MM/dd hh:mm", :type => "input"
+        = f.text_field :start_at, :order => [:day, :month, :year,], class: 'datetime_picker form-control'
         .input-group-addon.add-on
           %i{"data-date-icon" => "fa fa-calendar", "data-time-icon" => "fa fa-clock-o"}
 
@@ -19,9 +19,9 @@
   .form-group
     .col-sm-2.control-label
       = f.label t 'events.ed', for: :end_at
-    .col-md-3
+    .col-md-2
       .input-group.datetimepicker.date
-        = f.text_field :end_at, :class => 'form-control', "data-format" => "yyyy/MM/dd hh:mm", :type => "input"
+        = f.text_field :end_at, :order => [:day, :month, :year,], class: 'datetime_picker form-control'
         .input-group-addon.add-on
           %i{"data-date-icon" => "fa fa-calendar", "data-time-icon" => "fa fa-clock-o"}
 
@@ -29,26 +29,26 @@
   .form-group
     .col-sm-2.control-label
       = f.label t 'events.loca', for: :location
-    .col-md-5
+    .col-md-3
       = f.text_field :location, class: 'form-control mandatory'
 
 
   .form-group
     .col-sm-2.control-label
       = f.label t 'events.pt', for: :participants
-    .col-md-5
+    .col-md-3
       = f.text_area :participants, class: 'form-control mandatory', :rows => "6"
 
 
   .form-group
     .col-sm-2.control-label
       = f.label t 'events.ob', for: :officiated
-    .col-md-5
+    .col-md-3
       = f.text_field :officiated, class: 'form-control mandatory'
 
 
   .form-group
     .col-sm-2.control-label
       = f.label t 'events.cb', for: :staff_name
-    .col-md-2
-      = f.collection_select :createdby, Staff.all, :id, :name, {:include_blank => true}, {class: 'selectpicker', "data-width"=>"300px"}
+    .col-md-3
+      = f.collection_select :createdby, Staff.all.order(name: :asc), :id,  :staff_name_with_position, {:include_blank =>t('helpers.prompt.select_staff'), :selected=>@current_user.userable_id},{class: 'selectpicker', "data-width"=>'360px'}

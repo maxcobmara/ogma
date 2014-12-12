@@ -107,7 +107,7 @@
         %a.mp-back{:href => "#"}=t('back')
         %ul
           %li= link_to content_tag(:i, "", :class => "icon-numb") + "Campus Info", '#'
-          %li= link_to content_tag(:i, "", :class => "icon-numb") + "Campus Events", events_path
+          %li= link_to content_tag(:i, "", :class => "icon-numb") + (t "events.campus_events"), events_path
           %li= link_to content_tag(:i, "", :class => "icon-numb") + "Campus Events Calendar", '#'
           %li= link_to content_tag(:i, "", :class => "icon-numb") + "Local Messaging", '#'
           %li= link_to content_tag(:i, "", :class => "icon-numb") + "Bulletin Board", bulletins_path

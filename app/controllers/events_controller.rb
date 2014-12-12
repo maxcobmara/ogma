@@ -5,12 +5,14 @@ class EventsController < ApplicationController
   def index
     @search = Event.search(params[:q])
     @events = @search.result
+    @events2 = Event.where('start_at >= ?', Date.today).order(:start_at).page(params[:page]||1)
+    @events1 = Event.all.order(:start_at).page(params[:page]||1)
     @events = @events.page(params[:page]||1)
   end
 
   
   def calendar
-    @events = Event.find(:all)
+    @events = Event.all
     @date = params[:month] ? Date.parse(params[:month].gsub('-', '/')) : Date.today
 
     respond_to do |format|

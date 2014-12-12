@@ -1403,6 +1403,7 @@ ms_MY:
     control: Kawalan
 
   events:
+    campus_events: Acara Kampus
     list: Senarai Acara
     sd: Tarikh Mula
     ed: Tarikh Tamaat

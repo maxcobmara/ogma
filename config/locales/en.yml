@@ -1460,6 +1460,7 @@ en:
     action_details: Action Details
 
   events:
+    campus_events: Campus Events
     list: Event List
     sd: Start Date
     ed: End Date
