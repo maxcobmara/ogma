@@ -1708,7 +1708,7 @@ en:
       comment: Comment
       description: Description
       score: Score
-      objective_achieved: "Lesson objectives achievement."
+      objective_achieved: "Achievement of lesson objectives."
       lecturer_knowledge: "Lecturer's knowledge on lesson being taught."
       lecturer_q_achievement: "Quality of lecturer's achievement."
       content: "Content of lesson."
@@ -1726,6 +1726,9 @@ en:
       must_student: " must be filled-in by student only."
       update_course_student_info: "Please update 'Programme' (tab : Course Details) in Student Information page."
       kp_which_programme: "Programme Manager must have 'Unit' in Task & Responsibilities (Positions)."
+      prepared_by: PREPARED BY
+      date_updated: LAST UPDATED
+      by_student: "(Prepared by Student)"
 
   training:
     title: Training

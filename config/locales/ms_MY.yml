@@ -1665,6 +1665,9 @@ ms_MY:
       must_student: " mestilah diisi oleh pelajar sahaja."
       update_course_student_info: "Sila kemaskini data 'Program' (tab : Butiran Kursus) dalam laman Maklumat Pelajar."
       kp_which_programme: "Ketua Program mesti mempunyai data 'Unit' dalam laman Tugas & Tanggungjawab (Perjawatan)."
+      prepared_by: DISEDIAKAN OLEH
+      date_updated: TARIKH KEMASKINI
+      by_student: "(Diisi oleh Pelatih)"
 
   training:
     title: Latihan

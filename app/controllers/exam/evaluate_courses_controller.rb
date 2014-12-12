@@ -95,6 +95,51 @@ class Exam::EvaluateCoursesController < ApplicationController
     end
   end
   
+  # DELETE /evaluate_courses/1
+  # DELETE /evaluate_courses/1.xml
+  def destroy
+    @evaluate_course = EvaluateCourse.find(params[:id])
+    @evaluate_course.destroy
+
+    respond_to do |format|
+      format.html { redirect_to(exam_evaluate_courses_url) }
+      format.xml  { head :ok }
+    end
+  end
+  
+  def courseevaluation
+    @evaluate_course = EvaluateCourse.find(params[:id])
+    @evs = []
+    @evs << @evaluate_course.ev_obj
+    @evs << @evaluate_course.ev_knowledge
+    @evs << @evaluate_course.ev_deliver
+    @evs << @evaluate_course.ev_content
+    @evs << @evaluate_course.ev_tool
+    @evs << @evaluate_course.ev_topic
+    @evs << @evaluate_course.ev_work
+    @evs << @evaluate_course.ev_note
+    respond_to do |format|
+       format.pdf do
+         pdf = CourseevaluationPdf.new(@evaluate_course, view_context, @evs)
+         send_data pdf.render, filename: "courseevaluation-{Date.today}",
+                               type: "application/pdf",
+                               disposition: "inline"
+       end
+     end
+  end
+  #def feedback_referrer 
+    #@sessions_by_case = StudentCounselingSession.where('case_id=?',params[:id]).order(confirmed_at: :asc)
+    #@case_details = StudentDisciplineCase.find(params[:id])
+    #respond_to do |format|
+       #format.pdf do
+         #pdf = Feedback_referrerPdf.new(@sessions_by_case, view_context, @case_details)
+         #send_data pdf.render, filename: "feedback_referrer-{Date.today}",
+           #                    type: "application/pdf",
+            #                   disposition: "inline"
+       #end
+     #end
+  #end
+  
 
   private
     # Use callbacks to share common setup or constraints between actions.

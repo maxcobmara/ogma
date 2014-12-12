@@ -300,7 +300,11 @@ Ogma::Application.routes.draw do
     end
     resources :grades
     resources :examresults
-    resources :evaluate_courses
+    resources :evaluate_courses do
+      member do
+        get 'courseevaluation'
+      end
+    end
   end
 
   devise_for :users
