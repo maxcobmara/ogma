@@ -3,30 +3,9 @@ class Exam::EvaluateCoursesController < ApplicationController
   before_action :set_evaluate_course, only: [:show, :edit, :update, :destroy] 
   before_action :set_programme_subject_lecturer, only: [:edit, :update]
   before_action :set_data_new_create, only: [:new, :create]
+  before_action :set_data_index_show, only: [:index, :show]
   
    def index  
-    if @current_user.userable_type == "Student"
-      @programme_id="s,"+"#{@current_user.userable_id}"
-    else
-      #staff section-start
-      @position_exist = @current_user.userable.positions
-      if @position_exist     
-        @lecturer_programme = @current_user.userable.positions.first.unit
-        unless @lecturer_programme.nil? 
-          @programme = Programme.where('name ILIKE (?) AND ancestry_depth=?',"%#{@lecturer_programme}%",0).first
-        end
-        unless @programme.nil?
-          @programme_id = @programme.id
-        else
-          if @lecturer_programme == 'Commonsubject'
-          else
-            @programme_id = 0
-          end
-        end
-      end 
-      #staff section-end
-    end
-    
     @search = EvaluateCourse.search(params[:q])
     @evaluate_courses = @search.result.search2(@programme_id)
     @evaluate_courses = @evaluate_courses.order(course_id: :asc).page(params[:page]||1)
@@ -127,20 +106,7 @@ class Exam::EvaluateCoursesController < ApplicationController
        end
      end
   end
-  #def feedback_referrer 
-    #@sessions_by_case = StudentCounselingSession.where('case_id=?',params[:id]).order(confirmed_at: :asc)
-    #@case_details = StudentDisciplineCase.find(params[:id])
-    #respond_to do |format|
-       #format.pdf do
-         #pdf = Feedback_referrerPdf.new(@sessions_by_case, view_context, @case_details)
-         #send_data pdf.render, filename: "feedback_referrer-{Date.today}",
-           #                    type: "application/pdf",
-            #                   disposition: "inline"
-       #end
-     #end
-  #end
   
-
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_evaluate_course
@@ -206,6 +172,30 @@ class Exam::EvaluateCoursesController < ApplicationController
           end
         #end
       end
+    end
+    
+    def set_data_index_show
+      if @current_user.userable_type == "Student"
+        @programme_id="s,"+"#{@current_user.userable_id}"
+      else
+        #staff section-start
+        @position_exist = @current_user.userable.positions
+        if @position_exist     
+          @lecturer_programme = @current_user.userable.positions.first.unit
+          unless @lecturer_programme.nil? 
+            @programme = Programme.where('name ILIKE (?) AND ancestry_depth=?',"%#{@lecturer_programme}%",0).first
+          end
+          unless @programme.nil?
+            @programme_id = @programme.id
+          else
+            if @lecturer_programme == 'Commonsubject'
+            else
+              @programme_id = 0
+            end
+          end
+        end 
+        #staff section-end
+      end  
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

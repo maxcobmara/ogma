@@ -1,4 +1,8 @@
 %dl.dl-horizontal
+  - if @position_exist
+    %dt= t 'exam.evaluate_course.student_id'
+    %dd=h @evaluate_course.studentevaluate.try(:matrix_name)
+    
   %dt= t 'exam.evaluate_course.course_id'
   %dd=h @evaluate_course.stucourse.programme_list
   
