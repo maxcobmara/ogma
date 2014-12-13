@@ -182,7 +182,7 @@
                     %li= link_to (t "exam.exammark.title"), exam_exammarks_path
                   /- permitted_to? :menu, :exam_grades do
                   /activate above, once grades - lecturers & programme manager ready
-                  %li= link_to (t "exam.grade.title"), "#"
+                  %li= link_to (t "exam.grade.title"), exam_grades_path
                   %li.icon.icon-left
                     = link_to (t "exam.result"), '#'
                     .mp-level

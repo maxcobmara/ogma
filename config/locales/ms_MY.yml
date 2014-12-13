@@ -53,6 +53,7 @@ ms_MY:
   select: Pilih
   check: Semak
   yes_on: "Ya, pada "
+  yes2: Ya
   no2: Tidak
   by2: " oleh "
   return: Pemulangan
@@ -1625,7 +1626,23 @@ ms_MY:
       title: Gred Peperiksaan
       new: Gred Peperiksaan Baru
       edit: Sunting Gred Peperiksaan
-    
+      student_id: Pelajar
+      subject_id: Subjek
+      camse: "CA+MSE"
+      sent_bpl: Dihantar ke BPL 
+      notsent_bpl: Tidak dihantar
+      sent_date: "Hantar ke BPL (tarikh hantar)"
+      eligible_for_exam: Layak untuk Peperiksaan
+      carry_paper: Markah Terkumpul
+      examweight: Pemberat Sumatif
+      exam1marks: Peperiksaan Akhir
+      summative: Jumlah Sumatif
+      resit: Ulangan
+      finalscore: Jumlah Akhir
+      grading_id: Gred
+      new_multiple: "Gred Baru (Pukal)"
+      existing_subject: Semua Subjek
+       
     examresult:
       title: Keputusan Peperiksaan Mengikut Program
       title2: Keputusan Mengikut Program

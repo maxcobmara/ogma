@@ -76,6 +76,7 @@ en:
   select: Select
   check: Check
   yes_on: "Yes, on "
+  yes2: Yes
   no2: No
   by2: " by "
   return: Return
@@ -1686,6 +1687,22 @@ en:
       title: Examination Grades
       new: New Examination Grade
       edit: Edit Examination Grade
+      student_id: Student
+      subject_id: Subject
+      camse: "CA+MSE"
+      sent_bpl: Sent to BPL 
+      notsent_bpl: Not Sent
+      sent_date: "Sent to BPL (date sent)"
+      eligible_for_exam: Eligible for Examination
+      carry_paper: Carry Paper
+      examweight: Summative Weightage
+      exam1marks: Final Exam
+      summative: Total Summative
+      resit: Resit
+      finalscore: Total Marks
+      grading_id: Grade
+      new_multiple: New Multiple Grades
+      existing_subject: All Subjects
     
     examresult:
       title: Examination Result by Programme

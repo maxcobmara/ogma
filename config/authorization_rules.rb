@@ -140,6 +140,8 @@ authorization do
      if_attribute :exam_id => is_in {user.exams_of_programme}
    end
    
+   has_permission_on :exam_grades, :to => [:manage, :edit_multiple, :update_multiple, :new_multiple, :create_multiple ]
+   
    #has_permission_on :exam_evaluate_courses, :to => :manage - evaluation supposed by student - lecturer being evaluate shouldn't hv EDIT access
    has_permission_on :exam_evaluate_courses, :to =>[:index, :show, :courseevaluation] do
      if_attribute :staff_id => is {user.userable.id}
