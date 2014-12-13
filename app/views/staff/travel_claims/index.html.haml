@@ -28,9 +28,7 @@
         %td=link_to travel_claim.claim_month.try(:strftime,'%B %Y'), staff_travel_claim_path(travel_claim)
         %td=h travel_claim.staff.name
         %td=h travel_claim.total_claims
-        %td
-          /hide first - current_user not ready
-          /=h travel_claim.my_claim_status.titleize
+        %td=h travel_claim.my_claim_status(@current_user).titleize
 
 :javascript
 $(document).ready(function(){

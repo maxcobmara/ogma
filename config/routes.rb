@@ -203,9 +203,10 @@ Ogma::Application.routes.draw do
     end
     resources :student_attendances do
       collection do
-        put 'edit_multiple'
+        put 'edit_multiple', to:"student_attendances#edit_multiple"
         post 'update_multiple'
         put 'new_multiple'
+        put 'new_multiple_intake'
         post 'create_multiple'
       end
     end
@@ -297,8 +298,20 @@ Ogma::Application.routes.draw do
         post 'create_multiple'
       end
     end
-    resources :grades
+    resources :grades do
+      collection do
+        put 'edit_multiple'
+        post 'update_multiple'
+	put 'new_multiple'
+	post 'create_multiple'
+      end
+    end
     resources :examresults
+    resources :evaluate_courses do
+      member do
+        get 'courseevaluation'
+      end
+    end
   end
 
   devise_for :users

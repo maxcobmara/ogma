@@ -1,0 +1,34 @@
+%tr
+  %th{:colspan=>"#{@schedule_list.count};"}= t 'student.attendance.class_schedule_details'
+%tr
+  %td{:style => "width:100px; padding:5px;"} &nbsp;
+  - 1.upto(@schedule_list.count) do |index|
+    %td{:style => "width:250px; font-weight: bold; padding:5px;"}=index              
+%tr
+  %td{:style => "width:100px;"}=t('student.attendance.subject')
+  - for schedule in @schedule_list
+    %td{:style => "width:250px; padding:5px;"}=schedule.weeklytimetable_topic.full_parent
+%tr
+  %td{:style => "width:100px;;"}=t('student.attendance.topic')
+  - for schedule in @schedule_list
+    %td{:style => "width:250px; padding:5px;"}=schedule.weeklytimetable_topic.subject_list
+%tr
+  %td{:style => "width:100px; padding:5px;"}=t('student.attendance.date')
+  - for schedule in @schedule_list
+    %td{:style => "width:250px; padding:5px;"}=schedule.get_date_day_of_schedule+" "
+%tr
+  %td{:style => "width:100px; padding:5px; "}=t('student.attendance.time')
+  - for schedule in @schedule_list
+    %td{:style => "width:250px; padding:5px;"}
+      - if schedule.time_slot==0 
+        =TimetablePeriod.find(schedule.time_slot2).timing
+      - else
+        =TimetablePeriod.find(schedule.time_slot).timing
+%tr
+  %td{:style => "width:100px; padding:5px;"}=t('student.attendance.lecturer')
+  - for schedule in @schedule_list
+    %td{:style => "width:250px; padding:5px;"}=schedule.weeklytimetable_lecturer.name 
+%tr
+  %td{:style => "width:100px; padding:5px;"}=t('student.attendance.intake2')
+  - for schedule in @schedule_list
+    %td{:style => "width:250px; padding:5px;"}=schedule.weeklytimetable.schedule_intake.name 

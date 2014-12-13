@@ -83,6 +83,10 @@ class Programme < ActiveRecord::Base
       @newtopicdetail.save
     end  
   end
+  
+  def programme_subject
+    "#{root.course_type}"+" "+"#{root.name}"+" "+"#{code}"+" "+"#{name} "
+  end
     
 end
 

@@ -1,0 +1,33 @@
+- model_class = EvaluateCourse
+.page-header
+  %h1=t 'exam.evaluate_course.title'
+= render 'shared/flashes'
+
+.row
+  .col-md-offset-1
+    / Nav tabs
+    %ul.nav.nav-tabs
+      %li.active= link_to (t 'exam.evaluate_course.appraisal_details'),"#appraisal_details", "data-toggle" => "tab"
+    .tab-content{style:"padding-top:1em"}
+      .col-md-8.col-md-offset-1
+        = render 'tab_appraisal_info'
+        
+      #appraisal_details.tab-pane.active
+        %br
+        .col-md-8.col-md-offset-1
+          = render 'tab_appraisal_details'
+
+.row
+  .col-md-4.col-md-offset-3
+    %hr
+    .form-actions
+      = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), exam_evaluate_courses_path, :class => 'btn btn-default'
+      = link_to content_tag(:i, "", class: "fa fa-file-pdf-o"), courseevaluation_exam_evaluate_course_path(@evaluate_course, format: "pdf"), class: "btn btn-default", "data-toggle" => "tooltip", title: t('exam.evaluate_course.title')
+      - permitted_to? :update, :exam_evaluate_courses do
+        = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('.edit', :default => t("helpers.links.edit")), edit_exam_evaluate_course_path(@evaluate_course),  :class => 'btn btn-primary' 
+      - permitted_to? :manage, :exam_evaluate_courses do
+        = link_to content_tag(:i, "", :class => "fa fa-trash-o icon-white") + " " + t('.destroy', :default => t("helpers.links.destroy")), |
+        exam_evaluate_course_path(@evaluate_course),                                                                                                    |
+        :method => 'delete',                                                                                                           |
+        :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },                   |
+        :class => 'btn btn-danger'

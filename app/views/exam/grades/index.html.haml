@@ -1,0 +1,131 @@
+- model_class = Grade
+.page-header
+  %h1= t('exam.grade.title')#, :default => model_class.model_name.human.pluralize
+  
+.navbar.navbar-inverse{role: "navigation", style: "padding-right:40px;"}
+  %ul.nav.navbar-nav
+    %li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'actions.new'))), new_exam_grade_path
+  %ul.nav.navbar-nav.navbar-right
+    %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "index_search_bar"
+    %li.toga= link_to content_tag(:li, fa_icon("print", text: (t 'actions.print'))), "#", class: 'bogus'  
+
+= render 'shared/flashes'
+
+= form_tag new_multiple_exam_grades_path, :method => :put , :id => "form2" do
+  .form-group
+    .col-md-3
+      .input-group
+        .input-group-addon
+          = t 'exam.grade.subject_id'
+        = select_tag('subjectid', options_for_select(@subjectlist_preselec_prog2), class: "form-control", width: "50px;")
+        /= select_tag('subjectid', options_from_collection_for_select(@subjectlist_preselec_prog2, :id, :programme_subject), class: "form-control", width: "50px;")
+    .col-md-2
+      = submit_tag t('exam.grade.new_multiple'), :subject_id => nil, class: "btn btn-default"
+.row
+  .col-md-12
+    %table.table-striped.table-hover.ogma
+      %thead
+        %tr
+          %th{:style=>"width:20px;"} &nbsp;
+          %th= sort_link(@search, :student_id, (t 'exam.grade.student_id'))
+          %th= sort_link(@search, :subject_id, (t 'exam.grade.subject_id'))
+          %th= t 'exam.grade.camse'
+          %th{:colspan=>"2"}=sort_link(@search, :sent_date, (t 'exam.grade.sent_date'))
+          %th=sort_link(@search, :eligible_for_exam, (t 'exam.grade.eligible_for_exam'))
+          %th=sort_link(@search, :carry_paper, (t 'exam.grade.carry_paper'))
+          %th=sort_link(@search, :examweight, (t 'exam.grade.examweight'))
+          %th=sort_link(@search, :exam1marks, (t 'exam.grade.exam1marks'))
+          %th=sort_link(@search, :summative, (t 'exam.grade.summative'))
+          %th=sort_link(@search, :resit, (t 'exam.grade.resit'))
+          %th=sort_link(@search, :finalscore, (t 'exam.grade.finalscore'))
+          %th=sort_link(@search, :grading_id, (t 'exam.grade.grading_id'))
+      %tbody
+        = render "search_bar"
+        = form_tag edit_multiple_exam_grades_path, :method => :put , :id => "form1" do
+          - index2=0
+          - @grades_group.sort.each do |grades_group, grades|
+            - grades.sort_by{|x|x.studentgrade.name}.each_with_index do |grade,index|
+              - if index == 0
+                %tr
+                  %td.group{:colspan => "15"} 
+                    %span= (t 'exam.grade.subject_id')+' : '+Programme.find(grades_group).subject_list
+              %tr
+                %td{:style=>"text-align: center;"}= check_box_tag "grade_ids[]", grade.id, true, :id => "gradeidss_#{index2}"
+                %td= link_to grade.studentgrade.matrix_name, exam_grade_path(grade)
+                %td=h grade.subjectgrade.try(:subject_list)
+                %td
+                  - if grade.scores.count>0 
+                    =number_with_precision(grade.score, precision: 2)
+                    /use score field to save CA+MSE value, from model exammark
+                %td
+                  - if grade.sent_to_BPL == true 
+                    &#10003;
+                %td=h grade.sent_date.try(:strftime, '%d %b %Y')
+                %td
+                  - if grade.eligible_for_exam == true
+                    &#10003;
+                %td
+                  - if grade.carry_paper ==true
+                    &#10003
+                %td=h grade.examweight.blank? ? "" : number_with_precision(grade.examweight,:precision=>2).to_s+" %" 
+                %td=h grade.exam1marks.blank? ? "" : number_with_precision(grade.exam1marks,:precision=>2) 
+                %td
+                  - if grade.examweight.blank? == false && grade.exam1marks.blank? == false
+                    =h number_with_precision(grade.total_summative,:precision=>2)
+                %td
+                  - if grade.resit==true
+                    &#10003
+                %td
+                  /column in grades table, once updated-data will be same as grade.finale
+                  - if grade.examweight.blank? == false && grade.exam1marks.blank? == false
+                    =h number_with_precision(grade.finale,:precision=>2)
+                %td=h grade.finale.blank? ? "" : grade.set_gred
+                /grade table - 'score' field must exist, exam1marks, examweight too
+              - index2+=1
+    
+          %br
+          %table
+            %tr
+              %td{:style=> "width:200px; text-align: right; padding:5px;"}
+                = submit_tag t('edit_checked'), :name => :grade_submit_button, class: "btn btn-default"
+              %td{:style=>"padding:5px;"}= check_box_tag :check_all
+              %td{:style=>"padding:5px;"}= t('actions.check_all')   
+        
+  .right{style:"padding:0 30px; margin:0;"}= paginate @grades, :theme => 'twitter-bootstrap-3'
+ 
+:javascript
+$(document).ready(function(){
+  var default_check = document.getElementById('check_all');
+  default_check.checked = true;
+  
+  $("input[id='check_all']").change(function() {  
+    var checkbox = document.getElementsByName('grade_ids[]')
+    if($('#check_all').is(':checked')) { 
+      for (var j=0; j<checkbox.length; j++) {
+        var cc = document.getElementById('gradeidss_'+j)
+        cc.checked = true;
+      }
+    }else{
+      for (var j=0; j<checkbox.length; j++) {
+        var cc = document.getElementById('gradeidss_'+j)
+        cc.checked = false;
+      }
+    }
+  });
+
+  $("input[id='check_all']").each(function() {  
+    var checkbox = document.getElementsByName('grade_ids[]')
+    if($('#check_all').is(':checked')) { 
+      for (var j=0; j<checkbox.length; j++) {
+        var cc = document.getElementById('gradeidss_'+j)
+        cc.checked = true;
+      }
+    }else{
+      for (var j=0; j<checkbox.length; j++) {
+        var cc = document.getElementById('gradeidss_'+j)
+        cc.checked = false;
+      }
+    }
+  });
+  
+});
