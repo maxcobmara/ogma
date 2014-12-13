@@ -204,6 +204,9 @@ Ogma::Application.routes.draw do
     resources :student_attendances do
       collection do
         put 'edit_multiple', to:"student_attendances#edit_multiple"
+        get :student_attendan_form
+        get :examination_slip
+        put 'edit_multiple'
         post 'update_multiple'
         put 'new_multiple'
         put 'new_multiple_intake'
@@ -234,6 +237,7 @@ Ogma::Application.routes.draw do
     resources :weeklytimetables do
       member do
         get :personalize_show
+        get :weekly_timetable
       end
       collection do
         get 'general_timetable', to: "weeklytimetables#general_timetable"
