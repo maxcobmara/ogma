@@ -22,7 +22,7 @@
                 .col-sm-3.control-label
                   = f.label t 'staff_leave.replacement', for: :replacement_id
                 .col-md-4
-                  = f.collection_select :replacement_id, Staff.where("id IN (?)", @leaveforstaff.try(:repl_staff)), :id, :name, {:include_blank => t('helpers.prompt.select_staff')}, {class: 'selectpicker', "data-width"=>'300px'}
+                  = f.collection_select :replacement_id, Staff.where("id IN (?)", @leaveforstaff.repl_staff), :id, :name, {:include_blank => t('helpers.prompt.select_staff')}, {class: 'selectpicker', "data-width"=>'300px'}
                 
               .form-group
                 .col-sm-3.control-label

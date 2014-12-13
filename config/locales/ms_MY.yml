@@ -55,6 +55,7 @@ ms_MY:
   yes_on: "Ya, pada "
   no2: Tidak
   by2: " oleh "
+  on2: " pada "
   return: Pemulangan
   confirmed: Disahkan
   confirmed_on: Disahkan pada
@@ -629,8 +630,6 @@ ms_MY:
     approve: Meluluskan
     reject: Menolak
     support: Menyokong
-    by: oleh
-    onn: pada
     approved: Diluluskan
     rejected: Ditolak
   
@@ -1418,6 +1417,7 @@ ms_MY:
     control: Kawalan
 
   events:
+    campus_events: Acara Kampus
     list: Senarai Acara
     sd: Tarikh Mula
     ed: Tarikh Tamaat

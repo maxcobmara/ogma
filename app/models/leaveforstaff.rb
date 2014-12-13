@@ -11,8 +11,15 @@ class Leaveforstaff < ActiveRecord::Base
     belongs_to :approver,     :class_name => 'Staff', :foreign_key => 'approval2_id'
   
     validates_presence_of :staff_id, :leavetype
+    validate :validate_positions_exist
     validate :validate_end_date_before_start_date
   
+    def validate_positions_exist
+      if applicant.position_for_staff == "-"
+        errors.add(:position, "must exist")
+      end
+    end
+    
     def validate_end_date_before_start_date
       if leavenddate && leavestartdate
         errors.add(:leavenddate, "Your leave must begin before it ends") if leavenddate < leavestartdate || leavestartdate < DateTime.now

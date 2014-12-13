@@ -21,7 +21,8 @@
               %dd= @leaveforstaff.replacement_id.blank? ? "" : @leaveforstaff.replacement.name 
               
               %dt= t 'staff_leave.endorser_decision'
-              %dd= @leaveforstaff.approval1?.to_s ? t("staff_leave.approved") + (" ") + t("staff_leave.by") + (" ") +  @leaveforstaff.seconder.name  + (" ") + t("staff_leave.onn")  + (" ") + @leaveforstaff.approval1date.try(:strftime, "%d %b %Y") : t("staff_leave.rejected") 
+              %dd
+                = @leaveforstaff.approval1? ? t('staff_leave.approved')+t("by2")+@leaveforstaff.seconder.name+t("on2")+@leaveforstaff.approval1date.try(:strftime, "%d %b %Y") : t("staff_leave.rejected") 
                 
             .form-group
               .col-sm-3.control-label

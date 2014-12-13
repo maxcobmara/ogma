@@ -1,5 +1,6 @@
 class Event < ActiveRecord::Base
   
+  paginates_per 10 
   before_save  :titleize_eventname
   
   belongs_to :staff, :foreign_key => 'createdby'
