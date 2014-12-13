@@ -140,13 +140,23 @@ authorization do
      if_attribute :exam_id => is_in {user.exams_of_programme}
    end
    
-   has_permission_on :student_student_attendances, :to => :manage
+   has_permission_on :exam_grades, :to => [:manage, :edit_multiple, :update_multiple, :new_multiple, :create_multiple ]
+   
+   #has_permission_on :exam_evaluate_courses, :to => :manage - evaluation supposed by student - lecturer being evaluate shouldn't hv EDIT access
+   has_permission_on :exam_evaluate_courses, :to =>[:index, :show, :courseevaluation] do
+     if_attribute :staff_id => is {user.userable.id}
+   end
+   has_permission_on :student_student_attendances, :to => [:manage, :new_multiple, :new_multiple_intake, :create_multiple, :edit_multiple, :update_multiple]
    
  end
 
  role :programme_manager do
    has_permission_on [:exam_examquestions, :exam_exams], :to => :manage
    has_permission_on :exam_exammarks, :to => [:manage, :edit_multiple, :update_multiple, :new_multiple, :create_multiple]
+   has_permission_on :exam_evaluate_courses, :to => :create 
+   has_permission_on :exam_evaluate_courses, :to => [:manage, :courseevaluation] do
+     if_attribute :course_id => is {user.evaluations_of_programme}
+   end
  end
  
  #Group Library   -------------------------------------------------------------------------------
@@ -159,6 +169,14 @@ authorization do
     #has_permission_on :librarytransactionsearches, :to => :read
   end
 
+#Group Student --------------------------------------------------------------------------------
+  role :student do
+      has_permission_on :exam_evaluate_courses, :to => [:index, :create]
+      has_permission_on :exam_evaluate_courses, :to => [:read, :courseevaluation] do
+        if_attribute :student_id => is {user.userable.id}  #student_id
+      end
+  end
+  
   role :guest do
     #has_permission_on :users, :to => :create
     has_permission_on :library_books, :to => :read

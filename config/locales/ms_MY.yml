@@ -53,6 +53,7 @@ ms_MY:
   select: Pilih
   check: Semak
   yes_on: "Ya, pada "
+  yes2: Ya
   no2: Tidak
   by2: " oleh "
   on2: " pada "
@@ -69,6 +70,7 @@ ms_MY:
   newrecord_type: Jenis Rekod
   single: Rekod Individu
   multiple: Rekod Pukal
+  no3: Tiada
  
   actions:
     new: Baru
@@ -444,6 +446,17 @@ ms_MY:
       km1701_and_above: "1,701 km dan seterusnya"
       cent_per_km: "sen / km :"
       travel_log_val_rm_public_receipt_other_claims : "(Nilai log perjalanan (RM) + Resit Pengangkutan Awam) + Jumlah Lain-lain Tuntutan"
+      editing: sedang disunting
+      editing_staff: sedang disunting oleh staff
+      submitted: dihantar
+      for_checking: untuk semakan
+      returned: dipulangkan
+      resubmitted_finance: dihantar semula untuk semakan kewangan
+      returned_staff: dipulangkan kepada staf untuk dibaiki
+      processed: diproses
+      approved: diluluskan
+      amended_resubmit: telah diperbaiki dan dihantar semula untuk semakan kewangan
+      status_not_known: status tidak diketahui
 
     staff_appraisal:
       title: Penilaian Prestasi
@@ -1192,6 +1205,7 @@ ms_MY:
       action_close: "Tindakan Selesai?"
       programme: Program
       intake: Ambilan
+      tick_attend: " Pilih jika hadir"
       class_schedule: "Kelas / Jadual Waktu"
       student_intake: "Ambilan Pelajar : "
       subject: "Subjek : "
@@ -1200,6 +1214,7 @@ ms_MY:
       time: "Masa : "
       lecturer: "Pengajar : "
       intake2: "Ambilan : "
+      other_intake: "Ambilan Lain (jika ada)"
       attendance_details: Butiran Kedatangan
       date_time_subject_topic: "Tarikh | Masa | Subjek-Topik "
       all_records: Semua Rekod
@@ -1213,12 +1228,17 @@ ms_MY:
       new_multiple_schedule: "Kedatangan Baru (Jadual)"
       edit_remark: "Bagi suntingan (pukal), pilih pelajar dari Kelas / Jadual yang sama ATAU pelajar dari beberapa Kelas / Jadual bagi sesi Ambilan(serta Program) yang sama."
       multiple_new: "Kedatangan Baru Pelajar (Pukal)"
+      multiple_new_intake: "Kedatangan Baru Pelajar Mengikut Ambilan (Pukal)"
       multiple_created: "Kedatangan Baru Pelajar telah berjaya disimpan."
       create_by_class: "Tambah Data (Mengikut Kelas)"
       create_by_intake: "Tambah Data (Mengikut Ambilan)"
       data_invalid: "Data yang dikemukakan adalah tidak sah."
       no_student_available: "Tiada data pelajar bagi sesi Ambilan ini."
+      no_schedule_available: "Tiada data jadual / kelas bagi sesi Ambilan ini."
+      att_exist: "Kedatangan pelajar bagi kelas di atas telah wujud."
       attendance_exist: "Kedatangan Pelajar bagi jadual / kelas yang dipilih (bagi sesi Ambilan semasa) telah wujud. Sekiranya perlu menambah pelajar dari sesi Ambilan lain (ulang subjek / kelas dll), gunakan pautan 'Baru' (laman indeks) untuk setiap kemasukan pelajar."
+      attendance_exist_not_default_intake: "Kedatangan pelajar yang telah wujud di atas adalah BUKAN daripada sesi Ambilan lalai(default) bagi Jadual / Kelas yang dipilih. Sekiranya perlu menambah lagi pelajar  (ulang subjek / kelas dll),  gunakan pautan 'Baru' (laman indeks) untuk setiap kemasukan pelajar."
+      intake_not_exist: ": Tiada data Ambilan yang sepadan dalam senarai Ambilan (rujuk menu : Latihan | Data Asas | Pengambilan)"
       multiple_edit: "Kedatangan Pelajar (Suntingan Pukal)."
       multiple_updated: "Kedatangan Pelajar telah berjaya dikemaskini."
       class_schedule_details: "Butiran Kelas / Jadual Waktu."
@@ -1609,11 +1629,65 @@ ms_MY:
       title: Gred Peperiksaan
       new: Gred Peperiksaan Baru
       edit: Sunting Gred Peperiksaan
-    
+      student_id: Pelajar
+      subject_id: Subjek
+      camse: "CA+MSE"
+      sent_bpl: Dihantar ke BPL 
+      notsent_bpl: Tidak dihantar
+      sent_date: "Hantar ke BPL (tarikh hantar)"
+      eligible_for_exam: Layak untuk Peperiksaan
+      carry_paper: Markah Terkumpul
+      examweight: Pemberat Sumatif
+      exam1marks: Peperiksaan Akhir
+      summative: Jumlah Sumatif
+      resit: Ulangan
+      finalscore: Jumlah Akhir
+      grading_id: Gred
+      new_multiple: "Gred Baru (Pukal)"
+      existing_subject: Semua Subjek
+       
     examresult:
       title: Keputusan Peperiksaan Mengikut Program
       title2: Keputusan Mengikut Program
       exam_slip: Slip Keputusan
+    
+    evaluate_course:
+      title: "Penilaian Program (Pengajar)"
+      new: "Penilaian Baru Program (Pengajar)"
+      edit: "Sunting Penilaian Program (Pengajar)"
+      student_id: Pelajar
+      staff_id: Pengajar
+      course_id: Program
+      subject_id: Subjek
+      programme_subject: "Program - Subjek"
+      programme_or_subject: Program atau Subjek
+      evaluate_date: Tarikh Penilaian
+      appraisal_details: Butiran Penilaian
+      invite_lec: Pengajar Jemputan
+      comment: Komen
+      description: Perkara
+      score: Skor
+      objective_achieved: "Pencapaian objektif pelajaran."
+      lecturer_knowledge: "Pengetahuan pensyarah tentang pelajaran yang diajar."
+      lecturer_q_achievement: "Mutu pencapaian pensyarah."
+      content: "Isi kandungan pelajaran"
+      training_aids_quality: "Mutu alat pandang dengar yang digunakan."
+      suitability_topic_sequence: "Kesesuaian turutan topik dalam jadual."
+      effectiveness_teaching_learning: "Keberkesanan pengajaran dan pembelajaran (interaksi antara pensyarah dan pelajar)."
+      benefit_notes: "Faedah bahan/nota yang diedarkan"
+      evaluation_scale: Skala Penilaian
+      unsatisfactory: Tidak Memuaskan 
+      average: Sederhana 
+      satisfactory: Memuaskan 
+      good: Baik 
+      excellent: Sangat Baik
+      staff_invitation_must_exist: " : samada Pengajar (staf) ATAU Pensyarah Jemputan mestilah diisi."
+      must_student: " mestilah diisi oleh pelajar sahaja."
+      update_course_student_info: "Sila kemaskini data 'Program' (tab : Butiran Kursus) dalam laman Maklumat Pelajar."
+      kp_which_programme: "Ketua Program mesti mempunyai data 'Unit' dalam laman Tugas & Tanggungjawab (Perjawatan)."
+      prepared_by: DISEDIAKAN OLEH
+      date_updated: TARIKH KEMASKINI
+      by_student: "(Diisi oleh Pelatih)"
 
   training:
     title: Latihan

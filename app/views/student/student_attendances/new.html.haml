@@ -11,7 +11,7 @@
       .col-md-offset-1
         / Nav tabs
         %ul.nav.nav-tabs
-          %li.active= link_to (t 'student.attendance.atttendance_details'),"#attendance_details_edit", "data-toggle" => "tab"
+          %li.active= link_to (t 'student.attendance.attendance_details'),"#attendance_details_edit", "data-toggle" => "tab"
 
         / display 
         .tab-content{style:"padding-top:1em"}
@@ -33,7 +33,29 @@
                   .col-sm-2.control-label
                     = f.label t 'student.attendance.attend'
                   .col-md-2
-                    = f.check_box :attend 
+                    = f.check_box :attend, :id => 'check_attend'
+                    =t 'student.attendance.tick_attend'
+                #absent_details{:style=>"display: block;"}
+                  .form-group
+                    .col-sm-2.control-label
+                      = f.label t 'student.attendance.reason'
+                    .col-md-2
+                      = f.select :reason, DropDown::ABSENT_REASON, {:prompt=>t('select')}, {class: 'selectpicker', "data-width"=>"200px"}
+                  .form-group
+                    .col-sm-2.control-label
+                      = f.label t 'student.attendance.action_taken'
+                    .col-md-2
+                      = f.select :action, DropDown::ABSENT_ACTION, {:prompt=>t('select')}, {class: 'selectpicker', "data-width"=>"200px"}
+                  .form-group
+                    .col-sm-2.control-label
+                      = f.label t 'student.attendance.action_close'
+                    .col-md-2
+                      = f.select :status, [[t('student.attendance.complete'),'Yes'],[t('student.attendance.incomplete'),'No']], {:prompt=>t('select')}, {class: 'selectpicker', "data-width"=>"200px"}
+                  .form-group
+                    .col-sm-2.control-label
+                      = f.label t 'student.attendance.remark'
+                    .col-md-4
+                      = f.text_field :remark, class: 'form-control'
 
     %br
     .row
@@ -43,3 +65,23 @@
         .col-md-2
           .div{style: "margin-left:-40px;"}
             = f.submit t('create'), class: "btn btn-primary"
+
+:javascript
+
+$(document).ready(function(){
+  $("input[id='check_attend']").change(function() {  
+    if($('#check_attend').is(':checked')) { 
+      $("#absent_details").hide(""); 
+    }else{
+      $("#absent_details").show("highlight"); 
+    }
+  });
+  $("input[id='check_attend']").each(function() {  
+    if($('#check_attend').is(':checked')) { 
+      $("#absent_details").hide("");
+    }else{
+    $("#absent_details").show("highlight"); 
+    }
+  });
+
+});

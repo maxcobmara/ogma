@@ -24,6 +24,12 @@ class User < ActiveRecord::Base
     subjects_ids = programme_of_staff.descendants.at_depth(2).pluck(:id)
     return Exam.where('subject_id IN(?)', subjects_ids).pluck(:id)
   end
+  
+  def evaluations_of_programme
+    unit_of_prog_mgr = userable.positions.first.unit
+    programme_id_of_prog_mgr = Programme.where('name ILIKE(?)', "%#{unit_of_prog_mgr}%").at_depth(0).first.id
+    return programme_id_of_prog_mgr
+  end
 
   def role_symbols
    roles.map do |role|

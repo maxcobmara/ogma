@@ -30,8 +30,10 @@
                   .col-sm-2.control-label
                     = f.label t 'student.attendance.attend', for: :attend
                   .col-md-2
-                    = f.check_box :attend 
-                - unless @student_attendance.attend == true
+                    = f.check_box :attend, :id => 'check_attend'
+                    =t 'student.attendance.tick_attend'
+                #absent_details{:style=>"display: none;"}
+                  /- unless @student_attendance.attend == true
                   .form-group
                     .col-sm-2.control-label
                       = f.label t 'student.attendance.reason'
@@ -61,3 +63,24 @@
         .col-md-2
           .div{style: "margin-left:-40px;"}
             = f.submit t('update'), class: "btn btn-primary"
+
+
+:javascript
+
+$(document).ready(function(){
+  $("input[id='check_attend']").change(function() {  
+    if($('#check_attend').is(':checked')) { 
+      $("#absent_details").hide(""); 
+    }else{
+      $("#absent_details").show("highlight"); 
+    }
+  });
+  $("input[id='check_attend']").each(function() {  
+    if($('#check_attend').is(':checked')) { 
+      $("#absent_details").hide("");
+    }else{
+    $("#absent_details").show("highlight"); 
+    }
+  });
+
+});

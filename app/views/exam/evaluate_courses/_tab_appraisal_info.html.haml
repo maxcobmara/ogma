@@ -1,0 +1,23 @@
+%dl.dl-horizontal
+  - if @position_exist
+    %dt= t 'exam.evaluate_course.student_id'
+    %dd=h @evaluate_course.studentevaluate.try(:matrix_name)
+    
+  %dt= t 'exam.evaluate_course.course_id'
+  %dd=h @evaluate_course.stucourse.programme_list
+  
+  %dt= t 'exam.evaluate_course.subject_id'
+  %dd=h @evaluate_course.subjectevaluate.subject_list
+  
+  %dt= t 'exam.evaluate_course.staff_id'
+  %dd=h @evaluate_course.staffevaluate.name
+  
+  %dt= t 'exam.evaluate_course.invite_lec'
+  %dd=h @evaluate_course.invite_lec
+  
+  %dt= t 'exam.evaluate_course.comment'
+  %dd=h @evaluate_course.comment
+  
+  %dt= t 'exam.evaluate_course.evaluate_date'
+  %dd= @evaluate_course.evaluate_date.try(:strftime, '%d %b %Y')
+  %BR

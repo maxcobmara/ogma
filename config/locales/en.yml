@@ -76,6 +76,7 @@ en:
   select: Select
   check: Check
   yes_on: "Yes, on "
+  yes2: Yes
   no2: No
   by2: " by "
   on2: " on "
@@ -92,6 +93,7 @@ en:
   newrecord_type: Record Type
   single: Single Record
   multiple: Multiple Records
+  no3: No
   
   actions:
     new: New
@@ -454,6 +456,17 @@ en:
       km1701_and_above: "1,701 km and above"
       cent_per_km: "cent / km :"
       travel_log_val_rm_public_receipt_other_claims : "(Travel Log Value (RM) + Public Transport Receipts) + Total Other Claims"
+      editing: editing
+      editing_staff: editing by staff
+      submitted: submitted
+      for_checking: for checking
+      returned: returned
+      resubmitted_finance: resubmitted to finance
+      returned_staff: returned to staff for amendment
+      processed: processed
+      approved: approved
+      amended_resubmit: amended and resubmit for finance check
+      status_not_known: status not known
       
     staff_appraisal:
       title: Staff Appraisal
@@ -1278,6 +1291,7 @@ en:
       action_close: "Action Close?"
       programme: Programme
       intake: Intake
+      tick_attend: " Tick if attend"
       class_schedule: "Class / Schedule"
       student_intake: "Student Intake : "
       subject: "Subject : "
@@ -1285,6 +1299,8 @@ en:
       date: "Date : "
       time: "Time : "
       lecturer: "Lecturer : "
+      intake2: "Intake : "
+      other_intake: "Other Intake (if any)"
       attendance_details: Attendance Details
       date_time_subject_topic: "Date | Time | Subject-Topic "
       all_records: All Records
@@ -1298,12 +1314,17 @@ en:
       new_multiple_schedule: "New Multiple (by Schedule)"
       edit_remark: "For multiple edit, select students from the same Class / Schedule OR students from multiple Classes / Schedules of the same Intake(and Programme)."
       multiple_new: "Student Attendances (Multiple New)"
+      multiple_new_intake: "Student Attendances by Intake (Multiple New)"
       multiple_created: "Student Attendances are successfully created."
       create_by_class: "Add Data (By Class)"
       create_by_intake: "Add Data (By Intake)"
       data_invalid: "Data supplied are invalid."
       no_student_available: "No student available for this intake."
-      attendance_exist: "Student Attendances for selected schedule / class (of current Intake) already exist. Should you require to add student from other Intake (repeat class etc), use 'New' (Index page) link per student entry."
+      no_schedule_available: "No schedule / class available for this intake."
+      att_exist: "Attendance of this student for above class already exist."
+      attendance_exist: "Student Attendances for selected schedule / class (of current Intake) already exist. Should you require to add student from other Intake (repeat class etc), use 'New' link (Index page) per student entry."
+      attendance_exist_not_default_intake: "Above existing student attendance(s) are NOT from default Intake of selected Schedule / Class. Should you require to add more student (repeat class etc), use 'New' (Index page) link per student entry."
+      intake_not_exist: ": Has no matching Intake record in Intakes listing (refer menu : Training | Setup | Create Intake)."
       multiple_edit: "Student Attendances (Multiple Edit)"
       multiple_updated: "Student Attendances are successfully updated."
       class_schedule_details: "Class / Schedule Details"
@@ -1668,11 +1689,65 @@ en:
       title: Examination Grades
       new: New Examination Grade
       edit: Edit Examination Grade
+      student_id: Student
+      subject_id: Subject
+      camse: "CA+MSE"
+      sent_bpl: Sent to BPL 
+      notsent_bpl: Not Sent
+      sent_date: "Sent to BPL (date sent)"
+      eligible_for_exam: Eligible for Examination
+      carry_paper: Carry Paper
+      examweight: Summative Weightage
+      exam1marks: Final Exam
+      summative: Total Summative
+      resit: Resit
+      finalscore: Total Marks
+      grading_id: Grade
+      new_multiple: New Multiple Grades
+      existing_subject: All Subjects
     
     examresult:
       title: Examination Result by Programme
       title2: Result By Programme
       exam_slip: Examination Result Slip
+    
+    evaluate_course:
+      title: "Course Evaluation (Lecturer)"
+      new: "New Course Evaluation (Lecturer)"
+      edit: "Edit Course Evaluation (Lecturer)"
+      student_id: Student
+      staff_id: Lecturer
+      course_id: Programme
+      subject_id: Subject
+      programme_subject: "Programme - Subject"
+      programme_or_subject: Programme or Subject
+      evaluate_date: Evaluation Date
+      appraisal_details: Appraisal Details
+      invite_lec: Invitation Lecturer
+      comment: Comment
+      description: Description
+      score: Score
+      objective_achieved: "Achievement of lesson objectives."
+      lecturer_knowledge: "Lecturer's knowledge on lesson being taught."
+      lecturer_q_achievement: "Quality of lecturer's achievement."
+      content: "Content of lesson."
+      training_aids_quality: "Quality of training aids in use."
+      suitability_topic_sequence: "Suitability of topic sequence in schedule."
+      effectiveness_teaching_learning: "Effectiveness of teaching and learning (interaction between lecturer and student)."
+      benefit_notes: "Benefit of distributed material / notes."
+      evaluation_scale: Evaluation Scale
+      unsatisfactory: Unsatisfactory
+      average: Average
+      satisfactory: Satisfactory
+      good: Good
+      excellent: Excellent
+      staff_invitation_must_exist: " : either Lecturer (staff) OR Invitation Lecturer must exist."
+      must_student: " must be filled-in by student only."
+      update_course_student_info: "Please update 'Programme' (tab : Course Details) in Student Information page."
+      kp_which_programme: "Programme Manager must have 'Unit' in Task & Responsibilities (Positions)."
+      prepared_by: PREPARED BY
+      date_updated: LAST UPDATED
+      by_student: "(Prepared by Student)"
 
   training:
     title: Training
@@ -1777,7 +1852,7 @@ en:
       status: Status
       remarks: "Click at Programme / Subject / Topic NAME to hide / display COMBO CODE and its' subitem list. Next click at COMBO CODE to show details"
       method: Lecture Method
-      practical:: Practical
+      practical: Practical
       tutorial: Tutorial
       lecture: Lecture
       semester: Semester

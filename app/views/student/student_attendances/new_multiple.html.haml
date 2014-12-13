@@ -4,24 +4,13 @@
 = render 'shared/flashes'
 
 .row
-  /= form_tag update_multiple_student_student_attendances_path, :id => "form1", :html => {:method => :put} do |f|
   = form_tag create_multiple_student_student_attendances_path, :id => "form1", :html => {:method => :put} do |f|
     = hidden_field_tag :redirect_location, student_student_attendances_path
  
     - @student_attendances.each_with_index do |student_attendance, index| 
       = fields_for "student_attendances[#{index}]", student_attendance do |f| 
-      
         - if index==0
-          - @selected_class = WeeklytimetableDetail.find(@classid)
-          - @subject_name = @selected_class.weeklytimetable_topic.parent.name 
-          - @programmeid = @selected_class.weeklytimetable_topic.root.id 
-          - @iii = @selected_class.weeklytimetable.schedule_intake.monthyear_intake
-          /- @student_list = Student.where('course_id=? AND intake>=? AND intake <?',@programmeid,@iii,@iii.to_date+1.day)
-          - @student_intake = Student.where('course_id=? AND intake>=? AND intake <?',@programmeid,@iii,@iii.to_date+1.day)
-          - @student_att_exist = StudentAttendance.where('weeklytimetable_details_id=?', @classid)
-          - @student_ids_att_exist = @student_att_exist.pluck(:student_id)
-          - @student_list = Student.where('course_id=? AND intake>=? AND intake <? and id NOT IN(?)',@programmeid,@iii,@iii.to_date+1.day, @student_ids_att_exist)
-           
+          
           .col-md-offset-1
             / Nav tabs
             %ul.nav.nav-tabs
@@ -41,36 +30,43 @@
                   %dd=(DropDown::CLASS_METHOD.find_all{|disp, value| value == @selected_class.lecture_method}).map {|disp, value| disp}.first
                   
                   %dt= t 'student.attendance.intake'
-                  %dd=@iii.try(:strftime,'%b %Y').to_s+"("+@student_intake.count.to_s+" "+t('student.attendance.student_id')+") "
+                  %dd
+                    =intake_name=@iii.try(:strftime,'%b %Y')
+                    - if @student_intake.count==0
+                      %font{:style=>"color: red;"}
+                        ="("+t('no3')+" "+t('student.attendance.student_id')+")"
+                    - else
+                      %font{:style=>"color: blue;"}
+                        =" ("+@student_intake.count.to_s+" "+t('student.attendance.student_id')+") "
               
               #attendance_details.tab-pane.active 
                 .col-md-8.col-md-offset-1
-
+                  
                   /display new form if attendance not created yet (within this intake only)
-                  - if @student_list.count > 0
+                  - if @student_list.count > 0 || (@student_list.count==0 && @student_ids_att_exist.count ==0 && @student_intake.count>0)
                     %BR
-                    %table
+                    %table.table.table-bordered
                       %tr
                         %th{:style => "width: 50px;"} No
                         %th{:style => "width: 400px;"}= t 'student.attendance.student_id'
-                        %th= t 'student.attendance.title2'
-                      - @student_list.each_with_index do |student, nos| 
+                        %th= t 'student.attendance.title2' 
+                      - @student_listing.each_with_index do |student, nos| 
                         = hidden_field "student_attendances[#{nos}]",:student_id, :size=>2, :value=>student.id 
                         = hidden_field "student_attendances[#{nos}]",:weeklytimetable_details_id, :size=>2, :value=> @classid 
                         %tr
                           %td=nos+1
                           %td= student.matrix_name 
                           %td= check_box_tag "student_attendances[#{nos}][attend]", true 
-                          /#= check_box_tag "attends[#{nos}]", true
-                      
-                  /display existing attendance, if any(within this intake only)
+                    
+                  /display existing attendance, all (including those from other intake)
                   - if @student_ids_att_exist.count>0
                     %BR
-                    %table
+                    %table.table.table-bordered
                       %tr
                         %th{:style => "width: 50px;"} No
                         %th{:style => "width: 400px;"}= t 'student.attendance.student_id'
                         %th= t 'student.attendance.title2'
+                        %th= t 'student.attendance.other_intake'
                       - @student_att_exist.each_with_index do |student_a, nos| 
                         %tr
                           %td=nos+1
@@ -80,14 +76,32 @@
                               =t 'student.attendance.attend2' 
                             - elsif student_a.attend==false
                               =t 'student.attendance.absent'
+                          %td
+                            - @iii2=student_a.student.intake.try(:strftime, '%b %Y')
+                            - if @iii2!=intake_name
+                              %font{:style=>"color: red;"}= @iii2
+                              
+                  /- if @student_ids_att_exist.count > @student_intake.count
+                  /  =@student_ids_att_exist.count-@student_intake.count
             
-                  /display message if (1) got student of selected intake and all attendance already created * student_list - exclude existing one
+                  /display message if student of selected intake exist and all attendance already created * student_list - exclude existing one
                   - if @student_list.count <= 0 && @student_ids_att_exist.count>0 
                     %BR
-                    = t('student.attendance.attendance_exist')
+                    - if @student_intake.count!=0
+                      = t('student.attendance.attendance_exist')
+                    - elsif @student_intake.count==0
+                      = t('student.attendance.attendance_exist_not_default_intake')
                   - if @student_intake.count == 0
                     %BR
-                    = t('student.attendance.no_student_available')
+                    %font{:style=>"color: red;"}
+                      = t('student.attendance.no_student_available')
+                  
+                  - if @student_listing && @student_listing.count > 0
+                    %table
+                      %tr
+                        %td{:style=> "width:200px; text-align: right; padding:5px;"}
+                        %td{:style=>"padding:5px;"}= check_box_tag :check_all
+                        %td{:style=>"padding:5px;"}= t('actions.check_all') 
                   %BR
 
     .col-md-offset-1  
@@ -96,78 +110,39 @@
           = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), student_student_attendances_path, :class => 'btn btn-default'
         .col-sm-3
           - unless @student_list.count <= 0 && @student_ids_att_exist.count>0
-            /= submit_tag t('update'), :name => :student_attendance_submit_button, class: "btn btn-primary"
             = submit_tag t('student.attendance.create_by_class'), :name => :new_submit, class: "btn btn-primary"
 
-          
+:javascript
+$(document).ready(function(){
+  var checkbox =$("input:checkbox");
 
-/<% form_tag :action => 'create' do |f|%>
-/	<% @student_attendances.each_with_index do |student_attendance, index| %>
-/		<% fields_for "student_attendances[#{index}]", student_attendance do |f| %>
-			
-/			******************
-/			<% if index==0 %>
-/			<div class="tform">
+  $("input[id='check_all']").change(function() {  
+    if($('#check_all').is(':checked')) { 
+      for (var j=0; j<checkbox.length; j++) {
+        var cc = document.getElementById('student_attendances_'+j+'_attend')
+        cc.checked = true;
+      }
 
-/			  <H2>Student Attendance Details</H2>
+    }else{
+      for (var j=0; j<checkbox.length; j++) {
+        var cc = document.getElementById('student_attendances_'+j+'_attend')
+        cc.checked = false;
+      }
+    }
+  });
 
-/						<% @selected_class = WeeklytimetableDetail.find(@classid)%>
-/						<% @subject_name = @selected_class.weeklytimetable_topic.parent.name %>
-/						<% @programmeid = @selected_class.weeklytimetable_topic.root.id %>
-/						<table width=100%>
-/							<tr>
-/								<td class="leftcol"><label>Programme :</label></td>
-/								<td><%=@selected_class.weeklytimetable_topic.programme_coursetype_name %></td>
-/							</tr>
-/							<tr>
-/								<td class="leftcol"><label>Class / Schedule :</label></td>
-/								<td><%=@selected_class.day_time_slot %></td>
-/							</tr>
-/							<tr>
-/								<td class="leftcol"><label>Lecture Method :</label></td>
-/								<td><%= (WeeklytimetableDetail::CLASS_METHOD.find_all{|disp, value| value == @selected_class.lecture_method}).map {|disp, value| disp}%></td>
-/							</tr>
-/							<tr>
-/								<td class="leftcol"><label>Student Intake :</label></td>
-/								<td><% @iii = @selected_class.weeklytimetable.schedule_intake.monthyear_intake %><%=@iii.strftime("%b")%>&nbsp;<%=@iii.strftime("%Y")%></td>
-/							</tr>
-						
-/							<tr>
-/								<td class="leftcol" style="vertical-align:middle;">Students - Attendances</td>
-/								<td>
-/									---
-/									<% @student_list = Student.find(:all, :conditions => ['course_id=? AND intake>=? AND intake <?',@programmeid,@iii,@iii.to_date+1.day])%>
-/									<% if @student_list.count <= 0 %>
-/										No student available for this intake.
-/									<% else %>
-/										<table>
-/											<tr>
-/												<th>No</th>
-/												<th>Student</th>
-/												<th>Attendance</th>
-/											</tr>
-/											<% @student_list.each_with_index do |student, nos| %>
-/												<%= hidden_field "student_attendances[#{nos}]",:student_id, :size=>2, :value=>student.id %>
-/												<%= hidden_field "student_attendances[#{nos}]",:weeklytimetable_details_id, :size=>2, :value=> @classid %>
-/												<tr>
-/													<td><%=nos+1%></td>
-/													<td><%= student.matrix_name %></td>
-/													<td style="text-align:center;"><%= check_box_tag "student_attendances[#{nos}][attend]", true %>
-/																					<%#= check_box_tag "attends[#{nos}]", true  %></td>
-/												</tr>
-/											<% end %>
-/										</table>
-/									<% end %>
-/									----
-/								</td>
-/							</tr>
-/						</table>   end for - table width=100
-/			</div>
-/			<% end %>
-/			******************-
-/			
-/		<% end %>	<!-- end of - @exammarks.each_with_index 
-/	<% end %>	<!-- end of - fields_for "exammarks[#{index}]"
-/	<p><%= f.submit 'Create By Class/Schedule',:name => :new_submit %></p>
-/<% end %>	end of - form_tag :action => 'create' do |f| %>
-/<!--end-trial new exammark by exampaper (filtered by programme)-12Sept2012
+  $("input[id='check_all']").each(function() {  
+    if($('#check_all').is(':checked')) { 
+      for (var j=0; j<checkbox.length; j++) {
+        var cc = document.getElementById('student_attendances_'+j+'_attend')
+        cc.checked = true;
+      }
+    }else{
+      for (var j=0; j<checkbox.length; j++) {
+        var cc = document.getElementById('student_attendances_'+j+'_attend')
+        cc.checked = false;
+      }
+    }
+  });
+
+});

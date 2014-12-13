@@ -1,0 +1,77 @@
+%table.table.table-bordered
+  %tr
+    %th{:width=>"20px;"} No
+    %th{:width=>"300px;"}= t 'exam.evaluate_course.description'
+    %th{:colspan=>"9"}= t 'exam.evaluate_course.score'
+  %tr
+    %td{:width=>"20px;"} 1
+    %td{:width=>"300px;"}=t 'exam.evaluate_course.objective_achieved'
+    - 1.upto(9) do |count|
+      %td{:width=>"20px;"}
+        - if @evaluate_course.ev_obj == count  
+          %b= @evaluate_course.ev_obj 
+        - else 
+          %font{:style=>"color: #A0A0A0;"}=count
+  %tr
+    %td 2
+    %td=t 'exam.evaluate_course.lecturer_knowledge'
+    - 1.upto(9) do |count|
+      %td{:width=>"20px;"}
+        - if @evaluate_course.ev_knowledge  == count
+          %b= @evaluate_course.ev_knowledge 
+        - else 
+          %font{:style=>"color: #A0A0A0;"}=count
+  %tr
+    %td 3
+    %td=t 'exam.evaluate_course.lecturer_q_achievement'
+    - 1.upto(9) do |count|
+      %td{:width=>"20px;"}
+        - if @evaluate_course.ev_deliver == count
+          %b= @evaluate_course.ev_deliver 
+        - else 
+          %font{:style=>"color: #A0A0A0;"}=count  
+  %tr
+    %td 4
+    %td=t 'exam.evaluate_course.content'
+    - 1.upto(9) do |count|
+      %td{:width=>"20px;"}
+        - if @evaluate_course.ev_content == count  
+          %b= @evaluate_course.ev_content
+        - else 
+          %font{:style=>"color: #A0A0A0;"}=count   
+  %tr
+    %td 5
+    %td=t 'exam.evaluate_course.training_aids_quality'
+    - 1.upto(9) do |count|
+      %td{:width=>"20px;"}
+        - if @evaluate_course.ev_tool == count
+          %b= @evaluate_course.ev_tool 
+        - else 
+          %font{:style=>"color: #A0A0A0;"}=count    
+  %tr
+    %td 6
+    %td=t 'exam.evaluate_course.suitability_topic_sequence'
+    - 1.upto(9) do |count|
+      %td{:width=>"20px;"}
+        - if @evaluate_course.ev_topic  == count
+          %b= @evaluate_course.ev_topic 
+        - else 
+          %font{:style=>"color: #A0A0A0;"}=count    
+  %tr
+    %td 7
+    %td=t 'exam.evaluate_course.effectiveness_teaching_learning'
+    - 1.upto(9) do |count|
+      %td{:width=>"20px;"}
+        - if @evaluate_course.ev_work == count  
+          %b= @evaluate_course.ev_work 
+        - else 
+          %font{:style=>"color: #A0A0A0;"}=count  
+  %tr
+    %td 8
+    %td=t 'exam.evaluate_course.benefit_notes'
+    - 1.upto(9) do |count|
+      %td{:width=>"20px;"}
+        - if @evaluate_course.ev_note== count
+          %b= @evaluate_course.ev_note
+        - else 
+          %font{:style=>"color: #A0A0A0;"}=count

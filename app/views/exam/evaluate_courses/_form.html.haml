@@ -1,0 +1,15 @@
+.row
+  .col-md-offset-1
+    / Nav tabs
+    %ul.nav.nav-tabs
+      %li.active= link_to (t 'exam.evaluate_course.appraisal_details'),"#appraisal_details", "data-toggle" => "tab"
+      
+    .tab-content{style:"padding-top:1em"}
+      .col-md-8.col-md-offset-1
+        = render 'tab_appraisal_info_edit', :f => f
+    
+      #appraisal_details.tab-pane.active
+        %br
+        .col-md-8.col-md-offset-1
+          = render 'tab_appraisal_details_edit', :f => f
+   
