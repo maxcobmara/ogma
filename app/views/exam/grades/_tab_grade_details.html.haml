@@ -1,0 +1,27 @@
+.col-md-6.col-md-offset-2
+  %BR
+  .row
+    .col-md-2= t 'exam.grade.formative' 
+    .col-md-3= t 'exam.grade.description' 
+    .col-md-2.right= t 'exam.grade.marks' 
+    .col-md-2.right= t 'exam.grade.weightage'
+    .col-md-2.right= t 'exam.grade.marks' 
+    %hr
+    - for score in @grade.scores.all.order(:type_id)
+      .row
+        .col-md-2=h (Score::E_TYPES.find_all{|disp, value| value == score.type_id}).map {|disp, value| disp}.first
+        .col-md-3=h score.description 
+        .col-md-2.right=h number_with_precision(score.marks,:precision=>2) 
+        .col-md-2.right=h number_with_precision(score.weightage,:precision=>2) 
+        .col-md-2.right=h number_with_precision(score.type_marks, :precision=>2) 
+    .row
+      .col-md-2 &nbsp;
+      .col-md-3 &nbsp;
+      .col-md-2.right
+        %b= number_with_precision(@grade.total_formative2,:precision=>2) 
+      .col-md-2.right
+        %b= number_with_precision(@grade.total_per,:precision=>2) 
+        \%
+      .col-md-2.right
+        %b= number_with_precision(@grade.total_formative,:precision=>2)
+        \%

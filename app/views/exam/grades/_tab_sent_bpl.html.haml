@@ -1,0 +1,11 @@
+.col-md-8.col-md-offset-1
+  %dl.dl-horizontal
+  
+    %dt= t 'exam.grade.total_formative'
+    %dd
+    
+    %dt= t 'exam.grade.sent_to_bpl' 
+    %dd=h @grade.sent_to_BPL? ? t('yes_on') + (@grade.sent_date.try(:strftime, '%d %b %Y')).to_s : t('exam.grade.notsent_bpl')
+    
+    %dt= t 'exam.grade.eligible_for_exam2'
+    %dd=h @grade.eligible_for_exam? ? t('yes2') : t('no2')

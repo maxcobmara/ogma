@@ -42,6 +42,18 @@ class Grade < ActiveRecord::Base
     end
   end
   
+  def total_per
+    Score.sum(:weightage, :conditions => ["grade_id = ?", id])
+  end
+    
+  def total_formative
+    Score.sum(:score, :conditions => ["grade_id = ?", id])
+  end
+  
+  def total_formative2  #temporary - to confirm with user-marks to be entered in weightage or %
+    Score.sum(:marks, :conditions => ["grade_id = ?", id])
+  end
+  
   def finale
     score.to_f + total_summative    #23August2013
     #((exam1marks * examweight)/100) + ((total_formative * (100 - examweight)/100))

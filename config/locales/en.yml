@@ -1692,8 +1692,10 @@ en:
       camse: "CA+MSE"
       sent_bpl: Sent to BPL 
       notsent_bpl: Not Sent
+      sent_to_bpl: "Sent to BPL?"
       sent_date: "Sent to BPL (date sent)"
       eligible_for_exam: Eligible for Examination
+      eligible_for_exam2: "Eligible for Examination?"
       carry_paper: Carry Paper
       examweight: Summative Weightage
       exam1marks: Final Exam
@@ -1703,6 +1705,16 @@ en:
       grading_id: Grade
       new_multiple: New Multiple Grades
       existing_subject: All Subjects
+      formative: Formative
+      total_formative: Total Formative
+      grade_details: Grade Details
+      description: Description
+      marks: Marks
+      weightage: Weightage
+      final_details: Final Details
+      exam: Examination
+      required: Required
+      not_required: Not Required
     
     examresult:
       title: Examination Result by Programme

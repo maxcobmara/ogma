@@ -1631,8 +1631,10 @@ ms_MY:
       camse: "CA+MSE"
       sent_bpl: Dihantar ke BPL 
       notsent_bpl: Tidak dihantar
+      sent_to_bpl: "Dihantar ke BPL?"
       sent_date: "Hantar ke BPL (tarikh hantar)"
-      eligible_for_exam: Layak untuk Peperiksaan
+      eligible_for_exam: Layak Mengambil Peperiksaan
+      eligible_for_exam2: "Layak mengambil peperiksaan?"
       carry_paper: Markah Terkumpul
       examweight: Pemberat Sumatif
       exam1marks: Peperiksaan Akhir
@@ -1642,6 +1644,16 @@ ms_MY:
       grading_id: Gred
       new_multiple: "Gred Baru (Pukal)"
       existing_subject: Semua Subjek
+      formative: Formatif
+      total_formative: Jumlah Formatif
+      grade_details: Butiran Gred
+      description: Deskripsi
+      marks: Markah
+      weightage: Pemberat
+      final_details: Butiran Akhir
+      exam: Peperiksaan
+      required: Diperlukan
+      not_required: Tidak diperlukan
        
     examresult:
       title: Keputusan Peperiksaan Mengikut Program
