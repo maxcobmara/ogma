@@ -2,7 +2,10 @@
   .row
     .col-sm-4= f.label t 'exam.grade.exam', for: :examination_name
     .col-sm-4= f.label t 'exam.grade.description', for: :description
-    .col-sm-1= f.label t 'exam.grade.marks', for: :marks
+    .col-sm-1
+      = f.label t 'exam.grade.marks', for: :marks
+      - if @grade.examweight.nil?
+        %font{:style=>"color: red;"}*
   .row
     .col-md-4= f.text_field :exam1name, class: 'form-control'
     .col-md-4= f.text_field :exam1desc, class: 'form-control'

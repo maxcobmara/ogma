@@ -1658,6 +1658,7 @@ ms_MY:
       exam: Peperiksaan
       required: Diperlukan
       not_required: Tidak diperlukan
+      weightage_before_marks: "Masukkan Pemberat Sumatif terlebih dahulu, bagi membolehkan medan Jumlah Akhir dan Gred dikemaskini berdasarkan kemasukan / perubahan data MARKAH Peperiksaan"
        
     examresult:
       title: Keputusan Peperiksaan Mengikut Program

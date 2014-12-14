@@ -1,7 +1,14 @@
-- if @subject_id != nil
+/- if @subject_id != nil
+/  - @subject = @subject_id
+/  - @programme = @preselect_prog
+/- else 
+/  - @subject = @grade.subject_id
+/  - @programme = @grade.subjectgrade.root_id
+
+- if @grade.new_record?
   - @subject = @subject_id
   - @programme = @preselect_prog
-- else 
+- else
   - @subject = @grade.subject_id
   - @programme = @grade.subjectgrade.root_id
   
@@ -34,7 +41,10 @@
           .col-sm-2.control-label
             = f.label t 'exam.grade.subject_id', for: :subject_id
           .col-md-3
-            = f.collection_select :subject_id,  @subject_list, :id, :subject_list, {:include_blank => t('select'), :selected=> @subject.to_i}, {class: 'selectpicker', "data-width"=>'360px'} 
+            - if @programme.nil?
+              = f.collection_select :subject_id,  @subject_list, :id, :programme_subject, {:include_blank => t('select'), :selected=> @subject.to_i}, {class: 'selectpicker', "data-width"=>'360px'} 
+            - else
+              = f.collection_select :subject_id,  @subject_list, :id, :subject_list, {:include_blank => t('select'), :selected=> @subject.to_i}, {class: 'selectpicker', "data-width"=>'360px'} 
 
         /TODO: Preselect course in above condition
         

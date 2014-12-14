@@ -1719,6 +1719,7 @@ en:
       exam: Examination
       required: Required
       not_required: Not Required
+      weightage_before_marks: "Insert Summative Weightage first, for Total Marks & Grade to takes effect upon entry / changes of Examination MARKS"
     
     examresult:
       title: Examination Result by Programme
