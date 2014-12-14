@@ -1,1 +1,159 @@
- 
+- if @subject_id != nil
+  - @subject = @subject_id
+  - @programme = @preselect_prog
+- else 
+  - @subject = @grade.subject_id
+  - @programme = @grade.subjectgrade.root_id
+  
+.row
+  .col-md-10.col-md-offset-1
+    / Nav tabs
+    %ul.nav.nav-tabs
+      %li.active= link_to (t 'exam.grade.grade_details'),"#grade_details_edit", "data-toggle" => "tab"
+      %li= link_to (t 'exam.grade.sent_bpl'),"#sent_to_bpl_edit", "data-toggle" => "tab"
+      %li= link_to (t 'exam.grade.summative_final_details'),"#summative_final_details_edit", "data-toggle" => "tab"
+      
+    /display  
+    .tab-content{style:"padding-top:1em"}
+      .col-md-offset-2 
+        %br
+        .form-group
+          .col-sm-2.control-label
+            =f.label t 'exam.grade.student_id', for: :student_id
+          .col-md-2
+            - if @grade.id.nil? 
+              = f.collection_select :student_id, @student_list, :id, :matrix_name, {:include_blank => t('select')},{class: 'selectpicker', "data-width"=>'360px'} 
+            - else
+              = f.collection_select :student_id, @student_list, :id, :matrix_name, {:include_blank => t('select'), :selected=>@grade.student_id},{class: 'selectpicker', "data-width"=>'360px'} 
+        .form-group
+          .col-sm-2.control-label
+            = f.label t 'exam.grade.programme', for: :programme
+          .col-md-3
+            = f.collection_select :programme_id,  @programme_list, :id, :programme_list, {:include_blank => t('select'),:selected=> @programme.to_i}, {class: 'selectpicker', "data-width"=>'360px'} 
+        .form-group
+          .col-sm-2.control-label
+            = f.label t 'exam.grade.subject_id', for: :subject_id
+          .col-md-3
+            = f.collection_select :subject_id,  @subject_list, :id, :subject_list, {:include_blank => t('select'), :selected=> @subject.to_i}, {class: 'selectpicker', "data-width"=>'360px'} 
+
+        /TODO: Preselect course in above condition
+        
+      #grade_details_edit.tab-pane.active
+        .col-md-offset-2
+          .form-group
+          .col-sm-2.control-label
+            = f.label t 'exam.grade.formative_scores'
+    
+        .col-md-8.col-md-offset-1
+          %br
+          .row
+            .col-sm-3= t 'exam.grade.type'
+            .col-sm-5= t 'exam.grade.description' 
+            .col-sm-2= t 'exam.grade.marks'
+            .col-sm-2= t 'exam.grade.weightage'
+            %hr
+          - @count=0
+          = f.fields_for :scores do |builder|
+            = render 'score_fields', :f => builder, :locals =>{:count=>@count}
+            - @count+=1
+          %br
+          .row
+            = link_to_add_fields t('addmore'), f, :scores, "",  t('addmore')
+          %br   
+
+      #sent_to_bpl_edit.tab-pane
+        %br
+        = render 'tab_sent_bpl_edit', :f => f
+
+      #summative_final_details_edit.tab-pane
+        .col-md-9.col-md-offset-1
+          =t 'exam.grade.summative'
+          %hr
+        = render 'tab_summative_edit', :f => f
+        %br
+        .col-md-9.col-md-offset-1  
+          = t 'exam.grade.final_details'
+          %hr
+        %br
+        = render 'tab_final_details_edit', :f => f
+        
+=hidden_field_tag "grade[formative_count]", @count 
+
+:javascript
+  function add_fields(link, association, content) {  
+    var new_id = new Date().getTime();  
+    var regexp = new RegExp("new_" + association, "g");  
+    $(link).parent().before(content.replace(regexp, new_id));  
+  }
+:javascript
+  
+  $(".i1").keyup(function() {  
+    var formativecount = document.getElementById("grade_formative_count").value;
+    var exam1marks = document.getElementById("grade_exam1marks").value;
+    var examweight = document.getElementById("grade_examweight").value;
+
+    for (var i=0;i<formativecount;i++)
+   {
+      window["fmark"+i] = document.getElementById("formative"+i).value;
+      window["fweight"+i] = document.getElementById("fweight"+i).value;
+    }
+      
+    var finalscore = document.getElementById("grade_finalscore");
+    var setgrade = document.getElementById("grade_grading_id")
+
+    totalformative = 0
+    for (var i=0;i<formativecount;i++)
+    {
+      totalformative = totalformative+(window["fmark"+i]*1)*((window["fweight"+i]*1)/100)
+    }
+      
+    caplusmse = (totalformative*1)*(100-examweight)/100;
+    summative = (exam1marks*1)*(examweight*1)/100;
+    forgrade = caplusmse+summative;
+    finalscore.value = caplusmse+summative;
+
+    if ((caplusmse+summative) > 79)
+    {
+      setgrade.value = "A";
+    }
+    else if ((caplusmse+summative) > 74)
+    {
+      setgrade.value = "A-";
+     }
+    else if ((caplusmse+summative) > 69)
+    {
+      setgrade.value = "B+";
+    }
+    else if ((caplusmse+summative) > 64)
+    {
+       setgrade.value = "B";
+     }
+    else if ((caplusmse+summative) > 59)
+    {
+      setgrade.value = "B-";
+    }
+    else if ((caplusmse+summative) > 54)
+    {
+      setgrade.value = "C+";
+    }
+    else if ((caplusmse+summative) > 49)
+    {
+      setgrade.value = "C";
+     }
+    else if ((caplusmse+summative) > 44)
+    {
+      setgrade.value = "C-";
+     }
+    else if ((caplusmse+summative) > 39)
+    {
+      setgrade.value = "D+";
+     }
+    else if ((caplusmse+summative) > 34)
+    {
+      setgrade.value = "D";
+     }
+    else if ((caplusmse+summative) > 0)
+    {
+       setgrade.value = "E";
+    }
+  });

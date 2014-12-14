@@ -18,6 +18,9 @@
         %dl.dl-horizontal
           %dt= t 'exam.grade.student_id'
           %dd=h @grade.studentgrade.try(:matrix_name)
+          
+          %dt= t 'exam.grade.programme'
+          %dd=h @grade.subjectgrade.root.programme_list
         
           %dt=t 'exam.grade.subject_id'
           %dd=h @grade.subjectgrade.subject_list
@@ -41,7 +44,8 @@
     %hr
     .form-actions
       = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), exam_grades_path, :class => 'btn btn-default'
-      = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('.edit', :default => t("helpers.links.edit")), edit_exam_grade_path(@grade),  :class => 'btn btn-primary' 
+      - permitted_to? :update, :exam_grades do
+        = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('.edit', :default => t("helpers.links.edit")), edit_exam_grade_path(@grade),  :class => 'btn btn-primary' 
       = link_to content_tag(:i, "", :class => "fa fa-trash-o icon-white") + " " + t('.destroy', :default => t("helpers.links.destroy")), |
         exam_grade_path(@grade),                                                                                                    |
         :method => 'delete',                                                                                                           |

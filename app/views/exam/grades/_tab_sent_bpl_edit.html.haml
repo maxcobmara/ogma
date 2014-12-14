@@ -1,0 +1,34 @@
+.col-md-offset-2   
+  .form-group
+    .col-sm-2.control-label
+      = f.label t 'exam.grade.sent_to_bpl', for: :sent_to_bpl
+    .col-md-1
+      = f.check_box :sent_to_BPL, :id => 'check_submitted'
+    .col-md-2
+      #span_submitted{:style=>"display: none;"}
+        = f.text_field :sent_date, class: 'date_picker form-control'
+  .form-group
+    .col-sm-2.control-label
+      = f.label t 'exam.grade.eligible_for_exam2', for: :eligible_for_exam
+    .col-md-5
+      = f.check_box :eligible_for_exam
+      %font{:style => "color: #AAA; size:-2;"} (need other inputs for automatic)
+
+:javascript
+
+$(document).ready(function(){
+  $("input[id='check_submitted']").change(function() {  
+    if($('#check_submitted').is(':checked')) { 
+      $("#span_submitted").show("highlight"); 
+    }else{
+      $("#span_submitted").hide(""); 
+    }
+  });
+  $("input[id='check_submitted']").each(function() {  
+    if($('#check_submitted').is(':checked')) { 
+      $("#span_submitted").show("highlight"); 
+    }else{
+    $("#span_submitted").hide(""); 
+    }
+  });
+});

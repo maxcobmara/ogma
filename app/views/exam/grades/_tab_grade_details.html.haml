@@ -9,7 +9,7 @@
     %hr
     - for score in @grade.scores.all.order(:type_id)
       .row
-        .col-md-2=h (Score::E_TYPES.find_all{|disp, value| value == score.type_id}).map {|disp, value| disp}.first
+        .col-md-2=h (DropDown::E_TYPES.find_all{|disp, value| value == score.type_id}).map {|disp, value| disp}.first
         .col-md-3=h score.description 
         .col-md-2.right=h number_with_precision(score.marks,:precision=>2) 
         .col-md-2.right=h number_with_precision(score.weightage,:precision=>2) 

@@ -1689,6 +1689,7 @@ en:
       edit: Edit Examination Grade
       student_id: Student
       subject_id: Subject
+      programme: Programme
       camse: "CA+MSE"
       sent_bpl: Sent to BPL 
       notsent_bpl: Not Sent
@@ -1706,12 +1707,15 @@ en:
       new_multiple: New Multiple Grades
       existing_subject: All Subjects
       formative: Formative
+      formative_scores: Formative Scores
       total_formative: Total Formative
       grade_details: Grade Details
+      type: Type
       description: Description
       marks: Marks
       weightage: Weightage
       final_details: Final Details
+      summative_final_details: "Total Summative & Final Details"
       exam: Examination
       required: Required
       not_required: Not Required

@@ -565,4 +565,31 @@ module DropDown
          ["Hadir Kelas Gantian","6"]
      ]
   
+   #Score  
+   E_TYPES = [
+     #  Displayed       stored in db
+       [ "Clinical Work",1 ],
+       [ "Assignment",2 ],
+       [ "Project", 3 ],
+       [ "Clinical Report", 4 ],
+       [ "Test", 5 ],
+       [ "Exam", 6 ],
+  ]
+   
+   #Grade
+   GRADE = [
+  #  Displayed       stored in db
+    [ "80-100% - A",  "A" ],
+    [ "75-79% - A-",  "A-" ],
+    [ "70-74% - B+",  "B+" ],
+    [ "65-69% - B",   "B" ],
+    [ "60-64% - B-",  "B-" ],
+    [ "55-59% - C+",  "C+" ],
+    [ "50-54% - C",   "C" ],
+    [ "45-49% - C-",  "C-" ],
+    [ "40-44% - D+",  "D+" ],
+    [ "35-39% - D",   "D" ],
+    [ "0-34% - E",    "E" ]
+  ]
+   
 end

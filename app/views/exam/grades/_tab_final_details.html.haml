@@ -1,7 +1,7 @@
 .col-md-8.col-md-offset-1
   %dl.dl-horizontal
   
-    %dt= t 'exam.grade.final_score'
+    %dt= t 'exam.grade.finalscore'
     %dd
       - if (@grade.exam1marks!= nil && @grade.examweight !=nil && @grade.total_formative != nil)
         =h number_with_precision(@grade.finale,:precision=>2) 
