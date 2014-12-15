@@ -1687,6 +1687,7 @@ en:
       title: Examination Grades
       new: New Examination Grade
       edit: Edit Examination Grade
+      multiple_edit: Grades Multiple Edit
       student_id: Student
       subject_id: Subject
       programme: Programme
@@ -1720,6 +1721,9 @@ en:
       required: Required
       not_required: Not Required
       weightage_before_marks: "Insert Summative Weightage first, for Total Marks & Grade to takes effect upon entry / changes of Examination MARKS"
+      sum_of_scores: "Sum of scores(%), "
+      total_marks: Total Marks
+      final_exam: Final Exam
     
     examresult:
       title: Examination Result by Programme

@@ -1,0 +1,234 @@
+.col-md-12
+  %table.table.table-bordered
+    %tr
+      %th No
+      %th= t 'exam.grade.student_id'
+      %th Mykad No
+      - if @subjects_of_grades > 1
+        %th= t 'exam.grade.subject_id'
+      - if @subjects_of_grades > 1
+      - else
+        - @score_for_legend_sort.each do |score_x|
+          %th{:style=> "text-align: center; background-color: #EFE; font-size:-2;"}
+            =h (DropDown::E_TYPES.find_all{|disp, value| value == score_x.type_id}).map {|disp, value| disp}.first
+            %br
+            (
+            =h score_x.weightage.to_i
+            \%
+            )
+      %th{:style=>"background-color:#E5ECE5; text-align:center;"}CA+MSE
+      - if @subjects_of_grades > 1
+        /if subject for selected grades is different
+        %th{:style=>"background-color:#EEF9F9;text-align:center;"}= t 'exam.grade.examweight'
+      %th{:style=>"background-color:#FEE;text-align:center;"}
+        Final Exam
+        %br
+        %font{:style=>"font size=-2"} (Written Paper)
+      %th{:style=>"background-color:#FEE;text-align:center;"}Total Summative
+      %th{:style=>"background-color:#EEF;text-align:center;"}Total Marks
+      %th BPL
+      %th Exam?
+      %th Carry Paper
+      %th Resit
+    - @grades.sort_by{|x|x.studentgrade.name}.each_with_index do |grade, no|
+      /note: DIV:grade_weightage_multiple NOT grades_0_weightage_multiple-refer grades/_update_weightage.html.erb
+      /= tag("div", :id => form_tag_id(f.object_name, :weightage_multiple)) 
+      /-note: DIV:grade_weightage_multiple NOT grades_0_weightage_multiple-refer grades/_update_weightage.html.erb
+      = hidden_field_tag "grade_ids[]", grade.id 
+      /result ==> "grade_ids"=>["4","3","2","1"]  == grade_ids[] 
+      %tr
+        %td=no+1
+        %td{:style=>"width: 250px;"}=h grade.studentgrade.matrix_name 
+        %td{:style=>"width: 100px;"}=h grade.studentgrade.icno
+        - if @subjects_of_grades > 1 
+          /if subject for selected grades is different
+          %td
+            %b=h grade.subjectgrade.subject_list 
+        - if @subjects_of_grades > 1
+        - else
+          - @score_for_legend_sort_1 = Score.where('grade_id=?',grade.id).sort_by{|x|x.created_at}
+          - @score_for_legend_sort_1.each_with_index do |score_1, score_count|
+            %td{:style=>"text-align:center;background-color:#EDFDEB;"}
+              = text_field_tag "scores_attributes[#{score_count}][marks][]", number_with_precision(score_1.marks,:precision=>2), :size=> 4,:class=>'i1',:id=>"score_"+"#{no}"+"_"+score_count.to_s 
+              = hidden_field_tag "formweight", score_1.weightage, :id=>"formweight_"+"#{no}"+"_"+score_count.to_s,:size=>2,:class=>'i1'
+        
+        /23June2013-no changes here but pls refer js part
+        %td{:style=>"background-color:#E5ECE5;text-align:center;"}
+          = text_field_tag "scores[]", number_with_precision(grade.score,:precision=>2), :size=> 4,:id=>"caplusmse"+no.to_s
+        - if @subjects_of_grades > 1 
+          /if subject for selected grades is different
+          %td{:style=>"background-color:#EEF9F9;text-align:center;"}
+            = text_field_tag "examweights[]", number_with_precision(grade.examweight,:precision=>2), :size=> 4, :id=>"examweight"+no.to_s
+        - else
+          = hidden_field_tag "examweights[]", number_with_precision(grade.examweight,:precision=>2), :id=>"examweight"+no.to_s
+        %td{:style=>"background-color:#FEE;text-align:center;"}
+          = text_field_tag "exam1markss[]", number_with_precision(grade.exam1marks,:precision=>2), :size=> 4,:id=>"finalexam"+no.to_s,:class=>'k1'
+        %td{:style=>"background-color:#FEE;text-align:center;"}
+          = text_field_tag "summatives[]", number_with_precision(grade.summative,:precision=>2), :size=> 4,:id=>"summative"+no.to_s 
+        %td{:style=>"background-color:#EEF;text-align:center;"}
+          = text_field_tag "finalscores[]", number_with_precision(grade.finalscore,:precision=>2), :size=> 4,:id=>"finalscore"+no.to_s
+        %td
+          /--asal-http://apidock.com/rails/ActionView/Helpers/FormTagHelper/check_box_tag
+          /#= check_box_tag "sent_to_BPLs[#{no}]", true, :name => "sent_to_BPLs[]"
+          /-use iteration nos of grade
+          = check_box_tag "sent_to_BPLs[#{no}]", true, grade.sent_to_BPL 
+          /-use grade.id
+          /#= check_box_tag "sent_to_BPLs[#{grade.id}]", true, grade.sent_to_BPL 
+        %td{:style=>"text-align:center;"}= check_box_tag "eligible_for_exams[#{no}]", true, grade.eligible_for_exam
+        %td{:style=>"text-align:center;"}= check_box_tag "carry_papers[#{no}]", true, grade.carry_paper
+        %td{:style=>"text-align:center;"}=check_box_tag "resits[#{no}]", true, grade.resit
+ 
+      
+
+      
+//////////////////////
+/	<table cellspacing=0 cellpadding=0>
+/		<tr>
+/			<th>No</th>
+/			<th>Student</th>
+/			<th>Mykad No</th>
+/			<% if @subjects_of_grades > 1 %><!--if subject for selected grades is different
+/				<th>Subject</th>
+/			<% end %>
+/			<% if @subjects_of_grades > 1 %>
+/			<% else %>
+/				<% @score_for_legend_sort.each do |score_x|%><!--1st item
+/				<%# 0.upto(@grades[0].scores.count-1) do |score_count|%>
+/					<th style="text-align:center;background-color:#EFE;">
+/						<font size=-2>
+/						<%=h (Score::E_TYPES.find_all{|disp, value| value == score_x.type_id}).map {|disp, value| disp} %><br>
+/						<%#=h (Score::E_TYPES.find_all{|disp, value| value == @grades[0].scores[score_count].type_id.to_i}).map {|disp, value| disp} %>
+/						(<%=h score_x.weightage.to_i %>%)<!--15June2013 HIDE this - instead display..this
+/						<!--23June2013 (in %)
+/						</font>
+/					</th>
+/				<% end %>
+/			<% end %>
+/			<!--15th June 2013 - hide this column, refer grade.rb, line 36-38 - total-up value of scores(other than mcq) in scores table, no need to display...
+/			<th style="background-color:#E5ECE5;text-align:center;">Total Formative</th>
+/			
+/			<!--#D7EFD7
+/			<th style="background-color:#E5ECE5;text-align:center;">CA+MSE</th><!--#C3E9BF
+/			<% if @subjects_of_grades > 1 %><!--if subject for selected grades is different
+/				<th style="background-color:#EEF9F9;text-align:center;">Summative Weightage</th>
+/			<% end %>
+/			<th style="background-color:#FEE;text-align:center;">
+/				Final Exam<br><font size=-2>(Written Paper)</font></th>
+/			<th style="background-color:#FEE;text-align:center;">Total Summative</th>
+/			<th style="background-color:#EEF;text-align:center;">Total Marks</th>
+/			<th>BPL</th>
+/			<th>Exam?</th>
+/			<th>Carry Paper<<% if @subjects_of_grades > 1 %><!--if subject for selected grades is different
+/				<th style="background-color:#EEF9F9;text-align:center;">Summative Weightage</th>
+/			<% end %>
+/			<th style="background-color:#FEE;text-align:center;">
+/				Final Exam<br><font size=-2>(Written Paper)</font></th>
+/			<th style="background-color:#FEE;text-align:center;">Total Summative</th>
+/			<th style="background-color:#EEF;text-align:center;">Total Marks</th>
+/			<th>BPL</th>
+/			<th>Exam?</th>
+/			<th>Carry Paper</th>
+/			<th>Resit</th>/th>
+/			<th>Resit</th>
+/			<!--
+/			<th>Total MCQ</th>
+/				<%# @examid = @exammarks[0].exam_id %>
+/				<%# @mcqcount = Examquestion.find(:all, :joins=> :exams, :conditions=>['questiontype=? and exam_id=?',"MCQ", @examid ]).count %>
+/				<%# @meqcount = Examquestion.find(:all, :joins=> :exams, :conditions=>['questiontype=? and exam_id=?',"MEQ", @examid ]).count %>
+/				<%# @seqcount = Examquestion.find(:all, :joins=> :exams, :conditions=>['questiontype=? and exam_id=?',"SEQ", @examid ]).count %>
+/				<%# @acqcount = Examquestion.find(:all, :joins=> :exams, :conditions=>['questiontype=? and exam_id=?',"ACQ", @examid ]).count %>
+/			<%# 1.upto(@mcqcount) do |count|%>
+/				<th>MCQ-Q <%#=count%></th>
+/			<%# end %>
+/			<%# 1.upto(@meqcount) do |count|%>
+/				<th>MEQ-Q <%#=count%></th>
+/			<%# end %>
+/			<%# 1.upto(@seqcount) do |count|%>
+/				<th>SEQ-Q <%#=count%></th>
+/			<%# end %>
+/			<%# 1.upto(@acqcount) do |count| %>
+/				<th>ACQ-Q <%#=count%></th>
+/			<%# end %>
+
+/		</tr>
+/		<%# for exammark in @exammarks %>
+/		<%# @exammarks.sort_by{|x|x.studentmark.name}.each do |exammark| %>
+/		<% @grades.sort_by{|x|x.studentgrade.name}.each_with_index do |grade, no| %>
+/		
+/			<!--note: DIV:grade_weightage_multiple NOT grades_0_weightage_multiple-refer grades/_update_weightage.html.erb
+/			<%= tag("div", :id => form_tag_id(f.object_name, :weightage_multiple)) %></div>
+/			<!--note: DIV:grade_weightage_multiple NOT grades_0_weightage_multiple-refer grades/_update_weightage.html.erb
+
+/			<%= hidden_field_tag "grade_ids[]", grade.id %><%#result ==> "grade_ids"=>["4","3","2","1"]  == grade_ids[]  %>
+
+			
+/			<tr>
+/				<td><%=no+1%></td>
+/				<td><%#=exammark.id%><%=h grade.studentgrade.matrix_name %></td>
+/				<td><%=h grade.studentgrade.icno %></td>
+/<% if @edit_type == "Edit Checked" || @edit_type.nil? %>	
+	
+/<%# elsif @edit_type == "Edit by Subject" %>
+/	<%##= hidden_field_tag "subject_ids[]", @subject_id %>
+/	<%#= hidden_field_tag "exam_ids[]", @exam_id %>
+/<% end %>		
+/				<% if @subjects_of_grades > 1 %><!--if subject for selected grades is different
+/					<td><b><%=h grade.subjectgrade.subject_list %></b></td>
+/				<% end %>
+/				<% if @subjects_of_grades > 1 %>
+/				<% else %>
+/					<%# 0.upto(grade.scores.count-1) do |score_count|%><!--@score_for_legend_sort
+/					<!--
+/					<% @score_for_legend_1 = Score.find(:all,:conditions=>['grade_id=?',grade.id])%>
+/					<% @score_for_legend_sort_1 = @score_for_legend_1.sort_by{|x|x.created_at} %>
+/					<!--
+/					<% @score_for_legend_sort_1.each_with_index do |score_1, score_count|%>
+/					<%# 0.upto(grade.scores.count-1) do |score_count|%>
+/						<td style="text-align:center;background-color:#EDFDEB;">
+/							<%##=h grade.scores[score_count].marks%>
+/							<%= text_field_tag "scores_attributes[#{score_count}][marks][]", number_with_precision(score_1.marks,:precision=>2), :size=> 4,:class=>'i1',:id=>"score_"+"#{no}"+"_"+score_count.to_s %>
+/							<%#= text_field_tag "scores_attributes[#{score_count}][marks][]", grade.scores[score_count].marks, :size=> 4,:class=>'i1',:id=>"score_"+"#{no}"+"_"+score_count.to_s %>
+/							<%= hidden_field_tag "formweight", score_1.weightage, :id=>"formweight_"+"#{no}"+"_"+score_count.to_s,:size=>2,:class=>'i1' %>
+/							<%#= hidden_field_tag "formweight", grade.scores[score_count].weightage, :id=>"formweight_"+"#{no}"+"_"+score_count.to_s,:size=>2,:class=>'i1' %>
+/							<%##= grade.scores[score_count].id %>
+/						</td>
+/					<% end %>
+/				<% end %>
+				
+/				<!--15June2013-hide this line from display...but value still there...just hide field or JS will not work!
+/				<td style="text-align:center;background-color:#E5ECE5;">
+/					<%##= hidden_field_tag "total_mcqs[]", exammark.total_mcq, :size=> 4 %><%#=exammark.total_mcq%>
+/					<%##= text_field_tag "marks_attributes[#{index}][student_marks][]", aa.student_mark, :size=> 4 %>
+/					<%##= text_field "grades[#{index}]",:subject_id, :value=> @subject_id %>
+/					<%= hidden_field_tag "formatives[]", number_with_precision(grade.formative,:precision=>2), :size=> 4,:id=>"totalformative"+no.to_s,:class=>'j1'  %><%##=exammark.total_mcq%>
+/				<!--</td>
+				
+/				<!--23June2013-no changes here but pls refer js part
+/				<td style="background-color:#E5ECE5;text-align:center;"><%= text_field_tag "scores[]", number_with_precision(grade.score,:precision=>2), :size=> 4,:id=>"caplusmse"+no.to_s %></td>
+/				<!--23June2013
+				
+/				<% if @subjects_of_grades > 1 %><!--if subject for selected grades is different
+/					<td style="background-color:#EEF9F9;text-align:center;">
+/						<%= text_field_tag "examweights[]", number_with_precision(grade.examweight,:precision=>2), :size=> 4, :id=>"examweight"+no.to_s %>
+/					</td>
+/				<% else %>
+/						<%= hidden_field_tag "examweights[]", number_with_precision(grade.examweight,:precision=>2), :id=>"examweight"+no.to_s %>
+/				<% end %>
+/				<td style="background-color:#FEE;text-align:center;"><%= text_field_tag "exam1markss[]", number_with_precision(grade.exam1marks,:precision=>2), :size=> 4,:id=>"finalexam"+no.to_s,:class=>'k1' %></th>
+/				<td style="background-color:#FEE;text-align:center;"><%= text_field_tag "summatives[]", number_with_precision(grade.summative,:precision=>2), :size=> 4,:id=>"summative"+no.to_s %></td>
+/				<td style="background-color:#EEF;text-align:center;"><%= text_field_tag "finalscores[]", number_with_precision(grade.finalscore,:precision=>2), :size=> 4,:id=>"finalscore"+no.to_s %></td>
+/				<td>
+/					<!--asal-http://apidock.com/rails/ActionView/Helpers/FormTagHelper/check_box_tag
+/					<%#= check_box_tag "sent_to_BPLs[#{no}]", true, :name => "sent_to_BPLs[]" %>
+/					<!--use iteration nos of grade
+/					<%= check_box_tag "sent_to_BPLs[#{no}]", true, grade.sent_to_BPL %>
+/					<!--use grade.id
+/					<%#= check_box_tag "sent_to_BPLs[#{grade.id}]", true, grade.sent_to_BPL %>
+/				</td>
+/				<td style="text-align:center;"><%= check_box_tag "eligible_for_exams[#{no}]", true, grade.eligible_for_exam %></td>
+/				<td style="text-align:center;"><%= check_box_tag "carry_papers[#{no}]", true, grade.carry_paper %></td>
+/				<td style="text-align:center;"><%= check_box_tag "resits[#{no}]", true, grade.resit %></td>
+/			</tr>	
+/		<% end%>
+/	</table>
+/<%= f.submit "Submit" %> 

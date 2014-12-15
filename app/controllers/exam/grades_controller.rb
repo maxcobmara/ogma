@@ -117,10 +117,45 @@ class Exam::GradesController < ApplicationController
   end
   
   def edit_multiple
+    @gradeids = params[:grade_ids]
+    unless @gradeids.blank? 
+      @grades = Grade.find(@gradeids).sort_by{|x|x.studentgrade.name} #@grades = Grade.find(@gradeids)
+      @edit_type = params[:grade_submit_button]
+      if @edit_type ==  t('edit_checked') 
+        ## continue multiple edit (including subject edit here) --> refer view
+      end 
+    else  
+      flash[:notice] = t 'exam.exammark.select_one'
+      redirect_to exam_grades_path
+    end
   end
   
   def update_multiple
   end
+  
+  # DELETE /grades/1
+  # DELETE /grades/1.xml
+  def destroy
+    @grade = Grade.find(params[:id])
+    @grade.destroy
+
+    respond_to do |format|
+      format.html { redirect_to(exam_grades_url) }
+      format.xml  { head :ok }
+    end
+  end
+  
+  def add_formative
+    @data="yaya"
+     respond_to do |format|
+      format.js 
+     end
+  end
+  
+  def form_try
+     @nombor = params[:index]
+     render :layout => false
+   end
   
   private
   

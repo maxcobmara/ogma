@@ -1,0 +1,91 @@
+- if @grades.count >= 1 
+  - @sum_weight = @grades.map(&:examweight).uniq.count 
+  - @grade_score_type_comp = []
+  - @grade_score_desc_comp = [] 
+  - @grade_score_weight_comp = []
+  - @grade_sum_weight_comp = []
+  - @grade_score_type_diff = []
+  - @grade_score_desc_diff = []
+  - @grade_score_weight_diff = []
+
+  - @grades.sort_by{|x|x.studentgrade.name}.each_with_index do |grade, no| 
+    - if no == 0
+      - @score_for_legend_1 = Score.where('grade_id=?',grade.id)
+      - @score_for_legend_sort_1 = @score_for_legend_1.sort_by{|x|x.created_at}
+      - @a_type = @score_for_legend_sort_1.map(&:type_id) 
+      - @a_desc = @score_for_legend_sort_1.map(&:description).uniq  
+      - @a_weight = @score_for_legend_sort_1.map(&:weightage) 
+      - @a_sum_weight = grade.examweight
+    - else
+      - @b_type = @score_for_legend_sort_1.map(&:type_id)
+      - @b_desc = @score_for_legend_sort_1.map(&:description).uniq
+      - @b_weight = @score_for_legend_sort_1.map(&:weightage)
+      - @b_sum_weight = grade.examweight 
+      - @grade_score_type_comp << (@a_type == @b_type)
+      - @grade_score_desc_comp << (@a_desc == @b_desc)
+      - @grade_score_weight_comp << (@a_weight == @b_weight)
+      - @grade_sum_weight_comp << (@a_sum_weight == @b_sum_weight)
+
+  - @score_for_legend_sort = Score.where('grade_id=?',@grades[0].id).sort_by{|x|x.created_at}
+
+/Please note : use this : scores_attributes[#{score_count}][type_id] INSTEAD OF this:scores_attributes[#{score_count}][type_id][]
+    
+.col-md-8.col-md-offset-1
+  %br
+  %b= t('exam.grade.formative_scores').upcase
+  .row
+    .col-sm-3
+      = t 'exam.grade.type'
+      - if @grade_score_type_comp.include?(false)
+        %span{:style=>"color:red;"}*
+    .col-sm-5
+      = t 'exam.grade.description' 
+      - if @grade_score_desc_comp.include?(false)
+        %span{:style=>"color:red;"}*
+    .col-sm-2
+      =t 'exam.grade.weightage'
+      - if @grade_score_weight_comp.include?(false)
+        %span{:style=>"color:red;"}*
+    %hr     
+
+  - @score_for_legend_sort.each_with_index do |score_x,score_count|
+    .row
+      .col-sm-3=select_tag "scores_attributes[#{score_count}][type_id]", options_for_select(DropDown::E_TYPES,score_x.type_id), class: 'form-control'
+      .col-sm-5= text_field_tag "scores_attributes[#{score_count}][description]",score_x.description, :size=> 15 , class: 'form-control'
+      .col-sm-2=select_tag "scores_attributes[#{score_count}][weightage]", options_for_select(DropDown::WEIGHTAGE,score_x.weightage), class: 'form-control'
+  %br
+  .row
+    .col-sm-3= submit_tag 'Apply Changes', :name =>:applychange, class: "btn btn-default" 
+    .col-sm-9 Please CONFIRM or MODIFY & 'Apply Changes' for above Summative Weightage and Formative Scores items before proceeding with data entry. 
+    %br
+    %br
+    %hr
+
+  %BR
+  - count = @grades[0].scores.count 
+  #barunyediv
+    - @current_subject = @grades[0].subjectgrade.id 
+    = link_to "Add Formative", "#", :id=>'new_score_type' , :remote => true 
+    = link_to "Try add", add_formative_exam_grade_path(1), :remote=>true
+    =link_to "lagi try", "exam/grades/add_formative/1", :remote=>true
+    
+    /below line is from catechumen - link_to_remote - no longer working
+    /when click below link, content of 'form_try.html.erb' shall update 'barunyediv'
+    /  = link_to_remote image_tag("add.png", :border => 0, :title => 'Add More'), :url => {:action => 'form_try', :index => count,:subject=>@current_subject}, :update => 'barunyediv' 
+    /  /\- Add More 
+    /form_try.html.erb - consist of :
+    /  =select_tag "scores_attributes[#{score_count}][type_id]", options_for_select(Score::E_TYPES), 
+    /  = text_field_tag "scores_attributes[#{score_count}][description]", {}, :size=> 15 
+    /  =select_tag "scores_attributes[#{score_count}][weightage]", options_for_select(Grade::WEIGHTAGE)
+    /  div id="barunyediv_<%= abc %>">
+    /   <%#= link_to_remote image_tag("add.png", :border => 0, :title => 'Add More'), :url => {:action => 'form_try', :index => abc ,:subject=>@current_subject }, :update => "barunyediv_#{abc}" %> - Add More 
+    
+  
+:javascript 
+  $("#new_score_type").click(function(){
+    alert("hmmmm");
+    $("#barunyediv").append("test lkkk!");
+    $("#barunyediv").append("#{@current_subject}");
+    $("#barunyediv").append("<%= escape_javascript(render(@grades)) %>"); 
+  });
+

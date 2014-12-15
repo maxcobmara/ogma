@@ -1,0 +1,77 @@
+- model_class = Grade
+.page-header
+  %h1= t 'exam.grade.multiple_edit'
+= render 'shared/flashes'
+
+- @subjects_of_grades = @grades.map(&:subject_id).uniq.count
+
+.row
+  .col-md-12
+    .alert.alert-info
+      %font{:style=>"size: -2; color: blue;"}
+        %b= t 'exam.grade.total_formative'
+        =" = "+t('exam.grade.sum_of_scores').to_s
+        %b CA+MSE
+        =" = "+t('exam.grade.total_formative').to_s+" *  ( 100 - "+t('exam.grade.examweight')+") /100"
+        %br
+        %b= t 'exam.grade.summative'
+        =" = ("+t('exam.grade.final_exam')+" * "+t('exam.grade.examweight')+") / 100, "
+        %b= t 'exam.grade.total_marks'
+        =" = CA+MSE + "+ t('exam.grade.summative')
+
+- if @subjects_of_grades==1
+  = form_tag update_multiple_exam_grades_path, :id => "form1", :html => {:method => :put} do |f|
+    = hidden_field_tag :redirect_location, exam_grades_path  
+    .row  
+      .col-md-10.col-md-offset-1
+        / Nav tabs
+        %ul.nav.nav-tabs
+          %li.active= link_to ((t 'exam.grade.grade_details')),"#grade_details", "data-toggle" => "tab"
+
+        / display 
+        .tab-content{style:"padding-top:1em"}
+          .col-md-offset-2
+            .row
+              .form-group
+                .col-sm-2.control-label
+                  %b= t 'exam.grade.subject_id'
+                .col-md-5=@grades[0].subjectgrade.subject_list
+            .row
+              .form-group
+                .col-sm-2.control-label
+                  %b= t 'exam.grade.examweight'
+                .col-md-1
+                  - @sum_weight = @grades.map(&:examweight).uniq.count if @grades.count >= 1 
+                  =select_tag "grade[summative_weightage]", options_for_select(DropDown::WEIGHTAGE, @grades[0].examweight), {class: 'selectpicker'}
+                  - if @sum_weight>1 
+                    %span{:style=>"color:red;"}*
+            /.row
+            /  .form-group
+            /    .col-sm-2.control-label
+            /      %b= t 'exam.grade.formative_scores'
+
+          #grade_details.tab-pane.active
+            .col-md-10
+              %br
+              = render :partial => 'formative_template', :f=>f
+              = render :partial => 'formative_contents', :f=>f
+            /.col-md-11
+            /  %br
+            /  = render :partial => 'form_multiple', :f=>f
+    
+      .col-md-offset-1  
+        .form-group
+          .col-sm-offset-3.col-sm-1
+            = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), exam_grades_path, :class => 'btn btn-default'
+          .col-sm-2
+            = submit_tag t('update'), :name => :grade_submit_button, class: "btn btn-primary"         
+- else
+  .row
+    .col-md-12
+      .alert.alert-info
+        = t 'exam.grade.student_same_exam'
+  .row
+    .col-md-offset-1  
+      .form-group
+        .col-sm-offset-3.col-sm-1
+          = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), exam_grades_path, :class => 'btn btn-default'

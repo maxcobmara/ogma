@@ -1626,6 +1626,7 @@ ms_MY:
       title: Gred Peperiksaan
       new: Gred Peperiksaan Baru
       edit: Sunting Gred Peperiksaan
+      multiple_edit: Suntingan Pukal Gred Peperiksaan
       student_id: Pelajar
       subject_id: Subjek
       programme: Program
@@ -1659,6 +1660,9 @@ ms_MY:
       required: Diperlukan
       not_required: Tidak diperlukan
       weightage_before_marks: "Masukkan Pemberat Sumatif terlebih dahulu, bagi membolehkan medan Jumlah Akhir dan Gred dikemaskini berdasarkan kemasukan / perubahan data MARKAH Peperiksaan"
+      sum_of_scores: "Jumlah Skor (%), "
+      total_marks: Jumlah Markah
+      final_exam: Peperiksaan Akhir
        
     examresult:
       title: Keputusan Peperiksaan Mengikut Program

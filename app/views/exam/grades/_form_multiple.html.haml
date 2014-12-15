@@ -1,0 +1,195 @@
+- if @grades.count >= 1 
+  - @sum_weight = @grades.map(&:examweight).uniq.count 
+  - @grade_score_type_comp = []
+  - @grade_score_desc_comp = [] 
+  - @grade_score_weight_comp = []
+  - @grade_sum_weight_comp = []
+  - @grade_score_type_diff = []
+  - @grade_score_desc_diff = []
+  - @grade_score_weight_diff = []
+
+  - @grades.sort_by{|x|x.studentgrade.name}.each_with_index do |grade, no| 
+    - if no == 0
+      - @score_for_legend_1 = Score.where('grade_id=?',grade.id)
+      - @score_for_legend_sort_1 = @score_for_legend_1.sort_by{|x|x.created_at}
+      - @a_type = @score_for_legend_sort_1.map(&:type_id) 
+      - @a_desc = @score_for_legend_sort_1.map(&:description).uniq  
+      - @a_weight = @score_for_legend_sort_1.map(&:weightage) 
+      - @a_sum_weight = grade.examweight
+    - else
+      - @b_type = @score_for_legend_sort_1.map(&:type_id)
+      - @b_desc = @score_for_legend_sort_1.map(&:description).uniq
+      - @b_weight = @score_for_legend_sort_1.map(&:weightage)
+      - @b_sum_weight = grade.examweight 
+      - @grade_score_type_comp << (@a_type == @b_type)
+      - @grade_score_desc_comp << (@a_desc == @b_desc)
+      - @grade_score_weight_comp << (@a_weight == @b_weight)
+      - @grade_sum_weight_comp << (@a_sum_weight == @b_sum_weight)
+
+
+
+/note: VAR:grade_summative_weightage, DIV:grade_weightage_multiple NOT grades_0_summative_weightage   
+- @intake_val = @grades[0].studentgrade.intake.to_s
+- @programmeid = @grades[0].studentgrade.course_id 
+- @modify = "yes"
+.row 
+  .col-sm-2
+    %b Summative Weightage
+    %b=t 'exam.grade.examweight'
+  .col-md-1
+    =select_tag "grade[summative_weightage]", options_for_select(DropDown::WEIGHTAGE, @grades[0].examweight), {class: 'selectpicker'}
+    /= f.select :summative_weightage, Grade::WEIGHTAGE, {:selected=> @grades[0].examweight}
+    //= f.select :summative_weightage, Grade::WEIGHTAGE, {:selected=> @grades[0].examweight}, :onchange => remote_function(:update => form_tag_id(f.object_name, :weightage_multiple), :url => {:action=>'update_summative_weightage'}, :with => "'weightage='+$('"+"grade_summative_weightage"+"').value+'&intakeid='+'#{@intake_val}'+'&programmeid='+'#{@programmeid}'+'&modify='+'#{@modify}' ")
+    - if @sum_weight>1 
+      %span{:style=>"color:red;"}*
+.row
+  .col-sm-2 
+    %b Formative Scores
+    /Please note : use this : scores_attributes[#{score_count}][type_id] INSTEAD OF this:scores_attributes[#{score_count}][type_id][]
+
+%table
+  %tr
+    %th
+      = t 'exam.grades.type'
+      - if @grade_score_type_comp.include?(false)
+        %span{:style=>"color:red;"}*
+    %th
+      = t 'exam.grade.description'
+      - if @grade_score_desc_comp.include?(false)
+        %span{:style=>"color:red;"}*
+    %th
+      = t 'exam.grade.weightage'
+      - if @grade_score_weight_comp.include?(false)
+        %span{:style=>"color:red;"}*
+    - if @grade_score_type_comp.include?(false) || @grade_score_desc_comp.include?(false) || @grade_score_weight_comp.include?(false) 
+      %th Differences
+  - @score_for_legend = Score.where('grade_id=?',@grades[0].id)
+  - @score_for_legend_sort = @score_for_legend.sort_by{|x|x.created_at}
+  - @score_for_legend_sort.each_with_index do |score_x,score_count|
+    %tr
+      %td=select_tag "scores_attributes[#{score_count}][type_id]", options_for_select(DropDown::E_TYPES,score_x.type_id)
+      %td= text_field_tag "scores_attributes[#{score_count}][description]",score_x.description, :size=> 15 
+      %td=select_tag "scores_attributes[#{score_count}][weightage]", options_for_select(DropDown::WEIGHTAGE,score_x.weightage)
+      - if (@grade_score_type_comp.include?(false) || @grade_score_desc_comp.include?(false) ||  @grade_score_weight_comp.include?(false) || @sum_weight>1) && score_count==0
+        %td{:rowspan=>"6"}
+          /start-display differences for summative weightage (examweight)
+          %span{:style=>"color:red;"}
+            - @grade_sum_weight_comp.each_with_index do |x,y|
+              - if y==0 && @grade_sum_weight_comp.include?(false)
+                %span{:style=>"text-decoration:underline;font-weight:bold;"} Summative Weightage
+                %br
+              - if x==false
+                =y+2
+                - if (@grades[y+1].examweight <=> @grades[0].examweight) == -1
+                  - if @grades[y+1].examweight != @grades[0].examweight
+                    =h @grades[y+1].examweight
+                    (other records:
+                    =h @grades[0].examweight
+                    ) 
+                - elsif (@grades[y+1].examweight <=> @grades[0].examweight) == 1 
+                  - if @grades[0].examweight != @grades[y+1].examweight
+                    =h @grades[0].examweight
+                    (other records:
+                    =h @grades[y+1].examweight
+                    ) 
+              - if (x==false)&&(y < @grades.count-1) 
+                %br
+        
+          /start-display differences for score type
+          %span{:style=>"color:red;"}
+            - @grade_score_type_comp.each_with_index do |x,y| 
+              - if y==0 && @grade_score_type_comp.include?(false)
+                %span{:style=>"text-decoration:underline;font-weight:bold;"}Score Type
+                %br
+              - if x==false
+                =y+2
+                - if (@grades[y+1].scores.map(&:type_id) <=> @score_for_legend_sort.map(&:type_id)) == -1 
+                  /#if (@grades[y+1].scores.map(&:type_id) <=> @grades[0].scores.map(&:type_id)) == -1
+                  - @diff_type = @score_for_legend_sort.map(&:type_id) - @grades[y+1].scores.map(&:type_id)
+                  - @grades[y+1].scores.each_with_index do |r,s|
+                    /$$$$$$$$$$$$$$$
+                    - if r.type_id != score_x.type_id
+                      =h (Score::E_TYPES.find_all{|disp, value| value == r.type_id}).map {|disp, value| disp} 
+                      (other records:
+                      =h (Score::E_TYPES.find_all{|disp, value| value == @diff_type[0].to_i}).map {|disp, value| disp} 
+                      ) 
+                      \- item 
+                      =s+1
+                    - elsif (@grades[y+1].scores.map(&:type_id) <=> @score_for_legend_sort.map(&:type_id)) == 1
+                      - @diff_type = @grades[y+1].scores.map(&:type_id) - @score_for_legend_sort.map(&:type_id)
+                  - @score_for_legend_sort.each_with_index do |r,s|
+                    /#******$$$$$$$$$$$$$$$
+                    - if r.type_id != @grades[y+1].scores[s].type_id
+                      =h (Score::E_TYPES.find_all{|disp, value| value == @diff_type[0].to_i}).map {|disp, value| disp}
+                      (other records:
+                      =h (Score::E_TYPES.find_all{|disp, value| value == r.type_id}).map {|disp, value| disp} 
+                      ) 
+                      \- item 
+                      =s+1
+              - if (x==false)&&(y < @grades.count-1) 
+                %br
+
+          /start-display differences for description
+          %span{:style=>"color:red;"}
+            - @grade_score_desc_comp.each_with_index do |x,y| 
+              - if y==0 && @grade_score_desc_comp.include?(false)
+                %span{:style=>"text-decoration:underline;font-weight:bold;"}Description
+                %br
+              - if x==false 
+                =y+2
+                = @grades[y+1].scores.map(&:description).uniq - @score_for_legend_sort.map(&:description).uniq
+              - if (x==false)&&(y < @grades.count-1)
+                %br
+      
+          /start-display differences for weightage
+          %span{:style=>"color:red;"} 
+            - @grade_score_weight_comp.each_with_index do |x,y|
+              - if y==0 && @grade_score_weight_comp.include?(false)
+                %span{:style=>"text-decoration:underline;font-weight:bold;"}Weightage
+                %br
+              - if x==false 
+                =y+2
+                &nbsp;
+                - if (@grades[y+1].scores.map(&:weightage) <=> @score_for_legend_sort.map(&:weightage)) == -1 % 
+                  - @diff_type = @score_for_legend_sort.map(&:weightage) - @grades[y+1].scores.map(&:weightage) 
+                  - @grades[y+1].scores.each_with_index do |r,s|
+                    - if r.weightage != score_x.weightage
+                      =h (Score::E_TYPES.find_all{|disp, value| value == r.weightage}).map {|disp, value| disp} 
+                      (other records:
+                      =h (Score::E_TYPES.find_all{|disp, value| value == @diff_type[0].to_i}).map {|disp, value| disp} 
+                      ) 
+                      \- item 
+                      =s+1
+                - elsif (@grades[y+1].scores.map(&:weightage) <=> @score_for_legend_sort.map(&:weightage)) == 1
+                  - @diff_type = @grades[y+1].scores.map(&:weightage) - @score_for_legend_sort.map(&:weightage)
+                  - @score_for_legend_sort.each_with_index do |r,s|
+                    - if r.weightage != @grades[y+1].scores[s].weightage 
+                      =@diff_type[0]
+                      \%
+                      (other records:
+                      =r.weightage 
+                      \%) 
+                      \- item 
+                      =s+1
+              - if (x==false)&&(y < @grades.count-1)
+                %br
+  %tr{:colspan=>"4"}
+    - count = @grades[0].scores.count 
+    #barunyediv
+      - @current_subject = @grades[0].subjectgrade.id 
+      /= link_to_remote image_tag("add.png", :border => 0, :title => 'Add More'), :url => {:action => 'form_try', :index => count,:subject=>@current_subject}, :update => 'barunyediv' 
+      /\- Add More 
+
+- if (@grade_score_type_comp.include?(false) || @grade_score_desc_comp.include?(false) || @grade_score_weight_comp.include?(false))
+  %span{:style=>"color:red;"}
+    * indicates different values found for
+  %b Summative Weightage
+  OR 
+  %b formative score items of each\/some student grades. Edit each grade record 
+  %span{:style=>"color:red;"}
+    separately
+  OR modify & click 'Apply Changes' to 
+  %b standardize
+  summative weightage and\/or formative score items for subject
+  %b=@grades[0].subjectgrade.code
+  = submit_tag 'Apply Changes', :name =>:applychange
