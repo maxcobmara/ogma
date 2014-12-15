@@ -20,8 +20,15 @@
         =" = CA+MSE + "+ t('exam.grade.summative')
 
 - if @subjects_of_grades==1
-  = form_tag update_multiple_exam_grades_path, :id => "form1", :html => {:method => :put} do |f|
-    = hidden_field_tag :redirect_location, exam_grades_path  
+  /= form_for [:exam, @grade], html: { class: 'form-horizontal' }  do |f| 
+  /  = render 'shared/error_messages', object: f.object
+  /= form_tag update_multiple_exam_grades_path, :id => "form1", :html => {:method => :put} do |f|
+  /  = hidden_field_tag :redirect_location, exam_grades_path  
+  /= form_for @article, url: {action: "create"}, html: {class: "nifty_form"} do |f| 
+  / {action: "update_multiple"}
+  = form_for [:exam, @grades_obj], url: update_multiple_exam_grades_path, html: {:method => :post} do |f|
+    = hidden_field_tag :redirect_location, exam_grades_path 
+
     .row  
       .col-md-10.col-md-offset-1
         / Nav tabs
@@ -53,7 +60,7 @@
           #grade_details.tab-pane.active
             .col-md-10
               %br
-              = render :partial => 'formative_template', :f=>f
+              = render :partial =>'formative_template', :locals=>{:f=>f}
               = render :partial => 'formative_contents', :f=>f
             /.col-md-11
             /  %br

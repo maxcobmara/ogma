@@ -120,6 +120,7 @@ class Exam::GradesController < ApplicationController
     @gradeids = params[:grade_ids]
     unless @gradeids.blank? 
       @grades = Grade.find(@gradeids).sort_by{|x|x.studentgrade.name} #@grades = Grade.find(@gradeids)
+      @grades_obj = @grades[0]
       @edit_type = params[:grade_submit_button]
       if @edit_type ==  t('edit_checked') 
         ## continue multiple edit (including subject edit here) --> refer view
@@ -131,6 +132,31 @@ class Exam::GradesController < ApplicationController
   end
   
   def update_multiple
+    @gradeids = params[:grade_ids]
+    unless @gradeids.blank?
+      @grades = Grade.find(@gradeids)
+      @grades_obj = @grades[0]
+      submit_type = params[:grade_submit_button]
+      #add code here-start
+      #if apply changes
+        #buat ape
+      #elsif update
+        #buat ape
+      #add code here-end 
+      if submit_type == t('update')
+        respond_to do |format|
+          format.html { redirect_to(exam_grades_url, :notice =>"test dulu la...blm simpan data!") }
+          format.xml  { head :ok }
+        end
+      elsif submit_type == 'Apply Changes'
+        respond_to do |format|
+	  flash[:notice]= "test dulu la...APPLY Changes clicked!"
+	  format.html {render :action => 'edit_multiple'}
+          format.xml  { head :ok }
+        end
+      end
+    end #end for unless
+    
   end
   
   # DELETE /grades/1

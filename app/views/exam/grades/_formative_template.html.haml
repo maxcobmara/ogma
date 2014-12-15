@@ -50,12 +50,38 @@
 
   - @score_for_legend_sort.each_with_index do |score_x,score_count|
     .row
-      .col-sm-3=select_tag "scores_attributes[#{score_count}][type_id]", options_for_select(DropDown::E_TYPES,score_x.type_id), class: 'form-control'
+      .col-sm-3=select_tag "scores_attributes[#{score_count}][type_id]", options_for_select(DropDown::E_TYPES,score_x.type_id), {class: 'selectpicker'}
       .col-sm-5= text_field_tag "scores_attributes[#{score_count}][description]",score_x.description, :size=> 15 , class: 'form-control'
-      .col-sm-2=select_tag "scores_attributes[#{score_count}][weightage]", options_for_select(DropDown::WEIGHTAGE,score_x.weightage), class: 'form-control'
-  %br
+      .col-sm-2=select_tag "scores_attributes[#{score_count}][weightage]", options_for_select(DropDown::WEIGHTAGE,score_x.weightage), {class: 'selectpicker'}
+      
+  - @job_type="multiple"
+  - @score_count2 = @score_for_legend_sort.count
+  = f.fields_for :scores do |builder|
+    - if builder.object.id=nil && builder.object.created_at=nil
+      = render 'score_fields', :f => builder
+      - @score_count2+=1
+   
   .row
-    .col-sm-3= submit_tag 'Apply Changes', :name =>:applychange, class: "btn btn-default" 
+    /= link_to_add_fields image_tag("add.png", :border => 0, :title => t('addmore')), f, :kins
+    = link_to_add_fields t('addmore'), f, :scores, "",  t('addmore')
+
+  %br
+  /      #contacts.tab-pane
+  /      .row
+  /        .col-sm-offset-1.col-sm-1= t 'staff.kintype_id'
+  /        .col-sm-2= t 'staff.name'
+  /        .col-sm-1= t 'staff.icno'
+  /        .col-sm-1= t 'staff.phone'
+  /        .col-sm-2 Profession
+  /        .col-sm-4 Address
+  /      = f.fields_for :kins do |builder|
+  /        = render 'kin_fields', :f => builder
+  /      .row
+  /        /= link_to_add_fields image_tag("add.png", :border => 0, :title => t('addmore')), f, :kins
+  /        = link_to_add_fields t('addmore'), f, :kins, "",  t('addmore')
+  
+  .row
+    .col-sm-3= submit_tag 'Apply Changes', :name =>:grade_submit_button, class: "btn btn-default" 
     .col-sm-9 Please CONFIRM or MODIFY & 'Apply Changes' for above Summative Weightage and Formative Scores items before proceeding with data entry. 
     %br
     %br
@@ -89,3 +115,10 @@
     $("#barunyediv").append("<%= escape_javascript(render(@grades)) %>"); 
   });
 
+
+:javascript
+  function add_fields(link, association, content) {  
+    var new_id = new Date().getTime();  
+    var regexp = new RegExp("new_" + association, "g");  
+    $(link).parent().before(content.replace(regexp, new_id));  
+  }
