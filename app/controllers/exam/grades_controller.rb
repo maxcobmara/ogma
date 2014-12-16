@@ -63,6 +63,7 @@ class Exam::GradesController < ApplicationController
       @search = Grade.search(params[:q])
       @grades = @search.result.search2(programme_id)
       @grades = @grades.page(params[:page]||1)
+      #@grades = Kaminari.paginate_array(@sdc).page(params[:page]||1) 
       @grades_group = @grades.group_by{|x|x.subject_id}
     end
     ###
@@ -173,12 +174,7 @@ class Exam::GradesController < ApplicationController
       ##########################
   
       if submit_type == t('update')
-	aaa=Grade.find(97)
-	aaa.eligible_for_exam = true
-	aaa.carry_paper = true
-	aaa.resit = true
-	aaa.save
-        ####%%%%%%%%%%%%%%%%%%%%%
+        ####
         #below (add-in sort_by) in order to get data match accordingly to form values (sorted by student name)
         @grades.sort_by{|x|x.studentgrade.name}.each_with_index do |grade, index| 
 
@@ -188,21 +184,13 @@ class Exam::GradesController < ApplicationController
             grade.examweight = @examweights[0] if @examweights.count==1       #for selected grades with different subject
             grade.examweight = @examweights[index] if @examweights.count>1
           end
-          #for selected grades with same subject
-          #0.upto(exammark.marks.count-1) do |cc|
-            #exammark.marks[cc].student_mark = params[:marks_attributes][cc.to_s][:student_marks][index]
-          #end
+       
           #---BIG PROBLEM-SAVE SCORE TABLE SEPARATELY - RESOLVE..TEMPORARY-10JUN2013-AM-START-replace grades.score... with y.marks...
           scores_of_grades = Score.where('grade_id=?',grade.id)
           scores_of_grades.sort_by{|x|x.created_at}.each_with_index do |y,no| #tak boleh by created_at?
-            #scores_of_grades.each_with_index do |y,no| #tak boleh by created_at?
              y.marks = params[:scores_attributes][no.to_s][:marks][index]
              y.save
           end
-          #0.upto(grade.scores.count-1) do |score_count|
-            #grade.scores[score_count].marks = params[:scores_attributes][score_count.to_s][:marks][index]
-          #end
-          #grade.score=params[:scores_attributes]["1"][:marks][index]#@scores1[index] 
           #---BIG PROBLEM-SAVE SCORE TABLE SEPARATELY - RESOLVE..TEMPORARY-10JUN2013-AM-END------------------------------------------
        
           grade.exam1marks=@exam1markss[index]
@@ -216,49 +204,35 @@ class Exam::GradesController < ApplicationController
             #end
             #--end of BIG PROBLEM
           end 
-          #exammark.save
-          #--assign checkbox value-sent_to_BPL----
-	  
-	  grade.sent_to_BPL = "1"
-	  grade.sent_date = Date.today
-	  grade.eligible_for_exam = true
 
-          if @senttobpls && @senttobpls[index.to_s]== true #!=nil
+          #checkboxes values - note : hashes, only exist if value is TRUE
+          if @senttobpls && @senttobpls[index.to_s]!=nil
             grade.sent_to_BPL = true
-	    grade.sent_date = Date.today
+            grade.sent_date = Date.today
           else
             grade.sent_to_BPL = false
           end
-          #--asign checkbox value------
-          #--assign checkbox value-eligible_for_exam----
-          if @eligibleexams && @eligibleexams[index.to_s]== true #!=nil
+          if @eligibleexams && @eligibleexams[index.to_s]!=nil
             grade.eligible_for_exam = true
           else
             grade.eligible_for_exam = false
           end
-          #--asign checkbox value------
-          #--assign checkbox value-carry paper----
-          if @carrypapers &&@carrypapers[index.to_s]== true #!=nil
+          if @carrypapers &&@carrypapers[index.to_s]!=nil
             grade.carry_paper = true
           else
             grade.carry_paper = false
           end
-          #--asign checkbox value------
-          #--assign checkbox value-resit----
-          if @resits && @resits[index.to_s]== true #!=nil
+          if @resits && @resits[index.to_s]!=nil
             grade.resit = true
           else
             grade.resit = false
           end
-          #--asign checkbox value------
+          
           grade.save
         end  #--end of @grades.each_with_index do |grade,index|--
-   
-        #flash[:notice] = "Updated grades!"
-        #redirect_to grades_path
-        ####%%%%%%%%%%%%%%%%%%%%%
+        ####
         respond_to do |format|
-          format.html { redirect_to(exam_grades_url, :notice =>"test dulu la...blm simpan data! why?"+"#{@gradeids.count}"+"#{@formatives}") }
+          format.html { redirect_to(exam_grades_url, :notice =>t('exam.grade.multiple_updated')+" ("+"#{@grades[0].subjectgrade.subject_list}"+" - "+"#{@grades.count}"+" "+t('records')+")")}
           format.xml  { head :ok }
         end
       elsif submit_type == t('exam.grade.apply_changes')

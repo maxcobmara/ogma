@@ -20,12 +20,8 @@
         =" = CA+MSE + "+ t('exam.grade.summative')
 
 - if @subjects_of_grades==1
-  /= form_for [:exam, @grade], html: { class: 'form-horizontal' }  do |f| 
-  /  = render 'shared/error_messages', object: f.object
-  /= form_tag update_multiple_exam_grades_path, :id => "form1", :html => {:method => :put} do |f|
-  /  = hidden_field_tag :redirect_location, exam_grades_path  
-  /= form_for @article, url: {action: "create"}, html: {class: "nifty_form"} do |f| 
-  / {action: "update_multiple"}
+  /= form_tag update_multiple_exam_grades_path, :id => "form1", :html => {:method => :put} do |f| 
+  /ABOVE --- f didn't work coz not bind with any specific record, instead use form_for & bind the first record.
   = form_for [:exam, @grades_obj], url: update_multiple_exam_grades_path, html: {:method => :post} do |f|
     = hidden_field_tag :redirect_location, exam_grades_path 
 

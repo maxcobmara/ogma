@@ -70,6 +70,7 @@ ms_MY:
   single: Rekod Individu
   multiple: Rekod Pukal
   no3: Tiada
+  records: rekod
  
   actions:
     new: Baru
@@ -1666,6 +1667,7 @@ ms_MY:
       apply_changes: Kemaskini Perubahan
       confirm_apply_changes: "Sila PASTIKAN atau TUKAR / TAMBAH 'Pemberat Sumatif' dan item - item 'Skor Formatif' di atas & klik 'Kemaskini Perubahan', sebelum meneruskan kemasukan data di bawah."
       formative_summative_var_updated: "Item 'Skor Formatif' dan / atau 'Pemberat Sumatif' telah dikemaskini. Sila SUNTING butiran markah berkenaan."
+      multiple_updated: "Kesemua gred peperiksaan telah berjaya dikemaskini!"
        
     examresult:
       title: Keputusan Peperiksaan Mengikut Program

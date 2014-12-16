@@ -10,7 +10,7 @@ class Score < ActiveRecord::Base
   end 
 
   def type_marks
-    (marks * weightage)/100
+    (marks * weightage)/100 if marks!=nil
   end
 
 end

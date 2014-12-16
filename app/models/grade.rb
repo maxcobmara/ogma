@@ -90,16 +90,17 @@ class Grade < ActiveRecord::Base
     common_subject = Programme.where('course_type=?','Commonsubject').pluck(:id)
     if search 
       if search == '0'
-        @grades = Grade.all
+        @grades = Grade.all.order(:subject_id)
       elsif search == '1'
-        @grades = Grade.where("subject_id IN (?)", common_subject)
+        @grades = Grade.where("subject_id IN (?)", common_subject).order(:subject_id)
       else
         subject_of_programme = Programme.find(search).descendants.at_depth(2).map(&:id)
         @grades = Grade.where("subject_id IN (?)", subject_of_programme)
       end
     else
-       @grades = Grade.all
+       @grades = Grade.all.order(:subject_id)
     end
+    #ABOVE : order(:subject_id) - added, when group by subject, won't split up - continueos in paging
   end
   
 end

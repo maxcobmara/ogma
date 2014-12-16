@@ -93,6 +93,7 @@ en:
   single: Single Record
   multiple: Multiple Records
   no3: No
+  records: records
   
   actions:
     new: New
@@ -1727,6 +1728,7 @@ en:
       apply_changes: Apply Changes
       confirm_apply_changes: "Please CONFIRM or MODIFY & click 'Apply Changes' for above Summative Weightage and Formative Scores items before proceeding with data entry."
       formative_summative_var_updated: "Formative Score items and / or Summative Weightage are updated. Please EDIT marks accordingly."
+      multiple_updated: "All examination grades were successfully updated!"
     
     examresult:
       title: Examination Result by Programme
