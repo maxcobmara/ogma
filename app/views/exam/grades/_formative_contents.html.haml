@@ -9,13 +9,11 @@
       - if @subjects_of_grades > 1
       - else
         - @score_for_legend_sort.each do |score_x|
-          %th{:style=> "text-align: center; background-color: #EFE; font-size:-2;"}
+          %th{:style=> "text-align: center; background-color: #EFE; font-size:-2; width: 80px;"}
             =h (DropDown::E_TYPES.find_all{|disp, value| value == score_x.type_id}).map {|disp, value| disp}.first
             %br
-            (
-            =h score_x.weightage.to_i
-            \%
-            )
+            =h "("+score_x.weightage.to_i.to_s+"%)"
+           
       %th{:style=>"background-color:#E5ECE5; text-align:center;"}CA+MSE
       - if @subjects_of_grades > 1
         /if subject for selected grades is different
@@ -72,14 +70,17 @@
           /#= check_box_tag "sent_to_BPLs[#{no}]", true, :name => "sent_to_BPLs[]"
           /-use iteration nos of grade
           = check_box_tag "sent_to_BPLs[#{no}]", true, grade.sent_to_BPL 
+       
+          /- if grade.sent_to_BPL == true
+          /  = check_box_tag "sent_to_BPLs[#{no}]", true, grade.sent_to_BPL, :class => "check" 
+          /- else
+          /  = check_box_tag "sent_to_BPLs[#{no}]", true
+
           /-use grade.id
           /#= check_box_tag "sent_to_BPLs[#{grade.id}]", true, grade.sent_to_BPL 
         %td{:style=>"text-align:center;"}= check_box_tag "eligible_for_exams[#{no}]", true, grade.eligible_for_exam
         %td{:style=>"text-align:center;"}= check_box_tag "carry_papers[#{no}]", true, grade.carry_paper
         %td{:style=>"text-align:center;"}=check_box_tag "resits[#{no}]", true, grade.resit
- 
-      
-
       
 //////////////////////
 /	<table cellspacing=0 cellpadding=0>

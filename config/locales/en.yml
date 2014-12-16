@@ -1724,6 +1724,9 @@ en:
       sum_of_scores: "Sum of scores(%), "
       total_marks: Total Marks
       final_exam: Final Exam
+      apply_changes: Apply Changes
+      confirm_apply_changes: "Please CONFIRM or MODIFY & click 'Apply Changes' for above Summative Weightage and Formative Scores items before proceeding with data entry."
+      formative_summative_var_updated: "Formative Score items and / or Summative Weightage are updated. Please EDIT marks accordingly."
     
     examresult:
       title: Examination Result by Programme

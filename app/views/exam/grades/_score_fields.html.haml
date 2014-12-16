@@ -2,7 +2,7 @@
   - if @job_type && @job_type=="multiple"
     - score_count = @score_count2
     .row
-      .col-sm-3=select_tag "scores_attributes[#{score_count}][type_id]", options_for_select([[t('select'), '']]+DropDown::E_TYPES), {class: 'selectpicker'}
+      .col-sm-4=select_tag "scores_attributes[#{score_count}][type_id]", options_for_select([[t('select'), '']]+DropDown::E_TYPES), {class: 'selectpicker'}
       .col-sm-5= text_field_tag "scores_attributes[#{score_count}][description]", "", class: 'form-control'
       .col-sm-2=select_tag "scores_attributes[#{score_count}][weightage]", options_for_select([[t('select'), '']]+DropDown::WEIGHTAGE), {class: 'selectpicker'}
   - else

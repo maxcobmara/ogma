@@ -63,7 +63,6 @@
             .col-sm-2= t 'exam.grade.weightage'
             %hr
           - @count=0
-          = f.object
           = f.fields_for :scores do |builder|
             = render 'score_fields', :f => builder, :locals =>{:count=>@count}
             - @count+=1

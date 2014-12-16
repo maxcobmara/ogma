@@ -2,7 +2,7 @@ class Grade < ActiveRecord::Base
   
   validates_presence_of :student_id, :subject_id, :examweight#, :exam1marks #added examweight for multiple edit - same subject - this item must exist
   validates_uniqueness_of :subject_id, :scope => :student_id, :message => " - This student has already taken this subject"
-  validates_presence_of :sent_date, :if => :sent_to_BPL?
+ # validates_presence_of :sent_date, :if => :sent_to_BPL?
   
   belongs_to :studentgrade, :class_name => 'Student', :foreign_key => 'student_id'  #Link to Model student
   belongs_to :subjectgrade, :class_name => 'Programme', :foreign_key => 'subject_id'  #Link to Model subject
@@ -36,7 +36,7 @@ class Grade < ActiveRecord::Base
   end
   
   def total_summative
-    if exam1marks == 0
+    if exam1marks == 0 || exam1marks == nil
       0
     else
       (exam1marks * examweight)/100

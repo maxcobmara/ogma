@@ -99,7 +99,7 @@ class Exam::GradesController < ApplicationController
   def update
     @grade = Grade.find(params[:id])
     respond_to do |format|
-      if @grade.update_attributes(grade_params)
+      if @grade.update(grade_params)
         flash[:notice] = t('exam.grade.title')+t('actions.updated')
         format.html { redirect_to exam_grade_path(@grade) }
         format.xml  { head :ok }
@@ -137,23 +137,179 @@ class Exam::GradesController < ApplicationController
       @grades = Grade.find(@gradeids)
       @grades_obj = @grades[0]
       submit_type = params[:grade_submit_button]
-      #add code here-start
-      #if apply changes
-        #buat ape
-      #elsif update
-        #buat ape
-      #add code here-end 
+      ##########################
+      @caplusmse = params[:scores] #**
+      @examweights = params[:examweights]  
+      if @subjects_of_grades==1 || submit_type == t('exam.grade.apply_changes')
+        @summative_weightage = params[:grade][:summative_weightage]    
+        @scores = params[:scores_attributes]
+        @scores_new_count = @scores.count 
+      end
       if submit_type == t('update')
+        #start-scores (marks) only exist for EXISTing formative_scores (not yet exist if just ADDED - apply_changes)
+        #@formatives = params[:formatives]
+        @formatives=[]
+        all_scores = params[:scores_attributes]   #all_scores["0"]["marks"].first.to_f - gives 90.00
+        grade_qty = all_scores["0"]["marks"].count  #@grades.count
+        scoretype_qty = all_scores.count
+        0.upto(grade_qty-1) do |bil|
+          mks = 0
+          0.upto(scoretype_qty-1) do |no|
+            aa = all_scores[no.to_s]["marks"][bil]
+            mks+=all_scores[no.to_s]["marks"][bil].to_f
+          end
+          @formatives << mks
+        end
+        #end-scores (marks) only exist for EXISTing formative_scores (not yet exist if just ADDED - apply_changes)
+      end
+      #@scores1 = params[:scores] #caplusmse
+      @exam1markss = params[:exam1markss]
+      @summatives = params[:summatives]
+      @finalscores = params[:finalscores]                             
+      @senttobpls = params[:sent_to_BPLs]                    # "sent_to_BPLs"=>{"2"=>"true"}, "sent_to_BPLs"=>{"1"=>"true","2"=>"true"}	  
+      @eligibleexams = params[:eligible_for_exams]
+      @carrypapers = params[:carry_papers] 
+      @resits = params[:resits]
+      ##########################
+  
+      if submit_type == t('update')
+	aaa=Grade.find(97)
+	aaa.eligible_for_exam = true
+	aaa.carry_paper = true
+	aaa.resit = true
+	aaa.save
+        ####%%%%%%%%%%%%%%%%%%%%%
+        #below (add-in sort_by) in order to get data match accordingly to form values (sorted by student name)
+        @grades.sort_by{|x|x.studentgrade.name}.each_with_index do |grade, index| 
+
+          grade.formative = @formatives[index]# - save Total Formative = Sum of formative scores.  ####total_formative2-refer model##
+          grade.score = @caplusmse[index]
+          if @examweights
+            grade.examweight = @examweights[0] if @examweights.count==1       #for selected grades with different subject
+            grade.examweight = @examweights[index] if @examweights.count>1
+          end
+          #for selected grades with same subject
+          #0.upto(exammark.marks.count-1) do |cc|
+            #exammark.marks[cc].student_mark = params[:marks_attributes][cc.to_s][:student_marks][index]
+          #end
+          #---BIG PROBLEM-SAVE SCORE TABLE SEPARATELY - RESOLVE..TEMPORARY-10JUN2013-AM-START-replace grades.score... with y.marks...
+          scores_of_grades = Score.where('grade_id=?',grade.id)
+          scores_of_grades.sort_by{|x|x.created_at}.each_with_index do |y,no| #tak boleh by created_at?
+            #scores_of_grades.each_with_index do |y,no| #tak boleh by created_at?
+             y.marks = params[:scores_attributes][no.to_s][:marks][index]
+             y.save
+          end
+          #0.upto(grade.scores.count-1) do |score_count|
+            #grade.scores[score_count].marks = params[:scores_attributes][score_count.to_s][:marks][index]
+          #end
+          #grade.score=params[:scores_attributes]["1"][:marks][index]#@scores1[index] 
+          #---BIG PROBLEM-SAVE SCORE TABLE SEPARATELY - RESOLVE..TEMPORARY-10JUN2013-AM-END------------------------------------------
+       
+          grade.exam1marks=@exam1markss[index]
+          grade.summative=@summatives[index]
+          grade.finalscore=@finalscores[index]
+          if @subjects_of_grades==1 
+            grade.examweight = @summative_weightage 
+            #--BIG PROBLEM-remove to line 331 but yet replace with direct SAVING DATA INTO SCORES table instead of grades.scores...
+            #0.upto(grade.scores.count-1) do |score_count|
+              #grade.scores[score_count].marks = params[:scores_attributes][score_count.to_s][:marks][index]
+            #end
+            #--end of BIG PROBLEM
+          end 
+          #exammark.save
+          #--assign checkbox value-sent_to_BPL----
+	  
+	  grade.sent_to_BPL = "1"
+	  grade.sent_date = Date.today
+	  grade.eligible_for_exam = true
+
+          if @senttobpls && @senttobpls[index.to_s]== true #!=nil
+            grade.sent_to_BPL = true
+	    grade.sent_date = Date.today
+          else
+            grade.sent_to_BPL = false
+          end
+          #--asign checkbox value------
+          #--assign checkbox value-eligible_for_exam----
+          if @eligibleexams && @eligibleexams[index.to_s]== true #!=nil
+            grade.eligible_for_exam = true
+          else
+            grade.eligible_for_exam = false
+          end
+          #--asign checkbox value------
+          #--assign checkbox value-carry paper----
+          if @carrypapers &&@carrypapers[index.to_s]== true #!=nil
+            grade.carry_paper = true
+          else
+            grade.carry_paper = false
+          end
+          #--asign checkbox value------
+          #--assign checkbox value-resit----
+          if @resits && @resits[index.to_s]== true #!=nil
+            grade.resit = true
+          else
+            grade.resit = false
+          end
+          #--asign checkbox value------
+          grade.save
+        end  #--end of @grades.each_with_index do |grade,index|--
+   
+        #flash[:notice] = "Updated grades!"
+        #redirect_to grades_path
+        ####%%%%%%%%%%%%%%%%%%%%%
         respond_to do |format|
-          format.html { redirect_to(exam_grades_url, :notice =>"test dulu la...blm simpan data!") }
+          format.html { redirect_to(exam_grades_url, :notice =>"test dulu la...blm simpan data! why?"+"#{@gradeids.count}"+"#{@formatives}") }
           format.xml  { head :ok }
         end
-      elsif submit_type == 'Apply Changes'
+      elsif submit_type == t('exam.grade.apply_changes')
+  
+        #edit & update EXISTING 'Formative Scores' items & 'Summative Weightage' accordingly (if there's any changes)
+        @grades.sort_by{|x|x.studentgrade.name}.each_with_index do |grade, index| 
+          scores = Score.where(grade_id: grade.id).sort_by{|y|y.created_at}
+          0.upto(grade.scores.count-1) do |score_count|
+            #Please note : use this : params[:scores_attributes][score_count.to_s][:type_id] INSTEAD OF this:params[:scores_attributes][score_count.to_s][:type_id][index]
+            #grade.scores[score_count].type_id = params[:scores_attributes][score_count.to_s][:type_id]
+            #grade.scores[score_count].description = params[:scores_attributes][score_count.to_s][:description]# "AAA"
+            #grade.scores[score_count].weightage = params[:scores_attributes][score_count.to_s][:weightage]
+            #rails 4 : above FAILS, the other way
+            scores[score_count].type_id = params[:scores_attributes][score_count.to_s][:type_id]
+            scores[score_count].description = params[:scores_attributes][score_count.to_s][:description]
+            scores[score_count].weightage = params[:scores_attributes][score_count.to_s][:weightage]
+            scores[score_count].save
+          end
+          grade.examweight = @summative_weightage 
+          grade.save
+        end
+
+        #create & save NEW 'Formative Scores' items & 'Summative Weightage' accordingly        
+        @grades.sort_by{|x|x.studentgrade.name}.each_with_index do |grade, index|  
+	  if @scores_new_count >= @grades[index].scores.count
+            (grade.scores.count).upto(@scores_new_count-1) do |c|
+              #grade.scores.build
+              #grade.scores[c].type_id = params[:scores_attributes][c.to_s][:type_id]#@grade_scores[2].type_id         
+              #grade.scores[c].description = params[:scores_attributes][c.to_s][:description]#@grade_scores[2].description 
+              #grade.scores[c].weightage = params[:scores_attributes][c.to_s][:weightage]#@grade_scores[2].weightage
+              #grade.scores[c].marks = 0
+              #grade.examweight = @summative_weightage 
+              #grade.save
+              #rails 4 : above FAILS, the other way
+              score = Score.new
+              score.type_id = params[:scores_attributes][c.to_s][:type_id]
+              score.description = params[:scores_attributes][c.to_s][:description]
+              score.weightage = params[:scores_attributes][c.to_s][:weightage]
+              score.marks = 0
+              score.grade_id = grade.id
+              score.save
+            end
+          end
+        end
+        
         respond_to do |format|
-	  flash[:notice]= "test dulu la...APPLY Changes clicked!"
-	  format.html {render :action => 'edit_multiple'}
+          flash[:notice]=t('exam.grade.formative_summative_var_updated')
+          format.html {render :action => 'edit_multiple'}
           format.xml  { head :ok }
         end
+
       end
     end #end for unless
     

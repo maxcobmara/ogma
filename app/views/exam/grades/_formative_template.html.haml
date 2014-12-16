@@ -50,10 +50,10 @@
 
   - @score_for_legend_sort.each_with_index do |score_x,score_count|
     .row
-      .col-sm-3=select_tag "scores_attributes[#{score_count}][type_id]", options_for_select(DropDown::E_TYPES,score_x.type_id), {class: 'selectpicker'}
+      .col-sm-4=select_tag "scores_attributes[#{score_count}][type_id]", options_for_select(DropDown::E_TYPES,score_x.type_id), {class: 'selectpicker'}
       .col-sm-5= text_field_tag "scores_attributes[#{score_count}][description]",score_x.description, :size=> 15 , class: 'form-control'
-      .col-sm-2=select_tag "scores_attributes[#{score_count}][weightage]", options_for_select(DropDown::WEIGHTAGE,score_x.weightage), {class: 'selectpicker'}
-      
+      .col-sm-2=select_tag "scores_attributes[#{score_count}][weightage]", options_for_select(DropDown::WEIGHTAGE,score_x.weightage.to_i), {class: 'selectpicker'}
+
   - @job_type="multiple"
   - @score_count2 = @score_for_legend_sort.count
   = f.fields_for :scores do |builder|
@@ -62,27 +62,12 @@
       - @score_count2+=1
    
   .row
-    /= link_to_add_fields image_tag("add.png", :border => 0, :title => t('addmore')), f, :kins
     = link_to_add_fields t('addmore'), f, :scores, "",  t('addmore')
-
   %br
-  /      #contacts.tab-pane
-  /      .row
-  /        .col-sm-offset-1.col-sm-1= t 'staff.kintype_id'
-  /        .col-sm-2= t 'staff.name'
-  /        .col-sm-1= t 'staff.icno'
-  /        .col-sm-1= t 'staff.phone'
-  /        .col-sm-2 Profession
-  /        .col-sm-4 Address
-  /      = f.fields_for :kins do |builder|
-  /        = render 'kin_fields', :f => builder
-  /      .row
-  /        /= link_to_add_fields image_tag("add.png", :border => 0, :title => t('addmore')), f, :kins
-  /        = link_to_add_fields t('addmore'), f, :kins, "",  t('addmore')
-  
+
   .row
-    .col-sm-3= submit_tag 'Apply Changes', :name =>:grade_submit_button, class: "btn btn-default" 
-    .col-sm-9 Please CONFIRM or MODIFY & 'Apply Changes' for above Summative Weightage and Formative Scores items before proceeding with data entry. 
+    .col-sm-4= submit_tag t('exam.grade.apply_changes'), :name =>:grade_submit_button, class: "btn btn-default" 
+    .col-sm-8= t('exam.grade.confirm_apply_changes')
     %br
     %br
     %hr
@@ -90,10 +75,10 @@
   %BR
   - count = @grades[0].scores.count 
   #barunyediv
-    - @current_subject = @grades[0].subjectgrade.id 
-    = link_to "Add Formative", "#", :id=>'new_score_type' , :remote => true 
-    = link_to "Try add", add_formative_exam_grade_path(1), :remote=>true
-    =link_to "lagi try", "exam/grades/add_formative/1", :remote=>true
+    /- @current_subject = @grades[0].subjectgrade.id 
+    /= link_to "Add Formative", "#", :id=>'new_score_type' , :remote => true 
+    //= link_to "Try add", add_formative_exam_grade_path(1), :remote=>true
+    //=link_to "lagi try", "exam/grades/add_formative/1", :remote=>true
     
     /below line is from catechumen - link_to_remote - no longer working
     /when click below link, content of 'form_try.html.erb' shall update 'barunyediv' - repeating fields with assigned 'score_count'
@@ -106,15 +91,6 @@
     /  div id="barunyediv_<%= abc %>">
     /   <%#= link_to_remote image_tag("add.png", :border => 0, :title => 'Add More'), :url => {:action => 'form_try', :index => abc ,:subject=>@current_subject }, :update => "barunyediv_#{abc}" %> - Add More 
     
-  
-:javascript 
-  $("#new_score_type").click(function(){
-    alert("hmmmm");
-    $("#barunyediv").append("test lkkk!");
-    $("#barunyediv").append("#{@current_subject}");
-    $("#barunyediv").append("<%= escape_javascript(render(@grades)) %>"); 
-  });
-
 
 :javascript
   function add_fields(link, association, content) {  
@@ -122,3 +98,13 @@
     var regexp = new RegExp("new_" + association, "g");  
     $(link).parent().before(content.replace(regexp, new_id));  
   }
+  
+/:javascript 
+/  $("#new_score_type").click(function(){
+/    alert("hmmmm");
+/    $("#barunyediv").append("test lkkk!");
+/    $("#barunyediv").append("#{@current_subject}");
+/    $("#barunyediv").append("<%= escape_javascript(render(@grades)) %>"); 
+/  });
+
+

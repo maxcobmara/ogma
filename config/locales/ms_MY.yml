@@ -1663,6 +1663,9 @@ ms_MY:
       sum_of_scores: "Jumlah Skor (%), "
       total_marks: Jumlah Markah
       final_exam: Peperiksaan Akhir
+      apply_changes: Kemaskini Perubahan
+      confirm_apply_changes: "Sila PASTIKAN atau TUKAR / TAMBAH 'Pemberat Sumatif' dan item - item 'Skor Formatif' di atas & klik 'Kemaskini Perubahan', sebelum meneruskan kemasukan data di bawah."
+      formative_summative_var_updated: "Item 'Skor Formatif' dan / atau 'Pemberat Sumatif' telah dikemaskini. Sila SUNTING butiran markah berkenaan."
        
     examresult:
       title: Keputusan Peperiksaan Mengikut Program
