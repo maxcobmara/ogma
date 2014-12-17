@@ -46,6 +46,8 @@ module Notifications
  def late_need_a_reason
   if current_staff.positions.exists?
    StaffAttendance.where(trigger: true).where(reason: nil).where(thumb_id: current_staff.thumb_id).count
+  else
+    0
   end
  end
 

@@ -11,7 +11,7 @@ class Exam::GradesController < ApplicationController
     @existing_grade_subject_ids = Grade.all.pluck(:subject_id).uniq
     @position_exist = @current_user.userable.positions
     ###
-    if @position_exist     
+    if @position_exist && @position_exist.count > 0
       @lecturer_programme = @current_user.userable.positions[0].unit
       common_subject_a = Programme.where('course_type=?','Commonsubject')
       unless @lecturer_programme.nil?
@@ -68,8 +68,12 @@ class Exam::GradesController < ApplicationController
     end
     ###
     respond_to do |format|
-      format.html # index.html.erb
-      format.xml  { render :xml => @grades }
+      if @grades && @grades_group
+        format.html # index.html.erb
+        format.xml  { render :xml => @grades }
+      else
+        format.html { redirect_to(dashboard_url, :notice =>t('positions_required')+(t 'exam.title')+" - "+(t 'exam.grade.title')) }
+      end
     end
   end
   

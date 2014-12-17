@@ -7,7 +7,7 @@ class Exam::ExamsController < ApplicationController
     #@exams = Exam.all
     ##----------
     @position_exist = @current_user.userable.positions
-    if @position_exist  
+    if @position_exist && @position_exist.count > 0
       @lecturer_programme = @current_user.userable.positions[0].unit
       unless @lecturer_programme.nil?
         @programme = Programme.where('name ILIKE (?) AND ancestry_depth=?',"%#{@lecturer_programme}%",0) if !(@lecturer_programme=="Pos Basik" || @lecturer_programme=="Diploma Lanjutan")
@@ -39,8 +39,12 @@ class Exam::ExamsController < ApplicationController
     #@exams = @search.result       
     
     respond_to do |format|
-      format.html # index.html.erb
-      format.xml  { render :xml => @exams }
+      if @exams
+        format.html # index.html.erb
+        format.xml  { render :xml => @exams }
+      else
+        format.html { redirect_to(dashboard_url, :notice =>t('positions_required')+(t 'exam.title')+" - "+(t 'exam.exams.title')) }
+      end
     end
   end
 

@@ -94,6 +94,7 @@ en:
   multiple: Multiple Records
   no3: No
   records: records
+  positions_required: "Position (task & responsibilities) is required to access submodule : "
   
   actions:
     new: New
