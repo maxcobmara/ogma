@@ -9,7 +9,7 @@ class Exam::ExammarksController < ApplicationController
   def index
     valid_exams = Exammark.get_valid_exams
     position_exist = @current_user.userable.positions
-    if position_exist  
+    if position_exist && position_exist.count > 0
       lecturer_programme = @current_user.userable.positions[0].unit
       unless lecturer_programme.nil?
         programme = Programme.where('name ILIKE (?) AND ancestry_depth=?',"%#{lecturer_programme}%",0)  if !(lecturer_programme=="Pos Basik" || lecturer_programme=="Diploma Lanjutan")
@@ -43,8 +43,12 @@ class Exam::ExammarksController < ApplicationController
     end
     
     respond_to do |format|
-      format.html # index.html.erb
-      format.xml  { render :xml => @exammarks }
+      if @exammarks && @exammarks_group
+        format.html # index.html.erb
+        format.xml  { render :xml => @exammarks }
+      else
+        format.html { redirect_to(dashboard_url, :notice =>t('positions_required')+(t 'exam.title')+" - "+(t 'exam.exammark.title')) }
+      end
     end
   end
 

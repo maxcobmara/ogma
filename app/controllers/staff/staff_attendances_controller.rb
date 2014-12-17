@@ -242,7 +242,8 @@ class Staff::StaffAttendancesController < ApplicationController
   
   def status  
     #@all_dates_staffs = StaffAttendance.find(:all, :conditions =>['logged_at>=? and logged_at<?',"2012-05-07","2012-10-16"], :order => 'logged_at ASC')
-    @all_dates_staffs = StaffAttendance.where('logged_at>=? and logged_at<?',"2012-05-07","2014-01-01").order('logged_at ASC')   
+    thumb_ids_in_staff = Staff.all.pluck(:thumb_id)
+    @all_dates_staffs = StaffAttendance.where('logged_at>=? and logged_at<? and thumb_id IN(?)',"2012-05-07","2014-01-01", thumb_ids_in_staff).order('logged_at ASC')   
     @logged_at_list =[] 
     for all_dates_staff in @all_dates_staffs.map(&:logged_at)
       @logged_at_list << all_dates_staff.in_time_zone('UTC').to_date.beginning_of_month.to_s

@@ -72,6 +72,7 @@ ms_MY:
   multiple: Rekod Pukal
   no3: Tiada
   records: rekod
+  positions_required: "Butiran Perjawatan (tugas & tanggungjawab) diperlukan bagi mengakses submodul : "
  
   actions:
     new: Baru

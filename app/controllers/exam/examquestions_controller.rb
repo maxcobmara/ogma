@@ -12,7 +12,7 @@ class Exam::ExamquestionsController < ApplicationController
     #-----in case-use these 4 lines-------
 
     @position_exist = @current_user.userable.positions
-    if @position_exist
+    if @position_exist && @position_exist.count > 0
       @lecturer_programme = @current_user.userable.positions[0].unit
       unless @lecturer_programme.nil?
         @programme = Programme.where('name ILIKE (?) AND ancestry_depth=?',"%#{@lecturer_programme}%",0)
@@ -31,21 +31,24 @@ class Exam::ExamquestionsController < ApplicationController
       #@examquestions = Examquestion.search2(@programme_id)                                 #listing based on programme
       #@programme_exams = @examquestions.group_by {|t| t.subject.root} 
       
+      @search = Examquestion.search(params[:q])
+      @examquestions3 = @search.result                                                         #result of search   
+      #Examquestion.search(:subject_id_in=>[75,1366])
+      #@examquestions = @examquestions3.where(:subject_id => [75,1366])  
+      @examquestions_prog = @examquestions3.where(:subject_id => @subject_ids_of_programme)    #select for current programme (of logged-in user)
+      @examquestions = @examquestions_prog.order(subject_id: :asc).page(params[:page]||1)
+      @programme_exams = @examquestions.group_by {|t| t.subject.root} 
     end 
- 
-    @search = Examquestion.search(params[:q])
-    @examquestions3 = @search.result                                                         #result of search   
-    #Examquestion.search(:subject_id_in=>[75,1366])
-    #@examquestions = @examquestions3.where(:subject_id => [75,1366])  
-    @examquestions_prog = @examquestions3.where(:subject_id => @subject_ids_of_programme)    #select for current programme (of logged-in user)
-    @examquestions = @examquestions_prog.order(subject_id: :asc).page(params[:page]||1)
-    @programme_exams = @examquestions.group_by {|t| t.subject.root} 
-    
+
     respond_to do |format|
-      format.html # index.html.erb
-      format.xml  { render :xml => @examquestions }
-      format.csv { send_data @examquestions.to_csv }
-      format.xls { send_data @examquestions.to_csv(col_sep: "\t") }
+      if @examquestions && @programme_exams
+        format.html # index.html.erb
+        format.xml  { render :xml => @examquestions }
+        format.csv { send_data @examquestions.to_csv }
+        format.xls { send_data @examquestions.to_csv(col_sep: "\t") }
+      else
+        format.html { redirect_to(dashboard_url, :notice =>t('positions_required')+(t 'exam.title')+" - "+(t 'exam.examquestion.title')) }
+      end
     end
   end
 
@@ -169,9 +172,7 @@ class Exam::ExamquestionsController < ApplicationController
       @programme_listing = Programme.roots
       unless @examquestion.subject_id.nil? || @examquestion.subject_id.blank? || @examquestion.subject_id==0 || @examquestion.subject_id=='Select the Subject' #if subject already selected
         @subjects2 = Programme.find(@examquestion.subject.root_id).descendants.at_depth(2).sort_by{|x|x.ancestry}
-        @topics = Programme.find(@examquestion.subject_id).descendants.at_depth(3).s
-Tarikh Disediakan
-ort
+        @topics = Programme.find(@examquestion.subject_id).descendants.at_depth(3).sort
       else  # if subject not selected yet 
         #check if programme IS SELECTED (re-submit of new record)
         if @examquestion.programme_id.nil? || @examquestion.programme_id.blank? #note : SUBJECT FIELD & TOPIC FIELD are hide
