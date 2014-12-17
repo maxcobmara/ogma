@@ -3,7 +3,7 @@ class WeeklytimetableDetail < ActiveRecord::Base
    before_save :set_day_time_slot_for_non_selected
    #before_save :set_false_if_topic_not_exist 
 
-   #before_destroy :check_student_attendance  #####to UNREMARK when student attendance is ready****************************   26JUNE2014
+   before_destroy :check_student_attendance  #####to UNREMARK when student attendance is ready****************************   26JUNE2014
    
    belongs_to :weeklytimetable,     :foreign_key => 'weeklytimetable_id'
    belongs_to :weeklytimetable_subject,   :class_name => 'Programme',   :foreign_key => 'subject' #starting 25March2013-no longer use

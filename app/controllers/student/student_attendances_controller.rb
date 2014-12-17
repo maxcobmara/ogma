@@ -43,7 +43,7 @@ class Student::StudentAttendancesController < ApplicationController
       
       @search = StudentAttendance.search(params[:q])
       #BELOW : order(:weeklytimetable_details_id) - added, when group by class, won't split up (continueos paging), unless different Intake
-      @student_attendances = @search.result.order(:weeklytimetable_details_id)  
+      @student_attendances = @search.result.search2.order(:weeklytimetable_details_id)  
       @student_attendances  = @student_attendances.page(params[:page]||1)
       @student_attendances_intake = @student_attendances.group_by{|x|x.student.intake}
       
