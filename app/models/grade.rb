@@ -2,6 +2,7 @@ class Grade < ActiveRecord::Base
   
   validates_presence_of :student_id, :subject_id, :examweight#, :exam1marks #added examweight for multiple edit - same subject - this item must exist
   validates_uniqueness_of :subject_id, :scope => :student_id, :message => " - This student has already taken this subject"
+ # validates_presence_of :sent_date, :if => :sent_to_BPL?
   
   belongs_to :studentgrade, :class_name => 'Student', :foreign_key => 'student_id'  #Link to Model student
   belongs_to :subjectgrade, :class_name => 'Programme', :foreign_key => 'subject_id'  #Link to Model subject
@@ -35,11 +36,23 @@ class Grade < ActiveRecord::Base
   end
   
   def total_summative
-    if exam1marks == 0
+    if exam1marks == 0 || exam1marks == nil
       0
     else
       (exam1marks * examweight)/100
     end
+  end
+  
+  def total_per
+    Score.where(grade_id: id).sum(:weightage)
+  end
+    
+  def total_formative
+    Score.where(grade_id: id).sum(:score)
+  end
+  
+  def total_formative2  #temporary - to confirm with user-marks to be entered in weightage or %
+    Score.where(grade_id: id).sum(:marks)
   end
   
   def finale
@@ -77,16 +90,17 @@ class Grade < ActiveRecord::Base
     common_subject = Programme.where('course_type=?','Commonsubject').pluck(:id)
     if search 
       if search == '0'
-        @grades = Grade.all
+        @grades = Grade.all.order(:subject_id)
       elsif search == '1'
-        @grades = Grade.where("subject_id IN (?)", common_subject)
+        @grades = Grade.where("subject_id IN (?)", common_subject).order(:subject_id)
       else
         subject_of_programme = Programme.find(search).descendants.at_depth(2).map(&:id)
         @grades = Grade.where("subject_id IN (?)", subject_of_programme)
       end
     else
-       @grades = Grade.all
+       @grades = Grade.all.order(:subject_id)
     end
+    #ABOVE : order(:subject_id) - added, when group by subject, won't split up - continueos in paging
   end
   
 end

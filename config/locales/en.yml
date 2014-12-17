@@ -94,6 +94,7 @@ en:
   single: Single Record
   multiple: Multiple Records
   no3: No
+  records: records
   
   actions:
     new: New
@@ -1689,13 +1690,17 @@ en:
       title: Examination Grades
       new: New Examination Grade
       edit: Edit Examination Grade
+      multiple_edit: Grades Multiple Edit
       student_id: Student
       subject_id: Subject
+      programme: Programme
       camse: "CA+MSE"
       sent_bpl: Sent to BPL 
       notsent_bpl: Not Sent
+      sent_to_bpl: "Sent to BPL?"
       sent_date: "Sent to BPL (date sent)"
       eligible_for_exam: Eligible for Examination
+      eligible_for_exam2: "Eligible for Examination?"
       carry_paper: Carry Paper
       examweight: Summative Weightage
       exam1marks: Final Exam
@@ -1705,6 +1710,27 @@ en:
       grading_id: Grade
       new_multiple: New Multiple Grades
       existing_subject: All Subjects
+      formative: Formative
+      formative_scores: Formative Scores
+      total_formative: Total Formative
+      grade_details: Grade Details
+      type: Type
+      description: Description
+      marks: Marks
+      weightage: Weightage
+      final_details: Final Details
+      summative_final_details: "Total Summative & Final Details"
+      exam: Examination
+      required: Required
+      not_required: Not Required
+      weightage_before_marks: "Insert Summative Weightage first, for Total Marks & Grade to takes effect upon entry / changes of Examination MARKS"
+      sum_of_scores: "Sum of scores(%), "
+      total_marks: Total Marks
+      final_exam: Final Exam
+      apply_changes: Apply Changes
+      confirm_apply_changes: "Please CONFIRM or MODIFY & click 'Apply Changes' for above Summative Weightage and Formative Scores items before proceeding with data entry."
+      formative_summative_var_updated: "Formative Score items and / or Summative Weightage are updated. Please EDIT marks accordingly."
+      multiple_updated: "All examination grades were successfully updated!"
     
     examresult:
       title: Examination Result by Programme

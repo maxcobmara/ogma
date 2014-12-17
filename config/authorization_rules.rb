@@ -106,7 +106,7 @@ authorization do
 
  #Group Trainings ------------------------------------------------------------read(index, show), menu(inc index), update(inc edit), approve(read, update), manage(crud,approve,menu)
  role :lecturer do
-   has_permission_on [:exam_examquestions, :exam_exams, :exam_exammarks], :to => [:menu, :read, :create]
+   has_permission_on [:exam_examquestions, :exam_exams, :exam_exammarks, :exam_grades], :to => [:menu, :read, :create]
    
    has_permission_on :exam_exams, :to =>:manage do
      if_attribute :created_by => is {user.userable.id}
@@ -140,7 +140,10 @@ authorization do
      if_attribute :exam_id => is_in {user.exams_of_programme}
    end
    
-   has_permission_on :exam_grades, :to => [:manage, :edit_multiple, :update_multiple, :new_multiple, :create_multiple ]
+   #pending - just in case other programme's grade appear in current programme index page?
+   has_permission_on :exam_grades, :to => [:update, :edit_multiple, :update_multiple, :new_multiple, :create_multiple] do
+     if_attribute :subject_id => is_in {user.grades_of_programme}
+   end
    
    #has_permission_on :exam_evaluate_courses, :to => :manage - evaluation supposed by student - lecturer being evaluate shouldn't hv EDIT access
    has_permission_on :exam_evaluate_courses, :to =>[:index, :show, :courseevaluation] do

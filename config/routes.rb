@@ -305,9 +305,13 @@ Ogma::Application.routes.draw do
     resources :grades do
       collection do
         put 'edit_multiple'
-        post 'update_multiple'
-	put 'new_multiple'
-	post 'create_multiple'
+        post 'update_multiple', to: "grades#update_multiple"
+        put 'new_multiple'
+        post 'create_multiple'
+	post 'add_formative'
+      end
+      member do
+        get 'add_formative'
       end
     end
     resources :examresults

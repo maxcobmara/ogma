@@ -1,0 +1,37 @@
+.col-md-8.col-md-offset-2
+  .form-group
+    .col-sm-2.control-label
+      = f.label t 'exam.grade.examweight', for: :examweight
+    .col-md-2
+      = f.text_field :examweight
+      /= f.text_field :examweight, :value => @grade_weightage, class: 'form-control'
+    .col-md-7
+      - if @grade.examweight.nil?
+        %font{:style=>"color: red;"}* 
+        = t 'exam.grade.weightage_before_marks'
+  .form-group
+    .col-sm-2.control-label
+      = f.label t 'exam.grade.carry_paper', for: :carry_paper
+    .col-md-2
+      = f.check_box :carry_paper
+  .form-group
+    .col-sm-2.control-label
+      = f.label t 'exam.grade.resit', for: :resit
+    .col-md-2
+      = f.check_box :resit 
+  .form-group
+    .col-sm-2.control-label
+      = f.label t 'exam.grade.finalscore', for: :total_marks
+    .col-md-2
+      = f.text_field :finalscore  
+      - if @grade.examweight.nil?
+        %font{:style=>"color: red;"}*
+  .form-group
+    .col-sm-2.control-label
+      = f.label t 'exam.grade.grading_id', for: :grading_id
+    .col-md-2
+      = f.select :grading_id, DropDown::GRADE,{:prompt => t('select')}
+      /= f.select :grading_id, DropDown::GRADE, :prompt =>t('select'),:selected=>@grade.set_gred 
+      - if @grade.examweight.nil?
+        %font{:style=>"color: red;"}*
+

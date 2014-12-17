@@ -1,1 +1,17 @@
- 
+- model_class = Grade
+.page-header
+  %h1= t 'exam.grade.edit'
+= render 'shared/flashes'
+
+.row
+  = form_for [:exam, @grade],  html: { multipart: true, class: 'form-horizontal' }  do |f| 
+    = render 'shared/error_messages', object: f.object
+    = hidden_field_tag :redirect_location, exam_grades_path  
+    = render :partial => 'form', :locals => {:f => f}       
+    
+    .col-md-offset-1  
+      .form-group
+        .col-sm-offset-3.col-sm-1
+          = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), exam_grade_path(@grade), :class => 'btn btn-default'
+        .col-sm-2
+          = f.submit t('update'), class: "btn btn-primary"

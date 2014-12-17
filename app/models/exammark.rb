@@ -129,19 +129,20 @@ class Exammark < ActiveRecord::Base
     common_subject = Programme.where('course_type=?','Commonsubject').pluck(:id)
     if search 
       if search == '0'
-        @exammarks = Exammark.all
+        @exammarks = Exammark.all.order(:exam_id)
       elsif search == '1'
          exampapers = Exam.where("subject_id IN (?)", common_subject).pluck(:id)
-        @exammarks = Exammark.where("exam_id IN (?)", exampapers)
+        @exammarks = Exammark.where("exam_id IN (?)", exampapers).order(:exam_id)
       else
         subject_of_programme = Programme.find(search).descendants.at_depth(2).map(&:id)
         #@exams = Exam.find(:all, :conditions => ["subject_id IN (?) and subject_id NOT IN (?)", subject_of_program, common_subject])
         exampapers = Exam.where('subject_id IN(?) AND subject_id NOT IN(?)',subject_of_programme, common_subject).pluck(:id)
-        @exammarks = Exammark.where("exam_id IN (?)", exampapers)
+        @exammarks = Exammark.where("exam_id IN (?)", exampapers).order(:exam_id)
       end
     else
-       @exammarks = Exammark.all
+       @exammarks = Exammark.all.order(:exam_id)
     end
+    #ABOVE : order(:exam_id) - added, when group by exam_id(exampaper), records won't split up - continuous in paging
   end
   
   def self.fullmarks(exam_id)

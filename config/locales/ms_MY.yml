@@ -71,6 +71,7 @@ ms_MY:
   single: Rekod Individu
   multiple: Rekod Pukal
   no3: Tiada
+  records: rekod
  
   actions:
     new: Baru
@@ -1629,13 +1630,17 @@ ms_MY:
       title: Gred Peperiksaan
       new: Gred Peperiksaan Baru
       edit: Sunting Gred Peperiksaan
+      multiple_edit: Suntingan Pukal Gred Peperiksaan
       student_id: Pelajar
       subject_id: Subjek
+      programme: Program
       camse: "CA+MSE"
       sent_bpl: Dihantar ke BPL 
       notsent_bpl: Tidak dihantar
+      sent_to_bpl: "Dihantar ke BPL?"
       sent_date: "Hantar ke BPL (tarikh hantar)"
-      eligible_for_exam: Layak untuk Peperiksaan
+      eligible_for_exam: Layak Mengambil Peperiksaan
+      eligible_for_exam2: "Layak mengambil peperiksaan?"
       carry_paper: Markah Terkumpul
       examweight: Pemberat Sumatif
       exam1marks: Peperiksaan Akhir
@@ -1645,6 +1650,27 @@ ms_MY:
       grading_id: Gred
       new_multiple: "Gred Baru (Pukal)"
       existing_subject: Semua Subjek
+      formative: Formatif
+      formative_scores: Skor Formatif
+      total_formative: Jumlah Formatif
+      grade_details: Butiran Gred
+      type: Jenis
+      description: Deskripsi
+      marks: Markah
+      weightage: Pemberat
+      final_details: Butiran Akhir
+      summative_final_details: "Jumlah Summatif & Butiran Akhir"
+      exam: Peperiksaan
+      required: Diperlukan
+      not_required: Tidak diperlukan
+      weightage_before_marks: "Masukkan Pemberat Sumatif terlebih dahulu, bagi membolehkan medan Jumlah Akhir dan Gred dikemaskini berdasarkan kemasukan / perubahan data MARKAH Peperiksaan"
+      sum_of_scores: "Jumlah Skor (%), "
+      total_marks: Jumlah Markah
+      final_exam: Peperiksaan Akhir
+      apply_changes: Kemaskini Perubahan
+      confirm_apply_changes: "Sila PASTIKAN atau TUKAR / TAMBAH 'Pemberat Sumatif' dan item - item 'Skor Formatif' di atas & klik 'Kemaskini Perubahan', sebelum meneruskan kemasukan data di bawah."
+      formative_summative_var_updated: "Item 'Skor Formatif' dan / atau 'Pemberat Sumatif' telah dikemaskini. Sila SUNTING butiran markah berkenaan."
+      multiple_updated: "Kesemua gred peperiksaan telah berjaya dikemaskini!"
        
     examresult:
       title: Keputusan Peperiksaan Mengikut Program
