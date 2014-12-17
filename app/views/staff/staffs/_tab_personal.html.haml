@@ -60,20 +60,22 @@
     %dt= t 'staff.shift', :default => model_class.human_attribute_name(:staff_shift_id) + ":"
     %dd 
       = @staff.staff_shift.start_end
-      %b=t 'staff.shift_start'
-      = @staff.shift_histories.order(created_at: :desc).first.deactivate_date.try(:strftime, '%d %b %Y')
+      - if @staff.shift_histories.count > 0
+        %b=t 'staff.shift_start'
+        = @staff.shift_histories.order(created_at: :desc).first.deactivate_date.try(:strftime, '%d %b %Y')
     
-    %dt= t 'staff.shift_histories.title'
-    %dd
-      %table
-        %tr
-          %td
-            - shifthistories = @staff.shift_histories.order(created_at: :desc)
-            - shifthistories.each_with_index do |shift, ind|
-              = shift.staff_shift.start_end
-              - if ind!=shifthistories.count-1
-                %b=t 'staff.shift_start'
-                = shifthistories[ind-1].deactivate_date.try(:strftime, '%d %b %Y')
-              %br
+    - if @staff.shift_histories.count > 0
+      %dt= t 'staff.shift_histories.title'
+      %dd
+        %table
+          %tr
+            %td
+              - shifthistories = @staff.shift_histories.order(created_at: :desc)
+              - shifthistories.each_with_index do |shift, ind|
+                = shift.staff_shift.start_end
+                - if ind!=shifthistories.count-1
+                  %b=t 'staff.shift_start'
+                  = shifthistories[ind-1].deactivate_date.try(:strftime, '%d %b %Y')
+                %br
       
 
