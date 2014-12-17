@@ -78,3 +78,105 @@
       .form-group
         .col-sm-offset-3.col-sm-1
           = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), exam_grades_path, :class => 'btn btn-default'
+
+//below-not working yet-          
+/TRIAL TRIAL TRIAL TRIAL TRIAL TRIAL TRIAL
+/- @score_count=@grades[0].scores.count
+/- @student_count = @grades.map(&:student_id).uniq.count
+/=hidden_field_tag "grade[score_count]", @score_count
+/=hidden_field_tag "grade[student_count]", @student_count
+/=hidden_field_tag "grade[column_count]", 4
+
+//23June2013-add total fullmarks
+/- @examid_exist = Exam.where('subject_id=? AND name=?', @grades[0].subject_id, 'F').first
+//use FIRST-[0], must unique, only 1
+//-EXAM ID (EXIST) YG DIBACA SEPATUTNYE FINAL 
+/- if @examid_exist
+/  - @examid = @examid_exist.id
+/=hidden_field_tag "grade[fullmarks]", Exammark.fullmarks(@examid)
+//23June2013-add total fullmarks
+
+/:javascript
+/  $(".i1").keyup(function() {  
+/    var studentcount = $("#grade_student_count").val();
+/    var mcqcount = $("#grade_score_count").val();
+/    var fullmarks = $("#grade_fullmarks").val();
+/    for (var i=0;i<studentcount;i++)
+/    {
+/      for (var j=0;j<mcqcount;j++)
+/      {
+/        window["mcq"+i+j] = document.getElementById("score_"+i+"_"+j).value;
+/        window["fw"+i+j] = document.getElementById("formweight_"+i+"_"+j).value;
+/       }
+/    }
+/    for (var i=0;i<studentcount;i++)
+/    {
+/      window["examweightage"+i] = document.getElementById("examweight"+i).value;
+/      window["tfinalexam"+i] = document.getElementById("finalexam"+i).value;
+/    }
+/    for (var i=0;i<studentcount;i++)
+/    {
+/      window["totalmcq"+i] = document.getElementById("totalformative"+i);
+/      window["camse"+i] = document.getElementById("caplusmse"+i);
+/      window["tfinalscore"+i] = document.getElementById("finalscore"+i); 
+/      window["tsummative"+i] = document.getElementById("summative"+i);
+/    }
+/    for (var i=0;i<studentcount;i++)
+/    {
+/      var a = 0
+/      for (var k=0;k<mcqcount;k++)
+/      {
+/        a=a+(((window["mcq"+i+k])*1))
+/      }
+/      var b = 0
+/      for (var m=0;m<mcqcount;m++)
+/      {
+/        b=b+((window["mcq"+i+m])*1)
+/      }
+/      ((window["totalmcq"+i]).value) = a;
+/      (window["camse"+i]).value = b;
+/      window["tsummative"+i].value = ((window["tfinalexam"+i]*1)/fullmarks*(window["examweightage"+i]*1))
+/      window["tfinalscore"+i].value = ((window["camse"+i]).value*1)+(window["tsummative"+i].value*1)
+/    }
+/  });
+
+/  $(".j1").keyup(function() {  
+/    var studentcount =  document.getElementById("grade_student_count").value;
+/    for (var i=0;i<studentcount;i++)
+/    {
+/      window["examweightage"+i] = document.getElementById("examweight"+i).value;
+/      window["totalmcq"+i] = document.getElementById("totalformative"+i).value;
+/      window["tsummative"+i] = document.getElementById("summative"+i).value;
+/    }
+/    for (var i=0;i<studentcount;i++)
+/    {
+/      window["camse"+i] = document.getElementById("caplusmse"+i);
+/      window["tfinalscore"+i] = document.getElementById("finalscore"+i); 
+/    }
+/    for (var i=0;i<studentcount;i++)
+/    {
+/      window["camse"+i].value = (window["totalmcq"+i]) * ((100-(window["examweightage"+i]*1))/100)
+/      window["tfinalscore"+i].value = (window["camse"+i].value*1)+(window["tsummative"+i]*1)
+/    }
+/  });
+
+/  $(".k1").keyup(function() {  
+/    var studentcount =  document.getElementById("grade_student_count").value;
+/    for (var i=0;i<studentcount;i++)
+/    {
+/      window["examweightage"+i] = document.getElementById("examweight"+i).value;
+/      window["finalexam"+i] = document.getElementById("finalexam"+i).value;
+/      window["totalmcq"+i] = document.getElementById("totalformative"+i).value;
+/     }
+/    for (var i=0;i<studentcount;i++)
+/    {
+/      window["tsummative"+i] = document.getElementById("summative"+i);
+/      window["tfinalscore"+i] = document.getElementById("finalscore"+i);	
+/    }
+/    for (var i=0;i<studentcount;i++)
+/    {
+/      window["tsummative"+i].value = (window["finalexam"+i]*1)*((window["examweightage"+i]*1)/100)
+/      window["tfinalscore"+i].value = ((window["tsummative"+i].value)*1)+((window["totalmcq"+i]) * ((100-(window["examweightage"+i]*1))/100))
+/    }
+/  });
+

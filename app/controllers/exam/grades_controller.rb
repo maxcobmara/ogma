@@ -308,11 +308,6 @@ class Exam::GradesController < ApplicationController
      end
   end
   
-  def form_try
-     @nombor = params[:index]
-     render :layout => false
-   end
-  
   private
   
   # Use callbacks to share common setup or constraints between actions.
