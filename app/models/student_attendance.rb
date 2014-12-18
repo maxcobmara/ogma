@@ -48,4 +48,9 @@ class StudentAttendance < ActiveRecord::Base
     "#{WeeklytimetableDetail.find(weeklytimetable_details_id)}"
   end
  
+  def self.search2
+    exist_wtd_ids = WeeklytimetableDetail.all.pluck(:id)
+    where('weeklytimetable_details_id IN(?)',exist_wtd_ids)
+  end
+  
 end
