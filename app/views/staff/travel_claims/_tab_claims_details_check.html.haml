@@ -7,7 +7,7 @@
     .col-sm-2= t 'staff.travel_claim.type' 
     .col-sm-2= t 'staff.travel_claim.value'
     .col-sm-2= t 'staff.travel_claim.receipt_no'
-    .col-sm-5= t 'check'
+    .col-sm-5= t 'staff.travel_claim.check'
     %hr 
   = f.fields_for :travel_claim_allowances do |builder|
     = render 'travel_claim_allowance_fields', :f => builder
@@ -19,7 +19,7 @@
     .col-sm-3= t 'staff.travel_claim.type' 
     .col-sm-2= t 'staff.travel_claim.receipt_no'
     .col-sm-2= t 'staff.travel_claim.value'
-    .col-sm-5= t 'check'
+    .col-sm-5= t 'staff.travel_claim.check'
     %hr
   = f.fields_for :travel_claim_receipts do |builder|
     = render 'travel_claim_receipt_fields', :f => builder
