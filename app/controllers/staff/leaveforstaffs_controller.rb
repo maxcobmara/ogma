@@ -2,10 +2,11 @@ class Staff::LeaveforstaffsController < ApplicationController
   before_action :set_leaveforstaff, only: [:show, :edit, :update, :destroy]
   
   def index
-    @leaveforstaffs = Leaveforstaff.all
     @search = Leaveforstaff.search(params[:q])
-    @leaveforstaffs = @search.result 
-    @leaveforstaffs = @leaveforstaffs.page(params[:page]||1)
+    @leaveforstaffs = @search.result
+    #@leaveforstaffs = @search.result.search2(@current_user)
+    @leaveforstaffs =  @leaveforstaffs.page(params[:page]||1) 
+    #@leaveforstaffs =  Kaminari.paginate_array(@leaveforstaffs).page(params[:page]||1) 
   end
   
   def show
@@ -18,8 +19,9 @@ class Staff::LeaveforstaffsController < ApplicationController
   
   def update
     @leaveforstaff = Leaveforstaff.find(params[:id])
+ 
     respond_to do |format|
-      if @leaveforstaff.update(leaveforstaff_params)
+      if @leaveforstaff.update(leaveforstaff_params)        
         format.html { redirect_to staff_leaveforstaff_path, notice:t('staff_leave.update_notice')}
         format.json { head :no_content }
       else
@@ -65,7 +67,7 @@ class Staff::LeaveforstaffsController < ApplicationController
 
   def processing_level_1
     @leaveforstaff = Leaveforstaff.find(params[:id])
-    LeaveforstaffsMailer.approve_leave_notification(@leaveforstaff).deliver 
+    LeaveforstaffsMailer.approve_leave_notification(@leaveforstaff).deliver     
   end
   
   def processing_level_2

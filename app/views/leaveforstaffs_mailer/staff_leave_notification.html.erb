@@ -12,4 +12,4 @@
 
 <p>Click the link below to make decision.</p>
 
-<p><%= @url%></p>
+<p><%=link_to @leaveforstaff.applicant.name, processing_level_1_staff_leaveforstaff_url(@leaveforstaff, host:'localhost:3003')%></p>
