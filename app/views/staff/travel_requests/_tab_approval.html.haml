@@ -5,7 +5,11 @@
     %dt=t 'staff.travel_request.approved_mileage'
     %dd
       =t 'staff.travel_request.mileage'
-      =h @travel_request.mileage? ? image_tag("tick.png") : image_tag("cross.png")
+      /=h @travel_request.mileage? ? image_tag("tick.png") : image_tag("cross.png")
+      -  if @travel_request.mileage_replace==nil
+        =h @travel_request.mileage? ? image_tag("tick.png") : image_tag("cross.png") 
+      - else 
+        =h @travel_request.mileage_replace? ? image_tag("cross.png") : image_tag("tick.png")
       =t 'staff.travel_request.mileage_replace'
       %font{:size=>'-2'}
         = t 'staff.travel_request.train_plane_replacement'
