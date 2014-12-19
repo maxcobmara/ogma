@@ -11,7 +11,7 @@ class Kewpa19Pdf < Prawn::Document
     move_down 20
     text "SIJIL PELUPUSAN ASET KERAJAAN MALAYSIA", :align => :center, :size => 14, :style => :bold
     move_down 20
-    text "Merujuk surat kelulusan No rujukan   <b>#{@disposal.document.refno}</b>  , bertarikh   <b>#{@disposal.document.letterdt}</b> , 
+    text "Merujuk surat kelulusan No rujukan   <b>#{@disposal.document.try(:refno)}</b>  , bertarikh   <b>#{@disposal.document.try(:letterdt)}</b> , 
     saya mengesahkan tindakan pelupusan telah dilaksanakan seperti berikut :-", :align => :left, :size => 10, :inline_format => true
     move_down 10
     text "1.  Aset berikut telah dilupuskan secara pindahan/hadiah." , :align => :left, :width => 200, :size => 10

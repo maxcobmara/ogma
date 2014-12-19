@@ -1,6 +1,6 @@
 class Kewpa17Pdf < Prawn::Document
   def initialize(disposal, view)
-    super({top_margin: 50, page_size: 'A4', page_layout: :portrait })
+    super({top_margin: 50, page_size: 'A4', page_layout: :landscape})
     @disposals = disposal
     @view = view
     font "Times-Roman"
@@ -13,6 +13,8 @@ class Kewpa17Pdf < Prawn::Document
     table1
     table2
     table3
+    move_down 20
+    text "*(Ruangan boleh ditambah jika ahli Lembaga Pemeriksa Lebih daripada 2 orang)", :align=> :right, :size => 9, :style => :bold
   
    
   end
@@ -20,7 +22,7 @@ class Kewpa17Pdf < Prawn::Document
   def tab
     data = [["","","","","", "", "", "HARGA PEROLEHAN ASAL", "NILAI SEMASA", "", ""]]
     
-    table(data , :column_widths => [20, 40, 50, 35, 40, 45, 40, 80, 80, 65], :cell_style => { :size => 6}) do
+    table(data , :column_widths => [30, 50, 100, 45, 50, 55, 50, 90, 90], :cell_style => { :size => 6}) do
      row(0).columns(0).borders = [:left, :right, :top]
      row(0).columns(1).borders = [:left, :right, :top]
      row(0).columns(2).borders = [:left, :right, :top]
@@ -28,43 +30,45 @@ class Kewpa17Pdf < Prawn::Document
      row(0).columns(4).borders = [:left, :right, :top]
      row(0).columns(5).borders = [:left, :right, :top]
      row(0).columns(6).borders = [:left, :right, :top]
-     row(0).columns(10).borders = [:left, :right, :top]
-     row(0).columns(11).borders = [:left, :right, :top]
-     row(0).columns(12).borders = [:left, :right, :top]
-     self.width = 555
+     row(0).columns(9).borders = [:top, :right]
+     row(0).columns(10).borders = [:top, :right, :left]
+     
+     self.width = 740
+    
     end
     
   end
   def table1
     
     table line_item_rows  do
-      columns(0).width = 20
+      columns(0).width = 30
       columns(0).borders = [:left, :right, :bottom]
-      columns(1).width = 40
+      columns(1).width = 50
       columns(1).borders = [:left, :right, :bottom]
-      columns(2).width = 50
+      columns(2).width = 100
       columns(2).borders = [:left, :right, :bottom]
-      columns(3).width = 35
+      columns(3).width = 45
       columns(3).borders = [:left, :right, :bottom]
-      columns(4).width = 40
+      columns(4).width = 50
       columns(4).borders = [:left, :right, :bottom]
-      columns(5).width = 45
+      columns(5).width = 55
       columns(5).borders = [:left, :right, :bottom]
-      columns(6).width = 40
+      columns(6).width = 50
       columns(6).borders = [:left, :right, :bottom]
-      columns(7).width = 40
-      columns(8).width = 40
-      columns(9).width = 40
-      columns(10).width = 40
+      columns(7).width = 45
+      columns(8).width = 45
+      columns(9).width = 45
+      columns(10).width = 45
       columns(10).borders = [:left, :right, :bottom]
-      columns(11).width = 60
+      columns(11).width = 70
       columns(11).borders = [:left, :right, :bottom]
-      columns(11).width = 65
+      columns(11).width = 90
       columns(12).borders = [:left, :right, :bottom]
       self.row_colors = ["FEFEFE", "FFFFFF"]
       self.header = true
       self.cell_style = { size: 6 }
-      self.width = 555
+      self.width = 740
+     
       header = true
     end
   end
@@ -94,8 +98,8 @@ class Kewpa17Pdf < Prawn::Document
             quan = "#{disposal.try(:asset).try(:quantity)}"
          end
          
-        ["#{counter += 1}", "", "#{disposal.try(:asset).try(:assetcode)} #{disposal.try(:asset).try(:name)}", "" , quan ,"#{disposal.try(:asset).try(:purchasedate).try(:strftime, "%d/%m/%y")}", 
-          "#{Date.today - disposal.try(:asset).try(:purchasedate)} days", @view.currency(disposal.try(:asset).try(:purchaseprice).to_f), @view.currency(total.to_f), @view.currency(disposal.current_value.to_f), @view.currency(totalcurrent.to_f), "", "" ]
+        ["#{counter += 1}", "#{disposal.try(:asset).try(:assignedto).try(:positions).try(:first).try(:unit) unless disposal.asset.assignedto.try(:positions).blank?}", "#{disposal.try(:asset).try(:assetcode)} #{disposal.try(:asset).try(:name)}", "" , quan ,"#{disposal.try(:asset).try(:purchasedate).try(:strftime, "%d/%m/%y")}", 
+          "#{Date.today - disposal.try(:asset).try(:purchasedate)} hari", @view.currency(disposal.try(:asset).try(:purchaseprice).to_f), @view.currency(total.to_f), @view.currency(disposal.current_value.to_f), @view.currency(totalcurrent.to_f), "", "" ]
 
       end
       
@@ -125,22 +129,29 @@ def table2
  end
   data3 = [["","JUMLAH KESELURUHAN", @view.currency(count.to_f),"", @view.currency(sum.to_f),""]]
   
-  table(data3, :column_widths => [185, 125, 40,  40, 40], :cell_style => { :size => 6}) do
-    self.width = 555
+  table(data3, :column_widths => [325, 100, 45,  45, 45], :cell_style => { :size => 6}) do
+    self.width = 740
     columns(1).align = :right
+    columns(0).borders = []
+    columns(1).borders = [:right]
+    columns(3).borders = []
+    columns(5).borders = []
     
   end
   move_down 20
 end
   def table3
-   data = [["Tarikh pelantikan Lembaga pemeriksa #{'.'*60}", "Tandatangan ","#{'.'*60} (pengerusi)"],
-   [ "Tarikh pemeriksaan #{'.'*60}", "Nama ", "#{'.'*60}"],
-   ["Tempat pemeriksaan #{'.'*60}", "Tandatangan", "#{'.'*60}"],
-   ["","Nama","#{'.'*60}"],
-   ["","Jawatan", "#{'.'*60}"],
-   ["","","*(Ruangan boleh ditambah jika ahli Lembaga Pemeriksa Lebih daripada 2 orang)"]]
-   
-   table(data, :column_widths => [200, 90, ], :cell_style => { :size => 9}) do
+   data = [["Tarikh pelantikan Lembaga pemeriksa #{'.'*65}", "Tandatangan ","#{'.'*45} (Pengerusi)"],
+   [ "", "Nama ", "#{'.'*65}"],
+   ["Tarikh pemeriksaan #{'.'*65}", "Jawatan", "#{'.'*65}"],
+   ["Tempat pemeriksaan #{'.'*65}", "Tandatangan", "#{'.'*55} (Ahli)"],
+   ["","Nama","#{'.'*65}"],
+   ["","Jawatan", "#{'.'*65}"]]
+          
+   table(data, :column_widths => [420, 90, ], :cell_style => { :size => 9}) do
+     row(0).height = 30
+     row(2).height = 30
+     row(3).height = 30
      columns(0).borders = []
      columns(1).borders = []
      columns(2).borders = []
