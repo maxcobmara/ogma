@@ -26,8 +26,8 @@ class TravelClaim < ActiveRecord::Base
       if is_returned == true
         self.is_checked == false
       end
-      #check part?
-      if is_checked == false && staff_id != Login.current_login.staff_id  #2nd time return by finance
+      #check part
+      if is_checked == false #&& staff_id != Login.current_login.staff_id  #2nd time return by finance   #current_user not accessible fr model? 19Dec14
         self.is_returned = true
       end
       if is_checked == true

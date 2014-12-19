@@ -364,7 +364,7 @@ ms_MY:
       own_car: Kereta Sendiri
       own_car_notes: Sebab
       dept_car: Kenderaan Jabatan
-      others_car: Kenderaan Staf Lain
+      others_car: Menumpang Pegawai Lain
       public_transport: Kenderaan Awam
       taxi: Teksi
       bus: Bas
@@ -2160,7 +2160,7 @@ ms_MY:
         return_at: Masa Balik
         own_car: Kenderaan Sendiri
         office_car: Kenderaan Pejabat
-        others_car: Kenderaan Staf Lain
+        others_car: Menumpang Pegawai Lain
         own_car_notes: "Sebab (menggunakan kenderaan sendiri)"
         approved_mileage: Batuan yang Diluluskan
         mileage: Elaun Batuan

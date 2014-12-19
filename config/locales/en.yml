@@ -375,7 +375,7 @@ en:
       own_car: Own Car
       own_car_notes: Reason
       dept_car: Department Vehicle
-      others_car: Others Vehicle
+      others_car: "Other Staff's Vehicle"
       public_transport: Public Transport
       taxi: Taxi
       bus: Bus
@@ -2221,7 +2221,7 @@ en:
         return_at: Return At
         own_car: Own Car
         office_car: Office Car
-        others_car: Others Car
+        others_car: "Other Staff's Car"
         own_car_notes: "Reasos (for using own car)"
         approved_mileage: Approved Mileage
         mileage: Mileage Allowance
