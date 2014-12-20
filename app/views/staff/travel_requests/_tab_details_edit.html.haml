@@ -31,21 +31,34 @@
           = f.check_box :others_car, :id => 'othcar', :class => 'tt'
         .col-sm-3
           = f.label :others_car
+      #tr_others_car
+        .row
+          .col-sm-3
+            = f.label t 'staff.travel_request.others_car_notes', for: :others_car_notes
+          .col-sm-9
+            = f.text_field :others_car_notes, placeholder: t('staff.travel_request.staff_and_place'), class: 'form-control'
       #tr_my_car
         /display own car notes & registered vehicle (if any + it's transport class)
-        - unless Staff.where(id:25)[0].vehicles.blank?
+        /- unless Staff.where(id:25)[0].vehicles.blank?
+        - if @travel_request.new_record?
+          - staff_apply = @current_user.userable
+        - else
+          - staff_apply = @travel_request.applicant
+        - unless staff_apply.vehicles.blank?
           .row
             .col-sm-11= f.text_field :own_car_notes, :placeholder => t('helpers.label.travel_request.own_car_notes'), class: 'form-control'
           .row
             .col-sm-3
               %b=t 'staff.vehicles.reg_no'
-            - staffvehicle = Staff.where(id:25)[0].vehicles[0].reg_no
+            /- staffvehicle = Staff.where(id:25)[0].vehicles[0].reg_no
+            
+            - staffvehicle = staff_apply.vehicles[0].reg_no
             .col-sm-3= f.text_field :staff_own_car, :value => staffvehicle, :readonly => 'readonly', class: 'form-control'
             .col-sm-3=f.label t 'staff.transportclass_id'
             .col-sm-2=f.text_field :tpt_class,:value=>@travel_request.transport_class, :readonly => 'readonly', class: 'form-control'
         - else
           You have NO registered vehicle in this system
-         
+          = @current_user.userable_id
           /= f.collection_select :staff_own_car, Staff.where(id:25)[0].cars, :id, :reg_no, {:include_blank =>t('select')},{class: 'selectpicker', "data-width"=>'100px'}
           /pending by current logged-in staff
   .form-group
@@ -133,4 +146,19 @@ $(document).ready(function(){
       $("#tr_public_others").hide(""); 
     }
   });
+  $("input[id='othcar']").change(function() {  
+    if($('#othcar').is(':checked')) { 
+      $("#tr_others_car").show("appear"); 
+    }else{
+      $("#tr_others_car").hide(""); 
+    }
+  });
+  $("input[id='othcar']").each(function() {  
+    if($('#othcar').is(':checked')) { 
+      $("#tr_others_car").show("highlight"); 
+    }else{
+      $("#tr_others_car").hide(""); 
+    }
+  });
+  
 });

@@ -44,6 +44,7 @@ Ogma::Application.routes.draw do
       member do
         get :travel_log
         get :approval
+        get 'status_movement'
       end
       collection do
         get :travel_log_index

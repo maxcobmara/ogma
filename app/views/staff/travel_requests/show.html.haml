@@ -55,6 +55,8 @@
       - else
         = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('helpers.links.back'), staff_travel_requests_path, :class => 'btn btn-default'
        
+      = link_to content_tag(:i, "", class: "fa fa-file-pdf-o"), status_movement_staff_travel_request_path(@travel_request, format: "pdf"), class: "btn btn-default", "data-toggle" => "tooltip", title: t('staff.travel_request.title')
+      
       /owner can edit - use just (if staff_id exist) to pass test
       - if @travel_request.staff_id
         /- if @travel_request.staff_id == 25

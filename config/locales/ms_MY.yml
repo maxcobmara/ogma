@@ -374,6 +374,8 @@ ms_MY:
       own_car_notes: Sebab
       dept_car: Kenderaan Jabatan
       others_car: Menumpang Pegawai Lain
+      others_car_notes: "Nyatakan : "
+      staff_and_place: "Sila sebutkan nama & tempat bertugas pegawai ini"
       public_transport: Kenderaan Awam
       taxi: Teksi
       bus: Bas
