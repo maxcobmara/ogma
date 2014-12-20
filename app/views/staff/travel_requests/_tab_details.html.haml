@@ -22,7 +22,7 @@
       =t 'staff.travel_request.dept_car'
       =h @travel_request.dept_car? ? image_tag("tick.png") : image_tag("cross.png")
       =t 'staff.travel_request.others_car'
-      =h @travel_request.others_car? ? image_tag("tick.png") : image_tag("cross.png")
+      =h @travel_request.others_car? ? image_tag("tick.png")+'('+@travel_request.others_car_notes+')' : image_tag("cross.png")
     
     - if !@travel_request.applicant.vehicles.blank? && @travel_request.own_car?
       %dt=t 'staff.travel_request.own_car_notes'

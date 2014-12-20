@@ -182,4 +182,10 @@ class TravelRequest < ActiveRecord::Base
     end
   end
   
+  def depart_return
+    if depart_at!=nil && return_at!=nil
+      "#{depart_at.try(:strftime, '%d %b %Y')} - #{return_at.try(:strftime, '%d %b %Y')}"
+    end
+  end
+  
 end

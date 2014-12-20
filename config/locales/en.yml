@@ -386,6 +386,8 @@ en:
       own_car_notes: Reason
       dept_car: Department Vehicle
       others_car: "Other Staff's Vehicle"
+      others_car_notes: "Describe : "
+      staff_and_place: "Other staff's name and location / destination"
       public_transport: Public Transport
       taxi: Taxi
       bus: Bus
