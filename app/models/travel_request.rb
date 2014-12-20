@@ -37,7 +37,7 @@ class TravelRequest < ActiveRecord::Base
   
   def reference_document
     if document.blank?
-      "None Assigned"
+      I18n.t('none_assigned')
     else
       document.refno+" : "+document.title+I18n.t("staff.travel_request.dated")+document.letterdt.try(:strftime,"%d %b %Y").to_s
     end

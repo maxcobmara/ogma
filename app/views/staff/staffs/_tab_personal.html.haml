@@ -59,7 +59,7 @@
     %hr
     %dt= t 'staff.shift', :default => model_class.human_attribute_name(:staff_shift_id) + ":"
     %dd 
-      = @staff.staff_shift.start_end
+      = @staff.staff_shift.try(:start_end)
       - if @staff.shift_histories.count > 0
         %b=t 'staff.shift_start'
         = @staff.shift_histories.order(created_at: :desc).first.deactivate_date.try(:strftime, '%d %b %Y')

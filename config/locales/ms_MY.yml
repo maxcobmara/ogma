@@ -7,22 +7,30 @@ ms_MY:
       student: Pelajar
       location: Lokasi
       examquestion: Soalan Peperiksaan
+      travel_request: Permohonan Perjalanan
     attributes:
       location:
         combo_code: Kod Lokasi
+      travel_request:
+        destination: Destinasi
+        depart_at: Masa Bertolak
+        return_at: Masa Balik
+        replaced_by: Staf Gantian
+        hod_id: Ketua Jabatan
+        hod_accept_on: Tarikh Penerimaan Ketua Jabatan
     errors:
         template:
-          body: "There were problems with the following fields:"
+          body: "Berikut adalah beberapa masalah:"
           header:
-            one: "1 errors prohibited this {{model}} from being saved"
-            other: "{{count}} prohibited this {{model}} from being saved"
+            one: "{{model}} ini mempunyai 1 kesalahan dari disimpan"
+            other: "{{model}} ini mempunyai {{count}} kesalahan dari yang disimpan"
         messages:
-            blank: "cant't be blank"
-            not_a_number: "is not number"
-            too_short: "is too short (minimum is {{count}} characters)"
-            taken: "telah terpakai"
-            illegal_char: contains illegal characters
-            invalid: is invalid
+            blank: "tidak boleh dikosongkan"
+            not_a_number: "ialah bukan nombor"
+            too_short: "ialah sangat pendek (minimum ialah {{count}} huruf)"
+            taken: "sudah digunakan"
+            illegal_char: mengandungi aksara yang tidak sah
+            invalid: adalah tidak sah           
         models:
           ptschedule:
             attributes:
@@ -73,6 +81,7 @@ ms_MY:
   no3: Tiada
   records: rekod
   positions_required: "Butiran Perjawatan (tugas & tanggungjawab) diperlukan bagi mengakses submodul : "
+  none_assigned: Tiada maklumat
  
   actions:
     new: Baru
@@ -364,7 +373,7 @@ ms_MY:
       own_car: Kereta Sendiri
       own_car_notes: Sebab
       dept_car: Kenderaan Jabatan
-      others_car: Kenderaan Staf Lain
+      others_car: Menumpang Pegawai Lain
       public_transport: Kenderaan Awam
       taxi: Teksi
       bus: Bas
@@ -2160,7 +2169,7 @@ ms_MY:
         return_at: Masa Balik
         own_car: Kenderaan Sendiri
         office_car: Kenderaan Pejabat
-        others_car: Kenderaan Staf Lain
+        others_car: Menumpang Pegawai Lain
         own_car_notes: "Sebab (menggunakan kenderaan sendiri)"
         approved_mileage: Batuan yang Diluluskan
         mileage: Elaun Batuan
