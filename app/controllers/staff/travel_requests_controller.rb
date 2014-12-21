@@ -5,7 +5,7 @@
   def index
     @search = TravelRequest.search(params[:q])
     @for_approvals = @search.result.in_need_of_approval
-    @travel_requests = @search.result.my_travel_requests
+    @travel_requests = @search.result.my_travel_requests(@current_user)
     #@for_approvals = @for_approvals.page(params[:page]||1)
 
     respond_to do |format|
@@ -61,6 +61,7 @@
   # PUT /travel_requests/1
   # PUT /travel_requests/1.xml
   def update
+    #raise params.inspect
     @travel_request = TravelRequest.find(params[:id])
 
     respond_to do |format|
@@ -71,10 +72,18 @@
       else
 	if params[:task] && params[:task]=="1"
 	  format.html {render :action => "travel_log"}
+	  format.xml  { render :xml => @travel_request.errors, :status => :unprocessable_entity }
 	elsif params[:task] && params[:task]=="2"
+	  w = []
+	  @travel_request.errors.each do |k,v|
+	    w << k
+	  end
+	  flash[:notice]= "whhh"+w.to_s
 	   format.html {render :action => "approval"}
+	   format.xml  { render :xml => @travel_request.errors, :status => :unprocessable_entity }
 	else
           format.html { render :action => "edit" }
+	  format.xml  { render :xml => @travel_request.errors, :status => :unprocessable_entity }
 	end
         format.xml  { render :xml => @travel_request.errors, :status => :unprocessable_entity }
       end

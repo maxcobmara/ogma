@@ -62,14 +62,14 @@ class Status_movementPdf< Prawn::Document
     ["",{content: "SILA NYATAKAN SEBABNYA :", colspan: 6}],
     ["",{content: "#{'.'*180 if @travel_request.own_car==false} <u>#{@travel_request.own_car_notes if @travel_request.own_car==true}</u>", colspan: 6}],["",{content: "#{'.'*180 if @travel_request.own_car==false} ", colspan: 6}],
     ["",{content: "JIKA MENGGUNAKAN KERETA SENDIRI TUNTUTAN YANG AKAN DIBUAT ADALAH : ", colspan: 6}],
-    ["","#{'<b>/</b>' if @travel_request.mileage_replace==nil && @travel_request.mileage==true}  ","Elaun Hitungan Batu","","#{'<b>/</b>' if @travel_request.mileage_replace==true && @travel_request.hod_accept_on==nil } #{'<b>/v</b>' if @travel_request.mileage_replace!=nil &&@travel_request.mileage==false}",{content: "Gantian Tambang Keretapi / Kapal Terbang", colspan: 2}],
+    ["","#{'<b>/</b>' if @travel_request.mileage_history==1}","Elaun Hitungan Batu","","#{'<b>/</b>' if @travel_request.mileage_history==2} ",{content: "Gantian Tambang Keretapi / Kapal Terbang", colspan: 2}],
     [{content: "", colspan: 7}],
-    ["",{content: "Tarikh : #{'.'*40}", colspan: 2},"",{content: "T/Tangan Pemohon : #{'.'*50}", colspan: 3}],
+    ["",{content: "Tarikh : #{@travel_request.submitted_on.blank? ? '.'*40 : @travel_request.submitted_on.try(:strftime, '%d %b %Y')}", colspan: 2},"",{content: "T/Tangan Pemohon : #{'.'*50}", colspan: 3}],
     [{content: "<b>PERAKUAN KETUA JABATAN</b>", colspan: 7}],
     [{content: "Permohonan untuk menjalankan tugas-tugas rasmi di luar Ibu Pejabat seperti di atas adalah *diluluskan / #{'<strikethrough>tidak diluluskan</strikethrough>' if @travel_request.hod_accept == true} . Adalah disahkan pegawai in perlu menggunakan keretanya sendiri dan diperakukan bahawa beliau dibayar :", colspan: 7}],
-    ["","#{'<b>/</b>' if @travel_request.mileage_replace==nil && @travel_request.mileage==true && @travel_request.hod_accept_on!=nil}","Elaun Hitungan Batu","","#{'<b>/</b>' if @travel_request.mileage_replace==true && @travel_request.hod_accept_on!=nil}",{content: "Gantian Tambang Keretapi / Kapal Terbang", colspan: 2}],
-    ["",{content: "Tarikh : #{'.'*40}", colspan: 2},"",{content: "#{'.'*80}", colspan: 3}]]
-          
+    ["","#{'<b>/</b>' if @travel_request.mileage_replace!=nil &&  @travel_request.mileage_replace==false}","Elaun Hitungan Batu","","#{'<b>/</b>' if @travel_request.mileage_replace==true}",{content: "Gantian Tambang Keretapi / Kapal Terbang", colspan: 2}],
+    ["",{content: "Tarikh : #{@travel_request.hod_accept_on.blank? ? '.'*40 : @travel_request.hod_accept_on.try(:strftime, '%d %b %Y')}", colspan: 2},"",{content: "#{'.'*80}", colspan: 3}]]
+
     table(data, :column_widths => [4, 86,86,86,86,86,86], :cell_style => { :size => 11, :inline_format => true}) do
       rows(0).height= 32
       rows(1).height= 14
@@ -124,7 +124,7 @@ class Status_movementPdf< Prawn::Document
       rows(9).height=32
       rows(10).borders = []
       rows(11).borders = [:bottom]
-      rows(12).align=:center
+      rows(12).align=:center      #note : row 12 -> PERAKUAN KETUA JABATAN
       rows(12).borders=[]
       rows(13).borders=[]
       rows(13).height=50
@@ -137,7 +137,8 @@ class Status_movementPdf< Prawn::Document
       cells[14,2].borders=[]
       cells[14,3].borders=[]
       cells[14,5].borders=[]
-      rows(15).align=:center
+      cells[15,1].align=:left
+      cells[15,3].align=:center
       rows(15).valign=:bottom
       rows(15).height=30
       rows(15).borders=[]

@@ -13,9 +13,9 @@ class TravelRequest < ActiveRecord::Base
   validates_presence_of :staff_id, :destination, :depart_at, :return_at
   validates_presence_of :own_car_notes, :if => :mycar?
   validate :validate_end_date_before_start_date
-  validates_presence_of :replaced_by, :if => :check_submit?
-  validates_presence_of :hod_id,      :if => :check_submit?
-  validates_presence_of :hod_accept_on, :if => :hod_accept?
+  validates_presence_of :replaced_by, :if => :check_submit?   #validation during EDIT - refer notes on EDIT & APPROVE button in SHOW page
+  validates_presence_of :hod_id,      :if => :check_submit?       #validation during EDIT - refer notes on EDIT & APPROVE button in SHOW page
+  validates_presence_of :hod_accept_on, :if => :hod_accept?  #validation in APPROVAL page - refer notes on EDIT & APPROVE button in SHOW page
   
   has_many :travel_claim_logs, :dependent => :destroy
   accepts_nested_attributes_for :travel_claim_logs, :reject_if => lambda { |a| a[:destination].blank? }, :allow_destroy =>true
@@ -30,9 +30,8 @@ class TravelRequest < ActiveRecord::Base
     #to revised current_user.staff_id, current_user.try(:login), login 
   end
   
-  def self.my_travel_requests
-    #where(staff_id:  Login.first.staff_id)
-    where(staff_id:  25)
+  def self.my_travel_requests(current_user)
+    where(staff_id: current_user.userable_id)
   end
   
   def reference_document
@@ -88,6 +87,7 @@ class TravelRequest < ActiveRecord::Base
   
   
   #before logic
+  #before logic
   def set_to_nil_where_false
     if is_submitted == true
       self.submitted_on	= Date.today
@@ -100,6 +100,12 @@ class TravelRequest < ActiveRecord::Base
     if !mycar?#own_car == false 
       self.own_car_notes =''
       self.mileage = nil
+    end
+    
+    if mileage_replace == false #decision by hod
+      self.mileage = true
+    elsif mileage_replace == true
+      self.mileage = false
     end
   end
   
