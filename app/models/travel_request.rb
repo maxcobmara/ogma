@@ -90,7 +90,12 @@ class TravelRequest < ActiveRecord::Base
   #before logic
   def set_to_nil_where_false
     if is_submitted == true
-      self.submitted_on	= Date.today
+      self.submitted_on= Date.today
+      if mileage == true
+        self.mileage_history = 1
+      elsif mileage == false
+        self.mileage_history = 2
+      end
     end
     
     if hod_accept == false
