@@ -1,11 +1,13 @@
  class Staff::TravelRequestsController < ApplicationController
-    before_action :set_travel_request, only: [:show, :edit, :update, :destroy]
+  before_filter :set_current_user
+  before_action :set_travel_request, only: [:show, :edit, :update, :destroy]
+    
   # GET /travel_requests
   # GET /travel_requests.xml
   def index
     @search = TravelRequest.search(params[:q])
     @for_approvals = @search.result.in_need_of_approval
-    @travel_requests = @search.result.my_travel_requests(@current_user)
+    @travel_requests = @search.result.my_travel_requests
     #@for_approvals = @for_approvals.page(params[:page]||1)
 
     respond_to do |format|
