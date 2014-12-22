@@ -57,8 +57,8 @@
             .col-sm-3=f.label t 'staff.transportclass_id'
             .col-sm-2=f.text_field :tpt_class,:value=>@travel_request.transport_class, :readonly => 'readonly', class: 'form-control'
         - else
-          You have NO registered vehicle in this system
-          = @current_user.userable_id
+          =t('staff.travel_request.no_registered_vehicle')
+          /= @current_user.userable_id
           /= f.collection_select :staff_own_car, Staff.where(id:25)[0].cars, :id, :reg_no, {:include_blank =>t('select')},{class: 'selectpicker', "data-width"=>'100px'}
           /pending by current logged-in staff
   .form-group

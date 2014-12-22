@@ -426,6 +426,7 @@ en:
       mileage_field: "Mileage(KM) field: State the mileage for those who bring their own vehicles only"
       value_field: "Value(RM) field: State the number of taxi fares only"
       status_movement: "Status & Movement"
+      no_registered_vehicle: "You have NO registered vehicle in this system. Please register your vehicle in Staff submodule first."
 
     travel_claim:
       title: Travel Claims
