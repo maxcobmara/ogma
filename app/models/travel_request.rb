@@ -3,9 +3,9 @@ class TravelRequest < ActiveRecord::Base
   #controller searches, variables, lists, relationship checking
   before_save :set_to_nil_where_false, :set_total, :set_mileage_nil_when_not_own_car, :set_own_car_false_if_no_car_registered
   
-  belongs_to :applicant,    :class_name => 'Staff', :foreign_key => 'staff_id'
-  belongs_to :replacement,  :class_name => 'Staff', :foreign_key => 'replaced_by'
-  belongs_to :headofdept,   :class_name => 'Staff', :foreign_key => 'hod_id'
+  belongs_to :applicant, :class_name => 'Staff', :foreign_key => 'staff_id'
+  belongs_to :replacement, :class_name => 'Staff', :foreign_key => 'replaced_by'
+  belongs_to :headofdept, :class_name => 'Staff', :foreign_key => 'hod_id'
   
   belongs_to :travel_claim, :foreign_key => 'travel_claim_id'
   belongs_to :document
@@ -13,9 +13,9 @@ class TravelRequest < ActiveRecord::Base
   validates_presence_of :staff_id, :destination, :depart_at, :return_at
   validates_presence_of :own_car_notes, :if => :mycar?
   validate :validate_end_date_before_start_date
-  validates_presence_of :replaced_by, :if => :check_submit?
-  validates_presence_of :hod_id,      :if => :check_submit?
-  validates_presence_of :hod_accept_on, :if => :hod_accept?
+  validates_presence_of :replaced_by, :if => :check_submit?    #validation during EDIT - refer notes on EDIT & APPROVE button in SHOW page
+  validates_presence_of :hod_id, :if => :check_submit?             #validation during EDIT - refer notes on EDIT & APPROVE button in SHOW page
+  validates_presence_of :hod_accept_on, :if => :hod_accept?  #validation in APPROVAL page - refer notes on EDIT & APPROVE button in SHOW page
   
   has_many :travel_claim_logs, :dependent => :destroy
   accepts_nested_attributes_for :travel_claim_logs, :reject_if => lambda { |a| a[:destination].blank? }, :allow_destroy =>true
@@ -25,14 +25,11 @@ class TravelRequest < ActiveRecord::Base
   
   #controller searches
   def self.in_need_of_approval
-    where('hod_id = ? AND is_submitted = ? AND (hod_accept IS ? OR hod_accept = ?)', 25, true, nil, false)
-    #where('hod_id = ? AND is_submitted = ? AND (hod_accept IS ? OR hod_accept = ?)', Login.first.staff_id, true, nil, false)
-    #to revised current_user.staff_id, current_user.try(:login), login 
+    where('hod_id = ? AND is_submitted = ? AND (hod_accept IS ? OR hod_accept = ?)', User.current.userable_id, true, nil, false)
   end
   
   def self.my_travel_requests
-    #where(staff_id:  Login.first.staff_id)
-    where(staff_id:  25)
+    where(staff_id: User.current.userable_id)
   end
   
   def reference_document
@@ -44,28 +41,31 @@ class TravelRequest < ActiveRecord::Base
   end
   
   def repl_staff
-      unit_name = "Teknologi Maklumat"#Login.first.staff.positions.first.unit
-      replacements = Position.joins(:staff).where(unit: unit_name).pluck(:staff_id) 
-      replacements
+    unit_name = User.current.userable.positions.first.unit
+    siblings = Position.joins(:staff).where(unit: unit_name).pluck(:staff_id)  
+    #children = User.current.userable.positions.first.children.pluck(:staff_id)
+    replacements = siblings # + children #not suitable for Pn Nabilah, Pn Rokiah - Timbalan2 Pengarah
+    replacements
   end
   
-   def hods
-      #if Login.current_login.staff.position.root_id == Login.current_login.staff.position.parent_id
-     #if Login.first.staff.positions.first.root_id == Login.first.staff.positions.first.parent_id
-        #hod = Login.first.staff.positions.first.root_id	#Login.current_login.staff.position.root_id
-        #approver = Position.where("id IN (?)", hod).pluck(:staff_id)
-     #test fail..requires LOGIN TO MATCH WITH STAFF - hide first
-     #if Login.first.staff.positions.first.root_id == Login.first.staff.positions.first.parent_id
-     #   hod = Login.first.staff.positions.first.root_id	#Login.current_login.staff.position.root_id
-      #  approver = Position.where("id IN (?)", hod).pluck(:staff_id)
-      #else
-        #hod = Login.first.staff.positions.first.root.child_ids	#Login.current_login.staff.position.root.child_ids
-        #hod << Login.first.staff.positions.first.root_id	#Login.current_login.staff.position.root_id
-        #approver = Position.where("id IN (?)", hod).pluck(:staff_id)
-      #end
-
-      approver = [25,58]
-      approver
+  def hods
+    unit_name = User.current.userable.positions.first.unit
+    applicant_post= User.current.userable.positions.first
+    prog_names = Programme.roots.map(&:name)
+    approver=[]
+    if prog_names.include?(unit_name) 
+      if applicant_post.tasks_main.include?("Ketua Program")
+        approver = User.current.userable.positions.firstparent.staff_id
+      else
+        approver << Position.where('unit=? and staff_id is not null',unit_name).order(combo_code: :asc).first.staff_id
+      end
+    else
+      approver<< Position.where('unit=? and combo_code<? and ancestry_depth!=?', unit_name, applicant_post.combo_code,1).first.staff_id
+      #Above : ancestry_depth!= 1 to avoid Timbalan2 Pengarah - fr becoming each other's hod.
+      approver << User.current.userable.positions.first.parent.staff_id if approver.count==0
+      approver << User.current.userable.positions.first.ancestors.map(&:staff_id) if approver.count==0
+    end
+    approver
   end
   
   def gcode(generated_code)
@@ -86,11 +86,15 @@ class TravelRequest < ActiveRecord::Base
     #self.document = Document.find_by_refno(refno) unless refno.blank?
   #end
   
-  
   #before logic
   def set_to_nil_where_false
     if is_submitted == true
-      self.submitted_on	= Date.today
+      self.submitted_on= Date.today
+      if mileage == true
+        self.mileage_history = 1
+      elsif mileage == false
+        self.mileage_history = 2
+      end
     end
     
     if hod_accept == false
@@ -100,6 +104,12 @@ class TravelRequest < ActiveRecord::Base
     if !mycar?#own_car == false 
       self.own_car_notes =''
       self.mileage = nil
+    end
+    
+    if mileage_replace == false #decision by hod
+      self.mileage = true
+    elsif mileage_replace == true
+      self.mileage = false
     end
   end
   

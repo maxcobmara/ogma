@@ -7,6 +7,13 @@ class User < ActiveRecord::Base
   belongs_to :userable, polymorphic: true
   has_and_belongs_to_many :roles
 
+  def self.current
+    Thread.current[:user]
+  end
+  def self.current=(user)
+    Thread.current[:user] = user
+  end
+  
   def self.keyword_search(query)
    staff_ids=Staff.where('name ILIKE(?)', "%#{query}%").pluck(:id)
    student_ids=Student.where('name ILIKE(?)', "%#{query}%").pluck(:id)

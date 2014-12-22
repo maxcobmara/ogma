@@ -16,7 +16,7 @@
           .col-sm-2.control-label
             = f.label :staff_id
           .col-md-3
-            = f.collection_select :staff_id, Staff.all.order(name: :asc), :id,  :staff_name_with_position_grade_unit, {:include_blank =>t('helpers.prompt.select_staff'), :selected=>25},{class: 'selectpicker', "data-width"=>'460px'} 
+            = f.collection_select :staff_id, Staff.all.order(name: :asc), :id,  :staff_name_with_position_grade_unit, {:include_blank =>t('helpers.prompt.select_staff'), :selected=>@current_user.userable_id},{class: 'selectpicker', "data-width"=>'460px'} 
             /= f.collection_select :staff_id, Staff.all.order(name: :asc), :id,  :staff_name_with_position, {:include_blank =>t('helpers.prompt.select_staff'), :selected=>Login.first.staff_id},{class: 'selectpicker', "data-width"=>'320px'} 
         .form-group
           .col-sm-2.control-label

@@ -1,5 +1,7 @@
  class Staff::TravelRequestsController < ApplicationController
-    before_action :set_travel_request, only: [:show, :edit, :update, :destroy]
+  before_filter :set_current_user
+  before_action :set_travel_request, only: [:show, :edit, :update, :destroy]
+    
   # GET /travel_requests
   # GET /travel_requests.xml
   def index
@@ -61,6 +63,7 @@
   # PUT /travel_requests/1
   # PUT /travel_requests/1.xml
   def update
+    #raise params.inspect
     @travel_request = TravelRequest.find(params[:id])
 
     respond_to do |format|
@@ -71,10 +74,18 @@
       else
 	if params[:task] && params[:task]=="1"
 	  format.html {render :action => "travel_log"}
+	  format.xml  { render :xml => @travel_request.errors, :status => :unprocessable_entity }
 	elsif params[:task] && params[:task]=="2"
+	  w = []
+	  @travel_request.errors.each do |k,v|
+	    w << k
+	  end
+	  flash[:notice]= "whhh"+w.to_s
 	   format.html {render :action => "approval"}
+	   format.xml  { render :xml => @travel_request.errors, :status => :unprocessable_entity }
 	else
           format.html { render :action => "edit" }
+	  format.xml  { render :xml => @travel_request.errors, :status => :unprocessable_entity }
 	end
         format.xml  { render :xml => @travel_request.errors, :status => :unprocessable_entity }
       end
