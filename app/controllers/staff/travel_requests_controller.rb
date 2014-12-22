@@ -33,8 +33,13 @@
     @travel_request = TravelRequest.new
     @generated_code = SecureRandom.hex 8
     respond_to do |format|
-      format.html # new.html.erb
-      format.xml  { render :xml => @travel_request }
+      if @current_user.userable.positions!=nil && @current_user.userable.positions.first.unit!=""
+        format.html # new.html.erb
+        format.xml  { render :xml => @travel_request }
+      else
+        format.html {redirect_to staff_travel_requests_url, :notice => t('positions_required')+t('staff.travel_request.title')+t('inc_unitname')}
+        format.xml  { render :xml => @travel_request }
+      end
     end
   end
 

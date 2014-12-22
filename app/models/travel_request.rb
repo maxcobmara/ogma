@@ -52,16 +52,27 @@ class TravelRequest < ActiveRecord::Base
     unit_name = User.current.userable.positions.first.unit
     applicant_post= User.current.userable.positions.first
     prog_names = Programme.roots.map(&:name)
+     #common_subjects = Programme.find(:all, :conditions=>['course_type=?', "Common Subject"]).map(&:name)  #no yet exist in programme & name format not sure 2
+    common_subjects=["Komunikasi & Sains Pengurusan", "Sains Tingkahlaku", "Anatomi & Fisiologi", "Sains Perubatan Asas"]
     approver=[]
-    if prog_names.include?(unit_name) 
-      if applicant_post.tasks_main.include?("Ketua Program")
-        approver = User.current.userable.positions.firstparent.staff_id
+    if prog_names.include?(unit_name) || unit_name == "Pos Basik" || common_subjects.include?(unit_name)
+      if applicant_post.tasks_main.include?("Ketua Program") || applicant_post.tasks_main.include?("Ketua Subjek")
+        approver = User.current.userable.positions.first.parent.staff_id
       else
-        approver << Position.where('unit=? and staff_id is not null',unit_name).order(combo_code: :asc).first.staff_id
+        sib_pos = Position.where('unit=? and staff_id is not null',unit_name).order(combo_code: :asc)
+        if sib_pos
+          sib_pos.each do |sp|
+            approver << sp.staff_id if sp.tasks_main.include?("Ketua Program") || applicant_post.tasks_main.include?("Ketua Subjek")
+          end
+        end
       end
     else
-      approver<< Position.where('unit=? and combo_code<? and ancestry_depth!=?', unit_name, applicant_post.combo_code,1).first.staff_id
+      staffapprover = Position.where('unit=? and combo_code<? and ancestry_depth!=?', unit_name, applicant_post.combo_code,1).map(&:staff_id)
       #Above : ancestry_depth!= 1 to avoid Timbalan2 Pengarah - fr becoming each other's hod.
+      approvers= Staff.where('id IN(?)', staffapprover)
+      approvers.each_with_index do |ap,idx|
+        approver << ap.id if ap.staffgrade.name.scan(/\d+/).first.to_i > 26  #check if approver realy qualified one 
+      end
       approver << User.current.userable.positions.first.parent.staff_id if approver.count==0
       approver << User.current.userable.positions.first.ancestors.map(&:staff_id) if approver.count==0
     end
