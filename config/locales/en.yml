@@ -106,7 +106,8 @@ en:
   records: records
   positions_required: "Position (task & responsibilities) is required to access submodule : "
   none_assigned: None assigned
-  
+  inc_unitname: " (including Department / Unit name) "
+
   actions:
     new: New
     new_node: New Node

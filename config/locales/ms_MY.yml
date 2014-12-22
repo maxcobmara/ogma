@@ -82,6 +82,7 @@ ms_MY:
   records: rekod
   positions_required: "Butiran Perjawatan (tugas & tanggungjawab) diperlukan bagi mengakses submodul : "
   none_assigned: Tiada maklumat
+  inc_unitname: " (termasuk nama Jabatan / Unit) "
  
   actions:
     new: Baru
