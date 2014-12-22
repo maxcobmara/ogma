@@ -38,7 +38,7 @@ class Status_movementPdf< Prawn::Document
   
   def table_content
     data = [["<u>TEMPAT</u>", "<u>PERIHAL</u>","<u>TEMPOH</u>"],
-     [ "#{@travel_request.destination.blank? ? '.'*55 : @travel_request.destination}", "#{'.'*55}","#{@travel_request.depart_return.blank? ? '.'*55 : @travel_request.depart_return}"],
+     [ "#{@travel_request.destination.blank? ? '.'*55 : @travel_request.destination}", "#{@travel_request.document.title.blank? ? '.'*55 : @travel_request.document.title[0,30]}","#{@travel_request.depart_return.blank? ? '.'*55 : @travel_request.depart_return}"],
      #[ "#{'.'*55}",  "#{'.'*55}",  "#{'.'*55}"],
      ["CARA PERJALANAN : ", {content: "", colspan: 2}]
      ]
