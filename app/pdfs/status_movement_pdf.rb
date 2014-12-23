@@ -38,7 +38,7 @@ class Status_movementPdf< Prawn::Document
   
   def table_content
     data = [["<u>TEMPAT</u>", "<u>PERIHAL</u>","<u>TEMPOH</u>"],
-     [ "#{@travel_request.destination.blank? ? '.'*55 : @travel_request.destination}", "#{@travel_request.document.title.blank? ? '.'*55 : @travel_request.document.title[0,30]}","#{@travel_request.depart_return.blank? ? '.'*55 : @travel_request.depart_return}"],
+     [ "#{@travel_request.destination.blank? ? '.'*55 : @travel_request.destination}", "#{@travel_request.document.blank? ? '.'*55 : @travel_request.document.title[0,30]}","#{@travel_request.depart_return.blank? ? '.'*55 : @travel_request.depart_return}"],
      #[ "#{'.'*55}",  "#{'.'*55}",  "#{'.'*55}"],
      ["CARA PERJALANAN : ", {content: "", colspan: 2}]
      ]
@@ -56,8 +56,8 @@ class Status_movementPdf< Prawn::Document
   
   def table_transport_choice
     data = [["","#{'<b>/</b>' if @travel_request.own_car==true}","Kereta Sendiri","#{'<b>/</b>' if @travel_request.train==true}","Keretapi","#{'<b>/</b>' if @travel_request.dept_car==true}","Kenderaan Jabatan"], ["","","","","","",""], 
-    ["","#{'<b>/</b>' if @travel_request.plane==true}","Kapal Terbang","#{'<b>/</b>' if @travel_request.other==true}","Kenderaan Awam","#{'<b>/</b>' if @travel_request.others_car==true}","Menumpang Pegawai Lain"], 
-    ["","","",{content: "<b>Nyatakan</b>:  #{'.'*40 if @travel_request.others_car==false} <u>#{@travel_request.others_car_notes if @travel_request.others_car==true}</u>", colspan: 2},{content: "Sila sebutkan nama & tempat bertugas pegawai ini", colspan: 2}],
+    ["","#{'<b>/</b>' if @travel_request.plane==true}","Kapal Terbang","#{'<b>/</b>' if (@travel_request.taxi==true|| @travel_request.bus==true || @travel_request.train==true || @travel_request.plane==true || @travel_request.other==true)}","Kenderaan Awam","#{'<b>/</b>' if @travel_request.others_car==true}","Menumpang Pegawai Lain"], 
+    ["","","",{content: "<b>Nyatakan</b>:  #{'.'*40 if(@travel_request.taxi==false&& @travel_request.bus==false&& @travel_request.train==false && @travel_request.plane==false && @travel_request.other==false)} <u>#{@travel_request.other_desc if @travel_request.other==true} #{'Teksi' if @travel_request.taxi==true} #{'Bas' if @travel_request.bus==true} #{'Keretapi' if @travel_request.train==true} #{'Kapal Terbang' if @travel_request.plane==true}</u>", colspan: 2},{content: "Pegawai Lain : #{@travel_request.others_car_notes if @travel_request.others_car==true} #{'Sila sebutkan nama & tempat bertugas pegawai ini' if @travel_request.others_car==false} ", colspan: 2}],
     ["",{content: "JIKA TIDAK MENAIKI KERETA / KAPAL TERBANG KERANA MENGGUNAKAN KERETA SENDIRI, ", colspan: 6}],
     ["",{content: "SILA NYATAKAN SEBABNYA :", colspan: 6}],
     ["",{content: "#{'.'*180 if @travel_request.own_car==false} <u>#{@travel_request.own_car_notes if @travel_request.own_car==true}</u>", colspan: 6}],["",{content: "#{'.'*180 if @travel_request.own_car==false} ", colspan: 6}],
