@@ -89,7 +89,10 @@
               - if @info.new_record?
                 = f.collection_select :staff_shift_id, StaffShift.all, :id, :start_end, {:include_blank => true, :prompt=>t('select')}, {class: 'selectpicker', "data-width"=>"auto"}
               - else
-                = f.collection_select :staff_shift_id, StaffShift.all, :id, :start_end, {:include_blank => true, :selected=>@staff.staff_shift_id}, {class: 'selectpicker', "data-width"=>"auto"}
+                - if @staff.staff_shift_id.blank? 
+                  = f.collection_select :staff_shift_id, StaffShift.all, :id, :start_end, {:include_blank => true, :prompt=>t('select')}, {class: 'selectpicker', "data-width"=>"auto"}
+                - else
+                  = f.collection_select :staff_shift_id, StaffShift.all, :id, :start_end, {:include_blank => true, :selected=>@staff.staff_shift_id}, {class: 'selectpicker', "data-width"=>"auto"}
 
             .previous_shift{:style=>"display: none;"}
               = f.fields_for :shift_histories do |builder|

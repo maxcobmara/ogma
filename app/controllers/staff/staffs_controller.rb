@@ -54,10 +54,11 @@ end
   def update
     @info = Staff.find(params[:id])
     c_shift = params[:staff][:staff_shift_id]
-    s_shift = params[:staff][:shift_histories_attributes]["#{@info.shift_histories.count}"][:shift_id]
-    new_ddate= params[:staff][:shift_histories_attributes]["#{@info.shift_histories.count}"][:deactivate_date]
-    @info.create_shift_history_nodate(s_shift, c_shift, new_ddate) if (c_shift!=s_shift) && new_ddate==""
-    
+    if params[:staff][:shift_histories_attributes]
+      s_shift = params[:staff][:shift_histories_attributes]["#{@info.shift_histories.count}"][:shift_id]
+      new_ddate= params[:staff][:shift_histories_attributes]["#{@info.shift_histories.count}"][:deactivate_date]
+      @info.create_shift_history_nodate(s_shift, c_shift, new_ddate) if (c_shift!=s_shift) && new_ddate==""
+    end
     respond_to do |format|
       if @info.update(staff_params)
         format.html { redirect_to staff_info_path, notice: 'Staff was successfully updated.' }

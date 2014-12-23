@@ -414,6 +414,7 @@ ms_MY:
       mileage_field: "Ruangan Batuan(KM): Nyatakan jarak km bagi yang membawa kenderaan sendiri sahaja"
       value_field: "Ruangan Nilai(RM): Nyatakan jumlah tambang teksi sahaja"
       status_movement: "Status & Pergerakan"
+      no_registered_vehicle: "Anda tidak mempunyai rekod kenderaan berdaftar dalam sistem ini. Sila daftarkan kenderaan anda dalam submodul Staf terlebih dahulu."
 
     travel_claim:
       title: Tuntutan Perjalanan
