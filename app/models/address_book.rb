@@ -2,6 +2,7 @@ class AddressBook < ActiveRecord::Base
   
   has_many :provides, :class_name => 'Ptcourse', :foreign_key => 'provider_id'
   validates :name, presence: :true
+  has_many :suppliers,    :class_name => 'Asset', :foreign_key => 'supplier_id'
 end
 
 # == Schema Information
