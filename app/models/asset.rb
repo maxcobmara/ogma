@@ -7,6 +7,8 @@ class Asset < ActiveRecord::Base
   accepts_nested_attributes_for :asset_placements, :allow_destroy => true , :reject_if => lambda { |a| a[:location_id].blank? }
   has_many  :locations, :through => :asset_placements
   
+  belongs_to :suppliedby,  :class_name => 'AddressBook', :foreign_key => 'supplier_id'
+  
   #belongs_to :location, :foreign_key => "location_id" --> not required - refer line 5
   #belongs_to :staff,    :class_name => 'Staff', :foreign_key => "assignedto_id"
   belongs_to :receiver, :class_name => 'Staff', :foreign_key => 'receiver_id'
