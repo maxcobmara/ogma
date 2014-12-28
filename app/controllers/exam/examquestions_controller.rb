@@ -1,5 +1,6 @@
 class Exam::ExamquestionsController < ApplicationController
-  filter_resource_access
+  #filter_resource_access
+    filter_access_to :all
   before_action :set_examquestion, only: [:show, :edit, :update, :destroy]
   # GET /examquestions
   # GET /examquestions.xml
@@ -87,7 +88,7 @@ class Exam::ExamquestionsController < ApplicationController
       @programme_listing = Programme.roots
       @subjects2 = Programme.all.at_depth(2).sort #default for NEW record & resubmission of NEW record - refer kaka2
     end
-    
+    @subjects = @subjects2
     #no topic will be displayed until subject is selected - below line required as DEFAULT value
     @topics = Programme.all.at_depth(3).sort  
     #refer examquestion.js.coffee (same for all, except for : when programme & subject are selected, topics will be populated accordingly)

@@ -71,7 +71,7 @@ class ClaimprintPdf < Prawn::Document
                        81200 Johor Bahru, Johor" ],
                       ["ALAMAT RUMAH", "#{@travel_claim.staff.addr}"],
                       ["ALAMAT PENGINAPAN", ""],
-                      ["NO GAJI", ""],
+                      ["NO GAJI", "#{@travel_claim.staff.salary_no}"],
                       ["NO AKAUN", "#{@travel_claim.staff.bankaccno}"],
                       ["NAMA BANK", "#{@travel_claim.staff.bank}"],
                       ["EMAIL", " #{@travel_claim.staff.coemail}"],

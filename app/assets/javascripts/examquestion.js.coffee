@@ -1,10 +1,10 @@
 #WYSIWUG - textarea - question
-bkLib.onDomLoaded ->
-  nicEditors.editors.push new nicEditor(fullPanel: true).panelInstance(document.getElementById("myNicEditor"))
-  nicEditors.editors.push new nicEditor(fullPanel: true).panelInstance(document.getElementById("examquestion_shortessays_attributes_0_subanswer"))
-  nicEditors.editors.push new nicEditor(fullpanel: true).panelInstance(document.getElementById("examquestion_shortessays_attributes_1_subanswer"))
-  nicEditors.editors.push new nicEditor(fullpanel: true).panelInstance(document.getElementById("examquestion_shortessays_attributes_2_subanswer"))
-  return
+#bkLib.onDomLoaded ->
+#  nicEditors.editors.push new nicEditor(fullPanel: true).panelInstance(document.getElementById("myNicEditor"))
+#  nicEditors.editors.push new nicEditor(fullPanel: true).panelInstance(document.getElementById("examquestion_shortessays_attributes_0_subanswer"))
+#  nicEditors.editors.push new nicEditor(fullpanel: true).panelInstance(document.getElementById("examquestion_shortessays_attributes_1_subanswer"))
+#  nicEditors.editors.push new nicEditor(fullpanel: true).panelInstance(document.getElementById("examquestion_shortessays_attributes_2_subanswer"))
+#  return
 
 
 
@@ -242,10 +242,10 @@ $(document).ready ->
       $(".span_activate").hide()
     return
 
-  PreviewImage = ->
-    oFReader = new FileReader()
-    oFReader.readAsDataURL document.getElementById("examquestion_diagram").files[0]
-    oFReader.onload = (oFREvent) ->
-      document.getElementById("uploadPreview").src = oFREvent.target.result
-    return
-  document.getElementById("examquestion_diagram").addEventListener "change", PreviewImage, false
+#  PreviewImage = ->
+#    oFReader = new FileReader()
+#    oFReader.readAsDataURL document.getElementById("examquestion_diagram").files[0]
+#    oFReader.onload = (oFREvent) ->
+#      document.getElementById("uploadPreview").src = oFREvent.target.result
+#    return
+#    document.getElementById("examquestion_diagram").addEventListener "change", PreviewImage, false
