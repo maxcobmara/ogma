@@ -171,7 +171,7 @@ class Library::LibrarytransactionsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def librarytransaction_params
-      params.require(:librarytransaction).permit(:accession_id, :ru_staff, :staff_id, :student_id, :checkoutdate, :returnduedate, :accession, :accession_no, :accession_acc_book)
+      params.require(:librarytransaction).permit(:accession_id, :ru_staff, :staff_id, :student_id, :checkoutdate, :returnduedate, :accession, :accession_no, :accession_acc_book, :libcheckout_by)
       # <-- insert editable fields here inside here e.g (:date, :name)
     end
 
