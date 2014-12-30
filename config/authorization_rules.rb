@@ -102,6 +102,9 @@ authorization do
    has_permission_on :assets, :to => :manage
    has_permission_on :asset_defects, :to =>[:manage, :kewpa9] #3nov2013
    has_permission_on :assetsearches, :to => :read
+   has_permission_on :locations, :to => :manage
+   has_permission_on :asset_disposals, :to => :manage
+   has_permission_on :asset_losses, :to => :manage
  end
 
  #Group Trainings ------------------------------------------------------------read(index, show), menu(inc index), update(inc edit), approve(read, update), manage(crud,approve,menu)

@@ -16,7 +16,7 @@
           %li=link_to (t 'training.lesson_plan.methodologies'), "#lesson_plan_methodologies", "data-toggle" => "tab"
           %li=link_to (t 'training.lesson_plan.submission'), "#lesson_plan_submission", "data-toggle" => "tab"
           %li.active=link_to (t 'training.lesson_plan.reporting'), "#lesson_reporting_edit", "data-toggle" => "tab"
-          - if (@lesson_plan.endorsed_by == current_user.staff_id && @lesson_plan.report_submit == true) || @current_roles.include?('Administration')
+          - if (@lesson_plan.endorsed_by == @current_user.userable_id && @lesson_plan.report_submit == true) || @current_roles.include?('Administration')
             %li=link_to (t 'training.lesson_plan.report_review'), "#lesson_report_review_edit", "data-toggle" => "tab"
 
         / display 
