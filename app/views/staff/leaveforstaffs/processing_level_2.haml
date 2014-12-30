@@ -7,6 +7,7 @@
 .row
   = form_for [:staff, @leaveforstaff], html: { multipart: true, class: 'form-horizontal' }  do |f| 
     = render 'shared/error_messages', object: f.object
+    = f.hidden_field :edit_type, :value=>'approve'
     
     .row
       .col-md-offset-1

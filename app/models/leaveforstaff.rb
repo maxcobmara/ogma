@@ -91,7 +91,7 @@ class Leaveforstaff < ActiveRecord::Base
       if (leavenddate - leavestartdate) == 0
         ""
       else
-        (" ") + (leavenddate.strftime("%d %b %Y")).to_s
+        ("") + (leavenddate.strftime("%d %b %Y")).to_s
       end
     end
   
@@ -143,6 +143,12 @@ class Leaveforstaff < ActiveRecord::Base
       sibs   = Position.where(["id IN (?) AND unit=?" , sibpos,dept]).pluck(:staff_id)
       applicant = Array(staff_id)
       sibs - applicant
+    end
+    
+    def self.search2(current_user)
+      my_first_level_approval  = Leaveforstaff.where(approval1_id: current_user.userable_id).where(approval1: nil)
+      my_second_level_approval = Leaveforstaff.where(approval1: true).where(approval2_id: current_user.userable_id).where(approver2: nil)
+      my_first_level_approval + my_second_level_approval
     end
   
 
