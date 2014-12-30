@@ -800,7 +800,11 @@ ms_MY:
     registration: "No. Pendaftaran"
     otherinfo: "Komponen & Aksesori"
     quantity: Kuantiti
-    #serialno: "No. Siri"
+    reportdownload: "Laporan/Muat Turun"
+    filename: Nama
+    type: Jenis
+    link: Pautan
+    kewpa_download_linklist: "Muat Turun/Senarai Pautan KEW PA"
     
     defect:
       title: Kerosakan Aset

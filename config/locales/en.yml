@@ -887,7 +887,12 @@ en:
     otherinfo: "Components & Accessories"
     administered_by: "Administered By"
     quantity: Quantity
-    #serialno: Serial No
+    reportdownload: "Report/Downloads"
+    filename: Name
+    type: Type
+    link: Link
+    kewpa_download_linklist: "KEW PA Download/Link List"
+    
     
     defect:
       title: Asset Defect
