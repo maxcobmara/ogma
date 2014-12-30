@@ -102,22 +102,29 @@ class Training::LessonPlansController < ApplicationController
   end
   
   def lesson_plan
-      @lesson_plan = LessonPlan.find(params[:id])
-      #render :layout => 'report'
-      #respond_to do |format|
-      #format.pdf do
-        #pdf = Borang_maklumat_staffPdf.new(@staff, view_context)
-        #send_data pdf.render, filename: "borang_maklumat_staff-{Date.today}",
-                              #type: "application/pdf",
-                              #disposition: "inline"
-      #end
-    #end
+    @lesson_plan = LessonPlan.find(params[:id])
+    respond_to do |format|
+      format.pdf do
+        pdf = Lesson_planPdf.new(@lesson_plan, view_context)
+        send_data pdf.render, filename: "lesson_plan-{Date.today}",
+                              type: "application/pdf",
+                              disposition: "inline"
+      end
+    end
+  end
+
+  def lesson_report
+    @lesson_plan = LessonPlan.find(params[:id])   
+    respond_to do |format|
+      format.pdf do
+        pdf = Lesson_reportPdf.new(@lesson_plan, view_context)
+        send_data pdf.render, filename: "lesson_report-{Date.today}",
+                              type: "application/pdf",
+                              disposition: "inline"
+      end
+    end
   end
   
-  def lessonplan_reporting
-      @lesson_plan = LessonPlan.find(params[:id])  
-      
-  end
   def index_report
       #@lesson_plans = LessonPlan.where('hod_approved=?', true) 
       @search = LessonPlan.search(params[:q])
@@ -125,22 +132,7 @@ class Training::LessonPlansController < ApplicationController
       @lesson_plans3 = @lesson_plans2.sort_by{|t|t.lecturer} 
       @lesson_plans =  Kaminari.paginate_array(@lesson_plans3).page(params[:page]||1) 
   end
-  def lesson_report
-      @lesson_plan = LessonPlan.find(params[:id])
-      @current_roles=[]
-      current_user.roles.each do |x|
-	@current_roles << x.name
-      end
-      #render :layout => 'report'
-      #respond_to do |format|
-      #format.pdf do
-        #pdf = Borang_maklumat_staffPdf.new(@staff, view_context)
-        #send_data pdf.render, filename: "borang_maklumat_staff-{Date.today}",
-                              #type: "application/pdf",
-                              #disposition: "inline"
-      #end
-    #end
-  end
+
   
   private
   
