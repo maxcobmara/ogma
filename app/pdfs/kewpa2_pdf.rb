@@ -220,7 +220,7 @@ class Kewpa2Pdf < Prawn::Document
    @asset.maints.map do |maint|
      ["#{counter += 1}", "#{maint.created_at.try(:strftime, "%d/%m/%y")}", "#{maint.details} ", "#{maint.workorderno} ",
        @view.currency(maint.maintcost.to_f),"#{maint.try(:asset).try(:staff).try(:name)}"]
-   end + bb
+   end
  end 
   
 end

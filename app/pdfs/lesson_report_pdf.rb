@@ -21,7 +21,7 @@ class Lesson_reportPdf< Prawn::Document
     table_signatory
   end
   
-   def table_teaching_method
+  def table_teaching_method
     data = [["", "#{'<b>/</b>' if @lesson_plan.schedule_item.lecture_method == 1}","Kuliah","#{'<b>/</b>' if @lesson_plan.schedule_item.lecture_method == 2}","Tutorial","#{'<b>/</b>' if @lesson_plan.schedule_item.lecture_method == 3}","Amali"]]
           
     table(data, :column_widths => [100,50,70,50,70,50,70], :cell_style => { :size => 11, :align=> :center,  :inline_format => true}) do
