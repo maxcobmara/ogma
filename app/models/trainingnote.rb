@@ -47,4 +47,24 @@ class Trainingnote < ActiveRecord::Base
     end
   end
   
+    
+  #define scope subject
+  def self.subject_search(query)
+    topicids=Programme.where('(code ILIKE(?) OR name ILIKE(?)) AND course_type=?',"%#{query}%", "%#{query}%", "Subject")[0].descendants.pluck(:id)
+    topicdetailsids = Topicdetail.where('topic_code IN(?)', topicids).pluck(:id)
+    return Trainingnote.where('topicdetail_id IN(?)', topicdetailsids)
+  end
+    
+  def self.programme_search(query)
+    topicids=Programme.where('name ILIKE(?) AND ancestry_depth=?',"%#{query}%",0)[0].descendants.at_depth(3).pluck(:id)
+    subtopicids=Programme.where('name ILIKE(?) AND ancestry_depth=?',"%#{query}%",0)[0].descendants.at_depth(4).pluck(:id)
+    topicdetailsids = Topicdetail.where('topic_code IN(?) OR topic_code IN(?)', topicids, subtopicids).pluck(:id)
+    return Trainingnote.where('topicdetail_id IN(?)', topicdetailsids)
+  end
+  
+  # whitelist the scope
+  def self.ransackable_scopes(auth_object = nil)
+    [:subject_search, :programme_search]
+  end
+  
 end

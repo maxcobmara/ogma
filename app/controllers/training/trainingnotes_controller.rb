@@ -1,5 +1,7 @@
  class Training:: TrainingnotesController < ApplicationController
+   filter_resource_access
    before_action :set_trainingnote, only: [:show, :edit, :update, :destroy]
+   
   # GET /trainingnotes
   # GET /trainingnotes.xml
   def index

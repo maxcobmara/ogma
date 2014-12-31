@@ -65,6 +65,8 @@ ms_MY:
   no2: Tidak
   by2: " oleh "
   on2: " pada "
+  from: Dari
+  to: Hingga
   return: Pemulangan
   confirmed: Disahkan
   confirmed_on: Disahkan pada
@@ -1884,6 +1886,8 @@ ms_MY:
       file_name: Nama Fail
       or: Atau pilih semula fail
       topic_subtopic: "Topik / Subtopik"
+      programme: Program
+      subject: Subjek
     lesson_plan:
       title: Pelan Pengajaran
       title2: Pengajaran dan Pembelajaran

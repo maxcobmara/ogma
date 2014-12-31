@@ -44,6 +44,25 @@ class User < ActiveRecord::Base
     subjects_ids = programme_of_staff.descendants.at_depth(2).pluck(:id)
     return Grade.where('subject_id IN(?)', subjects_ids).pluck(:id)
   end
+  
+  def topicdetails_of_programme
+    unit_of_staff = userable.positions.first.unit
+    programme_of_staff = Programme.where('name ILIKE(?)', "%#{unit_of_staff}%").at_depth(0).first
+    topicids = programme_of_staff.descendants.at_depth(3).pluck(:id)
+    subtopicids = programme_of_staff.descendants.at_depth(4).pluck(:id)
+    topicdetailsids = Topicdetail.where('topic_code IN(?) OR topic_code IN(?)', topicids, subtopicids).pluck(:id)
+    return topicdetailsids
+  end
+  
+  def timetables_of_programme
+    unit_of_staff = userable.positions.first.unit
+    programme_of_staff = Programme.where('name ILIKE(?)', "%#{unit_of_staff}%").at_depth(0).first
+    topicids = programme_of_staff.descendants.at_depth(3).pluck(:id)
+    subtopicids = programme_of_staff.descendants.at_depth(4).pluck(:id)
+    timetable_in_trainingnote = Trainingnote.where('timetable_id IS NOT NULL').pluck(:timetable_id)
+    timetableids = WeeklytimetableDetail.where('(topic IN(?) or topic IN(?))and id IN(?)',topicids, subtopicids, timetable_in_trainingnote).pluck(:id)
+    return timetableids
+  end
 
   def role_symbols
    roles.map do |role|

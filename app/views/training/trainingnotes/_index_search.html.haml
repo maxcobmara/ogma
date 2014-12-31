@@ -1,21 +1,19 @@
 = search_form_for @search, url: training_trainingnotes_path,  class: "form-inline" do |f|
   %tr.search_row{style: "display: none;"}
-    %td{:colspan=>'2'}
+    %td= f.text_field :programme_search, size: 2, :class => "form-control"
+    %td= f.text_field :subject_search, size: 2, :class => "form-control"
     %td= f.text_field :topicdetail_subject_topic_name_cont, size: 2, :class => "form-control"
     %td= f.text_field :title_cont, size: 2,  :class => "form-control"
     %td= f.text_field :reference_cont, size: 2,  :class => "form-control"
     %td= f.text_field :version_cont, size:2, :class => "form-control"
-    %td= f.text_field :release_cont, size:2, :class => "form-control"
-    %td &nbsp;
+    %td
+      = f.text_field :release_gteq, size:2, :class => "form-control date_picker", :placeholder => t('from')
+      = f.text_field :release_lteq, size:2, :class => "form-control date_picker", :placeholder => t('to')
     %td
       .input-group 
+        = f.text_field :document_file_name_cont, size:2, :class => "form-control"
         %span.input-group-btn
           %button.btn.btn-sm.btn-default.right{:type => "submit"}
             %i.fa.fa-search.fa-fw
        
-  :javascript
-    $('.date-picker').datetimepicker({
-     timepicker:false,
-       format: "Y-m-d",
-       autoclose: true
-     });
+ 
