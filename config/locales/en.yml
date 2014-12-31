@@ -1915,6 +1915,7 @@ en:
       major: Major
       minor: Minor
       elective: Elective
+      subject_abbreviation: Abbreviation
     topicdetail:
       create: Create Topic Detail
       title: Topic Detail
@@ -2138,17 +2139,6 @@ en:
         hod_rejected: HOD Rejection
         hod_rejected_on: Rejecttion Date
         reason: Reason
-      programme:
-        combo_code: Combo Code
-        duration: Duration
-        credits: Credits
-        status: Status
-        method: Teaching Method
-        course_type: Course Type
-        name: Name
-        lecture: Lecture
-        tutorial: Tutorial
-        practical: Practical
       staff_attendance:
         thumb_id: Staff
         logged_at: Logged At
