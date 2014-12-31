@@ -47,24 +47,59 @@ class Trainingnote < ActiveRecord::Base
     end
   end
   
-    
   #define scope subject
   def self.subject_search(query)
-    topicids=Programme.where('(code ILIKE(?) OR name ILIKE(?)) AND course_type=?',"%#{query}%", "%#{query}%", "Subject")[0].descendants.pluck(:id)
-    topicdetailsids = Topicdetail.where('topic_code IN(?)', topicids).pluck(:id)
-    return Trainingnote.where('topicdetail_id IN(?)', topicdetailsids)
+    if query
+      sel_programme = Programme.where('(code ILIKE(?) OR name ILIKE(?)) AND course_type=?',"%#{query}%", "%#{query}%", "Subject").first
+      if sel_programme!=nil
+        topicids=sel_programme.descendants.pluck(:id)
+        topicdetailsids = Topicdetail.where('topic_code IN(?)', topicids).pluck(:id)
+      else
+        topicdetailsids = []
+      end
+      return Trainingnote.where('topicdetail_id IN(?)', topicdetailsids)
+    end
   end
     
   def self.programme_search(query)
-    topicids=Programme.where('name ILIKE(?) AND ancestry_depth=?',"%#{query}%",0)[0].descendants.at_depth(3).pluck(:id)
-    subtopicids=Programme.where('name ILIKE(?) AND ancestry_depth=?',"%#{query}%",0)[0].descendants.at_depth(4).pluck(:id)
-    topicdetailsids = Topicdetail.where('topic_code IN(?) OR topic_code IN(?)', topicids, subtopicids).pluck(:id)
-    return Trainingnote.where('topicdetail_id IN(?)', topicdetailsids)
+    if query
+      sel_programme=Programme.where('name ILIKE(?) AND ancestry_depth=?',"%#{query}%",0).first
+      if sel_programme!=nil 
+        topicids=sel_programme.descendants.at_depth(3).pluck(:id)
+        subtopicids=sel_programme.descendants.at_depth(4).pluck(:id)
+        topicdetailsids = Topicdetail.where('topic_code IN(?) OR topic_code IN(?)', topicids, subtopicids).pluck(:id)
+        return Trainingnote.where('topicdetail_id IN(?)', topicdetailsids)
+      else
+        topicdetailsids=[]
+      end
+      return Trainingnote.where('topicdetail_id IN(?)', topicdetailsids)
+    end
   end
   
   # whitelist the scope
   def self.ransackable_scopes(auth_object = nil)
     [:subject_search, :programme_search]
+  end
+  
+  def self.search2(search)
+    common_subject = Programme.where('course_type=?','Commonsubject').pluck(:id)
+    if search 
+      if search == '0'
+        training_notes = Trainingnote.all
+      else
+        if search == '1'
+          topicids = Programme.where('id IN(?)', common_subject).first.descendants.at_depth(3).pluck(:id)
+          subtopicids = Programme.where('id IN(?)', common_subject).first.descendants.at_depth(4).pluck(:id)
+        else
+          topicids = Programme.where(id: search).first.descendants.at_depth(3).pluck(:id)
+          subtopicids = Programme.where(id: search).first.descendants.at_depth(4).pluck(:id)
+        end
+        topicdetailsids = Topicdetail.where('topic_code IN(?) OR topic_code IN(?)', topicids, subtopicids).pluck(:id)
+        nobody_ownids = Trainingnote.where('timetable_id is null AND topicdetail_id is null').pluck(:id)
+        training_notes = Trainingnote.where('topicdetail_id IN(?) OR id IN(?)', topicdetailsids, nobody_ownids)
+      end
+    end
+    training_notes
   end
   
 end
