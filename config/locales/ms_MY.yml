@@ -1853,6 +1853,7 @@ ms_MY:
       major: Major
       minor: Minor
       elective: Elektif
+      subject_abbreviation: Nama Singkatan
     topicdetail:
       create: Cipta Butiran Topik
       title: Butiran Topik
@@ -2074,17 +2075,6 @@ ms_MY:
         hod_rejected: Ditolak Ketua Jabatan
         hod_rejected_on: Tarikh Ditolak Ketua Jabatan
         reason: Sebab
-      programme:
-        combo_code: Kod Kombo
-        duration: Jangka Masa
-        credits: Kredit
-        status: Status
-        method: Kaedah Pengajaran
-        course_type: Jenis Kurikulum
-        name: Nama
-        lecture: Kuliah
-        tutorial: Tutorial
-        practical: Amali
       staff_attendance:
         thumb_id: Staf
         logged_at: Masa Log

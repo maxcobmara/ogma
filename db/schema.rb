@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141221092521) do
+ActiveRecord::Schema.define(version: 20141231044353) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -1201,11 +1201,8 @@ ActiveRecord::Schema.define(version: 20141221092521) do
     t.string   "combo_code"
     t.integer  "ancestry_depth", default: 0
     t.string   "status"
+    t.boolean  "damaged"
   end
-
-  add_index "locations", ["ancestry"], name: "index_locations_on_ancestry", using: :btree
-  add_index "locations", ["combo_code"], name: "index_locations_on_combo_code", using: :btree
-  add_index "locations", ["id"], name: "index_locations_on_id", using: :btree
 
   create_table "logins", force: true do |t|
     t.string   "login",                     limit: 40
@@ -1342,6 +1339,7 @@ ActiveRecord::Schema.define(version: 20141221092521) do
     t.integer  "tutorial_time"
     t.integer  "practical_time"
     t.decimal  "duration"
+    t.string   "subject_abbreviation"
   end
 
   create_table "programmes_subjects", id: false, force: true do |t|
