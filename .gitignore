@@ -28,7 +28,7 @@ public/assets/**
 public/assets/books/*
 public/assets/bulletins/*
 public/assets/examquestions/*
-public/assets/notes/*
+#public/assets/notes/*
 public/assets/staffs/*
 public/assets/students/*
 public/system/**

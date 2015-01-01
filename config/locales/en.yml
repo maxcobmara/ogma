@@ -89,6 +89,8 @@ en:
   no2: No
   by2: " by "
   on2: " on "
+  from: From
+  to: To
   return: Return
   confirmed: Confirmed
   confirmed_on: Confirmed on

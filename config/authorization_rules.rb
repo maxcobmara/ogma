@@ -109,6 +109,7 @@ authorization do
 
  #Group Trainings ------------------------------------------------------------read(index, show), menu(inc index), update(inc edit), approve(read, update), manage(crud,approve,menu)
  role :lecturer do
+   #EXAMINATION modules
    has_permission_on [:exam_examquestions, :exam_exams, :exam_exammarks, :exam_grades], :to => [:menu, :read, :create]
    
    has_permission_on :exam_exams, :to =>:manage do
@@ -154,6 +155,16 @@ authorization do
    end
    has_permission_on :student_student_attendances, :to => [:manage, :new_multiple, :new_multiple_intake, :create_multiple, :edit_multiple, :update_multiple]
    
+   #TRAINING modules
+   has_permission_on :training_trainingnotes, :to => :manage, :join_by => :or do
+     if_attribute :topicdetail_id => is_in {user.topicdetails_of_programme}
+     if_attribute :timetable_id => is_in {user.timetables_of_programme} 
+   end
+   
+   has_permission_on :training_trainingnotes, :to => :manage, :join_by => :and do
+     if_attribute :topicdetail_id => is {nil}
+     if_attribute :timetable_id => is {nil}
+   end
  end
 
  role :programme_manager do

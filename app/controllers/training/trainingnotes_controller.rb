@@ -1,12 +1,13 @@
  class Training:: TrainingnotesController < ApplicationController
+   filter_resource_access
    before_action :set_trainingnote, only: [:show, :edit, :update, :destroy]
+   before_action :set_data_index_show, only: [:index, :show]
+   
   # GET /trainingnotes
   # GET /trainingnotes.xml
-  def index
-    #@trainingnotes = Trainingnote.all.order(:topicdetail_id)#:order => 'topic_id')
-    
+  def index    
     @search = Trainingnote.search(params[:q])
-    @trainingnotes2 = @search.result
+    @trainingnotes2 = @search.result.search2(@programme_id)
     #@trainingnotes3 = @trainingnotes2.order(:topicdetail_id)
                 
     by_subject  =@trainingnotes2.where('topicdetail_id is not null').group_by{|x|x.topicdetail.subject_topic}  
@@ -17,7 +18,6 @@
     wo_topic = @trainingnotes2.where('topicdetail_id is null')
     combine = arr_w_topic+wo_topic
     @trainingnotes_lala = Kaminari.paginate_array(combine).page(params[:page]||1) 
-    
     #@trainingnotes =  Kaminari.paginate_array(@trainingnotes3).page(params[:page]||1) 
 
     respond_to do |format|
@@ -103,6 +103,25 @@
     # Use callbacks to share common setup or constraints between actions.
     def set_trainingnote
       @trainingnote= Trainingnote.find(params[:id])
+    end
+    
+    def set_data_index_show
+      @position_exist = @current_user.userable.positions
+      if @position_exist     
+        @lecturer_programme = @current_user.userable.positions.first.unit
+        unless @lecturer_programme.nil? 
+          @programme = Programme.where('name ILIKE (?) AND ancestry_depth=?',"%#{@lecturer_programme}%",0).first
+        end
+        unless @programme.nil?
+          @programme_id = @programme.id
+        else
+          if @lecturer_programme == 'Commonsubject'
+            @programme_id = '1'
+          else
+            @programme_id = '0'
+          end
+        end
+      end 
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
