@@ -19,14 +19,14 @@
     .col-sm-8
       = f.file_field :document, class: 'form-control'
     .col-sm-4
-      = f.text_field :release,  class: 'input-date'
+      = f.text_field :release,  class: 'form-control input-date'
   .row 
     .col-sm-8
       = f.label :title
-      = f.text_field :title, :placeholder => 'Tajuk', :size => '5', class: 'form-control'
+      = f.text_field :title, :placeholder => t('training.trainingnote.title'), :size => '5', class: 'form-control'
     .col-sm-2
       = f.label :version
-      = f.text_field :version, :placeholder => 'Versi', :size => '2', class: 'form-control'
+      = f.text_field :version, :placeholder => t('training.trainingnote.version'), :size => '2', class: 'form-control'
     .col-sm-1
       /= link_to image_tag("delete.png", :border => 0, :title => 'Remove'), class: "remove_fields"
       = link_to content_tag(:i, "", class: "fa fa-trash-o"), data: {"data-toggle" => "tooltip", title: "Delete"}, class: "btn btn-danger remove_fields"

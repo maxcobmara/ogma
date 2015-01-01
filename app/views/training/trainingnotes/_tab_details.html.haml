@@ -1,0 +1,28 @@
+.col-md-8.col-md-offset-1
+  %dl.dl-horizontal    
+    /%dt=t 'training.trainingnote.file_name'
+    /%dd=h @trainingnote.document_file_name
+    
+    %dt=t 'training.trainingnote.document'
+    %dd
+      - if @trainingnote.document.exists?
+        = link_to image_tag('attach.png'), @trainingnote.document.url
+        = link_to @trainingnote.document_file_name, @trainingnote.document.url 
+      - else
+        = link_to image_tag('attach.png'),  "http://#{request.host}:3000"+@trainingnote.document.url
+        = link_to @trainingnote.document_file_name, "http://#{request.host}:3000"+@trainingnote.document.url , :width => '57px'
+ 
+    %dt=t 'training.trainingnote.title'
+    %dd=h @trainingnote.title
+    
+    %dt=t 'training.trainingnote.reference'
+    %dd=h @trainingnote.reference
+    
+    %dt=t 'training.trainingnote.release'
+    %dd=h @trainingnote.release.try(:strftime, '%d %b %Y')
+    
+    %dt=t 'training.trainingnote.version'
+    %dd=h @trainingnote.version    
+    
+    /%dt=t 'training.trainingnote.timetable'
+    /%dd=h @trainingnote.timetable_id

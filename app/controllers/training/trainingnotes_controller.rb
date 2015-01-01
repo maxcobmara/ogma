@@ -1,8 +1,9 @@
  class Training:: TrainingnotesController < ApplicationController
    filter_resource_access
    before_action :set_trainingnote, only: [:show, :edit, :update, :destroy]
-   before_action :set_data_index_show, only: [:index, :show]
-   
+   before_action :set_data_index_new_edit, only: [:index, :new, :edit, :create, :update] #create & update - if validations failed
+   before_action :set_data_new_edit, only: [:new, :edit, :create, :update]
+
   # GET /trainingnotes
   # GET /trainingnotes.xml
   def index    
@@ -41,7 +42,7 @@
   # GET /trainingnotes/new.xml
   def new
     @trainingnote = Trainingnote.new
-
+    
     respond_to do |format|
       format.html # new.html.erb
       format.xml  { render :xml => @trainingnote }
@@ -60,7 +61,7 @@
 
     respond_to do |format|
       if @trainingnote.save
-        flash[:notice] = t('training.trainingnote.title')+t('actions.created')
+        flash[:notice] = t('training.trainingnote.title2')+t('actions.created')
         format.html { redirect_to training_trainingnote_path(@trainingnote) }
         format.xml  { render :xml => @trainingnote, :status => :created, :location => @trainingnote }
       else
@@ -77,7 +78,7 @@
 
     respond_to do |format|
       if @trainingnote.update(trainingnote_params)
-        flash[:notice] =  t('training.trainingnote.title')+t('actions.updated')
+        flash[:notice] =  t('training.trainingnote.title2')+t('actions.updated')
         format.html { redirect_to training_trainingnote_path(@trainingnote) }
         format.xml  { head :ok }
       else
@@ -99,13 +100,14 @@
     end
   end
   
-    private
+  private
     # Use callbacks to share common setup or constraints between actions.
     def set_trainingnote
       @trainingnote= Trainingnote.find(params[:id])
     end
     
-    def set_data_index_show
+    #set programme
+    def set_data_index_new_edit
       @position_exist = @current_user.userable.positions
       if @position_exist     
         @lecturer_programme = @current_user.userable.positions.first.unit
@@ -115,13 +117,33 @@
         unless @programme.nil?
           @programme_id = @programme.id
         else
-          if @lecturer_programme == 'Commonsubject'
+          if @lecturer_programme != 'Pos Basik' && @position_exist.first.name=='Pengajar' #== 'Commonsubject' 
             @programme_id = '1'
           else
             @programme_id = '0'
           end
         end
       end 
+    end
+    
+    #set appropiate data
+    def set_data_new_edit
+      if @programme_id == '1' #common_subject
+        commonsubject_ids= Programme.where(course_type: "Commonsubject").pluck(:id)
+        topicids_of_commonsubject = []
+        for commons_id in commonsubject_ids
+          topicids_of_commonsubject +=Programme.where(id:commons_id).first.descendants.pluck(:id)
+        end
+        @topicids_of_programme =  topicids_of_commonsubject 
+      elsif @programme_id =='0' #admin
+        @topicids_of_programme = Programme.where('course_type=? or course_type=?', "Topic", "Subtopic").pluck(:id)
+      else
+        @topicids_of_programme = Programme.where(id: @programme_id).first.descendants.where('course_type=? or course_type=?', "Topic", "Subtopic").pluck(:id)
+      end
+      @semester_subject_topic_list_bytopicdetail = Topicdetail.joins(:subject_topic).where('(course_type=? OR course_type=?) AND topic_code IN(?)', "Topic", "Subtopic", @topicids_of_programme).sort_by{|x| x.subject_topic.combo_code}
+                  
+      user_w_adminrole =Role.joins(:users).where(id:2).pluck(:user_id)
+      @staff_w_adminrole=User.where('id IN(?)', user_w_adminrole).pluck(:userable_id)
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

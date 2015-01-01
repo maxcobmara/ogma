@@ -47,21 +47,36 @@ class User < ActiveRecord::Base
   
   def topicdetails_of_programme
     unit_of_staff = userable.positions.first.unit
-    programme_of_staff = Programme.where('name ILIKE(?)', "%#{unit_of_staff}%").at_depth(0).first
-    topicids = programme_of_staff.descendants.at_depth(3).pluck(:id)
-    subtopicids = programme_of_staff.descendants.at_depth(4).pluck(:id)
-    topicdetailsids = Topicdetail.where('topic_code IN(?) OR topic_code IN(?)', topicids, subtopicids).pluck(:id)
-    return topicdetailsids
+    if Programme.roots.map(&:name).include?(unit_of_staff)==true
+      programme_of_staff = Programme.where('name ILIKE(?)', "%#{unit_of_staff}%").at_depth(0).first
+      topicids = programme_of_staff.descendants.at_depth(3).pluck(:id)
+      subtopicids = programme_of_staff.descendants.at_depth(4).pluck(:id)
+      topicdetailsids = Topicdetail.where('topic_code IN(?) OR topic_code IN(?)', topicids, subtopicids).pluck(:id)
+    else
+      #common subject lecturer
+      commonsubject_ids= Programme.where(course_type: "Commonsubject").pluck(:id)
+      topicids_of_commonsubject = []
+      for commons_id in commonsubject_ids
+        topicids_of_commonsubject +=Programme.where(id:commons_id).first.descendants.pluck(:id)
+      end
+      topicdetailsids = Topicdetail.where('topic_code IN(?)', topicids_of_commonsubject).pluck(:id)
+    end
+    topicdetailsids
   end
-  
+
   def timetables_of_programme
     unit_of_staff = userable.positions.first.unit
-    programme_of_staff = Programme.where('name ILIKE(?)', "%#{unit_of_staff}%").at_depth(0).first
-    topicids = programme_of_staff.descendants.at_depth(3).pluck(:id)
-    subtopicids = programme_of_staff.descendants.at_depth(4).pluck(:id)
-    timetable_in_trainingnote = Trainingnote.where('timetable_id IS NOT NULL').pluck(:timetable_id)
-    timetableids = WeeklytimetableDetail.where('(topic IN(?) or topic IN(?))and id IN(?)',topicids, subtopicids, timetable_in_trainingnote).pluck(:id)
-    return timetableids
+    if Programme.roots.map(&:name).include?(unit_of_staff)==true
+      programme_of_staff = Programme.where('name ILIKE(?)', "%#{unit_of_staff}%").at_depth(0).first
+      topicids = programme_of_staff.descendants.at_depth(3).pluck(:id)
+      subtopicids = programme_of_staff.descendants.at_depth(4).pluck(:id)
+      timetable_in_trainingnote = Trainingnote.where('timetable_id IS NOT NULL').pluck(:timetable_id)
+      timetableids = WeeklytimetableDetail.where('(topic IN(?) or topic IN(?))and id IN(?)',topicids, subtopicids, timetable_in_trainingnote).pluck(:id)
+      return timetableids
+    else
+      #common subject lecturer
+      []
+    end
   end
 
   def role_symbols
