@@ -2023,6 +2023,7 @@ en:
       exist_attachment: "Existing Attachment. Click 'Browse' to Change File."
       to: to
       status: Approval Status
+      location: Location
     
  
   campus:

@@ -2165,6 +2165,7 @@ ms_MY:
         report_endorsed: "Luluskan Laporan?"
         report_endorsed_on: Tarikh Kelulusan Laporan
         report_summary: "Ringkasan Laporan (Ulasan)"
+        location: Lokasi
       travel_request:
         staff_id: Staf
         document_id: Dokumen Rujukan
