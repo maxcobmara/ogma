@@ -1881,6 +1881,7 @@ ms_MY:
       title2: Nota Latihan
       new: Nota Latihan Baru
       edit: Sunting Nota Latihan
+      details: Butiran Nota Latihan
       document: Fail
       reference: Rujukan
       release: Keluaran
@@ -1893,6 +1894,7 @@ ms_MY:
       topic_subtopic: "Topik / Subtopik"
       programme: Program
       subject: Subjek
+      staff_id: Disediakan oleh
     lesson_plan:
       title: Pelan Pengajaran
       title2: Pengajaran dan Pembelajaran

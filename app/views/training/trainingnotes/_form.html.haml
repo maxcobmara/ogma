@@ -1,1 +1,69 @@
- 
+.row
+  .col-md-10.col-md-offset-1
+    / Nav tabs
+    %ul.nav.nav-tabs
+      %li.active= link_to (t 'training.trainingnote.details'),"#trainingnote_details", "data-toggle" => "tab"
+     
+    .tab-content{style:"padding-top:1em"}
+      .col-md-offset-2 
+        .form-group
+          .col-sm-2.control-label
+            = f.label t('training.trainingnote.topic_subtopic')
+          .col-md-3
+            = f.collection_select :topicdetail_id,@semester_subject_topic_list_bytopicdetail , :id, :semester_subject_topic, {:prompt=>t('select'), :selected=>@trainingnote.topicdetail_id}, {class: 'selectpicker', "data-width"=>'460px'}   
+        .form-group
+          .col-sm-2.control-label
+            = f.label t('training.trainingnote.staff_id'), for: :staff_id
+          .col-md-3
+            - unless @trainingnote.staff_id.nil? || @trainingnote.staff_id.blank?
+              - prepared_by = @trainingnote.staff_id
+            - else
+              - prepared_by = @current_user.userable_id
+
+            = f.collection_select :staff_id, Staff.joins(:positions).where('positions.name=? OR staffs.id IN(?)','Pengajar', @staff_w_adminrole).order('name ASC'), :id, :name, {:include_blank =>t('select'), :selected=>prepared_by},{class: 'selectpicker', "data-width"=>'260px'} 
+
+      #trainingnote_details.tab-pane.active
+        %br
+        .col-md-offset-2   
+          .form-group
+            .col-sm-2.control-label
+              = f.label t('training.trainingnote.document'), for: :document
+            .col-md-3
+              - if @trainingnote.new_record? == false
+                - if @trainingnote.document.exists?
+                  = link_to image_tag('attach.png'), @trainingnote.document.url
+                  = link_to @trainingnote.document_file_name, @trainingnote.document.url 
+                - else
+                  = link_to image_tag('attach.png'),  "http://#{request.host}:3000"+@trainingnote.document.url
+                  = link_to @trainingnote.document_file_name, "http://#{request.host}:3000"+@trainingnote.document.url , :width => '57px'
+     
+              - if f.object.document_file_name
+                %br
+                %b=t('training.trainingnote.or')
+              %br
+              = f.file_field :document, class: 'form-control'
+          
+          .form-group
+            .col-sm-2.control-label
+              = f.label t('training.trainingnote.title'), for: :title
+            .col-md-5
+              = f.text_field :title, :placeholder => t('training.trainingnote.title'), class: 'form-control'
+          
+          .form-group
+            .col-sm-2.control-label
+              = f.label t('training.trainingnote.reference'), for: :reference
+            .col-md-5
+              = f.text_field :reference, :placeholder => t('training.trainingnote.reference'), class: 'form-control'
+              
+          .form-group
+            .col-sm-2.control-label
+              = f.label t('training.trainingnote.release'), for: :release
+            .col-md-2
+              = f.text_field :release,  class: 'form-control date_picker'
+
+          .form-group
+            .col-sm-2.control-label
+              = f.label :version
+            .col-md-2
+              = f.text_field :version, :placeholder => t('training.trainingnote.version'), class: 'form-control'
+

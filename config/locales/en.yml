@@ -1943,6 +1943,7 @@ en:
       title2: Training Notes
       new: New Training Note
       edit: Edit Training Note
+      details: Training Note Details
       document: File
       reference: Reference
       release: Release
@@ -1955,6 +1956,7 @@ en:
       topic_subtopic: "Topic / Subtopic"
       programme: Programme
       subject: Subject
+      staff_id: Prepared By
     lesson_plan:
       title: Lesson Plan
       title2: Lesson and Learning

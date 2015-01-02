@@ -26,7 +26,7 @@
               /lecturer
               - if @lesson_plan && !@lesson_plan.schedule
                 - @lessonplan_schedule = LessonPlan.all.map(&:schedule).uniq.compact
-                = f.collection_select :schedule, WeeklytimetableDetail.where('lecturer_id=? AND id NOT IN (?)', current_user.staff_id,@lessonplan_schedule), :id, :day_time_slot, {:include_blank=>t('helpers.prompt.select_schedule')},{ class: 'selectpicker', "data-width"=>'550px'}
+                = f.collection_select :schedule, WeeklytimetableDetail.where('lecturer_id=? AND id NOT IN (?)', @current_user.userable_id,@lessonplan_schedule), :id, :day_time_slot, {:include_blank=>t('helpers.prompt.select_schedule')},{ class: 'selectpicker', "data-width"=>'550px'}
               - else
                 = f.collection_select :schedule, WeeklytimetableDetail.where('lecturer_id=?', current_user.staff_id), :id, :day_time_slot, {:include_blank=>t('helpers.prompt.select_schedule')},{class: 'selectpicker', "data-width"=>'550px'}
 

@@ -7,6 +7,7 @@ class Trainingnote < ActiveRecord::Base
   
   #belongs_to :topic
   #belongs_to :timetable
+  belongs_to :note_creator, :class_name => 'Staff', :foreign_key => :staff_id
   belongs_to :topicdetail, :foreign_key=> 'topicdetail_id'
   
   #trial section
@@ -83,6 +84,10 @@ class Trainingnote < ActiveRecord::Base
   
   def self.search2(search)
     common_subject = Programme.where('course_type=?','Commonsubject').pluck(:id)
+    #timetable_id exist (note created via lesson plan -->select timetable which consist topic)
+    #but if selected topic has no TOPIC DETAIL yet...
+    notopicdetail_timetable_exist = Trainingnote.where('topicdetail_id is null AND timetable_id is not null').pluck(:timetable_id)
+    topic_timetable_exist_raw = WeeklytimetableDetail.where('id iN(?)', notopicdetail_timetable_exist).pluck(:topic)
     if search 
       if search == '0'
         training_notes = Trainingnote.all
@@ -94,9 +99,11 @@ class Trainingnote < ActiveRecord::Base
           topicids = Programme.where(id: search).first.descendants.at_depth(3).pluck(:id)
           subtopicids = Programme.where(id: search).first.descendants.at_depth(4).pluck(:id)
         end
+        topic_timetable_exist = Programme.where('id IN(?) AND (id IN(?) OR id IN(?))', topic_timetable_exist_raw, topicids, subtopicids).pluck(:id)
+        timetableids = WeeklytimetableDetail.where('topic IN(?)', topic_timetable_exist).pluck(:id)
         topicdetailsids = Topicdetail.where('topic_code IN(?) OR topic_code IN(?)', topicids, subtopicids).pluck(:id)
         nobody_ownids = Trainingnote.where('timetable_id is null AND topicdetail_id is null').pluck(:id)
-        training_notes = Trainingnote.where('topicdetail_id IN(?) OR id IN(?)', topicdetailsids, nobody_ownids)
+        training_notes = Trainingnote.where('topicdetail_id IN(?) OR id IN(?) OR timetable_id IN(?)', topicdetailsids, nobody_ownids, timetableids)
       end
     end
     training_notes
