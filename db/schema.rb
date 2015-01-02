@@ -1201,8 +1201,11 @@ ActiveRecord::Schema.define(version: 20141231044353) do
     t.string   "combo_code"
     t.integer  "ancestry_depth", default: 0
     t.string   "status"
-    t.boolean  "damaged"
   end
+
+  add_index "locations", ["ancestry"], name: "index_locations_on_ancestry", using: :btree
+  add_index "locations", ["combo_code"], name: "index_locations_on_combo_code", using: :btree
+  add_index "locations", ["id"], name: "index_locations_on_id", using: :btree
 
   create_table "logins", force: true do |t|
     t.string   "login",                     limit: 40

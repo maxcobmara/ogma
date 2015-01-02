@@ -1,14 +1,21 @@
 - if j.weeklytimetable_topic.ancestry_depth == 4 
-  = j.weeklytimetable_topic.parent.parent.code
-  %br= j.weeklytimetable_topic.parent.name
+  .text-left
+    /= j.weeklytimetable_topic.parent.parent.code
+    = j.weeklytimetable_topic.parent.parent.subject_abbreviation.blank? ? "-" :  j.weeklytimetable_topic.parent.parent.subject_abbreviation.upcase
+  = j.weeklytimetable_topic.parent.name
 - else
-  = j.weeklytimetable_topic.parent.code
-  %br= j.weeklytimetable_topic.name
+  .text-left
+    /= j.weeklytimetable_topic.parent.code
+    = j.weeklytimetable_topic.parent.subject_abbreviation.blank? ? "-" :  j.weeklytimetable_topic.parent.subject_abbreviation.upcase
+  = j.weeklytimetable_topic.name
+%br
 = j.weeklytimetable_location.try(:name)
 = "(K)" if j.lecture_method == 1
 = "(T)" if j.lecture_method == 2
 = "(A)" if j.lecture_method == 3
-%br
-= j.weeklytimetable.schedule_programme.programme_list
-= j.weeklytimetable.schedule_intake.description
-%br= t('training.weeklytimetable.intake')+ " ("+ j.weeklytimetable.schedule_intake.name+")"
+%BR
+.text-right
+  = j.weeklytimetable.schedule_programme.programme_list
+  %br
+  = j.weeklytimetable.schedule_intake.description
+  = t('training.weeklytimetable.intake')+ " ("+ j.weeklytimetable.schedule_intake.name+")"
