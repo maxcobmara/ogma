@@ -378,14 +378,18 @@ class Weeklytimetable < ActiveRecord::Base
   
   def self.empty_slot_weekend(timeslot,weeklytimetable,daycount_check)
     atsw = timeslot.pluck(:sequence)
+    @special = weeklytimetable.timetable_monthurs.timetable_periods.count       #=@count1
+    @count2 = weeklytimetable.timetable_friday.timetable_periods.count 
     #1c-available time slots - Weekends
     if daycount_check==1
-      #rev_all_timeslot_weekend = atsw.map{|x|x+=(@special*4)}
-      rev_all_timeslot_weekend = atsw.map{|x|x+=(7*4+5)}
+      ##rev_all_timeslot_weekend = atsw.map{|x|x+=(@special*4)}
+      #rev_all_timeslot_weekend = atsw.map{|x|x+=7*4+5)}
+      rev_all_timeslot_weekend = atsw.map{|x|x+=(@special*4+@count2)}
     elsif daycount_check==2
-      # rev_all_timeslot_weekend = [34,36,37,39,40,41,43,44,46,47]
-      rev_all_timeslot_weekend = atsw.map{|x|x+=(7*4+5)}+atsw.map{|x|x+=(7*5+5)}
-      #atsw.map{|x|x+=(@special*4)}+atsw.map{|x|x+=(@special*5)}
+      ## rev_all_timeslot_weekend = [34,36,37,39,40,41,43,44,46,47]
+      #rev_all_timeslot_weekend = atsw.map{|x|x+=(7*4+5)}+atsw.map{|x|x+=(7*5+5)}
+      rev_all_timeslot_weekend = atsw.map{|x|x+=(@special*4+@count2)}+atsw.map{|x|x+=(@special*5+@count2)}
+      ##atsw.map{|x|x+=(@special*4)}+atsw.map{|x|x+=(@special*5)}
     end
     #0c-NEW weekends
     new_timeslot_1stday_weekend=[]

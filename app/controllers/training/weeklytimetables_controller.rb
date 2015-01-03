@@ -166,8 +166,9 @@ class Training::WeeklytimetablesController < ApplicationController
   end
   
   def weekly_timetable
-
     @weeklytimetable = Weeklytimetable.find(params[:id])
+    wtm = WeeklytimetableDetail.where(weeklytimetable_id: params[:id], is_friday: false)#.pluck(:id)
+    
     respond_to do |format|
       format.pdf do
         pdf = Weekly_timetablePdf.new(@weeklytimetable, view_context)

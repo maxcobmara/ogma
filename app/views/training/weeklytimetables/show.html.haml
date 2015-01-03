@@ -56,7 +56,7 @@
     %hr
     .form-actions
       = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), training_weeklytimetables_path, :class => 'btn btn-default'
-      = link_to content_tag(:i, "", class: "fa fa-file-pdf-o"), weekly_timetable_training_weeklytimetable_path(@weeklytimetable, format: "pdf"), class: "btn btn-default", "data-toggle" => "tooltip", title: "Weekly Time Table"
+      = link_to content_tag(:i, "", class: "fa fa-file-pdf-o"), weekly_timetable_training_weeklytimetable_path(@weeklytimetable, format: "pdf"), class: "btn btn-default", "data-toggle" => "tooltip", title: "Weekly Timetable"
 
       - if a1_condition
 
