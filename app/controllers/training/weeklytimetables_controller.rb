@@ -167,7 +167,6 @@ class Training::WeeklytimetablesController < ApplicationController
   
   def weekly_timetable
     @weeklytimetable = Weeklytimetable.find(params[:id])
-    wtm = WeeklytimetableDetail.where(weeklytimetable_id: params[:id], is_friday: false)#.pluck(:id)
     
     respond_to do |format|
       format.pdf do
@@ -178,6 +177,27 @@ class Training::WeeklytimetablesController < ApplicationController
       end
     end
   end
+
+  def personalizetimetable
+    @test_lecturer = @current_user   
+    @selected_date = params[:id]
+    @weeklytimetables_details=WeeklytimetableDetail.where('lecturer_id=?',@current_user.userable_id)
+    
+    @all_combine = []
+    @weeklytimetables_details.each do |x|
+        @all_combine << Weeklytimetable.find(x.weeklytimetable.id)
+    end 
+    @personalize = @all_combine.group_by{|t|t.startdate}
+    
+    respond_to do |format|
+      format.pdf do
+        pdf = PersonalizetimetablePdf.new(@personalize, view_context, @test_lecturer, @selected_date)
+        send_data pdf.render, filename: "timetable_blank-{Date.today}",
+                              type: "application/pdf",
+                              disposition: "inline"
+      end
+    end
+  end  
   
   #23March2013
   def general_timetable
