@@ -127,9 +127,14 @@ class Weekly_timetablePdf < Prawn::Document
   end
   
   def table_schedule_thurs
-    @break_tospan=4	
-    @classes_tospan=[5,7]
-    @span_count=2
+    @break_tospan=4
+    #refer to screen capture -- PDF limitation-schedule.png - temp solution- as below:
+    if @count1==9 && @count2==7 #excluding 1st column 
+      @classes_tospan=[5]
+    else
+      @classes_tospan=[5,7]
+    end
+    @span_count=2            
     header_col = [""]
     colfriday=1
     allrows_content=["#{@weekdays_end.try(:strftime, "%A")}#{'<br>'+@weekdays_end.try(:strftime, "%d-%b-%Y")}"]  
@@ -199,12 +204,14 @@ class Weekly_timetablePdf < Prawn::Document
  
     data = [header_col]+[allrows_content]
     table(data, :column_widths => all_col, :cell_style => { :size => 9, :align=> :center,  :inline_format => true}) do
-      #self.width = all_col.sum-80 #use this if below error
-      if header_col.count > 8
-        self.width = all_col.sum-80#750
-      else
-        self.width = all_col.sum-45#755
-      end
+      #self.width = all_col.sum-80 #use this if below error #750 #705
+      if @count1==9 && @count2==7
+        self.width = 705
+      elsif @count1==10 && @count2==7
+        self.width = 750
+      #else
+        #self.width = 750
+      end 
       row(0).background_color = 'ABA9A9'  
       cells[1,2].valign = :center
       cells[1,4].valign = :center

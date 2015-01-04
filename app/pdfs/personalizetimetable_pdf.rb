@@ -147,7 +147,12 @@ class PersonalizetimetablePdf < Prawn::Document
   
   def table_schedule_thurs
     @break_tospan=4	
-    @classes_tospan=[5,7]
+    #@classes_tospan=[5,7]
+    if @count1==9 && @count2==7 #excluding 1st column 
+      @classes_tospan=[5]
+    else
+      @classes_tospan=[5,7]
+    end
     @span_count=2
     header_col = [""]
     colfriday=1
@@ -173,7 +178,7 @@ class PersonalizetimetablePdf < Prawn::Document
           colfriday=1
           for periods in row_things
             if periods.day_name == 2  
-              if colfriday == 4 || colfriday == 5
+              if colfriday == 4 || colfriday == 5 || @classes_tospan.include?(colfriday)
               #if colfriday == @break_tospan || colfriday == @classes_tospan[0] || colfriday == @classes_tospan[1] 
                 header_col << {content: "#{periods.sequence} <br> #{periods.timing}", colspan: @span_count}
               else
