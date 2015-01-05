@@ -20,11 +20,11 @@ class Staff::StaffsController < ApplicationController
   def new
     @info = Staff.new
     @info.vehicles.build
-    
+
     respond_to do |format|
       format.html # new.html.erb
       format.xml  { render :xml => @info }
-  end
+    end
   end
 
   # GET /staffs/1/edit
@@ -57,7 +57,7 @@ end
     s_shift = params[:staff][:shift_histories_attributes]["#{@info.shift_histories.count}"][:shift_id]
     new_ddate= params[:staff][:shift_histories_attributes]["#{@info.shift_histories.count}"][:deactivate_date]
     @info.create_shift_history_nodate(s_shift, c_shift, new_ddate) if (c_shift!=s_shift) && new_ddate==""
-    
+
     respond_to do |format|
       if @info.update(staff_params)
         format.html { redirect_to staff_info_path, notice: 'Staff was successfully updated.' }
@@ -91,8 +91,8 @@ end
       end
     end
   end
-  
-  
+
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_staff
@@ -110,6 +110,3 @@ end
 #  bankaccno               :string(255)
 #  bankacctype             :string(255)
 #  transportclass_id       :string(255)
-
-
-

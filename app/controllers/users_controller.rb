@@ -47,7 +47,7 @@ class UsersController < ApplicationController
 
    def load_userable
      resource, id = request.path.split('/')[1, 2]
-     #@userable = resource.singularize.classify.constantize.find(id)ss
+     @userable = resource.singularize.classify.constantize.find(id)
    end
 
 
