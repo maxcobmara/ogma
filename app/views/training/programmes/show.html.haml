@@ -34,8 +34,9 @@
       %dt= t 'training.programme.name', :default => model_class.human_attribute_name(:name) + ":"
       %dd= @programme.name
       
-      %dt= t 'training.programme.subject_abbreviation', :default => model_class.human_attribute_name(:subject_abbreviation) + ":"
-      %dd= @programme.subject_abbreviation
+      - unless @programme.parent_id == nil
+        %dt= t 'training.programme.subject_abbreviation', :default => model_class.human_attribute_name(:subject_abbreviation) + ":"
+        %dd= @programme.subject_abbreviation
       
       %dt= t 'training.programme.credits', :default => model_class.human_attribute_name(:credits) + ":"
       %dd= @programme.credits

@@ -29,18 +29,19 @@
             %td.bbb{:style=>"padding: 0 12px 0 0;"}=f.label t 'training.programme.practical'
             %td.bbb{:style=>"padding: 0 12px 0 0;"}= f.text_field :practical, :size=>'2', class: 'form-control'
             %td.bbb{:style=>"padding: 0 12px 0 0;"}= f.select :practical_time, DropDown::LECTURE_TIME,{:prompt =>t('select')},{ class: 'selectpicker', "data-width"=>'80px'}
+            
+  - unless @programme.parent_id == nil        
+    .form-group
+      .col-sm-2.control-label
+        = f.label t 'training.programme.subject_abbreviation'
+      .col-md-1
+        = f.text_field :subject_abbreviation, class: 'form-control'
       
   .form-group
     .col-sm-2.control-label
       = f.label t 'training.programme.name'
     .col-md-5
       = f.text_field :name, :size => '50' , class: 'form-control'
-      
-  .form-group
-    .col-sm-2.control-label
-      = f.label t 'training.programme.subject_abbreviation'
-    .col-md-1
-      = f.text_field :subject_abbreviation, class: 'form-control'
   
   .form-group
     .col-sm-2.control-label

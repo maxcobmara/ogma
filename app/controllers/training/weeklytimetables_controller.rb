@@ -34,10 +34,7 @@ class Training::WeeklytimetablesController < ApplicationController
   end
   
   def personalize_index
-    #current_user = User.find(11)    #maslinda 
-    current_user = User.find(72)    #izmohdzaki
-    #@weeklytimetables_details=WeeklytimetableDetail.find(:all, :conditions => ['lecturer_id=?',User.current_user.staff_id])
-    @weeklytimetables_details=WeeklytimetableDetail.find(:all, :conditions => ['lecturer_id=?',current_user.staff_id])
+    @weeklytimetables_details=WeeklytimetableDetail.where('lecturer_id=?',@current_user.userable_id)
 
     respond_to do |format|
       format.html { render :action => "personalize_index" }
@@ -64,13 +61,10 @@ class Training::WeeklytimetablesController < ApplicationController
     end
   end
   
-  def personalize_show  #yg dihantar : startdate
-    #current_user = User.find(11)    #maslinda 
-    current_user = User.find(72)    #izmohdzaki
-    @test_lecturer = current_user   #force for test only, to remove when ready (based on logged-in lecturer)
+  def personalize_show  
+    @test_lecturer = @current_user   
     @selected_date = params[:id]
-    #@weeklytimetables_details=WeeklytimetableDetail.find(:all, :conditions => ['lecturer_id=?',User.current_user.staff_id])
-    @weeklytimetables_details=WeeklytimetableDetail.find(:all, :conditions => ['lecturer_id=?',current_user.staff_id])
+    @weeklytimetables_details=WeeklytimetableDetail.where('lecturer_id=?',@current_user.userable_id)
     
     @all_combine = []
     @weeklytimetables_details.each do |x|
@@ -172,8 +166,8 @@ class Training::WeeklytimetablesController < ApplicationController
   end
   
   def weekly_timetable
-
     @weeklytimetable = Weeklytimetable.find(params[:id])
+    
     respond_to do |format|
       format.pdf do
         pdf = Weekly_timetablePdf.new(@weeklytimetable, view_context)
@@ -183,6 +177,27 @@ class Training::WeeklytimetablesController < ApplicationController
       end
     end
   end
+
+  def personalizetimetable
+    @test_lecturer = @current_user   
+    @selected_date = params[:id]
+    @weeklytimetables_details=WeeklytimetableDetail.where('lecturer_id=?',@current_user.userable_id)
+    
+    @all_combine = []
+    @weeklytimetables_details.each do |x|
+        @all_combine << Weeklytimetable.find(x.weeklytimetable.id)
+    end 
+    @personalize = @all_combine.group_by{|t|t.startdate}
+    
+    respond_to do |format|
+      format.pdf do
+        pdf = PersonalizetimetablePdf.new(@personalize, view_context, @test_lecturer, @selected_date)
+        send_data pdf.render, filename: "timetable_blank-{Date.today}",
+                              type: "application/pdf",
+                              disposition: "inline"
+      end
+    end
+  end  
   
   #23March2013
   def general_timetable

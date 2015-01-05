@@ -1,11 +1,17 @@
 - if xx.weeklytimetable_topic.ancestry_depth == 4 
-  = xx.weeklytimetable_topic.parent.parent.code
+  .text-left
+    /= xx.weeklytimetable_topic.parent.parent.code
+    = xx.weeklytimetable_topic.parent.parent.subject_abbreviation.blank? ? "-" :  xx.weeklytimetable_topic.parent.parent.subject_abbreviation.upcase
   %br= xx.weeklytimetable_topic.parent.name
 - else
-  = xx.weeklytimetable_topic.parent.code
+  .text-left
+    /= xx.weeklytimetable_topic.parent.code
+    = xx.weeklytimetable_topic.parent.subject_abbreviation.blank? ? "-" :  xx.weeklytimetable_topic.parent.subject_abbreviation.upcase
   %br= xx.weeklytimetable_topic.name
-= xx.weeklytimetable_lecturer.name
-%br= xx.weeklytimetable_location.try(:name)
+= xx.weeklytimetable_location.try(:name)
 = "(K)" if xx.lecture_method == 1
 = "(T)" if xx.lecture_method == 2
 = "(A)" if xx.lecture_method == 3
+%BR
+.text-right
+  = xx.weeklytimetable_lecturer.name
