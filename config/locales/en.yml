@@ -89,6 +89,8 @@ en:
   no2: No
   by2: " by "
   on2: " on "
+  from: From
+  to: To
   return: Return
   confirmed: Confirmed
   confirmed_on: Confirmed on
@@ -106,7 +108,8 @@ en:
   records: records
   positions_required: "Position (task & responsibilities) is required to access submodule : "
   none_assigned: None assigned
-  
+  inc_unitname: " (including Department / Unit name) "
+
   actions:
     new: New
     new_node: New Node
@@ -425,6 +428,7 @@ en:
       mileage_field: "Mileage(KM) field: State the mileage for those who bring their own vehicles only"
       value_field: "Value(RM) field: State the number of taxi fares only"
       status_movement: "Status & Movement"
+      no_registered_vehicle: "You have NO registered vehicle in this system. Please register your vehicle in Staff submodule first."
 
     travel_claim:
       title: Travel Claims
@@ -885,7 +889,12 @@ en:
     otherinfo: "Components & Accessories"
     administered_by: "Administered By"
     quantity: Quantity
-    #serialno: Serial No
+    reportdownload: "Report/Downloads"
+    filename: Name
+    type: Type
+    link: Link
+    kewpa_download_linklist: "KEW PA Download/Link List"
+    
     
     defect:
       title: Asset Defect
@@ -1908,6 +1917,7 @@ en:
       major: Major
       minor: Minor
       elective: Elective
+      subject_abbreviation: Abbreviation
     topicdetail:
       create: Create Topic Detail
       title: Topic Detail
@@ -1933,6 +1943,7 @@ en:
       title2: Training Notes
       new: New Training Note
       edit: Edit Training Note
+      details: Training Note Details
       document: File
       reference: Reference
       release: Release
@@ -1945,6 +1956,7 @@ en:
       topic_subtopic: "Topic / Subtopic"
       programme: Programme
       subject: Subject
+      staff_id: Prepared By
     lesson_plan:
       title: Lesson Plan
       title2: Lesson and Learning
@@ -2011,6 +2023,7 @@ en:
       exist_attachment: "Existing Attachment. Click 'Browse' to Change File."
       to: to
       status: Approval Status
+      location: Location
     
  
   campus:
@@ -2131,17 +2144,6 @@ en:
         hod_rejected: HOD Rejection
         hod_rejected_on: Rejecttion Date
         reason: Reason
-      programme:
-        combo_code: Combo Code
-        duration: Duration
-        credits: Credits
-        status: Status
-        method: Teaching Method
-        course_type: Course Type
-        name: Name
-        lecture: Lecture
-        tutorial: Tutorial
-        practical: Practical
       staff_attendance:
         thumb_id: Staff
         logged_at: Logged At

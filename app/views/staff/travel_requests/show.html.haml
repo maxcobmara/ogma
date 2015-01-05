@@ -63,8 +63,9 @@
         /- if @travel_request.staff_id == Login.first.staff_id
         = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('actions.edit'), edit_staff_travel_request_path(@travel_request),  :class => 'btn btn-primary' 
       
-      /hod & admin can edit - test will fail
-      - if @travel_request.is_submitted == true 
+      /hod & admin can edit - test will fail -  TO DO - hide this link when ready - only appear if HOD page
+      - if @travel_request.is_submitted == true && @travel_request.staff_id !=@current_user.userable_id
+        /- if @travel_request.is_submitted == true 
         = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('staff.travel_request.approval'), approval_staff_travel_request_path(@travel_request),  :class => 'btn btn-primary' 
       
       

@@ -3,7 +3,7 @@
   %h1
     - if !@programme.course_type.nil? && !@programme.name.nil?
       /=(DropDown::COURSE_TYPES.find_all{|disp, value| value == @programme.course_type}).map {|disp, value| disp}[0]+" : "+@programme.name
-      =@programme.course_type+":"+@programme.name
+      =@programme.course_type+": "+@programme.name
     - else
       = @programme.name
  
@@ -33,6 +33,16 @@
       
       %dt= t 'training.programme.name', :default => model_class.human_attribute_name(:name) + ":"
       %dd= @programme.name
+      
+      - unless @programme.parent_id == nil
+        %dt= t 'training.programme.subject_abbreviation', :default => model_class.human_attribute_name(:subject_abbreviation) + ":"
+        %dd= @programme.subject_abbreviation
+      
+      %dt= t 'training.programme.credits', :default => model_class.human_attribute_name(:credits) + ":"
+      %dd= @programme.credits
+      
+      %dt= t 'training.programme.status', :default => model_class.human_attribute_name(:status) + ":"
+      %dd= (DropDown::COURSE_STATUS.find_all{|disp, value| value == @programme.status}).map {|disp, value| disp} [0]
 
 .row
   .col-md-4.col-md-offset-3

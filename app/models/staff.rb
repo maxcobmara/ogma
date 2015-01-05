@@ -35,6 +35,8 @@ class Staff < ActiveRecord::Base
 
   has_many :attendingstaffs,    :class_name => 'StaffAttendance', :foreign_key => 'thumb_id', :primary_key => 'thumb_id'#, :dependent => :destroy #attendance staff name
   has_many :approvers,          :class_name => 'StaffAttendance', :foreign_key => 'approved_by' # approver name
+  
+  has_many :trainingnotes,    :class_name => 'Trainingnote'
 
   has_many          :qualifications, :dependent => :destroy
   accepts_nested_attributes_for :qualifications, :allow_destroy => true, :reject_if => lambda { |a| a[:level_id].blank? }

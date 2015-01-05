@@ -2,7 +2,7 @@
 .col-md-offset-1
   .form-group
     .col-sm-2.control-label
-      = f.label :combo_code
+      = f.label t 'training.programme.code'
     .col-md-5
       /= f.text_field :combo_code, :size => '6' ,class: 'form-control'
       %table
@@ -12,7 +12,7 @@
   
   .form-group
     .col-sm-2.control-label
-      = f.label :course_type
+      = f.label t 'training.programme.course_type'
     .col-md-9
       - if @programme.parent_id == nil
         = f.select :course_type,DropDown::COURSE_TYPES_PROG,{:prompt => t('helpers.prompt.select_course_type')},{ class: 'selectpicker', "data-width"=>'160px'} 
@@ -20,25 +20,32 @@
         %table
           %tr
             %td{:style=>"padding: 0 12px 0 0;  vertical-align: top;"}= f.select :course_type, DropDown::COURSE_TYPES_SUB,{:prompt => t('helpers.prompt.select_course_type')},{ class: 'selectpicker', "data-width"=>'160px'} 
-            %td.bbb{:style=>"padding: 0 12px 0 0;"}= f.label :lecture
+            %td.bbb{:style=>"padding: 0 12px 0 0;"}= f.label t 'training.programme.lecture'
             %td.bbb{:style=>"padding: 0 12px 0 0;"}= f.text_field :lecture, :size=>'2', class: 'form-control'
             %td.bbb{:style=>"padding: 0 12px 0 0;"}= f.select :lecture_time, DropDown::LECTURE_TIME,{:prompt =>t('select')},{ class: 'selectpicker', "data-width"=>'80px'} 
-            %td.bbb{:style=>"padding: 0 12px 0 0;"}=f.label :tutorial
+            %td.bbb{:style=>"padding: 0 12px 0 0;"}=f.label t 'training.programme.tutorial'
             %td.bbb{:style=>"padding: 0 12px 0 0;"}= f.text_field :tutorial, :size=>'2', class: 'form-control'
             %td.bbb{:style=>"padding: 0 12px 0 0;"}= f.select :tutorial_time, DropDown::LECTURE_TIME,{:prompt =>t('select')},{ class: 'selectpicker', "data-width"=>'80px'} 
-            %td.bbb{:style=>"padding: 0 12px 0 0;"}=f.label :practical
+            %td.bbb{:style=>"padding: 0 12px 0 0;"}=f.label t 'training.programme.practical'
             %td.bbb{:style=>"padding: 0 12px 0 0;"}= f.text_field :practical, :size=>'2', class: 'form-control'
-            %td.bbb{:style=>"padding: 0 12px 0 0;"}= f.select :practical_time, DropDown::LECTURE_TIME,{:prompt =>t('select')},{ class: 'selectpicker', "data-width"=>'80px'} 
-   
+            %td.bbb{:style=>"padding: 0 12px 0 0;"}= f.select :practical_time, DropDown::LECTURE_TIME,{:prompt =>t('select')},{ class: 'selectpicker', "data-width"=>'80px'}
+            
+  - unless @programme.parent_id == nil        
+    .form-group
+      .col-sm-2.control-label
+        = f.label t 'training.programme.subject_abbreviation'
+      .col-md-1
+        = f.text_field :subject_abbreviation, class: 'form-control'
+      
   .form-group
     .col-sm-2.control-label
-      = f.label :name
+      = f.label t 'training.programme.name'
     .col-md-5
       = f.text_field :name, :size => '50' , class: 'form-control'
   
   .form-group
     .col-sm-2.control-label
-      = f.label :duration
+      = f.label t 'training.programme.duration'
     .col-md-3
       %table
         %tr
@@ -47,13 +54,13 @@
 
   .form-group
     .col-sm-2.control-label
-      = f.label :credits
+      = f.label t 'training.programme.credits'
     .col-md-3
       = f.select :credits, 0..8 ,{:prompt => t('helpers.prompt.select_credit')},{ class: 'selectpicker', "data-width"=>'160px'} 
       
   .form-group
     .col-sm-2.control-label
-      = f.label :status
+      = f.label t 'training.programme.status'
     .col-md-3
       = f.select :status, DropDown::COURSE_STATUS,{:prompt => t('helpers.prompt.select_status')},{ class: 'selectpicker', "data-width"=>'160px'} 
 

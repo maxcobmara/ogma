@@ -7,6 +7,7 @@ class Trainingnote < ActiveRecord::Base
   
   #belongs_to :topic
   #belongs_to :timetable
+  belongs_to :note_creator, :class_name => 'Staff', :foreign_key => :staff_id
   belongs_to :topicdetail, :foreign_key=> 'topicdetail_id'
   
   #trial section
@@ -45,6 +46,67 @@ class Trainingnote < ActiveRecord::Base
     else
       "#{title}"
     end
+  end
+  
+  #define scope subject
+  def self.subject_search(query)
+    if query
+      sel_programme = Programme.where('(code ILIKE(?) OR name ILIKE(?)) AND course_type=?',"%#{query}%", "%#{query}%", "Subject").first
+      if sel_programme!=nil
+        topicids=sel_programme.descendants.pluck(:id)
+        topicdetailsids = Topicdetail.where('topic_code IN(?)', topicids).pluck(:id)
+      else
+        topicdetailsids = []
+      end
+      return Trainingnote.where('topicdetail_id IN(?)', topicdetailsids)
+    end
+  end
+    
+  def self.programme_search(query)
+    if query
+      sel_programme=Programme.where('name ILIKE(?) AND ancestry_depth=?',"%#{query}%",0).first
+      if sel_programme!=nil 
+        topicids=sel_programme.descendants.at_depth(3).pluck(:id)
+        subtopicids=sel_programme.descendants.at_depth(4).pluck(:id)
+        topicdetailsids = Topicdetail.where('topic_code IN(?) OR topic_code IN(?)', topicids, subtopicids).pluck(:id)
+        return Trainingnote.where('topicdetail_id IN(?)', topicdetailsids)
+      else
+        topicdetailsids=[]
+      end
+      return Trainingnote.where('topicdetail_id IN(?)', topicdetailsids)
+    end
+  end
+  
+  # whitelist the scope
+  def self.ransackable_scopes(auth_object = nil)
+    [:subject_search, :programme_search]
+  end
+  
+  def self.search2(search)
+    common_subject = Programme.where('course_type=?','Commonsubject').pluck(:id)
+    #timetable_id exist (note created via lesson plan -->select timetable which consist topic)
+    #but if selected topic has no TOPIC DETAIL yet...
+    notopicdetail_timetable_exist = Trainingnote.where('topicdetail_id is null AND timetable_id is not null').pluck(:timetable_id)
+    topic_timetable_exist_raw = WeeklytimetableDetail.where('id iN(?)', notopicdetail_timetable_exist).pluck(:topic)
+    if search 
+      if search == '0'
+        training_notes = Trainingnote.all
+      else
+        if search == '1'
+          topicids = Programme.where('id IN(?)', common_subject).first.descendants.at_depth(3).pluck(:id)
+          subtopicids = Programme.where('id IN(?)', common_subject).first.descendants.at_depth(4).pluck(:id)
+        else
+          topicids = Programme.where(id: search).first.descendants.at_depth(3).pluck(:id)
+          subtopicids = Programme.where(id: search).first.descendants.at_depth(4).pluck(:id)
+        end
+        topic_timetable_exist = Programme.where('id IN(?) AND (id IN(?) OR id IN(?))', topic_timetable_exist_raw, topicids, subtopicids).pluck(:id)
+        timetableids = WeeklytimetableDetail.where('topic IN(?)', topic_timetable_exist).pluck(:id)
+        topicdetailsids = Topicdetail.where('topic_code IN(?) OR topic_code IN(?)', topicids, subtopicids).pluck(:id)
+        nobody_ownids = Trainingnote.where('timetable_id is null AND topicdetail_id is null').pluck(:id)
+        training_notes = Trainingnote.where('topicdetail_id IN(?) OR id IN(?) OR timetable_id IN(?)', topicdetailsids, nobody_ownids, timetableids)
+      end
+    end
+    training_notes
   end
   
 end

@@ -5,6 +5,7 @@
     = f.hidden_field :staff_id
     = f.hidden_field :ru_staff
     = f.hidden_field :student_id
+    = f.hidden_field :libcheckout_by, :value => @current_user.userable_id
   
     .form-group
       .col-sm-2.control-label

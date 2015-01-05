@@ -38,7 +38,7 @@
         
     - @lesson_plans.each do |lesson_plan|
       /- if (lesson_plan.lecturer == User.current_user.staff_id) || (lesson_plan.endorsed_by == User.current_user.staff_id) ||(current_roles.include? 'Administration')|| (lesson_plan.lecturer == User.current_user.staff_id)
-      - if (lesson_plan.lecturer == current_user.staff_id) || (lesson_plan.endorsed_by == current_user.staff_id) ||(current_roles.include? 'Administration')|| (lesson_plan.lecturer == current_user.staff_id)
+      - if (lesson_plan.lecturer == @current_user.userable_id) || (lesson_plan.endorsed_by == @current_user.userable_id) ||(current_roles.include? 'Administration')|| (lesson_plan.lecturer == @current_user.userable_id)
         %tr
           %td=h link_to lesson_plan.lessonplan_owner.name, training_lesson_plan_path(lesson_plan)
           %td=h lesson_plan.lessonplan_intake.name

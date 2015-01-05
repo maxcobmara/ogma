@@ -16,7 +16,8 @@
     .col-sm-2.control-label
       = f.label :hod_id
     .col-md-4
-      = f.collection_select :hod_id, Staff.where("id IN (?)", @travel_request.hods).order(name: :asc), :id, :name, {:include_blank => t('helpers.prompt.select_hod')}, {class: 'selectpicker', "data-width"=>'320px'} 
+      /to do next - sort / order by postion rank   
+      = f.collection_select :hod_id, Staff.joins(:positions).where('staffs.id IN(?)', @travel_request.hods).uniq, :id, :name, {:include_blank => t('helpers.prompt.select_hod')}, {class: 'selectpicker', "data-width"=>'320px'} 
 
 :javascript
 

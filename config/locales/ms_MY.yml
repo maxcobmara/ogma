@@ -65,6 +65,8 @@ ms_MY:
   no2: Tidak
   by2: " oleh "
   on2: " pada "
+  from: Dari
+  to: Hingga
   return: Pemulangan
   confirmed: Disahkan
   confirmed_on: Disahkan pada
@@ -82,6 +84,7 @@ ms_MY:
   records: rekod
   positions_required: "Butiran Perjawatan (tugas & tanggungjawab) diperlukan bagi mengakses submodul : "
   none_assigned: Tiada maklumat
+  inc_unitname: " (termasuk nama Jabatan / Unit) "
  
   actions:
     new: Baru
@@ -413,6 +416,7 @@ ms_MY:
       mileage_field: "Ruangan Batuan(KM): Nyatakan jarak km bagi yang membawa kenderaan sendiri sahaja"
       value_field: "Ruangan Nilai(RM): Nyatakan jumlah tambang teksi sahaja"
       status_movement: "Status & Pergerakan"
+      no_registered_vehicle: "Anda tidak mempunyai rekod kenderaan berdaftar dalam sistem ini. Sila daftarkan kenderaan anda dalam submodul Staf terlebih dahulu."
 
     travel_claim:
       title: Tuntutan Perjalanan
@@ -798,7 +802,11 @@ ms_MY:
     registration: "No. Pendaftaran"
     otherinfo: "Komponen & Aksesori"
     quantity: Kuantiti
-    #serialno: "No. Siri"
+    reportdownload: "Laporan/Muat Turun"
+    filename: Nama
+    type: Jenis
+    link: Pautan
+    kewpa_download_linklist: "Muat Turun/Senarai Pautan KEW PA"
     
     defect:
       title: Kerosakan Aset
@@ -1847,6 +1855,7 @@ ms_MY:
       major: Major
       minor: Minor
       elective: Elektif
+      subject_abbreviation: Nama Singkatan
     topicdetail:
       create: Cipta Butiran Topik
       title: Butiran Topik
@@ -1872,6 +1881,7 @@ ms_MY:
       title2: Nota Latihan
       new: Nota Latihan Baru
       edit: Sunting Nota Latihan
+      details: Butiran Nota Latihan
       document: Fail
       reference: Rujukan
       release: Keluaran
@@ -1882,6 +1892,9 @@ ms_MY:
       file_name: Nama Fail
       or: Atau pilih semula fail
       topic_subtopic: "Topik / Subtopik"
+      programme: Program
+      subject: Subjek
+      staff_id: Disediakan oleh
     lesson_plan:
       title: Pelan Pengajaran
       title2: Pengajaran dan Pembelajaran
@@ -2068,17 +2081,6 @@ ms_MY:
         hod_rejected: Ditolak Ketua Jabatan
         hod_rejected_on: Tarikh Ditolak Ketua Jabatan
         reason: Sebab
-      programme:
-        combo_code: Kod Kombo
-        duration: Jangka Masa
-        credits: Kredit
-        status: Status
-        method: Kaedah Pengajaran
-        course_type: Jenis Kurikulum
-        name: Nama
-        lecture: Kuliah
-        tutorial: Tutorial
-        practical: Amali
       staff_attendance:
         thumb_id: Staf
         logged_at: Masa Log
@@ -2163,6 +2165,7 @@ ms_MY:
         report_endorsed: "Luluskan Laporan?"
         report_endorsed_on: Tarikh Kelulusan Laporan
         report_summary: "Ringkasan Laporan (Ulasan)"
+        location: Lokasi
       travel_request:
         staff_id: Staf
         document_id: Dokumen Rujukan

@@ -239,6 +239,7 @@ Ogma::Application.routes.draw do
       member do
         get :personalize_show
         get :weekly_timetable
+        get :personalizetimetable
       end
       collection do
         get 'general_timetable', to: "weeklytimetables#general_timetable"

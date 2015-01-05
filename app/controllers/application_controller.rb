@@ -12,6 +12,11 @@ class ApplicationController < ActionController::Base
     #Login.first
   #end
   
+  #http://rails-bestpractices.com/posts/47-fetch-current-user-in-models (sample:travel_requests)
+  def set_current_user
+    User.current = current_user
+  end
+  
   ### http://stackoverflow.com/questions/19861067/activemodelforbiddenattributeserror-in-commentscontrollercreate?rq=1
   before_filter do
     resource = controller_name.singularize.to_sym
