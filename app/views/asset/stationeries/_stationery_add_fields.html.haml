@@ -1,0 +1,23 @@
+%fieldset 
+  = f.hidden_field :_destroy
+  /= f.hidden_field :index
+  .row
+    .col-sm-1= f.text_field :lpono, class: 'form-control'
+    .col-sm-2= f.text_field :document, class: 'form-control'
+    .col-sm-1= f.text_field :quantity, class: 'g1'
+    .col-sm-2= f.text_field :unitcost, class: 'g1'
+    .col-sm-2= f.text_field :total, class: 'g1', readonly: 'readonly', class: 'form-control'
+    .col-sm-2= f.text_field :received, class: 'date-picker form-control'
+    .col-sm-1
+      = link_to content_tag(:i, "", class: "fa fa-trash-o"), data: {"data-toggle" => "tooltip", title: "Delete"}, class: "btn btn-danger remove_fields"
+      
+:javascript
+$(document).ready(function(){
+  $(".g1").keyup(function() {   	
+    var qty = $("#stationery_attributes_1_quantity").val();
+    var unitcost = $("#stationery_attributes_1_unitcost").val(); 
+    
+    var ansP1 = document.getElementById("stationery_g1_attributes_1_total");
+    ansP1.value = (unitcost*1)*(qty*1)
+  });
+});

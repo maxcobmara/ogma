@@ -984,6 +984,17 @@ ms_MY:
     details: Keperluan Pejabat
     additions: Penambahan
     deductions: Pengurangan
+    unittype: Jenis Unit
+    new: Bekalan Pejabat Baru
+    lpono: Nombor LPO
+    supplier_name: Nama Pembekal
+    quantity: Kuantiti
+    price_per_unit: Harga Seunit
+    total: Jumlah
+    received_date: Tarikh Terima
+    issues_by: Isu oleh
+    received_by: Diterima oleh
+    issue_date: Tarikh isu
 
   location:
     title: Lokasi

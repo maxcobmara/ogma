@@ -1,5 +1,19 @@
 class StationeryAdd < ActiveRecord::Base
   belongs_to :stationery
+  
+  attr_accessor :total
+  
+  def line_item_value
+    quantity * unitcost
+  end
+  
+  def total
+    
+  end
+  
+  def boo
+    "ba"
+  end
 end
 
 # == Schema Information

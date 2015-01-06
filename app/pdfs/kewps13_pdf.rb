@@ -8,7 +8,7 @@ class Kewps13Pdf < Prawn::Document
     font "Times-Roman"
     text "KEW.PS-13", :align => :right, :size => 15, :style => :bold
     move_down 15
-    text "LAPORAN KEDUDUKAN STOK TAHUN ", :align => :center, :size => 14
+    text "LAPORAN KEDUDUKAN STOK TAHUN #{Time.new.last_year}", :align => :center, :size => 14
     text "BAGI SUKU TAHUN KEDUA PADA  ", :align => :center, :size => 14
     move_down 15
     text "KATEGORI STOR :", :align => :left, :size => 14
@@ -28,7 +28,7 @@ class Kewps13Pdf < Prawn::Document
     data = [ ["", "", "KEDUDUKAN", "STOK", "", "KADAR PUSINGAN"],
              ["", "Sedia Ada", "Pembelian/Penerimaan", "Pengeluaran/Penggunaan","Stok Semasa", "STOK"],
              ["TAHUN ", "Jumlah Nilai Stok (RM)", "Jumlah Nilai Stok (RM)", "Jumlah Nilai Stok (RM)", "Jumlah Nilai Stok (RM)", ""],
-             ["SEMASA", "(a)", "(b)", "(c)", "d = (a+b)- (c)", "c / [(a+b)/2]" ]]
+             ["SEMASA", "(a)", "(b)", "(c)", "d = (a+b) - (c)", "c / [(a+b)/2]" ]]
           
 
          table(data, :column_widths => [100, 130, 130, 135, 130, 140 ], :cell_style => { :size => 12}) do

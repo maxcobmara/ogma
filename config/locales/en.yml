@@ -1072,6 +1072,17 @@ en:
     details: Details
     additions: Additions
     deductions: Deductions
+    unittype: Unit Type
+    new: New Office Supplies
+    lpono: LPO no.
+    supplier_name: Supplier Name
+    quantity: Quantity
+    price_per_unit: Price per Unit
+    total: Total
+    received_date: Received Date
+    issues_by: Issues by
+    received_by: Received by
+    issue_date: Issue Date  
        
   location:
     title: Location

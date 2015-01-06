@@ -1,0 +1,19 @@
+%fieldset   
+  = f.hidden_field :_destroy
+  .row
+    .col-sm-2= f.collection_select :issuedby, Staff.all.order(name: :asc), :id, :staff_name_with_position, {include_blank: (t 'helpers.prompt.select_staff')}, {class: 'selectpicker'}
+    .col-sm-2= f.collection_select :receivedby, Staff.all.order(name: :asc), :id, :staff_name_with_position, {include_blank: (t 'helpers.prompt.select_staff')}, {class: 'selectpicker'}
+    .col-sm-1= f.text_field :quantity, class: 'form-control'
+    .col-sm-2= f.text_field :issuedate, class: 'date-picker form-control'
+    .col-sm-1
+      = link_to content_tag(:i, "", class: "fa fa-trash-o"), data: {"data-toggle" => "tooltip", title: "Delete"}, class: "btn btn-danger remove_fields"
+      
+:javascript
+  $('.selectpicker').selectpicker('render');
+  
+  $('.date-picker').datetimepicker({
+    timepicker:false,
+    format: "d-m-Y",
+    defaultSeconds: 0,
+    autoclose: true
+  });

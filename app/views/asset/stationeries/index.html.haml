@@ -6,7 +6,7 @@
   %ul.nav.navbar-nav
     %li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'actions.new'))), new_asset_stationery_path
   %ul.nav.navbar-nav.navbar-right
-    %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "toga"
+    %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "index_search_bar"
     %li.dropdown
       %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#"}
         = fa_icon "print", text: (t 'actions.print')
@@ -20,15 +20,15 @@
   %table.table-striped.table-hover.ogma
     %thead
       %tr
-        %th= (t 'stationery.code')
-        %th= (t 'stationery.category')
-        %th= (t 'stationery.quantity')
-        %th= (t 'stationery.max')
-        %th= (t 'stationery.min')
+        %th= sort_link(@search, :code, (t 'stationery.code'))
+        %th= sort_link(@search, :category, (t 'stationery.category'))
+        %th= sort_link(@search, :quantity, (t 'stationery.quantity'))
+        %th= sort_link(@search, :maxquantity, (t 'stationery.max'))
+        %th{style: "width:33%;"}= sort_link(@search, :minquantity, (t 'stationery.min'))
 
     %tbody
-    =# render "index_search"
-    - @stationeries.each do |stationery|
+    = render "index_search"
+    - @stationery.each do |stationery|
       %tr
         %td= link_to stationery.code, asset_stationery_path(stationery)
         %td= link_to stationery.category, asset_stationery_path(stationery)

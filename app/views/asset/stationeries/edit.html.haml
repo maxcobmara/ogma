@@ -4,92 +4,14 @@
     = t 'edit'
     = @stationery.category
 
-
-
 .row
   = form_for [:asset, @stationery],  html: { multipart: true, class: 'form-horizontal' }  do |f| 
     = render 'shared/error_messages', object: f.object
-
-    %ul.nav.nav-tabs
-      %li.active= link_to (t "stationery.details"), "#details",   "data-toggle" => "tab"
-      %li= link_to (t "stationery.additions"),      "#additions", "data-toggle" => "tab"
-      %li= link_to (t "stationery.deductions"),     "#deductions","data-toggle" => "tab"
-
-    .tab-content.col-md-offset-1
+    = render :partial => 'form', :locals => {:f => f}
+    
+    .col-md-offset-1
       .form-group
-        .col-sm-2.control-label
-          = f.label t 'stationery.code', for: :code
-        .col-md-5
-          = f.text_field :code, class: 'form-control mandatory'
-		  
-      .form-group
-        .col-sm-2.control-label
-          = f.label t 'stationery.category', for: :category
-        .col-md-5
-          = f.text_field :category, class: 'form-control mandatory'
-		  
-		  
-		  
-      #details.tab-pane.fade.in.active
-        .form-group
-          .col-sm-2.control-label
-            = f.label t 'asset.quantity', for: :current_quantity
-          .col-md-4
-            = f.text_field :current_quantity, class: 'form-control'
-			
-        .form-group
-          .col-sm-2.control-label
-            = f.label t 'asset.min', for: :minquantity
-          .col-md-4
-            = f.text_field :minquantity, class: 'form-control'
-			
-        .form-group
-          .col-sm-2.control-label
-            = f.label t 'asset.max', for: :maxquantity
-          .col-md-4
-            = f.text_field :maxquantity, class: 'form-control'
-			
-      #additions.tab-pane.fade.in.active
-        %table.table.table-condensed.table-hover{:style => "width: 50%; "}	
-          %thead	  
-            %tr
-              %th LPO No
-              %th Supplier Name
-              %th Quantity
-              %th Price per Unit
-              %th Total
-              %th Received Date
-          %tbody
-            - for stationery_add in @stationery.stationery_adds
-            - cost = stationery_add.unitcost * stationery_add.quantity.to_i	
-              %tr
-                %td= stationery_add.lpono 
-                %td= stationery_add.document
-                %td= stationery_add.quantity.to_i
-                %td= ringgols(stationery_add.unitcost)
-                %td= ringgols(cost)
-                %td= stationery_add.received.try(:strftime,"%d %b %Y")						
-
-      #deductions.tab-pane.fade.in.active
-        %table.table.table-condensed.table-hover{:style => "width: 50%; "}	
-          %thead	  
-            %tr
-              %th Issues By
-              %th Received By
-              %th Quantity
-              %th Issue Date
-          %tbody
-            - for stationery_use in @stationery.stationery_uses
-              %tr
-                %td= stationery_use.issuedby
-                %td= stationery_use.receivedby
-                %td= stationery_use.quantity.to_i
-                %td= stationery_use.issuedate.try(:strftime, "%d %b %Y")
-				
-      .col-md-offset-1
-        //= render :partial => 'form', :locals => {:f => f}
-        .form-group
-          .col-sm-offset-4.col-sm-1
-            = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), asset_stationeries_path(@stationery), :class => 'btn btn-default'
-          .col-sm-2
-            = f.submit t('update'), class: "btn btn-primary" 
+        .col-sm-offset-2.col-sm-1
+          = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), asset_stationeries_path(@stationery), :class => 'btn btn-default'
+        .col-sm-2
+          = f.submit t('update'), class: "btn btn-primary"

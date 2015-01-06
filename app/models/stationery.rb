@@ -15,6 +15,10 @@ class Stationery < ActiveRecord::Base
     b = StationeryUse.where(stationery_id: id).sum(:quantity)
     a - b
   end
+  
+  def self.ransackable_scopes(auth_object = nil)
+    [:current_quantity]
+  end
 end
 
 # == Schema Information
