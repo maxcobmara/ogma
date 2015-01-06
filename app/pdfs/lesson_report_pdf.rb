@@ -43,7 +43,7 @@ class Lesson_reportPdf< Prawn::Document
                 ["","Tarikh (Mengikut jadual)",":","#{@lesson_plan.schedule_item.get_date_for_lesson_plan }"],
                 ["","Masa",":","#{@lesson_plan.schedule_item.get_start_time+' - '+@lesson_plan.schedule_item.get_end_time}"],
                 ["","Tahun dan Semester Pelatih",":","Tahun #{@lesson_plan.year} Semester #{@lesson_plan.semester}"],
-                ["","Bilik / Kelas / Makmal",":","#{@lesson_plan.schedule_item.weeklytimetable_location.try(:name)}"],
+                ["","Bilik / Kelas / Makmal",":","#{@lesson_plan.schedule_item.location_desc}"],
              ]
           
     table(data, :column_widths => [70,150,20,260], :cell_style => { :size => 10, :align=> :center,  :inline_format => true}) do
