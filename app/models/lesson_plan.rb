@@ -23,7 +23,7 @@ class LessonPlan < ActiveRecord::Base
   accepts_nested_attributes_for :trainingnotes, :reject_if => lambda {|a| a[:topic_id].blank?}
   #trial section-----------
   
-  attr_accessor :title
+  attr_accessor :title, :schedule2
 
   #---------------------AttachFile------------------------------------------------------------------------
    has_attached_file :data,

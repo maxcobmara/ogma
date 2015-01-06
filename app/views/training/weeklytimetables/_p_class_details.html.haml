@@ -9,7 +9,8 @@
     = j.weeklytimetable_topic.parent.subject_abbreviation.blank? ? "-" :  j.weeklytimetable_topic.parent.subject_abbreviation.upcase
   = j.weeklytimetable_topic.name
 %br
-= j.weeklytimetable_location.try(:name)
+/= j.weeklytimetable_location.try(:name)
+= j.location_desc
 = "(K)" if j.lecture_method == 1
 = "(T)" if j.lecture_method == 2
 = "(A)" if j.lecture_method == 3
