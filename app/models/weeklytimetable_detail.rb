@@ -3,7 +3,7 @@ class WeeklytimetableDetail < ActiveRecord::Base
    before_save :set_day_time_slot_for_non_selected
    #before_save :set_false_if_topic_not_exist 
 
-   before_destroy :check_student_attendance  #####to UNREMARK when student attendance is ready****************************   26JUNE2014
+   before_destroy :check_student_attendance, :check_lesson_plan
    
    belongs_to :weeklytimetable,     :foreign_key => 'weeklytimetable_id'
    belongs_to :weeklytimetable_subject,   :class_name => 'Programme',   :foreign_key => 'subject' #starting 25March2013-no longer use
@@ -116,7 +116,18 @@ class WeeklytimetableDetail < ActiveRecord::Base
        end
      end
      
-    
+     #this part will only restrict user from REMOVING current daily timetable detail (TIME SLOT)
+     #but pls note replacing content(topic, location etc) of current daily timetable detail (TIME SLOT) shall REFLECT schedule details(topic, timing, etc) in Lesson Plan
+     def check_lesson_plan
+       current_schedule = 
+       submitted_lesson_plan = LessonPlan.where('is_submitted=?', true]).pluck(:schedule)
+       if submitted_lesson_plan.include?(self.id)
+         #lesson plan created, schedule editable? #issue arise during training : lesson plan first created by lecturer, schedule used to be last minute produce by Coordinator
+         #errors.add_to_base "tak bole la"
+         # raise I18n.t("weeklytimetable_detail.removal_not_allowed")
+         return false
+       end
+     end
      
 end
 

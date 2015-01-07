@@ -32,11 +32,11 @@
                 - @lessonplan_schedule = LessonPlan.all.map(&:schedule).uniq.compact
                 -  WeeklytimetableDetail.where('lecturer_id=? AND id NOT IN (?)', @current_user.userable_id,@lessonplan_schedule).each do |c|
                   - arr << [c.day_time_slot3, c.id, {'data'=>c.location_desc}]
-                = select_tag("lesson_plan[schedule]", options_for_select(arr, @lesson_plan.schedule), {class: 'selectpicker', "data-width"=>'900px'})
+                = select_tag("lesson_plan[schedule]", options_for_select(arr, @lesson_plan.schedule), {class: 'selectpicker', "data-width"=>'550px'})
               - else
                 - WeeklytimetableDetail.where('lecturer_id=?', @current_user.userable_id).each do |c|
                   - arr << [c.day_time_slot3, c.id, {'data'=>c.location_desc}]
-                = select_tag("lesson_plan[schedule]", options_for_select(arr, @lesson_plan.schedule), {class: 'selectpicker', "data-width"=>'900px'})
+                = select_tag("lesson_plan[schedule]", options_for_select(arr, @lesson_plan.schedule), {class: 'selectpicker', "data-width"=>'550px'})
        
         .form-group.bong{:style=> "display: none;"}
           .col-sm-2.control-label
@@ -71,7 +71,7 @@
       var yoyo = $(this).find('option:selected').attr('data');
       var ansP = document.getElementById("new_location");
       ansP.value =yoyo;
-      $('.bong').show();
+      $('.bong').show("appear");
     }
   });
   
