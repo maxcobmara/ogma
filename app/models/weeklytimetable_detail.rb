@@ -120,7 +120,7 @@ class WeeklytimetableDetail < ActiveRecord::Base
      #but pls note replacing content(topic, location etc) of current daily timetable detail (TIME SLOT) shall REFLECT schedule details(topic, timing, etc) in Lesson Plan
      def check_lesson_plan
        current_schedule = 
-       submitted_lesson_plan = LessonPlan.where('is_submitted=?', true]).pluck(:schedule)
+       submitted_lesson_plan = LessonPlan.where('is_submitted=?', true).pluck(:schedule)
        if submitted_lesson_plan.include?(self.id)
          #lesson plan created, schedule editable? #issue arise during training : lesson plan first created by lecturer, schedule used to be last minute produce by Coordinator
          #errors.add_to_base "tak bole la"

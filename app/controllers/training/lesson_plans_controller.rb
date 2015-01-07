@@ -22,7 +22,7 @@ class Training::LessonPlansController < ApplicationController
     current_user.roles.each do |x|
       @current_roles << x.name
     end
-
+    @location_display="show"
     respond_to do |format|
       format.html # show.html.erb
       format.xml  { render :xml => @lesson_plan }
@@ -52,6 +52,15 @@ class Training::LessonPlansController < ApplicationController
       @current_roles << x.name
     end
   end
+  
+  def lessonplan_reporting
+    @lesson_plan = LessonPlan.find(params[:id])
+    @current_roles=[]
+    current_user.roles.each do |x|
+      @current_roles << x.name
+    end
+    @location_display="reporting"
+  end
 
   # POST /lesson_plans
   # POST /lesson_plans.xml
@@ -71,17 +80,21 @@ class Training::LessonPlansController < ApplicationController
   # PUT /lesson_plans/1
   # PUT /lesson_plans/1.xml
   def update
-    #raise params.inspect
     @lesson_plan = LessonPlan.find(params[:id])
     @current_roles=[]
     current_user.roles.each do |x|
       @current_roles << x.name
     end 
     newlocation = params[:new_location]
-    scheduleid = params[:lesson_plan][:schedule]
-    schedule = WeeklytimetableDetail.where(id:scheduleid).first
-    schedule.location_desc = newlocation
-    schedule.save!
+    if newlocation!=nil
+      scheduleid = params[:lesson_plan][:schedule]
+      scheduleid = @lesson_plan.schedule if scheduleid==nil
+      if scheduleid!=nil
+        schedule = WeeklytimetableDetail.find(scheduleid) 
+        schedule.location_desc = newlocation
+        schedule.save!
+      end
+    end
     
     respond_to do |format|
       if @lesson_plan.update(lesson_plan_params)
