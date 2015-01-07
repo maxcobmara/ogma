@@ -66,7 +66,7 @@ class Lesson_reportPdf< Prawn::Document
   end 
   
   def table_report
-    data = [["i.","",{content: "Keadaan kelas (tandakan / )", colspan: 3},""],
+    data = [["i.","",{content: "Keadaan kelas (tandakan / )", colspan: 4}],
              ["","","","#{'<b>/</b>' if @lesson_plan.condition_isgood == true}","", "Memuaskan"],
              ["","","","","",""],
              ["","","","#{'<b>/</b>' if @lesson_plan.condition_isgood == false}","","Tidak Memuaskan"],

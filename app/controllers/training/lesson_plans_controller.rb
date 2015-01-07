@@ -149,8 +149,11 @@ class Training::LessonPlansController < ApplicationController
       @lesson_plans2 = @search.result.where('hod_approved=?', true)
       @lesson_plans3 = @lesson_plans2.sort_by{|t|t.lecturer} 
       @lesson_plans =  Kaminari.paginate_array(@lesson_plans3).page(params[:page]||1) 
+      @current_roles=[]
+      current_user.roles.each do |x|
+        @current_roles << x.name
+      end 
   end
-
   
   private
   

@@ -31,14 +31,10 @@
             
     %tbody
     = render "index_search2"
-    
-    - current_roles=[]
-    - current_user.roles.each do |x|
-      - current_roles << x.name
         
     - @lesson_plans.each do |lesson_plan|
       /- if (lesson_plan.lecturer == User.current_user.staff_id) || (lesson_plan.endorsed_by == User.current_user.staff_id) ||(current_roles.include? 'Administration')|| (lesson_plan.lecturer == User.current_user.staff_id)
-      - if (lesson_plan.lecturer == @current_user.userable_id) || (lesson_plan.endorsed_by == @current_user.userable_id) ||(current_roles.include? 'Administration')|| (lesson_plan.lecturer == @current_user.userable_id)
+      - if (lesson_plan.lecturer == @current_user.userable_id) || (lesson_plan.endorsed_by == @current_user.userable_id) ||(@current_roles.include? 'Administration')|| (lesson_plan.lecturer == @current_user.userable_id)
         %tr
           %td=h link_to lesson_plan.lessonplan_owner.name, training_lesson_plan_path(lesson_plan)
           %td=h lesson_plan.lessonplan_intake.name
@@ -50,7 +46,7 @@
           %td=h lesson_plan.try(:lecture_date).try(:strftime, '%d %b %Y')
           %td=h lesson_plan.try(:start_time).try(:strftime, '%H:%M')
           %td=h lesson_plan.try(:end_time).try(:strftime, '%H:%M')
-          %td=h lesson_plan.is_submitted? ? image_tag("tick.png") : image_tag("cross.png")
+          %td=h lesson_plan.report_submit? ? image_tag("tick.png") : image_tag("cross.png")
           %td=h lesson_plan.report_endorsed? ? image_tag("tick.png") : image_tag("cross.png") 
 
   .right{style:"padding:0 30px; margin:0;"}= paginate @lesson_plans, :theme => 'twitter-bootstrap-3'
