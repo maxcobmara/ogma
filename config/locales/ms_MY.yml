@@ -1122,6 +1122,10 @@ ms_MY:
       staff_id: Pelulus
       approvedate: Tarikh diluluskan
       notes: Nota
+      student_leave_details: Maklumat Cuti Pelajar
+      guardian_parents_name: "Nama Penjaga/IbuBapa"
+      guardian_parents_phone: "No. Telefon Penjaga/IbuBapa"
+      relationship: Hubungan
 
     discipline:
       title: Kes Disiplin Pelajar
