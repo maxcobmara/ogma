@@ -634,7 +634,7 @@ KTYPE = [
         [ "Penjamin II", 99 ]
  ]
 
-#Stuedent Leave
+#Student Leave
    STUDENTLEAVETYPE = [
         #  Displayed       stored in db
         [ I18n.t("student.leaveforstudent.weekend_day"),"Weekend Day" ],

@@ -1,13 +1,10 @@
 class Leaveforstudent < ActiveRecord::Base
   
-  before_save :check_if_kin_exist
-  
   belongs_to :student
   belongs_to :staff
 
   validates_presence_of :student_id, :leavetype, :leave_startdate, :leave_enddate
   validates_numericality_of :telno
-  
   validate :validate_kin_exist
   
   def self.find_main
@@ -24,14 +21,6 @@ class Leaveforstudent < ActiveRecord::Base
     if leave_enddate && leave_startdate
       errors.add(:end_date, "Your leave must begin before it ends") if leave_enddate < leave_startdate || leave_startdate < DateTime.now
     end
-  end
-  
- def self.search(search)
-     if search
-       @leaveforstudent = Leaveforstudent.find(:all, :conditions => ['leavetype LIKE ?' , "%#{search}%"])
-     else
-      @leaveforstudent = Leaveforstudent.find(:all)
-     end
   end
 
   #<07/10/2011 - Shaliza fixed for error when staff no longer exists>

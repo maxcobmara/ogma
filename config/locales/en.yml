@@ -150,6 +150,10 @@ en:
     check_all2: "Tick to SELECT or DESELECT ALL records for printing of KEW.PA-17 and KEW.PA-20."
     all_records: All Records
     select_one: "Please select at least one record for editing."
+    submitted: Submitted
+    not_submitted: Not Submitted
+    approved: Approved
+    not_approved: Not Approved
     
   errors:
 
@@ -1223,6 +1227,7 @@ en:
       telno: Telephone No
       leave_startdate: On Leave Starting
       leave_enddate: Leave End Date
+      leaves_date: Leaves Date
       studentsubmit: "Submitted?"
       submit_approval: Submit for approval
       approved: "Approved?"
@@ -1236,7 +1241,7 @@ en:
       festive_leave: Festive Leave
       midterm_break: Mid Term Break
       end_of_semester: End of Semester
-      has_no_kin: "Student has no next to kin details (parents / guardian / guarantor)."
+      has_no_kin: "Student has no next of kin details (parents / guardian / guarantor)."
       update_kin: Update next of kin details
       update_student_kin: ". Please update next of kin details in Student submodule first."
 

@@ -2,7 +2,10 @@ class Student::LeaveforstudentsController < ApplicationController
   before_action :set_leaveforstudent, only: [:show, :edit, :update, :destroy]
 
   def index
-    @leaveforstudent = Leaveforstudent.all
+    #@leaveforstudent = Leaveforstudent.all
+    @search = Leaveforstudent.search(params[:q])
+    @leaveforstudent = @search.result
+    @leaveforstudent = @leaveforstudent.page(params[:page]||1)
 
     respond_to do |format|
       format.html # index.html.erb

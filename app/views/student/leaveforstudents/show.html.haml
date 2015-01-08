@@ -19,10 +19,10 @@
           %dd=h @leaveforstudent.student_id.blank? ? "No Student" : @leaveforstudent.student.formatted_mykad_and_student_name
 
           %dt= t 'student.leaveforstudent.leavetype'
-          %dd=h @leaveforstudent.leavetype
+          %dd=h ((DropDown::STUDENTLEAVETYPE.find_all{|disp, value| value == @leaveforstudent.leavetype }).map {|disp, value| disp}).first
 
           %dt= t 'student.leaveforstudent.requestdate'
-          %dd=h @leaveforstudent.requestdate.strftime("%d - %b - %Y")
+          %dd=h @leaveforstudent.requestdate.try(:strftime,"%d - %b - %Y")
 
           %dt= t 'student.leaveforstudent.reason'
           %dd=h  @leaveforstudent.reason

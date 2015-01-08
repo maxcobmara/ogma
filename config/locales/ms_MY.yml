@@ -130,6 +130,10 @@ ms_MY:
     check_all2: "Pilih kotak semak ini untuk MEMILIH atau MENYAHPILIH SEMUA rekod bagi cetakan KEW.PA-17 dan KEW.PA-20."
     all_records: Semua Rekod
     select_one: "Sila pilih sekurang-kurangnya satu rekod untuk disunting."
+    submitted: Dihantar
+    not_submitted: Tidak Dihantar
+    approved: Diluluskan
+    not_approved: Tidak Diluluskan
     
   errors:
   
@@ -1139,6 +1143,7 @@ ms_MY:
       telno: Telefon
       leave_startdate: Tarikh Cuti Bermula
       leave_enddate: Tarikh Cuti Berakhir
+      leaves_date: Tarikh Bercuti
       studentsubmit: "Dihantar?"
       submit_approval: Hantar untuk kelulusan
       approved: "Diluluskan?"
