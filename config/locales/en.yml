@@ -1211,9 +1211,6 @@ en:
       approvedate: Approval Date
       notes: Notes
       student_leave_details: Student Leave Details
-      guardian_parents_name: "Guardian/Parents Name"
-      guardian_parents_phone: "Guardian/Parents Phone"
-      relationship: Relationship
 
     discipline:
       title: Student Discipline Case

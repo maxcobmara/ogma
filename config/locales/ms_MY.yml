@@ -1080,8 +1080,8 @@ ms_MY:
       disease: Keadaan/Penyakit
       bloodtype: Kumpulan Darah
       medication: Ubat
-      kintype_id: Catatan
-      kinaddr: Relationship
+      kintype_id: Hubungan
+      kinaddr: Alamat
       profession: Profession
       male: Lelaki
       female: Perempuan
@@ -1107,7 +1107,7 @@ ms_MY:
       title: Cuti Pelajar
       list: Senarai Cuti Pelajar
       leave_details: Perincian Cuti
-      approve_leave: Kelulusan CUti
+      approve_leave: Kelulusan Cuti
       student_id: Nama Pelajar
       leavetype: Jenis Cuti
       requestdate: Tarikh Mohon Cuti
@@ -1123,9 +1123,6 @@ ms_MY:
       approvedate: Tarikh diluluskan
       notes: Nota
       student_leave_details: Maklumat Cuti Pelajar
-      guardian_parents_name: "Nama Penjaga/IbuBapa"
-      guardian_parents_phone: "No. Telefon Penjaga/IbuBapa"
-      relationship: Hubungan
 
     discipline:
       title: Kes Disiplin Pelajar

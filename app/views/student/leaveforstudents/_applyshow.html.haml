@@ -1,30 +1,10 @@
-.col-md-offset-2   
+.col-md-8.col-md-offset-1
   %dl.dl-horizontal 
-    %dt= t 'student.leaveforstudent.student_id'
-    %dd=h @leaveforstudent.student_id.blank? ? "No Student" : @leaveforstudent.student.formatted_mykad_and_student_name
-	
-    %dt= t 'student.leaveforstudent.leavetype'
-    %dd=h @leaveforstudent.leavetype
-	
-    %dt= t 'student.leaveforstudent.requestdate'
-    %dd=h @leaveforstudent.requestdate.strftime("%d - %b - %Y")
-	
-    %dt= t 'student.leaveforstudent.reason'
-    %dd=h  @leaveforstudent.reason
-	
     %dt= t 'student.leaveforstudent.address'
     %dd=h @leaveforstudent.address
 
     %dt= t 'student.leaveforstudent.telno'
     %dd=h @leaveforstudent.telno 
-    
-    - @leaveforstudent.student.kins.each do |x|
-      %dt= t 'student.leaveforstudent.guardian_parents_name'
-      %dd= x.name
-      %dt= t 'student.leaveforstudent.guardian_parents_phone'
-      %dd= x.phone
-      %dt= t 'student.leaveforstudent.relationship'
-      %dd= x.display_ktype
     
     %dt= t 'student.leaveforstudent.leave_startdate'
     %dd=h @leaveforstudent.leave_startdate.strftime("%a, %d %b")
@@ -34,6 +14,17 @@
 	
     %dt= t 'student.leaveforstudent.submit_approval'
     %dd=h @leaveforstudent.studentsubmit? ? (t 'submitted') : (t 'not_submitted')
+    
+    - @leaveforstudent.student.kins.each do |x|
+      %hr
+        %dt= t 'student.students.name'
+        %dd= x.name
+      
+        %dt=  t 'student.students.kintype_id'
+        %dd= x.display_ktype
+      
+        %dt= t 'student.students.stelno' 
+        %dd= x.phone
     
 .row
   .col-md-4.col-md-offset-2

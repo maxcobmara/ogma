@@ -4,20 +4,35 @@
 
 = render 'shared/flashes'
 
-%ul.nav.nav-tabs
-  %li.active= link_to (t 'student.leaveforstudent.leave_details'),"#applyshow", "data-toggle" => "tab"
-  %li= link_to (t 'student.leaveforstudent.approve_leave'), "#approve_leave", "data-toggle" => "tab"
-	  
-.tab-content.col-md-offset-1
-  %dl.dl-horizontal
-    %dt 
-    %dd
-	 
-  #applyshow.tab-pane.fade.in.active
-    %br
-      = render 'applyshow'
-		  		  
-  #approve_leave.tab-pane.fade
-    %br
-      = render 'approve_leave'
+
+.row
+  .col-md-offset-1
+    / Nav tabs
+    %ul.nav.nav-tabs
+      %li.active= link_to (t 'student.leaveforstudent.leave_details'),"#applyshow", "data-toggle" => "tab"
+      %li= link_to (t 'student.leaveforstudent.approve_leave'), "#approve_leave", "data-toggle" => "tab"
+  
+    / Tab panes
+    .tab-content{style:"padding-top:1em"}  
+      .col-md-8.col-md-offset-1
+        %dl.dl-horizontal
+          %dt= t 'student.leaveforstudent.student_id'
+          %dd=h @leaveforstudent.student_id.blank? ? "No Student" : @leaveforstudent.student.formatted_mykad_and_student_name
+
+          %dt= t 'student.leaveforstudent.leavetype'
+          %dd=h @leaveforstudent.leavetype
+
+          %dt= t 'student.leaveforstudent.requestdate'
+          %dd=h @leaveforstudent.requestdate.strftime("%d - %b - %Y")
+
+          %dt= t 'student.leaveforstudent.reason'
+          %dd=h  @leaveforstudent.reason
+
+      #applyshow.tab-pane.fade.in.active
+        %br
+          = render 'applyshow'
+
+      #approve_leave.tab-pane.fade
+        %br
+          = render 'approve_leave'
     
