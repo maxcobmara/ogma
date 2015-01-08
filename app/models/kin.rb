@@ -1,6 +1,12 @@
 class Kin < ActiveRecord::Base
   belongs_to :staff
   belongs_to :student
+  
+  def display_ktype
+    "#{(DropDown::KTYPE.find_all{|disp, value| value == kintype_id}).map {|disp, value| disp}.first}"
+  end
+  
+  
 end
 
 # == Schema Information

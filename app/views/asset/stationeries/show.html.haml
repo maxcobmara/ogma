@@ -32,12 +32,12 @@
     %table.table.table-condensed.table-hover
       %thead
         %tr
-          %th LPO No
-          %th Supplier Name
-          %th Quantity
-          %th Price per Unit
-          %th Total
-          %th Received Date
+          %th=t 'stationery.lpono'
+          %th=t 'stationery.supplier_name'
+          %th=t 'stationery.quantity'
+          %th=t 'stationery.price_per_unit'
+          %th=t 'stationery.total'
+          %th=t 'stationery.received_date'
       %tbody
         - for stationery_add in @stationery.stationery_adds
         - cost = stationery_add.unitcost * stationery_add.quantity.to_i	  
@@ -53,16 +53,16 @@
     %table.table.table-condensed.table-hover
       %thead
         %tr
-          %th Issues By
-          %th Received By
-          %th Quantity
-          %th Issue Date
+          %th=t 'stationery.issues_by'
+          %th=t 'stationery.received_by'
+          %th=t 'stationery.quantity'
+          %th=t 'stationery.issue_date'
 
       %tbody
         - for stationery_use in @stationery.stationery_uses 
           %tr 
-            %td= stationery_use.issuedby
-            %td= stationery_use.receivedby
+            %td= stationery_use.issuesupply.try(:name)
+            %td= stationery_use.receivesupply.try(:name)
             %td= stationery_use.quantity.to_i
             %td= stationery_use.issuedate.try(:strftime, "%d %b %Y")
 			

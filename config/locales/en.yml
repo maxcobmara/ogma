@@ -1072,6 +1072,17 @@ en:
     details: Details
     additions: Additions
     deductions: Deductions
+    unittype: Unit Type
+    new: New Office Supplies
+    lpono: LPO no.
+    supplier_name: Supplier Name
+    quantity: Quantity
+    price_per_unit: Price per Unit
+    total: Total
+    received_date: Received Date
+    issues_by: Issues by
+    received_by: Received by
+    issue_date: Issue Date  
        
   location:
     title: Location
@@ -1199,6 +1210,10 @@ en:
       staff_id: Approved By
       approvedate: Approval Date
       notes: Notes
+      student_leave_details: Student Leave Details
+      guardian_parents_name: "Guardian/Parents Name"
+      guardian_parents_phone: "Guardian/Parents Phone"
+      relationship: Relationship
 
     discipline:
       title: Student Discipline Case

@@ -1,7 +1,7 @@
 class StationeryUse < ActiveRecord::Base
  belongs_to :stationery
- belongs_to :issuesupply,       :class_name => 'staff', :foreign_key => 'issuedby'
- belongs_to :receivesupply,       :class_name => 'staff', :foreign_key => 'receivedby'
+ belongs_to :issuesupply,       :class_name => 'Staff', :foreign_key => 'issuedby'
+ belongs_to :receivesupply,       :class_name => 'Staff', :foreign_key => 'receivedby'
 end
 
 # == Schema Information

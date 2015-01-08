@@ -1,0 +1,87 @@
+.row
+  .col-md-10.col-md-offset-1
+    / Nav tabs
+    %ul.nav.nav-tabs
+      %li.active= link_to (t "stationery.details"), "#details",   "data-toggle" => "tab"
+      %li= link_to (t "stationery.additions"),      "#additions", "data-toggle" => "tab"
+      %li= link_to (t "stationery.deductions"),     "#deductions","data-toggle" => "tab"
+      
+    / Tab Panes
+    .tab-content{style:"padding-top:1em"}
+      
+      // Register Tab
+      #details.tab-pane.fade.in.active
+        .col-md-offset-2
+          .form-group
+            .col-sm-2.control-label
+              = f.label t 'stationery.code', for: :code
+            .col-md-1
+              = f.text_field :code, class: 'form-control'
+              
+          .form-group
+            .col-sm-2.control-label
+              = f.label t 'stationery.category', for: :category
+            .col-md-3
+              = f.text_field :category, class: 'form-control'
+              
+          .form-group
+            .col-sm-2.control-label
+              = f.label t 'stationery.unittype', for: :unittype
+            .col-md-2
+              = f.text_field :unittype, class: 'form-control'
+			
+          .form-group
+            .col-sm-2.control-label
+              = f.label t 'stationery.min', for: :minquantity
+            .col-md-1
+              = f.text_field :minquantity, class: 'form-control'
+			
+          .form-group
+            .col-sm-2.control-label
+              = f.label t 'stationery.max', for: :maxquantity
+            .col-md-1
+              = f.text_field :maxquantity, class: 'form-control'   
+              
+      #additions.tab-pane.fade
+        .row
+          .col-sm-1=f.label t 'stationery.lpono', for: :lpono
+          .col-sm-2=f.label t 'stationery.supplier_name', for: :document
+          .col-sm-1=f.label t 'stationery.quantity', for: :quantity
+          .col-sm-2=f.label t 'stationery.price_per_unit', for: :unitcost
+          .col-sm-2=f.label t 'stationery.total'
+          .col-sm-2=f.label t 'stationery.received_date', for: :received
+          
+        - @index=-1
+        = f.fields_for :stationery_adds do |builder|
+          = render 'stationery_add_fields', :f => builder, :index=>@index+=1
+              
+        .row
+          = link_to_add_fields t('addmore'), f, :stationery_adds, "",  t('addmore')
+                
+      #deductions.tab-pane.fade
+        .row
+          .col-sm-2=f.label t 'stationery.issues_by', for: :issuesby
+          .col-sm-2=f.label t 'stationery.received_by', for: :receivedby
+          .col-sm-1=f.label t 'stationery.quantity', for: :quantity
+          .col-sm-2=f.label t 'stationery.issue_date', for: :issuedate
+          
+        
+        = f.fields_for :stationery_uses do |builder|
+          = render 'stationery_use_fields', :f => builder
+              
+        .row
+          = link_to_add_fields t('addmore'), f, :stationery_uses, "",  t('addmore')
+                
+:javascript
+          
+  function add_fields(link, association, content) {
+    var new_id = new Date().getTime();
+    var regexp = new RegExp("new_" + association, "g");
+    $(link).parent().before(content.replace(regexp, new_id));
+  }
+
+	
+                
+                
+                
+                

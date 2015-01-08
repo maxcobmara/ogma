@@ -1,11 +1,11 @@
 - model_class = Leaveforstudent
 .page-header
-  %h1 Student Leave Request Details
+  %h1= t 'student.leaveforstudent.student_leave_details'
 
 = render 'shared/flashes'
 
 %ul.nav.nav-tabs
-  %li.active= link_to (t 'student.tleaveforstudent.leave_details'),"#applyshow", "data-toggle" => "tab"
+  %li.active= link_to (t 'student.leaveforstudent.leave_details'),"#applyshow", "data-toggle" => "tab"
   %li= link_to (t 'student.leaveforstudent.approve_leave'), "#approve_leave", "data-toggle" => "tab"
 	  
 .tab-content.col-md-offset-1

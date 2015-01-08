@@ -1,0 +1,15 @@
+= search_form_for @search, url: asset_stationeries_path,  class: "form-inline" do |f|
+  %tr.search_row{style: "display: none;"}
+    %td=f.text_field :code_cont, class:  'form-control'
+    %td=f.text_field :category_cont,  class:  'form-control'
+    /%td=f.text_field :current_quantity_eq, class:  'form-control'
+    %td=f.text_field :maxquantity_eq, class:  'form-control'
+    %td
+      .input-group
+        =f.text_field :minquantity_eq, class:  'form-control'
+        %span.input-group-btn
+          %button.btn.btn-sm.btn-default.right{:type => "submit"}
+            %i.fa.fa-search.fa-fw
+          
+          
+     

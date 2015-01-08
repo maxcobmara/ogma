@@ -984,6 +984,17 @@ ms_MY:
     details: Keperluan Pejabat
     additions: Penambahan
     deductions: Pengurangan
+    unittype: Jenis Unit
+    new: Bekalan Pejabat Baru
+    lpono: Nombor LPO
+    supplier_name: Nama Pembekal
+    quantity: Kuantiti
+    price_per_unit: Harga Seunit
+    total: Jumlah
+    received_date: Tarikh Terima
+    issues_by: Isu oleh
+    received_by: Diterima oleh
+    issue_date: Tarikh isu
 
   location:
     title: Lokasi
@@ -1111,6 +1122,10 @@ ms_MY:
       staff_id: Pelulus
       approvedate: Tarikh diluluskan
       notes: Nota
+      student_leave_details: Maklumat Cuti Pelajar
+      guardian_parents_name: "Nama Penjaga/IbuBapa"
+      guardian_parents_phone: "No. Telefon Penjaga/IbuBapa"
+      relationship: Hubungan
 
     discipline:
       title: Kes Disiplin Pelajar
