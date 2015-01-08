@@ -230,6 +230,7 @@ Ogma::Application.routes.draw do
       member do
         get :lesson_report
         get :lesson_plan
+        get :lessonplan_reporting
       end
       collection do
         get :index_report

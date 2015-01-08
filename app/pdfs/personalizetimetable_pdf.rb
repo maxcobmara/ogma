@@ -119,6 +119,7 @@ class PersonalizetimetablePdf < Prawn::Document
             if j.day2 == row  && j.time_slot2 == col && j.weeklytimetable.hod_approved == true
               if nos==0
                 nos+=1
+		##note : location_desc - user's comment : location type on
                 gg+="#{j.weeklytimetable_topic.parent.parent.subject_abbreviation.blank? ? "-" :  j.weeklytimetable_topic.parent.parent.subject_abbreviation.upcase  if j.weeklytimetable_topic.ancestry_depth == 4} #{ '<br>'+j.weeklytimetable_topic.parent.name if j.weeklytimetable_topic.ancestry_depth == 4}  #{j.weeklytimetable_topic.parent.subject_abbreviation.blank? ? "-" :  j.weeklytimetable_topic.parent.subject_abbreviation.upcase if j.weeklytimetable_topic.ancestry_depth != 4} #{'<br>'+j.weeklytimetable_topic.name  if j.weeklytimetable_topic.ancestry_depth != 4}#{"(K)" if j.lecture_method==1} #{"(T)" if j.lecture_method==2}#{"(A)" if j.lecture_method==3} #{'<br>'+j.weeklytimetable_lecturer.name}#{'<br>'+j.weeklytimetable.schedule_programme.programme_list}#{'<br>'+j.weeklytimetable.schedule_intake.description}#{I18n.t('training.weeklytimetable.intake')+ " ("+ j.weeklytimetable.schedule_intake.name+")"}"
               end
             end
@@ -211,6 +212,7 @@ class PersonalizetimetablePdf < Prawn::Document
         #NON BREAK COLUMNS
         if @classes_tospan.include?(col2)
           gg=""
+	  ##note : location_desc - user's comment : location type on
           @detailing_friday.each do |j|
             if j.is_friday == true && j.time_slot == @column_count_monthur+col2 && j.weeklytimetable.hod_approved == true
               gg+="#{j.weeklytimetable_topic.parent.parent.subject_abbreviation.blank? ? "-" :  j.weeklytimetable_topic.parent.parent.subject_abbreviation.upcase  if j.weeklytimetable_topic.ancestry_depth == 4} #{ '<br>'+j.weeklytimetable_topic.parent.name if j.weeklytimetable_topic.ancestry_depth == 4}  #{j.weeklytimetable_topic.parent.subject_abbreviation.blank? ? "-" :  j.weeklytimetable_topic.parent.subject_abbreviation.upcase if j.weeklytimetable_topic.ancestry_depth != 4} #{'<br>'+j.weeklytimetable_topic.name  if j.weeklytimetable_topic.ancestry_depth != 4}#{"(K)" if j.lecture_method==1} #{"(T)" if j.lecture_method==2}#{"(A)" if j.lecture_method==3} #{'<br>'+j.weeklytimetable_lecturer.name}#{'<br>'+j.weeklytimetable.schedule_programme.programme_list}#{'<br>'+j.weeklytimetable.schedule_intake.description}#{I18n.t('training.weeklytimetable.intake')+ " ("+ j.weeklytimetable.schedule_intake.name+")"}"
@@ -220,6 +222,7 @@ class PersonalizetimetablePdf < Prawn::Document
         else
           hh=""
           nos=0
+	  ##note : location_desc - user's comment : location type on
           @detailing_friday.each do |j|
             if j.is_friday == true  && j.time_slot == @column_count_monthur+col2 && j.weeklytimetable.hod_approved == true
               if nos==0
@@ -292,6 +295,7 @@ class PersonalizetimetablePdf < Prawn::Document
           elsif @break_format1[col2-1]==false
             nos=0
             gg=""
+	    ##note : location_desc - user's comment : location type on
             @detailing_monthurs.each do |j2|
               if j2.day2 == row2+@daycount+1 && j2.time_slot2 == col2 && @j.weeklytimetable.hod_approved == true
                 if nos==0

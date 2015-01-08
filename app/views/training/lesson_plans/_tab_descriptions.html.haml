@@ -18,7 +18,11 @@
             
     %dt=t 'training.lesson_plan.lecture_date', :default => model_class.human_attribute_name(:lecture_date)+":"
     %dd=h @lesson_plan.try(:schedule_item).try(:get_date_for_lesson_plan)
-              
+
+    - if @location_display=="show"
+      %dt=t 'training.lesson_plan.location', :default => model_class.human_attribute_name(:location)+":"
+      %dd=h @lesson_plan.try(:schedule_item).try(:location_desc)
+      
     %dt=t 'training.lesson_plan.start_time', :default => model_class.human_attribute_name(:start_time)+":"
     %dd=h @lesson_plan.try(:schedule_item).try(:get_start_time)
             

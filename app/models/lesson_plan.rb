@@ -23,7 +23,7 @@ class LessonPlan < ActiveRecord::Base
   accepts_nested_attributes_for :trainingnotes, :reject_if => lambda {|a| a[:topic_id].blank?}
   #trial section-----------
   
-  attr_accessor :title
+  attr_accessor :title, :schedule2
 
   #---------------------AttachFile------------------------------------------------------------------------
    has_attached_file :data,
@@ -120,20 +120,17 @@ class LessonPlan < ActiveRecord::Base
    end
    
   def hods  
-      #hod = User.current_user.staff.position.parent
-      #approver = Position.find(:all, :select => "staff_id", :conditions => ["id IN (?)", hod]).map(&:staff_id)
       role_kp = Role.find_by_name('Programme Manager')  #must have role as Programme Manager
-      staff_with_kprole = Login.joins(:roles).where('role_id=?',role_kp).pluck(:staff_id).compact.uniq
-				    #User.joins(:roles).where('role_id=?',role_kp).pluck(:staff_id).compact.uniq
-      #programme_name = Programme.roots.map(&:name)    #must be among Academic Staff 
-      #approver = Staff.find(:all, :joins=>:position, :conditions=>['unit IN(?) AND staff_id IN(?)', programme_name, staff_with_kprole])
-      current_user = Login.first #User.find(11) #####
-      programme_name = current_user.staff.positions[0].unit
-      if Programme.roots.pluck(:name).include?(programme_name)
-	approver = Staff.joins(:positions).where('unit=? AND staff_id IN(?)', programme_name, staff_with_kprole).pluck(:id).uniq
-      else
-	approver = Staff.where('id IN(?)',staff_with_kprole).pluck(:id).uniq
-      end
+      staff_with_kprole = Login.joins(:roles).where('role_id IN(?)',role_kp).pluck(:staff_id).compact.uniq
+      #programme_name = User.current.userable.positions.first.unit # "Radiografi"
+      #approver = Staff.joins(:positions).where('unit=? AND staff_id IN(?)', programme_name, staff_with_kprole).pluck(:id).uniq
+      #approver  
+
+      #if Programme.roots.pluck(:name).include?(programme_name)
+         #approver = Staff.joins(:positions).where('unit=? AND staff_id IN(?)', programme_name, staff_with_kprole).pluck(:id).uniq
+      #else
+        approver = Staff.where('id IN(?)',staff_with_kprole).pluck(:id).uniq
+      #end
       approver  
   end
   

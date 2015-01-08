@@ -72,6 +72,8 @@ class User < ActiveRecord::Base
       subtopicids = programme_of_staff.descendants.at_depth(4).pluck(:id)
       timetable_in_trainingnote = Trainingnote.where('timetable_id IS NOT NULL').pluck(:timetable_id)
       timetableids = WeeklytimetableDetail.where('(topic IN(?) or topic IN(?))and id IN(?)',topicids, subtopicids, timetable_in_trainingnote).pluck(:id)
+      #Use below instead & ignore training note -> copy above accordingly 4 those notes selection related
+      timetableids = WeeklytimetableDetail.where('(topic IN(?) or topic IN(?))',topicids, subtopicids).pluck(:id)
       return timetableids
     else
       #common subject lecturer

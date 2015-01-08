@@ -18,33 +18,36 @@
         %br
         %dt= t 'staff_leave.replacement'
         %dd= @leaveforstaff.replacement_id.blank? ? "" : @leaveforstaff.replacement.name 
-	
+
         %dt= t 'staff_leave.entitlement'
         %dd= @leaveforstaff.cuti_rehat_entitlement
-		  		  
+
   #approve.tab-pane.fade
     .col-md-8.col-md-offset-1
       %dl.dl-horizontal
         %dt= t 'staff_leave.endorser_decision'
-        %dd=h @leaveforstaff.approval1? ? (t 'staff_leave.support') : (t 'staff_leave.reject')
+        %dd
+          - unless @leaveforstaff.approval1.blank?
+            =h @leaveforstaff.approval1? ? (t 'staff_leave.support') : (t 'staff_leave.reject')
           
         %dt= t 'staff_leave.endorsed_name'
         %dd=h @leaveforstaff.approval1_id.blank? ? "" : @leaveforstaff.seconder.name
-		  
+ 
         %dt= t 'staff_leave.endorsed_date'
         %dd=h @leaveforstaff.approval1date.try(:strftime, "%d %b %Y")
         %br
-		  
+
         %dt= t 'staff_leave.approver_decision'
-        %dd=h @leaveforstaff.approver2? ? (t 'staff_leave.approve') : (t 'staff_leave.reject')
-		  
+        %dd
+          - unless @leaveforstaff.approver2.blank?
+            =h @leaveforstaff.approver2? ? (t 'staff_leave.approve') : (t 'staff_leave.reject')
+
         %dt= t 'staff_leave.approval_name'
         %dd=h  @leaveforstaff.approval2_id.blank? ? "Not Required" : @leaveforstaff.endorser
-		  
+  
         %dt= t 'staff_leave.approve_date'
         %dd=h @leaveforstaff.approval2date.try(:strftime, "%d %b %Y")
-          
-		  
+
 .row
   .col-md-6.col-md-offset-3
     %hr

@@ -19,26 +19,31 @@
           .col-sm-2.control-label
             = f.label :schedule
           .col-md-3
+            - arr=[[t('select'),"", {'data'=>""}]]
             - if @current_roles.include?('Administration')
               /admin
               - @lessonplan_schedule = LessonPlan.all.map(&:schedule).uniq.compact
-              = f.collection_select :schedule, WeeklytimetableDetail.all.sort_by{|x|x.weeklytimetable_lecturer.name}, :id, :day_time_slot3, {:include_blank=>t('helpers.prompt.select_schedule')},{ class: 'selectpicker', "data-width"=>'900px'}
+              - WeeklytimetableDetail.all.sort_by{|x|x.weeklytimetable_lecturer.name}.each do |c|
+                - arr << [c.day_time_slot3, c.id, {'data'=>c.location_desc}]
+              = select_tag("lesson_plan[schedule]", options_for_select(arr, @lesson_plan.schedule), {class: 'selectpicker', "data-width"=>'550px'})
             - else
               /lecturer
               - if @lesson_plan && !@lesson_plan.schedule
                 - @lessonplan_schedule = LessonPlan.all.map(&:schedule).uniq.compact
-                = f.collection_select :schedule, WeeklytimetableDetail.where('lecturer_id=? AND id NOT IN (?)', @current_user.userable_id,@lessonplan_schedule), :id, :day_time_slot, {:include_blank=>t('helpers.prompt.select_schedule')},{ class: 'selectpicker', "data-width"=>'550px'}
+                -  WeeklytimetableDetail.where('lecturer_id=? AND id NOT IN (?)', @current_user.userable_id,@lessonplan_schedule).each do |c|
+                  - arr << [c.day_time_slot3, c.id, {'data'=>c.location_desc}]
+                = select_tag("lesson_plan[schedule]", options_for_select(arr, @lesson_plan.schedule), {class: 'selectpicker', "data-width"=>'550px'})
               - else
-                = f.collection_select :schedule, WeeklytimetableDetail.where('lecturer_id=?', @current_user.userable_id), :id, :day_time_slot, {:include_blank=>t('helpers.prompt.select_schedule')},{class: 'selectpicker', "data-width"=>'550px'}
-      
-        .col-md-offset-2.bong{:style=> "display: none;"}
-          .form-group
-            .col-sm-2.control-label
-              = f.label :location
-            .col-md-3
-              - if @lesson_plan.schedule
-                = @lesson_plan.schedule_item.weeklytimetable_location.try(:name) 
-                = text_field_tag :new_location, @lesson_plan.schedule_item.location_desc, class: 'form-control'          
+                - WeeklytimetableDetail.where('lecturer_id=?', @current_user.userable_id).each do |c|
+                  - arr << [c.day_time_slot3, c.id, {'data'=>c.location_desc}]
+                = select_tag("lesson_plan[schedule]", options_for_select(arr, @lesson_plan.schedule), {class: 'selectpicker', "data-width"=>'550px'})
+       
+        .form-group.bong{:style=> "display: none;"}
+          .col-sm-2.control-label
+            = f.label :location
+          .col-md-3
+            /= @lesson_plan.schedule_item.weeklytimetable_location.try(:name) 
+            = text_field_tag :new_location, @lesson_plan.try(:schedule_item).try(:location_desc), class: 'form-control'  
 
       #lesson_plan_descriptions.tab-pane.active
         %br
@@ -54,12 +59,28 @@
               
 :javascript
 
-//<![CDATA[
-bkLib.onDomLoaded(function() {
-  new nicEditor().panelInstance('myNicEditor3');
-  new nicEditor().panelInstance('myNicEditor4');
-});
-//]]>
+  if ($('#lesson_plan_schedule option:selected').val()=="")
+    $('.bong').hide();
+  else
+    $('.bong').show();
+
+  $('#lesson_plan_schedule').change(function() {
+    if($(this).val() == "") {
+      $('.bong').hide();
+    }else {
+      var yoyo = $(this).find('option:selected').attr('data');
+      var ansP = document.getElementById("new_location");
+      ansP.value =yoyo;
+      $('.bong').show("appear");
+    }
+  });
+  
+  //<![CDATA[
+  bkLib.onDomLoaded(function() {
+    new nicEditor().panelInstance('myNicEditor3');
+    new nicEditor().panelInstance('myNicEditor4');
+  });
+  //]]>
 
   function add_fields(link, association, content) {  
     var new_id = new Date().getTime();  
@@ -67,18 +88,5 @@ bkLib.onDomLoaded(function() {
     $(link).parent().before(content.replace(regexp, new_id));  
   }
 
-$(document).ready(function(){
-  $('#lessonplan_schedule').change(function() {
-    if($(this).val() == 1) {
-      $('.bong').show();
-      $('.inventory_selector').hide();
-    }else if($(this).val() == 2) {
-      $('.bong').hide();
-      $('.inventory_selector').show();
-    }
-  });
-});
-
-
-  
- 
+/Ref : http://guides.rubyonrails.org/form_helpers.html#the-select-and-option-tags
+/Ref : http://stackoverflow.com/questions/4305378/ruby-on-rails-jquery-to-get-data-using-ajax

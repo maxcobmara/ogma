@@ -66,7 +66,7 @@
         = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('helpers.links.edit'), edit_training_lesson_plan_path(@lesson_plan),  :class => 'btn btn-primary' 
 
       - if (@lesson_plan.hod_approved == true && @lesson_plan.report_submit != true && @lesson_plan.lecturer == @current_user.userable_id) || (@current_roles.include?('Administration') && @lesson_plan.hod_approved == true)
-        = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('training.lesson_plan.report'), lesson_report_training_lesson_plan_path(@lesson_plan),  :class => 'btn btn-primary' 
+        = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('training.lesson_plan.report'), lessonplan_reporting_training_lesson_plan_path(@lesson_plan),  :class => 'btn btn-primary' 
         /= link_to 'Lesson Plan Reporting', :action => 'lessonplan_reporting', :id => @lesson_plan 
          
       = link_to content_tag(:i, "", :class => "fa fa-trash-o icon-white") + " " + t('helpers.links.destroy'), |

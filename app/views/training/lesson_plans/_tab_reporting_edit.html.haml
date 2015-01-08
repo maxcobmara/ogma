@@ -1,4 +1,10 @@
 .col-md-6.col-md-offset-2
+  - if @location_display="reporting"
+    .form-group
+      .col-sm-2.control-label
+        = f.label :location
+      .col-md-5
+        = text_field_tag :new_location, @lesson_plan.try(:schedule_item).try(:location_desc), class: 'form-control'  
   .form-group
     .col-sm-2.control-label
       = f.label :total_absent

@@ -12,7 +12,8 @@
 	
 /location
 = t 'training.weeklytimetable_detail.location'
-=select_tag "weeklytimetable[weeklytimetable_details_attributes][#{@ind}][location]", options_from_collection_for_select(Weeklytimetable.location_list.sort_by{|x|x.name}, :id, :name), :prompt=>(t 'helpers.prompt.select_location')
+/=select_tag "weeklytimetable[weeklytimetable_details_attributes][#{@ind}][location]", options_from_collection_for_select(Weeklytimetable.location_list.sort_by{|x|x.name}, :id, :name), :prompt=>(t 'helpers.prompt.select_location')
+=text_field_tag "weeklytimetable[weeklytimetable_details_attributes][#{@ind}][location_desc]"
 	
 /lecture method
 = t 'training.weeklytimetable_detail.lecture_method'
