@@ -6,7 +6,6 @@ class Kin < ActiveRecord::Base
     "#{(DropDown::KTYPE.find_all{|disp, value| value == kintype_id}).map {|disp, value| disp}.first}"
   end
   
-  
 end
 
 # == Schema Information

@@ -9,7 +9,7 @@
     .col-sm-2.control-label
       = f.label t 'student.leaveforstudent.leavetype', for: :leavetype
     .col-md-2
-      = f.select :leavetype, Leaveforstudent::STUDENTLEAVETYPE,:prompt => "Select", class: 'form-control' 
+      = f.select :leavetype, DropDown::STUDENTLEAVETYPE,{:include_blank =>t('select')},{class: 'selectpicker', "data-width"=>'220px'} 
   
   .form-group
     .col-sm-2.control-label
@@ -52,6 +52,3 @@
       = f.label t 'student.leaveforstudent.submit_approval', for: :submit_approval
     .col-md-1 
       = f.check_box :studentsubmit, class: 'form-control'
-   
-	
-	

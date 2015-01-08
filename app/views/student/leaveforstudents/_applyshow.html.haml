@@ -7,7 +7,7 @@
     %dd=h @leaveforstudent.telno 
     
     %dt= t 'student.leaveforstudent.leave_startdate'
-    %dd=h @leaveforstudent.leave_startdate.strftime("%a, %d %b")
+    %dd=h @leaveforstudent.leave_startdate.strftime("%a, %d %b %Y")
     
     %dt=t 'student.leaveforstudent.leave_enddate'  
     %dd=h @leaveforstudent.leave_enddate.strftime("%a, %d %b %Y")
@@ -15,31 +15,19 @@
     %dt= t 'student.leaveforstudent.submit_approval'
     %dd=h @leaveforstudent.studentsubmit? ? (t 'submitted') : (t 'not_submitted')
     
-    - @leaveforstudent.student.kins.each do |x|
-      %hr
-        %dt= t 'student.students.name'
-        %dd= x.name
+    - if @leaveforstudent.student.kins.count>0
+      - @leaveforstudent.student.kins.each do |x|
+        %hr
+          %dt= t 'student.students.name'
+          %dd= x.name
       
-        %dt=  t 'student.students.kintype_id'
-        %dd= x.display_ktype
+          %dt=  t 'student.students.kintype_id'
+          %dd= x.display_ktype
       
-        %dt= t 'student.students.stelno' 
-        %dd= x.phone
-    
-.row
-  .col-md-4.col-md-offset-2
-    %hr
-    .form-actions
-      = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), student_leaveforstudents_path, :class => 'btn btn-default'
-      = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('.edit', :default => t("helpers.links.edit")), edit_student_leaveforstudent_path(@leaveforstudent), :class => 'btn btn-primary'
-      = link_to content_tag(:i, "", :class => "fa fa-trash-o icon-white") + " " + t('helpers.links.destroy'), |
-        student_leaveforstudent_path(@leaveforstudent),                                                                                                    |
-        :method => 'delete',                                                                                                           |
-        :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },                   |
-        :class => 'btn btn-danger'
-        
-
-  
-    
- 
-
+          %dt= t 'student.students.stelno' 
+          %dd= x.phone
+    - else
+      %BR
+      = t('student.leaveforstudent.has_no_kin')
+      &nbsp;
+      %b= link_to t('student.leaveforstudent.update_kin'), edit_student_path(@leaveforstudent.student_id)
