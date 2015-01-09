@@ -28,9 +28,23 @@ en:
       student: Student
       location: Location
       examquestion: Examquestion
+      leaveforstudent: Cuti Pelajar
     attributes:
       location:
         combo_code: Location Code
+      travel_request:
+        destination: Destination
+        depart_at: Depart at
+        return_at: Return at
+        replaced_by: Replaced by
+        hod_id: Head of Department
+        hod_accept_on: Head of Department acceptance date
+      leaveforstudent:
+        student_id: Nama pelajar
+        leavetype: Jenis cuti
+        leave_startdate: Tarikh cuti bermula
+        leave_enddate: Tarikh cuti berakhir
+        telno: Telefon
     errors:
         template:
           body: "There were problems with the following fields:"
@@ -50,6 +64,7 @@ en:
               min_participants:
                 less_than_or_equal_to: Max shoud be more than Min
           travel_request: Travel Request
+          kin: Next of Kin
         attributes:
           travel_request:
             destination: Destination
@@ -109,6 +124,7 @@ en:
   positions_required: "Position (task & responsibilities) is required to access submodule : "
   none_assigned: None assigned
   inc_unitname: " (including Department / Unit name) "
+  approve: Approve
 
   actions:
     new: New
@@ -134,6 +150,10 @@ en:
     check_all2: "Tick to SELECT or DESELECT ALL records for printing of KEW.PA-17 and KEW.PA-20."
     all_records: All Records
     select_one: "Please select at least one record for editing."
+    submitted: Submitted
+    not_submitted: Not Submitted
+    approved: Approved
+    not_approved: Not Approved
     
   errors:
 
@@ -1168,8 +1188,8 @@ en:
       disease: Condition/Disease
       bloodtype: Blood Group
       medication: Medication
-      kintype_id: Remarks
-      kinaddr: Relationship
+      kintype_id: Relationship
+      kinaddr: Address
       profession: Profession
       male: Male
       female: Female
@@ -1190,10 +1210,13 @@ en:
       subject: Subject
       grade: Grade
       new: New Student
+      result: Result
       
     leaveforstudent:
       title: Student Leave
       list: Student Leave List
+      new: New Student Leave Application
+      edit: Edit Student Leave Application
       leave_details: Leave Details
       approve_leave: Leave Approval
       student_id: Student Name
@@ -1204,6 +1227,7 @@ en:
       telno: Telephone No
       leave_startdate: On Leave Starting
       leave_enddate: Leave End Date
+      leaves_date: Leaves Date
       studentsubmit: "Submitted?"
       submit_approval: Submit for approval
       approved: "Approved?"
@@ -1211,9 +1235,15 @@ en:
       approvedate: Approval Date
       notes: Notes
       student_leave_details: Student Leave Details
-      guardian_parents_name: "Guardian/Parents Name"
-      guardian_parents_phone: "Guardian/Parents Phone"
-      relationship: Relationship
+      weekend_day: Weekend Day
+      weekend_overnight: Weekend Overnight
+      emergency: Emergency Leave
+      festive_leave: Festive Leave
+      midterm_break: Mid Term Break
+      end_of_semester: End of Semester
+      has_no_kin: "Student has no next of kin details (parents / guardian / guarantor)."
+      update_kin: Update next of kin details
+      update_student_kin: ". Please update next of kin details in Student submodule first."
 
     discipline:
       title: Student Discipline Case

@@ -35,6 +35,9 @@ class Student < ActiveRecord::Base
 
   #has_many :sdiciplines, :foreign_key => 'student_id'
   #has_many :std, :class_name => 'Sdicipline', :foreign_key => 'student_id'
+  
+  has_many          :kins, :dependent => :destroy
+  accepts_nested_attributes_for :kins, :reject_if => lambda { |a| a[:kintype_id].blank? }
 
   def intake_course
     "#{intake}"+","+"#{course_id}"

@@ -1,0 +1,27 @@
+= search_form_for @search, url: student_leaveforstudents_path,  class: "form-inline" do |f|
+  %tr.search_row{style: "display: none;"}
+    %td=f.text_field :student_name_cont, size: 2, :class => "form-control", :placeholder => (t 'student.leaveforstudent.student_id')
+    %td= select_tag('q[leavetype_eq]',options_for_select([[(t 'actions.all_records'),''],[(t 'student.leaveforstudent.weekend_day'),"Weekend Day"], [(t 'student.leaveforstudent.weekend_overnight'),"Weekend Overnight"], [(t 'student.leaveforstudent.emergency'),"Emergency"],[(t 'student.leaveforstudent.festive_leave'),"Cuti Perayaan" ], [(t 'student.leaveforstudent.midterm_break'),"Mid Term Break" ], [(t 'student.leaveforstudent.end_of_semester'), "End of Semester"]])) 
+    %td=f.text_field :requestdate_eq, size: 2, :class => "form-control date-picker", :placeholder => (t 'student.leaveforstudent.requestdate')
+    %td=f.text_field :leave_startdate_eq, size: 2, :class => "form-control date-picker", :placeholder => (t 'student.leaveforstudent.leave_startdate')
+    %td= select_tag('q[studentsubmit_eq]',options_for_select([[(t 'actions.all_records'),''],[(t 'actions.submitted'),true],[(t 'actions.not_submitted'),false]]),class: 'selectpicker',"data-width"=>'100px')
+    %td= select_tag('q[approved_eq]',options_for_select([[(t 'actions.all_records'),''],[(t 'actions.approved'),true],[(t 'actions.not_approved'),false]]),class: 'selectpicker',"data-width"=>'100px')
+    %td
+      .input-group
+        =f.text_field :staff_name_cont, size: 2, :class => "form-control", :placeholder => (t 'student.leaveforstudent.staff_id')
+        %span.input-group-btn
+          %button.btn.btn-sm.btn-default.right{:type => "submit"}
+            %i.fa.fa-search.fa-fw
+
+:javascript  
+  $('.date-picker').datetimepicker({
+   timepicker:false,
+     format: "Y-m-d",
+     autoclose: true
+   });    
+
+        
+      
+            
+            
+

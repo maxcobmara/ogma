@@ -633,5 +633,16 @@ KTYPE = [
         [ "Penjamin I", 98 ],
         [ "Penjamin II", 99 ]
  ]
+
+#Student Leave
+   STUDENTLEAVETYPE = [
+        #  Displayed       stored in db
+        [ I18n.t("student.leaveforstudent.weekend_day"),"Weekend Day" ],
+        [ I18n.t("student.leaveforstudent.weekend_overnight"),"Weekend Overnight" ],
+        [ I18n.t("student.leaveforstudent.emergency"),"Emergency" ],
+        [ I18n.t("student.leaveforstudent.festive_leave"),"Cuti Perayaan" ],
+        [ I18n.t("student.leaveforstudent.midterm_break"),"Mid Term Break" ],
+        [ I18n.t("student.leaveforstudent.end_of_semester"),"End of Semester" ]
+    ]
    
 end

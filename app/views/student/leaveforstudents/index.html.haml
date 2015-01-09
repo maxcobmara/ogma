@@ -6,11 +6,8 @@
   %ul.nav.navbar-nav
     %li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'actions.new'))), new_student_leaveforstudent_path
   %ul.nav.navbar-nav.navbar-right
-    %li= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "load_search_bar"
+    %li= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "index_search_bar"
     %li= link_to content_tag(:li, fa_icon("print", text: (t 'actions.print'))), "#"
-	
-.search{style: "display:none;"}
-  //= render "index_search"
   
 .row
   %table.table-striped.table-hover.ogma
@@ -19,18 +16,19 @@
         %th=t 'student.leaveforstudent.student_id'
         %th=t 'student.leaveforstudent.leavetype'
         %th=t 'student.leaveforstudent.requestdate'
-        %th=t 'student.leaveforstudent.leave_startdate'
+        %th=t 'student.leaveforstudent.leaves_date'
         %th=t 'student.leaveforstudent.studentsubmit'
         %th=t 'student.leaveforstudent.approved'
         %th=t 'student.leaveforstudent.staff_id'
-		
+        /%th= sort_link(@search, :thumb_id, (t 'staff_attendance.thumb_id'))
     %tbody
+    = render "index_search"
     - @leaveforstudent.each do |leaveforstudent|
       %tr
         %td= link_to leaveforstudent.student_details, student_leaveforstudent_path(leaveforstudent)
-        %td= leaveforstudent.leavetype
-        %td= leaveforstudent.requestdate
-        %td= leaveforstudent.leave_startdate
-        %td= leaveforstudent.studentsubmit? ? "Submitted" : ""
-        %td= leaveforstudent.approved? ? "Approved" : ""
-        %td= leaveforstudent.staff_id? ? leaveforstudent.approver_details : ""
+        %td=h ((DropDown::STUDENTLEAVETYPE.find_all{|disp, value| value ==leaveforstudent.leavetype }).map {|disp, value| disp}).first
+        %td=h leaveforstudent.requestdate.try(:strftime, '%d %b %Y')
+        %td=h leaveforstudent.leave_startdate.try(:strftime, '%d %b %Y')+" - "+ leaveforstudent.leave_enddate.try(:strftime, '%d %b %Y')
+        %td=h leaveforstudent.studentsubmit? ? image_tag("tick.png") : image_tag("cross.png") 
+        %td=h leaveforstudent.approved? ? image_tag("tick.png") : image_tag("cross.png") 
+        %td=h leaveforstudent.staff_id? ? leaveforstudent.approver_details : ""

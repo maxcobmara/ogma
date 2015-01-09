@@ -8,6 +8,8 @@ ms_MY:
       location: Lokasi
       examquestion: Soalan Peperiksaan
       travel_request: Permohonan Perjalanan
+      leaveforstudent: Cuti Pelajar
+      kin: Waris
     attributes:
       location:
         combo_code: Kod Lokasi
@@ -18,6 +20,12 @@ ms_MY:
         replaced_by: Staf Gantian
         hod_id: Ketua Jabatan
         hod_accept_on: Tarikh Penerimaan Ketua Jabatan
+      leaveforstudent:
+        student_id: Nama pelajar
+        leavetype: Jenis cuti
+        leave_startdate: Tarikh cuti bermula
+        leave_enddate: Tarikh cuti berakhir
+        telno: Telefon
     errors:
         template:
           body: "Berikut adalah beberapa masalah:"
@@ -35,7 +43,18 @@ ms_MY:
           ptschedule:
             attributes:
               min_participants:
-                less_than_or_equal_to: Maxima harus melebihi Minima
+                less_than_or_equal_to: Maksima harus melebihi Minima
+          travel_request: Travel Request
+          kin: Maklumat Waris
+        attributes:
+          travel_request:
+            destination: Destination
+            depart_at: Depart At
+            return_at: Return At
+            replaced_by: Replacement Staff
+            hod_id: Head of Department
+            hod_accept_on: Head of Department Accepted Date
+
   search:  Cari
   datelabel: Tarikh
   years_label: tahun
@@ -85,6 +104,7 @@ ms_MY:
   positions_required: "Butiran Perjawatan (tugas & tanggungjawab) diperlukan bagi mengakses submodul : "
   none_assigned: Tiada maklumat
   inc_unitname: " (termasuk nama Jabatan / Unit) "
+  approve: Kelulusan
  
   actions:
     new: Baru
@@ -110,6 +130,10 @@ ms_MY:
     check_all2: "Pilih kotak semak ini untuk MEMILIH atau MENYAHPILIH SEMUA rekod bagi cetakan KEW.PA-17 dan KEW.PA-20."
     all_records: Semua Rekod
     select_one: "Sila pilih sekurang-kurangnya satu rekod untuk disunting."
+    submitted: Dihantar
+    not_submitted: Tidak Dihantar
+    approved: Diluluskan
+    not_approved: Tidak Diluluskan
     
   errors:
   
@@ -1080,8 +1104,8 @@ ms_MY:
       disease: Keadaan/Penyakit
       bloodtype: Kumpulan Darah
       medication: Ubat
-      kintype_id: Catatan
-      kinaddr: Relationship
+      kintype_id: Hubungan
+      kinaddr: Alamat
       profession: Profession
       male: Lelaki
       female: Perempuan
@@ -1102,20 +1126,24 @@ ms_MY:
       subject: Subjek
       grade: Gred
       new: Pelajar Baru
+      result: Keputusan
     
     leaveforstudent:
-      title: Cuti Pelajar
-      list: Senarai Cuti Pelajar
+      title: Permohonan Cuti Pelajar
+      list: Senarai Permohonan Cuti Pelajar
+      new: Permohonan Baru Cuti Pelajar
+      edit: Sunting Permohonan Cuti Pelajar
       leave_details: Perincian Cuti
-      approve_leave: Kelulusan CUti
+      approve_leave: Kelulusan Cuti
       student_id: Nama Pelajar
       leavetype: Jenis Cuti
       requestdate: Tarikh Mohon Cuti
       reason: Sebab
       address: Alamat
-      telno: "No. Telefon"
+      telno: Telefon
       leave_startdate: Tarikh Cuti Bermula
       leave_enddate: Tarikh Cuti Berakhir
+      leaves_date: Tarikh Bercuti
       studentsubmit: "Dihantar?"
       submit_approval: Hantar untuk kelulusan
       approved: "Diluluskan?"
@@ -1123,9 +1151,15 @@ ms_MY:
       approvedate: Tarikh diluluskan
       notes: Nota
       student_leave_details: Maklumat Cuti Pelajar
-      guardian_parents_name: "Nama Penjaga/IbuBapa"
-      guardian_parents_phone: "No. Telefon Penjaga/IbuBapa"
-      relationship: Hubungan
+      weekend_day: "Hujung Minggu (Siang)"
+      weekend_overnight: "Hujung Minggu (Bermalam)"
+      emergency: Cuti Kecemasan
+      festive_leave: Cuti Perayaan
+      midterm_break: Cuti Pertengahan Semester
+      end_of_semester: Akhir Semester
+      has_no_kin: "Pelajar tidak mempunyai maklumat waris terdekat (ibu bapa / penjaga / penjamin)."
+      update_kin: Kemaskini maklumat waris
+      update_student_kin: ". Sila kemaskini maklumat waris dalam submodul Pelajar terlebih dahulu."
 
     discipline:
       title: Kes Disiplin Pelajar
