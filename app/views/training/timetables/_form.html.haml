@@ -27,7 +27,7 @@
             .col-sm-2.control-label
               = f.label :created_by
             .col-md-3
-              = f.collection_select :created_by, Staff.where('id =?', current_user.staff.id), :id, :name, :include_blank => t('helpers.prompt.select_creator')	
+              = f.collection_select :created_by, Staff.where('id =?', @current_user.userable_id), :id, :name, :include_blank => t('helpers.prompt.select_creator')	
               /= f.collection_select :created_by, Staff.find(:all, :conditions => ['id =?', User.current_user.staff_id.to_i]), :id, :name
           .form-group
             .col-lg-offset-2.col-lg-8
@@ -45,8 +45,8 @@
                 %b= t'helpers.links.destroy'
               = f.fields_for :timetable_periods do |builder|
                 = render 'timetable_period_fields', f: builder
-              = link_to_add_fields (t 'training.timetable.add_details'), f, :timetable_periods
-
+              /= link_to_add_fields (t 'training.timetable.add_details'), f, :timetable_periods
+              = link_to_add_fields t('addmore'), f, :timetable_periods, "",  t('addmore')
 
 
 
@@ -56,6 +56,12 @@
 /= link_to_add_fields image_tag("add.png", :border => 0, :title => 'Add More'), f, :timetable_periods
 /Add More
 
+:javascript
+  function add_fields(link, association, content) {
+    var new_id = new Date().getTime();
+    var regexp = new RegExp("new_" + association, "g");
+    $(link).parent().before(content.replace(regexp, new_id));
+  }
 
 
 

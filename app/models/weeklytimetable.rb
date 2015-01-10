@@ -110,10 +110,15 @@ class Weeklytimetable < ActiveRecord::Base
     details2 = weeklytimetable_details.group_by(&:lecturer_id)    
     details2.each do |l,d2|
       d2.each do |y|
+        wt = y.weeklytimetable_id
+        seq = y.time_slot
+        tp_1 = Weeklytimetable.where(id: wt).first.format1
+        seq = y.time_slot2
+        tp_2 = Weeklytimetable.where(id: wt).first.format2  
         if y.is_friday == true
           current_date = (startdate+4).try(:strftime,"%d%b%Y")
-          period_start = TimetablePeriod.where(id:y.time_slot)[0].start_at
-          period_end = TimetablePeriod.where(id:y.time_slot)[0].end_at
+          period_start = TimetablePeriod.where(id: tp_1)[0].start_at 
+          period_end = TimetablePeriod.where(id: tp_1)[0].end_at
           period = period_start.try(:strftime, "%H:%M%P")+"-"+period_end.try(:strftime, "%H:%M%P")
           current_date_period << current_date +" "+ period+" "+y.subject.to_s+" "+l.to_s#+" "+y.id.to_s
         else
@@ -123,8 +128,8 @@ class Weeklytimetable < ActiveRecord::Base
           current_date2 = (startdate+3).try(:strftime, "%d%b%Y") if y.day2==4
           current_date2 = (startdate+5).try(:strftime, "%d%b%Y") if y.day2==6    #weekends
           current_date2 = (startdate+6).try(:strftime, "%d%b%Y") if y.day2==7 
-          period_start = TimetablePeriod.where(id:y.time_slot2)[0].start_at
-          period_end = TimetablePeriod.where(id:y.time_slot2)[0].end_at
+          period_start = TimetablePeriod.where(id: tp_2)[0].start_at
+          period_end = TimetablePeriod.where(id: tp_2)[0].end_at
           period2 = period_start.try(:strftime, "%H:%M%P")+"-"+period_end.try(:strftime, "%H:%M%P")
           current_date_period << current_date2 +" "+ period2+" "+y.subject.to_s+" "+l.to_s#+" "+y.id.to_s    
         end

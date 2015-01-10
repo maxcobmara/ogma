@@ -22,7 +22,8 @@
 - exist_timeslot_thurs = Weeklytimetable.exist_timeslot_thurs(@timeslot2,@weeklytimetable,@count1)
 - exist_day2_thurs = 0
 /4b-display EMPTY FIELDS for Thursday
-- if exist_timeslot_thurs.include?(colno+@count1)==false && rowno==exist_day2_thurs  
+/- if exist_timeslot_thurs.include?(colno+@count1)==false && rowno==exist_day2_thurs  
+- if exist_timeslot_thurs.include?(colno)==false && rowno==exist_day2_thurs  
   = render 'sstab_class_edit', {:rowno=>rowno,:colno=>colno}
 
 /1c,2c,3c Empty Slots for Weekends
@@ -38,7 +39,8 @@
 /PART C - timeslots WITH VALUES - note, in (xx.day2!=5 || xx.day2!=6) => 0:Thurs, 1-4:Sun-Wed, 5:Friday, 6:Saturday
 /-------------------------------------------------------------------------------------------------------------------
 - @weeklytimetable.weeklytimetable_details.each do |xx|
-  - if (xx.day2 == rowno && xx.time_slot2 == colno && (xx.day2!=6 || xx.day2!=7)) || (xx.is_friday == true && rowno==0 && xx.time_slot == @count1+colno) || ( xx.time_slot2 == colno && (xx.day2==rowno))
+  /- if (xx.day2 == rowno && xx.time_slot2 == colno && (xx.day2!=6 || xx.day2!=7)) || (xx.is_friday == true && rowno==0 && xx.time_slot == @count1+colno) || ( xx.time_slot2 == colno && (xx.day2==rowno))
+  - if (xx.day2 == rowno && xx.time_slot2 == colno && (xx.day2!=6 || xx.day2!=7)) || (xx.is_friday == true && rowno==0 && xx.time_slot == colno) || ( xx.time_slot2 == colno && (xx.day2==rowno))
     /(xx.day2==rowno))
     / && (rowno==xx.day2+1)) 
 
