@@ -1,8 +1,10 @@
 - if rowno==0 
   /thursday
   -timeslot2=0
-  -timeslot=@count1+colno
-  -@ind = @count1*(4)+colno	
+  /-timeslot=@count1+colno
+  -timeslot= colno
+  /-@ind = @count1*(4)+colno	
+  -@ind = colno	
   = hidden_field_tag "weeklytimetable[weeklytimetable_details_attributes][#{@ind}][is_friday]",true  
 - else
   /sun-wed

@@ -78,12 +78,14 @@
                 - if classes_tospan.include?(col2)
                   %td{:colspan=>span_count, :align=>"center", :style=>"border:1px solid black;text-align:center; padding:4px; vertical-align:middle;font-size:12px;"}
                     - @weeklytimetable.weeklytimetable_details.each do |xx|
-                      - if xx.is_friday == true && xx.time_slot == @count1+col2 
+                      /- if xx.is_friday == true && xx.time_slot == @count1+col2 
+                      - if xx.is_friday == true && xx.time_slot == col2
                         %b= render 'subtab_class_details', {:xx=>xx}               
                 - else
                   %td{:align=>"center", :style=>"border:1px solid black;text-align:center; padding:4px; vertical-align:middle;font-size:12px;"}
                     - @weeklytimetable.weeklytimetable_details.each do |xx|
-                      - if xx.is_friday == true && xx.time_slot == @count1+col2
+                      /- if xx.is_friday == true && xx.time_slot == @count1+col2
+                      - if xx.is_friday == true && xx.time_slot == col2
                         %b= render 'subtab_class_details', {:xx=>xx}
 
       /Header(row) : sequence & time period (ADDITIONAL - Weekends classes)
