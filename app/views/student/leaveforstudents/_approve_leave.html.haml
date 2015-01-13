@@ -1,6 +1,6 @@
 .col-md-8.col-md-offset-1
   %dl.dl-horizontal
-    %dt= t 'student.leaveforstudent.approved'
+    %dt= t 'student.leaveforstudent.coordinator_result'
     %dd=h @leaveforstudent.approved? ? (t 'approved') : (t 'not_approved')
           
     %dt= t 'student.leaveforstudent.staff_id'
@@ -8,3 +8,13 @@
   
     %dt= t 'student.leaveforstudent.approvedate'
     %dd=h @leaveforstudent.approvedate.try(:strftime, '%d %b %Y')
+    
+    %hr
+    %dt= t 'student.leaveforstudent.warden_result'
+    %dd=h @leaveforstudent.approved2? ? (t 'approved') : (t 'not_approved')
+          
+    %dt= t 'student.leaveforstudent.staff_id'
+    %dd=h @leaveforstudent.approver_details2
+  
+    %dt= t 'student.leaveforstudent.approvedate'
+    %dd=h @leaveforstudent.approvedate2.try(:strftime, '%d %b %Y')

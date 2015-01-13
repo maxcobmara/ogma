@@ -18,8 +18,10 @@
         %th=t 'student.leaveforstudent.requestdate'
         %th=t 'student.leaveforstudent.leaves_date'
         %th=t 'student.leaveforstudent.studentsubmit'
+        %th=t 'student.leaveforstudent.coordinator'
         %th=t 'student.leaveforstudent.approved'
-        %th=t 'student.leaveforstudent.staff_id'
+        %th=t 'student.leaveforstudent.warden'
+        %th=t 'student.leaveforstudent.approved'
         /%th= sort_link(@search, :thumb_id, (t 'staff_attendance.thumb_id'))
     %tbody
     = render "index_search"
@@ -30,5 +32,8 @@
         %td=h leaveforstudent.requestdate.try(:strftime, '%d %b %Y')
         %td=h leaveforstudent.leave_startdate.try(:strftime, '%d %b %Y')+" - "+ leaveforstudent.leave_enddate.try(:strftime, '%d %b %Y')
         %td=h leaveforstudent.studentsubmit? ? image_tag("tick.png") : image_tag("cross.png") 
-        %td=h leaveforstudent.approved? ? image_tag("tick.png") : image_tag("cross.png") 
         %td=h leaveforstudent.staff_id? ? leaveforstudent.approver_details : ""
+        %td=h leaveforstudent.approved? ? image_tag("tick.png") : image_tag("cross.png") 
+        %td=h leaveforstudent.staff_id2? ? leaveforstudent.approver_details2 : ""
+        %td=h leaveforstudent.approved2? ? image_tag("tick.png") : image_tag("cross.png") 
+        
