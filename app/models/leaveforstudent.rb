@@ -22,6 +22,14 @@ class Leaveforstudent < ActiveRecord::Base
       errors.add(:end_date, "Your leave must begin before it ends") if leave_enddate < leave_startdate || leave_startdate < DateTime.now
     end
   end
+  
+  def approver_details2
+    if staff_id2 == nil
+      ""
+    else
+      staff.name
+    end
+  end
 
   #<07/10/2011 - Shaliza fixed for error when staff no longer exists>
   def approver_details 
@@ -29,7 +37,7 @@ class Leaveforstudent < ActiveRecord::Base
       #exists = Staff.find(:all, :select => "id").map(&:id)
       #checker = suid & exists     
   
-      if staff_id == nil
+      if staff_id == nil 
          "" 
          #elsif checker == []
          #"Staff No Longer Exists" 
