@@ -1,0 +1,34 @@
+/* dashboard */
+#event_bar {
+
+
+
+  h3, h3 a{
+    background-color:#AAA;
+    text-align:center; font-size: 1em; color: white;font-weight:bold;
+    text-decoration: none; padding: 1px; margin:0px; border-bottom:solid 2px #DDD;
+  }
+  h5, h5 a{
+  text-align:left;font-weight:bold;
+  text-decoration: none; padding-bottom: 2px; margin:0px}
+
+  .sidebar_event_item0 {
+    padding:12px 8px;
+    background-color:#fff;
+    border-bottom: solid 1px #CCC;
+    border-top: solid 1px #CCC;
+    margin-top: 10px; margin-bottom: 10px
+  }
+  .sidebar_event_item1 {
+    padding:4px 8px;
+    background-color:#ddd;
+  }
+
+  .sidebar_event_item0 p,
+  .sidebar_event_item1 p,
+  .sidebar_event_item0 p a,
+  .sidebar_event_item1 p a {
+    text-decoration:none; color:#222; font-family: tahoma, sans-serif; font-size: 0.8em;
+    text-align: left; padding:0; margin:0;
+  }
+}
