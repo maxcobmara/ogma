@@ -200,6 +200,7 @@ Ogma::Application.routes.draw do
     resources :leaveforstudents do
       member do
         get :approve
+        get :approve_warden
       end
     end
     resources :student_attendances do

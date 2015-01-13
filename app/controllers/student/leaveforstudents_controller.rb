@@ -90,6 +90,10 @@ class Student::LeaveforstudentsController < ApplicationController
     @leaveforstudent = Leaveforstudent.find(params[:id])
   end
   
+  def approve_warden
+    @leaveforstudent = Leaveforstudent.find(params[:id])
+  end
+  
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_leaveforstudent
@@ -98,7 +102,8 @@ class Student::LeaveforstudentsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def leaveforstudent_params
-      params.require(:leaveforstudent).permit(:student_id, :leavetype, :requestdate, :reason, :address, :telno, :leave_startdate, :leave_enddate, :studentsubmit, :approved, :staff_id, :staff_id, :approvedate)
+      params.require(:leaveforstudent).permit(:student_id, :leavetype, :requestdate, :reason, :address, :telno, :leave_startdate, :leave_enddate, :studentsubmit, :approved, :staff_id, :approvedate,
+                                              :notes, :approved2, :staff_id2, :approvedate2)
     end
 end
 

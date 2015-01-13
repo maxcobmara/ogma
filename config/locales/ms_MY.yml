@@ -1160,6 +1160,17 @@ ms_MY:
       has_no_kin: "Pelajar tidak mempunyai maklumat waris terdekat (ibu bapa / penjaga / penjamin)."
       update_kin: Kemaskini maklumat waris
       update_student_kin: ". Sila kemaskini maklumat waris dalam submodul Pelajar terlebih dahulu."
+      student_approve_leave_coordinator: "Kelulusan Permohonan Cuti Pelajar (Penyelaras Kumpulan)"
+      student_approve_leave_warden: "Kelulusan Permohonan Cuti Pelajar (Warden)"
+      approve_student_leave: Kelulusan Cuti Pelajar
+      approved_by: Diluluskan Oleh
+      approve_date: Tarikh Kelulusan
+      approve: Luluskan
+      not_approve: Tidak Meluluskan
+      coordinator: Penyelaras Kumpulan
+      warden: Warden
+      coordinator_result: Keputusan Penyelaras Kumpulan
+      warden_result: Keputusan Warden
 
     discipline:
       title: Kes Disiplin Pelajar
@@ -2046,6 +2057,8 @@ ms_MY:
       finance_check: Semakan Kewangan
       return: Pemulangan
       endorse: Sokongan
+      coordinator_approval: Kelulusan Penyelaras
+      warden_approval: Kelulusan Warden
       
     label:
       examquestion:
