@@ -1,10 +1,10 @@
 source 'https://rubygems.org'
-ruby '2.1.1'
+ruby '2.1.4'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '4.1.6'
-gem "thin", "~> 1.6.2"
-gem "devise", "~> 3.3.0"
+gem 'rails', '4.1.9'
+gem "thin", "~> 1.6.3"
+gem "devise", "~> 3.4.1"
 gem 'declarative_authorization', '~> 0.5.7'
 gem 'pg', '~> 0.17.1'
 gem 'paperclip', '~> 4.2.0'
@@ -12,10 +12,10 @@ gem "ancestry", "~> 2.1.0"
 #gem "ransack", "~> 1.2.3"
 #gem 'ransack', github: 'activerecord-hackery/ransack'#, branch: 'rails-4.1'
 gem 'ransack', :path=>'vendor/ransack', branch: 'rails-4.1'
-gem "prawn", "~> 1.2.1"
-gem 'prawn-table', '~> 0.1.1'
+gem "prawn", "~> 1.3.0"
+gem 'prawn-table', '~> 0.2.1'
 gem "chartkick", "~> 1.3.2"
-gem 'country_select', '~> 2.0.0'
+gem 'country_select', '~> 2.1.0'
 
 
 
