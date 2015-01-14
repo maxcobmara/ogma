@@ -40,6 +40,7 @@
     %hr
     .form-actions
       = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), student_leaveforstudents_path, :class => 'btn btn-default'
+      = link_to content_tag(:i, "", :class => "fa fa-file-pdf-o "), slip_pengesahan_cuti_pelajar_student_leaveforstudent_path(@leaveforstudent, format: "pdf"), {class: "btn btn-default",     "data-toggle" => "tooltip", title: "Slip Pengesahan Cuti Pelajar"}
       - if @leaveforstudent.studentsubmit != true
         = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('.edit', :default => t("helpers.links.edit")), edit_student_leaveforstudent_path(@leaveforstudent), :class => 'btn btn-primary'
       - if @leaveforstudent.studentsubmit==true && @leaveforstudent.student.kins.count>0

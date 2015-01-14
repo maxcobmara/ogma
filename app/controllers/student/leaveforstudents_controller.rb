@@ -94,6 +94,19 @@ class Student::LeaveforstudentsController < ApplicationController
     @leaveforstudent = Leaveforstudent.find(params[:id])
   end
   
+  def slip_pengesahan_cuti_pelajar
+
+    @leaveforstudent = Leaveforstudent.find(params[:id])
+    respond_to do |format|
+      format.pdf do
+        pdf = Slip_pengesahan_cuti_pelajarPdf.new(@leaveforstudent, view_context)
+        send_data pdf.render, filename: "slip_pengesahan_cuti_pelajar-{Date.today}",
+                              type: "application/pdf",
+                              disposition: "inline"
+      end
+    end
+  end
+  
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_leaveforstudent
