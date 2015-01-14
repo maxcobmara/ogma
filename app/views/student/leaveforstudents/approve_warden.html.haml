@@ -1,6 +1,6 @@
 - model_class = Leaveforstaff
 .page-header
-  %h1= t 'student.leaveforstudent.student_approve_leave_coordinator'
+  %h1= t 'student.leaveforstudent.student_approve_leave_warden'
   
 = render 'shared/flashes'
 
@@ -21,22 +21,22 @@
               .form-inline
                 .form-group
                   = t 'student.leaveforstudent.approve'
-                  = f.radio_button :approved, true
+                  = f.radio_button :approved2, true
                 .form-group
                   = t 'student.leaveforstudent.not_approve'
-                  = f.radio_button :approved, false
+                  = f.radio_button :approved2, false
                   
           .form-group
             .col-sm-3.control-label
               = f.label t 'student.leaveforstudent.approved_by'
             .col-md-4
-              = f.collection_select :staff_id, Staff.joins(:positions).where('tasks_main ILIKE (?)',"%Penyelaras Kumpulan 23%"), :id,  :staff_name_with_position,  {:include_blank => t('helpers.prompt.select_staff'),readonly: 'readonly'}, {class: 'selectpicker', "data-width"=>'300px'}
+              = f.collection_select :staff_id2, Staff.joins(:positions).where('tasks_main ILIKE (?)',"%Warden%"), :id,  :staff_name_with_position, {:include_blank => t('helpers.prompt.select_staff')}, {class: 'selectpicker', "data-width"=>'300px'}
                     
           .form-group
             .col-sm-3.control-label
               = f.label t 'student.leaveforstudent.approvedate'
             .col-md-3
-              = f.text_field :approvedate, :order => [:day, :month, :year],  class: 'date_picker form-control'        
+              = f.text_field :approvedate2, :order => [:day, :month, :year],  class: 'date_picker form-control'        
             
           .col-md-5.col-md-offset-1
             %BR
