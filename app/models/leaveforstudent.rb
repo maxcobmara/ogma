@@ -2,6 +2,7 @@ class Leaveforstudent < ActiveRecord::Base
   
   belongs_to :student
   belongs_to :staff
+  belongs_to :second_approver, :class_name=>"Staff",:foreign_key=>"staff_id2"
 
   validates_presence_of :student_id, :leavetype, :leave_startdate, :leave_enddate
   validates_numericality_of :telno
@@ -27,7 +28,7 @@ class Leaveforstudent < ActiveRecord::Base
     if staff_id2 == nil
       ""
     else
-      staff.name
+      second_approver.name
     end
   end
 
