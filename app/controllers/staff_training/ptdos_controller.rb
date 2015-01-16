@@ -24,7 +24,7 @@ class StaffTraining::PtdosController < ApplicationController
 
     respond_to do |format|
       if @ptdo.save
-        format.html { redirect_to @ptdo, notice: 'Apply for training was successfully created.' }
+        format.html { redirect_to(staff_training_ptdo_path(@ptdo), notice: 'Apply for training was successfully created.' )}
         format.json { render action: 'show', status: :created, location: @ptdo }
       else
         format.html { render action: 'new' }
@@ -38,7 +38,7 @@ class StaffTraining::PtdosController < ApplicationController
 
     respond_to do |format|
       if @ptdo.update(ptdo_params)
-        format.html { redirect_to @ptdo, notice: 'Apply for training was successfully updated.' }
+        format.html { redirect_to(staff_training_ptdo_path(@ptdo), notice: 'Apply for training was successfully updated.' )}
         format.json { head :no_content }
       else
         format.html { render action: 'edit' }
@@ -69,6 +69,6 @@ class StaffTraining::PtdosController < ApplicationController
 
       # Never trust parameters from the scary internet, only allow the white list through.
       def ptdo_params
-        params.require(:ptdo).permit(:fiscalstart, :budget, :used_budget, :budget_balance)
+        params.require(:ptdo).permit(:id, :ptcourse_id, :ptschedule_id, :staff_id, :justification, :unit_review, :unit_approve, :dept_review, :dept_approve, :replacement_id, :final_approve, :trainee_report)
       end  
 end

@@ -332,6 +332,7 @@ en:
         balance: Balance
         new: New Training Budget
       course:
+        title_course: Training Courses
         new: New Staff Training Course
         title: Staff Training Courses
         name: Course
@@ -343,6 +344,7 @@ en:
         approval: Approval
         schedule: Schedule Course
       schedule:
+        title_schedule: Training Schedule
         new: Schedule a Course
         title: Staff Training Course Schedule
         start: Start Date
@@ -351,6 +353,7 @@ en:
         price: Price
       application_status:
         title: Application Status 
+        title_apply: Apply for Training
         training_request: Training Requests List
         schedule: Schedule
         course_name: Course Name
@@ -380,6 +383,8 @@ en:
         approved: Approved
         reject: Reject
         rejected: Rejected
+        apply: Apply
+        edit_staff_training: Edit Staff Training
         
               
     travel_request:
