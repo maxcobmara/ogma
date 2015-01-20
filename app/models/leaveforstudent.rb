@@ -2,11 +2,24 @@ class Leaveforstudent < ActiveRecord::Base
   
   belongs_to :student
   belongs_to :staff
-  belongs_to :second_approver, :class_name=>"Staff",:foreign_key=>"staff_id2"
+  belongs_to :second_approver, :class_name=>"Staff", :foreign_key=>"staff_id2"
 
   validates_presence_of :student_id, :leavetype, :leave_startdate, :leave_enddate
   validates_numericality_of :telno
   validate :validate_kin_exist
+  validate :validate_end_date_before_start_date
+
+  def validate_end_date_before_start_date
+    if leave_enddate && leave_startdate
+      errors.add(:end_date, "Your leave must begin before it ends") if leave_enddate < leave_startdate || leave_startdate < DateTime.now
+    end
+  end
+
+  def validate_kin_exist
+     if student.kins.count < 1
+      errors.add( I18n.t('student.leaveforstudent.has_no_kin'), I18n.t('student.leaveforstudent.update_student_kin')) 
+     end
+  end
   
   def self.find_main
     Student.find(:all, :condition => ['student_id IS NULL'])
@@ -14,14 +27,6 @@ class Leaveforstudent < ActiveRecord::Base
   
   def self.find_main
     Staff.find(:all, :condition => ['staff_id IS NULL'])
-  end
-  
-  validate :validate_end_date_before_start_date
-
-  def validate_end_date_before_start_date
-    if leave_enddate && leave_startdate
-      errors.add(:end_date, "Your leave must begin before it ends") if leave_enddate < leave_startdate || leave_startdate < DateTime.now
-    end
   end
   
   def approver_details2
@@ -62,11 +67,25 @@ class Leaveforstudent < ActiveRecord::Base
       end
   end
   
-  #validation logic
-  def validate_kin_exist
-     if student.kins.count < 1
-      errors.add( I18n.t('student.leaveforstudent.has_no_kin'), I18n.t('student.leaveforstudent.update_student_kin')) 
+  def student_intake
+    Intake.where('monthyear_intake=? and programme_id=?', student.intake, student.course_id).first
+  end
+  
+  def group_intake
+     if student_intake
+       student_intake.group_with_intake_name
+     else
+       " - ("+I18n.t('student.leaveforstudent.intake')+" : "+student.intake.strftime('%b %Y').to_s+")"
      end
+  end
+  
+  def group_coordinator
+    if student_intake
+      group_no = student_intake.description
+      group_name = "Penyelaras Kumpulan "+group_no
+      coordinator = Staff.joins(:positions).where('tasks_main ILIKE (?)',"%#{group_name}%").first
+    end
+    coordinator
   end
 
 end

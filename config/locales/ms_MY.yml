@@ -1157,6 +1157,7 @@ ms_MY:
       festive_leave: Cuti Perayaan
       midterm_break: Cuti Pertengahan Semester
       end_of_semester: Akhir Semester
+      kin_info: Maklumat Waris
       has_no_kin: "Pelajar tidak mempunyai maklumat waris terdekat (ibu bapa / penjaga / penjamin)."
       update_kin: Kemaskini maklumat waris
       update_student_kin: ". Sila kemaskini maklumat waris dalam submodul Pelajar terlebih dahulu."
@@ -1171,6 +1172,11 @@ ms_MY:
       warden: Warden
       coordinator_result: Keputusan Penyelaras Kumpulan
       warden_result: Keputusan Warden
+      programme: Program
+      group: Kumpulan
+      intake: Ambilan
+      coordinator_not_available: "Tiada data Penyelaras Kumpulan, sila pilih pengajar lain dari program yang sama."
+      application_due: "Permohonan cuti telah tamat tempoh dan tidak dapat diproses."
 
     discipline:
       title: Kes Disiplin Pelajar

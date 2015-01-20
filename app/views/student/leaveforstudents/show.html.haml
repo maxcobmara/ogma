@@ -14,9 +14,18 @@
     / Tab panes
     .tab-content{style:"padding-top:1em"}  
       .col-md-8.col-md-offset-1
-        %dl.dl-horizontal
+        - if @leaveforstudent.leave_startdate < Date.tomorrow && @leaveforstudent.approved==nil && @leaveforstudent.approved2==nil
+          %BR
+          %font{:style=>"color: red;"}=t('student.leaveforstudent.application_due')
+        %dl.dl-horizontal  
           %dt= t 'student.leaveforstudent.student_id'
           %dd=h @leaveforstudent.student_id.blank? ? "No Student" : @leaveforstudent.student.formatted_mykad_and_student_name
+          
+          %dt= t 'student.leaveforstudent.programme'
+          %dd=h @leaveforstudent.student.course.programme_list
+            
+          %dt= t 'student.leaveforstudent.group'
+          %dd=h @leaveforstudent.group_intake
 
           %dt= t 'student.leaveforstudent.leavetype'
           %dd=h ((DropDown::STUDENTLEAVETYPE.find_all{|disp, value| value == @leaveforstudent.leavetype }).map {|disp, value| disp}).first
@@ -36,16 +45,21 @@
           = render 'approve_leave'
           
 .row
-  .col-md-4.col-md-offset-2
+  .col-md-8.col-md-offset-2
     %hr
     .form-actions
       = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), student_leaveforstudents_path, :class => 'btn btn-default'
-      = link_to content_tag(:i, "", :class => "fa fa-file-pdf-o "), slip_pengesahan_cuti_pelajar_student_leaveforstudent_path(@leaveforstudent, format: "pdf"), {class: "btn btn-default",     "data-toggle" => "tooltip", title: "Slip Pengesahan Cuti Pelajar"}
-      - if @leaveforstudent.studentsubmit != true
-        = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('.edit', :default => t("helpers.links.edit")), edit_student_leaveforstudent_path(@leaveforstudent), :class => 'btn btn-primary'
-      - if @leaveforstudent.studentsubmit==true && @leaveforstudent.student.kins.count>0
-        = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('.approve', :default => t("helpers.links.coordinator_approval")), approve_student_leaveforstudent_path(@leaveforstudent), :class => 'btn btn-primary'
-      = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('.approve', :default => t("helpers.links.warden_approval")), approve_warden_student_leaveforstudent_path(@leaveforstudent),       :class => 'btn btn-primary'
+
+      - unless (@leaveforstudent.leave_startdate < Date.tomorrow && @leaveforstudent.approved==nil && @leaveforstudent.approved2==nil)
+        = link_to content_tag(:i, "", :class => "fa fa-file-pdf-o "), slip_pengesahan_cuti_pelajar_student_leaveforstudent_path(@leaveforstudent, format: "pdf"), {class: "btn btn-default",     "data-toggle" => "tooltip", title: "Slip Pengesahan Cuti Pelajar"}
+        
+        - if @leaveforstudent.studentsubmit != true
+          = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('.edit', :default => t("helpers.links.edit")), edit_student_leaveforstudent_path(@leaveforstudent), :class => 'btn btn-primary'
+   
+        - if @leaveforstudent.studentsubmit==true && @leaveforstudent.student.kins.count>0   
+          = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('.approve', :default => t("helpers.links.coordinator_approval")), approve_student_leaveforstudent_path(@leaveforstudent), :class => 'btn btn-primary'
+          = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('.approve', :default => t("helpers.links.warden_approval")), approve_warden_student_leaveforstudent_path(@leaveforstudent),       :class => 'btn btn-primary'
+
       = link_to content_tag(:i, "", :class => "fa fa-trash-o icon-white") + " " + t('helpers.links.destroy'), |
         student_leaveforstudent_path(@leaveforstudent),                                                                                                    |
         :method => 'delete',                                                                                                           |

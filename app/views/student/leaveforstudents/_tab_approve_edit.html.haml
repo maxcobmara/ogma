@@ -1,0 +1,30 @@
+.col-md-offset-2
+  .form-group
+    .col-sm-2.control-label
+      = f.label t 'student.leaveforstudent.approve_student_leave'
+    .col-md-7
+      .form-inline
+        .form-group
+          = t 'student.leaveforstudent.approve'
+          = f.radio_button :approved, true
+        .form-group
+          = t 'student.leaveforstudent.not_approve'
+          = f.radio_button :approved, false
+                  
+  .form-group
+    .col-sm-2.control-label
+      = f.label t 'student.leaveforstudent.approved_by'
+    .col-md-6
+      - if @leaveforstudent.group_coordinator
+        = f.text_field :staff, :value => @leaveforstudent.group_coordinator.name, :readonly => true, class: 'form-control mandatory'
+        = f.text_field :staff_id, :value=>@leaveforstudent.group_coordinator.id
+      - else
+        =t('student.leaveforstudent.coordinator_not_available')
+        %br
+        = f.collection_select :staff_id, Staff.joins(:positions).where('unit=?', Programme.find(@leaveforstudent.student.course_id).name), :id,  :staff_name_with_position,  {:include_blank => t('select')}, {class: 'selectpicker', "data-width"=>'300px'}
+        
+  .form-group
+    .col-sm-2.control-label
+      = f.label t 'student.leaveforstudent.approvedate'
+    .col-md-3
+      = f.text_field :approvedate, :order => [:day, :month, :year],  class: 'date_picker form-control'

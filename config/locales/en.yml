@@ -1241,6 +1241,7 @@ en:
       festive_leave: Festive Leave
       midterm_break: Mid Term Break
       end_of_semester: End of Semester
+      kin_info: Next of Kin Details
       has_no_kin: "Student has no next of kin details (parents / guardian / guarantor)."
       update_kin: Update next of kin details
       update_student_kin: ". Please update next of kin details in Student submodule first."
@@ -1255,6 +1256,11 @@ en:
       warden: Warden
       coordinator_result: Coordinator Result
       warden_result: Warden Result
+      programme: Programme
+      group: Group
+      intake: Ambilan
+      coordinator_not_available: "Group Coordinator NOT available, please select other Programme lecturer."
+      application_due: "Leave application has expired and could not be processed."
 
     discipline:
       title: Student Discipline Case
