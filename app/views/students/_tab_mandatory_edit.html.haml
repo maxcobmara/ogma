@@ -11,7 +11,7 @@
       = f.label t 'student.students.name', for: :name
     .col-md-4
       = f.text_field :name, class: 'form-control mandatory'
-          
+
   .form-group
     .col-sm-2.control-label
       = f.label t 'student.students.sstatus', for: :sstatus
@@ -29,7 +29,7 @@
     .col-sm-2.control-label
       =f.label t 'student.students.ssponsor', for: :ssponsor
     .col-md-3
-      = f.select :ssponsor, Student::SPONSOR, {:include_blank =>t('helpers.prompt.select_sponsor')}, {class: 'selectpicker mandatory'}
+      = f.select :ssponsor, Student::SPONSOR, {:include_blank =>t('helpers.prompt.select_sponsor')}, {class: 'selectpicker mandatory', 'data-width' => "auto"}
 
   .form-group
     .col-sm-2.control-label
@@ -44,7 +44,7 @@
         .form-group
           = t('student.students.female')
           = f.radio_button :gender,'2'
-          
+
   .form-group
     .col-sm-2.control-label
       =f.label t 'student.students.sbirthd', for: :sbirthdt
@@ -63,4 +63,3 @@
       =f.label t 'student.students.intake_id', for: :intake
     .col-md-2
       = f.text_field :intake, class: 'form-control date_picker mandatory', 'data-behaviour' => 'datepicker_today'
-
