@@ -301,7 +301,7 @@ module StaffAttendanceHelper
 	    spost.unit=="Perpustakaan"
 	  elsif deptlist[v]=="Aset & Stor" || deptlist[v]=="Kewangan"
 	    spost.unit=="Kewangan & Stor"
-	  elsif deptlist[v]=="Pengkhususan"
+	  elsif deptlist[v]=="Pengkhususan"				#MAY REQUIRE UPDATE LATER - POS BASIK vs DIPLOMA LANJUTAN
 	    spost.unit=="Pos Basik" #or Pengkhususan 
 	    #but Pos Basik individual names required (as below) - in POSITIONs table (add-in Pos Basik name into tasks_main column via Task & Reponsibilities)
 	    #.....Kebidanan/Perawatan Rapi/Perawatan Onkologi/Perawatan Renal/Perioperating/Perawatan Psikiatri/Perawatan Koronari/Pengimejan Perubatan(Pengimejan Payudara)/Perawatan Pediatrik/Perawatan Komuniti

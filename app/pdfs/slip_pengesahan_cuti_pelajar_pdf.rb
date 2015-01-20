@@ -80,7 +80,7 @@ class Slip_pengesahan_cuti_pelajarPdf < Prawn::Document
     
     table(data2, :column_widths => [200, 300], :cell_style => { :size => 10}) do
       a = 0
-      b = 12
+      b = data2.size
       while a < b do
         row(a).borders = []
         a += 1
