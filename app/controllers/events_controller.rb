@@ -79,5 +79,4 @@ class EventsController < ApplicationController
       params.require(:event).permit(:eventname, :start_at, :end_at, :location, :participants, :officiated, :createdby)# <-- insert editable fields here inside here e.g (:date, :name)
     end
 
-
 end
