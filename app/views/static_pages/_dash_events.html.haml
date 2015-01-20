@@ -6,9 +6,9 @@
       %div{:role => "tabpanel"}
         / Nav tabs
         %ul.nav.nav-tabs.nav-justified{:role => "tablist"}
-          %li.active{:role => "presentation"}
-            %a{"aria-controls" => "home", "data-toggle" => "tab", :href => "#recent", :role => "tab"} Recent
           %li{:role => "presentation"}
+            %a{"aria-controls" => "home", "data-toggle" => "tab", :href => "#recent", :role => "tab"} Recent
+          %li.active{:role => "presentation"}
             %a{"aria-controls" => "profile", "data-toggle" => "tab", :href => "#today", :role => "tab"} Today
           %li{:role => "presentation"}
             %a{"aria-controls" => "messages", "data-toggle" => "tab", :href => "#upcoming", :role => "tab"} Upcoming
@@ -17,7 +17,7 @@
           #today.tab-pane.active{:role => "tabpanel"}
             - todays_events = Event.where("start_at <= ? AND end_at >= ?", Time.now,  Time.now).order(:end_at).reverse_order.limit(6)
             - if todays_events == []
-              %h5.left No Events Today
+              %h5{style: "padding-top:25px; text-align: center;"} No Events Today
             - else
               - todays_events.each do |e|
                 %div{:class => "sidebar_event_item#{cycle("0", "1")}"}
@@ -30,28 +30,27 @@
 
 
           #upcoming.tab-pane{:role => "tabpanel"}
-            future...
+            - future_events = Event.where("start_at > ? ", Time.now.end_of_day).order(:start_at).reverse_order.limit(6)
+            - if future_events == []
+              %h5{style: "padding-top:25px; text-align: center;"} Nothing
+            - else
+              - future_events.each do |e|
+                %div{:class => "sidebar_event_item#{cycle("0", "1")}"}
+                  %h5= link_to e.eventname, event_path(e)
+                  %p
+                    =  e.start_at.try(:strftime, '%a, %e %b')
+                    \ -
+                    = e.end_at.try(:strftime, '%a, %e %b')
+
           #recent.tab-pane{:role => "tabpanel"}
-            past...
-
-
-
--#
-  %h3 Today's Events
-  %table.table.table-striped
-    %tr
-      %th Today's Events
-    - todays_events = Event.where("start_at <= ? AND end_at >= ?", Time.now,  Time.now).order(:end_at).reverse_order.limit(6)
-    - if todays_events == []
-      %tr
-        %td No Events Today
-    - else
-      - todays_events.each do |e|
-        %tr
-          %td
-            %h5= link_to e.eventname, event_path(e)
-            %p= e.location
-            %p
-              =  e.start_at.try(:strftime, '%a, %e %b')
-              \ -
-              = e.end_at.try(:strftime, '%a, %e %b')
+            - past_events = Event.where("end_at < ? AND end_at >= ? ", Time.now, 7.days.ago.beginning_of_day).order(:end_at).reverse_order.limit(6)
+            - if past_events == []
+              %h5{style: "padding-top:25px; text-align: center;"} No events since last week
+            - else
+              - past_events.each do |e|
+                %div{:class => "sidebar_event_item#{cycle("0", "1")}"}
+                  %h5= link_to e.eventname, event_path(e)
+                  %p
+                    =  e.start_at.try(:strftime, '%a, %e %b')
+                    \ -
+                    = e.end_at.try(:strftime, '%a, %e %b')
