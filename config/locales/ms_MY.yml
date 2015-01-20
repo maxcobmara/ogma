@@ -325,6 +325,7 @@ ms_MY:
         new: Belanjawan Latihan Staff Baru
         
       course:
+        title_course: Kursus Latihan
         new: Kursus Staff Baru
         title: Kursus Kakitangan
         name: Kursus
@@ -336,6 +337,7 @@ ms_MY:
         approval: Kelulusan
         schedule: Jadualkan Kursus
       schedule:
+        title_schedule: Jadual Latihan
         new: Penjadualan Baru
         title: Jadual Kursus Staf
         start: Tarikh Mula
@@ -343,6 +345,7 @@ ms_MY:
         location: Lokasi
         price: Harga
       application_status:
+        title_apply: Permohonan Latihan
         title: Status Permohonan
         training_request: Senarai Permintaan Latihan  
         schedule: Jadual
@@ -373,6 +376,8 @@ ms_MY:
         approved: Diluluskan
         reject: Menolak
         rejected: Ditolak
+        apply: Memohon
+        edit_staff_training: Sunting Latihan Staf
         
     travel_request:
       title: Permohonan Perjalanan

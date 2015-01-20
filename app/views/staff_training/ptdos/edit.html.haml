@@ -1,0 +1,95 @@
+- model_class =  Ptdo
+.page-header
+  %h1
+    = t('staff.training.application_status.edit_staff_training')
+  = render 'shared/flashes'
+    
+
+.row.fluid
+  = form_for [:staff_training, @ptdo], :html => { :class => 'form-horizontal' }  do |f| 
+    = render 'shared/error_messages', object: f.object
+    
+    .col-md-offset-3
+      .form-group
+        .col-sm-2.control-label
+          = f.label t 'staff.training.application_status.course_name'
+        .col-md-3
+          = @ptdo.ptschedule.try(:course).try(:name)
+          
+      .form-group
+        .col-sm-2.control-label
+          = f.label t 'staff.training.application_status.date'
+        .col-md-3
+          = @ptdo.ptschedule.start
+          
+      .form-group
+        .col-sm-2.control-label
+          = f.label t 'staff.training.application_status.staff_name'
+        .col-md-3
+          = @ptdo.applicant_details
+            
+      /Unit Approval Block
+      - permitted_to? :approve, :ptdos do
+        - if @ptdo.unit_approve.blank?
+          .form-group
+            .col-sm-2.control-label
+              = f.label t 'staff.training.application_status.justification'
+            .col-md-3
+              = f.text_area :justification, :size => "30x5", class: 'form-control'
+          
+          .form-group
+            .col-sm-2.control-label
+              = f.label t 'staff.training.application_status.unit_review'
+            .col-md-3
+              = f.text_area :unit_review, :size => "30x5", class: 'form-control'
+          
+          .form-group
+            .col-sm-2.control-label
+              = f.label t 'staff.training.application_status.unit_decision'
+            .col-md-3
+              = f.check_box :unit_approve, class: 'form-control'
+      
+      /Department Approval Block        
+      - permitted_to? :approve, :ptdos do
+        - if @ptdo.unit_approve.blank? && @ptdo.dept_approve.blank?
+          .form-group
+            .col-sm-2.control-label
+              = f.label t 'staff.training.application_status.dept_review'
+            .col-md-3
+              = f.text_area :dept_review, :size => "30x5", class: 'form-control'
+          
+          .form-group
+            .col-sm-2.control-label
+              = f.label t 'staff.training.application_status.dept_decision'
+            .col-md-3
+              = f.check_box :dept_approve, class: 'form-control' 
+          
+          .form-group
+            .col-sm-2.control-label
+              = f.label t 'staff.training.application_status.replacement_staff'
+            .col-md-3
+              = f.collection_select :replacement_id, Staff.where("id IN (?)", @ptdo.repl_staff), :id, :staff_name_with_position, {:include_blank => t('helpers.prompt.select_staff')}, {class: 'selectpicker', "data-width"=>'300px'} 
+              
+      - permitted_to? :approve, :ptdos do
+        - if @ptdo.dept_approve? && @ptdo.final_approve.blank? && @current_user.userable_id.staff.position.name == "Pengarah"  
+          .form-group
+            .col-sm-2.control-label
+              = f.label t 'staff.training.application_status.final_approve'
+            .col-md-3
+              = f.check_box :final_approve, class: 'form-control'
+              
+      - if @ptdo.dept_approve? && @ptdo.final_approve? && @ptdo.staff_id == @current_user.userable_id.staff_id
+        .form-group
+          .col-sm-2.control-label
+            = f.label t 'staff.training.application_status.trainee_report'
+          .col-md-3
+            = f.text_area :trainee_report, :size => "30x5", class: 'form-control'
+           
+          
+      .form-group
+        .col-sm-offset-2.col-sm-1
+          = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), staff_training_ptdos_path, :class => 'btn btn-default'
+        .col-md-2
+          = f.submit t('update'), class: "btn btn-primary"
+          
+        
