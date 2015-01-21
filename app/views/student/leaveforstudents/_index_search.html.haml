@@ -5,10 +5,12 @@
     %td=f.text_field :requestdate_eq, size: 2, :class => "form-control date-picker", :placeholder => (t 'student.leaveforstudent.requestdate')
     %td=f.text_field :leave_startdate_eq, size: 2, :class => "form-control date-picker", :placeholder => (t 'student.leaveforstudent.leave_startdate')
     %td= select_tag('q[studentsubmit_eq]',options_for_select([[(t 'actions.all_records'),''],[(t 'actions.submitted'),true],[(t 'actions.not_submitted'),false]]),class: 'selectpicker',"data-width"=>'100px')
+    %td=f.text_field :staff_name_cont, size: 2, :class => "form-control", :placeholder => (t 'student.leaveforstudent.staff_id')
     %td= select_tag('q[approved_eq]',options_for_select([[(t 'actions.all_records'),''],[(t 'actions.approved'),true],[(t 'actions.not_approved'),false]]),class: 'selectpicker',"data-width"=>'100px')
+    %td=f.text_field :second_approver_name_cont, size: 2, :class => "form-control", :placeholder => (t 'student.leaveforstudent.staff_id')
     %td
       .input-group
-        =f.text_field :staff_name_cont, size: 2, :class => "form-control", :placeholder => (t 'student.leaveforstudent.staff_id')
+        = select_tag('q[approved_eq]',options_for_select([[(t 'actions.all_records'),''],[(t 'actions.approved'),true],[(t 'actions.not_approved'),false]]),class: 'selectpicker',"data-width"=>'100px')
         %span.input-group-btn
           %button.btn.btn-sm.btn-default.right{:type => "submit"}
             %i.fa.fa-search.fa-fw

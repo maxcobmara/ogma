@@ -13,16 +13,15 @@
   %table.table-striped.table-hover.ogma
     %thead
       %tr
-        %th=t 'student.leaveforstudent.student_id'
-        %th=t 'student.leaveforstudent.leavetype'
-        %th=t 'student.leaveforstudent.requestdate'
-        %th=t 'student.leaveforstudent.leaves_date'
-        %th=t 'student.leaveforstudent.studentsubmit'
-        %th=t 'student.leaveforstudent.coordinator'
-        %th=t 'student.leaveforstudent.approved'
-        %th=t 'student.leaveforstudent.warden'
-        %th=t 'student.leaveforstudent.approved'
-        /%th= sort_link(@search, :thumb_id, (t 'staff_attendance.thumb_id'))
+        %th= sort_link(@search, :student_name, (t 'student.leaveforstudent.student_id'))
+        %th= sort_link(@search, :leavetype, (t 'student.leaveforstudent.leavetype'))
+        %th= sort_link(@search, :requestdate, (t 'student.leaveforstudent.request_date'))
+        %th= sort_link(@search, :leave_startdate, (t 'student.leaveforstudent.leaves_date'))
+        %th= sort_link(@search, :studentsubmit, (t 'student.leaveforstudent.studentsubmit'))
+        %th= sort_link(@search, :staff_name, (t 'student.leaveforstudent.coordinator'))
+        %th= sort_link(@search, :approved, (t 'student.leaveforstudent.approved'))
+        %th= sort_link(@search, :second_approver_name, (t 'student.leaveforstudent.warden'))
+        %th= sort_link(@search, :approved2, (t 'student.leaveforstudent.approved'))
     %tbody
     = render "index_search"
     - @leaveforstudent.each do |leaveforstudent|
