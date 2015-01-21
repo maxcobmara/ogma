@@ -3,7 +3,7 @@
     .col-sm-2.control-label
       = f.label t 'student.leaveforstudent.student_id', for: :student
     .col-md-2
-      = f.collection_select :student_id, Student.all.order(name: :asc), :id, :formatted_mykad_and_student_name, {:include_blank =>t('helpers.prompt.select_student'), :selected=>Login.first.student_id},{class: 'selectpicker', "data-width"=>'320px'} 
+      = f.collection_select :student_id, Student.all.order(name: :asc), :id, :formatted_mykad_and_student_name, {:include_blank =>t('helpers.prompt.select_student')},{class: 'selectpicker', "data-width"=>'320px'} 
   
   .form-group
     .col-sm-2.control-label

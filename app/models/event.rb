@@ -1,16 +1,16 @@
 class Event < ActiveRecord::Base
-  
-  paginates_per 10 
+
+  paginates_per 15 
   before_save  :titleize_eventname
-  
+
   belongs_to :staff, :foreign_key => 'createdby'
-  
+
   validates_presence_of :eventname, :start_at, :end_at, :location, :participants, :officiated, :createdby
-  
+
   def titleize_eventname
     self.eventname = eventname.titleize
   end
-    
+
 end
 
 # == Schema Information

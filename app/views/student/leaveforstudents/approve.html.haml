@@ -7,44 +7,47 @@
 .row
   = form_for [:student, @leaveforstudent],  :html => { :class => 'form-horizontal' } do |f| 
     = render 'shared/error_messages', object: f.object
-    
+
     .row
       .col-md-offset-1
+        / Nav tabs
         %ul.nav.nav-tabs
-          %li.active= link_to (t 'student.leaveforstudent.approve_leave'), "#approve", "data-toggle" => "tab"
+          %li.active= link_to (t 'student.leaveforstudent.approve_leave'), "#leave_approve_edit", "data-toggle" => "tab"
 
-        .col-md-8.col-md-offset-1
-          .form-group
-            .col-sm-3.control-label
-              = f.label t 'student.leaveforstudent.approve_student_leave'
-            .col-md-7
-              .form-inline
-                .form-group
-                  = t 'student.leaveforstudent.approve'
-                  = f.radio_button :approved, true
-                .form-group
-                  = t 'student.leaveforstudent.not_approve'
-                  = f.radio_button :approved, false
-                  
-          .form-group
-            .col-sm-3.control-label
-              = f.label t 'student.leaveforstudent.approved_by'
-            .col-md-4
-              = f.collection_select :staff_id, Staff.joins(:positions).where('tasks_main ILIKE (?)',"%Penyelaras Kumpulan 23%"), :id,  :staff_name_with_position,  {:include_blank => t('helpers.prompt.select_staff'),readonly: 'readonly'}, {class: 'selectpicker', "data-width"=>'300px'}
-                    
-          .form-group
-            .col-sm-3.control-label
-              = f.label t 'student.leaveforstudent.approvedate'
-            .col-md-3
-              = f.text_field :approvedate, :order => [:day, :month, :year],  class: 'date_picker form-control'        
-            
-          .col-md-5.col-md-offset-1
-            %BR
-              .form-group
-                .col-sm-offset-2.col-sm-2
-                  = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), student_leaveforstudent_path(@leaveforstudent), :class => 'btn btn-default'
-                .col-sm-offset-1.col-sm-4
-                  = f.submit t('update'), class: "btn btn-primary"
+        / display 
+        .tab-content{style:"padding-top:1em"}
+          .col-md-8.col-md-offset-1
+            %dl.dl-horizontal
+              %dt= t 'student.leaveforstudent.student_id'
+              %dd=h @leaveforstudent.student_id.blank? ? "No Student" : @leaveforstudent.student.formatted_mykad_and_student_name
+              
+              %dt= t 'student.leaveforstudent.programme'
+              %dd=h @leaveforstudent.student.course.programme_list
+              
+              %dt= t 'student.leaveforstudent.group'
+              %dd=h @leaveforstudent.group_intake
+
+              %dt= t 'student.leaveforstudent.leavetype'
+              %dd=h ((DropDown::STUDENTLEAVETYPE.find_all{|disp, value| value == @leaveforstudent.leavetype }).map {|disp, value| disp}).first
+
+              %dt= t 'student.leaveforstudent.requestdate'
+              %dd=h @leaveforstudent.requestdate.try(:strftime,"%d - %b - %Y")
+
+              %dt= t 'student.leaveforstudent.reason'
+              %dd=h @leaveforstudent.reason
+
+          #leave_approve_edit.tab-pane.active
+            .col-md-10
+              %br
+              = render 'tab_approve_edit', :f=>f
+
+    %BR
+    .row
+      .form-group
+        .col-md-1.col-md-offset-3
+          = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), student_leaveforstudent_path(@leaveforstudent), :class => 'btn btn-default'
+        .col-sm-2
+          = f.submit t('update'), class: "btn btn-primary"
             
             
                       

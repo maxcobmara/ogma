@@ -201,6 +201,7 @@ Ogma::Application.routes.draw do
       member do
         get :approve
         get :approve_warden
+        get :slip_pengesahan_cuti_pelajar
       end
     end
     resources :student_attendances do

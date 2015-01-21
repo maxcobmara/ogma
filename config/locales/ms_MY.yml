@@ -325,6 +325,7 @@ ms_MY:
         new: Belanjawan Latihan Staff Baru
         
       course:
+        title_course: Kursus Latihan
         new: Kursus Staff Baru
         title: Kursus Kakitangan
         name: Kursus
@@ -336,6 +337,7 @@ ms_MY:
         approval: Kelulusan
         schedule: Jadualkan Kursus
       schedule:
+        title_schedule: Jadual Latihan
         new: Penjadualan Baru
         title: Jadual Kursus Staf
         start: Tarikh Mula
@@ -343,6 +345,7 @@ ms_MY:
         location: Lokasi
         price: Harga
       application_status:
+        title_apply: Permohonan Latihan
         title: Status Permohonan
         training_request: Senarai Permintaan Latihan  
         schedule: Jadual
@@ -373,6 +376,8 @@ ms_MY:
         approved: Diluluskan
         reject: Menolak
         rejected: Ditolak
+        apply: Memohon
+        edit_staff_training: Sunting Latihan Staf
         
     travel_request:
       title: Permohonan Perjalanan
@@ -1157,6 +1162,7 @@ ms_MY:
       festive_leave: Cuti Perayaan
       midterm_break: Cuti Pertengahan Semester
       end_of_semester: Akhir Semester
+      kin_info: Maklumat Waris
       has_no_kin: "Pelajar tidak mempunyai maklumat waris terdekat (ibu bapa / penjaga / penjamin)."
       update_kin: Kemaskini maklumat waris
       update_student_kin: ". Sila kemaskini maklumat waris dalam submodul Pelajar terlebih dahulu."
@@ -1171,6 +1177,11 @@ ms_MY:
       warden: Warden
       coordinator_result: Keputusan Penyelaras Kumpulan
       warden_result: Keputusan Warden
+      programme: Program
+      group: Kumpulan
+      intake: Ambilan
+      coordinator_not_available: "Tiada data Penyelaras Kumpulan, sila pilih pengajar lain dari program yang sama."
+      application_due: "Permohonan cuti telah tamat tempoh dan tidak dapat diproses."
 
     discipline:
       title: Kes Disiplin Pelajar

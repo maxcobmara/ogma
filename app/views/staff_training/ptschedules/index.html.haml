@@ -33,4 +33,4 @@
         Min
         = scheduled.min_participants
     .col-md-1
-      clicky
+      %td= link_to scheduled.course.name, new_staff_training_ptdo_path(:ptschedule_id => scheduled) 

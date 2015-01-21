@@ -41,7 +41,15 @@ class Ptdo < ActiveRecord::Base
   
   def whoami
     #self.staff_id = Login.current_login.staff.id
-    self.ptcourse_id = ptschedule.ptcourse.id
+    self.ptcourse_id = ptschedule.course.id
+  end
+  
+  def repl_staff
+    sibpos = applicant.positions.first.sibling_ids
+    dept   = applicant.positions.first.unit
+    sibs   = Position.where(["id IN (?) AND unit=?" , sibpos,dept]).pluck(:staff_id)
+    applicant = Array(staff_id)
+    sibs - applicant
   end
   
   def apply_dept_status

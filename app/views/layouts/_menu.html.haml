@@ -45,9 +45,9 @@
                 %a.mp-back{:href => "#"}= t 'helpers.links.back'
                 %ul
                   %li= link_to t('staff.training.budget.title'), staff_training_ptbudgets_path
-                  %li= link_to "Training Courses", staff_training_ptcourses_path
-                  %li= link_to "Training Schedule", staff_training_ptschedules_path
-                  %li= link_to "Apply for Training", '#', class: 'bogus'
+                  %li= link_to t('staff.training.course.title_course'), staff_training_ptcourses_path
+                  %li= link_to t('staff.training.schedule.title_schedule'), staff_training_ptschedules_path
+                  %li= link_to t('staff.training.application_status.title_apply'), '#', class: 'bogus'
                   %li= link_to t('staff.training.application_status.title'), staff_training_ptdos_path
             %li= link_to t('staff.travel_request.status_movement'), staff_travel_requests_path
             %li.icon.icon-left

@@ -5,12 +5,10 @@ class EventsController < ApplicationController
   def index
     @search = Event.search(params[:q])
     @events = @search.result
-    @events2 = Event.where('start_at >= ?', Date.today).order(:start_at).page(params[:page]||1)
-    @events1 = Event.all.order(:start_at).page(params[:page]||1)
-    @events = @events.page(params[:page]||1)
+    @events = @events.order(:start_at).reverse_order.page(params[:page]||1)
   end
 
-  
+
   def calendar
     @events = Event.all
     @date = params[:month] ? Date.parse(params[:month].gsub('-', '/')) : Date.today
@@ -69,7 +67,7 @@ class EventsController < ApplicationController
   def edit
     @event = Event.find(params[:id])
   end
-  
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_event
@@ -80,12 +78,5 @@ class EventsController < ApplicationController
     def event_params
       params.require(:event).permit(:eventname, :start_at, :end_at, :location, :participants, :officiated, :createdby)# <-- insert editable fields here inside here e.g (:date, :name)
     end
-    
-    def sort_column
-        Event.column_names.include?(params[:sort]) ? params[:sort] : "eventname" 
-    end
-    
-    def sort_direction
-        %w[asc desc].include?(params[:direction])? params[:direction] : "asc" 
-    end
+
 end
