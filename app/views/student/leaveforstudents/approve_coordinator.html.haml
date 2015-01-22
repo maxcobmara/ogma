@@ -1,0 +1,55 @@
+- model_class = Leaveforstaff
+.page-header
+  %h1= t 'student.leaveforstudent.student_approve_leave_coordinator'
+  
+= render 'shared/flashes'
+
+.row
+  = form_for [:student, @leaveforstudent],  :html => { :class => 'form-horizontal' } do |f| 
+    = render 'shared/error_messages', object: f.object
+
+    .row
+      .col-md-offset-1
+        / Nav tabs
+        %ul.nav.nav-tabs
+          %li.active= link_to (t 'student.leaveforstudent.approve_leave'), "#leave_approve_edit", "data-toggle" => "tab"
+
+        / display 
+        .tab-content{style:"padding-top:1em"}
+          .col-md-8.col-md-offset-1
+            %dl.dl-horizontal
+              %dt= t 'student.leaveforstudent.student_id'
+              %dd=h @leaveforstudent.student_id.blank? ? "No Student" : @leaveforstudent.student.formatted_mykad_and_student_name
+              
+              %dt= t 'student.leaveforstudent.programme'
+              %dd=h @leaveforstudent.student.course.programme_list
+              
+              %dt= t 'student.leaveforstudent.group'
+              %dd=h @leaveforstudent.group_intake
+
+              %dt= t 'student.leaveforstudent.leavetype'
+              %dd=h ((DropDown::STUDENTLEAVETYPE.find_all{|disp, value| value == @leaveforstudent.leavetype }).map {|disp, value| disp}).first
+
+              %dt= t 'student.leaveforstudent.requestdate'
+              %dd=h @leaveforstudent.requestdate.try(:strftime,"%d - %b - %Y")
+
+              %dt= t 'student.leaveforstudent.reason'
+              %dd=h @leaveforstudent.reason
+
+          #leave_approve_edit.tab-pane.active
+            .col-md-10
+              %br
+              = render 'tab_approve_edit', :f=>f
+
+    %BR
+    .row
+      .form-group
+        .col-md-1.col-md-offset-3
+          = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), student_leaveforstudent_path(@leaveforstudent), :class => 'btn btn-default'
+        .col-sm-2
+          = f.submit t('update'), class: "btn btn-primary"
+            
+            
+                      
+              
+

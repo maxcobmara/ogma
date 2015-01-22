@@ -15,8 +15,8 @@
     .col-sm-2.control-label
       = f.label t 'student.leaveforstudent.approved_by'
     .col-md-4
-      = f.collection_select :staff_id2, Staff.joins(:positions).where('tasks_main ILIKE (?)',"%Warden%"), :id,  :staff_name_with_position, {:include_blank => t('helpers.prompt.select_staff')}, {class: 'selectpicker', "data-width"=>'300px'}
-                    
+      = f.collection_select :staff_id2, Staff.where('id IN(?)', @leaveforstudent.warden_list).order(name: :asc), :id,  :staff_name_with_position, {:include_blank => t('helpers.prompt.select_staff')}, {class: 'selectpicker', "data-width"=>'300px'}
+
   .form-group
     .col-sm-2.control-label
       = f.label t 'student.leaveforstudent.approvedate'

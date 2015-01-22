@@ -16,8 +16,9 @@
       = f.label t 'student.leaveforstudent.approved_by'
     .col-md-6
       - if @leaveforstudent.group_coordinator
-        = f.text_field :staff, :value => @leaveforstudent.group_coordinator.name, :readonly => true, class: 'form-control mandatory'
-        = f.text_field :staff_id, :value=>@leaveforstudent.group_coordinator.id
+        /= f.text_field :staff, :value => @leaveforstudent.group_coordinator.name, :readonly => true, class: 'form-control mandatory'
+        /= f.text_field :staff_id, :value=>@leaveforstudent.group_coordinator.id
+        = f.collection_select :staff_id, Staff.where(id: @leaveforstudent.group_coordinator.id), :id, :staff_name_with_position, {:selected=>@leaveforstudent.group_coordinator.id}, {class: 'selectpicker', "data-width"=>'300px'}
       - else
         =t('student.leaveforstudent.coordinator_not_available')
         %br

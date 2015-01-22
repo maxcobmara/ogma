@@ -109,6 +109,17 @@ authorization do
 
  #Group Trainings ------------------------------------------------------------read(index, show), menu(inc index), update(inc edit), approve(read, update), manage(crud,approve,menu)
  role :lecturer do
+
+   ###HOLD first - works well in Catechumen but not in ogma - just let all lecturers access, afterall only coordinator/programme lecture appear in the list! 
+   has_permission_on :student_leaveforstudents, :to => [:index, :menu, :create, :show, :update, :approve_coordinator]
+   #prob - if warden(not lecturer) ok, if warden also lecturer-tak boleh,....staff --> index, menu, create, show, update??, 
+   
+   #restricted access for penyelaras - [relationship: approver, FK: staff_id, page: approve], in case of non-exist of penyelaras other lecturer fr the same programme
+   #has_permission_on :student_leaveforstudents, :to => [:index, :menu, :create, :show, :update, :approve], :join_by => :and do
+      #if_attribute :studentsubmit => true
+      #if_attribute :student_id => is_in {[334]}  #is_in {user.under_my_supervision} 
+   #end
+   
    #EXAMINATION modules
    has_permission_on [:exam_examquestions, :exam_exams, :exam_exammarks, :exam_grades], :to => [:menu, :read, :create]
    
@@ -194,10 +205,21 @@ authorization do
       end
   end
   
+  #Group Location --------------------------------------------------------------------------------
+  role :warden do
+    #has_permission_on :locations, :to => :core
+    #all wardens have access - [relationship: second_approver, FK: staff_id2, page: approve_warden]
+    has_permission_on :student_leaveforstudents, :to => [:index, :menu, :create, :show, :update, :approve_warden] do
+      if_attribute :studentsubmit => true
+    end
+   
+  end
+  
   role :guest do
     #has_permission_on :users, :to => :create
     has_permission_on :library_books, :to => :read
   end
+
 
 
 end

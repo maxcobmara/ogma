@@ -198,7 +198,7 @@ class Staff < ActiveRecord::Base
       'Z' #no vehicles?
     end
   end
-
+  
 end
 
 # == Schema Information
