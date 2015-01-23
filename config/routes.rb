@@ -199,7 +199,7 @@ Ogma::Application.routes.draw do
     end
     resources :leaveforstudents do
       member do
-        get :approve
+        get :approve_coordinator
         get :approve_warden
         get :slip_pengesahan_cuti_pelajar
       end

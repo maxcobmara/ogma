@@ -47,7 +47,7 @@ class Document < ActiveRecord::Base
 
   def filedocer
     suid = file_id
-    Cofile.where(id: suid).pluck(:name)
+    Cofile.where(id: suid).map(&:file_no_and_name)
   end
   
   def owner_ids

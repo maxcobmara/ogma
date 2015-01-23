@@ -1,4 +1,5 @@
 class Student::LeaveforstudentsController < ApplicationController
+  filter_access_to :all
   before_action :set_leaveforstudent, only: [:show, :edit, :update, :destroy]
 
   def index
@@ -86,7 +87,7 @@ class Student::LeaveforstudentsController < ApplicationController
     end
   end
   
-  def approve
+  def approve_coordinator
     @leaveforstudent = Leaveforstudent.find(params[:id])
   end
   
