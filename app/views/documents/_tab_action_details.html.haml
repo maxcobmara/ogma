@@ -1,22 +1,30 @@
 - model_class = Document
 .col-md-8.col-md-offset-1
   %dl.dl-horizontal
-    %dt= t 'document.circulate_minute_action' , :default => model_class.human_attribute_name(:closed) + ":" 
-    %dt
-      %font{:size => "-1"}= t 'document.minit_tindakan'
-    %dd= @document.otherinfo
+    - @document.circulations.each do |y| 
+      %dt= t 'document.cc1action' , :default => model_class.human_attribute_name(:cc1action) + ":" 
+      %dd=h y.action_taken
 
-    %dt= t 'document.circulate_to' , :default => model_class.human_attribute_name(:circulate_to) + ":"
-    %dd
-      - @document.staffs.each_with_index do |doc_recepient,ind|
-        (#{ind+=1}) #{doc_recepient.name}
-        %br
+      %dt=t 'document.cc1remarks', :default => model_class.human_attribute_name(:cc1remarks) + ":"
+      %dd=h y.action_remarks 
+      
+      %dt=t 'document.action_by'
+      %dd= y.staff.try(:staff_name_with_position)
+      
+      %dt=t 'document.attachment_action'
+      %dd
+        - if y.action.exists? then
+          = y.action_file_name
+          = link_to (t 'document.download'), y.action.url
+          ||
+          = link_to "ALT", y.action.url
+        - else
+          =t 'document.no_attachment'
 
-    %dt= t 'document.circulate_minute_date' , :default => model_class.human_attribute_name(:cc1date) + ":"
-    %dd= @document.cc1date.try(:strftime, "%d %b %Y" )
+      %dt=t 'document.cc1actiondate' 
+      %dd=y.action_date.try(:strftime, '%d %b %Y')
+        
+      %dt= t 'document.cc1closed'
+      %dd=h y.action_closed? ? (t 'yes2') : (t 'no2')  
 
-    %dt= t 'document.action_type' , :default => model_class.human_attribute_name(:action) + ":"
-    %dd= (DropDown::DOCUMENT_ACTION.find_all{|disp, value| value == @document.cctype_id.to_s}).map {|disp, value| disp} [0]
-	  
-    %dt= t 'document.file_closed' , :default => model_class.human_attribute_name(:closed) + ":"
-    %dd= @document.closed? ? "Yes" : "No"
+      %hr

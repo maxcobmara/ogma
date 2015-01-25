@@ -1,0 +1,22 @@
+- model_class = Document
+.col-md-8.col-md-offset-1
+  %dl.dl-horizontal
+    %dt= t 'document.circulate_minute_action' , :default => model_class.human_attribute_name(:closed) + ":" 
+    %dt
+      %font{:size => "-1"}= t 'document.minit_tindakan'
+    %dd= @document.otherinfo
+
+    %dt= t 'document.circulate_to' , :default => model_class.human_attribute_name(:circulate_to) + ":"
+    %dd
+      - @document.staffs.each_with_index do |doc_recepient,ind|
+        (#{ind+=1}) #{doc_recepient.name}
+        %br
+
+    %dt= t 'document.circulate_minute_date' , :default => model_class.human_attribute_name(:cc1date) + ":"
+    %dd= @document.cc1date.try(:strftime, "%d %b %Y" )
+
+    %dt= t 'document.action_type' , :default => model_class.human_attribute_name(:action) + ":"
+    %dd= (DropDown::DOCUMENT_ACTION.find_all{|disp, value| value == @document.cctype_id.to_s}).map {|disp, value| disp} [0]
+	  
+    %dt= t 'document.file_closed' , :default => model_class.human_attribute_name(:closed) + ":"
+    %dd= @document.closed? ? "Yes" : "No"

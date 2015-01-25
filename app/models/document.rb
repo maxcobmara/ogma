@@ -7,12 +7,14 @@ class Document < ActiveRecord::Base
   has_attached_file :data,
                      :url => "/assets/documents/:id/:style/:basename.:extension",
                      :path => ":rails_root/public/assets/documents/:id/:style/:basename.:extension"
-  has_and_belongs_to_many   :staffs, :join_table => :documents_staffs 
-
+  #has_and_belongs_to_many   :staffs, :join_table => :documents_staffs 
+  has_many :circulations
+  has_many :staffs, :through => :circulations
+  accepts_nested_attributes_for :circulations
 
   belongs_to :stafffilled,  :class_name => 'Staff', :foreign_key => 'stafffiled_id'
   belongs_to :preparedby,   :class_name => 'Staff', :foreign_key => 'prepared_by'
-  belongs_to :cc1staff,     :class_name => 'Staff', :foreign_key => 'cc1staff_id' 
+  #belongs_to :cc1staff,     :class_name => 'Staff', :foreign_key => 'cc1staff_id' 
   belongs_to :cofile,       :foreign_key => 'file_id'
 
   validates_attachment_content_type :data, 

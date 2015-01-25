@@ -7,8 +7,13 @@
 .row
   / Nav tabs
   %ul.nav.nav-tabs
-    %li.active= link_to  ((t 'document.document_details')), "#document_details", "data-toggle" => "tab"
-    %li= link_to ((t 'document.action_details')),    "#action_details",    "data-toggle" => "tab"
+    %li.active= link_to  (t 'document.document_details'), "#document_details", "data-toggle" => "tab"
+    %li=link_to (t 'document.circulation_details'), "#circulation_details", "data-toggle" => "tab"
+    %li=link_to (t 'document.action_details'), "#action_details", "data-toggle" => "tab"
+      
+      
+    /%li= link_to (t 'document.circulation_details'), "#circulation_details", "data-toggle" => "tab"
+    /%li= link_to (t 'document.action_details'), "#action_details", "data-toggle" => "tab"
 
   .tab-content{style:"padding-top:1em"}
     .col-md-8.col-md-offset-1
@@ -25,10 +30,15 @@
     #document_details.tab-pane.active
       %br
       = render 'tab_document_details'
+ 
+    #circulation_details.tab-pane
+      %br
+      = render 'tab_circulation_details'
+
     #action_details.tab-pane
       %br
       = render 'tab_action_details'
-	  
+  
 .row
   .col-md-4.col-md-offset-2
     %hr
