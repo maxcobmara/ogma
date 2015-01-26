@@ -1475,18 +1475,19 @@ ms_MY:
     upload_file: Memuatnaik Dokumen
 
   document:
+    title: Daftar Dokumen 
     list_of_document: Senarai Dokumen
     serial_no: No Siri
     ref_no: No Rujukan
     category: Kategori
-    title: Tajuk
+    title2: Tajuk
     letter_date: Tarikh Surat
     received_date: Tarikh Terima
     from: Daripada
     circulate_to: Diedarkan Untuk
     action_notifications: "Tindakan / Makluman"
     closed: Ditutup
-    file_no: No File
+    file_no: No Fail
     circulate_minute_action: "Tindakan Edaran / Minit"
     circulate_minute_date: "Tarikh Edaran / Minit"
     action_type: Jenis Tindakan
@@ -1497,23 +1498,26 @@ ms_MY:
     letterxdt: Tarikh Terima
     circulation_date: Tarikh Edaran
     uploaded: Fail Dimuatnaik 
-    upload_change_file: "Memuatnaik/Tukar File"
+    upload_change_file: "Memuatnaik/Tukar Fail"
     document_details: Butiran Dokumen
     action_details: Butiran Tindakan
     circulation_details: Butiran Edaran
     recipient_remark: "Masukkan abjad dan pilih penerima dari senarai pendek nama staf yang dipaparkan. Bagi berbilang penerima, taipkan koma (','), diikuti dengan abjad dan buat pilihan nama staf untuk penerima mesej berikutnya."
     staff_name: Masukkan nama staf
+    staff_id: Staf
     letter: Surat
     memo: Memo
     circular: Pekeliling
     others: "Lain-lain"
     email: Emel
+    circulation1_action: Tindakan oleh Penerima Edaran
     cc1action: Tindakan yang diambil
     cc1remarks: Catatan
     cc1closed: Selesai Tindakan
     cc1actiondate: Taikh Tindakan Diambil
     action_by: Tindakan Oleh
     attachment_action: "Lampiran (Tindakan)"
+    generate_report: Laporan
 
   campus:
     tenants:

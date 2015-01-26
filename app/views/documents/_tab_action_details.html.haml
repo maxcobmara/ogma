@@ -9,12 +9,12 @@
       %dd=h y.action_remarks 
       
       %dt=t 'document.action_by'
-      %dd= y.staff.try(:staff_name_with_position)
+      %dd=h y.staff.try(:staff_name_with_position)
       
       %dt=t 'document.attachment_action'
       %dd
         - if y.action.exists? then
-          = y.action_file_name
+          =h y.action_file_name
           = link_to (t 'document.download'), y.action.url
           ||
           = link_to "ALT", y.action.url
@@ -22,7 +22,7 @@
           =t 'document.no_attachment'
 
       %dt=t 'document.cc1actiondate' 
-      %dd=y.action_date.try(:strftime, '%d %b %Y')
+      %dd=h y.action_date.try(:strftime, '%d %b %Y')
         
       %dt= t 'document.cc1closed'
       %dd=h y.action_closed? ? (t 'yes2') : (t 'no2')  

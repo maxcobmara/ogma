@@ -1,0 +1,56 @@
+=f.hidden_field :action_type, :value=>"action1"
+.col-md-offset-2 
+  - admin_staff_ids = Role.joins(:users).where('roles.name=?', "Administration").pluck(:userable_id)
+  
+  = f.fields_for :circulations do |builder| 
+    - if (builder.object.staff_id == current_user.userable.id) || (admin_staff_ids.include?(current_user.userable.id))
+      - if builder.object.staff_id != current_user.userable.id
+        .form-group
+          .col-sm-2.control-label
+            =builder.label  t('document.staff_id')
+          .col-md-5
+            =builder.object.staff.staff_name_with_position
+
+      .form-group
+        .col-sm-2.control-label
+          =builder.label t('document.cc1action')
+        .col-md-5
+          =builder.text_field :action_taken, class: 'form-control'
+
+      .form-group
+        .col-sm-2.control-label
+          =builder.label t('document.cc1remarks')
+        .col-md-5
+          =builder.text_area :action_remarks, :size => '40x3', class: 'form-control'
+
+      .form-group
+        .col-sm-2.control-label
+          =builder.label t('document.attachment_action')
+        .col-md-5
+          - if builder.object.action.exists? then 
+            = builder.object.action_file_name 
+            &nbsp; &nbsp; &nbsp;
+            = link_to (t 'document.download'), builder.object.action.url 
+            ||
+            = link_to "ALT", builder.object.action.url 
+            %br 
+            =(t 'or').downcase
+          - else
+            =t('document.no_attachment')
+          =t('document.upload_file')+" : " 
+          =builder.file_field :action
+
+      .form-group
+        .col-sm-2.control-label
+          =builder.label t('document.cc1actiondate')
+        .col-md-5
+          = builder.text_field :action_date, class: 'form-control date_picker'
+
+      .form-group
+        .col-sm-2.control-label
+          =builder.label t('document.cc1closed')
+        .col-md-1
+          =builder.check_box :action_closed
+          
+    - if builder.object.staff_id != current_user.userable.id
+      %hr

@@ -13,7 +13,7 @@
         %b.caret
       %ul.dropdown-menu
         %li
-          %a{:href => document_report_documents_path(:format => 'pdf')} Document Report
+          %a{:href => document_report_documents_path(:format => 'pdf')}=t('document.generate_report')
 
 .row
   %table.table-striped.table-hover.ogma
@@ -22,7 +22,7 @@
         %th{style: "width:8%;"}= sort_link(@search, :serialno, (t 'document.serial_no'))
         %th= sort_link(@search, :refno, (t 'document.ref_no'))
         %th= sort_link(@search, :category, (t 'document.category'))
-        %th= sort_link(@search, :title, (t 'document.title'))
+        %th= sort_link(@search, :title, (t 'document.title2'))
         %th{style: "width:10%;"}= sort_link(@search, :letterdt, (t 'document.letter_date'))
         %th{style: "width:10%;"}= sort_link(@search, :letterxdt, (t 'document.received_date'))
         %th= sort_link(@search, :from, (t 'document.from'))
