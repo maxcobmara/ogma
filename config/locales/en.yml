@@ -1559,11 +1559,12 @@ en:
     upload_file: Upload File
 
   document:
+    title: Document Registry
     list_of_document: Document List
     serial_no: Serial No
     ref_no: Ref No
     category: Category
-    title: Title
+    title2: Title
     letter_date: Letter Date
     received_date: Received Date
     from: From
@@ -1579,10 +1580,27 @@ en:
     stafffiled_id: Filled By
     letterdt: Letter Date
     letterxdt: Received Date
+    circulation_date: Circulation Date
     uploaded: Uploaded File
     upload_change_file: "Upload/Change File"
     document_details: Document Details
     action_details: Action Details
+    recipient_remark: "Type an alphabet and select a recipient accordingly. To add other recipient, please type a comma (,), without any spaces, followed by an alphabet and make your next selection."
+    staff_name: Enter staff name
+    staff_id: Staff
+    letter: Letter
+    memo: Memo
+    circular: Circular
+    others: Others
+    email: "E-mail"
+    circulation1_action: Action by Recipient
+    cc1action: Action Taken
+    cc1remarks: Remark
+    cc1closed: Close Action
+    cc1actiondate: Action Date
+    action_by: Action By
+    attachment_action: "Attachment (Action)"
+    generate_report: Report
 
   events:
     campus_events: Campus Events

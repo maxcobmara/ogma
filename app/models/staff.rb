@@ -72,6 +72,10 @@ class Staff < ActiveRecord::Base
   has_many :replacor_travelstaff, :class_name => 'TravelRequest'
   has_many :travelrequest_approver, :class_name => 'TravelRequest'
 
+  #25Jan2015
+  has_many :circulations
+  has_many :documents, :through => :circulations
+  
   #validates_attachment_size         :photo, :less_than => 500.kilobytes
   #validates_attachment_content_type :photo, :content_type => ['image/jpeg', 'image/png']
  #---------------Validations------------------------------------------------

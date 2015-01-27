@@ -13,7 +13,7 @@
         %b.caret
       %ul.dropdown-menu
         %li
-          %a{:href => document_report_documents_path(:format => 'pdf')} Document Report
+          %a{:href => document_report_documents_path(:format => 'pdf')}=t('document.generate_report')
 
 .row
   %table.table-striped.table-hover.ogma
@@ -22,12 +22,12 @@
         %th{style: "width:8%;"}= sort_link(@search, :serialno, (t 'document.serial_no'))
         %th= sort_link(@search, :refno, (t 'document.ref_no'))
         %th= sort_link(@search, :category, (t 'document.category'))
-        %th= sort_link(@search, :title, (t 'document.title'))
+        %th= sort_link(@search, :title, (t 'document.title2'))
         %th{style: "width:10%;"}= sort_link(@search, :letterdt, (t 'document.letter_date'))
         %th{style: "width:10%;"}= sort_link(@search, :letterxdt, (t 'document.received_date'))
         %th= sort_link(@search, :from, (t 'document.from'))
-        %th{style: "width:15%;"}= sort_link(@search, :staffs_name, (t 'document.circulate_to'))
-        %th{style: "width:15%;"}= sort_link(@search, :action_notifications, (t 'document.action_notifications'))
+        %th{style: "width:10%;"}= sort_link(@search, :cc1date, (t 'document.circulation_date'))
+        %th{style: "width:15%;"}=(t 'document.action_notifications')
         %th= sort_link(@search, :closed, (t 'document.closed'))
 
     %tbody
@@ -45,13 +45,13 @@
           %td.centre= document.letterdt.try(:strftime, "%d %b %Y" )
           %td.centre= document.letterxdt.try(:strftime, "%d %b %Y" )
           %td= document.from
-          %td/
-          - document.staffs.each_with_index do |doc_recepient,ind|
-            (#{ind+=1}) #{doc_recepient.name} 
-            %br
-          %td= document.otherinfo
+          %td.centre= document.cc1date.try(:strftime, "%d %b %Y" )
+          %td
+            - document.circulations.each_with_index do |circulation, ind|
+              (#{ind+=1}) #{circulation.staff.name} - #{circulation.action_taken}
+              %br
           %td.centre= document.closed? ? fa_icon("check", :border => 0) : ""
-			
+
   .right{style:"padding:0 30px; margin:0;"}= paginate @documents_pagi, :theme => 'twitter-bootstrap-3'
   
 :javascript
