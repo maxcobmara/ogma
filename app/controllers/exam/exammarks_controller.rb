@@ -8,6 +8,7 @@ class Exam::ExammarksController < ApplicationController
   # GET /exammarks.xml
   def index
     valid_exams = Exammark.get_valid_exams
+    #@valid_exammm = valid_exams.count
     position_exist = @current_user.userable.positions
     if position_exist && position_exist.count > 0
       lecturer_programme = @current_user.userable.positions[0].unit
@@ -17,12 +18,12 @@ class Exam::ExammarksController < ApplicationController
       unless programme.nil? || programme.count==0
         programme_id = programme.try(:first).try(:id)
         subjects_ids = Programme.where(id: programme_id).first.descendants.at_depth(2).pluck(:id)
-        @exams_list = Exam.where('subject_id IN(?) and id IN(?)', subjects_ids, valid_exams).order(name: :asc, subject_id: :asc)
+        @exams_list_raw = Exam.where('subject_id IN(?) and id IN(?)', subjects_ids, valid_exams).order(name: :asc, subject_id: :asc)
       else
         tasks_main = @current_user.userable.positions[0].tasks_main
         if lecturer_programme == 'Commonsubject'
           programme_id ='1'
-          @exams_list = Exam.where('id IN(?)', valid_exams).order(name: :asc, subject_id: :asc)
+          @exams_list_raw = Exam.where('id IN(?)', valid_exams).order(name: :asc, subject_id: :asc)
         elsif (lecturer_programme == 'Pos Basik' || lecturer_programme == "Diploma Lanjutan") && tasks_main!=nil
           allposbasic_prog = Programme.where('course_type=? or course_type=?', "Pos Basik", "Diploma Lanjutan").pluck(:name)  #Onkologi, Perioperating, Kebidanan etc
           for basicprog in allposbasic_prog
@@ -30,12 +31,15 @@ class Exam::ExammarksController < ApplicationController
           end
           programme_id=Programme.where(name: lecturer_basicprog_name, ancestry_depth: 0).first.id
           subject_ids = Programme.where(id: programme_id).first.descendants.at_depth(2).pluck(:id)
-          @exams_list = Exam.where('subject_id IN(?) and id IN(?)', subject_ids, valid_exams).order(name: :asc, subject_id: :asc)
+          @exams_list_raw = Exam.where('subject_id IN(?) and id IN(?)', subject_ids, valid_exams).order(name: :asc, subject_id: :asc)
         else
           programme_id='0'
-          @exams_list = Exam.where('id IN(?)', valid_exams).order(name: :asc, subject_id: :asc)
+          @exams_list_raw = Exam.where('id IN(?)', valid_exams).order(name: :asc, subject_id: :asc)
         end
       end
+      @exams_list_exist_mark = Exam.joins(:exammarks).where('exam_id IN(?)', @exams_list_raw.pluck(:id)).uniq  
+      @exams_list= Exam.where('id IN(?) and id NOT IN(?)', valid_exams, @exams_list_exist_mark.pluck(:id))
+      
       @search = Exammark.search(params[:q])
       @exammarks = @search.result.search2(programme_id)
       @exammarks = @exammarks.page(params[:page]||1)
