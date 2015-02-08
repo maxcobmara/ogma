@@ -63,6 +63,10 @@ class Document < ActiveRecord::Base
     a
   end
 
+  def staffiled_list
+    (User.joins(:roles).where('authname=?',"e_filing").pluck(:userable_id)+Array(stafffiled_id)).compact.uniq
+    #add existing stafffiled_id just in case of changed of person in charge
+  end
   
   def stafffiled_details 
     stafffilled.mykad_with_staff_name
