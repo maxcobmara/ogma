@@ -1235,6 +1235,7 @@ ms_MY:
       assigned2_to: Makluman kepada Ketua Jabatan
       assigned2_on: Tarikh Makluman
       counseling_request: Permohonan Kaunseling
+      removal_prohibited_for_referred_case: "Rekod disiplin pelajar yang dipilih TIDAK BOLEH DIPADAM, kerana telah dirujuk kepada pihak Kaunselor."
       
     counseling:
       title: Sesi Kaunseling Pelajar
@@ -1286,6 +1287,7 @@ ms_MY:
       on_byday: "pada (mengikut hari)"
       case_reference: Rujukan Kes Disiplin
       display_feedback: Papar Maklumbalas
+      removal_prohibited_case_still_exist: "Rekod temujanji / sesi yang dipilih TIDAK BOLEH DIPADAM, kerana kes rujukan (kes disiplin) masih wujud."
       
     attendance:
       title: Kedatangan Pelajar

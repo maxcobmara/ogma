@@ -69,7 +69,6 @@ class Student::StudentDisciplineCasesController < ApplicationController
     @student_discipline_case = StudentDisciplineCase.find(params[:id])
     #@student_counseling_session = StudentDisciplineCase.student_counseling_session.new(params[:student_counseling_session])
     
-
     respond_to do |format|
       if @student_discipline_case.update(student_discipline_case_params)
         format.html { redirect_to(student_student_discipline_case_path(@student_discipline_case), :notice => (t 'student.discipline.case')+t('actions.updated')) }
@@ -85,11 +84,16 @@ class Student::StudentDisciplineCasesController < ApplicationController
   # DELETE /student_discipline_cases/1.xml
   def destroy
     @student_discipline_case = StudentDisciplineCase.find(params[:id])
-    @student_discipline_case.destroy
 
     respond_to do |format|
-      format.html { redirect_to(student_student_discipline_cases_url) }
-      format.xml  { head :ok }
+      if @student_discipline_case.destroy
+        format.html { redirect_to(student_student_discipline_cases_url) }
+        format.xml  { head :ok }
+      else
+        format.html { redirect_to(student_student_discipline_case_path(@student_discipline_case), :notice => t('student.discipline.removal_prohibited_for_referred_case'))}
+       #format.html { redirect_to(student_student_discipline_cases_url, :notice => StudentDisciplineCase.display_msg(@student_discipline_case.errors))}
+        format.xml  { render :xml => @student_discipline_case.errors, :status => :unprocessable_entity }
+      end
     end
   end
   

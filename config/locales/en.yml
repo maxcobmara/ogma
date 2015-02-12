@@ -1319,6 +1319,7 @@ en:
       assigned2_to: Notify HOD
       assigned2_on: Notify HOD Date
       counseling_request: Counseling request
+      removal_prohibited_for_referred_case: "Selected discipline case is NOT ALLOWED for removal, as case already referred to Counselor for action."
       
     counseling:
       title: Student Counseling Session
@@ -1370,6 +1371,7 @@ en:
       on_byday: "on (by day)"
       case_reference: Discipline Case Reference
       display_feedback: Display Feeback
+      removal_prohibited_case_still_exist: "Removal of selected appoinment/session is NOT ALLOWED, referrred case (discipline case) still exist."
     
     attendance:
       title: Student Attendance
