@@ -1320,6 +1320,18 @@ en:
       assigned2_on: Notify HOD Date
       counseling_request: Counseling request
       removal_prohibited_for_referred_case: "Selected discipline case is NOT ALLOWED for removal, as case already referred to Counselor for action."
+      new2: New 
+      open: Open
+      refer_tphep: Refer to TPHEP
+      refer_bpl: Refer to BPL
+      closed: Closed
+      all: All Case
+      smooking: Smooking
+      skip_class: Skip Class
+      quarrel: Quarrel
+      others: Others
+      no_case: No case
+      advise: Advise
       
     counseling:
       title: Student Counseling Session

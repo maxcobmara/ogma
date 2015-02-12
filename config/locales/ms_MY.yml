@@ -1236,7 +1236,19 @@ ms_MY:
       assigned2_on: Tarikh Makluman
       counseling_request: Permohonan Kaunseling
       removal_prohibited_for_referred_case: "Rekod disiplin pelajar yang dipilih TIDAK BOLEH DIPADAM, kerana telah dirujuk kepada pihak Kaunselor."
-      
+      new2: Baru
+      open: Buka
+      refer_tphep: Rujuk ke TPHEP
+      refer_bpl: Rujuk ke BPL
+      closed: Tutup
+      all: Semua Kes
+      smooking: Merokok
+      skip_class: Ponteng Kelas
+      quarrel: Bergaduh
+      others: "Lain - lain"
+      no_case: Tiada kes
+      advise: Nasihat
+    
     counseling:
       title: Sesi Kaunseling Pelajar
       title2: Sesi Kaunseling

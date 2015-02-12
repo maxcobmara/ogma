@@ -11,7 +11,13 @@
     %dd=h @student_discipline_case.investigation_notes
     
     %dt=t 'student.discipline.action_type', :default => model_class.human_attribute_name(:action_type)+":"
-    %dd=h @student_discipline_case.action_type.try(:titleize)
+    %dd
+      /=h @student_discipline_case.action_type.try(:titleize)
+      - unless @student_discipline_case.action_type.blank?
+        =h t('student.discipline.refer_bpl') if @student_discipline_case.action_type=="Ref to BPL"
+        =h t('student.discipline.refer_tphep') if @student_discipline_case.action_type=="Ref TPHEP"
+        =h t('student.discipline.no_case') if @student_discipline_case.action_type=="no_case"
+        =h t('student.discipline.advise') if @student_discipline_case.action_type=="advise"
     
     - if @student_discipline_case.action_type == "no_case"
       %dt=t 'student.discipline.closed_at_college_on', :default => model_class.human_attribute_name(:closed_at_college_on)+":"

@@ -4,8 +4,9 @@
       = f.label :status
     .col-md-2
       - if @student_discipline_case.status != nil && @student_discipline_case.status == "Closed" 
-        Closed
+        =t('student.discipline.closed')
         /elsif @student_discipline_case.status != nil && @student_discipline_case.status == "Refer to TPHEP"
         /Refer to TPHEP
       - else	
-        = f.select :status, options_for_select(@student_discipline_case.status_workflow.collect {|v,i| [v] }, @student_discipline_case.status), {:prompt => t('select')}, {class: 'form-control'}
+        = f.select :status, options_for_select(@student_discipline_case.status_workflow.collect {|v,i| [v, i] }, @student_discipline_case.status), {:prompt => t('select')}, {class: 'form-control'}
+        /= f.select :status, options_for_select(@student_discipline_case.status_workflow.collect {|v,i| [v] }, @student_discipline_case.status), {:prompt => t('select')}, {class: 'form-control'}
