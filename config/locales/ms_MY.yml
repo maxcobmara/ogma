@@ -2246,8 +2246,8 @@ ms_MY:
         note_title: "Tajuk Lampiran / Nota Latihan Semasa"
         methodologies: Metodologi
         topic: Topik
-        lecture_title: Tajuk Kuliah
-        lecture_date: Tarikh Kuliah
+        lecture_title: Tajuk
+        lecture_date: Tarikh
         start_time: Masa Mula
         end_time: Masa Tamat
         reference: Rujukan

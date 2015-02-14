@@ -2303,7 +2303,8 @@ en:
         note_title: "Attachment / Current Training Note Title"
         methodologies: Methodologies
         topic: Topic
-        lecture_date: Lecture Date
+        lecture_title: Title
+        lecture_date: Date
         start_time: Start Time
         end_time: End Time
         reference: Reference

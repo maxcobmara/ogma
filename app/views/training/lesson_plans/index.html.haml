@@ -40,7 +40,9 @@
         %td=h lesson_plan.student_qty
         %td=h lesson_plan.year
         %td=h lesson_plan.semester
-        %td=h lesson_plan.schedule_item.try(:weeklytimetable_topic).try(:subject_list)
+        %td
+          =h lesson_plan.schedule_item.try(:weeklytimetable_topic).try(:subject_list)
+          = "-"+lesson_plan.schedule_item.try(:render_class_method).try(:first).to_s
         %td=h lesson_plan.lecture_title
         %td=h lesson_plan.try(:lecture_date).try(:strftime, '%d %b %Y')
         %td=h lesson_plan.try(:start_time).try(:strftime, '%H:%M')
