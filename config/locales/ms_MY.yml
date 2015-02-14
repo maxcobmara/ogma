@@ -691,6 +691,7 @@ ms_MY:
     support: Menyokong
     approved: Diluluskan
     rejected: Ditolak
+    appointdt_not_exist: "Sila kemaskini 'Tarikh Lantikan Pertama' dalam submodul 'Maklumat Kakitangan'"
   
   position:
     title: "Tugas & Tanggungjawab"

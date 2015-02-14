@@ -772,7 +772,7 @@ en:
     reject: Reject
     approved: Approved
     rejected: Rejected
-      
+    appointdt_not_exist: "Please update 'Appointment Date' in 'Staff Information' submodule"  
       
   position:
     title: "Tasks & Responsibilities"
