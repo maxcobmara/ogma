@@ -1,0 +1,12 @@
+.form-group
+  .col-sm-2.control-label
+    = f.label :add_exist_notes
+  .col-md-6
+    /select & save selected corresponding note
+    = f.fields_for :lesson_plan_trainingnotes do |p|
+      = render 'lesson_plan_trainingnote_fields', :f => p
+    %br
+    .row  
+      = link_to_add_fields t('helpers.label.lesson_plan.add_notes'), f, :lesson_plan_trainingnotes, "",  t('helpers.label.lesson_plan.add_notes')
+    %br
+    %font{:color=>"green"}=t 'helpers.label.lesson_plan.remark'

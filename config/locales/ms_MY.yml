@@ -2067,6 +2067,8 @@ ms_MY:
       exist_attachment: "Nota dilampirkan. Klik 'Browse' untuk tukar fail."
       to: hingga
       status: Status Kelulusan
+      add_notes: Tambah Nota
+      adding_notes: "Tambah Nota Latihan (selepas Pelan Pengajaran dihantar untuk kelulusan)"
 
   campus:
     address: 

@@ -2124,7 +2124,8 @@ en:
       to: to
       status: Approval Status
       location: Location
-    
+      add_notes: Add Notes
+      adding_notes: "Add Training Notes (after Lesson Plan submitted for approval)"
  
   campus:
     address: 
