@@ -1976,8 +1976,9 @@ en:
       lecturer_name: Lecturer Name
       intake: Intake
       date_time: "Date & Time : "
-      duplicate_lecturer: "Lecturer can only be scheduled to One class at One time. Time slots with error(s) :" 
+      duplicate_lecturer: "Lecturer can only be scheduled to One class at One time. Time slots with error(s) :"
       duplicate_lecturer2: "Re-select Lecturer."
+      intake_programme_must_match: Selected Intake must match with selected Programme
     weeklytimetable_detail:
       topic: Topic
       lecturer_id: Lecturer     

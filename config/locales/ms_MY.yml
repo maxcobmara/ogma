@@ -1921,6 +1921,7 @@ ms_MY:
       date_time: "Tarikh & Masa : "
       duplicate_lecturer: "Pengajar hanya boleh mengajar Satu kelas pada satu-satu masa. Slot masa dengan ralat :" 
       duplicate_lecturer2: "Pilih semula Pengajar."
+      intake_programme_must_match: Ambilan yang dipilih mestilah sepadan dengan Program yang dipilih
     weeklytimetable_detail:
       topic: Topik
       lecturer_id: Pengajar      
