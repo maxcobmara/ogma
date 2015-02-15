@@ -3,9 +3,9 @@
     .col-sm-2.control-label
       = f.label  t 'student.discipline.action_type', for: :action_type
     .col-md-1= f.radio_button :action_type, "counseling",	:id => 'co', :class => 'radio_action_type' 
-    .col-md-1 Counseling
+    .col-md-1=t('student.discipline.counseling')
     .col-md-1= f.radio_button :action_type, "Ref to BPL", 	:id => 'bpl', :class => 'radio_action_type'
-    .col-md-2 Refer to BPL 
+    .col-md-2=t('student.discipline.refer_bpl')
 
   .form-group.co_item{style: "display: none;"}
     .col-sm-2.control-label

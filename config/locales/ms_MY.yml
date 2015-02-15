@@ -691,6 +691,7 @@ ms_MY:
     support: Menyokong
     approved: Diluluskan
     rejected: Ditolak
+    appointdt_not_exist: "Sila kemaskini 'Tarikh Lantikan Pertama' dalam submodul 'Maklumat Kakitangan'"
   
   position:
     title: "Tugas & Tanggungjawab"
@@ -1235,7 +1236,20 @@ ms_MY:
       assigned2_to: Makluman kepada Ketua Jabatan
       assigned2_on: Tarikh Makluman
       counseling_request: Permohonan Kaunseling
-      
+      removal_prohibited_for_referred_case: "Rekod disiplin pelajar yang dipilih TIDAK BOLEH DIPADAM, kerana telah dirujuk kepada pihak Kaunselor."
+      new2: Baru
+      open: Buka
+      refer_tphep: Rujuk ke TPHEP
+      refer_bpl: Rujuk ke BPL
+      closed: Tutup
+      all: Semua Kes
+      smooking: Merokok
+      skip_class: Ponteng Kelas
+      quarrel: Bergaduh
+      others: "Lain - lain"
+      no_case: Tiada kes
+      advise: Nasihat
+    
     counseling:
       title: Sesi Kaunseling Pelajar
       title2: Sesi Kaunseling
@@ -1286,6 +1300,7 @@ ms_MY:
       on_byday: "pada (mengikut hari)"
       case_reference: Rujukan Kes Disiplin
       display_feedback: Papar Maklumbalas
+      removal_prohibited_case_still_exist: "Rekod temujanji / sesi yang dipilih TIDAK BOLEH DIPADAM, kerana kes rujukan (kes disiplin) masih wujud."
       
     attendance:
       title: Kedatangan Pelajar
@@ -1907,6 +1922,7 @@ ms_MY:
       date_time: "Tarikh & Masa : "
       duplicate_lecturer: "Pengajar hanya boleh mengajar Satu kelas pada satu-satu masa. Slot masa dengan ralat :" 
       duplicate_lecturer2: "Pilih semula Pengajar."
+      intake_programme_must_match: Ambilan yang dipilih mestilah sepadan dengan Program yang dipilih
     weeklytimetable_detail:
       topic: Topik
       lecturer_id: Pengajar      
@@ -2052,6 +2068,8 @@ ms_MY:
       exist_attachment: "Nota dilampirkan. Klik 'Browse' untuk tukar fail."
       to: hingga
       status: Status Kelulusan
+      add_notes: Tambah Nota
+      adding_notes: "Tambah Nota Latihan (selepas Pelan Pengajaran dihantar untuk kelulusan)"
 
   campus:
     address: 
@@ -2229,8 +2247,8 @@ ms_MY:
         note_title: "Tajuk Lampiran / Nota Latihan Semasa"
         methodologies: Metodologi
         topic: Topik
-        lecture_title: Tajuk Kuliah
-        lecture_date: Tarikh Kuliah
+        lecture_title: Tajuk
+        lecture_date: Tarikh
         start_time: Masa Mula
         end_time: Masa Tamat
         reference: Rujukan

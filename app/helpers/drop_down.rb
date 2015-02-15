@@ -432,19 +432,20 @@ module DropDown
   #student discipline cases  
    SDCSTATUS = [
          #  Displayed       stored in db
-         [ "New","New" ],
-         [ "Open","Open" ],
-         [ "No Case","No Case" ],
-         [ "Closed", "Closed" ],
-         [ "Refer to BPL", "Refer to BPL" ]
+         [ I18n.t('student.discipline.new2'),"New" ],
+         [ I18n.t('student.discipline.open'),"Open" ],
+         [ I18n.t('student.discipline.no_case'),"No Case" ],
+         [ I18n.t('student.discipline.closed'), "Closed" ],
+         [ I18n.t('student.discipline.refer_bpl'), "Refer to BPL" ],   
+         [ I18n.t('student.discipline.refer_tphep'), "Refer to TPHEP"]
     ]
    
-  INFRACTION = [
+   INFRACTION = [
          #  Displayed       stored in db
-         [ "Merokok", 1  ],
-         [ "Ponteng Kelas", 2 ],
-         [ "Bergaduh", 3 ],
-         [ "Lain Lain", 4 ]
+         [ I18n.t('student.discipline.smooking'), 1  ],
+         [ I18n.t('student.discipline.skip_class'), 2 ],
+         [ I18n.t('student.discipline.quarrel'), 3 ],
+         [ I18n.t('student.discipline.others'), 4 ]
       ]
     
     STAFFLEAVETYPE = [

@@ -772,7 +772,7 @@ en:
     reject: Reject
     approved: Approved
     rejected: Rejected
-      
+    appointdt_not_exist: "Please update 'Appointment Date' in 'Staff Information' submodule"  
       
   position:
     title: "Tasks & Responsibilities"
@@ -1319,6 +1319,19 @@ en:
       assigned2_to: Notify HOD
       assigned2_on: Notify HOD Date
       counseling_request: Counseling request
+      removal_prohibited_for_referred_case: "Selected discipline case is NOT ALLOWED for removal, as case already referred to Counselor for action."
+      new2: New 
+      open: Open
+      refer_tphep: Refer to TPHEP
+      refer_bpl: Refer to BPL
+      closed: Closed
+      all: All Case
+      smooking: Smooking
+      skip_class: Skip Class
+      quarrel: Quarrel
+      others: Others
+      no_case: No case
+      advise: Advise
       
     counseling:
       title: Student Counseling Session
@@ -1370,6 +1383,7 @@ en:
       on_byday: "on (by day)"
       case_reference: Discipline Case Reference
       display_feedback: Display Feeback
+      removal_prohibited_case_still_exist: "Removal of selected appoinment/session is NOT ALLOWED, referrred case (discipline case) still exist."
     
     attendance:
       title: Student Attendance
@@ -1962,8 +1976,9 @@ en:
       lecturer_name: Lecturer Name
       intake: Intake
       date_time: "Date & Time : "
-      duplicate_lecturer: "Lecturer can only be scheduled to One class at One time. Time slots with error(s) :" 
+      duplicate_lecturer: "Lecturer can only be scheduled to One class at One time. Time slots with error(s) :"
       duplicate_lecturer2: "Re-select Lecturer."
+      intake_programme_must_match: Selected Intake must match with selected Programme
     weeklytimetable_detail:
       topic: Topic
       lecturer_id: Lecturer     
@@ -2109,7 +2124,8 @@ en:
       to: to
       status: Approval Status
       location: Location
-    
+      add_notes: Add Notes
+      adding_notes: "Add Training Notes (after Lesson Plan submitted for approval)"
  
   campus:
     address: 
@@ -2287,7 +2303,8 @@ en:
         note_title: "Attachment / Current Training Note Title"
         methodologies: Methodologies
         topic: Topic
-        lecture_date: Lecture Date
+        lecture_title: Title
+        lecture_date: Date
         start_time: Start Time
         end_time: End Time
         reference: Reference

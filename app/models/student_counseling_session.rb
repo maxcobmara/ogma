@@ -2,6 +2,7 @@ class StudentCounselingSession < ActiveRecord::Base
   # befores, relationships, validations, before logic, validation logic, 
   #controller searches, variables, lists, relationship checking
   before_save :set_to_nil_where_false, :set_date_to_notimezone
+  before_destroy :check_referred_case
   
   belongs_to :student
   belongs_to :student_discipline_case, :foreign_key => 'case_id'
@@ -73,10 +74,30 @@ class StudentCounselingSession < ActiveRecord::Base
     find(:all, :conditions =>['requested_at>? and requested_at<? and requested_at >?', startdte, enddte, Time.now.in_time_zone('UTC') ],:order => 'requested_at DESC')
   end 
   
+  #def self.display_msg(err)
+    #full_msg=[]
+    #err.each do |k,v|
+      #full_msg << v
+    #end
+    #full_msg
+  #end
+  
   def self.search_session_done(startdt,enddt)
       startdte=startdt.strftime('%Y-%m-%d %H:%M:%S')
       enddte =enddt.strftime('%Y-%m-%d %H:%M:%S') 
       find(:all, :conditions =>['requested_at>? and requested_at<? and confirmed_at <?', startdte, enddte, Time.now.in_time_zone('UTC') ], :order => 'confirmed_at DESC')
   end 
+  
+  private
+  
+  def check_referred_case
+    aaa=StudentDisciplineCase.find(case_id)
+    if aaa
+       #errors.add(:base, I18n.t('student.counseling.removal_prohibited_case_still_exist'))
+       return false
+    else
+      return true
+    end
+  end
   
 end

@@ -4,7 +4,7 @@
     %ul.nav.nav-tabs
       %li.active= link_to (t 'document.document_details'),"#details_edit", "data-toggle" => "tab"
       %li=link_to (t 'document.circulation_details'), "#circulation_details_edit", "data-toggle" => "tab"
-      %li=link_to (t 'document.circulation1_action'), "#action_details_edit", "data-toggle" => "tab"
+      %li=link_to (t 'document.circulation1_action'), "#action_details_edit", "data-toggle" => "tab"  if @document.circulations.count > 0 
       
     .tab-content{style:"padding-top:1em"}
       #details_edit.tab-pane.active
@@ -14,7 +14,8 @@
       #circulation_details_edit.tab-pane
         %br
         = render 'tab_circulation_details_edit', :f => f
-        
-      #action_details_edit.tab-pane
-        %br
-        = render 'tab_action_details_edit', :f => f
+      
+      - if @document.circulations.count > 0 
+        #action_details_edit.tab-pane
+          %br
+          = render 'tab_action_details_edit', :f => f

@@ -21,7 +21,7 @@ class Leaveforstaff < ActiveRecord::Base
     end
     
     def validate_end_date_before_start_date
-      if leavenddate && leavestartdate
+      if leavenddate && leavestartdate && leavetype!=2
         errors.add(:leavenddate, "Your leave must begin before it ends") if leavenddate < leavestartdate || leavestartdate < DateTime.now
       end
     end
@@ -103,7 +103,7 @@ class Leaveforstaff < ActiveRecord::Base
         else
          a = (applicant.staffgrade.name)[-2,4].to_i
         end
-      b = Date.today.year - applicant.appointdt.year
+      b = Date.today.year - applicant.appointdt.try(:year)
       if    a < 21 && b < 10
         20
       elsif a < 21 && b > 10
@@ -125,7 +125,7 @@ class Leaveforstaff < ActiveRecord::Base
       leavedays.each do |leave|
         accumulated_leave+=leave.leavenddate+1-leave.leavestartdate
       end
-      cuti_rehat_entitlement - accumulated_leave
+      cuti_rehat_entitlement - accumulated_leave if cuti_rehat_entitlement!=nil
     end
   
   

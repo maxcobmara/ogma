@@ -1,0 +1,69 @@
+- model_class = LessonPlan
+.page-header
+  %h1=(t 'training.lesson_plan.title2')+(t 'training.lesson_plan.adding_notes')
+
+= render 'shared/flashes'
+
+.row
+  = form_for [:training, @lesson_plan], html: { multipart: true, class: 'form-horizontal' }  do |f| 
+    = render 'shared/error_messages', object: f.object
+
+    .row
+      .col-md-offset-1
+        / Nav tabs
+        %ul.nav.nav-tabs
+          %li= link_to (t 'training.lesson_plan.descriptions'),"#lesson_plan_descriptions", "data-toggle" => "tab"
+          %li=link_to (t 'training.lesson_plan.methodologies'), "#lesson_plan_methodologies", "data-toggle" => "tab"
+          %li=link_to (t 'training.lesson_plan.submission'), "#lesson_plan_submission", "data-toggle" => "tab"
+          %li.active=link_to (t 'training.lesson_plan.add_notes'), "#add_notes_edit", "data-toggle" => "tab"
+
+        / display 
+        .tab-content{style:"padding-top:1em"}
+          .col-md-8.col-md-offset-1
+            %dl.dl-horizontal
+              %dt= t 'training.lesson_plan.lecturer', :default => model_class.human_attribute_name(:lecturer) + ":"
+              %dd=h @lesson_plan.lessonplan_owner.name
+          
+              %dt= t 'training.lesson_plan.intake_id', :default => model_class.human_attribute_name(:intake_id)+":"
+              %dd
+                - @weeklytmetabledetails = WeeklytimetableDetail.all.map(&:id).uniq
+                - if @weeklytmetabledetails.include?(@lesson_plan.schedule) 
+                  =t 'training.lesson_plan.group'
+                  =h @lesson_plan.schedule_item.weeklytimetable.schedule_intake.group_with_intake_name
+                - else
+                  %font{:color=>"red"}=t('training.lesson_plan.schedule_removed')
+        
+          #lesson_plan_descriptions.tab-pane
+            %br
+            =render 'tab_descriptions'
+        
+          #lesson_plan_methodologies.tab-pane
+            %br
+            =render 'tab_methodologies'
+
+          #lesson_plan_submission.tab-pane
+            %br
+            = render 'tab_submission'
+        
+          #add_notes_edit.tab-pane.active
+            %BR
+            %BR
+            .col-md-6.col-md-offset-2
+              = render 'tab_add_notes_edit', :f => f
+
+    %br        
+    .row
+      .form-group
+        .col-md-1.col-md-offset-2
+          = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), training_lesson_plan_path(@lesson_plan), :class => 'btn btn-default'
+        .col-md-2
+          .div{style: "margin-left:-40px;"}
+            = f.submit t('update'), class: "btn btn-primary"
+
+:javascript
+
+  function add_fields(link, association, content) {  
+    var new_id = new Date().getTime();  
+    var regexp = new RegExp("new_" + association, "g");  
+    $(link).parent().before(content.replace(regexp, new_id));  
+  }

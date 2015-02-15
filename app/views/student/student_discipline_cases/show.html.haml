@@ -9,7 +9,7 @@
     / Nav tabs
     %ul.nav.nav-tabs
       %li.active= link_to (t 'student.discipline.report_details'),"#report_details", "data-toggle" => "tab"
-      %li=link_to ((t 'student.discipline.case_info')+" ("+@student_discipline_case.status+")"), "#case_info", "data-toggle" => "tab"  if ["Open", "Closed", "No Case", "Refer to TPHEP", "Refer to BPL"].include? (@student_discipline_case.status) 
+      %li=link_to ((t 'student.discipline.case_info')+" ("+@student_discipline_case.render_status+")"), "#case_info", "data-toggle" => "tab"  if ["Open", "Closed", "No Case", "Refer to TPHEP", "Refer to BPL"].include? (@student_discipline_case.status) 
       %li=link_to (t 'student.discipline.action_details'), "#action_taken", "data-toggle" => "tab" if (["Open", "Closed", "Refer to TPHEP", "Refer to BPL"].include? (@student_discipline_case.status)) && (@student_discipline_case.assigned2_to == @current_user.userable_id || @current_user.roles.pluck(:name).include?("Administration"))
       
       /- if ["Closed","Refer to BPL"].include? (@student_discipline_case.status)  
@@ -28,6 +28,9 @@
           
           %dt= t 'student.discipline.student_id', :default => model_class.human_attribute_name(:student_id)+":"
           %dd=h @student_discipline_case.student.try(:matrix_name)
+          
+          %dt Status :
+          %dd=h @student_discipline_case.render_status 
         
       #report_details.tab-pane.active
         %br
@@ -48,7 +51,7 @@
         #refer_to_bpl.tab-pane
           %br
           = render 'tab_refer_to_bpl'
-
+      
 .row
   .col-md-7.col-md-offset-2
     %hr

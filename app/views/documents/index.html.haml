@@ -28,7 +28,7 @@
         %th= sort_link(@search, :from, (t 'document.from'))
         %th{style: "width:10%;"}= sort_link(@search, :cc1date, (t 'document.circulation_date'))
         %th{style: "width:15%;"}=(t 'document.action_notifications')
-        %th= sort_link(@search, :closed, (t 'document.closed'))
+        %th= sort_link(@search, :closed, (t 'document.file_closed'))
 
     %tbody
     = render "index_search"

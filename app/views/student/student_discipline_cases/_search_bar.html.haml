@@ -1,6 +1,6 @@
 = search_form_for @search, url: student_student_discipline_cases_path,  class: "form-inline" do |f|
   %tr.search_row{style: "display: none;"}
-    %td= select_tag('q[status_cont_any]', options_for_select(DropDown::SDCSTATUS+[['Refer to TPHEP','Refer to TPHEP']]), {class: 'selectpicker', "data-width"=>"100px"})
+    %td= select_tag('q[status_cont_any]', options_for_select(DropDown::SDCSTATUS), {class: 'selectpicker', "data-width"=>"100px"})
     %td= f.text_field :student_course_name_cont, size: 2, class: 'form-control'
     %td &nbsp;
     %td= f.text_field :student_matrixno_cont, size: 2, class: 'form-control'

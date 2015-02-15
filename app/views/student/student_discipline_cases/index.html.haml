@@ -32,7 +32,7 @@
     
     - @student_discipline_cases.each do |student_discipline_case|
       %tr
-        %td=h link_to student_discipline_case.status, student_student_discipline_case_path(student_discipline_case)
+        %td=h link_to student_discipline_case.render_status, student_student_discipline_case_path(student_discipline_case)
         %td=h student_discipline_case.student.course.programme_list
         %td
           - @intake=student_discipline_case.student.intake

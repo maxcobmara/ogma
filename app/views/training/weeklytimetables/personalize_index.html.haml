@@ -22,10 +22,10 @@
         /%th= sort_link(@search, :end_date, (t 'training.weeklytimetable.enddate'))
         /%th= sort_link(@search, :semester, (t 'training.weeklytimetable.semester'))
         %th= (t 'training.weeklytimetable.programme_id')
-        %th= (t 'training.weeklytimetable.intake_id')
+        /%th= (t 'training.weeklytimetable.intake_id') - may have multiple groups (intakes) in 1 week
         %th= (t 'training.weeklytimetable.startdate')
         %th= (t 'training.weeklytimetable.enddate')
-        %th= (t 'training.weeklytimetable.semester')
+        /%th= (t 'training.weeklytimetable.semester')
 
     - all_combine = []
     - @weeklytimetables_details.each do |x|
@@ -40,10 +40,10 @@
           %tr
             /%td=h link_to weeklytimetable.schedule_programme.programme_list, training_weeklytimetable_path(weeklytimetable)     
             %td=h link_to item.schedule_programme.programme_list, personalize_show_training_weeklytimetable_path(sdate)
-            %td=h item.schedule_intake.group_with_intake_name
+            /%td=h item.schedule_intake.group_with_intake_name
             %td=h sdate.try(:strftime, "%d %b %Y")
             %td=h item.try(:enddate).try(:strftime, "%d %b %Y")
-            %td=h item.academic_semester.semester
+            /%td=h item.academic_semester.semester
 
 
   /.right{style:"padding:0 30px; margin:0;"}= paginate @weeklytimetables, :theme => 'twitter-bootstrap-3'

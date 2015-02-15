@@ -114,7 +114,7 @@ class LessonPlan < ActiveRecord::Base
 	 if Trainingnote.where('document_file_name=? and timetable_id=?', data_file_name, schedule).count==0
            notes_for_lessonplan.save   
 	 elsif Trainingnote.where('document_file_name=? and timetable_id=?', data_file_name, schedule).count>0
-	   @trainingnote_lessonplan.update_attributes(:document_file_name=>data_file_name, :document_content_type=>data_content_type,:document_file_size=>data_file_size, :timetable_id=>schedule, :staff_id=>current_user.staff_id, :title=>title,:topicdetail_id=>@topicdetail_id)
+	   @trainingnote_lessonplan.update_attributes(:document_file_name=>data_file_name, :document_content_type=>data_content_type,:document_file_size=>data_file_size, :timetable_id=>schedule, :staff_id=>prepared_by, :title=>title,:topicdetail_id=>@topicdetail_id)
          end
      end 
    end

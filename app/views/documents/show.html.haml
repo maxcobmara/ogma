@@ -10,7 +10,7 @@
     %ul.nav.nav-tabs
       %li.active= link_to  (t 'document.document_details'), "#details", "data-toggle" => "tab"
       %li=link_to (t 'document.circulation_details'), "#circulation_details", "data-toggle" => "tab"
-      %li=link_to (t 'document.action_details'), "#action_details", "data-toggle" => "tab"
+      %li=link_to (t 'document.action_details'), "#action_details", "data-toggle" => "tab" if @document.circulations.count > 0 
  
     /display 
     .tab-content{style:"padding-top:1em"}
@@ -33,9 +33,10 @@
         %br
         = render 'tab_circulation_details'
 
-      #action_details.tab-pane
-        %BR
-        = render 'tab_action_details'
+      - if @document.circulations.count > 0 
+        #action_details.tab-pane
+          %BR
+          = render 'tab_action_details'
   
 .row
   .col-md-4.col-md-offset-2

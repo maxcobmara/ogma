@@ -3,6 +3,7 @@ class StudentDisciplineCase < ActiveRecord::Base
   #controller searches, variables, lists, relationship checking
   
   before_save :close_if_no_case
+  before_destroy :check_case_referred_for_counseling
   
   belongs_to :staff, :foreign_key => 'reported_by'
   belongs_to :ketua, :class_name => 'Staff', :foreign_key => 'assigned_to'
@@ -32,13 +33,14 @@ class StudentDisciplineCase < ActiveRecord::Base
   scope :bpl, -> {where(status: 'Refer to BPL')}
   scope :closed, -> {where(status: 'Closed')}
   
-  FILTERS = [
-    {:scope => "new2",   :label => "New"},                                      #:scope => "new"
-    {:scope => "opencase",  :label => "Open"},
-    {:scope => "tphep", :label => "Refer to TPHEP"},
-    {:scope => "bpl",   :label => "Refer to BPL"},
-    {:scope => "closed",:label => "Closed"}
-  ]
+ FILTERS = [
+    {:scope => "all", :label => I18n.t('student.discipline.all')},
+    {:scope => "new2",   :label => I18n.t('student.discipline.new2')},                                      #:scope => "new"
+    {:scope => "opencase",  :label =>  I18n.t('student.discipline.open')},
+    {:scope => "tphep", :label =>  I18n.t('student.discipline.refer_tphep')},
+    {:scope => "bpl",   :label =>  I18n.t('student.discipline.refer_bpl')},
+    {:scope => "closed",:label => I18n.t('student.discipline.closed')}
+  ]  
   
   def close_if_no_case
     if action_type == "no_case" || action_type == "advise" #|| action_type == "counseling"
@@ -63,16 +65,17 @@ class StudentDisciplineCase < ActiveRecord::Base
   	end
   end
     
-    def status_workflow
+  #note : status - in English all the time
+  def status_workflow
     flow = Array.new
       if status == nil
-        flow << "New"
+        flow << [ I18n.t('student.discipline.new2'),"New"]
       #------------
-      elsif status =="New" 
+      elsif status == "New"  
         if reported_by == nil || student_id == nil || status == nil || infraction_id == nil || assigned_to == nil
-        	flow << "New"	#special case for 1st time data entry (upon validation-if any of the above field is nil --> stay with 'New' status)
+        	flow << [ I18n.t('student.discipline.new2'),"New"]	#special case for 1st time data entry (upon validation-if any of the above field is nil --> stay with 'New' status)
         else
-        	flow << "Open" << "Refer to TPHEP" << "Closed" 
+        	flow << [ I18n.t('student.discipline.open'),"Open"]<< [ I18n.t('student.discipline.refer_tphep'), "Refer to TPHEP"] << [ I18n.t('student.discipline.closed'),"Closed"]
         end
       #------------
       #elsif status == "New"	#asal
@@ -84,14 +87,22 @@ class StudentDisciplineCase < ActiveRecord::Base
       elsif status == "Refer to TPHEP"
         #flow << "Refer to TPHEP" << "Refer to BPL" << "Closed"		#asal
         #flow << "Refer to TPHEP" << "Refer to BPL" << "Closed" << "Open"		#baru-24Dec2012
-        flow << "Refer to BPL" << "Closed"		#baru
+        flow << [ I18n.t('student.discipline.refer_bpl'), "Refer to BPL"] << [ I18n.t('student.discipline.closed'), "Closed"]		#baru
       elsif status == "Refer to BPL"
-        flow << "Refer to BPL" << "Closed"
+        flow << [ I18n.t('student.discipline.refer_bpl'), "Refer to BPL"] << [ I18n.t('student.discipline.new2'),"New"]
       else
     end
     flow
-    end
+  end
 
+  def render_status
+    (DropDown::SDCSTATUS.find_all{|disp, value| value == status }).map {|disp, value| disp}.first
+  end
+    
+  def render_infraction
+    (DropDown::INFRACTION.find_all{|disp, value| value == infraction_id }).map {|disp, value| disp}.first
+  end
+    
     def reporter_details 
           suid = Array(reported_by)
           exists = Staff.all.pluck(:id)
@@ -117,4 +128,25 @@ class StudentDisciplineCase < ActiveRecord::Base
     def room_no
       location.blank? ? "Not Assigned" : " #{location.location_list}"  
     end
+    
+    #def self.display_msg(err)
+      #full_msg=[]
+      #err.each do |k,v|
+        #full_msg << v
+      #end
+      #full_msg
+    #end
+    
+    private
+    
+    def check_case_referred_for_counseling
+      counseling_sessions=StudentCounselingSession.where(case_id: id)
+      if counseling_sessions && counseling_sessions.count > 0
+        #errors.add(:base, I18n.t('student.discipline.removal_prohibited_for_referred_case'))
+        return false
+      else
+        return true
+      end
+    end
+    
 end

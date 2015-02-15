@@ -61,6 +61,10 @@ class Training::LessonPlansController < ApplicationController
     end
     @location_display="reporting"
   end
+  
+  def add_notes
+    @lesson_plan = LessonPlan.find(params[:id])
+  end
 
   # POST /lesson_plans
   # POST /lesson_plans.xml

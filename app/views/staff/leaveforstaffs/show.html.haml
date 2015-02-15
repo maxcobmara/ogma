@@ -20,7 +20,7 @@
         %dd= @leaveforstaff.replacement_id.blank? ? "" : @leaveforstaff.replacement.name 
 
         %dt= t 'staff_leave.entitlement'
-        %dd= @leaveforstaff.cuti_rehat_entitlement
+        %dd= @leaveforstaff.applicant.appointdt.nil? ? (t 'staff_leave.appointdt_not_exist') : @leaveforstaff.leave_balance
 
   #approve.tab-pane.fade
     .col-md-8.col-md-offset-1
