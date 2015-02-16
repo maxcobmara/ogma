@@ -12,7 +12,7 @@ class Leaveforstaff < ActiveRecord::Base
   
     validates_presence_of :staff_id, :leavetype
     validate :validate_positions_exist
-    validate :validate_end_date_before_start_date
+    validate :validate_end_date_before_start_date, :validate_leave_application_is_unique
   
     def validate_positions_exist
       if applicant.position_for_staff == "-"
@@ -22,7 +22,40 @@ class Leaveforstaff < ActiveRecord::Base
     
     def validate_end_date_before_start_date
       if leavenddate && leavestartdate && leavetype!=2
-        errors.add(:leavenddate, "Your leave must begin before it ends") if leavenddate < leavestartdate || leavestartdate < DateTime.now
+        errors.add(:base, I18n.t('staff_leave.begin_before_ends')) if leavenddate < leavestartdate || leavestartdate < DateTime.now
+      end
+    end
+    
+    def validate_leave_application_is_unique
+      #existing leave
+      leavedays = Leaveforstaff.where(staff_id: applicant)
+      e_leavedates = []
+      leavedays.each do |leave|
+        currdate = leave.leavestartdate
+        daycount= leave.leavenddate+1-leave.leavestartdate
+        0.upto(daycount-1) do |t|
+          if currdate <= leave.leavenddate 
+            e_leavedates << currdate
+            currdate+=1.days
+          end
+        end
+      end
+      #current application 
+      c_leavedates = []
+      c_currdate = leavestartdate
+      c_daycount=leavenddate+1-leavestartdate
+      0.upto(c_daycount-1) do |u|
+        if c_currdate  <= leavenddate
+          c_leavedates << c_currdate
+          c_currdate+=1.days
+        end
+      end
+      duplicates = (e_leavedates & c_leavedates).count
+      if duplicates > 0 
+        errors.add(:base, I18n.t('staff_leave.leave_already_taken'))
+        return false
+      else
+        return true
       end
     end
   
@@ -238,7 +271,7 @@ class Leaveforstaff < ActiveRecord::Base
          a = (applicant.staffgrade.name)[-2,4].to_i
         end
       b = Date.today.year - applicant.appointdt.try(:year)
-      if    a < 21 && b < 10
+      if a < 21 && b < 10
         20
       elsif a < 21 && b > 10
         25
@@ -257,11 +290,28 @@ class Leaveforstaff < ActiveRecord::Base
       accumulated_leave = 0
       leavedays = Leaveforstaff.where('staff_id=? AND leavetype=?',applicant, 1)
       leavedays.each do |leave|
-        accumulated_leave+=leave.leavenddate+1-leave.leavestartdate
+        accumulated_leave+=(leave.leavenddate+1.day-leave.leavestartdate).to_i
       end
       cuti_rehat_entitlement - accumulated_leave if cuti_rehat_entitlement!=nil
     end
+      
+    def balance_before
+      bal_bef = 0
+      leavedays = Leaveforstaff.where('staff_id=? AND leavetype=? and leavestartdate <?',applicant, 1, leavestartdate)
+      leavedays.each do |leave|
+        bal_bef+=(leave.leavenddate+1-leave.leavestartdate).to_i
+      end
+      cuti_rehat_entitlement - bal_bef if cuti_rehat_entitlement!=nil
+    end
   
+    def balance_after
+      bal_aft = 0
+      leavedays = Leaveforstaff.where('staff_id=? AND leavetype=? and leavestartdate <=?',applicant, 1, leavestartdate)
+      leavedays.each do |leave|
+        bal_aft+=(leave.leavenddate+1-leave.leavestartdate).to_i
+      end
+      cuti_rehat_entitlement - bal_aft if cuti_rehat_entitlement!=nil
+    end
   
     def endorser
       if approval2_id == 0

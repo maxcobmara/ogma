@@ -4,8 +4,8 @@ class Staff::LeaveforstaffsController < ApplicationController
   def index
     @leaveforstaffs = Leaveforstaff.all
     @search = Leaveforstaff.search(params[:q])
-    @leaveforstaffs = @search.result 
-    @leaveforstaffs = @leaveforstaffs.page(params[:page]||1)
+    @leaveforstaffs = @search.result
+    @leaveforstaffs = @leaveforstaffs.order(staff_id: :asc, leavestartdate: :asc).page(params[:page]||1)
   end
   
   def show
