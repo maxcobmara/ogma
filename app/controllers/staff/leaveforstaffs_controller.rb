@@ -34,7 +34,7 @@ class Staff::LeaveforstaffsController < ApplicationController
 
     respond_to do |format|
       if @leaveforstaff.save
-        LeaveforstaffsMailer.staff_leave_notification(@leaveforstaff).deliver
+        #LeaveforstaffsMailer.staff_leave_notification(@leaveforstaff).deliver
         format.html { redirect_to(staff_leaveforstaff_path(@leaveforstaff), notice:t('staff_leave.new_notice'))}
         format.xml  { render :xml => @leaveforstaff, :status => :created, :location => @leaveforstaff }
       else
