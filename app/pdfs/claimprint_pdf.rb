@@ -31,16 +31,16 @@ class ClaimprintPdf < Prawn::Document
              ["NAMA", " #{@travel_claim.staff.name} ", ""],
              ["NO KAD PENGENALAN", "#{@travel_claim.staff.formatted_mykad}", ""],
              ["GRED/KATEGORI/KUMPULAN", "#{@travel_claim.staff.staffgrade.name}", ""],
-             ["JAWATAN", "#{@travel_claim.staff.try(:position).try(:name)} ", ""],
-             ["", "GAJI", @view.currency(@travel_claim.staff.starting_salary.to_f)],
-             ["PENDAPATAN (RM)", "ELAUN-ELAUN", " "],
-             ["", "JUMLAH",""],
-             ["","JENIS MODEL",""],
-             ["KENDERAAN", "NO PENDAFTARAN",""],
-             ["","KUASA (C.C)", " "],
+             ["JAWATAN", "#{@travel_claim.staff.try(:positions).try(:first).try(:name)} ", ""],
+             ["", "GAJI", @view.currency(@travel_claim.staff.current_salary.to_f)],
+             ["PENDAPATAN (RM)", "ELAUN-ELAUN", @view.currency(@travel_claim.staff.allowance.to_f)],
+             ["", "JUMLAH",@view.currency(@travel_claim.staff.current_salary.to_f+@travel_claim.staff.allowance.to_f)],
+             ["","JENIS MODEL"," #{@travel_claim.staff.vehicles.first.type_model}"],
+             ["KENDERAAN", "NO PENDAFTARAN"," #{@travel_claim.staff.vehicles.first.reg_no}"],
+             ["","KUASA (C.C)", " #{@travel_claim.staff.vehicles.first.cylinder_capacity}"],
              ["","KELAS TUNTUTAN","#{@travel_claim.staff.transportclass_id} "]]
-             
-             table(data1, :column_widths => [180, 180,180], :cell_style => { :size => 10}) do
+    
+             table(data1, :column_widths => [180, 180,180], :cell_style => { :size => 10,  :inline_format => :true}) do
                row(0).background_color = 'FFE34D'
                self.width = 540
                row(0).align = :center

@@ -299,7 +299,7 @@ class TravelClaim < ActiveRecord::Base
   end
   def parking_receipts_total
     #travel_claim_receipts.sum(:amount, :conditions => ["expenditure_type = ?", 42])
-    travel_claim_receipts.where(expenditure_type = ?", 42)
+    travel_claim_receipts.where(expenditure_type: 42).sum(:amount)
   end
   
   def laundry_receipts
