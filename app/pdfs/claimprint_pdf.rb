@@ -70,10 +70,10 @@ class ClaimprintPdf < Prawn::Document
                       Lot 8173, Jalan Pesiaran Kempas Baru
                        81200 Johor Bahru, Johor" ],
                       ["ALAMAT RUMAH", "#{@travel_claim.staff.addr}"],
-                      ["ALAMAT PENGINAPAN", ""],
+                      ["ALAMAT PENGINAPAN", "#{@travel_claim.accommodations if (@travel_claim.travel_claim_allowances.map(&:expenditure_type) & [31,32]).count > 0}"],
                       ["NO GAJI", "#{@travel_claim.staff.salary_no}"],
-                      ["NO AKAUN", "#{@travel_claim.staff.bankaccno}"],
-                      ["NAMA BANK", "#{@travel_claim.staff.bank}"],
+                      ["NO AKAUN", "#{@travel_claim.staff.bankaccounts.first.account_no}"],
+                      ["NAMA BANK", "#{@travel_claim.staff.bankaccounts.first.bank.long_name}"],
                       ["EMAIL", " #{@travel_claim.staff.coemail}"],
                       ["NO TELEFON BIMBIT","#{@travel_claim.staff.phonecell}"]]
              

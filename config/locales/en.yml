@@ -510,6 +510,10 @@ en:
       approved: approved
       amended_resubmit: amended and resubmit for finance check
       status_not_known: status not known
+      accommodations: Accommodations 
+      hotel_lodging: "(Hotel / Lodging Address)"
+      address_compulsory: " Compulsory for lodging allowance / hotel rent"
+      address_required: "Please enter lodging / hotel address for claims of lodging allowance / hotel rent"
       
     staff_appraisal:
       title: Staff Appraisal

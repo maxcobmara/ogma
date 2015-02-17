@@ -503,6 +503,10 @@ ms_MY:
       approved: diluluskan
       amended_resubmit: telah diperbaiki dan dihantar semula untuk semakan kewangan
       status_not_known: status tidak diketahui
+      accommodations: Penginapan
+      hotel_lodging: "(Alamat Hotel / Lojing)"
+      address_compulsory: " Mesti diisi untuk elaun lojing / sewa hotel"
+      address_required: "Sila masukkan alamat lojing / hotel bagi tuntutan elaun lojing / sewa hotel"
 
     staff_appraisal:
       title: Penilaian Prestasi
