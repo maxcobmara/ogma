@@ -20,6 +20,7 @@ class ClaimprintPdf < Prawn::Document
     hotel
     pelbagai
     pengakuan
+    kewangan
     pengesahan
     pendahuluan
 
@@ -145,7 +146,7 @@ def tuntutan
                     if @log.count > 0         
                 data4 = 
                  @log.map do |travel_log|
-                ["#{travel_log.travel_on.try(:strftime, '%d %b %Y')} #{travel_log.travel_on.strftime("(%A)")}", "#{travel_log.start_at.try(:strftime,"%l:%M%p")}", "#{travel_log.finish_at.try(:strftime,"%l:%M%p")}","#{travel_log.destination}","#{travel_log.mileage}", @view.currency(travel_log.km_money.to_f)]
+                ["#{I18n.l(travel_log.travel_on, :format => '%d %b %Y')} #{I18n.l(travel_log.travel_on, :format => "(%A)")}", "#{I18n.l(travel_log.start_at, :format => "%l:%M %p")}", "#{I18n.l(travel_log.finish_at, :format => "%l:%M %p")}","#{travel_log.destination}","#{travel_log.mileage}", @view.currency(travel_log.km_money.to_f)]
               end
             else
               data4 = [["","","","","",""]]
@@ -155,8 +156,8 @@ def tuntutan
                   
                 end
                 
-                data5 =  [["Totals", "", "#{travel_request.log_mileage}",@view.currency(travel_request.log_fare.to_f) ],
-                          ["Total KM", "", "#{@travel_claim.total_mileage}", @view.currency(@travel_claim.total_km_money.to_f) ]]
+                data5 =  [["Jumlah", "", "#{travel_request.log_mileage}",@view.currency(travel_request.log_fare.to_f) ],
+                          ["Jumlah KM", "", "#{@travel_claim.total_mileage}", @view.currency(@travel_claim.total_km_money.to_f) ]]
   
                          table(data5, :column_widths => [60, 330 , 70, 80], :cell_style => { :size => 10}) do
                            self.width = 540
@@ -398,6 +399,24 @@ end
               row(8).column(0).borders = [  :left, :right]
               row(9).column(0).borders = [  :left, :right, :bottom]
 
+            end
+            move_down 10
+  end
+  
+  def kewangan
+    
+    data = [[" PENGESAHAN KEWANGAN"],
+            ["Tarikh: #{@travel_claim.checked_on.try(:strftime,"%d-%m-%Y")}"],
+            ["Nama: #{@travel_claim.checker.name unless  @travel_claim.checker.blank? }"],
+            ["Jawatan: #{@travel_claim.checker.try(:position).try(:name)}"]]
+            
+            table(data, :column_widths => [540], :cell_style => { :size => 10})  do
+              row(0).background_color = 'FFE34D'
+              self.width = 540
+              row(0).align = :center
+              row(1).column(0).borders = [  :left, :right]
+              row(2).column(0).borders = [  :left, :right]
+              row(3).column(0).borders = [  :left, :right, :bottom]
             end
             move_down 10
   end

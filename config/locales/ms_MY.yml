@@ -2432,8 +2432,8 @@ ms_MY:
     formats:
       default:  "%l:%M %p"
       short: "%l:%M %p"
-    am: pagi
-    pm: petang    
+    am: pg
+    pm: ptg 
 
   number:
     currency:

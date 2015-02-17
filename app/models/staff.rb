@@ -63,6 +63,7 @@ class Staff < ActiveRecord::Base
   #Link to Model travel_claim
   has_many :travel_claims, :dependent => :destroy
   has_many :approvers,           :class_name => 'TravelClaim',      :foreign_key => 'approved_by'
+  has_many :checkers,            :class_name => 'TravelClaim',      :foreign_key => 'checked_by'
 
   #links to Model TravelRequest
   #has_many :staffs,             :class_name => 'TravelRequest', :foreign_key => 'staff_id', :dependent => :destroy #staff name
