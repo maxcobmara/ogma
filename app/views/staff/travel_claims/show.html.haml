@@ -17,10 +17,14 @@
       .col-md-8.col-md-offset-1
         %dl.dl-horizontal
           %dt= t 'staff.travel_claim.month_year', :default => model_class.human_attribute_name(:claim_month) + ":"
-          %dd=h @travel_claim.claim_month.strftime("%B %Y") 
+          %dd=h l(@travel_claim.claim_month, :format => "%B %Y") 
           
           %dt= t 'staff.travel_claim.staff_id', :default => model_class.human_attribute_name(:staff_id) + ":"
           %dd=h @travel_claim.staff.staff_name_with_position unless @travel_claim.staff.blank?
+          
+          - if @travel_claim.travel_requests.count > 0
+            %dt= t('staff.transportclass_id')
+            %dd= @travel_claim.travel_requests.first.transport_class+'  ('+@travel_claim.staff.vehicles[0].reg_no+','+@travel_claim.staff.vehicles[0].type_model+' cc)'
         
       #travel_request_log.tab-pane.active
         - for travel_request in @travel_claim.travel_requests

@@ -20,16 +20,23 @@
           .col-md-3
             - unless @my_approved_unclaimed_requests != nil 
               (
-              = @travel_claim.claim_month.strftime("%b %Y")
+              = l(@travel_claim.claim_month, :format =>"%b %Y")
               )
       .col-md-6.col-md-offset-2
         .form-group
           .col-sm-2.control-label
             = f.label :staff_id
           .col-md-3
-            = f.collection_select :staff_id, Staff.all.order(name: :asc), :id,  :staff_name_with_position, {:include_blank =>t('helpers.prompt.select_staff'), :selected=>25},{class: 'selectpicker', "data-width"=>'350px'}
-            /= f.collection_select :staff_id, Staff.all.order(name: :asc), :id,  :staff_name_with_position, {:include_blank =>t('helpers.prompt.select_staff'), :selected=>Login.first.staff_id},{class: 'selectpicker', "data-width"=>'350px'}
+            = f.collection_select :staff_id, Staff.all.order(name: :asc), :id,  :staff_name_with_position, {:include_blank =>t('helpers.prompt.select_staff'), :selected=>@current_user.userable.id},{class: 'selectpicker', "data-width"=>'350px'}
             
+      - if !@travel_claim.new_record? && @travel_claim.travel_requests.count > 0
+        .col-md-6.col-md-offset-2    
+          .form-group
+            .col-sm-2.control-label
+              = f.label  t('staff.transportclass_id')
+            .col-md-4
+              = @travel_claim.travel_requests.first.transport_class+'  ('+@travel_claim.staff.vehicles[0].reg_no+','+@travel_claim.staff.vehicles[0].type_model+' cc)'
+              
       #travel_request_log_edit.tab-pane.active
         - if @my_approved_unclaimed_requests != nil 
           /.col-md-10.col-md-offset-1

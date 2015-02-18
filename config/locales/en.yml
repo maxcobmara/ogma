@@ -514,6 +514,23 @@ en:
       hotel_lodging: "(Hotel / Lodging Address)"
       address_compulsory: " Compulsory for lodging allowance / hotel rent"
       address_required: "Please enter lodging / hotel address for claims of lodging allowance / hotel rent"
+      finance_check: Finance Check
+      editing: Editing
+      editing_by_staff: Editing By Staff
+      submitted: Submitted
+      returned: Returned
+      resubmitted_to_finance: Resubmitted to Finance
+      for_checking: For Checking
+      processed: Processed
+      approved: Approved
+      return_to_staff_for_amendment: Return to Staff for Amendment
+      status_not_known: Status Not Known
+      finance_check: "Finance Check (for verifications) of Travel Claims by "
+      returned_for_amendment: Returned for Amendment
+      return_to_staff: Return to Staff
+      verified_ok: Verified OK
+      submitted_on: Submitted on
+      approved_on: Approved on
       
     staff_appraisal:
       title: Staff Appraisal
