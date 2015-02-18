@@ -5,6 +5,7 @@ class TravelClaim < ActiveRecord::Base
   
   belongs_to :staff
   belongs_to :approver,           :class_name => 'Staff',      :foreign_key => 'approved_by'
+  belongs_to :checker,            :class_name => 'Staff',      :foreign_key => 'checked_by'
   
   has_many :travel_requests
   accepts_nested_attributes_for :travel_requests
@@ -18,6 +19,7 @@ class TravelClaim < ActiveRecord::Base
   accepts_nested_attributes_for :travel_claim_allowances, :reject_if => lambda { |a| a[:amount].blank? }, :allow_destroy =>true
   
   validates_uniqueness_of :claim_month, :scope => :staff_id, :message => "You already have claims for this month"
+  validate :accommodations_must_exist_for_lodging_hotel_claims
   
   def set_to_nil_where_false
     if is_submitted == true
@@ -41,6 +43,13 @@ class TravelClaim < ActiveRecord::Base
   
   def set_total
     self.total = total_claims
+  end
+  
+  def accommodations_must_exist_for_lodging_hotel_claims
+     duplicates = (travel_claim_allowances.map(&:expenditure_type) & [31,32]).count
+     if duplicates > 0 && (accommodations.nil? || accommodations.blank?)
+      errors.add(:base, I18n.t('staff.travel_claim.address_required'))
+    end
   end
   
   def my_claim_status(current_user)
@@ -299,7 +308,7 @@ class TravelClaim < ActiveRecord::Base
   end
   def parking_receipts_total
     #travel_claim_receipts.sum(:amount, :conditions => ["expenditure_type = ?", 42])
-    travel_claim_receipts.where(expenditure_type = ?", 42)
+    travel_claim_receipts.where(expenditure_type: 42).sum(:amount)
   end
   
   def laundry_receipts

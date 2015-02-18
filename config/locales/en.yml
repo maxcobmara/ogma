@@ -510,6 +510,10 @@ en:
       approved: approved
       amended_resubmit: amended and resubmit for finance check
       status_not_known: status not known
+      accommodations: Accommodations 
+      hotel_lodging: "(Hotel / Lodging Address)"
+      address_compulsory: " Compulsory for lodging allowance / hotel rent"
+      address_required: "Please enter lodging / hotel address for claims of lodging allowance / hotel rent"
       
     staff_appraisal:
       title: Staff Appraisal
@@ -772,7 +776,12 @@ en:
     reject: Reject
     approved: Approved
     rejected: Rejected
-    appointdt_not_exist: "Please update 'Appointment Date' in 'Staff Information' submodule"  
+    appointdt_not_exist: "Please update 'Appointment Date' in 'Staff Information' submodule"
+    leave_balance: Leave Balance
+    balance_before: "(before this leave is taken)"
+    balance_after: "(after this leave is taken)"
+    leave_already_taken: "Leave already taken for current applied dates!"
+    begin_before_ends: "Your leave must begin before it ends"
       
   position:
     title: "Tasks & Responsibilities"

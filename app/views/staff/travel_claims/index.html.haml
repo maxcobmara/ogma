@@ -27,5 +27,5 @@
       %tr
         %td=link_to travel_claim.claim_month.try(:strftime,'%B %Y'), staff_travel_claim_path(travel_claim)
         %td=h travel_claim.staff.name
-        %td=h travel_claim.total_claims
+        %td=h @current_user.userable.current_salary.nil? ? "" : travel_claim.total_claims
         %td=h travel_claim.my_claim_status(@current_user).titleize

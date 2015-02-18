@@ -503,6 +503,10 @@ ms_MY:
       approved: diluluskan
       amended_resubmit: telah diperbaiki dan dihantar semula untuk semakan kewangan
       status_not_known: status tidak diketahui
+      accommodations: Penginapan
+      hotel_lodging: "(Alamat Hotel / Lojing)"
+      address_compulsory: " Mesti diisi untuk elaun lojing / sewa hotel"
+      address_required: "Sila masukkan alamat lojing / hotel bagi tuntutan elaun lojing / sewa hotel"
 
     staff_appraisal:
       title: Penilaian Prestasi
@@ -692,6 +696,11 @@ ms_MY:
     approved: Diluluskan
     rejected: Ditolak
     appointdt_not_exist: "Sila kemaskini 'Tarikh Lantikan Pertama' dalam submodul 'Maklumat Kakitangan'"
+    leave_balance: Baki Cuti Rehat
+    balance_before: "(sebelum cuti ini diambil)"
+    balance_after: "(selepas cuti ini diambil)"
+    leave_already_taken: "Cuti telah diambil pada tarikh cuti yang sedang dimohon!"
+    begin_before_ends: "Tarikh mula cuti mestilah sebelum cuti berakhir dan selepas tarikh semasa"
   
   position:
     title: "Tugas & Tanggungjawab"
@@ -2423,8 +2432,8 @@ ms_MY:
     formats:
       default:  "%l:%M %p"
       short: "%l:%M %p"
-    am: pagi
-    pm: petang    
+    am: pg
+    pm: ptg 
 
   number:
     currency:
