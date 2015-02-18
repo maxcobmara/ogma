@@ -2,7 +2,7 @@ class Staff::TravelClaimsController < ApplicationController
   before_action :set_travel_claim, only: [:show, :edit, :update, :destroy]
   def index
     @search = TravelClaim.search(params[:q])
-    @travel_claims = @search.result
+    @travel_claims = @search.result.order(staff_id: :asc, claim_month: :asc)
 
      respond_to do |format|
       format.html # index.html.erb

@@ -507,6 +507,23 @@ ms_MY:
       hotel_lodging: "(Alamat Hotel / Lojing)"
       address_compulsory: " Mesti diisi untuk elaun lojing / sewa hotel"
       address_required: "Sila masukkan alamat lojing / hotel bagi tuntutan elaun lojing / sewa hotel"
+      finance_check: Semakan Kewangan
+      editing: Sedang Disunting
+      editing_by_staff: Sedang Disunting Oleh Kakitangan
+      submitted: Telah Dihantar
+      returned: Dipulangkan
+      resubmitted_to_finance: Dihantar Semula ke Unit Kewangan
+      for_checking: Untuk Semakan
+      processed: Telah Diproses
+      approved: Telah Diluluskan
+      return_to_staff_for_amendment: Dipulangkan kepada kakitangan untuk pembetulan
+      status_not_known: Status tidak diketahui
+      finance_check: "Semakan Kewangan (pengesahan) bagi Tuntutan Perjalanan oleh "
+      returned_for_amendment: Dipulangkan untuk pembetulan
+      return_to_staff: Pulangkan kepada kakitangan
+      verified_ok: Disahkan lengkap
+      submitted_on : Dihantar pada
+      approved_on: Diluluskan pada
 
     staff_appraisal:
       title: Penilaian Prestasi

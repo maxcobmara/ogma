@@ -194,7 +194,7 @@ class TravelRequest < ActiveRecord::Base
     de = TravelClaimsTransportGroup.derate
     mid = 1820.75
     if applicant.nil? || applicant.blank?
-      app2 = Staff.where(id:25).first
+      app2 = Staff.where(id: applicant).first
       if app2.vehicles && app2.vehicles.count>0
         TravelClaimsTransportGroup.transport_class(app2.vehicles.first.id, app2.current_salary, abc, de, mid)
       else
