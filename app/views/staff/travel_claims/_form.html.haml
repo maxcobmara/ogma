@@ -29,7 +29,7 @@
           .col-md-3
             = f.collection_select :staff_id, Staff.all.order(name: :asc), :id,  :staff_name_with_position, {:include_blank =>t('helpers.prompt.select_staff'), :selected=>@current_user.userable.id},{class: 'selectpicker', "data-width"=>'350px'}
             
-      - if !@travel_claim.new_record? && @travel_claim.travel_requests.count > 0
+      - if !@travel_claim.new_record? && @travel_claim.travel_requests.count > 0 && @travel_claim.travel_requests.map(&:own_car).uniq.include?(true) 
         .col-md-6.col-md-offset-2    
           .form-group
             .col-sm-2.control-label

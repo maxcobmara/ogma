@@ -22,7 +22,7 @@
           %dt= t 'staff.travel_claim.staff_id', :default => model_class.human_attribute_name(:staff_id) + ":"
           %dd=h @travel_claim.staff.staff_name_with_position unless @travel_claim.staff.blank?
           
-          - if @travel_claim.travel_requests.count > 0
+          - if @travel_claim.travel_requests.count > 0 && @travel_claim.travel_requests.map(&:own_car).uniq.include?(true) 
             %dt= t('staff.transportclass_id')
             %dd= @travel_claim.travel_requests.first.transport_class+'  ('+@travel_claim.staff.vehicles[0].reg_no+','+@travel_claim.staff.vehicles[0].type_model+' cc)'
         
