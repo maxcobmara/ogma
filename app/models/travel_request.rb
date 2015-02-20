@@ -12,7 +12,7 @@ class TravelRequest < ActiveRecord::Base
   
   validates_presence_of :staff_id, :destination, :depart_at, :return_at
   validates_presence_of :own_car_notes, :if => :mycar?
-  validate :validate_end_date_before_start_date
+  validate :validate_end_date_before_start_date, :staff_vehicle_must_exist_if_own_car
   validates_presence_of :replaced_by, :if => :check_submit?    #validation during EDIT - refer notes on EDIT & APPROVE button in SHOW page
   validates_presence_of :hod_id, :if => :check_submit?             #validation during EDIT - refer notes on EDIT & APPROVE button in SHOW page
   validates_presence_of :hod_accept_on, :if => :hod_accept?  #validation in APPROVAL page - refer notes on EDIT & APPROVE button in SHOW page
@@ -21,7 +21,7 @@ class TravelRequest < ActiveRecord::Base
   accepts_nested_attributes_for :travel_claim_logs, :reject_if => lambda { |a| a[:destination].blank? }, :allow_destroy =>true
   validates_associated :travel_claim_logs#, :message=>"data is not complete."
   
-  attr_accessor :staff_own_car
+  attr_accessor :staff_own_car, :tpt_class
   
   #controller searches
   def self.in_need_of_approval
@@ -156,6 +156,12 @@ class TravelRequest < ActiveRecord::Base
     end
   end
   
+  def staff_vehicle_must_exist_if_own_car
+    if own_car == true && User.current.userable.vehicles.count==0
+      errors.add(I18n.t('staff.vehicles.title'), I18n.t('staff.travel_request.vehicle_must_exist'))
+    end
+  end
+  
   def mycar?
     own_car == true && (!applicant.blank? && !applicant.vehicles.blank?)
   end
@@ -194,7 +200,7 @@ class TravelRequest < ActiveRecord::Base
     de = TravelClaimsTransportGroup.derate
     mid = 1820.75
     if applicant.nil? || applicant.blank?
-      app2 = Staff.where(id: applicant).first
+      app2 = Staff.where(id: User.current.userable.id).first
       if app2.vehicles && app2.vehicles.count>0
         TravelClaimsTransportGroup.transport_class(app2.vehicles.first.id, app2.current_salary, abc, de, mid)
       else

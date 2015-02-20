@@ -7,6 +7,7 @@ class User < ActiveRecord::Base
   belongs_to :userable, polymorphic: true
   has_and_belongs_to_many :roles
 
+ #Now you can easily fetch the current_user in models by User.current, enjoy it!
   def self.current
     Thread.current[:user]
   end
