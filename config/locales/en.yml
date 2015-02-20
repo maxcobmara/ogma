@@ -531,6 +531,7 @@ en:
       verified_ok: Verified OK
       submitted_on: Submitted on
       approved_on: Approved on
+      insert_current_salary: "Please insert 'current salary' and 'total fixed allowance' in Staff Information submodule"
       
     staff_appraisal:
       title: Staff Appraisal

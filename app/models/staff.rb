@@ -16,6 +16,7 @@ class Staff < ActiveRecord::Base
   
   has_many :vehicles, :dependent => :destroy
   accepts_nested_attributes_for :vehicles, :allow_destroy => true, :reject_if => lambda {|a| a[:cylinder_capacity].blank? }#|| a[:reg_no].blank?}
+  validates_associated :vehicles
     
   has_many :shift_histories, :dependent => :destroy
   accepts_nested_attributes_for :shift_histories, :reject_if => lambda {|a| a[:deactivate_date].blank?}
