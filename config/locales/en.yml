@@ -454,6 +454,7 @@ en:
       value_field: "Value(RM) field: State the number of taxi fares only"
       status_movement: "Status & Movement"
       no_registered_vehicle: "You have NO registered vehicle in this system. Please register your vehicle in Staff submodule first."
+      vehicle_must_exist: " must exist if 'own car' is selected"
 
     travel_claim:
       title: Travel Claims

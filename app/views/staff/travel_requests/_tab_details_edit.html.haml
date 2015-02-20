@@ -39,7 +39,6 @@
             = f.text_field :others_car_notes, placeholder: t('staff.travel_request.staff_and_place'), class: 'form-control'
       #tr_my_car
         /display own car notes & registered vehicle (if any + it's transport class)
-        /- unless Staff.where(id:25)[0].vehicles.blank?
         - if @travel_request.new_record?
           - staff_apply = @current_user.userable
         - else
@@ -49,18 +48,14 @@
             .col-sm-11= f.text_field :own_car_notes, :placeholder => t('helpers.label.travel_request.own_car_notes'), class: 'form-control'
           .row
             .col-sm-3
-              %b=t 'staff.vehicles.reg_no'
-            /- staffvehicle = Staff.where(id:25)[0].vehicles[0].reg_no
-            
+              %b=t 'staff.vehicles.reg_no'            
             - staffvehicle = staff_apply.vehicles[0].reg_no
             .col-sm-3= f.text_field :staff_own_car, :value => staffvehicle, :readonly => 'readonly', class: 'form-control'
             .col-sm-3=f.label t 'staff.transportclass_id'
             .col-sm-2=f.text_field :tpt_class,:value=>@travel_request.transport_class, :readonly => 'readonly', class: 'form-control'
         - else
-          =t('staff.travel_request.no_registered_vehicle')
-          /= @current_user.userable_id
-          /= f.collection_select :staff_own_car, Staff.where(id:25)[0].cars, :id, :reg_no, {:include_blank =>t('select')},{class: 'selectpicker', "data-width"=>'100px'}
-          /pending by current logged-in staff
+          %font{:style => "color: red;"}=t('staff.travel_request.no_registered_vehicle')
+          
   .form-group
     .col-sm-2.control-label 
       - unless Staff.where(id:25)[0].vehicles.blank?
