@@ -10,6 +10,7 @@ ms_MY:
       travel_request: Permohonan Perjalanan
       leaveforstudent: Cuti Pelajar
       kin: Waris
+      travel_request: Permohonan Perjalanan
     attributes:
       location:
         combo_code: Kod Lokasi
@@ -20,6 +21,7 @@ ms_MY:
         replaced_by: Staf Gantian
         hod_id: Ketua Jabatan
         hod_accept_on: Tarikh Penerimaan Ketua Jabatan
+        own_car_notes: Sebab
       leaveforstudent:
         student_id: Nama pelajar
         leavetype: Jenis cuti
@@ -48,12 +50,13 @@ ms_MY:
           kin: Maklumat Waris
         attributes:
           travel_request:
-            destination: Destination
-            depart_at: Depart At
-            return_at: Return At
-            replaced_by: Replacement Staff
-            hod_id: Head of Department
-            hod_accept_on: Head of Department Accepted Date
+            destination: Destinasi
+            depart_at: Masa Berlepas
+            return_at: Masa Pulang
+            replaced_by: Kakitangan Gantian
+            hod_id: Ketua Jabatan
+            hod_accept_on: Tarikh Penerimaan Ketua Jabatan
+            own_car_notes: Sebab
 
   search:  Cari
   datelabel: Tarikh

@@ -163,7 +163,7 @@ class TravelRequest < ActiveRecord::Base
   end
   
   def mycar?
-    own_car == true && (!applicant.blank? && !applicant.vehicles.blank?)
+    own_car == true #&& (!applicant.blank? && !applicant.vehicles.blank?)
   end
   
   def check_submit?
