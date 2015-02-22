@@ -88,10 +88,10 @@ Ogma::Application.routes.draw do
       end
     end
     resources :stationeries do
-    collection do
-      get :kewps13
+      collection do
+        get :kewps13
+      end
     end
-  end
     resources :asset_defects,   as: :defects do
       member do
         get :kewpa9
