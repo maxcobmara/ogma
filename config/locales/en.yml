@@ -28,7 +28,8 @@ en:
       student: Student
       location: Location
       examquestion: Examquestion
-      leaveforstudent: Cuti Pelajar
+      leaveforstudent: Student Leave
+      travel_request: Travel Request
     attributes:
       location:
         combo_code: Location Code
@@ -39,6 +40,7 @@ en:
         replaced_by: Replaced by
         hod_id: Head of Department
         hod_accept_on: Head of Department acceptance date
+        own_car_notes: Reasons
       leaveforstudent:
         student_id: Nama pelajar
         leavetype: Jenis cuti
@@ -73,6 +75,8 @@ en:
             replaced_by: Replacement Staff
             hod_id: Head of Department
             hod_accept_on: Head of Department Accepted Date
+            own_car_notes: Reason
+            
   #common
   search:  Search
   datelabel: Date

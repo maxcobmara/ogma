@@ -43,9 +43,9 @@
           - staff_apply = @current_user.userable
         - else
           - staff_apply = @travel_request.applicant
+        .row
+          .col-sm-11= f.text_field :own_car_notes, :placeholder => t('helpers.label.travel_request.own_car_notes'), class: 'form-control'
         - unless staff_apply.vehicles.blank?
-          .row
-            .col-sm-11= f.text_field :own_car_notes, :placeholder => t('helpers.label.travel_request.own_car_notes'), class: 'form-control'
           .row
             .col-sm-3
               %b=t 'staff.vehicles.reg_no'            

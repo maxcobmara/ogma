@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150217183040) do
+ActiveRecord::Schema.define(version: 20150221192002) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -1789,31 +1789,31 @@ ActiveRecord::Schema.define(version: 20150217183040) do
     t.string   "code"
     t.string   "category"
     t.string   "unittype"
-    t.decimal  "maxquantity"
-    t.decimal  "minquantity"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "maxquantity"
+    t.integer  "minquantity"
   end
 
   create_table "stationery_adds", force: true do |t|
     t.integer  "stationery_id"
     t.string   "lpono"
     t.string   "document"
-    t.decimal  "quantity"
     t.decimal  "unitcost"
     t.date     "received"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "quantity"
   end
 
   create_table "stationery_uses", force: true do |t|
     t.integer  "stationery_id"
     t.integer  "issuedby"
     t.integer  "receivedby"
-    t.decimal  "quantity"
     t.date     "issuedate"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "quantity"
   end
 
   create_table "student_attendances", force: true do |t|
