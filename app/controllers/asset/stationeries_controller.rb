@@ -56,11 +56,13 @@ class Asset::StationeriesController < ApplicationController
   end
   
   def kewps13
-    @lead = Position.find(1)
-    @stationeries = Stationery.order(code: :asc)
+    ryear = params[:yyear]
+    r_year = ryear if ryear && ryear!=nil #Date.today.year.to_s #2012.to_s #2013.to_s #"2014"
+    @reporting_year = (r_year+"-12-31").to_date
+    
     respond_to do |format|
       format.pdf do
-        pdf = Kewps13Pdf.new(@stationeries, view_context, @lead)
+        pdf = Kewps13Pdf.new(view_context, @reporting_year)
         send_data pdf.render, filename: "kewps13-{Date.today}",
                               type: "application/pdf",
                               disposition: "inline"
