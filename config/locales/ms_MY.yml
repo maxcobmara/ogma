@@ -2033,7 +2033,7 @@ ms_MY:
       subject: Subjek
       staff_id: Disediakan oleh
     lesson_plan:
-      title: Pelan Pengajaran
+      title: Senarai Pelan & Laporan Pengajaran
       title2: Pengajaran dan Pembelajaran
       reporting: Laporan Aktiviti Pengajaran dan Pembelajaran
       report: Laporan
@@ -2053,9 +2053,11 @@ ms_MY:
       reference: Rujukan
       submission: "Penghantaran & Kelulusan Pelan"
       is_submitted: "Telah Dihantar?"
+      is_submitted2: Pelan dihantar?
       submitted_on: Tarikh Dihantar
       hod_approved: Kelulusan Atasan
       hod_approved2: Kelulusan Ketua Jabatan
+      hod_approved3: Pelan diluluskan?
       hod_approved_on: Tarikh Kelulusan
       hod_rejected: Penolakan Ketua Jabatan
       hod_rejected_on: Tarikh Penolakan
@@ -2081,9 +2083,11 @@ ms_MY:
       total_absent: Jumlah Tidak Hadir
       report_review: Semakan Laporan
       report_submit: "Laporan Telah Dihantar?"
+      report_submit2: Laporan dihantar?
       report_submit_on: Tarikh Hantar Laporan
-      report_endorsed: "Laporan telah Diluluskan?"
-      report_endorsed_on: Tarikh Kelulusan Laporan
+      report_endorsed: "Laporan telah Disahkan?"
+      report_endorsed2: Laporan disahkan?
+      report_endorsed_on: Tarikh Pengesahan Laporan
       report_summary: "Ringkasan Laporan (Ulasan)"
       schedule: Jadual Waktu
       trainingnotes: Nota Latihan

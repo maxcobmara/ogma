@@ -10,16 +10,17 @@
     %td= f.text_field :lecture_date_gteq, :size=> 2,  :class =>  'date-picker'
     %td &nbsp;
     %td &nbsp;
-    %td= select_tag('q[is_submitted_eq]',options_for_select([['Yes',true],['No',false]]),class: 'selectpicker',"data-width"=>'100px')
+    %td= select_tag('q[is_submitted_eq]',options_for_select([['All', ''],['Yes',true],['No',false]]),class: 'selectpicker',"data-width"=>'100px')
     /%td=select_tag('q[hod_approved_eq]', options_for_select([['Hod Approved','true'],['Rejected','false']]))
-    %td=select_tag('q[hod_approved_null]', options_for_select([['Checked',0],['Not Checked',1]]), class: 'selectpicker',"data-width"=>'100px')
+    %td=select_tag('q[hod_approved_null]', options_for_select([['All', ''],['Checked',0],['Not Checked',1]]), class: 'selectpicker',"data-width"=>'100px')
     /above - checked & not checked term used (Checked - True or False, Not Checked - Null), change to False (direct in table, to see effect)
     /but fr system - value are restricted to True or Null (even value is null, Hod Rejected might be true)
+    %td= select_tag('q[report_submit_null]',options_for_select([['All', ''],['Yes',0],['No',1]]), class: 'selectpicker',"data-width"=>'60px')
+    /above (Submitted, 0 is not null = True [also for false], Not Submitted, 1- Null
+    /in system - value restricted to True?? 
     %td
       .input-group
-        = select_tag('q[report_submit_null]',options_for_select([['Yes',0],['No',1]]), class: 'selectpicker',"data-width"=>'60px')
-        /above (Submitted, 0 is not null = True [also for false], Not Submitted, 1- Null
-        /in system - value restricted to True?? 
+        =select_tag('q[report_endorsed_null]', options_for_select([['All', ''],['Yes',0],['No',1]]), class: 'selectpicker',"data-width"=>'60px') 
         %span.input-group-btn
           %button.btn.btn-sm.btn-default.right{:type => "submit"}
             %i.fa.fa-search.fa-fw
