@@ -2090,7 +2090,7 @@ en:
       subject: Subject
       staff_id: Prepared By
     lesson_plan:
-      title: Lesson Plan
+      title: Lesson Plan & Report Listing
       title2: Lesson and Learning
       reporting: Lesson and Learning Activity Report
       report: Report
@@ -2109,9 +2109,11 @@ en:
       reference: Reference
       submission: "Plan Submission & Approval"
       is_submitted: "Submitted?"
+      is_submitted2: Plan submitted?
       submitted_on: Submission Date
       hod_approved: HOD Approval
       hod_approved2: Head of Department Approval
+      hod_approved3: Plan approved?
       hod_approved_on: Approval Date
       hod_rejected: Head of Department Rejection
       hod_rejected_on: Rejection Date
@@ -2137,8 +2139,10 @@ en:
       total_absent: Total Absent
       report_review: Report Review
       report_submit: "Report Submitted?"
+      report_submit2: Report submitted?
       report_submit_on: Report Submission Date
-      report_endorsed: "Report Reviewed?"
+      report_endorsed: "Report Endorsed?"
+      report_endorsed2: Report endorsed?
       report_endorsed_on: Report Review Date
       report_summary: Report Summary
       schedule: Timetable
