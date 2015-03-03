@@ -11,7 +11,7 @@ class TravelClaimLog < ActiveRecord::Base
       def mileage_xor_km_money
         if !(mileage.blank? ^ km_money.blank?)
           #errors.add_to_base("Specify a mileage or a payment, not both")
-	  errors.add(": Mileage or Payment,", "specify one")
+	  errors.add(:travel_log, I18n.t('staff.travel_claim.mileage_xor_km_money'))
         end
       end
  

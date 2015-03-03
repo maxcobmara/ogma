@@ -31,6 +31,9 @@ en:
       leaveforstudent: Student Leave
       travel_request: Travel Request
       travel_claim: Travel Claim
+      stationery: Office Supplies
+      stationery_add: Office Supplies Additions
+      statonery_use: Office Supplies Deductions
     attributes:
       location:
         combo_code: Location Code
@@ -42,6 +45,12 @@ en:
         hod_id: Head of Department
         hod_accept_on: Head of Department acceptance date
         own_car_notes: Reasons
+        travel_claim_logs: Travel Logs
+      travel_claim_logs:
+        travel_on: Date
+        start_at: From
+        finish_at: To
+        travel_log: Travel Logs
       leaveforstudent:
         student_id: Nama pelajar
         leavetype: Jenis cuti
@@ -51,6 +60,19 @@ en:
       travel_claim:
         claim_month: "Claim For (month & year) "
         travel_requests: "Travel Request(s) "
+      stationery:
+        stationery_adds: Details of Add Supplies
+        stationery_uses: "Details of Use/Issue Supplies"
+      stationery_adds:
+        document: Supplier Name
+        unitcost: Price Per Unit
+        received: Received Date
+        quantity: Quantity
+      stationery_uses:
+        issuedby: Issued By
+        receivedby: Received By
+        issuedate: Issue Date
+      quantity: Quantity  
     errors:
         template:
           body: "There were problems with the following fields:"
@@ -71,6 +93,9 @@ en:
                 less_than_or_equal_to: Max shoud be more than Min
           travel_request: Travel Request
           kin: Next of Kin
+          stationery: Office Supplies
+          stationery_add: Office Supplies Additions
+          statonery_use: Office Supplies Deductions
         attributes:
           travel_request:
             destination: Destination
@@ -544,6 +569,7 @@ en:
       insert_vehicle: "Please insert vehicle details in Staff Information submodule"
       claim_exist: "already exist"
       travel_requests_must_exist: must be selected
+      mileage_xor_km_money: " : Specify a Mileage (km) or a Payment (RM), not both (entered / blank)"
       
     staff_appraisal:
       title: Staff Appraisal
