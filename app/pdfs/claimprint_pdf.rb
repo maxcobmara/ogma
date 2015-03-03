@@ -39,8 +39,9 @@ class ClaimprintPdf < Prawn::Document
              ["","JENIS MODEL"," #{@travel_claim.staff.vehicles.first.type_model}"],
              ["KENDERAAN", "NO PENDAFTARAN"," #{@travel_claim.staff.vehicles.first.reg_no}"],
              ["","KUASA (C.C)", " #{@travel_claim.staff.vehicles.first.cylinder_capacity}"],
-             ["","KELAS TUNTUTAN","#{@travel_claim.staff.transportclass_id} "]]
-    
+             ["","KELAS TUNTUTAN","#{'<b>A </b>/ B / C / D / E' if @travel_claim.transport_class == 'A'} #{'A / <b>B</b> / C / D / E' if @travel_claim.transport_class == 'B'} #{'A / B / <b>C </b>/ D / E' if @travel_claim.transport_class == 'C'} #{'A / B / C / <b>D</b> / E' if @travel_claim.transport_class == 'D'} #{'A / B / C / D / <b>E</b>' if @travel_claim.transport_class == 'E'} #{'A / B / C / D /E' if @travel_claim.staff.current_salary != nil && @travel_claim.staff.vehicles.count > 0 }" ]]
+
+
              table(data1, :column_widths => [180, 180,180], :cell_style => { :size => 10,  :inline_format => :true}) do
                row(0).background_color = 'FFE34D'
                self.width = 540

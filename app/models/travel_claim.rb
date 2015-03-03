@@ -18,7 +18,8 @@ class TravelClaim < ActiveRecord::Base
   has_many :travel_claim_allowances, :dependent => :destroy
   accepts_nested_attributes_for :travel_claim_allowances, :reject_if => lambda { |a| a[:amount].blank? }, :allow_destroy =>true
   
-  validates_uniqueness_of :claim_month, :scope => :staff_id, :message => "You already have claims for this month"
+  validates_presence_of :travel_requests, :message => I18n.t('staff.travel_claim.travel_requests_must_exist')
+  validates_uniqueness_of :claim_month, :scope => :staff_id, :message => I18n.t('staff.travel_claim.claim_exist')
   validate :accommodations_must_exist_for_lodging_hotel_claims
   
   def set_to_nil_where_false

@@ -11,6 +11,7 @@ ms_MY:
       leaveforstudent: Cuti Pelajar
       kin: Waris
       travel_request: Permohonan Perjalanan
+      travel_claim: Tuntutan Perjalanan
     attributes:
       location:
         combo_code: Kod Lokasi
@@ -28,6 +29,9 @@ ms_MY:
         leave_startdate: Tarikh cuti bermula
         leave_enddate: Tarikh cuti berakhir
         telno: Telefon
+      travel_claim:
+        claim_month: "Tuntutan Bagi (bulan & tahun) "
+        travel_requests: "Permohonan Perjalanan "
     errors:
         template:
           body: "Berikut adalah beberapa masalah:"
@@ -48,6 +52,7 @@ ms_MY:
                 less_than_or_equal_to: Maksima harus melebihi Minima
           travel_request: Travel Request
           kin: Maklumat Waris
+         
         attributes:
           travel_request:
             destination: Destinasi
@@ -57,6 +62,7 @@ ms_MY:
             hod_id: Ketua Jabatan
             hod_accept_on: Tarikh Penerimaan Ketua Jabatan
             own_car_notes: Sebab
+        
 
   search:  Cari
   datelabel: Tarikh
@@ -529,6 +535,9 @@ ms_MY:
       submitted_on : Dihantar pada
       approved_on: Diluluskan pada
       insert_current_salary: "Sila masukkan 'gaji semasa' dan 'jumlah elaun tetap' dalam submodul Maklumat Kakitangan"
+      insert_vehicle: "Sila masukkan butran kenderaan dalam submodul Maklumat Kakitangan"
+      claim_exist: "yang dipilih telah wujud"
+      travel_requests_must_exist: mesti dipilih
 
     staff_appraisal:
       title: Penilaian Prestasi
