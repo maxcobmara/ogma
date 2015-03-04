@@ -11,6 +11,11 @@ ms_MY:
       leaveforstudent: Cuti Pelajar
       kin: Waris
       travel_request: Permohonan Perjalanan
+      travel_claim: Tuntutan Perjalanan
+      travel_claim_logs: Log Perjalanan
+      stationery: Keperluan Pejabat
+      stationery_add: Penerimaan Keperluan Pejabat
+      stationery_use: Pengeluaran Keperluan Pejabat
     attributes:
       location:
         combo_code: Kod Lokasi
@@ -22,12 +27,34 @@ ms_MY:
         hod_id: Ketua Jabatan
         hod_accept_on: Tarikh Penerimaan Ketua Jabatan
         own_car_notes: Sebab
+        travel_claim_logs: Log Perjalanan
+      travel_claim_logs:
+        travel_on: Tarikh
+        start_at: Dari
+        finish_at: Hingga
+        travel_log: Log Perjalanan
       leaveforstudent:
         student_id: Nama pelajar
         leavetype: Jenis cuti
         leave_startdate: Tarikh cuti bermula
         leave_enddate: Tarikh cuti berakhir
         telno: Telefon
+      travel_claim:
+        claim_month: "Tuntutan Bagi (bulan & tahun) "
+        travel_requests: "Permohonan Perjalanan "
+      stationery:
+        stationery_adds: Butiran Penambahan Keperluan Pejabat
+        stationery_uses: Butiran Pengurangan Keperluan Pejabat
+      stationery_adds:
+        document: Pembekal
+        unitcost: Harga Seunit
+        received: Tarikh Diterima
+        quantity: Kuantiti
+      stationery_uses:
+        issuedby: Dikeluarkan Oleh
+        receivedby: Diterima Oleh
+        issuedate: Tarikh Dikeluarkan
+        quantity: Kuantiti   
     errors:
         template:
           body: "Berikut adalah beberapa masalah:"
@@ -48,6 +75,7 @@ ms_MY:
                 less_than_or_equal_to: Maksima harus melebihi Minima
           travel_request: Travel Request
           kin: Maklumat Waris
+         
         attributes:
           travel_request:
             destination: Destinasi
@@ -57,6 +85,7 @@ ms_MY:
             hod_id: Ketua Jabatan
             hod_accept_on: Tarikh Penerimaan Ketua Jabatan
             own_car_notes: Sebab
+        
 
   search:  Cari
   datelabel: Tarikh
@@ -529,6 +558,10 @@ ms_MY:
       submitted_on : Dihantar pada
       approved_on: Diluluskan pada
       insert_current_salary: "Sila masukkan 'gaji semasa' dan 'jumlah elaun tetap' dalam submodul Maklumat Kakitangan"
+      insert_vehicle: "Sila masukkan butran kenderaan dalam submodul Maklumat Kakitangan"
+      claim_exist: "yang dipilih telah wujud"
+      travel_requests_must_exist: mesti dipilih
+      mileage_xor_km_money: " : Masukkan Batuan (km) atau Nilai (RM), bukan kedua-duanya (diisi / dibiarkan kosong)"
 
     staff_appraisal:
       title: Penilaian Prestasi

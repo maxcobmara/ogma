@@ -58,7 +58,12 @@ class Asset::StationeriesController < ApplicationController
   def kewps13
     ryear = params[:yyear]
     r_year = ryear if ryear && ryear!=nil #Date.today.year.to_s #2012.to_s #2013.to_s #"2014"
-    @reporting_year = (r_year+"-12-31").to_date
+    reporting_year = (r_year+"-12-31").to_date
+    if reporting_year > Date.today
+      @reporting_year = Date.today
+    else
+      @reporting_year = reporting_year
+    end
     
     respond_to do |format|
       format.pdf do
