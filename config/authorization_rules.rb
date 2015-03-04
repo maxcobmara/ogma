@@ -207,7 +207,7 @@ authorization do
   
   #Group Location --------------------------------------------------------------------------------
   role :warden do
-    #has_permission_on :locations, :to => :core
+    has_permission_on :locations, :to => :core
     #all wardens have access - [relationship: second_approver, FK: staff_id2, page: approve_warden]
     has_permission_on :student_leaveforstudents, :to => [:index, :menu, :create, :show, :update, :approve_warden] do
       if_attribute :studentsubmit => true
