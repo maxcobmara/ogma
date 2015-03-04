@@ -1,7 +1,7 @@
 class UsersController < ApplicationController
 
  before_action :set_user, only: [:show, :edit, :update, :destroy]
- before_filter :load_userable
+ before_filter :load_userable, only: [:link, :edit, :update]
 
 
  def index
@@ -47,7 +47,7 @@ class UsersController < ApplicationController
 
    def load_userable
      resource, id = request.path.split('/')[1, 2]
-     id = @current_user.userable.id #HACK - no idea how to do, this path (index pg) --> http://localhost:3003/users?locale=en --> listing of all record, has no ID
+     #id = @current_user.userable.id #HACK - no idea how to do, this path (index pg) --> http://localhost:3003/users?locale=en --> listing of all record, has no ID
      @userable = resource.singularize.classify.constantize.find(id)
    end
 
