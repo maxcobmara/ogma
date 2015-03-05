@@ -71,6 +71,8 @@ class Student::TenantsController < ApplicationController
   
   def new
     @current_tenant_ids = Tenant.where(:keyreturned => nil).where(:force_vacate => false).pluck(:student_id)
+    @potential1=Student.where(gender: 1).where("end_training > ?", Date.today).pluck(:id)-@current_tenant_ids
+    @potential2=Student.where(gender: 2).where("end_training > ?", Date.today).pluck(:id)-@current_tenant_ids
     @tenant = Tenant.new(:location_id => params[:location_id])
     
   end
