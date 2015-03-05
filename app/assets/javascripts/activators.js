@@ -16,6 +16,23 @@ $(document).ready(function(e) {
    	formatDate:'Y-m-d',
         minDate: 0
   });
+  //tenant - datekeyprovided
+  //$tahun = '2010';
+  //minDate: $tahun+'-07-01'
+  //minDate: '2012-07-01'
+  var currentdt = new Date();
+  $currentmt = currentdt.getMonth();
+  if($currentmt < 6)
+    {$tahunbulan = (currentdt.getFullYear() - 3)+'-07';}
+  else
+    {$tahunbulan = (currentdt.getFullYear() - 2)+'-01';}
+  $('.date_picker_before').datetimepicker({
+        timepicker:false,
+   	format:'Y-m-d',
+   	formatDate:'Y-m-d',
+        minDate: $tahunbulan+'-01'
+  }); 
+  
   $('.datetime_picker').datetimepicker({
     timepicker:true,
     format: "Y-m-d H:i",

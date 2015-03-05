@@ -33,9 +33,9 @@
       = f.collection_select :staff_id, Staff.find(:all), :id, :mykad_with_staff_name
 
 .form-group
-  %label.col-sm-2.control-label{:for => "returnduedate"}= t 'student.tenant.key.provided'
+  %label.col-sm-2.control-label{:for => "keyprovided"}= t 'student.tenant.key.provided'
   .col-md-2
-    = f.text_field :keyaccept, type: "text", :class => 'form-control date_picker_after'
+    = f.text_field :keyaccept, type: "text", :class => 'form-control date_picker_before'
     
 .form-group
   %label.col-sm-2.control-label{:for => "keyexpectedreturn"}= t 'student.tenant.key.expected'
