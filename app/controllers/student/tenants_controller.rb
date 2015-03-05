@@ -113,7 +113,8 @@ class Student::TenantsController < ApplicationController
   def destroy
     @tenant.destroy
     respond_to do |format|
-      format.html { redirect_to student_tenant_url }
+      #format.html { redirect_to student_tenants_url }
+      format.html { redirect_to room_map_student_tenants_path }
       format.json { head :no_content }
     end
   end
