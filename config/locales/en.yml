@@ -1219,7 +1219,8 @@ en:
       vacate: Force Vacate
       room_map: Room Map
       list: Tenancy List
-      statistics: Statistics
+      statistics: Student Residence Statistics
+      statistics_menu: Statistics
       empty: Empty
       occupied: Occupied
       damaged: Damaged
@@ -1227,7 +1228,8 @@ en:
       return_key: Return Key
       empty_room: Empty Room
       damage: Damage by Student
-      
+      bed: Bed
+      room: Room
       
     students:
       title: Student Info

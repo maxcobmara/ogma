@@ -1137,7 +1137,8 @@ ms_MY:
       vacate: Kosongkan
       room_map: Peta Katil
       list: Senarai Penghuni
-      statistics: Statistik
+      statistics: Statistik Penempatan Pelajar
+      statistics_menu: Statistik
       empty: Kosong
       occupied: Berpenghuni
       damaged: Rosak
@@ -1145,6 +1146,8 @@ ms_MY:
       empty_room: Pemulangan Kunci
       empty_room: Kosongkan Bilik
       damage: Kerosakan oleh Pelajar
+      bed: Katil
+      room: Bilik
       
     students:
       title: Maklumat Pelajar

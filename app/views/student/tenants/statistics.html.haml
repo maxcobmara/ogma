@@ -1,41 +1,49 @@
 - model_class = Tenant
 .page-header
-  %h1
-    = t('student.tenant.title')
-    -
-    = (t "student.tenant.statistics")
-    //#, :default => model_class.model_name.human.pluralize
-
+  %h1= (t "student.tenant.statistics")
 
 .row
   .col-md-3
     %table.table-striped.table-hover.ogma
       %thead
         %tr
-          %th Item
-          %th= t 'student.female'
-          %th= t 'student.male'
+          %th{:rowspan=>2} Item
+          %th{:colspan=>2}= t 'student.female'
+          %th{:colspan=>2}= t 'student.male'
+        %tr
+          %th=t('student.tenant.bed')
+          %th=t('student.tenant.room')
+          %th=t('student.tenant.bed')
+          %th=t('student.tenant.room')
       %tbody
         %tr
           %th= t 'student.tenant.empty'
           %td.centre= @ef = @female_student_beds.where(occupied: [false, nil]).where('id NOT IN (?)', @occupied_locations).count
+          %td.centre= @af_rooms.count - @of_rooms.count - @df_rooms.count
           %td.centre= @em = @male_student_beds.where(occupied: [false, nil]).where('id NOT IN (?)', @occupied_locations).count
+          %td.centre= @am_rooms.count - @om_rooms.count - @dm_rooms.count
         %tr
           %th= t 'student.tenant.occupied'
           %td.centre= @of = @female_student_beds.joins(:tenants).where("tenants.id" => @current_tenants).count
+          %td.centre=@of_rooms.count
           %td.centre= @om = @male_student_beds.joins(:tenants).where("tenants.id" => @current_tenants).count
+          %td.centre=@om_rooms.count
         %tr
           %th= t 'student.tenant.damaged'
           %td.centre= @df = @female_student_beds.where(occupied: true).count
+          %td.centre= @df_rooms.count
           %td.centre= @dm = @male_student_beds.where(occupied: true).count
+          %td.centre= @dm_rooms.count
         %tr
           %th= t 'student.tenant.total'
           %td.centre= a = @female_student_beds.count
+          %td.centre= c = @af_rooms.count
           %td.centre= b = @male_student_beds.count
+          %td.centre= d = @am_rooms.count
         %tr
           %th= t 'student.tenant.total'
-          %td.centre{colspan: 2}= (a + b)
-          
+          %td.centre{colspan: 4}=(t 'student.tenant.bed')+" : "+ (a + b).to_s+" / "+(t 'student.tenant.room')+" : "+ (c + d).to_s
+       
   .col-md-4
     %h4.centre= t 'student.female'
     = pie_chart [[(t 'student.tenant.empty'), @ef], [(t 'student.tenant.occupied'), @of], [(t 'student.tenant.damaged'), @df]], :height => "190px", :library => {legend: { position: 'left', maxLines: 3}}
@@ -43,3 +51,87 @@
   .col-md-4
     %h4.centre= t 'student.male'
     = pie_chart [[(t 'student.tenant.empty'), @em], [(t 'student.tenant.occupied'), @om], [(t 'student.tenant.damaged'), @dm]], :height => "190px", :library => {legend: { position: 'right', maxLines: 3}}
+    
+.row
+  .col-md-3
+    %table.table-striped.table-hover.ogma
+      %thead
+        %tr
+          %th.centre{colspan: 2}A - Sri Samudera
+        %tr
+          %th=t('student.tenant.room')
+          %th.centre=t('student.tenant.total')
+      %tbody
+        %tr
+          %th= t 'student.tenant.empty'
+          %td.centre= @am_rooms.count-@om_rooms.count-@dm_rooms.count
+        %tr
+          %th= t 'student.tenant.occupied'
+          %td.centre= @om_rooms.count
+        %tr
+          %th= t 'student.tenant.damaged'
+          %td.centre= @dm_rooms.count
+        %tr
+          %th= t 'student.tenant.total'
+          %td.centre= @am_rooms.count
+  .col-md-1 &nbsp;
+  .col-md-3
+    - if @dbedF_B.nil? 
+      - b_damaged=0
+    - else
+      - b_damaged=@droomF_B.count
+    - if @obedF_B.nil? 
+      - b_occupied=0
+    - else
+      - b_occupied=@oroomF_B.count   
+    %table.table-striped.table-hover.ogma
+      %thead
+        %tr
+          %th.centre{colspan: 2}B - Sri Tebrau
+        %tr
+          %th=t('student.tenant.room')
+          %th.centre=t('student.tenant.total')
+      %tbody
+        %tr
+          %th= t 'student.tenant.empty'
+          %td.centre=@roomF_B.count-b_occupied-b_damaged
+        %tr
+          %th= t 'student.tenant.occupied'
+          %td.centre=b_occupied
+        %tr
+          %th= t 'student.tenant.damaged'
+          %td.centre=b_damaged
+            
+        %tr
+          %th= t 'student.tenant.total'
+          %td.centre= @roomF_B.count
+  .col-md-1 &nbsp;
+  .col-md-3
+    - if @dbedF_C.nil? 
+      - c_damaged=0
+    - else
+      - c_damaged=@droomF_C.count
+    - if @obedF_C.nil? 
+      - c_occupied=0
+    - else
+      - c_occupied=@oroomF_C.count   
+    %table.table-striped.table-hover.ogma
+      %thead
+        %tr
+          %th.centre{colspan: 2}C - Sri Danga
+        %tr
+          %th=t('student.tenant.room')
+          %th.centre=t('student.tenant.total')
+      %tbody
+        %tr
+          %th= t 'student.tenant.empty'
+          %td.centre=@roomF_C.count-c_occupied-c_damaged
+        %tr
+          %th= t 'student.tenant.occupied'
+          %td.centre=c_occupied
+        %tr
+          %th= t 'student.tenant.damaged'
+          %td.centre=c_damaged
+        %tr
+          %th= t 'student.tenant.total'
+          %td.centre= @roomF_C.count
