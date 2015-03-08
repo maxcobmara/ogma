@@ -183,6 +183,9 @@ Ogma::Application.routes.draw do
         get  :empty_room
         post :empty_room
       end
+      member do
+        get :census_level
+      end
     end
     resources :student_discipline_cases do
       member do

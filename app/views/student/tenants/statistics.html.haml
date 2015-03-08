@@ -67,16 +67,16 @@
           %th.centre=t('student.tenant.total')
       %tbody
         %tr
-          %th= t 'student.tenant.empty'
+          %th= t 'student.tenant.total_empty'
           %td.centre= @am_rooms.count-@om_rooms.count-@dm_rooms.count
         %tr
-          %th= t 'student.tenant.occupied'
+          %th= t 'student.tenant.total_occupied'
           %td.centre= @om_rooms.count
         %tr
-          %th= t 'student.tenant.damaged'
+          %th= t 'student.tenant.total_damaged'
           %td.centre= @dm_rooms.count
         %tr
-          %th= t 'student.tenant.total'
+          %th= t 'student.tenant.total_rooms'
           %td.centre= @am_rooms.count
   .col-md-1 &nbsp;
   .col-md-3
@@ -97,17 +97,17 @@
           %th.centre=t('student.tenant.total')
       %tbody
         %tr
-          %th= t 'student.tenant.empty'
+          %th= t 'student.tenant.total_empty'
           %td.centre=@roomF_B.count-b_occupied-b_damaged
         %tr
-          %th= t 'student.tenant.occupied'
+          %th= t 'student.tenant.total_occupied'
           %td.centre=b_occupied
         %tr
-          %th= t 'student.tenant.damaged'
+          %th= t 'student.tenant.total_damaged'
           %td.centre=b_damaged
             
         %tr
-          %th= t 'student.tenant.total'
+          %th= t 'student.tenant.total_rooms'
           %td.centre= @roomF_B.count
   .col-md-1 &nbsp;
   .col-md-3
@@ -128,16 +128,16 @@
           %th.centre=t('student.tenant.total')
       %tbody
         %tr
-          %th= t 'student.tenant.empty'
+          %th= t 'student.tenant.total_empty'
           %td.centre=@roomF_C.count-c_occupied-c_damaged
         %tr
-          %th= t 'student.tenant.occupied'
+          %th= t 'student.tenant.total_occupied'
           %td.centre=c_occupied
         %tr
-          %th= t 'student.tenant.damaged'
+          %th= t 'student.tenant.total_damaged'
           %td.centre=c_damaged
         %tr
-          %th= t 'student.tenant.total'
+          %th= t 'student.tenant.total_rooms'
           %td.centre= @roomF_C.count
 
 %BR
@@ -146,9 +146,9 @@
   %H4=t 'student.tenant.tenants_students'
   - @residentials.sort.each do |building|
     - @tenantbed_per_block = building.descendants.where(typename: [2,8]).joins(:tenants).where("tenants.id" => @current_tenants)
-    - @all_tenants_wstudent = @current_tenants.joins(:location).where('location_id IN(?) and student_id is not null', @tenantbed_per_block.pluck(:id))
+    - @all_tenants_wstudent = @current_tenants.joins(:location).where('location_id IN(?) and student_id IN(?)', @tenantbed_per_block.pluck(:id), Student.all.pluck(:id))
     - @students_prog = Student.where('id IN (?)', @all_tenants_wstudent.pluck(:student_id)).group_by{|j|j.course_id}
-    - @all_tenants_wostudent = @current_tenants.joins(:location).where('location_id IN(?) and student_id NOT IN(?)', @tenantbed_per_block.pluck(:id), Student.all.pluck(:id))
+    - @all_tenants_wostudent = @current_tenants.joins(:location).where('location_id IN(?) and (student_id is null OR student_id NOT IN(?))', @tenantbed_per_block.pluck(:id), Student.all.pluck(:id))
     .col-md-3
       %table.table-striped.table-hover.ogma
         %thead
@@ -168,6 +168,6 @@
               %td{style: "color: red;"}=t 'student.tenant.tenancy_details_nil'
               %td.centre=@all_tenants_wostudent.count
           %tr
-            %th{style: "background-color: #ABC6E9;"}=t 'student.tenant.total_tenants'
-            %td.centre{style: "background-color: #ABC6E9; font-weight: bold;"}=@all_tenants_wstudent.count
+            %th=t 'student.tenant.total_tenants'
+            %td.centre=@tenantbed_per_block.count.to_s
     .col-md-1 &nbsp;

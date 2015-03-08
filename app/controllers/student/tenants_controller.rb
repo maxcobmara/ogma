@@ -3,22 +3,12 @@ class Student::TenantsController < ApplicationController
   before_action :set_tenant, only: [:show, :edit, :update, :destroy]
   
   def index
-    @search = Tenant.where("student_id IS NOT NULL").search(params[:q])
+    #@search = Tenant.where("student_id IS NOT NULL").search(params[:q])
+    @search = Tenant.search(params[:q]) #NOTE: To match with room map, statistic (by programme) & census_level (+report)
     @search.keyreturned_present != nil unless params[:q]
     @search.force_vacate_true = false unless params[:q]
     @search.sorts = 'location_combo_code asc' if @search.sorts.empty?
     @tenants = @search.result
-    #from Index
-    #reports - will move out
-    #getting buidings with student beds
-    @places = Location.where('typename = ? OR typename =?', 2, 8)
-    roots = []
-    @places.each do |place|
-     roots << place.root
-    end
-    @residentials = roots.uniq
-    @current_tenants = Tenant.where("keyreturned IS ? AND force_vacate != ?", nil, true)
-    @occupied_locations = @current_tenants.pluck(:location_id)
   end
   
   def reports
@@ -34,6 +24,24 @@ class Student::TenantsController < ApplicationController
     @current_tenants = Tenant.where("keyreturned IS ? AND force_vacate != ?", nil, true)
     @occupied_locations = @current_tenants.pluck(:location_id)
     
+    @floor=Location.find(103)
+    @all_beds_single=Location.where(id: 103).first.descendants.where('typename = ? OR typename =?', 2, 8).sort_by{|y|y.combo_code}
+  end
+  
+  def census_level
+    @floor=Location.find(params[:id]) #103, 1181
+    @all_beds_single=Location.find(params[:id]).descendants.where('typename = ? OR typename =?', 2, 8).sort_by{|y|y.combo_code}
+    #@all_rooms=Location.find(params[:id]).descendants.where('typename = ?',6) #error - not precise
+    @all_rooms=Location.find(params[:id]).descendants.where('typename = ? OR typename =?', 2, 8).pluck(:combo_code).group_by{|x|x[0, x.size-2]}
+    @damaged_rooms=Location.find(params[:id]).descendants.where('typename = ? OR typename =?', 2, 8).where(occupied: true).pluck(:combo_code).group_by{|x|x[0, x.size-2]}
+    @current_tenants = Tenant.where("keyreturned IS ? AND force_vacate != ?", nil, true)
+    @tenantbed_per_level=Location.find(params[:id]).descendants.where('typename = ? OR typename =?', 2, 8).joins(:tenants).where("tenants.id" => @current_tenants)
+    @occupied_rooms= @tenantbed_per_level.pluck(:combo_code).group_by{|x|x[0, x.size-2]}
+
+	#Location.find(params[:id]).descendants.where('typename = ? OR typename =?', 2, 8).where('id iN(?)', @current_tenants.pluck(:location_id)).pluck(:combo_code).group_by{|x|x[0, x.size-2]}
+
+     #must not be sorted
+    #building.descendants.where(typename: [2,8]).joins(:tenants).where("tenants.id" => @current_tenants)
   end
 
   def room_map

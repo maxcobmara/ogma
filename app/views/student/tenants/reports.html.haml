@@ -1,6 +1,7 @@
 - model_class = Tenant
 .page-header
-  %h1= t('student.tenant.report_census_title')#, :default => model_class.model_name.human.pluralize 
+  %h1=t 'student.tenant.report'
+  /= t('student.tenant.report_census_title')#, :default => model_class.model_name.human.pluralize 
 
 .row  
   .navbar.navbar-inverse{role: "navigation", style: "padding-right:40px;"}
@@ -19,7 +20,7 @@
           %li= link_to (t "student.tenant.census"), census_student_tenants_path(:format => :pdf )
 
 .row
-  %H4=t 'student.tenant.report'
+  /%H4=t 'student.tenant.report'
   %table.table-striped.table-hover.ogma
     - @residentials.sort.each do |building|
       %thead
@@ -28,14 +29,16 @@
           %th= t 'student.tenant.occupied'
           %th= t 'student.tenant.empty'
           %th= t 'student.tenant.damaged'
+          %th= t 'student.tenant.census2'
           %th= t 'student.tenant.notes'
       - building.children.sort.reverse.each do |floor|
       
         - @all = floor.descendants.where(typename: [2,8]).pluck(:combo_code).group_by{|x|x[0, x.size-2]} 
-        - @occupied = floor.descendants.where(typename: [2,8]).joins(:tenants).where("tenants.id" => @current_tenants).pluck(:combo_code).group_by{|x|x[0, x.size-2]} 
+        - @occupied_beds = floor.descendants.where(typename: [2,8]).joins(:tenants).where("tenants.id" => @current_tenants)
+        - @occupied = @occupied_beds.pluck(:combo_code).group_by{|x|x[0, x.size-2]} 
         /this may not precise coz 1 room have 2 beds, 1 bed occupied, room considered occupied, use all-occupied-damaged instead
         /- @empty =    floor.descendants.where(typename: [2,8]).where(occupied: [false, nil]).where('id NOT IN (?)', @occupied_locations)
-        - @damaged = floor.descendants.where(occupied: true).where(typename: 6) #is a room
+        - @damaged = floor.descendants.where(occupied: true).where(typename: 6) #NOTE:is a room
         - @empty = @all.count-@occupied.count-@damaged.count
 
         %tr
@@ -43,43 +46,6 @@
           %td= @occupied.count
           %td= @empty
           %td= @damaged.count
+          %td= link_to ((t 'student.tenant.census2')+" ("+@occupied_beds.count.to_s+" "+(t 'student.tenant.person')+")"), census_level_student_tenant_path(floor.id)
           %td
-          
-.row
-  %H4=t 'student.tenant.census'
-  %table.table-striped.table-hover.ogma
-    - @residentials.sort.each do |building|
-      - building.children.sort.reverse.each do |floor|
-      
-        - @occupied = floor.descendants.where(typename: [2,8]).joins(:tenants).where("tenants.id" => @current_tenants)
-        - @empty =    floor.descendants.where(typename: [2,8]).where(occupied: [false, nil]).where('id NOT IN (?)', @occupied_locations)
-        - @damaged =         floor.descendants.where(occupied: true)
-        
-        - @rooms = floor.descendants.where(typename: [2,8])
-        - @this_floor = @current_tenants.where(location_id: @rooms)
-        
-        - unless @this_floor.blank?
-          %thead
-            %tr
-              %td{colspan:8}= floor.name
-            %tr
-              %td= t 'location.code'
-              %td= t 'location.name'
-              %td= t 'student.name'
-              %td= t 'student.icno'
-              %td= t 'student.matrixno'
-              %td= t 'course.name'
-              %td= t 'training.intake.description'
-              %td= t 'student.tenant.notes'
-        %tbody
-          - @this_floor.each do |room|
-            %tr
-              %td= room.location.combo_code
-              %td= room.location.name
-              %td= room.try(:student).try(:name)
-              %td= room.try(:student).try(:icno)
-              %td= room.try(:student).try(:matrixno)
-              %td= room.try(:student).try(:course).try(:name)
-              %td= room.student.intake_num rescue ""
-              %td
-
+ 
