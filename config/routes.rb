@@ -175,6 +175,7 @@ Ogma::Application.routes.draw do
     resources :tenants do
       collection do
         get :room_map
+        get :reports
         get :statistics
         get :census
         get  :return_key

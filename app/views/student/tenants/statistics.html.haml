@@ -2,6 +2,7 @@
 .page-header
   %h1= (t "student.tenant.statistics")
 
+/General Statistics
 .row
   .col-md-3
     %table.table-striped.table-hover.ogma
@@ -51,8 +52,11 @@
   .col-md-4
     %h4.centre= t 'student.male'
     = pie_chart [[(t 'student.tenant.empty'), @em], [(t 'student.tenant.occupied'), @om], [(t 'student.tenant.damaged'), @dm]], :height => "190px", :library => {legend: { position: 'right', maxLines: 3}}
-    
+
+%BR
+/Statistics by Block    
 .row
+  %H4=t 'student.tenant.statistics_block'
   .col-md-3
     %table.table-striped.table-hover.ogma
       %thead
@@ -135,3 +139,35 @@
         %tr
           %th= t 'student.tenant.total'
           %td.centre= @roomF_C.count
+
+%BR
+/Statistics by Programme (of each block)
+.row
+  %H4=t 'student.tenant.tenants_students'
+  - @residentials.sort.each do |building|
+    - @tenantbed_per_block = building.descendants.where(typename: [2,8]).joins(:tenants).where("tenants.id" => @current_tenants)
+    - @all_tenants_wstudent = @current_tenants.joins(:location).where('location_id IN(?) and student_id is not null', @tenantbed_per_block.pluck(:id))
+    - @students_prog = Student.where('id IN (?)', @all_tenants_wstudent.pluck(:student_id)).group_by{|j|j.course_id}
+    - @all_tenants_wostudent = @current_tenants.joins(:location).where('location_id IN(?) and student_id NOT IN(?)', @tenantbed_per_block.pluck(:id), Student.all.pluck(:id))
+    .col-md-3
+      %table.table-striped.table-hover.ogma
+        %thead
+          %tr
+            %th.centre{colspan: 2}=building.name
+          %tr
+            %th=(t 'course.name')+" - "+(t 'training.intake.description')
+            %th.centre=t('student.tenant.total')
+        %tbody
+          - @students_prog.each do |course_id, students|
+            - students.group_by{|k|k.intake}.each do |intake, students2|
+              %tr
+                %th=students.first.course.name+" - "+students2.first.intake_num
+                %td.centre=students2.count
+          - if @all_tenants_wostudent.count > 0
+            %tr
+              %td{style: "color: red;"}=t 'student.tenant.tenancy_details_nil'
+              %td.centre=@all_tenants_wostudent.count
+          %tr
+            %th{style: "background-color: #ABC6E9;"}=t 'student.tenant.total_tenants'
+            %td.centre{style: "background-color: #ABC6E9; font-weight: bold;"}=@all_tenants_wstudent.count
+    .col-md-1 &nbsp;

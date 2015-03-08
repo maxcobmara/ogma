@@ -1135,19 +1135,33 @@ ms_MY:
         expected: Tarikh Dijangka Pulang
         returned: Tarikh Dipulang
       vacate: Kosongkan
+      tenancy_details_nil: Tiada data penghuni
       room_map: Peta Katil
       list: Senarai Penghuni
       statistics: Statistik Penempatan Pelajar
-      statistics_menu: Statistik
+      statistics_menu: "Statistik"
+      statistics_block: Pecahan Jenis Bilik Mengikut Blok Kediaman Asrama
+      tenants_students: "Jumlah Keseluruhan Pelatih Yang Menghuni Asrama (Mengikut Program)"
       empty: Kosong
-      occupied: Berpenghuni
+      occupied: Isi #Berpenghuni
       damaged: Rosak
+      notes: Nota
       total: Jumlah
-      empty_room: Pemulangan Kunci
+      total_empty: Jumlah Bilik Kosong
+      total_occupied: Jumlah Bilik Guna
+      total_damaged: Jumlah Bilik Rosak
+      total_all: Jumlah Keseluruhan Bilik
+      total_tenants: Jumlah Keseluruhan Penghuni
+      return_key: Pemulangan Kunci
       empty_room: Kosongkan Bilik
       damage: Kerosakan oleh Pelajar
       bed: Katil
       room: Bilik
+      report: Laporan Penginapan
+      census: Bancian Penghuni Mengikut Aras
+      report_census: Laporan & Bancian
+      report_census_title: "Laporan Penginapan & Bancian Penghuni Kediaman Pelatih"
+      summary: Ringkasan
       
     students:
       title: Maklumat Pelajar
@@ -1657,7 +1671,7 @@ ms_MY:
     
   course:
     title: Kursus
-    name: Nama Programme
+    name: Nama Program
 
   exam:
     title: Peperiksaan

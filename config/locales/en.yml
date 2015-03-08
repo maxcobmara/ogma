@@ -1217,19 +1217,33 @@ en:
         expected: Date Key expected returned
         returned: Date Returned
       vacate: Force Vacate
+      tenancy_details_nil: Tenancy data not available
       room_map: Room Map
       list: Tenancy List
       statistics: Student Residence Statistics
       statistics_menu: Statistics
+      statistics_block: "Breakdown of Room Type (by Block)"
+      tenants_students: "Total of Student Residency Tenant (By Programme)"
       empty: Empty
       occupied: Occupied
       damaged: Damaged
+      notes: Notes
       total: Totals
+      total_empty: Total Empty Rooms
+      total_occupied: Total Occupied Rooms
+      total_damaged: Total Damaged Rooms
+      total_all: Total Rooms in Block
+      total_tenants: Total Tenants in Block
       return_key: Return Key
       empty_room: Empty Room
       damage: Damage by Student
       bed: Bed
       room: Room
+      report: Tenancy Report
+      census: Tenancy Census by Level
+      report_census: "Tenancy & Census"
+      report_census_title: "Student Resident Tenancy Report & Census"
+      summary: Summary
       
     students:
       title: Student Info

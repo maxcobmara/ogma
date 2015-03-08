@@ -8,7 +8,7 @@ class Student::TenantsController < ApplicationController
     @search.force_vacate_true = false unless params[:q]
     @search.sorts = 'location_combo_code asc' if @search.sorts.empty?
     @tenants = @search.result
-  
+    #from Index
     #reports - will move out
     #getting buidings with student beds
     @places = Location.where('typename = ? OR typename =?', 2, 8)
@@ -18,9 +18,24 @@ class Student::TenantsController < ApplicationController
     end
     @residentials = roots.uniq
     @current_tenants = Tenant.where("keyreturned IS ? AND force_vacate != ?", nil, true)
-
+    @occupied_locations = @current_tenants.pluck(:location_id)
   end
   
+  def reports
+    #from Index
+    #reports - will move out
+    #getting buidings with student beds
+    @places = Location.where('typename = ? OR typename =?', 2, 8)
+    roots = []
+    @places.each do |place|
+     roots << place.root
+    end
+    @residentials = roots.uniq
+    @current_tenants = Tenant.where("keyreturned IS ? AND force_vacate != ?", nil, true)
+    @occupied_locations = @current_tenants.pluck(:location_id)
+    
+  end
+
   def room_map
     @residentials = Location.where(lclass: 4).order(combo_code: :asc)
     #sets div size to fit no of buildings 
@@ -66,7 +81,18 @@ class Student::TenantsController < ApplicationController
     @droomF_B = @dbedF_B.group_by{|x|x[0, x.size-2]} if @dbedF_B
     @droomF_C = @dbedF_C.group_by{|x|x[0, x.size-2]} if @dbedF_C
 
-
+    #For Statistics by Programme 
+    #from Index
+    #reports - will move out
+    #getting buidings with student beds
+    @places = Location.where('typename = ? OR typename =?', 2, 8)
+    roots = []
+    @places.each do |place|
+     roots << place.root
+    end
+    @residentials = roots.uniq
+    @current_tenants = Tenant.where("keyreturned IS ? AND force_vacate != ?", nil, true)
+    @occupied_locations = @current_tenants.pluck(:location_id)
   end
   
   def census
