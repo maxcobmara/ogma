@@ -185,6 +185,7 @@ Ogma::Application.routes.draw do
       end
       member do
         get :census_level
+	get :return_key
       end
     end
     resources :student_discipline_cases do

@@ -27,7 +27,7 @@ module StudentsHelper
       end
     end 
 
-    "Year #{@year}, Semester #{@semester}"
+    "#{(I18n.t('time.years')).singularize.titleize} #{@year}, Semester #{@semester}"
   end
   
   def intake_num

@@ -96,7 +96,7 @@
                         - if (builder.object.id!=nil && builder.object.document_id==2) || builder.object.id==nil
                           = render 'damage_fields', f: builder
                       /= link_to_add_fields ("Add Details"), f, :damages
-                      .returned= link_to_add_fields t('Add Details'), f, :damages, "",  ""
+                      .returned= link_to_add_fields t('add_details'), f, :damages, "",  ""
                        
                   .form-group.returned
                     .col-sm-offset-3.col-sm-4

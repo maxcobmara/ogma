@@ -128,6 +128,9 @@ class Student::TenantsController < ApplicationController
       @ic_only = @student_ic.split(" ")[0]
       #@selected_student = Student.where("icno = ?", "#{@student_ic}").first
       @my_room = Tenant.where(student_id: Student.where("icno = ?", "#{@ic_only}").first).first
+    elsif params[:id]
+      @icno = params[:id]
+      @my_room = Tenant.where(student_id: Student.where("icno = ?", "#{@icno}").first).first
     end
     @tenant = @my_room
   end
@@ -151,7 +154,7 @@ class Student::TenantsController < ApplicationController
 
     respond_to do |format|
       if @tenant.save
-        flash[:notice] = 'Location was successfully created.'
+        flash[:notice] = (t 'student.tenant.title')+(t 'actions.created')
         format.html { redirect_to(student_tenant_path(@tenant)) }
         format.xml  { render :xml => @tenant, :status => :created, :location => @tenant }
       else

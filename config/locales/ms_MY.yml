@@ -137,6 +137,7 @@ ms_MY:
   none_assigned: Tiada maklumat
   inc_unitname: " (termasuk nama Jabatan / Unit) "
   approve: Kelulusan
+  add_details: Tambah Butiran
  
   actions:
     new: Baru
@@ -1130,7 +1131,8 @@ ms_MY:
     tenant:
       person: penghuni
       title: Penempatan Pelatih
-      new : Pendudukkan Baru
+      new : Penempatan Baru Pelatih
+      edit: Sunting Penempatan Pelatih
       key:
         provided: Tarikh Kunci Diberi
         expected: Tarikh Dijangka Pulang
@@ -2516,6 +2518,12 @@ ms_MY:
       short: "%l:%M %p"
     am: pg
     pm: ptg 
+    hours: jam
+    minutes: minit
+    days: hari
+    months: bulan
+    years: tahun
+    weeks: minggu
 
   number:
     currency:

@@ -158,6 +158,7 @@ en:
   none_assigned: None assigned
   inc_unitname: " (including Department / Unit name) "
   approve: Approve
+  add_details: Add Details
 
   actions:
     new: New
@@ -1211,8 +1212,9 @@ en:
       ic_no: Search for Student
     tenant:
       person: tenants
-      title: Student Residence
+      title: Student Tenancy
       new: New Student Tenancy
+      edit: Edit Student Tenancy
       key:
         provided: Date Key Provided
         expected: Date Key expected returned
@@ -2567,6 +2569,12 @@ en:
     formats:
       default:  "%l:%M %p"
       short: "%l:%M %p"
+    hours: hours
+    minutes: minutes
+    days: days
+    months: months
+    years: years
+    weeks: weeks
       
   datetime:
     formats:
