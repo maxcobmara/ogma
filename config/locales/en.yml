@@ -1241,7 +1241,11 @@ en:
       total_tenant: Total Tenants
       return_key: Return Key
       empty_room: Empty Room
+      damage_status: Damage Status
+      damage_type: Damage Type
       damage: Damage by Student
+      asset_other_damage: "Asset / Other Damages"
+      room_damage: "Room Damage"
       bed: Bed
       room: Room
       report: Tenancy Statistics & Census by Level

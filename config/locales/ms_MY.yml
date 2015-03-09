@@ -1160,7 +1160,11 @@ ms_MY:
       total_tenant: Jumlah penghuni
       return_key: Pemulangan Kunci
       empty_room: Kosongkan Bilik
+      damage_status: Status Kerosakan
+      damage_type: Jenis Kerosakan
       damage: Kerosakan oleh Pelajar
+      asset_other_damage: "Aset / Lain-lain"
+      room_damage: "Kerosakan Bilik"
       bed: Katil
       room: Bilik
       report: Statistik Penginapan & Bancian Penghuni Mengikut Aras #LAPORAN PENGINAPAN

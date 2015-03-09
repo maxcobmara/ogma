@@ -1,5 +1,14 @@
 class LocationDamage < ActiveRecord::Base
   belongs_to :location, :foreign_key => 'location_id'
+  
+  def damage_type
+    if document_id==1
+     "#{ I18n.t('student.tenant.room_damage')}"
+    elsif document_id==2
+      "#{ I18n.t('student.tenant.asset_other_damage')}"
+    end
+  end
+  
 end
 
 # == Schema Information

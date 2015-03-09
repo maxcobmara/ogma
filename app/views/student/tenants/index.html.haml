@@ -23,13 +23,17 @@
     %thead
       %tr
         %th= t 'location.code'
-        %th= t 'student.icno'
+        %th= t 'student.students.icno'
         %th= t 'student.name'
+        %th= t 'student.students.matrixno'
+        %th= t 'student.students.intake_id'
         %th= t 'course.name'
         %th= t 'student.tenant.key.provided'
         %th= t 'student.tenant.key.expected'
         %th= t 'student.tenant.key.returned'
         %th= t 'student.tenant.vacate'
+        %th= t 'student.tenant.damage_status'
+        %th= t 'student.tenant.damage_type'
     
     %tbody
     = render "index_search"
@@ -42,9 +46,26 @@
           - else
             = link_to tenant.try(:student).try(:icno), student_tenant_path(tenant)
         %td= link_to tenant.try(:student).try(:name), student_path(tenant.student) unless tenant.student.nil? 
+        %td= tenant.try(:student).try(:matrixno) unless tenant.student.nil?
+        %td= tenant.try(:student).try(:intake).try(:strftime, '%b %Y') unless tenant.student.nil?
         %td= tenant.try(:student).try(:course).try(:name)
-        %td= l(tenant.keyaccept) rescue nil
-        %td= l(tenant.keyexpectedreturn) unless tenant.keyexpectedreturn.blank?
-        %td= l(tenant.keyreturned) unless tenant.keyreturned.blank?
+        %td= l(tenant.keyaccept, :format => '%d %b %Y') rescue nil
+        %td= l(tenant.keyexpectedreturn, :format => '%d %b %Y') unless tenant.keyexpectedreturn.blank?
+        %td= l(tenant.keyreturned, :format => '%d %b %Y') unless tenant.keyreturned.blank?
         %td= tenant.force_vacate? ? (t 'yes2') : (t 'no2')
+        %td
+          - if tenant.damages.count==0 
+            = (t 'no2') 
+          - else
+            = (t 'yes2')
+        %td
+          - if tenant.damages.count>0 
+            - dd=[]
+            - tenant.damages.each{|t|dd << t.damage_type}
+            - dmg=dd.uniq
+            - if dmg.count<0
+              = dmg
+            - else
+              = dmg.join(" & ")
+            
         //%td= link_to image_tag("printer.png", :border => 0, :title => 'Borang Asrama'), :action => 'borang_asrama', :id => tenant
