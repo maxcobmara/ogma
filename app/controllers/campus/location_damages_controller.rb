@@ -2,7 +2,9 @@ class Campus::LocationDamagesController < ApplicationController
   before_action :set_location_damage, only: [:show, :edit, :update, :destroy]
   
   def index
-    @damages = LocationDamage.all
+    #@damages = LocationDamage.all
+    @search = LocationDamage.search(params[:q]) 
+    @damages = @search.result.joins(:location).where('typename IN(?) or lclass IN(?)',[2,8,6],[4,2]) #4-block, 2-flr, 2-bed f, 8-bed m, 6-room
     respond_to do |format|
       format.html # index.html.erb
       format.xml  { render :xml => @locations }
@@ -10,9 +12,10 @@ class Campus::LocationDamagesController < ApplicationController
   end
   
   def new
+    @locationid = params[:location_id]
     @location = Location.find(params[:location_id])
     @damage = @location.damages.new(params[:location_damage])
-    @damage.save
+    #@damage.save
     #@damage = LocationDamage.new(:location_id => params[:location_id])
   end
   
@@ -20,11 +23,14 @@ class Campus::LocationDamagesController < ApplicationController
   end
   
   def create
-    @damage = Location.new(location_damage_params)
+    @locationid = params[:location_damage][:location_id]
+    @location = Location.find(@locationid)
+    @damage = @location.damages.new(params[:location_damage])
+    #@damage = LocationDamage.new(location_damage_params)
 
     respond_to do |format|
       if @damage.save
-        flash[:notice] = 'Location was successfully created.'
+        flash[:notice] = (t 'location.damage.title')+(t 'actions.created')
         format.html { redirect_to(campus_location_path(@damage.location)) }
         format.xml  { render :xml => @damage, :status => :created, :location_damage => @damage }
       else

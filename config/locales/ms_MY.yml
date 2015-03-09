@@ -16,9 +16,14 @@ ms_MY:
       stationery: Keperluan Pejabat
       stationery_add: Penerimaan Keperluan Pejabat
       stationery_use: Pengeluaran Keperluan Pejabat
+      location_damage: Kerosakan di Lokasi
     attributes:
       location:
         combo_code: Kod Lokasi
+      location_damage:
+        document_id: Jenis Kerosakan
+        reported_on: Tarikh Dilaporkan
+        description: Deskripsi Kerosakan
       travel_request:
         destination: Destinasi
         depart_at: Masa Bertolak
@@ -1106,6 +1111,7 @@ ms_MY:
       floor: Tingkat
       room: "Unit/Bilik"
       admin: Pentadbir
+      bed: Katil
       
     damage:
       title: Kerosakan di Lokasi
@@ -1117,6 +1123,9 @@ ms_MY:
       room_damage: Bilik Rosak
       description: Deskripsi Kerosakan
       reported_on: Tarikh Dilaporkan
+      list: Senarai Kerosakan di Lokasi
+      list2: Kerosakan di Lokasi
+      new: "Laporkan Kerosakan bagi "
     
   student:
     title: Pelajar
@@ -1174,6 +1183,7 @@ ms_MY:
       report_census: "Statistik & Bancian (Aras)"
       #report_census_title: "Laporan Penginapan & Bancian Penghuni Kediaman Pelatih"
       summary: Ringkasan
+      reset_search: Reset Carian Pelajar
       
     students:
       title: Maklumat Pelajar

@@ -34,9 +34,14 @@ en:
       stationery: Office Supplies
       stationery_add: Office Supplies Additions
       statonery_use: Office Supplies Deductions
+      location_damage: Location Damages
     attributes:
       location:
         combo_code: Location Code
+      location_damage:
+        document_id: Damage Type
+        reported_on: Reported On
+        description: Damage Description
       travel_request:
         destination: Destination
         depart_at: Depart at
@@ -1188,6 +1193,7 @@ en:
       floor: Floor
       room: "Unit/Room"
       admin: Administrator
+      bed: Katil
       
     damage:
       title: Location Damage
@@ -1199,6 +1205,9 @@ en:
       room_damage: Room Damage
       description: Description
       reported_on: Reported On 
+      list: Location Damage List
+      list2: Location Damage
+      new: "Report Damage for "
     
   student:
     title: Student
@@ -1255,6 +1264,7 @@ en:
       report_census: "Statistics & Census (Level)"
       #report_census_title: "Student Resident Tenancy Report & Census"
       summary: Summary
+      reset_search: Reset Student Search
       
     students:
       title: Student Info

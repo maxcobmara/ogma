@@ -124,6 +124,7 @@ class Student::TenantsController < ApplicationController
   
   def return_key
     if params[:search] && params[:search][:student_icno].present?
+      params[:id]=nil
       @student_ic = params[:search][:student_icno]
       @ic_only = @student_ic.split(" ")[0]
       #@selected_student = Student.where("icno = ?", "#{@student_ic}").first
