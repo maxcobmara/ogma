@@ -10,5 +10,8 @@
       = f.hidden_field :location_id
       = render :partial => 'form', :locals => {:f => f}
       .form-group
-        .col-sm-offset-2.col-sm-2
-          = f.submit t('update'), class: "btn btn-primary"
+        .col-sm-offset-2
+          .col-sm-1
+            = link_to "Back", room_map_student_tenants_path,class: "btn btn-primary"
+          .col-sm-2
+            = f.submit t('update'), class: "btn btn-primary"

@@ -175,12 +175,16 @@ Ogma::Application.routes.draw do
     resources :tenants do
       collection do
         get :room_map
+        get :reports
         get :statistics
         get :census
         get  :return_key
         post :return_key
         get  :empty_room
         post :empty_room
+      end
+      member do
+        get :census_level
       end
     end
     resources :student_discipline_cases do

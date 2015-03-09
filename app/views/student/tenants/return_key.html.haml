@@ -21,9 +21,17 @@
         .panel-heading
           = t( 'location.code')
           &nbsp; : &nbsp;
-          = @my_room.location.combo_code
+          = link_to @my_room.location.combo_code, campus_location_path(@my_room.location.id)
           &nbsp; : &nbsp;
           = @my_room.location.name
+          .right
+            = link_to content_tag(:i, "", :class => "fa fa-map-marker ") + " " + t('.back', :default => t("student.tenant.room_map")), room_map_student_tenants_path
+            /, :class => 'btn btn-default'
+            /= link_to  t("student.tenant.list"), student_tenants_path
+            &nbsp; | &nbsp;
+            = link_to content_tag(:i, "", :class => "fa fa-list-alt ") + " " + t('.back', :default => t("student.tenant.list")), student_tenants_path
+            /, :class => 'btn btn-default'
+            /= link_to  t("student.tenant.room_map"), room_map_student_tenants_path
         .panel-body
           .row
             .col-md-10.col-md-offset-1
@@ -88,7 +96,7 @@
                         - if (builder.object.id!=nil && builder.object.document_id==2) || builder.object.id==nil
                           = render 'damage_fields', f: builder
                       /= link_to_add_fields ("Add Details"), f, :damages
-                      = link_to_add_fields t('Add Details'), f, :damages, "",  ""
+                      .returned= link_to_add_fields t('Add Details'), f, :damages, "",  ""
                        
                   .form-group.returned
                     .col-sm-offset-3.col-sm-4

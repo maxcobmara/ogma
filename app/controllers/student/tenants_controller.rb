@@ -3,12 +3,16 @@ class Student::TenantsController < ApplicationController
   before_action :set_tenant, only: [:show, :edit, :update, :destroy]
   
   def index
-    @search = Tenant.where("student_id IS NOT NULL").search(params[:q])
+    #@search = Tenant.where("student_id IS NOT NULL").search(params[:q])
+    @search = Tenant.search(params[:q]) #NOTE: To match with room map, statistic (by programme) & census_level (+report)
     @search.keyreturned_present != nil unless params[:q]
     @search.force_vacate_true = false unless params[:q]
     @search.sorts = 'location_combo_code asc' if @search.sorts.empty?
     @tenants = @search.result
+  end
   
+  def reports
+    #from Index
     #reports - will move out
     #getting buidings with student beds
     @places = Location.where('typename = ? OR typename =?', 2, 8)
@@ -18,9 +22,28 @@ class Student::TenantsController < ApplicationController
     end
     @residentials = roots.uniq
     @current_tenants = Tenant.where("keyreturned IS ? AND force_vacate != ?", nil, true)
-
+    @occupied_locations = @current_tenants.pluck(:location_id)
+    
+    @floor=Location.find(103)
+    @all_beds_single=Location.where(id: 103).first.descendants.where('typename = ? OR typename =?', 2, 8).sort_by{|y|y.combo_code}
   end
   
+  def census_level
+    @floor=Location.find(params[:id]) #103, 1181
+    @all_beds_single=Location.find(params[:id]).descendants.where('typename = ? OR typename =?', 2, 8).sort_by{|y|y.combo_code}
+    #@all_rooms=Location.find(params[:id]).descendants.where('typename = ?',6) #error - not precise
+    @all_rooms=Location.find(params[:id]).descendants.where('typename = ? OR typename =?', 2, 8).pluck(:combo_code).group_by{|x|x[0, x.size-2]}
+    @damaged_rooms=Location.find(params[:id]).descendants.where('typename = ? OR typename =?', 2, 8).where(occupied: true).pluck(:combo_code).group_by{|x|x[0, x.size-2]}
+    @current_tenants = Tenant.where("keyreturned IS ? AND force_vacate != ?", nil, true)
+    @tenantbed_per_level=Location.find(params[:id]).descendants.where('typename = ? OR typename =?', 2, 8).joins(:tenants).where("tenants.id" => @current_tenants)
+    @occupied_rooms= @tenantbed_per_level.pluck(:combo_code).group_by{|x|x[0, x.size-2]}
+
+	#Location.find(params[:id]).descendants.where('typename = ? OR typename =?', 2, 8).where('id iN(?)', @current_tenants.pluck(:location_id)).pluck(:combo_code).group_by{|x|x[0, x.size-2]}
+
+     #must not be sorted
+    #building.descendants.where(typename: [2,8]).joins(:tenants).where("tenants.id" => @current_tenants)
+  end
+
   def room_map
     @residentials = Location.where(lclass: 4).order(combo_code: :asc)
     #sets div size to fit no of buildings 
@@ -33,6 +56,49 @@ class Student::TenantsController < ApplicationController
     @locations = Location.where('typename IN (?)', [2,8])
     @female_student_beds  = @locations.where('typename = ?', 2)
     @male_student_beds    = @locations.where('typename = ?', 8)
+    @current_tenants = Tenant.where("keyreturned IS ? AND force_vacate != ?", nil, true)
+    @occupied_locations = @current_tenants.pluck(:location_id)
+    
+    #All Rooms
+    @af_bedcode = @female_student_beds.pluck(:combo_code)
+    @am_bedcode = @male_student_beds.pluck(:combo_code)
+    @am_rooms = @am_bedcode.group_by{|x|x[0, x.size-2]} #block A  {"HA-01-01"=>["HA-01-01-A", "HA-01-01-B"]} - group by male rooms (Block A)
+    @af_rooms = @af_bedcode.group_by{|x|x[0, x.size-2]}   #block B & C {"HB-01-01"=>["HB-01-01-A", "HB-01-01-B"], "HC-01-01"=>["HC-01-01-A", "HC-01-01-B"]}
+    @bedF_B = @af_bedcode.group_by{|x|x[1,1]}["B"]     #bed by block {"B"=>["HB-01", "HB-01", "HB-02"], "C"=>["HC-01"]} 
+    @bedF_C = @af_bedcode.group_by{|x|x[1,1]}["C"]
+    @roomF_B = @bedF_B.group_by{|x|x[0, x.size-2]}
+    @roomF_C = @bedF_C.group_by{|x|x[0, x.size-2]}
+    
+    #Occupied Rooms 
+    @of_bedcode = @female_student_beds.joins(:tenants).where("tenants.id" => @current_tenants).pluck(:combo_code)
+    @om_bedcode = @male_student_beds.joins(:tenants).where("tenants.id" => @current_tenants).pluck(:combo_code)
+    @of_rooms = @of_bedcode.group_by{|x|x[0, x.size-2]}
+    @om_rooms = @om_bedcode.group_by{|x|x[0, x.size-2]}
+    @obedF_B = @of_bedcode.group_by{|x|x[1,1]}["B"]     #bed by block {"B"=>["HB-01", "HB-01", "HB-02"], "C"=>["HC-01"]} 
+    @obedF_C = @of_bedcode.group_by{|x|x[1,1]}["C"]
+    @oroomF_B = @obedF_B.group_by{|x|x[0, x.size-2]} if @obedF_B
+    @oroomF_C = @obedF_C.group_by{|x|x[0, x.size-2]} if @obedF_C
+    
+    #Damaged Rooms
+    @df_bedcode = @female_student_beds.where(occupied: true).pluck(:combo_code)
+    @dm_bedcode = @male_student_beds.where(occupied: true).pluck(:combo_code)
+    @df_rooms = @df_bedcode.group_by{|x|x[0, x.size-2]}
+    @dm_rooms = @dm_bedcode.group_by{|x|x[0, x.size-2]}
+    @dbedF_B = @df_bedcode.group_by{|x|x[1,1]}["B"]     #bed by block {"B"=>["HB-01", "HB-01", "HB-02"], "C"=>["HC-01"]} 
+    @dbedF_C = @df_bedcode.group_by{|x|x[1,1]}["C"]
+    @droomF_B = @dbedF_B.group_by{|x|x[0, x.size-2]} if @dbedF_B
+    @droomF_C = @dbedF_C.group_by{|x|x[0, x.size-2]} if @dbedF_C
+
+    #For Statistics by Programme 
+    #from Index
+    #reports - will move out
+    #getting buidings with student beds
+    @places = Location.where('typename = ? OR typename =?', 2, 8)
+    roots = []
+    @places.each do |place|
+     roots << place.root
+    end
+    @residentials = roots.uniq
     @current_tenants = Tenant.where("keyreturned IS ? AND force_vacate != ?", nil, true)
     @occupied_locations = @current_tenants.pluck(:location_id)
   end
@@ -71,6 +137,8 @@ class Student::TenantsController < ApplicationController
   
   def new
     @current_tenant_ids = Tenant.where(:keyreturned => nil).where(:force_vacate => false).pluck(:student_id)
+    @potential1=Student.where(gender: 1).where("end_training > ?", Date.today).pluck(:id)-@current_tenant_ids
+    @potential2=Student.where(gender: 2).where("end_training > ?", Date.today).pluck(:id)-@current_tenant_ids
     @tenant = Tenant.new(:location_id => params[:location_id])
     
   end
@@ -111,7 +179,8 @@ class Student::TenantsController < ApplicationController
   def destroy
     @tenant.destroy
     respond_to do |format|
-      format.html { redirect_to student_tenant_url }
+      #format.html { redirect_to student_tenants_url }
+      format.html { redirect_to room_map_student_tenants_path }
       format.json { head :no_content }
     end
   end

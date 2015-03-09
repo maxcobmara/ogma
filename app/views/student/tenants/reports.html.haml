@@ -1,0 +1,51 @@
+- model_class = Tenant
+.page-header
+  %h1=t 'student.tenant.report'
+  /= t('student.tenant.report_census_title')#, :default => model_class.model_name.human.pluralize 
+
+.row  
+  .navbar.navbar-inverse{role: "navigation", style: "padding-right:40px;"}
+    %ul.nav.navbar-nav
+      //%li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'new'))), new_student_tenant_path
+    %ul.nav.navbar-nav.navbar-right
+      /%li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "index_search_bar"
+      %li.dropdown
+        %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#"}
+          = fa_icon "print", text: (t 'actions.print')
+          %b.caret
+        %ul.dropdown-menu
+          %li= link_to (t "student.tenant.statistics"), statistics_student_tenants_path
+          %li
+            %a.bogus{:href => "#"} Laporan Penginapan
+          %li= link_to (t "student.tenant.census"), census_student_tenants_path(:format => :pdf )
+
+.row
+  /%H4=t 'student.tenant.report'
+  %table.table-striped.table-hover.ogma
+    - @residentials.sort.each do |building|
+      %thead
+        %tr
+          %th= building.name
+          %th= t 'student.tenant.occupied'
+          %th= t 'student.tenant.empty'
+          %th= t 'student.tenant.damaged'
+          %th= t 'student.tenant.census2'
+          %th= t 'student.tenant.notes'
+      - building.children.sort.reverse.each do |floor|
+      
+        - @all = floor.descendants.where(typename: [2,8]).pluck(:combo_code).group_by{|x|x[0, x.size-2]} 
+        - @occupied_beds = floor.descendants.where(typename: [2,8]).joins(:tenants).where("tenants.id" => @current_tenants)
+        - @occupied = @occupied_beds.pluck(:combo_code).group_by{|x|x[0, x.size-2]} 
+        /this may not precise coz 1 room have 2 beds, 1 bed occupied, room considered occupied, use all-occupied-damaged instead
+        /- @empty =    floor.descendants.where(typename: [2,8]).where(occupied: [false, nil]).where('id NOT IN (?)', @occupied_locations)
+        - @damaged = floor.descendants.where(occupied: true).where(typename: 6) #NOTE:is a room
+        - @empty = @all.count-@occupied.count-@damaged.count
+
+        %tr
+          %td= floor.name
+          %td= @occupied.count
+          %td= @empty
+          %td= @damaged.count
+          %td= link_to ((t 'student.tenant.census2')+" ("+@occupied_beds.count.to_s+" "+(t 'student.tenant.person')+")"), census_level_student_tenant_path(floor.id)
+          %td
+ 

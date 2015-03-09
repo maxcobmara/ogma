@@ -1,5 +1,6 @@
 class Student < ActiveRecord::Base
-
+  include StudentsHelper
+  
   before_save  :titleize_name
   validates_presence_of     :icno, :name, :sstatus, :stelno, :ssponsor, :gender, :sbirthdt, :mrtlstatuscd, :intake,:course_id
   validates_numericality_of :icno, :stelno

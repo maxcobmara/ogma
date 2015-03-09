@@ -1,9 +1,15 @@
-= search_form_for [:tenant, @search], url: student_tenants_path,  class: "form-inline" do |f|
-  %tr.search_row.hidden
-    %td= f.text_field :location_combo_code_start, size: 2,  :class => "form-control"
-    %td= f.text_field :student_icno_start, size: 8,  :class => "form-control"
+= search_form_for [:tenant, @search], url: student_tenants_path, class: "form-inline" do |f|
+  %tr.search_row{style: "display: none;"}
+    %td= f.text_field :location_combo_code_start, size: 2, class: 'form-control'
+    %td= f.text_field :student_icno_start, size: 8, class: 'form-control'
+    %td= f.text_field :student_name_cont, size: 8, class: 'form-control'
+    %td= f.text_field :student_course_name_cont, size: 8, class: 'form-control'
+    %td= f.text_field :keyaccept_eq, :size=> 2, class: 'date_picker form-control'
+    %td= f.text_field :keyexpectedreturn_eq, :size=> 2, class:  'date_picker form-control'
+    %td= f.text_field :keyreturned_eq, :size=> 2, class: 'date_picker form-control'
     %td.input-group
-      = f.text_field :student_name_start, size: 8, :class => "form-control"
+      = select_tag('q[force_vacate_eq]',options_for_select([[(t 'actions.all_records'),''],[(t 'yes2'),true],[(t 'no2'),false]]),class: 'selectpicker',"data-width"=>'100px')
       %span.input-group-btn
         %button.btn.btn-sm.btn-default.right{:type => "submit"}
           %i.fa.fa-search.fa-fw
+

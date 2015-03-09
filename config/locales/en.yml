@@ -1210,6 +1210,7 @@ en:
     search:
       ic_no: Search for Student
     tenant:
+      person: tenants
       title: Student Residence
       new: New Student Tenancy
       key:
@@ -1217,17 +1218,37 @@ en:
         expected: Date Key expected returned
         returned: Date Returned
       vacate: Force Vacate
+      tenancy_details_nil: Student data not available
       room_map: Room Map
-      list: Tenancy List
-      statistics: Statistics
+      list: Student Residence Tenancy List
+      statistics: Student Residence Statistics
+      statistics_menu: Statistics (General / Block / Programme)
+      statistics_block: "Breakdown of Room Status (by Block)"
+      tenants_students: "Total of Student Residency Tenant (By Programme)"
       empty: Empty
       occupied: Occupied
       damaged: Damaged
+      notes: Notes
       total: Totals
+      total_rooms: Total Rooms
+      total_empty: Total Empty Rooms
+      total_occupied: Total Occupied Rooms
+      total_damaged: Total Damaged Rooms
+      total_all: Total Rooms in Block
+      total_tenants: Total Tenants in Block
+      total_tenant: Total Tenants
       return_key: Return Key
       empty_room: Empty Room
       damage: Damage by Student
-      
+      bed: Bed
+      room: Room
+      report: Tenancy Statistics & Census by Level
+      report_main: Tenancy Statistics by Level
+      census: Tenancy Census by Level
+      census2: Cencus
+      report_census: "Statistics & Census (Level)"
+      #report_census_title: "Student Resident Tenancy Report & Census"
+      summary: Summary
       
     students:
       title: Student Info
