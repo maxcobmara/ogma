@@ -35,9 +35,14 @@ en:
       stationery_add: Office Supplies Additions
       statonery_use: Office Supplies Deductions
       location_damage: Location Damages
+      location: Location
     attributes:
       location:
         combo_code: Location Code
+        damages: Location Damages
+      damages:
+        description: Damage Description
+        reported_on: Reported On
       location_damage:
         document_id: Damage Type
         reported_on: Reported On
