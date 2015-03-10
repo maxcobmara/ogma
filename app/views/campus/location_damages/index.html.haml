@@ -27,7 +27,8 @@
         %th= t 'student.tenant.damage_type'
         %th= t 'location.damage.description'
         %th= t 'location.damage.reported_on'
-        %th= t 'student.students.name'
+        %th= t 'location.damage.repaired_on'
+        %th= t 'student.tenant.name'
     
     %tbody
     /= render "index_search"
@@ -36,11 +37,10 @@
       %tr
         %td=no+=1
         %td= link_to damage.location.try(:combo_code), campus_location_path(damage.location)
-        /= link_to damage.location.try(:combo_code), campus_location_damage_path(damage)
-        /= link_to tenant.location.try(:combo_code), campus_location_path(tenant.location)
-        %td= damage.damage_type unless damage.document_id.nil?
+        %td= link_to damage.damage_type, campus_location_damage_path(damage)
         %td= damage.description
         %td= l(damage.reported_on) unless damage.reported_on.nil?
+        %td= l(damage.reported_on) unless damage.repaired_on.nil?
         %td= damage.tenant.try(:student).try(:name) unless damage.user_id.nil?
         %td
 

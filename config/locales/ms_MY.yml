@@ -1123,6 +1123,7 @@ ms_MY:
       room_damage: Bilik Rosak
       description: Deskripsi Kerosakan
       reported_on: Tarikh Dilaporkan
+      repaired_on: Tarikh Dibaiki
       list: Senarai Kerosakan di Lokasi
       list2: Kerosakan di Lokasi
       new: "Laporkan Kerosakan bagi "
@@ -1139,6 +1140,7 @@ ms_MY:
       ic_no: Carian Pelajar
     tenant:
       person: penghuni
+      name: Nama Penghuni
       title: Penempatan Pelatih
       new : Penempatan Baru Pelatih
       edit: Sunting Penempatan Pelatih

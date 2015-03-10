@@ -1205,6 +1205,7 @@ en:
       room_damage: Room Damage
       description: Description
       reported_on: Reported On 
+      repaired_on: Repaired On
       list: Location Damage List
       list2: Location Damage
       new: "Report Damage for "
@@ -1221,6 +1222,7 @@ en:
       ic_no: Search for Student
     tenant:
       person: tenants
+      name: Tenant Name
       title: Student Tenancy
       new: New Student Tenancy
       edit: Edit Student Tenancy
@@ -1231,7 +1233,8 @@ en:
       vacate: Force Vacate
       tenancy_details_nil: Student data not available
       room_map: Room Map
-      list: Student Residence Tenancy List
+      list: Tenancy List
+      list_full: Student Residence Tenancy List
       statistics: Student Residence Statistics
       statistics_menu: Statistics (General / Block / Programme)
       statistics_block: "Breakdown of Room Status (by Block)"
