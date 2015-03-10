@@ -1135,6 +1135,7 @@ ms_MY:
       edit: "Sunting Kerosakan bagi "
       repaired: Telah dibaiki
       not_repaired: Belum dibaiki
+      damage_report: Laporan Kerosakan di Lokasi bagi Penempatan Pelatih
     
   student:
     title: Pelajar

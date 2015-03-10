@@ -1217,6 +1217,7 @@ en:
       edit: "Edit Damage for "
       repaired: Repaired
       not_repaired: Not Repaired
+      damage_report: Location Damage Report for Student Residence
     
   student:
     title: Student

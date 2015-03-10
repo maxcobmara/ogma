@@ -10,13 +10,13 @@
       %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "index_search_bar"
       %li.dropdown
         %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#"}
-          = fa_icon "print", text: (t 'actions.print')
+          = fa_icon "print", text: (t 'actions.print')+" & Excel"
           %b.caret
         %ul.dropdown-menu
-          %li= link_to (t "student.tenant.statistics"), statistics_student_tenants_path
-          %li
-            %a.bogus{:href => "#"}=t('location.damage.report')
-          %li= link_to (t "student.tenant.census"), census_student_tenants_path(:format => :pdf )
+          %li= link_to (t 'location.damage.report')+" (PDF)", damage_report_campus_location_damages_path(params.merge(format: 'pdf' ))
+          /%li= link_to "Export Excel", campus_location_damages_path(format: "xls") - to export excel ALL record
+          %li= link_to (t 'actions.download_excel'), campus_location_damages_path(params.merge(format: 'xls')) 
+          / Erick Alvarez over 2 years ago(railscast #362) : You can use - link_to "Excel", user_contacts_path(params.merge(format: 'xls')), and this will maintain the current parameters you have plus the ones you add or edit inside merge.
 
 .row
   %table.table-striped.table-hover.ogma
@@ -42,44 +42,3 @@
         %td= l(damage.reported_on) unless damage.reported_on.nil?
         %td= l(damage.repaired_on) unless damage.repaired_on.nil?
         %td= damage.tenant.try(:student).try(:name) unless damage.user_id.nil?
-        %td
-
-
-
-/         %td
-/           - if tenant.student.nil?
-/             = link_to (t 'student.tenant.tenancy_details_nil'), student_tenant_path(tenant)
-/           - else
-/             = link_to tenant.try(:student).try(:icno), student_tenant_path(tenant)
-/         %td= link_to tenant.try(:student).try(:name), student_path(tenant.student) unless tenant.student.nil? 
-/         %td= tenant.try(:student).try(:matrixno) unless tenant.student.nil?
-/         %td= tenant.try(:student).try(:intake).try(:strftime, '%b %Y') unless tenant.student.nil?
-/         %td= tenant.try(:student).try(:course).try(:name)
-/         %td= l(tenant.keyaccept, :format => '%d %b %Y') rescue nil
-/         %td= l(tenant.keyexpectedreturn, :format => '%d %b %Y') unless tenant.keyexpectedreturn.blank?
-/         %td= l(tenant.keyreturned, :format => '%d %b %Y') unless tenant.keyreturned.blank?
-/         %td= tenant.force_vacate? ? (t 'yes2') : (t 'no2')
-/         %td
-/           - if tenant.damages.count==0 
-/             = (t 'no2') 
-/           - else
-/             = (t 'yes2')
-/         %td
-/           - if tenant.damages.count>0 
-/             - dd=[]
-/             - tenant.damages.each{|t|dd << t.damage_type}
-/             - dmg=dd.uniq
-/             - if dmg.count<0
-/               = dmg
-/             - else
-/               = dmg.join(" & ")
-            
-/         //%td= link_to image_tag("printer.png", :border => 0, :title => 'Borang Asrama'), :action => 'borang_asrama', :id => tenant
-
-/         %th= t 'student.students.matrixno'
-/         %th= t 'student.students.intake_id'
-/         %th= t 'course.name'
-/         %th= t 'student.tenant.key.provided'
-/         %th= t 'student.tenant.key.expected'
-/         %th= t 'student.tenant.key.returned'
-/         %th= t 'student.tenant.vacate'

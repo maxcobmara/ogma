@@ -141,7 +141,11 @@ Ogma::Application.routes.draw do
         get :kewpa11
       end
     end
-    resources :location_damages
+    resources :location_damages do
+      collection do
+        get :damage_report
+      end
+    end
     resources :address_books
   end
 

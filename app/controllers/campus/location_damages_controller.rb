@@ -7,6 +7,8 @@ class Campus::LocationDamagesController < ApplicationController
     respond_to do |format|
       format.html # index.html.erb
       format.xml  { render :xml => @locations }
+      format.csv { send_data @damages.to_csv }
+      format.xls { send_data @damages.to_csv(col_sep: "\t") } 
     end
   end
   
@@ -66,6 +68,19 @@ class Campus::LocationDamagesController < ApplicationController
       format.html { redirect_to campus_locations_url }
       format.json { head :no_content }
     end
+  end
+  
+  def damage_report
+    @search = LocationDamage.search(params[:q]) 
+    @damages = @search.result.joins(:location).where('typename IN(?) or lclass IN(?)',[2,8,6],[4,2]) #4-block, 2-flr, 2-bed f, 8-bed m, 6-room
+    respond_to do |format|
+       format.pdf do
+         pdf = Damage_reportPdf.new(@damages, view_context)
+                   send_data pdf.render, filename: "damage_report-{Date.today}",
+                   type: "application/pdf",
+                   disposition: "inline"
+       end
+     end
   end
     
   private
