@@ -4,6 +4,8 @@ class LocationDamage < ActiveRecord::Base
   
   validates_presence_of :reported_on, :description, :document_id
   
+  attr_accessor :location_combocode, :damagetype, :dmgbytenant, :update_type
+  
   def damage_type
     if document_id==1
      "#{ I18n.t('student.tenant.room_damage')}"
@@ -13,26 +15,18 @@ class LocationDamage < ActiveRecord::Base
   end
   
   # define scope
-  def self.keyword_search(query)
-    aaa=LocationDamage.where('user_id is not null').pluck(:user_id)
-    tenant_ids = LocationDamage.where('user_id is not null').pluck(:user_id) if query=='1'   #w dmgs
-    tenant_ids = Tenant.where('id not IN(?)', aaa).pluck(:id) if query=='2'                               #wo dmgs
-    where('tenants.id IN(?)', tenant_ids) 
+  def self.repaired_on_search(query) 
+    if query=='1'
+      cond_stat = 'repaired_on is not null'
+    elsif query=='2'
+      cond_stat = 'repaired_on is null'
+    end
+    where(cond_stat)   
   end
-  
-#   def self.damagetype_search(query)
-#     if query=='1' 
-#       tenant_ids = LocationDamage.where('document_id=?', 1).pluck(:user_id)  #oom_damage
-#     elsif query=='2'
-#       tenant_ids = LocationDamage.where('document_id=?', 2).pluck(:user_id)  #asset_other_damage
-#     end
-#     where('tenants.id IN(?)', tenant_ids) 
-#   end
 
   # whitelist the scope
   def self.ransackable_scopes(auth_object = nil)
-#     [:keyword_search, :damagetype_search]
-    [:keyword_search]
+    [:repaired_on_search]
   end
   
 end

@@ -1214,6 +1214,9 @@ en:
       list: Location Damage List
       list2: Location Damage
       new: "Report Damage for "
+      edit: "Edit Damage for "
+      repaired: Repaired
+      not_repaired: Not Repaired
     
   student:
     title: Student

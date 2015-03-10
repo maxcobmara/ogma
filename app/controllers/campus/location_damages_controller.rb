@@ -2,7 +2,6 @@ class Campus::LocationDamagesController < ApplicationController
   before_action :set_location_damage, only: [:show, :edit, :update, :destroy]
   
   def index
-    #@damages = LocationDamage.all
     @search = LocationDamage.search(params[:q]) 
     @damages = @search.result.joins(:location).where('typename IN(?) or lclass IN(?)',[2,8,6],[4,2]) #4-block, 2-flr, 2-bed f, 8-bed m, 6-room
     respond_to do |format|
@@ -41,17 +40,22 @@ class Campus::LocationDamagesController < ApplicationController
   end
   
   def update
+    updatetype = params[:location_damage][:update_type]
     respond_to do |format|
       if @damage.update(location_damage_params)
-        format.html {redirect_to campus_location_path(@damage.location), notice: (t 'location.title')+(t 'actions.updated')  }
-        format.json { head :no_content }
+        if updatetype == "update_damage"
+          format.html {redirect_to campus_location_damage_path(@damage), notice: (t 'location.damage.title')+(t 'actions.updated')  }
+          format.json { head :no_content }
+        else
+          format.html {redirect_to campus_location_path(@damage.location), notice: (t 'location.title')+(t 'actions.updated')  }
+          format.json { head :no_content }
+        end
       else
         format.html { render action: 'edit' }
         format.json { render json: @damage.errors, status: :unprocessable_entity }
       end
     end
   end
-    
   
   def show
   end
@@ -72,6 +76,6 @@ class Campus::LocationDamagesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def location_damage_params
-      params.require(:location_damage).permit(:location_id, :reported_on, :description, :repaired_on, :document_id, :inspection_on, :user_id, :college_id )
+      params.require(:location_damage).permit(:update_type, :location_id, :reported_on, :description, :repaired_on, :document_id, :inspection_on, :user_id, :college_id )
     end
 end

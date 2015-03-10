@@ -1132,6 +1132,9 @@ ms_MY:
       list: Senarai Kerosakan di Lokasi
       list2: Kerosakan di Lokasi
       new: "Laporkan Kerosakan bagi "
+      edit: "Sunting Kerosakan bagi "
+      repaired: Telah dibaiki
+      not_repaired: Belum dibaiki
     
   student:
     title: Pelajar
