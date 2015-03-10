@@ -17,9 +17,14 @@ ms_MY:
       stationery_add: Penerimaan Keperluan Pejabat
       stationery_use: Pengeluaran Keperluan Pejabat
       location_damage: Kerosakan di Lokasi
+      location: Lokasi
     attributes:
       location:
         combo_code: Kod Lokasi
+        damages: Kerosakan di Lokasi
+      damages:
+        description: Deskripsi Kerosakan
+        reported_on: Tarikh Dilaporkan
       location_damage:
         document_id: Jenis Kerosakan
         reported_on: Tarikh Dilaporkan

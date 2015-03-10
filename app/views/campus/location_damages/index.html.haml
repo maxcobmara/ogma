@@ -33,7 +33,7 @@
     %tbody
     /= render "index_search"
     - no=0
-    - @damages.sort_by{|i|i.location.combo_code}.each do |damage|
+    - @damages.order(created_at: :desc).sort_by{|i|i.location.combo_code}.each do |damage|
       %tr
         %td=no+=1
         %td= link_to damage.location.try(:combo_code), campus_location_path(damage.location)
