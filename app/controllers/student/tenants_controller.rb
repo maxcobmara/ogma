@@ -105,7 +105,6 @@ class Student::TenantsController < ApplicationController
   
   def census
 
-###
      @floor=Location.find(params[:id]) #103, 1181
      @all_beds_single=Location.find(params[:id]).descendants.where('typename = ? OR typename =?', 2, 8).sort_by{|y|y.combo_code}
      #@all_rooms=Location.find(params[:id]).descendants.where('typename = ?',6) #error - not precise
@@ -114,20 +113,14 @@ class Student::TenantsController < ApplicationController
      @current_tenants = Tenant.where("keyreturned IS ? AND force_vacate != ?", nil, true)
      @tenantbed_per_level=Location.find(params[:id]).descendants.where('typename = ? OR typename =?', 2, 8).joins(:tenants).where("tenants.id" => @current_tenants)
      @occupied_rooms= @tenantbed_per_level.pluck(:combo_code).group_by{|x|x[0, x.size-2]}
-###
-    
-#     @places = Location.where('typename = ? OR typename =?', 2, 8)
-#     roots = []
-#     @places.each do |place|
-#       roots << place.root
-#     end
-#     @residentials = roots.uniq
-#     @current_tenants = Tenant.where("keyreturned IS ? AND force_vacate != ?", nil, true)
+
+     @all_tenants_wstudent = @current_tenants.joins(:location).where('location_id IN(?) and student_id IN(?)', @tenantbed_per_level.pluck(:id), Student.all.pluck(:id))
+     @students_prog = Student.where('id IN (?)', @all_tenants_wstudent.pluck(:student_id)).group_by{|j|j.course_id}
+     @all_tenants_wostudent = @current_tenants.joins(:location).where('location_id IN(?) and (student_id is null OR student_id NOT IN(?))', @tenantbed_per_level.pluck(:id), Student.all.pluck(:id))
     
     respond_to do |format|
       format.pdf do
-        #pdf = CensusStudentTenantsPdf.new(@residentials, @current_tenants, current_user)
-	pdf = CensusStudentTenantsPdf.new(@all_beds_single, view_context)
+	pdf = CensusStudentTenantsPdf.new(@all_beds_single,@all_rooms.count, @damaged_rooms.count,@occupied_rooms.count, @students_prog, @all_tenants_wstudent.count, @all_tenants_wostudent.count, @tenantbed_per_level.count, view_context)
         send_data pdf.render, filename: "census",
                               type: "application/pdf",
                               disposition: "inline"
