@@ -180,6 +180,23 @@ class Student::TenantsController < ApplicationController
   def show
   end
   
+  
+  def tenant_report
+    @search = Tenant.search(params[:q]) #NOTE: To match with room map, statistic (by programme) & census_level (+report)
+    @search.keyreturned_present != nil unless params[:q]
+    @search.force_vacate_true = false unless params[:q]
+    @search.sorts = 'location_combo_code asc' if @search.sorts.empty?
+    @tenants = @search.result
+    respond_to do |format|
+       format.pdf do
+         pdf = Tenant_reportPdf.new(@tenants, view_context)
+                   send_data pdf.render, filename: "tenant_report-{Date.today}",
+                   type: "application/pdf",
+                   disposition: "inline"
+       end
+     end
+  end
+
   def destroy
     @tenant.destroy
     respond_to do |format|
@@ -188,9 +205,6 @@ class Student::TenantsController < ApplicationController
       format.json { head :no_content }
     end
   end
-  
-  
-  
   
   private
     # Use callbacks to share common setup or constraints between actions.

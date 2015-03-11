@@ -6,6 +6,8 @@
   .navbar.navbar-inverse{role: "navigation", style: "padding-right:40px;"}
     %ul.nav.navbar-nav
       //%li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'new'))), new_student_tenant_path
+      /to relocate this PDF link....
+      %li= link_to (t 'student.tenant.list')+" (PDF)", tenant_report_student_tenants_path(params.merge(format: 'pdf' ))
     %ul.nav.navbar-nav.navbar-right
       %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "index_search_bar"
       %li.dropdown
