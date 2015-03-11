@@ -10,12 +10,11 @@
       %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "index_search_bar"
       %li.dropdown
         %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#"}
-          = fa_icon "print", text: (t 'actions.print')+" & Excel"
+          = fa_icon "external-link", text: (t 'actions.export')
           %b.caret
         %ul.dropdown-menu
-          %li= link_to (t 'location.damage.report')+" (PDF)", damage_report_campus_location_damages_path(params.merge(format: 'pdf' ))
-          /%li= link_to "Export Excel", campus_location_damages_path(format: "xls") - to export excel ALL record
-          %li= link_to (t 'actions.download_excel'), campus_location_damages_path(params.merge(format: 'xls')) 
+          %li= link_to (fa_icon "file-excel-o", text: (t 'location.damage.report')), campus_location_damages_path(params.merge(format: 'xls')) 
+          %li= link_to  (fa_icon "file-pdf-o", text: (t 'location.damage.report')), damage_report_campus_location_damages_path(params.merge(format: 'pdf' ))
           / Erick Alvarez over 2 years ago(railscast #362) : You can use - link_to "Excel", user_contacts_path(params.merge(format: 'xls')), and this will maintain the current parameters you have plus the ones you add or edit inside merge.
 
 .row
