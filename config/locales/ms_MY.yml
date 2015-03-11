@@ -16,9 +16,19 @@ ms_MY:
       stationery: Keperluan Pejabat
       stationery_add: Penerimaan Keperluan Pejabat
       stationery_use: Pengeluaran Keperluan Pejabat
+      location_damage: Kerosakan di Lokasi
+      location: Lokasi
     attributes:
       location:
         combo_code: Kod Lokasi
+        damages: Kerosakan di Lokasi
+      damages:
+        description: Deskripsi Kerosakan
+        reported_on: Tarikh Dilaporkan
+      location_damage:
+        document_id: Jenis Kerosakan
+        reported_on: Tarikh Dilaporkan
+        description: Deskripsi Kerosakan
       travel_request:
         destination: Destinasi
         depart_at: Masa Bertolak
@@ -137,6 +147,7 @@ ms_MY:
   none_assigned: Tiada maklumat
   inc_unitname: " (termasuk nama Jabatan / Unit) "
   approve: Kelulusan
+  add_details: Tambah Butiran
  
   actions:
     new: Baru
@@ -1105,6 +1116,7 @@ ms_MY:
       floor: Tingkat
       room: "Unit/Bilik"
       admin: Pentadbir
+      bed: Katil
       
     damage:
       title: Kerosakan di Lokasi
@@ -1116,6 +1128,14 @@ ms_MY:
       room_damage: Bilik Rosak
       description: Deskripsi Kerosakan
       reported_on: Tarikh Dilaporkan
+      repaired_on: Tarikh Dibaiki
+      list: Senarai Kerosakan di Lokasi
+      list2: Kerosakan di Lokasi
+      new: "Laporkan Kerosakan bagi "
+      edit: "Sunting Kerosakan bagi "
+      repaired: Telah dibaiki
+      not_repaired: Belum dibaiki
+      damage_report: Laporan Kerosakan di Lokasi bagi Penempatan Pelatih
     
   student:
     title: Pelajar
@@ -1129,8 +1149,10 @@ ms_MY:
       ic_no: Carian Pelajar
     tenant:
       person: penghuni
+      name: Nama Penghuni
       title: Penempatan Pelatih
-      new : Pendudukkan Baru
+      new : Penempatan Baru Pelatih
+      edit: Sunting Penempatan Pelatih
       key:
         provided: Tarikh Kunci Diberi
         expected: Tarikh Dijangka Pulang
@@ -1158,7 +1180,11 @@ ms_MY:
       total_tenant: Jumlah penghuni
       return_key: Pemulangan Kunci
       empty_room: Kosongkan Bilik
+      damage_status: Status Kerosakan
+      damage_type: Jenis Kerosakan
       damage: Kerosakan oleh Pelajar
+      asset_other_damage: "Aset / Lain-lain"
+      room_damage: "Kerosakan Bilik"
       bed: Katil
       room: Bilik
       report: Statistik Penginapan & Bancian Penghuni Mengikut Aras #LAPORAN PENGINAPAN
@@ -1168,6 +1194,7 @@ ms_MY:
       report_census: "Statistik & Bancian (Aras)"
       #report_census_title: "Laporan Penginapan & Bancian Penghuni Kediaman Pelatih"
       summary: Ringkasan
+      reset_search: Reset Carian Pelajar
       
     students:
       title: Maklumat Pelajar
@@ -2516,6 +2543,12 @@ ms_MY:
       short: "%l:%M %p"
     am: pg
     pm: ptg 
+    hours: jam
+    minutes: minit
+    days: hari
+    months: bulan
+    years: tahun
+    weeks: minggu
 
   number:
     currency:

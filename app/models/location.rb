@@ -11,12 +11,14 @@ class Location < ActiveRecord::Base
   belongs_to  :administrator, :class_name => 'Staff', :foreign_key => 'staffadmin_id'
   has_many  :tenants, :dependent => :destroy
   has_many  :damages, :class_name => 'LocationDamage', :foreign_key => 'location_id', :dependent => :destroy
-  accepts_nested_attributes_for :damages, :allow_destroy => true, reject_if: proc { |damages| damages[:description].blank?}
+  accepts_nested_attributes_for :damages, :allow_destroy => true#, reject_if: proc { |damages| damages[:description].blank?}
+  validates_associated :damages
   has_many :asset_placements
   has_many :assets, :through => :asset_placements
   #has_many :asset, :foreign_key => "location_id" --> not required - refer line 15 & 16
   has_many :asset_loss
   
+  attr_accessor :repairdate
   
   def staff_name
     administrator.try(:name)
@@ -77,7 +79,13 @@ class Location < ActiveRecord::Base
       self.children.each do |c|
         c.occupied = 0
         c.save!
-      end    
+      end
+      damages.each do |d|
+        if d.repaired_on.nil?
+          d.repaired_on = repairdate #Date.today
+          d.save!
+        end
+      end
     elsif @occupied_location_ids.include? id
       status_type = "occupied"
     else

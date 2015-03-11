@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?mso-application progid="Excel.Sheet"?>
+<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet" xmlns:c="urn:schemas-microsoft-com:office:component:spreadsheet" xmlns:html="http://www.w3.org/TR/REC-html40" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet" xmlns:x2="http://schemas.microsoft.com/office/excel/2003/xml" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <OfficeDocumentSettings xmlns="urn:schemas-microsoft-com:office:office">
+    <Colors><Color><Index>3</Index><RGB>#c0c0c0</RGB></Color></Colors>
+  </OfficeDocumentSettings>
+  <ExcelWorkbook xmlns="urn:schemas-microsoft-com:office:excel">   <WindowHeight>9000</WindowHeight><WindowWidth>13860</WindowWidth><WindowTopX>240</WindowTopX><WindowTopY>75</WindowTopY><ProtectStructure>False</ProtectStructure><ProtectWindows>False</ProtectWindows></ExcelWorkbook>
+
+  <Styles>
+    <Style ss:ID="Default" ss:Name="Default"/>
+    <Style ss:ID="Result" ss:Name="Result"><Font ss:Bold="1" ss:Italic="1" ss:Underline="Single"/></Style>
+    <Style ss:ID="Result2" ss:Name="Result2"><Font ss:Bold="1" ss:Italic="1" ss:Underline="Single"/></Style>
+    <Style ss:ID="Heading" ss:Name="Heading"><Font ss:Bold="1" ss:Italic="1" ss:Size="16"/></Style>
+    <Style ss:ID="Heading1" ss:Name="Heading1"><Font ss:Bold="1" ss:Italic="1" ss:Size="16"/></Style>
+    <Style ss:ID="co1"/><Style ss:ID="co2"/><Style ss:ID="co3"/><Style ss:ID="co4"/><Style ss:ID="ta1"/>
+    <Style ss:ID="ce1"><Font ss:FontName="Liberation Sans"/></Style>
+  </Styles>
+  
+  <ss:Worksheet ss:Name="Sheet1">
+    <Table ss:StyleID="ta1">
+      <Column ss:Span="1" ss:Width="64.008"/>
+      <Column ss:Index="3" ss:Width="112.6512"/>
+      <Column ss:Span="1" ss:Width="106.7544"/>
+      <Column ss:Index="6" ss:Width="109.6992"/>
+      <Column ss:Width="64.008"/>
+      
+      <!--Document Title-->
+      <Row ss:Height="12.816">
+        <Cell><Data ss:Type="String">Laporan Kerosakan di Lokasi</Data></Cell>
+        <Cell ss:Index="7"/>
+      </Row>
+      <Row ss:Height="12.816"><Cell ss:Index="7"/></Row>
+      
+      <!--Table Heading-->
+      <Row ss:Height="12.816">
+	<Cell><Data ss:Type="String">Bil</Data></Cell>
+	<Cell><Data ss:Type="String">Kod Lokasi</Data></Cell>
+	<Cell><Data ss:Type="String">Jenis Kerosakan</Data></Cell>
+	<Cell><Data ss:Type="String">Deskripsi Kerosakan</Data></Cell>
+	<Cell><Data ss:Type="String">Tarikh Dilaporkan</Data></Cell>
+	<Cell><Data ss:Type="String">Tarikh Dibaiki</Data></Cell>
+	<Cell><Data ss:Type="String">Nama Penghuni</Data></Cell>
+     </Row>
+      
+      <% no=0 %>
+      <%# @damages.order(created_at: :desc).sort_by{|i|i.location.combo_code}.each do |damage| %>
+      <% @damages..each do |damage| %>
+      <Row ss:Height="12.816">
+	<Cell><Data ss:Type="Number"><%=no+=1%></Data></Cell>
+	<Cell><Data ss:Type="String"><%=damage.location.try(:combo_code)%></Data></Cell>
+	<Cell><Data ss:Type="String"><%=damage.damage_type%></Data></Cell>
+	<Cell><Data ss:Type="String"><%=damage.description%></Data></Cell>
+	<Cell><Data ss:Type="String"><%=l(damage.reported_on) unless damage.reported_on.nil?%></Data></Cell>
+	<Cell><Data ss:Type="String"><%=l(damage.repaired_on) unless damage.repaired_on.nil?%></Data></Cell>
+	<Cell ss:Index="7"><Data ss:Type="String"><%=damage.tenant.try(:student).try(:name) unless damage.user_id.nil?%></Data></Cell>
+      </Row>
+      <% end %>
+      
+      <!--<Row ss:Height="12.816">
+	<Cell><Data ss:Type="Number">2</Data></Cell>
+	<Cell ss:StyleID="ce1"><Data ss:Type="String">HA-06-22-A </Data></Cell>
+	<Cell><Data ss:Type="String">Aset / Lain-lain</Data></Cell>
+	<Cell><Data ss:Type="String">losak rosak</Data></Cell>
+	<Cell><Data ss:Type="String">10 Mac 2015</Data></Cell>
+	<Cell ss:Index="7"/>
+      </Row>-->
+      
+  </Table>
+  <x:WorksheetOptions/>
+</ss:Worksheet>
+</Workbook> 

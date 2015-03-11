@@ -1,0 +1,18 @@
+- model_class = LocationDamage
+.page-header
+  %h1
+    = t('location.damage.edit')
+    = @damage.location.combo_code
+
+= render 'shared/flashes'
+
+.row
+  = form_for [:campus, @damage],  html: { multipart: true, class: 'form-horizontal' }  do |f| 
+    = render 'shared/error_messages', object: f.object
+    .col-md-offset-1
+      = render :partial => 'form', :locals => {:f => f}
+      .form-group
+        .col-sm-offset-3.col-sm-1
+          = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), campus_location_damage_path(@damage), :class => 'btn btn-default'
+        .col-sm-2
+          = f.submit t('update'), class: "btn btn-primary"

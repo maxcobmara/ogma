@@ -1,0 +1,44 @@
+- model_class = LocationDamage
+.page-header
+  %h1= t('location.damage.list')#, :default => model_class.model_name.human.pluralize
+
+.row  
+  .navbar.navbar-inverse{role: "navigation", style: "padding-right:40px;"}
+    %ul.nav.navbar-nav
+      //%li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'new'))), new_student_tenant_path
+    %ul.nav.navbar-nav.navbar-right
+      %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "index_search_bar"
+      %li.dropdown
+        %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#"}
+          = fa_icon "print", text: (t 'actions.print')+" & Excel"
+          %b.caret
+        %ul.dropdown-menu
+          %li= link_to (t 'location.damage.report')+" (PDF)", damage_report_campus_location_damages_path(params.merge(format: 'pdf' ))
+          /%li= link_to "Export Excel", campus_location_damages_path(format: "xls") - to export excel ALL record
+          %li= link_to (t 'actions.download_excel'), campus_location_damages_path(params.merge(format: 'xls')) 
+          / Erick Alvarez over 2 years ago(railscast #362) : You can use - link_to "Excel", user_contacts_path(params.merge(format: 'xls')), and this will maintain the current parameters you have plus the ones you add or edit inside merge.
+
+.row
+  %table.table-striped.table-hover.ogma
+    %thead
+      %tr
+        %th No
+        %th= t 'location.combo_code'
+        %th= t 'student.tenant.damage_type'
+        %th= t 'location.damage.description'
+        %th= t 'location.damage.reported_on'
+        %th= t 'location.damage.repaired_on'
+        %th= t 'student.tenant.name'
+    
+    %tbody
+    = render "index_search"
+    - no=0
+    - @damages.order(created_at: :desc).sort_by{|i|i.location.combo_code}.each do |damage|
+      %tr
+        %td=no+=1
+        %td= link_to damage.location.try(:combo_code), campus_location_path(damage.location)
+        %td= link_to damage.damage_type, campus_location_damage_path(damage)
+        %td= damage.description
+        %td= l(damage.reported_on) unless damage.reported_on.nil?
+        %td= l(damage.repaired_on) unless damage.repaired_on.nil?
+        %td= damage.tenant.try(:student).try(:name) unless damage.user_id.nil?

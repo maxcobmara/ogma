@@ -3,12 +3,16 @@
     %td= f.text_field :location_combo_code_start, size: 2, class: 'form-control'
     %td= f.text_field :student_icno_start, size: 8, class: 'form-control'
     %td= f.text_field :student_name_cont, size: 8, class: 'form-control'
+    %td= f.text_field :student_matrixno_cont, size: 8, class: 'form-control'
+    %td= f.text_field :student_intake_eq, size: 8, class: 'monthyear_picker form-control'
     %td= f.text_field :student_course_name_cont, size: 8, class: 'form-control'
     %td= f.text_field :keyaccept_eq, :size=> 2, class: 'date_picker form-control'
     %td= f.text_field :keyexpectedreturn_eq, :size=> 2, class:  'date_picker form-control'
     %td= f.text_field :keyreturned_eq, :size=> 2, class: 'date_picker form-control'
+    %td= select_tag('q[force_vacate_eq]',options_for_select([[(t 'actions.all_records'),''],[(t 'yes2'),true],[(t 'no2'),false]]),class: 'selectpicker',"data-width"=>'100px')
+    %td= select_tag('q[keyword_search]',options_for_select([[(t 'actions.all_records'),''],[(t 'yes2'),1],[(t 'no2'),2]]),class: 'selectpicker',"data-width"=>'100px')
     %td.input-group
-      = select_tag('q[force_vacate_eq]',options_for_select([[(t 'actions.all_records'),''],[(t 'yes2'),true],[(t 'no2'),false]]),class: 'selectpicker',"data-width"=>'100px')
+      = select_tag('q[damagetype_search]',options_for_select([[(t 'actions.all_records'),''],[(t 'student.tenant.room_damage'),1],[(t 'student.tenant.asset_other_damage'),2]]),class: 'selectpicker',"data-width"=>'100px')
       %span.input-group-btn
         %button.btn.btn-sm.btn-default.right{:type => "submit"}
           %i.fa.fa-search.fa-fw

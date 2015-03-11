@@ -3,16 +3,15 @@
   %h1
     = t('student.tenant.return_key')
 
-
 .row
   .col-md-6.col-md-offset-3.student_search
-    = form_for :search, :html=>{:class => "form-horizontal", :role => "form", :style => 'padding: 0 30px 0 30px; margin-top: 0;' } do |f|
-      .input-group
-        = f.text_field :student_icno, data: {autocomplete_source: Tenant.joins(:student).map(&:student_icno)}, :autofocus => true, :required => true, :class => 'form-control search-field', :type => "input", placeholder: (@student_ic || "IC Starts with")#, value: (@params_student_ic = params[:search].try(:[], :student_icno))
-        %span.input-group-btn
-          = f.submit (t 'search'), :class => "btn btn-primary", style: "width:80px;"
-      %span.help-block.small= (t 'student.search.ic_no')
-
+    - unless params[:id]
+      = form_for :search, :html=>{:class => "form-horizontal", :role => "form", :style => 'padding: 0 30px 0 30px; margin-top: 0;' } do |f|
+        .input-group
+          = f.text_field :student_icno, data: {autocomplete_source: Tenant.joins(:student).map(&:student_icno)}, :autofocus => true, :required => true, :class => 'form-control search-field', :type => "input", placeholder: (@student_ic || "IC Starts with")#, value: (@params_student_ic = params[:search].try(:[], :student_icno))
+          %span.input-group-btn
+            = f.submit (t 'search'), :class => "btn btn-primary", style: "width:80px;"
+        %span.help-block.small= (t 'student.search.ic_no')
 
 - if @my_room
   .row
@@ -25,6 +24,8 @@
           &nbsp; : &nbsp;
           = @my_room.location.name
           .right
+            = link_to content_tag(:i, "", class: "fa fa-repeat") + " " + t('.back', :default => (t "student.tenant.reset_search")), return_key_student_tenants_path if params[:id]
+            &nbsp; | &nbsp;
             = link_to content_tag(:i, "", :class => "fa fa-map-marker ") + " " + t('.back', :default => t("student.tenant.room_map")), room_map_student_tenants_path
             /, :class => 'btn btn-default'
             /= link_to  t("student.tenant.list"), student_tenants_path
@@ -76,7 +77,7 @@
               .col-md-10.col-md-offset-1
                 %hr
                 = form_for [:student, @tenant], remote: true, :html => { :class => 'form-horizontal' } do |f|
-                  %dt Return Key
+                  %dt=t 'student.tenant.return_key'
                   = render 'shared/flashes'
                   =# f.hidden_field :student_id, value: ''
                   .form-group
@@ -96,7 +97,7 @@
                         - if (builder.object.id!=nil && builder.object.document_id==2) || builder.object.id==nil
                           = render 'damage_fields', f: builder
                       /= link_to_add_fields ("Add Details"), f, :damages
-                      .returned= link_to_add_fields t('Add Details'), f, :damages, "",  ""
+                      .returned= link_to_add_fields t('add_details'), f, :damages, "",  ""
                        
                   .form-group.returned
                     .col-sm-offset-3.col-sm-4

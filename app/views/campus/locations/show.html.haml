@@ -89,16 +89,18 @@
             %th= t "location.damage.reported_on"
             %th= t "location.damage.description"
             %th= t "location.damage.damage_type"
+            %th= t "location.damage.repaired_on"
         %tbody
-          - for damage in @location.damages.order(reported_on: :desc)
+          - for damage in @location.damages.order(reported_on: :desc, repaired_on: :desc)
             %tr
               %td= damage.reported_on.try(:strftime, '%d %b %Y')
               %td= damage.description
               %td
                 - if damage.document_id == 1
-                  =t "location.damage.room_damage"			  
+                  =t "location.damage.room_damage"  
                 - elsif damage.document_id == 2
-                  =t "location.damage.asset_damage"     
+                  =t "location.damage.asset_damage"
+              %td= damage.repaired_on.try(:strftime, '%d %b %Y')
         
         
 

@@ -1,12 +1,16 @@
 - model_class = Location
 .page-header
   %h1
-    = t('new')
-    damage for 
+    = t('location.damage.new')
     = @damage.location.combo_code
-    
+
+= render 'shared/flashes'
+
 .row
   = form_for [:campus, @damage], :html => { :class => 'form-horizontal' }  do |f| 
+    = render 'shared/error_messages', object: f.object
+    = f.hidden_field :location_id, :value => @locationid
+    = f.hidden_field :document_id, :value => 2
     .form-group
       %label.col-sm-2.control-label{:for => "Location"}= t 'location.title'
       .col-md-3
@@ -16,7 +20,6 @@
       %label.col-sm-2.control-label{:for => "reported_on"}= t 'location.damage.reported_on'
       .col-md-2
         = f.text_field :reported_on, type: "text", :class => 'form-control date_picker_after'
-      
     
     .form-group
       %label.col-sm-2.control-label{:for => "code"}= t 'location.damage.description'
@@ -24,5 +27,8 @@
         = f.text_field :description, class: 'form-control'
         
     .form-group
-      .col-sm-offset-2.col-sm-2
-        = f.submit t('actions.create'), class: "btn btn-primary"
+      .col-md-6.col-sm-offset-2
+        .col-sm-2
+          = link_to t('back'), campus_location_path(@damage.location), class: "btn btn-primary"
+        .col-sm-3
+          = f.submit t('create'), class: "btn btn-primary"

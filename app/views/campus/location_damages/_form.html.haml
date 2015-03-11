@@ -1,0 +1,55 @@
+=f.hidden_field :update_type, :value => "update_damage"
+.row
+  .col-md-10.col-md-offset-1
+    / Nav tabs
+    %ul.nav.nav-tabs
+      %li.active= link_to (t "location.damage.description"), "#details_edit",     "data-toggle" => "tab"
+      
+    .tab-content{style:"padding-top:1em"}
+      #details_edit.tab-pane.active
+        %br
+        .col-md-offset-1
+          .form-group
+            .col-sm-2.control-label
+              = f.label  t 'location.combo_code' , for: :location_combocode
+            .col-md-2
+              = f.text_field :location_combocode, :value => @damage.location.combo_code, :readonly => true, class: 'form-control'
+            .col-md-3
+              - if @damage.document_id == 1
+                %font{:style => "color: blue;"}
+                  Pembaikan 
+                  %b kerosakan bilik 
+                  perlu dikemaskini di modul : 
+                  =link_to (t 'location.title').upcase, campus_location_path(@damage.location_id)
+
+          .form-group
+            .col-sm-2.control-label
+              = f.label t 'student.tenant.damage_type' , for: :damage_type
+            .col-md-2
+              = f.text_field :damagetype, :value => @damage.damage_type, :readonly => true, class: 'form-control'
+
+          .form-group
+            .col-sm-2.control-label
+              = f.label t 'location.damage.description', for: :description
+            .col-md-5
+              = f.text_field :description, class: 'form-control'
+
+          .form-group
+            .col-sm-2.control-label
+              = f.label t 'location.damage.reported_on', for: :reported_on
+            .col-md-2
+              = f.text_field :reported_on, class: 'date_picker form-control'
+
+          - unless @damage.user_id.nil?
+            .form-group
+              .col-sm-2.control-label
+                = f.label t 'student.tenant.name', for: :dmgbytenant
+              .col-md-5
+                = f.text_field :dmgbytenant, :value => @damage.tenant.try(:student).try(:name), :readonly => true, class: 'form-control'
+                
+          - if @damage.document_id == 2    
+            .form-group
+              .col-sm-2.control-label
+                = f.label t 'location.damage.repaired_on', for: :repaired_on
+              .col-md-2
+                = f.text_field :repaired_on, class: 'date_picker form-control'

@@ -34,9 +34,19 @@ en:
       stationery: Office Supplies
       stationery_add: Office Supplies Additions
       statonery_use: Office Supplies Deductions
+      location_damage: Location Damages
+      location: Location
     attributes:
       location:
         combo_code: Location Code
+        damages: Location Damages
+      damages:
+        description: Damage Description
+        reported_on: Reported On
+      location_damage:
+        document_id: Damage Type
+        reported_on: Reported On
+        description: Damage Description
       travel_request:
         destination: Destination
         depart_at: Depart at
@@ -158,6 +168,7 @@ en:
   none_assigned: None assigned
   inc_unitname: " (including Department / Unit name) "
   approve: Approve
+  add_details: Add Details
 
   actions:
     new: New
@@ -1187,6 +1198,7 @@ en:
       floor: Floor
       room: "Unit/Room"
       admin: Administrator
+      bed: Katil
       
     damage:
       title: Location Damage
@@ -1198,6 +1210,14 @@ en:
       room_damage: Room Damage
       description: Description
       reported_on: Reported On 
+      repaired_on: Repaired On
+      list: Location Damage List
+      list2: Location Damage
+      new: "Report Damage for "
+      edit: "Edit Damage for "
+      repaired: Repaired
+      not_repaired: Not Repaired
+      damage_report: Location Damage Report for Student Residence
     
   student:
     title: Student
@@ -1211,8 +1231,10 @@ en:
       ic_no: Search for Student
     tenant:
       person: tenants
-      title: Student Residence
+      name: Tenant Name
+      title: Student Tenancy
       new: New Student Tenancy
+      edit: Edit Student Tenancy
       key:
         provided: Date Key Provided
         expected: Date Key expected returned
@@ -1220,7 +1242,8 @@ en:
       vacate: Force Vacate
       tenancy_details_nil: Student data not available
       room_map: Room Map
-      list: Student Residence Tenancy List
+      list: Tenancy List
+      list_full: Student Residence Tenancy List
       statistics: Student Residence Statistics
       statistics_menu: Statistics (General / Block / Programme)
       statistics_block: "Breakdown of Room Status (by Block)"
@@ -1239,7 +1262,11 @@ en:
       total_tenant: Total Tenants
       return_key: Return Key
       empty_room: Empty Room
+      damage_status: Damage Status
+      damage_type: Damage Type
       damage: Damage by Student
+      asset_other_damage: "Asset / Other Damages"
+      room_damage: "Room Damage"
       bed: Bed
       room: Room
       report: Tenancy Statistics & Census by Level
@@ -1249,6 +1276,7 @@ en:
       report_census: "Statistics & Census (Level)"
       #report_census_title: "Student Resident Tenancy Report & Census"
       summary: Summary
+      reset_search: Reset Student Search
       
     students:
       title: Student Info
@@ -2567,6 +2595,12 @@ en:
     formats:
       default:  "%l:%M %p"
       short: "%l:%M %p"
+    hours: hours
+    minutes: minutes
+    days: days
+    months: months
+    years: years
+    weeks: weeks
       
   datetime:
     formats:

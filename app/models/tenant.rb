@@ -24,6 +24,28 @@ class Tenant < ActiveRecord::Base
     end
   end
   
+  # define scope
+  def self.keyword_search(query)
+    aaa=LocationDamage.where('user_id is not null').pluck(:user_id)
+    tenant_ids = LocationDamage.where('user_id is not null').pluck(:user_id) if query=='1'   #w dmgs
+    tenant_ids = Tenant.where('id not IN(?)', aaa).pluck(:id) if query=='2'                               #wo dmgs
+    where('tenants.id IN(?)', tenant_ids) 
+  end
+  
+  def self.damagetype_search(query)
+    if query=='1' 
+      tenant_ids = LocationDamage.where('document_id=?', 1).pluck(:user_id)  #oom_damage
+    elsif query=='2'
+      tenant_ids = LocationDamage.where('document_id=?', 2).pluck(:user_id)  #asset_other_damage
+    end
+    where('tenants.id IN(?)', tenant_ids) 
+  end
+
+  # whitelist the scope
+  def self.ransackable_scopes(auth_object = nil)
+    [:keyword_search, :damagetype_search]
+  end
+  
 end
 
 # == Schema Information

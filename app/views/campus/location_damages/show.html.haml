@@ -1,0 +1,59 @@
+- model_class = LocationDamage
+.page-header
+  %h1= (t 'location.damage.title')+" "+@damage.location.combo_code
+= render 'shared/flashes'
+
+.row
+  .col-md-offset-1
+    %ul.nav.nav-tabs
+      %li.active= link_to (t "location.damage.description"), "#details",     "data-toggle" => "tab"
+
+
+    .tab-content
+      .col-md-8.col-md-offset-1
+        %dl.dl-horizontal
+          %dt= t 'location.combo_code'
+          %dd= @damage.location.combo_code
+      #details.tab-pane.fade.in.active
+        .col-md-8.col-md-offset-1
+          %dl.dl-horizontal
+            %dt=t 'student.tenant.damage_type'
+            %dd=@damage.damage_type
+          
+            %dt= t 'location.damage.description'
+            %dd=@damage.description
+          
+            %dt= t 'location.damage.reported_on'
+            %dd=l(@damage.reported_on) unless @damage.reported_on.nil?
+          
+            - unless @damage.user_id.nil?
+              %dt= t 'student.tenant.name'
+              %dd=@damage.tenant.try(:student).try(:name)
+            
+            %dt= t 'location.damage.repaired_on'
+            %dd
+              - unless @damage.repaired_on.nil?
+                =l(@damage.repaired_on)  
+              - else
+                - if @damage.document_id == 1
+                  %font{:style => "color: blue;"}
+                    Pembaikan 
+                    %b kerosakan bilik 
+                    perlu dikemaskini di modul : 
+                    =link_to (t 'location.title').upcase, campus_location_path(@damage.location_id)
+    
+.row
+  .col-md-8.col-md-offset-3
+    %hr
+    .form-actions
+      = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), campus_location_damages_path, :class => 'btn btn-default'
+      - if (@damage.document_id==1 && @damage.repaired_on==nil) || @damage.document_id==2
+        = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('.edit', :default => t("helpers.links.edit")), edit_campus_location_damage_path(@damage), :class => 'btn btn-primary' 
+      - dmgs = LocationDamage.where('location_id=? and repaired_on is null', @damage.location_id)
+      - if (@damage.document_id==1 && dmgs.count > 1 && @damage.repaired_on==nil) || (@damage.document_id==2 && @damage.repaired_on==nil)
+        = link_to content_tag(:i, "", :class => "fa fa-trash-o icon-white") + " " + t('.destroy', :default => t("helpers.links.destroy")), |
+      campus_location_damage_path(@damage),                                                                                                    |
+      :method => 'delete',                                                                                                           |
+      :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },                   |
+      :class => 'btn btn-danger'
+ 

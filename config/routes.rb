@@ -141,7 +141,11 @@ Ogma::Application.routes.draw do
         get :kewpa11
       end
     end
-    resources :location_damages
+    resources :location_damages do
+      collection do
+        get :damage_report
+      end
+    end
     resources :address_books
   end
 
@@ -185,6 +189,7 @@ Ogma::Application.routes.draw do
       end
       member do
         get :census_level
+	get :return_key
       end
     end
     resources :student_discipline_cases do
