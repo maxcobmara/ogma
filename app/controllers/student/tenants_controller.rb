@@ -104,17 +104,30 @@ class Student::TenantsController < ApplicationController
   end
   
   def census
-    @places = Location.where('typename = ? OR typename =?', 2, 8)
-    roots = []
-    @places.each do |place|
-      roots << place.root
-    end
-    @residentials = roots.uniq
-    @current_tenants = Tenant.where("keyreturned IS ? AND force_vacate != ?", nil, true)
+
+###
+     @floor=Location.find(params[:id]) #103, 1181
+     @all_beds_single=Location.find(params[:id]).descendants.where('typename = ? OR typename =?', 2, 8).sort_by{|y|y.combo_code}
+     #@all_rooms=Location.find(params[:id]).descendants.where('typename = ?',6) #error - not precise
+     @all_rooms=Location.find(params[:id]).descendants.where('typename = ? OR typename =?', 2, 8).pluck(:combo_code).group_by{|x|x[0, x.size-2]}
+     @damaged_rooms=Location.find(params[:id]).descendants.where('typename = ? OR typename =?', 2, 8).where(occupied: true).pluck(:combo_code).group_by{|x|x[0, x.size-2]}
+     @current_tenants = Tenant.where("keyreturned IS ? AND force_vacate != ?", nil, true)
+     @tenantbed_per_level=Location.find(params[:id]).descendants.where('typename = ? OR typename =?', 2, 8).joins(:tenants).where("tenants.id" => @current_tenants)
+     @occupied_rooms= @tenantbed_per_level.pluck(:combo_code).group_by{|x|x[0, x.size-2]}
+###
+    
+#     @places = Location.where('typename = ? OR typename =?', 2, 8)
+#     roots = []
+#     @places.each do |place|
+#       roots << place.root
+#     end
+#     @residentials = roots.uniq
+#     @current_tenants = Tenant.where("keyreturned IS ? AND force_vacate != ?", nil, true)
     
     respond_to do |format|
       format.pdf do
-        pdf = CensusStudentTenantsPdf.new(@residentials, @current_tenants, current_user)
+        #pdf = CensusStudentTenantsPdf.new(@residentials, @current_tenants, current_user)
+	pdf = CensusStudentTenantsPdf.new(@all_beds_single, view_context)
         send_data pdf.render, filename: "census",
                               type: "application/pdf",
                               disposition: "inline"
