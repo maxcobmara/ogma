@@ -1218,6 +1218,8 @@ en:
       repaired: Repaired
       not_repaired: Not Repaired
       damage_report: Location Damage Report for Student Residence
+      match_asset: "Match Asset ?"
+      no_match_asset: No matching asset
     
   student:
     title: Student

@@ -1136,6 +1136,8 @@ ms_MY:
       repaired: Telah dibaiki
       not_repaired: Belum dibaiki
       damage_report: Laporan Kerosakan di Lokasi bagi Penempatan Pelatih
+      match_asset: "Padankan Aset ?"
+      no_match_asset: Tiada padanan aset
     
   student:
     title: Pelajar

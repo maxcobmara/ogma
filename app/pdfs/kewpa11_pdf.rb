@@ -7,7 +7,7 @@ class Kewpa11Pdf < Prawn::Document
     font "Times-Roman"
     text "KEW.PA-11", :align => :right, :size => 16, :style => :bold
     move_down 20
-    text "LAPORAN PEMERIKSAAN INVENTORY", :align => :center, :size => 14, :style => :bold
+    text "LAPORAN PEMERIKSAAN INVENTORI", :align => :center, :size => 14, :style => :bold
     text "(Diisi oleh Pegawai Pemeriksa)", :align => :center, :size => 12
     move_down 10
     make_table1

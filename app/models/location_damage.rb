@@ -1,6 +1,7 @@
 class LocationDamage < ActiveRecord::Base
   belongs_to :location, :foreign_key => 'location_id'
   belongs_to :tenant, :foreign_key => 'user_id'
+  belongs_to :asset, :foreign_key => 'college_id'
   
   validates_presence_of :reported_on, :description, :document_id
   
@@ -29,6 +30,11 @@ class LocationDamage < ActiveRecord::Base
     [:repaired_on_search]
   end
   
+  def description_assetcode
+    d=description
+    d+=" ("+asset.try(:assetcode)+")" unless college_id.nil?
+    d
+  end
   #shall collect all fields & didn't produce xls as formatted in index.xls.erb - use below instead
   #   def self.to_csv(options = {})
   #     CSV.generate(options) do |csv|
@@ -46,7 +52,7 @@ class LocationDamage < ActiveRecord::Base
         csv << [] #blank row added
         csv << [I18n.t('location.combo_code'), I18n.t('student.tenant.damage_type'), I18n.t('location.damage.description'), I18n.t('location.damage.reported_on'), I18n.t('location.damage.repaired_on'), I18n.t('student.tenant.name')]   
         all.each do |damage|
-          csv << [damage.try(:location).try(:combo_code),damage.damage_type, damage.description, damage.reported_on.try(:strftime, '%d-%m-%Y'), damage.repaired_on.try(:strftime, '%d-%m-%Y'), damage.try(:tenant).try(:student).try(:name)]
+          csv << [damage.try(:location).try(:combo_code),damage.damage_type, damage.description_assetcode, damage.reported_on.try(:strftime, '%d-%m-%Y'), damage.repaired_on.try(:strftime, '%d-%m-%Y'), damage.try(:tenant).try(:student).try(:name)]
         end
       end
   end

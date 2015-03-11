@@ -18,7 +18,9 @@
         .col-md-8.col-md-offset-1
           %dl.dl-horizontal
             %dt=t 'student.tenant.damage_type'
-            %dd=@damage.damage_type
+            %dd
+              =@damage.damage_type
+              =" ("+@damage.asset.code_asset+")" unless @damage.college_id.nil?
           
             %dt= t 'location.damage.description'
             %dd=@damage.description
