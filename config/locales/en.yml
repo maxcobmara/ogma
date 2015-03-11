@@ -1269,6 +1269,7 @@ en:
       damage: Damage by Student
       asset_other_damage: "Asset / Other Damages"
       room_damage: "Room Damage"
+      level: Level
       bed: Bed
       room: Room
       report: Tenancy Statistics & Census by Level

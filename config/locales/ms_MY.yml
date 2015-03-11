@@ -1187,6 +1187,7 @@ ms_MY:
       damage: Kerosakan oleh Pelajar
       asset_other_damage: "Aset / Lain-lain"
       room_damage: "Kerosakan Bilik"
+      level: Aras
       bed: Katil
       room: Bilik
       report: Statistik Penginapan & Bancian Penghuni Mengikut Aras #LAPORAN PENGINAPAN

@@ -196,6 +196,19 @@ class Student::TenantsController < ApplicationController
        end
      end
   end
+  
+  def laporan_penginapan
+    commit = params[:commit]      #if commit == 'KEW.PA-17'
+    @residential = Location.where('name LIKE (?) and lclass=?', "#{commit}", 4).first
+    respond_to do |format|
+       format.pdf do
+         pdf = Laporan_penginapanPdf.new(@residential, view_context)
+                   send_data pdf.render, filename: "laporan_penginapan-{Date.today}",
+                   type: "application/pdf",
+                   disposition: "inline"
+       end
+     end
+  end
 
   def destroy
     @tenant.destroy

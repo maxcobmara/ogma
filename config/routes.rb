@@ -187,6 +187,7 @@ Ogma::Application.routes.draw do
         get  :empty_room
         post :empty_room
         get :tenant_report
+        get :laporan_penginapan
       end
       member do
         get :census_level
