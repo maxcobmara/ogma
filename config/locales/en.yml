@@ -198,6 +198,7 @@ en:
     not_submitted: Not Submitted
     approved: Approved
     not_approved: Not Approved
+    export: Export
     
   errors:
 

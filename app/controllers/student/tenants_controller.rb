@@ -5,7 +5,6 @@ class Student::TenantsController < ApplicationController
   def index
     #@search = Tenant.where("student_id IS NOT NULL").search(params[:q])
     @search = Tenant.search(params[:q]) #NOTE: To match with room map, statistic (by programme) & census_level (+report)
-    @search = Tenant.where("student_id IS NOT NULL").search(params[:q]) #NOTE: To match with room map, statistic (by programme) & census_level (+report)
     if params[:q]
       #move searches here
     end

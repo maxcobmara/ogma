@@ -24,16 +24,11 @@ class Tenant_reportPdf < Prawn::Document
   def line_item_rows
     @wa=[]
     @tenants.each do |tenant|
-      if tenant.damages.count>0 
-        dd=[]
-        tenant.damages.each{|t|dd << t.damage_type}
-	dmg=dd.uniq
-        if dmg.count<0
-          @wa << dmg
-	else
-          @wa << dmg.join(" & ") 
-        end
+      damage_description=[]
+      if tenant.damages.count>0
+        tenant.damages.each{|t|damage_description << t.damage_type}
       end
+      @wa << damage_description.uniq.to_sentence
     end
     
     counter = counter || 0

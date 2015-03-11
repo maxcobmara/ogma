@@ -177,6 +177,7 @@ ms_MY:
     not_submitted: Tidak Dihantar
     approved: Diluluskan
     not_approved: Tidak Diluluskan
+    export: Eksport
     
   errors:
   
