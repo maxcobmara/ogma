@@ -1,0 +1,53 @@
+<?xml version="1.0"?>
+<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet"
+  xmlns:o="urn:schemas-microsoft-com:office:office"
+  xmlns:x="urn:schemas-microsoft-com:office:excel"
+  xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet"
+  xmlns:html="http://www.w3.org/TR/REC-html40">
+  <Worksheet ss:Name="Sheet1">
+    <Table>
+      <Row>
+        <Cell><Data ss:Type="String"><%= t 'location.code' %>         </Data></Cell>
+        <Cell><Data ss:Type="String"><%= t 'student.students.icno' %> </Data></Cell>
+        <Cell><Data ss:Type="String"><%= t 'student.name' %>          </Data></Cell>
+        <Cell><Data ss:Type="String"><%= t 'student.students.matrixno' %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= t 'student.students.intake_id' %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= t 'course.name' %>           </Data></Cell>
+        <Cell><Data ss:Type="String"><%= t 'student.tenant.key.provided' %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= t 'student.tenant.key.expected' %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= t 'student.tenant.key.returned'  %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= t 'student.tenant.vacate'  %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= t 'student.tenant.damage_status'  %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= t 'student.tenant.damage_type'  %></Data></Cell>
+      </Row>
+    <% @tenants.each do |tenant| %>
+    <% unless tenant.student.nil? %>
+
+      <% if tenant.damages.count==0; damages_text = (t 'no2'); else damages_text = (t 'yes2'); end %>
+      <% if tenant.damages.count>0 %>
+        <% dd=[] %>
+        <% tenant.damages.each{|t|dd << t.damage_type} %>
+        <% damage_description = dd.uniq.to_sentence %>
+      <% end %>
+
+
+      <Row>
+        <Cell><Data ss:Type="String"><%= tenant.location.try(:combo_code) %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= tenant.try(:student).try(:icno) %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= tenant.try(:student).try(:name) %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= tenant.try(:student).try(:matrixno) %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= tenant.try(:student).try(:intake).try(:strftime, '%b %Y') %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= tenant.try(:student).try(:course).try(:name) %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= tenant.keyaccept.try(:strftime, '%d %b %Y') %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= tenant.keyexpectedreturn.try(:strftime, '%d %b %Y') %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= tenant.keyreturned.try(:strftime, '%d %b %Y') %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= tenant.force_vacate? ? (t 'yes2') : (t 'no2') %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= damages_text %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= damage_description %></Data></Cell>
+      </Row>
+    <% end %>
+    <% end %>
+    </Table>
+  </Worksheet>
+</Workbook>
+        -
