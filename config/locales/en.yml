@@ -198,6 +198,7 @@ en:
     not_submitted: Not Submitted
     approved: Approved
     not_approved: Not Approved
+    export: Export
     
   errors:
 
@@ -1218,6 +1219,8 @@ en:
       repaired: Repaired
       not_repaired: Not Repaired
       damage_report: Location Damage Report for Student Residence
+      match_asset: "Match Asset ?"
+      no_match_asset: No matching asset
     
   student:
     title: Student
@@ -1267,6 +1270,7 @@ en:
       damage: Damage by Student
       asset_other_damage: "Asset / Other Damages"
       room_damage: "Room Damage"
+      level: Level
       bed: Bed
       room: Room
       report: Tenancy Statistics & Census by Level

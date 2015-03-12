@@ -94,7 +94,9 @@
           - for damage in @location.damages.order(reported_on: :desc, repaired_on: :desc)
             %tr
               %td= damage.reported_on.try(:strftime, '%d %b %Y')
-              %td= damage.description
+              %td
+                = damage.description
+                =" ("+damage.asset.assetcode[15,12]+")" unless damage.college_id.nil?
               %td
                 - if damage.document_id == 1
                   =t "location.damage.room_damage"  

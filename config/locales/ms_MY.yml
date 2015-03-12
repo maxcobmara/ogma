@@ -177,6 +177,7 @@ ms_MY:
     not_submitted: Tidak Dihantar
     approved: Diluluskan
     not_approved: Tidak Diluluskan
+    export: Eksport
     
   errors:
   
@@ -1136,6 +1137,8 @@ ms_MY:
       repaired: Telah dibaiki
       not_repaired: Belum dibaiki
       damage_report: Laporan Kerosakan di Lokasi bagi Penempatan Pelatih
+      match_asset: "Padankan Aset ?"
+      no_match_asset: Tiada padanan aset
     
   student:
     title: Pelajar
@@ -1185,6 +1188,7 @@ ms_MY:
       damage: Kerosakan oleh Pelajar
       asset_other_damage: "Aset / Lain-lain"
       room_damage: "Kerosakan Bilik"
+      level: Aras
       bed: Katil
       room: Bilik
       report: Statistik Penginapan & Bancian Penghuni Mengikut Aras #LAPORAN PENGINAPAN

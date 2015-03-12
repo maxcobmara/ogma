@@ -44,7 +44,7 @@ class Kewpa7Pdf < Prawn::Document
   
   def line_item_rows
     counter = counter || 0
-    header = [[ 'Bil', 'Keterangan Aset', "", 'Quantity']]
+    header = [[ 'Bil', 'Keterangan Aset', "", 'Kuantiti']]
     a= 
        @asset_placements.map do |asset_placement|
       ["#{counter += 1}", "#{asset_placement.asset.assetcode}", "#{asset_placement.asset.typename} #{asset_placement.asset.name} #{asset_placement.asset.modelname}","#{asset_placement.asset.assettype==1 ? 1 : asset_placement.quantity}"] 

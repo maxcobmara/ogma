@@ -27,8 +27,14 @@
         = f.text_field :description, class: 'form-control'
         
     .form-group
+      %label.col-sm-2.control-label{:for => "code"}= t 'location.damage.match_asset'
+      .col-md-6
+        = f.collection_select :college_id, @damage.location.assets, :id, :code_asset, {:prompt=>((t 'select')+" "+(t 'asset.assetcode')+" - "+(t 'asset.name'))}, {class: 'selectpicker', "data-width"=>"380px" }
+        
+    .form-group
       .col-md-6.col-sm-offset-2
         .col-sm-2
-          = link_to t('back'), campus_location_path(@damage.location), class: "btn btn-primary"
+          = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("back")), campus_location_path(@damage.location), class: "btn btn-default"
         .col-sm-3
           = f.submit t('create'), class: "btn btn-primary"
+

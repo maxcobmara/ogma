@@ -1,9 +1,10 @@
 class Student::TenantsController < ApplicationController
-
+  
   before_action :set_tenant, only: [:show, :edit, :update, :destroy]
-
+  
   def index
-    @search = Tenant.where("student_id IS NOT NULL").search(params[:q]) #NOTE: To match with room map, statistic (by programme) & census_level (+report)
+    #@search = Tenant.where("student_id IS NOT NULL").search(params[:q])
+    @search = Tenant.search(params[:q]) #NOTE: To match with room map, statistic (by programme) & census_level (+report)
     if params[:q]
       #move searches here
     end
@@ -30,11 +31,11 @@ class Student::TenantsController < ApplicationController
     @residentials = roots.uniq
     @current_tenants = Tenant.where("keyreturned IS ? AND force_vacate != ?", nil, true)
     @occupied_locations = @current_tenants.pluck(:location_id)
-
+    
     @floor=Location.find(103)
     @all_beds_single=Location.where(id: 103).first.descendants.where('typename = ? OR typename =?', 2, 8).sort_by{|y|y.combo_code}
   end
-
+  
   def census_level
     @floor=Location.find(params[:id]) #103, 1181
     @all_beds_single=Location.find(params[:id]).descendants.where('typename = ? OR typename =?', 2, 8).sort_by{|y|y.combo_code}
@@ -65,7 +66,7 @@ class Student::TenantsController < ApplicationController
     @male_student_beds    = @locations.where('typename = ?', 8)
     @current_tenants = Tenant.where("keyreturned IS ? AND force_vacate != ?", nil, true)
     @occupied_locations = @current_tenants.pluck(:location_id)
-
+    
     #All Rooms
     @af_bedcode = @female_student_beds.pluck(:combo_code)
     @am_bedcode = @male_student_beds.pluck(:combo_code)
@@ -109,19 +110,25 @@ class Student::TenantsController < ApplicationController
     @current_tenants = Tenant.where("keyreturned IS ? AND force_vacate != ?", nil, true)
     @occupied_locations = @current_tenants.pluck(:location_id)
   end
-
+  
   def census
-    @places = Location.where('typename = ? OR typename =?', 2, 8)
-    roots = []
-    @places.each do |place|
-      roots << place.root
-    end
-    @residentials = roots.uniq
-    @current_tenants = Tenant.where("keyreturned IS ? AND force_vacate != ?", nil, true)
 
+     @floor=Location.find(params[:id]) #103, 1181
+     @all_beds_single=Location.find(params[:id]).descendants.where('typename = ? OR typename =?', 2, 8).sort_by{|y|y.combo_code}
+     #@all_rooms=Location.find(params[:id]).descendants.where('typename = ?',6) #error - not precise
+     @all_rooms=Location.find(params[:id]).descendants.where('typename = ? OR typename =?', 2, 8).pluck(:combo_code).group_by{|x|x[0, x.size-2]}
+     @damaged_rooms=Location.find(params[:id]).descendants.where('typename = ? OR typename =?', 2, 8).where(occupied: true).pluck(:combo_code).group_by{|x|x[0, x.size-2]}
+     @current_tenants = Tenant.where("keyreturned IS ? AND force_vacate != ?", nil, true)
+     @tenantbed_per_level=Location.find(params[:id]).descendants.where('typename = ? OR typename =?', 2, 8).joins(:tenants).where("tenants.id" => @current_tenants)
+     @occupied_rooms= @tenantbed_per_level.pluck(:combo_code).group_by{|x|x[0, x.size-2]}
+
+     @all_tenants_wstudent = @current_tenants.joins(:location).where('location_id IN(?) and student_id IN(?)', @tenantbed_per_level.pluck(:id), Student.all.pluck(:id))
+     @students_prog = Student.where('id IN (?)', @all_tenants_wstudent.pluck(:student_id)).group_by{|j|j.course_id}
+     @all_tenants_wostudent = @current_tenants.joins(:location).where('location_id IN(?) and (student_id is null OR student_id NOT IN(?))', @tenantbed_per_level.pluck(:id), Student.all.pluck(:id))
+    
     respond_to do |format|
       format.pdf do
-        pdf = CensusStudentTenantsPdf.new(@residentials, @current_tenants, current_user)
+	pdf = CensusStudentTenantsPdf.new(@all_beds_single,@all_rooms.count, @damaged_rooms.count,@occupied_rooms.count, @students_prog, @all_tenants_wstudent.count, @all_tenants_wostudent.count, @tenantbed_per_level.count, view_context)
         send_data pdf.render, filename: "census",
                               type: "application/pdf",
                               disposition: "inline"
@@ -186,6 +193,36 @@ class Student::TenantsController < ApplicationController
 
   def show
   end
+  
+  
+  def tenant_report
+    @search = Tenant.search(params[:q]) #NOTE: To match with room map, statistic (by programme) & census_level (+report)
+    @search.keyreturned_present != nil unless params[:q]
+    @search.force_vacate_true = false unless params[:q]
+    @search.sorts = 'location_combo_code asc' if @search.sorts.empty?
+    @tenants = @search.result
+    respond_to do |format|
+       format.pdf do
+         pdf = Tenant_reportPdf.new(@tenants, view_context)
+                   send_data pdf.render, filename: "tenant_report-{Date.today}",
+                   type: "application/pdf",
+                   disposition: "inline"
+       end
+     end
+  end
+  
+  def laporan_penginapan
+    commit = params[:commit]      #if commit == 'KEW.PA-17'
+    @residential = Location.where('name LIKE (?) and lclass=?', "#{commit}", 4).first
+    respond_to do |format|
+       format.pdf do
+         pdf = Laporan_penginapanPdf.new(@residential, view_context)
+                   send_data pdf.render, filename: "laporan_penginapan-{Date.today}",
+                   type: "application/pdf",
+                   disposition: "inline"
+       end
+     end
+  end
 
   def destroy
     @tenant.destroy
@@ -195,10 +232,7 @@ class Student::TenantsController < ApplicationController
       format.json { head :no_content }
     end
   end
-
-
-
-
+  
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_tenant

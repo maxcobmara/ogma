@@ -27,6 +27,12 @@
               = f.label t 'student.tenant.damage_type' , for: :damage_type
             .col-md-2
               = f.text_field :damagetype, :value => @damage.damage_type, :readonly => true, class: 'form-control'
+              
+          .form-group
+            .col-sm-2.control-label
+              = f.label t 'location.damage.match_asset', for: :match_asset 
+            .col-md-2
+              = f.collection_select :college_id, @damage.location.assets, :id, :code_asset, {:prompt=>((t 'location.damage.no_match_asset')+" "+(t 'asset.assetcode')+" - "+(t 'asset.name'))}, {class: 'selectpicker', "data-width"=>"380px" }
 
           .form-group
             .col-sm-2.control-label

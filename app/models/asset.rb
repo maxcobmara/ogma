@@ -20,6 +20,7 @@ class Asset < ActiveRecord::Base
   has_many :asset_loans
   has_many :asset_disposal
   has_many :asset_loss
+  has_many :location_damages
   
   scope :hm, -> { where(assettype: 1)}
   scope :inv, -> {where(assettype: 2)}
