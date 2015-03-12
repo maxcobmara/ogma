@@ -65,13 +65,13 @@
         %a.mp-back{:href => "#"}=t('back')
         %ul
           %li= link_to content_tag(:i, "", :class => "icon-numb") + (t "asset.title"), asset_assets_path
-          - permitted_to? :manage, :assets do 
+          - permitted_to? :manage, :assets do
             %li= link_to content_tag(:i, "", :class => "icon-numb") + (t "stationery.title_menu"), asset_stationeries_path
-          - permitted_to? :manage, :asset_defects do 
+          - permitted_to? :manage, :asset_defects do
             %li= link_to content_tag(:i, "", :class => "icon-numb") + (t "asset.defect.title"), asset_defects_path
-          - permitted_to? :manage, :asset_losses do 
+          - permitted_to? :manage, :asset_losses do
             %li= link_to content_tag(:i, "", :class => "icon-numb") + (t "asset.loss.title"), asset_losses_path
-          - permitted_to? :manage, :asset_disposals do 
+          - permitted_to? :manage, :asset_disposals do
             %li= link_to content_tag(:i, "", :class => "icon-numb") + (t "asset.disposal.title"), asset_disposals_path
           %li.icon.icon-left
             = link_to t('asset.loan.title'), '#'
@@ -83,7 +83,7 @@
                 %li= link_to t('asset.loan.asset_on_loan'), asset_loans_path
           %li= link_to content_tag(:i, "", :class => "icon-numb") + (t "asset.reportdownload"), "/asset_report"
 
-    - permitted_to? :core, :locations do 
+    - permitted_to? :core, :locations do
       %li.icon.icon-left
         = link_to content_tag(:i, "", :class => "icon-numb") + (t "location.title"), '#'
         .mp-level
@@ -107,7 +107,7 @@
 
             /%li= link_to content_tag(:i, "", :class => "icon-numb") + "Location Tree", '#'
 
-    - permitted_to? :read, :documents do 
+    - permitted_to? :read, :documents do
       %li.icon.icon-left
         = link_to content_tag(:i, "", :class => "icon-numb") + "E-Filing", '#'
         .mp-level
@@ -130,6 +130,13 @@
         %a.mp-back{:href => "#"}=t('back')
         %ul
           %li= link_to content_tag(:i, "", :class => "icon-numb") + t("student.students.title"), students_path
+          %li.icon.icon-left
+            = link_to 'Reporting', '#'
+            .mp-level
+              %h2.icon Reporting
+              %a.mp-back{:href => "#"}= t 'helpers.links.back'
+              %ul
+                %li= link_to 'Reporting', reports_students_path
           - permitted_to? [:update, :approve, :approve2], :student_leaveforstudents do
             %li= link_to content_tag(:i, "", :class => "icon-numb") + t("student.leaveforstudent.title"), student_leaveforstudents_path
           - permitted_to? :manage, :student_student_attendances do
@@ -139,7 +146,8 @@
           - permitted_to? :manage, :student_discipline_cases do
             %li= link_to content_tag(:i, "", :class => "icon-numb") + t("student.counseling.title2"), student_student_counseling_sessions_path
 
-    - permitted_to? :menu, :training_trainingnotes do          
+
+    - permitted_to? :menu, :training_trainingnotes do
       %li.icon.icon-left
         = link_to content_tag(:i, "", :class => "icon-numb") +  t("training.title"), '#'
         .mp-level
@@ -183,7 +191,7 @@
               %li= link_to content_tag(:i, "", :class => "icon-numb") + (t "exam.examquestion.title"), exam_examquestions_path
             - permitted_to? :menu, :exam_exams do
               %li= link_to content_tag(:i, "", :class => "icon-numb") + (t "exam.exams.title"), exam_exams_path
-            /- permitted_to? :menu, :exam_examresults do 
+            /- permitted_to? :menu, :exam_examresults do
             /activate above, once examresult for student access ready
             %li.icon.icon-left
               = link_to (t "exam.management"), '#'
@@ -207,7 +215,7 @@
                         %li= link_to (t "exam.examresult.title2"), "#"
                         //no need to put any permitted_to here -- as access given above(line 173 -174)
                         %li= link_to (t "exam.examresult.exam_slip"), "#"
-            
+
             /%li= link_to content_tag(:i, "", :class => "icon-numb") + "Examination Management", '#'
             - permitted_to? :index, :exam_evaluate_courses do
               %li= link_to content_tag(:i, "", :class => "icon-numb") + (t "exam.evaluate_course.title"), exam_evaluate_courses_path
@@ -222,13 +230,13 @@
         %a.mp-back{:href => "#"}=t('back')
         %ul
           %li= link_to content_tag(:i, "", :class => "icon-numb") + "Rules & Regulations", '#'
-          - permitted_to? :read, :library_librarytransactions do 
+          - permitted_to? :read, :library_librarytransactions do
             %li= link_to content_tag(:i, "", :class => "icon-numb") + (t "library.transaction.title"), library_librarytransactions_path
           - permitted_to? :manage, :library_librarytransactions do
             %li= link_to content_tag(:i, "", :class => "icon-numb") + (t "library.transaction.manager"), manager_library_librarytransactions_path
-          - permitted_to? :read, :library_books do  
+          - permitted_to? :read, :library_books do
             %li= link_to content_tag(:i, "", :class => "icon-numb") + (t "library.book.list"), library_books_path
-          - permitted_to? :read, :library_librarytransactions do 
+          - permitted_to? :read, :library_librarytransactions do
             %li= link_to content_tag(:i, "", :class => "icon-numb") + "Analysis", '#'
             %li= link_to content_tag(:i, fa_icon("bar-chart-o", text: "Statistics")), '#'
 
@@ -256,4 +264,3 @@
                   %li= link_to t('banks.title'), banks_path
                   %li= link_to "Asset Categories", '#'
             %li= link_to content_tag(:i, "", :class => "icon-numb") + "Release Notes", '#'
-
