@@ -93,19 +93,68 @@ class Location < ActiveRecord::Base
     end
     "#{bed_type}_#{status_type}"
     self.status = "#{bed_type}_#{status_type}"
-
   end
   
   def update_status
     update_attribute(:status, set_status)
   end
   
-  
   #named shortcuts
   def location_list
      "#{combo_code}  #{name}"
   end
   
+  def self.to_csv(options = {})
+    @current_tenants=Tenant.where("keyreturned IS ? AND force_vacate != ?", nil, true)
+    occupied_beds = @current_tenants.pluck(:location_id)
+    building_name = all[0].root.name
+    CSV.generate(options) do |csv|
+        csv << [I18n.t('student.tenant.report_main')] #title added
+        csv << [] #blank row added
+        csv << [building_name]
+        csv << [I18n.t('student.tenant.level'), I18n.t('student.tenant.occupied'), I18n.t('student.tenant.empty'), I18n.t('student.tenant.damaged'), I18n.t('student.tenant.notes')]   
+        
+        ##############
+        lev=[]
+        occ_level=[]
+        occupiedroomss=[]
+        ocbb=[]
+        all.each do |bed|      
+            ocbb << bed if occupied_beds.include?(bed.id)
+        end
+        #occupiedroom = ocbb.group_by{|x|x.combo_code[0,6]}.count   #3 aras je yg ade data
+        occupiedlevel = ocbb.group_by{|x|x.combo_code[0,6]}
+        occupiedlevel.each do |level, beds| #beds
+          occ_level << level  #HB-02-
+          occupiedbeds_level = beds.group_by{|y|y.combo_code[0,9]}
+          occupiedbeds_level.each do |leve, bedss|
+            lev << leve[0,6]
+          end
+          occupiedroomss << occupiedbeds_level.count
+        end
+        ##################
+
+        num=0
+        all.group_by{|x|x.combo_code[0,6]}.sort.reverse.each do |floor, beds|     #by floor
+           damangedbed=[]
+          #per each level----start
+           beds.each do|bed|
+              if bed.occupied == true
+                damangedbed << bed
+             end
+           end
+           damangedroom = damangedbed.group_by{|x|x.combo_code[0,6]}.count
+           hash_occlevel = Hash[occ_level.zip(occupiedroomss)]
+           hash_occlevel.default = 0 
+           occupiedroom = hash_occlevel[floor]
+           allroom = beds.group_by{|x|x.combo_code[0,9]}.count
+           csv << [floor, occupiedroom, allroom-occupiedroom-damangedroom, damangedroom]
+           num+=1
+          #per each level----end
+        end
+
+      end
+  end
   
 end
 

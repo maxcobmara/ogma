@@ -2,20 +2,27 @@
 .page-header
   %h1=t 'student.tenant.report'
 
-  = form_tag laporan_penginapan_student_tenants_path(:format => 'pdf'), :method => 'get' , :id => 'form1' do
-    .navbar.navbar-inverse{role: "navigation", style: "padding-right:40px;"}
-      %ul.nav.navbar-nav
-        //%li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'new'))), new_student_tenant_path
-      %ul.nav.navbar-nav.navbar-right
-        /%li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "toga"
-        %li.dropdown
-          %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#"}
-            = fa_icon "print", text: (t 'actions.print')
-            %b.caret
-          %ul.dropdown-menu
-            - @residentials.sort.each do |building|
-              %li= submit_tag building.name, class: "btn btn-link"
-
+.row
+  .navbar.navbar-inverse{role: "navigation", style: "padding-right:40px;"}
+    /%ul.nav.navbar-nav
+    /  //%li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'new'))), new_student_tenant_path
+    %ul.nav.navbar-nav.navbar-right
+      /%li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "toga"
+      %li.dropdown
+        %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#"}
+          = fa_icon "print", text: (t 'actions.print')
+          %b.caret
+        %ul.dropdown-menu
+          - @residentials.sort.each do |building|
+            %li= link_to  (fa_icon "file-pdf-o", text: building.name), laporan_penginapan_student_tenants_path(buildingname: building.name, format: 'pdf')
+      %li.dropdown
+        %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#"}
+          = fa_icon "external-link", text: (t 'actions.export')
+          %b.caret
+        %ul.dropdown-menu
+          - @residentials.sort.each do |building|
+            /%li= link_to  (fa_icon "file-excel-o", text: building.name), reports_student_tenants_path(buildingname: building.name, format: 'xls')
+            %li= link_to (fa_icon "file-excel-o", text: building.name), statistic_level_campus_locations_path(buildingname: building.name, format: 'xls')
 .row
   /%H4=t 'student.tenant.report'
   %table.table-striped.table-hover.ogma
@@ -45,5 +52,3 @@
           %td= @damaged.count
           %td &nbsp;
           %td= link_to ((t 'student.tenant.census2')+" ("+@occupied_beds.count.to_s+" "+(t 'student.tenant.person')+")"), census_level_student_tenant_path(floor.id)
-
- 

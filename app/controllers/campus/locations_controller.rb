@@ -128,6 +128,19 @@ class Campus::LocationsController < ApplicationController
     end
   end
   
+  #moved from Tenants Controller
+  #Excel - Statistic by level (of selected block) - app/views/student/tenants/reports.html.haml
+  def statistic_level 
+    buildingname = params[:buildingname]
+    @rooms = Location.where('name LIKE (?) and lclass=?', "#{buildingname}", 4).first.descendants.where(typename: [2,8])
+    
+    respond_to do |format|
+      format.html
+      format.csv { send_data @rooms.to_csv }
+      format.xls { send_data @rooms.to_csv(col_sep: "\t") } 
+    end
+  end
+  
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_location

@@ -140,6 +140,9 @@ Ogma::Application.routes.draw do
         get :kewpa10
         get :kewpa11
       end
+      collection do
+	get :statistic_level
+      end
     end
     resources :location_damages do
       collection do
