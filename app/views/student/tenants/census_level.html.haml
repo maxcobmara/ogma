@@ -42,18 +42,24 @@
           %tr
             %td= bed.combo_code
             %td= bed.name
-            %td
-              - if bed.tenants.count > 0
-                - if bed.tenants.last.student.nil?  
+            - if bed.tenants.count > 0 && bed.tenants.last.keyreturned==nil && bed.tenants.last.force_vacate !=true
+              %td
+                - if bed.tenants.last.student.nil?
                   %font{color: "red"}=t 'student.tenant.tenancy_details_nil'
                 - else
                   =bed.tenants.last.try(:student).try(:name) 
-            %td= bed.tenants.last.try(:student).try(:icno)
-            %td= bed.tenants.last.try(:student).try(:matrixno)
-            %td= bed.tenants.last.try(:student).try(:course).try(:name)
-            %td= bed.tenants.last.student.intake_num rescue ""
-            %td &nbsp; 
-
+              %td= bed.tenants.last.student.nil? ? "" : bed.tenants.last.try(:student).try(:icno)
+              %td= bed.tenants.last.student.nil? ? "" : bed.tenants.last.try(:student).try(:matrixno)
+              %td= bed.tenants.last.student.nil? ? "" : bed.tenants.last.try(:student).try(:course).try(:name)
+              %td= bed.tenants.last.student.nil? ? "" : bed.tenants.last.student.intake_num rescue ""
+              %td &nbsp; 
+            - else
+              %td &nbsp;
+              %td &nbsp;
+              %td &nbsp;
+              %td &nbsp;
+              %td &nbsp;
+              %td &nbsp;
 .row
   .col-md-1 &nbsp;
   .col-md-4

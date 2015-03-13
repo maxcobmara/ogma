@@ -1278,9 +1278,10 @@ en:
       census: Tenancy Census by Level
       census2: Cencus
       report_census: "Statistics & Census (Level)"
-      #report_census_title: "Student Resident Tenancy Report & Census"
       summary: Summary
       reset_search: Reset Student Search
+      room_status_title: Room Status Breakdown
+      tenant_programme_title: Tenant Programme Breakdown
       
     students:
       title: Student Info
