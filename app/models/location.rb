@@ -156,6 +156,66 @@ class Location < ActiveRecord::Base
       end
   end
   
+  def self.to_csv2(options = {})
+    
+    #For TOTAL of rooms, damaged rooms, occupied rooms, empty rooms
+    @current_tenants=Tenant.where("keyreturned IS ? AND force_vacate != ?", nil, true)
+    @tenantbed_per_level=all.joins(:tenants).where("tenants.id" => @current_tenants)
+    tenant_beds_ids = @tenantbed_per_level.pluck(:location_id)
+    occupied_rooms = all.where('id IN(?)', tenant_beds_ids).group_by{|x|x.combo_code[0,9]}.count
+    all_rooms = all.group_by{|x|x.combo_code[0,9]}.count
+    damaged_rooms = all.where(occupied: true).group_by{|x|x.combo_code[0,9]}.count
+    floor_name = all[0].name
+    
+    #For tenants COUNT group by programme
+    @all_tenants_wstudent = @current_tenants.joins(:location).where('location_id IN(?) and student_id IN(?)', tenant_beds_ids, Student.all.pluck(:id))
+    @students_prog = Student.where('id IN (?)', @all_tenants_wstudent.pluck(:student_id)).group_by{|j|j.course_id}
+    @all_tenants_wostudent = @current_tenants.joins(:location).where('location_id IN(?) and (student_id is null OR student_id NOT IN(?))', tenant_beds_ids, Student.all.pluck(:id))
+    
+    CSV.generate(options) do |csv|
+        csv << [I18n.t('student.tenant.census')] #title added
+        csv << [] #blank row added
+        csv << [floor_name]
+        csv << [I18n.t('location.code'), I18n.t('location.name'), I18n.t('student.name'), I18n.t('student.icno'), I18n.t('student.students.matrixno'), I18n.t('course.name'), I18n.t('training.intake.description'), I18n.t('student.tenant.notes')]  
+
+        all.sort.reverse.each do |bed|
+          if bed.occupied==true
+             csv << [bed.combo_code, bed.name, "#{bed.parent.damages.where(document_id: 1).last.description rescue (I18n.t 'student.tenant.damage')}"]
+          else
+            if bed.tenants.count > 0
+               if bed.tenants.last.student.nil?
+                  csv << [bed.combo_code, bed.name, I18n.t('student.tenant.tenancy_details_nil'), bed.tenants.last.try(:student).try(:icno), bed.tenants.last.try(:student).try(:matrixno), bed.tenants.last.try(:student).try(:course).try(:name), bed.tenants.last.try(:student).try(:intake_num)]
+               else
+                  csv << [bed.combo_code, bed.name, bed.tenants.last.try(:student).try(:name), bed.tenants.last.try(:student).try(:icno), bed.tenants.last.try(:student).try(:matrixno), bed.tenants.last.try(:student).try(:course).try(:name), bed.tenants.last.try(:student).try(:intake_num)]
+               end
+             else
+               csv << [bed.combo_code, bed.name, bed.tenants.last.try(:student).try(:name), bed.tenants.last.try(:student).try(:icno), bed.tenants.last.try(:student).try(:matrixno), bed.tenants.last.try(:student).try(:course).try(:name), bed.tenants.last.try(:student).try(:intake_num)]
+             end     
+          end
+        end
+
+        csv << [] #blank row added
+        csv << [] #blank row added
+        csv << [ I18n.t('student.tenant.total_empty'), all_rooms-damaged_rooms-occupied_rooms]
+        csv << [I18n.t('student.tenant.total_damaged'), damaged_rooms]
+        csv << [I18n.t('student.tenant.total_occupied'), occupied_rooms]
+        csv << [ I18n.t('student.tenant.total_all'), all_rooms]
+
+        csv << [] #blank row added
+        csv << [] #blank row added
+        csv << [(I18n.t 'course.name')+" - "+(I18n.t 'training.intake.description'), I18n.t('student.tenant.total')]
+        @students_prog.each do |course_id, students|
+           students.group_by{|k|k.intake}.each do |intake, students2|
+             csv << [students.first.course.name+" - "+students2.first.intake_num, students2.count]
+           end
+        end
+        if @all_tenants_wostudent.count > 0
+           csv << [(I18n.t 'student.tenant.tenancy_details_nil'), @all_tenants_wostudent.count]
+        end
+        csv << [(I18n.t 'student.tenant.total_tenants'),@tenantbed_per_level.count]
+     end
+  end
+  
 end
 
 # == Schema Information

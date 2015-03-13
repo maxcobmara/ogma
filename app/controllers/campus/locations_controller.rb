@@ -129,7 +129,7 @@ class Campus::LocationsController < ApplicationController
   end
   
   #moved from Tenants Controller
-  #Excel - Statistic by level (of selected block) - app/views/student/tenants/reports.html.haml
+  #Excel - Statistic by level (of selected block) - link at app/views/student/tenants/reports.html.haml
   def statistic_level 
     buildingname = params[:buildingname]
     @rooms = Location.where('name LIKE (?) and lclass=?', "#{buildingname}", 4).first.descendants.where(typename: [2,8])
@@ -138,6 +138,19 @@ class Campus::LocationsController < ApplicationController
       format.html
       format.csv { send_data @rooms.to_csv }
       format.xls { send_data @rooms.to_csv(col_sep: "\t") } 
+    end
+  end
+  
+  #moved from Tenants Controller
+  #Excel - Census by level - link at app/views/student/tenants/census_level.html.haml
+  def census_level2
+    @floor_id = params[:floorid]
+    @all_beds_single=Location.find(@floor_id).descendants.where('typename = ? OR typename =?', 2, 8)#.sort_by{|y|y.combo_code}
+
+    respond_to do |format|
+      format.html
+      format.csv { send_data @all_beds_single.to_csv2}
+      format.xls { send_data @all_beds_single.to_csv2(col_sep: "\t") } 
     end
   end
   

@@ -21,7 +21,6 @@
           %b.caret
         %ul.dropdown-menu
           - @residentials.sort.each do |building|
-            /%li= link_to  (fa_icon "file-excel-o", text: building.name), reports_student_tenants_path(buildingname: building.name, format: 'xls')
             %li= link_to (fa_icon "file-excel-o", text: building.name), statistic_level_campus_locations_path(buildingname: building.name, format: 'xls')
 .row
   /%H4=t 'student.tenant.report'

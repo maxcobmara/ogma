@@ -141,7 +141,8 @@ Ogma::Application.routes.draw do
         get :kewpa11
       end
       collection do
-	get :statistic_level
+        get :statistic_level
+        get :census_level2
       end
     end
     resources :location_damages do

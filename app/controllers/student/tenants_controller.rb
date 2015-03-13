@@ -19,7 +19,7 @@ class Student::TenantsController < ApplicationController
     end
   end
 
-  #Statistic (by level) & Cencus(links only)
+  #Statistic (by level) & Census(links only)
   def reports
     #Listing of all levels in all blocks
     @places = Location.where('typename = ? OR typename =?', 2, 8)
@@ -36,7 +36,8 @@ class Student::TenantsController < ApplicationController
   
   #Census by level
   def census_level
-    @floor=Location.find(params[:id]) #103, 1181
+    @floor_id = params[:id]
+    @floor=Location.find(@floor_id) #103, 1181
     @all_beds_single=Location.find(params[:id]).descendants.where('typename = ? OR typename =?', 2, 8).sort_by{|y|y.combo_code}
     #@all_rooms=Location.find(params[:id]).descendants.where('typename = ?',6) #NOTE : error - not precise!
     @all_rooms=Location.find(params[:id]).descendants.where('typename = ? OR typename =?', 2, 8).pluck(:combo_code).group_by{|x|x[0, x.size-2]}
@@ -48,6 +49,8 @@ class Student::TenantsController < ApplicationController
     #Location.find(params[:id]).descendants.where('typename = ? OR typename =?', 2, 8).where('id iN(?)', @current_tenants.pluck(:location_id)).pluck(:combo_code).group_by{|x|x[0, x.size-2]}
     #must not be sorted
     #building.descendants.where(typename: [2,8]).joins(:tenants).where("tenants.id" => @current_tenants)
+    
+    #Excel - Census by level - moved to LOCATION module - census_level2
   end
 
   def room_map
