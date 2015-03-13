@@ -56,19 +56,19 @@ class CensusStudentTenantsPdf < Prawn::Document
         line_items << ["#{counter+=1}","#{bed.parent.name[-5,5] if bed.parent.name[4,1]!='-'}#{bed.parent.name[-4,5] if bed.parent.name[4,1]=='-'}",{content: "#{bed.parent.damages.where(document_id: 1).last.description rescue (t 'student.tenant.damage')}", colspan: 4, :align => :center}]
       else
         one_line = ["#{counter+=1}","#{bed.parent.name[-5,5] if bed.parent.name[4,1]!='-' && bed.parent.name.size < 10}#{bed.parent.name[-4,5] if bed.parent.name[4,1]=='-' && bed.parent.name.size < 10} #{(bed.parent.name.split("-")[1]+"-"+bed.parent.name.split("-")[2][0,2]) if bed.parent.name.size > 9}"]
-        if bed.tenants.count > 0
+        if bed.tenants.count > 0 && bed.tenants.last.keyreturned==nil && bed.tenants.last.force_vacate !=true
           if bed.tenants.last.student.nil?
-            one_line+=["#{I18n.t 'student.tenant.tenancy_details_nil'}"]
+            one_line+=["#{I18n.t 'student.tenant.tenancy_details_nil'}","","",""]
           else
-            one_line+=["#{bed.tenants.last.try(:student).try(:name)}"]
+            one_line+=["#{bed.tenants.last.try(:student).try(:name)}", "#{bed.tenants.last.try(:student).try(:formatted_mykad)}", "#{bed.tenants.last.try(:student).try(:course).try(:name)}","#{bed.tenants.last.student.intake_num rescue ""}"]
           end
         else
-          one_line+=[""]
+          one_line+=["","","",""]
         end
-        one_line+=["#{bed.tenants.last.try(:student).try(:formatted_mykad)}", "#{bed.tenants.last.try(:student).try(:course).try(:name)}","#{bed.tenants.last.student.intake_num rescue ""}"]
         line_items << one_line
       end
     end
+    
     header = [[ "BIL", "NO. BILIK", "NAMA", "NO. K / P", "PROGRAM", "KUMP"]]   
     header + line_items
   end

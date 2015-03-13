@@ -1196,9 +1196,10 @@ ms_MY:
       census: Bancian Penghuni Mengikut Aras
       census2: Bancian
       report_census: "Statistik & Bancian (Aras)"
-      #report_census_title: "Laporan Penginapan & Bancian Penghuni Kediaman Pelatih"
       summary: Ringkasan
-      reset_search: Reset Carian Pelajar
+      reset_search: Set Semula Carian Pelajar
+      room_status_title: Pecahan Status Bilik
+      tenant_programme_title: Pecahan Penghuni Mengikut Program
       
     students:
       title: Maklumat Pelajar

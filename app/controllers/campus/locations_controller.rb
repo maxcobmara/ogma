@@ -128,6 +128,45 @@ class Campus::LocationsController < ApplicationController
     end
   end
   
+  #moved from Tenants Controller
+  #Excel - Statistic by level (of selected block) - link at app/views/student/tenants/reports.html.haml
+  def statistic_level 
+    buildingname = params[:buildingname]
+    @rooms = Location.where('name LIKE (?) and lclass=?', "#{buildingname}", 4).first.descendants.where(typename: [2,8])
+    
+    respond_to do |format|
+      format.html
+      format.csv { send_data @rooms.to_csv }
+      format.xls { send_data @rooms.to_csv(col_sep: "\t") } 
+    end
+  end
+  
+  #moved from Tenants Controller
+  #Excel - Census by level - link at app/views/student/tenants/census_level.html.haml
+  def census_level2
+    @floor_id = params[:floorid]
+    @all_beds_single=Location.find(@floor_id).descendants.where('typename = ? OR typename =?', 2, 8)
+
+    respond_to do |format|
+      format.html
+      format.csv { send_data @all_beds_single.to_csv2}
+      format.xls { send_data @all_beds_single.to_csv2(col_sep: "\t") } 
+    end
+  end
+  
+  #moved from Tenants Controller
+  #Excel - Statistic by block (room status & tenants group by programme) - link at app/views/student/tenants/statistics.html.haml
+  def statistic_block
+    @block_id = params[:blockid]
+    @all_beds_single=Location.find(@block_id).descendants.where('typename = ? OR typename =?', 2, 8)#.sort_by{|y|y.combo_code}
+
+    respond_to do |format|
+      format.html
+      format.csv { send_data @all_beds_single.to_csv3}
+      format.xls { send_data @all_beds_single.to_csv3(col_sep: "\t") } 
+    end
+  end
+  
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_location

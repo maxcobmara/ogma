@@ -140,6 +140,11 @@ Ogma::Application.routes.draw do
         get :kewpa10
         get :kewpa11
       end
+      collection do
+        get :statistic_level
+        get :census_level2
+        get :statistic_block
+      end
     end
     resources :location_damages do
       collection do
@@ -175,7 +180,6 @@ Ogma::Application.routes.draw do
     end
   end
 
-
   namespace :student do
     resources :tenants do
       collection do
@@ -189,6 +193,7 @@ Ogma::Application.routes.draw do
         post :empty_room
         get :tenant_report
         get :laporan_penginapan
+        get :laporan_penginapan2
       end
       member do
         get :census_level

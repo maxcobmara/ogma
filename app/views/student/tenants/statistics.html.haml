@@ -5,6 +5,11 @@
 /General Statistics
 .row
   .col-md-3
+    %h4 Statistik Umum
+    /= link_to (fa_icon "file-excel-o"), census_level2_campus_locations_path(floorid: @floor_id , format: 'xls')
+    /= link_to  (fa_icon "file-pdf-o"), census_student_tenants_path(params.merge(format: 'pdf' ))
+.row
+  .col-md-3
     %table.table-striped.table-hover.ogma
       %thead
         %tr
@@ -54,96 +59,49 @@
     = pie_chart [[(t 'student.tenant.empty'), @em], [(t 'student.tenant.occupied'), @om], [(t 'student.tenant.damaged'), @dm]], :height => "190px", :library => {legend: { position: 'right', maxLines: 3}}
 
 %BR
-/Statistics by Block    
+/Statistics by Block
 .row
-  %H4=t 'student.tenant.statistics_block'
-  .col-md-3
-    %table.table-striped.table-hover.ogma
-      %thead
+  .col-md-11
+    %h4=(t 'student.tenant.statistics_block')+" & "+(t 'student.tenant.tenants_students')
+.row
+  - @residentials.sort.each do |building|
+    - all_beds = building.descendants.where(typename: [2,8])
+    - all_rooms = all_beds.group_by{|x|x.combo_code[0,x.combo_code.size-2]}
+    - damaged_rooms = all_beds.where(occupied: true).group_by{|x|x.combo_code[0,x.combo_code.size-2]}
+    - occupied_rooms = all_beds.where('id IN(?)', @current_tenants.pluck(:location_id)).group_by{|x|x.combo_code[0,x.combo_code.size-2]}
+    .col-md-3  
+      %br
+      %table{:style=>"margin-left: 25px; cellspacing: 0: cellpadding:0;"}
         %tr
-          %th.centre{colspan: 2}A - Sri Samudera
-        %tr
-          %th=t('student.tenant.room')
-          %th.centre=t('student.tenant.total')
-      %tbody
-        %tr
-          %th= t 'student.tenant.total_empty'
-          %td.centre= @am_rooms.count-@om_rooms.count-@dm_rooms.count
-        %tr
-          %th= t 'student.tenant.total_occupied'
-          %td.centre= @om_rooms.count
-        %tr
-          %th= t 'student.tenant.total_damaged'
-          %td.centre= @dm_rooms.count
-        %tr
-          %th= t 'student.tenant.total_rooms'
-          %td.centre= @am_rooms.count
-  .col-md-1 &nbsp;
-  .col-md-3
-    - if @dbedF_B.nil? 
-      - b_damaged=0
-    - else
-      - b_damaged=@droomF_B.count
-    - if @obedF_B.nil? 
-      - b_occupied=0
-    - else
-      - b_occupied=@oroomF_B.count   
-    %table.table-striped.table-hover.ogma
-      %thead
-        %tr
-          %th.centre{colspan: 2}B - Sri Tebrau
-        %tr
-          %th=t('student.tenant.room')
-          %th.centre=t('student.tenant.total')
-      %tbody
-        %tr
-          %th= t 'student.tenant.total_empty'
-          %td.centre=@roomF_B.count-b_occupied-b_damaged
-        %tr
-          %th= t 'student.tenant.total_occupied'
-          %td.centre=b_occupied
-        %tr
-          %th= t 'student.tenant.total_damaged'
-          %td.centre=b_damaged
-            
-        %tr
-          %th= t 'student.tenant.total_rooms'
-          %td.centre= @roomF_B.count
-  .col-md-1 &nbsp;
-  .col-md-3
-    - if @dbedF_C.nil? 
-      - c_damaged=0
-    - else
-      - c_damaged=@droomF_C.count
-    - if @obedF_C.nil? 
-      - c_occupied=0
-    - else
-      - c_occupied=@oroomF_C.count   
-    %table.table-striped.table-hover.ogma
-      %thead
-        %tr
-          %th.centre{colspan: 2}C - Sri Danga
-        %tr
-          %th=t('student.tenant.room')
-          %th.centre=t('student.tenant.total')
-      %tbody
-        %tr
-          %th= t 'student.tenant.total_empty'
-          %td.centre=@roomF_C.count-c_occupied-c_damaged
-        %tr
-          %th= t 'student.tenant.total_occupied'
-          %td.centre=c_occupied
-        %tr
-          %th= t 'student.tenant.total_damaged'
-          %td.centre=c_damaged
-        %tr
-          %th= t 'student.tenant.total_rooms'
-          %td.centre= @roomF_C.count
+          %td.left
+            = link_to (fa_icon "file-excel-o"), statistic_block_campus_locations_path(blockid: building.id , format: 'xls')
+            = link_to  (fa_icon "file-pdf-o"), laporan_penginapan2_student_tenants_path(blockid: building.id, format: 'pdf')
+            = "  "+building.name
+      %table.table-striped.table-hover.ogma
+        %thead
+          %tr
+            %th.centre{colspan: 2}=t('student.tenant.room_status_title')
+          %tr
+            %th=t('student.tenant.room')
+            %th.centre=t('student.tenant.total')
+        %tbody
+          %tr
+            %th= t 'student.tenant.total_empty'
+            %td.centre=all_rooms.count-damaged_rooms.count-occupied_rooms.count
+          %tr
+            %th= t 'student.tenant.total_occupied'
+            %td.centre=occupied_rooms.count
+          %tr
+            %th= t 'student.tenant.total_damaged'
+            %td.centre=damaged_rooms.count
+          %tr
+            %th= t 'student.tenant.total_rooms'
+            %td.centre=all_rooms.count
+    .col-md-1 &nbsp;
 
 %BR
 /Statistics by Programme (of each block)
 .row
-  %H4=t 'student.tenant.tenants_students'
   - @residentials.sort.each do |building|
     - @tenantbed_per_block = building.descendants.where(typename: [2,8]).joins(:tenants).where("tenants.id" => @current_tenants)
     - @all_tenants_wstudent = @current_tenants.joins(:location).where('location_id IN(?) and student_id IN(?)', @tenantbed_per_block.pluck(:id), Student.all.pluck(:id))
@@ -153,7 +111,7 @@
       %table.table-striped.table-hover.ogma
         %thead
           %tr
-            %th.centre{colspan: 2}=building.name
+            %th.centre{colspan: 2}=t('student.tenant.tenant_programme_title')
           %tr
             %th=(t 'course.name')+" - "+(t 'training.intake.description')
             %th.centre=t('student.tenant.total')
