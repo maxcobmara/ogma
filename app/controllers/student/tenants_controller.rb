@@ -69,34 +69,34 @@ class Student::TenantsController < ApplicationController
     @occupied_locations = @current_tenants.pluck(:location_id)
     
     #All Rooms
-    @af_bedcode = @female_student_beds.pluck(:combo_code)
-    @am_bedcode = @male_student_beds.pluck(:combo_code)
-    @am_rooms = @am_bedcode.group_by{|x|x[0, x.size-2]} #block A  {"HA-01-01"=>["HA-01-01-A", "HA-01-01-B"]} - group by male rooms (Block A)
-    @af_rooms = @af_bedcode.group_by{|x|x[0, x.size-2]}   #block B & C {"HB-01-01"=>["HB-01-01-A", "HB-01-01-B"], "HC-01-01"=>["HC-01-01-A", "HC-01-01-B"]}
-    @bedF_B = @af_bedcode.group_by{|x|x[1,1]}["B"]     #bed by block {"B"=>["HB-01", "HB-01", "HB-02"], "C"=>["HC-01"]}
-    @bedF_C = @af_bedcode.group_by{|x|x[1,1]}["C"]
-    @roomF_B = @bedF_B.group_by{|x|x[0, x.size-2]}
-    @roomF_C = @bedF_C.group_by{|x|x[0, x.size-2]}
+     @af_bedcode = @female_student_beds.pluck(:combo_code)
+     @am_bedcode = @male_student_beds.pluck(:combo_code)
+     @am_rooms = @am_bedcode.group_by{|x|x[0, x.size-2]} #block A  {"HA-01-01"=>["HA-01-01-A", "HA-01-01-B"]} - group by male rooms (Block A)
+     @af_rooms = @af_bedcode.group_by{|x|x[0, x.size-2]}   #block B & C {"HB-01-01"=>["HB-01-01-A", "HB-01-01-B"], "HC-01-01"=>["HC-01-01-A", "HC-01-01-B"]}
+#     @bedF_B = @af_bedcode.group_by{|x|x[1,1]}["B"]     #bed by block {"B"=>["HB-01", "HB-01", "HB-02"], "C"=>["HC-01"]}
+#     @bedF_C = @af_bedcode.group_by{|x|x[1,1]}["C"]
+#     @roomF_B = @bedF_B.group_by{|x|x[0, x.size-2]}
+#     @roomF_C = @bedF_C.group_by{|x|x[0, x.size-2]}
 
     #Occupied Rooms
-    @of_bedcode = @female_student_beds.joins(:tenants).where("tenants.id" => @current_tenants).pluck(:combo_code)
-    @om_bedcode = @male_student_beds.joins(:tenants).where("tenants.id" => @current_tenants).pluck(:combo_code)
-    @of_rooms = @of_bedcode.group_by{|x|x[0, x.size-2]}
-    @om_rooms = @om_bedcode.group_by{|x|x[0, x.size-2]}
-    @obedF_B = @of_bedcode.group_by{|x|x[1,1]}["B"]     #bed by block {"B"=>["HB-01", "HB-01", "HB-02"], "C"=>["HC-01"]}
-    @obedF_C = @of_bedcode.group_by{|x|x[1,1]}["C"]
-    @oroomF_B = @obedF_B.group_by{|x|x[0, x.size-2]} if @obedF_B
-    @oroomF_C = @obedF_C.group_by{|x|x[0, x.size-2]} if @obedF_C
+     @of_bedcode = @female_student_beds.joins(:tenants).where("tenants.id" => @current_tenants).pluck(:combo_code)
+     @om_bedcode = @male_student_beds.joins(:tenants).where("tenants.id" => @current_tenants).pluck(:combo_code)
+     @of_rooms = @of_bedcode.group_by{|x|x[0, x.size-2]}
+     @om_rooms = @om_bedcode.group_by{|x|x[0, x.size-2]}
+#     @obedF_B = @of_bedcode.group_by{|x|x[1,1]}["B"]     #bed by block {"B"=>["HB-01", "HB-01", "HB-02"], "C"=>["HC-01"]}
+#     @obedF_C = @of_bedcode.group_by{|x|x[1,1]}["C"]
+#     @oroomF_B = @obedF_B.group_by{|x|x[0, x.size-2]} if @obedF_B
+#     @oroomF_C = @obedF_C.group_by{|x|x[0, x.size-2]} if @obedF_C
 
     #Damaged Rooms
-    @df_bedcode = @female_student_beds.where(occupied: true).pluck(:combo_code)
-    @dm_bedcode = @male_student_beds.where(occupied: true).pluck(:combo_code)
-    @df_rooms = @df_bedcode.group_by{|x|x[0, x.size-2]}
-    @dm_rooms = @dm_bedcode.group_by{|x|x[0, x.size-2]}
-    @dbedF_B = @df_bedcode.group_by{|x|x[1,1]}["B"]     #bed by block {"B"=>["HB-01", "HB-01", "HB-02"], "C"=>["HC-01"]}
-    @dbedF_C = @df_bedcode.group_by{|x|x[1,1]}["C"]
-    @droomF_B = @dbedF_B.group_by{|x|x[0, x.size-2]} if @dbedF_B
-    @droomF_C = @dbedF_C.group_by{|x|x[0, x.size-2]} if @dbedF_C
+     @df_bedcode = @female_student_beds.where(occupied: true).pluck(:combo_code)
+     @dm_bedcode = @male_student_beds.where(occupied: true).pluck(:combo_code)
+     @df_rooms = @df_bedcode.group_by{|x|x[0, x.size-2]}
+     @dm_rooms = @dm_bedcode.group_by{|x|x[0, x.size-2]}
+#     @dbedF_B = @df_bedcode.group_by{|x|x[1,1]}["B"]     #bed by block {"B"=>["HB-01", "HB-01", "HB-02"], "C"=>["HC-01"]}
+#     @dbedF_C = @df_bedcode.group_by{|x|x[1,1]}["C"]
+#     @droomF_B = @dbedF_B.group_by{|x|x[0, x.size-2]} if @dbedF_B
+#     @droomF_C = @dbedF_C.group_by{|x|x[0, x.size-2]} if @dbedF_C
 
     #For Statistics by Programme
     #from Index

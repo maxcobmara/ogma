@@ -178,7 +178,7 @@ class Location < ActiveRecord::Base
         csv << [floor_name]
         csv << [I18n.t('location.code'), I18n.t('location.name'), I18n.t('student.name'), I18n.t('student.icno'), I18n.t('student.students.matrixno'), I18n.t('course.name'), I18n.t('training.intake.description'), I18n.t('student.tenant.notes')]  
 
-        all.sort.reverse.each do |bed|
+        all.sort_by{|t|t.combo_code}.each do |bed|
           if bed.occupied==true
              csv << [bed.combo_code, bed.name, "#{bed.parent.damages.where(document_id: 1).last.description rescue (I18n.t 'student.tenant.damage')}"]
           else
