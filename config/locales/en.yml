@@ -1223,7 +1223,7 @@ en:
       match_asset: "Match Asset ?"
       no_match_asset: No matching asset
       repairs_of: Repairs of
-      room_damage2: room damage(s)
+      room_damages: room damages
       must_be_updated_in: "must be updated in : "
     
   student:
