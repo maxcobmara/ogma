@@ -30,7 +30,7 @@
   .form-group
     %label.col-sm-2.control-label{:for => "staff_id"}= t 'staff.name'
     .col-md-4
-      = f.collection_select :staff_id, Staff.find(:all), :id, :mykad_with_staff_name
+      = f.collection_select :staff_id, Staff.all, :id, :mykad_with_staff_name
 
 .form-group
   %label.col-sm-2.control-label{:for => "keyprovided"}= t 'student.tenant.key.provided'

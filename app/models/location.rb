@@ -5,7 +5,7 @@ class Location < ActiveRecord::Base
   before_save           :set_combo_code, :set_status
   after_touch           :update_status
 
-  validates_presence_of  :code, :name
+  validates_presence_of  :code, :name, :combo_code
   validates :combo_code, uniqueness: true
   
   belongs_to  :administrator, :class_name => 'Staff', :foreign_key => 'staffadmin_id'
