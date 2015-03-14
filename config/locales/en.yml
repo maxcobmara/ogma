@@ -1221,6 +1221,9 @@ en:
       damage_report: Location Damage Report for Student Residence
       match_asset: "Match Asset ?"
       no_match_asset: No matching asset
+      repairs_of: Repairs of
+      room_damages: room damages
+      must_be_updated_in: "must be updated in : "
     
   student:
     title: Student

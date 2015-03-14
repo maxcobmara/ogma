@@ -17,9 +17,9 @@
             .col-md-3
               - if @damage.document_id == 1
                 %font{:style => "color: blue;"}
-                  Pembaikan 
-                  %b kerosakan bilik 
-                  perlu dikemaskini di modul : 
+                  = t('location.damage.repairs_of')
+                  %b=t('location.damage.room_damages')
+                  =t('location.damage.must_be_updated_in')
                   =link_to (t 'location.title').upcase, campus_location_path(@damage.location_id)
 
           .form-group
