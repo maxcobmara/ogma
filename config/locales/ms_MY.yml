@@ -1139,6 +1139,9 @@ ms_MY:
       damage_report: Laporan Kerosakan di Lokasi bagi Penempatan Pelatih
       match_asset: "Padankan Aset ?"
       no_match_asset: Tiada padanan aset
+      repairs_of: Pembaikan
+      room_damage2: kerosakan bilik
+      must_be_updated_in: "perlu dikemaskini di modul : "
     
   student:
     title: Pelajar
