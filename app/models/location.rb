@@ -148,7 +148,12 @@ class Location < ActiveRecord::Base
            hash_occlevel.default = 0 
            occupiedroom = hash_occlevel[floor]
            allroom = beds.group_by{|x|x.combo_code[0,9]}.count
-           csv << [floor, occupiedroom, allroom-occupiedroom-damangedroom, damangedroom]
+           if floor[5,1]=="-"
+             rev_floor = floor[0,5]   #HB-02-
+           elsif floor[5,1]!="-"
+             rev_floor = floor          #HB-00B
+           end
+           csv << [rev_floor, occupiedroom, allroom-occupiedroom-damangedroom, damangedroom]
            num+=1
           #per each level----end
         end
