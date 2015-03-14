@@ -104,6 +104,7 @@ class Location < ActiveRecord::Base
      "#{combo_code}  #{name}"
   end
   
+  #Export excel - statistic by level - tenants/reports.html.haml
   def self.to_csv(options = {})
     @current_tenants=Tenant.where("keyreturned IS ? AND force_vacate != ?", nil, true)
     occupied_beds = @current_tenants.pluck(:location_id)
@@ -161,6 +162,7 @@ class Location < ActiveRecord::Base
       end
   end
   
+  #Export Excel - Census by level - tenants/..../census_level.html.haml (location_id/level)
   def self.to_csv2(options = {})
     
     #For TOTAL of rooms, damaged rooms, occupied rooms, empty rooms
@@ -225,6 +227,7 @@ class Location < ActiveRecord::Base
      end
   end
   
+  #Export Excel - statistic by block(total room status & tenant's programme) - tenant/statistics.html.haml
   def self.to_csv3(options = {})
     
     #For statistic by block (room status breakdown)
