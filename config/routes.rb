@@ -22,7 +22,7 @@ Ogma::Application.routes.draw do
         get :processing_level_2
       end
     end
-    resources :travel_claims do 
+    resources :travel_claims do
       member do
         get :check
         get :approve
@@ -173,6 +173,7 @@ Ogma::Application.routes.draw do
       get :autocomplete
       get :kumpulan_etnik
       post :kumpulan_etnik
+      get :reports
     end
     member do
       get :borang_maklumat_pelajar
@@ -355,7 +356,7 @@ Ogma::Application.routes.draw do
   resources :logins
   resources :roles
   resources :banks
-  
+
   root  'static_pages#home'
   match '/help',    to: 'static_pages#help',    via: 'get'
   match '/about',   to: 'static_pages#about',   via: 'get'
