@@ -51,7 +51,7 @@ class LocationDamage < ActiveRecord::Base
         csv << [I18n.t('location.damage.damage_report')] #title added
         csv << [] #blank row added
         csv << [I18n.t('location.combo_code'), I18n.t('student.tenant.damage_type'), I18n.t('location.damage.description'), I18n.t('location.damage.reported_on'), I18n.t('location.damage.repaired_on'), I18n.t('student.tenant.name')]   
-        all.each do |damage|
+        all.order(created_at: :desc).sort_by{|i|i.location.combo_code}.each do |damage|
           csv << [damage.try(:location).try(:combo_code),damage.damage_type, damage.description_assetcode, damage.reported_on.try(:strftime, '%d-%m-%Y'), damage.repaired_on.try(:strftime, '%d-%m-%Y'), damage.try(:tenant).try(:student).try(:name)]
         end
       end

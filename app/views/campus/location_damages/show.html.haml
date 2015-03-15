@@ -51,8 +51,8 @@
       = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), campus_location_damages_path, :class => 'btn btn-default'
       - if (@damage.document_id==1 && @damage.repaired_on==nil) || @damage.document_id==2
         = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('.edit', :default => t("helpers.links.edit")), edit_campus_location_damage_path(@damage), :class => 'btn btn-primary' 
-      - dmgs = LocationDamage.where('location_id=? and repaired_on is null', @damage.location_id)
-      - if (@damage.document_id==1 && dmgs.count > 1 && @damage.repaired_on==nil) || (@damage.document_id==2 && @damage.repaired_on==nil) || (@damage.document_id==nil || @damage.description==nil || @damage.reported_on==nil)
+      - dmgs = LocationDamage.where('location_id=? and document_id=? and repaired_on is null', @damage.location_id, 1)
+      - if (@damage.document_id==1 && dmgs.count > 1 && @damage.repaired_on==nil) || (@damage.document_id==2 && @damage.repaired_on==nil) || (@damage.document_id==nil && @damage.description==nil && @damage.reported_on==nil)
         = link_to content_tag(:i, "", :class => "fa fa-trash-o icon-white") + " " + t('.destroy', :default => t("helpers.links.destroy")), |
       campus_location_damage_path(@damage),                                                                                                    |
       :method => 'delete',                                                                                                           |

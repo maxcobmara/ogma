@@ -65,7 +65,7 @@ class Campus::LocationDamagesController < ApplicationController
   def destroy
     @damage.destroy
     respond_to do |format|
-      format.html { redirect_to campus_locations_url }
+      format.html { redirect_to campus_location_damages_url }
       format.json { head :no_content }
     end
   end

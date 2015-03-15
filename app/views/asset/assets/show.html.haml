@@ -42,7 +42,13 @@
       %dt= t 'asset.serial_no'
       %dd= @asset.serialno
       %dt= t 'asset.located_at'
-      %dd=@asset.try(:asset_placements).last.try(:location).try(:name)
+      %dd
+        .col-md-8
+          - if @asset.assettype==1
+            =@asset.try(:asset_placements).last.try(:location).try(:name)
+          - elsif @asset.assettype==2
+            - for asset_placement in @asset.asset_placements
+              = asset_placement.location.name+" "
       %dt= t 'asset.assigned_to'
       %dd= @asset.assignedto.try(:name)
       %dt= t 'asset.status'
