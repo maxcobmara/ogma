@@ -212,12 +212,16 @@ authorization do
     has_permission_on :student_leaveforstudents, :to => [:index, :menu, :create, :show, :update, :approve_warden] do
       if_attribute :studentsubmit => true
     end
-   
+    has_permission_on :library_books, :to => :read
+    has_permission_on :assets, :to => :read
+    has_permission_on :students, :to => :read
   end
   
   role :guest do
     #has_permission_on :users, :to => :create
-    has_permission_on :library_books, :to => :read
+    #has_permission_on :library_books, :to => :read   
+    #hide ALL modules from guest first --> 14 March 2015 & temporary add 3 items for permission for warden library_books, assets & students
+    #coz roles assign for guest - accessible to user WITHOUT LOGIN due to firefox/Ie - unsupported version (old version)
   end
 
 

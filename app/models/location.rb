@@ -5,7 +5,7 @@ class Location < ActiveRecord::Base
   before_save           :set_combo_code, :set_status
   after_touch           :update_status
 
-  validates_presence_of  :code, :name
+  validates_presence_of  :code, :name, :combo_code
   validates :combo_code, uniqueness: true
   
   belongs_to  :administrator, :class_name => 'Staff', :foreign_key => 'staffadmin_id'
@@ -104,6 +104,7 @@ class Location < ActiveRecord::Base
      "#{combo_code}  #{name}"
   end
   
+  #Export excel - statistic by level - tenants/reports.html.haml
   def self.to_csv(options = {})
     @current_tenants=Tenant.where("keyreturned IS ? AND force_vacate != ?", nil, true)
     occupied_beds = @current_tenants.pluck(:location_id)
@@ -148,7 +149,12 @@ class Location < ActiveRecord::Base
            hash_occlevel.default = 0 
            occupiedroom = hash_occlevel[floor]
            allroom = beds.group_by{|x|x.combo_code[0,9]}.count
-           csv << [floor, occupiedroom, allroom-occupiedroom-damangedroom, damangedroom]
+           if floor[5,1]=="-"
+             rev_floor = floor[0,5]   #HB-02-
+           elsif floor[5,1]!="-"
+             rev_floor = floor          #HB-00B
+           end
+           csv << [rev_floor, occupiedroom, allroom-occupiedroom-damangedroom, damangedroom]
            num+=1
           #per each level----end
         end
@@ -156,6 +162,7 @@ class Location < ActiveRecord::Base
       end
   end
   
+  #Export Excel - Census by level - tenants/..../census_level.html.haml (location_id/level)
   def self.to_csv2(options = {})
     
     #For TOTAL of rooms, damaged rooms, occupied rooms, empty rooms
@@ -220,6 +227,7 @@ class Location < ActiveRecord::Base
      end
   end
   
+  #Export Excel - statistic by block(total room status & tenant's programme) - tenant/statistics.html.haml
   def self.to_csv3(options = {})
     
     #For statistic by block (room status breakdown)

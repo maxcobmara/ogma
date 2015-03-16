@@ -14,9 +14,10 @@ class Laporan_penginapanPdf < Prawn::Document
   end
   
   def record
-    table(line_item_rows, :column_widths => [100,100,100,100,100], :cell_style => { :size => 8,  :inline_format => :true}) do
+    table(line_item_rows, :column_widths => [100,100,100,100,100], :cell_style => { :size => 10,  :inline_format => :true}) do
       row(0).font_style = :bold
       row(0).background_color = 'FFE34D'
+      columns(1..3).align=:center
       self.row_colors = ["FEFEFE", "FFFFFF"]
       self.header = true
       self.width = 500

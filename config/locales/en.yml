@@ -1189,6 +1189,7 @@ en:
   location:
     title: Location
     code: Location Code
+    combo_code: Combo Code
     name: Name
     administrator: Administrated By
     select_admin: "Select Administrator"
@@ -1221,6 +1222,9 @@ en:
       damage_report: Location Damage Report for Student Residence
       match_asset: "Match Asset ?"
       no_match_asset: No matching asset
+      repairs_of: Repairs of
+      room_damages: room damages
+      must_be_updated_in: "must be updated in : "
     
   student:
     title: Student

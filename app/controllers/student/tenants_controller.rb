@@ -15,7 +15,9 @@ class Student::TenantsController < ApplicationController
 
     respond_to do |format|
       format.html
-      format.xls
+      #format.xls - temp hide until resolve - 'general i/o error'
+      format.csv { send_data @tenants.to_csv }
+      format.xls { send_data @tenants.to_csv(col_sep: "\t") } 
     end
   end
 
