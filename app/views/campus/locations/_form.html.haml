@@ -48,7 +48,7 @@
   - if @location.damages.pluck(:repaired_on).include?(nil)
     .form-group#span_repairdate{:style=>"display:none;"}
       %label.col-sm-2.control-label=t('location.damage.repaired_on')
-      .col-md-2= f.text_field :repairdate, class: 'date_picker form-control'
+      .col-md-2= f.text_field :repairdate, class: 'date_picker_reverse form-control'
       /= Date.today.try(:strftime, "%d %b %Y")
 
   .form-group#span_damages{:style=>"display:none;"}

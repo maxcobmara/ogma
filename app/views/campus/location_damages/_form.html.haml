@@ -44,7 +44,7 @@
             .col-sm-2.control-label
               = f.label t 'location.damage.reported_on', for: :reported_on
             .col-md-2
-              = f.text_field :reported_on, class: 'date_picker form-control'
+              = f.text_field :reported_on, class: 'date_picker_reverse form-control', value: @damage.try(:reported_on).try(:strftime, '%d-%m-%Y')
 
           - unless @damage.user_id.nil?
             .form-group
@@ -58,4 +58,4 @@
               .col-sm-2.control-label
                 = f.label t 'location.damage.repaired_on', for: :repaired_on
               .col-md-2
-                = f.text_field :repaired_on, class: 'date_picker form-control'
+                = f.text_field :repaired_on, class: 'date_picker_reverse form-control', value: @damage.try(:repaired_on).try(:strftime, '%d-%m-%Y')
