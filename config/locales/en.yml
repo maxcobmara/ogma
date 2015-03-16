@@ -1345,7 +1345,7 @@ en:
       on_leave: On leave
       expelled: Expelled from College
       transfer_college: Transfer College
-      sstatus_remark: "Remark, if transfer college"
+      sstatus_remark: "Remarks, if transfer college"
       
     leaveforstudent:
       title: Student Leave
