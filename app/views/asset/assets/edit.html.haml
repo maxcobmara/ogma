@@ -143,13 +143,13 @@
             .col-sm-2.control-label
               = f.label t 'asset.purchasedate', for: :purchasedate
             .col-md-5
-              = f.text_field :purchasedate, :order => [:day, :month, :year], :default => 1.days.from_now,  :class =>  'datetime_picker form-control'
+              = f.text_field :purchasedate, :default => 1.days.from_now,  :class =>  'date_picker_reverse form-control', value: @asset.try(:purchasedate).try(:strftime, '%d-%m-%Y')
 			  
           .form-group
             .col-sm-2.control-label
               = f.label t 'asset.receiveddate', for: :receiveddate
             .col-md-5
-              = f.text_field :receiveddate, :order => [:day, :month, :year], :default => 1.days.from_now,  :class =>  'datetime_picker form-control'
+              = f.text_field :receiveddate, :default => 1.days.from_now,  :class =>  'date_picker_reverse form-control', value: @asset.try(:receiveddate).try(:strftime, '%d-%m-%Y')
 			  			  
           .form-group
             .col-sm-2.control-label
