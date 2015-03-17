@@ -1195,6 +1195,7 @@ ms_MY:
       level: Aras
       bed: Katil
       room: Bilik
+      rooms: Bilik
       report: Statistik Penginapan & Bancian Penghuni Mengikut Aras #LAPORAN PENGINAPAN
       report_main: Statistik Penginapan Mengikut Aras
       census: Bancian Penghuni Mengikut Aras
@@ -1208,6 +1209,7 @@ ms_MY:
     students:
       title: Maklumat Pelajar
       list: Senarai Maklumat Pelajar
+      reporting: Laporan
       formatted_mykad: No Mykad
       name: Nama
       matrixno: No Matrik

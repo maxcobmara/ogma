@@ -30,7 +30,9 @@ class Student::TenantsController < ApplicationController
      roots << place.root
     end
     @residentials = roots.uniq
-    @current_tenants = Tenant.where("keyreturned IS ? AND force_vacate != ?", nil, true)
+    #@current_tenants = Tenant.where("keyreturned IS ? AND force_vacate != ?", nil, true)
+    student_bed_ids = Location.where(typename: [2,8]).pluck(:id)
+    @current_tenants = Tenant.where("keyreturned IS ? AND force_vacate != ? and location_id IN(?)", nil, true, student_bed_ids)
     @occupied_locations = @current_tenants.pluck(:location_id)
     
     #Excel - Statistic by level (of selected block) - moved to LOCATION module - statistic_level
@@ -44,7 +46,9 @@ class Student::TenantsController < ApplicationController
     #@all_rooms=Location.find(params[:id]).descendants.where('typename = ?',6) #NOTE : error - not precise!
     @all_rooms=Location.find(params[:id]).descendants.where('typename = ? OR typename =?', 2, 8).pluck(:combo_code).group_by{|x|x[0, x.size-2]}
     @damaged_rooms=Location.find(params[:id]).descendants.where('typename = ? OR typename =?', 2, 8).where(occupied: true).pluck(:combo_code).group_by{|x|x[0, x.size-2]}
-    @current_tenants = Tenant.where("keyreturned IS ? AND force_vacate != ?", nil, true)
+    #@current_tenants = Tenant.where("keyreturned IS ? AND force_vacate != ?", nil, true)
+    student_bed_ids = Location.where(typename: [2,8]).pluck(:id)
+    @current_tenants = Tenant.where("keyreturned IS ? AND force_vacate != ? and location_id IN(?)", nil, true, student_bed_ids)
     @tenantbed_per_level=Location.find(params[:id]).descendants.where('typename = ? OR typename =?', 2, 8).joins(:tenants).where("tenants.id" => @current_tenants)
     @occupied_rooms= @tenantbed_per_level.pluck(:combo_code).group_by{|x|x[0, x.size-2]}
 
@@ -59,7 +63,8 @@ class Student::TenantsController < ApplicationController
     @residentials = Location.where(lclass: 4).order(combo_code: :asc)
     #sets div size to fit no of buildings
     @div_width = 90/@residentials.count
-    @current_tenants = Tenant.where("keyreturned IS ? AND force_vacate != ?", nil, true)
+    student_bed_ids = Location.where(typename: [2,8]).pluck(:id)
+    @current_tenants = Tenant.where("keyreturned IS ? AND force_vacate != ? and location_id IN(?)", nil, true, student_bed_ids)
     @occupied_locations = @current_tenants.pluck(:location_id)
   end
 
@@ -67,7 +72,9 @@ class Student::TenantsController < ApplicationController
     @locations = Location.where('typename IN (?)', [2,8])
     @female_student_beds  = @locations.where('typename = ?', 2)
     @male_student_beds    = @locations.where('typename = ?', 8)
-    @current_tenants = Tenant.where("keyreturned IS ? AND force_vacate != ?", nil, true)
+    #@current_tenants = Tenant.where("keyreturned IS ? AND force_vacate != ?", nil, true)
+    student_bed_ids = Location.where(typename: [2,8]).pluck(:id)
+    @current_tenants = Tenant.where("keyreturned IS ? AND force_vacate != ? and location_id IN(?)", nil, true, student_bed_ids)
     @occupied_locations = @current_tenants.pluck(:location_id)
     
     #All Rooms
@@ -99,7 +106,7 @@ class Student::TenantsController < ApplicationController
      roots << place.root
     end
     @residentials = roots.uniq
-    @current_tenants = Tenant.where("keyreturned IS ? AND force_vacate != ?", nil, true)
+    #@current_tenants = Tenant.where("keyreturned IS ? AND force_vacate != ?", nil, true) - duplicate
     @occupied_locations = @current_tenants.pluck(:location_id)
   end
   
@@ -147,7 +154,7 @@ class Student::TenantsController < ApplicationController
   def update
     respond_to do |format|
       if @tenant.update(tenant_params)
-        format.html { redirect_to student_tenant_path(@tenant), notice: (t 'location.title')+(t 'actions.updated')  }
+        format.html { redirect_to student_tenant_path(@tenant), notice: (t 'student.tenant.title')+(t 'actions.updated')  }
         format.json { head :no_content }
       else
         format.html { render action: 'edit' }
@@ -166,7 +173,9 @@ class Student::TenantsController < ApplicationController
      #@all_rooms=Location.find(params[:id]).descendants.where('typename = ?',6) #error - not precise
      @all_rooms=Location.find(params[:id]).descendants.where('typename = ? OR typename =?', 2, 8).pluck(:combo_code).group_by{|x|x[0, x.size-2]}
      @damaged_rooms=Location.find(params[:id]).descendants.where('typename = ? OR typename =?', 2, 8).where(occupied: true).pluck(:combo_code).group_by{|x|x[0, x.size-2]}
-     @current_tenants = Tenant.where("keyreturned IS ? AND force_vacate != ?", nil, true)
+     #@current_tenants = Tenant.where("keyreturned IS ? AND force_vacate != ?", nil, true)
+     student_bed_ids = Location.where(typename: [2,8]).pluck(:id)
+     @current_tenants = Tenant.where("keyreturned IS ? AND force_vacate != ? and location_id IN(?)", nil, true, student_bed_ids)
      @tenantbed_per_level=Location.find(params[:id]).descendants.where('typename = ? OR typename =?', 2, 8).joins(:tenants).where("tenants.id" => @current_tenants)
      @occupied_rooms= @tenantbed_per_level.pluck(:combo_code).group_by{|x|x[0, x.size-2]}
 
@@ -205,7 +214,9 @@ class Student::TenantsController < ApplicationController
   def laporan_penginapan
     buildingname = params[:buildingname]
     @residential = Location.where('name LIKE (?) and lclass=?', "#{buildingname}", 4).first
-    @current_tenants=Tenant.where("keyreturned IS ? AND force_vacate != ?", nil, true)
+    #@current_tenants=Tenant.where("keyreturned IS ? AND force_vacate != ?", nil, true)
+    student_bed_ids = Location.where(typename: [2,8]).pluck(:id)
+    @current_tenants = Tenant.where("keyreturned IS ? AND force_vacate != ? and location_id IN(?)", nil, true, student_bed_ids)
     respond_to do |format|
        format.pdf do
          pdf = Laporan_penginapanPdf.new(@residential, @current_tenants, view_context)
@@ -220,7 +231,9 @@ class Student::TenantsController < ApplicationController
   def laporan_penginapan2
     blockid= params[:blockid]
     @residentials = Location.find(blockid).descendants.where('typename = ? OR typename =?', 2, 8)    #beds
-    @current_tenants=Tenant.where("keyreturned IS ? AND force_vacate != ?", nil, true)
+    #@current_tenants=Tenant.where("keyreturned IS ? AND force_vacate != ?", nil, true)
+    student_bed_ids = Location.where(typename: [2,8]).pluck(:id)
+    @current_tenants = Tenant.where("keyreturned IS ? AND force_vacate != ? and location_id IN(?)", nil, true, student_bed_ids)
     respond_to do |format|
        format.pdf do
          pdf = Laporan_penginapan2Pdf.new(@residentials, @current_tenants, view_context)

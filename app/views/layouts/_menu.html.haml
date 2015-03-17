@@ -133,9 +133,9 @@
           %ul
             %li= link_to content_tag(:i, "", :class => "icon-numb") + t("student.students.title"), students_path
             %li.icon.icon-left
-              = link_to 'Reporting', '#'
+              = link_to (t "student.students.reporting"), '#'
               .mp-level
-                %h2.icon Reporting
+                %h2.icon= t "student.students.reporting"
                 %a.mp-back{:href => "#"}= t 'helpers.links.back'
                 %ul
                   %li= link_to 'Ethnic', reports_students_path

@@ -25,7 +25,7 @@
         .row.tenancy_floor
           - @bed = floor.descendants.where(typename: [2,8]).order(combo_code: :asc)
           - @room_nos = @bed.pluck(:combo_code).group_by{|x|x[0, x.size-2]}.count.to_s
-          .floor_name= floor.name+" ("+@room_nos+" "+(t 'student.tenant.room').upcase+")"
+          .floor_name= floor.name+" ("+@room_nos+" "+(t 'student.tenant.rooms').upcase+")"
           
           - @bed.each do |bed|
             = link_to (get_status_link(bed)) do

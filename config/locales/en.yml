@@ -1278,6 +1278,7 @@ en:
       level: Level
       bed: Bed
       room: Room
+      rooms: Rooms
       report: Tenancy Statistics & Census by Level
       report_main: Tenancy Statistics by Level
       census: Tenancy Census by Level
@@ -1291,6 +1292,7 @@ en:
     students:
       title: Student Info
       list: Student Info List
+      reporting: Reporting
       formatted_mykad: MyKad No
       name: Name
       matrixno: Matrix No
