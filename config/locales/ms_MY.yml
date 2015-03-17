@@ -1171,6 +1171,7 @@ ms_MY:
       statistics: Statistik Penempatan Pelatih
       statistics_menu: "Statistik (Umum / Blok / Program)"
       statistics_block: Pecahan Status Bilik Mengikut Blok Kediaman Asrama
+      general_statistic: Statistik Umum
       tenants_students: "Jumlah Keseluruhan Pelatih Yang Menghuni Asrama (Mengikut Program)"
       empty: Kosong
       occupied: Isi #Berpenghuni

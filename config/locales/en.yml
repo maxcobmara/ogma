@@ -1254,6 +1254,7 @@ en:
       statistics: Student Residence Statistics
       statistics_menu: Statistics (General / Block / Programme)
       statistics_block: "Breakdown of Room Status (by Block)"
+      general_statistic: General Statistic
       tenants_students: "Total of Student Residency Tenant (By Programme)"
       empty: Empty
       occupied: Occupied
