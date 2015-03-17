@@ -1259,6 +1259,10 @@ en:
       empty: Empty
       occupied: Occupied
       damaged: Damaged
+      female_occupied: female occupied
+      female_empty: female empty
+      male_occupied: male occupied
+      male_empty: male empty
       notes: Notes
       total: Totals
       total_rooms: Total Rooms

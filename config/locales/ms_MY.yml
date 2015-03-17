@@ -1176,6 +1176,10 @@ ms_MY:
       empty: Kosong
       occupied: Isi #Berpenghuni
       damaged: Rosak
+      female_occupied: perempuan berpenghuni
+      female_empty: perempuan kosong
+      male_occupied: lelaki berpenghuni
+      male_empty: lelaki kosong
       notes: Nota
       total: Jumlah
       total_rooms: Jumlah Keseluruhan Bilik
