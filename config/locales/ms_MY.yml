@@ -1255,6 +1255,13 @@ ms_MY:
       grade: Gred
       new: Pelajar Baru
       result: Keputusan
+      current: Semasa
+      graduated: Tamat belajar
+      repeat: Mengulang
+      on_leave: Bercuti
+      expelled: Dibuang Kolej
+      transfer_college: Pindah Kolej
+      sstatus_remark: "Catatan, jika pindah kolej"
     
     leaveforstudent:
       title: Permohonan Cuti Pelajar

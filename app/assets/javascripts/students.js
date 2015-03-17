@@ -6,4 +6,20 @@ $(document).ready(function(){
          $('.bong').hide();
    }
    });
+  
+  $('#student_sstatus').change(function() {
+    if($(this).val() == "Transfer College") {
+      $('.bong2').show();
+    }else {
+      $('.bong2').hide();
+    }
+  });
+  $('#student_sstatus').each(function() {
+    if($(this).val() == "Transfer College") {
+      $('.bong2').show();
+    }else {
+      $('.bong2').hide();
+    }
+  });
+
 });

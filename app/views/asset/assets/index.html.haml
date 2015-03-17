@@ -30,7 +30,7 @@
   
 .tab-content
   - permitted_to? :read, :assets do
-    #home.tab-pane.fade.in.active
+    #home.tab-pane.fade
       %table.table-striped.table-hover.ogma
         %thead
           %tr
@@ -45,7 +45,7 @@
             %tr
               %td= link_to asset.assetcode, asset_asset_path(asset)
               %td= asset.name
-              %td= asset.purchasedate if permitted_to? :manage, :assets 
+              %td= asset.purchasedate.try(:strftime, '%d-%m-%Y') if permitted_to? :manage, :assets 
               %td.number= currency(asset.purchaseprice) if permitted_to? :manage, :assets
 
       .right{style:"padding:0 30px; margin:0;"}= paginate @fixed_assets, :theme => 'twitter-bootstrap-3'
@@ -66,7 +66,7 @@
             %tr
               %td= link_to asset.assetcode, asset_asset_path(asset)
               %td= asset.name
-              %td= asset.purchasedate if permitted_to? :manage, :assets 
+              %td= asset.purchasedate.try(:strftime, '%d-%m-%Y') if permitted_to? :manage, :assets 
               %td.number= currency(asset.purchaseprice) if permitted_to? :manage, :assets 
         
       .right{style:"padding:0 30px; margin:0;"}= paginate @inventories, :theme => 'twitter-bootstrap-3'

@@ -83,7 +83,7 @@
                   .form-group
                     %label.col-sm-3.control-label{:for => "keyreturned"}= t 'student.tenant.key.returned'
                     .col-md-4
-                      = f.text_field :keyreturned, type: "text", :class => 'form-control date_picker_after'
+                      = f.text_field :keyreturned, type: "text", :class => 'form-control date_picker_after_reverse', value: @tenant.try(:keyreturned).try(:strftime, '%d-%m-%Y')
 							
                   .form-group.returned
                     %label.col-sm-3.control-label{:for => "force_vacate"}= t 'student.tenant.vacate'

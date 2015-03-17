@@ -1339,6 +1339,13 @@ en:
       grade: Grade
       new: New Student
       result: Result
+      current: Current
+      graduated: Graduated
+      repeat: Repeat
+      on_leave: On leave
+      expelled: Expelled from College
+      transfer_college: Transfer College
+      sstatus_remark: "Remarks, if transfer college"
       
     leaveforstudent:
       title: Student Leave

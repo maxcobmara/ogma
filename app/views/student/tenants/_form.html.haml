@@ -35,11 +35,11 @@
 .form-group
   %label.col-sm-2.control-label{:for => "keyprovided"}= t 'student.tenant.key.provided'
   .col-md-2
-    = f.text_field :keyaccept, type: "text", :class => 'form-control date_picker_before'
+    = f.text_field :keyaccept, type: "text", :class => 'form-control date_picker_before_reverse', value: @tenant.try(:keyaccept).try(:strftime, '%d-%m-%Y')
     
 .form-group
   %label.col-sm-2.control-label{:for => "keyexpectedreturn"}= t 'student.tenant.key.expected'
   .col-md-2
-    = f.text_field :keyexpectedreturn, type: "text", :class => 'form-control date_picker'
+    = f.text_field :keyexpectedreturn, type: "text", :class => 'form-control date_picker_reverse', value: @tenant.try(:keyexpectedreturn).try(:strftime, '%d-%m-%Y')
     
 

@@ -10,9 +10,20 @@ $(document).ready(function(e) {
    	format:'Y-m-d',
    	formatDate:'Y-m-d'
   });
+ $('.date_picker_reverse').datetimepicker({
+   timepicker:false,
+   	format:'d-m-Y',
+   	formatDate:'Y-m-d'
+  });
   $('.date_picker_after').datetimepicker({
    timepicker:false,
    	format:'Y-m-d',
+   	formatDate:'Y-m-d',
+        minDate: 0
+  });
+  $('.date_picker_after_reverse').datetimepicker({
+   timepicker:false,
+   	format:'d-m-Y',
    	formatDate:'Y-m-d',
         minDate: 0
   });
@@ -29,6 +40,12 @@ $(document).ready(function(e) {
   $('.date_picker_before').datetimepicker({
         timepicker:false,
    	format:'Y-m-d',
+   	formatDate:'Y-m-d',
+        minDate: $tahunbulan+'-01'
+  }); 
+  $('.date_picker_before_reverse').datetimepicker({
+        timepicker:false,
+   	format:'d-m-Y',
    	formatDate:'Y-m-d',
         minDate: $tahunbulan+'-01'
   }); 

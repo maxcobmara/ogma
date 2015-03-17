@@ -148,7 +148,7 @@ class StudentsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def student_params
-      params.require(:student).permit(:address, :address_posbasik, :allergy, :bloodtype, :course_id, :course_remarks, :created_at, :disease, :end_training, :gender, :group_id, :icno, :id, :intake, :intake_id, :matrixno, :medication, :mrtlstatuscd, :name, :offer_letter_serial, :photo_content_type, :photo_file_name, :photo_file_size, :photo_updated_at, :physical, :race, :race2, :regdate, :remarks, :sbirthdt, :semail, :specialisation, :specilisation, :ssponsor, :sstatus, :stelno, :updated_at, kins_attributes: [:id,:destroy, :kintype_id,  :name, :mykadno, :phone, :profession, :kinaddr])
+      params.require(:student).permit(:address, :address_posbasik, :allergy, :bloodtype, :course_id, :course_remarks, :created_at, :disease, :end_training, :gender, :group_id, :icno, :id, :intake, :intake_id, :matrixno, :medication, :mrtlstatuscd, :name, :offer_letter_serial, :photo_content_type, :photo_file_name, :photo_file_size, :photo_updated_at, :physical, :race, :race2, :regdate, :remarks, :sbirthdt, :semail, :specialisation, :specilisation, :ssponsor, :sstatus, :stelno, :updated_at, :sstatus_remark, kins_attributes: [:id,:destroy, :kintype_id,  :name, :mykadno, :phone, :profession, :kinaddr])
     end
 
     def sort_column
