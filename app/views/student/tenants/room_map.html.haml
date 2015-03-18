@@ -5,15 +5,15 @@
 .row
   .col-md-offset-3
     .student_bed_female_occupied.legend_object
-    .legend_title female occupied
+    .legend_title=t 'student.tenant.female_occupied'
     .student_bed_female_empty.legend_object
-    .legend_title female empty
+    .legend_title=t 'student.tenant.female_empty'
     .student_bed_male_occupied.legend_object
-    .legend_title male occupied
+    .legend_title=t 'student.tenant.male_occupied'
     .student_bed_male_empty.legend_object
-    .legend_title male empty
+    .legend_title=t 'student.tenant.male_empty'
     .bed_damage.legend_object
-    .legend_title damaged
+    .legend_title=(t 'student.tenant.damaged').downcase
   
   
   
@@ -25,7 +25,7 @@
         .row.tenancy_floor
           - @bed = floor.descendants.where(typename: [2,8]).order(combo_code: :asc)
           - @room_nos = @bed.pluck(:combo_code).group_by{|x|x[0, x.size-2]}.count.to_s
-          .floor_name= floor.name+" ("+@room_nos+" "+(t 'student.tenant.room').upcase+")"
+          .floor_name= floor.name+" ("+@room_nos+" "+(t 'student.tenant.rooms').upcase+")"
           
           - @bed.each do |bed|
             = link_to (get_status_link(bed)) do

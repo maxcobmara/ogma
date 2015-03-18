@@ -1171,10 +1171,15 @@ ms_MY:
       statistics: Statistik Penempatan Pelatih
       statistics_menu: "Statistik (Umum / Blok / Program)"
       statistics_block: Pecahan Status Bilik Mengikut Blok Kediaman Asrama
+      general_statistic: Statistik Umum
       tenants_students: "Jumlah Keseluruhan Pelatih Yang Menghuni Asrama (Mengikut Program)"
       empty: Kosong
       occupied: Isi #Berpenghuni
       damaged: Rosak
+      female_occupied: perempuan berpenghuni
+      female_empty: perempuan kosong
+      male_occupied: lelaki berpenghuni
+      male_empty: lelaki kosong
       notes: Nota
       total: Jumlah
       total_rooms: Jumlah Keseluruhan Bilik
@@ -1194,6 +1199,7 @@ ms_MY:
       level: Aras
       bed: Katil
       room: Bilik
+      rooms: Bilik
       report: Statistik Penginapan & Bancian Penghuni Mengikut Aras #LAPORAN PENGINAPAN
       report_main: Statistik Penginapan Mengikut Aras
       census: Bancian Penghuni Mengikut Aras
@@ -1207,6 +1213,7 @@ ms_MY:
     students:
       title: Maklumat Pelajar
       list: Senarai Maklumat Pelajar
+      reporting: Laporan
       formatted_mykad: No Mykad
       name: Nama
       matrixno: No Matrik

@@ -106,7 +106,9 @@ class Location < ActiveRecord::Base
   
   #Export excel - statistic by level - tenants/reports.html.haml
   def self.to_csv(options = {})
-    @current_tenants=Tenant.where("keyreturned IS ? AND force_vacate != ?", nil, true)
+    #@current_tenants=Tenant.where("keyreturned IS ? AND force_vacate != ?", nil, true)
+    student_bed_ids = Location.where(typename: [2,8]).pluck(:id)
+    @current_tenants = Tenant.where("keyreturned IS ? AND force_vacate != ? and location_id IN(?)", nil, true, student_bed_ids)
     occupied_beds = @current_tenants.pluck(:location_id)
     building_name = all[0].root.name
     CSV.generate(options) do |csv|
@@ -166,7 +168,9 @@ class Location < ActiveRecord::Base
   def self.to_csv2(options = {})
     
     #For TOTAL of rooms, damaged rooms, occupied rooms, empty rooms
-    @current_tenants=Tenant.where("keyreturned IS ? AND force_vacate != ?", nil, true)
+    #@current_tenants=Tenant.where("keyreturned IS ? AND force_vacate != ?", nil, true)
+    student_bed_ids = Location.where(typename: [2,8]).pluck(:id)
+    @current_tenants = Tenant.where("keyreturned IS ? AND force_vacate != ? and location_id IN(?)", nil, true, student_bed_ids)
     @tenantbed_per_level=all.joins(:tenants).where("tenants.id" => @current_tenants)
     tenant_beds_ids = @tenantbed_per_level.pluck(:location_id)
     occupied_rooms = all.where('id IN(?)', tenant_beds_ids).group_by{|x|x.combo_code[0,9]}.count
@@ -231,7 +235,9 @@ class Location < ActiveRecord::Base
   def self.to_csv3(options = {})
     
     #For statistic by block (room status breakdown)
-    @current_tenants=Tenant.where("keyreturned IS ? AND force_vacate != ?", nil, true)
+    #@current_tenants=Tenant.where("keyreturned IS ? AND force_vacate != ?", nil, true)
+    student_bed_ids = Location.where(typename: [2,8]).pluck(:id)
+    @current_tenants = Tenant.where("keyreturned IS ? AND force_vacate != ? and location_id IN(?)", nil, true, student_bed_ids)
     all_beds = all
     all_rooms = all_beds.group_by{|x|x.combo_code[0,x.combo_code.size-2]}
     damaged_rooms = all_beds.where(occupied: true).group_by{|x|x.combo_code[0,x.combo_code.size-2]}

@@ -1254,10 +1254,15 @@ en:
       statistics: Student Residence Statistics
       statistics_menu: Statistics (General / Block / Programme)
       statistics_block: "Breakdown of Room Status (by Block)"
+      general_statistic: General Statistic
       tenants_students: "Total of Student Residency Tenant (By Programme)"
       empty: Empty
       occupied: Occupied
       damaged: Damaged
+      female_occupied: female occupied
+      female_empty: female empty
+      male_occupied: male occupied
+      male_empty: male empty
       notes: Notes
       total: Totals
       total_rooms: Total Rooms
@@ -1277,6 +1282,7 @@ en:
       level: Level
       bed: Bed
       room: Room
+      rooms: Rooms
       report: Tenancy Statistics & Census by Level
       report_main: Tenancy Statistics by Level
       census: Tenancy Census by Level
@@ -1290,6 +1296,7 @@ en:
     students:
       title: Student Info
       list: Student Info List
+      reporting: Reporting
       formatted_mykad: MyKad No
       name: Name
       matrixno: Matrix No

@@ -5,7 +5,7 @@
 /General Statistics
 .row
   .col-md-3
-    %h4 Statistik Umum
+    %h4= t 'student.tenant.general_statistic'
     /= link_to (fa_icon "file-excel-o"), census_level2_campus_locations_path(floorid: @floor_id , format: 'xls')
     /= link_to  (fa_icon "file-pdf-o"), census_student_tenants_path(params.merge(format: 'pdf' ))
 .row
