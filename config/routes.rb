@@ -5,6 +5,9 @@ Ogma::Application.routes.draw do
       member do
         get :borang_maklumat_staff
       end
+      collection do
+        get :autocomplete
+      end
     end
     resources :positions do
       collection do
@@ -183,12 +186,16 @@ Ogma::Application.routes.draw do
   namespace :student do
     resources :tenants do
       collection do
+        get :index_staff
         get :room_map
+        get :room_map2
         get :reports
         get :statistics
         get :census
         get  :return_key
         post :return_key
+	get  :return_key2
+        post :return_key2
         get  :empty_room
         post :empty_room
         get :tenant_report
@@ -198,6 +205,7 @@ Ogma::Application.routes.draw do
       member do
         get :census_level
 	get :return_key
+        get :return_key2
       end
     end
     resources :student_discipline_cases do

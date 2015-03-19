@@ -11,6 +11,11 @@ class Staff::StaffsController < ApplicationController
     @infos = @staffs
   end
 
+  def auto_complete
+    @staffs = Staff.order(:icno).where("icno like ?", "#{params[:term]}")
+    render json: @staffs.map(&:icno)
+  end
+  
   # GET /staffs/1
   # GET /staffs/1.json
   def show

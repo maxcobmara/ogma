@@ -310,6 +310,8 @@ ms_MY:
     uniformstat: Status Pakaian Seragam
     position_id: Jawatan
     reports_to: Melapor Kepada
+    search:
+      ic_no: Carian Kakitangan
     
     vehicles:
       title: Butiran Kenderaan
@@ -1157,8 +1159,11 @@ ms_MY:
       person: penghuni
       name: Nama Penghuni
       title: Penempatan Pelatih
+      title2: Penempatan Kakitangan
       new : Penempatan Baru Pelatih
+      new2: Penempatan Baru Kakitangan
       edit: Sunting Penempatan Pelatih
+      edit2: Sunting Penempatan Kakitangan
       key:
         provided: Tarikh Kunci Diberi
         expected: Tarikh Dijangka Pulang
@@ -1166,8 +1171,10 @@ ms_MY:
       vacate: Kosongkan
       tenancy_details_nil: Tiada data pelatih
       room_map: Peta Katil
+      unit_map: Peta Unit
       list: Senarai Penghuni
       list_full: Senarai Penghuni Penempatan Pelatih
+      list_full2: Senarai Penghuni Penempatan Kakitangan
       statistics: Statistik Penempatan Pelatih
       statistics_menu: "Statistik (Umum / Blok / Program)"
       statistics_block: Pecahan Status Bilik Mengikut Blok Kediaman Asrama
@@ -1190,10 +1197,13 @@ ms_MY:
       total_tenants: Jumlah Keseluruhan Penghuni
       total_tenant: Jumlah penghuni
       return_key: Pemulangan Kunci
+      return_key_student: Pemulangan Kunci oleh Pelatih
+      return_key_staff: Pemulangan Kunci oleh Kakitangan
       empty_room: Kosongkan Bilik
       damage_status: Status Kerosakan
       damage_type: Jenis Kerosakan
       damage: Kerosakan oleh Pelajar
+      damage2: Kerosakan oleh Kakitangan
       asset_other_damage: "Aset / Lain-lain"
       room_damage: "Kerosakan Bilik"
       level: Aras
@@ -1207,8 +1217,11 @@ ms_MY:
       report_census: "Statistik & Bancian (Aras)"
       summary: Ringkasan
       reset_search: Set Semula Carian Pelajar
+      reset_search2: Set Semula Carian Kakitangan
       room_status_title: Pecahan Status Bilik
       tenant_programme_title: Pecahan Penghuni Mengikut Program
+      block: Blok
+      unit_no: "No. Unit"
       
     students:
       title: Maklumat Pelajar

@@ -1,7 +1,10 @@
 - model_class = Tenant
 .page-header
   %h1
-    = t('student.tenant.edit')
+    - if [2,8].include? @tenant.try(:location).try(:typename)
+      = t('student.tenant.edit')
+    - if @tenant.try(:location).try(:typename)==1 
+      = t('student.tenant.edit2')
 
 .row
   = form_for [:student, @tenant], :html => { :class => 'form-horizontal' }  do |f| 
@@ -11,6 +14,9 @@
       .form-group
         .col-sm-offset-2
           .col-sm-1
-            = link_to t('back'), room_map_student_tenants_path,class: "btn btn-primary"
+            - if [2,8].include? @tenant.try(:location).try(:typename)
+              = link_to t('back'), room_map_student_tenants_path,class: "btn btn-primary"
+            - if @tenant.try(:location).try(:typename)==1
+              = link_to t('back'), room_map2_student_tenants_path,class: "btn btn-primary"
           .col-sm-2
             = f.submit t('update'), class: "btn btn-primary"

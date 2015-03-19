@@ -52,9 +52,13 @@
       .col-md-offset-2
         .form-actions
           .button-toolbar
-            .btn-group  
-              = link_to content_tag(:i, "", :class => "fa fa-map-marker "), room_map_student_tenants_path,
-                {class: "btn btn-default", "data-toggle" => "tooltip", title: t("student.tenant.room_map")}           
+            .btn-group
+              - if [2,6,8].include? @location.typename
+                = link_to content_tag(:i, "", :class => "fa fa-map-marker "), room_map_student_tenants_path,
+                {class: "btn btn-default", "data-toggle" => "tooltip", title: t("student.tenant.room_map")}      
+              - if @location.typename==1
+                = link_to content_tag(:i, "", :class => "fa fa-map-marker "), room_map2_student_tenants_path,
+                {class: "btn btn-default", "data-toggle" => "tooltip", title: t("student.tenant.unit_map")}    
               = link_to (fa_icon "building-o"), campus_locations_path, 
                 {class: "btn btn-default", "data-toggle" => "tooltip", title: "Back"}
               - if @location.parent
