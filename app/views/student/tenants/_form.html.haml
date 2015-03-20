@@ -30,7 +30,7 @@
   .form-group
     %label.col-sm-2.control-label{:for => "staff_id"}= t 'staff.name'
     .col-md-4
-      = f.collection_select :staff_id, Staff.all, :id, :mykad_with_staff_name
+      = f.text_field :staff_icno, :class => 'form-control', data: {autocomplete_source: Staff.where("id IN (?)", @potential3).order(icno: :asc).map(&:staff_list)}
 
 .form-group
   %label.col-sm-2.control-label{:for => "keyprovided"}= t 'student.tenant.key.provided'

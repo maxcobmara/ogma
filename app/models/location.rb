@@ -54,6 +54,8 @@ class Location < ActiveRecord::Base
       bed_type = "student_bed_female"
     elsif typename == 8
       bed_type = "student_bed_male"
+    elsif typename == 1
+      bed_type = "staff_house"
     end
     @occupied_location_ids = Tenant.where("keyreturned IS ? AND force_vacate != ?", nil, true).pluck(:location_id)
     #if occupied == true || (parent.occupied == true && parent.status== "_empty") - this line will failed if location is a building
@@ -75,6 +77,8 @@ class Location < ActiveRecord::Base
         bed_type = "student_bed_female"
       elsif typename == 8
         bed_type = "student_bed_male"
+      elsif typename == 1
+        bed_type = "staff_house"
       end
       self.children.each do |c|
         c.occupied = 0

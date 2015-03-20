@@ -52,9 +52,13 @@
       .col-md-offset-2
         .form-actions
           .button-toolbar
-            .btn-group  
-              = link_to content_tag(:i, "", :class => "fa fa-map-marker "), room_map_student_tenants_path,
-                {class: "btn btn-default", "data-toggle" => "tooltip", title: t("student.tenant.room_map")}           
+            .btn-group
+              - if [2,6,8].include? @location.typename
+                = link_to content_tag(:i, "", :class => "fa fa-map-marker "), room_map_student_tenants_path,
+                {class: "btn btn-default", "data-toggle" => "tooltip", title: t("student.tenant.room_map")}      
+              - if @location.typename==1
+                = link_to content_tag(:i, "", :class => "fa fa-map-marker "), room_map2_student_tenants_path,
+                {class: "btn btn-default", "data-toggle" => "tooltip", title: t("student.tenant.unit_map")}    
               = link_to (fa_icon "building-o"), campus_locations_path, 
                 {class: "btn btn-default", "data-toggle" => "tooltip", title: "Back"}
               - if @location.parent
@@ -70,7 +74,7 @@
                 = link_to content_tag(:i, "", :class => "fa fa-file "), kewpa11_campus_location_path(@location, format: "pdf"),
                   {class: "btn btn-default", "data-toggle" => "tooltip", title: "KEW.PA 11 PDF"}				  				  
               = link_to content_tag(:i, "", :class => "fa fa-edit"), edit_campus_location_path(@location),
-                 {class: "btn btn-primary", "data-toggle" => "tooltip", title: t("actions.edit")}
+                  {class: "btn btn-primary", "data-toggle" => "tooltip", title: t("actions.edit")}
             .btn-group  
               = link_to content_tag(:i, "", :class => "fa fa-trash-o icon-white"), campus_location_path(@location),                                                                                                    |
                 :method => 'delete',                                                                                                           |
@@ -99,7 +103,10 @@
                 =" ("+damage.asset.assetcode[15,12]+")" unless damage.college_id.nil?
               %td
                 - if damage.document_id == 1
-                  =t "location.damage.room_damage"  
+                  - if @location.typename == 1
+                    = t "location.damage.unit_damage"
+                  - else
+                    =t "location.damage.room_damage"  
                 - elsif damage.document_id == 2
                   =t "location.damage.asset_damage"
               %td= damage.repaired_on.try(:strftime, '%d %b %Y')

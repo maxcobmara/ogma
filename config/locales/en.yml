@@ -318,6 +318,8 @@ en:
     uniformstat: Uniform Status
     position_id: Position
     reports_to: Reports To 
+    search:
+      ic_no: Staff Search
 
     vehicles:
       title: Vehicle Details
@@ -1210,10 +1212,12 @@ en:
       damage_type: Damage Type
       asset_damage: Asset Damage
       room_damage: Room Damage
+      unit_damage: Unit Damage
       description: Description
       reported_on: Reported On 
       repaired_on: Repaired On
-      list: Location Damage List
+      list: "Location Damage List - Student Residence"
+      list_staff: "Location Damage List - Staff Residence"
       list2: Location Damage
       new: "Report Damage for "
       edit: "Edit Damage for "
@@ -1240,8 +1244,11 @@ en:
       person: tenants
       name: Tenant Name
       title: Student Tenancy
+      title2: Staff Tenancy
       new: New Student Tenancy
+      new2: New Staff Tenancy
       edit: Edit Student Tenancy
+      edit2: Edit Staff Tenancy
       key:
         provided: Date Key Provided
         expected: Date Key expected returned
@@ -1249,8 +1256,10 @@ en:
       vacate: Force Vacate
       tenancy_details_nil: Student data not available
       room_map: Room Map
+      unit_map: Unit Map
       list: Tenancy List
       list_full: Student Residence Tenancy List
+      list_full2: Staff Residence Tenancy List
       statistics: Student Residence Statistics
       statistics_menu: Statistics (General / Block / Programme)
       statistics_block: "Breakdown of Room Status (by Block)"
@@ -1273,10 +1282,13 @@ en:
       total_tenants: Total Tenants in Block
       total_tenant: Total Tenants
       return_key: Return Key
+      return_key_student: Return Key by Student
+      return_key_staff: Return Key by Staff
       empty_room: Empty Room
       damage_status: Damage Status
       damage_type: Damage Type
       damage: Damage by Student
+      damage2: Damage by Staff
       asset_other_damage: "Asset / Other Damages"
       room_damage: "Room Damage"
       level: Level
@@ -1290,8 +1302,11 @@ en:
       report_census: "Statistics & Census (Level)"
       summary: Summary
       reset_search: Reset Student Search
+      reset_search2: Reset Staff Search
       room_status_title: Room Status Breakdown
       tenant_programme_title: Tenant Programme Breakdown
+      block: Block
+      unit_no: Unit No
       
     students:
       title: Student Info

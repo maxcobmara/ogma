@@ -110,6 +110,10 @@ class Staff < ActiveRecord::Base
       Date.today.year - cobirthdt.year unless cobirthdt == nil
     end
 
+    def staff_list
+    "#{icno}"+" "+"#{name}"
+    end
+    
     def formatted_mykad
     "#{icno[0,6]}-#{icno[6,2]}-#{icno[-4,4]}"
     end

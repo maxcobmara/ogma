@@ -105,7 +105,16 @@
                   %li= link_to (t "location.damage.list2"), campus_location_damages_path
                   %li= link_to (t "student.tenant.report_census"), reports_student_tenants_path
                   %li= link_to (t "student.tenant.statistics_menu"), statistics_student_tenants_path
-
+            %li.icon.icon-left
+              = link_to (t "student.tenant.title2"), '#'
+              .mp-level
+                %h2.icon= t "student.tenant.title2"
+                %a.mp-back{:href => "#"}= t 'helpers.links.back'
+                %ul
+                  %li= link_to (t "student.tenant.unit_map"), room_map2_student_tenants_path
+                  %li= link_to (t "student.tenant.list"), index_staff_student_tenants_path
+                  %li= link_to (t "student.tenant.return_key"), return_key2_student_tenants_path
+                  %li= link_to (t "location.damage.list2"), index_staff_campus_location_damages_path
             /%li= link_to content_tag(:i, "", :class => "icon-numb") + "Location Tree", '#'
 
     - permitted_to? :read, :documents do
