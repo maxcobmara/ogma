@@ -114,6 +114,7 @@
                   %li= link_to (t "student.tenant.unit_map"), room_map2_student_tenants_path
                   %li= link_to (t "student.tenant.list"), index_staff_student_tenants_path
                   %li= link_to (t "student.tenant.return_key"), return_key2_student_tenants_path
+                  %li= link_to (t "location.damage.list2"), index_staff_campus_location_damages_path
             /%li= link_to content_tag(:i, "", :class => "icon-numb") + "Location Tree", '#'
 
     - permitted_to? :read, :documents do

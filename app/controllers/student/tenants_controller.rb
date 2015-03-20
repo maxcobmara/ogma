@@ -29,12 +29,6 @@ class Student::TenantsController < ApplicationController
     @search.force_vacate_true = false unless params[:q]
     @search.sorts = 'location_combo_code asc' if @search.sorts.empty?
     @tenants = @search.result
-#     respond_to do |format|
-#       format.html
-#       #format.xls - temp hide until resolve - 'general i/o error'
-#       format.csv { send_data @tenants.to_csv }
-#       format.xls { send_data @tenants.to_csv(col_sep: "\t") } 
-#     end
   end
 
   #Statistic (by level) & Census(links only)
@@ -263,7 +257,7 @@ class Student::TenantsController < ApplicationController
     end
   end
 
-  #PDF for Index
+  #PDF for Index - student residence
   def tenant_report
     @search = Tenant.search(params[:q]) #NOTE: To match with room map, statistic (by programme) & census_level (+report)
     @search.keyreturned_present != nil unless params[:q]
@@ -273,6 +267,23 @@ class Student::TenantsController < ApplicationController
     respond_to do |format|
        format.pdf do
          pdf = Tenant_reportPdf.new(@tenants, view_context)
+                   send_data pdf.render, filename: "tenant_report-{Date.today}",
+                   type: "application/pdf",
+                   disposition: "inline"
+       end
+     end
+  end
+  
+  #PDF for Index - staff residence
+  def tenant_report_staff
+    @search = Tenant.search(params[:q]) 
+    @search.keyreturned_present != nil unless params[:q]
+    @search.force_vacate_true = false unless params[:q]
+    @search.sorts = 'location_combo_code asc' if @search.sorts.empty?
+    @tenants = @search.result.where('staff_id is not null')
+    respond_to do |format|
+       format.pdf do
+         pdf = Tenant_report_staffPdf.new(@tenants, view_context)
                    send_data pdf.render, filename: "tenant_report-{Date.today}",
                    type: "application/pdf",
                    disposition: "inline"

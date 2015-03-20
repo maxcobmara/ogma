@@ -1129,16 +1129,19 @@ ms_MY:
       damage_type: Jenis Kerosakan	  
       asset_damage: Aset Rosak
       room_damage: Bilik Rosak
+      unit_damage: Unit Rosak
       description: Deskripsi Kerosakan
       reported_on: Tarikh Dilaporkan
       repaired_on: Tarikh Dibaiki
-      list: Senarai Kerosakan di Lokasi
+      list: "Senarai Kerosakan di Lokasi - Penempatan Pelatih"
+      list_staff: "Senarai Kerosakan di Lokasi - Penempatan Kakitangan"
       list2: Kerosakan di Lokasi
       new: "Laporkan Kerosakan bagi "
       edit: "Sunting Kerosakan bagi "
       repaired: Telah dibaiki
       not_repaired: Belum dibaiki
       damage_report: Laporan Kerosakan di Lokasi bagi Penempatan Pelatih
+      damage_report_staff: Laporan Kerosakan di Lokasi bagi Penempatan Kakitangan
       match_asset: "Padankan Aset ?"
       no_match_asset: Tiada padanan aset
       repairs_of: Pembaikan 

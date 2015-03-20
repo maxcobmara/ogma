@@ -152,6 +152,8 @@ Ogma::Application.routes.draw do
     resources :location_damages do
       collection do
         get :damage_report
+        get :damage_report_staff
+        get :index_staff
       end
     end
     resources :address_books
@@ -199,6 +201,7 @@ Ogma::Application.routes.draw do
         get  :empty_room
         post :empty_room
         get :tenant_report
+        get :tenant_report_staff
         get :laporan_penginapan
         get :laporan_penginapan2
       end

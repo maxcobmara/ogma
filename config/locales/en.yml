@@ -1212,10 +1212,12 @@ en:
       damage_type: Damage Type
       asset_damage: Asset Damage
       room_damage: Room Damage
+      unit_damage: Unit Damage
       description: Description
       reported_on: Reported On 
       repaired_on: Repaired On
-      list: Location Damage List
+      list: "Location Damage List - Student Residence"
+      list_staff: "Location Damage List - Staff Residence"
       list2: Location Damage
       new: "Report Damage for "
       edit: "Edit Damage for "

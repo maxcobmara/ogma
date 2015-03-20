@@ -12,6 +12,11 @@ class Campus::LocationDamagesController < ApplicationController
     end
   end
   
+  def index_staff
+    @search = LocationDamage.search(params[:q]) 
+    @damages = @search.result.joins(:location).where('locations.typename=?',1) #staff unit
+  end
+  
   def new
     @locationid = params[:location_id]
     @location = Location.find(params[:location_id])
@@ -76,6 +81,19 @@ class Campus::LocationDamagesController < ApplicationController
     respond_to do |format|
        format.pdf do
          pdf = Damage_reportPdf.new(@damages, view_context)
+                   send_data pdf.render, filename: "damage_report-{Date.today}",
+                   type: "application/pdf",
+                   disposition: "inline"
+       end
+     end
+  end
+  
+  def damage_report_staff
+    @search = LocationDamage.search(params[:q]) 
+    @damages = @search.result.joins(:location).where('locations.typename=?',1) 
+    respond_to do |format|
+       format.pdf do
+         pdf = Damage_report_staffPdf.new(@damages, view_context)
                    send_data pdf.render, filename: "damage_report-{Date.today}",
                    type: "application/pdf",
                    disposition: "inline"
