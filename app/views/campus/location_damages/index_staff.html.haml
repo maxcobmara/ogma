@@ -28,7 +28,7 @@
     %tbody
     = render "index_search2"
     - no=0
-    - @damages.order(created_at: :desc).sort_by{|i|i.location.combo_code}.each do |damage|
+    - @damages.each do |damage|
       %tr
         %td=no+=1
         %td= link_to damage.location.try(:combo_code), campus_location_path(damage.location)
@@ -41,3 +41,5 @@
         %td= l(damage.reported_on) unless damage.reported_on.nil?
         %td= l(damage.repaired_on) unless damage.repaired_on.nil?
         %td= damage.tenant.try(:student).try(:name) unless damage.user_id.nil?
+
+  .right{style:"padding:0 30px; margin:0;"}= paginate @damages, :theme => 'twitter-bootstrap-3'

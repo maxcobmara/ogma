@@ -11,12 +11,13 @@ class Student::TenantsController < ApplicationController
     @search.keyreturned_present != nil unless params[:q]
     @search.force_vacate_true = false unless params[:q]
     @search.sorts = 'location_combo_code asc' if @search.sorts.empty?
-    @tenants = @search.result
+    @tenants_all = @search.result.where('student_id is not null')
+    @tenants = @tenants_all.page(params[:page]||1)  
     respond_to do |format|
       format.html
       #format.xls - temp hide until resolve - 'general i/o error'
-      format.csv { send_data @tenants.to_csv }
-      format.xls { send_data @tenants.to_csv(col_sep: "\t") } 
+      format.csv { send_data @tenants_all.to_csv }
+      format.xls { send_data @tenants_all.to_csv(col_sep: "\t") } 
     end
   end
   
@@ -28,7 +29,8 @@ class Student::TenantsController < ApplicationController
     @search.keyreturned_present != nil unless params[:q]
     @search.force_vacate_true = false unless params[:q]
     @search.sorts = 'location_combo_code asc' if @search.sorts.empty?
-    @tenants = @search.result
+    @tenants_all = @search.result.where('staff_id is not null')
+    @tenants = @tenants_all.page(params[:page]||1)
   end
 
   #Statistic (by level) & Census(links only)
