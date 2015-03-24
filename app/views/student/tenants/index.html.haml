@@ -60,3 +60,4 @@
               = damage_description.uniq.to_sentence
 
         //%td= link_to image_tag("printer.png", :border => 0, :title => 'Borang Asrama'), :action => 'borang_asrama', :id => tenant
+  .right{style:"padding:0 30px; margin:0;"}= paginate @tenants, :theme => 'twitter-bootstrap-3'

@@ -7,7 +7,7 @@ class StudentsController < ApplicationController
 
   def index
     @search = Student.search(params[:q])
-    @students = @search.result
+    @students = @search.result.order(intake: :asc, course_id: :asc)
     @students = @students.page(params[:page]||1)
   end
 

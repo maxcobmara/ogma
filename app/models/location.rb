@@ -190,12 +190,12 @@ class Location < ActiveRecord::Base
     @all_tenants_wstudent = @current_tenants.joins(:location).where('location_id IN(?) and student_id IN(?)', tenant_beds_ids, Student.all.pluck(:id))
     @students_prog = Student.where('id IN (?)', @all_tenants_wstudent.pluck(:student_id)).group_by{|j|j.course_id}
     @all_tenants_wostudent = @current_tenants.joins(:location).where('location_id IN(?) and (student_id is null OR student_id NOT IN(?))', tenant_beds_ids, Student.all.pluck(:id))
-    
+   
     CSV.generate(options) do |csv|
         csv << [I18n.t('student.tenant.census')] #title added
         csv << [] #blank row added
         csv << [floor_label]
-        csv << [I18n.t('location.code'), I18n.t('location.name'), I18n.t('student.name'), I18n.t('student.icno'), I18n.t('student.students.matrixno'), I18n.t('course.name'), I18n.t('training.intake.description'), I18n.t('student.tenant.notes')]  
+        csv << [I18n.t('location.code'), I18n.t('location.name'), I18n.t('student.name'), I18n.t('student.icno'), I18n.t('student.students.matrixno'), I18n.t('course.name'), I18n.t('training.intake.description'), I18n.t('student.students.stelno') , I18n.t('student.tenant.notes')]  
 
         all.sort_by{|t|t.combo_code}.each do |bed|
           if bed.occupied==true
@@ -205,7 +205,7 @@ class Location < ActiveRecord::Base
                if bed.tenants.last.student.nil?
                   csv << [bed.combo_code, bed.name, I18n.t('student.tenant.tenancy_details_nil')]
                else
-                  csv << [bed.combo_code, bed.name, bed.tenants.last.try(:student).try(:name), bed.tenants.last.try(:student).try(:icno), bed.tenants.last.try(:student).try(:matrixno), bed.tenants.last.try(:student).try(:course).try(:name), bed.tenants.last.try(:student).try(:intake_num)]
+                  csv << [bed.combo_code, bed.name, bed.tenants.last.try(:student).try(:name), bed.tenants.last.try(:student).try(:icno), bed.tenants.last.try(:student).try(:matrixno), bed.tenants.last.try(:student).try(:course).try(:name), bed.tenants.last.try(:student).try(:intake_num),  "\'"+bed.tenants.last.try(:student).try(:stelno)+"\'"]  #"=\"" + myVariable + "\""
                end
              else
                csv << [bed.combo_code, bed.name] #leaves empty, coz has no values
