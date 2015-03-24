@@ -21,7 +21,7 @@
   %table.table-striped.table-hover.ogma
     %thead
       %tr
-        %td{colspan:8}=@floor.name
+        %td{colspan:9}=@floor.name
       %tr
         %td= t 'location.code'
         %td= t 'location.name'
@@ -30,6 +30,7 @@
         %td= t 'student.students.matrixno'
         %td= t 'course.name'
         %td= t 'training.intake.description'
+        %td= t 'student.students.stelno'
         %td= t 'student.tenant.notes'
     %tbody
       - @all_beds_single.each do |bed|
@@ -37,7 +38,7 @@
           %tr
             %td= bed.combo_code
             %td= bed.name
-            %td.damaged{colspan:6}=bed.parent.damages.where(document_id: 1).last.description rescue (t 'student.tenant.damage')
+            %td.damaged{colspan:7}=bed.parent.damages.where(document_id: 1).last.description rescue (t 'student.tenant.damage')
         - else
           %tr
             %td= bed.combo_code
@@ -52,8 +53,10 @@
               %td= bed.tenants.last.student.nil? ? "" : bed.tenants.last.try(:student).try(:matrixno)
               %td= bed.tenants.last.student.nil? ? "" : bed.tenants.last.try(:student).try(:course).try(:name)
               %td= bed.tenants.last.student.nil? ? "" : bed.tenants.last.student.intake_num rescue ""
+              %td= bed.tenants.last.student.nil? ? "" : bed.tenants.last.try(:student).try(:stelno)
               %td &nbsp; 
             - else
+              %td &nbsp;
               %td &nbsp;
               %td &nbsp;
               %td &nbsp;
