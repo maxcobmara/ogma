@@ -10,9 +10,25 @@ ms_MY:
       travel_request: Permohonan Perjalanan
       leaveforstudent: Cuti Pelajar
       kin: Waris
+      travel_request: Permohonan Perjalanan
+      travel_claim: Tuntutan Perjalanan
+      travel_claim_logs: Log Perjalanan
+      stationery: Keperluan Pejabat
+      stationery_add: Penerimaan Keperluan Pejabat
+      stationery_use: Pengeluaran Keperluan Pejabat
+      location_damage: Kerosakan di Lokasi
+      location: Lokasi
     attributes:
       location:
         combo_code: Kod Lokasi
+        damages: Kerosakan di Lokasi
+      damages:
+        description: Deskripsi Kerosakan
+        reported_on: Tarikh Dilaporkan
+      location_damage:
+        document_id: Jenis Kerosakan
+        reported_on: Tarikh Dilaporkan
+        description: Deskripsi Kerosakan
       travel_request:
         destination: Destinasi
         depart_at: Masa Bertolak
@@ -20,12 +36,35 @@ ms_MY:
         replaced_by: Staf Gantian
         hod_id: Ketua Jabatan
         hod_accept_on: Tarikh Penerimaan Ketua Jabatan
+        own_car_notes: Sebab
+        travel_claim_logs: Log Perjalanan
+      travel_claim_logs:
+        travel_on: Tarikh
+        start_at: Dari
+        finish_at: Hingga
+        travel_log: Log Perjalanan
       leaveforstudent:
         student_id: Nama pelajar
         leavetype: Jenis cuti
         leave_startdate: Tarikh cuti bermula
         leave_enddate: Tarikh cuti berakhir
         telno: Telefon
+      travel_claim:
+        claim_month: "Tuntutan Bagi (bulan & tahun) "
+        travel_requests: "Permohonan Perjalanan "
+      stationery:
+        stationery_adds: Butiran Penambahan Keperluan Pejabat
+        stationery_uses: Butiran Pengurangan Keperluan Pejabat
+      stationery_adds:
+        document: Pembekal
+        unitcost: Harga Seunit
+        received: Tarikh Diterima
+        quantity: Kuantiti
+      stationery_uses:
+        issuedby: Dikeluarkan Oleh
+        receivedby: Diterima Oleh
+        issuedate: Tarikh Dikeluarkan
+        quantity: Kuantiti   
     errors:
         template:
           body: "Berikut adalah beberapa masalah:"
@@ -46,14 +85,17 @@ ms_MY:
                 less_than_or_equal_to: Maksima harus melebihi Minima
           travel_request: Travel Request
           kin: Maklumat Waris
+         
         attributes:
           travel_request:
-            destination: Destination
-            depart_at: Depart At
-            return_at: Return At
-            replaced_by: Replacement Staff
-            hod_id: Head of Department
-            hod_accept_on: Head of Department Accepted Date
+            destination: Destinasi
+            depart_at: Masa Berlepas
+            return_at: Masa Pulang
+            replaced_by: Kakitangan Gantian
+            hod_id: Ketua Jabatan
+            hod_accept_on: Tarikh Penerimaan Ketua Jabatan
+            own_car_notes: Sebab
+        
 
   search:  Cari
   datelabel: Tarikh
@@ -105,6 +147,7 @@ ms_MY:
   none_assigned: Tiada maklumat
   inc_unitname: " (termasuk nama Jabatan / Unit) "
   approve: Kelulusan
+  add_details: Tambah Butiran
  
   actions:
     new: Baru
@@ -134,6 +177,7 @@ ms_MY:
     not_submitted: Tidak Dihantar
     approved: Diluluskan
     not_approved: Tidak Diluluskan
+    export: Eksport
     
   errors:
   
@@ -266,6 +310,8 @@ ms_MY:
     uniformstat: Status Pakaian Seragam
     position_id: Jawatan
     reports_to: Melapor Kepada
+    search:
+      ic_no: Carian Kakitangan
     
     vehicles:
       title: Butiran Kenderaan
@@ -446,7 +492,8 @@ ms_MY:
       value_field: "Ruangan Nilai(RM): Nyatakan jumlah tambang teksi sahaja"
       status_movement: "Status & Pergerakan"
       no_registered_vehicle: "Anda tidak mempunyai rekod kenderaan berdaftar dalam sistem ini. Sila daftarkan kenderaan anda dalam submodul Staf terlebih dahulu."
-
+      vehicle_must_exist: " mesti diisi jika 'kenderaan sendiri' dipilih"
+      
     travel_claim:
       title: Tuntutan Perjalanan
       new: Tuntutan Perjalanan Baru
@@ -503,6 +550,32 @@ ms_MY:
       approved: diluluskan
       amended_resubmit: telah diperbaiki dan dihantar semula untuk semakan kewangan
       status_not_known: status tidak diketahui
+      accommodations: Penginapan
+      hotel_lodging: "(Alamat Hotel / Lojing)"
+      address_compulsory: " Mesti diisi untuk elaun lojing / sewa hotel"
+      address_required: "Sila masukkan alamat lojing / hotel bagi tuntutan elaun lojing / sewa hotel"
+      finance_check: Semakan Kewangan
+      editing: Sedang Disunting
+      editing_by_staff: Sedang Disunting Oleh Kakitangan
+      submitted: Telah Dihantar
+      returned: Dipulangkan
+      resubmitted_to_finance: Dihantar Semula ke Unit Kewangan
+      for_checking: Untuk Semakan
+      processed: Telah Diproses
+      approved: Telah Diluluskan
+      return_to_staff_for_amendment: Dipulangkan kepada kakitangan untuk pembetulan
+      status_not_known: Status tidak diketahui
+      finance_check: "Semakan Kewangan (pengesahan) bagi Tuntutan Perjalanan oleh "
+      returned_for_amendment: Dipulangkan untuk pembetulan
+      return_to_staff: Pulangkan kepada kakitangan
+      verified_ok: Disahkan lengkap
+      submitted_on : Dihantar pada
+      approved_on: Diluluskan pada
+      insert_current_salary: "Sila masukkan 'gaji semasa' dan 'jumlah elaun tetap' dalam submodul Maklumat Kakitangan"
+      insert_vehicle: "Sila masukkan butran kenderaan dalam submodul Maklumat Kakitangan"
+      claim_exist: "yang dipilih telah wujud"
+      travel_requests_must_exist: mesti dipilih
+      mileage_xor_km_money: " : Masukkan Batuan (km) atau Nilai (RM), bukan kedua-duanya (diisi / dibiarkan kosong)"
 
     staff_appraisal:
       title: Penilaian Prestasi
@@ -691,6 +764,12 @@ ms_MY:
     support: Menyokong
     approved: Diluluskan
     rejected: Ditolak
+    appointdt_not_exist: "Sila kemaskini 'Tarikh Lantikan Pertama' dalam submodul 'Maklumat Kakitangan'"
+    leave_balance: Baki Cuti Rehat
+    balance_before: "(sebelum cuti ini diambil)"
+    balance_after: "(selepas cuti ini diambil)"
+    leave_already_taken: "Cuti telah diambil pada tarikh cuti yang sedang dimohon!"
+    begin_before_ends: "Tarikh mula cuti mestilah sebelum cuti berakhir dan selepas tarikh semasa"
   
   position:
     title: "Tugas & Tanggungjawab"
@@ -1040,6 +1119,7 @@ ms_MY:
       floor: Tingkat
       room: "Unit/Bilik"
       admin: Pentadbir
+      bed: Katil
       
     damage:
       title: Kerosakan di Lokasi
@@ -1049,8 +1129,24 @@ ms_MY:
       damage_type: Jenis Kerosakan	  
       asset_damage: Aset Rosak
       room_damage: Bilik Rosak
+      unit_damage: Unit Rosak
       description: Deskripsi Kerosakan
       reported_on: Tarikh Dilaporkan
+      repaired_on: Tarikh Dibaiki
+      list: "Senarai Kerosakan di Lokasi - Penempatan Pelatih"
+      list_staff: "Senarai Kerosakan di Lokasi - Penempatan Kakitangan"
+      list2: Kerosakan di Lokasi
+      new: "Laporkan Kerosakan bagi "
+      edit: "Sunting Kerosakan bagi "
+      repaired: Telah dibaiki
+      not_repaired: Belum dibaiki
+      damage_report: Laporan Kerosakan di Lokasi bagi Penempatan Pelatih
+      damage_report_staff: Laporan Kerosakan di Lokasi bagi Penempatan Kakitangan
+      match_asset: "Padankan Aset ?"
+      no_match_asset: Tiada padanan aset
+      repairs_of: Pembaikan 
+      room_damages: kerosakan bilik 
+      must_be_updated_in: "perlu dikemaskini di modul : "
     
   student:
     title: Pelajar
@@ -1063,27 +1159,77 @@ ms_MY:
     search:
       ic_no: Carian Pelajar
     tenant:
-      title: Penempatan Pelajar
-      new : Pendudukkan Baru
+      person: penghuni
+      name: Nama Penghuni
+      title: Penempatan Pelatih
+      title2: Penempatan Kakitangan
+      new : Penempatan Baru Pelatih
+      new2: Penempatan Baru Kakitangan
+      edit: Sunting Penempatan Pelatih
+      edit2: Sunting Penempatan Kakitangan
       key:
         provided: Tarikh Kunci Diberi
         expected: Tarikh Dijangka Pulang
         returned: Tarikh Dipulang
       vacate: Kosongkan
+      tenancy_details_nil: Tiada data pelatih
       room_map: Peta Katil
+      unit_map: Peta Unit
       list: Senarai Penghuni
-      statistics: Statistik
+      list_full: Senarai Penghuni Penempatan Pelatih
+      list_full2: Senarai Penghuni Penempatan Kakitangan
+      statistics: Statistik Penempatan Pelatih
+      statistics_menu: "Statistik (Umum / Blok / Program)"
+      statistics_block: Pecahan Status Bilik Mengikut Blok Kediaman Asrama
+      general_statistic: Statistik Umum
+      tenants_students: "Jumlah Keseluruhan Pelatih Yang Menghuni Asrama (Mengikut Program)"
       empty: Kosong
-      occupied: Berpenghuni
+      occupied: Isi #Berpenghuni
       damaged: Rosak
+      female_occupied: perempuan berpenghuni
+      female_empty: perempuan kosong
+      male_occupied: lelaki berpenghuni
+      male_empty: lelaki kosong
+      notes: Nota
       total: Jumlah
-      empty_room: Pemulangan Kunci
+      total_rooms: Jumlah Keseluruhan Bilik
+      total_empty: Jumlah Bilik Kosong
+      total_occupied: Jumlah Bilik Guna
+      total_damaged: Jumlah Bilik Rosak
+      total_all: Jumlah Keseluruhan Bilik
+      total_tenants: Jumlah Keseluruhan Penghuni
+      total_tenant: Jumlah penghuni
+      return_key: Pemulangan Kunci
+      return_key_student: Pemulangan Kunci oleh Pelatih
+      return_key_staff: Pemulangan Kunci oleh Kakitangan
       empty_room: Kosongkan Bilik
+      damage_status: Status Kerosakan
+      damage_type: Jenis Kerosakan
       damage: Kerosakan oleh Pelajar
+      damage2: Kerosakan oleh Kakitangan
+      asset_other_damage: "Aset / Lain-lain"
+      room_damage: "Kerosakan Bilik"
+      level: Aras
+      bed: Katil
+      room: Bilik
+      rooms: Bilik
+      report: Statistik Penginapan & Bancian Penghuni Mengikut Aras #LAPORAN PENGINAPAN
+      report_main: Statistik Penginapan Mengikut Aras
+      census: Bancian Penghuni Mengikut Aras
+      census2: Bancian
+      report_census: "Statistik & Bancian (Aras)"
+      summary: Ringkasan
+      reset_search: Set Semula Carian Pelajar
+      reset_search2: Set Semula Carian Kakitangan
+      room_status_title: Pecahan Status Bilik
+      tenant_programme_title: Pecahan Penghuni Mengikut Program
+      block: Blok
+      unit_no: "No. Unit"
       
     students:
       title: Maklumat Pelajar
       list: Senarai Maklumat Pelajar
+      reporting: Laporan
       formatted_mykad: No Mykad
       name: Nama
       matrixno: No Matrik
@@ -1132,6 +1278,13 @@ ms_MY:
       grade: Gred
       new: Pelajar Baru
       result: Keputusan
+      current: Semasa
+      graduated: Tamat belajar
+      repeat: Mengulang
+      on_leave: Bercuti
+      expelled: Dibuang Kolej
+      transfer_college: Pindah Kolej
+      sstatus_remark: "Catatan, jika pindah kolej"
     
     leaveforstudent:
       title: Permohonan Cuti Pelajar
@@ -1235,7 +1388,20 @@ ms_MY:
       assigned2_to: Makluman kepada Ketua Jabatan
       assigned2_on: Tarikh Makluman
       counseling_request: Permohonan Kaunseling
-      
+      removal_prohibited_for_referred_case: "Rekod disiplin pelajar yang dipilih TIDAK BOLEH DIPADAM, kerana telah dirujuk kepada pihak Kaunselor."
+      new2: Baru
+      open: Buka
+      refer_tphep: Rujuk ke TPHEP
+      refer_bpl: Rujuk ke BPL
+      closed: Tutup
+      all: Semua Kes
+      smooking: Merokok
+      skip_class: Ponteng Kelas
+      quarrel: Bergaduh
+      others: "Lain - lain"
+      no_case: Tiada kes
+      advise: Nasihat
+    
     counseling:
       title: Sesi Kaunseling Pelajar
       title2: Sesi Kaunseling
@@ -1286,6 +1452,7 @@ ms_MY:
       on_byday: "pada (mengikut hari)"
       case_reference: Rujukan Kes Disiplin
       display_feedback: Papar Maklumbalas
+      removal_prohibited_case_still_exist: "Rekod temujanji / sesi yang dipilih TIDAK BOLEH DIPADAM, kerana kes rujukan (kes disiplin) masih wujud."
       
     attendance:
       title: Kedatangan Pelajar
@@ -1475,18 +1642,19 @@ ms_MY:
     upload_file: Memuatnaik Dokumen
 
   document:
+    title: Daftar Dokumen 
     list_of_document: Senarai Dokumen
     serial_no: No Siri
     ref_no: No Rujukan
     category: Kategori
-    title: Tajuk
+    title2: Tajuk
     letter_date: Tarikh Surat
     received_date: Tarikh Terima
     from: Daripada
     circulate_to: Diedarkan Untuk
-    action_notifications: "Tindakan / Pemberitahuan"
+    action_notifications: "Tindakan / Makluman"
     closed: Ditutup
-    file_no: No File
+    file_no: No Fail
     circulate_minute_action: "Tindakan Edaran / Minit"
     circulate_minute_date: "Tarikh Edaran / Minit"
     action_type: Jenis Tindakan
@@ -1495,10 +1663,28 @@ ms_MY:
     stafffiled_id: Diisi Oleh
     letterdt: Tarikh Surat
     letterxdt: Tarikh Terima
-    uploaded: File Dimuatnaik 
-    upload_change_file: "Memuatnaik/Tukar File"
-    document_details: Maklumat Dokumen
-    action_details: Maklumat Tindakan
+    circulation_date: Tarikh Edaran
+    uploaded: Fail Dimuatnaik 
+    upload_change_file: "Memuatnaik/Tukar Fail"
+    document_details: Butiran Dokumen
+    action_details: Butiran Tindakan
+    circulation_details: Butiran Edaran
+    recipient_remark: "Masukkan abjad dan pilih penerima dari senarai pendek nama staf yang dipaparkan. Bagi berbilang penerima, taipkan koma (','), diikuti dengan abjad dan buat pilihan nama staf untuk penerima mesej berikutnya."
+    staff_name: Masukkan nama staf
+    staff_id: Staf
+    letter: Surat
+    memo: Memo
+    circular: Pekeliling
+    others: "Lain-lain"
+    email: Emel
+    circulation1_action: Tindakan oleh Penerima Edaran
+    cc1action: Tindakan yang diambil
+    cc1remarks: Catatan
+    cc1closed: Selesai Tindakan
+    cc1actiondate: Taikh Tindakan Diambil
+    action_by: Tindakan Oleh
+    attachment_action: "Lampiran (Tindakan)"
+    generate_report: Laporan
 
   campus:
     tenants:
@@ -1556,7 +1742,7 @@ ms_MY:
     
   course:
     title: Kursus
-    name: Nama Programme
+    name: Nama Program
 
   exam:
     title: Peperiksaan
@@ -1888,6 +2074,7 @@ ms_MY:
       date_time: "Tarikh & Masa : "
       duplicate_lecturer: "Pengajar hanya boleh mengajar Satu kelas pada satu-satu masa. Slot masa dengan ralat :" 
       duplicate_lecturer2: "Pilih semula Pengajar."
+      intake_programme_must_match: Ambilan yang dipilih mestilah sepadan dengan Program yang dipilih
     weeklytimetable_detail:
       topic: Topik
       lecturer_id: Pengajar      
@@ -1967,7 +2154,7 @@ ms_MY:
       subject: Subjek
       staff_id: Disediakan oleh
     lesson_plan:
-      title: Pelan Pengajaran
+      title: Senarai Pelan & Laporan Pengajaran
       title2: Pengajaran dan Pembelajaran
       reporting: Laporan Aktiviti Pengajaran dan Pembelajaran
       report: Laporan
@@ -1987,9 +2174,11 @@ ms_MY:
       reference: Rujukan
       submission: "Penghantaran & Kelulusan Pelan"
       is_submitted: "Telah Dihantar?"
+      is_submitted2: Pelan dihantar?
       submitted_on: Tarikh Dihantar
       hod_approved: Kelulusan Atasan
       hod_approved2: Kelulusan Ketua Jabatan
+      hod_approved3: Pelan diluluskan?
       hod_approved_on: Tarikh Kelulusan
       hod_rejected: Penolakan Ketua Jabatan
       hod_rejected_on: Tarikh Penolakan
@@ -2015,9 +2204,11 @@ ms_MY:
       total_absent: Jumlah Tidak Hadir
       report_review: Semakan Laporan
       report_submit: "Laporan Telah Dihantar?"
+      report_submit2: Laporan dihantar?
       report_submit_on: Tarikh Hantar Laporan
-      report_endorsed: "Laporan telah Diluluskan?"
-      report_endorsed_on: Tarikh Kelulusan Laporan
+      report_endorsed: "Laporan telah Disahkan?"
+      report_endorsed2: Laporan disahkan?
+      report_endorsed_on: Tarikh Pengesahan Laporan
       report_summary: "Ringkasan Laporan (Ulasan)"
       schedule: Jadual Waktu
       trainingnotes: Nota Latihan
@@ -2033,6 +2224,8 @@ ms_MY:
       exist_attachment: "Nota dilampirkan. Klik 'Browse' untuk tukar fail."
       to: hingga
       status: Status Kelulusan
+      add_notes: Tambah Nota
+      adding_notes: "Tambah Nota Latihan (selepas Pelan Pengajaran dihantar untuk kelulusan)"
 
   campus:
     address: 
@@ -2210,8 +2403,8 @@ ms_MY:
         note_title: "Tajuk Lampiran / Nota Latihan Semasa"
         methodologies: Metodologi
         topic: Topik
-        lecture_title: Tajuk Kuliah
-        lecture_date: Tarikh Kuliah
+        lecture_title: Tajuk
+        lecture_date: Tarikh
         start_time: Masa Mula
         end_time: Masa Tamat
         reference: Rujukan
@@ -2386,8 +2579,14 @@ ms_MY:
     formats:
       default:  "%l:%M %p"
       short: "%l:%M %p"
-    am: pagi
-    pm: petang    
+    am: pg
+    pm: ptg 
+    hours: jam
+    minutes: minit
+    days: hari
+    months: bulan
+    years: tahun
+    weeks: minggu
 
   number:
     currency:

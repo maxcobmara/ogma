@@ -15,7 +15,16 @@
   .row
     /= link_to_add_fields image_tag("add.png", :border => 0, :title => t('addmore')), f, :travel_claim_allowances
     = link_to_add_fields t('addmore'), f, :travel_claim_allowances, "",  t('addmore')
-          
+  %BR
+  .row
+    .col-sm-4
+      %b
+        = t('staff.travel_claim.accommodations')
+        %br=t('staff.travel_claim.hotel_lodging')
+      %font{:style => "color: red;"}*
+      %font{:style => "size=-2"}=t('staff.travel_claim.address_compulsory')
+    .col-sm-6=f.text_area :accommodations, :size => "70x2"
+  
   /Receipt section
   %br
   %b= t 'staff.travel_claim.receipts'

@@ -1,41 +1,55 @@
 - model_class = Tenant
 .page-header
-  %h1
-    = t('student.tenant.title')
-    -
-    = (t "student.tenant.statistics")
-    //#, :default => model_class.model_name.human.pluralize
+  %h1= (t "student.tenant.statistics")
 
-
+/General Statistics
+.row
+  .col-md-3
+    %h4= t 'student.tenant.general_statistic'
+    /= link_to (fa_icon "file-excel-o"), census_level2_campus_locations_path(floorid: @floor_id , format: 'xls')
+    /= link_to  (fa_icon "file-pdf-o"), census_student_tenants_path(params.merge(format: 'pdf' ))
 .row
   .col-md-3
     %table.table-striped.table-hover.ogma
       %thead
         %tr
-          %th Item
-          %th= t 'student.female'
-          %th= t 'student.male'
+          %th{:rowspan=>2} Item
+          %th{:colspan=>2}= t 'student.female'
+          %th{:colspan=>2}= t 'student.male'
+        %tr
+          %th=t('student.tenant.bed')
+          %th=t('student.tenant.room')
+          %th=t('student.tenant.bed')
+          %th=t('student.tenant.room')
       %tbody
         %tr
           %th= t 'student.tenant.empty'
           %td.centre= @ef = @female_student_beds.where(occupied: [false, nil]).where('id NOT IN (?)', @occupied_locations).count
+          %td.centre= @af_rooms.count - @of_rooms.count - @df_rooms.count
           %td.centre= @em = @male_student_beds.where(occupied: [false, nil]).where('id NOT IN (?)', @occupied_locations).count
+          %td.centre= @am_rooms.count - @om_rooms.count - @dm_rooms.count
         %tr
           %th= t 'student.tenant.occupied'
           %td.centre= @of = @female_student_beds.joins(:tenants).where("tenants.id" => @current_tenants).count
+          %td.centre=@of_rooms.count
           %td.centre= @om = @male_student_beds.joins(:tenants).where("tenants.id" => @current_tenants).count
+          %td.centre=@om_rooms.count
         %tr
           %th= t 'student.tenant.damaged'
           %td.centre= @df = @female_student_beds.where(occupied: true).count
+          %td.centre= @df_rooms.count
           %td.centre= @dm = @male_student_beds.where(occupied: true).count
+          %td.centre= @dm_rooms.count
         %tr
           %th= t 'student.tenant.total'
           %td.centre= a = @female_student_beds.count
+          %td.centre= c = @af_rooms.count
           %td.centre= b = @male_student_beds.count
+          %td.centre= d = @am_rooms.count
         %tr
           %th= t 'student.tenant.total'
-          %td.centre{colspan: 2}= (a + b)
-          
+          %td.centre{colspan: 4}=(t 'student.tenant.bed')+" : "+ (a + b).to_s+" / "+(t 'student.tenant.room')+" : "+ (c + d).to_s
+       
   .col-md-4
     %h4.centre= t 'student.female'
     = pie_chart [[(t 'student.tenant.empty'), @ef], [(t 'student.tenant.occupied'), @of], [(t 'student.tenant.damaged'), @df]], :height => "190px", :library => {legend: { position: 'left', maxLines: 3}}
@@ -43,3 +57,75 @@
   .col-md-4
     %h4.centre= t 'student.male'
     = pie_chart [[(t 'student.tenant.empty'), @em], [(t 'student.tenant.occupied'), @om], [(t 'student.tenant.damaged'), @dm]], :height => "190px", :library => {legend: { position: 'right', maxLines: 3}}
+
+%BR
+/Statistics by Block
+.row
+  .col-md-11
+    %h4=(t 'student.tenant.statistics_block')+" & "+(t 'student.tenant.tenants_students')
+.row
+  - @residentials.sort.each do |building|
+    - all_beds = building.descendants.where(typename: [2,8])
+    - all_rooms = all_beds.group_by{|x|x.combo_code[0,x.combo_code.size-2]}
+    - damaged_rooms = all_beds.where(occupied: true).group_by{|x|x.combo_code[0,x.combo_code.size-2]}
+    - occupied_rooms = all_beds.where('id IN(?)', @current_tenants.pluck(:location_id)).group_by{|x|x.combo_code[0,x.combo_code.size-2]}
+    .col-md-3  
+      %br
+      %table{:style=>"margin-left: 25px; cellspacing: 0: cellpadding:0;"}
+        %tr
+          %td.left
+            = link_to (fa_icon "file-excel-o"), statistic_block_campus_locations_path(blockid: building.id , format: 'xls')
+            = link_to  (fa_icon "file-pdf-o"), laporan_penginapan2_student_tenants_path(blockid: building.id, format: 'pdf')
+            = "  "+building.name
+      %table.table-striped.table-hover.ogma
+        %thead
+          %tr
+            %th.centre{colspan: 2}=t('student.tenant.room_status_title')
+          %tr
+            %th=t('student.tenant.room')
+            %th.centre=t('student.tenant.total')
+        %tbody
+          %tr
+            %th= t 'student.tenant.total_empty'
+            %td.centre=all_rooms.count-damaged_rooms.count-occupied_rooms.count
+          %tr
+            %th= t 'student.tenant.total_occupied'
+            %td.centre=occupied_rooms.count
+          %tr
+            %th= t 'student.tenant.total_damaged'
+            %td.centre=damaged_rooms.count
+          %tr
+            %th= t 'student.tenant.total_rooms'
+            %td.centre=all_rooms.count
+    .col-md-1 &nbsp;
+
+%BR
+/Statistics by Programme (of each block)
+.row
+  - @residentials.sort.each do |building|
+    - @tenantbed_per_block = building.descendants.where(typename: [2,8]).joins(:tenants).where("tenants.id" => @current_tenants)
+    - @all_tenants_wstudent = @current_tenants.joins(:location).where('location_id IN(?) and student_id IN(?)', @tenantbed_per_block.pluck(:id), Student.all.pluck(:id))
+    - @students_prog = Student.where('id IN (?)', @all_tenants_wstudent.pluck(:student_id)).group_by{|j|j.course_id}
+    - @all_tenants_wostudent = @current_tenants.joins(:location).where('location_id IN(?) and (student_id is null OR student_id NOT IN(?))', @tenantbed_per_block.pluck(:id), Student.all.pluck(:id))
+    .col-md-3
+      %table.table-striped.table-hover.ogma
+        %thead
+          %tr
+            %th.centre{colspan: 2}=t('student.tenant.tenant_programme_title')
+          %tr
+            %th=(t 'course.name')+" - "+(t 'training.intake.description')
+            %th.centre=t('student.tenant.total')
+        %tbody
+          - @students_prog.each do |course_id, students|
+            - students.group_by{|k|k.intake}.each do |intake, students2|
+              %tr
+                %th=students.first.course.name+" - "+students2.first.intake_num
+                %td.centre=students2.count
+          - if @all_tenants_wostudent.count > 0
+            %tr
+              %td{style: "color: red;"}=t 'student.tenant.tenancy_details_nil'
+              %td.centre=@all_tenants_wostudent.count
+          %tr
+            %th=t 'student.tenant.total_tenants'
+            %td.centre=@tenantbed_per_block.count.to_s
+    .col-md-1 &nbsp;

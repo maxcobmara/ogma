@@ -7,12 +7,14 @@ class Document < ActiveRecord::Base
   has_attached_file :data,
                      :url => "/assets/documents/:id/:style/:basename.:extension",
                      :path => ":rails_root/public/assets/documents/:id/:style/:basename.:extension"
-  has_and_belongs_to_many   :staffs, :join_table => :documents_staffs 
-
+  #has_and_belongs_to_many   :staffs, :join_table => :documents_staffs 
+  has_many :circulations
+  has_many :staffs, :through => :circulations
+  accepts_nested_attributes_for :circulations
 
   belongs_to :stafffilled,  :class_name => 'Staff', :foreign_key => 'stafffiled_id'
   belongs_to :preparedby,   :class_name => 'Staff', :foreign_key => 'prepared_by'
-  belongs_to :cc1staff,     :class_name => 'Staff', :foreign_key => 'cc1staff_id' 
+  #belongs_to :cc1staff,     :class_name => 'Staff', :foreign_key => 'cc1staff_id' 
   belongs_to :cofile,       :foreign_key => 'file_id'
 
   validates_attachment_content_type :data, 
@@ -47,7 +49,7 @@ class Document < ActiveRecord::Base
 
   def filedocer
     suid = file_id
-    Cofile.where(id: suid).pluck(:name)
+    Cofile.where(id: suid).map(&:file_no_and_name)
   end
   
   def owner_ids
@@ -61,6 +63,10 @@ class Document < ActiveRecord::Base
     a
   end
 
+  def staffiled_list
+    (User.joins(:roles).where('authname=?',"e_filing").pluck(:userable_id)+Array(stafffiled_id)).compact.uniq
+    #add existing stafffiled_id just in case of changed of person in charge
+  end
   
   def stafffiled_details 
     stafffilled.mykad_with_staff_name

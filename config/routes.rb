@@ -5,6 +5,9 @@ Ogma::Application.routes.draw do
       member do
         get :borang_maklumat_staff
       end
+      collection do
+        get :autocomplete
+      end
     end
     resources :positions do
       collection do
@@ -22,7 +25,7 @@ Ogma::Application.routes.draw do
         get :processing_level_2
       end
     end
-    resources :travel_claims do 
+    resources :travel_claims do
       member do
         get :check
         get :approve
@@ -88,10 +91,10 @@ Ogma::Application.routes.draw do
       end
     end
     resources :stationeries do
-    collection do
-      get :kewps13
+      collection do
+        get :kewps13
+      end
     end
-  end
     resources :asset_defects,   as: :defects do
       member do
         get :kewpa9
@@ -140,8 +143,19 @@ Ogma::Application.routes.draw do
         get :kewpa10
         get :kewpa11
       end
+      collection do
+        get :statistic_level
+        get :census_level2
+        get :statistic_block
+      end
     end
-    resources :location_damages
+    resources :location_damages do
+      collection do
+        get :damage_report
+        get :damage_report_staff
+        get :index_staff
+      end
+    end
     resources :address_books
   end
 
@@ -164,23 +178,37 @@ Ogma::Application.routes.draw do
       get :autocomplete
       get :kumpulan_etnik
       post :kumpulan_etnik
+      get :reports
     end
     member do
       get :borang_maklumat_pelajar
     end
   end
 
-
   namespace :student do
     resources :tenants do
       collection do
+        get :index_staff
         get :room_map
+        get :room_map2
+        get :reports
         get :statistics
         get :census
         get  :return_key
         post :return_key
+	get  :return_key2
+        post :return_key2
         get  :empty_room
         post :empty_room
+        get :tenant_report
+        get :tenant_report_staff
+        get :laporan_penginapan
+        get :laporan_penginapan2
+      end
+      member do
+        get :census_level
+	get :return_key
+        get :return_key2
       end
     end
     resources :student_discipline_cases do
@@ -199,7 +227,7 @@ Ogma::Application.routes.draw do
     end
     resources :leaveforstudents do
       member do
-        get :approve
+        get :approve_coordinator
         get :approve_warden
         get :slip_pengesahan_cuti_pelajar
       end
@@ -233,6 +261,7 @@ Ogma::Application.routes.draw do
         get :lesson_report
         get :lesson_plan
         get :lessonplan_reporting
+        get :add_notes
       end
       collection do
         get :index_report
@@ -338,7 +367,7 @@ Ogma::Application.routes.draw do
   resources :logins
   resources :roles
   resources :banks
-  
+
   root  'static_pages#home'
   match '/help',    to: 'static_pages#help',    via: 'get'
   match '/about',   to: 'static_pages#about',   via: 'get'

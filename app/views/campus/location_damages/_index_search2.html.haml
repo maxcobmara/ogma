@@ -1,0 +1,15 @@
+= search_form_for [:damage, @search], url: index_staff_campus_location_damages_path, class: "form-inline" do |f|
+  %tr.search_row{style: "display: none;"}
+    %td &nbsp;
+    %td= f.text_field :location_combo_code_start, size: 2, class: 'form-control'
+    %td= select_tag('q[document_id_eq]',options_for_select([[(t 'actions.all_records'),''],[(t 'student.tenant.room_damage'),1],[(t 'student.tenant.asset_other_damage'),2]]),class: 'selectpicker',"data-width"=>'100px')
+    %td= f.text_field :description_cont, size: 8, class: 'form-control'
+    %td= f.text_field :reported_on_eq, :size=> 2, class: 'date_picker form-control'
+    %td
+      /= f.text_field :repaired_on_eq, :size=> 2, class:  'date_picker form-control'
+      = select_tag('q[repaired_on_search]',options_for_select([[(t 'actions.all_records'),''],[(t 'location.damage.repaired'),1],[(t 'location.damage.not_repaired'),2]]),class: 'selectpicker',"data-width"=>'100px')
+    %td.input-group
+      = f.text_field :tenant_student_name_cont, size: 2, class: 'form-control'
+      %span.input-group-btn
+        %button.btn.btn-sm.btn-default.right{:type => "submit"}
+          %i.fa.fa-search.fa-fw

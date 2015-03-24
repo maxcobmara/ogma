@@ -40,6 +40,8 @@
         .form-group
           .col-sm-offset-3.col-sm-1
             = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), student_student_attendances_path, :class => 'btn btn-default'
+          .col-sm-1
+            = link_to content_tag(:i, "", class: "fa fa-file-pdf-o"), student_attendan_form_student_student_attendances_path(@studentattendances, format: "pdf"), class: "btn btn-default", "data-toggle" => "tooltip", title: "Borang Kehadiran Pelatih"
           .col-sm-2
             = submit_tag t('update'), :name => :student_attendance_submit_button, class: "btn btn-primary"         
  

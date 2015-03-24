@@ -87,5 +87,9 @@ class Leaveforstudent < ActiveRecord::Base
     end
     coordinator
   end
+  
+  def warden_list
+    staff_ids = Login.joins(:roles).where('roles.name=?', "Warden").pluck(:staff_id).compact.uniq
+  end
 
 end

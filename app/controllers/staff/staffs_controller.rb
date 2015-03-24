@@ -11,6 +11,11 @@ class Staff::StaffsController < ApplicationController
     @infos = @staffs
   end
 
+  def auto_complete
+    @staffs = Staff.order(:icno).where("icno like ?", "#{params[:term]}")
+    render json: @staffs.map(&:icno)
+  end
+  
   # GET /staffs/1
   # GET /staffs/1.json
   def show
@@ -30,7 +35,7 @@ class Staff::StaffsController < ApplicationController
   # GET /staffs/1/edit
   def edit
     @info = Staff.find(params[:id])
-    @info.vehicles.build if @info.vehicles && @info.vehicles.count==0
+    @info.vehicles.build if (@info.vehicles && @info.vehicles.count==0) || @info.vehicles[0].nil?
     @info.shift_histories.build if @info.staff_shift_id!=nil
   end
 

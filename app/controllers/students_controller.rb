@@ -8,9 +8,9 @@ class StudentsController < ApplicationController
   def index
     @search = Student.search(params[:q])
     @students = @search.result
-    @students = @students.page(params[:page]||1)  
+    @students = @students.page(params[:page]||1)
   end
-  
+
   def auto_complete
     @students = Student.order(:icno).where("icno like ?", "#{params[:term]}")
     render json: @students.map(&:icno)
@@ -28,7 +28,7 @@ class StudentsController < ApplicationController
     @student = Student.new
     @student.qualifications.build
     @student.kins.build
-    
+
     respond_to do |format|
       format.html # new.html.erb
       format.xml  { render :xml => @student }
@@ -39,9 +39,9 @@ class StudentsController < ApplicationController
   def edit
     @student = Student.find(params[:id])
   end
-  
+
   def formforstudent
-     @student = Student.find(params[:id])  
+     @student = Student.find(params[:id])
      #@students = Student.search(params[:search])
      render :layout => 'report'
      #respond_to do |format|
@@ -50,13 +50,13 @@ class StudentsController < ApplicationController
      #end
   end
 
-  def report  
+  def report
     @students = Student.search(params[:all])
     @students = Student.find(:all)
     render :layout => 'report'
-    
+
   end
- 
+
   # POST /students
   # POST /students.xml
   def create
@@ -89,17 +89,17 @@ class StudentsController < ApplicationController
       end
     end
   end
-  
+
   def kumpulan_etnik
     @programme_id = params[:programme].to_i
-    #@programme_id = Student.where('course_id=?',@programmes_id )  
-    
+    #@programme_id = Student.where('course_id=?',@programmes_id )
+
     #@programme_id = 3
     students_all_6intakes = Student.get_student_by_6intake(@programme_id)
     @students_6intakes_ids = students_all_6intakes.map(&:id)
     students_all_6intakes_count = students_all_6intakes.count
     @valid = Student.where('course_id=? AND race2 IS NOT NULL AND id IN(?)',@programme_id, @students_6intakes_ids)
-    
+
     @student = Student.all
     respond_to do |format|
       format.pdf do
@@ -110,7 +110,7 @@ class StudentsController < ApplicationController
       end
     end
   end
-  
+
   def destroy
     @student = Student.find(params[:id])
     @student.destroy
@@ -120,7 +120,7 @@ class StudentsController < ApplicationController
       format.xml  { head :ok }
     end
   end
-  
+
   def borang_maklumat_pelajar
 
     @student= Student.find(params[:id])
@@ -134,8 +134,12 @@ class StudentsController < ApplicationController
     end
   end
 
+  def reports
     
-    
+  end
+
+
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_student
@@ -144,18 +148,14 @@ class StudentsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def student_params
-      params.require(:student).permit(:address, :address_posbasik, :allergy, :bloodtype, :course_id, :course_remarks, :created_at, :disease, :end_training, :gender, :group_id, :icno, :id, :intake, :intake_id, :matrixno, :medication, :mrtlstatuscd, :name, :offer_letter_serial, :photo_content_type, :photo_file_name, :photo_file_size, :photo_updated_at, :physical, :race, :race2, :regdate, :remarks, :sbirthdt, :semail, :specialisation, :specilisation, :ssponsor, :sstatus, :stelno, :updated_at, kins_attributes: [:id,:destroy, :kintype_id,  :name, :mykadno, :phone, :profession, :kinaddr])
+      params.require(:student).permit(:address, :address_posbasik, :allergy, :bloodtype, :course_id, :course_remarks, :created_at, :disease, :end_training, :gender, :group_id, :icno, :id, :intake, :intake_id, :matrixno, :medication, :mrtlstatuscd, :name, :offer_letter_serial, :photo_content_type, :photo_file_name, :photo_file_size, :photo_updated_at, :physical, :race, :race2, :regdate, :remarks, :sbirthdt, :semail, :specialisation, :specilisation, :ssponsor, :sstatus, :stelno, :updated_at, :sstatus_remark, kins_attributes: [:id,:destroy, :kintype_id,  :name, :mykadno, :phone, :profession, :kinaddr])
     end
 
     def sort_column
-        Student.column_names.include?(params[:sort]) ? params[:sort] : "formatted_mykad" 
+        Student.column_names.include?(params[:sort]) ? params[:sort] : "formatted_mykad"
     end
 
     def sort_direction
-        %w[asc desc].include?(params[:direction])? params[:direction] : "asc" 
+        %w[asc desc].include?(params[:direction])? params[:direction] : "asc"
     end
 end
-
-
-
-

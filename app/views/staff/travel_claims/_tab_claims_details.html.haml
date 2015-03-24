@@ -33,7 +33,14 @@
     .col-md-1
       %br
       %font{:style=>"font-weight:bold; text-decoration:underline;"}= ringgols(@travel_claim.allowas)
-
+  %BR
+  - if (@travel_claim.travel_claim_allowances.map(&:expenditure_type) & [31,32]).count > 0 
+    .row
+      .col-md-2
+        %b= t('staff.travel_claim.accommodations')
+        %br=t('staff.travel_claim.hotel_lodging')
+      .col-md-4=simple_format(@travel_claim.accommodations)
+  
 /RECEIPTS section
 .col-md-10.col-md-offset-1
   %dl.dl-horizontal

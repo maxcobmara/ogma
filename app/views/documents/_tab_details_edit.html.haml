@@ -1,0 +1,79 @@
+.col-md-offset-2 
+  .form-group
+    .col-sm-2.control-label
+      = f.label t 'document.serial_no' , for: :serialno
+    .col-md-3
+      = f.text_field :serialno, :value => Document.set_serialno(@document.id), :readonly => true, class: 'form-control mandatory'
+  
+
+  .form-group
+    .col-sm-2.control-label
+      = f.label t 'document.ref_no' , for: :refno
+    .col-md-5
+      = f.text_field :refno, class: 'form-control mandatory'
+
+  .form-group
+    .col-sm-2.control-label
+      = f.label t 'document.title2'  , for: :title
+    .col-md-7
+      = f.text_field :title, :size => '60', class: 'form-control mandatory'    
+
+  .form-group
+    .col-sm-2.control-label
+      = f.label t 'document.category'  , for: :category
+    .col-md-4
+      = f.select :category, DropDown::DOCUMENT_CATEGORY, {:prompt => "Select"}, class: 'selectpicker mandatory'
+		  
+  .form-group
+    .col-sm-2.control-label
+      = f.label t 'document.letterdt' , for: :letterdt
+    .col-md-3
+      = f.text_field :letterdt, class: 'form-control date_picker'
+
+  .form-group
+    .col-sm-2.control-label
+      = f.label t 'document.letterxdt'  , for: :letterxdt
+    .col-md-3
+      = f.text_field :letterxdt, class: 'form-control date_picker'
+
+  .form-group
+    .col-sm-2.control-label
+      = f.label t 'document.from'   , for: :from
+    .col-md-5
+      = f.text_field :from, :size => '60', class: 'form-control mandatory' 
+
+  .form-group
+    .col-sm-2.control-label
+      = f.label t 'document.stafffiled_id' , for: :prepared_by
+    .col-md-3
+      - if @document.new_record?
+        - filedby = 164
+      - else
+        - filedby = @document.stafffiled_id 
+      = f.collection_select :stafffiled_id, Staff.where('id IN(?)', @document.staffiled_list).order(name: :asc), :id, :name, {:selected => filedby}, {class: 'selectpicker', "data-width"=>"350px"}
+      /= f.collection_select :stafffiled_id, Staff.order(name: :asc), :id, :name, {:include_blank => true}, {class: 'selectpicker', "data-width"=>"350px"}
+      = f.hidden_field :prepared_by, :value=>current_user
+  
+  .form-group
+    .col-sm-2.control-label
+      = f.label t 'document.file_no'   , for: :file_id
+    .col-md-6
+      = f.collection_select :file_id, Cofile.order(cofileno: :asc), :id, :file_no_and_name, {:include_blank => true}, {class: 'selectpicker', "data-width"=>"500px"}
+		  
+		  
+  .form-group
+    .col-sm-2.control-label
+      = f.label t 'document.uploaded'  , for: :data_dsiplay
+    .col-md-5
+      = if @document.data.exists? then
+        = @document.data_file_name
+        \#{link_to (t 'document.download'), @document.data.url}
+      - else
+      No Attachment yet
+
+  .form-group
+    .col-sm-2.control-label
+      = f.label t 'document.upload_change_file', for: :data
+    .col-md-4
+      = f.file_field :data, class: 'form-control'
+	

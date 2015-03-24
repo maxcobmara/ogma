@@ -1,23 +1,45 @@
 %fieldset 
   = f.hidden_field :_destroy
-  /= f.hidden_field :index
+  - @object_full_id = f.object_name.gsub(/(\])?\[/,"_").chop
+  - @object_index_id = @object_full_id.to_s.split("attributes_").last
+  
   .row
     .col-sm-1= f.text_field :lpono, class: 'form-control'
     .col-sm-2= f.text_field :document, class: 'form-control'
     .col-sm-1= f.text_field :quantity, class: 'g1'
     .col-sm-2= f.text_field :unitcost, class: 'g1'
-    .col-sm-2= f.text_field :total, class: 'g1', readonly: 'readonly', class: 'form-control'
-    .col-sm-2= f.text_field :received, class: 'date-picker form-control'
+    /.col-sm-2= f.text_field :total, class: 'g1', readonly: 'readonly', class: 'form-control'
+    .col-sm-2= f.text_field :total, readonly: 'readonly', class: 'form-control'
+    .col-sm-2= f.text_field :received, class: 'date_picker form-control'
     .col-sm-1
       = link_to content_tag(:i, "", class: "fa fa-trash-o"), data: {"data-toggle" => "tooltip", title: "Delete"}, class: "btn btn-danger remove_fields"
       
 :javascript
-$(document).ready(function(){
-  $(".g1").keyup(function() {   	
-    var qty = $("#stationery_attributes_1_quantity").val();
-    var unitcost = $("#stationery_attributes_1_unitcost").val(); 
+
+  var theval2 = "#{@object_index_id}";
+      
+  var qty2 = $("#stationery_stationery_adds_attributes_"+theval2+"_quantity").val();
+  var unitcost2 = $("#stationery_stationery_adds_attributes_"+theval2+"_unitcost").val(); 
     
-    var ansP1 = document.getElementById("stationery_g1_attributes_1_total");
-    ansP1.value = (unitcost*1)*(qty*1)
+  var ansP2 = document.getElementById("stationery_stationery_adds_attributes_"+theval2+"_total");
+  ansP2.value = (unitcost2*1)*(qty2*1);
+  
+  $('.g1').keyup(function() {
+    var theval = "#{@object_index_id}";
+    var qty = $("#stationery_stationery_adds_attributes_"+theval+"_quantity").val();
+    var unitcost = $("#stationery_stationery_adds_attributes_"+theval+"_unitcost").val(); 
+    
+    var ansP1 = document.getElementById("stationery_stationery_adds_attributes_"+theval+"_total");
+    ansP1.value = (unitcost*1)*(qty*1);
   });
-});
+
+  $('.date_picker').datetimepicker({
+    timepicker:false,
+      format:'Y-m-d',
+      formatDate:'Y-m-d'
+  });
+
+  $('.selectpicker').selectpicker('render');
+
+/line 19-25 //required for EXISTING saved items to works?
+/line 27-34 //required for newly added (second item and subsequent items to works)?

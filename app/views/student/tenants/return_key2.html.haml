@@ -1,0 +1,105 @@
+- model_class = Tenant
+.page-header
+  %h1
+    = t('student.tenant.return_key_staff')
+
+.row
+  .col-md-6.col-md-offset-3.student_search
+    - unless params[:id]
+      = form_for :search, :html=>{:class => "form-horizontal", :role => "form", :style => 'padding: 0 30px 0 30px; margin-top: 0;' } do |f|
+        .input-group
+          = f.text_field :staff_icno_location, data: {autocomplete_source: Tenant.joins(:staff).map(&:staff_icno_location)} , :autofocus => true, :required => true, :class => 'form-control search-field', :type => "input", placeholder: (@staff_ic || "IC Starts with")#, value: (@params_student_ic = params[:search].try(:[], :student_icno))
+          %span.input-group-btn
+            = f.submit (t 'search'), :class => "btn btn-primary", style: "width:80px;"
+        %span.help-block.small= (t 'staff.search.ic_no')
+/Staff.where("id IN (?)", Tenant.where('staff_id is not null').pluck(:staff_id)).map(&:staff_icno)
+
+- if @my_room
+  .row
+    .col-md-8.col-sm-offset-2
+      .panel.panel-info
+        .panel-heading
+          = t( 'location.code')
+          &nbsp; : &nbsp;
+          = link_to @my_room.location.combo_code, campus_location_path(@my_room.location.id)
+          &nbsp; : &nbsp;
+          = @my_room.location.name
+          .right
+            = link_to content_tag(:i, "", class: "fa fa-repeat") + " " + t('.back', :default => (t "student.tenant.reset_search2")), return_key2_student_tenants_path if params[:id]
+            &nbsp; | &nbsp;
+            = link_to content_tag(:i, "", :class => "fa fa-map-marker ") + " " + t('.back', :default => t("student.tenant.unit_map")), room_map2_student_tenants_path
+            //, :class => 'btn btn-default'
+            //= link_to  t("student.tenant.list"), student_tenants_path
+            /&nbsp; | &nbsp;
+            /= link_to content_tag(:i, "", :class => "fa fa-list-alt ") + " " + t('.back', :default => t("student.tenant.list")), student_tenants_path
+            //, :class => 'btn btn-default'
+            //= link_to  t("student.tenant.room_map"), room_map_student_tenants_path
+        .panel-body
+          .row
+            .col-md-10.col-md-offset-1
+              %dl.dl-horizontal
+                %dt= t 'staff.name'
+                %dd= link_to @my_room.staff.name, staff_info_path(@my_room.staff_id)
+
+                %dt= t 'student.icno'
+                %dd= @my_room.staff.icno
+            
+                %dt= t 'student.tenant.key.provided', :default =>  model_class.human_attribute_name(:keyaccept) + ":"
+                %dd= @my_room.keyaccept.try(:strftime, "%d %b %Y")
+            
+                %dt= t 'student.tenant.key.expected', :default =>  model_class.human_attribute_name(:keyexpectedreturn) + ":"
+                %dd= @my_room.keyexpectedreturn.try(:strftime, "%d %b %Y")
+                
+                .returned{style:"display:none;"}
+                  %dt= t 'student.tenant.key.returned', :default =>  model_class.human_attribute_name(:keyexpectedreturn) + ":"
+                  %dd= @my_room.keyreturned.try(:strftime, "%d %b %Y")
+                
+                %dt= t 'location.damage.title'
+                %dd
+                  - for damage in @my_room.location.damages.order(reported_on: :desc)
+                    = damage.reported_on
+                    &nbsp; : &nbsp;
+                    = damage.description
+                    %br
+
+            .row
+              .col-md-10.col-md-offset-1
+                %hr
+                = form_for [:student, @tenant], remote: true, :html => { :class => 'form-horizontal' } do |f|
+                  %dt=t 'student.tenant.return_key'
+                  = render 'shared/flashes'
+                  =# f.hidden_field :student_id, value: ''
+                  .form-group
+                    %label.col-sm-3.control-label{:for => "keyreturned"}= t 'student.tenant.key.returned'
+                    .col-md-4
+                      = f.text_field :keyreturned, type: "text", :class => 'form-control date_picker_after_reverse', value: @tenant.try(:keyreturned).try(:strftime, '%d-%m-%Y')
+
+                  .form-group.returned
+                    %label.col-sm-3.control-label{:for => "force_vacate"}= t 'student.tenant.vacate'
+                    .col-md-4
+                      = f.check_box :force_vacate, :class => 'form-control'
+
+                  .form-group
+                    %label.col-sm-3.control-label{:for => "damage"}= t 'student.tenant.damage2'
+                    .col-md-6
+                      = f.fields_for :damages do |builder|
+                        - if (builder.object.id!=nil && builder.object.document_id==2) || builder.object.id==nil
+                          = render 'damage_fields', f: builder
+                      /= link_to_add_fields ("Add Details"), f, :damages
+                      .returned= link_to_add_fields t('add_details'), f, :damages, "",  ""
+                       
+                  .form-group.returned
+                    .col-sm-offset-3.col-sm-4
+                      = f.submit t('student.tenant.return_key'), class: "btn btn-primary", id: "save"
+
+:javascript
+  $('#save').click(function() {	   
+     $('#save').hide();
+     $('.returned').toggle();
+  });
+ 
+  function add_fields(link, association, content) {  
+    var new_id = new Date().getTime();  
+    var regexp = new RegExp("new_" + association, "g");  
+    $(link).parent().before(content.replace(regexp, new_id));  
+  }

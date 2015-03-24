@@ -1,0 +1,115 @@
+- model_class = Tenant
+.page-header
+  %h1= t('student.tenant.census')#, :default => model_class.model_name.human.pluralize 
+
+.row  
+  .navbar.navbar-inverse{role: "navigation", style: "padding-right:40px;"}
+    %ul.nav.navbar-nav
+      %li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'student.tenant.report_main'))), reports_student_tenants_path
+    %ul.nav.navbar-nav.navbar-right
+      /%li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "index_search_bar"
+      %li.dropdown
+        %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#"}
+          = fa_icon "external-link", text: (t 'actions.export')
+          %b.caret
+        %ul.dropdown-menu
+          //%li= link_to (fa_icon "file-excel-o", text: building.name), statistic_level_campus_locations_path(buildingname: building.name, format: 'xls')
+          %li= link_to (fa_icon "file-excel-o", text: (t "student.tenant.census")), census_level2_campus_locations_path(floorid: @floor_id , format: 'xls')
+          %li= link_to  (fa_icon "file-pdf-o", text: (t "student.tenant.census")), census_student_tenants_path(params.merge(format: 'pdf' ))
+
+.row
+  %table.table-striped.table-hover.ogma
+    %thead
+      %tr
+        %td{colspan:8}=@floor.name
+      %tr
+        %td= t 'location.code'
+        %td= t 'location.name'
+        %td= t 'student.name'
+        %td= t 'student.icno'
+        %td= t 'student.students.matrixno'
+        %td= t 'course.name'
+        %td= t 'training.intake.description'
+        %td= t 'student.tenant.notes'
+    %tbody
+      - @all_beds_single.each do |bed|
+        - if bed.occupied==true
+          %tr
+            %td= bed.combo_code
+            %td= bed.name
+            %td.damaged{colspan:6}=bed.parent.damages.where(document_id: 1).last.description rescue (t 'student.tenant.damage')
+        - else
+          %tr
+            %td= bed.combo_code
+            %td= bed.name
+            - if bed.tenants.count > 0 && bed.tenants.last.keyreturned==nil && bed.tenants.last.force_vacate !=true
+              %td
+                - if bed.tenants.last.student.nil?
+                  %font{color: "red"}=t 'student.tenant.tenancy_details_nil'
+                - else
+                  =bed.tenants.last.try(:student).try(:name) 
+              %td= bed.tenants.last.student.nil? ? "" : bed.tenants.last.try(:student).try(:icno)
+              %td= bed.tenants.last.student.nil? ? "" : bed.tenants.last.try(:student).try(:matrixno)
+              %td= bed.tenants.last.student.nil? ? "" : bed.tenants.last.try(:student).try(:course).try(:name)
+              %td= bed.tenants.last.student.nil? ? "" : bed.tenants.last.student.intake_num rescue ""
+              %td &nbsp; 
+            - else
+              %td &nbsp;
+              %td &nbsp;
+              %td &nbsp;
+              %td &nbsp;
+              %td &nbsp;
+              %td &nbsp;
+.row
+  .col-md-1 &nbsp;
+  .col-md-4
+    %table.table-striped.table-hover.ogma
+      %thead
+        %tr
+          %th Item
+          %th.centre=t('student.tenant.total')
+      %tbody
+        %tr
+          %th=t 'student.tenant.total_empty'
+          %td.centre=@all_rooms.count-@damaged_rooms.count-@occupied_rooms.count
+        %tr
+          %th=t 'student.tenant.total_damaged'
+          %td.centre=@damaged_rooms.count
+        %tr
+          %th=t 'student.tenant.total_occupied'
+          %td.centre=@occupied_rooms.count
+        %tr
+          %th=t 'student.tenant.total_all'
+          %td.centre=@all_rooms.count
+  .col-md-1 &nbsp;
+  .col-md-4
+    - @all_tenants_wstudent = @current_tenants.joins(:location).where('location_id IN(?) and student_id IN(?)', @tenantbed_per_level.pluck(:id), Student.all.pluck(:id))
+    - @students_prog = Student.where('id IN (?)', @all_tenants_wstudent.pluck(:student_id)).group_by{|j|j.course_id}
+    - @all_tenants_wostudent = @current_tenants.joins(:location).where('location_id IN(?) and (student_id is null OR student_id NOT IN(?))', @tenantbed_per_level.pluck(:id), Student.all.pluck(:id))
+    %table.table-striped.table-hover.ogma
+      %thead
+        %tr
+          %th=(t 'course.name')+" - "+(t 'training.intake.description')
+          %th.centre=t('student.tenant.total')
+      %tbody
+        - @students_prog.each do |course_id, students|
+          - students.group_by{|k|k.intake}.each do |intake, students2|
+            %tr
+              %th=students.first.course.name+" - "+students2.first.intake_num
+              %td.centre=students2.count
+        - if @all_tenants_wostudent.count > 0
+          %tr
+            %td{style: "color: red;"}=t 'student.tenant.tenancy_details_nil'
+            %td.centre=@all_tenants_wostudent.count
+        %tr
+          %th=t 'student.tenant.total_tenants'
+          %td.centre=@tenantbed_per_level.count  
+
+/ all tenant with student id
+/ =@tenantbed_per_level.pluck(:student_id)
+/ with student id (exist) [student really exist]
+/ =@all_tenants_wstudent.count  
+/ without student id (exist) [student really not exist] OR has no student id in tenant at all
+/ =@all_tenants_wostudent.count  
+
+

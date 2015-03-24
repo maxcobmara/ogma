@@ -4,69 +4,69 @@
   
 .navbar.navbar-inverse{role: "navigation", style: "padding-right:40px;"}
   %ul.nav.navbar-nav
-    %li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'actions.new'))), new_asset_asset_path
+    - permitted_to? :create, :assets do 
+      %li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'actions.new'))), new_asset_asset_path
   %ul.nav.navbar-nav.navbar-right
     %li= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "index_search_bar"
-    %li.dropdown
-      %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#"}
-        = fa_icon "print", text: (t 'actions.print')
-        %b.caret
-      %ul.dropdown-menu
-        %li
-          %a{:href => kewpa4_asset_assets_path(:format => 'pdf')} KEW PA4
-        %li
-          %a{:href => kewpa5_asset_assets_path(:format => 'pdf')} KEW PA5
-        %li
-          %a{:href => kewpa13_asset_assets_path(:format => 'pdf')} KEW PA13
-        %li
-          %a{:href => "#"} KEW PA14
+    - permitted_to? :manage, :assets do
+      %li.dropdown
+        %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#"}
+          = fa_icon "print", text: (t 'actions.print')
+          %b.caret 
+        %ul.dropdown-menu
+          %li
+            %a{:href => kewpa4_asset_assets_path(:format => 'pdf')} KEW PA4
+          %li
+            %a{:href => kewpa5_asset_assets_path(:format => 'pdf')} KEW PA5
+          %li
+            %a{:href => kewpa13_asset_assets_path(:format => 'pdf')} KEW PA13
+          %li
+            %a{:href => "#"} KEW PA14
 
 
 %ul.nav.nav-tabs
-  %li.half_width.active= link_to (t 'asset.fixed'), "#home", "data-toggle" => "tab"
-  %li.half_width= link_to (t 'asset.inventory'), "#profile", "data-toggle" => "tab"
+  %li.half_width.active= link_to (t 'asset.fixed'), "#home", "data-toggle" => "tab" if permitted_to? :read, :assets
+  %li.half_width= link_to (t 'asset.inventory'), "#profile", "data-toggle" => "tab" if permitted_to? :read, :assets
   
 .tab-content
-  #home.tab-pane.fade.in.active
-    %table.table-striped.table-hover.ogma
-      %thead
-        %tr
-          %th= sort_link(@search, :assetcode, (t 'asset.assetcode'))
-          %th= sort_link(@search, :name, (t 'asset.name'))
-          %th= sort_link(@search, :purchasedate, (t 'asset.purchasedate'))
-          %th{style: "width:33%;"}= sort_link(@search, :purchaseprice, (t 'asset.purchaseprice'))
-
-          %tbody
-            = render "search_asset_bar"
-            - @fixed_assets.each do |asset|
-              %tr
-                %td= link_to asset.assetcode, asset_asset_path(asset)
-                %td= asset.name
-                %td= asset.purchasedate
-                %td.number= currency(asset.purchaseprice)
-
-    .right{style:"padding:0 30px; margin:0;"}= paginate @fixed_assets, :theme => 'twitter-bootstrap-3'
-        
-  #profile.tab-pane.fade
-    %table.table-striped.table-hover.ogma
-      %thead
-        %tr
-          %th= sort_link(@search, :assetcode, (t 'asset.assetcode'))
-          %th= sort_link(@search, :name, (t 'asset.name'))
-          %th= sort_link(@search, :purchasedate, (t 'asset.purchasedate'))
-          %th{style: "width:33%;"}= sort_link(@search, :purchaseprice, (t 'asset.purchaseprice'))
-
-      %tbody
-        = render "search_asset_bar"
-        - @inventories.each do |asset|
+  - permitted_to? :read, :assets do
+    #home.tab-pane.fade
+      %table.table-striped.table-hover.ogma
+        %thead
           %tr
-            %td= link_to asset.assetcode, asset_asset_path(asset)
-            %td= asset.name
-            %td= asset.purchasedate
-            %td.number= currency(asset.purchaseprice)
-        
-    .right{style:"padding:0 30px; margin:0;"}= paginate @inventories, :theme => 'twitter-bootstrap-3'
-    
+            %th= sort_link(@search, :assetcode, (t 'asset.assetcode'))
+            %th= sort_link(@search, :name, (t 'asset.name'))
+            %th= sort_link(@search, :purchasedate, (t 'asset.purchasedate'))
+            %th{style: "width:33%;"}= sort_link(@search, :purchaseprice, (t 'asset.purchaseprice'))
 
-    
-  
+        %tbody
+          = render "search_asset_bar"
+          - @fixed_assets.each do |asset|
+            %tr
+              %td= link_to asset.assetcode, asset_asset_path(asset)
+              %td= asset.name
+              %td= asset.purchasedate.try(:strftime, '%d-%m-%Y') if permitted_to? :manage, :assets 
+              %td.number= currency(asset.purchaseprice) if permitted_to? :manage, :assets
+
+      .right{style:"padding:0 30px; margin:0;"}= paginate @fixed_assets, :theme => 'twitter-bootstrap-3'
+
+  - permitted_to? :read, :assets do      
+    #profile.tab-pane.fade
+      %table.table-striped.table-hover.ogma
+        %thead
+          %tr
+            %th= sort_link(@search, :assetcode, (t 'asset.assetcode'))
+            %th= sort_link(@search, :name, (t 'asset.name'))
+            %th= sort_link(@search, :purchasedate, (t 'asset.purchasedate'))
+            %th{style: "width:33%;"}= sort_link(@search, :purchaseprice, (t 'asset.purchaseprice'))
+
+        %tbody
+          = render "search_asset_bar"
+          - @inventories.each do |asset|
+            %tr
+              %td= link_to asset.assetcode, asset_asset_path(asset)
+              %td= asset.name
+              %td= asset.purchasedate.try(:strftime, '%d-%m-%Y') if permitted_to? :manage, :assets 
+              %td.number= currency(asset.purchaseprice) if permitted_to? :manage, :assets 
+        
+      .right{style:"padding:0 30px; margin:0;"}= paginate @inventories, :theme => 'twitter-bootstrap-3'

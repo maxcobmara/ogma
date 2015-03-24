@@ -16,6 +16,7 @@ class Staff < ActiveRecord::Base
   
   has_many :vehicles, :dependent => :destroy
   accepts_nested_attributes_for :vehicles, :allow_destroy => true, :reject_if => lambda {|a| a[:cylinder_capacity].blank? }#|| a[:reg_no].blank?}
+  validates_associated :vehicles
     
   has_many :shift_histories, :dependent => :destroy
   accepts_nested_attributes_for :shift_histories, :reject_if => lambda {|a| a[:deactivate_date].blank?}
@@ -63,6 +64,7 @@ class Staff < ActiveRecord::Base
   #Link to Model travel_claim
   has_many :travel_claims, :dependent => :destroy
   has_many :approvers,           :class_name => 'TravelClaim',      :foreign_key => 'approved_by'
+  has_many :checkers,            :class_name => 'TravelClaim',      :foreign_key => 'checked_by'
 
   #links to Model TravelRequest
   #has_many :staffs,             :class_name => 'TravelRequest', :foreign_key => 'staff_id', :dependent => :destroy #staff name
@@ -72,6 +74,10 @@ class Staff < ActiveRecord::Base
   has_many :replacor_travelstaff, :class_name => 'TravelRequest'
   has_many :travelrequest_approver, :class_name => 'TravelRequest'
 
+  #25Jan2015
+  has_many :circulations
+  has_many :documents, :through => :circulations
+  
   #validates_attachment_size         :photo, :less_than => 500.kilobytes
   #validates_attachment_content_type :photo, :content_type => ['image/jpeg', 'image/png']
  #---------------Validations------------------------------------------------
@@ -104,6 +110,10 @@ class Staff < ActiveRecord::Base
       Date.today.year - cobirthdt.year unless cobirthdt == nil
     end
 
+    def staff_list
+    "#{icno}"+" "+"#{name}"
+    end
+    
     def formatted_mykad
     "#{icno[0,6]}-#{icno[6,2]}-#{icno[-4,4]}"
     end
@@ -198,7 +208,7 @@ class Staff < ActiveRecord::Base
       'Z' #no vehicles?
     end
   end
-
+  
 end
 
 # == Schema Information

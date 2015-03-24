@@ -1,114 +1,62 @@
 - model_class = Tenant
 .page-header
-  %h1= t('student.tenant.title')#, :default => model_class.model_name.human.pluralize
+  %h1= t('student.tenant.list_full')#, :default => model_class.model_name.human.pluralize
 
-.row  
+.row
   .navbar.navbar-inverse{role: "navigation", style: "padding-right:40px;"}
     %ul.nav.navbar-nav
       //%li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'new'))), new_student_tenant_path
     %ul.nav.navbar-nav.navbar-right
-      %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "toga"
+      %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "index_search_bar"
       %li.dropdown
         %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#"}
-          = fa_icon "print", text: (t 'actions.print')
+          = fa_icon "external-link", text: (t 'actions.export')
           %b.caret
         %ul.dropdown-menu
-          %li= link_to (t "student.tenant.statistics"), statistics_student_tenants_path
-          %li
-            %a.bogus{:href => "#"} Lapuran Penginapan
-          %li= link_to (t "student.tenant.census"), census_student_tenants_path(:format => :pdf )
-            
-
+          %li= link_to (fa_icon "file-excel-o", text: (t "student.tenant.list")), student_tenants_path(params.merge(format: "xls"))
+          %li= link_to  (fa_icon "file-pdf-o", text: (t "student.tenant.list")), tenant_report_student_tenants_path(params.merge(format: 'pdf' ))
+          
 
 .row
   %table.table-striped.table-hover.ogma
     %thead
       %tr
         %th= t 'location.code'
-        %th= t 'student.icno'
+        %th= t 'student.students.icno'
         %th= t 'student.name'
+        %th= t 'student.students.matrixno'
+        %th= t 'student.students.intake_id'
         %th= t 'course.name'
-        %th= t 'tenant.key.accept'
-        %th= t 'tenant.key.expected'
-        %th= t 'tenant.key.return'
-        %th= t 'tenance.force_vacate'
-    
+        %th= t 'student.tenant.key.provided'
+        %th= t 'student.tenant.key.expected'
+        %th= t 'student.tenant.key.returned'
+        %th= t 'student.tenant.vacate'
+        %th= t 'student.tenant.damage_status'
+        %th= t 'student.tenant.damage_type'
+
     %tbody
-      = render "index_search"
-      - @tenants.each do |tenant|
+    = render "index_search"
+    - @tenants.each do |tenant|
+      - unless tenant.student.nil?
+
+        - if tenant.damages.count==0; damages_text = (t 'no2'); else damages_text = (t 'yes2'); end
+        - damage_description = []
+
         %tr
           %td= link_to tenant.location.try(:combo_code), campus_location_path(tenant.location)
           %td= link_to tenant.try(:student).try(:icno), student_tenant_path(tenant)
-          %td= link_to tenant.try(:student).try(:name), student_path(tenant.student) unless tenant.student.nil? 
-          %td= tenant.try(:student).try(:programme).try(:name)
-          %td= l(tenant.keyaccept) rescue nil
-          %td= l(tenant.keyexpectedreturn) unless tenant.keyexpectedreturn.blank?
-          %td= l(tenant.keyreturned) unless tenant.keyreturned.blank?
-          %td= tenant.force_vacate? ? "Yes" : "No"
-          //%td= link_to image_tag("printer.png", :border => 0, :title => 'Borang Asrama'), :action => 'borang_asrama', :id => tenant
-
-.row
-  %H4 Lapuran Penginapan
-  %table.table-striped.table-hover.ogma
-    - @residentials.each do |building|
-      %thead
-        %tr
-          %th= building.name
-          %th isi
-          %th kosong
-          %th rosak
-          %th notes
-      - building.children.sort.reverse.each do |floor|
-      
-        - @occupied = floor.descendants.where(typename: [2,8]).joins(:tenants).where("tenants.id" => @current_tenants)
-        - @empty =    floor.descendants.where(typename: [2,8]).where(occupied: [false, nil]).where('id NOT IN (?)', @occupied_locations)
-        - @damaged =         floor.descendants.where(occupied: true)
-
-        %tr
-          %td= floor.name
-          %td= @occupied.count
-          %td= @empty.count
-          %td= @damaged.count
+          %td= link_to tenant.try(:student).try(:name), student_path(tenant.student)
+          %td= tenant.try(:student).try(:matrixno)
+          %td= tenant.try(:student).try(:intake).try(:strftime, '%b %Y')
+          %td= tenant.try(:student).try(:course).try(:name)
+          %td= tenant.keyaccept.try(:strftime, '%d %b %Y')
+          %td= tenant.keyexpectedreturn.try(:strftime, '%d %b %Y')
+          %td= tenant.keyreturned.try(:strftime, '%d %b %Y')
+          %td= tenant.force_vacate? ? (t 'yes2') : (t 'no2')
+          %td= damages_text
           %td
-          
-.row
-  %H4 Census
-  %table.table-striped.table-hover.ogma
-    - @residentials.each do |building|
-      - building.children.sort.reverse.each do |floor|
-      
-        - @occupied = floor.descendants.where(typename: [2,8]).joins(:tenants).where("tenants.id" => @current_tenants)
-        - @empty =    floor.descendants.where(typename: [2,8]).where(occupied: [false, nil]).where('id NOT IN (?)', @occupied_locations)
-        - @damaged =         floor.descendants.where(occupied: true)
-        
-        - @rooms = floor.descendants.where(typename: [2,8])
-        - @this_floor = @current_tenants.where(location_id: @rooms)
-        
-        - unless @this_floor.blank?
-          %thead
-            %tr
-              %td{colspan:7}= floor.name
-            %tr
-              %td Location Code
-              %td Location Name
-              %td Student Name
-              %td IC No
-              %td Programme
-              %td Year & Semester
-              %td Notes
-        %tbody
-          - @this_floor.each do |room|
-            %tr
-              %td= room.location.combo_code
-              %td= room.location.name
-              %td= room.try(:student).try(:name)
-              %td= room.try(:student).try(:icno)
-              %td= room.try(:student).try(:course).try(:name)
-              %td= year_and_sem(room.student) rescue "nil"
-              %td
-            
+            - if tenant.damages.count>0
+              - tenant.damages.each{|t|damage_description << t.damage_type}
+              = damage_description.uniq.to_sentence
 
-      
-    
-  
-
+        //%td= link_to image_tag("printer.png", :border => 0, :title => 'Borang Asrama'), :action => 'borang_asrama', :id => tenant

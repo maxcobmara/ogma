@@ -12,7 +12,7 @@ class TravelRequest < ActiveRecord::Base
   
   validates_presence_of :staff_id, :destination, :depart_at, :return_at
   validates_presence_of :own_car_notes, :if => :mycar?
-  validate :validate_end_date_before_start_date
+  validate :validate_end_date_before_start_date, :staff_vehicle_must_exist_if_own_car
   validates_presence_of :replaced_by, :if => :check_submit?    #validation during EDIT - refer notes on EDIT & APPROVE button in SHOW page
   validates_presence_of :hod_id, :if => :check_submit?             #validation during EDIT - refer notes on EDIT & APPROVE button in SHOW page
   validates_presence_of :hod_accept_on, :if => :hod_accept?  #validation in APPROVAL page - refer notes on EDIT & APPROVE button in SHOW page
@@ -21,7 +21,7 @@ class TravelRequest < ActiveRecord::Base
   accepts_nested_attributes_for :travel_claim_logs, :reject_if => lambda { |a| a[:destination].blank? }, :allow_destroy =>true
   validates_associated :travel_claim_logs#, :message=>"data is not complete."
   
-  attr_accessor :staff_own_car
+  attr_accessor :staff_own_car, :tpt_class
   
   #controller searches
   def self.in_need_of_approval
@@ -49,33 +49,33 @@ class TravelRequest < ActiveRecord::Base
   end
   
   def hods
-    unit_name = User.current.userable.positions.first.unit
-    applicant_post= User.current.userable.positions.first
-    prog_names = Programme.roots.map(&:name)
-     #common_subjects = Programme.find(:all, :conditions=>['course_type=?', "Common Subject"]).map(&:name)  #no yet exist in programme & name format not sure 2
-    common_subjects=["Komunikasi & Sains Pengurusan", "Sains Tingkahlaku", "Anatomi & Fisiologi", "Sains Perubatan Asas"]
-    approver=[]
-    if prog_names.include?(unit_name) || unit_name == "Pos Basik" || common_subjects.include?(unit_name)
-      if applicant_post.tasks_main.include?("Ketua Program") || applicant_post.tasks_main.include?("Ketua Subjek")
-        approver = User.current.userable.positions.first.parent.staff_id
-      else
-        sib_pos = Position.where('unit=? and staff_id is not null',unit_name).order(combo_code: :asc)
-        if sib_pos
-          sib_pos.each do |sp|
-            approver << sp.staff_id if sp.tasks_main.include?("Ketua Program") || applicant_post.tasks_main.include?("Ketua Subjek")
-          end
-        end
-      end
-    else
-      staffapprover = Position.where('unit=? and combo_code<? and ancestry_depth!=?', unit_name, applicant_post.combo_code,1).map(&:staff_id)
-      #Above : ancestry_depth!= 1 to avoid Timbalan2 Pengarah - fr becoming each other's hod.
-      approvers= Staff.where('id IN(?)', staffapprover)
-      approvers.each_with_index do |ap,idx|
-        approver << ap.id if ap.staffgrade.name.scan(/\d+/).first.to_i > 26  #check if approver realy qualified one 
-      end
-      approver << User.current.userable.positions.first.parent.staff_id if approver.count==0
-      approver << User.current.userable.positions.first.ancestors.map(&:staff_id) if approver.count==0
-    end
+#     unit_name = User.current.userable.positions.first.unit
+#     applicant_post= User.current.userable.positions.first
+#     prog_names = Programme.roots.map(&:name)
+#      #common_subjects = Programme.find(:all, :conditions=>['course_type=?', "Common Subject"]).map(&:name)  #no yet exist in programme & name format not sure 2
+#     common_subjects=["Komunikasi & Sains Pengurusan", "Sains Tingkahlaku", "Anatomi & Fisiologi", "Sains Perubatan Asas"]
+#     approver=[]
+#     if prog_names.include?(unit_name) || unit_name == "Pos Basik" || common_subjects.include?(unit_name)
+#       if applicant_post.tasks_main.include?("Ketua Program") || applicant_post.tasks_main.include?("Ketua Subjek")
+#         approver = User.current.userable.positions.first.parent.staff_id
+#       else
+#         sib_pos = Position.where('unit=? and staff_id is not null',unit_name).order(combo_code: :asc)
+#         if sib_pos
+#           sib_pos.each do |sp|
+#             approver << sp.staff_id if sp.tasks_main.include?("Ketua Program") || applicant_post.tasks_main.include?("Ketua Subjek")
+#           end
+#         end
+#       end
+#     else
+#       staffapprover = Position.where('unit=? and combo_code<? and ancestry_depth!=?', unit_name, applicant_post.combo_code,1).map(&:staff_id)
+#       #Above : ancestry_depth!= 1 to avoid Timbalan2 Pengarah - fr becoming each other's hod.
+#       approvers= Staff.where('id IN(?)', staffapprover)
+#       approvers.each_with_index do |ap,idx|
+#         approver << ap.id if ap.staffgrade.name.scan(/\d+/).first.to_i > 26  #check if approver realy qualified one 
+#       end
+#       approver << User.current.userable.positions.first.parent.staff_id if approver.count==0
+#       approver << User.current.userable.positions.first.ancestors.map(&:staff_id) if approver.count==0
+#     end
     #override all above approver - 23Dec2014 - do not remove above yet, may be useful for other submodules
     hod_posts = Position.where('ancestry_depth<?',2)
     approver=[] 
@@ -156,8 +156,14 @@ class TravelRequest < ActiveRecord::Base
     end
   end
   
+  def staff_vehicle_must_exist_if_own_car
+    if own_car == true && User.current.userable.vehicles.count==0
+      errors.add(I18n.t('staff.vehicles.title'), I18n.t('staff.travel_request.vehicle_must_exist'))
+    end
+  end
+  
   def mycar?
-    own_car == true && (!applicant.blank? && !applicant.vehicles.blank?)
+    own_car == true #&& (!applicant.blank? && !applicant.vehicles.blank?)
   end
   
   def check_submit?
@@ -194,7 +200,7 @@ class TravelRequest < ActiveRecord::Base
     de = TravelClaimsTransportGroup.derate
     mid = 1820.75
     if applicant.nil? || applicant.blank?
-      app2 = Staff.where(id:25).first
+      app2 = Staff.where(id: User.current.userable.id).first
       if app2.vehicles && app2.vehicles.count>0
         TravelClaimsTransportGroup.transport_class(app2.vehicles.first.id, app2.current_salary, abc, de, mid)
       else

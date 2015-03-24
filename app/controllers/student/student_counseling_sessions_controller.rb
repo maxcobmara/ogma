@@ -101,11 +101,16 @@ class Student::StudentCounselingSessionsController < ApplicationController
   # DELETE /student_counseling_sessions/1.xml
   def destroy
     @student_counseling_session = StudentCounselingSession.find(params[:id])
-    @student_counseling_session.destroy
 
     respond_to do |format|
-      format.html { redirect_to(student_counseling_sessions_url) }
-      format.xml  { head :ok }
+      if @student_counseling_session.destroy 
+        format.html { redirect_to(student_student_counseling_sessions_url) }
+        format.xml  { head :ok }
+      else
+	 format.html { redirect_to(student_student_counseling_session_url(@student_counseling_session), :notice => t('student.counseling.removal_prohibited_case_still_exist')) }
+        #format.html { redirect_to(student_student_counseling_session_url(@student_counseling_session), :notice => StudentCounselingSession.display_msg(@student_counseling_session.errors))}
+        format.xml  { render :xml => @student_counseling_session.errors, :status => :unprocessable_entity }
+      end
     end
   end
   

@@ -2,7 +2,7 @@ class Staff::TravelClaimsController < ApplicationController
   before_action :set_travel_claim, only: [:show, :edit, :update, :destroy]
   def index
     @search = TravelClaim.search(params[:q])
-    @travel_claims = @search.result
+    @travel_claims = @search.result.order(staff_id: :asc, claim_month: :asc)
 
      respond_to do |format|
       format.html # index.html.erb
@@ -111,7 +111,7 @@ class Staff::TravelClaimsController < ApplicationController
   end
   
   def travel_claim_params
-    params.require(:travel_claim).permit(:staff_id, :claim_month, :advance, :total, :is_submitted, :submitted_on, :is_checked, :is_returned, :checked_on, :checked_by, :notes, :is_approved, :approved_on, :approved_by, travel_claim_receipts_attributes: [:id,:expenditure_type, :receipt_code, :amount, :checker, :checker_notes, :_destroy], travel_claim_allowances_attributes: [:id, :quantity, :expenditure_type, :amount, :receipt_code,:checker, :checker_notes,:_destroy])
+    params.require(:travel_claim).permit(:staff_id, :claim_month, :advance, :total, :is_submitted, :submitted_on, :is_checked, :is_returned, :checked_on, :checked_by, :notes, :is_approved, :approved_on, :approved_by, :accommodations, travel_claim_receipts_attributes: [:id,:expenditure_type, :receipt_code, :amount, :checker, :checker_notes, :_destroy], travel_claim_allowances_attributes: [:id, :quantity, :expenditure_type, :amount, :receipt_code,:checker, :checker_notes,:_destroy])
   end
   
 end

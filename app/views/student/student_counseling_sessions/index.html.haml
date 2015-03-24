@@ -72,7 +72,7 @@
               %td=h session_done.confirmed_at.try(:getlocal).try(:strftime,"%d %b %Y, %l:%M %P") 
               %td=h session_done.duration
               %td=h session_done.is_confirmed? ? image_tag("tick.png") : ""  
-              - if session_done.c_scope == "case" && !session_done.case_id.blank? 
+              - if session_done.c_scope == "case" && !session_done.case_id.blank? && !session_done.student_discipline_case.nil?
                 - if count2==0
                   %td{:rowspan=>session_dones.count, :style=>"text-align:center; vertical-align: middle"}
                     - if session_done.student_discipline_case.counselor_feedback.blank?  

@@ -20,6 +20,7 @@ class ClaimprintPdf < Prawn::Document
     hotel
     pelbagai
     pengakuan
+    kewangan
     pengesahan
     pendahuluan
 
@@ -31,16 +32,17 @@ class ClaimprintPdf < Prawn::Document
              ["NAMA", " #{@travel_claim.staff.name} ", ""],
              ["NO KAD PENGENALAN", "#{@travel_claim.staff.formatted_mykad}", ""],
              ["GRED/KATEGORI/KUMPULAN", "#{@travel_claim.staff.staffgrade.name}", ""],
-             ["JAWATAN", "#{@travel_claim.staff.try(:position).try(:name)} ", ""],
-             ["", "GAJI", @view.currency(@travel_claim.staff.starting_salary.to_f)],
-             ["PENDAPATAN (RM)", "ELAUN-ELAUN", " "],
-             ["", "JUMLAH",""],
-             ["","JENIS MODEL",""],
-             ["KENDERAAN", "NO PENDAFTARAN",""],
-             ["","KUASA (C.C)", " "],
-             ["","KELAS TUNTUTAN","#{@travel_claim.staff.transportclass_id} "]]
-             
-             table(data1, :column_widths => [180, 180,180], :cell_style => { :size => 10}) do
+             ["JAWATAN", "#{@travel_claim.staff.try(:positions).try(:first).try(:name)} ", ""],
+             ["", "GAJI", @view.currency(@travel_claim.staff.current_salary.to_f)],
+             ["PENDAPATAN (RM)", "ELAUN-ELAUN", @view.currency(@travel_claim.staff.allowance.to_f)],
+             ["", "JUMLAH",@view.currency(@travel_claim.staff.current_salary.to_f+@travel_claim.staff.allowance.to_f)],
+             ["","JENIS MODEL"," #{@travel_claim.staff.vehicles.first.type_model}"],
+             ["KENDERAAN", "NO PENDAFTARAN"," #{@travel_claim.staff.vehicles.first.reg_no}"],
+             ["","KUASA (C.C)", " #{@travel_claim.staff.vehicles.first.cylinder_capacity}"],
+             ["","KELAS TUNTUTAN","#{'<b>A </b>/ B / C / D / E' if @travel_claim.transport_class == 'A'} #{'A / <b>B</b> / C / D / E' if @travel_claim.transport_class == 'B'} #{'A / B / <b>C </b>/ D / E' if @travel_claim.transport_class == 'C'} #{'A / B / C / <b>D</b> / E' if @travel_claim.transport_class == 'D'} #{'A / B / C / D / <b>E</b>' if @travel_claim.transport_class == 'E'} #{'A / B / C / D /E' if @travel_claim.staff.current_salary != nil && @travel_claim.staff.vehicles.count > 0 }" ]]
+
+
+             table(data1, :column_widths => [180, 180,180], :cell_style => { :size => 10,  :inline_format => :true}) do
                row(0).background_color = 'FFE34D'
                self.width = 540
                row(0).align = :center
@@ -70,10 +72,10 @@ class ClaimprintPdf < Prawn::Document
                       Lot 8173, Jalan Pesiaran Kempas Baru
                        81200 Johor Bahru, Johor" ],
                       ["ALAMAT RUMAH", "#{@travel_claim.staff.addr}"],
-                      ["ALAMAT PENGINAPAN", ""],
+                      ["ALAMAT PENGINAPAN", "#{@travel_claim.accommodations if (@travel_claim.travel_claim_allowances.map(&:expenditure_type) & [31,32]).count > 0}"],
                       ["NO GAJI", "#{@travel_claim.staff.salary_no}"],
-                      ["NO AKAUN", "#{@travel_claim.staff.bankaccno}"],
-                      ["NAMA BANK", "#{@travel_claim.staff.bank}"],
+                      ["NO AKAUN", "#{@travel_claim.staff.bankaccounts.try(:first).try(:account_no)}"],
+                      ["NAMA BANK", "#{@travel_claim.staff.bankaccounts.try(:first).try(:bank).try(:long_name)}"],
                       ["EMAIL", " #{@travel_claim.staff.coemail}"],
                       ["NO TELEFON BIMBIT","#{@travel_claim.staff.phonecell}"]]
              
@@ -145,7 +147,7 @@ def tuntutan
                     if @log.count > 0         
                 data4 = 
                  @log.map do |travel_log|
-                ["#{travel_log.travel_on.try(:strftime, '%d %b %Y')} #{travel_log.travel_on.strftime("(%A)")}", "#{travel_log.start_at.try(:strftime,"%l:%M%p")}", "#{travel_log.finish_at.try(:strftime,"%l:%M%p")}","#{travel_log.destination}","#{travel_log.mileage}", @view.currency(travel_log.km_money.to_f)]
+                ["#{I18n.l(travel_log.travel_on, :format => '%d %b %Y')} #{I18n.l(travel_log.travel_on, :format => "(%A)")}", "#{I18n.l(travel_log.start_at, :format => "%l:%M %p")}", "#{I18n.l(travel_log.finish_at, :format => "%l:%M %p")}","#{travel_log.destination}","#{travel_log.mileage}", @view.currency(travel_log.km_money.to_f)]
               end
             else
               data4 = [["","","","","",""]]
@@ -155,8 +157,8 @@ def tuntutan
                   
                 end
                 
-                data5 =  [["Totals", "", "#{travel_request.log_mileage}",@view.currency(travel_request.log_fare.to_f) ],
-                          ["Total KM", "", "#{@travel_claim.total_mileage}", @view.currency(@travel_claim.total_km_money.to_f) ]]
+                data5 =  [["Jumlah", "", "#{travel_request.log_mileage}",@view.currency(travel_request.log_fare.to_f) ],
+                          ["Jumlah KM", "", "#{@travel_claim.total_mileage}", @view.currency(@travel_claim.total_km_money.to_f) ]]
   
                          table(data5, :column_widths => [60, 330 , 70, 80], :cell_style => { :size => 10}) do
                            self.width = 540
@@ -380,7 +382,7 @@ end
             ["(e) Butir-butir seperti yang dinyatakan di atas adalah benar dan saya bertanggungjawab terhadapnya"],
             ["Tarikh  #{@travel_claim.try(:submitted_on).try(:strftime,"%d-%m-%Y")}"],
             ["#{@travel_claim.staff.name}  "],
-            [" #{@travel_claim.staff.positions.name} "]]
+            ["#{@travel_claim.staff.positions.try(:first).try(:name)} "]]
             
             table(data, :column_widths => [540], :cell_style => { :size => 10}) do
               row(0).background_color = 'FFE34D'
@@ -398,6 +400,24 @@ end
               row(8).column(0).borders = [  :left, :right]
               row(9).column(0).borders = [  :left, :right, :bottom]
 
+            end
+            move_down 10
+  end
+  
+  def kewangan
+    
+    data = [[" PENGESAHAN KEWANGAN"],
+            ["Tarikh: #{@travel_claim.checked_on.try(:strftime,"%d-%m-%Y")}"],
+            ["Nama: #{@travel_claim.checker.name unless  @travel_claim.checker.blank? }"],
+            ["Jawatan: #{@travel_claim.checker.try(:positions).try(:first).try(:name)}"]]
+            
+            table(data, :column_widths => [540], :cell_style => { :size => 10})  do
+              row(0).background_color = 'FFE34D'
+              self.width = 540
+              row(0).align = :center
+              row(1).column(0).borders = [  :left, :right]
+              row(2).column(0).borders = [  :left, :right]
+              row(3).column(0).borders = [  :left, :right, :bottom]
             end
             move_down 10
   end

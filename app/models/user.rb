@@ -7,6 +7,7 @@ class User < ActiveRecord::Base
   belongs_to :userable, polymorphic: true
   has_and_belongs_to_many :roles
 
+ #Now you can easily fetch the current_user in models by User.current, enjoy it!
   def self.current
     Thread.current[:user]
   end
@@ -78,6 +79,54 @@ class User < ActiveRecord::Base
     else
       #common subject lecturer
       []
+    end
+  end
+  
+  
+  def under_my_supervision
+    unit= userable.positions.first.unit
+    if Programme.roots.pluck(:name).include?(unit)
+      course_id = Programme.where(name: unit).first.id
+      main_task = userable.positions.first.tasks_main
+      coordinator=main_task[/Penyelaras Kumpulan \d{1,}/]   
+      if coordinator
+        intake_group=coordinator.split(" ")[2]   #should match 'descripton' field in Intakes table
+        intake = Intake.where('programme_id=? and description=?', course_id, intake_group).first.monthyear_intake
+        if intake
+          supervised_student = Student.where('intake=? and course_id=?', intake, course_id).pluck(:id)
+        end
+      end
+    
+      supervised_student=[] if !supervised_student
+      sib_lect_maintask = Position.where('unit=? and staff_id!=?', unit, userable.id).pluck(:tasks_main)
+      sib_lect_coordinates_groups=[]
+      sib_lect_maintask.each do |y|
+        coordinator2 =  y[/Penyelaras Kumpulan \d{1,}/]
+        if coordinator2
+          sib_lect_coordinates_groups << coordinator2.split(" ")[2]     #collect group with coordinator
+        end
+      end
+      
+      #Either I'm a coordinator (or not) of any student group/intake/batch, is there any group/intake/batch w/o coordinator that requires me to become ONE OF authorising programme lecturer (to approve student leave applications)
+      #limit checking on existing leaveforstudent records 
+    
+      leave_applicant_ids = Leaveforstudent.all.pluck(:student_id) #ALL student applying leave
+      applicant_of_current_prog = Student.where('id IN(?) and course_id=?', leave_applicant_ids, course_id)
+      applicant_of_current_prog.group_by{|x|x.intake}.each do |intatake, applicants|
+	intake2 = Intake.where('programme_id=? and monthyear_intake=?', course_id, intatake).first
+        if intake2
+	  intake2_group = intake2.description
+          w_coordinator=sib_lect_coordinates_groups.include?(intake2_group)
+	  supervised_student+= applicants if !w_coordinator
+        else
+	  #this student group definitely got no coordinator as their intake not even exist in Intakes table
+	  #add these applicants to supervised_student array! note 'applicants' is an array
+	  supervised_student+= applicants 
+        end
+      end 
+      return supervised_student
+    else
+      return []
     end
   end
 

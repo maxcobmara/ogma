@@ -1,5 +1,6 @@
 class Student < ActiveRecord::Base
-
+  include StudentsHelper
+  
   before_save  :titleize_name
   validates_presence_of     :icno, :name, :sstatus, :stelno, :ssponsor, :gender, :sbirthdt, :mrtlstatuscd, :intake,:course_id
   validates_numericality_of :icno, :stelno
@@ -208,17 +209,68 @@ class Student < ActiveRecord::Base
      end
      return Date.new(intake_year, intake_month,1)
    end
+   
+   def self.get_intake_repeat(main_semester, main_year, programme)
+     current_year = Date.today.year
+     current_month = Date.today.month     #for testing - assign value as 8 (August)
+     if current_month < 7 
+       current_semester = 2
+       current_sem_month = 7              #Sem January
+     else 
+       current_semester = 1 
+       current_sem_month = 1              #Sem July
+     end 
+     if main_semester == 1 
+       intake_month = current_sem_month 
+       if main_year >1 
+         intake_year = current_year-main_year
+#        else                                     #no repeaters among 1st sem, 1st year students, all freshies.
+#          intake_year = current_year 
+       end 
+     elsif main_semester == 2
+       if current_sem_month == 1 
+         intake_month = 1
+         intake_year = current_year-(main_year-1) 
+       else 
+         intake_month = 1 
+         intake_year = current_year-main_year    
+       end 
+     end 
+     return Date.new(intake_year, intake_month,1) 
+   end
 
    def self.get_student_by_intake_gender_race(main_semester, main_year, gender, programme, race)
      intake_start = Student.get_intake(main_semester, main_year, programme)
      intake_end = intake_start.end_of_month
-     return Student.where('intake >=? AND intake<=? AND course_id=? AND race2=? AND gender=?',intake_start, intake_end, programme, race, gender)
+     current_students=Student.where('intake >=? AND intake<=? AND course_id=? AND race2=? AND gender=? AND sstatus=?',intake_start, intake_end, programme, race, gender, 'Current')
+     if !(main_semester==1 && main_year==1)
+       intake_repeat_start = Student.get_intake_repeat(main_semester, main_year, programme)
+       intake_repeat_end = intake_repeat_start.end_of_month
+       repeat_students = Student.where('intake >=? AND intake<=? AND course_id=? AND race2=? AND gender=? AND sstatus=?',intake_repeat_start, intake_repeat_end, programme, race, gender, 'Repeat')
+       #repeat_students = Student.find(:all, :conditions => ['intake >=? AND intake<=? AND course_id=? AND race2=? AND gender=? and sstatus=?', "2014-01-01", "2014-01-31", 1, 11, 1, 'Repeat']) 
+       #for checking - 950423-12-6289, Idzham, Jurupulih Cara Kerja(1), Male, Kedayan(11), Intake Jan 2014, SWITCH between sstatus='Current' & 'Repeat'
+     end
+     all_students = []
+     all_students += current_students if current_students
+     all_students+=repeat_students if repeat_students
+     return all_students
    end
 
    def self.get_student_by_intake_gender(main_semester, main_year, gender, programme)
      intake_start = Student.get_intake(main_semester, main_year, programme)
      intake_end = intake_start.end_of_month
-     return Student.where('intake >=? AND intake<=? AND course_id=? AND gender=? AND race2 IS NOT NULL',intake_start, intake_end, programme, gender)
+     current_students=Student.where('intake >=? AND intake<=? AND course_id=? AND gender=? AND race2 IS NOT NULL and sstatus=?',intake_start, intake_end, programme, gender, 'Current')
+     if !(main_semester==1 && main_year==1)
+       intake_repeat_start = Student.get_intake_repeat(main_semester, main_year, programme)
+       intake_repeat_end = intake_repeat_start.end_of_month
+       repeat_students = Student.where('intake >=? AND intake<=? AND course_id=? AND gender=? AND  race2 IS NOT NULL and sstatus=?', intake_repeat_start, intake_repeat_end, programme, gender, 'Repeat')
+       #repeat_students = Student.find(:all, :conditions => ['intake >=? AND intake<=? AND course_id=? AND gender=? and sstatus=?', "2014-01-01", "2014-01-31", 1, 1, 'Repeat']) 
+       #for checking - 950423-12-6289, Idzham, Jurupulih Cara Kerja(1), Male, Kedayan(11), Intake Jan 2014, SWITCH between sstatus='Current' & 'Repeat'
+     end
+     all_students = []
+     all_students += current_students if current_students
+     all_students+=repeat_students if repeat_students
+     return all_students
    end
 
    def self.get_student_by_6intake(programme) #return all students for these 6 intake - valid & invalid
@@ -234,7 +286,24 @@ class Student < ActiveRecord::Base
      intake_end5 = intake_start5.end_of_month
      intake_start6 = Student.get_intake(2, 3, programme)
      intake_end6 = intake_start6.end_of_month
-     return Student.where('((intake >=? AND intake<=?) OR (intake >=? AND intake<=?) OR (intake >=? AND intake<=?) OR (intake >=? AND intake<=?) OR (intake >=? AND intake<=?) OR (intake >=? AND intake<=?)) AND course_id=?',intake_start1, intake_end1,intake_start2, intake_end2, intake_start3, intake_end3, intake_start4, intake_end4,intake_start5, intake_end5,intake_start6, intake_end6,programme)
+     current_students = Student.where('((intake >=? AND intake<=?) OR (intake >=? AND intake<=?) OR (intake >=? AND intake<=?) OR (intake >=? AND intake<=?) OR (intake >=? AND intake<=?) OR (intake >=? AND intake<=?)) AND course_id=? and sstatus=?',intake_start1, intake_end1,intake_start2, intake_end2, intake_start3, intake_end3, intake_start4, intake_end4,intake_start5, intake_end5,intake_start6, intake_end6,programme, 'Current')
+     
+     intake_repeat_start2 = Student.get_intake_repeat(2, 1, programme)
+     intake_repeat_end2 = intake_repeat_start2.end_of_month
+     intake_repeat_start3 = Student.get_intake_repeat(1, 2, programme)
+     intake_repeat_end3 = intake_repeat_start3.end_of_month
+     intake_repeat_start4 = Student.get_intake_repeat(2, 2, programme)
+     intake_repeat_end4 = intake_repeat_start4.end_of_month
+     intake_repeat_start5 = Student.get_intake_repeat(1, 3, programme)
+     intake_repeat_end5 = intake_repeat_start5.end_of_month
+     intake_repeat_start6 = Student.get_intake_repeat(2, 3, programme)
+     intake_repeat_end6 = intake_repeat_start6.end_of_month
+     repeat_students= Student.where('((intake >=? AND intake<=?) OR (intake >=? AND intake<=?) OR (intake >=? AND intake<=?) OR (intake >=? AND intake<=?) OR (intake >=? AND intake<=?)) AND course_id=? AND sstatus=?',intake_repeat_start2, intake_repeat_end2, intake_repeat_start3, intake_repeat_end3, intake_repeat_start4, intake_repeat_end4,intake_repeat_start5, intake_repeat_end5,intake_repeat_start6, intake_repeat_end6,programme, 'Repeat')
+     
+     all_students = []
+     all_students += current_students if current_students
+     all_students+=repeat_students if repeat_students
+     return all_students
    end
 
 # ------------------------------code for repeating field qualification---------------------------------------------------
@@ -291,12 +360,13 @@ class Student < ActiveRecord::Base
 
 STATUS = [
            #  Displayed       stored in db
-           [ "Current","Current" ],
-           [ "Graduated","Graduated" ],
-           [ "Repeat", "Repeat" ],
-           [ "On Leave", "On Leave" ]
-
-]
+           [ I18n.t('student.students.current'),"Current" ],
+           [ I18n.t('student.students.graduated'),"Graduated" ],
+           [ I18n.t('student.students.repeat'), "Repeat" ],
+           [ I18n.t('student.students.on_leave'), "On Leave" ],
+           [ I18n.t('student.students.transfer_college'), "Transfer College"],
+           [ I18n.t('student.students.expelled'), "Expelled"]
+] 
 
 SPONSOR = [
          #  Displayed       stored in db
@@ -308,8 +378,8 @@ SPONSOR = [
 
 GENDER = [
         #  Displayed       stored in db
-        [ "Male","1" ],
-        [ "Female","2" ]
+        [ I18n.t('student.students.male'),"1" ],
+        [ I18n.t('student.students.male'),"2" ]
 ]
 
 #Pls note 'race2' field is for race whereas 'race' field is for etnic

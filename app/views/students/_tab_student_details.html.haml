@@ -2,8 +2,9 @@
 .col-md-8.col-md-offset-1
   %dl.dl-horizontal
     %dt= t 'student.students.sstatus' , :default => model_class.human_attribute_name(:sstatus) + ":"
-    %dd= @student.sstatus
-
+    %dd
+      = @student.sstatus
+      = " ("+@student.sstatus_remark+")" if @student.sstatus=="Transfer College" && @student.sstatus_remark!=""
     %dt= t 'student.students.stelno' , :default => model_class.human_attribute_name(:stelno) + ":"
     %dd=  @student.stelno
 		  
@@ -20,7 +21,7 @@
     %dd= (Student::GENDER.find_all{|disp, value| value == @student.gender.to_s}).map {|disp, value| disp} [0]
 		  
     %dt= t 'student.students.sbirthd' , :default => model_class.human_attribute_name(:sbirthd) + ":"
-    %dd= @student.sbirthdt
+    %dd= @student.sbirthdt.try(:strftime, '%d-%m-%Y')
     %dt= t 'student.students.age' , :default => model_class.human_attribute_name(:age) + ":"
     %dd= @student.age
  
@@ -38,7 +39,7 @@
     %dd= @student.semail
 
     %dt= t 'student.students.regdate' , :default => model_class.human_attribute_name(:regdate) + ":"
-    %dd= @student.regdate
+    %dd= @student.regdate.try(:strftime, '%d-%m-%Y')
     
     %dt= t 'student.students.offer_letter_serial' , :default => model_class.human_attribute_name(:offer_letter_serial) + ":"
     %dd= @student.offer_letter_serial

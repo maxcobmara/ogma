@@ -45,16 +45,22 @@
       %span.switch-left 
         Rosak
         = f.check_box :occupied, {type: "checkbox", id: "my_checkbox", "data-off-color"=>"danger"}, "true", "false"
-  .form-group
+  - if @location.damages.pluck(:repaired_on).include?(nil)
+    .form-group#span_repairdate{:style=>"display:none;"}
+      %label.col-sm-2.control-label=t('location.damage.repaired_on')
+      .col-md-2= f.text_field :repairdate, class: 'date_picker_reverse form-control'
+      /= Date.today.try(:strftime, "%d %b %Y")
+
+  .form-group#span_damages{:style=>"display:none;"}
     %label.col-sm-2.control-label{:for => "occupied"}
       = t 'location.damage.describe_damage'
     .col-md-6
       %span.switch-left 
         = f.fields_for :damages do |builder|
-          - if (builder.object.id!=nil && builder.object.document_id==1) || builder.object.id==nil
+          - if (builder.object.id!=nil && builder.object.document_id==1 && builder.object.repaired_on==nil) || builder.object.id==nil
             = render 'damage_fields', f: builder
         /= link_to_add_fields (t 'fuel_issueds.add_details'), f, :damages
-        = link_to_add_fields t('fuel_issueds.add_details'), f, :damages, "",  ""
+        = link_to_add_fields t('add_details'), f, :damages, "",  ""
 
     
 :javascript
@@ -64,6 +70,28 @@
     var regexp = new RegExp("new_" + association, "g");  
     $(link).parent().before(content.replace(regexp, new_id));  
   }
+  
+  $(document).ready(function(){
+    $("input[id='my_checkbox']").change(function() {  
+      if($('#my_checkbox').is(':checked')) { 
+        $("#span_damages").show(); 
+        $("#span_repairdate").hide();
+      }else{
+        $("#span_damages").hide(); 
+        $("#span_repairdate").show();
+      }
+    });
+
+    $("input[id='my_checkbox']").each(function() {  
+      if($('#my_checkbox').is(':checked')) { 
+        $("#span_damages").show(); 
+        $("#span_repairdate").hide();
+      }else{
+        $("#span_damages").hide(); 
+        $("#span_repairdate").show();
+      }	
+    });
+  });
 
       
       

@@ -1,10 +1,16 @@
 - if bed.tenants.last.try(:keyreturned) != nil
-  Empty
+  /Empty
+  =t 'student.tenant.empty'
 - else 
   - if bed.tenants.last.try(:force_vacate)==true
-    Empty
+    /Empty
+    =t 'student.tenant.empty'
   - else
-    = bed.tenants.last.try(:student).try(:name) || "Empty"
+    /= bed.tenants.last.try(:student).try(:name) || "Empty"
+    - if bed.typename==2 || bed.typename==8
+      = bed.tenants.last.try(:student).try(:name) || (t 'student.tenant.empty')
+    - elsif bed.typename==1
+      = bed.tenants.last.try(:staff).try(:name) || (t 'student.tenant.empty')
   /= bed.tenants.last.try(:student).try(:name) || "Empty"
 %br
 = bed.try(:parent).try(:combo_code)

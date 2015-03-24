@@ -14,8 +14,8 @@
   .form-group
     %label.col-sm-2.control-label{:for => "student_id"}= t 'student.icno'
     .col-md-3
-      = f.text_field :student_icno, :class => 'form-control', data: {autocomplete_source: Student.order(icno: :asc).map(&:student_list)}
-    
+      = f.text_field :student_icno, :class => 'form-control', data: {autocomplete_source: Student.where("id IN (?)", @potential2).order(icno: :asc).map(&:student_list)}
+      /= f.text_field :student_icno, :class => 'form-control', data: {autocomplete_source: Student.order(icno: :asc).map(&:student_list)}
       //= f.text_field :student_icno, :class => 'form-control', data: {autocomplete_source: Student.where("id NOT IN (?) AND gender = ? AND end_training > ?", @current_tenant_ids, 2, Date.today).order(icno: :asc).map(&:icno)}
 
 
@@ -23,22 +23,23 @@
   .form-group
     %label.col-sm-2.control-label{:for => "student_id"}= t 'student.icno'
     .col-md-3
-      = f.text_field :student_icno, :class => 'form-control', data: {autocomplete_source: Student.where("id NOT IN (?) AND gender = ? AND end_training > ?", @current_tenant_ids, 1, Date.today).order(icno: :asc).map(&:student_list)}
+      = f.text_field :student_icno, :class => 'form-control', data: {autocomplete_source: Student.where("id IN (?)", @potential1).order(icno: :asc).map(&:student_list)}
+      /= f.text_field :student_icno, :class => 'form-control', data: {autocomplete_source: Student.where("id NOT IN (?) AND gender = ? AND end_training > ?", @current_tenant_ids, 1, Date.today).order(icno: :asc).map(&:student_list)}
       
 - if @tenant.try(:location).try(:typename) == 1
   .form-group
     %label.col-sm-2.control-label{:for => "staff_id"}= t 'staff.name'
     .col-md-4
-      = f.collection_select :staff_id, Staff.find(:all), :id, :mykad_with_staff_name
+      = f.text_field :staff_icno, :class => 'form-control', data: {autocomplete_source: Staff.where("id IN (?)", @potential3).order(icno: :asc).map(&:staff_list)}
 
 .form-group
-  %label.col-sm-2.control-label{:for => "returnduedate"}= t 'student.tenant.key.provided'
+  %label.col-sm-2.control-label{:for => "keyprovided"}= t 'student.tenant.key.provided'
   .col-md-2
-    = f.text_field :keyaccept, type: "text", :class => 'form-control date_picker_after'
+    = f.text_field :keyaccept, type: "text", :class => 'form-control date_picker_before_reverse', value: @tenant.try(:keyaccept).try(:strftime, '%d-%m-%Y')
     
 .form-group
   %label.col-sm-2.control-label{:for => "keyexpectedreturn"}= t 'student.tenant.key.expected'
   .col-md-2
-    = f.text_field :keyexpectedreturn, type: "text", :class => 'form-control date_picker'
+    = f.text_field :keyexpectedreturn, type: "text", :class => 'form-control date_picker_reverse', value: @tenant.try(:keyexpectedreturn).try(:strftime, '%d-%m-%Y')
     
 

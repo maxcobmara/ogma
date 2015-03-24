@@ -28,10 +28,25 @@ en:
       student: Student
       location: Location
       examquestion: Examquestion
-      leaveforstudent: Cuti Pelajar
+      leaveforstudent: Student Leave
+      travel_request: Travel Request
+      travel_claim: Travel Claim
+      stationery: Office Supplies
+      stationery_add: Office Supplies Additions
+      statonery_use: Office Supplies Deductions
+      location_damage: Location Damages
+      location: Location
     attributes:
       location:
         combo_code: Location Code
+        damages: Location Damages
+      damages:
+        description: Damage Description
+        reported_on: Reported On
+      location_damage:
+        document_id: Damage Type
+        reported_on: Reported On
+        description: Damage Description
       travel_request:
         destination: Destination
         depart_at: Depart at
@@ -39,12 +54,35 @@ en:
         replaced_by: Replaced by
         hod_id: Head of Department
         hod_accept_on: Head of Department acceptance date
+        own_car_notes: Reasons
+        travel_claim_logs: Travel Logs
+      travel_claim_logs:
+        travel_on: Date
+        start_at: From
+        finish_at: To
+        travel_log: Travel Logs
       leaveforstudent:
         student_id: Nama pelajar
         leavetype: Jenis cuti
         leave_startdate: Tarikh cuti bermula
         leave_enddate: Tarikh cuti berakhir
         telno: Telefon
+      travel_claim:
+        claim_month: "Claim For (month & year) "
+        travel_requests: "Travel Request(s) "
+      stationery:
+        stationery_adds: Details of Add Supplies
+        stationery_uses: "Details of Use/Issue Supplies"
+      stationery_adds:
+        document: Supplier Name
+        unitcost: Price Per Unit
+        received: Received Date
+        quantity: Quantity
+      stationery_uses:
+        issuedby: Issued By
+        receivedby: Received By
+        issuedate: Issue Date
+      quantity: Quantity  
     errors:
         template:
           body: "There were problems with the following fields:"
@@ -65,6 +103,9 @@ en:
                 less_than_or_equal_to: Max shoud be more than Min
           travel_request: Travel Request
           kin: Next of Kin
+          stationery: Office Supplies
+          stationery_add: Office Supplies Additions
+          statonery_use: Office Supplies Deductions
         attributes:
           travel_request:
             destination: Destination
@@ -73,6 +114,8 @@ en:
             replaced_by: Replacement Staff
             hod_id: Head of Department
             hod_accept_on: Head of Department Accepted Date
+            own_car_notes: Reason
+            
   #common
   search:  Search
   datelabel: Date
@@ -125,6 +168,7 @@ en:
   none_assigned: None assigned
   inc_unitname: " (including Department / Unit name) "
   approve: Approve
+  add_details: Add Details
 
   actions:
     new: New
@@ -154,6 +198,7 @@ en:
     not_submitted: Not Submitted
     approved: Approved
     not_approved: Not Approved
+    export: Export
     
   errors:
 
@@ -273,6 +318,8 @@ en:
     uniformstat: Uniform Status
     position_id: Position
     reports_to: Reports To 
+    search:
+      ic_no: Staff Search
 
     vehicles:
       title: Vehicle Details
@@ -454,6 +501,7 @@ en:
       value_field: "Value(RM) field: State the number of taxi fares only"
       status_movement: "Status & Movement"
       no_registered_vehicle: "You have NO registered vehicle in this system. Please register your vehicle in Staff submodule first."
+      vehicle_must_exist: " must exist if 'own car' is selected"
 
     travel_claim:
       title: Travel Claims
@@ -510,6 +558,32 @@ en:
       approved: approved
       amended_resubmit: amended and resubmit for finance check
       status_not_known: status not known
+      accommodations: Accommodations 
+      hotel_lodging: "(Hotel / Lodging Address)"
+      address_compulsory: " Compulsory for lodging allowance / hotel rent"
+      address_required: "Please enter lodging / hotel address for claims of lodging allowance / hotel rent"
+      finance_check: Finance Check
+      editing: Editing
+      editing_by_staff: Editing By Staff
+      submitted: Submitted
+      returned: Returned
+      resubmitted_to_finance: Resubmitted to Finance
+      for_checking: For Checking
+      processed: Processed
+      approved: Approved
+      return_to_staff_for_amendment: Return to Staff for Amendment
+      status_not_known: Status Not Known
+      finance_check: "Finance Check (for verifications) of Travel Claims by "
+      returned_for_amendment: Returned for Amendment
+      return_to_staff: Return to Staff
+      verified_ok: Verified OK
+      submitted_on: Submitted on
+      approved_on: Approved on
+      insert_current_salary: "Please insert 'current salary' and 'total fixed allowance' in Staff Information submodule"
+      insert_vehicle: "Please insert vehicle details in Staff Information submodule"
+      claim_exist: "already exist"
+      travel_requests_must_exist: must be selected
+      mileage_xor_km_money: " : Specify a Mileage (km) or a Payment (RM), not both (entered / blank)"
       
     staff_appraisal:
       title: Staff Appraisal
@@ -772,7 +846,12 @@ en:
     reject: Reject
     approved: Approved
     rejected: Rejected
-      
+    appointdt_not_exist: "Please update 'Appointment Date' in 'Staff Information' submodule"
+    leave_balance: Leave Balance
+    balance_before: "(before this leave is taken)"
+    balance_after: "(after this leave is taken)"
+    leave_already_taken: "Leave already taken for current applied dates!"
+    begin_before_ends: "Your leave must begin before it ends"
       
   position:
     title: "Tasks & Responsibilities"
@@ -1112,6 +1191,7 @@ en:
   location:
     title: Location
     code: Location Code
+    combo_code: Combo Code
     name: Name
     administrator: Administrated By
     select_admin: "Select Administrator"
@@ -1122,6 +1202,7 @@ en:
       floor: Floor
       room: "Unit/Room"
       admin: Administrator
+      bed: Katil
       
     damage:
       title: Location Damage
@@ -1131,8 +1212,23 @@ en:
       damage_type: Damage Type
       asset_damage: Asset Damage
       room_damage: Room Damage
+      unit_damage: Unit Damage
       description: Description
       reported_on: Reported On 
+      repaired_on: Repaired On
+      list: "Location Damage List - Student Residence"
+      list_staff: "Location Damage List - Staff Residence"
+      list2: Location Damage
+      new: "Report Damage for "
+      edit: "Edit Damage for "
+      repaired: Repaired
+      not_repaired: Not Repaired
+      damage_report: Location Damage Report for Student Residence
+      match_asset: "Match Asset ?"
+      no_match_asset: No matching asset
+      repairs_of: Repairs of
+      room_damages: room damages
+      must_be_updated_in: "must be updated in : "
     
   student:
     title: Student
@@ -1145,28 +1241,77 @@ en:
     search:
       ic_no: Search for Student
     tenant:
-      title: Student Residence
+      person: tenants
+      name: Tenant Name
+      title: Student Tenancy
+      title2: Staff Tenancy
       new: New Student Tenancy
+      new2: New Staff Tenancy
+      edit: Edit Student Tenancy
+      edit2: Edit Staff Tenancy
       key:
         provided: Date Key Provided
         expected: Date Key expected returned
         returned: Date Returned
       vacate: Force Vacate
+      tenancy_details_nil: Student data not available
       room_map: Room Map
+      unit_map: Unit Map
       list: Tenancy List
-      statistics: Statistics
+      list_full: Student Residence Tenancy List
+      list_full2: Staff Residence Tenancy List
+      statistics: Student Residence Statistics
+      statistics_menu: Statistics (General / Block / Programme)
+      statistics_block: "Breakdown of Room Status (by Block)"
+      general_statistic: General Statistic
+      tenants_students: "Total of Student Residency Tenant (By Programme)"
       empty: Empty
       occupied: Occupied
       damaged: Damaged
+      female_occupied: female occupied
+      female_empty: female empty
+      male_occupied: male occupied
+      male_empty: male empty
+      notes: Notes
       total: Totals
+      total_rooms: Total Rooms
+      total_empty: Total Empty Rooms
+      total_occupied: Total Occupied Rooms
+      total_damaged: Total Damaged Rooms
+      total_all: Total Rooms in Block
+      total_tenants: Total Tenants in Block
+      total_tenant: Total Tenants
       return_key: Return Key
+      return_key_student: Return Key by Student
+      return_key_staff: Return Key by Staff
       empty_room: Empty Room
+      damage_status: Damage Status
+      damage_type: Damage Type
       damage: Damage by Student
-      
+      damage2: Damage by Staff
+      asset_other_damage: "Asset / Other Damages"
+      room_damage: "Room Damage"
+      level: Level
+      bed: Bed
+      room: Room
+      rooms: Rooms
+      report: Tenancy Statistics & Census by Level
+      report_main: Tenancy Statistics by Level
+      census: Tenancy Census by Level
+      census2: Cencus
+      report_census: "Statistics & Census (Level)"
+      summary: Summary
+      reset_search: Reset Student Search
+      reset_search2: Reset Staff Search
+      room_status_title: Room Status Breakdown
+      tenant_programme_title: Tenant Programme Breakdown
+      block: Block
+      unit_no: Unit No
       
     students:
       title: Student Info
       list: Student Info List
+      reporting: Reporting
       formatted_mykad: MyKad No
       name: Name
       matrixno: Matrix No
@@ -1216,6 +1361,13 @@ en:
       grade: Grade
       new: New Student
       result: Result
+      current: Current
+      graduated: Graduated
+      repeat: Repeat
+      on_leave: On leave
+      expelled: Expelled from College
+      transfer_college: Transfer College
+      sstatus_remark: "Remarks, if transfer college"
       
     leaveforstudent:
       title: Student Leave
@@ -1251,7 +1403,7 @@ en:
       update_kin: Update next of kin details
       update_student_kin: ". Please update next of kin details in Student submodule first."
       student_approve_leave_coordinator: "Approve Student Leave Application (Coordinator)"
-      student_approve_leave_warden: "Approve Student Leave Application (Coordinator)"
+      student_approve_leave_warden: "Approve Student Leave Application (Warden)"
       approve_student_leave: Approve Student Leave
       approved_by: Approved By
       approve_date: Approve Date
@@ -1319,6 +1471,19 @@ en:
       assigned2_to: Notify HOD
       assigned2_on: Notify HOD Date
       counseling_request: Counseling request
+      removal_prohibited_for_referred_case: "Selected discipline case is NOT ALLOWED for removal, as case already referred to Counselor for action."
+      new2: New 
+      open: Open
+      refer_tphep: Refer to TPHEP
+      refer_bpl: Refer to BPL
+      closed: Closed
+      all: All Case
+      smooking: Smooking
+      skip_class: Skip Class
+      quarrel: Quarrel
+      others: Others
+      no_case: No case
+      advise: Advise
       
     counseling:
       title: Student Counseling Session
@@ -1370,6 +1535,7 @@ en:
       on_byday: "on (by day)"
       case_reference: Discipline Case Reference
       display_feedback: Display Feeback
+      removal_prohibited_case_still_exist: "Removal of selected appoinment/session is NOT ALLOWED, referrred case (discipline case) still exist."
     
     attendance:
       title: Student Attendance
@@ -1559,11 +1725,12 @@ en:
     upload_file: Upload File
 
   document:
+    title: Document Registry
     list_of_document: Document List
     serial_no: Serial No
     ref_no: Ref No
     category: Category
-    title: Title
+    title2: Title
     letter_date: Letter Date
     received_date: Received Date
     from: From
@@ -1579,10 +1746,27 @@ en:
     stafffiled_id: Filled By
     letterdt: Letter Date
     letterxdt: Received Date
+    circulation_date: Circulation Date
     uploaded: Uploaded File
     upload_change_file: "Upload/Change File"
     document_details: Document Details
     action_details: Action Details
+    recipient_remark: "Type an alphabet and select a recipient accordingly. To add other recipient, please type a comma (,), without any spaces, followed by an alphabet and make your next selection."
+    staff_name: Enter staff name
+    staff_id: Staff
+    letter: Letter
+    memo: Memo
+    circular: Circular
+    others: Others
+    email: "E-mail"
+    circulation1_action: Action by Recipient
+    cc1action: Action Taken
+    cc1remarks: Remark
+    cc1closed: Close Action
+    cc1actiondate: Action Date
+    action_by: Action By
+    attachment_action: "Attachment (Action)"
+    generate_report: Report
 
   events:
     campus_events: Campus Events
@@ -1944,8 +2128,9 @@ en:
       lecturer_name: Lecturer Name
       intake: Intake
       date_time: "Date & Time : "
-      duplicate_lecturer: "Lecturer can only be scheduled to One class at One time. Time slots with error(s) :" 
+      duplicate_lecturer: "Lecturer can only be scheduled to One class at One time. Time slots with error(s) :"
       duplicate_lecturer2: "Re-select Lecturer."
+      intake_programme_must_match: Selected Intake must match with selected Programme
     weeklytimetable_detail:
       topic: Topic
       lecturer_id: Lecturer     
@@ -2025,7 +2210,7 @@ en:
       subject: Subject
       staff_id: Prepared By
     lesson_plan:
-      title: Lesson Plan
+      title: Lesson Plan & Report Listing
       title2: Lesson and Learning
       reporting: Lesson and Learning Activity Report
       report: Report
@@ -2044,9 +2229,11 @@ en:
       reference: Reference
       submission: "Plan Submission & Approval"
       is_submitted: "Submitted?"
+      is_submitted2: Plan submitted?
       submitted_on: Submission Date
       hod_approved: HOD Approval
       hod_approved2: Head of Department Approval
+      hod_approved3: Plan approved?
       hod_approved_on: Approval Date
       hod_rejected: Head of Department Rejection
       hod_rejected_on: Rejection Date
@@ -2072,8 +2259,10 @@ en:
       total_absent: Total Absent
       report_review: Report Review
       report_submit: "Report Submitted?"
+      report_submit2: Report submitted?
       report_submit_on: Report Submission Date
-      report_endorsed: "Report Reviewed?"
+      report_endorsed: "Report Endorsed?"
+      report_endorsed2: Report endorsed?
       report_endorsed_on: Report Review Date
       report_summary: Report Summary
       schedule: Timetable
@@ -2091,7 +2280,8 @@ en:
       to: to
       status: Approval Status
       location: Location
-    
+      add_notes: Add Notes
+      adding_notes: "Add Training Notes (after Lesson Plan submitted for approval)"
  
   campus:
     address: 
@@ -2269,7 +2459,8 @@ en:
         note_title: "Attachment / Current Training Note Title"
         methodologies: Methodologies
         topic: Topic
-        lecture_date: Lecture Date
+        lecture_title: Title
+        lecture_date: Date
         start_time: Start Time
         end_time: End Time
         reference: Reference
@@ -2442,6 +2633,12 @@ en:
     formats:
       default:  "%l:%M %p"
       short: "%l:%M %p"
+    hours: hours
+    minutes: minutes
+    days: days
+    months: months
+    years: years
+    weeks: weeks
       
   datetime:
     formats:

@@ -19,9 +19,19 @@
         %dt= t 'staff_leave.replacement'
         %dd= @leaveforstaff.replacement_id.blank? ? "" : @leaveforstaff.replacement.name 
 
+        %dt
+          =(t 'staff_leave.leave_balance')
+          %br=(t 'staff_leave.balance_before')
+        %dd= @leaveforstaff.applicant.appointdt.nil? ? (t 'staff_leave.appointdt_not_exist') : @leaveforstaff.balance_before
+        
+        %dt
+          = (t 'staff_leave.leave_balance')
+          %br=(t 'staff_leave.balance_after')
+        %dd= @leaveforstaff.applicant.appointdt.nil? ? (t 'staff_leave.appointdt_not_exist') : @leaveforstaff.balance_after
+   
         %dt= t 'staff_leave.entitlement'
-        %dd= @leaveforstaff.cuti_rehat_entitlement
-
+        %dd= @leaveforstaff.applicant.appointdt.nil? ? (t 'staff_leave.appointdt_not_exist') : @leaveforstaff.leave_balance.to_s+"/"+@leaveforstaff.cuti_rehat_entitlement.to_s
+        
   #approve.tab-pane.fade
     .col-md-8.col-md-offset-1
       %dl.dl-horizontal

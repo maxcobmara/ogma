@@ -50,5 +50,5 @@
         %tr
           %td
             - @lesson_plan.trainingnotes.each_with_index do |trainingnote, count|
-              =(count+1).to_s+". "+trainingnote.title+" : "+trainingnote.document_file_name 
+              =(count+1).to_s+". "+trainingnote.title.to_s+" : "+trainingnote.document_file_name.to_s
               %br

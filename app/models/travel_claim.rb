@@ -5,6 +5,7 @@ class TravelClaim < ActiveRecord::Base
   
   belongs_to :staff
   belongs_to :approver,           :class_name => 'Staff',      :foreign_key => 'approved_by'
+  belongs_to :checker,            :class_name => 'Staff',      :foreign_key => 'checked_by'
   
   has_many :travel_requests
   accepts_nested_attributes_for :travel_requests
@@ -17,7 +18,9 @@ class TravelClaim < ActiveRecord::Base
   has_many :travel_claim_allowances, :dependent => :destroy
   accepts_nested_attributes_for :travel_claim_allowances, :reject_if => lambda { |a| a[:amount].blank? }, :allow_destroy =>true
   
-  validates_uniqueness_of :claim_month, :scope => :staff_id, :message => "You already have claims for this month"
+  validates_presence_of :travel_requests, :message => I18n.t('staff.travel_claim.travel_requests_must_exist')
+  validates_uniqueness_of :claim_month, :scope => :staff_id, :message => I18n.t('staff.travel_claim.claim_exist')
+  validate :accommodations_must_exist_for_lodging_hotel_claims
   
   def set_to_nil_where_false
     if is_submitted == true
@@ -43,34 +46,40 @@ class TravelClaim < ActiveRecord::Base
     self.total = total_claims
   end
   
-  def my_claim_status(current_user)
-    if staff_id == current_user.userable.id && is_submitted != true 
-      "editing"
-    elsif staff_id != current_user.userable.id && is_submitted != true	#add-in to make sure it work with - those HACK part in index page - to differentiate with "editing" & login as finance staff
-     "editing by staff"
-    elsif staff_id == current_user.userable.id && is_submitted == true && is_checked == nil
-      "submitted"
-    elsif staff_id != current_user.userable.id && is_submitted == true && is_checked == nil
-      "for checking"
-    elsif staff_id == current_user.userable.id && is_submitted == true && is_checked == false && is_returned == true
-      "returned"
-    elsif staff_id == current_user.userable.id && is_submitted == true && is_checked == false && is_returned == false 
-      "resubmitted to finance"
-    elsif staff_id != current_user.userable.id && is_submitted == true && is_checked == false	&& is_returned == false 
-      "for checking"
-    elsif is_submitted == true && is_checked == true && is_approved != true
-      "processed"
-    elsif is_submitted == true && is_checked == true && is_approved == true
-      "approved"
-    elsif staff_id != current_user.userable.id && is_submitted == true && is_checked ==false && is_returned == true 
-      "return to staff for amendment"
-    else
-      "status not known"
-    end    
+  def accommodations_must_exist_for_lodging_hotel_claims
+     duplicates = (travel_claim_allowances.map(&:expenditure_type) & [31,32]).count
+     if duplicates > 0 && (accommodations.nil? || accommodations.blank?)
+      errors.add(:base, I18n.t('staff.travel_claim.address_required'))
+    end
   end
   
-  
-  
+  def my_claim_status(current_user)
+    if staff_id == current_user.userable.id && is_submitted != true  && is_checked == nil
+      I18n.t('staff.travel_claim.editing') #"editing"
+    elsif staff_id != current_user.userable.id && is_submitted != true && is_checked == nil #add-in to make sure it work with - those HACK part in index page - to differentiate with "editing" & login as finance staff
+      I18n.t('staff.travel_claim.editing_by_staff') #"editing by staff"
+    elsif staff_id == current_user.userable.id && is_submitted == true && is_checked == nil
+      I18n.t('staff.travel_claim.submitted') #"submitted"
+    elsif staff_id != current_user.userable.id && is_submitted == true && is_checked == nil
+      I18n.t('staff.travel_claim.for_checking') #"for checking"
+    elsif staff_id == current_user.userable.id && is_submitted == false && is_checked == false && is_returned == true #owner amend returned document but did not submit
+      I18n.t('staff.travel_claim.returned') #"returned"
+    elsif staff_id == current_user.userable.id && is_submitted == true && is_checked == false && is_returned == true #owner amend returned document & re-SUBMIT
+      I18n.t('staff.travel_claim.returned') #"returned"
+    elsif staff_id == current_user.userable.id && is_submitted == true && is_checked == false && is_returned == false 
+      I18n.t('staff.travel_claim.resubmitted_to_finance')#"resubmitted to finance"
+    elsif staff_id != current_user.userable.id && is_submitted == true && is_checked == false	&& is_returned == false 
+      I18n.t('staff.travel_claim.for_checking') # "for checking"
+    elsif is_submitted == true && is_checked == true && is_approved != true
+      I18n.t('staff.travel_claim.processed') #"processed"
+    elsif is_submitted == true && is_checked == true && is_approved == true
+      I18n.t('staff.travel_claim.approved') #"approved"
+    elsif staff_id != current_user.userable.id && is_submitted == true && is_checked ==false && is_returned == true 
+      I18n.t('staff.travel_claim.return_to_staff_for_amendment') #"return to staff for amendment"
+    else
+      I18n.t('staff.travel_claim.status_not_known') #"status not known"
+    end    
+  end
   
   def to_be_paid
     if advance == nil
@@ -299,7 +308,7 @@ class TravelClaim < ActiveRecord::Base
   end
   def parking_receipts_total
     #travel_claim_receipts.sum(:amount, :conditions => ["expenditure_type = ?", 42])
-    travel_claim_receipts.where(expenditure_type = ?", 42)
+    travel_claim_receipts.where(expenditure_type: 42).sum(:amount)
   end
   
   def laundry_receipts

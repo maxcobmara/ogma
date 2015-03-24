@@ -5,15 +5,15 @@
 .row
   .col-md-offset-3
     .student_bed_female_occupied.legend_object
-    .legend_title female occupied
+    .legend_title=t 'student.tenant.female_occupied'
     .student_bed_female_empty.legend_object
-    .legend_title female empty
+    .legend_title=t 'student.tenant.female_empty'
     .student_bed_male_occupied.legend_object
-    .legend_title male occupied
+    .legend_title=t 'student.tenant.male_occupied'
     .student_bed_male_empty.legend_object
-    .legend_title male empty
+    .legend_title=t 'student.tenant.male_empty'
     .bed_damage.legend_object
-    .legend_title damaged
+    .legend_title=(t 'student.tenant.damaged').downcase
   
   
   
@@ -23,10 +23,14 @@
       %h5= building.name
       - building.children.order(combo_code: :desc).each do |floor|
         .row.tenancy_floor
-          .floor_name= floor.name
           - @bed = floor.descendants.where(typename: [2,8]).order(combo_code: :asc)
+          - @room_nos = @bed.pluck(:combo_code).group_by{|x|x[0, x.size-2]}.count.to_s
+          .floor_name= floor.name+" ("+@room_nos+" "+(t 'student.tenant.rooms').upcase+")"
           
           - @bed.each do |bed|
             = link_to (get_status_link(bed)) do
               .tenant{class: "#{bed.status}", title: "#{render 'tooltip', bed: bed}", 'data-toggle' => 'tooltip', 'data-html' => "true"}
+                /for test
+                /- bedc=bed.combo_code
+                /%font{size: "-2px; color: black;"}=(bedc[bedc.size-4,2]).to_i.to_s+(bedc[bedc.size-1, 1])
                 

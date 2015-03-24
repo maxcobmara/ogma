@@ -18,6 +18,11 @@
     .col-md-3
       = f.select :sstatus, Student::STATUS, {:include_blank =>t('helpers.prompt.select_student_status')}, {class: 'selectpicker mandatory'}
 
+  .form-group.bong2{style: "display: none;"}
+    .col-sm-2.control-label
+      = f.label t 'student.students.sstatus_remark', for: :sstatus_remark
+    .col-md-4
+      = f.text_field :sstatus_remark, class: 'form-control'
 
   .form-group
     .col-sm-2.control-label
@@ -49,7 +54,7 @@
     .col-sm-2.control-label
       =f.label t 'student.students.sbirthd', for: :sbirthdt
     .col-md-2
-      = f.text_field :sbirthdt, class: 'form-control date_picker mandatory', 'data-behaviour' => 'datepicker_today'
+      = f.text_field :sbirthdt, class: 'form-control date_picker_reverse mandatory', 'data-behaviour' => 'datepicker_today', value: @student.try(:sbirthdt).try(:strftime, '%d-%m-%Y')
 
   .form-group
     .col-sm-2.control-label
@@ -62,4 +67,4 @@
     .col-sm-2.control-label
       =f.label t 'student.students.intake_id', for: :intake
     .col-md-2
-      = f.text_field :intake, class: 'form-control date_picker mandatory', 'data-behaviour' => 'datepicker_today'
+      = f.text_field :intake, class: 'form-control date_picker_reverse mandatory', 'data-behaviour' => 'datepicker_today', value: @student.try(:intake).try(:strftime, '%d-%m-%Y')
