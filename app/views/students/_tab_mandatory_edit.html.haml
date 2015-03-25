@@ -24,6 +24,14 @@
     .col-md-4
       = f.text_field :sstatus_remark, class: 'form-control'
 
+  .form-group.bong3{style: "display: none;"}
+    .col-sm-2.control-label
+      = f.label t 'student.students.semester_repeated', for: :sstatus_remark
+    .col-md-4
+      = f.text_field :sstatus_remark, class: 'form-control'
+    .col-md-4
+      =t 'student.students.repeated_notes'
+
   .form-group
     .col-sm-2.control-label
       = f.label t 'student.students.stelno', for: :stelno

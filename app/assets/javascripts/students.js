@@ -21,5 +21,20 @@ $(document).ready(function(){
       $('.bong2').hide();
     }
   });
+  
+  $('#student_sstatus').change(function() {
+    if($(this).val() == "Repeat") {
+      $('.bong3').show();
+    }else {
+      $('.bong3').hide();
+    }
+  });
+  $('#student_sstatus').each(function() {
+    if($(this).val() == "Repeat") {
+      $('.bong3').show();
+    }else {
+      $('.bong3').hide();
+    }
+  });
 
 });
