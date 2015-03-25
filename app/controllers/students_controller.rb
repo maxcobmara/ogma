@@ -89,25 +89,42 @@ class StudentsController < ApplicationController
       end
     end
   end
+  
+  def kumpulan_etnik_main
+    commit = params[:list_submit_button]
+    programme_id = params[:programme]
+    if commit == t('actions.print')
+      redirect_to  kumpulan_etnik_students_path(:format => 'pdf', :programme => programme_id)
+    elsif commit == t('actions.export_excel')
+      redirect_to  kumpulan_etnik_excel_students_path(:format => 'xls', :programme => programme_id)
+    end
+  end
 
   def kumpulan_etnik
     @programme_id = params[:programme].to_i
-    #@programme_id = Student.where('course_id=?',@programmes_id )
-
-    #@programme_id = 3
     students_all_6intakes = Student.get_student_by_6intake(@programme_id)
     @students_6intakes_ids = students_all_6intakes.map(&:id)
     students_all_6intakes_count = students_all_6intakes.count
     @valid = Student.where('course_id=? AND race2 IS NOT NULL AND id IN(?)',@programme_id, @students_6intakes_ids)
-
     @student = Student.all
     respond_to do |format|
       format.pdf do
         pdf = Kumpulan_etnikPdf.new(@student, view_context, @programme_id, @students_6intakes_ids, @valid)
         send_data pdf.render, filename: "kumpulan_etnik-{Date.today}",
-                              type: "application/pdf",
-                              disposition: "inline"
+        type: "application/pdf",
+        disposition: "inline"
       end
+    end
+  end
+  
+  def kumpulan_etnik_excel
+    #raise params.inspect
+    @programme_id = params[:programme].to_i
+    @student=Student.where(course_id: @programme_id)
+    respond_to do |format|
+      #format.html
+      format.csv { send_data @student.to_csv }
+      format.xls { send_data @student.to_csv(col_sep: "\t") } 
     end
   end
 

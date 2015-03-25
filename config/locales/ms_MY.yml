@@ -162,6 +162,7 @@ ms_MY:
     updated: " telah berjaya dikemaskini."
     removed: " telah berjaya dibuang."
     download_excel: Muatturun Fail Excel
+    export_excel: Eksport Excel
     import_excel: Import Excel
     imported: " telah berjaya diimport"
     imported2: "Rekod - rekod berjaya diimport : "
@@ -1287,6 +1288,8 @@ ms_MY:
       sstatus_remark: "Catatan, jika pindah kolej"
       semester_repeated: Semester diulang
       repeated_notes: "Cth 1: Masukkan '2' jika semester 2 diulang, Cth 2: Masukkan '2, 4' jika semester 2 dan 4 diulang."
+      ethnic: Kumpulan Etnik
+      ethnic_group: Maklumat Kumpulan Etnik Pelatih
     
     leaveforstudent:
       title: Permohonan Cuti Pelajar
