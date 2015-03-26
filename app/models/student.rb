@@ -48,36 +48,6 @@ class Student < ActiveRecord::Base
     "#{icno}"+" "+"#{name}"
 
   end
-  #@positions2.concat(positions_by_grade)
-  def self.search3(search3)
-     if search3
-      @students3 = Student.find(:all, :conditions => ["icno LIKE ? ", "%#{search3}%"], :order => "name ASC")
-
-     else
-      @students3 = Student.find(:all,  :order => :icno)
-     end
-  end
-
-
-  def self.search2(intake, programme)
-    if intake!='0' && programme!='0'
-        #@students = Student.find(:all, :conditions=> ['intake =? AND course_id=?',"%#{intake}%",programme]).sort_by{|t|t.intake} #group by program, then sort by intake (first)
-        @students = Student.find(:all, :conditions=> ['intake =? AND course_id=?',"%#{intake}%",programme]).sort_by{|t|t.course_id} #group by intake, then sort by programme (first)
-    elsif intake!='0' && programme=='0'
-        #@students = Student.find(:all, :conditions=> ['intake =?',"%#{intake}%"]).sort_by{|t|t.intake} #group by program, then sort by intake (first)
-        @students = Student.find(:all, :conditions=> ['intake =?',"%#{intake}%"]).sort_by{|t|t.course_id} #group by intake, then sort by programme (first)
-    elsif intake=='0' && programme!='0'
-        #@students = Student.find(:all, :conditions=> ['course_id=?',programme]).sort_by{|t|t.intake} #group by program, then sort by intake (first)
-        @students = Student.find(:all, :conditions=> ['course_id=?',programme]).sort_by{|t|t.course_id} #group by intake, then sort by programme (first)
-    else
-       #@students = Student.find(:all).sort_by{|t|t.intake} #group by program, then sort by intake (first)
-       @students = Student.find(:all).sort_by{|t|t.intake}  #sort by intake, paginate & group by course for display
-    end
-  end
-
-  def self.find_main
-      Programme.find(:all, :condition => ['programme_id IS NULL'])
-  end
 
   def self.year_and_sem(intake)
       current_month = Date.today.strftime("%m")
