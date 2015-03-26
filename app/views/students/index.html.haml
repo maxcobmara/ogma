@@ -8,14 +8,27 @@
       %li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'actions.new'))), new_student_path
   %ul.nav.navbar-nav.navbar-right
     %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "index_search_bar"
+    /%li.dropdown
+    /  %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#"}
+    /    = fa_icon "external-link", text: (t 'actions.export')
+    /    %b.caret
+    /  %ul.dropdown-menu
+    /    %li= link_to (fa_icon "file-excel-o", text: (t "student.students.list")), students_path(params.merge(format: "xls"))
+    /    %li= link_to  (fa_icon "file-pdf-o", text: (t "student.students.list")), student_report_students_path(params.merge(format: 'pdf' ))
+    %li.dropdown
+      %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#"}
+        = fa_icon "print", text: (t 'actions.print')
+        %b.caret
+      %ul.dropdown-menu
+        - Programme.roots.each do |programme|
+          %li= link_to  (fa_icon "file-pdf-o", text: programme.name), student_report_students_path(programme_id: programme.id, format: 'pdf')
     %li.dropdown
       %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#"}
         = fa_icon "external-link", text: (t 'actions.export')
         %b.caret
       %ul.dropdown-menu
         %li= link_to (fa_icon "file-excel-o", text: (t "student.students.list")), students_path(params.merge(format: "xls"))
-        /%li= link_to  (fa_icon "file-pdf-o", text: (t "student.students.list")), tenant_report_student_tenants_path(params.merge(format: 'pdf' ))
-
+     
 .row.filter{style: "display:none;"}
   .col-md-2
 
