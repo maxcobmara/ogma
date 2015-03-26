@@ -147,7 +147,7 @@
                 %h2.icon= t "student.students.reporting"
                 %a.mp-back{:href => "#"}= t 'helpers.links.back'
                 %ul
-                  %li= link_to 'Ethnic', reports_students_path
+                  %li= link_to (t "student.students.ethnic"), reports_students_path
             - permitted_to? [:update, :approve, :approve2], :student_leaveforstudents do
               %li= link_to content_tag(:i, "", :class => "icon-numb") + t("student.leaveforstudent.title"), student_leaveforstudents_path
             - permitted_to? :manage, :student_student_attendances do

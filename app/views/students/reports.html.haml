@@ -1,9 +1,42 @@
 .page-header
-  %h1 Pilihan Laporan Etnik
+  %h1=t 'student.students.ethnic_group'
 
-.row
-  .col-md-4.col-md-offset-2
-    - @programme_diploma_only = Programme.where('ancestry_depth=? AND course_type=?',0,'Diploma')
-    = form_tag(action: :kumpulan_etnik, format: 'pdf') do
-      = select_tag('programme', options_from_collection_for_select(@programme_diploma_only,:id, :programme_list), class: 'selectpicker', 'data-width'=>"75%")
-      = submit_tag "Ethnic Listing by Programme", :name => :list_submit_button, :class => 'btn btn-primary'
+
+.row.fluid
+  - @programme_diploma_only = Programme.where('ancestry_depth=? AND course_type=?',0,'Diploma')
+  /= form_tag(action: :kumpulan_etnik, format: 'pdf') do
+  = form_tag kumpulan_etnik_main_students_path, :method =>'get' do
+    .row
+      .col-md-offset-3
+        .form-group
+          .col-sm-1.control-label
+            %b= t 'student.students.course_id'
+          .col-md-4
+            = select_tag('programme', options_from_collection_for_select(@programme_diploma_only,:id, :programme_list), class: 'selectpicker', 'data-width'=>"90%")
+  
+    .row
+      .col-md-offset-3
+        .form-group
+          .col-sm-offset-1.col-sm-2
+            = submit_tag (t 'actions.print'), :name => :list_submit_button, :class => 'btn btn-primary'
+            /= link_to  (fa_icon "file-pdf-o", text: (t "actions.print")), kumpulan_etnik_students_path(params.merge(format: 'pdf'))
+          .col-sm-2
+            = submit_tag (t 'actions.export_excel'), :name => :list_submit_button, :class => 'btn btn-primary', :format=> 'xls'
+            /link_to (fa_icon "file-excel-o", text: (t "student.tenant.list")), student_tenants_path(params.merge(format: "xls"))
+            
+
+/ = form_tag kewpa17_20_asset_disposals_path(:format => 'pdf'), :method => 'get' , :id => 'form1' do
+/   .navbar.navbar-inverse{role: "navigation", style: "padding-right:40px;"}
+/     %ul.nav.navbar-nav
+/       %li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'actions.new'))), new_asset_disposal_path
+/     %ul.nav.navbar-nav.navbar-right
+/       %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "toga"
+/       %li.dropdown
+/         %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#"}
+/           = fa_icon "print", text: (t 'actions.print')
+/           %b.caret
+/         %ul.dropdown-menu
+/           %li
+/             = submit_tag 'KEW.PA-17', class: "btn btn-link"
+/           %li
+/             = submit_tag 'KEW.PA-20', class: "btn btn-link"
