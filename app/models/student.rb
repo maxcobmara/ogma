@@ -397,6 +397,12 @@ class Student < ActiveRecord::Base
 
       end
   end
+  
+  def self.import(file) 
+    spreadsheet = Spreadsheet2.open_spreadsheet(file) 
+    result = StudentsHelper.update_student(spreadsheet)
+    return result
+  end 
 
 
 STATUS = [
@@ -420,7 +426,7 @@ SPONSOR = [
 GENDER = [
         #  Displayed       stored in db
         [ I18n.t('student.students.male'),"1" ],
-        [ I18n.t('student.students.male'),"2" ]
+        [ I18n.t('student.students.female'),"2" ]
 ]
 
 #Pls note 'race2' field is for race whereas 'race' field is for etnic

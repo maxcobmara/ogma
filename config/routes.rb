@@ -182,12 +182,16 @@ Ogma::Application.routes.draw do
       get :student_report
       get :kumpulan_etnik_main
       get :kumpulan_etnik_excel
+      post :import
+      get 'import_excel', to: "students#import_excel"
     end
     member do
       get :borang_maklumat_pelajar
     end
   end
 
+  match '/public/excel_format/student_import.xls', to: 'students#download_excel_format', via: 'get', target: '_self'
+  
   namespace :student do
     resources :tenants do
       collection do

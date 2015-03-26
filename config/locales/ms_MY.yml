@@ -148,6 +148,7 @@ ms_MY:
   inc_unitname: " (termasuk nama Jabatan / Unit) "
   approve: Kelulusan
   add_details: Tambah Butiran
+  or: atau
  
   actions:
     new: Baru
@@ -1286,13 +1287,27 @@ ms_MY:
       expelled: Dibuang Kolej
       transfer_college: Pindah Kolej
       status_remark: "Catatan (Status)"
-      sstatus_remark: "Catatan, jika pindah kolej"
+      sstatus_remark: "Catatan, jika Pindah Kolej"
+      sstatus_remark2: "Semester diulang, jika Mengulang"
       semester_repeated: Semester diulang
       repeated_notes: "Cth 1: Masukkan '2' jika semester 2 diulang, Cth 2: Masukkan '2, 4' jika semester 2 dan 4 diulang."
       ethnic: Kumpulan Etnik
       ethnic_group: Maklumat Kumpulan Etnik Pelatih
       medical: Kesihatan
       remark: Catatan
+      import_excel: Import Pelajar dari Fail Excel
+      icno_must_unique: "(Nota Tambahan : No Mykad mestilah UNIK dalam format '999999999999')"
+      sstatus_must_use: "(Nota Tambahan : Gunakan 'Current', 'Graduated', 'Repeat', 'On Leave', 'Transfer College' atau 'Expelled' mengikut kesesuaian)"
+      ssponsor_must_use: "(Nota Tambahan : Gunakan 'KKM' untuk Kementerian Kesihatan Malaysia, 'SPA' untuk Suruhanjaya Perkhidmatan Awam, 'swasta' untuk Swasta dan 'FaMa' untuk sendiri)"
+      gender_must_use: "(Nota Tambahan : Gunakan '1' untuk Lelaki dan '2' untuk Perempuan)"
+      sbirthdt_must_use: "(Nota Tambahan : Tarikh Lahir - tarikh mesti dalam format 'tttt-bb-hh')"
+      mrtlstatuscd_must_use: "(Nota Tambahan : Status perkahwinan - gunakan '1' untuk bujang, '2' untuk berkahwin, '3' untuk lain-lain)"
+      regdate_must_use: "(Nota Tambahan : Tarikh Pendaftaran - tarikh mesti dalam format 'tttt-bb-hh')"
+      course_id_accordingly: "(Nota Tambahan : Gunakan 'course_id' berdasarkan senarai berikut (course_id - nama program) : "
+      end_training_must_use: "(Nota Tambahan : Tarikh Tamat Belajar - tarikh mesti dalam format 'tttt-bb-hh')"
+      additional_notes: "Nota Tambahan : "
+      intake_must_use: "(Nota Tambahan : Sesi Ambilan - mesti dalam format tarikh 'tttt-bb-01', pastikan '01' digunakan)"
+      race2_accordingly: "(Nota Tambahan : Gunakan 'race2' berdasarkan senarai berikut (race2 - nama kaum) : "
     
     leaveforstudent:
       title: Permohonan Cuti Pelajar

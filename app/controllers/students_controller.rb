@@ -21,11 +21,41 @@ class StudentsController < ApplicationController
     render json: @students.map(&:icno)
   end
 
+  #start - import excel
+  def import_excel
+  end
+  
+  def import
+      a=Student.import(params[:file]) 
+      #msg=Book.messages(a)
+      #msg2=Book.messages2(a)      
+      #msg3=I18n.t'library.book.book_wo_acc' if a[:bwoacc].count>0
+      if a[:svs].count>0 #a[:svb].count>0 || a[:sva].count>0 || a[:rmb].count>0 || a[:wpt].count>0 || a[:bwoacc].count>0
+	respond_to do |format|
+	   #flash[:notice] = msg
+	   #flash[:error] = msg2
+	   #flash[:error] = msg3
+	   format.html {redirect_to students_url}
+	   #flash.discard
+	end
+      else
+	respond_to do |format|
+          flash[:notice] = "Nothing Imported"
+          format.html { render action: 'import_excel' }
+          flash.discard
+        end
+      end
+  end
+  
+  def download_excel_format
+    send_file ("#{::Rails.root.to_s}/public/excel_format/student_import.xls")
+  end
+  #end - import excel
+  
   # GET /students/1
   # GET /students/1.xml
   def show
   end
-
 
   # GET /students/new
   # GET /students/new.xml

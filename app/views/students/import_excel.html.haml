@@ -1,0 +1,68 @@
+- model_class = Student
+.page-header
+  %h1= t('student.students.import_excel')
+= render 'shared/flashes'
+  
+%br
+= form_tag import_students_path, multipart: true do
+  .row
+    .form-group
+      .col-md-4.col-md-offset-2
+        = file_field_tag :file
+      .col-md-1
+        = submit_tag "Import", :class => 'btn btn-primary'
+    .form-group
+      .col-md-4.col-md-offset-2
+        = link_to (t 'library.book.excel_format'), '/public/excel_format/student_import.xls', :action => 'download_excel_format'
+%br
+%h4=t('library.book.excel_conditions')
+
+%br=t('library.book.condition_line')
+%ol
+  %li 
+    icno
+    =" - "+t('student.students.icno_must_unique')
+  %li name
+  %li matrixno
+  %li 
+    sstatus
+    =" - "+t('student.students.sstatus_must_use')
+  %li 
+    sstatus_remark
+    ="- ("+t('student.students.additional_notes')+t('student.students.sstatus_remark')+" "+(t 'or').upcase+" "+t('student.students.sstatus_remark2')+" "+" - "+t('student.students.repeated_notes')+")"
+  %li stelno
+  %li 
+    ssponsor
+    =" - "+t('student.students.ssponsor_must_use')
+  %li 
+    gender
+    =" - "+t('student.students.gender_must_use')
+  %li 
+    sbirthdt
+    =" - "+t('student.students.sbirthdt_must_use')
+  %li 
+    mrtlstatuscd
+    =" - "+t('student.students.mrtlstatuscd_must_use')
+  %li semail
+  %li 
+    regdate
+    =" - "+t('student.students.regdate_must_use')
+  %li 
+    course_id
+    =" - "+t('student.students.course_id_accordingly')
+    %ul
+      - Programme.roots.each do |course|
+        %li= course.id.to_s+" - "+course.name
+  %li offer_letter_serial
+  %li 
+    end_training
+    =" - "+t('student.students.end_training_must_use')
+  %li 
+    intake
+    =" - "+t('student.students.intake_must_use')
+  %li 
+    race2
+    =" - "+t('student.students.race2_accordingly')
+    %ul
+      - Student::RACE.each do |name, id|
+        %li=id.to_s+" - "+name
