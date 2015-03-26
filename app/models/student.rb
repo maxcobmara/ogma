@@ -366,8 +366,21 @@ class Student < ActiveRecord::Base
  accepts_nested_attributes_for :spmresults, :reject_if => lambda { |a| a[:spm_subject].blank? }
 
 
+ def display_matrixno
+   unless matrixno.nil?
+     a="#{matrixno}"
+   else
+     nil
+   end
+ end
+ 
  def display_race
-   "#{(Student::RACE.find_all{|disp, value| value == race2.to_i}).map {|disp, value| disp}}"
+   unless race2.nil? 
+     a="#{((Student::RACE.find_all{|disp, value| value == race2.to_i}).map {|disp, value| disp}).first}"
+   else
+     a=nil
+   end
+   a
  end
 
  def display_intake
@@ -375,35 +388,143 @@ class Student < ActiveRecord::Base
  end
 
  def display_regdate
-   "#{regdate.to_date.strftime("%d-%b-%Y")}"
+   "#{regdate.to_date.strftime("%d-%m-%Y") unless regdate.nil?}"
  end
  def display_gender
-  "#{(Student::GENDER.find_all{|disp, value| value == gender.to_s}).map {|disp, value| disp}}"
+  "#{((Student::GENDER.find_all{|disp, value| value == gender.to_s}).map {|disp, value| disp}).first}"
  end
 
  def display_enddate
-   "#{end_training.to_date.strftime("%d-%b-%Y")}"
+   "#{end_training.to_date.strftime("%d-%m-%Y") unless end_training.nil?}"
  end
 
+ def display_birthdate
+   "#{sbirthdt.to_date.strftime("%d-%m-%Y") unless sbirthdt.nil?}"
+ end
+ 
  def display_bloodtype
-   "#{(Student::BLOOD_TYPE.find_all{|disp, value| value == bloodtype.to_s}).map {|disp, value| disp}}"
+   if bloodtype.nil? || bloodtype.blank?
+     a=nil
+   else
+     a="#{((Student::BLOOD_TYPE.find_all{|disp, value| value == bloodtype.to_s}).map {|disp, value| disp}).first}"
+   end
+   a
  end
 
  def display_address
-   address.to_s
+   unless address.nil?
+     a="#{address.gsub!(/\s/," ")}"
+   else
+     a=nil
+   end
+   a
+ end
+ def display_marital
+   "#{((Student::MARITAL_STATUS.find_all{|disp, value| value == mrtlstatuscd.to_s}).map {|disp, value| disp}).first}"
+ end
+ def display_status
+   "#{((Student::STATUS.find_all{|disp, value| value==sstatus}).map {|disp, value| disp}).first}"
+ end
+ def display_sstatus_remark
+   if sstatus == "Repeat"
+     unless sstatus_remark.nil?
+       a="#{I18n.t('student.students.semester_repeated')+": "+ sstatus_remark}"
+     else
+       a=nil
+     end
+   else
+     unless sstatus_remark.nil? 
+       a="#{sstatus_remark}"
+     else
+       a=nil
+     end
+   end
+   a
+ end
+ def display_programme
+   unless course_id.nil?
+     a=course.try(:programme_list)
+   else
+     a=nil
+   end
+   a
+ end
+ def display_physical
+   unless physical.blank?
+     a="#{physical}"
+   else
+     a=nil
+   end
+   a
+ end
+ def display_allergy
+   unless allergy.blank?
+     a="#{allergy}"
+   else
+     a=nil
+   end
+   a
+ end
+ def display_disease
+   unless disease.blank?
+     a="#{disease}"
+   else
+     a=nil
+   end
+   a
+ end
+ def display_offer_letter
+   unless offer_letter_serial.blank?
+     a="#{offer_letter_serial.to_s}"
+   else
+     a=nil
+   end
+   a
+ end
+ def display_semail
+   unless semail.blank?
+     a="#{semail}"
+   else
+     a=nil
+   end
+   a
+ end
+ def display_medication
+   unless medication.blank?
+     a="#{medication}"
+   else
+     a=nil
+   end
+   a
+ end
+ def display_medicalremarks
+   unless remarks.blank?
+     a="#{remarks}"
+   else
+     a=nil
+   end
+   a
+ end
+ def display_courseremarks
+   if course_remarks.blank? || course_remarks.nil?
+     a=nil
+   else
+     a="#{course_remarks}"
+   end
+   a
  end
  #export excel section ---
-
- def self.header_excel
-  ["Mykad No", "Student Name", "Matrix No", "Programme", "Intake", "Registration Date","End Training Date","Remarks", "Offer Letter","Race","Status","Gender","Tel No.", "Email","Physical","Allergy","Disease","Blood Type", "Medication", "Remarks"]
-  #, "Address" - to add in later
- end
-
- def self.column_excel
-   #[{:exampaper=>[:examtypename,{:subject => :subject_list}]},:gradeA, :gradeAminus, :gradeBplus,:gradeB, :gradeBminus, :gradeCplus,:gradeC, :gradeCminus,:gradeDplus,:gradeD,:gradeE ]
-
-   [:formatted_mykad, :name, :matrixno, {:course => :programme_list}, :display_intake, :display_regdate,:display_enddate,:course_remarks, :offer_letter_serial,:display_race,:sstatus,:display_gender,:stelno,:semail, :physical,:allergy,:disease,:display_bloodtype,:medication, :remarks]  #  , :display_address --> to add in later
- end
+ 
+  def self.to_csv2(options = {})
+    CSV.generate(options) do |csv|
+        csv << [I18n.t('student.students.list')] #title added
+        csv << [] #blank row added
+        csv << [I18n.t('student.students.icno'), I18n.t('student.students.name'), I18n.t('student.students.matrixno'), I18n.t('student.students.course_id'), I18n.t('student.students.intake_id'), I18n.t('student.students.regdate'), I18n.t('student.students.end_training'),I18n.t('student.students.offer_letter_serial'),I18n.t('student.students.ssponsor'),"Status",I18n.t('student.students.status_remark'), I18n.t('student.students.gender'), I18n.t('student.students.race'), I18n.t('student.students.mrtlstatuscd'),I18n.t('student.students.stelno'), I18n.t('student.students.semail'), I18n.t('student.students.sbirthd'), I18n.t('student.students.physical'), I18n.t('student.students.allergy'), I18n.t('student.students.disease'),I18n.t('student.students.bloodtype'), I18n.t('student.students.medication'),I18n.t('student.students.remark')+" ("+I18n.t('student.students.medical')+")", I18n.t('student.students.address'), I18n.t('student.students.remark')]
+        all.each do |student|
+          csv << [student.formatted_mykad, student.name, student.display_matrixno, student.display_programme, student.display_intake, student.display_regdate,student.display_enddate, student.display_offer_letter, student.ssponsor, student.display_status, student.display_sstatus_remark, student.display_gender, student.display_race, student.display_marital,  "\'"+student.try(:stelno)+"\'", student.display_semail, student.display_birthdate, student.display_physical, student.display_allergy, student.display_disease, student.display_bloodtype, student.display_medication, student.display_medicalremarks,  student.display_address, student.course_remarks]
+        end
+      end
+  end
  
  def self.to_csv(options = {})
     @programme_id = all[0].course_id

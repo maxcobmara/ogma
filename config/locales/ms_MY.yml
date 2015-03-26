@@ -1272,7 +1272,7 @@ ms_MY:
       course_details: Butiran Kursus
       health_status: Status Kesihatan
       qualifications: Kelayakan
-      guarantor: Keputusan SPM
+      guarantor: Penjamin
       contact_information: Maklumat Perhubungan dan Penjamin
       mandatory: Mandatori
       subject: Subjek
@@ -1285,11 +1285,14 @@ ms_MY:
       on_leave: Bercuti
       expelled: Dibuang Kolej
       transfer_college: Pindah Kolej
+      status_remark: "Catatan (Status)"
       sstatus_remark: "Catatan, jika pindah kolej"
       semester_repeated: Semester diulang
       repeated_notes: "Cth 1: Masukkan '2' jika semester 2 diulang, Cth 2: Masukkan '2, 4' jika semester 2 dan 4 diulang."
       ethnic: Kumpulan Etnik
       ethnic_group: Maklumat Kumpulan Etnik Pelatih
+      medical: Kesihatan
+      remark: Catatan
     
     leaveforstudent:
       title: Permohonan Cuti Pelajar

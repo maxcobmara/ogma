@@ -7,8 +7,13 @@ class StudentsController < ApplicationController
 
   def index
     @search = Student.search(params[:q])
-    @students = @search.result.order(intake: :asc, course_id: :asc)
-    @students = @students.page(params[:page]||1)
+    @students_all = @search.result.order(intake: :asc, course_id: :asc)
+    @students = @students_all.page(params[:page]||1)
+    respond_to do |format|
+      format.html
+      format.csv { send_data @students_all.to_csv2 }
+      format.xls { send_data @students_all.to_csv2(col_sep: "\t") } 
+    end
   end
 
   def auto_complete
