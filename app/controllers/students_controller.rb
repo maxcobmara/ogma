@@ -27,22 +27,21 @@ class StudentsController < ApplicationController
   
   def import
       a=Student.import(params[:file]) 
-      #msg=Book.messages(a)
-      #msg2=Book.messages2(a)      
-      #msg3=I18n.t'library.book.book_wo_acc' if a[:bwoacc].count>0
-      if a[:svs].count>0 #a[:svb].count>0 || a[:sva].count>0 || a[:rmb].count>0 || a[:wpt].count>0 || a[:bwoacc].count>0
-	respond_to do |format|
-	   #flash[:notice] = msg
-	   #flash[:error] = msg2
-	   #flash[:error] = msg3
-	   format.html {redirect_to students_url}
-	   #flash.discard
+      msg=Student.messages(a)
+      msg2=Student.messages2(a)      
+      
+      if a[:svs].count>0 && a[:ine].count==0 && a[:stnv].count==0 && a[:spnv].count==0
+        respond_to do |format|
+	  flash[:notice]= msg
+	  format.html {redirect_to students_url}
+	  #flash.discard
 	end
       else
 	respond_to do |format|
-          flash[:notice] = "Nothing Imported"
-          format.html { render action: 'import_excel' }
-          flash.discard
+          flash[:notice]= msg if a[:svs].count>0
+	  flash[:error] = msg2
+          format.html { redirect_to import_excel_students_url}#{ render action: 'import_excel' }
+          #flash.discard
         end
       end
   end

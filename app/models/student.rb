@@ -404,7 +404,14 @@ class Student < ActiveRecord::Base
     return result
   end 
 
-
+  def self.messages(import_result) 
+    StudentsHelper.msg_import(import_result)
+  end
+  
+  def self.messages2(import_result) 
+    StudentsHelper.msg_import2(import_result)
+  end
+  
 STATUS = [
            #  Displayed       stored in db
            [ I18n.t('student.students.current'),"Current" ],

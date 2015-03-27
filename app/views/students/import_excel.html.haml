@@ -13,7 +13,7 @@
         = submit_tag "Import", :class => 'btn btn-primary'
     .form-group
       .col-md-4.col-md-offset-2
-        = link_to (t 'library.book.excel_format'), '/public/excel_format/student_import.xls', :action => 'download_excel_format'
+        = link_to (t 'excel_format'), '/public/excel_format/student_import.xls', :action => 'download_excel_format'
 %br
 %h4=t('library.book.excel_conditions')
 
@@ -22,7 +22,9 @@
   %li 
     icno
     =" - "+t('student.students.icno_must_unique')
-  %li name
+  %li 
+    name
+    =" - "+t('student.students.name_must_not_blank')
   %li matrixno
   %li 
     sstatus
@@ -30,7 +32,9 @@
   %li 
     sstatus_remark
     ="- ("+t('student.students.additional_notes')+t('student.students.sstatus_remark')+" "+(t 'or').upcase+" "+t('student.students.sstatus_remark2')+" "+" - "+t('student.students.repeated_notes')+")"
-  %li stelno
+  %li 
+    stelno
+    =" - "+t('student.students.stelno_must_not_blank')
   %li 
     ssponsor
     =" - "+t('student.students.ssponsor_must_use')
@@ -51,7 +55,7 @@
     course_id
     =" - "+t('student.students.course_id_accordingly')
     %ul
-      - Programme.roots.each do |course|
+      - Programme.roots.sort.each do |course|
         %li= course.id.to_s+" - "+course.name
   %li offer_letter_serial
   %li 

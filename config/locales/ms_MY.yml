@@ -149,6 +149,7 @@ ms_MY:
   approve: Kelulusan
   add_details: Tambah Butiran
   or: atau
+  excel_format: Format Excel
  
   actions:
     new: Baru
@@ -180,6 +181,7 @@ ms_MY:
     approved: Diluluskan
     not_approved: Tidak Diluluskan
     export: Eksport
+    line_no_excel:  " (fail excel - no baris : "
     
   errors:
   
@@ -1297,6 +1299,8 @@ ms_MY:
       remark: Catatan
       import_excel: Import Pelajar dari Fail Excel
       icno_must_unique: "(Nota Tambahan : No Mykad mestilah UNIK dalam format '999999999999')"
+      name_must_not_blank: "(Nota Tambahan : Medan ini tidak boleh dikosongkan)"
+      stelno_must_not_blank: "(Nota Tambahan : Medan ini (no telefon pelajar) tidak boleh dikosongkan)"
       sstatus_must_use: "(Nota Tambahan : Gunakan 'Current', 'Graduated', 'Repeat', 'On Leave', 'Transfer College' atau 'Expelled' mengikut kesesuaian)"
       ssponsor_must_use: "(Nota Tambahan : Gunakan 'KKM' untuk Kementerian Kesihatan Malaysia, 'SPA' untuk Suruhanjaya Perkhidmatan Awam, 'swasta' untuk Swasta dan 'FaMa' untuk sendiri)"
       gender_must_use: "(Nota Tambahan : Gunakan '1' untuk Lelaki dan '2' untuk Perempuan)"
@@ -1308,6 +1312,16 @@ ms_MY:
       additional_notes: "Nota Tambahan : "
       intake_must_use: "(Nota Tambahan : Sesi Ambilan - mesti dalam format tarikh 'tttt-bb-01', pastikan '01' digunakan)"
       race2_accordingly: "(Nota Tambahan : Gunakan 'race2' berdasarkan senarai berikut (race2 - nama kaum) : "
+      icno_invalid: " rekod dengan data 'icno' tidak sah "
+      name_invalid: " rekod dengan data 'nama' tidak sah "
+      stelno_invalid: " rekod dengan data 'stelno' tidak sah "
+      sstatus_invalid: " rekod dengan data 'sstatus' tidak sah "
+      ssponsor_invalid: " rekod dengan data 'ssponsor' tidak sah "
+      sbirthdt_invalid: " rekod dengan data 'sbirthdt' tidak sah "
+      gender_invalid: " rekod dengan data 'gender' tidak sah "
+      marital_invalid: " rekod dengan data 'mrtlstatuscd' tidak sah "
+      course_id_invalid: " rekod dengan data 'course_id' tidak sah "
+      intake_invalid: " rekod dengan data 'intake' tidak sah "
     
     leaveforstudent:
       title: Permohonan Cuti Pelajar
