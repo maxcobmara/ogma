@@ -48,36 +48,6 @@ class Student < ActiveRecord::Base
     "#{icno}"+" "+"#{name}"
 
   end
-  #@positions2.concat(positions_by_grade)
-  def self.search3(search3)
-     if search3
-      @students3 = Student.find(:all, :conditions => ["icno LIKE ? ", "%#{search3}%"], :order => "name ASC")
-
-     else
-      @students3 = Student.find(:all,  :order => :icno)
-     end
-  end
-
-
-  def self.search2(intake, programme)
-    if intake!='0' && programme!='0'
-        #@students = Student.find(:all, :conditions=> ['intake =? AND course_id=?',"%#{intake}%",programme]).sort_by{|t|t.intake} #group by program, then sort by intake (first)
-        @students = Student.find(:all, :conditions=> ['intake =? AND course_id=?',"%#{intake}%",programme]).sort_by{|t|t.course_id} #group by intake, then sort by programme (first)
-    elsif intake!='0' && programme=='0'
-        #@students = Student.find(:all, :conditions=> ['intake =?',"%#{intake}%"]).sort_by{|t|t.intake} #group by program, then sort by intake (first)
-        @students = Student.find(:all, :conditions=> ['intake =?',"%#{intake}%"]).sort_by{|t|t.course_id} #group by intake, then sort by programme (first)
-    elsif intake=='0' && programme!='0'
-        #@students = Student.find(:all, :conditions=> ['course_id=?',programme]).sort_by{|t|t.intake} #group by program, then sort by intake (first)
-        @students = Student.find(:all, :conditions=> ['course_id=?',programme]).sort_by{|t|t.course_id} #group by intake, then sort by programme (first)
-    else
-       #@students = Student.find(:all).sort_by{|t|t.intake} #group by program, then sort by intake (first)
-       @students = Student.find(:all).sort_by{|t|t.intake}  #sort by intake, paginate & group by course for display
-    end
-  end
-
-  def self.find_main
-      Programme.find(:all, :condition => ['programme_id IS NULL'])
-  end
 
   def self.year_and_sem(intake)
       current_month = Date.today.strftime("%m")
@@ -365,45 +335,18 @@ class Student < ActiveRecord::Base
  has_many :spmresults, :dependent => :destroy
  accepts_nested_attributes_for :spmresults, :reject_if => lambda { |a| a[:spm_subject].blank? }
 
-
- def display_race
-   "#{(Student::RACE.find_all{|disp, value| value == race2.to_i}).map {|disp, value| disp}}"
- end
-
- def display_intake
-   "#{intake.to_date.strftime("%b %Y") }"
- end
-
- def display_regdate
-   "#{regdate.to_date.strftime("%d-%b-%Y")}"
- end
- def display_gender
-  "#{(Student::GENDER.find_all{|disp, value| value == gender.to_s}).map {|disp, value| disp}}"
- end
-
- def display_enddate
-   "#{end_training.to_date.strftime("%d-%b-%Y")}"
- end
-
- def display_bloodtype
-   "#{(Student::BLOOD_TYPE.find_all{|disp, value| value == bloodtype.to_s}).map {|disp, value| disp}}"
- end
-
- def display_address
-   address.to_s
- end
  #export excel section ---
-
- def self.header_excel
-  ["Mykad No", "Student Name", "Matrix No", "Programme", "Intake", "Registration Date","End Training Date","Remarks", "Offer Letter","Race","Status","Gender","Tel No.", "Email","Physical","Allergy","Disease","Blood Type", "Medication", "Remarks"]
-  #, "Address" - to add in later
- end
-
- def self.column_excel
-   #[{:exampaper=>[:examtypename,{:subject => :subject_list}]},:gradeA, :gradeAminus, :gradeBplus,:gradeB, :gradeBminus, :gradeCplus,:gradeC, :gradeCminus,:gradeDplus,:gradeD,:gradeE ]
-
-   [:formatted_mykad, :name, :matrixno, {:course => :programme_list}, :display_intake, :display_regdate,:display_enddate,:course_remarks, :offer_letter_serial,:display_race,:sstatus,:display_gender,:stelno,:semail, :physical,:allergy,:disease,:display_bloodtype,:medication, :remarks]  #  , :display_address --> to add in later
- end
+ 
+  def self.to_csv2(options = {})
+    CSV.generate(options) do |csv|
+        csv << [I18n.t('student.students.list')] #title added
+        csv << [] #blank row added
+        csv << [I18n.t('student.students.icno'), I18n.t('student.students.name'), I18n.t('student.students.matrixno'), I18n.t('student.students.course_id'), I18n.t('student.students.intake_id'), I18n.t('student.students.regdate'), I18n.t('student.students.end_training'),I18n.t('student.students.offer_letter_serial'),I18n.t('student.students.ssponsor'),"Status",I18n.t('student.students.status_remark'), I18n.t('student.students.gender'), I18n.t('student.students.race'), I18n.t('student.students.mrtlstatuscd'),I18n.t('student.students.stelno'), I18n.t('student.students.semail'), I18n.t('student.students.sbirthd'), I18n.t('student.students.physical'), I18n.t('student.students.allergy'), I18n.t('student.students.disease'),I18n.t('student.students.bloodtype'), I18n.t('student.students.medication'),I18n.t('student.students.remark')+" ("+I18n.t('student.students.medical')+")", I18n.t('student.students.address'), I18n.t('student.students.remark')]
+        all.each do |student|
+          csv << [student.formatted_mykad, student.name, student.display_matrixno, student.display_programme, student.display_intake, student.display_regdate,student.display_enddate, student.display_offer_letter, student.ssponsor, student.display_status, student.display_sstatus_remark, student.display_gender, student.display_race, student.display_marital,  "\'"+student.try(:stelno)+"\'", student.display_semail, student.display_birthdate, student.display_physical, student.display_allergy, student.display_disease, student.display_bloodtype, student.display_medication, student.display_medicalremarks,  student.display_address, student.display_courseremarks]
+        end
+      end
+  end
  
  def self.to_csv(options = {})
     @programme_id = all[0].course_id
@@ -454,8 +397,21 @@ class Student < ActiveRecord::Base
 
       end
   end
+  
+  def self.import(file) 
+    spreadsheet = Spreadsheet2.open_spreadsheet(file) 
+    result = StudentsHelper.update_student(spreadsheet)
+    return result
+  end 
 
-
+  def self.messages(import_result) 
+    StudentsHelper.msg_import(import_result)
+  end
+  
+  def self.messages2(import_result) 
+    StudentsHelper.msg_import2(import_result)
+  end
+  
 STATUS = [
            #  Displayed       stored in db
            [ I18n.t('student.students.current'),"Current" ],
@@ -477,7 +433,7 @@ SPONSOR = [
 GENDER = [
         #  Displayed       stored in db
         [ I18n.t('student.students.male'),"1" ],
-        [ I18n.t('student.students.male'),"2" ]
+        [ I18n.t('student.students.female'),"2" ]
 ]
 
 #Pls note 'race2' field is for race whereas 'race' field is for etnic

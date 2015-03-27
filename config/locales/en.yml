@@ -169,6 +169,8 @@ en:
   inc_unitname: " (including Department / Unit name) "
   approve: Approve
   add_details: Add Details
+  or: or
+  excel_format: Excel Format
 
   actions:
     new: New
@@ -200,6 +202,7 @@ en:
     approved: Approved
     not_approved: Not Approved
     export: Export
+    line_no_excel: " (excel file - line no : "
     
   errors:
 
@@ -1368,11 +1371,40 @@ en:
       on_leave: On leave
       expelled: Expelled from College
       transfer_college: Transfer College
-      sstatus_remark: "Remarks, if transfer college"
+      status_remark: "Remark (Status)"
+      sstatus_remark: "Remarks, if Transfer College"
+      sstatus_remark2: "Semester repeated, if Repeat"
       semester_repeated: Semester repeated
       repeated_notes: "Eg. 1: Insert '2' if semester 2 is repeated, Eg. 2: Insert '2, 4' if semester 2 and 4 are repeated."
       ethnic: Ethnic Group
       ethnic_group: Students Ethnic Group Information
+      medical: Medical
+      remark: Remarks
+      import_excel: Import Students from Excel File
+      icno_must_unique: "(Additional notes : Mykad UNIQUE in '999999999999' format)"
+      name_must_not_blank: "(Additional notes : this field can't be blank"
+      stelno_must_not_blank: "(Additional notes : this field (student telephone no) can't be blank)"
+      sstatus_must_use: "(Additional notes : Use 'Current', 'Graduated', 'Repeat', 'On Leave', 'Transfer College' or 'Expelled' accordingly)"
+      ssponsor_must_use: "(Additional notes : Use 'KKM' for Kementerian Kesihatan Malaysia, 'SPA' for Suruhanjaya Perkhidmatan Awam, 'swasta' untuk Private dan 'FaMa' for Own)"
+      gender_must_use: "(Additional notes : Use '1' for Male and '2' for female)"
+      sbirthdt_must_use: "(Additional notes : Date of Birth - date must in 'yyyy-mm-dd' format)"
+      mrtlstatuscd_must_use: "(Additional notes : Marital status - use '1' for single, '2' for married, '3' for others)"
+      regdate_must_use: "(Additional notes : Registration date - date must in 'yyyy-mm-dd' format)"
+      course_id_accordingly: "(Additional notes : Use 'course_id' accordingly as per listed (course_id - programme name) : "
+      end_training_must_use: "(Additional notes : End of training - date must in 'yyyy-mm-dd' format)"
+      additional_notes: "Additional notes : "
+      intake_must_use: "(Additional notes : Intake - must in date format 'yyyy-mm-01', note '01' is used)"
+      race2_accordingly: "(Additional notes : Use 'race2' accordingly as per listed (race2 - race name) : "
+      icno_invalid: " record(s) with invalid 'icno' "
+      name_invalid: " record(s) with invalid 'name' "
+      stelno_invalid: " record(s) with invalid 'stelno' "
+      sstatus_invalid: " record(s) with invalid 'sstatus' "
+      ssponsor_invalid: "record(s) with invalid 'ssponsor' "
+      sbirthdt_invalid: "record(s) with invalid 'sbirthdt' "
+      gender_invalid: "record(s) with invalid 'gender' "
+      marital_invalid: "record(s) with invalid 'mrtlstatuscd' "
+      course_id_invalid: "record(s) with invalid 'course_id' "
+      intake_invalid: "record(s) with invalid 'intake' "
       
     leaveforstudent:
       title: Student Leave

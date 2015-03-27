@@ -7,8 +7,13 @@ class StudentsController < ApplicationController
 
   def index
     @search = Student.search(params[:q])
-    @students = @search.result.order(intake: :asc, course_id: :asc)
-    @students = @students.page(params[:page]||1)
+    @students_all = @search.result.order(intake: :asc, course_id: :asc)
+    @students = @students_all.page(params[:page]||1)
+    respond_to do |format|
+      format.html
+      format.csv { send_data @students_all.to_csv2 }
+      format.xls { send_data @students_all.to_csv2(col_sep: "\t") } 
+    end
   end
 
   def auto_complete
@@ -16,11 +21,40 @@ class StudentsController < ApplicationController
     render json: @students.map(&:icno)
   end
 
+  #start - import excel
+  def import_excel
+  end
+  
+  def import
+      a=Student.import(params[:file]) 
+      msg=Student.messages(a)
+      msg2=Student.messages2(a)      
+      
+      if a[:svs].count>0 && a[:ine].count==0 && a[:stnv].count==0 && a[:spnv].count==0
+        respond_to do |format|
+	  flash[:notice]= msg
+	  format.html {redirect_to students_url}
+	  #flash.discard
+	end
+      else
+	respond_to do |format|
+          flash[:notice]= msg if a[:svs].count>0
+	  flash[:error] = msg2
+          format.html { redirect_to import_excel_students_url}#{ render action: 'import_excel' }
+          #flash.discard
+        end
+      end
+  end
+  
+  def download_excel_format
+    send_file ("#{::Rails.root.to_s}/public/excel_format/student_import.xls")
+  end
+  #end - import excel
+  
   # GET /students/1
   # GET /students/1.xml
   def show
   end
-
 
   # GET /students/new
   # GET /students/new.xml
@@ -118,7 +152,6 @@ class StudentsController < ApplicationController
   end
   
   def kumpulan_etnik_excel
-    #raise params.inspect
     @programme_id = params[:programme].to_i
     @student=Student.where(course_id: @programme_id)
     respond_to do |format|
@@ -139,23 +172,32 @@ class StudentsController < ApplicationController
   end
 
   def borang_maklumat_pelajar
-
     @student= Student.find(params[:id])
     respond_to do |format|
       format.pdf do
         pdf = Borang_maklumat_pelajarPdf.new(@student, view_context)
         send_data pdf.render, filename: "borang_maklumat_pelajar-{Date.today}",
-                              type: "application/pdf",
-                              disposition: "inline"
+        type: "application/pdf",
+        disposition: "inline"
       end
     end
   end
 
   def reports
-    
   end
-
-
+  
+  def student_report
+    @programme_id=params[:programme_id].to_i
+    @students_all = Student.where(sstatus: ['Current', 'Repeat'], course_id: @programme_id).order(intake: :asc, course_id: :asc)
+    respond_to do |format|
+      format.pdf do
+        pdf = Student_reportPdf.new(@students_all, view_context)
+        send_data pdf.render, filename: "student-list-{Date.today}",
+        type: "application/pdf",
+        disposition: "inline"
+      end
+    end
+  end
 
   private
     # Use callbacks to share common setup or constraints between actions.

@@ -164,7 +164,7 @@ authorization do
    has_permission_on :exam_evaluate_courses, :to =>[:index, :show, :courseevaluation] do
      if_attribute :staff_id => is {user.userable.id}
    end
-   has_permission_on :student_student_attendances, :to => [:manage, :new_multiple, :new_multiple_intake, :create_multiple, :edit_multiple, :update_multiple]
+   has_permission_on :student_student_attendances, :to => [:manage, :new_multiple, :new_multiple_intake, :create_multiple, :edit_multiple, :update_multiple, :student_attendan_form]
    
    #TRAINING modules
    has_permission_on :training_trainingnotes, :to => :manage, :join_by => :or do
