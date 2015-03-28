@@ -154,7 +154,7 @@
               %li= link_to content_tag(:i, "", :class => "icon-numb") + t("student.attendance.title2"), student_student_attendances_path
             - permitted_to? :create, :student_discipline_cases do
               %li= link_to content_tag(:i, "", :class => "icon-numb") + t("student.discipline.title2"), student_student_discipline_cases_path
-            - permitted_to? :manage, :student_discipline_cases do
+            - permitted_to? :manage, :student_counseling_sessions do
               %li= link_to content_tag(:i, "", :class => "icon-numb") + t("student.counseling.title2"), student_student_counseling_sessions_path
 
 
