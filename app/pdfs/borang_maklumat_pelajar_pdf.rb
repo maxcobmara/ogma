@@ -49,7 +49,7 @@ class Borang_maklumat_pelajarPdf < Prawn::Document
           ["10. Tarikh Lahir", ": #{@student.try(:sbirthdt).try(:strftime, '%d %b %Y')}"],
           ["11. Taraf Perkahwinan", ": #{(Student::MARITAL_STATUS.find_all{|disp, value| value == @student.mrtlstatuscd.to_s}).map {|disp, value| disp} [0]} "],
           ["12. Emel", ": #{@student.try(:semail)}" ],
-          ["13. Tarikh Pendaftaran", ": #{@student.try(:regdate)}"]]
+          ["13. Tarikh Pendaftaran", ": #{@student.try(:regdate).try(:strftime, '%d %b %Y')}"]]
           
           table(data, :column_widths => [150, 250], :cell_style => { :size => 11})  do
             a = 0
@@ -69,7 +69,7 @@ class Borang_maklumat_pelajarPdf < Prawn::Document
   def table2
   
     data = [["Maklumat Kursus", ""],
-           ["14. Nama Kursus", ": #{@student.course_id.blank? ? " " : @student.course_id}"], 
+           ["14. Nama Kursus", ": #{@student.course_id.blank? ? " " : @student.course.programme_list}"], 
            ["15. Sesi Pengambilan",": #{@student.intake.blank? ? "-" : @student.intake.strftime("%B %Y")}"], 
            ["16. Catatan",": #{@student.course_remarks}"]] 
         
