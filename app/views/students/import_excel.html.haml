@@ -1,6 +1,7 @@
 - model_class = Student
 .page-header
   %h1= t('student.students.import_excel')
+  %br=link_to (t 'student.students.list'), students_path
 = render 'shared/flashes'
   
 %br
