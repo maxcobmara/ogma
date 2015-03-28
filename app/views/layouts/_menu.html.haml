@@ -133,15 +133,16 @@
             %li= link_to content_tag(:i, "", :class => "icon-numb") + (t "document.title"), documents_path
             %li= link_to content_tag(:i, "", :class => "icon-numb") + "File Registry", cofiles_path
 
-    - permitted_to? :update, :students do        
+    - permitted_to? :show, :students do        
       %li.icon.icon-left
         = link_to content_tag(:i, "", :class => "icon-numb") + t("student.title"), '#'
         .mp-level
           %h2.icon=t "student.title"
           %a.mp-back{:href => "#"}=t('back')
           %ul
-            - if current_user.userable_type=="Student"
-              %li= link_to content_tag(:i, "", :class => "icon-numb") + t("student.students.title"), student_path(current_user.userable.id)
+            - permitted_to? :update, :students do
+              - if current_user.userable_type=="Student"
+                %li= link_to content_tag(:i, "", :class => "icon-numb") + t("student.students.title"), student_path(current_user.userable.id)
             - permitted_to? :read, :students do
               %li= link_to content_tag(:i, "", :class => "icon-numb") + t("student.students.title"), students_path
             - permitted_to? :reports, :students do

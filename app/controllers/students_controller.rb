@@ -1,7 +1,7 @@
 class StudentsController < ApplicationController
   before_action :set_student, only: [:show, :edit, :update, :destroy]
-  filter_resource_access
-  #filter_access_to :all
+  #filter_resource_access
+  filter_access_to :all
   # GET /students
   # GET /students.xml
 
