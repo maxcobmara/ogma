@@ -3,8 +3,9 @@
   %dl.dl-horizontal
     %dt= t 'student.students.sstatus' , :default => model_class.human_attribute_name(:sstatus) + ":"
     %dd
-      = @student.sstatus
+      = (t('student.students.'+@student.sstatus.downcase)).titleize
       = " ("+@student.sstatus_remark+")" if @student.sstatus=="Transfer College" && @student.sstatus_remark!=""
+      =" ("+(t 'student.students.semester_repeated')+": "+@student.sstatus_remark+")" if @student.sstatus=="Repeat" && @student.sstatus_remark!="" 
     %dt= t 'student.students.stelno' , :default => model_class.human_attribute_name(:stelno) + ":"
     %dd=  @student.stelno
 		  

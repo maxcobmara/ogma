@@ -150,7 +150,8 @@ class Campus::LocationsController < ApplicationController
     respond_to do |format|
       format.html
       format.csv { send_data @all_beds_single.to_csv2}
-      format.xls { send_data @all_beds_single.to_csv2(col_sep: "\t") } 
+      format.xls { send_data @all_beds_single.to_csv2(col_sep: "\t") }    ##generate_line(["=\"01\""], ...)
+                                                                                                             #CSV.generate_line(["01"], :force_quotes => true)
     end
   end
   

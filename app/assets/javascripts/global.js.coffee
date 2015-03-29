@@ -28,9 +28,13 @@ jQuery ->
     minLength: 3
     source: $('#search_staff_name').data('autocomplete-source')
     
-  $('#search_student_icno').autocomplete
+  $('#search_student_icno_location').autocomplete
     minLength: 3
-    source: $('#search_student_icno').data('autocomplete-source')
+    source: $('#search_student_icno_location').data('autocomplete-source')
+    
+  $('#search_staff_icno_location').autocomplete
+    minLength: 3
+    source: $('#search_staff_icno_location').data('autocomplete-source')
     
 $('#librarytransaction_accession_acc_book').autocomplete
   minLength: 2

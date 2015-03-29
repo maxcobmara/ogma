@@ -10,7 +10,7 @@
   %ul.nav.navbar-nav
     %li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'actions.new'))), new_staff_staff_attendance_path
   %ul.nav.navbar-nav
-    %li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'actions.import_excel'))), import_excel_staff_staff_attendances_path     
+    %li= link_to content_tag(:li, fa_icon("file-excel-o", text: (t 'actions.import_excel'))), import_excel_staff_staff_attendances_path     
   %ul.nav.navbar-nav.navbar-right
     %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "toga"
     %li= link_to content_tag(:li, fa_icon("print", text: (t 'actions.print'))), "#", class: 'bogus'

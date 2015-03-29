@@ -34,7 +34,8 @@
           %th= t 'student.tenant.damaged'
           %th= t 'student.tenant.notes'
           %th= t 'student.tenant.census2'
-      - building.children.sort.reverse.each do |floor|
+      /- building.children.sort.reverse.each do |floor|
+      - building.children.sort_by{|t|t.combo_code}.reverse.each do |floor|
       
         - @all = floor.descendants.where(typename: [2,8]).pluck(:combo_code).group_by{|x|x[0, x.size-2]} 
         - @occupied_beds = floor.descendants.where(typename: [2,8]).joins(:tenants).where("tenants.id" => @current_tenants)

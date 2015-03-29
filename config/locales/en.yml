@@ -37,6 +37,17 @@ en:
       location_damage: Location Damages
       location: Location
     attributes:
+      student:
+        name: Name
+        sstatus: Student Status
+        ssponsor: Sponsor
+        stelno: Telephone No
+        gender: Gender
+        sbirthdt: Date of Birth 
+        mrtlstatuscd: Marital Status 
+        intake: Intake Session
+        course_id: Programme
+        icno: Mykad No
       location:
         combo_code: Location Code
         damages: Location Damages
@@ -97,6 +108,10 @@ en:
             illegal_char: contains illegal characters
             invalid: is invalid
         models:
+          student:
+            attributes:
+              icno:
+                wrong_length: length is wrong
           ptschedule:
             attributes:
               min_participants:
@@ -169,6 +184,8 @@ en:
   inc_unitname: " (including Department / Unit name) "
   approve: Approve
   add_details: Add Details
+  or: or
+  excel_format: Excel Format
 
   actions:
     new: New
@@ -183,6 +200,7 @@ en:
     updated: " was successfully updated."
     removed: " was successfully removed."
     download_excel: Download Excel
+    export_excel: Export Excel
     import_excel: Import Excel
     imported: " was/were successfully imported"
     imported2: "Successful imported record(s) : "
@@ -199,6 +217,7 @@ en:
     approved: Approved
     not_approved: Not Approved
     export: Export
+    line_no_excel: " (excel file - line no : "
     
   errors:
 
@@ -318,6 +337,8 @@ en:
     uniformstat: Uniform Status
     position_id: Position
     reports_to: Reports To 
+    search:
+      ic_no: Staff Search
 
     vehicles:
       title: Vehicle Details
@@ -1210,10 +1231,12 @@ en:
       damage_type: Damage Type
       asset_damage: Asset Damage
       room_damage: Room Damage
+      unit_damage: Unit Damage
       description: Description
       reported_on: Reported On 
       repaired_on: Repaired On
-      list: Location Damage List
+      list: "Location Damage List - Student Residence"
+      list_staff: "Location Damage List - Staff Residence"
       list2: Location Damage
       new: "Report Damage for "
       edit: "Edit Damage for "
@@ -1240,8 +1263,11 @@ en:
       person: tenants
       name: Tenant Name
       title: Student Tenancy
+      title2: Staff Tenancy
       new: New Student Tenancy
+      new2: New Staff Tenancy
       edit: Edit Student Tenancy
+      edit2: Edit Staff Tenancy
       key:
         provided: Date Key Provided
         expected: Date Key expected returned
@@ -1249,15 +1275,22 @@ en:
       vacate: Force Vacate
       tenancy_details_nil: Student data not available
       room_map: Room Map
+      unit_map: Unit Map
       list: Tenancy List
       list_full: Student Residence Tenancy List
+      list_full2: Staff Residence Tenancy List
       statistics: Student Residence Statistics
       statistics_menu: Statistics (General / Block / Programme)
       statistics_block: "Breakdown of Room Status (by Block)"
+      general_statistic: General Statistic
       tenants_students: "Total of Student Residency Tenant (By Programme)"
       empty: Empty
       occupied: Occupied
       damaged: Damaged
+      female_occupied: female occupied
+      female_empty: female empty
+      male_occupied: male occupied
+      male_empty: male empty
       notes: Notes
       total: Totals
       total_rooms: Total Rooms
@@ -1268,15 +1301,19 @@ en:
       total_tenants: Total Tenants in Block
       total_tenant: Total Tenants
       return_key: Return Key
+      return_key_student: Return Key by Student
+      return_key_staff: Return Key by Staff
       empty_room: Empty Room
       damage_status: Damage Status
       damage_type: Damage Type
       damage: Damage by Student
+      damage2: Damage by Staff
       asset_other_damage: "Asset / Other Damages"
       room_damage: "Room Damage"
       level: Level
       bed: Bed
       room: Room
+      rooms: Rooms
       report: Tenancy Statistics & Census by Level
       report_main: Tenancy Statistics by Level
       census: Tenancy Census by Level
@@ -1284,12 +1321,16 @@ en:
       report_census: "Statistics & Census (Level)"
       summary: Summary
       reset_search: Reset Student Search
+      reset_search2: Reset Staff Search
       room_status_title: Room Status Breakdown
       tenant_programme_title: Tenant Programme Breakdown
+      block: Block
+      unit_no: Unit No
       
     students:
       title: Student Info
       list: Student Info List
+      reporting: Reporting
       formatted_mykad: MyKad No
       name: Name
       matrixno: Matrix No
@@ -1345,7 +1386,40 @@ en:
       on_leave: On leave
       expelled: Expelled from College
       transfer_college: Transfer College
-      sstatus_remark: "Remarks, if transfer college"
+      status_remark: "Remark (Status)"
+      sstatus_remark: "Remarks, if Transfer College"
+      sstatus_remark2: "Semester repeated, if Repeat"
+      semester_repeated: Semester repeated
+      repeated_notes: "Eg. 1: Insert '2' if semester 2 is repeated, Eg. 2: Insert '2, 4' if semester 2 and 4 are repeated."
+      ethnic: Ethnic Group
+      ethnic_group: Students Ethnic Group Information
+      medical: Medical
+      remark: Remarks
+      import_excel: Import Students from Excel File
+      icno_must_unique: "(Additional notes : Mykad UNIQUE in '999999999999' format)"
+      name_must_not_blank: "(Additional notes : this field can't be blank"
+      stelno_must_not_blank: "(Additional notes : this field (student telephone no) can't be blank)"
+      sstatus_must_use: "(Additional notes : Use 'Current', 'Graduated', 'Repeat', 'On Leave', 'Transfer College' or 'Expelled' accordingly)"
+      ssponsor_must_use: "(Additional notes : Use 'KKM' for Kementerian Kesihatan Malaysia, 'SPA' for Suruhanjaya Perkhidmatan Awam, 'swasta' untuk Private dan 'FaMa' for Own)"
+      gender_must_use: "(Additional notes : Use '1' for Male and '2' for female)"
+      sbirthdt_must_use: "(Additional notes : Date of Birth - date must in 'yyyy-mm-dd' format)"
+      mrtlstatuscd_must_use: "(Additional notes : Marital status - use '1' for single, '2' for married, '3' for others)"
+      regdate_must_use: "(Additional notes : Registration date - date must in 'yyyy-mm-dd' format)"
+      course_id_accordingly: "(Additional notes : Use 'course_id' accordingly as per listed (course_id - programme name) : "
+      end_training_must_use: "(Additional notes : End of training - date must in 'yyyy-mm-dd' format)"
+      additional_notes: "Additional notes : "
+      intake_must_use: "(Additional notes : Intake - must in date format 'yyyy-mm-01', note '01' is used)"
+      race2_accordingly: "(Additional notes : Use 'race2' accordingly as per listed (race2 - race name) : "
+      icno_invalid: " record(s) with invalid 'icno' "
+      name_invalid: " record(s) with invalid 'name' "
+      stelno_invalid: " record(s) with invalid 'stelno' "
+      sstatus_invalid: " record(s) with invalid 'sstatus' "
+      ssponsor_invalid: "record(s) with invalid 'ssponsor' "
+      sbirthdt_invalid: "record(s) with invalid 'sbirthdt' "
+      gender_invalid: "record(s) with invalid 'gender' "
+      marital_invalid: "record(s) with invalid 'mrtlstatuscd' "
+      course_id_invalid: "record(s) with invalid 'course_id' "
+      intake_invalid: "record(s) with invalid 'intake' "
       
     leaveforstudent:
       title: Student Leave

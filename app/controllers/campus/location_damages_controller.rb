@@ -3,13 +3,20 @@ class Campus::LocationDamagesController < ApplicationController
   
   def index
     @search = LocationDamage.search(params[:q]) 
-    @damages = @search.result.joins(:location).where('typename IN(?) or lclass IN(?)',[2,8,6],[4,2]) #4-block, 2-flr, 2-bed f, 8-bed m, 6-room
+    @damages_all = @search.result.joins(:location).where('typename IN(?) or lclass IN(?)',[2,8,6],[4,2]).sort_by{|x|x.location.combo_code} #4-block, 2-flr, 2-bed f, 8-bed m, 6-room
+    @damages = Kaminari.paginate_array(@damages_all).page(params[:page]||1) 
     respond_to do |format|
       format.html # index.html.erb
       format.xml  { render :xml => @locations }
-      format.csv { send_data @damages.to_csv }
-      format.xls { send_data @damages.to_csv(col_sep: "\t") } 
+      format.csv { send_data @damages_all.to_csv }
+      format.xls { send_data @damages_all.to_csv(col_sep: "\t") } 
     end
+  end
+  
+  def index_staff
+    @search = LocationDamage.search(params[:q]) 
+    @damages_all = @search.result.joins(:location).where('locations.typename=?',1).sort_by{|x|x.location.combo_code} #staff unit
+    @damages = Kaminari.paginate_array(@damages_all).page(params[:page]||1) 
   end
   
   def new
@@ -76,6 +83,19 @@ class Campus::LocationDamagesController < ApplicationController
     respond_to do |format|
        format.pdf do
          pdf = Damage_reportPdf.new(@damages, view_context)
+                   send_data pdf.render, filename: "damage_report-{Date.today}",
+                   type: "application/pdf",
+                   disposition: "inline"
+       end
+     end
+  end
+  
+  def damage_report_staff
+    @search = LocationDamage.search(params[:q]) 
+    @damages = @search.result.joins(:location).where('locations.typename=?',1) 
+    respond_to do |format|
+       format.pdf do
+         pdf = Damage_report_staffPdf.new(@damages, view_context)
                    send_data pdf.render, filename: "damage_report-{Date.today}",
                    type: "application/pdf",
                    disposition: "inline"

@@ -6,7 +6,7 @@ class Tenant < ActiveRecord::Base
   has_many  :damages, :class_name => 'LocationDamage', :foreign_key => 'user_id', :dependent => :destroy
   accepts_nested_attributes_for :damages, :allow_destroy => true, reject_if: proc { |damages| damages[:description].blank?}
   
-  #student autocomplete
+  #student autocomplete - New Tenant 
   def student_icno
     student.try(:student_list)
   end
@@ -15,6 +15,48 @@ class Tenant < ActiveRecord::Base
     icno2 = icno.split(" ")[0]
     #self.student = Student.find_or_create_by_icno(icno2) if icno2.present?
     self.student = Student.find_or_create_by(icno: icno2) if icno2.present?
+  end
+  
+  #student autocomplete for return key
+  def student_icno_location
+    if Tenant.where(student_id: student.id).count > 1
+      studentsearch = student.try(:student_list)+" "+location.combo_code
+    else
+      studentsearch = student.try(:student_list)
+    end
+    studentsearch
+  end
+
+  def student_icno_location=(icno)
+    icno2 = icno.split(" ")[0]
+    #self.student = Student.find_or_create_by_icno(icno2) if icno2.present?
+    self.student = Student.find_or_create_by(icno: icno2) if icno2.present?
+  end
+  
+  #staff autocomplete
+  def staff_icno
+    staff.try(:staff_list)
+  end
+
+  def staff_icno=(icno)
+    icno2 = icno.split(" ")[0]
+    #self.student = Student.find_or_create_by_icno(icno2) if icno2.present?
+    self.staff = Staff.find_or_create_by(icno: icno2) if icno2.present?
+  end
+  
+  #staff autocomplete for return key2
+  def staff_icno_location
+    if Tenant.where(staff_id: staff.id).count > 1
+      staffsearch = staff.try(:staff_list)+" "+location.combo_code
+    else
+      staffsearch = staff.try(:staff_list)
+    end
+    staffsearch
+  end
+
+  def staff_icno_location=(icno)
+    icno2 = icno.split(" ")[0]
+    self.staff = Staff.find_or_create_by(icno: icno2) if icno2.present?
   end
   
   def save_my_vars
@@ -45,7 +87,7 @@ class Tenant < ActiveRecord::Base
     [:keyword_search, :damagetype_search]
   end
  
-  #Temporary add other method for Excel Import of Tenant Listing - remove this part if general I/O error fixed 
+  #Temporary add other method for Excel Export of Tenant Listing - remove this part if general I/O error fixed 
   def self.to_csv(options = {})
     CSV.generate(options) do |csv|
         csv << [I18n.t('student.tenant.list_full')] #title added

@@ -5,6 +5,9 @@ Ogma::Application.routes.draw do
       member do
         get :borang_maklumat_staff
       end
+      collection do
+        get :autocomplete
+      end
     end
     resources :positions do
       collection do
@@ -149,6 +152,8 @@ Ogma::Application.routes.draw do
     resources :location_damages do
       collection do
         get :damage_report
+        get :damage_report_staff
+        get :index_staff
       end
     end
     resources :address_books
@@ -174,30 +179,43 @@ Ogma::Application.routes.draw do
       get :kumpulan_etnik
       post :kumpulan_etnik
       get :reports
+      get :student_report
+      get :kumpulan_etnik_main
+      get :kumpulan_etnik_excel
+      post :import
+      get 'import_excel', to: "students#import_excel"
     end
     member do
       get :borang_maklumat_pelajar
     end
   end
 
+  match '/public/excel_format/student_import.xls', to: 'students#download_excel_format', via: 'get', target: '_self'
+  
   namespace :student do
     resources :tenants do
       collection do
+        get :index_staff
         get :room_map
+        get :room_map2
         get :reports
         get :statistics
         get :census
         get  :return_key
         post :return_key
+	get  :return_key2
+        post :return_key2
         get  :empty_room
         post :empty_room
         get :tenant_report
+        get :tenant_report_staff
         get :laporan_penginapan
         get :laporan_penginapan2
       end
       member do
         get :census_level
 	get :return_key
+        get :return_key2
       end
     end
     resources :student_discipline_cases do

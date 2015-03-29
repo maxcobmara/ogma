@@ -131,7 +131,6 @@ class Student::StudentCounselingSessionsController < ApplicationController
      end
   end
   
-  
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_student_counseling_session
@@ -140,7 +139,7 @@ class Student::StudentCounselingSessionsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def student_counseling_session_params
-      params.require(:student_counseling_session).permit(:student_id, :case_id, :requested_at, :alt_dates, :c_type, :c_scope, :duration, :is_confirmed, :confirmed_at, :issue_desc, :notes, :file_id, :suggestions, :staff_id, :created_by, :created_by_type, :confirmed_by, :confirmed_by_type, :remark)
+      params.require(:student_counseling_session).permit(:student_id, :case_id, :requested_at, :alt_dates, :c_type, :c_scope, :duration, :is_confirmed, :confirmed_at, :issue_desc, :notes, :file_id, :suggestions, :staff_id, :created_by, :created_by_type, :confirmed_by, :confirmed_by_type, :remark, :feedback, :feedback_final)
     end
   
 end
