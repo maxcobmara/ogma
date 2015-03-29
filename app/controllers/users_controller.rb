@@ -22,6 +22,7 @@ class UsersController < ApplicationController
  end
 
  def update
+    @user.roles << Role.find(3) if params[:user][:userable_type]=="Student" && @user.roles.count==0 
     respond_to do |format|
        if @user.update(user_params)
          format.html { redirect_to "/dashboard", notice: 'User was successfully updated.' }
