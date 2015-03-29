@@ -19,6 +19,17 @@ ms_MY:
       location_damage: Kerosakan di Lokasi
       location: Lokasi
     attributes:
+      student:
+        name: Nama
+        sstatus: Status Pelajar
+        ssponsor: Penaja
+        stelno: No Telefon
+        gender: Jantina
+        sbirthdt: Tarikh Lahir
+        mrtlstatuscd: Status Perkahwinan
+        intake: Sesi Pengambilan
+        course_id: Program
+        icno: No Mykad
       location:
         combo_code: Kod Lokasi
         damages: Kerosakan di Lokasi
@@ -79,11 +90,15 @@ ms_MY:
             illegal_char: mengandungi aksara yang tidak sah
             invalid: adalah tidak sah           
         models:
+          student:
+            attributes:
+              icno:
+                wrong_length: panjang adalah salah
           ptschedule:
             attributes:
               min_participants:
                 less_than_or_equal_to: Maksima harus melebihi Minima
-          travel_request: Travel Request
+          travel_request: Permohonan Perjalanan
           kin: Maklumat Waris
          
         attributes:
@@ -255,7 +270,7 @@ ms_MY:
     bloodtype: "Jenis Darah"
     addr: "Alamat"
     poskod_id: "Poskod"
-    mrtlstatuscd: "Status Berkahwin"
+    mrtlstatuscd: "Status Perkahwinan"
     staffgrade_id: "Gred Staf"
     statecd: "Tempat Lahir"
     country_cd: "Kewarganegaraan"
@@ -278,7 +293,7 @@ ms_MY:
     phonehome: Telefon (H)
     poskod_id: Poskod
     address: Alamat
-    mrtlstatuscd: Status Kahwin
+    mrtlstatuscd: Status Perkahwinan
     statecd: Tempat Lahir
     race: Bangsa
     religion: Agama

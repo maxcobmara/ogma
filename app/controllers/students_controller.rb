@@ -1,7 +1,7 @@
 class StudentsController < ApplicationController
   before_action :set_student, only: [:show, :edit, :update, :destroy]
   #filter_resource_access
-  #filter_access_to :all
+  filter_access_to :all
   # GET /students
   # GET /students.xml
 
@@ -72,16 +72,6 @@ class StudentsController < ApplicationController
   # GET /students/1/edit
   def edit
     @student = Student.find(params[:id])
-  end
-
-  def formforstudent
-     @student = Student.find(params[:id])
-     #@students = Student.search(params[:search])
-     render :layout => 'report'
-     #respond_to do |format|
-         #format.html # index.html.erb  { render :action => "report.css" }
-         #format.xml  { render :xml => @staffs }
-     #end
   end
 
   def report

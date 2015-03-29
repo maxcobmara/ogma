@@ -37,6 +37,17 @@ en:
       location_damage: Location Damages
       location: Location
     attributes:
+      student:
+        name: Name
+        sstatus: Student Status
+        ssponsor: Sponsor
+        stelno: Telephone No
+        gender: Gender
+        sbirthdt: Date of Birth 
+        mrtlstatuscd: Marital Status 
+        intake: Intake Session
+        course_id: Programme
+        icno: Mykad No
       location:
         combo_code: Location Code
         damages: Location Damages
@@ -97,6 +108,10 @@ en:
             illegal_char: contains illegal characters
             invalid: is invalid
         models:
+          student:
+            attributes:
+              icno:
+                wrong_length: length is wrong
           ptschedule:
             attributes:
               min_participants:

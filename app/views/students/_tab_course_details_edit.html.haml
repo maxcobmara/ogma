@@ -3,7 +3,7 @@
     .col-sm-2.control-label
       = f.label t 'student.students.course_id', for: :course_id
     .col-md-2
-      = f.collection_select :course_id, Programme.roots.order(combo_code: :asc), :id, :name, {:include_blank => true}, {class: 'selectpicker', "data-width"=>"300px"}	
+      = f.collection_select :course_id, Programme.roots.order(combo_code: :asc), :id, :name, {:include_blank => (t 'select')}, {class: 'selectpicker mandatory', "data-width"=>"300px"}	
 	  
 	          
   .form-group

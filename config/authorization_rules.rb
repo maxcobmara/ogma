@@ -122,7 +122,7 @@ authorization do
    
    #EXAMINATION modules
    has_permission_on [:exam_examquestions, :exam_exams, :exam_exammarks, :exam_grades], :to => [:menu, :read, :create]
-   
+ 
    has_permission_on :exam_exams, :to =>:manage do
      if_attribute :created_by => is {user.userable.id}
    end
@@ -192,7 +192,7 @@ authorization do
   role :librarian do
     has_permission_on :library_books, :to => [:manage, :extend, :return]
     has_permission_on :library_librarytransactions, :to => [:manage, :extend, :extend2,:return,:return2, :check_availability, :form_try, :multiple_edit,:check_availability2,:multiple_update]#,:accession_list]
-    #has_permission_on :students, :to => :index
+    has_permission_on :students, :to => [:read, :borang_maklumat_pelajar]
     #has_permission_on :booksearches, :to => :read
     #has_permission_on :librarytransactionsearches, :to => :read
   end
@@ -203,7 +203,29 @@ authorization do
       has_permission_on :exam_evaluate_courses, :to => [:read, :courseevaluation] do
         if_attribute :student_id => is {user.userable.id}  #student_id
       end
+      has_permission_on :students, :to => [:update, :show, :borang_maklumat_pelajar] do #[:read, :update, :menu] do
+        if_attribute :id => is {user.userable.id}
+      end
   end
+ 
+  role :student_administrator do
+     has_permission_on :students, :to => [:manage, :borang_maklumat_pelajar, :reports, :student_report, :ethnic_listing, :kumpulan_etnik, :kumpulan_etnik_main, :import, :import_excel, :download_excel_format] 
+  end
+
+   role :disciplinary_officer do
+     has_permission_on :student_discipline_cases, :to => :manage
+     has_permission_on :student_counseling_sessions, :to => :feedback_referrer do
+       if_attribute :case_id =>  is_not {nil}
+     end
+   end
+
+#####
+#   role :student_counsellor do
+#     has_permission_on :student_counseling_sessions, :to => [:manage, :feedback_referrer]
+#     has_permission_on :students, :to => :core
+#     has_permission_on :studentcounselingsearches, :to => :read
+#   end
+#####
   
   #Group Location --------------------------------------------------------------------------------
   role :warden do
@@ -462,7 +484,10 @@ roles = Role.create([
       end
 
       #has_permission_on :student_counseling_sessions, :to => :create
-      #has_permission_on :student_counseling_sessions, :to => :show do
+      #has_permission_on :student_counseling_sessions, :to => :show do         
+    Perpustakaan
+
+
         #if_attribute :student_id => is {Login.current_login.student_id}
       #end
 

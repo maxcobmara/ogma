@@ -4,7 +4,7 @@
     %dt
       =t 'student.counseling.actions_referrer1'
       %br=t 'student.counseling.actions_referrer2'
-    %dd=h @student_counseling_session.student_discipline_case.action if !@student_counseling_session.case_id.blank? 
+    %dd=h @student_counseling_session.student_discipline_case.try(:action) if !@student_counseling_session.case_id.blank? 
     %br
     
     %dt
@@ -31,7 +31,8 @@
       %dd=@session_count.to_s+t('student.counseling.include_this')
     %br
     
-    - unless @student_counseling_session.student_discipline_case.counselor_feedback== nil|| @student_counseling_session.student_discipline_case.counselor_feedback==''
+    /- unless @student_counseling_session.student_discipline_case.counselor_feedback== nil|| @student_counseling_session.student_discipline_case.counselor_feedback=='' 
+    - if @student_counseling_session.student_discipline_case &&(@student_counseling_session.student_discipline_case.counselor_feedback!= nil || @student_counseling_session.student_discipline_case.counselor_feedback!='' )
       %dt
         =t 'student.counseling.counselor_feedback1'
         %br=t 'student.counseling.counselor_feedback2'
