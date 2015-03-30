@@ -1,12 +1,42 @@
 .col-md-offset-2
   .form-group
-    .col-sm-3.control-label
+    .col-sm-2.control-label
       =f.label t 'student.students.level_id'
     .col-sm-2.control-label
       =f.label t 'student.students.qname'
     .col-sm-2.control-label
       =f.label t 'student.students.institute'
-	  
+     
+  //temp solution
+  /.form-group
+  /  .col-md-3
+  /    /= f.select :level_id, Qualification::QTYPE, :prompt => t('select'), class: 'form-control'
+  /    = select_tag "student[qualifications_attributes][0][level_id]",  options_for_select(DropDown::QUALIFICATION_LEVEL, @student.qualifications[0].id),{ class: 'selectpicker', "data-width"=>'200px'}
+  /  .col-md-2
+  /    /= f.text_field :qname, :placeholder => 'Qualification Name', class: 'form-control'
+  /    = text_field_tag "student[qualifications_attributes][0][qname]", @student.qualifications[0].qname
+  /  .col-md-2
+  /    /= f.text_field :institute, :size => '50', :placeholder => 'Institute Name', class: 'form-control'
+  /    = text_field_tag"student[qualifications_attributes][0][institute]", @student.qualifications[0].institute
+      
+  - 0.upto(7).each do |cnt|
+    - if @student.qualifications[cnt].nil? || @student.qualifications[cnt].blank?
+      .form-group
+        .col-md-3
+          = select_tag "student[qualifications_attributes][#{cnt}][level_id]",  options_for_select([[(t 'select'), '']]+DropDown::QUALIFICATION_LEVEL),{ class: 'selectpicker', "data-width"=>'200px'}
+        .col-md-2
+          = text_field_tag "student[qualifications_attributes][#{cnt}][qname]", "", :placeholder => "Qualification Name"
+        .col-md-2
+          = text_field_tag"student[qualifications_attributes][#{cnt}][institute]", "", :placeholder => "Institute"
+    - else
+      .form-group
+        .col-md-3
+          = hidden_field_tag "student[qualifications_attributes][#{cnt}][id]", @student.qualifications[cnt].id
+          = select_tag "student[qualifications_attributes][#{cnt}][level_id]",  options_for_select(DropDown::QUALIFICATION_LEVEL, @student.qualifications[cnt].level_id),{ class: 'selectpicker', "data-width"=>'200px'}
+        .col-md-2
+          = text_field_tag "student[qualifications_attributes][#{cnt}][qname]", @student.qualifications[cnt].qname, :placeholder => "Qualification Name"
+        .col-md-2
+          = text_field_tag"student[qualifications_attributes][#{cnt}][institute]", @student.qualifications[cnt].institute, :placeholder => "Institute"
 
 -#  .form-group	  
     .col-sm-8.control-label
@@ -14,3 +44,4 @@
         = render 'qualification_fields', :f => builder
  
       = link_to_add_fields fa_icon("asterisk", text: (t 'actions.new'), :border => 0), f, :qualifications
+

@@ -4,11 +4,11 @@
     %BR
   - for qualification in @student.qualifications
     %dt{:for => "level_id "}
-      = h (DropDown::QTYPE.find_all{|disp, value| value == qualification.level_id}).map {|disp, value| disp}[0]
+      = h (DropDown::QUALIFICATION_LEVEL.find_all{|disp, value| value == qualification.level_id.to_i}).map {|disp, value| disp}[0]
       \:
-  %dt
-    = h qualification.try(:qname)
-    \&nbsp &nbsp from &nbsp &nbsp #{h qualification.try(:institute)}
+    %dd
+      = h qualification.try(:qname)
+      \&nbsp &nbsp from &nbsp &nbsp #{h qualification.try(:institute)}
 	
 .col-md-8.col-md-offset-2	
   %BR	
