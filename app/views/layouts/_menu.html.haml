@@ -153,6 +153,8 @@
                   %a.mp-back{:href => "#"}= t 'helpers.links.back'
                   %ul
                     %li= link_to (t "student.students.ethnic"), reports_students_path
+                    %li= link_to (t "student.students.students_quantity_sponsor"), students_quantity_sponsor_students_path(format: 'pdf')
+                    %li= link_to (t "student.students.students_quantity_report"), students_quantity_report_students_path(format: 'pdf')
             - permitted_to? [:update, :approve, :approve2], :student_leaveforstudents do
               %li= link_to content_tag(:i, "", :class => "icon-numb") + t("student.leaveforstudent.title"), student_leaveforstudents_path
             - permitted_to? :manage, :student_student_attendances do

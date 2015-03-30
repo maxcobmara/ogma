@@ -1331,6 +1331,8 @@ en:
       title: Student Info
       list: Student Info List
       reporting: Reporting
+      students_quantity_sponsor: "Students Quantity (Sponsor)"
+      students_quantity_report: "Students Quantity (Report)"
       formatted_mykad: MyKad No
       name: Name
       matrixno: Matrix No

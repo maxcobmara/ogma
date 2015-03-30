@@ -178,10 +178,47 @@ class StudentsController < ApplicationController
   
   def student_report
     @programme_id=params[:programme_id].to_i
-    @students_all = Student.where(sstatus: ['Current', 'Repeat'], course_id: @programme_id).order(intake: :asc, course_id: :asc)
+    @students = Student.where(sstatus: ['Current', 'Repeat'], course_id: @programme_id).order(intake: :asc, course_id: :asc)
     respond_to do |format|
       format.pdf do
-        pdf = Student_reportPdf.new(@students_all, view_context)
+        pdf = Student_reportPdf.new(@students, view_context)
+        send_data pdf.render, filename: "student-list-{Date.today}",
+        type: "application/pdf",
+        disposition: "inline"
+      end
+    end
+  end
+  
+  def students_quantity_sponsor
+    @students_kkm=Student.where(sstatus: ['Current', 'Repeat'], ssponsor: "KKM")
+    @students_kkm_male=Student.where(sstatus: ['Current', 'Repeat'], gender: 1, ssponsor: "KKM")
+    @students_kkm_female=Student.where(sstatus: ['Current', 'Repeat'], gender: 2, ssponsor: "KKM")
+    @students_spa=Student.where(sstatus: ['Current', 'Repeat'], ssponsor: "SPA")
+    @students_spa_male=Student.where(sstatus: ['Current', 'Repeat'], gender: 1, ssponsor: "SPA")
+    @students_spa_female=Student.where(sstatus: ['Current', 'Repeat'], gender: 2, ssponsor: "SPA")
+    @students_swasta=Student.where(sstatus: ['Current', 'Repeat'], ssponsor: "swasta")
+    @students_swasta_male=Student.where(sstatus: ['Current', 'Repeat'], gender: 1, ssponsor: "swasta")
+    @students_swasta_female=Student.where(sstatus: ['Current', 'Repeat'], gender: 2, ssponsor: "swasta")
+    @students_sendiri=Student.where(sstatus: ['Current', 'Repeat'], ssponsor: "FaMa")
+    @students_sendiri_male=Student.where(sstatus: ['Current', 'Repeat'], gender: 1, ssponsor: "FaMa")
+    @students_sendiri_female=Student.where(sstatus: ['Current', 'Repeat'], gender: 2, ssponsor: "FaMa")
+    @programmes=Programme.roots
+    @students=Student.where(sstatus: ['Current', 'Repeat'])
+    respond_to do |format|
+      format.pdf do
+        pdf = Students_quantity_sponsorPdf.new(@students_kkm, @students_kkm_male, @students_kkm_female, @students_spa, @students_spa_male, @students_spa_female, @students_swasta, @students_swasta_male, @students_swasta_female, @students_sendiri, @students_sendiri_male, @students_sendiri_female, @programmes, @students, view_context)
+        send_data pdf.render, filename: "student-list-{Date.today}",
+        type: "application/pdf",
+        disposition: "inline"
+      end
+    end
+  end
+  
+  def students_quantity_report
+    @students = Student.where(sstatus: ['Current', 'Repeat'])
+    respond_to do |format|
+      format.pdf do
+        pdf = Students_quantity_reportPdf.new(@students, view_context)
         send_data pdf.render, filename: "student-list-{Date.today}",
         type: "application/pdf",
         disposition: "inline"
