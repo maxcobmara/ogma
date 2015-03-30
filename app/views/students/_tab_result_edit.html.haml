@@ -11,4 +11,4 @@
       = f.fields_for :spmresults do |builder|
         = render 'spmresult_fields', :f => builder
 
-      = link_to_add_fields (fa_icon("asterisk", text: (t 'actions.new'), :border => 0)), f, :spmresults, "", "text"
+      = link_to_add_fields (fa_icon("asterisk", text: (t 'addmore'), :border => 0)), f, :spmresults, "", "text"

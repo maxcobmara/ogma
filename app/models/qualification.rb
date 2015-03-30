@@ -1,5 +1,6 @@
 class Qualification < ActiveRecord::Base
   belongs_to :staff
+  belongs_to :student
 end
 
 # == Schema Information
