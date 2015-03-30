@@ -209,7 +209,7 @@ authorization do
   end
  
   role :student_administrator do
-     has_permission_on :students, :to => [:manage, :borang_maklumat_pelajar, :reports, :student_report, :ethnic_listing, :kumpulan_etnik, :kumpulan_etnik_main, :import, :import_excel, :download_excel_format] 
+     has_permission_on :students, :to => [:manage, :borang_maklumat_pelajar, :reports, :student_report, :ethnic_listing, :kumpulan_etnik, :kumpulan_etnik_main, :kumpulan_etnik_excel,:import, :import_excel, :download_excel_format] 
   end
 
    role :disciplinary_officer do
