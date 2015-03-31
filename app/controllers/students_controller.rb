@@ -26,24 +26,31 @@ class StudentsController < ApplicationController
   end
   
   def import
+    unless params[:file].nil? || params[:file].blank?
+      
       a=Student.import(params[:file]) 
       msg=Student.messages(a)
       msg2=Student.messages2(a)      
       
       if a[:svs].count>0 && a[:ine].count==0 && a[:stnv].count==0 && a[:spnv].count==0
         respond_to do |format|
-	  flash[:notice]= msg
-	  format.html {redirect_to students_url}
-	  #flash.discard
-	end
+          flash[:notice]= msg
+          format.html {redirect_to students_url}
+        end
       else
-	respond_to do |format|
+        respond_to do |format|
           flash[:notice]= msg if a[:svs].count>0
-	  flash[:error] = msg2
-          format.html { redirect_to import_excel_students_url}#{ render action: 'import_excel' }
+          flash[:error] = msg2
+          format.html { redirect_to import_excel_students_url}
           #flash.discard
         end
       end
+      
+    else
+      respond_to do |format|
+        format.html { redirect_to import_excel_students_url, :notice => (t 'select_excel_file')}
+      end
+    end
   end
   
   def download_excel_format

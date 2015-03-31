@@ -186,6 +186,7 @@ en:
   add_details: Add Details
   or: or
   excel_format: Excel Format
+  select_excel_file: Please select an Excel file for import
 
   actions:
     new: New
