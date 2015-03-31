@@ -104,9 +104,13 @@ class Students_quantity_sponsorPdf < Prawn::Document
     
     lines=[]
     @programmes1.each_with_index do |programme, counter|
+      
+       students_all_6intakes = Student.get_student_by_6intake(programme.id)
+       @s6ids= students_all_6intakes.map(&:id)
+      
        if counter < 5
-         lines<< [{content: "#{counter+=1}", rowspan:2}, {content: "#{programme.programme_list}", rowspan: 2}, "P",{content: "#{@kkm.where(course_id: programme.id).count}", rowspan:2},"#{@kkm_f.where(course_id: programme.id).count}", {content:"#{@spa.where(course_id: programme.id).count}", rowspan:2}, "#{@spa_f.where(course_id: programme.id).count}", {content:"#{@swasta.where(course_id: programme.id).count}", rowspan:2}, "#{@swasta_f.where(course_id: programme.id).count}", {content:"#{@sendiri.where(course_id: programme.id).count}", rowspan:2}, "#{@sendiri_f.where(course_id: programme.id).count}"]
-         lines << [ "L","#{@kkm_m.where(course_id: programme.id).count}","#{@spa_m.where(course_id: programme.id).count}","#{@swasta_m.where(course_id: programme.id).count}","#{@sendiri_m.where(course_id: programme.id).count}"]
+         lines<< [{content: "#{counter+=1}", rowspan:2}, {content: "#{programme.programme_list}", rowspan: 2}, "P",{content: "#{@kkm.where('course_id=? AND race2 IS NOT NULL AND id IN(?)',programme.id, @s6ids).count}", rowspan:2},"#{@kkm_f.where('course_id=? AND race2 IS NOT NULL AND id IN(?)',programme.id, @s6ids).count}", {content:"#{@spa.where('course_id=? AND race2 IS NOT NULL AND id IN(?)',programme.id, @s6ids).count}", rowspan:2}, "#{@spa_f.where('course_id=? AND race2 IS NOT NULL AND id IN(?)',programme.id, @s6ids).count}", {content:"#{@swasta.where('course_id=? AND race2 IS NOT NULL AND id IN(?)',programme.id, @s6ids).count}", rowspan:2}, "#{@swasta_f.where('course_id=? AND race2 IS NOT NULL AND id IN(?)',programme.id, @s6ids).count}", {content:"#{@sendiri.where('course_id=? AND race2 IS NOT NULL AND id IN(?)',programme.id, @s6ids).count}", rowspan:2}, "#{@sendiri_f.where('course_id=? AND race2 IS NOT NULL AND id IN(?)',programme.id, @s6ids).count}"]
+         lines << [ "L","#{@kkm_m.where('course_id=? AND race2 IS NOT NULL AND id IN(?)',programme.id, @s6ids).count}", "#{@spa_m.where('course_id=? AND race2 IS NOT NULL AND id IN(?)',programme.id, @s6ids).count}","#{@swasta_m.where('course_id=? AND race2 IS NOT NULL AND id IN(?)',programme.id, @s6ids).count}","#{@sendiri_m.where('course_id=? AND race2 IS NOT NULL AND id IN(?)',programme.id, @s6ids).count}"]
        end
      end 
      header+lines
@@ -131,9 +135,13 @@ class Students_quantity_sponsorPdf < Prawn::Document
     
     lines=[]
     @programmes1.each_with_index do |programme, counter|
+      
+      students_all_6intakes = Student.get_student_by_6intake(programme.id)
+      @s6ids= students_all_6intakes.map(&:id)
+       
       if counter > 4
-         lines<< [{content: "#{counter+=1}", rowspan:2}, {content: "#{programme.programme_list}", rowspan: 2}, "P",{content: "#{@kkm.where(course_id: programme.id).count}", rowspan:2},"#{@kkm_f.where(course_id: programme.id).count}", {content:"#{@spa.where(course_id: programme.id).count}", rowspan:2}, "#{@spa_f.where(course_id: programme.id).count}", {content:"#{@swasta.where(course_id: programme.id).count}", rowspan:2}, "#{@swasta_f.where(course_id: programme.id).count}", {content:"#{@sendiri.where(course_id: programme.id).count}", rowspan:2}, "#{@sendiri_f.where(course_id: programme.id).count}"]
-         lines << [ "L","#{@kkm_m.where(course_id: programme.id).count}","#{@spa_m.where(course_id: programme.id).count}","#{@swasta_m.where(course_id: programme.id).count}","#{@sendiri_m.where(course_id: programme.id).count}"]
+         lines<< [{content: "#{counter+=1}", rowspan:2}, {content: "#{programme.programme_list}", rowspan: 2}, "P",{content: "#{@kkm.where('course_id=? AND race2 IS NOT NULL AND id IN(?)',programme.id, @s6ids).count}", rowspan:2},"#{@kkm_f.where('course_id=? AND race2 IS NOT NULL AND id IN(?)',programme.id, @s6ids).count}", {content:"#{@spa.where('course_id=? AND race2 IS NOT NULL AND id IN(?)',programme.id, @s6ids).count}", rowspan:2}, "#{@spa_f.where('course_id=? AND race2 IS NOT NULL AND id IN(?)',programme.id, @s6ids).count}", {content:"#{@swasta.where('course_id=? AND race2 IS NOT NULL AND id IN(?)',programme.id, @s6ids).count}", rowspan:2}, "#{@swasta_f.where('course_id=? AND race2 IS NOT NULL AND id IN(?)',programme.id, @s6ids).count}", {content:"#{@sendiri.where('course_id=? AND race2 IS NOT NULL AND id IN(?)',programme.id, @s6ids).count}", rowspan:2}, "#{@sendiri_f.where('course_id=? AND race2 IS NOT NULL AND id IN(?)',programme.id, @s6ids).count}"]
+         lines << [ "L","#{@kkm_m.where('course_id=? AND race2 IS NOT NULL AND id IN(?)',programme.id, @s6ids).count}", "#{@spa_m.where('course_id=? AND race2 IS NOT NULL AND id IN(?)',programme.id, @s6ids).count}","#{@swasta_m.where('course_id=? AND race2 IS NOT NULL AND id IN(?)',programme.id, @s6ids).count}","#{@sendiri_m.where('course_id=? AND race2 IS NOT NULL AND id IN(?)',programme.id, @s6ids).count}"]
        end
      end 
      header+lines
@@ -157,9 +165,13 @@ class Students_quantity_sponsorPdf < Prawn::Document
     header =[ [{content: "BIL", rowspan: 2}, {content: "JENIS PROGRAM/KURSUS", rowspan: 2}, {content: "JANTINA", rowspan:2}, {content: "TAJAAN", colspan: 8}],["KKM", "BIL PELATIH","SPA", "BIL PELATIH", "SWASTA", "BIL PELATIH", "SENDIRI", "BIL PELATIH"] ]
     lines=[]
     @programmes2.each_with_index do |programme, counter|
+      
+       student_all_2intakes = Student.get_student_by_2intake(programme.id)
+       @s2ids = student_all_2intakes.map(&:id)
+
        if counter < 5
-         lines<< [{content: "#{counter+=1}", rowspan:2}, {content: "#{programme.programme_list}", rowspan: 2}, "P",{content: "#{@kkm.where(course_id: programme.id).count}", rowspan:2},"#{@kkm_f.where(course_id: programme.id).count}", {content:"#{@spa.where(course_id: programme.id).count}", rowspan:2}, "#{@spa_f.where(course_id: programme.id).count}", {content:"#{@swasta.where(course_id: programme.id).count}", rowspan:2}, "#{@swasta_f.where(course_id: programme.id).count}", {content:"#{@sendiri.where(course_id: programme.id).count}", rowspan:2}, "#{@sendiri_f.where(course_id: programme.id).count}"]
-         lines << [ "L","#{@kkm_m.where(course_id: programme.id).count}","#{@spa_m.where(course_id: programme.id).count}","#{@swasta_m.where(course_id:  programme.id).count}","#{@sendiri_m.where(course_id: programme.id).count}"]
+         lines<< [{content: "#{counter+=1}", rowspan:2}, {content: "#{programme.programme_list}", rowspan: 2}, "P",{content: "#{@kkm.where('course_id=? AND race2 IS NOT NULL AND id IN(?)',programme.id, @s2ids).count}", rowspan:2},"#{@kkm_f.where('course_id=? AND race2 IS NOT NULL AND id IN(?)',programme.id, @s2ids).count}", {content:"#{@spa.where('course_id=? AND race2 IS NOT NULL AND id IN(?)',programme.id, @s2ids).count}", rowspan:2}, "#{@spa_f.where('course_id=? AND race2 IS NOT NULL AND id IN(?)',programme.id, @s2ids).count}", {content:"#{@swasta.where('course_id=? AND race2 IS NOT NULL AND id IN(?)',programme.id, @s2ids).count}", rowspan:2}, "#{@swasta_f.where('course_id=? AND race2 IS NOT NULL AND id IN(?)',programme.id, @s2ids).count}", {content:"#{@sendiri.where('course_id=? AND race2 IS NOT NULL AND id IN(?)',programme.id, @s2ids).count}", rowspan:2}, "#{@sendiri_f.where('course_id=? AND race2 IS NOT NULL AND id IN(?)',programme.id, @s2ids).count}"]
+         lines << [ "L","#{@kkm_m.where('course_id=? AND race2 IS NOT NULL AND id IN(?)',programme.id, @s2ids).count}","#{@spa_m.where('course_id=? AND race2 IS NOT NULL AND id IN(?)',programme.id, @s2ids).count}","#{@swasta_m.where('course_id=? AND race2 IS NOT NULL AND id IN(?)',programme.id, @s2ids).count}","#{@sendiri_m.where('course_id=? AND race2 IS NOT NULL AND id IN(?)',programme.id, @s2ids).count}"]
        end
      end 
      header+lines
@@ -183,9 +195,13 @@ class Students_quantity_sponsorPdf < Prawn::Document
     header =[ [{content: "BIL", rowspan: 2}, {content: "JENIS PROGRAM/KURSUS", rowspan: 2}, {content: "JANTINA", rowspan:2}, {content: "TAJAAN", colspan: 8}],["KKM", "BIL PELATIH","SPA", "BIL PELATIH", "SWASTA", "BIL PELATIH", "SENDIRI", "BIL PELATIH"] ]
     lines=[]
     @programmes2.each_with_index do |programme, counter|
+       
+       student_all_2intakes = Student.get_student_by_2intake(programme.id)
+       @s2ids = student_all_2intakes.map(&:id)
+       
        if counter > 4
-         lines<< [{content: "#{counter+=1}", rowspan:2}, {content: "#{programme.programme_list}", rowspan: 2}, "P",{content: "#{@kkm.where(course_id: programme.id).count}", rowspan:2},"#{@kkm_f.where(course_id: programme.id).count}", {content:"#{@spa.where(course_id: programme.id).count}", rowspan:2}, "#{@spa_f.where(course_id: programme.id).count}", {content:"#{@swasta.where(course_id: programme.id).count}", rowspan:2}, "#{@swasta_f.where(course_id: programme.id).count}", {content:"#{@sendiri.where(course_id: programme.id).count}", rowspan:2}, "#{@sendiri_f.where(course_id: programme.id).count}"]
-         lines << [ "L","#{@kkm_m.where(course_id: programme.id).count}","#{@spa_m.where(course_id: programme.id).count}","#{@swasta_m.where(course_id: programme.id).count}","#{@sendiri_m.where(course_id: programme.id).count}"]
+         lines<< [{content: "#{counter+=1}", rowspan:2}, {content: "#{programme.programme_list}", rowspan: 2}, "P",{content: "#{@kkm.where('course_id=? AND race2 IS NOT NULL AND id IN(?)',programme.id, @s2ids).count}", rowspan:2},"#{@kkm_f.where('course_id=? AND race2 IS NOT NULL AND id IN(?)',programme.id, @s2ids).count}", {content:"#{@spa.where('course_id=? AND race2 IS NOT NULL AND id IN(?)',programme.id, @s2ids).count}", rowspan:2}, "#{@spa_f.where('course_id=? AND race2 IS NOT NULL AND id IN(?)',programme.id, @s2ids).count}", {content:"#{@swasta.where('course_id=? AND race2 IS NOT NULL AND id IN(?)',programme.id, @s2ids).count}", rowspan:2}, "#{@swasta_f.where('course_id=? AND race2 IS NOT NULL AND id IN(?)',programme.id, @s2ids).count}", {content:"#{@sendiri.where('course_id=? AND race2 IS NOT NULL AND id IN(?)',programme.id, @s2ids).count}", rowspan:2}, "#{@sendiri_f.where('course_id=? AND race2 IS NOT NULL AND id IN(?)',programme.id, @s2ids).count}"]
+         lines << [ "L","#{@kkm_m.where('course_id=? AND race2 IS NOT NULL AND id IN(?)',programme.id, @s2ids).count}","#{@spa_m.where('course_id=? AND race2 IS NOT NULL AND id IN(?)',programme.id, @s2ids).count}","#{@swasta_m.where('course_id=? AND race2 IS NOT NULL AND id IN(?)',programme.id, @s2ids).count}","#{@sendiri_m.where('course_id=? AND race2 IS NOT NULL AND id IN(?)',programme.id, @s2ids).count}"]
        end
      end 
      header+lines
@@ -209,9 +225,13 @@ class Students_quantity_sponsorPdf < Prawn::Document
     header =[ [{content: "BIL", rowspan: 2}, {content: "JENIS PROGRAM/KURSUS", rowspan: 2}, {content: "JANTINA", rowspan:2}, {content: "TAJAAN", colspan: 8}],["KKM", "BIL PELATIH","SPA", "BIL PELATIH", "SWASTA", "BIL PELATIH", "SENDIRI", "BIL PELATIH"] ]
     lines=[]
     @programmes3.each_with_index do |programme, counter|
+      
+       student_all_2intakes = Student.get_student_by_2intake(programme.id)
+       @s2ids = student_all_2intakes.map(&:id)
+       
        if counter < 5
-         lines<< [{content: "#{counter+=1}", rowspan:2}, {content: "#{programme.programme_list}", rowspan: 2}, "P",{content: "#{@kkm.where(course_id: programme.id).count}", rowspan:2},"#{@kkm_f.where(course_id: programme.id).count}", {content:"#{@spa.where(course_id: programme.id).count}", rowspan:2}, "#{@spa_f.where(course_id: programme.id).count}", {content:"#{@swasta.where(course_id: programme.id).count}", rowspan:2}, "#{@swasta_f.where(course_id: programme.id).count}", {content:"#{@sendiri.where(course_id: programme.id).count}", rowspan:2}, "#{@sendiri_f.where(course_id: programme.id).count}"]
-         lines << [ "L","#{@kkm_m.where(course_id: programme.id).count}","#{@spa_m.where(course_id: programme.id).count}","#{@swasta_m.where(course_id: programme.id).count}","#{@sendiri_m.where(course_id: programme.id).count}"]
+         lines<< [{content: "#{counter+=1}", rowspan:2}, {content: "#{programme.programme_list}", rowspan: 2}, "P",{content: "#{@kkm.where('course_id=? AND race2 IS NOT NULL AND id IN(?)',programme.id, @s2ids).count}", rowspan:2},"#{@kkm_f.where('course_id=? AND race2 IS NOT NULL AND id IN(?)',programme.id, @s2ids).count}", {content:"#{@spa.where('course_id=? AND race2 IS NOT NULL AND id IN(?)',programme.id, @s2ids).count}", rowspan:2}, "#{@spa_f.where('course_id=? AND race2 IS NOT NULL AND id IN(?)',programme.id, @s2ids).count}", {content:"#{@swasta.where('course_id=? AND race2 IS NOT NULL AND id IN(?)',programme.id, @s2ids).count}", rowspan:2}, "#{@swasta_f.where('course_id=? AND race2 IS NOT NULL AND id IN(?)',programme.id, @s2ids).count}", {content:"#{@sendiri.where('course_id=? AND race2 IS NOT NULL AND id IN(?)',programme.id, @s2ids).count}", rowspan:2}, "#{@sendiri_f.where('course_id=? AND race2 IS NOT NULL AND id IN(?)',programme.id, @s2ids).count}"]
+         lines << [ "L","#{@kkm_m.where('course_id=? AND race2 IS NOT NULL AND id IN(?)',programme.id, @s2ids).count}","#{@spa_m.where('course_id=? AND race2 IS NOT NULL AND id IN(?)',programme.id, @s2ids).count}","#{@swasta_m.where('course_id=? AND race2 IS NOT NULL AND id IN(?)',programme.id, @s2ids).count}","#{@sendiri_m.where('course_id=? AND race2 IS NOT NULL AND id IN(?)',programme.id, @s2ids).count}"]
        end
      end 
      header+lines
@@ -235,9 +255,13 @@ class Students_quantity_sponsorPdf < Prawn::Document
     header =[ [{content: "BIL", rowspan: 2}, {content: "JENIS PROGRAM/KURSUS", rowspan: 2}, {content: "JANTINA", rowspan:2}, {content: "TAJAAN", colspan: 8}],["KKM", "BIL PELATIH","SPA", "BIL PELATIH", "SWASTA", "BIL PELATIH", "SENDIRI", "BIL PELATIH"] ]
     lines=[]
     @programmes3.each_with_index do |programme, counter|
+       
+       student_all_2intakes = Student.get_student_by_2intake(programme.id)
+       @s2ids = student_all_2intakes.map(&:id)
+       
        if counter > 4
-         lines<< [{content: "#{counter+=1}", rowspan:2}, {content: "#{programme.programme_list}", rowspan: 2}, "P",{content: "#{@kkm.where(course_id: programme.id).count}", rowspan:2},"#{@kkm_f.where(course_id: programme.id).count}", {content:"#{@spa.where(course_id: programme.id).count}", rowspan:2}, "#{@spa_f.where(course_id: programme.id).count}", {content:"#{@swasta.where(course_id: programme.id).count}", rowspan:2}, "#{@swasta_f.where(course_id: programme.id).count}", {content:"#{@sendiri.where(course_id: programme.id).count}", rowspan:2}, "#{@sendiri_f.where(course_id: programme.id).count}"]
-         lines << [ "L","#{@kkm_m.where(course_id: programme.id).count}","#{@spa_m.where(course_id: programme.id).count}","#{@swasta_m.where(course_id: programme.id).count}","#{@sendiri_m.where(course_id: programme.id).count}"]
+         lines<< [{content: "#{counter+=1}", rowspan:2}, {content: "#{programme.programme_list}", rowspan: 2}, "P",{content: "#{@kkm.where('course_id=? AND race2 IS NOT NULL AND id IN(?)',programme.id, @s2ids).count}", rowspan:2},"#{@kkm_f.where('course_id=? AND race2 IS NOT NULL AND id IN(?)',programme.id, @s2ids).count}", {content:"#{@spa.where('course_id=? AND race2 IS NOT NULL AND id IN(?)',programme.id, @s2ids).count}", rowspan:2}, "#{@spa_f.where('course_id=? AND race2 IS NOT NULL AND id IN(?)',programme.id, @s2ids).count}", {content:"#{@swasta.where('course_id=? AND race2 IS NOT NULL AND id IN(?)',programme.id, @s2ids).count}", rowspan:2}, "#{@swasta_f.where('course_id=? AND race2 IS NOT NULL AND id IN(?)',programme.id, @s2ids).count}", {content:"#{@sendiri.where('course_id=? AND race2 IS NOT NULL AND id IN(?)',programme.id, @s2ids).count}", rowspan:2}, "#{@sendiri_f.where('course_id=? AND race2 IS NOT NULL AND id IN(?)',programme.id, @s2ids).count}"]
+         lines << [ "L","#{@kkm_m.where('course_id=? AND race2 IS NOT NULL AND id IN(?)',programme.id, @s2ids).count}","#{@spa_m.where('course_id=? AND race2 IS NOT NULL AND id IN(?)',programme.id, @s2ids).count}","#{@swasta_m.where('course_id=? AND race2 IS NOT NULL AND id IN(?)',programme.id, @s2ids).count}","#{@sendiri_m.where('course_id=? AND race2 IS NOT NULL AND id IN(?)',programme.id, @s2ids).count}"]
        end
      end 
      header+lines

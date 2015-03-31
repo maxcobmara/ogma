@@ -177,7 +177,7 @@ class Student < ActiveRecord::Base
          intake_year = current_year-(main_year-1)
        end
      end
-     #### Kebidanan only
+     #### Kebidanan only - start
      if Programme.find(programme).name=="Kebidanan"
         if current_month >=3 && current_month < 10
           current_sem_month = 3
@@ -188,17 +188,16 @@ class Student < ActiveRecord::Base
           intake_month = current_sem_month
           intake_year = current_year
         elsif main_semester == 2
-	  if current_sem_month==3
-	    intake_year = current_year-1
-	    intake_month = 9
-	  elsif current_sem_month==9
-	    intake_month = 3
-	    intake_year = current_year
-	  end
-	  intake_month = current_sem_month
+          if current_sem_month==3
+            intake_year = current_year-1
+            intake_month = 9
+          elsif current_sem_month==9
+            intake_month = 3
+            intake_year = current_year
+          end
         end
      end
-     ####Kebidanan only
+     ####Kebidanan only - end
      return Date.new(intake_year, intake_month,1)
    end
    
