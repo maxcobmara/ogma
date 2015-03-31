@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150316143324) do
+ActiveRecord::Schema.define(version: 20150331161348) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -440,6 +440,23 @@ ActiveRecord::Schema.define(version: 20150316143324) do
     t.datetime "updated_at"
   end
 
+  create_table "average_courses", force: true do |t|
+    t.integer  "lecturer_id"
+    t.integer  "programme_id"
+    t.string   "dissactifaction"
+    t.string   "recommend_for_improvement"
+    t.string   "summary_evaluation"
+    t.string   "evaluate_category"
+    t.string   "support_justify"
+    t.integer  "principal_id"
+    t.date     "principal_date"
+    t.integer  "subject_id"
+    t.integer  "delivery_quality"
+    t.integer  "lecturer_knowledge"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "bankaccounts", force: true do |t|
     t.integer  "staff_id"
     t.integer  "student_id"
@@ -586,6 +603,14 @@ ActiveRecord::Schema.define(version: 20150316143324) do
     t.datetime "updated_at"
   end
 
+  create_table "courseevaluations", force: true do |t|
+    t.integer  "student_id"
+    t.integer  "programme_id"
+    t.integer  "subject_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "curriculumsearches", force: true do |t|
     t.integer  "programme_id"
     t.integer  "semester"
@@ -680,6 +705,36 @@ ActiveRecord::Schema.define(version: 20150316143324) do
     t.string   "evactivity"
     t.string   "actlevel"
     t.date     "actdt"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "evaluate_courses", force: true do |t|
+    t.integer  "course_id"
+    t.integer  "subject_id"
+    t.integer  "staff_id"
+    t.integer  "student_id"
+    t.date     "evaluate_date"
+    t.string   "comment"
+    t.integer  "ev_obj"
+    t.integer  "ev_knowledge"
+    t.integer  "ev_deliver"
+    t.integer  "ev_content"
+    t.integer  "ev_tool"
+    t.integer  "ev_topic"
+    t.integer  "ev_work"
+    t.integer  "ev_note"
+    t.string   "invite_lec"
+    t.integer  "average_course_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "evaluatecoursesearches", force: true do |t|
+    t.integer  "programme_id"
+    t.integer  "subject_id"
+    t.date     "evaldate"
+    t.integer  "lecturer_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -1162,6 +1217,7 @@ ActiveRecord::Schema.define(version: 20150316143324) do
     t.string   "combo_code"
     t.integer  "ancestry_depth", default: 0
     t.string   "status"
+    t.boolean  "damaged"
   end
 
   add_index "locations", ["ancestry"], name: "index_locations_on_ancestry", using: :btree
@@ -1861,6 +1917,10 @@ ActiveRecord::Schema.define(version: 20150316143324) do
     t.integer  "case_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.datetime "confirmed_at_start"
+    t.datetime "confirmed_at_end"
+    t.boolean  "is_confirmed"
+    t.string   "name"
   end
 
   create_table "studentdisciplinesearches", force: true do |t|
