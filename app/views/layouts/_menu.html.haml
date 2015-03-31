@@ -133,28 +133,35 @@
             %li= link_to content_tag(:i, "", :class => "icon-numb") + (t "document.title"), documents_path
             %li= link_to content_tag(:i, "", :class => "icon-numb") + "File Registry", cofiles_path
 
-    - permitted_to? :read, :students do        
+    - permitted_to? :show, :students do        
       %li.icon.icon-left
         = link_to content_tag(:i, "", :class => "icon-numb") + t("student.title"), '#'
         .mp-level
           %h2.icon=t "student.title"
           %a.mp-back{:href => "#"}=t('back')
           %ul
-            %li= link_to content_tag(:i, "", :class => "icon-numb") + t("student.students.title"), students_path
-            %li.icon.icon-left
-              = link_to (t "student.students.reporting"), '#'
-              .mp-level
-                %h2.icon= t "student.students.reporting"
-                %a.mp-back{:href => "#"}= t 'helpers.links.back'
-                %ul
-                  %li= link_to 'Ethnic', reports_students_path
+            - permitted_to? :update, :students do
+              - if current_user.userable_type=="Student"
+                %li= link_to content_tag(:i, "", :class => "icon-numb") + t("student.students.title"), student_path(current_user.userable.id)
+            - permitted_to? :read, :students do
+              %li= link_to content_tag(:i, "", :class => "icon-numb") + t("student.students.title"), students_path
+            - permitted_to? :reports, :students do
+              %li.icon.icon-left
+                = link_to (t "student.students.reporting"), '#'
+                .mp-level
+                  %h2.icon= t "student.students.reporting"
+                  %a.mp-back{:href => "#"}= t 'helpers.links.back'
+                  %ul
+                    %li= link_to (t "student.students.ethnic"), reports_students_path
+                    %li= link_to (t "student.students.students_quantity_sponsor"), students_quantity_sponsor_students_path(format: 'pdf')
+                    %li= link_to (t "student.students.students_quantity_report"), students_quantity_report_students_path(format: 'pdf')
             - permitted_to? [:update, :approve, :approve2], :student_leaveforstudents do
               %li= link_to content_tag(:i, "", :class => "icon-numb") + t("student.leaveforstudent.title"), student_leaveforstudents_path
             - permitted_to? :manage, :student_student_attendances do
               %li= link_to content_tag(:i, "", :class => "icon-numb") + t("student.attendance.title2"), student_student_attendances_path
             - permitted_to? :create, :student_discipline_cases do
               %li= link_to content_tag(:i, "", :class => "icon-numb") + t("student.discipline.title2"), student_student_discipline_cases_path
-            - permitted_to? :manage, :student_discipline_cases do
+            - permitted_to? :manage, :student_counseling_sessions do
               %li= link_to content_tag(:i, "", :class => "icon-numb") + t("student.counseling.title2"), student_student_counseling_sessions_path
 
 
@@ -204,28 +211,29 @@
               %li= link_to content_tag(:i, "", :class => "icon-numb") + (t "exam.exams.title"), exam_exams_path
             /- permitted_to? :menu, :exam_examresults do
             /activate above, once examresult for student access ready
-            %li.icon.icon-left
-              = link_to (t "exam.management"), '#'
-              .mp-level
-                %h2.icon= t "exam.management"
-                %a.mp-back{:href => "#"}= t 'helpers.links.back'
-                %ul
-                  - permitted_to? :menu, :exam_exammarks do
-                    %li= link_to (t "exam.exammark.title"), exam_exammarks_path
-                  /- permitted_to? :menu, :exam_grades do
-                  /activate above, once grades - lecturers & programme manager ready
-                  %li= link_to (t "exam.grade.title"), exam_grades_path
-                  %li.icon.icon-left
-                    = link_to (t "exam.result"), '#'
-                    .mp-level
-                      %h2.icon= t "exam.result"
-                      %a.mp-back{:href => "#"}= t 'helpers.links.back'
-                      %ul
-                        /- permitted_to? :manage, :exam_examresults do
-                        /activate above, once examresults - lecturers & programme manager ready
-                        %li= link_to (t "exam.examresult.title2"), "#"
-                        //no need to put any permitted_to here -- as access given above(line 173 -174)
-                        %li= link_to (t "exam.examresult.exam_slip"), "#"
+            - permitted_to? :menu, :exam_exammarks do
+              %li.icon.icon-left
+                = link_to (t "exam.management"), '#'
+                .mp-level
+                  %h2.icon= t "exam.management"
+                  %a.mp-back{:href => "#"}= t 'helpers.links.back'
+                  %ul
+                    - permitted_to? :menu, :exam_exammarks do
+                      %li= link_to (t "exam.exammark.title"), exam_exammarks_path
+                    /- permitted_to? :menu, :exam_grades do
+                    /activate above, once grades - lecturers & programme manager ready
+                    %li= link_to (t "exam.grade.title"), exam_grades_path
+                    %li.icon.icon-left
+                      = link_to (t "exam.result"), '#'
+                      .mp-level
+                        %h2.icon= t "exam.result"
+                        %a.mp-back{:href => "#"}= t 'helpers.links.back'
+                        %ul
+                          /- permitted_to? :manage, :exam_examresults do
+                          /activate above, once examresults - lecturers & programme manager ready
+                          %li= link_to (t "exam.examresult.title2"), "#"
+                          //no need to put any permitted_to here -- as access given above(line 173 -174)
+                          %li= link_to (t "exam.examresult.exam_slip"), "#"
 
             /%li= link_to content_tag(:i, "", :class => "icon-numb") + "Examination Management", '#'
             - permitted_to? :index, :exam_evaluate_courses do

@@ -1,14 +1,19 @@
 class StudentsController < ApplicationController
   before_action :set_student, only: [:show, :edit, :update, :destroy]
   #filter_resource_access
-  #filter_access_to :all
+  filter_access_to :all
   # GET /students
   # GET /students.xml
 
   def index
     @search = Student.search(params[:q])
-    @students = @search.result.order(intake: :asc, course_id: :asc)
-    @students = @students.page(params[:page]||1)
+    @students_all = @search.result.order(intake: :asc, course_id: :asc)
+    @students = @students_all.page(params[:page]||1)
+    respond_to do |format|
+      format.html
+      format.csv { send_data @students_all.to_csv2 }
+      format.xls { send_data @students_all.to_csv2(col_sep: "\t") } 
+    end
   end
 
   def auto_complete
@@ -16,11 +21,40 @@ class StudentsController < ApplicationController
     render json: @students.map(&:icno)
   end
 
+  #start - import excel
+  def import_excel
+  end
+  
+  def import
+      a=Student.import(params[:file]) 
+      msg=Student.messages(a)
+      msg2=Student.messages2(a)      
+      
+      if a[:svs].count>0 && a[:ine].count==0 && a[:stnv].count==0 && a[:spnv].count==0
+        respond_to do |format|
+	  flash[:notice]= msg
+	  format.html {redirect_to students_url}
+	  #flash.discard
+	end
+      else
+	respond_to do |format|
+          flash[:notice]= msg if a[:svs].count>0
+	  flash[:error] = msg2
+          format.html { redirect_to import_excel_students_url}#{ render action: 'import_excel' }
+          #flash.discard
+        end
+      end
+  end
+  
+  def download_excel_format
+    send_file ("#{::Rails.root.to_s}/public/excel_format/student_import.xls")
+  end
+  #end - import excel
+  
   # GET /students/1
   # GET /students/1.xml
   def show
   end
-
 
   # GET /students/new
   # GET /students/new.xml
@@ -38,16 +72,6 @@ class StudentsController < ApplicationController
   # GET /students/1/edit
   def edit
     @student = Student.find(params[:id])
-  end
-
-  def formforstudent
-     @student = Student.find(params[:id])
-     #@students = Student.search(params[:search])
-     render :layout => 'report'
-     #respond_to do |format|
-         #format.html # index.html.erb  { render :action => "report.css" }
-         #format.xml  { render :xml => @staffs }
-     #end
   end
 
   def report
@@ -89,25 +113,41 @@ class StudentsController < ApplicationController
       end
     end
   end
+  
+  def kumpulan_etnik_main
+    commit = params[:list_submit_button]
+    programme_id = params[:programme]
+    if commit == t('actions.print')
+      redirect_to  kumpulan_etnik_students_path(:format => 'pdf', :programme => programme_id)
+    elsif commit == t('actions.export_excel')
+      redirect_to  kumpulan_etnik_excel_students_path(:format => 'xls', :programme => programme_id)
+    end
+  end
 
   def kumpulan_etnik
     @programme_id = params[:programme].to_i
-    #@programme_id = Student.where('course_id=?',@programmes_id )
-
-    #@programme_id = 3
     students_all_6intakes = Student.get_student_by_6intake(@programme_id)
     @students_6intakes_ids = students_all_6intakes.map(&:id)
     students_all_6intakes_count = students_all_6intakes.count
     @valid = Student.where('course_id=? AND race2 IS NOT NULL AND id IN(?)',@programme_id, @students_6intakes_ids)
-
     @student = Student.all
     respond_to do |format|
       format.pdf do
         pdf = Kumpulan_etnikPdf.new(@student, view_context, @programme_id, @students_6intakes_ids, @valid)
         send_data pdf.render, filename: "kumpulan_etnik-{Date.today}",
-                              type: "application/pdf",
-                              disposition: "inline"
+        type: "application/pdf",
+        disposition: "inline"
       end
+    end
+  end
+  
+  def kumpulan_etnik_excel
+    @programme_id = params[:programme].to_i
+    @student=Student.where(course_id: @programme_id)
+    respond_to do |format|
+      #format.html
+      format.csv { send_data @student.to_csv }
+      format.xls { send_data @student.to_csv(col_sep: "\t") } 
     end
   end
 
@@ -122,23 +162,70 @@ class StudentsController < ApplicationController
   end
 
   def borang_maklumat_pelajar
-
     @student= Student.find(params[:id])
     respond_to do |format|
       format.pdf do
         pdf = Borang_maklumat_pelajarPdf.new(@student, view_context)
         send_data pdf.render, filename: "borang_maklumat_pelajar-{Date.today}",
-                              type: "application/pdf",
-                              disposition: "inline"
+        type: "application/pdf",
+        disposition: "inline"
       end
     end
   end
 
   def reports
-    
   end
-
-
+  
+  def student_report
+    @programme_id=params[:programme_id].to_i
+    @students = Student.where(sstatus: ['Current', 'Repeat'], course_id: @programme_id).order(intake: :asc, course_id: :asc)
+    respond_to do |format|
+      format.pdf do
+        pdf = Student_reportPdf.new(@students, view_context)
+        send_data pdf.render, filename: "student-list-{Date.today}",
+        type: "application/pdf",
+        disposition: "inline"
+      end
+    end
+  end
+  
+  def students_quantity_sponsor
+    @students_kkm=Student.where(sstatus: ['Current', 'Repeat'], ssponsor: "KKM")
+    @students_kkm_male=Student.where(sstatus: ['Current', 'Repeat'], gender: 1, ssponsor: "KKM")
+    @students_kkm_female=Student.where(sstatus: ['Current', 'Repeat'], gender: 2, ssponsor: "KKM")
+    @students_spa=Student.where(sstatus: ['Current', 'Repeat'], ssponsor: "SPA")
+    @students_spa_male=Student.where(sstatus: ['Current', 'Repeat'], gender: 1, ssponsor: "SPA")
+    @students_spa_female=Student.where(sstatus: ['Current', 'Repeat'], gender: 2, ssponsor: "SPA")
+    @students_swasta=Student.where(sstatus: ['Current', 'Repeat'], ssponsor: "swasta")
+    @students_swasta_male=Student.where(sstatus: ['Current', 'Repeat'], gender: 1, ssponsor: "swasta")
+    @students_swasta_female=Student.where(sstatus: ['Current', 'Repeat'], gender: 2, ssponsor: "swasta")
+    @students_sendiri=Student.where(sstatus: ['Current', 'Repeat'], ssponsor: "FaMa")
+    @students_sendiri_male=Student.where(sstatus: ['Current', 'Repeat'], gender: 1, ssponsor: "FaMa")
+    @students_sendiri_female=Student.where(sstatus: ['Current', 'Repeat'], gender: 2, ssponsor: "FaMa")
+    @programmes=Programme.roots
+    @students=Student.where(sstatus: ['Current', 'Repeat'])
+    respond_to do |format|
+      format.pdf do
+        pdf = Students_quantity_sponsorPdf.new(@students_kkm, @students_kkm_male, @students_kkm_female, @students_spa, @students_spa_male, @students_spa_female, @students_swasta, @students_swasta_male, @students_swasta_female, @students_sendiri, @students_sendiri_male, @students_sendiri_female, @programmes, @students, view_context)
+        send_data pdf.render, filename: "student-list-{Date.today}",
+        type: "application/pdf",
+        disposition: "inline"
+      end
+    end
+  end
+  
+  def students_quantity_report
+    @programmes=Programme.roots
+    @students = Student.where(sstatus: ['Current', 'Repeat'])
+    respond_to do |format|
+      format.pdf do
+        pdf = Students_quantity_reportPdf.new(@programmes, @students, view_context)
+        send_data pdf.render, filename: "student-list-{Date.today}",
+        type: "application/pdf",
+        disposition: "inline"
+      end
+    end
+  end
 
   private
     # Use callbacks to share common setup or constraints between actions.
@@ -148,7 +235,7 @@ class StudentsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def student_params
-      params.require(:student).permit(:address, :address_posbasik, :allergy, :bloodtype, :course_id, :course_remarks, :created_at, :disease, :end_training, :gender, :group_id, :icno, :id, :intake, :intake_id, :matrixno, :medication, :mrtlstatuscd, :name, :offer_letter_serial, :photo_content_type, :photo_file_name, :photo_file_size, :photo_updated_at, :physical, :race, :race2, :regdate, :remarks, :sbirthdt, :semail, :specialisation, :specilisation, :ssponsor, :sstatus, :stelno, :updated_at, :sstatus_remark, kins_attributes: [:id,:destroy, :kintype_id,  :name, :mykadno, :phone, :profession, :kinaddr])
+      params.require(:student).permit(:address, :address_posbasik, :allergy, :bloodtype, :course_id, :course_remarks, :created_at, :disease, :end_training, :gender, :group_id, :icno, :id, :intake, :intake_id, :matrixno, :medication, :mrtlstatuscd, :name, :offer_letter_serial, :photo_content_type, :photo_file_name, :photo_file_size, :photo_updated_at, :physical, :race, :race2, :regdate, :remarks, :sbirthdt, :semail, :specialisation, :specilisation, :ssponsor, :sstatus, :stelno, :updated_at, :sstatus_remark, kins_attributes: [:id,:destroy, :kintype_id,  :name, :mykadno, :phone, :profession, :kinaddr], qualifications_attributes:[:id,:destroy, :level_id, :qname, :institute], spmresults_attributes: [:id, :destroy, :spm_subject, :grade])
     end
 
     def sort_column

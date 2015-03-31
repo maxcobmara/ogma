@@ -19,6 +19,17 @@ ms_MY:
       location_damage: Kerosakan di Lokasi
       location: Lokasi
     attributes:
+      student:
+        name: Nama
+        sstatus: Status Pelajar
+        ssponsor: Penaja
+        stelno: No Telefon
+        gender: Jantina
+        sbirthdt: Tarikh Lahir
+        mrtlstatuscd: Status Perkahwinan
+        intake: Sesi Pengambilan
+        course_id: Program
+        icno: No Mykad
       location:
         combo_code: Kod Lokasi
         damages: Kerosakan di Lokasi
@@ -79,11 +90,15 @@ ms_MY:
             illegal_char: mengandungi aksara yang tidak sah
             invalid: adalah tidak sah           
         models:
+          student:
+            attributes:
+              icno:
+                wrong_length: panjang adalah salah
           ptschedule:
             attributes:
               min_participants:
                 less_than_or_equal_to: Maksima harus melebihi Minima
-          travel_request: Travel Request
+          travel_request: Permohonan Perjalanan
           kin: Maklumat Waris
          
         attributes:
@@ -148,6 +163,8 @@ ms_MY:
   inc_unitname: " (termasuk nama Jabatan / Unit) "
   approve: Kelulusan
   add_details: Tambah Butiran
+  or: atau
+  excel_format: Format Excel
  
   actions:
     new: Baru
@@ -162,6 +179,7 @@ ms_MY:
     updated: " telah berjaya dikemaskini."
     removed: " telah berjaya dibuang."
     download_excel: Muatturun Fail Excel
+    export_excel: Eksport Excel
     import_excel: Import Excel
     imported: " telah berjaya diimport"
     imported2: "Rekod - rekod berjaya diimport : "
@@ -178,6 +196,7 @@ ms_MY:
     approved: Diluluskan
     not_approved: Tidak Diluluskan
     export: Eksport
+    line_no_excel:  " (fail excel - no baris : "
     
   errors:
   
@@ -251,7 +270,7 @@ ms_MY:
     bloodtype: "Jenis Darah"
     addr: "Alamat"
     poskod_id: "Poskod"
-    mrtlstatuscd: "Status Berkahwin"
+    mrtlstatuscd: "Status Perkahwinan"
     staffgrade_id: "Gred Staf"
     statecd: "Tempat Lahir"
     country_cd: "Kewarganegaraan"
@@ -274,7 +293,7 @@ ms_MY:
     phonehome: Telefon (H)
     poskod_id: Poskod
     address: Alamat
-    mrtlstatuscd: Status Kahwin
+    mrtlstatuscd: Status Perkahwinan
     statecd: Tempat Lahir
     race: Bangsa
     religion: Agama
@@ -1230,6 +1249,8 @@ ms_MY:
       title: Maklumat Pelajar
       list: Senarai Maklumat Pelajar
       reporting: Laporan
+      students_quantity_sponsor: "Bilangan Pelatih (Tajaan)"
+      students_quantity_report: "Bilangan Pelatih (Lapor Diri)"
       formatted_mykad: No Mykad
       name: Nama
       matrixno: No Matrik
@@ -1271,7 +1292,7 @@ ms_MY:
       course_details: Butiran Kursus
       health_status: Status Kesihatan
       qualifications: Kelayakan
-      guarantor: Keputusan SPM
+      guarantor: Penjamin
       contact_information: Maklumat Perhubungan dan Penjamin
       mandatory: Mandatori
       subject: Subjek
@@ -1284,7 +1305,40 @@ ms_MY:
       on_leave: Bercuti
       expelled: Dibuang Kolej
       transfer_college: Pindah Kolej
-      sstatus_remark: "Catatan, jika pindah kolej"
+      status_remark: "Catatan (Status)"
+      sstatus_remark: "Catatan, jika Pindah Kolej"
+      sstatus_remark2: "Semester diulang, jika Mengulang"
+      semester_repeated: Semester diulang
+      repeated_notes: "Cth 1: Masukkan '2' jika semester 2 diulang, Cth 2: Masukkan '2, 4' jika semester 2 dan 4 diulang."
+      ethnic: Kumpulan Etnik
+      ethnic_group: Maklumat Kumpulan Etnik Pelatih
+      medical: Kesihatan
+      remark: Catatan
+      import_excel: Import Pelajar dari Fail Excel
+      icno_must_unique: "(Nota Tambahan : No Mykad mestilah UNIK dalam format '999999999999')"
+      name_must_not_blank: "(Nota Tambahan : Medan ini tidak boleh dikosongkan)"
+      stelno_must_not_blank: "(Nota Tambahan : Medan ini (no telefon pelajar) tidak boleh dikosongkan)"
+      sstatus_must_use: "(Nota Tambahan : Gunakan 'Current', 'Graduated', 'Repeat', 'On Leave', 'Transfer College' atau 'Expelled' mengikut kesesuaian)"
+      ssponsor_must_use: "(Nota Tambahan : Gunakan 'KKM' untuk Kementerian Kesihatan Malaysia, 'SPA' untuk Suruhanjaya Perkhidmatan Awam, 'swasta' untuk Swasta dan 'FaMa' untuk sendiri)"
+      gender_must_use: "(Nota Tambahan : Gunakan '1' untuk Lelaki dan '2' untuk Perempuan)"
+      sbirthdt_must_use: "(Nota Tambahan : Tarikh Lahir - tarikh mesti dalam format 'tttt-bb-hh')"
+      mrtlstatuscd_must_use: "(Nota Tambahan : Status perkahwinan - gunakan '1' untuk bujang, '2' untuk berkahwin, '3' untuk lain-lain)"
+      regdate_must_use: "(Nota Tambahan : Tarikh Pendaftaran - tarikh mesti dalam format 'tttt-bb-hh')"
+      course_id_accordingly: "(Nota Tambahan : Gunakan 'course_id' berdasarkan senarai berikut (course_id - nama program) : "
+      end_training_must_use: "(Nota Tambahan : Tarikh Tamat Belajar - tarikh mesti dalam format 'tttt-bb-hh')"
+      additional_notes: "Nota Tambahan : "
+      intake_must_use: "(Nota Tambahan : Sesi Ambilan - mesti dalam format tarikh 'tttt-bb-01', pastikan '01' digunakan)"
+      race2_accordingly: "(Nota Tambahan : Gunakan 'race2' berdasarkan senarai berikut (race2 - nama kaum) : "
+      icno_invalid: " rekod dengan data 'icno' tidak sah "
+      name_invalid: " rekod dengan data 'nama' tidak sah "
+      stelno_invalid: " rekod dengan data 'stelno' tidak sah "
+      sstatus_invalid: " rekod dengan data 'sstatus' tidak sah "
+      ssponsor_invalid: " rekod dengan data 'ssponsor' tidak sah "
+      sbirthdt_invalid: " rekod dengan data 'sbirthdt' tidak sah "
+      gender_invalid: " rekod dengan data 'gender' tidak sah "
+      marital_invalid: " rekod dengan data 'mrtlstatuscd' tidak sah "
+      course_id_invalid: " rekod dengan data 'course_id' tidak sah "
+      intake_invalid: " rekod dengan data 'intake' tidak sah "
     
     leaveforstudent:
       title: Permohonan Cuti Pelajar
