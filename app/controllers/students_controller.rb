@@ -215,10 +215,11 @@ class StudentsController < ApplicationController
   end
   
   def students_quantity_report
+    @programmes=Programme.roots
     @students = Student.where(sstatus: ['Current', 'Repeat'])
     respond_to do |format|
       format.pdf do
-        pdf = Students_quantity_reportPdf.new(@students, view_context)
+        pdf = Students_quantity_reportPdf.new(@programmes, @students, view_context)
         send_data pdf.render, filename: "student-list-{Date.today}",
         type: "application/pdf",
         disposition: "inline"

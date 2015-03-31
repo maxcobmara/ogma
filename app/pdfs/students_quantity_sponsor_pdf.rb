@@ -120,7 +120,7 @@ class Students_quantity_sponsorPdf < Prawn::Document
       column(2..10).align =:center
       self.row_colors = ["FEFEFE", "FFFFFF"]
       self.header = true
-      self.width = 775#755
+      self.width = 775
       header = true
     end
   end
@@ -244,18 +244,18 @@ class Students_quantity_sponsorPdf < Prawn::Document
   end 
   
   def cop
-  move_down 10
-  text "* P - Perempuan", :align => :left, :size => 11, :indent_paragraphs => 30
-  text "* L - Lelaki", :align => :left, :size => 11, :indent_paragraphs => 30
+    move_down 10
+    text "* P - Perempuan", :align => :left, :size => 11, :indent_paragraphs => 30
+    text "* L - Lelaki", :align => :left, :size => 11, :indent_paragraphs => 30
   
-  text "Disediakan oleh :                                                                            Disahkan oleh : ", :align => :left, :size => 11, :indent_paragraphs => 40
-  move_down 25
-  text "---------------------------                                                                  -----------------------------", :align => :left, :size => 11, :indent_paragraphs => 30
-  text "Nama :                                                                                                 Pengarah", :align => :left, :size => 11, :indent_paragraphs => 30
-  text "Jawatan", :align => :left, :size => 11, :indent_paragraphs => 30
+    text "Disediakan oleh :                                                                            Disahkan oleh : ", :align => :left, :size => 11, :indent_paragraphs => 40
+    move_down 25
+    text "---------------------------                                                                  -----------------------------", :align => :left, :size => 11, :indent_paragraphs => 30
+    text "Nama :                                                                                                 Pengarah", :align => :left, :size => 11, :indent_paragraphs => 30
+    text "Jawatan", :align => :left, :size => 11, :indent_paragraphs => 30
   
-  text "Catatan : ", :align => :left, :size => 11, :indent_paragraphs => 30
-  text "* Laporan setiap 6 bulan pada 15 Februari & 15 Ogos", :align => :left, :size => 11, :indent_paragraphs => 30
+    text "Catatan : ", :align => :left, :size => 11, :indent_paragraphs => 30
+    text "* Laporan setiap 6 bulan pada 15 Februari & 15 Ogos", :align => :left, :size => 11, :indent_paragraphs => 30
   end
   
 end

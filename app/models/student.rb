@@ -177,6 +177,28 @@ class Student < ActiveRecord::Base
          intake_year = current_year-(main_year-1)
        end
      end
+     #### Kebidanan only
+     if Programme.find(programme).name=="Kebidanan"
+        if current_month >=3 && current_month < 10
+          current_sem_month = 3
+        else (current_month > 0 && current_month < 3) || (current_month >=9 && current_month <=12)
+          current_sem_month = 9
+        end
+        if main_semester == 1
+          intake_month = current_sem_month
+          intake_year = current_year
+        elsif main_semester == 2
+	  if current_sem_month==3
+	    intake_year = current_year-1
+	    intake_month = 9
+	  elsif current_sem_month==9
+	    intake_month = 3
+	    intake_year = current_year
+	  end
+	  intake_month = current_sem_month
+        end
+     end
+     ####Kebidanan only
      return Date.new(intake_year, intake_month,1)
    end
    
@@ -316,6 +338,32 @@ class Student < ActiveRecord::Base
      intake_repeat2_start6 = Student.get_intake_repeat2(2, 3, programme)
      intake_repeat2_end6 = intake_repeat2_start6.end_of_month
      repeat2_students= Student.where('( (intake >=? AND intake<=?) OR (intake >=? AND intake<=?) OR (intake >=? AND intake<=?) OR (intake >=? AND intake<=?)) AND course_id=? AND sstatus=? AND sstatus_remark ILIKE(?)', intake_repeat2_start3, intake_repeat2_end3, intake_repeat2_start4, intake_repeat2_end4,intake_repeat2_start5, intake_repeat2_end5,intake_repeat2_start6, intake_repeat2_end6,programme, 'Repeat', '%,%')
+     
+     all_students = []
+     all_students += current_students if current_students
+     all_students+=repeat_students if repeat_students
+     all_students+=repeat2_students if repeat2_students
+     return all_students
+   end
+
+   def self.get_student_by_2intake(programme) #return all students for these 6 intake - valid & invalid
+     intake_start1 = Student.get_intake(1, 1, programme)
+     intake_end1 = intake_start1.end_of_month
+     intake_start2 = Student.get_intake(2, 1, programme)
+     intake_end2 = intake_start2.end_of_month
+     current_students = Student.where('((intake >=? AND intake<=?) OR (intake >=? AND intake<=?)) AND course_id=? and sstatus=?',intake_start1, intake_end1,intake_start2, intake_end2, programme, 'Current')
+     
+     intake_repeat_start2 = Student.get_intake_repeat(2, 1, programme)
+     intake_repeat_end2 = intake_repeat_start2.end_of_month
+     #intake_repeat_start3 = Student.get_intake_repeat(1, 2, programme)
+     #intake_repeat_end3 = intake_repeat_start3.end_of_month
+     repeat_students= Student.where('( (intake >=? AND intake<=?)) AND course_id=? AND sstatus=? AND sstatus_remark not ILIKE(?)',intake_repeat_start2, intake_repeat_end2, programme, 'Repeat', '%,%')
+     
+     intake_repeat2_start3 = Student.get_intake_repeat2(1, 2, programme)
+     intake_repeat2_end3 = intake_repeat2_start3.end_of_month
+     intake_repeat2_start4 = Student.get_intake_repeat2(2, 2, programme)
+     intake_repeat2_end4 = intake_repeat2_start4.end_of_month
+     repeat2_students= Student.where('((intake >=? AND intake<=?) OR (intake >=? AND intake<=?)) AND course_id=? AND sstatus=? AND sstatus_remark ILIKE(?)', intake_repeat2_start3, intake_repeat2_end3, intake_repeat2_start4, intake_repeat2_end4,programme, 'Repeat', '%,%')
      
      all_students = []
      all_students += current_students if current_students
