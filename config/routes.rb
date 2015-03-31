@@ -179,6 +179,8 @@ Ogma::Application.routes.draw do
       get :kumpulan_etnik
       post :kumpulan_etnik
       get :reports
+      get :students_quantity_sponsor
+      get :students_quantity_report
       get :student_report
       get :kumpulan_etnik_main
       get :kumpulan_etnik_excel

@@ -1249,6 +1249,8 @@ ms_MY:
       title: Maklumat Pelajar
       list: Senarai Maklumat Pelajar
       reporting: Laporan
+      students_quantity_sponsor: "Bilangan Pelatih (Tajaan)"
+      students_quantity_report: "Bilangan Pelatih (Lapor Diri)"
       formatted_mykad: No Mykad
       name: Nama
       matrixno: No Matrik
