@@ -132,6 +132,7 @@ ms_MY:
   class: Kelas
   type: Jenis
   notes: Catatan
+  compulsory_fields: Medan - medan yang wajib diisi
   create: Tambah Data
   no: Tidak
   setup: Data Asas
