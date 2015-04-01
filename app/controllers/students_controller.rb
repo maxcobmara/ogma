@@ -138,9 +138,10 @@ class StudentsController < ApplicationController
     students_all_6intakes_count = students_all_6intakes.count
     @valid = Student.where('course_id=? AND race2 IS NOT NULL AND id IN(?)',@programme_id, @students_6intakes_ids)
     @student = Student.all
+    @preparedby=current_user.userable
     respond_to do |format|
       format.pdf do
-        pdf = Kumpulan_etnikPdf.new(@student, view_context, @programme_id, @students_6intakes_ids, @valid)
+        pdf = Kumpulan_etnikPdf.new(@student, view_context, @programme_id, @students_6intakes_ids, @valid, @preparedby)
         send_data pdf.render, filename: "kumpulan_etnik-{Date.today}",
         type: "application/pdf",
         disposition: "inline"

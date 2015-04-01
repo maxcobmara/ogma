@@ -281,21 +281,6 @@ class Students_quantity_sponsorPdf < Prawn::Document
 #      header+lines
 #   end 
   
-  def cop2
-    move_down 10
-    text "* P - Perempuan", :align => :left, :size => 11, :indent_paragraphs => 30
-    text "* L - Lelaki", :align => :left, :size => 11, :indent_paragraphs => 30
-  
-    text "Disediakan oleh :                                                                            Disahkan oleh : ", :align => :left, :size => 11, :indent_paragraphs => 40
-    move_down 25
-    text "---------------------------                                                                  -----------------------------", :align => :left, :size => 11, :indent_paragraphs => 30
-    text "Nama : #{@prepared_by.name}                                                                                                Pengarah", :align => :left, :size => 11, :indent_paragraphs => 30
-    text "Jawatan", :align => :left, :size => 11, :indent_paragraphs => 30
-  
-    text "Catatan : ", :align => :left, :size => 11, :indent_paragraphs => 30
-    text "* Laporan setiap 6 bulan pada 15 Februari & 15 Ogos", :align => :left, :size => 11, :indent_paragraphs => 30
-  end
-  
   def cop
     text "* P - Perempuan", :align => :left, :size => 10, :indent_paragraphs => 30
     text "* L - Lelaki", :align => :left, :size => 10, :indent_paragraphs => 30
@@ -318,8 +303,8 @@ class Students_quantity_sponsorPdf < Prawn::Document
             end
     end
     move_down 10
-    text "Catatan : ", :align => :left, :size => 11, :indent_paragraphs => 28
-    text "* Laporan setiap 6 bulan pada 15 Februari & 15 Ogos", :align => :left, :size => 11, :indent_paragraphs => 28
+    text "Catatan : ", :align => :left, :size => 10, :indent_paragraphs => 30
+    text "* Laporan setiap 6 bulan pada 15 Februari & 15 Ogos", :align => :left, :size => 10, :indent_paragraphs => 30
   end
   
 end
