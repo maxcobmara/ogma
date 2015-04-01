@@ -53,7 +53,8 @@ ms_MY:
         travel_on: Tarikh
         start_at: Dari
         finish_at: Hingga
-        travel_log: Log Perjalanan
+        travel_log: Log Perjalananlash[:notice]= 
+          flash[:error] = msg2
       leaveforstudent:
         student_id: Nama pelajar
         leavetype: Jenis cuti
@@ -165,6 +166,7 @@ ms_MY:
   add_details: Tambah Butiran
   or: atau
   excel_format: Format Excel
+  select_excel_file: Sila pilih fail Excel untuk diimport
  
   actions:
     new: Baru
