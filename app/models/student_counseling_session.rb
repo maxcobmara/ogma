@@ -91,12 +91,14 @@ class StudentCounselingSession < ActiveRecord::Base
   private
   
   def check_referred_case
-    aaa=StudentDisciplineCase.find(case_id)
-    if aaa
-       #errors.add(:base, I18n.t('student.counseling.removal_prohibited_case_still_exist'))
-       return false
-    else
-      return true
+    unless case_id.nil? || case_id.blank?
+      aaa=StudentDisciplineCase.find(case_id)
+      if aaa
+         #errors.add(:base, I18n.t('student.counseling.removal_prohibited_case_still_exist'))
+         return false
+      else
+        return true
+      end
     end
   end
   

@@ -21,53 +21,82 @@
 %br=t('library.book.condition_line')
 %ol
   %li 
-    icno
+    %b icno
+    %font{color: "red"}*
     =" - "+t('student.students.icno_must_unique')
   %li 
-    name
+    %b name
+    %font{color: "red"}*
     =" - "+t('student.students.name_must_not_blank')
-  %li matrixno
   %li 
-    sstatus
+    %b matrixno
+    =" - "+t('student.students.matrixno')
+  %li 
+    %b sstatus
+    %font{color: "red"}*
     =" - "+t('student.students.sstatus_must_use')
   %li 
-    sstatus_remark
+    %b sstatus_remark
     ="- ("+t('student.students.additional_notes')+t('student.students.sstatus_remark')+" "+(t 'or').upcase+" "+t('student.students.sstatus_remark2')+" "+" - "+t('student.students.repeated_notes')+")"
   %li 
-    stelno
+    %b stelno
+    %font{color: "red"}*
     =" - "+t('student.students.stelno_must_not_blank')
   %li 
-    ssponsor
+    %b ssponsor
+    %font{color: "red"}*
     =" - "+t('student.students.ssponsor_must_use')
   %li 
-    gender
+    %b gender
+    %font{color: "red"}*
     =" - "+t('student.students.gender_must_use')
   %li 
-    sbirthdt
+    %b sbirthdt
+    %font{color: "red"}*
     =" - "+t('student.students.sbirthdt_must_use')
   %li 
-    mrtlstatuscd
+    %b mrtlstatuscd
+    %font{color: "red"}*
     =" - "+t('student.students.mrtlstatuscd_must_use')
-  %li semail
   %li 
-    regdate
+    %b semail
+    =" - "+t('student.students.semail')
+  %li 
+    %b regdate
     =" - "+t('student.students.regdate_must_use')
   %li 
-    course_id
+    %b course_id
+    %font{color: "red"}*
     =" - "+t('student.students.course_id_accordingly')
     %ul
       - Programme.roots.sort.each do |course|
         %li= course.id.to_s+" - "+course.name
-  %li offer_letter_serial
   %li 
-    end_training
+    %b offer_letter_serial
+    =" - "+t('student.students.offer_letter_serial')
+  %li 
+    %b end_training
     =" - "+t('student.students.end_training_must_use')
   %li 
-    intake
+    %b intake
+    %font{color: "red"}*
     =" - "+t('student.students.intake_must_use')
   %li 
-    race2
+    %b race2
     =" - "+t('student.students.race2_accordingly')
     %ul
       - Student::RACE.each do |name, id|
         %li=id.to_s+" - "+name
+  %li 
+    %b address
+    =" - "+t('student.students.address')
+  %li 
+    %b address_posbasik 
+    =" - "+t('student.students.address_posbasik')
+%br
+%B 
+  %u=t('notes')+" : "
+%font{color: "red"}*
+=t('compulsory_fields')
+%BR
+%BR

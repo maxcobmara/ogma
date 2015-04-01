@@ -152,6 +152,7 @@ en:
   class: Class
   type: Type
   notes: Notes
+  compulsory_fields: Indicates compulsory fields
   create: Create
   no: No
   setup: Set Up
