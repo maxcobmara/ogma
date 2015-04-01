@@ -327,7 +327,6 @@ class Kumpulan_etnikPdf < Prawn::Document
     @m_t3s2t=Student.get_student_by_intake_gender_race(2, 3, 1,@programme_id, 20).count
     @m_t3s2u=Student.get_student_by_intake_gender_race(2, 3, 1,@programme_id, 21).count
     @m_total_t3s2=Student.get_student_by_intake_gender(2, 3, 1,@programme_id).count
-    
     ###
     
     data = [["JENIS PROGRAM/ KURSUS","KUMP","Jantina", "Melayu","Cina","India","Org Asli","Bajau","Murut","Brunei","Bisaya","Kadazan","Suluk","Kedayan","Iban","Kadazan Dusun","Sungai","Siam","Malanau","Bugis","Bidayuh","Momogun Rungus","Dusun","Lain-lain","JUMLAH"],
