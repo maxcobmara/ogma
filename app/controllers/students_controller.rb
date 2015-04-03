@@ -26,24 +26,31 @@ class StudentsController < ApplicationController
   end
   
   def import
+    unless params[:file].nil? || params[:file].blank?
+      
       a=Student.import(params[:file]) 
       msg=Student.messages(a)
       msg2=Student.messages2(a)      
       
       if a[:svs].count>0 && a[:ine].count==0 && a[:stnv].count==0 && a[:spnv].count==0
         respond_to do |format|
-	  flash[:notice]= msg
-	  format.html {redirect_to students_url}
-	  #flash.discard
-	end
+          flash[:notice]= msg
+          format.html {redirect_to students_url}
+        end
       else
-	respond_to do |format|
+        respond_to do |format|
           flash[:notice]= msg if a[:svs].count>0
-	  flash[:error] = msg2
-          format.html { redirect_to import_excel_students_url}#{ render action: 'import_excel' }
+          flash[:error] = msg2
+          format.html { redirect_to import_excel_students_url}
           #flash.discard
         end
       end
+      
+    else
+      respond_to do |format|
+        format.html { redirect_to import_excel_students_url, :notice => (t 'select_excel_file')}
+      end
+    end
   end
   
   def download_excel_format
@@ -131,9 +138,10 @@ class StudentsController < ApplicationController
     students_all_6intakes_count = students_all_6intakes.count
     @valid = Student.where('course_id=? AND race2 IS NOT NULL AND id IN(?)',@programme_id, @students_6intakes_ids)
     @student = Student.all
+    @preparedby=current_user.userable
     respond_to do |format|
       format.pdf do
-        pdf = Kumpulan_etnikPdf.new(@student, view_context, @programme_id, @students_6intakes_ids, @valid)
+        pdf = Kumpulan_etnikPdf.new(@student, view_context, @programme_id, @students_6intakes_ids, @valid, @preparedby)
         send_data pdf.render, filename: "kumpulan_etnik-{Date.today}",
         type: "application/pdf",
         disposition: "inline"
@@ -204,9 +212,10 @@ class StudentsController < ApplicationController
     @students_sendiri_female=Student.where(sstatus: ['Current', 'Repeat'], gender: 2, ssponsor: "FaMa")
     @programmes=Programme.roots
     @students=Student.where(sstatus: ['Current', 'Repeat'])
+    @preparedby=current_user.userable
     respond_to do |format|
       format.pdf do
-        pdf = Students_quantity_sponsorPdf.new(@students_kkm, @students_kkm_male, @students_kkm_female, @students_spa, @students_spa_male, @students_spa_female, @students_swasta, @students_swasta_male, @students_swasta_female, @students_sendiri, @students_sendiri_male, @students_sendiri_female, @programmes, @students, view_context)
+        pdf = Students_quantity_sponsorPdf.new(@students_kkm, @students_kkm_male, @students_kkm_female, @students_spa, @students_spa_male, @students_spa_female, @students_swasta, @students_swasta_male, @students_swasta_female, @students_sendiri, @students_sendiri_male, @students_sendiri_female, @programmes, @students, @preparedby, view_context)
         send_data pdf.render, filename: "student-list-{Date.today}",
         type: "application/pdf",
         disposition: "inline"

@@ -10,9 +10,9 @@
     .col-md-5
       - if @case_id!= nil 
         = f.hidden_field :case_id, :value => @case_id
-        = f.collection_select :student_id, Student.all.order(name: :asc), :id, :formatted_mykad_and_student_name, {:selected=> StudentDisciplineCase.find(@case_id).student_id}, {class: 'selectpicker', "data-width"=>"400px"}
+        = f.collection_select :student_id, Student.where('sstatus=? or sstatus=?', 'Current', 'Repeat').order(name: :asc), :id, :formatted_mykad_and_student_name, {:selected=> StudentDisciplineCase.find(@case_id).student_id}, {class: 'selectpicker', "data-width"=>"400px"}
       - else
-        = f.collection_select :student_id, Student.all.order(name: :asc), :id, :formatted_mykad_and_student_name, {:include_blank=>t('helpers.prompt.select_student')}, {class: 'selectpicker', "data-width"=>"400px"}
+        = f.collection_select :student_id, Student.where('sstatus=? or sstatus=?', 'Current', 'Repeat').order(name: :asc), :id, :formatted_mykad_and_student_name, {:include_blank=>t('helpers.prompt.select_student')}, {class: 'selectpicker', "data-width"=>"400px"}
     .col-md-1
       %font{style: "color: red;"} *
   .form-group

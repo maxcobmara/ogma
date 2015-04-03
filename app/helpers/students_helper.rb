@@ -427,7 +427,7 @@ module StudentsHelper
         student_rec.ssponsor = ssponsor_e
         student_rec.sbirthdt = sbirthdt_e
         student_rec.intake = intake_e
-        student_rec.attributes = row.to_hash.slice("matrixno","sstatus_remark", "semail", "regdate", "offer_letter_serial", "end_training")
+        student_rec.attributes = row.to_hash.slice("matrixno","sstatus_remark", "semail", "regdate", "offer_letter_serial", "end_training", "address", "address_posbasik")
         student_rec.save!
         #saved_students << student_rec if !student_rec.id.nil?
         saved_students << i #if !student_rec.id.nil?

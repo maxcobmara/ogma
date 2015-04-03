@@ -152,6 +152,7 @@ en:
   class: Class
   type: Type
   notes: Notes
+  compulsory_fields: Indicates compulsory fields
   create: Create
   no: No
   setup: Set Up
@@ -186,6 +187,7 @@ en:
   add_details: Add Details
   or: or
   excel_format: Excel Format
+  select_excel_file: Please select an Excel file for import
 
   actions:
     new: New

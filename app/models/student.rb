@@ -177,7 +177,7 @@ class Student < ActiveRecord::Base
          intake_year = current_year-(main_year-1)
        end
      end
-     #### Kebidanan only
+     #### Kebidanan only - start
      if Programme.find(programme).name=="Kebidanan"
         if current_month >=3 && current_month < 10
           current_sem_month = 3
@@ -188,17 +188,16 @@ class Student < ActiveRecord::Base
           intake_month = current_sem_month
           intake_year = current_year
         elsif main_semester == 2
-	  if current_sem_month==3
-	    intake_year = current_year-1
-	    intake_month = 9
-	  elsif current_sem_month==9
-	    intake_month = 3
-	    intake_year = current_year
-	  end
-	  intake_month = current_sem_month
+          if current_sem_month==3
+            intake_year = current_year-1
+            intake_month = 9
+          elsif current_sem_month==9
+            intake_month = 3
+            intake_year = current_year
+          end
         end
      end
-     ####Kebidanan only
+     ####Kebidanan only - end
      return Date.new(intake_year, intake_month,1)
    end
    
@@ -301,6 +300,17 @@ class Student < ActiveRecord::Base
      all_students+=repeat_students2 if repeat_students2
      return all_students
    end
+   
+   #####Laporan Bilangan Pelatih (Lapor Diri)
+   def self.get_lapor_diri(main_semester, main_year, gender, programme)
+     students_all_6intakes = Student.get_student_by_6intake(programme)
+     @students_6intakes_ids = students_all_6intakes.map(&:id)
+     intake_start = Student.get_intake(main_semester, main_year, programme)
+     intake_end = intake_start.end_of_month
+     existing_students=Student.where('intake >=? AND intake<=? AND course_id=? AND gender=? AND race2 IS NOT NULL and id IN(?) and (sstatus=? OR sstatus=?)', intake_start, intake_end, programme, gender,@students_6intakes_ids ,'Current', 'Repeat')
+     existing_students
+   end
+   #####
 
    def self.get_student_by_6intake(programme) #return all students for these 6 intake - valid & invalid
      intake_start1 = Student.get_intake(1, 1, programme)
