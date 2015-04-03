@@ -1,0 +1,1 @@
+git pull && bundle install --quiet && rake db:migrate && rake db:test:prepare && rspec
