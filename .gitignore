@@ -36,3 +36,4 @@ public/excel_format_local/*.xls
 tmp/
 tmp/**/*
 *.directory
+*.fuse_*
