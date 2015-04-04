@@ -1254,6 +1254,7 @@ ms_MY:
       reporting: Laporan
       students_quantity_sponsor: "Bilangan Pelatih (Tajaan)"
       students_quantity_report: "Bilangan Pelatih (Lapor Diri)"
+      matrix_name: "No Matrik - Nama"
       formatted_mykad: No Mykad
       name: Nama
       matrixno: No Matrik
@@ -1396,6 +1397,8 @@ ms_MY:
     discipline:
       title: Kes Disiplin Pelajar
       title2: Kes Disiplin
+      report_title: "Senarai Kes Disiplin (Mengikut Pelajar)"
+      list: Senarai Kes Disiplin Pelajar
       new: Kes Baru Disiplin Pelajar
       edit: Sunting Kes Displin Pelajar
       new_case: Kes Disiplin Baru

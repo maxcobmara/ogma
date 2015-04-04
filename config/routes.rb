@@ -225,6 +225,12 @@ Ogma::Application.routes.draw do
         get :actiontaken
         get :referbpl
       end
+      collection do
+        get :reports
+        get :anacdotal_report
+        post :anacdotal_report
+        get :discipline_report
+      end
     end
     resources :student_counseling_sessions do
       member do
