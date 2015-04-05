@@ -6,17 +6,34 @@ class Student::StudentDisciplineCasesController < ApplicationController
   # GET /student_discipline_cases.xml
   def index
     @search = StudentDisciplineCase.search(params[:q])
-    @student_discipline_cases2 = @search.result
-    @student_discipline_cases = @student_discipline_cases2.page(params[:page]||1)  
+    #@student_discipline_cases2 = @search.result
+    #@student_discipline_cases = @student_discipline_cases2.page(params[:page]||1)
+    @student_discipline_cases2 = @search.result.sort_by{|x|x.student.course_id}
+    @student_discipline_cases = Kaminari.paginate_array(@student_discipline_cases2).page(params[:page]||1) 
 
-    @student_year_sem=[]
-    @student_discipline_cases.each do |sdc|
-	@student_year_sem << Student.year_and_sem(sdc.student.intake)
-    end
+#     @student_year_sem=[]
+#     @student_discipline_cases.each do |sdc|
+# 	@student_year_sem << Student.year_and_sem(sdc.student.intake)
+#     end
+
     respond_to do |format|
       format.html # index.html.erb
       format.xml  { render :xml => @student_discipline_cases }
     end
+  end
+  
+  def discipline_report
+    @search = StudentDisciplineCase.search(params[:q])
+    @student_discipline_cases2 = @search.result.sort_by{|x|x.student.course_id}
+
+    respond_to do |format|
+       format.pdf do
+         pdf = Discipline_reportPdf.new(@student_discipline_cases2, view_context)
+                   send_data pdf.render, filename: "discipline_report-{Date.today}",
+                   type: "application/pdf",
+                   disposition: "inline"
+       end
+     end
   end
 
   # GET /student_discipline_cases/1
@@ -104,6 +121,22 @@ class Student::StudentDisciplineCasesController < ApplicationController
 
   def referbpl
     @student_discipline_case = StudentDisciplineCase.find(params[:id]) 
+  end
+  
+  def reports
+  end
+  
+  def anacdotal_report
+    @student_id=params[:student].to_i
+    @discipline_cases=StudentDisciplineCase.where(student_id: @student_id)
+    respond_to do |format|
+      format.pdf do
+        pdf = Anacdotal_reportPdf.new(@discipline_cases, view_context)
+        send_data pdf.render, filename: "discipline-bystudent-{Date.today}",
+        type: "application/pdf",
+        disposition: "inline"
+      end
+    end
   end
   
   private

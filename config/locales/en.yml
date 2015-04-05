@@ -1335,6 +1335,7 @@ en:
       reporting: Reporting
       students_quantity_sponsor: "Students Quantity (Sponsor)"
       students_quantity_report: "Students Quantity (Report)"
+      matrix_name: "Matrix No - Name"
       formatted_mykad: MyKad No
       name: Name
       matrixno: Matrix No
@@ -1478,6 +1479,8 @@ en:
     discipline:
       title: Student Discipline Case
       title2: Discipline Cases
+      report_title: "Discipline Case Listing (by Student)"
+      list: Student Discipline Case LIsting
       new: New Student Discipline Case
       edit: Edit Student Discipline Case
       new_case: New Case 
