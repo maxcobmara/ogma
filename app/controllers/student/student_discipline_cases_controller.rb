@@ -1,15 +1,22 @@
 class Student::StudentDisciplineCasesController < ApplicationController
   
-  filter_resource_access
-  #filter_access_to :all
+  #filter_resource_access
+  filter_access_to :all
   before_action :set_student_discipline_case, only: [:show, :edit, :update, :destroy]
    
   # GET /student_discipline_cases
   # GET /student_discipline_cases.xml
   def index
-    @search = StudentDisciplineCase.search(params[:q])
-    #@student_discipline_cases2 = @search.result
-    #@student_discipline_cases = @student_discipline_cases2.page(params[:page]||1)
+    roles = current_user.roles.pluck(:id)
+    @is_admin = roles.include?(2)
+    if @is_admin
+      @search = StudentDisciplineCase.search(params[:q])
+    else
+      @search = StudentDisciplineCase.sstaff2(current_user.userable.id).search(params[:q])
+    end 
+    
+    ##@student_discipline_cases2 = @search.result
+    ##@student_discipline_cases = @student_discipline_cases2.page(params[:page]||1)
     @student_discipline_cases2 = @search.result.sort_by{|x|x.student.course_id}
     @student_discipline_cases = Kaminari.paginate_array(@student_discipline_cases2).page(params[:page]||1) 
 

@@ -47,9 +47,13 @@ class StaffAppraisal < ActiveRecord::Base
 
    # whitelist the scope
    def self.ransackable_scopes(auth_object = nil)
-     [:status_search]
+     [:status_search] 
    end 
-      
+   
+   def self.sstaff2(u)
+     where('staff_id=? OR eval1_by=? OR eval2_by=?', u,u,u)
+   end   
+     
    def evaluation_status
      if is_skt_submit != true
        I18n.t('staff.staff_appraisal.skt_being_formulated')

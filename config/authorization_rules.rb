@@ -28,37 +28,49 @@ authorization do
     if_attribute :id => is {user.userable.id}
    end
    ###
-   has_permission_on :ptdos, :to => :create                                             # A staff can register for training session
-   has_permission_on :ptdos, :to => :index do
+   has_permission_on :staff_training_ptdos, :to => :create                                             # A staff can register for training session
+   has_permission_on :staff_training_ptdos, :to => :index do
      if_attribute :staff_id => is {current_user.userable.id}                            # but onle see his own registrations
    end
 
-   has_permission_on :attendances, :to => [:index, :show, :new, :create, :edit, :update] do
+   has_permission_on :staff_attendances, :to => [:index, :show, :new, :create, :edit, :update] do
      if_attribute :staff_id => is {current_user.userable.id}
    end
-   has_permission_on :attendances, :to => [:index, :show, :approve, :update] do
+   has_permission_on :staff_attendances, :to => [:index, :show, :approve, :update] do
        if_attribute :approve_id => is {current_user.userable.id}
    end
 
-   has_permission_on :staff_appraisals, :to => :create
-   has_permission_on :staff_appraisals, :to => :manage, :join_by => :or do
-       if_attribute :staff_id => is {current_user.userable.id}
-       if_attribute :eval1_by => is {current_user.userable.id}
-       if_attribute :eval2_by => is {current_user.userable.id}
+   ###
+   has_permission_on :student_student_discipline_cases, :to => :approve do 
+      if_attribute :assigned_to =>  is {user.userable.id} 
+    end
+    has_permission_on :student_student_discipline_cases, :to => [:manage, :actiontaken] do
+      if_attribute :assigned2_to => is {user.userable.id}
+    end
+   ####
+   
+   has_permission_on :staff_staff_appraisals, :to => :create
+   has_permission_on :staff_staff_appraisals, :to => [ :update] do 
+     if_attribute :eval1_by => is {user.userable.id}
+   end
+   has_permission_on :staff_staff_appraisals, :to => :manage, :join_by => :or do
+       #if_attribute :staff_id => is {user.userable.id}
+       if_attribute :eval1_by => is {user.userable.id}
+       if_attribute :eval2_by => is {user.userable.id}
    end
 
-   has_permission_on :leaveforstaffs, :to => :create
-   has_permission_on :leaveforstaffs, :to => [:index, :show, :edit, :update] do
-     if_attribute :staff_id => is {current_user.userable.id}
+   has_permission_on :staff_leaveforstaffs, :to => :create
+   has_permission_on :staff_leaveforstaffs, :to => [:index, :show, :edit, :update] do
+     if_attribute :staff_id => is {user.userable.id}
    end
-   has_permission_on :leaveforstaffs, :to => [:index, :show, :approve1, :update] do
-       if_attribute :approval1_id => is {current_user.userable.id}
+   has_permission_on :staff_leaveforstaffs, :to => [:index, :show, :approve1, :update] do
+       if_attribute :approval1_id => is {user.userable.id}
    end
-   has_permission_on :leaveforstaffs, :to => [:index, :show, :approve2, :update] do
-       if_attribute :approval2_id => is {current_user.userable.id}
+   has_permission_on :staff_leaveforstaffs, :to => [:index, :show, :approve2, :update] do
+       if_attribute :approval2_id => is {user.userable.id}
    end
-   has_permission_on :ptdos, :to => :delete do
-       if_attribute :staff_id => is {current_user.userable.id}
+   has_permission_on :staff_training_ptdos, :to => :delete do
+       if_attribute :staff_id => is {user.userable.id}
    end
 
    has_permission_on :asset_defects, :to => :create
@@ -76,7 +88,8 @@ authorization do
    end
 
    #to works in travel request..28 August 2013
-   #has_permission_on :documents, :to => :index
+   has_permission_on :documents, :to => :index
+   has_permission_on :staff_travel_requests, :to => :create
 
    has_permission_on :students, :to => :show ###temp - required for access to students menu items
 
@@ -107,6 +120,25 @@ authorization do
    
  end
 
+  role :staff_administrator do
+     has_permission_on :staffs, :to => [:manage, :borang_maklumat_staff]
+     has_permission_on :attendances, :to => :manage
+     has_permission_on :staff_attendances, :to => :manage   #29Apr2013-refer routes.rb
+     has_permission_on :staff_positions, :to =>[:manage, :maklumat_perjawatan]
+  end
+  
+  role :finance_unit do
+    has_permission_on [:travel_claims, :travel_claim_allowances, :travel_claim_receipts, :travel_claim_logs], :to => [:manage, :check, :approve]
+  end
+
+   role :training_manager do
+     has_permission_on [:staff_training_ptbudgets, :staff_training_ptcourses, :staff_training_ptschedules], :to => :manage
+   end
+ 
+   role :training_administration do
+     has_permission_on [:staff_training_ptcourses, :staff_training_ptschedules], :to => :manage
+     has_permission_on :staff_training_ptdos, :to => :approve
+   end
 
  #Group Assets  -------------------------------------------------------------------------------
  role :asset_administrator do
@@ -224,8 +256,8 @@ authorization do
   end
 
    role :disciplinary_officer do
-     has_permission_on :student_discipline_cases, :to => :manage
-     has_permission_on :student_counseling_sessions, :to => :feedback_referrer do
+     has_permission_on :student_student_discipline_cases, :to => [:manage, :reports, :discipline_report, :anacdotal_report]
+     has_permission_on :student_student_counseling_sessions, :to => :feedback_referrer do
        if_attribute :case_id =>  is_not {nil}
      end
    end

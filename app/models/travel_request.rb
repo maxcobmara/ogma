@@ -24,12 +24,12 @@ class TravelRequest < ActiveRecord::Base
   attr_accessor :staff_own_car, :tpt_class
   
   #controller searches
-  def self.in_need_of_approval
-    where('hod_id = ? AND is_submitted = ? AND (hod_accept IS ? OR hod_accept = ?)', User.current.userable_id, true, nil, false)
+  def self.in_need_of_approval(u)
+    where('hod_id = ? AND is_submitted = ? AND (hod_accept IS ? OR hod_accept = ?)', u, true, nil, false)
   end
   
-  def self.my_travel_requests
-    where(staff_id: User.current.userable_id)
+  def self.my_travel_requests(u)
+    where(staff_id: u)
   end
   
   def reference_document

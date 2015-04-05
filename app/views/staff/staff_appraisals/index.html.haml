@@ -29,5 +29,5 @@
           %td= appraised.evaluation_year.try(:strftime,'%Y')
           %td= appraised.evaluation_status
   
-    .right{style:"padding:0 30px; margin:0;"}= paginate @staff_appraisals, :theme => 'twitter-bootstrap-3'
+  .right{style:"padding:0 30px; margin:0;"}= paginate @staff_appraisals, :theme => 'twitter-bootstrap-3'
 
