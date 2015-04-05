@@ -30,7 +30,7 @@
           .col-sm-2.control-label
             = f.label t 'student.discipline.location_id', for: :location_id
           .col-md-3 
-            = f.collection_select :location_id, Location.all, :id, :location_list,{:prompt => t('select')}, {class: 'form-control'}
+            = f.collection_select :location_id, Location.all.order(combo_code: :asc), :id, :location_list,{:prompt => t('select')}, {class: 'form-control'}
         .form-group
           .col-sm-2.control-label
             = f.label t 'student.discipline.reported_on', for: :reported_on

@@ -1,14 +1,18 @@
 .mp-level
   %h2.icon.icon-world Menu
   %ul
-    - permitted_to? :menu, :staffs do
+    /- permitted_to? :menu, :staffs do             - inc index
+    - permitted_to? :show, :staffs do
       %li.icon.icon-left
         = link_to t('staff.title'), '#'
         .mp-level
           %h2.icon=t('staff.title')
           %a.mp-back{:href => "#"}=t('back')
           %ul
-            %li= link_to t('staff.list'), staff_infos_path
+            - permitted_to? :read, :staffs do
+              %li= link_to t('staff.list'), staff_infos_path
+            - permitted_to? :update, :staffs do
+              %li= link_to content_tag(:i, "", :class => "icon-numb") + t("staff.title"), staff_info_path(current_user.userable.id)
             %li.icon.icon-left
               = link_to t('staff_attendance.title'), '#'
               .mp-level
@@ -160,9 +164,9 @@
               %li= link_to content_tag(:i, "", :class => "icon-numb") + t("student.leaveforstudent.title"), student_leaveforstudents_path
             - permitted_to? :manage, :student_student_attendances do
               %li= link_to content_tag(:i, "", :class => "icon-numb") + t("student.attendance.title2"), student_student_attendances_path
-            - permitted_to? :create, :student_discipline_cases do
+            - permitted_to? :create, :student_student_discipline_cases do
               %li= link_to content_tag(:i, "", :class => "icon-numb") + t("student.discipline.title2"), student_student_discipline_cases_path
-            - permitted_to? :manage, :student_counseling_sessions do
+            - permitted_to? :manage, :student_student_counseling_sessions do
               %li= link_to content_tag(:i, "", :class => "icon-numb") + t("student.counseling.title2"), student_student_counseling_sessions_path
 
 

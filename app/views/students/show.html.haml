@@ -59,7 +59,8 @@
     .form-actions
       - permitted_to? :read, :students do 
         = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), students_path, :class => 'btn btn-default'
-      = link_to content_tag(:i, "", class: "fa fa-file-pdf-o"), borang_maklumat_pelajar_student_path(@student, format: "pdf"), class: "btn btn-default", "data-toggle" => "tooltip", title: "Borang Maklumat Pelajar"
+      - permitted_to? :borang_maklumat_pelajar, :students do
+        = link_to content_tag(:i, "", class: "fa fa-file-pdf-o"), borang_maklumat_pelajar_student_path(@student, format: "pdf"), class: "btn btn-default", "data-toggle" => "tooltip", title: "Borang Maklumat Pelajar"
       - permitted_to? :update, :students do
         = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('.edit', :default => t("helpers.links.edit")), edit_student_path(@student),  :class => 'btn btn-primary' 
       - permitted_to? :manage, :students do

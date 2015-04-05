@@ -67,12 +67,16 @@
   .col-md-4.col-md-offset-4
     %hr
     .form-actions
-      = link_to content_tag(:i, "", class: "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), staff_infos_path, class: 'btn btn-default'
-      = link_to content_tag(:i, "", class: "fa fa-file-pdf-o"), borang_maklumat_staff_staff_info_path(@staff, format: "pdf"), class: "btn btn-default", "data-toggle" => "tooltip", title: "Borang Maklumat Staff"
-      = link_to content_tag(:i, "", class: "fa fa-edit") + " " + t('.edit', :default => t("helpers.links.edit")), edit_staff_info_path(@staff), class: 'btn btn-primary'
-      = link_to content_tag(:i, "", class: "fa fa-trash-o icon-white") + " " + t('.destroy', :default => t("helpers.links.destroy")), |
-        staff_info_path(@staff),                                                                                                    |
-        :method => 'delete',                                                                                                           |
-        :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },                   |
-        class: 'btn btn-danger'
+      - permitted_to? :read, :staffs do 
+        = link_to content_tag(:i, "", class: "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), staff_infos_path, class: 'btn btn-default'
+      - permitted_to? :borang_maklumat_staff, :staffs do
+        = link_to content_tag(:i, "", class: "fa fa-file-pdf-o"), borang_maklumat_staff_staff_info_path(@staff, format: "pdf"), class: "btn btn-default", "data-toggle" => "tooltip", title: "Borang Maklumat Staff"
+      - permitted_to? :update, :staffs do
+        = link_to content_tag(:i, "", class: "fa fa-edit") + " " + t('.edit', :default => t("helpers.links.edit")), edit_staff_info_path(@staff), class: 'btn btn-primary'
+      - permitted_to? :manage, :staffs do
+        = link_to content_tag(:i, "", class: "fa fa-trash-o icon-white") + " " + t('.destroy', :default => t("helpers.links.destroy")), |
+          staff_info_path(@staff),                                                                                                    |
+          :method => 'delete',                                                                                                           |
+          :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },                   |
+          class: 'btn btn-danger'
               
