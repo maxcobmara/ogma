@@ -19,10 +19,15 @@ authorization do
 
  role :staff do
    has_permission_on [:attendances, :assets, :documents],     :to => :menu              # Access for Menus
-   has_permission_on :staffs, :to => [:show, :menu]                                     # A staff see the staff list
-   has_permission_on :staffs, :to => [:edit, :update, :menu] do
-     if_attribute :id => is {current_user.userable.id}                                  # but only sees himself
+   #has_permission_on :staffs, :to => [:show, :menu]                                     # A staff see the staff list
+   #has_permission_on :staffs, :to => [:edit, :update, :menu] do
+   #  if_attribute :id => is {current_user.userable.id}                                  # but only sees himself
+   #end
+   ###
+   has_permission_on :staffs, :to => [:update, :show, :borang_maklumat_staff] do #[:read, :update, :menu] do
+    if_attribute :id => is {user.userable.id}
    end
+   ###
    has_permission_on :ptdos, :to => :create                                             # A staff can register for training session
    has_permission_on :ptdos, :to => :index do
      if_attribute :staff_id => is {current_user.userable.id}                            # but onle see his own registrations
@@ -73,19 +78,25 @@ authorization do
    #to works in travel request..28 August 2013
    #has_permission_on :documents, :to => :index
 
+   has_permission_on :students, :to => :show ###temp - required for access to students menu items
 
-   has_permission_on :student_discipline_cases, :to => :create
-   has_permission_on :student_discipline_cases, :to => :approve do
-     if_attribute :assigned_to => is {current_user.userable.id}
-   end
-   has_permission_on :student_discipline_cases, :to => :manage do
-     if_attribute :assigned2_to => is {current_user.userable.id}
-   end
-   has_permission_on :student_discipline_cases, :to => :read, :join_by => :or do
-     if_attribute :reported_by => is {current_user.userable.id}
-     if_attribute :assigned_to => is {current_user.userable.id}
-     if_attribute :assigned2_to => is {current_user.userable.id}
-   end
+    has_permission_on :student_student_discipline_cases, :to => :create
+    has_permission_on :student_student_discipline_cases, :to => :approve do 
+      if_attribute :assigned_to =>  is {user.userable.id} #is {current_user.userable.id}
+    end
+    has_permission_on :student_student_discipline_cases, :to => [:manage, :actiontaken] do
+      if_attribute :assigned2_to => is {user.userable.id}
+    end
+    
+    ###read - temp : to avoid using :read -> inc :index where necessary
+    has_permission_on :student_student_discipline_cases, :to => :read do
+      if_attribute :reported_by => is {user.userable.id}
+    end
+#    has_permission_on :student_discipline_cases, :to => :read, :join_by => :or do
+#      if_attribute :reported_by => is {current_user.userable.id}
+#      if_attribute :assigned_to => is {current_user.userable.id}
+#      if_attribute :assigned2_to => is {current_user.userable.id}
+#    end
 
    #disable this part first - suppose in index, view only - transaction where current_user is a borrower - but ALL record are displayed when this part is enable
    #has_permission_on :library_librarytransactions, :to => :read do

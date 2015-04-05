@@ -1,5 +1,7 @@
 class Student::StudentDisciplineCasesController < ApplicationController
   
+  filter_resource_access
+  #filter_access_to :all
   before_action :set_student_discipline_case, only: [:show, :edit, :update, :destroy]
    
   # GET /student_discipline_cases
@@ -51,7 +53,7 @@ class Student::StudentDisciplineCasesController < ApplicationController
   # GET /student_discipline_cases/new.xml
   def new
     @student_discipline_case = StudentDisciplineCase.new
-    @student_discipline_case.student_counseling_sessions.build
+    #@student_discipline_case.student_counseling_sessions.build
     @myhod = Position.where('tasks_main ILIKE (?)', "%Ketua Program%").pluck(:staff_id)
     respond_to do |format|
       format.html # new.html.erb
