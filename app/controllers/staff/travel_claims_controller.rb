@@ -1,7 +1,13 @@
 class Staff::TravelClaimsController < ApplicationController
   before_action :set_travel_claim, only: [:show, :edit, :update, :destroy]
   def index
-    @search = TravelClaim.search(params[:q])
+    roles = current_user.roles.pluck(:id)
+    @is_admin = roles.include?(2)
+    if @is_admin
+      @search = TravelClaim.search(params[:q])
+    else
+      @search = TravelClaim.sstaff2(current_user.userable.id).search(params[:q])
+    end 
     @travel_claims = @search.result.order(staff_id: :asc, claim_month: :asc)
 
      respond_to do |format|

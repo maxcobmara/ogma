@@ -1,7 +1,17 @@
 class Staff::StaffAppraisalsController < ApplicationController
   before_action :set_staff_appraisal, only: [:show, :edit, :update, :destroy] 
+  
+  #filter_resource_access
+  filter_access_to :all
+  
   def index
-    @search = StaffAppraisal.search(params[:q])
+    roles = current_user.roles.pluck(:id)
+    @is_admin = roles.include?(2)
+    if @is_admin
+      @search = StaffAppraisal.search(params[:q])
+    else
+      @search = StaffAppraisal.sstaff2(current_user.userable.id).search(params[:q])
+    end 
     @staff_appraisals = @search.result
     @staff_appraisals = @staff_appraisals.page(params[:page]||1)
   end

@@ -41,6 +41,10 @@ class StudentDisciplineCase < ActiveRecord::Base
     {:scope => "bpl",   :label =>  I18n.t('student.discipline.refer_bpl')},
     {:scope => "closed",:label => I18n.t('student.discipline.closed')}
   ]  
+ 
+  def self.sstaff2(u)
+     where('reported_by=? OR assigned_to=? OR assigned2_to=?', u,u,u)
+  end    
   
   def close_if_no_case
     if action_type == "no_case" || action_type == "advise" #|| action_type == "counseling"

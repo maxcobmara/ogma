@@ -1,13 +1,13 @@
  class Staff::TravelRequestsController < ApplicationController
-  before_filter :set_current_user
+  #before_filter :set_current_user
   before_action :set_travel_request, only: [:show, :edit, :update, :destroy]
     
   # GET /travel_requests
   # GET /travel_requests.xml
   def index
     @search = TravelRequest.search(params[:q])
-    @for_approvals = @search.result.in_need_of_approval
-    @travel_requests = @search.result.my_travel_requests
+    @for_approvals = @search.result.in_need_of_approval(current_user.userable.id)
+    @travel_requests = @search.result.my_travel_requests(current_user.userable.id)
     #@for_approvals = @for_approvals.page(params[:page]||1)
 
     respond_to do |format|
@@ -111,7 +111,7 @@
   
   def travel_log_index
     @search = TravelRequest.search(params[:q])
-    @my_approved_requests = @search.result.where('staff_id =? AND hod_accept=?', Login.first.staff_id, true)
+    @my_approved_requests = @search.result.where('staff_id =? AND hod_accept=?', current_user.userable.id, true)
     @my_approved_requests = @my_approved_requests.page(params[:page]||1)
 
     respond_to do |format|

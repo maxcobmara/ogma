@@ -2,8 +2,13 @@ class StaffTraining::PtdosController < ApplicationController
   before_action :set_ptdo, only: [:show, :edit, :update, :destroy]
   
   def index
-    @ptdos = Ptdo.all
-    @search = Ptdo.search(params[:q])
+    roles = current_user.roles.pluck(:id)
+    @is_admin = roles.include?(2)
+    if @is_admin
+      @search = Ptdo.search(params[:q])
+    else
+      @search = Ptdo.sstaff2(current_user.userable.id).search(params[:q])
+    end 
     @ptdos = @search.result
   end
   

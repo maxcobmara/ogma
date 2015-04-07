@@ -39,6 +39,10 @@ class Ptdo < ActiveRecord::Base
     status
   end
   
+  def self.sstaff2(u)
+     where('staff_id=?', u)
+  end 
+  
   def whoami
     #self.staff_id = Login.current_login.staff.id
     self.ptcourse_id = ptschedule.course.id

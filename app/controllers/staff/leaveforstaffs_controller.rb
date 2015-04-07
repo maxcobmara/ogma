@@ -2,8 +2,13 @@ class Staff::LeaveforstaffsController < ApplicationController
   before_action :set_leaveforstaff, only: [:show, :edit, :update, :destroy]
   
   def index
-    @leaveforstaffs = Leaveforstaff.all
-    @search = Leaveforstaff.search(params[:q])
+    roles = current_user.roles.pluck(:id)
+    @is_admin = roles.include?(2)
+    if @is_admin
+      @search = Leaveforstaff.search(params[:q])
+    else
+      @search = Leaveforstaff.sstaff2(current_user.userable.id).search(params[:q])
+    end 
     @leaveforstaffs = @search.result
     @leaveforstaffs = @leaveforstaffs.order(staff_id: :asc, leavestartdate: :asc).page(params[:page]||1)
   end

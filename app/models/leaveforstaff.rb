@@ -77,6 +77,9 @@ class Leaveforstaff < ActiveRecord::Base
       [:keyword_search]
     end
   
+    def self.sstaff2(u)
+      where('staff_id=? OR approval1_id=? OR approval2_id=?', u,u,u)
+    end   
   
     def self.find_main
       Staff.find(:all, :condition => ["staff_id=? OR approval1_id=? OR approval2_id=?", User.current_user.staff_id, User.current_user.staff_id, User.current_user.staff_id])

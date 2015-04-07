@@ -1,6 +1,9 @@
 class Staff::StaffAttendancesController < ApplicationController
   before_action :set_staff_attendance, only: [:show, :edit, :update, :destroy]
 
+  #filter_resource_access
+  filter_access_to :all
+  
   # GET /staff_attendances
   # GET /staff_attendances.xml
   def index
@@ -219,10 +222,10 @@ class Staff::StaffAttendancesController < ApplicationController
   end
 
   def manage
-    @mylate_attendances = StaffAttendance.find_mylate(@current_user)
-    @myearly_attendances = StaffAttendance.find_myearly(@current_user)
-    @approvelate_attendances = StaffAttendance.find_approvelate(@current_user)
-    @approveearly_attendances = StaffAttendance.find_approveearly(@current_user)
+    @mylate_attendances = StaffAttendance.find_mylate(current_user)
+    @myearly_attendances = StaffAttendance.find_myearly(current_user)
+    @approvelate_attendances = StaffAttendance.find_approvelate(current_user)
+    @approveearly_attendances = StaffAttendance.find_approveearly(current_user)
 
     respond_to do |format|
       format.html # index.html.erb

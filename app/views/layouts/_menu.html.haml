@@ -9,58 +9,70 @@
           %h2.icon=t('staff.title')
           %a.mp-back{:href => "#"}=t('back')
           %ul
-            - permitted_to? :read, :staffs do
+            - if permitted_to? :read, :staffs
               %li= link_to t('staff.list'), staff_infos_path
-            - permitted_to? :update, :staffs do
-              %li= link_to content_tag(:i, "", :class => "icon-numb") + t("staff.title"), staff_info_path(current_user.userable.id)
-            %li.icon.icon-left
-              = link_to t('staff_attendance.title'), '#'
-              .mp-level
-                %h2.icon Staff Attendance
-                %a.mp-back{:href => "#"}= t 'helpers.links.back'
-                %ul
-                  %li= link_to t('attendance.manage_lateness_earlyreturn'), '/attendance/manage'
-                  %li= link_to t('staff_attendance.title'), staff_staff_attendances_path
-                  %li= link_to t('staff_attendance.status_pcard'), '/attendance/status'
-                  %li= link_to "Report - Monthly Listing", '#'
-            %li= link_to t('staff.staff_appraisal.title'), staff_staff_appraisals_path
-            %li= link_to t('position.title'), staff_positions_path
+            - else
+              - permitted_to? :update, :staffs do
+                %li= link_to content_tag(:i, "", :class => "icon-numb") + t("staff.title"), staff_info_path(current_user.userable.id)
+            - permitted_to? :menu, :staff_attendances do
+              %li.icon.icon-left
+                = link_to t('staff_attendance.title'), '#'
+                .mp-level
+                  %h2.icon=t('staff_attendance.title')
+                  %a.mp-back{:href => "#"}= t 'helpers.links.back'
+                  %ul
+                    %li= link_to t('attendance.manage_lateness_earlyreturn'), '/attendance/manage'
+                    %li= link_to t('staff_attendance.title'), staff_staff_attendances_path
+                    %li= link_to t('staff_attendance.status_pcard'), '/attendance/status'
+                    %li= link_to "Report - Monthly Listing", '#'
+            - permitted_to? :index, :staff_staff_appraisals do        
+              %li= link_to t('staff.staff_appraisal.title'), staff_staff_appraisals_path
+            - permitted_to? :read, :staffs do
+              %li= link_to t('position.title'), staff_positions_path
             %li.icon.icon-left
               = link_to t('staff_leave.leave'), '#'
               .mp-level
                 %h2.icon= t('staff_leave.leave')
                 %a.mp-back{:href => "#"}= t 'helpers.links.back'
                 %ul
-                  %li= link_to t('staff_leave.apply'), new_staff_leaveforstaff_path
+                  - permitted_to? :create, :staff_leaveforstaffs do
+                    %li= link_to t('staff_leave.apply'), new_staff_leaveforstaff_path
                   %li= link_to t('staff_leave.listapprove'), staff_leaveforstaffs_path
-            %li.icon.icon-left
-              = link_to t('staff.travel_claim.title'), '#'
-              .mp-level
-                %h2.icon=t 'staff.travel_claim.title'
-                %a.mp-back{:href => "#"}= t 'helpers.links.back'
-                %ul
-                  %li= link_to t('staff.travel_request.title'), staff_travel_requests_path
-                  %li= link_to t('staff.travel_request.my_travel_logs'), travel_log_index_staff_travel_requests_path
-                  %li= link_to t('staff.travel_claim.title'), staff_travel_claims_path
-            %li.icon.icon-left
-              = link_to t('staff.professional_development'), '#'
-              .mp-level
-                %h2.icon=t ('staff.professional_development')
-                %a.mp-back{:href => "#"}= t 'helpers.links.back'
-                %ul
-                  %li= link_to t('staff.training.budget.title'), staff_training_ptbudgets_path
-                  %li= link_to t('staff.training.course.title_course'), staff_training_ptcourses_path
-                  %li= link_to t('staff.training.schedule.title_schedule'), staff_training_ptschedules_path
-                  %li= link_to t('staff.training.application_status.title_apply'), '#', class: 'bogus'
-                  %li= link_to t('staff.training.application_status.title'), staff_training_ptdos_path
-            %li= link_to t('staff.travel_request.status_movement'), staff_travel_requests_path
-            %li.icon.icon-left
-              = link_to "Reports", '#'
-              .mp-level
-                %h2.icon Reports
-                %a.mp-back{:href => "#"}= t 'helpers.links.back'
-                %ul
-                  %li= link_to "Maklumat Perjawatan", '/staff/positions/maklumat_perjawatan.pdf'
+            - permitted_to? :create, :staff_travel_requests do
+              %li.icon.icon-left
+                = link_to t('staff.travel_claim.title'), '#'
+                .mp-level
+                  %h2.icon=t 'staff.travel_claim.title'
+                  %a.mp-back{:href => "#"}= t 'helpers.links.back'
+                  %ul
+                    %li= link_to t('staff.travel_request.title'), staff_travel_requests_path
+                    %li= link_to t('staff.travel_request.my_travel_logs'), travel_log_index_staff_travel_requests_path
+                    %li= link_to t('staff.travel_claim.title'), staff_travel_claims_path
+            - permitted_to? :create, :staff_training_ptdos do
+              %li.icon.icon-left
+                = link_to t('staff.professional_development'), '#'
+                .mp-level
+                  %h2.icon=t ('staff.professional_development')
+                  %a.mp-back{:href => "#"}= t 'helpers.links.back'
+                  %ul
+                    - permitted_to? :manage, :staff_training_ptbudgets do
+                      %li= link_to t('staff.training.budget.title'), staff_training_ptbudgets_path
+                    - permitted_to? :manage, :staff_training_ptcourses do
+                      %li= link_to t('staff.training.course.title_course'), staff_training_ptcourses_path
+                    - permitted_to? :manage, :staff_training_ptschedules do
+                      %li= link_to t('staff.training.schedule.title_schedule'), staff_training_ptschedules_path
+                    %li= link_to t('staff.training.application_status.title_apply'), '#', class: 'bogus'
+                    %li= link_to t('staff.training.application_status.title'), staff_training_ptdos_path
+            - permitted_to? :create, :staff_travel_requests do
+              %li= link_to t('staff.travel_request.status_movement'), staff_travel_requests_path
+            - permitted_to? :maklumat_perjawatan, :staff_positions do
+              %li.icon.icon-left
+                = link_to "Reports", '#'
+                .mp-level
+                  %h2.icon Reports
+                  %a.mp-back{:href => "#"}= t 'helpers.links.back'
+                  %ul
+                    %li= link_to "Maklumat Perjawatan", '/staff/positions/maklumat_perjawatan.pdf'
 
     - permitted_to? :read, :assets do
       %li.icon.icon-left
@@ -159,7 +171,8 @@
                     %li= link_to (t "student.students.ethnic"), reports_students_path
                     %li= link_to (t "student.students.students_quantity_sponsor"), students_quantity_sponsor_students_path(format: 'pdf')
                     %li= link_to (t "student.students.students_quantity_report"), students_quantity_report_students_path(format: 'pdf')
-                    %li= link_to (t "student.discipline.report_title"), reports_student_student_discipline_cases_path
+                    - permitted_to? :reports, :student_student_discipline_cases do
+                      %li= link_to (t "student.discipline.report_title"), reports_student_student_discipline_cases_path
             - permitted_to? [:update, :approve, :approve2], :student_leaveforstudents do
               %li= link_to content_tag(:i, "", :class => "icon-numb") + t("student.leaveforstudent.title"), student_leaveforstudents_path
             - permitted_to? :manage, :student_student_attendances do

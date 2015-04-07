@@ -46,6 +46,10 @@ class TravelClaim < ActiveRecord::Base
     self.total = total_claims
   end
   
+  def self.sstaff2(u)
+     where('staff_id=? OR checked_by=? OR approved_by=?', u,u,u)
+  end   
+  
   def accommodations_must_exist_for_lodging_hotel_claims
      duplicates = (travel_claim_allowances.map(&:expenditure_type) & [31,32]).count
      if duplicates > 0 && (accommodations.nil? || accommodations.blank?)
