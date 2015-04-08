@@ -1,6 +1,6 @@
 FactoryGirl.define do
-  
-   factory :user do
+
+   factory :login do
      id 11
      staff_id 25
      login "maslinda"

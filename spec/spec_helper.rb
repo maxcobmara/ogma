@@ -6,6 +6,7 @@ require 'rspec/autorun'
 require 'capybara/rspec'
 require 'capybara/rails'
 require 'factory_girl'
+require 'devise'
 #require 'zip/zip'
 
 # Requires supporting ruby files with custom matchers and macros, etc,
@@ -46,6 +47,12 @@ RSpec.configure do |config|
   config.include Capybara::DSL
   config.include Rails.application.routes.url_helpers
   config.include ApplicationHelper
-  
+
+  #config.include ControllerHelpers, type: :controller
+  Warden.test_mode!
+
+  config.after do
+    Warden.test_reset!
+  end
 
 end

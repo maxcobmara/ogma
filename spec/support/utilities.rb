@@ -1,3 +1,12 @@
+def sign_in(user)
+  visit root_path
+  fill_in "Email",    with: user.email
+  fill_in "Password", with: user.password
+  click_button "Sign-In"
+  # Sign in when not using Capybara as well.
+  #cookies[:remember_token] = user.remember_token
+end
+
 def full_title(page_title)
   base_title = "Ogma App"
   if page_title.empty?
@@ -14,4 +23,3 @@ end
 def budget_range(budget)
   budget.fiscalstart.strftime("%d %B %Y") + ' ~ ' + fiscal_end(budget)
 end
-
