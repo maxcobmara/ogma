@@ -8,7 +8,7 @@ class Maklumat_perjawatanPdf < Prawn::Document
     move_down 5
     text "MAKLUMAT PERJAWATAN DI KOLEH-KOLEJ LATIHAN", :align => :center, :size => 12, :style => :bold
     text "KEMENTERIAN KESIHATAN MALAYSIA", :align => :center, :size => 12, :style => :bold
-    text "SEHINGGA #{Date.today.strftime('%d-%m-%Y')}", :align => :center, :size => 12, :style => :bold   
+    text "SEHINGGA #{I18n.l((Position.all.order(updated_at: :desc).pluck(:updated_at).first), format: '%d-%m-%Y')}", :align => :center, :size => 12, :style => :bold   
     move_down 10
     text "KOLEJ: KOLEJ SAINS KESIHATAN BERSEKUTU JOHOR BAHRU", :align => :left, :size => 12, :style => :bold    
     jawatan

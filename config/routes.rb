@@ -12,6 +12,7 @@ Ogma::Application.routes.draw do
     resources :positions do
       collection do
         get :maklumat_perjawatan
+        get :maklumat_perjawatan_excel
       end
     end
     resources :staff_appraisals do

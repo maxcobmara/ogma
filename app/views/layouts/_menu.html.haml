@@ -67,12 +67,13 @@
               %li= link_to t('staff.travel_request.status_movement'), staff_travel_requests_path
             - permitted_to? :maklumat_perjawatan, :staff_positions do
               %li.icon.icon-left
-                = link_to "Reports", '#'
+                = link_to t('reports'), '#'
                 .mp-level
-                  %h2.icon Reports
+                  %h2.icon=t('reports')
                   %a.mp-back{:href => "#"}= t 'helpers.links.back'
                   %ul
-                    %li= link_to "Maklumat Perjawatan", '/staff/positions/maklumat_perjawatan.pdf'
+                    %li= link_to t('position.report'), '/staff/positions/maklumat_perjawatan.pdf'
+                    %li= link_to t('position.report_excel'), maklumat_perjawatan_excel_staff_positions_path(format: 'xls')
 
     - permitted_to? :read, :assets do
       %li.icon.icon-left

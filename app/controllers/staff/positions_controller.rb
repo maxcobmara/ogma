@@ -38,6 +38,16 @@ class Staff::PositionsController < ApplicationController
     end
   end
   
+  #Excel - Statistic by block (room status & tenants group by programme) - link at app/views/student/tenants/statistics.html.haml
+  def maklumat_perjawatan_excel
+    @positions_raw = Position.where('staffgrade_id IS NOT NULL AND name!=?', 'ICMS Vendor Admin') 
+    respond_to do |format|
+      format.html
+      format.csv { send_data @positions_raw.to_csv}
+      format.xls { send_data @positions_raw.to_csv(col_sep: "\t") } 
+    end
+  end
+  
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_position

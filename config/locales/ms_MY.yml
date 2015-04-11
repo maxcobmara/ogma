@@ -168,6 +168,7 @@ ms_MY:
   or: atau
   excel_format: Format Excel
   select_excel_file: Sila pilih fail Excel untuk diimport
+  reports: Laporan
  
   actions:
     new: Baru
@@ -797,6 +798,8 @@ ms_MY:
     title: "Tugas & Tanggungjawab"
     index: Carta Organisasi
     name: Jawatan
+    report: Maklumat Perjawatan
+    report_excel: "Maklumat Perjawatan (Excel)"
        
   staff_attendance:
     title: Kedatangan Staf
