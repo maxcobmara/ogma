@@ -74,7 +74,7 @@ class Kewpa7Pdf < Prawn::Document
      ["Tandatangan", "Tandatangan"],
      ["Nama : #{@asset_admin.try(:userable).try(:name)}", "Nama : #{@location.try(:administrator).try(:name)}"],
      ["Jawatan : #{@asset_admin.try(:userable).try(:positions).try(:first).try(:name)}", "Jawatan : #{@location.try(:position).try(:name)}"],
-     ["Tarikh : #{Date.today.strftime('%d-%m-%Y')}", "Tarikh : #{Date.today.strftime('%d-%m-%Y')}"]
+     ["Tarikh : #{Date.today.strftime('%d-%b-%Y')}", "Tarikh : #{Date.today.strftime('%d-%b-%Y')}"]
     ]
   end  
   
