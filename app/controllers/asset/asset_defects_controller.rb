@@ -1,9 +1,18 @@
 class Asset::AssetDefectsController < ApplicationController
+  #filter_resource_access
+  filter_access_to :all
   before_action :set_defective, only: [:show, :edit, :update, :destroy]
   
   def index
-    #@search = AssetDefect.where.not(decision: true).search(params[:q])
-    @search = AssetDefect.where('decision is not true').search(params[:q])
+    roles = current_user.roles.pluck(:id)
+    @is_admin = roles.include?([2,11])
+    if @is_admin
+      @search = AssetDefect.where('decision is not true').search(params[:q])
+    else
+      @search = AssetDefect.where('decision is not true').sstaff2(current_user.userable.id).search(params[:q])
+    end 
+    ##@search = AssetDefect.where.not(decision: true).search(params[:q])
+    #@search = AssetDefect.where('decision is not true').search(params[:q])
     @assets = @search.result
     @defective = @assets.order(created_at: :desc).page(params[:page]||1)
   end

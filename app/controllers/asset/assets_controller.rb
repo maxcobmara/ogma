@@ -1,13 +1,18 @@
 class Asset::AssetsController < ApplicationController
+  #filter_resource_access
+  filter_access_to :all
   before_action :set_asset, only: [:show, :edit, :update, :destroy]
   
   def index
+    #all staff @ user w menu(index) access; can view full list of asset w 'purchase details' hidden
+    #in index & show - 'purchase detail' visible to admin & asset admin (w access to : manage, kewpa2 ..etc)
+    #show - link for creating asset defect
     @search = Asset.search(params[:q])
     @assets = @search.result
     @fa = @assets.where(assettype: 1).sort_by{|x|[x.assetcode.split("/")[3], (x.assetcode.split("/")[4]).to_i, (x.assetcode.split("/")[5]).to_i]}
     @inv = @assets.where(assettype: 2).sort_by{|x|[x.assetcode.split("/")[3], (x.assetcode.split("/")[4]).to_i, (x.assetcode.split("/")[5]).to_i]}
-    @fixed_assets = Kaminari.paginate_array(@fa).page(params[:page]||1) #@assets.where(assettype: 1).page(params[:page]||1) 
-    @inventories  = Kaminari.paginate_array(@inv).page(params[:page]||1)#@assets.where(assettype: 2).page(params[:page]||1)
+    @fixed_assets = Kaminari.paginate_array(@fa).page(params[:page]||1) 
+    @inventories  = Kaminari.paginate_array(@inv).page(params[:page]||1)
   end
   
   def show

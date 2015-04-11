@@ -1,10 +1,18 @@
 class Asset::AssetLoansController < ApplicationController
-    before_action :set_asset_loan, only: [:show, :edit, :update, :destroy]
+  #filter_resource_access
+  filter_access_to :all
+  before_action :set_asset_loan, only: [:show, :edit, :update, :destroy]
 
   # GET /asset_loans
   # GET /asset_loans.xml
   def index
-    @search = AssetLoan.search(params[:q])
+    roles = current_user.roles.pluck(:id)
+    @is_admin = roles.include?([2,11])
+    if @is_admin
+      @search = AssetLoan.search(params[:q])
+    else
+      @search = AssetLoan.sstaff2(current_user.userable.id).search(params[:q])
+    end 
     @asset_loans = @search.result
     @asset_loans = @asset_loans.order(created_at: :desc).page(params[:page]||1)
     

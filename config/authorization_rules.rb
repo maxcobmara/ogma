@@ -18,7 +18,8 @@ authorization do
  #Group Staff
 
  role :staff do
-   has_permission_on [:attendances, :assets, :documents],     :to => :menu              # Access for Menus
+   has_permission_on [:attendances, :documents],     :to => :menu              # Access for Menus
+   has_permission_on :asset_assets, :to => [:menu, :loanables]
    #has_permission_on :staffs, :to => [:show, :menu]                                     # A staff see the staff list
    #has_permission_on :staffs, :to => [:edit, :update, :menu] do
    #  if_attribute :id => is {current_user.userable.id}                                  # but only sees himself
@@ -73,12 +74,23 @@ authorization do
        if_attribute :staff_id => is {user.userable.id}
    end
 
-   has_permission_on :asset_defects, :to => :create
-   has_permission_on :asset_defects, :to => [:read, :update]  do
-       if_attribute :reported_by => is {current_user.userable.id}
+   has_permission_on :asset_asset_defects, :to => :create
+   has_permission_on :asset_asset_defects, :to => [:read, :update]  do
+       if_attribute :reported_by => is {user.userable.id}
    end
-   has_permission_on :asset_defects, :to => [:manage]  do
-       if_attribute :decision_by => is {current_user.userable.id}
+   has_permission_on :asset_asset_defects, :to => [:manage, :process2, :kewpa9] do
+       if_attribute :processed_by => is {user.userable.id}
+   end
+   has_permission_on :asset_asset_defects, :to => [:manage, :decision, :kewpa9] do
+       if_attribute :decision_by => is {user.userable.id}
+   end
+   
+   has_permission_on :asset_asset_loans, :to => :create
+   has_permission_on :asset_asset_loans, :to =>:read do 
+      if_attribute :staff_id => is {user.userable.id}
+   end
+   has_permission_on :asset_loans, :to => [:read, :update, :approve, :lampiran_a] do
+      if_attribute :loaned_by => is_in {AssetLoan.find(asset_id).unit_members}
    end
 
    has_permission_on :documents, :to => [:approve,:menu], :join_by => :or do
@@ -142,12 +154,13 @@ authorization do
 
  #Group Assets  -------------------------------------------------------------------------------
  role :asset_administrator do
-   has_permission_on :assets, :to => :manage
+   has_permission_on :assets, :to => [:manage, :kewpa2, :kewpa3, :kewpa4, :kewpa5, :kewpa6, :kewpa13, :kewpa14, :loanables]
    has_permission_on :asset_defects, :to =>[:manage, :kewpa9] #3nov2013
    has_permission_on :assetsearches, :to => :read
    has_permission_on :locations, :to => :manage
    has_permission_on :asset_disposals, :to => :manage
    has_permission_on :asset_losses, :to => :manage
+   has_permission_on :asset_loans, :to => [:manage, :approve, :lampiran_a]
  end
 
  #Group Trainings ------------------------------------------------------------read(index, show), menu(inc index), update(inc edit), approve(read, update), manage(crud,approve,menu)
@@ -278,7 +291,7 @@ authorization do
       if_attribute :studentsubmit => true
     end
     has_permission_on :library_books, :to => :read
-    has_permission_on :assets, :to => :read
+    has_permission_on :asset_assets, :to => :read
     has_permission_on :students, :to => :read
   end
   

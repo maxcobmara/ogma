@@ -23,6 +23,10 @@ class AssetDefect < ActiveRecord::Base
     [:typemodelname_search]
   end
   
+  def self.sstaff2(u)
+     where('reported_by=? OR processed_by=? OR decision_by=?', u,u,u)
+  end    
+  
 end
 
 # == Schema Information

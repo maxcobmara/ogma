@@ -9,6 +9,7 @@
   = form_for @asset_defect, html: { multipart: true, class: 'form-horizontal' }  do |f| 
     = render 'shared/error_messages', object: f.object
     = f.hidden_field :asset_id
+    = f.hidden_field :reported_by, value: @current_user.userable.id
     .form-group
       .col-sm-2.control-label
         = f.label t 'asset.assetcode', for: :asset_show

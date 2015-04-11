@@ -60,6 +60,9 @@ class AssetLoan < ActiveRecord::Base
     find(:all, :conditions => ['is_returned !=? OR is_approved IS NOT ?', true, nil])
   end
   
+  def self.sstaff2(u)
+     where('staff_id=? OR loaned_by=? OR loan_officer=? OR hod=? OR received_officer=?', u,u,u,u,u)
+  end    
   
   def set_staff_when_blank
     if staff_id.blank?
