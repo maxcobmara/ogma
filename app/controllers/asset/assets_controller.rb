@@ -4,8 +4,10 @@ class Asset::AssetsController < ApplicationController
   def index
     @search = Asset.search(params[:q])
     @assets = @search.result
-    @fixed_assets = @assets.where(assettype: 1).order(assetcode: :asc).page(params[:page]||1)
-    @inventories  = @assets.where(assettype: 2).order(assetcode: :asc).page(params[:page]||1)
+    @fa = @assets.where(assettype: 1).sort_by{|x|[x.assetcode.split("/")[3], (x.assetcode.split("/")[4]).to_i, (x.assetcode.split("/")[5]).to_i]}
+    @inv = @assets.where(assettype: 2).sort_by{|x|[x.assetcode.split("/")[3], (x.assetcode.split("/")[4]).to_i, (x.assetcode.split("/")[5]).to_i]}
+    @fixed_assets = Kaminari.paginate_array(@fa).page(params[:page]||1) #@assets.where(assettype: 1).page(params[:page]||1) 
+    @inventories  = Kaminari.paginate_array(@inv).page(params[:page]||1)#@assets.where(assettype: 2).page(params[:page]||1)
   end
   
   def show
@@ -84,7 +86,7 @@ class Asset::AssetsController < ApplicationController
   
   def kewpa4
     unless params[:search] == '0'
-      @assets = Asset.where('substring(assetcode, 18, 2 ) =? AND assettype =?', "#{params[:search]}", 1).sort_by &:assetcode
+      @assets = Asset.where('substring(assetcode, 18, 2 ) =? AND assettype =?', "#{params[:search]}", 1).sort_by{|x|[x.assetcode.split("/")[3], (x.assetcode.split("/")[4]).to_i, (x.assetcode.split("/")[5]).to_i]}
       respond_to do |format|
         format.pdf do
           pdf = Kewpa4Pdf.new(@assets, view_context)
@@ -94,7 +96,7 @@ class Asset::AssetsController < ApplicationController
                  end
              end
         else
-    @assets = Asset.where(assettype: 1).sort_by &:assetcode
+    @assets = Asset.where(assettype: 1).sort_by{|x|[x.assetcode.split("/")[3], (x.assetcode.split("/")[4]).to_i, (x.assetcode.split("/")[5]).to_i]}
     respond_to do |format|
       format.pdf do
         pdf = Kewpa4Pdf.new(@assets, view_context)
@@ -108,7 +110,7 @@ end
   
   def kewpa5
     unless params[:search] == '0'
-      @assets = Asset.where('substring(assetcode, 18, 2 ) =? AND assettype =?', "#{params[:search]}", 2).sort_by &:assetcode
+      @assets = Asset.where('substring(assetcode, 18, 2 ) =? AND assettype =?', "#{params[:search]}", 2).sort_by{|x|[x.assetcode.split("/")[3], (x.assetcode.split("/")[4]).to_i, (x.assetcode.split("/")[5]).to_i]}
       respond_to do |format|
         format.pdf do
           pdf = Kewpa5Pdf.new(@assets, view_context)
@@ -118,7 +120,7 @@ end
         end
       end
     else
-    @assets = Asset.where(assettype: 2).sort_by &:assetcode
+    @assets = Asset.where(assettype: 2).sort_by{|x|[x.assetcode.split("/")[3], (x.assetcode.split("/")[4]).to_i, (x.assetcode.split("/")[5]).to_i]}
     respond_to do |format|
       format.pdf do
         pdf = Kewpa5Pdf.new(@assets, view_context)
