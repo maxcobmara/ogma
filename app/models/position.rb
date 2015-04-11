@@ -8,6 +8,7 @@ class Position < ActiveRecord::Base
   
   belongs_to :staff
   belongs_to :staffgrade, :class_name => 'Employgrade'
+  belongs_to :postinfo
   
   def titleize_name
     self.name = name.titleize
@@ -19,6 +20,77 @@ class Position < ActiveRecord::Base
     else
       self.combo_code = parent.combo_code + "-" + code
     end
+  end
+  
+  #PDF section  
+  def totalpost
+    unless postinfo_id.blank?
+      a=Position.where('postinfo_id=?', postinfo_id).order(combo_code: :asc)[0].id
+      if self.id==a
+        aa="#{postinfo.post_count}"
+      else
+        aa=""
+      end
+      return aa
+    else
+      return "-"
+    end
+  end
+  
+  
+  
+  def butiran_details
+    unless totalpost=="-" 
+      b="#{postinfo.details}" if totalpost!=""
+    else
+      b="-"
+    end
+    b    
+  end
+  
+  def occupied_post
+    unless totalpost=="-" 
+      b="#{Position.where('postinfo_id=? AND staff_id IS NOT NULL',postinfo_id).count}" if totalpost!=""
+    else
+      b="-"
+    end
+    b
+  end
+  
+  def available_post
+    unless totalpost=="-" 
+      b="#{totalpost.to_i-occupied_post.to_i}" if totalpost!=""
+    else
+      b="-" 
+    end
+    b
+  end
+  
+  def hakiki
+    unless totalpost=="-" 
+      b="#{Position.where('postinfo_id=? AND status=? AND staff_id IS NOT NULL',postinfo_id, 1).count }" if totalpost!=""
+    else
+      b="-"
+    end
+    b
+  end
+  
+  def kontrak
+    unless totalpost=="-" 
+      b="#{Position.where('postinfo_id=? AND status=? AND staff_id IS NOT NULL',postinfo_id, 2).count}" if totalpost!=""
+    else
+      b="-" 
+    end
+    b
+  end
+  
+  def kup
+    unless totalpost=="-" 
+      b="#{Position.where('postinfo_id=? AND status=? AND staff_id IS NOT NULL',postinfo_id, 3).count}" if totalpost!=""
+    else
+      b="-" 
+    end
+    b
   end
   
   
