@@ -151,8 +151,8 @@ end
   end
   
   def kewpa8
-    @fa = Asset.where(assettype: 1)
-    @inv =  Asset.where(assettype: 2)
+    @fa = Asset.where(assettype: 1).where('purchasedate <=?', Date.today)
+    @inv =  Asset.where(assettype: 2).where('purchasedate <=?', Date.today)
     respond_to do |format|
       format.pdf do
         pdf = Kewpa8Pdf.new(@fa, @inv, view_context)

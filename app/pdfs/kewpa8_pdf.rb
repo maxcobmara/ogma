@@ -12,7 +12,7 @@ class Kewpa8Pdf < Prawn::Document
     text "KEMENTERIAN : KESIHATAN MALAYSIA ", :align => :center, :size => 12, :style => :bold
     move_down 30
     table1
-    move_down 30
+    move_down 50
     table3
     move_down 80
     text "* laporan merangkumi semua aset alih yang dipegang sehingga tahun semasa", :align => :left, :size => 11
@@ -31,7 +31,7 @@ class Kewpa8Pdf < Prawn::Document
       cells[2,4].align = :right
       cells[2,5].align = :right
       cells[2,1].align = :right
-      cells[2,1].font_style =:bold
+      row(2).font_style=:bold
       row(0).background_color = 'FFE34D'
       self.row_colors = ["FEFEFE", "FFFFFF"]
       self.width = 740
@@ -56,14 +56,20 @@ class Kewpa8Pdf < Prawn::Document
   end
 
   def table3
-    data = [["", "Tandatangan Pegawai Pengawal", ": #{'.'*60} "],
-                ["", "Nama", ": #{'.'*60} "],
-                ["", "Jawatan", ": #{'.'*60}"],
-                ["", "Tarikh",": #{'.'*60}"]]
-    table(data, :column_widths => [30, 190, 200 ], :cell_style => { :size => 11}) do
+    data = [ ["", {content: "#{'.'*90} ", colspan: 2}, ""],
+                ["", {content: "Tandatangan Pegawai Pengawal", colspan: 2}, ""],   
+                ["", "", "", ""],
+                ["", "Nama", ": #{'.'*65} ", ""],
+                ["", "Jawatan", ": #{'.'*65}", ""],
+                ["", "Tarikh",": #{'.'*65}", ""]]
+    table(data, :column_widths => [30, 60, 200, 200 ], :cell_style => { :size => 11, :inline_format => :true}) do
       columns(0).borders = []
       columns(1).borders = []
       columns(2).borders = []
+      columns(3).borders = []
+      cells[1,1].align = :center
+      row(1).height = 25
+      row(2).height = 20
     end
   end
   
