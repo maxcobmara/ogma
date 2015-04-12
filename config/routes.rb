@@ -88,6 +88,7 @@ Ogma::Application.routes.draw do
         get :loanables
         get :kewpa4
         get :kewpa5
+        get :kewpa8
         get :kewpa13
       end
     end

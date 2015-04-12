@@ -150,6 +150,19 @@ end
     end
   end
   
+  def kewpa8
+    @fa = Asset.where(assettype: 1)
+    @inv =  Asset.where(assettype: 2)
+    respond_to do |format|
+      format.pdf do
+        pdf = Kewpa8Pdf.new(@fa, @inv, view_context)
+        send_data pdf.render, filename: "kewpa8-{Date.today}",
+                              type: "application/pdf",
+                              disposition: "inline"
+      end
+    end
+  end
+  
   def kewpa13
     @assets = Asset.where('is_maintainable = ?', true).order(assetcode: :asc)
     respond_to do |format|

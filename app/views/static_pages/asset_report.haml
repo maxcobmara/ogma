@@ -94,8 +94,10 @@
           %td KEW.PA-8
           %td Laporan Tahunan Harta Modal Dan Inventori Bagi Tahun .........
           %td= link_to "PDF", asset_path("kewpas/kewpa8.pdf")
-          %td 		  
-		  
+          %td 
+            - permitted_to? :manage, :assets do
+              = link_to "link", kewpa8_asset_assets_path(format: 'pdf')
+ 
         %tr
           %td KEW.PA-9
           %td Borang Aduan Kerosakan Aset Alih Kerajaan
