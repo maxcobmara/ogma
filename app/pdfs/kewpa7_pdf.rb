@@ -3,7 +3,7 @@ class Kewpa7Pdf < Prawn::Document
     super({top_margin: 40, page_size: 'A4', page_layout: :portrait })
     @location = location
     #@current_user = current_user
-    @asset_admin = current_user
+    @asset_admin_post = Position.where('name ILIKE(?) OR tasks_main ILIKE(?) OR tasks_other ILIKE(?)', "%pegawai aset%", "%pegawai aset%", "%pegawai aset%").first
     @asset_placements = asset_placements
     font "Times-Roman"
     text "KEW.PA-7", :align => :right, :size => 16, :style => :bold
@@ -72,8 +72,8 @@ class Kewpa7Pdf < Prawn::Document
     [["(a) Disediakan oleh :", "(b) Disahkan oleh :"],
      ["#{'.'*40}", "#{'.'*40}"],
      ["Tandatangan", "Tandatangan"],
-     ["Nama : #{@asset_admin.try(:userable).try(:name)}", "Nama : #{@location.try(:administrator).try(:name)}"],
-     ["Jawatan : #{@asset_admin.try(:userable).try(:positions).try(:first).try(:name)}", "Jawatan : #{@location.try(:position).try(:name)}"],
+     ["Nama : #{@asset_admin_post.try(:staff).try(:name)}", "Nama : #{@location.try(:administrator).try(:name)}"],
+     ["Jawatan : #{@asset_admin_post.try(:name)}", "Jawatan : #{@location.try(:position).try(:name)}"],
      ["Tarikh : #{Date.today.strftime('%d-%b-%Y')}", "Tarikh : #{Date.today.strftime('%d-%b-%Y')}"]
     ]
   end  
