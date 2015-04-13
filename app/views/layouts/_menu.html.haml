@@ -67,24 +67,27 @@
               %li= link_to t('staff.travel_request.status_movement'), staff_travel_requests_path
             - permitted_to? :maklumat_perjawatan, :staff_positions do
               %li.icon.icon-left
-                = link_to "Reports", '#'
+                = link_to t('reports'), '#'
                 .mp-level
-                  %h2.icon Reports
+                  %h2.icon=t('reports')
                   %a.mp-back{:href => "#"}= t 'helpers.links.back'
                   %ul
-                    %li= link_to "Maklumat Perjawatan", '/staff/positions/maklumat_perjawatan.pdf'
+                    %li= link_to t('position.report'), '/staff/positions/maklumat_perjawatan.pdf'
+                    %li= link_to t('position.report_excel'), maklumat_perjawatan_excel_staff_positions_path(format: 'xls')
 
-    - permitted_to? :read, :assets do
+    /- permitted_to? :read, :assets do
+    - permitted_to? :create, :asset_asset_loans do
       %li.icon.icon-left
         = link_to content_tag(:i, "", :class => "icon-numb") + (t "asset.title"), '#'
         .mp-level
           %h2.icon=t ("asset.title")
           %a.mp-back{:href => "#"}=t('back')
           %ul
-            %li= link_to content_tag(:i, "", :class => "icon-numb") + (t "asset.title"), asset_assets_path
+            - permitted_to? :menu, :asset_assets do
+              %li= link_to content_tag(:i, "", :class => "icon-numb") + (t "asset.title"), asset_assets_path
             - permitted_to? :manage, :assets do
               %li= link_to content_tag(:i, "", :class => "icon-numb") + (t "stationery.title_menu"), asset_stationeries_path
-            - permitted_to? :manage, :asset_defects do
+            - permitted_to? :read, :asset_asset_defects do
               %li= link_to content_tag(:i, "", :class => "icon-numb") + (t "asset.defect.title"), asset_defects_path
             - permitted_to? :manage, :asset_losses do
               %li= link_to content_tag(:i, "", :class => "icon-numb") + (t "asset.loss.title"), asset_losses_path

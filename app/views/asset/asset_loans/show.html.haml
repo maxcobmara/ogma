@@ -37,25 +37,29 @@
     .form-actions
       = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), asset_loans_path, :class => 'btn btn-default'
       
-      /Lampiran A for external loan type
-      - if @asset_loan.loantype == 2 
-        = link_to content_tag(:i, "", :class => "fa fa-file-pdf-o"), lampiran_a_asset_loan_path(@asset_loan, format: "pdf"), {class: "btn btn-default", "data-toggle" => "tooltip", title: "Lampiran A PDF"}
+      -  permitted_to? :manage, :asset_loans do
+        /Lampiran A for external loan type
+        - if @asset_loan.loantype == 2 
+          = link_to content_tag(:i, "", :class => "fa fa-file-pdf-o"), lampiran_a_asset_loan_path(@asset_loan, format: "pdf"), {class: "btn btn-default", "data-toggle" => "tooltip", title: "Lampiran A PDF"}
       
-      - if @asset_loan.is_approved == nil && @asset_loan.is_returned != true
-        /edit details - request & approval are editable
-        = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('.edit', :default => t("helpers.links.edit")), edit_asset_loan_path(@asset_loan), :class => 'btn btn-primary'
-      - if @asset_loan.is_approved == true && @asset_loan.is_returned != true 
-        /return page - request & approval no longer editable, RETURN tab becomes available
-        = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('.return', :default => t("helpers.links.return")), edit_asset_loan_path(@asset_loan), :class => 'btn btn-primary'
+        - if @asset_loan.is_approved == nil && @asset_loan.is_returned != true
+          /edit details - request & approval are editable
+          = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('.edit', :default => t("helpers.links.edit")), edit_asset_loan_path(@asset_loan), :class => 'btn btn-primary'
+      
+        - if @asset_loan.is_approved == true && @asset_loan.is_returned != true 
+          /return page - request & approval no longer editable, RETURN tab becomes available
+          = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('.return', :default => t("helpers.links.return")), edit_asset_loan_path(@asset_loan), :class => 'btn btn-primary'
         
       /Approval process
-      /- if @asset_loan.is_approved == nil && @asset_loan.loaned_by == Login.current_login.staff_id
-      - if @asset_loan.is_approved == nil
-        = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('.approve', :default => t("helpers.links.approve")), approve_asset_loan_path(@asset_loan), :class => 'btn btn-primary'
+      -  permitted_to? :manage, :asset_loans do
+        /- if @asset_loan.is_approved == nil && @asset_loan.loaned_by == Login.current_login.staff_id
+        - if @asset_loan.is_approved == nil
+          = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('.approve', :default => t("helpers.links.approve")), approve_asset_loan_path(@asset_loan), :class => 'btn btn-primary'
       
       /destroy
-      = link_to content_tag(:i, "", :class => "fa fa-trash-o icon-white") + " " + t('.destroy', :default => t("helpers.links.destroy")), |
-        asset_loan_path(@asset_loan),                                                                                                    |
-        :method => 'delete',                                                                                                           |
-        :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },                   |
-        :class => 'btn btn-danger'
+      -  permitted_to? :delete, :asset_loans do
+        = link_to content_tag(:i, "", :class => "fa fa-trash-o icon-white") + " " + t('.destroy', :default => t("helpers.links.destroy")), |
+          asset_loan_path(@asset_loan),                                                                                                    |
+          :method => 'delete',                                                                                                           |
+          :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },                   |
+          :class => 'btn btn-danger'

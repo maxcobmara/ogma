@@ -1,11 +1,18 @@
 class Asset::AssetsController < ApplicationController
+  #filter_resource_access
+  filter_access_to :all
   before_action :set_asset, only: [:show, :edit, :update, :destroy]
   
   def index
+    #all staff @ user w menu(index) access; can view full list of asset w 'purchase details' hidden
+    #in index & show - 'purchase detail' visible to admin & asset admin (w access to : manage, kewpa2 ..etc)
+    #show - link for creating asset defect
     @search = Asset.search(params[:q])
     @assets = @search.result
-    @fixed_assets = @assets.where(assettype: 1).order(assetcode: :asc).page(params[:page]||1)
-    @inventories  = @assets.where(assettype: 2).order(assetcode: :asc).page(params[:page]||1)
+    @fa = @assets.where(assettype: 1).sort_by{|x|[x.assetcode.split("/")[3], (x.assetcode.split("/")[4]).to_i, (x.assetcode.split("/")[5]).to_i]}
+    @inv = @assets.where(assettype: 2).sort_by{|x|[x.assetcode.split("/")[3], (x.assetcode.split("/")[4]).to_i, (x.assetcode.split("/")[5]).to_i]}
+    @fixed_assets = Kaminari.paginate_array(@fa).page(params[:page]||1) 
+    @inventories  = Kaminari.paginate_array(@inv).page(params[:page]||1)
   end
   
   def show
@@ -84,7 +91,7 @@ class Asset::AssetsController < ApplicationController
   
   def kewpa4
     unless params[:search] == '0'
-      @assets = Asset.where('substring(assetcode, 18, 2 ) =? AND assettype =?', "#{params[:search]}", 1).sort_by &:assetcode
+      @assets = Asset.where('substring(assetcode, 18, 2 ) =? AND assettype =?', "#{params[:search]}", 1).sort_by{|x|[x.assetcode.split("/")[3], (x.assetcode.split("/")[4]).to_i, (x.assetcode.split("/")[5]).to_i]}
       respond_to do |format|
         format.pdf do
           pdf = Kewpa4Pdf.new(@assets, view_context)
@@ -94,7 +101,7 @@ class Asset::AssetsController < ApplicationController
                  end
              end
         else
-    @assets = Asset.where(assettype: 1).sort_by &:assetcode
+    @assets = Asset.where(assettype: 1).sort_by{|x|[x.assetcode.split("/")[3], (x.assetcode.split("/")[4]).to_i, (x.assetcode.split("/")[5]).to_i]}
     respond_to do |format|
       format.pdf do
         pdf = Kewpa4Pdf.new(@assets, view_context)
@@ -108,7 +115,7 @@ end
   
   def kewpa5
     unless params[:search] == '0'
-      @assets = Asset.where('substring(assetcode, 18, 2 ) =? AND assettype =?', "#{params[:search]}", 2).sort_by &:assetcode
+      @assets = Asset.where('substring(assetcode, 18, 2 ) =? AND assettype =?', "#{params[:search]}", 2).sort_by{|x|[x.assetcode.split("/")[3], (x.assetcode.split("/")[4]).to_i, (x.assetcode.split("/")[5]).to_i]}
       respond_to do |format|
         format.pdf do
           pdf = Kewpa5Pdf.new(@assets, view_context)
@@ -118,7 +125,7 @@ end
         end
       end
     else
-    @assets = Asset.where(assettype: 2).sort_by &:assetcode
+    @assets = Asset.where(assettype: 2).sort_by{|x|[x.assetcode.split("/")[3], (x.assetcode.split("/")[4]).to_i, (x.assetcode.split("/")[5]).to_i]}
     respond_to do |format|
       format.pdf do
         pdf = Kewpa5Pdf.new(@assets, view_context)
@@ -137,6 +144,19 @@ end
       format.pdf do
         pdf = Kewpa6Pdf.new(@asset, view_context)
         send_data pdf.render, filename: "kewpa6-{Date.today}",
+                              type: "application/pdf",
+                              disposition: "inline"
+      end
+    end
+  end
+  
+  def kewpa8
+    @fa = Asset.where(assettype: 1).where('purchasedate <=?', Date.today)
+    @inv =  Asset.where(assettype: 2).where('purchasedate <=?', Date.today)
+    respond_to do |format|
+      format.pdf do
+        pdf = Kewpa8Pdf.new(@fa, @inv, view_context)
+        send_data pdf.render, filename: "kewpa8-{Date.today}",
                               type: "application/pdf",
                               disposition: "inline"
       end

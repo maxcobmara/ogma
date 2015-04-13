@@ -8,79 +8,82 @@ class Maklumat_perjawatanPdf < Prawn::Document
     move_down 5
     text "MAKLUMAT PERJAWATAN DI KOLEH-KOLEJ LATIHAN", :align => :center, :size => 12, :style => :bold
     text "KEMENTERIAN KESIHATAN MALAYSIA", :align => :center, :size => 12, :style => :bold
-    text "SEHINGGA #{Date.today.strftime('%d-%m-%Y')}", :align => :center, :size => 12, :style => :bold   
+    text "SEHINGGA #{I18n.l((Position.all.order(updated_at: :desc).pluck(:updated_at).first), format: '%d-%m-%Y')}", :align => :center, :size => 12, :style => :bold   
     move_down 10
     text "KOLEJ: KOLEJ SAINS KESIHATAN BERSEKUTU JOHOR BAHRU", :align => :left, :size => 12, :style => :bold    
-    tajuk1
-    tajuk2
     jawatan
-   
-  end
-  
-  def tajuk1
-    data = [["BIL","BUT.","JAWATAN","GRED","JUM", "ISI", "STATUS PENGISIAN", "KSG", "NAMA", "NO. K/P/", "JANTINA","BIDANG","TARIKH","PENEMPATAN",
-      "PINJAM KE","PINJAM DARI","CATATAN"]]
-   
-    table(data , :column_widths => [23, 30, 43, 40, 30, 30, 80, 28, 60, 50, 40, 40, 40, 60, 65,65,45], :cell_style => { :size => 7}) do
-     row(0).columns(0).borders = [:left, :right, :top]
-     row(0).columns(1).borders = [:left, :right, :top]
-     row(0).columns(2).borders = [:left, :right, :top]
-     row(0).columns(3).borders = [:left, :right, :top]
-     row(0).columns(4).borders = [:left, :right, :top]
-     row(0).columns(5).borders = [:left, :right, :top]
-     row(0).columns(7).borders = [:left, :right, :top]
-     row(0).columns(8).borders = [:left, :right, :top]
-     row(0).columns(9).borders = [:left, :right, :top]
-     row(0).columns(10).borders = [:left, :right, :top]
-     row(0).columns(11).borders = [:left, :right, :top]
-     row(0).columns(12).borders = [:left, :right, :top]
-     row(0).columns(13).borders = [:left, :right, :top]
-     row(0).columns(16).borders = [:left, :right, :top]
-     row(0).font_style = :bold
-     row(0).background_color = 'FFE34D'
 
-    end 
-  end
-  def tajuk2
+    #bounding_box([50, 500], :width => 200, :height => 300) do
+    #stroke_bounds
+    #end
     
-    data = [[ '', '', '', '', 'JWT','','HAKIKI','KONTRAK','KUP','','PENYANDANG','PASSPORT','(L/P)','KEPAKARAN/SUB-KEPAKARAN','WARTA PAKAR','',
-      'Akt.','Penempatan','Akt.','Penempatan','*']]
-      
-      table(data , :column_widths => [23, 30, 43, 40, 30, 30, 30,30,20, 28, 60, 50, 40, 40, 40, 60, 25,40,25,40,45], :cell_style => { :size => 7}) do
-        row(0).columns(0).borders = [:left, :right]
-        row(0).columns(1).borders = [:left, :right]
-        row(0).columns(2).borders = [:left, :right]
-        row(0).columns(3).borders = [:left, :right]
-        row(0).columns(4).borders = [:left, :right]
-        row(0).columns(5).borders = [:left, :right]
-        row(0).columns(9).borders = [:left, :right]
-        row(0).columns(10).borders = [:left, :right]
-        row(0).columns(11).borders = [:left, :right]
-        row(0).columns(12).borders = [:left, :right]
-        row(0).columns(13).borders = [:left, :right]
-        row(0).columns(14).borders = [:left, :right]
-        row(0).columns(15).borders = [:left, :right]
-        row(0).columns(20).borders = [:left, :right]
-        row(0).font_style = :bold
-        row(0).background_color = 'FFE34D'
-      end
-    
+    #repeat(lambda{|page_number| page_number!=1}) do
+      ##horizontal_rule
+      ##stroke_bounds
+       #stroke do
+         #horizontal_line 0, 280, :at => [bounds.top]
+       #end
+    #end
+    #repeat :all do
+      #stroke do
+        #horizontal_line 0, 280, :at => [bounds.bottom]
+        #horizontal_line 0, 280, :at => [bounds.absolute_bottom]
+        ##horizontal_line 0, 280, :at => y
+        ##horizontal_line 200, 500, :at => 150
+      #end
+    #end
   end
   
   def jawatan
+    #butiran_heading_rows=[]
+    #butiran_not_exist=[]
+    #butiran_exist=[]
+    #@positions.each_with_index do |position, ind|
+      #postcount=position.totalpost.to_i
+      #if postcount > 0
+        #butiran_heading_rows << ind+2    #butiran heading
+      #else
+        #if position.postinfo_id.blank?
+          #butiran_not_exist << ind+2         #butiran not exist 
+        #else
+          #butiran_exist << ind+2                #butiran exist (other than heading)
+        #end
+      #end
+    #end
     
-    table(line_item_rows , :column_widths => [23, 30, 43, 40, 30, 30, 30,30,20, 28, 60, 50, 40, 40, 40, 60, 25,40,25,40,45], :cell_style => { :size => 7}) do
-      self.row_colors = ["FEFEFE", "FFFFFF"]
-
+    #border_width - 3rd one - bottom
+    #:border_width => [1, 1, 1, 1], borders: [:left, :right, :top, :bottom], :header =>true
+    table(line_item_rows , :column_widths => [23, 30, 43, 30, 25, 20, 37,45,26, 25, 60, 55, 40, 40, 40, 60, 25,47,25,47,43], :cell_style => { :size => 7}) do 
+      row(0..1).font_style = :bold
+      row(0..1).background_color = 'FFE34D'
+      #header=[0,1]
+      self.width = 790
+      #0.upto(butiran_heading_rows.count-1).each do |cnt|
+        #row(butiran_heading_rows[cnt]).columns(1).borders = [:top, :left, :right]
+        #row(butiran_heading_rows[cnt]).columns(4..9).borders = [:top, :left, :right]
+      #end
+      #0.upto(butiran_not_exist.count-1).each do |cnt|
+        #row(butiran_not_exist).borders =[:top, :left, :right, :bottom]
+      #end
+      #0.upto(butiran_exist.count-1).each do |cnt|
+        #row(butiran_exist[cnt]).columns(1).borders=[:left, :right]
+        #row(butiran_exist[cnt]).columns(4..9).borders=[:left, :right]
+      #end
+      #row(-1).background_color='FFE34D' #last row of table (in last page only)
     end
   end
   
   def line_item_rows
     counter = counter || 0
-      @positions.map do |position|
-      ["#{counter += 1}", "", "#{position.name}","#{position.try(:staff_grade).try(:grade)}","#{position.try(:postinfo).try(:post_count)}", "", "","","","",
-        "#{position.try(:staff).try(:name)}","#{position.try(:staff).try(:icno)}","#{position.try(:staff).try(:gender)}","","","",
-        "","","","",""]
+    pgcount = page_count
+    header = [[{content: "BIL", rowspan: 2} ,{content: "BUT.", rowspan: 2},{content: "JAWATAN", rowspan: 2},{content: "GRED", rowspan: 2},{content: "JUM JWT", rowspan: 2}, {content: "ISI", rowspan: 2}, {content: "STATUS PENGISIAN", colspan: 3}, {content: "KSG", rowspan: 2}, {content: "NAMA PENYANDANG", rowspan: 2}, {content: "NO. K/P / PASSPORT", rowspan: 2}, {content: "JANTINA (L/P)", rowspan: 2},{content: "BIDANG KEPAKARAN/SUB-KEPAKARAN", rowspan: 2}, {content: "TARIKH WARTA PAKAR", rowspan: 2}, {content: "PENEMPATAN", rowspan: 2},{content: "PINJAM KE", colspan: 2},{content: "PINJAM DARI", colspan: 2},"CATATAN"],['HAKIKI','KONTRAK','KUP',
+      'Akt.','Penempatan','Akt.','Penempatan','*']]
+
+    datalines=[]
+    @positions.each do |position|
+        datalines << ["#{counter += 1}","#{position.butiran_details}","#{position.name}","#{position.try(:staffgrade).try(:name)}", "#{position.totalpost}",   "#{position.occupied_post}",   "#{position.hakiki}","#{position.kontrak}","#{position.kup}","#{position.available_post}","#{position.try(:staff).try(:name)}", "#{position.try(:staff).try(:icno)}","#{'L' if position.try(:staff).try(:gender)==1} #{'P' if position.try(:staff).try(:gender)==2}","","","","","","","",""]
+        #{content: "#{position.butiran_details}", rowspan: postinfo_exist}
     end
+    header+datalines
   end
 end

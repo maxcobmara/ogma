@@ -12,6 +12,7 @@ Ogma::Application.routes.draw do
     resources :positions do
       collection do
         get :maklumat_perjawatan
+        get :maklumat_perjawatan_excel
       end
     end
     resources :staff_appraisals do
@@ -87,6 +88,7 @@ Ogma::Application.routes.draw do
         get :loanables
         get :kewpa4
         get :kewpa5
+        get :kewpa8
         get :kewpa13
       end
     end

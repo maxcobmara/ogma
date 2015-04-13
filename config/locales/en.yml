@@ -188,6 +188,7 @@ en:
   or: or
   excel_format: Excel Format
   select_excel_file: Please select an Excel file for import
+  reports: Reports
 
   actions:
     new: New
@@ -878,6 +879,8 @@ en:
     title: "Tasks & Responsibilities"
     index: Organisation Chart
     name: Position
+    report: Positions Information
+    report_excel: "Positions Information (Excel)"
     
   staff_attendance:
     title: Staff Attendance
