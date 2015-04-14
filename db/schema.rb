@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150409030148) do
+ActiveRecord::Schema.define(version: 20150414130523) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -1309,6 +1309,8 @@ ActiveRecord::Schema.define(version: 20150409030148) do
     t.integer  "programme_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.date     "startdate"
+    t.date     "enddate"
   end
 
   create_table "positions", force: true do |t|
@@ -2365,6 +2367,7 @@ ActiveRecord::Schema.define(version: 20150409030148) do
     t.integer  "intake"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "validintake"
   end
 
 end
