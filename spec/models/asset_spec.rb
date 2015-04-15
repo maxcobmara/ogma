@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Asset do
 
-  before  { @asset = FactoryGirl.create(:asset) }
+  before  { @asset = FactoryGirl.create(:fixed_asset) }
 
   subject { @asset }
 
@@ -16,9 +16,9 @@ describe Asset do
   it { should respond_to(:engine_no) }
   it { should respond_to(:engine_type_id) }
   it { should respond_to(:is_disposed) }
-  
+
   it { should be_valid }
-  
+
 end
 
 

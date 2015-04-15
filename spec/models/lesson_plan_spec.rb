@@ -1,11 +1,11 @@
  require 'spec_helper'
 
 describe LessonPlan do
-  
+
   before { @lesson_plan = FactoryGirl.create(:lesson_plan) }
- 
+
   subject { @lesson_plan }
-  
+
   it { should respond_to(:prepared_by) }
   it { should respond_to(:intake_id) }
   it { should respond_to(:student_qty) }
@@ -24,32 +24,32 @@ describe LessonPlan do
   it { should respond_to(:hod_rejected_on) }
   it { should respond_to(:data_file_name) }
   it { should respond_to(:data_content_type) }
-  it { should respond_to(:data_file_size) }  
-  it { should respond_to(:data_updated_ot) }  
+  it { should respond_to(:data_file_size) }
+  it { should respond_to(:data_updated_ot) }
   it { should respond_to(:prerequisites) }
   it { should respond_to(:year) }
-  it { should respond_to(:reason) }  
+  it { should respond_to(:reason) }
   it { should respond_to(:endorsed_by) }
   it { should respond_to(:condition_isgood) }
-  it { should respond_to(:condition_isnotgood) }  
+  it { should respond_to(:condition_isnotgood) }
   it { should respond_to(:condition_desc) }
   it { should respond_to(:training_aids) }
-  it { should respond_to(:summary) }  
+  it { should respond_to(:summary) }
   it { should respond_to(:total_absent) }
   it { should respond_to(:report_submit) }
-  it { should respond_to(:report_submit_on) } 
+  it { should respond_to(:report_submit_on) }
   it { should respond_to(:report_endorsed) }
-  it { should respond_to(:report_endorsed_on) }  
+  it { should respond_to(:report_endorsed_on) }
   it { should respond_to(:report_summary) }
-  it { should respond_to(:schedule) }  
-  
-  it { should be_valid }    
-  
-   describe "when attachment format is not valid" do
+  it { should respond_to(:schedule) }
+
+  it { should be_valid }
+
+  describe "when attachment format is not valid" do
     before { @lesson_plan.data_content_type = "Other type"}
     it { should_not be_valid }
   end
-  
+
   describe "when weeklytimetable details (schedule) is not present" do
     before { @lesson_plan.schedule = nil }
     it { should_not be_valid}
