@@ -5,9 +5,17 @@ FactoryGirl.define do
 end
 
 FactoryGirl.define do
-  factory :user, :class => 'User' do
+  factory :admin_user, :class => 'User' do
     email
     password '12345678'
     password_confirmation '12345678'
+    after(:create) {|user| user.roles = [create(:admin_role)]}
   end
+
+  factory :admin_role, :class => 'Role' do
+    name 'Administration'
+    authname 'administration'
+  end
+
+
 end
