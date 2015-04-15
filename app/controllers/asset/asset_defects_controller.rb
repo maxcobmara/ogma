@@ -2,7 +2,7 @@ class Asset::AssetDefectsController < ApplicationController
   #filter_resource_access
   filter_access_to :all
   before_action :set_defective, only: [:show, :edit, :update, :destroy]
-  
+
   def index
     roles = current_user.roles.pluck(:id)
     @is_admin = roles.include?([2,11])
@@ -10,32 +10,32 @@ class Asset::AssetDefectsController < ApplicationController
       @search = AssetDefect.where('decision is not true').search(params[:q])
     else
       @search = AssetDefect.where('decision is not true').sstaff2(current_user.userable.id).search(params[:q])
-    end 
+    end
     ##@search = AssetDefect.where.not(decision: true).search(params[:q])
     #@search = AssetDefect.where('decision is not true').search(params[:q])
     @assets = @search.result
     @defective = @assets.order(created_at: :desc).page(params[:page]||1)
   end
-  
+
   def show
   end
-  
+
   def edit
   end
-  
+
   def decision
     @defective = AssetDefect.find(params[:id])
   end
-  
+
   def process2
     @defective = AssetDefect.find(params[:id])
   end
-  
+
   def new
     @asset = Asset.find(params[:asset_id])
     @asset_defect = @asset.asset_defects.new(params[:asset_defect])
   end
-  
+
   def create
     @asset_defect = AssetDefect.new(asset_defect_params)
     respond_to do |format|
@@ -48,7 +48,7 @@ class Asset::AssetDefectsController < ApplicationController
       end
     end
   end
-  
+
   def update
     editingpage = params[:asset_defect][:editing_page]
     respond_to do |format|
@@ -67,7 +67,7 @@ class Asset::AssetDefectsController < ApplicationController
       end
     end
   end
-  
+
   def kewpa9
     @lead = Position.find(1)
     @defective = AssetDefect.find(params[:id])
@@ -80,7 +80,7 @@ class Asset::AssetDefectsController < ApplicationController
       end
     end
   end
-  
+
   def destroy
     @asset_defect = AssetDefect.find(params[:id])
     @asset_defect.destroy
@@ -90,7 +90,7 @@ class Asset::AssetDefectsController < ApplicationController
       format.xml  { head :ok }
     end
   end
-   
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_defective
