@@ -1,23 +1,23 @@
 class Ptdo < ActiveRecord::Base
   before_save  :whoami
-  
+
   belongs_to  :ptschedule
   belongs_to  :staff
   belongs_to  :applicant, :class_name => 'Staff',   :foreign_key => 'staff_id'
   belongs_to  :replacement, :class_name => 'Staff', :foreign_key => 'replacement_id'
-  
-  
+
+
   has_many    :staff_appraisals, :through => :staff
-  
-  def self.keyword_search(query) 
+
+  def self.keyword_search(query)
     staff_ids = Staff.where('icno ILIKE (?) OR name ILIKE(?)', "%#{query}%", "%#{query}%").pluck(:id).uniq
     where('staff_id IN(?)', staff_ids)
   end
-  
+
   def self.ransackable_scopes(auth_object = nil)
     [:keyword_search,:status_search]
   end
-  
+
   def self.status_search(query)
     if query == '1'
       status = where('unit_approve IS FALSE OR dept_approve IS FALSE OR final_approve IS FALSE')
@@ -35,19 +35,19 @@ class Ptdo < ActiveRecord::Base
       status = where('NULL')
     else
       status = Ptdo.all
-    end 
+    end
     status
   end
-  
+
   def self.sstaff2(u)
      where('staff_id=?', u)
-  end 
-  
+  end
+
   def whoami
     #self.staff_id = Login.current_login.staff.id
-    self.ptcourse_id = ptschedule.course.id
+    #self.ptcourse_id = ptschedule.course.id
   end
-  
+
   def repl_staff
     sibpos = applicant.positions.first.sibling_ids
     dept   = applicant.positions.first.unit
@@ -55,7 +55,7 @@ class Ptdo < ActiveRecord::Base
     applicant = Array(staff_id)
     sibs - applicant
   end
-  
+
   def apply_dept_status
     if (unit_approve == false || dept_approve == false || final_approve == false)
       "Application Rejected"
@@ -73,16 +73,16 @@ class Ptdo < ActiveRecord::Base
       "Status Not Available"
     end
   end
-  
-  def applicant_details 
+
+  def applicant_details
        suid = applicant
        exists = Staff.select(:id).pluck(:id)
-       checker = suid && exists     
-   
+       checker = suid && exists
+
        if staff_id == nil
-          "" 
+          ""
         elsif checker == []
-          "Staff No Longer Exists" 
+          "Staff No Longer Exists"
        else
          staff.mykad_with_staff_name
        end
