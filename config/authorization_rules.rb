@@ -20,6 +20,7 @@ authorization do
  role :staff do
    has_permission_on [:attendances, :documents],     :to => :menu              # Access for Menus
    has_permission_on :asset_assets, :to => [:menu, :loanables]
+   has_permission_on [:staff_staff_attendances], :to => [:manager, :menu]
    #has_permission_on :staffs, :to => [:show, :menu]                                     # A staff see the staff list
    #has_permission_on :staffs, :to => [:edit, :update, :menu] do
    #  if_attribute :id => is {current_user.userable.id}                                  # but only sees himself
@@ -34,10 +35,11 @@ authorization do
      if_attribute :staff_id => is {current_user.userable.id}                            # but onle see his own registrations
    end
 
-   has_permission_on :staff_attendances, :to => [:index, :show, :new, :create, :edit, :update] do
-     if_attribute :staff_id => is {current_user.userable.id}
+   #has_permission_on :staff_staff_attendances, :to => [:index, :show, :new, :create, :edit, :update] do
+   has_permission_on :staff_staff_attendances, :to => [:read, :update, :manager] do  #update - reason, #manager - manage lateness
+     if_attribute :thumb_id => is {user.userable.thumb_id}
    end
-   has_permission_on :staff_attendances, :to => [:index, :show, :approve, :update] do
+   has_permission_on :staff_staff_attendances, :to => [:index, :show, :approve, :update] do
        if_attribute :approve_id => is {current_user.userable.id}
    end
 
@@ -51,7 +53,7 @@ authorization do
    ####
    
    has_permission_on :staff_staff_appraisals, :to => :create
-   has_permission_on :staff_staff_appraisals, :to => [ :update] do 
+   has_permission_on :staff_staff_appraisals, :to => [ :update, :appraisal_form] do 
      if_attribute :eval1_by => is {user.userable.id}
    end
    has_permission_on :staff_staff_appraisals, :to => :manage, :join_by => :or do
@@ -135,7 +137,7 @@ authorization do
   role :staff_administrator do
      has_permission_on :staffs, :to => [:manage, :borang_maklumat_staff]
      has_permission_on :attendances, :to => :manage
-     has_permission_on :staff_attendances, :to => :manage   #29Apr2013-refer routes.rb
+     has_permission_on :staff_staff_attendances, :to => :manage   #29Apr2013-refer routes.rb
      has_permission_on :staff_positions, :to =>[:manage, :maklumat_perjawatan]
   end
   

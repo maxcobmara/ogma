@@ -29,7 +29,7 @@
     .form-actions
       = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('staff_attendance.list1'), staff_staff_attendances_path, :class => 'btn btn-default'
       - if @staff_attendance.r_u_late == "flag" || @staff_attendance.r_u_early == "flag"
-        = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('staff_attendance.list2'), '/attendance/manage/', :class => 'btn btn-default'
+        = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('staff_attendance.list2'), '/attendance/manager/', :class => 'btn btn-default'
       - if @staff_attendance.trigger==true
         = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('staff_attendance.fingerprint'), edit_staff_staff_attendance_path(@staff_attendance),  :class => 'btn btn-primary' 
       - if @staff_attendance.trigger==true && (@staff_attendance.status || (@staff_attendance.reason && @staff_attendance.reason!=""))

@@ -221,7 +221,7 @@ class Staff::StaffAttendancesController < ApplicationController
     end
   end
 
-  def manage
+  def manager
     @mylate_attendances = StaffAttendance.find_mylate(current_user)
     @myearly_attendances = StaffAttendance.find_myearly(current_user)
     @approvelate_attendances = StaffAttendance.find_approvelate(current_user)
