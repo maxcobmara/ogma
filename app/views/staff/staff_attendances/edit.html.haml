@@ -44,7 +44,7 @@
       .col-md-7.col-md-offset-3
         .form-group
           .col-md-1
-            = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), '/attendance/manage/', :class => 'btn btn-default'
+            = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), '/attendance/manager/', :class => 'btn btn-default'
           .col-md-1.col-md-offset-1
             = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('actions.show'), staff_staff_attendance_path(@staff_attendance), :class => 'btn btn-default'
           .col-md-3.col-md-offset-1

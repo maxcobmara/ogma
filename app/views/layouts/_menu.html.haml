@@ -14,17 +14,18 @@
             - else
               - permitted_to? :update, :staffs do
                 %li= link_to content_tag(:i, "", :class => "icon-numb") + t("staff.title"), staff_info_path(current_user.userable.id)
-            - permitted_to? :menu, :staff_attendances do
+            - permitted_to? :menu, :staff_staff_attendances do
               %li.icon.icon-left
                 = link_to t('staff_attendance.title'), '#'
                 .mp-level
                   %h2.icon=t('staff_attendance.title')
                   %a.mp-back{:href => "#"}= t 'helpers.links.back'
                   %ul
-                    %li= link_to t('attendance.manage_lateness_earlyreturn'), '/attendance/manage'
-                    %li= link_to t('staff_attendance.title'), staff_staff_attendances_path
-                    %li= link_to t('staff_attendance.status_pcard'), '/attendance/status'
-                    %li= link_to "Report - Monthly Listing", '#'
+                    %li= link_to t('attendance.manage_lateness_earlyreturn'), '/attendance/manager'
+                    - permitted_to? :staff_staff_attendances, :to => :manage do
+                      %li= link_to t('staff_attendance.title'), staff_staff_attendances_path
+                      %li= link_to t('staff_attendance.status_pcard'), '/attendance/status'
+                      %li= link_to "Report - Monthly Listing", '#'
             - permitted_to? :index, :staff_staff_appraisals do        
               %li= link_to t('staff.staff_appraisal.title'), staff_staff_appraisals_path
             - permitted_to? :read, :staffs do

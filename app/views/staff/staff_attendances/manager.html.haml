@@ -8,7 +8,8 @@
   /%ul.nav.navbar-nav
   /  %li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'actions.new'))), new_staff_attendance_path
   %ul.nav.navbar-nav
-    %li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'staff_attendance.list1'))), staff_staff_attendances_path
+    - permitted_to? :staff_staff_attendances, :manage do
+      %li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'staff_attendance.list1'))), staff_staff_attendances_path
   %ul.nav.navbar-nav.navbar-right
     %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "toga"
     %li= link_to content_tag(:li, fa_icon("print", text: (t 'actions.print'))), "#", class: 'bogus'
@@ -32,8 +33,8 @@
       - if @approvelate_attendances.size > 0
         - for attendance in @approvelate_attendances
           %tr
-            %td=h attendance.logged_at.in_time_zone('UTC').strftime('%d-%m-%Y')
-            %td=h attendance.logged_at.in_time_zone('UTC').strftime('%H:%M:%S') 
+            %td=h attendance.logged_at.strftime('%d-%m-%Y')
+            %td=h attendance.logged_at.strftime('%H:%M:%S') 
             %td &nbsp;
             %td=h attendance.attended.name 
             %td=h attendance.reason? ? attendance.reason : "Not Submitted Yet"
@@ -50,9 +51,9 @@
       -  if @approveearly_attendances.size > 0
         - for attendance in @approveearly_attendances
           %tr
-            %td=h attendance.logged_at.in_time_zone('UTC').strftime('%d-%m-%Y')
+            %td=h attendance.logged_at.strftime('%d-%m-%Y')
             %td &nbsp;
-            %td=h attendance.logged_at.in_time_zone('UTC').strftime('%H:%M:%S')
+            %td=h attendance.logged_at.strftime('%H:%M:%S')
             %td=h attendance.attended.name
             %td=h attendance.reason? ? attendance.reason : "Not Submitted Yet"
             %td= attendance.try(:approvedby).try(:name) if attendance.is_approved == true 
@@ -68,11 +69,11 @@
         %td{:colspan=>"7",:style=>"font-weight: bold; background-color: #D8D8D8;"}=t 'attendance.days_iam_late'
       - for attendance in @mylate_attendances
         %tr
-          %td=h link_to attendance.logged_at.in_time_zone('UTC').strftime('%d-%m-%Y'), :action=>'edit', :id=> attendance
-          %td=h attendance.logged_at.in_time_zone('UTC').strftime('%H:%M:%S') 
+          %td=h link_to attendance.logged_at.strftime('%d-%m-%Y'), :action=>'edit', :id=> attendance
+          %td=h attendance.logged_at.strftime('%H:%M:%S') 
           %td &nbsp;
           %td &nbsp;
-          %td=h attendance.approved_by.blank? ? "Reason not submitted" : attendance.reason
+          %td=h attendance.reason.blank? ? "Reason not submitted" : attendance.reason
           %td=h attendance.approved_by.blank? ? "" : attendance.try(:approver).try(:staff_name_with_position)
           %td &nbsp;
           /- if permitted_to? :destroy, @attendance 
@@ -82,9 +83,9 @@
         %td{:colspan=>"7",:style=>"font-weight: bold; background-color: #D8D8D8;"}=t 'attendance.days_iam_early'
       - for attendance in @myearly_attendances
         %tr
-          %td=h link_to attendance.logged_at.in_time_zone('UTC').strftime('%d-%m-%Y'), :action=>'edit', :id=> attendance
+          %td=h link_to attendance.logged_at.strftime('%d-%m-%Y'), :action=>'edit', :id=> attendance
           %td &nbsp;
-          %td=h attendance.logged_at.in_time_zone('UTC').strftime('%H:%M:%S') 
+          %td=h attendance.logged_at.strftime('%H:%M:%S') 
           %td &nbsp;
           %td=h attendance.approved_by.blank? ? "Reason not submitted" : attendance.reason
           %td=h attendance.approved_by.blank? ? "" : attendance.try(:approver).try(:staff_name_with_position)
