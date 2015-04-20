@@ -1,13 +1,14 @@
 require 'spec_helper'
 
 describe TravelRequest do
-  before { @staff = FactoryGirl.create(:staff) }
-  before { @vehicle = FactoryGirl.create(:vehicle, reg_no: "JJJ1234", staff_id: @staff.id) }
-  before { @vehicle2 = FactoryGirl.create(:vehicle, reg_no: "JKK 4545", staff_id: @staff.id)}
-  before { @travel_request = FactoryGirl.create(:travel_request, staff_id: @staff.id)}
-  
+  #before { @staff = FactoryGirl.create(:staff)}
+  #before { @vehicle = FactoryGirl.create(:vehicle, reg_no: "JJJ1234", staff_id: @staff.id) }
+  #before { @vehicle2 = FactoryGirl.create(:vehicle, reg_no: "JKK 4545", staff_id: @staff.id)}
+  before { @travel_request = FactoryGirl.create(:travel_request)}
+  #before  { sign_in (@travel_request.staff_with_login)}
+
   subject {@travel_request }
-  
+
   it { should respond_to(:staff_id) }
   it { should respond_to(:replaced_by) }
   it { should respond_to(:hod_id) }
@@ -36,29 +37,29 @@ describe TravelRequest do
   it { should respond_to(:log_mileage) }
   it { should respond_to(:log_fare) }
   it { should respond_to(:code) }
-  
+
   it { should be_valid }
-  
+
   describe "applicant is not present" do
     before { @travel_request.staff_id=nil}
     it {should_not be_valid}
   end
-  
+
   describe "destination is not present" do
     before { @travel_request.destination=nil}
     it {should_not be_valid}
   end
-  
+
   describe "depature date & time is not present" do
     before { @travel_request.depart_at=nil}
     it {should_not be_valid}
   end
-  
+
   describe "return date & time is not present" do
     before { @travel_request.return_at=nil}
     it {should_not be_valid}
   end
-  
+
   describe "own car notes is not present when own car is selected and vehicle registered(in staff module)" do
     before do
       @travel_request.own_car=true
@@ -74,7 +75,7 @@ describe TravelRequest do
       @travel_request.replaced_by=nil
     end
     it {should_not be_valid}
-  end  
+  end
 
   describe "approver is not present when travel request submitted" do
     before do
@@ -82,7 +83,7 @@ describe TravelRequest do
       @travel_request.hod_id=nil
     end
     it {should_not be_valid}
-  end  
+  end
 
   describe "hod acceptance date is not present when hod accepted request" do
     before do
@@ -90,16 +91,16 @@ describe TravelRequest do
       @travel_request.hod_accept_on=nil
     end
     it {should_not be_valid}
-  end  
-  
+  end
+
   describe "departure must takes place before return" do
     before do
       @travel_request.depart_at='2010-01-02 08:00:00'
       @travel_request.return_at='2010-01-01 08:00:00'
     end
     it {should_not be_valid}
-  end  
-  
+  end
+
 end
 
 #validates_presence_of :staff_id, :destination, :depart_at, :return_at

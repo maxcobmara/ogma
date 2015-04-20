@@ -1,7 +1,7 @@
 FactoryGirl.define do
-  
+
   # Staffs
-  factory :staff do
+  factory :basic_staff, :class => 'Staff' do
     sequence(:coemail) { |n| "slatest#{n}@example.com" }
     sequence(:name) { |n| "Bob#{n} Uncle" }
     icno {(0...12).map {rand(10).to_s}.join }
@@ -16,28 +16,47 @@ FactoryGirl.define do
     fileno {(0...8).map { (65 + rand(26)).chr }.join}
     current_salary {rand(300..15000)}
     association :staffgrade, factory: :employgrade
-    #association :users, factory: :user not ready
     #association :timetables, factory: :timetable
   end
-  
-  factory :vehicle do
+
+  factory :staff_with_login, :class => 'Staff' do
+    sequence(:coemail) { |n| "slatest#{n}@example.com" }
+    sequence(:name) { |n| "Bob#{n} Uncle" }
+    icno {(0...12).map {rand(10).to_s}.join }
+    code {(0...8).map { (65 + rand(26)).chr }.join}
+    appointdt {Time.at(rand * Time.now.to_f)}
+    cobirthdt {Time.at(rand * Time.now.to_f)}
+    addr "Some Address"
+    poskod_id {rand(10 ** 5).to_s}
+    statecd 1
+    country_id 1
+    country_cd 1
+    fileno {(0...8).map { (65 + rand(26)).chr }.join}
+    current_salary {rand(300..15000)}
+    association :staffgrade, factory: :employgrade
+    after(:create) {|staff| staff.users = [create(:staff_user)]}
+    after(:create) {|staff| staff.vehicles = [create(:vehicle)]}
+    #association :timetables, factory: :timetable
+  end
+
+  factory :vehicle, :class => 'Vehicle' do
     sequence(:type_model)  { |n| "Reg No #{n}" }
     sequence(:reg_no) { |n| "Reg No #{n}" }
     cylinder_capacity {rand(60..3000)}
-    #association :staffvehicle, factory: :staff
-    staff_id 25
+    #association :staffvehicle, factory: :basic_staff
+    #staff_id 25
   end
-  
+
   factory :employgrade do
     name {|n| "Grade Name #{n}"}
     group_id {[1,2,4].sample}
   end
-  
+
   factory :position do
     sequence(:name) { |n| "Position#{n} Orgchart" }
     sequence(:code) { |n| "Code#{n}" }
   end
-  
+
   factory :staff_attendance do
     #sequence(:thumb_id) { |n| }
     association :attended, factory: :staff
@@ -51,7 +70,7 @@ FactoryGirl.define do
     status 1
     review "Some Review"
   end
-  
+
   factory :staff_appraisal do
     association :appraised, factory: :staff
     association :eval1_officer, factory: :staff
@@ -101,7 +120,7 @@ FactoryGirl.define do
     e1_progress "Some Progress"
     is_submit_e2 {rand(2)==1}
     submit_e2_on {Date.today+(366*rand()).to_f}
-    
+
     e2g1q1 {rand(0..10).to_f}
     e2g1q2 {rand(0..10).to_f}
     e2g1q3 {rand(0..10).to_f}
@@ -132,43 +151,43 @@ FactoryGirl.define do
     is_complete {rand(2)==1}
     is_completed_on {Date.today+(366*rand()).to_f}
   end
-  
-  factory :travel_request do
-    association :applicant, factory: :staff
-    association :replacement, factory: :staff
-    association :headofdept, factory: :staff
-    association :travel_claim, factory: :travel_claim
-    association :document, factory: :document
+
+  factory :travel_request, :class => 'TravelRequest' do
+    association :applicant, factory: :staff_with_login
+    association :replacement, factory: :basic_staff
+    association :headofdept, factory: :basic_staff
+    #association :travel_claim, factory: :travel_claim
+    #association :document, factory: :document
     destination "Some destination"
     depart_at {DateTime.now-2.days}
     return_at {DateTime.now-1.days}
     #depart_at {DateTime.now-(366*rand()).to_f}
     #return_at {DateTime.now-(366*rand()).to_f}
-    own_car {rand(2)==1}
-    own_car_notes "Some notes"
-    dept_car {rand(2)==1}
-    others_car {rand(2)==1}
-    taxi {rand(2)==1}
-    bus {rand(2)==1}
-    train {rand(2)==1}
-    plane {rand(2)==1}
-    other {rand(2)==1}
-    other_desc "Some description"
-    is_submitted {rand(2)==1}
-    submitted_on {Date.today+(366*rand()).to_f}
-    mileage {rand(2)==1}
-    mileage_replace {rand(2)==1}
-    hod_accept {rand(2)==1}
-    hod_accept_on {Date.today+(366*rand()).to_f}
-    is_travel_log_complete {rand(2)==1}
-    log_mileage {rand(0..2500).to_f}
-    log_fare {rand(0..5000).to_f}
-    code "Some code"
+    #own_car {rand(2)==1}
+    #own_car_notes "Some notes"
+    #dept_car {rand(2)==1}
+    #others_car {rand(2)==1}
+    #taxi {rand(2)==1}
+    #bus {rand(2)==1}
+    #train {rand(2)==1}
+    #plane {rand(2)==1}
+    #other {rand(2)==1}
+    #other_desc "Some description"
+    #is_submitted {rand(2)==1}
+    #submitted_on {Date.today+(366*rand()).to_f}
+    #mileage {rand(2)==1}
+    #mileage_replace {rand(2)==1}
+    #hod_accept {rand(2)==1}
+    #hod_accept_on {Date.today+(366*rand()).to_f}
+    #is_travel_log_complete {rand(2)==1}
+    #log_mileage {rand(0..2500).to_f}
+    #log_fare {rand(0..5000).to_f}
+    #code "Some code"
   end
-  
+
   factory :travel_claim do
-    association :staff, factory: :staff
-    association :approver, factory: :staff
+    association :staff, factory: :basic_staff
+    association :approver, factory: :basic_staff
     claim_month {Date.today-(366*rand()).to_f}
     advance {rand(0..1000).to_f}
     total {rand(0..5000).to_f}
@@ -181,14 +200,14 @@ FactoryGirl.define do
     is_approved {rand(2)==1}
     approved_on {Date.today+(366*rand()).to_f}
   end
-  
+
 end
 
 
-    
+
 #
 #
-    
+
     # == Schema Information
     #
     # Table name: staffs
