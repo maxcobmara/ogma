@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150422075254) do
+ActiveRecord::Schema.define(version: 20150423085924) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -943,6 +943,7 @@ ActiveRecord::Schema.define(version: 20150422075254) do
     t.date     "examdate"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "valid_papertype"
   end
 
   create_table "examsubquestions", force: true do |t|
