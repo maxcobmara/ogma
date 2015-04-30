@@ -24,7 +24,7 @@
     .col-md-6.student_search{style: "display:none;"}
       = form_for :search, :url => { :action => "manager" }, :html=>{:class => "form-horizontal", :role => "form", :style => 'padding: 0 30px 0 30px; margin-top: 0;' } do |f|
         .input-group
-          = f.text_field :student_icno, data: {autocomplete_source: Student.order(:icno).map(&:icno)}, :autofocus => true, :required => true, :class => 'form-control search-field', :type => "input", placeholder: "IC Starts with"#, value: (@params_student_ic = params[:search].try(:[], :student_icno))
+          = f.text_field :student_icno, data: {autocomplete_source: Student.order(:icno).map(&:student_list)}, :autofocus => true, :required => true, :class => 'form-control search-field', :type => "input", placeholder: "IC Starts with"#, value: (@params_student_ic = params[:search].try(:[], :student_icno))
           %span.input-group-btn
             = f.submit (t 'search'), :class => "btn btn-primary", style: "width:80px;"
         %span.help-block.small= (t 'library.check.search')

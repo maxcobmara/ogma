@@ -5,12 +5,13 @@ class Library::LibrarytransactionsController < ApplicationController
   filter_access_to :index
 
   def index
-    @filters = Librarytransaction::FILTERS
-    if params[:show] && @filters.collect{|f| f[:scope]}.include?(params[:show])
-      @librarytransactions = Librarytransaction.with_permissions_to.send(params[:show])
-    else
-      @librarytransactions = Librarytransaction.all
-    end
+#     @filters = Librarytransaction::FILTERS
+#     if params[:show] && @filters.collect{|f| f[:scope]}.include?(params[:show])
+#       @librarytransactions = Librarytransaction.with_permissions_to.send(params[:show])
+#     else
+#       @librarytransactions = Librarytransaction.all
+#     end
+    @librarytransactions=Librarytransaction.borrowed
     @paginated_transaction = @librarytransactions.order(checkoutdate: :desc).page(params[:page]).per(15)
     @libtran_days = @paginated_transaction.group_by {|t| t.checkoutdate}
   end
@@ -32,7 +33,11 @@ class Library::LibrarytransactionsController < ApplicationController
 
     #@librarytransaction.accession_id = 1
     @librarytransaction.checkoutdate = Date.today()
-    @librarytransaction.returnduedate = Date.today() + 14.days
+    if @librarytransaction.ru_staff == true
+      @librarytransaction.returnduedate = Date.today() + 21.days
+    elsif @librarytransaction.ru_staff == false
+      @librarytransaction.returnduedate = Date.today() + 14.days
+    end
   end
 
   def show
@@ -76,7 +81,7 @@ class Library::LibrarytransactionsController < ApplicationController
     end
 
     if params[:search].present? && params[:search][:student_icno].present?
-      @student_ic = params[:search][:student_icno]
+      @student_ic = params[:search][:student_icno].split(" ")[0]
       @selected_student = Student.where("icno = ?", "#{@student_ic}").first
       unless @selected_student.nil?
         scope = Librarytransaction.where(student: @selected_student).where(returneddate: nil).order(returnduedate: :asc)

@@ -35,8 +35,9 @@
       source: $('#librarytransaction_accession_acc_book').data('autocomplete-source')
     });
   
-    $(".input-daterange").datepicker({
+    $(".input-daterange").datetimepicker({
       format: "yyyy-mm-dd",
+      timepicker: false,
       todayBtn: "linked", 
       todayHighlight: true
     });
