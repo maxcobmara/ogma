@@ -28,6 +28,10 @@ jQuery ->
     minLength: 3
     source: $('#search_staff_name').data('autocomplete-source')
     
+  $('#search_student_icno').autocomplete
+    minLength: 3
+    source: $('#search_student_icno').data('autocomplete-source')  
+    
   $('#search_student_icno_location').autocomplete
     minLength: 3
     source: $('#search_student_icno_location').data('autocomplete-source')
