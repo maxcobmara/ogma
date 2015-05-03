@@ -1,0 +1,21 @@
+.page-header
+  %h1=t 'library.transaction.analysis_statistic'
+= render 'shared/flashes'
+
+.row.fluid
+  = form_tag analysis_statistic_main_library_librarytransactions_path, :method =>'get' do
+    .row
+      .col-md-offset-4
+        .form-group
+          .col-sm-2.control-label
+            %b= t 'library.transaction.analysis.year_date'
+          .col-md-2
+            = text_field_tag( :report_year,'' , class: 'form-control mandatory year_picker')
+    %br
+    .row
+      .col-md-offset-4
+        .form-group
+          .col-sm-offset-1.col-sm-2
+            = submit_tag (t 'library.transaction.analysis.borrower_data'), :name => :list_submit_button, :class => 'btn btn-primary'
+          .col-sm-2
+            = submit_tag (t 'library.transaction.analysis.book_data'), :name => :list_submit_button, :class => 'btn btn-primary', :format=> 'xls'

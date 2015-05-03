@@ -1617,7 +1617,30 @@ ms_MY:
       reportdetails: Laporan
       reportlostdate: Tarikh Laporan Kehilangan
       replaceddate: Tarikh Ganti
-      report: Laporan Kehilangan  
+      report: Laporan Kehilangan
+      analysis_statistic: "Analisis & Statistik"
+      analysis:
+        main_title: Laporan Tahunan
+        first_title: "Data Peminjam Bahan Monograf (Buku) Mengikut Kumpulan dan Program"
+        borrower_by_programme_month: Jumlah Peminjam Mengikut Program dan Bulan
+        borrower_statistic_category: Statistik Peminjam Mengikut Kategori
+        borrower_statistic_circulation: "Statistik Sirkulasi Monograf (Buku) Bulanan"
+        borrower_breakdown_group: Data Pecahan Peminjam Mengikut Kumpulan
+        programme_month: "Program / Bulan"
+        staff: Kakitangan
+        total_year: Jumlah Tahunan
+        total_month: Jumlah Bulanan
+        total: Jumlah
+        second_title: "Data Pinjaman Bahan Monograf (Buku) Mengikut Klasifikasi Bahan"
+        class_total_books: "Kelas / Jumlah Bahan"
+        general: UMUM
+        media_classification: Klasifikasi Bahan
+        borrower_breakdown: Pecahan Pinjaman Bahan
+        breakdown_circulation_classification_statistic: Statistik Pecahan Sirkulasi Mengikut Klasifikasi Bahan
+        borrower_data: Data Peminjam
+        book_data: Data Monograf
+        select_year: "Sila pilih Tahun (tarikh) terlebih dahulu"
+        year_date: "Tahun (tarikh)"
           
     check:  
       status: Semak Taraf
@@ -2635,8 +2658,13 @@ ms_MY:
       # Don't forget the nil at the beginning; there's no such thing as a 0th month
       month_names: [~, Januari, Februari, Mac, April, Mei, Jun, Julai, Ogos, September, Oktober, November, Disember]
       abbr_month_names: [~, Jan, Feb, Mar, Apr, Mei, Jun, Jul, Ogo, Sep, Okt, Nov, Dis]
+      #order: [ :day, :month, :year ]
       # Used in date_select and datime_select.
-#      order: [ :day, :month, :year ]
+      order: 
+        - :day
+        - :month
+        - :year
+      
     
   time:
     formats:

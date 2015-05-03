@@ -167,6 +167,62 @@ class Library::LibrarytransactionsController < ApplicationController
     @librarytransaction = Librarytransaction.find(params[:id])
     render :layout => false
   end
+  
+  def analysis
+    yyear = params[:reporting_year]
+    unless yyear.blank?
+      sstart = yyear.to_date
+      eend = sstart.end_of_year
+      @progs=Programme.where('course_type=? OR course_type=? OR course_type=? OR course_type=?', 'Diploma', 'Diploma Lanjutan', 'Pos Basik', 'Pengkhususan').where(ancestry_depth: 0).where('name NOT ILIKE(?) and name NOT ILIKE(?)', '%test%', '%unknown%').select(:id, :name, :course_type).order(course_type: :asc, name: :asc)
+      student_ids=Student.all.pluck(:id)
+      @librarytransactions=Librarytransaction.where(ru_staff: false).where('student_id IN(?)', student_ids).where('checkoutdate >=? and checkoutdate <=?', sstart, eend).group_by{|x|x.student.course_id}
+      @librarytransactions_staff=Librarytransaction.where(ru_staff: true).where('checkoutdate >=? and checkoutdate <=?', sstart, eend)
+      @thismonthcourse =[0,0,0,0,0,0,0,0,0,0,0,0,0] #note : 13 for 12 months
+      @thismonthcourse2 =[0,0,0,0,0,0,0,0,0,0,0,0,0] 
+      @thisyearcourse=[]
+    else
+      flash[:notice] = t('library.transaction.analysis.select_year')
+      redirect_to analysis_statistic_library_librarytransactions_path
+    end
+  end
+  
+  def analysis_book
+    student_ids=Student.all.pluck(:id)
+    yyear = params[:reporting_year]
+    unless yyear.blank?
+      sstart = yyear.to_date
+      eend = sstart.end_of_year
+      @thismonthcourse =[0,0,0,0,0,0,0,0,0,0,0,0,0] #note : 13 for 12 months
+      @thismonthumum =[0,0,0,0,0,0,0,0,0,0,0,0,0]
+      @thismonth_wclass=[0,0,0,0,0,0,0,0,0,0,0,0,0]
+      @thisyearcourse=[]
+      @thisyear_wclass=0
+      @nlm_classification_q=['QS','QT','QU','QV','QW','QX','QY','QZ']
+      @nlm_classification_w=['W','WA','WB','WC','WD','WE','WF','WG','WH','WI','WJ','WK','WL','WM','WN','WO','WP','WQ','WR','WS','WT','WU','WV','WW','WX','WY','WZ']
+      @nlm_classification=@nlm_classification_q+@nlm_classification_w
+      @w_class=[]
+      @umum_libtrans=[]
+      @librarytransactions_students=Librarytransaction.where(ru_staff: false).where('student_id IN(?)', student_ids).where('checkoutdate >=? and checkoutdate <=?', sstart, eend)
+      @librarytransactions_staff=Librarytransaction.where(ru_staff: true).where('checkoutdate >=? and checkoutdate <=?', sstart, eend)
+      @librarytransactions=(@librarytransactions_staff+@librarytransactions_students).group_by{|x|x.accession.book.classlcc[0,2]}
+    else
+      flash[:notice] = t('library.transaction.analysis.select_year')
+      redirect_to analysis_statistic_library_librarytransactions_path
+    end
+  end
+  
+  def analysis_statistic
+  end
+  
+  def analysis_statistic_main
+    commit = params[:list_submit_button]
+    reporting_year = params[:report_year]
+    if commit == t('library.transaction.analysis.borrower_data')
+      redirect_to analysis_library_librarytransactions_path(:reporting_year => reporting_year)
+    elsif commit == t('library.transaction.analysis.book_data')
+      redirect_to analysis_book_library_librarytransactions_path(:reporting_year => reporting_year)
+    end
+  end
 
   private
     # Use callbacks to share common setup or constraints between actions.

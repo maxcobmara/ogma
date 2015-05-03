@@ -310,6 +310,11 @@ Ogma::Application.routes.draw do
         post :check_status
         get   :manager
         post  :manager
+        get :analysis
+        get :analysis_book
+        get :analysis_statistic
+        post :analysis_statistic
+        get :analysis_statistic_main
       end
     end
     resources :books do
