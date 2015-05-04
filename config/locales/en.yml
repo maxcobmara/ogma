@@ -1705,6 +1705,7 @@ en:
       analysis:
         main_title: "Analysis & Statistic (Borrower) - "
         main_title2: "Analysis & Statistic (Monograph) - "
+        main_title3: "Analysis & Statistic (General) - "
         first_title: "Monograph (Book) Borrower Data Based on Group and Programme"
         borrower_by_programme_month: Total of Borrower by Programme and Month
         borrower_statistic_category: Statistic of Borrower By Category
@@ -1727,6 +1728,32 @@ en:
         general_data: General Data
         select_year: "Please select Year (date) first"
         year_date: "Year (date)"
+        ms: pg
+        copies: Copies
+        total_pages: Total pages
+        most_active_students: Most Active Students
+        most_active_staffs: Most Active Staffs 
+        name: Name
+        total_transactions: Total Transactions
+        main_figures: Main Figures
+        no_titles: Total Number of Titles in Library
+        no_books: Total Number of Books In Library
+        transactions_for: Total Library Transactions for 
+        books_borrowed: Books Borrowed
+        today: Today
+        total_fines: Total of Fines Collected
+        language: Language
+        qty_title: "Quantity (Title)"
+        latest_title: Latest Title in Library
+        borrowed_books: Borrowed Books
+        title: Title
+        id_title: "Book Id : Title"
+        classifications_nlm_lc: "Clasifications (NLM / LC)"
+        accession_no: Accession No
+        view_more: "View all..."
+        repeats: Repeats
+        repeated_books: Possibily Repeated Books
+        back_general: "Back to Analysis & Statistic (General) - Main Page"
       
     check:  
       status: Check Status

@@ -222,6 +222,25 @@ class Library::LibrarytransactionsController < ApplicationController
     end
   end
   
+  def general_analysis_ext
+    @jobtype=params[:jobtype]  
+    if @jobtype=='1'
+      @libtrans=Librarytransaction.where('returned is NOT TRUE').sort_by{|x|x.accession.accession_no}
+      @libtrans=Kaminari.paginate_array(@libtrans).page(params[:page]||1)
+    elsif @jobtype=='2'
+      repeated_books = Book.all.select(:isbn).map(&:isbn)
+      b = repeated_books.inject(Hash.new(0)) {|h,i| h[i] += 1; h }
+      @repeat = b.to_a.each {|book, repeats|}
+      @ewah=[]
+      @repeat.each do |book, repeats| 
+        if ("#{repeats}").to_i > 1 
+          @ewah << [book, repeats]
+        end
+      end 
+      @ewah=Kaminari.paginate_array(@ewah).page(params[:page]||1) 
+    end
+  end
+  
   def analysis_statistic #form for searching by year
   end
   

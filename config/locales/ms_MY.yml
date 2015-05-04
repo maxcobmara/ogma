@@ -1645,6 +1645,32 @@ ms_MY:
         general_data: Data Umum
         select_year: "Sila pilih Tahun (tarikh) terlebih dahulu"
         year_date: "Tahun (tarikh)"
+        ms: ms
+        copies: Salinan
+        total_pages: Jumlah laman
+        most_active_students: Pelatih Paling Aktif
+        most_active_staffs: Kakitangan Paling Aktif
+        name: Nama
+        total_transactions: Jumlah Transaksi
+        main_figures: Figura Utama
+        no_titles: Jumlah Judul (Tajuk) di Perpustakaan
+        no_books: Jumlah Buku di Perpustakaan
+        transactions_for: Jumlah Transaksi Perpustakaan Bagi Tahun
+        books_borrowed: Buku Dipinjam
+        today: Hari Ini
+        total_fines: Jumlah Kutipan Denda
+        language: Bahasa
+        qty_title: "Kuantiti (Judul / Tajuk)"
+        latest_title: "Judul (Tajuk) Terkini di Perpustakaan"
+        borrowed_books: Buku Sedang Dipinjam
+        title: "Judul (Tajuk)"
+        id_title: "Id Buku : Judul (Tajuk)"
+        classifications_nlm_lc: "Klasifikasi (NLM / LC)"
+        accession_no: "No. Panggilan"
+        view_more: "Papar semua..."
+        repeats: Ulangan
+        repeated_books: Kemungkinan Rekod Buku Berulang
+        back_general: "Kembali ke Analisis & Statistik (Umum) - Laman Utama"
           
     check:  
       status: Semak Taraf

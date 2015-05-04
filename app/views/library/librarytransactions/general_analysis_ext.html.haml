@@ -1,0 +1,47 @@
+- model_class = Librarytransaction
+.page-header
+  - selected_year=params[:reporting_year].to_date
+  %h1= (t 'library.transaction.analysis.main_title3')+" "+selected_year.year.to_s
+  
+  =link_to(t('library.transaction.analysis.back_general'), general_analysis_library_librarytransactions_path(:reporting_year => params[:reporting_year]))
+  
+.row
+  - if @jobtype=='1'     
+    .col-md-10.col-md-offset-1
+      %h4=t('library.transaction.analysis.borrowed_books')
+      %table.table-striped.table-hover.ogma
+        %thead
+          %tr
+            %th=t('library.transaction.analysis.title')
+            %th{:width=>"20%"}=t('library.transaction.analysis.classifications_nlm_lc')
+            %th{:width=>"15%"}=t('library.transaction.analysis.accession_no')
+        %tbody
+          - @libtrans.each do |ltran|
+            %tr
+              %td=ltran.accession.book.title
+              %td=ltran.accession.book.classlcc
+              %td=ltran.accession.accession_no
+      .right{style:"padding:0 30px; margin:0;"}= paginate @libtrans, :theme => 'twitter-bootstrap-3'
+
+  - elsif @jobtype=='2'
+    .col-md-10.col-md-offset-1
+      %h4
+        %font{:color=>:red}=t('library.transaction.analysis.repeated_books')
+    
+      %table.table-striped.table-hover.ogma
+        %thead
+          %tr
+            %th=t('library.transaction.analysis.id_title')
+            %th.centre{:width=>"10%"}=t('library.transaction.analysis.repeats')
+        %tbody       
+          - @ewah.each do  |book, repeats| 
+            - stuid = "#{book}" 
+            %tr
+              %td
+                = Book.where("isbn = ?", stuid).map {|f| f.id}.first
+                \:
+                = Book.where("isbn = ?", stuid).map {|f| f.title}.first
+              %td.centre
+                %font{:color=>:red}="#{repeats}"
+                
+      .right{style:"padding:0 30px; margin:0;"}= paginate @ewah, :theme => 'twitter-bootstrap-3'
