@@ -1620,7 +1620,9 @@ ms_MY:
       report: Laporan Kehilangan
       analysis_statistic: "Analisis & Statistik"
       analysis:
-        main_title: Laporan Tahunan
+        main_title: "Analisis & Statistik (Peminjam) - "
+        main_title2: "Analisis & Statistik (Monograf) - "
+        main_title3: "Analisis & Statistik (Umum) - "
         first_title: "Data Peminjam Bahan Monograf (Buku) Mengikut Kumpulan dan Program"
         borrower_by_programme_month: Jumlah Peminjam Mengikut Program dan Bulan
         borrower_statistic_category: Statistik Peminjam Mengikut Kategori
@@ -1632,13 +1634,15 @@ ms_MY:
         total_month: Jumlah Bulanan
         total: Jumlah
         second_title: "Data Pinjaman Bahan Monograf (Buku) Mengikut Klasifikasi Bahan"
-        class_total_books: "Kelas / Jumlah Bahan"
+        third_title: Statistik Umum
+        class_total_books: "Klasifikasi / Jumlah Bahan"
         general: UMUM
         media_classification: Klasifikasi Bahan
         borrower_breakdown: Pecahan Pinjaman Bahan
         breakdown_circulation_classification_statistic: Statistik Pecahan Sirkulasi Mengikut Klasifikasi Bahan
         borrower_data: Data Peminjam
         book_data: Data Monograf
+        general_data: Data Umum
         select_year: "Sila pilih Tahun (tarikh) terlebih dahulu"
         year_date: "Tahun (tarikh)"
           

@@ -312,6 +312,7 @@ Ogma::Application.routes.draw do
         post  :manager
         get :analysis
         get :analysis_book
+        get :general_analysis
         get :analysis_statistic
         post :analysis_statistic
         get :analysis_statistic_main

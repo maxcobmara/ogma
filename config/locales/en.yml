@@ -1703,7 +1703,8 @@ en:
       report: Report Lost
       analysis_statistic: "Analysis & Statistics"
       analysis:
-        main_title: Yearly Report
+        main_title: "Analysis & Statistic (Borrower) - "
+        main_title2: "Analysis & Statistic (Monograph) - "
         first_title: "Monograph (Book) Borrower Data Based on Group and Programme"
         borrower_by_programme_month: Total of Borrower by Programme and Month
         borrower_statistic_category: Statistic of Borrower By Category
@@ -1715,6 +1716,7 @@ en:
         total_month: Monthly Total
         total: Total
         second_title: "Monograph (Book) Borrowed Data Based on Media Classification"
+        third_title: General Statistic
         class_total_books: "Class / Total Media"
         general: GENERAL
         media_classification: Media Classification
@@ -1722,6 +1724,7 @@ en:
         breakdown_circulation_classification_statistic: Statistic of Circulations Breakdown by Media Classification
         borrower_data: Borrower Data
         book_data: Monograph Data
+        general_data: General Data
         select_year: "Please select Year (date) first"
         year_date: "Year (date)"
       

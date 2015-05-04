@@ -211,7 +211,18 @@ class Library::LibrarytransactionsController < ApplicationController
     end
   end
   
-  def analysis_statistic
+  def general_analysis
+    yyear = params[:reporting_year]
+    unless yyear.blank?
+      sstart = yyear.to_date
+      eend = sstart.end_of_year
+    else
+      flash[:notice] = t('library.transaction.analysis.select_year')
+      redirect_to analysis_statistic_library_librarytransactions_path
+    end
+  end
+  
+  def analysis_statistic #form for searching by year
   end
   
   def analysis_statistic_main
@@ -221,6 +232,8 @@ class Library::LibrarytransactionsController < ApplicationController
       redirect_to analysis_library_librarytransactions_path(:reporting_year => reporting_year)
     elsif commit == t('library.transaction.analysis.book_data')
       redirect_to analysis_book_library_librarytransactions_path(:reporting_year => reporting_year)
+    elsif commit == t('library.transaction.analysis.general_data')
+      redirect_to general_analysis_library_librarytransactions_path(:reporting_year => reporting_year)
     end
   end
 

@@ -15,7 +15,9 @@
     .row
       .col-md-offset-4
         .form-group
-          .col-sm-offset-1.col-sm-2
+          .col-sm-2
             = submit_tag (t 'library.transaction.analysis.borrower_data'), :name => :list_submit_button, :class => 'btn btn-primary'
           .col-sm-2
-            = submit_tag (t 'library.transaction.analysis.book_data'), :name => :list_submit_button, :class => 'btn btn-primary', :format=> 'xls'
+            = submit_tag (t 'library.transaction.analysis.book_data'), :name => :list_submit_button, :class => 'btn btn-primary'
+          .col-sm-2
+            = submit_tag (t 'library.transaction.analysis.general_data'), :name => :list_submit_button, :class => 'btn btn-primary'
