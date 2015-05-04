@@ -226,7 +226,7 @@ class Library::LibrarytransactionsController < ApplicationController
     @jobtype=params[:jobtype]  
     if @jobtype=='1'
       @libtrans=Librarytransaction.where('returned is NOT TRUE').sort_by{|x|x.accession.accession_no}
-      @libtrans=Kaminari.paginate_array(@libtrans).page(params[:page]||1)
+      @libtrans=Kaminari.paginate_array(@libtrans).page(params[:page]||1).per(15)
     elsif @jobtype=='2'
       repeated_books = Book.all.select(:isbn).map(&:isbn)
       b = repeated_books.inject(Hash.new(0)) {|h,i| h[i] += 1; h }
@@ -237,7 +237,7 @@ class Library::LibrarytransactionsController < ApplicationController
           @ewah << [book, repeats]
         end
       end 
-      @ewah=Kaminari.paginate_array(@ewah).page(params[:page]||1) 
+      @ewah=Kaminari.paginate_array(@ewah).page(params[:page]||1).per(15)
     end
   end
   
