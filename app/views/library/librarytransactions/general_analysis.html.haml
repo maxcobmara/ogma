@@ -9,26 +9,7 @@
   |
   =link_to(t('library.transaction.analysis.book_data'),analysis_book_library_librarytransactions_path(:reporting_year => params[:reporting_year]))
 
-.row  
-  .col-md-3
-    %h4=t('library.transaction.analysis.most_active_students')
-    %table.table-striped.table-hover.ogma
-      %thead
-        %tr
-          %th.centre=t('library.transaction.analysis.name')
-          %th.centre{:width=>"40%"}=t('library.transaction.analysis.total_transactions')
-          
-      - dash_student = Librarytransaction.where("student_id IS NOT ?", nil).select(:student_id).pluck(:student_id)
-      - b = dash_student.inject(Hash.new(0)) {|h,i| h[i] += 1; h } 
-      - top_ten = b.to_a.each {|who, visits|} 
-
-      %tbody
-        - top_ten[(0..9)].each do |who, visits| 
-          - stuid = ("#{who}").to_i 
-          %tr
-            %td.left= Student.where("id = ?", stuid ).select(:name).pluck(:name).first
-            %td.centre= "#{visits}"
-  .col-md-1 &nbsp;     
+.row    
   .col-md-3
     %h4=t('library.transaction.analysis.main_figures')
     %table.table-striped.table-hover.ogma
@@ -54,31 +35,61 @@
             &nbsp;
             %b=t('library.transaction.analysis.today')
         %tr 
-          %th.right=ringgols(Librarytransaction.where(returneddate: Date.today).sum(:fine))
+          %th.right=ringgols(Librarytransaction.where('returneddate >=? and returneddate<=?', selected_year.beginning_of_year, selected_year.end_of_year).sum(:fine))
           %td 
             =t('library.transaction.analysis.total_fines')
             &nbsp;
-            %b=t('library.transaction.analysis.today')
+            %b=selected_year.year
     %table.table-striped.table-hover.ogma
       %thead
         %tr
-          %th.centre=t('library.transaction.analysis.language')
+          %th.left=t('library.transaction.analysis.language')
           %th.centre=t('library.transaction.analysis.qty_title')
       %tbody
         - Book.all.group_by(&:language).each do |lang, books|
           - unless lang.blank?
             %tr
-              %td.centre
+              %td.left
                 = (DropDown::LANGUAGE.find_all{|disp, value| value == lang}).map {|disp, value| disp}[0]
               %td.centre=books.count
-  .col-md-1 &nbsp;        
+
+  .col-md-6
+    %h4=t('library.transaction.analysis.most_active_students')
+    %table.table-striped.table-hover.ogma
+      %thead
+        %tr
+          %th.left=t('library.transaction.analysis.name')
+          %th.left=t('student.students.course_id')
+          %th.left=t('training.intake.description')
+          %th.left Semester
+          %th.centre{:width=>"10%"}=t('library.transaction.analysis.total_transactions')
+      - studentids = Student.all.map(&:id)    
+      - dash_student = Librarytransaction.where("student_id IS NOT ? and student_id IN(?)", nil, studentids).select(:student_id).pluck(:student_id)
+      - b = dash_student.inject(Hash.new(0)) {|h,i| h[i] += 1; h } 
+      - top_ten = b.to_a.each {|who, visits|} 
+
+      %tbody
+        - top_ten[(0..9)].each do |who, visits| 
+          - stuid = ("#{who}").to_i 
+          %tr
+            %td.left= Student.where("id = ?", stuid ).select(:name).pluck(:name).first
+            %td.left
+              - courseid=Student.where("id = ?", stuid ).select(:course_id).pluck(:course_id).first
+              = Programme.find(courseid).name unless courseid.blank?
+            %td.centre
+              - intake=Student.where("id = ?", stuid ).select(:intake).pluck(:intake).first
+              - intake2=intake.beginning_of_month
+              =Intake.where(monthyear_intake: intake2, programme_id: courseid).first.try(:description) if !intake2.blank? && !courseid.blank?
+            %td=Student.find(stuid).year_and_sem unless stuid==0
+            %td.centre= "#{visits}"
+
   .col-md-3
     %h4=t('library.transaction.analysis.most_active_staffs')
     %table.table-striped.table-hover.ogma
       %thead
         %tr
-          %th.centre=t('library.transaction.analysis.name')
-          %th.centre{:width=>"40%"}=t('library.transaction.analysis.total_transactions')
+          %th.left=t('library.transaction.analysis.name')
+          %th.centre{:width=>"20%"}=t('library.transaction.analysis.total_transactions')
           
       - dash_staff = Librarytransaction.where("staff_id IS NOT ?", nil).select(:staff_id).pluck(:staff_id)
       - b = dash_staff.inject(Hash.new(0)) {|h,i| h[i] += 1; h } 

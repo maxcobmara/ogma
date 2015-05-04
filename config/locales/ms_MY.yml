@@ -1658,7 +1658,7 @@ ms_MY:
         transactions_for: Jumlah Transaksi Perpustakaan Bagi Tahun
         books_borrowed: Buku Dipinjam
         today: Hari Ini
-        total_fines: Jumlah Kutipan Denda
+        total_fines: Jumlah Kutipan Denda Bagi Tahun
         language: Bahasa
         qty_title: "Kuantiti (Judul / Tajuk)"
         latest_title: "Judul (Tajuk) Terkini di Perpustakaan"
