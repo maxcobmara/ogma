@@ -143,7 +143,7 @@
 %BR     
 .row      
   .col-md-7
-    %h4=t('library.transaction.analysis.borrowed_books')
+    %h4=t('library.transaction.analysis.borrowed_books')+" - "+selected_year.year.to_s
     %table.table-striped.table-hover.ogma
       %thead
         %tr
@@ -151,13 +151,13 @@
           %th{:width=>"20%"}=t('library.transaction.analysis.classifications_nlm_lc')
           %th{:width=>"15%"}=t('library.transaction.analysis.accession_no')
       %tbody
-        - libtran=Librarytransaction.where('returned is NOT TRUE').sort_by{|x|x.accession.accession_no}#order(checkoutdate: :asc)
+        - libtran=Librarytransaction.where('returned is NOT TRUE and checkoutdate >=? AND checkoutdate <=?', selected_year.beginning_of_year, selected_year.end_of_year).sort_by{|x|x.accession.accession_no}#order(checkoutdate: :asc)
         - a=libtran.count
         - if a > 10
           - libcount=9
         - else
           - libcount=a
-        - 0.upto(libcount).each do |count_transac|
+        - 0.upto(libcount-1).each do |count_transac|
           %tr
             %td=libtran[count_transac].accession.book.title
             %td=libtran[count_transac].accession.book.classlcc
