@@ -279,8 +279,9 @@
             - permitted_to? :read, :library_books do  
               %li= link_to content_tag(:i, "", :class => "icon-numb") + (t "library.book.list"), library_books_path
             - permitted_to? :read, :library_librarytransactions do 
-              %li= link_to content_tag(:i, "", :class => "icon-numb") + "Analysis", '#'
-              %li= link_to content_tag(:i, fa_icon("bar-chart-o", text: "Statistics")), '#'
+              /%li= link_to content_tag(:i, "", :class => "icon-numb") + "Analysis", analysis_library_librarytransactions_path
+              /%li= link_to content_tag(:i, fa_icon("bar-chart-o", text: "Statistics")), '#'
+              %li= link_to content_tag(:i, "", :class => "icon_numb") + (t "library.transaction.analysis_statistic"), analysis_statistic_library_librarytransactions_path
 
     - permitted_to? :core, :roles do
       %li.icon.icon-left

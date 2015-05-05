@@ -1,0 +1,204 @@
+- model_class = Librarytransaction
+.page-header
+  - selected_year=params[:reporting_year].to_date
+  %h1= (t 'library.transaction.analysis.main_title3')+" "+selected_year.year.to_s
+  
+  =link_to(t('back'),analysis_statistic_library_librarytransactions_path(:reporting_year => params[:reporting_year]))
+  |
+  =link_to(t('library.transaction.analysis.borrower_data'),analysis_library_librarytransactions_path(:reporting_year => params[:reporting_year]))
+  |
+  =link_to(t('library.transaction.analysis.book_data'),analysis_book_library_librarytransactions_path(:reporting_year => params[:reporting_year]))
+
+.row    
+  .col-md-3
+    %h4=t('library.transaction.analysis.main_figures')
+    %table.table-striped.table-hover.ogma
+      %thead
+        %tr
+          %th.centre{:colspan=>2}=t 'library.transaction.analysis.third_title'
+      %tbody
+        %tr
+          %th.right=Book.all.count
+          %td=t('library.transaction.analysis.no_titles') 
+        %tr 
+          %th.right=Accession.all.count
+          %td=t('library.transaction.analysis.no_books')
+        %tr 
+          %th.right=Librarytransaction.where('checkoutdate>=? AND checkoutdate<=?', selected_year.beginning_of_year, selected_year.end_of_year).count
+          %td 
+            =t('library.transaction.analysis.transactions_for') 
+            %b=selected_year.year
+        %tr 
+          %th.right=Librarytransaction.where('created_at >? and checkoutdate>?', 1.day.ago, 1.day.ago).count
+          %td 
+            =t('library.transaction.analysis.books_borrowed')
+            &nbsp;
+            %b=t('library.transaction.analysis.today')
+        %tr 
+          %th.right=ringgols(Librarytransaction.where('returneddate >=? and returneddate<=?', selected_year.beginning_of_year, selected_year.end_of_year).sum(:fine))
+          %td 
+            =t('library.transaction.analysis.total_fines')
+            &nbsp;
+            %b=selected_year.year
+    %table.table-striped.table-hover.ogma
+      %thead
+        %tr
+          %th.left=t('library.transaction.analysis.language')
+          %th.centre=t('library.transaction.analysis.qty_title')
+      %tbody
+        - Book.all.group_by(&:language).each do |lang, books|
+          - unless lang.blank?
+            %tr
+              %td.left
+                = (DropDown::LANGUAGE.find_all{|disp, value| value == lang}).map {|disp, value| disp}[0]
+              %td.centre=books.count
+
+  .col-md-6
+    %h4=t('library.transaction.analysis.most_active_students')
+    %table.table-striped.table-hover.ogma
+      %thead
+        %tr
+          %th.left=t('library.transaction.analysis.name')
+          %th.left=t('student.students.course_id')
+          %th.left=t('training.intake.description')
+          %th.left Semester
+          %th.centre{:width=>"10%"}=t('library.transaction.analysis.total_transactions')
+      - studentids = Student.all.map(&:id)    
+      - dash_student = Librarytransaction.where("student_id IS NOT ? and student_id IN(?)", nil, studentids).select(:student_id).pluck(:student_id)
+      - b = dash_student.inject(Hash.new(0)) {|h,i| h[i] += 1; h } 
+      - top_ten = b.to_a.each {|who, visits|} 
+
+      %tbody
+        - top_ten[(0..9)].each do |who, visits| 
+          - stuid = ("#{who}").to_i 
+          %tr
+            %td.left= Student.where("id = ?", stuid ).select(:name).pluck(:name).first
+            %td.left
+              - courseid=Student.where("id = ?", stuid ).select(:course_id).pluck(:course_id).first
+              = Programme.find(courseid).name unless courseid.blank?
+            %td.centre
+              - intake=Student.where("id = ?", stuid ).select(:intake).pluck(:intake).first
+              - intake2=intake.beginning_of_month
+              =Intake.where(monthyear_intake: intake2, programme_id: courseid).first.try(:description) if !intake2.blank? && !courseid.blank?
+            %td=Student.find(stuid).year_and_sem unless stuid==0
+            %td.centre= "#{visits}"
+
+  .col-md-3
+    %h4=t('library.transaction.analysis.most_active_staffs')
+    %table.table-striped.table-hover.ogma
+      %thead
+        %tr
+          %th.left=t('library.transaction.analysis.name')
+          %th.centre{:width=>"20%"}=t('library.transaction.analysis.total_transactions')
+          
+      - dash_staff = Librarytransaction.where("staff_id IS NOT ?", nil).select(:staff_id).pluck(:staff_id)
+      - b = dash_staff.inject(Hash.new(0)) {|h,i| h[i] += 1; h } 
+      - top_ten = b.to_a.each {|who, visits|} 
+
+      %tbody
+        - top_ten[(0..9)].each do |who, visits| 
+          - staid = ("#{who}").to_i 
+          %tr
+            %td.left= Staff.where("id = ?", staid ).select(:name).pluck(:name).first
+            %td.centre= "#{visits}"
+%BR
+.row
+  .col-md-12
+    %h4=t('library.transaction.analysis.latest_title')
+    %table.table.table-striped
+      - latest_books = Book.all.order(updated_at: :desc).limit(10) 
+      %tr
+        - latest_books.each do |e| 
+          %td.centre{:width=>"10%", :height=>"10%"}
+            - if e.photo_file_name == nil 
+              =t 'library.book.no_image'
+            - else 
+              /= image_tag e.photo.url
+              //=image_tag "http://localhost:3000/assets/books/21001/original/display%20div%20of%20selected%20menu%20item%20ON%20LOAD.png?1410749822"
+              //acc.book.photo.url GIVING THIS-assets/books/21001/original/no_cover_thumb.png?1410753027 
+              =image_tag "http://#{request.host}:3000"+e.photo.url, :width => '57px'  
+      %tr
+        - latest_books.each do |e| 
+          %td.left.small
+            %b=h e.title
+            %br=h e.author
+           
+      %tr
+        - latest_books.each do |e| 
+          %td.left.small
+            ISBN
+            =h e.isbn
+            %br
+            =t('library.transaction.analysis.copies')+" : " 
+            =h e.book_quantity
+            %br
+            =t('library.transaction.analysis.total_pages')+" : " 
+            - trim_epages=e.pages.gsub(/[.]/,"") 
+            - unless e.pages.blank?
+              - pgs=trim_epages[-2,2]
+              - ab=trim_epages.size-2
+              = trim_epages[0,ab]+" "+t('library.transaction.analysis.'+pgs.downcase)
+            
+
+%BR     
+.row      
+  .col-md-7
+    %h4=t('library.transaction.analysis.borrowed_books')
+    %table.table-striped.table-hover.ogma
+      %thead
+        %tr
+          %th=t('library.transaction.analysis.title')
+          %th{:width=>"20%"}=t('library.transaction.analysis.classifications_nlm_lc')
+          %th{:width=>"15%"}=t('library.transaction.analysis.accession_no')
+      %tbody
+        - libtran=Librarytransaction.where('returned is NOT TRUE').sort_by{|x|x.accession.accession_no}#order(checkoutdate: :asc)
+        - a=libtran.count
+        - if a > 10
+          - libcount=9
+        - else
+          - libcount=a
+        - 0.upto(libcount).each do |count_transac|
+          %tr
+            %td=libtran[count_transac].accession.book.title
+            %td=libtran[count_transac].accession.book.classlcc
+            %td=libtran[count_transac].accession.accession_no
+    - if a > 10
+      %table{:style=>" margin-left: 25px; cellspacing: 0: cellpadding:0; width:90%"}
+        %tr
+          %td.left=link_to(t('library.transaction.analysis.view_more'), general_analysis_ext_library_librarytransactions_path(:reporting_year => params[:reporting_year], :jobtype=>'1'))
+    
+  .col-md-5
+    %h4
+      %font{:color=>:red}=t('library.transaction.analysis.repeated_books')
+    
+    %table.table-striped.table-hover.ogma
+      %thead
+        %tr
+          %th=t('library.transaction.analysis.id_title')
+          %th.centre{:width=>"10%"}=t('library.transaction.analysis.repeats')
+      %tbody  
+        - repeated_books = Book.all.select(:isbn).map(&:isbn)
+        - b = repeated_books.inject(Hash.new(0)) {|h,i| h[i] += 1; h }
+        - repeat = b.to_a.each {|book, repeats|}
+        - c=repeat.count
+        - if c > 10
+          - repeattingcount=10
+        - else
+          - repeattingcount=c
+        - rcount=0
+        - repeat.each do |book, repeats| 
+          - if ("#{repeats}").to_i > 1 && rcount < repeattingcount
+            - rcount+=1
+            - stuid = "#{book}" 
+            %tr
+              %td
+                = Book.where("isbn = ?", stuid).map {|f| f.id}.first
+                \:
+                = Book.where("isbn = ?", stuid).map {|f| f.title}.first
+              %td.centre
+                %font{:color=>:red}="#{repeats}"
+    - if c > 10
+      %table{:style=>" margin-left: 25px; cellspacing: 0: cellpadding:0; width:90%"}
+        %tr
+          %td.left=link_to(t('library.transaction.analysis.view_more'), general_analysis_ext_library_librarytransactions_path(:reporting_year => params[:reporting_year], :jobtype=>'2'))
+   

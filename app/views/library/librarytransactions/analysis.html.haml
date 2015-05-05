@@ -1,0 +1,121 @@
+- model_class = Librarytransaction
+.page-header
+  %h1= (t 'library.transaction.analysis.main_title')+" "+params[:reporting_year].to_date.year.to_s
+
+  =link_to(t('back'),analysis_statistic_library_librarytransactions_path(:reporting_year => params[:reporting_year]))
+  |
+  =link_to(t('library.transaction.analysis.general_data'), general_analysis_library_librarytransactions_path(:reporting_year => params[:reporting_year]))
+  |
+  =link_to(t('library.transaction.analysis.book_data'),analysis_book_library_librarytransactions_path(:reporting_year => params[:reporting_year]))
+.row
+  .col-md-8
+    %h4= t 'library.transaction.analysis.first_title'
+    %table.table-striped.table-hover.ogma
+      %thead
+        %tr
+          %th=t('library.transaction.analysis.programme_month')
+          %th=t(:'date.abbr_month_names')[1]
+          %th=t(:'date.abbr_month_names')[2]
+          %th=t(:'date.abbr_month_names')[3]
+          %th=t(:'date.abbr_month_names')[4]
+          %th=t(:'date.abbr_month_names')[5]
+          %th=t(:'date.abbr_month_names')[6]
+          %th=t(:'date.abbr_month_names')[7]
+          %th=t(:'date.abbr_month_names')[8]
+          %th=t(:'date.abbr_month_names')[9]
+          %th=t(:'date.abbr_month_names')[10]
+          %th=t(:'date.abbr_month_names')[11]
+          %th=t(:'date.abbr_month_names')[12]
+          %th=t('library.transaction.analysis.total_year')
+        %tbody
+          - @progs.each do |prog|
+            - thisyearcourse=0
+            %tr
+              %td
+                - if prog.course_type=='Diploma'
+                  = prog.name
+                - else
+                  = prog.programme_list
+              - 1.upto(12) do |month_num|
+                %td.centre
+                  - thismonthcourse=0
+                  - if month_num < 10
+                    - monthnu="0"+month_num.to_s
+                  - else
+                    - monthnu=month_num.to_s
+                  - @librarytransactions.each do |courseid, libtrans_students|
+                    - if courseid==prog.id
+                      - libtrans_students.group_by{|y|y.checkoutdate.strftime('%m')}.each do |monthno, students|
+                        - thismonthcourse= students.count if monthno==monthnu
+                  = thismonthcourse
+                  - @thismonthcourse[month_num]+=thismonthcourse
+                - thisyearcourse+=thismonthcourse
+              %td.centre
+                %b=thisyearcourse
+                - @thisyearcourse << thisyearcourse
+          %tr
+            %td
+              %b=t('library.transaction.analysis.staff')
+            - thisyearstaff=0
+            - 1.upto(12) do |month_num|
+              %td.centre
+                - thismonthcourse2=0
+                - if month_num < 10
+                  - monthnu="0"+month_num.to_s
+                - else
+                  - monthnu=month_num.to_s
+                - @librarytransactions_staff.group_by{|y|y.checkoutdate.strftime('%m')}.each do |monthno, staffs|
+                  - thismonthcourse2=staffs.count if monthno==monthnu
+                = thismonthcourse2
+                - @thismonthcourse2[month_num]+=thismonthcourse2
+                - thisyearstaff+=thismonthcourse2
+            %td.centre
+              %b=thisyearstaff
+          %tr
+            %td
+              %b=t('library.transaction.analysis.total_month')
+            - @bb=[]
+            - 1.upto(12) do |month_num|
+              %td.centre
+                %b=@thismonthcourse[month_num]+@thismonthcourse2[month_num]
+                - @bb << [t(:'date.abbr_month_names')[month_num], @thismonthcourse[month_num]+@thismonthcourse2[month_num]]
+            %td.centre
+              %b=@thismonthcourse.sum+@thismonthcourse2.sum
+
+  .col-md-3
+    %h4 &nbsp;
+    %table.table-striped.table-hover.ogma
+      %thead
+        %tr
+          %th{:colspan => 2}=t 'library.transaction.analysis.borrower_breakdown_group'
+      %tbody
+        - 0.upto(@thisyearcourse.count-1).each do |ind|
+          %tr
+            %td=@progs[ind].name
+            %td{:width=>"20%", :align =>:center}=@thisyearcourse[ind]
+        %tr
+          %td=t('library.transaction.analysis.staff')
+          %td.centre=thisyearstaff
+        %tr
+          %td
+            %b=t('library.transaction.analysis.total')
+          %td.centre
+            %b=@thisyearcourse.sum+thisyearstaff
+               
+%BR
+.row    
+  .col-md-6
+    %h4.centre=t 'library.transaction.analysis.borrower_statistic_circulation'
+    /= column_chart [["uu", 20],["ff", 30],["mm",10],["tt",50]], :height => "190px", :library => {legend: { position: 'left', maxLines: @bb.count}}
+    = column_chart @bb, :height => "390px", :width=> "490px", :library => {legend: { position: 'left', maxLines: @bb.count},backgroundColor: "#FBFBFB"}
+  .col-md-6
+    - aa = []
+    - 0.upto(@thisyearcourse.count-1).each do |ind|
+      - aa << [@progs[ind].name, @thisyearcourse[ind]]
+    - aa << [t('library.transaction.analysis.staff'), thisyearstaff]
+    %h4.centre= t 'library.transaction.analysis.borrower_statistic_category'
+    = pie_chart aa, :height => "390px", :width=> "590px", :library => {legend: { position: 'left', maxLines: aa.count},backgroundColor: "#FBFBFB"}
+    
+%BR
+
+        
