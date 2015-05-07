@@ -188,20 +188,55 @@ module DropDown
            [ "None", 99 ]
   ]
   
+#   STAFF_COURSE_TYPE = [
+#        #  Displayed       stored in db
+#        [ "In-House",              5 ],
+#        [ "External Short Course",10 ],
+#        [ "Seminar",              15 ],
+#        [ "Certificate",          20 ],
+#        [ "Diploma/Others",       25 ]
+#   ]
+  
+  PROGRAMME_CLASSIFICATION = [
+       #  Displayed       stored in db
+       [ I18n.t("staff.training.course.training"), 1],
+       [ I18n.t("staff.training.course.confront"), 2],
+       [ I18n.t("staff.training.course.non_confront"), 3],
+       [ I18n.t("staff.training.course.self_training"), 4]
+  ]
+  
   STAFF_COURSE_TYPE = [
        #  Displayed       stored in db
-       [ "In-House",              5 ],
-       [ "External Short Course",10 ],
-       [ "Seminar",              15 ],
-       [ "Certificate",          20 ],
-       [ "Diploma/Others",       25 ]
+       [ I18n.t("staff.training.course.course"), 1],
+       [ I18n.t("staff.training.course.seminar"), 2],
+       [ I18n.t("staff.training.course.convention"), 3],
+       [ I18n.t("staff.training.course.workshop"), 4],
+       [ I18n.t("staff.training.course.forum"), 5],
+       [ I18n.t("staff.training.course.symposium"), 6],
+       [ I18n.t("staff.training.course.learning_session"), 7],
+       [ I18n.t("staff.training.course.monthly_assembly"), 8],
+       [ I18n.t("staff.training.course.special_talk"), 9],
+       [ I18n.t("staff.training.course.celebration"), 10],
+       [ I18n.t("staff.training.course.presentation"), 11],
+       [ I18n.t("staff.training.course.speaker"), 12],
+       [ I18n.t("staff.training.course.job_visit"), 13],
+       [ I18n.t("staff.training.course.on_job_training"), 14],
+       [ I18n.t("staff.training.course.attachment_training"), 15],
+       [ I18n.t("staff.training.course.simulation"), 16],
+       [ I18n.t("staff.training.course.others"), 17],
+       [ I18n.t("staff.training.course.epsa_portal"), 18],  
+       [ I18n.t("staff.training.course.e_learning_portal"), 19],  
+       [ I18n.t("staff.training.course.hr_knowledge_repo"), 20],  
+       [ I18n.t("staff.training.course.book_reading"), 21],  
+       [ I18n.t("staff.training.course.jurnal_reading"), 22],  
   ]
   
   DURATION_TYPE = [
        #  Displayed       stored in db
-       [ "Days",  1 ],
-       [ "Months",2 ],
-       [ "Years", 3 ]
+       [ I18n.t("time.hours"), 0],
+       [ I18n.t("time.days"),  1 ],
+       [ I18n.t("time.months"),2 ],
+       [ I18n.t("time.years"), 3 ],
   ]
 
   LOCATION_CATEGORIES = [
@@ -477,7 +512,7 @@ module DropDown
           [ "Antarabangsa", "9" ]
    ]
    
-   #ptcourse
+   #staff.training.course
     COURSE_TYPE = [
        #  Displayed       stored in db
        [ "In-House",              5 ],

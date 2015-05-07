@@ -65,7 +65,7 @@ class StaffTraining::PtcoursesController < ApplicationController
 
       # Never trust parameters from the scary internet, only allow the white list through.
       def ptcourse_params
-        params.require(:ptcourse).permit(:cost, :course_type, :description, :duration, :duration_type, :name, :provider_id, :approved)
+        params.require(:ptcourse).permit(:cost, :course_type, :description, :duration, :duration_type, :name, :provider_id, :approved, :training_classification)
       end
   
   
