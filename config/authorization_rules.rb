@@ -248,7 +248,7 @@ authorization do
  #Group Library   -------------------------------------------------------------------------------
 
   role :librarian do
-    has_permission_on :library_books, :to => [:manage, :extend, :return]
+    has_permission_on :library_books, :to => [:manage, :extend, :return, :import_excel]
     has_permission_on :library_librarytransactions, :to => [:manage, :extend, :extend2,:return,:return2, :check_availability, :form_try, :multiple_edit,:check_availability2,:multiple_update]#,:accession_list]
     has_permission_on :students, :to => [:read, :borang_maklumat_pelajar]
     #has_permission_on :booksearches, :to => :read
