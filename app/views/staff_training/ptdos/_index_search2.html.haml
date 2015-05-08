@@ -1,10 +1,10 @@
 = search_form_for @search, url: show_total_days_staff_training_ptdos_path(:id=>@current_user.userable_id),  class: "form-inline" do |f|
   %tr.search_row{style: "display: none;"}
-    /%td=f.text_field :ptschedule_course_name_cont, size: 2, class: 'form-control' 
+    %td=f.text_field :ptschedule_course_name_cont, size: 2, class: 'form-control' 
     %td &nbsp;
     %td
-      .col-md-6=f.text_field :ptschedule_start_gteq, size:2, class:  'date_picker_reverse form-control', placeholder: 'From'
-      .col-md-6=f.text_field :ptschedule_start_lteq, size:2, class:  'date_picker_reverse form-control', placeholder: 'To'
+      .col-md-6=f.text_field :ptschedule_start_gteq, size:2, class:  'date_picker form-control', placeholder: 'From'
+      .col-md-6=f.text_field :ptschedule_start_lteq, size:2, class:  'date_picker form-control', placeholder: 'To'
     /%td=f.text_field :ptschedule_location_cont, size: 2,  class:  'form-control'
     %td
       .input-group

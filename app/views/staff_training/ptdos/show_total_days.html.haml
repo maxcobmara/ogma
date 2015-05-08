@@ -10,7 +10,12 @@
     %li= link_to t('staff.training.application_status.training_request'), staff_training_ptdos_path
   %ul.nav.navbar-nav.navbar-right
     %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "index_search_bar"
-    %li= link_to content_tag(:li, fa_icon("print", text: (t 'actions.print'))), "#", class: 'bogus'
+    %li.dropdown
+      %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#"}
+        = fa_icon "print", text: (t 'actions.print')
+        %b.caret
+      %ul.dropdown-menu
+        %li= link_to  (fa_icon "file-pdf-o", text: (t 'document.generate_report')),  training_report_staff_training_ptdos_path(params.merge(format: 'pdf' ))
 
 .row
   .col-md-12
@@ -50,7 +55,10 @@
             - days_count = course_days / 6.0
             - bal_hours = course_days.to_f % 6.0
             - if bal_hours > 0 
-              = days_count.to_i.to_s+" "+I18n.t('time.days')+" "+bal_hours.to_i.to_s+" "+I18n.t('time.hours')
+              - if days_count.to_i > 0
+                = days_count.to_i.to_s+" "+I18n.t('time.days')+" "+bal_hours.to_i.to_s+" "+I18n.t('time.hours')
+              - else
+                = bal_hours.to_i.to_s+" "+I18n.t('time.hours')
             - else
               = days_count.to_i.to_s+" "+I18n.t('time.days')
       %tr

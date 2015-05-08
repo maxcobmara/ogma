@@ -71,6 +71,7 @@ Ogma::Application.routes.draw do
     resources :ptdos do
       collection do
         get :show_total_days
+        get :training_report
       end
     end
   end
