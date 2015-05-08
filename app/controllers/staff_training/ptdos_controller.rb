@@ -64,9 +64,21 @@ class StaffTraining::PtdosController < ApplicationController
   
   def show_total_days
     @search = Ptdo.search(params[:q])
-    @ptdos = @search.result.where('final_approve=? and staff_id=? and trainee_report is not null', true, 25) 
-    #@ptdos = Ptdo.where('final_approve=? and staff_id=? and trainee_report is not null', true, 25) 
+    @ptdos = @search.result.where('final_approve=? and staff_id=? and trainee_report is not null', true, params[:id]) 
   end
+  
+  def training_report
+    @search = Ptdo.search(params[:q])
+    @ptdos = @search.result
+     respond_to do |format|
+       format.pdf do
+         pdf = Document_reportPdf.new(@ptdos, view_context)
+         send_data pdf.render, filename: "training_report-{Date.today}",
+                               type: "application/pdf",
+                               disposition: "inline"
+       end
+     end
+   end
   
   private
       # Use callbacks to share common setup or constraints between actions.
