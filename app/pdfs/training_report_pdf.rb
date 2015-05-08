@@ -64,7 +64,7 @@ class Training_reportPdf < Prawn::Document
   def line_signatory_rows
     @startdates=[]
     @ptdos.each do |ptdo|
-      @startdates << ptdo.ptschedule.start
+      @startdates << ptdo.ptschedule.start.year
     end
     aa=""
     aa=@ptdos[0].ptschedule.start.year.to_s if @startdates.uniq.count==1
