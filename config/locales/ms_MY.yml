@@ -401,6 +401,7 @@ ms_MY:
         course_type: Jenis Aktiviti
         provider: Pengendali
         duration: Tempoh
+        duration_type: Jenis Tempoh
         description: Deskripsi
         costs: Harga
         approval: Kelulusan
@@ -442,7 +443,7 @@ ms_MY:
       application_status:
         title_apply: Permohonan Latihan
         title: Status Permohonan
-        training_request: Senarai Permintaan Latihan  
+        training_request: Senarai Permohonan Latihan  
         schedule: Jadual
         course_name: Nama Kursus
         staff_name: Nama Staf
@@ -473,6 +474,10 @@ ms_MY:
         rejected: Ditolak
         apply: Memohon
         edit_staff_training: Sunting Latihan Staf
+        viewsummary: Senarai Latihan Yang Dihadiri
+        total: Jumlah
+        note_hours_day: "Nota : 6 jam bersamaan 1 hari berkursus"
+        total_day_attended: Jumlah hari latihan yang dihadiri
         
     travel_request:
       title: Permohonan Perjalanan

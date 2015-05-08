@@ -63,7 +63,9 @@ class StaffTraining::PtdosController < ApplicationController
   end
   
   def show_total_days
-    @ptdos = Ptdo.find(:all, :conditions => ['final_approve=? and staff_id=? and trainee_report is not null',true,params[:id]]) 
+    @search = Ptdo.search(params[:q])
+    @ptdos = @search.result.where('final_approve=? and staff_id=? and trainee_report is not null', true, 25) 
+    #@ptdos = Ptdo.where('final_approve=? and staff_id=? and trainee_report is not null', true, 25) 
   end
   
   private

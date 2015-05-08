@@ -68,7 +68,11 @@ Ogma::Application.routes.draw do
     resources :ptbudgets
     resources :ptcourses
     resources :ptschedules
-    resources :ptdos
+    resources :ptdos do
+      collection do
+        get :show_total_days
+      end
+    end
   end
 
 

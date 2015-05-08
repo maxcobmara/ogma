@@ -1,0 +1,60 @@
+- model_class = Ptdo
+.page-header
+  %h1= t('staff.training.application_status.viewsummary')
+  /+" "+Date.today.year.to_s+" - "+@current_user.userable.name
+
+= render 'shared/flashes'
+
+.navbar.navbar-inverse{role: "navigation", style: "padding-right:40px;"}
+  %ul.nav.navbar-nav
+    %li= link_to t('staff.training.application_status.training_request'), staff_training_ptdos_path
+  %ul.nav.navbar-nav.navbar-right
+    %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "index_search_bar"
+    %li= link_to content_tag(:li, fa_icon("print", text: (t 'actions.print'))), "#", class: 'bogus'
+
+.row
+  .col-md-12
+    .alert.alert-warning
+      =t('staff.training.application_status.note_hours_day')
+  %table.table-striped.table-hover.ogma
+    %thead
+      %tr
+        /%th= sort_link(@search, :ptschedule_id, t('staff.training.application_status.schedule'))
+        /%th= sort_link(@search, :ptcourse_id, t('staff.training.application_status.course_name'))
+        /%th= sort_link(@search, :staff_id, t('staff.training.application_status.staff_name'))
+        /%th{style: "width:20%;"}=t ('staff.training.application_status.status')
+        %th= sort_link(@search, :ptcourse_id, t('staff.training.application_status.course_name'))
+        %th= sort_link(@search, :ptschedule_id, t('staff.training.schedule.start'))
+        %th= t 'staff.training.application_status.location'
+        %th= t('staff.training.course.training_classification')+" - "+t('staff.training.course.course_type')
+        %th= t 'staff.training.course.duration'
+        %th= t 'staff.training.course.duration_type'
+        %th= t 'staff.training.application_status.total' 
+      
+    %tbody
+      = render "index_search2"
+      - sum_days = 0
+      - sum_bal_hours=0
+      - @ptdos.sort_by{|x|[x.ptschedule.course.training_classification, x.ptschedule.course.course_type]}.each do |ptdo|
+        - @ptcourse = Ptcourse.find(ptdo.ptcourse_id)
+        /- @ptschedule = Ptschedule.find(ptdo.ptschedule_id)
+        %tr
+          %td= link_to ptdo.ptschedule.course.name, staff_training_ptdo_path(ptdo)
+          %td= ptdo.try(:ptschedule).try(:course).try(:start).try(:strftime, '%d-%m-%Y')
+          %td= ptdo.ptschedule.location
+          %td= ptdo.ptschedule.course.rendered_course_type
+          %td= ptdo.ptschedule.course.duration.to_i
+          %td= @ptcourse.rendered_course_duration
+          %td
+            - course_days=Ptdo.staff_course_days(@ptcourse) * 6
+            - days_count = course_days / 6.0
+            - bal_hours = course_days.to_f % 6.0
+            - if bal_hours > 0 
+              = days_count.to_i.to_s+" "+I18n.t('time.days')+" "+bal_hours.to_i.to_s+" "+I18n.t('time.hours')
+            - else
+              = days_count.to_i.to_s+" "+I18n.t('time.days')
+      %tr
+        %td{:colspan =>5, :align=>"right"}
+          %b= t 'staff.training.application_status.total_day_attended'
+        %td{:colspan=>2, :align=>"center"}
+          %b=Ptdo.staff_total_days(@ptdos.map(&:id))

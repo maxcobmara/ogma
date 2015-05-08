@@ -87,6 +87,40 @@ class Ptdo < ActiveRecord::Base
          staff.mykad_with_staff_name
        end
   end
+  
+  def self.staff_course_days(attended)
+      #attended = Ptcourse.find(ptcourseid)
+      if attended.duration_type == 0
+        total_days = (attended.duration / 6.0)   #force to avoid integer division - 6.0 or 6.to_f
+      elsif attended.duration_type == 1
+        total_days = attended.duration*1
+      elsif attended.duration_type == 2
+        total_days = attended.duration*30
+      elsif attended.duration_type == 3
+        total_days = attended.duration*365
+      end
+      total_days  #hours in decimal
+  end
+  
+  #used in Ptdosearches : Show & Ptdo : show_total_days
+  def self.staff_total_days(ptdoids_staff)
+    sum_total_days = 0
+    ptcourse_ids = Ptdo.where('id IN(?) AND final_approve=? AND trainee_report is not null', ptdoids_staff, true).map(&:ptcourse_id)  #valid attended courses
+    ptcourse_ids.each do |ptcourse_id|
+      attended = Ptcourse.find(ptcourse_id)
+      total_days=self.staff_course_days(attended)
+      sum_total_days+=total_days.to_f
+    end
+    days_count = sum_total_days * 6 / 6
+    bal_hours = sum_total_days * 6 % 6
+    if bal_hours > 0
+      total_days_instring=days_count.to_i.to_s+" "+I18n.t('time.days')+" "+bal_hours.to_i.to_s+" "+I18n.t('time.hours')
+    else
+      total_days_instring=days_count.to_i.to_s+" "+I18n.t('time.days')
+    end
+    total_days_instring
+  end
+  
 end
 
 # == Schema Information

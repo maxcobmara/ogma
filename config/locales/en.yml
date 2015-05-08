@@ -408,6 +408,7 @@ en:
         course_type: Activity Type
         provider: Provider
         duration: Duration
+        duration_type: Duration Type
         description: Description
         costs: Cost
         approval: Approval
@@ -480,7 +481,10 @@ en:
         rejected: Rejected
         apply: Apply
         edit_staff_training: Edit Staff Training
-        
+        viewsummary: Listing of Training Attended
+        total: Total
+        note_hours_day: "Note : 6 hours equal to 1 day of training"
+        total_day_attended: Total days of training attended
               
     travel_request:
       title: Travel Request
