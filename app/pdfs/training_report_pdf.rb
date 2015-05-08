@@ -36,7 +36,7 @@ class Training_reportPdf < Prawn::Document
     counter = counter || 0
     header = [[ 'Bil', 'Program Latihan', 'Bilangan Hari']]
     content_line =[]
-    classifications=DropDown::PROGRAMME_CLASSIFICATION
+    classifications=DropDown::PROGRAMME_CLASSIFICATION2
     ptdo_class=@ptdos.group_by{|x|x.ptschedule.course.training_classification}
     0.upto(classifications.count-1).each do |x|
       if classifications[x][1]==1

@@ -197,6 +197,14 @@ module DropDown
 #        [ "Diploma/Others",       25 ]
 #   ]
   
+  PROGRAMME_CLASSIFICATION2 = [
+       #  Displayed       stored in db
+       ["Latihan", 1],
+       ["Sesi Pembelajaran (Bersemuka)", 2],
+       ["Sesi Pembelajaran (Tidak Bersemuka)", 3],
+       ["Pembelajaran Kendiri", 4]
+  ]
+   
   PROGRAMME_CLASSIFICATION = [
        #  Displayed       stored in db
        [ I18n.t("staff.training.course.training"), 1],
