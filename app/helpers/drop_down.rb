@@ -204,6 +204,12 @@ module DropDown
        ["Sesi Pembelajaran (Tidak Bersemuka)", 3],
        ["Pembelajaran Kendiri", 4]
   ]
+  
+  TRAINING_LEVEL = [
+       #  Displayed       stored in db
+       [ I18n.t("staff.training.course.domestic"), 1],
+       [ I18n.t("staff.training.course.overseas"), 2]
+  ]
    
   PROGRAMME_CLASSIFICATION = [
        #  Displayed       stored in db

@@ -32,6 +32,7 @@
         %th= sort_link(@search, :ptschedule_id, t('staff.training.schedule.start'))
         %th= t 'staff.training.application_status.location'
         %th= t('staff.training.course.training_classification')+" - "+t('staff.training.course.course_type')
+        %th= t 'staff.training.course.level'
         %th= t 'staff.training.course.duration'
         %th= t 'staff.training.course.duration_type'
         %th= t 'staff.training.application_status.total' 
@@ -47,9 +48,10 @@
           %td= link_to ptdo.ptschedule.course.name, staff_training_ptdo_path(ptdo)
           %td= ptdo.try(:ptschedule).try(:course).try(:start).try(:strftime, '%d-%m-%Y')
           %td= ptdo.ptschedule.location
-          %td= ptdo.ptschedule.course.rendered_course_type
+          %td= course_type(ptdo.ptschedule.course)
+          %td= training_level(@ptcourse) if @ptcourse.training_classification==1
           %td= ptdo.ptschedule.course.duration.to_i
-          %td= @ptcourse.rendered_course_duration
+          %td= duration_type(@ptcourse)
           %td
             - course_days=Ptdo.staff_course_days(@ptcourse) * 6
             - days_count = course_days / 6.0

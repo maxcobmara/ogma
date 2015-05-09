@@ -18,6 +18,7 @@ ms_MY:
       stationery_use: Pengeluaran Keperluan Pejabat
       location_damage: Kerosakan di Lokasi
       location: Lokasi
+      ptcourse: Kursus Latihan
     attributes:
       student:
         name: Nama
@@ -76,7 +77,9 @@ ms_MY:
         issuedby: Dikeluarkan Oleh
         receivedby: Diterima Oleh
         issuedate: Tarikh Dikeluarkan
-        quantity: Kuantiti   
+        quantity: Kuantiti
+      ptcourse:
+        level: Peringkat
     errors:
         template:
           body: "Berikut adalah beberapa masalah:"
@@ -432,6 +435,9 @@ ms_MY:
         hr_knowledge_repo: "Penggunaan Pangkalan Repositori Ilmu Sumber Manusia"
         book_reading: "Pembacaan buku-buku ilmiah dalam Bahasa Malaysia dan Bahasa Inggeris (termasuk e-book)"
         jurnal_reading: "Pembacaan Jurnal ilmiah / Laporan Kajian dan lain-lain bahan ilmiah secara fizikal atau maya (virtual)"
+        level: Peringkat
+        domestic: Dalam Negeri
+        overseas: Luar Negara
       schedule:
         title_schedule: Jadual Latihan
         new: Penjadualan Baru

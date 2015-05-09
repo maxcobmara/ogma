@@ -8,7 +8,17 @@
     %label.col-sm-2.control-label= f.label t 'staff.training.course.training_classification', for: :name
     .col-md-3
       = f.select :training_classification, DropDown::PROGRAMME_CLASSIFICATION, {:include_blank => t('select')}, class: 'selectpicker'
-      
+  
+  .form-group.training_level
+    %label.col-sm-2.control-label=f.label t 'staff.training.course.level', for: :level
+    .col-md-3
+      /Peringkat
+      %label.radio-inline
+        =f.radio_button :level, 1 
+      =t('staff.training.course.domestic')
+      %label.radio-inline
+        =f.radio_button :level, 2
+      =t('staff.training.course.overseas')
   .form-group
     %label.col-sm-2.control-label=f.label t 'staff.training.course.course_type', for: :classification 
     .col-md-8
@@ -129,26 +139,31 @@
     $('#ptcourse_training_classification').change(function() {
       if($(this).val() == 1) {
         $('.training').show();
+        $('.training_level').show();
         $('.confront').hide();
         $('.non_confront').hide();
         $('.self_training').hide();
       }else if ($(this).val() == 2) {
         $('.training').hide();
+        $('.training_level').hide();
         $('.confront').show();
         $('.non_confront').hide();
         $('.self_training').hide();
       }else if ($(this).val() == 3) {
         $('.training').hide();
+        $('.training_level').hide();
         $('.confront').hide();
         $('.non_confront').show();
         $('.self_training').hide();
       }else if ($(this).val() == 4) {
         $('.training').hide();
+        $('.training_level').hide();
         $('.confront').hide();
         $('.non_confront').hide();
         $('.self_training').show();
       }else {
         $('.training').hide();
+        $('.training_level').hide();
         $('.confront').hide();
         $('.non_confront').hide();
         $('.self_training').hide();
@@ -157,26 +172,31 @@
     $('#ptcourse_training_classification').each(function() {
       if($(this).val() == 1) {
         $('.training').show();
+        $('.training_level').show();
         $('.confront').hide();
         $('.non_confront').hide();
         $('.self_training').hide();
       }else if ($(this).val() == 2) {
         $('.training').hide();
+        $('.training_level').hide();
         $('.confront').show();
         $('.non_confront').hide();
         $('.self_training').hide();
       }else if ($(this).val() == 3) {
         $('.training').hide();
+        $('.training_level').hide();
         $('.confront').hide();
         $('.non_confront').show();
         $('.self_training').hide();
       }else if ($(this).val() == 4) {
         $('.training').hide();
+        $('.training_level').hide();
         $('.confront').hide();
         $('.non_confront').hide();
         $('.self_training').show();
       }else {
         $('.training').hide();
+        $('.training_level').hide();
         $('.confront').hide();
         $('.non_confront').hide();
         $('.self_training').hide();

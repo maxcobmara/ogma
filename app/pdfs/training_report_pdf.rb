@@ -1,7 +1,9 @@
 class Training_reportPdf < Prawn::Document
-  def initialize(ptdos, current_user, view)
+  def initialize(ptdos, domestic, overseas, current_user, view)
     super({top_margin: 50, page_size: 'A4', page_layout: :landscape })
     @ptdos = ptdos
+    @ptdos_domestic = domestic
+    @ptdos_overseas = overseas
     @current_user = current_user
     @view = view
     font "Times-Roman"
@@ -41,8 +43,9 @@ class Training_reportPdf < Prawn::Document
     0.upto(classifications.count-1).each do |x|
       if classifications[x][1]==1
         content_line << [{content: "#{counter += 1}", rowspan: 3}, "#{classifications[x][0]}",""] 
-        content_line << ["a) Dalam Negeri", "#{Ptdo.staff_total_days(ptdo_class[1].map(&:id))}"]
-        content_line << ["b) Luar Negara", ""]
+        #content_line << [{content: "#{counter += 1}", rowspan: 3}, "#{classifications[x][0]}","#{Ptdo.staff_total_days(ptdo_class[1].map(&:id))}"] 
+        content_line << ["a) Dalam Negeri", "#{Ptdo.staff_total_days(@ptdos_domestic.map(&:id))}"]
+        content_line << ["b) Luar Negara", "#{Ptdo.staff_total_days(@ptdos_overseas.map(&:id))}"]
       else
         content_line << ["#{counter+=1}", "#{classifications[x][0]}","#{Ptdo.staff_total_days(ptdo_class[x+1].map(&:id)) unless (ptdo_class[x+1]).nil? }"]  #name
       end
