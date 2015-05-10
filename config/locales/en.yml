@@ -37,6 +37,7 @@ en:
       location_damage: Location Damages
       location: Location
       ptcourse: Course
+      ptbudget: Training Budget
     attributes:
       student:
         name: Name
@@ -97,6 +98,9 @@ en:
         quantity: Quantity  
       ptcourse:
         level: Level
+      ptbudget:
+        fiscalstart: Fiscal year
+        budget: Budget
     errors:
         template:
           body: "There were problems with the following fields:"

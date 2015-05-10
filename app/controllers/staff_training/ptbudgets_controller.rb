@@ -6,7 +6,7 @@ class StaffTraining::PtbudgetsController < ApplicationController
   # GET /ptbudgets.xml
   def index
     @search = Ptbudget.search(params[:q])
-    @ptbudgets = @search.result
+    @ptbudgets = @search.result.order(fiscalstart: :desc)
     @budgets = @ptbudgets
     @ptbudgets = @ptbudgets.page(params[:page]||1)
   end
@@ -26,7 +26,8 @@ class StaffTraining::PtbudgetsController < ApplicationController
   # GET /ptbudgets/new.xml
   def new
     @ptbudget = Ptbudget.new
-    @ptbudget.fiscalstart = Ptbudget.last.fiscalstart + 1.year rescue Date.today
+    @newtype = params[:newtype]
+    #@ptbudget.fiscalstart = Ptbudget.last.fiscalstart + 1.year rescue Date.today
 
     respond_to do |format|
       format.html # new.html.erb
@@ -46,7 +47,7 @@ class StaffTraining::PtbudgetsController < ApplicationController
 
     respond_to do |format|
       if @ptbudget.save
-        flash[:notice] = 'Budget successfully created.'
+        flash[:notice] = t('ptbudgets.budget')+t('actions.created')
         format.html { redirect_to staff_training_ptbudgets_path(@ptbudget)}
         format.json { render action: 'show', status: :created, location: @ptbudget }
       else
@@ -63,7 +64,7 @@ class StaffTraining::PtbudgetsController < ApplicationController
 
     respond_to do |format|
       if @ptbudget.update_attributes(ptbudget_params)
-        flash[:notice] = 'Your training budget was successfully updated.'
+        flash[:notice] =t('ptbudgets.budget')+t('updated')
         format.html { redirect_to(staff_training_ptbudgets_path(@ptbudget)) }
         format.xml  { head :ok }
       else

@@ -5,7 +5,7 @@
 
 .navbar.navbar-inverse{role: "navigation", style: "padding-right:40px;"}
   %ul.nav.navbar-nav
-    %li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'actions.new'))), new_staff_training_ptbudget_path
+    %li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'actions.new'))), new_staff_training_ptbudget_path(:newtype =>"1")
   %ul.nav.navbar-nav.navbar-right
     %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "toga"
     %li= link_to content_tag(:li, fa_icon("print", text: (t 'actions.print'))), "#", class: 'bogus'
@@ -17,11 +17,68 @@
       %th= t('staff.training.budget.budget')
       %th= t('staff.training.budget.used')
       %th= t('staff.training.budget.balance')
-    - @ptbudgets.each do |budget|
-      %tbody
-        %tr
-          %td= link_to fiscal_range(budget), staff_training_ptbudget_path(budget)
-          %td= ringgols(budget.budget)
-          %td= ringgols(budget.used_budget)
-          %td= ringgols(budget.budget_balance)
-          
+      %th= t('staff.training.budget.balance')+" (%)"
+    /- @ptbudgets.each do |budget|
+    /  %tbody
+    /    %tr
+    /      %td= link_to fiscal_range(budget), staff_training_ptbudget_path(budget)
+    /      %td= ringgols(budget.budget)
+    /      %td= ringgols(budget.used_budget)
+    /      %td= ringgols(budget.budget_balance)
+
+    %tbody    
+      - @ptbudgets.group_by{|x|x.fiscal_end}.each do |fiscal_ending, budgets|
+        - if budgets.count>1
+          - main_budget_id=0
+          - budgets.each do |ptbudget|
+            - if ptbudget.fiscalstart.month==ptbudget.budget_start.month && ptbudget.fiscalstart.day==ptbudget.budget_start.day 
+              - main_budget_id=ptbudget.id 
+              %tr
+                %td
+                  = link_to (l(ptbudget.fiscalstart).to_s+" "+t('to')+" "+l(ptbudget.fiscal_end)), staff_training_ptbudget_path(ptbudget)
+                  - if ptbudget.fiscal_end > Date.today && ptbudget.fiscal_end <= Date.today.end_of_year
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    = link_to (t 'ptbudget.additional_budget'), :action =>'new', :newtype=> "2" 
+                    /--aaa--
+                  &nbsp;
+                %td{:style =>"text-align: right;"}=h ringgols(ptbudget.budget)
+                %td{:style =>"text-align: right;", :rowspan=>"#{budgets.count}"}=h ringgols(ptbudget.used_budget)
+                %td{:style =>"text-align: right;"}=h ringgols(ptbudget.budget_balance) 
+                %td{:style =>"text-align: right;"}=h number_with_precision((ptbudget.budget_balance.to_f / ptbudget.budget.to_f) *  100, :precision => 2)
+              - @ptbudgets_multiple=Ptbudget.where('id IN(?) and id!=?', budgets.map(&:id), main_budget_id).order(fiscalstart: :asc)
+              - @ptbudgets_multiple.each do |ptbudget|
+                %tr
+                  %td{:style =>"color: green;"}
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    = link_to (l(ptbudget.fiscalstart).to_s+" "+t('to')+" "+l(ptbudget.fiscal_end)), staff_training_ptbudget_path(ptbudget)
+                  %td{:style =>"text-align: right; color: green;"}
+                    &nbsp;&nbsp;&nbsp;
+                    \+ 
+                    =h ringgols(ptbudget.budget) 
+                  %td{:style =>"text-align: right;"}=h ringgols(ptbudget.budget_balance)
+                  %td{:style =>"text-align: right;"}=h number_with_precision((ptbudget.budget_balance.to_f / ptbudget.acc_budget.to_f) *  100, :precision => 2)
+
+              - heading_budget=Ptbudget.find(main_budget_id)
+              - all_budget_recs=Ptbudget.where('fiscalstart >=? and fiscalstart <=?', heading_budget.fiscalstart, heading_budget.fiscalstart+1.year-1.day)
+              - all_budget=all_budget_recs.map(&:budget).sum 
+              - latest_balance=all_budget-all_budget_recs[0].used_budget
+              %tr
+                %td &nbsp;
+                %td{:style =>"text-align: right; text-decoration: underline; font-weight: bold;"}=h ringgols(all_budget).to_s+"wa"
+                %td{:style =>"text-align: right; text-decoration: underline; font-weight: bold;"}=h ringgols(all_budget_recs[0].used_budget)
+                %td{:style =>"text-align: right; text-decoration: underline; font-weight: bold;"}=h ringgols(latest_balance)
+                %td{:style =>"text-align: right; text-decoration: underline; font-weight: bold;"}=h number_with_precision((latest_balance.to_f / all_budget.to_f) *  100, :precision => 2)
+                %td{:colspan=>3}
+
+        - else
+          - ptbudget=budgets[0]
+          %tr
+            %td
+              = link_to (l(ptbudget.fiscalstart).to_s+" "+t('to')+" "+l(ptbudget.fiscal_end)), staff_training_ptbudget_path(ptbudget)
+              - if ptbudget.fiscal_end > Date.today && ptbudget.fiscal_end <= Date.today.end_of_year 
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<%= link_to image_tag("money_add.png", :border => 0, :title => (t 'ptbudget.additional_budget')) + " "+(t 'ptbudget.additional_budget'), :action =>'new', :newtype=> "2" 
+                /--ccc--
+            %td{:style =>"text-align: right;"}=h ringgols(ptbudget.budget) 
+            %td{:style =>"text-align: right;"}=h ringgols(ptbudget.used_budget)
+            %td{:style =>"text-align: right;"}=h ringgols(ptbudget.budget_balance)
+            %td{:style =>"text-align: right;"}=h number_with_precision((ptbudget.budget_balance.to_f / ptbudget.budget.to_f) *  100, :precision => 2)

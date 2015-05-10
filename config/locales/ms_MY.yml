@@ -19,6 +19,7 @@ ms_MY:
       location_damage: Kerosakan di Lokasi
       location: Lokasi
       ptcourse: Kursus Latihan
+      ptbudget: Bajet
     attributes:
       student:
         name: Nama
@@ -80,6 +81,9 @@ ms_MY:
         quantity: Kuantiti
       ptcourse:
         level: Peringkat
+      ptbudget: 
+        fiscalstart: Mula Tahun Fiskal
+        budget: Jumlah
     errors:
         template:
           body: "Berikut adalah beberapa masalah:"
