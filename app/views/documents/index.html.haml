@@ -12,8 +12,7 @@
         = fa_icon "print", text: (t 'actions.print')
         %b.caret
       %ul.dropdown-menu
-        %li
-          %a{:href => document_report_documents_path(:format => 'pdf')}=t('document.generate_report')
+        %li= link_to  (fa_icon "file-pdf-o", text: (t 'document.generate_report')),  document_report_documents_path(params.merge(format: 'pdf' ))
 
 .row
   %table.table-striped.table-hover.ogma

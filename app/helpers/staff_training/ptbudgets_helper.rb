@@ -16,4 +16,12 @@ module  StaffTraining::PtbudgetsHelper
     (DropDown::DURATION_TYPE.find_all{|disp, value| value == course.duration_type}).map {|disp, value| disp}[0]
   end
   
+  def training_level(course)
+    (DropDown::TRAINING_LEVEL.find_all{|disp, value| value == course.level}).map {|disp, value| disp}[0]
+  end
+  
+  def training_classification(course)
+    (DropDown::PROGRAMME_CLASSIFICATION.find_all{|disp, value| value == course.training_classification}).map {|disp, value| disp}[0]
+  end
+  
 end

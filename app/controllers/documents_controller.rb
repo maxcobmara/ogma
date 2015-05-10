@@ -59,8 +59,8 @@ class DocumentsController < ApplicationController
    end
 
    def document_report
-     @search = Document.search(params[:q])
-     @documents = @search.result
+    @search = Document.search(params[:q])
+    @documents = @search.result
      respond_to do |format|
        format.pdf do
          pdf = Document_reportPdf.new(@documents, view_context)

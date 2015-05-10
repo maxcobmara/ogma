@@ -10,6 +10,13 @@
       %dt= t 'staff.training.course.name', :default => model_class.human_attribute_name(:budget) + ":"
       %dd= @ptcourse.name
       
+      %dt= t 'staff.training.course.training_classification', :default => model_class.human_attribute_name(:training_classification) + ":"
+      %dd= training_classification(@ptcourse)
+
+      - if @ptcourse.training_classification==1
+        %dt= t 'staff.training.course.level', :default => model_class.human_attribute_name(:level) + ":"
+        %dd= training_level(@ptcourse)
+      
       %dt= t 'staff.training.course.course_type', :default => model_class.human_attribute_name(:course_type) + ":"
       %dd= course_type(@ptcourse)
 
@@ -25,7 +32,7 @@
       %dt= t 'staff.training.course.description', :default => model_class.human_attribute_name(:description) + ":"
       %dd= @ptcourse.description
       
-      %dt= t 'staff.training.course.cost', :default => model_class.human_attribute_name(:cost) + ":"
+      %dt= t 'staff.training.course.costs', :default => model_class.human_attribute_name(:cost) + ":"
       %dd= ringgols(@ptcourse.cost)
       
       %dt= t 'staff.training.course.status', :default => model_class.human_attribute_name(:status) + ":"

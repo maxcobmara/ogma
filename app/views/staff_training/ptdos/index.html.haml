@@ -6,6 +6,7 @@
 .navbar.navbar-inverse{role: "navigation", style: "padding-right:40px;"}
   %ul.nav.navbar-nav
     %li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'actions.new'))), "#", class: 'bogus'
+    %li= link_to  t('staff.training.application_status.viewsummary'), show_total_days_staff_training_ptdos_path(:id=>@current_user.userable_id)
   %ul.nav.navbar-nav.navbar-right
     %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "index_search_bar"
     %li= link_to content_tag(:li, fa_icon("print", text: (t 'actions.print'))), "#", class: 'bogus'
@@ -26,6 +27,3 @@
         %td= ptdo.try(:ptschedule).try(:course).try(:name)
         %td= ptdo.applicant_details
         %td= ptdo.apply_dept_status
-      
-        
-    
