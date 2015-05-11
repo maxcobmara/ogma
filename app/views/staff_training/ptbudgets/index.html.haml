@@ -38,7 +38,7 @@
                   = link_to (l(ptbudget.fiscalstart).to_s+" "+t('to')+" "+l(ptbudget.fiscal_end)), staff_training_ptbudget_path(ptbudget)
                   - if ptbudget.fiscal_end > Date.today && ptbudget.fiscal_end <= Date.today.end_of_year
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    = link_to (t 'ptbudget.additional_budget'), :action =>'new', :newtype=> "2" 
+                    = link_to t('staff.training.budget.add_budget'), :action =>'new', :newtype=> "2" 
                     /--aaa--
                   &nbsp;
                 %td{:style =>"text-align: right;"}=h ringgols(ptbudget.budget)
@@ -64,7 +64,7 @@
               - latest_balance=all_budget-all_budget_recs[0].used_budget
               %tr
                 %td &nbsp;
-                %td{:style =>"text-align: right; text-decoration: underline; font-weight: bold;"}=h ringgols(all_budget).to_s+"wa"
+                %td{:style =>"text-align: right; text-decoration: underline; font-weight: bold;"}=h ringgols(all_budget)
                 %td{:style =>"text-align: right; text-decoration: underline; font-weight: bold;"}=h ringgols(all_budget_recs[0].used_budget)
                 %td{:style =>"text-align: right; text-decoration: underline; font-weight: bold;"}=h ringgols(latest_balance)
                 %td{:style =>"text-align: right; text-decoration: underline; font-weight: bold;"}=h number_with_precision((latest_balance.to_f / all_budget.to_f) *  100, :precision => 2)

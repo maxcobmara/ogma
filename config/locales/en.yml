@@ -407,6 +407,8 @@ en:
         used: Used
         balance: Balance
         new: New Training Budget
+        add_budget: "+ Additional Budget"
+        additional_budget: " (Additional)"
       course:
         title_course: Training Courses
         new: New Staff Training Course

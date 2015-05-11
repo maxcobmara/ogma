@@ -398,7 +398,9 @@ ms_MY:
         budget: Jumlah
         used: Digunakan
         balance: Baki
-        new: Belanjawan Latihan Staff Baru
+        new: Belanjawan Latihan Kakitangan Baru
+        add_budget: "+ Belanjawan Tambahan"
+        additional_budget: " (Tambahan)"
         
       course:
         title_course: Kursus Latihan

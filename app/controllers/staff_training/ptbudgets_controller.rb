@@ -43,8 +43,16 @@ class StaffTraining::PtbudgetsController < ApplicationController
   # POST /ptbudgets
   # POST /ptbudgets.xml
   def create
+    @newtype = params[:newtype]
     @ptbudget = Ptbudget.new(ptbudget_params)
-
+    if @newtype.nil?
+      ab=@ptbudget.fiscalstart
+      if ab.month==@ptbudget.budget_start.month && ab.day==@ptbudget.budget_start.day
+        @newtype="1"
+      else
+        @newtype="2"
+      end
+    end
     respond_to do |format|
       if @ptbudget.save
         flash[:notice] = t('ptbudgets.budget')+t('actions.created')
