@@ -12,20 +12,19 @@ class Kewpa16Pdf < Prawn::Document
     table1
     data
     table2
+    #for test #move_down 10
+    if y < 180
+      start_new_page
+    end
     data2
-   
   end
-  
   
   def table1
     data = [["Kementerian/Jabatan", ": Kementerian Kesihatan Malaysia - Kolej Sains Kesihatan Bersekutu Johor"],
-             ["Alamat", ": Persiaran Kempas, Johor Baru"]]
-             
-          table(data, :column_widths => [120, ], :cell_style => { :size => 9})  do
-            row(0).borders = [ ]
-            row(1).borders = [ ]
-          end
-    
+             ["Alamat", ": Persiaran Kempas, Johor Baru"]]    
+    table(data, :column_widths => [120, ], :cell_style => { :size => 9})  do
+      row(0..1).borders = [ ]
+    end
     data1 = [["No Siri Pendaftaran Aset (KEW.PA-2/PA-3)",": #{@disposals.try(:asset).try(:assetcode)}","",""],
              ["No. Kodifikasi Nasional",":","Jumlah Jarak Perjalanan(km)/ Tempoh Penggunaan(jam)", ":#{@disposals.mileage} #{@disposals.running_hours}"],
              ["Jenis, Jenama dan Model", ":#{@disposals.try(:asset).try(:typename)} #{@disposals.try(:asset).try(:name)} #{@disposals.try(:asset).try(:modelname)}","Tahap Penyampaian Perkhidmatan(%)",":"],
@@ -36,18 +35,11 @@ class Kewpa16Pdf < Prawn::Document
              ["Harga Perolehan Asal",@view.currency(@disposals.asset.purchaseprice.to_f),"Anggaran Tahan Selepas Dibaiki ",":#{@disposals.est_time_next_fail} (bulan)"]]
              
     table(data1, :column_widths => [120, 120, 150, 80], :cell_style => { :size => 9})  do
-      row(0).borders = [ ]
-      row(1).borders = [ ]
-      row(2).borders = [ ]
-      row(3).borders = [ ]
-      row(4).borders = [ ]
-      row(5).borders = [ ]
-      row(6).borders = [ ]
-      row(7).borders = [ ]
-      
+      row(0..7).borders = [ ]  
     end
     move_down 10
   end
+  
   def data
     text "LAPORAN PEMERIKSAAN", :align => :left, :size => 10, :style => :bold
     move_down 10
@@ -72,50 +64,31 @@ class Kewpa16Pdf < Prawn::Document
            ["Tarikh :","", "Tarikh :"],
            ["Cop :","","Cop :"]]
            
-           table(data, :column_widths => [160, 60, 160], :cell_style => { :size => 9})  do
-             row(0).borders = [ ]
-             row(0).height = 18
-             row(1).borders = [ ]
+    table(data, :column_widths => [160, 60, 160], :cell_style => { :size => 9})  do
+             row(0..5).height = 18
+             row(0..5).borders = [ ]
              row(1).align = :center
-             row(1).height = 18
-             row(2).borders = [ ]
-             row(2).height = 18
-             row(3).borders = [ ]
-             row(3).height = 18
-             row(4).borders = [ ]
-             row(4).height = 18
-             row(5).borders = [ ]
-             row(5).height = 18
-             
-           end
-           move_down 10
-         end
+    end
+    move_down 10
+  end
       
-      def data2
-        pad_top(20) {text "Ruangan ini hendaklah diisi jika PEP melebihi tempoh satu (1) tahun." , :size => 10}
-        move_down 10
-        text "Aset telah dibuat penilaian semula dengan nilai semasa RM #{'.'*40}", :align => :left, :size => 10 
-        move_down 10
+  def data2
+    pad_top(20) {text "Ruangan ini hendaklah diisi jika PEP melebihi tempoh satu (1) tahun." , :size => 10}
+    move_down 10
+    text "Aset telah dibuat penilaian semula dengan nilai semasa RM #{'.'*40}", :align => :left, :size => 10 
+    move_down 10
         
-        data = [["#{'.'*60}", ""],
+    data = [["#{'.'*60}", ""],
               ["(Tandatangan)",""],
               ["Nama :",""],
               ["Jawatan :",""],
               ["Tarikh :",""]]
-              
-              table(data, :column_widths => [160,160], :cell_style => { :size => 9})  do
-                row(0).borders = [ ]
-                row(0).height = 18
-                row(1).borders = [ ]
-                row(1).align = :center
-                row(1).height = 18
-                row(2).borders = [ ]
-                row(2).height = 18
-                row(3).borders = [ ]
-                row(3).height = 18
-                row(4).borders = [ ]
-                row(4).height = 18
-              end
-            end
+ 
+    table(data, :column_widths => [160,160], :cell_style => { :size => 9})  do
+       row(0..4).borders = [ ]
+       row(0..4).height = 18
+       row(1).align = :center
+    end
+  end
                
 end
