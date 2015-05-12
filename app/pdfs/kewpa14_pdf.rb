@@ -1,6 +1,6 @@
 class Kewpa14Pdf < Prawn::Document
   def initialize(asset, view)
-    super({top_margin: 50, page_size: 'A4', page_layout: :portrait })
+    super({top_margin: 50, page_size: 'A4', page_layout: :landscape })
     @asset = asset
     @view = view
     font "Times-Roman"
@@ -20,7 +20,7 @@ class Kewpa14Pdf < Prawn::Document
   
 
   def description
-   table(penem , :column_widths => [60,130, 90, 90, 50, 100 ], :cell_style => { :size => 8}) do
+   table(penem , :column_widths => [60,250, 110, 110, 70, 120 ], :cell_style => { :size => 8}) do
      row(0).font_style = :bold
      row(0).align = :center
      row(0).background_color = 'FFE34D'

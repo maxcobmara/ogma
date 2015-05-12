@@ -176,7 +176,7 @@ end
   end
 
   def kewpa14
-    @asset = Asset.find(params[:id])
+    @asset = Asset.find(10) #.find(params[:id])
     respond_to do |format|
       format.pdf do
         pdf = Kewpa14Pdf.new(@asset, view_context)
