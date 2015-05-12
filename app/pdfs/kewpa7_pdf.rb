@@ -10,7 +10,15 @@ class Kewpa7Pdf < Prawn::Document
     move_down 20
     text "SENARAI ASET ALIH KERAJAAN", :align => :center, :size => 14, :style => :bold
     description
+    heading
     asset_list
+    #move_down 500
+    if y < 360
+      start_new_page
+      heading
+    end
+    asset_last
+    blank_rows if @asset_placements.count < 14 #4
     signature_block
     row_only_block
     note_block
@@ -22,40 +30,69 @@ class Kewpa7Pdf < Prawn::Document
     table(data, :width => 250, :cell_style => {:border_color => "FFFFFF"})
   end
   
-  def asset_list
+  def heading
     move_down 5
-    
-    table line_item_rows do
+    heading_row = [[ 'Bil', 'Keterangan Aset', "", 'Kuantiti']]
+    table(heading_row, :column_widths => [30, 130, 250], :cell_style => { :size => 10, :height => 20}) do
       row(0).font_style = :bold
       row(0).background_color = 'FFE34D'
-      columns(0).width = 30
       columns(1).borders = [:top, :left, :bottom]
-      columns(1).width = 140
+      columns(2).borders = [:top, :right, :bottom]
+      columns(3).align = :center
+      self.header = true
+      self.width = 525
+      header = true
+    end
+  end
+
+  def asset_list
+    table(line_item_rows, :column_widths => [30, 130, 250], :cell_style => { :size => 10, :height => 20})  do
+      columns(1).borders = [:top, :left, :bottom]
       columns(2).borders = [:top, :right, :bottom]
       columns(3).align = :center
       self.row_colors = ["FEFEFE", "FFFFFF"]
-      self.header = true
-      self.cell_style = { size: 10, height:20 }
       self.width = 525
-      header = true
-      
     end
   end
   
   def line_item_rows
     counter = counter || 0
-    header = [[ 'Bil', 'Keterangan Aset', "", 'Kuantiti']]
-    a= 
-       @asset_placements.map do |asset_placement|
-      ["#{counter += 1}", "#{asset_placement.asset.assetcode}", "#{asset_placement.asset.typename} #{asset_placement.asset.name} #{asset_placement.asset.modelname}","#{asset_placement.asset.assettype==1 ? 1 : asset_placement.quantity}"] 
-      end
+    a=[]
+    @asset_placements.each do |asset_placement|
+      a << ["#{counter += 1}", "#{asset_placement.asset.assetcode}", "#{asset_placement.asset.typename} #{asset_placement.asset.name} #{asset_placement.asset.modelname}","#{asset_placement.asset.assettype==1 ? 1 : asset_placement.quantity}"] if counter < @asset_placements.count-1
+    end  
+    a
+  end
+  
+  def asset_last
+    ccount=@asset_placements.count
+    asset_placement=@asset_placements[ccount-1]
+    asset_last_row =[["#{ccount}", "#{asset_placement.asset.assetcode}", "#{asset_placement.asset.typename} #{asset_placement.asset.name} #{asset_placement.asset.modelname}","#{asset_placement.asset.assettype==1 ? 1 : asset_placement.quantity}"]]
+    
+    table(asset_last_row, :column_widths => [30, 130, 250], :cell_style => { :size => 10, :height => 20}) do
+      columns(1).borders = [:top, :left, :bottom]
+      columns(2).borders = [:top, :right, :bottom]
+      columns(3).align = :center
+      self.width = 525
+    end
+  end
+
+  def blank_rows
+    table(b_rows, :column_widths => [30, 130, 250], :cell_style => { :size => 10, :height => 20}) do
+      columns(1).borders = [:top, :left, :bottom]
+      columns(2).borders = [:top, :right, :bottom]
+      columns(3).align = :center
+      self.row_colors = ["FEFEFE", "FFFFFF"]
+      self.width = 525
+    end
+  end
+  
+  def b_rows
     b=[]
     0.upto(14-@asset_placements.count-1) do |count|
       b+= [ ["","","",""]]
     end
-  
-    header+a+b
-      
+    b
   end
   
   def signature_block
