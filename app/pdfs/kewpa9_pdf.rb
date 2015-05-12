@@ -10,10 +10,14 @@ class Kewpa9Pdf < Prawn::Document
     move_down 20
     text "BORANG ADUAN KEROSAKAN ASET ALIH KERAJAAN", :align => :center, :size => 14, :style => :bold
     move_down 20
-    text "Bahagian 1", :align => :left, :size => 14
+    text "Bahagian 1", :align => :left, :size => 12
     table1
-    data2
-   
+    #move_down 500
+    if y < 260
+      start_new_page
+    end
+    table2
+    signatory
   end
   
   def table1
@@ -24,43 +28,38 @@ class Kewpa9Pdf < Prawn::Document
              ["5. Pengguna Terakhir", ": #{@defective.reporter.try(:name)}  #{@defective.reporter.try(:position_old)}"],
              ["6. Tarikh Kerosakan", ": #{@defective.created_at.try(:strftime, "%d/%m/%y")}"],
              ["7. Perihal Kerosakan", ":"],
-             ["#{@defective.description}",""],
-             ["8. Syor Pegawai Aset", ":"],
+             ["#{@defective.description}",""]]
+             
+             table(data1, :column_widths => [180, 340]) do
+               row(0..7).borders = [ ]
+               row(7).align = :center
+             end
+  end
+  
+  def table2
+    data1 = [["8. Syor Pegawai Aset", ":"],
              ["#{@defective.process_type}",""],
              ["#{@defective.recommendation}",""]]
              
              table(data1, :column_widths => [180, 340]) do
-               
-               row(0).borders = [ ]
-               row(1).borders = [ ]
-               row(2).borders = [ ]
-               row(3).borders = [ ]
-               row(4).borders = [ ]
-               row(5).borders = [ ]
-               row(6).borders = [ ]
-               row(7).borders = [ ]
-               row(7).align = :center
-               row(8).borders = [ ]
-               row(9).borders = [ ]
-               row(9).align = :center
-               row(10).borders = [ ]
-               row(10).align = :center
+               row(0..2).borders = [ ]
+               row(1..2).align = :center
              end
              move_down 20
-end
+  end
 
-  def data2
+  def signatory
      
-      text "Nama : #{@defective.processor.try(:name)}", :align => :left, :size => 14
-      text "Jawatan : #{@defective.processor.try(:position).try(:name)}", :align => :left, :size => 14
-      text "Tarikh : #{@defective.processed_on.try(:strftime, "%d/%m/%y")}", :align => :left, :size => 14
+      text "Nama : #{@defective.processor.try(:name)}", :align => :left, :size => 12
+      text "Jawatan : #{@defective.processor.try(:position).try(:name)}", :align => :left, :size => 12
+      text "Tarikh : #{@defective.processed_on.try(:strftime, "%d/%m/%y")}", :align => :left, :size => 12
       move_down 20
-      text "Bahagian II (Keputusan Ketua Jabatan)", :align => :left, :size => 14
-      text "- #{@defective.decision}", :align => :left, :size => 14
+      text "Bahagian II (Keputusan Ketua Jabatan)", :align => :left, :size => 12
+      text "- #{@defective.decision}", :align => :left, :size => 12
       move_down 40
-      text "Signature : ", :align => :left, :size => 14
-      text "Nama : #{@lead.try(:staff).try(:name)}", :align => :left, :size => 14
-      text "Jawatan : #{@lead.name}", :align => :left, :size => 14
-      text "Tarikh :", :align => :left, :size => 14
+      text "Tandatangan : ", :align => :left, :size => 12
+      text "Nama : #{@lead.try(:staff).try(:name)}", :align => :left, :size => 12
+      text "Jawatan : #{@lead.name}", :align => :left, :size => 12
+      text "Tarikh :", :align => :left, :size => 12
   end
 end
