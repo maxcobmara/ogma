@@ -100,7 +100,7 @@ class Asset::AssetLossesController < ApplicationController
   def kewpa31
     @lead = Position.find(1)
    @document_id = params[:id]
-   @asset_losses = AssetLoss.find(:all, :conditions=>['document_id=?', @document_id], :order => 'created_at DESC') 
+   @asset_losses = AssetLoss.where('document_id=?', @document_id).order(created_at: :desc) 
     respond_to do |format|
       format.pdf do
         pdf = Kewpa31Pdf.new(@asset_losses, view_context, @lead)
