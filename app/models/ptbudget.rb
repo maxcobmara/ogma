@@ -44,14 +44,16 @@ class Ptbudget < ActiveRecord::Base
   end
   
   def next_budget_date
-    last_fiscalstart=Ptbudget.all.order(fiscalstart: :asc).last.fiscalstart
-    last_fiscalend=Ptbudget.all.order(fiscalstart: :asc).last.fiscal_end           #for all MAIN records, fiscal_end always same month & day
-    if last_fiscalstart.month==budget_start.month && last_fiscalstart.day==budget_start.day 
-      next_date=last_fiscalstart+1.year
-    else
-      next_date=Date.new(last_fiscalend.year, budget_start.month, budget_start.day)
+    #Ptbudget.last.fiscalstart + 1.year
+    budget_all=Ptbudget.all.order(fiscalstart: :desc)     #for all MAIN records, fiscal_end always same month & day
+    count=0
+    budget_all.each do |yy|
+      if yy.fiscalstart.month==budget_start.month && yy.fiscalstart.day==budget_start.day && count==0
+        @last_main=yy.fiscalstart
+        count+=1
+      end
     end
-    next_date
+    @last_main+1.year
   end 
   
 end

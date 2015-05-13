@@ -1,10 +1,10 @@
 class Training_reportPdf < Prawn::Document
-  def initialize(ptdos, domestic, overseas, current_user, view)
+  def initialize(ptdos, domestic, overseas, staffid, view)
     super({top_margin: 50, page_size: 'A4', page_layout: :landscape })
     @ptdos = ptdos
     @ptdos_domestic = domestic
     @ptdos_overseas = overseas
-    @current_user = current_user
+    @staffid = staffid
     @view = view
     font "Times-Roman"
     move_down 20
@@ -71,8 +71,8 @@ class Training_reportPdf < Prawn::Document
     end
     aa=""
     aa=@ptdos[0].ptschedule.start.year.to_s if @startdates.uniq.count==1
-    [["Adalah disahkan bahawa #{'<u>'+'     '+@current_user.userable.name+'    '+'</u>'}    No K/P : #{'<u>'+@current_user.userable.formatted_mykad+'</u>'}"],
-     ["Gred Jawatan : #{'<u>'+@current_user.userable.staffgrade.name+'</u>'}    Bahagian : #{'<u>'+@current_user.userable.positions.first.unit+'</u>'}"],
+    [["Adalah disahkan bahawa #{'<u>'+'     '+Staff.find(@staffid).name+'    '+'</u>'}    No K/P : #{'<u>'+Staff.find(@staffid).formatted_mykad+'</u>'}"],
+     ["Gred Jawatan : #{'<u>'+Staff.find(@staffid).staffgrade.name+'</u>'}    Bahagian : #{'<u>'+Staff.find(@staffid).try(:positions).try(:first).try(:unit).to_s+'</u>'}"],
      ["Telah menghadiri #{'<u>'+Ptdo.staff_total_days(@ptdos.map(&:id))+'</u>'}  hari berkursus pada tahun   #{'<u> '+aa+' </u>'}"],
      [""],
      ["(....................................................................)"],
