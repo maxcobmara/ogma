@@ -104,13 +104,16 @@ class Asset::AssetDisposalsController < ApplicationController
 
   def kewpa17
     if params[:disposalids]
-      @disposals = AssetDisposal.where('id IN(?)', params[:disposalids]).order(created_at: :desc)
+      @disposals_all = AssetDisposal.where('id IN(?)', params[:disposalids]).order(created_at: :desc)
     else
-      @disposals = AssetDisposal.order('created_at DESC')
+      @disposals_all = AssetDisposal.order('created_at DESC')
     end
+    @disposal_last = @disposals_all.last
+    @disposal_last_id = @disposal_last.id
+    @disposals=AssetDisposal.where('id IN(?) and id !=?', @disposals_all.map(&:id), @disposal_last_id)
     respond_to do |format|
       format.pdf do
-        pdf = Kewpa17Pdf.new(@disposals, view_context)
+        pdf = Kewpa17Pdf.new(@disposals,@disposal_last,  view_context)
         send_data pdf.render, filename: "kewpa17-{Date.today}",
                               type: "application/pdf",
                               disposition: "inline"

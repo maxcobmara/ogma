@@ -9,4 +9,8 @@
   .form-group
     %label.col-sm-2.control-label= f.label t 'staff.training.budget.start', for: :fiscalstart
     .col-md-3
-      = f.text_field :fiscalstart, class: 'form-control mandatory date_picker '
+      - if @newtype=="1"
+        - vall = @ptbudget.next_budget_date
+      - elsif @newtype =="2" 
+        - vall = Date.today 
+      = f.text_field :fiscalstart, class: 'form-control mandatory date_picker', :value => vall

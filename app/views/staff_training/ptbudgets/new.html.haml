@@ -2,6 +2,7 @@
 .page-header
   %h1
     = t('staff.training.budget.new')
+    = t('staff.training.budget.additional_budget') if @newtype=="2"
     = render 'shared/flashes'
     
 

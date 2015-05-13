@@ -4,8 +4,10 @@ class Asset::AssetDefectsController < ApplicationController
   before_action :set_defective, only: [:show, :edit, :update, :destroy]
 
   def index
-    roles = current_user.roles.pluck(:id)
-    @is_admin = roles.include?([2,11])
+    roles = @current_user.roles.pluck(:id)
+    if roles.include?(2) || roles.include?(11)
+      @is_admin=true
+    end
     if @is_admin
       @search = AssetDefect.where('decision is not true').search(params[:q])
     else
@@ -69,7 +71,7 @@ class Asset::AssetDefectsController < ApplicationController
   end
 
   def kewpa9
-    @lead = Position.find(1)
+    @lead = Position.where(name: 'Pengarah').first
     @defective = AssetDefect.find(params[:id])
     respond_to do |format|
       format.pdf do

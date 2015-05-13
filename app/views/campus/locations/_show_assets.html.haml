@@ -7,7 +7,9 @@
         %th= t "asset.name"
         %th= t "asset.model"
     %tbody
-      - for asset in @location.assets
+      - asset_ids=[]
+      - @location.assets.group_by{|x|x.id}.map{|assetid, assets|asset_ids << assetid}
+      - for asset in Asset.find(asset_ids)
         %tr
           %td= asset.assetcode
           %td= asset.name

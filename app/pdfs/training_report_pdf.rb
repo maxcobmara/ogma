@@ -44,8 +44,8 @@ class Training_reportPdf < Prawn::Document
       if classifications[x][1]==1
         content_line << [{content: "#{counter += 1}", rowspan: 3}, "#{classifications[x][0]}",""] 
         #content_line << [{content: "#{counter += 1}", rowspan: 3}, "#{classifications[x][0]}","#{Ptdo.staff_total_days(ptdo_class[1].map(&:id))}"] 
-        content_line << ["a) Dalam Negeri", "#{Ptdo.staff_total_days(@ptdos_domestic.map(&:id))}"]
-        content_line << ["b) Luar Negara", "#{Ptdo.staff_total_days(@ptdos_overseas.map(&:id))}"]
+        content_line << ["a) Dalam Negeri", "#{Ptdo.staff_total_days(@ptdos_domestic.map(&:id)) unless (@ptdos_domestic.map(&:id)).count==0 }"]
+        content_line << ["b) Luar Negara", "#{Ptdo.staff_total_days(@ptdos_overseas.map(&:id)) unless (@ptdos_overseas.map(&:id)).count==0 }"]
       else
         content_line << ["#{counter+=1}", "#{classifications[x][0]}","#{Ptdo.staff_total_days(ptdo_class[x+1].map(&:id)) unless (ptdo_class[x+1]).nil? }"]  #name
       end

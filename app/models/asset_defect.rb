@@ -14,8 +14,10 @@ class AssetDefect < ActiveRecord::Base
   
   #define scope - asset(typename, name, modelname)
   def self.typemodelname_search(query)
-    asset_ids = Asset.where('typename ILIKE(?) or name ILIKE(?) or modelname ILIKE(?)', "%#{query}%","%#{query}%","%#{query}%").pluck(:id)
-    return AssetDefect.where('asset_id IN (?)', asset_ids)
+    if query
+      asset_ids = Asset.where('typename ILIKE(?) or name ILIKE(?) or modelname ILIKE(?)', "%#{query}%","%#{query}%","%#{query}%").pluck(:id)
+      return AssetDefect.where('asset_id IN (?)', asset_ids)
+    end
   end
     
   # whitelist the scope

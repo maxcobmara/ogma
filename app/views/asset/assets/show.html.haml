@@ -128,6 +128,8 @@
           
       - permitted_to? :manage, :assets do
         = link_to content_tag(:i, "", :class => "fa fa-file-pdf-o"), kewpa6_asset_asset_path(@asset, format: "pdf"), {class: "btn btn-default", "data-toggle" => "tooltip", title: "KEW.PA 6 PDF"}
+        - if @asset.is_maintainable==true
+          = link_to content_tag(:i, "", :class => "fa fa-file-pdf-o"), kewpa14_asset_asset_path(@asset, format: "pdf"), {class: "btn btn-default", "data-toggle" => "tooltip", title: "KEW.PA 14 PDF"}
         = link_to content_tag(:i, "", :class => "fa fa-edit") , edit_asset_asset_path(@asset),  {class: "btn btn-primary", "data-toggle" => "tooltip", title: t("actions.edit")}
         = link_to content_tag(:i, "", :class => "fa fa-trash-o icon-white"), |
           asset_asset_path(@asset),                                                                                                    |
