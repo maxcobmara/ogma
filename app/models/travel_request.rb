@@ -40,8 +40,8 @@ class TravelRequest < ActiveRecord::Base
     end
   end
   
-  def repl_staff
-    unit_name = User.current.userable.positions.first.unit
+  def repl_staff(currentuser)
+    unit_name = Staff.find(currentuser).positions.first.unit   #User.current.userable.positions.first.unit
     siblings = Position.joins(:staff).where(unit: unit_name).pluck(:staff_id)  
     #children = User.current.userable.positions.first.children.pluck(:staff_id)
     replacements = siblings # + children #not suitable for Pn Nabilah, Pn Rokiah - Timbalan2 Pengarah
@@ -133,7 +133,8 @@ class TravelRequest < ActiveRecord::Base
   def set_mileage_nil_when_not_own_car
     #true for mileage allowance
     #false for mileage replacement
-    unless own_car
+    if own_car==nil || own_car==false
+      self.mileage=nil
       self.mileage_replace = nil
     end
   end
