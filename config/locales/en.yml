@@ -2775,6 +2775,7 @@ en:
       short: "%d %b"
       long: "%d %B %Y"
       events: "%A, %e %b"
+      full_events: "%a, %d %b %Y"
       # Use the strftime parameters for formats.
       # When no format has been given, it uses default.
       # You can provide other formats here if you like!

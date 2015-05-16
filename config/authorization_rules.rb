@@ -264,6 +264,10 @@ authorization do
       has_permission_on :students, :to => [:update, :show, :borang_maklumat_pelajar] do #[:read, :update, :menu] do
         if_attribute :id => is {user.userable.id}
       end
+      has_permission_on :student_leaveforstudents, :to => :create
+      has_permission_on :student_leaveforstudents, :to => [:index, :slip_pengesahan_cuti_pelajar] do
+        if_attribute :student_id => is {user.userable.id}
+      end
   end
  
   role :student_administrator do

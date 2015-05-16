@@ -24,13 +24,13 @@ class Slip_pengesahan_cuti_pelajarPdf < Prawn::Document
     
     data =[["Butiran Cuti Pelajar", ""],
           ["1. Nama Pelajar", ": #{@leaveforstudent.student.formatted_mykad_and_student_name}"],
-          ["2. Jenis Cuti", ": #{((DropDown::STUDENTLEAVETYPE.find_all{|disp, value| value == @leaveforstudent.leavetype }).map {|disp, value| disp})[0]}"],
-          ["3. Tarikh Mohon Cuti", ": #{@leaveforstudent.requestdate.try(:strftime,"%d - %b - %Y")}"],
+          ["2. Jenis Cuti", ": #{((DropDown::STUDENTLEAVETYPE2.find_all{|disp, value| value == @leaveforstudent.leavetype }).map {|disp, value| disp})[0]}"],
+          ["3. Tarikh Mohon Cuti", ": #{I18n.l(@leaveforstudent.requestdate)}"],
           ["4. Sebab", ": #{@leaveforstudent.reason}"],
           ["5. Alamat",": #{@leaveforstudent.address}"],
           ["6. Telefon", ": #{@leaveforstudent.telno }"],
-          ["7. Tarikh Cuti Bermula", ": #{@leaveforstudent.leave_startdate.strftime("%a, %d %b %Y")}"],
-          ["8. Tarikh Cuti Berakhir", ": #{@leaveforstudent.leave_enddate.strftime("%a, %d %b %Y")}"]]
+          ["7. Tarikh Cuti Bermula", ": #{ I18n.l(@leaveforstudent.leave_startdate, format: :full_events)}"],
+          ["8. Tarikh Cuti Berakhir", ": #{ I18n.l(@leaveforstudent.leave_enddate, format: :full_events)}"]]
     
     table(data, :column_widths => [200, 300], :cell_style => { :size => 11})  do
       a = 0
@@ -94,11 +94,11 @@ class Slip_pengesahan_cuti_pelajarPdf < Prawn::Document
     data =[["Maklumat Kelulusan Cuti", ""],
           ["1. Keputusan Penyelaras Kumpulan", ": #{@leaveforstudent.approved? ? 'Diluluskan' : 'Tidak Diluluskan'}"],
           ["2. Nama Pelulus", ": #{@leaveforstudent.approver_details}"],
-          ["3. Tarikh Diluluskan", ": #{@leaveforstudent.approvedate.try(:strftime, '%d %b %Y')}"],
+          ["3. Tarikh Diluluskan", ": #{@leaveforstudent.approved? ? I18n.l(@leaveforstudent.approvedate) : @leaveforstudent.approvedate.try(:strftime, '%d %b %Y')}"],
           ["",""],
           ["4. Keputusan Warden", ": #{@leaveforstudent.approved2? ? 'Diluluskan' : 'Tidak Diluluskan'}"],
           ["5. Nama Pelulus", ": #{@leaveforstudent.approver_details2}"],
-          ["6. Tarikh Diluluskan", ": #{@leaveforstudent.approvedate2.try(:strftime, '%d %b %Y')}"]]
+          ["6. Tarikh Diluluskan", ": #{@leaveforstudent.approved? ? I18n.l(@leaveforstudent.approvedate2) : @leaveforstudent.approvedate2.try(:strftime, '%d %b %Y')}"]]
   
     table(data, :column_widths => [200, 300], :cell_style => { :size => 11})  do
       a = 0
