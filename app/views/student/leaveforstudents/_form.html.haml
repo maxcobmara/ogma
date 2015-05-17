@@ -3,13 +3,16 @@
     .col-sm-2.control-label
       = f.label t 'student.leaveforstudent.student_id', for: :student
     .col-md-2
-      = f.collection_select :student_id, Student.all.order(name: :asc), :id, :formatted_mykad_and_student_name, {:include_blank =>t('helpers.prompt.select_student')},{class: 'selectpicker', "data-width"=>'320px'} 
+      - if @current_user.userable_type=="Student"
+        = f.collection_select :student_id, Student.where(id: @current_user.userable_id), :id, :formatted_mykad_and_student_name, {:selected => @current_user.userable_id},{class: 'selectpicker', "data-width"=>'320px'} 
+      - else
+        = f.collection_select :student_id, Student.all.order(name: :asc), :id, :formatted_mykad_and_student_name, {:include_blank =>t('helpers.prompt.select_student')},{class: 'selectpicker', "data-width"=>'320px'} 
   
   .form-group
     .col-sm-2.control-label
       = f.label t 'student.leaveforstudent.leavetype', for: :leavetype
     .col-md-2
-      = f.select :leavetype, DropDown::STUDENTLEAVETYPE,{:include_blank =>t('select')},{class: 'selectpicker', "data-width"=>'220px'} 
+      = f.select :leavetype, DropDown::STUDENTLEAVETYPE,{:include_blank =>t('select')},{class: 'selectpicker mandatory', "data-width"=>'220px'} 
   
   .form-group
     .col-sm-2.control-label
@@ -33,19 +36,19 @@
     .col-sm-2.control-label
       = f.label t 'student.leaveforstudent.telno', for: :phone_no
     .col-md-4
-      = f.text_field :telno, class: 'form-control'
+      = f.text_field :telno, class: 'form-control mandatory'
   
   .form-group
     .col-sm-2.control-label
       = f.label t 'student.leaveforstudent.leave_startdate', for: :leave_startdate
     .col-md-4 
-      = f.text_field :leave_startdate, class: 'date_picker form-control'
+      = f.text_field :leave_startdate, class: 'date_picker form-control mandatory'
   
   .form-group
     .col-sm-2.control-label
       = f.label t 'student.leaveforstudent.leave_enddate', for: :leave_enddate
     .col-md-4 
-      = f.text_field :leave_enddate, class: 'date_picker form-control'
+      = f.text_field :leave_enddate, class: 'date_picker form-control mandatory'
 
   .form-group
     .col-sm-2.control-label

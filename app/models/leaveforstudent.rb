@@ -91,5 +91,19 @@ class Leaveforstudent < ActiveRecord::Base
   def warden_list
     staff_ids = Login.joins(:roles).where('roles.name=?', "Warden").pluck(:staff_id).compact.uniq
   end
+  
+  def self.search2(curr_user)
+    if curr_user.userable_type=="Student"
+      userable_id=curr_user.userable_id
+      leaveforstudents = Leaveforstudent.where(student_id: userable_id)
+    else
+      if curr_user.roles.pluck(:id).include?(2)
+        leaveforstudents = Leaveforstudent.all
+      else
+        leaveforstudents = Leaveforstudent.where('student_id IN(?)', curr_user.under_my_supervision)  
+      end
+    end
+    leaveforstudents
+  end
 
 end

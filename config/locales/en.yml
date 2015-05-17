@@ -75,11 +75,11 @@ en:
         finish_at: To
         travel_log: Travel Logs
       leaveforstudent:
-        student_id: Nama pelajar
-        leavetype: Jenis cuti
-        leave_startdate: Tarikh cuti bermula
-        leave_enddate: Tarikh cuti berakhir
-        telno: Telefon
+        student_id: Student Name
+        leavetype: Leave Type
+        leave_startdate: On leave starting
+        leave_enddate: Leave end date
+        telno: Phone No
       travel_claim:
         claim_month: "Claim For (month & year) "
         travel_requests: "Travel Request(s) "

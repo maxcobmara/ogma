@@ -93,6 +93,14 @@ $(document).ready(function(e) {
         $input.val($input.val().substr(0,8) + '01');
       }
   });
+  $('.monthyear_picker_reverse').datetimepicker({
+      format: "Y-m-d",
+      timepicker: false,
+      autoclose: true,
+      onSelectDate: function(dp, $input) {
+        $input.val($input.val().substr(0,8) + '01');
+      }
+  });
   $('.year_picker').datetimepicker({
       format: "Y-m-d",
       timepicker: false,

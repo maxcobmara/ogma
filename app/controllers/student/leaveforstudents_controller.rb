@@ -5,7 +5,8 @@ class Student::LeaveforstudentsController < ApplicationController
   def index
     #@leaveforstudent = Leaveforstudent.all
     @search = Leaveforstudent.search(params[:q])
-    @leaveforstudent = @search.result
+    #@leaveforstudent = @search.result
+    @leaveforstudent = @search.result.search2(@current_user)
     @leaveforstudent = @leaveforstudent.page(params[:page]||1)
 
     respond_to do |format|
