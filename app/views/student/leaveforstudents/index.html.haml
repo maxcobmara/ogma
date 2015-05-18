@@ -29,15 +29,23 @@
     - @leaveforstudent.each do |leaveforstudent|
       %tr
         %td= link_to leaveforstudent.student_details, student_leaveforstudent_path(leaveforstudent)
-        %td
-          /=h leaveforstudent.student.course.name
+        %td=h leaveforstudent.student.course.name
         %td=h leaveforstudent.student.intake.try(:strftime, '%b %Y')
         %td=h ((DropDown::STUDENTLEAVETYPE.find_all{|disp, value| value ==leaveforstudent.leavetype }).map {|disp, value| disp}).first
         %td=h leaveforstudent.requestdate.try(:strftime, '%d %b %Y')
         %td=h leaveforstudent.leave_startdate.try(:strftime, '%d %b %Y')+" - "+ leaveforstudent.leave_enddate.try(:strftime, '%d %b %Y')
         %td=h leaveforstudent.studentsubmit? ? image_tag("tick.png") : image_tag("cross.png") 
         %td=h leaveforstudent.staff_id? ? leaveforstudent.approver_details : ""
-        %td=h leaveforstudent.approved? ? image_tag("tick.png") : image_tag("cross.png") 
+        %td
+          - unless leaveforstudent.leave_startdate < Date.tomorrow && leaveforstudent.approved==nil 
+            =h leaveforstudent.approved? ? image_tag("tick.png") : image_tag("cross.png")
+          - else
+            %font{:color =>"red"}=t('leaveforstudent.expired')
         %td=h leaveforstudent.staff_id2? ? leaveforstudent.approver_details2 : ""
-        %td=h leaveforstudent.approved2? ? image_tag("tick.png") : image_tag("cross.png") 
+        %td
+          - unless leaveforstudent.leave_startdate < Date.tomorrow && leaveforstudent.approved2==nil 
+            =h leaveforstudent.approved2? ? image_tag("tick.png") : image_tag("cross.png")
+          - else
+            %font{:color=>"red"}=t('leaveforstudent.expired')
+
         

@@ -62,11 +62,12 @@
           - permitted_to? :approve_warden, :student_leaveforstudents do
             = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('.approve', :default => t("helpers.links.warden_approval")), approve_warden_student_leaveforstudent_path(@leaveforstudent),       :class => 'btn btn-primary'
 
-      = link_to content_tag(:i, "", :class => "fa fa-trash-o icon-white") + " " + t('helpers.links.destroy'), |
-        student_leaveforstudent_path(@leaveforstudent),                                                                                                    |
-        :method => 'delete',                                                                                                           |
-        :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },                   |
-        :class => 'btn btn-danger'
+      - unless @leaveforstudent.studentsubmit==true
+        = link_to content_tag(:i, "", :class => "fa fa-trash-o icon-white") + " " + t('helpers.links.destroy'), |
+          student_leaveforstudent_path(@leaveforstudent),                                                                                                    |
+          :method => 'delete',                                                                                                           |
+          :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },                   |
+          :class => 'btn btn-danger'
 
         
     

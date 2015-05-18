@@ -9,6 +9,13 @@ class Leaveforstudent < ActiveRecord::Base
   validate :validate_kin_exist
   validate :validate_end_date_before_start_date
 
+  #scope :pending_coor, -> { where(assettype: 1)}
+  
+  scope :approved_coordinator, -> { where('studentsubmit=? and approved=?', true, true) }
+  scope :approved_warden, -> { where('studentsubmit=? and approved2=?', true, true) }
+  scope :pending_coordinator, -> { where('studentsubmit=? and id not in(?)', true, Leaveforstudent.approved_coordinator.map(&:id)) }
+  scope :pending_warden, -> { where('studentsubmit=? and id not in(?)', true, Leaveforstudent.approved_warden.map(&:id)) }
+  
   def validate_end_date_before_start_date
     if leave_enddate && leave_startdate
       errors.add(:end_date, "Your leave must begin before it ends") if leave_enddate < leave_startdate || leave_startdate < DateTime.now
@@ -100,7 +107,21 @@ class Leaveforstudent < ActiveRecord::Base
       if curr_user.roles.pluck(:id).include?(2)
         leaveforstudents = Leaveforstudent.all
       else
-        leaveforstudents = Leaveforstudent.where('student_id IN(?)', curr_user.under_my_supervision)  
+###
+         if curr_user.roles.pluck(:id).include?(7)
+           if curr_user.userable.positions.first.tasks_main.include?('Penyelaras Kumpulan')
+             leaveforstudents = Leaveforstudent.where('student_id IN(?)', curr_user.under_my_supervision)     
+           else
+             leaveforstudents = Leaveforstudent.all
+           end
+         else
+           leaveforstudents = Leaveforstudent.where('student_id IN(?)', curr_user.under_my_supervision)  
+         end
+#       if curr_user.roles.pluck(:id).include?(7)
+#         leaveforstudents = Leaveforstudent.all
+#       else
+#         leaveforstudents = Leaveforstudent.where('student_id IN(?)', curr_user.under_my_supervision)  
+#       end
       end
     end
     leaveforstudents

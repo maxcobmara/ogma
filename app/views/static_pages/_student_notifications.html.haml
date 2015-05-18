@@ -1,0 +1,3 @@
+%ul.nav.nav-pills.nav-stacked{role: "tablist"}
+ - if student_notification_of_leave.count > 0
+  %li= link_to "Your leave request for #{student_notification_of_leave.first.strftime('%d-%m-%Y')} has been approved", student_leaveforstudents_path
