@@ -32,6 +32,8 @@
     .panel-body.notifications{style: "padding:0;"}
      - if is_staff?
       = render 'staff_notifications'
+     - if !is_staff?
+      = render 'student_notifications'
 
   .row{:style => "background-color:#D0E8F5;"}
    = render 'bulletin'
