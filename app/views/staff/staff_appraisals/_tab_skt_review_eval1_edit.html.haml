@@ -18,7 +18,7 @@
         = f.check_box :is_skt_ppp_report_done, :id => 'is_skt_ppp_report_done' 
       .col-md-2
         #span_skt_ppp_report_on{:style=>"display: none;"}
-          = f.text_field :skt_ppp_report_on, :class => 'date_picker form-control'   
+          = f.text_field :skt_ppp_report_on, :class => 'date_picker form-control', :value => Date.today
     .form-group
       .col-sm-2
         &nbsp;

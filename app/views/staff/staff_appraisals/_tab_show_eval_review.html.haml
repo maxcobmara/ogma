@@ -7,7 +7,7 @@
 
     %dl.dl-horizontal
       %dt= t 'staff.staff_appraisal.endorsed_on_ppp'
-      %dd= l(@staff_appraisal.submit_e2_on)
+      %dd= l(@staff_appraisal.submit_e2_on) if @staff_appraisal.submit_e2_on!=nil
          
       %dt= t 'evaluation.form.part8_desc'
       %dd 
@@ -28,7 +28,7 @@
     %br
     %font{:style=>"color: green; font-weight: bold;"}
       = t 'evaluation.form.ppp_statement'
-      on #{l(@staff_appraisal.submit_e2_on)}
+      on #{l(@staff_appraisal.submit_e2_on) if @staff_appraisal.submit_e2_on!=nil} 
     %dl.dl-horizontal  
       %dt= t 'evaluation.form.pppid'
       %dd= h @staff_appraisal.eval1_officer.name
@@ -43,7 +43,7 @@
 
       %dl.dl-horizontal
         %dt= t 'staff.staff_appraisal.endorsed_on_ppk'
-        %dd= l(@staff_appraisal.is_completed_on)
+        %dd= l(@staff_appraisal.is_completed_on) if @staff_appraisal.is_completed_on!=nil
 		
         %dt= t 'evaluation.form.part8_desc'
         %dd 

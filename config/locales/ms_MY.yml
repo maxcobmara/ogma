@@ -20,6 +20,7 @@ ms_MY:
       location: Lokasi
       ptcourse: Kursus Latihan
       ptbudget: Bajet
+      staff_appraisal: Penilaian Prestasi
     attributes:
       student:
         name: Nama
@@ -84,6 +85,14 @@ ms_MY:
       ptbudget: 
         fiscalstart: Mula Tahun Fiskal
         budget: Jumlah
+      staff_appraisal:
+        e2_performance: Pencapaian keseluruhan PYD
+        is_completed_on: Tarikh penilaian prestasi selesai
+        e2_months: Bulan
+        e1_months: Bulan
+        e1_performance: Pencapaian Keseluruhan
+        e1_progress: Perkembangan Karier
+        submit_e2_on: Tarikh hantar ke PPK
     errors:
         template:
           body: "Berikut adalah beberapa masalah:"
@@ -96,7 +105,7 @@ ms_MY:
             too_short: "ialah sangat pendek (minimum ialah {{count}} huruf)"
             taken: "sudah digunakan"
             illegal_char: mengandungi aksara yang tidak sah
-            invalid: adalah tidak sah           
+            invalid: adalah tidak sah   
         models:
           student:
             attributes:
@@ -106,6 +115,12 @@ ms_MY:
             attributes:
               min_participants:
                 less_than_or_equal_to: Maksima harus melebihi Minima
+          staff_appraisal:
+            attributes: 
+              e2_months:
+                greater_than: mesti lebih besar dari 0 jika kurang dari setahun
+              e1_months:
+                greater_than: mesti lebih besar dari 0 jika kurang dari setahun
           travel_request: Permohonan Perjalanan
           kin: Maklumat Waris
          

@@ -59,7 +59,7 @@
         = f.check_box :is_submit_for_evaluation, :id => 'submit_for_evaluation1' 
       .col-md-2
         #span_submit1{:style=>"display: none;"}
-          = f.text_field  :submit_for_evaluation_on, :class => 'date_picker form-control'   
+          = f.text_field  :submit_for_evaluation_on, :class => 'date_picker form-control', :value => Date.today
     .form-group
       .col-sm-2
         &nbsp;

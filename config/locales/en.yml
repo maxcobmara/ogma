@@ -38,6 +38,7 @@ en:
       location: Location
       ptcourse: Course
       ptbudget: Training Budget
+      staff_appraisal: Staff Appraisal
     attributes:
       student:
         name: Name
@@ -101,6 +102,14 @@ en:
       ptbudget:
         fiscalstart: Fiscal year
         budget: Budget
+      staff_appraisal:
+        e2_performance: "Overall performance - PYD"
+        is_completed_on: Date appraisal completed
+        e2_months: Months
+        e1_months: Months
+        e1_performance: Overall Performance
+        e1_progress: Career Progress
+        submit_e2_on: Submission date to PPK
     errors:
         template:
           body: "There were problems with the following fields:"
@@ -123,6 +132,12 @@ en:
             attributes:
               min_participants:
                 less_than_or_equal_to: Max shoud be more than Min
+          staff_appraisal:
+            attributes: 
+              e2_months:
+                greater_than: must greater than 0 if less than a year
+              e1_months:
+                greater_than: must greater than 0 if less than a year
           travel_request: Travel Request
           kin: Next of Kin
           stationery: Office Supplies
