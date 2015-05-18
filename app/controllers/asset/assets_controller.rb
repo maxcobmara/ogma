@@ -139,10 +139,10 @@ end
   
   def kewpa6
     @asset = Asset.find(params[:id])
-    @loanable = AssetLoan.where('asset_id=? AND is_approved!=?',params[:id], false).order(assetcode: :asc)
+    @loanable = AssetLoan.where('asset_id=? AND is_approved!=?',params[:id], false)#.order(assetcode: :asc)
     respond_to do |format|
       format.pdf do
-        pdf = Kewpa6Pdf.new(@asset, view_context)
+        pdf = Kewpa6Pdf.new(@loanable, view_context)
         send_data pdf.render, filename: "kewpa6-{Date.today}",
                               type: "application/pdf",
                               disposition: "inline"

@@ -6,8 +6,8 @@ class Asset::AssetLoansController < ApplicationController
   # GET /asset_loans
   # GET /asset_loans.xml
   def index
-    roles = current_user.roles.pluck(:id)
-    @is_admin = roles.include?([2,11])
+    roles = @current_user.roles.pluck(:id)
+    @is_admin = true if roles.include?(2) || roles.include?(11)
     if @is_admin
       @search = AssetLoan.search(params[:q])
     else

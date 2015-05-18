@@ -169,7 +169,7 @@ authorization do
  role :lecturer do
 
    ###HOLD first - works well in Catechumen but not in ogma - just let all lecturers access, afterall only coordinator/programme lecture appear in the list! 
-   has_permission_on :student_leaveforstudents, :to => [:index, :menu, :create, :show, :update, :approve_coordinator]
+   ##HIDE ON 17MAY2015--has_permission_on :student_leaveforstudents, :to => [:index, :menu, :create, :show, :update, :approve_coordinator]
    #prob - if warden(not lecturer) ok, if warden also lecturer-tak boleh,....staff --> index, menu, create, show, update??, 
    
    #restricted access for penyelaras - [relationship: approver, FK: staff_id, page: approve], in case of non-exist of penyelaras other lecturer fr the same programme
@@ -177,6 +177,14 @@ authorization do
       #if_attribute :studentsubmit => true
       #if_attribute :student_id => is_in {[334]}  #is_in {user.under_my_supervision} 
    #end
+   
+   #revised - 17May2015-start
+   #restricted access for penyelaras - [relationship: approver, FK: staff_id, page: approve], in case of non-exist of penyelaras other lecturer fr the same programme
+    has_permission_on :student_leaveforstudents, :to => [:index,:menu, :create, :show, :update, :approve_coordinator, :slip_pengesahan_cuti_pelajar] do #, :join_by => :and do
+      if_attribute :studentsubmit => true
+      #if_attribute :student_id => is_in {user.under_my_supervision} - not working - access 'under_my_supervision' method from controller & model via 'search2'
+    end
+    #revised - 17May2015-end
    
    #EXAMINATION modules
    has_permission_on [:exam_examquestions, :exam_exams, :exam_exammarks, :exam_grades], :to => [:menu, :read, :create]
@@ -263,6 +271,10 @@ authorization do
       end
       has_permission_on :students, :to => [:update, :show, :borang_maklumat_pelajar] do #[:read, :update, :menu] do
         if_attribute :id => is {user.userable.id}
+      end
+      has_permission_on :student_leaveforstudents, :to =>[:index, :create]
+      has_permission_on :student_leaveforstudents, :to => [:show, :update, :slip_pengesahan_cuti_pelajar] do
+        if_attribute :student_id => is {user.userable.id}
       end
   end
  

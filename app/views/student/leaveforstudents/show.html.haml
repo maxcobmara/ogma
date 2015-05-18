@@ -57,8 +57,10 @@
           = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('.edit', :default => t("helpers.links.edit")), edit_student_leaveforstudent_path(@leaveforstudent), :class => 'btn btn-primary'
    
         - if @leaveforstudent.studentsubmit==true && @leaveforstudent.student.kins.count>0   
-          = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('.approve', :default => t("helpers.links.coordinator_approval")), approve_coordinator_student_leaveforstudent_path(@leaveforstudent), :class => 'btn btn-primary'
-          = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('.approve', :default => t("helpers.links.warden_approval")), approve_warden_student_leaveforstudent_path(@leaveforstudent),       :class => 'btn btn-primary'
+          - permitted_to? :approve_coordinator, :student_leaveforstudents do
+            = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('.approve', :default => t("helpers.links.coordinator_approval")), approve_coordinator_student_leaveforstudent_path(@leaveforstudent), :class => 'btn btn-primary'
+          - permitted_to? :approve_warden, :student_leaveforstudents do
+            = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('.approve', :default => t("helpers.links.warden_approval")), approve_warden_student_leaveforstudent_path(@leaveforstudent),       :class => 'btn btn-primary'
 
       = link_to content_tag(:i, "", :class => "fa fa-trash-o icon-white") + " " + t('helpers.links.destroy'), |
         student_leaveforstudent_path(@leaveforstudent),                                                                                                    |

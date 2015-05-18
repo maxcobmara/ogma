@@ -694,5 +694,14 @@ KTYPE = [
         [ I18n.t("student.leaveforstudent.midterm_break"),"Mid Term Break" ],
         [ I18n.t("student.leaveforstudent.end_of_semester"),"End of Semester" ]
     ]
+   STUDENTLEAVETYPE2 = [
+        #  Displayed       stored in db
+        [ "Hujung Minggu (Siang)", "Weekend Day" ],
+        [ "Hujung Minggu (Bermalam)", "Weekend Overnight" ],
+        [ "Cuti Kecemasan", "Emergency" ],
+        [ "Cuti Perayaan", "Cuti Perayaan" ],
+        [ "Cuti Pertengahan Semester", "Mid Term Break" ],
+        [ "Cuti Akhir Semester", "End of Semester" ]
+    ]
    
 end

@@ -62,7 +62,7 @@ class Status_movementPdf< Prawn::Document
     ["",{content: "SILA NYATAKAN SEBABNYA :", colspan: 6}],
     ["",{content: "#{'.'*180 if @travel_request.own_car==false} <u>#{@travel_request.own_car_notes if @travel_request.own_car==true}</u>", colspan: 6}],["",{content: "#{'.'*180 if @travel_request.own_car==false} ", colspan: 6}],
     ["",{content: "JIKA MENGGUNAKAN KERETA SENDIRI TUNTUTAN YANG AKAN DIBUAT ADALAH : ", colspan: 6}],
-    ["","#{'<b>/</b>' if @travel_request.mileage_history==1}","Elaun Hitungan Batu","","#{'<b>/</b>' if @travel_request.mileage_history==2} ",{content: "Gantian Tambang Keretapi / Kapal Terbang", colspan: 2}],
+    ["","#{'<b>/</b>' if @travel_request.own_car==true && @travel_request.mileage_history==1}","Elaun Hitungan Batu","","#{'<b>/</b>' if @travel_request.own_car==true && @travel_request.mileage_history==2} ",{content: "Gantian Tambang Keretapi / Kapal Terbang", colspan: 2}],
     [{content: "", colspan: 7}],
     ["",{content: "Tarikh : #{@travel_request.submitted_on.blank? ? '.'*40 : @travel_request.submitted_on.try(:strftime, '%d %b %Y')}", colspan: 2},"",{content: "T/Tangan Pemohon : #{'.'*50}", colspan: 3}],
     [{content: "<b>PERAKUAN KETUA JABATAN</b>", colspan: 7}],
