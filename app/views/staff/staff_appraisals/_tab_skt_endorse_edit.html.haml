@@ -7,7 +7,7 @@
         = f.check_box :is_skt_endorsed, :id => 'is_skt_endorsed'
       .col-md-2
         #span_skt_endorse{:style=>"display: none;"}
-          = f.text_field :skt_endorsed_on, :class => 'date_picker form-control'   
+          = f.text_field :skt_endorsed_on, :class => 'date_picker form-control', :value => Date.today
     .form-group
       .col-sm-2
         &nbsp;

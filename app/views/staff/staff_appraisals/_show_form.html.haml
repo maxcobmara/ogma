@@ -35,7 +35,7 @@
           - if @staff_appraisal.is_skt_endorsed == true
             %dt= t 'helpers.label.staff_appraisal.endorsement_on' 
             %dd
-              =h @staff_appraisal.skt_endorsed_on.try(:strftime, '%d %b %Y')+t('by2')+@staff_appraisal.eval1_officer.try(:name)
+              =h @staff_appraisal.skt_endorsed_on.try(:strftime, '%d %b %Y')+t('by2')+@staff_appraisal.eval1_officer.try(:name) unless @staff_appraisal.skt_endorsed_on.nil?
             
       #show_skt.tab-pane.active
         %br

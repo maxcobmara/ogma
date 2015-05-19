@@ -56,13 +56,18 @@ class Staff::StaffAppraisalsController < ApplicationController
   end
   
   def update
+    #raise params.inspect
     @staff_appraisal = StaffAppraisal.find(params[:id])
     respond_to do |format|
       if @staff_appraisal.update(staff_appraisal_params)
         format.html { redirect_to(staff_staff_appraisal_path(@staff_appraisal), :notice => (t 'staff.staff_appraisal.title')+(t 'actions.updated'))}
         format.xml  { head :ok }
       else
-        format.html { render :action => "edit" }
+	#msg=StaffAppraisal.messages(a)
+	msg=@staff_appraisal.errors.count
+        format.html { render :action => "edit", :f => @staff_appraisal} 
+	#format.html {redirect_to edit_staff_staff_appraisal_path(@staff_appraisal)}
+        #format.html { redirect_to edit_staff_staff_appraisal_path(@staff_appraisal), :notice => msg.to_s+" errors la"}
         format.xml  { render :xml => @staff_appraisal.errors, :status => :unprocessable_entity }
       end
     end

@@ -20,6 +20,26 @@ class StaffAppraisal < ActiveRecord::Base
    validates_uniqueness_of :evaluation_year, :scope => :staff_id, :message => "Your evaluation for this year already exists"
    #validates_presence_of  :e1g1q1, :e1g1q2,:e1g1q3, :e1g1q4, :e1g1q5,:e1g1_total, :e1g1_percent,:e1g2q1, :e1g2q2, :e1g2q3, :e1g2q4, :e1g2_total, :e1g2_percent, :e1g3q1, :e1g3q2, :e1g3q3, :e1g3q4, :e1g3q5, :e1g3_total, :e1g3_percent,:e1g4,:e1g4_percent, :e1_total, :e1_years, :e1_months,  :e1_performance, :e1_progress, :if => :is_submit_e2? #pending - update page (when validation fails)
    #validates_presence_of :e2g1q1, :e2g1q2, :e2g1q3,:e2g1q4, :e2g1q5,:e2g1_total, :e2g1_percent, :e2g2q1, :e2g2q2,:e2g2q3, :e2g2q4, :e2g2_total, :e2g2_percent, :e2g3q1, :e2g3q2, :e2g3q3,:e2g3q4,:e2g3q5, :e2g3_total,:e2g3_percent, :e2g4, :e2g4_percent,:e2_total, :e2_years, :e2_months, :e2_performance, :if => :is_complete? #pending - update page (when validation fails)
+   validates_presence_of :e1_performance, :e1_progress, :submit_e2_on, :if => :ppp_eval?
+   validates :e1_months, numericality: { greater_than: 0}, :if => :ppp_eval2?
+   validates_presence_of :e2_performance, :is_completed_on, :if => :ppk_eval?
+   validates :e2_months, numericality: { greater_than: 0 }, :if => :ppk_eval2?
+   
+   def ppp_eval?
+     is_submit_e2 == true #&& evaluation_status==I18n.t('staff.staff_appraisal.submitted_for_evaluation_by_ppp')
+   end 
+   
+   def ppp_eval2?
+     is_submit_e2 == true && e1_years==0 #&& evaluation_status==I18n.t('staff.staff_appraisal.submitted_for_evaluation_by_ppp') && e1_years==0
+   end 
+   
+   def ppk_eval?
+     is_complete ==true #&& I18n.t('staff.staff_appraisal.submitted_by_ppp_for_evaluation_to_PPK')
+   end
+   
+    def ppk_eval2?
+     is_complete ==true && e2_years==0 #&& I18n.t('staff.staff_appraisal.submitted_by_ppp_for_evaluation_to_PPK') && e2_years==0
+   end
    
    # define scope
    def self.status_search(query) 
@@ -57,7 +77,7 @@ class StaffAppraisal < ActiveRecord::Base
    def evaluation_status
      if is_skt_submit != true
        I18n.t('staff.staff_appraisal.skt_being_formulated')
-     elsif is_complete == true
+     elsif is_complete == true #&& is_completed_on !=nil && e2_performance !=nil
        I18n.t('staff.staff_appraisal.staff_appraisal_complete')
      elsif is_skt_submit == true && is_skt_endorsed != true
        I18n.t('staff.staff_appraisal.skt_awaiting_ppp_endorsement')
@@ -124,18 +144,18 @@ class StaffAppraisal < ActiveRecord::Base
   end
   
   #logic to set editable
-  def edit_icon
-    if evaluation_status == "SKT awaiting PPP endorsement" #&& staff_id == Login.current_login.staff_id
+  def edit_icon(curr_user)
+    if evaluation_status == I18n.t('staff.staff_appraisal.skt_awaiting_ppp_endorsement') && staff_id == curr_user.userable_id# "SKT awaiting PPP endorsement" && staff_id==Login.current_login.staff_id
       "noedit"
-    elsif evaluation_status == "SKT awaiting PPP endorsement" #&& eval1_by == Login.current_login.staff_id
+    elsif evaluation_status ==  I18n.t('staff.staff_appraisal.skt_awaiting_ppp_endorsement') && eval1_by == curr_user.userable_id#"SKT awaiting PPP endorsement" && eval1_by ==  Login.current_login.staff_id
       "approval.png"
-    elsif evaluation_status == "SKT Review" #&& eval1_by == Login.current_login.staff_id
+    elsif evaluation_status ==  I18n.t('staff.staff_appraisal.skt_review') && eval1_by == curr_user.userable_id #"SKT Review" && eval1_by == Login.current_login.staff_id
       "noedit"
-    elsif evaluation_status == "Ready for PPP SKT Report" #&& staff_id == Login.current_login.staff_id
+    elsif evaluation_status ==  I18n.t('staff.staff_appraisal.ready_for_ppp_skt_report') && staff_id == curr_user.userable_id #"Ready for PPP SKT Report" #&& staff_id == Login.current_login.staff_id
       "noedit"
-    elsif evaluation_status == "PPP Report complete" #&& eval1_by == Login.current_login.staff_id
+    elsif evaluation_status == I18n.t('staff.staff_appraisal.ppp_report_complete') && eval1_by == curr_user.userable_id #"PPP Report complete" #&& eval1_by == Login.current_login.staff_id
       "noedit"
-    elsif evaluation_status == "Submitted for Evaluation by PPP" #&& staff_id == Login.current_login.staff_id
+    elsif evaluation_status == I18n.t('staff.staff_appraisal.submitted_for_evaluation_by_ppp') && staff_id == curr_user.userable_id #"Submitted for Evaluation by PPP" #&& staff_id == Login.current_login.staff_id
       "noedit"
     elsif evaluation_status == "Submitted for Evaluation by PPP to PPK" #&& staff_id == Login.current_login.staff_id
       "noedit"
@@ -204,5 +224,21 @@ class StaffAppraisal < ActiveRecord::Base
       4
     end
   end
+  
+#   private
+#     def service_duration_must_exist
+#       if e2_performance.blank?  #.blank? || e2_performance.nil? || e2_performance==""
+# 	return false
+# 	errors.add(:base, I18n.t('training.weeklytimetable.intake_programme_must_match'))
+#       else
+# 	return true
+#       end
+# #       if e2_months < 0 && e2_years < 0
+# # 	errors.add(:base, I18n.t('training.weeklytimetable.intake_programme_must_match'))
+# #         return false
+# #       else
+# #         return true
+# #       end
+#     end
  
 end

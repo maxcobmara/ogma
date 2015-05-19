@@ -7,8 +7,12 @@
       %li=link_to (t 'staff.staff_appraisal.skt_review_staff'), "#skt_review_staff", "data-toggle" => "tab"
       %li=link_to (t 'staff.staff_appraisal.skt_review_eval1'), "#skt_review_eval1", "data-toggle" => "tab"
       %li=link_to (t 'staff.staff_appraisal.activity'), "#activity", "data-toggle" => "tab"
-      %li.active=link_to (t 'staff.staff_appraisal.eval1_1_17_41'), "#eval1_1_17_14", "data-toggle" => "tab"
-      %li=link_to (t 'staff.staff_appraisal.eval1_review'), "#eval1_review", "data-toggle" => "tab" 
+      - if @staff_appraisal.is_submit_e2.nil?
+        %li.active=link_to (t 'staff.staff_appraisal.eval1_1_17_41'), "#eval1_1_17_14", "data-toggle" => "tab"
+        %li=link_to (t 'staff.staff_appraisal.eval1_review'), "#eval1_review", "data-toggle" => "tab" 
+      - if @staff_appraisal.is_submit_e2==true || @staff_appraisal.is_submit_e2==false
+        %li=link_to (t 'staff.staff_appraisal.eval1_1_17_41'), "#eval1_1_17_14", "data-toggle" => "tab"
+        %li.active=link_to (t 'staff.staff_appraisal.eval1_review'), "#eval1_review", "data-toggle" => "tab" 
 
     .tab-content{style:"padding-top:1em"}
       %br
@@ -31,20 +35,34 @@
         
       #activity.tab-pane
         = render 'tab_show_activity'
-        
-      #eval1_1_17_14.tab-pane.active
-        %br
-        - if @staff_appraisal.person_type == 5
-          = render 'tab_eval1_1_edit', :f => f
-        - elsif @staff_appraisal.person_type == 4
-          = render 'tab_eval1_17_edit', :f => f
-        - elsif @staff_appraisal.person_type == 3
-          = render 'tab_eval1_41_edit', :f => f
-      #eval1_review.tab-pane
-        %br
-        = render 'tab_eval1_review_edit', :f => f
-
-
+       
+      - if @staff_appraisal.is_submit_e2.nil?
+        #eval1_1_17_14.tab-pane.active
+          %br
+          - if @staff_appraisal.person_type == 5
+            = render 'tab_eval1_1_edit', :f => f
+          - elsif @staff_appraisal.person_type == 4
+            = render 'tab_eval1_17_edit', :f => f
+          - elsif @staff_appraisal.person_type == 3
+            = render 'tab_eval1_41_edit', :f => f
+      - if @staff_appraisal.is_submit_e2==true || @staff_appraisal.is_submit_e2==false
+        #eval1_1_17_14.tab-pane
+          %br
+          - if @staff_appraisal.person_type == 5
+            = render 'tab_eval1_1_edit', :f => f
+          - elsif @staff_appraisal.person_type == 4
+            = render 'tab_eval1_17_edit', :f => f
+          - elsif @staff_appraisal.person_type == 3
+            = render 'tab_eval1_41_edit', :f => f
+            
+      - if @staff_appraisal.is_submit_e2.nil?
+        #eval1_review.tab-pane
+          %br
+          = render 'tab_eval1_review_edit', :f => f
+      - if @staff_appraisal.is_submit_e2==true || @staff_appraisal.is_submit_e2==false
+        #eval1_review.tab-pane.active
+          %br
+          = render 'tab_eval1_review_edit', :f => f
 :javascript
 
 //<![CDATA[
