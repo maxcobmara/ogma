@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150515102413) do
+ActiveRecord::Schema.define(version: 20150520025327) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -1563,7 +1563,6 @@ ActiveRecord::Schema.define(version: 20150515102413) do
     t.integer  "priority"
     t.string   "description"
     t.integer  "half"
-    t.string   "indicator"
     t.string   "acheivment"
     t.decimal  "progress"
     t.text     "notes"
@@ -1572,6 +1571,8 @@ ActiveRecord::Schema.define(version: 20150515102413) do
     t.string   "drop_reasons"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "indicator"
+    t.string   "target"
   end
 
   create_table "staff_appraisals", force: true do |t|
