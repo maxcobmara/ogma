@@ -46,7 +46,7 @@
         /- @ptschedule = Ptschedule.find(ptdo.ptschedule_id)
         %tr
           %td= link_to ptdo.ptschedule.course.name, staff_training_ptdo_path(ptdo)
-          %td= ptdo.try(:ptschedule).try(:course).try(:start).try(:strftime, '%d-%m-%Y')
+          %td= ptdo.try(:ptschedule).try(:start).try(:strftime, '%d-%m-%Y')
           %td= ptdo.ptschedule.location
           %td= training_classification(ptdo.ptschedule.course)+" - "+course_type(ptdo.ptschedule.course)
           %td= training_level(@ptcourse) if @ptcourse.training_classification==1
