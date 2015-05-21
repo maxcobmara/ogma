@@ -1454,6 +1454,7 @@ ms_MY:
       intake: Ambilan
       coordinator_not_available: "Tiada data Penyelaras Kumpulan, sila pilih pengajar lain dari program yang sama."
       application_due: "Permohonan cuti telah tamat tempoh dan tidak dapat diproses."
+      hostel_block: Blok Asrama
 
     discipline:
       title: Kes Disiplin Pelajar
