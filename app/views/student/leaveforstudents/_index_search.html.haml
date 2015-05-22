@@ -3,6 +3,7 @@
     %td=f.text_field :student_name_cont, size: 2, :class => "form-control", :placeholder => (t 'student.leaveforstudent.student_id')
     %td=f.text_field :student_course_name_cont, size: 2, :class => "form-control date-picker", :placeholder => (t 'student.students.course_id')
     %td=f.text_field :student_intake_eq, size: 2, :class => "form-control monthyear_picker_reverse", :placeholder => (t 'student.students.intake_id')
+    %td=f.text_field :student_tenants_location_code_cont, size:2, :class =>"form-control"
     %td= select_tag('q[leavetype_eq]',options_for_select([[(t 'actions.all_records'),''],[(t 'student.leaveforstudent.weekend_day'),"Weekend Day"], [(t 'student.leaveforstudent.weekend_overnight'),"Weekend Overnight"], [(t 'student.leaveforstudent.emergency'),"Emergency"],[(t 'student.leaveforstudent.festive_leave'),"Cuti Perayaan" ], [(t 'student.leaveforstudent.midterm_break'),"Mid Term Break" ], [(t 'student.leaveforstudent.end_of_semester'), "End of Semester"]]), :class => "selectpicker") 
     %td=f.text_field :requestdate_eq, size: 2, :class => "form-control date-picker", :placeholder => (t 'student.leaveforstudent.requestdate')
     %td=f.text_field :leave_startdate_eq, size: 2, :class => "form-control date-picker", :placeholder => (t 'student.leaveforstudent.leave_startdate')

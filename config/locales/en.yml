@@ -1535,6 +1535,7 @@ en:
       intake: Ambilan
       coordinator_not_available: "Group Coordinator NOT available, please select other Programme lecturer."
       application_due: "Leave application has expired and could not be processed."
+      hostel_block: Hostel Blok
 
     discipline:
       title: Student Discipline Case

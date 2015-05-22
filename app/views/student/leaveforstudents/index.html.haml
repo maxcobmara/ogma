@@ -15,7 +15,8 @@
       %tr
         %th= sort_link(@search, :student_name, (t 'student.leaveforstudent.student_id'))
         %th= sort_link(@search, :student_course_name, (t 'student.students.course_id'))
-        %th= sort_link(@search, :student_intake, (t 'student.students.intake_id'))
+        %th= sort_link(@search, :student_tenants_location, (t 'student.students.intake_id'))
+        %th= sort_link(@search, :student_intake, (t 'student.leaveforstudent.hostel_block'))
         %th= sort_link(@search, :leavetype, (t 'student.leaveforstudent.leavetype'))
         %th= sort_link(@search, :requestdate, (t 'student.leaveforstudent.request_date'))
         %th= sort_link(@search, :leave_startdate, (t 'student.leaveforstudent.leaves_date'))
@@ -31,6 +32,7 @@
         %td= link_to leaveforstudent.student_details, student_leaveforstudent_path(leaveforstudent)
         %td=h leaveforstudent.student.course.name
         %td=h leaveforstudent.student.intake.try(:strftime, '%b %Y')
+        %td=h leaveforstudent.student.tenants.last.location.root.code if !leaveforstudent.student.tenants.nil? && leaveforstudent.student.tenants.count > 0 
         %td=h ((DropDown::STUDENTLEAVETYPE.find_all{|disp, value| value ==leaveforstudent.leavetype }).map {|disp, value| disp}).first
         %td=h leaveforstudent.requestdate.try(:strftime, '%d %b %Y')
         %td=h leaveforstudent.leave_startdate.try(:strftime, '%d %b %Y')+" - "+ leaveforstudent.leave_enddate.try(:strftime, '%d %b %Y')
