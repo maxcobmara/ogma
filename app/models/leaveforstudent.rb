@@ -4,7 +4,7 @@ class Leaveforstudent < ActiveRecord::Base
   belongs_to :staff
   belongs_to :second_approver, :class_name=>"Staff", :foreign_key=>"staff_id2"
 
-  validates_presence_of :student_id, :leavetype, :leave_startdate, :leave_enddate
+  validates_presence_of :student_id, :leavetype, :leave_startdate, :leave_enddate, :reason, :address
   validates_numericality_of :telno
   validate :validate_kin_exist
   validate :validate_end_date_before_start_date
