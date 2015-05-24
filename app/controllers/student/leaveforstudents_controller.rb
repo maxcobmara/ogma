@@ -109,6 +109,23 @@ class Student::LeaveforstudentsController < ApplicationController
     end
   end
   
+  def studentleave_report
+    @search = Leaveforstudent.search(params[:q])
+    @leaveforstudents = @search.result
+    @expired_wc=[]
+    @leaveforstudents.each_with_index do |leaveforstudent, ind|
+      @expired_wc << ind+1 if leaveforstudent.studentsubmit==true && leaveforstudent.leave_startdate < Date.tomorrow && (leaveforstudent.approved2==nil || leaveforstudent.approved==nil)
+    end
+    respond_to do |format|
+       format.pdf do
+         pdf = Studentleave_reportPdf.new(@leaveforstudents, @expired_wc, view_context)
+         send_data pdf.render, filename: "studentleave_report-{Date.today}",
+                               type: "application/pdf",
+                               disposition: "inline"
+       end
+    end
+  end
+  
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_leaveforstudent
