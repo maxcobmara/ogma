@@ -1500,6 +1500,7 @@ en:
       address: Address
       telno: Telephone No
       leave_startdate: On Leave Starting
+      leave_start: Start date
       leave_enddate: Leave End Date
       leaves_date: Leaves Date
       studentsubmit: "Submitted?"
@@ -1536,6 +1537,8 @@ en:
       coordinator_not_available: "Group Coordinator NOT available, please select other Programme lecturer."
       application_due: "Leave application has expired and could not be processed."
       hostel_block: Hostel Blok
+      expired: Expired
+      valid: Valid
 
     discipline:
       title: Student Discipline Case

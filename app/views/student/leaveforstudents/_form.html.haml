@@ -6,7 +6,7 @@
       - if @current_user.userable_type=="Student"
         = f.collection_select :student_id, Student.where(id: @current_user.userable_id), :id, :formatted_mykad_and_student_name, {:selected => @current_user.userable_id},{class: 'selectpicker', "data-width"=>'320px'} 
       - else
-        = f.collection_select :student_id, Student.all.order(name: :asc), :id, :formatted_mykad_and_student_name, {:include_blank =>t('helpers.prompt.select_student')},{class: 'selectpicker', "data-width"=>'320px'} 
+        = f.collection_select :student_id, Student.all.order(name: :asc), :id, :formatted_mykad_and_student_name, {:include_blank =>t('helpers.prompt.select_student')},{class: 'selectpicker mandatory', "data-width"=>'320px'} 
   
   .form-group
     .col-sm-2.control-label
@@ -24,13 +24,13 @@
     .col-sm-2.control-label
       = f.label t 'student.leaveforstudent.reason', for: :reason
     .col-md-4
-      = f.text_field :reason, class: 'form-control'
+      = f.text_field :reason, class: 'form-control mandatory'
 	  
   .form-group
     .col-sm-2.control-label
       = f.label t 'student.leaveforstudent.address', for: :address
     .col-md-4
-      = f.text_area :address, class: 'form-control'
+      = f.text_area :address, class: 'form-control mandatory'
   
   .form-group
     .col-sm-2.control-label

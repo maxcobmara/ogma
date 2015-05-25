@@ -1,32 +1,30 @@
 = search_form_for @search, url: student_leaveforstudents_path,  class: "form-inline" do |f|
   %tr.search_row{style: "display: none;"}
     %td=f.text_field :student_name_cont, size: 2, :class => "form-control", :placeholder => (t 'student.leaveforstudent.student_id')
-    %td=f.text_field :student_course_name_cont, size: 2, :class => "form-control date-picker", :placeholder => (t 'student.students.course_id')
+    %td=f.text_field :student_course_name_cont, size: 2, :class => "form-control", :placeholder => (t 'student.students.course_id')
     %td=f.text_field :student_intake_eq, size: 2, :class => "form-control monthyear_picker_reverse", :placeholder => (t 'student.students.intake_id')
-    %td=f.text_field :student_tenants_location_code_cont, size:2, :class =>"form-control"
+    %td=f.text_field :student_tenants_location_combo_code_cont, size:2, :class =>"form-control"
     %td= select_tag('q[leavetype_eq]',options_for_select([[(t 'actions.all_records'),''],[(t 'student.leaveforstudent.weekend_day'),"Weekend Day"], [(t 'student.leaveforstudent.weekend_overnight'),"Weekend Overnight"], [(t 'student.leaveforstudent.emergency'),"Emergency"],[(t 'student.leaveforstudent.festive_leave'),"Cuti Perayaan" ], [(t 'student.leaveforstudent.midterm_break'),"Mid Term Break" ], [(t 'student.leaveforstudent.end_of_semester'), "End of Semester"]]), :class => "selectpicker") 
-    %td=f.text_field :requestdate_eq, size: 2, :class => "form-control date-picker", :placeholder => (t 'student.leaveforstudent.requestdate')
-    %td=f.text_field :leave_startdate_eq, size: 2, :class => "form-control date-picker", :placeholder => (t 'student.leaveforstudent.leave_startdate')
+    %td=f.text_field :requestdate_eq, size: 2, :class => "form-control date_picker_reverse", :placeholder => (t 'student.leaveforstudent.requestdate')
+    %td
+      =t('from')
+      =f.text_field :leave_startdate_gteq, size: 2, :class => "form-control date_picker_reverse", :placeholder => (t 'student.leaveforstudent.leave_start')
+      =t('to')
+      =f.text_field :leave_startdate_lteq, size: 2, :class => "form-control date_picker_reverse", :placeholder => (t 'student.leaveforstudent.leave_start')
     %td= select_tag('q[studentsubmit_eq]',options_for_select([[(t 'actions.all_records'),''],[(t 'actions.submitted'),true],[(t 'actions.not_submitted'),false]]),class: 'selectpicker',"data-width"=>'100px')
     %td=f.text_field :staff_name_cont, size: 2, :class => "form-control", :placeholder => (t 'student.leaveforstudent.staff_id')
-    %td= select_tag('q[approved_eq]',options_for_select([[(t 'actions.all_records'),''],[(t 'actions.approved'),true],[(t 'actions.not_approved'),false]]),class: 'selectpicker',"data-width"=>'100px')
+    
+    %td= select_tag('q[coordinator_search]',options_for_select([[(t 'actions.all_records'),''],[(t 'actions.approved'),'1'],[(t 'actions.not_approved'),'0'], [(t 'student.leaveforstudent.expired'), 'expired'],[(t 'student.leaveforstudent.valid'), 'valid']]),class: 'selectpicker',"data-width"=>'100px')
+    /%td= select_tag('q[approved_eq]',options_for_select([[(t 'actions.all_records'),''],[(t 'actions.approved'),true],[(t 'actions.not_approved'),false]]),class: 'selectpicker',"data-width"=>'100px')
+    
     %td=f.text_field :second_approver_name_cont, size: 2, :class => "form-control", :placeholder => (t 'student.leaveforstudent.staff_id')
     %td
       .input-group
-        = select_tag('q[approved2_eq]',options_for_select([[(t 'actions.all_records'),''],[(t 'actions.approved'),true],[(t 'actions.not_approved'),false]]),class: 'selectpicker',"data-width"=>'100px')
+        = select_tag('q[warden_search]',options_for_select([[(t 'actions.all_records'),''],[(t 'actions.approved'),'1'],[(t 'actions.not_approved'),'0'], [(t 'student.leaveforstudent.expired'), 'expired'],[(t 'student.leaveforstudent.valid'), 'valid']]),class: 'selectpicker',"data-width"=>'100px')
+        /= select_tag('q[approved2_eq]',options_for_select([[(t 'actions.all_records'),''],[(t 'actions.approved'),true],[(t 'actions.not_approved'),false]]),class: 'selectpicker',"data-width"=>'100px')
         %span.input-group-btn
           %button.btn.btn-sm.btn-default.right{:type => "submit"}
             %i.fa.fa-search.fa-fw
 
-:javascript  
-  $('.date-picker').datetimepicker({
-   timepicker:false,
-     format: "Y-m-d",
-     autoclose: true
-   });    
-
-        
-      
-            
             
 

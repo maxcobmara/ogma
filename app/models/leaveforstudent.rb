@@ -4,7 +4,7 @@ class Leaveforstudent < ActiveRecord::Base
   belongs_to :staff
   belongs_to :second_approver, :class_name=>"Staff", :foreign_key=>"staff_id2"
 
-  validates_presence_of :student_id, :leavetype, :leave_startdate, :leave_enddate
+  validates_presence_of :student_id, :leavetype, :leave_startdate, :leave_enddate, :reason, :address
   validates_numericality_of :telno
   validate :validate_kin_exist
   validate :validate_end_date_before_start_date
@@ -15,6 +15,51 @@ class Leaveforstudent < ActiveRecord::Base
   scope :approved_warden, -> { where('studentsubmit=? and approved2=?', true, true) }
   scope :pending_coordinator, -> { where('studentsubmit=? and id not in(?)', true, Leaveforstudent.approved_coordinator.map(&:id)) }
   scope :pending_warden, -> { where('studentsubmit=? and id not in(?)', true, Leaveforstudent.approved_warden.map(&:id)) }
+  scope :expired_coordinator, -> { where('studentsubmit=? and leave_startdate <? AND (approved is null or approved=?)', true, Date.tomorrow, false)}
+  scope :expired_warden, -> { where('studentsubmit=? and leave_startdate <? AND (approved2 is null or approved2=?)', true, Date.tomorrow, false) }
+
+  # define scope
+  def self.warden_search(query) 
+    if query
+      if query=='1'
+        ids=Leaveforstudent.approved_warden.pluck(:id)  
+      elsif query=='0'
+        ids=Leaveforstudent.where(studentsubmit: true, approved2: false).pluck(:id)
+      elsif query=='expired'
+        ids=Leaveforstudent.expired_warden.pluck(:id)
+      elsif query=='valid'
+        #ids=Leaveforstudent.where('studentsubmit=? and leave_startdate >=? AND (approved2 is null or approved2=?)', true, Date.tomorrow, false).pluck(:id)
+        ids=Leaveforstudent.where('id not IN(?)', Leaveforstudent.expired_warden.pluck(:id)).pluck(:id)
+      end
+    else
+      ids=Leaveforstudent.all.pluck(:id)
+    end
+    where('id IN(?)', ids)
+  end
+  
+  def self.coordinator_search(query) 
+    if query
+      if query=='1'
+        ids=Leaveforstudent.approved_coordinator.pluck(:id)  
+      elsif query=='0'
+        ids=Leaveforstudent.where(studentsubmit: true, approved: false).pluck(:id)
+      elsif query=='expired'
+        ids=Leaveforstudent.expired_coordinator.pluck(:id)
+      elsif query=='valid'
+        #ids=Leaveforstudent.where('studentsubmit=? and leave_startdate >=? AND (approved is null or approved=?)', true, Date.tomorrow, false).pluck(:id)  
+        ids=Leaveforstudent.where('id not IN(?)', Leaveforstudent.expired_coordinator.pluck(:id)).pluck(:id)
+      end
+    else
+      ids=Leaveforstudent.all.pluck(:id)
+    end
+    where('id IN(?)', ids)
+  end
+  
+  # whitelist the scope
+  def self.ransackable_scopes(auth_object = nil)
+    [:warden_search, :coordinator_search]
+  end
+  ####
   
   def validate_end_date_before_start_date
     if leave_enddate && leave_startdate
