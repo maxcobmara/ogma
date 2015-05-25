@@ -717,6 +717,10 @@ en:
       endorse_notify: "Clicking on submit disables your editing this record further."
       submit_report: "Clicking on submit notifies your Evaluating Officer (PPP) and disables your editing this record further."
       skt_ppp_report: "Clicking on complete notifies your Staff (PYD) and disables your editing this record further."
+      quantity: Quantity
+      quality: Quality
+      time: Time
+      cost: Cost
 
     skt_review:
       title: "Attachment A : Part II - Mid Year Review"

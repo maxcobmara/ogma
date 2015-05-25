@@ -532,6 +532,15 @@ module DropDown
           [ "Antarabangsa", "9" ]
    ]
    
+  #staff_appraisal_skt
+  INDICATORS=[
+    [I18n.t('evaluation.skt.quality'), 1],
+    [I18n.t('evaluation.skt.time'), 2],
+    [I18n.t('evaluation.skt.quantity'), 3],
+    [I18n.t('evaluation.skt.cost'), 4]
+    ]
+  
+   
    #staff.training.course
     COURSE_TYPE = [
        #  Displayed       stored in db

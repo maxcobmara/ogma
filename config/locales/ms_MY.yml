@@ -710,7 +710,10 @@ ms_MY:
       endorse_notify: "Sebaik sahaja diluluskan, tiada suntingan boleh dibuat ke atas rekod ini lagi."
       submit_report: "Penghantaran laporan akan dimaklumkan kepada Pegawai Penilai Pertama (PPP) dan tiada sutingan boleh dibuat ke atas rekod ini lagi."
       skt_ppp_report: "Sebaik SKT selesai, Pegawai Penilai Pertama (PPP) akan dimaklumkan dan tiada suntingan boleh dibuat ke atas rekod ini lagi."
-
+      quantity: Kuantiti
+      quality: Kualiti
+      time: Masa
+      cost: Kos
 
     skt_review:
       title: "Lampiran A : Bahagian II - Kajian Semula Sasaran Kerja Tahunan Pertengahan Tahun"

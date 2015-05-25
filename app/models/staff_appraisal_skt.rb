@@ -22,4 +22,9 @@ class StaffAppraisalSkt < ActiveRecord::Base
     	self.half = 2
     end
   end
+  
+  def render_indicator
+    (DropDown::INDICATORS.find_all{|disp, value| value == indicator}).map {|disp, value| disp}.first
+  end
+ 
 end
