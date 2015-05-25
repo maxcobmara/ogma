@@ -72,6 +72,7 @@ Ogma::Application.routes.draw do
       collection do
         get :show_total_days
         get :training_report
+        get :participants_expenses
       end
     end
   end

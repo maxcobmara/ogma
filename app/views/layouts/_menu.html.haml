@@ -64,6 +64,8 @@
                       %li= link_to t('staff.training.schedule.title_schedule'), staff_training_ptschedules_path
                     %li= link_to t('staff.training.application_status.title_apply'), '#', class: 'bogus'
                     %li= link_to t('staff.training.application_status.title'), staff_training_ptdos_path
+                    - permitted_to? :manage, :staff_training_ptbudgets do
+                      %li=link_to t('staff.training.budget.participants_expenses'), participants_expenses_staff_training_ptdos_path
             - permitted_to? :create, :staff_travel_requests do
               %li= link_to t('staff.travel_request.status_movement'), staff_travel_requests_path
             - permitted_to? :maklumat_perjawatan, :staff_positions do

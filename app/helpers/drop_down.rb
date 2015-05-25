@@ -253,6 +253,12 @@ module DropDown
        [ I18n.t("time.years"), 3 ],
   ]
 
+  PAYMENT=[
+    #  Displayed       stored in db
+    [I18n.t('staff.training.budget.local_order'), 1],
+    [I18n.t('staff.training.budget.cash'), 2]
+  ]
+  
   LOCATION_CATEGORIES = [
          #  Displayed       stored in db
          [ "building" , 1 ],

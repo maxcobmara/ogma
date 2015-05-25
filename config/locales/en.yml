@@ -211,6 +211,7 @@ en:
   excel_format: Excel Format
   select_excel_file: Please select an Excel file for import
   reports: Reports
+  all_records: All Records
 
   actions:
     new: New
@@ -424,6 +425,11 @@ en:
         new: New Training Budget
         add_budget: "+ Additional Budget"
         additional_budget: " (Additional)"
+        participants_expenses: "Participants & Expenses"
+        payment_method: Payment Method
+        local_order: Local Order
+        cash: Cash
+        remark: Remark
       course:
         title_course: Training Courses
         new: New Staff Training Course
@@ -471,9 +477,13 @@ en:
         new: Schedule a Course
         title: Staff Training Course Schedule
         start: Start Date
+        end: End Date
         participants: Participants
         location: Location
         price: Price
+        duration: Duration
+        budget_ok: Budget Approval
+        min_participants: Minimum Participants
       application_status:
         title: Application Status 
         title_apply: Apply for Training
@@ -501,7 +511,7 @@ en:
         dept_decision: Department Decision
         replacement_staff: Staff Replacement
         final_approve: Final Approve
-        trainee_report: Trainee Report
+        trainee_report: Participant Report
         approve: Approve
         approved: Approved
         reject: Reject
@@ -512,6 +522,8 @@ en:
         total: Total
         note_hours_day: "Note : 6 hours equal to 1 day of training"
         total_day_attended: Total days of training attended
+        attended: "Upon completion of attendance (Participant Report recorded), duration of training will be displayed, otherwise 'Not yet attended' will be dsplayed."
+        nil: Not yet attended
               
     travel_request:
       title: Travel Request

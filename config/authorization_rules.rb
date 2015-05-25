@@ -143,6 +143,7 @@ authorization do
   
   role :finance_unit do
     has_permission_on [:travel_claims, :travel_claim_allowances, :travel_claim_receipts, :travel_claim_logs], :to => [:manage, :check, :approve]
+    has_permission_on :staff_training_ptbudgets, :to => :manage
   end
 
    role :training_manager do
