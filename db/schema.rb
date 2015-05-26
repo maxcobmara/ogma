@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150525025432) do
+ActiveRecord::Schema.define(version: 20150526171956) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -1411,8 +1411,6 @@ ActiveRecord::Schema.define(version: 20150525025432) do
     t.text     "trainee_report"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "payment"
-    t.text     "remark"
   end
 
   create_table "ptdosearches", force: true do |t|
@@ -1435,6 +1433,8 @@ ActiveRecord::Schema.define(version: 20150525025432) do
     t.boolean  "budget_ok"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "payment"
+    t.text     "remark"
   end
 
   create_table "qualifications", force: true do |t|
