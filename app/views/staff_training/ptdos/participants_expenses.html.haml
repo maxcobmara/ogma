@@ -42,7 +42,9 @@
             - if indexx==0
               %td{:rowspan=>"#{ptdos.count}"}=h ptdo.ptschedule.course.name
               %td{:rowspan=>"#{ptdos.count}", :align => :center}=h (ptdo.ptschedule.start.try(:strftime, '%d-%m-%Y')).to_s+" " +t('to').downcase+"  "+(ptdo.ptschedule.enddate.try(:strftime, '%d-%m-%Y')).to_s
-              %td{:rowspan=>"#{ptdos.count}", :align => :center}=duration_in_string=Ptdo.staff_total_days([ptdo.id])
+              /%td{:rowspan=>"#{ptdos.count}", :align => :center}=duration_in_string=Ptdo.staff_total_days([ptdo.id])
+            %td.centre=duration_in_string=Ptdo.staff_total_days([ptdo.id])
+            - if indexx==0
               %td{:rowspan=>"#{ptdos.count}"}=h ringgols(ptdo.ptschedule.final_price)
               %td{:rowspan=>"#{ptdos.count}", :align => :center}=h ptdo.ptschedule.budget_ok? ? image_tag('tick.png') : image_tag('cross.png')
               %td{:rowspan=>"#{ptdos.count}", :align => :center}
