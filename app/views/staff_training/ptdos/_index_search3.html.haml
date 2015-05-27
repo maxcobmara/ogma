@@ -1,0 +1,24 @@
+= search_form_for @search, url: participants_expenses_staff_training_ptdos_path, class: "form-inline" do |f|
+  %tr.search_row{style: "display: none;"}
+    %td
+    %td=f.text_field :staff_name_cont, size:2, class: 'form-control'
+    %td=f.text_field :staff_positions_name_cont, size:2, class: 'form-control'
+    %td=f.text_field :ptschedule_course_name_cont, size: 2, class: 'form-control' 
+    %td
+      ="("+t('staff.training.schedule.start')+") "+t('from')
+      =f.text_field :ptschedule_start_gteq, size:2, class:  'date_picker_reverse form-control'
+      =t('to')
+      =f.text_field :ptschedule_start_lteq, size:2, class:  'date_picker_reverse form-control'
+    %td 
+    %td=f.text_field :ptschedule_final_price_eq, size:2, class: 'form-control'
+    %td
+    %td=f.text_field :ptschedule_min_participants_eq, size: 2,  class:  'form-control'
+    %td=f.select :payment_eq, [[t('all_records'),'']]+DropDown::PAYMENT, size:2, class: 'selectpicker'
+    %td
+      .input-group
+        =f.text_field :remark_cont, size: 2, class: 'form-control'
+        %span.input-group-btn
+          %button.btn.btn-sm.btn-default.right{:type => "submit"}
+            %i.fa.fa-search.fa-fw
+          
+     

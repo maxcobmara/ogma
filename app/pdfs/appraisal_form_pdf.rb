@@ -38,6 +38,7 @@ def color
       color_3
     end
  end
+
     color   
     text "BORANG J.P.A. (Prestasi) #{@staff_appraisal.person_type}", :align => :right, :size => 12, :style => :bold, :color => "010000"
     text "SULIT", :align => :left, :size => 12
@@ -228,10 +229,14 @@ end
     
     
      def line_item_rows2
+       ptdoyear=@staff_appraisal.evaluation_year.year
+       year_start=Date.new(ptdoyear,1,1)
+       nextyear_start=year_start+1.year 
+       schedule_of_ptdoyear=Ptschedule.where('start >=? and start <?', year_start, nextyear_start).pluck(:id)
        counter = counter || 0
        header = [[ 'Nama Latihan (Nyatakan sijil jika ada)', 'Tarikh/Tempoh', ' Tempat']]
        header +
-         Ptdo.where('staff_id = ?',@staff_appraisal.appraised).map do |ptdo|
+         Ptdo.where('staff_id = ? and ptschedule_id IN(?)',@staff_appraisal.appraised, schedule_of_ptdoyear).map do |ptdo|
          ["#{ptdo.ptschedule.course.name}", "#{ptdo.ptschedule.start.try(:strftime, "%d/%m/%y")}", "#{ptdo.ptschedule.location}"]
        end
      end   
@@ -996,7 +1001,7 @@ def lampiranA1
  end
   
   def table_lampiranA1 
-    table(line_item_rows6 , :column_widths => [30,150,150], :cell_style => { :size => 11}) do
+    table(line_item_rows6 , :column_widths => [30,240,240], :cell_style => { :size => 11}) do
       row(0).font_style = :bold
       self.row_colors = ["FEFEFE", "FFFFFF"]  
     end
@@ -1007,7 +1012,7 @@ def lampiranA1
     header = [["Bil", "Ringkasan Aktiviti/Projek", "Petunjuk Prestasi"]]
     header +
       @staff_appraisal.staff_appraisal_skts.where('half =?', 1).order(priority: :asc).map do |staff_appraisal_skt|
-      ["#{counter += 1}", "#{staff_appraisal_skt.description}", "#{staff_appraisal_skt.indicator}"]
+      ["#{counter += 1}", "#{staff_appraisal_skt.description}", "#{staff_appraisal_skt.render_indicator} : #{staff_appraisal_skt.target}"]
     end
   end
   
@@ -1018,7 +1023,7 @@ def lampiranA1
         [ "Tandatangan PYD", "Tandatangan PPP"],
         ["Tarikh : #{@staff_appraisal.skt_submit_on.try(:strftime, "%d/%m/%y")}", "Tarikh : #{@staff_appraisal.skt_endorsed_on.try(:strftime, "%d/%m/%y")}"]] 
       
-        table(data1 , :column_widths => [200,200], :cell_style => { :size => 11}) do
+        table(data1 , :column_widths => [270,240], :cell_style => { :size => 11}) do
           row(1).borders = [ ]
           row(1).align = :center
           row(2).borders = [ ]
@@ -1042,7 +1047,7 @@ end
   
   def table_lampiranA2
     
-    table(line_item , :column_widths => [30,150,150], :cell_style => { :size => 11}) do
+    table(line_item , :column_widths => [30,240,240], :cell_style => { :size => 11}) do
       row(0).font_style = :bold
       self.row_colors = ["FEFEFE", "FFFFFF"]   
     end
@@ -1053,7 +1058,7 @@ end
     header = [["Bil", "Ringkasan Aktiviti/Projek", "Petunjuk Prestasi"]]
     header +
       @staff_appraisal.staff_appraisal_skts.where('half = ?', 2).order(priority: :asc).map do |staff_appraisal_skt|
-      ["#{counter += 1}", "#{staff_appraisal_skt.description}", "#{staff_appraisal_skt.indicator}"]
+      ["#{counter += 1}", "#{staff_appraisal_skt.description}", "#{staff_appraisal_skt.render_indicator} : #{staff_appraisal_skt.target}"]
     end 
   end
     
@@ -1069,7 +1074,7 @@ end
 end
   def table_lampiranAa3
     
-    table(line_item2, :column_widths => [30,150], :cell_style => { :size => 11}) do
+    table(line_item2, :column_widths => [30,480], :cell_style => { :size => 11}) do
       row(0).font_style = :bold
       self.row_colors = ["FEFEFE", "FFFFFF"]
       
@@ -1093,16 +1098,23 @@ def lampiranA3
   text "BAHAGIAN III -  Laporan dan Ulasan Keseluruhan Pencapaian Sasaran Kerja Tahunan Pada Akhir Tahun Oleh PYD dan PPP", :align => :left, :size => 12, :style => :bold  
      move_down 20                   
   text "1.   Laporan/Ulasan Oleh PYD", :align => :left, :size => 12, :style => :bold    
-
-    data = [["#{ @staff_appraisal.skt_pyd_report}"]]
-    table(data, :column_widths => [250], :cell_style => { :size => 11}) do
+    
+    #capture all skt's achievement, progress & notes here first - LAMPIRAN A
+    @aa=""
+    @staff_appraisal.staff_appraisal_skts.sort_by{|x|x.half}.each_with_index do |staff_appraisal_skt, ind|
+      @aa += ((ind+1).to_s+') '+staff_appraisal_skt.acheivment.to_s+" "+staff_appraisal_skt.progress.to_s+"%,  "+staff_appraisal_skt.notes.to_s+'<br>')  if staff_appraisal_skt.progress!=nil 
+    end
+    
+    data = []
+    data << ["#{@aa} #{ @staff_appraisal.skt_pyd_report}"]
+    table(data, :column_widths => [510], :cell_style => { :size => 11, :inline_format => :true }) do
       self.row_colors = ["FEFEFE", "FFFFFF"]    
     end
   move_down 10
   text "2.   Laporan/Ulasan Oleh PPP", :align => :left, :size => 12, :style => :bold 
   
   data1 = [[" #{@staff_appraisal.skt_ppp_report} "]]
-  table(data1, :column_widths => [250], :cell_style => { :size => 11}) do
+  table(data1, :column_widths => [510], :cell_style => { :size => 11}) do
     self.row_colors = ["FEFEFE", "FFFFFF"]    
   end
   
@@ -1113,7 +1125,7 @@ def lampiranA3
         ["Tarikh : #{@staff_appraisal.skt_pyd_report_on.try(:strftime, "%d/%m/%y")}", 
           "Tarikh : #{@staff_appraisal.skt_ppp_report_on.try(:strftime, "%d/%m/%y")}"]] 
       
-        table(data2 , :column_widths => [150,150], :cell_style => { :size => 11}) do
+        table(data2 , :column_widths => [270,240], :cell_style => { :size => 11}) do
           row(0).font_style = :bold
           row(1).borders = [ ]
           row(1).align = :center

@@ -191,6 +191,7 @@ ms_MY:
   excel_format: Format Excel
   select_excel_file: Sila pilih fail Excel untuk diimport
   reports: Laporan
+  all_records: Semua Rekod
  
   actions:
     new: Baru
@@ -416,7 +417,11 @@ ms_MY:
         new: Belanjawan Latihan Kakitangan Baru
         add_budget: "+ Belanjawan Tambahan"
         additional_budget: " (Tambahan)"
-        
+        participants_expenses: "Penyertaan & Perbelanjaan"
+        payment_method: Kaedah Pembayaran
+        local_order: Pesanan Tempatan
+        cash: Tunai
+        remark: Catatan
       course:
         title_course: Kursus Latihan
         new: Kursus Staff Baru
@@ -464,9 +469,13 @@ ms_MY:
         new: Penjadualan Baru
         title: Jadual Kursus Staf
         start: Tarikh Mula
+        end: Tarikh Tamat
         participants: Peserta 
         location: Lokasi
         price: Harga
+        duration: Jangka Masa
+        budget_ok: Belanjawan Diluluskan
+        min_participants: Jum Minimum Peserta
       application_status:
         title_apply: Permohonan Latihan
         title: Status Permohonan
@@ -494,7 +503,7 @@ ms_MY:
         dept_decision: Keputusan Jabatan
         replacement_staff: Staf Gantian
         final_approve: Kelulusan Akhir
-        trainee_report: Laporan Pelatih
+        trainee_report: Laporan Peserta
         approve: Meluluskan
         approved: Diluluskan
         reject: Menolak
@@ -505,6 +514,8 @@ ms_MY:
         total: Jumlah
         note_hours_day: "Nota : 6 jam bersamaan 1 hari berkursus"
         total_day_attended: Jumlah hari latihan yang dihadiri
+        attended: "Sebaik sahaja kursus dihadiri (Laporan Peserta direkodkan), jangka masa kursus akan dipaparkan, sebaliknya 'Belum Hadir' akan dipaparkan."
+        nil: Belum Hadir
         
     travel_request:
       title: Permohonan Perjalanan
@@ -699,7 +710,10 @@ ms_MY:
       endorse_notify: "Sebaik sahaja diluluskan, tiada suntingan boleh dibuat ke atas rekod ini lagi."
       submit_report: "Penghantaran laporan akan dimaklumkan kepada Pegawai Penilai Pertama (PPP) dan tiada sutingan boleh dibuat ke atas rekod ini lagi."
       skt_ppp_report: "Sebaik SKT selesai, Pegawai Penilai Pertama (PPP) akan dimaklumkan dan tiada suntingan boleh dibuat ke atas rekod ini lagi."
-
+      quantity: Kuantiti
+      quality: Kualiti
+      time: Masa
+      cost: Kos
 
     skt_review:
       title: "Lampiran A : Bahagian II - Kajian Semula Sasaran Kerja Tahunan Pertengahan Tahun"

@@ -253,6 +253,12 @@ module DropDown
        [ I18n.t("time.years"), 3 ],
   ]
 
+  PAYMENT=[
+    #  Displayed       stored in db
+    [I18n.t('staff.training.budget.local_order'), 1],
+    [I18n.t('staff.training.budget.cash'), 2]
+  ]
+  
   LOCATION_CATEGORIES = [
          #  Displayed       stored in db
          [ "building" , 1 ],
@@ -525,6 +531,15 @@ module DropDown
           [ "Negara", "5" ],
           [ "Antarabangsa", "9" ]
    ]
+   
+  #staff_appraisal_skt
+  INDICATORS=[
+    [I18n.t('evaluation.skt.quality'), 1],
+    [I18n.t('evaluation.skt.time'), 2],
+    [I18n.t('evaluation.skt.quantity'), 3],
+    [I18n.t('evaluation.skt.cost'), 4]
+    ]
+  
    
    #staff.training.course
     COURSE_TYPE = [
