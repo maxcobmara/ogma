@@ -84,21 +84,7 @@
             = f.label t 'staff.training.application_status.trainee_report'
           .col-md-3
             = f.text_area :trainee_report, :size => "30x5", class: 'form-control'
-           
-      - permitted_to? :manage, :staff_training_ptbudgets do
-        - if @ptdo.final_approve
-          .form-group
-            .col-sm-2.control-label
-              = f.label t 'staff.training.budget.payment_method'
-            .col-md-3
-              = f.select :payment, DropDown::PAYMENT, {:include_blank => t('select')}, {class: 'selectpicker', "data-width"=>"200px"}
-              
-          .form-group
-            .col-sm-2.control-label
-              = f.label t 'staff.training.budget.remark'
-            .col-md-3
-              = f.text_area :remark, :size => "50x2", class: 'form-control'
-          
+
       .form-group
         .col-sm-offset-2.col-sm-1
           = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), staff_training_ptdos_path, :class => 'btn btn-default'

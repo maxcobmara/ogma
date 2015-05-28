@@ -13,7 +13,7 @@
     %td=f.text_field :ptschedule_final_price_eq, size:2, class: 'form-control'
     %td
     %td=f.text_field :ptschedule_min_participants_eq, size: 2,  class:  'form-control'
-    %td=f.select :payment_eq, [[t('all_records'),'']]+DropDown::PAYMENT, size:2, class: 'selectpicker'
+    %td=f.select :ptshedule_payment_eq, [[t('all_records'),'']]+DropDown::PAYMENT, size:2, class: 'selectpicker'
     %td
       .input-group
         =f.text_field :remark_cont, size: 2, class: 'form-control'

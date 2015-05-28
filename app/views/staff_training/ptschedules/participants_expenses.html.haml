@@ -1,0 +1,56 @@
+- model_class = Ptschedule
+.page-header
+  %h1= t('staff.training.schedule.participants_expenses')
+= render 'shared/flashes'
+
+.navbar.navbar-inverse{role: "navigation", style: "padding-right:40px;"}
+  %ul.nav.navbar-nav.navbar-right
+    %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "index_search_bar"
+    %li= link_to content_tag(:li, fa_icon("print", text: (t 'actions.print'))), "#", class: 'bogus'
+
+.row
+  %table.table-striped.table-hover.ogma
+    %thead
+      %tr
+        %th No
+        %th= t('staff.training.application_status.staff_name')
+        %th= t('staff.position')
+        %th= sort_link(@search, :course_name, t('staff.training.application_status.course_name'))
+        %th= sort_link(@search, :start, (t('staff.training.schedule.start')+' - '+t('staff.training.schedule.end')))
+        %th= t('staff.training.schedule.duration')
+        %th= sort_link(@search, :final_price , t('staff.training.schedule.price'))
+        %th= t('staff.training.schedule.budget_ok')
+        %th= sort_link(@search, :min_participants , t('staff.training.schedule.min_participants'))
+        %th= sort_link(@search, :payment, (t('staff.training.schedule.local_order')+' / '+t('staff.training.schedule.cash')))
+        %th= t('staff.training.schedule.remark')
+      
+    %tbody
+      = render "index_search3"
+      - no=0
+      - @ptschedules.each do |ptschedule| 
+        /- schedule.ptdos
+        /- schedule.ptdos.where('trainee_report is not null')
+        - ptdos = ptschedule.ptdos.where('trainee_report is not null')
+        - ptdos.each_with_index do |ptdo, indexx|
+          %tr
+            %td=no+=1
+            %td= ptdo.staff.name
+            %td=h ptdo.staff.try(:positions).try(:first).try(:name)
+            - if indexx==0
+              %td{:rowspan=>"#{ptdos.count}"}=h link_to(ptschedule.course.name, staff_training_ptschedule_path(ptschedule))
+              %td{:rowspan=>"#{ptdos.count}", :align => :center}=h (ptschedule.start.try(:strftime, '%d-%m-%Y')).to_s+" " +t('to').downcase+"  "+(ptdo.ptschedule.enddate.try(:strftime, '%d-%m-%Y')).to_s
+              %td{:rowspan=>"#{ptdos.count}", :align => :center}=duration_in_string=ptschedule.course.course_total_days
+              %td{:rowspan=>"#{ptdos.count}"}=h ringgols(ptschedule.final_price)
+              %td{:rowspan=>"#{ptdos.count}", :align => :center}=h ptschedule.budget_ok? ? image_tag('tick.png') : image_tag('cross.png')
+              %td{:rowspan=>"#{ptdos.count}", :align => :center}
+                - participants_no=ptdos.count
+                - if participants_no >= ptschedule.min_participants
+                  = image_tag('tick.png')
+                - else
+                  = image_tag('cross.png') 
+                %br
+                = participants_no.to_s+" / "+ptschedule.min_participants.to_s+" ("+ptschedule.max_participants.to_s+")"
+              %td{:rowspan=>"#{ptdos.count}", :align => :center}=h ptschedule.render_payment
+              %td{:rowspan=>"#{ptdos.count}"}=h ptschedule.remark
+
+    .right{style:"padding:0 30px; margin:0;"}= paginate @ptschedules, :theme => 'twitter-bootstrap-3'  

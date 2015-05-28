@@ -28,3 +28,24 @@
       .input-group
         .input-group-addon $
         = f.text_field :final_price, class: 'form-control'
+        
+
+  - permitted_to? :approve, :staff_training_ptcourses do 
+    .form-group
+      %label.col-sm-2.control-label= f.label t 'staff.training.schedule.budget_ok', for: :budget_ok
+      .col-md-4
+        = f.check_box :budget_ok 
+        %font{:color=>"grey", :size=>"-2"}=t('staff.training.schedule.tick_to_approve')
+     
+  - permitted_to? :manage, :staff_training_ptbudgets do
+    - @participants_count = @ptschedule.ptdos.where('trainee_report is not null').count 
+    - if @ptschedule.budget_ok==true && @participants_count >= @ptschedule.min_participants
+      .form-group
+        %label.col-sm-2.control-label= f.label t 'staff.training.schedule.payment_method', for: :payment_method
+        .col-md-2
+          = f.select :payment, DropDown::PAYMENT, {:include_blank => t('select')}, {class: 'form-control'}
+          
+      .form-group
+        %label.col-sm-2.control-label= f.label t 'staff.training.schedule.remark', for: :remark
+        .col-md-4
+          = f.text_area :remark, :size => "50x2", class: 'form-control'
