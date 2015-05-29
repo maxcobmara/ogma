@@ -39,7 +39,7 @@ class StaffTraining::PtschedulesController < ApplicationController
   def update
     respond_to do |format|
       if @ptschedule.update(ptschedule_params)
-        format.html { redirect_to staff_training_ptschedules_path, notice: 'Course was successfully re-scheduled.' }
+        format.html { redirect_to staff_training_ptschedule_path(@ptschedule), notice: (t 'staff.training.schedule.title_schedule')+" "+(t 'actions.updated') }
         format.json { head :no_content }
       else
         format.html { render action: 'edit' }
@@ -58,6 +58,14 @@ class StaffTraining::PtschedulesController < ApplicationController
     end
   end
   
+  def participants_expenses
+    @search = Ptschedule.search(params[:q])
+    @ptschedules = @search.result.where(budget_ok: true).page(params[:page]||1) 
+    respond_to do |format|
+      format.html # index.html.erb
+      format.xml  { render :xml => @ptschedules }
+    end
+  end
   
   private
       # Use callbacks to share common setup or constraints between actions.
@@ -67,7 +75,7 @@ class StaffTraining::PtschedulesController < ApplicationController
 
       # Never trust parameters from the scary internet, only allow the white list through.
       def ptschedule_params
-        params.require(:ptschedule).permit(:location, :max_participants, :min_participants, :ptcourse_id, :start, :final_price, :budget_ok )
+        params.require(:ptschedule).permit(:location, :max_participants, :min_participants, :ptcourse_id, :start, :final_price, :budget_ok, :payment, :remark)
       end
   
   

@@ -1,0 +1,54 @@
+- model_class = Ptschedule
+.page-header
+  %h1= t 'staff.training.schedule.title'
+= render 'shared/flashes'
+'
+.row
+  .col-md-offset-1
+    %dl.dl-horizontal
+      %dt= t 'staff.training.course.course_type', :default => model_class.human_attribute_name(:course_type) + ":"
+      %dd=h course_type(@ptschedule.course)
+
+      %dt= t 'staff.training.course.name', :default => model_class.human_attribute_name(:name) + ":"
+      %dd=h @ptschedule.course.name
+      
+      %dt= t 'staff.training.course.descripton', :default => model_class.human_attribute_name(:description) + ":"
+      %dd=h @ptschedule.course.description 
+     
+      %dt= t 'staff.training.schedule.start', :default => model_class.human_attribute_name(:start) + ":"
+      %dd
+        =h @ptschedule.start.try(:strftime, '%d-%m-%Y')
+        =t('for')+" "+@ptschedule.course.course_total_days
+      
+      %dt= t 'staff.training.schedule.location.', :default => model_class.human_attribute_name(:location) + ":"
+      %dd=h @ptschedule.location
+      
+      %dt= t 'staff.training.schedule.min_participants', :default => model_class.human_attribute_name(:description) + ":"
+      %dd=h @ptschedule.min_participants
+      
+      %dt= t 'staff.training.schedule.max_participants', :default => model_class.human_attribute_name(:description) + ":"
+      %dd=h @ptschedule.max_participants
+      
+      %dt= t 'staff.training.course.provider', :default => model_class.human_attribute_name(:description) + ":"
+      %dd=h @ptschedule.course.provider.try(:name) 
+
+      %dt= t 'staff.training.schedule.payment_method', :default => model_class.human_attribute_name(:description) + ":"
+      %dd=h @ptschedule.render_payment
+      
+      %dt= t 'staff.training.schedule.remark', :default => model_class.human_attribute_name(:description) + ":"
+      %dd=h @ptschedule.remark
+    
+.row
+  .col-md-6.col-md-offset-2
+    %hr
+    .form-actions
+      = link_to content_tag(:i, "", class: "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), staff_training_ptschedules_path, class: 'btn btn-default'
+      - permitted_to? :manage, :ptbudgets do 
+        = link_to content_tag(:i, "", class: "fa fa-arrow-left ") + " " + t('staff.training.schedule.participants_expenses', :default => t("helpers.links.back")),  participants_expenses_staff_training_ptschedules_path, class: 'btn btn-default'
+      = link_to content_tag(:i, "", class: "fa fa-edit") + " " + t('.edit', :default => t("helpers.links.edit")), edit_staff_training_ptschedule_path(@ptschedule), class: 'btn btn-primary'
+      = link_to content_tag(:i, "", class: "fa fa-trash-o icon-white") + " " + t('.destroy', :default => t("helpers.links.destroy")), |
+          staff_training_ptschedule_path(@ptschedule),                                                                                                    |
+          :method => 'delete',                                                                                                           |
+          :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },                   |
+          class: 'btn btn-danger'
+

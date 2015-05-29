@@ -255,8 +255,8 @@ module DropDown
 
   PAYMENT=[
     #  Displayed       stored in db
-    [I18n.t('staff.training.budget.local_order'), 1],
-    [I18n.t('staff.training.budget.cash'), 2]
+    [I18n.t('staff.training.schedule.local_order'), 1],
+    [I18n.t('staff.training.schedule.cash'), 2]
   ]
   
   LOCATION_CATEGORIES = [

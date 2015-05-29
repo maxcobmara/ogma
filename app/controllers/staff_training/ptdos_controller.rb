@@ -89,16 +89,6 @@ class StaffTraining::PtdosController < ApplicationController
     end
   end
   
-  def participants_expenses
-    approved_budget_sch_ids= Ptschedule.where(budget_ok: true).pluck(:id)
-    @search = Ptdo.search(params[:q])
-    @ptdos = @search.result.where('ptschedule_id IN(?)', approved_budget_sch_ids).page(params[:page]||1) 
-    respond_to do |format|
-      format.html # index.html.erb
-      format.xml  { render :xml => @ptdos }
-    end
-  end
-  
   private
       # Use callbacks to share common setup or constraints between actions.
       def set_ptdo

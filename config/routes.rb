@@ -67,12 +67,15 @@ Ogma::Application.routes.draw do
   namespace :staff_training do
     resources :ptbudgets
     resources :ptcourses
-    resources :ptschedules
+    resources :ptschedules do
+      collection do 
+        get :participants_expenses
+      end
+    end
     resources :ptdos do
       collection do
         get :show_total_days
         get :training_report
-        get :participants_expenses
       end
     end
   end

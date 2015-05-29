@@ -417,11 +417,6 @@ ms_MY:
         new: Belanjawan Latihan Kakitangan Baru
         add_budget: "+ Belanjawan Tambahan"
         additional_budget: " (Tambahan)"
-        participants_expenses: "Penyertaan & Perbelanjaan"
-        payment_method: Kaedah Pembayaran
-        local_order: Pesanan Tempatan
-        cash: Tunai
-        remark: Catatan
       course:
         title_course: Kursus Latihan
         new: Kursus Staff Baru
@@ -467,7 +462,8 @@ ms_MY:
       schedule:
         title_schedule: Jadual Latihan
         new: Penjadualan Baru
-        title: Jadual Kursus Staf
+        edit: Sunting Jadual Latihan
+        title: Jadual Latihan Staf
         start: Tarikh Mula
         end: Tarikh Tamat
         participants: Peserta 
@@ -475,7 +471,16 @@ ms_MY:
         price: Harga
         duration: Jangka Masa
         budget_ok: Belanjawan Diluluskan
-        min_participants: Jum Minimum Peserta
+        min_participants: Jum Minima Peserta
+        max_participants: Jum Maksima Peserta
+        manage: Pengurusan Jadual
+        participants_expenses: "Penyertaan & Perbelanjaan"
+        payment_method: Kaedah Pembayaran
+        local_order: Pesanan Tempatan
+        cash: Tunai
+        remark: Catatan
+        budget_ok: Kelulusan Perbelanjaan
+        tick_to_approve: Pilih kotak semak untuk luluskan
       application_status:
         title_apply: Permohonan Latihan
         title: Status Permohonan
@@ -514,7 +519,6 @@ ms_MY:
         total: Jumlah
         note_hours_day: "Nota : 6 jam bersamaan 1 hari berkursus"
         total_day_attended: Jumlah hari latihan yang dihadiri
-        attended: "Sebaik sahaja kursus dihadiri (Laporan Peserta direkodkan), jangka masa kursus akan dipaparkan, sebaliknya 'Belum Hadir' akan dipaparkan."
         nil: Belum Hadir
         
     travel_request:

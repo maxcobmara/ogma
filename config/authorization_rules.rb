@@ -151,7 +151,7 @@ authorization do
    end
  
    role :training_administration do
-     has_permission_on [:staff_training_ptcourses, :staff_training_ptschedules], :to => :manage
+     has_permission_on [:staff_training_ptbudgets, :staff_training_ptcourses, :staff_training_ptschedules], :to => :manage
      has_permission_on :staff_training_ptdos, :to => :approve
    end
 

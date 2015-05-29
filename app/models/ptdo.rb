@@ -126,10 +126,6 @@ class Ptdo < ActiveRecord::Base
     total_days_instring
   end
   
-  def render_payment
-    (DropDown::PAYMENT.find_all{|disp, value| value == payment}).map{|disp, value| disp}.first
-  end
-  
 end
 
 # == Schema Information

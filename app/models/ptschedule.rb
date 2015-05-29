@@ -19,6 +19,10 @@ class Ptschedule < ActiveRecord::Base
     start+duration.to_i.day
   end
   
+  def render_payment
+    (DropDown::PAYMENT.find_all{|disp, value| value == payment}).map{|disp, value| disp}.first
+  end
+  
 end
 
 # == Schema Information
