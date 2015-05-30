@@ -1,31 +1,46 @@
-.col-md-8.col-md-offset-1
+- params[:job_level]= "skt_revision"
+.col-md-12
+  /.col-md-offset-1
   %b=t 'evaluation.skt_review.title'
   %BR
   %b=t 'evaluation.skt_review.drop'
   .row
     .col-sm-1= t 'evaluation.skt.priority'
-    .col-sm-5= t 'evaluation.skt.description'
-    .col-sm-5= t 'evaluation.skt.performance'
-    .col-sm-1= t 'evaluation.skt_review.drop2'
+    .col-sm-2= t 'evaluation.skt.description2'
+    .col-sm-2= t 'evaluation.skt.performance'
+    .col-sm-2= t 'evaluation.skt.target'
+    .col-sm-2= t 'evaluation.skt.achievement'
+    .col-sm-1= t 'evaluation.skt.progress'
+    .col-sm-2
+      = (t 'evaluation.skt.notes')+" / "+(t 'evaluation.skt_review.drop2')
+    /.col-sm-1= t 'evaluation.skt_review.drop2'
     %hr
   = f.fields_for :staff_appraisal_skts do |builder|
     - if builder.object.description.blank? != true && builder.object.half == 1 
-      = render 'staff_appraisal_skt_fields', :f => builder
+      /= render 'staff_appraisal_skt_fields', :f => builder
+      = render 'staff_appraisal_skt_fields', {:f => builder, :joblevel=>"skt_revision"}
   %br
   %b=t 'evaluation.skt_review.add'
   .row
     .col-sm-1= t 'evaluation.skt.priority'
-    .col-sm-5= t 'evaluation.skt.description'
-    .col-sm-5= t 'evaluation.skt.performance'
+    .col-sm-2= t 'evaluation.skt.description2'
+    .col-sm-2= t 'evaluation.skt.performance'
+    .col-sm-2= t 'evaluation.skt.target'
+    .col-sm-2= t 'evaluation.skt.achievement'
+    .col-sm-1= t 'evaluation.skt.progress'
+    .col-sm-2
+      = (t 'evaluation.skt.notes')+" / "+(t 'evaluation.skt_review.drop2')
     %hr
   = f.fields_for :staff_appraisal_skts do |builder|
     - if builder.object.description.blank? != true && builder.object.half == 2
-      = render 'staff_appraisal_skt_fields', :f => builder
+      /= render 'staff_appraisal_skt_fields', :f => builder
+      = render 'staff_appraisal_skt_fields', {:f => builder, :joblevel=>"skt_revision"}
   %br
   .row
     /= link_to_add_fields image_tag("add.png", :border => 0, :title => t('addmore')), f, :travel_claim_logs
     = link_to_add_fields t('helpers.label.staff_appraisal.add_activity'), f, :staff_appraisal_skts, "",  t('helpers.label.staff_appraisal.add_activity')
   %br  
+
 .col-md-10.col-md-offset-1 
   .form-group
     .col-md-6

@@ -1,21 +1,94 @@
 %fieldset
   = f.hidden_field :_destroy
-  - if f.object.description.blank? != true && f.object.half == 1 
+  /- if f.object.description.blank? != true && f.object.half == 1 
+  - if f.object.description.blank? != true && (f.object.half == 1 || f.object.half==2) && joblevel=="skt_revision" && f.object.id!=nil
     .row
       .col-sm-1= f.text_field :priority, :value=>f.object.priority, class: 'form-control', readonly: 'readonly'
-      .col-sm-5= f.text_field :description, :value=> f.object.description, class: 'form-control', readonly: 'readonly'
-      .col-sm-5= f.text_field :indicator, :value=> f.object.indicator, class: 'form-control', readonly: 'readonly'
-      .col-sm-1=f.check_box :is_dropped 
-  - else
-    .row 
-      .col-sm-1= f.select :priority, 1..5, {:include_blank=>"-"}, {class: 'form-control'}
-      .col-sm-5= f.text_field :description, placeholder: 'Activity / Project', class: 'form-control'
-      .col-sm-5= f.text_field :indicator, placeholder: 'Quantity / Quality / Time / Cost', class: 'form-control'
+      .col-sm-2= f.text_area :description, :size => "30x8", :value=> f.object.description, class: 'form-control', readonly: 'readonly'
+      .col-sm-2
+        = f.text_area :indicator_desc_quality, :size => "20x1", placeholder: t('evaluation.skt.quality'), class: 'form-control', readonly: 'readonly'
+        = f.text_area :indicator_desc_time, :size => "20x1", placeholder: t('evaluation.skt.time'), class: 'form-control', readonly: 'readonly'
+        = f.text_area :indicator_desc_quantity, :size => "20x1", placeholder: t('evaluation.skt.quantity'), class: 'form-control', readonly: 'readonly'
+        = f.text_area :indicator_desc_cost, :size => "20x1", placeholder: t('evaluation.skt.cost'), class: 'form-control', readonly: 'readonly'
+      .col-sm-2
+        = f.text_area :target_quality, :size => "20x1", placeholder: t('evaluation.skt.quality'), class: 'form-control', readonly: 'readonly'
+        = f.text_area :target_time, :size => "20x1", placeholder: t('evaluation.skt.time'), class: 'form-control', readonly: 'readonly'
+        = f.text_area :target_quantity, :size => "20x1", placeholder: t('evaluation.skt.quantity'), class: 'form-control', readonly: 'readonly'
+        = f.text_area :target_cost, :size => "20x1", placeholder: t('evaluation.skt.cost'), class: 'form-control', readonly: 'readonly'
+      .col-sm-2
+        = f.text_area :achievement_quality, :size => "20x1", placeholder: t('evaluation.skt.quality'), class: 'form-control'
+        = f.text_area :achievement_time, :size => "20x1", placeholder: t('evaluation.skt.time'), class: 'form-control'
+        = f.text_area :achievement_quantity, :size => "20x1", placeholder: t('evaluation.skt.quantity'), class: 'form-control'
+        = f.text_area :achievement_cost, :size => "20x1", placeholder: t('evaluation.skt.cost'), class: 'form-control'
       .col-sm-1
-        = link_to content_tag(:i, "", class: "fa fa-trash-o"), data: {"data-toggle" => "tooltip", title: "Delete"}, class: "btn btn-danger remove_fields"
-        /= link_to_remove_fields image_tag("delete.png", :border => 0, :title => 'Remove'), f 
-        /= link_to content_tag(:i,"", class: "fa-fa-trash-o"), '#', :onclick => 'rmv_field($(this))', title: "Delete", class: "btn btn-danger remove_fields"
-        = f.hidden_field :is_dropped, :value=> "0"
+        = f.text_field :progress_quality, :size => 5, placeholder: t('evaluation.skt.quality'), class: 'form-control'
+        = f.text_field :progress_time, :size => 5, placeholder: t('evaluation.skt.time'), class: 'form-control'
+        = f.text_field :progress_quantity, :size => 5, placeholder: t('evaluation.skt.quantity'), class: 'form-control'
+        = f.text_field :progress_cost, :size => 5, placeholder: t('evaluation.skt.cost'), class: 'form-control'
+      .col-sm-2
+        = f.text_area :notes_quality, :size => "20x1", placeholder: t('evaluation.skt.quality'), class: 'form-control'
+        = f.text_area :notes_time, :size => "20x1", placeholder: t('evaluation.skt.time'), class: 'form-control'
+        = f.text_area :notes_quantity, :size => "20x1", placeholder: t('evaluation.skt.quantity'), class: 'form-control'
+        = f.text_area :notes_cost, :size => "20x1", placeholder: t('evaluation.skt.cost'), class: 'form-control'
+        /.col-sm-1
+        = f.check_box :is_dropped if f.object.half == 1
+        = f.hidden_field :dropped_on, :default => Date.today if f.object.half == 1
+        = f.check_box '_destroy' if f.object.half == 2
+        
+  - else
+    - if params[:job_level]=="skt_revision"
+      .row 
+        .col-sm-1= f.select :priority, 1..5, {:include_blank=>"-"}, {class: 'form-control'}
+        .col-sm-2= f.text_area:description, :size=>"30x8", placeholder: 'Activity / Project', class: 'form-control'
+        .col-sm-2
+          = f.text_area :indicator_desc_quality, :size => "20x1", placeholder: t('evaluation.skt.quality'), class: 'form-control'
+          = f.text_area :indicator_desc_time, :size => "20x1", placeholder: t('evaluation.skt.time'), class: 'form-control'
+          = f.text_area :indicator_desc_quantity, :size => "20x1", placeholder: t('evaluation.skt.quantity'), class: 'form-control'
+          = f.text_area :indicator_desc_cost, :size => "20x1", placeholder: t('evaluation.skt.cost'), class: 'form-control'
+        .col-sm-2
+          = f.text_area :target_quality, :size => "20x1", placeholder: t('evaluation.skt.quality'), class: 'form-control'
+          = f.text_area :target_time, :size => "20x1", placeholder: t('evaluation.skt.time'), class: 'form-control'
+          = f.text_area :target_quantity, :size => "20x1", placeholder: t('evaluation.skt.quantity'), class: 'form-control'
+          = f.text_area :target_cost, :size => "20x1", placeholder: t('evaluation.skt.cost'), class: 'form-control'
+        .col-sm-2
+          = f.text_area :achievement_quality, :size => "20x1", placeholder: t('evaluation.skt.quality'), class: 'form-control'
+          = f.text_area :achievement_time, :size => "20x1", placeholder: t('evaluation.skt.time'), class: 'form-control'
+          = f.text_area :achievement_quantity, :size => "20x1", placeholder: t('evaluation.skt.quantity'), class: 'form-control'
+          = f.text_area :achievement_cost, :size => "20x1", placeholder: t('evaluation.skt.cost'), class: 'form-control'
+        .col-sm-1
+          = f.text_field :progress_quality, :size => 5, placeholder: t('evaluation.skt.quality'), class: 'form-control'
+          = f.text_field :progress_time, :size => 5, placeholder: t('evaluation.skt.time'), class: 'form-control'
+          = f.text_field :progress_quantity, :size => 5, placeholder: t('evaluation.skt.quantity'), class: 'form-control'
+          = f.text_field :progress_cost, :size => 5, placeholder: t('evaluation.skt.cost'), class: 'form-control'
+        .col-sm-2
+          = f.text_area :notes_quality, :size => "20x1", placeholder: t('evaluation.skt.quality'), class: 'form-control'
+          = f.text_area :notes_time, :size => "20x1", placeholder: t('evaluation.skt.time'), class: 'form-control'
+          = f.text_area :notes_quantity, :size => "20x1", placeholder: t('evaluation.skt.quantity'), class: 'form-control'
+          = f.text_area :notes_cost, :size => "20x1", placeholder: t('evaluation.skt.cost'), class: 'form-control'
+          /.col-sm-1
+          = link_to content_tag(:i, "", class: "fa fa-trash-o"), data: {"data-toggle" => "tooltip", title: "Delete"}, class: "btn btn-danger remove_fields"
+          /= link_to_remove_fields image_tag("delete.png", :border => 0, :title => 'Remove'), f 
+          /= link_to content_tag(:i,"", class: "fa-fa-trash-o"), '#', :onclick => 'rmv_field($(this))', title: "Delete", class: "btn btn-danger remove_fields"
+          = f.hidden_field :is_dropped, :value=> "0"
+    - else
+      .row 
+        .col-sm-1= f.select :priority, 1..5, {:include_blank=>"-"}, {class: 'form-control'}
+        .col-sm-5= f.text_area:description, :size=>"30x3", placeholder: 'Activity / Project', class: 'form-control'
+        .col-sm-3
+          = f.text_area :indicator_desc_quality, :size => "20x1", placeholder: t('evaluation.skt.quality'), class: 'form-control'
+          = f.text_area :indicator_desc_time, :size => "20x1", placeholder: t('evaluation.skt.time'), class: 'form-control'
+          = f.text_area :indicator_desc_quantity, :size => "20x1", placeholder: t('evaluation.skt.quantity'), class: 'form-control'
+          = f.text_area :indicator_desc_cost, :size => "20x1", placeholder: t('evaluation.skt.cost'), class: 'form-control'
+        .col-sm-3
+          = f.text_area :target_quality, :size => "20x1", placeholder: t('evaluation.skt.quality'), class: 'form-control'
+          = f.text_area :target_time, :size => "20x1", placeholder: t('evaluation.skt.time'), class: 'form-control'
+          = f.text_area :target_quantity, :size => "20x1", placeholder: t('evaluation.skt.quantity'), class: 'form-control'
+          = f.text_area :target_cost, :size => "20x1", placeholder: t('evaluation.skt.cost'), class: 'form-control'
+          /.col-sm-1
+          = link_to content_tag(:i, "", class: "fa fa-trash-o"), data: {"data-toggle" => "tooltip", title: "Delete"}, class: "btn btn-danger remove_fields"
+          /= link_to_remove_fields image_tag("delete.png", :border => 0, :title => 'Remove'), f 
+          /= link_to content_tag(:i,"", class: "fa-fa-trash-o"), '#', :onclick => 'rmv_field($(this))', title: "Delete", class: "btn btn-danger remove_fields"
+          = f.hidden_field :is_dropped, :value=> "0"
 :javascript
   
   function rmv_field(curr_fieldset) {

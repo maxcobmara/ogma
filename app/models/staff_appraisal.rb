@@ -16,6 +16,7 @@ class StaffAppraisal < ActiveRecord::Base
    has_many :trainneeds, :foreign_key => 'evaluation_id', :dependent => :destroy
    accepts_nested_attributes_for :trainneeds, :allow_destroy => true, :reject_if => lambda { |a| a[:name].blank? }
   
+   validates_presence_of :skt_pyd_report, :if => :is_skt_pyd_report_done?
    validates_presence_of :evaluation_year
    validates_uniqueness_of :evaluation_year, :scope => :staff_id, :message => "Your evaluation for this year already exists"
    #validates_presence_of  :e1g1q1, :e1g1q2,:e1g1q3, :e1g1q4, :e1g1q5,:e1g1_total, :e1g1_percent,:e1g2q1, :e1g2q2, :e1g2q3, :e1g2q4, :e1g2_total, :e1g2_percent, :e1g3q1, :e1g3q2, :e1g3q3, :e1g3q4, :e1g3q5, :e1g3_total, :e1g3_percent,:e1g4,:e1g4_percent, :e1_total, :e1_years, :e1_months,  :e1_performance, :e1_progress, :if => :is_submit_e2? #pending - update page (when validation fails)

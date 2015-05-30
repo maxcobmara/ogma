@@ -93,6 +93,7 @@ ms_MY:
         e1_performance: Pencapaian Keseluruhan
         e1_progress: Perkembangan Karier
         submit_e2_on: Tarikh hantar ke PPK
+        skt_pyd_report: Laporan oleh PYD
     errors:
         template:
           body: "Berikut adalah beberapa masalah:"
@@ -708,6 +709,7 @@ ms_MY:
     skt: 
       title: "Lampiran A : Bahagian I - Penetapan Sasaran Kerja Tahunan"
       description: "Deskripsi Aktiviti & Projek"
+      description2: Deskripsi
       performance: Penunjuk Prestasi
       priority: Keutamaan
       submit_notify: "Penghantaran SKT akan dimaklumkan kepada Pegawai Penilai Pertama (PPP) dan tiada suntingan boleh dibuat ke atas rekod ini lagi."
