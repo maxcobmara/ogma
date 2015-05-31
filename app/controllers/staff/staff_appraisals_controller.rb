@@ -40,7 +40,7 @@ class Staff::StaffAppraisalsController < ApplicationController
   
   def edit
     @staff_appraisal = StaffAppraisal.find(params[:id])
-    if params[:job_type] && params[:job_level]
+    if params[:job_type] && params[:job_level] 
       @job_type=params[:job_type] #redo_performance
       @job_level=params[:job_level]
     end

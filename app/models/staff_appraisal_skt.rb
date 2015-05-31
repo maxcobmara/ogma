@@ -112,8 +112,8 @@ class StaffAppraisalSkt < ActiveRecord::Base
     end
   end
   
-  def render_indicator
-    (DropDown::INDICATORS.find_all{|disp, value| value == indicator}).map {|disp, value| disp}.first
-  end
+#   def render_indicator
+#     (DropDown::INDICATORS.find_all{|disp, value| value == indicator}).map {|disp, value| disp}.first
+#   end
  
 end
