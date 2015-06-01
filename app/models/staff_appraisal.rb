@@ -88,9 +88,9 @@ class StaffAppraisal < ActiveRecord::Base
        I18n.t('staff.staff_appraisal.ready_for_ppp_skt_report')
      elsif is_skt_pyd_report_done == true && is_skt_ppp_report_done == true && is_submit_for_evaluation != true
        I18n.t('staff.staff_appraisal.ppp_report_complete')
-     elsif is_skt_ppp_report_done == true && is_submit_for_evaluation == true && is_submit_e2 != true
+     elsif (is_skt_ppp_report_done == true && is_submit_for_evaluation == true && is_submit_e2 != true) || (is_submit_e2==true && (e1_performance=="" || e1_progress=="" || submit_e2_on.nil? || (e1_months==0 && e1_years==0)) )
        I18n.t('staff.staff_appraisal.submitted_for_evaluation_by_ppp')
-    elsif is_submit_for_evaluation == true && is_submit_e2 == true && ( (e1_months > 1 && e1_years==0)|| (e1_months ==0 && e1_years > 0) || (e1_months!=0 &&e1_years!=0) || (e1_months>0 &&e1_years>0) )
+    elsif is_submit_for_evaluation == true && is_submit_e2 == true && ( (e1_months > 0 && e1_years==0)|| (e1_months ==0 && e1_years > 0) || (e1_months!=0 &&e1_years!=0) || (e1_months>0 &&e1_years>0) )
        I18n.t('staff.staff_appraisal.submitted_by_ppp_for_evaluation_to_PPK')
      end
    end   

@@ -78,6 +78,13 @@ class Staff::StaffAppraisalsController < ApplicationController
   end
   
   def destroy
+    @staff_appraisal = StaffAppraisal.find(params[:id])
+    respond_to do |format|
+      if @staff_appraisal.destroy
+        format.html { redirect_to staff_staff_appraisals_url }
+        format.json { head :no_content }
+      end 
+    end
   end
   
   def appraisal_form
