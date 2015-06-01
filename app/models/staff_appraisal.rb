@@ -78,19 +78,19 @@ class StaffAppraisal < ActiveRecord::Base
    def evaluation_status
      if is_skt_submit != true
        I18n.t('staff.staff_appraisal.skt_being_formulated')
-     elsif is_complete == true #&& is_completed_on !=nil && e2_performance !=nil
+     elsif is_complete == true && ( (e2_months > 1 && e2_years==0)|| (e2_months ==0 && e2_years > 0) || (e2_months!=0 &&e2_years!=0) || (e2_months>0 &&e2_years>0) )#&& is_completed_on !=nil && e2_performance !=nil
        I18n.t('staff.staff_appraisal.staff_appraisal_complete')
      elsif is_skt_submit == true && is_skt_endorsed != true
        I18n.t('staff.staff_appraisal.skt_awaiting_ppp_endorsement')
-     elsif is_skt_submit == true && is_skt_endorsed == true && is_skt_pyd_report_done != true
+     elsif is_skt_submit == true && is_skt_endorsed == true && ((is_skt_pyd_report_done != true) || (is_skt_pyd_report_done == true && skt_pyd_report ==''))
        I18n.t('staff.staff_appraisal.skt_review')
-     elsif is_skt_pyd_report_done == true && is_skt_ppp_report_done != true
+     elsif is_skt_pyd_report_done == true && is_skt_ppp_report_done != true && skt_pyd_report !=''
        I18n.t('staff.staff_appraisal.ready_for_ppp_skt_report')
      elsif is_skt_pyd_report_done == true && is_skt_ppp_report_done == true && is_submit_for_evaluation != true
        I18n.t('staff.staff_appraisal.ppp_report_complete')
      elsif is_skt_ppp_report_done == true && is_submit_for_evaluation == true && is_submit_e2 != true
        I18n.t('staff.staff_appraisal.submitted_for_evaluation_by_ppp')
-    elsif is_submit_for_evaluation == true && is_submit_e2 == true
+    elsif is_submit_for_evaluation == true && is_submit_e2 == true && ( (e1_months > 1 && e1_years==0)|| (e1_months ==0 && e1_years > 0) || (e1_months!=0 &&e1_years!=0) || (e1_months>0 &&e1_years>0) )
        I18n.t('staff.staff_appraisal.submitted_by_ppp_for_evaluation_to_PPK')
      end
    end   

@@ -58,7 +58,7 @@
           = f.check_box :is_submit_e2, :id => 'submit_for_evaluation2'
         .col-md-2
           #span_submit2{:style=>"display: none;"}
-            = f.text_field :submit_e2_on, :class => 'date_picker form-control'   
+            = f.text_field :submit_e2_on, class: 'date_picker_reverse form-control', value: Date.today
       .form-group
         .col-sm-2
           &nbsp;

@@ -26,3 +26,10 @@ module Prawn
     end
   end
 end
+
+#refer ogma/config/initializers/prawn_extensions.rb 
+#https://www.bunkus.org/blog/2009/07/different-background-images-and-page-layouts-in-a-single-pdf-with-prawn/
+#works for tables that automatically span into new pages (background), as 'color' must be called upon new page creation (note cursor position)
+#http://inboxhealthinterns.blogspot.com/2014/07/using-prawn-to-dynamically-generate-pdfs.html
+#calling 'color' after text/table already displayed, will cover text/table 
+#sample usage - 'run_after_new_page' in ogma/app/pdf/appraisal_form_pdf.rb

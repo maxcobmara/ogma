@@ -38,7 +38,7 @@
   - else
     - if params[:job_level]=="skt_revision"
       .row 
-        .col-sm-1= f.select :priority, 1..5, {:include_blank=>"-"}, {class: 'form-control'}
+        .col-sm-1= f.select :priority, 1..8, {:include_blank=>"-"}, {class: 'form-control'}
         .col-sm-2= f.text_area:description, :size=>"30x8", placeholder: 'Activity / Project', class: 'form-control'
         .col-sm-2
           = f.text_area :indicator_desc_quality, :size => "20x1", placeholder: t('evaluation.skt.quality'), class: 'form-control'
@@ -72,7 +72,7 @@
           = f.hidden_field :is_dropped, :value=> "0"
     - else
       .row 
-        .col-sm-1= f.select :priority, 1..5, {:include_blank=>"-"}, {class: 'form-control'}
+        .col-sm-1= f.select :priority, 1..8, {:include_blank=>"-"}, {class: 'form-control'}
         .col-sm-5= f.text_area:description, :size=>"30x3", placeholder: 'Activity / Project', class: 'form-control'
         .col-sm-3
           = f.text_area :indicator_desc_quality, :size => "20x1", placeholder: t('evaluation.skt.quality'), class: 'form-control'

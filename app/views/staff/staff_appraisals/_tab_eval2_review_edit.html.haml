@@ -31,12 +31,12 @@
         = @staff_appraisal.eval2_officer.try(:name)
     .form-group
       .col-sm-2.control-label
-        = f.label :is_complete
+        = f.label (t 'staff.staff_appraisal.is_complete')
       .col-md-1
         = f.check_box :is_complete, :id => 'is_complete'
       .col-md-2
         #span_is_complete{:style=>"display: none;"}
-          = f.text_field :is_completed_on, :class => 'date_picker form-control'   
+          = f.text_field :is_completed_on, class: 'date_picker reverse form-control', value: Date.today.strftime('%d-%m-%Y')
     .form-group
       .col-sm-2
         &nbsp;

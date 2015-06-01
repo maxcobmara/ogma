@@ -707,6 +707,7 @@ en:
       ppp_report_complete: PPP Report complete
       submitted_for_evaluation_by_ppp: Submitted for Evaluation by PPP
       submitted_by_ppp_for_evaluation_to_PPK: Submitted by PPP for Evaluation to PPK
+      is_complete: "Staff Appraisal completed?"
     
     evactivity:
       actdt: Date

@@ -248,7 +248,7 @@ end
        header = [[ 'Nama Latihan (Nyatakan sijil jika ada)', 'Tarikh/Tempoh', ' Tempat']]
        header +
          Ptdo.where('staff_id = ? and ptschedule_id IN(?)',@staff_appraisal.appraised, schedule_of_ptdoyear).map do |ptdo|
-         ["#{ptdo.ptschedule.course.name}", "#{ptdo.ptschedule.start.try(:strftime, "%d/%m/%y")}", "#{ptdo.ptschedule.location}"]
+         ["#{ptdo.ptschedule.course.name}", "#{ptdo.ptschedule.start.try(:strftime, "%d/%m/%y")} (#{ptdo.ptschedule.course.course_total_days})", "#{ptdo.ptschedule.location}"]
        end
      end   
      
@@ -422,7 +422,7 @@ def bahagian4_4
        data2 = [["", "KRITERIA (Dinilai berasaskan SKT)", "PPP", "PPK"],
                  ["3. ","  KUANTITI HASIL KERJA","",""],
                  ["","Kuantiti hasil kerja seperti jumlah bilangan, kadar, kekerapan dan sebagainya berbanding dengan sasaran kuantiti kerja yang ditetapkan.","#{@staff_appraisal.e1g2q3}","#{@staff_appraisal.e2g2q3}"],
-                 ["", "Jumlah markah mengikut wajaran","#{@staff_appraisal.e1g2_total} x 25 = #{@staff_appraisal.e1g2_percent} / 30",
+                 ["", "Jumlah markah mengikut wajaran","#{@staff_appraisal.e1g2_total} x 25 = #{@view.number_with_precision(@staff_appraisal.e1g2_percent, precision:2)} / 30",
                    "#{@staff_appraisal.e2g2_total} x 25 = #{@staff_appraisal.e2g2_percent} / 30"]]
                    
                    table(data2 , :column_widths => [30, 250,100,100], :cell_style => { :size => 10}) do
@@ -497,7 +497,7 @@ def bahagian4_3
                  ["3. "," KEBERKESANAN KOMUNIKASI","",""],
                  ["","Kebolehan menyampaikan maksud, pendapat, kefahaman atau arahan secara lisan dan tulisan berkaitan dengan bidang tugas merangkumi penguasaan bahasa melalui tulisan dan lisan dengan menggunakan tatabahasa dan persembahan yang baik","#{@staff_appraisal.e1g2q3}","#{@staff_appraisal.e2g2q3}"],
                  ["", "Jumlah markah mengikut wajaran","#{@staff_appraisal.e1g2_total} x 25 = #{@staff_appraisal.e1g2_percent} / 30",
-                   "#{@staff_appraisal.e2g2_total} x 25 = #{@staff_appraisal.e2g2_percent} / 30"]]
+                   "#{@staff_appraisal.e2g2_total} x 25 = #{@view.number_with_precision(@staff_appraisal.e2g2_percent, precision: 2)} / 30"]]
                    
                    table(data2 , :column_widths => [30, 250,100,100], :cell_style => { :size => 10}) do
                      row(0).column(1).align = :center
@@ -887,7 +887,7 @@ def bahagian8
   text "3.  Adalah disahkan bahawa prestasi pegawai ini telah dimaklumkan kepada PYD.", :align => :left, :size => 12
   move_down 20
   data1 = [[ "Nama PPP :", "#{@staff_appraisal.eval1_officer.name}"],
-            ["Jawatan :", "#{@staff_appraisal.eval1_officer.positions.name}"],
+            ["Jawatan :", "#{@staff_appraisal.eval1_officer.positions.first.name}"],
              ["Kementerian /Jabatan : ","Kolej Sains Kesihatan Bersekutu Johor Bahru"],
            ["No. K.P : ","#{@staff_appraisal.eval1_officer.formatted_mykad}"]]
              
@@ -1011,42 +1011,6 @@ def lampiranA1
   move_down 10
   
  end
-  
-#   def table_lampiranA1 
-#     item_count=2
-#     item_count_per_skt=[]
-#     @staff_appraisal.staff_appraisal_skts.where('half =?', 1).order(priority: :asc).each_with_index do |staff_appraisal_skt, indx|
-#       if indx==0
-#           item_count+=1 if staff_appraisal_skt.indicator_desc_quality!='' && staff_appraisal_skt.target_quality!=''
-#          item_count+=1 if staff_appraisal_skt.indicator_desc_time!='' && staff_appraisal_skt.target_time!=''
-#          item_count+=1 if staff_appraisal_skt.indicator_desc_quantity!='' && staff_appraisal_skt.target_quantity!=''
-#          item_count+=1 if staff_appraisal_skt.indicator_desc_cost!='' && staff_appraisal_skt.target_cost!=''
-#          item_count_per_skt << item_count
-#       end 
-#     end 
-#     table(line_item_rows6 , :column_widths => [40, 100, 100, 100, 70, 100], :cell_style => { :size => 11, :inline_format => :true}) do
-#       #row(0).font_style = :bold
-#       row(0..1).background_color = "F0EEEE"
-#       row(2..item_count_per_skt[0]-1).background_color = "FFFFFF"
-#     end
-#   end
-#   
-#   def line_item_rows6
-#     counter = counter || 0
-#     arr=[]
-#     @staff_appraisal.staff_appraisal_skts.where('half =?', 1).order(priority: :asc).each_with_index do |staff_appraisal_skt, indx|
-#       if indx==0
-#          counter += 1
-#          arr << [ "#{staff_appraisal_skt.priority.blank? ? staff_appraisal_skt.priority : counter}", {content: "#{staff_appraisal_skt.description}", colspan: 5}]
-#          arr << [ {content: "Petunjuk Prestasi", colspan: 2}, "Sasaran", "Pencapaian", "%", "Ulasan"]
-#          arr << [ "Kualiti", "#{staff_appraisal_skt.indicator_desc_quality}", "#{staff_appraisal_skt.target_quality}", "#{staff_appraisal_skt.achievement_quality}", "#{staff_appraisal_skt.progress_quality}", "#{staff_appraisal_skt.notes_quality}"] if staff_appraisal_skt.indicator_desc_quality!='' && staff_appraisal_skt.target_quality!=''
-#          arr << [ "Masa", "#{staff_appraisal_skt.indicator_desc_time}", "#{staff_appraisal_skt.target_time}", "#{staff_appraisal_skt.achievement_time}", "#{staff_appraisal_skt.progress_time}", "#{staff_appraisal_skt.notes_time}"] if staff_appraisal_skt.indicator_desc_time!='' && staff_appraisal_skt.target_time!=''
-#          arr << [ "Kuantiti", "#{staff_appraisal_skt.indicator_desc_quantity}", "#{staff_appraisal_skt.target_quantity}", "#{staff_appraisal_skt.achievement_quantity}", "#{staff_appraisal_skt.progress_quantity}", "#{staff_appraisal_skt.notes_quantity}"] if staff_appraisal_skt.indicator_desc_quantity!='' && staff_appraisal_skt.target_quantity!=''
-#          arr << [ "Kos", "#{staff_appraisal_skt.indicator_desc_cost}", "#{staff_appraisal_skt.target_cost}", "#{staff_appraisal_skt.achievement_cost}", "#{staff_appraisal_skt.progress_cost}", "#{staff_appraisal_skt.notes_cost}"] if staff_appraisal_skt.indicator_desc_cost!='' && staff_appraisal_skt.target_cost!=''
-#       end 
-#     end
-#     arr
-#   end
   
   def table_lampiranA1
     item_count=0

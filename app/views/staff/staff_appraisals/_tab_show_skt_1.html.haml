@@ -19,12 +19,12 @@
       %br
       %table.table-striped.table-bordered
         %tr
-          %th &nbsp;
-          %th=t 'evaluation.skt.performance'
-          %th=t 'evaluation.skt.target'
-          %th=t 'evaluation.skt.achievement'
-          %th=t 'evaluation.skt.progress'
-          %th=t 'evaluation.skt.notes'
+          %th{:width => "10%"} 
+          %th{:width => "20%"}=t 'evaluation.skt.performance'
+          %th{:width => "20%"}=t 'evaluation.skt.target'
+          %th{:width => "20%"}=t 'evaluation.skt.achievement'
+          %th{:width => "10%"}=t 'evaluation.skt.progress'
+          %th{:width => "20%"}=t 'evaluation.skt.notes'
         %tr
           %th=t 'evaluation.skt.quality'
           - if staff_appraisal_skt.is_dropped == true
@@ -34,7 +34,7 @@
             %td= staff_appraisal_skt.indicator_desc_quality
             %td= staff_appraisal_skt.target_quality
           %td= staff_appraisal_skt.achievement_quality
-          %td= staff_appraisal_skt.progress_quality
+          %td= number_with_precision(staff_appraisal_skt.progress_quality, precision: 2)
           %td= staff_appraisal_skt.notes_quality
         %tr
           %th=t 'evaluation.skt.time'
@@ -45,7 +45,7 @@
             %td= staff_appraisal_skt.indicator_desc_time
             %td= staff_appraisal_skt.target_time
           %td= staff_appraisal_skt.achievement_time
-          %td= staff_appraisal_skt.progress_time
+          %td= number_with_precision(staff_appraisal_skt.progress_time, precision: 2)
           %td= staff_appraisal_skt.notes_time
         %tr
           %th=t 'evaluation.skt.quantity'
@@ -56,7 +56,7 @@
             %td= staff_appraisal_skt.indicator_desc_quantity
             %td= staff_appraisal_skt.target_quantity
           %td= staff_appraisal_skt.achievement_quantity
-          %td= staff_appraisal_skt.progress_quantity
+          %td= number_with_precision(staff_appraisal_skt.progress_quantity, precision: 2)
           %td= staff_appraisal_skt.notes_quantity
         %tr
           %th=t 'evaluation.skt.cost'
@@ -67,6 +67,6 @@
             %td= staff_appraisal_skt.indicator_desc_cost
             %td= staff_appraisal_skt.target_cost
           %td= staff_appraisal_skt.achievement_cost
-          %td= staff_appraisal_skt.progress_cost
+          %td= number_with_precision(staff_appraisal_skt.progress_cost, precision: 2)
           %td= staff_appraisal_skt.notes_cost
       %hr 

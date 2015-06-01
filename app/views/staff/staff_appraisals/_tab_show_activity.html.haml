@@ -28,15 +28,14 @@
         %dd= ptdo.ptschedule.course.name
         	 
         %dt= t 'evaluation.form.type'
-        %dd= (DropDown::COURSE_TYPE.find_all{|disp, value| value == ptdo.ptschedule.course.course_type}).map {|disp, value| disp}[0]
+        %dd= training_classification(ptdo.ptschedule.course)+" - "+ course_type(ptdo.ptschedule.course)
         
         %dt= t 'evaluation.form.date'
         %dd= l(ptdo.ptschedule.start)
    
         %dt= t 'evaluation.form.duration'
-        %dd
-          = ptdo.ptschedule.course.duration
-          = t 'evaluation.form.days'
+        %dd= ptdo.ptschedule.course.course_total_days
+
         %hr
 
   = t 'evaluation.form.label_004'

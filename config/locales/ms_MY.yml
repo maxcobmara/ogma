@@ -700,6 +700,7 @@ ms_MY:
       ppp_report_complete: Laporan PPP selesai
       submitted_for_evaluation_by_ppp: Dihantar untuk penilaian PPP
       submitted_by_ppp_for_evaluation_to_PPK: Dihantar oleh PPP utuk peniaian PPK
+      is_complete: "Penilaian Prestasi selesai?"
         
     evactivity:
       actdt: Tarikh
