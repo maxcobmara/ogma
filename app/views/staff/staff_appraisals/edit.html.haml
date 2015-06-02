@@ -17,7 +17,7 @@
     
     = render 'activity', :f=> f  if @staff_appraisal.evaluation_status == t('staff.staff_appraisal.ppp_report_complete') 
     /e1_performance, :e1_progress, :submit_e2_on
-    - if (@staff_appraisal.evaluation_status == t('staff.staff_appraisal.submitted_for_evaluation_by_ppp')# || (@staff_appraisal.is_submit_e2==true && (@staff_appraisal.e1_performance=="" || @staff_appraisal.e1_progress=="" || @staff_appraisal.submit_e2_on.nil? || (@staff_appraisal.e1_months <1 && @staff_appraisal.e1_years==0))))
+    - if (@staff_appraisal.evaluation_status == t('staff.staff_appraisal.submitted_for_evaluation_by_ppp'))# || (@staff_appraisal.is_submit_e2==true && (@staff_appraisal.e1_performance=="" || @staff_appraisal.e1_progress=="" || @staff_appraisal.submit_e2_on.nil? || (@staff_appraisal.e1_months <1 && @staff_appraisal.e1_years==0))))
       = render 'evaluation', :f=> f
     
     - if (@staff_appraisal.evaluation_status == t('staff.staff_appraisal.submitted_by_ppp_for_evaluation_to_PPK'))# || (@staff_appraisal.is_submit_e2==true && !@staff_appraisal.e1_performance=="" && !@staff_appraisal.e1_progress=="" && !@staff_appraisal.submit_e2_on.nil? && ((@staff_appraisal.e1_months > 1 && @staff_appraisal.e1_years==0)|| (@staff_appraisal.e1_months ==0 && @staff_appraisal.e1_years > 0) || (@staff_appraisal.e1_months!=0 && @staff_appraisal.e1_years!=0))))
