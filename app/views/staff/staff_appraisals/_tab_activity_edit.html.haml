@@ -2,7 +2,8 @@
   /Part IIa - 1. Activities (Activities & Contributions Outside of Official Duties)
   %b=t 'evaluation.form.title_partIIa'
   .row
-    .col-sm-7= t 'evaluation.form.label_001'
+    .col-sm-2= t 'evaluation.form.date'
+    .col-sm-6= t 'evaluation.form.label_001'
     .col-sm-3= t 'evaluation.form.level'
     %hr
   = f.fields_for :evactivities do |builder|
@@ -18,22 +19,21 @@
   %BR
   %b=t 'evaluation.form.label_003'
   .row
-    .col-sm-5= t 'evaluation.form.training_name'
+    .col-sm-3= t 'evaluation.form.training_name'
     .col-sm-3= t 'evaluation.form.type'
     .col-sm-2= t 'evaluation.form.date'
     .col-sm-2= t 'evaluation.form.duration'
+    .col-sm-2= t 'pschedule.location'
     %hr
     
-  /- for ptdo in Ptdo.find(:all, :conditions => ['staff_id = ?', Login.current_login.staff_id]) 
-  - for ptdo in Ptdo.where(staff_id: 25) 
+  - for ptdo in Ptdo.where(staff_id: @staff_appraisal.appraised) 
     - if ptdo.ptschedule.start.year==@staff_appraisal.evaluation_year.year
       .row
-        .col-sm-5= ptdo.ptschedule.course.name 
-        .col-sm-3= (DropDown::COURSE_TYPE.find_all{|disp, value| value == ptdo.ptschedule.course.course_type}).map {|disp, value| disp}[0]
+        .col-sm-3= ptdo.ptschedule.course.name 
+        .col-sm-3= training_classification(ptdo.ptschedule.course)+" - "+course_type(ptdo.ptschedule.course)
         .col-sm-2= l(ptdo.ptschedule.start) 
-        .col-sm-2
-          = ptdo.ptschedule.course.duration
-          = t 'evaluation.form.days'
+        .col-sm-2= ptdo.ptschedule.course.course_total_days
+        .col-sm-2= ptdo.ptschedule.location
   %br
 
   /Part IIb - ii) List of Training Needed

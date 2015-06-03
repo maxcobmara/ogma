@@ -4,6 +4,17 @@ class Appraisal_formPdf < Prawn::Document
     @staff_appraisal = staff_appraisal
     @view = view
     #font " "
+     
+    #refer ogma/config/initializers/prawn_extensions.rb 
+    #https://www.bunkus.org/blog/2009/07/different-background-images-and-page-layouts-in-a-single-pdf-with-prawn/
+    #works for tables that automatically span into new pages (background), as 'color' must be called upon new page creation (note cursor position)
+    #http://inboxhealthinterns.blogspot.com/2014/07/using-prawn-to-dynamically-generate-pdfs.html
+    #calling 'color' after text/table already displayed, will cover text/table 
+    run_after_new_page do
+      color
+    end
+    
+    
     def color_4
     #fill_color "FAFAD2" 
     #fill_rectangle [-40, 900], 1200, 1000
@@ -105,7 +116,7 @@ def color
       options = { :at => [bounds.right - 395, 0],
                   :width => 150,
                   :align => :right,
-                  :page_filter => (1..8),
+                  :page_filter => (1..12),
                   :start_count_at => 1,
                   :color => "010000" }
       number_pages string, options
@@ -237,7 +248,7 @@ end
        header = [[ 'Nama Latihan (Nyatakan sijil jika ada)', 'Tarikh/Tempoh', ' Tempat']]
        header +
          Ptdo.where('staff_id = ? and ptschedule_id IN(?)',@staff_appraisal.appraised, schedule_of_ptdoyear).map do |ptdo|
-         ["#{ptdo.ptschedule.course.name}", "#{ptdo.ptschedule.start.try(:strftime, "%d/%m/%y")}", "#{ptdo.ptschedule.location}"]
+         ["#{ptdo.ptschedule.course.name}", "#{ptdo.ptschedule.start.try(:strftime, "%d/%m/%y")} (#{ptdo.ptschedule.course.course_total_days})", "#{ptdo.ptschedule.location}"]
        end
      end   
      
@@ -411,7 +422,7 @@ def bahagian4_4
        data2 = [["", "KRITERIA (Dinilai berasaskan SKT)", "PPP", "PPK"],
                  ["3. ","  KUANTITI HASIL KERJA","",""],
                  ["","Kuantiti hasil kerja seperti jumlah bilangan, kadar, kekerapan dan sebagainya berbanding dengan sasaran kuantiti kerja yang ditetapkan.","#{@staff_appraisal.e1g2q3}","#{@staff_appraisal.e2g2q3}"],
-                 ["", "Jumlah markah mengikut wajaran","#{@staff_appraisal.e1g2_total} x 25 = #{@staff_appraisal.e1g2_percent} / 30",
+                 ["", "Jumlah markah mengikut wajaran","#{@staff_appraisal.e1g2_total} x 25 = #{@view.number_with_precision(@staff_appraisal.e1g2_percent, precision:2)} / 30",
                    "#{@staff_appraisal.e2g2_total} x 25 = #{@staff_appraisal.e2g2_percent} / 30"]]
                    
                    table(data2 , :column_widths => [30, 250,100,100], :cell_style => { :size => 10}) do
@@ -486,7 +497,7 @@ def bahagian4_3
                  ["3. "," KEBERKESANAN KOMUNIKASI","",""],
                  ["","Kebolehan menyampaikan maksud, pendapat, kefahaman atau arahan secara lisan dan tulisan berkaitan dengan bidang tugas merangkumi penguasaan bahasa melalui tulisan dan lisan dengan menggunakan tatabahasa dan persembahan yang baik","#{@staff_appraisal.e1g2q3}","#{@staff_appraisal.e2g2q3}"],
                  ["", "Jumlah markah mengikut wajaran","#{@staff_appraisal.e1g2_total} x 25 = #{@staff_appraisal.e1g2_percent} / 30",
-                   "#{@staff_appraisal.e2g2_total} x 25 = #{@staff_appraisal.e2g2_percent} / 30"]]
+                   "#{@staff_appraisal.e2g2_total} x 25 = #{@view.number_with_precision(@staff_appraisal.e2g2_percent, precision: 2)} / 30"]]
                    
                    table(data2 , :column_widths => [30, 250,100,100], :cell_style => { :size => 10}) do
                      row(0).column(1).align = :center
@@ -876,7 +887,7 @@ def bahagian8
   text "3.  Adalah disahkan bahawa prestasi pegawai ini telah dimaklumkan kepada PYD.", :align => :left, :size => 12
   move_down 20
   data1 = [[ "Nama PPP :", "#{@staff_appraisal.eval1_officer.name}"],
-            ["Jawatan :", "#{@staff_appraisal.eval1_officer.positions.name}"],
+            ["Jawatan :", "#{@staff_appraisal.eval1_officer.positions.first.name}"],
              ["Kementerian /Jabatan : ","Kolej Sains Kesihatan Bersekutu Johor Bahru"],
            ["No. K.P : ","#{@staff_appraisal.eval1_officer.formatted_mykad}"]]
              
@@ -990,7 +1001,7 @@ def lampiranA
        row(4).column(1).borders = [:right, :bottom]
        self.row_colors = ["FEFEFE", "FFFFFF"]  
     end
-    move_down 60 
+    move_down 40 
 end
 
 def lampiranA1
@@ -998,22 +1009,64 @@ def lampiranA1
   text "BAHAGIAN I -  MAKLUMAT PEGAWAI", :align => :left, :size => 12, :style => :bold  
   text "(PYD dan PPP hendaklah berbincang bersama sebelum menetapkan SKT dan petunjuk prestasinya)", :align => :left, :size => 12  
   move_down 10
+  
  end
   
-  def table_lampiranA1 
-    table(line_item_rows6 , :column_widths => [30,240,240], :cell_style => { :size => 11}) do
-      row(0).font_style = :bold
-      self.row_colors = ["FEFEFE", "FFFFFF"]  
+  def table_lampiranA1
+    item_count=0
+    blank_rows=[]
+    next_heading=[]
+    item_count_per_skt=[]
+    @staff_appraisal.staff_appraisal_skts.where('half =?', 1).order(priority: :asc).each_with_index do |staff_appraisal_skt, indx|
+         item_count+=1 if staff_appraisal_skt.indicator_desc_quality!='' && staff_appraisal_skt.target_quality!=''
+         item_count+=1 if staff_appraisal_skt.indicator_desc_time!='' && staff_appraisal_skt.target_time!=''
+         item_count+=1 if staff_appraisal_skt.indicator_desc_quantity!='' && staff_appraisal_skt.target_quantity!=''
+         item_count+=1 if staff_appraisal_skt.indicator_desc_cost!='' && staff_appraisal_skt.target_cost!=''
+         item_count_per_skt << item_count+2
+         blank_rows << item_count+2
+	 last_row=item_count+2
+	 next_heading << last_row+1
+         next_heading << last_row+2
+    end 
+    table(line_item_rows6 , :column_widths => [50, 100, 100, 100, 50, 100], :cell_style => { :size => 11, :inline_format => :true}) do
+      #row(0).font_style = :bold
+      row(0..1).background_color = "F0EEEE"
+      row(2..item_count_per_skt[0]-1).background_color = "FFFFFF"
+      
+#       row(item_count_per_skt[0]+1..item_count_per_skt[0]+2).background_color = "F0EEEE"
+#       row(item_count_per_skt[0]+3..item_count_per_skt[0]+5).background_color = "FFFFFF"
+#       row(item_count_per_skt[1]+4..item_count_per_skt[1]+5).background_color = "F0EEEE"
+#       row(item_count_per_skt[1]+6..item_count_per_skt[1]+8).background_color = "FFFFFF"
+
+      item_count_per_skt.each_with_index do |item, cnt|
+        row( (item_count_per_skt[cnt]+1+(cnt*3))..(item_count_per_skt[cnt]+2+(cnt*3)) ).background_color = "F0EEEE"
+        row( (item_count_per_skt[cnt]+((cnt+1)*3))..(item_count_per_skt[cnt]+2+((cnt+1)*3) )).background_color = "FFFFFF"
+      end
+
+      blank_rows.each_with_index do |rowno, indx|
+#      row(rowno).borders = [] if rowno==item_count_per_skt[0]#5
+#  	row(rowno+3).borders = [] if rowno==item_count_per_skt[1]#8
+# 	row(rowno+6).borders = [] if rowno==item_count_per_skt[2]
+	row(rowno+(indx*3)).borders=[]
+      end
     end
   end
   
-  def line_item_rows6
-    counter = counter || 0
-    header = [["Bil", "Ringkasan Aktiviti/Projek", "Petunjuk Prestasi"]]
-    header +
-      @staff_appraisal.staff_appraisal_skts.where('half =?', 1).order(priority: :asc).map do |staff_appraisal_skt|
-      ["#{counter += 1}", "#{staff_appraisal_skt.description}", "#{staff_appraisal_skt.render_indicator} : #{staff_appraisal_skt.target}"]
+   def line_item_rows6
+     counter = counter || 0
+     multi_arr=[]
+     arr=[]
+     @staff_appraisal.staff_appraisal_skts.where('half =?', 1).order(priority: :asc).each_with_index do |staff_appraisal_skt, indx|
+         counter += 1
+         arr << [ "#{staff_appraisal_skt.priority.blank? ? staff_appraisal_skt.priority : counter}", {content: "#{staff_appraisal_skt.description}", colspan: 5}]
+         arr << [ {content: "Petunjuk Prestasi", colspan: 2}, "Sasaran", "Pencapaian", "%", "Ulasan"]
+         arr << [ "Kualiti", "#{staff_appraisal_skt.indicator_desc_quality}", "#{staff_appraisal_skt.target_quality}", "#{staff_appraisal_skt.achievement_quality}", "#{@view.number_with_precision(staff_appraisal_skt.progress_quality, precision: 2)}", "#{staff_appraisal_skt.notes_quality}"] if staff_appraisal_skt.indicator_desc_quality!='' && staff_appraisal_skt.target_quality!=''
+         arr << [ "Masa", "#{staff_appraisal_skt.indicator_desc_time}", "#{staff_appraisal_skt.target_time}", "#{staff_appraisal_skt.achievement_time}", "#{@view.number_with_precision(staff_appraisal_skt.progress_time, precision:2)}", "#{staff_appraisal_skt.notes_time}"] if staff_appraisal_skt.indicator_desc_time!='' && staff_appraisal_skt.target_time!=''
+         arr << [ "Kuantiti", "#{staff_appraisal_skt.indicator_desc_quantity}", "#{staff_appraisal_skt.target_quantity}", "#{staff_appraisal_skt.achievement_quantity}", "#{@view.number_with_precision(staff_appraisal_skt.progress_quantity, precision: 2)}", "#{staff_appraisal_skt.notes_quantity}"] if staff_appraisal_skt.indicator_desc_quantity!='' && staff_appraisal_skt.target_quantity!=''
+         arr << [ "Kos", "#{staff_appraisal_skt.indicator_desc_cost}", "#{staff_appraisal_skt.target_cost}", "#{staff_appraisal_skt.achievement_cost}", "#{@view.number_with_precision(staff_appraisal_skt.progress_cost, precison: 2)}", "#{staff_appraisal_skt.notes_cost}"] if staff_appraisal_skt.indicator_desc_cost!='' && staff_appraisal_skt.target_cost!=''
+          arr << ["","","","","",""]
     end
+    arr
   end
   
   def lampiranA1a
@@ -1046,25 +1099,69 @@ def lampiranA2
 end
   
   def table_lampiranA2
-    
-    table(line_item , :column_widths => [30,240,240], :cell_style => { :size => 11}) do
-      row(0).font_style = :bold
-      self.row_colors = ["FEFEFE", "FFFFFF"]   
+    item_count=0
+    blank_rows=[]
+    next_heading=[]
+    item_count_per_skt=[]
+    @staff_appraisal.staff_appraisal_skts.where('half =?', 2).order(priority: :asc).each_with_index do |staff_appraisal_skt, indx|
+         item_count+=1 if staff_appraisal_skt.indicator_desc_quality!='' && staff_appraisal_skt.target_quality!=''
+         item_count+=1 if staff_appraisal_skt.indicator_desc_time!='' && staff_appraisal_skt.target_time!=''
+         item_count+=1 if staff_appraisal_skt.indicator_desc_quantity!='' && staff_appraisal_skt.target_quantity!=''
+         item_count+=1 if staff_appraisal_skt.indicator_desc_cost!='' && staff_appraisal_skt.target_cost!=''
+         item_count_per_skt << item_count+2
+         blank_rows << item_count+2
+	 last_row=item_count+2
+	 next_heading << last_row+1
+         next_heading << last_row+2
+    end 
+    if @staff_appraisal.staff_appraisal_skts.where('half =?', 2).count > 0
+      table(line_item, :column_widths => [50, 100, 100, 100, 50, 100], :cell_style => { :size => 11, :inline_format => :true}) do
+        row(0..1).background_color = "F0EEEE"
+        row(2..item_count_per_skt[0]-1).background_color = "FFFFFF"
+        item_count_per_skt.each_with_index do |item, cnt|
+          row( (item_count_per_skt[cnt]+1+(cnt*3))..(item_count_per_skt[cnt]+2+(cnt*3)) ).background_color = "F0EEEE"
+          row( (item_count_per_skt[cnt]+((cnt+1)*3))..(item_count_per_skt[cnt]+2+((cnt+1)*3) )).background_color = "FFFFFF"
+        end
+        blank_rows.each_with_index do |rowno, indx|
+	  row(rowno+(indx*3)).borders=[]
+        end
+      end
+    else 
+       table(line_item_empty, :column_widths => [50, 100, 100, 100, 50, 100], :cell_style => { :size => 11, :inline_format => :true}) do
+        row(0..1).background_color = "F0EEEE"
+        row(2..2).background_color = "FFFFFF"
+	row(2).height = 20
+       end
     end
+  end
+
+  def line_item_empty
+    arr=[]
+    arr << ["",  {content: "Ringkasan Aktiviti / Projek", colspan: 5}]
+    arr << [{content: "Petunjuk Prestasi", colspan: 2}, "Sasaran", "Pencapaian", "%", "Ulasan"]
+    arr << ["","","","","",""]
+    arr
   end
   
   def line_item
-    counter = counter || 0
-    header = [["Bil", "Ringkasan Aktiviti/Projek", "Petunjuk Prestasi"]]
-    header +
-      @staff_appraisal.staff_appraisal_skts.where('half = ?', 2).order(priority: :asc).map do |staff_appraisal_skt|
-      ["#{counter += 1}", "#{staff_appraisal_skt.description}", "#{staff_appraisal_skt.render_indicator} : #{staff_appraisal_skt.target}"]
-    end 
+     counter = counter || 0
+     arr=[]
+     @staff_appraisal.staff_appraisal_skts.where('half =?', 2).order(priority: :asc).each_with_index do |staff_appraisal_skt, indx|
+         counter += 1
+         arr << [ "#{staff_appraisal_skt.priority.blank? ? staff_appraisal_skt.priority : counter}", {content: "#{staff_appraisal_skt.description}", colspan: 5}]
+         arr << [ {content: "Petunjuk Prestasi", colspan: 2}, "Sasaran", "Pencapaian", "%", "Ulasan"]
+         arr << [ "Kualiti", "#{staff_appraisal_skt.indicator_desc_quality}", "#{staff_appraisal_skt.target_quality}", "#{staff_appraisal_skt.achievement_quality}", "#{@view.number_with_precision(staff_appraisal_skt.progress_quality, precision: 2)}", "#{staff_appraisal_skt.notes_quality}"] if staff_appraisal_skt.indicator_desc_quality!='' && staff_appraisal_skt.target_quality!=''
+         arr << [ "Masa", "#{staff_appraisal_skt.indicator_desc_time}", "#{staff_appraisal_skt.target_time}", "#{staff_appraisal_skt.achievement_time}", "#{@view.number_with_precision(staff_appraisal_skt.progress_time, precision:2)}", "#{staff_appraisal_skt.notes_time}"] if staff_appraisal_skt.indicator_desc_time!='' && staff_appraisal_skt.target_time!=''
+         arr << [ "Kuantiti", "#{staff_appraisal_skt.indicator_desc_quantity}", "#{staff_appraisal_skt.target_quantity}", "#{staff_appraisal_skt.achievement_quantity}", "#{@view.number_with_precision(staff_appraisal_skt.progress_quantity, precision: 2)}", "#{staff_appraisal_skt.notes_quantity}"] if staff_appraisal_skt.indicator_desc_quantity!='' && staff_appraisal_skt.target_quantity!=''
+         arr << [ "Kos", "#{staff_appraisal_skt.indicator_desc_cost}", "#{staff_appraisal_skt.target_cost}", "#{staff_appraisal_skt.achievement_cost}", "#{@view.number_with_precision(staff_appraisal_skt.progress_cost, precison: 2)}", "#{staff_appraisal_skt.notes_cost}"] if staff_appraisal_skt.indicator_desc_cost!='' && staff_appraisal_skt.target_cost!=''
+          arr << ["","","","","",""]
+    end
+    arr
   end
     
  def lampiranA2b
    move_down 30 
-  text "BAHAGIAN II - Kajian Semula Sasaran Kerja Tahun Pertengahan Tahun", :align => :left, :size => 12, :style => :bold 
+  text "BAHAGIAN II - Kajian Semula Sasaran Kerja Tahunan Pertengahan Tahun", :align => :left, :size => 12, :style => :bold 
   move_down 20
   text "1.   Aktiviti/Projek Yang Digugurkan", :align => :left, :size => 12, :style => :bold 
   text "(PYD hendaklah menyeneraikan aktiviti/projek yang digugurkan setelah berbincang dengan PPP)", :align => :left, :size => 12
@@ -1099,16 +1196,11 @@ def lampiranA3
      move_down 20                   
   text "1.   Laporan/Ulasan Oleh PYD", :align => :left, :size => 12, :style => :bold    
     
-    #capture all skt's achievement, progress & notes here first - LAMPIRAN A
-    @aa=""
-    @staff_appraisal.staff_appraisal_skts.sort_by{|x|x.half}.each_with_index do |staff_appraisal_skt, ind|
-      @aa += ((ind+1).to_s+') '+staff_appraisal_skt.acheivment.to_s+" "+staff_appraisal_skt.progress.to_s+"%,  "+staff_appraisal_skt.notes.to_s+'<br>')  if staff_appraisal_skt.progress!=nil 
-    end
-    
     data = []
-    data << ["#{@aa} #{ @staff_appraisal.skt_pyd_report}"]
+    data << ["#{ @staff_appraisal.skt_pyd_report}"]
     table(data, :column_widths => [510], :cell_style => { :size => 11, :inline_format => :true }) do
       self.row_colors = ["FEFEFE", "FFFFFF"]    
+      row(0).height =80
     end
   move_down 10
   text "2.   Laporan/Ulasan Oleh PPP", :align => :left, :size => 12, :style => :bold 
@@ -1116,6 +1208,7 @@ def lampiranA3
   data1 = [[" #{@staff_appraisal.skt_ppp_report} "]]
   table(data1, :column_widths => [510], :cell_style => { :size => 11}) do
     self.row_colors = ["FEFEFE", "FFFFFF"]    
+    row(0).height =80
   end
   
   

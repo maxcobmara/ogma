@@ -16,6 +16,7 @@ class StaffAppraisal < ActiveRecord::Base
    has_many :trainneeds, :foreign_key => 'evaluation_id', :dependent => :destroy
    accepts_nested_attributes_for :trainneeds, :allow_destroy => true, :reject_if => lambda { |a| a[:name].blank? }
   
+   validates_presence_of :skt_pyd_report, :if => :is_skt_pyd_report_done?
    validates_presence_of :evaluation_year
    validates_uniqueness_of :evaluation_year, :scope => :staff_id, :message => "Your evaluation for this year already exists"
    #validates_presence_of  :e1g1q1, :e1g1q2,:e1g1q3, :e1g1q4, :e1g1q5,:e1g1_total, :e1g1_percent,:e1g2q1, :e1g2q2, :e1g2q3, :e1g2q4, :e1g2_total, :e1g2_percent, :e1g3q1, :e1g3q2, :e1g3q3, :e1g3q4, :e1g3q5, :e1g3_total, :e1g3_percent,:e1g4,:e1g4_percent, :e1_total, :e1_years, :e1_months,  :e1_performance, :e1_progress, :if => :is_submit_e2? #pending - update page (when validation fails)
@@ -77,19 +78,19 @@ class StaffAppraisal < ActiveRecord::Base
    def evaluation_status
      if is_skt_submit != true
        I18n.t('staff.staff_appraisal.skt_being_formulated')
-     elsif is_complete == true #&& is_completed_on !=nil && e2_performance !=nil
+     elsif is_complete == true && ( (e2_months > 1 && e2_years==0)|| (e2_months ==0 && e2_years > 0) || (e2_months!=0 &&e2_years!=0) || (e2_months>0 &&e2_years>0) )#&& is_completed_on !=nil && e2_performance !=nil
        I18n.t('staff.staff_appraisal.staff_appraisal_complete')
      elsif is_skt_submit == true && is_skt_endorsed != true
        I18n.t('staff.staff_appraisal.skt_awaiting_ppp_endorsement')
-     elsif is_skt_submit == true && is_skt_endorsed == true && is_skt_pyd_report_done != true
+     elsif is_skt_submit == true && is_skt_endorsed == true && ((is_skt_pyd_report_done != true) || (is_skt_pyd_report_done == true && skt_pyd_report ==''))
        I18n.t('staff.staff_appraisal.skt_review')
-     elsif is_skt_pyd_report_done == true && is_skt_ppp_report_done != true
+     elsif is_skt_pyd_report_done == true && is_skt_ppp_report_done != true && skt_pyd_report !=''
        I18n.t('staff.staff_appraisal.ready_for_ppp_skt_report')
      elsif is_skt_pyd_report_done == true && is_skt_ppp_report_done == true && is_submit_for_evaluation != true
        I18n.t('staff.staff_appraisal.ppp_report_complete')
-     elsif is_skt_ppp_report_done == true && is_submit_for_evaluation == true && is_submit_e2 != true
+     elsif (is_skt_ppp_report_done == true && is_submit_for_evaluation == true && is_submit_e2 != true) || (is_submit_e2==true && (e1_performance=="" || e1_progress=="" || submit_e2_on.nil? || (e1_months==0 && e1_years==0)) )
        I18n.t('staff.staff_appraisal.submitted_for_evaluation_by_ppp')
-    elsif is_submit_for_evaluation == true && is_submit_e2 == true
+    elsif is_submit_for_evaluation == true && is_submit_e2 == true && ( (e1_months > 0 && e1_years==0)|| (e1_months ==0 && e1_years > 0) || (e1_months!=0 &&e1_years!=0) || (e1_months>0 &&e1_years>0) )
        I18n.t('staff.staff_appraisal.submitted_by_ppp_for_evaluation_to_PPK')
      end
    end   

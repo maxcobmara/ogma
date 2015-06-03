@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150526171956) do
+ActiveRecord::Schema.define(version: 20150531080246) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -1563,18 +1563,33 @@ ActiveRecord::Schema.define(version: 20150526171956) do
   create_table "staff_appraisal_skts", force: true do |t|
     t.integer  "staff_appraisal_id"
     t.integer  "priority"
-    t.string   "description"
     t.integer  "half"
-    t.string   "acheivment"
-    t.decimal  "progress"
-    t.text     "notes"
     t.boolean  "is_dropped"
     t.date     "dropped_on"
     t.string   "drop_reasons"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "indicator"
-    t.string   "target"
+    t.string   "indicator_desc_quality"
+    t.string   "indicator_desc_time"
+    t.string   "indicator_desc_quantity"
+    t.string   "indicator_desc_cost"
+    t.string   "target_quality"
+    t.string   "target_time"
+    t.string   "target_quantity"
+    t.string   "target_cost"
+    t.string   "achievement_quality"
+    t.string   "achievement_time"
+    t.string   "achievement_quantity"
+    t.string   "achievement_cost"
+    t.decimal  "progress_quality"
+    t.decimal  "progress_time"
+    t.decimal  "progress_quantity"
+    t.decimal  "progress_cost"
+    t.string   "notes_quantity"
+    t.string   "notes_time"
+    t.string   "notes_quality"
+    t.string   "notes_cost"
+    t.text     "description"
   end
 
   create_table "staff_appraisals", force: true do |t|

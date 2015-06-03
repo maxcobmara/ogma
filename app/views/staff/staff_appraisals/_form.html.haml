@@ -8,7 +8,8 @@
       -  if @staff_appraisal.evaluation_status == t('staff.staff_appraisal.skt_awaiting_ppp_endorsement')
         %li=link_to (t 'staff.staff_appraisal.skt_endorse'), "#skt_endorse", "data-toggle" => "tab" 
       /- if @staff_appraisal.evaluation_status == t('staff.staff_appraisal.skt_review') && @staff_appraisal.staff_id == Login.current_login.staff_id 
-      - if @staff_appraisal.evaluation_status == t('staff.staff_appraisal.skt_review')
+      /- if @staff_appraisal.evaluation_status == t('staff.staff_appraisal.skt_review')
+      - if (@staff_appraisal.evaluation_status == t('staff.staff_appraisal.skt_review')) || (@job_type="redo_performance" && @job_level="skt_revision" && @staff_appraisal.is_skt_ppp_report_done!=true)
         %li=link_to (t 'staff.staff_appraisal.skt_review_staff'), "#skt_review_staff", "data-toggle" => "tab"
       /- if @staff_appraisal.evaluation_status == t('staff.staff_appraisal.ready_for_ppp_skt_report') && @staff_appraisal.eval1_by == Login.current_login.staff_id 
       - if @staff_appraisal.evaluation_status == t('staff.staff_appraisal.ready_for_ppp_skt_report')
@@ -17,7 +18,8 @@
       - if @staff_appraisal.evaluation_status == t('staff.staff_appraisal.ppp_report_complete') 
         %li=link_to (t 'staff.staff_appraisal.activity'), "#activity", "data-toggle" => "tab"
       /- if @staff_appraisal.evaluation_status == t('staff.staff_appraisal.submitted_for_evaluation_by_ppp')  && @staff_appraisal.eval1_by == Login.current_login.staff_id 
-      - if @staff_appraisal.evaluation_status == t('staff.staff_appraisal.submitted_for_evaluation_by_ppp')  
+      /- if @staff_appraisal.evaluation_status == t('staff.staff_appraisal.submitted_for_evaluation_by_ppp')  
+      - if (@staff_appraisal.evaluation_status == t('evaluation.appraisal.submitted_for_evaluation_by_ppp') || (@staff_appraisal.is_submit_e2==true && (@staff_appraisal.e1_performance=="" || @staff_appraisal.e1_progress=="" || @staff_appraisal.submit_e2_on.nil? || (@staff_appraisal.e1_months <1 && @staff_appraisal.e1_years==0)))
         %li=link_to (t 'staff.staff_appraisal.eval1_1_17_41'), "#eval1_1_17_14", "data-toggle" => "tab"
         %li=link_to (t 'staff.staff_appraisal.eval1_review'), "#eval1_review", "data-toggle" => "tab"
       /- if @staff_appraisal.evaluation_status == t('staff.staff_appraisal.submitted_by_ppp_for_evaluation_to_PPK')  && @staff_appraisal.eval2_by == Login.current_login.staff_id 

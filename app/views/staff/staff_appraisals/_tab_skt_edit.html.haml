@@ -1,14 +1,17 @@
-.col-md-8.col-md-offset-1
+.col-md-10.col-md-offset-1
   %b=t 'evaluation.skt.title'
   %br
   .row
     .col-sm-1= t 'evaluation.skt..priority'
     .col-sm-5= t 'evaluation.skt.description'
-    .col-sm-5= t 'evaluation.skt.performance'
+    .col-sm-3= t 'evaluation.skt.performance'
+    .col-sm-3= t 'evaluation.skt.target'
+    .col-sm-1
     %hr
   = f.fields_for :staff_appraisal_skts do |builder|
     - if builder.object.description.blank? != true && builder.object.half == 1
-      = render 'staff_appraisal_skt_fields', :f => builder
+      /= render 'staff_appraisal_skt_fields', :f => builder
+      = render 'staff_appraisal_skt_fields',{:f => builder, :joblevel=>"skt_issuance"} 
   %br
   .row
     /= link_to_add_fields image_tag("add.png", :border => 0, :title => t('addmore')), f, :travel_claim_logs
@@ -25,7 +28,7 @@
         = f.check_box :is_skt_submit, :id => 'is_skt_submit'
       .col-md-2
         #span_skt_submit{:style=>"display: none;"}
-          = f.text_field :skt_submit_on, :class => 'date_picker form-control'   
+          = f.text_field :skt_submit_on, :class => 'date_picker form-control', :value => Date.today
     .form-group
       .col-sm-2
         &nbsp;

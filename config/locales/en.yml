@@ -110,6 +110,7 @@ en:
         e1_performance: Overall Performance
         e1_progress: Career Progress
         submit_e2_on: Submission date to PPK
+        skt_pyd_report: Report by PYD
     errors:
         template:
           body: "There were problems with the following fields:"
@@ -706,6 +707,7 @@ en:
       ppp_report_complete: PPP Report complete
       submitted_for_evaluation_by_ppp: Submitted for Evaluation by PPP
       submitted_by_ppp_for_evaluation_to_PPK: Submitted by PPP for Evaluation to PPK
+      is_complete: "Staff Appraisal completed?"
     
     evactivity:
       actdt: Date
@@ -715,6 +717,7 @@ en:
     skt: 
       title: "Attachment A : Part I - Setting Annual Work Targets"
       description: Description of Activities and Projects
+      description2: Description
       performance:  Performance Indicators
       priority: Priority
       submit_notify: "Clicking on submit notifies your Evaluating Officer (PPP) and disables your editing this record further."
