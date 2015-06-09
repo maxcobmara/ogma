@@ -213,6 +213,30 @@
             /working one - 2nd line - hide first (limit to one & only 1 car per staff)
             /= link_to_add_fields content_tag(:i, "", class: "fa fa-plus-square"), f, :vehicles
             /= link_to_add_fields t('addmore'), f, :vehicles, "",  t('addmore')
+            
+
+          .form-group
+            .col-sm-3.control-label
+              = f.label t 'staff.training.mycpd.accumulated_cpd_points'
+
+        /staff myCPD point
+        .col-md-8.col-sm-offset-2
+          %br
+          .row
+            .col-sm-2= t 'staff.training.mycpd.cpd_year'
+            .col-sm-4=t 'staff.training.mycpd.cpd_value'
+            /.col-sm-2= t 'staff.vehicles.cylinder_capacity'
+            %hr
+          = f.fields_for :mycpds do |builder|
+            = render 'mycpd_fields', :f => builder
+
+          .help-block.small
+            =(t 'staff.training.mycpd.inserted_values')
+            = link_to ((t 'staff.training.application_status.viewsummary')+" "+Date.today.year.to_s), show_total_days_staff_training_ptdos_path(:id=>@current_user.userable_id)
+          .col-sm-2
+            /working one - 2nd line - hide first (limit to one & only 1 car per staff)
+            /= link_to_add_fields content_tag(:i, "", class: "fa fa-plus-square"), f, :vehicles
+            = link_to_add_fields t('addmore'), f, :mycpds, "",  t('addmore')
 
           .form-group
             .col-sm-offset-2.col-sm-2

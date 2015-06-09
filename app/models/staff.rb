@@ -51,6 +51,10 @@ class Staff < ActiveRecord::Base
   has_many          :kins, :dependent => :destroy
   accepts_nested_attributes_for :kins, :reject_if => lambda { |a| a[:kintype_id].blank? }
  
+  has_many          :mycpds, :dependent => :destroy
+  accepts_nested_attributes_for :mycpds
+  validates_associated :mycpds
+  
   has_attached_file :photo,
                     :url => "/assets/staffs/:id/:style/:basename.:extension",
                     :path => ":rails_root/public/assets/staffs/:id/:style/:basename.:extension"#, :styles => {:thumb => "40x60"}
