@@ -47,7 +47,9 @@
       = t 'evaluation.form.percent'
   .row
     .col-md-3 &nbsp;
-    .col-md-1=(t 'evaluation.form.division')+((@staff_appraisal.g1_questions)*10).to_s
+    .col-md-1
+      =(t 'evaluation.form.division')+((@staff_appraisal.g1_questions)*10).to_s+" x 50="
+      = f.text_field :e1g1_percent, readonly: 'readonly', class:'form-control'
     .col-md-1=(t 'evaluation.form.division')+((@staff_appraisal.g1_questions)*10).to_s
     .col-md-6 &nbsp;
   %br
@@ -94,7 +96,9 @@
       = t 'evaluation.form.percent'
   .row
     .col-md-3 &nbsp;
-    .col-md-1=(t 'evaluation.form.division')+((@staff_appraisal.g2_questions)*10).to_s
+    .col-md-1
+      =(t 'evaluation.form.division')+((@staff_appraisal.g2_questions)*10).to_s+" x 25="
+      = f.text_field :e1g2_percent, readonly: 'readonly', class:'form-control'
     .col-md-1=(t 'evaluation.form.division')+((@staff_appraisal.g2_questions)*10).to_s
     .col-md-6 &nbsp;
   %br
@@ -137,7 +141,10 @@
       = t 'evaluation.form.percent'
   .row
     .col-md-3 &nbsp;
-    .col-md-1=(t 'evaluation.form.division')+((@staff_appraisal.g3_questions)*10).to_s
+    .col-md-1
+      =(t 'evaluation.form.division')+((@staff_appraisal.g3_questions)*10).to_s+" x 20="
+      = f.text_field :e1g3_percent, readonly: 'readonly', class:'form-control'
+      
     .col-md-1=(t 'evaluation.form.division')+((@staff_appraisal.g3_questions)*10).to_s
     .col-md-6 &nbsp;
   %br
@@ -155,12 +162,12 @@
     .col-md-3= t 'evaluation.form.parttwo'
     .col-md-1
       = f.text_field :e1g4, readonly: 'readonly', class:'form-control'
-      x 5 =
+      \/ 10 x 5 =
       = f.text_field :e1g4_percent, readonly: 'readonly', class:'form-control'
       = t 'evaluation.form.percent'
     .col-md-1
       = f.text_field :e2g4, :class => "e2g4", :placeholder => 0
-      x 5 =
+      \/ 10 x 5 =
       = f.text_field :e2g4_percent, readonly: 'readonly', class:'form-control'
       = t 'evaluation.form.percent'
     .col-md-6
