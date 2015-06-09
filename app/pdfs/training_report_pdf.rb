@@ -50,7 +50,19 @@ class Training_reportPdf < Prawn::Document
         content_line << ["#{counter+=1}", "#{classifications[x][0]}","#{Ptdo.staff_total_days(ptdo_class[x+1].map(&:id)) unless (ptdo_class[x+1]).nil? }"]  #name
       end
     end
-    content_line << ["#{counter += 1}", "Lain-lain (myCPD) - jumlah mata kumulatif", ""]
+    schedule_ids = @ptdos.map(&:ptschedule_id)
+    schedules_start = Ptschedule.where(id: schedule_ids).pluck(:start)
+    @schedules_year=[]
+    schedules_start.each do |start|
+      @schedules_year << start.year
+    end
+    if @schedules_year.uniq.count==1
+      b=Mycpd.where(staff_id: @staffid, cpd_year: Date.today.beginning_of_year).first.try(:cpd_value) 
+    else
+      b=I18n.t('staff.training.mycpd.same_year')
+    end
+	    
+    content_line << ["#{counter += 1}", "Lain-lain (myCPD) - jumlah mata kumulatif", "#{b}"]
     content_line << [{content: "Jumlah Keseluruhan", colspan: 2},"#{Ptdo.staff_total_days(@ptdos.map(&:id))}"]
     header+content_line
   end
@@ -69,7 +81,7 @@ class Training_reportPdf < Prawn::Document
     @ptdos.each do |ptdo|
       @startdates << ptdo.ptschedule.start.year
     end
-    aa=""
+    aa=I18n.t('staff.training.mycpd.same_year2')
     aa=@ptdos[0].ptschedule.start.year.to_s if @startdates.uniq.count==1
     [["Adalah disahkan bahawa #{'<u>'+'     '+Staff.find(@staffid).name+'    '+'</u>'}    No K/P : #{'<u>'+Staff.find(@staffid).formatted_mykad+'</u>'}"],
      ["Gred Jawatan : #{'<u>'+Staff.find(@staffid).staffgrade.name+'</u>'}    Bahagian : #{'<u>'+Staff.find(@staffid).try(:positions).try(:first).try(:unit).to_s+'</u>'}"],

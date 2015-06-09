@@ -52,17 +52,20 @@
           %td= training_level(@ptcourse) if @ptcourse.training_classification==1
           %td= ptdo.ptschedule.course.duration.to_i
           %td= duration_type(@ptcourse)
-          %td
-            - course_days=Ptdo.staff_course_days(@ptcourse) * 6
-            - days_count = course_days / 6.0
-            - bal_hours = course_days.to_f % 6.0
-            - if bal_hours > 0 
-              - if days_count.to_i > 0
-                = days_count.to_i.to_s+" "+I18n.t('time.days')+" "+bal_hours.to_i.to_s+" "+I18n.t('time.hours')
-              - else
-                = bal_hours.to_i.to_s+" "+I18n.t('time.hours')
-            - else
-              = days_count.to_i.to_s+" "+I18n.t('time.days')
+          %td= @ptcourse.course_total_days
+      %tr
+        %td{:colspan => 5, :align=>"right"}
+          %b= t 'staff.training.mycpd.accumulated_cpd_points' 
+        %td{:colspan => 3, :align=>"center"}
+          - schedule_ids = @ptdos.map(&:ptschedule_id)
+          - schedules_start = Ptschedule.where(id: schedule_ids).pluck(:start)
+          - @schedules_year=[]
+          - schedules_start.each do |start|
+            - @schedules_year << start.year
+          - if @schedules_year.uniq.count==1
+            %b=Mycpd.where('staff_id=? and cpd_year=?', @current_user.userable_id, Date.today.beginning_of_year).first.try(:cpd_value) 
+          - else
+            =t 'staff.training.mycpd.same_year'
       %tr
         %td{:colspan =>5, :align=>"right"}
           %b= t 'staff.training.application_status.total_day_attended'

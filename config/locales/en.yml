@@ -39,6 +39,7 @@ en:
       ptcourse: Course
       ptbudget: Training Budget
       staff_appraisal: Staff Appraisal
+      mycpd: MyCPD
     attributes:
       student:
         name: Name
@@ -111,6 +112,11 @@ en:
         e1_progress: Career Progress
         submit_e2_on: Submission date to PPK
         skt_pyd_report: Report by PYD
+      staff:
+        mycpds: "Accumulative CPD points (MyCPD)"
+      mycpd:
+        cpd_year: Year
+        cpd_value: CPD value
     errors:
         template:
           body: "There were problems with the following fields:"
@@ -529,6 +535,14 @@ en:
         note_hours_day: "Note : 6 hours equal to 1 day of training"
         total_day_attended: Total days of training attended
         nil: Not yet attended
+      mycpd:
+        accumulated_cpd_points: "Accumulated CPD Points (myCPD)"
+        cpd_year: Year 
+        cpd_value: Accumulated Points
+        inserted_values: "Inserted values shall appear in item no.5 of 'Rekod Pengesahan Kehadiran Program Latihan' and 'Yearly Summary of Training Attended'."
+        same_year: "* Select Training record within the same year to display related CPD point."
+        same_year2: "* Select Training record within the same year to display YEAR."
+        uniq_msg: "CPD for selected year already exist"
               
     travel_request:
       title: Travel Request

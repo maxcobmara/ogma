@@ -1,0 +1,18 @@
+%fieldset
+  = f.hidden_field :_destroy
+  .row
+    /.col-sm-2= f.date_select :cpd_year, :start_year => 2011, :order => [:year], :default=>{:month => 1, :day => 1}, :include_blank => (t 'select') , class: 'selectpicker'
+    .col-sm-2= f.text_field :cpd_year, class: 'year_picker form-control'
+    .col-sm-4= f.text_field :cpd_value, class: 'form-control'
+    .col-sm-1
+      = link_to content_tag(:i, "", class: "fa fa-trash-o"), data: {"data-toggle" => "tooltip", title: "Delete"}, class: "btn btn-danger remove_fields"
+  :javascript
+    $('.selectpicker').selectpicker('render');
+    $('.year_picker').datetimepicker({
+      format: "Y-m-d",
+      timepicker: false,
+      autoclose: true,
+      onSelectDate: function(dp, $input) {
+        $input.val($input.val().substr(0,4) + '-01-01');
+      }
+    });

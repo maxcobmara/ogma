@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150531080246) do
+ActiveRecord::Schema.define(version: 20150609062702) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -1280,6 +1280,12 @@ ActiveRecord::Schema.define(version: 20150531080246) do
 
   create_table "messages_staffs", id: false, force: true do |t|
     t.integer "message_id"
+    t.integer "staff_id"
+  end
+
+  create_table "mycpds", force: true do |t|
+    t.date    "cpd_year"
+    t.decimal "cpd_value"
     t.integer "staff_id"
   end
 

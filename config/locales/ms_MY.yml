@@ -94,6 +94,11 @@ ms_MY:
         e1_progress: Perkembangan Karier
         submit_e2_on: Tarikh hantar ke PPK
         skt_pyd_report: Laporan oleh PYD
+      staff:
+        mycpds: "Jumlah Mata Kumulatif (MyCPD)"
+      mycpd:
+        cpd_year: Tahun
+        cpd_value: Jumlah Mata Kumulatif
     errors:
         template:
           body: "Berikut adalah beberapa masalah:"
@@ -521,6 +526,14 @@ ms_MY:
         note_hours_day: "Nota : 6 jam bersamaan 1 hari berkursus"
         total_day_attended: Jumlah hari latihan yang dihadiri
         nil: Belum Hadir
+      mycpd:
+        accumulated_cpd_points: "Jumlah Mata Kumulatif (myCPD)"
+        cpd_year: Tahun
+        cpd_value: Jumlah Mata Kumulatif
+        inserted_values: "Nilai yang dimasukkan akan dipaparkan dalam item no.5, 'Rekod Pengesahan Kehadiran Program Latihan' dan 'Rumusan Latihan Yang Dihadiri Sepanjang Tahun'."
+        same_year: "* Pilih rekod program Latihan bagi tahun yang sama untuk paparan mata kumulatif CPD berkaitan."
+        same_year2: "* Pilih rekod program Latihan bagi tahun yang sama untuk paparan TAHUN"
+        uniq_msg: "CPD bagi tahun yang dipilih telah wujud"
         
     travel_request:
       title: Permohonan Perjalanan
