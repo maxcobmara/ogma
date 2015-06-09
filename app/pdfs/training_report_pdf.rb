@@ -57,7 +57,8 @@ class Training_reportPdf < Prawn::Document
       @schedules_year << start.year
     end
     if @schedules_year.uniq.count==1
-      b=Mycpd.where(staff_id: @staffid, cpd_year: Date.today.beginning_of_year).first.try(:cpd_value) 
+      schedule_date=Date.new(@schedules_year[0],1,1)
+      b=Mycpd.where(staff_id: @staffid, cpd_year: schedule_date).first.try(:cpd_value) 
     else
       b=I18n.t('staff.training.mycpd.same_year')
     end
