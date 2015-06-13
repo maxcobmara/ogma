@@ -508,6 +508,7 @@ en:
         ic_or_name: IC or Staff Name
         app_reject: Application Rejected
         await_unit_app: Awaiting Unit Approval
+        await_dept_app: Awaiting Department Approval
         app_by_unit_head: "Approved by Unit head, awaiting Dept approval"
         app_by_dept_head: "Approved by Dept head, awaiting Pengarah approval"
         all_app_comp: All approvals complete

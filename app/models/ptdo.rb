@@ -92,19 +92,23 @@ class Ptdo < ActiveRecord::Base
 
   def apply_dept_status
     if (unit_approve == false || dept_approve == false || final_approve == false)
-      "Application Rejected"
+      I18n.t("staff.training.application_status.app_reject") #"Application Rejected"
     elsif unit_approve.nil? == true
-      "Awaiting Unit Approval"
+      I18n.t("staff.training.application_status.await_unit_app") #"Awaiting Unit Approval" 
     elsif unit_approve == true && dept_approve.nil? == true
-      "Approved by Unit head, awaiting Dept approval"
+      if User.where(userable_id: staff_id).first.roles.map(&:name).include?("Lecturer") || Programme.roots.map(&:name).include?(applicant.positions.first.unit)
+        I18n.t("staff.training.application_status.await_dept_app")#unit approval - not applicable for academician
+      else
+        I18n.t("staff.training.application_status.app_by_unit_head")#"Approved by Unit head, awaiting Dept approval"
+      end  
     elsif dept_approve == true && dept_approve == true && final_approve.nil? == true
-      "Approved by Dept head, awaiting Pengarah approval"
+      I18n.t("staff.training.application_status.app_by_dept_headl") #"Approved by Dept head, awaiting Pengarah approval"
     elsif dept_approve == true && dept_approve == true && final_approve == true && trainee_report.nil? == true
-      "All approvals complete"
+      I18n.t("staff.training.application_status.all_app_comp") #"All approvals complete"
     elsif dept_approve == true && dept_approve == true && final_approve == true && trainee_report.nil? == false
-      "Report Submitted"
+      I18n.t("staff.training.application_status.report_submit") #"Report Submitted"
     else
-      "Status Not Available"
+      I18n.t("staff.training.application_status.status_not_available") #"Status Not Available"
     end
   end
 
