@@ -27,51 +27,70 @@
           = f.label t 'staff.training.application_status.staff_name'
         .col-md-3
           = @ptdo.applicant_details
-            
-      /Unit Approval Block
-      - permitted_to? :approve, :ptdos do
-        - if @ptdo.unit_approve.blank?
-          .form-group
-            .col-sm-2.control-label
-              = f.label t 'staff.training.application_status.justification'
-            .col-md-3
-              = f.text_area :justification, :size => "30x5", class: 'form-control'
-          
-          .form-group
-            .col-sm-2.control-label
-              = f.label t 'staff.training.application_status.unit_review'
-            .col-md-3
-              = f.text_area :unit_review, :size => "30x5", class: 'form-control'
-          
-          .form-group
-            .col-sm-2.control-label
-              = f.label t 'staff.training.application_status.unit_decision'
-            .col-md-3
-              = f.check_box :unit_approve, class: 'form-control'
       
-      /Department Approval Block        
-      - permitted_to? :approve, :ptdos do
-        - if @ptdo.unit_approve.blank? && @ptdo.dept_approve.blank?
-          .form-group
-            .col-sm-2.control-label
-              = f.label t 'staff.training.application_status.dept_review'
-            .col-md-3
-              = f.text_area :dept_review, :size => "30x5", class: 'form-control'
+      - c_unit=@ptdo.applicant.positions.first.unit
+      - c_staff=@ptdo.staff_id
+      - c_roles=User.where(userable_id: @ptdo.staff_id).first.roles.map(&:name)
+      - unless @ptdo.repl_staff.nil?
+        - replacements = @ptdo.repl_staff
+      - unless @ptdo.repl_staff2(c_unit, c_staff, c_roles).nil?
+        - replacements = @ptdo.repl_staff2(c_unit, c_staff, c_roles)
+                  
+      /Unit Approval Block
+      - permitted_to? :approve, :staff_training_ptdos do
+        /Hack : Training Administration should not approved siblings application, must be done by Training Manager
+        - if (@current_user.roles.map(&:name).include?("Training Administration") && @current_user.unit_members.include?(@ptdo.staff_id)==false) || @current_user.roles.map(&:name).include?("Training Manager") || (@current_user.roles.map(&:name).include?("Training Administration")==false && @current_user.roles.map(&:name).include?("Training Manager")==false)
+          - if @ptdo.unit_approve.blank?
+            .form-group
+              .col-sm-2.control-label
+                = f.label t 'staff.training.application_status.justification'
+              .col-md-3
+                = f.text_area :justification, :size => "30x5", class: 'form-control'
           
-          .form-group
-            .col-sm-2.control-label
-              = f.label t 'staff.training.application_status.dept_decision'
-            .col-md-3
-              = f.check_box :dept_approve, class: 'form-control' 
+            .form-group
+              .col-sm-2.control-label
+                = f.label t 'staff.training.application_status.unit_review'
+              .col-md-3
+                = f.text_area :unit_review, :size => "30x5", class: 'form-control'
           
-          .form-group
-            .col-sm-2.control-label
-              = f.label t 'staff.training.application_status.replacement_staff'
-            .col-md-3
-              = f.collection_select :replacement_id, Staff.where("id IN (?)", @ptdo.repl_staff), :id, :staff_name_with_position, {:include_blank => t('helpers.prompt.select_staff')}, {class: 'selectpicker', "data-width"=>'300px'} 
+            .form-group
+              .col-sm-2.control-label
+                = f.label t 'staff.training.application_status.unit_decision'
+              .col-md-3
+                = f.check_box :unit_approve, class: 'form-control'
               
-      - permitted_to? :approve, :ptdos do
-        - if @ptdo.dept_approve? && @ptdo.final_approve.blank? && @current_user.userable_id.staff.position.name == "Pengarah"  
+            /Mgmt staff:replacement done at Unit level, lecturers replacement done at Dept level
+            .form-group
+              .col-sm-2.control-label
+                = f.label t 'staff.training.application_status.replacement_staff'
+              .col-md-3
+                = f.collection_select :replacement_id, Staff.where("id IN (?)", replacements), :id, :staff_name_with_position, {:include_blank => t('helpers.prompt.select_staff')}, {class: 'selectpicker', "data-width"=>'300px'} 
+      
+      /Department Approval Block  
+      - permitted_to? :approve, :staff_training_ptdos do
+        - if @ptdo.unit_approve? && @ptdo.dept_approve.blank?          
+          - if ((User.where(userable_id: @ptdo.staff_id).first.roles.map(&:name).include?("Lecturer") || Programme.roots.map(&:name).include?(@ptdo.applicant.positions.first.unit)) && @current_user.userable.positions.first.name != "Timbalan Pengarah (Pengurusan)" ) || (User.where(userable_id: @ptdo.staff_id).first.roles.map(&:name).include?("Lecturer")==false && Programme.roots.map(&:name).include?(@ptdo.applicant.positions.first.unit)==false && @current_user.userable.positions.first.name == "Timbalan Pengarah (Pengurusan)") || @current_user.roles.map(&:name).include?("Training Manager") || @current_user.roles.map(&:name).include?("Training Administration")
+            .form-group
+              .col-sm-2.control-label
+                = f.label t 'staff.training.application_status.dept_review'
+              .col-md-3
+                = f.text_area :dept_review, :size => "30x5", class: 'form-control'
+          
+            .form-group
+              .col-sm-2.control-label
+                = f.label t 'staff.training.application_status.dept_decision'
+              .col-md-3
+                = f.check_box :dept_approve, class: 'form-control' 
+          
+            - if User.where(userable_id: @ptdo.staff_id).first.roles.map(&:name).include?("Lecturer") || Programme.roots.map(&:name).include?(@ptdo.applicant.positions.first.unit)
+              .form-group
+                .col-sm-2.control-label
+                  = f.label t 'staff.training.application_status.replacement_staff'
+                .col-md-3
+                  = f.collection_select :replacement_id, Staff.where("id IN (?)", replacements).order(name: :asc), :id, :staff_name_with_position, {:include_blank => t('helpers.prompt.select_staff')}, {class: 'selectpicker', "data-width"=>'300px'} 
+              
+      - permitted_to? :approve, :staff_training_ptdos do
+        - if @ptdo.dept_approve? && @ptdo.final_approve.blank? && @current_user.userable.positions.first.name == "Pengarah"  
           .form-group
             .col-sm-2.control-label
               = f.label t 'staff.training.application_status.final_approve'
@@ -90,6 +109,3 @@
           = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), staff_training_ptdos_path, :class => 'btn btn-default'
         .col-md-2
           = f.submit t('update'), class: "btn btn-primary"
-        - permitted_to? :manage, :staff_training_ptbudgets do
-          .col-md-2
-            = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('staff.training.budget.participants_expenses', :default => t("helpers.links.back")), participants_expenses_staff_training_ptdos_path, :class => 'btn btn-default'

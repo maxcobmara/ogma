@@ -526,6 +526,8 @@ ms_MY:
         note_hours_day: "Nota : 6 jam bersamaan 1 hari berkursus"
         total_day_attended: Jumlah hari latihan yang dihadiri
         nil: Belum Hadir
+        staff_must_unique: " - Permohonan menyertai latihan bagi jadual kursus yang dipilih hanya boleh dibuat sekali sahaja."
+        group_by: Kumpulan
       mycpd:
         accumulated_cpd_points: "Jumlah Mata Kumulatif (myCPD)"
         cpd_year: Tahun
