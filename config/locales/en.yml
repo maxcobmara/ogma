@@ -508,6 +508,7 @@ en:
         ic_or_name: IC or Staff Name
         app_reject: Application Rejected
         await_unit_app: Awaiting Unit Approval
+        await_dept_app: Awaiting Department Approval
         app_by_unit_head: "Approved by Unit head, awaiting Dept approval"
         app_by_dept_head: "Approved by Dept head, awaiting Pengarah approval"
         all_app_comp: All approvals complete
@@ -535,6 +536,8 @@ en:
         note_hours_day: "Note : 6 hours equal to 1 day of training"
         total_day_attended: Total days of training attended
         nil: Not yet attended
+        staff_must_unique: " - Application for training of selected course schedule can only be done once."
+        group_by: Group by
       mycpd:
         accumulated_cpd_points: "Accumulated CPD Points (myCPD)"
         cpd_year: Year 

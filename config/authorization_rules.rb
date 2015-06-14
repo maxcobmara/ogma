@@ -148,6 +148,7 @@ authorization do
 
    role :training_manager do
      has_permission_on [:staff_training_ptbudgets, :staff_training_ptcourses, :staff_training_ptschedules], :to => :manage
+     has_permission_on :staff_training_ptdos, :to =>:approve
    end
  
    role :training_administration do
@@ -252,6 +253,9 @@ authorization do
    has_permission_on :exam_evaluate_courses, :to => [:manage, :courseevaluation] do
      if_attribute :course_id => is {user.evaluations_of_programme}
    end
+   has_permission_on :staff_training_ptdos, :to => :approve do
+     if_attribute :staff_id => is_in {user.unit_members}#is {69}#is_in {[69, 106]}  #
+   end
  end
  
  #Group Library   -------------------------------------------------------------------------------
@@ -308,6 +312,12 @@ authorization do
     has_permission_on :library_books, :to => :read
     has_permission_on :asset_assets, :to => :read
     has_permission_on :students, :to => :read
+  end
+  
+  role :unit_leader do
+    has_permission_on :staff_training_ptdos, :to => :approve do
+      if_attribute :staff_id => is_in { user.unit_members}
+    end
   end
   
   role :guest do

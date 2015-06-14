@@ -52,19 +52,17 @@
             %dt= t 'staff.training.application_status.trainee_report'
             %dd= h @ptdo.trainee_report
             
-            %br
-            %dt=t 'staff.training.budget.payment_method'
-            %dd=h @ptdo.render_payment
-            
-            %dt=t 'staff.training.budget.remark'
-            %dd=h @ptdo.remark 
-            
 .row
   .col-md-4.col-md-offset-4
     %hr
     .form-actions
       = link_to content_tag(:i, "", class: "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), staff_training_ptdos_path, class: 'btn btn-default'
       = link_to content_tag(:i, "", class: "fa fa-edit") + " " + t('.edit', :default => t("helpers.links.edit")), edit_staff_training_ptdo_path, class: 'btn btn-primary'
-      - permitted_to? :manage, :staff_training_ptbudgets do
-        = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('staff.training.budget.participants_expenses', :default => t("helpers.links.back")), participants_expenses_staff_training_ptdos_path, :class => 'btn btn-default'
+      - permitted_to? :approve, :staff_training_ptdos do
+        - if @ptdo.trainee_report.blank?
+          = link_to content_tag(:i, "", class: "fa fa-trash-o icon-white") + " " + t('.destroy', :default => t("helpers.links.destroy")), |
+              staff_training_ptdo_path(@ptdo),                                                                                                    |
+              :method => 'delete',                                                                                                           |
+              :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },                   |
+              class: 'btn btn-danger'
               

@@ -60,8 +60,8 @@
                       %li= link_to t('staff.training.budget.title'), staff_training_ptbudgets_path
                     - permitted_to? :manage, :staff_training_ptcourses do
                       %li= link_to t('staff.training.course.title_course'), staff_training_ptcourses_path
-                    - permitted_to? :manage, :staff_training_ptschedules do
-                      %li= link_to t('staff.training.schedule.title_schedule'), staff_training_ptschedules_path
+                    /- permitted_to? :manage, :staff_training_ptschedules do
+                    %li= link_to t('staff.training.schedule.title_schedule'), staff_training_ptschedules_path
                     %li= link_to t('staff.training.application_status.title_apply'), '#', class: 'bogus'
                     %li= link_to t('staff.training.application_status.title'), staff_training_ptdos_path
                     - permitted_to? :manage, :staff_training_ptbudgets do

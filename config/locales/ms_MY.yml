@@ -499,6 +499,7 @@ ms_MY:
         ic_or_name: IC atau Nama Staf
         app_reject: Permohonan Ditolak
         await_unit_app: Menunggu Kelulusan Unit
+        await_dept_app: Menunggu Kelulusan Jabatan
         app_by_unit_head: "Diluluskan oleh Ketua Unit, menunggu kelulusan Ketua Jabatan"
         app_by_dept_head: "Diluluskan oleh Ketua Jabatan, menunggu kelulusan Pengarah"
         all_app_comp: Semua kelulusan lengkap
@@ -526,6 +527,8 @@ ms_MY:
         note_hours_day: "Nota : 6 jam bersamaan 1 hari berkursus"
         total_day_attended: Jumlah hari latihan yang dihadiri
         nil: Belum Hadir
+        staff_must_unique: " - Permohonan menyertai latihan bagi jadual kursus yang dipilih hanya boleh dibuat sekali sahaja."
+        group_by: Kumpulan
       mycpd:
         accumulated_cpd_points: "Jumlah Mata Kumulatif (myCPD)"
         cpd_year: Tahun

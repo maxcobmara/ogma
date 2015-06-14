@@ -2,10 +2,21 @@ class StaffTraining::PtdosController < ApplicationController
   before_action :set_ptdo, only: [:show, :edit, :update, :destroy]
   
   def index
-    roles = current_user.roles.pluck(:id)
-    @is_admin = roles.include?(2)
+    roles = current_user.roles.pluck(:authname)
+    @is_admin = roles.include?("administration") || roles.include?("training_administration") || roles.include?("training_manager")
+    @is_programme_mgr = roles.include?("programme_manager")
+    @is_unit_leader = roles.include?("unit_leader")
     if @is_admin
       @search = Ptdo.search(params[:q])
+    elsif @is_programme_mgr || @is_unit_leader
+      if @is_programme_mgr && @is_unit_leader
+        roles2=["programme_manager", "unit_leader"]
+      elsif @is_programme_mgr && !@is_unit_leader
+        roles2=["programme_manager"]
+      elsif !@is_programme_mgr && @is_unit_leader
+        roles2=["unit_leader"]
+      end
+      @search = Ptdo.unit_members(current_user.userable.positions.first.unit, current_user.userable_id, roles2).search(params[:q])
     else
       @search = Ptdo.sstaff2(current_user.userable.id).search(params[:q])
     end 
@@ -29,7 +40,7 @@ class StaffTraining::PtdosController < ApplicationController
 
     respond_to do |format|
       if @ptdo.save
-        format.html { redirect_to(staff_training_ptdo_path(@ptdo), notice: 'Apply for training was successfully created.' )}
+        format.html { redirect_to(staff_training_ptdo_path(@ptdo), notice: (t 'staff.training.application_status.title_apply')+" "+(t 'actions.created'))}
         format.json { render action: 'show', status: :created, location: @ptdo }
       else
         format.html { render action: 'new' }
@@ -43,7 +54,7 @@ class StaffTraining::PtdosController < ApplicationController
 
     respond_to do |format|
       if @ptdo.update(ptdo_params)
-        format.html { redirect_to(staff_training_ptdo_path(@ptdo), notice: 'Apply for training was successfully updated.' )}
+        format.html { redirect_to(staff_training_ptdo_path(@ptdo), notice:  (t 'staff.training.application_status.title_apply')+" "+(t 'actions.updated') )}
         format.json { head :no_content }
       else
         format.html { render action: 'edit' }
@@ -57,7 +68,7 @@ class StaffTraining::PtdosController < ApplicationController
     @ptdo.destroy
 
     respond_to do |format|
-      format.html { redirect_to(ptdos_url) }
+      format.html { redirect_to(staff_training_ptdos_url) }
       format.xml  { head :ok }
     end
   end

@@ -154,6 +154,46 @@ class User < ActiveRecord::Base
       return []
     end
   end
+  
+  ###Use in Ptdo(for use in auth_rules & Edit pages (approve)) - start
+  def unit_members#(current_unit, current_staff, current_roles)
+    #Academicians & Mgmt staff : "Teknologi Maklumat", "Perpustakaan", "Kewangan & Akaun", "Sumber Manusia","logistik", "perkhidmatan" ETC.. - by default staff with the same unit in Position will become unit members, whereby Ketua Unit='unit_leader' role & Ketua Program='programme_manager' role.
+    #Exceptional for - "Kejuruteraan", "Pentadbiran Am", "Perhotelan", "Aset & Stor" (subunit of Pentadbiran), Ketua Unit='unit_leader' with unit in Position="Pentadbiran" Note: whoever within these unit if wrongly assigned as 'unit_leader' will also hv access for all ptdos on these unit staff
+    
+    current_staff=userable_id
+    exist_unit_of_staff_in_position = Position.where('unit is not null and staff_id is not null').map(&:staff_id).uniq
+    if exist_unit_of_staff_in_position.include?(current_staff)   
+      
+      current_unit=userable.positions.first.unit
+      #replace current_unit value if academician also a Unit Leader (23)
+      current_roles=User.where(userable_id: userable_id).first.roles.map(&:name) #"Unit Leader" #userable.roles.map(&:role_id) 
+      current_unit=unit_lead_by_academician if current_roles.include?("Unit Leader") && Programme.roots.map(&:name).include?(current_unit)
+      
+      if current_unit=="Pentadbiran"
+        unit_members = Position.where('unit=? OR unit=? OR unit=? OR unit=?', "Kejuruteraan", "Pentadbiran Am", "Perhotelan", "Aset & Stor").map(&:staff_id).uniq-[nil]+Position.where('unit=?', current_unit).map(&:staff_id).uniq-[nil]
+      elsif ["Teknologi Maklumat", "Pusat Sumber", "Kewangan & Akaun", "Sumber Manusia"].include?(current_unit) || Programme.roots.map(&:name).include?(current_unit)
+        unit_members = Position.where('unit=?', current_unit).map(&:staff_id).uniq-[nil]
+      else #logistik & perkhidmatan inc."Unit Perkhidmatan diswastakan / Logistik" or other UNIT just in case - change of unit name, eg. Perpustakaan renamed as Pusat Sumber
+        unit_members = Position.where('unit ILIKE(?)', "%#{current_unit}%").map(&:staff_id).uniq-[nil] 
+      end
+    else
+      unit_members = []#Position.find(:all, :conditions=>['unit=?', 'Teknologi Maklumat']).map(&:staff_id).uniq-[nil]
+    end
+    unit_members   #collection of staff_id (member of a unit/dept) - use in model/user.rb (for auth_rules)
+    #where('staff_id IN(?)', unit_members) ##use in ptdo.rb (controller - index)
+  end
+  
+  #call this method if academician also lead a mgmt unit
+  def unit_lead_by_academician
+    main_tasks=userable.positions.first.tasks_main
+    if main_tasks.include?("Ketua Unit")   
+      mgmt_unit=main_tasks.scan(/Ketua Unit(.*),/)[0][0].strip
+    else
+      mgmt_unit=""
+    end
+    mgmt_unit
+  end
+  ###Use in Ptdo(for use in auth_rules & Edit pages (approve)) - end
 
   def role_symbols
    roles.map do |role|
