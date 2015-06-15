@@ -26,14 +26,14 @@
               .col-sm-2.control-label
                 = f.label :staff_id
               .col-md-6 
-                = f.collection_select :staff_id, Staff.all.order('name ASC'), :id, :mykad_with_staff_name_position_grade, {:include_blank =>t('helpers.prompt.select_staff')},{class: 'selectpicker',  "data-width"=>'460px'} 
+                = f.collection_select :staff_id, Staff.where(id: @current_user.userable_id), :id, :mykad_with_staff_name_position_grade,{},{class: 'selectpicker',  "data-width"=>'500px'} 
                 /= f.collection_select :staff_id, Staff.where('id = ?', Login.current_login.staff_id).order('name ASC'), :id, :mykad_with_staff_name, {:include_blank =>t('helpers.prompt.select_staff')},{class: 'selectpicker', "data-width"=>'230px'}   
           .col-md-offset-2 
             .form-group
               .col-sm-2.control-label
                 = f.label :evaluation_year
               .col-md-2
-                = f.text_field :evaluation_year, class: 'date_picker form-control'
+                = f.text_field :evaluation_year, class: 'date_picker_reverse form-control'
             
           #skt.tab-pane.active
             %br

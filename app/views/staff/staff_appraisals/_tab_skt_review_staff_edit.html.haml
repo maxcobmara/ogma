@@ -3,16 +3,30 @@
   /.col-md-offset-1
   %b=t 'evaluation.skt_review.title'
   %BR
-  %b=t 'evaluation.skt_review.drop'
+  /%b=t 'evaluation.skt_review.drop'
+  %b= (t 'evaluation.skt_review.drop_select')
+  (
+  %font{color: "red"}*
+  = t 'evaluation.skt_review.drop_select2'
+  %b= t 'evaluation.skt.performance'
+  =t('and')
+  %b= t 'evaluation.skt.target'
+  = t 'evaluation.skt_review.drop_select3'
+  %BR
+
   .row
     .col-sm-1= t 'evaluation.skt.priority'
     .col-sm-2= t 'evaluation.skt.description2'
     .col-sm-2= t 'evaluation.skt.performance'
-    .col-sm-2= t 'evaluation.skt.target'
-    .col-sm-2= t 'evaluation.skt.achievement'
-    .col-sm-1= t 'evaluation.skt.progress'
     .col-sm-2
-      = (t 'evaluation.skt.notes')+" / "+(t 'evaluation.skt_review.drop2')
+      %font{color: "red"}*
+      = t 'evaluation.skt.target'
+    .col-sm-2
+      %font{color: "red"}*
+      = t 'evaluation.skt_review.achievement'
+    .col-sm-1= t 'evaluation.skt_review.progress'
+    .col-sm-2
+      = (t 'evaluation.skt_review.notes')+" / "+(t 'evaluation.skt_review.drop2')
     /.col-sm-1= t 'evaluation.skt_review.drop2'
     %hr
   = f.fields_for :staff_appraisal_skts do |builder|
@@ -26,10 +40,9 @@
     .col-sm-2= t 'evaluation.skt.description2'
     .col-sm-2= t 'evaluation.skt.performance'
     .col-sm-2= t 'evaluation.skt.target'
-    .col-sm-2= t 'evaluation.skt.achievement'
-    .col-sm-1= t 'evaluation.skt.progress'
-    .col-sm-2
-      = (t 'evaluation.skt.notes')+" / "+(t 'evaluation.skt_review.drop2')
+    .col-sm-2= t 'evaluation.skt_review.achievement'
+    .col-sm-1= t 'evaluation.skt_review.progress'
+    .col-sm-2= (t 'evaluation.skt_review.notes')+" / "+(t 'evaluation.skt_review.drop2')
     %hr
   = f.fields_for :staff_appraisal_skts do |builder|
     - if builder.object.description.blank? != true && builder.object.half == 2
@@ -38,8 +51,15 @@
   %br
   .row
     /= link_to_add_fields image_tag("add.png", :border => 0, :title => t('addmore')), f, :travel_claim_logs
-    = link_to_add_fields t('helpers.label.staff_appraisal.add_activity'), f, :staff_appraisal_skts, "",  t('helpers.label.staff_appraisal.add_activity')
-  %br  
+    = link_to_add_fields t('addmore'), f, :staff_appraisal_skts, "",  t('addmore')
+  %br
+  %font{size: "-1"}
+    %i
+      = t 'evaluation.skt_review.cancel_select'
+      %br= t 'evaluation.skt_review.new_additional' 
+      %font{color: "red"}= t 'evaluation.skt_review.new_additional2'
+      = t 'evaluation.skt_review.new_additional3'
+  %hr
 
 .col-md-10.col-md-offset-1 
   .form-group
