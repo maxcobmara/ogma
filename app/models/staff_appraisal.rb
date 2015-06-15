@@ -159,11 +159,6 @@ class StaffAppraisal < ActiveRecord::Base
       "noedit"
     elsif evaluation_status == I18n.t('staff.staff_appraisal.submitted_for_evaluation_by_ppp') && staff_id == curr_user.userable_id #"Submitted for Evaluation by PPP" #&& staff_id == Login.current_login.staff_id
       "noedit"
-      
-#     elsif evaluation_status == "Submitted for Evaluation by PPP to PPK" #&& staff_id == Login.current_login.staff_id
-#       "noedit"
-#     elsif evaluation_status == "Submitted by PPP for Evaluation  to PPK" #&& eval1_by == Login.current_login.staff_id
-#       "noedit"
     elsif evaluation_status == I18n.t('staff.staff_appraisal.submitted_by_ppp_for_evaluation_to_PPK') && staff_id == curr_user.userable_id
       "noedit"
     elsif evaluation_status == I18n.t('staff.staff_appraisal.submitted_by_ppp_for_evaluation_to_PPK') && eval1_by == curr_user.userable_id
@@ -172,6 +167,23 @@ class StaffAppraisal < ActiveRecord::Base
       "noedit"
     else
       "edit.png"
+    end
+  end
+  
+  def viewable(curr_user)
+    curr_roles=curr_user.roles.map(&:authname)
+    if curr_user.userable_id==eval2_by || curr_roles.include?("administration") || (curr_roles.include?("staff_administrator") && curr_roles.include?("unit_leader"))
+      "display"
+    elsif curr_user.userable.positions.first.unit=="Sumber Manusia"
+      unit_members=Position.joins(:staff).where('unit=?', "Sumber Manusia").order(ancestry_depth: :asc)
+      highest_rank = unit_members.sort_by{|x|x.staffgrade.name[-2,2]}.last
+      highest_grade = highest_rank.staffgrade.name[-2,2]
+      curr_grade = curr_user.userable.staffgrade.name[-2,2] 
+      if highest_grade==curr_grade
+        "display"
+      end
+    else
+      "not visible"
     end
   end
   
