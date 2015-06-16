@@ -57,6 +57,9 @@
       /= @staff.transportclass_id
     
     %hr
+    %dt= t 'staff.thumb'
+    %dd= @staff.thumb_id
+    
     %dt= t 'staff.shift', :default => model_class.human_attribute_name(:staff_shift_id) + ":"
     %dd 
       = @staff.staff_shift.try(:start_end)

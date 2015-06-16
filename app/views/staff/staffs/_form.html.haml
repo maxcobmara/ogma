@@ -103,6 +103,12 @@
 
           .form-group
             .col-sm-2.control-label
+              = f.label t 'staff.thumb', for: :thumb_id
+            .col-md-1
+              = f.text_field :thumb_id, class: 'form-control mandatory'
+
+          .form-group
+            .col-sm-2.control-label
               = f.label t 'staff.birthcertno', for: :birthcertno
             .col-md-4
               = f.text_field :birthcertno, class: 'form-control'
