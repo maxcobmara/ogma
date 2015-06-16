@@ -3,9 +3,10 @@ class StaffTraining::PtdosController < ApplicationController
   
   def index
     roles = current_user.roles.pluck(:authname)
-    @is_admin = roles.include?("administration") || roles.include?("training_administration") || roles.include?("training_manager")
+    @is_admin = roles.include?("administration") || roles.include?("training_administration") || roles.include?("training_manager") 
     @is_programme_mgr = roles.include?("programme_manager")
     @is_unit_leader = roles.include?("unit_leader")
+    @is_admin_superior = roles.include?("administration_staff") && current_user.userable.positions.first.name=="Timbalan Pengarah (Pengurusan)"
     if @is_admin
       @search = Ptdo.search(params[:q])
     elsif @is_programme_mgr || @is_unit_leader
@@ -17,6 +18,8 @@ class StaffTraining::PtdosController < ApplicationController
         roles2=["unit_leader"]
       end
       @search = Ptdo.unit_members(current_user.userable.positions.first.unit, current_user.userable_id, roles2).search(params[:q])
+     elsif @is_admin_superior
+       @search = Ptdo.where(staff_id: @current_user.admin_subordinates).search(params[:q])
     else
       @search = Ptdo.sstaff2(current_user.userable.id).search(params[:q])
     end 

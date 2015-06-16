@@ -316,7 +316,13 @@ authorization do
   
   role :unit_leader do
     has_permission_on :staff_training_ptdos, :to => :approve do
-      if_attribute :staff_id => is_in { user.unit_members}
+      if_attribute :staff_id => is_in {user.unit_members}
+    end
+  end
+  
+  role :administration_staff do
+    has_permission_on :staff_training_ptdos, :to => :approve do
+      if_attribute :staff_id => is_in {user.admin_subordinates}
     end
   end
   
