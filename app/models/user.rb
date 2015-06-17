@@ -194,6 +194,18 @@ class User < ActiveRecord::Base
     mgmt_unit
   end
   ###Use in Ptdo(for use in auth_rules & Edit pages (approve)) - end
+  
+  #for Timbalan Pengarah Pengurusan only - for accessible of staff training application status list w/o assignment on 'Administration' role
+  def admin_subordinates
+    mypost=userable.positions.first
+    post_name=mypost.name
+    if post_name=="Timbalan Pengarah (Pengurusan)"
+      adm_sub=mypost.descendants.map(&:staff_id)
+    else
+      adm_sub=[]
+    end
+    adm_sub
+  end
 
   def role_symbols
    roles.map do |role|

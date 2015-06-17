@@ -73,12 +73,12 @@ module Notifications
  
  def staff_notifications_of_student_leave
    if is_staff?
-     if current_user.roles.pluck(:id).include?(2)
+     if current_user.roles.pluck(:id).include?(2) #administration
         a = Leaveforstudent.where("studentsubmit =? AND approved IS ? AND leave_startdate >=?", true, nil, Date.tomorrow)
         b = Leaveforstudent.where("studentsubmit =? AND approved2 IS ? AND leave_startdate >=?", true, nil, Date.tomorrow)
         leaveforstudents = (a + b).uniq
      else
-       if current_user.roles.pluck(:id).include?(7) 
+       if current_user.roles.pluck(:id).include?(7) #warden
          if current_staff.positions.first.tasks_main.include?('Penyelaras Kumpulan')
            pending_applications = Leaveforstudent.pending_coordinator.map(&:id)
            leaveforstudents = Leaveforstudent.where('student_id IN(?) and id IN(?) and leave_startdate >=?', current_user.under_my_supervision, pending_applications, Date.tomorrow)  
@@ -87,12 +87,14 @@ module Notifications
            leaveforstudents = Leaveforstudent.where('id IN(?) and leave_startdate >=?', pending_applications, Date.tomorrow)  
          end
        else 
-         pending_applications = Leaveforstudent.pending_coordinator.map(&:id)
-         leaveforstudents = Leaveforstudent.where('student_id IN(?) and id IN(?) and leave_startdate >=?', current_user.under_my_supervision, pending_applications, Date.tomorrow)  
+         if current_user.roles.pluck(:id).include?(14) #lecturer
+           pending_applications = Leaveforstudent.pending_coordinator.map(&:id)
+           leaveforstudents = Leaveforstudent.where('student_id IN(?) and id IN(?) and leave_startdate >=?', current_user.under_my_supervision, pending_applications, Date.tomorrow)  
+         end
        end
      end
    end
-   leaveforstudents.count
+   leaveforstudents.count if leaveforstudents
  end 
 
 end

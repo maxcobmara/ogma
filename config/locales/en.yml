@@ -112,6 +112,7 @@ en:
         e1_progress: Career Progress
         submit_e2_on: Submission date to PPK
         skt_pyd_report: Report by PYD
+        evaluation_year: Evaluation year
       staff:
         mycpds: "Accumulative CPD points (MyCPD)"
       mycpd:
@@ -725,6 +726,7 @@ en:
       submitted_for_evaluation_by_ppp: Submitted for Evaluation by PPP
       submitted_by_ppp_for_evaluation_to_PPK: Submitted by PPP for Evaluation to PPK
       is_complete: "Staff Appraisal completed?"
+      evaluation_year_must_unique: " - Your evaluation for selected year already exists"
     
     evactivity:
       actdt: Date
@@ -741,6 +743,7 @@ en:
       endorse_notify: "Clicking on submit disables your editing this record further."
       submit_report: "Clicking on submit notifies your Evaluating Officer (PPP) and disables your editing this record further."
       skt_ppp_report: "Clicking on complete notifies your Staff (PYD) and disables your editing this record further."
+      target: Work Target
       quantity: Quantity
       quality: Quality
       time: Time
@@ -751,6 +754,17 @@ en:
       drop: "Drop existing Activity/Project"
       add: "Additional Activity/Project"
       drop2: Drop
+      drop_select: "Tick 'Drop' checkbox to drop an activity / project"
+      drop_select2: "compulsory fields for existing "
+      drop_select3: ", if activity / project is not drop)"
+      achievement: Achievement
+      notes: Reviews
+      progress: " %"
+      cancel: Cancel
+      cancel_select: "Tick 'Cancel' checkbox to remove saved additional activity / project OR click 'dustbin' icon to remove unsaved activity from the list. "
+      new_additional: "For new additional activity, click 'Add More'."
+      new_additional2: " Note, compulsory fields: "
+      new_additional3: "'Description of Activities and Projects' plus at least 1 set of (Performance Indicator and corresponding : Target + Achievement + % of achievement)."
       title3: "Attachment A Part III - Report & Summary"
       #pyd_report: "1. Report by PYD"
       #ppp_report: "2. Report by PPP"

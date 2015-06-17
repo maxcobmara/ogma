@@ -1,8 +1,9 @@
 class Appraisal_formPdf < Prawn::Document
-  def initialize(staff_appraisal, view)
+  def initialize(staff_appraisal, curr_user, view)
     super({top_margin: 50, left_margin: 38, page_size: 'A4', page_layout: :portrait})
     @staff_appraisal = staff_appraisal
     @view = view
+    @curr_user=curr_user
     #font " "
      
     #refer ogma/config/initializers/prawn_extensions.rb 
@@ -314,15 +315,15 @@ def bahagian3
   data1 = [["", "KRITERIA (Dinilai berasaskan SKT)", "PPP", "PPK"],
            ["1.", "   KUANTITI HASIL KERJA", "", ""],
            ["","Kuantiti hasil kerja seperti jumlah bilangan, kadar, kekerapan dan sebagainya berbanding dengan sasaran kuantiti 
-             kerja yang ditetapkan.", "#{@staff_appraisal.e1g1q1}" , "#{@staff_appraisal.e2g1q1}" ],
+             kerja yang ditetapkan.", "#{@staff_appraisal.e1g1q1}" , "#{@staff_appraisal.e2g1q1 if @staff_appraisal.viewable(@curr_user) == "display" }" ],
              ["2. ","  KUALITI HASIL KERJA", "",""],
-             ["2.1. ","Dinilai dari segi kesempurnaan, teratur dan kemas.", "#{@staff_appraisal.e1g1q1}","#{@staff_appraisal.e2g1q2}"],
-             ["2.2."," Dinilai dari segi usaha dan inisiatif untuk mencapai kesempurnaan hasil kerja.","#{@staff_appraisal.e1g1q3 }","#{@staff_appraisal.e2g1q3}"],
+             ["2.1. ","Dinilai dari segi kesempurnaan, teratur dan kemas.", "#{@staff_appraisal.e1g1q2}","#{@staff_appraisal.e2g1q2 if @staff_appraisal.viewable(@curr_user) == "display" }"],
+             ["2.2."," Dinilai dari segi usaha dan inisiatif untuk mencapai kesempurnaan hasil kerja.","#{@staff_appraisal.e1g1q3 }","#{@staff_appraisal.e2g1q3 if @staff_appraisal.viewable(@curr_user) == "display" }"],
              ["3. ","  KETEPATAN MASA","",""],
-             ["","Kebolehan menghasilkan kerja atau melaksanakan tugas dalam tempoh masa yang ditetapkan.","#{@staff_appraisal.e1g1q4}","#{@staff_appraisal.e2g1q4}"],
+             ["","Kebolehan menghasilkan kerja atau melaksanakan tugas dalam tempoh masa yang ditetapkan.","#{@staff_appraisal.e1g1q4}","#{@staff_appraisal.e2g1q4 if @staff_appraisal.viewable(@curr_user) == "display" }"],
              ["4. ","  KEBERKESANAN HASIL KERJA", "",""],
-             ["","Dinilai dari segi memenuhi kehendak 'stake-holder' atau pelanggan.","#{@staff_appraisal.e1g1q5}","#{@staff_appraisal.e2g1q5}"],
-             ["", "Jumlah markah mengikut wajaran","#{@staff_appraisal.e1g1_total} / 50 x 50 = #{@view.number_with_precision(@staff_appraisal.e1g1_percent, precision: 2, locale: "en") }","#{@staff_appraisal.e1g2_total} / 50 x 50 = #{@view.number_with_precision(@staff_appraisal.e2g1_percent, precision: 2, locale: "en")}"]]
+             ["","Dinilai dari segi memenuhi kehendak 'stake-holder' atau pelanggan.","#{@staff_appraisal.e1g1q5}","#{@staff_appraisal.e2g1q5 if @staff_appraisal.viewable(@curr_user) == "display" }"],
+             ["", "Jumlah markah mengikut wajaran","#{@staff_appraisal.e1g1_total} / 50 x 50 = #{@view.number_with_precision(@staff_appraisal.e1g1_percent, precision: 2, locale: "en") }","#{@staff_appraisal.e1g2_total if @staff_appraisal.viewable(@curr_user) == "display" } / 50 x 50 = #{@view.number_with_precision(@staff_appraisal.e2g1_percent, precision: 2, locale: "en") if @staff_appraisal.viewable(@curr_user) == "display" }"]]
              
        table(data1 , :column_widths => [30, 291,100,100], :cell_style => { :size => 10}) do
          row(0).column(1).align = :center
@@ -388,9 +389,9 @@ def bahagian4_4
   
   data1 = [["", "KRITERIA ", "PPP", "PPK"],
            ["1.", "  ILMU PENGETAHUAN DAN KEMAHIRAN DALAM BIDANG KERJA", "", ""],
-           ["","Mempunyai ilmu pengetahuan dan kemahiran/kepakaran dalam menghasilkan kerja meliputi kebolehan mengenalpasti, menganalisis serta menyelesaikan masalah.", "#{@staff_appraisal.e1g2q1}" , "#{@staff_appraisal.e2g2q1}" ],
+           ["","Mempunyai ilmu pengetahuan dan kemahiran/kepakaran dalam menghasilkan kerja meliputi kebolehan mengenalpasti, menganalisis serta menyelesaikan masalah.", "#{@staff_appraisal.e1g2q1}" , "#{@staff_appraisal.e2g2q1 if @staff_appraisal.viewable(@curr_user) == "display" }" ],
              ["2. ","  PELAKSANAAN DASAR, PERATURAN DAN ARAHAN PENTADBIRAN", "",""],
-             ["","Kebolehan menghayati dan melaksanakan dasar, peraturan dan arahan pentadbiran berkaitan dengan bidang tugasnya.", "#{@staff_appraisal.e1g2q2}","#{@staff_appraisal.e2g2q2}"]]
+             ["","Kebolehan menghayati dan melaksanakan dasar, peraturan dan arahan pentadbiran berkaitan dengan bidang tugasnya.", "#{@staff_appraisal.e1g2q2}","#{@staff_appraisal.e2g2q2 if @staff_appraisal.viewable(@curr_user) == "display" }"]]
         
              
        table(data1 , :column_widths => [30, 291,100,100], :cell_style => { :size => 10}) do
@@ -426,9 +427,9 @@ def bahagian4_4
        
        data2 = [["", "KRITERIA (Dinilai berasaskan SKT)", "PPP", "PPK"],
                  ["3. ","  KUANTITI HASIL KERJA","",""],
-                 ["","Kuantiti hasil kerja seperti jumlah bilangan, kadar, kekerapan dan sebagainya berbanding dengan sasaran kuantiti kerja yang ditetapkan.","#{@staff_appraisal.e1g2q3}","#{@staff_appraisal.e2g2q3}"],
+                 ["","Kuantiti hasil kerja seperti jumlah bilangan, kadar, kekerapan dan sebagainya berbanding dengan sasaran kuantiti kerja yang ditetapkan.","#{@staff_appraisal.e1g2q3}","#{@staff_appraisal.e2g2q3 if @staff_appraisal.viewable(@curr_user) == "display" }"],
                  ["", "Jumlah markah mengikut wajaran","#{@staff_appraisal.e1g2_total} / 30 x 25 = #{@view.number_with_precision(@staff_appraisal.e1g2_percent, precision:2, locale: "en")}",
-                   "#{@staff_appraisal.e2g2_total}/ 30 x 25 = #{@view.number_with_precision(@staff_appraisal.e2g2_percent, precision: 2, locale: "en")}"]]
+                   "#{@staff_appraisal.e2g2_total if @staff_appraisal.viewable(@curr_user) == "display" }/ 30 x 25 = #{@view.number_with_precision(@staff_appraisal.e2g2_percent, precision: 2, locale: "en") if @staff_appraisal.viewable(@curr_user) == "display" }"]]
                    
                    table(data2 , :column_widths => [30, 291,100,100], :cell_style => { :size => 10}) do
                      row(0).column(1).align = :center
@@ -463,9 +464,9 @@ def bahagian4_3
   
   data1 = [["", "KRITERIA ", "PPP", "PPK"],
            ["1.", "  ILMU PENGETAHUAN DAN KEMAHIRAN DALAM BIDANG KERJA", "", ""],
-           ["","Mempunyai ilmu pengetahuan dan kemahiran/kepakaran dalam menghasilkan kerja meliputi kebolehan mengenalpasti, menganalisis serta menyelesaikan masalah.", "#{@staff_appraisal.e1g2q1}" , "#{@staff_appraisal.e2g2q1}" ],
+           ["","Mempunyai ilmu pengetahuan dan kemahiran/kepakaran dalam menghasilkan kerja meliputi kebolehan mengenalpasti, menganalisis serta menyelesaikan masalah.", "#{@staff_appraisal.e1g2q1}" , "#{@staff_appraisal.e2g2q1 if @staff_appraisal.viewable(@curr_user) == "display" }" ],
              ["2. ","  PELAKSANAAN DASAR, PERATURAN DAN ARAHAN PENTADBIRAN", "",""],
-             ["","Kebolehan menghayati dan melaksanakan dasar, peraturan dan arahan pentadbiran berkaitan dengan bidang tugasnya.", "#{@staff_appraisal.e1g2q2}","#{@staff_appraisal.e2g2q2}"]]
+             ["","Kebolehan menghayati dan melaksanakan dasar, peraturan dan arahan pentadbiran berkaitan dengan bidang tugasnya.", "#{@staff_appraisal.e1g2q2}","#{@staff_appraisal.e2g2q2 if @staff_appraisal.viewable(@curr_user) == "display" }"]]
              
        table(data1 , :column_widths => [30, 291,100,100], :cell_style => { :size => 10}) do
          row(0).column(1).align = :center
@@ -500,9 +501,9 @@ def bahagian4_3
        
        data2 = [["", "KRITERIA (Dinilai berasaskan SKT)", "PPP", "PPK"],
                  ["3. "," KEBERKESANAN KOMUNIKASI","",""],
-                 ["","Kebolehan menyampaikan maksud, pendapat, kefahaman atau arahan secara lisan dan tulisan berkaitan dengan bidang tugas merangkumi penguasaan bahasa melalui tulisan dan lisan dengan menggunakan tatabahasa dan persembahan yang baik","#{@staff_appraisal.e1g2q3}","#{@staff_appraisal.e2g2q3}"],
+                 ["","Kebolehan menyampaikan maksud, pendapat, kefahaman atau arahan secara lisan dan tulisan berkaitan dengan bidang tugas merangkumi penguasaan bahasa melalui tulisan dan lisan dengan menggunakan tatabahasa dan persembahan yang baik","#{@staff_appraisal.e1g2q3}","#{@staff_appraisal.e2g2q3 if @staff_appraisal.viewable(@curr_user) == "display" }"],
                  ["", "Jumlah markah mengikut wajaran","#{@staff_appraisal.e1g2_total} / 30 x 25 = #{@view.number_with_precision(@staff_appraisal.e1g2_percent, precision: 2, locale: "en")}",
-                   "#{@staff_appraisal.e2g2_total} / 30 x 25 = #{@view.number_with_precision(@staff_appraisal.e2g2_percent, precision: 2, locale: "en")}"]]
+                   "#{@staff_appraisal.e2g2_total if @staff_appraisal.viewable(@curr_user) == "display" } / 30 x 25 = #{@view.number_with_precision(@staff_appraisal.e2g2_percent, precision: 2, locale: "en") if @staff_appraisal.viewable(@curr_user) == "display" }"]]
                    
                    table(data2 , :column_widths => [30, 291,100,100], :cell_style => { :size => 10}) do
                      row(0).column(1).align = :center
@@ -536,11 +537,11 @@ def bahagian4_5
   
   data1 = [["", "KRITERIA ", "PPP", "PPK"],
            ["1.", "  KEBOLEHAN MENGELOLA", "", ""],
-           ["","Keupayaan dan kebolehan menggembleng segala sumber dalam kawalannya seperti kewangan, tenaga manusia,peralatan dan maklumat bagi merancang mengatur, membahagi dan mengendalikan sesuatu tugas untuk mencapai objektif organisasi.", "#{@staff_appraisal.e1g2q1}" , "#{@staff_appraisal.e2g2q1}" ],
+           ["","Keupayaan dan kebolehan menggembleng segala sumber dalam kawalannya seperti kewangan, tenaga manusia,peralatan dan maklumat bagi merancang mengatur, membahagi dan mengendalikan sesuatu tugas untuk mencapai objektif organisasi.", "#{@staff_appraisal.e1g2q1}" , "#{@staff_appraisal.e2g2q1 if @staff_appraisal.viewable(@curr_user) == "display" }" ],
              ["2. ","  DISIPLIN", "",""],
-             ["","Mempunyai daya kawalan diri dari segi mental dan fizikal termasuk mematuhi peraturan, menepati masa, menunaikan janji dan bersifat sabar.", "#{@staff_appraisal.e1g2q2}","#{@staff_appraisal.e2g2q2}"],
+             ["","Mempunyai daya kawalan diri dari segi mental dan fizikal termasuk mematuhi peraturan, menepati masa, menunaikan janji dan bersifat sabar.", "#{@staff_appraisal.e1g2q2}","#{@staff_appraisal.e2g2q2 if @staff_appraisal.viewable(@curr_user) == "display" }"],
              ["3. ","  PROAKTIF DAN INOVATIF","",""],
-             ["","Kebolehan menjangka kemungkinan, mencipta dan mengeluarkan idea baru serta membuat pembaharuan bagi mempertingkatkan kualiti dan produktiviti organisasi.","#{@staff_appraisal.e1g2q3}","#{@staff_appraisal.e2g2q3}"]]
+             ["","Kebolehan menjangka kemungkinan, mencipta dan mengeluarkan idea baru serta membuat pembaharuan bagi mempertingkatkan kualiti dan produktiviti organisasi.","#{@staff_appraisal.e1g2q3}","#{@staff_appraisal.e2g2q3 if @staff_appraisal.viewable(@curr_user) == "display" }"]]
                
                table(data1 , :column_widths => [30, 291,100,100], :cell_style => { :size => 10}) do
                  row(0).column(1).align = :center
@@ -585,9 +586,9 @@ def bahagian4_5
        
                data2 = [["", "KRITERIA (Dinilai berasaskan SKT)", "PPP", "PPK"],
                ["4. ","  JALINAN HUBUNGAN DAN KERJASAMA","",""],
-               ["","Kebolehan pegawai dalam mewujudkan suasana kerjasama yang harmoni dan mesra serta boleh menyesuaikan diri dalam semua keadaan.","#{@staff_appraisal.e1g2q4}","#{@staff_appraisal.e2g2q4}"],
+               ["","Kebolehan pegawai dalam mewujudkan suasana kerjasama yang harmoni dan mesra serta boleh menyesuaikan diri dalam semua keadaan.","#{@staff_appraisal.e1g2q4}","#{@staff_appraisal.e2g2q4 if @staff_appraisal.viewable(@curr_user) == "display" }"],
                ["", "Jumlah markah mengikut wajaran","#{@staff_appraisal.e1g2_total} / 30 x 25 = #{@view.number_with_precision(@staff_appraisal.e1g2_percent, precision: 2, locale: "en")} ",
-                 "#{@staff_appraisal.e2g2_total} / 30 x 25 = #{@view.number_with_precision(@staff_appraisal.e2g2_percent, precision: 2, locale: "en")}"]]
+                 "#{@staff_appraisal.e2g2_total if @staff_appraisal.viewable(@curr_user) == "display" } / 30 x 25 = #{@view.number_with_precision(@staff_appraisal.e2g2_percent, precision: 2, locale: "en") if @staff_appraisal.viewable(@curr_user) == "display" }"]]
                    
                            table(data2 , :column_widths => [30, 291,100,100], :cell_style => { :size => 10}) do
                              row(0).column(1).align = :center
@@ -622,14 +623,14 @@ def bahagian5_4
   
   data1 = [["", "KRITERIA (Dinilai berasaskan SKT)", "PPP", "PPK"],
            ["1.", "  KEBOLEHAN MENGELOLA", "", ""],
-           ["","Keupayaan dan kebolehan menggembleng segala sumber dalam kawalannya seperti kewangan, tenaga manusia, peralatan dan maklumat bagi merancang mengatur, membahagi dan mengendalikan sesuatu tugas untuk mencapai objektif organisasi.", "#{@staff_appraisal.e1g3q1}" , "#{@staff_appraisal.e2g3q1}" ],
+           ["","Keupayaan dan kebolehan menggembleng segala sumber dalam kawalannya seperti kewangan, tenaga manusia, peralatan dan maklumat bagi merancang mengatur, membahagi dan mengendalikan sesuatu tugas untuk mencapai objektif organisasi.", "#{@staff_appraisal.e1g3q1}" , "#{@staff_appraisal.e2g3q1 if @staff_appraisal.viewable(@curr_user) == "display" }" ],
              ["2. ","   DISIPLIN", "",""],
-             ["","Mempunyai daya kawalan diri dari segi mental dan fizikal termasuk mematuhi peraturan, menepati masa, menunaikan janji dan bersifat sabar.", "#{@staff_appraisal.e1g3q2}","#{@staff_appraisal.e2g3q2}"],
+             ["","Mempunyai daya kawalan diri dari segi mental dan fizikal termasuk mematuhi peraturan, menepati masa, menunaikan janji dan bersifat sabar.", "#{@staff_appraisal.e1g3q2}","#{@staff_appraisal.e2g3q2 if @staff_appraisal.viewable(@curr_user) == "display" }"],
              ["3. ","   PROAKTIF DAN INOVATIF","",""],
-             ["","Kebolehan menjangka kemungkinan, mencipta dan mengeluarkan idea baru serta membuat pembaharuan bagi mempertingkatkan kualiti dan produktiviti organisasi.","#{@staff_appraisal.e1g3q3}","#{@staff_appraisal.e2g3q3}"],
+             ["","Kebolehan menjangka kemungkinan, mencipta dan mengeluarkan idea baru serta membuat pembaharuan bagi mempertingkatkan kualiti dan produktiviti organisasi.","#{@staff_appraisal.e1g3q3}","#{@staff_appraisal.e2g3q3 if @staff_appraisal.viewable(@curr_user) == "display" }"],
              ["4. ","   JALINAN HUBUNGAN DAN KERJASAMA","",""],
-             [""," Kebolehan pegawai dalam mewujudkan suasana kerjasama yang harmoni dan mesra serta boleh menyesuaikan diri dalam semua keadaan.","#{@staff_appraisal.e1g3q4}","#{@staff_appraisal.e2g3q4}"],
-             ["", "Jumlah markah mengikut wajaran","#{@staff_appraisal.e1g3_total} / 50 x 20 = #{@view.number_with_precision(@staff_appraisal.e1g3_percent, precision: 2, locale: "en")}","#{@staff_appraisal.e2g3_total} / 50 x 20 = #{@view.number_with_precision(@staff_appraisal.e2g3_percent, precision: 2, locale: "en")}"]]
+             [""," Kebolehan pegawai dalam mewujudkan suasana kerjasama yang harmoni dan mesra serta boleh menyesuaikan diri dalam semua keadaan.","#{@staff_appraisal.e1g3q4}","#{@staff_appraisal.e2g3q4 if @staff_appraisal.viewable(@curr_user) == "display" }"],
+             ["", "Jumlah markah mengikut wajaran","#{@staff_appraisal.e1g3_total} / 50 x 20 = #{@view.number_with_precision(@staff_appraisal.e1g3_percent, precision: 2, locale: "en")}","#{@staff_appraisal.e2g3_total if @staff_appraisal.viewable(@curr_user) == "display" } / 50 x 20 = #{@view.number_with_precision(@staff_appraisal.e2g3_percent, precision: 2, locale: "en") if @staff_appraisal.viewable(@curr_user) == "display" }"]]
              
        table(data1 , :column_widths => [30, 291,100,100], :cell_style => { :size => 10}) do
          row(0).font_style = :bold
@@ -691,12 +692,12 @@ def bahagian5_5
   
   data1 = [["", "KRITERIA (Dinilai berasaskan SKT)", "PPP", "PPK"],
            ["1.", "  ILMU PENGETAHUAN DAN KEMAHIRAN DALAM BIDANG KERJA", "", ""],
-           ["","Mempunyai ilmu pengetahuan dan kemahiran/kepakaran dalam menghasilkan kerja meliputi kebolehan mengenalpasti, menganalisis serta menyelesaikan masalah.", "#{@staff_appraisal.e1g3q1}" , "#{@staff_appraisal.e2g3q1}" ],
+           ["","Mempunyai ilmu pengetahuan dan kemahiran/kepakaran dalam menghasilkan kerja meliputi kebolehan mengenalpasti, menganalisis serta menyelesaikan masalah.", "#{@staff_appraisal.e1g3q1}" , "#{@staff_appraisal.e2g3q1 if @staff_appraisal.viewable(@curr_user) == "display" }" ],
              ["2. "," PELAKSANAAN PERATURAN DAN ARAHAN PENTADBIRAN", "",""],
-             ["","Kebolehan menghayati dan melaksanakan dasar, peraturan dan arahan pentadbiran berkaitan dengan bidang tugasnya.", "#{@staff_appraisal.e1g3q2}","#{@staff_appraisal.e2g3q2}"],
+             ["","Kebolehan menghayati dan melaksanakan dasar, peraturan dan arahan pentadbiran berkaitan dengan bidang tugasnya.", "#{@staff_appraisal.e1g3q2}","#{@staff_appraisal.e2g3q2 if @staff_appraisal.viewable(@curr_user) == "display" }"],
              ["3. ","KEBERKESANAN KOMUNIKASI","",""],
-             ["","Kebolehan menyampaikan maksud, pendapat, kefahaman atau arahan","#{@staff_appraisal.e1g3q3}","#{@staff_appraisal.e2g3q3}"],
-             ["", "Jumlah markah mengikut wajaran","#{@staff_appraisal.e1g3_total} / 50 x 20 = #{@view.number_with_precision(@staff_appraisal.e1g3_percent, precision: 2, locale: "en")}","#{@staff_appraisal.e2g3_total} / 50 x 20 = #{@view.number_with_precision(@staff_appraisal.e2g3_percent, precision: 2, locale: "en")}"]]
+             ["","Kebolehan menyampaikan maksud, pendapat, kefahaman atau arahan","#{@staff_appraisal.e1g3q3}","#{@staff_appraisal.e2g3q3 if @staff_appraisal.viewable(@curr_user) == "display" }"],
+             ["", "Jumlah markah mengikut wajaran","#{@staff_appraisal.e1g3_total} / 50 x 20 = #{@view.number_with_precision(@staff_appraisal.e1g3_percent, precision: 2, locale: "en")}","#{@staff_appraisal.e2g3_total if @staff_appraisal.viewable(@curr_user) == "display" } / 50 x 20 = #{@view.number_with_precision(@staff_appraisal.e2g3_percent, precision: 2, locale: "en") if @staff_appraisal.viewable(@curr_user) == "display" }"]]
              
        table(data1 , :column_widths => [30, 291,100,100], :cell_style => { :size => 10}) do
          row(0).font_style = :bold
@@ -749,16 +750,16 @@ def bahagian5_3
   
   data1 = [["", "KRITERIA (Dinilai berasaskan SKT)", "PPP", "PPK"],
            ["1.", "  CIRI-CIRI PEMIMPIN", "", ""],
-           [" ", " Mempunyai wawasan, komitmen, kebolehan membuat keputusan, menggerak dan memberi dorongan kepada pegawai ke arah pencapaian objektif organisasi.", "#{@staff_appraisal.e1g3q1 }", "#{@staff_appraisal.e2g3q1 }"],
+           [" ", " Mempunyai wawasan, komitmen, kebolehan membuat keputusan, menggerak dan memberi dorongan kepada pegawai ke arah pencapaian objektif organisasi.", "#{@staff_appraisal.e1g3q1 }", "#{@staff_appraisal.e2g3q1 if @staff_appraisal.viewable(@curr_user) == "display" }"],
            ["1.", "  KEBOLEHAN MENGELOLA", "", ""],
-           ["","Keupayaan dan kebolehan menggembleng segala sumber dalam kawalannya seperti kewangan, tenaga manusia, peralatan dan maklumat bagi merancang mengatur, membahagi dan mengendalikan sesuatu tugas untuk mencapai objektif organisasi.", "#{@staff_appraisal.e1g3q2 }" , "#{@staff_appraisal.e2g3q2 }" ],
+           ["","Keupayaan dan kebolehan menggembleng segala sumber dalam kawalannya seperti kewangan, tenaga manusia, peralatan dan maklumat bagi merancang mengatur, membahagi dan mengendalikan sesuatu tugas untuk mencapai objektif organisasi.", "#{@staff_appraisal.e1g3q2 }" , "#{@staff_appraisal.e2g3q2 if @staff_appraisal.viewable(@curr_user) == "display" }" ],
              ["2. ","   DISIPLIN", "",""],
-             ["","Mempunyai daya kawalan diri dari segi mental dan fizikal termasuk mematuhi peraturan, menepati masa, menunaikan janji dan bersifat sabar.", "#{@staff_appraisal.e1g3q3 }","#{@staff_appraisal.e2g3q3 }"],
+             ["","Mempunyai daya kawalan diri dari segi mental dan fizikal termasuk mematuhi peraturan, menepati masa, menunaikan janji dan bersifat sabar.", "#{@staff_appraisal.e1g3q3 }","#{@staff_appraisal.e2g3q3 if @staff_appraisal.viewable(@curr_user) == "display" }"],
              ["3. ","   PROAKTIF DAN INOVATIF","",""],
-             ["","Kebolehan menjangka kemungkinan, mencipta dan mengeluarkan idea baru serta membuat pembaharuan bagi mempertingkatkan kualiti dan produktiviti organisasi.","#{@staff_appraisal.e1g3q4 }","#{@staff_appraisal.e2g3q4 }"],
+             ["","Kebolehan menjangka kemungkinan, mencipta dan mengeluarkan idea baru serta membuat pembaharuan bagi mempertingkatkan kualiti dan produktiviti organisasi.","#{@staff_appraisal.e1g3q4 }","#{@staff_appraisal.e2g3q4 if @staff_appraisal.viewable(@curr_user) == "display" }"],
              ["4. ","   JALINAN HUBUNGAN DAN KERJASAMA","",""],
-             [""," Kebolehan pegawai dalam mewujudkan suasana kerjasama yang harmoni dan mesra serta boleh menyesuaikan diri dalam semua keadaan.","#{@staff_appraisal.e1g3q5 }","#{@staff_appraisal.e2g3q5 }"],
-             ["", "Jumlah markah mengikut wajaran","#{@staff_appraisal.e1g3_total } / 50 x 20 = #{@view.number_with_precision(@staff_appraisal.e1g3_percent, precision: 2, locale: "en")}","#{@staff_appraisal.e2g3_total } / 50 x 20 = #{@view.number_with_precision(@staff_appraisal.e2g3_percent, precision: 2, locale: "en")}"]]
+             [""," Kebolehan pegawai dalam mewujudkan suasana kerjasama yang harmoni dan mesra serta boleh menyesuaikan diri dalam semua keadaan.","#{@staff_appraisal.e1g3q5 }","#{@staff_appraisal.e2g3q5 if @staff_appraisal.viewable(@curr_user) == "display" }"],
+             ["", "Jumlah markah mengikut wajaran","#{@staff_appraisal.e1g3_total } / 50 x 20 = #{@view.number_with_precision(@staff_appraisal.e1g3_percent, precision: 2, locale: "en")}","#{@staff_appraisal.e2g3_total if @staff_appraisal.viewable(@curr_user) == "display" } / 50 x 20 = #{@view.number_with_precision(@staff_appraisal.e2g3_percent, precision: 2, locale: "en") if @staff_appraisal.viewable(@curr_user) == "display" }"]]
              
        table(data1 , :column_widths => [30, 291,100,100], :cell_style => { :size => 10}) do
          row(0).font_style = :bold
@@ -830,9 +831,9 @@ def bahagian6
   move_down 20   
   
   data1 = [ ["", " ", "PPP","PPK"],
-    [ "", "Peringkat Komuniti / Jabatan / Daerah / Negeri / Negara / Antarabangsa", "#{@staff_appraisal.e1g4 }", "#{@staff_appraisal.e2g3q1}"],
+    [ "", "Peringkat Komuniti / Jabatan / Daerah / Negeri / Negara / Antarabangsa", "#{@staff_appraisal.e1g4 }", "#{@staff_appraisal.e2g3q1 if @staff_appraisal.viewable(@curr_user) == "display" }"],
              ["","Jumlah markah mengikut wajaran","#{@staff_appraisal.e1g4} / 10 x 5 = #{(@staff_appraisal.e1g4_percent)}",
-               "#{@staff_appraisal.e2g4} / 10 x 5 = #{(@staff_appraisal.e2g4_percent)}"]]
+               "#{@staff_appraisal.e2g4 if @staff_appraisal.viewable(@curr_user) == "display" } / 10 x 5 = #{(@staff_appraisal.e2g4_percent) if @staff_appraisal.viewable(@curr_user) == "display" }"]]
              
        table(data1 , :column_widths => [20,291,100,100], :cell_style => { :size => 10}) do
          row(0).column(0).borders = [:left, :top]
@@ -861,7 +862,7 @@ def bahagian7
   data1 = [[ "", "PPP(%)", "PPK(%)", "MARKAH PURATA (%) 
     untuk diisi oleh Urus Setia PPSM)"],
              ["MARKAH KESELURUHAN",
-               "#{@view.number_with_precision(@staff_appraisal.e1_total, precision: 2, locale: "en")}","#{@view.number_with_precision(@staff_appraisal.e2_total, precision: 2, locale: "en")}", ""]] 
+               "#{@view.number_with_precision(@staff_appraisal.e1_total, precision: 2, locale: "en")}","#{@view.number_with_precision(@staff_appraisal.e2_total, precision: 2, locale: "en") if @staff_appraisal.viewable(@curr_user) == "display" }", ""]] 
              
        table(data1 , :column_widths => [150,80,80, 200], :cell_style => { :size => 10}) do
          row(0).column(0).font_style = :bold

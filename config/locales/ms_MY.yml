@@ -94,6 +94,7 @@ ms_MY:
         e1_progress: Perkembangan Karier
         submit_e2_on: Tarikh hantar ke PPK
         skt_pyd_report: Laporan oleh PYD
+        evaluation_year: Tahun Penilaian
       staff:
         mycpds: "Jumlah Mata Kumulatif (MyCPD)"
       mycpd:
@@ -715,8 +716,9 @@ ms_MY:
       ready_for_ppp_skt_report: SKT Sedia untuk laporan PPP
       ppp_report_complete: Laporan PPP selesai
       submitted_for_evaluation_by_ppp: Dihantar untuk penilaian PPP
-      submitted_by_ppp_for_evaluation_to_PPK: Dihantar oleh PPP utuk peniaian PPK
+      submitted_by_ppp_for_evaluation_to_PPK: Dihantar oleh PPP utuk penilaian PPK
       is_complete: "Penilaian Prestasi selesai?"
+      evaluation_year_must_unique: " - Penilaian prestasi bagi tahun dipilih telah wujud"
         
     evactivity:
       actdt: Tarikh
@@ -733,6 +735,7 @@ ms_MY:
       endorse_notify: "Sebaik sahaja diluluskan, tiada suntingan boleh dibuat ke atas rekod ini lagi."
       submit_report: "Penghantaran laporan akan dimaklumkan kepada Pegawai Penilai Pertama (PPP) dan tiada sutingan boleh dibuat ke atas rekod ini lagi."
       skt_ppp_report: "Sebaik SKT selesai, Pegawai Penilai Pertama (PPP) akan dimaklumkan dan tiada suntingan boleh dibuat ke atas rekod ini lagi."
+      target: Sasaran Kerja
       quantity: Kuantiti
       quality: Kualiti
       time: Masa
@@ -743,6 +746,17 @@ ms_MY:
       drop: "Aktiviti / Projek Yang Digugurkan"
       add: "Aktiviti / Projek Yang Ditambah"
       drop2: Gugur
+      drop_select: "Pilih kotak semak 'Gugur' untuk gugurkan aktiviti / projek"
+      drop_select2: "medan-medan wajib diisi bagi aktiviti / projek yang mempunyai : "
+      drop_select3: ", jika aktiviti / projek tidak digugurkan)"
+      achievement: Pencapaian Sebenar
+      notes: Ulasan
+      progress: " %"
+      cancel: Batal
+      cancel_select: "Pilih kotak semak 'Batal' untuk memadam aktiviti / projek tambahan yang telah disimpan atau klik ikon 'tong sampah' untuk mengeluarkan aktiviti yang belum disimpan daripada senarai ."
+      new_additional: "Bagi penambahan rekod baru, klik 'Tambah rekod' untuk menambah aktiviti / projek tambahan lain."
+      new_additional2: " Nota, medan-medan wajib diisi: "
+      new_additional3: "'Deskripsi Aktiviti / Projek' beserta sekurang-kurangnya 1 set (Petunjuk Prestasi dan Sasaran + Pencapaian + % Pencapaian yang sepadan)."
       title3: "Lampiran A : Bahagian III - Laporan & Ulasan"
       #pyd_report: "1. Laporan Oleh PYD"
       #ppp_report: "2. Laporan Oleh PPP"
