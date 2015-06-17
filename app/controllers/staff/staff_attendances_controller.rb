@@ -7,13 +7,15 @@ class Staff::StaffAttendancesController < ApplicationController
   # GET /staff_attendances
   # GET /staff_attendances.xml
   def index
-    @mylate_attendances = StaffAttendance.find_mylate(@current_user)
-    @approvelate_attendances = StaffAttendance.find_approvelate(@current_user)
+    #/////////////////
+    #@mylate_attendances = StaffAttendance.find_mylate(@current_user)
+    #@approvelate_attendances = StaffAttendance.find_approvelate(@current_user)
 
     @thumb_ids =  StaffAttendance.get_thumb_ids_unit_names(1)
     @unit_names = StaffAttendance.get_thumb_ids_unit_names(2)
     @all_thumb_ids = StaffAttendance.thumb_ids_all
-
+    #////////////////
+    
     #Part 1 - Ransack Search
     @search = StaffAttendance.search(params[:q])
     @staff_attendances2 = @search.result
@@ -182,48 +184,14 @@ class Staff::StaffAttendancesController < ApplicationController
     end
   end
 
-  def laporan_bulanan_punchcard
-
-    @staff_attendance = StaffAttendance.where(params[:id])
-    respond_to do |format|
-      format.pdf do
-        pdf = Laporan_bulanan_punchcardPdf.new(@staff_attendance, view_context)
-        send_data pdf.render, filename: "laporan_bulanan_punchcard-{Date.today}",
-                              type: "application/pdf",
-                              disposition: "inline"
-      end
-    end
-  end
-
-  def laporan_mingguan_punchcard
-
-    @staff_attendance = StaffAttendance.where(params[:id])
-    respond_to do |format|
-      format.pdf do
-        pdf = Laporan_mingguan_punchcardPdf.new(@staff_attendance, view_context)
-        send_data pdf.render, filename: "laporan_mingguan_punchcard-{Date.today}",
-                              type: "application/pdf",
-                              disposition: "inline"
-      end
-    end
-  end
-
-  def laporan_harian_punchcard
-
-    @staff_attendance = StaffAttendance.where(params[:id])
-    respond_to do |format|
-      format.pdf do
-        pdf = Laporan_harian_punchcardPdf.new(@staff_attendance, view_context)
-        send_data pdf.render, filename: "laporan_harian_punchcard-{Date.today}",
-                              type: "application/pdf",
-                              disposition: "inline"
-      end
-    end
-  end
-
   def manager
-    @mylate_attendances = StaffAttendance.find_mylate(current_user)
-    @myearly_attendances = StaffAttendance.find_myearly(current_user)
+    unless current_user.userable.staff_shift_id.nil?
+      @mylate_attendances = StaffAttendance.find_mylate(current_user) 
+      @myearly_attendances = StaffAttendance.find_myearly(current_user)
+    else
+      @mylate_attendances=[]
+      @myearly_attendances=[]
+    end
     @approvelate_attendances = StaffAttendance.find_approvelate(current_user)
     @approveearly_attendances = StaffAttendance.find_approveearly(current_user)
 
@@ -272,15 +240,96 @@ class Staff::StaffAttendancesController < ApplicationController
     #@lastmonthgreens = StaffAttendance.last_month_green
     #@prevmonthgreens = StaffAttendance.previous_month_green
   end
+  
+  ###
+  def attendance_report #form for searching by year
+  end
+  
+  def attendance_report_main
+#     commit = params[:list_submit_button]
+#     reporting_year = params[:report_year]
+#     if commit == t('library.transaction.analysis.borrower_data')
+#       redirect_to analysis_library_librarytransactions_path(:reporting_year => reporting_year)
+#     elsif commit == t('library.transaction.analysis.book_data')
+#       redirect_to analysis_book_library_librarytransactions_path(:reporting_year => reporting_year)
+#     elsif commit == t('library.transaction.analysis.general_data')
+#       redirect_to general_analysis_library_librarytransactions_path(:reporting_year => reporting_year)
+#     end
+    commit = params[:list_submit_button]
+    if commit==t('staff_attendance.daily_report')
+      redirect_to daily_report_staff_staff_attendances_path(:daily_date => params[:daily_date], :unit_department => params[:unit_department], format: 'pdf' )
+    elsif commit==t('staff_attendance.weekly_report')
+      redirect_to weekly_report_staff_staff_attendances_path(:weekly_date => params[:weekly_date], :unit_department => params[:unit_department], format: 'pdf' )
+    elsif commit==t('staff_attendance.monthly_report')
+      redirect_to monthly_report_staff_staff_attendances_path(:monthly_date => params[:monthly_date], :unit_department => params[:unit_department], format: 'pdf' )
+    end
+  end
+  ###
 
-  def report
+  ###############
+  
+  def daily_report
+    #raise params.inspect
+    daily_date=params[:daily_date].to_date
+    daily_start=daily_date.beginning_of_day
+    daily_end=daily_date.end_of_day
+    unit_dept=params[:unit_department]
+    unit_dept_post_staffids=Position.where('staff_id is not null and unit=?', unit_dept).pluck(:staff_id)
+    thumb_ids=Staff.where('thumb_id is not null and id in(?)', unit_dept_post_staffids).pluck(:thumb_id)
+    # || staff with highest grade / rank
+    unit_dept_post_staffids.each do |staffid|
+      staff_roles=User.where(userable_id: staffid.to_i).first.roles.map(&:authname)
+      @leader_id=staffid if staff_roles.include?("unit_leader")
+    end
+    @leader=Staff.find(@leader_id.to_i)
+    #@staff_attendances = StaffAttendance.where('logged_at >? and logged_at <? and thumb_id IN(?)', daily_start, daily_end, thumb_ids)
+    @staff_attendances = StaffAttendance.where('trigger is true and logged_at >? and logged_at <? and thumb_id IN(?)', daily_start, daily_end, thumb_ids)
+    respond_to do |format|
+      format.pdf do
+        pdf = Laporan_harian_punchcardPdf.new(@staff_attendances, @leader, daily_date, view_context)
+        send_data pdf.render, filename: "laporan_bulanan_punchcard-{Date.today}",
+                              type: "application/pdf",
+                              disposition: "inline"
+      end
+    end
   end
 
-  def monthly_weekly_report
+  def weekly_report
+
+    @staff_attendance = StaffAttendance.where(params[:id])
+    respond_to do |format|
+      format.pdf do
+        pdf = Laporan_mingguan_punchcardPdf.new(@staff_attendance, view_context)
+        send_data pdf.render, filename: "laporan_mingguan_punchcard-{Date.today}",
+                              type: "application/pdf",
+                              disposition: "inline"
+      end
+    end
   end
 
-  def monthly_listing
+  def monthly_report
+
+    @staff_attendance = StaffAttendance.where(params[:id])
+    respond_to do |format|
+      format.pdf do
+        pdf = Laporan_bulanan_punchcardPdf.new(@staff_attendance, view_context)
+        send_data pdf.render, filename: "laporan_harian_punchcard-{Date.today}",
+                              type: "application/pdf",
+                              disposition: "inline"
+      end
+    end
   end
+  
+  ###############
+  
+#   def report
+#   end
+# 
+#   def monthly_weekly_report
+#   end
+# 
+#   def monthly_listing
+#   end
 
   private
     # Use callbacks to share common setup or constraints between actions.

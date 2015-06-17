@@ -1,0 +1,105 @@
+.page-header
+  %h1=t 'staff_attendance.report'
+= render 'shared/flashes'
+
+//academic part
+- postbasics=['Pengkhususan', 'Pos Basik', 'Diploma Lanjutan']
+- dip_prog=Programme.roots.where(course_type: 'Diploma').pluck(:name)
+- post_prog=Programme.roots.where(course_type: postbasics).pluck(:name)
+- post_prog2=Programme.roots.where(course_type: postbasics).map(&:programme_list)
+- commonsubject=Programme.where(course_type: 'Commonsubject').pluck(:name).uniq
+/temp-rescue - make sure this 2 included in Programmes table @ production svr
+- etc_subject=['Sains Tingkahlaku', 'Anatomi & Fisiologi']
+            
+//management part
+- mgmt_units= Position.where('unit is not null and unit!=? and unit not in (?) and unit not in (?) and unit not in (?) and unit not in (?)', '', dip_prog, commonsubject, postbasics, etc_subject).pluck(:unit).uniq
+            
+//combine
+- udept=[]
+- mgmt_units.each do |u|
+  - udept << [u, u]
+- udept.sort!
+- udept << ['--------------------------------------', 0]
+- dip_prog.sort.each do |d|
+  - udept << ["Diploma "+d, d]
+- post_prog2.sort.each do |p2|
+  - udept << [p2, p2]
+- commonsubject.sort.each do |s|
+  - udept << ["Subjek "+s, s]
+            
+/= select_tag(:unit_department, options_for_select(udept), :include_blank => (t 'select'), :class => 'form-control')
+/= text_field_tag( :report_year,'' , class: 'form-control mandatory year_picker')
+
+
+.row.fluid
+  /= form_tag analysis_statistic_main_library_librarytransactions_path, :method =>'get' do
+  = form_tag attendance_report_main_staff_staff_attendances_path, :method =>'get' do
+    .row
+      .col-md-8.col-md-offset-2
+        / Nav tabs
+        %ul.nav.nav-tabs
+          %li.active= link_to (t 'staff_attendance.daily_report'), "#daily",   "data-toggle" => "tab"
+          %li= link_to (t 'staff_attendance.weekly_report'), "#weekly", "data-toggle" => "tab"
+          %li= link_to (t 'staff_attendance.monthly_report'), "#monthly","data-toggle" => "tab"
+      
+        / Tab Panes
+        .tab-content{style:"padding-top:1em"}
+          .row
+            .col-md-offset-2
+              .form-group
+                .col-sm-2.control-label
+                  %b= t 'staff_attendance.unit_department'
+                .col-md-5
+                  = select_tag(:unit_department, options_for_select(udept), :include_blank => (t 'select'), :class => 'form-control')
+          %br
+          // Register Tab
+          #daily.tab-pane.fade.in.active
+            .col-md-offset-2
+              .form-group
+                .col-sm-2.control-label
+                  %b= t 'staff_attendance.daily_date', for: :daily_date
+                .col-md-3
+                  = text_field_tag(:daily_date, '', class: 'form-control date_picker')
+                .col-md-7
+                  &nbsp;
+            %BR
+            .row
+              .form-group
+                .col-md-offset-4.col-sm-3
+                  = submit_tag (t 'staff_attendance.daily_report'), :name => :list_submit_button, :class => 'btn btn-primary'
+                .col-md-8
+                  &nbsp;
+            %BR
+
+          #weekly.tab-pane.fade
+            .col-md-offset-2
+              .form-group
+                .col-sm-2.control-label
+                  %b= t 'staff_attendance.weekly_date', for: :weekly_date
+                .col-md-3
+                  = text_field_tag(:weekly_date, '', class: 'form-control date_picker')
+                .col-md-7
+                  &nbsp;
+            %BR
+            .row
+              .form-group
+                .col-md-offset-4.col-sm-3
+                  = submit_tag (t 'staff_attendance.weekly_report'), :name => :list_submit_button, :class => 'btn btn-primary'
+            %BR
+            
+          #monthly.tab-pane.fade
+            .col-md-offset-2
+              .form-group
+                .col-sm-2.control-label
+                  %b= t 'staff_attendance.monthly_date', for: :monthly_date
+                .col-md-3
+                  = text_field_tag(:monthly_date, '', class: 'form-control date_picker')
+                .col-md-7
+                  &nbsp;
+            %BR
+            .row
+              .form-group
+                .col-md-offset-4.col-sm-3
+                  = submit_tag (t 'staff_attendance.monthly_report'), :name => :list_submit_button, :class => 'btn btn-primary'
+            %BR
+

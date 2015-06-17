@@ -38,9 +38,15 @@ Ogma::Application.routes.draw do
         put 'actionable', to: "staff_attendances#actionable"
         post 'import'
         get 'import_excel', to: "staff_attendances#import_excel"
-        get :laporan_bulanan_punchcard
-        get :laporan_mingguan_punchcard
-        get :laporan_harian_punchcard
+        #get :laporan_bulanan_punchcard
+        #get :laporan_mingguan_punchcard
+        #get :laporan_harian_punchcard
+        get :attendance_report
+	post :attendance_report
+	get :attendance_report_main
+	get :daily_report
+	get :weekly_report
+	get :monthly_report
       end
     end
     resources :attendances
@@ -322,7 +328,7 @@ Ogma::Application.routes.draw do
         post :check_status
         get   :manager
         post  :manager
-        get :analysis
+        get :iis
         get :analysis_book
         get :general_analysis
         get :general_analysis_ext

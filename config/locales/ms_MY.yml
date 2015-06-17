@@ -941,6 +941,7 @@ ms_MY:
     review: Ulasan
     date: "Tarikh : "
     unit: "Unit : "
+    unit_department: "Unit / Jabatan"
     unit_not_define: Belum Dikemaskini
     from: "Dari :"
     to: "Hingga :"
@@ -980,6 +981,14 @@ ms_MY:
     status_pcard: Status Kad Perakam Waktu
     unit_department: "Unit / Jabatan"
     user_not_exist: "Pengguna / Staf Tidak Wujud"
+    report: "Laporan / Senarai Kedatangan Staf"
+    daily_report: Laporan Harian
+    weekly_report: Laporan Mingguan
+    monthly_report: Laporan Bulanan
+    daily_date: Tarikh Kedatangan
+    weekly_date: Minggu bermula
+    monthly_date: Bulan bermula
+    since: semenjak
   
   attendance:
     title: "Pengurusan Datang Lambat & Pulang Awal"
