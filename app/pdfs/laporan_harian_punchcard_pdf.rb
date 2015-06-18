@@ -11,15 +11,12 @@ class Laporan_harian_punchcardPdf < Prawn::Document
     text "Laporan Harian", :align => :center, :size => 12, :style => :bold
     move_down 20
     heading_details
-    #text "#{y}"
     @y=("#{y}").to_i
     record
-    #text "#{y}"
-   
   end
   
   def heading_details
-    data = [["Nama Pegawai : ","#{@leader.staff_name_with_position_grade}"],
+    data = [["Nama Pegawai : ","#{@leader.staff_name_with_position_grade if @leader!="not exist"}"],
       ["Tarikh : ", "#{@daily_date.try(:strftime, '%d-%m-%Y')}"]]
    
     table(data , :column_widths => [150,350], :cell_style => { :size => 10}) do
@@ -53,14 +50,6 @@ class Laporan_harian_punchcardPdf < Prawn::Document
   end
   
   def line_item_rows
-#     @circulation_details=[]
-#     @documents.each do |document|
-#       circulation_details=""
-#       document.circulations.each_with_index do |circulation, ind|
-#         circulation_details += "(#{ind+=1}) #{circulation.staff.name} - #{circulation.action_taken}<br>"
-#       end
-#       @circulation_details << circulation_details
-#     end
     counter = counter || 0
     header = [[ "Bil", "Nama Pegawai / Kakitangan Yang Datang Lambat / Pulang Awal", "Sebab - Sebab ","Masa Yang Dicatatkan"]]
     
@@ -74,18 +63,6 @@ class Laporan_harian_punchcardPdf < Prawn::Document
     else
       header << ["", "", "", ""]
     end
-    
   end
 
-  
- def jumlah 
-   move_down 20
-  text "Jumlah Pegawai / Kakitangan", :align => :left, :size => 12
-  move_down 5
-  text "Jumlah Pegawai / Kakitangan", :align => :left, :size => 12
-  text "Yang memegang kad hijau", :align => :left, :size => 12
-  move_down 5
-  text "Jumlah Pegawai / Kakitangan", :align => :left, :size => 12
-  text "Yang memegang kad merah", :align => :left, :size => 12
-end
 end

@@ -185,13 +185,8 @@ class Staff::StaffAttendancesController < ApplicationController
   end
 
   def manager
-    unless current_user.userable.staff_shift_id.nil?
-      @mylate_attendances = StaffAttendance.find_mylate(current_user) 
-      @myearly_attendances = StaffAttendance.find_myearly(current_user)
-    else
-      @mylate_attendances=[]
-      @myearly_attendances=[]
-    end
+    @mylate_attendances = StaffAttendance.find_mylate(current_user) 
+    @myearly_attendances = StaffAttendance.find_myearly(current_user)
     @approvelate_attendances = StaffAttendance.find_approvelate(current_user)
     @approveearly_attendances = StaffAttendance.find_approveearly(current_user)
 
@@ -241,20 +236,11 @@ class Staff::StaffAttendancesController < ApplicationController
     #@prevmonthgreens = StaffAttendance.previous_month_green
   end
   
-  ###
-  def attendance_report #form for searching by year
+  def attendance_report 
+    @udept=Position.unit_department 
   end
   
   def attendance_report_main
-#     commit = params[:list_submit_button]
-#     reporting_year = params[:report_year]
-#     if commit == t('library.transaction.analysis.borrower_data')
-#       redirect_to analysis_library_librarytransactions_path(:reporting_year => reporting_year)
-#     elsif commit == t('library.transaction.analysis.book_data')
-#       redirect_to analysis_book_library_librarytransactions_path(:reporting_year => reporting_year)
-#     elsif commit == t('library.transaction.analysis.general_data')
-#       redirect_to general_analysis_library_librarytransactions_path(:reporting_year => reporting_year)
-#     end
     commit = params[:list_submit_button]
     if commit==t('staff_attendance.daily_report')
       redirect_to daily_report_staff_staff_attendances_path(:daily_date => params[:daily_date], :unit_department => params[:unit_department], format: 'pdf' )
@@ -264,24 +250,25 @@ class Staff::StaffAttendancesController < ApplicationController
       redirect_to monthly_report_staff_staff_attendances_path(:monthly_date => params[:monthly_date], :unit_department => params[:unit_department], format: 'pdf' )
     end
   end
-  ###
 
-  ###############
-  
   def daily_report
-    #raise params.inspect
     daily_date=params[:daily_date].to_date
     daily_start=daily_date.beginning_of_day
     daily_end=daily_date.end_of_day
     unit_dept=params[:unit_department]
     unit_dept_post_staffids=Position.where('staff_id is not null and unit=?', unit_dept).pluck(:staff_id)
     thumb_ids=Staff.where('thumb_id is not null and id in(?)', unit_dept_post_staffids).pluck(:thumb_id)
-    # || staff with highest grade / rank
     unit_dept_post_staffids.each do |staffid|
-      staff_roles=User.where(userable_id: staffid.to_i).first.roles.map(&:authname)
-      @leader_id=staffid if staff_roles.include?("unit_leader")
+      if User.where(userable_id: staffid.to_i).count > 0 #check account existance
+        staff_roles=User.where(userable_id: staffid.to_i).first.roles.map(&:authname)
+        @leader_id=staffid if staff_roles.include?("unit_leader") || staff_roles.include?("programme_manager")
+      end
     end
-    @leader=Staff.find(@leader_id.to_i)
+    unless @leader_id.nil?
+      @leader=Staff.find(@leader_id.to_i) 
+    else
+      @leader=Position.unit_department_leader(unit_dept)
+    end
     #@staff_attendances = StaffAttendance.where('logged_at >? and logged_at <? and thumb_id IN(?)', daily_start, daily_end, thumb_ids)
     @staff_attendances = StaffAttendance.where('trigger is true and logged_at >? and logged_at <? and thumb_id IN(?)', daily_start, daily_end, thumb_ids)
     respond_to do |format|
@@ -295,11 +282,30 @@ class Staff::StaffAttendancesController < ApplicationController
   end
 
   def weekly_report
-
-    @staff_attendance = StaffAttendance.where(params[:id])
+    weekly_date=params[:weekly_date].to_date
+    weekly_start=weekly_date.beginning_of_week
+    weekly_end=weekly_date.end_of_week
+    unit_dept=params[:unit_department]
+    unit_dept_post_staffids=Position.where('staff_id is not null and unit=?', unit_dept).pluck(:staff_id)
+    thumb_ids=Staff.where('thumb_id is not null and id in(?)', unit_dept_post_staffids).pluck(:thumb_id)
+    unit_dept_post_staffids.each do |staffid|
+      if User.where(userable_id: staffid.to_i).count > 0 #check account existance
+        staff_roles=User.where(userable_id: staffid.to_i).first.roles.map(&:authname)
+        @leader_id=staffid if staff_roles.include?("unit_leader") || staff_roles.include?("programme_manager")
+      end
+    end
+    unless @leader_id.nil?
+      @leader=Staff.find(@leader_id.to_i) 
+    else
+      @leader=Position.unit_department_leader(unit_dept)
+    end
+    #@staff_attendances = StaffAttendance.where('trigger is true and logged_at >? and logged_at <? and thumb_id IN(?)', weekly_start, weekly_end, thumb_ids)
+    @staff_attendances = StaffAttendance.count_non_approved(thumb_ids, weekly_start, weekly_end)
+    @notapproved_lateearly=StaffAttendance.where("trigger=? AND is_approved =? AND thumb_id IN (?) AND logged_at>=? AND logged_at<=?", true, false, thumb_ids, weekly_start, weekly_end).order(logged_at: :desc).group_by {|t| t.thumb_id } 
+    
     respond_to do |format|
       format.pdf do
-        pdf = Laporan_mingguan_punchcardPdf.new(@staff_attendance, view_context)
+        pdf = Laporan_mingguan_punchcardPdf.new(@staff_attendances, @leader, weekly_date, @notapproved_lateearly, view_context)
         send_data pdf.render, filename: "laporan_mingguan_punchcard-{Date.today}",
                               type: "application/pdf",
                               disposition: "inline"
@@ -308,28 +314,36 @@ class Staff::StaffAttendancesController < ApplicationController
   end
 
   def monthly_report
-
-    @staff_attendance = StaffAttendance.where(params[:id])
+    monthly_date=params[:monthly_date].to_date
+    monthly_start=monthly_date.beginning_of_month
+    monthly_end=monthly_date.end_of_month
+    unit_dept=params[:unit_department]
+    unit_dept_post_staffids=Position.where('staff_id is not null and unit=?', unit_dept).pluck(:staff_id)
+    thumb_ids=Staff.where('thumb_id is not null and id in(?)', unit_dept_post_staffids).pluck(:thumb_id)
+    unit_dept_post_staffids.each do |staffid|
+      if User.where(userable_id: staffid.to_i).count > 0 #check account existance
+        staff_roles=User.where(userable_id: staffid.to_i).first.roles.map(&:authname)
+        @leader_id=staffid if staff_roles.include?("unit_leader") || staff_roles.include?("programme_manager")
+      end
+    end
+    unless @leader_id.nil?
+      @leader=Staff.find(@leader_id.to_i) 
+    else
+      @leader=Position.unit_department_leader(unit_dept)
+    end
+    #@staff_attendances = StaffAttendance.where('trigger is true and logged_at >? and logged_at <? and thumb_id IN(?)', monthly_start, monthly_end, thumb_ids)
+    @staff_attendances = StaffAttendance.count_non_approved(thumb_ids, monthly_start, monthly_end)
+    @notapproved_lateearly=StaffAttendance.where("trigger=? AND is_approved =? AND thumb_id IN (?) AND logged_at>=? AND logged_at<=?", true, false, thumb_ids, monthly_start, monthly_end).order(logged_at: :desc).group_by {|t| t.thumb_id }
+    
     respond_to do |format|
       format.pdf do
-        pdf = Laporan_bulanan_punchcardPdf.new(@staff_attendance, view_context)
-        send_data pdf.render, filename: "laporan_harian_punchcard-{Date.today}",
+        pdf = Laporan_bulanan_punchcardPdf.new(@staff_attendances,@leader, monthly_date, @notapproved_lateearly, view_context)
+        send_data pdf.render, filename: "laporan_bulanan_punchcard-{Date.today}",
                               type: "application/pdf",
                               disposition: "inline"
       end
     end
   end
-  
-  ###############
-  
-#   def report
-#   end
-# 
-#   def monthly_weekly_report
-#   end
-# 
-#   def monthly_listing
-#   end
 
   private
     # Use callbacks to share common setup or constraints between actions.

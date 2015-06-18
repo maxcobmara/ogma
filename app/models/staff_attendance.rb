@@ -107,39 +107,47 @@ class StaffAttendance < ActiveRecord::Base
   def self.find_mylate(current_user)
      staffshift_id = current_user.userable.staff_shift_id
      thumb_id = current_user.userable.thumb_id   
-#      if staffshift_id != nil 
-#        start_time = StaffShift.find(staffshift_id).start_at.strftime("%H:%M") 
-#      else
-#        start_time = "08:00"
-#      end
-#      where("trigger=? AND log_type =? AND thumb_id=? AND logged_at::time > ?", true, "I", thumb_id, start_time).order('logged_at')
-     sas=StaffAttendance.where(thumb_id: thumb_id)
-     sa_lateness=[]
-     sas.each do |sa|
-       curr_date=sa.logged_at.strftime('%Y-%m-%d')
-       shiftid = StaffShift.shift_id_in_use(curr_date, sa.thumb_id)
-       sa_lateness << sa.id if sa.r_u_late(shiftid)
+     if staffshift_id != nil 
+       if current_user.userable.shift_histories.count==0
+          start_time = StaffShift.find(staffshift_id).start_at.strftime("%H:%M") 
+       else
+         sas=StaffAttendance.where(thumb_id: thumb_id)
+         @sa_lateness=[]
+         sas.each do |sa|
+           curr_date=sa.logged_at.strftime('%Y-%m-%d')
+           shiftid = StaffShift.shift_id_in_use(curr_date, sa.thumb_id)
+           @sa_lateness << sa.id if sa.r_u_late(shiftid)
+         end
+       end
+     else
+       start_time = "08:00"
      end
-     where(id: sa_lateness, trigger: true).order(logged_at: :desc)
+     a=StaffAttendance.where("trigger=? AND log_type =? AND thumb_id=? AND logged_at::time > ?", true, "I", thumb_id, start_time).order('logged_at') unless start_time.nil?
+     a=StaffAttendance.where(id: @sa_lateness, trigger: true).order(logged_at: :desc) unless @sa_lateness.nil?
+     a
   end
   
   def self.find_myearly(current_user)
      staffshift_id = current_user.userable.staff_shift_id
      thumb_id = current_user.userable.thumb_id
-#     if staffshift_id != nil
-#         end_time = StaffShift.find(staffshift_id).end_at.strftime("%H:%M") 
-#     else
-#         end_time = "17:00"
-#     end
-#     where("trigger=? AND log_type =? AND thumb_id=? AND logged_at::time < ?", true, "O", thumb_id, end_time).order(:logged_at)
-     sas=StaffAttendance.where(thumb_id: thumb_id)
-     sa_early=[]
-     sas.each do |sa|
-       curr_date=sa.logged_at.strftime('%Y-%m-%d')
-       shiftid = StaffShift.shift_id_in_use(curr_date, sa.thumb_id)
-       sa_early << sa.id if sa.r_u_early(shiftid)
+     if staffshift_id != nil
+       if current_user.userable.shift_histories.count==0
+         end_time = StaffShift.find(staffshift_id).end_at.strftime("%H:%M") 
+       else
+         sas=StaffAttendance.where(thumb_id: thumb_id)
+         @sa_early=[]
+         sas.each do |sa|
+           curr_date=sa.logged_at.strftime('%Y-%m-%d')
+           shiftid = StaffShift.shift_id_in_use(curr_date, sa.thumb_id)
+           @sa_early << sa.id if sa.r_u_early(shiftid)
+         end
+       end
+     else
+       end_time = "17:00"
      end
-     where(id: sa_early, trigger: true).order(logged_at: :desc)
+     b=StaffAttendance.where("trigger=? AND log_type =? AND thumb_id=? AND logged_at::time < ?", true, "O", thumb_id, end_time).order(:logged_at) unless end_time.nil?
+     b=StaffAttendance.where(id: @sa_early, trigger: true).order(logged_at: :desc) unless @sa_early.nil?
+     b
   end
   
   def i_have_a_thumb
