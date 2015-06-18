@@ -8,7 +8,7 @@
       .col-md-8.col-md-offset-2
         / Nav tabs
         %ul.nav.nav-tabs
-          %li.active= link_to (t 'staff_attendance.daily_report'), "#daily",   "data-toggle" => "tab"
+          %li= link_to (t 'staff_attendance.daily_report'), "#daily",   "data-toggle" => "tab"
           %li= link_to (t 'staff_attendance.weekly_report'), "#weekly", "data-toggle" => "tab"
           %li= link_to (t 'staff_attendance.monthly_report'), "#monthly","data-toggle" => "tab"
           %li= link_to (t 'staff_attendance.monthly_listing'), "#monthly_listing","data-toggle" => "tab"
@@ -24,7 +24,7 @@
                   = select_tag(:unit_department, options_for_select(@udept), :include_blank => (t 'select'), :class => 'form-control')
           %br
           // Register Tab
-          #daily.tab-pane.fade.in.active
+          #daily.tab-pane.fade
             .col-md-offset-2
               .form-group
                 .col-sm-2.control-label

@@ -177,9 +177,15 @@ class Position < ActiveRecord::Base
   
   #Use in STAFF ATTENDANCE report - #define Unit Leader /  Programme Mgr by highest staff grade / rank within unit
   def self.unit_department_leader(unit_dept)
-    unit_members=Position.joins(:staff).where('unit=? and positions.name!=?', unit_dept, "ICMS Vendor Admin").order(ancestry_depth: :asc)
-    highest_rank = unit_members.sort_by{|x|x.staffgrade.name[-2,2]}.last
-    leader=Staff.find(highest_rank.staff_id)
+    if ["Kejuruteraan", "Pentadbiran Am", "Perhotelan", "Aset & Stor", "Asrama"].include?(unit_dept) #asrama previously known as perhotelan
+      sid = Position.where('unit=?', "Pentadbiran").try(:first).try(:staff_id)
+      sid = Position.where(unit: unit_dept).first.parent.staff_id if sid.nil?
+      leader=Staff.find(sid)
+    else
+      unit_members=Position.joins(:staff).where('unit=? and positions.name!=?', unit_dept, "ICMS Vendor Admin").order(ancestry_depth: :asc)
+      highest_rank = unit_members.sort_by{|x|x.staffgrade.name[-2,2]}.last
+      leader=Staff.find(highest_rank.staff_id)
+    end
     leader
   end
   
