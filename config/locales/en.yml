@@ -1073,6 +1073,9 @@ en:
     weekly_date: Week starting
     monthly_date: Month starting
     since: since
+    monthly_listing: Monthly Listing
+    staff_name: Staff Name
+    monthly_list: Listing for Month
  
   attendance:
     title: "Manage Lateness & Early Return"

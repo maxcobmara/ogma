@@ -238,6 +238,7 @@ class Staff::StaffAttendancesController < ApplicationController
   
   def attendance_report 
     @udept=Position.unit_department 
+    @udept_staffs=Position.unit_department_staffs
   end
   
   def attendance_report_main
@@ -248,6 +249,8 @@ class Staff::StaffAttendancesController < ApplicationController
       redirect_to weekly_report_staff_staff_attendances_path(:weekly_date => params[:weekly_date], :unit_department => params[:unit_department], format: 'pdf' )
     elsif commit==t('staff_attendance.monthly_report')
       redirect_to monthly_report_staff_staff_attendances_path(:monthly_date => params[:monthly_date], :unit_department => params[:unit_department], format: 'pdf' )
+    elsif commit==t('staff_attendance.monthly_listing')
+      redirect_to monthly_listing_staff_staff_attendances_path(:monthly_list => params[:monthly_list], :unit_department => params[:unit_department], :staff => params[:staff] ,format: 'pdf' )
     end
   end
 
@@ -339,6 +342,24 @@ class Staff::StaffAttendancesController < ApplicationController
       format.pdf do
         pdf = Laporan_bulanan_punchcardPdf.new(@staff_attendances,@leader, monthly_date, @notapproved_lateearly, view_context)
         send_data pdf.render, filename: "laporan_bulanan_punchcard-{Date.today}",
+                              type: "application/pdf",
+                              disposition: "inline"
+      end
+    end
+  end
+  
+  def monthly_listing
+    monthly_list=params[:monthly_list].to_date
+    monthly_start=monthly_list.beginning_of_month
+    monthly_end=monthly_list.end_of_month
+    staff=params[:staff].to_i
+    thumb_id=Staff.find(staff).thumb_id
+    unit_dept=params[:unit_department]
+    @staff_attendances=StaffAttendance.where('thumb_id=? and logged_at >=? and logged_at <=?', thumb_id, monthly_start, monthly_end).order('logged_at ASC, log_type ASC')
+    respond_to do |format|
+      format.pdf do
+        pdf = Senarai_bulanan_punchcardPdf.new(@staff_attendances, monthly_list, unit_dept, thumb_id, view_context)
+        send_data pdf.render, filename: "senarai_bulanan_punchcard-{Date.today}",
                               type: "application/pdf",
                               disposition: "inline"
       end

@@ -989,6 +989,9 @@ ms_MY:
     weekly_date: Minggu bermula
     monthly_date: Bulan bermula
     since: semenjak
+    monthly_listing: Senarai Bulanan
+    staff_name: Nama Staf
+    monthly_list: Senarai bagi bulan
   
   attendance:
     title: "Pengurusan Datang Lambat & Pulang Awal"

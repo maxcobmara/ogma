@@ -140,15 +140,15 @@ class Position < ActiveRecord::Base
   end
   #Export Excel - end
   
-  #Use in STAFF ATTENDANCE report
+  #Use in STAFF ATTENDANCE report (unit / department drop down list - for all types of attendance report/listing)
   def self.unit_department
     #academic part
     postbasics=['Pengkhususan', 'Pos Basik', 'Diploma Lanjutan']
     dip_prog=Programme.roots.where(course_type: 'Diploma').pluck(:name)
     post_prog=Programme.roots.where(course_type: postbasics).pluck(:name)
-    post_prog2=Programme.roots.where(course_type: postbasics).map(&:programme_list)
+    post_prog2=Programme.roots.where(course_type: postbasics).pluck(:name) #.map(&:programme_list)
     commonsubject=Programme.where(course_type: 'Commonsubject').pluck(:name).uniq
-    #temp-rescue - make sure this 2 included in Programmes table @ production svr
+    #temp-rescue - make sure this 2 included in Programmes table @ production svr as commonsubject type
     etc_subject=['Sains Tingkahlaku', 'Anatomi & Fisiologi']
             
     #management part
@@ -157,18 +157,20 @@ class Position < ActiveRecord::Base
     #combine
     udept=[]
     mgmt_units.each do |u|
-      udept << [u, u]
+      udept << [u.strip, u.strip]
     end
     udept.sort!
-    udept << ['--------------------------------------', 0]
+    udept << ['---------------------Diploma--------------------------------------', 0]
     dip_prog.sort.each do |d|
-      udept << ["Diploma "+d, d]
+      udept << [d.strip, d.strip]
     end
+    udept << ['---Diploma Lanjutan/Posbasik/Pengkhususan---', 0]
     post_prog2.sort.each do |p2|
-      udept << [p2, p2]
+      udept << [p2.strip, p2.strip]
     end
-    commonsubject.sort.each do |s|
-      udept << ["Subjek "+s, s]
+    udept << ['---------------------Subjek Asas--------------------------------', 0]
+    (commonsubject+etc_subject).sort.each do |s|
+      udept << [s.strip, s.strip]
     end
     udept
   end
@@ -181,6 +183,56 @@ class Position < ActiveRecord::Base
     leader
   end
   
+  #Use in STAFF ATTENDANCE report (staff drop down list [upon selection of unit / department]- for monthly attendance listing)
+  def self.unit_department_staffs
+    #academic part
+    postbasics=['Pengkhususan', 'Pos Basik', 'Diploma Lanjutan']
+    dip_prog=Programme.roots.where(course_type: 'Diploma').pluck(:name)
+    post_prog=Programme.roots.where(course_type: postbasics).pluck(:name)
+    commonsubject=Programme.where(course_type: 'Commonsubject').pluck(:name).uniq
+    #temp-rescue - make sure this 2 included in Programmes table @ production svr
+    etc_subject=['Sains Tingkahlaku', 'Anatomi & Fisiologi']
+            
+    #management part
+    mgmt_units= Position.joins(:staff).where('positions.staff_id is not null and staffs.thumb_id is not null and unit is not null and unit!=? and unit not in (?) and unit not in (?) and unit not in (?) and unit not in (?) and positions.name!=?', '', dip_prog, commonsubject, postbasics, etc_subject, "ICMS Vendor Admin").group_by(&:unit)
+
+    #academic part
+    diploma_depts=Position.joins(:staff).where('positions.staff_id is not null and staffs.thumb_id is not null and unit in(?)', dip_prog).group_by(&:unit)
+    
+    @grouped_staff = []
+    mgmt_units.sort.each do |unit_name, posts|
+      @staffs_of_unit=[]
+      posts.sort_by{|x|x.staff.name}.each do |pp|
+        @staffs_of_unit << [pp.staff.name, pp.staff_id]
+      end
+      @grouped_staff << [unit_name.lstrip, @staffs_of_unit]
+    end
+    diploma_depts.sort.each do |unit_name, posts|
+      @staffs_of_unit=[]
+      posts.sort_by{|x|x.staff.name}.each do |pp|
+        @staffs_of_unit << [pp.staff.name, pp.staff_id]
+      end
+      @grouped_staff << [unit_name.lstrip, @staffs_of_unit]
+    end
+    post_prog.sort.each do |posbasik|
+      posts= Position.joins(:staff).where('positions.staff_id is not null and staffs.thumb_id is not null and unit in(?) and tasks_main ILIKE(?)', postbasics, "%#{posbasik}%")
+      @staffs_of_unit=[]
+      posts.sort_by{|x|x.staff.name}.each do |pp|
+        @staffs_of_unit << [pp.staff.name, pp.staff_id]
+      end
+      @grouped_staff << [posbasik, @staffs_of_unit]
+    end
+    (commonsubject+etc_subject).each do |csubject|
+      posts= Position.joins(:staff).where('positions.staff_id is not null and staffs.thumb_id is not null and unit=?', csubject)
+      @staffs_of_unit=[]
+      posts.sort_by{|x|x.staff.name}.each do |pp|
+        @staffs_of_unit << [pp.staff.name, pp.staff_id]
+      end
+      @grouped_staff << [csubject, @staffs_of_unit]
+    end
+    @grouped_staff
+  end
+    
 end
 
 # == Schema Information
