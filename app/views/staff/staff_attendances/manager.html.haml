@@ -42,7 +42,8 @@
             %td=h attendance.reason? ? attendance.reason : "Not Submitted Yet"
             %td= attendance.try(:approvedby).try(:name) if attendance.is_approved == true
             %td
-              - if attendance.reason? && (attendance.is_approved == nil || attendance.is_approved == false)
+              /- if attendance.reason? && (attendance.is_approved == nil || attendance.is_approved == false)
+              - if attendance.reason? && (attendance.is_approved == nil)
                 = link_to image_tag("approval.png", :border => 0, :title => 'Approval'), :action => 'approval', :id => attendance
               - elsif attendance.is_approved == true  
                 = image_tag("tick.png") 

@@ -962,6 +962,7 @@ ms_MY:
     excel_format: Format Excel
     date_range1: "Carian 'Semua Jabatan / Unit' - Rekod kedatangan bagi kemasukan julat tarikh (dalam 2 bulan terakhir)"
     date_range2: "Carian mengikut Jabatan / Unit - Rekod kedatangan bagi kemasukan julat tarikh (dalam 2 tahun terakhir)"
+    require_complete_data: "-- Data kakitangan (Waktu Anjal dan Thumb ID) serta perjawatan (Staf) dalam Jabatan / Unit perlulah lengkap bagi membolehkan carian dilakukan"
     conditions: "Syarat - syarat bagi fail Excel"
     allowed_date_range: "Julat tarikh yang dibenarkan : "
     must_not_exist: Rekod kedatangan mestilah BELUM wujud dalam ICMS

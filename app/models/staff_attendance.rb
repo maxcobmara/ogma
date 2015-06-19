@@ -65,12 +65,21 @@ class StaffAttendance < ActiveRecord::Base
 
   def self.staff_with_unit_groupbyunit
     Staff.joins(:positions).where('unit is not null and unit!=?',"").group_by{|x|x.positions.first.unit}
+   
+    # START--solution for - NoMethodError in Staff::StaffAttendances#index, Showing /home/shimah/rails/ogma/app/views/staff/staff_attendances/index.html.haml where line #80 raised:undefined method `start_at' for nil:NilClass
+    #Staff.joins(:positions).where('positions.staff_id is not null and staff_shift_id is not null and staffs.thumb_id is not null and unit is not null and unit!=?  and positions.name!=?', '', "ICMS Vendor Admin").group_by{|x|x.positions.first.unit}
+    # END--solution - but this will restrict to limited department / units only -- unit w/o complete staff_id, staff_shift_id & thumb_id wont be displayed in INDEX
+    #refer method .get_thumb_ids_unit_names() below.
+    
     #Staff.joins(:positions).where('unit is not null and unit!=?',"").order('positions.combo_code ASC').group_by{|x|x.positions.first.unit}
     #Staff.joins(:positions,:staffgrade).where('unit is not null and unit!=?',"").order('group_id, positions.combo_code ASC').group_by{|x|x.positions.first.unit}	#best ever
     #Staff.joins(:positions,:staffgrade).where('unit is not null and unit!=?',"").sort_by{|u|u.staffgrade.gred_no}.reverse!.group_by{|x|x.positions.first.unit} #better
   end
   
   def self.get_thumb_ids_unit_names(val)
+    #refer above--
+    valid_dept=Staff.joins(:positions).where('positions.staff_id is not null and staff_shift_id is not null and staffs.thumb_id is not null and unit is not null and unit!=?  and positions.name!=?', '', "ICMS Vendor Admin").pluck(:unit)
+    #-----
     a=StaffAttendance.staff_with_unit_groupbyunit
     thmb=[] if val==1
     uname=[] if val==2
@@ -80,8 +89,10 @@ class StaffAttendance < ActiveRecord::Base
 	thmb<< staffs.map(&:thumb_id).compact if val==1
 	uname<< u_name if val==2
 	if val==3
+	    u_name2=u_name
+	    u_name2="-- "+u_name if valid_dept.include?(u_name)==false
 	    u_t=[]
-	    u_t<< u_name<< count
+	    u_t<< u_name2<< count
 	    uname_thmb << u_t 
 	    count+=1
 	end
