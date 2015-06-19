@@ -175,6 +175,17 @@ class Position < ActiveRecord::Base
     udept
   end
   
+  #use in Staff Attendance (self.peeps)
+  def self.am_i_leader(curr_user)
+    staff_roles=curr_user.roles.map(&:authname)
+    if staff_roles.include?("unit_leader") || staff_roles.include?("programme_manager")
+      leader_status=true 
+    else
+      leader_status=false
+    end
+    leader_status
+  end
+  
   #Use in STAFF ATTENDANCE report - #define Unit Leader /  Programme Mgr by highest staff grade / rank within unit
   def self.unit_department_leader(unit_dept)
     if ["Kejuruteraan", "Pentadbiran Am", "Perhotelan", "Aset & Stor", "Asrama"].include?(unit_dept) #asrama previously known as perhotelan

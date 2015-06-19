@@ -163,7 +163,7 @@ class StaffAttendance < ActiveRecord::Base
   end
   
   def self.find_approveearly(current_user)
-    all.where("trigger=? AND log_type =? AND thumb_id IN (?)",true ,"O", peeps2(current_user)).order('logged_at DESC')
+    all.where("trigger=? AND log_type =? AND thumb_id IN (?)",true ,"O", peeps(current_user)).order('logged_at DESC')
   end
   
   def self.this_month_red
@@ -215,76 +215,74 @@ class StaffAttendance < ActiveRecord::Base
   end
   
   def self.peeps(current_user)
-    ###mystaff = User.current_user.staff.position.child_ids 
-    ##mystaff = Staff.where(id:25)[0].positions[0].child_ids
-    ##mystaffids = Position.find(:all, :select => "staff_id", :conditions => ["id IN (?)", mystaff]).map(&:staff_id)
-    ##thumbs = Staff.find(:all, :select => :thumb_id, :conditions => ["id IN (?)", mystaffids]).map(&:thumb_id)
-    
-    #myunit = Position.where(staff_id: 25).first.unit
-    #myancestry=Position.where(staff_id: 25).first.ancestry
-    #mycombocode=Position.where(staff_id: 25).first.combo_code
-    ##thumbs = Staff.joins(:positions).where('unit=? and ancestry>?',myunit, myancestry).pluck(:thumb_id) #additional conditions required ####ancestry
-    ##thumbs=Staff.joins(:positions).where('unit=? and combo_code>?','Teknologi Maklumat','1-03-02').pluck(:thumb_id)
-    #thumbs = Staff.joins(:positions).where('unit=? and combo_code>?',myunit,mycombocode).pluck(:thumb_id)
-    
-    #works for all units incl. Posbasik, Subjek Asas as long as UNIT column are using the same value
-    mystaffid = current_user.userable.id
-    myposition = Position.where(staff_id: mystaffid).first
-    myunit = myposition.unit
-    mycombocode = myposition.combo_code
-    myancestry = myposition.ancestry_depth
-    myisacting = myposition.is_acting
-    #menanggung tugas ?? ancestry_depth might be the same value as their siblings!
-    if myisacting == true
-      allmytask= myposition.tasks_other+" "+myposition.tasks_main
-      acting_title1 = "Ketua Subjek "+myunit.strip
-      actitle_title2 = "Ketua Program "+myunit.strip
-      if allmytask.include?(acting_title1) || allmytask.include?(acting_title2)
-        #to remove current_user's thumbid
-        mythumbid = current_user.userable.thumb_id
-        thumbs =  Staff.joins(:positions).where('unit=? and (combo_code>? or ancestry_depth>=?)', myunit, mycombocode, myancestry).pluck(:thumb_id)-Array(mythumbid)
+    mypost = Position.where(staff_id: current_user.userable_id).first
+    myunit = mypost.unit
+    mythumbid = current_user.userable.thumb_id
+    iamleader=Position.am_i_leader(current_user)
+    if iamleader== true   #check by roles
+      thumbs=Staff.joins(:positions).where('staffs.thumb_id!=? and unit=?', mythumbid, myunit).pluck(:thumb_id)
+    else #check by rank / grade
+      leader_staffid=Position.unit_department_leader(myunit).id   #return Staff(id) record ofunit/dept leader
+      @head_thumb_ids=[]
+      
+      #academic programmes-start
+      postbasics=['Pengkhususan', 'Pos Basik', 'Diploma Lanjutan']
+      dip_prog=Programme.roots.where(course_type: 'Diploma').pluck(:name)
+      post_prog=Programme.roots.where(course_type: postbasics).pluck(:name)
+      commonsubject=Programme.where(course_type: 'Commonsubject').pluck(:name).uniq
+      #temp-rescue - make sure this 2 included in Programmes table @ production svr as commonsubject type
+      etc_subject=['Sains Tingkahlaku', 'Anatomi & Fisiologi']
+      #academic programmes-end 
+      
+      if leader_staffid==current_user.userable_id #when current user is unit/department leader
+        thumbs=Staff.joins(:positions).where('staffs.thumb_id!=? and unit=?', mythumbid, myunit).pluck(:thumb_id)
+        #when current user is Pengarah, above shall collect all timbalans thumb id plus academicians leader (Ketua Program)
+        if current_user.userable_id==Position.roots.first.staff_id
+          academic_programmes=dip_prog+post_prog+commonsubject
+          academic_programmes.each do |prog|
+            @head_thumb_ids << Position.unit_department_leader(prog).thumb_id unless Position.unit_department_leader(department).nil?
+          end
+          thumbs+=@head_thumb_ids
+        end
+      else 
+        #when superior for current user is Pengarah, then she must be one of timbalans-"Ketua Unit Pengurusan Tertinggi"
+        if leader_staffid==Position.roots.first.staff_id 
+          if mypost.name.include?("Pengurusan") #Timbalan Pengarah (Pengurusan)
+            #management units
+            mgmt_units= Position.where('staff_id is not null and unit is not null and unit!=? and unit not in (?) and unit not in (?) and unit not in (?) and unit not in (?)', '', dip_prog, commonsubject, postbasics, etc_subject).pluck(:unit).uniq
+            mgmt_units.each do |department|
+              @head_thumb_ids << Position.unit_department_leader(department).thumb_id unless Position.unit_department_leader(department).nil?
+            end
+            thumbs=@head_thumb_ids
+          else #other timbalans
+            thumbs=[]
+          end
+        else   
+          thumbs=[]
+        end
       end
-    else
-      thumbs = Staff.joins(:positions).where('unit=? and (combo_code>? or ancestry_depth>?)', myunit, mycombocode, myancestry).pluck(:thumb_id)
     end
+    thumbs
   end
+  
+  
 
-  def self.peeps2(current_user)
-    ##mystaff = User.current_user.staff.position.child_ids 
-    ###mystaff = User.current_user.staff.position.child_ids  #position_ids for mystaff
-    ###myotherstaff--added-if no superior(act as approver for staff who has no superior)
-    ###myotherstaff = StaffAttendance.find(:all,:select=>:thumb_id,:conditions=>['approved_by=?',User.current_user.staff_id]).map(&:thumb_id) ##position_ids for myotherstaff
-    ###mystaffids = Position.find(:all, :select => "staff_id", :conditions => ["id IN (?)", mystaff+myotherstaff]).map(&:staff_id)
-    ##mystaffids = Position.find(:all, :select => "staff_id", :conditions => ["id IN (?)", mystaff]).map(&:staff_id)
-    ##thumbs = Staff.find(:all, :select => :thumb_id, :conditions => ["id IN (?)", mystaffids]).map(&:thumb_id)
-    
-    #myunit = Position.where(staff_id: 25).first.unit
-    #myancestry=Position.where(staff_id: 25).first.ancestry
-    #mycombocode=Position.where(staff_id: 25).first.combo_code
-    ##thumbs = Staff.joins(:positions).where('unit=? and ancestry>?',myunit, myancestry).pluck(:thumb_id) #additional conditions required ####ancestry
-    #thumbs = Staff.joins(:positions).where('unit=? and combo_code>?',myunit,mycombocode).pluck(:thumb_id)
-    
-    #works for all unit except for Posbasik & Diploma Lanjutan
-    mystaffid = current_user.userable.id
-    myposition = Position.where(staff_id: mystaffid).first
-    myunit = myposition.unit
-    mycombocode = myposition.combo_code
-    myancestry = myposition.ancestry_depth
-    #thumbs = Staff.joins(:positions).where('unit=? and (combo_code>? or ancestry_depth>?)', myunit, mycombocode, myancestry).pluck(:thumb_id)
-    myisacting = myposition.is_acting
-    if myisacting == true
-      allmytask= myposition.tasks_other+" "+myposition.tasks_main
-      acting_title1 = "Ketua Subjek "+myunit.strip
-      actitle_title2 = "Ketua Program "+myunit.strip
-      if allmytask.include?(acting_title1) || allmytask.include?(acting_title2)
-        #to remove current_user's thumbid
-        mythumbid = current_user.userable.thumb_id
-        thumbs =  Staff.joins(:positions).where('unit=? and (combo_code>? or ancestry_depth>=?)', myunit, mycombocode, myancestry).pluck(:thumb_id)-Array(mythumbid)
-      end
-    else
-      thumbs = Staff.joins(:positions).where('unit=? and (combo_code>? or ancestry_depth>?)', myunit, mycombocode, myancestry).pluck(:thumb_id)
-    end
-  end
+#   def self.peeps2(current_user)
+#     myunit = Position.where(staff_id: current_user.userable_id).first.unit
+#     mythumbid = current_user.userable.thumb_id
+#     iamleader=Position.am_i_leader(current_user)
+#     if iamleader== true   #check by roles
+#       thumbs=Staff.joins(:positions).where('staffs.thumb_id!=? and unit=?', mythumbid, myunit).pluck(:thumb_id)
+#     else #check by rank / grade
+#       leader_staffid=Position.unit_department_leader(myunit).id   #return Staff(id) record ofunit/dept leader
+#       if leader_staffid==current_user.userable_id
+#         thumbs=Staff.joins(:positions).where('staffs.thumb_id!=? and unit=?', mythumbid, myunit).pluck(:thumb_id)
+#       else
+#         thumbs=[]
+#       end
+#     end
+#     thumbs
+#   end
     
   def attendee_details 
       if attended.blank?
@@ -298,7 +296,6 @@ class StaffAttendance < ActiveRecord::Base
   def group_by_thingy
     logged_at.to_date.to_s                       #hide on 21June2013
     #logged_at.in_time_zone('UTC').to_date.to_s    #- AMENDED 21JUNE2013
-    
   end
   
   def r_u_late(shiftid)

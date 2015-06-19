@@ -50,7 +50,7 @@ Ogma::Application.routes.draw do
     resources :attendances
     resources :travel_requests do
       member do
-        get :travel_log
+        get :travel_logr
         get :approval
         get 'status_movement'
       end
@@ -64,7 +64,7 @@ Ogma::Application.routes.draw do
   match '/travel_requests/logs', to: 'staff/travel_requests#travel_log_index', via: 'get'
   match '/attendance/manager', to: 'staff/staff_attendances#manager', via: 'get'
   match '/attendance/status/', to: 'staff/staff_attendances#status', via: 'get'
-  match '/attendance/approve/', to: 'staff/staff_attendances#approve', via: 'get'
+  match '/attendance/approval/', to: 'staff/staff_attendances#approval', via: 'get'
   match '/attendance/report', to: 'staff/staff_attendances#report', via: 'get'
   match '/public/excel_format/staff_attendance_import.xls', to: 'staff/staff_attendances#download_excel_format', via: 'get', target: '_self'
 

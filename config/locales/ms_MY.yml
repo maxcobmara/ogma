@@ -21,6 +21,7 @@ ms_MY:
       ptcourse: Kursus Latihan
       ptbudget: Bajet
       staff_appraisal: Penilaian Prestasi
+      staff_attendance: Kedatangan Staf
     attributes:
       student:
         name: Nama
@@ -100,6 +101,8 @@ ms_MY:
       mycpd:
         cpd_year: Tahun
         cpd_value: Jumlah Mata Kumulatif
+      staff_attendance:
+        reason: Sebab
     errors:
         template:
           body: "Berikut adalah beberapa masalah:"
@@ -315,6 +318,7 @@ ms_MY:
     thumb: Thumb ID
     shift: Waktu Anjal
     shift_start: " bermula "
+    shift_end: " sehingga "
     fileno: No Fail Peribadi
     cobirthdt: Tarikh Lahir
     birthcertno: No Surat Beranak

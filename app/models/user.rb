@@ -206,7 +206,24 @@ class User < ActiveRecord::Base
     end
     adm_sub
   end
+  
+  #for Timbalan Pengarah Urusan / Head of Management side - accessible to staff attandance late early management pages
+  def admin_children_thumb
+    mypost=userable.positions.first
+    post_name=mypost.name
+    if post_name=="Timbalan Pengarah (Pengurusan)"
+      adm_cthumb=mypost.children.map(&:staff_id)
+    else
+      adm_cthumb=[]
+    end
+    adm_cthumb
+  end
 
+  #use in - auth_rules(staff attendance)
+  def unit_members_thumb
+    Staff.where(id: unit_members).pluck(:thumb_id).compact #[5658]
+  end
+  
   def role_symbols
    roles.map do |role|
     role.authname.to_sym

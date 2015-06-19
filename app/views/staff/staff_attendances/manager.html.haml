@@ -41,7 +41,7 @@
             %td= attendance.try(:approvedby).try(:name) if attendance.is_approved == true
             %td
               - if attendance.reason? && (attendance.is_approved == nil || attendance.is_approved == false)
-                = link_to image_tag("approval.png", :border => 0, :title => 'Approval'), :action => 'approve', :id => attendance
+                = link_to image_tag("approval.png", :border => 0, :title => 'Approval'), :action => 'approval', :id => attendance
               - elsif attendance.is_approved == true  
                 = image_tag("tick.png") 
               - elsif attendance.is_approved == false  
@@ -59,7 +59,7 @@
             %td= attendance.try(:approvedby).try(:name) if attendance.is_approved == true 
             %td
               - if attendance.reason? && attendance.is_approved == nil
-                = link_to image_tag("approval.png", :border => 0, :title => 'Approval'), :action => 'approve', :id => attendance
+                = link_to image_tag("approval.png", :border => 0, :title => 'Approval'), :action => 'approval', :id => attendance
               - elsif attendance.is_approved == true
                 = image_tag("tick.png")
               - elsif attendance.is_approved == false
@@ -69,7 +69,7 @@
         %td{:colspan=>"7",:style=>"font-weight: bold; background-color: #D8D8D8;"}=t 'attendance.days_iam_late'
       - for attendance in @mylate_attendances
         %tr
-          %td=h link_to attendance.logged_at.strftime('%d-%m-%Y'), :action=>'edit', :id=> attendance
+          %td=h link_to attendance.logged_at.strftime('%d-%m-%Y'), staff_staff_attendance_path(attendance)
           %td=h attendance.logged_at.strftime('%H:%M:%S') 
           %td &nbsp;
           %td &nbsp;
@@ -83,13 +83,17 @@
         %td{:colspan=>"7",:style=>"font-weight: bold; background-color: #D8D8D8;"}=t 'attendance.days_iam_early'
       - for attendance in @myearly_attendances
         %tr
-          %td=h link_to attendance.logged_at.strftime('%d-%m-%Y'), :action=>'edit', :id=> attendance
+          %td=h link_to attendance.logged_at.strftime('%d-%m-%Y'), staff_staff_attendance_path(attendance)
           %td &nbsp;
           %td=h attendance.logged_at.strftime('%H:%M:%S') 
           %td &nbsp;
           %td=h attendance.reason.blank? ? "Reason not submitted" : attendance.reason
           %td=h attendance.approved_by.blank? ? "" : attendance.try(:approver).try(:staff_name_with_position)
-          %td &nbsp;
+          %td 
+            - if attendance.is_approved == true
+              = image_tag("tick.png")
+            - elsif attendance.is_approved == false
+              = image_tag("cross.png")
           /- if permitted_to? :destroy, @attendance 
           /  = link_to image_tag("delete.png", :border => 0, :title => 'Delete'), attendance, :confirm => 'Are you sure?', :method => :delete 
         

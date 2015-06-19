@@ -196,7 +196,7 @@ class Staff::StaffAttendancesController < ApplicationController
     end
   end
 
-  def approve
+  def approval
     @staff_attendance = StaffAttendance.find(params[:id])
   end
 
