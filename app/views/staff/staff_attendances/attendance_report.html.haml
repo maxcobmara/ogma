@@ -1,0 +1,102 @@
+.page-header
+  %h1=t 'staff_attendance.report'
+= render 'shared/flashes'
+  
+.row.fluid
+  = form_tag attendance_report_main_staff_staff_attendances_path, :method =>'get' do
+    .row
+      .col-md-8.col-md-offset-2
+        / Nav tabs
+        %ul.nav.nav-tabs
+          %li= link_to (t 'staff_attendance.daily_report'), "#daily",   "data-toggle" => "tab"
+          %li= link_to (t 'staff_attendance.weekly_report'), "#weekly", "data-toggle" => "tab"
+          %li= link_to (t 'staff_attendance.monthly_report'), "#monthly","data-toggle" => "tab"
+          %li= link_to (t 'staff_attendance.monthly_listing'), "#monthly_listing","data-toggle" => "tab"
+      
+        / Tab Panes
+        .tab-content{style:"padding-top:1em"}
+          .row
+            .col-md-offset-2
+              .form-group
+                .col-sm-2.control-label
+                  %b= t 'staff_attendance.unit_department'
+                .col-md-5
+                  = select_tag(:unit_department, options_for_select(@udept), :include_blank => (t 'select'), :class => 'form-control')
+          %br
+          // Register Tab
+          #daily.tab-pane.fade
+            .col-md-offset-2
+              .form-group
+                .col-sm-2.control-label
+                  %b= t 'staff_attendance.daily_date', for: :daily_date
+                .col-md-3
+                  = text_field_tag(:daily_date, '', class: 'form-control date_picker')
+                /.col-md-7
+                /  &nbsp;
+            %BR
+            .row
+              .form-group
+                .col-md-offset-4.col-sm-3
+                  = submit_tag (t 'staff_attendance.daily_report'), :name => :list_submit_button, :class => 'btn btn-primary'
+                .col-md-9
+                  &nbsp;
+            %BR
+
+          #weekly.tab-pane.fade
+            .col-md-offset-2
+              .form-group
+                .col-sm-2.control-label
+                  %b= t 'staff_attendance.weekly_date', for: :weekly_date
+                .col-md-3
+                  = text_field_tag(:weekly_date, '', class: 'form-control date_picker')
+                /.col-md-7
+                /  &nbsp;
+            %BR
+            .row
+              .form-group
+                .col-md-offset-4.col-sm-3
+                  = submit_tag (t 'staff_attendance.weekly_report'), :name => :list_submit_button, :class => 'btn btn-primary'
+            %BR
+            
+          #monthly.tab-pane.fade
+            .col-md-offset-2
+              .form-group
+                .col-sm-2.control-label
+                  %b= t 'staff_attendance.monthly_date', for: :monthly_date
+                .col-md-3
+                  = text_field_tag(:monthly_date, '', class: 'form-control date_picker')
+                /.col-md-7
+                /  &nbsp;
+            %BR
+            .row
+              .form-group
+                .col-md-offset-4.col-sm-3
+                  = submit_tag (t 'staff_attendance.monthly_report'), :name => :list_submit_button, :class => 'btn btn-primary'
+            %BR
+            
+          #monthly_listing.tab-pane.fade
+            .col-md-offset-2
+              .form-group
+                .col-sm-2.control-label
+                  %b= t 'staff_attendance.staff_name', for: :staff_name
+                .col-md-5
+                  = select_tag(:staff, grouped_options_for_select(@udept_staffs), :include_blank => (t 'select'), :class => 'form-control')
+                  /= grouped_options_for_select(@udept_staffs)
+                .col-md-7
+                  &nbsp;
+            %BR
+            .col-md-offset-2
+              .form-group
+                .col-sm-2.control-label
+                  %b= t 'staff_attendance.monthly_list', for: :monthly_list
+                .col-md-3
+                  = text_field_tag(:monthly_list, '', class: 'form-control date_picker')
+                .col-md-7
+                  &nbsp;
+            %BR
+            .row
+              .form-group
+                .col-md-offset-4.col-sm-3
+                  = submit_tag (t 'staff_attendance.monthly_listing'), :name => :list_submit_button, :class => 'btn btn-primary'
+            %BR
+  

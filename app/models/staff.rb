@@ -17,7 +17,7 @@ class Staff < ActiveRecord::Base
   has_many :vehicles, :dependent => :destroy
   accepts_nested_attributes_for :vehicles, :allow_destroy => true, :reject_if => lambda {|a| a[:cylinder_capacity].blank? }#|| a[:reg_no].blank?}
   validates_associated :vehicles
-    
+  
   has_many :shift_histories, :dependent => :destroy
   accepts_nested_attributes_for :shift_histories, :reject_if => lambda {|a| a[:deactivate_date].blank?}
 
@@ -130,14 +130,14 @@ class Staff < ActiveRecord::Base
       "#{formatted_mykad}  #{name} (#{position_for_staff}-#{grade_for_staff})"
     end
 
-    def shift_for_staff
-      ssft = StaffShift.find(:first, :conditions=> ['id=?',staff_shift_id])
-      if ssft == nil
-        "-"
-      else
-        ssft.start_end
-      end
-    end
+#     def shift_for_staff
+#       ssft = StaffShift.find(:first, :conditions=> ['id=?',staff_shift_id])
+#       if ssft == nil
+#         "-"
+#       else
+#         ssft.start_end
+#       end
+#     end
 
     def thumb_id_with_name_unit
       if positions.blank?

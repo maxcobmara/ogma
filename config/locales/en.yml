@@ -1024,6 +1024,7 @@ en:
     review: Review
     date: "Date : "
     unit: "Unit : "
+    unit_department: "Unit / Department"
     unit_not_define: Not Updated
     from: "From :"
     to: "To :"
@@ -1064,6 +1065,17 @@ en:
     status_pcard: Punch Card Status
     unit_department: "Unit / Department"
     user_not_exist: "User / Staff Not Exist"
+    report: "Report / Listing - Staff Attendance"
+    daily_report: Daily Report
+    weekly_report: Weekly Report
+    monthly_report: Monthly Report
+    daily_date: Attendance Date
+    weekly_date: Week starting
+    monthly_date: Month starting
+    since: since
+    monthly_listing: Monthly Listing
+    staff_name: Staff Name
+    monthly_list: Listing for Month
  
   attendance:
     title: "Manage Lateness & Early Return"

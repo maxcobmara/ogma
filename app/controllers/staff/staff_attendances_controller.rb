@@ -7,13 +7,15 @@ class Staff::StaffAttendancesController < ApplicationController
   # GET /staff_attendances
   # GET /staff_attendances.xml
   def index
-    @mylate_attendances = StaffAttendance.find_mylate(@current_user)
-    @approvelate_attendances = StaffAttendance.find_approvelate(@current_user)
+    #/////////////////
+    #@mylate_attendances = StaffAttendance.find_mylate(@current_user)
+    #@approvelate_attendances = StaffAttendance.find_approvelate(@current_user)
 
     @thumb_ids =  StaffAttendance.get_thumb_ids_unit_names(1)
     @unit_names = StaffAttendance.get_thumb_ids_unit_names(2)
     @all_thumb_ids = StaffAttendance.thumb_ids_all
-
+    #////////////////
+    
     #Part 1 - Ransack Search
     @search = StaffAttendance.search(params[:q])
     @staff_attendances2 = @search.result
@@ -182,47 +184,8 @@ class Staff::StaffAttendancesController < ApplicationController
     end
   end
 
-  def laporan_bulanan_punchcard
-
-    @staff_attendance = StaffAttendance.where(params[:id])
-    respond_to do |format|
-      format.pdf do
-        pdf = Laporan_bulanan_punchcardPdf.new(@staff_attendance, view_context)
-        send_data pdf.render, filename: "laporan_bulanan_punchcard-{Date.today}",
-                              type: "application/pdf",
-                              disposition: "inline"
-      end
-    end
-  end
-
-  def laporan_mingguan_punchcard
-
-    @staff_attendance = StaffAttendance.where(params[:id])
-    respond_to do |format|
-      format.pdf do
-        pdf = Laporan_mingguan_punchcardPdf.new(@staff_attendance, view_context)
-        send_data pdf.render, filename: "laporan_mingguan_punchcard-{Date.today}",
-                              type: "application/pdf",
-                              disposition: "inline"
-      end
-    end
-  end
-
-  def laporan_harian_punchcard
-
-    @staff_attendance = StaffAttendance.where(params[:id])
-    respond_to do |format|
-      format.pdf do
-        pdf = Laporan_harian_punchcardPdf.new(@staff_attendance, view_context)
-        send_data pdf.render, filename: "laporan_harian_punchcard-{Date.today}",
-                              type: "application/pdf",
-                              disposition: "inline"
-      end
-    end
-  end
-
   def manager
-    @mylate_attendances = StaffAttendance.find_mylate(current_user)
+    @mylate_attendances = StaffAttendance.find_mylate(current_user) 
     @myearly_attendances = StaffAttendance.find_myearly(current_user)
     @approvelate_attendances = StaffAttendance.find_approvelate(current_user)
     @approveearly_attendances = StaffAttendance.find_approveearly(current_user)
@@ -272,14 +235,135 @@ class Staff::StaffAttendancesController < ApplicationController
     #@lastmonthgreens = StaffAttendance.last_month_green
     #@prevmonthgreens = StaffAttendance.previous_month_green
   end
-
-  def report
+  
+  def attendance_report 
+    @udept=Position.unit_department 
+    @udept_staffs=Position.unit_department_staffs
+  end
+  
+  def attendance_report_main
+    commit = params[:list_submit_button]
+    if commit==t('staff_attendance.daily_report')
+      redirect_to daily_report_staff_staff_attendances_path(:daily_date => params[:daily_date], :unit_department => params[:unit_department], format: 'pdf' )
+    elsif commit==t('staff_attendance.weekly_report')
+      redirect_to weekly_report_staff_staff_attendances_path(:weekly_date => params[:weekly_date], :unit_department => params[:unit_department], format: 'pdf' )
+    elsif commit==t('staff_attendance.monthly_report')
+      redirect_to monthly_report_staff_staff_attendances_path(:monthly_date => params[:monthly_date], :unit_department => params[:unit_department], format: 'pdf' )
+    elsif commit==t('staff_attendance.monthly_listing')
+      redirect_to monthly_listing_staff_staff_attendances_path(:monthly_list => params[:monthly_list], :unit_department => params[:unit_department], :staff => params[:staff] ,format: 'pdf' )
+    end
   end
 
-  def monthly_weekly_report
+  def daily_report
+    daily_date=params[:daily_date].to_date
+    daily_start=daily_date.beginning_of_day
+    daily_end=daily_date.end_of_day
+    unit_dept=params[:unit_department]
+    unit_dept_post_staffids=Position.where('staff_id is not null and unit=?', unit_dept).pluck(:staff_id)
+    thumb_ids=Staff.where('thumb_id is not null and id in(?)', unit_dept_post_staffids).pluck(:thumb_id)
+    unit_dept_post_staffids.each do |staffid|
+      if User.where(userable_id: staffid.to_i).count > 0 #check account existance
+        staff_roles=User.where(userable_id: staffid.to_i).first.roles.map(&:authname)
+        @leader_id=staffid if staff_roles.include?("unit_leader") || staff_roles.include?("programme_manager")
+      end
+    end
+    unless @leader_id.nil?
+      @leader=Staff.find(@leader_id.to_i) 
+    else
+      @leader=Position.unit_department_leader(unit_dept)
+    end
+    #@staff_attendances = StaffAttendance.where('logged_at >? and logged_at <? and thumb_id IN(?)', daily_start, daily_end, thumb_ids)
+    @staff_attendances = StaffAttendance.where('trigger is true and logged_at >? and logged_at <? and thumb_id IN(?)', daily_start, daily_end, thumb_ids)
+    respond_to do |format|
+      format.pdf do
+        pdf = Laporan_harian_punchcardPdf.new(@staff_attendances, @leader, daily_date, view_context)
+        send_data pdf.render, filename: "laporan_bulanan_punchcard-{Date.today}",
+                              type: "application/pdf",
+                              disposition: "inline"
+      end
+    end
   end
 
+  def weekly_report
+    weekly_date=params[:weekly_date].to_date
+    weekly_start=weekly_date.beginning_of_week
+    weekly_end=weekly_date.end_of_week
+    unit_dept=params[:unit_department]
+    unit_dept_post_staffids=Position.where('staff_id is not null and unit=?', unit_dept).pluck(:staff_id)
+    thumb_ids=Staff.where('thumb_id is not null and id in(?)', unit_dept_post_staffids).pluck(:thumb_id)
+    unit_dept_post_staffids.each do |staffid|
+      if User.where(userable_id: staffid.to_i).count > 0 #check account existance
+        staff_roles=User.where(userable_id: staffid.to_i).first.roles.map(&:authname)
+        @leader_id=staffid if staff_roles.include?("unit_leader") || staff_roles.include?("programme_manager")
+      end
+    end
+    unless @leader_id.nil?
+      @leader=Staff.find(@leader_id.to_i) 
+    else
+      @leader=Position.unit_department_leader(unit_dept)
+    end
+    #@staff_attendances = StaffAttendance.where('trigger is true and logged_at >? and logged_at <? and thumb_id IN(?)', weekly_start, weekly_end, thumb_ids)
+    @staff_attendances = StaffAttendance.count_non_approved(thumb_ids, weekly_start, weekly_end)
+    @notapproved_lateearly=StaffAttendance.where("trigger=? AND is_approved =? AND thumb_id IN (?) AND logged_at>=? AND logged_at<=?", true, false, thumb_ids, weekly_start, weekly_end).order(logged_at: :desc).group_by {|t| t.thumb_id } 
+    
+    respond_to do |format|
+      format.pdf do
+        pdf = Laporan_mingguan_punchcardPdf.new(@staff_attendances, @leader, weekly_date, @notapproved_lateearly, view_context)
+        send_data pdf.render, filename: "laporan_mingguan_punchcard-{Date.today}",
+                              type: "application/pdf",
+                              disposition: "inline"
+      end
+    end
+  end
+
+  def monthly_report
+    monthly_date=params[:monthly_date].to_date
+    monthly_start=monthly_date.beginning_of_month
+    monthly_end=monthly_date.end_of_month
+    unit_dept=params[:unit_department]
+    unit_dept_post_staffids=Position.where('staff_id is not null and unit=?', unit_dept).pluck(:staff_id)
+    thumb_ids=Staff.where('thumb_id is not null and id in(?)', unit_dept_post_staffids).pluck(:thumb_id)
+    unit_dept_post_staffids.each do |staffid|
+      if User.where(userable_id: staffid.to_i).count > 0 #check account existance
+        staff_roles=User.where(userable_id: staffid.to_i).first.roles.map(&:authname)
+        @leader_id=staffid if staff_roles.include?("unit_leader") || staff_roles.include?("programme_manager")
+      end
+    end
+    unless @leader_id.nil?
+      @leader=Staff.find(@leader_id.to_i) 
+    else
+      @leader=Position.unit_department_leader(unit_dept)
+    end
+    #@staff_attendances = StaffAttendance.where('trigger is true and logged_at >? and logged_at <? and thumb_id IN(?)', monthly_start, monthly_end, thumb_ids)
+    @staff_attendances = StaffAttendance.count_non_approved(thumb_ids, monthly_start, monthly_end)
+    @notapproved_lateearly=StaffAttendance.where("trigger=? AND is_approved =? AND thumb_id IN (?) AND logged_at>=? AND logged_at<=?", true, false, thumb_ids, monthly_start, monthly_end).order(logged_at: :desc).group_by {|t| t.thumb_id }
+    
+    respond_to do |format|
+      format.pdf do
+        pdf = Laporan_bulanan_punchcardPdf.new(@staff_attendances,@leader, monthly_date, @notapproved_lateearly, view_context)
+        send_data pdf.render, filename: "laporan_bulanan_punchcard-{Date.today}",
+                              type: "application/pdf",
+                              disposition: "inline"
+      end
+    end
+  end
+  
   def monthly_listing
+    monthly_list=params[:monthly_list].to_date
+    monthly_start=monthly_list.beginning_of_month
+    monthly_end=monthly_list.end_of_month
+    staff=params[:staff].to_i
+    thumb_id=Staff.find(staff).thumb_id
+    unit_dept=params[:unit_department]
+    @staff_attendances=StaffAttendance.where('thumb_id=? and logged_at >=? and logged_at <=?', thumb_id, monthly_start, monthly_end).order('logged_at ASC, log_type ASC')
+    respond_to do |format|
+      format.pdf do
+        pdf = Senarai_bulanan_punchcardPdf.new(@staff_attendances, monthly_list, unit_dept, thumb_id, view_context)
+        send_data pdf.render, filename: "senarai_bulanan_punchcard-{Date.today}",
+                              type: "application/pdf",
+                              disposition: "inline"
+      end
+    end
   end
 
   private

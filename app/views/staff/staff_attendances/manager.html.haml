@@ -87,7 +87,7 @@
           %td &nbsp;
           %td=h attendance.logged_at.strftime('%H:%M:%S') 
           %td &nbsp;
-          %td=h attendance.approved_by.blank? ? "Reason not submitted" : attendance.reason
+          %td=h attendance.reason.blank? ? "Reason not submitted" : attendance.reason
           %td=h attendance.approved_by.blank? ? "" : attendance.try(:approver).try(:staff_name_with_position)
           %td &nbsp;
           /- if permitted_to? :destroy, @attendance 
