@@ -50,7 +50,7 @@ Ogma::Application.routes.draw do
     resources :attendances
     resources :travel_requests do
       member do
-        get :travel_logr
+        get :travel_log
         get :approval
         get 'status_movement'
       end

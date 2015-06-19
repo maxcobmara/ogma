@@ -13,7 +13,9 @@
   %ul.nav.navbar-nav.navbar-right
     %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "toga"
     %li= link_to content_tag(:li, fa_icon("print", text: (t 'actions.print'))), "#", class: 'bogus'
-=@peeps
+
+/=@current_user.admin_unitleaders_thumb.count
+/=StaffAttendance.peeps(@current_user).count
 .row
   %table.table-striped.table-hover.ogma
     %thead
@@ -75,7 +77,11 @@
           %td &nbsp;
           %td=h attendance.reason.blank? ? "Reason not submitted" : attendance.reason
           %td=h attendance.approved_by.blank? ? "" : attendance.try(:approver).try(:staff_name_with_position)
-          %td &nbsp;
+          %td
+            - if attendance.is_approved == true
+              = image_tag("tick.png")
+            - elsif attendance.is_approved == false
+              = image_tag("cross.png")
           /- if permitted_to? :destroy, @attendance 
           /  = link_to image_tag("delete.png", :border => 0, :title => 'Delete'), attendance, :confirm => 'Are you sure?', :method => :delete 
 

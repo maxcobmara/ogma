@@ -240,7 +240,7 @@ class StaffAttendance < ActiveRecord::Base
         if current_user.userable_id==Position.roots.first.staff_id
           academic_programmes=dip_prog+post_prog+commonsubject
           academic_programmes.each do |prog|
-            @head_thumb_ids << Position.unit_department_leader(prog).thumb_id unless Position.unit_department_leader(department).nil?
+            @head_thumb_ids << Position.unit_department_leader(prog).thumb_id if Position.where('staff_id is not null and unit=?', prog).count > 0 #staff_id must exist 
           end
           thumbs+=@head_thumb_ids
         end

@@ -256,6 +256,9 @@ authorization do
    has_permission_on :staff_training_ptdos, :to => :approve do
      if_attribute :staff_id => is_in {user.unit_members}#is {69}#is_in {[69, 106]}  #
    end
+    has_permission_on :staff_staff_attendances, :to => :approval do
+      if_attribute :thumb_id => is_in {user.admin_unitleaders_thumb}
+    end
  end
  
  #Group Library   -------------------------------------------------------------------------------
@@ -324,11 +327,13 @@ authorization do
   end
   
   role :administration_staff do
+    #access for Timbalan Pengarah (Pengurusan)
     has_permission_on :staff_training_ptdos, :to => :approve do
       if_attribute :staff_id => is_in {user.admin_subordinates}
     end
+    #access for Timbalan Pengarah (Pengurusan) & Pengarah(Timbalans+Ketua2 Programs)
     has_permission_on :staff_staff_attendances, :to => :approval do
-      if_attribute :thumb_id => is_in {user.admin_children_thumb}
+      if_attribute :thumb_id => is_in {user.admin_unitleaders_thumb}
     end
   end
   
