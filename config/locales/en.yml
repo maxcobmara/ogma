@@ -1084,6 +1084,9 @@ en:
     staff_name: Staff Name
     monthly_list: Search Month
     details_type: Display Type
+    full_listing: Full Listing
+    shortlisted: Shortlisted
+    shortlisted_note: "Choose 'Shortlisted' to view related Leave / Movement / Absent only)"
  
   attendance:
     title: "Manage Lateness & Early Return"

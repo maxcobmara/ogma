@@ -999,6 +999,9 @@ ms_MY:
     staff_name: Nama Staf
     monthly_list: Bulan Carian
     details_type: Jenis Paparan
+    full_listing: Senarai Penuh
+    shortlisted: Senarai Ringkas
+    shortlisted_note: "Pilih 'Senarai Ringkas' untul papar Cuti / Pergerakan / Ketidakhadiran sahaja"
   
   attendance:
     title: "Pengurusan Datang Lambat & Pulang Awal"

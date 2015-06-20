@@ -332,5 +332,32 @@ class Leaveforstaff < ActiveRecord::Base
       sibs - applicant
     end
   
-
+    def self.leavetype_when_day_taken_off(staffid, details_date) #details_date = checked date
+      month_begin=details_date.beginning_of_month
+      month_end=details_date.end_of_month
+      #leavestaken=Leaveforstaff.where(staff_id: staffid, approval1: true, approver2: true) #shall collect all approved leaves date
+      leavestaken=Leaveforstaff.where(staff_id: staffid, approval1: true, approver2: true).where('(leavestartdate >=? and leavestartdate <=?) or (leavenddate >=? and leavenddate <=?)', month_begin, month_end, month_begin, month_end)
+      #leaves_dates=[]
+      @leave_id=0#"nope"
+      leavestaken.each do |lt|
+       # leaves_dates << lt.leavestartdate
+        duration=lt.leave_for
+	adate=lt.leavestartdate
+        0.upto(duration-1) do |cnt|
+          #leaves_dates << adate+=cnt.days
+	  adate+=cnt.days
+	  if adate==details_date
+	    @leave_id=lt.id  #"hula"+lt.id.to_s
+	  end
+        end
+      end
+      #leaves_dates  #collection of leaves date in a given month/year
+      @leave_id
+      if @leave_id==0
+        checkeddate_leavetype=""
+      else
+        checkeddate_leavetype=(DropDown::STAFFLEAVETYPE.find_all{|disp, value| value == Leaveforstaff.find(@leave_id).leavetype}).map {|disp, value| disp}[0] 
+      end
+    end
+ 
   end
