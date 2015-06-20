@@ -251,6 +251,8 @@ class Staff::StaffAttendancesController < ApplicationController
       redirect_to monthly_report_staff_staff_attendances_path(:monthly_date => params[:monthly_date], :unit_department => params[:unit_department], format: 'pdf' )
     elsif commit==t('staff_attendance.monthly_listing')
       redirect_to monthly_listing_staff_staff_attendances_path(:monthly_list => params[:monthly_list], :unit_department => params[:unit_department], :staff => params[:staff] ,format: 'pdf' )
+    elsif commit==t('staff_attendance.monthly_details')
+      redirect_to monthly_details_staff_staff_attendances_path(:monthly_list2 => params[:monthly_list2], :unit_department => params[:unit_department], :staff2 => params[:staff2], :details_type => params[:details_type], format: 'pdf' )
     end
   end
 
@@ -359,6 +361,25 @@ class Staff::StaffAttendancesController < ApplicationController
     respond_to do |format|
       format.pdf do
         pdf = Senarai_bulanan_punchcardPdf.new(@staff_attendances, monthly_list, unit_dept, thumb_id, view_context)
+        send_data pdf.render, filename: "senarai_bulanan_punchcard-{Date.today}",
+                              type: "application/pdf",
+                              disposition: "inline"
+      end
+    end
+  end
+  
+  def monthly_details
+    monthly_list2=params[:monthly_list2].to_date
+    monthly_start=monthly_list2.beginning_of_month
+    monthly_end=monthly_list2.end_of_month
+    staff2=params[:staff2].to_i
+    thumb_id=Staff.find(staff2).thumb_id
+    unit_dept=params[:unit_department]
+    list_type=params[:details_type]
+    @staff_attendances=StaffAttendance.where('thumb_id=? and logged_at >=? and logged_at <=?', thumb_id, monthly_start, monthly_end).order('logged_at ASC, log_type ASC')
+    respond_to do |format|
+      format.pdf do
+        pdf = Perincian_bulanan_punchcardPdf.new(@staff_attendances, monthly_list2, unit_dept, thumb_id, list_type, view_context)
         send_data pdf.render, filename: "senarai_bulanan_punchcard-{Date.today}",
                               type: "application/pdf",
                               disposition: "inline"

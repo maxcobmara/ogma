@@ -995,8 +995,10 @@ ms_MY:
     monthly_date: Bulan bermula
     since: semenjak
     monthly_listing: Senarai Bulanan
+    monthly_details: Perincian Bulanan
     staff_name: Nama Staf
-    monthly_list: Senarai bagi bulan
+    monthly_list: Bulan Carian
+    details_type: Jenis Paparan
   
   attendance:
     title: "Pengurusan Datang Lambat & Pulang Awal"

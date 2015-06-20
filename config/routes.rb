@@ -45,6 +45,7 @@ Ogma::Application.routes.draw do
 	get :weekly_report
 	get :monthly_report
 	get :monthly_listing
+        get :monthly_details
       end
     end
     resources :attendances
