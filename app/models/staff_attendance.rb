@@ -90,7 +90,7 @@ class StaffAttendance < ActiveRecord::Base
 	uname<< u_name if val==2
 	if val==3
 	    u_name2=u_name
-	    u_name2="-- "+u_name if valid_dept.include?(u_name)==false
+	    u_name2="-- "+u_name if valid_dept.include?(u_name)==false  #add remark "-- " before unit name, search for these units/departments error shall arise
 	    u_t=[]
 	    u_t<< u_name2<< count
 	    uname_thmb << u_t 
@@ -495,6 +495,12 @@ class StaffAttendance < ActiveRecord::Base
      # timmy = (logged_at.in_time_zone('UTC').strftime('%l%M')).to_i   #giving this format 1800 @ #0840 -> 840
       timmy = 1200+timmy if meridian=="pm"
       #note : (below) - previously using 24-hours format
+      
+      ####override all above--PENDING--temporary fixed - wont work if staff OT & went back after 12.00 midnight
+      timmy = (logged_at.strftime('%H%M')).to_i - 8   #1504   -- whereby ending_shift= 1800,           1726 -- whereby ending_shift=1730
+      timmy_jam=logged_at.strftime('%H').to_i - 8      #15                                                                  17
+      ####
+      
       if timmy < ending_shift(shift_id_use.to_i) && self.trigger != false #&& timmy2 < 0  #(&& timmy2 < 0)to work with logout at time after 12:00 midnight --> 00:00hrs
           #DO NOT REMOVE YET-below-working one!
           #early = "#{ending_shift} ~ #{timmy}" + " minutes" + "<BR>JAM_SHIFT:#{jam} MINIT_SHIFT:#{minit_shift} MINIT:#{minit}"+"<BR>TIMMYJAM:#{timmy_jam} TIMMYMINUTES:#{timmy_minutes}"
@@ -506,9 +512,15 @@ class StaffAttendance < ActiveRecord::Base
           if jam_diff > 0 && minit_diff <= 0 
               early = "#{jam_diff} hours"
           elsif jam_diff > 0 && minit_diff > 0 
-              early = "#{jam_diff} hours #{minit_diff} minutes"#+" timmy "+timmy.to_s+" ending_shift "+ending_shift.to_s+" timmy2 "+timmy2.to_s+" timmjam " +timmy_jam.to_s+"timmy minute"+timmy_minutes.to_s+" jam  "+jam.to_s
+	      if minit_diff==60
+                early="#{jam_diff+1} hours"
+	      else
+                early = "#{jam_diff} hours #{minit_diff} minutes"#+" timmy "+timmy.to_s+" ending_shift "+ending_shift.to_s+" timmy2 "+timmy2.to_s+" timmjam " +timmy_jam.to_s+"timmy minute"+timmy_minutes.to_s+" jam  "+jam.to_s
+	      end
           elsif minit_diff > 0 && jam_diff <= 0
               early ="#{minit_diff} minutes" 
+          else 
+              early ="" #rescue for punctual
           end
 
           early
@@ -609,6 +621,42 @@ class StaffAttendance < ActiveRecord::Base
     where("trigger IS TRUE AND is_approved IS FALSE AND thumb_id =? AND logged_at>=? AND logged_at<?", thumb_id, start_date, end_date).order(logged_at: :desc)
     #find(:all, :conditions => ["trigger=? AND is_approved =? AND thumb_id IN (?) AND logged_at>=? AND logged_at<?", true, false, thumb_id, start_date, end_date], :order => 'logged_at DESC')
     
+  end
+  
+  def number_format(lateearly_string)
+    if lateearly_string.include?("hours")
+      hours_cnt=lateearly_string.split("hours")[0].to_i
+      minutes_cnt=lateearly_string.split("hours")[1].split("minutes")[0].to_i unless (lateearly_string.split("hours")[1]).nil?
+      if hours_cnt < 10
+        hou="0"+hours_cnt.to_s
+      else
+        hou=hours_cnt.to_s
+      end
+      unless (lateearly_string.split("hours")[1]).nil?
+        if minutes_cnt < 10
+          minn="0"+minutes_cnt.to_s
+        else
+          minn=minutes_cnt.to_s
+        end
+      else
+        minn="00"
+      end
+      lateearly_num=hou+":"+minn
+    else
+      if lateearly_string.include?("minutes")
+        hours_cnt=0
+        minutes_cnt=lateearly_string.split("minutes")[0].to_i
+        if minutes_cnt < 10
+          minn="0"+minutes_cnt.to_s
+        else
+          minn=minutes_cnt.to_s
+        end
+        lateearly_num="00:"+minn
+      else
+        lateearly_num=""
+      end
+    end
+    lateearly_num
   end
 
   def render_colour_status

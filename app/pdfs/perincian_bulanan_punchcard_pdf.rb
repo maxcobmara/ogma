@@ -26,7 +26,7 @@ class Perincian_bulanan_punchcardPdf < Prawn::Document
 
   def attendance_list
     total_rows=@total_days 
-    table(line_item_rows, :column_widths => [60, 35, 35, 95, 70, 70, 40, 80.40], :cell_style => { :size => 10,  :inline_format => :true}) do
+    table(line_item_rows, :column_widths => [60, 35, 35, 95, 35, 35, 40, 120.40], :cell_style => { :size => 10,  :inline_format => :true}) do
       column(1..2).align=:center
       column(6).align=:center
       #rows(0..total_rows).height=20
@@ -45,27 +45,34 @@ class Perincian_bulanan_punchcardPdf < Prawn::Document
         curr_date=sas[0].logged_at.strftime('%Y-%m-%d')
         shift_id=StaffShift.shift_id_in_use(curr_date,sas[0].thumb_id)
 
+        #assign values(c/in, c/out, late, early columns) for days(one by one day) with logged records exist, but only capture the 1st occurance of IN & last occurance of OUT.
         sas.sort_by{|y|y.logged_at}.each_with_index do |sa, indx|
            if indx==0 && (sa.log_type=='I' || sa.log_type=='i')
              oneday<< "#{sa.logged_at.strftime('%H:%M')}"
              @lateness = sa.late_early(shift_id)
+             @lateness2 = sa.number_format(@lateness)
              cnt_i+=1
            end
            if cnt_i==0 && indx==0
              oneday << ""
+            @lateness2=""
            end
            if indx==sas.count-1 && (sa.log_type=='O' || sa.log_type=='o')
              oneday<< "#{sa.logged_at.strftime('%H:%M') }"
              @early = sa.late_early(shift_id)
+             @early2=sa.number_format(@early)
              cnt_o+=1
            end
            if cnt_o==0 && indx==sas.count-1
              oneday << ""
+             @early2=""
            end
         end 
         datte=ddate[0,2].to_i 
         mnth=ddate[3,2].to_i
         yyr=ddate[6,4].to_i
+
+        #assign complte/all values for days without any logged records
         if day_count < datte
           day_count.upto(datte-1).each do |cc|
             ccdate=Date.new(yyr,mnth,cc)
@@ -93,11 +100,27 @@ class Perincian_bulanan_punchcardPdf < Prawn::Document
             #when no leave recorded(Cuti Gantian / Cuti Sakit / Cuti Kecemasan) & no course/travel attended(travel request approved+claim created), absent=Y
           end
         end
+
+        #combine (days with logged records exist) oneday (one by one day - c/in, c/out, late, early) with date & dayname + exception data (if any) 
         day_count=datte+1
         if @list_type=="1"
           dy=datte
-          dyname=(Date.new(yyr,mnth,dy)).strftime('%a')
-          attendance_list << ["#{ddate}"]+oneday+["#{StaffShift.find(shift_id).start_end}", @lateness, @early, "", "", dyname] #absent & leave_or_travel - NO DATA
+          ddate_rev=Date.new(yyr,mnth,dy)
+          dyname=ddate_rev.strftime('%a')
+          #when logged at least ONCE/day - NO DATA for absent, but may also - taken the rest of the day off (eg. mc etc) or travel outstation - later after logged-in
+          #this 'leave_or_travel' column will also help admini in triggering / ignore - when late or early exist
+          leave_taken=Leaveforstaff.leavetype_when_day_taken_off(@staffid, ddate_rev) 
+          travel_outstation=TravelRequest.day_outstation(@staffid, ddate_rev)
+          if leave_taken=="" && travel_outstation==""
+            leave_or_travel=""
+          else
+            if leave_taken==""
+              leave_or_travel=travel_outstation
+            elsif travel_outstation==""
+              leave_or_travel=leave_taken
+            end
+          end    
+          attendance_list << ["#{ddate}"]+oneday+["#{StaffShift.find(shift_id).start_end}", @lateness2, @early2, "", leave_or_travel, dyname] 
         end
         @sas=sas
 
