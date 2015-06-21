@@ -1080,7 +1080,7 @@ en:
     since: since
     monthly_listing_details: "Monthly Listing / Details"
     monthly_listing: Monthly Listing
-    monthly_details: Monthly Details
+    monthly_details: "Monthly Details (Shift Exception)"
     staff_name: Staff Name
     monthly_list: Search Month
     details_type: Display Type

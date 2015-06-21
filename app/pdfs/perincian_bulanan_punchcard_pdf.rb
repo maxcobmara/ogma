@@ -11,7 +11,7 @@ class Perincian_bulanan_punchcardPdf < Prawn::Document
     @staffid=Staff.where(thumb_id: @thumb_id).first.id
     font "Times-Roman"
     move_down 10
-    text "Details of Attendance", :align => :center, :size => 13, :style => :bold
+    text "Details of Attendance (incl. Shift Exception)", :align => :center, :size => 13, :style => :bold
     move_down 10
     text "Department / Unit : #{@unit_department}", :size => 11
     text "#{Staff.where(thumb_id: @thumb_id).first.name.upcase}", :size => 11
@@ -26,9 +26,10 @@ class Perincian_bulanan_punchcardPdf < Prawn::Document
 
   def attendance_list
     total_rows=@total_days 
-    table(line_item_rows, :column_widths => [60, 35, 35, 95, 35, 35, 40, 120.40], :cell_style => { :size => 10,  :inline_format => :true}) do
+    table(line_item_rows, :column_widths => [60, 35, 35, 95, 35, 35, 40, 150,40], :cell_style => { :size => 10,  :inline_format => :true}) do
       column(1..2).align=:center
       column(6).align=:center
+      self.width = 525
       #rows(0..total_rows).height=20
     end
   end
@@ -72,7 +73,7 @@ class Perincian_bulanan_punchcardPdf < Prawn::Document
         mnth=ddate[3,2].to_i
         yyr=ddate[6,4].to_i
 
-        #assign complte/all values for days without any logged records
+        #assign complete/all values for days without any logged records
         if day_count < datte
           day_count.upto(datte-1).each do |cc|
             ccdate=Date.new(yyr,mnth,cc)
@@ -108,7 +109,7 @@ class Perincian_bulanan_punchcardPdf < Prawn::Document
           ddate_rev=Date.new(yyr,mnth,dy)
           dyname=ddate_rev.strftime('%a')
           #when logged at least ONCE/day - NO DATA for absent, but may also - taken the rest of the day off (eg. mc etc) or travel outstation - later after logged-in
-          #this 'leave_or_travel' column will also help admini in triggering / ignore - when late or early exist
+          #this 'leave_or_travel' column will also help admin in triggering / ignore - when late or early exist
           leave_taken=Leaveforstaff.leavetype_when_day_taken_off(@staffid, ddate_rev) 
           travel_outstation=TravelRequest.day_outstation(@staffid, ddate_rev)
           if leave_taken=="" && travel_outstation==""

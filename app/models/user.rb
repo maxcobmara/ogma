@@ -236,7 +236,7 @@ class User < ActiveRecord::Base
     mypost = Position.where(staff_id: userable_id).first
     myunit = mypost.unit
     mythumbid = userable.thumb_id
-    iamleader=Position.am_i_leader(userable)
+    iamleader=Position.am_i_leader(userable_id)
     if iamleader== true   #check by roles
       thumbs=Staff.joins(:positions).where('staffs.thumb_id!=? and unit=?', mythumbid, myunit).pluck(:thumb_id)
     else #check by rank / grade

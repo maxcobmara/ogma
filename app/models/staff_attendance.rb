@@ -127,14 +127,17 @@ class StaffAttendance < ActiveRecord::Base
          sas.each do |sa|
            curr_date=sa.logged_at.strftime('%Y-%m-%d')
            shiftid = StaffShift.shift_id_in_use(curr_date, sa.thumb_id)
-           @sa_lateness << sa.id if sa.r_u_late(shiftid)
+           @sa_lateness << sa.id if sa.r_u_late(shiftid)=="flag"
          end
        end
      else
        start_time = "08:00"
      end
-     a=StaffAttendance.where("trigger=? AND log_type =? AND thumb_id=? AND logged_at::time > ?", true, "I", thumb_id, start_time).order('logged_at') unless start_time.nil?
-     a=StaffAttendance.where(id: @sa_lateness, trigger: true).order(logged_at: :desc) unless @sa_lateness.nil?
+     unless @sa_lateness.nil?
+       a=StaffAttendance.where(id: @sa_lateness, thumb_id: thumb_id, trigger: true).order(logged_at: :desc) 
+     else
+       a=StaffAttendance.where("trigger=? AND log_type =? AND thumb_id=? AND logged_at::time > ?", true, "I", thumb_id, start_time).order('logged_at') 
+     end
      a
   end
   
@@ -150,14 +153,19 @@ class StaffAttendance < ActiveRecord::Base
          sas.each do |sa|
            curr_date=sa.logged_at.strftime('%Y-%m-%d')
            shiftid = StaffShift.shift_id_in_use(curr_date, sa.thumb_id)
-           @sa_early << sa.id if sa.r_u_early(shiftid)
+           @sa_early << sa.id if sa.r_u_early(shiftid)=="flag"
          end
        end
      else
        end_time = "17:00"
      end
-     b=StaffAttendance.where("trigger=? AND log_type =? AND thumb_id=? AND logged_at::time < ?", true, "O", thumb_id, end_time).order(:logged_at) unless end_time.nil?
-     b=StaffAttendance.where(id: @sa_early, trigger: true).order(logged_at: :desc) unless @sa_early.nil?
+     #b=StaffAttendance.where("trigger=? AND log_type =? AND thumb_id=? AND logged_at::time < ?", true, "O", thumb_id, end_time).order(:logged_at) unless end_time.nil?
+     #b=StaffAttendance.where(id: @sa_early, trigger: true).order(logged_at: :desc) unless @sa_early.nil?
+     unless @sa_early.nil?
+       b=StaffAttendance.where(id: @sa_early, thumb_id: thumb_id, trigger: true).order(logged_at: :desc) 
+     else
+       b=StaffAttendance.where("trigger=? AND log_type =? AND thumb_id=? AND logged_at::time < ?", true, "O", thumb_id, end_time).order(:logged_at)
+     end
      b
   end
   
@@ -229,7 +237,7 @@ class StaffAttendance < ActiveRecord::Base
     mypost = Position.where(staff_id: current_user.userable_id).first
     myunit = mypost.unit
     mythumbid = current_user.userable.thumb_id
-    iamleader=Position.am_i_leader(current_user)
+    iamleader=Position.am_i_leader(current_user.userable_id)
     if iamleader== true   #check by roles
       thumbs=Staff.joins(:positions).where('staffs.thumb_id!=? and unit=?', mythumbid, myunit).pluck(:thumb_id)
     else #check by rank / grade
@@ -327,7 +335,7 @@ class StaffAttendance < ActiveRecord::Base
 	timmy = ((logged_at.hour - 0).to_s + mins).to_i			#timmy = ((logged_at.hour - 8).to_s + mins).to_i
 	if timmy > starting_shift(shiftid.to_i) && self.trigger != false    #if timmy > starting_time && self.trigger != false  #if timmy > 830 && self.trigger != false
 	  "flag"
-	else 
+	else #***
 	end
     end	#end for log_type=="I"
   end

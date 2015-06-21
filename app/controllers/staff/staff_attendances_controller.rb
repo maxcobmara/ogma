@@ -185,10 +185,10 @@ class Staff::StaffAttendancesController < ApplicationController
   end
 
   def manager
-    @mylate_attendances = StaffAttendance.find_mylate(current_user) 
-    @myearly_attendances = StaffAttendance.find_myearly(current_user)
-    @approvelate_attendances = StaffAttendance.find_approvelate(current_user)
-    @approveearly_attendances = StaffAttendance.find_approveearly(current_user)
+    @mylate_attendances = StaffAttendance.find_mylate(@current_user) 
+    @myearly_attendances = StaffAttendance.find_myearly(@current_user)
+    @approvelate_attendances = StaffAttendance.find_approvelate(@current_user)
+    @approveearly_attendances = StaffAttendance.find_approveearly(@current_user)
 
     respond_to do |format|
       format.html # index.html.erb

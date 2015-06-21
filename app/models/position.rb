@@ -176,7 +176,8 @@ class Position < ActiveRecord::Base
   end
   
   #use in Staff Attendance (self.peeps)
-  def self.am_i_leader(curr_user)
+  def self.am_i_leader(userableid)   #(curr_user) - userable==staff   
+    curr_user=User.where(userable_id: userableid).first
     staff_roles=curr_user.roles.map(&:authname)
     if staff_roles.include?("unit_leader") || staff_roles.include?("programme_manager")
       leader_status=true 

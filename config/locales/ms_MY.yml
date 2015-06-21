@@ -995,7 +995,7 @@ ms_MY:
     monthly_date: Bulan bermula
     since: semenjak
     monthly_listing: Senarai Bulanan
-    monthly_details: Perincian Bulanan
+    monthly_details: "Perincian Bulanan (termasuk Pengecualian)"
     staff_name: Nama Staf
     monthly_list: Bulan Carian
     details_type: Jenis Paparan

@@ -250,7 +250,7 @@ class TravelRequest < ActiveRecord::Base
       checkeddate_travelpurpose=""
     else
       trvq=TravelRequest.find(@traveling_id)
-      checkeddate_travelpurpose=trvq.document.title[0,20]+" ("+trvq.destination+")"
+      checkeddate_travelpurpose=trvq.document.title.truncate(30)+" ("+trvq.destination+")"
     end
     checkeddate_travelpurpose
   end
