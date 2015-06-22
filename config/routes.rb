@@ -48,6 +48,11 @@ Ogma::Application.routes.draw do
         get :monthly_details
       end
     end
+    resources :fingerprints do
+      collection do
+        get :approval
+      end
+    end
     resources :attendances
     resources :travel_requests do
       member do

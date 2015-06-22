@@ -22,6 +22,7 @@
                   %a.mp-back{:href => "#"}= t 'helpers.links.back'
                   %ul
                     %li= link_to t('attendance.manage_lateness_earlyreturn'), '/attendance/manager'
+                    %li= link_to t('fingerprint.title2'), staff_fingerprints_path
                     - permitted_to? :manage, :staff_staff_attendances do
                       %li= link_to t('staff_attendance.title'), staff_staff_attendances_path
                       %li= link_to t('staff_attendance.status_pcard'), '/attendance/status'

@@ -189,7 +189,9 @@ class Staff::StaffAttendancesController < ApplicationController
     @myearly_attendances = StaffAttendance.find_myearly(current_user)
     @approvelate_attendances = StaffAttendance.find_approvelate(current_user)
     @approveearly_attendances = StaffAttendance.find_approveearly(current_user)
-
+#     @fingerprint = Fingerprint.new
+#     @fingerprints = Fingerprint.find_mystatement(current_user.userable.thumb_id)
+#     @approvefingerprints = Fingerprint.find_approvestatement(current_user)
     respond_to do |format|
       format.html # index.html.erb
       format.xml  { render :xml => @staff_attendances }
@@ -287,7 +289,7 @@ class Staff::StaffAttendancesController < ApplicationController
   end
 
   def weekly_report
-    weekly_date=params[:weekly_date].to_date
+    weekly_date=params[:weekly_date].to_time
     weekly_start=weekly_date.beginning_of_week
     weekly_end=weekly_date.end_of_week
     unit_dept=params[:unit_department]
@@ -319,7 +321,7 @@ class Staff::StaffAttendancesController < ApplicationController
   end
 
   def monthly_report
-    monthly_date=params[:monthly_date].to_date
+    monthly_date=params[:monthly_date].to_time
     monthly_start=monthly_date.beginning_of_month
     monthly_end=monthly_date.end_of_month
     unit_dept=params[:unit_department]
@@ -351,7 +353,7 @@ class Staff::StaffAttendancesController < ApplicationController
   end
   
   def monthly_listing
-    monthly_list=params[:monthly_list].to_date
+    monthly_list=params[:monthly_list].to_time
     monthly_start=monthly_list.beginning_of_month
     monthly_end=monthly_list.end_of_month
     staff=params[:staff].to_i
@@ -369,7 +371,7 @@ class Staff::StaffAttendancesController < ApplicationController
   end
   
   def monthly_details
-    monthly_list2=params[:monthly_list2].to_date
+    monthly_list2=params[:monthly_list2].to_time
     monthly_start=monthly_list2.beginning_of_month
     monthly_end=monthly_list2.end_of_month
     staff2=params[:staff2].to_i

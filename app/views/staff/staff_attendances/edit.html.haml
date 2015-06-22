@@ -28,9 +28,10 @@
                     %tr
                       %td{:style=>"padding: 0 6px 0 0;"}= f.radio_button :status, 2, :id => 'loanmode', :class => 'radio_discard_options'
                       %td= t 'staff_attendance.official'
-                    %tr
-                      %td{:style=>"padding: 0 6px 0 0;"}= f.radio_button :status, 3, :id => 'loanmode', :class => 'radio_discard_options'
-                      %td= t 'staff_attendance.forgot'
+                    /for not thumbprint only
+                    /%tr
+                    /  %td{:style=>"padding: 0 6px 0 0;"}= f.radio_button :status, 3, :id => 'loanmode', :class => 'radio_discard_options'
+                    /  %td= t 'staff_attendance.forgot'
                     %tr
                       %td{:style=>"padding: 0 6px 0 0;"}= f.radio_button :status, 5, :id => 'loanmode',  :class => 'radio_discard_options'
                       %td= t 'staff_attendance.others'

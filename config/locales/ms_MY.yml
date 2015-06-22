@@ -22,6 +22,7 @@ ms_MY:
       ptbudget: Bajet
       staff_appraisal: Penilaian Prestasi
       staff_attendance: Kedatangan Staf
+      fingerprint: Fingerprint
     attributes:
       student:
         name: Nama
@@ -103,6 +104,9 @@ ms_MY:
         cpd_value: Jumlah Mata Kumulatif
       staff_attendance:
         reason: Sebab
+      fingerprint:
+        fdate: Tarikh
+        thumb_id: "Staf (Thumb Id)"
     errors:
         template:
           body: "Berikut adalah beberapa masalah:"
@@ -973,8 +977,8 @@ ms_MY:
     fingerprint: Fingerprint
     date_time: "Tarikh & Masa"
     outstation: Luar Kawasan
-    official: Urusan Rasmi
-    forgot: Terlupa
+    official: "Urusan Rasmi / Peribadi"
+    forgot: Terlupa Fingerprint
     early_late: "Datang Lewat / Pulang Awal"
     others: "Lain - lain"
     advise_trigger1: "Datang Lewat : "
@@ -1020,6 +1024,25 @@ ms_MY:
     reason: Sebab
     approve_id: Pelulus
     approvestatus: Status Kelulusan
+    attendance_not_recorded: "Days Not Thumbprint (Fingerprint Submission)"
+    
+  fingerprint:
+    title: "Kenyataan Fingerprint (Hari Tidak Fingerprint)"
+    title2: "Kenyataan Fingerprint (Tidak Fingerprint)"
+    new: "Kenyataan Fingerprint Baru (Hari Tidak Fingerprint)"
+    edit: "Sunting Kenyataan Fingerprint (Hari Tidak Fingerprint)"
+    details: Butiran Fingerprint
+    fdate: Tarikh
+    ftype: Jenis
+    in: Masuk
+    out: Keluar
+    both: Masuk dan Keluar
+    thumb_id: "Staf (Thumb Id)"
+    approval_title: "Kelulusan Kenyataan Fingerprint (Tidak Fingerprint)"
+    approval: Kelulusan Kenyataan Fingerprint
+    approval2: "Kelulusan (Tidak Fingerprint)"
+    no_record: Tiada rekod
+    notes:  "Nota : Kenyataan Fingerprint (Tidak Fingerprint) hanya boleh dibuat bagi hari (tarikh) yang TIADA sekurang-kurangnya 1 rekod kedatangan (masuk atau keluar). Sekiranya Kenyataan Fingerprint diperlukan bagi hari yang mempunyai kedua-dua rekod keluar dan masuk, sila ke laman 'Pengurusan Datang Lambat & Pulang Awal'. Sila hubungi 'Pentadbir Staf' sekiranya rekod kedatangan yang diperlukan tiada dalam senarai."
     
   asset:
     title: Aset

@@ -1,0 +1,64 @@
+- model_class = Fingerprint
+.page-header
+  %h1= t 'fingerprint.approval'
+= render 'shared/flashes'
+
+.row
+  = form_for [:staff, @fingerprint],  :html => { :class => 'form-horizontal' } do |f| 
+    = render 'shared/error_messages', object: f.object
+ 
+    .col-md-10.col-md-offset-1
+      / Nav tabs
+      %ul.nav.nav-tabs
+        %li= link_to ((t 'fingerprint.details')),"#fingerprint_details", "data-toggle" => "tab"
+        %li.active=link_to ((t 'fingerprint.approval')),"#fingerprint_approval", "data-toggle" => "tab"
+        
+      .tab-content{style:"padding-top:1em"}
+        #fingerprint_details.tab-pane
+          = render 'tab_fingerprint_details'
+        #fingerprint_approval.tab-pane.active
+          %br
+          .col-md-offset-2
+            .form-group
+              .col-sm-2.control-label
+                = f.label t('staff_attendance.approved_by')
+              .col-md-3
+                = f.collection_select :approved_by, Staff.joins(:positions).where("thumb_id is not null and thumb_id!=? and (positions.unit is not null or positions.unit=?) ",0,"").order(name: :asc), :id, :mykad_with_staff_name, { :prompt => t('helpers.prompt.select_staff'), :selected => @current_user.userable_id}, {class: 'selectpicker', "data-width"=>"420px"}
+            .form-group
+              .col-sm-2.control-label
+                = f.label t('staff_attendance.is_approved')
+              .col-md-1
+                = f.radio_button :is_approved, 'true' , :id => 'approval_true' , :class => 'radio_approve' 
+              .col-md-1
+                = t 'staff_attendance.approve'
+              .col-md-1
+                = f.radio_button :is_approved, 'false', :id => 'approval_false', :class => 'radio_approve' 
+              .col-md-1
+                = t 'staff_attendance.reject'
+            .approve_time{:style=>"display: none;"}
+              .form-group
+                .col-sm-2.control-label
+                  = f.label t('staff_attendance.approved_on')
+                .col-md-2
+                  = f.text_field :approved_on, :class=>'date_picker form-control'
+
+    .row
+      .col-md-7.col-md-offset-3
+        .form-group
+          .col-md-1
+            = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")),  '/attendance/manager/', :class => 'btn btn-default'
+          .col-md-1.col-md-offset-1
+            = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('actions.show'), staff_fingerprint_path(@fingerprint), :class => 'btn btn-default'
+          .col-md-3.col-md-offset-1
+            /.div{style: "margin-left:-40px;"}
+            = f.submit t('update'), class: "btn btn-primary"
+
+:javascript
+
+$(document).ready(function(){ 
+  $('.radio_approve').change(function() {  
+    $('.approve_time').show();  
+  });
+});
+
+

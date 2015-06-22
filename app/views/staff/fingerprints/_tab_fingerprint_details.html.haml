@@ -1,0 +1,17 @@
+.col-md-8.col-md-offset-1
+  %dl.dl-horizontal
+    %dt= t'fingerprint.thumb_id'
+    %dd=h @fingerprint.try(:owner).try(:thumb_id_with_name_unit)
+
+    %dt= t'fingerprint.fdate'
+    %dd=h @fingerprint.try(:fdate).try(:strftime,  '%d %b %Y')
+            
+    %dt= t'fingerprint.ftype'
+    %dd=h (DropDown::FINGERPRINT_TYPE.find_all{|disp, value| value == @fingerprint.ftype}).map {|disp, value| disp}[0]
+    
+    %dt= t'staff_attendance.status'
+    %dd=(DropDown::TRIGGER_STATUS.find_all{|disp, value| value == @fingerprint.status }).map {|disp, value| disp}[0]
+    
+    %dt= t'staff_attendance.reason'
+    %dd=h @fingerprint.reason
+    
