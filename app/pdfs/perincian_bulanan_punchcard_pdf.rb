@@ -15,7 +15,7 @@ class Perincian_bulanan_punchcardPdf < Prawn::Document
     move_down 10
     text "Department / Unit : #{@unit_department}", :size => 11
     text "#{Staff.where(thumb_id: @thumb_id).first.name.upcase}", :size => 11
-    text "#{@monthly_list.beginning_of_month.strftime('%d-%m-%Y')} to #{@monthly_list.end_of_month.strftime('%d-%m-%Y')}", :size => 11
+    #text "#{@monthly_list.beginning_of_month.strftime('%d-%m-%Y')} to #{@monthly_list.end_of_month.strftime('%d-%m-%Y')}", :size => 11
     move_down 5
     attendance_list
     move_down 10
