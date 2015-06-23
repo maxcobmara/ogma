@@ -38,7 +38,7 @@
             %td &nbsp;
             %td=h fingerprint.owner.name 
             %td=h fingerprint.reason
-            %td= fingerprint.try(:approvedby).try(:name) if attendance.is_approved == true
+            %td= fingerprint.try(:approvedby).try(:name) if fingerprint.is_approved == true
             %td
               - if fingerprint.reason? && (fingerprint.is_approved == nil)
                 = link_to image_tag("approval.png", :border => 0, :title => 'Approval'), :controller=> 'fingerprints', :action => 'approval', :id => fingerprint
@@ -54,7 +54,7 @@
       %tr
         %td{:colspan => "7"}
           = form_for [:staff, @fingerprint], html: { multipart: true, class: 'form-horizontal' }  do |f| 
-            = f.hidden_field :thumb_id, value: current_user.userable.thumb_id
+            = f.hidden_field :thumb_id, value: @current_user.userable.thumb_id
             .col-md-1= f.text_field :fdate, class: 'form-control date_picker'
             .col-md-4= submit_tag t('fingerprint.new')
             .col-md-5= t('fingerprint.notes')

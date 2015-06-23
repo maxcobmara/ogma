@@ -73,7 +73,7 @@ class Perincian_bulanan_punchcardPdf < Prawn::Document
         mnth=ddate[3,2].to_i
         yyr=ddate[6,4].to_i
 
-        #assign complete/all values for days without any logged records
+        #assign complete/all values for days without any logged records-before existing logged records
         if day_count < datte
           day_count.upto(datte-1).each do |cc|
             ccdate=Date.new(yyr,mnth,cc)
@@ -85,19 +85,22 @@ class Perincian_bulanan_punchcardPdf < Prawn::Document
             else
               leave_taken=Leaveforstaff.leavetype_when_day_taken_off(@staffid, ccdate) #"Cuti YYYYYY"
               travel_outstation=TravelRequest.day_outstation(@staffid, ccdate)
-              if leave_taken=="" && travel_outstation==""
+              fingerprint_nothumbprint=Fingerprint.where(thumb_id: @thumb_id, fdate: ccdate)
+              if leave_taken=="" && travel_outstation=="" && fingerprint_nothumbprint.count==0
                 absent="Y"
-                leave_or_travel=""
+                leave_or_travel_nothumb=""
               else
-                if leave_taken==""
-                  leave_or_travel=travel_outstation
-                elsif travel_outstation==""
-                  leave_or_travel=leave_taken
+                if leave_taken==""  && fingerprint_nothumbprint.count==0 && travel_outstation!=""
+                  leave_or_travel_nothumb=travel_outstation
+                elsif travel_outstation=="" && fingerprint_nothumbprint.count==0 && leave_taken!="" 
+                  leave_or_travel_nothumb=leave_taken
+                elsif fingerprint_nothumbprint.count > 0 && leave_taken=="" && travel_outstation==""
+                  leave_or_travel_nothumb=fingerprint_nothumbprint.first.exception_details
                 end
                 absent=""
-              end
+              end 
             end
-            attendance_list << [ccdate_rev, "", "", "", "", "", absent, leave_or_travel, dyname]
+            attendance_list << [ccdate_rev, "", "", "", "", "", absent, leave_or_travel_nothumb, dyname]
             #when no leave recorded(Cuti Gantian / Cuti Sakit / Cuti Kecemasan) & no course/travel attended(travel request approved+claim created), absent=Y
           end
         end
@@ -108,24 +111,30 @@ class Perincian_bulanan_punchcardPdf < Prawn::Document
           dy=datte
           ddate_rev=Date.new(yyr,mnth,dy)
           dyname=ddate_rev.strftime('%a')
-          #when logged at least ONCE/day - NO DATA for absent, but may also - taken the rest of the day off (eg. mc etc) or travel outstation - later after logged-in
+          #when logged at least ONCE/day - NO DATA for absent, but may also - taken the rest of the day off (eg. mc etc) or travel outstation or keluar pejabat pagi keluar pejabat petang - later after logged-in / before logged_out(morning not thumb)
           #this 'leave_or_travel' column will also help admin in triggering / ignore - when late or early exist
           leave_taken=Leaveforstaff.leavetype_when_day_taken_off(@staffid, ddate_rev) 
           travel_outstation=TravelRequest.day_outstation(@staffid, ddate_rev)
-          if leave_taken=="" && travel_outstation==""
-            leave_or_travel=""
+          fingerprint_nothumbprint=Fingerprint.where(thumb_id: @thumb_id, fdate: ddate_rev)
+          if leave_taken=="" && travel_outstation=="" && fingerprint_nothumbprint.count==0
+            leave_or_travel_nothumb=""
           else
-            if leave_taken==""
+            if leave_taken==""  && fingerprint_nothumbprint.count==0 && travel_outstation!=""
               leave_or_travel=travel_outstation
-            elsif travel_outstation==""
-              leave_or_travel=leave_taken
+            elsif travel_outstation=="" && fingerprint_nothumbprint.count==0 && leave_taken!="" 
+              leave_or_travel_nothumb=leave_taken
+            #at least 1 log record should not exist
+            elsif fingerprint_nothumbprint.count > 0 && (@lateness2=="" || @early2=="") && leave_taken=="" && travel_outstation==""
+              leave_or_travel_nothumb=fingerprint_nothumbprint.first.exception_details
             end
-          end    
-          attendance_list << ["#{ddate}"]+oneday+["#{StaffShift.find(shift_id).start_end}", @lateness2, @early2, "", leave_or_travel, dyname] 
+          end 
+          attendance_list << ["#{ddate}"]+oneday+["#{StaffShift.find(shift_id).start_end}", @lateness2, @early2, "", leave_or_travel_nothumb, dyname] 
         end
         @sas=sas
 
     end
+    
+    #assign complete/all values for days without any logged records-after existing logged records
     datte2a=@sas.sort_by{|y|y.logged_at}.last.logged_at
     datte2b=datte2a.day
     @next_date=datte2a
@@ -139,19 +148,22 @@ class Perincian_bulanan_punchcardPdf < Prawn::Document
         else
           leave_taken=Leaveforstaff.leavetype_when_day_taken_off(@staffid, @next_date) #"Cuti YYYYYY"
           travel_outstation=TravelRequest.day_outstation(@staffid, @next_date)
-          if leave_taken=="" && travel_outstation==""
+          fingerprint_nothumbprint=Fingerprint.where(thumb_id: @thumb_id, fdate: @next_date.to_date)
+          if leave_taken=="" && travel_outstation=="" && fingerprint_nothumbprint.count==0
             absent="Y"
-            leave_or_travel=""
+            leave_or_travel_nothumb=""
           else
-            if leave_taken==""
+            if leave_taken==""  && fingerprint_nothumbprint.count==0 && travel_outstation!=""
               leave_or_travel=travel_outstation
-            elsif travel_outstation==""
-              leave_or_travel=leave_taken
+            elsif travel_outstation=="" && fingerprint_nothumbprint.count==0 && leave_taken!="" 
+              leave_or_travel_nothumb=leave_taken
+	    elsif fingerprint_nothumbprint.count > 0 && leave_taken=="" && travel_outstation==""
+	      leave_or_travel_nothumb=fingerprint_nothumbprint.first.exception_details
             end
             absent=""
           end   
         end
-        attendance_list << ["#{@next_date.strftime('%d/%m/%Y')}", "", "", "", "", "", absent, leave_or_travel, dyname]
+        attendance_list << ["#{@next_date.strftime('%d/%m/%Y')}", "", "", "", "", "", absent, leave_or_travel_nothumb, dyname]
         #when no leave recorded(Cuti Gantian / Cuti Sakit / Cuti Kecemasan) & no course/travel attended(travel request approved+claim created), absent=Y
       end
     end

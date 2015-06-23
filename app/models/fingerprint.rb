@@ -3,7 +3,7 @@ class Fingerprint < ActiveRecord::Base
   belongs_to :approver, :class_name => 'Staff', :foreign_key => 'approved_by'
   
   validates_presence_of :thumb_id, :fdate
-  validates_presence_of :reason, :if => :ftype?
+  validates_presence_of :reason, :status, :if => :ftype?
   validates_uniqueness_of :fdate, :scope => :thumb_id, :message => "Fingerprint statement already exist!"
   
   def type_val(current_user)
@@ -33,6 +33,15 @@ class Fingerprint < ActiveRecord::Base
   end
    def self.find_approvestatement(current_user)
     all.where("thumb_id IN (?)", StaffAttendance.peeps(current_user)).order(fdate: :desc)
+  end
+  
+  def exception_details
+    if is_approved==true
+      a=(DropDown::TRIGGER_STATUS.find_all{|disp, value| value == status}).map {|disp, value| disp}[0]+"-"+reason
+    else
+      a=""
+    end
+    a
   end
   
 end

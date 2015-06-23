@@ -21,7 +21,7 @@
   .col-md-7.col-md-offset-2
     %hr
     .form-actions
-      = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('back'), '/attendance/manager/', :class => 'btn btn-default'
+      = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('back'), staff_fingerprints_path, :class => 'btn btn-default'
       - if @fingerprint.is_approved.nil?
         = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + "Fingerprint", edit_staff_fingerprint_path(@fingerprint),  :class => 'btn btn-primary' 
       - permitted_to? :approval, :staff_staff_attendances do
