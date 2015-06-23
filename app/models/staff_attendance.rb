@@ -9,7 +9,7 @@ class StaffAttendance < ActiveRecord::Base
   belongs_to :attended, :class_name => 'Staff', :foreign_key => 'thumb_id', :primary_key => 'thumb_id'
   belongs_to :approver, :class_name => 'Staff', :foreign_key => 'approved_by'
   
-  attr_accessor :userid, :checktime, :checktype, :name, :birthday, :defaultdeptid, :deptid, :deptname, :thumbid, :icno	#from excel
+  attr_accessor :userid, :checktime, :checktype, :name, :birthday, :defaultdeptid, :deptid, :deptname, :thumbid, :icno, :hname, :hdate	#from excel
   
   validates_presence_of :reason, :if => :fingerprint_issued?        
   
@@ -34,6 +34,7 @@ class StaffAttendance < ActiveRecord::Base
   
   def self.import(file) 
     spreadsheet = Spreadsheet2.open_spreadsheet(file)  				#open/read excel file
+    StaffAttendanceHelper.update_holidays(spreadsheet)
     staff_dept = StaffAttendanceHelper.update_thumb_id(spreadsheet)			#update thumb_id - table : staffs & return staff_id & deptid
     userid_thumbid = StaffAttendanceHelper.userid_thumbid(spreadsheet)			#just retrieve match of userid & thumbid
     result = StaffAttendanceHelper.update_attendance(spreadsheet,userid_thumbid)				#update attendance record - table : staff_attendances    

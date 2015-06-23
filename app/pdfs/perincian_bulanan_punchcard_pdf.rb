@@ -26,7 +26,7 @@ class Perincian_bulanan_punchcardPdf < Prawn::Document
 
   def attendance_list
     total_rows=@total_days 
-    table(line_item_rows, :column_widths => [60, 35, 35, 70, 35, 35, 40, 175,40], :cell_style => { :size => 10,  :inline_format => :true}) do
+    table(line_item_rows, :column_widths => [65, 35, 35, 70, 35, 35, 40, 170,40], :cell_style => { :size => 10,  :inline_format => :true}) do
       column(1..2).align=:center
       column(6).align=:center
       self.width = 525
@@ -39,6 +39,7 @@ class Perincian_bulanan_punchcardPdf < Prawn::Document
     header=[["Date", "C/In", "C/Out","Shift", "Late", "Early", "Absent", "Exception", "Week"]]
     attendance_list = []
     day_count=1
+    @holidays=Holiday.all.pluck(:hdate)
     @staff_attendances.group_by{|x|x.logged_at.strftime('%d/%m/%Y')}.each do |ddate, sas|
         oneday=[]
         cnt_i=0
@@ -88,7 +89,11 @@ class Perincian_bulanan_punchcardPdf < Prawn::Document
               travel_outstation=TravelRequest.day_outstation(@staffid, ccdate)
               fingerprint_nothumbprint=Fingerprint.where(thumb_id: @thumb_id, fdate: ccdate)
               if leave_taken=="" && travel_outstation=="" && fingerprint_nothumbprint.count==0
-                absent="Y"
+                if @holidays.include?(ccdate)
+                  absent=""
+                else        
+                  absent="Y"
+                end
                 leave_or_travel_nothumb=""
               else
                 if leave_taken==""  && fingerprint_nothumbprint.count==0 && travel_outstation!=""
@@ -101,7 +106,7 @@ class Perincian_bulanan_punchcardPdf < Prawn::Document
                 absent=""
               end 
             end
-            attendance_list << [ccdate_rev, "", "", "#{StaffShift.find(shift_id).start_end2}", "", "", absent, leave_or_travel_nothumb, dyname]
+            attendance_list << ["#{ccdate_rev} #{'*' if @holidays.include?(ccdate)}", "", "", "#{StaffShift.find(shift_id).start_end2}", "", "", absent, leave_or_travel_nothumb, dyname]
             #when no leave recorded(Cuti Gantian / Cuti Sakit / Cuti Kecemasan) & no course/travel attended(travel request approved+claim created), absent=Y
           end
         end
@@ -129,7 +134,7 @@ class Perincian_bulanan_punchcardPdf < Prawn::Document
               leave_or_travel_nothumb=fingerprint_nothumbprint.first.exception_details
             end
           end 
-          attendance_list << ["#{ddate}"]+oneday+["#{StaffShift.find(shift_id).start_end2}", @lateness2, @early2, "", leave_or_travel_nothumb, dyname] 
+          attendance_list << ["#{ddate} #{'*' if @holidays.include?(ddate_rev)}"]+oneday+["#{StaffShift.find(shift_id).start_end2}", @lateness2, @early2, "", leave_or_travel_nothumb, dyname] 
         end
         @sas=sas
 
@@ -152,7 +157,11 @@ class Perincian_bulanan_punchcardPdf < Prawn::Document
           travel_outstation=TravelRequest.day_outstation(@staffid, @next_date)
           fingerprint_nothumbprint=Fingerprint.where(thumb_id: @thumb_id, fdate: @next_date.to_date)
           if leave_taken=="" && travel_outstation=="" && fingerprint_nothumbprint.count==0
-            absent="Y"
+            if @holidays.include?(@next_date.to_date)
+              absent=""
+            else        
+              absent="Y"
+            end
             leave_or_travel_nothumb=""
           else
             if leave_taken==""  && fingerprint_nothumbprint.count==0 && travel_outstation!=""
@@ -165,7 +174,7 @@ class Perincian_bulanan_punchcardPdf < Prawn::Document
             absent=""
           end   
         end
-        attendance_list << ["#{@next_date.strftime('%d/%m/%Y')}", "", "", "#{StaffShift.find(shift_id).start_end2}", "", "", absent, leave_or_travel_nothumb, dyname]
+        attendance_list << ["#{@next_date.strftime('%d/%m/%Y')} #{'*' if @holidays.include?(@next_date.to_date)}", "", "", "#{StaffShift.find(shift_id).start_end2}", "", "", absent, leave_or_travel_nothumb, dyname]
         #when no leave recorded(Cuti Gantian / Cuti Sakit / Cuti Kecemasan) & no course/travel attended(travel request approved+claim created), absent=Y
       end
     end

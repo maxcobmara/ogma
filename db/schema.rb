@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150622111337) do
+ActiveRecord::Schema.define(version: 20150623193323) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -1000,6 +1000,11 @@ ActiveRecord::Schema.define(version: 20150622111337) do
     t.decimal  "examweight"
     t.datetime "created_at"
     t.datetime "updated_at"
+  end
+
+  create_table "holidays", force: true do |t|
+    t.string "hname"
+    t.date   "hdate"
   end
 
   create_table "intakes", force: true do |t|

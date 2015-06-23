@@ -14,6 +14,42 @@ module StaffAttendanceHelper
     end
      useridthumbid
   end
+  
+  #a-import holidays date into holidays table
+  def self.update_holidays(spreadsheet)
+    holiday_sheet = spreadsheet.sheet('HOLIDAYS')
+    header_holiday=holiday_sheet.row(1)
+    holiday_list=Hash.new
+    (2..holiday_sheet.last_row).each do |j|
+      row=Hash[[header_holiday, holiday_sheet.row(j)].transpose] 
+      hname_excel=row["hname"].lstrip if row["hname"]!=nil
+      unless (row["hdate"].nil? || row["hdate"].blank? || row["hdate"]=="")
+        if row["hdate"].is_a? Date#Time
+          le_datetime = row["hdate"]
+          le_year=le_datetime.year
+          le_month=le_datetime.month.to_i
+          le_day=le_datetime.day.to_i
+        else
+          le_date = row["hdate"].split(" ")[0].split("/")
+          le_year = le_date[2].to_i
+          le_month = le_date[1].to_i
+          le_day = le_date[0].to_i
+        end
+      end
+      if le_datetime
+        holidaydate =  Date.new(le_year,le_month, le_day)
+      end
+      if le_date
+        holidaydate = Date.new(le_year,le_month, le_day)
+      end
+      holiday = Holiday.where(hdate: holidaydate, hname: hname_excel).first || Holiday.new
+      if holiday.id.nil? || holiday.id.blank?
+        holiday.hdate = holidaydate
+        holiday.hname = hname_excel
+        holiday.save
+      end
+    end
+  end
    
   #1-import (update) thumb_id from excel & collect staff_id & dept_id - sheet name: 'USERINFO' (userid, name, birthday, defaultdeptid)
   def self.update_thumb_id(spreadsheet)
