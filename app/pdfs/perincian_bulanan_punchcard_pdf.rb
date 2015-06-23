@@ -26,7 +26,7 @@ class Perincian_bulanan_punchcardPdf < Prawn::Document
 
   def attendance_list
     total_rows=@total_days 
-    table(line_item_rows, :column_widths => [60, 35, 35, 95, 35, 35, 40, 150,40], :cell_style => { :size => 10,  :inline_format => :true}) do
+    table(line_item_rows, :column_widths => [60, 35, 35, 70, 35, 35, 40, 175,40], :cell_style => { :size => 10,  :inline_format => :true}) do
       column(1..2).align=:center
       column(6).align=:center
       self.width = 525
@@ -79,6 +79,7 @@ class Perincian_bulanan_punchcardPdf < Prawn::Document
             ccdate=Date.new(yyr,mnth,cc)
             ccdate_rev=ccdate.strftime('%d/%m/%Y')
             dyname=ccdate.strftime('%a')
+            shift_id=StaffShift.shift_id_in_use(ccdate.strftime('%Y-%m-%d'), @staff_attendances[0].thumb_id)
             if ((dyname=="Sat" || dyname=="Sun") && ccdate.year < 2015) || ((dyname=="Sat" || dyname=="Fri") && ccdate.year > 2014)
               absent=""
               leave_taken=""
@@ -100,7 +101,7 @@ class Perincian_bulanan_punchcardPdf < Prawn::Document
                 absent=""
               end 
             end
-            attendance_list << [ccdate_rev, "", "", "", "", "", absent, leave_or_travel_nothumb, dyname]
+            attendance_list << [ccdate_rev, "", "", "#{StaffShift.find(shift_id).start_end2}", "", "", absent, leave_or_travel_nothumb, dyname]
             #when no leave recorded(Cuti Gantian / Cuti Sakit / Cuti Kecemasan) & no course/travel attended(travel request approved+claim created), absent=Y
           end
         end
@@ -128,7 +129,7 @@ class Perincian_bulanan_punchcardPdf < Prawn::Document
               leave_or_travel_nothumb=fingerprint_nothumbprint.first.exception_details
             end
           end 
-          attendance_list << ["#{ddate}"]+oneday+["#{StaffShift.find(shift_id).start_end}", @lateness2, @early2, "", leave_or_travel_nothumb, dyname] 
+          attendance_list << ["#{ddate}"]+oneday+["#{StaffShift.find(shift_id).start_end2}", @lateness2, @early2, "", leave_or_travel_nothumb, dyname] 
         end
         @sas=sas
 
@@ -142,6 +143,7 @@ class Perincian_bulanan_punchcardPdf < Prawn::Document
       (datte2b+1).upto(@total_days).each do |dd|
         @next_date+=1.day
         dyname=@next_date.strftime('%a')
+        shift_id=StaffShift.shift_id_in_use(@next_date.strftime('%Y-%m-%d'), @staff_attendances[0].thumb_id)
         if ((dyname=="Sat" || dyname=="Sun") && @next_date.year < 2015) || ((dyname=="Sat" || dyname=="Fri") && @next_date.year > 2014)
           absent=""
           leave_or_travel=""
@@ -163,7 +165,7 @@ class Perincian_bulanan_punchcardPdf < Prawn::Document
             absent=""
           end   
         end
-        attendance_list << ["#{@next_date.strftime('%d/%m/%Y')}", "", "", "", "", "", absent, leave_or_travel_nothumb, dyname]
+        attendance_list << ["#{@next_date.strftime('%d/%m/%Y')}", "", "", "#{StaffShift.find(shift_id).start_end2}", "", "", absent, leave_or_travel_nothumb, dyname]
         #when no leave recorded(Cuti Gantian / Cuti Sakit / Cuti Kecemasan) & no course/travel attended(travel request approved+claim created), absent=Y
       end
     end

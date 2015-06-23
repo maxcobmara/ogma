@@ -51,6 +51,7 @@ Ogma::Application.routes.draw do
     resources :fingerprints do
       collection do
         get :approval
+        get :index_admin
       end
     end
     resources :attendances

@@ -7,6 +7,10 @@ class StaffShift < ActiveRecord::Base
     "#{start_at.strftime('%l:%M %p')} - #{end_at.strftime('%l:%M %p')}" 
   end
   
+  def start_end2
+    "#{start_at.strftime('%H:%M')} - #{end_at.strftime('%H:%M')}" 
+  end
+  
   def self.shift_id_in_use(curr_date, sa_thumbid)
     astaff=Staff.where('thumb_id=?',sa_thumbid).first
     if astaff

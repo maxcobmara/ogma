@@ -107,6 +107,7 @@ ms_MY:
       fingerprint:
         fdate: Tarikh
         thumb_id: "Staf (Thumb Id)"
+        reason: Sebab
     errors:
         template:
           body: "Berikut adalah beberapa masalah:"
@@ -1029,6 +1030,7 @@ ms_MY:
   fingerprint:
     title: "Kenyataan Fingerprint (Hari Tidak Fingerprint)"
     title2: "Kenyataan Fingerprint (Tidak Fingerprint)"
+    title3: "Senarai Kenyataan Fingerprint (Tidak Fingerprint)"
     new: "Kenyataan Fingerprint Baru (Hari Tidak Fingerprint)"
     edit: "Sunting Kenyataan Fingerprint (Hari Tidak Fingerprint)"
     details: Butiran Fingerprint
@@ -1043,6 +1045,8 @@ ms_MY:
     approval2: "Kelulusan (Tidak Fingerprint)"
     no_record: Tiada rekod
     notes:  "Nota : Kenyataan Fingerprint (Tidak Fingerprint) hanya boleh dibuat bagi hari (tarikh) yang TIADA sekurang-kurangnya 1 rekod kedatangan (masuk atau keluar). Sekiranya Kenyataan Fingerprint diperlukan bagi hari yang mempunyai kedua-dua rekod keluar dan masuk, sila ke laman 'Pengurusan Datang Lambat & Pulang Awal'. Sila hubungi 'Pentadbir Staf' sekiranya rekod kedatangan yang diperlukan tiada dalam senarai."
+    statement_exist: "Kenyataan Fingerprint (Tdak Fingerprint) telah wujud!"
+    logrecord_exist: "Kenyataan Fingerprint (Tidak FIngerprint) hanya dibenarkan bagi hari-hari yang tidak mempunyai rekod kedatangan yang lengkap (log-masuk dan log-keluar)!"
     
   asset:
     title: Aset

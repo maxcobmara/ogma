@@ -125,6 +125,7 @@ en:
       fingerprint:
         fdate: Date
         thum_id: "Staff (Thumb Id)"
+        reason: Reason
     errors:
         template:
           body: "There were problems with the following fields:"
@@ -1114,6 +1115,7 @@ en:
   fingerprint:
     title: "Fingerprint Statement (Days Not Fingerprint)"
     title2: "Fingerprint Statement (Not Fingerprint)"
+    title3: "Fingerprint Statement (Not Fingerprint) Listing"
     new: "New Fingerprint Statement (Days Not Fingerprint)"
     edit: "Edit Fingerprint Statement (Days Not Fingerprint)"
     details: Fingerprint Details
@@ -1128,6 +1130,8 @@ en:
     approval2: "Approval (No Fingerprint)"
     no_record: No record
     notes:  "Note : Fingerprint Statement (No Fingerprint) can only be created for days (dates) without at least 1 attendance record (in or out). Please visit 'Manage Lateness & Early Return' page, should you require to create one for days with both in and out records exist. Consult 'Staff Administrator' if required attendance record is not in the list."
+    statement_exist: "Fingerprint Statement (Not Fingerprint) already exist!"
+    logrecord_exist: "Creating Fingerprint Statement (Not Fingerprint) for days with complete logged-in and logged-out record is not allowed!"
     
   asset:
     title: Assets

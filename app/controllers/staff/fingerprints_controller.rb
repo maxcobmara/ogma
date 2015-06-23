@@ -12,6 +12,12 @@ class Staff::FingerprintsController < ApplicationController
     end
   end
   
+  def index_admin
+    @search = Fingerprint.search(params[:q])
+    @fingerprints = @search.result
+    @fingerprints = @fingerprints.page(params[:page]||1)
+  end
+  
   def show
     @fingerprint = Fingerprint.find(params[:id])
 
@@ -62,7 +68,7 @@ class Staff::FingerprintsController < ApplicationController
 
     respond_to do |format|
       if @fingerprint.update(fingerprint_params)
-        format.html { redirect_to(staff_fingerprint_path(@fingerprint), :notice => (t 'fingerprint.title')+(t 'actions.updated'))}
+        format.html { redirect_to(staff_fingerprint_path(@fingerprint, :ftype2 => @fingerprint.type_val(current_user)), :notice => (t 'fingerprint.title')+(t 'actions.updated'))}
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }
@@ -75,7 +81,15 @@ class Staff::FingerprintsController < ApplicationController
   # DELETE /fingerprints/1.xml
   def destroy
     @fingerprint = Fingerprint.find(params[:id])
-    @fingerprint.destroy
+    respond_to do |format|
+      if @fingerprint.destroy
+        format.html {redirect_to(staff_fingerprints_url, :notice =>(t 'fingerprint.title')+(t 'actions.removed'))}
+        format.xml  { head :ok }
+      else
+        format.html { redirect_to(staff_fingerprint_path(@fingerprint))}
+        format.xml  { head :ok }
+      end
+    end
   end
   
   def approval

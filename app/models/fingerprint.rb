@@ -3,8 +3,23 @@ class Fingerprint < ActiveRecord::Base
   belongs_to :approver, :class_name => 'Staff', :foreign_key => 'approved_by'
   
   validates_presence_of :thumb_id, :fdate
-  validates_presence_of :reason, :status, :if => :ftype?
-  validates_uniqueness_of :fdate, :scope => :thumb_id, :message => "Fingerprint statement already exist!"
+  validates_presence_of :reason, :status, :if => :ftype_exist?
+  validates_uniqueness_of :fdate, :scope => :thumb_id, :message => I18n.t('fingerprint.statement_exist')
+  validate :valid_fdate?
+  
+  def valid_fdate?
+    daystart=fdate.to_time.beginning_of_day
+    dayend=fdate.to_time.end_of_day
+    exist_log_ins=StaffAttendance.where('logged_at >=? and logged_at <? and thumb_id=?', daystart, dayend, thumb_id).where('log_type=? or log_type=?', 'I', 'i').count
+    exist_log_outs=StaffAttendance.where('logged_at >=? and logged_at <? and thumb_id=?', daystart, dayend, thumb_id).where('log_type=? or log_type=?', 'O', 'o').count
+    if exist_log_ins > 0 && exist_log_outs > 0
+      errors.add(:fdate, I18n.t('fingerprint.logrecord_exist'))
+    end
+  end
+  
+  def ftype_exist?
+    ftype.nil? == false
+  end
   
   def type_val(current_user)
     if ftype.nil?
@@ -25,7 +40,7 @@ class Fingerprint < ActiveRecord::Base
     else
       type_value=(DropDown::FINGERPRINT_TYPE.find_all{|disp, value| value == ftype}).map {|disp, value| disp}[0] 
     end
-    type_value
+    type #type_value
   end
   
   def self.find_mystatement(thumbid)

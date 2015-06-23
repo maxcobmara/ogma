@@ -29,7 +29,7 @@
           = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('fingerprint.approval2'),  approval_staff_fingerprints_path(:id=>@fingerprint.id),  :class => 'btn btn-primary' 
       - if @fingerprint.is_approved.nil?
         = link_to content_tag(:i, "", :class => "fa fa-trash-o icon-white") + " " + t('.destroy', :default => t("helpers.links.destroy")), |
-          staff_fingerprints_path,                                                                                                    |
+          staff_fingerprint_path(@fingerprint),                                                                                                    |
           :method => 'delete',                                                                                                           |
           :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },                   |
           :class => 'btn btn-danger'
