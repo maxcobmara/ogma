@@ -197,6 +197,18 @@ class Staff::StaffAttendancesController < ApplicationController
       format.xml  { render :xml => @staff_attendances }
     end
   end
+  
+  def manager_admin
+    @late_early_recs_ids=[]
+    all_late_early=StaffAttendance.triggered
+    all_late_early.each do |x|
+      shift_id=StaffShift.shift_id_in_use(x.logged_at.strftime('%Y-%m-%d'),x.thumb_id)
+      @late_early_recs_ids << x.id if x.r_u_late(shift_id)=="flag" || x.r_u_early(shift_id)=="flag"
+    end
+    @search=StaffAttendance.search(params[:q])
+    @late_early_recs=@search.result.where(id: @late_early_recs_ids)
+    @late_early_recs=@late_early_recs.page(params[:page]||1)
+  end
 
   def approval
     @staff_attendance = StaffAttendance.find(params[:id])

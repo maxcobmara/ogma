@@ -10,6 +10,7 @@
   %ul.nav.navbar-nav
     - permitted_to? :staff_staff_attendances, :manage do
       %li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'staff_attendance.list1'))), staff_staff_attendances_path
+      %li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'attendance.title2'))), manager_admin_staff_staff_attendances_path
     %li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'fingerprint.title'))), staff_fingerprints_path
   %ul.nav.navbar-nav.navbar-right
     /%li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "toga"

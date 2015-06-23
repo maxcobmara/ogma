@@ -57,10 +57,20 @@ class StaffAttendance < ActiveRecord::Base
     #where(thumb_id: query)																	#working one
     #where('thumb_id IN(?)', [756,757]) if query=='1'												#also works nicely
   end
+  
+  def self.attended_search(query)
+    thumb_ids=Staff.where('name ILIKE(?)', "%#{query}%").pluck(:thumb_id)
+    where('thumb_id IN(?)', thumb_ids)
+  end
+  
+  def self.approver_search(query)
+    staff_ids=Staff.where('name ILIKE(?)', "%#{query}%").pluck(:id)
+    where('approved_by IN(?)', staff_ids)
+  end
 
   # whitelist the scope
   def self.ransackable_scopes(auth_object = nil)
-    [:keyword_search]
+    [:keyword_search, :attended_search, :approver_search]
   end
 
   def self.staff_with_unit_groupbyunit
@@ -110,9 +120,26 @@ class StaffAttendance < ActiveRecord::Base
     end
     all_thumb_ids
   end
+  
+  def self.unit_for_thumb(attendance_thumb_id)
+    thumb_by_dept=StaffAttendance.get_thumb_ids_unit_names(1)
+    dept_names=StaffAttendance.get_thumb_ids_unit_names(2)
+    thumb_by_dept.each_with_index do |thumbs, ind|
+      @dept_name=dept_names[ind] if thumbs.include?(attendance_thumb_id)
+    end 
+    @dept_name
+  end
 
   def self.is_controlled
-    find(:all, :order => 'logged_at DESC', :limit => 10000)
+    #find(:all, :order => 'logged_at DESC', :limit => 10000)
+    #joins(:attended).where('staffs.staff_shift_id is not null').limit(10000).order(logged_at: :desc)
+    tday=Time.now.beginning_of_day
+    #joins(:attended).where('staffs.staff_shift_id is not null').where('logged_at <=?', tday+2.years).order(logged_at: :desc)
+  end
+  
+  def self.triggered
+    tday=Time.now.beginning_of_day
+    joins(:attended).where('staffs.staff_shift_id is not null').where('logged_at <=?', tday+2.years).where(trigger: true).order(logged_at: :desc)
   end
 
   def self.find_mylate(curr_user)

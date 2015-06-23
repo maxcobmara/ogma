@@ -207,6 +207,7 @@ ms_MY:
   select_excel_file: Sila pilih fail Excel untuk diimport
   reports: Laporan
   all_records: Semua Rekod
+  rejected: Tidak Diluluskan
  
   actions:
     new: Baru
@@ -981,7 +982,7 @@ ms_MY:
     official: "Urusan Rasmi / Peribadi"
     forgot: Terlupa Fingerprint
     early_late: "Datang Lewat / Pulang Awal"
-    others: "Lain - lain"
+    others: "Lain - Lain Hal"
     advise_trigger1: "Datang Lewat : "
     advise_trigger3: "Tandakan kotak semak 'Tindakan' (untuk aktifkan borang 'Kenyataan Fingerprint') atau kotak semak 'Abaikan' dan klik ikon 'Simpan Tindakan' di laman senarai Kedatangan Staf"
     advise_trigger2: "Pulang Awal : "
@@ -1010,6 +1011,7 @@ ms_MY:
   
   attendance:
     title: "Pengurusan Datang Lambat & Pulang Awal"
+    title2: "Senarai Datang Lambat & Pulang Awal"
     new: "Kedatangan Baru (Datang Lambat / Pulang Awal)"
     details: Butiran Kedatangan 
     edit: "Sunting Kedatangan (Datang Lambat / Pulang Awal)"
@@ -1025,7 +1027,7 @@ ms_MY:
     reason: Sebab
     approve_id: Pelulus
     approvestatus: Status Kelulusan
-    attendance_not_recorded: "Days Not Thumbprint (Fingerprint Submission)"
+    attendance_not_recorded: "Hari Tanpa Thumbprint (Penghantaran Fingerprint)"
     
   fingerprint:
     title: "Kenyataan Fingerprint (Hari Tidak Fingerprint)"

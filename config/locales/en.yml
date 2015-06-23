@@ -228,6 +228,7 @@ en:
   select_excel_file: Please select an Excel file for import
   reports: Reports
   all_records: All Records
+  rejected: Rejected
 
   actions:
     new: New
@@ -1063,9 +1064,9 @@ en:
     date_time: "Date & Time"
     outstation: Outstation
     official: "Official / Personal"
-    forgot: Forgot
+    forgot: Forgot Fingerprint
     early_late: "Lateness / Early Return"
-    others: Others
+    others: Other Matters
     advise_trigger1: "Lateness : "
     advise_trigger3: "Tick 'Action' checkbox (to activate 'Fingerprint Statement') or 'Ignore' checkbox and click 'Save Action' icon in Staff Attendance listing"
     advise_trigger2: "Early Return : "
@@ -1095,6 +1096,7 @@ en:
  
   attendance:
     title: "Manage Lateness & Early Return"
+    title2: "Lateness & Early Return Listing"
     new: "New Attendance (Lateness / Early Return)"
     edit: "Edit Attendance (Lateness / Early Return)"
     details: Attendance Details
