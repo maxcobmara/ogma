@@ -179,7 +179,7 @@ class Staff::StaffAttendancesController < ApplicationController
     @staff_attendance.destroy
 
     respond_to do |format|
-      format.html { redirect_to(staff_attendances_url) }
+      format.html { redirect_to(staff_staff_attendances_url) }
       format.xml  { head :ok }
     end
   end
@@ -304,6 +304,13 @@ class Staff::StaffAttendancesController < ApplicationController
     weekly_date=params[:weekly_date].to_time
     weekly_start=weekly_date.beginning_of_week
     weekly_end=weekly_date.end_of_week
+    if weekly_date.year < 2015
+      wstart=weekly_start
+      wend=weekly_end
+    elsif weekly_date.year > 2014
+      wstart=weekly_start-1.days
+      wend=weekly_start+3.days 
+    end
     unit_dept=params[:unit_department]
     unit_dept_post_staffids=Position.where('staff_id is not null and unit=?', unit_dept).pluck(:staff_id)
     thumb_ids=Staff.where('thumb_id is not null and id in(?)', unit_dept_post_staffids).pluck(:thumb_id)
@@ -320,7 +327,7 @@ class Staff::StaffAttendancesController < ApplicationController
     end
     #@staff_attendances = StaffAttendance.where('trigger is true and logged_at >? and logged_at <? and thumb_id IN(?)', weekly_start, weekly_end, thumb_ids)
     @staff_attendances = StaffAttendance.count_non_approved(thumb_ids, weekly_start, weekly_end)
-    @notapproved_lateearly=StaffAttendance.where("trigger=? AND is_approved =? AND thumb_id IN (?) AND logged_at>=? AND logged_at<=?", true, false, thumb_ids, weekly_start, weekly_end).order(logged_at: :desc).group_by {|t| t.thumb_id } 
+    @notapproved_lateearly=StaffAttendance.where("trigger=? AND is_approved =? AND thumb_id IN (?) AND logged_at>=? AND logged_at<=?", true, false, thumb_ids, wstart, wend).order(logged_at: :desc).group_by {|t| t.thumb_id } 
     
     respond_to do |format|
       format.pdf do

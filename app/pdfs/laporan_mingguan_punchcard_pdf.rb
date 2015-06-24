@@ -4,8 +4,16 @@ class Laporan_mingguan_punchcardPdf < Prawn::Document
     @staff_attendances = staff_attendances
     @leader = leader
     @view = view
-    @weekly_date = weekly_date
     @notapproved_lateearly = notapproved_lateearly
+    weekly_start=weekly_date.beginning_of_week
+    weekly_end=weekly_date.end_of_week
+    if weekly_date.year < 2015
+      @wstart=weekly_start
+      @wend=weekly_end
+    elsif weekly_date.year > 2014
+      @wstart=weekly_start-1.days
+      @wend=weekly_start+5.days #-1+6
+    end
     font "Times-Roman"
     text "Lampiran B 2", :align => :right, :size => 12, :style => :bold
     move_down 20
@@ -20,7 +28,7 @@ class Laporan_mingguan_punchcardPdf < Prawn::Document
   
   def heading_details
     data = [["Nama Pegawai : ","#{@leader.staff_name_with_position_grade}"],
-      ["Tarikh : ", "#{@weekly_date.beginning_of_week.try(:strftime, '%d-%m-%Y')} hingga #{@weekly_date.end_of_week.try(:strftime, '%d-%m-%Y')}"]]
+      ["Tarikh : ", "#{@wstart.try(:strftime, '%d-%m-%Y')} hingga #{@wend.try(:strftime, '%d-%m-%Y')}"]]
    
     table(data , :column_widths => [150,350], :cell_style => { :size => 10}) do
      row(0).column(0).borders = [:left, :top ]

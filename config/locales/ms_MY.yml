@@ -997,8 +997,8 @@ ms_MY:
     weekly_report: Laporan Mingguan
     monthly_report: Laporan Bulanan
     daily_date: Tarikh Kedatangan
-    weekly_date: Minggu bermula
-    monthly_date: Bulan bermula
+    weekly_date: Minggu
+    monthly_date: Bulan
     since: semenjak
     monthly_listing: Senarai Bulanan
     monthly_details: "Perincian Bulanan (termasuk Pengecualian)"

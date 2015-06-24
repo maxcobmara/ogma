@@ -38,7 +38,9 @@
       - permitted_to? :approval, :staff_staff_attendances do
         - if @staff_attendance.trigger==true && (@staff_attendance.status || (@staff_attendance.reason && @staff_attendance.reason!="")) && @staff_attendance.thumb_id!=@current_user.userable.thumb_id
           = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('staff_attendance.approval2'),  '/attendance/approval?id='"#{@staff_attendance.id}",  :class => 'btn btn-primary' 
-      - if @staff_attendance.is_approved.nil?
+      /- if @staff_attendance.is_approved.nil? 
+      - permitted_to? :manage, :staff_staff_attendances do
+        - if (@staff_attendance.trigger==true && @staff_attendance.is_approved.nil?) || @staff_attendance.trigger==false || @staff_attendance.trigger.nil?
         = link_to content_tag(:i, "", :class => "fa fa-trash-o icon-white") + " " + t('.destroy', :default => t("helpers.links.destroy")), |
           staff_staff_attendance_path(@staff_attendance),                                                                                            |
           :method => 'delete',                                                                                                           |
