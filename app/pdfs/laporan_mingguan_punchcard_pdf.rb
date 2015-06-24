@@ -1,10 +1,11 @@
 class Laporan_mingguan_punchcardPdf < Prawn::Document
-  def initialize(staff_attendances,leader, weekly_date, notapproved_lateearly, view)
+  def initialize(staff_attendances,leader, weekly_date, notapproved_lateearly, thumb_ids, view)
     super({top_margin: 50, page_size: 'A4', page_layout: :portrait })
     @staff_attendances = staff_attendances
     @leader = leader
     @view = view
     @notapproved_lateearly = notapproved_lateearly
+    @total_staff=thumb_ids.count
     weekly_start=weekly_date.beginning_of_week
     weekly_end=weekly_date.end_of_week
     if weekly_date.year < 2015
@@ -68,8 +69,8 @@ class Laporan_mingguan_punchcardPdf < Prawn::Document
     @notapproved_lateearly.each do |thumb_id, items|
        
        #1-start-CURRENT DATA-To check colour status for selected week
-       @start_date = @weekly_date.beginning_of_week.to_s
-       @next_date = @weekly_date.end_of_week.to_s
+       @start_date = @wstart.to_s #@weekly_date.beginning_of_week.to_s
+       @next_date = @wstart.to_s #@weekly_date.end_of_week.to_s
        @count_non_approved = StaffAttendance.count_non_approved(thumb_id,@start_date,@next_date).count
        #1-end-CURRENT DATA-To check colour status for selected week
 
@@ -81,13 +82,13 @@ class Laporan_mingguan_punchcardPdf < Prawn::Document
        #start-previous status...data retrieved from staff attendance table all existing data
        @previous_status_for_SA = 1      #set default : previous status as 1; ie:yellow 
        @previous_colour = "Yellow"        #will be use if no changes on previous status
-       @all_dates = StaffAttendance.where('thumb_id=? and logged_at>=? and logged_at<?',thumb_id,"2012-05-07",@start_date).order(logged_at: :asc) .map(&:logged_at)
+       @all_dates = StaffAttendance.where('thumb_id=? and logged_at>=? and logged_at<?',thumb_id,"2012-05-07",@wstart).order(logged_at: :asc) .map(&:logged_at)
        @previous_status_SA = StaffAttendance.set_colour_status(@all_dates,thumb_id, @previous_status_for_SA)
        #end-previous status...data retrieved from staff attendance table all existing data
 
        #to choose either one : attendance colour status (1)from staffs table-or (2)compare values from staff_attendances table
        @previous_status = @previous_status_SA
-       @previous_colour = (StaffAttendance::ATT_STATUS.find_all{|disp, value| value == @previous_status}).map {|disp, value| disp}
+       @previous_colour = (StaffAttendance::ATT_STATUS.find_all{|disp, value| value == @previous_status}).map {|disp, value| disp}[0]
        #2-PREVIOUS DATA-To check colour status between - beginning of the (ALL) PREVIOUS month - until 1 day before selected week/month
 
        #3a-start-WEEKLY REPORT-check previous status & ASSIGN LATEST STATUS-for selected week
@@ -140,9 +141,11 @@ class Laporan_mingguan_punchcardPdf < Prawn::Document
     cnt = -1
     header = [[ "Bil", "Nama Pegawai / Kakitangan Yang Datang Lambat / Pulang Awal",  "Jumlah Catitan Merah dalam tempoh seminggu","Warna Kad Pegawai / Kakitangan akhir minggu"]]
     
+    #@staff_attendances.group_by{|x|x.thumb_id}.map do |attended, sa|
+    
     attendance_list = 
       @staff_attendances.group_by{|x|x.thumb_id}.map do |attended, sa|
-      ["#{counter += 1}", "#{Staff.where(thumb_id: attended).first.name}", "#{StaffAttendance.count_non_approved(attended, @weekly_date.beginning_of_week, @weekly_date.end_of_week).count}" , " #{@color_in_columns[cnt+=1]}"]
+      ["#{counter += 1}", "#{Staff.where(thumb_id: attended).first.name}", "#{StaffAttendance.count_non_approved(attended, @wstart, @wend).count}" , " #{@color_in_columns[cnt+=1]}"]
     end
     
     if @staff_attendances.count > 0
@@ -154,7 +157,8 @@ class Laporan_mingguan_punchcardPdf < Prawn::Document
   
   def jumlah 
     move_down 20
-    text "Jumlah Pegawai / Kakitangan                                       #{@notapproved_lateearly.count}", :align => :left, :size => 12
+    #text "Jumlah Pegawai / Kakitangan                                       #{@notapproved_lateearly.count}", :align => :left, :size => 12
+    text "Jumlah Pegawai / Kakitangan                                       #{@total_staff}", :align => :left, :size => 12
     move_down 5
     text "Jumlah Pegawai / Kakitangan                                       #{@green_count}", :align => :left, :size => 12
     text "Yang memegang kad hijau", :align => :left, :size => 12

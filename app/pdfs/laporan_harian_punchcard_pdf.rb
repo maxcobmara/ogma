@@ -61,16 +61,17 @@ class Laporan_harian_punchcardPdf < Prawn::Document
         exist_log=sas.first.log_type
         status="Tiada rekod masuk" if exist_log=="O" || exist_log=="o"
         status="Tiada rekod keluar" if exist_log=="I" || exist_log=="i"
-        status2="Lambat datang" if sas.first.r_u_late(shiftid) == "flag" 
-        status2="Pulang awal" if sas.first.r_u_early(shiftid) == "flag"
+        status2="Lambat datang" if sas.first.r_u_late(shiftid) == "flag" && sas.first.is_approved==false
+        status2="Pulang awal" if sas.first.r_u_early(shiftid) == "flag" && sas.first.is_approved==false
 
-        attendance_list << ["#{counter += 1}", "#{sas.first.attended.name}", "#{status2} & #{status}" , "#{sas.first.logged_at.strftime('%H:%M')}"]
+        attendance_list << ["#{counter += 1}", "#{sas.first.attended.name}", "#{status} #{'& '+status2 if status2}" , "#{sas.first.logged_at.strftime('%H:%M') if status2}"]
       elsif sas.count==2
-        status2a="Lambat datang" if sas.first.r_u_late(shiftid) == "flag" 
-        status2a="Pulang awal" if sas.first.r_u_early(shiftid) == "flag"
-        status2b="Lambat datang" if sas.last.r_u_late(shiftid) == "flag" 
-        status2b="Pulang awal" if sas.last.r_u_early(shiftid) == "flag"
-        attendance_list << ["#{counter += 1}", "#{sas.first.attended.name}", "#{status2a} & #{status2b}" , "#{sas.first.logged_at.strftime('%H:%M')} / #{sas.last.logged_at.strftime('%H:%M')}"]
+        status2a="Lambat datang" if sas.first.r_u_late(shiftid) == "flag" && sas.first.is_approved==false
+        status2a="Pulang awal" if sas.first.r_u_early(shiftid) == "flag" && sas.first.is_approved==false
+        status2b="Lambat datang" if sas.last.r_u_late(shiftid) == "flag"  && sas.last.is_approved==false
+        status2b="Pulang awal" if sas.last.r_u_early(shiftid) == "flag" && sas.last.is_approved==false
+	inbetween=" & " if status2a && status2b
+        attendance_list << ["#{counter += 1}", "#{sas.first.attended.name}", "#{status2a} +#{inbetween if inbetween}+ #{status2b}" , "#{sas.first.logged_at.strftime('%H:%M')} / #{sas.last.logged_at.strftime('%H:%M')}"]
       end
     end
     

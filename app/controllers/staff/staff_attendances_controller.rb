@@ -290,7 +290,7 @@ class Staff::StaffAttendancesController < ApplicationController
     end
     #to confirm
     #@staff_attendances = StaffAttendance.where('logged_at >? and logged_at <? and thumb_id IN(?)', daily_start, daily_end, thumb_ids)
-    @staff_attendances = StaffAttendance.where('trigger is true and logged_at >? and logged_at <? and thumb_id IN(?)', daily_start, daily_end, thumb_ids)
+    @staff_attendances = StaffAttendance.where('trigger is true and logged_at >? and logged_at <? and thumb_id IN(?) and is_approved is not true', daily_start, daily_end, thumb_ids)
     respond_to do |format|
       format.pdf do
         pdf = Laporan_harian_punchcardPdf.new(@staff_attendances, @leader, daily_date, thumb_ids, view_context)
@@ -327,12 +327,12 @@ class Staff::StaffAttendancesController < ApplicationController
       @leader=Position.unit_department_leader(unit_dept)
     end
     #@staff_attendances = StaffAttendance.where('trigger is true and logged_at >? and logged_at <? and thumb_id IN(?)', weekly_start, weekly_end, thumb_ids)
-    @staff_attendances = StaffAttendance.count_non_approved(thumb_ids, wstart, wend)
-    @notapproved_lateearly=StaffAttendance.where("trigger=? AND is_approved =? AND thumb_id IN (?) AND logged_at>=? AND logged_at<=?", true, false, thumb_ids, wstart, wend).order(logged_at: :desc).group_by {|t| t.thumb_id } 
+    @staff_attendances = StaffAttendance.where("trigger=? AND is_approved =? AND thumb_id IN (?) AND logged_at>=? AND logged_at<=?", true, false, thumb_ids, wstart, wend).order(logged_at: :desc)
+    @notapproved_lateearly=@staff_attendances.group_by {|t| t.thumb_id } 
     
     respond_to do |format|
       format.pdf do
-        pdf = Laporan_mingguan_punchcardPdf.new(@staff_attendances, @leader, weekly_date, @notapproved_lateearly, view_context)
+        pdf = Laporan_mingguan_punchcardPdf.new(@staff_attendances, @leader, weekly_date, @notapproved_lateearly, thumb_ids, view_context)
         send_data pdf.render, filename: "laporan_mingguan_punchcard-{Date.today}",
                               type: "application/pdf",
                               disposition: "inline"
