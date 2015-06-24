@@ -364,7 +364,7 @@ class Staff::StaffAttendancesController < ApplicationController
     
     respond_to do |format|
       format.pdf do
-        pdf = Laporan_bulanan_punchcardPdf.new(@staff_attendances,@leader, monthly_date, @notapproved_lateearly, view_context)
+        pdf = Laporan_bulanan_punchcardPdf.new(@staff_attendances,@leader, monthly_date, @notapproved_lateearly, thumb_ids, view_context)
         send_data pdf.render, filename: "laporan_bulanan_punchcard-{Date.today}",
                               type: "application/pdf",
                               disposition: "inline"

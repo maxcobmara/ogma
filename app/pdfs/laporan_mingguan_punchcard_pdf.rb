@@ -70,7 +70,7 @@ class Laporan_mingguan_punchcardPdf < Prawn::Document
        
        #1-start-CURRENT DATA-To check colour status for selected week
        @start_date = @wstart.to_s #@weekly_date.beginning_of_week.to_s
-       @next_date = @wstart.to_s #@weekly_date.end_of_week.to_s
+       @next_date = @wend.to_s #@weekly_date.end_of_week.to_s
        @count_non_approved = StaffAttendance.count_non_approved(thumb_id,@start_date,@next_date).count
        #1-end-CURRENT DATA-To check colour status for selected week
 
