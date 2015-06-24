@@ -137,7 +137,8 @@ authorization do
   role :staff_administrator do
      has_permission_on :staffs, :to => [:manage, :borang_maklumat_staff]
      has_permission_on :attendances, :to => :manage
-     has_permission_on :staff_staff_attendances, :to =>[:manage, :manager, :actionable, :approval]   #29Apr2013-refer routes.rb
+     has_permission_on :staff_staff_attendances, :to =>[:manage, :manager, :actionable, :approval, :manager_admin, :attendance_report, :attendance_report_main, :daily_report, :weekly_report, :monthly_report, :monthly_details ]   #29Apr2013-refer routes.rb
+     has_permission_on :staff_fingerprints, :to => [:manage, :approval, :index_admin]
      has_permission_on :staff_positions, :to =>[:manage, :maklumat_perjawatan]
   end
   
@@ -333,6 +334,9 @@ authorization do
     end
     #access for Timbalan Pengarah (Pengurusan) & Pengarah(Timbalans+Ketua2 Programs)
     has_permission_on :staff_staff_attendances, :to => :approval do
+      if_attribute :thumb_id => is_in {user.admin_unitleaders_thumb}
+    end
+    has_permission_on :staff_staff_fingerprints, :to => :approval do
       if_attribute :thumb_id => is_in {user.admin_unitleaders_thumb}
     end
   end

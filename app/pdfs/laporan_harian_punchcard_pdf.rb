@@ -1,10 +1,11 @@
 class Laporan_harian_punchcardPdf < Prawn::Document
-  def initialize(staff_attendances, leader, daily_date, view)
+  def initialize(staff_attendances, leader, daily_date, thumbids, view)
     super({top_margin: 50, page_size: 'A4', page_layout: :portrait })
     @staff_attendances = staff_attendances
     @view = view
     @leader = leader
     @daily_date = daily_date
+    @thumbids=thumbids
     font "Times-Roman"
     text "Lampiran B 1", :align => :right, :size => 12, :style => :bold
     move_down 20
@@ -31,7 +32,7 @@ class Laporan_harian_punchcardPdf < Prawn::Document
   end
 
   def record
-    xx=@staff_attendances.count
+    xx=@thumbids.count 
     yoy=@y
     table(line_item_rows, :column_widths => [40, 230, 140 ,90], :cell_style => { :size => 10,  :inline_format => :true}) do
       row(0).font_style = :bold
@@ -41,10 +42,10 @@ class Laporan_harian_punchcardPdf < Prawn::Document
       header = true
       if xx > 0
         row(1..xx).borders = [:left, :right]
-	row(xx+1).height = 1065-yoy
-	row(xx+1).borders = [:left, :right, :bottom]
+        row(xx+1).height = 1065-yoy
+        row(xx+1).borders = [:left, :right, :bottom]
       else
-        row(1).height = 500
+        row(xx+1).height = 500
       end
     end
   end
@@ -53,15 +54,37 @@ class Laporan_harian_punchcardPdf < Prawn::Document
     counter = counter || 0
     header = [[ "Bil", "Nama Pegawai / Kakitangan Yang Datang Lambat / Pulang Awal", "Sebab - Sebab ","Masa Yang Dicatatkan"]]
     
-    attendance_list = 
-      @staff_attendances.sort_by{|x|x.thumb_id}.map do |sa|
-      ["#{counter += 1}", "#{sa.attended.name}", "#{sa.reason}" , "#{sa.logged_at.strftime('%H:%M')}",]
+    attendance_list = []
+    @staff_attendances.group_by{|x|x.thumb_id}.sort.reverse.each do |thumb, sas|
+      shiftid = StaffShift.shift_id_in_use(@daily_date, sas.first.thumb_id)
+      if sas.count==1
+        exist_log=sas.first.log_type
+        status="Tiada rekod masuk" if exist_log=="O" || exist_log=="o"
+        status="Tiada rekod keluar" if exist_log=="I" || exist_log=="i"
+        status2="Lambat datang" if sas.first.r_u_late(shiftid) == "flag" && sas.first.is_approved==false
+        status2="Pulang awal" if sas.first.r_u_early(shiftid) == "flag" && sas.first.is_approved==false
+
+        attendance_list << ["#{counter += 1}", "#{sas.first.attended.name}", "#{status} #{'& '+status2 if status2}" , "#{sas.first.logged_at.strftime('%H:%M') if status2}"]
+      elsif sas.count==2
+        status2a="Lambat datang" if sas.first.r_u_late(shiftid) == "flag" && sas.first.is_approved==false
+        status2a="Pulang awal" if sas.first.r_u_early(shiftid) == "flag" && sas.first.is_approved==false
+        status2b="Lambat datang" if sas.last.r_u_late(shiftid) == "flag"  && sas.last.is_approved==false
+        status2b="Pulang awal" if sas.last.r_u_early(shiftid) == "flag" && sas.last.is_approved==false
+	inbetween=" & " if status2a && status2b
+        attendance_list << ["#{counter += 1}", "#{sas.first.attended.name}", "#{status2a} +#{inbetween if inbetween}+ #{status2b}" , "#{sas.first.logged_at.strftime('%H:%M')} / #{sas.last.logged_at.strftime('%H:%M')}"]
+      end
+    end
+    
+    without_both_logs=@thumbids-@staff_attendances.pluck(:thumb_id).uniq
+    non_attend_list=[]
+    without_both_logs.each do |thmb|
+      non_attend_list <<  ["#{counter += 1}", "#{Staff.where(thumb_id: thmb).first.name}", "Tiada rekod masuk & keluar" , ""]
     end
     
     if @staff_attendances.count > 0
-      header + attendance_list + [["", "", "", ""]]
+      header + attendance_list + non_attend_list+ [["", "", "", ""]]
     else
-      header << ["", "", "", ""]
+      header+non_attend_list+[["", "", "", ""]]
     end
   end
 

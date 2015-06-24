@@ -1081,8 +1081,8 @@ en:
     weekly_report: Weekly Report
     monthly_report: Monthly Report
     daily_date: Attendance Date
-    weekly_date: Week starting
-    monthly_date: Month starting
+    weekly_date: Week
+    monthly_date: Month
     since: since
     monthly_listing_details: "Monthly Listing / Details"
     monthly_listing: Monthly Listing

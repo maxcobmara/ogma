@@ -1,11 +1,12 @@
 class Laporan_bulanan_punchcardPdf < Prawn::Document
-  def initialize(staff_attendances,leader, monthly_date, notapproved_lateearly, view)
+  def initialize(staff_attendances,leader, monthly_date, notapproved_lateearly, thumb_ids, view)
     super({top_margin: 50, page_size: 'A4', page_layout: :portrait })
     @staff_attendances = staff_attendances
     @leader = leader
     @view = view
     @monthly_date = monthly_date
     @notapproved_lateearly = notapproved_lateearly
+    @total_staff=thumb_ids.count
     font "Times-Roman"
     text "Lampiran B 3", :align => :right, :size => 12, :style => :bold
     move_down 20
@@ -124,7 +125,7 @@ class Laporan_bulanan_punchcardPdf < Prawn::Document
   
   def jumlah 
     move_down 20
-    text "Jumlah Pegawai / Kakitangan                                      #{@notapproved_lateearly.count}", :align => :left, :size => 12
+    text "Jumlah Pegawai / Kakitangan                                      #{@total_staff}", :align => :left, :size => 12
     move_down 5
     text "Jumlah Pegawai / Kakitangan                                      #{@green_count}", :align => :left, :size => 12
     text "Yang memegang kad hijau", :align => :left, :size => 12

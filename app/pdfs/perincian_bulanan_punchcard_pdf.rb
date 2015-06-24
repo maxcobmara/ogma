@@ -17,10 +17,15 @@ class Perincian_bulanan_punchcardPdf < Prawn::Document
     text "#{Staff.where(thumb_id: @thumb_id).first.name.upcase}", :size => 11
     #text "#{@monthly_list.beginning_of_month.strftime('%d-%m-%Y')} to #{@monthly_list.end_of_month.strftime('%d-%m-%Y')}", :size => 11
     move_down 5
-    attendance_list
-    move_down 10
-    repeat(lambda {|pg| pg > 1}) do
-      draw_text "#{Staff.where(thumb_id: @thumb_id).first.name} (#{@unit_department})", :at => bounds.bottom_left, :size =>9
+    if @staff_attendances.count > 0
+      attendance_list
+      move_down 10
+      repeat(lambda {|pg| pg > 1}) do
+        draw_text "#{Staff.where(thumb_id: @thumb_id).first.name} (#{@unit_department})", :at => bounds.bottom_left, :size =>9
+      end
+    else
+      move_down 50
+      text "No data exist!"
     end
   end
 
