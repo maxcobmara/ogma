@@ -7,7 +7,9 @@ class Senarai_bulanan_punchcardPdf < Prawn::Document
     @thumb_id=thumb_id
     @view = view
     font "Times-Roman"
-    text "#{@monthly_list.beginning_of_month.strftime('%d-%m-%Y')} to #{@monthly_list.end_of_month.strftime('%d-%m-%Y')}", :align => :right, :size => 9
+    repeat :all do
+      text "#{@monthly_list.beginning_of_month.strftime('%d-%m-%Y')} to #{@monthly_list.end_of_month.strftime('%d-%m-%Y')}", :align => :right, :size => 9
+    end
     move_down 10
     text "Monthly Attendance Listing", :align => :center, :size => 12, :style => :bold
     move_down 10
@@ -23,15 +25,15 @@ class Senarai_bulanan_punchcardPdf < Prawn::Document
       move_down 20
       text "Data not exist", :size => 12
     end
+    repeat(lambda {|pg| pg > 1}) do
+      draw_text "#{Staff.where(thumb_id: @thumb_id).first.name}", :at => bounds.bottom_left, :size =>9
+    end
   end
 
   def attendance_list
     total_rows=@staff_attendances.count-1
     table(line_item_rows, :column_widths => [70, 70, 70], :cell_style => { :size => 10,  :inline_format => :true}) do
-      row(0).borders=[:left, :top, :bottom]
-      row(1..total_rows).borders=[:left, :bottom]
-      column(2).borders=[:left, :right, :top]
-      row(total_rows).column(2).borders=[:left,:bottom, :right, :top]
+      #leave empty for full borders
     end
   end
   

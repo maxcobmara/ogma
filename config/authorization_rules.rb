@@ -39,9 +39,9 @@ authorization do
    has_permission_on :staff_staff_attendances, :to => [:read, :update, :manager] do  #update - reason, #manager - manage lateness
      if_attribute :thumb_id => is {user.userable.thumb_id}
    end
-   has_permission_on :staff_staff_attendances, :to => [:index, :show, :approve, :update] do
-       if_attribute :approve_id => is {current_user.userable.id}
-   end
+#    has_permission_on :staff_staff_attendances, :to => [:index, :show, :approval, :update] do
+#        if_attribute :approve_id => is {user.userable.id}  #approved_by (no field - approve_id)
+#    end
 
    ###
    has_permission_on :student_student_discipline_cases, :to => :approve do 
@@ -137,7 +137,7 @@ authorization do
   role :staff_administrator do
      has_permission_on :staffs, :to => [:manage, :borang_maklumat_staff]
      has_permission_on :attendances, :to => :manage
-     has_permission_on :staff_staff_attendances, :to => :manage   #29Apr2013-refer routes.rb
+     has_permission_on :staff_staff_attendances, :to =>[:manage, :manager, :actionable, :approval]   #29Apr2013-refer routes.rb
      has_permission_on :staff_positions, :to =>[:manage, :maklumat_perjawatan]
   end
   
@@ -256,6 +256,9 @@ authorization do
    has_permission_on :staff_training_ptdos, :to => :approve do
      if_attribute :staff_id => is_in {user.unit_members}#is {69}#is_in {[69, 106]}  #
    end
+    has_permission_on :staff_staff_attendances, :to => :approval do
+      if_attribute :thumb_id => is_in {user.admin_unitleaders_thumb}
+    end
  end
  
  #Group Library   -------------------------------------------------------------------------------
@@ -318,11 +321,19 @@ authorization do
     has_permission_on :staff_training_ptdos, :to => :approve do
       if_attribute :staff_id => is_in {user.unit_members}
     end
+    has_permission_on :staff_staff_attendances, :to => :approval do  # :to =>[:manage, :actionable, :approve] do
+      if_attribute :thumb_id => is_in {user.unit_members_thumb}
+    end
   end
   
   role :administration_staff do
+    #access for Timbalan Pengarah (Pengurusan)
     has_permission_on :staff_training_ptdos, :to => :approve do
       if_attribute :staff_id => is_in {user.admin_subordinates}
+    end
+    #access for Timbalan Pengarah (Pengurusan) & Pengarah(Timbalans+Ketua2 Programs)
+    has_permission_on :staff_staff_attendances, :to => :approval do
+      if_attribute :thumb_id => is_in {user.admin_unitleaders_thumb}
     end
   end
   

@@ -37,6 +37,9 @@ class Staff < ActiveRecord::Base
   has_many :attendingstaffs,    :class_name => 'StaffAttendance', :foreign_key => 'thumb_id', :primary_key => 'thumb_id'#, :dependent => :destroy #attendance staff name
   has_many :approvers,          :class_name => 'StaffAttendance', :foreign_key => 'approved_by' # approver name
   
+  has_many :fingerprint_owners, :class_name => 'Fingerprint', :foreign_key => 'thumb_id'
+  has_many :fingerprint_approvers, :class_name => 'Fingerprint', :foreign_key => 'approved_by'
+  
   has_many :trainingnotes,    :class_name => 'Trainingnote'
 
   has_many          :qualifications, :dependent => :destroy

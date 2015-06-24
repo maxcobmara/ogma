@@ -40,6 +40,8 @@ en:
       ptbudget: Training Budget
       staff_appraisal: Staff Appraisal
       mycpd: MyCPD
+      staff_attendance: Staff Attendance
+      fingerprint: Fingerprint
     attributes:
       student:
         name: Name
@@ -118,6 +120,12 @@ en:
       mycpd:
         cpd_year: Year
         cpd_value: CPD value
+      staff_attendance:
+        reason: Reason
+      fingerprint:
+        fdate: Date
+        thum_id: "Staff (Thumb Id)"
+        reason: Reason
     errors:
         template:
           body: "There were problems with the following fields:"
@@ -220,6 +228,7 @@ en:
   select_excel_file: Please select an Excel file for import
   reports: Reports
   all_records: All Records
+  rejected: Rejected
 
   actions:
     new: New
@@ -322,6 +331,7 @@ en:
     thumb: Thumb ID
     shift: Staff Shift
     shift_start: " starting "
+    shift_end: " until "
     fileno: Personal File No
     position: Position
     cobirthdt: Date Of Birth
@@ -1042,6 +1052,7 @@ en:
     excel_format: Excel Format
     date_range1: "Searching 'All Department / Unit' - Attendance records for selected date range (within the latest 2 months)"
     date_range2: "Searching by Department / Unit - Attendance records for selected date range (within the latest 2 years)"
+    require_complete_data: "-- Department / Unit - Require complete staff (Staff Shift and Thumb ID) and positions (staff) data for searching to works"
     conditions: Conditions for Excel File
     allowed_date_range: "Allowed Date Range : "
     must_not_exist: Attendance Record must NOT exist in ICMS
@@ -1052,10 +1063,10 @@ en:
     fingerprint: Fingerprint
     date_time: "Date & Time"
     outstation: Outstation
-    official: Official
-    forgot: Forgot
+    official: "Official / Personal"
+    forgot: Forgot Fingerprint
     early_late: "Lateness / Early Return"
-    others: Others
+    others: Other Matters
     advise_trigger1: "Lateness : "
     advise_trigger3: "Tick 'Action' checkbox (to activate 'Fingerprint Statement') or 'Ignore' checkbox and click 'Save Action' icon in Staff Attendance listing"
     advise_trigger2: "Early Return : "
@@ -1073,12 +1084,19 @@ en:
     weekly_date: Week starting
     monthly_date: Month starting
     since: since
+    monthly_listing_details: "Monthly Listing / Details"
     monthly_listing: Monthly Listing
+    monthly_details: "Monthly Details (Shift Exception)"
     staff_name: Staff Name
-    monthly_list: Listing for Month
+    monthly_list: Search Month
+    details_type: Display Type
+    full_listing: Full Listing
+    shortlisted: Shortlisted
+    shortlisted_note: "Choose 'Shortlisted' to view related Leave / Movement / Absent only)"
  
   attendance:
     title: "Manage Lateness & Early Return"
+    title2: "Lateness & Early Return Listing"
     new: "New Attendance (Lateness / Early Return)"
     edit: "Edit Attendance (Lateness / Early Return)"
     details: Attendance Details
@@ -1094,6 +1112,28 @@ en:
     reason: Reason
     approve_id: Approver
     approvestatus: Approval Status
+    attendance_not_recorded: "Days Not Thumbprint (Fingerprint Submission)"
+  
+  fingerprint:
+    title: "Fingerprint Statement (Days Not Fingerprint)"
+    title2: "Fingerprint Statement (Not Fingerprint)"
+    title3: "Fingerprint Statement (Not Fingerprint) Listing"
+    new: "New Fingerprint Statement (Days Not Fingerprint)"
+    edit: "Edit Fingerprint Statement (Days Not Fingerprint)"
+    details: Fingerprint Details
+    fdate: Date 
+    ftype: Type
+    in: In 
+    out: Out
+    both: "In and Out"
+    thumb_id: Thumb Id
+    approval_title: "Fingerprint Statement Approval (No Fingerprint)"
+    approval: Fingerprint Statement Approval
+    approval2: "Approval (No Fingerprint)"
+    no_record: No record
+    notes:  "Note : Fingerprint Statement (No Fingerprint) can only be created for days (dates) without at least 1 attendance record (in or out). Please visit 'Manage Lateness & Early Return' page, should you require to create one for days with both in and out records exist. Consult 'Staff Administrator' if required attendance record is not in the list."
+    statement_exist: "Fingerprint Statement (Not Fingerprint) already exist!"
+    logrecord_exist: "Creating Fingerprint Statement (Not Fingerprint) for days with complete logged-in and logged-out record is not allowed!"
     
   asset:
     title: Assets

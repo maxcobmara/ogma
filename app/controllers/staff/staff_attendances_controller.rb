@@ -189,14 +189,28 @@ class Staff::StaffAttendancesController < ApplicationController
     @myearly_attendances = StaffAttendance.find_myearly(current_user)
     @approvelate_attendances = StaffAttendance.find_approvelate(current_user)
     @approveearly_attendances = StaffAttendance.find_approveearly(current_user)
-
+#     @fingerprint = Fingerprint.new
+#     @fingerprints = Fingerprint.find_mystatement(current_user.userable.thumb_id)
+#     @approvefingerprints = Fingerprint.find_approvestatement(current_user)
     respond_to do |format|
       format.html # index.html.erb
       format.xml  { render :xml => @staff_attendances }
     end
   end
+  
+  def manager_admin
+    @late_early_recs_ids=[]
+    all_late_early=StaffAttendance.triggered
+    all_late_early.each do |x|
+      shift_id=StaffShift.shift_id_in_use(x.logged_at.strftime('%Y-%m-%d'),x.thumb_id)
+      @late_early_recs_ids << x.id if x.r_u_late(shift_id)=="flag" || x.r_u_early(shift_id)=="flag"
+    end
+    @search=StaffAttendance.search(params[:q])
+    @late_early_recs=@search.result.where(id: @late_early_recs_ids)
+    @late_early_recs=@late_early_recs.page(params[:page]||1)
+  end
 
-  def approve
+  def approval
     @staff_attendance = StaffAttendance.find(params[:id])
   end
 
@@ -251,6 +265,8 @@ class Staff::StaffAttendancesController < ApplicationController
       redirect_to monthly_report_staff_staff_attendances_path(:monthly_date => params[:monthly_date], :unit_department => params[:unit_department], format: 'pdf' )
     elsif commit==t('staff_attendance.monthly_listing')
       redirect_to monthly_listing_staff_staff_attendances_path(:monthly_list => params[:monthly_list], :unit_department => params[:unit_department], :staff => params[:staff] ,format: 'pdf' )
+    elsif commit==t('staff_attendance.monthly_details')
+      redirect_to monthly_details_staff_staff_attendances_path(:monthly_list2 => params[:monthly_list2], :unit_department => params[:unit_department], :staff2 => params[:staff2], :details_type => params[:details_type], format: 'pdf' )
     end
   end
 
@@ -285,7 +301,7 @@ class Staff::StaffAttendancesController < ApplicationController
   end
 
   def weekly_report
-    weekly_date=params[:weekly_date].to_date
+    weekly_date=params[:weekly_date].to_time
     weekly_start=weekly_date.beginning_of_week
     weekly_end=weekly_date.end_of_week
     unit_dept=params[:unit_department]
@@ -317,7 +333,7 @@ class Staff::StaffAttendancesController < ApplicationController
   end
 
   def monthly_report
-    monthly_date=params[:monthly_date].to_date
+    monthly_date=params[:monthly_date].to_time
     monthly_start=monthly_date.beginning_of_month
     monthly_end=monthly_date.end_of_month
     unit_dept=params[:unit_department]
@@ -349,7 +365,7 @@ class Staff::StaffAttendancesController < ApplicationController
   end
   
   def monthly_listing
-    monthly_list=params[:monthly_list].to_date
+    monthly_list=params[:monthly_list].to_time
     monthly_start=monthly_list.beginning_of_month
     monthly_end=monthly_list.end_of_month
     staff=params[:staff].to_i
@@ -359,6 +375,25 @@ class Staff::StaffAttendancesController < ApplicationController
     respond_to do |format|
       format.pdf do
         pdf = Senarai_bulanan_punchcardPdf.new(@staff_attendances, monthly_list, unit_dept, thumb_id, view_context)
+        send_data pdf.render, filename: "senarai_bulanan_punchcard-{Date.today}",
+                              type: "application/pdf",
+                              disposition: "inline"
+      end
+    end
+  end
+  
+  def monthly_details
+    monthly_list2=params[:monthly_list2].to_time
+    monthly_start=monthly_list2.beginning_of_month
+    monthly_end=monthly_list2.end_of_month
+    staff2=params[:staff2].to_i
+    thumb_id=Staff.find(staff2).thumb_id
+    unit_dept=params[:unit_department]
+    list_type=params[:details_type]
+    @staff_attendances=StaffAttendance.where('thumb_id=? and logged_at >=? and logged_at <=?', thumb_id, monthly_start, monthly_end).order('logged_at ASC, log_type ASC')
+    respond_to do |format|
+      format.pdf do
+        pdf = Perincian_bulanan_punchcardPdf.new(@staff_attendances, monthly_list2, unit_dept, thumb_id, list_type, view_context)
         send_data pdf.render, filename: "senarai_bulanan_punchcard-{Date.today}",
                               type: "application/pdf",
                               disposition: "inline"

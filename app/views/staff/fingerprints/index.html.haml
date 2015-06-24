@@ -1,0 +1,94 @@
+-model_class = Fingerprint
+.page-header
+  %h1= t('fingerprint.title')
+= render 'shared/flashes'
+  
+.navbar.navbar-inverse{role: "navigation", style: "padding-right:40px;"}
+  /%ul.nav.navbar-nav
+  /  %li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'actions.new'))), new_staff_attendance_path
+  %ul.nav.navbar-nav
+    - permitted_to? :staff_staff_attendances, :manage do
+      %li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'staff_attendance.list1'))), staff_staff_attendances_path
+    %li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'attendance.title'))), '/attendance/manager'
+    - permitted_to? :staff_staff_attendances, :manage do
+      %li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'fingerprint.title3'))), index_admin_staff_fingerprints_path
+  %ul.nav.navbar-nav.navbar-right
+    /%li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "toga"
+    /%li= link_to content_tag(:li, fa_icon("print", text: (t 'actions.print'))), "#", class: 'bogus'
+
+.row
+  %table.table-striped.table-hover.ogma
+    %thead
+      %tr
+        %th=t 'attendance.attdate'		# sort_link(@search, :attdate, (t 'attendance.attdate'))
+        %th=t 'attendance.time_in'		# sort_link(@search, :time_in, (t 'attendance.time_in'))
+        %th=t 'attendance.time_out'		# sort_link(@search, :time_out, (t 'attendance.time_out'))
+        %th=t 'attendance.staff_id'		# sort_link(@search, :staff_id, (t 'attendance.staff_id'))
+        %th=t 'attendance.reason'		# sort_link(@search, :reason, (t 'attendance.reason'))
+        %th=t 'attendance.approve_id'	# sort_link(@search, :approve_id, (t 'attendance.approve_id'))
+        %th=t 'attendance.approvestatus'	# sort_link(@search, :approvestatus, (t 'attendance.approvestatus'))
+    %tbody
+      /= render "index_search"
+      %tr
+        %td{:colspan=>"7",:style=>"font-weight: bold; background-color: #D8D8D8;"}=t 'fingerprint.approval_title'
+
+      - if @approvefingerprints.size > 0
+        - for fingerprint in @approvefingerprints
+          %tr
+            %td=h fingerprint.fdate.strftime('%d-%m-%Y')
+            %td
+            %td &nbsp;
+            %td=h fingerprint.owner.name 
+            %td=h fingerprint.reason
+            %td= fingerprint.try(:approvedby).try(:name) if fingerprint.is_approved == true
+            %td
+              - if fingerprint.reason? && (fingerprint.is_approved == nil)
+                = link_to image_tag("approval.png", :border => 0, :title => 'Approval'), :controller=> 'fingerprints', :action => 'approval', :id => fingerprint
+              - elsif fingerprint.is_approved == true  
+                = image_tag("tick.png") 
+              - elsif fingerprint.is_approved == false  
+                = image_tag("cross.png")
+                
+      %tr
+        %td{:colspan=>"7",:style=>"font-weight: bold; background-color: #D8D8D8;"}=t 'fingerprint.title'
+        /=t 'fingerprint.title'+" | "
+        /= link_to (t 'attendance.new_fingerprint'), new_staff_fingerprint_path
+      %tr
+        %td{:colspan => "7"}
+          = form_for [:staff, @fingerprint], html: { multipart: true, class: 'form-horizontal' }  do |f| 
+            = f.hidden_field :thumb_id, value: @current_user.userable.thumb_id
+            .col-md-1= f.text_field :fdate, class: 'form-control date_picker'
+            .col-md-4= submit_tag t('fingerprint.new')
+            .col-md-5= t('fingerprint.notes')
+
+
+            /, class: "btn btn-link"
+      - for fingerprint in @fingerprints
+        - fdate_start=fingerprint.fdate.to_time.beginning_of_day
+        - fdate_end=fingerprint.fdate.to_time.end_of_day
+        - sa_rec_in = StaffAttendance.where('logged_at>=? and logged_at<=?', fdate_start, fdate_end).where('log_type=? or log_type=?', 'I','i').where(thumb_id: current_user.userable.thumb_id)
+        - sa_rec_out = StaffAttendance.where('logged_at>=? and logged_at<=?', fdate_start, fdate_end).where('log_type=? or log_type=?', 'O','o').where(thumb_id: current_user.userable.thumb_id)
+        %tr
+          %td=h link_to fingerprint.fdate.try(:strftime, '%d-%m-%Y'), staff_fingerprint_path(fingerprint)
+          %td
+            - if sa_rec_in.count > 0
+              = sa_rec_in.first.logged_at.strftime('%H:%M')
+            - else
+              %font{color: "red"}=t('fingerprint.no_record')
+          %td
+            - if sa_rec_out.count > 0
+              = sa_rec_out.first.logged_at.strftime('%H:%M')
+            - else
+              %font{color: "red"}=t('fingerprint.no_record')
+          %td
+          %td=h fingerprint.reason.blank? ? "Reason not submitted" : fingerprint.reason
+          %td=h fingerprint.approved_by.blank? ? "" : fingerprint.try(:approver).try(:staff_name_with_position)
+          %td 
+            - if fingerprint.is_approved == true
+              = image_tag("tick.png")
+            - elsif fingerprint.is_approved == false
+              = image_tag("cross.png") 
+%BR
+%BR
+%BR
+%BR

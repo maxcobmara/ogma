@@ -9,7 +9,7 @@ class StaffAttendance < ActiveRecord::Base
   belongs_to :attended, :class_name => 'Staff', :foreign_key => 'thumb_id', :primary_key => 'thumb_id'
   belongs_to :approver, :class_name => 'Staff', :foreign_key => 'approved_by'
   
-  attr_accessor :userid, :checktime, :checktype, :name, :birthday, :defaultdeptid, :deptid, :deptname, :thumbid, :icno	#from excel
+  attr_accessor :userid, :checktime, :checktype, :name, :birthday, :defaultdeptid, :deptid, :deptname, :thumbid, :icno, :hname, :hdate	#from excel
   
   validates_presence_of :reason, :if => :fingerprint_issued?        
   
@@ -34,6 +34,7 @@ class StaffAttendance < ActiveRecord::Base
   
   def self.import(file) 
     spreadsheet = Spreadsheet2.open_spreadsheet(file)  				#open/read excel file
+    StaffAttendanceHelper.update_holidays(spreadsheet)
     staff_dept = StaffAttendanceHelper.update_thumb_id(spreadsheet)			#update thumb_id - table : staffs & return staff_id & deptid
     userid_thumbid = StaffAttendanceHelper.userid_thumbid(spreadsheet)			#just retrieve match of userid & thumbid
     result = StaffAttendanceHelper.update_attendance(spreadsheet,userid_thumbid)				#update attendance record - table : staff_attendances    
@@ -57,20 +58,39 @@ class StaffAttendance < ActiveRecord::Base
     #where(thumb_id: query)																	#working one
     #where('thumb_id IN(?)', [756,757]) if query=='1'												#also works nicely
   end
+  
+  def self.attended_search(query)
+    thumb_ids=Staff.where('name ILIKE(?)', "%#{query}%").pluck(:thumb_id)
+    where('thumb_id IN(?)', thumb_ids)
+  end
+  
+  def self.approver_search(query)
+    staff_ids=Staff.where('name ILIKE(?)', "%#{query}%").pluck(:id)
+    where('approved_by IN(?)', staff_ids)
+  end
 
   # whitelist the scope
   def self.ransackable_scopes(auth_object = nil)
-    [:keyword_search]
+    [:keyword_search, :attended_search, :approver_search]
   end
 
   def self.staff_with_unit_groupbyunit
     Staff.joins(:positions).where('unit is not null and unit!=?',"").group_by{|x|x.positions.first.unit}
+   
+    # START--solution for - NoMethodError in Staff::StaffAttendances#index, Showing /home/shimah/rails/ogma/app/views/staff/staff_attendances/index.html.haml where line #80 raised:undefined method `start_at' for nil:NilClass
+    #Staff.joins(:positions).where('positions.staff_id is not null and staff_shift_id is not null and staffs.thumb_id is not null and unit is not null and unit!=?  and positions.name!=?', '', "ICMS Vendor Admin").group_by{|x|x.positions.first.unit}
+    # END--solution - but this will restrict to limited department / units only -- unit w/o complete staff_id, staff_shift_id & thumb_id wont be displayed in INDEX
+    #refer method .get_thumb_ids_unit_names() below.
+    
     #Staff.joins(:positions).where('unit is not null and unit!=?',"").order('positions.combo_code ASC').group_by{|x|x.positions.first.unit}
     #Staff.joins(:positions,:staffgrade).where('unit is not null and unit!=?',"").order('group_id, positions.combo_code ASC').group_by{|x|x.positions.first.unit}	#best ever
     #Staff.joins(:positions,:staffgrade).where('unit is not null and unit!=?',"").sort_by{|u|u.staffgrade.gred_no}.reverse!.group_by{|x|x.positions.first.unit} #better
   end
   
   def self.get_thumb_ids_unit_names(val)
+    #refer above--
+    valid_dept=Staff.joins(:positions).where('positions.staff_id is not null and staff_shift_id is not null and staffs.thumb_id is not null and unit is not null and unit!=?  and positions.name!=?', '', "ICMS Vendor Admin").pluck(:unit)
+    #-----
     a=StaffAttendance.staff_with_unit_groupbyunit
     thmb=[] if val==1
     uname=[] if val==2
@@ -80,8 +100,10 @@ class StaffAttendance < ActiveRecord::Base
 	thmb<< staffs.map(&:thumb_id).compact if val==1
 	uname<< u_name if val==2
 	if val==3
+	    u_name2=u_name
+	    u_name2="-- "+u_name if valid_dept.include?(u_name)==false  #add remark "-- " before unit name, search for these units/departments error shall arise
 	    u_t=[]
-	    u_t<< u_name<< count
+	    u_t<< u_name2<< count
 	    uname_thmb << u_t 
 	    count+=1
 	end
@@ -99,55 +121,84 @@ class StaffAttendance < ActiveRecord::Base
     end
     all_thumb_ids
   end
+  
+  def self.unit_for_thumb(attendance_thumb_id)
+    thumb_by_dept=StaffAttendance.get_thumb_ids_unit_names(1)
+    dept_names=StaffAttendance.get_thumb_ids_unit_names(2)
+    thumb_by_dept.each_with_index do |thumbs, ind|
+      @dept_name=dept_names[ind] if thumbs.include?(attendance_thumb_id)
+    end 
+    @dept_name
+  end
 
   def self.is_controlled
-    find(:all, :order => 'logged_at DESC', :limit => 10000)
-  end
-
-  def self.find_mylate(current_user)
-     staffshift_id = current_user.userable.staff_shift_id
-     thumb_id = current_user.userable.thumb_id   
-     if staffshift_id != nil 
-       if current_user.userable.shift_histories.count==0
-          start_time = StaffShift.find(staffshift_id).start_at.strftime("%H:%M") 
-       else
-         sas=StaffAttendance.where(thumb_id: thumb_id)
-         @sa_lateness=[]
-         sas.each do |sa|
-           curr_date=sa.logged_at.strftime('%Y-%m-%d')
-           shiftid = StaffShift.shift_id_in_use(curr_date, sa.thumb_id)
-           @sa_lateness << sa.id if sa.r_u_late(shiftid)
-         end
-       end
-     else
-       start_time = "08:00"
-     end
-     a=StaffAttendance.where("trigger=? AND log_type =? AND thumb_id=? AND logged_at::time > ?", true, "I", thumb_id, start_time).order('logged_at') unless start_time.nil?
-     a=StaffAttendance.where(id: @sa_lateness, trigger: true).order(logged_at: :desc) unless @sa_lateness.nil?
-     a
+    #find(:all, :order => 'logged_at DESC', :limit => 10000)
+    #joins(:attended).where('staffs.staff_shift_id is not null').limit(10000).order(logged_at: :desc)
+    tday=Time.now.beginning_of_day
+    #joins(:attended).where('staffs.staff_shift_id is not null').where('logged_at <=?', tday+2.years).order(logged_at: :desc)
   end
   
-  def self.find_myearly(current_user)
-     staffshift_id = current_user.userable.staff_shift_id
-     thumb_id = current_user.userable.thumb_id
-     if staffshift_id != nil
-       if current_user.userable.shift_histories.count==0
-         end_time = StaffShift.find(staffshift_id).end_at.strftime("%H:%M") 
-       else
-         sas=StaffAttendance.where(thumb_id: thumb_id)
-         @sa_early=[]
-         sas.each do |sa|
-           curr_date=sa.logged_at.strftime('%Y-%m-%d')
-           shiftid = StaffShift.shift_id_in_use(curr_date, sa.thumb_id)
-           @sa_early << sa.id if sa.r_u_early(shiftid)
-         end
-       end
-     else
-       end_time = "17:00"
-     end
-     b=StaffAttendance.where("trigger=? AND log_type =? AND thumb_id=? AND logged_at::time < ?", true, "O", thumb_id, end_time).order(:logged_at) unless end_time.nil?
-     b=StaffAttendance.where(id: @sa_early, trigger: true).order(logged_at: :desc) unless @sa_early.nil?
-     b
+  def self.triggered
+    tday=Time.now.beginning_of_day
+    joins(:attended).where('staffs.staff_shift_id is not null').where('logged_at <=?', tday+2.years).where(trigger: true).order(logged_at: :desc)
+  end
+
+  def self.find_mylate(curr_user)
+     staffshift_id = curr_user.userable.staff_shift_id
+     curr_thumb_id = curr_user.userable.thumb_id   
+#      if staffshift_id != nil 
+#        if curr_user.userable.shift_histories.count==0
+#           start_time = StaffShift.find(staffshift_id).start_at.strftime("%H:%M") 
+#        else
+#          sas=StaffAttendance.where(thumb_id: curr_thumb_id)#, trigger: true)
+#          @sa_lateness=[]
+#          sas.each do |sa|
+#            curr_date=sa.logged_at.to_date #strftime('%Y-%m-%d')
+#            shiftid = StaffShift.shift_id_in_use(curr_date, curr_thumb_id)
+#            @sa_lateness << sa.id if sa.r_u_late(shiftid)=="flag"
+#          end
+#        end
+#      else
+#        start_time = "08:00"
+#      end
+#      unless @sa_lateness.nil?
+#        a=StaffAttendance.where(id: @sa_lateness, thumb_id: curr_thumb_id, trigger: true).order(logged_at: :desc) 
+#      else
+#       a=StaffAttendance.where("trigger=? AND log_type =? AND thumb_id=? AND logged_at::time > ?", true, "I",curr_thumb_id, start_time).order('logged_at') 
+#      end
+#      a
+     StaffAttendance.where(thumb_id: curr_thumb_id, trigger: true).where('log_type=? or log_type=?', 'I', 'i')
+  end
+  
+  def self.find_myearly(curr_user)
+     staffshift_id = curr_user.userable.staff_shift_id
+     curr_thumb_id= curr_user.userable.thumb_id
+
+# prob : thumb id null    
+#temporary HIDE - Index (trigger / ignore / flag - shift histories already applied - history shift, note : use r_u_late(shift_id) & r_u_early(shift_id) on all SA record, so trigger == true will only happen when sa (r_u_late(shift_id)=="flag" or r_u_early(shift_id)=="flag")
+#      if staffshift_id != nil
+#        if curr_user.userable.shift_histories.count==0
+#          end_time = StaffShift.find(staffshift_id).end_at.strftime("%H:%M") 
+#        else
+#          sas=StaffAttendance.where(thumb_id: curr_thumb_id)#, trigger: true)
+#          @sa_early=[]
+#          sas.each do |sa|
+#            curr_date=sa.logged_at.to_date  #strftime('%Y-%m-%d')
+#            shiftid = StaffShift.shift_id_in_use(curr_date, curr_thumb_id)
+#            @sa_early << sa.id if sa.r_u_early(shiftid)=="flag"
+#          end
+#        end
+#      else
+#        end_time = "17:00"
+#      end
+#       unless @sa_early.nil?
+#         b=StaffAttendance.where(id: @sa_early, thumb_id: curr_thumb_id, trigger: true).order(logged_at: :desc) 
+#       else
+#        b=StaffAttendance.where("trigger=? AND log_type =? AND thumb_id=? AND logged_at::time < ?", true, "O", curr_thumb_id, end_time).order(:logged_at)
+#      end
+#      b
+
+     StaffAttendance.where(thumb_id: curr_thumb_id, trigger: true).where('log_type=? or log_type=?', 'O', 'o')
   end
   
   def i_have_a_thumb
@@ -163,7 +214,7 @@ class StaffAttendance < ActiveRecord::Base
   end
   
   def self.find_approveearly(current_user)
-    all.where("trigger=? AND log_type =? AND thumb_id IN (?)",true ,"O", peeps2(current_user)).order('logged_at DESC')
+    all.where("trigger=? AND log_type =? AND thumb_id IN (?)",true ,"O", peeps(current_user)).order('logged_at DESC')
   end
   
   def self.this_month_red
@@ -215,76 +266,74 @@ class StaffAttendance < ActiveRecord::Base
   end
   
   def self.peeps(current_user)
-    ###mystaff = User.current_user.staff.position.child_ids 
-    ##mystaff = Staff.where(id:25)[0].positions[0].child_ids
-    ##mystaffids = Position.find(:all, :select => "staff_id", :conditions => ["id IN (?)", mystaff]).map(&:staff_id)
-    ##thumbs = Staff.find(:all, :select => :thumb_id, :conditions => ["id IN (?)", mystaffids]).map(&:thumb_id)
-    
-    #myunit = Position.where(staff_id: 25).first.unit
-    #myancestry=Position.where(staff_id: 25).first.ancestry
-    #mycombocode=Position.where(staff_id: 25).first.combo_code
-    ##thumbs = Staff.joins(:positions).where('unit=? and ancestry>?',myunit, myancestry).pluck(:thumb_id) #additional conditions required ####ancestry
-    ##thumbs=Staff.joins(:positions).where('unit=? and combo_code>?','Teknologi Maklumat','1-03-02').pluck(:thumb_id)
-    #thumbs = Staff.joins(:positions).where('unit=? and combo_code>?',myunit,mycombocode).pluck(:thumb_id)
-    
-    #works for all units incl. Posbasik, Subjek Asas as long as UNIT column are using the same value
-    mystaffid = current_user.userable.id
-    myposition = Position.where(staff_id: mystaffid).first
-    myunit = myposition.unit
-    mycombocode = myposition.combo_code
-    myancestry = myposition.ancestry_depth
-    myisacting = myposition.is_acting
-    #menanggung tugas ?? ancestry_depth might be the same value as their siblings!
-    if myisacting == true
-      allmytask= myposition.tasks_other+" "+myposition.tasks_main
-      acting_title1 = "Ketua Subjek "+myunit.strip
-      actitle_title2 = "Ketua Program "+myunit.strip
-      if allmytask.include?(acting_title1) || allmytask.include?(acting_title2)
-        #to remove current_user's thumbid
-        mythumbid = current_user.userable.thumb_id
-        thumbs =  Staff.joins(:positions).where('unit=? and (combo_code>? or ancestry_depth>=?)', myunit, mycombocode, myancestry).pluck(:thumb_id)-Array(mythumbid)
+    mypost = Position.where(staff_id: current_user.userable_id).first
+    myunit = mypost.unit
+    mythumbid = current_user.userable.thumb_id
+    iamleader=Position.am_i_leader(current_user.userable_id)
+    if iamleader== true   #check by roles
+      thumbs=Staff.joins(:positions).where('staffs.thumb_id!=? and unit=?', mythumbid, myunit).pluck(:thumb_id)
+    else #check by rank / grade
+      leader_staffid=Position.unit_department_leader(myunit).id   #return Staff(id) record ofunit/dept leader
+      @head_thumb_ids=[]
+      
+      #academic programmes-start
+      postbasics=['Pengkhususan', 'Pos Basik', 'Diploma Lanjutan']
+      dip_prog=Programme.roots.where(course_type: 'Diploma').pluck(:name)
+      post_prog=Programme.roots.where(course_type: postbasics).pluck(:name)
+      commonsubject=Programme.where(course_type: 'Commonsubject').pluck(:name).uniq
+      #temp-rescue - make sure this 2 included in Programmes table @ production svr as commonsubject type
+      etc_subject=['Sains Tingkahlaku', 'Anatomi & Fisiologi']
+      #academic programmes-end 
+      
+      if leader_staffid==current_user.userable_id #when current user is unit/department leader
+        thumbs=Staff.joins(:positions).where('staffs.thumb_id!=? and unit=?', mythumbid, myunit).pluck(:thumb_id)
+        #when current user is Pengarah, above shall collect all timbalans thumb id plus academicians leader (Ketua Program)
+        if current_user.userable_id==Position.roots.first.staff_id
+          academic_programmes=dip_prog+post_prog+commonsubject
+          academic_programmes.each do |prog|
+            @head_thumb_ids << Position.unit_department_leader(prog).thumb_id if Position.where('staff_id is not null and unit=?', prog).count > 0 #staff_id must exist 
+          end
+          thumbs+=@head_thumb_ids
+        end
+      else 
+        #when superior for current user is Pengarah, then she must be one of timbalans-"Ketua Unit Pengurusan Tertinggi"
+        if leader_staffid==Position.roots.first.staff_id 
+          if mypost.name.include?("Pengurusan") #Timbalan Pengarah (Pengurusan)
+            #management units
+            mgmt_units= Position.where('staff_id is not null and unit is not null and unit!=? and unit not in (?) and unit not in (?) and unit not in (?) and unit not in (?)', '', dip_prog, commonsubject, postbasics, etc_subject).pluck(:unit).uniq
+            mgmt_units.each do |department|
+              @head_thumb_ids << Position.unit_department_leader(department).thumb_id unless Position.unit_department_leader(department).nil?
+            end
+            thumbs=@head_thumb_ids
+          else #other timbalans
+            thumbs=[]
+          end
+        else   
+          thumbs=[]
+        end
       end
-    else
-      thumbs = Staff.joins(:positions).where('unit=? and (combo_code>? or ancestry_depth>?)', myunit, mycombocode, myancestry).pluck(:thumb_id)
     end
+    thumbs
   end
+  
+  
 
-  def self.peeps2(current_user)
-    ##mystaff = User.current_user.staff.position.child_ids 
-    ###mystaff = User.current_user.staff.position.child_ids  #position_ids for mystaff
-    ###myotherstaff--added-if no superior(act as approver for staff who has no superior)
-    ###myotherstaff = StaffAttendance.find(:all,:select=>:thumb_id,:conditions=>['approved_by=?',User.current_user.staff_id]).map(&:thumb_id) ##position_ids for myotherstaff
-    ###mystaffids = Position.find(:all, :select => "staff_id", :conditions => ["id IN (?)", mystaff+myotherstaff]).map(&:staff_id)
-    ##mystaffids = Position.find(:all, :select => "staff_id", :conditions => ["id IN (?)", mystaff]).map(&:staff_id)
-    ##thumbs = Staff.find(:all, :select => :thumb_id, :conditions => ["id IN (?)", mystaffids]).map(&:thumb_id)
-    
-    #myunit = Position.where(staff_id: 25).first.unit
-    #myancestry=Position.where(staff_id: 25).first.ancestry
-    #mycombocode=Position.where(staff_id: 25).first.combo_code
-    ##thumbs = Staff.joins(:positions).where('unit=? and ancestry>?',myunit, myancestry).pluck(:thumb_id) #additional conditions required ####ancestry
-    #thumbs = Staff.joins(:positions).where('unit=? and combo_code>?',myunit,mycombocode).pluck(:thumb_id)
-    
-    #works for all unit except for Posbasik & Diploma Lanjutan
-    mystaffid = current_user.userable.id
-    myposition = Position.where(staff_id: mystaffid).first
-    myunit = myposition.unit
-    mycombocode = myposition.combo_code
-    myancestry = myposition.ancestry_depth
-    #thumbs = Staff.joins(:positions).where('unit=? and (combo_code>? or ancestry_depth>?)', myunit, mycombocode, myancestry).pluck(:thumb_id)
-    myisacting = myposition.is_acting
-    if myisacting == true
-      allmytask= myposition.tasks_other+" "+myposition.tasks_main
-      acting_title1 = "Ketua Subjek "+myunit.strip
-      actitle_title2 = "Ketua Program "+myunit.strip
-      if allmytask.include?(acting_title1) || allmytask.include?(acting_title2)
-        #to remove current_user's thumbid
-        mythumbid = current_user.userable.thumb_id
-        thumbs =  Staff.joins(:positions).where('unit=? and (combo_code>? or ancestry_depth>=?)', myunit, mycombocode, myancestry).pluck(:thumb_id)-Array(mythumbid)
-      end
-    else
-      thumbs = Staff.joins(:positions).where('unit=? and (combo_code>? or ancestry_depth>?)', myunit, mycombocode, myancestry).pluck(:thumb_id)
-    end
-  end
+#   def self.peeps2(current_user)
+#     myunit = Position.where(staff_id: current_user.userable_id).first.unit
+#     mythumbid = current_user.userable.thumb_id
+#     iamleader=Position.am_i_leader(current_user)
+#     if iamleader== true   #check by roles
+#       thumbs=Staff.joins(:positions).where('staffs.thumb_id!=? and unit=?', mythumbid, myunit).pluck(:thumb_id)
+#     else #check by rank / grade
+#       leader_staffid=Position.unit_department_leader(myunit).id   #return Staff(id) record ofunit/dept leader
+#       if leader_staffid==current_user.userable_id
+#         thumbs=Staff.joins(:positions).where('staffs.thumb_id!=? and unit=?', mythumbid, myunit).pluck(:thumb_id)
+#       else
+#         thumbs=[]
+#       end
+#     end
+#     thumbs
+#   end
     
   def attendee_details 
       if attended.blank?
@@ -298,7 +347,6 @@ class StaffAttendance < ActiveRecord::Base
   def group_by_thingy
     logged_at.to_date.to_s                       #hide on 21June2013
     #logged_at.in_time_zone('UTC').to_date.to_s    #- AMENDED 21JUNE2013
-    
   end
   
   def r_u_late(shiftid)
@@ -319,7 +367,7 @@ class StaffAttendance < ActiveRecord::Base
 	timmy = ((logged_at.hour - 0).to_s + mins).to_i			#timmy = ((logged_at.hour - 8).to_s + mins).to_i
 	if timmy > starting_shift(shiftid.to_i) && self.trigger != false    #if timmy > starting_time && self.trigger != false  #if timmy > 830 && self.trigger != false
 	  "flag"
-	else 
+	else #***
 	end
     end	#end for log_type=="I"
   end
@@ -487,6 +535,12 @@ class StaffAttendance < ActiveRecord::Base
      # timmy = (logged_at.in_time_zone('UTC').strftime('%l%M')).to_i   #giving this format 1800 @ #0840 -> 840
       timmy = 1200+timmy if meridian=="pm"
       #note : (below) - previously using 24-hours format
+      
+      ####override all above--PENDING--temporary fixed - wont work if staff OT & went back after 12.00 midnight
+      timmy = (logged_at.strftime('%H%M')).to_i - 8   #1504   -- whereby ending_shift= 1800,           1726 -- whereby ending_shift=1730
+      timmy_jam=logged_at.strftime('%H').to_i - 8      #15                                                                  17
+      ####
+      
       if timmy < ending_shift(shift_id_use.to_i) && self.trigger != false #&& timmy2 < 0  #(&& timmy2 < 0)to work with logout at time after 12:00 midnight --> 00:00hrs
           #DO NOT REMOVE YET-below-working one!
           #early = "#{ending_shift} ~ #{timmy}" + " minutes" + "<BR>JAM_SHIFT:#{jam} MINIT_SHIFT:#{minit_shift} MINIT:#{minit}"+"<BR>TIMMYJAM:#{timmy_jam} TIMMYMINUTES:#{timmy_minutes}"
@@ -498,9 +552,15 @@ class StaffAttendance < ActiveRecord::Base
           if jam_diff > 0 && minit_diff <= 0 
               early = "#{jam_diff} hours"
           elsif jam_diff > 0 && minit_diff > 0 
-              early = "#{jam_diff} hours #{minit_diff} minutes"#+" timmy "+timmy.to_s+" ending_shift "+ending_shift.to_s+" timmy2 "+timmy2.to_s+" timmjam " +timmy_jam.to_s+"timmy minute"+timmy_minutes.to_s+" jam  "+jam.to_s
+	      if minit_diff==60
+                early="#{jam_diff+1} hours"
+	      else
+                early = "#{jam_diff} hours #{minit_diff} minutes"#+" timmy "+timmy.to_s+" ending_shift "+ending_shift.to_s+" timmy2 "+timmy2.to_s+" timmjam " +timmy_jam.to_s+"timmy minute"+timmy_minutes.to_s+" jam  "+jam.to_s
+	      end
           elsif minit_diff > 0 && jam_diff <= 0
               early ="#{minit_diff} minutes" 
+          else 
+              early ="" #rescue for punctual
           end
 
           early
@@ -601,6 +661,42 @@ class StaffAttendance < ActiveRecord::Base
     where("trigger IS TRUE AND is_approved IS FALSE AND thumb_id =? AND logged_at>=? AND logged_at<?", thumb_id, start_date, end_date).order(logged_at: :desc)
     #find(:all, :conditions => ["trigger=? AND is_approved =? AND thumb_id IN (?) AND logged_at>=? AND logged_at<?", true, false, thumb_id, start_date, end_date], :order => 'logged_at DESC')
     
+  end
+  
+  def number_format(lateearly_string)
+    if lateearly_string.include?("hours")
+      hours_cnt=lateearly_string.split("hours")[0].to_i
+      minutes_cnt=lateearly_string.split("hours")[1].split("minutes")[0].to_i unless (lateearly_string.split("hours")[1]).nil?
+      if hours_cnt < 10
+        hou="0"+hours_cnt.to_s
+      else
+        hou=hours_cnt.to_s
+      end
+      unless (lateearly_string.split("hours")[1]).nil?
+        if minutes_cnt < 10
+          minn="0"+minutes_cnt.to_s
+        else
+          minn=minutes_cnt.to_s
+        end
+      else
+        minn="00"
+      end
+      lateearly_num=hou+":"+minn
+    else
+      if lateearly_string.include?("minutes")
+        hours_cnt=0
+        minutes_cnt=lateearly_string.split("minutes")[0].to_i
+        if minutes_cnt < 10
+          minn="0"+minutes_cnt.to_s
+        else
+          minn=minutes_cnt.to_s
+        end
+        lateearly_num="00:"+minn
+      else
+        lateearly_num=""
+      end
+    end
+    lateearly_num
   end
 
   def render_colour_status

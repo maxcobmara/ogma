@@ -1,0 +1,65 @@
+.row
+  .col-md-10.col-md-offset-1
+    / Nav tabs
+    %ul.nav.nav-tabs
+      %li.active= link_to ((t 'fingerprint.details')),"#staff_attendance_edit", "data-toggle" => "tab"
+
+    .tab-content{style:"padding-top:1em"}
+      #staff_attendance_edit.tab-pane.active
+        %br
+        .col-md-offset-2
+          .form-group
+            .col-sm-2.control-label
+              = f.label :thumb_id 
+            .col-md-3
+              - if @fingerprint.new_record?
+                = f.hidden_field :thumb_id, value: current_user.userable.thumb_id
+                = Staff.where(thumb_id: current_user.userable.thumb_id).first.staff_thumb
+              - else
+                = f.collection_select :thumb_id, Staff.where(thumb_id: @fingerprint.owner.thumb_id), :thumb_id, :staff_thumb, {:selected=>@fingerprint.owner.thumb_id},{class: 'selectpicker', "data-width"=>"420px", readonly: 'readonly'}
+              
+          .form-group
+            .col-sm-2.control-label
+              = f.label t('fingerprint.fdate')
+            .col-md-2
+              - if @fingerprint.new_record?
+                = f.text_field :fdate, class: 'form-control date_picker mandatory'
+              - else
+                = f.text_field :fdate, class: 'form-control', readonly: 'readonly'
+          .form-group
+            .col-sm-2.control-label
+              = f.label t('fingerprint.ftype')
+            .col-md-2
+              /1 for IN, 2 for OUT, 3 for both (if both not exist)
+              - if @fingerprint.new_record?
+                = f.select :ftype, DropDown::FINGERPRINT_TYPE,{ include_blank: t('select')}, {class: 'form-control'}
+              - else
+                - if @fingerprint.ftype.nil?
+                  = f.select :ftype, DropDown::FINGERPRINT_TYPE,{ include_blank: t('select'), :selected =>@fingerprint.type_val(current_user)}, {class: 'form-control'}
+                - else
+                  = f.select :ftype, DropDown::FINGERPRINT_TYPE,{ include_blank: t('select'), :selected =>@fingerprint.ftype}, {class: 'form-control'}
+                /= text_field_tag(:fingerprint_type, @fingerprint.type_val(current_user), class: 'form-control', readonly: 'readonly')
+                
+          .form-group
+            .col-sm-2.control-label
+              = f.label :status
+            .col-md-3
+              %table
+                %tbody
+                  %tr
+                    %td{:style=>"padding: 0 6px 0 0;"}= f.radio_button :status, 2, :id => 'loanmode', :class => 'radio_discard_options'
+                    %td= t 'staff_attendance.official'
+                    /for not thumbprint only
+                    %tr
+                      %td{:style=>"padding: 0 6px 0 0;"}= f.radio_button :status, 3, :id => 'loanmode', :class => 'radio_discard_options'
+                      %td= t 'staff_attendance.forgot'
+                    %tr
+                      %td{:style=>"padding: 0 6px 0 0;"}= f.radio_button :status, 5, :id => 'loanmode',  :class => 'radio_discard_options'
+                      %td= t 'staff_attendance.others'
+          .form-group
+            .col-sm-2.control-label
+              = f.label t('staff_attendance.reason')
+            .col-md-3
+              = f.text_area :reason, :size => "50x3"   
+
+  

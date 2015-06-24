@@ -12,6 +12,7 @@
           %li= link_to (t 'staff_attendance.weekly_report'), "#weekly", "data-toggle" => "tab"
           %li= link_to (t 'staff_attendance.monthly_report'), "#monthly","data-toggle" => "tab"
           %li= link_to (t 'staff_attendance.monthly_listing'), "#monthly_listing","data-toggle" => "tab"
+          %li= link_to (t 'staff_attendance.monthly_details'), "#monthly_details","data-toggle" => "tab"
       
         / Tab Panes
         .tab-content{style:"padding-top:1em"}
@@ -93,10 +94,53 @@
                   = text_field_tag(:monthly_list, '', class: 'form-control date_picker')
                 .col-md-7
                   &nbsp;
+                  
             %BR
             .row
               .form-group
                 .col-md-offset-4.col-sm-3
                   = submit_tag (t 'staff_attendance.monthly_listing'), :name => :list_submit_button, :class => 'btn btn-primary'
+            %BR
+            
+          #monthly_details.tab-pane.fade
+            .col-md-offset-2
+              .form-group
+                .col-sm-2.control-label
+                  %b= t 'staff_attendance.staff_name', for: :staff_name
+                .col-md-5
+                  = select_tag(:staff2, grouped_options_for_select(@udept_staffs), :include_blank => (t 'select'), :class => 'form-control')
+                  /= grouped_options_for_select(@udept_staffs)
+                .col-md-7
+                  &nbsp;
+            %BR
+            .col-md-offset-2
+              .form-group
+                .col-sm-2.control-label
+                  %b= t 'staff_attendance.monthly_list', for: :monthly_list
+                .col-md-3
+                  = text_field_tag(:monthly_list2, '', class: 'form-control date_picker')
+                .col-md-7
+                  &nbsp;
+            %BR
+            .col-md-offset-2
+              .form-group
+                .col-sm-2.control-label
+                  %b= t 'staff_attendance.details_type', for: :details_type
+                .col-md-7
+                  .form-inline
+                    .form-group
+                      = t 'staff_attendance.full_listing'
+                      = radio_button_tag :details_type,"1", "1"
+                    .form-group
+                      = t 'staff_attendance.shortlisted'
+                      = radio_button_tag :details_type,"2"
+                    .form-group
+                      %font{size: "-1", color: "grey"}= t 'staff_attendance.shortlisted_note'
+                  
+            %BR
+            .row
+              .form-group
+                .col-md-offset-4.col-sm-4
+                  = submit_tag (t 'staff_attendance.monthly_details'), :name => :list_submit_button, :class => 'btn btn-primary'
             %BR
   

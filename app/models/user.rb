@@ -206,7 +206,89 @@ class User < ActiveRecord::Base
     end
     adm_sub
   end
+  
+  #for Timbalan Pengarah Urusan / Head of Management side - able to approve - refer auth, should MATCH with StaffAttendance.peeps
+  ##not just Timbalan Pengarah (Pengurusan), have to give Pengarah APPROVE access too (plus add roles as 'administration_staff' as well)
+  def admin_unitleaders_thumb
+#     #academic programmes-start
+#     postbasics=['Pengkhususan', 'Pos Basik', 'Diploma Lanjutan']
+#     dip_prog=Programme.roots.where(course_type: 'Diploma').pluck(:name)
+#     post_prog=Programme.roots.where(course_type: postbasics).pluck(:name)
+#     commonsubject=Programme.where(course_type: 'Commonsubject').pluck(:name).uniq
+#     #temp-rescue - make sure this 2 included in Programmes table @ production svr as commonsubject type
+#     etc_subject=['Sains Tingkahlaku', 'Anatomi & Fisiologi']
+#     #academic programmes-end
+#     
+#     @head_thumb_ids=[]
+#     mypost=userable.positions.first
+#     if mypost.name=="Timbalan Pengarah (Pengurusan)"
+#       mgmt_units= Position.where('staff_id is not null and unit is not null and unit!=? and unit not in (?) and unit not in (?) and unit not in (?) and unit not in (?)', '', dip_prog, commonsubject, postbasics, etc_subject).pluck(:unit).uniq
+#       mgmt_units.each do |department|
+#         @head_thumb_ids << Position.unit_department_leader(department).thumb_id unless Position.unit_department_leader(department).nil?
+#       end
+#       adm_unit_thumbs=@head_thumb_ids
+#     else
+#       adm_unit_thumbs=[]
+#     end
+#     adm_unit_thumbs  
+    
+    ############
+    mypost = Position.where(staff_id: userable_id).first
+    myunit = mypost.unit
+    mythumbid = userable.thumb_id
+    iamleader=Position.am_i_leader(userable_id)
+    if iamleader== true   #check by roles
+      thumbs=Staff.joins(:positions).where('staffs.thumb_id!=? and unit=?', mythumbid, myunit).pluck(:thumb_id)
+    else #check by rank / grade
+      leader_staffid=Position.unit_department_leader(myunit).id   #return Staff(id) record ofunit/dept leader
+      @head_thumb_ids=[]
+      
+      #academic programmes-start
+      postbasics=['Pengkhususan', 'Pos Basik', 'Diploma Lanjutan']
+      dip_prog=Programme.roots.where(course_type: 'Diploma').pluck(:name)
+      post_prog=Programme.roots.where(course_type: postbasics).pluck(:name)
+      commonsubject=Programme.where(course_type: 'Commonsubject').pluck(:name).uniq
+      #temp-rescue - make sure this 2 included in Programmes table @ production svr as commonsubject type
+      etc_subject=['Sains Tingkahlaku', 'Anatomi & Fisiologi']
+      #academic programmes-end 
+      
+      if leader_staffid==userable_id #when current user is unit/department leader
+        thumbs=Staff.joins(:positions).where('staffs.thumb_id!=? and unit=?', mythumbid, myunit).pluck(:thumb_id)
+        #when current user is Pengarah, above shall collect all timbalans thumb id plus academicians leader (Ketua Program)
+        if userable_id==Position.roots.first.staff_id
+          academic_programmes=dip_prog+post_prog+commonsubject
+          academic_programmes.each do |prog|
+            @head_thumb_ids << Position.unit_department_leader(prog).thumb_id if Position.where('staff_id is not null and unit=?', prog).count > 0 #staff_id must exist 
+          end
+          thumbs+=@head_thumb_ids
+        end
+      else 
+        #when superior for current user is Pengarah, then she must be one of timbalans-"Ketua Unit Pengurusan Tertinggi"
+        if leader_staffid==Position.roots.first.staff_id 
+          if mypost.name.include?("Pengurusan") #Timbalan Pengarah (Pengurusan)
+            #management units
+            mgmt_units= Position.where('staff_id is not null and unit is not null and unit!=? and unit not in (?) and unit not in (?) and unit not in (?) and unit not in (?)', '', dip_prog, commonsubject, postbasics, etc_subject).pluck(:unit).uniq
+            mgmt_units.each do |department|
+              @head_thumb_ids << Position.unit_department_leader(department).thumb_id unless Position.unit_department_leader(department).nil?
+            end
+            thumbs=@head_thumb_ids
+          else #other timbalans
+            thumbs=[]
+          end
+        else   
+          thumbs=[]
+        end
+      end
+    end
+    thumbs
+    ############
+  end
 
+  #use in - auth_rules(staff attendance)
+  def unit_members_thumb
+    Staff.where(id: unit_members).pluck(:thumb_id).compact #[5658]
+  end
+  
   def role_symbols
    roles.map do |role|
     role.authname.to_sym

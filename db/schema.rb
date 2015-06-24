@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150609062702) do
+ActiveRecord::Schema.define(version: 20150623193323) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -967,6 +967,17 @@ ActiveRecord::Schema.define(version: 20150609062702) do
     t.datetime "updated_at"
   end
 
+  create_table "fingerprints", force: true do |t|
+    t.integer "thumb_id"
+    t.date    "fdate"
+    t.integer "ftype"
+    t.string  "reason"
+    t.integer "approved_by"
+    t.boolean "is_approved"
+    t.date    "approved_on"
+    t.integer "status"
+  end
+
   create_table "grades", force: true do |t|
     t.integer  "student_id"
     t.integer  "subject_id"
@@ -989,6 +1000,11 @@ ActiveRecord::Schema.define(version: 20150609062702) do
     t.decimal  "examweight"
     t.datetime "created_at"
     t.datetime "updated_at"
+  end
+
+  create_table "holidays", force: true do |t|
+    t.string "hname"
+    t.date   "hdate"
   end
 
   create_table "intakes", force: true do |t|

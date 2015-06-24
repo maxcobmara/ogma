@@ -446,6 +446,14 @@ module DropDown
         [ I18n.t('staff_attendance.others'), 5]
       ]
     
+    FINGERPRINT_TYPE = [
+      #Displayed       stored in db
+      [I18n.t('fingerprint.in'), 1],
+      [I18n.t('fingerprint.out'), 2],
+      [I18n.t('fingerprint.both'), 3]
+    ]
+	
+    
     # library resources (book)
     
   LOAN = [

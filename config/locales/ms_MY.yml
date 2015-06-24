@@ -21,6 +21,8 @@ ms_MY:
       ptcourse: Kursus Latihan
       ptbudget: Bajet
       staff_appraisal: Penilaian Prestasi
+      staff_attendance: Kedatangan Staf
+      fingerprint: Fingerprint
     attributes:
       student:
         name: Nama
@@ -100,6 +102,12 @@ ms_MY:
       mycpd:
         cpd_year: Tahun
         cpd_value: Jumlah Mata Kumulatif
+      staff_attendance:
+        reason: Sebab
+      fingerprint:
+        fdate: Tarikh
+        thumb_id: "Staf (Thumb Id)"
+        reason: Sebab
     errors:
         template:
           body: "Berikut adalah beberapa masalah:"
@@ -199,6 +207,7 @@ ms_MY:
   select_excel_file: Sila pilih fail Excel untuk diimport
   reports: Laporan
   all_records: Semua Rekod
+  rejected: Tidak Diluluskan
  
   actions:
     new: Baru
@@ -315,6 +324,7 @@ ms_MY:
     thumb: Thumb ID
     shift: Waktu Anjal
     shift_start: " bermula "
+    shift_end: " sehingga "
     fileno: No Fail Peribadi
     cobirthdt: Tarikh Lahir
     birthcertno: No Surat Beranak
@@ -958,6 +968,7 @@ ms_MY:
     excel_format: Format Excel
     date_range1: "Carian 'Semua Jabatan / Unit' - Rekod kedatangan bagi kemasukan julat tarikh (dalam 2 bulan terakhir)"
     date_range2: "Carian mengikut Jabatan / Unit - Rekod kedatangan bagi kemasukan julat tarikh (dalam 2 tahun terakhir)"
+    require_complete_data: "-- Data kakitangan (Waktu Anjal dan Thumb ID) serta perjawatan (Staf) dalam Jabatan / Unit perlulah lengkap bagi membolehkan carian dilakukan"
     conditions: "Syarat - syarat bagi fail Excel"
     allowed_date_range: "Julat tarikh yang dibenarkan : "
     must_not_exist: Rekod kedatangan mestilah BELUM wujud dalam ICMS
@@ -968,10 +979,10 @@ ms_MY:
     fingerprint: Fingerprint
     date_time: "Tarikh & Masa"
     outstation: Luar Kawasan
-    official: Urusan Rasmi
-    forgot: Terlupa
+    official: "Urusan Rasmi / Peribadi"
+    forgot: Terlupa Fingerprint
     early_late: "Datang Lewat / Pulang Awal"
-    others: "Lain - lain"
+    others: "Lain - Lain Hal"
     advise_trigger1: "Datang Lewat : "
     advise_trigger3: "Tandakan kotak semak 'Tindakan' (untuk aktifkan borang 'Kenyataan Fingerprint') atau kotak semak 'Abaikan' dan klik ikon 'Simpan Tindakan' di laman senarai Kedatangan Staf"
     advise_trigger2: "Pulang Awal : "
@@ -990,11 +1001,17 @@ ms_MY:
     monthly_date: Bulan bermula
     since: semenjak
     monthly_listing: Senarai Bulanan
+    monthly_details: "Perincian Bulanan (termasuk Pengecualian)"
     staff_name: Nama Staf
-    monthly_list: Senarai bagi bulan
+    monthly_list: Bulan Carian
+    details_type: Jenis Paparan
+    full_listing: Senarai Penuh
+    shortlisted: Senarai Ringkas
+    shortlisted_note: "Pilih 'Senarai Ringkas' untul papar Cuti / Pergerakan / Ketidakhadiran sahaja"
   
   attendance:
     title: "Pengurusan Datang Lambat & Pulang Awal"
+    title2: "Senarai Datang Lambat & Pulang Awal"
     new: "Kedatangan Baru (Datang Lambat / Pulang Awal)"
     details: Butiran Kedatangan 
     edit: "Sunting Kedatangan (Datang Lambat / Pulang Awal)"
@@ -1010,6 +1027,28 @@ ms_MY:
     reason: Sebab
     approve_id: Pelulus
     approvestatus: Status Kelulusan
+    attendance_not_recorded: "Hari Tanpa Thumbprint (Penghantaran Fingerprint)"
+    
+  fingerprint:
+    title: "Kenyataan Fingerprint (Hari Tidak Fingerprint)"
+    title2: "Kenyataan Fingerprint (Tidak Fingerprint)"
+    title3: "Senarai Kenyataan Fingerprint (Tidak Fingerprint)"
+    new: "Kenyataan Fingerprint Baru (Hari Tidak Fingerprint)"
+    edit: "Sunting Kenyataan Fingerprint (Hari Tidak Fingerprint)"
+    details: Butiran Fingerprint
+    fdate: Tarikh
+    ftype: Jenis
+    in: Masuk
+    out: Keluar
+    both: Masuk dan Keluar
+    thumb_id: "Staf (Thumb Id)"
+    approval_title: "Kelulusan Kenyataan Fingerprint (Tidak Fingerprint)"
+    approval: Kelulusan Kenyataan Fingerprint
+    approval2: "Kelulusan (Tidak Fingerprint)"
+    no_record: Tiada rekod
+    notes:  "Nota : Kenyataan Fingerprint (Tidak Fingerprint) hanya boleh dibuat bagi hari (tarikh) yang TIADA sekurang-kurangnya 1 rekod kedatangan (masuk atau keluar). Sekiranya Kenyataan Fingerprint diperlukan bagi hari yang mempunyai kedua-dua rekod keluar dan masuk, sila ke laman 'Pengurusan Datang Lambat & Pulang Awal'. Sila hubungi 'Pentadbir Staf' sekiranya rekod kedatangan yang diperlukan tiada dalam senarai."
+    statement_exist: "Kenyataan Fingerprint (Tdak Fingerprint) telah wujud!"
+    logrecord_exist: "Kenyataan Fingerprint (Tidak FIngerprint) hanya dibenarkan bagi hari-hari yang tidak mempunyai rekod kedatangan yang lengkap (log-masuk dan log-keluar)!"
     
   asset:
     title: Aset

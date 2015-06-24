@@ -222,4 +222,37 @@ class TravelRequest < ActiveRecord::Base
     end
   end
   
+  def travel_for
+    if return_at == 'null' || depart_at == 'null' || (return_at.beginning_of_day.to_date - depart_at.beginning_of_day.to_date) == 0
+      1
+    else
+      ((return_at.beginning_of_day.to_date - depart_at.beginning_of_day.to_date).to_i) + 1
+    end
+  end
+
+  def self.day_outstation(staffid, details_date)
+    month_begin=details_date.beginning_of_month
+    month_end=details_date.end_of_month
+    outstations=TravelRequest.where(staff_id: staffid, hod_accept: true).where('(depart_at >=? and depart_at <=?) or (return_at >=? and return_at <=?)', month_begin, month_end, month_begin, month_end).where('travel_claim_id is not null')
+    @traveling_id=0
+    outstations.each do |tr|
+      duration=tr.travel_for
+      adate=tr.depart_at.to_date
+      0.upto(duration-1) do |cnt|
+        adate+=cnt.days
+        if adate==details_date
+          @traveling_id=tr.id
+        end
+      end
+    end
+    @traveling_id
+    if @traveling_id==0
+      checkeddate_travelpurpose=""
+    else
+      trvq=TravelRequest.find(@traveling_id)
+      checkeddate_travelpurpose=trvq.document.title.truncate(30)+" ("+trvq.destination+")"
+    end
+    checkeddate_travelpurpose
+  end
+  
 end

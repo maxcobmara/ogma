@@ -10,10 +10,14 @@
   %ul.nav.navbar-nav
     - permitted_to? :staff_staff_attendances, :manage do
       %li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'staff_attendance.list1'))), staff_staff_attendances_path
+      %li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'attendance.title2'))), manager_admin_staff_staff_attendances_path
+    %li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'fingerprint.title'))), staff_fingerprints_path
   %ul.nav.navbar-nav.navbar-right
-    %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "toga"
-    %li= link_to content_tag(:li, fa_icon("print", text: (t 'actions.print'))), "#", class: 'bogus'
-=@peeps
+    /%li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "toga"
+    /%li= link_to content_tag(:li, fa_icon("print", text: (t 'actions.print'))), "#", class: 'bogus'
+
+/=@current_user.admin_unitleaders_thumb.count
+/=StaffAttendance.peeps(@current_user).count
 .row
   %table.table-striped.table-hover.ogma
     %thead
@@ -40,8 +44,9 @@
             %td=h attendance.reason? ? attendance.reason : "Not Submitted Yet"
             %td= attendance.try(:approvedby).try(:name) if attendance.is_approved == true
             %td
-              - if attendance.reason? && (attendance.is_approved == nil || attendance.is_approved == false)
-                = link_to image_tag("approval.png", :border => 0, :title => 'Approval'), :action => 'approve', :id => attendance
+              /- if attendance.reason? && (attendance.is_approved == nil || attendance.is_approved == false)
+              - if attendance.reason? && (attendance.is_approved == nil)
+                = link_to image_tag("approval.png", :border => 0, :title => 'Approval'), :action => 'approval', :id => attendance
               - elsif attendance.is_approved == true  
                 = image_tag("tick.png") 
               - elsif attendance.is_approved == false  
@@ -59,7 +64,7 @@
             %td= attendance.try(:approvedby).try(:name) if attendance.is_approved == true 
             %td
               - if attendance.reason? && attendance.is_approved == nil
-                = link_to image_tag("approval.png", :border => 0, :title => 'Approval'), :action => 'approve', :id => attendance
+                = link_to image_tag("approval.png", :border => 0, :title => 'Approval'), :action => 'approval', :id => attendance
               - elsif attendance.is_approved == true
                 = image_tag("tick.png")
               - elsif attendance.is_approved == false
@@ -69,13 +74,17 @@
         %td{:colspan=>"7",:style=>"font-weight: bold; background-color: #D8D8D8;"}=t 'attendance.days_iam_late'
       - for attendance in @mylate_attendances
         %tr
-          %td=h link_to attendance.logged_at.strftime('%d-%m-%Y'), :action=>'edit', :id=> attendance
+          %td=h link_to attendance.logged_at.strftime('%d-%m-%Y'), staff_staff_attendance_path(attendance)
           %td=h attendance.logged_at.strftime('%H:%M:%S') 
           %td &nbsp;
           %td &nbsp;
           %td=h attendance.reason.blank? ? "Reason not submitted" : attendance.reason
           %td=h attendance.approved_by.blank? ? "" : attendance.try(:approver).try(:staff_name_with_position)
-          %td &nbsp;
+          %td
+            - if attendance.is_approved == true
+              = image_tag("tick.png")
+            - elsif attendance.is_approved == false
+              = image_tag("cross.png")
           /- if permitted_to? :destroy, @attendance 
           /  = link_to image_tag("delete.png", :border => 0, :title => 'Delete'), attendance, :confirm => 'Are you sure?', :method => :delete 
 
@@ -83,14 +92,76 @@
         %td{:colspan=>"7",:style=>"font-weight: bold; background-color: #D8D8D8;"}=t 'attendance.days_iam_early'
       - for attendance in @myearly_attendances
         %tr
-          %td=h link_to attendance.logged_at.strftime('%d-%m-%Y'), :action=>'edit', :id=> attendance
+          %td=h link_to attendance.logged_at.strftime('%d-%m-%Y'), staff_staff_attendance_path(attendance)
           %td &nbsp;
           %td=h attendance.logged_at.strftime('%H:%M:%S') 
           %td &nbsp;
           %td=h attendance.reason.blank? ? "Reason not submitted" : attendance.reason
           %td=h attendance.approved_by.blank? ? "" : attendance.try(:approver).try(:staff_name_with_position)
-          %td &nbsp;
+          %td 
+            - if attendance.is_approved == true
+              = image_tag("tick.png")
+            - elsif attendance.is_approved == false
+              = image_tag("cross.png")
           /- if permitted_to? :destroy, @attendance 
           /  = link_to image_tag("delete.png", :border => 0, :title => 'Delete'), attendance, :confirm => 'Are you sure?', :method => :delete 
-        
  
+/       %tr
+/         %td{:colspan=>"7",:style=>"font-weight: bold; background-color: #D8D8D8;"}=t 'fingerprint.approval'
+/ 
+/       - if @approvefingerprints.size > 0
+/         - for fingerprint in @approvefingerprints
+/           %tr
+/             %td=h fingerprint.fdate.strftime('%d-%m-%Y')
+/             %td
+/             %td &nbsp;
+/             %td=h fingerprint.owner.name 
+/             %td=h fingerprint.reason
+/             %td= fingerprint.try(:approvedby).try(:name) if attendance.is_approved == true
+/             %td
+/               - if fingerprint.reason? && (fingerprint.is_approved == nil)
+/                 = link_to image_tag("approval.png", :border => 0, :title => 'Approval'), :controller=> 'fingerprints', :action => 'approval', :id => fingerprint
+/               - elsif fingerprint.is_approved == true  
+/                 = image_tag("tick.png") 
+/               - elsif fingerprint.is_approved == false  
+/                 = image_tag("cross.png")
+/                 
+/       %tr
+/         %td{:colspan=>"7",:style=>"font-weight: bold; background-color: #D8D8D8;"}=t 'fingerprint.title'
+/         /=t 'fingerprint.title'+" | "
+/         /= link_to (t 'attendance.new_fingerprint'), new_staff_fingerprint_path
+/       %tr
+/         %td{:colspan => "7"}
+/           = form_for [:staff, @fingerprint], html: { multipart: true, class: 'form-horizontal' }  do |f| 
+/             = f.hidden_field :thumb_id, value: current_user.userable.thumb_id
+/             .col-md-1= f.text_field :fdate, class: 'form-control date_picker'
+/             .col-md-3= submit_tag t('fingerprint.new')
+/             /, class: "btn btn-link"
+/       - for fingerprint in @fingerprints
+/         - fdate_start=fingerprint.fdate.to_time.beginning_of_day
+/         - fdate_end=fingerprint.fdate.to_time.end_of_day
+/         - sa_rec_in = StaffAttendance.where('logged_at>=? and logged_at<=?', fdate_start, fdate_end).where('log_type=? or log_type=?', 'I','i').where(thumb_id: current_user.userable.thumb_id)
+/         - sa_rec_out = StaffAttendance.where('logged_at>=? and logged_at<=?', fdate_start, fdate_end).where('log_type=? or log_type=?', 'O','o').where(thumb_id: current_user.userable.thumb_id)
+/         %tr
+/           %td=h link_to fingerprint.fdate.try(:strftime, '%d-%m-%Y'), staff_fingerprint_path(fingerprint)
+/           %td
+/             - if sa_rec_in.count > 0
+/               = sa_rec_in.first.logged_at.strftime('%H:%M')
+/             - else
+/               %font{color: "red"}No record
+/           %td
+/             - if sa_rec_out.count > 0
+/               = sa_rec_out.first.logged_at.strftime('%H:%M')
+/             - else
+/               %font{color: "red"}No record
+/           %td
+/           %td=h fingerprint.reason.blank? ? "Reason not submitted" : fingerprint.reason
+/           %td=h fingerprint.approved_by.blank? ? "" : fingerprint.try(:approver).try(:staff_name_with_position)
+/           %td 
+/             - if fingerprint.is_approved == true
+/               = image_tag("tick.png")
+/             - elsif fingerprint.is_approved == false
+/               = image_tag("cross.png")
+
+                
+%BR
