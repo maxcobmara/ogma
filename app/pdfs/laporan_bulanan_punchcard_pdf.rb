@@ -91,7 +91,7 @@ class Laporan_bulanan_punchcardPdf < Prawn::Document
          @latest_colour2="Hijau" 
        elsif @latest_colour=="Red"
           @latest_colour2="Merah"
-       elsif @latest_colour="Yellow"
+       elsif @latest_colour=="Yellow"
          @latest_colour2="Kuning"
        end
        @color_in_columns << @latest_colour2
