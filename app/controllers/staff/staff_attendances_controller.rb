@@ -288,11 +288,12 @@ class Staff::StaffAttendancesController < ApplicationController
     else
       @leader=Position.unit_department_leader(unit_dept)
     end
+    #to confirm
     #@staff_attendances = StaffAttendance.where('logged_at >? and logged_at <? and thumb_id IN(?)', daily_start, daily_end, thumb_ids)
     @staff_attendances = StaffAttendance.where('trigger is true and logged_at >? and logged_at <? and thumb_id IN(?)', daily_start, daily_end, thumb_ids)
     respond_to do |format|
       format.pdf do
-        pdf = Laporan_harian_punchcardPdf.new(@staff_attendances, @leader, daily_date, view_context)
+        pdf = Laporan_harian_punchcardPdf.new(@staff_attendances, @leader, daily_date, thumb_ids, view_context)
         send_data pdf.render, filename: "laporan_bulanan_punchcard-{Date.today}",
                               type: "application/pdf",
                               disposition: "inline"
