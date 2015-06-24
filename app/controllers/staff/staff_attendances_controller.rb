@@ -326,7 +326,7 @@ class Staff::StaffAttendancesController < ApplicationController
       @leader=Position.unit_department_leader(unit_dept)
     end
     #@staff_attendances = StaffAttendance.where('trigger is true and logged_at >? and logged_at <? and thumb_id IN(?)', weekly_start, weekly_end, thumb_ids)
-    @staff_attendances = StaffAttendance.count_non_approved(thumb_ids, weekly_start, weekly_end)
+    @staff_attendances = StaffAttendance.count_non_approved(thumb_ids, wstart, wend)
     @notapproved_lateearly=StaffAttendance.where("trigger=? AND is_approved =? AND thumb_id IN (?) AND logged_at>=? AND logged_at<=?", true, false, thumb_ids, wstart, wend).order(logged_at: :desc).group_by {|t| t.thumb_id } 
     
     respond_to do |format|
