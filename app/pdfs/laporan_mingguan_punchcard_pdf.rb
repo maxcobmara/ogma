@@ -12,7 +12,7 @@ class Laporan_mingguan_punchcardPdf < Prawn::Document
       @wend=weekly_end
     elsif weekly_date.year > 2014
       @wstart=weekly_start-1.days
-      @wend=weekly_start+5.days #-1+6
+      @wend=weekly_start+3.days
     end
     font "Times-Roman"
     text "Lampiran B 2", :align => :right, :size => 12, :style => :bold
