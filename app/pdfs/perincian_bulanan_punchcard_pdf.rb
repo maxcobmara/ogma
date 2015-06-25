@@ -58,6 +58,7 @@ class Perincian_bulanan_punchcardPdf < Prawn::Document
              oneday<< "#{sa.logged_at.strftime('%H:%M')}"
              @lateness = sa.late_early(shift_id)
              @lateness2 = sa.number_format(@lateness)
+             @approved_details=sa.approval_details
              cnt_i+=1
            end
            if cnt_i==0 && indx==0
@@ -68,6 +69,7 @@ class Perincian_bulanan_punchcardPdf < Prawn::Document
              oneday<< "#{sa.logged_at.strftime('%H:%M') }"
              @early = sa.late_early(shift_id)
              @early2=sa.number_format(@early)
+             @approved_details=sa.approval_details
              cnt_o+=1
            end
            if cnt_o==0 && indx==sas.count-1
@@ -97,7 +99,8 @@ class Perincian_bulanan_punchcardPdf < Prawn::Document
                 if @holidays.include?(ccdate)
                   absent=""
                 else        
-                  if @holidays.include?(ccdate-1.day) && ((dyname=="Mon" && ccdate.year < 2015) || (dyname=="Sun" && @next_date.year > 2014))
+                  #note - if public holidays fall on Friday, the next Sunday will be replace as holiday (not saturday)
+                  if (@holidays.include?(ccdate-1.day) && (dyname=="Mon" && ccdate.year < 2015) || (@holidays.include?(ccdate-2.day) && dyname=="Sun" && @next_date.year > 2014))
 		    absent=""
 		    replace_holiday="**"
 	          else
@@ -106,11 +109,11 @@ class Perincian_bulanan_punchcardPdf < Prawn::Document
                 end
                 leave_or_travel_nothumb=""
               else
-                if leave_taken==""  && fingerprint_nothumbprint.count==0 && travel_outstation!=""
+                if leave_taken==""  && fingerprint_nothumbprint.count==0 && travel_outstation!="" 
                   leave_or_travel_nothumb=travel_outstation
-                elsif travel_outstation=="" && fingerprint_nothumbprint.count==0 && leave_taken!="" 
+                elsif travel_outstation=="" && fingerprint_nothumbprint.count==0 && leave_taken!=""
                   leave_or_travel_nothumb=leave_taken
-                elsif fingerprint_nothumbprint.count > 0 && leave_taken=="" && travel_outstation==""
+                elsif fingerprint_nothumbprint.count > 0 && leave_taken=="" && travel_outstation=="" 
                   leave_or_travel_nothumb=fingerprint_nothumbprint.first.exception_details
                 end
                 absent=""
@@ -133,18 +136,22 @@ class Perincian_bulanan_punchcardPdf < Prawn::Document
           travel_outstation=TravelRequest.day_outstation(@staffid, ddate_rev)
           fingerprint_nothumbprint=Fingerprint.where(thumb_id: @thumb_id, fdate: ddate_rev)
           if leave_taken=="" && travel_outstation=="" && fingerprint_nothumbprint.count==0
-            leave_or_travel_nothumb=""
+            leave_or_travel_nothumb_apprlatearly=""
           else
-            if leave_taken==""  && fingerprint_nothumbprint.count==0 && travel_outstation!=""
-              leave_or_travel=travel_outstation
-            elsif travel_outstation=="" && fingerprint_nothumbprint.count==0 && leave_taken!="" 
-              leave_or_travel_nothumb=leave_taken
-            #at least 1 log record should not exist
+            #either take leave, outstation(movement), other keluar pej/movement etc-locally(keyed-in by late or early fingerprint), fingerprint(no fingerprint exist)
+            if leave_taken==""  && fingerprint_nothumbprint.count==0 && travel_outstation!="" 
+              leave_or_travel_nothumb_apprlatearly=travel_outstation
+            elsif travel_outstation=="" && fingerprint_nothumbprint.count==0 && leave_taken!=""
+              leave_or_travel_nothumb_apprlatearly=leave_taken
+	      #at least 1 log record should not exist
             elsif fingerprint_nothumbprint.count > 0 && (@lateness2=="" || @early2=="") && leave_taken=="" && travel_outstation==""
-              leave_or_travel_nothumb=fingerprint_nothumbprint.first.exception_details
-            end
+              leave_or_travel_nothumb_apprlatearly=fingerprint_nothumbprint.first.exception_details
+	    end
           end 
-          attendance_list << ["#{ddate} #{'*' if @holidays.include?(ddate_rev)}"]+oneday+["#{StaffShift.find(shift_id).start_end2}", @lateness2, @early2, "", leave_or_travel_nothumb, dyname] 
+	  #if there's a day with 1 logged record(late early only) & 1 w/o logged record: user can have both Fingeprint(via late early) && Fingerprint(via No fingerprint)
+	  #but gives priority to lateearly first(display Fingerprint), ignore Fingerprint(no fingerprint) if @approved_details EXIST
+	  #otherwise display Fingerprint(no thumbprint) - best ever sample 21Jun2015, Maslinda
+          attendance_list << ["#{ddate} #{'*' if @holidays.include?(ddate_rev)}"]+oneday+["#{StaffShift.find(shift_id).start_end2}", @lateness2, @early2, "", "OPPA #{@approved_details if @approved_details!=""} *ii #{leave_or_travel_nothumb_apprlatearly if @approved_details.nil?} ", dyname] 
         end
         @sas=sas
 
@@ -170,7 +177,9 @@ class Perincian_bulanan_punchcardPdf < Prawn::Document
             if @holidays.include?(@next_date.to_date)
               absent=""
             else   
-	      if @holidays.include?(@next_date.to_date-1.day) && ((dyname=="Mon" && @next_date.year < 2015)||(dyname=="Sun" && @next_date.year > 2014))
+	      #if @holidays.include?(@next_date.to_date-1.day) && ((dyname=="Mon" && @next_date.year < 2015)||(dyname=="Sun" && @next_date.year > 2014))
+	      #note - if public holidays fall on Friday, the next Sunday will be replace as holiday (not saturday)
+              if (@holidays.include?(@next_date.to_date-1.day) && (dyname=="Mon" && @next_date.year < 2015) || (@holidays.include?(@next_date.to_date-2.day) && dyname=="Sun" && @next_date.year > 2014))
 		absent=""
 		replace_holiday="**"
 	      else
