@@ -702,6 +702,15 @@ class StaffAttendance < ActiveRecord::Base
   def render_colour_status
     (StaffAttendance::ATT_STATUS.find_all{|disp, value| value == attended.att_colour}).map {|disp, value| disp}
   end
+  
+  def approval_details
+    if is_approved==true
+      a=(DropDown::TRIGGER_STATUS.find_all{|disp, value| value == status}).map {|disp, value| disp}[0]+"-"+reason
+    else
+      a="blm app"
+    end
+    a
+  end
  
   ATT_STATUS = [
          #  Displayed       stored in db
