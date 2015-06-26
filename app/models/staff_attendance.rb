@@ -704,10 +704,24 @@ class StaffAttendance < ActiveRecord::Base
   end
   
   def approval_details
+    clock_type="IN : " if log_type=="I" || log_type=="I"
+    clock_type="OUT : " if log_type=="O" || log_type=="o"
     if is_approved==true
-      a=(DropDown::TRIGGER_STATUS.find_all{|disp, value| value == status}).map {|disp, value| disp}[0]+"-"+reason
+      a=clock_type+(DropDown::TRIGGER_STATUS.find_all{|disp, value| value == status}).map {|disp, value| disp}[0]+"-"+reason
     else
-      a="blm app"
+      #this part won't be displayed if leave_taken / travel_outstation exist - in Monthly Details (Perincian Bulanan)-start
+      if trigger==true
+        if status.nil? || reason==""
+          a=clock_type+I18n.t("attendance.fingerprint_incomplete")
+        else
+          a=clock_type+I18n.t("attendance.pending_approval")
+        end
+      elsif trigger.nil?
+        a=clock_type+I18n.t("attendance.not_triggered") 
+      elsif trigger==false #IGNORED
+        a=""
+      end
+      #this part won't be displayed if leave_taken / travel_outstation exist - in Monthly Details (Perincian Bulanan)-end
     end
     a
   end

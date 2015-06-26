@@ -51,10 +51,13 @@ class Fingerprint < ActiveRecord::Base
   end
   
   def exception_details
+    f_type="IN : " if ftype==1
+    f_type="OUT : " if ftype==2
+    f_type="IN & OUT : " if ftype==3
     if is_approved==true
-      a=(DropDown::TRIGGER_STATUS.find_all{|disp, value| value == status}).map {|disp, value| disp}[0]+"-"+reason
+      a=f_type+(DropDown::TRIGGER_STATUS.find_all{|disp, value| value == status}).map {|disp, value| disp}[0]+"-"+reason
     else
-      a=""
+      a=f_type+""
     end
     a
   end

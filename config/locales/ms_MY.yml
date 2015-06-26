@@ -1007,7 +1007,7 @@ ms_MY:
     details_type: Jenis Paparan
     full_listing: Senarai Penuh
     shortlisted: Senarai Ringkas
-    shortlisted_note: "Pilih 'Senarai Ringkas' untul papar Cuti / Pergerakan / Ketidakhadiran sahaja"
+    shortlisted_note: "Pilih 'Senarai Ringkas' untuk papar hari tanpa log kedatangan sahaja"
   
   attendance:
     title: "Pengurusan Datang Lambat & Pulang Awal"
@@ -1028,6 +1028,9 @@ ms_MY:
     approve_id: Pelulus
     approvestatus: Status Kelulusan
     attendance_not_recorded: "Hari Tanpa Thumbprint (Penghantaran Fingerprint)"
+    pending_approval: Belum diluluskan
+    fingerprint_incomplete: Fingerprint belum lengkap
+    not_triggered: "Belum 'trigger'"
     
   fingerprint:
     title: "Kenyataan Fingerprint (Hari Tidak Fingerprint)"

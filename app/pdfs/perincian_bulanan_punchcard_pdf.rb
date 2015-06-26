@@ -58,7 +58,7 @@ class Perincian_bulanan_punchcardPdf < Prawn::Document
              oneday<< "#{sa.logged_at.strftime('%H:%M')}"
              @lateness = sa.late_early(shift_id)
              @lateness2 = sa.number_format(@lateness)
-             @approved_details=sa.approval_details
+             @approval_details_in=sa.approval_details
              cnt_i+=1
            end
            if cnt_i==0 && indx==0
@@ -69,7 +69,7 @@ class Perincian_bulanan_punchcardPdf < Prawn::Document
              oneday<< "#{sa.logged_at.strftime('%H:%M') }"
              @early = sa.late_early(shift_id)
              @early2=sa.number_format(@early)
-             @approved_details=sa.approval_details
+             @approval_details_out=sa.approval_details
              cnt_o+=1
            end
            if cnt_o==0 && indx==sas.count-1
@@ -135,7 +135,8 @@ class Perincian_bulanan_punchcardPdf < Prawn::Document
           leave_taken=Leaveforstaff.leavetype_when_day_taken_off(@staffid, ddate_rev) 
           travel_outstation=TravelRequest.day_outstation(@staffid, ddate_rev)
           fingerprint_nothumbprint=Fingerprint.where(thumb_id: @thumb_id, fdate: ddate_rev)
-          if leave_taken=="" && travel_outstation=="" && fingerprint_nothumbprint.count==0
+          ####################
+          if leave_taken=="" && travel_outstation=="" && fingerprint_nothumbprint.count==0 && @approval_details_in.nil? && @approval_details_out.nil?
             leave_or_travel_nothumb_apprlatearly=""
           else
             #either take leave, outstation(movement), other keluar pej/movement etc-locally(keyed-in by late or early fingerprint), fingerprint(no fingerprint exist)
@@ -144,14 +145,25 @@ class Perincian_bulanan_punchcardPdf < Prawn::Document
             elsif travel_outstation=="" && fingerprint_nothumbprint.count==0 && leave_taken!=""
               leave_or_travel_nothumb_apprlatearly=leave_taken
 	      #at least 1 log record should not exist
-            elsif fingerprint_nothumbprint.count > 0 && (@lateness2=="" || @early2=="") && leave_taken=="" && travel_outstation==""
+            elsif fingerprint_nothumbprint.count==1 && (@lateness2=="" || @early2=="") && leave_taken=="" && travel_outstation==""
               leave_or_travel_nothumb_apprlatearly=fingerprint_nothumbprint.first.exception_details
-	    end
-          end 
-	  #if there's a day with 1 logged record(late early only) & 1 w/o logged record: user can have both Fingeprint(via late early) && Fingerprint(via No fingerprint)
-	  #but gives priority to lateearly first(display Fingerprint), ignore Fingerprint(no fingerprint) if @approved_details EXIST
-	  #otherwise display Fingerprint(no thumbprint) - best ever sample 21Jun2015, Maslinda
-          attendance_list << ["#{ddate} #{'*' if @holidays.include?(ddate_rev)}"]+oneday+["#{StaffShift.find(shift_id).start_end2}", @lateness2, @early2, "", "OPPA #{@approved_details if @approved_details!=""} *ii #{leave_or_travel_nothumb_apprlatearly if @approved_details.nil?} ", dyname] 
+	      if @lateness2!=""
+	        leave_or_travel_nothumb_apprlatearly=@approval_details_in+", "+fingerprint_nothumbprint.first.exception_details
+	      elsif @early2!=""
+	        leave_or_travel_nothumb_apprlatearly=fingerprint_nothumbprint.first.exception_details+", "+@approval_details_out
+	      end
+	    elsif (@lateness2!="" || @early2!="") && fingerprint_nothumbprint.count==0 && leave_taken=="" && travel_outstation==""
+               if @lateness2!=""
+                 leave_or_travel_nothumb_apprlatearly=@approval_details_in
+                 leave_or_travel_nothumb_apprlatearly+=", "+@approval_details_out if @early2!=""
+               elsif @lateness2==""
+                 leave_or_travel_nothumb_apprlatearly=@approval_details_out
+               end
+            end
+          end   
+          ##############
+          attendance_list << ["#{ddate} #{'*' if @holidays.include?(ddate_rev)}"]+oneday+["#{StaffShift.find(shift_id).start_end2}", @lateness2, @early2, "",  leave_or_travel_nothumb_apprlatearly, dyname] 
+          #attendance_list << ["#{ddate} #{'*' if @holidays.include?(ddate_rev)}"]+oneday+["#{StaffShift.find(shift_id).start_end2}", @lateness2, @early2, "", "OPPA #{@approved_details if @approved_details!=""} *ii #{leave_or_travel_nothumb_apprlatearly if @approved_details.nil?} ", dyname] 
         end
         @sas=sas
 
