@@ -14,18 +14,27 @@ class Perincian_bulanan_punchcardPdf < Prawn::Document
     text "Details of Attendance (incl. Shift Exception)", :align => :center, :size => 13, :style => :bold
     move_down 10
     text "Department / Unit : #{@unit_department}", :size => 11
-    text "#{Staff.where(thumb_id: @thumb_id).first.name.upcase}", :size => 11
-    #text "#{@monthly_list.beginning_of_month.strftime('%d-%m-%Y')} to #{@monthly_list.end_of_month.strftime('%d-%m-%Y')}", :size => 11
-    move_down 5
-    if @staff_attendances.count > 0
-      attendance_list
-      move_down 10
-      repeat(lambda {|pg| pg > 1}) do
-        draw_text "#{Staff.where(thumb_id: @thumb_id).first.name} (#{@unit_department})", :at => bounds.bottom_left, :size =>9
-      end
-    else
+    thumb_ids=Staff.where(thumb_id: @thumb_id)
+    if thumb_ids.count > 1
+      staff_names=thumb_ids.pluck(:name).join(", ")
       move_down 50
-      text "No data exist!"
+      text "Thumb ID must unique for each staff. There are #{thumb_ids.count} of staffs using the same Thumb ID : #{@thumb_id}", :size => 11
+      move_down 5
+      text "#{staff_names}", :size => 11
+    else
+      text "#{Staff.where(thumb_id: @thumb_id).first.name.upcase}", :size => 11
+      #text "#{@monthly_list.beginning_of_month.strftime('%d-%m-%Y')} to #{@monthly_list.end_of_month.strftime('%d-%m-%Y')}", :size => 11
+      move_down 5
+      if @staff_attendances.count > 0
+        attendance_list
+        move_down 10
+        repeat(lambda {|pg| pg > 1}) do
+          draw_text "#{Staff.where(thumb_id: @thumb_id).first.name} (#{@unit_department})", :at => bounds.bottom_left, :size =>9
+        end
+      else
+        move_down 50
+        text "No data exist!"
+      end
     end
   end
 

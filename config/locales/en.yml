@@ -1052,7 +1052,7 @@ en:
     excel_format: Excel Format
     date_range1: "Searching 'All Department / Unit' - Attendance records for selected date range (within the latest 2 months)"
     date_range2: "Searching by Department / Unit - Attendance records for selected date range (within the latest 2 years)"
-    require_complete_data: "-- Department / Unit - Require complete staff (Staff Shift and Thumb ID) and positions (staff) data for searching to works"
+    require_complete_data: "-- <Unit / Department> :  Complete staff (Staff Shift and Thumb ID) and positions (staff) data are required for searching to works"
     conditions: Conditions for Excel File
     allowed_date_range: "Allowed Date Range : "
     must_not_exist: Attendance Record must NOT exist in ICMS
@@ -1093,6 +1093,11 @@ en:
     full_listing: Full Listing
     shortlisted: Shortlisted
     shortlisted_note: "Choose 'Shortlisted' to view days without log records only"
+    compulsory_daily: "Unit / Department and Attendance Date are compulsory fields for Daily Report"
+    compulsory_weekly: "Unit / Department and Week are compulsory fields for Weekly Report"
+    compulsory_monthly: "Unit / Department and Month are compulsory fields for Monthly Report"
+    compulsory_listing: "Unit / Department, Staff Name and Search Month are compulsory fields for Monthly Listing"
+    compulsory_details: "Unit / Department, Staff Name, Search Month and Display Type are compulsory fields for Month Details (inc. Exception)"
  
   attendance:
     title: "Manage Lateness & Early Return"
