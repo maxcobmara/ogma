@@ -94,23 +94,39 @@ class StaffAttendance < ActiveRecord::Base
     a=StaffAttendance.staff_with_unit_groupbyunit
     thmb=[] if val==1
     uname=[] if val==2
+    uname4=[] if val==4
     uname_thmb=[] if val==3
+    @name_id=[]
     count=0
     a.each do |u_name,staffs|
-	thmb<< staffs.map(&:thumb_id).compact if val==1
-	uname<< u_name if val==2
-	if val==3
-	    u_name2=u_name
-	    u_name2="-- "+u_name if valid_dept.include?(u_name)==false  #add remark "-- " before unit name, search for these units/departments error shall arise
-	    u_t=[]
-	    u_t<< u_name2<< count
-	    uname_thmb << u_t 
-	    count+=1
-	end
+      thmb<< staffs.map(&:thumb_id).compact if val==1
+      uname<< u_name if val==2
+      u_name2=u_name
+      u_name2="-- "+u_name if valid_dept.include?(u_name)==false #add remark "-- " before unit name, search for these units/departments error shall arise
+      if val==3
+        u_t=[]
+        u_t<< u_name2<< count
+        uname_thmb << u_t 
+        count+=1
+      end
+      
+      #additional for use in Attendance Report (select field) - START
+      uname4<< u_name2 if val==4
+      if val==5
+        unit_staffs=[]
+        staffs.each do |astaff|
+          unit_staffs << [astaff.name, astaff.id] if astaff.positions.first.name != "ICMS Vendor Admin" || astaff.icno!="123456789012"
+        end
+        @name_id << [u_name2, unit_staffs]
+      end
+      #additional for use in Attendance Report (select field) - END
+      
     end
     return thmb if val==1
     return uname if val==2
     return uname_thmb if val==3
+    return uname4 if val==4
+    return @name_id if val==5
   end
   
   def self.thumb_ids_all
@@ -626,12 +642,12 @@ class StaffAttendance < ActiveRecord::Base
 			  @begin_thismonth = every_month_begin 
 			  @begin_nextmonth = every_month_begin.to_date.next_month.beginning_of_month.to_s
 			  @monthly_non_approved = StaffAttendance.count_non_approved(thumb_id,@begin_thismonth,@begin_nextmonth).count
-			  if previous_status == 1 && @monthly_non_approved >= 1 && @count_prev_stat_change == 0            #current:yellow    #change to 1 for checking, original value:3
+			  if previous_status == 1 && @monthly_non_approved >= 3 && @count_prev_stat_change == 0            #current:yellow    #change to 1 for checking, original value:3*** re-update after UAT completed on 25th June 2015
 				    previous_status = 2        #turn into green
 				    @count_prev_stat_change+=1
 				    @date_prev_stat = every_month_begin
 			  elsif previous_status == 2     #current:green
-				    if @monthly_non_approved >= 1 && @count_prev_stat_change == 1 && (every_month_begin.to_date-@date_prev_stat.to_date) >= 28   #change to 1 for checking, original value:2
+				    if @monthly_non_approved >= 2 && @count_prev_stat_change == 1 && (every_month_begin.to_date-@date_prev_stat.to_date) >= 28   #change to 1 for checking, original value:2*** re-update after UAT completed on 25th June 2015
 					    previous_status = 3      #turn into red
 					    @count_prev_stat_change+=1 
 					    @date_prev_stat= every_month_begin

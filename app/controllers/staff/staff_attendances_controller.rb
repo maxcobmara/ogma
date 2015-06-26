@@ -251,8 +251,8 @@ class Staff::StaffAttendancesController < ApplicationController
   end
   
   def attendance_report 
-    @udept=Position.unit_department 
-    @udept_staffs=Position.unit_department_staffs
+    @udept=Position.unit_department2 #Position.unit_department
+    @udept_staffs=Position.unit_department_staffs2 #Position.unit_department_staffs
   end
   
   def attendance_report_main
