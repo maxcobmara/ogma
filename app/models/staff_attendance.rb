@@ -89,6 +89,7 @@ class StaffAttendance < ActiveRecord::Base
   
   def self.get_thumb_ids_unit_names(val)
     #refer above--
+    comb_pengkhususan=["Pengkhususan", "Pos Basik", "Diploma Lanjutan"]
     valid_dept=Staff.joins(:positions).where('positions.staff_id is not null and staff_shift_id is not null and staffs.thumb_id is not null and unit is not null and unit!=?  and positions.name!=?', '', "ICMS Vendor Admin").pluck(:unit)
     #-----
     a=StaffAttendance.staff_with_unit_groupbyunit
@@ -97,31 +98,62 @@ class StaffAttendance < ActiveRecord::Base
     uname4=[] if val==4
     uname_thmb=[] if val==3
     @name_id=[]
-    count=0
+    @count=0
+    @count2=0
+    @p_name = "Pengkhususan"
+    @p_staffs=[]
+    
     a.each do |u_name,staffs|
-      thmb<< staffs.map(&:thumb_id).compact if val==1
-      uname<< u_name if val==2
-      u_name2=u_name
-      u_name2="-- "+u_name if valid_dept.include?(u_name)==false #add remark "-- " before unit name, search for these units/departments error shall arise
-      if val==3
-        u_t=[]
-        u_t<< u_name2<< count
-        uname_thmb << u_t 
-        count+=1
-      end
-      
-      #additional for use in Attendance Report (select field) - START
-      uname4<< u_name2 if val==4
-      if val==5
-        unit_staffs=[]
-        staffs.each do |astaff|
-          unit_staffs << [astaff.name, astaff.id] if astaff.positions.first.name != "ICMS Vendor Admin" || astaff.icno!="123456789012"
+      if comb_pengkhususan.include?(u_name)
+        #combine advance programme - START
+        if valid_dept.include?(u_name) && @count==0
+          @p_name="-- Pengkhususan"
+          @count+=1
         end
-        @name_id << [u_name2, unit_staffs]
-      end
-      #additional for use in Attendance Report (select field) - END
+        @p_staffs += staffs.map(&:thumb_id).compact
+        @unit_staffs=[]
+        staffs.each do |astaff|
+          @unit_staffs << [astaff.name, astaff.id] if astaff.positions.first.name != "ICMS Vendor Admin" || astaff.icno!="123456789012"
+        end
+        @name_id2 = [@p_name, @unit_staffs]
+        #combine advance programme - END
+      else 
+        ###diploma - START
+        thmb<< staffs.map(&:thumb_id).compact if val==1
+        uname<< u_name if val==2
+        u_name2=u_name
+        u_name2="-- "+u_name if valid_dept.include?(u_name)==false #add remark "-- " before unit name, search for these units/departments error shall arise
       
+        if val==3
+          u_t=[]
+          u_t<< u_name2<< @count2
+          uname_thmb << u_t 
+          @count2+=1
+        end
+      
+        #additional for use in Attendance Report (select field) - START
+        uname4<< u_name2 if val==4 
+        if val==5
+          unit_staffs=[]
+          staffs.each do |astaff|
+            unit_staffs << [astaff.name, astaff.id] if astaff.positions.first.name != "ICMS Vendor Admin" || astaff.icno!="123456789012"
+          end
+          @name_id << [u_name2, unit_staffs]
+        end
+        #additional for use in Attendance Report (select field) - END
+        ###diploma - END
+      end
     end
+     thmb << @p_staffs if val==1
+     uname << @p_name if val==2 
+     if val==3
+       u_t=[]
+       u_t<< @p_name << @count2 
+       uname_thmb << u_t
+     end
+     uname4 << @p_name if val==4
+     @name_id << @name_id2 if val==5
+    
     return thmb if val==1
     return uname if val==2
     return uname_thmb if val==3

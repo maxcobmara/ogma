@@ -14,13 +14,18 @@ class Senarai_bulanan_punchcardPdf < Prawn::Document
     text "Monthly Attendance Listing", :align => :center, :size => 12, :style => :bold
     move_down 10
     text "Department / Unit : #{@unit_department}", :size => 11
-    thumb_ids=Staff.where(thumb_id: @thumb_id)
-    if thumb_ids.count > 1
-      staff_names=thumb_ids.pluck(:name).join(", ")
-      move_down 50
-      text "Thumb ID must unique for each staff. There are #{thumb_ids.count} of staffs using the same Thumb ID : #{@thumb_id}", :size => 11
-      move_down 5
-      text "#{staff_names}", :size => 11
+    thumb_dup=Staff.where(thumb_id: @thumb_id)
+    if thumb_dup.count > 1 
+      if @thumb_id.blank?
+	move_down 50
+        text "Thumb ID must exist for each staff."
+      else
+        staff_names=thumb_ids.pluck(:name).join(", ")
+        move_down 50
+        text "Thumb ID must unique for each staff. There are #{thumb_dup.count} staffs using the same Thumb ID : #{@thumb_id}", :size => 11
+        move_down 5
+        text "#{staff_names}", :size => 11
+      end
     else
       text "#{Staff.where(thumb_id: @thumb_id).first.name.upcase}", :size => 11
       move_down 5
