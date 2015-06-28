@@ -69,82 +69,90 @@
                   = t 'staff_attendance.unit'
                   =@unit_names[ind]
                   /= g_sa.count
-            - g_sa.each do |sa|
-            
-              /set current date & corresponding shift_id in use
-              - curr_date=sa.logged_at.strftime('%Y-%m-%d')
-              - shiftid = StaffShift.shift_id_in_use(curr_date, sa.thumb_id)
+                       
+            /this will display duplicates INs & OUTs - SAME 
+            /- g_sa.each do |sa|
+      
+            - g_sa.group_by{|y|y.thumb_id}.each do |aastaff, sa_beforesort|
+              - sa_beforesort.sort_by{|t|[t.log_type, t.logged_at]}.each_with_index do |sa, ind3|
               
-              %tr
-                %td{:style=>"text-align: center;"}
-                  =h sa.r_u_late(shiftid) == "flag" ? image_tag("flag_red.png") : "" 
-                  =h sa.r_u_early(shiftid) == "flag" ? image_tag("flag_red.png") : "" 
-                %td
-                  =h link_to sa.attended.try(:name), staff_staff_attendance_path(sa)      
-                  (
-                  =h sa.id
-                  )
-                  (
-                  =h sa.thumb_id
-                  )
-                /%td{:style=>"text-align: center;"}=h sa.log_type == "I" ? sa.logged_at.in_time_zone('UTC').strftime('%l:%M %P') : "" 
-                %td{:style=>"text-align: center;"}=h sa.log_type == "I" ? sa.logged_at.strftime('%l:%M %P') : "" 
-                %td{:style=>"text-align: center;"}
-                  - if sa.log_type == "O" || sa.log_type == "o"
-                    /=h sa.logged_at.in_time_zone('UTC').strftime('%l:%M %P')
-                    =h sa.logged_at.strftime('%l:%M %P')
-                %td{:style=>"text-align: center;"}
-                  //working - draft - same result as shiftinuse
-                  /- curr_date=sa.logged_at.strftime('%Y-%m-%d')
-                  /- astaff=Staff.where('thumb_id=?',sa.thumb_id).first
-                  /- abc=astaff.shift_histories.where('deactivate_date <?', curr_date)
-                  /- if abc.count==0
-                  /  = astaff.staff_shift.start_end
-                  /- else
-                  /  = abc.last.staff_shift.start_end
-                  /  %font{size: "-2px", color: "grey"}
-                  /    %br=(t 'staff_attendance.since')+" "+(abc.last.deactivate_date+1.day).strftime('%d-%m-%Y')
-                  //Notes: deactivate_date - last date for prev staff_shift
+                /while this will display first occurance of IN & last occurance of OUT - 23June2015
+                /- if (ind3==0 && (sa.log_type=="I" || sa.log_type=="i")) || (ind3==sa_beforesort.count-1 && (sa.log_type=="O" || sa.log_type=="o"))
+                /this part - same as used in Equery - punch card(Catechumen) & Attendance Details (inc Exeception) 
+                /but may not appropiate for use in INDEX - as eg. 30 May 2013 - Aisamuddin (2 log ins & 2 log outs - OT? etc., admin may ignore where appropiate)
+                
+                /this will display duplicates INs & OUTs - SAME 
+                - if (sa.log_type=="I" || sa.log_type=="i") || (sa.log_type=="O" || sa.log_type=="o")
+                
+                  /set current date & corresponding shift_id in use
+                  - curr_date=sa.logged_at.strftime('%Y-%m-%d')
+                  - shiftid = StaffShift.shift_id_in_use(curr_date, sa.thumb_id)
+              
+                  %tr
+                    %td{:style=>"text-align: center;"}
+                      =h sa.r_u_late(shiftid) == "flag" ? image_tag("flag_red.png") : "" 
+                      =h sa.r_u_early(shiftid) == "flag" ? image_tag("flag_red.png") : "" 
+                    %td
+                      =h link_to sa.attended.try(:name), staff_staff_attendance_path(sa)
+                      ="("+sa.id.to_s+") ("+sa.thumb_id.to_s+")"
+                    /%td{:style=>"text-align: center;"}=h sa.log_type == "I" ? sa.logged_at.in_time_zone('UTC').strftime('%l:%M %P') : "" 
+                    %td{:style=>"text-align: center;"}=h sa.log_type == "I" ? sa.logged_at.strftime('%l:%M %P') : "" 
+                    %td{:style=>"text-align: center;"}
+                      - if sa.log_type == "O" || sa.log_type == "o"
+                        /=h sa.logged_at.in_time_zone('UTC').strftime('%l:%M %P')
+                        =h sa.logged_at.strftime('%l:%M %P')
+                    %td{:style=>"text-align: center;"}
+                      //working - draft - same result as shiftinuse
+                      /- curr_date=sa.logged_at.strftime('%Y-%m-%d')
+                      /- astaff=Staff.where('thumb_id=?',sa.thumb_id).first
+                      /- abc=astaff.shift_histories.where('deactivate_date <?', curr_date)
+                      /- if abc.count==0
+                      /  = astaff.staff_shift.start_end
+                      /- else
+                      /  = abc.last.staff_shift.start_end
+                      /  %font{size: "-2px", color: "grey"}
+                      /    %br=(t 'staff_attendance.since')+" "+(abc.last.deactivate_date+1.day).strftime('%d-%m-%Y')
+                      //Notes: deactivate_date - last date for prev staff_shift
                  
-                  /Display shift in use (start time & end time plus 'activation date' [ie. 1 day after deactivate_date of prev shift used])
-                  - shiftinuse= StaffShift.shift_in_use(curr_date,sa.thumb_id)
-                  - if shiftinuse.include?("~")==false
-                    = shiftinuse
-                  - else
-                    = shiftinuse.split("~")[0]
-                    %font{size: "-2px", color: "grey"}
-                      %br= shiftinuse.split("~")[1]
+                      /Display shift in use (start time & end time plus 'activation date' [ie. 1 day after deactivate_date of prev shift used])
+                      - shiftinuse= StaffShift.shift_in_use(curr_date,sa.thumb_id)
+                      - if shiftinuse.include?("~")==false
+                        = shiftinuse
+                      - else
+                        = shiftinuse.split("~")[0]
+                        %font{size: "-2px", color: "grey"}
+                          %br= shiftinuse.split("~")[1]
                    
-                %td{:style=>"text-align: center;"}
-                  - if sa.log_type == "I" 
-                    - if sa.late_early(shiftid)=="-"
-                      %font{:color=> "black"}-
-                    - else
-                      %font{:color=> "red"}= sa.late_early(shiftid)
-                  - else
-                    %font{:color=> "black"}-
-                %td{:style=>"text-align: center;"}
-                  - if sa.log_type == "O" 
-                    - if sa.late_early(shiftid)=="-"
-                      %font{:color=> "black"}-
-                    - else
-                      %font{:color=> "red"}= sa.late_early(shiftid)
-                  - else 
-                    %font{:color=> "black"}-
-                %td{:style=>"text-align: center;"}
-                  - if sa.trigger == nil && sa.r_u_late(shiftid) == "flag"
-                    = check_box_tag "triggers[]", sa.id
-                  - elsif sa.trigger == nil && sa.r_u_early(shiftid) == "flag"
-                    = check_box_tag "triggers[]", sa.id
-                  - elsif sa.trigger == true  
-                    = image_tag("user_go.png")
-                %td{:style=>"text-align: center;"}
-                  - if sa.trigger == nil && sa.r_u_late(shiftid) == "flag"
-                    = check_box_tag "ignores[]", sa.id
-                  - elsif sa.trigger == nil && sa.r_u_early(shiftid) == "flag"
-                    = check_box_tag "ignores[]", sa.id
-                  - elsif sa.trigger == false
-                    = image_tag("tick.png")
+                    %td{:style=>"text-align: center;"}
+                      - if sa.log_type == "I" 
+                        - if sa.late_early(shiftid)=="-"
+                          %font{:color=> "black"}-
+                        - else
+                          %font{:color=> "red"}= sa.late_early(shiftid)
+                      - else
+                        %font{:color=> "black"}-
+                    %td{:style=>"text-align: center;"}
+                      - if sa.log_type == "O" 
+                        - if sa.late_early(shiftid)=="-"
+                          %font{:color=> "black"}-
+                        - else
+                          %font{:color=> "red"}= sa.late_early(shiftid)
+                      - else 
+                        %font{:color=> "black"}-
+                    %td{:style=>"text-align: center;"}
+                      - if sa.trigger == nil && sa.r_u_late(shiftid) == "flag"
+                        = check_box_tag "triggers[]", sa.id
+                      - elsif sa.trigger == nil && sa.r_u_early(shiftid) == "flag"
+                        = check_box_tag "triggers[]", sa.id
+                      - elsif sa.trigger == true  
+                        = image_tag("user_go.png")
+                    %td{:style=>"text-align: center;"}
+                      - if sa.trigger == nil && sa.r_u_late(shiftid) == "flag"
+                        = check_box_tag "ignores[]", sa.id
+                      - elsif sa.trigger == nil && sa.r_u_early(shiftid) == "flag"
+                        = check_box_tag "ignores[]", sa.id
+                      - elsif sa.trigger == false
+                        = image_tag("tick.png")
                     
           /display unit name for non-exist sa
           - if @hula == @last_person_oftheday && (params[:q]==nil || (params[:q][:keyword_search]==nil))

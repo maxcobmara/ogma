@@ -251,22 +251,48 @@ class Staff::StaffAttendancesController < ApplicationController
   end
   
   def attendance_report 
-    @udept=Position.unit_department 
-    @udept_staffs=Position.unit_department_staffs
+    @udept=Position.unit_department2 #Position.unit_department
+    @udept_staffs=Position.unit_department_staffs2 #Position.unit_department_staffs
   end
   
   def attendance_report_main
     commit = params[:list_submit_button]
     if commit==t('staff_attendance.daily_report')
-      redirect_to daily_report_staff_staff_attendances_path(:daily_date => params[:daily_date], :unit_department => params[:unit_department], format: 'pdf' )
+      if params[:daily_date].blank? || params[:unit_department].blank? 
+        redirect_to(attendance_report_staff_staff_attendances_path, :notice => I18n.t('staff_attendance.compulsory_daily'))
+      elsif params[:unit_department].include?("--")
+        redirect_to(attendance_report_staff_staff_attendances_path, :notice => I18n.t('staff_attendance.require_complete_data'))
+      else
+        redirect_to daily_report_staff_staff_attendances_path(:daily_date => params[:daily_date], :unit_department => params[:unit_department], format: 'pdf' )
+      end
     elsif commit==t('staff_attendance.weekly_report')
-      redirect_to weekly_report_staff_staff_attendances_path(:weekly_date => params[:weekly_date], :unit_department => params[:unit_department], format: 'pdf' )
+      if params[:weekly_date].blank? || params[:unit_department].blank?
+        redirect_to(attendance_report_staff_staff_attendances_path, :notice => I18n.t('staff_attendance.compulsory_weekly'))
+      elsif params[:unit_department].include?("--")
+        redirect_to(attendance_report_staff_staff_attendances_path, :notice => I18n.t('staff_attendance.require_complete_data'))
+      else
+        redirect_to weekly_report_staff_staff_attendances_path(:weekly_date => params[:weekly_date], :unit_department => params[:unit_department], format: 'pdf' )
+      end 
     elsif commit==t('staff_attendance.monthly_report')
-      redirect_to monthly_report_staff_staff_attendances_path(:monthly_date => params[:monthly_date], :unit_department => params[:unit_department], format: 'pdf' )
+      if params[:monthly_date].blank? || params[:unit_department].blank?
+        redirect_to(attendance_report_staff_staff_attendances_path, :notice => I18n.t('staff_attendance.compulsory_monthly'))
+      elsif params[:unit_department].include?("--")
+        redirect_to(attendance_report_staff_staff_attendances_path, :notice => I18n.t('staff_attendance.require_complete_data'))
+      else
+        redirect_to monthly_report_staff_staff_attendances_path(:monthly_date => params[:monthly_date], :unit_department => params[:unit_department], format: 'pdf' )
+      end 
     elsif commit==t('staff_attendance.monthly_listing')
-      redirect_to monthly_listing_staff_staff_attendances_path(:monthly_list => params[:monthly_list], :unit_department => params[:unit_department], :staff => params[:staff] ,format: 'pdf' )
+      if params[:monthly_list].blank? || params[:unit_department].blank? || params[:staff].blank?
+        redirect_to(attendance_report_staff_staff_attendances_path, :notice => I18n.t('staff_attendance.compulsory_listing'))
+      else
+        redirect_to monthly_listing_staff_staff_attendances_path(:monthly_list => params[:monthly_list], :unit_department => params[:unit_department], :staff => params[:staff] ,format: 'pdf' )
+      end
     elsif commit==t('staff_attendance.monthly_details')
-      redirect_to monthly_details_staff_staff_attendances_path(:monthly_list2 => params[:monthly_list2], :unit_department => params[:unit_department], :staff2 => params[:staff2], :details_type => params[:details_type], format: 'pdf' )
+      if params[:monthly_list2].blank? || params[:unit_department].blank? || params[:staff2].blank? || params[:details_type].blank?
+        redirect_to(attendance_report_staff_staff_attendances_path, :notice => I18n.t('staff_attendance.compulsory_details'))
+      else
+        redirect_to monthly_details_staff_staff_attendances_path(:monthly_list2 => params[:monthly_list2], :unit_department => params[:unit_department], :staff2 => params[:staff2], :details_type => params[:details_type], format: 'pdf' )
+      end
     end
   end
 

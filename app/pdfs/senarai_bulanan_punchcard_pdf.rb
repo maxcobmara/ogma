@@ -14,20 +14,34 @@ class Senarai_bulanan_punchcardPdf < Prawn::Document
     text "Monthly Attendance Listing", :align => :center, :size => 12, :style => :bold
     move_down 10
     text "Department / Unit : #{@unit_department}", :size => 11
-    text "#{Staff.where(thumb_id: @thumb_id).first.name.upcase}", :size => 11
-    move_down 5
-    if @staff_attendances.count > 0
-      attendance_list
-      move_down 10
-      text "C/In :   #{@staff_attendances.where('log_type ILIKE?', '%I%').count}", :size => 11
-      text "C/Out :   #{@staff_attendances.where('log_type ILIKE?', '%O%').count}", :size => 11
+    thumb_dup=Staff.where(thumb_id: @thumb_id)
+    if thumb_dup.count > 1 
+      if @thumb_id.blank?
+	move_down 50
+        text "Thumb ID must exist for each staff."
+      else
+        staff_names=thumb_ids.pluck(:name).join(", ")
+        move_down 50
+        text "Thumb ID must unique for each staff. There are #{thumb_dup.count} staffs using the same Thumb ID : #{@thumb_id}", :size => 11
+        move_down 5
+        text "#{staff_names}", :size => 11
+      end
     else
-      move_down 20
-      text "Data not exist", :size => 12
-    end
-    repeat(lambda {|pg| pg > 1}) do
-      draw_text "#{Staff.where(thumb_id: @thumb_id).first.name}", :at => bounds.bottom_left, :size =>9
-    end
+      text "#{Staff.where(thumb_id: @thumb_id).first.name.upcase}", :size => 11
+      move_down 5
+      if @staff_attendances.count > 0
+        attendance_list
+        move_down 10
+        text "C/In :   #{@staff_attendances.where('log_type ILIKE?', '%I%').count}", :size => 11
+        text "C/Out :   #{@staff_attendances.where('log_type ILIKE?', '%O%').count}", :size => 11
+      else
+        move_down 20
+        text "Data not exist", :size => 12
+      end
+      repeat(lambda {|pg| pg > 1}) do
+        draw_text "#{Staff.where(thumb_id: @thumb_id).first.name}", :at => bounds.bottom_left, :size =>9
+      end
+    end 
   end
 
   def attendance_list

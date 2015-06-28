@@ -140,7 +140,8 @@ class Position < ActiveRecord::Base
   end
   #Export Excel - end
   
-  #Use in STAFF ATTENDANCE report (unit / department drop down list - for all types of attendance report/listing)
+  #Use in STAFF ATTENDANCE report (unit / department drop down list - for all types of attendance report/listing) - START 
+  #- rev26June2015 - to match with Index page (search part)
   def self.unit_department
     #academic part
     postbasics=['Pengkhususan', 'Pos Basik', 'Diploma Lanjutan']
@@ -175,6 +176,16 @@ class Position < ActiveRecord::Base
     udept
   end
   
+  def self.unit_department2
+    unitname_fr_staff_attendances=StaffAttendance.get_thumb_ids_unit_names(4)
+    udept=[]
+    unitname_fr_staff_attendances.each do |ud|
+      udept << [ud, ud]
+    end
+    udept.sort
+  end
+  #Use in STAFF ATTENDANCE report (unit / department drop down list - for all types of attendance report/listing) - END
+  
   #use in Staff Attendance (self.peeps)
   def self.am_i_leader(userableid)   #(curr_user) - userable==staff   
     curr_user=User.where(userable_id: userableid).first
@@ -201,7 +212,8 @@ class Position < ActiveRecord::Base
     leader
   end
   
-  #Use in STAFF ATTENDANCE report (staff drop down list [upon selection of unit / department]- for monthly attendance listing)
+  #Use in STAFF ATTENDANCE report (staff drop down list [upon selection of unit / department]- for monthly attendance listing) - START 
+  #- rev26June2015 - to match with Index page (search part)
   def self.unit_department_staffs
     #academic part
     postbasics=['Pengkhususan', 'Pos Basik', 'Diploma Lanjutan']
@@ -250,6 +262,11 @@ class Position < ActiveRecord::Base
     end
     @grouped_staff
   end
+  
+  def self.unit_department_staffs2
+     StaffAttendance.get_thumb_ids_unit_names(5).sort
+  end
+  #Use in STAFF ATTENDANCE report (staff drop down list [upon selection of unit / department]- for monthly attendance listing) - END
     
 end
 

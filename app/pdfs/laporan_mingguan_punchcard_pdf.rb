@@ -93,13 +93,13 @@ class Laporan_mingguan_punchcardPdf < Prawn::Document
 
        #3a-start-WEEKLY REPORT-check previous status & ASSIGN LATEST STATUS-for selected week
        if @previous_status == 1            #!--if yellow-
-         if @count_non_approved>= 1   #!--change to 1 for checking, original value:3
+         if @count_non_approved>= 3   #!--change to 1 for checking, original value:3*** re-update after UAT completed on 25th June 2015
            @latest_colour = "Green"        #!--previous:yellow & >= 3 red marking, change status into GREEN
          else
            @latest_colour = @previous_colour   #!--current:yellow & < 3 red marking, NO CHANGES
          end 
        elsif @previous_status == 2       #!--if green-
-         if @count_non_approved >= 1  #!--change to 1 for checking, original value:2
+         if @count_non_approved >= 2  #!--change to 1 for checking, original value:2*** re-update after UAT completed on 25th June 2015
            @latest_colour = "Red"            #!--previous:green & >=2 red marking, [GREEN->RED]
          elsif @count_non_approved == 1
            @latest_colour = @previous_colour #!--current:green & = 1 red marking, NO CHANGES
@@ -140,9 +140,7 @@ class Laporan_mingguan_punchcardPdf < Prawn::Document
     counter = counter || 0
     cnt = -1
     header = [[ "Bil", "Nama Pegawai / Kakitangan Yang Datang Lambat / Pulang Awal",  "Jumlah Catitan Merah dalam tempoh seminggu","Warna Kad Pegawai / Kakitangan akhir minggu"]]
-    
-    #@staff_attendances.group_by{|x|x.thumb_id}.map do |attended, sa|
-    
+        
     attendance_list = 
       @staff_attendances.group_by{|x|x.thumb_id}.map do |attended, sa|
       ["#{counter += 1}", "#{Staff.where(thumb_id: attended).first.name}", "#{StaffAttendance.count_non_approved(attended, @wstart, @wend).count}" , " #{@color_in_columns[cnt+=1]}"]
@@ -157,7 +155,6 @@ class Laporan_mingguan_punchcardPdf < Prawn::Document
   
   def jumlah 
     move_down 20
-    #text "Jumlah Pegawai / Kakitangan                                       #{@notapproved_lateearly.count}", :align => :left, :size => 12
     text "Jumlah Pegawai / Kakitangan                                       #{@total_staff}", :align => :left, :size => 12
     move_down 5
     text "Jumlah Pegawai / Kakitangan                                       #{@green_count}", :align => :left, :size => 12
