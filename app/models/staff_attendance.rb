@@ -88,11 +88,18 @@ class StaffAttendance < ActiveRecord::Base
   end
   
   def self.get_thumb_ids_unit_names(val)
-    #refer above--
-    comb_pengkhususan=["Pengkhususan", "Pos Basik", "Diploma Lanjutan"]
-    valid_dept=Staff.joins(:positions).where('positions.staff_id is not null and staff_shift_id is not null and staffs.thumb_id is not null and unit is not null and unit!=?  and positions.name!=?', '', "ICMS Vendor Admin").pluck(:unit)
-    #-----
+    
     a=StaffAttendance.staff_with_unit_groupbyunit
+    comb_pengkhususan=["Pengkhususan", "Pos Basik", "Diploma Lanjutan"]
+    
+    #refer above--this will display all department / unit in INDEX & SEARCH select field - although w/out complete staff_shiftid & thumb_id(staffs)& staff_id(positions)
+    valid_staff=Staff.joins(:positions).where('positions.staff_id is not null and staff_shift_id is not null and thumb_id is not null and positions.unit is not null and positions.unit!=? and positions.name!=?', '', "ICMS Vendor Admin").pluck(:id)
+    invalid_staff=Staff.joins(:positions).where('positions.staff_id is not null and (staff_shift_id is null or thumb_id is null) and positions.unit is not null and positions.unit!=?and positions.name!=?', '', "ICMS Vendor Admin").pluck(:id)
+    valid_unit=Position.where(staff_id: valid_staff).pluck(:unit).uniq.compact-[""]
+    invalid_unit=Position.where(staff_id: invalid_staff).pluck(:unit).uniq.compact-[""]
+    valid_dept=valid_unit-invalid_unit
+    #---
+
     thmb=[] if val==1
     uname=[] if val==2
     uname4=[] if val==4
@@ -106,7 +113,7 @@ class StaffAttendance < ActiveRecord::Base
     a.each do |u_name,staffs|
       if comb_pengkhususan.include?(u_name)
         #combine advance programme - START
-        if valid_dept.include?(u_name) && @count==0
+        if valid_dept.include?(u_name)==false && @count==0
           @p_name="-- Pengkhususan"
           @count+=1
         end
