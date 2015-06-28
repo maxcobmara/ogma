@@ -21,7 +21,7 @@
         - @year_group.each do |y,m|
           - m.each do |month2|
             %th=month2.to_date.strftime("%b")
-
+        = @year_group.count
     %tbody
       /= render "index_search"
       - @all_dates.keys.sort.each_with_index do |thumbid, index|

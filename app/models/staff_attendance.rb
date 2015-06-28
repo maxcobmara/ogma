@@ -769,7 +769,8 @@ class StaffAttendance < ActiveRecord::Base
         if status.nil? || reason==""
           a=clock_type+I18n.t("attendance.fingerprint_incomplete")
         else
-          a=clock_type+I18n.t("attendance.pending_approval")
+          a=clock_type+I18n.t("attendance.pending_approval") if is_approved==nil 
+          a=clock_type+I18n.t("attendance.rejected").upcase+" ("+(DropDown::TRIGGER_STATUS.find_all{|disp, value| value == status}).map {|disp, value| disp}[0]+"-"+reason+")" if is_approved==false
         end
       elsif trigger.nil?
         a=clock_type+I18n.t("attendance.not_triggered") 

@@ -1121,6 +1121,7 @@ en:
     pending_approval: Pending Approval
     fingerprint_incomplete: Fingerprint incomplete
     not_triggered: Not yet triggered
+    rejected: Rejected
   
   fingerprint:
     title: "Fingerprint Statement (Days Not Fingerprint)"

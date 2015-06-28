@@ -1036,6 +1036,7 @@ ms_MY:
     pending_approval: Belum diluluskan
     fingerprint_incomplete: Fingerprint belum lengkap
     not_triggered: "Belum 'trigger'"
+    rejected: Ditolak
     
   fingerprint:
     title: "Kenyataan Fingerprint (Hari Tidak Fingerprint)"
