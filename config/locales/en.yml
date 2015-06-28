@@ -42,6 +42,7 @@ en:
       mycpd: MyCPD
       staff_attendance: Staff Attendance
       fingerprint: Fingerprint
+      holiday: Public Holiday
     attributes:
       student:
         name: Name
@@ -126,6 +127,9 @@ en:
         fdate: Date
         thum_id: "Staff (Thumb Id)"
         reason: Reason
+      holiday:
+        hname: Name
+        hdate: Date
     errors:
         template:
           body: "There were problems with the following fields:"
@@ -1122,6 +1126,15 @@ en:
     fingerprint_incomplete: Fingerprint incomplete
     not_triggered: Not yet triggered
     rejected: Rejected
+    
+  holiday:
+    title: Public Holiday
+    list: Public Holiday Listing
+    hname: Name
+    hdate: Date
+    details: Holiday Details
+    new: New Public Hoilday
+    edit: Edit Public Holiday
   
   fingerprint:
     title: "Fingerprint Statement (Days Not Fingerprint)"

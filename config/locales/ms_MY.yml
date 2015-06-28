@@ -23,6 +23,7 @@ ms_MY:
       staff_appraisal: Penilaian Prestasi
       staff_attendance: Kedatangan Staf
       fingerprint: Fingerprint
+      holiday: Cuti Umum
     attributes:
       student:
         name: Nama
@@ -108,6 +109,9 @@ ms_MY:
         fdate: Tarikh
         thumb_id: "Staf (Thumb Id)"
         reason: Sebab
+      holiday:
+        hname: Nama
+        hdate: Tarikh
     errors:
         template:
           body: "Berikut adalah beberapa masalah:"
@@ -1037,6 +1041,15 @@ ms_MY:
     fingerprint_incomplete: Fingerprint belum lengkap
     not_triggered: "Belum 'trigger'"
     rejected: Ditolak
+  
+  holiday:
+    title: Cuti Umum
+    list: Senarai Cuti Umum
+    hname: Nama Cuti
+    hdate: Tarikh Cuti 
+    details: Butiran Cuti
+    new: Cuti Umum Baru
+    edit: Sunting Cuti Umum
     
   fingerprint:
     title: "Kenyataan Fingerprint (Hari Tidak Fingerprint)"

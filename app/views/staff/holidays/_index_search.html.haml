@@ -1,0 +1,11 @@
+= search_form_for [:holiday, @search], url: staff_holidays_path,  class: "form-inline" do |f|
+  %tr.search_row{style: "display: none;"}
+    %td= f.text_field :hname_cont, size: 8,  :class => "form-control" 
+    %td
+      .col-md-2= f.text_field :hdate_gteq, size: 2,  :class => "form-control date_picker"
+      .col-md-2= f.text_field :hdate_lteq, size: 2,  :class => "form-control date_picker"
+    %td.input-group
+      /= f.text_field :hdate_eq, size: 2,  :class => "form-control date_picker"
+      %span.input-group-btn
+        %button.btn.btn-sm.btn-default.right{:type => "submit"}
+          %i.fa.fa-search.fa-fw

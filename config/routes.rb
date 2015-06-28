@@ -55,6 +55,7 @@ Ogma::Application.routes.draw do
         get :index_admin
       end
     end
+    resources :holidays 
     resources :attendances
     resources :travel_requests do
       member do
