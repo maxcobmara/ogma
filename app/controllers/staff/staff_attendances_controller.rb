@@ -336,8 +336,8 @@ class Staff::StaffAttendancesController < ApplicationController
       wstart=weekly_start
       wend=weekly_end
     elsif weekly_date.year > 2014
-      wstart=weekly_start-1.days
-      wend=weekly_start+3.days 
+      wstart=(weekly_start-1.days).to_time.beginning_of_day
+      wend=(weekly_start+3.days ).to_time.end_of_day
     end
     unit_dept=params[:unit_department]
     unit_dept_post_staffids=Position.where('staff_id is not null and unit=?', unit_dept).pluck(:staff_id)
