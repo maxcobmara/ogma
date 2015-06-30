@@ -236,6 +236,17 @@ authorization do
    has_permission_on :student_student_attendances, :to => [:manage, :new_multiple, :new_multiple_intake, :create_multiple, :edit_multiple, :update_multiple, :student_attendan_form]
    
    #TRAINING modules
+   has_permission_on :training_weeklytimetables, :to => [:menu, :read, :create]
+ 
+   has_permission_on :training_weeklytimetables, :to => [:personalize_index, :personalize_show, :personalize_timetable, :personalizetimetable] do
+      if_attribute :staff_id => is {user.userable_id}
+   end
+   
+   #coordinator
+   has_permission_on :training_weeklytimetables, :to => [:manage, :weekly_timetable] do
+      if_attribute :prepared_by => is {user.userable_id}
+   end
+   
    has_permission_on :training_trainingnotes, :to => :manage, :join_by => :or do
      if_attribute :topicdetail_id => is_in {user.topicdetails_of_programme}
      if_attribute :timetable_id => is_in {user.timetables_of_programme} 
@@ -260,6 +271,7 @@ authorization do
     has_permission_on :staff_staff_attendances, :to => :approval do
       if_attribute :thumb_id => is_in {user.admin_unitleaders_thumb}
     end
+    has_permission_on :training_weeklytimetables, :to => :manage
  end
  
  #Group Library   -------------------------------------------------------------------------------

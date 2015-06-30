@@ -268,6 +268,29 @@ class Position < ActiveRecord::Base
   end
   #Use in STAFF ATTENDANCE report (staff drop down list [upon selection of unit / department]- for monthly attendance listing) - END
     
+  #use in Weeklytimetables_controller.rb (Index - retrieve Programme ID for Pos Basik/Pengkhususan/Diploma Lanjutan) - START
+  def self.get_postbasic_id(main_task_first, unit_name)
+    #postbasic_name_full = main_task_first[/Diploma Lanjutan \D{1,}/] 
+    #a=@position_exist.first.main_tasks.scan(/"#{@lecturer_programme}"(.*),/)[0][0].strip   #Diploma Lanjutan Perioperating nbafmb anbfm ban
+    #postbasic_name=a.gsub!(/[^a-zA-Z]/," ").split(" ")[0]     #in case a consist of comma, etc
+    if ["Diploma Lanjutan"].include?(unit_name)
+      a=main_task_first.scan(/Diploma Lanjutan (.*)/)[0][0].strip   #Diploma Lanjutan Perioperating nbafmb anbfm ban
+    elsif ["Pos Basik"].include?(unit_name)
+      a=main_task_first.scan(/Pos Basik (.*)/)[0][0].strip
+    elsif ["Pengkhususan"].include?(unit_name)
+      a=main_task_first.scan(/Pengkhususan (.*)/)[0][0].strip
+    end
+    if a.include?(" ")  #space exist, others may exist too
+      a_rev=a.gsub!(/[^a-zA-Z]/," ")   #in case a consist of comma, etc 
+      postbasic_name=a_rev.split(" ")[0]
+    else
+      postbasic_name=a 
+    end
+    postbasic=Programme.where('name ILIKE(?)', "%#{postbasic_name}%").first
+    postbasic.id if postbasic
+  end
+  #use in Weeklytimetables_controller.rb (Index - retrieve Programme ID for Pos Basik/Pengkhususan/Diploma Lanjutan) - END
+  
 end
 
 # == Schema Information

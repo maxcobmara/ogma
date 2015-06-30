@@ -47,10 +47,10 @@
     .col-sm-2.control-label
       = f.label :format1
     .col-md-3
-      = f.collection_select :format1, Timetable.all, :id, :name, {:include_blank => (t 'helpers.prompt.select_format')},{class: 'selectpicker', "data-width"=>'260px'}
+      = f.collection_select :format1, Timetable.all, :id, :name, {:include_blank => (t 'helpers.prompt.select_format')},{class: 'selectpicker', "data-width"=>'360px'}
 	  
   .form-group
     .col-sm-2.control-label
       = f.label :format2
     .col-md-3
-      = f.collection_select :format2, Timetable.all, :id, :name, {:include_blank => (t 'helpers.prompt.select_format')}, {class: 'selectpicker', "data-width"=>'260px'}
+      = f.collection_select :format2, Timetable.all, :id, :name, {:include_blank => (t 'helpers.prompt.select_format')}, {class: 'selectpicker', "data-width"=>'360px'}

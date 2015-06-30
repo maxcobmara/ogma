@@ -180,7 +180,7 @@ class Weekly_timetablePdf < Prawn::Document
           if @classes_tospan.include?(col2)
             gg=""
             @weeklytimetable.weeklytimetable_details.each do |xx|
-              if xx.is_friday == true && xx.time_slot == @count1+col2 
+              if xx.is_friday == true && xx.time_slot == col2 #@count1+col2 
                 #= render 'subtab_class_details', {:xx=>xx}   
 		##note : location_desc - user's comment : location type on
                 gg+="#{xx.weeklytimetable_topic.parent.parent.subject_abbreviation.blank? ? "-" :  xx.weeklytimetable_topic.parent.parent.subject_abbreviation.upcase  if xx.weeklytimetable_topic.ancestry_depth == 4} #{ '<br>'+xx.weeklytimetable_topic.parent.name if xx.weeklytimetable_topic.ancestry_depth == 4}  #{xx.weeklytimetable_topic.parent.subject_abbreviation.blank? ? "-" :  xx.weeklytimetable_topic.parent.subject_abbreviation.upcase if xx.weeklytimetable_topic.ancestry_depth != 4} #{'<br>'+xx.weeklytimetable_topic.name  if xx.weeklytimetable_topic.ancestry_depth != 4}#{"(K)" if xx.lecture_method==1} #{"(T)" if xx.lecture_method==2}#{"(A)" if xx.lecture_method==3} #{'<br>'+xx.weeklytimetable_lecturer.name}"
@@ -190,7 +190,7 @@ class Weekly_timetablePdf < Prawn::Document
           else
             hh=""
             @weeklytimetable.weeklytimetable_details.each do |xx|
-              if xx.is_friday == true && xx.time_slot == @count1+col2
+              if xx.is_friday == true && xx.time_slot == col2 #@count1+col2
                 #=render 'subtab_class_details', {:xx=>xx}
 		##note : location_desc - user's comment : location type on
                 hh+="#{xx.weeklytimetable_topic.parent.parent.subject_abbreviation.blank? ? "-" :  xx.weeklytimetable_topic.parent.parent.subject_abbreviation.upcase  if xx.weeklytimetable_topic.ancestry_depth == 4} #{ '<br>'+xx.weeklytimetable_topic.parent.name if xx.weeklytimetable_topic.ancestry_depth == 4}  #{xx.weeklytimetable_topic.parent.subject_abbreviation.blank? ? "-" :  xx.weeklytimetable_topic.parent.subject_abbreviation.upcase if xx.weeklytimetable_topic.ancestry_depth != 4} #{'<br>'+xx.weeklytimetable_topic.name  if xx.weeklytimetable_topic.ancestry_depth != 4}#{"(K)" if xx.lecture_method==1} #{"(T)" if xx.lecture_method==2}#{"(A)" if xx.lecture_method==3} #{'<br>'+xx.weeklytimetable_lecturer.name}"

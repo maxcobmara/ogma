@@ -1,13 +1,14 @@
 = search_form_for @search, url: training_weeklytimetables_path,  class: "form-inline" do |f|
-  %tr.search_row.hidden
+  %tr.search_row{style: "display: none;"}
     %td= f.text_field :schedule_programme_name_cont, size: 2,  :class => "form-control"
     %td= f.text_field :schedule_intake_description_cont, size: 2,  :class => "form-control"
     %td= f.text_field :startdate_gteq, size: 2,  :class => "form-control"
     %td= f.text_field :enddate_gteq, size: 2,  :class => "form-control"
     %td= f.text_field :academic_semester_semester_cont, size: 2,  :class => "form-control"
     %td= f.text_field :schedule_creator_name_cont, size: 2, :class => "form-control"
-
+    %td=select_tag('q[is_submitted_eq]', options_for_select([[t('actions.all_records'),''],[t('submitted'), true],[t('not_submitted'), false]]), class: 'selectpicker',"data-width"=>'100px') 
     %td.input-group
+      =select_tag('q[hod_approved_eq]', options_for_select([[t('actions.all_records'),''],[t('approved'), true],[t('not_approved'), false]]), class: 'selectpicker',"data-width"=>'60px') 
       %span.input-group-btn
         %button.btn.btn-sm.btn-default.right{:type => "submit"}
           %i.fa.fa-search.fa-fw

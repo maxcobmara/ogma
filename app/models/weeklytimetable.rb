@@ -253,13 +253,45 @@ class Weeklytimetable < ActiveRecord::Base
     
   end
 
-  #def self.search(search)
-    #if search         
-      #@weeklytimetables = Weeklytimetable.find(:all,:conditions => ['programme_id=?', search])
-      #else
-      #@weeklytimetables = Weeklytimetable.find(:all)
-      #end
-  #end
+  #dip & posbasiks
+  def self.search2(programmeid, roles, staffid)  
+    intake_of_coordinator=Intake.where(programme_id: programmeid, staff_id: staffid)
+    intake_ids=intake_of_coordinator.pluck(:id) if intake_of_coordinator.count > 0
+#     main_task_first=Position.where(staff_id: staffid).first.tasks_main
+#     if main_task_first.include?("Penyelaras Kumpulan")
+#       a=main_task_first.scan(/Penyelaras Kumpulan (.*)/)[0][0].strip 
+#       if a.include?(" ")  #space exist, others may exist too
+#         a_rev=a.gsub!(/[^a-zA-Z]/," ")   #in case a consist of comma, etc 
+#         intake_desc=a_rev.split(" ")[0] #intake_desc=group
+#       else
+#         intake_desc=a 
+#       end
+#       intakeid=Intake.where(programme_id: programmeid, description: intake_desc).first.id
+#     end
+    if roles.include?("programme_manager") || roles.include?("coordinator") #coordinator here - w/o group name/no  may see all
+      weeklytimetables= Weeklytimetable.where(programme_id: programmeid)
+#     elsif main_task_first.include?("Penyelaras Kumpulan") && intakeid
+#       #weeklytimetables= Weeklytimetable.where(programme_id: programmeid, intake_id: intakeid) - betulnye, suppose must assign Penyelaras Kumpulan XXXX
+#        weeklytimetables= Weeklytimetable.where('programme_id=? and (intake_id=? or prepared_by=?)',  programmeid,  intakeid, staffid) #retrieve : prev working sample
+    elsif intake_ids
+      weeklytimetables=Weeklytimetable.where('programme_id=? and (intake_id IN(?) or prepared_by=?)', programmeid, intake_ids, staffid)
+    else
+      wt_ids=WeeklytimetableDetail.where(lecturer_id: staffid).pluck(:weeklytimetable_id)
+      weeklytimetables= Weeklytimetable.where('programme_id=? and (id IN(?) or prepared_by=?)',  programmeid, wt_ids, staffid) #include prev coordinator
+    end
+  end
+  
+  #common subjects
+  def self.search3(subject_name, main_task_first, staffid) 
+    if main_task_first.include?("Ketua Subjek")
+      csubjects_post_lect_ids=Position.where(unit: subject_name).pluck(:staff_id).compact
+      wt_ids=WeeklytimetableDetail.where(lecturer_id: csubjects_post_lect_ids).pluck(:weeklytimetable_id)
+      weeklytimetables = Weeklytimetable.where(id: wt_ids)
+    else
+      wt_ids=WeeklytimetableDetail.where(lecturer_id: staffid).pluck(:weeklytimetable_id)
+      weeklytimetables = Weeklytimetable.where(id: wt_ids) #impossible for common subject lecturer to become preparer
+    end
+  end
 
   def main_details_for_weekly_timetable
     "#{schedule_programme.programme_list}"+" Intake : "+"#{schedule_intake.name}" +" - (Week : "+"#{startdate.strftime('%d-%m-%Y')}"+" - "+"#{enddate.strftime('%d-%m-%Y')}"+")" 

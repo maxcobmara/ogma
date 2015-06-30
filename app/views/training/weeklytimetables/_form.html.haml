@@ -8,7 +8,7 @@
 - b_condition = (@weeklytimetable.is_submitted == true && @weeklytimetable.endorsed_by == @staffid) || (@is_admin==true && @weeklytimetable.is_submitted == true)
 
 .row
-  .col-md-10.col-md-offset-1
+  .col-md-12.col-md-offset-1
     / Nav tabs
     %ul.nav.nav-tabs
       %li.active= link_to ((t 'training.weeklytimetable.details')),"#weeklytimetable_details", "data-toggle" => "tab"

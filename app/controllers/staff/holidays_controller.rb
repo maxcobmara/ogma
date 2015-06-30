@@ -55,7 +55,7 @@ end
         format.json { head :no_content }
       else
         format.html { render action: 'edit' }
-        format.json { render json: @staff.errors, status: :unprocessable_entity }
+        format.json { render json: @holiday.errors, status: :unprocessable_entity }
       end
     end
   end
