@@ -233,6 +233,8 @@ en:
   reports: Reports
   all_records: All Records
   rejected: Rejected
+  active: Active
+  not_active: Not Active
 
   actions:
     new: New
@@ -2370,6 +2372,7 @@ en:
       register_on: Registration Date
       programme_id: Programme
       is_active: Is Active
+      staff_id: Group Coordinator
     timetable:
       title: Timetable
       new: New Timetable
@@ -2435,6 +2438,7 @@ en:
       duplicate_lecturer: "Lecturer can only be scheduled to One class at One time. Time slots with error(s) :"
       duplicate_lecturer2: "Re-select Lecturer."
       intake_programme_must_match: Selected Intake must match with selected Programme
+      submission_by_coordinator: Submission to be done by Group Coordinator
     weeklytimetable_detail:
       topic: Topic
       lecturer_id: Lecturer     
@@ -2680,6 +2684,7 @@ en:
         register_on: Registration Date
         programme_id: Programme
         is_active: Is Active
+        staff_id: Group Coordinator
       timetable:
         code: Code
         name: Name  	  

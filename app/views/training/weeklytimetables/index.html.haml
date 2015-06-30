@@ -4,7 +4,10 @@
   
 .navbar.navbar-inverse{role: "navigation", style: "padding-right:40px;"}
   %ul.nav.navbar-nav
-    %li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'actions.new'))), new_training_weeklytimetable_path
+    - permitted_to? :create, :training_weeklytimetables do
+      /HACK - restrict access from non-coordinator
+      - if @is_coordinator || @is_admin
+        %li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'actions.new'))), new_training_weeklytimetable_path
   %ul.nav.navbar-nav.navbar-right
     %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "index_search_bar"
     %li= link_to content_tag(:li, fa_icon("print", text: (t 'actions.print'))), "#", class: 'bogus'

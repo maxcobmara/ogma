@@ -19,24 +19,31 @@
     .tab-content{style:"padding-top:1em"}
       #weeklytimetable_details.tab-pane.active
         %br
-        - if a_condition 
+        /- if a_condition 
+        - if @weeklytimetable.new_record?
           = render :partial => 'tab_weeklytimetable_details_edit', :locals => {:f => f}  
-        - if b_condition
+          /- if b_condition
+        - else
           =render :partial => 'show_main'   
       #daily_details.tab-pane
         %br
-        - if a_condition 
-          - unless @weeklytimetable.id.nil? || @weeklytimetable.id.blank?
-            = render :partial => 'tab_daily_details_edit', :locals => {:f => f}
-          - else
-            = t 'training.weeklytimetable.activate_format'
-          %BR
+        /- if a_condition 
+        - unless @weeklytimetable.id.nil? || @weeklytimetable.id.blank?
+          = render :partial => 'tab_daily_details_edit', :locals => {:f => f}
+        - else
+          = t 'training.weeklytimetable.activate_format'
+        %BR
         - if b_condition
           = render :partial => 'tab_daily_details'
       #submit_approve.tab-pane
         %br
-        - if a_condition 
+        /- if a_condition 
+        - if (@is_admin || @is_coordinator) && @weeklytimetable.is_submitted != true
           = render :partial => 'submission', :locals => {:f => f}
+        - else
+          .col-md-8.col-md-offset-1
+            = t('training.weeklytimetable.submission_by_coordinator')
+            %br
         - if b_condition 
           =render :partial => 'approval', :locals => {:f => f} 
  

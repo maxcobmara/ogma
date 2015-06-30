@@ -27,7 +27,10 @@
             %dd=h @intake.register_on.try(:strftime, "%d %b %Y")
 
             %dt= t'training.intake.is_active'
-            %dd=h @intake.is_active? ? "Active" : "Not Active"		
+            %dd=h @intake.is_active? ? "Active" : "Not Active"
+            
+            %dt= t'training.intake.staff_id'
+            %dd=h @intake.coordinator.try(:name)
 
 .row
   .col-md-4.col-md-offset-3

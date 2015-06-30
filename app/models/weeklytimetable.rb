@@ -33,6 +33,17 @@ class Weeklytimetable < ActiveRecord::Base
       end
     end
   end
+  
+  #define scope
+  def self.schedule_creator_search(query)
+    staff_ids=Staff.where('name ILIKE(?)', "%#{query}%").pluck(:id)
+    where('prepared_by IN(?)', staff_ids)
+  end
+
+  # whitelist the scope
+  def self.ransackable_scopes(auth_object = nil)
+    [:schedule_creator_search]
+  end
 
   def restrict_lecturer_per_class_duration #------
     count_errors=0
@@ -282,16 +293,16 @@ class Weeklytimetable < ActiveRecord::Base
   end
   
   #common subjects
-  def self.search3(subject_name, main_task_first, staffid) 
-    if main_task_first.include?("Ketua Subjek")
-      csubjects_post_lect_ids=Position.where(unit: subject_name).pluck(:staff_id).compact
-      wt_ids=WeeklytimetableDetail.where(lecturer_id: csubjects_post_lect_ids).pluck(:weeklytimetable_id)
-      weeklytimetables = Weeklytimetable.where(id: wt_ids)
-    else
-      wt_ids=WeeklytimetableDetail.where(lecturer_id: staffid).pluck(:weeklytimetable_id)
-      weeklytimetables = Weeklytimetable.where(id: wt_ids) #impossible for common subject lecturer to become preparer
-    end
-  end
+#   def self.search3(subject_name, main_task_first, staffid) 
+#     if main_task_first.include?("Ketua Subjek")
+#       csubjects_post_lect_ids=Position.where(unit: subject_name).pluck(:staff_id).compact
+#       wt_ids=WeeklytimetableDetail.where(lecturer_id: csubjects_post_lect_ids).pluck(:weeklytimetable_id)
+#       weeklytimetables = Weeklytimetable.where(id: wt_ids)
+#     else
+#       wt_ids=WeeklytimetableDetail.where(lecturer_id: staffid).pluck(:weeklytimetable_id)
+#       weeklytimetables = Weeklytimetable.where(id: wt_ids) #impossible for common subject lecturer to become preparer
+#     end
+#   end
 
   def main_details_for_weekly_timetable
     "#{schedule_programme.programme_list}"+" Intake : "+"#{schedule_intake.name}" +" - (Week : "+"#{startdate.strftime('%d-%m-%Y')}"+" - "+"#{enddate.strftime('%d-%m-%Y')}"+")" 

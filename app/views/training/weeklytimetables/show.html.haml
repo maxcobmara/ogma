@@ -58,11 +58,13 @@
       = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), training_weeklytimetables_path, :class => 'btn btn-default'
       = link_to content_tag(:i, "", class: "fa fa-file-pdf-o"), weekly_timetable_training_weeklytimetable_path(@weeklytimetable, format: "pdf"), class: "btn btn-default", "data-toggle" => "tooltip", title: "Weekly Timetable"
 
-      - if a1_condition
-
-        = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('.edit', :default => t("helpers.links.edit")), edit_training_weeklytimetable_path(@weeklytimetable),  :class => 'btn btn-primary'        
+      /- if a1_condition
+      - permitted_to? :update, :training_weeklytimetables do
+        /HACK - restrict access from non-coordinator (only coordinator, admin, common subject lecturers)
+        - if @is_coordinator || @is_admin || @is_common_leader
+          = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('.edit', :default => t("helpers.links.edit")), edit_training_weeklytimetable_path(@weeklytimetable),  :class => 'btn btn-primary'        
         
-      - elsif b1_condition
+      - if b1_condition
         = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('.edit', :default => t("helpers.links.approve")), edit_training_weeklytimetable_path(@weeklytimetable),  :class => 'btn btn-primary' 
 		
       - elsif c_condition

@@ -49,8 +49,11 @@
       - if a_eday2[t]==xx.day2 && ((a_eis_friday[t]==false && a_etimeslot2[t]==xx.time_slot2) || (a_eis_friday[t]==true && a_etimeslot[t]==xx.time_slot))
         %font{:color => "red", :style=> "bold"}=t('training.weeklytimetable.duplicate_lecturer2')
         %br
-    	
-    = render 'sstab_class_edit2', {:xx=>xx,:rowno=>rowno,:colno=>colno}
+    
+    - if @lecturer_list.pluck(:id).include?(xx.lecturer_id)
+      = render 'sstab_class_edit2', {:xx=>xx,:rowno=>rowno,:colno=>colno}
+    - else
+      %b= render 'subtab_class_details', {:xx=>xx}
     /- if xx.weeklytimetable_topic.ancestry_depth == 4 
     /= xx.weeklytimetable_topic.parent.parent.code
     /%br= xx.weeklytimetable_topic.parent.name

@@ -236,7 +236,10 @@ authorization do
    has_permission_on :student_student_attendances, :to => [:manage, :new_multiple, :new_multiple_intake, :create_multiple, :edit_multiple, :update_multiple, :student_attendan_form]
    
    #TRAINING modules
-   has_permission_on :training_weeklytimetables, :to => [:menu, :read, :create]
+   has_permission_on :training_weeklytimetables, :to => [:menu, :read, :create] #w/o coordinator role: restrict lecturer other than coordinator to create via HACK in index
+   has_permission_on :training_weeklytimetables, :to => :update do #HACK in show
+     if_attribute :is_submitted => is_not {true}
+   end
  
    has_permission_on :training_weeklytimetables, :to => [:personalize_index, :personalize_show, :personalize_timetable, :personalizetimetable] do
       if_attribute :staff_id => is {user.userable_id}
