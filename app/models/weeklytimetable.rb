@@ -450,12 +450,12 @@ class Weeklytimetable < ActiveRecord::Base
         end
       end
     end
-    new_timeslot_weekend=new_timeslot_1stday_weekend+new_timeslot_2ndday_weekend.map{|y|y+=7}
+    new_timeslot_weekend=new_timeslot_1stday_weekend+new_timeslot_2ndday_weekend.map{|y|y+=@special}
 
     #2c-START-existing time slot - Weekends
     exist_timeslot_1stday_weekend = weeklytimetable.weeklytimetable_details.where('day2=?',6).pluck(:time_slot2) 
     exist_timeslot_2ndday_weekend = weeklytimetable.weeklytimetable_details.where('day2=?',7).pluck(:time_slot2) 
-    exist_timeslot_weekend = exist_timeslot_1stday_weekend+exist_timeslot_2ndday_weekend.map{|y|y+=7}
+    exist_timeslot_weekend = exist_timeslot_1stday_weekend+exist_timeslot_2ndday_weekend.map{|y|y+=@special}
     exist_day2_weekend = weeklytimetable.weeklytimetable_details.where('day2=? or day2=?',6,7).pluck(:day2)
 
     rev_exist_slot_weekend=[]
