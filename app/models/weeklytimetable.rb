@@ -249,7 +249,7 @@ class Weeklytimetable < ActiveRecord::Base
     end
     
     if hod_approved == false
-      self.hod_approved_on	= nil
+      self.hod_approved_on= nil
     end
     
     #current_user = User.find(11)    #maslinda 
@@ -308,24 +308,13 @@ class Weeklytimetable < ActiveRecord::Base
     "#{schedule_programme.programme_list}"+" Intake : "+"#{schedule_intake.name}" +" - (Week : "+"#{startdate.strftime('%d-%m-%Y')}"+" - "+"#{enddate.strftime('%d-%m-%Y')}"+")" 
   end
   
-  def hods  
-      ##hod = User.current_user.staff.position.parent
-      #current_user = User.find(11)    #maslinda 
-      ##current_user = User.find(72)    #izmohdzaki      
-      #approver = Position.where('tasks_main like? or (tasks_other like? and is_acting=?) or unit=?', "%Ketua Program%", "%Ketua Program%",true, Programme.find(programme_id).name).pluck(:staff_id).compact
-      approver = Position.where('tasks_main like? or (tasks_other like? and is_acting=?) or unit=?', "%Ketua Program%", "%Ketua Program%",true, "Radiografi").pluck(:staff_id).compact
-      
-      ##Ketua Program - ancestry_depth.2
-      ##hod = Position.find(:all, :conditions => ["ancestry=?","1/2"])
-      
-      ##if User.current_user.staff.position.root_id == User.current_user.staff.position.parent_id
-        ##hod = User.current_user.staff.position.root_id
-        ##approver = Position.find(:all, :select => "staff_id", :conditions => ["id IN (?)", hod]).map(&:staff_id)
-      ##else
-        ##hod = User.current_user.staff.position.root.child_ids
-        ##approver = Position.find(:all, :select => "staff_id", :conditions => ["id IN (?)", hod]).map(&:staff_id)
-      ##end
-      ##approver
+  def hods        
+    #works for both Diploma(eg. KP Radiografi) & Pos Basik/Pengkhususan/Dip Lanjutan(KP Pengkhususan) - note, creator among programmes lecturers only
+    #unit_name=schedule_programme.name #not working for posbasiks
+    unit_name=schedule_creator.positions.first.unit
+    approver=[]
+    approver << Position.unit_department_leader(unit_name).id       
+    approver
   end
   
   def self.location_list
@@ -344,7 +333,7 @@ class Weeklytimetable < ActiveRecord::Base
   def approved_or_rejected
     #if is_submitted==true && submitted_on.blank? == false && hod_approved.blank? == false && hod_rejected.blank? == false
     #is_submitted is true and submitted_on is not null and hod_approved is null and hod_rejected is null
-    if is_submitted==true and submitted_on!=nil and hod_approved==nil and hod_rejected==nil
+    if is_submitted==true && submitted_on!=nil && hod_approved==nil && hod_rejected==nil && endorsed_by!=nil
       errors.add(:base, "Please choose either to approve or reject this weekly timetable")
     end
   end

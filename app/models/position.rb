@@ -198,6 +198,7 @@ class Position < ActiveRecord::Base
     leader_status
   end
   
+  #Use in Weeklytimetable to retrieve Unit Leader
   #Use in STAFF ATTENDANCE report - #define Unit Leader /  Programme Mgr by highest staff grade / rank within unit
   def self.unit_department_leader(unit_dept)
     if ["Kejuruteraan", "Pentadbiran Am", "Perhotelan", "Aset & Stor", "Asrama"].include?(unit_dept) #asrama previously known as perhotelan
@@ -205,6 +206,8 @@ class Position < ActiveRecord::Base
       sid = Position.where(unit: unit_dept).first.parent.staff_id if sid.nil?
       leader=Staff.find(sid)
     else
+      #works for all Diploma(Ketua Progam xxxx), Pos Basik/Pengkhususan/Dip Lanjutan(Ketua Program PENGKHUSUSAN), all Commonsubject(Ketua Subjek xxxx)
+      #for members with same staffgrade - first occurance
       unit_members=Position.joins(:staff).where('unit=? and positions.name!=?', unit_dept, "ICMS Vendor Admin").order(ancestry_depth: :asc)
       highest_rank = unit_members.sort_by{|x|x.staffgrade.name[-2,2]}.last
       leader=Staff.find(highest_rank.staff_id)

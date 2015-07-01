@@ -1,0 +1,14 @@
+- model_class=Weeklytimetable
+.col-md-8.col-md-offset-1
+  %dl.dl-horizontal    
+        
+    %dt=t 'training.weeklytimetable.hod_approved'
+    %dd
+      - if @weeklytimetable.hod_approved==true
+        = (t 'approved')+(t 'on2')+@weeklytimetable.hod_approved_on.try(:strftime, '%d %b %Y').to_s
+      - elsif @weeklytimetable.hod_rejected==true
+        = t 'rejected'+(t 'on2')+@weeklytimetable.hod_rejected_on.try(:strftime, '%d %b %Y').to_s
+        %font{:color=>"red"}Reason for Rejection
+        =h simple_format(@weeklytimetable.reason)
+  
+    

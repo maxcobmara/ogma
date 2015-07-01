@@ -1,0 +1,40 @@
+- model_class = Weeklytimetable
+.page-header
+  %h1=t 'training.weeklytimetable.approval'
+
+= render 'shared/flashes'
+
+.row
+  = form_for [:training, @weeklytimetable], html: { multipart: true, class: 'form-horizontal' }  do |f| 
+    = render 'shared/error_messages', object: f.object
+    .row
+      .col-md-offset-1
+        / Nav tabs
+        %ul.nav.nav-tabs
+          %li= link_to ((t 'training.weeklytimetable.details')),"#weeklytimetable_details", "data-toggle" => "tab"
+          %li= link_to ((t 'training.weeklytimetable.daily_details')), "#daily_details", "data-toggle" => "tab"
+          %li.active= link_to ((t 'training.weeklytimetable.submission_approval')), "#submit_approve", "data-toggle" => "tab"
+ 
+        / display 
+        .tab-content{style:"padding-top:1em"}
+          #weeklytimetable_details.tab-pane
+            %br
+            =render :partial => 'show_main'   
+        
+          #daily_details.tab-pane
+            %br
+            = render :partial => 'tab_daily_details'
+
+          #submit_approve.tab-pane.active
+            .col-md-10
+              %br
+              =render :partial => 'approval', :locals => {:f => f} 
+
+    %br
+    .row
+      .form-group
+        .col-md-1.col-md-offset-2
+          = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), training_weeklytimetable_path(@weeklytimetable), :class => 'btn btn-default'
+        .col-md-2.col-md-offset-1
+          .div{style: "margin-left:-40px;"}
+            = f.submit t('update'), class: "btn btn-primary"

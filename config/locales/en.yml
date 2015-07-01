@@ -2403,6 +2403,7 @@ en:
       title: Weekly Timetable
       new: New Weekly Timetable
       edit: Edit Weekly Timetable
+      approval: Weekly Timetable Approval
       details: Weekly Timetable Details
       programme_id: Programme
       intake_id: Group
@@ -2411,7 +2412,7 @@ en:
       enddate: End Date
       semester: Semester
       prepared_by: Prepared By
-      endorsed_by: Endorsed By
+      endorsed_by: Submitted for Endorsement by
       format1: "Format (Sunday - Wednesday"
       format2: "Format (Thursday)"
       week: Week
@@ -2439,6 +2440,7 @@ en:
       duplicate_lecturer2: "Re-select Lecturer."
       intake_programme_must_match: Selected Intake must match with selected Programme
       submission_by_coordinator: Submission to be done by Group Coordinator
+      
     weeklytimetable_detail:
       topic: Topic
       lecturer_id: Lecturer     

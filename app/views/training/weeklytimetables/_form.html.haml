@@ -1,14 +1,8 @@
-/@is_admin conditions ADDED
-/- if (@weeklytimetable.prepared_by == User.current_user.staff_id && @weeklytimetable.is_submitted != true) || (@weeklytimetable.prepared_by == User.current_user.staff_id && @weeklytimetable.hod_rejected? == true )
-/- a_condition = (@weeklytimetable.id.nil? || @weeklytimetable.id.blank?) || (@weeklytimetable.prepared_by == current_user.staff_id && @weeklytimetable.is_submitted != true) || (@weeklytimetable.prepared_by == current_user.staff_id && @weeklytimetable.hod_rejected? == true ) || (@is_admin==true && @weeklytimetable.is_submitted != true)
-- a_condition = (@weeklytimetable.id.nil? || @weeklytimetable.id.blank?) || (@weeklytimetable.prepared_by == @staffid && @weeklytimetable.is_submitted != true) || (@weeklytimetable.prepared_by == @current_user.userable_id && @weeklytimetable.hod_rejected? == true ) || (@is_admin==true && @weeklytimetable.is_submitted != true)
-
-/- if @weeklytimetable.is_submitted == true && @weeklytimetable.endorsed_by == User.current_user.staff_id 
-/- b_condition = (@weeklytimetable.is_submitted == true && @weeklytimetable.endorsed_by == current_user.staff_id) || (@is_admin==true && @weeklytimetable.is_submitted == true)
-- b_condition = (@weeklytimetable.is_submitted == true && @weeklytimetable.endorsed_by == @staffid) || (@is_admin==true && @weeklytimetable.is_submitted == true)
+/- a_condition = (@weeklytimetable.id.nil? || @weeklytimetable.id.blank?) || (@weeklytimetable.prepared_by == @staffid && @weeklytimetable.is_submitted != true) || (@weeklytimetable.prepared_by == @current_user.userable_id && @weeklytimetable.hod_rejected? == true ) || (@is_admin==true && @weeklytimetable.is_submitted != true)
+/- b_condition = (@weeklytimetable.is_submitted == true && @weeklytimetable.endorsed_by == @staffid) || (@is_admin==true && @weeklytimetable.is_submitted == true)
 
 .row
-  .col-md-12.col-md-offset-1
+  .col-md-10.col-md-offset-1
     / Nav tabs
     %ul.nav.nav-tabs
       %li.active= link_to ((t 'training.weeklytimetable.details')),"#weeklytimetable_details", "data-toggle" => "tab"
@@ -19,31 +13,27 @@
     .tab-content{style:"padding-top:1em"}
       #weeklytimetable_details.tab-pane.active
         %br
-        /- if a_condition 
         - if @weeklytimetable.new_record?
           = render :partial => 'tab_weeklytimetable_details_edit', :locals => {:f => f}  
-          /- if b_condition
         - else
           =render :partial => 'show_main'   
       #daily_details.tab-pane
         %br
-        /- if a_condition 
-        - unless @weeklytimetable.id.nil? || @weeklytimetable.id.blank?
-          = render :partial => 'tab_daily_details_edit', :locals => {:f => f}
+        - unless @weeklytimetable.is_submitted==true
+          - unless @weeklytimetable.id.nil? || @weeklytimetable.id.blank?
+            = render :partial => 'tab_daily_details_edit', :locals => {:f => f}
+          - else
+            = t 'training.weeklytimetable.activate_format'
+          %BR
         - else
-          = t 'training.weeklytimetable.activate_format'
-        %BR
-        - if b_condition
           = render :partial => 'tab_daily_details'
       #submit_approve.tab-pane
         %br
-        /- if a_condition 
-        - if (@is_admin || @is_coordinator) && @weeklytimetable.is_submitted != true
+        /is_creator - previously saved (prepared_by)
+        - if @is_coordinator || @is_admin || @is_creator
           = render :partial => 'submission', :locals => {:f => f}
         - else
           .col-md-8.col-md-offset-1
             = t('training.weeklytimetable.submission_by_coordinator')
             %br
-        - if b_condition 
-          =render :partial => 'approval', :locals => {:f => f} 
  

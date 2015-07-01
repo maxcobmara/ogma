@@ -84,18 +84,26 @@ class User < ActiveRecord::Base
   
   def under_my_supervision
     unit= userable.positions.first.unit
-    if Programme.roots.map(&:name).include?(unit) || ["Pengkhususan", "Pos Basik", "Diploma Lanjutan"].include?(unit)
+    roles_list=roles.pluck(:authname)
+    if Programme.roots.map(&:name).include?(unit) || ["Pengkhususan", "Pos Basik", "Diploma Lanjutan"].include?(unit) && !roles_list.include?("programme_manager")
       if Programme.roots.map(&:name).include?(unit)
         course_id = Programme.where('name=? and ancestry_depth=?', unit,0).first.id
       elsif ["Pengkhususan", "Pos Basik", "Diploma Lanjutan"].include?(unit)
-        main_task_first = userable.positions.first.tasks_main
-         prog_name_full = main_task_first[/Diploma Lanjutan \D{1,}/] if ["Diploma Lanjutan"].include?(unit)
-         prog_name_full = main_task_first[/Pos Basik \D{1,}/] if ["Pos Basik"].include?(unit)
-         prog_name_full = main_task_first[/Pengkhususan \D{1,}/] if ["Pengkhususan"].include?(unit)
-#         prog_name_full = main_task_first[/"#{unit}" \D{1,}/]
-        prog_name = prog_name_full.split(" ")[prog_name_full.split(" ").size-1] 
-        #course_id = Programme.where('name ILIKE(?) and course_type=?', "%#{prog_name}%", unit).first.id   #course_type must match with Pos Basik/....in tasks_main
-        course_id = Programme.where('name ILIKE(?)', "%#{prog_name}%").first.id
+         main_task_first = userable.positions.first.tasks_main
+         prog_name_full = main_task_first.scan(/Diploma Lanjutan (.*)/)[0][0].strip if ["Diploma Lanjutan"].include?(unit)    #main_task_first[/Diploma Lanjutan \D{1,}/]  
+         prog_name_full = main_task_first.scan(/Pos Basik (.*)/)[0][0].strip if ["Pos Basik"].include?(unit)                            #main_task_first[/Pos Basik \D{1,}/]
+         prog_name_full = main_task_first.scan(/Pengkhususan (.*)/)[0][0].strip if ["Pengkhususan"].include?(unit)            #main_task_first[/Pengkhususan \D{1,}/] 
+         if prog_name_full.include?(" ")  #space exist, others may exist too
+           a_rev=prog_name_full.gsub!(/[^a-zA-Z]/," ")   #in case a consist of comma, etc 
+           prog_name=a_rev.split(" ")[0] #intake_desc=group
+         else
+           prog_name=prog_name_full
+         end
+         #prog_name_full = main_task_first[/"#{unit}" \D{1,}/]
+         #prog_name = prog_name_full.split(" ")[prog_name_full.split(" ").size-1] 
+         #prog_name=prog_name_full.split(" ")[0]
+         #course_id = Programme.where('name ILIKE(?) and course_type=?', "%#{prog_name}%", unit).first.id   #course_type must match with Pos Basik/....in tasks_main
+         course_id = Programme.where('name ILIKE(?)', "%#{prog_name}%").first.id
       end 
       main_task = userable.positions.first.tasks_main
       coordinator=main_task[/Penyelaras Kumpulan \d{1,}/]   
@@ -124,7 +132,7 @@ class User < ActiveRecord::Base
           prog_name_full2 = main_task_first[/Diploma Lanjutan \D{1,}/] if ["Diploma Lanjutan"].include?(unit)
           prog_name_full2 = main_task_first[/Pos Basik \D{1,}/] if ["Pos Basik"].include?(unit)
           prog_name_full2 = main_task_first[/Pengkhususan \D{1,}/] if ["Pengkhususan"].include?(unit)
-          prog_name2 =prog_name_full2.split(" ")[prog_name_full2.split(" ").size-1]
+          #prog_name2 =prog_name_full2.split(" ")[prog_name_full2.split(" ").size-1]
           if coordinator2 && prog_name==prog_name2
             sib_lect_coordinates_groups << coordinator2.split(" ")[2]     #collect group with coordinator
           end

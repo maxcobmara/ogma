@@ -2345,6 +2345,7 @@ ms_MY:
       title: Jadual Waktu Mingguan
       new: Jadual Waktu Mingguan Baru
       edit: Sunting Jadual Waktu Mingguan
+      approval: Kelulusan Jadual Waktu Mingguan
       details: Butiran Jadual Waktu
       programme_id: Program
       intake_id: Kumpulan
@@ -2353,7 +2354,7 @@ ms_MY:
       enddate: Tarikh Akhir
       semester: Semester
       prepared_by: Disediakan Oleh
-      endorsed_by: Diluluskan Oleh
+      endorsed_by: Dihantar untuk kelulusan
       format1: "Format (Ahad - Rabu)"
       format2: "Format (Khamis)"
       week: Minggu
