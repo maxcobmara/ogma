@@ -225,7 +225,11 @@ class Training::WeeklytimetablesController < ApplicationController
         format.html { redirect_to(training_weeklytimetable_path(@weeklytimetable), :notice => (t 'training.weeklytimetable.title')+(t 'actions.updated')) }
         format.xml  { head :ok }
       else
-        format.html { render :action => "edit" }
+        if @weeklytimetable.hod_rejected==true || @weeklytimetable.hod_approved==true
+          format.html {render :action => "approval"}
+        else
+          format.html { render :action => "edit" }
+        end
         format.xml  { render :xml => @weeklytimetable.errors, :status => :unprocessable_entity }
       end
     end

@@ -7,8 +7,14 @@
       - if @weeklytimetable.hod_approved==true
         = (t 'approved')+(t 'on2')+@weeklytimetable.hod_approved_on.try(:strftime, '%d %b %Y').to_s
       - elsif @weeklytimetable.hod_rejected==true
-        = t 'rejected'+(t 'on2')+@weeklytimetable.hod_rejected_on.try(:strftime, '%d %b %Y').to_s
-        %font{:color=>"red"}Reason for Rejection
-        =h simple_format(@weeklytimetable.reason)
-  
-    
+        = (t 'rejected')+(t 'on2')+@weeklytimetable.hod_rejected_on.try(:strftime, '%d %b %Y').to_s
+      - if @weeklytimetable.hod_rejected==true && @weeklytimetable.is_submitted==nil 
+        = t 'training.weeklytimetable.is_returned'
+      - elsif @weeklytimetable.hod_rejected_on!=nil && @weeklytimetable.is_submitted==true && @weeklytimetable.hod_approved!=true
+        = t 'training.weeklytimetable.is_resubmitted'
+     
+    - if !@weeklytimetable.reason.blank? && @weeklytimetable.hod_approved!=true
+      %dt
+        %font{:color=>"red"}=t 'training.weeklytimetable.reason_rejection'
+      %dd=h simple_format(@weeklytimetable.reason)
+

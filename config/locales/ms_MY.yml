@@ -24,6 +24,7 @@ ms_MY:
       staff_attendance: Kedatangan Staf
       fingerprint: Fingerprint
       holiday: Cuti Umum
+      weeklytimetable: Jadual Waktu Mingguan
     attributes:
       student:
         name: Nama
@@ -112,6 +113,10 @@ ms_MY:
       holiday:
         hname: Nama
         hdate: Tarikh
+      weeklytimetable:
+        reason: Sebab
+        hod_approved_on: Tarikh diluluskan
+        hod_rejected_on: Tarikh ditolak
     errors:
         template:
           body: "Berikut adalah beberapa masalah:"
@@ -2382,6 +2387,8 @@ ms_MY:
       duplicate_lecturer2: "Pilih semula Pengajar."
       intake_programme_must_match: Ambilan yang dipilih mestilah sepadan dengan Program yang dipilih
       submission_by_coordinator: Penghantaran perlu dilakukan oleh Penyelaras Kumpulan
+      reason_rejection: Sebab Penolakan
+      choose_approve_or_reject: Sila pilih samada untuk meluluskan atau menolak Jadual Waktu Mingguan ini
     weeklytimetable_detail:
       topic: Topik
       lecturer_id: Pengajar      
