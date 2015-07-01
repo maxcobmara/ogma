@@ -1,41 +1,54 @@
 class Training::WeeklytimetablesController < ApplicationController
+  #filter_resource_access
+  filter_access_to :all
+  
   before_action :set_weeklytimetable, only: [:show, :edit, :update, :destroy]
   # GET /weeklytimetables
   # GET /weeklytimetables.xml
   def index
     #@weeklytimetables = Weeklytimetable.all
-    #current_user = User.find(11)    #maslinda 
-    #current_user = User.find(72)    #izmohdzaki
-    @position_exist = Staff.where(id:25)[0].try(:positions)  #current_user.staff.positions
-    if @position_exist  
-      #@lecturer_programme = current_user.staff.positions[0].unit
-      @lecturer_programme = Staff.where(id:25)[0].positions.try(:unit) 
-      unless @lecturer_programme.nil?
-        @programme = Programme.find(:first,:conditions=>['name ILIKE (?) AND ancestry_depth=?',"%#{@lecturer_programme}%",0])
-      end
-      unless @programme.nil?
-        @programme_id = @programme.id 
-      end
-      #common subject - not yet - no matching programme (although assign as coordinator)
-      #@weeklytimetables = Weeklytimetable.with_permissions_to(:index).search(@programme_id) 
-      #@weeklytimetables = Weeklytimetable.search(@programme_id) 
-    end
-    
     @search = Weeklytimetable.search(params[:q])
-    @weeklytimetables2 = @search.result                                                           
-    @weeklytimetables3 = @weeklytimetables2.where(:programme_id => @programme_id) if @programme_id!=nil
-    @weeklytimetables3 = @weeklytimetables2 if @programme_id==nil    
-    @weeklytimetables = @weeklytimetables3.order(programme_id: :asc).page(params[:page]||1)
+    @weeklytimetables2= @search.result  
+    
+    roles = current_user.roles.pluck(:authname)
+    @is_admin = roles.include?("administration") 
+    @position_exist = current_user.userable.positions
+    if @position_exist && @position_exist.count > 0
+      main_task_first=@position_exist.first.tasks_main
+      lecturer_programme = current_user.userable.positions[0].unit
+      unless lecturer_programme.nil?
+        programme = Programme.where('name ILIKE (?) AND ancestry_depth=?',"%#{lecturer_programme}%",0)  #Diploma only
+      end
+      unless programme.nil? || programme.count==0
+        programme_id = programme.try(:first).try(:id)
+        @weeklytimetables3 = @weeklytimetables2.search2(programme_id, roles, current_user.userable_id)
+      else
+        if @is_admin
+          @weeklytimetables3 = @weeklytimetables2
+        elsif ["Diploma Lanjutan", "Pos Basik", "Pengkhususan"].include?(lecturer_programme)
+          programme_id=Position.get_postbasic_id(main_task_first, lecturer_programme)
+          @weeklytimetables3 = @weeklytimetables2.search2(programme_id, roles, current_user.userable_id)
+        elsif ["Sains Perubatan Asas", "Anatomi & Fisiologi", "Sains Tingkahlaku", "Komunikasi & Sains Pengurusan", "Komuniti"].include?(lecturer_programme) && roles.include?("unit_leader")
+          @weeklytimetables3 = @weeklytimetables2
+          #@weeklytimetables3=@weeklytimetables2.search3(lecturer_programme, main_task_first, current_user.userable_id)
+        end
+      end
+      @is_coordinator= Intake.where(programme_id: programme_id, staff_id: current_user.userable_id).count > 0       #coordinator - determine in Intakes
+      @weeklytimetables = @weeklytimetables3.order(programme_id: :asc, intake_id: :desc, startdate: :desc).page(params[:page]||1)
+    end 
     
     respond_to do |format|
-      format.html # index.html.erb
-      format.xml  { render :xml => @weeklytimetables }
+      unless @position_exist.first.nil?
+        format.html # index.html.erb
+        format.xml  { render :xml => @weeklytimetables }
+      else
+        format.html {redirect_to '/dashboard', notice: "Position required to be assigned!"}
+      end
     end
   end
   
   def personalize_index
-    @weeklytimetables_details=WeeklytimetableDetail.where('lecturer_id=?',@current_user.userable_id)
-
+    @weeklytimetables_details=WeeklytimetableDetail.where('lecturer_id=?', current_user.userable_id)
     respond_to do |format|
       format.html { render :action => "personalize_index" }
       format.xml  { render :xml => @weeklytimetables }
@@ -45,16 +58,15 @@ class Training::WeeklytimetablesController < ApplicationController
   # GET /weeklytimetables/1
   # GET /weeklytimetables/1.xml
   def show
-    #current_user = User.find(11)    #maslinda 
-    #current_user = User.find(72)    #izmohdzaki
-    #roles = current_user.roles.pluck(:id)
     @weeklytimetable = Weeklytimetable.find(params[:id])
     @count1=@weeklytimetable.timetable_monthurs.timetable_periods.count
     @count2=@weeklytimetable.timetable_friday.timetable_periods.count 
-    @staffid=25
-    roles = Role.joins(:logins).where('logins.id=?',11).pluck(:id).uniq
-    @is_admin = roles.include?(2)
-
+    @staffid=current_user.userable_id
+    roles=current_user.roles.pluck(:authname)
+    lecturer_programme = current_user.userable.positions[0].unit
+    @is_admin=roles.include?("administration")
+    @is_coordinator=@weeklytimetable.prepared_by==@staffid
+    @is_common_leader=["Sains Perubatan Asas", "Anatomi & Fisiologi", "Sains Tingkahlaku", "Komunikasi & Sains Pengurusan", "Komuniti"].include?(lecturer_programme) && roles.include?("unit_leader")
     respond_to do |format|
       format.html # show.html.erb
       format.xml  { render :xml => @weeklytimetable }
@@ -62,9 +74,9 @@ class Training::WeeklytimetablesController < ApplicationController
   end
   
   def personalize_show  
-    @test_lecturer = @current_user   
+    @test_lecturer = current_user   
     @selected_date = params[:id]
-    @weeklytimetables_details=WeeklytimetableDetail.where('lecturer_id=?',@current_user.userable_id)
+    @weeklytimetables_details=WeeklytimetableDetail.where('lecturer_id=?', current_user.userable_id)
     
     @all_combine = []
     @weeklytimetables_details.each do |x|
@@ -76,9 +88,28 @@ class Training::WeeklytimetablesController < ApplicationController
   # GET /weeklytimetables/new
   # GET /weeklytimetables/new.xml
   def new
+    #Admin & Coordinator ONLY - diploma & pos basik/pengkhususan/dip lanjutan (common subjects lecturer has no access)
     @weeklytimetable = Weeklytimetable.new
-    #@weeklytimetable.weeklytimetable_details.build
-    @staffid = 25
+    @staffid = current_user.userable_id 
+    roles = current_user.roles.pluck(:authname)
+    @is_admin = roles.include?("administration") 
+    if @is_admin
+      @programme_list=Programme.roots
+      @intake_list=Intake.all.order(programme_id: :asc, monthyear_intake: :desc)
+      #retrieve programme & pos basik lecturers
+      prog_name=Programme.find(@weeklytimetable.programme_id).name
+      pengkhususan_lecturers_ids = Staff.joins(:positions).where('(unit=? or unit=? or unit=?) and tasks_main ILIKE(?)', "Diploma Lanjutan","Pos Basik", "Pengkhususan", "%#{prog_name}%").map(&:id)
+      programme_lecturers = Staff.joins(:positions).where('positions.name=? AND positions.unit=?','Pengajar', prog_name).order(name: :asc)
+      pengkhususan_lecturers = Staff.where('id IN(?)', pengkhususan_lecturers_ids).order(name: :asc)
+      @lecturer_list=programme_lecturers+pengkhususan_lecturers
+    else
+      #retrieve programme & groups coordinated from Intake
+      programme_id=Intake.where(staff_id: @staffid).first.programme_id
+      @programme_list=Programme.roots.where(id: programme_id)
+      group_intake_ids=Intake.where(programme_id: programme_id, staff_id: @staffid).pluck(:id).compact
+      @intake_list=Intake.where(id: group_intake_ids)
+      @lecturer_list=Staff.where(id: @staffid)
+    end
     respond_to do |format|
       format.html # new.html.erb
       format.xml  { render :xml => @weeklytimetable }
@@ -87,11 +118,12 @@ class Training::WeeklytimetablesController < ApplicationController
 
   # GET /weeklytimetables/1/edit
   def edit
-    current_user = Login.find(11)#User.find(11)    #maslinda 
-    #current_user = User.find(72)    #izmohdzaki
-    roles = current_user.roles.pluck(:id)
-    @is_admin = roles.include?(2)
-    @staffid = 25
+    roles = current_user.roles.pluck(:authname)
+    @is_admin = roles.include?("administration")
+    @staffid = current_user.userable_id
+    lecturer_programme = current_user.userable.positions[0].unit
+    @is_coordinator=@weeklytimetable.prepared_by==@staffid
+    @is_common_leader=["Sains Perubatan Asas", "Anatomi & Fisiologi", "Sains Tingkahlaku", "Komunikasi & Sains Pengurusan", "Komuniti"].include?(lecturer_programme) && roles.include?("unit_leader")
     #start-remove from partial : tab_daily_details_edit
     @count1=@weeklytimetable.timetable_monthurs.timetable_periods.count
     @count2=@weeklytimetable.timetable_friday.timetable_periods.count 
@@ -100,10 +132,24 @@ class Training::WeeklytimetablesController < ApplicationController
     @weeklytimetable = Weeklytimetable.find(params[:id])
     #start-remove from partial : tab_daily_details_edit
     #start-remove from partial : subtab_class_details_edit
-    @semester_subject_topic_list = Programme.find(@weeklytimetable.programme_id).descendants.where('ancestry_depth=? OR ancestry_depth=?',3,4).sort_by(&:combo_code)		
+    @semester_subject_topic_list = Programme.find(@weeklytimetable.programme_id).descendants.where('ancestry_depth=? OR ancestry_depth=?',3,4).sort_by(&:combo_code)
     @timeslot = @weeklytimetable.timetable_monthurs.timetable_periods.where('is_break is false')
     @timeslot2 = @weeklytimetable.timetable_friday.timetable_periods.where('is_break is false')
     #start-remove from partial : subtab_class_details_edit  
+    #start-lecturer list - edit of programme no longer available, diploma & posbasic lecturer list already fixed
+    lecturer_programme = current_user.userable.positions[0].unit
+    prog_name=Programme.find(@weeklytimetable.programme_id).name
+    posbasics= ["Diploma Lanjutan", "Pos Basik", "Pengkhususan"]
+    common_subjects = ["Sains Perubatan Asas", "Anatomi & Fisiologi", "Sains Tingkahlaku", "Komunikasi & Sains Pengurusan", "Komuniti"]
+    if lecturer_programme==prog_name #diploma only
+      lecturer_ids= Staff.joins(:positions).where('unit=?', prog_name).order(name: :asc).pluck(:id)
+    elsif posbasics.include?(lecturer_programme)
+      lecturer_ids=Staff.joins(:positions).where('(unit=? or unit=? or unit=?) and tasks_main ILIKE(?)', "Diploma Lanjutan","Pos Basik", "Pengkhususan", "%#{prog_name}%").pluck(:id)
+    elsif common_subjects.include?(lecturer_programme)
+      lecturer_ids=Staff.joins(:positions).where('unit IN(?)', common_subjects).order(name: :asc).pluck(:id)
+    end
+    @lecturer_list=Staff.where('id IN(?)', lecturer_ids).order(name: :asc)
+    #end-lecture list   
   end
 
   # POST /weeklytimetables
@@ -179,9 +225,9 @@ class Training::WeeklytimetablesController < ApplicationController
   end
 
   def personalizetimetable
-    @test_lecturer = @current_user   
+    @test_lecturer = current_user   
     @selected_date = params[:id]
-    @weeklytimetables_details=WeeklytimetableDetail.where('lecturer_id=?',@current_user.userable_id)
+    @weeklytimetables_details=WeeklytimetableDetail.where('lecturer_id=?', current_user.userable_id)
     
     @all_combine = []
     @weeklytimetables_details.each do |x|

@@ -90,11 +90,12 @@ class User < ActiveRecord::Base
       elsif ["Pengkhususan", "Pos Basik", "Diploma Lanjutan"].include?(unit)
         main_task_first = userable.positions.first.tasks_main
          prog_name_full = main_task_first[/Diploma Lanjutan \D{1,}/] if ["Diploma Lanjutan"].include?(unit)
-         prog_name_full = main_task_first[/Pos Basik \d{1,}/] if ["Pos Basik"].include?(unit)
-         prog_name_full = main_task_first[/Pengkhususan \d{1,}/] if ["Pengkhususan"].include?(unit)
+         prog_name_full = main_task_first[/Pos Basik \D{1,}/] if ["Pos Basik"].include?(unit)
+         prog_name_full = main_task_first[/Pengkhususan \D{1,}/] if ["Pengkhususan"].include?(unit)
 #         prog_name_full = main_task_first[/"#{unit}" \D{1,}/]
-        prog_name = prog_name_full.split(" ")[prog_name_full.split(" ").size-1]
-        course_id = Programme.where('name ILIKE(?) and course_type=?', "%#{prog_name}%", unit).first.id
+        prog_name = prog_name_full.split(" ")[prog_name_full.split(" ").size-1] 
+        #course_id = Programme.where('name ILIKE(?) and course_type=?', "%#{prog_name}%", unit).first.id   #course_type must match with Pos Basik/....in tasks_main
+        course_id = Programme.where('name ILIKE(?)', "%#{prog_name}%").first.id
       end 
       main_task = userable.positions.first.tasks_main
       coordinator=main_task[/Penyelaras Kumpulan \d{1,}/]   
@@ -121,8 +122,8 @@ class User < ActiveRecord::Base
         sib_lect_maintask_all_posbasik.each do |x|
           coordinator2 =  x[/Penyelaras Kumpulan \d{1,}/]
           prog_name_full2 = main_task_first[/Diploma Lanjutan \D{1,}/] if ["Diploma Lanjutan"].include?(unit)
-          prog_name_full2 = main_task_first[/Pos Basik \d{1,}/] if ["Pos Basik"].include?(unit)
-          prog_name_full2 = main_task_first[/Pengkhususan \d{1,}/] if ["Pengkhususan"].include?(unit)
+          prog_name_full2 = main_task_first[/Pos Basik \D{1,}/] if ["Pos Basik"].include?(unit)
+          prog_name_full2 = main_task_first[/Pengkhususan \D{1,}/] if ["Pengkhususan"].include?(unit)
           prog_name2 =prog_name_full2.split(" ")[prog_name_full2.split(" ").size-1]
           if coordinator2 && prog_name==prog_name2
             sib_lect_coordinates_groups << coordinator2.split(" ")[2]     #collect group with coordinator

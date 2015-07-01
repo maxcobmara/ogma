@@ -36,7 +36,7 @@ class Laporan_bulanan_punchcardPdf < Prawn::Document
 
 
   def record
-    xx=@staff_attendances.count
+    xx=@staff_attendances.group_by{|x|x.thumb_id}.count
     yoy=@y
     table(line_item_rows, :column_widths => [40, 230, 140 ,90], :cell_style => { :size => 10,  :inline_format => :true}) do
       row(0).font_style = :bold

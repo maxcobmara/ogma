@@ -12,7 +12,7 @@
             .col-sm-2.control-label
               = f.label :programme_id
             .col-md-3
-              = f.collection_select :programme_id, Programme.roots, :id, :programme_list, :include_blank => t('helpers.prompt.select_programme')		
+              = f.collection_select :programme_id, Programme.roots, :id, :programme_list, {:include_blank=> (t 'helpers.prompt.select_programme')},{class: 'selectpicker', "data-width"=>'280px'}
           .form-group
             .col-sm-2.control-label
               = f.label :name
@@ -34,3 +34,11 @@
               = f.label :is_active
             .col-md-3
               = f.check_box :is_active
+          .form-group
+            .col-sm-2.control-label
+              = f.label :staff_id
+            .col-md-3
+              - programme_names = Programme.roots.where(course_type: "Diploma").pluck(:name)
+              - commonsubject_names = Programme.roots.where(course_type: "Commonsubject").pluck(:name)
+              - academician_post_ids=Position.where('unit IN(?) or unit IN(?) or unit=? or unit=? or unit=?', programme_names, commonsubject_names, "Pos Basik", "Diploma Lanjutan", "Pengkhususan").pluck(:staff_id).compact
+              = f.collection_select :staff_id, Staff.where(id: academician_post_ids).order(name: :asc), :id, :name, {:include_blank=> (t 'select')},{class: 'selectpicker', "data-width"=>'280px'}

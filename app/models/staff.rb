@@ -33,6 +33,7 @@ class Staff < ActiveRecord::Base
   has_many :prepared_weekly_schedules, :class_name => 'Weeklytimetable', :foreign_key => 'prepared_by', :dependent => :nullify
   has_many :endorsed_weekly_schedules, :class_name => 'Weeklytimetable', :foreign_key => 'endorsed_by', :dependent => :nullify
   has_many :weekly_schedule_details, :class_name => 'WeeklytimetableDetail', :foreign_key => 'lecturer_id', :dependent => :nullify
+  has_many :intakes  #upon graduation, may become coordinator for other intakes
 
   has_many :attendingstaffs,    :class_name => 'StaffAttendance', :foreign_key => 'thumb_id', :primary_key => 'thumb_id'#, :dependent => :destroy #attendance staff name
   has_many :approvers,          :class_name => 'StaffAttendance', :foreign_key => 'approved_by' # approver name

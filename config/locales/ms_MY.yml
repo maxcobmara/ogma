@@ -23,6 +23,7 @@ ms_MY:
       staff_appraisal: Penilaian Prestasi
       staff_attendance: Kedatangan Staf
       fingerprint: Fingerprint
+      holiday: Cuti Umum
     attributes:
       student:
         name: Nama
@@ -108,6 +109,9 @@ ms_MY:
         fdate: Tarikh
         thumb_id: "Staf (Thumb Id)"
         reason: Sebab
+      holiday:
+        hname: Nama
+        hdate: Tarikh
     errors:
         template:
           body: "Berikut adalah beberapa masalah:"
@@ -208,6 +212,8 @@ ms_MY:
   reports: Laporan
   all_records: Semua Rekod
   rejected: Tidak Diluluskan
+  active: Aktif
+  not_active: Tidak Aktif
  
   actions:
     new: Baru
@@ -1036,6 +1042,16 @@ ms_MY:
     pending_approval: Belum diluluskan
     fingerprint_incomplete: Fingerprint belum lengkap
     not_triggered: "Belum 'trigger'"
+    rejected: Ditolak
+  
+  holiday:
+    title: Cuti Umum
+    list: Senarai Cuti Umum
+    hname: Nama Cuti
+    hdate: Tarikh Cuti 
+    details: Butiran Cuti
+    new: Cuti Umum Baru
+    edit: Sunting Cuti Umum
     
   fingerprint:
     title: "Kenyataan Fingerprint (Hari Tidak Fingerprint)"
@@ -2298,6 +2314,7 @@ ms_MY:
       register_on: Tarikh Pendaftaran
       programme_id: Program
       is_active: "Aktif?"
+      staff_id: Penyelaras Kumpulan
     timetable:
       title: Jadual Waktu
       new: Jadual Waktu Baru
@@ -2360,9 +2377,10 @@ ms_MY:
       lecturer_name: Nama Pengajar
       intake: Ambilan
       date_time: "Tarikh & Masa : "
-      duplicate_lecturer: "Pengajar hanya boleh mengajar Satu kelas pada satu-satu masa. Slot masa dengan ralat :" 
+      duplicate_lecturer: "Pengajar hanya boleh mengajar Satu kelas pada satu-satu masa. Slot masa dengan ralat :"
       duplicate_lecturer2: "Pilih semula Pengajar."
       intake_programme_must_match: Ambilan yang dipilih mestilah sepadan dengan Program yang dipilih
+      submission_by_coordinator: Penghantaran perlu dilakukan oleh Penyelaras Kumpulan
     weeklytimetable_detail:
       topic: Topik
       lecturer_id: Pengajar      
@@ -2608,6 +2626,7 @@ ms_MY:
         register_on: Tarikh Pendaftaran
         programme_id: Program
         is_active: "Aktif?"
+        staff_id: Penyelaras Kumpulan
       timetable:
         code: Kod
         name: Nama

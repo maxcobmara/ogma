@@ -1,11 +1,13 @@
 class Laporan_harian_punchcardPdf < Prawn::Document
-  def initialize(staff_attendances, leader, daily_date, thumbids, view)
+  def initialize(staff_attendances, leader, daily_date, thumbids, w_wo_triggered, view)
     super({top_margin: 50, page_size: 'A4', page_layout: :portrait })
     @staff_attendances = staff_attendances
     @view = view
     @leader = leader
     @daily_date = daily_date
     @thumbids=thumbids
+    @w_wo_triggered=w_wo_triggered
+    @without_both_logs=@thumbids-@w_wo_triggered.pluck(:thumb_id).uniq
     font "Times-Roman"
     text "Lampiran B 1", :align => :right, :size => 12, :style => :bold
     move_down 20
@@ -32,7 +34,7 @@ class Laporan_harian_punchcardPdf < Prawn::Document
   end
 
   def record
-    xx=@thumbids.count 
+    xx=@w_wo_triggered.group_by{|x|x.thumb_id}.count+@without_both_logs.count  #@thumbids.count 
     yoy=@y
     table(line_item_rows, :column_widths => [40, 230, 140 ,90], :cell_style => { :size => 10,  :inline_format => :true}) do
       row(0).font_style = :bold
@@ -55,29 +57,30 @@ class Laporan_harian_punchcardPdf < Prawn::Document
     header = [[ "Bil", "Nama Pegawai / Kakitangan Yang Datang Lambat / Pulang Awal", "Sebab - Sebab ","Masa Yang Dicatatkan"]]
     
     attendance_list = []
-    @staff_attendances.group_by{|x|x.thumb_id}.sort.reverse.each do |thumb, sas|
+    #@staff_attendances.group_by{|x|x.thumb_id}.sort.reverse.each do |thumb, sas|
+    @w_wo_triggered.group_by{|x|x.thumb_id}.sort.reverse.each do |thumb, sas|
       shiftid = StaffShift.shift_id_in_use(@daily_date, sas.first.thumb_id)
       if sas.count==1
         exist_log=sas.first.log_type
         status="Tiada rekod masuk" if exist_log=="O" || exist_log=="o"
         status="Tiada rekod keluar" if exist_log=="I" || exist_log=="i"
-        status2="Lambat datang" if sas.first.r_u_late(shiftid) == "flag" && sas.first.is_approved==false
-        status2="Pulang awal" if sas.first.r_u_early(shiftid) == "flag" && sas.first.is_approved==false
+        status2="Lambat datang" if sas.first.r_u_late(shiftid) == "flag" && sas.first.trigger==true && sas.first.is_approved==false  
+        status2="Pulang awal" if sas.first.r_u_early(shiftid) == "flag" && sas.first.trigger==true &&sas.first.is_approved==false
 
         attendance_list << ["#{counter += 1}", "#{sas.first.attended.name}", "#{status} #{'& '+status2 if status2}" , "#{sas.first.logged_at.strftime('%H:%M') if status2}"]
       elsif sas.count==2
-        status2a="Lambat datang" if sas.first.r_u_late(shiftid) == "flag" && sas.first.is_approved==false
-        status2a="Pulang awal" if sas.first.r_u_early(shiftid) == "flag" && sas.first.is_approved==false
-        status2b="Lambat datang" if sas.last.r_u_late(shiftid) == "flag"  && sas.last.is_approved==false
-        status2b="Pulang awal" if sas.last.r_u_early(shiftid) == "flag" && sas.last.is_approved==false
+        status2a="Lambat datang" if sas.first.r_u_late(shiftid) == "flag" && sas.first.trigger==true && sas.first.is_approved==false
+        status2a="Pulang awal" if sas.first.r_u_early(shiftid) == "flag" && sas.first.trigger==true &&sas.first.is_approved==false
+        status2b="Lambat datang" if sas.last.r_u_late(shiftid) == "flag"  && sas.first.trigger==true && sas.last.is_approved==false
+        status2b="Pulang awal" if sas.last.r_u_early(shiftid) == "flag" && sas.first.trigger==true && sas.last.is_approved==false
 	inbetween=" & " if status2a && status2b
         attendance_list << ["#{counter += 1}", "#{sas.first.attended.name}", "#{status2a} +#{inbetween if inbetween}+ #{status2b}" , "#{sas.first.logged_at.strftime('%H:%M')} / #{sas.last.logged_at.strftime('%H:%M')}"]
       end
     end
     
-    without_both_logs=@thumbids-@staff_attendances.pluck(:thumb_id).uniq
+    #without_both_logs=@thumbids-@staff_attendances.pluck(:thumb_id).uniq  #triggered only
     non_attend_list=[]
-    without_both_logs.each do |thmb|
+    @without_both_logs.each do |thmb|
       non_attend_list <<  ["#{counter += 1}", "#{Staff.where(thumb_id: thmb).first.name}", "Tiada rekod masuk & keluar" , ""]
     end
     

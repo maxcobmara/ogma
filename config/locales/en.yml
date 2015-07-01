@@ -42,6 +42,7 @@ en:
       mycpd: MyCPD
       staff_attendance: Staff Attendance
       fingerprint: Fingerprint
+      holiday: Public Holiday
     attributes:
       student:
         name: Name
@@ -126,6 +127,9 @@ en:
         fdate: Date
         thum_id: "Staff (Thumb Id)"
         reason: Reason
+      holiday:
+        hname: Name
+        hdate: Date
     errors:
         template:
           body: "There were problems with the following fields:"
@@ -229,6 +233,8 @@ en:
   reports: Reports
   all_records: All Records
   rejected: Rejected
+  active: Active
+  not_active: Not Active
 
   actions:
     new: New
@@ -1121,6 +1127,16 @@ en:
     pending_approval: Pending Approval
     fingerprint_incomplete: Fingerprint incomplete
     not_triggered: Not yet triggered
+    rejected: Rejected
+    
+  holiday:
+    title: Public Holiday
+    list: Public Holiday Listing
+    hname: Name
+    hdate: Date
+    details: Holiday Details
+    new: New Public Hoilday
+    edit: Edit Public Holiday
   
   fingerprint:
     title: "Fingerprint Statement (Days Not Fingerprint)"
@@ -2356,6 +2372,7 @@ en:
       register_on: Registration Date
       programme_id: Programme
       is_active: Is Active
+      staff_id: Group Coordinator
     timetable:
       title: Timetable
       new: New Timetable
@@ -2421,6 +2438,7 @@ en:
       duplicate_lecturer: "Lecturer can only be scheduled to One class at One time. Time slots with error(s) :"
       duplicate_lecturer2: "Re-select Lecturer."
       intake_programme_must_match: Selected Intake must match with selected Programme
+      submission_by_coordinator: Submission to be done by Group Coordinator
     weeklytimetable_detail:
       topic: Topic
       lecturer_id: Lecturer     
@@ -2666,6 +2684,7 @@ en:
         register_on: Registration Date
         programme_id: Programme
         is_active: Is Active
+        staff_id: Group Coordinator
       timetable:
         code: Code
         name: Name  	  

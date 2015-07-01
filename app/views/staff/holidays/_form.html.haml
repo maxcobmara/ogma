@@ -1,0 +1,21 @@
+.row
+  .col-md-10.col-md-offset-1
+    / Nav tabs
+    %ul.nav.nav-tabs
+      %li.active= link_to ((t 'holiday.details')),"#holiday_edit", "data-toggle" => "tab"
+
+    .tab-content{style:"padding-top:1em"}
+      #holiday_edit.tab-pane.active
+        %br
+        .col-md-offset-2
+          .form-group
+            .col-sm-2.control-label
+              = f.label t('holiday.hname')
+            .col-md-3
+              = f.text_field :hname, class: 'form-control mandatory'
+              
+          .form-group
+            .col-sm-2.control-label
+              = f.label t('holiday.hdate')
+            .col-md-2
+              = f.text_field :hdate, class: 'form-control date_picker mandatory'

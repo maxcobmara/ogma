@@ -107,8 +107,13 @@ class StaffAttendance < ActiveRecord::Base
     @name_id=[]
     @count=0
     @count2=0
+    @count3=0
     @p_name = "Pengkhususan"
+    @p_name2= "Pentadbiran Am"
     @p_staffs=[]
+    @p_staffs2=[]
+    @unit_staffs=[]
+    @unit_staffs2=[]
     
     a.each do |u_name,staffs|
       if comb_pengkhususan.include?(u_name)
@@ -118,12 +123,23 @@ class StaffAttendance < ActiveRecord::Base
           @count+=1
         end
         @p_staffs += staffs.map(&:thumb_id).compact
-        @unit_staffs=[]
+        #@unit_staffs=[]
         staffs.each do |astaff|
           @unit_staffs << [astaff.name, astaff.id] if astaff.positions.first.name != "ICMS Vendor Admin" || astaff.icno!="123456789012"
         end
         @name_id2 = [@p_name, @unit_staffs]
         #combine advance programme - END
+      elsif u_name=="Pentadbiran" || u_name=="Pentadbiran Am"
+        if valid_dept.include?(u_name)==false && @count3==0
+          @p_name2="-- Pentadbiran Am"
+          @count3+=1
+        end
+	@p_staffs2 += staffs.map(&:thumb_id).compact
+        #@unit_staffs2=[]
+        staffs.each do |astaff|
+          @unit_staffs2 << [astaff.name, astaff.id] if astaff.positions.first.name != "ICMS Vendor Admin" || astaff.icno!="123456789012"
+        end
+	@name_id22 = [@p_name2, @unit_staffs2]
       else 
         ###diploma - START
         thmb<< staffs.map(&:thumb_id).compact if val==1
@@ -152,14 +168,21 @@ class StaffAttendance < ActiveRecord::Base
       end
     end
      thmb << @p_staffs if val==1
+     thmb << @p_staffs2 if val==1
      uname << @p_name if val==2 
+     uname << @p_name2 if val==2 
      if val==3
        u_t=[]
        u_t<< @p_name << @count2 
        uname_thmb << u_t
+       u_t2=[]
+       u_t2<< @p_name2 << @count2+1
+       uname_thmb << u_t2
      end
      uname4 << @p_name if val==4
+     uname4 << @p_name2 if val==4
      @name_id << @name_id2 if val==5
+     @name_id << @name_id22 if val==5
     
     return thmb if val==1
     return uname if val==2
@@ -652,10 +675,10 @@ class StaffAttendance < ActiveRecord::Base
     @begin_thismonth = every_month_begin 
 	  @begin_nextmonth = every_month_begin.to_date.next_month.beginning_of_month.to_s
 	  @monthly_non_approved = StaffAttendance.count_non_approved_monthly(thumb_id,@begin_thismonth,@begin_nextmonth).count
-	  if previous_status == 1 && @monthly_non_approved >= 1     #current:yellow     #change from 3 to 1 for checking
+	  if previous_status == 1 && @monthly_non_approved >= 3     #current:yellow     #change from 3 to 1 for checking
 		    previous_status = 2                                   #turn into green
-    elsif previous_status == 2                                #current:green      #change from 2 to 1 for checking
-		    if @monthly_non_approved >= 1                        #change to 1 for checking
+    elsif previous_status == 2                                #current:green      
+		    if @monthly_non_approved >= 2                     #change from 2 to 1 for checking
 			    previous_status = 3                                 #turn into red
         elsif @monthly_non_approved == 0 
 			    previous_status = 1                                 #turn into yellow
@@ -769,7 +792,8 @@ class StaffAttendance < ActiveRecord::Base
         if status.nil? || reason==""
           a=clock_type+I18n.t("attendance.fingerprint_incomplete")
         else
-          a=clock_type+I18n.t("attendance.pending_approval")
+          a=clock_type+I18n.t("attendance.pending_approval") if is_approved==nil 
+          a=clock_type+I18n.t("attendance.rejected").upcase+" ("+(DropDown::TRIGGER_STATUS.find_all{|disp, value| value == status}).map {|disp, value| disp}[0]+"-"+reason+")" if is_approved==false
         end
       elsif trigger.nil?
         a=clock_type+I18n.t("attendance.not_triggered") 

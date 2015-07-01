@@ -4,9 +4,12 @@
   
 .navbar.navbar-inverse{role: "navigation", style: "padding-right:40px;"}
   %ul.nav.navbar-nav
-    %li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'actions.new'))), new_training_weeklytimetable_path
+    - permitted_to? :create, :training_weeklytimetables do
+      /HACK - restrict access from non-coordinator
+      - if @is_coordinator || @is_admin
+        %li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'actions.new'))), new_training_weeklytimetable_path
   %ul.nav.navbar-nav.navbar-right
-    %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "toga"
+    %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "index_search_bar"
     %li= link_to content_tag(:li, fa_icon("print", text: (t 'actions.print'))), "#", class: 'bogus'
 
 .row.filter{style: "display:none;"}
@@ -49,7 +52,10 @@
   .right{style:"padding:0 30px; margin:0;"}= paginate @weeklytimetables, :theme => 'twitter-bootstrap-3'
 
 
-
+%BR
+%BR
+%BR
+%BR
 / if (weeklytimetable.is_submitted != true && weeklytimetable.prepared_by == current_user.staff_id) || (weeklytimetable.prepared_by == current_user.staff_id && weeklytimetable.hod_rejected? == true && weeklytimetable.is_submitted==nil) 
 /= link_to image_tag("edit.png", :border => 0, :title => 'Edit'), :action => 'edit', :id => weeklytimetable
 /elsif (weeklytimetable.is_submitted == true && weeklytimetable.endorsed_by == current_user.staff_id && weeklytimetable.hod_approved!= true)  %>

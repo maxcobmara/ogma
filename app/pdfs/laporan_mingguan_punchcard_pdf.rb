@@ -12,8 +12,8 @@ class Laporan_mingguan_punchcardPdf < Prawn::Document
       @wstart=weekly_start
       @wend=weekly_end
     elsif weekly_date.year > 2014
-      @wstart=weekly_start-1.days
-      @wend=weekly_start+3.days
+      @wstart=(weekly_start-1.days).to_time.beginning_of_day
+      @wend=(weekly_start+3.days).to_time.end_of_day
     end
     font "Times-Roman"
     text "Lampiran B 2", :align => :right, :size => 12, :style => :bold
@@ -43,7 +43,7 @@ class Laporan_mingguan_punchcardPdf < Prawn::Document
   end
 
   def record
-    xx=@staff_attendances.count
+    xx=@staff_attendances.group_by{|x|x.thumb_id}.count
     yoy=@y
     table(line_item_rows, :column_widths => [40, 230, 140 ,90], :cell_style => { :size => 10,  :inline_format => :true}) do
       row(0).font_style = :bold

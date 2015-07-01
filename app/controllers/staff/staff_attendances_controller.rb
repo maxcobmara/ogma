@@ -223,7 +223,8 @@ class Staff::StaffAttendancesController < ApplicationController
   def status
     #@all_dates_staffs = StaffAttendance.find(:all, :conditions =>['logged_at>=? and logged_at<?',"2012-05-07","2012-10-16"], :order => 'logged_at ASC')
     thumb_ids_in_staff = Staff.where('thumb_id IS NOT NULL').order(:thumb_id).pluck(:thumb_id).uniq
-    @all_dates_staffs = StaffAttendance.where('logged_at>=? and logged_at<? and thumb_id IN(?)',"2012-05-07","2014-01-01", thumb_ids_in_staff).order('logged_at ASC').limit(1500)
+    #@all_dates_staffs = StaffAttendance.where('logged_at>=? and logged_at<? and thumb_id IN(?)',"2012-05-07","2014-01-01", thumb_ids_in_staff).order('logged_at ASC').limit(1500)
+    @all_dates_staffs = StaffAttendance.where('logged_at>=? and logged_at<? and thumb_id IN(?)',Date.today-2.years, Date.today, thumb_ids_in_staff).order('logged_at ASC').limit(15000)
     @logged_at_list =[]
     for all_dates_staff in @all_dates_staffs.map(&:logged_at)
       @logged_at_list << all_dates_staff.in_time_zone('UTC').to_date.beginning_of_month.to_s
@@ -302,6 +303,7 @@ class Staff::StaffAttendancesController < ApplicationController
     daily_end=daily_date.end_of_day
     unit_dept=params[:unit_department]
     unit_dept_post_staffids=Position.where('staff_id is not null and unit=?', unit_dept).pluck(:staff_id)
+    unit_dept_post_staffids+=Position.where('staff_id is not null and unit=?', "Pentadbiran").pluck(:staff_id) if unit_dept=="Pentadbiran Am"
     thumb_ids=Staff.where('thumb_id is not null and id in(?)', unit_dept_post_staffids).pluck(:thumb_id)
     unit_dept_post_staffids.each do |staffid|
       if User.where(userable_id: staffid.to_i).count > 0 #check account existance
@@ -317,10 +319,11 @@ class Staff::StaffAttendancesController < ApplicationController
     #to confirm
     #@staff_attendances = StaffAttendance.where('logged_at >? and logged_at <? and thumb_id IN(?)', daily_start, daily_end, thumb_ids)
     @staff_attendances = StaffAttendance.where('trigger is true and logged_at >? and logged_at <? and thumb_id IN(?) and is_approved is not true', daily_start, daily_end, thumb_ids)
+    @w_wo_triggered = StaffAttendance.where('logged_at >? and logged_at <? and thumb_id IN(?)', daily_start, daily_end, thumb_ids)
     respond_to do |format|
       format.pdf do
-        pdf = Laporan_harian_punchcardPdf.new(@staff_attendances, @leader, daily_date, thumb_ids, view_context)
-        send_data pdf.render, filename: "laporan_bulanan_punchcard-{Date.today}",
+        pdf = Laporan_harian_punchcardPdf.new(@staff_attendances, @leader, daily_date, thumb_ids, @w_wo_triggered, view_context)
+        send_data pdf.render, filename: "laporan_harian_punchcard-{Date.today}",
                               type: "application/pdf",
                               disposition: "inline"
       end
@@ -335,11 +338,12 @@ class Staff::StaffAttendancesController < ApplicationController
       wstart=weekly_start
       wend=weekly_end
     elsif weekly_date.year > 2014
-      wstart=weekly_start-1.days
-      wend=weekly_start+3.days 
+      wstart=(weekly_start-1.days).to_time.beginning_of_day
+      wend=(weekly_start+3.days ).to_time.end_of_day
     end
     unit_dept=params[:unit_department]
     unit_dept_post_staffids=Position.where('staff_id is not null and unit=?', unit_dept).pluck(:staff_id)
+    unit_dept_post_staffids+=Position.where('staff_id is not null and unit=?', "Pentadbiran").pluck(:staff_id) if unit_dept=="Pentadbiran Am"
     thumb_ids=Staff.where('thumb_id is not null and id in(?)', unit_dept_post_staffids).pluck(:thumb_id)
     unit_dept_post_staffids.each do |staffid|
       if User.where(userable_id: staffid.to_i).count > 0 #check account existance
@@ -372,6 +376,7 @@ class Staff::StaffAttendancesController < ApplicationController
     monthly_end=monthly_date.end_of_month
     unit_dept=params[:unit_department]
     unit_dept_post_staffids=Position.where('staff_id is not null and unit=?', unit_dept).pluck(:staff_id)
+    unit_dept_post_staffids+=Position.where('staff_id is not null and unit=?', "Pentadbiran").pluck(:staff_id) if unit_dept=="Pentadbiran Am"
     thumb_ids=Staff.where('thumb_id is not null and id in(?)', unit_dept_post_staffids).pluck(:thumb_id)
     unit_dept_post_staffids.each do |staffid|
       if User.where(userable_id: staffid.to_i).count > 0 #check account existance

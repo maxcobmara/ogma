@@ -20,7 +20,8 @@ class Senarai_bulanan_punchcardPdf < Prawn::Document
 	move_down 50
         text "Thumb ID must exist for each staff."
       else
-        staff_names=thumb_ids.pluck(:name).join(", ")
+        staff_names=thumb_dup.pluck(:name)
+        staff_names=staff_names.join(", ") if thumb_dup.count > 1
         move_down 50
         text "Thumb ID must unique for each staff. There are #{thumb_dup.count} staffs using the same Thumb ID : #{@thumb_id}", :size => 11
         move_down 5
