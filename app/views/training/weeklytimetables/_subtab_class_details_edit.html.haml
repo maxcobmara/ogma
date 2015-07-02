@@ -51,10 +51,10 @@
         %font{:color => "red", :style=> "font-weight: bold"}=t('training.weeklytimetable.duplicate_lecturer2')
         %br
     / Note : a_eday2.count = a_eis_friday.count = (a_etimeslot+a_etimeslot2).count
-    = a_eday2
-    = a_etimeslot2
-    = a_eis_friday
-    = a_etimeslot
+    /= a_eday2
+    /= a_etimeslot2
+    /= a_eis_friday
+    /= a_etimeslot
     - if @lecturer_list.pluck(:id).include?(xx.lecturer_id)
       = render 'sstab_class_edit2', {:xx=>xx,:rowno=>rowno,:colno=>colno}
     - else
