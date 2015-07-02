@@ -314,6 +314,7 @@ Ogma::Application.routes.draw do
         get :personalize_show
         get :weekly_timetable
         get :personalizetimetable
+        get :approval
       end
       collection do
         get 'general_timetable', to: "weeklytimetables#general_timetable"

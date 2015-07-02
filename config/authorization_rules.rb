@@ -237,15 +237,12 @@ authorization do
    
    #TRAINING modules
    has_permission_on :training_weeklytimetables, :to => [:menu, :read, :create] #w/o coordinator role: restrict lecturer other than coordinator to create via HACK in index
-   has_permission_on :training_weeklytimetables, :to => :update do #HACK in show
-     if_attribute :is_submitted => is_not {true}
-   end
- 
+   
    has_permission_on :training_weeklytimetables, :to => [:personalize_index, :personalize_show, :personalize_timetable, :personalizetimetable] do
-      if_attribute :staff_id => is {user.userable_id}
+       if_attribute :staff_id => is {user.userable_id}
    end
    
-   #coordinator
+   #coordinator #HACK - is_submitted
    has_permission_on :training_weeklytimetables, :to => [:manage, :weekly_timetable] do
       if_attribute :prepared_by => is {user.userable_id}
    end
@@ -274,7 +271,12 @@ authorization do
     has_permission_on :staff_staff_attendances, :to => :approval do
       if_attribute :thumb_id => is_in {user.admin_unitleaders_thumb}
     end
-    has_permission_on :training_weeklytimetables, :to => :manage
+    has_permission_on :training_weeklytimetables, :to => :manage do
+      if_attribute :is_submitted => is_not {true}
+    end
+    has_permission_on :training_weeklytimetables, :to => :approval do
+      if_attribute :is_submitted => is {true}
+    end
  end
  
  #Group Library   -------------------------------------------------------------------------------

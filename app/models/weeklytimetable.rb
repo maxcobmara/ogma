@@ -20,8 +20,37 @@ class Weeklytimetable < ActiveRecord::Base
 
   validates_presence_of :programme_id, :semester, :intake_id, :format1, :format2
   validate :approved_or_rejected, :restrict_lecturer_per_class_duration
+  validates_presence_of :hod_approved_on, :if => :hod_approval?
+  validates_presence_of :hod_rejected_on, :reason, :if => :hod_rejection?
   
   attr_accessor :set_error_slot
+  #attr_accessor :subject_id  #for testing grouped programme (subject)
+  
+  #before logic
+  def set_to_nil_where_false
+    if is_submitted == true
+      self.submitted_on= Date.today
+    end
+    if is_submitted == true && hod_approved_on==nil && hod_approved==nil 
+       self.hod_rejected = nil 
+    end
+    if hod_rejected == true && reason!="" && hod_approved==false
+      self.is_submitted = nil
+      self.hod_approved_on =nil
+      self.hod_approved=nil
+    end
+    if hod_approved==true 
+      self.reason=nil
+    end
+  end
+  
+  def hod_approval?
+    hod_approved==true && hod_rejected==false
+  end
+  
+  def hod_rejection?
+    hod_rejected==true && hod_approved==false
+  end
   
   def manual_remove_details_if_marked
     weeklytimetable_details.each do |wd|
@@ -240,29 +269,6 @@ class Weeklytimetable < ActiveRecord::Base
       self.set_error_slot = @all_error_slots.uniq
     end
   end#------
- 
-  #attr_accessor :subject_id  #for testing grouped programme (subject)
-  #before logic
-  def set_to_nil_where_false
-    if is_submitted == true
-      self.submitted_on	= Date.today
-    end
-    
-    if hod_approved == false
-      self.hod_approved_on	= nil
-    end
-    
-    #current_user = User.find(11)    #maslinda 
-    #current_user = User.find(72)    #izmohdzaki
-    #staff_id = 25 maslinda
-    #staff_id = 84 izmohdzaki
-    #staff_id = 72 chin wan king
-    
-    if hod_rejected == true && endorsed_by == 25 #84 #current_user.staff_id # User.current_user.staff_id
-      self.is_submitted = nil
-   end
-    
-  end
 
   #dip & posbasiks
   def self.search2(programmeid, roles, staffid)  
@@ -308,24 +314,13 @@ class Weeklytimetable < ActiveRecord::Base
     "#{schedule_programme.programme_list}"+" Intake : "+"#{schedule_intake.name}" +" - (Week : "+"#{startdate.strftime('%d-%m-%Y')}"+" - "+"#{enddate.strftime('%d-%m-%Y')}"+")" 
   end
   
-  def hods  
-      ##hod = User.current_user.staff.position.parent
-      #current_user = User.find(11)    #maslinda 
-      ##current_user = User.find(72)    #izmohdzaki      
-      #approver = Position.where('tasks_main like? or (tasks_other like? and is_acting=?) or unit=?', "%Ketua Program%", "%Ketua Program%",true, Programme.find(programme_id).name).pluck(:staff_id).compact
-      approver = Position.where('tasks_main like? or (tasks_other like? and is_acting=?) or unit=?', "%Ketua Program%", "%Ketua Program%",true, "Radiografi").pluck(:staff_id).compact
-      
-      ##Ketua Program - ancestry_depth.2
-      ##hod = Position.find(:all, :conditions => ["ancestry=?","1/2"])
-      
-      ##if User.current_user.staff.position.root_id == User.current_user.staff.position.parent_id
-        ##hod = User.current_user.staff.position.root_id
-        ##approver = Position.find(:all, :select => "staff_id", :conditions => ["id IN (?)", hod]).map(&:staff_id)
-      ##else
-        ##hod = User.current_user.staff.position.root.child_ids
-        ##approver = Position.find(:all, :select => "staff_id", :conditions => ["id IN (?)", hod]).map(&:staff_id)
-      ##end
-      ##approver
+  def hods        
+    #works for both Diploma(eg. KP Radiografi) & Pos Basik/Pengkhususan/Dip Lanjutan(KP Pengkhususan) - note, creator among programmes lecturers only
+    #unit_name=schedule_programme.name #not working for posbasiks
+    unit_name=schedule_creator.positions.first.unit
+    approver=[]
+    approver << Position.unit_department_leader(unit_name).id       
+    approver
   end
   
   def self.location_list
@@ -344,8 +339,8 @@ class Weeklytimetable < ActiveRecord::Base
   def approved_or_rejected
     #if is_submitted==true && submitted_on.blank? == false && hod_approved.blank? == false && hod_rejected.blank? == false
     #is_submitted is true and submitted_on is not null and hod_approved is null and hod_rejected is null
-    if is_submitted==true and submitted_on!=nil and hod_approved==nil and hod_rejected==nil
-      errors.add(:base, "Please choose either to approve or reject this weekly timetable")
+    if (is_submitted==true && submitted_on!=nil && hod_approved==nil && hod_rejected==nil && endorsed_by!=nil) || (hod_approved==true && hod_rejected==true)
+      errors.add(:base, I18n.t('training.weeklytimetable.choose_approve_or_reject'))
     end
   end
   
@@ -455,12 +450,12 @@ class Weeklytimetable < ActiveRecord::Base
         end
       end
     end
-    new_timeslot_weekend=new_timeslot_1stday_weekend+new_timeslot_2ndday_weekend.map{|y|y+=7}
+    new_timeslot_weekend=new_timeslot_1stday_weekend+new_timeslot_2ndday_weekend.map{|y|y+=@special}
 
     #2c-START-existing time slot - Weekends
     exist_timeslot_1stday_weekend = weeklytimetable.weeklytimetable_details.where('day2=?',6).pluck(:time_slot2) 
     exist_timeslot_2ndday_weekend = weeklytimetable.weeklytimetable_details.where('day2=?',7).pluck(:time_slot2) 
-    exist_timeslot_weekend = exist_timeslot_1stday_weekend+exist_timeslot_2ndday_weekend.map{|y|y+=7}
+    exist_timeslot_weekend = exist_timeslot_1stday_weekend+exist_timeslot_2ndday_weekend.map{|y|y+=@special}
     exist_day2_weekend = weeklytimetable.weeklytimetable_details.where('day2=? or day2=?',6,7).pluck(:day2)
 
     rev_exist_slot_weekend=[]

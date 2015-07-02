@@ -43,6 +43,7 @@ en:
       staff_attendance: Staff Attendance
       fingerprint: Fingerprint
       holiday: Public Holiday
+      weeklytimetable: Weekly Timetable
     attributes:
       student:
         name: Name
@@ -130,6 +131,10 @@ en:
       holiday:
         hname: Name
         hdate: Date
+      weeklytimetable:
+        reason: Reason
+        hod_approved_on: Approval date
+        hod_rejected_on: Rejection date
     errors:
         template:
           body: "There were problems with the following fields:"
@@ -2403,6 +2408,7 @@ en:
       title: Weekly Timetable
       new: New Weekly Timetable
       edit: Edit Weekly Timetable
+      approval: Weekly Timetable Approval
       details: Weekly Timetable Details
       programme_id: Programme
       intake_id: Group
@@ -2411,7 +2417,7 @@ en:
       enddate: End Date
       semester: Semester
       prepared_by: Prepared By
-      endorsed_by: Endorsed By
+      endorsed_by: Submitted for Endorsement by
       format1: "Format (Sunday - Wednesday"
       format2: "Format (Thursday)"
       week: Week
@@ -2422,8 +2428,8 @@ en:
       hod_rejected: HOD Rejection
       hod_rejected_on: Rejecttion Date
       reason: Reason
-      is_returned: " - Dipulangkan"
-      is_resubmitted: " -  Dihantar Semula"
+      is_returned: " - Returned"
+      is_resubmitted: " -  Re-submitted"
       is_approved: "Approved ?"
       daily_details: Daily Details
       break: BREAK
@@ -2439,6 +2445,9 @@ en:
       duplicate_lecturer2: "Re-select Lecturer."
       intake_programme_must_match: Selected Intake must match with selected Programme
       submission_by_coordinator: Submission to be done by Group Coordinator
+      reason_rejection: Reason for Rejection
+      choose_approve_or_reject: Please choose either to approve or reject this Weekly Timetable
+      
     weeklytimetable_detail:
       topic: Topic
       lecturer_id: Lecturer     
