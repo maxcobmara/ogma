@@ -4,7 +4,9 @@
   /-timeslot=@count1+colno
   -timeslot= colno
   /-@ind = @count1*(4)+colno	
-  -@ind = colno	
+  /-@ind = colno  /hide on 3July2015 & fixes as below -  1 Day Format - Sun to Wed (9 sessions) & 1 Day Format - Thurs (7 sessions) 
+  /below - fixed Sunday - when (3: row=1, col=4) & (5: row=1, col=6) - data wrongly save as is_friday==true, as this part is for friday(thurs) 
+  -@ind = @count1+colno 
   = hidden_field_tag "weeklytimetable[weeklytimetable_details_attributes][#{@ind}][is_friday]",true  
 - else
   /sun-wed

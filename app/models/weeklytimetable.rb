@@ -279,7 +279,8 @@ class Weeklytimetable < ActiveRecord::Base
     error_lines=""
     @all_error_slots.each_with_index do |error_line,ind|
       el = error_line.split(" ")
-      error_lines+= "("+(ind+1).to_s+") "+I18n.t('training.weeklytimetable.date_time')+el[0]+" "+el[1]
+      rev_el_1=(el[1].split("-")[0].to_time.strftime("%l:%M:%P"))+(el[1].split("-")[1].to_time.strftime("%l:%M:%P"))
+      error_lines+= "("+(ind+1).to_s+") "+I18n.t('training.weeklytimetable.date_time')+el[0]+" "+rev_el_1
     end
     #END - Currently EDIT
     
@@ -340,8 +341,11 @@ class Weeklytimetable < ActiveRecord::Base
     #unit_name=schedule_programme.name #not working for posbasiks
     unit_name=schedule_creator.positions.first.unit
     approver=[]
-    approver << Position.unit_department_leader(unit_name).id       
-    approver
+    kp_staffid = Position.unit_department_leader(unit_name).id
+    sibkp_staffid=User.joins(:roles).where('roles.authname=?', "programme_manager").pluck(:userable_id).compact
+    approver << kp_staffid
+    approver += sibkp_staffid #dup may exist
+    approver.uniq
   end
   
   def self.location_list

@@ -107,9 +107,9 @@ class Training::WeeklytimetablesController < ApplicationController
       @lecturer_list=programme_lecturers+pengkhususan_lecturers
     else
       #retrieve programme & groups coordinated from Intake
-      programme_id=Intake.where(staff_id: @staffid).first.programme_id
-      @programme_list=Programme.roots.where(id: programme_id)
-      group_intake_ids=Intake.where(programme_id: programme_id, staff_id: @staffid).pluck(:id).compact
+      @programme_id=Intake.where(staff_id: @staffid).first.programme_id
+      @programme_list=Programme.roots.where(id: @programme_id)
+      group_intake_ids=Intake.where(programme_id: @programme_id, staff_id: @staffid).pluck(:id).compact
       @intake_list=Intake.where(id: group_intake_ids)
       @lecturer_list=Staff.where(id: @staffid)
     end
