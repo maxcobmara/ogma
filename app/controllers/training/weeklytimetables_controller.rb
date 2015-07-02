@@ -150,9 +150,9 @@ class Training::WeeklytimetablesController < ApplicationController
     common_subjects = ["Sains Perubatan Asas", "Anatomi & Fisiologi", "Sains Tingkahlaku", "Komunikasi & Sains Pengurusan", "Komuniti"]
     
     ##diploma & posbasic - based on saved WT(coordinators/admin), commonsubjects - based on logged-in user(unit in Positions is of type commonsubjects)
-    if dip_programmes.include?(prog_name) 
+    if dip_programmes.include?(prog_name) && (@is_coordinator || @is_admin)
       lecturer_ids= Staff.joins(:positions).where('unit=?', prog_name).pluck(:id)
-    elsif posbasics.include?(prog_type) 
+    elsif posbasics.include?(prog_type) && (@is_coordinator || @is_admin)
       lecturer_ids=Staff.joins(:positions).where('(unit=? or unit=? or unit=?) and tasks_main ILIKE(?)', "Diploma Lanjutan","Pos Basik", "Pengkhususan", "%#{prog_name}%").pluck(:id)
     elsif common_subjects.include?(lecturer_programme)
       lecturer_ids=Staff.joins(:positions).where('unit IN(?)', common_subjects).pluck(:id)
@@ -242,7 +242,7 @@ class Training::WeeklytimetablesController < ApplicationController
     @weeklytimetable.destroy
 
     respond_to do |format|
-      format.html { redirect_to(weeklytimetables_url) }
+      format.html { redirect_to(training_weeklytimetables_url) }
       format.xml  { head :ok }
     end
   end

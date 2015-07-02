@@ -78,6 +78,7 @@ class Weeklytimetable < ActiveRecord::Base
     count_errors=0
     count_marked2=0
     current_date_period=[]
+    current_date_period2=[]
     details_by_lecturer = Hash.new
     current_wd=[]
     new_lecturer=[]
@@ -112,16 +113,23 @@ class Weeklytimetable < ActiveRecord::Base
     
     details_g_lecturer.each do |lecturer, details|        
       details.each do |x|
+        wt = x.weeklytimetable_id
         sdate=x.weeklytimetable.startdate
+        tp_1 = Weeklytimetable.where(id: wt).first.format1
+        tp_2 = Weeklytimetable.where(id: wt).first.format2   #Thurs/Firday
         if x.is_friday == true
           current_date = (sdate+4).try(:strftime, "%d%b%Y")
-          period_start = TimetablePeriod.where(id:x.time_slot)[0].start_at
-          period_end = TimetablePeriod.where(id:x.time_slot)[0].end_at
+#           period_start = TimetablePeriod.where(id:x.time_slot)[0].start_at
+#           period_end = TimetablePeriod.where(id:x.time_slot)[0].end_at
+	  period_start = TimetablePeriod.where(timetable_id: tp_2, sequence: x.time_slot)[0].start_at
+          period_end = TimetablePeriod.where(timetable_id: tp_2, sequence: x.time_slot)[0].end_at
           period = period_start.try(:strftime, "%H:%M%P")+"-"+period_end.try(:strftime, "%H:%M%P")
           unless x.subject.nil? || x.subject.blank?
             current_date_period << current_date +" "+ period+" "+x.subject.to_s+" "+lecturer.to_s#+" "+x.id.to_s
+            #current_date_period2 << current_date +" "+ period+" "+x.subject.to_s+" "+lecturer.to_s+" "+x.id.to_s   ******-unremark for checking 2Jul2015
           else
             current_date_period << current_date +" "+ period+" "+"0"+" "+lecturer.to_s#+" "+x.id.to_s
+            #current_date_period2 << current_date +" "+ period+" "+x.subject.to_s+" "+lecturer.to_s+" "+x.id.to_s  ******-unremark for checking 2Jul2015
           end
         else
           current_date2 = sdate.try(:strftime, "%d%b%Y") if x.day2==1        #weekdays
@@ -130,13 +138,15 @@ class Weeklytimetable < ActiveRecord::Base
           current_date2 = (sdate+3).try(:strftime, "%d%b%Y") if x.day2==4
           current_date2 = (sdate+5).try(:strftime, "%d%b%Y") if x.day2==6    #weekends
           current_date2 = (sdate+6).try(:strftime, "%d%b%Y") if x.day2==7  
-          period_start = TimetablePeriod.where(id:x.time_slot2)[0].start_at
-          period_end = TimetablePeriod.where(id:x.time_slot2)[0].end_at
+          period_start = TimetablePeriod.where(timetable_id: tp_1, sequence: x.time_slot2)[0].start_at
+          period_end = TimetablePeriod.where(timetable_id: tp_1, sequence: x.time_slot2)[0].end_at
           period2 = period_start.try(:strftime, "%H:%M%P")+"-"+period_end.try(:strftime, "%H:%M%P")
           unless x.subject.nil? || x.subject.blank?
             current_date_period << current_date2 +" "+ period2+" "+x.subject.to_s+" "+lecturer.to_s#+" "+x.id.to_s
+            #current_date_period2 << current_date2 +" "+ period2+" "+x.subject.to_s+" "+lecturer.to_s+" "+x.id.to_s  ******-unremark for checking 2Jul2015
           else
             current_date_period << current_date2 +" "+ period2+" "+"0"+" "+lecturer.to_s#+" "+x.id.to_s
+            #current_date_period2 << current_date2 +" "+ period2+" "+"0"+" "+lecturer.to_s+" "+x.id.to_s    ******-unremark for checking 2Jul2015
           end
         end        
       end
@@ -151,16 +161,20 @@ class Weeklytimetable < ActiveRecord::Base
     details2.each do |l,d2|
       d2.each do |y|
         wt = y.weeklytimetable_id
-        seq = y.time_slot
         tp_1 = Weeklytimetable.where(id: wt).first.format1
-        seq = y.time_slot2
-        tp_2 = Weeklytimetable.where(id: wt).first.format2  
+        tp_2 = Weeklytimetable.where(id: wt).first.format2    #Thurs/Firday
         if y.is_friday == true
           current_date = (startdate+4).try(:strftime,"%d%b%Y")
-          period_start = TimetablePeriod.where(id: tp_1)[0].start_at 
-          period_end = TimetablePeriod.where(id: tp_1)[0].end_at
+          period_start = TimetablePeriod.where(timetable_id: tp_2, sequence: y.time_slot)[0].start_at 
+          period_end = TimetablePeriod.where(timetable_id: tp_2, sequence: y.time_slot)[0].end_at
           period = period_start.try(:strftime, "%H:%M%P")+"-"+period_end.try(:strftime, "%H:%M%P")
-          current_date_period << current_date +" "+ period+" "+y.subject.to_s+" "+l.to_s#+" "+y.id.to_s
+          unless y.subject.nil? || y.subject.blank?
+            current_date_period << current_date +" "+ period+" "+y.subject.to_s+" "+l.to_s#+" "+y.id.to_s
+            #current_date_period2 << current_date +" "+ period+" "+y.subject.to_s+" "+l.to_s+" "+y.id.to_s+"salah baca masa 3"  ******-unremark for checking 2Jul2015
+          else
+            current_date_period << current_date +" "+ period+" "+"0"+" "+l.to_s#+" "+y.id.to_s
+           # current_date_period2 << current_date +" "+ period+" "+"0"+" "+l.to_s+" "+y.id.to_s+"salah baca masa 3 -->"+y.time_slot.to_s  ******-unremark for 2Jul2015 checking
+          end
         else
           current_date2 = startdate.try(:strftime, "%d%b%Y") if y.day2==1    #weekdays
           current_date2 = (startdate+1).try(:strftime, "%d%b%Y") if y.day2==2    
@@ -168,10 +182,16 @@ class Weeklytimetable < ActiveRecord::Base
           current_date2 = (startdate+3).try(:strftime, "%d%b%Y") if y.day2==4
           current_date2 = (startdate+5).try(:strftime, "%d%b%Y") if y.day2==6    #weekends
           current_date2 = (startdate+6).try(:strftime, "%d%b%Y") if y.day2==7 
-          period_start = TimetablePeriod.where(id: tp_2)[0].start_at
-          period_end = TimetablePeriod.where(id: tp_2)[0].end_at
+          period_start = TimetablePeriod.where(timetable_id: tp_1, sequence: y.time_slot2)[0].start_at
+          period_end = TimetablePeriod.where(timetable_id: tp_1, sequence: y.time_slot2)[0].end_at
           period2 = period_start.try(:strftime, "%H:%M%P")+"-"+period_end.try(:strftime, "%H:%M%P")
-          current_date_period << current_date2 +" "+ period2+" "+y.subject.to_s+" "+l.to_s#+" "+y.id.to_s    
+          unless y.subject.nil? || y.subject.blank?
+            current_date_period << current_date2 +" "+ period2+" "+y.subject.to_s+" "+l.to_s#+" "+y.id.to_s    
+            #current_date_period2 << current_date2 +" "+ period2+" "+y.subject.to_s+" "+l.to_s+" "+y.id.to_s+"salah baca masa"  ******-unremark for checking 2Jul2015
+          else
+            current_date_period << current_date2 +" "+ period2+" "+"0"+" "+l.to_s#+" "+y.id.to_s    
+            #current_date_period2 << current_date2 +" "+ period2+" "+"0"+" "+l.to_s+" "+y.id.to_s+"salah baca masa2"   ******-unremark for checking 2Jul2015
+          end
         end
       end
     end 
@@ -208,7 +228,7 @@ class Weeklytimetable < ActiveRecord::Base
             if (splitter2[2]==0 || splitter2[2]=="0")   #not marked for removal 
               count_e+=1
               if item_count>=2 && count_e>=2
-                error_slots<< splitter2[0]+" "+splitter2[1]#+item_count.to_s+count_e.to_s+"yoyo"
+                error_slots<< splitter2[0]+" "+splitter2[1]#+item_count.to_s+count_e.to_s+"yoyo"  ******-unremark for checking 2Jul2015
               end
             elsif splitter2[2]==1 || splitter2[2]=="1"  #marked for removal
               #count_marked+=1
@@ -238,7 +258,7 @@ class Weeklytimetable < ActiveRecord::Base
             if (splitter2[2]==0 || splitter2[2]=="0")   #not marked for removal 
               count_e+=1
               if item_count>=2 && count_e>=2
-                error_slots<< splitter2[0]+" "+splitter2[1]#+item_count.to_s+count_e.to_s+"yaya"
+                error_slots<< splitter2[0]+" "+splitter2[1]#+item_count.to_s+count_e.to_s+"yaya"   ******-unremark for checking 2Jul2015
               end
             elsif splitter2[2]==1 || splitter2[2]=="1"  #marked for removal
               #count_marked+=1
@@ -259,12 +279,13 @@ class Weeklytimetable < ActiveRecord::Base
     error_lines=""
     @all_error_slots.each_with_index do |error_line,ind|
       el = error_line.split(" ")
-      error_lines+= "("+(ind+1).to_s+") "+I18n.t('training.weeklytimetable.date_time')+el[0]+" "+el[1]+" "
+      error_lines+= "("+(ind+1).to_s+") "+I18n.t('training.weeklytimetable.date_time')+el[0]+" "+el[1]
     end
     #END - Currently EDIT
     
     if count_errors>0       
-      errors.add(:base, I18n.t('training.weeklytimetable.duplicate_lecturer')+" #{error_lines}")
+      errors.add(:base, I18n.t('training.weeklytimetable.duplicate_lecturer')+" #{error_lines}") #+"~ #{current_date_period2} #{@all_error_slots.uniq.count}")   ****** remove last right bracket ')' & unremark for checking (current_date_period2 will display all existing time slot) 2Jul2015
+      #*******
       #errors.add(:base, "#{count_marked2} #{count_errors} #{details2.count} #{details_g_lecturer.count}-#{current_date_period}+#{current_date_period.uniq} * #{current_lecturer} ==#{new_lecturer} ~~#{current_wd} ` #{current_date_period.count}==`#{current_date_period.uniq.count}--->#{@all_error_slots}")
       self.set_error_slot = @all_error_slots.uniq
     end
@@ -511,40 +532,42 @@ class Weeklytimetable < ActiveRecord::Base
         emonth=eslot.split("")[2,3].join
         eday=eslot.split("")[0,2].join
         edate = Date.new(eyear.to_i,Date::ABBR_MONTHNAMES.index(emonth),eday.to_i)
-        estart_at = eslot.split(" ")[1].split("-")[0].to_time.strftime("%H:%M%p")
-        eend_at = eslot.split(" ")[1].split("-")[1].to_time.strftime("%H:%M%p")
+        estart_at = eslot.split(" ")[1].split("-")[0].to_time.strftime("%H:%M:%S")
+        eend_at = eslot.split(" ")[1].split("-")[1].to_time.strftime("%H:%M:%S")
+        dayyname=1 if edate.strftime("%A")!="Thursday"
+        dayyname=2 if edate.strftime("%A")=="Thursday"
         
         if item_type==3      
           weekdays_slots.each do |slot|
-            if slot.start_at.strftime("%H:%M%p")==estart_at && slot.end_at.strftime("%H:%M%p")==eend_at && slot.day_name==1
-              a_etimeslot2<< slot.id
+            if slot.start_at.strftime("%H:%M:%S")==estart_at && slot.end_at.strftime("%H:%M:%S")==eend_at && slot.day_name==dayyname  #==1
+              a_etimeslot2<< slot.sequence #slot.id
               a_etimeslot<< 0
             end
           end
         end
         if item_type==2 
           thursday_slots.each do |slot|
-            if slot.start_at.strftime("%H:%M%p")==estart_at && slot.end_at.strftime("%H:%M%p")==eend_at && slot.day_name==2
-              a_etimeslot<< slot.id
+            if slot.start_at.strftime("%H:%M:%S")==estart_at && slot.end_at.strftime("%H:%M:%S")==eend_at && slot.day_name==dayyname #==2
+              a_etimeslot<< slot.sequence #slot.id
               a_etimeslot2<< 0
             end
           end
         end
         
         if item_type==4 || item_type==1
-          diff_day=(weeklytimetable.startdate-edate).to_i
-          eday2=1 if diff_day==0
-          eday2=2 if diff_day==1
-          eday2=3 if diff_day==2
-          eday2=4 if diff_day==3
-          eday2=0 if diff_day==4
-          eday2=6 if diff_day==5
-          eday2=7 if diff_day==6
+          diff_day=(weeklytimetable.startdate-edate).to_i  #hari pertama
+          eday2=1 if edate.strftime("%A")=="Sunday"# if diff_day==0
+          eday2=2 if edate.strftime("%A")=="Monday"# if diff_day==1
+          eday2=3 if edate.strftime("%A")=="Tuesday" # if diff_day==2
+          eday2=4 if edate.strftime("%A")=="Wednesday"# if diff_day==3
+          eday2=0 if edate.strftime("%A")=="Thursday" # if diff_day==-4 
+          eday2=6 if edate.strftime("%A")=="Friday"# if diff_day==5
+          eday2=7 if edate.strftime("%A")=="Saturday"# if diff_day==6
           if item_type==1
             a_eday2<< eday2
           end
-          eis_friday=true if diff_day==4
-          eis_friday=false if (diff_day==0||diff_day==1||diff_day==2||diff_day==3||diff_day==5||diff_day==6||diff_day==7)
+          eis_friday=true if eday2==0 #diff_day==-4
+          eis_friday=false if (eday2==1 || eday2==2 ||eday2==3 || eday2==4 || eday2==6 || eday2==7)
           a_eis_friday<< eis_friday
         end
       end
