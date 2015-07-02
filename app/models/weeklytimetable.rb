@@ -279,7 +279,7 @@ class Weeklytimetable < ActiveRecord::Base
     error_lines=""
     @all_error_slots.each_with_index do |error_line,ind|
       el = error_line.split(" ")
-      rev_el_1=(el[1].split("-")[0].to_time.strftime("%l:%M:%P"))+(el[1].split("-")[1].to_time.strftime("%l:%M:%P"))
+      rev_el_1=(el[1].split("-")[0].to_time.strftime("%l:%M:%P"))+" - "+(el[1].split("-")[1].to_time.strftime("%l:%M:%P"))+"  "
       error_lines+= "("+(ind+1).to_s+") "+I18n.t('training.weeklytimetable.date_time')+el[0]+" "+rev_el_1
     end
     #END - Currently EDIT
@@ -530,7 +530,7 @@ class Weeklytimetable < ActiveRecord::Base
     a_eis_friday=[]
 
     if (weeklytimetable.set_error_slot).is_a? Array
-      weeklytimetable.set_error_slot.each do |eslot|
+      weeklytimetable.set_error_slot.sort.each do |eslot|
         
         eyear=(eslot.split(" ")[0]).split("")[-4,4].join
         emonth=eslot.split("")[2,3].join
@@ -541,7 +541,7 @@ class Weeklytimetable < ActiveRecord::Base
         dayyname=1 if edate.strftime("%A")!="Thursday"
         dayyname=2 if edate.strftime("%A")=="Thursday"
         
-        if item_type==3      
+        if item_type==3 
           weekdays_slots.each do |slot|
             if slot.start_at.strftime("%H:%M:%S")==estart_at && slot.end_at.strftime("%H:%M:%S")==eend_at && slot.day_name==dayyname  #==1
               a_etimeslot2<< slot.sequence #slot.id
@@ -568,18 +568,19 @@ class Weeklytimetable < ActiveRecord::Base
           eday2=6 if edate.strftime("%A")=="Friday"# if diff_day==5
           eday2=7 if edate.strftime("%A")=="Saturday"# if diff_day==6
           if item_type==1
-            a_eday2<< eday2
+            a_eday2<< eday2 if eday2!=0
           end
-          eis_friday=true if eday2==0 #diff_day==-4
+          @eday2=0 if eday2==0
+          @eis_friday=true if eday2==0 #diff_day==-4
           eis_friday=false if (eday2==1 || eday2==2 ||eday2==3 || eday2==4 || eday2==6 || eday2==7)
           a_eis_friday<< eis_friday
         end
       end
     end
-    return a_eday2 if item_type==1
+    return a_eday2 << @eday2 if item_type==1
     return a_etimeslot if item_type==2
     return a_etimeslot2 if item_type==3
-    return a_eis_friday if item_type==4
+    return a_eis_friday.compact << @eis_friday if item_type==4
   end
   
   private

@@ -212,11 +212,11 @@ class Position < ActiveRecord::Base
       unit_members=Position.joins(:staff).where('unit=? and positions.name!=?', unit_dept, "ICMS Vendor Admin").order(ancestry_depth: :asc)
       highest_rank = unit_members.sort_by{|x|x.staffgrade.name[-2,2]}.last
       leader=Staff.find(highest_rank.staff_id)
-      if leader.nil?
-        members_staffid=unit_members.pluck(:staff_id)
-        mstaffid_w_kp_role=  User.joins(:roles).where('roles.authname=? and userable_id IN(?)', "programme_manager", members_staffid).first.pluck(:userable_id)
-        leader=Staff.find(mstaffid_w_kp_role) if mstaffid_w_kp_role
-      end
+      #if leader.nil?
+      #  members_staffid=unit_members.pluck(:staff_id)
+      #  mstaffid_w_kp_role=  User.joins(:roles).where('roles.authname=? and userable_id IN(?)', "programme_manager", members_staffid).first.pluck(:userable_id)
+      #  leader=Staff.find(mstaffid_w_kp_role) if mstaffid_w_kp_role
+      #end
     end
     leader
   end
