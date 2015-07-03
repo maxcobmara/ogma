@@ -242,10 +242,11 @@ authorization do
        if_attribute :staff_id => is {user.userable_id}
    end
    
-   #coordinator #HACK - is_submitted
-   has_permission_on :training_weeklytimetables, :to => [:manage, :weekly_timetable] do
-      if_attribute :prepared_by => is {user.userable_id}
-   end
+   #coordinator & Ketua Program/Ketua Subjek 
+   #HACK: for Show - 1)edit button appear if - is_submitted!=true - although all lecturer has access - but listing already restricted in INDEX (controller)
+   has_permission_on :training_weeklytimetables, :to => [:manage, :weekly_timetable] #do
+   #   if_attribute :prepared_by => is {user.userable_id}
+   #end
    
    has_permission_on :training_trainingnotes, :to => :manage, :join_by => :or do
      if_attribute :topicdetail_id => is_in {user.topicdetails_of_programme}
@@ -271,9 +272,11 @@ authorization do
     has_permission_on :staff_staff_attendances, :to => :approval do
       if_attribute :thumb_id => is_in {user.admin_unitleaders_thumb}
     end
-    has_permission_on :training_weeklytimetables, :to => :manage do
-      if_attribute :is_submitted => is_not {true}
-    end
+    #no longer required - redundant roles -> lecturer can manage but, hv to access Index (which controlled who can access)
+#     has_permission_on :training_weeklytimetables, :to => :manage do
+#       if_attribute :is_submitted => is_not {true}
+#     end
+    #required for in SHOW (approval button) to appear
     has_permission_on :training_weeklytimetables, :to => :approval do
       if_attribute :is_submitted => is {true}
     end

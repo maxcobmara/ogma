@@ -13,7 +13,7 @@ class Training::WeeklytimetablesController < ApplicationController
     roles = current_user.roles.pluck(:authname)
     @is_admin = roles.include?("administration") 
     @position_exist = current_user.userable.positions
-    if @position_exist && @position_exist.count > 0
+    if @position_exist && @position_exist.count > 0 && !@position_exist.first.unit.blank?
       main_task_first=@position_exist.first.tasks_main
       lecturer_programme = current_user.userable.positions[0].unit
       unless lecturer_programme.nil?
@@ -34,19 +34,20 @@ class Training::WeeklytimetablesController < ApplicationController
             @weeklytimetables3 = @weeklytimetables2.search2(programme_id, roles, current_user.userable_id)
           end
         elsif ["Sains Perubatan Asas", "Anatomi & Fisiologi", "Sains Tingkahlaku", "Komunikasi & Sains Pengurusan", "Komuniti"].include?(lecturer_programme) && roles.include?("unit_leader")
-          @weeklytimetables3 = @weeklytimetables2 
+            @weeklytimetables3 = @weeklytimetables2
         end
       end
       @is_coordinator= Intake.where(programme_id: programme_id, staff_id: current_user.userable_id).count > 0       #coordinator - determine in Intakes
       @weeklytimetables = @weeklytimetables3.order(programme_id: :asc, intake_id: :desc, startdate: :desc).page(params[:page]||1)
+      
     end 
     
     respond_to do |format|
-      unless @position_exist.first.nil?
+      if @position_exist.first && !@position_exist.first.unit.blank?
         format.html # index.html.erb
         format.xml  { render :xml => @weeklytimetables }
       else
-        format.html {redirect_to '/dashboard', notice: "Position required to be assigned!"}
+        format.html {redirect_to '/dashboard', notice: "Position (and unit) are required to be assigned!"}
       end
     end
   end
@@ -79,6 +80,7 @@ class Training::WeeklytimetablesController < ApplicationController
   end
   
   def personalize_show   
+    @test_lecturer=current_user
     @selected_date = params[:id]
     @weeklytimetables_details=WeeklytimetableDetail.where('lecturer_id=?', current_user.userable_id)
     @all_combine = []
@@ -99,12 +101,9 @@ class Training::WeeklytimetablesController < ApplicationController
     if @is_admin
       @programme_list=Programme.roots
       @intake_list=Intake.all.order(programme_id: :asc, monthyear_intake: :desc)
-      #retrieve programme & pos basik lecturers
-      prog_name=Programme.find(@weeklytimetable.programme_id).name
-      pengkhususan_lecturers_ids = Staff.joins(:positions).where('(unit=? or unit=? or unit=?) and tasks_main ILIKE(?)', "Diploma Lanjutan","Pos Basik", "Pengkhususan", "%#{prog_name}%").map(&:id)
-      programme_lecturers = Staff.joins(:positions).where('positions.name=? AND positions.unit=?','Pengajar', prog_name).order(name: :asc)
-      pengkhususan_lecturers = Staff.where('id IN(?)', pengkhususan_lecturers_ids).order(name: :asc)
-      @lecturer_list=programme_lecturers+pengkhususan_lecturers
+      posbasics=["Diploma Lanjutan", "Pos Basik", "Pengkhususan"]
+      prog_names=@programme_list.where(course_type: "Diploma").pluck(:name)
+      @lecturer_list= Staff.joins(:positions).where('positions.unit IN(?) or positions.unit IN(?)', prog_names, posbasics).order(name: :asc)
     else
       #retrieve programme & groups coordinated from Intake
       @programme_id=Intake.where(staff_id: @staffid).first.programme_id
@@ -136,7 +135,6 @@ class Training::WeeklytimetablesController < ApplicationController
     @weeklytimetable = Weeklytimetable.find(params[:id])
     #start-remove from partial : tab_daily_details_edit
     #start-remove from partial : subtab_class_details_edit
-#     @semester_subject_topic_list = Programme.find(@weeklytimetable.programme_id).descendants.where('ancestry_depth=? OR ancestry_depth=?',3,4).sort_by(&:combo_code)
     @timeslot = @weeklytimetable.timetable_monthurs.timetable_periods.where('is_break is false')
     @timeslot2 = @weeklytimetable.timetable_friday.timetable_periods.where('is_break is false')
     #start-remove from partial : subtab_class_details_edit  
@@ -144,8 +142,8 @@ class Training::WeeklytimetablesController < ApplicationController
     dip_programmes=Programme.roots.where(course_type: "Diploma").pluck(:name)
     lecturer_programme = current_user.userable.positions[0].unit
     programme=Programme.find(@weeklytimetable.programme_id)
-    prog_name=programme.name
-    prog_type=programme.course_type
+    prog_name=programme.name #based on saved records
+    prog_type=programme.course_type #based on saved records
     posbasics= ["Diploma Lanjutan", "Pos Basik", "Pengkhususan"]
     common_subjects = ["Sains Perubatan Asas", "Anatomi & Fisiologi", "Sains Tingkahlaku", "Komunikasi & Sains Pengurusan", "Komuniti"]
     
@@ -153,20 +151,29 @@ class Training::WeeklytimetablesController < ApplicationController
     common_subjects_ids=Programme.find(@weeklytimetable.programme_id).descendants.where(course_type: "Commonsubject").pluck(:id)
     @comms_topic=[]
     common_subjects_ids.each{|x|@comms_topic += Programme.find(x).descendant_ids}
-    aa= Programme.find(@weeklytimetable.programme_id).descendants.where('ancestry_depth=? OR ancestry_depth=?',3,4).where('id not in(?)', @comms_topic).sort_by(&:combo_code)
-    if dip_programmes.include?(prog_name) && (@is_coordinator || @is_admin)
+    prog_topics_ifcommon_exist= Programme.find(@weeklytimetable.programme_id).descendants.where('ancestry_depth=? OR ancestry_depth=?',3,4).where('id not in(?)', @comms_topic).sort_by(&:combo_code)
+    full_topics=Programme.find(@weeklytimetable.programme_id).descendants.where('ancestry_depth=? OR ancestry_depth=?',3,4).sort_by(&:combo_code)
+    if dip_programmes.include?(prog_name) && (@is_coordinator || @is_admin || roles.include?("programme_manager")) 
       lecturer_ids= Staff.joins(:positions).where('unit=?', prog_name).pluck(:id)
-      @semester_subject_topic_list==aa
-    elsif posbasics.include?(prog_type) && (@is_coordinator || @is_admin)
+      if @comms_topic==[]
+        @semester_subject_topic_list=full_topics
+      else
+        @semester_subject_topic_list=prog_topics_ifcommon_exist
+      end
+    elsif posbasics.include?(prog_type) && (@is_coordinator || @is_admin || roles.include?("programme_manager"))
       lecturer_ids=Staff.joins(:positions).where('(unit=? or unit=? or unit=?) and tasks_main ILIKE(?)', "Diploma Lanjutan","Pos Basik", "Pengkhususan", "%#{prog_name}%").pluck(:id)
-      @semester_subject_topic_list =aa
+      if @comms_topic==[]
+        @semester_subject_topic_list=full_topics
+      else
+        @semester_subject_topic_list=prog_topics_ifcommon_exist
+      end
     elsif common_subjects.include?(lecturer_programme)
       lecturer_ids=Staff.joins(:positions).where('unit IN(?)', common_subjects).pluck(:id)
       @semester_subject_topic_list = Programme.find(@weeklytimetable.programme_id).descendants.where('ancestry_depth=? OR ancestry_depth=?',3,4).where(id: @comms_topic).sort_by(&:combo_code)
     end
     if @is_admin
       lecturer_ids+=Staff.joins(:positions).where('unit IN(?)', common_subjects).pluck(:id)
-      @semester_subject_topic_list = Programme.find(@weeklytimetable.programme_id).descendants.where('ancestry_depth=? OR ancestry_depth=?',3,4).sort_by(&:combo_code)
+      @semester_subject_topic_list = full_topics
     end
     @lecturer_list=Staff.where('id IN(?)', lecturer_ids).order(name: :asc)
     #end-lecture list   
@@ -222,16 +229,24 @@ class Training::WeeklytimetablesController < ApplicationController
     
     ##diploma & posbasic - based on saved WT(coordinators/admin), commonsubjects - based on logged-in user(unit in Positions is of type commonsubjects)
     common_subjects_ids=Programme.find(@weeklytimetable.programme_id).descendants.where(course_type: "Commonsubject").pluck(:id)
-	#Programme.where(id: @weeklytimetable.programme_id, course_type: "Commonsubject").pluck(:id)
     @comms_topic=[]
     common_subjects_ids.each{|x|@comms_topic += Programme.find(x).descendant_ids}
-    aa= Programme.find(@weeklytimetable.programme_id).descendants.where('ancestry_depth=? OR ancestry_depth=?',3,4).where('id not in(?)', @comms_topic).sort_by(&:combo_code)
-    if dip_programmes.include?(prog_name) && (@is_coordinator || @is_admin)
+    prog_topics_ifcommon_exist= Programme.find(@weeklytimetable.programme_id).descendants.where('ancestry_depth=? OR ancestry_depth=?',3,4).where('id not in(?)', @comms_topic).sort_by(&:combo_code)
+    full_topics=Programme.find(@weeklytimetable.programme_id).descendants.where('ancestry_depth=? OR ancestry_depth=?',3,4).sort_by(&:combo_code)
+    if dip_programmes.include?(prog_name) && (@is_coordinator || @is_admin || roles.include?("programme_manager")) 
       lecturer_ids= Staff.joins(:positions).where('unit=?', prog_name).pluck(:id)
-      @semester_subject_topic_list ==aa
-    elsif posbasics.include?(prog_type) && (@is_coordinator || @is_admin)
+      if @comms_topic==[]
+        @semester_subject_topic_list=full_topics
+      else
+        @semester_subject_topic_list=prog_topics_ifcommon_exist
+      end
+    elsif posbasics.include?(prog_type) && (@is_coordinator || @is_admin || roles.include?("programme_manager"))
       lecturer_ids=Staff.joins(:positions).where('(unit=? or unit=? or unit=?) and tasks_main ILIKE(?)', "Diploma Lanjutan","Pos Basik", "Pengkhususan", "%#{prog_name}%").pluck(:id)
-      @semester_subject_topic_list =aa
+      if @comms_topic==[]
+        @semester_subject_topic_list=full_topics
+      else
+        @semester_subject_topic_list=prog_topics_ifcommon_exist
+      end
     elsif common_subjects.include?(lecturer_programme)
       lecturer_ids=Staff.joins(:positions).where('unit IN(?)', common_subjects).pluck(:id)
       @semester_subject_topic_list = Programme.find(@weeklytimetable.programme_id).descendants.where('ancestry_depth=? OR ancestry_depth=?',3,4).where(id: @comms_topic).sort_by(&:combo_code)

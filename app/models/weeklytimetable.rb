@@ -315,8 +315,7 @@ class Weeklytimetable < ActiveRecord::Base
     elsif intake_ids
       weeklytimetables=Weeklytimetable.where('programme_id=? and (intake_id IN(?) or prepared_by=?)', programmeid, intake_ids, staffid)
     else
-      wt_ids=WeeklytimetableDetail.where(lecturer_id: staffid).pluck(:weeklytimetable_id)
-      weeklytimetables= Weeklytimetable.where('programme_id=? and (id IN(?) or prepared_by=?)',  programmeid, wt_ids, staffid) #include prev coordinator
+      weeklytimetables= Weeklytimetable.where(programme_id: programmeid, prepared_by: staffid) #include prev coordinator
     end
   end
   
@@ -339,11 +338,13 @@ class Weeklytimetable < ActiveRecord::Base
   def hods        
     #works for both Diploma(eg. KP Radiografi) & Pos Basik/Pengkhususan/Dip Lanjutan(KP Pengkhususan) - note, creator among programmes lecturers only
     #unit_name=schedule_programme.name #not working for posbasiks
-    unit_name=schedule_creator.positions.first.unit
     approver=[]
-    kp_staffid = Position.unit_department_leader(unit_name).id
+    unless prepared_by.nil?
+      unit_name=schedule_creator.positions.first.unit 
+      kp_staffid = Position.unit_department_leader(unit_name).id
+      approver << kp_staffid
+    end
     sibkp_staffid=User.joins(:roles).where('roles.authname=?', "programme_manager").pluck(:userable_id).compact
-    approver << kp_staffid
     approver += sibkp_staffid #dup may exist
     approver.uniq
   end
