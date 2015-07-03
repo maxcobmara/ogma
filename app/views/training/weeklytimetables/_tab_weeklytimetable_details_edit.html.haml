@@ -39,7 +39,7 @@
     .col-sm-2.control-label
       = f.label :prepared_by
     .col-md-3
-      = f.collection_select :prepared_by, @lecturer_list, :id, :name , {},{class: 'selectpicker', "data-width"=>'280px'}
+      = f.collection_select :prepared_by, @lecturer_list, :id, :name , {:include_blank =>(t 'select'), :selected => @staffid},{class: 'selectpicker', "data-width"=>'280px'}
 
   .form-group
     .col-sm-2.control-label
