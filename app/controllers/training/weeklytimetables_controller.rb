@@ -140,7 +140,7 @@ class Training::WeeklytimetablesController < ApplicationController
     #start-remove from partial : subtab_class_details_edit  
     #start-lecturer list - edit of programme no longer available, diploma & posbasic lecturer list already fixed
     dip_programmes=Programme.roots.where(course_type: "Diploma").pluck(:name)
-    lecturer_programme = current_user.userable.positions[0].unit
+    lecturer_programme = current_user.userable.positions[0].unit   #note - dip & posbasic (programme name), commonsubjects (subject name)
     programme=Programme.find(@weeklytimetable.programme_id)
     prog_name=programme.name #based on saved records
     prog_type=programme.course_type #based on saved records
@@ -168,7 +168,7 @@ class Training::WeeklytimetablesController < ApplicationController
         @semester_subject_topic_list=prog_topics_ifcommon_exist
       end
     elsif common_subjects.include?(lecturer_programme)
-      lecturer_ids=Staff.joins(:positions).where('unit IN(?)', common_subjects).pluck(:id)
+      lecturer_ids=Staff.joins(:positions).where('unit IN(?) and unit=?', common_subjects, lecturer_programme).pluck(:id)
       @semester_subject_topic_list = Programme.find(@weeklytimetable.programme_id).descendants.where('ancestry_depth=? OR ancestry_depth=?',3,4).where(id: @comms_topic).sort_by(&:combo_code)
     end
     if @is_admin
@@ -220,7 +220,7 @@ class Training::WeeklytimetablesController < ApplicationController
     #start-copy from edit
     #start-lecturer list - edit of programme no longer available, diploma & posbasic lecturer list already fixed
     dip_programmes=Programme.roots.where(course_type: "Diploma").pluck(:name)
-    lecturer_programme = current_user.userable.positions[0].unit
+    lecturer_programme = current_user.userable.positions[0].unit    #note - dip & posbasic (programme name), commonsubjects (subject name)
     programme=Programme.find(@weeklytimetable.programme_id)
     prog_name=programme.name
     prog_type=programme.course_type
@@ -248,7 +248,7 @@ class Training::WeeklytimetablesController < ApplicationController
         @semester_subject_topic_list=prog_topics_ifcommon_exist
       end
     elsif common_subjects.include?(lecturer_programme)
-      lecturer_ids=Staff.joins(:positions).where('unit IN(?)', common_subjects).pluck(:id)
+      lecturer_ids=Staff.joins(:positions).where('unit IN(?) and unit=?', common_subjects, lecturer_programme).pluck(:id)
       @semester_subject_topic_list = Programme.find(@weeklytimetable.programme_id).descendants.where('ancestry_depth=? OR ancestry_depth=?',3,4).where(id: @comms_topic).sort_by(&:combo_code)
     end
     if @is_admin
