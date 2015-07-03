@@ -275,6 +275,7 @@ authorization do
    has_permission_on :training_weeklytimetables, :to => :approval do
      if_attribute :is_submitted => is {true}
    end
+   has_permission_on :training_programmes, :to => :manage
  end
  
  #Group Library   -------------------------------------------------------------------------------
@@ -339,6 +340,10 @@ authorization do
     end
     has_permission_on :staff_staff_attendances, :to => :approval do  # :to =>[:manage, :actionable, :approve] do
       if_attribute :thumb_id => is_in {user.unit_members_thumb}
+    end
+    has_permission_on :training_programmes, :to => :manage, :join_by => :and do
+      if_attribute :name => is {user.positions.first.unit}
+      if_attribute :course_type => is {"Commonsubject"}
     end
   end
   
