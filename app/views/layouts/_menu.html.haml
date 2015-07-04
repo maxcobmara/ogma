@@ -202,7 +202,7 @@
               - roles=current_user.roles.pluck(:authname)
               - unit_name=current_user.userable.positions.first.unit
               - unless unit_name.blank?
-                /Ketua Subjek should not have access, other diploma/posbasic lecturers too
+                /Ketua Subjek should not have access
                 - if roles.include?("administration") || (roles.include?("programme_manager") && (Programme.roots.where(course_type: "Diploma").pluck(:name).include?(unit_name) ||  ["Pos Basik", "Pengkhususan", "Diploma Lanjutan"].include?(unit_name))) || Intake.where(staff_id: current_user.userable_id).count > 0  || Weeklytimetable.all.pluck(:prepared_by).include?(current_user.userable_id)           
                   %li.icon.icon-left
                     = link_to (t "setup"), '#'
