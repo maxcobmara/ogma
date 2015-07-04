@@ -86,11 +86,18 @@
                       - nos=0
                       /26Jul2013-toavoid multiple display:5 times of the same value in 1 field
                       - detailing_monthurs.each do |j|
-                        - if j.day2 == row  && j.time_slot2 == col && j.weeklytimetable.hod_approved == true
+                        - if j.day2 == row  && j.time_slot2 == col 
+                          /&& j.weeklytimetable.hod_approved == true
                           - if nos==0
                             - nos+=1
                             /26Jul2013-toavoid multiple display:5times of the same value in 1 field
-                            %b= render 'p_class_details', {:j=>j}
+                            - if j.weeklytimetable.hod_approved == true 
+                              %font{color: "#000000"}
+                                %b= render 'p_class_details', {:j=>j}
+                            - else 
+                              %font{color: "grey"}
+                                %b= render 'p_class_details', {:j=>j}
+                          
 
             /Header for Thursday-(start)
             - break_tospan=4	
@@ -146,19 +153,33 @@
                   - if classes_tospan.include?(col2)
                     /- elsif count4 == 5 
                     %td{:colspan=>span_count, :align=>"center", :style=>"border:1px solid black;text-align:center; padding:4px; vertical-align:middle;font-size:12px;"}
-
+                      - nos=0
                       - detailing_friday.each do |j|
-                        - if j.is_friday == true && j.time_slot == col2 && j.weeklytimetable.hod_approved == true
-                          %b= render 'p_class_details', {:j=>j}
+                        - if j.is_friday == true && j.time_slot == col2 
+                          /&& j.weeklytimetable.hod_approved == true
+                          - if nos==0
+                            - nos+=1
+                            - if j.weeklytimetable.hod_approved == true 
+                              %font{color: "#000000"}
+                                %b= render 'p_class_details', {:j=>j}
+                            - else
+                              %font{color: "grey"}
+                                %b= render 'p_class_details', {:j=>j}
 
                   - else
                     %td{:align=>"center", :style=>"border:1px solid black;text-align:center; padding:4px; vertical-align:middle;font-size:12px;"}
                       - nos=0
                       - detailing_friday.each do |j|
-                        - if j.is_friday == true  && j.time_slot == col2 && j.weeklytimetable.hod_approved == true
+                        - if j.is_friday == true  && j.time_slot == col2 
+                          /&& j.weeklytimetable.hod_approved == true
                           - if nos==0
                             - nos+=1
-                            %b= render 'p_class_details', {:j=>j}
+                            - if j.weeklytimetable.hod_approved == true 
+                              %font{color: "#000000"}
+                                %b= render 'p_class_details', {:j=>j}
+                            - else
+                              %font{color: "grey"}
+                                %b= render 'p_class_details', {:j=>j}
                               
             /Header(row) : sequence & time period (ADDITIONAL - Weekends classes)
             - weekdays_end = j.weeklytimetable.startdate.to_date+4.days
@@ -198,10 +219,16 @@
                         - nos=0
                         /- j.weeklytimetable.weeklytimetable_details.each do |j2|
                         - detailing_monthurs.each do |j2|
-                          - if j2.day2 == row2+daycount+1 && j2.time_slot2 == col2 && j.weeklytimetable.hod_approved == true					  
+                          - if j2.day2 == row2+daycount+1 && j2.time_slot2 == col2 
+                            /&& j.weeklytimetable.hod_approved == true					  
                             - if nos==0
                               - nos+=1
-                              %b= render 'p_class_details', {:j=>j2}   		
+                              - if j.weeklytimetable.hod_approved == true 
+                                %font{color: "#000000"}
+                                  %b= render 'p_class_details', {:j=>j}
+                              - else
+                                %font{color: "grey"}
+                                  %b= render 'p_class_details', {:j=>j2}   		
                               
 .row
   .col-md-4.col-md-offset-3
