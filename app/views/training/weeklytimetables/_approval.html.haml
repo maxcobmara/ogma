@@ -6,7 +6,7 @@
       = f.check_box :hod_approved, :id => 'check_hod_accept'
     .col-md-2
       #span_hod_endorse{:style=>"display:none;"}
-        = f.text_field :hod_approved_on, class: 'form-control date_picker'
+        = f.text_field :hod_approved_on, class: 'form-control date_picker_reverse'
   .form-group
     .col-sm-2.control-label
       = f.label :hod_rejected
@@ -14,5 +14,5 @@
       = f.check_box :hod_rejected, :id => 'check_hod_reject'
     .col-md-2
       #span_hod_endorse2{:style=>"display:none;"}
-        = f.text_field :hod_rejected_on, class: 'form-control date_picker'  
+        = f.text_field :hod_rejected_on, class: 'form-control date_picker_reverse'  
         %br= f.text_area :reason, :col=>30, :rows=> 3, :placeholder => "State reason for rejection."

@@ -208,9 +208,15 @@ class Position < ActiveRecord::Base
     else
       #works for all Diploma(Ketua Progam xxxx), Pos Basik/Pengkhususan/Dip Lanjutan(Ketua Program PENGKHUSUSAN), all Commonsubject(Ketua Subjek xxxx)
       #for members with same staffgrade - first occurance
+      #check roles as "Programme Manager" if first occurance fails
       unit_members=Position.joins(:staff).where('unit=? and positions.name!=?', unit_dept, "ICMS Vendor Admin").order(ancestry_depth: :asc)
       highest_rank = unit_members.sort_by{|x|x.staffgrade.name[-2,2]}.last
       leader=Staff.find(highest_rank.staff_id)
+      #if leader.nil?
+      #  members_staffid=unit_members.pluck(:staff_id)
+      #  mstaffid_w_kp_role=  User.joins(:roles).where('roles.authname=? and userable_id IN(?)', "programme_manager", members_staffid).first.pluck(:userable_id)
+      #  leader=Staff.find(mstaffid_w_kp_role) if mstaffid_w_kp_role
+      #end
     end
     leader
   end

@@ -236,15 +236,15 @@ authorization do
    has_permission_on :student_student_attendances, :to => [:manage, :new_multiple, :new_multiple_intake, :create_multiple, :edit_multiple, :update_multiple, :student_attendan_form]
    
    #TRAINING modules
-   has_permission_on :training_weeklytimetables, :to => [:menu, :read, :create] #w/o coordinator role: restrict lecturer other than coordinator to create via HACK in index
+   #HACK : INDEX (new) - restricted access except for Penyelaras Kumpulan (diploma & posbasics)
+   has_permission_on :training_weeklytimetables, :to => [:menu, :read, :create]
+   
+   #HACK : INDEX (list+show)- restricted access except for Penyelaras Kumpulan/Ketua Program/Ketua Subjek(+'unit_leader' role)/Administration/creator(prepared_by)
+   #HACK : SHOW (+edit) - restricted access UNLESS is_submitted!=true (+submission only allowed for Penyelaras Kumpulan)
+   has_permission_on :training_weeklytimetables, :to => [:manage, :weekly_timetable] 
    
    has_permission_on :training_weeklytimetables, :to => [:personalize_index, :personalize_show, :personalize_timetable, :personalizetimetable] do
        if_attribute :staff_id => is {user.userable_id}
-   end
-   
-   #coordinator #HACK - is_submitted
-   has_permission_on :training_weeklytimetables, :to => [:manage, :weekly_timetable] do
-      if_attribute :prepared_by => is {user.userable_id}
    end
    
    has_permission_on :training_trainingnotes, :to => :manage, :join_by => :or do
@@ -268,15 +268,14 @@ authorization do
    has_permission_on :staff_training_ptdos, :to => :approve do
      if_attribute :staff_id => is_in {user.unit_members}#is {69}#is_in {[69, 106]}  #
    end
-    has_permission_on :staff_staff_attendances, :to => :approval do
-      if_attribute :thumb_id => is_in {user.admin_unitleaders_thumb}
-    end
-    has_permission_on :training_weeklytimetables, :to => :manage do
-      if_attribute :is_submitted => is_not {true}
-    end
-    has_permission_on :training_weeklytimetables, :to => :approval do
-      if_attribute :is_submitted => is {true}
-    end
+   has_permission_on :staff_staff_attendances, :to => :approval do
+     if_attribute :thumb_id => is_in {user.admin_unitleaders_thumb}
+   end   
+   #SHOW (approval button) & approval action
+   has_permission_on :training_weeklytimetables, :to => :approval do
+     if_attribute :is_submitted => is {true}
+   end
+   has_permission_on :training_programmes, :to => :manage
  end
  
  #Group Library   -------------------------------------------------------------------------------
@@ -341,6 +340,10 @@ authorization do
     end
     has_permission_on :staff_staff_attendances, :to => :approval do  # :to =>[:manage, :actionable, :approve] do
       if_attribute :thumb_id => is_in {user.unit_members_thumb}
+    end
+    has_permission_on :training_programmes, :to => :manage, :join_by => :and do
+      if_attribute :name => is {user.positions.first.unit}
+      if_attribute :course_type => is {"Commonsubject"}
     end
   end
   

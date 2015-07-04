@@ -13,8 +13,8 @@ class WeeklytimetableDetail < ActiveRecord::Base
    #has_one    :lessonplan,                :class_name => 'LessonPlan',  :foreign_key => 'schedule', :dependent => :nullify #31OCT2013 - :dependent => :destroy #####to UNREMARK when student attendance is ready******  26JUNE2014
    has_many   :student_attendances
    
-   belongs_to :fridayslot,      :class_name => 'TimetablePeriod', :foreign_key => 'time_slot'
-   belongs_to :monthurslot, :class_name => 'TimetablePeriod', :foreign_key => 'time_slot2'
+   belongs_to :fridayslot,      :class_name => 'TimetablePeriod', :foreign_key => 'time_slot'  ##sequence save not ID of TimetablePeriod
+   belongs_to :monthurslot, :class_name => 'TimetablePeriod', :foreign_key => 'time_slot2'  ##sequence save not ID of TimetablePeriod
    
    #validates_presence_of :lecturer_id, :lecture_method, :if => :topic?#,:time_slot, :time_slot2, :day2, :is_friday, :location,
    validates_presence_of :weeklytimetable_id
@@ -110,7 +110,7 @@ class WeeklytimetableDetail < ActiveRecord::Base
   private
      
      def check_student_attendance
-       student_attendance_exist = StudentAttendance.find(:all, :conditions=>['weeklytimetable_details_id=?',id])
+       student_attendance_exist = StudentAttendance.where('weeklytimetable_details_id=?',id)
        if student_attendance_exist.count>0
          return false
        end
