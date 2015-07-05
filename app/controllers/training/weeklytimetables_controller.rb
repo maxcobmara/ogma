@@ -161,7 +161,11 @@ class Training::WeeklytimetablesController < ApplicationController
         @semester_subject_topic_list=prog_topics_ifcommon_exist
       end
     elsif posbasics.include?(prog_type) && (@is_coordinator || @is_admin || roles.include?("programme_manager"))
-      lecturer_ids=Staff.joins(:positions).where('(unit=? or unit=? or unit=?) and tasks_main ILIKE(?)', "Diploma Lanjutan","Pos Basik", "Pengkhususan", "%#{prog_name}%").pluck(:id)
+      if roles.include?("programme_manager")
+        lecturer_ids=Staff.joins(:positions).where('(unit=? or unit=? or unit=?)', "Diploma Lanjutan","Pos Basik", "Pengkhususan").pluck(:id)
+      else
+        lecturer_ids=Staff.joins(:positions).where('(unit=? or unit=? or unit=?) and tasks_main ILIKE(?)', "Diploma Lanjutan","Pos Basik", "Pengkhususan", "%#{prog_name}%").pluck(:id)
+      end
       if @comms_topic==[]
         @semester_subject_topic_list=full_topics
       else
@@ -241,7 +245,11 @@ class Training::WeeklytimetablesController < ApplicationController
         @semester_subject_topic_list=prog_topics_ifcommon_exist
       end
     elsif posbasics.include?(prog_type) && (@is_coordinator || @is_admin || roles.include?("programme_manager"))
-      lecturer_ids=Staff.joins(:positions).where('(unit=? or unit=? or unit=?) and tasks_main ILIKE(?)', "Diploma Lanjutan","Pos Basik", "Pengkhususan", "%#{prog_name}%").pluck(:id)
+      if roles.include?("programme_manager")
+        lecturer_ids=Staff.joins(:positions).where('(unit=? or unit=? or unit=?)', "Diploma Lanjutan","Pos Basik", "Pengkhususan").pluck(:id)
+      else
+        lecturer_ids=Staff.joins(:positions).where('(unit=? or unit=? or unit=?) and tasks_main ILIKE(?)', "Diploma Lanjutan","Pos Basik", "Pengkhususan", "%#{prog_name}%").pluck(:id)
+      end 
       if @comms_topic==[]
         @semester_subject_topic_list=full_topics
       else

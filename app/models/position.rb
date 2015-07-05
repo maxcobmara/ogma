@@ -295,7 +295,7 @@ class Position < ActiveRecord::Base
     else
       postbasic_name=a 
     end
-    postbasic=Programme.where('name ILIKE(?)', "%#{postbasic_name}%").first
+    postbasic=Programme.where('name ILIKE(?) and course_type=?', "%#{postbasic_name}%", unit_name).first
     postbasic.id if postbasic
   end
   #use in Weeklytimetables_controller.rb (Index - retrieve Programme ID for Pos Basik/Pengkhususan/Diploma Lanjutan) - END
