@@ -1064,6 +1064,7 @@ en:
     date_range1: "Searching 'All Department / Unit' - Attendance records for selected date range (within the latest 2 months)"
     date_range2: "Searching by Department / Unit - Attendance records for selected date range (within the latest 2 years)"
     require_complete_data: "-- <Unit / Department> :  Complete staff (Staff Shift and Thumb ID) and positions (staff) data are required for searching to works"
+    require_complete_data_manage: "Management of Late / Early Return (attendance) require complete staff (Staff Shift and Thumb ID) and positions (staff) data in your Unit / Department"
     conditions: Conditions for Excel File
     allowed_date_range: "Allowed Date Range : "
     must_not_exist: Attendance Record must NOT exist in ICMS
