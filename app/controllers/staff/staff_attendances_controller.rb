@@ -185,16 +185,15 @@ class Staff::StaffAttendancesController < ApplicationController
   end
 
   def manager
-    @mylate_attendances = StaffAttendance.find_mylate(current_user) 
-    @myearly_attendances = StaffAttendance.find_myearly(current_user)
-    @approvelate_attendances = StaffAttendance.find_approvelate(current_user)
-    @approveearly_attendances = StaffAttendance.find_approveearly(current_user)
-#     @fingerprint = Fingerprint.new
-#     @fingerprints = Fingerprint.find_mystatement(current_user.userable.thumb_id)
-#     @approvefingerprints = Fingerprint.find_approvestatement(current_user)
-    respond_to do |format|
-      format.html # index.html.erb
-      format.xml  { render :xml => @staff_attendances }
+    @udept=Position.unit_department2
+    unit_name=current_user.userable.positions.first.unit
+    if @udept.include?(unit_name) ==true #matching unit_name with valid department
+      @mylate_attendances = StaffAttendance.find_mylate(current_user) 
+      @myearly_attendances = StaffAttendance.find_myearly(current_user)
+      @approvelate_attendances = StaffAttendance.find_approvelate(current_user)
+      @approveearly_attendances = StaffAttendance.find_approveearly(current_user)  
+    elsif @udept.include?(unit_name)==false  #elsif @udept.include?("--"+unit_name)
+      redirect_to('/dashboard', :notice => I18n.t('staff_attendance.require_complete_data_manage'))
     end
   end
   
