@@ -201,7 +201,7 @@
             - permitted_to? :menu, :training_weeklytimetables do
               - roles=current_user.roles.pluck(:authname)
               - unit_name=current_user.userable.positions.first.unit
-              - common_subjects = ["Sains Perubatan Asas", "Anatomi & Fisiologi", "Sains Tingkahlaku", "Komunikasi & Sains Pengurusan"]
+              - common_subjects = ["Sains Perubatan Asas", "Anatomi & Fisiologi", "Sains Tingkahlaku", "Komunikasi & Sains Pengurusan", "Komuniti"]
               - unless unit_name.blank?
                 /Ketua Subjek should not have access
                 - if roles.include?("administration") || (roles.include?("programme_manager") && (Programme.roots.where(course_type: "Diploma").pluck(:name).include?(unit_name) ||  ["Pos Basik", "Pengkhususan", "Diploma Lanjutan"].include?(unit_name))) || Intake.where(staff_id: current_user.userable_id).count > 0  || Weeklytimetable.all.pluck(:prepared_by).include?(current_user.userable_id)           
