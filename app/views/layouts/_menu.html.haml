@@ -201,6 +201,7 @@
             - permitted_to? :menu, :training_weeklytimetables do
               - roles=current_user.roles.pluck(:authname)
               - unit_name=current_user.userable.positions.first.unit
+              - common_subjects = ["Sains Perubatan Asas", "Anatomi & Fisiologi", "Sains Tingkahlaku", "Komunikasi & Sains Pengurusan"]
               - unless unit_name.blank?
                 /Ketua Subjek should not have access
                 - if roles.include?("administration") || (roles.include?("programme_manager") && (Programme.roots.where(course_type: "Diploma").pluck(:name).include?(unit_name) ||  ["Pos Basik", "Pengkhususan", "Diploma Lanjutan"].include?(unit_name))) || Intake.where(staff_id: current_user.userable_id).count > 0  || Weeklytimetable.all.pluck(:prepared_by).include?(current_user.userable_id)           
@@ -214,7 +215,7 @@
                         %li= link_to t("training.create_intake"), training_intakes_path
                         %li= link_to t("training.create_academic_session"), training_academic_sessions_path
                 /Ketua Program/Ketua Subjek/Penyelaras Kumpulan/prev creator
-                - if roles.include?("administration") || (roles.include?("programme_manager") && (Programme.roots.where(course_type: "Diploma").pluck(:name).include?(unit_name) ||  ["Pos Basik", "Pengkhususan", "Diploma Lanjutan"].include?(unit_name))) || (roles.include?("unit_leader") && Programme.where(course_type: "Commonsubject").pluck(:name).include?(unit_name)) || Intake.where(staff_id: current_user.userable_id).count > 0 || Weeklytimetable.all.pluck(:prepared_by).include?(current_user.userable_id)
+                - if roles.include?("administration") || (roles.include?("programme_manager") && (Programme.roots.where(course_type: "Diploma").pluck(:name).include?(unit_name) ||  ["Pos Basik", "Pengkhususan", "Diploma Lanjutan"].include?(unit_name))) || (roles.include?("unit_leader") && common_subjects.include?(unit_name)) || Intake.where(staff_id: current_user.userable_id).count > 0 || Weeklytimetable.all.pluck(:prepared_by).include?(current_user.userable_id)
                   %li= link_to content_tag(:i, "", :class => "icon-numb") + t("training.timetable_entries"), training_weeklytimetables_path
             /Ketua Program & Ketua Subjek only - manage Curriculum
             - permitted_to? :manage, :training_programmes do
