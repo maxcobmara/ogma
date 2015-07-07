@@ -49,7 +49,7 @@ class Training::AcademicSessionsController < ApplicationController
 
     respond_to do |format|
       if @academic_session.save
-        format.html { redirect_to(@academic_session, :notice => (t 'training.academic_session.title')+(t 'actions.created')) }
+        format.html { redirect_to(training_academic_session_path(@academic_session), :notice => (t 'training.academic_session.title')+(t 'actions.created')) }
         format.xml  { render :xml => @academic_session, :status => :created, :location => @academic_session }
       else
         format.html { render :action => "new" }
