@@ -2335,6 +2335,9 @@ ms_MY:
       details: Butiran Jadual Waktu
       add_details: Tambah Butiran
       period_timings: Turutan Sesi Pembelajaran
+      remark: Catatan
+      editable_removal_restricted: "Format Jadual Waktu sedang digunakan : suntingan hanya dibenarkan bagi jangka masa sahaja dan rekod tidak boleh dipadam."
+      editing_restricted: "Format Jadual Waktu yang digunakan dalam Jadual Waktu Mingguan yang telah DILULUSKAN sudah tidak boleh disunting."
     timetable_period:
       title: Sesi Pembelajaran
       period: Sesi
@@ -2364,8 +2367,8 @@ ms_MY:
       semester: Semester
       prepared_by: Disediakan Oleh
       endorsed_by: Dihantar untuk kelulusan
-      format1: "Format (Ahad - Rabu)"
-      format2: "Format (Khamis)"
+      format1: "Format (Ahad - Rabu / Isnin - Khamis)"
+      format2: "Format (Khamis / Jumaat)"
       week: Minggu
       is_submitted: "Dihantar ?"
       submitted_on: Tarikh Dihantar

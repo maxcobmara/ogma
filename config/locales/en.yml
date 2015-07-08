@@ -2394,6 +2394,9 @@ en:
       details: Timetable Details
       add_details: Add Details
       period_timings: Period Timings
+      remark: Remark
+      editable_removal_restricted: "Timetable in use : modification allowed for timing/period only and record is no longer removable."
+      editing_restricted: "Timetable being used in an APPROVED Weeklytimetable is restricted for editing at all."
     timetable_period:
       title: Timetable Period
       period: Period

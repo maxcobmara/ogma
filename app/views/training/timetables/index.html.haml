@@ -9,10 +9,13 @@
     %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "toga"
     %li= link_to content_tag(:li, fa_icon("print", text: (t 'actions.print'))), "#", class: 'bogus'
 
-.row.filter{style: "display:none;"}
-  .col-md-2
-   
 .row
+  .col-md-12
+    .alert.alert-warning
+      %strong=t 'training.timetable.remark'
+      %ul
+        %li=t 'training.timetable.editable_removal_restricted'
+        %li=t 'training.timetable.editing_restricted'
   %table.table-striped.table-hover.ogma
     %thead
       %tr

@@ -1,7 +1,6 @@
 class TimetablePeriod < ActiveRecord::Base
   belongs_to :timetable, :foreign_key => 'timetable_id'
   
-  validates_presence_of :timetable_id
   validates_uniqueness_of :sequence, :scope => :timetable_id
   
   def timing

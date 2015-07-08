@@ -50,9 +50,9 @@
           %hr
           = f.fields_for :timetable_periods do |builder|
             = render 'timetable_period_fields', f: builder
-
-          /= link_to_add_fields (t 'training.timetable.add_details'), f, :timetable_periods
-          = link_to_add_fields t('addmore'), f, :timetable_periods, "",  t('addmore')
+          .row
+            /= link_to_add_fields (t 'training.timetable.add_details'), f, :timetable_periods
+            = link_to_add_fields t('addmore'), f, :timetable_periods, "",  t('addmore')
 
 
 

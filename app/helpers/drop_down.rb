@@ -353,8 +353,8 @@ module DropDown
      
     DAY_CHOICE = [
          #  Displayed       stored in db
-         [ "Sun-Wed",  1 ],
-         [ "Thurs",    2 ]
+         [ "Sun-Wed / Mon-Thurs",  1 ],
+         [ "Thurs / Fri",    2 ]
     ]
     
     DAY_LIST = [
