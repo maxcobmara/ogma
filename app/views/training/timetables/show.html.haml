@@ -44,7 +44,7 @@
                         %BR= periods.start_at.try(:strftime, "%H:%M %P")+" - "
                         = periods.end_at.try(:strftime, "%H:%M %P") 
                         %BR= periods.is_break? ? (t 'training.timetable_period.is_break') : "" 
-							
+
                   - for periods in row_things
                     - if periods.day_name == 2
                       %td{:align => "center", :style=>"border-right:1px solid #FFFFFF;padding: 6px 6px 6px 6px;text-align:center;background: #E6E7E8;font-size:10px;"}
