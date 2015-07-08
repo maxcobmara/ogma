@@ -1,6 +1,6 @@
 - model_class = Weeklytimetable
-- break_format1 = @weeklytimetable.timetable_monthurs.timetable_periods.pluck(:is_break)
-- break_format2 = @weeklytimetable.timetable_friday.timetable_periods.pluck(:is_break)
+- break_format1 = @weeklytimetable.timetable_monthurs.timetable_periods.order(sequence: :asc).pluck(:is_break)
+- break_format2 = @weeklytimetable.timetable_friday.timetable_periods.order(sequence: :asc).pluck(:is_break)
 .col-md-11
   /.col-md-offset-1
   %br
@@ -10,7 +10,7 @@
       - daycount=4	
       - weekdays_end = @weeklytimetable.startdate.to_date+4.days
       /Header(row) : sequence & time period (Sunday - Wednesday)  
-      - @weeklytimetable.timetable_monthurs.timetable_periods.in_groups_of(@count1, false) do |row_things|
+      - @weeklytimetable.timetable_monthurs.timetable_periods.order(sequence: :asc).in_groups_of(@count1, false) do |row_things|
         %tr
           %th{:align => "center", :style=>"border:1px solid black; text-align:center; padding:4px; vertical-align:middle;background-color:#FEE;font-size:12px;"} 
             &nbsp;
@@ -44,7 +44,7 @@
       - break_tospan=4	
       - classes_tospan=[5,7]
       - span_count="2"
-      - @weeklytimetable.timetable_friday.timetable_periods.in_groups_of(@count2, false) do |row_things|
+      - @weeklytimetable.timetable_friday.timetable_periods.order(sequence: :asc).in_groups_of(@count2, false) do |row_things|
         %tr
           %th{:align=>"center", :style=>"border:1px solid black; text-align:center; padding:4px; vertical-align:middle;background-color:#FEE;font-size:12px;"}
             &nbsp;
@@ -93,7 +93,7 @@
       - weekdays_end = @weeklytimetable.startdate.to_date+4.days
       - daycount2 = (@weeklytimetable.enddate.to_date - weekdays_end).to_i 
       - if daycount2 > 0
-        - @weeklytimetable.timetable_monthurs.timetable_periods.in_groups_of(@count1, false) do |row_things|
+        - @weeklytimetable.timetable_monthurs.timetable_periods.order(sequence: :asc).in_groups_of(@count1, false) do |row_things|
           %tr
             %th{:align => "center", :style=>"border:1px solid black; text-align:center; padding:4px; vertical-align:middle;background-color:#FEE;font-size:12px;"} 
               &nbsp;
