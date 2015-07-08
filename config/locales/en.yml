@@ -135,6 +135,10 @@ en:
         reason: Reason
         hod_approved_on: Approval date
         hod_rejected_on: Rejection date
+      timetable:
+        timetable_periods: Timetable Details
+      timetable_periods:
+        sequence: Period
     errors:
         template:
           body: "There were problems with the following fields:"

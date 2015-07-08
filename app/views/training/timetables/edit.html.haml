@@ -15,5 +15,5 @@
         .col-md-1.col-md-offset-2
           = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), training_timetable_path(@timetable), :class => 'btn btn-default'
         .col-md-2
-          .div{style: "margin-left:-40px;"}
-            = f.submit t('update'), class: "btn btn-primary"
+          /.div{style: "margin-left:-40px;"}
+          = f.submit t('update'), class: "btn btn-primary"
