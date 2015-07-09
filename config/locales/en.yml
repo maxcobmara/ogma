@@ -2455,6 +2455,7 @@ en:
       submission_by_coordinator: Submission to be done by Group Coordinator
       reason_rejection: Reason for Rejection
       choose_approve_or_reject: Please choose either to approve or reject this Weekly Timetable
+      personalize: Personalize Timetable
       
     weeklytimetable_detail:
       topic: Topic

@@ -31,8 +31,8 @@ class PersonalizetimetablePdf < Prawn::Document
     @j = @detailing[0]
     @column_count_friday=@j.weeklytimetable.timetable_friday.timetable_periods.count
     @column_count_monthur=@j.weeklytimetable.timetable_monthurs.timetable_periods.count
-    @break_format1 = @j.weeklytimetable.timetable_monthurs.timetable_periods.pluck(:is_break)
-    @break_format2 = @j.weeklytimetable.timetable_friday.timetable_periods.pluck(:is_break)
+    @break_format1 = @j.weeklytimetable.timetable_monthurs.timetable_periods.order(sequence: :asc).pluck(:is_break)
+    @break_format2 = @j.weeklytimetable.timetable_friday.timetable_periods.order(sequence: :asc).pluck(:is_break)
     @daycount=4
     @weekdays_end = @j.weeklytimetable.startdate.to_date+4.days
     @daycount2 = (@j.weeklytimetable.enddate.to_date - @weekdays_end).to_i 
@@ -74,7 +74,7 @@ class PersonalizetimetablePdf < Prawn::Document
         all_col << 45
       else
         if @column_count_monthur > 7
-          all_col << 80 
+          all_col << 95 #80 
         else
           all_col << 122
         end
@@ -86,7 +86,7 @@ class PersonalizetimetablePdf < Prawn::Document
     allrows_content=[]  
     @detailing.each_with_index do |j,index|
       if index==0
-        j.weeklytimetable.timetable_monthurs.timetable_periods.in_groups_of(@column_count_monthur, false) do |row_things|
+        j.weeklytimetable.timetable_monthurs.timetable_periods.order(sequence: :asc).in_groups_of(@column_count_monthur, false) do |row_things|
           for periods in row_things
             if periods.day_name == 1
               header_col << "#{periods.sequence} <br> #{periods.timing}"
@@ -133,7 +133,7 @@ class PersonalizetimetablePdf < Prawn::Document
     data = [header_col]+allrows_content
     table(data, :column_widths => all_col, :cell_style => { :size => 9, :align=> :center,  :inline_format => true}) do
       if header_col.count > 8
-        self.width = all_col.sum-80
+        self.width = all_col.sum-95 #-80
       else
         self.width = all_col.sum-45
       end
@@ -147,25 +147,35 @@ class PersonalizetimetablePdf < Prawn::Document
   end
   
   def table_schedule_thurs
-    @break_tospan=4	
-    #@classes_tospan=[5,7]
-    if @count1==9 && @count2==7 #excluding 1st column 
-      @classes_tospan=[5]
-    else
-      @classes_tospan=[5,7]
+    #Lunch break for Thursday is similar to Sun-Wed, except : working hours is less than Sun-Wed 
+    #PENDING : last class did not span as show (if Friday) - 9July2015
+    if @weekdays_end.strftime('%A')=="Friday"
+      @break_tospan=4
+      #classes_tospan=[5,7]
+      if (@column_count_monthur==9 && @column_count_friday==7) || @column_count_friday==5 #excluding 1st column 
+        @classes_tospan=[5]
+      else
+        @classes_tospan=[5,7]
+      end
     end
+    if @weekdays_end.strftime('%A')=="Thursday"
+      @break_tospan=0
+      @classes_tospan=[]
+    end
+    ###
     @span_count=2
     header_col = [""]
     colfriday=1
  
     #size & columns count
     all_col = [55]
-    0.upto(@column_count_monthur) do |no|
+    0.upto(@column_count_friday) do |no|
        if (no==1) || (no==4) || (no==7)
         all_col << 45
       else
-        if @column_count_monthur > 7
-          all_col << 80 
+        if @column_count_friday >= 7
+          #all_col << 80 
+	  all_col << 95 ###9July2015
         else
           all_col << 122
         end
@@ -175,12 +185,13 @@ class PersonalizetimetablePdf < Prawn::Document
     ##Header+Thursday Content row - start
     @detailing.each_with_index do |j,index|   
       if index==0
-        j.weeklytimetable.timetable_friday.timetable_periods.in_groups_of(@column_count_friday, false) do |row_things|
+        j.weeklytimetable.timetable_friday.timetable_periods.order(sequence: :asc).in_groups_of(@column_count_friday, false) do |row_things|
           colfriday=1
           for periods in row_things
             if periods.day_name == 2  
-              if colfriday == 4 || colfriday == 5 || @classes_tospan.include?(colfriday)
-              #if colfriday == @break_tospan || colfriday == @classes_tospan[0] || colfriday == @classes_tospan[1] 
+              #if colfriday == 4 || colfriday == 5 || @classes_tospan.include?(colfriday)
+              if colfriday == @break_tospan || @classes_tospan.include?(colfriday)
+              ##if colfriday == @break_tospan || colfriday == @classes_tospan[0] || colfriday == @classes_tospan[1] 
                 header_col << {content: "#{periods.sequence} <br> #{periods.timing}", colspan: @span_count}
               else
                 header_col << "#{periods.sequence} <br> #{periods.timing}"
@@ -226,7 +237,7 @@ class PersonalizetimetablePdf < Prawn::Document
           @detailing_friday.each do |j|
             if j.is_friday == true  && j.time_slot == col2 && j.weeklytimetable.hod_approved == true
               if nos==0
-                hh="#{j.weeklytimetable_topic.parent.parent.subject_abbreviation.blank? ? "-" :  j.weeklytimetable_topic.parent.parent.subject_abbreviation.upcase  if j.weeklytimetable_topic.ancestry_depth == 4} #{ '<br>'+j.weeklytimetable_topic.parent.name if j.weeklytimetable_topic.ancestry_depth == 4}  #{j.weeklytimetable_topic.parent.subject_abbreviation.blank? ? "-" :  j.weeklytimetable_topic.parent.subject_abbreviation.upcase if j.weeklytimetable_topic.ancestry_depth != 4} #{'<br>'+j.weeklytimetable_topic.name  if j.weeklytimetable_topic.ancestry_depth != 4}#{"(K)" if j.lecture_method==1} #{"(T)" if j.lecture_method==2}#{"(A)" if j.lecture_method==3} #{'<br>'+j.weeklytimetable_lecturer.name}#{'<br>'+j.weeklytimetable.schedule_programme.programme_list}#{'<br>'+j.weeklytimetable.schedule_intake.description}#{I18n.t('training.weeklytimetable.intake')+ " ("+ j.weeklytimetable.schedule_intake.name+")"}"
+                hh+="#{j.weeklytimetable_topic.parent.parent.subject_abbreviation.blank? ? "-" :  j.weeklytimetable_topic.parent.parent.subject_abbreviation.upcase  if j.weeklytimetable_topic.ancestry_depth == 4} #{ '<br>'+j.weeklytimetable_topic.parent.name if j.weeklytimetable_topic.ancestry_depth == 4}  #{j.weeklytimetable_topic.parent.subject_abbreviation.blank? ? "-" :  j.weeklytimetable_topic.parent.subject_abbreviation.upcase if j.weeklytimetable_topic.ancestry_depth != 4} #{'<br>'+j.weeklytimetable_topic.name  if j.weeklytimetable_topic.ancestry_depth != 4}#{"(K)" if j.lecture_method==1} #{"(T)" if j.lecture_method==2}#{"(A)" if j.lecture_method==3} #{'<br>'+j.weeklytimetable_lecturer.name}#{'<br>'+j.weeklytimetable.schedule_programme.programme_list}#{'<br>'+j.weeklytimetable.schedule_intake.description}#{I18n.t('training.weeklytimetable.intake')+ " ("+ j.weeklytimetable.schedule_intake.name+")"}"
               end
             end
           end
@@ -236,12 +247,13 @@ class PersonalizetimetablePdf < Prawn::Document
     end 
  
     data = [header_col]+[allrows_content]
-    table(data, :column_widths => all_col, :cell_style => { :size => 9, :align=> :center,  :inline_format => true}) do
-      if header_col.count > 8
-        self.width = all_col.sum-80
-      else
-        self.width = all_col.sum-45
+    table(data, :column_widths => all_col, :cell_style => { :size => 9, :align=> :center,  :inline_format => true}) do 
+      if header_col.count==8    #7 columns
+        self.width = 760
+      #elsif header_col.count==9
+        #self.width = 665
       end
+      
       row(0).background_color = 'ABA9A9'  
       cells[1,2].valign = :center
       cells[1,4].valign = :center
@@ -262,7 +274,7 @@ class PersonalizetimetablePdf < Prawn::Document
         all_col << 45
       else
         if @column_count_monthur > 7
-          all_col << 80 
+          all_col << 95 #80 
         else
           all_col << 122
         end
@@ -273,7 +285,7 @@ class PersonalizetimetablePdf < Prawn::Document
     if @daycount2 > 0
       @detailing.each_with_index do |j,index|
         if index==0 
-          j.weeklytimetable.timetable_monthurs.timetable_periods.in_groups_of(@column_count_monthur, false) do |row_things|
+          j.weeklytimetable.timetable_monthurs.timetable_periods.order(sequence: :asc).in_groups_of(@column_count_monthur, false) do |row_things|
             for periods in row_things
               header_col << "#{periods.sequence} <br> #{periods.timing}"
             end
@@ -315,7 +327,7 @@ class PersonalizetimetablePdf < Prawn::Document
     data = [header_col]+allrows_content
     table(data, :column_widths => all_col, :cell_style => { :size => 9, :align=> :center,  :inline_format => true}) do
       if header_col.count > 8
-        self.width = all_col.sum-80
+        self.width = all_col.sum-95 #-80
       else
         self.width = all_col.sum-45
       end
