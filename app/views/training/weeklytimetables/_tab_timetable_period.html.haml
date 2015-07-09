@@ -5,7 +5,7 @@
     %dt= t 'training.weeklytimetable.format1' , :default => model_class.human_attribute_name(:format1) + ":"
     %dd
       =@weeklytimetable.timetable_monthurs.name
-      - @weeklytimetable.timetable_monthurs.timetable_periods.in_groups_of(@count1, false) do |row_things|
+      - @weeklytimetable.timetable_monthurs.timetable_periods.order(sequence: :asc).in_groups_of(@count1, false) do |row_things|
         .showform
           %table#subtable
             %tr
@@ -20,7 +20,7 @@
     %dt= t 'training.weeklytimetable.format2' , :default => model_class.human_attribute_name(:format2) + ":"
     %dd
       =@weeklytimetable.timetable_friday.name
-      - @weeklytimetable.timetable_friday.timetable_periods.in_groups_of(@count2, false) do |row_things|
+      - @weeklytimetable.timetable_friday.timetable_periods.order(sequence: :asc).in_groups_of(@count2, false) do |row_things|
         .showform
           %table#subtable
             %tr

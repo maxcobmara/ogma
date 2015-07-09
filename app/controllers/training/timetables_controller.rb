@@ -29,8 +29,6 @@ class Training::TimetablesController < ApplicationController
   # GET /timetables/new
   # GET /timetables/new.xml
   def new
-    current_user = User.find(11)    #maslinda 
-    #current_user = User.find(72)    #izmohdzaki
     @timetable = Timetable.new
     @timetable.timetable_periods.build
 
@@ -48,7 +46,6 @@ class Training::TimetablesController < ApplicationController
   # POST /timetables
   # POST /timetables.xml
   def create
-#raise params.inspect
     @timetable = Timetable.new(timetable_params)
     respond_to do |format|
       if @timetable.save
@@ -65,13 +62,12 @@ class Training::TimetablesController < ApplicationController
   # PUT /timetables/1.xml
   def update
     @timetable = Timetable.find(params[:id])
-
     respond_to do |format|
       if @timetable.update(timetable_params)
         format.html { redirect_to(training_timetable_path(@timetable), :notice => (t 'training.timetable.title')+(t 'actions.updated'))}
         format.xml  { head :ok }
       else
-        format.html { render :action => "edit" }
+        format.html { render :action => "edit"}
         format.xml  { render :xml => @timetable.errors, :status => :unprocessable_entity }
       end
     end
@@ -97,6 +93,6 @@ class Training::TimetablesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def timetable_params
-      params.require(:timetable).permit(:code, :name, :description, :created_by, timetable_periods_attributes: [:id, :timetable_id, :sequence, :day_name, :start_at, :end_at, :is_break])
+      params.require(:timetable).permit(:code, :name, :description, :created_by, timetable_periods_attributes: [:id, :timetable_id, :sequence, :day_name, :start_at, :end_at, :is_break, :_destroy])
     end
 end
