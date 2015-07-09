@@ -2396,6 +2396,7 @@ ms_MY:
       submission_by_coordinator: Penghantaran perlu dilakukan oleh Penyelaras Kumpulan
       reason_rejection: Sebab Penolakan
       choose_approve_or_reject: Sila pilih samada untuk meluluskan atau menolak Jadual Waktu Mingguan ini
+      personalize: Jadual Waktu Individu
     weeklytimetable_detail:
       topic: Topik
       lecturer_id: Pengajar      

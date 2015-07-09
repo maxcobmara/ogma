@@ -43,8 +43,8 @@
             - j = detailing[0]
             - @column_count_friday=j.weeklytimetable.timetable_friday.timetable_periods.count
             - @column_count_monthur=j.weeklytimetable.timetable_monthurs.timetable_periods.count
-            - break_format1 = j.weeklytimetable.timetable_monthurs.timetable_periods.pluck(:is_break)
-            - @break_format2 = j.weeklytimetable.timetable_friday.timetable_periods.pluck(:is_break)
+            - break_format1 = j.weeklytimetable.timetable_monthurs.timetable_periods.order(sequence: :asc).pluck(:is_break)
+            - @break_format2 = j.weeklytimetable.timetable_friday.timetable_periods.order(sequence: :asc).pluck(:is_break)
             /- @column_count=j.weeklytimetable.timetable_monthurs.timetable_periods.count	
             - daycount=4
             - weekdays_end = j.weeklytimetable.startdate.to_date+4.days
@@ -52,7 +52,7 @@
             /Header(row) : sequence & time period (Sunday - Wednesday)
             - detailing.each_with_index do |j,index|
               - if index==0
-                - j.weeklytimetable.timetable_monthurs.timetable_periods.in_groups_of(@column_count_monthur, false) do |row_things|
+                - j.weeklytimetable.timetable_monthurs.timetable_periods.order(sequence: :asc).in_groups_of(@column_count_monthur, false) do |row_things|
                   %tr
                     %th{:align => "center", :style=>"width:200px; border:1px solid black; text-align:center; padding:4px; vertical-align:middle;background-color:#FEE;font-size:12px;"} 
                       &nbsp;
@@ -103,14 +103,27 @@
             - break_tospan=4	
             /- classes_tospan=[5,7]
             /refer to screen capture -- PDF limitation-schedule.png - temp solution- as below:
-            - if @count1==9 && @count2==7 #excluding 1st column 
-              - classes_tospan=[5]
-            - else
-              - classes_tospan=[5,7]
+            /- if @count1==9 && @count2==7 #excluding 1st column 
+            /  - classes_tospan=[5]
+            /- else
+            /  - classes_tospan=[5,7]
+            ///
+            /Lunch break for Thursday is similar to Sun-Wed, except : working hours is less than Sun-Wed 
+            - if weekdays_end.strftime('%A')=="Friday"
+              /- classes_tospan=[5,7]
+              - break_tospan=4
+              - if @count1==9 && @count2==7 #excluding 1st column 
+                - classes_tospan=[5]
+              - else
+                - classes_tospan=[5,7]
+            - if weekdays_end.strftime('%A')=="Thursday"
+              - break_tospan=0
+              - classes_tospan=[]
+            /lunch break on Thursday vs Friday
             - span_count="2"
             - detailing.each_with_index do |j,index|
               - if index==0
-                - j.weeklytimetable.timetable_friday.timetable_periods.in_groups_of(@column_count_friday, false) do |row_things|
+                - j.weeklytimetable.timetable_friday.timetable_periods.order(sequence: :asc).in_groups_of(@column_count_friday, false) do |row_things|
                   %tr
                     %th{:align => "center", :style=>"border:1px solid black; text-align:center; padding:4px; vertical-align:middle;background-color:#FEE;font-size:12px;"} 
                       &nbsp;
@@ -118,7 +131,8 @@
                     - colfriday=1
                     - for periods in row_things
                       - if periods.day_name == 2
-                        - if colfriday == 4 || colfriday == 5 || classes_tospan.include?(colfriday)
+                        /- if colfriday == 4 || colfriday == 5 || classes_tospan.include?(colfriday)
+                        - if colfriday == break_tospan || colfriday == classes_tospan[0] || colfriday == classes_tospan[1] 
                           %th{:align => "center", :colspan=>"2", :style=>"border:1px solid black; text-align:center; padding:4px;background-color:#FEE;font-size:12px;"} 
                             =periods.sequence
                             %BR= periods.timing
@@ -188,7 +202,7 @@
 			
               - detailing.each_with_index do |j,index|
                 - if index==0
-                  - j.weeklytimetable.timetable_monthurs.timetable_periods.in_groups_of(@column_count_monthur, false) do |row_things|
+                  - j.weeklytimetable.timetable_monthurs.timetable_periods.order(sequence: :asc).in_groups_of(@column_count_monthur, false) do |row_things|
                     %tr
                       %th{:align => "center", :style=>"border:1px solid black; text-align:center; padding:4px; vertical-align:middle;background-color:#FEE;font-size:12px;"} 
                         &nbsp;
