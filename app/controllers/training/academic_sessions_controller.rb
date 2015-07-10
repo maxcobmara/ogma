@@ -81,7 +81,7 @@ class Training::AcademicSessionsController < ApplicationController
     @academic_session.destroy
 
     respond_to do |format|
-      format.html { redirect_to(academic_sessions_url) }
+      format.html { redirect_to(training_academic_sessions_url) }
       format.xml  { head :ok }
     end
   end

@@ -44,6 +44,7 @@ en:
       fingerprint: Fingerprint
       holiday: Public Holiday
       weeklytimetable: Weekly Timetable
+      academic_session: Academic Session
     attributes:
       student:
         name: Name
@@ -139,6 +140,8 @@ en:
         timetable_periods: Timetable Details
       timetable_periods:
         sequence: Period
+      academic_session:
+        total_week: Total Week
     errors:
         template:
           body: "There were problems with the following fields:"

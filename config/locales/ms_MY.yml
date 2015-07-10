@@ -25,6 +25,7 @@ ms_MY:
       fingerprint: Fingerprint
       holiday: Cuti Umum
       weeklytimetable: Jadual Waktu Mingguan
+      academic_session: Sesi Akademik
     attributes:
       student:
         name: Nama
@@ -121,6 +122,8 @@ ms_MY:
         timetable_periods: Butiran Jadual Waktu
       timetable_periods:
         sequence: Sesi
+      academic_session:
+        total_week: Bilangan Minggu
     errors:
         template:
           body: "Berikut adalah beberapa masalah:"

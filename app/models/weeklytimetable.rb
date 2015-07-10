@@ -7,7 +7,7 @@ class Weeklytimetable < ActiveRecord::Base
   before_save :manual_remove_details_if_marked, prepend: true
   
   belongs_to :schedule_programme, :class_name => 'Programme',       :foreign_key => 'programme_id'
-  belongs_to :schedule_semester,  :class_name => 'Programme',       :foreign_key => 'semester'
+  #belongs_to :schedule_semester,  :class_name => 'Programme',       :foreign_key => 'semester'
   belongs_to :schedule_intake,    :class_name => 'Intake',          :foreign_key => 'intake_id' 
   belongs_to :schedule_creator,   :class_name => 'Staff',           :foreign_key => 'prepared_by'
   belongs_to :schedule_approver,  :class_name => 'Staff',           :foreign_key => 'endorsed_by'

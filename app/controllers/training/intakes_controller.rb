@@ -83,7 +83,7 @@ class Training::IntakesController < ApplicationController
     @intake.destroy
 
     respond_to do |format|
-      format.html { redirect_to(intakes_url) }
+      format.html { redirect_to(training_intakes_url) }
       format.xml  { head :ok }
     end
   end

@@ -1,10 +1,14 @@
 class Programme < ActiveRecord::Base
   before_save :set_combo_code
   #after_save :copy_topic_topicdetail
+  before_destroy :valid_for_removal
   
   has_ancestry :cache_depth => true
   has_many :topic_details, :class_name => 'Topicdetail',:dependent =>:nullify, :foreign_key => 'topic_code'   #31Oct2013
- 
+  has_many :weeklytimetables
+  has_many :intakes
+  has_many :topic_for_weeklytimetable_details, :class_name => 'WeeklytimetableDetail', :foreign_key => 'topic'
+  
   validates_uniqueness_of :combo_code
 
   #scope :by_semester, -> { where(course_type: 'Semester')}
@@ -86,6 +90,16 @@ class Programme < ActiveRecord::Base
   
   def programme_subject
     "#{root.course_type}"+" "+"#{root.name}"+" "+"#{code}"+" "+"#{name} "
+  end
+  
+  private
+  
+  def valid_for_removal
+    if weeklytimetables.count > 0 || intakes.count > 0 || topic_for_weeklytimetable_details.count > 0
+      return false
+    else
+      return true
+    end
   end
     
 end
