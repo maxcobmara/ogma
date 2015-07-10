@@ -100,7 +100,7 @@
                           
 
             /Header for Thursday-(start)
-            - break_tospan=4	
+            /- break_tospan=4
             /- classes_tospan=[5,7]
             /refer to screen capture -- PDF limitation-schedule.png - temp solution- as below:
             /- if @count1==9 && @count2==7 #excluding 1st column 
@@ -116,7 +116,8 @@
                 - classes_tospan=[5]
               - else
                 - classes_tospan=[5,7]
-            - if weekdays_end.strftime('%A')=="Thursday"
+            - else
+              /Thursday or any other day
               - break_tospan=0
               - classes_tospan=[]
             /lunch break on Thursday vs Friday
@@ -132,7 +133,7 @@
                     - for periods in row_things
                       - if periods.day_name == 2
                         /- if colfriday == 4 || colfriday == 5 || classes_tospan.include?(colfriday)
-                        - if colfriday == break_tospan || colfriday == classes_tospan[0] || colfriday == classes_tospan[1] 
+                        - if colfriday == break_tospan || classes_tospan.include?(colfriday)==true
                           %th{:align => "center", :colspan=>"2", :style=>"border:1px solid black; text-align:center; padding:4px;background-color:#FEE;font-size:12px;"} 
                             =periods.sequence
                             %BR= periods.timing
@@ -217,7 +218,7 @@
               - 1.upto(daycount2) do |row2|
                 %tr
                   %td{:align =>"center", :style=> "border:1px solid black;text-align:center; padding:4px; vertical-align:middle;font-size:12px;"} 
-                    =(weekdays_end+row2).try(:strftime, "%A")
+                    =weekend_dayname=(weekdays_end+row2).try(:strftime, "%A")
                     %br=(weekdays_end+row2).try(:strftime, "%d-%b-%Y")
 
                   /Content - (ADDITIONAL - Weekends classes)
@@ -230,19 +231,25 @@
                       /do-not-remove : should not have any field or value
                     - elsif break_format1[col2-1]==false
                       %td{:align=>"center", :style=>"border:1px solid black; text-align:center; padding:4px;font-size:12px;"}
-                        - nos=0
-                        /- j.weeklytimetable.weeklytimetable_details.each do |j2|
-                        - detailing_monthurs.each do |j2|
-                          - if j2.day2 == row2+daycount+1 && j2.time_slot2 == col2 
-                            /&& j.weeklytimetable.hod_approved == true					  
-                            - if nos==0
-                              - nos+=1
-                              - if j.weeklytimetable.hod_approved == true 
-                                %font{color: "#000000"}
-                                  %b= render 'p_class_details', {:j=>j}
-                              - else
-                                %font{color: "grey"}
-                                  %b= render 'p_class_details', {:j=>j2}   		
+                        /1-DECLARE BREAK for 4th slot for Weekend class (Friday only) for Week starting on Sunday
+                        - if weekend_dayname=="Friday" && col2==4
+                          = (t 'training.timetable_period.is_break').upcase
+                        - else
+                          /1-display Sat slot accordingly for Week starting on Sunday 
+                          /2-OR display Weekends slot (Sat & Sun) for week starting on Monday
+                          - nos=0
+                          /- j.weeklytimetable.weeklytimetable_details.each do |j2|
+                          - detailing_monthurs.each do |j2|
+                            - if j2.day2 == row2+daycount+1 && j2.time_slot2 == col2 
+                              /&& j.weeklytimetable.hod_approved == true					  
+                              - if nos==0
+                                - nos+=1
+                                - if j.weeklytimetable.hod_approved == true 
+                                  %font{color: "#000000"}
+                                    %b= render 'p_class_details', {:j=>j}
+                                - else
+                                  %font{color: "grey"}
+                                    %b= render 'p_class_details', {:j=>j2}   		
                               
 .row
   .col-md-4.col-md-offset-3

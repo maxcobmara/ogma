@@ -45,7 +45,8 @@
       - if weekdays_end.strftime('%A')=="Friday"
         - break_tospan=4
         - classes_tospan=[5,7]
-      - if weekdays_end.strftime('%A')=="Thursday"
+      - else
+        /Thursday or any other day
         - break_tospan=0
         - classes_tospan=[]
       - span_count="2"
