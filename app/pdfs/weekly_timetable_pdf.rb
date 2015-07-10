@@ -43,7 +43,7 @@ class Weekly_timetablePdf < Prawn::Document
   end
    
   def table_date_semester_week
-    data = [[ "TARIKH : #{@weeklytimetable.startdate.try(:strftime, '%d %b %Y') } HINGGA : #{@weeklytimetable.enddate.try(:strftime, '%d %b %Y')}",
+    data = [[ "TARIKH : #{@weeklytimetable.startdate.try(:strftime, '%d/%m/%Y') } HINGGA : #{@weeklytimetable.enddate.try(:strftime, '%d/%m/%Y')}",
                 "SEMESTER : #{ @weeklytimetable.academic_semester.try(:semester).nil? ? "" : @weeklytimetable.academic_semester.try(:semester).split("/").join(" / ")}",
                 "MINGGU : #{@weeklytimetable.week.to_s+" / "+@weeklytimetable.academic_semester.try(:total_week).to_s}"]]
     table(data, :column_widths => [250,250,250], :cell_style => { :size => 9}) do
@@ -79,7 +79,7 @@ class Weekly_timetablePdf < Prawn::Document
       end
       #rows & columns of data
       1.upto(@daycount) do |row|
-        onerow_content=["#{(@weeklytimetable.startdate+(row-1)).try(:strftime, "%A")}<br> #{(@weeklytimetable.startdate+(row-1)).try(:strftime, "%d-%b-%Y")}"]
+        onerow_content=["#{I18n.t(:'date.day_names')[(@weeklytimetable.startdate+(row-1)).wday]}<br> #{(@weeklytimetable.startdate+(row-1)).try(:strftime, "%d/%m/%Y")}"]
         1.upto(@count1) do |col|
           #onerow_content << "row = #{row}, col = #{col}"
 	  #---------------------
@@ -153,7 +153,7 @@ class Weekly_timetablePdf < Prawn::Document
     @span_count=2            
     header_col = [""]
     colfriday=1
-    allrows_content=["#{@weekdays_end.try(:strftime, "%A")}#{'<br>'+@weekdays_end.try(:strftime, "%d-%b-%Y")}"]  
+    allrows_content=["#{I18n.t(:'date.day_names')[@weekdays_end.wday]}#{'<br>'+@weekdays_end.try(:strftime, "%d/%m/%Y")}"]  
     
     #size & columns count
     all_col = [55]
@@ -266,7 +266,7 @@ class Weekly_timetablePdf < Prawn::Document
         end
         #Day & date(column) : (ADDITIONAL - Weekends classes) - row starts after timeslot header
         1.upto(@daycount2) do |row2|
-          onerow_content=["#{(@weekdays_end+row2).try(:strftime, "%A")}<br> #{(@weekdays_end+row2).try(:strftime, "%d-%b-%Y")}"]
+          onerow_content=["#{I18n.t(:'date.day_names')[(@weekdays_end+row2).wday]}<br> #{(@weekdays_end+row2).try(:strftime, "%d/%m/%Y")}"]
           weekend_dayname=(@weekdays_end+row2).try(:strftime, "%A")
 
           #Content - (ADDITIONAL - Weekends classes)

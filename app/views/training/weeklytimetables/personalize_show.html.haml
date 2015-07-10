@@ -23,10 +23,10 @@
                   %dd=h @test_lecturer.userable.name
       
                   %dt= t 'training.weeklytimetable.startdate' , :default => model_class.human_attribute_name(:startdate) + ":"
-                  %dd=h item.try(:startdate).try(:strftime, "%d %b %Y") 
-		  
+                  %dd=h item.try(:startdate).try(:strftime, "%d/%m/%Y") 
+  
                   %dt= t 'training.weeklytimetable.enddate' , :default => model_class.human_attribute_name(:enddate) + ":"
-                  %dd=h item.try(:enddate).try(:strftime, "%d %b %Y")  
+                  %dd=h item.try(:enddate).try(:strftime, "%d/%m/%Y")  
 
                 - item.weeklytimetable_details.each do |h| 
                   - if h.lecturer_id == @test_lecturer.userable_id
@@ -68,9 +68,10 @@
                 - detailing.each_with_index do |j,index|
                   - if index==0
                     %td{:align =>"center", :style=> "border:1px solid black;text-align:center; padding:4px; vertical-align:middle;font-size:12px;"} 
-                      =(j.weeklytimetable.startdate+(row-1)).try(:strftime, "%A")
-                      %br=(j.weeklytimetable.startdate+(row-1)).try(:strftime, "%d-%b-%Y")
-					
+                      /=(j.weeklytimetable.startdate+(row-1)).try(:strftime, "%A")
+                      /this format refers to translation file -- t(:'date.day_names')[0]
+                      =t(:'date.day_names')[(j.weeklytimetable.startdate+(row-1)).wday]
+                      %br=(j.weeklytimetable.startdate+(row-1)).try(:strftime, "%d/%m/%Y")
                   /span BREAK fields & display CLASSES fields accordingly-(start)
                 - 1.upto(@column_count_monthur) do |col|
                   - if break_format1[col-1]==true && row==1
@@ -148,8 +149,10 @@
               - detailing.each_with_index do |j,index|
                 - if index==0
                   %td{:align=>"center", :style=>"border:1px solid black;text-align:center; padding:4px; vertical-align:middle;font-size:12px;"}
-                    =weekdays_end.try(:strftime, "%A")
-                    %br=weekdays_end.try(:strftime, "%d-%b-%Y")
+                    /=weekdays_end.try(:strftime, "%A")
+                    /this format refers to translation file -- t(:'date.day_names')[0]
+                    =t(:'date.day_names')[weekdays_end.wday]
+                    %br=weekdays_end.try(:strftime, "%d/%m/%Y")
 
 		
               - 1.upto(@column_count_friday) do |col2|
@@ -200,7 +203,7 @@
             - weekdays_end = j.weeklytimetable.startdate.to_date+4.days
             - daycount2 = (j.weeklytimetable.enddate.to_date - weekdays_end).to_i 
             - if daycount2 > 0
-			
+
               - detailing.each_with_index do |j,index|
                 - if index==0
                   - j.weeklytimetable.timetable_monthurs.timetable_periods.order(sequence: :asc).in_groups_of(@column_count_monthur, false) do |row_things|
@@ -211,15 +214,17 @@
                         - if periods.day_name == 1
                           %th{:align => "center", :style=>"border:1px solid black; text-align:center; padding:4px;background-color:#FEE;font-size:12px;"} 
                             =periods.sequence
-                            %BR= periods.timing			
+                            %BR= periods.timing
 
-				
+
               /Day & date(column) : (ADDITIONAL - Weekends classes) - row starts after timeslot header
               - 1.upto(daycount2) do |row2|
                 %tr
                   %td{:align =>"center", :style=> "border:1px solid black;text-align:center; padding:4px; vertical-align:middle;font-size:12px;"} 
-                    =weekend_dayname=(weekdays_end+row2).try(:strftime, "%A")
-                    %br=(weekdays_end+row2).try(:strftime, "%d-%b-%Y")
+                    - weekend_dayname=(weekdays_end+row2).try(:strftime, "%A")
+                    /this format refers to translation file -- t(:'date.day_names')[0]
+                    =t(:'date.day_names')[(weekdays_end+row2).wday]
+                    %br=(weekdays_end+row2).try(:strftime, "%d/%m/%Y")
 
                   /Content - (ADDITIONAL - Weekends classes)
                   /span BREAK fields & display CLASSES fields accordingly - col (column) starts after day/date column

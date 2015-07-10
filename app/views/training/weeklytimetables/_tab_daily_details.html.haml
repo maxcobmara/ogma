@@ -23,8 +23,10 @@
         - 1.upto(daycount) do |row|
           %tr
             %td{:align =>"center", :style=> "border:1px solid black;text-align:center; padding:4px; vertical-align:middle;font-size:12px;"} 
-              =(@weeklytimetable.startdate+(row-1)).try(:strftime, "%A")
-              %br=(@weeklytimetable.startdate+(row-1)).try(:strftime, "%d-%b-%Y")
+              /=(@weeklytimetable.startdate+(row-1)).try(:strftime, "%A")
+              /this format refers to translation file -- t(:'date.day_names')[0]
+              =t(:'date.day_names')[(@weeklytimetable.startdate+(row-1)).wday]
+              %br=(@weeklytimetable.startdate+(row-1)).try(:strftime, "%d/%m/%Y")
 
             /Content - (Sunday - Wednesday)
             /span BREAK fields & display CLASSES fields accordingly - col (column) starts after day/date column
@@ -69,8 +71,10 @@
         /Content for FRIDAY-(start) - COMPULSORY long break on the fouth time slot - if Week start on Monday
         %tr
           %td{:align=>"center", :style=>"border:1px solid black;text-align:center; padding:4px; vertical-align:middle;font-size:12px;"}
-            =weekdays_end.try(:strftime, "%A")
-            %br=weekdays_end.try(:strftime, "%d-%b-%Y")
+            - weekdays_end.try(:strftime, "%A")
+            /this format refers to translation file -- t(:'date.day_names')[0]
+            =t(:'date.day_names')[weekdays_end.wday]
+            %br=weekdays_end.try(:strftime, "%d/%m/%Y")
             - 1.upto(@count2) do |col2|
               - if break_format2[col2-1]==true
                 /BREAK columns
@@ -112,8 +116,10 @@
           - 1.upto(daycount2) do |row2|
             %tr
               %td{:align =>"center", :style=> "border:1px solid black;text-align:center; padding:4px; vertical-align:middle;font-size:12px;"} 
-                =weekend_dayname=(weekdays_end+row2).try(:strftime, "%A")
-                %br=(weekdays_end+row2).try(:strftime, "%d-%b-%Y")
+                - weekend_dayname=(weekdays_end+row2).try(:strftime, "%A")
+                /this format refers to translation file -- t(:'date.day_names')[0]
+                =t(:'date.day_names')[(weekdays_end+row2).wday]
+                %br=(weekdays_end+row2).try(:strftime, "%d/%m/%Y")
 
               /Content - (ADDITIONAL - Weekends classes)
               /span BREAK fields & display CLASSES fields accordingly - col (column) starts after day/date column

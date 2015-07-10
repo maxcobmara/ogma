@@ -12,8 +12,8 @@ class PersonalizetimetablePdf < Prawn::Document
       items2.each_with_index do |item, index|
         if sdate.to_s == @selected_date.to_s
           if index == 0 
-            @sdt=item.try(:startdate).try(:strftime, "%d %b %Y") 
-            @edt= item.try(:enddate).try(:strftime, "%d %b %Y") 
+            @sdt=item.try(:startdate).try(:strftime, "%d/%m/%Y") 
+            @edt= item.try(:enddate).try(:strftime, "%d/%m/%Y") 
           end
           item.weeklytimetable_details.each do |h| 
             if h.lecturer_id == @test_lecturer.userable_id
@@ -59,7 +59,7 @@ class PersonalizetimetablePdf < Prawn::Document
       move_down 3
       text "INSTITUSI : KOLEJ SAINS KESIHATAN BERSEKUTU JOHOR BAHRU", :align => :left, :size => 9
       text "NAMA PENSYARAH : #{@test_lecturer.userable.name}", :align => :left, :size => 9
-      text "TARIKH : #{@j.weeklytimetable.startdate.try(:strftime, '%d %b %Y') } HINGGA : #{@j.weeklytimetable.enddate.try(:strftime, '%d %b %Y')}", :align =>:left, :size =>9
+      text "TARIKH : #{@j.weeklytimetable.startdate.try(:strftime, '%d/%m/%Y') } HINGGA : #{@j.weeklytimetable.enddate.try(:strftime, '%d/%m/%Y')}", :align =>:left, :size =>9
       ##same page header
       table_weekend 
     end
@@ -104,7 +104,8 @@ class PersonalizetimetablePdf < Prawn::Document
         if index==0
           #onerow_content=["#{(j.weeklytimetable.startdate+(row-1)).try(:strftime, "%A")}<br> #{(j.weeklytimetable.startdate+(row-1)).try(:strftime, "%d-%b-%Y")}"]
         end 
-        onerow_content=["#{(j.weeklytimetable.startdate+(row-1)).try(:strftime, "%A")}<br> #{(j.weeklytimetable.startdate+(row-1)).try(:strftime, "%d-%b-%Y")}"]
+        #onerow_content=["#{(j.weeklytimetable.startdate+(row-1)).try(:strftime, "%A")}<br> #{(j.weeklytimetable.startdate+(row-1)).try(:strftime, "%d-%b-%Y")}"]
+        onerow_content=["#{I18n.t(:'date.day_names')[(j.weeklytimetable.startdate+(row-1)).wday]}<br> #{(j.weeklytimetable.startdate+(row-1)).try(:strftime, "%d/%m/%Y")}"]
       end 
       #span BREAK fields & display CLASSES fields accordingly-(start)
       1.upto(@column_count_monthur) do |col|
@@ -206,7 +207,7 @@ class PersonalizetimetablePdf < Prawn::Document
     @detailing.each_with_index do |j,index|
        if index==0
          #first column - date & day (Thursday)
-         allrows_content=["#{@weekdays_end.try(:strftime, "%A")}#{'<br>'+@weekdays_end.try(:strftime, "%d-%b-%Y")}"]  
+         allrows_content=["#{I18n.t(:'date.day_names')[@weekdays_end.wday]}#{'<br>'+@weekdays_end.try(:strftime, "%d/%m/%Y")}"]  
        end
     end 
     1.upto(@column_count_friday) do |col2|
@@ -297,7 +298,7 @@ class PersonalizetimetablePdf < Prawn::Document
 
       #Day & date(column) : (ADDITIONAL - Weekends classes) - row starts after timeslot header
       1.upto(@daycount2) do |row2|
-        onerow_content=["#{(@weekdays_end+row2).try(:strftime, "%A")}<br> #{(@weekdays_end+row2).try(:strftime, "%d-%b-%Y")}"]
+        onerow_content=["#{I18n.t(:'date.day_names')[(@weekdays_end+row2).wday]}<br> #{(@weekdays_end+row2).try(:strftime, "%d/%m/%Y")}"]
         weekend_dayname=(@weekdays_end+row2).try(:strftime, "%A")
 
         #Content - (ADDITIONAL - Weekends classes)
