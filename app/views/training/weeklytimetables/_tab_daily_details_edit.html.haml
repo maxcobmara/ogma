@@ -45,7 +45,8 @@
       - if weekdays_end.strftime('%A')=="Friday"
         - break_tospan=4
         - classes_tospan=[5,7]
-      - if weekdays_end.strftime('%A')=="Thursday"
+      - else
+        /Thursday or any other day
         - break_tospan=0
         - classes_tospan=[]
       - span_count="2"
@@ -55,7 +56,7 @@
             &nbsp;
             - colfriday=1
           - for periods in row_things
-            - if colfriday == break_tospan || colfriday == classes_tospan[0] || colfriday == classes_tospan[1] 
+            - if colfriday == break_tospan || classes_tospan.include?(colfriday)
               %th{:colspan=>span_count, :style=>"border:1px solid black; text-align:center; padding:4px;background-color:#FEE;font-size:12px;"}
                 %b=periods.sequence
                 %BR= periods.timing

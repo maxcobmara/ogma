@@ -119,8 +119,7 @@ class PersonalizetimetablePdf < Prawn::Document
             if j.day2 == row  && j.time_slot2 == col && j.weeklytimetable.hod_approved == true
               if nos==0
                 nos+=1
-		##note : location_desc - user's comment : location type on
-                gg+="#{j.weeklytimetable_topic.parent.parent.subject_abbreviation.blank? ? "-" :  j.weeklytimetable_topic.parent.parent.subject_abbreviation.upcase  if j.weeklytimetable_topic.ancestry_depth == 4} #{ '<br>'+j.weeklytimetable_topic.parent.name if j.weeklytimetable_topic.ancestry_depth == 4}  #{j.weeklytimetable_topic.parent.subject_abbreviation.blank? ? "-" :  j.weeklytimetable_topic.parent.subject_abbreviation.upcase if j.weeklytimetable_topic.ancestry_depth != 4} #{'<br>'+j.weeklytimetable_topic.name  if j.weeklytimetable_topic.ancestry_depth != 4}#{"(K)" if j.lecture_method==1} #{"(T)" if j.lecture_method==2}#{"(A)" if j.lecture_method==3} #{'<br>'+j.weeklytimetable_lecturer.name}#{'<br>'+j.weeklytimetable.schedule_programme.programme_list}#{'<br>'+j.weeklytimetable.schedule_intake.description}#{I18n.t('training.weeklytimetable.intake')+ " ("+ j.weeklytimetable.schedule_intake.name+")"}"
+                gg+="#{j.weeklytimetable_topic.parent.parent.subject_abbreviation.blank? ? "-" :  j.weeklytimetable_topic.parent.parent.subject_abbreviation.upcase  if j.weeklytimetable_topic.ancestry_depth == 4} #{ '<br>'+j.weeklytimetable_topic.parent.name if j.weeklytimetable_topic.ancestry_depth == 4}  #{j.weeklytimetable_topic.parent.subject_abbreviation.blank? ? "-" :  j.weeklytimetable_topic.parent.subject_abbreviation.upcase if j.weeklytimetable_topic.ancestry_depth != 4} #{'<br>'+j.weeklytimetable_topic.name  if j.weeklytimetable_topic.ancestry_depth != 4}#{"(K)" if j.lecture_method==1} #{j.location_desc}#{"(T)" if j.lecture_method==2}#{"(A)" if j.lecture_method==3} #{'<br>'+j.weeklytimetable_lecturer.name}#{'<br>'+j.weeklytimetable.schedule_programme.programme_list}#{'<br>'+j.weeklytimetable.schedule_intake.description} #{I18n.t('training.weeklytimetable.intake')+ " ("+ j.weeklytimetable.schedule_intake.name+")"}"
               end
             end
           end
@@ -152,24 +151,23 @@ class PersonalizetimetablePdf < Prawn::Document
     if @weekdays_end.strftime('%A')=="Friday"
       @break_tospan=4
       #classes_tospan=[5,7]
-      if (@column_count_monthur==9 && @column_count_friday==7) || @column_count_friday==5 #excluding 1st column 
+      if  @column_count_friday==5 #excluding 1st column 
         @classes_tospan=[5]
-      else
+      elsif @column_count_monthur==9 && @column_count_friday==7
         @classes_tospan=[5,7]
       end
-    end
-    if @weekdays_end.strftime('%A')=="Thursday"
+    else 
+      #Thursday and any other day
       @break_tospan=0
       @classes_tospan=[]
     end
-    ###
     @span_count=2
     header_col = [""]
     colfriday=1
  
     #size & columns count
     all_col = [55]
-    0.upto(@column_count_friday) do |no|
+    0.upto(@column_count_friday+1) do |no|   #require additional 1 DUMMY column in order to get last DATA/EMPTY column to span, due to separate tables used
        if (no==1) || (no==4) || (no==7)
         all_col << 45
       else
@@ -201,9 +199,9 @@ class PersonalizetimetablePdf < Prawn::Document
           end 
         end
       end 
-    end 
+    end
 
-    #Content for THURSDAY-(start) - COMPULSORY long break on the fouth time slot-START
+    #Content for THURSDAY-(start) - COMPULSORY long break(fifth day==Friday) on the fouth time slot-START
     allrows_content=[]
     @detailing.each_with_index do |j,index|
        if index==0
@@ -223,21 +221,24 @@ class PersonalizetimetablePdf < Prawn::Document
         #NON BREAK COLUMNS
         if @classes_tospan.include?(col2)
           gg=""
-	  ##note : location_desc - user's comment : location type on
+          nos=0
           @detailing_friday.each do |j|
             if j.is_friday == true && j.time_slot == col2 && j.weeklytimetable.hod_approved == true
-              gg+="#{j.weeklytimetable_topic.parent.parent.subject_abbreviation.blank? ? "-" :  j.weeklytimetable_topic.parent.parent.subject_abbreviation.upcase  if j.weeklytimetable_topic.ancestry_depth == 4} #{ '<br>'+j.weeklytimetable_topic.parent.name if j.weeklytimetable_topic.ancestry_depth == 4}  #{j.weeklytimetable_topic.parent.subject_abbreviation.blank? ? "-" :  j.weeklytimetable_topic.parent.subject_abbreviation.upcase if j.weeklytimetable_topic.ancestry_depth != 4} #{'<br>'+j.weeklytimetable_topic.name  if j.weeklytimetable_topic.ancestry_depth != 4}#{"(K)" if j.lecture_method==1} #{"(T)" if j.lecture_method==2}#{"(A)" if j.lecture_method==3} #{'<br>'+j.weeklytimetable_lecturer.name}#{'<br>'+j.weeklytimetable.schedule_programme.programme_list}#{'<br>'+j.weeklytimetable.schedule_intake.description}#{I18n.t('training.weeklytimetable.intake')+ " ("+ j.weeklytimetable.schedule_intake.name+")"}"
+              if nos==0
+                nos+=1
+                gg="#{j.weeklytimetable_topic.parent.parent.subject_abbreviation.blank? ? "-" :  j.weeklytimetable_topic.parent.parent.subject_abbreviation.upcase  if j.weeklytimetable_topic.ancestry_depth == 4} #{ '<br>'+j.weeklytimetable_topic.parent.name if j.weeklytimetable_topic.ancestry_depth == 4}  #{j.weeklytimetable_topic.parent.subject_abbreviation.blank? ? "-" :  j.weeklytimetable_topic.parent.subject_abbreviation.upcase if j.weeklytimetable_topic.ancestry_depth != 4} #{'<br>'+j.weeklytimetable_topic.name  if j.weeklytimetable_topic.ancestry_depth != 4}#{"(K)" if j.lecture_method==1} #{j.location_desc}#{"(T)" if j.lecture_method==2}#{"(A)" if j.lecture_method==3} #{'<br>'+j.weeklytimetable_lecturer.name}#{'<br>'+j.weeklytimetable.schedule_programme.programme_list}#{'<br>'+j.weeklytimetable.schedule_intake.description} #{I18n.t('training.weeklytimetable.intake')+ " ("+ j.weeklytimetable.schedule_intake.name+")"}"
+              end
             end
           end
           allrows_content<< {content: gg, colspan: @span_count}
         else
           hh=""
           nos=0
-	  ##note : location_desc - user's comment : location type on
           @detailing_friday.each do |j|
             if j.is_friday == true  && j.time_slot == col2 && j.weeklytimetable.hod_approved == true
               if nos==0
-                hh+="#{j.weeklytimetable_topic.parent.parent.subject_abbreviation.blank? ? "-" :  j.weeklytimetable_topic.parent.parent.subject_abbreviation.upcase  if j.weeklytimetable_topic.ancestry_depth == 4} #{ '<br>'+j.weeklytimetable_topic.parent.name if j.weeklytimetable_topic.ancestry_depth == 4}  #{j.weeklytimetable_topic.parent.subject_abbreviation.blank? ? "-" :  j.weeklytimetable_topic.parent.subject_abbreviation.upcase if j.weeklytimetable_topic.ancestry_depth != 4} #{'<br>'+j.weeklytimetable_topic.name  if j.weeklytimetable_topic.ancestry_depth != 4}#{"(K)" if j.lecture_method==1} #{"(T)" if j.lecture_method==2}#{"(A)" if j.lecture_method==3} #{'<br>'+j.weeklytimetable_lecturer.name}#{'<br>'+j.weeklytimetable.schedule_programme.programme_list}#{'<br>'+j.weeklytimetable.schedule_intake.description}#{I18n.t('training.weeklytimetable.intake')+ " ("+ j.weeklytimetable.schedule_intake.name+")"}"
+                nos+=1
+                hh="#{j.weeklytimetable_topic.parent.parent.subject_abbreviation.blank? ? "-" :  j.weeklytimetable_topic.parent.parent.subject_abbreviation.upcase  if j.weeklytimetable_topic.ancestry_depth == 4} #{ '<br>'+j.weeklytimetable_topic.parent.name if j.weeklytimetable_topic.ancestry_depth == 4}  #{j.weeklytimetable_topic.parent.subject_abbreviation.blank? ? "-" :  j.weeklytimetable_topic.parent.subject_abbreviation.upcase if j.weeklytimetable_topic.ancestry_depth != 4} #{'<br>'+j.weeklytimetable_topic.name  if j.weeklytimetable_topic.ancestry_depth != 4}#{"(K)" if j.lecture_method==1} #{j.location_desc}#{"(T)" if j.lecture_method==2}#{"(A)" if j.lecture_method==3} #{'<br>'+j.weeklytimetable_lecturer.name}#{'<br>'+j.weeklytimetable.schedule_programme.programme_list}#{'<br>'+j.weeklytimetable.schedule_intake.description} #{I18n.t('training.weeklytimetable.intake')+ " ("+ j.weeklytimetable.schedule_intake.name+")"}"
               end
             end
           end
@@ -248,11 +249,12 @@ class PersonalizetimetablePdf < Prawn::Document
  
     data = [header_col]+[allrows_content]
     table(data, :column_widths => all_col, :cell_style => { :size => 9, :align=> :center,  :inline_format => true}) do 
-      if header_col.count==8    #7 columns
-        self.width = 760
-      #elsif header_col.count==9
-        #self.width = 665
-      end
+#       if header_col.count==8    #7 columns
+#         self.width = 620  #760
+#       else
+#       #elsif header_col.count==9
+#         #self.width = 665
+#       end
       
       row(0).background_color = 'ABA9A9'  
       cells[1,2].valign = :center
@@ -296,6 +298,7 @@ class PersonalizetimetablePdf < Prawn::Document
       #Day & date(column) : (ADDITIONAL - Weekends classes) - row starts after timeslot header
       1.upto(@daycount2) do |row2|
         onerow_content=["#{(@weekdays_end+row2).try(:strftime, "%A")}<br> #{(@weekdays_end+row2).try(:strftime, "%d-%b-%Y")}"]
+        weekend_dayname=(@weekdays_end+row2).try(:strftime, "%A")
 
         #Content - (ADDITIONAL - Weekends classes)
         #span BREAK fields & display CLASSES fields accordingly - col (column) starts after day/date column
@@ -307,16 +310,24 @@ class PersonalizetimetablePdf < Prawn::Document
           elsif @break_format1[col2-1]==false
             nos=0
             gg=""
-	    ##note : location_desc - user's comment : location type on
-            @detailing_monthurs.each do |j2|
-              if j2.day2 == row2+@daycount+1 && j2.time_slot2 == col2 && @j.weeklytimetable.hod_approved == true
-                if nos==0
-                  nos+=1
-                  gg+="#{j2.weeklytimetable_topic.parent.parent.subject_abbreviation.blank? ? "-" :  j2.weeklytimetable_topic.parent.parent.subject_abbreviation.upcase  if j2.weeklytimetable_topic.ancestry_depth == 4} #{ '<br>'+j2.weeklytimetable_topic.parent.name if j2.weeklytimetable_topic.ancestry_depth == 4}  #{j2.weeklytimetable_topic.parent.subject_abbreviation.blank? ? "-" :  j2.weeklytimetable_topic.parent.subject_abbreviation.upcase if j2.weeklytimetable_topic.ancestry_depth != 4} #{'<br>'+j2.weeklytimetable_topic.name  if j2.weeklytimetable_topic.ancestry_depth != 4}#{"(K)" if j2.lecture_method==1} #{"(T)" if j2.lecture_method==2}#{"(A)" if j2.lecture_method==3} #{'<br>'+j2.weeklytimetable_lecturer.name} #{'<br>'+j2.weeklytimetable.schedule_programme.programme_list}#{'<br>'+j2.weeklytimetable.schedule_intake.description}#{I18n.t('training.weeklytimetable.intake')+ " ("+ j2.weeklytimetable.schedule_intake.name+")"}"
+
+            #1-DECLARE BREAK for 4th slot(12:00-13:00) for Weekend class (Friday only) for Week starting on Sunday
+            if weekend_dayname=="Friday" && col2==4
+              gg+="REHAT"
+            else
+              #1-display Sat slot accordingly for Week starting on Sunday 
+              #2-OR display Weekends slot (Sat & Sun) for week starting on Monday
+              @detailing_monthurs.each do |j2|
+                if j2.day2 == row2+@daycount+1 && j2.time_slot2 == col2 && @j.weeklytimetable.hod_approved == true
+                  if nos==0
+                    nos+=1
+                    gg+="#{j2.weeklytimetable_topic.parent.parent.subject_abbreviation.blank? ? "-" :  j2.weeklytimetable_topic.parent.parent.subject_abbreviation.upcase  if j2.weeklytimetable_topic.ancestry_depth == 4} #{ '<br>'+j2.weeklytimetable_topic.parent.name if j2.weeklytimetable_topic.ancestry_depth == 4}  #{j2.weeklytimetable_topic.parent.subject_abbreviation.blank? ? "-" :  j2.weeklytimetable_topic.parent.subject_abbreviation.upcase if j2.weeklytimetable_topic.ancestry_depth != 4} #{'<br>'+j2.weeklytimetable_topic.name  if j2.weeklytimetable_topic.ancestry_depth != 4}#{"(K)" if j2.lecture_method==1} #{j2.location_desc}#{"(T)" if j2.lecture_method==2}#{"(A)" if j2.lecture_method==3} #{'<br>'+j2.weeklytimetable_lecturer.name} #{'<br>'+j2.weeklytimetable.schedule_programme.programme_list}#{'<br>'+j2.weeklytimetable.schedule_intake.description}  #{I18n.t('training.weeklytimetable.intake')+ " ("+ j2.weeklytimetable.schedule_intake.name+")"}"
+                  end
                 end
-              end
-            end #end for detailing_monthurs
+              end #end for detailing_monthurs
+            end  #end for weekend_dayname friday
             onerow_content<< gg
+
           end
         end
         allrows_content << onerow_content
