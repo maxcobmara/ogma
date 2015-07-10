@@ -3,52 +3,52 @@
     .col-sm-2.control-label
       = f.label :programme_id
     .col-md-3
-      = f.collection_select :programme_id, @programme_list, :id, :programme_list, {:include_blank => (t 'helpers.prompt.select_programme'), :selected => @programme_id},{class: 'selectpicker', "data-width"=>'280px'}
+      = f.collection_select :programme_id, @programme_list, :id, :programme_list, {:include_blank => (t 'helpers.prompt.select_programme'), :selected => @programme_id},{class: 'selectpicker mandatory', "data-width"=>'280px'}
        
   .form-group
     .col-sm-2.control-label
       = f.label :intake_id
     .col-md-3
-      = f.collection_select :intake_id, @intake_list, :id, :programme_group_intake,{:include_blank=> (t 'helpers.prompt.select_intake')},{class: 'selectpicker', "data-width"=>'280px'}
+      = f.collection_select :intake_id, @intake_list, :id, :programme_group_intake,{:include_blank=> (t 'helpers.prompt.select_intake')},{class: 'selectpicker mandatory', "data-width"=>'280px'}
        
   .form-group
     .col-sm-2.control-label
       = f.label :startdate
     .col-md-3
-      = f.text_field :startdate, class: 'date_picker_reverse form-control'
+      = f.text_field :startdate, class: 'date_picker_reverse form-control mandatory'
        
   .form-group
     .col-sm-2.control-label
       = f.label :enddate
     .col-md-3
-      = f.text_field :enddate, class: 'date_picker_reverse form-control'
+      = f.text_field :enddate, class: 'date_picker_reverse form-control mandatory'
  
   .form-group
     .col-sm-2.control-label
       = f.label :semester
     .col-md-3
-      = f.collection_select :semester, AcademicSession.all.order(created_at: :desc), :id, :semester,{:include_blank =>(t 'helpers.prompt.select_semester')},{class: 'selectpicker', "data-width"=>'280px'}
+      = f.collection_select :semester, AcademicSession.all.order(created_at: :desc), :id, :semester,{:include_blank =>(t 'helpers.prompt.select_semester')},{class: 'selectpicker mandatory', "data-width"=>'280px'}
        
   .form-group
     .col-sm-2.control-label
       = f.label :week
     .col-md-3
-      = f.text_field :week, class: 'form-control'
+      = f.text_field :week, class: 'form-control mandatory'
 
   .form-group
     .col-sm-2.control-label
       = f.label :prepared_by
     .col-md-3
-      = f.collection_select :prepared_by, @lecturer_list, :id, :name , {:include_blank =>(t 'select'), :selected => @staffid},{class: 'selectpicker', "data-width"=>'280px'}
+      = f.collection_select :prepared_by, @lecturer_list, :id, :name , {:include_blank =>(t 'select'), :selected => @staffid},{class: 'selectpicker mandatory', "data-width"=>'280px'}
 
   .form-group
     .col-sm-2.control-label
       = f.label :format1
     .col-md-3
-      = f.collection_select :format1, Timetable.all, :id, :name, {:include_blank => (t 'helpers.prompt.select_format')},{class: 'selectpicker', "data-width"=>'360px'}
+      = f.collection_select :format1, Timetable.all, :id, :name, {:include_blank => (t 'helpers.prompt.select_format')},{class: 'selectpicker mandatory', "data-width"=>'360px'}
 	  
   .form-group
     .col-sm-2.control-label
       = f.label :format2
     .col-md-3
-      = f.collection_select :format2, Timetable.all, :id, :name, {:include_blank => (t 'helpers.prompt.select_format')}, {class: 'selectpicker', "data-width"=>'360px'}
+      = f.collection_select :format2, Timetable.all, :id, :name, {:include_blank => (t 'helpers.prompt.select_format')}, {class: 'selectpicker mandatory', "data-width"=>'360px'}

@@ -133,6 +133,14 @@ en:
         hname: Name
         hdate: Date
       weeklytimetable:
+        programme_id: Programme
+        intake_id: Intake
+        startdate: Start Date
+        enddate: End Date
+        week: Week
+        prepared_by: Prepared By
+        format1: "Format (Sun-Wed/Mon-Thurs)"
+        format2: "Format (Thursday/Friday)"
         reason: Reason
         hod_approved_on: Approval date
         hod_rejected_on: Rejection date
@@ -2429,8 +2437,8 @@ en:
       semester: Semester
       prepared_by: Prepared By
       endorsed_by: Submitted for Endorsement by
-      format1: "Format (Sunday - Wednesday"
-      format2: "Format (Thursday)"
+      format1: "Format (Sun-Wed / Mon-Thurs)"
+      format2: "Format (Thursday / Friday)"
       week: Week
       is_submitted: "Submitted ?"
       submitted_on: Submission Date
@@ -2723,8 +2731,8 @@ en:
         semester: Semester
         prepared_by: Prepared By
         endorsed_by: Endorsed By
-        format1: "Format (Sunday - Wednesday)"
-        format2: "Format (Thursday)"
+        format1: "Format (Sun-Wed/ Mon-Thurs)"
+        format2: "Format (Thursday/ Friday)"
         week: Week
         is_submitted: "Submit ?"
         submitted_on: Submission Date

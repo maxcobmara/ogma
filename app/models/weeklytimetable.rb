@@ -18,7 +18,8 @@ class Weeklytimetable < ActiveRecord::Base
   has_many :weeklytimetable_details, :dependent => :destroy
   accepts_nested_attributes_for :weeklytimetable_details, :reject_if => proc {|a|a['topic'].blank? || a['lecturer_id'].blank? || a['lecture_method'].blank?} 
 
-  validates_presence_of :programme_id, :semester, :intake_id, :format1, :format2
+  #validates_presence_of :programme_id, :semester, :intake_id, :format1, :format2
+  validates_presence_of :programme_id, :intake_id, :startdate, :enddate, :week, :prepared_by, :semester, :format1, :format2
   validate :approved_or_rejected, :restrict_lecturer_per_class_duration
   validates_presence_of :hod_approved_on, :if => :hod_approval?
   validates_presence_of :hod_rejected_on, :reason, :if => :hod_rejection?
