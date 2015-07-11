@@ -20,16 +20,16 @@
         %th= sort_link(@search, :register_on, (t 'training.intake.register_on'))
         %th= sort_link(@search, :programme_id, (t 'training.intake.programme_id'))
         %th= sort_link(@search, :staff_id, (t 'training.intake.staff_id'))
-        %th= sort_link(@search, :is_active, (t 'training.intake.is_active'))
+        %th{style: "width:10%;"}= sort_link(@search, :is_active, (t 'training.intake.is_active'))
 
     %tbody
     = render "index_search"
-    - @intakes.sort.each do |intakename,intakedetails|
+    - @intakes.each do |intakedate,intakedetails|
       %tr
         %td.group{:colspan => "8", :style => "background-color:#EFF1F1;"}
-          %span{:style => "color:#218AFB;font-weight:bold;"}=h intakename 
+          %span{:style => "color:#218AFB;font-weight:bold;"}=h intakedate.strftime('%b %Y')
       - for details in intakedetails 
-        %tr	  
+        %tr
           %td=h link_to details.description, training_intake_path(details)
           %td=h details.try(:register_on).try(:strftime, "%d %b %Y") 
           %td=h details.programme.programme_list

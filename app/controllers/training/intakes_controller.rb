@@ -3,12 +3,10 @@ class Training::IntakesController < ApplicationController
   # GET /intakes
   # GET /intakes.xml
   def index
-    #@intakes = Intake.all.group_by{|t|t.name} #28Feb2013-changed view by intake name
-    
     @search = Intake.search(params[:q])
     @intakes2 = @search.result
     @intakes3 = @intakes2.page(params[:page]||1)  
-    @intakes = @intakes3.group_by{|t|t.name}#28Feb2013-changed view by intake name
+    @intakes = @intakes3.order(monthyear_intake: :desc).group_by(&:monthyear_intake)
 
     respond_to do |format|
       format.html # index.html.erb

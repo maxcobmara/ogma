@@ -40,6 +40,16 @@ class Student < ActiveRecord::Base
   has_many          :kins, :dependent => :destroy
   accepts_nested_attributes_for :kins, :reject_if => lambda { |a| a[:kintype_id].blank? }
 
+  def self.course_search(query)
+    programme_id = Programme.roots.where('name ILIKE(?)', "%#{query}%").first.id
+    where(course_id: programme_id)
+  end
+  
+  # whitelist the scope
+  def self.ransackable_scopes(auth_object = nil)
+    [:course_search]
+  end
+  
   def intake_course
     "#{intake}"+","+"#{course_id}"
   end
