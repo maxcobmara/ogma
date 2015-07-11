@@ -4,7 +4,7 @@ class EvaluateCourse < ActiveRecord::Base
   belongs_to :subjectevaluate,   :class_name => 'Programme',   :foreign_key => 'subject_id'
   belongs_to :staffevaluate,     :class_name => 'Staff',     :foreign_key => 'staff_id'
   
-  validates_presence_of :evaluate_date, :course_id, :ev_obj, :ev_knowledge, :ev_deliver, :ev_content, :ev_tool, :ev_topic, :ev_work, :ev_note#,:student_id,
+  validates_presence_of :evaluate_date, :course_id, :ev_obj, :ev_knowledge, :ev_deliver, :ev_content, :ev_tool, :ev_topic, :ev_work, :ev_note, :ev_assessment#,:student_id,
   
   validate :validate_staff_or_invitation_lecturer_must_exist
   validates_presence_of :subject_id, :if => :trainer_is_staff?

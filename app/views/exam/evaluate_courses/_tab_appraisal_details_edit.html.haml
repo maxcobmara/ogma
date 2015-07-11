@@ -73,3 +73,10 @@
       - 1.upto(9) do |count|
         %td{:width=>"20px;"}
           = f.radio_button :ev_note,"#{count}"
+ 
+    %tr
+      %td 9
+      %td=t 'exam.evaluate_course.suitable_assessment'
+      - 1.upto(9) do |count|
+        %td{:width=>"20px;"}
+          = f.radio_button :ev_assessment,"#{count}"

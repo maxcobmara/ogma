@@ -97,6 +97,7 @@ class Exam::EvaluateCoursesController < ApplicationController
     @evs << @evaluate_course.ev_topic
     @evs << @evaluate_course.ev_work
     @evs << @evaluate_course.ev_note
+    @evs << @evaluate_course.ev_assessment
     respond_to do |format|
        format.pdf do
          pdf = CourseevaluationPdf.new(@evaluate_course, view_context, @evs)
@@ -200,6 +201,6 @@ class Exam::EvaluateCoursesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def evaluate_course_params
-      params.require(:evaluate_course).permit(:course_id, :subject_id, :staff_id, :student_id, :evaluate_date, :comment, :ev_obj, :ev_knowledge, :ev_deliver, :ev_content, :ev_tool, :ev_topic, :ev_work, :ev_note, :invite_lec, :average_course_id)
+      params.require(:evaluate_course).permit(:course_id, :subject_id, :staff_id, :student_id, :evaluate_date, :comment, :ev_obj, :ev_knowledge, :ev_deliver, :ev_content, :ev_tool, :ev_topic, :ev_work, :ev_note, :invite_lec, :average_course_id, :invite_lec_topic, :ev_assessment)
     end
 end

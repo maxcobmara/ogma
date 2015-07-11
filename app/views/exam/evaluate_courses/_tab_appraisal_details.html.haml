@@ -91,3 +91,13 @@
           %b= @evaluate_course.ev_note
         - else 
           %font{:style=>"color: #D5D3D3;"}=count
+
+  %tr
+    %td 9
+    %td=t 'exam.evaluate_course.suitable_assessment'
+    - 1.upto(9) do |count|
+      %td{:width=>"20px;"}
+        - if @evaluate_course.ev_assessment== count
+          %b= @evaluate_course.ev_assessment
+        - else 
+          %font{:style=>"color: #D5D3D3;"}=count
