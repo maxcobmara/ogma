@@ -187,7 +187,26 @@ class Training::WeeklytimetablesController < ApplicationController
   # POST /weeklytimetables.xml
   def create
     @weeklytimetable = Weeklytimetable.new(weeklytimetable_params)
-
+    #from NEW###
+    #Admin & Coordinator ONLY - diploma & pos basik/pengkhususan/dip lanjutan (common subjects lecturer has no access)
+    @staffid = current_user.userable_id 
+    roles = current_user.roles.pluck(:authname)
+    @is_admin = roles.include?("administration") 
+    if @is_admin
+      @programme_list=Programme.roots
+      @intake_list=Intake.all.order(programme_id: :asc, monthyear_intake: :desc)
+      posbasics=["Diploma Lanjutan", "Pos Basik", "Pengkhususan"]
+      prog_names=@programme_list.where(course_type: "Diploma").pluck(:name)
+      @lecturer_list= Staff.joins(:positions).where('positions.unit IN(?) or positions.unit IN(?)', prog_names, posbasics).order(name: :asc)
+    else
+      #retrieve programme & groups coordinated from Intake
+      @programme_id=Intake.where(staff_id: @staffid).first.programme_id
+      @programme_list=Programme.roots.where(id: @programme_id)
+      group_intake_ids=Intake.where(programme_id: @programme_id, staff_id: @staffid).pluck(:id).compact
+      @intake_list=Intake.where(id: group_intake_ids)
+      @lecturer_list=Staff.where(id: @staffid)
+    end
+    ###
     respond_to do |format|
       if @weeklytimetable.save
         format.html { redirect_to(training_weeklytimetable_path(@weeklytimetable), :notice => (t 'training.weeklytimetable.title')+(t 'actions.created')) }

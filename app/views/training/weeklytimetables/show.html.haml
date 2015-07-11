@@ -22,10 +22,10 @@
           %dd= @weeklytimetable.try(:schedule_intake).try(:group_with_intake_name)
 		  
           %dt= t 'training.weeklytimetable.startdate' , :default => model_class.human_attribute_name(:startdate) + ":"
-          %dd= @weeklytimetable.startdate.try(:strftime, "%d %b %Y") 
+          %dd= @weeklytimetable.startdate.try(:strftime, "%d/%m/%Y") 
 
           %dt= t 'training.weeklytimetable.enddate' , :default => model_class.human_attribute_name(:enddate) + ":"
-          %dd= @weeklytimetable.enddate.try(:strftime, "%d %b %Y") 
+          %dd= @weeklytimetable.enddate.try(:strftime, "%d/%m/%Y") 
 
           %dt= t 'training.weeklytimetable.semester' , :default => model_class.human_attribute_name(:semester) + ":"
           %dd 

@@ -25,6 +25,7 @@ ms_MY:
       fingerprint: Fingerprint
       holiday: Cuti Umum
       weeklytimetable: Jadual Waktu Mingguan
+      academic_session: Sesi Akademik
     attributes:
       student:
         name: Nama
@@ -114,6 +115,14 @@ ms_MY:
         hname: Nama
         hdate: Tarikh
       weeklytimetable:
+        programme_id: Program
+        intake_id: "Kumpulan /Sesi Pengambilan"
+        startdate: Tarikh Mula
+        enddate: Tarikh Akhir
+        week: Minggu
+        prepared_by: Disediakan Oleh
+        format1: "Format (Aha-Rab/Isn-Kha)"
+        format2: "Format (Khamis/Jumaat)"
         reason: Sebab
         hod_approved_on: Tarikh diluluskan
         hod_rejected_on: Tarikh ditolak
@@ -121,6 +130,8 @@ ms_MY:
         timetable_periods: Butiran Jadual Waktu
       timetable_periods:
         sequence: Sesi
+      academic_session:
+        total_week: Bilangan Minggu
     errors:
         template:
           body: "Berikut adalah beberapa masalah:"
@@ -2660,8 +2671,8 @@ ms_MY:
         semester: Semester
         prepared_by: Disediakan Oleh
         endorsed_by: Diluluskan Oleh
-        format1: "Format (Ahad - Rabu)"
-        format2: "Format (Khamis)"
+        format1: "Format (Aha-Rabu/ Isn-Kha)"
+        format2: "Format (Khamis/ Jumaat)"
         week: Minggu
         is_submitted: Telah Dihantar
         submitted_on: Tarikh Dihantar

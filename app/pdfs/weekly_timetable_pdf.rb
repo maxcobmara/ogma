@@ -43,7 +43,7 @@ class Weekly_timetablePdf < Prawn::Document
   end
    
   def table_date_semester_week
-    data = [[ "TARIKH : #{@weeklytimetable.startdate.try(:strftime, '%d %b %Y') } HINGGA : #{@weeklytimetable.enddate.try(:strftime, '%d %b %Y')}",
+    data = [[ "TARIKH : #{@weeklytimetable.startdate.try(:strftime, '%d/%m/%Y') } HINGGA : #{@weeklytimetable.enddate.try(:strftime, '%d/%m/%Y')}",
                 "SEMESTER : #{ @weeklytimetable.academic_semester.try(:semester).nil? ? "" : @weeklytimetable.academic_semester.try(:semester).split("/").join(" / ")}",
                 "MINGGU : #{@weeklytimetable.week.to_s+" / "+@weeklytimetable.academic_semester.try(:total_week).to_s}"]]
     table(data, :column_widths => [250,250,250], :cell_style => { :size => 9}) do
@@ -79,7 +79,7 @@ class Weekly_timetablePdf < Prawn::Document
       end
       #rows & columns of data
       1.upto(@daycount) do |row|
-        onerow_content=["#{(@weeklytimetable.startdate+(row-1)).try(:strftime, "%A")}<br> #{(@weeklytimetable.startdate+(row-1)).try(:strftime, "%d-%b-%Y")}"]
+        onerow_content=["#{I18n.t(:'date.day_names')[(@weeklytimetable.startdate+(row-1)).wday]}<br> #{(@weeklytimetable.startdate+(row-1)).try(:strftime, "%d/%m/%Y")}"]
         1.upto(@count1) do |col|
           #onerow_content << "row = #{row}, col = #{col}"
 	  #---------------------
@@ -93,10 +93,6 @@ class Weekly_timetablePdf < Prawn::Document
             @weeklytimetable.weeklytimetable_details.each do |xx|
 	      if xx.day2 == row && xx.time_slot2 == col 
 	        #render 'subtab_class_details', {:xx=>xx}
-		#gg+="#{xx.weeklytimetable_topic.parent.parent.subject_abbreviation.blank? ? "-" :  xx.weeklytimetable_topic.parent.parent.subject_abbreviation.upcase  if xx.weeklytimetable_topic.ancestry_depth == 4} #{ '<br>'+xx.weeklytimetable_topic.parent.name if xx.weeklytimetable_topic.ancestry_depth == 4}  #{xx.weeklytimetable_topic.parent.subject_abbreviation.blank? ? "-" :  xx.weeklytimetable_topic.parent.subject_abbreviation.upcase if xx.weeklytimetable_topic.ancestry_depth != 4} #{'<br>'+xx.weeklytimetable_topic.name  if xx.weeklytimetable_topic.ancestry_depth != 4}#{"(K)" if xx.lecture_method==1} #{"(T)" if xx.lecture_method==2}#{"(A)" if xx.lecture_method==3} #{'<br>'+xx.weeklytimetable_lecturer.name}"
-                #above-without location--
-                #below-with location--
-		##note : location_desc - user's comment : location type on
                 gg+="#{xx.weeklytimetable_topic.parent.parent.subject_abbreviation.blank? ? "-" :  xx.weeklytimetable_topic.parent.parent.subject_abbreviation.upcase  if xx.weeklytimetable_topic.ancestry_depth == 4} #{ '<br>'+xx.weeklytimetable_topic.parent.name if xx.weeklytimetable_topic.ancestry_depth == 4}  #{xx.weeklytimetable_topic.parent.subject_abbreviation.blank? ? "-" :  xx.weeklytimetable_topic.parent.subject_abbreviation.upcase if xx.weeklytimetable_topic.ancestry_depth != 4} #{'<br>'+xx.weeklytimetable_topic.name  if xx.weeklytimetable_topic.ancestry_depth != 4} #{xx.location_desc}#{"(K)" if xx.lecture_method==1} #{"(T)" if xx.lecture_method==2}#{"(A)" if xx.lecture_method==3} #{xx.weeklytimetable_lecturer.name}"
 	      end 
 	    end
@@ -147,8 +143,8 @@ class Weekly_timetablePdf < Prawn::Document
       else
         @classes_tospan=[5,7]
       end
-    end
-    if @weekdays_end.strftime('%A')=="Thursday"
+    else
+      #Thursday or any other day
       @break_tospan=0
       @classes_tospan=[]
     end
@@ -157,7 +153,7 @@ class Weekly_timetablePdf < Prawn::Document
     @span_count=2            
     header_col = [""]
     colfriday=1
-    allrows_content=["#{@weekdays_end.try(:strftime, "%A")}#{'<br>'+@weekdays_end.try(:strftime, "%d-%b-%Y")}"]  
+    allrows_content=["#{I18n.t(:'date.day_names')[@weekdays_end.wday]}#{'<br>'+@weekdays_end.try(:strftime, "%d/%m/%Y")}"]  
     
     #size & columns count
     all_col = [55]
@@ -178,7 +174,7 @@ class Weekly_timetablePdf < Prawn::Document
     @weeklytimetable.timetable_friday.timetable_periods.order(sequence: :asc).in_groups_of(@count2, false).map do |row_things|  
       #Header (Thursday)
       for periods in row_things
-        if colfriday == @break_tospan || colfriday == @classes_tospan[0] || colfriday == @classes_tospan[1] 
+        if colfriday == @break_tospan || @classes_tospan.include?(colfriday)==true
           header_col << {content: "#{periods.sequence} <br> #{periods.timing}", colspan: @span_count}
         else
           header_col << "#{periods.sequence} <br> #{periods.timing}"
@@ -202,7 +198,6 @@ class Weekly_timetablePdf < Prawn::Document
             @weeklytimetable.weeklytimetable_details.each do |xx|
               if xx.is_friday == true && xx.time_slot == col2 #@count1+col2 
                 #= render 'subtab_class_details', {:xx=>xx}   
-		##note : location_desc - user's comment : location type on
                 gg+="#{xx.weeklytimetable_topic.parent.parent.subject_abbreviation.blank? ? "-" :  xx.weeklytimetable_topic.parent.parent.subject_abbreviation.upcase  if xx.weeklytimetable_topic.ancestry_depth == 4} #{ '<br>'+xx.weeklytimetable_topic.parent.name if xx.weeklytimetable_topic.ancestry_depth == 4}  #{xx.weeklytimetable_topic.parent.subject_abbreviation.blank? ? "-" :  xx.weeklytimetable_topic.parent.subject_abbreviation.upcase if xx.weeklytimetable_topic.ancestry_depth != 4} #{'<br>'+xx.weeklytimetable_topic.name  if xx.weeklytimetable_topic.ancestry_depth != 4} #{ xx.location_desc}#{"(K)" if xx.lecture_method==1} #{"(T)" if xx.lecture_method==2}#{"(A)" if xx.lecture_method==3} #{'<br>'+xx.weeklytimetable_lecturer.name}"
               end
             end
@@ -212,7 +207,6 @@ class Weekly_timetablePdf < Prawn::Document
             @weeklytimetable.weeklytimetable_details.each do |xx|
               if xx.is_friday == true && xx.time_slot == col2 #@count1+col2
                 #=render 'subtab_class_details', {:xx=>xx}
-		##note : location_desc - user's comment : location type on
                 hh+="#{xx.weeklytimetable_topic.parent.parent.subject_abbreviation.blank? ? "-" :  xx.weeklytimetable_topic.parent.parent.subject_abbreviation.upcase  if xx.weeklytimetable_topic.ancestry_depth == 4} #{ '<br>'+xx.weeklytimetable_topic.parent.name if xx.weeklytimetable_topic.ancestry_depth == 4}  #{xx.weeklytimetable_topic.parent.subject_abbreviation.blank? ? "-" :  xx.weeklytimetable_topic.parent.subject_abbreviation.upcase if xx.weeklytimetable_topic.ancestry_depth != 4} #{'<br>'+xx.weeklytimetable_topic.name  if xx.weeklytimetable_topic.ancestry_depth != 4} #{ xx.location_desc}#{"(K)" if xx.lecture_method==1} #{"(T)" if xx.lecture_method==2}#{"(A)" if xx.lecture_method==3} #{'<br>'+xx.weeklytimetable_lecturer.name}"
               end
             end
@@ -272,7 +266,8 @@ class Weekly_timetablePdf < Prawn::Document
         end
         #Day & date(column) : (ADDITIONAL - Weekends classes) - row starts after timeslot header
         1.upto(@daycount2) do |row2|
-          onerow_content=["#{(@weekdays_end+row2).try(:strftime, "%A")}<br> #{(@weekdays_end+row2).try(:strftime, "%d-%b-%Y")}"]
+          onerow_content=["#{I18n.t(:'date.day_names')[(@weekdays_end+row2).wday]}<br> #{(@weekdays_end+row2).try(:strftime, "%d/%m/%Y")}"]
+          weekend_dayname=(@weekdays_end+row2).try(:strftime, "%A")
 
           #Content - (ADDITIONAL - Weekends classes)
           #span BREAK fields & display CLASSES fields accordingly - col (column) starts after day/date column
@@ -283,12 +278,19 @@ class Weekly_timetablePdf < Prawn::Document
               #do-not-remove : should not have any field or value
             elsif @break_format1[col2-1]==false
               gg=""
-	      ##note : location_desc - user's comment : location type on
-              @weeklytimetable.weeklytimetable_details.each do |xx|
-                if xx.day2 == row2+@daycount+1 && xx.time_slot2 == col2 
-                  gg+="#{xx.weeklytimetable_topic.parent.parent.subject_abbreviation.blank? ? "-" :  xx.weeklytimetable_topic.parent.parent.subject_abbreviation.upcase  if xx.weeklytimetable_topic.ancestry_depth == 4} #{ '<br>'+xx.weeklytimetable_topic.parent.name if xx.weeklytimetable_topic.ancestry_depth == 4}  #{xx.weeklytimetable_topic.parent.subject_abbreviation.blank? ? "-" :  xx.weeklytimetable_topic.parent.subject_abbreviation.upcase if xx.weeklytimetable_topic.ancestry_depth != 4} #{'<br>'+xx.weeklytimetable_topic.name  if xx.weeklytimetable_topic.ancestry_depth != 4}#{"(K)" if xx.lecture_method==1} #{xx.location_desc}#{"(T)" if xx.lecture_method==2}#{"(A)" if xx.lecture_method==3} #{'<br>'+xx.weeklytimetable_lecturer.name}"
+   
+              #1-DECLARE BREAK for 4th slot(12:00-13:00) for Weekend class (Friday only) for Week starting on Sunday
+              if weekend_dayname=="Friday" && col2==4
+                gg+="REHAT"
+              else
+                #1-display Sat slot accordingly for Week starting on Sunday 
+                #2-OR display Weekends slot (Sat & Sun) for week starting on Monday    
+                @weeklytimetable.weeklytimetable_details.each do |xx|
+                  if xx.day2 == row2+@daycount+1 && xx.time_slot2 == col2 
+                    gg+="#{xx.weeklytimetable_topic.parent.parent.subject_abbreviation.blank? ? "-" :  xx.weeklytimetable_topic.parent.parent.subject_abbreviation.upcase  if xx.weeklytimetable_topic.ancestry_depth == 4} #{ '<br>'+xx.weeklytimetable_topic.parent.name if xx.weeklytimetable_topic.ancestry_depth == 4}  #{xx.weeklytimetable_topic.parent.subject_abbreviation.blank? ? "-" :  xx.weeklytimetable_topic.parent.subject_abbreviation.upcase if xx.weeklytimetable_topic.ancestry_depth != 4} #{'<br>'+xx.weeklytimetable_topic.name  if xx.weeklytimetable_topic.ancestry_depth != 4}#{"(K)" if xx.lecture_method==1} #{xx.location_desc}#{"(T)" if xx.lecture_method==2}#{"(A)" if xx.lecture_method==3} #{'<br>'+xx.weeklytimetable_lecturer.name}"
+                  end
                 end
-              end
+              end #end for weekend_dayname friday
               onerow_content<< gg
             end
           end
