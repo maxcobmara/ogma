@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150630092736) do
+ActiveRecord::Schema.define(version: 20150711141712) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -729,6 +729,7 @@ ActiveRecord::Schema.define(version: 20150630092736) do
     t.integer  "average_course_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "invite_lec_topic"
   end
 
   create_table "evaluatecoursesearches", force: true do |t|

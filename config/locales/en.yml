@@ -45,6 +45,7 @@ en:
       holiday: Public Holiday
       weeklytimetable: Weekly Timetable
       academic_session: Academic Session
+      evaluate_course: Course Evaluation
     attributes:
       student:
         name: Name
@@ -150,6 +151,21 @@ en:
         sequence: Period
       academic_session:
         total_week: Total Week
+      evaluate_course:
+        staff_id: Lecturer
+        invite_lec: Invitation Lecturer
+        subject_id: Subject
+        invite_lec_topic: Topic
+        evaluate_date: Evaluation Date
+        course_id: Programme
+        ev_obj: Question 1
+        ev_knowledge: Question 2
+        ev_deliver: Question 3
+        ev_content: Question 4
+        ev_tool: Question 5
+        ev_topic: Question 6
+        ev_work: Question 7
+        ev_note: Question 8
     errors:
         template:
           body: "There were problems with the following fields:"
@@ -2346,10 +2362,11 @@ en:
       course_id: Programme
       subject_id: Subject
       programme_subject: "Programme - Subject"
-      programme_or_subject: Programme or Subject
+      programme_or_subject: Programme or Subject or Topic 
       evaluate_date: Evaluation Date
       appraisal_details: Appraisal Details
       invite_lec: Invitation Lecturer
+      invite_lec_topic: Topic
       comment: Comment
       description: Description
       score: Score
@@ -2374,6 +2391,8 @@ en:
       prepared_by: PREPARED BY
       date_updated: LAST UPDATED
       by_student: "(Prepared by Student)"
+      staff_or_invited: "Tick if Invitation Lecturer, untick if KSKB lecturers."
+      no_staff: "Invitation - "
 
   training:
     title: Training

@@ -26,6 +26,7 @@ ms_MY:
       holiday: Cuti Umum
       weeklytimetable: Jadual Waktu Mingguan
       academic_session: Sesi Akademik
+      evaluate_course: Penilaian Kursus
     attributes:
       student:
         name: Nama
@@ -132,6 +133,21 @@ ms_MY:
         sequence: Sesi
       academic_session:
         total_week: Bilangan Minggu
+      evaluate_course:
+        staff_id: Pengajar
+        invite_lec: Pengajar Jemputan
+        subject_id: Subjek
+        invite_lec_topic: Topik
+        evaluate_date: Tarikh Penilaian
+        course_id: Program
+        ev_obj: Soalan 1
+        ev_knowledge: Soalan 2
+        ev_deliver: Soalan 3
+        ev_content: Soalan 4
+        ev_tool: Soalan 5
+        ev_topic: Soalan 6
+        ev_work: Soalan 7
+        ev_note: Soalan 8
     errors:
         template:
           body: "Berikut adalah beberapa masalah:"
@@ -2287,10 +2303,11 @@ ms_MY:
       course_id: Program
       subject_id: Subjek
       programme_subject: "Program - Subjek"
-      programme_or_subject: Program atau Subjek
+      programme_or_subject: Program atau Subjek atau Topik
       evaluate_date: Tarikh Penilaian
       appraisal_details: Butiran Penilaian
       invite_lec: Pengajar Jemputan
+      invite_lec_topic: Topik
       comment: Komen
       description: Perkara
       score: Skor
@@ -2315,6 +2332,8 @@ ms_MY:
       prepared_by: DISEDIAKAN OLEH
       date_updated: TARIKH KEMASKINI
       by_student: "(Diisi oleh Pelatih)"
+      staff_or_invited: "Pilih kotak semak jika Pensyarah Jemputan, nyahpilih jika Pengajar KSKB."
+      no_staff: "Jemputan -  "
 
   training:
     title: Latihan

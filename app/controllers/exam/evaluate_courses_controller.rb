@@ -32,7 +32,7 @@ class Exam::EvaluateCoursesController < ApplicationController
        #AUTHORIZATION - Administration & Programme Manager can still NEW / CREATE
        unless @programme.nil?
        else
-         if @current_user.userable.positions.first.tasks_main.include?("Ketua Program")
+         if @current_user.userable.positions.first.tasks_main.include?("Ketua Program") || @current_user.userable.roles.pluck(:authname).include?("programme_manager")
            #unit not exist in Staff Task & Responsibilities (position table) for this Programme_Manager
            flash[:notice] = t('exam.evaluate_course.kp_which_programme')
            redirect_to exam_evaluate_courses_path
