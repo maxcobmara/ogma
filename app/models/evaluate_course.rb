@@ -4,11 +4,11 @@ class EvaluateCourse < ActiveRecord::Base
   belongs_to :subjectevaluate,   :class_name => 'Programme',   :foreign_key => 'subject_id'
   belongs_to :staffevaluate,     :class_name => 'Staff',     :foreign_key => 'staff_id'
   
-  validates_presence_of :evaluate_date, :course_id, :ev_obj, :ev_knowledge, :ev_deliver, :ev_content, :ev_tool, :ev_topic, :ev_work, :ev_note, :ev_assessment#,:student_id,
-  
+  validates_presence_of :evaluate_date, :course_id, :ev_obj, :ev_knowledge, :ev_deliver, :ev_content, :ev_tool, :ev_topic, :ev_work, :ev_note, :ev_assessment, :student_id
   validate :validate_staff_or_invitation_lecturer_must_exist
   validates_presence_of :subject_id, :if => :trainer_is_staff?
   validates_presence_of :invite_lec_topic, :if => :trainer_invited?
+  validates_uniqueness_of :staff_id, :scope =>[:subject_id, :student_id], :message => I18n.t("exam.evaluate_course.evaluation_once")
   
   attr_accessor :is_staff 
 
@@ -106,6 +106,25 @@ class EvaluateCourse < ActiveRecord::Base
       end
     end
     evaluate_courses
+  end
+  
+  def self.lecturer_list(programmeid, programmename)
+    diploma_ids=Programme.roots.where(course_type: "Diploma").pluck(:id)
+    posbasik=Programme.roots.where(course_type: ["Diploma lanjutan", "Pos Basik", "Pengkhususan"])
+    if diploma_ids.include?(programmeid)
+      @lecturer_list = Staff.joins(:positions).where('positions.name=? and unit=?', "Pengajar", programmename)
+    elsif posbasik.pluck(:id).include?(programmeid)
+      posbasik_names=posbasik.pluck(:name)
+      posbasik_positions=Position.where(unit: ["Diploma lanjutan", "Pos Basik", "Pengkhususan"])
+      @lecturer_ids=[]
+      posbasik_positions.each do |post|
+        posbasik_names.each do |pname|
+          @lecturer_ids << post.staff_id if post.tasks_main.include?(pname)
+        end
+      end
+      @lecturer_list=Staff.joins(:positions).where('positions.name=? and staff_id IN(?)', "Pengajar", @lecturer_ids.uniq).uniq
+    end
+    @lecturer_list
   end
   
   private

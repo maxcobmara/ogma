@@ -12,7 +12,7 @@ class CourseevaluationPdf < Prawn::Document
     end
     bounding_box([150,750], :width => 350, :height => 100) do |y2|
       move_down 30
-      text "Kolej Sans Kesihatan Bersekutu Johor Bahru"
+      text "Kolej Sains Kesihatan Bersekutu Johor Bahru"
       move_down 1
       text "#{I18n.t('exam.evaluate_course.title')}"
     end

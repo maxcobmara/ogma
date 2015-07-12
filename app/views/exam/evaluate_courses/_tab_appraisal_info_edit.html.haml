@@ -25,12 +25,12 @@
         = f.label t 'exam.evaluate_course.invite_lec', for: :invite_lec
     .col-md-6
       - if @evaluate_course.new_record?
-        - isstaff="unchecked"
+        - isstaff="checked"
       - else
         - unless @evaluate_course.staff_id.blank?
-          - isstaff="unchecked"
-        - else
           - isstaff="checked"
+        - else
+          - isstaff="unchecked"
       = f.check_box :is_staff, :checked => isstaff, :id => 'is_staff'
       = t('exam.evaluate_course.staff_or_invited')
       .span_staff{:style=>"display: block;"}
@@ -67,21 +67,21 @@
   $(document).ready(function(){
     $("input[id='is_staff']").change(function() {  
       if($('#is_staff').is(':checked')) { 
-        $(".span_invited").show("highlight"); 
-        $(".span_staff").hide(""); 
-      }else{
         $(".span_invited").hide(""); 
         $(".span_staff").show("highlight"); 
+      }else{
+        $(".span_invited").show("highlight"); 
+        $(".span_staff").hide(""); 
       }
     });
 
     $("input[id='is_staff']").each(function() {  
       if($('#is_staff').is(':checked')) { 
-        $(".span_invited").show("highlight"); 
-        $(".span_staff").hide(""); 
-      }else{
         $(".span_invited").hide(""); 
         $(".span_staff").show("highlight"); 
+      }else{
+        $(".span_invited").show("highlight"); 
+        $(".span_staff").hide(""); 
       }
     });
   });

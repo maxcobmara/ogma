@@ -273,7 +273,7 @@
                           %li= link_to (t "exam.examresult.exam_slip"), "#"
 
             /%li= link_to content_tag(:i, "", :class => "icon-numb") + "Examination Management", '#'
-            - permitted_to? :index, :exam_evaluate_courses do
+            - permitted_to? :read, :exam_evaluate_courses do
               %li= link_to content_tag(:i, "", :class => "icon-numb") + (t "exam.evaluate_course.title"), exam_evaluate_courses_path
             - permitted_to? :menu, :exam_exams do
               %li= link_to content_tag(:i, "", :class => "icon-numb") + "Examination Analysis", '#'

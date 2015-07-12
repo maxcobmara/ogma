@@ -8,7 +8,8 @@
       %li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'actions.new'))), new_exam_evaluate_course_path
   %ul.nav.navbar-nav.navbar-right
     %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: 'index_search_bar'
-    %li.toga= link_to content_tag(:li, fa_icon("print", text: (t 'actions.print'))), "#", class: 'bogus'  
+    - permitted_to? :manage, :exam_evaluate_courses do
+      %li.toga= link_to content_tag(:li, fa_icon("print", text: (t 'actions.print'))), "#", class: 'bogus'  
     
 .row 
   %table.table-striped.table-hover.ogma
@@ -24,7 +25,7 @@
       - @evaluate_courses.each do |evaluate_course|
         %tr
           /%td= evaluate_course.student_id.blank? ? "No Student" : evaluate_course.studentevaluate.name
-          %td= link_to ((evaluate_course.subject_id.blank? ? (t 'exam.evaluate_course.invite_lec_topic')+" : "+evaluate_course.invite_lec_topic : evaluate_course.subjectevaluate.subject_list)), exam_evaluate_course_path(evaluate_course)
+          %td= link_to (evaluate_course.stucourse.programme_coursetype_name+" - " +(evaluate_course.subject_id.blank? ? (t 'exam.evaluate_course.invite_lec_topic')+" : "+evaluate_course.invite_lec_topic : evaluate_course.subjectevaluate.subject_list)), exam_evaluate_course_path(evaluate_course)
           %td= evaluate_course.evaluate_date.blank? ? "-" : evaluate_course.evaluate_date.try(:strftime, "%d %b %Y") 
           %td=h evaluate_course.staff_id.blank? ? (t 'exam.evaluate_course.no_staff')+evaluate_course.invite_lec : evaluate_course.staffevaluate.name 
 

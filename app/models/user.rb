@@ -34,9 +34,26 @@ class User < ActiveRecord::Base
   end
   
   def evaluations_of_programme
-    unit_of_prog_mgr = userable.positions.first.unit
-    programme_id_of_prog_mgr = Programme.where('name ILIKE(?)', "%#{unit_of_prog_mgr}%").at_depth(0).first.id
-    return programme_id_of_prog_mgr
+#     unit_of_prog_mgr = userable.positions.first.unit
+#     programme_id_of_prog_mgr = Programme.where('name ILIKE(?)', "%#{unit_of_prog_mgr}%").at_depth(0).first.id
+#     return programme_id_of_prog_mgr
+    
+    #START - fr Catechumen
+    #use in authrules - only for Programme Manager, Admin (for Course Evaluation)
+    staffpost=Position.where(staff_id: userable_id).first
+    unitname=staffpost.unit
+    if unitname=="Pengkhususan"  #definitely KP Pengkhususan only
+      programmeids=Programme.where(course_type:  ["Diploma Lanjutan", "Pos Basik", "Pengkhususan"]).pluck(:id)
+    else
+      if roles.pluck(:authname).include?("administration")
+        programmeids=Programme.roots.pluck(:id)
+      else
+        programmeid=Programme.where(name: unitname).first.id
+        programmeids=[programmeid]
+      end
+    end
+    programmeids
+    #END - fr Catechumen
   end
   
   def grades_of_programme

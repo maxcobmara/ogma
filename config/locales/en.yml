@@ -158,14 +158,15 @@ en:
         invite_lec_topic: Topic
         evaluate_date: Evaluation Date
         course_id: Programme
-        ev_obj: Question 1
-        ev_knowledge: Question 2
-        ev_deliver: Question 3
-        ev_content: Question 4
-        ev_tool: Question 5
-        ev_topic: Question 6
-        ev_work: Question 7
-        ev_note: Question 8
+        ev_obj: Score question 1
+        ev_knowledge: Score question 2
+        ev_deliver: Score question 3
+        ev_content: Score question 4
+        ev_tool: Score question 5
+        ev_topic: Score question 6
+        ev_work: Score question 7
+        ev_note: Score question 8
+        ev_assessment: Score question 9
     errors:
         template:
           body: "There were problems with the following fields:"
@@ -2392,8 +2393,9 @@ en:
       prepared_by: PREPARED BY
       date_updated: LAST UPDATED
       by_student: "(Prepared by Student)"
-      staff_or_invited: "Tick if Invitation Lecturer, untick if KSKB lecturers."
+      staff_or_invited: "Tick if KSKB lecturers, untick if Invitation Lecturer."
       no_staff: "Invitation - "
+      evaluation_once: " - Evaluation for a taught Subject can only be done once"
 
   training:
     title: Training

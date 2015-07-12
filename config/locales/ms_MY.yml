@@ -140,14 +140,15 @@ ms_MY:
         invite_lec_topic: Topik
         evaluate_date: Tarikh Penilaian
         course_id: Program
-        ev_obj: Soalan 1
-        ev_knowledge: Soalan 2
-        ev_deliver: Soalan 3
-        ev_content: Soalan 4
-        ev_tool: Soalan 5
-        ev_topic: Soalan 6
-        ev_work: Soalan 7
-        ev_note: Soalan 8
+        ev_obj: Skor soalan 1
+        ev_knowledge: Skor soalan 2
+        ev_deliver: Skor soalan 3
+        ev_content: Skor soalan 4
+        ev_tool: Skor soalan 5
+        ev_topic: Skor soalan 6
+        ev_work: Skor soalan 7
+        ev_note: Skor soalan 8
+        ev_assessment: Skor soalan 9
     errors:
         template:
           body: "Berikut adalah beberapa masalah:"
@@ -2333,8 +2334,9 @@ ms_MY:
       prepared_by: DISEDIAKAN OLEH
       date_updated: TARIKH KEMASKINI
       by_student: "(Diisi oleh Pelatih)"
-      staff_or_invited: "Pilih kotak semak jika Pensyarah Jemputan, nyahpilih jika Pengajar KSKB."
+      staff_or_invited: "Pilih kotak semak jika  Pengajar KSKB, nyahpilih jika Pensyarah Jemputan."
       no_staff: "Jemputan -  "
+      evaluation_once: " - Penilaian bagi Subjek yang diajar hanya dibenarkan sekali"
 
   training:
     title: Latihan
