@@ -1,5 +1,6 @@
 class Intake < ActiveRecord::Base
   
+  before_save :apply_month_year_if_nil
   before_destroy :valid_for_removal
   
   belongs_to :programme, :foreign_key => 'programme_id'
@@ -8,12 +9,22 @@ class Intake < ActiveRecord::Base
   has_many   :weeklytimetables
   has_many   :lessonplans, :class_name => 'LessonPlan', :foreign_key=>'intake_id' 
   
+  def apply_month_year_if_nil
+    if monthyear_intake==nil && register_on!=nil
+      self.monthyear_intake = register_on.to_date.beginning_of_month
+    end
+  end
+  
   def group_with_intake_name
     "#{description}"+' ('+I18n.t('training.intake.title')+" #{name}"+')'
   end  
   
   def programme_group_intake
     "#{description}"+" ("+"#{name}"+")"+" | "+"#{programme.name}"
+  end
+  
+  def self.get_intake(student_intake, courseid)
+    Intake.where(monthyear_intake: student_intake, programme_id: courseid).first.id
   end
   
   private

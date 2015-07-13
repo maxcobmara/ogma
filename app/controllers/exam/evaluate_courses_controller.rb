@@ -1,14 +1,14 @@
 class Exam::EvaluateCoursesController < ApplicationController
   filter_resource_access
   before_action :set_evaluate_course, only: [:show, :edit, :update, :destroy] 
-  before_action :set_programme_subject_lecturer, only: [:edit, :update]
-  before_action :set_data_new_create, only: [:new, :create]
+  #before_action :set_programme_subject_lecturer, only: [:edit, :update]
+  before_action :set_data_new_create, only: [:new, :create, :edit, :update]
   before_action :set_data_index_show, only: [:index, :show]
   
    def index  
     @search = EvaluateCourse.search(params[:q])
     @evaluate_courses = @search.result.search2(@programme_id)
-    @evaluate_courses = @evaluate_courses.order(course_id: :asc).page(params[:page]||1)
+    @evaluate_courses = @evaluate_courses.order('course_id, staff_id, subject_id ASC').page(params[:page]||1)
     
     respond_to do |format|
       format.html # index.html.erb
@@ -32,7 +32,7 @@ class Exam::EvaluateCoursesController < ApplicationController
        #AUTHORIZATION - Administration & Programme Manager can still NEW / CREATE
        unless @programme.nil?
        else
-         if @current_user.userable.positions.first.tasks_main.include?("Ketua Program")
+         if @current_user.userable.positions.first.tasks_main.include?("Ketua Program") || @current_user.roles.pluck(:authname).include?("programme_manager")
            #unit not exist in Staff Task & Responsibilities (position table) for this Programme_Manager
            flash[:notice] = t('exam.evaluate_course.kp_which_programme')
            redirect_to exam_evaluate_courses_path
@@ -97,6 +97,7 @@ class Exam::EvaluateCoursesController < ApplicationController
     @evs << @evaluate_course.ev_topic
     @evs << @evaluate_course.ev_work
     @evs << @evaluate_course.ev_note
+    @evs << @evaluate_course.ev_assessment
     respond_to do |format|
        format.pdf do
          pdf = CourseevaluationPdf.new(@evaluate_course, view_context, @evs)
@@ -123,8 +124,10 @@ class Exam::EvaluateCoursesController < ApplicationController
         unless @programme.nil?
           @preselect_prog = @programme.id
           @programme_list = Programme.where(id: @preselect_prog)
+          @programme_name = @programme_list.first.name 
           @subjectlist_preselect_prog = Programme.where(id: @preselect_prog).first.descendants.at_depth(2)
-          @lecturer_list = Staff.joins(:positions).where('positions.name=? and unit=?', "Pengajar", @lecturer_programme)
+          #@lecturer_list = Staff.joins(:positions).where('positions.name=? and unit=?', "Pengajar", @lecturer_programme)
+          @lecturer_list=EvaluateCourse.lecturer_list(@preselect_prog, @programme_name)
           @student_list = Student.where(course_id: @preselect_prog)
         else
           @programme_list = Programme.roots
@@ -143,7 +146,22 @@ class Exam::EvaluateCoursesController < ApplicationController
           @programme_list = Programme.where(id: student_course)
           @programme_name = @programme_list.first.name               #same with UNIT in positions table
           @subjectlist_preselect_prog = Programme.where(id: student_course).first.descendants.at_depth(2)
-          @lecturer_list = Staff.joins(:positions).where('positions.name=? and unit=?', "Pengajar", @programme_name)
+#           diploma_ids=Programme.roots.where(course_type: "Diploma").pluck(:id)
+#           posbasik=Programme.roots.where(course_type: ["Diploma lanjutan", "Pos Basik", "Pengkhususan"])
+#           if diploma_ids.include?(@preselect_prog)
+#             @lecturer_list = Staff.joins(:positions).where('positions.name=? and unit=?', "Pengajar", @programme_name)
+#           elsif posbasik.pluck(:id).include?(@preselect_prog)
+#             posbasik_names=posbasik.pluck(:name)
+#             posbasik_positions=Position.where(unit: ["Diploma lanjutan", "Pos Basik", "Pengkhususan"])
+#             @lecturer_ids=[]
+#             posbasik_positions.each do |post|
+#               posbasik_names.each do |pname|
+#                 @lecturer_ids << post.staff_id if post.tasks_main.include?(pname)
+#               end
+#             end
+#             @lecturer_list=Staff.joins(:positions).where('positions.name=? and staff_id IN(?)', "Pengajar", @lecturer_ids.uniq).uniq
+#           end
+          @lecturer_list=EvaluateCourse.lecturer_list(@preselect_prog, @programme_name)
         end
       else
         #----NO CHECKING REQUIRED - PROGRAMME MGR - POSITION CONFIRM EXIST, ADMINISTRATION too?
@@ -156,11 +174,13 @@ class Exam::EvaluateCoursesController < ApplicationController
           unless @programme.nil?
             @preselect_prog = @programme.id
             @programme_list = Programme.where(id: @preselect_prog)
+            @programme_name = @programme_list.first.name
             @subjectlist_preselect_prog = Programme.where(id: @preselect_prog).first.descendants.at_depth(2)
-            @lecturer_list = Staff.joins(:positions).where('positions.name=? and unit=?', "Pengajar", @lecturer_programme)
+            #@lecturer_list = Staff.joins(:positions).where('positions.name=? and unit=?', "Pengajar", @lecturer_programme)
+            @lecturer_list=EvaluateCourse.lecturer_list(@preselect_prog, @programme_name)
             @student_list = Student.where(course_id: @preselect_prog)
           else
-            if @current_user.userable.positions.first.tasks_main.include?("Ketua Program")
+            if @current_user.userable.positions.first.tasks_main.include?("Ketua Program") || @current_user.roles.pluck(:authname).include?("programme_manager")
               #unit not exist in Staff Task & Responsibilities (position table) for this Programme_Manager
             else
               #Administration part
@@ -174,7 +194,7 @@ class Exam::EvaluateCoursesController < ApplicationController
       end
     end
     
-    def set_data_index_show
+    def set_data_index_show  #student/KP/Admin
       if @current_user.userable_type == "Student"
         @programme_id="s,"+"#{@current_user.userable_id}"
       else
@@ -190,7 +210,13 @@ class Exam::EvaluateCoursesController < ApplicationController
           else
             if @lecturer_programme == 'Commonsubject'
             else
-              @programme_id = 0
+              if @current_user.roles.pluck(:authname).include?("administration")
+                @programme_id = 0
+              else
+                if @lecturer_programme=="Pengkhususan"
+                  @programme_id=Programme.roots.where(course_type: ["Diploma lanjutan", "Pos Basik", "Pengkhususan"]).pluck(:id)
+                end
+              end
             end
           end
         end 
@@ -200,6 +226,6 @@ class Exam::EvaluateCoursesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def evaluate_course_params
-      params.require(:evaluate_course).permit(:course_id, :subject_id, :staff_id, :student_id, :evaluate_date, :comment, :ev_obj, :ev_knowledge, :ev_deliver, :ev_content, :ev_tool, :ev_topic, :ev_work, :ev_note, :invite_lec, :average_course_id)
+      params.require(:evaluate_course).permit(:course_id, :subject_id, :staff_id, :student_id, :evaluate_date, :comment, :ev_obj, :ev_knowledge, :ev_deliver, :ev_content, :ev_tool, :ev_topic, :ev_work, :ev_note, :invite_lec, :average_course_id, :invite_lec_topic, :ev_assessment)
     end
 end

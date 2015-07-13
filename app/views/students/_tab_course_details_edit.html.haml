@@ -3,22 +3,24 @@
     .col-sm-2.control-label
       = f.label t 'student.students.course_id', for: :course_id
     .col-md-2
-      = f.collection_select :course_id, Programme.roots.order(combo_code: :asc), :id, :name, {:include_blank => (t 'select')}, {class: 'selectpicker mandatory', "data-width"=>"300px"}	
-	  
-	          
+      = f.collection_select :course_id, Programme.roots.order(combo_code: :asc), :id, :name, {:include_blank => (t 'select')}, {class: 'selectpicker mandatory', "data-width"=>"300px"}
+          
   .form-group
     .col-sm-2.control-label
-      =f.label t 'student.students.group_id', for: :group_id
+      =f.label t 'student.students.group_id', for: :intake_id
     .col-md-3
-      = f.text_field :group_id, class: 'form-control'
-
-		  
+      - unless @student.new_record?
+        - curr_intake=Intake.get_intake(@student.intake, @student.course_id)
+      /= f.text_field :group_id, class: 'form-control'
+      = f.collection_select :intake_id, Intake.all.order(programme_id: :asc, monthyear_intake: :desc), :id, :programme_group_intake,{:include_blank=> (t 'helpers.prompt.select_intake'), :selected => curr_intake},{class: 'selectpicker mandatory', "data-width"=>'280px'}
+      %font{size: "-2px;", color: "grey"}=h @student.intake.try(:strftime, '%b %Y')
+  
   .form-group
     .col-sm-2.control-label
       =f.label t 'student.students.end_training', for: :sbirthdt
     .col-md-3
       = f.text_field :end_training, class: 'form-control date_picker_reverse', 'data-behaviour' => 'datepicker_today', value: @student.try(:end_training).try(:strftime, '%d-%m-%Y')
-		  
+  
   .form-group
     .col-sm-2.control-label
       =f.label t 'student.students.remarks', for: :remarks

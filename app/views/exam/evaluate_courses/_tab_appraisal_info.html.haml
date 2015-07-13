@@ -5,16 +5,29 @@
     
   %dt= t 'exam.evaluate_course.course_id'
   %dd=h @evaluate_course.stucourse.programme_list
-  
-  %dt= t 'exam.evaluate_course.subject_id'
-  %dd=h @evaluate_course.subjectevaluate.subject_list
-  
-  %dt= t 'exam.evaluate_course.staff_id'
-  %dd=h @evaluate_course.staffevaluate.name
-  
-  %dt= t 'exam.evaluate_course.invite_lec'
-  %dd=h @evaluate_course.invite_lec
-  
+
+  %dt
+    - unless @evaluate_course.staff_id.blank? 
+      = t 'exam.evaluate_course.staff_id'
+    - else
+      = t 'exam.evaluate_course.invite_lec'
+  %dd
+    - unless @evaluate_course.staff_id.blank? 
+      =h @evaluate_course.staffevaluate.name
+    - else
+      =h @evaluate_course.invite_lec
+
+  %dt
+    - unless @evaluate_course.subject_id.blank? 
+      = t 'exam.evaluate_course.subject_id'
+    - else
+      = t 'exam.evaluate_course.invite_lec_topic'
+  %dd
+    - unless @evaluate_course.subject_id.blank? 
+      =h @evaluate_course.subjectevaluate.subject_list
+    - else
+      =h @evaluate_course.invite_lec_topic
+ 
   %dt= t 'exam.evaluate_course.comment'
   %dd=h @evaluate_course.comment
   

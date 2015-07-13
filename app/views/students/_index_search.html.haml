@@ -1,9 +1,10 @@
 = search_form_for @search, url: students_path,  class: "form-inline" do |f|
   %tr.search_row{:style => "display: none;"}
     %td= f.text_field :icno_cont, size: 2,  :class => "form-control"
-    %td= f.text_field :name_cont, size: 2,  :class => "form-control"
+    %td
+      .col-md-5= f.text_field :name_cont, class: "form-control", placeholder: "Student Name"
+      .col-md-4= f.text_field :course_search, class: "form-control", placeholder: "Programme Name"
     %td= f.text_field :matrixno_start, size: 2,  :class => "form-control"
-    /%td= f.select :course_cont, options_from_collection_for_select(Student.all, "id", "course"), {include_blank: true}#, {class: 'selectpicker', "data-width"=>"350px"}
     %td.input-group
       = f.text_field :race_cont, size: 2,  :class => "form-control"    	  
       %span.input-group-btn

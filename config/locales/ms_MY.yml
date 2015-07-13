@@ -26,6 +26,7 @@ ms_MY:
       holiday: Cuti Umum
       weeklytimetable: Jadual Waktu Mingguan
       academic_session: Sesi Akademik
+      evaluate_course: Penilaian Kursus
     attributes:
       student:
         name: Nama
@@ -132,6 +133,22 @@ ms_MY:
         sequence: Sesi
       academic_session:
         total_week: Bilangan Minggu
+      evaluate_course:
+        staff_id: Pengajar
+        invite_lec: Pengajar Jemputan
+        subject_id: Subjek
+        invite_lec_topic: Topik
+        evaluate_date: Tarikh Penilaian
+        course_id: Program
+        ev_obj: Skor soalan 1
+        ev_knowledge: Skor soalan 2
+        ev_deliver: Skor soalan 3
+        ev_content: Skor soalan 4
+        ev_tool: Skor soalan 5
+        ev_topic: Skor soalan 6
+        ev_work: Skor soalan 7
+        ev_note: Skor soalan 8
+        ev_assessment: Skor soalan 9
     errors:
         template:
           body: "Berikut adalah beberapa masalah:"
@@ -2287,21 +2304,23 @@ ms_MY:
       course_id: Program
       subject_id: Subjek
       programme_subject: "Program - Subjek"
-      programme_or_subject: Program atau Subjek
+      programme_or_subject: Program atau Subjek atau Topik
       evaluate_date: Tarikh Penilaian
       appraisal_details: Butiran Penilaian
       invite_lec: Pengajar Jemputan
+      invite_lec_topic: Topik
       comment: Komen
       description: Perkara
       score: Skor
       objective_achieved: "Pencapaian objektif pelajaran."
       lecturer_knowledge: "Pengetahuan pensyarah tentang pelajaran yang diajar."
-      lecturer_q_achievement: "Mutu pencapaian pensyarah."
+      lecturer_q_achievement: "Syarahan menepati masa yang ditetapkan."
       content: "Isi kandungan pelajaran"
       training_aids_quality: "Mutu alat pandang dengar yang digunakan."
       suitability_topic_sequence: "Kesesuaian turutan topik dalam jadual."
-      effectiveness_teaching_learning: "Keberkesanan pengajaran dan pembelajaran (interaksi antara pensyarah dan pelajar)."
+      effectiveness_teaching_learning: "Keberkesanan pengajaran dan pembelajaran dengan interaksi antara pensyarah dan pelajar."
       benefit_notes: "Faedah bahan/nota yang diedarkan"
+      suitable_assessment: "Penilaian yang dilakukan bersesuaian dengan topik."
       evaluation_scale: Skala Penilaian
       unsatisfactory: Tidak Memuaskan 
       average: Sederhana 
@@ -2315,6 +2334,9 @@ ms_MY:
       prepared_by: DISEDIAKAN OLEH
       date_updated: TARIKH KEMASKINI
       by_student: "(Diisi oleh Pelatih)"
+      staff_or_invited: "Pilih kotak semak jika  Pengajar KSKB, nyahpilih jika Pensyarah Jemputan."
+      no_staff: "Jemputan -  "
+      evaluation_once: " - Penilaian bagi Subjek yang diajar hanya dibenarkan sekali"
 
   training:
     title: Latihan

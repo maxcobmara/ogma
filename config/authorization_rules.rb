@@ -261,9 +261,12 @@ authorization do
  role :programme_manager do
    has_permission_on [:exam_examquestions, :exam_exams], :to => :manage
    has_permission_on :exam_exammarks, :to => [:manage, :edit_multiple, :update_multiple, :new_multiple, :create_multiple]
-   has_permission_on :exam_evaluate_courses, :to => :create 
-   has_permission_on :exam_evaluate_courses, :to => [:manage, :courseevaluation] do
-     if_attribute :course_id => is {user.evaluations_of_programme}
+#    has_permission_on :exam_evaluate_courses, :to => :create 
+#    has_permission_on :exam_evaluate_courses, :to => [:manage, :courseevaluation] do
+   has_permission_on :exam_evaluate_courses, :to => [:read, :courseevaluation] do
+     #if_attribute :course_id => is {user.evaluations_of_programme}
+     if_attribute :course_id => is_in {user.evaluations_of_programme}
+     #if_attribute :course_id => is_in {Position.my_programmeid(Login.current_login.staff_id)} # is_in {[5]}
    end
    has_permission_on :staff_training_ptdos, :to => :approve do
      if_attribute :staff_id => is_in {user.unit_members}#is {69}#is_in {[69, 106]}  #
@@ -291,7 +294,7 @@ authorization do
 #Group Student --------------------------------------------------------------------------------
   role :student do
       has_permission_on :exam_evaluate_courses, :to => [:index, :create]
-      has_permission_on :exam_evaluate_courses, :to => [:read, :courseevaluation] do
+      has_permission_on :exam_evaluate_courses, :to => [:read, :update, :courseevaluation] do
         if_attribute :student_id => is {user.userable.id}  #student_id
       end
       has_permission_on :students, :to => [:update, :show, :borang_maklumat_pelajar] do #[:read, :update, :menu] do
