@@ -263,7 +263,7 @@ authorization do
    has_permission_on :exam_exammarks, :to => [:manage, :edit_multiple, :update_multiple, :new_multiple, :create_multiple]
 #    has_permission_on :exam_evaluate_courses, :to => :create 
 #    has_permission_on :exam_evaluate_courses, :to => [:manage, :courseevaluation] do
-   has_permission_on :exam_evaluate_courses, :to => [:read, :courseevaluation] do
+   has_permission_on :exam_evaluate_courses, :to => [:read, :courseevaluation, :evaluation_report] do
      #if_attribute :course_id => is {user.evaluations_of_programme}
      if_attribute :course_id => is_in {user.evaluations_of_programme}
      #if_attribute :course_id => is_in {Position.my_programmeid(Login.current_login.staff_id)} # is_in {[5]}

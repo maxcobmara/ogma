@@ -2318,7 +2318,7 @@ ms_MY:
       content: "Isi kandungan pelajaran"
       training_aids_quality: "Mutu alat pandang dengar yang digunakan."
       suitability_topic_sequence: "Kesesuaian turutan topik dalam jadual."
-      effectiveness_teaching_learning: "Keberkesanan pengajaran dan pembelajaran dengan interaksi antara pensyarah dan pelajar."
+      effectiveness_teaching_learning: "Interaksi antara pensyarah dan pelajar."
       benefit_notes: "Faedah bahan/nota yang diedarkan"
       suitable_assessment: "Penilaian yang dilakukan bersesuaian dengan topik."
       evaluation_scale: Skala Penilaian
@@ -2337,6 +2337,10 @@ ms_MY:
       staff_or_invited: "Pilih kotak semak jika  Pengajar KSKB, nyahpilih jika Pensyarah Jemputan."
       no_staff: "Jemputan -  "
       evaluation_once: " - Penilaian bagi Subjek yang diajar hanya dibenarkan sekali"
+      total: Jumlah
+      question: S
+      total_scores: Jumlah Skor
+      average_scores: Purata Skor
 
   training:
     title: Latihan
