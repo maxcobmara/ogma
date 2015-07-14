@@ -1,9 +1,10 @@
 class Exam::EvaluateCoursesController < ApplicationController
-  filter_resource_access
+  #filter_resource_access
+  filter_access_to :all
   before_action :set_evaluate_course, only: [:show, :edit, :update, :destroy] 
   #before_action :set_programme_subject_lecturer, only: [:edit, :update]
   before_action :set_data_new_create, only: [:new, :create, :edit, :update]
-  before_action :set_data_index_show, only: [:index, :show]
+  before_action :set_data_index_show, only: [:index, :show, :evaluation_report]
   
    def index  
     @search = EvaluateCourse.search(params[:q])
@@ -107,6 +108,19 @@ class Exam::EvaluateCoursesController < ApplicationController
        end
      end
   end
+  
+  def evaluation_report
+    @search = EvaluateCourse.search(params[:q])
+    @evaluate_courses = @search.result.search2(@programme_id)
+     respond_to do |format|
+       format.pdf do
+         pdf = Evaluation_reportPdf.new(@evaluate_courses, view_context)
+         send_data pdf.render, filename: "evaluation_report-{Date.today}",
+                               type: "application/pdf",
+                               disposition: "inline"
+       end
+     end
+   end
   
   private
     # Use callbacks to share common setup or constraints between actions.

@@ -2377,7 +2377,7 @@ en:
       content: "Content of lesson."
       training_aids_quality: "Quality of training aids in use."
       suitability_topic_sequence: "Suitability of topic sequence in schedule."
-      effectiveness_teaching_learning: "Effectiveness of teaching and learning (interaction between lecturer and student)."
+      effectiveness_teaching_learning: "Interaction between lecturer and student."
       benefit_notes: "Benefit of distributed material / notes."
       suitable_assessment: "The assessment carried out in accordance with the topic."
       evaluation_scale: Evaluation Scale
@@ -2396,6 +2396,10 @@ en:
       staff_or_invited: "Tick if KSKB lecturers, untick if Invitation Lecturer."
       no_staff: "Invitation - "
       evaluation_once: " - Evaluation for a taught Subject can only be done once"
+      total: Total
+      question: Q
+      total_scores: Total Scores
+      average_scores: Average Scores
 
   training:
     title: Training

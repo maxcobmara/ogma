@@ -403,6 +403,9 @@ Ogma::Application.routes.draw do
       member do
         get 'courseevaluation'
       end
+      collection do
+        get :evaluation_report
+      end
     end
   end
 
