@@ -14,16 +14,17 @@
   #question_answers_edit.tab-pane
     %br
     = render :partial => 'tab_question_answers_edit', :locals => {:f => f}
-    
-:javascript
-  //<![CDATA[
-    bkLib.onDomLoaded(function() {
-        nicEditors.editors.push(new nicEditor({fullPanel: true}).panelInstance(document.getElementById('myNicEditor')));
-        nicEditors.editors.push(new nicEditor({fullPanel: true}).panelInstance(document.getElementById('examquestion_shortessays_attributes_0_subanswer')));
-        nicEditors.editors.push(new nicEditor({fullPanel: true}).panelInstance(document.getElementById('examquestion_shortessays_attributes_1_subanswer')));
-        nicEditors.editors.push(new nicEditor({fullPanel: true}).panelInstance(document.getElementById('examquestion_shortessays_attributes_2_subanswer')));
-    });
-  //]]>
+
+/MOVED TO partial :  _tab_question_answers_edit.htmlhaml
+/ :javascript
+/   //<![CDATA[
+/     bkLib.onDomLoaded(function() {
+/         nicEditors.editors.push(new nicEditor({fullPanel: true}).panelInstance(document.getElementById('myNicEditor')));
+/         nicEditors.editors.push(new nicEditor({fullPanel: true}).panelInstance(document.getElementById('examquestion_shortessays_attributes_0_subanswer')));
+/         nicEditors.editors.push(new nicEditor({fullPanel: true}).panelInstance(document.getElementById('examquestion_shortessays_attributes_1_subanswer')));
+/         nicEditors.editors.push(new nicEditor({fullPanel: true}).panelInstance(document.getElementById('examquestion_shortessays_attributes_2_subanswer')));
+/     });
+/   //]]>
 /   
 / <script type="text/javascript">
 / //<![CDATA[

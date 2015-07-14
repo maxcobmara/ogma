@@ -78,25 +78,25 @@
 
 
   .p#MEQ.box
-    MEQ section -- no specific requirement at this moment
+    /MEQ section -- no specific requirement at this moment
 
   .p#ACQ.box
-    ACQ section -- no specific requirement at this moment
+    /ACQ section -- no specific requirement at this moment
 
   .p#OSCI.box
-    OSCI section -- no specific requirement at this moment
+    /OSCI section -- no specific requirement at this moment
 
   .p#OSCII.box
-    OSCII section -- no specific requirement at this moment
+    /OSCII section -- no specific requirement at this moment
 
   .p#OSCE.box
-    OSCE section -- no specific requirement at this moment
+    /OSCE section -- no specific requirement at this moment
 
   .p#OSPE.box
-    OSPE section -- no specific requirement at this moment
+    /OSPE section -- no specific requirement at this moment
 
   .p#VIVA.box
-    VIVA section -- no specific requirement at this moment
+    /VIVA section -- no specific requirement at this moment
 
   .P#TRUEFALSE.box
     /START of TRUE FALSE section ----------------------------------------
@@ -127,7 +127,7 @@
       .p#main_question2.box
         = f.label :marks
       .p#main_question3.box
-        %b= t 'exam.examquestion.marks2'
+        = f.label (t 'exam.examquestion.marks2')
     .col-md-2
       = f.text_field :marks, class: 'form-control mandatory'
 
@@ -141,3 +141,13 @@
         = f.text_area :qkeyword, :size => "60x3",  class: 'form-control'
 
   /= render :partial => 'status', :locals => {:f => f} if @examquestion.qstatus != "Approved"
+
+:javascript
+  //<![CDATA[
+    bkLib.onDomLoaded(function() {
+        nicEditors.editors.push(new nicEditor({fullPanel: true}).panelInstance(document.getElementById('myNicEditor')));
+        nicEditors.editors.push(new nicEditor({fullPanel: true}).panelInstance(document.getElementById('examquestion_shortessays_attributes_0_subanswer')));
+        nicEditors.editors.push(new nicEditor({fullPanel: true}).panelInstance(document.getElementById('examquestion_shortessays_attributes_1_subanswer')));
+        nicEditors.editors.push(new nicEditor({fullPanel: true}).panelInstance(document.getElementById('examquestion_shortessays_attributes_2_subanswer')));
+    });
+  //]]>

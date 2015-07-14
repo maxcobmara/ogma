@@ -38,7 +38,7 @@
       =f.label :createdt
     .col-md-2
       - if @examquestion.id.nil? || @examquestion.id.blank?
-        = f.text_field :createdt, class: 'date_picker form-control mandatory'
+        = f.text_field :createdt, class: 'date_picker_reverse form-control mandatory'
       - else
         = f.text_field :createdt, class: 'form-control', readonly: 'readonly'
 

@@ -34,7 +34,7 @@ $(document).ready ->
         $("#VIVA").hide()
         $("#TRUEFALSE").hide()
         $("#others_answer").hide()
-        $("#main_question2").hide()
+        $("#main_question2").show()
         $("#main_question3").hide()
         $("#others_keyword").hide()
       if $(this).val() is "MCQ"
