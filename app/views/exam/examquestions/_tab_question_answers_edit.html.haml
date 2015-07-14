@@ -8,9 +8,10 @@
   //main - for all type of question
   .p#main_question.box
     - if @examquestion.diagram.exists? then
-      %dl.dl-horizontal
-        %dt= t 'exam.examquestion.current_diagram'
-        %dd
+      .form-group
+        .col-sm-2.control-label
+          = f.label (t 'exam.examquestion.current_diagram')
+        .col-md-6
           = image_tag @examquestion.diagram.url,:style => "border: solid 1px;"
           %br
           %b= t'exam.examquestion.uploaded_file'
@@ -26,7 +27,7 @@
       .col-sm-2.control-label
         = f.label :diagram
       .col-md-6
-        = f.file_field :diagram, class: 'form-control'
+        = f.file_field :diagram, class: 'form-control', :onchange=>"PreviewImage();"
     .form-group
       .col-sm-2.control-label
         = f.label :diagram_caption
@@ -151,3 +152,23 @@
         nicEditors.editors.push(new nicEditor({fullPanel: true}).panelInstance(document.getElementById('examquestion_shortessays_attributes_2_subanswer')));
     });
   //]]>
+
+:javascript
+  function PreviewImage() {
+    var oFReader = new FileReader();
+    oFReader.readAsDataURL(document.getElementById("examquestion_diagram").files[0]);
+
+    oFReader.onload = function(oFREvent) {
+      document.getElementById("uploadPreview").src = oFREvent.target.result;
+    };
+  };
+  
+/   function PreviewImage() {
+/     var oFReader = new FileReader();
+/     oFReader.readAsDataURL(document.getElementById("examquestion_diagram").files[0]);
+/ 
+/     oFReader.onload = function (oFREvent) {
+/       document.getElementById("uploadPreview").src = oFREvent.target.result;
+/     };
+/   };
+  

@@ -1,15 +1,3 @@
-#WYSIWUG - textarea - question
-#bkLib.onDomLoaded ->
-#  nicEditors.editors.push new nicEditor(fullPanel: true).panelInstance(document.getElementById("myNicEditor"))
-#  nicEditors.editors.push new nicEditor(fullPanel: true).panelInstance(document.getElementById("examquestion_shortessays_attributes_0_subanswer"))
-#  nicEditors.editors.push new nicEditor(fullpanel: true).panelInstance(document.getElementById("examquestion_shortessays_attributes_1_subanswer"))
-#  nicEditors.editors.push new nicEditor(fullpanel: true).panelInstance(document.getElementById("examquestion_shortessays_attributes_2_subanswer"))
-#  return
-
-# above got error somewhere if enable, but where?
-
-
-
 $(document).ready ->
   
   #onload, hide DIV questions of all types  
