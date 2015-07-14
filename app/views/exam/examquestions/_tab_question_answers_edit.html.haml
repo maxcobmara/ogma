@@ -36,10 +36,10 @@
       .col-sm-2.control-label
         = f.label :question
       .col-md-6
-        = f.text_area :question, :id => 'myNicEditor'
+        = f.text_area :question, :id => 'myNicEditor', :style=>"width: 545px;"
 
   .p#MCQ.box
-    START of MCQ section ----------------------------------------
+    /START of MCQ section ----------------------------------------
     - @type="1"
     .form-group
       .col-sm-2.control-label
@@ -61,10 +61,10 @@
         - ans = ['A','B','C','D']
         - @mcqanswer = @examquestion.answer.to_s if !@examquestion.id.nil?
         = f.select :answermcq, ans, {:include_blank=> t('helpers.prompt.select_mcq_answer'),:selected=> @mcqanswer}, {class: 'selectpicker'}
-    END of MCQ section ----------------------------------------
+    /END of MCQ section ----------------------------------------
 
   .p#SEQ.box
-    START of SEQ section ----------------------------------------
+    /START of SEQ section ----------------------------------------
     - @count=0
     .form-group
       .col-sm-2.control-label
@@ -74,7 +74,7 @@
           = render 'shortessay_fields', :f => builder,:locals=> { :index => @count}
           - @count+=1
         /= link_to_add_fields image_tag("add.png", :border => 0, :title => 'Add Q'), f, :shortessays  - Add
-    END of SEQ section ----------------------------------------
+    /END of SEQ section ----------------------------------------
 
 
   .p#MEQ.box
@@ -99,7 +99,7 @@
     VIVA section -- no specific requirement at this moment
 
   .P#TRUEFALSE.box
-    START of TRUE FALSE section ----------------------------------------
+    /START of TRUE FALSE section ----------------------------------------
     .form-group
       .col-sm-2.control-label
         %b= t 'exam.examquestion.booleanchoices'
@@ -110,7 +110,7 @@
         %b= t 'exam.examquestion.booleananswers'
       .col-md-6
         = render :partial => 'booleananswer_fields', :locals => {:f => f}
-    END of TRUE FALSE section ----------------------------------------
+    /END of TRUE FALSE section ----------------------------------------
 
   /answer field for other than MCQ & SEQ (pls note TRUE FALSE requires this field)
   .p#others_answer.box
@@ -137,6 +137,7 @@
       .col-sm-2.control-label
         = f.label :qkeyword
       .col-md-6
-        = f.text_area :qkeyword, :size => "60x3"
+        /= f.text_field :qkeyword, class: 'form-control'
+        = f.text_area :qkeyword, :size => "60x3",  class: 'form-control'
 
   /= render :partial => 'status', :locals => {:f => f} if @examquestion.qstatus != "Approved"

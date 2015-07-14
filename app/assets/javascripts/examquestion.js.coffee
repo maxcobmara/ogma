@@ -6,6 +6,7 @@
 #  nicEditors.editors.push new nicEditor(fullpanel: true).panelInstance(document.getElementById("examquestion_shortessays_attributes_2_subanswer"))
 #  return
 
+# above got error somewhere if enable, but where?
 
 
 
@@ -215,3 +216,5 @@ $(document).ready ->
 #      document.getElementById("uploadPreview").src = oFREvent.target.result
 #    return
 #    document.getElementById("examquestion_diagram").addEventListener "change", PreviewImage, false
+
+#prev disable coz - hostel / residence - student / staff selection akan error - Jan-Mac 2015

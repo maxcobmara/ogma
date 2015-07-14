@@ -13,4 +13,32 @@
     = render :partial => 'tab_question_details_edit', :locals => {:f => f}
   #question_answers_edit.tab-pane
     %br
-    = render :partial => 'tab_question_answers_edit', :locals => {:f => f}		
+    = render :partial => 'tab_question_answers_edit', :locals => {:f => f}
+    
+:javascript
+  //<![CDATA[
+    bkLib.onDomLoaded(function() {
+        nicEditors.editors.push(new nicEditor({fullPanel: true}).panelInstance(document.getElementById('myNicEditor')));
+        nicEditors.editors.push(new nicEditor({fullPanel: true}).panelInstance(document.getElementById('examquestion_shortessays_attributes_0_subanswer')));
+        nicEditors.editors.push(new nicEditor({fullPanel: true}).panelInstance(document.getElementById('examquestion_shortessays_attributes_1_subanswer')));
+        nicEditors.editors.push(new nicEditor({fullPanel: true}).panelInstance(document.getElementById('examquestion_shortessays_attributes_2_subanswer')));
+    });
+  //]]>
+/   
+/ <script type="text/javascript">
+/ //<![CDATA[
+/ bkLib.onDomLoaded(function() {
+/     nicEditors.editors.push(
+/         new nicEditor().panelInstance(
+/             document.getElementById('myNicEditor')
+/         )
+/     );
+/ });
+//]]>
+/</script>
+
+/  <script type="text/javascript" src="http://js.nicedit.com/nicEdit-latest.js"></script> <script type="text/javascript">
+/ //<![CDATA[
+/         bkLib.onDomLoaded(function() { nicEditors.allTextAreas() });
+/   //]]>
+/   </script>
