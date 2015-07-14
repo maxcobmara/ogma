@@ -48,7 +48,7 @@ class Examquestion < ActiveRecord::Base
   #has_many :exammcqanswers, :dependent => :destroy
   #accepts_nested_attributes_for :exammcqanswers, :reject_if => lambda { |a| a[:answer].blank? }
 
-  before_validation :set_nil_if_not_activate, :set_answer_for_mcq, :set_approvedt_if_approved, :set_details_editing_for_approval
+  before_validation :set_nil_if_not_activate, :set_answer_for_mcq, :set_approvedt_if_approved#, :set_details_editing_for_approval
   #before_save :set_answer_for_mcq#, :set_subquestions_if_seq
   
   def set_details_editing_for_approval
@@ -113,21 +113,36 @@ class Examquestion < ActiveRecord::Base
     end
   end
     
-  def question_editor
-    #programme = User.current_user.staff.position.unit --> requires log-in
-    #current_user = User.find(72)  #current_user = User.find(72) - izmohdzaki, 11-maslinda
-    current_user = Login.first
-    programme = current_user.staff.positions[0].unit
-    unless subject_id.nil?
-      if subject.root.name == programme
-        editors = Position.where('unit=?',programme).map(&:staff_id).compact
-      else
-        editors = Position.where('unit=?',subject.root.name).map(&:staff_id).compact
+  def question_editor(current_user)
+    unless programme_id.nil?
+      if Programme.roots.where(course_type: "Diploma").pluck(:name).include?(course.name)
+        editors = Position.where(unit: course.name).pluck(:staff_id).compact
+      else #must be posbasiks
+        posts = Position.where(unit: ["Diploma Lanjutan", "Pos Basik", "Pengkhususan"])
+        posbasiks_name = Programme.roots.where(course_type: ["Diploma Lanjutan", "Pos Basik", "Pengkhususan"]).pluck(:name)
+	@editors=[]
+        posts.each do |post|
+          posbasiks_name.each do |pname|
+            @editors << post.id if post.tasks_main.include?(pname)
+	  end
+        end
+	editors=@editors
       end
-    else
-      programme_name = Programme.roots.map(&:name)    #must be among Academic Staff 
-      editors = Staff.joins(:positions).where('unit=? AND unit IN(?)', programme, programme_name).map(&:id)
+      editors << current_user.userable_id if current_user.roles.pluck(:authname).include?("administration")
+      editors
     end
+    
+#     programme = current_user.staff.positions[0].unit
+#     unless subject_id.nil?
+#       if subject.root.name == programme
+#         editors = Position.where('unit=?',programme).map(&:staff_id).compact
+#       else
+#         editors = Position.where('unit=?',subject.root.name).map(&:staff_id).compact
+#       end
+#     else
+#       programme_name = Programme.roots.map(&:name)    #must be among Academic Staff 
+#       editors = Staff.joins(:positions).where('unit=? AND unit IN(?)', programme, programme_name).map(&:id)
+#     end
     editors
   end
   
