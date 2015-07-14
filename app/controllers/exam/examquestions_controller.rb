@@ -68,124 +68,57 @@ class Exam::ExamquestionsController < ApplicationController
   # GET /examquestions/new.xml
   def new
     @examquestion = Examquestion.new
-    @lecturer_programme = @current_user.userable.positions[0].unit
-    @creator = @current_user.userable_id
-    
+    @lecturer_programme = current_user.userable.positions[0].unit
+    @creator = current_user.userable_id
     unless @lecturer_programme.nil?
       @programme = Programme.where('name ILIKE (?) AND ancestry_depth=?',"%#{@lecturer_programme}%",0)
     end
     unless @programme.nil? || @programme.count==0
-      @programme_listing = Programme.where(id: @programme.try(:first).try(:id)).to_a
       @preselect_prog = @programme.first.id
-      @all_subject_ids = Programme.find(@preselect_prog).descendants.at_depth(2).map(&:id)
-      if @lecturer_programme == 'Commonsubject'
-        @subjects2 = Programme.where('id IN(?) AND course_type=?',@all_subject_ids, @lecturer_programme).order('ancestry ASC') 
-      else
-        @subjects2 = Programme.where('id IN(?) AND course_type=?',@all_subject_ids, 'Subject').order('ancestry ASC')  #'Subject' 
-        #subjects2 - kaka2 (NEW)
-      end
-    else #for admin
-      @programme_listing = Programme.roots
-      @subjects2 = Programme.all.at_depth(2).sort #default for NEW record & resubmission of NEW record - refer kaka2
     end
-    @subjects = @subjects2
-    #no topic will be displayed until subject is selected - below line required as DEFAULT value
-    @topics = Programme.all.at_depth(3).sort  
-    #refer examquestion.js.coffee (same for all, except for : when programme & subject are selected, topics will be populated accordingly)
-    
+    if current_user.roles.pluck(:authname).include?("administration")
+      @programme_list=Programme.roots  
+    else
+      @programme_list=Programme.where(id: @preselect_prog)
+    end
+       
     3.times { @examquestion.shortessays.build }
     respond_to do |format|
       format.html # new.html.erb
       format.xml  { render :xml => @examquestion }
     end
   end
-
-  def update_subjects
-    programme = Programme.find(params[:programme_id])
-    @subjects = Programme.find(programme.id).descendants.at_depth(2).order(ancestry: :asc)
-  end
-
-  def update_topics
-    @topics = Programme.find(params[:subject_id]).descendants.at_depth(3).order(ancestry: :asc)
-  end
   
   # GET /examquestions/1/edit
   def edit
     @examquestion = Examquestion.find(params[:id])
     @creator = @examquestion.creator_id
-    
-    @lecturer_programme = @current_user.userable.positions[0].unit      
-    unless @lecturer_programme.nil?
-      @programme = Programme.where('name ILIKE (?) AND ancestry_depth=?',"%#{@lecturer_programme}%",0)
+    @preselect_prog = @examquestion.programme_id
+    if current_user.roles.pluck(:authname).include?("administration")
+      @programme_list=Programme.roots  
+    else
+      @programme_list=Programme.where(id: @preselect_prog)
     end
-    
-    #NOTE : For ALL records, EDIT : @subjects1 & @topics always SELECTED (mandatory fields), (programme list - based on logged-in user)
-    unless @programme.nil?  || @programme.count==0 
-      @programme_listing = Programme.where('id=?',@programme.id).to_a
-      @preselect_prog = @programme.id
-      @all_subject_ids = Programme.find(@preselect_prog).descendants.at_depth(2).map(&:id)
-      
-      if @lecturer_programme == 'Commonsubject'
-        @subjects1 = Programme.where('id IN(?) AND course_type=?',@all_subjects_ids, @lecturer_programme).order('ancestry ASC')  
-      else
-        @subjects1 = Programme.where('id IN(?)',@all_subject_ids)
-      end
-    else  #for admin (has no programme in current_user.staff.position.unit)
-      @programme_listing = Programme.roots
-      @subjects1 = Programme.find(@examquestion.subject_id).root.descendants.at_depth(2).sort_by{|x|x.ancestry}
-    end
-    @topics = Programme.find(@examquestion.subject_id).descendants.at_depth(3).sort_by{|x|x.code}
   end
 
   # POST /examquestions
   # POST /examquestions.xml
   def create
     @examquestion= Examquestion.new(examquestion_params)
-    
-    #--newly added--same as edit--required when incomplete data submitted
-    @lecturer_programme = @current_user.userable.positions[0].unit      
-    if @lecturer_programme != 'Commonsubject'
+    @lecturer_programme = current_user.userable.positions[0].unit
+    @creator = current_user.userable_id
+    unless @lecturer_programme.nil?
       @programme = Programme.where('name ILIKE (?) AND ancestry_depth=?',"%#{@lecturer_programme}%",0)
     end
-    unless @programme.nil? || @programme.count==0 
-      @programme_listing = Programme.where('id=?',@programme.first.id).to_a
+    unless @programme.nil? || @programme.count==0
       @preselect_prog = @programme.first.id
-      @all_subject_ids = Programme.find(@preselect_prog).descendants.at_depth(2).map(&:id)      
-      if @lecturer_programme == 'Commonsubject' #common subject lecturers
-        unless @examquestion.subject_id.nil? || @examquestion.subject_id.blank? || @examquestion.subject_id==0 
-          @subjects2 = Programme.where('id IN(?) AND course_type=?',@all_subjects1, @lecturer_programme).order(ancestry: :asc)
-          #to define topic later
-        else
-          @subjects2 = Programme.where('id IN(?) AND course_type=?',@all_subjects2, @lecturer_programme).order(ancestry: :asc)
-          #to define topic later
-        end 
-      else  #programme lecturers
-        #when SUBJECT is selected, @subjects2 - lili2 NEW (resubmission) & @topics - kaka3 NEW (resubmission)
-        @subjects2 = Programme.where('id IN(?) AND course_type=?',@all_subject_ids, 'Subject').order(ancestry: :asc)
-        unless @examquestion.subject_id.nil? || @examquestion.subject_id.blank? || @examquestion.subject_id==0 || @examquestion.subject_id=='Select the Subject' #if subject already selected
-          @topics = Programme.find(@examquestion.subject_id).descendants.at_depth(3)
-        else
-          @topics = Programme.find(@preselect_prog).descendants.at_depth(3) #default - still required, although TOPIC FIELD is hide
-        end
-        #when SUBJECT is NOT selected, @subjects2 - kaka2 (NEW-resubmission), @topics - kaka3 (NEW-resubmission)
-      end
-    else #for admin
-      @programme_listing = Programme.roots
-      unless @examquestion.subject_id.nil? || @examquestion.subject_id.blank? || @examquestion.subject_id==0 || @examquestion.subject_id=='Select the Subject' #if subject already selected
-        @subjects2 = Programme.find(@examquestion.subject.root_id).descendants.at_depth(2).sort_by{|x|x.ancestry}
-        @topics = Programme.find(@examquestion.subject_id).descendants.at_depth(3).sort
-      else  # if subject not selected yet 
-        #check if programme IS SELECTED (re-submit of new record)
-        if @examquestion.programme_id.nil? || @examquestion.programme_id.blank? #note : SUBJECT FIELD & TOPIC FIELD are hide
-          @subjects2= Programme.where(ancestry_depth:2).order(ancestry: :asc)
-          @topics = Programme.all.at_depth(3).sort  #refer examquestion.js.coffee
-        else
-          @subjects2 = Programme.find(@examquestion.programme_id).descendants.at_depth(2).sort_by{|x|x.ancestry}
-          @topics = Programme.find(@examquestion.programme_id).descendants.at_depth(3).sort
-        end
-      end      
     end
-    #--newly added--same as edit--required when incomplete data submitted
+    if current_user.roles.pluck(:authname).include?("administration")
+      @preselect_prog=@examquestion.programme_id  #only exist in create, but not new
+      @programme_list=Programme.roots  
+    else
+      @programme_list=Programme.where(id: @preselect_prog)
+    end
    
     respond_to do |format|
       if @examquestion.save
@@ -202,34 +135,14 @@ class Exam::ExamquestionsController < ApplicationController
   # PUT /examquestions/1
   # PUT /examquestions/1.xml
   def update
-    #raise params.inspect
     @examquestion = Examquestion.find(params[:id])
-    #@subject_exams = @examquestions.group_by { |t| t.subject_details }
-    #from edit - start----------------------required when validation failed
     @creator = @examquestion.creator_id
-    
-    @lecturer_programme = @current_user.userable.positions[0].unit      
-    unless @lecturer_programme.nil?
-      @programme = Programme.where('name ILIKE (?) AND ancestry_depth=?',"%#{@lecturer_programme}%",0)
+    @preselect_prog = @examquestion.programme_id
+    if current_user.roles.pluck(:authname).include?("administration")
+      @programme_list=Programme.roots  
+    else
+      @programme_list=Programme.where(id: @preselect_prog)
     end
-    
-    #NOTE : For ALL records, EDIT : @subjects1 & @topics always SELECTED (mandatory fields), (programme list - based on logged-in user)
-    unless @programme.nil? || @programme.count==0 
-      @programme_listing = Programme.where('id=?',@programme.id).to_a
-      @preselect_prog = @programme.id
-      @all_subject_ids = Programme.find(@preselect_prog).descendants.at_depth(2).map(&:id)
-      
-      if @lecturer_programme == 'Commonsubject'
-        @subjects1 = Programme.where('id IN(?) AND course_type=?',@all_subjects_ids, @lecturer_programme).order('ancestry ASC')  
-      else
-        @subjects1 = Programme.where('id IN(?)',@all_subject_ids)
-      end
-    else  #for admin (has no programme in current_user.staff.position.unit)
-      @programme_listing = Programme.roots
-      @subjects1 = Programme.find(@examquestion.subject_id).root.descendants.at_depth(2).sort_by{|x|x.ancestry}
-    end
-    @topics = Programme.find(@examquestion.subject_id).descendants.at_depth(3).sort_by{|x|x.code}
-    #from edit - end----------------------required when validation failed
     
     respond_to do |format|
       if @examquestion.update(examquestion_params)

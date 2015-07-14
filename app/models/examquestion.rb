@@ -3,6 +3,7 @@ class Examquestion < ActiveRecord::Base
   belongs_to :creator,  :class_name => 'Staff', :foreign_key => 'creator_id'
   belongs_to :approver, :class_name => 'Staff', :foreign_key => 'approver_id'
   belongs_to :editor,   :class_name => 'Staff', :foreign_key => 'editor_id'
+  belongs_to :course, :class_name => 'Programme', :foreign_key => 'programme_id'
   belongs_to :subject,  :class_name => 'Programme', :foreign_key => 'subject_id'
   belongs_to :topic,    :class_name => 'Programme', :foreign_key => 'topic_id'
   has_and_belongs_to_many :exams
@@ -39,16 +40,13 @@ class Examquestion < ActiveRecord::Base
   validates_attachment_content_type :diagram, :content_type => ["image/jpg", "image/jpeg", "image/png", "image/gif"]
                     #may require validation
 
-  validates_presence_of :subject_id, :topic_id, :questiontype, :question, :marks, :qstatus #17Apr2013,:answer #9Apr2013-compulsory for subject_id
+  validates_presence_of :subject_id, :topic_id, :questiontype, :question, :marks, :qstatus, :createdt, :programme_id #17Apr2013,:answer #9Apr2013-compulsory for subject_id
 
   #has_many :examsubquestions, :dependent => :destroy
   #accepts_nested_attributes_for :examsubquestions, :reject_if => lambda { |a| a[:question].blank? }
 
   #has_many :exammcqanswers, :dependent => :destroy
   #accepts_nested_attributes_for :exammcqanswers, :reject_if => lambda { |a| a[:answer].blank? }
-
-  attr_accessor :programme_id #9Apr2013 - rely on subject (root of subject[programme])
-  #attr_accessor :question1,:question2,:question3,:question4,:questiona,:questionb,:questionc,:questiond
 
   before_validation :set_nil_if_not_activate, :set_answer_for_mcq, :set_approvedt_if_approved, :set_details_editing_for_approval
   #before_save :set_answer_for_mcq#, :set_subquestions_if_seq
@@ -104,23 +102,15 @@ class Examquestion < ActiveRecord::Base
     [:keyword_search]
   end
 
-  def question_creator
-    #programme = User.current_user.staff.position.unit - replace with : 2 lines (below)
-    #current_user = User.find(11)  #current_user = User.find(11) - 11-maslinda, 72-izmohdzaki
-    current_user = Login.first
-    programme = current_user.staff.positions[0].unit
-    
-    programme_name = Programme.roots.map(&:name)
-    creator_prog= Staff.joins(:positions).where('unit IN(?)', programme_name).map(&:id)
-    if programme_name.include?(programme)
-      creator = Staff.joins(:positions).where('unit=? AND unit IN(?)', programme, programme_name).map(&:id)
+  def question_creator(current_user)
+    if current_user.roles.pluck(:authname).include?("administration")
+      diploma=Programme.roots.where(course_type: "Diploma").pluck(:name)
+      creator_units=diploma+["Diploma Lanjutan", "Pos Basik", "Pengkhususan"]
+      creator_ids=Staff.joins(:positions).where('positions.unit IN(?)', creator_units).pluck(:id)
+      creator=creator_ids+[current_user.userable_id]
     else
-      role_admin = Role.find_by_name('Administration')  #must have role as administrator
-      staff_with_adminrole = Login.joins(:roles).where('role_id=?',role_admin).map(&:staff_id).compact.uniq
-      creator_adm = Staff.joins(:positions).where('staff_id IN(?)', staff_with_adminrole).map(&:id)
-      creator=creator_prog+creator_adm
+      creator=[current_user.userable_id]
     end
-    creator
   end
     
   def question_editor

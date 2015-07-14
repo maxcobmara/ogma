@@ -9,6 +9,8 @@ class Programme < ActiveRecord::Base
   has_many :intakes
   has_many :topic_for_weeklytimetable_details, :class_name => 'WeeklytimetableDetail', :foreign_key => 'topic'
   
+  attr_accessor :programme_listng, :subject_listing, :topic_listing, :subject_listing2
+  
   validates_uniqueness_of :combo_code
 
   #scope :by_semester, -> { where(course_type: 'Semester')}
@@ -51,8 +53,7 @@ class Programme < ActiveRecord::Base
       ">>Sem #{parent.parent.parent.code}"+"-"+"#{parent.parent.code}"+" | "+"#{code} "+"#{name}"
     end
   end
-  
-  
+
   def subject_with_topic  #use in lesson plan
     "#{parent.code}"+" - "+"#{name}"
   end
@@ -92,15 +93,67 @@ class Programme < ActiveRecord::Base
     "#{root.course_type}"+" "+"#{root.name}"+" "+"#{code}"+" "+"#{name} "
   end
   
+  def self.programme_names
+    Programme.roots.map(&:programme_list)
+  end
+  
+  def self.subject_groupbyprogramme
+    subjectby_programmelists=Programme.where(course_type: "Subject").group_by{|x|x.root.programme_list}
+    @groupped_subject=[]
+    subjectby_programmelists.each do |programmelist, subjects|
+      pg_subjects=[[I18n.t('helpers.prompt.select_subject'), '']]
+      subjects.each{|subject|pg_subjects << [subject.subject_list, subject.id]} # [subject.subject_list]}
+      @groupped_subject << [programmelist, pg_subjects]
+    end
+    @groupped_subject
+  end
+  
+  def self.subject_groupbyoneprogramme(progid)
+    subjectby_programmelists=Programme.find(progid).descendants.where(course_type: "Subject").group_by{|x|x.root.programme_list}
+    @groupped_subject=[]
+    subjectby_programmelists.each do |programmelist, subjects|
+      pg_subjects=[]
+      subjects.each{|subject|pg_subjects << [subject.subject_list, subject.id]} # [subject.subject_list]}
+      @groupped_subject << [programmelist, pg_subjects]
+    end
+    @groupped_subject
+  end
+
+  def self.subject_names
+    Programme.where(course_type: "Subject").map(&:subject_list)
+  end
+  
+  def self.topic_groupbysubject
+    topicby_subjectids=Programme.where(course_type: "Topic").group_by{|x|x.ancestry.split("/").last}
+    @groupped_topic=[]
+    topicby_subjectids.each do |subjectid, topics|
+      sb_topics=[[I18n.t('helpers.prompt.select_topic'), '']]
+      topics.each{|topic|sb_topics << [topic.subject_list, topic.id]}  #[topic.subject_list]}
+      @groupped_topic << [Programme.find(subjectid).subject_list, sb_topics]
+    end
+    @groupped_topic
+  end
+  
+  def self.topic_groupbysubject_oneprogramme(progid)
+    topicby_subjectids=Programme.find(progid).descendants.where(course_type: "Topic").group_by{|x|x.ancestry.split("/").last}
+    @groupped_topic=[]
+    topicby_subjectids.each do |subjectid, topics|
+      sb_topics=[[I18n.t('helpers.prompt.select_topic'), '']]
+      topics.each{|topic|sb_topics << [topic.subject_list, topic.id]}  #[topic.subject_list]}
+      @groupped_topic << [Programme.find(subjectid).subject_list, sb_topics]
+    end
+    @groupped_topic
+  end
+  
   private
   
-  def valid_for_removal
-    if weeklytimetables.count > 0 || intakes.count > 0 || topic_for_weeklytimetable_details.count > 0
-      return false
-    else
-      return true
+    def valid_for_removal
+      if weeklytimetables.count > 0 || intakes.count > 0 || topic_for_weeklytimetable_details.count > 0
+        return false
+      else
+        return true
+      end
     end
-  end
     
 end
 

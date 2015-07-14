@@ -3,7 +3,7 @@
     .col-sm-2.control-label
       = f.label :questiontype
     .col-md-4
-      = f.select :questiontype, DropDown::QTYPE, {:prompt=> t('helpers.prompt.select_questiontype')}, {class: 'selectpicker'}
+      = f.select :questiontype, DropDown::QTYPE, {:prompt=> t('helpers.prompt.select_questiontype')}, {class: 'selectpicker mandatory'}
 
   //main - for all type of question
   .p#main_question.box
@@ -129,7 +129,7 @@
       .p#main_question3.box
         %b= t 'exam.examquestion.marks2'
     .col-md-2
-      = f.text_field :marks, class: 'form-control'
+      = f.text_field :marks, class: 'form-control mandatory'
 
   /keyword field for other than MCQ & True/False
   .p#others_keyword.box

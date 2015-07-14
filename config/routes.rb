@@ -356,12 +356,7 @@ Ogma::Application.routes.draw do
   match '/public/excel_format/book_import.xls', to: 'library/books#download_excel_format', via: 'get', target: '_self'
 
   namespace :exam do
-    resources :examquestions do
-      collection do
-        get 'update_subjects', to: "examquestions#update_subjects"
-        get 'update_topics', to: "examquestions#update_topics"
-      end
-    end
+    resources :examquestions
     resources :examsubquestions
     resources :answerchoices
     resources :examanswers
