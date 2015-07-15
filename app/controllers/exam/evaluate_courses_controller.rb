@@ -222,7 +222,7 @@ class Exam::EvaluateCoursesController < ApplicationController
           unless @programme.nil?
             @programme_id = @programme.id
           else
-            if @lecturer_programme == 'Commonsubject'
+            if @lecturer_programme == 'Commonsubject' #if required - refer examquestions_controller.rb (Index)
             else
               if @current_user.roles.pluck(:authname).include?("administration")
                 @programme_id = 0
