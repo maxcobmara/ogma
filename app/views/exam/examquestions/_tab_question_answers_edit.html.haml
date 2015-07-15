@@ -3,14 +3,15 @@
     .col-sm-2.control-label
       = f.label :questiontype
     .col-md-4
-      = f.select :questiontype, DropDown::QTYPE, {:prompt=> t('helpers.prompt.select_questiontype')}, {class: 'selectpicker'}
+      = f.select :questiontype, DropDown::QTYPE, {:prompt=> t('helpers.prompt.select_questiontype')}, {class: 'selectpicker mandatory'}
 
   //main - for all type of question
   .p#main_question.box
     - if @examquestion.diagram.exists? then
-      %dl.dl-horizontal
-        %dt= t 'exam.examquestion.current_diagram'
-        %dd
+      .form-group
+        .col-sm-2.control-label
+          = f.label (t 'exam.examquestion.current_diagram')
+        .col-md-6
           = image_tag @examquestion.diagram.url,:style => "border: solid 1px;"
           %br
           %b= t'exam.examquestion.uploaded_file'
@@ -26,7 +27,7 @@
       .col-sm-2.control-label
         = f.label :diagram
       .col-md-6
-        = f.file_field :diagram, class: 'form-control'
+        = f.file_field :diagram, class: 'form-control', :onchange=>"PreviewImage();"
     .form-group
       .col-sm-2.control-label
         = f.label :diagram_caption
@@ -36,10 +37,10 @@
       .col-sm-2.control-label
         = f.label :question
       .col-md-6
-        = f.text_area :question, :id => 'myNicEditor'
+        = f.text_area :question, :id => 'myNicEditor', :style=>"width: 545px;"
 
   .p#MCQ.box
-    START of MCQ section ----------------------------------------
+    /START of MCQ section ----------------------------------------
     - @type="1"
     .form-group
       .col-sm-2.control-label
@@ -61,10 +62,10 @@
         - ans = ['A','B','C','D']
         - @mcqanswer = @examquestion.answer.to_s if !@examquestion.id.nil?
         = f.select :answermcq, ans, {:include_blank=> t('helpers.prompt.select_mcq_answer'),:selected=> @mcqanswer}, {class: 'selectpicker'}
-    END of MCQ section ----------------------------------------
+    /END of MCQ section ----------------------------------------
 
   .p#SEQ.box
-    START of SEQ section ----------------------------------------
+    /START of SEQ section ----------------------------------------
     - @count=0
     .form-group
       .col-sm-2.control-label
@@ -74,32 +75,32 @@
           = render 'shortessay_fields', :f => builder,:locals=> { :index => @count}
           - @count+=1
         /= link_to_add_fields image_tag("add.png", :border => 0, :title => 'Add Q'), f, :shortessays  - Add
-    END of SEQ section ----------------------------------------
+    /END of SEQ section ----------------------------------------
 
 
   .p#MEQ.box
-    MEQ section -- no specific requirement at this moment
+    /MEQ section -- no specific requirement at this moment
 
   .p#ACQ.box
-    ACQ section -- no specific requirement at this moment
+    /ACQ section -- no specific requirement at this moment
 
   .p#OSCI.box
-    OSCI section -- no specific requirement at this moment
+    /OSCI section -- no specific requirement at this moment
 
   .p#OSCII.box
-    OSCII section -- no specific requirement at this moment
+    /OSCII section -- no specific requirement at this moment
 
   .p#OSCE.box
-    OSCE section -- no specific requirement at this moment
+    /OSCE section -- no specific requirement at this moment
 
   .p#OSPE.box
-    OSPE section -- no specific requirement at this moment
+    /OSPE section -- no specific requirement at this moment
 
   .p#VIVA.box
-    VIVA section -- no specific requirement at this moment
+    /VIVA section -- no specific requirement at this moment
 
   .P#TRUEFALSE.box
-    START of TRUE FALSE section ----------------------------------------
+    /START of TRUE FALSE section ----------------------------------------
     .form-group
       .col-sm-2.control-label
         %b= t 'exam.examquestion.booleanchoices'
@@ -110,7 +111,7 @@
         %b= t 'exam.examquestion.booleananswers'
       .col-md-6
         = render :partial => 'booleananswer_fields', :locals => {:f => f}
-    END of TRUE FALSE section ----------------------------------------
+    /END of TRUE FALSE section ----------------------------------------
 
   /answer field for other than MCQ & SEQ (pls note TRUE FALSE requires this field)
   .p#others_answer.box
@@ -127,9 +128,9 @@
       .p#main_question2.box
         = f.label :marks
       .p#main_question3.box
-        %b= t 'exam.examquestion.marks2'
+        = f.label (t 'exam.examquestion.marks2')
     .col-md-2
-      = f.text_field :marks, class: 'form-control'
+      = f.text_field :marks, class: 'form-control mandatory'
 
   /keyword field for other than MCQ & True/False
   .p#others_keyword.box
@@ -137,6 +138,30 @@
       .col-sm-2.control-label
         = f.label :qkeyword
       .col-md-6
-        = f.text_area :qkeyword, :size => "60x3"
+        /= f.text_field :qkeyword, class: 'form-control'
+        = f.text_area :qkeyword, :size => "60x3",  class: 'form-control'
 
   /= render :partial => 'status', :locals => {:f => f} if @examquestion.qstatus != "Approved"
+
+:javascript
+  //<![CDATA[
+    bkLib.onDomLoaded(function() {
+        nicEditors.editors.push(new nicEditor({fullPanel: true}).panelInstance(document.getElementById('myNicEditor')));
+        nicEditors.editors.push(new nicEditor({fullPanel: true}).panelInstance(document.getElementById('examquestion_shortessays_attributes_0_subanswer')));
+        nicEditors.editors.push(new nicEditor({fullPanel: true}).panelInstance(document.getElementById('examquestion_shortessays_attributes_1_subanswer')));
+        nicEditors.editors.push(new nicEditor({fullPanel: true}).panelInstance(document.getElementById('examquestion_shortessays_attributes_2_subanswer')));
+    });
+  //]]>
+
+:javascript
+  function PreviewImage() {
+    var oFReader = new FileReader();
+    oFReader.readAsDataURL(document.getElementById("examquestion_diagram").files[0]);
+
+    oFReader.onload = function(oFREvent) {
+      document.getElementById("uploadPreview").src = oFREvent.target.result;
+    };
+  };
+  
+
+  

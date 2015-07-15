@@ -21,26 +21,31 @@
     .tab-content{style:"padding-top:1em"}
       .col-md-1
         - if @examquestion.diagram.exists? then
-          = image_tag @examquestion.diagram.url,:style => "border: solid 1px;"
-          %br
-          = @examquestion.diagram_caption
+          = image_tag @examquestion.diagram.url, :style=>"width: 300px; height:200px;border: solid 1px;"
         - else
           %img{:src => "http://placekitten.com/200/300"}/ 
-    
+      .col-md-11
+        / display creation & status details
+        = render 'show_question_main'
     / display creation & status details & frequency of usage
     .tab-content{style:"padding-top:1em"}    
-      = render 'show_question_main'
-      .col-md-8.col-md-offset-1
+      .col-md-4
+        /display diagram_caption here
+        = @examquestion.diagram_caption
+      .col-md-8.col-md-offset-2
         %dl.dl-horizontal
           - if @examquestion.usage_frequency > 0  
             %dt= t'exam.examquestion.usage_frequency'
             %dd 
-              - count=1
-              - @q_frequency[0].exams.each do |paper| 
-                =count.to_s+') '+paper.exam_on.strftime("%d %b %Y").to_s
-                =paper.name+'-'+paper.subject.subject_list
-                %br
-                - count+=1
+              %table
+                %tr
+                  %td
+                    - count=1
+                    - @q_frequency[0].exams.each do |paper| 
+                      =count.to_s+') '+paper.exam_on.strftime("%d %b %Y").to_s
+                      =paper.name+'-'+paper.subject.subject_list
+                      %br
+                      - count+=1
 
       #show_question_details_answer.tab-pane.active
         %br
@@ -59,7 +64,7 @@
           = render 'show_approval'
           - if ["Approved", "Reserve for BPL"].include? (@examquestion.qstatus) 
             .row
-              .col-md-8.col-md-offset-1
+              .col-md-8.col-md-offset-2
                 %dl.dl-horizontal
                   %BR
 

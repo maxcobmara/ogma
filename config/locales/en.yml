@@ -167,6 +167,14 @@ en:
         ev_work: Score question 7
         ev_note: Score question 8
         ev_assessment: Score question 9
+      examquestion:
+        programme_id: Programme
+        subject_id: Subject
+        topic_id: Topic
+        questiontype: Question Type
+        question: Question
+        marks: Marks
+        createdt: Creation Date
     errors:
         template:
           body: "There were problems with the following fields:"

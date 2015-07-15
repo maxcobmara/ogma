@@ -5,16 +5,16 @@
     
     %dt= t 'exam.examquestion.creator_id', :default => model_class.human_attribute_name(:creator_id) + ":"
     %dd=h @examquestion.creator_id? ? @examquestion.creator_details : "" 
-		  
+  
     %dt= t 'exam.examquestion.programme_id', :default => model_class.human_attribute_name(:programme_id) + ":"
-    %dd=h @examquestion.subject_id? ?  @examquestion.subject.root.programme_list : ""  
+    %dd=h @examquestion.programme_id? ? @examquestion.course.programme_list : @examquestion.subject.root.programme_list
   
     %dt= t 'exam.examquestion.subject_id', :default => model_class.human_attribute_name(:subject_id) + ":"
     %dd=h @examquestion.subject_id? ? @examquestion.subject_details : ""
-			
+
     %dt= t 'exam.examquestion.topic_id', :default => model_class.human_attribute_name(:topic_id) + ":"
     %dd=h @examquestion.topic_id? ? @examquestion.topic.subject_list : ""
-		  
+
     %dt= t 'exam.examquestion.qstatus' , :default => model_class.human_attribute_name(:qstatus) + ":"
     %dd
       %b= t("exam.examquestion.#{@examquestion.qstatus.downcase.split.join.gsub(/-+/,"")}")
