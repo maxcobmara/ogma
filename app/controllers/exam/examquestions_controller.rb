@@ -39,7 +39,7 @@ class Exam::ExamquestionsController < ApplicationController
           end
         end
       end
-      6
+      
       @search = Examquestion.search(params[:q])
       @examquestions = @search.result.search2(@programme_id).sort_by(&:programme_id)
       @examquestions = Kaminari.paginate_array(@examquestions).page(params[:page]||1)
@@ -73,6 +73,7 @@ class Exam::ExamquestionsController < ApplicationController
   # GET /examquestions/new.xml
   def new
     @examquestion = Examquestion.new
+    @position_exist = current_user.userable.positions
     @lecturer_programme = current_user.userable.positions[0].unit
     @creator = current_user.userable_id
     unless @lecturer_programme.nil?
@@ -80,13 +81,24 @@ class Exam::ExamquestionsController < ApplicationController
     end
     unless @programme.nil? || @programme.count==0
       @preselect_prog = @programme.first.id
-    end
-    if current_user.roles.pluck(:authname).include?("administration")
-      @programme_list=Programme.roots  
-    else
       @programme_list=Programme.where(id: @preselect_prog)
+    else
+      if @lecturer_programme == 'Commonsubject'
+      elsif current_user.roles.pluck(:authname).include?("administration")
+        @programme_list=Programme.roots  
+      else
+        posbasiks = Programme.roots.where(course_type: ["Diploma Lanjutan", "Pos Basik", "Pengkhususan"])
+        if @lecturer_programme=="Pengkhususan" && current_user.roles.pluck(:authname).include?("programme_manager")
+          @programme_list=Programme.where(id: posbasiks.pluck(:id))
+        else
+          posbasiks.pluck(:name).each do |pname|
+            @preselect_prog = Programme.where(name: pname).first.id if @position_exist.first.tasks_main.include?(pname)
+          end  
+          @programme_list=Programme.where(id: @preselect_prog)
+        end
+      end
     end
-       
+    
     3.times { @examquestion.shortessays.build }
     respond_to do |format|
       format.html # new.html.erb
@@ -98,10 +110,14 @@ class Exam::ExamquestionsController < ApplicationController
   def edit
     @examquestion = Examquestion.find(params[:id])
     @creator = @examquestion.creator_id
-    @preselect_prog = @examquestion.programme_id
+    @lecturer_programme = current_user.userable.positions[0].unit
     if current_user.roles.pluck(:authname).include?("administration")
-      @programme_list=Programme.roots  
+      @programme_list=Programme.roots
+    elsif current_user.roles.pluck(:authname).include?("programme_manager") && @lecturer_programme=="Pengkhususan" 
+      posbasiks = Programme.roots.where(course_type: ["Diploma Lanjutan", "Pos Basik", "Pengkhususan"])
+      @programme_list=Programme.where(id: posbasiks.pluck(:id))
     else
+      @preselect_prog = @examquestion.programme_id
       @programme_list=Programme.where(id: @preselect_prog)
     end
   end
@@ -110,6 +126,7 @@ class Exam::ExamquestionsController < ApplicationController
   # POST /examquestions.xml
   def create
     @examquestion= Examquestion.new(examquestion_params)
+    @position_exist = current_user.userable.positions
     @lecturer_programme = current_user.userable.positions[0].unit
     @creator = current_user.userable_id
     unless @lecturer_programme.nil?
@@ -117,12 +134,22 @@ class Exam::ExamquestionsController < ApplicationController
     end
     unless @programme.nil? || @programme.count==0
       @preselect_prog = @programme.first.id
-    end
-    if current_user.roles.pluck(:authname).include?("administration")
-      @preselect_prog=@examquestion.programme_id  #only exist in create, but not new
-      @programme_list=Programme.roots  
-    else
       @programme_list=Programme.where(id: @preselect_prog)
+    else
+      if @lecturer_programme == 'Commonsubject'
+      elsif current_user.roles.pluck(:authname).include?("administration")
+        @programme_list=Programme.roots  
+      else
+        posbasiks = Programme.roots.where(course_type: ["Diploma Lanjutan", "Pos Basik", "Pengkhususan"])
+        if @lecturer_programme=="Pengkhususan" && current_user.roles.pluck(:authname).include?("programme_manager")
+          @programme_list=Programme.where(id: posbasiks.pluck(:id))
+        else
+          posbasiks.pluck(:name).each do |pname|
+            @preselect_prog = Programme.where(name: pname).first.id if @position_exist.first.tasks_main.include?(pname)
+          end  
+          @programme_list=Programme.where(id: @preselect_prog)
+        end
+      end
     end
    
     respond_to do |format|
@@ -142,10 +169,14 @@ class Exam::ExamquestionsController < ApplicationController
   def update
     @examquestion = Examquestion.find(params[:id])
     @creator = @examquestion.creator_id
-    @preselect_prog = @examquestion.programme_id
+    @lecturer_programme = current_user.userable.positions[0].unit
     if current_user.roles.pluck(:authname).include?("administration")
-      @programme_list=Programme.roots  
+      @programme_list=Programme.roots
+    elsif current_user.roles.pluck(:authname).include?("programme_manager") && @lecturer_programme=="Pengkhususan" 
+      posbasiks = Programme.roots.where(course_type: ["Diploma Lanjutan", "Pos Basik", "Pengkhususan"])
+      @programme_list=Programme.where(id: posbasiks.pluck(:id))
     else
+      @preselect_prog = @examquestion.programme_id
       @programme_list=Programme.where(id: @preselect_prog)
     end
     

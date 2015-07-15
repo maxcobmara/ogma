@@ -112,7 +112,7 @@ class Programme < ActiveRecord::Base
     subjectby_programmelists=Programme.find(progid).descendants.where(course_type: "Subject").group_by{|x|x.root.programme_list}
     @groupped_subject=[]
     subjectby_programmelists.each do |programmelist, subjects|
-      pg_subjects=[[I18n.t('helpers.prompt.select_subject'), '']]
+      pg_subjects=[]
       subjects.each{|subject|pg_subjects << [subject.subject_list, subject.id]} # [subject.subject_list]}
       @groupped_subject << [programmelist, pg_subjects]
     end
