@@ -29,7 +29,7 @@ class Exam::ExamquestionsController < ApplicationController
             @programme_id=0  #admin 
           else
             if @lecturer_programme=="Pengkhususan" && current_user.roles.pluck(:authname).include?("programme_manager")
-              @programme_id=1 #KP Pengkhususan
+              @programme_id="1" #KP Pengkhususan
             else
               posbasiks_name = Programme.roots.where(course_type: ["Diploma Lanjutan", "Pos Basik", "Pengkhususan"]).pluck(:name)
               posbasiks_name.each do |pname|
