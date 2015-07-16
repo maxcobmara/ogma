@@ -9,7 +9,11 @@
     .col-sm-2.control-label
       = f.label :programme_id
     .col-md-6
-      = f.collection_select :programme_id, @programme_list, :id, :programme_list, {:selected => @preselect_prog, :include_blank => (t 'select')}, {class: 'selectpicker mandatory', "data-width"=>"400px"}
+      - unless @examquestion.programme_id.nil?
+        - selected_programme=@examquestion.programme_id
+      - else
+        - selected_programme=@preselect_prog
+      = f.collection_select :programme_id, @programme_list, :id, :programme_list, {:selected => selected_programme, :include_blank => (t 'select')}, {class: 'selectpicker mandatory', "data-width"=>"400px"}
 
   .form-group
     .col-sm-2.control-label

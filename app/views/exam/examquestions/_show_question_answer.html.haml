@@ -57,7 +57,8 @@
               %br
               - for booleananswer in @examquestion.booleananswers.sort_by{|y|y.item}
                 = booleananswer.item+". "
-                = booleananswer.answer
+                = (t 'exam.examquestion.true1') if booleananswer.answer==true 
+                = (t 'exam.examquestion.false1') if booleananswer.answer==false
                 %br
             /TRUEFALSE Question:boolean choices & boolean answers - end
 

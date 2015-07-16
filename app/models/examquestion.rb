@@ -120,34 +120,22 @@ class Examquestion < ActiveRecord::Base
       else #must be posbasiks
         posts = Position.where(unit: ["Diploma Lanjutan", "Pos Basik", "Pengkhususan"])
         posbasiks_name = Programme.roots.where(course_type: ["Diploma Lanjutan", "Pos Basik", "Pengkhususan"]).pluck(:name)
-	@editors=[]
+        @editors=[]
         posts.each do |post|
           posbasiks_name.each do |pname|
             @editors << post.id if post.tasks_main.include?(pname)
-	  end
+          end
         end
-	editors=@editors
+        editors=@editors
       end
       editors << current_user.userable_id if current_user.roles.pluck(:authname).include?("administration")
       editors
     end
-    
-#     programme = current_user.staff.positions[0].unit
-#     unless subject_id.nil?
-#       if subject.root.name == programme
-#         editors = Position.where('unit=?',programme).map(&:staff_id).compact
-#       else
-#         editors = Position.where('unit=?',subject.root.name).map(&:staff_id).compact
-#       end
-#     else
-#       programme_name = Programme.roots.map(&:name)    #must be among Academic Staff 
-#       editors = Staff.joins(:positions).where('unit=? AND unit IN(?)', programme, programme_name).map(&:id)
-#     end
     editors
   end
   
   def question_approver #to assign question -> KP
-    ###latest finding - as of Mei-Jul/Aug 2013 - approver should be at Ketua Program level ONLY (own programme @ other programme)### 
+    ###latest finding - as of Mei-Jul/Aug 2013 - approver should be at Ketua Program level ONLY (own programme @ other programme)
     
     role_kp = Role.where(name: 'Programme Manager').pluck(:id) #must have role as Programme Manager
     staff_with_kprole = Login.joins(:roles).where('role_id IN(?)',role_kp).pluck(:staff_id).compact.uniq
@@ -157,19 +145,17 @@ class Examquestion < ActiveRecord::Base
   end
   
   
-  def self.search2(search2)
+  def self.search2(programmeid)
     common_subject = Programme.where('course_type=?','Commonsubject').pluck(:id)
-    if search2 
-      if search2 == '0'
-        @examquestions = Examquestion.all
-      elsif search2 == '1'
-        @examquestions = Examquestion.where("subject_id IN (?)", common_subject)
-      else
-        subject_of_program = Programme.find(search2).descendants.at_depth(2).map(&:id)
-        @examquestions = Examquestion.where("subject_id IN (?) and subject_id NOT IN (?)", subject_of_program, common_subject)
-      end
+    if programmeid == 0 #admin 
+      @examquestions = Examquestion.all
+    elsif programmeid == 1 #KP Pengkhususan
+      posbasiks_ids = Programme.roots.where(course_type: ["Diploma Lanjutan", "Pos Basik", "Pengkhususan"]).pluck(:id)
+      @examquestions = Examquestion.where(programme_id: posbasiks_ids)
+    elsif common_subject.include?(programmeid)
+      #@examquestions = Examquestion.where("subject_id IN (?)", common_subject)  #pending creation of examquestion by common subject lect??
     else
-       @examquestions = Examquestion.all
+      @examquestions = Examquestion.where(programme_id: programmeid)
     end
   end
   

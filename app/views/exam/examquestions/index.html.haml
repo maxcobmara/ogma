@@ -33,7 +33,7 @@
           %td.group{:colspan => "12"}
             %span
             - unless prog.blank?
-              = (t 'exam.examquestion.programme_id')+' : '+Programme.find(prog.id).name
+              = (t 'exam.examquestion.programme_id')+' : '+Programme.find(prog).name
 
         - examquestions.group_by{|t|t.subject_details}.sort.each do |subject_details, examquestions| 
           %tr
