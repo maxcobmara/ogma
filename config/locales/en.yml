@@ -175,6 +175,10 @@ en:
         question: Question
         marks: Marks
         createdt: Creation Date
+        creator_id: Creator
+        editdt: Editing Date
+        editor_id: Editor
+        approver_id: Approver
     errors:
         template:
           body: "There were problems with the following fields:"
@@ -2243,6 +2247,7 @@ en:
       browse_preview: "Browse an image file to PREVIEW new diagram here. "
       diagram_caption: Diagram Caption
       no_diagram: Nil
+      selected_if_readyforapproval: " must be selected, if status is 'Ready For Approval'"
 
     exams:
       new_title: New Examination Maker

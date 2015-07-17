@@ -315,6 +315,28 @@ class User < ActiveRecord::Base
     Staff.where(id: unit_members).pluck(:thumb_id).compact #[5658]
   end
   
+  #use in - auth_rules(examquestion) - return [programme_id] for academician
+  def lecturers_programme
+    mypost = Position.where(staff_id: userable_id).first
+    myunit = mypost.unit
+    postbasics=['Pengkhususan', 'Pos Basik', 'Diploma Lanjutan']
+    post_prog=Programme.roots.where(course_type: postbasics)
+    dip_prog=Programme.roots.where(course_type: 'Diploma').pluck(:name)
+    if dip_prog.include?(myunit)
+      programmeid=Programme.roots.where(name: myunit).pluck(:id)
+    else
+      if myunit=="Pengkhususan" && roles.pluck(:authname).include?("programme_manager")
+        programmeid=post_prog.pluck(:id)
+      else
+        post_prog.pluck(:name).each do |pname|
+          @programmeid=Programme.roots.where(name: pname) if mypost.tasks_main.include?(pname).pluck(:id)
+        end
+        programmeid=@programmeid
+      end
+    end
+    programmeid
+  end
+  
   def role_symbols
    roles.map do |role|
     role.authname.to_sym

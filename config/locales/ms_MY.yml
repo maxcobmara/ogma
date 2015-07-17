@@ -157,6 +157,10 @@ ms_MY:
         question: Soalan
         marks: Markah
         createdt: Tarikh disediakan
+        creator_id: Penyedia Soalan
+        editdt: Tarikh Semakan
+        editor_id: Penyemak
+        approver_id: Pelulus
     errors:
         template:
           body: "Berikut adalah beberapa masalah:"
@@ -2184,6 +2188,7 @@ ms_MY:
       browse_preview: "Pilih fail imej untuk PAPAR diagram baru di sini. "
       diagram_caption: Tajuk Diagram
       no_diagram: Tiada
+      selected_if_readyforapproval: " mesti diisi, jika status 'Ready For Approval'('Sedia untuk kelulusan') dipilih.'"
 
     exams:
       new_title: Set Kertas Soalan Peperiksaan Baru

@@ -40,21 +40,28 @@ class Examquestion < ActiveRecord::Base
   validates_attachment_content_type :diagram, :content_type => ["image/jpg", "image/jpeg", "image/png", "image/gif"]
                     #may require validation
 
-  validates_presence_of :subject_id, :topic_id, :questiontype, :question, :marks, :qstatus, :createdt, :programme_id #17Apr2013,:answer #9Apr2013-compulsory for subject_id
-
+  validates_presence_of :subject_id, :topic_id, :questiontype, :question, :marks, :qstatus, :createdt, :programme_id, :creator_id #17Apr2013,:answer #9Apr2013-compulsory for subject_id
+  validates_presence_of :editor_id, :editdt, :if => :status_is_editing?
+  validate :approver_must_exist
+  
   #has_many :examsubquestions, :dependent => :destroy
   #accepts_nested_attributes_for :examsubquestions, :reject_if => lambda { |a| a[:question].blank? }
 
   #has_many :exammcqanswers, :dependent => :destroy
   #accepts_nested_attributes_for :exammcqanswers, :reject_if => lambda { |a| a[:answer].blank? }
 
-  before_validation :set_nil_if_not_activate, :set_answer_for_mcq, :set_approvedt_if_approved#, :set_details_editing_for_approval
+  before_validation :set_nil_if_not_activate, :set_answer_for_mcq, :set_approvedt_if_approved#, :reset_status_if_approver_is_blank
+  
   #before_save :set_answer_for_mcq#, :set_subquestions_if_seq
   
-  def set_details_editing_for_approval
-     if qstatus == "Editing" || qstatus == "Ready For Approval"
-       self.editor_id = current_user.userable_id if editor_id.blank? || editor_id.nil?
-       self.editdt = Date.today.strftime('%Y-%m-%d')
+  def status_is_editing?
+    qstatus=="Editing"
+  end
+  
+  def approver_must_exist
+     if qstatus=="Ready For Approval" && (approver_id.blank? || approver_id.nil?)
+        errors.add( I18n.t('exam.examquestion.approver_id'),I18n.t('exam.examquestion.selected_if_readyforapproval'))
+        self.qstatus="Editing"
      end
   end
   
@@ -149,7 +156,7 @@ class Examquestion < ActiveRecord::Base
     common_subject = Programme.where('course_type=?','Commonsubject').pluck(:id)
     if programmeid == 0 #admin 
       @examquestions = Examquestion.all
-    elsif programmeid == 1 #KP Pengkhususan
+    elsif programmeid == "1" #KP Pengkhususan
       posbasiks_ids = Programme.roots.where(course_type: ["Diploma Lanjutan", "Pos Basik", "Pengkhususan"]).pluck(:id)
       @examquestions = Examquestion.where(programme_id: posbasiks_ids)
     elsif common_subject.include?(programmeid)
@@ -159,21 +166,32 @@ class Examquestion < ActiveRecord::Base
     end
   end
   
-  #def self.find_main
-  #    Examquestion.find(:all, :condition => ['staff_id IS NULL'])
- # end
-  
-   def self.find_main
-     Subject.where('subject_id IS NULL')
-   end
+  #logic to set editable - ref: Staff Appraisal
+  def edit_icon(curr_user)
+    if qstatus=="New" && creator_id==curr_user.userable_id
+      "edit.png"
+    elsif qstatus=="New" && creator_id!=curr_user.userable_id
+      "noedit"
+    elsif qstatus=="Submit" && curr_user.lecturers_programme.include?(programme_id)
+      "edit.png"
+    elsif ["Editing", "Re-Edit"].include?(qstatus) && editor_id==curr_user.userable_id
+      "edit.png"
+    elsif qstatus=="Re-Edit" && approver_id==curr_user.userable_id
+      "noedit"
+    elsif ["Ready For Approval", "For Approval"].include?(qstatus) && (creator_id==curr_user.userable_id || editor_id==curr_user.userable_id)
+      "noedit"
+    elsif  ["Ready For Approval", "For ApprovalFor Approval"].include?(qstatus) && approver_id==curr_user.userable_id
+      "edit.png"
+    elsif qstatus=="Approved" && approver_id==curr_user.userable_id
+      "edit.png"
+    elsif qstatus=="Approved" && approver_id!=curr_user.userable_id
+      "noedit"
+    end
+  end
    
-   def self.find_main
-      Staff.where('staff_id IS NULL')
-   end
-      
-   def render_difficulty
+  def render_difficulty
      (DropDown::QLEVEL.find_all{|disp, value| value == difficulty }).map {|disp, value| disp}[0]
-   end
+  end
    
   def subject_details
      if subject.blank? 
@@ -182,7 +200,6 @@ class Examquestion < ActiveRecord::Base
        subject.subject_list
      end
   end
-
 
   def creator_details
     if creator.blank?
