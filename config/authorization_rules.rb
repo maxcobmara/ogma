@@ -263,7 +263,8 @@ authorization do
  end
 
  role :programme_manager do
-   has_permission_on [:exam_examquestions, :exam_exams], :to => :manage
+   has_permission_on :exam_examquestions, :to => :manage
+   has_permission_on :exam_exams, :to => [:manage, :exampaper]
    has_permission_on :exam_exammarks, :to => [:manage, :edit_multiple, :update_multiple, :new_multiple, :create_multiple]
 #    has_permission_on :exam_evaluate_courses, :to => :create 
 #    has_permission_on :exam_evaluate_courses, :to => [:manage, :courseevaluation] do
