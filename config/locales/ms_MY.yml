@@ -2152,13 +2152,14 @@ ms_MY:
       created: Telah Dicipta
       submitted: Telah Dihantar
       edited: Telah Disunting
-      editing: Sedang Disunting
+      editing: Sedang Disemak
       approved: Diluluskan
       rejectatcollege: Ditolak (di kolej)
       senttokkm: Dihantar ke KKM
       reedit: Sunting Semula
       rejected: Ditolak
       readyforapproval: Sedia Untuk Kelulusan
+      forapproval: Untuk Kelulusan
       edit_details: Butiran Semakan
       approval_details: Butiran Kelulusan
       approval_bpl_details: "Butiran Kelulusan & BPL"
@@ -2889,6 +2890,7 @@ ms_MY:
     prompt:
       select_creator: Pilih Penyedia Soalan
       select_editor: Pilih Penyunting
+      select_approver: Pilih Pelulus
       select_programme: Pilih Program
       select_subject: Pilih Subjek
       select_topic: Pilih Topik

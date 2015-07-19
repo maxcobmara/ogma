@@ -168,21 +168,22 @@ class Examquestion < ActiveRecord::Base
   
   #logic to set editable - ref: Staff Appraisal
   def edit_icon(curr_user)
-    if qstatus=="New" && creator_id==curr_user.userable_id
+    is_admin=true if curr_user.roles.pluck(:authname).include?("administration")==true
+    if qstatus=="New" &&(creator_id==curr_user.userable_id || is_admin)
       "edit.png"
     elsif qstatus=="New" && creator_id!=curr_user.userable_id
       "noedit"
-    elsif qstatus=="Submit" && curr_user.lecturers_programme.include?(programme_id)
+    elsif qstatus=="Submit" && (curr_user.lecturers_programme.include?(programme_id) || is_admin)
       "edit.png"
-    elsif ["Editing", "Re-Edit"].include?(qstatus) && editor_id==curr_user.userable_id
+    elsif ["Editing", "Re-Edit"].include?(qstatus) && (editor_id==curr_user.userable_id || is_admin)
       "edit.png"
     elsif qstatus=="Re-Edit" && approver_id==curr_user.userable_id
       "noedit"
     elsif ["Ready For Approval", "For Approval"].include?(qstatus) && (creator_id==curr_user.userable_id || editor_id==curr_user.userable_id)
       "noedit"
-    elsif  ["Ready For Approval", "For ApprovalFor Approval"].include?(qstatus) && approver_id==curr_user.userable_id
+    elsif  ["Ready For Approval", "For ApprovalFor Approval"].include?(qstatus) && (approver_id==curr_user.userable_id || is_admin)
       "edit.png"
-    elsif qstatus=="Approved" && approver_id==curr_user.userable_id
+    elsif qstatus=="Approved" && (approver_id==curr_user.userable_id || is_admin)
       "edit.png"
     elsif qstatus=="Approved" && approver_id!=curr_user.userable_id
       "noedit"

@@ -2217,7 +2217,8 @@ en:
       senttokkm: Sent to KKM
       reedit: "Re-Edit"
       rejected: Rejected
-      readyforapproval: Ready for Approval
+      readyforapproval: Ready For Approval
+      forapproval: For Approval
       edit_details: Edit Details
       approval_details: Approval Details
       approval_bpl_details: "Approval & BPL Details"
@@ -2948,6 +2949,7 @@ en:
     prompt:
       select_creator: Select Creator
       select_editor: Select Editor
+      select_approver: Select Approver
       select_programme: Select Programme
       select_subject: Select Subject
       select_topic: Select Topic

@@ -22,6 +22,7 @@
     %hr
     .form-actions
       = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), exam_exams_path, :class => 'btn btn-default'
+      = link_to content_tag(:i, "", class: "fa fa-file-pdf-o"), exampaper_exam_exam_path(@exam, format: "pdf"), class: "btn btn-default", "data-toggle" => "tooltip", title: "Exam Paper"
       = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('.edit', :default => t("helpers.links.edit")), edit_exam_exam_path(@exam),  :class => 'btn btn-primary' 
       = link_to content_tag(:i, "", :class => "fa fa-trash-o icon-white") + " " + t('.destroy', :default => t("helpers.links.destroy")), |
         exam_exam_path(@exam),                                                                                                    |
