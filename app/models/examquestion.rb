@@ -168,12 +168,12 @@ class Examquestion < ActiveRecord::Base
   
   #logic to set editable - ref: Staff Appraisal
   def edit_icon(curr_user)
-    is_admin=true if curr_user.roles.pluck(:authname).include?("administration")==true
+    is_admin=true  if curr_user.roles.pluck(:authname).include?("administration")
     if qstatus=="New" &&(creator_id==curr_user.userable_id || is_admin)
       "edit.png"
     elsif qstatus=="New" && creator_id!=curr_user.userable_id
       "noedit"
-    elsif qstatus=="Submit" && (curr_user.lecturers_programme.include?(programme_id) || is_admin)
+    elsif qstatus=="Submit" && (curr_user.lecturers_programme==programme_id || is_admin)#(curr_user.lecturers_programme.include?(programme_id) || is_admin)
       "edit.png"
     elsif ["Editing", "Re-Edit"].include?(qstatus) && (editor_id==curr_user.userable_id || is_admin)
       "edit.png"

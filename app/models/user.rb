@@ -327,11 +327,13 @@ class User < ActiveRecord::Base
     else
       if myunit=="Pengkhususan" && roles.pluck(:authname).include?("programme_manager")
         programmeid=post_prog.pluck(:id)
-      else
+      elsif postbasics.include?(myunit)
         post_prog.pluck(:name).each do |pname|
           @programmeid=Programme.roots.where(name: pname) if mypost.tasks_main.include?(pname).pluck(:id)
         end
         programmeid=@programmeid
+      else
+        programmeid=0 #default val for admin
       end
     end
     programmeid

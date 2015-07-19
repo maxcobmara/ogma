@@ -150,9 +150,13 @@ class Exam_paperPdf < Prawn::Document
       @counting=count2
       move_down 20
 
-      q_string=q.question
+      q_string=q.question#@view.simple_format(q.question)#.gsub(/<br>/,"").gsub(/<br\/>/,"")
       draw_text "#{count2+1}", :at => [10, cursor]
       text_box q_string, :at => [30, cursor+8], :width => 450, :height => 40, :overflow => :expand, :align => :justify, :inline_format => true
+#       bounding_box([30, cursor+8], :width => 450) do
+#           formatted_text_box([{ :text => q_string, :align => :justify,  :width => 450, :height => 40,  :overflow => :expand}])
+#       end
+     
       lines=q_string.size/80
       move_down (lines*20+5)
  
