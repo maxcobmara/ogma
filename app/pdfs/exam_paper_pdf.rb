@@ -29,15 +29,16 @@ class Exam_paperPdf < Prawn::Document
       end
     end
     font "Times-Roman"
-    text "SULIT", :align => :left, :size => 10
     cover_page
     mcq_part
+    @mcqpages=page_number
     cover_page2 if [1,2,4].include?(@exam.subject.root_id)==false
     seq_part if @exam.examquestions.seqq.count > 0
     meq_part if @exam.examquestions.meqq.count > 0
   end
   
   def cover_page
+    text "SULIT", :align => :left, :size => 10
     bounding_box([10,750], :width => 500, :height => 600) do |y2|
       move_down 20
       stroke_bounds
@@ -110,6 +111,7 @@ class Exam_paperPdf < Prawn::Document
   
   def cover_page2
     start_new_page
+    text "SULIT", :align => :left, :size => 10
     bounding_box([10,750], :width => 500, :height => 600) do |y2|
       move_down 20
       stroke_bounds
@@ -204,7 +206,7 @@ class Exam_paperPdf < Prawn::Document
 
   def mcq_part
     start_new_page
-    repeat(lambda {|pg| pg > 1}) do #repeative 
+    repeat(lambda {|pg| pg > 1 && pg!=@mcqpages+1}) do #repeative 
       draw_text "SULIT", :at => [0,770], :size =>10
       draw_text "#{@exam.subject.subject_list}", :at => [200, 770], :size => 10
       draw_text "No.Matrik:...............................", :at => [400, 770], :size => 10
@@ -282,7 +284,6 @@ class Exam_paperPdf < Prawn::Document
           draw_text "SULIT", :at => [500,0], :size => 10
         end
       end
-      
     end    
   end
 
@@ -350,7 +351,11 @@ class Exam_paperPdf < Prawn::Document
          move_down 30 
          if y < 180 
            draw_text "#{@exam.exam_on.strftime('%d ')+I18n.t(:'date.month_names')[@exam.exam_on.month]+@exam.exam_on.strftime(' %Y')}", :at => [0,0], :size => 10
-           draw_text "muka surat #{page_number-1}", :at => [230,0], :size => 10
+           if [1,2,4].include?(@exam.subject.root_id)
+              draw_text "muka surat #{page_number-1}", :at => [230,0], :size => 10
+           else
+             draw_text "muka surat #{page_number-1-@mcqpages}", :at => [230,0], :size => 10
+           end
            draw_text "SULIT", :at => [500,0], :size => 10
            if (indx != @tosort_seqid.count-1) 
              start_new_page
@@ -361,13 +366,21 @@ class Exam_paperPdf < Prawn::Document
  
        if y < 180 &&  (indx != @tosort_seqid.count-1) 
          draw_text "#{@exam.exam_on.strftime('%d ')+I18n.t(:'date.month_names')[@exam.exam_on.month]+@exam.exam_on.strftime(' %Y')}", :at => [0,0], :size => 10
-         draw_text "muka surat #{page_number-1}", :at => [230,0], :size => 10
+         if [1,2,4].include?(@exam.subject.root_id)
+           draw_text "muka surat #{page_number-1}", :at => [230,0], :size => 10
+         else
+           draw_text "muka surat #{page_number-1-@mcqpages}", :at => [230,0], :size => 10
+         end
          draw_text "SULIT", :at => [500,0], :size => 10
          start_new_page
          move_down 20
        elsif y >= 180 && (indx==@tosort_seqid.count-1) 
          draw_text "#{@exam.exam_on.strftime('%d ')+I18n.t(:'date.month_names')[@exam.exam_on.month]+@exam.exam_on.strftime(' %Y')}", :at => [0,0], :size => 10
-         draw_text "muka surat #{page_number-1}", :at => [230,0], :size => 10
+         if [1,2,4].include?(@exam.subject.root_id)
+           draw_text "muka surat #{page_number-1}", :at => [230,0], :size => 10
+         else
+           draw_text "muka surat #{page_number-1-@mcqpages}", :at => [230,0], :size => 10
+         end
          draw_text "SULIT", :at => [500,0], :size => 10
        end
      end   #ENDING @exam.examquestions.seqq    
@@ -422,14 +435,22 @@ class Exam_paperPdf < Prawn::Document
  
        if y < 180 
          draw_text "#{@exam.exam_on.strftime('%d ')+I18n.t(:'date.month_names')[@exam.exam_on.month]+@exam.exam_on.strftime(' %Y')}", :at => [0,0], :size => 10
-         draw_text "muka surat #{page_number-1}", :at => [230,0], :size => 10
+         if [1,2,4].include?(@exam.subject.root_id)
+           draw_text "muka surat #{page_number-1}", :at => [230,0], :size => 10
+         else
+           draw_text "muka surat #{page_number-1-@mcqpages}", :at => [230,0], :size => 10
+         end
          draw_text "SULIT", :at => [500,0], :size => 10
          start_new_page
          move_down 20
        else 
          if (indx==@tosort_seqid.count-1)
            draw_text "#{@exam.exam_on.strftime('%d ')+I18n.t(:'date.month_names')[@exam.exam_on.month]+@exam.exam_on.strftime(' %Y')}", :at => [0,0], :size => 10
-           draw_text "muka surat #{page_number-1}", :at => [230,0], :size => 10
+           if [1,2,4].include?(@exam.subject.root_id)
+             draw_text "muka surat #{page_number-1}", :at => [230,0], :size => 10
+           else
+             draw_text "muka surat #{page_number-1-@mcqpages}", :at => [230,0], :size => 10
+           end
            draw_text "SULIT", :at => [500,0], :size => 10
          end
        end
