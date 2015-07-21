@@ -31,18 +31,8 @@ class Exam_paperPdf < Prawn::Document
     font "Times-Roman"
     text "SULIT", :align => :left, :size => 10
     cover_page
-    ###second page(1) starts here
-    start_new_page
-    repeat(2..3) do #repeative 
-      draw_text "SULIT", :at => [0,770], :size =>10
-      draw_text "#{@exam.subject.subject_list}", :at => [200, 770], :size => 10
-      draw_text "No.Matrik:...............................", :at => [400, 770], :size => 10
-    end
-    draw_text "#{@exam.exam_on.strftime('%d ')+I18n.t(:'date.month_names')[@exam.exam_on.month]+@exam.exam_on.strftime(' %Y')}", :at => [0,0], :size => 10
-    draw_text "muka surat #{page_number-1}", :at => [230,0], :size => 10
-    draw_text "SULIT", :at => [500,0], :size => 10
-    ###
     mcq_part
+    seq_part
   end
   
   def cover_page
@@ -109,6 +99,12 @@ class Exam_paperPdf < Prawn::Document
   end
 
   def mcq_part
+    start_new_page
+    repeat(lambda {|pg| pg > 1}) do #repeative 
+      draw_text "SULIT", :at => [0,770], :size =>10
+      draw_text "#{@exam.subject.subject_list}", :at => [200, 770], :size => 10
+      draw_text "No.Matrik:...............................", :at => [400, 770], :size => 10
+    end    
     move_down 20
     text "Bahagian A. Jawab SEMUA soalan", :align => :left, :size => 12, :style => :bold
     move_down 10
@@ -120,8 +116,7 @@ class Exam_paperPdf < Prawn::Document
     @tosort_seqid = Hash.new 
     select_questionid = []  
     count = 0
-
-    #START-ASSIGN QUESTIONS WITH SEQUENCE INTO HASH & QUESTIONS WITHOUT SEQUENCE INTO ARRAY ACCORDINGLY-->
+    #START-ASSIGN QUESTIONS WITH SEQUENCE INTO HASH
     for examquestion in @exam.examquestions.mcqq
       if sequ[count] != "Select" 
         hash_seqid = {sequ[count] => examquestion.id}
@@ -131,7 +126,6 @@ class Exam_paperPdf < Prawn::Document
       end
       count+=1
     end 
-
     #for question with sequence-SORT by its' sequence
     @tosort_seqid.sort_by{|k,v|k.to_i}.each do |x,y|   #to overcome this sort result:1,10,11,2,3,4,5,6,7,8,9
       @seq_questionid << y 
@@ -147,7 +141,7 @@ class Exam_paperPdf < Prawn::Document
         move_down 5
         text "#{q.diagram_caption}", :align => :center, :style => :italic, :size => 11
       end
-      @counting=count2
+      #@counting=count2
       move_down 20
 
       q_string=q.question#@view.simple_format(q.question)#.gsub(/<br>/,"").gsub(/<br\/>/,"")
@@ -171,46 +165,108 @@ class Exam_paperPdf < Prawn::Document
       end
       move_down 10
           
-      if y < 140
-        start_new_page
-        move_down 20
+      if y < 180 
         draw_text "#{@exam.exam_on.strftime('%d ')+I18n.t(:'date.month_names')[@exam.exam_on.month]+@exam.exam_on.strftime(' %Y')}", :at => [0,0], :size => 10
         draw_text "muka surat #{page_number-1}", :at => [230,0], :size => 10
         draw_text "SULIT", :at => [500,0], :size => 10
+        start_new_page
+        move_down 20
+      else 
+        if (count2==@tosort_seqid.count-1)
+          draw_text "#{@exam.exam_on.strftime('%d ')+I18n.t(:'date.month_names')[@exam.exam_on.month]+@exam.exam_on.strftime(' %Y')}", :at => [0,0], :size => 10
+          draw_text "muka surat #{page_number-1}", :at => [230,0], :size => 10
+          draw_text "SULIT", :at => [500,0], :size => 10
+        end
       end
-
-#       table(line_item_rows, :column_widths => [30,30, 400, 80], :cell_style => { :size => 12,  :inline_format => :true}) do
-#         row(0).font_style = :bold
-#         row(0..10).borders = []
-#         columns(0..6).borders = []
-#         self.header = true
-#         self.width = 540
-#         header = true
-#       end
       
-    end
-    
+    end    
   end
-  
-#   def line_item_rows
-#     counter = counter || 0
-#     header = [[ "", "","", ""]]   
-#     content_q=[]
-#       
-#           q = Examquestion.find(@seq_questionid[@counting])
-#           content_q << [@counting+1, {content: q.question, colspan: 2}, ""] 
-#           if q.answerchoices.count > 0
-#             q.answerchoices.sort_by(&:item).each do |ac|
-#               content_q << ["", ac.item, ac.description, ""]
-#             end
-#             content_q << ["","","",""]
-#           end
-#           q.examanswers.sort_by(&:item).each do |eans|
-#             content_q << ["", eans.item, eans.answer_desc, "" ]
-#           end
-#           content_q << ["","","",""]
-#       
-#     header+content_q
-#   end
-  
+
+  def seq_part
+     start_new_page
+     move_down 20
+     text "Bahagian B. Jawab DUA soalan sahaja.", :align => :left, :size => 12, :style => :bold
+     move_down 10
+     #########
+     sequ = @exam.sequ.split(",")
+     @seq_questionid = [] 
+     hash_seqid = Hash.new
+     @tosort_seqid = Hash.new 
+     select_questionid = []  
+     count = 0
+     #START-ASSIGN QUESTIONS WITH SEQUENCE INTO HASH
+     for examquestion in @exam.examquestions.seqq
+       if sequ[count] != "Select" 
+         hash_seqid = {sequ[count] => examquestion.id}
+         @tosort_seqid = @tosort_seqid.merge(hash_seqid)
+       else
+         select_questionid << examquestion.id
+       end
+       count+=1
+     end 
+     #for question with sequence-SORT by its' sequence
+     @tosort_seqid.sort_by{|k,v|k.to_i}.each do |x,y|   #to overcome this sort result:1,10,11,2,3,4,5,6,7,8,9
+       @seq_questionid << y 
+     end 
+     #########
+
+     #@exam.examquestions.seqq.each_with_index do |q, indx|
+     0.upto(@tosort_seqid.count-1) do |indx|
+       q = Examquestion.find(@seq_questionid[indx])
+       if q.diagram.exists? then
+         image "#{Rails.root}/public#{q.diagram.url.split("?")[0]}", :position => :center, :height => 140
+         move_down 5
+         text "#{q.diagram_caption}", :align => :center, :style => :italic, :size => 11
+       end
+       move_down 20
+
+       if q.question
+         q_string=q.question 
+         draw_text "#{indx+1}", :at => [10, cursor]
+         text_box q_string, :at => [30, cursor+8], :width => 450, :height => 40, :overflow => :expand, :align => :justify, :inline_format => true
+         move_down 20
+       end
+       
+       for subq in q.shortessays
+         if q.question
+           draw_text "#{subq.item})", :at => [30, cursor] 
+         else 
+           draw_text "#{indx+1}#{subq.item})",  :at => [10, cursor]
+         end
+         draw_text "("+subq.submark.to_i.to_s+" markah)",  :at => [455, cursor]
+         subq_string=subq.subquestion
+         empty_lines=subq.submark.to_i*2
+         text_box subq_string, :at => [50, cursor+8], :width => 400, :height => 40, :overflow => :expand, :align => :justify, :inline_format => true
+         lines=subq_string.size/85
+         move_down 20 if lines > 0
+         0.upto(empty_lines) do |cnt|
+           move_down 20
+           draw_text  "#{'_'*80}", :at => [30, cursor]
+         end
+         move_down 30 
+         if y < 180 
+           draw_text "#{@exam.exam_on.strftime('%d ')+I18n.t(:'date.month_names')[@exam.exam_on.month]+@exam.exam_on.strftime(' %Y')}", :at => [0,0], :size => 10
+           draw_text "muka surat #{page_number-1}", :at => [230,0], :size => 10
+           draw_text "SULIT", :at => [500,0], :size => 10
+           if (indx != @tosort_seqid.count-1) 
+             start_new_page
+             move_down 20
+           end
+         end
+       end #ENDING for shortessays
+ 
+       if y < 180 &&  (indx != @tosort_seqid.count-1) 
+         draw_text "#{@exam.exam_on.strftime('%d ')+I18n.t(:'date.month_names')[@exam.exam_on.month]+@exam.exam_on.strftime(' %Y')}", :at => [0,0], :size => 10
+         draw_text "muka surat #{page_number-1}", :at => [230,0], :size => 10
+         draw_text "SULIT", :at => [500,0], :size => 10
+         start_new_page
+         move_down 20
+       elsif y >= 180 && (indx==@tosort_seqid.count-1) 
+         draw_text "#{@exam.exam_on.strftime('%d ')+I18n.t(:'date.month_names')[@exam.exam_on.month]+@exam.exam_on.strftime(' %Y')}", :at => [0,0], :size => 10
+         draw_text "muka surat #{page_number-1}", :at => [230,0], :size => 10
+         draw_text "SULIT", :at => [500,0], :size => 10
+       end
+     end   #ENDING @exam.examquestions.seqq    
+   end
+ 
 end
