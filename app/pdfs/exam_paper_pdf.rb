@@ -233,12 +233,7 @@ class Exam_paperPdf < Prawn::Document
   end
 
   def mcq_part
-    start_new_page
-#     repeat(lambda {|pg| pg > 1 && pg!=@mcqpages+1 && pg!=@mcq_seqpages+1}) do #repeative 
-#       draw_text "SULIT", :at => [0,770], :size =>10
-#       draw_text "#{@exam.subject.subject_list}", :at => [200, 770], :size => 10
-#       draw_text "No.Matrik:...............................", :at => [400, 770], :size => 10
-#     end    
+    start_new_page 
     move_down 20
     text "Bahagian A. Jawab SEMUA soalan", :align => :left, :size => 12, :style => :bold
     move_down 10
@@ -267,28 +262,52 @@ class Exam_paperPdf < Prawn::Document
     #########
 
     0.upto(@tosort_seqid.count-1) do |count2|
+      move_down 5
       q = Examquestion.find(@seq_questionid[count2])
+      
+      #check COMPLETE question set HEIGHT, set default as 180 if less than 180
+      q_string=q.question
+      lines=q_string.size/89
+      mod_lines=q_string.size%89
+      aa= (lines*20+5) if mod_lines==0
+      aa= ((lines+1)*20+5) if mod_lines>0
       if q.diagram.exists? then
+        imageheight=130
+      else
+        imageheight=0
+      end
+      qset_height=5+20+10+aa+10+10+imageheight
+      qset_height=180 if qset_height <180
+      #text "qset_height = #{qset_height}  y = #{y}"
+      
+      #move to next page if space is inadequate for COMPLETE question set
+      if qset_height > y
+        start_new_page
+        move_down 20
+        #text "sebab tak muat"
+      end
+      
+      #display diagram
+      if q.diagram.exists? then
+        draw_text "#{count2+1})", :at => [10, cursor-8]
         #image "#{Rails.root}/app/assets/images/logo_kerajaan.png",  :width =>97.2, :height =>77.76, :position => :center
         #image "#{Rails.root}/public/assets/examquestions/100/original/screen_cap.png", :position => :center
-        image "#{Rails.root}/public#{q.diagram.url.split("?")[0]}", :position => :center, :height => 140
+        image "#{Rails.root}/public#{q.diagram.url.split("?")[0]}", :position => :center, :height => 130
         move_down 5
         text "#{q.diagram_caption}", :align => :center, :style => :italic, :size => 11
+      else
+        draw_text "#{count2+1})", :at => [10, cursor-20]
       end
-      #@counting=count2
       move_down 20
 
-      q_string=q.question#@view.simple_format(q.question)#.gsub(/<br>/,"").gsub(/<br\/>/,"")
-      draw_text "#{count2+1}", :at => [10, cursor]
+      #display question
       text_box q_string, :at => [30, cursor+8], :width => 450, :height => 40, :overflow => :expand, :align => :justify, :inline_format => true
 #       bounding_box([30, cursor+8], :width => 450) do
 #           formatted_text_box([{ :text => q_string, :align => :justify,  :width => 450, :height => 40,  :overflow => :expand}])
 #       end
-      lines=q_string.size/80
-      mod_lines=q_string.size%89
-      move_down (lines*20+5) if mod_lines==0
-      move_down ((lines+1)*20+5) if mod_lines>0
+      move_down aa
  
+      #display answerchoices(i, ii, ii, iv) & answers option(A, B, C, D)
       if q.answerchoices.count > 0
         q.answerchoices.sort_by(&:item).each do |ac|
         text "   #{ac.item}  #{ac.description}", :indent_paragraphs => 40
@@ -299,22 +318,22 @@ class Exam_paperPdf < Prawn::Document
          text "   #{eans.item}  #{eans.answer_desc}", :indent_paragraphs => 40
       end
       move_down 10
-          
-      if y < 180 
-        draw_text "#{@exam.exam_on.strftime('%d ')+I18n.t(:'date.month_names')[@exam.exam_on.month]+@exam.exam_on.strftime(' %Y')}", :at => [0,0], :size => 10
-        draw_text "muka surat #{page_number-1}", :at => [230,0], :size => 10
-        draw_text "SULIT", :at => [500,0], :size => 10
-        if (count2 != @tosort_seqid.count-1) 
-          start_new_page
-          move_down 20
-        end
-      else 
-        if (count2==@tosort_seqid.count-1)
-          draw_text "#{@exam.exam_on.strftime('%d ')+I18n.t(:'date.month_names')[@exam.exam_on.month]+@exam.exam_on.strftime(' %Y')}", :at => [0,0], :size => 10
-          draw_text "muka surat #{page_number-1}", :at => [230,0], :size => 10
-          draw_text "SULIT", :at => [500,0], :size => 10
-        end
-      end
+
+       if y < qset_height  #180 
+         draw_text "#{@exam.exam_on.strftime('%d ')+I18n.t(:'date.month_names')[@exam.exam_on.month]+@exam.exam_on.strftime(' %Y')}", :at => [0,0], :size => 10
+         draw_text "muka surat #{page_number-1}", :at => [230,0], :size => 10
+         draw_text "SULIT", :at => [500,0], :size => 10
+         #if (count2 != @tosort_seqid.count-1) 
+           #start_new_page
+           #move_down 20
+         #end
+       else 
+         if (count2==@tosort_seqid.count-1)
+           draw_text "#{@exam.exam_on.strftime('%d ')+I18n.t(:'date.month_names')[@exam.exam_on.month]+@exam.exam_on.strftime(' %Y')}", :at => [0,0], :size => 10
+           draw_text "muka surat #{page_number-1}", :at => [230,0], :size => 10
+           draw_text "SULIT", :at => [500,0], :size => 10
+         end
+       end
     end
   end
 
@@ -350,43 +369,86 @@ class Exam_paperPdf < Prawn::Document
      #@exam.examquestions.seqq.each_with_index do |q, indx|
      0.upto(@tosort_seqid.count-1) do |indx|
        q = Examquestion.find(@seq_questionid[indx])
+       
+       #check COMPLETE Main SEQ question set HEIGHT (main question+diagram[if any]), set default as 180 if less than 180
+       q_string=q.question
+       lines=q_string.size/89
+       mod_lines=q_string.size%89
+       aa= (lines*20+5) if mod_lines==0
+       aa= ((lines+1)*20+5) if mod_lines>0
        if q.diagram.exists? then
+         imageheight=130
+       else
+         imageheight=0
+       end
+       qset_height=20+10+aa+10+10+imageheight
+       qset_height=180 if qset_height <180
+       #text "qset_height = #{qset_height}  y = #{y}"
+      
+      #move to next page if space is inadequate for Main SEQ question set
+       if qset_height > y
+         start_new_page
+         move_down 20
+         #text "sebab tak muat mainQ"
+       end
+
+       #display diagram
+       if q.diagram.exists? then
+         draw_text "#{indx+1})", :at => [10, cursor-8]
          image "#{Rails.root}/public#{q.diagram.url.split("?")[0]}", :position => :center, :height => 140
          move_down 5
          text "#{q.diagram_caption}", :align => :center, :style => :italic, :size => 11
+       else
+         draw_text "#{indx+1})", :at => [10, cursor-20]
        end
        move_down 20
+       
+       #display MAIN SEQ question
        if q.question
          q_string=q.question 
-         draw_text "#{indx+1}", :at => [10, cursor]
+         #draw_text "#{indx+1}", :at => [10, cursor]
          text_box q_string, :at => [30, cursor+8], :width => 450, :height => 40, :overflow => :expand, :align => :justify, :inline_format => true
          lines=q_string.size/89
          mod_lines=q_string.size%89
-         move_down (lines*20+5) if mod_lines==0
-         move_down ((lines+1)*20+5) if mod_lines>0
+         move_down aa
        end
+       total_valid=0
+       q.shortessays.each{|x|total_valid+=1 unless x.subquestion.blank? && x.subquestion.size==0}
        subq_count=0
        for subq in q.shortessays
-         unless subq.subquestion.blank? && subq.subquestion.size==0
+         unless subq.subquestion.blank? && subq.subquestion.size==0        
+           #check subquestion HEIGHT
+           subq_string=subq.subquestion
+           empty_lines=subq.submark.to_i*2
+           lines=subq_string.size/85
+           subqset_height=20+10+10+10+lines*20+empty_lines*20
+           subqset_height=180 if qset_height <180
+
+           #move to next page if space is inadequate for COMPLETE subquestion set
+           if subqset_height > y && subq_count < q.shortessays.count 
+             start_new_page
+             move_down 50
+             #text "sebab tak muat subqq #{subq_count}"
+           end
+
+           #display subquestion: numbering, marks, squestion & empty lines
            if q.question
              draw_text "#{subq.item})", :at => [30, cursor] 
            else 
              draw_text "#{indx+1}#{subq.item})",  :at => [10, cursor]
            end
            draw_text "("+subq.submark.to_i.to_s+" markah)",  :at => [455, cursor]
-           subq_string=subq.subquestion
-           empty_lines=subq.submark.to_i*2
            text_box subq_string, :at => [50, cursor+8], :width => 400, :height => 40, :overflow => :expand, :align => :justify, :inline_format => true
-           lines=subq_string.size/85
            move_down 20 if lines > 0
            0.upto(empty_lines) do |cnt|
              move_down 20
              draw_text  "#{'_'*80}", :at => [30, cursor]
            end
            move_down 30  
+           subq_count+=1
          end
-         subq_count+=1
-         if y < 180 && indx < @tosort_seqid.count-1   
+      
+         if y < subqset_height && subq_count < total_valid   #subqset_height (180)
            draw_text "#{@exam.exam_on.strftime('%d ')+I18n.t(:'date.month_names')[@exam.exam_on.month]+@exam.exam_on.strftime(' %Y')}", :at => [0,0], :size => 10
            if [1, 4].include?(@exam.subject.root_id)
              draw_text "muka surat #{page_number-1}", :at => [230,0], :size => 10
@@ -394,12 +456,13 @@ class Exam_paperPdf < Prawn::Document
              draw_text "muka surat #{page_number-1-@mcqpages}", :at => [230,0], :size => 10
            end
            draw_text "SULIT", :at => [500,0], :size => 10
-           start_new_page
-           move_down 20
+	   
+           #start_new_page
+           #move_down 20
          end
        end #ENDING for shortessays
  
-       if y < 180 && indx < @tosort_seqid.count-1
+       if y < qset_height && indx < @tosort_seqid.count-1   #qset_height (180)
          draw_text "#{@exam.exam_on.strftime('%d ')+I18n.t(:'date.month_names')[@exam.exam_on.month]+@exam.exam_on.strftime(' %Y')}", :at => [0,0], :size => 10
          if [1, 4].include?(@exam.subject.root_id)
            draw_text "muka surat #{page_number-1}", :at => [230,0], :size => 10
@@ -407,8 +470,8 @@ class Exam_paperPdf < Prawn::Document
            draw_text "muka surat #{page_number-1-@mcqpages}", :at => [230,0], :size => 10
          end
          draw_text "SULIT", :at => [500,0], :size => 10
-         start_new_page
-         move_down 20
+         #start_new_page
+         #move_down 20
        end
        if indx==@tosort_seqid.count-1       #last page, 1st pg=last pg if only 1 SEQ page exist
          draw_text "#{@exam.exam_on.strftime('%d ')+I18n.t(:'date.month_names')[@exam.exam_on.month]+@exam.exam_on.strftime(' %Y')}", :at => [0,0], :size => 10
@@ -454,23 +517,45 @@ class Exam_paperPdf < Prawn::Document
      #@exam.examquestions.meqq.each_with_index do |q, indx|
      0.upto(@tosort_seqid.count-1) do |indx|
        q = Examquestion.find(@seq_questionid[indx])
-       if q.diagram.exists? then
-         image "#{Rails.root}/public#{q.diagram.url.split("?")[0]}", :position => :center, :height => 140
-         move_down 5
-         text "#{q.diagram_caption}", :align => :center, :style => :italic, :size => 11
-       end
-       move_down 20
-       q_string=q.question 
-       draw_text "#{indx+1}", :at => [10, cursor]
-       text_box q_string, :at => [30, cursor+8], :width => 480, :height => 40, :overflow => :expand, :align => :justify, :inline_format => true
+
+       #check COMPLETE question set HEIGHT, set default as 180 if less than 180
+       q_string=q.question
        lines=q_string.size/100
        mod_lines=q_string.size%100
        aa= (lines*20) if mod_lines==0
        aa= (lines*20+10) if mod_lines>0
+       if q.diagram.exists? then
+         imageheight=130
+       else
+         imageheight=0
+       end
+       qset_height=5+20+20+aa+20+imageheight
+       qset_height=180 if qset_height <180
+       #text "qset_height = #{qset_height}  y = #{y}"
+      
+       #move to next page if space is inadequate for COMPLETE question set
+       if qset_height > y
+         start_new_page
+         move_down 20
+         #text "sebab tak muat meq"
+       end
+       
+       if q.diagram.exists? then
+         draw_text "#{indx+1})", :at => [10, cursor-8]
+         image "#{Rails.root}/public#{q.diagram.url.split("?")[0]}", :position => :center, :height => 130
+         move_down 5
+         text "#{q.diagram_caption}", :align => :center, :style => :italic, :size => 11
+       else
+         draw_text "#{indx+1})", :at => [10, cursor-20]
+       end
+       move_down 20
+       q_string=q.question 
+       #draw_text "#{indx+1}", :at => [10, cursor]
+       text_box q_string, :at => [30, cursor+8], :width => 480, :height => 40, :overflow => :expand, :align => :justify, :inline_format => true
        draw_text "("+q.marks.to_i.to_s+" markah)",  :at => [455, cursor-(aa)]
        move_down (aa)+20
  
-       if y < 180 
+       if y < qset_height #180 
          draw_text "#{@exam.exam_on.strftime('%d ')+I18n.t(:'date.month_names')[@exam.exam_on.month]+@exam.exam_on.strftime(' %Y')}", :at => [0,0], :size => 10
          draw_text "SULIT", :at => [500,0], :size => 10
          if [1, 4].include?(@exam.subject.root_id)
@@ -480,8 +565,8 @@ class Exam_paperPdf < Prawn::Document
          else
            draw_text "muka surat #{page_number-1-@mcqpages}", :at => [230,0], :size => 10
          end
-         start_new_page
-         move_down 20
+         #start_new_page
+         #move_down 20
        else 
          if (indx==@tosort_seqid.count-1)
            draw_text "#{@exam.exam_on.strftime('%d ')+I18n.t(:'date.month_names')[@exam.exam_on.month]+@exam.exam_on.strftime(' %Y')}", :at => [0,0], :size => 10
