@@ -275,7 +275,7 @@ class Exam::ExamsController < ApplicationController
     @exam.destroy
 
     respond_to do |format|
-      format.html { redirect_to(exams_url) }
+      format.html { redirect_to(exam_exams_url) }
       format.xml  { head :ok }
     end
   end

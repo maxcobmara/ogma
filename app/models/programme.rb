@@ -128,7 +128,7 @@ class Programme < ActiveRecord::Base
     @groupped_topic=[]
     topicby_subjectids.each do |subjectid, topics|
       sb_topics=[[I18n.t('helpers.prompt.select_topic'), '']]
-      topics.each{|topic|sb_topics << [topic.subject_list, topic.id]}  #[topic.subject_list]}
+      topics.sort_by{|x|x.code}.each{|topic|sb_topics << [topic.subject_list, topic.id]}  #[topic.subject_list]}
       @groupped_topic << [Programme.find(subjectid).subject_list, sb_topics]
     end
     @groupped_topic
@@ -139,7 +139,7 @@ class Programme < ActiveRecord::Base
     @groupped_topic=[]
     topicby_subjectids.each do |subjectid, topics|
       sb_topics=[[I18n.t('helpers.prompt.select_topic'), '']]
-      topics.each{|topic|sb_topics << [topic.subject_list, topic.id]}  #[topic.subject_list]}
+      topics.sort_by{|x|x.code}.each{|topic|sb_topics << [topic.subject_list, topic.id]}  #[topic.subject_list]}
       @groupped_topic << [Programme.find(subjectid).subject_list, sb_topics]
     end
     @groupped_topic
