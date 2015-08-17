@@ -11,7 +11,7 @@ class Kewpa19Pdf < Prawn::Document
     move_down 20
     text "SIJIL PELUPUSAN ASET KERAJAAN MALAYSIA", :align => :center, :size => 14, :style => :bold
     move_down 20
-    text "Merujuk surat kelulusan No rujukan   <b>#{@disposal.document.try(:refno)}</b>  , bertarikh   <b>#{@disposal.document.try(:letterdt)}</b> , 
+    text "Merujuk surat kelulusan No rujukan   <b>#{@disposal.document.try(:refno)}</b>  , bertarikh   <b>#{@disposal.document.try(:letterdt).try(:strftime, "%d-%m-%Y")}</b> , 
     saya mengesahkan tindakan pelupusan telah dilaksanakan seperti berikut :-", :align => :left, :size => 10, :inline_format => true
     move_down 10
     text "1.  Aset berikut telah dilupuskan secara pindahan/hadiah." , :align => :left, :width => 200, :size => 10
@@ -25,7 +25,7 @@ class Kewpa19Pdf < Prawn::Document
     move_down 10
     text "3.  Aset berikut telah dilupuskan secara musnah.", :align => :left, :width => 200, :size => 10
     text "Bilangan item : <b>#{@disposal.quantity}</b>", :align => :left, :width => 200, :size => 10, :indent_paragraphs => 13,:inline_format => true
-    text  "Cara dimusnahkan : <b>#{@disposal.discard_options}</b>", :align => :left, :width => 200, :size => 10, :indent_paragraphs => 13,:inline_format => true
+    text  "Cara dimusnahkan : <b>#{I18n.t('asset.disposal.'+@disposal.discard_options)}</b>", :align => :left, :width => 200, :size => 10, :indent_paragraphs => 13,:inline_format => true
     text "(Sijil Menyaksikan Pemusnahan disertakan)", :align => :left, :width => 200, :size => 10, :indent_paragraphs => 13
     
     move_down 10
@@ -35,7 +35,7 @@ class Kewpa19Pdf < Prawn::Document
     text "(Dokumen berkaitan disertakan)", :align => :left, :width => 200, :size => 10, :indent_paragraphs => 13
     move_down 10
     text "5.  Aset berikut telah dimasukkan ke dalam stok.", :align => :left, :width => 200, :size => 10
-    text "Bilangan item : <b>#{@disposal.quantity}</b>", :align => :left, :width => 200, :size => 10, :indent_paragraphs => 13
+    text "Bilangan item : <b>#{@disposal.quantity}</b>", :align => :left, :width => 200, :size => 10, :indent_paragraphs => 13, :inline_format => true
     text "Salinan Kad Kawalan Stok Disertakan)", :align => :left, :width => 200, :size => 10, :indent_paragraphs => 13
     move_down 40
     table1

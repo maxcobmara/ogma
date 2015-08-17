@@ -57,7 +57,7 @@ class Kewpa16Pdf < Prawn::Document
   end
   
   def table2
-    data = [["<u>#{@disposals.is_checked? ? @disposals.processor.name.to_s + " via ICMS" : ""}</u>", "", "#{'_'*60}"],
+    data = [["<u>#{@disposals.is_checked? ? @disposals.processor.name.to_s + " via ICMS" : ""}</u>", "", "<u>#{@disposals.is_verified? ? @disposals.verifier.name.to_s + " via ICMS" : ""}</u>"],
            ["(Tandatangan)","","(Tandatangan)"],
            ["Nama : #{@disposals.processor.name.to_s}","","Nama : #{@disposals.verifier.name.to_s}"],
            ["Jawatan : #{@disposals.processor.positions.first.try(:name) }","","Jawatan : #{@disposals.verifier.positions.first.try(:name) }"],
