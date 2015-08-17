@@ -33,6 +33,9 @@
             %br
               %font{:style=>"size:-2"}=t 'exam.exams.marks_each'
             %br
+        - else
+          %br
+          = render :partial => 'tab_questions_edit', :locals => {:f => f}
             
 
 :javascript
