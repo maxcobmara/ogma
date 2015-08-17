@@ -110,7 +110,11 @@ class Asset::AssetDisposalsController < ApplicationController
     end
     @disposal_last = @disposals_all.last
     @disposal_last_id = @disposal_last.id
-    @disposals=AssetDisposal.where('id IN(?) and id !=?', @disposals_all.map(&:id), @disposal_last_id)
+    if @disposals_all.count==1
+      @disposals=AssetDisposal.where('id IN(?)', @disposals_all.map(&:id))
+    else
+      @disposals=AssetDisposal.where('id IN(?) and id !=?', @disposals_all.map(&:id), @disposal_last_id)
+    end
     respond_to do |format|
       format.pdf do
         pdf = Kewpa17Pdf.new(@disposals,@disposal_last,  view_context)

@@ -18,7 +18,7 @@ class Kewpa17Pdf < Prawn::Document
       heading_table
       heading_table2
     end
-    table2
+    table2 if @disposals.count > 1
     total_up
     total_table
     move_down 20
