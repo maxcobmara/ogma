@@ -18,7 +18,7 @@ class Kewpa17Pdf < Prawn::Document
       heading_table
       heading_table2
     end
-    table2
+    table2 if @disposals.count > 1
     total_up
     total_table
     move_down 20
@@ -64,7 +64,7 @@ class Kewpa17Pdf < Prawn::Document
   def line_item_rows
       counter = counter || 0
       header = []
-      header +
+      #header +
         @disposals.map do |disposal|
           quantiti = "#{disposal.try(:asset).try(:quantity)}"
           if quantiti.to_i < 1
@@ -83,9 +83,10 @@ class Kewpa17Pdf < Prawn::Document
             quan = "#{disposal.try(:asset).try(:quantity)}"
           end
          
-          ["#{counter += 1}", "#{disposal.try(:asset).try(:assignedto).try(:positions).try(:first).try(:unit) unless disposal.asset.assignedto.try(:positions).blank?}", "#{disposal.try(:asset).try(:assetcode)} #{disposal.try(:asset).try(:name)}", "" , quan ,"#{disposal.try(:asset).try(:purchasedate).try(:strftime, "%d/%m/%y")}", 
-          "#{Date.today - disposal.try(:asset).try(:purchasedate)} hari", @view.currency(disposal.try(:asset).try(:purchaseprice).to_f), @view.currency(total.to_f), @view.currency(disposal.current_value.to_f), @view.currency(totalcurrent.to_f), "", "" ]
+          header << ["#{counter += 1}", "#{disposal.try(:asset).try(:assignedto).try(:positions).try(:first).try(:unit) unless disposal.asset.assignedto.try(:positions).blank?}", "#{disposal.try(:asset).try(:assetcode)} #{disposal.try(:asset).try(:name)}", "" , quan ,"#{disposal.try(:asset).try(:purchasedate).try(:strftime, "%d/%m/%y")}", 
+          "#{Date.today - disposal.try(:asset).try(:purchasedate)} hari", @view.currency(disposal.try(:asset).try(:purchaseprice).to_f), @view.currency(total.to_f), @view.currency(disposal.current_value.to_f), @view.currency(totalcurrent.to_f), "", "" ] if counter < 14
         end    
+      header
   end
   
   def table2
@@ -102,8 +103,33 @@ class Kewpa17Pdf < Prawn::Document
   
   def line_item_rows2
       counter = counter || 0
-      [["#{@disposals.count+1}", "#{@disposal_end.try(:asset).try(:assignedto).try(:positions).try(:first).try(:unit) unless @disposal_end.asset.assignedto.try(:positions).blank?}", "#{@disposal_end.try(:asset).try(:assetcode)} #{@disposal_end.try(:asset).try(:name)}", "" , @quan ,"#{@disposal_end.try(:asset).try(:purchasedate).try(:strftime, "%d/%m/%y")}", 
+       header = []
+        @disposals.map do |disposal|
+          quantiti = "#{disposal.try(:asset).try(:quantity)}"
+          if quantiti.to_i < 1
+            a = "#{disposal.try(:asset).try(:purchaseprice)}"
+            b = 1
+            c = "#{disposal.current_value}"
+            total = a.to_i * b.to_i 
+            totalcurrent = c.to_i * b.to_i 
+            quan = 1
+          else
+            a = "#{disposal.try(:asset).try(:purchaseprice)}"
+            b = "#{disposal.try(:asset).try(:quantity)}"
+            c = "#{disposal.current_value}"
+            total = a.to_i * b.to_i 
+            totalcurrent = c.to_i * b.to_i 
+            quan = "#{disposal.try(:asset).try(:quantity)}"
+          end
+          
+          header << ["#{counter}", "#{disposal.try(:asset).try(:assignedto).try(:positions).try(:first).try(:unit) unless disposal.asset.assignedto.try(:positions).blank?}", "#{disposal.try(:asset).try(:assetcode)} #{disposal.try(:asset).try(:name)}", "" , quan ,"#{disposal.try(:asset).try(:purchasedate).try(:strftime, "%d/%m/%y")}", 
+          "#{Date.today - disposal.try(:asset).try(:purchasedate)} hari", @view.currency(disposal.try(:asset).try(:purchaseprice).to_f), @view.currency(total.to_f), @view.currency(disposal.current_value.to_f), @view.currency(totalcurrent.to_f), "", "" ] if counter > 14
+          counter += 1
+        end  
+      lastone=[["#{@disposals.count+1}", "#{@disposal_end.try(:asset).try(:assignedto).try(:positions).try(:first).try(:unit) unless @disposal_end.asset.assignedto.try(:positions).blank?}", "#{@disposal_end.try(:asset).try(:assetcode)} #{@disposal_end.try(:asset).try(:name)}", "" , @quan ,"#{@disposal_end.try(:asset).try(:purchasedate).try(:strftime, "%d/%m/%y")}", 
           "#{Date.today - @disposal_end.try(:asset).try(:purchasedate)} hari", @view.currency(@disposal_end.try(:asset).try(:purchaseprice).to_f), @view.currency(@total.to_f), @view.currency(@disposal_end.current_value.to_f), @view.currency(@totalcurrent.to_f), "", "" ]] 
+
+      header+lastone
   end
 
   def total_up

@@ -110,7 +110,11 @@ class Asset::AssetDisposalsController < ApplicationController
     end
     @disposal_last = @disposals_all.last
     @disposal_last_id = @disposal_last.id
-    @disposals=AssetDisposal.where('id IN(?) and id !=?', @disposals_all.map(&:id), @disposal_last_id)
+    if @disposals_all.count==1
+      @disposals=AssetDisposal.where('id IN(?)', @disposals_all.map(&:id))
+    else
+      @disposals=AssetDisposal.where('id IN(?) and id !=?', @disposals_all.map(&:id), @disposal_last_id)
+    end
     respond_to do |format|
       format.pdf do
         pdf = Kewpa17Pdf.new(@disposals,@disposal_last,  view_context)
@@ -181,7 +185,7 @@ class Asset::AssetDisposalsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def asset_disposal_params
-      params.require(:asset_disposal).permit(:asset_id, :description, :running_hours, :mileage, :current_condition,:current_value, :est_repair_cost,:est_value_post_repair, :est_time_next_fail, :repair1_need, :repair2_need,:repair3_need,:justify1_disposal, :justify2_disposal,:justify3_disposal,:is_checked, :checked_on, :is_verified,:verified_on, :revalue, :revalued_by,:revalued_on, :document_id, :disposal_type,:type_others_desc, :discard_option,:receiver_name,:documentation_no, :is_disposed, :inform_hod,:disposed_by, :disposed_on, :is_discarded, :discarded_on, :discard_location, :discard_witness_1, :discard_witness_2, :checked_by, :verified_by, :examiner1, :examiner2, :is_staff1, :is_staff2, :examiner_staff1,:examiner_staff2, :witness_outsider1, :witness_outsider2,:witness_is_staff1, :witness_is_staff2)
+      params.require(:asset_disposal).permit(:asset_id, :description, :running_hours, :mileage, :current_condition,:current_value, :est_repair_cost,:est_value_post_repair, :est_time_next_fail, :repair1_needed, :repair2_needed,:repair3_needed,:justify1_disposal, :justify2_disposal,:justify3_disposal,:is_checked, :checked_on, :is_verified,:verified_on, :revalue, :revalued_by,:revalued_on, :document_id, :disposal_type,:type_others_desc, :discard_option,:receiver_name,:documentation_no, :is_disposed, :inform_hod,:disposed_by, :disposed_on, :is_discarded, :discarded_on, :discard_location, :discard_witness_1, :discard_witness_2, :checked_by, :verified_by, :examiner1, :examiner2, :is_staff1, :is_staff2, :examiner_staff1,:examiner_staff2, :witness_outsider1, :witness_outsider2,:witness_is_staff1, :witness_is_staff2)
       #:code, :category, :unittype, :maxquantity, :minquantity, damages_attributes: [:id, :description,:reported_on,:document_id,:location_id])
     end
 end

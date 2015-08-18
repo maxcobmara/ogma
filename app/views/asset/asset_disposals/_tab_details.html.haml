@@ -17,7 +17,7 @@
     %dt= t 'asset.disposal.estimated_value_after_repair'
     %dd= currency(@disposed.est_value_post_repair.to_f) 	  
     %dt= t 'asset.disposal.estimated_next_failure'
-    %dd= @disposed.est_time_next_fail	  	  
+    %dd= @disposed.est_time_next_fail.nil? ? "" :  "#{@disposed.est_time_next_fail} months"
     %dt= t 'asset.disposal.repair_needed'
     %dd= "1. #{@disposed.repair1_needed}"
     %dt &nbsp;
@@ -31,8 +31,8 @@
     %dt &nbsp;
     %dd= "3. #{@disposed.justify3_disposal}"  
     %dt= t 'asset.disposal.board_examiners'
-    %dd= "1. #{@disposed.inspect1or.try(:name)}"
+    %dd= "1. #{@disposed.is_staff1? ? @disposed.inspect1or.try(:name) : @disposed.examiner1}"
     %dt &nbsp;
-    %dd= "2. #{@disposed.inspect2or.try(:name)}"
+    %dd= "2. #{@disposed.is_staff2? ? @disposed.inspect2or.try(:name) : @disposed.examiner2}"
     %dt= t 'asset.disposal.is_checked'
     %dd= @disposed.is_checked? ? "Yes, "+@disposed.processor.name+" on "+@disposed.checked_on.strftime('%d %b %Y') : "No" 

@@ -1306,7 +1306,7 @@ en:
       board_examiners: Board of Examiners
       is_checked: "Check / Process?"
       is_verified: "Verified?"
-      is_disposed: Send to HOD for Verification
+      is_disposed: "Disposal Approval"
       revalue: "Current Value (New)"
       revalued_by: "Re-Valued By"
       revalued_on: "Re-Valued On"
@@ -2943,7 +2943,7 @@ en:
         discarded_on: Discarded On
         witness1: "1. Witness Name (Tick if STAFF)"
         witness2: "2. Witness Name (Tick if STAFF)"
-        is_disposed: Send to HOD for Verification
+        is_disposed: "Disposal Approval"
         
 
     prompt:

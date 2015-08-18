@@ -1,0 +1,50 @@
+.col-md-offset-2
+  .form-group
+    .col-sm-2.control-label
+      = f.label :created_by
+    .col-md-6 
+      - if @exam.creator_id!=nil && ["Submit", "Editing", "Re-Edit"].include?(@exam.qstatus)
+        = f.collection_select :creator_by, Staff.where('id IN (?)', @exam.creator_by), :id, :name,{}, {class: 'selectpicker readonly', "data-width"=>"300px"}
+      - else
+        = f.collection_select :creator_by, Staff.where('id IN (?)', @exam.question_creator(current_user)).order('name ASC'), :id, :name, {:include_blank => (t 'select'), :selected =>@creator, :prompt => t('helpers.prompt.select_creator')}, {class: 'selectpicker mandatory', "data-width"=>"300px"}
+
+  .form-group
+    .col-sm-2.control-label
+      = f.label :course_id
+    .col-md-6
+      - unless @exam.programme_id.nil?
+        - selected_programme=@exam.programme_id
+      - else
+        - selected_programme=@preselect_prog
+      = f.collection_select :course_id, @programme_list, :id, :programme_list, {:selected => selected_programme, :include_blank => (t 'select')}, {class: 'selectpicker mandatory', "data-width"=>"400px"}
+
+  .form-group
+    .col-sm-2.control-label
+      = f.label :subject_id
+    .col-md-5
+      - unless @preselect_prog.nil?
+        /lecturer
+        = f.select :subject_id, grouped_options_for_select(Programme.subject_groupbyoneprogramme(@preselect_prog), @exam.subject_id), {:include_blank => (t 'select'), :selected => @exam.subject_id.to_i}, {class: 'form-control mandatory'}
+      - else
+        /admin
+        = f.select :subject_id, grouped_options_for_select(Programme.subject_groupbyprogramme, @exam.subject_id), {:include_blank => (t 'select')}, {class: 'form-control mandatory'}
+
+  .form-group
+    .col-sm-2.control-label
+      = f.label :topic_id
+    .col-md-5
+      - unless @preselect_prog.nil?
+        /lecturer
+        = f.select :topic_id, grouped_options_for_select(Programme.topic_groupbysubject_oneprogramme(@preselect_prog), @exam.topic_id),{:include_blank => (t 'select')}, {class: 'form-control mandatory'}
+      - else
+        /admin
+        = f.select :topic_id, grouped_options_for_select(Programme.topic_groupbysubject, @exam.topic_id),{:include_blank => (t 'select')}, {class: 'form-control mandatory'}
+
+  .form-group
+    .col-sm-2.control-label
+      =f.label :createdt
+    .col-md-2
+      - if @exam.id.nil? || @exam.id.blank?
+        = f.text_field :createdt, class: 'date_picker_reverse form-control mandatory'
+      - else
+        = f.text_field :createdt, value: @exam.createdt.strftime('%d-%m-%Y'), class: 'form-control', readonly: 'readonly'

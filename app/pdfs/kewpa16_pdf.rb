@@ -26,13 +26,13 @@ class Kewpa16Pdf < Prawn::Document
       row(0..1).borders = [ ]
     end
     data1 = [["No Siri Pendaftaran Aset (KEW.PA-2/PA-3)",": #{@disposals.try(:asset).try(:assetcode)}","",""],
-             ["No. Kodifikasi Nasional",":","Jumlah Jarak Perjalanan(km)/ Tempoh Penggunaan(jam)", ":#{@disposals.mileage} #{@disposals.running_hours}"],
+             ["No. Kodifikasi Nasional",":","Jumlah Jarak Perjalanan(km)/ Tempoh Penggunaan(jam)", ": #{@disposals.mileage} #{@disposals.running_hours}"],
              ["Jenis, Jenama dan Model", ":#{@disposals.try(:asset).try(:typename)} #{@disposals.try(:asset).try(:name)} #{@disposals.try(:asset).try(:modelname)}","Tahap Penyampaian Perkhidmatan(%)",":"],
-             ["No. Chassis/Siri Pembuat",":#{@disposals.try(:asset).try(:serialno)}","Jumlah Kos Penyelenggaraan Terdahulu", ": #{@disposal.try(:asset).try(:maints).try(:maintcost)}" ],
-             ["No. Enjin",":#{@disposals.try(:asset).try(:engine_no)}","Anggaran Kos Penyelenggaraan Semasa",  @view.currency(@disposals.est_repair_cost.to_f)],
-             ["No. Pendaftaran (kenderaan)",":#{@disposals.try(:asset).try(:registration)}","Nilai Semasa", @view.currency(@disposals.current_value.to_f) ],
-             ["Tarikh dibeli",":#{@disposals.try(:asset).try(:purchasedate).try(:strftime,"%d/%m/%y")}","Anggaran Nilai Selepas Dibaiki",@view.currency(@disposals.est_value_post_repair.to_f) ],
-             ["Harga Perolehan Asal",@view.currency(@disposals.asset.purchaseprice.to_f),"Anggaran Tahan Selepas Dibaiki ",":#{@disposals.est_time_next_fail} (bulan)"]]
+             ["No. Chassis/Siri Pembuat",": #{@disposals.try(:asset).try(:serialno)}","Jumlah Kos Penyelenggaraan Terdahulu", ": #{@disposal.try(:asset).try(:maints).try(:maintcost)}" ],
+             ["No. Enjin",": #{@disposals.try(:asset).try(:engine_no)}","Anggaran Kos Penyelenggaraan Semasa", ": #{@view.currency(@disposals.est_repair_cost.to_f)}"],
+             ["No. Pendaftaran (kenderaan)",": #{@disposals.try(:asset).try(:registration)}","Nilai Semasa", ": #{@view.currency(@disposals.current_value.to_f)}" ],
+             ["Tarikh dibeli",": #{@disposals.try(:asset).try(:purchasedate).try(:strftime,"%d/%m/%y")}","Anggaran Nilai Selepas Dibaiki",": #{@view.currency(@disposals.est_value_post_repair.to_f)}"],
+             ["Harga Perolehan Asal",": #{@view.currency(@disposals.asset.purchaseprice.to_f)}","Anggaran Tahan Selepas Dibaiki ",": #{@disposals.est_time_next_fail} (bulan)"]]
              
     table(data1, :column_widths => [120, 120, 150, 80], :cell_style => { :size => 9})  do
       row(0..7).borders = [ ]  
@@ -57,14 +57,14 @@ class Kewpa16Pdf < Prawn::Document
   end
   
   def table2
-    data = [["#{'.'*60}", "", "#{'.'*60}"],
+    data = [["<u>#{@disposals.is_checked? ? @disposals.processor.name.to_s + " via ICMS" : ""}</u>", "", "<u>#{@disposals.is_verified? ? @disposals.verifier.name.to_s + " via ICMS" : ""}</u>"],
            ["(Tandatangan)","","(Tandatangan)"],
-           ["Nama : ","","Nama : "],
-           ["Jawatan :","","Jawatan :"],
+           ["Nama : #{@disposals.processor.name.to_s}","","Nama : #{@disposals.verifier.name.to_s}"],
+           ["Jawatan : #{@disposals.processor.positions.first.try(:name) }","","Jawatan : #{@disposals.verifier.positions.first.try(:name) }"],
            ["Tarikh :","", "Tarikh :"],
            ["Cop :","","Cop :"]]
            
-    table(data, :column_widths => [160, 60, 160], :cell_style => { :size => 9})  do
+    table(data, :column_widths => [160, 120, 160], :cell_style => { :size => 9,  :inline_format => :true})  do
              row(0..5).height = 18
              row(0..5).borders = [ ]
              row(1).align = :center
