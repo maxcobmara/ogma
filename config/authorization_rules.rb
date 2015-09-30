@@ -86,6 +86,10 @@ authorization do
    has_permission_on :asset_asset_defects, :to => [:manage, :decision, :kewpa9] do
        if_attribute :decision_by => is {user.userable.id}
    end
+#not working yet
+#    has_permission_on :asset_asset_disposals, :to => [:manage, :verify] do
+#      if_attribute :verified_by => is {user.userable.id}
+#    end
    
    has_permission_on :asset_asset_loans, :to => :create
    has_permission_on :asset_asset_loans, :to =>:read do 
@@ -160,7 +164,7 @@ authorization do
  #Group Assets  -------------------------------------------------------------------------------
  role :asset_administrator do
    has_permission_on :asset_assets, :to => [:manage, :kewpa2, :kewpa3, :kewpa4, :kewpa5, :kewpa6, :kewpa13, :kewpa14, :loanables]
-   has_permission_on :asset_defects, :to =>[:manage, :kewpa9] #3nov2013
+   has_permission_on :asset_defects, :to =>[:manage, :kewpa9, :process2] #3nov2013
    has_permission_on :assetsearches, :to => :read
    has_permission_on :locations, :to => :manage
    has_permission_on :asset_disposals, :to => :manage

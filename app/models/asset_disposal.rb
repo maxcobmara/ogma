@@ -22,11 +22,16 @@ class AssetDisposal < ActiveRecord::Base
     validates :revalued_on, presence: true, :if => :revalue?
     validates :disposed_by, presence: true, :if => :disposed_on?
     validates :disposed_on, presence: true, :if => :disposed_by?
+    validates :discard_options, presence: true, :if => :disposal_type_is_discard?
     
     attr_accessor :editing_page
     
     def disposaltype_others?
       disposal_type=='others'
+    end
+    
+    def disposal_type_is_discard?
+      disposal_type=='discard'
     end
     
     #define scope - asset(typename, name, modelname)
