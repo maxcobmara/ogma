@@ -24,9 +24,9 @@
 
  - permitted_to? :manage, :asset_defects do
   - if asset_with_defects > 0
-   %li= link_to content_tag(:span, "#{asset_with_defects}", class: "badge") + "  Defect reports require processing", asset_asset_defects_path
+   %li= link_to content_tag(:span, "#{asset_with_defects}", class: "badge") + "  Defect reports require processing", asset_defects_path
   - if defect_actions_for_approval > 0
-   %li= link_to content_tag(:span, "#{defect_actions_for_approval}", class: "badge") + " Defect reports for decision", asset_asset_defects_path
+   %li= link_to content_tag(:span, "#{defect_actions_for_approval}", class: "badge") + " Defect reports for decision", asset_defects_path
 
  - if current_user.roles.pluck(:id).include?(7) || current_user.roles.pluck(:id).include?(14) || current_user.roles.pluck(:id).include?(2) 
   - if staff_notifications_of_student_leave > 0

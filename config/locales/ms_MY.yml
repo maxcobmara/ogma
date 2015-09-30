@@ -1219,7 +1219,7 @@ ms_MY:
       board_examiners: Lembaga Pemeriksa
       is_checked: "Disemak / Diproses?"
       is_verified: "Disahkan"
-      is_disposed: Kelulusan Pelupusan
+      is_disposed: Hantar kepada Ketua Jabatan untuk semakan
       revalue: "Nilai Semasa (Baru)"
       revalued_by: Penilaian Semula Oleh
       revalued_on: Penilaian Semula Pada
@@ -2884,7 +2884,7 @@ ms_MY:
         discarded_on: Dimusnahkan Pada
         witness1: "1. Nama Saksi (Pilih kotak semak jika STAF)"
         witness2: "2. Nama Saksi (Pilih kotak semak jika STAF)"
-        is_disposed: "Kelulusan pelupusan"
+        is_disposed: Hantar kepada Ketua Jabatan untuk semakan
 
 
     prompt:

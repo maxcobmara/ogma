@@ -34,6 +34,7 @@
       %b= t 'asset.disposal.receipt_no'
     .col-md-5
       = f.text_field :documentation_no, class: 'form-control'
+  /TODO - recheck-when validation failed for unselected 'discard_options' (disposal_type - 'discard' is selected) - should re-display DISPOSE page (this partial) not EDIT pg & discard_options var not available during submission - note check_box
   .form-group.discard_item{:style=>"display: block;"}
     .col-sm-2.control-label
       %b= t 'asset.disposal.discard_options'
@@ -72,9 +73,9 @@
     .col-md-1
       = f.check_box :witness_is_staff2, :id => 'witness_is_staff2'
     .col-md-4
-      .span_wstaff1_on{:style=>"display: none;"}
+      .span_wstaff2_on{:style=>"display: none;"}
         = f.collection_select :discard_witness_2, Staff.all.order(name: :asc), :id, :staff_name_with_position, {:include_blank =>t('helpers.prompt.select_staff'), :selected=>@disposal.discard_witness_2},{class: 'selectpicker', "data-width"=>'357px'} 
-      .span_wstaff1_off{:style=>"display: none;"}
+      .span_wstaff2_off{:style=>"display: none;"}
         = f.text_field :witness_outsider2, class: 'form-control'
   .form-group
     .col-sm-2.control-label

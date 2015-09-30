@@ -27,10 +27,25 @@
   .col-sm-2.control-label
     = f.label t 'asset.defect.processed_by', for: :processed_by
   .col-md-4
-    = f.collection_select :processed_by, Staff.all.order(name: :asc), :id, :name, {:include_blank =>t('helpers.prompt.select_staff'), :selected=>@defective.processed_by},{class: 'selectpicker', "data-width"=>'230px'} 
+    - if @defective.processed_by.nil?
+      - asset_processor=current_user.userable_id
+    - else
+      - asset_processor = @defective.processed_by
+    = f.collection_select :processed_by, Staff.all.order(name: :asc), :id, :name, {:include_blank =>t('helpers.prompt.select_staff'), :selected=>asset_processor},{class: 'selectpicker', "data-width"=>'230px'} 
 
 .form-group
   .col-sm-2.control-label
     = f.label t 'asset.defect.processed_on', for: :processed_on
   .col-md-2
     = f.text_field :processed_on, class: 'date_picker form-control' 
+
+.form-group
+  .col-sm-2.control-label
+    = f.label t 'asset.defect.decision_by', for: :decision_by
+  .col-md-2
+    - if current_user.userable.positions.first.is_root? == false
+      - bosses = current_user.userable.positions.first.try(:ancestor_ids) 
+      - myhod = Position.where('id IN (?)', bosses).pluck(:staff_id) 
+    - else
+      - myhod = current_user.userable_id 
+    = f.collection_select :decision_by, Staff.where(id: myhod), :id, :name,{:include_blank =>t('helpers.prompt.select_staff'), :selected=>asset_processor},{class: 'selectpicker', "data-width"=>'230px'} 

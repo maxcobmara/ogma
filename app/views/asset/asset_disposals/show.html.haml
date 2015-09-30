@@ -52,13 +52,15 @@
         - if !@disposed.document_id && !@disposed.is_disposed && !@disposed.disposed_by
           = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('.edit', :default => t("helpers.links.revalue")), revalue_asset_disposal_path(@disposed), :class => 'btn btn-primary'
         /verification - HOD
-        = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('.edit', :default => t("helpers.links.verify")), verify_asset_disposal_path(@disposed), :class => 'btn btn-primary'
+        - if@disposed.verified_by==current_user.userable_id
+          = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('.edit', :default => t("helpers.links.verify")), verify_asset_disposal_path(@disposed), :class => 'btn btn-primary'
         - if @disposed.is_verified
           /disposaldetails (disposal approval)
           = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('.edit', :default => t("helpers.links.dispose")), dispose_asset_disposal_path(@disposed), :class => 'btn btn-primary'
       - if @disposed.is_disposed
-        /view_close
-        = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('.edit', :default => t("helpers.links.view_close")), view_close_asset_disposal_path(@disposed), :class => 'btn btn-primary'   
+        /view_close - confirmed disposal done 
+        - if@disposed.verified_by==current_user.userable_id
+          = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('.edit', :default => t("helpers.links.view_close")), view_close_asset_disposal_path(@disposed), :class => 'btn btn-primary'   
       = link_to content_tag(:i, "", :class => "fa fa-trash-o icon-white") + " " + t('.destroy', :default => t("helpers.links.destroy")), |
       asset_disposal_path(@disposed),                                                                                                    |
       :method => 'delete',                                                                                                           |

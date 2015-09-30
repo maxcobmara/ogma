@@ -32,6 +32,7 @@ class Asset::AssetDisposalsController < ApplicationController
   end
   
   def update
+    raise params.inspect
     @disposal = AssetDisposal.find(params[:id])  
     editingpage = params[:asset_disposal][:editing_page]
     respond_to do |format|
