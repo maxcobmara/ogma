@@ -88,7 +88,7 @@
           %h2.icon=t ("asset.title")
           %a.mp-back{:href => "#"}=t('back')
           %ul
-            - permitted_to? :menu, :asset_assets do
+            - permitted_to? :read, :asset_assets do
               %li= link_to content_tag(:i, "", :class => "icon-numb") + (t "asset.title"), asset_assets_path
             - permitted_to? :manage, :assets do
               %li= link_to content_tag(:i, "", :class => "icon-numb") + (t "stationery.title_menu"), asset_stationeries_path

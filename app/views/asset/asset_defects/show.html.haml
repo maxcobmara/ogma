@@ -27,23 +27,24 @@
     %hr
     .form-actions
       = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), asset_defects_path, :class => 'btn btn-default'
-      - permitted_to? :kewpa9, :asset_defects do
+      - permitted_to? :kewpa9, :asset_asset_defects do
         = link_to content_tag(:i, "", :class => "fa fa-file-pdf-o"), kewpa9_asset_defect_path(@defective, format: "pdf"), {class: "btn btn-default", "data-toggle" => "tooltip", title: "KEW.PA 9 PDF"}
       
       - if (@defective.exist_count==1)|| ((@defective.exist_count>1)&&(@defective.marked_dispose_count==0))||((@defective.exist_count>1)&&(@defective.marked_dispose_count>0)&&(@defective.marked_dispose_inc) )
         /edit details
-        - permitted_to? :update, :asset_defects do
+        - permitted_to? :update, :asset_asset_defects do
           = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('.edit', :default => t("helpers.links.edit")), edit_asset_defect_path(@defective), :class => 'btn btn-primary'
         /process defective
-        - permitted_to? :process2, :asset_defects do
+        - permitted_to? :process2, :asset_asset_defects do
           = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('.process', :default => t("helpers.links.process")), process2_asset_defect_path(@defective), :class => 'btn btn-primary' 
         /approve process
         
       - if @defective.is_processed
         - permitted_to? :decision, :asset_asset_defects do
-          = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('.decision', :default => t("helpers.links.decision")), decision_asset_defect_path(@defective), :class => 'btn btn-primary'
+          - if @defective.decision_by==current_user.userable_id
+            = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('.decision', :default => t("helpers.links.decision")), decision_asset_defect_path(@defective), :class => 'btn btn-primary'
        
-      - permitted_to? :delete, :asset_defects do
+      - permitted_to? :delete, :asset_asset_defects do
         = link_to content_tag(:i, "", :class => "fa fa-trash-o icon-white") + " " + t('.destroy', :default => t("helpers.links.destroy")), |
           asset_defect_path(@defective),                                                                                                    |
           :method => 'delete',                                                                                                           |
