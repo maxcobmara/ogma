@@ -19,7 +19,7 @@ authorization do
 
  role :staff do
    has_permission_on [:attendances, :documents],     :to => :menu              # Access for Menus
-   has_permission_on :asset_assets, :to => [:menu, :loanables]
+   has_permission_on :asset_assets, :to => [:read, :loanables]
    has_permission_on [:staff_staff_attendances], :to => [:manager, :menu]
    #has_permission_on :staffs, :to => [:show, :menu]                                     # A staff see the staff list
    #has_permission_on :staffs, :to => [:edit, :update, :menu] do
@@ -164,7 +164,7 @@ authorization do
  #Group Assets  -------------------------------------------------------------------------------
  role :asset_administrator do
    has_permission_on :asset_assets, :to => [:manage, :kewpa2, :kewpa3, :kewpa4, :kewpa5, :kewpa6, :kewpa13, :kewpa14, :loanables]
-   has_permission_on :asset_defects, :to =>[:manage, :kewpa9, :process2] #3nov2013
+   has_permission_on :asset_asset_defects, :to =>[:manage, :kewpa9, :process2] #3nov2013
    has_permission_on :assetsearches, :to => :read
    has_permission_on :locations, :to => :manage
    has_permission_on :asset_disposals, :to => :manage
