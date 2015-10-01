@@ -104,9 +104,9 @@ class Asset::AssetDisposalsController < ApplicationController
 
   def kewpa17
     if params[:disposalids]
-      @disposals_all = AssetDisposal.where('id IN(?)', params[:disposalids]).order(created_at: :desc)
+      @disposals_all = AssetDisposal.where('is_disposed is not TRUE').where('id IN(?)', params[:disposalids]).order(created_at: :desc)
     else
-      @disposals_all = AssetDisposal.order('created_at DESC')
+      @disposals_all = AssetDisposal.where('is_disposed is not TRUE').order('created_at DESC')
     end
     @disposal_last = @disposals_all.last
     @disposal_last_id = @disposal_last.id
