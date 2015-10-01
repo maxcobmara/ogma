@@ -22,6 +22,7 @@ class AssetDisposal < ActiveRecord::Base
     validates :revalued_on, presence: true, :if => :revalue?
     validates :disposed_by, presence: true, :if => :disposed_on?
     validates :disposed_on, presence: true, :if => :disposed_by?
+    validates :current_value, presence: true
     #validates :discard_options, presence: true, :if => :disposal_type_is_discard?
     
     attr_accessor :editing_page
