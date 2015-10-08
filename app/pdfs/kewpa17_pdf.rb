@@ -9,7 +9,7 @@ class Kewpa17Pdf < Prawn::Document
     move_down 20
     text "LAPORAN LEMBAGA PEMERIKSA ASET ALIH KERAJAAN", :align => :center, :size => 14, :style => :bold
     move_down 20
-    text "KEMENTERIAN/JABATAN:  KOLEJ SAINS KESIHATAN BERSEKUTU JOHOR BAHRU", :align => :left, :size => 10
+    text "KEMENTERIAN/JABATAN: KOLEJ SAINS KESIHATAN BERSEKUTU JOHOR BAHRU", :align => :left, :size => 10
     heading_table
     heading_table2
     table1
@@ -50,7 +50,7 @@ class Kewpa17Pdf < Prawn::Document
   end
   
   def table1
-    table(line_item_rows, :column_widths => [30, 50, 100, 45, 50, 55, 50, 45, 45, 45, 45,90], :cell_style => { :size => 6})  do
+    table(line_item_rows, :column_widths => [30, 50, 100, 45, 50, 55, 50, 45, 45, 45, 45,90], :cell_style => { :size => 6,  :inline_format => :true})  do
       columns(0..6).borders = [:left, :right, :bottom]
       columns(10..12).borders = [:left, :right, :bottom]
       self.row_colors = ["FEFEFE", "FFFFFF"]
@@ -84,7 +84,7 @@ class Kewpa17Pdf < Prawn::Document
           end
          
           header << ["#{counter += 1}", "#{disposal.try(:asset).try(:assignedto).try(:positions).try(:first).try(:unit) unless disposal.asset.assignedto.try(:positions).blank?}", "#{disposal.try(:asset).try(:assetcode)} #{disposal.try(:asset).try(:name)}", "" , quan ,"#{disposal.try(:asset).try(:purchasedate).try(:strftime, "%d/%m/%y")}", 
-          "#{Date.today - disposal.try(:asset).try(:purchasedate)} hari", @view.currency(disposal.try(:asset).try(:purchaseprice).to_f), @view.currency(total.to_f), @view.currency(disposal.current_value.to_f), @view.currency(totalcurrent.to_f), "", "" ] if counter < 14
+          "#{Date.today - disposal.try(:asset).try(:purchasedate)} hari", @view.currency(disposal.try(:asset).try(:purchaseprice).to_f), @view.currency(total.to_f), @view.currency(disposal.current_value.to_f), @view.currency(totalcurrent.to_f), disposal.try(:current_condition), disposal.justify1_disposal+"<br>"+disposal.justify2_disposal+"<br>"+disposal.justify3_disposal ] if counter < 14
         end    
       header
   end
