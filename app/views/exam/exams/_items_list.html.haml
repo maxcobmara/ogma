@@ -1,0 +1,20 @@
+%br
+- if items.count > 0
+  %table.table.table-bordered
+    %head
+      %tr
+        %th No
+        %th Question
+        %th Answer
+        %th Marks
+        %th Category
+      - items.each_with_index do |item, index|
+        %tr
+          %td=index+1
+          %td= simple_format(item.question)
+          %td= item.answer
+          %td= item.marks
+          %td= item.category
+- else
+  No question available. Select other subject and / or topic, or create one. 
+  %BR

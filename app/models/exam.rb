@@ -1,6 +1,6 @@
 class Exam < ActiveRecord::Base
   belongs_to  :creator,       :class_name => 'Staff',   :foreign_key => 'created_by'
-  #belongs_to  :programme,   :foreign_key => 'course_id'
+  belongs_to  :programme,   :foreign_key => 'course_id'
   belongs_to :subject,  :class_name => 'Programme', :foreign_key => 'subject_id'
   has_and_belongs_to_many :examquestions
   has_many :exammarks   #11Apr2013
@@ -9,7 +9,7 @@ class Exam < ActiveRecord::Base
   
   before_save :set_sequence, :set_duration, :set_full_marks
   
-  attr_accessor :own_car, :dept_car,:programme_id #18Apr2013-programme_id used in views/exams/new.html.erb #9Apr2013-use course_id (temp) to capture semester (year as well)
+  attr_accessor :own_car, :dept_car#,:programme_id #18Apr2013-programme_id used in views/exams/new.html.erb #9Apr2013-use course_id (temp) to capture semester (year as well)
   attr_accessor :programme_filter, :subject_filter, :topic_filter, :seq
   
   validates_presence_of :subject_id, :name  #programme_id

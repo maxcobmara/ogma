@@ -20,12 +20,12 @@
           .col-sm-2.control-label
             = f.label t 'exam.exams.course_id', for: :programme
           .col-md-4
-            = f.collection_select :programme_id, Programme.roots, :id, :programme_list ,{:include_blank => t('select')}, {class: 'selectpicker', "data-width"=>'360px'} 
+            = f.collection_select :course_id, @programme_listing, :id, :programme_list ,{:include_blank => t('select'), :selected => @preselect_prog}, {class: 'selectpicker', "data-width"=>'360px'} 
         .form-group
           .col-sm-2.control-label
             = f.label t 'exam.exams.subject_id', for: :subject
           .col-md-4
-            = f.collection_select :subject_id, Programme.at_depth(2), :id, :subject_list, {:include_blank => t('select')}, {class: 'selectpicker', "data-width"=>'360px'} 
+            = f.collection_select :subject_id, @subjectlist_preselect_prog, :id, :subject_list, {:include_blank => t('select')}, {class: 'selectpicker', "data-width"=>'360px'} 
         .form-group
           .col-sm-2.control-label
             = f.label t 'exam.exams.exam_on', for: :exam_on

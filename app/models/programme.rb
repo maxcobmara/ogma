@@ -112,12 +112,25 @@ class Programme < ActiveRecord::Base
     subjectby_programmelists=Programme.find(progid).descendants.where(course_type: "Subject").group_by{|x|x.root.programme_list}
     @groupped_subject=[]
     subjectby_programmelists.each do |programmelist, subjects|
-      pg_subjects=[]
+      pg_subjects=[[I18n.t('helpers.prompt.select_subject'), '']]
+      subjects.each{|subject|pg_subjects << [subject.subject_list]} # [subject.subject_list]}
+      @groupped_subject << [programmelist, pg_subjects]
+    end
+    @groupped_subject
+  end
+  
+  #orignal one-start
+  def self.subject_groupbyoneprogramme2(progid)
+    subjectby_programmelists=Programme.find(progid).descendants.where(course_type: "Subject").group_by{|x|x.root.programme_list}
+    @groupped_subject=[]
+    subjectby_programmelists.each do |programmelist, subjects|
+      pg_subjects=[[I18n.t('helpers.prompt.select_subject'), '']]
       subjects.each{|subject|pg_subjects << [subject.subject_list, subject.id]} # [subject.subject_list]}
       @groupped_subject << [programmelist, pg_subjects]
     end
     @groupped_subject
   end
+  #original one-end
 
   def self.subject_names
     Programme.where(course_type: "Subject").map(&:subject_list)
@@ -138,6 +151,19 @@ class Programme < ActiveRecord::Base
     topicby_subjectids=Programme.find(progid).descendants.where(course_type: "Topic").group_by{|x|x.ancestry.split("/").last}
     @groupped_topic=[]
     topicby_subjectids.each do |subjectid, topics|
+      sb_topics=[[I18n.t('helpers.prompt.select_topic'), '']]
+      topics.sort_by{|x|x.code}.each{|topic|sb_topics << [topic.subject_list, topic.id]}  #[topic.subject_list]}
+      @groupped_topic << [Programme.find(subjectid).subject_list, sb_topics]
+    end
+    @groupped_topic
+  end
+  
+  #topics under common subjects only
+  def self.topic_groupbycommonsubjects
+    topics_ofcommon_subjects=Programme.where('course_type=?','Commonsubject').descendants
+    #topicby_subjectids=Programme.find(progid).descendants.where(course_type: "Topic").group_by{|x|x.ancestry.split("/").last}
+    @groupped_topic=[]
+    topics_ofcommon_subjects.each do |subjectid, topics|
       sb_topics=[[I18n.t('helpers.prompt.select_topic'), '']]
       topics.sort_by{|x|x.code}.each{|topic|sb_topics << [topic.subject_list, topic.id]}  #[topic.subject_list]}
       @groupped_topic << [Programme.find(subjectid).subject_list, sb_topics]

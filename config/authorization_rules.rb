@@ -196,7 +196,7 @@ authorization do
    #EXAMINATION modules
    has_permission_on [:exam_examquestions, :exam_exams, :exam_exammarks, :exam_grades], :to => [:menu, :read, :create]
  
-   has_permission_on :exam_exams, :to =>:manage do
+   has_permission_on :exam_exams, :to =>[:manage , :exampaper, :question_selection] do
      if_attribute :created_by => is {user.userable.id}
    end
    
@@ -268,7 +268,7 @@ authorization do
 
  role :programme_manager do
    has_permission_on :exam_examquestions, :to => :manage
-   has_permission_on :exam_exams, :to => [:manage, :exampaper]
+   has_permission_on :exam_exams, :to => [:manage, :exampaper, :question_selection]
    has_permission_on :exam_exammarks, :to => [:manage, :edit_multiple, :update_multiple, :new_multiple, :create_multiple]
 #    has_permission_on :exam_evaluate_courses, :to => :create 
 #    has_permission_on :exam_evaluate_courses, :to => [:manage, :courseevaluation] do

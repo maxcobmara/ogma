@@ -97,13 +97,30 @@ class Exam::ExamsController < ApplicationController
   def edit
     @exam = Exam.find(params[:id])
     @programme_id = @exam.subject.root.id
-    #@lecturer_programme = current_user.staff.positions[0].unit  
     @lecturer_programme = @current_user.userable.positions[0].unit  
-    all_subject_ids = Programme.find(@programme_id).descendants.at_depth(2).map(&:id)
-    if @lecturer_programme == 'Commonsubject'
-      @subjects = Programme.where('id IN(?) AND course_type=?',all_subject_ids, @lecturer_programme)  
-    else
-      @subjects = Programme.where('id IN(?) AND course_type=?',all_subject_ids, 'Subject')  #'Subject' 
+    unless @programme_id.nil? #|| @programme.count==0
+      @programme_names=Programme.where(id: @programme_id).map(&:programme_list)
+      @subjects=Programme.subject_groupbyoneprogramme(@programme_id)
+      @topics=Programme.topic_groupbysubject_oneprogramme(@programme_id)
+    else  #if programme not pre-selected (Commonsubject lecturer)
+      if @lecturer_programme == 'Commonsubject' #Commonsubject LECTURER have no selected programme
+#         @subjectlist_preselect_prog = Programme.where('course_type=?','Commonsubject')
+        @topics=Programme.topic_groupbycommonsubjects
+      else
+        @topics=Programme.topic_groupbysubject
+      end
+      @subjects=Programme.subject_groupbyprogramme
+      @programme_names=Programme.programme_names
+    end
+    @items=Examquestion.all
+  end
+  
+  def question_selection
+    @exam=Exam.where(id: params[:id]).first
+    topicid=params[:topicid]
+    @selected = Examquestion.where(topic_id: topicid)
+    respond_to do |format|
+      format.js
     end
   end
 
@@ -141,7 +158,26 @@ class Exam::ExamsController < ApplicationController
           #end
         #end
     #10June2013-----  
-    #end  
+    #end
+
+    #--newly added
+    @lecturer_programme = @current_user.userable.positions[0].unit      
+    unless @lecturer_programme.nil?
+      @programme = Programme.where('name ILIKE (?) AND ancestry_depth=?',"%#{@lecturer_programme}%",0).first
+    end
+    unless @programme.nil? #|| @programme.count==0
+      @programme_listing = Programme.where('id=?',@programme.id).to_a
+      @preselect_prog = @programme.id
+      @all_subject_ids = Programme.find(@preselect_prog).descendants.at_depth(2).map(&:id)
+      @subjectlist_preselect_prog = Programme.where('id IN(?) AND course_type=?',@all_subject_ids, 'Subject')  #'Subject' 
+    else  #if programme not pre-selected (Commonsubject lecturer)
+      if @lecturer_programme == 'Commonsubject' #Commonsubject LECTURER have no selected programme
+        @subjectlist_preselect_prog = Programme.where('course_type=?','Commonsubject')
+      end
+      @programme_listing = Programme.roots
+      @subjectlist_preselect_prog = Programme.at_depth(2)
+    end
+    #--newly added
     
     if @create_type == t('exam.exams.create_exam')
         @exam.klass_id = 1  #added for use in E-Query & Report Manager (27Jul2013)
