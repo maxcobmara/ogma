@@ -206,13 +206,35 @@ class Exam::ExamsController < ApplicationController
     ###----subject + common subject
     @programme_id = @exam.subject.root.id
     @lecturer_programme = @current_user.userable.positions.first.unit  
-    all_subject_ids = Programme.find(@programme_id).descendants.at_depth(2).map(&:id)
-    if @lecturer_programme == 'Commonsubject'
-      @subjects = Programme.where('id IN(?) AND course_type=?',all_subject_ids, @lecturer_programme)  
-    else
-      @subjects = Programme.where('id IN(?) AND course_type=?',all_subject_ids, 'Subject')  #'Subject' 
-    end
+   
+#     all_subject_ids = Programme.find(@programme_id).descendants.at_depth(2).map(&:id)
+#     if @lecturer_programme == 'Commonsubject'
+#       @subjects = Programme.where('id IN(?) AND course_type=?',all_subject_ids, @lecturer_programme)  
+#     else
+#       @subjects = Programme.where('id IN(?) AND course_type=?',all_subject_ids, 'Subject')  #'Subject' 
+#     end
     ###----subject + common subject
+    
+    ###from edit
+    unless @programme_id.nil? #|| @programme.count==0
+      @programme_names=Programme.where(id: @programme_id).map(&:programme_list)
+      @subjects=Programme.subject_groupbyoneprogramme(@programme_id)
+      @topics=Programme.topic_groupbysubject_oneprogramme(@programme_id)
+    else  #if programme not pre-selected (Commonsubject lecturer)
+      if @lecturer_programme == 'Commonsubject' #Commonsubject LECTURER have no selected programme
+#         @subjectlist_preselect_prog = Programme.where('course_type=?','Commonsubject')
+        @topics=Programme.topic_groupbycommonsubjects
+      else
+        @topics=Programme.topic_groupbysubject
+      end
+      @subjects=Programme.subject_groupbyprogramme
+      @programme_names=Programme.programme_names
+    end
+    @items=Examquestion.all
+    
+    
+ 
+    ####from edit
     
     if @exam.klass_id == 0
     #----for template
@@ -233,7 +255,7 @@ class Exam::ExamsController < ApplicationController
         #if @exam.update_attributes(params[:exam]) 
         if @exam.update_attributes(exam_params)
             if params[:exam][:seq]!=nil && ((params[:exam][:seq]).count ==  (params[:exam][:examquestion_ids]).count) 
-                format.html { redirect_to(@exam, :notice => (t 'exam.exams.title2')+(t 'actions.updated')) }
+                format.html { redirect_to(exam_exam_path(@exam.id), :notice => (t 'exam.exams.title2')+(t 'actions.updated')) }
                 format.xml  { head :ok }
                 #format.xml  { render :xml => @exam, :status => :created, :location => @exam }
             else
@@ -242,7 +264,7 @@ class Exam::ExamsController < ApplicationController
                 #-------for both situation--sequence fields are not available during questions addition
                 #-------sequence can only be set once after question is saved into exam----------------
         	      format.html {render :action => "edit"}
-        	      flash[:notice] = (t 'exam.exams.title2')+(t 'actions.updated')+'<b>'+(t 'exam.exams.set_sequence')+'</b>'
+        	      flash[:notice] = (t 'exam.exams.title2')+(t 'actions.updated')+(t 'exam.exams.set_sequence')
         	      format.xml  { head :ok }
         	      flash.discard        
                 #format.html { render :action => "edit" }
@@ -406,7 +428,6 @@ class Exam::ExamsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def exam_params
-      params.require(:exam).permit(:name, :description, :created_by, :course_id, :subject_id, :klass_id, :exam_on, :duration, :full_marks, :starttime, :endtime, :topic_id, :sequ, examtemplates_attributes: [:id, :_destroy, :questiontype, :quantity, :total_marks])
-      #, answerchoices_attributes: [:id,:examquestion_id, :item, :description], examanswers_attributes: [:id,:examquestion_id,:item,:answer_desc])
+      params.require(:exam).permit(:name, :description, :created_by, :course_id, :subject_id, :klass_id, :exam_on, :duration, :full_marks, :starttime, :endtime, :topic_id, :sequ, examtemplates_attributes: [:id, :_destroy, :questiontype, :quantity, :total_marks], :examquestion_ids => [], :seq => [])
     end
 end

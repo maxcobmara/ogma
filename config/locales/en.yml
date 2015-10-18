@@ -2286,6 +2286,11 @@ en:
       create_exam: Add Exam Data
       create_template: Add Exam Template
       marks_each: "MCQ - 1 marks/each, MEQ - 20 marks/each, SEQ - 10 marks/each"
+      filters: Filters
+      existing: Existing Questions
+      programme_subject_topic: "* Select Programme, Subject, Topic and click 'Display Available Questions' link to view available questions."
+      already_selected: "X indicates question already selected"
+      subject_topic_name: "Subject | Topic"
 
     exammark:
       title: Marks by Examination Papers

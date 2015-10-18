@@ -2227,6 +2227,11 @@ ms_MY:
       create_exam: Tambah Data Set Peperiksaan
       create_template: Tambah Data Template Peperiksaan
       marks_each: "MCQ - 1 markah/setiap satu, MEQ - 20 markah/setiap satu, SEQ - 10 markah/setiap satu"
+      filters: Saringan
+      existing: Soalan TELAH dipilih
+      programme_subject_topic: "* Pilih Program, Subjek, Topik and klik pautan 'Display Available Questions' untuk memapar soalan yang tersedia bagi topik dipilih."
+      already_selected: "X menandakan soalan telah dipilih"
+      subject_topic_name: "Subjek | Topik"
     
     exammark:
       title: Markah Kertas Peperiksaan

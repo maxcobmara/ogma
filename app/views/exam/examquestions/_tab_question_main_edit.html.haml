@@ -24,7 +24,7 @@
     .col-md-5
       - unless @preselect_prog.nil?
         /lecturer
-        = f.select :subject_id, grouped_options_for_select(Programme.subject_groupbyoneprogramme(@preselect_prog), @examquestion.subject_id), {:include_blank => (t 'select'), :selected => @examquestion.subject_id.to_i}, {class: 'form-control mandatory'}
+        = f.select :subject_id, grouped_options_for_select(Programme.subject_groupbyoneprogramme2(@preselect_prog), @examquestion.subject_id), {:include_blank => (t 'select'), :selected => @examquestion.subject_id.to_i}, {class: 'form-control mandatory'}
       - else
         /admin
         = f.select :subject_id, grouped_options_for_select(Programme.subject_groupbyprogramme, @examquestion.subject_id), {:include_blank => (t 'select')}, {class: 'form-control mandatory'}

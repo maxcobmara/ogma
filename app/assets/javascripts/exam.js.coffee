@@ -28,7 +28,7 @@ jQuery ->
     curr_exam=$('#current_exam').val()
     $('.display_link').remove()
     $('#question_list').hide()
-    $('#question_title').html("<b><a href='/fetch_items?id="+curr_exam+"&topicid="+selectedtopic+")' data-remote='true' class='display_link'>Display Questions</a></b>")
+    $('#question_title').html("<b><a href='/fetch_items?id="+curr_exam+"&topicid="+selectedtopic+")' data-remote='true' class='display_link'>Display Available Questions</a></b>")  
     #$('#testing').val(selectedtopic)
     #on change display link ('Display question' for selected topic_id), but retrieve this SELECTED TOPIC ID first
     
