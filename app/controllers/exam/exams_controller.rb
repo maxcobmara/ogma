@@ -1,6 +1,8 @@
 class Exam::ExamsController < ApplicationController
   filter_resource_access
   before_action :set_exam, only: [:show, :edit, :update, :destroy]
+  before_action :set_edit_data, only: [:edit, :update, :create]
+
   # GET /exams
   # GET /exams.xml
   def index
@@ -32,7 +34,6 @@ class Exam::ExamsController < ApplicationController
       @search = Exam.search(params[:q])
       @exams = @search.result.search2(@programme_id)
       @exams = @exams.order(subject_id: :asc).page(params[:page]||1)
-      
     end
     ##----------
     #@search = Exam.search(params[:q])
@@ -69,7 +70,6 @@ class Exam::ExamsController < ApplicationController
   # GET /exams/new.xml
   def new
     @exam = Exam.new
-    #--newly added
     @lecturer_programme = @current_user.userable.positions[0].unit      
     unless @lecturer_programme.nil?
       @programme = Programme.where('name ILIKE (?) AND ancestry_depth=?',"%#{@lecturer_programme}%",0).first
@@ -86,7 +86,6 @@ class Exam::ExamsController < ApplicationController
       @programme_listing = Programme.roots
       @subjectlist_preselect_prog = Programme.at_depth(2)
     end
-    #--newly added
     respond_to do |format|
       format.html # new.html.erb
       format.xml  { render :xml => @exam }
@@ -96,23 +95,6 @@ class Exam::ExamsController < ApplicationController
   # GET /exams/1/edit
   def edit
     @exam = Exam.find(params[:id])
-    @programme_id = @exam.subject.root.id
-    @lecturer_programme = @current_user.userable.positions[0].unit  
-    unless @programme_id.nil? #|| @programme.count==0
-      @programme_names=Programme.where(id: @programme_id).map(&:programme_list)
-      @subjects=Programme.subject_groupbyoneprogramme(@programme_id)
-      @topics=Programme.topic_groupbysubject_oneprogramme(@programme_id)
-    else  #if programme not pre-selected (Commonsubject lecturer)
-      if @lecturer_programme == 'Commonsubject' #Commonsubject LECTURER have no selected programme
-#         @subjectlist_preselect_prog = Programme.where('course_type=?','Commonsubject')
-        @topics=Programme.topic_groupbycommonsubjects
-      else
-        @topics=Programme.topic_groupbysubject
-      end
-      @subjects=Programme.subject_groupbyprogramme
-      @programme_names=Programme.programme_names
-    end
-    @items=Examquestion.all
   end
   
   def question_selection
@@ -128,39 +110,7 @@ class Exam::ExamsController < ApplicationController
   # POST /exams.xml
   def create
     @exam = Exam.new(exam_params)
-    @create_type = params[:submit_button]             #10June2013-pm
-    #if @create_type == "Create"
-        #respond_to do |format|
-          #if @exam.save
-            #format.html { redirect_to(@exam, :notice => 'Exam was successfully created.') }
-            ##format.html {render :action => "edit"}
-            ##flash[:notice] = 'Exam was successfully created. <b>You may now proceed with examquestion selection.</b>'
-            #format.xml  { head :ok }
-            #flash.discard
-            ##do not remove 2 lines at the bottom of this line
-            ##format.html { redirect_to(@exam, :notice => 'Exam was successfully created.') }
-            ##format.xml  { render :xml => @exam, :status => :created, :location => @exam }
-          #else
-            #format.html { render :action => "new" }
-            #format.xml  { render :xml => @exam.errors, :status => :unprocessable_entity }
-          #end
-        #end
-    #elsif @create_type == "Create Template"
-    #10June2013-----
-       # @exam.klass_id = 0
-        #respond_to do |format|
-          #if @exam.save
-            #format.html { redirect_to(@exam, :notice => 'Exam template was successfully created.') }
-            #format.xml  { render :xml => @exam, :status => :created, :location => @exam }
-          #else
-            #format.html { render :action => "new" }
-            #format.xml  { render :xml => @exam.errors, :status => :unprocessable_entity }
-          #end
-        #end
-    #10June2013-----  
-    #end
-
-    #--newly added
+    @create_type = params[:submit_button]             
     @lecturer_programme = @current_user.userable.positions[0].unit      
     unless @lecturer_programme.nil?
       @programme = Programme.where('name ILIKE (?) AND ancestry_depth=?',"%#{@lecturer_programme}%",0).first
@@ -177,18 +127,19 @@ class Exam::ExamsController < ApplicationController
       @programme_listing = Programme.roots
       @subjectlist_preselect_prog = Programme.at_depth(2)
     end
-    #--newly added
-    
     if @create_type == t('exam.exams.create_exam')
         @exam.klass_id = 1  #added for use in E-Query & Report Manager (27Jul2013)
     elsif @create_type == t('exam.exams.create_template')
         @exam.klass_id = 0
     end   
+    
     respond_to do |format|
       if @exam.save
-        flash[:notice] = (t 'exam.exams.title')+(t 'actions.created')
-        format.html { redirect_to (exam_exam_path(@exam)) }
-        format.xml  { render :xml => @exam, :status => :created, :location => @exam }
+        flash[:notice] = (t 'exam.exams.created_add_question_details')
+        #format.html { redirect_to (exam_exam_path(@exam)) }
+        #format.xml  { render :xml => @exam, :status => :created, :location => @exam }
+        format.html {render :action => "edit"}
+        format.xml  { head :ok }
       else
         format.html { render :action => "new" }
         format.xml  { render :xml => @exam.errors, :status => :unprocessable_entity }
@@ -199,128 +150,47 @@ class Exam::ExamsController < ApplicationController
   # PUT /exams/1
   # PUT /exams/1.xml
   def update
-    #raise params.inspect
     params[:exam][:examquestion_ids] ||= []
     @exam = Exam.find(params[:id])
-    
-    ###----subject + common subject
-    @programme_id = @exam.subject.root.id
-    @lecturer_programme = @current_user.userable.positions.first.unit  
-   
-#     all_subject_ids = Programme.find(@programme_id).descendants.at_depth(2).map(&:id)
-#     if @lecturer_programme == 'Commonsubject'
-#       @subjects = Programme.where('id IN(?) AND course_type=?',all_subject_ids, @lecturer_programme)  
-#     else
-#       @subjects = Programme.where('id IN(?) AND course_type=?',all_subject_ids, 'Subject')  #'Subject' 
-#     end
-    ###----subject + common subject
-    
-    ###from edit
-    unless @programme_id.nil? #|| @programme.count==0
-      @programme_names=Programme.where(id: @programme_id).map(&:programme_list)
-      @subjects=Programme.subject_groupbyoneprogramme(@programme_id)
-      @topics=Programme.topic_groupbysubject_oneprogramme(@programme_id)
-    else  #if programme not pre-selected (Commonsubject lecturer)
-      if @lecturer_programme == 'Commonsubject' #Commonsubject LECTURER have no selected programme
-#         @subjectlist_preselect_prog = Programme.where('course_type=?','Commonsubject')
-        @topics=Programme.topic_groupbycommonsubjects
-      else
-        @topics=Programme.topic_groupbysubject
-      end
-      @subjects=Programme.subject_groupbyprogramme
-      @programme_names=Programme.programme_names
-    end
-    @items=Examquestion.all
-    
-    
- 
-    ####from edit
-    
     if @exam.klass_id == 0
-    #----for template
+      #template
       respond_to do |format|
-        #if @exam.update_attributes(params[:exam]) 
         if @exam.update_attributes(exam_params)
-          format.html { redirect_to(exam_exam_path(@exam.id), :notice => (t 'exam.exams.title')+(t 'actions.updated')) }
+          format.html { redirect_to(exam_exam_path(@exam.id), :notice => (t 'exam.exams.title2')+(t 'actions.updated')) }
           format.xml  { head :ok }
-          #format.xml  { render :xml => @exam, :status => :created, :location => @exam }
         else
-          format.html { render :action => "new" } #edit
+          format.html { render :action => "edit" }
           format.xml  { render :xml => @exam.errors, :status => :unprocessable_entity }
         end
       end
-    #----for template  
     else
+      #complete exam paper
       respond_to do |format|
-        #if @exam.update_attributes(params[:exam]) 
         if @exam.update_attributes(exam_params)
-            if params[:exam][:seq]!=nil && ((params[:exam][:seq]).count ==  (params[:exam][:examquestion_ids]).count) 
-                format.html { redirect_to(exam_exam_path(@exam.id), :notice => (t 'exam.exams.title2')+(t 'actions.updated')) }
-                format.xml  { head :ok }
-                #format.xml  { render :xml => @exam, :status => :created, :location => @exam }
+          if params[:exam][:seq]!=nil && ((params[:exam][:seq]).count >=  (params[:exam][:examquestion_ids]).count)   
+            format.html { redirect_to(exam_exam_path(@exam.id), :notice => (t 'exam.exams.title')+(t 'actions.updated')) }
+            format.xml  { head :ok }
+            #Note: when saved question is removed(untick), seq.count > examquestions.count  --> ref: model (remove_unused_sequence) to remove extra seq in Exam table
+          else
+            #-------(1)for first time data entry--default to edit to set sequence------------------
+            #-------(2)for additional data entry--default to edit to set sequence------------------
+            #-------for both situation--sequence fields are not available during questions addition
+            #-------sequence can only be set once after question is saved into exam----------------
+            format.html {render :action => "edit"}
+            if params[:exam][:seq]!=nil && ((params[:exam][:seq]).count >  (params[:exam][:examquestion_ids]).count) 
+              flash[:notice]='klik update - item removed'
             else
-                #-------(1)for first time data entry--default to edit to set sequence------------------
-                #-------(2)for additional data entry--default to edit to set sequence------------------
-                #-------for both situation--sequence fields are not available during questions addition
-                #-------sequence can only be set once after question is saved into exam----------------
-        	      format.html {render :action => "edit"}
-        	      flash[:notice] = (t 'exam.exams.title2')+(t 'actions.updated')+(t 'exam.exams.set_sequence')
-        	      format.xml  { head :ok }
-        	      flash.discard        
-                #format.html { render :action => "edit" }
-                #format.xml  { render :xml => @exam.errors, :status => :unprocessable_entity }
-                #-------END FOR ABOVE CONDITIONS--------------------------------------------------------          
+              flash[:notice] = (t 'exam.exams.title')+(t 'actions.updated')+(t 'exam.exams.set_sequence')
             end
+            #format.xml  { render :xml => @exam.errors, :status => :unprocessable_entity }
+            format.xml  { head :ok }
+            flash.discard
+            #-------END FOR ABOVE CONDITIONS--------------------------------------------------------          
+          end
         else
-            format.html { render :action => "edit" }
-          	format.xml  { render :xml => @exam.errors, :status => :unprocessable_entity }
+          format.html { render :action => "edit" }
+          format.xml  { render :xml => @exam.errors, :status => :unprocessable_entity }
         end
-        #if params[:exam][:seq]!=nil
-        #------  
-            #if params[:exam][:seq].uniq.length == params[:exam][:seq].length  #check for UNIQUE value of sequence selected for each question, if Ok, proceed.
-                #if @exam.update_attributes(params[:exam])                     #check if value for all params' value passed validation, if Ok, proceed.
-                    #if params[:exam][:seq].include?("Select") ==  false       #(ALL SEQUENCE ARE SET) - NONE OF SEQUENCE value is "Select" - SAVE & redirect to show page...
-                        #format.html { redirect_to(@exam, :notice => 'Exam was successfully updated.') }
-                        #format.xml  { head :ok }
-                    #else                                                      #sequence column in exam table BLANK - no data at all OR include?("Select") == true
-                        #format.html {render :action => "edit"}
-                        #flash[:error] = 'Please set sequence for each question.'
-                        #format.xml  { head :ok }
-                        #flash.discard
-                    #end
-                #else
-                    #format.html { render :action => "edit" }
-                    #format.xml  { render :xml => @exam.errors, :status => :unprocessable_entity }
-                #end
-            #else                                                              #this part is for those with REDUNDANT sequence selected for any 2 or more questions in 1 exam!
-                #if params[:exam][:seq].include?("Select") ==  true            #if any of REDUNDANT sequence is 'Select'.
-                    #format.html {render :action => "edit"}
-                    #flash[:error] = 'Please set sequence for each question'
-                    #format.xml  { head :ok }
-                    #flash.discard
-                #else                                                          #if none of REDUNDANT sequence value is 'Select'
-                    #format.html { render :action => "edit" }
-                    #flash[:error] = 'No duplicates sequence is allowed.'
-                    #format.xml  { head :ok }
-                    #flash.discard
-                #end
-            #end
-        #------
-        #else
-        #------
-            #if @exam.update_attributes(params[:exam]) 
-                ##format.html { redirect_to(@exam, :notice => 'Exam was successfully updated. Please ') }
-                ##format.xml  { head :ok }
-                #format.html {render :action => "edit"}
-                #flash[:notice] = 'Exam was successfully updated. <b>Please set sequence for each question.</b>'
-                #format.xml  { head :ok }
-                #flash.discard
-            #else
-                #format.html { render :action => "edit" }
-                #format.xml  { render :xml => @exam.errors, :status => :unprocessable_entity }
-            #end
-        #------
-        #end  
       end     #end for respond_to do |format|
     end   #end for if @exam.klass_id == 0
     
@@ -338,24 +208,8 @@ class Exam::ExamsController < ApplicationController
     end
   end
   
-#   def exampaper
-#     @exam = Exam.find(params[:id])  
-#     render :layout => 'report'
-#   end
-#   
-#   def exampaper_separate
-#     @exam = Exam.find(params[:id])  
-#     render :layout => 'report'
-#   end
-#   
-#   def exampaper_combine
-#     @exam = Exam.find(params[:id])  
-#     render :layout => 'report'
-#   end
-  
   def exampaper
     @exam = Exam.find(params[:id])
-    
     respond_to do |format|
       format.pdf do
         pdf = Exam_paperPdf.new(@exam, view_context)
@@ -424,6 +278,27 @@ class Exam::ExamsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_exam
       @examn = Exam.find(params[:id])
+    end
+    
+    # Assign values associated to EDIT - edit(from show), edit(after create) & update
+    def set_edit_data
+      @programme_id = @exam.subject.root.id
+      @lecturer_programme = @current_user.userable.positions[0].unit  
+      unless @programme_id.nil? #|| @programme.count==0
+        @programme_names=Programme.where(id: @programme_id).map(&:programme_list)
+        @subjects=Programme.subject_groupbyoneprogramme(@programme_id)
+        @topics=Programme.topic_groupbysubject_oneprogramme(@programme_id)
+      else  #if programme not pre-selected (Commonsubject lecturer)
+        if @lecturer_programme == 'Commonsubject' #Commonsubject LECTURER have no selected programme
+          #@subjectlist_preselect_prog = Programme.where('course_type=?','Commonsubject')
+          @topics=Programme.topic_groupbycommonsubjects
+        else
+          @topics=Programme.topic_groupbysubject
+        end
+        @subjects=Programme.subject_groupbyprogramme
+        @programme_names=Programme.programme_names
+      end
+      @items=Examquestion.all
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

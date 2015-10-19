@@ -48,7 +48,7 @@
   - for booleanchoice in item.booleanchoices.sort_by{|x|x.item}
     = booleanchoice.item+". "
     = booleanchoice.description
-  %br
+    %br
   %u= t 'exam.examquestion.booleananswers'
   %br
   - for booleananswer in item.booleananswers.sort_by{|y|y.item}

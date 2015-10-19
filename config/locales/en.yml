@@ -28,6 +28,7 @@ en:
       student: Student
       location: Location
       examquestion: Examquestion
+      exam: Examination
       leaveforstudent: Student Leave
       travel_request: Travel Request
       travel_claim: Travel Claim
@@ -179,6 +180,8 @@ en:
         editdt: Editing Date
         editor_id: Editor
         approver_id: Approver
+      exam:
+        name: Examination Name
     errors:
         template:
           body: "There were problems with the following fields:"
@@ -2251,9 +2254,9 @@ en:
       selected_if_readyforapproval: " must be selected, if status is 'Ready For Approval'"
 
     exams:
-      new_title: New Examination Maker
-      edit: Edit Examination Maker
-      title: Examination Maker
+      new_title: New Examination Paper
+      edit: Edit Examination Paper
+      title: Examination Paper
       title2: Examination Template 
       name: Examination Name 
       description: Description
@@ -2291,6 +2294,12 @@ en:
       programme_subject_topic: "* Select Programme, Subject, Topic and click 'Display Available Questions' link to view available questions."
       already_selected: "X indicates question already selected"
       subject_topic_name: "Subject | Topic"
+      must_unique: " - for selected subject and date already exist."
+      created_add_question_details: "Examination Paper Details were successfully saved, enter Question Details accordingly and click Update to save details."
+      seq_must_select: "Sequence for each question must be selected."
+      seq_increase_by_one: "Sequence for all questions must increase by 1."
+      seq_must_unique: "Sequence for each question must be unique."
+      remove_seq_select: "Question(s) removed, sequence for remaining questions must be selected."
 
     exammark:
       title: Marks by Examination Papers

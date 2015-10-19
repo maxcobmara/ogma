@@ -7,13 +7,13 @@ class Exam < ActiveRecord::Base
   has_many :examtemplates, :dependent => :destroy #10June2013
   accepts_nested_attributes_for :examtemplates, :reject_if => lambda { |a| a[:quantity].blank? }
   
-  before_save :set_sequence, :set_duration, :set_full_marks
+  before_save :set_sequence, :set_duration, :set_full_marks, :remove_unused_sequence
   
-  attr_accessor :own_car, :dept_car#,:programme_id #18Apr2013-programme_id used in views/exams/new.html.erb #9Apr2013-use course_id (temp) to capture semester (year as well)
+  #attr_accessor :own_car, :dept_car#,:programme_id #18Apr2013-programme_id used in views/exams/new.html.erb #9Apr2013-use course_id (temp) to capture semester (year as well)
   attr_accessor :programme_filter, :subject_filter, :topic_filter, :seq
   
   validates_presence_of :subject_id, :name  #programme_id
-  validates_uniqueness_of :name, :scope => "subject_id", :message => " - Examination of selected exam type (name) for selected subject already exist."
+  validates_uniqueness_of :name, :scope => [:subject_id, :exam_on], :message => I18n.t('exam.exams.must_unique')
   validate :sequence_must_be_selected, :sequence_must_be_unique #,:sequence_must_increment_by_one
   
   #remark : validation for:validates_uniqueness_of :name, :scope => "subject_id", 
@@ -64,12 +64,22 @@ class Exam < ActiveRecord::Base
         if examquestion_ids.count > seq.count
             diff_count = examquestion_ids.count - seq.count
             0.upto(diff_count-1) do |c|
-                sequence = sequence + "Select"+","
+                sequence = sequence + I18n.t('select')+","
             end
         end    
         self.sequ = sequence    
+    else
+      #start-set_sequ_after_create
+      if (sequ.nil? || sequ.blank?) && examquestions.count > 0
+        seqq=''
+        0.upto(examquestions.count-1).each do |x|
+          seqq+= I18n.t('select')+','
+        end
+        self.sequ=seqq
+      end
     end
   end
+
   
   def set_duration
     if starttime!=nil && endtime!=nil
@@ -96,6 +106,20 @@ class Exam < ActiveRecord::Base
       elsif klass_id==1
         self.full_marks = total_marks
       end
+    end
+  end
+  
+  def remove_unused_sequence
+    unless id.nil? || id.blank?
+      if sequ.split(',').count > examquestions.count
+        seqq2=''
+        sequ.split(',').each_with_index do |x,index|
+          if index < examquestions.count
+            seqq2+= x+','
+          end
+        end
+        self.sequ=seqq2
+      end 
     end
   end
   
@@ -287,24 +311,28 @@ private
           end 
           y=z 
         end
-        if result == false && seq.include?("Select") == false                     #sequence increment by 1 can only be checked for selected sequence!
-            errors.add_to_base("Sequence for all questions must increase by 1.")  
+        if result == false && seq.include?(I18n.t('select')) == false                     #sequence increment by 1 can only be checked for selected sequence!
+          errors.add(:base, I18n.t('exam.exams.seq_increase_by_one'))  
         end
     end
   end
   
   def sequence_must_be_selected
     if seq!= nil
-        if seq.include?("Select") == true   #means sequence not yet selected
-            errors.add_to_base("Sequence for each question must be selected.")
+        if seq.include?(I18n.t('select')) == true  #means sequence not yet selected
+          if seq.count < sequ.split(',').count
+            errors.add(:base, I18n.t('exam.exams.remove_seq_select'))
+          else
+            errors.add(:base, I18n.t('exam.exams.seq_must_select'))
+          end
         end
     end
   end
   
   def sequence_must_be_unique
     if seq!= nil
-        if seq.uniq.length != seq.length && seq.include?("Select") == false       #sequence UNIQUENESS can only be checked for selected sequence!
-            errors.add_to_base("Sequence for each question must be unique.")
+        if seq.uniq.length != seq.length && seq.include?(I18n.t('select')) == false       #sequence UNIQUENESS can only be checked for selected sequence!
+          errors.add(:base, I18n.t('exam.exams.seq_must_unique'))
         end
     end
   end
