@@ -9,7 +9,6 @@ class Exam < ActiveRecord::Base
   
   before_save :set_sequence, :set_duration, :set_full_marks, :remove_unused_sequence
   
-  #attr_accessor :own_car, :dept_car#,:programme_id #18Apr2013-programme_id used in views/exams/new.html.erb #9Apr2013-use course_id (temp) to capture semester (year as well)
   attr_accessor :programme_filter, :subject_filter, :topic_filter, :seq
   
   validates_presence_of :subject_id, :name  #programme_id
@@ -111,7 +110,7 @@ class Exam < ActiveRecord::Base
   
   def remove_unused_sequence
     unless id.nil? || id.blank?
-      if sequ.split(',').count > examquestions.count
+      if !sequ.nil? && sequ.split(',').count > examquestions.count
         seqq2=''
         sequ.split(',').each_with_index do |x,index|
           if index < examquestions.count
@@ -139,8 +138,8 @@ class Exam < ActiveRecord::Base
         #@exams = Exam.find(:all, :conditions => ["subject_id IN (?) and subject_id NOT IN (?)", subject_of_program, common_subject])
         @exams = Exam.where('subject_id IN(?) AND subject_id NOT IN(?)',subject_of_programme, common_subject)
       end
-    else
-       @exams = Exam.all
+    #else
+       #@exams = Exam.all
     end
   end
   

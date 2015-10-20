@@ -39,7 +39,6 @@
     %b=t('exam.exams.existing')
   .row
     .col-md-10
-      =@exam.examquestions.count
       - if @exam.examquestions.count>0  
         %table.table.table-bordered
           %thead

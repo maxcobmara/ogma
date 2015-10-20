@@ -97,12 +97,25 @@ class Programme < ActiveRecord::Base
     Programme.roots.map(&:programme_list)
   end
   
+  #used somewhere else
   def self.subject_groupbyprogramme
     subjectby_programmelists=Programme.where(course_type: "Subject").group_by{|x|x.root.programme_list}
     @groupped_subject=[]
     subjectby_programmelists.each do |programmelist, subjects|
       pg_subjects=[[I18n.t('helpers.prompt.select_subject'), '']]
-      subjects.each{|subject|pg_subjects << [subject.subject_list, subject.id]} # [subject.subject_list]}
+      subjects.each{|subject|pg_subjects << [subject.subject_list, subject.id]} 
+      @groupped_subject << [programmelist, pg_subjects]
+    end
+    @groupped_subject
+  end
+  
+  #use in exam_controller - set_edit_data
+  def self.subject_groupbyprogramme2
+    subjectby_programmelists=Programme.where(course_type: "Subject").group_by{|x|x.root.programme_list}
+    @groupped_subject=[]
+    subjectby_programmelists.each do |programmelist, subjects|
+      pg_subjects=[[I18n.t('helpers.prompt.select_subject'), '']]
+      subjects.each{|subject|pg_subjects << [subject.subject_list]} # [subject.subject_list, subject.id]} 
       @groupped_subject << [programmelist, pg_subjects]
     end
     @groupped_subject
@@ -131,6 +144,17 @@ class Programme < ActiveRecord::Base
     @groupped_subject
   end
   #original one-end
+  
+  def self.subject_groupbycommonsubjects
+    common_subjects=Programme.where('course_type=?','Commonsubject').group_by{|x|x.root.programme_list}
+    @groupped_subject=[]
+    common_subjects.each do |programmelist, subjects|
+      pg_subjects=[[I18n.t('helpers.prompt.select_subject'), '']]
+      subjects.each{|subject|pg_subjects << [subject.subject_list]}
+      @groupped_subject << [programmelist, pg_subjects]
+    end
+    @groupped_subject
+  end
 
   def self.subject_names
     Programme.where(course_type: "Subject").map(&:subject_list)
@@ -160,14 +184,21 @@ class Programme < ActiveRecord::Base
   
   #topics under common subjects only
   def self.topic_groupbycommonsubjects
-    topics_ofcommon_subjects=Programme.where('course_type=?','Commonsubject').descendants
+    #topics_ofcommon_subjects=Programme.where('course_type=?','Commonsubject').descendants
     #topicby_subjectids=Programme.find(progid).descendants.where(course_type: "Topic").group_by{|x|x.ancestry.split("/").last}
+    common_subjects=Programme.where('course_type=?','Commonsubject')#.pluck(:id)
     @groupped_topic=[]
-    topics_ofcommon_subjects.each do |subjectid, topics|
+    common_subjects.each do |csubject|
       sb_topics=[[I18n.t('helpers.prompt.select_topic'), '']]
-      topics.sort_by{|x|x.code}.each{|topic|sb_topics << [topic.subject_list, topic.id]}  #[topic.subject_list]}
-      @groupped_topic << [Programme.find(subjectid).subject_list, sb_topics]
+      topics=csubject.descendants
+      topics.sort_by{|x|x.code}.each{|topic|sb_topics << [topic.subject_list, topic.id]}
+      @groupped_topic << [csubject.subject_list, sb_topics]
     end
+#     topics_ofcommon_subjects.each do |subjectid, topics|
+#       sb_topics=[[I18n.t('helpers.prompt.select_topic'), '']]
+#       topics.sort_by{|x|x.code}.each{|topic|sb_topics << [topic.subject_list, topic.id]}  #[topic.subject_list]}
+#       @groupped_topic << [Programme.find(subjectid).subject_list, sb_topics]
+#     end
     @groupped_topic
   end
   

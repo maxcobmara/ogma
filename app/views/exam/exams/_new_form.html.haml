@@ -15,7 +15,7 @@
           .col-sm-2.control-label
             = f.label  t 'exam.exams.created_by', for: :created_by
           .col-md-4
-            = f.collection_select :created_by, Staff.where('id IN(?)', @exam.creator_list).order(name: :asc), :id,  :staff_name_with_position, {:include_blank =>t('helpers.prompt.select_staff'), :selected=>@current_user.userable_id.to_i},{class: 'selectpicker', "data-width"=>'360px'} 
+            = f.collection_select :created_by, Staff.where('id IN(?)', @staff_listing).order(name: :asc), :id,  :staff_name_with_position, {:include_blank =>t('helpers.prompt.select_staff'), :selected=>@current_user.userable_id.to_i},{class: 'selectpicker', "data-width"=>'360px'} 
         .form-group
           .col-sm-2.control-label
             = f.label t 'exam.exams.course_id', for: :programme

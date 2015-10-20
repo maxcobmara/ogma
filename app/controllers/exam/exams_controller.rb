@@ -18,29 +18,32 @@ class Exam::ExamsController < ApplicationController
         @programme_id = @programme.try(:first).try(:id)
       else
         @tasks_main = @current_user.userable.positions[0].tasks_main
-        if @lecturer_programme == 'Commonsubject'
+        common_subjects=['Sains Tingkahlaku','Sains Perubatan Asas', 'Komunikasi & Sains Pengurusan', 'Anatomi & Fisiologi', 'Komuniti']
+        if common_subjects.include?(@lecturer_programme) #@lecturer_programme =='Commonsubject'
           @programme_id ='1'
-        elsif (@lecturer_programme == 'Pos Basik' || @lecturer_programme == "Diploma Lanjutan") && @tasks_main!=nil
+        elsif (@lecturer_programme == 'Pos Basik' || @lecturer_programme == 'Diploma Lanjutan') && @tasks_main!=nil
           @allposbasic_prog = Programme.where('course_type=? or course_type=?', "Pos Basik", "Diploma Lanjutan").pluck(:name)  #Onkologi, Perioperating, Kebidanan etc
           for basicprog in @allposbasic_prog
             lecturer_basicprog_name = basicprog if @tasks_main.include?(basicprog)==true
           end
           @programme_id=Programme.where(name: lecturer_basicprog_name, ancestry_depth: 0).first.id
         else
-          @programme_id='0'
+          @programme_id='0' if !@lecturer_programme.nil? && @current_user.userable.positions[0].name !='Pengajar'
         end
       end
-      #@exams_all = Exam.search(@programme_id) 
-      @search = Exam.search(params[:q])
-      @exams = @search.result.search2(@programme_id)
-      @exams = @exams.order(subject_id: :asc).page(params[:page]||1)
+      if @programme_id
+        #@exams_all = Exam.search(@programme_id) 
+        @search = Exam.search(params[:q])
+        @exams = @search.result.search2(@programme_id)
+        @exams = @exams.order(subject_id: :asc).page(params[:page]||1)
+      end
     end
     ##----------
     #@search = Exam.search(params[:q])
     #@exams = @search.result       
     
     respond_to do |format|
-      if @exams
+      if @exams 
         format.html # index.html.erb
         format.xml  { render :xml => @exams }
       else
@@ -75,16 +78,21 @@ class Exam::ExamsController < ApplicationController
       @programme = Programme.where('name ILIKE (?) AND ancestry_depth=?',"%#{@lecturer_programme}%",0).first
     end
     unless @programme.nil? #|| @programme.count==0
+      @staff_listing=@current_user.userable_id
       @programme_listing = Programme.where('id=?',@programme.id).to_a
       @preselect_prog = @programme.id
       @all_subject_ids = Programme.find(@preselect_prog).descendants.at_depth(2).map(&:id)
       @subjectlist_preselect_prog = Programme.where('id IN(?) AND course_type=?',@all_subject_ids, 'Subject')  #'Subject' 
-    else  #if programme not pre-selected (Commonsubject lecturer)
-      if @lecturer_programme == 'Commonsubject' #Commonsubject LECTURER have no selected programme
+    else #Commonsubject LECTURER have no selected programme
+      common_subjects=['Sains Tingkahlaku','Sains Perubatan Asas', 'Komunikasi & Sains Pengurusan', 'Anatomi & Fisiologi', 'Komuniti']
+      if common_subjects.include?(@lecturer_programme) 
         @subjectlist_preselect_prog = Programme.where('course_type=?','Commonsubject')
+        @staff_listing=@current_user.userable_id
+      else
+        @subjectlist_preselect_prog = Programme.at_depth(2)
+        @staff_listing=@exam.creator_list
       end
       @programme_listing = Programme.roots
-      @subjectlist_preselect_prog = Programme.at_depth(2)
     end
     respond_to do |format|
       format.html # new.html.erb
@@ -120,12 +128,14 @@ class Exam::ExamsController < ApplicationController
       @preselect_prog = @programme.id
       @all_subject_ids = Programme.find(@preselect_prog).descendants.at_depth(2).map(&:id)
       @subjectlist_preselect_prog = Programme.where('id IN(?) AND course_type=?',@all_subject_ids, 'Subject')  #'Subject' 
-    else  #if programme not pre-selected (Commonsubject lecturer)
-      if @lecturer_programme == 'Commonsubject' #Commonsubject LECTURER have no selected programme
+    else  #Commonsubject LECTURER have no selected programme
+      common_subjects=['Sains Tingkahlaku','Sains Perubatan Asas', 'Komunikasi & Sains Pengurusan', 'Anatomi & Fisiologi', 'Komuniti']
+      if common_subjects.include?(@lecturer_programme) 
         @subjectlist_preselect_prog = Programme.where('course_type=?','Commonsubject')
+      else
+        @subjectlist_preselect_prog = Programme.at_depth(2)
       end
       @programme_listing = Programme.roots
-      @subjectlist_preselect_prog = Programme.at_depth(2)
     end
     if @create_type == t('exam.exams.create_exam')
         @exam.klass_id = 1  #added for use in E-Query & Report Manager (27Jul2013)
@@ -167,7 +177,7 @@ class Exam::ExamsController < ApplicationController
       #complete exam paper
       respond_to do |format|
         if @exam.update_attributes(exam_params)
-          if params[:exam][:seq]!=nil && ((params[:exam][:seq]).count >=  (params[:exam][:examquestion_ids]).count)   
+          if (params[:exam][:seq]!=nil && ((params[:exam][:seq]).count >=  (params[:exam][:examquestion_ids]).count)) || (params[:exam][:examquestion_ids]).count==0
             format.html { redirect_to(exam_exam_path(@exam.id), :notice => (t 'exam.exams.title')+(t 'actions.updated')) }
             format.xml  { head :ok }
             #Note: when saved question is removed(untick), seq.count > examquestions.count  --> ref: model (remove_unused_sequence) to remove extra seq in Exam table
@@ -284,18 +294,20 @@ class Exam::ExamsController < ApplicationController
     def set_edit_data
       @programme_id = @exam.subject.root.id
       @lecturer_programme = @current_user.userable.positions[0].unit  
-      unless @programme_id.nil? #|| @programme.count==0
+      #unless @programme_id.nil? #|| @programme.count==0
+      if Programme.where(course_type: ['Diploma','Diploma Lanjutan', 'Pos Basik']).pluck(:name).include?(@lecturer_programme)
         @programme_names=Programme.where(id: @programme_id).map(&:programme_list)
         @subjects=Programme.subject_groupbyoneprogramme(@programme_id)
         @topics=Programme.topic_groupbysubject_oneprogramme(@programme_id)
-      else  #if programme not pre-selected (Commonsubject lecturer)
-        if @lecturer_programme == 'Commonsubject' #Commonsubject LECTURER have no selected programme
-          #@subjectlist_preselect_prog = Programme.where('course_type=?','Commonsubject')
+      else  #Commonsubject LECTURER have no selected programme
+        common_subjects=['Sains Tingkahlaku','Sains Perubatan Asas', 'Komunikasi & Sains Pengurusan', 'Anatomi & Fisiologi', 'Komuniti']
+        if common_subjects.include?(@lecturer_programme) 
           @topics=Programme.topic_groupbycommonsubjects
+          @subjects=Programme.subject_groupbycommonsubjects
         else
           @topics=Programme.topic_groupbysubject
+          @subjects=Programme.subject_groupbyprogramme2
         end
-        @subjects=Programme.subject_groupbyprogramme
         @programme_names=Programme.programme_names
       end
       @items=Examquestion.all
