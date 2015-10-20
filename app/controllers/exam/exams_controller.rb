@@ -1,7 +1,7 @@
 class Exam::ExamsController < ApplicationController
   filter_resource_access
   before_action :set_exam, only: [:show, :edit, :update, :destroy]
-  before_action :set_edit_data, only: [:edit, :update, :create]
+  before_action :set_shareable_data, only: [:new, :edit, :update, :create]
 
   # GET /exams
   # GET /exams.xml
@@ -73,27 +73,18 @@ class Exam::ExamsController < ApplicationController
   # GET /exams/new.xml
   def new
     @exam = Exam.new
-    @lecturer_programme = @current_user.userable.positions[0].unit      
-    unless @lecturer_programme.nil?
-      @programme = Programme.where('name ILIKE (?) AND ancestry_depth=?',"%#{@lecturer_programme}%",0).first
-    end
     unless @programme.nil? #|| @programme.count==0
       @staff_listing=@current_user.userable_id
-      @programme_listing = Programme.where('id=?',@programme.id).to_a
-      @preselect_prog = @programme.id
-      @all_subject_ids = Programme.find(@preselect_prog).descendants.at_depth(2).map(&:id)
-      @subjectlist_preselect_prog = Programme.where('id IN(?) AND course_type=?',@all_subject_ids, 'Subject')  #'Subject' 
+      @programme_detail=@programme.programme_list
     else #Commonsubject LECTURER have no selected programme
       common_subjects=['Sains Tingkahlaku','Sains Perubatan Asas', 'Komunikasi & Sains Pengurusan', 'Anatomi & Fisiologi', 'Komuniti']
       if common_subjects.include?(@lecturer_programme) 
-        @subjectlist_preselect_prog = Programme.where('course_type=?','Commonsubject')
         @staff_listing=@current_user.userable_id
       else
-        @subjectlist_preselect_prog = Programme.at_depth(2)
         @staff_listing=@exam.creator_list
       end
-      @programme_listing = Programme.roots
     end
+
     respond_to do |format|
       format.html # new.html.erb
       format.xml  { render :xml => @exam }
@@ -119,30 +110,12 @@ class Exam::ExamsController < ApplicationController
   def create
     @exam = Exam.new(exam_params)
     @create_type = params[:submit_button]             
-    @lecturer_programme = @current_user.userable.positions[0].unit      
-    unless @lecturer_programme.nil?
-      @programme = Programme.where('name ILIKE (?) AND ancestry_depth=?',"%#{@lecturer_programme}%",0).first
-    end
-    unless @programme.nil? #|| @programme.count==0
-      @programme_listing = Programme.where('id=?',@programme.id).to_a
-      @preselect_prog = @programme.id
-      @all_subject_ids = Programme.find(@preselect_prog).descendants.at_depth(2).map(&:id)
-      @subjectlist_preselect_prog = Programme.where('id IN(?) AND course_type=?',@all_subject_ids, 'Subject')  #'Subject' 
-    else  #Commonsubject LECTURER have no selected programme
-      common_subjects=['Sains Tingkahlaku','Sains Perubatan Asas', 'Komunikasi & Sains Pengurusan', 'Anatomi & Fisiologi', 'Komuniti']
-      if common_subjects.include?(@lecturer_programme) 
-        @subjectlist_preselect_prog = Programme.where('course_type=?','Commonsubject')
-      else
-        @subjectlist_preselect_prog = Programme.at_depth(2)
-      end
-      @programme_listing = Programme.roots
-    end
     if @create_type == t('exam.exams.create_exam')
         @exam.klass_id = 1  #added for use in E-Query & Report Manager (27Jul2013)
     elsif @create_type == t('exam.exams.create_template')
         @exam.klass_id = 0
     end   
-    
+ 
     respond_to do |format|
       if @exam.save
         flash[:notice] = (t 'exam.exams.created_add_question_details')
@@ -287,14 +260,25 @@ class Exam::ExamsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_exam
-      @examn = Exam.find(params[:id])
+      @exam = Exam.find(params[:id])
     end
     
-    # Assign values associated to EDIT - edit(from show), edit(after create) & update
-    def set_edit_data
-      @programme_id = @exam.subject.root.id
+    def set_shareable_data
+      @items=Examquestion.all 
       @lecturer_programme = @current_user.userable.positions[0].unit  
-      #unless @programme_id.nil? #|| @programme.count==0
+      if @exam.id.nil?
+        #applicable - new only
+        unless @lecturer_programme.nil?
+          @programme = Programme.where('name ILIKE (?) AND ancestry_depth=?',"%#{@lecturer_programme}%",0).first
+        end
+        unless @programme.nil?
+          @programme_id=@programme.id
+        end
+      else
+        #applicable - edit, update, create
+        @programme_id = @exam.subject.root.id 
+      end
+      
       if Programme.where(course_type: ['Diploma','Diploma Lanjutan', 'Pos Basik']).pluck(:name).include?(@lecturer_programme)
         @programme_names=Programme.where(id: @programme_id).map(&:programme_list)
         @subjects=Programme.subject_groupbyoneprogramme(@programme_id)
@@ -310,7 +294,6 @@ class Exam::ExamsController < ApplicationController
         end
         @programme_names=Programme.programme_names
       end
-      @items=Examquestion.all
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

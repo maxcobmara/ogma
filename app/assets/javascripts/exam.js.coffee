@@ -32,6 +32,18 @@ jQuery ->
     #$('#testing').val(selectedtopic)
     #on change display link ('Display question' for selected topic_id), but retrieve this SELECTED TOPIC ID first
     
+  staffs3 = $('#exam_subject_id').html()
+  $('#exam_course_id').change ->
+    unitdepartment = $('#exam_course_id :selected').val()
+    escaped_unitdepartment = unitdepartment.replace(/([ #;&,.+*~\':"!^$[\]()=>|\/@])/g, '\\$1')
+    options = $(staffs3).filter("optgroup[label=#{escaped_unitdepartment}]").html()
+    if options
+      $('#exam_subject_id').html(options)
+      $('#exam_subject_id').parent().show()
+    else
+      $('#exam_subject_id').empty
+      $('#exam_subject_id').parent().hide()
+
 
    
      
