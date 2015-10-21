@@ -25,7 +25,6 @@ class Exam::ExamquestionsController < ApplicationController
       else
         common_subjects=['Sains Tingkahlaku','Sains Perubatan Asas', 'Komunikasi & Sains Pengurusan', 'Anatomi & Fisiologi', 'Komuniti']
         if common_subjects.include?(@lecturer_programme) 
-          # TODO - programmes & subjects available in Commonsubject lecturers - refer Exams controller
           @programme_id="2" #common subject lecturers
         else
           if current_user.roles.pluck(:authname).include?("administration")
