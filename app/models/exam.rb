@@ -133,6 +133,14 @@ class Exam < ActiveRecord::Base
         @exams = Exam.all
       elsif search == '1'
         @exams = Exam.where("subject_id IN (?)", common_subject)
+      elsif search == '2'
+        postbasic_ids = Programme.where(course_type: ['Pos Basik', 'Diploma Lanjutan', 'Pengkhususan']).pluck(:id).compact
+        postbasic_subject_ids = []
+        postbasic_ids.each do |pb_id|
+          subject_ids=Programme.where(id: pb_id)[0].descendants.at_depth(2).pluck(:id).compact
+          postbasic_subject_ids << subject_ids if subject_ids.count > 0
+        end
+        @exams = Exam.where(subject_id: postbasic_subject_ids).where('subject_id NOT IN(?)', common_subject)
       else
         subject_of_programme = Programme.find(search).descendants.at_depth(2).map(&:id)
         #@exams = Exam.find(:all, :conditions => ["subject_id IN (?) and subject_id NOT IN (?)", subject_of_program, common_subject])

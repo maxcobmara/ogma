@@ -165,13 +165,14 @@ class Exam::ExamquestionsController < ApplicationController
           posbasiks = Programme.roots.where(course_type: ["Diploma Lanjutan", "Pos Basik", "Pengkhususan"])
           if @lecturer_programme=="Pengkhususan" && current_user.roles.pluck(:authname).include?("programme_manager")
             @programme_list=Programme.where(id: posbasiks.pluck(:id))
+            @subjects=Programme.subject_groupbyposbasiks2
           else
             posbasiks.pluck(:name).each do |pname|
               @preselect_prog = Programme.where(name: pname).first.id if @position_exist.first.tasks_main.include?(pname)
             end  
             @programme_list=Programme.where(id: @preselect_prog)
+            @subjects=Programme.subject_groupbyoneprogramme2(@preselect_prog)
           end
-          @subjects=Programme.subject_groupbyoneprogramme2(@preselect_prog)
         end
       end
     end
@@ -186,7 +187,7 @@ class Exam::ExamquestionsController < ApplicationController
       elsif current_user.roles.pluck(:authname).include?("programme_manager") && @lecturer_programme=="Pengkhususan" 
         posbasiks = Programme.roots.where(course_type: ["Diploma Lanjutan", "Pos Basik", "Pengkhususan"])
         @programme_list=Programme.where(id: posbasiks.pluck(:id))
-        @subjects=Programme.subject_groupbyoneprogramme2(@preselect_prog)
+        @subjects=Programme.subject_groupbyposbasiks2
       else
         @preselect_prog = @examquestion.programme_id
         @programme_list=Programme.where(id: @preselect_prog)

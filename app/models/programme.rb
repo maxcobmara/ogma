@@ -133,6 +133,32 @@ class Programme < ActiveRecord::Base
     @groupped_subject
   end
   
+  def self.subject_groupbyposbasiks
+    posbasik_ids=Programme.where(course_type: ['Diploma Lanjutan', 'Pos Basik', 'Pengkhususan']).pluck(:id)
+    @groupped_subject=[]
+    posbasik_ids.each do |pbid|
+      pg_subjects=[[I18n.t('helpers.prompt.select_subject'), '']]
+      programmelist=Programme.where(id: pbid)[0].programme_list
+      subjects=Programme.where(id: pbid)[0].descendants.at_depth(2)
+      subjects.each{|subject|pg_subjects << [subject.subject_list]}
+      @groupped_subject << [programmelist, pg_subjects]
+    end
+    @groupped_subject
+  end
+  
+  def self.subject_groupbyposbasiks2
+    posbasik_ids=Programme.where(course_type: ['Diploma Lanjutan', 'Pos Basik', 'Pengkhususan']).pluck(:id)
+    @groupped_subject=[]
+    posbasik_ids.each do |pbid|
+      pg_subjects=[[I18n.t('helpers.prompt.select_subject'), '']]
+      programmelist=Programme.where(id: pbid)[0].programme_list
+      subjects=Programme.where(id: pbid)[0].descendants.at_depth(2)
+      subjects.each{|subject|pg_subjects << [subject.subject_list, subject.id]}
+      @groupped_subject << [programmelist, pg_subjects]
+    end
+    @groupped_subject
+  end
+  
   #use in exam controller - set shareable data - programme lecturers
   def self.subject_groupbyoneprogramme(progid)
     subjectby_programmelists=Programme.find(progid).descendants.where(course_type: "Subject").group_by{|x|x.root.programme_list}
@@ -224,6 +250,43 @@ class Programme < ActiveRecord::Base
 #       @groupped_topic << [Programme.find(subjectid).subject_list, sb_topics]
 #     end
     @groupped_topic
+  end
+  
+  def self.topic_groupbyposbasiks
+    #
+#     posbasik_ids=Programme.where(course_type: ['Diploma Lanjutan', 'Pos Basik', 'Pengkhususan']).pluck(:id)
+#     @groupped_subject=[]
+#     posbasik_ids.each do |pbid|
+#       pg_subjects=[[I18n.t('helpers.prompt.select_subject'), '']]
+#       programmelist=Programme.where(id: pbid)[0].programme_list
+#       subjects=Programme.where(id: pbid)[0].descendants.at_depth(2)
+#       subjects.each{|subject|pg_subjects << [subject.subject_list, subject.id]}
+#       @groupped_subject << [programmelist, pg_subjects]
+#     end
+#     @groupped_subject
+    #
+    posbasik_ids=Programme.where(course_type: ['Diploma Lanjutan', 'Pos Basik', 'Pengkhususan']).pluck(:id)
+    @groupped_topic=[]
+    posbasik_ids.each do |pbid|
+      topics=Programme.where(id: pbid)[0].descendants.at_depth(3)
+      subtopics=Programme.where(id: pbid)[0].descendants.at_depth(4)
+      ttopics=topics+subtopics
+      topicsby_subjectids=ttopics.group_by{|x|x.ancestry.split("/").last}
+      topicsby_subjectids.each do |subjectid, topics|
+        sb_topics=[[I18n.t('helpers.prompt.select_topic'), '']]
+        topics.sort_by{|x|x.code}.each{|topic|sb_topics << [topic.subject_list, topic.id]}  #[topic.subject_list]}
+        @groupped_topic << [Programme.find(subjectid).subject_list, sb_topics]
+      end
+    end
+    @groupped_topic
+#     topicby_subjectids=Programme.where(course_type: "Topic").group_by{|x|x.ancestry.split("/").last}
+#     @groupped_topic=[]
+#     topicby_subjectids.each do |subjectid, topics|
+#       sb_topics=[[I18n.t('helpers.prompt.select_topic'), '']]
+#       topics.sort_by{|x|x.code}.each{|topic|sb_topics << [topic.subject_list, topic.id]}  #[topic.subject_list]}
+#       @groupped_topic << [Programme.find(subjectid).subject_list, sb_topics]
+#     end
+#     @groupped_topic
   end
   
   private

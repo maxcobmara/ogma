@@ -22,12 +22,16 @@ class Exam::ExamsController < ApplicationController
         common_subjects=['Sains Tingkahlaku','Sains Perubatan Asas', 'Komunikasi & Sains Pengurusan', 'Anatomi & Fisiologi', 'Komuniti']
         if common_subjects.include?(@lecturer_programme) #@lecturer_programme =='Commonsubject'
           @programme_id ='1'
-        elsif (@lecturer_programme == 'Pos Basik' || @lecturer_programme == 'Diploma Lanjutan') && @tasks_main!=nil
-          @allposbasic_prog = Programme.where('course_type=? or course_type=?', "Pos Basik", "Diploma Lanjutan").pluck(:name)  #Onkologi, Perioperating, Kebidanan etc
+        elsif (@lecturer_programme == 'Pos Basik' || @lecturer_programme == 'Diploma Lanjutan' || @lecturer_programme =='Pengkhususan') && @tasks_main!=nil
+          @allposbasic_prog = Programme.where(course_type: ['Pos Basik', 'Diploma Lanjutan', 'Pengkhususan']).pluck(:name)  #Onkologi, Perioperating, Kebidanan etc
           for basicprog in @allposbasic_prog
             lecturer_basicprog_name = basicprog if @tasks_main.include?(basicprog)==true
           end
-          @programme_id=Programme.where(name: lecturer_basicprog_name, ancestry_depth: 0).first.id
+          if @lecturer_programme=="Pengkhususan" && current_user.roles.pluck(:authname).include?("programme_manager")
+            @programme_id='2'
+          else
+            @programme_id=Programme.where(name: lecturer_basicprog_name, ancestry_depth: 0).first.id
+          end
         else
           @programme_id='0' if !@lecturer_programme.nil? && @current_user.roles.pluck(:authname).include?("administration") # @current_user.userable.positions[0].name !='Pengajar'
         end
@@ -254,10 +258,10 @@ class Exam::ExamsController < ApplicationController
     end
     
     # Assign shared data among new, edit, create & update
-    # TODO - Assign data for postbasic lecturers too
     def set_shareable_data
       @items=Examquestion.all 
       @lecturer_programme = @current_user.userable.positions[0].unit  
+      posbasiks=['Diploma Lanjutan', 'Pos Basik', 'Pengkhususan']
       if @exam.id.nil?
         #applicable - new only
         unless @lecturer_programme.nil?
@@ -265,46 +269,68 @@ class Exam::ExamsController < ApplicationController
         end
         unless @programme.nil?
           @programme_id=@programme.id
+        else
+          #posbasik part
+          posbasiks_prog = Programme.roots.where(course_type: posbasiks)
+          posbasiks_prog.pluck(:name).each do |pname|
+            @programme_id = Programme.where('name ILIKE(?)', pname).first.id if @current_user.userable.positions.first.tasks_main.include?(pname)
+          end  
         end
       else
         #applicable - edit, update, create
         @programme_id = @exam.subject.root.id 
       end
       
-      if Programme.where(course_type: ['Diploma','Diploma Lanjutan', 'Pos Basik']).pluck(:name).include?(@lecturer_programme)
-        @programme_names=Programme.where(id: @programme_id).map(&:programme_list)
-        @subjects=Programme.subject_groupbyoneprogramme(@programme_id)
-        @topics=Programme.topic_groupbysubject_oneprogramme(@programme_id)
+      if Programme.where(course_type: ['Diploma']).pluck(:name).include?(@lecturer_programme) || (posbasiks.include?(@lecturer_programme) && @current_user.roles.pluck(:authname).include?("programme_manager")==false)
+          @programme_names=Programme.where(id: @programme_id).map(&:programme_list)
+          @subjects=Programme.subject_groupbyoneprogramme(@programme_id)
+          @topics=Programme.topic_groupbysubject_oneprogramme(@programme_id)
+      elsif posbasiks.include?(@lecturer_programme)
+          @programme_names=Programme.where(course_type: posbasiks).map(&:programme_list)
+          @subjects=Programme.subject_groupbyposbasiks
+          @topics=Programme.topic_groupbyposbasiks
       else  #Commonsubject LECTURER have no selected programme
-        common_subjects=['Sains Tingkahlaku','Sains Perubatan Asas', 'Komunikasi & Sains Pengurusan', 'Anatomi & Fisiologi', 'Komuniti']
-        if common_subjects.include?(@lecturer_programme) 
-          @topics=Programme.topic_groupbycommonsubjects
-          @subjects=Programme.subject_groupbycommonsubjects
-        else
-          @topics=Programme.topic_groupbysubject
-          @subjects=Programme.subject_groupbyprogramme
-        end
-        @programme_names=Programme.programme_names
+          common_subjects=['Sains Tingkahlaku','Sains Perubatan Asas', 'Komunikasi & Sains Pengurusan', 'Anatomi & Fisiologi', 'Komuniti']
+          if common_subjects.include?(@lecturer_programme) 
+            @topics=Programme.topic_groupbycommonsubjects
+            @subjects=Programme.subject_groupbycommonsubjects
+          else
+            @topics=Programme.topic_groupbysubject
+            @subjects=Programme.subject_groupbyprogramme
+          end
+          @programme_names=Programme.programme_names
       end
     end
     
     # Assign New & Create data only
-    # TODO - Assign data for Postbasic lecturers too
     def set_new_create_data
       unless @programme.nil? #|| @programme.count==0
-      @staff_listing=@current_user.userable_id
-      @programme_detail=@programme.programme_list
-      @subjects_paper=Programme.subject_groupbyoneprogramme2(@programme_id)
-    else #Commonsubject LECTURER have no selected programme
-      common_subjects=['Sains Tingkahlaku','Sains Perubatan Asas', 'Komunikasi & Sains Pengurusan', 'Anatomi & Fisiologi', 'Komuniti']
-      if common_subjects.include?(@lecturer_programme) 
         @staff_listing=@current_user.userable_id
-        @subjects_paper=Programme.subject_groupbycommonsubjects2 #new only
-      else
-        @staff_listing=@exam.creator_list
-        @subjects_paper=Programme.subject_groupbyprogramme2 #new only
+        @programme_detail=@programme.programme_list
+        @subjects_paper=Programme.subject_groupbyoneprogramme2(@programme_id)
+      else #Commonsubject LECTURER have no selected programme
+        common_subjects=['Sains Tingkahlaku','Sains Perubatan Asas', 'Komunikasi & Sains Pengurusan', 'Anatomi & Fisiologi', 'Komuniti']
+        posbasiks=['Diploma Lanjutan', 'Pos Basik', 'Pengkhususan']
+        if common_subjects.include?(@lecturer_programme) 
+          @staff_listing=@current_user.userable_id
+          @subjects_paper=Programme.subject_groupbycommonsubjects2 #new only
+        elsif posbasiks.include?(@lecturer_programme)
+          @staff_listing=@current_user.userable_id
+          if @current_user.roles.pluck(:authname).include?("programme_manager")
+            @subjects_paper=Programme.subject_groupbyposbasiks2 #new only
+          else#all posbasic lecturer EXCEPT Ketua Program Pengkhususan
+            posbasiks_prog = Programme.roots.where(course_type: posbasiks)
+            posbasiks_prog.pluck(:name).each do |pname|
+              @programme2 = Programme.where('name ILIKE(?)', pname).first if @current_user.userable.positions.first.tasks_main.include?(pname)
+            end  
+	    #@programme_detail=@programme2.programme_list
+            @subjects_paper=Programme.subject_groupbyoneprogramme2(@programme2.id) #new only
+          end
+        else #admin
+          @staff_listing=@exam.creator_list
+          @subjects_paper=Programme.subject_groupbyprogramme2 #new only
+        end
       end
-    end
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
