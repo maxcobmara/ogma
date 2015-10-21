@@ -153,14 +153,14 @@ class Examquestion < ActiveRecord::Base
   
   
   def self.search2(programmeid)
-    common_subject = Programme.where('course_type=?','Commonsubject').pluck(:id)
     if programmeid == 0 #admin 
       @examquestions = Examquestion.all
     elsif programmeid == "1" #KP Pengkhususan
       posbasiks_ids = Programme.roots.where(course_type: ["Diploma Lanjutan", "Pos Basik", "Pengkhususan"]).pluck(:id)
       @examquestions = Examquestion.where(programme_id: posbasiks_ids)
-    elsif common_subject.include?(programmeid)
-      #@examquestions = Examquestion.where("subject_id IN (?)", common_subject)  #pending creation of examquestion by common subject lect??
+    elsif programmeid == "2" #Common Subject lecturers
+      common_subject_ids = Programme.where(course_type: 'Commonsubject').pluck(:id)
+      @examquestions = Examquestion.where(subject_id: common_subject_ids )
     else
       @examquestions = Examquestion.where(programme_id: programmeid)
     end

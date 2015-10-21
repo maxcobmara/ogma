@@ -181,7 +181,11 @@ en:
         editor_id: Editor
         approver_id: Approver
       exam:
-        name: Examination Name
+        name: Examination name
+        subject_id: Subject
+        exam_on: Date
+        starttime: Start time
+        endtime: End time
     errors:
         template:
           body: "There were problems with the following fields:"

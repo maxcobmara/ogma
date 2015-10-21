@@ -163,7 +163,11 @@ ms_MY:
         editor_id: Penyemak
         approver_id: Pelulus
       exam:
-        name: Nama Peperiksaan
+        name: Nama peperiksaan
+        subject_id: Subjek
+        exam_on: Tarikh
+        starttime: Masa mula
+        endtime: Masa tamat
     errors:
         template:
           body: "Berikut adalah beberapa masalah:"

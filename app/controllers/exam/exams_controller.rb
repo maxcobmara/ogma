@@ -29,7 +29,7 @@ class Exam::ExamsController < ApplicationController
           end
           @programme_id=Programme.where(name: lecturer_basicprog_name, ancestry_depth: 0).first.id
         else
-          @programme_id='0' if !@lecturer_programme.nil? && @current_user.userable.positions[0].name !='Pengajar'
+          @programme_id='0' if !@lecturer_programme.nil? && @current_user.roles.pluck(:authname).include?("administration") # @current_user.userable.positions[0].name !='Pengajar'
         end
       end
       if @programme_id
@@ -253,6 +253,8 @@ class Exam::ExamsController < ApplicationController
       @exam = Exam.find(params[:id])
     end
     
+    # Assign shared data among new, edit, create & update
+    # TODO - Assign data for Commonsubject lecturers too
     def set_shareable_data
       @items=Examquestion.all 
       @lecturer_programme = @current_user.userable.positions[0].unit  
@@ -287,6 +289,7 @@ class Exam::ExamsController < ApplicationController
     end
     
     # Assign New & Create data only
+    # TODO - Assign data for Commonsubject lecturers too
     def set_new_create_data
       unless @programme.nil? #|| @programme.count==0
       @staff_listing=@current_user.userable_id

@@ -2,6 +2,8 @@ class Exam::ExamquestionsController < ApplicationController
   #filter_resource_access
     filter_access_to :all
   before_action :set_examquestion, only: [:show, :edit, :update, :destroy]
+  before_action :set_new_create_data, only: [:new, :create]
+  before_action :set_edit_update_data, only: [:edit, :update]
   # GET /examquestions
   # GET /examquestions.xml
   def index
@@ -21,9 +23,10 @@ class Exam::ExamquestionsController < ApplicationController
       unless @programme.nil? || @programme.count==0
         @programme_id = @programme.try(:first).try(:id)
       else
-        if @lecturer_programme == 'Commonsubject'
-          #SUP - among programme lecturers only
-          #@programme_id = Programme.where('name ILIKE (?) AND course_type=?',"%#{@lecturer_programme}%","Commonsubject").first.id #'1' 
+        common_subjects=['Sains Tingkahlaku','Sains Perubatan Asas', 'Komunikasi & Sains Pengurusan', 'Anatomi & Fisiologi', 'Komuniti']
+        if common_subjects.include?(@lecturer_programme) 
+          # TODO - programmes & subjects available in Commonsubject lecturers - refer Exams controller
+          @programme_id="2" #common subject lecturers
         else
           if current_user.roles.pluck(:authname).include?("administration")
             @programme_id=0  #admin 
@@ -73,32 +76,6 @@ class Exam::ExamquestionsController < ApplicationController
   # GET /examquestions/new.xml
   def new
     @examquestion = Examquestion.new
-    @position_exist = current_user.userable.positions
-    @lecturer_programme = current_user.userable.positions[0].unit
-    @creator = current_user.userable_id
-    unless @lecturer_programme.nil?
-      @programme = Programme.where('name ILIKE (?) AND ancestry_depth=?',"%#{@lecturer_programme}%",0)
-    end
-    unless @programme.nil? || @programme.count==0
-      @preselect_prog = @programme.first.id
-      @programme_list=Programme.where(id: @preselect_prog)
-    else
-      if @lecturer_programme == 'Commonsubject'
-      elsif current_user.roles.pluck(:authname).include?("administration")
-        @programme_list=Programme.roots  
-      else
-        posbasiks = Programme.roots.where(course_type: ["Diploma Lanjutan", "Pos Basik", "Pengkhususan"])
-        if @lecturer_programme=="Pengkhususan" && current_user.roles.pluck(:authname).include?("programme_manager")
-          @programme_list=Programme.where(id: posbasiks.pluck(:id))
-        else
-          posbasiks.pluck(:name).each do |pname|
-            @preselect_prog = Programme.where(name: pname).first.id if @position_exist.first.tasks_main.include?(pname)
-          end  
-          @programme_list=Programme.where(id: @preselect_prog)
-        end
-      end
-    end
-    
     3.times { @examquestion.shortessays.build }
     respond_to do |format|
       format.html # new.html.erb
@@ -108,50 +85,12 @@ class Exam::ExamquestionsController < ApplicationController
   
   # GET /examquestions/1/edit
   def edit
-    @examquestion = Examquestion.find(params[:id])
-    @creator = @examquestion.creator_id
-    @lecturer_programme = current_user.userable.positions[0].unit
-    if current_user.roles.pluck(:authname).include?("administration")
-      @programme_list=Programme.roots
-    elsif current_user.roles.pluck(:authname).include?("programme_manager") && @lecturer_programme=="Pengkhususan" 
-      posbasiks = Programme.roots.where(course_type: ["Diploma Lanjutan", "Pos Basik", "Pengkhususan"])
-      @programme_list=Programme.where(id: posbasiks.pluck(:id))
-    else
-      @preselect_prog = @examquestion.programme_id
-      @programme_list=Programme.where(id: @preselect_prog)
-    end
   end
 
   # POST /examquestions
   # POST /examquestions.xml
   def create
     @examquestion= Examquestion.new(examquestion_params)
-    @position_exist = current_user.userable.positions
-    @lecturer_programme = current_user.userable.positions[0].unit
-    @creator = current_user.userable_id
-    unless @lecturer_programme.nil?
-      @programme = Programme.where('name ILIKE (?) AND ancestry_depth=?',"%#{@lecturer_programme}%",0)
-    end
-    unless @programme.nil? || @programme.count==0
-      @preselect_prog = @programme.first.id
-      @programme_list=Programme.where(id: @preselect_prog)
-    else
-      if @lecturer_programme == 'Commonsubject'
-      elsif current_user.roles.pluck(:authname).include?("administration")
-        @programme_list=Programme.roots  
-      else
-        posbasiks = Programme.roots.where(course_type: ["Diploma Lanjutan", "Pos Basik", "Pengkhususan"])
-        if @lecturer_programme=="Pengkhususan" && current_user.roles.pluck(:authname).include?("programme_manager")
-          @programme_list=Programme.where(id: posbasiks.pluck(:id))
-        else
-          posbasiks.pluck(:name).each do |pname|
-            @preselect_prog = Programme.where(name: pname).first.id if @position_exist.first.tasks_main.include?(pname)
-          end  
-          @programme_list=Programme.where(id: @preselect_prog)
-        end
-      end
-    end
-   
     respond_to do |format|
       if @examquestion.save
         flash[:notice] = (t 'exam.examquestion.title')+(t 'actions.created')
@@ -167,19 +106,6 @@ class Exam::ExamquestionsController < ApplicationController
   # PUT /examquestions/1
   # PUT /examquestions/1.xml
   def update
-    @examquestion = Examquestion.find(params[:id])
-    @creator = @examquestion.creator_id
-    @lecturer_programme = current_user.userable.positions[0].unit
-    if current_user.roles.pluck(:authname).include?("administration")
-      @programme_list=Programme.roots
-    elsif current_user.roles.pluck(:authname).include?("programme_manager") && @lecturer_programme=="Pengkhususan" 
-      posbasiks = Programme.roots.where(course_type: ["Diploma Lanjutan", "Pos Basik", "Pengkhususan"])
-      @programme_list=Programme.where(id: posbasiks.pluck(:id))
-    else
-      @preselect_prog = @examquestion.programme_id
-      @programme_list=Programme.where(id: @preselect_prog)
-    end
-    
     respond_to do |format|
       if @examquestion.update(examquestion_params)
         flash[:notice] = (t 'exam.examquestion.title')+(t 'actions.updated')
@@ -215,6 +141,63 @@ class Exam::ExamquestionsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_examquestion
       @examquestion = Examquestion.find(params[:id])
+    end
+    
+    def set_new_create_data
+      @position_exist = current_user.userable.positions
+      @lecturer_programme = current_user.userable.positions[0].unit
+      @creator = current_user.userable_id
+      unless @lecturer_programme.nil?
+        @programme = Programme.where('name ILIKE (?) AND ancestry_depth=?',"%#{@lecturer_programme}%",0)
+      end
+      unless @programme.nil? || @programme.count==0
+        @preselect_prog = @programme.first.id
+        @programme_list=Programme.where(id: @preselect_prog)
+        @subjects=Programme.subject_groupbyoneprogramme2(@preselect_prog)
+      else
+        common_subjects=['Sains Tingkahlaku','Sains Perubatan Asas', 'Komunikasi & Sains Pengurusan', 'Anatomi & Fisiologi', 'Komuniti']
+        if common_subjects.include?(@lecturer_programme) 
+          @programme_list=Programme.roots
+          @subjects=Programme.subject_groupbycommonsubjects2
+        elsif current_user.roles.pluck(:authname).include?("administration")
+          @programme_list=Programme.roots
+          @subjects=Programme.subject_groupbyprogramme
+        else
+          posbasiks = Programme.roots.where(course_type: ["Diploma Lanjutan", "Pos Basik", "Pengkhususan"])
+          if @lecturer_programme=="Pengkhususan" && current_user.roles.pluck(:authname).include?("programme_manager")
+            @programme_list=Programme.where(id: posbasiks.pluck(:id))
+          else
+            posbasiks.pluck(:name).each do |pname|
+              @preselect_prog = Programme.where(name: pname).first.id if @position_exist.first.tasks_main.include?(pname)
+            end  
+            @programme_list=Programme.where(id: @preselect_prog)
+          end
+          @subjects=Programme.subject_groupbyoneprogramme2(@preselect_prog)
+        end
+      end
+    end
+    
+    def set_edit_update_data
+      @examquestion = Examquestion.find(params[:id])
+      @creator = @examquestion.creator_id
+      @lecturer_programme = current_user.userable.positions[0].unit
+      if current_user.roles.pluck(:authname).include?("administration")
+        @programme_list=Programme.roots
+        @subjects=Programme.subject_groupbyprogramme
+      elsif current_user.roles.pluck(:authname).include?("programme_manager") && @lecturer_programme=="Pengkhususan" 
+        posbasiks = Programme.roots.where(course_type: ["Diploma Lanjutan", "Pos Basik", "Pengkhususan"])
+        @programme_list=Programme.where(id: posbasiks.pluck(:id))
+        @subjects=Programme.subject_groupbyoneprogramme2(@preselect_prog)
+      else
+        @preselect_prog = @examquestion.programme_id
+        @programme_list=Programme.where(id: @preselect_prog)
+        common_subjects=['Sains Tingkahlaku','Sains Perubatan Asas', 'Komunikasi & Sains Pengurusan', 'Anatomi & Fisiologi', 'Komuniti']
+        if common_subjects.include?(@lecturer_programme) 
+          @subjects=Programme.subject_groupbycommonsubjects2
+        else
+          @subjects=Programme.subject_groupbyoneprogramme2(@preselect_prog)
+        end
+      end
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

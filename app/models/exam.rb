@@ -11,7 +11,7 @@ class Exam < ActiveRecord::Base
   
   attr_accessor :programme_filter, :subject_filter, :topic_filter, :seq
   
-  validates_presence_of :subject_id, :name  #programme_id
+  validates_presence_of :subject_id, :name, :exam_on, :starttime, :endtime
   validates_uniqueness_of :name, :scope => [:subject_id, :exam_on], :message => I18n.t('exam.exams.must_unique')
   validate :sequence_must_be_selected, :sequence_must_be_unique #,:sequence_must_increment_by_one
   
