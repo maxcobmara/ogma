@@ -126,7 +126,7 @@ class Exam::ExamquestionsController < ApplicationController
     if @exist_in_exam == 0
         @examquestion.destroy
     else
-        flash[:error] = 'This examquestion EXIST in examination and is not allowed for deletion.'
+        flash[:error] = t('exam.examquestion.exist_in_exampaper')
     end
     #22Apr2013--avoid deletion of examquestion that exist in exams
     

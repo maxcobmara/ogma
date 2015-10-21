@@ -2197,6 +2197,7 @@ ms_MY:
       diagram_caption: Tajuk Diagram
       no_diagram: Tiada
       selected_if_readyforapproval: " mesti diisi, jika status 'Ready For Approval'('Sedia untuk kelulusan') dipilih.'"
+      exist_in_exampaper: "Soalan ini sedang DIGUNAKAN dalam set kertas peperiksaan dan tidak boleh dipadam."
 
     exams:
       new_title: Set Kertas Soalan Peperiksaan Baru

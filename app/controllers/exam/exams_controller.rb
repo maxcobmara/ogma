@@ -254,7 +254,7 @@ class Exam::ExamsController < ApplicationController
     end
     
     # Assign shared data among new, edit, create & update
-    # TODO - Assign data for Commonsubject lecturers too
+    # TODO - Assign data for postbasic lecturers too
     def set_shareable_data
       @items=Examquestion.all 
       @lecturer_programme = @current_user.userable.positions[0].unit  
@@ -289,7 +289,7 @@ class Exam::ExamsController < ApplicationController
     end
     
     # Assign New & Create data only
-    # TODO - Assign data for Commonsubject lecturers too
+    # TODO - Assign data for Postbasic lecturers too
     def set_new_create_data
       unless @programme.nil? #|| @programme.count==0
       @staff_listing=@current_user.userable_id

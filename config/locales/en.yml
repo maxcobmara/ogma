@@ -2256,6 +2256,7 @@ en:
       diagram_caption: Diagram Caption
       no_diagram: Nil
       selected_if_readyforapproval: " must be selected, if status is 'Ready For Approval'"
+      exist_in_exampaper: "This examquestion EXIST in examination and is not allowed for deletion."
 
     exams:
       new_title: New Examination Paper
