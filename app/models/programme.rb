@@ -97,8 +97,8 @@ class Programme < ActiveRecord::Base
     Programme.roots.map(&:programme_list)
   end
   
-  #use in exam_controller - set_edit_data
-  def self.subject_groupbyprogramme
+  #original - start
+  def self.subject_groupbyprogramme2
     subjectby_programmelists=Programme.where(course_type: "Subject").group_by{|x|x.root.programme_list}
     @groupped_subject=[]
     subjectby_programmelists.each do |programmelist, subjects|
@@ -108,9 +108,10 @@ class Programme < ActiveRecord::Base
     end
     @groupped_subject
   end
+  #original - end
   
-  #used somewhere else
-  def self.subject_groupbyprogramme2
+  #use in exam controller - set shareable data - administrators
+  def self.subject_groupbyprogramme
     subjectby_programmelists=Programme.where(course_type: "Subject").group_by{|x|x.root.programme_list}
     @groupped_subject=[]
     subjectby_programmelists.each do |programmelist, subjects|
@@ -121,6 +122,18 @@ class Programme < ActiveRecord::Base
     @groupped_subject
   end
   
+  def self.subject_groupbyprogramme2
+    subjectby_programmelists=Programme.where(course_type: "Subject").group_by{|x|x.root.programme_list}
+    @groupped_subject=[]
+    subjectby_programmelists.each do |programmelist, subjects|
+      pg_subjects=[[I18n.t('helpers.prompt.select_subject'), '']]
+      subjects.each{|subject|pg_subjects << [subject.subject_list, subject.id]} 
+      @groupped_subject << [programmelist, pg_subjects]
+    end
+    @groupped_subject
+  end
+  
+  #use in exam controller - set shareable data - programme lecturers
   def self.subject_groupbyoneprogramme(progid)
     subjectby_programmelists=Programme.find(progid).descendants.where(course_type: "Subject").group_by{|x|x.root.programme_list}
     @groupped_subject=[]
@@ -138,7 +151,7 @@ class Programme < ActiveRecord::Base
     @groupped_subject=[]
     subjectby_programmelists.each do |programmelist, subjects|
       pg_subjects=[[I18n.t('helpers.prompt.select_subject'), '']]
-      subjects.each{|subject|pg_subjects << [subject.subject_list, subject.id]} # [subject.subject_list]}
+      subjects.each{|subject|pg_subjects << [subject.subject_list, subject.id]}
       @groupped_subject << [programmelist, pg_subjects]
     end
     @groupped_subject
@@ -156,13 +169,12 @@ class Programme < ActiveRecord::Base
     @groupped_subject
   end
   
-  #use in Exam controller - New
   def self.subject_groupbycommonsubjects2
     common_subjects=Programme.where('course_type=?','Commonsubject').group_by{|x|x.root.programme_list}
     @groupped_subject=[]
     common_subjects.each do |programmelist, subjects|
       pg_subjects=[[I18n.t('helpers.prompt.select_subject'), '']]
-      subjects.each{|subject|pg_subjects << [subject.subject_list, subject.id]}
+      subjects.each{|subject|pg_subjects <<  [subject.subject_list, subject.id] }  #[subject.subject_list]
       @groupped_subject << [programmelist, pg_subjects]
     end
     @groupped_subject

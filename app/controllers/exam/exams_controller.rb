@@ -2,6 +2,7 @@ class Exam::ExamsController < ApplicationController
   filter_resource_access
   before_action :set_exam, only: [:show, :edit, :update, :destroy]
   before_action :set_shareable_data, only: [:new, :edit, :update, :create]
+  before_action :set_new_create_data, only: [:new, :create]
 
   # GET /exams
   # GET /exams.xml
@@ -63,6 +64,7 @@ class Exam::ExamsController < ApplicationController
     elsif @exam.subject_id!=nil && (@exam.subject.parent.code == '5' || @exam.subject.parent.code == '6')
      @year = "3 / "
     end
+
     respond_to do |format|
       format.html # show.html.erb
       format.xml  { render :xml => @exam }
@@ -73,18 +75,6 @@ class Exam::ExamsController < ApplicationController
   # GET /exams/new.xml
   def new
     @exam = Exam.new
-    unless @programme.nil? #|| @programme.count==0
-      @staff_listing=@current_user.userable_id
-      @programme_detail=@programme.programme_list
-    else #Commonsubject LECTURER have no selected programme
-      common_subjects=['Sains Tingkahlaku','Sains Perubatan Asas', 'Komunikasi & Sains Pengurusan', 'Anatomi & Fisiologi', 'Komuniti']
-      if common_subjects.include?(@lecturer_programme) 
-        @staff_listing=@current_user.userable_id
-      else
-        @staff_listing=@exam.creator_list
-      end
-    end
-
     respond_to do |format|
       format.html # new.html.erb
       format.xml  { render :xml => @exam }
@@ -115,7 +105,7 @@ class Exam::ExamsController < ApplicationController
     elsif @create_type == t('exam.exams.create_template')
         @exam.klass_id = 0
     end   
- 
+    
     respond_to do |format|
       if @exam.save
         flash[:notice] = (t 'exam.exams.created_add_question_details')
@@ -133,8 +123,8 @@ class Exam::ExamsController < ApplicationController
   # PUT /exams/1
   # PUT /exams/1.xml
   def update
-    params[:exam][:examquestion_ids] ||= []
     @exam = Exam.find(params[:id])
+    params[:exam][:examquestion_ids] ||= [] 
     if @exam.klass_id == 0
       #template
       respond_to do |format|
@@ -290,10 +280,28 @@ class Exam::ExamsController < ApplicationController
           @subjects=Programme.subject_groupbycommonsubjects
         else
           @topics=Programme.topic_groupbysubject
-          @subjects=Programme.subject_groupbyprogramme2
+          @subjects=Programme.subject_groupbyprogramme
         end
         @programme_names=Programme.programme_names
       end
+    end
+    
+    # Assign New & Create data only
+    def set_new_create_data
+      unless @programme.nil? #|| @programme.count==0
+      @staff_listing=@current_user.userable_id
+      @programme_detail=@programme.programme_list
+      @subjects_paper=Programme.subject_groupbyoneprogramme2(@programme_id)
+    else #Commonsubject LECTURER have no selected programme
+      common_subjects=['Sains Tingkahlaku','Sains Perubatan Asas', 'Komunikasi & Sains Pengurusan', 'Anatomi & Fisiologi', 'Komuniti']
+      if common_subjects.include?(@lecturer_programme) 
+        @staff_listing=@current_user.userable_id
+        @subjects_paper=Programme.subject_groupbycommonsubjects2 #new only
+      else
+        @staff_listing=@exam.creator_list
+        @subjects_paper=Programme.subject_groupbyprogramme2 #new only
+      end
+    end
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
