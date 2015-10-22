@@ -2,10 +2,13 @@
   %tr.search_row{style: "display: none;"}
     /%td= f.text_field :studentevaluate_name_cont, size: 2, class: 'form-control'
     %td= f.text_field :programme_subject_search, size: 2, :placeholder=>(t 'exam.evaluate_course.programme_or_subject'), class: 'form-control'
-    %td= f.text_field :evaluate_date_eq, class: 'date_picker form-control'
+    %td
+      .col-md-3= f.text_field :evaluate_date_gteq, class: 'date_picker form-control'
+      .col-md-3= f.text_field :evaluate_date_lteq, class: 'date_picker form-control'
     %td
       .input-group
-        = f.text_field :staffevaluate_name_cont, size: 8,  class: 'form-control'
+        /= f.text_field :staffevaluate_name_cont, size: 8,  class: 'form-control'
+        = f.text_field :evaluated_search, size: 8,  class: 'form-control'
         %span.input-group-btn
           %button.btn.btn-sm.btn-default.right{:type => "submit"}
             %i.fa.fa-search.fa-fw

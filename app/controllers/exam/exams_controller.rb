@@ -275,24 +275,37 @@ class Exam::ExamsController < ApplicationController
     @exam.destroy
 
     respond_to do |format|
-      format.html { redirect_to(exams_url) }
+      format.html { redirect_to(exam_exams_url) }
       format.xml  { head :ok }
     end
   end
   
+#   def exampaper
+#     @exam = Exam.find(params[:id])  
+#     render :layout => 'report'
+#   end
+#   
+#   def exampaper_separate
+#     @exam = Exam.find(params[:id])  
+#     render :layout => 'report'
+#   end
+#   
+#   def exampaper_combine
+#     @exam = Exam.find(params[:id])  
+#     render :layout => 'report'
+#   end
+  
   def exampaper
-    @exam = Exam.find(params[:id])  
-    render :layout => 'report'
-  end
-  
-  def exampaper_separate
-    @exam = Exam.find(params[:id])  
-    render :layout => 'report'
-  end
-  
-  def exampaper_combine
-    @exam = Exam.find(params[:id])  
-    render :layout => 'report'
+    @exam = Exam.find(params[:id])
+    
+    respond_to do |format|
+      format.pdf do
+        pdf = Exam_paperPdf.new(@exam, view_context)
+        send_data pdf.render, filename: "exampaper-{Date.today}",
+                              type: "application/pdf",
+                              disposition: "inline"
+      end
+    end
   end
   
   def view_subject_main

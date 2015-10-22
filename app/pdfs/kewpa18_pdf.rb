@@ -14,7 +14,7 @@ class Kewpa18Pdf < Prawn::Document
     move_down 40
     text "Jenis Aset :  #{@disposal.try(:asset).try(:typename)} #{@disposal.try(:asset).try(:name)} #{@disposal.try(:asset).try(:modelname)}", :align => :left, :size => 14, :indent_paragraphs => 50
     text "Kuantiti   :  #{@disposal.quantity} ", :align => :left, :size => 14, :indent_paragraphs => 50
-    text "Secara     :  #{@disposal.discard_options}", :align => :left, :size => 14, :indent_paragraphs => 50
+    text "Secara     :  #{I18n.t('asset.disposal.'+@disposal.discard_options)}", :align => :left, :size => 14, :indent_paragraphs => 50
     text "Tarikh     :  #{@disposal.discarded_on.try(:strftime, "%d/%m/%y")}", :align => :left, :size => 14, :indent_paragraphs => 50
     text "Tempat     :  #{@disposal.discard_location}", :align => :left, :size => 14, :indent_paragraphs => 50
     move_down 80
@@ -33,7 +33,7 @@ class Kewpa18Pdf < Prawn::Document
              ["Tarikh : #{@disposal.discarded_on.try(:strftime, "%d/%m/%y")}","","Tarikh : #{@disposal.discarded_on.try(:strftime, "%d/%m/%y")}",""],
              ["Cop :","","Cop :", ""]]
              
-    table(data1, :column_widths => [180, 80, 180], :cell_style => { :size => 7})  do
+    table(data1, :column_widths => [180, 80, 180], :cell_style => { :size => 14})  do
       row(0).columns(0).borders = [:bottom]
       row(0).columns(1).borders = [ ]
       row(0).columns(2).borders = [:bottom]

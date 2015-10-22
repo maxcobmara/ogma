@@ -26,6 +26,7 @@ ms_MY:
       holiday: Cuti Umum
       weeklytimetable: Jadual Waktu Mingguan
       academic_session: Sesi Akademik
+      evaluate_course: Penilaian Kursus
     attributes:
       student:
         name: Nama
@@ -132,6 +133,34 @@ ms_MY:
         sequence: Sesi
       academic_session:
         total_week: Bilangan Minggu
+      evaluate_course:
+        staff_id: Pengajar
+        invite_lec: Pengajar Jemputan
+        subject_id: Subjek
+        invite_lec_topic: Topik
+        evaluate_date: Tarikh Penilaian
+        course_id: Program
+        ev_obj: Skor soalan 1
+        ev_knowledge: Skor soalan 2
+        ev_deliver: Skor soalan 3
+        ev_content: Skor soalan 4
+        ev_tool: Skor soalan 5
+        ev_topic: Skor soalan 6
+        ev_work: Skor soalan 7
+        ev_note: Skor soalan 8
+        ev_assessment: Skor soalan 9
+      examquestion:
+        programme_id: Program
+        subject_id: Subjek
+        topic_id: Topik
+        questiontype: Jenis Soalan
+        question: Soalan
+        marks: Markah
+        createdt: Tarikh disediakan
+        creator_id: Penyedia Soalan
+        editdt: Tarikh Semakan
+        editor_id: Penyemak
+        approver_id: Pelulus
     errors:
         template:
           body: "Berikut adalah beberapa masalah:"
@@ -1190,7 +1219,7 @@ ms_MY:
       board_examiners: Lembaga Pemeriksa
       is_checked: "Disemak / Diproses?"
       is_verified: "Disahkan"
-      is_disposed: Hantar untuk Pengesahan Ketua Jabatan
+      is_disposed: Hantar kepada Ketua Jabatan untuk semakan
       revalue: "Nilai Semasa (Baru)"
       revalued_by: Penilaian Semula Oleh
       revalued_on: Penilaian Semula Pada
@@ -2123,13 +2152,14 @@ ms_MY:
       created: Telah Dicipta
       submitted: Telah Dihantar
       edited: Telah Disunting
-      editing: Sedang Disunting
+      editing: Sedang Disemak
       approved: Diluluskan
       rejectatcollege: Ditolak (di kolej)
       senttokkm: Dihantar ke KKM
       reedit: Sunting Semula
       rejected: Ditolak
       readyforapproval: Sedia Untuk Kelulusan
+      forapproval: Untuk Kelulusan
       edit_details: Butiran Semakan
       approval_details: Butiran Kelulusan
       approval_bpl_details: "Butiran Kelulusan & BPL"
@@ -2159,6 +2189,7 @@ ms_MY:
       browse_preview: "Pilih fail imej untuk PAPAR diagram baru di sini. "
       diagram_caption: Tajuk Diagram
       no_diagram: Tiada
+      selected_if_readyforapproval: " mesti diisi, jika status 'Ready For Approval'('Sedia untuk kelulusan') dipilih.'"
 
     exams:
       new_title: Set Kertas Soalan Peperiksaan Baru
@@ -2287,21 +2318,23 @@ ms_MY:
       course_id: Program
       subject_id: Subjek
       programme_subject: "Program - Subjek"
-      programme_or_subject: Program atau Subjek
+      programme_or_subject: Program atau Subjek atau Topik
       evaluate_date: Tarikh Penilaian
       appraisal_details: Butiran Penilaian
       invite_lec: Pengajar Jemputan
+      invite_lec_topic: Topik
       comment: Komen
       description: Perkara
       score: Skor
       objective_achieved: "Pencapaian objektif pelajaran."
       lecturer_knowledge: "Pengetahuan pensyarah tentang pelajaran yang diajar."
-      lecturer_q_achievement: "Mutu pencapaian pensyarah."
+      lecturer_q_achievement: "Syarahan menepati masa yang ditetapkan."
       content: "Isi kandungan pelajaran"
       training_aids_quality: "Mutu alat pandang dengar yang digunakan."
       suitability_topic_sequence: "Kesesuaian turutan topik dalam jadual."
-      effectiveness_teaching_learning: "Keberkesanan pengajaran dan pembelajaran (interaksi antara pensyarah dan pelajar)."
+      effectiveness_teaching_learning: "Interaksi antara pensyarah dan pelajar."
       benefit_notes: "Faedah bahan/nota yang diedarkan"
+      suitable_assessment: "Penilaian yang dilakukan bersesuaian dengan topik."
       evaluation_scale: Skala Penilaian
       unsatisfactory: Tidak Memuaskan 
       average: Sederhana 
@@ -2315,6 +2348,13 @@ ms_MY:
       prepared_by: DISEDIAKAN OLEH
       date_updated: TARIKH KEMASKINI
       by_student: "(Diisi oleh Pelatih)"
+      staff_or_invited: "Pilih kotak semak jika  Pengajar KSKB, nyahpilih jika Pensyarah Jemputan."
+      no_staff: "Jemputan -  "
+      evaluation_once: " - Penilaian bagi Subjek yang diajar hanya dibenarkan sekali"
+      total: Jumlah
+      question: S
+      total_scores: Jumlah Skor
+      average_scores: Purata Skor
 
   training:
     title: Latihan
@@ -2844,12 +2884,13 @@ ms_MY:
         discarded_on: Dimusnahkan Pada
         witness1: "1. Nama Saksi (Pilih kotak semak jika STAF)"
         witness2: "2. Nama Saksi (Pilih kotak semak jika STAF)"
-        is_disposed: Hantar Untuk Pengesahan Ketua Jabatan
+        is_disposed: Hantar kepada Ketua Jabatan untuk semakan
 
 
     prompt:
       select_creator: Pilih Penyedia Soalan
       select_editor: Pilih Penyunting
+      select_approver: Pilih Pelulus
       select_programme: Pilih Program
       select_subject: Pilih Subjek
       select_topic: Pilih Topik

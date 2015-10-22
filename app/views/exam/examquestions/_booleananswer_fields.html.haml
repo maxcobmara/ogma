@@ -1,97 +1,102 @@
 /TRUE FALSE Question-start-BOOLEAN ANSWER PART
 /answer field, table : examquestion
 - @boolean_answer = [["#{t 'exam.examquestion.true1'}", "true"],["#{t 'exam.examquestion.false1'}","false"]]
-A
-= hidden_field "examquestion[booleananswers_attributes][0]",:item, :value => "A" 
-- unless @examquestion.id.nil? || @examquestion.id.blank?
-  - if (Booleanchoice.where('examquestion_id=?',@examquestion.id).count) > 0 
-    = hidden_field "examquestion[booleananswers_attributes][0]",:id, :value => @examquestion.booleananswers[0].id
-    = select_tag "examquestion[booleananswers_attributes][0][answer]", "<option>#{(t 'helpers.prompt.select_answer')}</option>".html_safe+options_for_select(@boolean_answer,@examquestion.booleananswers[0].answer.to_s) 
+.input-group
+  .input-group-addon 
+    A
+  = hidden_field "examquestion[booleananswers_attributes][0]",:item, :value => "A" 
+  - unless @examquestion.id.nil? || @examquestion.id.blank?
+    - if (Booleanchoice.where('examquestion_id=?',@examquestion.id).count) > 0 
+      = hidden_field "examquestion[booleananswers_attributes][0]",:id, :value => @examquestion.booleananswers[0].id
+      = select_tag "examquestion[booleananswers_attributes][0][answer]", "<option>#{(t 'helpers.prompt.select_answer')}</option>".html_safe+options_for_select(@boolean_answer,@examquestion.booleananswers[0].answer.to_s), class: 'form-control'
+    - else
+      - if @examquestion.questiontype=="TRUEFALSE"
+        = select_tag "examquestion[booleananswers_attributes][0][answer]", "<option>#{(t 'helpers.prompt.select_answer')}</option>".html_safe+options_for_select(@boolean_answer), class: 'form-control'
   - else
-    - if @examquestion.questiontype=="TRUEFALSE"
-      = select_tag "examquestion[booleananswers_attributes][0][answer]", "<option>#{(t 'helpers.prompt.select_answer')}</option>".html_safe+options_for_select(@boolean_answer) 
-- else
-  /EDIT PART?
-  /-if @examquestion.questiontype=="TRUEFALSE" && @examquestion.booleananswers[0]%>
-  /= select_tag "examquestion[booleananswers_attributes][0][answer]", "<option>#{(t 'helpers.prompt.select_answer')}</option>".html_safe+options_for_select(@boolean_answer,@examquestion.booleananswers[0].answer.to_s) %>
-  /= text_field "examquestion[booleananswers_attributes][0]",:description, :size=>60, :value=>@examquestion.booleananswers[0].description      
-  /else
-  /EDIT PART?
-  = select_tag "examquestion[booleananswers_attributes][0][answer]", "<option>#{(t 'helpers.prompt.select_answer')}</option>".html_safe+options_for_select(@boolean_answer).html_safe	
-%br
+    /EDIT PART?
+    /-if @examquestion.questiontype=="TRUEFALSE" && @examquestion.booleananswers[0]%>
+    /= select_tag "examquestion[booleananswers_attributes][0][answer]", "<option>#{(t 'helpers.prompt.select_answer')}</option>".html_safe+options_for_select(@boolean_answer,@examquestion.booleananswers[0].answer.to_s) %>
+    /= text_field "examquestion[booleananswers_attributes][0]",:description, :size=>60, :value=>@examquestion.booleananswers[0].description      
+    /else
+    /EDIT PART?
+    = select_tag "examquestion[booleananswers_attributes][0][answer]", "<option>#{(t 'helpers.prompt.select_answer')}</option>".html_safe+options_for_select(@boolean_answer).html_safe, class: 'form-control'
 
-B
-= hidden_field "examquestion[booleananswers_attributes][1]",:item, :value => "B" 
-- unless @examquestion.id.nil? || @examquestion.id.blank?
-  - if (Booleanchoice.where('examquestion_id=?',@examquestion.id).count) > 0 
-    = hidden_field "examquestion[booleananswers_attributes][1]",:id, :value => @examquestion.booleananswers[1].id
-    = select_tag "examquestion[booleananswers_attributes][1][answer]", "<option>#{(t 'helpers.prompt.select_answer')}</option>".html_safe+options_for_select(@boolean_answer,@examquestion.booleananswers[1].answer.to_s) 
+.input-group
+  .input-group-addon 
+    B
+  = hidden_field "examquestion[booleananswers_attributes][1]",:item, :value => "B" 
+  - unless @examquestion.id.nil? || @examquestion.id.blank?
+    - if (Booleanchoice.where('examquestion_id=?',@examquestion.id).count) > 0 
+      = hidden_field "examquestion[booleananswers_attributes][1]",:id, :value => @examquestion.booleananswers[1].id
+      = select_tag "examquestion[booleananswers_attributes][1][answer]", "<option>#{(t 'helpers.prompt.select_answer')}</option>".html_safe+options_for_select(@boolean_answer,@examquestion.booleananswers[1].answer.to_s), class: 'form-control'
+    - else
+      - if @examquestion.questiontype=="TRUEFALSE"
+        = select_tag "examquestion[booleananswers_attributes][1][answer]", "<option>#{(t 'helpers.prompt.select_answer')}</option>".html_safe+options_for_select(@boolean_answer), class: 'form-control'
   - else
-    - if @examquestion.questiontype=="TRUEFALSE"
-      = select_tag "examquestion[booleananswers_attributes][1][answer]", "<option>#{(t 'helpers.prompt.select_answer')}</option>".html_safe+options_for_select(@boolean_answer) 
-- else
-  /EDIT PART?
-  /-if @examquestion.questiontype=="TRUEFALSE" && @examquestion.booleananswers[1]%>
-  /= select_tag "examquestion[booleananswers_attributes][1][answer]", "<option>#{(t 'helpers.prompt.select_answer')}</option>".html_safe+options_for_select(@boolean_answer,@examquestion.booleananswers[1].answer.to_s) %>
-  /= text_field "examquestion[booleananswers_attributes][1]",:description, :size=>60, :value=>@examquestion.booleananswers[1].description      
-  /else
-  /EDIT PART?
-  = select_tag "examquestion[booleananswers_attributes][1][answer]", "<option>#{(t 'helpers.prompt.select_answer')}</option>".html_safe+options_for_select(@boolean_answer).html_safe
-%br
+    /EDIT PART?
+    /-if @examquestion.questiontype=="TRUEFALSE" && @examquestion.booleananswers[1]%>
+    /= select_tag "examquestion[booleananswers_attributes][1][answer]", "<option>#{(t 'helpers.prompt.select_answer')}</option>".html_safe+options_for_select(@boolean_answer,@examquestion.booleananswers[1].answer.to_s) %>
+    /= text_field "examquestion[booleananswers_attributes][1]",:description, :size=>60, :value=>@examquestion.booleananswers[1].description      
+    /else
+    /EDIT PART?
+    = select_tag "examquestion[booleananswers_attributes][1][answer]", "<option>#{(t 'helpers.prompt.select_answer')}</option>".html_safe+options_for_select(@boolean_answer).html_safe, class: 'form-control'
 
-C
-= hidden_field "examquestion[booleananswers_attributes][2]",:item, :value => "C" 
-- unless @examquestion.id.nil? || @examquestion.id.blank?
-  - if (Booleanchoice.where('examquestion_id=?',@examquestion.id).count) > 0 
-    = hidden_field "examquestion[booleananswers_attributes][2]",:id, :value => @examquestion.booleananswers[2].id
-    = select_tag "examquestion[booleananswers_attributes][2][answer]", "<option>#{(t 'helpers.prompt.select_answer')}</option>".html_safe+options_for_select(@boolean_answer,@examquestion.booleananswers[0].answer.to_s) 
+.input-group
+  .input-group-addon 
+    C
+  = hidden_field "examquestion[booleananswers_attributes][2]",:item, :value => "C" 
+  - unless @examquestion.id.nil? || @examquestion.id.blank?
+    - if (Booleanchoice.where('examquestion_id=?',@examquestion.id).count) > 0 
+      = hidden_field "examquestion[booleananswers_attributes][2]",:id, :value => @examquestion.booleananswers[2].id
+      = select_tag "examquestion[booleananswers_attributes][2][answer]", "<option>#{(t 'helpers.prompt.select_answer')}</option>".html_safe+options_for_select(@boolean_answer,@examquestion.booleananswers[0].answer.to_s), class: 'form-control'
+    - else
+      - if @examquestion.questiontype=="TRUEFALSE"
+        = select_tag "examquestion[booleananswers_attributes][2][answer]", "<option>#{(t 'helpers.prompt.select_answer')}</option>".html_safe+options_for_select(@boolean_answer), class: 'form-control'
   - else
-    - if @examquestion.questiontype=="TRUEFALSE"
-      = select_tag "examquestion[booleananswers_attributes][2][answer]", "<option>#{(t 'helpers.prompt.select_answer')}</option>".html_safe+options_for_select(@boolean_answer) 
-- else
-  /EDIT PART?
-  /-if @examquestion.questiontype=="TRUEFALSE" && @examquestion.booleananswers[0]%>
-  /= select_tag "examquestion[booleananswers_attributes][2][answer]", "<option>#{(t 'helpers.prompt.select_answer')}</option>".html_safe+options_for_select(@boolean_answer,@examquestion.booleananswers[2].answer.to_s) %>
-  /= text_field "examquestion[booleananswers_attributes][2]",:description, :size=>60, :value=>@examquestion.booleananswers[2].description
-  /else
-  /EDIT PART?
-  = select_tag "examquestion[booleananswers_attributes][2][answer]", "<option>#{(t 'helpers.prompt.select_answer')}</option>".html_safe+options_for_select(@boolean_answer).html_safe	
-%br
+    /EDIT PART?
+    /-if @examquestion.questiontype=="TRUEFALSE" && @examquestion.booleananswers[0]%>
+    /= select_tag "examquestion[booleananswers_attributes][2][answer]", "<option>#{(t 'helpers.prompt.select_answer')}</option>".html_safe+options_for_select(@boolean_answer,@examquestion.booleananswers[2].answer.to_s) %>
+    /= text_field "examquestion[booleananswers_attributes][2]",:description, :size=>60, :value=>@examquestion.booleananswers[2].description
+    /else
+    /EDIT PART?
+    = select_tag "examquestion[booleananswers_attributes][2][answer]", "<option>#{(t 'helpers.prompt.select_answer')}</option>".html_safe+options_for_select(@boolean_answer).html_safe, class: 'form-control'
+    
+.input-group
+  .input-group-addon 
+    D
+  = hidden_field "examquestion[booleananswers_attributes][3]",:item, :value => "D" 
+  - unless @examquestion.id.nil? || @examquestion.id.blank?
+    - if (Booleanchoice.where('examquestion_id=?',@examquestion.id).count) > 0 
+      = hidden_field "examquestion[booleananswers_attributes][3]",:id, :value => @examquestion.booleananswers[3].id
+      = select_tag "examquestion[booleananswers_attributes][3][answer]", "<option>#{(t 'helpers.prompt.select_answer')}</option>".html_safe+options_for_select(@boolean_answer,@examquestion.booleananswers[0].answer.to_s), class: 'form-control'
+    - else
+      - if @examquestion.questiontype=="TRUEFALSE"
+        = select_tag "examquestion[booleananswers_attributes][3][answer]", "<option>#{(t 'helpers.prompt.select_answer')}</option>".html_safe+options_for_select(@boolean_answer), class: form-control
+  - else
+    /EDIT PART?
+    /-if @examquestion.questiontype=="TRUEFALSE" && @examquestion.booleananswers[3]%>
+    /= select_tag "examquestion[booleananswers_attributes][3][answer]", "<option>#{(t 'helpers.prompt.select_answer')}</option>".html_safe+options_for_select(@boolean_answer,@examquestion.booleananswers[0].answer.to_s) %>
+    /= text_field "examquestion[booleananswers_attributes][3]",:description, :size=>60, :value=>@examquestion.booleananswers[3].description      
+    /else
+    /EDIT PART?
+    = select_tag "examquestion[booleananswers_attributes][3][answer]", "<option>#{(t 'helpers.prompt.select_answer')}</option>".html_safe+options_for_select(@boolean_answer).html_safe, class: 'form-control'
 
-D
-= hidden_field "examquestion[booleananswers_attributes][3]",:item, :value => "D" 
-- unless @examquestion.id.nil? || @examquestion.id.blank?
-  - if (Booleanchoice.where('examquestion_id=?',@examquestion.id).count) > 0 
-    = hidden_field "examquestion[booleananswers_attributes][3]",:id, :value => @examquestion.booleananswers[3].id
-    = select_tag "examquestion[booleananswers_attributes][3][answer]", "<option>#{(t 'helpers.prompt.select_answer')}</option>".html_safe+options_for_select(@boolean_answer,@examquestion.booleananswers[0].answer.to_s) 
+.input-group
+  .input-group-addon 
+    E
+  = hidden_field "examquestion[booleananswers_attributes][4]",:item, :value => "E" 
+  - unless @examquestion.id.nil? || @examquestion.id.blank?
+    - if (Booleanchoice.where('examquestion_id=?',@examquestion.id).count) > 0 
+      = hidden_field "examquestion[booleananswers_attributes][4]",:id, :value => @examquestion.booleananswers[4].id
+      = select_tag "examquestion[booleananswers_attributes][4][answer]", "<option>#{(t 'helpers.prompt.select_answer')}</option>".html_safe+options_for_select(@boolean_answer,@examquestion.booleananswers[0].answer.to_s), class: 'form-control'
+    - else
+      - if @examquestion.questiontype=="TRUEFALSE"
+        = select_tag "examquestion[booleananswers_attributes][4][answer]", "<option>#{(t 'helpers.prompt.select_answer')}</option>".html_safe+options_for_select(@boolean_answer), class: 'form-control'
   - else
-    - if @examquestion.questiontype=="TRUEFALSE"
-      = select_tag "examquestion[booleananswers_attributes][3][answer]", "<option>#{(t 'helpers.prompt.select_answer')}</option>".html_safe+options_for_select(@boolean_answer) 
-- else
-  /EDIT PART?
-  /-if @examquestion.questiontype=="TRUEFALSE" && @examquestion.booleananswers[3]%>
-  /= select_tag "examquestion[booleananswers_attributes][3][answer]", "<option>#{(t 'helpers.prompt.select_answer')}</option>".html_safe+options_for_select(@boolean_answer,@examquestion.booleananswers[0].answer.to_s) %>
-  /= text_field "examquestion[booleananswers_attributes][3]",:description, :size=>60, :value=>@examquestion.booleananswers[3].description      
-  /else
-  /EDIT PART?
-  = select_tag "examquestion[booleananswers_attributes][3][answer]", "<option>#{(t 'helpers.prompt.select_answer')}</option>".html_safe+options_for_select(@boolean_answer).html_safe	
-%br
-
-E
-= hidden_field "examquestion[booleananswers_attributes][4]",:item, :value => "E" 
-- unless @examquestion.id.nil? || @examquestion.id.blank?
-  - if (Booleanchoice.where('examquestion_id=?',@examquestion.id).count) > 0 
-    = hidden_field "examquestion[booleananswers_attributes][4]",:id, :value => @examquestion.booleananswers[4].id
-    = select_tag "examquestion[booleananswers_attributes][4][answer]", "<option>#{(t 'helpers.prompt.select_answer')}</option>".html_safe+options_for_select(@boolean_answer,@examquestion.booleananswers[0].answer.to_s) 
-  - else
-    - if @examquestion.questiontype=="TRUEFALSE"
-      = select_tag "examquestion[booleananswers_attributes][4][answer]", "<option>#{(t 'helpers.prompt.select_answer')}</option>".html_safe+options_for_select(@boolean_answer) 
-- else
-  /EDIT PART?
-  /-if @examquestion.questiontype=="TRUEFALSE" && @examquestion.booleananswers[0]%>
-  /= select_tag "examquestion[booleananswers_attributes][4][answer]", "<option>#{(t 'helpers.prompt.select_answer')}</option>".html_safe+options_for_select(@boolean_answer,@examquestion.booleananswers[4].answer.to_s) %>
-  /= text_field "examquestion[booleananswers_attributes][4]",:description, :size=>60, :value=>@examquestion.booleananswers[4].description      
-  /else
-  /EDIT PART?
-  = select_tag "examquestion[booleananswers_attributes][4][answer]", "<option>#{(t 'helpers.prompt.select_answer')}</option>".html_safe+options_for_select(@boolean_answer).html_safe	
-%br
+    /EDIT PART?
+    /-if @examquestion.questiontype=="TRUEFALSE" && @examquestion.booleananswers[0]%>
+    /= select_tag "examquestion[booleananswers_attributes][4][answer]", "<option>#{(t 'helpers.prompt.select_answer')}</option>".html_safe+options_for_select(@boolean_answer,@examquestion.booleananswers[4].answer.to_s) %>
+    /= text_field "examquestion[booleananswers_attributes][4]",:description, :size=>60, :value=>@examquestion.booleananswers[4].description      
+    /else
+    /EDIT PART?
+    = select_tag "examquestion[booleananswers_attributes][4][answer]", "<option>#{(t 'helpers.prompt.select_answer')}</option>".html_safe+options_for_select(@boolean_answer).html_safe, class: 'form-control'

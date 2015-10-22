@@ -29,6 +29,11 @@
       = f.text_field :est_value_post_repair, class: 'form-control', placeholder: 'RM'  
   .form-group
     .col-sm-2.control-label
+      =f.label :est_time_next_fail
+    .col-md-3
+      = f.text_field :est_time_next_fail, class: 'form-control', placeholder: 'in months'
+  .form-group
+    .col-sm-2.control-label
       %b= t 'asset.disposal.repair_needed'
     .col-md-6
       %ol
@@ -84,9 +89,12 @@
         = f.label :checked_by
     .col-md-4
       .span_is_checked{:style=>"display: none;"}
-        = f.collection_select :checked_by, Staff.where("id = ?", Login.first.staff_id), :id, :staff_name_with_position,{:include_blank =>t('helpers.prompt.select_staff'), :selected=>@disposal.checked_by},{class: 'selectpicker', "data-width"=>'260px'}
-        - bosses = Login.first.staff.positions.first.ancestor_ids
-        /- bosses = Login.current_login.staff.position.ancestor_ids
+        - if @disposal.new_record?
+          - checker=current_user.userable_id
+        - else
+          - checker=@disposal.checked_by
+        = f.collection_select :checked_by, Staff.where("id = ?", current_user.userable_id), :id, :staff_name_with_position,{:include_blank =>t('helpers.prompt.select_staff'), :selected=>checker},{class: 'selectpicker', "data-width"=>'260px'}
+        - bosses = current_user.userable.positions.first.ancestor_ids
         - myhod = Position.where('id IN (?)', bosses ).pluck(:staff_id) 
   .form-group
     .col-sm-2.control-label

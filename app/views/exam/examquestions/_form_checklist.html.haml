@@ -3,13 +3,13 @@
     .col-sm-2.control-label
       = f.label :editor_id
     .col-md-6
-      = f.collection_select :editor_id, Staff.where('id IN (?)', @examquestion.question_editor).order('staffgrade_id DESC'), :id, :name, {:prompt => t('helpers.prompt.select_editor'), :selected => @current_user.userable_id}, {class: 'selectpicker', "data-width"=>"300px"}
+      = f.collection_select :editor_id, Staff.where('id IN (?)', @examquestion.question_editor(current_user)).order('staffgrade_id DESC'), :id, :name, {:prompt => t('helpers.prompt.select_editor'), :selected => @current_user.userable_id}, {class: 'selectpicker', "data-width"=>"300px"}
 
   .form-group
     .col-sm-2.control-label
       = f.label :editdt
     .col-md-2
-      = f.text_field :editdt, class: 'date_picker form-control'
+      = f.text_field :editdt, class: 'date_picker_reverse form-control'
 
   .form-group
     .col-sm-2.control-label
@@ -71,7 +71,7 @@
     .col-sm-2.control-label
       = f.label :approver_id
     .col-md-6
-      = f.collection_select :approver_id, Staff.where("id IN (?)", @examquestion.question_approver).order(:name), :id, :name, {:include_blank => 'Please select approver'},{class: 'selectpicker', "data-width"=>"230px"}
+      = f.collection_select :approver_id, Staff.where("id IN (?)", @examquestion.question_approver).order(:name), :id, :name, {:include_blank => (t 'helpers.prompt.select_approver')},{class: 'selectpicker', "data-width"=>"230px"}
   //copied from partial : form_approval.html.haml in order to assign HOD accordingly - end
 
 / This stuff is for subs

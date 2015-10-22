@@ -1,86 +1,93 @@
 /Answer choices for MCQ Question-start
 - if @type && @type=="1"
-  I&nbsp;&nbsp;&nbsp;
-  = hidden_field "examquestion[answerchoices_attributes][0]",:item, :value => "I" 
-  - unless @examquestion.id.nil? || @examquestion.id.blank?
-    - if (Answerchoice.where(examquestion_id: @examquestion.id).count) > 0 
-      /EDIT examquestion with existing answerchoices
-      = hidden_field "examquestion[answerchoices_attributes][0]",:id, :value => @examquestion.answerchoices[0].id 
-      = text_field "examquestion[answerchoices_attributes][0]",:description, :size=>60, :value=>@examquestion.answerchoices[0].description      
-    - else
-      /EDIT examquestion without answerchoices
-      - if @examquestion.questiontype=="MCQ"
-        = text_field "examquestion[answerchoices_attributes][0]",:description, :size=>60	
+  .input-group
+    .input-group-addon 
+      I&nbsp;&nbsp;&nbsp;
+    = hidden_field "examquestion[answerchoices_attributes][0]",:item, :value => "I" 
+    - unless @examquestion.id.nil? || @examquestion.id.blank?
+      - if (Answerchoice.where(examquestion_id: @examquestion.id).count) > 0 
+        /EDIT examquestion with existing answerchoices
+        = hidden_field "examquestion[answerchoices_attributes][0]",:id, :value => @examquestion.answerchoices[0].id 
+        = text_field "examquestion[answerchoices_attributes][0]",:description, :size=>60, :value=>@examquestion.answerchoices[0].description, class: 'form-control'   
+      - else
+        /EDIT examquestion without answerchoices
+        - if @examquestion.questiontype=="MCQ"
+          = text_field "examquestion[answerchoices_attributes][0]",:description, :size=>60, class: 'form-control' 
         
-  - else
-    - if @examquestion.questiontype=="MCQ" && @examquestion.answerchoices[0] 
-      /NEW - resubmission (with entered answerchoices)
-      = text_field "examquestion[answerchoices_attributes][0]",:description, :size=>60, :value=>@examquestion.answerchoices[0].description
-    - else 
-      /NEW examquestion
-      = text_field "examquestion[answerchoices_attributes][0]",:description
+    - else
+      - if @examquestion.questiontype=="MCQ" && @examquestion.answerchoices[0] 
+        /NEW - resubmission (with entered answerchoices)
+        = text_field "examquestion[answerchoices_attributes][0]",:description, :size=>60, :value=>@examquestion.answerchoices[0].description, class: 'form-control' 
+      - else 
+        /NEW examquestion
+        = text_field "examquestion[answerchoices_attributes][0]",:description, class: 'form-control' 
       
-  %br
-  II&nbsp;&nbsp;
-  = hidden_field "examquestion[answerchoices_attributes][1]",:item, :value => "II"
-  - unless @examquestion.id.nil? || @examquestion.id.blank?
-    - if (Answerchoice.where(examquestion_id: @examquestion.id).count) > 1 
-      /EDIT examquestion with existing answerchoices
-      = hidden_field "examquestion[answerchoices_attributes][1]",:id, :value => @examquestion.answerchoices[1].id 
-      = text_field "examquestion[answerchoices_attributes][1]",:description, :size=>60, :value=>@examquestion.answerchoices[1].description      
-    - else
-      /EDIT examquestion without answerchoices
-      - if @examquestion.questiontype=="MCQ"
-        = text_field "examquestion[answerchoices_attributes][1]",:description, :size=>60	
+  .input-group
+    .input-group-addon 
+      II&nbsp;&nbsp;
+    = hidden_field "examquestion[answerchoices_attributes][1]",:item, :value => "II"
+    - unless @examquestion.id.nil? || @examquestion.id.blank?
+      - if (Answerchoice.where(examquestion_id: @examquestion.id).count) > 1 
+        /EDIT examquestion with existing answerchoices
+        = hidden_field "examquestion[answerchoices_attributes][1]",:id, :value => @examquestion.answerchoices[1].id 
+        = text_field "examquestion[answerchoices_attributes][1]",:description, :size=>60, :value=>@examquestion.answerchoices[1].description, class: 'form-control'  
+      - else
+        /EDIT examquestion without answerchoices
+        - if @examquestion.questiontype=="MCQ"
+          = text_field "examquestion[answerchoices_attributes][1]",:description, :size=>60, class: 'form-control' 
         
-  - else
-    - if @examquestion.questiontype=="MCQ" && @examquestion.answerchoices[1] 
-      /NEW - resubmission (with entered answerchoices)
-      = text_field "examquestion[answerchoices_attributes][1]",:description, :size=>60, :value=>@examquestion.answerchoices[1].description
-    - else 
-      /NEW examquestion
-      = text_field "examquestion[answerchoices_attributes][1]",:description
+    - else
+      - if @examquestion.questiontype=="MCQ" && @examquestion.answerchoices[1] 
+        /NEW - resubmission (with entered answerchoices)
+        = text_field "examquestion[answerchoices_attributes][1]",:description, :size=>60, :value=>@examquestion.answerchoices[1].description, class: 'form-control' 
+      - else 
+        /NEW examquestion
+        = text_field "examquestion[answerchoices_attributes][1]",:description, class: 'form-control' 
       
-  %br
-  III&nbsp;
-  = hidden_field "examquestion[answerchoices_attributes][2]",:item, :value => "III"
-  - unless @examquestion.id.nil? || @examquestion.id.blank?
-    - if (Answerchoice.where(examquestion_id: @examquestion.id).count) > 2 
-      /EDIT examquestion with existing answerchoices
-      = hidden_field "examquestion[answerchoices_attributes][2]",:id, :value => @examquestion.answerchoices[2].id 
-      = text_field "examquestion[answerchoices_attributes][2]",:description, :size=>60, :value=>@examquestion.answerchoices[2].description      
-    - else
-      /EDIT examquestion without answerchoices
-      - if @examquestion.questiontype=="MCQ"
-        = text_field "examquestion[answerchoices_attributes][2]",:description, :size=>60	
-        
-  - else
-    - if @examquestion.questiontype=="MCQ" && @examquestion.answerchoices[2] 
-      /NEW - resubmission (with entered answerchoices)
-      = text_field "examquestion[answerchoices_attributes][2]",:description, :size=>60, :value=>@examquestion.answerchoices[2].description
-    - else 
-      /NEW examquestion
-      = text_field "examquestion[answerchoices_attributes][2]",:description
       
-  %br
-  IV&nbsp;
-  = hidden_field "examquestion[answerchoices_attributes][3]",:item, :value => "IV"
-  - unless @examquestion.id.nil? || @examquestion.id.blank?
-    - if (Answerchoice.where(examquestion_id: @examquestion.id).count) > 3 
-      /EDIT examquestion with existing answerchoices
-      = hidden_field "examquestion[answerchoices_attributes][3]",:id, :value => @examquestion.answerchoices[3].id 
-      = text_field "examquestion[answerchoices_attributes][3]",:description, :size=>60, :value=>@examquestion.answerchoices[3].description      
-    - else
-      /EDIT examquestion without answerchoices
-      - if @examquestion.questiontype=="MCQ"
-        = text_field "examquestion[answerchoices_attributes][3]",:description, :size=>60	
+  .input-group
+    .input-group-addon 
+      III&nbsp;
+    = hidden_field "examquestion[answerchoices_attributes][2]",:item, :value => "III"
+    - unless @examquestion.id.nil? || @examquestion.id.blank?
+      - if (Answerchoice.where(examquestion_id: @examquestion.id).count) > 2 
+        /EDIT examquestion with existing answerchoices
+        = hidden_field "examquestion[answerchoices_attributes][2]",:id, :value => @examquestion.answerchoices[2].id 
+        = text_field "examquestion[answerchoices_attributes][2]",:description, :size=>60, :value=>@examquestion.answerchoices[2].description, class: 'form-control' 
+      - else
+        /EDIT examquestion without answerchoices
+        - if @examquestion.questiontype=="MCQ"
+          = text_field "examquestion[answerchoices_attributes][2]",:description, :size=>60, class: 'form-control' 
         
-  - else
-    - if @examquestion.questiontype=="MCQ" && @examquestion.answerchoices[3] 
-      /NEW - resubmission (with entered answerchoices)
-      = text_field "examquestion[answerchoices_attributes][3]",:description, :size=>60, :value=>@examquestion.answerchoices[3].description
-    - else 
-      /NEW examquestion
-      = text_field "examquestion[answerchoices_attributes][3]",:description
+    - else
+      - if @examquestion.questiontype=="MCQ" && @examquestion.answerchoices[2] 
+        /NEW - resubmission (with entered answerchoices)
+        = text_field "examquestion[answerchoices_attributes][2]",:description, :size=>60, :value=>@examquestion.answerchoices[2].description, class: 'form-control' 
+      - else 
+        /NEW examquestion
+        = text_field "examquestion[answerchoices_attributes][2]",:description, class: 'form-control' 
+   
+      
+  .input-group
+    .input-group-addon 
+      IV
+    = hidden_field "examquestion[answerchoices_attributes][3]",:item, :value => "IV"
+    - unless @examquestion.id.nil? || @examquestion.id.blank?
+      - if (Answerchoice.where(examquestion_id: @examquestion.id).count) > 3 
+        /EDIT examquestion with existing answerchoices
+        = hidden_field "examquestion[answerchoices_attributes][3]",:id, :value => @examquestion.answerchoices[3].id 
+        = text_field "examquestion[answerchoices_attributes][3]",:description, :size=>60, :value=>@examquestion.answerchoices[3].description, class: 'form-control' 
+      - else
+        /EDIT examquestion without answerchoices
+        - if @examquestion.questiontype=="MCQ"
+          = text_field "examquestion[answerchoices_attributes][3]",:description, :size=>60, class: 'form-control' 
+        
+    - else
+      - if @examquestion.questiontype=="MCQ" && @examquestion.answerchoices[3] 
+        /NEW - resubmission (with entered answerchoices)
+        = text_field "examquestion[answerchoices_attributes][3]",:description, :size=>60, :value=>@examquestion.answerchoices[3].description, class: 'form-control' 
+      - else 
+        /NEW examquestion
+        = text_field "examquestion[answerchoices_attributes][3]",:description, class: 'form-control' 
 
 /Answer choices for MCQ Question-end

@@ -19,7 +19,7 @@ authorization do
 
  role :staff do
    has_permission_on [:attendances, :documents],     :to => :menu              # Access for Menus
-   has_permission_on :asset_assets, :to => [:menu, :loanables]
+   has_permission_on :asset_assets, :to => [:read, :loanables]
    has_permission_on [:staff_staff_attendances], :to => [:manager, :menu]
    #has_permission_on :staffs, :to => [:show, :menu]                                     # A staff see the staff list
    #has_permission_on :staffs, :to => [:edit, :update, :menu] do
@@ -86,6 +86,10 @@ authorization do
    has_permission_on :asset_asset_defects, :to => [:manage, :decision, :kewpa9] do
        if_attribute :decision_by => is {user.userable.id}
    end
+#not working yet
+#    has_permission_on :asset_asset_disposals, :to => [:manage, :verify] do
+#      if_attribute :verified_by => is {user.userable.id}
+#    end
    
    has_permission_on :asset_asset_loans, :to => :create
    has_permission_on :asset_asset_loans, :to =>:read do 
@@ -160,7 +164,7 @@ authorization do
  #Group Assets  -------------------------------------------------------------------------------
  role :asset_administrator do
    has_permission_on :asset_assets, :to => [:manage, :kewpa2, :kewpa3, :kewpa4, :kewpa5, :kewpa6, :kewpa13, :kewpa14, :loanables]
-   has_permission_on :asset_defects, :to =>[:manage, :kewpa9] #3nov2013
+   has_permission_on :asset_asset_defects, :to =>[:manage, :kewpa9, :process2] #3nov2013
    has_permission_on :assetsearches, :to => :read
    has_permission_on :locations, :to => :manage
    has_permission_on :asset_disposals, :to => :manage
@@ -196,29 +200,33 @@ authorization do
      if_attribute :created_by => is {user.userable.id}
    end
    
-   has_permission_on :exam_examquestions, :to =>:update, :join_by => :and do
-     if_attribute :creator_id => is {user.userable.id}
-     if_attribute :qstatus => is {"New"}
+   has_permission_on :exam_examquestions, :to => :update do
+     if_attribute :programme_id => is_in {user.lecturers_programme}
    end
-   #any other lecturer from the same programme can be an EDITOR
-   has_permission_on :exam_examquestions, :to =>:update, :join_by => :and do
-     if_attribute :creator_id => is_not {user.userable.id}
-     if_attribute :qstatus => is {"Submit"}
-   end
-   #if EDITOR hold record first, for later editing, must be the same person
-   has_permission_on :exam_examquestions, :to => :update, :join_by => :and do
-     if_attribute :editor_id => is {user.userable.id}
-     if_attribute :qstatus => is {"Editing"}
-   end
-   #HOD can approve although not assigned - role:programme_manager
-   has_permission_on :exam_examquestions, :to => :manage do
-     if_attribute :approver_id => is {user.userable.id}
-   end
-   #Ready for approval - HOD classify as Re-Edit, return to editor
-   has_permission_on :exam_examquestions, :to =>:update, :join_by => :and do
-     if_attribute :editor_id => is {user.userable.id}
-     if_attribute :qstatus => is {"Re-Edit"}
-   end
+   
+#    has_permission_on :exam_examquestions, :to =>:update, :join_by => :and do
+#      if_attribute :creator_id => is {user.userable.id}
+#      if_attribute :qstatus => is {"New"}
+#    end
+#    #any other lecturer from the same programme can be an EDITOR
+#    has_permission_on :exam_examquestions, :to =>:update, :join_by => :and do
+#      if_attribute :creator_id => is_not {user.userable.id}
+#      if_attribute :qstatus => is {"Submit"}
+#    end
+#    #if EDITOR hold record first, for later editing, must be the same person
+#    has_permission_on :exam_examquestions, :to => :update, :join_by => :and do
+#      if_attribute :editor_id => is {user.userable.id}
+#      if_attribute :qstatus => is {"Editing"}
+#    end
+#    #HOD can approve although not assigned - role:programme_manager
+#    has_permission_on :exam_examquestions, :to => :manage do
+#      if_attribute :approver_id => is {user.userable.id}
+#    end
+#    #Ready for approval - HOD classify as Re-Edit, return to editor
+#    has_permission_on :exam_examquestions, :to =>:update, :join_by => :and do
+#      if_attribute :editor_id => is {user.userable.id}
+#      if_attribute :qstatus => is {"Re-Edit"}
+#    end
    
    has_permission_on :exam_exammarks, :to =>[:update, :delete, :edit_multiple, :update_multiple, :new_multiple, :create_multiple] do
      if_attribute :exam_id => is_in {user.exams_of_programme}
@@ -259,11 +267,15 @@ authorization do
  end
 
  role :programme_manager do
-   has_permission_on [:exam_examquestions, :exam_exams], :to => :manage
+   has_permission_on :exam_examquestions, :to => :manage
+   has_permission_on :exam_exams, :to => [:manage, :exampaper]
    has_permission_on :exam_exammarks, :to => [:manage, :edit_multiple, :update_multiple, :new_multiple, :create_multiple]
-   has_permission_on :exam_evaluate_courses, :to => :create 
-   has_permission_on :exam_evaluate_courses, :to => [:manage, :courseevaluation] do
-     if_attribute :course_id => is {user.evaluations_of_programme}
+#    has_permission_on :exam_evaluate_courses, :to => :create 
+#    has_permission_on :exam_evaluate_courses, :to => [:manage, :courseevaluation] do
+   has_permission_on :exam_evaluate_courses, :to => [:read, :courseevaluation, :evaluation_report] do
+     #if_attribute :course_id => is {user.evaluations_of_programme}
+     if_attribute :course_id => is_in {user.evaluations_of_programme}
+     #if_attribute :course_id => is_in {Position.my_programmeid(Login.current_login.staff_id)} # is_in {[5]}
    end
    has_permission_on :staff_training_ptdos, :to => :approve do
      if_attribute :staff_id => is_in {user.unit_members}#is {69}#is_in {[69, 106]}  #
@@ -291,7 +303,7 @@ authorization do
 #Group Student --------------------------------------------------------------------------------
   role :student do
       has_permission_on :exam_evaluate_courses, :to => [:index, :create]
-      has_permission_on :exam_evaluate_courses, :to => [:read, :courseevaluation] do
+      has_permission_on :exam_evaluate_courses, :to => [:read, :update, :courseevaluation] do
         if_attribute :student_id => is {user.userable.id}  #student_id
       end
       has_permission_on :students, :to => [:update, :show, :borang_maklumat_pelajar] do #[:read, :update, :menu] do

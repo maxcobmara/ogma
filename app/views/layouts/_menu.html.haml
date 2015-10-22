@@ -88,7 +88,7 @@
           %h2.icon=t ("asset.title")
           %a.mp-back{:href => "#"}=t('back')
           %ul
-            - permitted_to? :menu, :asset_assets do
+            - permitted_to? :read, :asset_assets do
               %li= link_to content_tag(:i, "", :class => "icon-numb") + (t "asset.title"), asset_assets_path
             - permitted_to? :manage, :assets do
               %li= link_to content_tag(:i, "", :class => "icon-numb") + (t "stationery.title_menu"), asset_stationeries_path
@@ -242,7 +242,7 @@
           %a.mp-back{:href => "#"}= t 'helpers.links.back'
           %ul
             /- permitted_to? :menu, :exam_exams do
-            - permitted_to? :menu, :exam_examquestions do
+            - permitted_to? :create, :exam_examquestions do
               %li= link_to content_tag(:i, "", :class => "icon-numb") + (t "exam.examquestion.title"), exam_examquestions_path
             - permitted_to? :menu, :exam_exams do
               %li= link_to content_tag(:i, "", :class => "icon-numb") + (t "exam.exams.title"), exam_exams_path
@@ -273,7 +273,7 @@
                           %li= link_to (t "exam.examresult.exam_slip"), "#"
 
             /%li= link_to content_tag(:i, "", :class => "icon-numb") + "Examination Management", '#'
-            - permitted_to? :index, :exam_evaluate_courses do
+            - permitted_to? :read, :exam_evaluate_courses do
               %li= link_to content_tag(:i, "", :class => "icon-numb") + (t "exam.evaluate_course.title"), exam_evaluate_courses_path
             - permitted_to? :menu, :exam_exams do
               %li= link_to content_tag(:i, "", :class => "icon-numb") + "Examination Analysis", '#'

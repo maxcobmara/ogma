@@ -3,6 +3,7 @@ class Examquestion < ActiveRecord::Base
   belongs_to :creator,  :class_name => 'Staff', :foreign_key => 'creator_id'
   belongs_to :approver, :class_name => 'Staff', :foreign_key => 'approver_id'
   belongs_to :editor,   :class_name => 'Staff', :foreign_key => 'editor_id'
+  belongs_to :course, :class_name => 'Programme', :foreign_key => 'programme_id'
   belongs_to :subject,  :class_name => 'Programme', :foreign_key => 'subject_id'
   belongs_to :topic,    :class_name => 'Programme', :foreign_key => 'topic_id'
   has_and_belongs_to_many :exams
@@ -39,24 +40,28 @@ class Examquestion < ActiveRecord::Base
   validates_attachment_content_type :diagram, :content_type => ["image/jpg", "image/jpeg", "image/png", "image/gif"]
                     #may require validation
 
-  validates_presence_of :subject_id, :topic_id, :questiontype, :question, :marks, :qstatus #17Apr2013,:answer #9Apr2013-compulsory for subject_id
-
+  validates_presence_of :subject_id, :topic_id, :questiontype, :question, :marks, :qstatus, :createdt, :programme_id, :creator_id #17Apr2013,:answer #9Apr2013-compulsory for subject_id
+  validates_presence_of :editor_id, :editdt, :if => :status_is_editing?
+  validate :approver_must_exist
+  
   #has_many :examsubquestions, :dependent => :destroy
   #accepts_nested_attributes_for :examsubquestions, :reject_if => lambda { |a| a[:question].blank? }
 
   #has_many :exammcqanswers, :dependent => :destroy
   #accepts_nested_attributes_for :exammcqanswers, :reject_if => lambda { |a| a[:answer].blank? }
 
-  attr_accessor :programme_id #9Apr2013 - rely on subject (root of subject[programme])
-  #attr_accessor :question1,:question2,:question3,:question4,:questiona,:questionb,:questionc,:questiond
-
-  before_validation :set_nil_if_not_activate, :set_answer_for_mcq, :set_approvedt_if_approved, :set_details_editing_for_approval
+  before_validation :set_nil_if_not_activate, :set_answer_for_mcq, :set_approvedt_if_approved#, :reset_status_if_approver_is_blank
+  
   #before_save :set_answer_for_mcq#, :set_subquestions_if_seq
   
-  def set_details_editing_for_approval
-     if qstatus == "Editing" || qstatus == "Ready For Approval"
-       self.editor_id = current_user.userable_id if editor_id.blank? || editor_id.nil?
-       self.editdt = Date.today.strftime('%Y-%m-%d')
+  def status_is_editing?
+    qstatus=="Editing"
+  end
+  
+  def approver_must_exist
+     if qstatus=="Ready For Approval" && (approver_id.blank? || approver_id.nil?)
+        errors.add( I18n.t('exam.examquestion.approver_id'),I18n.t('exam.examquestion.selected_if_readyforapproval'))
+        self.qstatus="Editing"
      end
   end
   
@@ -104,45 +109,40 @@ class Examquestion < ActiveRecord::Base
     [:keyword_search]
   end
 
-  def question_creator
-    #programme = User.current_user.staff.position.unit - replace with : 2 lines (below)
-    #current_user = User.find(11)  #current_user = User.find(11) - 11-maslinda, 72-izmohdzaki
-    current_user = Login.first
-    programme = current_user.staff.positions[0].unit
-    
-    programme_name = Programme.roots.map(&:name)
-    creator_prog= Staff.joins(:positions).where('unit IN(?)', programme_name).map(&:id)
-    if programme_name.include?(programme)
-      creator = Staff.joins(:positions).where('unit=? AND unit IN(?)', programme, programme_name).map(&:id)
+  def question_creator(current_user)
+    if current_user.roles.pluck(:authname).include?("administration")
+      diploma=Programme.roots.where(course_type: "Diploma").pluck(:name)
+      creator_units=diploma+["Diploma Lanjutan", "Pos Basik", "Pengkhususan"]
+      creator_ids=Staff.joins(:positions).where('positions.unit IN(?)', creator_units).pluck(:id)
+      creator=creator_ids+[current_user.userable_id]
     else
-      role_admin = Role.find_by_name('Administration')  #must have role as administrator
-      staff_with_adminrole = Login.joins(:roles).where('role_id=?',role_admin).map(&:staff_id).compact.uniq
-      creator_adm = Staff.joins(:positions).where('staff_id IN(?)', staff_with_adminrole).map(&:id)
-      creator=creator_prog+creator_adm
+      creator=[current_user.userable_id]
     end
-    creator
   end
     
-  def question_editor
-    #programme = User.current_user.staff.position.unit --> requires log-in
-    #current_user = User.find(72)  #current_user = User.find(72) - izmohdzaki, 11-maslinda
-    current_user = Login.first
-    programme = current_user.staff.positions[0].unit
-    unless subject_id.nil?
-      if subject.root.name == programme
-        editors = Position.where('unit=?',programme).map(&:staff_id).compact
-      else
-        editors = Position.where('unit=?',subject.root.name).map(&:staff_id).compact
+  def question_editor(current_user)
+    unless programme_id.nil?
+      if Programme.roots.where(course_type: "Diploma").pluck(:name).include?(course.name)
+        editors = Position.where(unit: course.name).pluck(:staff_id).compact
+      else #must be posbasiks
+        posts = Position.where(unit: ["Diploma Lanjutan", "Pos Basik", "Pengkhususan"])
+        posbasiks_name = Programme.roots.where(course_type: ["Diploma Lanjutan", "Pos Basik", "Pengkhususan"]).pluck(:name)
+        @editors=[]
+        posts.each do |post|
+          posbasiks_name.each do |pname|
+            @editors << post.id if post.tasks_main.include?(pname)
+          end
+        end
+        editors=@editors
       end
-    else
-      programme_name = Programme.roots.map(&:name)    #must be among Academic Staff 
-      editors = Staff.joins(:positions).where('unit=? AND unit IN(?)', programme, programme_name).map(&:id)
+      editors << current_user.userable_id if current_user.roles.pluck(:authname).include?("administration")
+      editors
     end
     editors
   end
   
   def question_approver #to assign question -> KP
-    ###latest finding - as of Mei-Jul/Aug 2013 - approver should be at Ketua Program level ONLY (own programme @ other programme)### 
+    ###latest finding - as of Mei-Jul/Aug 2013 - approver should be at Ketua Program level ONLY (own programme @ other programme)
     
     role_kp = Role.where(name: 'Programme Manager').pluck(:id) #must have role as Programme Manager
     staff_with_kprole = Login.joins(:roles).where('role_id IN(?)',role_kp).pluck(:staff_id).compact.uniq
@@ -152,37 +152,47 @@ class Examquestion < ActiveRecord::Base
   end
   
   
-  def self.search2(search2)
+  def self.search2(programmeid)
     common_subject = Programme.where('course_type=?','Commonsubject').pluck(:id)
-    if search2 
-      if search2 == '0'
-        @examquestions = Examquestion.all
-      elsif search2 == '1'
-        @examquestions = Examquestion.where("subject_id IN (?)", common_subject)
-      else
-        subject_of_program = Programme.find(search2).descendants.at_depth(2).map(&:id)
-        @examquestions = Examquestion.where("subject_id IN (?) and subject_id NOT IN (?)", subject_of_program, common_subject)
-      end
+    if programmeid == 0 #admin 
+      @examquestions = Examquestion.all
+    elsif programmeid == "1" #KP Pengkhususan
+      posbasiks_ids = Programme.roots.where(course_type: ["Diploma Lanjutan", "Pos Basik", "Pengkhususan"]).pluck(:id)
+      @examquestions = Examquestion.where(programme_id: posbasiks_ids)
+    elsif common_subject.include?(programmeid)
+      #@examquestions = Examquestion.where("subject_id IN (?)", common_subject)  #pending creation of examquestion by common subject lect??
     else
-       @examquestions = Examquestion.all
+      @examquestions = Examquestion.where(programme_id: programmeid)
     end
   end
   
-  #def self.find_main
-  #    Examquestion.find(:all, :condition => ['staff_id IS NULL'])
- # end
-  
-   def self.find_main
-     Subject.where('subject_id IS NULL')
-   end
+  #logic to set editable - ref: Staff Appraisal
+  def edit_icon(curr_user)
+    is_admin=true  if curr_user.roles.pluck(:authname).include?("administration")
+    if qstatus=="New" &&(creator_id==curr_user.userable_id || is_admin)
+      "edit.png"
+    elsif qstatus=="New" && creator_id!=curr_user.userable_id
+      "noedit"
+    elsif qstatus=="Submit" && (curr_user.lecturers_programme==programme_id || is_admin)#(curr_user.lecturers_programme.include?(programme_id) || is_admin)
+      "edit.png"
+    elsif ["Editing", "Re-Edit"].include?(qstatus) && (editor_id==curr_user.userable_id || is_admin)
+      "edit.png"
+    elsif qstatus=="Re-Edit" && approver_id==curr_user.userable_id
+      "noedit"
+    elsif ["Ready For Approval", "For Approval"].include?(qstatus) && (creator_id==curr_user.userable_id || editor_id==curr_user.userable_id)
+      "noedit"
+    elsif  ["Ready For Approval", "For ApprovalFor Approval"].include?(qstatus) && (approver_id==curr_user.userable_id || is_admin)
+      "edit.png"
+    elsif qstatus=="Approved" && (approver_id==curr_user.userable_id || is_admin)
+      "edit.png"
+    elsif qstatus=="Approved" && approver_id!=curr_user.userable_id
+      "noedit"
+    end
+  end
    
-   def self.find_main
-      Staff.where('staff_id IS NULL')
-   end
-      
-   def render_difficulty
+  def render_difficulty
      (DropDown::QLEVEL.find_all{|disp, value| value == difficulty }).map {|disp, value| disp}[0]
-   end
+  end
    
   def subject_details
      if subject.blank? 
@@ -191,7 +201,6 @@ class Examquestion < ActiveRecord::Base
        subject.subject_list
      end
   end
-
 
   def creator_details
     if creator.blank?

@@ -6,44 +6,82 @@
     .form-group
       .col-sm-2.control-label
         = f.label t 'exam.evaluate_course.student_id', for: :student_id
-      .col-md-8
-        = f.collection_select :student_id, @student_list, :id, :matrix_name,{:include_blank =>t('select')},{class: 'selectpicker', "data-width"=>'450px'}
+      .col-md-6
+        = f.collection_select :student_id, @student_list, :id, :matrix_name,{:include_blank =>t('select')},{class: 'selectpicker', "data-width"=>'350px'}
   .form-group
     .col-sm-2.control-label
       = f.label t 'exam.evaluate_course.course_id', for: :course_id
-    .col-md-8
+    .col-md-6
       - if @evaluate_course.new_record?
-        = f.collection_select :course_id, @programme_list, :id, :programme_coursetype_name,{:include_blank =>t('select'),:selected =>@preselect_prog},{class: 'selectpicker', "data-width"=>'450px'}
+        = f.collection_select :course_id, @programme_list, :id, :programme_coursetype_name,{:include_blank =>t('select'),:selected =>@preselect_prog},{class: 'selectpicker mandatory', "data-width"=>'350px'}
       - else 
-        = f.collection_select :course_id, @programme_list, :id, :programme_coursetype_name, {:include_blank =>t('select'),:selected =>@evaluate_course.course_id},{class: 'selectpicker', "data-width"=>'450px'}
-  
-  .form-group
-    .col-sm-2.control-label
-      = f.label t 'exam.evaluate_course.subject_id', for: :subject_id
-    .col-md-8
-      = f.collection_select :subject_id, @subjectlist_preselect_prog, :id, :subject_list, {:include_blank =>t('select')},{class: 'selectpicker', "data-width"=>'450px'}
+        = f.collection_select :course_id, @programme_list, :id, :programme_coursetype_name, {:include_blank =>t('select'),:selected =>@evaluate_course.course_id},{class: 'selectpicker mandatory', "data-width"=>'350px'}   
 
   .form-group
     .col-sm-2.control-label
-      = f.label t 'exam.evaluate_course.staff_id', for: :staff_id
-    .col-md-8
-      = f.collection_select :staff_id, @lecturer_list, :id, :name, {:include_blank =>t('select')},{class: 'selectpicker', "data-width"=>'450px'}
+      .span_staff{:style=>"display: block;"}
+        = f.label t 'exam.evaluate_course.staff_id', for: :staff_id
+      .span_invited{:style=>"display: none;"}
+        = f.label t 'exam.evaluate_course.invite_lec', for: :invite_lec
+    .col-md-6
+      - if @evaluate_course.new_record?
+        - isstaff="checked"
+      - else
+        - unless @evaluate_course.staff_id.blank?
+          - isstaff="checked"
+        - else
+          - isstaff="unchecked"
+      = f.check_box :is_staff, :checked => isstaff, :id => 'is_staff'
+      = t('exam.evaluate_course.staff_or_invited')
+      .span_staff{:style=>"display: block;"}
+        = f.collection_select :staff_id, @lecturer_list, :id, :name, {:include_blank =>t('select')},{class: 'selectpicker mandatory', "data-width"=>'350px'}
+      .span_invited{:style=>"display: none;"}
+        = f.text_field :invite_lec, class: 'form-control mandatory'
 
   .form-group
     .col-sm-2.control-label
-      = f.label t 'exam.evaluate_course.invite_lec', for: :invite_lec
-    .col-md-8
-      = f.text_field :invite_lec, class: 'form-control'
+      .span_staff{:style=>"display: block;"}
+        = f.label t 'exam.evaluate_course.subject_id', for: :subject_id
+      .span_invited{:style=>"display: none;"}
+        = f.label t 'exam.evaluate_course.invite_lec_topic', for: :invite_lec_topic
+    .col-md-6
+      .span_staff{:style=>"display: block;"}
+        = f.collection_select :subject_id, @subjectlist_preselect_prog, :id, :subject_list, {:include_blank =>t('select')},{class: 'selectpicker mandatory', "data-width"=>'350px'}
+      .span_invited{:style=>"display: none;"}
+        = f.text_field :invite_lec_topic, class: 'form-control mandatory'
       
   .form-group
     .col-sm-2.control-label
-      = f.label t 'exam.evaluate_course.comment', for: :course_id
-    .col-md-8
+      = f.label t 'exam.evaluate_course.comment', for: :comment
+    .col-md-6
       = f.text_field :comment, class: 'form-control'  
 
   .form-group
     .col-sm-2.control-label
       = f.label t 'exam.evaluate_course.evaluate_date', for: :evaluate_date
-    .col-md-2
-      = f.text_field :evaluate_date, class: 'date_picker form-control'
+    .col-md-3
+      = f.text_field :evaluate_date, class: 'date_picker_reverse form-control mandatory'
 %BR
+
+:javascript
+  $(document).ready(function(){
+    $("input[id='is_staff']").change(function() {  
+      if($('#is_staff').is(':checked')) { 
+        $(".span_invited").hide(""); 
+        $(".span_staff").show("highlight"); 
+      }else{
+        $(".span_invited").show("highlight"); 
+        $(".span_staff").hide(""); 
+      }
+    });
+
+    $("input[id='is_staff']").each(function() {  
+      if($('#is_staff').is(':checked')) { 
+        $(".span_invited").hide(""); 
+        $(".span_staff").show("highlight"); 
+      }else{
+        $(".span_invited").show("highlight"); 
+        $(".span_staff").hide(""); 
+      }
+    });
+  });

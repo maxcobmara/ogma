@@ -1,15 +1,25 @@
+- @itemval=["a","b","c"]
+.form-group
+  .col-md-5
+    .input-group
+      .input-group-addon 
+        = @itemval[@count]+"."
+      = f.hidden_field :item, :value => @itemval[@count]
+      = f.text_area :subquestion, :placeholder => (t 'exam.examquestion.subquestion'), :style=>"width: 350px; min-height:50px;", class: 'form-control' 
+  .col-md-2
+    =(t 'exam.examquestion.submark')
+    = f.text_field :submark, :placeholder => (t 'exam.examquestion.submark'), class: 'form-control' 
+
 .form-group
   .col-md-10
-    - @itemval=["a","b","c"]
-    = @itemval[@count]+"."
-    = f.hidden_field :item, :value => @itemval[@count]
-    = f.text_field :subquestion, :placeholder => (t 'exam.examquestion.subquestion')
-  .col-md-3
-    = f.text_field :submark, :placeholder => (t 'exam.examquestion.submark')  
-= t 'exam.examquestion.subanswer'
-= f.text_area :subanswer
+    = t 'exam.examquestion.subanswer'
+    = f.text_area :subanswer, :style=>"width: 545px;"
+
 .form-group
-  .col-md-10  
-    = f.text_field :keyword, :placeholder => (t 'exam.examquestion.keyword')
+  .col-md-7
+    =t 'exam.examquestion.keyword'
+    = f.text_field :keyword, :placeholder => (t 'exam.examquestion.keyword'), class: 'form-control' 
     = f.hidden_field :_destroy 
     /= link_to_remove_fields image_tag("delete.png", :border => 0, :title => 'Remove'), f 
+    %hr
+    

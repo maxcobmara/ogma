@@ -18,9 +18,10 @@
           - if @disposal.is_checked
             - if @disposal.revalue && @disposal.revalued_on
               %li= link_to (t "asset.disposal.revalue_title"), "#value_edit", "data-toggle" => "tab"
-            %li= link_to (t "asset.disposal.approval_details"), "#disposaldetails", "data-toggle" => "tab"
-          - if @disposed.is_disposed
             %li.active=link_to (t "asset.disposal.verification_details"), "#verification_edit", "data-toggle" => "tab"
+          - if @disposal.is_disposed
+            %li= link_to (t "asset.disposal.approval_details"), "#disposaldetails", "data-toggle" => "tab"
+          
         / display 
         .tab-content{style:"padding-top:1em"}
           .col-md-8.col-md-offset-1
@@ -36,14 +37,14 @@
             %br
             = render 'tab_value'
 
-          #disposaldetails.tab-pane
-            %br
-            = render 'tab_disposaldetails'
-              
           #verification_edit.tab-pane.active
             .col-md-10
               %br
               = render 'tab_verification_edit', :f => f
+              
+          #disposaldetails.tab-pane
+            %br
+            = render 'tab_disposaldetails'
 
     %br
     .row

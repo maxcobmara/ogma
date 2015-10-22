@@ -4,15 +4,15 @@
     %td= f.text_field :keyword_search, size: 2, class: 'form-control'
     %td= f.text_field :topic_name_cont, size: 2, class: 'form-control'
     %td= f.text_field :questiontype_cont, size: 2, class: 'form-control'
-    %td= f.text_field :question_cont, class: 'form-control'
-    %td= f.text_field :answer_cont, class: 'form-control'
-    %td= f.text_field :marks_eq, :class=> "form-control"
-    %td= f.text_field :category_cont, class: 'form-control'
-    %td= f.text_field :difficulty_cont, class: 'form-control'
-    %td= f.text_field :qstatus_cont, size: 8,  class: 'form-control'
+    %td= f.text_field :question_cont, size: 2, class: 'form-control'
+    %td= f.text_field :answer_cont, size: 2, class: 'form-control'
+    %td= f.text_field :marks_eq, size: 2, :class=> "form-control"
+    %td= f.text_field :category_cont, size: 2, class: 'form-control'
+    %td= f.text_field :difficulty_cont, size: 2, class: 'form-control'
+    %td= f.text_field :qstatus_cont, size: 2,  class: 'form-control'
     %td
-      .input-group
-        = f.text_field :creator_name_cont, size: 8,  class: 'form-control'
+      .input-group{:style => "width: 150px;"}
+        = f.text_field :creator_name_cont, size: 2,  class: 'form-control'
         %span.input-group-btn
           %button.btn.btn-sm.btn-default.right{:type => "submit"}
             %i.fa.fa-search.fa-fw

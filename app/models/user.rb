@@ -34,9 +34,26 @@ class User < ActiveRecord::Base
   end
   
   def evaluations_of_programme
-    unit_of_prog_mgr = userable.positions.first.unit
-    programme_id_of_prog_mgr = Programme.where('name ILIKE(?)', "%#{unit_of_prog_mgr}%").at_depth(0).first.id
-    return programme_id_of_prog_mgr
+#     unit_of_prog_mgr = userable.positions.first.unit
+#     programme_id_of_prog_mgr = Programme.where('name ILIKE(?)', "%#{unit_of_prog_mgr}%").at_depth(0).first.id
+#     return programme_id_of_prog_mgr
+    
+    #START - fr Catechumen
+    #use in authrules - only for Programme Manager, Admin (for Course Evaluation)
+    staffpost=Position.where(staff_id: userable_id).first
+    unitname=staffpost.unit
+    if unitname=="Pengkhususan"  #definitely KP Pengkhususan only
+      programmeids=Programme.where(course_type:  ["Diploma Lanjutan", "Pos Basik", "Pengkhususan"]).pluck(:id)
+    else
+      if roles.pluck(:authname).include?("administration")
+        programmeids=Programme.roots.pluck(:id)
+      else
+        programmeid=Programme.where(name: unitname).first.id
+        programmeids=[programmeid]
+      end
+    end
+    programmeids
+    #END - fr Catechumen
   end
   
   def grades_of_programme
@@ -296,6 +313,30 @@ class User < ActiveRecord::Base
   #use in - auth_rules(staff attendance)
   def unit_members_thumb
     Staff.where(id: unit_members).pluck(:thumb_id).compact #[5658]
+  end
+  
+  #use in - auth_rules(examquestion) - return [programme_id] for academician
+  def lecturers_programme
+    mypost = Position.where(staff_id: userable_id).first
+    myunit = mypost.unit
+    postbasics=['Pengkhususan', 'Pos Basik', 'Diploma Lanjutan']
+    post_prog=Programme.roots.where(course_type: postbasics)
+    dip_prog=Programme.roots.where(course_type: 'Diploma').pluck(:name)
+    if dip_prog.include?(myunit)
+      programmeid=Programme.roots.where(name: myunit).pluck(:id)
+    else
+      if myunit=="Pengkhususan" && roles.pluck(:authname).include?("programme_manager")
+        programmeid=post_prog.pluck(:id)
+      elsif postbasics.include?(myunit)
+        post_prog.pluck(:name).each do |pname|
+          @programmeid=Programme.roots.where(name: pname) if mypost.tasks_main.include?(pname).pluck(:id)
+        end
+        programmeid=@programmeid
+      else
+        programmeid=0 #default val for admin
+      end
+    end
+    programmeid
   end
   
   def role_symbols

@@ -356,12 +356,7 @@ Ogma::Application.routes.draw do
   match '/public/excel_format/book_import.xls', to: 'library/books#download_excel_format', via: 'get', target: '_self'
 
   namespace :exam do
-    resources :examquestions do
-      collection do
-        get 'update_subjects', to: "examquestions#update_subjects"
-        get 'update_topics', to: "examquestions#update_topics"
-      end
-    end
+    resources :examquestions
     resources :examsubquestions
     resources :answerchoices
     resources :examanswers
@@ -372,11 +367,14 @@ Ogma::Application.routes.draw do
       #map.connect '/exams/exampaper', :controller => 'exams', :action => 'exampaper'
       #map.connect '/exams/exampaper_separate', :controller => 'exams', :action => 'exampaper_separate'
       #map.connect '/exams/exampaper_combine', :controller => 'exams', :action => 'exampaper_combine'
-      collection do
-        get 'exampaper', to: "exams#exampaper"
-        get 'exampaper_separate', to: "exams#exampaper_separate"
-        get 'exampaper_combine', to: "exams#exampaper_combine"
+      member do
+        get :exampaper
       end
+#       collection do
+#         get 'exampaper', to: "exams#exampaper"
+#         get 'exampaper_separate', to: "exams#exampaper_separate"
+#         get 'exampaper_combine', to: "exams#exampaper_combine"
+#       end
     end
     resources :exammarks do
       collection do
@@ -402,6 +400,9 @@ Ogma::Application.routes.draw do
     resources :evaluate_courses do
       member do
         get 'courseevaluation'
+      end
+      collection do
+        get :evaluation_report
       end
     end
   end
