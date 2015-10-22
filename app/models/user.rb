@@ -333,10 +333,32 @@ class User < ActiveRecord::Base
         end
         programmeid=@programmeid
       else
-        programmeid=0 #default val for admin
+        programmeid=0 #default val for admin, common_subjects lecturer too
       end
     end
     programmeid
+  end
+  
+  def lecturers_programme_subject
+    mypost = Position.where(staff_id: userable_id).first
+    myunit = mypost.unit
+    postbasics=['Pengkhususan', 'Pos Basik', 'Diploma Lanjutan']
+    post_prog=Programme.roots.where(course_type: postbasics)
+    common_subjects=['Sains Tingkahlaku','Sains Perubatan Asas', 'Komunikasi & Sains Pengurusan', 'Anatomi & Fisiologi', 'Komuniti']
+    dip_prog=Programme.roots.where(course_type: 'Diploma').pluck(:name)
+    if dip_prog.include?(myunit)
+      subject_ids=Programme.roots.where(name: myunit).first.descendants.at_depth(2).pluck(:id)
+    elsif postbasics.include?(myunit)
+      post_prog.pluck(:name).each do |pname|
+        @programmeid=Programme.roots.where(name: pname).pluck(:id) if mypost.tasks_main.include?(pname)
+      end
+      subject_ids=Programme.roots.where(id: @programmeid).first.descendants.at_depth(2).pluck(:id)
+    elsif common_subjects.include?(myunit) 
+      subject_ids=Programme.where(course_type: 'Commonsubject').pluck(:id)
+    else
+      subject_ids=Programme.where(course_type: ['Subject', 'Commonsubject']).pluck(:id)
+    end
+    subject_ids
   end
   
   def role_symbols
