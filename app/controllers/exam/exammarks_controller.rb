@@ -8,12 +8,13 @@ class Exam::ExammarksController < ApplicationController
   # GET /exammarks.xml
   def index
     valid_exams = Exammark.get_valid_exams
-    #@valid_exammm = valid_exams.count
+    @valid_exammm = valid_exams.count
     position_exist = @current_user.userable.positions
+    posbasiks=["Pos Basik", "Diploma Lanjutan", "Pengkhususan"]
     if position_exist && position_exist.count > 0
       lecturer_programme = @current_user.userable.positions[0].unit
       unless lecturer_programme.nil?
-        programme = Programme.where('name ILIKE (?) AND ancestry_depth=?',"%#{lecturer_programme}%",0)  if !(lecturer_programme=="Pos Basik" || lecturer_programme=="Diploma Lanjutan")
+        programme = Programme.where('name ILIKE (?) AND ancestry_depth=?',"%#{lecturer_programme}%",0)  if posbasiks.include?(lecturer_programme)==false
       end
       unless programme.nil? || programme.count==0
         programme_id = programme.try(:first).try(:id)
@@ -24,8 +25,8 @@ class Exam::ExammarksController < ApplicationController
         if lecturer_programme == 'Commonsubject'
           programme_id ='1'
           @exams_list_raw = Exam.where('id IN(?)', valid_exams).order(name: :asc, subject_id: :asc)
-        elsif (lecturer_programme == 'Pos Basik' || lecturer_programme == "Diploma Lanjutan") && tasks_main!=nil
-          allposbasic_prog = Programme.where('course_type=? or course_type=?', "Pos Basik", "Diploma Lanjutan").pluck(:name)  #Onkologi, Perioperating, Kebidanan etc
+        elsif posbasiks.include?(lecturer_programme) && tasks_main!=nil
+          allposbasic_prog = Programme.where(course_type: posbasiks).pluck(:name)  #Onkologi, Perioperating, Kebidanan etc
           for basicprog in allposbasic_prog
             lecturer_basicprog_name = basicprog if tasks_main.include?(basicprog)==true
           end
@@ -37,8 +38,12 @@ class Exam::ExammarksController < ApplicationController
           @exams_list_raw = Exam.where('id IN(?)', valid_exams).order(name: :asc, subject_id: :asc)
         end
       end
-      @exams_list_exist_mark = Exam.joins(:exammarks).where('exam_id IN(?)', @exams_list_raw.pluck(:id)).uniq  
-      @exams_list= Exam.where('id IN(?) and id NOT IN(?)', valid_exams, @exams_list_exist_mark.pluck(:id))
+      @exams_list_exist_mark = Exam.joins(:exammarks).where('exam_id IN(?)', @exams_list_raw.pluck(:id)).uniq.pluck(:id)
+      if @exams_list_exist_mark==[]
+        @exams_list=Exam.where(id: @exams_list_raw)
+      elsif @exams_list_exist_mark.count > 0
+        @exams_list= Exam.where('id IN(?) and id NOT IN(?)', @exams_list_raw.pluck(:id), @exams_list_exist_mark)
+      end
       
       @search = Exammark.search(params[:q])
       @exammarks = @search.result.search2(programme_id)
@@ -128,31 +133,36 @@ class Exam::ExammarksController < ApplicationController
     
   def new_multiple
     @examid = params[:examid]
-    @exammarks = Array.new(1) { Exammark.new }
-    @selected_exam = Exam.find(@examid)
-    @iii=Exammark.set_intake_group(@selected_exam.exam_on.year,@selected_exam.exam_on.month,@selected_exam.subject.parent.code,@current_user).to_s
-    common_subject = Programme.where('course_type=?','Commonsubject').map(&:id)
-    valid_exams = Exammark.get_valid_exams
-    position_exist = @current_user.userable.positions
-    if position_exist  
-      @lecturer_programme = @current_user.userable.positions[0].unit
-      unless @lecturer_programme.nil?
-        programme = Programme.where('name ILIKE (?) AND ancestry_depth=?',"%#{@lecturer_programme}%",0)  if !(@lecturer_programme=="Pos Basik" || @lecturer_programme=="Diploma Lanjutan")
-      end
-      unless @programme.nil? || @programme.count == 0
-        @programme_id = @programme.id
-        @student_list = Student.where('course_id=?', @programme.id).order(name: :asc)
-        @dept_unit_prog = Programme.where(id: @programme_id).first.programme_list
-        @intakes_lt = @student_list.pluck(:intake).uniq
-      else
-        #for administrator, Posbasik, Diploma Lanjutan & Commonsubject lecturer : to assign programme, based on selected exampaper 
-        if @examid
-          @dept_unit = Programme.find(Exam.find(@examid).subject_id).root
-          @dept_unit_prog = @dept_unit.programme_list
-          @intakes_lt = Student.where('course_id=?',@dept_unit.id).pluck(:intake).uniq #must be among the programme of exampaper coz even common subject...
-          @programme_id=@dept_unit.id
+    unless @examid.nil?
+      @exammarks = Array.new(1) { Exammark.new }
+      @selected_exam = Exam.find(@examid)
+      @iii=Exammark.set_intake_group(@selected_exam.exam_on.year,@selected_exam.exam_on.month,@selected_exam.subject.parent.code,@current_user).to_s
+      common_subject = Programme.where('course_type=?','Commonsubject').map(&:id)
+      valid_exams = Exammark.get_valid_exams
+      position_exist = @current_user.userable.positions
+      if position_exist  
+        @lecturer_programme = @current_user.userable.positions[0].unit
+        unless @lecturer_programme.nil?
+          programme = Programme.where('name ILIKE (?) AND ancestry_depth=?',"%#{@lecturer_programme}%",0)  if !(@lecturer_programme=="Pos Basik" || @lecturer_programme=="Diploma Lanjutan")
+        end
+        unless @programme.nil? || @programme.count == 0
+          @programme_id = @programme.id
+          @student_list = Student.where('course_id=?', @programme.id).order(name: :asc)
+          @dept_unit_prog = Programme.where(id: @programme_id).first.programme_list
+          @intakes_lt = @student_list.pluck(:intake).uniq
+        else
+          #for administrator, Posbasik, Diploma Lanjutan & Commonsubject lecturer : to assign programme, based on selected exampaper 
+          if @examid
+            @dept_unit = Programme.find(Exam.find(@examid).subject_id).root
+            @dept_unit_prog = @dept_unit.programme_list
+            @intakes_lt = Student.where('course_id=?',@dept_unit.id).pluck(:intake).uniq #must be among the programme of exampaper coz even common subject...
+            @programme_id=@dept_unit.id
+          end
         end
       end
+    else
+      flash[:notice] = t 'exam.exammark.select_exam'
+      redirect_to exam_exammarks_path
     end
   end
   

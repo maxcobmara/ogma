@@ -2328,6 +2328,7 @@ en:
       total: Total
       summative: Summative
       select_one: "Please select at least 1 record for editing."
+      select_exam: "Please select Examination Paper"
       multiple_updated: "All examination marks were successfully updated!"
       multiple_created: "Records were successfully created. Enter examination marks accordingly."
       intake: Student Intake

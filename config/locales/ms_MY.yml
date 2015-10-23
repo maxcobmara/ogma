@@ -2269,6 +2269,7 @@ ms_MY:
       total: Jumlah
       summative: Sumatif
       select_one: "Sila pilih sekurang-kurangnya 1 rekod untuk disunting."
+      select_exam: "SIla pilih Kertas Peperiksaan"
       multiple_updated: "Kesemua markah peperiksaan telah berjaya dikemaskini!"
       multiple_created: "Rekod telah berjaya disimpan. Masukkan markah peperiksaan berkenaan!"
       intake: Ambilan Pelajar
