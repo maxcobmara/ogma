@@ -1,0 +1,24 @@
+.col-md-offset-2 
+  .form-group
+    .col-sm-2.control-label
+      =f.label t 'exam.examresult.programme_id', for: :programme_id
+    .col-md-8
+      = f.collection_select :programme_id, Programme.roots, :id, :programme_list,{:include_blank =>t('select')},{class: 'mandatory selectpicker', "data-width"=>'350px'} 
+  .form-group
+    .col-sm-2.control-label
+      %b Semester
+    .col-md-8
+      = f.select :semester, DropDown::SEMESTER,{:include_blank => t('select')}, {class: 'mandatory selectpicker', "data-width"=>'150px'}
+  .form-group
+    .col-sm-2.control-label
+      = f.label t 'exam.examresult.examdts'
+    .col-md-3
+      = f.text_field :examdts, class: 'form-control mandatory date_picker'
+  .form-group
+    .col-sm-2.control-label
+      = f.label t 'exam.examresult.examdte'
+    .col-md-3
+      = f.text_field :examdte, class: 'form-control mandatory date_picker'
+
+#cities_select
+  div cities select

@@ -1,0 +1,27 @@
+- model_class = Exam
+.col-md-11
+  %hr  
+  %table.table.table-bordered
+    %head
+      %tr
+        %th{rowspan: 2} &nbsp;
+        %th{rowspan: 2}=t('student.name')
+        %th{rowspan: 2}=t('student.students.matrixno')
+        %th{rowspan: 2}=t('student.icno')
+        - @subjects = Examresult.get_subjects(@examresult.programme_id,@examresult.semester)
+        - for subject in @subjects
+          %th.centre{colspan: 2}=h subject.code
+        %th.centre{rowspan: 2}= t 'examresult.total' 
+        %th.centre{rowspan: 2} PNGS17
+        %th.centre{rowspan: 2} PNGK
+        %th.centre{rowspan: 2} Status
+        %th.centre{rowspan: 2}= t 'examresult.remark'
+      %tr
+        - 0.upto(@subjects.count-1) do |count|
+          %th=t('grade.grade')
+          %th NG
+    %body
+      - @nos=0
+      = f.fields_for :resultlines do |builder|
+        - @nos+=1
+        = render 'resultline_fields', {:f => builder, :nos => @nos}

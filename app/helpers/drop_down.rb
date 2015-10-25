@@ -351,6 +351,26 @@ module DropDown
          [ "Rejected", "Rejected" ]
     ]
      
+   #Examresults
+    SEMESTER = [
+              #  Displayed       stored in db
+              [ "Tahun 1/Semester I","1" ],
+              [ "Tahun 1/Semester II","2" ],
+              [ "Tahun 2/Semester I","3" ],
+              [ "Tahun 2/Semester II","4" ],
+              [ "Tahun 3/Semester I","5" ],
+              [ "Tahun 3/Semester II","6" ],
+
+    ]
+    #Resultline
+    RESULT_STATUS =[
+            #  Displayed       stored in db
+            [ "Cemerlang", "1"],
+            [ "Kepujian", "2"],
+            [ "Lulus", "3"],
+            [ "Gagal", "4"]
+  ]
+     
     DAY_CHOICE = [
          #  Displayed       stored in db
          [ "Sun-Wed / Mon-Thurs",  1 ],

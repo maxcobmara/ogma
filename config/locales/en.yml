@@ -2386,7 +2386,17 @@ en:
     examresult:
       title: Examination Result by Programme
       title2: Result By Programme
+      new: New Examination Result
+      edit: Edit Examination Result
       exam_slip: Examination Result Slip
+      programme_id: Program
+      examdts: Exam Date Start
+      examdte: Exam Date End
+      total: Total
+      remark: Remark
+      details: Examination Details
+      result_details: Result Details
+      details2: Examination Result
     
     evaluate_course:
       title: "Course Evaluation (Lecturer)"

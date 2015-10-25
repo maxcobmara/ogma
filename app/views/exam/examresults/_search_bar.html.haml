@@ -1,0 +1,11 @@
+= search_form_for [:exammark, @search], url: exam_examresults_path,  class: "form-inline" do |f|
+  %tr.search_row{style: "display: none;"}
+    %td= f.text_field :examdts_gteq, class: 'date_picker', size: 2
+    %td= f.text_field :examdte_gteq, class: 'date_picker', size: 2
+    %td &nbsp;
+    %td
+      .input-group
+        = f.text_field :keyword_search, class: 'form-control'
+        %span.input-group-btn
+          %button.btn.btn-sm.btn-default.right{:type => "submit"}
+            %i.fa.fa-search.fa-fw

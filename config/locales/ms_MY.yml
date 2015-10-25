@@ -2327,7 +2327,17 @@ ms_MY:
     examresult:
       title: Keputusan Peperiksaan Mengikut Program
       title2: Keputusan Mengikut Program
+      new: Keputusan Baru Peperiksaan
+      edit: Sunting Keputusan Peperiksaan
       exam_slip: Slip Keputusan
+      programme_id: Program
+      examdts: Tarikh Mula Peperiksaan
+      examdte: Tarikh Tamat Peperiksaan
+      total: Jumlah
+      remark: Catatan
+      details: Butiran Peperiksaan
+      result_details: Butiran Keputusan
+      details2: Keputusan Peperiksaan
     
     evaluate_course:
       title: "Penilaian Program (Pengajar)"

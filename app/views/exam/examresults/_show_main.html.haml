@@ -1,0 +1,12 @@
+%dl.dl-horizontal
+  %dt= t 'exam.examresult.programme_id'
+  %dd= @examresult.programmestudent.programme_list
+          
+  %dt=t 'exam.examresult.semester'
+  %dd=h @examresult.render_semester
+            
+  %dt=t 'exam.examresult.examdts'
+  %dd=h l(@examresult.examdts)
+          
+  %dt=t 'exam.examresult.examdte'
+  %dd=h l(@examresult.examdte)

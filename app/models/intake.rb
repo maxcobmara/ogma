@@ -24,7 +24,10 @@ class Intake < ActiveRecord::Base
   end
   
   def self.get_intake(student_intake, courseid)
-    Intake.where(monthyear_intake: student_intake, programme_id: courseid).first.id
+    intakeid=0
+    a=Intake.where(monthyear_intake: student_intake, programme_id: courseid)
+    intakeid=a.first.id if a.count > 0
+    intakeid
   end
   
   private

@@ -107,9 +107,10 @@
         %th 
           =t 'exam.exammark.total'
           %font{:style=>"size:-2;"}="("+(number_with_precision(@fullmarks, precision: 2)).to_s+")"
-        %th
-          =t 'exam.exammark.summative'
-          (70%)
+        - if @exammarks[0].exampaper.name=='F'
+          %th
+            =t 'exam.exammark.summative'
+            (70%)
 
     %tbody
       - @exammarks.sort_by{|x|x.studentmark.name}.each_with_index do |exammark,no|
@@ -135,5 +136,7 @@
 
           %td{:style=>"background-color:#C3E9BF;"}= text_field_tag "total_marks_view[]", number_with_precision(exammark.total_marks,precision:2) ,:id=>"total_marks_view"+@b_count.to_s, :size=> 5, :readonly=>true
 
-          %td{:style=>"background-color:#C3E9BF;"}= text_field_tag "total_summative[]", number_with_precision(exammark.total_marks/Exammark.fullmarks(@examid)*70, precision: 2) ,:id=>"total_summative"+@b_count.to_s, :size=> 5, :readonly=>true 
+          - if @exammarks[0].exampaper.name=='F'
+            %td{:style=>"background-color:#C3E9BF;"}
+              = text_field_tag "total_summative[]", number_with_precision(exammark.total_marks/Exammark.fullmarks(@examid)*70, precision: 2) ,:id=>"total_summative"+@b_count.to_s, :size=> 5, :readonly=>true 
           - @b_count+=1

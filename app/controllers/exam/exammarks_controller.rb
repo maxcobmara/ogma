@@ -22,7 +22,8 @@ class Exam::ExammarksController < ApplicationController
         @exams_list_raw = Exam.where('subject_id IN(?) and id IN(?)', subjects_ids, valid_exams).order(name: :asc, subject_id: :asc)
       else
         tasks_main = @current_user.userable.positions[0].tasks_main
-        if lecturer_programme == 'Commonsubject'
+        common_subjects=['Sains Tingkahlaku','Sains Perubatan Asas', 'Komunikasi & Sains Pengurusan', 'Anatomi & Fisiologi', 'Komuniti']
+        if common_subjects.include?(@lecturer_programme) 
           programme_id ='1'
           @exams_list_raw = Exam.where('id IN(?)', valid_exams).order(name: :asc, subject_id: :asc)
         elsif posbasiks.include?(lecturer_programme) && tasks_main!=nil

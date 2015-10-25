@@ -86,6 +86,32 @@ class Grade < ActiveRecord::Base
     end
   end
   
+  def set_NG
+    if finale < 35  #<= 35 
+      0.00
+    elsif finale < 40 #<= 40
+      1.00
+    elsif finale < 45 #<= 45
+      1.33
+    elsif finale < 50 #<= 50
+      1.67
+    elsif finale < 55 #<= 55
+      2.00
+    elsif finale < 60 #<= 60
+      2.33
+    elsif finale < 65 #<= 65
+      2.67
+    elsif finale < 70 #<= 70
+      3.00
+    elsif finale < 75 #<= 75
+      3.33
+    elsif finale < 80 #<= 80
+      3.67
+    else
+      4.00
+    end
+  end 
+  
   def self.search2(search)
     common_subject = Programme.where('course_type=?','Commonsubject').pluck(:id)
     if search 
