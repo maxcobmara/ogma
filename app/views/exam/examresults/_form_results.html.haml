@@ -25,3 +25,27 @@
       = f.fields_for :resultlines do |builder|
         - @nos+=1
         = render 'resultline_fields', {:f => builder, :nos => @nos}
+      - if @students.count > 0 && @examresult.resultlines.count==0
+        - 0.upto(@students.count-1).each do |no|
+          %tr
+            %td=no
+            = hidden_field "examresult[resultlines_attributes][#{no}]", :student_id, :size =>8, :value=>@students[no].id
+            %td=@students[no].name
+            %td=@students[no].matrixno
+            %td=@students[no].icno
+            - for subject in @subjects
+              - @student_grade = Grade.where('student_id=? and subject_id=?', @students[no].id,subject.id).first
+              - @student_finale = Grade.where('student_id=? and subject_id=?', @students[no].id,subject.id).first
+              %td.center
+                - unless @student_grade.nil? || @student_grade.blank?
+                  =@student_grade.set_gred
+              %td.center
+                - unless @student_finale.nil? || @student_finale.blank? 
+                  =number_with_precision(@student_finale.set_NG.to_f,:precision=>2)
+                - else 
+                  = number_with_precision(0.00,:precision=>2) 
+            %td= text_field "examresult[resultlines_attributes][#{no}]", :total, :size =>8, :value=>0
+            %td= text_field "examresult[resultlines_attributes][#{no}]", :pngs17, :size =>8, :value=>0
+            %td= text_field "examresult[resultlines_attributes][#{no}]", :pngk, :size =>8, :value=>0
+            %td= select_tag "examresult[resultlines_attributes][#{no}][status]", options_for_select(DropDown::RESULT_STATUS) 
+            %td= text_field "examresult[resultlines_attributes][#{no}]", :remark, :size =>8

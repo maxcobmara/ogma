@@ -106,6 +106,7 @@ class Exam::ExamresultsController < ApplicationController
   # GET /examresults/new.xml
   def new
     @examresult = Examresult.new
+    @examresult.resultlines.build
     respond_to do |format|
       format.html # new.html.erb
       format.xml  { render :xml => @examresult }
@@ -119,6 +120,21 @@ class Exam::ExamresultsController < ApplicationController
   # GET /examresults/1/edit
   def edit
     @examresult = Examresult.find(params[:id])
+    ###
+    programmeid=@examresult.programme_id#params[:examresult][:programme_id]
+    sem=@examresult.semester#params[:examresult][:semester]
+    exammonth=@examresult.examdts.month#(params[:examresult][:examdts]).to_date.month
+    examyear=@examresult.examdts.year#(params[:examresult][:examdts]).to_date.year
+    unless programmeid.blank? || programmeid.nil?
+      unless sem.blank? || sem.nil?
+        unless examyear.blank? || examyear.nil? || exammonth.blank? || exammonth.nil?
+          @intake = Examresult.set_intake_group(examyear, exammonth, sem, @current_user.userable.positions)
+          @subjects = Examresult.get_subjects(programmeid, sem)
+          @students = Examresult.get_students(programmeid, examyear, exammonth, sem, @current_user.userable.positions)
+        end
+      end
+    end
+    ###
   end
   
   def edit_stat
@@ -129,24 +145,84 @@ class Exam::ExamresultsController < ApplicationController
   # POST /examresults.xml
   def create
     @examresult = Examresult.new(params[:examresult])
-    respond_to do |format|
-      if @examresult.save
-        format.html { redirect_to(@examresult, :notice => t('exam.examresult.title2')+" "+t('created')) }
-        format.xml  { render :xml => @examresult, :status => :created, :location => @examresult }
-      else
-        format.html { render :action => "new" }
-        format.xml  { render :xml => @examresult.errors, :status => :unprocessable_entity }
+    
+    # TODO 
+    programmeid=params[:examresult][:programme_id]
+    sem=params[:examresult][:semester]
+    exammonth=(params[:examresult][:examdts]).to_date.month
+    examyear=(params[:examresult][:examdts]).to_date.year
+    unless programmeid.blank? || programmeid.nil?
+      unless sem.blank? || sem.nil?
+        unless examyear.blank? || examyear.nil? || exammonth.blank? || exammonth.nil?
+          @intake = Examresult.set_intake_group(examyear, exammonth, sem, @current_user.userable.positions)
+          @subjects = Examresult.get_subjects(programmeid, sem)
+          @students = Examresult.get_students(programmeid, examyear, exammonth, sem, @current_user.userable.positions)
+        end
       end
     end
+    respond_to do |format|
+      if @students && @students.count > 0
+        if @examresult.save
+          flash[:notice]=t('exam.examresult.title2')+" "+t('actions.created')
+          format.html {render :action => "edit"}
+          format.xml  { head :ok }
+           #format.html { redirect_to(exam_examresult_path(@examresult), :notice => t('exam.examresult.title2')+" "+t('created')) }
+            #format.xml  { render :xml => @examresult, :status => :created, :location => @examresult }
+	else
+	  flash[:notice]='kkk'
+	  redirect_to  exam_examresults_path
+        end
+      else
+        if @students && @students.count==0
+          flash[:notice]='No students have taken this programme'
+          format.html { render :action => "new" }
+          format.xml  { render :xml => @examresult.errors, :status => :unprocessable_entity }
+        else
+          format.html { render :action => "new" }
+          format.xml  { render :xml => @examresult.errors, :status => :unprocessable_entity }
+        end
+      end
+    end
+    #retrieve all params values, do checking here - if student exist then SAVE display examresult EDIT page with UPDATE button.
+    #if no student exist for current - raise ERROR
+#     if @students && @students.count > 0 
+#       respond_to do |format|
+#         if @examresult.save
+#           format.html { redirect_to(exam_examresult_path(@examresult), :notice => t('exam.examresult.title2')+" "+t('created')) }
+#           format.xml  { render :xml => @examresult, :status => :created, :location => @examresult }
+#         else
+#           format.html { render :action => "new" }
+#           format.xml  { render :xml => @examresult.errors, :status => :unprocessable_entity }
+#         end
+#       end
+#     else
+#       flash[:notice]='No students have taken this programme'
+#     end
+#     
   end
 
   # PUT /examresults/1
   # PUT /examresults/1.xml
   def update
     @examresult = Examresult.find(params[:id])  
+    ###
+    programmeid=@examresult.programme_id#params[:examresult][:programme_id]
+    sem=@examresult.semester#params[:examresult][:semester]
+    exammonth=@examresult.examdts.month#(params[:examresult][:examdts]).to_date.month
+    examyear=@examresult.examdts.year#(params[:examresult][:examdts]).to_date.year
+    unless programmeid.blank? || programmeid.nil?
+      unless sem.blank? || sem.nil?
+        unless examyear.blank? || examyear.nil? || exammonth.blank? || exammonth.nil?
+          @intake = Examresult.set_intake_group(examyear, exammonth, sem, @current_user.userable.positions)
+          @subjects = Examresult.get_subjects(programmeid, sem)
+          @students = Examresult.get_students(programmeid, examyear, exammonth, sem, @current_user.userable.positions)
+        end
+      end
+    end
+    ###
     respond_to do |format|
       if @examresult.update_attributes(examresult_params)
-        format.html { redirect_to(exam_examresult_path(@examresult), :notice => t('exam.examresult.title2')+" "+t('updated')) }
+        format.html { redirect_to(exam_examresult_path(@examresult), :notice => t('exam.examresult.title2')+" "+t('actions.updated')) }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }
