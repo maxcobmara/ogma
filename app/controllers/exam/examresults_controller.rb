@@ -1,4 +1,8 @@
 class Exam::ExamresultsController < ApplicationController
+  filter_access_to :all
+  before_action :set_examresult, only: [:show, :edit, :update, :destroy]
+  before_action :set_edit_update_data, only: [:edit, :update] 
+  
   # GET /examresults
   # GET /examresults.xml
   def index
@@ -70,83 +74,65 @@ class Exam::ExamresultsController < ApplicationController
     end
   end
   
-  def show2
-    @resultline = Resultline.find(params[:id])
-
-    respond_to do |format|
-      format.html # show.html.erb
-      format.xml  { render :xml => @examresult }
-    end
-  end
-  
-  def examslip
-    @resultline = Resultline.find(params[:id])
-    render :layout => 'report'
-  end
-  
-  def show_stat
-    @examresult = Examresult.find(params[:id])
-
-    respond_to do |format|
-      format.html # show.html.erb
-      format.xml  { render :xml => @examresult }
-    end
-  end
-  
-  def show_summary
-    @examresult = Examresult.find(params[:id])
-
-    respond_to do |format|
-      format.html # show.html.erb
-      format.xml  { render :xml => @examresult }
-    end
-  end
+#   def show2
+#     @resultline = Resultline.find(params[:id])
+# 
+#     respond_to do |format|
+#       format.html # show.html.erb
+#       format.xml  { render :xml => @examresult }
+#     end
+#   end
+#   
+#   def examslip
+#     @resultline = Resultline.find(params[:id])
+#     render :layout => 'report'
+#   end
+#   
+#   def show_stat
+#     @examresult = Examresult.find(params[:id])
+# 
+#     respond_to do |format|
+#       format.html # show.html.erb
+#       format.xml  { render :xml => @examresult }
+#     end
+#   end
+#   
+#   def show_summary
+#     @examresult = Examresult.find(params[:id])
+# 
+#     respond_to do |format|
+#       format.html # show.html.erb
+#       format.xml  { render :xml => @examresult }
+#     end
+#   end
 
   # GET /examresults/new
   # GET /examresults/new.xml
   def new
     @examresult = Examresult.new
-    @examresult.resultlines.build
     respond_to do |format|
       format.html # new.html.erb
       format.xml  { render :xml => @examresult }
     end
   end
   
-  def new_analysis
-    
-  end
+#   def new_analysis
+#   end
 
   # GET /examresults/1/edit
   def edit
     @examresult = Examresult.find(params[:id])
-    ###
-    programmeid=@examresult.programme_id#params[:examresult][:programme_id]
-    sem=@examresult.semester#params[:examresult][:semester]
-    exammonth=@examresult.examdts.month#(params[:examresult][:examdts]).to_date.month
-    examyear=@examresult.examdts.year#(params[:examresult][:examdts]).to_date.year
-    unless programmeid.blank? || programmeid.nil?
-      unless sem.blank? || sem.nil?
-        unless examyear.blank? || examyear.nil? || exammonth.blank? || exammonth.nil?
-          @intake = Examresult.set_intake_group(examyear, exammonth, sem, @current_user.userable.positions)
-          @subjects = Examresult.get_subjects(programmeid, sem)
-          @students = Examresult.get_students(programmeid, examyear, exammonth, sem, @current_user.userable.positions)
-        end
-      end
-    end
-    ###
+    @unique_students = @students
   end
   
-  def edit_stat
-    @examresult = Examresult.find(params[:id])
-  end
+#   def edit_stat
+#     @examresult = Examresult.find(params[:id])
+#   end
 
   # POST /examresults
   # POST /examresults.xml
   def create
     @examresult = Examresult.new(params[:examresult])
-    
-    # TODO 
     programmeid=params[:examresult][:programme_id]
     sem=params[:examresult][:semester]
     exammonth=(params[:examresult][:examdts]).to_date.month
@@ -163,18 +149,18 @@ class Exam::ExamresultsController < ApplicationController
     respond_to do |format|
       if @students && @students.count > 0
         if @examresult.save
-          flash[:notice]=t('exam.examresult.title2')+" "+t('actions.created')
+          flash[:notice]=t('exam.examresult.title2')+" "+t('actions.created')+" "+t('exam.examresult.update_resultlines')
           format.html {render :action => "edit"}
           format.xml  { head :ok }
            #format.html { redirect_to(exam_examresult_path(@examresult), :notice => t('exam.examresult.title2')+" "+t('created')) }
             #format.xml  { render :xml => @examresult, :status => :created, :location => @examresult }
-	else
-	  flash[:notice]='kkk'
-	  redirect_to  exam_examresults_path
+        else
+          flash[:notice]='Error arise!'
+          redirect_to  exam_examresults_path
         end
       else
         if @students && @students.count==0
-          flash[:notice]='No students have taken this programme'
+          flash[:notice]=t('exam.examresult.no_student')
           format.html { render :action => "new" }
           format.xml  { render :xml => @examresult.errors, :status => :unprocessable_entity }
         else
@@ -183,43 +169,13 @@ class Exam::ExamresultsController < ApplicationController
         end
       end
     end
-    #retrieve all params values, do checking here - if student exist then SAVE display examresult EDIT page with UPDATE button.
-    #if no student exist for current - raise ERROR
-#     if @students && @students.count > 0 
-#       respond_to do |format|
-#         if @examresult.save
-#           format.html { redirect_to(exam_examresult_path(@examresult), :notice => t('exam.examresult.title2')+" "+t('created')) }
-#           format.xml  { render :xml => @examresult, :status => :created, :location => @examresult }
-#         else
-#           format.html { render :action => "new" }
-#           format.xml  { render :xml => @examresult.errors, :status => :unprocessable_entity }
-#         end
-#       end
-#     else
-#       flash[:notice]='No students have taken this programme'
-#     end
-#     
+    
   end
 
   # PUT /examresults/1
   # PUT /examresults/1.xml
   def update
     @examresult = Examresult.find(params[:id])  
-    ###
-    programmeid=@examresult.programme_id#params[:examresult][:programme_id]
-    sem=@examresult.semester#params[:examresult][:semester]
-    exammonth=@examresult.examdts.month#(params[:examresult][:examdts]).to_date.month
-    examyear=@examresult.examdts.year#(params[:examresult][:examdts]).to_date.year
-    unless programmeid.blank? || programmeid.nil?
-      unless sem.blank? || sem.nil?
-        unless examyear.blank? || examyear.nil? || exammonth.blank? || exammonth.nil?
-          @intake = Examresult.set_intake_group(examyear, exammonth, sem, @current_user.userable.positions)
-          @subjects = Examresult.get_subjects(programmeid, sem)
-          @students = Examresult.get_students(programmeid, examyear, exammonth, sem, @current_user.userable.positions)
-        end
-      end
-    end
-    ###
     respond_to do |format|
       if @examresult.update_attributes(examresult_params)
         format.html { redirect_to(exam_examresult_path(@examresult), :notice => t('exam.examresult.title2')+" "+t('actions.updated')) }
@@ -243,10 +199,29 @@ class Exam::ExamresultsController < ApplicationController
     end
   end
   
+  private 
+  
   # Use callbacks to share common setup or constraints between actions.
     def set_examresult
-      @exammark = Exammark.find(params[:id])
+      @examresult = Examresult.find(params[:id])
     end
+    
+    def set_edit_update_data
+      programmeid=@examresult.programme_id
+      sem=@examresult.semester
+      exammonth=@examresult.examdts.month
+      examyear=@examresult.examdts.year
+      unless programmeid.blank? || programmeid.nil?
+        unless sem.blank? || sem.nil?
+          unless examyear.blank? || examyear.nil? || exammonth.blank? || exammonth.nil?
+            @intake = Examresult.set_intake_group(examyear, exammonth, sem, @current_user.userable.positions)
+            @subjects = Examresult.get_subjects(programmeid, sem)
+            @students = Examresult.get_students(programmeid, examyear, exammonth, sem, @current_user.userable.positions)
+          end
+        end
+      end
+    end
+    
     # Never trust parameters from the scary internet, only allow the white list through.
     def examresult_params
       params.require(:examresult).permit(:programme_id, :total, :pngs17, :status, :remark, :semester, :examdts, :examdte, resultlines_attributes: [:id, :_destroy, :total, :pngs17, :status, :remark, :student_id, :pngk])

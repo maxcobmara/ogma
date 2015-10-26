@@ -8,6 +8,8 @@ ms_MY:
       location: Lokasi
       examquestion: Soalan Peperiksaan
       exam: Peperiksaan
+      examresult: Keputusan Peperiksaan
+      resultline: Keputusan
       travel_request: Permohonan Perjalanan
       leaveforstudent: Cuti Pelajar
       kin: Waris
@@ -63,8 +65,7 @@ ms_MY:
         travel_on: Tarikh
         start_at: Dari
         finish_at: Hingga
-        travel_log: Log Perjalananlash[:notice]= 
-          flash[:error] = msg2
+        travel_log: Log Perjalanan
       leaveforstudent:
         student_id: Nama pelajar
         leavetype: Jenis cuti
@@ -168,6 +169,14 @@ ms_MY:
         exam_on: Tarikh
         starttime: Masa mula
         endtime: Masa tamat
+      examresult:
+        resultlines: Keputusan
+      resultlines:
+        total: Jumlah
+        pngs17: PNGS17
+        status: Status
+        remark: Catatan
+
     errors:
         template:
           body: "Berikut adalah beberapa masalah:"
@@ -2338,6 +2347,9 @@ ms_MY:
       details: Butiran Peperiksaan
       result_details: Butiran Keputusan
       details2: Keputusan Peperiksaan
+      no_student: "Tiada pelajar yang mengambil program ini bagi semester dan tarikh peperiksaan yang dpilih."
+      update_resultlines: "Sila masukkan butiran keputusan pelajar (Jumlah, PNGS17, PNGK, Status dan Catatan) dan klik 'Kemaskini' untuk menyimpan data."
+      record_must_unique: ", Program dan Tarikh Peperiksaan telah wujud. Hanya 1 rekod dibenarkan bagi setiap keputusan peperiksaan.. "
     
     evaluate_course:
       title: "Penilaian Program (Pengajar)"

@@ -29,6 +29,8 @@ en:
       location: Location
       examquestion: Examquestion
       exam: Examination
+      examresult: Keputusan Peperiksaan
+      resultline: Keputusan
       leaveforstudent: Student Leave
       travel_request: Travel Request
       travel_claim: Travel Claim
@@ -186,6 +188,13 @@ en:
         exam_on: Date
         starttime: Start time
         endtime: End time
+      examresult:
+        resultlines: Result
+      resultlines:
+        total: Total
+        pngs17: PNGS17
+        status: Status
+        remark: Remark
     errors:
         template:
           body: "There were problems with the following fields:"
@@ -2397,6 +2406,8 @@ en:
       details: Examination Details
       result_details: Result Details
       details2: Examination Result
+      no_student: "No students have taken this programme for selected semester and examination dates."
+      record_must_unique: ", Programme and Examination Date has already been taken. Only 1 record permitted for each examination result. "
     
     evaluate_course:
       title: "Course Evaluation (Lecturer)"

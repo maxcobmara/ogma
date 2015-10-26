@@ -1,7 +1,7 @@
 class Examresult < ActiveRecord::Base
   validates_presence_of :semester, :programme_id, :examdts, :examdte
   #ref:http://stackoverflow.com/questions/923796/how-do-you-validate-uniqueness-of-a-pair-of-ids-in-ruby-on-rails
-  validates_uniqueness_of :semester, :scope => [:programme_id, :examdts], :message => ", Programme and Examination Date has already been taken. Only 1 record permitted for each examination result. "
+  validates_uniqueness_of :semester, :scope => [:programme_id, :examdts], :message => I18n.t('exam.examresult.record_must_unique')
   belongs_to :programmestudent, :class_name => 'Programme', :foreign_key => 'programme_id' 
   has_many :resultlines, :dependent => :destroy                                                     
   accepts_nested_attributes_for :resultlines, :reject_if => lambda { |a| a[:student_id].blank? }
