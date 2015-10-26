@@ -398,7 +398,13 @@ Ogma::Application.routes.draw do
         get 'add_formative'
       end
     end
-    resources :examresults
+    resources :examresults do
+      collection do
+        get :index2
+        post :index2
+        get :show2
+      end
+    end
     resources :evaluate_courses do
       member do
         get 'courseevaluation'

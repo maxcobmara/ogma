@@ -2309,6 +2309,7 @@ ms_MY:
       resit: Ulangan
       finalscore: Jumlah Akhir
       grading_id: Gred
+      grade_value: Nilai Gred
       new_multiple: "Gred Baru (Pukal)"
       existing_subject: Semua Subjek
       formative: Formatif
@@ -2338,7 +2339,7 @@ ms_MY:
       title2: Keputusan Mengikut Program
       new: Keputusan Baru Peperiksaan
       edit: Sunting Keputusan Peperiksaan
-      exam_slip: Slip Keputusan
+      exam_slip: Slip Keputusan Peperiksaan
       programme_id: Program
       examdts: Tarikh Mula Peperiksaan
       examdte: Tarikh Tamat Peperiksaan
@@ -2349,7 +2350,14 @@ ms_MY:
       details2: Keputusan Peperiksaan
       no_student: "Tiada pelajar yang mengambil program ini bagi semester dan tarikh peperiksaan yang dpilih."
       update_resultlines: "Sila masukkan butiran keputusan pelajar (Jumlah, PNGS17, PNGK, Status dan Catatan) dan klik 'Kemaskini' untuk menyimpan data."
-      record_must_unique: ", Program dan Tarikh Peperiksaan telah wujud. Hanya 1 rekod dibenarkan bagi setiap keputusan peperiksaan.. "
+      record_must_unique: ", Program dan Tarikh Peperiksaan telah wujud. Hanya 1 rekod dibenarkan bagi setiap keputusan peperiksaan."
+      all_compulsory: "Semua medan wajib diisi."
+      student: Pelajar
+      exam_date: Tarikh Peperiksaan
+      course_code: Kod Kursus
+      exam_centre: Pusat Peperiksaan
+      passed: Lulus
+      failed: Gagal
     
     evaluate_course:
       title: "Penilaian Program (Pengajar)"

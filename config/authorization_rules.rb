@@ -194,7 +194,7 @@ authorization do
     #revised - 17May2015-end
    
    #EXAMINATION modules
-   has_permission_on [:exam_examquestions, :exam_exams, :exam_exammarks, :exam_grades], :to => [:menu, :read, :create]
+   has_permission_on [:exam_examquestions, :exam_exams, :exam_exammarks, :exam_grades, :exam_examresults], :to => [:menu, :read, :create, :index2, :show2]
  
    has_permission_on :exam_exams, :to =>[:manage ,:exampaper, :question_selection] do
      if_attribute :created_by => is {user.userable.id}
@@ -206,6 +206,10 @@ authorization do
    
    has_permission_on :exam_examquestions, :to => :update do
      if_attribute :programme_id => is_in {user.lecturers_programme}
+   end
+   
+   has_permission_on :exam_examresults, :to =>[:edit, :update, :delete] do
+     if_attribute :programme_id => is_in {user.lecturers_programme2}
    end
    
 #    has_permission_on :exam_examquestions, :to =>:update, :join_by => :and do

@@ -1,0 +1,79 @@
+.col-md-8.col-md-offset-2
+  %dl.dl-horizontal
+    %dt=t 'exam.examresult.exam_centre'
+    %dd Kolej Sains Kesihatan Bersekutu Johor Bahru
+  
+    %dt=t 'exam.examresult.programme_id'
+    %dd=h @resultline.examresult.programmestudent.programme_list
+          
+    %dt=t 'exam.examresult.semester'
+    %dd=h @resultline.examresult.render_semester
+            
+    %dt=t 'exam.examresult.examdts'
+    %dd=h l(@resultline.examresult.examdts)
+          
+    %dt=t 'exam.examresult.examdte'
+    %dd=h l(@resultline.examresult.examdte)
+  
+    %br
+  
+    %dt=t('exam.examresult.student')
+    %dd=h @resultline.student.name
+  
+    %dt=t('student.icno')
+    %dd=h @resultline.student.icno
+  
+    %dt=t('student.students.matrixno')
+    %dd=h @resultline.student.matrixno
+  
+.col-md-8.col-md-offset-1
+  %br
+  %table.table.table-bordered
+    %head
+      %tr
+        %th No
+        %th=t('exam.examresult.course_code')
+        %th=t('exam.grade.grading_id')
+        %th=t('exam.grade.grade_value')
+        %th=t('exam.examresult.remark')
+      - @programme_id = @resultline.examresult.programmestudent.id
+      - @semester = @resultline.examresult.semester
+      - @subjects = Examresult.get_subjects(@programme_id ,@semester)
+      - @no=0
+      - for subject in @subjects 
+        - @student_grade = Grade.where('student_id=? and subject_id=?',@resultline.student.id,subject.id).first
+        - @student_finale = Grade.where('student_id=? and subject_id=?',@resultline.student.id,subject.id).first
+        %tr
+          %td=@no+=1
+          %td= subject.subject_list 
+          %td=@grading=@student_grade.set_gred unless @student_grade.nil? || @student_grade.blank?
+          %td
+            - unless @student_finale.nil? || @student_finale.blank? 
+              =sprintf('%.2f', @student_finale.set_NG.to_f)
+            - else 
+              = sprintf('%.2f', 0.00)
+          %td
+            - if @grading=="A" || @grading=="A-" ||@grading=="B+"||@grading=="B"||@grading=="B-"||@grading=="C+"||@grading=="C"
+              =t('exam.examresult.passed')
+            - else 
+              =t('exam.examresult.failed')
+
+.col-md-3.col-md-offset-3
+  %br
+  %table.table.table-bordered
+    %head
+      %tr
+        %th=h @resultline.examresult.render_semester
+        %th=t('examresult.total')
+      %tr
+        %td=(t 'examresult.total')+" NGK"
+        %td=h @resultline.total.nil? ? "" : sprintf('%.2f',@resultline.total)
+      %tr
+        %td PNGS
+        %td=h @resultline.pngs17.nil? ? "" : sprintf('%.2f',@resultline.pngs17)
+      %tr
+        %td PNGK
+        %td=h @resultline.pngk.nil? ? "" : sprintf('%.2f',@resultline.pngk) 
+      %tr
+        %td STATUS
+        %td=h @resultline.render_status

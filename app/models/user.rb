@@ -339,6 +339,33 @@ class User < ActiveRecord::Base
     programmeid
   end
   
+  #use in - auth_rules(examresult) - return [programme_id] for academician (return [] for common subjects lecturer)
+  def lecturers_programme2 #to exclude common subjects lecturer
+    mypost = Position.where(staff_id: userable_id).first
+    myunit = mypost.unit
+    postbasics=['Pengkhususan', 'Pos Basik', 'Diploma Lanjutan']
+    post_prog=Programme.roots.where(course_type: postbasics)
+    dip_prog=Programme.roots.where(course_type: 'Diploma').pluck(:name)
+    common_subjects=['Sains Tingkahlaku','Sains Perubatan Asas', 'Komunikasi & Sains Pengurusan', 'Anatomi & Fisiologi', 'Komuniti']
+    if dip_prog.include?(myunit)
+      programmeid=Programme.roots.where(name: myunit).pluck(:id)
+    else
+      if myunit=="Pengkhususan" && roles.pluck(:authname).include?("programme_manager")
+        programmeid=post_prog.pluck(:id)
+      elsif postbasics.include?(myunit)
+        post_prog.pluck(:name).each do |pname|
+          @programmeid=Programme.roots.where(name: pname) if mypost.tasks_main.include?(pname).pluck(:id)
+        end
+        programmeid=@programmeid
+      elsif common_subjects.include?(myunit)
+        programmeid=[] #common_subjects lecturer
+      else
+        programmeid=[0] #default val for admin
+      end
+    end
+    programmeid
+  end
+  
   def lecturers_programme_subject
     mypost = Position.where(staff_id: userable_id).first
     myunit = mypost.unit

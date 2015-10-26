@@ -1,64 +1,37 @@
 class Exam::ExamresultsController < ApplicationController
-  filter_access_to :all
+  #filter_access_to :all
+  #filter_resource_access
+  filter_access_to :index, :index2, :new, :create, :show2, :attribute_check => false
+  filter_access_to :show, :edit, :update, :destroy, :attribute_check => true
+  
   before_action :set_examresult, only: [:show, :edit, :update, :destroy]
+  before_action :set_index_index2_data, only: [:index, :index2]
+  before_action :set_new_create_data, only: [:new, :create]
   before_action :set_edit_update_data, only: [:edit, :update] 
   
   # GET /examresults
   # GET /examresults.xml
   def index
-    position_exist = @current_user.userable.positions
-    posbasiks=["Pos Basik", "Diploma Lanjutan", "Pengkhususan"]
-    if position_exist && position_exist.count > 0
-      lecturer_programme = @current_user.userable.positions[0].unit
-      unless lecturer_programme.nil?
-        programme = Programme.where('name ILIKE (?) AND ancestry_depth=?',"%#{lecturer_programme}%",0)  if posbasiks.include?(lecturer_programme)==false
-      end
-      unless programme.nil? || programme.count==0
-        programme_id = programme.try(:first).try(:id)
-      else
-        tasks_main = @current_user.userable.positions[0].tasks_main
-        common_subjects=['Sains Tingkahlaku','Sains Perubatan Asas', 'Komunikasi & Sains Pengurusan', 'Anatomi & Fisiologi', 'Komuniti']
-        if common_subjects.include?(@lecturer_programme) 
-          #programme_id ='1'
-        elsif posbasiks.include?(lecturer_programme) && tasks_main!=nil
-          allposbasic_prog = Programme.where(course_type: posbasiks).pluck(:name)  #Onkologi, Perioperating, Kebidanan etc
-          for basicprog in allposbasic_prog
-            lecturer_basicprog_name = basicprog if tasks_main.include?(basicprog)==true
-          end
-          programme_id=Programme.where(name: lecturer_basicprog_name, ancestry_depth: 0).first.id
-        else
-          programme_id='0'
-        end
-      end
-      
-      @search = Examresult.search(params[:q])
-      @examresults = @search.result.search2(programme_id)
-      @examresults = @examresults.page(params[:page]||1)
-    end
-    
     respond_to do |format|
       if @examresults
         format.html # index.html.erb
         format.xml  { render :xml => @examresults }
       else
-        format.html { redirect_to(dashboard_url, :notice =>t('positions_required')+(t 'exam.title')+" - "+(t 'exam.examresult.title')+ ' Accessible to Programme / Pos basic lecturers only') }
+        format.html { redirect_to(dashboard_url, :notice =>t('positions_required')+(t 'exam.title')+" - "+(t 'exam.examresult.title'))}
+        #+ ' Accessible to Programme / Pos basic lecturers only') }
         format.xml  { render :xml => @examresults.errors, :status => :unprocessable_entity }
       end
     end
   end
   
   def index2
-    @position_exist = @current_user.userable.positions
-    if @position_exist     
-      @examresults = Examresult.all
-    end
     respond_to do |format|
-      if @position_exist
+      if @resultlines
         format.html # index.html.erb
-        format.xml  { render :xml => @examresults }
+        format.xml  { render :xml => @resultlines }
       else
-	 format.html {redirect_to "/home", :notice =>t('position_required')+t('menu.exam_slip')}
-         format.xml  { render :xml => @examresult.errors, :status => :unprocessable_entity }
+         format.html { redirect_to(dashboard_url, :notice =>t('positions_required')+t('menu.exam_slip'))}#+ ' Accessible to Programme / Pos basic lecturers only') }
+         format.xml  { render :xml => @resultlines.errors, :status => :unprocessable_entity }
       end
     end
   end
@@ -74,14 +47,14 @@ class Exam::ExamresultsController < ApplicationController
     end
   end
   
-#   def show2
-#     @resultline = Resultline.find(params[:id])
-# 
-#     respond_to do |format|
-#       format.html # show.html.erb
-#       format.xml  { render :xml => @examresult }
-#     end
-#   end
+   def show2
+     @resultline = Resultline.find(params[:id])
+ 
+     respond_to do |format|
+       format.html # show.html.erb
+       format.xml  { render :xml => @examresult }
+     end
+   end
 #   
 #   def examslip
 #     @resultline = Resultline.find(params[:id])
@@ -135,8 +108,8 @@ class Exam::ExamresultsController < ApplicationController
     @examresult = Examresult.new(params[:examresult])
     programmeid=params[:examresult][:programme_id]
     sem=params[:examresult][:semester]
-    exammonth=(params[:examresult][:examdts]).to_date.month
-    examyear=(params[:examresult][:examdts]).to_date.year
+    exammonth=(params[:examresult][:examdts]).to_date.month if !(params[:examresult][:examdts]).to_date.nil?
+    examyear=(params[:examresult][:examdts]).to_date.year if !(params[:examresult][:examdts]).to_date.nil?
     unless programmeid.blank? || programmeid.nil?
       unless sem.blank? || sem.nil?
         unless examyear.blank? || examyear.nil? || exammonth.blank? || exammonth.nil?
@@ -152,6 +125,7 @@ class Exam::ExamresultsController < ApplicationController
           flash[:notice]=t('exam.examresult.title2')+" "+t('actions.created')+" "+t('exam.examresult.update_resultlines')
           format.html {render :action => "edit"}
           format.xml  { head :ok }
+          flash.discard
            #format.html { redirect_to(exam_examresult_path(@examresult), :notice => t('exam.examresult.title2')+" "+t('created')) }
             #format.xml  { render :xml => @examresult, :status => :created, :location => @examresult }
         else
@@ -163,9 +137,12 @@ class Exam::ExamresultsController < ApplicationController
           flash[:notice]=t('exam.examresult.no_student')
           format.html { render :action => "new" }
           format.xml  { render :xml => @examresult.errors, :status => :unprocessable_entity }
+          flash.discard
         else
+          flash[:notice]=t('exam.examresult.all_compulsory')
           format.html { render :action => "new" }
           format.xml  { render :xml => @examresult.errors, :status => :unprocessable_entity }
+          flash.discard
         end
       end
     end
@@ -204,6 +181,73 @@ class Exam::ExamresultsController < ApplicationController
   # Use callbacks to share common setup or constraints between actions.
     def set_examresult
       @examresult = Examresult.find(params[:id])
+    end
+    
+    def set_index_index2_data
+      position_exist = @current_user.userable.positions
+      posbasiks=["Pos Basik", "Diploma Lanjutan", "Pengkhususan"]
+      if position_exist && position_exist.count > 0
+        lecturer_programme = @current_user.userable.positions[0].unit
+        unless lecturer_programme.nil?
+          programme = Programme.where('name ILIKE (?) AND ancestry_depth=?',"%#{lecturer_programme}%",0)  if posbasiks.include?(lecturer_programme)==false
+        end
+        unless programme.nil? || programme.count==0
+          programme_id = programme.try(:first).try(:id)
+        else
+          tasks_main = @current_user.userable.positions[0].tasks_main
+          common_subjects=['Sains Tingkahlaku','Sains Perubatan Asas', 'Komunikasi & Sains Pengurusan', 'Anatomi & Fisiologi', 'Komuniti']
+          if common_subjects.include?(@lecturer_programme) 
+            #programme_id ='1'
+          elsif posbasiks.include?(lecturer_programme) && tasks_main!=nil
+            allposbasic_prog = Programme.where(course_type: posbasiks).pluck(:name)  #Onkologi, Perioperating, Kebidanan etc
+            for basicprog in allposbasic_prog
+              lecturer_basicprog_name = basicprog if tasks_main.include?(basicprog)==true
+            end
+            programme_id=Programme.where(name: lecturer_basicprog_name, ancestry_depth: 0).first.id
+          else
+            programme_id='0'
+          end
+        end
+        #INDEX use
+        @search = Examresult.search(params[:q])
+        @examresults = @search.result.search2(programme_id)
+        @examresults = @examresults.page(params[:page]||1)
+        #INDEX2 use
+        @search2 = Resultline.search(params[:q])
+        @resultlines = @search2.result.search2(programme_id)
+        @resultlines = @resultlines.page(params[:page]||1)
+      end
+    end
+    
+    def set_new_create_data
+      position_exist = @current_user.userable.positions
+      posbasiks=["Pos Basik", "Diploma Lanjutan", "Pengkhususan"]
+      if position_exist && position_exist.count > 0
+        lecturer_programme = @current_user.userable.positions[0].unit
+        unless lecturer_programme.nil?
+          programme = Programme.where('name ILIKE (?) AND ancestry_depth=?',"%#{lecturer_programme}%",0)  if posbasiks.include?(lecturer_programme)==false
+        end
+        unless programme.nil? || programme.count==0
+          @programme_id = programme.try(:first).try(:id)
+          @programmes=Programme.where(id: @programme_id)
+        else
+          tasks_main = @current_user.userable.positions[0].tasks_main
+          common_subjects=['Sains Tingkahlaku','Sains Perubatan Asas', 'Komunikasi & Sains Pengurusan', 'Anatomi & Fisiologi', 'Komuniti']
+          if common_subjects.include?(@lecturer_programme) 
+            #programme_id ='1'
+          elsif posbasiks.include?(lecturer_programme) && tasks_main!=nil
+            allposbasic_prog = Programme.where(course_type: posbasiks).pluck(:name)  #Onkologi, Perioperating, Kebidanan etc
+            for basicprog in allposbasic_prog
+              lecturer_basicprog_name = basicprog if tasks_main.include?(basicprog)==true
+            end
+            @programme_id=Programme.where(name: lecturer_basicprog_name, ancestry_depth: 0).first.id
+            @programmes=Programme.where(id: programme_id)
+          else
+            @programme_id='0'
+            @programmes=Programme.roots.where(course_type: ['Diploma', 'Diploma Lanjutan', 'Pos Basik', 'Pengkhususan'])
+          end
+        end
+      end
     end
     
     def set_edit_update_data

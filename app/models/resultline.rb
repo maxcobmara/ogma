@@ -5,7 +5,18 @@ class Resultline < ActiveRecord::Base
                                                                 #total refers to sum of.. [(set_NG*credit hour)..of each subject]
   
   def render_status
-    (DropDown::STATUS.find_all{|disp, value| value == status}).map {|disp, value| disp}[0]
+    (DropDown::RESULT_STATUS.find_all{|disp, value| value == status}).map {|disp, value| disp}[0]
+  end
+  
+  def self.search2(search)
+    if search 
+      if search == '0'  #admin
+        @resultlines = Resultline.all.order(examresult_id: :asc)
+      else
+        examresult_ids=Examresult.where(programme_id: search).pluck(:id)
+        @resultlines = Resultline.where(examresult_id: examresult_ids)
+      end
+    end
   end
 
 end

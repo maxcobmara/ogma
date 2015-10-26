@@ -9,23 +9,23 @@
     %li.toga= link_to content_tag(:li, fa_icon("print", text: (t 'actions.print'))), "#", class: 'bogus'  
 
 = render 'shared/flashes'
-
-%table.table-striped.table-hover.ogma
-  %thead
-    %tr
-      %th= sort_link(@search, :programme_id, (t 'exam.examresult.programme_id'))
-      %th= sort_link(@search, :examdts, (t 'exam.examresult.examdts'))
-      %th= sort_link(@search, :examdte, (t 'exam.examresult.examdte'))
-      %th Semester
-
-  %tbody
-    = render "search_bar"
-    - @examresults.each do |examresult|
+.row
+  %table.table-striped.table-hover.ogma
+    %thead
       %tr
-        %td= link_to examresult.programmestudent.programme_list, exam_examresult_path(examresult)
-        %td=h examresult.examdts
-        %td=h examresult.examdte
-        %td=h examresult.render_semester
+        %th= sort_link(@search, :programme_id, (t 'exam.examresult.programme_id'))
+        %th= sort_link(@search, :examdts, (t 'exam.examresult.examdts'))
+        %th= sort_link(@search, :examdte, (t 'exam.examresult.examdte'))
+        %th Semester
+
+    %tbody
+      = render "search_bar"
+      - @examresults.each do |examresult|
+        %tr
+          %td= link_to examresult.programmestudent.programme_list, exam_examresult_path(examresult)
+          %td=h examresult.examdts
+          %td=h examresult.examdte
+          %td=h examresult.render_semester
         
   .right{style:"padding:0 30px; margin:0;"}= paginate @examresults, :theme => 'twitter-bootstrap-3'
 

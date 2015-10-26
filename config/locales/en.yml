@@ -2368,6 +2368,7 @@ en:
       resit: Resit
       finalscore: Total Marks
       grading_id: Grade
+      grade_value: Grade Value
       new_multiple: New Multiple Grades
       existing_subject: All Subjects
       formative: Formative
@@ -2408,6 +2409,13 @@ en:
       details2: Examination Result
       no_student: "No students have taken this programme for selected semester and examination dates."
       record_must_unique: ", Programme and Examination Date has already been taken. Only 1 record permitted for each examination result. "
+      all_compulsory: "All fields are compulsory."
+      student: Student
+      exam_date: Examination Date
+      course_code: Course Code
+      exam_centre: Exam Centre
+      passed: Passed
+      failed: Failed
     
     evaluate_course:
       title: "Course Evaluation (Lecturer)"
