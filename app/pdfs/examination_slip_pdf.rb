@@ -1,93 +1,112 @@
 class Examination_slipPdf < Prawn::Document
-  def initialize(student, view, programme_id)
+  def initialize(resultline, view)
     super({top_margin: 20, left_margin:100, page_size: 'A4', page_layout: :portrait })
-    @student = student
+    @resultline = resultline
     @view = view
-    @programme_id = programme_id
     font "Times-Roman"
     image "#{Rails.root}/app/assets/images/logo_kerajaan.png", :position => :center, :scale => 0.5
     move_down 10
-    text "JAWATANKUASA PEPERIKSAAN", :align => :center, :size => 12, :style => :bold
-    text "KURSUS #{ }", :align => :center, :size => 12, :style => :bold
-    text "LEMBAGA PENDIDIKAN", :align => :center, :size => 12, :style => :bold
-    text "KEMENTERIAN KESIHATAN MALAYSIA", :align => :center, :size => 12, :style => :bold
+    text "JAWATANKUASA PEPERIKSAAN", :align => :center, :size => 11, :style => :bold
+    text "KURSUS #{@resultline.examresult.programmestudent.programme_list.upcase}", :align => :center, :size => 11, :style => :bold
+    text "LEMBAGA PENDIDIKAN", :align => :center, :size => 11, :style => :bold
+    text "KEMENTERIAN KESIHATAN MALAYSIA", :align => :center, :size => 11, :style => :bold
     move_down 10
-    text "SLIP KEPUTUSAN TERPERINCI MENGIKUT KOD KURSUS", :align => :center, :size => 12, :style => :bold
+    text "SLIP KEPUTUSAN TERPERINCI MENGIKUT KOD KURSUS", :align => :center, :size => 11, :style => :bold
     move_down 20
-    text " PUSAT PEPERIKSAAN : KOLEJ KEJURURAWATAN JOHOR BAHRU", :align => :left, :size => 12
-    text " KEPUTUSAN PEPERIKSAAN AKHIR TAHUN #{ }", :align => :left, :size => 12
-    text " TAHUN PENGAMBILAN : #{ }", :align => :left, :size => 12
-    text " TARIKH PEPERIKSAAN : #{ }", :align => :left, :size => 12
+    text " PUSAT PEPERIKSAAN : KOLEJ SAINS KESIHATAN BERSEKUTU JOHOR BAHRU", :align => :left, :size => 10
+    text " KEPUTUSAN PEPERIKSAAN AKHIR TAHUN : #{(@resultline.examresult.render_semester).upcase}", :align => :left, :size => 10
+    text " TAHUN PENGAMBILAN : #{@view.l(@resultline.student.intake)}", :align => :left, :size => 10
+    text " TARIKH PEPERIKSAAN : #{@view.l(@resultline.examresult.examdts)} - #{@view.l(@resultline.examresult.examdte)}", :align => :left, :size => 10
     move_down 10
-    pelatih
-    keputusan
-    #result
-    jumlah
-   
-  end
-  
-  def pelatih 
-    text " MAKLUMAT BIODATA PELATIH", :align => :left, :size => 12, :style => :bold
-    data = [["Nama",": #{ }"],
-             ["MyKad No", ": #{ }"],
-             ["Matrik No",": #{ } "]]
-             
-      table(data, :column_widths => [100 , 300], :cell_style => { :size => 10}) do
-      self.width = 400
-    end
-  end
-  
-  
-  def keputusan
+    trainee
     move_down 15
-     text "KEPUTUSAN PEPERIKSAAN AKHIR #{ }", :align => :left, :size => 12, :style => :bold
-     
-    data = [["Bil", "Kod Kursus ", "Gred ", "Nilai Gred ", "Catatan "]]
-    
-    table(data, :column_widths => [40, 170, 50 , 60, 80], :cell_style => { :size => 10}) do
-     self.width = 400
+    result_header
+    result
+    move_down 15
+    summary
+    move_down 25
+    signatory
+  end
+  
+  def trainee
+    text " MAKLUMAT BIODATA PELATIH", :align => :left, :size => 10, :style => :bold
+    data = [["Nama",": #{@resultline.student.name }"],
+             ["MyKad No", ": #{@resultline.student.icno}"],
+             ["Matrik No",": #{@resultline.student.matrixno} "]]
+    table(data, :column_widths => [120 , 300], :cell_style => { :size => 10}) do
+      self.width = 420
+    end
+  end
+  
+  def result_header
+    text "KEPUTUSAN PEPERIKSAAN AKHIR #{(@resultline.examresult.render_semester).upcase}", :align => :left, :size => 10, :style => :bold
+    data = [["<b>Bil</b> ", "<b>Kod Kursus</b> ", "<b>Gred</b> ", "<b>Nilai Gred</b> ", "<b>Catatan</b> "]]
+    table(data, :column_widths => [25, 235, 50 , 60, 50], :cell_style => { :size => 10, :inline_format => :true}) do
+      self.width = 420
     end
   end
     
-    def result
-      table(data2, :column_widths => [40, 170, 50 , 60, 80], :cell_style => { :size => 10}) do
-       self.width = 540
+  def result
+    table(data2, :column_widths => [25, 235, 50 , 60, 50], :cell_style => { :size => 10}) do
+      self.width = 420
+      columns(0).align =:center
+    end
+  end
+    
+  def data2
+    programme_id = @resultline.examresult.programmestudent.id
+    semester = @resultline.examresult.semester
+    subjects = Examresult.get_subjects(programme_id ,semester)
+    @grading=[]
+    @finale=[]
+    @remark=[]
+    for subject in subjects
+      student_grade = Grade.where('student_id=? and subject_id=?',@resultline.student.id,subject.id).first
+      unless student_grade.nil? || student_grade.blank?
+        grading = student_grade.set_gred 
+      else
+        grading = ""
+      end
+      @grading << grading
+      student_finale = Grade.where('student_id=? and subject_id=?',@resultline.student.id,subject.id).first
+      unless student_finale.nil? || student_finale.blank? 
+        @finale << @view.sprintf('%.2f', student_finale.set_NG.to_f)
+      else
+        @finale << "0.00"
+      end
+      if grading=="A" || @grading=="A-" ||@grading=="B+"||@grading=="B"||@grading=="B-"||@grading=="C+"||@grading=="C"
+        @remark << I18n.t('exam.examresult.passed')
+      else 
+        @remark << I18n.t('exam.examresult.failed')
       end
     end
-    
-    def data2
-      @programme_id = @resultline.examresult.programmestudent.id
-      @semester = @resultline.examresult.semester
-      @subjects = Examresult.get_subjects(@programme_id ,@semester)
     counter = counter || 0
-      @subjects.map do |subjects|
-      ["#{counter += 1}", " ", " ", " ", " "]
-      #end
+    subjects.map do |subject|
+        ["#{counter += 1}", subject.subject_list, @grading[counter-1], @finale[counter-1], @remark[counter-1]]
     end  
   end
   
-  def jumlah
-    move_down 10
+  def summary
+    chairman_notes= "Pengerusi dan Ahli-ahli Jawatankuasa Peperiksaan Kursus #{  }yang bermesyuarat pada ....................... telah mengesahkan keputusan Peperiksaan Akhir Tahun #{@resultline.examresult.render_semester} yang telah diadakan pada #{@view.l(@resultline.examresult.examdts)} - #{@view.l(@resultline.examresult.examdte)} seperti di atas."
     
-    data = [["tahun #{ }"," JUMLAH"],
-             ["Jumlah NGK (Nilai Gred Kumulatif)", " #{ }"],
-             ["Purata Nilai Gred Semester (PNGS)"," #{ } "],
-           ["Purata Nilai Gred Kumulatif (PNGK)", " #{ }"],
-           ["STATUS", " #{ }"] ]
-             
-      table(data, :column_widths => [300 , 100], :cell_style => { :size => 10}) do
-      self.width = 400
+    data = [["<b>#{(@resultline.examresult.render_semester).upcase}</b>","<b> JUMLAH</b>"],
+             ["Jumlah NGK (Nilai Gred Kumulatif)", @resultline.total.nil? ? "" : @view.number_with_precision(@resultline.total, :precision => 2)],
+             ["Purata Nilai Gred Semester (PNGS)", @resultline.pngs17.nil? ? "" : @view.number_with_precision(@resultline.pngs17, :precision => 2) ],
+           ["Purata Nilai Gred Kumulatif (PNGK)", @resultline.pngk.nil? ? "" : @view.number_with_precision(@resultline.pngk, :precision => 2) ],
+           ["<b>STATUS</b>", @resultline.render_status] ]
+    data << [{content: chairman_notes, colspan: 2}]
+      table(data, :column_widths => [300 , 120], :cell_style => { :size => 10, :inline_format => :true}) do
+      self.width = 420
+      columns(1).align =:center
+      rows(5).borders=[:top]
+      rows(5).align=:justify
     end
-    move_down 10
-    text "Pengerusi dan Ahli-ahli Jawatankuasa Peperiksaan Kursus #{  }yang bermesyuarat pada ........ telah mengesahkan keputusan Peperiksaan Akhir Tahun #{  } yang telah diadakan pada #{  } - #{ } seperti di atas.", :align => :left, :size => 11
-   
-   move_down 25
-   text "#{'.' * 60 }", :align => :center, :size => 10
-   text "(HJ.MOHD ZULKIFLI BIN MOHD TAHIR)", :align => :center, :size => 11, :style => :bold
-   text "Pengarah", :align => :center, :size => 11
-   text "Kolej Sains Kesihatan Bersekutu Johor Bahru", :align => :center, :size => 11
-   
+  end 
+
+  def signatory
+    text "#{'.' * 60 }", :align => :center, :size => 10
+    text "(#{Position.roots.first.staff.try(:title).try(:name)} #{Position.roots.first.staff.name})", :align => :center, :size => 11, :style => :bold
+    text "#{Position.roots.first.name}", :align => :center, :size => 11
+    text "Kolej Sains Kesihatan Bersekutu Johor Bahru", :align => :center, :size => 11
   end
-  
-  
 end

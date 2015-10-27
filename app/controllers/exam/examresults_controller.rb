@@ -1,7 +1,7 @@
 class Exam::ExamresultsController < ApplicationController
   #filter_access_to :all
   #filter_resource_access
-  filter_access_to :index, :index2, :new, :create, :show2, :attribute_check => false
+  filter_access_to :index, :index2, :new, :create, :show2, :examination_slip, :attribute_check => false
   filter_access_to :show, :edit, :update, :destroy, :attribute_check => true
   
   before_action :set_examresult, only: [:show, :edit, :update, :destroy]
@@ -18,7 +18,6 @@ class Exam::ExamresultsController < ApplicationController
         format.xml  { render :xml => @examresults }
       else
         format.html { redirect_to(dashboard_url, :notice =>t('positions_required')+(t 'exam.title')+" - "+(t 'exam.examresult.title'))}
-        #+ ' Accessible to Programme / Pos basic lecturers only') }
         format.xml  { render :xml => @examresults.errors, :status => :unprocessable_entity }
       end
     end
@@ -49,35 +48,24 @@ class Exam::ExamresultsController < ApplicationController
   
    def show2
      @resultline = Resultline.find(params[:id])
- 
+     @common_subjects=['Sains Tingkahlaku','Sains Perubatan Asas', 'Komunikasi & Sains Pengurusan', 'Anatomi & Fisiologi', 'Komuniti']
      respond_to do |format|
        format.html # show.html.erb
        format.xml  { render :xml => @examresult }
      end
    end
-#   
-#   def examslip
-#     @resultline = Resultline.find(params[:id])
-#     render :layout => 'report'
-#   end
-#   
-#   def show_stat
-#     @examresult = Examresult.find(params[:id])
-# 
-#     respond_to do |format|
-#       format.html # show.html.erb
-#       format.xml  { render :xml => @examresult }
-#     end
-#   end
-#   
-#   def show_summary
-#     @examresult = Examresult.find(params[:id])
-# 
-#     respond_to do |format|
-#       format.html # show.html.erb
-#       format.xml  { render :xml => @examresult }
-#     end
-#   end
+
+  def examination_slip
+    @resultline = Resultline.find(params[:id])
+    respond_to do |format|
+       format.pdf do
+         pdf = Examination_slipPdf.new(@resultline, view_context)
+         send_data pdf.render, filename: "examination_slip-{Date.today}",
+                               type: "application/pdf",
+                               disposition: "inline"
+       end
+     end
+  end
 
   # GET /examresults/new
   # GET /examresults/new.xml
@@ -88,19 +76,11 @@ class Exam::ExamresultsController < ApplicationController
       format.xml  { render :xml => @examresult }
     end
   end
-  
-#   def new_analysis
-#   end
 
   # GET /examresults/1/edit
   def edit
     @examresult = Examresult.find(params[:id])
-    @unique_students = @students
   end
-  
-#   def edit_stat
-#     @examresult = Examresult.find(params[:id])
-#   end
 
   # POST /examresults
   # POST /examresults.xml
@@ -186,6 +166,7 @@ class Exam::ExamresultsController < ApplicationController
     def set_index_index2_data
       position_exist = @current_user.userable.positions
       posbasiks=["Pos Basik", "Diploma Lanjutan", "Pengkhususan"]
+      @common_subjects=['Sains Tingkahlaku','Sains Perubatan Asas', 'Komunikasi & Sains Pengurusan', 'Anatomi & Fisiologi', 'Komuniti']
       if position_exist && position_exist.count > 0
         lecturer_programme = @current_user.userable.positions[0].unit
         unless lecturer_programme.nil?
@@ -195,9 +176,8 @@ class Exam::ExamresultsController < ApplicationController
           programme_id = programme.try(:first).try(:id)
         else
           tasks_main = @current_user.userable.positions[0].tasks_main
-          common_subjects=['Sains Tingkahlaku','Sains Perubatan Asas', 'Komunikasi & Sains Pengurusan', 'Anatomi & Fisiologi', 'Komuniti']
-          if common_subjects.include?(@lecturer_programme) 
-            #programme_id ='1'
+          if @common_subjects.include?(lecturer_programme) 
+            programme_id ='1'
           elsif posbasiks.include?(lecturer_programme) && tasks_main!=nil
             allposbasic_prog = Programme.where(course_type: posbasiks).pluck(:name)  #Onkologi, Perioperating, Kebidanan etc
             for basicprog in allposbasic_prog
@@ -205,7 +185,7 @@ class Exam::ExamresultsController < ApplicationController
             end
             programme_id=Programme.where(name: lecturer_basicprog_name, ancestry_depth: 0).first.id
           else
-            programme_id='0'
+            programme_id='0'# if @current_user.roles.pluck(:authname).include?("administration")
           end
         end
         #INDEX use
@@ -216,12 +196,14 @@ class Exam::ExamresultsController < ApplicationController
         @search2 = Resultline.search(params[:q])
         @resultlines = @search2.result.search2(programme_id)
         @resultlines = @resultlines.page(params[:page]||1)
+	@progid=programme_id
       end
     end
     
     def set_new_create_data
       position_exist = @current_user.userable.positions
       posbasiks=["Pos Basik", "Diploma Lanjutan", "Pengkhususan"]
+      common_subjects=['Sains Tingkahlaku','Sains Perubatan Asas', 'Komunikasi & Sains Pengurusan', 'Anatomi & Fisiologi', 'Komuniti']
       if position_exist && position_exist.count > 0
         lecturer_programme = @current_user.userable.positions[0].unit
         unless lecturer_programme.nil?
@@ -232,7 +214,6 @@ class Exam::ExamresultsController < ApplicationController
           @programmes=Programme.where(id: @programme_id)
         else
           tasks_main = @current_user.userable.positions[0].tasks_main
-          common_subjects=['Sains Tingkahlaku','Sains Perubatan Asas', 'Komunikasi & Sains Pengurusan', 'Anatomi & Fisiologi', 'Komuniti']
           if common_subjects.include?(@lecturer_programme) 
             #programme_id ='1'
           elsif posbasiks.include?(lecturer_programme) && tasks_main!=nil
@@ -268,7 +249,7 @@ class Exam::ExamresultsController < ApplicationController
     
     # Never trust parameters from the scary internet, only allow the white list through.
     def examresult_params
-      params.require(:examresult).permit(:programme_id, :total, :pngs17, :status, :remark, :semester, :examdts, :examdte, resultlines_attributes: [:id, :_destroy, :total, :pngs17, :status, :remark, :student_id, :pngk])
+      params.require(:examresult).permit(:programme_id, :total, :pngs17, :status, :remark, :semester, :examdts, :examdte, resultlines_attributes: [:id, :_destroy, :total, :pngs17, :status, :remark, :student_id, :pngk, :remark])
     end
   
 end

@@ -64,9 +64,9 @@
     %head
       %tr
         %th=h @resultline.examresult.render_semester
-        %th=t('examresult.total')
+        %th=t('exam.examresult.total')
       %tr
-        %td=(t 'examresult.total')+" NGK"
+        %td=(t 'exam.examresult.total')+" NGK"
         %td=h @resultline.total.nil? ? "" : sprintf('%.2f',@resultline.total)
       %tr
         %td PNGS

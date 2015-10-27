@@ -12,6 +12,17 @@ class Resultline < ActiveRecord::Base
     if search 
       if search == '0'  #admin
         @resultlines = Resultline.all.order(examresult_id: :asc)
+      elsif search == '1' #common subject lecturer
+        @result_with_common_subjects=[]
+        Examresult.all.each do |result|
+        subject_ids=Examresult.get_subjects(result.programme_id, result.semester).map(&:id)
+          common_subject_ids=Programme.where(course_type: 'Commonsubject').pluck(:id)
+          common_exist=common_subject_ids & subject_ids
+          if common_exist.count > 0
+           @result_with_common_subjects << result.id
+          end
+        end
+        @resultlines = Resultline.where(examresult_id: @result_with_common_subjects)
       else
         examresult_ids=Examresult.where(programme_id: search).pluck(:id)
         @resultlines = Resultline.where(examresult_id: examresult_ids)

@@ -9,7 +9,9 @@
         %th{rowspan: 2}=t('student.students.matrixno')
         %th{rowspan: 2}=t('student.icno')
         - @subjects = Examresult.get_subjects(@examresult.programme_id,@examresult.semester)
+        - @subject_credits=[]
         - for subject in @subjects
+          - @subject_credits << subject.credits
           %th.centre{colspan: 2}=h subject.code
         %th.centre{rowspan: 2}= t 'examresult.total' 
         %th.centre{rowspan: 2} PNGS17
@@ -21,32 +23,52 @@
           %th=t('grade.grade')
           %th NG
     %body
-      - @nos=0
-      = f.fields_for :resultlines do |builder|
-        - @nos+=1
-        = render 'resultline_fields', {:f => builder, :nos => @nos}
-      - if @students.count > 0 && @examresult.resultlines.count==0 && @unique_students
+      /- @nos=0
+      /= f.fields_for :resultlines do |builder|
+      /  - @nos+=1
+      /  = render 'resultline_fields', {:f => builder, :nos => @nos}
+      /- if @students.count > 0 && @examresult.resultlines.count==0 && @examresult.errors.count==0
+      
+      /BELOW - will display fields successfully
+      - if @students.count > 0 
         - 0.upto(@students.count-1).each do |no|
           %tr
             %td=no+1
+            /maintan entered values, although errors arise
+            - if @examresult.resultlines
+              /.count > 0
+              - @value_status = @examresult.resultlines[no].status if @examresult.resultlines[no]
+              - @value_remark = @examresult.resultlines[no].remark if @examresult.resultlines[no]
+              - @value_id = @examresult.resultlines[no].id if @examresult.resultlines[no]
+              - @value_pngk = @examresult.resultlines[no].pngk if @examresult.resultlines[no]
+            
+            = hidden_field "examresult[resultlines_attributes][#{no}]", :id, :size =>8, :value=>@value_id
             = hidden_field "examresult[resultlines_attributes][#{no}]", :student_id, :size =>8, :value=>@students[no].id
             %td=@students[no].name
             %td=@students[no].matrixno
             %td=@students[no].icno
-            - for subject in @subjects
-              - @student_grade = Grade.where('student_id=? and subject_id=?', @students[no].id,subject.id).first
-              - @student_finale = Grade.where('student_id=? and subject_id=?', @students[no].id,subject.id).first
-              %td.center
-                - unless @student_grade.nil? || @student_grade.blank?
-                  =@student_grade.set_gred
-              %td.center
-                - unless @student_finale.nil? || @student_finale.blank? 
-                  =number_with_precision(@student_finale.set_NG.to_f,:precision=>2)
-                - else 
-                  = number_with_precision(0.00,:precision=>2) 
-                  
-            %td= text_field "examresult[resultlines_attributes][#{no}]", :total, :size =>8
-            %td= text_field "examresult[resultlines_attributes][#{no}]", :pngs17, :size =>8
-            %td= text_field "examresult[resultlines_attributes][#{no}]", :pngk, :size =>8
-            %td= select_tag "examresult[resultlines_attributes][#{no}][status]", options_for_select(DropDown::RESULT_STATUS) 
-            %td= text_field "examresult[resultlines_attributes][#{no}]", :remark, :size =>8
+            
+            - unless @subjects.nil? || @subjects.blank? 
+              - @finaletotal=111
+              - @pngs17=222
+              - @finale_all=[]
+              - for subject in @subjects
+                - @grade_student=Grade.where(subject_id: subject.id).where(student_id: @students[no].id)
+                - if @grade_student.count > 0
+                  - @gradeit=Grade.where('student_id=? and subject_id=?', @students[no].id,subject.id).first.set_gred 
+                  - @finale=Grade.where('student_id=? and subject_id=?', @students[no].id,subject.id).first.set_NG.to_f 
+                  - @finale_all << @finale
+                  %td= @gradeit 
+                  %td= @finale 
+                - else
+                  - @finale_all << 0.00
+                  %td &nbsp;
+                  %td 0.00
+              - @finaletotal=Examresult.total(@finale_all,@subject_credits) 
+              - @pngs17=number_with_precision(Examresult.pngs17(@finaletotal, @subject_credits), :precision => 2) 
+
+            %td= text_field "examresult[resultlines_attributes][#{no}]", :total, :size =>8, :value => @finaletotal
+            %td= text_field "examresult[resultlines_attributes][#{no}]", :pngs17, :size =>8, :value => @pngs17
+            %td= text_field "examresult[resultlines_attributes][#{no}]", :pngk, :size =>8, :value => @value_pngk
+            %td= select_tag "examresult[resultlines_attributes][#{no}][status]", options_for_select([[t('select'), '0']]+DropDown::RESULT_STATUS, @value_status) 
+            %td= text_field "examresult[resultlines_attributes][#{no}]", :remark, :size =>8, :value => @value_remark

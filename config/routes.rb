@@ -403,6 +403,7 @@ Ogma::Application.routes.draw do
         get :index2
         post :index2
         get :show2
+        get :examination_slip
       end
     end
     resources :evaluate_courses do

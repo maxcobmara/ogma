@@ -10,6 +10,17 @@ class Examresult < ActiveRecord::Base
     if search 
       if search == '0'  #admin
         @examresults = Examresult.all.order(examdts: :desc)
+      elsif search == '1' #common subject lecturer
+        @result_with_common_subjects=[]
+        Examresult.all.each do |result|
+        subject_ids=Examresult.get_subjects(result.programme_id, result.semester).map(&:id)
+          common_subject_ids=Programme.where(course_type: 'Commonsubject').pluck(:id)
+          common_exist=common_subject_ids & subject_ids
+          if common_exist.count > 0
+           @result_with_common_subjects << result.id
+          end
+        end
+        @examresults = Examresult.where(id: @result_with_common_subjects)
       else
         @examresults = Examresult.where(programme_id: search)
       end
@@ -153,6 +164,24 @@ class Examresult < ActiveRecord::Base
       end
     end
     @all_students
+  end
+  
+  def self.total(finale_all,subject_credits)
+    @finaletotal = 0.00
+    0.upto(finale_all.count-1) do |index|
+      @finaletotal = @finaletotal+(finale_all[index]*subject_credits[index])
+    end
+    @finaletotal
+  end
+  
+  def self.pngs17(finale_total,subject_credits)
+    #finale_total/17
+    #total_credit = Examresult.get_subjects(programme_id,semester).map(&:credits).inject{|sum,x|sum+x}
+    finale_total/(subject_credits.inject{|sum,x|sum+x})
+    
+    #(subject_credits.inject{|sum,x|sum+x}) 
+    #NGS [=finale_total]-> Nilai Gred Semester(JUM-Nilai gred(tiap subjek) * kredit(tiap subjek))
+    #PNGS -> Purata Nilai Gred Semester(NGS/jum kredit); [jum kredit=(subject_credits.inject{|sum,x|sum+x})]
   end
   
 end

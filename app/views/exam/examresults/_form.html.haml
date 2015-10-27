@@ -3,11 +3,13 @@
   .col-md-offset-1
     / Nav tabs
     %ul.nav.nav-tabs
-      %li.active= link_to ((t 'exam.examresult.details2')),"#examresult_details", "data-toggle" => "tab"
+      %li.active= link_to ((t 'exam.examresult.details')),"#exam_details", "data-toggle" => "tab"
+      %li= link_to ((t 'exam.examresult.result_details')),"#examresult_details", "data-toggle" => "tab"
 
     / display 
     .tab-content{style:"padding-top:1em"}
-      .col-md-8.col-md-offset-1
+      /.col-md-8.col-md-offset-1
+      #exam_details
         - if @examresult.new_record?
           = render :partial => 'show_main_edit', :locals => {:f => f}
         - else
