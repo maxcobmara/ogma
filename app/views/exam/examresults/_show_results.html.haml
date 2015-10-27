@@ -27,17 +27,29 @@
           %td.left=h examresultline.student.name 
           %td.left=h examresultline.student.matrixno
           %td.left=h examresultline.student.icno
+          /- for subject in @subjects
+          /  - @student_grade = Grade.where('student_id=? and subject_id=?',examresultline.student.id,subject.id).first
+          /  - @student_finale = Grade.where('student_id=? and subject_id=?',examresultline.student.id,subject.id).first
+          /  %td.center
+          /    - unless @student_grade.nil? || @student_grade.blank?
+          /      =@student_grade.set_gred
+          /  %td.center
+          /    - unless @student_finale.nil? || @student_finale.blank? 
+          /      =number_with_precision(@student_finale.set_NG.to_f,:precision=>2)
+          /    - else 
+          /      = number_with_precision(0.00,:precision=>2) 
+          //
           - for subject in @subjects
-            - @student_grade = Grade.where('student_id=? and subject_id=?',examresultline.student.id,subject.id).first
-            - @student_finale = Grade.where('student_id=? and subject_id=?',examresultline.student.id,subject.id).first
-            %td.center
-              - unless @student_grade.nil? || @student_grade.blank?
-                =@student_grade.set_gred
-            %td.center
-              - unless @student_finale.nil? || @student_finale.blank? 
-                =number_with_precision(@student_finale.set_NG.to_f,:precision=>2)
-              - else 
-                = number_with_precision(0.00,:precision=>2) 
+            - @grade_student=Grade.where(subject_id: subject.id).where(student_id: examresultline.student_id)
+            - if @grade_student.count > 0
+              - @gradeit=Grade.where('student_id=? and subject_id=?', examresultline.student_id,subject.id).first.set_gred 
+              - @finale=Grade.where('student_id=? and subject_id=?', examresultline.student_id,subject.id).first.set_NG.to_f 
+              %td.center= @gradeit 
+              %td.center= @finale 
+            - else
+              %td.center &nbsp;
+              %td.center 0.00
+          //
           %td=h number_with_precision(examresultline.total,:precision=>2)
           %td=h number_with_precision(examresultline.pngs17,:precision=>2)
           %td=h number_with_precision(examresultline.pngk, :precision=>2)
