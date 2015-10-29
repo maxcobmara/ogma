@@ -42,10 +42,8 @@ class Examination_slipPdf < Prawn::Document
     move_down 15
     summary
     move_down 25
-    if @resultline.examresult.programme_id==@cara_kerja
-    else
-      signatory
-    end
+    certificate     #replacing clause ('chairman_notes') with authority body.
+    #- signatory - remove previous format for Kejururawatan (signature line, staff name, position & college name) for all programmes
   end
   
   def trainee
@@ -133,38 +131,50 @@ class Examination_slipPdf < Prawn::Document
   end
   
   def summary
-    chairman_notes= "Pengerusi dan Ahli-ahli Jawatankuasa Peperiksaan Kursus #{  }yang bermesyuarat pada ....................... telah mengesahkan keputusan Peperiksaan Akhir Tahun #{@resultline.examresult.render_semester} yang telah diadakan pada #{@view.l(@resultline.examresult.examdts)} - #{@view.l(@resultline.examresult.examdte)} seperti di atas."
+    #chairman_notes= "Pengerusi dan Ahli-ahli Jawatankuasa Peperiksaan Kursus #{  }yang bermesyuarat pada ....................... telah mengesahkan keputusan Peperiksaan Akhir Tahun #{@resultline.examresult.render_semester} yang telah diadakan pada #{@view.l(@resultline.examresult.examdts)} - #{@view.l(@resultline.examresult.examdte)} seperti di atas."
     if @resultline.examresult.programme_id==@cara_kerja
         data = [["Purata Nilai Kredit Semester (PNGS 17)", ": #{@resultline.pngs17.nil? ? "0.00" : @view.number_with_precision(@resultline.pngs17, :precision => 2)}"],
                   ["Purata Nilai Gred Keseluruhan (PNGK 17)", ": #{@resultline.pngk.nil? ? "0.00" : @view.number_with_precision(@resultline.pngk, :precision => 2)}"],
                   ["Status", ": #{@resultline.render_status}"], ["",""], 
-                  [{content: "Ini adalah cetakan komputer, tandatangan tidak diperlukan", colspan: 2}], 
+                  [{content: "Ini adalah cetakan komputer, tandatangan tidak diperlukan. <br><b><i>Tidak sah untuk kegunaan rasmi.</i></b>", colspan: 2}], 
                   [{content: "Tarikh: #{@view.l(Date.today)}", colspan: 2}]]
         table(data, :column_widths => [300 , 120], :cell_style => { :size => 10, :inline_format => :true}) do
             self.width = 420
             columns(0..1).borders = []
-            rows(0..3).borders = []
+            rows(0..4).borders = []
         end
     else
         data = [["<b>#{(@resultline.examresult.render_semester).upcase}</b>","<b> JUMLAH</b>"],
                  ["Jumlah NGK (Nilai Gred Kumulatif)", @resultline.total.nil? ? "" : @view.number_with_precision(@resultline.total, :precision => 2)],
                  ["Purata Nilai Gred Semester (PNGS)", @resultline.pngs17.nil? ? "" : @view.number_with_precision(@resultline.pngs17, :precision => 2)],
                  ["Purata Nilai Gred Kumulatif (PNGK)", @resultline.pngk.nil? ? "" : @view.number_with_precision(@resultline.pngk, :precision => 2) ],
-                 ["<b>STATUS</b>", @resultline.render_status] ]
-                 data << [{content: chairman_notes, colspan: 2}]
+                 ["<b>STATUS</b>", @resultline.render_status],
+                 [{content: "Ini adalah cetakan komputer, tandatangan tidak diperlukan. <br><b><i>Tidak sah untuk kegunaan rasmi.</i></b>", colspan: 2}], 
+                  [{content: "Tarikh: #{@view.l(Date.today)}", colspan: 2}]]
+                 #data << [{content: chairman_notes, colspan: 2}]
          table(data, :column_widths => [300 , 120], :cell_style => { :size => 10, :inline_format => :true}) do
               self.width = 420
               columns(1).align =:center
               rows(5).borders=[:top]
+	      rows(6).borders=[]
               rows(5).align=:justify
           end
     end
   end 
 
-  def signatory
-    text "#{'.' * 60 }", :align => :center, :size => 10
-    text "(#{Position.roots.first.staff.try(:title).try(:name)} #{Position.roots.first.staff.name})", :align => :center, :size => 11, :style => :bold
-    text "#{Position.roots.first.name}", :align => :center, :size => 11
-    text "Kolej Sains Kesihatan Bersekutu Johor Bahru", :align => :center, :size => 11
+#   def signatory
+#     text "#{'.' * 60 }", :align => :center, :size => 10
+#     text "(#{Position.roots.first.staff.try(:title).try(:name)} #{Position.roots.first.staff.name})", :align => :center, :size => 11, :style => :bold
+#     text "#{Position.roots.first.name}", :align => :center, :size => 11
+#     text "Kolej Sains Kesihatan Bersekutu Johor Bahru", :align => :center, :size => 11
+#   end
+  
+  def certificate
+    indent(5) do
+      text "Unit Pengurusan Peperiksaan & Pensijilan,",  :size => 10
+      text "Bahagian Pengurusan Latihan,",  :size => 10 
+      text "Kementerian Kesihatan Malaysia.",  :size => 10
+    end
   end
+  
 end
