@@ -8,6 +8,10 @@ class Resultline < ActiveRecord::Base
     (DropDown::RESULT_STATUS.find_all{|disp, value| value == status}).map {|disp, value| disp}[0]
   end
   
+  def render_status_contra
+    (DropDown::RESULT_STATUS_CONTRA.find_all{|disp, value| value == status}).map {|disp, value| disp}[0]
+  end
+  
   def self.search2(search)
     if search 
       if search == '0'  #admin

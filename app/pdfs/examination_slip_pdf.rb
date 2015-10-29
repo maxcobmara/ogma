@@ -144,11 +144,18 @@ class Examination_slipPdf < Prawn::Document
             rows(0..4).borders = []
         end
     else
+        fisioterapi=Programme.where(course_type: 'Diploma').where('name ILIKE (?)', 'Fisioterapi').first.id
+        perubatan=Programme.where(course_type: 'Diploma').where('name ILIKE (?)', 'Penolong Pegawai Perubatan').first.id
+        if [fisioterapi, perubatan].include?(@resultline.examresult.programme_id)
+          @resultline.render_status_contra
+        else
+          @resultline.render_status
+        end
         data = [["<b>#{(@resultline.examresult.render_semester).upcase}</b>","<b> JUMLAH</b>"],
                  ["Jumlah NGK (Nilai Gred Kumulatif)", @resultline.total.nil? ? "" : @view.number_with_precision(@resultline.total, :precision => 2)],
                  ["Purata Nilai Gred Semester (PNGS)", @resultline.pngs17.nil? ? "" : @view.number_with_precision(@resultline.pngs17, :precision => 2)],
                  ["Purata Nilai Gred Kumulatif (PNGK)", @resultline.pngk.nil? ? "" : @view.number_with_precision(@resultline.pngk, :precision => 2) ],
-                 ["<b>STATUS</b>", @resultline.render_status],
+                 ["<b>STATUS</b>", render_status_view],
                  [{content: "Ini adalah cetakan komputer, tandatangan tidak diperlukan. <br><b><i>Tidak sah untuk kegunaan rasmi.</i></b>", colspan: 2}], 
                   [{content: "Tarikh: #{@view.l(Date.today)}", colspan: 2}]]
                  #data << [{content: chairman_notes, colspan: 2}]
@@ -156,7 +163,7 @@ class Examination_slipPdf < Prawn::Document
               self.width = 420
               columns(1).align =:center
               rows(5).borders=[:top]
-	      rows(6).borders=[]
+              rows(6).borders=[]
               rows(5).align=:justify
           end
     end

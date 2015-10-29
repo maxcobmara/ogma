@@ -53,5 +53,11 @@
           %td=h number_with_precision(examresultline.total,:precision=>2)
           %td=h number_with_precision(examresultline.pngs17,:precision=>2)
           %td=h number_with_precision(examresultline.pngk, :precision=>2)
-          %td=h examresultline.render_status
+          - fisioterapi=Programme.where(course_type: 'Diploma').where('name ILIKE (?)', 'Fisioterapi').first.id
+          - perubatan=Programme.where(course_type: 'Diploma').where('name ILIKE (?)', 'Penolong Pegawai Perubatan').first.id
+          - if [fisioterapi, perubatan].include?(examresultline.examresult.programme_id)
+            - status_viewing=examresultline.render_status_contra
+          - else
+            - status_viewing=examresultline.render_status
+          %td=status_viewing
           %td=h examresultline.remark

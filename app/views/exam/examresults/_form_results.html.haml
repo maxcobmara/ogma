@@ -70,5 +70,11 @@
             %td= text_field "examresult[resultlines_attributes][#{no}]", :total, :size =>8, :value => @finaletotal
             %td= text_field "examresult[resultlines_attributes][#{no}]", :pngs17, :size =>8, :value => @pngs17
             %td= text_field "examresult[resultlines_attributes][#{no}]", :pngk, :size =>8, :value => @value_pngk
-            %td= select_tag "examresult[resultlines_attributes][#{no}][status]", options_for_select([[t('select'), '0']]+DropDown::RESULT_STATUS, @value_status) 
+            - fisioterapi=Programme.where(course_type: 'Diploma').where('name ILIKE (?)', 'Fisioterapi').first.id
+            - perubatan=Programme.where(course_type: 'Diploma').where('name ILIKE (?)', 'Penolong Pegawai Perubatan').first.id
+            - if [fisioterapi, perubatan].include?(@examresult.programme_id)
+              - status_selection = DropDown::RESULT_STATUS_CONTRA
+            - else
+              - status_selection = DropDown::RESULT_STATUS
+            %td= select_tag "examresult[resultlines_attributes][#{no}][status]", options_for_select([[t('select'), '0']]+status_selection, @value_status) 
             %td= text_field "examresult[resultlines_attributes][#{no}]", :remark, :size =>8, :value => @value_remark

@@ -370,6 +370,13 @@ module DropDown
             [ "Lulus", "3"],
             [ "Gagal", "4"]
   ]
+    
+    #Resultline
+    RESULT_STATUS_CONTRA =[
+            #  Displayed       stored in db
+            [ "Lulus", "3"],
+            [ "Gagal", "4"]
+  ]
      
     DAY_CHOICE = [
          #  Displayed       stored in db
