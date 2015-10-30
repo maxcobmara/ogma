@@ -2416,6 +2416,9 @@ en:
       exam_centre: Exam Centre
       passed: Passed
       failed: Failed
+      excellent: Excellent
+      distinction: Distinction
+
     
     evaluate_course:
       title: "Course Evaluation (Lecturer)"

@@ -112,11 +112,28 @@ class Examination_slipPdf < Prawn::Document
       else
         @finale << "0.00"
       end
-      if grading=="A" || @grading=="A-" ||@grading=="B+"||@grading=="B"||@grading=="B-"||@grading=="C+"||@grading=="C"
-        @remark << I18n.t('exam.examresult.passed')
-      else 
-        @remark << I18n.t('exam.examresult.failed')
+      
+      #ref : https://trello.com/c/W7hjdKzp
+      perubatan=Programme.where(course_type: 'Diploma').where('name ILIKE (?)', 'Penolong Pegawai Perubatan').first.id
+      if @resultline.examresult.programme_id==perubatan
+        if grading=="A" || @grading=="A-"
+          @remark << I18n.t('exam.examresult.excellent')
+        elsif @grading=="B+"||@grading=="B"||@grading=="B-"
+          @remark << I18n.t('exam.examresult.distinction')
+        elsif @grading=="C+"||@grading=="C"
+          @remark << I18n.t('exam.examresult.passed')
+        else
+          @remark << I18n.t('exam.examresult.failed')
+        end
+      else
+        if grading=="A" || @grading=="A-" ||@grading=="B+"||@grading=="B"||@grading=="B-"||@grading=="C+"||@grading=="C"
+          @remark << I18n.t('exam.examresult.passed')
+        else 
+          @remark << I18n.t('exam.examresult.failed')
+        end
       end
+      
+      
     end
     counter = counter || 0
     if @resultline.examresult.programme_id==@cara_kerja
@@ -144,12 +161,12 @@ class Examination_slipPdf < Prawn::Document
             rows(0..4).borders = []
         end
     else
-        fisioterapi=Programme.where(course_type: 'Diploma').where('name ILIKE (?)', 'Fisioterapi').first.id
+        fisioterapi=Programme.where(course_type: 'Diploma').where('name ILIKE (?)', '%Fisioterapi%').first.id
         perubatan=Programme.where(course_type: 'Diploma').where('name ILIKE (?)', 'Penolong Pegawai Perubatan').first.id
         if [fisioterapi, perubatan].include?(@resultline.examresult.programme_id)
-          @resultline.render_status_contra
+          render_status_view=@resultline.render_status_contra
         else
-          @resultline.render_status
+          render_status_view=@resultline.render_status
         end
         data = [["<b>#{(@resultline.examresult.render_semester).upcase}</b>","<b> JUMLAH</b>"],
                  ["Jumlah NGK (Nilai Gred Kumulatif)", @resultline.total.nil? ? "" : @view.number_with_precision(@resultline.total, :precision => 2)],

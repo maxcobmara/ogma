@@ -2358,6 +2358,8 @@ ms_MY:
       exam_centre: Pusat Peperiksaan
       passed: Lulus
       failed: Gagal
+      excellent: Cemerlang
+      distinction: Kepujian
     
     evaluate_course:
       title: "Penilaian Program (Pengajar)"
