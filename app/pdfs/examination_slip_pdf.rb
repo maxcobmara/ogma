@@ -30,7 +30,8 @@ class Examination_slipPdf < Prawn::Document
       text "SLIP KEPUTUSAN TERPERINCI MENGIKUT KOD KURSUS", :align => :center, :size => 11, :style => :bold
       move_down 20
       text " PUSAT PEPERIKSAAN : KOLEJ SAINS KESIHATAN BERSEKUTU JOHOR BAHRU", :align => :left, :size => 10
-      text " KEPUTUSAN PEPERIKSAAN AKHIR TAHUN : #{(@resultline.examresult.render_semester).upcase}", :align => :left, :size => 10
+      text " KEPUTUSAN PEPERIKSAAN AKHIR : #{(@resultline.examresult.render_semester.split("/").join(" ")).upcase}", :align => :left, :size => 10
+      sesi_data
       text " TAHUN PENGAMBILAN : #{@view.l(@resultline.student.intake)}", :align => :left, :size => 10
       text " TARIKH PEPERIKSAAN : #{@view.l(@resultline.examresult.examdts)} - #{@view.l(@resultline.examresult.examdte)}", :align => :left, :size => 10
     end
@@ -46,6 +47,33 @@ class Examination_slipPdf < Prawn::Document
     #- signatory - remove previous format for Kejururawatan (signature line, staff name, position & college name) for all programmes
   end
   
+  def sesi_data
+    #sesi data - refer comment by Fisioterapi (Pn Norazebah), note too - Kebidanan intake : Mac / Sept
+    #refers to 'academic session' - when the classes / learning & examination takes place).
+    diplomas=Programme.roots.where(course_type: 'Diploma').pluck(:id)
+    kebidanan=Programme.roots.where(course_type: ['Diploma Lanjutan', 'Pos Basik', 'Pengkhususan']).where('name ILIKE(?)', '%Kebidanan%').pluck(:id)
+    exam_month=@resultline.examresult.examdts.month
+    exam_year=@resultline.examresult.examdts.year
+    if diplomas.include?(@resultline.examresult.programme_id)
+      if exam_month <= 6
+        sesi="Januari - Jun "+exam_year.to_s
+      else
+        sesi="Julai - Disember "+exam_year.to_s
+      end
+    elsif kebidanan.include?(@resultline.examresult.programme_id)
+      if exam_month > 3 && exam_month <= 9    #inc. 9 when... eg. awal bln exam, akhir bln new intake?
+        sesi="Mac - Ogos "+exam_year.to_s
+      else
+        if exam_month <=3
+          sesi="Sept "+(exam_year-1).to_s+" - Februari "+exam_year.to_s
+        elsif exam_month > 9
+          sesi="Sept "+(exam_year-1).to_s+" - Februari "+(exam_year+1).to_s  #almost impossible Exam held > 2 months be4 semester ended?
+        end
+      end
+    end
+    text " SESI : #{sesi}", :align => :left, :size => 10
+  end
+
   def trainee
     if @resultline.examresult.programme_id==@cara_kerja
         text "Nama                               : #{@resultline.student.name}", :size => 10
