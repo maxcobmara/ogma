@@ -126,6 +126,7 @@ class Examination_slipPdf < Prawn::Document
     semester = @resultline.examresult.semester
     subjects = Examresult.get_subjects(programme_id ,semester)
     @grading=[]
+    @grading2=[]
     @finale=[]
     @remark=[]
     for subject in subjects
@@ -135,43 +136,66 @@ class Examination_slipPdf < Prawn::Document
       else
         grading = ""
       end
-      @grading << grading
       student_finale = Grade.where('student_id=? and subject_id=?',@resultline.student.id,subject.id).first
-      unless student_finale.nil? || student_finale.blank? 
-        @finale << @view.sprintf('%.2f', student_finale.set_NG.to_f)
+      
+      #Fisioterapi-PTEN, Kejururawatan-NELA, NELB, NELC, Perubatan-MAPE, Radiografi-XBRE, CaraKerja-OTEL
+      english_subjects=['PTEN', 'NELA', 'NELB', 'NELC', 'MAPE', 'XBRE', 'OTEL'] 
+      if english_subjects.include?(subject.code[0,4])
+        @grading2 << "-"
+        @finale << "-"
       else
-        @finale << "0.00"
-      end
-      
-      #ref : https://trello.com/c/W7hjdKzp (Perubatan)
-      #ref : KEPUTUSAN SEm 4-6 KSKBJB.xlsx - Cara Kerja(subject status - Cemerlang, Kepujian, Lulus, Gagal)
-      
-      if [@cara_kerja, @perubatan].include?(@resultline.examresult.programme_id)
-        if grading=="A" || @grading=="A-"
-          @remark << I18n.t('exam.examresult.excellent')
-        elsif @grading=="B+"||@grading=="B"||@grading=="B-"
-          @remark << I18n.t('exam.examresult.distinction')
-        elsif @grading=="C+"||@grading=="C"
-          @remark << I18n.t('exam.examresult.passed')
+        @grading2 << grading
+        unless student_finale.nil? || student_finale.blank? 
+          @finale << @view.sprintf('%.2f', student_finale.set_NG.to_f)
         else
-          @remark << I18n.t('exam.examresult.failed')
-        end
-      else
-        if grading=="A" || @grading=="A-" ||@grading=="B+"||@grading=="B"||@grading=="B-"||@grading=="C+"||@grading=="C"
-          @remark << I18n.t('exam.examresult.passed')
-        else 
-          @remark << I18n.t('exam.examresult.failed')
+          @finale << "0.00"
         end
       end
-    end
+      
+      if english_subjects.include?(subject.code[0,4])
+            if grading=="A" || grading=="A-" ||grading=="B+"||grading=="B"||grading=="B-"||grading=="C+"||grading=="C"
+               @remark << I18n.t('exam.examresult.passed')
+            else 
+               @remark << I18n.t('exam.examresult.failed')
+            end
+      else
+      
+          #******************************
+          #ref : https://trello.com/c/W7hjdKzp (Perubatan)
+          #ref : KEPUTUSAN SEM 4-6 KSKBJB.xlsx - Cara Kerja(subject status - Cemerlang, Kepujian, Lulus, Gagal)
+      
+          if [@cara_kerja, @perubatan].include?(@resultline.examresult.programme_id)
+            if grading=="A" || grading=="A-"
+              @remark << I18n.t('exam.examresult.excellent')
+            elsif grading=="B+"||grading=="B"||grading=="B-"
+              @remark << I18n.t('exam.examresult.distinction')
+            elsif grading=="C+"||grading=="C"
+              @remark << I18n.t('exam.examresult.passed')
+            else
+              @remark << I18n.t('exam.examresult.failed')
+            end
+          else
+            if grading=="A" || grading=="A-" ||grading=="B+"||grading=="B"||grading=="B-"||grading=="C+"||grading=="C"
+               @remark << I18n.t('exam.examresult.passed')
+            else 
+               @remark << I18n.t('exam.examresult.failed')
+            end
+          end
+          #******************************
+      end
+      
+    end ##--end of ....for subject in subjects
+
     counter = counter || 0
     if @resultline.examresult.programme_id==@cara_kerja
-        subjects.map do |subject|
-            [subject.code, subject.name, @grading[counter-1], @finale[counter-1], @remark[counter-1]]
+        result_by_subjectline=[]
+        subjects.each_with_index do |subject, counting|
+            result_by_subjectline << [subject.code, subject.name, @grading2[counting], @finale[counting], @remark[counting]]
         end 
+        result_by_subjectline
     else
         subjects.map do |subject|
-            ["#{counter += 1}", subject.subject_list, @grading[counter-1], @finale[counter-1], @remark[counter-1]]
+            ["#{counter += 1}", subject.subject_list, @grading2[counter-1], @finale[counter-1], @remark[counter-1]]
         end 
     end
   end
