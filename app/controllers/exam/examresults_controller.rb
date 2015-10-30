@@ -215,14 +215,14 @@ class Exam::ExamresultsController < ApplicationController
         else
           tasks_main = @current_user.userable.positions[0].tasks_main
           if common_subjects.include?(@lecturer_programme) 
-            #programme_id ='1'
+            #@programme_id ='1'
           elsif posbasiks.include?(lecturer_programme) && tasks_main!=nil
             allposbasic_prog = Programme.where(course_type: posbasiks).pluck(:name)  #Onkologi, Perioperating, Kebidanan etc
             for basicprog in allposbasic_prog
               lecturer_basicprog_name = basicprog if tasks_main.include?(basicprog)==true
             end
             @programme_id=Programme.where(name: lecturer_basicprog_name, ancestry_depth: 0).first.id
-            @programmes=Programme.where(id: programme_id)
+            @programmes=Programme.where(id: @programme_id)
           else
             @programme_id='0'
             @programmes=Programme.roots.where(course_type: ['Diploma', 'Diploma Lanjutan', 'Pos Basik', 'Pengkhususan'])
