@@ -196,21 +196,33 @@ class Examination_slipPdf < Prawn::Document
         else
           render_status_view=@resultline.render_status
         end
-        data = [["<b>#{(@resultline.examresult.render_semester).upcase}</b>","<b> JUMLAH</b>"],
-                 ["Jumlah NGK (Nilai Gred Kumulatif)", @resultline.total.nil? ? "" : @view.number_with_precision(@resultline.total, :precision => 2)],
-                 ["Purata Nilai Gred Semester (PNGS)", @resultline.pngs17.nil? ? "" : @view.number_with_precision(@resultline.pngs17, :precision => 2)],
+        data = [["<b>#{(@resultline.examresult.render_semester).upcase}</b>","<b> JUMLAH</b>"]]
+        if @resultline.examresult.programme_id!=fisioterapi        
+            data << ["Jumlah NGK (Nilai Gred Kumulatif)", @resultline.total.nil? ? "" : @view.number_with_precision(@resultline.total, :precision => 2)]
+        end
+        data+=[["Purata Nilai Gred Semester (PNGS)", @resultline.pngs17.nil? ? "" : @view.number_with_precision(@resultline.pngs17, :precision => 2)],
                  ["Purata Nilai Gred Kumulatif (PNGK)", @resultline.pngk.nil? ? "" : @view.number_with_precision(@resultline.pngk, :precision => 2) ],
                  ["<b>STATUS</b>", render_status_view],
                  [{content: "Ini adalah cetakan komputer, tandatangan tidak diperlukan. <br><b><i>Tidak sah untuk kegunaan rasmi.</i></b>", colspan: 2}], 
                   [{content: "Tarikh: #{@view.l(Date.today)}", colspan: 2}]]
                  #data << [{content: chairman_notes, colspan: 2}]
-         table(data, :column_widths => [300 , 120], :cell_style => { :size => 10, :inline_format => :true}) do
+        if @resultline.examresult.programme_id!=fisioterapi
+          table(data, :column_widths => [300 , 120], :cell_style => { :size => 10, :inline_format => :true}) do
               self.width = 420
               columns(1).align =:center
               rows(5).borders=[:top]
               rows(6).borders=[]
+              rows(6).align=:justify
+          end
+        else
+          table(data, :column_widths => [300 , 120], :cell_style => { :size => 10, :inline_format => :true}) do
+              self.width = 420
+              columns(1).align =:center
+              rows(4).borders=[:top]
+              rows(5).borders=[]
               rows(5).align=:justify
           end
+        end
     end
   end 
 
