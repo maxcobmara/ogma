@@ -146,7 +146,7 @@ class Examination_slipPdf < Prawn::Document
       #ref : https://trello.com/c/W7hjdKzp (Perubatan)
       #ref : KEPUTUSAN SEm 4-6 KSKBJB.xlsx - Cara Kerja(subject status - Cemerlang, Kepujian, Lulus, Gagal)
       
-      if [@cara_kerja, @fisioterapi, @perubatan].include?(@resultline.examresult.programme_id)
+      if [@cara_kerja, @perubatan].include?(@resultline.examresult.programme_id)
         if grading=="A" || @grading=="A-"
           @remark << I18n.t('exam.examresult.excellent')
         elsif @grading=="B+"||@grading=="B"||@grading=="B-"
@@ -163,8 +163,6 @@ class Examination_slipPdf < Prawn::Document
           @remark << I18n.t('exam.examresult.failed')
         end
       end
-      
-      
     end
     counter = counter || 0
     if @resultline.examresult.programme_id==@cara_kerja
