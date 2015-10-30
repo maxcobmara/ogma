@@ -41,14 +41,21 @@
           //
           - for subject in @subjects
             - @grade_student=Grade.where(subject_id: subject.id).where(student_id: examresultline.student_id)
+            - english_subjects=['PTEN', 'NELA', 'NELB', 'NELC', 'MAPE', 'XBRE', 'OTEL'] 
             - if @grade_student.count > 0
-              - @gradeit=Grade.where('student_id=? and subject_id=?', examresultline.student_id,subject.id).first.set_gred 
-              - @finale=Grade.where('student_id=? and subject_id=?', examresultline.student_id,subject.id).first.set_NG.to_f 
-              %td.center= @gradeit 
-              %td.center= @finale 
+              - if english_subjects.include?(subject.code[0,4])==false
+                - @gradeit=Grade.where('student_id=? and subject_id=?', examresultline.student_id,subject.id).first.set_gred 
+                - @finale=Grade.where('student_id=? and subject_id=?', examresultline.student_id,subject.id).first.set_NG.to_f 
             - else
-              %td.center &nbsp;
-              %td.center 0.00
+              - if english_subjects.include?(subject.code[0,4])==false
+                - @gradeit= ""
+                - @finale= "0.00"
+            - if english_subjects.include?(subject.code[0,4])
+              /Lulus OR Gagal 
+              %td.centre{colspan: 2}=examresultline.render_status_contra
+            - else
+              %td.centre=@gradeit
+              %td.centre=@finale
           //
           %td=h number_with_precision(examresultline.total,:precision=>2)
           %td=h number_with_precision(examresultline.pngs17,:precision=>2)
