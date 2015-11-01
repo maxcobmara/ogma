@@ -86,8 +86,15 @@
               - status_selection = DropDown::RESULT_STATUS_CONTRA
             - else
               - status_selection = DropDown::RESULT_STATUS
-            %td= select_tag "examresult[resultlines_attributes][#{no}][status]", options_for_select([[t('select'), '0']]+status_selection, @value_status) 
+            %td
+              - if [kebidanan, kejururawatan].include?(@examresult.programme_id)
+                = hidden_field "examresult[resultlines_attributes][#{no}]", :status, :size =>8, :value => @value_status
+                =(DropDown::RESULT_STATUS.find_all{|disp, value| value == @value_status}).map {|disp, value| disp}[0]
+              - else
+                = select_tag "examresult[resultlines_attributes][#{no}][status]", options_for_select([[t('select'), '0']]+status_selection, @value_status) 
             %td= text_field "examresult[resultlines_attributes][#{no}]", :remark, :size =>8, :value => @value_remark
           
-      /NOTES as of 1st Nov2015 : Value for STATUS - Kebidanan & Kejururawatan - set to 'Gagal' if any subject status is 'Gagal', otherwise set to 'Lulus'.
+      /NOTE - as of 1st Nov2015 : Value for STATUS - Kebidanan & Kejururawatan - set to 'Gagal' if any subject status is 'Gagal', otherwise set to 'Lulus'.
       /Other programmes : requires user to select STATUS accordingly UNLESS define by user.
+      /Total, PNGS17 : auto-generated, non-editable & display only 4 all programmes.
+      /STATUS : auto-generated, non-editable & display only for Kejururawatan & Kebidanan.
