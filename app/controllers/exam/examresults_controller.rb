@@ -66,6 +66,18 @@ class Exam::ExamresultsController < ApplicationController
        end
      end
   end
+  
+  def examination_slip_posbasic
+    @resultline = Resultline.find(params[:id])
+    respond_to do |format|
+       format.pdf do
+         pdf = Examination_slip_posbasicPdf.new(@resultline, view_context)
+         send_data pdf.render, filename: "examination_slip-{Date.today}",
+                               type: "application/pdf",
+                               disposition: "inline"
+       end
+     end
+  end
 
   # GET /examresults/new
   # GET /examresults/new.xml

@@ -18,7 +18,7 @@
         %th.centre{rowspan: 2}= t 'examresult.remark'
       %tr
         - 0.upto(@subjects.count-1) do |count|
-          %th=t('grade.grade')
+          %th=t('exam.grade.grading_id')
           %th NG
       - nos=0
       - for examresultline in @examresult.resultlines

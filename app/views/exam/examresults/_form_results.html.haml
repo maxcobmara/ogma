@@ -8,6 +8,7 @@
         %th{rowspan: 2}=t('student.name')
         %th{rowspan: 2}=t('student.students.matrixno')
         %th{rowspan: 2}=t('student.icno')
+        - kebidanan = Programme.roots.where('name ILIKE(?)', '%Kebidanan%').first.id
         - @subjects = Examresult.get_subjects(@examresult.programme_id,@examresult.semester)
         - @subject_credits=[]
         - for subject in @subjects
@@ -60,10 +61,14 @@
                   - @finale_all << @finale
                   %td= @gradeit 
                   %td= @finale 
+                  /https://trello.com/c/zlIT9mSO - Kebidanan (STATUS) : gagal if any of subject is failed
+                  - @value_status='4' if @examresult.programme_id==kebidanan && @gradeit=="C-"  
                 - else
                   - @finale_all << 0.00
                   %td &nbsp;
                   %td 0.00
+                  /https://trello.com/c/zlIT9mSO - Kebidanan (STATUS) : gagal if any of subject has no grade
+                  - @value_status='4' if @examresult.programme_id==kebidanan
               - @finaletotal=Examresult.total(@finale_all,@subject_credits) 
               - @pngs17=number_with_precision(Examresult.pngs17(@finaletotal, @subject_credits), :precision => 2) 
 
@@ -75,6 +80,7 @@
             - if [fisioterapi, perubatan].include?(@examresult.programme_id)
               - status_selection = DropDown::RESULT_STATUS_CONTRA
             - else
+             
               - status_selection = DropDown::RESULT_STATUS
             %td= select_tag "examresult[resultlines_attributes][#{no}][status]", options_for_select([[t('select'), '0']]+status_selection, @value_status) 
             %td= text_field "examresult[resultlines_attributes][#{no}]", :remark, :size =>8, :value => @value_remark

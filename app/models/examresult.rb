@@ -83,6 +83,12 @@ class Examresult < ActiveRecord::Base
         			@dept_unit = posts.first.unit #Login.current_login.staff.position.unit 
         	 end 
         end 
+        #####--Pos Basik / Diploma Lanjutan / Kebidanan -- 1Nov2015 -- note latest format - Position for Pos Basik / Diploma Lanjutan / Pengkhususan
+        if ['Pos Basik', 'Kebidanan', 'Diploma Lanjutan'].include?(@dept_unit)
+           maintask=Login.current_login.staff.position.tasks_main
+           @dept_unit="Kebidanan" if maintask.include?('Kebidanan')
+        end
+        #####
        end
        
        @current_login_roles=[]
