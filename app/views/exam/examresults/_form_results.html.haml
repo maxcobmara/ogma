@@ -9,6 +9,7 @@
         %th{rowspan: 2}=t('student.students.matrixno')
         %th{rowspan: 2}=t('student.icno')
         - kebidanan = Programme.roots.where('name ILIKE(?)', '%Kebidanan%').first.id
+        - kejururawatan = Programme.roots.where('name ILIKE(?)', '%Kejururawatan%').first.id
         - @subjects = Examresult.get_subjects(@examresult.programme_id,@examresult.semester)
         - @subject_credits=[]
         - for subject in @subjects
@@ -21,7 +22,7 @@
         %th.centre{rowspan: 2}= t 'examresult.remark'
       %tr
         - 0.upto(@subjects.count-1) do |count|
-          %th=t('grade.grade')
+          %th=t('exam.grade.grading_id')
           %th NG
     %body
       /- @nos=0
@@ -61,26 +62,32 @@
                   - @finale_all << @finale
                   %td= @gradeit 
                   %td= @finale 
-                  /https://trello.com/c/zlIT9mSO - Kebidanan (STATUS) : gagal if any of subject is failed
-                  - @value_status='4' if @examresult.programme_id==kebidanan && @gradeit=="C-"  
+                  /https://trello.com/c/zlIT9mSO - Kebidanan (STATUS) : gagal if any of subject is failed - Kejururawatan too
+                  - @value_status='4' if [kebidanan, kejururawatan].include?(@examresult.programme_id) && @gradeit=="C-"  
                 - else
                   - @finale_all << 0.00
                   %td &nbsp;
                   %td 0.00
-                  /https://trello.com/c/zlIT9mSO - Kebidanan (STATUS) : gagal if any of subject has no grade
-                  - @value_status='4' if @examresult.programme_id==kebidanan
+                  /https://trello.com/c/zlIT9mSO - Kebidanan (STATUS) : gagal if any of subject has no grade - Kejururawatan too
+                  - @value_status='4' if [kebidanan, kejururawatan].include?(@examresult.programme_id)
               - @finaletotal=Examresult.total(@finale_all,@subject_credits) 
               - @pngs17=number_with_precision(Examresult.pngs17(@finaletotal, @subject_credits), :precision => 2) 
 
-            %td= text_field "examresult[resultlines_attributes][#{no}]", :total, :size =>8, :value => @finaletotal
-            %td= text_field "examresult[resultlines_attributes][#{no}]", :pngs17, :size =>8, :value => @pngs17
+            %td
+              = hidden_field "examresult[resultlines_attributes][#{no}]", :total, :size =>8, :value => @finaletotal
+              = @finaletotal
+            %td
+              = hidden_field "examresult[resultlines_attributes][#{no}]", :pngs17, :size =>8, :value => @pngs17
+              = @pngs17
             %td= text_field "examresult[resultlines_attributes][#{no}]", :pngk, :size =>8, :value => @value_pngk
             - fisioterapi=Programme.where(course_type: 'Diploma').where('name ILIKE (?)', '%Fisioterapi%').first.id
             - perubatan=Programme.where(course_type: 'Diploma').where('name ILIKE (?)', 'Penolong Pegawai Perubatan').first.id
             - if [fisioterapi, perubatan].include?(@examresult.programme_id)
               - status_selection = DropDown::RESULT_STATUS_CONTRA
             - else
-             
               - status_selection = DropDown::RESULT_STATUS
             %td= select_tag "examresult[resultlines_attributes][#{no}][status]", options_for_select([[t('select'), '0']]+status_selection, @value_status) 
             %td= text_field "examresult[resultlines_attributes][#{no}]", :remark, :size =>8, :value => @value_remark
+          
+      /NOTES as of 1st Nov2015 : Value for STATUS - Kebidanan & Kejururawatan - set to 'Gagal' if any subject status is 'Gagal', otherwise set to 'Lulus'.
+      /Other programmes : requires user to select STATUS accordingly UNLESS define by user.
