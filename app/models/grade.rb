@@ -9,6 +9,8 @@ class Grade < ActiveRecord::Base
 
   has_many :scores, :dependent => :destroy
   accepts_nested_attributes_for :scores,:allow_destroy => true, :reject_if => lambda { |a| a[:description].blank? } #allow for destroy - 17June2013
+  
+  attr_accessor :intake_id
 
   # define scope
   def self.student_search(query)

@@ -2,6 +2,7 @@ class Exam::GradesController < ApplicationController
   filter_access_to :all 
   before_action :set_grade, only: [:show, :edit, :update, :destroy]
   before_action :set_data_edit_update_new_create, only: [:edit, :update, :new, :create]
+  before_action :set_new_multiple_create_multiple, only: [:new_multiple, :create_multiple]
 
   # GET /grades
   # GET /grades.xml
@@ -10,12 +11,14 @@ class Exam::GradesController < ApplicationController
     @grade_list_exist_subject=[]
     @existing_grade_subject_ids = Grade.all.pluck(:subject_id).uniq
     @position_exist = @current_user.userable.positions
+    @common_subjects=['Sains Tingkahlaku','Sains Perubatan Asas', 'Komunikasi & Sains Pengurusan', 'Anatomi & Fisiologi', 'Komuniti']
+    posbasics=['Pos Basik', 'Diploma Lanjutan', 'Pengkhususan']
     ###
     if @position_exist && @position_exist.count > 0
       @lecturer_programme = @current_user.userable.positions[0].unit
       common_subject_a = Programme.where('course_type=?','Commonsubject')
       unless @lecturer_programme.nil?
-        @programme = Programme.where('name ILIKE (?) AND ancestry_depth=?',"%#{@lecturer_programme}%",0) if !(@lecturer_programme=="Pos Basik" || @lecturer_programme=="Diploma Lanjutan")
+        @programme = Programme.where('name ILIKE (?) AND ancestry_depth=?',"%#{@lecturer_programme}%",0) if posbasics.include?(@lecturer_programme)==false
       end
       unless @programme.nil? || @programme.count == 0
         @preselect_prog = @programme.first.id
@@ -27,11 +30,11 @@ class Exam::GradesController < ApplicationController
         #@subjectlist_preselec_prog2_raw = Programme.where('id IN (?) AND id NOT IN(?)',@subjectlist_preselec_prog.map(&:id), common_subject_a.map(&:id))
       else
         tasks_main = @current_user.userable.positions[0].tasks_main
-        if @lecturer_programme == 'Commonsubject'
+        if @common_subjects.include?(@lecturer_programme)
           programme_id ='1'
           @subjectlist_preselec_prog = common_subject_a
-        elsif (@lecturer_programme == 'Pos Basik' || @lecturer_programme == "Diploma Lanjutan") && tasks_main!=nil
-          allposbasic_prog = Programme.where('course_type=? or course_type=?', "Pos Basik", "Diploma Lanjutan").pluck(:name)  #Onkologi, Perioperating, Kebidanan etc
+        elsif posbasics.include?(@lecturer_programme) && tasks_main!=nil
+          allposbasic_prog = Programme.where(course_type: posbasics).pluck(:name)  #Onkologi, Perioperating, Kebidanan etc
           for basicprog in allposbasic_prog
             lecturer_basicprog_name = basicprog if tasks_main.include?(basicprog)==true
           end
@@ -116,15 +119,56 @@ class Exam::GradesController < ApplicationController
   end
   
   def new_multiple
+#     @subjectid=params[:subjectid]
+    unless @subjectid.nil?
+      @grades = Array.new(1) { Grade.new }
+      @selected_subject = Programme.where(id: @subjectid).first.subject_list
+      @selected_exam = Exam.where(subject_id: @subjectid).where(name: 'F').order(exam_on: :desc).first
+    else
+      flash[:notice] ='Select subject'
+      redirect_to exam_grades_path
+    end
   end
   
   def create_multiple
+    ##sample from Exammarks 
+    selected_intake = params[:grades]["0"][:intake_id]
+    @subjectid = params[:grades]["0"][:subject_id]                                                       #required if render new_multiple
+    #@programme_id = params[:exammarks]["0"][:programme_id]                                  #required if render new_multiple
+    #@selected_exam = Exam.find(@examid)                                                                   #required if render new_multiple
+    @programme_id=Programme.where(id: @subjectid).first.root_id
+    @intakes_lt = Student.where('course_id=?',@programme_id).pluck(:intake).uniq    #required if render new_multiple
+                                               
+    @grade = Grade.new
+    #qcount = @exammark.get_questions_count(@examid)
+    #current_program = Programme.find(Exam.find(@examid).subject_id).root_id
+    #selected_student = Student.where(course_id: current_program.to_i, intake: selected_intake)
+    selected_student = Student.where(course_id: @programme_id, intake: selected_intake)
+    rec_count = selected_student.count
+    @grades = Array.new(rec_count) { Grade.new }                      
+    @grades.each_with_index do |grade,ind|                                     
+      grade.student_id = selected_student[ind].id
+      grade.subject_id = @subjectid
+      grade.examweight = 70
+      #0.upto(qcount-1) do
+      #  exammark.marks.build
+      #end       
+    end
+    if @grades.all?(&:valid?) 
+      @grades.each(&:save!)
+      flash[:notice] = t('exam.exammark.multiple_created')
+      render :action => 'edit_multiple', :grade_ids =>@grades.map(&:id)
+    else                                                                      
+      flash[:notice] = t('exam.exammark.marks_intakes_exist')
+      render :action => 'new_multiple'
+    end
+    ##end sample from Exammarks
   end
   
   def edit_multiple
     @gradeids = params[:grade_ids]
     unless @gradeids.blank? 
-      @grades = Grade.find(@gradeids).sort_by{|x|x.studentgrade.name} #@grades = Grade.find(@gradeids)
+      @grades = Grade.where(id: @gradeids).sort_by{|x|x.studentgrade.name} #@grades = Grade.find(@gradeids)
       @grades_obj = @grades[0]
       @edit_type = params[:grade_submit_button]
       if @edit_type ==  t('edit_checked') 
@@ -326,8 +370,10 @@ class Exam::GradesController < ApplicationController
       if @position_exist     
         @lecturer_programme = @current_user.userable.positions[0].unit
         common_subject_a = Programme.where('course_type=?','Commonsubject')
+        @common_subjects=['Sains Tingkahlaku','Sains Perubatan Asas', 'Komunikasi & Sains Pengurusan', 'Anatomi & Fisiologi', 'Komuniti']
+        posbasics=['Pos Basik', 'Diploma Lanjutan', 'Pengkhususan']
         unless @lecturer_programme.nil?
-          @programme = Programme.where('name ILIKE (?) AND ancestry_depth=?',"%#{@lecturer_programme}%",0) if !(@lecturer_programme=="Pos Basik" || @lecturer_programme=="Diploma Lanjutan")
+          @programme = Programme.where('name ILIKE (?) AND ancestry_depth=?',"%#{@lecturer_programme}%",0) if posbasics.include?(@lecturer_programme)==false
         end
         unless @programme.nil? || @programme.count == 0
           @preselect_prog = @programme.first.id
@@ -341,15 +387,15 @@ class Exam::GradesController < ApplicationController
         
           ####
           tasks_main = @current_user.userable.positions[0].tasks_main
-          if @lecturer_programme == 'Commonsubject'
+          if @common_subjects.include?(@lecturer_programme)  # if @lecturer_programme == 'Commonsubject'
             @programme_list = Programme.roots 
             @student_list = Student.all.order(course_id: :asc)
             #subjects - only those with existing exampaper
             @subject_list = Programme.where('id IN(?)',common_subject_a.pluck(:id)).where('id IN(?)', Exam.where('id IN(?)', valid_exams).map(&:subject_id))
             #subjects - ALL subjects
             #@subject_list = common_subject_a
-          elsif (@lecturer_programme == 'Pos Basik' || @lecturer_programme == "Diploma Lanjutan") && tasks_main!=nil
-            allposbasic_prog = Programme.where('course_type=? or course_type=?', "Pos Basik", "Diploma Lanjutan").pluck(:name)  #Onkologi, Perioperating, Kebidanan etc
+          elsif posbasics.include?(@lecturer_programme) && tasks_main!=nil
+            allposbasic_prog = Programme.where(course_type: posbasics).pluck(:name)  #Onkologi, Perioperating, Kebidanan etc
             for basicprog in allposbasic_prog
               lecturer_basicprog_name = basicprog if tasks_main.include?(basicprog)==true
             end
@@ -373,6 +419,43 @@ class Exam::GradesController < ApplicationController
         end
       end
       ##
+    end
+    
+    def set_new_multiple_create_multiple
+      @subjectid=params[:subjectid]
+      @lecturer_programme = @current_user.userable.positions.first.unit
+      common_subject_a = Programme.where(course_type: 'Commonsubject')
+      posbasiks=["Pos Basik", "Diploma Lanjutan", "Pengkhususan"]
+      common_subjects=['Sains Tingkahlaku','Sains Perubatan Asas', 'Komunikasi & Sains Pengurusan', 'Anatomi & Fisiologi', 'Komuniti']
+      unless @lecturer_programme.nil?
+        @programme = Programme.where('name ILIKE (?) AND ancestry_depth=?',"%#{@lecturer_programme}%",0)
+      end
+      unless @programme.nil? || @programme.count == 0
+        @preselect_prog = @programme.id
+        @student_list = Student.where(course_id: @preselect_prog).order(name: :asc)
+        @subject_list = Programme.where(id: @preselect_prog).first.descendants.at_depth(2)
+        #@intake_list = @student_list.group_by{|l|l.intake}
+	@intakes_lt = @student_list.pluck(:intake).uniq.sort
+      else
+        if common_subjects.include?(@lecturer_programme)
+           #@student_list = Student.all 
+           @subject_list = common_subject_a
+        else
+           #@student_list = Student.all 
+           @subject_list = Programme.at_depth(2) 
+        end
+        #for administrator & Commonsubject lecturer : to assign programme, based on selected exampaper 
+        #@subjectid2 = params[:subjectid]  #force - Retrieve this params value TWICE
+        #@dept_unit = Programme.where(id: @subjectid2).first.root  
+        #@student_list = Student.where(course_id: @dept_unit.id)#.group_by{|l|l.intake}
+	 if @subjectid
+            @dept_unit = Programme.where(id: @subjectid).first.root
+            @dept_unit_prog = @dept_unit.programme_list
+            @intakes_lt = Student.where('course_id=?',@dept_unit.id).pluck(:intake).uniq.sort #must be among the programme of exampaper coz even common subject...
+            @programme_id=@dept_unit.id
+          end
+      end
+      #@intakes=@student_list.pluck(:intake).uniq.sort
     end
     
     # Never trust parameters from the scary internet, only allow the white list through.
