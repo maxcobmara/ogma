@@ -2392,6 +2392,7 @@ en:
       confirm_apply_changes: "Please CONFIRM or MODIFY & click 'Apply Changes' for above Summative Weightage and Formative Scores items before proceeding with data entry."
       formative_summative_var_updated: "Formative Score items and / or Summative Weightage are updated. Please EDIT marks accordingly."
       multiple_updated: "All examination grades were successfully updated!"
+      scores_not_exist: "Formative Scores not exist yet. Click 'Add More', enter formative score details and 'Apply Changes' to activate Formative Scores structure. Once structure is activated, enter scores details in generated formatives columns accordingly."
     
     examresult:
       title: Examination Result by Programme

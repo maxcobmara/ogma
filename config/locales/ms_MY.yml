@@ -2333,6 +2333,7 @@ ms_MY:
       confirm_apply_changes: "Sila PASTIKAN atau TUKAR / TAMBAH 'Pemberat Sumatif' dan item - item 'Skor Formatif' di atas & klik 'Kemaskini Perubahan', sebelum meneruskan kemasukan data di bawah."
       formative_summative_var_updated: "Item 'Skor Formatif' dan / atau 'Pemberat Sumatif' telah dikemaskini. Sila SUNTING butiran markah berkenaan."
       multiple_updated: "Kesemua gred peperiksaan telah berjaya dikemaskini!"
+      scores_not_exist: "Skor Formatif masih belum wujud. Klik 'Tambah Rekod', masukkan butiran skor formatif dan klik 'Kemaskini Perubahan' untuk mengaktifkan struktur Skor Formatif. Sebaik sahaja struktur diaktifkan, masukkan butiran markah dalam lajur - lajur formatif yang telah dijana."
        
     examresult:
       title: Keputusan Peperiksaan Mengikut Program

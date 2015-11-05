@@ -46,7 +46,7 @@
                   %b= t 'exam.grade.examweight'
                 .col-md-1
                   - @sum_weight = @grades.map(&:examweight).uniq.count if @grades.count >= 1 
-                  =select_tag "grade[summative_weightage]", options_for_select(DropDown::WEIGHTAGE, @grades[0].examweight), {class: 'selectpicker'}
+                  =select_tag "grade[summative_weightage]", options_for_select(DropDown::WEIGHTAGE, @grades[0].examweight.to_i), {class: 'selectpicker'}
                   - if @sum_weight>1 
                     %span{:style=>"color:red;"}*
             /.row

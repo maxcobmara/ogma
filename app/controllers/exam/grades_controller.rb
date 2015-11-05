@@ -25,7 +25,7 @@ class Exam::GradesController < ApplicationController
         programme_id = @programme.first.id
         @subjectlist_preselec_prog = Programme.find(@preselect_prog).descendants.at_depth(2)  #.sort_by{|y|y.code}
         #subjects - only those with existing exampaper
-        @subjectlist_preselec_prog2_raw = Programme.where('id IN (?) AND id IN (?) and id NOT IN(?)',@subjectlist_preselec_prog.map(&:id), Exam.where('id IN(?)', valid_exams).map(&:subject_id), common_subject_a.map(&:id))
+        @subjectlist_preselec_prog2_raw = Programme.where('id IN (?) AND id IN (?) and id NOT IN(?)',@subjectlist_preselec_prog.map(&:id), Exam.where('id IN(?) and name=?', valid_exams, 'F').map(&:subject_id), common_subject_a.map(&:id))
         #subjects - ALL subject of current programme
         #@subjectlist_preselec_prog2_raw = Programme.where('id IN (?) AND id NOT IN(?)',@subjectlist_preselec_prog.map(&:id), common_subject_a.map(&:id))
       else
@@ -195,21 +195,29 @@ class Exam::GradesController < ApplicationController
         @scores_new_count = @scores.count 
       end
       if submit_type == t('update')
+        
         #start-scores (marks) only exist for EXISTing formative_scores (not yet exist if just ADDED - apply_changes)
         #@formatives = params[:formatives]
         @formatives=[]
         all_scores = params[:scores_attributes]   #all_scores["0"]["marks"].first.to_f - gives 90.00
-        grade_qty = all_scores["0"]["marks"].count  #@grades.count
-        scoretype_qty = all_scores.count
-        0.upto(grade_qty-1) do |bil|
-          mks = 0
-          0.upto(scoretype_qty-1) do |no|
-            aa = all_scores[no.to_s]["marks"][bil]
-            mks+=all_scores[no.to_s]["marks"][bil].to_f
+        if all_scores && all_scores["0"]["marks"]
+          grade_qty = all_scores["0"]["marks"].count  #@grades.count
+          scoretype_qty = all_scores.count
+          0.upto(grade_qty-1) do |bil|
+            mks = 0
+            0.upto(scoretype_qty-1) do |no|
+              if all_scores[no.to_s]["marks"]
+                aa = all_scores[no.to_s]["marks"][bil]
+                mks+=all_scores[no.to_s]["marks"][bil].to_f
+              end
+            end
+            @formatives << mks
           end
-          @formatives << mks
+        else
+          #refer below for notice
         end
         #end-scores (marks) only exist for EXISTing formative_scores (not yet exist if just ADDED - apply_changes)
+        
       end
       #@scores1 = params[:scores] #caplusmse
       @exam1markss = params[:exam1markss]
@@ -280,8 +288,14 @@ class Exam::GradesController < ApplicationController
         end  #--end of @grades.each_with_index do |grade,index|--
         ####
         respond_to do |format|
-          format.html { redirect_to(exam_grades_url, :notice =>t('exam.grade.multiple_updated')+" ("+"#{@grades[0].subjectgrade.subject_list}"+" - "+"#{@grades.count}"+" "+t('records')+")")}
-          format.xml  { head :ok }
+          if all_scores && all_scores["0"]["marks"]
+              format.html { redirect_to(exam_grades_url, :notice =>t('exam.grade.multiple_updated')+" ("+"#{@grades[0].subjectgrade.subject_list}"+" - "+"#{@grades.count}"+" "+t('records')+")") }
+              format.xml  { head :ok }
+          else
+              flash[:notice]=(t 'exam.grade.scores_not_exist')
+              format.html {render :action => 'edit_multiple'}
+              format.xml  { head :ok }
+          end
         end
       elsif submit_type == t('exam.grade.apply_changes')
   
@@ -425,13 +439,13 @@ class Exam::GradesController < ApplicationController
       @subjectid=params[:subjectid]
       @lecturer_programme = @current_user.userable.positions.first.unit
       common_subject_a = Programme.where(course_type: 'Commonsubject')
-      posbasiks=["Pos Basik", "Diploma Lanjutan", "Pengkhususan"]
+      posbasics=["Pos Basik", "Diploma Lanjutan", "Pengkhususan"]
       common_subjects=['Sains Tingkahlaku','Sains Perubatan Asas', 'Komunikasi & Sains Pengurusan', 'Anatomi & Fisiologi', 'Komuniti']
       unless @lecturer_programme.nil?
-        @programme = Programme.where('name ILIKE (?) AND ancestry_depth=?',"%#{@lecturer_programme}%",0)
+        @programme = Programme.where('name ILIKE (?) AND ancestry_depth=?',"%#{@lecturer_programme}%",0) if posbasics.include?(@lecturer_programme)==false
       end
       unless @programme.nil? || @programme.count == 0
-        @preselect_prog = @programme.id
+        @preselect_prog = @programme.first.id
         @student_list = Student.where(course_id: @preselect_prog).order(name: :asc)
         @subject_list = Programme.where(id: @preselect_prog).first.descendants.at_depth(2)
         #@intake_list = @student_list.group_by{|l|l.intake}
