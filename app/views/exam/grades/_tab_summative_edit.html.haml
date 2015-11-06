@@ -1,12 +1,10 @@
-.col-md-offset-2
-  .row
-    .col-sm-4= f.label t 'exam.grade.exam', for: :examination_name
-    .col-sm-4= f.label t 'exam.grade.description', for: :description
-    .col-sm-1
-      = f.label t 'exam.grade.marks', for: :marks
-      - if @grade.examweight.nil?
-        %font{:style=>"color: red;"}*
-  .row
-    .col-md-4= f.text_field :exam1name, class: 'form-control'
-    .col-md-4= f.text_field :exam1desc, class: 'form-control'
-    .col-md-1= f.text_field :exam1marks, :class=>'i1'
+.row
+  .col-md-4= f.text_field :exam1name, class: 'form-control'
+  .col-md-4= f.text_field :exam1desc, class: 'form-control'
+  .col-md-2= f.text_field :examweight, class: 'form-control'
+  .col-md-2= f.text_field :exam1marks, :class=>'i1'
+%br
+.row
+  - if @grade.examweight.nil?
+    %font{:style=>"color: red;"}* 
+    = t 'exam.grade.weightage_before_marks'

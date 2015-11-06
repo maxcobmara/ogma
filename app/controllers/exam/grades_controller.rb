@@ -431,11 +431,13 @@ class Exam::GradesController < ApplicationController
           end
           ####
         end
+        @subject_list= Programme.where('id IN (?) AND id IN (?)',@subject_list.map(&:id), Exam.where('id IN(?)', valid_exams).map(&:subject_id) )
       end
       ##
     end
     
     def set_new_multiple_create_multiple
+      valid_exams = Exammark.get_valid_exams
       @subjectid=params[:subjectid]
       @lecturer_programme = @current_user.userable.positions.first.unit
       common_subject_a = Programme.where(course_type: 'Commonsubject')

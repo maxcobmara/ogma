@@ -49,13 +49,9 @@
         /TODO: Preselect course in above condition
         
       #grade_details_edit.tab-pane.active
-        .col-md-offset-2
-          .form-group
-          .col-sm-2.control-label
-            = f.label t 'exam.grade.formative_scores'
-    
         .col-md-8.col-md-offset-1
           %br
+          = f.label t 'exam.grade.formative_scores'
           .row
             .col-sm-3= t 'exam.grade.type'
             .col-sm-5= t 'exam.grade.description' 
@@ -77,12 +73,22 @@
 
       #summative_final_details_edit.tab-pane
         .col-md-9.col-md-offset-1
-          =t 'exam.grade.summative'
-          %hr
-        = render 'tab_summative_edit', :f => f
-        %br
-        .col-md-9.col-md-offset-1  
-          = t 'exam.grade.final_details'
+          %br
+          =f.label t 'exam.grade.summative'
+          .row
+            .col-sm-4=t 'exam.grade.exam'
+            .col-sm-4=t 'exam.grade.description'
+            .col-sm-2= t 'exam.grade.weightage'
+            .col-sm-2
+              = t 'exam.grade.marks'
+              (100%)
+              - if @grade.examweight.nil?
+                %font{:style=>"color: red;"}*
+            %hr
+          = render 'tab_summative_edit', :f => f
+        .col-md-9.col-md-offset-1
+          %BR
+          =f.label t 'exam.grade.final_details'
           %hr
         %br
         = render 'tab_final_details_edit', :f => f
