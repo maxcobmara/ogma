@@ -49,14 +49,14 @@
         /TODO: Preselect course in above condition
         
       #grade_details_edit.tab-pane.active
-        .col-md-8.col-md-offset-1
+        .col-md-9.col-md-offset-1
           %br
           = f.label t 'exam.grade.formative_scores'
           .row
-            .col-sm-3= t 'exam.grade.type'
-            .col-sm-5= t 'exam.grade.description' 
-            .col-sm-2= t 'exam.grade.marks'
-            .col-sm-2= t 'exam.grade.weightage'
+            .col-sm-4= t 'exam.grade.type'
+            .col-sm-4= t 'exam.grade.description' 
+            .col-sm-2= (t 'exam.grade.weightage')+" (%) *"
+            .col-sm-2= (t 'exam.grade.marks')+" (%) **"
             %hr
           - @count=0
           = f.fields_for :scores do |builder|
@@ -65,7 +65,42 @@
           %br
           .row
             = link_to_add_fields t('addmore'), f, :scores, "",  t('addmore')
-          %br   
+          
+          /NOTE - For use during UAT
+          /English ONLY (all Diploma programmes)
+          /1-Mid Term Exam : Assignment / Case Study (15%)
+          /2-On-going Assesment : Assignment / Presentation (10%)
+          /3-Affective Assesment : Attendance \/ Punctuality \/ Appearance \/ Enrolment \/ Communication (5%)
+   
+          /Radiografi 
+          /1-Formative Assesment : MCQ & SEQ (15%)
+          /2-Student\-Centered Assesment : SC1 & SC2 (10%)
+          /3-Affective Assesment : Attendance \/ Punctuality \/ Appearance \/ Enrolment \/ Communication (5%)
+          
+          /Fisioterapi
+          /1-Mid Term Exam : <Exampaper> (15%)
+          /2-On-going Assessment : Test / Assignment @ Practical Test @ Assignment / Presentation (10%)
+          /3-Affective Accessment : Attendance \/ Punctuality \/ Appearance \/ Enrolment \/ Communication (5%)
+          
+          /Peg Pem Perubatan 
+          /1-Test : MCQ (15%) 
+          /2-Test : MEQ (10%) 
+          /3-Test : OSCE / Assignment / Project (5%)
+          
+          /CaraKerja 
+          /1-CA+MSE (Continuous Assessment+Mid Sem Exam) : <any description> (30%)
+          
+          /Kejururawatan : use CaraKerja format as spec not yet received from SUP.
+          
+          %br
+          .row
+            .col-sm-9= t('exam.grade.confirm_apply_changes2')
+            .col-sm-3= submit_tag t('exam.grade.apply_changes'), :name =>:grade_submit_button, class: "btn btn-default" 
+          .row
+            .col-sm-12=t('exam.grade.diploma_weightage_30')
+          .row
+            .col-sm-12=t('exam.grade.marks_weightage_range')
+            %hr
 
       #sent_to_bpl_edit.tab-pane
         %br
@@ -76,24 +111,27 @@
           %br
           =f.label t 'exam.grade.summative'
           .row
-            .col-sm-4=t 'exam.grade.exam'
-            .col-sm-4=t 'exam.grade.description'
+            .col-sm-3=t 'exam.grade.exam'
+            .col-sm-3=t 'exam.grade.description'
             .col-sm-2= t 'exam.grade.weightage'
             .col-sm-2
               = t 'exam.grade.marks'
-              (100%)
-              - if @grade.examweight.nil?
-                %font{:style=>"color: red;"}*
+              (100%)                
+            .col-sm-2
+              = t 'exam.grade.marks'
+              - if Programme.roots.where(course_type: 'Diploma').pluck(:id).include?(@grade.subjectgrade.root_id)
+                (70%)
+              %font{:style=>"color: red;"}*
             %hr
           = render 'tab_summative_edit', :f => f
         .col-md-9.col-md-offset-1
-          %BR
+          %br
           =f.label t 'exam.grade.final_details'
-          %hr
         %br
         = render 'tab_final_details_edit', :f => f
         
 =hidden_field_tag "grade[formative_count]", @count 
+/$(".i1").keyup(function() {
 
 :javascript
   function add_fields(link, association, content) {  
@@ -103,7 +141,7 @@
   }
 :javascript
   
-  $(".i1").keyup(function() {  
+  $("#grade_exam1marks").keyup(function() {  
     var formativecount = document.getElementById("grade_formative_count").value;
     var exam1marks = document.getElementById("grade_exam1marks").value;
     var examweight = document.getElementById("grade_examweight").value;
@@ -115,18 +153,20 @@
     }
       
     var finalscore = document.getElementById("grade_finalscore");
-    var setgrade = document.getElementById("grade_grading_id")
+    var setgrade = document.getElementById("grade_grading_id");
+    var marks70 = document.getElementById("grade_marks_70");
 
     totalformative = 0
     for (var i=0;i<formativecount;i++)
     {
-      totalformative = totalformative+(window["fmark"+i]*1)*((window["fweight"+i]*1)/100)
+      totalformative = totalformative+(window["fmark"+i]*1)
     }
       
-    caplusmse = (totalformative*1)*(100-examweight)/100;
+    caplusmse = (totalformative*1);
     summative = (exam1marks*1)*(examweight*1)/100;
     forgrade = caplusmse+summative;
     finalscore.value = caplusmse+summative;
+    marks70.value = summative;
 
     if ((caplusmse+summative) > 79)
     {
@@ -173,3 +213,8 @@
        setgrade.value = "E";
     }
   });
+  
+//above - latest (formative marks requested to be entered within weightage range)
+//below - previous
+//caplusmse = (totalformative*1)*(100-examweight)/100;
+//totalformative = totalformative+(window["fmark"+i]*1)*((window["fweight"+i]*1)/100)

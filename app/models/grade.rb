@@ -2,6 +2,7 @@ class Grade < ActiveRecord::Base
   
   validates_presence_of :student_id, :subject_id, :examweight#, :exam1marks #added examweight for multiple edit - same subject - this item must exist
   validates_uniqueness_of :subject_id, :scope => :student_id, :message => " - This student has already taken this subject"
+  validates :exam1marks, :finalscore, numericality: {greater_than_or_equal_to: 0, less_than_or_equal_to: 100}
  # validates_presence_of :sent_date, :if => :sent_to_BPL?
   
   belongs_to :studentgrade, :class_name => 'Student', :foreign_key => 'student_id'  #Link to Model student
@@ -10,7 +11,9 @@ class Grade < ActiveRecord::Base
   has_many :scores, :dependent => :destroy
   accepts_nested_attributes_for :scores,:allow_destroy => true, :reject_if => lambda { |a| a[:description].blank? } #allow for destroy - 17June2013
   
-  attr_accessor :intake_id
+  before_save :check_summative_valid
+  
+  attr_accessor :intake_id, :marks_70, :formative_weight_sum, :formative_marks_sum
 
   # define scope
   def self.student_search(query)
@@ -50,15 +53,12 @@ class Grade < ActiveRecord::Base
   end
     
   def total_formative
-    Score.where(grade_id: id).sum(:score)
-  end
-  
-  def total_formative2  #temporary - to confirm with user-marks to be entered in weightage or %
     Score.where(grade_id: id).sum(:marks)
   end
   
   def finale
-    score.to_f + total_summative    #23August2013
+    total_formative+total_summative #8Nov2015
+    #score.to_f + total_summative    #23August2013
     #((exam1marks * examweight)/100) + ((total_formative * (100 - examweight)/100))
   end
   
@@ -130,5 +130,19 @@ class Grade < ActiveRecord::Base
     end
     #ABOVE : order(:subject_id) - added, when group by subject, won't split up - continueos in paging
   end
+  
+  private 
+  
+    def check_summative_valid #add error msg in controller
+       if Programme.roots.where(course_type: 'Diploma').pluck(:id).include?(subjectgrade.root_id)
+         if scores && scores.count > 0
+           if scores.map(&:weightage).sum > 30 || scores.map(&:marks).sum > 30
+             return false
+           else
+             return true
+           end
+         end
+       end
+    end
   
 end

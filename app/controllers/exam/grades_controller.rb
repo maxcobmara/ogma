@@ -106,12 +106,27 @@ class Exam::GradesController < ApplicationController
   
   def update
     @grade = Grade.find(params[:id])
+    submit_type = params[:grade_submit_button]
     respond_to do |format|
       if @grade.update(grade_params)
-        flash[:notice] = t('exam.grade.title')+t('actions.updated')
-        format.html { redirect_to exam_grade_path(@grade) }
-        format.xml  { head :ok }
+        if  submit_type == t('update')
+          flash[:notice] = t('exam.grade.title')+t('actions.updated')
+          format.html { redirect_to exam_grade_path(@grade) }
+          format.xml  { head :ok }
+        elsif submit_type == t('exam.grade.apply_changes')
+          flash[:notice]=t('exam.grade.formative_summative_var_updated2')
+          format.html { render :action => "edit" }
+          format.xml  { head :ok }
+        end
+        flash.discard
       else
+        if Programme.roots.where(course_type: 'Diploma').pluck(:id).include?(@grade.subjectgrade.root_id)
+         if @grade.scores && @grade.scores.count > 0
+           if @grade.scores.map(&:weightage).sum > 30 || @grade.scores.map(&:marks).sum > 30
+             flash[:notice]= t('exam.grade.max_weightage_marks_30')
+           end
+         end
+        end
         format.html { render :action => "edit" }
         format.xml  { render :xml => @grade.errors, :status => :unprocessable_entity }
       end

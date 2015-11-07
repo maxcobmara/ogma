@@ -9,19 +9,25 @@
       = f.label t 'exam.grade.resit', for: :resit
     .col-md-2
       = f.check_box :resit 
+  /.form-group
+  /  .col-sm-2.control-label
+  /    = f.label t 'exam.grade.marks_in_70'
+  /  .col-md-2
+  /    = f.text_field :marks_70, class: 'form-control', readonly: 'readonly'
   .form-group
     .col-sm-2.control-label
-      = f.label t 'exam.grade.finalscore', for: :total_marks
-    .col-md-2
-      = f.text_field :finalscore, class: 'form-control'
-      - if @grade.examweight.nil?
+      %label
+        =t 'exam.grade.finalscore'
         %font{:style=>"color: red;"}*
+    .col-md-2
+      = f.text_field :finalscore, class: 'form-control', readonly: 'readonly'
   .form-group
     .col-sm-2.control-label
-      = f.label t 'exam.grade.grading_id', for: :grading_id
+      %label
+        =t 'exam.grade.grading_id'
+        %font{:style=>"color: red;"}*
     .col-md-2
       = f.select :grading_id, DropDown::GRADE,{:prompt => t('select')}, class: 'form-control'
       /= f.select :grading_id, DropDown::GRADE, :prompt =>t('select'),:selected=>@grade.set_gred 
-      - if @grade.examweight.nil?
-        %font{:style=>"color: red;"}*
+
 

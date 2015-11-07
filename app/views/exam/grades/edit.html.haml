@@ -14,4 +14,4 @@
         .col-sm-offset-3.col-sm-1
           = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), exam_grade_path(@grade), :class => 'btn btn-default'
         .col-sm-2
-          = f.submit t('update'), class: "btn btn-primary"
+          = f.submit t('update'), :name =>:grade_submit_button, class: "btn btn-primary"

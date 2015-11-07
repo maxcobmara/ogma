@@ -1,10 +1,17 @@
 .row
-  .col-md-4= f.text_field :exam1name, class: 'form-control'
-  .col-md-4= f.text_field :exam1desc, class: 'form-control'
-  .col-md-2= f.text_field :examweight, class: 'form-control'
-  .col-md-2= f.text_field :exam1marks, :class=>'i1'
+  .col-md-3= f.text_field :exam1name, class: 'form-control'
+  .col-md-3= f.text_field :exam1desc, class: 'form-control'
+  .col-md-2
+    - if Programme.roots.where(course_type: 'Diploma').pluck(:id).include?(@grade.subjectgrade.root_id)
+      = f.text_field :examweight, value: 70, class: 'form-control', readonly: 'readonly'
+    - else
+      = f.text_field :examweight, value: 0, class: 'form-control'
+  /.col-md-2= f.text_field :exam1marks, :class=>'i1'
+  .col-md-2= f.text_field :exam1marks, :class=>'form-control'
+  .col-md-2= f.text_field :marks_70, value: @grade.total_summative, class: 'form-control', readonly: 'readonly'
 %br
 .row
-  - if @grade.examweight.nil?
+  .col-md-12
     %font{:style=>"color: red;"}* 
-    = t 'exam.grade.weightage_before_marks'
+    = t 'exam.grade.weightage_before_marks2'
+  %hr
