@@ -11,7 +11,7 @@ class Grade < ActiveRecord::Base
   has_many :scores, :dependent => :destroy
   accepts_nested_attributes_for :scores,:allow_destroy => true, :reject_if => lambda { |a| a[:description].blank? } #allow for destroy - 17June2013
   
-  before_save :check_summative_valid
+  before_save :check_formative_valid
   
   attr_accessor :intake_id, :marks_70, :formative_weight_sum, :formative_marks_sum
 
@@ -133,7 +133,7 @@ class Grade < ActiveRecord::Base
   
   private 
   
-    def check_summative_valid #add error msg in controller
+    def check_formative_valid #add error msg in controller
        if Programme.roots.where(course_type: 'Diploma').pluck(:id).include?(subjectgrade.root_id)
          if scores && scores.count > 0
            if scores.map(&:weightage).sum > 30 || scores.map(&:marks).sum > 30
