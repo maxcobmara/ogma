@@ -197,6 +197,7 @@ en:
         status: Status
         remark: Remark
       grade:
+        examweight: "Weightage (Summative)"
         exam1marks: "Marks (100%)"
         finalscore: Total Marks
     errors:

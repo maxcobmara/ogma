@@ -116,11 +116,16 @@ class Grade < ActiveRecord::Base
   
   def self.search2(search)
     common_subject = Programme.where('course_type=?','Commonsubject').pluck(:id)
+    posbasics=Programme.where(course_type: ['Pos Basik', 'Diploma Lanjutan', 'Pengkhususan'])
+    posbasics_subjects=[]
+    posbasics.each{|x|posbasics_subjects+= x.descendants.where(course_type: ['Subject', 'Commonsubject']).pluck(:id)}
     if search 
       if search == '0'
         @grades = Grade.all.order(:subject_id)
       elsif search == '1'
         @grades = Grade.where("subject_id IN (?)", common_subject).order(:subject_id)
+      elsif search =='2'
+        @grades = Grade.where("subject_id IN (?)", posbasics_subjects).order(:subject_id)
       else
         subject_of_programme = Programme.find(search).descendants.at_depth(2).map(&:id)
         @grades = Grade.where("subject_id IN (?)", subject_of_programme)

@@ -178,6 +178,7 @@ ms_MY:
         status: Status
         remark: Catatan
       grade:
+        examweight: "Wajaran (Sumatif)"
         exam1marks: "Markah (100%)"
         finalscore: Jumlah Akhir
     errors:

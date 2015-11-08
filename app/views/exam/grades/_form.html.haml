@@ -24,29 +24,42 @@
     .tab-content{style:"padding-top:1em"}
       .col-md-offset-2 
         %br
-        .form-group
-          .col-sm-2.control-label
-            =f.label t 'exam.grade.student_id', for: :student_id
-          .col-md-2
-            - if @grade.id.nil? 
-              = f.collection_select :student_id, @student_list, :id, :matrix_name, {:include_blank => t('select')},{class: 'selectpicker', "data-width"=>'360px'} 
-            - else
-              = f.collection_select :student_id, @student_list, :id, :matrix_name, {:include_blank => t('select'), :selected=>@grade.student_id},{class: 'selectpicker', "data-width"=>'360px'} 
+        /.form-group
+        /  .col-sm-2.control-label
+        /    =f.label t 'exam.grade.student_id', for: :student_id
+        /  .col-md-2
+        /    - if @grade.id.nil? 
+        /      = f.collection_select :student_id, @student_list, :id, :matrix_name, {:include_blank => t('select')},{class: 'selectpicker', "data-width"=>'360px'} 
+        /    - else
+        /      = f.collection_select :student_id, @student_list, :id, :matrix_name, {:include_blank => t('select'), :selected=>@grade.student_id},{class: 'selectpicker', "data-width"=>'360px'} 
         .form-group
           .col-sm-2.control-label
             = f.label t 'exam.grade.programme', for: :programme
-          .col-md-3
-            = f.collection_select :programme_id,  @programme_list, :id, :programme_list, {:include_blank => t('select'),:selected=> @programme.to_i}, {class: 'selectpicker', "data-width"=>'360px'} 
+          .col-md-4
+            /= f.collection_select :programme_id,  @programme_list, :id, :programme_list, {:include_blank => t('select'),:selected=> @programme.to_i}, {class: 'selectpicker', "data-width"=>'360px'} 
+            - if @grade.subject_id
+              - programme=@grade.subjectgrade.root.programme_list
+            /- else
+            /  - programme=@programme_detail if @programme_detail
+            = select_tag("grade[programme_id]", options_for_select(@programme_names, programme), :include_blank => (t 'select'),  class: 'form-control mandatory')
+            
         .form-group
           .col-sm-2.control-label
             = f.label t 'exam.grade.subject_id', for: :subject_id
-          .col-md-3
-            - if @programme.nil?
-              = f.collection_select :subject_id,  @subject_list, :id, :programme_subject, {:include_blank => t('select'), :selected=> @subject.to_i}, {class: 'selectpicker', "data-width"=>'360px'} 
-            - else
-              = f.collection_select :subject_id,  @subject_list, :id, :subject_list, {:include_blank => t('select'), :selected=> @subject.to_i}, {class: 'selectpicker', "data-width"=>'360px'} 
+          .col-md-4
+            /- if @programme.nil?
+            /  = f.collection_select :subject_id,  @subject_list, :id, :programme_subject, {:include_blank => t('select'), :selected=> @subject.to_i}, {class: 'selectpicker', "data-width"=>'360px'} 
+            /- else
+            /= f.collection_select :subject_id,  @subject_list, :id, :subject_list, {:include_blank => t('select'), :selected=> @subject.to_i}, {class: 'selectpicker', "data-width"=>'360px'} 
+            = select_tag("grade[subject_id]", grouped_options_for_select(@subjects, @grade.subject_id), :include_blank => (t 'select'), :class => 'form-control mandatory')
+        .form-group
+          .col-sm-2.control-label
+            =f.label t 'exam.grade.student_id', for: :student_id
+          .col-md-4
+            = select_tag("grade[student_id]", grouped_options_for_select(@students, @grade.student_id), :include_blank => (t 'select'), :class => 'form-control mandatory')
 
         /TODO: Preselect course in above condition
+        /programme_id - when preselected (diploma/posbasic lecturer) - change function will not works for subjects & students list
         
       #grade_details_edit.tab-pane.active
         .col-md-9.col-md-offset-1
@@ -119,7 +132,7 @@
               (100%)                
             .col-sm-2
               = t 'exam.grade.marks'
-              - if Programme.roots.where(course_type: 'Diploma').pluck(:id).include?(@grade.subjectgrade.root_id)
+              - if Programme.roots.where(course_type: 'Diploma').pluck(:id).include?(@programme.to_i)
                 (70%)
               %font{:style=>"color: red;"}*
             %hr

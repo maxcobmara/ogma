@@ -94,7 +94,7 @@ class Programme < ActiveRecord::Base
   end
   
   def self.programme_names
-    Programme.roots.map(&:programme_list)
+    Programme.roots.order('course_type, name ASC').map(&:programme_list)
   end
   
   #original - start
@@ -287,6 +287,59 @@ class Programme < ActiveRecord::Base
 #       @groupped_topic << [Programme.find(subjectid).subject_list, sb_topics]
 #     end
 #     @groupped_topic
+  end
+  
+  #GRADES SECTION
+  #use for Admin (Grades controller) - retrieve ALL subjects
+  def self.all_subjects_groupbyprogramme_grade
+    valid_subject=Exam.where(id: Exammark.get_valid_exams).pluck(:subject_id)
+    subjectby_programmelists=Programme.where(course_type: ["Subject", "Commonsubject"]).where(id: valid_subject).group_by{|x|x.root.programme_list}
+    @groupped_subject=[]
+    subjectby_programmelists.each do |programmelist, subjects|
+      pg_subjects=[[I18n.t('helpers.prompt.select_subject'), '']]
+      subjects.sort_by{|x|(x.code[5,2]).to_i}.each{|subject|pg_subjects << [subject.subject_list, subject.id]} 
+      @groupped_subject << [programmelist, pg_subjects]
+    end
+    @groupped_subject
+  end
+  
+  def self.subject_groupbyposbasiks2_grade
+    valid_subject=Exam.where(id: Exammark.get_valid_exams).pluck(:subject_id)
+    posbasik_ids=Programme.where(course_type: ['Diploma Lanjutan', 'Pos Basik', 'Pengkhususan']).pluck(:id)
+    @groupped_subject=[]
+    posbasik_ids.each do |pbid|
+      pg_subjects=[[I18n.t('helpers.prompt.select_subject'), '']]
+      programmelist=Programme.where(id: pbid)[0].programme_list
+      subjects=Programme.where(id: pbid)[0].descendants.at_depth(2).where(id: valid_subject)
+      subjects.each{|subject|pg_subjects << [subject.subject_list, subject.id]}
+      @groupped_subject << [programmelist, pg_subjects]
+    end
+    @groupped_subject
+  end
+  
+  def self.subject_groupbyoneprogramme2_grade(progid)
+    valid_subject=Exam.where(id: Exammark.get_valid_exams).pluck(:subject_id)
+    subjects=Programme.find(progid).descendants.where(course_type: "Subject").where(id: valid_subject)#.group_by{|x|x.root.programme_list}
+    @groupped_subject=[]
+    programmelist=Programme.find(progid).programme_list
+    #subjectby_programmelists.each do |programmelist, subjects|
+      pg_subjects=[[I18n.t('helpers.prompt.select_subject'), '']]
+      subjects.each{|subject|pg_subjects << [subject.subject_list, subject.id]}
+      @groupped_subject << [programmelist, pg_subjects]
+    #end
+    @groupped_subject
+  end
+  
+  def self.subject_groupbycommonsubjects2_grade
+    valid_subject=Exam.where(id: Exammark.get_valid_exams).pluck(:subject_id)
+    common_subjects=Programme.where('course_type=?','Commonsubject').where(id: valid_subject).group_by{|x|x.root.programme_list}
+    @groupped_subject=[]
+    common_subjects.each do |programmelist, subjects|
+      pg_subjects=[[I18n.t('helpers.prompt.select_subject'), '']]
+      subjects.each{|subject|pg_subjects <<  [subject.subject_list, subject.id] }  #[subject.subject_list]
+      @groupped_subject << [programmelist, pg_subjects]
+    end
+    @groupped_subject
   end
   
   private

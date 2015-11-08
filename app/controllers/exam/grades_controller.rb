@@ -34,12 +34,20 @@ class Exam::GradesController < ApplicationController
           programme_id ='1'
           @subjectlist_preselec_prog = common_subject_a
         elsif posbasics.include?(@lecturer_programme) && tasks_main!=nil
-          allposbasic_prog = Programme.where(course_type: posbasics).pluck(:name)  #Onkologi, Perioperating, Kebidanan etc
-          for basicprog in allposbasic_prog
-            lecturer_basicprog_name = basicprog if tasks_main.include?(basicprog)==true
-          end
-          programme_id=Programme.where(name: lecturer_basicprog_name, ancestry_depth: 0).first.id
-          @subjectlist_preselec_prog = Programme.where(id: programme_id).first.descendants.at_depth(2)
+	  ###
+	  if @current_user.roles.pluck(:authname).include?("programme_manager")
+	      @subjectlist_preselec_prog = Programme.where(course_type: posbasics).first.descendants.at_depth(2)
+	      programme_id='2'
+	  else
+	      
+	      allposbasic_prog = Programme.where(course_type: posbasics).pluck(:name)  #Onkologi, Perioperating, Kebidanan etc
+              for basicprog in allposbasic_prog
+                lecturer_basicprog_name = basicprog if tasks_main.include?(basicprog)==true
+              end
+              programme_id=Programme.where(name: lecturer_basicprog_name, ancestry_depth: 0).first.id
+              @subjectlist_preselec_prog = Programme.where(id: programme_id).first.descendants.at_depth(2)
+	  end
+	  ###
         else
           programme_id='0'
           @subjectlist_preselec_prog = Programme.at_depth(2) 
@@ -406,47 +414,41 @@ class Exam::GradesController < ApplicationController
         end
         unless @programme.nil? || @programme.count == 0
           @preselect_prog = @programme.first.id
-          @programme_list = @programme #a hash
-          @student_list = Student.where('course_id=?', @preselect_prog).order(name: :asc)
-          #subjects - only those with existing exampaper
-          @subject_list = Programme.find(@preselect_prog).descendants.at_depth(2).where('id IN(?)', Exam.where('id IN(?)', valid_exams).map(&:subject_id))
-          #subjects - ALL subjects
-          #@subject_list = Programme.find(@preselect_prog).descendants.at_depth(2)
+          @programme_names=Programme.where(id: @preselect_prog).map(&:programme_list)
+          @programme_detail=@programme.first.programme_list
+          @subjects=Programme.subject_groupbyoneprogramme2_grade(@preselect_prog)
+          @students=Student.groupby_oneprogramme(@preselect_prog)
         else
-        
           ####
           tasks_main = @current_user.userable.positions[0].tasks_main
           if @common_subjects.include?(@lecturer_programme)  # if @lecturer_programme == 'Commonsubject'
-            @programme_list = Programme.roots 
-            @student_list = Student.all.order(course_id: :asc)
-            #subjects - only those with existing exampaper
-            @subject_list = Programme.where('id IN(?)',common_subject_a.pluck(:id)).where('id IN(?)', Exam.where('id IN(?)', valid_exams).map(&:subject_id))
-            #subjects - ALL subjects
-            #@subject_list = common_subject_a
+            prog_ids=[]
+            Programme.where(id: common_subject_a).each{|x| prog_ids << x.root_id}
+            @programme_names=Programme.where(id: prog_ids.uniq).order('course_type, name ASC').map(&:programme_list)
+            @subjects=Programme.subject_groupbycommonsubjects2_grade #new only
+            @students=Student.groupby_programme
           elsif posbasics.include?(@lecturer_programme) && tasks_main!=nil
             allposbasic_prog = Programme.where(course_type: posbasics).pluck(:name)  #Onkologi, Perioperating, Kebidanan etc
             for basicprog in allposbasic_prog
               lecturer_basicprog_name = basicprog if tasks_main.include?(basicprog)==true
             end
-            @preselect_prog=Programme.where(name: lecturer_basicprog_name, ancestry_depth: 0).first.id
-            #@programme_list = Programme.where('id IN(?)', allbasic_prog.pluck(:id))
-            @programme_list = Programme.where('id IN(?)', Array(@preselect_prog))
-            @student_list = Student.where(course_id: @preselect_prog)
-            #subjects - only those with existing exampaper
-            @subject_list = Programme.where(id: @preselect_prog).first.descendants.at_depth(2).where('id IN(?)', Exam.where('id IN(?)', valid_exams).map(&:subject_id))
-            #subjects - ALL subjects
-            #@subject_list = Programme.where(id: @preselect_prog).first.descendants.at_depth(2)
+            if @current_user.roles.pluck(:authname).include?("programme_manager")
+              @programme_names=Programme.where(course_type: posbasics).map(&:programme_list)
+              @subjects=Programme.subject_groupbyposbasiks2_grade #new only
+              @students=Student.groupby_posbasics
+            else#all posbasic lecturer EXCEPT Ketua Program Pengkhususan
+              @preselect_prog=Programme.where(name: lecturer_basicprog_name, ancestry_depth: 0).first.id
+              @programme_names=Programme.where(id: @preselect_prog).map(&:programme_list)
+              @subjects=Programme.subject_groupbyoneprogramme2_grade(@preselect_prog) #new only
+              @students=Student.groupby_oneprogramme(@preselect_prog)
+            end
           else
-            @programme_list = Programme.roots
-            @student_list = Student.all.order(course_id: :asc)
-            #subjects - only those with existing exampaper
-            @subject_list = Programme.at_depth(2).where('id IN(?)', Exam.where('id IN(?)', valid_exams).map(&:subject_id))
-            #subjects - ALL subjects
-            #@subject_list = Programme.at_depth(2) 
+            @programme_names=Programme.programme_names
+            @subjects=Programme.all_subjects_groupbyprogramme_grade #new only
+	    @students=Student.groupby_programme
           end
           ####
         end
-        @subject_list= Programme.where('id IN (?) AND id IN (?)',@subject_list.map(&:id), Exam.where('id IN(?)', valid_exams).map(&:subject_id) )
       end
       ##
     end

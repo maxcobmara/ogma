@@ -2,7 +2,7 @@
   .col-md-3= f.text_field :exam1name, class: 'form-control'
   .col-md-3= f.text_field :exam1desc, class: 'form-control'
   .col-md-2
-    - if Programme.roots.where(course_type: 'Diploma').pluck(:id).include?(@grade.subjectgrade.root_id)
+    - if Programme.roots.where(course_type: 'Diploma').pluck(:id).include?(@programme.to_i)
       = f.text_field :examweight, value: 70, class: 'form-control', readonly: 'readonly'
     - else
       = f.text_field :examweight, value: 0, class: 'form-control'
