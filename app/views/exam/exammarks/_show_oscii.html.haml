@@ -14,7 +14,7 @@
     - if task==1
       = number_with_precision(@marks_for_questions[count2].student_mark, precision: 2)
     - elsif task==2
-      = text_field "exammark[marks_attributes][#{count2}]",:student_mark, :value=>number_with_precision(@exist_mark,:precision=>2) , :size=>2, :class=>'form-control'  
+      = text_field "exammark[marks_attributes][#{count2}]",:student_mark, :value=>number_with_precision(@exist_mark,:precision=>2) , :size=>2, :class=>'k1'
       /HIDDEN FIELD FOR ID OF EXISTING RECORD-edit existing record instead of creating a new one
       - if @exammark && @marks_for_questions.count!=0
         = hidden_field "exammark[marks_attributes][#{count2}]", :id, :value => @marks_for_questions[count2].id 

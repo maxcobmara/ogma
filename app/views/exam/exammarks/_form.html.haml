@@ -160,23 +160,42 @@
                             = render 'show_truefalse', :count=>count, :count2=>count2, :task=>2
                             - count2+=1
 
-                        
-/for use in below JS
-/- if @exammark.new_record? == false 
-/  = hidden_field_tag "exammark[trial1]", nil, :class=>'k1'
-/  = hidden_field_tag "exammark[trial2]", @examquestions.mcqq.count, :class=>'k1'
-/  = hidden_field_tag "exammark[trial3]", @examquestions.count 
-/  - if @exammark
-/    =hidden_field_tag "exammark[total_mcq_in_exammark_single]", @exammark.total_mcq 
-  
-/:javascript
-/$(document).ready(function(){
-/  $(".k1").keyup(function() {  
-/    var trial1 = $("#exammark_trial1").val();
-/    var trial2 = $("#exammark_trial2").val();
-/    var ansP2 = document.getElementById("exammark_trial3");
-/    ansP2.value = (trial1*1)+(trial2*1) 
-/  });
-/});
-            
+                      %tr
+                        %td{rowspan: 3, colspan: 3, align: "right"}= f.label t 'exam.exammark.total', for: :total
+                        %td= text_field_tag "total_marks_view", number_with_precision(@exammark.total_marks,precision:2), :size=> 5, :readonly=>true, :class => 'form-control'
+                        - @fullmarks = Exammark.fullmarks(@exammark.exam_id)
+                        %td='/ '+Exammark.fullmarks(@exammark.exam_id).to_s
+                      %tr
+                        %td= text_field_tag "marks_in_hundred", number_with_precision((@exammark.total_marks/Exammark.fullmarks(@exammark.exam_id))*100, precision: 2), :size=> 5, :readonly=>true, :class => 'form-control'
+                        %td (100.00 %)
+                      %tr
+                        %td= text_field_tag "marks_in_70", number_with_precision((@exammark.total_marks/Exammark.fullmarks(@exammark.exam_id))*100*0.7, precision: 2), :size=> 5, :readonly=>true, :class => 'form-control'
+                        %td (70.00 %)
+    
+=hidden_field_tag "exammark[trial3]", @exammark.marks.count
+=hidden_field_tag "exammark[trial4]", @fullmarks
+
+:javascript
+$(document).ready(function(){
+  $(".k1").keyup(function(){
+    var totalmcq = $("#total_mcq1").val();
+    var nonmcqcount = $("#exammark_trial3").val();
+    var fullmarks = $("#exammark_trial4").val();
+    
+    var totalmarksview = document.getElementById("total_marks_view");
+    var marksinhundred = document.getElementById("marks_in_hundred");
+    var marksin70 = document.getElementById("marks_in_70");
+    
+    a=0;
+    for (var j=0;j<nonmcqcount;j++)
+    {
+      var other = document.getElementById("exammark_marks_attributes_"+j+"_student_mark").value;
+      a=a*1+(other*1);
+    }
+    
+    totalmarksview.value = totalmcq*1+a;
+    marksinhundred.value = (totalmcq*1+a) / fullmarks * 100;
+    marksin70.value = (totalmcq*1+a) / fullmarks * 100 * 0.7;
+  });
+});            
 /display form for marks entering here (form display upon selection of exam (exam paper))

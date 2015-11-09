@@ -16,7 +16,7 @@
       - if task==1
         =number_with_precision(@exammark.total_mcq,precision: 2)  
       - elsif task==2
-        = text_field_tag "exammark[total_mcq]",number_with_precision(@exist_mark,:precision=>2) ,:id=>"total_mcq1" , :size=>2,  :class=>'form-control'
+        = text_field_tag "exammark[total_mcq]",number_with_precision(@exist_mark,:precision=>2) ,:id=>"total_mcq1" , :size=>2,  :class=>'k1'
     %td{:rowspan=>"#{@examquestions.mcqq.count}"}
       \/ 
       =number_with_precision(@mcq_totalmarks, precision: 2) 
@@ -37,7 +37,7 @@
       - if task==1
         =number_with_precision(@exammark.total_mcq,precision: 2)  
       - elsif task==2
-        = text_field_tag "exammark[total_mcq]",number_with_precision(@exist_mark,:precision=>2) ,:id=>"total_mcq1" , :size=>2,  :class=>'form-control'
+        = text_field_tag "exammark[total_mcq]",number_with_precision(@exist_mark,:precision=>2) ,:id=>"total_mcq1" , :size=>2,  :class=>'k1'
     %td
       \/ 
       =number_with_precision(@mcq_totalmarks, precision: 2) 

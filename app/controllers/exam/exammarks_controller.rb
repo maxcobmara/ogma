@@ -23,9 +23,10 @@ class Exam::ExammarksController < ApplicationController
       else
         tasks_main = @current_user.userable.positions[0].tasks_main
         common_subjects=['Sains Tingkahlaku','Sains Perubatan Asas', 'Komunikasi & Sains Pengurusan', 'Anatomi & Fisiologi', 'Komuniti']
-        if common_subjects.include?(@lecturer_programme) 
+        if common_subjects.include?(lecturer_programme) 
           programme_id ='1'
-          @exams_list_raw = Exam.where('id IN(?)', valid_exams).order(name: :asc, subject_id: :asc)
+          subject_ids=Programme.where(course_type: 'Commonsubject').pluck(:id)
+          @exams_list_raw = Exam.where('id IN(?)', valid_exams).where(subject_id: subject_ids).order(name: :asc, subject_id: :asc)
         elsif posbasiks.include?(lecturer_programme) && tasks_main!=nil
           allposbasic_prog = Programme.where(course_type: posbasiks).pluck(:name)  #Onkologi, Perioperating, Kebidanan etc
           for basicprog in allposbasic_prog
@@ -238,27 +239,41 @@ class Exam::ExammarksController < ApplicationController
     def set_students_exam_list
       valid_exams = Exammark.get_valid_exams
       position_exist = @current_user.userable.positions
+      posbasiks=['Pos Basik', 'Diploma Lanjutan', 'Pengkhususan']
+      common_subjects=['Sains Tingkahlaku','Sains Perubatan Asas', 'Komunikasi & Sains Pengurusan', 'Anatomi & Fisiologi', 'Komuniti']
       if position_exist  
         lecturer_programme = @current_user.userable.positions[0].unit
         unless lecturer_programme.nil?
-          programme = Programme.where('name ILIKE (?) AND ancestry_depth=?',"%#{lecturer_programme}%",0) if !(lecturer_programme=="Pos Basik" || lecturer_programme=="Diploma Lanjutan")
+          programme = Programme.where('name ILIKE (?) AND ancestry_depth=?',"%#{lecturer_programme}%",0) if posbasiks.include?(lecturer_programme)==false
         end
         unless programme.nil? || programme.count==0
           programme_id = programme.first.id
-          @students_list = Student.where(course_id: programme_id).order(matrixno: :asc)
+          @students_list = Student.where(course_id: programme_id).order('matrixno, name asc')
           subjects_ids = Programme.where(id: programme_id).first.descendants.at_depth(2).pluck(:id)
           @exams_list = Exam.where('subject_id IN(?) and id IN(?)', subjects_ids, valid_exams).order(name: :asc, subject_id: :asc)
         else
           tasks_main = @current_user.userable.positions[0].tasks_main
-          if (lecturer_programme == 'Pos Basik' || lecturer_programme == "Diploma Lanjutan") && tasks_main!=nil
+          if common_subjects.include?(lecturer_programme)  
+            subject_ids=Programme.where(course_type: 'Commonsubject').pluck(:id)
+            @exams_list = Exam.where('subject_id IN(?) and id IN(?)', subject_ids, valid_exams).order(name: :asc, subject_id: :asc)
+            @students_list=Student.all.order('matrixno, name asc')
+          elsif posbasiks.include?(lecturer_programme) && tasks_main!=nil
             allposbasic_prog = Programme.where('course_type=? or course_type=?', "Pos Basik", "Diploma Lanjutan").pluck(:name)  #Onkologi, Perioperating, Kebidanan etc
             for basicprog in allposbasic_prog
               lecturer_basicprog_name = basicprog if tasks_main.include?(basicprog)==true
             end
-            programme_id=Programme.where(name: lecturer_basicprog_name, ancestry_depth: 0).first.id
-            subject_ids = Programme.where(id: programme_id).first.descendants.at_depth(2).pluck(:id)
+            if @current_user.roles.pluck(:authname).include?("programme_manager")
+            else
+              programme_id=Programme.where(name: lecturer_basicprog_name, ancestry_depth: 0).first.id
+              subject_ids = Programme.where(id: programme_id).first.descendants.at_depth(2).pluck(:id)
+              @exams_list = Exam.where('subject_id IN(?) and id IN(?)', subject_ids, valid_exams).order(name: :asc, subject_id: :asc)
+              @students_list = Student.where(course_id: programme_id).order('matrixno, name asc')
+            end
+          else
+            #admin part
+            subject_ids=Programme.where(course_type: ['Subject', 'Commonsubject']).pluck(:id)
             @exams_list = Exam.where('subject_id IN(?) and id IN(?)', subject_ids, valid_exams).order(name: :asc, subject_id: :asc)
-            @students_list = Student.where(course_id: programme_id).order(matrixno: :asc)
+            @students_list=Student.all.order('matrixno, name asc')
           end
         end
       end

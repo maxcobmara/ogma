@@ -119,9 +119,7 @@
                   - count2+=1
                 
               %tr
-                %td &nbsp;
-                %td &nbsp;
-                %td
+                %td{rowspan: 3, colspan: 3, align: "right"}
                   %b=t 'exam.exammark.total'
                 %td
                   = number_with_precision(@exammark.total_marks, precision: 2)
@@ -131,5 +129,10 @@
                     =number_with_precision(@examquestions.all.map(&:marks).inject{|sum, x|sum+x}, precision: 2)
                   - else
                     =number_with_precision(@examtemplates.all.map(&:total_marks).inject{|sum, x|sum+x}, precision: 2)
-
+              %tr
+                %td=number_with_precision((@exammark.total_marks/Exammark.fullmarks(@exammark.exam_id))*100, precision: 2)
+                %td (100.00 %)
+              %tr
+                %td=number_with_precision((@exammark.total_marks/Exammark.fullmarks(@exammark.exam_id))*100*0.7, precision: 2)
+                %td (70.00 %)
         /################################################
