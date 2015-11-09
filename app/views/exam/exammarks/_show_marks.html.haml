@@ -129,10 +129,11 @@
                     =number_with_precision(@examquestions.all.map(&:marks).inject{|sum, x|sum+x}, precision: 2)
                   - else
                     =number_with_precision(@examtemplates.all.map(&:total_marks).inject{|sum, x|sum+x}, precision: 2)
-              %tr
-                %td=number_with_precision((@exammark.total_marks/Exammark.fullmarks(@exammark.exam_id))*100, precision: 2)
-                %td (100.00 %)
-              %tr
-                %td=number_with_precision((@exammark.total_marks/Exammark.fullmarks(@exammark.exam_id))*100*0.7, precision: 2)
-                %td (70.00 %)
+              - if @exammark.exampaper.name=='F'
+                %tr
+                  %td=number_with_precision((@exammark.total_marks/Exammark.fullmarks(@exammark.exam_id))*100, precision: 2)
+                  %td (100.00 %)
+                %tr
+                  %td=number_with_precision((@exammark.total_marks/Exammark.fullmarks(@exammark.exam_id))*100*0.7, precision: 2)
+                  %td (70.00 %)
         /################################################

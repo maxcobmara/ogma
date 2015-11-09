@@ -165,12 +165,14 @@
                         %td= text_field_tag "total_marks_view", number_with_precision(@exammark.total_marks,precision:2), :size=> 5, :readonly=>true, :class => 'form-control'
                         - @fullmarks = Exammark.fullmarks(@exammark.exam_id)
                         %td='/ '+Exammark.fullmarks(@exammark.exam_id).to_s
-                      %tr
-                        %td= text_field_tag "marks_in_hundred", number_with_precision((@exammark.total_marks/Exammark.fullmarks(@exammark.exam_id))*100, precision: 2), :size=> 5, :readonly=>true, :class => 'form-control'
-                        %td (100.00 %)
-                      %tr
-                        %td= text_field_tag "marks_in_70", number_with_precision((@exammark.total_marks/Exammark.fullmarks(@exammark.exam_id))*100*0.7, precision: 2), :size=> 5, :readonly=>true, :class => 'form-control'
-                        %td (70.00 %)
+
+                      - if @exammark.exampaper.name=='F'
+                        %tr
+                          %td= text_field_tag "marks_in_hundred", number_with_precision((@exammark.total_marks/Exammark.fullmarks(@exammark.exam_id))*100, precision: 2), :size=> 5, :readonly=>true, :class => 'form-control'
+                          %td (100.00 %)
+                        %tr
+                          %td= text_field_tag "marks_in_70", number_with_precision((@exammark.total_marks/Exammark.fullmarks(@exammark.exam_id))*100*0.7, precision: 2), :size=> 5, :readonly=>true, :class => 'form-control'
+                          %td (70.00 %)
     
 =hidden_field_tag "exammark[trial3]", @exammark.marks.count
 =hidden_field_tag "exammark[trial4]", @fullmarks
