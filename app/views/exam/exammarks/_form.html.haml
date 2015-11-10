@@ -164,25 +164,25 @@
                         %td{rowspan: 3, colspan: 3, align: "right"}= f.label t 'exam.exammark.total', for: :total
                         %td= text_field_tag "total_marks_view", number_with_precision(@exammark.total_marks,precision:2), :size=> 5, :readonly=>true, :class => 'form-control'
                         - @fullmarks = Exammark.fullmarks(@exammark.exam_id)
-                        %td='/ '+Exammark.fullmarks(@exammark.exam_id).to_s
+                        %td='/ '+@fullmarks.to_s
 
                       - if @exammark.exampaper.name=='F'
                         %tr
-                          %td= text_field_tag "marks_in_hundred", number_with_precision((@exammark.total_marks/Exammark.fullmarks(@exammark.exam_id))*100, precision: 2), :size=> 5, :readonly=>true, :class => 'form-control'
+                          %td= text_field_tag "marks_in_hundred", number_with_precision((@exammark.total_marks/@fullmarks)*100, precision: 2), :size=> 5, :readonly=>true, :class => 'form-control'
                           %td (100.00 %)
                         %tr
-                          %td= text_field_tag "marks_in_70", number_with_precision((@exammark.total_marks/Exammark.fullmarks(@exammark.exam_id))*100*0.7, precision: 2), :size=> 5, :readonly=>true, :class => 'form-control'
+                          %td= text_field_tag "marks_in_70", number_with_precision((@exammark.total_marks/@fullmarks)*100*0.7, precision: 2), :size=> 5, :readonly=>true, :class => 'form-control'
                           %td (70.00 %)
     
-=hidden_field_tag "exammark[trial3]", @exammark.marks.count
-=hidden_field_tag "exammark[trial4]", @fullmarks
+=hidden_field_tag "exammark[non_mcq]", @exammark.marks.count
+=hidden_field_tag "exammark[full_marks]", @fullmarks
 
 :javascript
 $(document).ready(function(){
   $(".k1").keyup(function(){
     var totalmcq = $("#total_mcq1").val();
-    var nonmcqcount = $("#exammark_trial3").val();
-    var fullmarks = $("#exammark_trial4").val();
+    var nonmcqcount = $("#exammark_non_mcq").val();
+    var fullmarks = $("#exammark_full_marks").val();
     
     var totalmarksview = document.getElementById("total_marks_view");
     var marksinhundred = document.getElementById("marks_in_hundred");

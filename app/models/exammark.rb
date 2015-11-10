@@ -17,10 +17,9 @@ class Exammark < ActiveRecord::Base
   end
   
   def self.totalmarks_search(query)
-    marksby_exammark = Mark.all.group_by(&:exammark_id)
     exammarks_ids=[]
-    marksby_exammark.each do |emid, mms|
-      exammarks_ids << emid if Exammark.where(id: emid).first.total_marks==query.to_i
+    Exammark.all.pluck(:id).each do |emid|
+      exammarks_ids << emid if Exammark.where(id: emid).first.total_marks.to_f==query.to_f
     end
     where('id IN(?)', exammarks_ids)
   end
