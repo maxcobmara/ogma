@@ -2,12 +2,21 @@
   .col-md-3= f.text_field :exam1name, class: 'form-control'
   .col-md-3= f.text_field :exam1desc, class: 'form-control'
   .col-md-2
-    - if Programme.roots.where(course_type: 'Diploma').pluck(:id).include?(@programme.to_i)
+    - diploma_ids=Programme.roots.where(course_type: 'Diploma').pluck(:id)
+    - if @grade.subject_id
+      - progid=Programme.where(id: @grade.subject_id).first.root_id
+    - elsif @programme
+      - progid=@programme.to_i
+    - if diploma_ids.include?(progid)
       = f.text_field :examweight, value: 70, class: 'form-control', readonly: 'readonly'
     - else
       = f.text_field :examweight, value: 0, class: 'form-control'
   /.col-md-2= f.text_field :exam1marks, :class=>'i1'
-  .col-md-2= f.text_field :exam1marks, :class=>'form-control'
+  - if @grade.exam1marks
+    - exammarks = @grade.exam1marks
+  - else
+    - exammarks = 0
+  .col-md-2= f.text_field :exam1marks, value: exammarks,  :class=>'form-control'
   .col-md-2= f.text_field :marks_70, value: @grade.total_summative, class: 'form-control', readonly: 'readonly'
 %br
 .row

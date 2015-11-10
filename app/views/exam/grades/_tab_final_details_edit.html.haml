@@ -20,7 +20,11 @@
         =t 'exam.grade.finalscore'
         %font{:style=>"color: red;"}*
     .col-md-2
-      = f.text_field :finalscore, class: 'form-control', readonly: 'readonly'
+      - if @grade.finalscore
+        - finalscor = @grade.finalscore
+      - else
+        - finalscor = 0
+      = f.text_field :finalscore, value: finalscor, class: 'form-control', readonly: 'readonly'
   .form-group
     .col-sm-2.control-label
       %label

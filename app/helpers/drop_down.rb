@@ -677,7 +677,7 @@ module DropDown
   #]
    E_TYPES = [
      #Displayed       stored in db
-        ["Select", 0],
+#         ["Select", 0],
         ["Test", 5],
         ["Formative Assesment / Mid Term Exam", 6],
         ["Student-Centered / On-going Accessment", 7],

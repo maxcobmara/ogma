@@ -4,6 +4,7 @@ class Grade < ActiveRecord::Base
   validates_uniqueness_of :subject_id, :scope => :student_id, :message => " - This student has already taken this subject"
   validates :exam1marks, :finalscore, numericality: {greater_than_or_equal_to: 0, less_than_or_equal_to: 100}
  # validates_presence_of :sent_date, :if => :sent_to_BPL?
+  validate :check_formative_valid
   
   belongs_to :studentgrade, :class_name => 'Student', :foreign_key => 'student_id'  #Link to Model student
   belongs_to :subjectgrade, :class_name => 'Programme', :foreign_key => 'subject_id'  #Link to Model subject
@@ -11,7 +12,7 @@ class Grade < ActiveRecord::Base
   has_many :scores, :dependent => :destroy
   accepts_nested_attributes_for :scores,:allow_destroy => true, :reject_if => lambda { |a| a[:description].blank? } #allow for destroy - 17June2013
   
-  before_save :check_formative_valid
+  #before_save :check_formative_valid
   
   attr_accessor :intake_id, :marks_70, :formative_weight_sum, :formative_marks_sum
 
@@ -139,15 +140,18 @@ class Grade < ActiveRecord::Base
   private 
   
     def check_formative_valid #add error msg in controller
+    if subject_id
        if Programme.roots.where(course_type: 'Diploma').pluck(:id).include?(subjectgrade.root_id)
          if scores && scores.count > 0
            if scores.map(&:weightage).sum > 30 || scores.map(&:marks).sum > 30
-             return false
+	     errors.add(:base, I18n.t('exam.grade.max_weightage_marks_30'))
+             #return false
            else
-             return true
+             #return true
            end
          end
        end
+    end
     end
   
 end

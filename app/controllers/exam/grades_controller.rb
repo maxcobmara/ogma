@@ -97,9 +97,28 @@ class Exam::GradesController < ApplicationController
     @grade = Grade.new(grade_params) 
     respond_to do |format|
       if @grade.save
-        flash[:notice] = t('exam.grade.title')+t('actions.created')
-        format.html { redirect_to exam_grade_path(@grade) }
-        format.xml  { render :xml => @grade, :status => :created, :location => @grade }
+        if Programme.roots.where(course_type: 'Diploma').pluck(:id).include?(@grade.subjectgrade.root_id) && (@grade.scores && @grade.scores.count > 0) && (@grade.scores.map(&:weightage).sum > 30 || @grade.scores.map(&:marks).sum > 30)
+#           if @grade.scores && @grade.scores.count > 0
+#             if @grade.scores.map(&:weightage).sum > 30 || @grade.scores.map(&:marks).sum > 30
+              flash[:notice]= t('exam.grade.max_weightage_marks_30')
+              format.html { render :action => "edit" }
+              format.xml  { head :ok }
+              flash.discard
+#             else
+#               #as formative scores entered are VALID, path to show
+#               format.html { redirect_to exam_grade_path(@grade) , :notice =>  t('exam.grade.title')+t('actions.created') }
+#               format.xml  { render :xml => @grade, :status => :created, :location => @grade } 
+#             end
+#           else
+#             #no need to check if formative scores not exist at all, path to show
+#             format.html { redirect_to exam_grade_path(@grade) , :notice =>  t('exam.grade.title')+t('actions.created') }
+#             format.xml  { render :xml => @grade, :status => :created, :location => @grade } 
+#           end
+        else
+          #no need to check at all if not Diploma, path to show
+          format.html { redirect_to exam_grade_path(@grade) , :notice =>  t('exam.grade.title')+t('actions.created') }
+          format.xml  { render :xml => @grade, :status => :created, :location => @grade } 
+        end
       else
         format.html { render :new }                                      
         format.xml  { render :xml => @grade.errors, :status => :unprocessable_entity }
@@ -128,13 +147,6 @@ class Exam::GradesController < ApplicationController
         end
         flash.discard
       else
-        if Programme.roots.where(course_type: 'Diploma').pluck(:id).include?(@grade.subjectgrade.root_id)
-         if @grade.scores && @grade.scores.count > 0
-           if @grade.scores.map(&:weightage).sum > 30 || @grade.scores.map(&:marks).sum > 30
-             flash[:notice]= t('exam.grade.max_weightage_marks_30')
-           end
-         end
-        end
         format.html { render :action => "edit" }
         format.xml  { render :xml => @grade.errors, :status => :unprocessable_entity }
       end
