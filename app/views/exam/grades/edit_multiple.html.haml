@@ -40,15 +40,24 @@
                 .col-sm-2.control-label
                   %b= t 'exam.grade.subject_id'
                 .col-md-5=@grades[0].subjectgrade.subject_list
+            - diploma_ids=Programme.roots.where(course_type: 'Diploma').pluck(:id)
+            - progid=Programme.where(id: @grades.first.subject_id).first.root_id
             .row
               .form-group
                 .col-sm-2.control-label
                   %b= t 'exam.grade.examweight'
                 .col-md-1
                   - @sum_weight = @grades.map(&:examweight).uniq.count if @grades.count >= 1 
-                  =select_tag "grade[summative_weightage]", options_for_select(DropDown::WEIGHTAGE, @grades[0].examweight.to_i), {class: 'selectpicker'}
+                  - if diploma_ids.include?(progid)
+                    = text_field_tag "grade[summative_weightage]", 70, class: 'form-control', readonly: 'readonly'
+                  - else
+                    /= f.text_field :examweight, value: 0, class: 'form-control'
+                    =select_tag "grade[summative_weightage]", options_for_select(DropDown::WEIGHTAGE, @grades[0].examweight.to_i), {class: 'selectpicker'}
                   - if @sum_weight>1 
                     %span{:style=>"color:red;"}*
+                - if diploma_ids.include?(progid)
+                  .col-md-1
+                    \%
             /.row
             /  .form-group
             /    .col-sm-2.control-label

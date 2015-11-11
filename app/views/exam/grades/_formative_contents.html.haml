@@ -14,7 +14,10 @@
             %br
             =h "("+score_x.weightage.to_i.to_s+"%)"
            
-      %th{:style=>"background-color:#E5ECE5; text-align:center;"}CA+MSE (30%)
+      %th{:style=>"background-color:#E5ECE5; text-align:center;"}
+        CA+MSE 
+        %font{color: "blue"} 
+          ="("+@grades[0].scores.sum(:weightage).to_s+"%) *"
       - if @subjects_of_grades > 1
         /if subject for selected grades is different
         %th{:style=>"background-color:#EEF9F9;text-align:center;"}= t 'exam.grade.examweight'
@@ -23,8 +26,14 @@
         %br
         %font{:style=>"font size=-2"} (Written Paper)
         (100%)
-      %th{:style=>"background-color:#FEE;text-align:center;"}Total Summative (70%)
-      %th{:style=>"background-color:#EEF;text-align:center;"}Total Marks
+      %th{:style=>"background-color:#FEE;text-align:center;"}
+        Total Summative 
+        %font{color: "blue"} 
+          ="("+@grades[0].examweight.to_s+"%) *"
+      %th{:style=>"background-color:#EEF;text-align:center;"}
+        Total Marks
+        %font{color: "blue"}
+          ="("+@grades[0].scores.sum(:weightage).to_s+"%+"+@grades[0].examweight.to_s+"%)*"
       %th BPL
       %th Exam?
       %th Carry Paper
@@ -61,9 +70,17 @@
         - else
           = hidden_field_tag "examweights[]", number_with_precision(grade.examweight,:precision=>2), :id=>"examweight"+no.to_s
         %td{:style=>"background-color:#FEE;text-align:center;"}
-          = text_field_tag "exam1markss[]", number_with_precision(grade.exam1marks,:precision=>2), :size=> 4,:id=>"finalexam"+no.to_s,:class=>'k1'
+          - latest_paper=Exam.where(subject_id: grade.subject_id).order(created_at: :desc).first.id
+          - student_exammark=Exammark.where(exam_id: latest_paper).where(student_id: grade.student_id)
+          - if student_exammark && student_exammark.count > 0
+            = text_field_tag "exam1markss[]", number_with_precision(grade.exam1marks,:precision=>2), :size=> 4,:id=>"finalexam"+no.to_s, class: 'form-control', readonly: 'readonly'
+          - else
+            = text_field_tag "exam1markss[]", number_with_precision(grade.exam1marks,:precision=>2), :size=> 4,:id=>"finalexam"+no.to_s,:class=>'k1'
         %td{:style=>"background-color:#FEE;text-align:center;"}
-          = text_field_tag "summatives[]", number_with_precision(grade.summative,:precision=>2), :size=> 4,:id=>"summative"+no.to_s 
+          - if student_exammark && student_exammark.count > 0
+            = text_field_tag "summatives[]", number_with_precision(grade.summative,:precision=>2), :size=> 4,:id=>"summative"+no.to_s, class: 'form-control', readonly: 'readonly'
+          - else
+            = text_field_tag "summatives[]", number_with_precision(grade.summative,:precision=>2), :size=> 4,:id=>"summative"+no.to_s 
         %td{:style=>"background-color:#EEF;text-align:center;"}
           = text_field_tag "finalscores[]", number_with_precision(grade.finalscore,:precision=>2), :size=> 4,:id=>"finalscore"+no.to_s, :readonly => "readonly", class: "form-control"
         %td
@@ -86,7 +103,7 @@
 /TRIAL      
 =hidden_field_tag "grade_count", @grades.count
 =hidden_field_tag "scores_count", @score_for_legend_sort_1.count
-
+=hidden_field_tag "grade_examweight", @grades[0].examweight
 :javascript
 
 $(document).ready(function(){
@@ -118,16 +135,17 @@ $(document).ready(function(){
   
   $(".k1").keyup(function(){
     var gradecount = $("#grade_count").val();
+    var summativeweightage = $("#grade_examweight").val(); 
+    
     for (var i=0;i<gradecount;i++){
       window["total_marks"+i]= document.getElementById("finalexam"+i).value;
       window["summative70"+i] = document.getElementById("summative"+i);
-      window["summative70"+i].value=(window["total_marks"+i])*0.70;
+      window["summative70"+i].value=(window["total_marks"+i])*(summativeweightage/100);
       
       window["cplus_val"+i] =  document.getElementById("caplusmse"+i).value;
       window["formative_summative"+i] = document.getElementById("finalscore"+i);
-      window["formative_summative"+i].value = (window["total_marks"+i])*0.70 +((window["cplus_val"+i])*1);
+      window["formative_summative"+i].value = (window["total_marks"+i])*(summativeweightage/100) +((window["cplus_val"+i])*1);
     }
   });
   
-
 });

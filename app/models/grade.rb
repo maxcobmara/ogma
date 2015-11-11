@@ -65,27 +65,27 @@ class Grade < ActiveRecord::Base
   
   def set_gred
     if finale <= 35 
-      "E"
+      11#"E"
     elsif finale <= 40
-      "D"
+      10#"D"
     elsif finale <= 45
-      "D+"
+      9#"D+"
     elsif finale <= 50
-      "C-"
+      8#"C-"
     elsif finale <= 55
-      "C"
+      7#"C"
     elsif finale <= 60
-      "C+"
+      6#"C+"
     elsif finale <= 65
-      "B-"
+      5#"B-"
     elsif finale <= 70
-      "B"
+      4#"B"
     elsif finale <= 75
-      "B+"
+      3#"B+"
     elsif finale <= 80
-      "A-"
+      2#"A-"
     else
-      "A"
+      1#"A"
     end
   end
   

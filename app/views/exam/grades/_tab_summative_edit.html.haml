@@ -1,26 +1,37 @@
 .row
   .col-md-3= f.text_field :exam1name, class: 'form-control'
   .col-md-3= f.text_field :exam1desc, class: 'form-control'
+  - diploma_ids=Programme.roots.where(course_type: 'Diploma').pluck(:id)
+  - if @grade.subject_id
+    - progid=Programme.where(id: @grade.subject_id).first.root_id
+  - elsif @programme
+    - progid=@programme.to_i
+  - if @grade.examweight
+    - sumweight=@grade.examweight
+  - else
+    - sumweight=0
   .col-md-2
-    - diploma_ids=Programme.roots.where(course_type: 'Diploma').pluck(:id)
-    - if @grade.subject_id
-      - progid=Programme.where(id: @grade.subject_id).first.root_id
-    - elsif @programme
-      - progid=@programme.to_i
     - if diploma_ids.include?(progid)
       = f.text_field :examweight, value: 70, class: 'form-control', readonly: 'readonly'
     - else
-      = f.text_field :examweight, value: 0, class: 'form-control'
+      = f.text_field :examweight, value: sumweight, class: 'form-control'
   /.col-md-2= f.text_field :exam1marks, :class=>'i1'
   - if @grade.exam1marks
-    - exammarks = @grade.exam1marks
+    - exammarks = number_with_precision(@grade.exam1marks, precision: 2)
   - else
     - exammarks = 0
-  .col-md-2= f.text_field :exam1marks, value: exammarks,  :class=>'form-control'
-  .col-md-2= f.text_field :marks_70, value: @grade.total_summative, class: 'form-control', readonly: 'readonly'
+  - latest_paper=Exam.where(subject_id: @grade.subject_id).order(created_at: :desc).first.id
+  - student_exammark=Exammark.where(exam_id: latest_paper).where(student_id: @grade.student_id)
+  .col-md-2
+    - if (student_exammark && student_exammark.count > 0) && diploma_ids.include?(progid)
+      = f.text_field :exam1marks, value: exammarks, class: 'form-control', readonly: 'readonly'
+    - else
+      = f.text_field :exam1marks, value: exammarks, class: 'form-control'
+  .col-md-2= f.text_field :marks_70, value: number_with_precision(@grade.total_summative, precision: 2), class: 'form-control', readonly: 'readonly'
 %br
 .row
   .col-md-12
-    %font{:style=>"color: red;"}* 
-    = t 'exam.grade.weightage_before_marks2'
+    - unless student_exammark && student_exammark.count > 0
+      %font{:style=>"color: red;"}* 
+      = t 'exam.grade.weightage_before_marks2'
   %hr
