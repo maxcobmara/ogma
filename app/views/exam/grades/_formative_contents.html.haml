@@ -14,7 +14,7 @@
             %br
             =h "("+score_x.weightage.to_i.to_s+"%)"
            
-      %th{:style=>"background-color:#E5ECE5; text-align:center;"}CA+MSE
+      %th{:style=>"background-color:#E5ECE5; text-align:center;"}CA+MSE (30%)
       - if @subjects_of_grades > 1
         /if subject for selected grades is different
         %th{:style=>"background-color:#EEF9F9;text-align:center;"}= t 'exam.grade.examweight'
@@ -22,7 +22,8 @@
         Final Exam
         %br
         %font{:style=>"font size=-2"} (Written Paper)
-      %th{:style=>"background-color:#FEE;text-align:center;"}Total Summative
+        (100%)
+      %th{:style=>"background-color:#FEE;text-align:center;"}Total Summative (70%)
       %th{:style=>"background-color:#EEF;text-align:center;"}Total Marks
       %th BPL
       %th Exam?
@@ -48,11 +49,11 @@
           - @score_for_legend_sort_1.each_with_index do |score_1, score_count|
             %td{:style=>"text-align:center;background-color:#EDFDEB;"}
               = text_field_tag "scores_attributes[#{score_count}][marks][]", number_with_precision(score_1.marks,:precision=>2), :size=> 4,:class=>'i1',:id=>"score_"+"#{no}"+"_"+score_count.to_s 
-              = hidden_field_tag "formweight", score_1.weightage, :id=>"formweight_"+"#{no}"+"_"+score_count.to_s,:size=>2,:class=>'i1'
+              = hidden_field_tag "formweight", score_1.weightage, :id=>"formweight_"+"#{no}"+"_"+score_count.to_s,:size=>2
         
         /23June2013-no changes here but pls refer js part
         %td{:style=>"background-color:#E5ECE5;text-align:center;"}
-          = text_field_tag "scores[]", number_with_precision(grade.score,:precision=>2), :size=> 4,:id=>"caplusmse"+no.to_s
+          = text_field_tag "scores[]", number_with_precision(grade.score,:precision=>2), :size=> 4,:id=>"caplusmse"+no.to_s, :readonly => "readonly", class: "form-control"
         - if @subjects_of_grades > 1 
           /if subject for selected grades is different
           %td{:style=>"background-color:#EEF9F9;text-align:center;"}
@@ -64,7 +65,7 @@
         %td{:style=>"background-color:#FEE;text-align:center;"}
           = text_field_tag "summatives[]", number_with_precision(grade.summative,:precision=>2), :size=> 4,:id=>"summative"+no.to_s 
         %td{:style=>"background-color:#EEF;text-align:center;"}
-          = text_field_tag "finalscores[]", number_with_precision(grade.finalscore,:precision=>2), :size=> 4,:id=>"finalscore"+no.to_s
+          = text_field_tag "finalscores[]", number_with_precision(grade.finalscore,:precision=>2), :size=> 4,:id=>"finalscore"+no.to_s, :readonly => "readonly", class: "form-control"
         %td
           /--asal-http://apidock.com/rails/ActionView/Helpers/FormTagHelper/check_box_tag
           /#= check_box_tag "sent_to_BPLs[#{no}]", true, :name => "sent_to_BPLs[]"
@@ -82,3 +83,51 @@
         %td{:style=>"text-align:center;"}= check_box_tag "carry_papers[#{no}]", true, grade.carry_paper
         %td{:style=>"text-align:center;"}=check_box_tag "resits[#{no}]", true, grade.resit
 
+/TRIAL      
+=hidden_field_tag "grade_count", @grades.count
+=hidden_field_tag "scores_count", @score_for_legend_sort_1.count
+
+:javascript
+
+$(document).ready(function(){
+  $(".i1").keyup(function(){  
+    
+    var gradecount = $("#grade_count").val();
+    var scorescount = $("#scores_count").val();
+    
+    var other2 = document.getElementById("score_"+0+"_"+0).value;
+    window["formative"+i] =  document.getElementById("caplusmse0");
+    window["formative"+i].value =  other2;
+    
+    for (var i=0;i<gradecount;i++)
+    {
+      window["cplus"+i] =  document.getElementById("caplusmse"+i);
+      var a = 0;
+      for (var k=0;k<scorescount;k++)
+      {
+        var other = document.getElementById("score_"+i+"_"+k).value;
+        a=a*1+(other*1);
+      }
+      window["cplus"+i].value=a;
+      window["summative70_val"+i] = document.getElementById("summative"+i).value;
+      window["formative_summative"+i] = document.getElementById("finalscore"+i);
+      window["formative_summative"+i].value = a+(window["summative70_val"+i])*1
+    }
+    
+  });
+  
+  $(".k1").keyup(function(){
+    var gradecount = $("#grade_count").val();
+    for (var i=0;i<gradecount;i++){
+      window["total_marks"+i]= document.getElementById("finalexam"+i).value;
+      window["summative70"+i] = document.getElementById("summative"+i);
+      window["summative70"+i].value=(window["total_marks"+i])*0.70;
+      
+      window["cplus_val"+i] =  document.getElementById("caplusmse"+i).value;
+      window["formative_summative"+i] = document.getElementById("finalscore"+i);
+      window["formative_summative"+i].value = (window["total_marks"+i])*0.70 +((window["cplus_val"+i])*1);
+    }
+  });
+  
+
+});

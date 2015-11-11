@@ -379,6 +379,7 @@ class Exam::GradesController < ApplicationController
           flash[:notice]=t('exam.grade.formative_summative_var_updated')
           format.html {render :action => 'edit_multiple'}
           format.xml  { head :ok }
+          flash.discard
         end
 
       end
