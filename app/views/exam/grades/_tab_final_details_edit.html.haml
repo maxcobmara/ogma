@@ -14,8 +14,9 @@
   /    = f.label t 'exam.grade.marks_in_70'
   /  .col-md-2
   /    = f.text_field :marks_70, class: 'form-control', readonly: 'readonly'
-  - latest_paper=Exam.where(subject_id: @grade.subject_id).order(created_at: :desc).first.id
-  - student_exammark=Exammark.where(exam_id: latest_paper).where(student_id: @grade.student_id)
+  - if @grade.subject_id && @grade.student_id
+    - latest_paper=Exam.where(subject_id: @grade.subject_id).order(created_at: :desc).first.id
+    - student_exammark=Exammark.where(exam_id: latest_paper).where(student_id: @grade.student_id)
   .form-group
     .col-sm-2.control-label
       %label

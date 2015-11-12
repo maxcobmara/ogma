@@ -52,8 +52,23 @@ class Exam::GradesController < ApplicationController
           programme_id='0'
           @subjectlist_preselec_prog = Programme.at_depth(2) 
         end
-        #subjects - only those with existing exampaper
-        @subjectlist_preselec_prog2_raw = Programme.where('id IN (?) AND id IN (?)',@subjectlist_preselec_prog.map(&:id), Exam.where('id IN(?)', valid_exams).map(&:subject_id) )
+
+        #subject no longer available for NEW multiple when ALL available Intakes already have at least ONE grade entry
+        @ssubject_grade_exist=[]
+        Grade.where(subject_id: @subjectlist_preselec_prog.map(&:id)).group_by(&:subject_id).each do |subjectid, grades|
+          progid=Programme.where(id: subjectid).first.root_id
+          exist_students=grades.map(&:student_id)
+          exist_intakes=Student.where(id: exist_students).pluck(:intake)
+          available_students=Student.where(course_id: progid).pluck(:id)
+          available_intakes=Student.where(id: available_students).pluck(:intake)
+          #when all intakes already hv at least ONE grade entry
+          if exist_intakes.count == available_intakes.count 
+            @ssubject_grade_exist << subjectid
+          end
+        end
+
+        #subjects - only those with existing exampaper & not even 1 grade exist
+        @subjectlist_preselec_prog2_raw = Programme.where('id IN (?) AND id IN (?)',@subjectlist_preselec_prog.map(&:id), Exam.where('id IN(?)', valid_exams).map(&:subject_id)).where.not(id: @ssubject_grade_exist)
         #subjects - ALL subjects
         #@subjectlist_preselec_prog2_raw = Programme.where('id IN (?)',@subjectlist_preselec_prog.map(&:id))
       end
@@ -155,10 +170,16 @@ class Exam::GradesController < ApplicationController
   
   def new_multiple
 #     @subjectid=params[:subjectid]
+    #@intakes_lt = @student_list.pluck(:intake).uniq.sort
     unless @subjectid.nil?
       @grades = Array.new(1) { Grade.new }
       @selected_subject = Programme.where(id: @subjectid).first.subject_list
       @selected_exam = Exam.where(subject_id: @subjectid).where(name: 'F').order(exam_on: :desc).first
+      existing_grade_students=Grade.where(subject_id: @subjectid).pluck(:student_id)
+      programme_id=Programme.where(id: @subjectid).first.root_id
+      existing_grade_intakes=Student.where(course_id: programme_id).where(id: existing_grade_students).pluck(:intake).uniq
+      @intakes_lt=Student.where(course_id: programme_id).where.not(intake: existing_grade_intakes).pluck(:intake).uniq.sort
+      @exist=existing_grade_intakes
     else
       flash[:notice] ='Select subject'
       redirect_to exam_grades_path
@@ -172,7 +193,10 @@ class Exam::GradesController < ApplicationController
     #@programme_id = params[:exammarks]["0"][:programme_id]                                  #required if render new_multiple
     #@selected_exam = Exam.find(@examid)                                                                   #required if render new_multiple
     @programme_id=Programme.where(id: @subjectid).first.root_id
-    @intakes_lt = Student.where('course_id=?',@programme_id).pluck(:intake).uniq    #required if render new_multiple
+    existing_grade_students=Grade.where(subject_id: @subjectid).pluck(:student_id)
+    existing_grade_intakes=Student.where(course_id: @programme_id).where(id: existing_grade_students).pluck(:intake).uniq
+      @intakes_lt=Student.where(course_id: @programme_id).where.not(intake: existing_grade_intakes).pluck(:intake).uniq.sort
+    #@intakes_lt = Student.where('course_id=?',@programme_id).pluck(:intake).uniq    #required if render new_multiple
                                                
     @grade = Grade.new
     #qcount = @exammark.get_questions_count(@examid)
@@ -184,7 +208,13 @@ class Exam::GradesController < ApplicationController
     @grades.each_with_index do |grade,ind|                                     
       grade.student_id = selected_student[ind].id
       grade.subject_id = @subjectid
-      grade.examweight = 70
+      if Programme.where(course_type: 'Diploma').pluck(:id).include?(@programme_id)
+        grade.examweight = 70 
+      else
+        grade.examweight = 0
+      end
+      grade.exam1marks=0
+      grade.finalscore=0
       #0.upto(qcount-1) do
       #  exammark.marks.build
       #end       
@@ -194,8 +224,8 @@ class Exam::GradesController < ApplicationController
       flash[:notice] = t('exam.exammark.multiple_created')
       render :action => 'edit_multiple', :grade_ids =>@grades.map(&:id)
     else                                                                      
-      flash[:notice] = t('exam.exammark.marks_intakes_exist')
-      render :action => 'new_multiple'
+      flash[:notice] = t('exam.grade.grades_intakes_exist')
+      render :action => 'new_multiple', params[:grades]["0"][:intake_id] => selected_intake, params[:grades]["0"][:subject_id] => @subjectid
     end
     ##end sample from Exammarks
   end
@@ -348,7 +378,7 @@ class Exam::GradesController < ApplicationController
             scores[score_count].weightage = params[:scores_attributes][score_count.to_s][:weightage]
             scores[score_count].save
           end
-          grade.examweight = @summative_weightage 
+          #grade.examweight = @summative_weightage #this shall ignored prev saved value
           grade.save
         end
 
@@ -481,7 +511,6 @@ class Exam::GradesController < ApplicationController
         @student_list = Student.where(course_id: @preselect_prog).order(name: :asc)
         @subject_list = Programme.where(id: @preselect_prog).first.descendants.at_depth(2)
         #@intake_list = @student_list.group_by{|l|l.intake}
-	@intakes_lt = @student_list.pluck(:intake).uniq.sort
       else
         if common_subjects.include?(@lecturer_programme)
            #@student_list = Student.all 
@@ -497,7 +526,6 @@ class Exam::GradesController < ApplicationController
 	 if @subjectid
             @dept_unit = Programme.where(id: @subjectid).first.root
             @dept_unit_prog = @dept_unit.programme_list
-            @intakes_lt = Student.where('course_id=?',@dept_unit.id).pluck(:intake).uniq.sort #must be among the programme of exampaper coz even common subject...
             @programme_id=@dept_unit.id
           end
       end

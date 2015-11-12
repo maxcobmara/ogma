@@ -78,6 +78,11 @@
             = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), exam_grades_path, :class => 'btn btn-default'
           .col-sm-2
             = submit_tag t('update'), :name => :grade_submit_button, class: "btn btn-primary"         
+- elsif @subjects_of_grades==0
+  .row
+    .col-md-12
+      .alert.alert-info
+        = t 'exam.grade.no_grades_created_sebenarnya'
 - else
   .row
     .col-md-12
