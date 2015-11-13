@@ -2421,15 +2421,18 @@ en:
       new: New Examination Result
       edit: Edit Examination Result
       exam_slip: Examination Result Slip
-      programme_id: Program
+      programme_id: Programme
       examdts: Exam Date Start
       examdte: Exam Date End
+      intake: Intake
       total: Total
       remark: Remark
       details: Examination Details
       result_details: Result Details
       details2: Examination Result
       no_student: "No students have taken this programme for selected semester and examination dates."
+      update_resultlines: "Enter student result details (PNGK and Remark) and click 'Update' to save data."
+      no_student: "Selected Programme and Semester has no student. Add student data accordingly."
       record_must_unique: ", Programme and Examination Date has already been taken. Only 1 record permitted for each examination result. "
       all_compulsory: "All fields are compulsory."
       student: Student
@@ -2440,7 +2443,6 @@ en:
       failed: Failed
       excellent: Excellent
       distinction: Distinction
-      intake: Intake
     
     evaluate_course:
       title: "Course Evaluation (Lecturer)"

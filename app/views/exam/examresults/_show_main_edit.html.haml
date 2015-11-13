@@ -8,14 +8,14 @@
     .col-sm-2.control-label
       %b Semester
     .col-md-8
-      = f.select :semester, DropDown::SEMESTER,{:include_blank => t('select')}, {class: 'mandatory selectpicker', "data-width"=>'150px'}
+      = f.select :semester, DropDown::SEMESTER,{:include_blank => t('select')}, {class: 'mandatory selectpicker', "data-width"=>'250px'}
   .form-group
     .col-sm-2.control-label
       = f.label t 'exam.examresult.examdts'
-    .col-md-3
+    .col-md-2
       = f.text_field :examdts, class: 'form-control mandatory date_picker'
   .form-group
     .col-sm-2.control-label
       = f.label t 'exam.examresult.examdte'
-    .col-md-3
+    .col-md-2
       = f.text_field :examdte, class: 'form-control mandatory date_picker'

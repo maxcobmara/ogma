@@ -100,8 +100,16 @@ class Exam::ExamresultsController < ApplicationController
     @examresult = Examresult.new(examresult_params)    #(params[:examresult])
     respond_to do |format|
       if @examresult.save
-        format.html{ redirect_to(exam_examresult_path(@examresult), :notice => t('exam.examresult.title2')+" "+t('actions.created')  ) }
-        format.xml  { render :xml => @examresult, :status => :created, :location => @examresult }
+        students=@examresult.retrieve_student
+        if students
+          flash[:notice]=t('exam.examresult.title2')+" "+t('actions.created')+" "+t('exam.examresult.update_resultlines')
+          format.html {render :action => "edit"}
+          format.xml  { head :ok }
+          flash.discard
+        else
+          format.html{ redirect_to(exam_examresult_path(@examresult), :notice => t('exam.examresult.title2')+" "+t('actions.created')+" "+t('exam.examresult.no_student')  ) }
+          format.xml  { render :xml => @examresult, :status => :created, :location => @examresult }
+        end
       else
          format.html { render :action => "new" }
          format.xml  { render :xml => @examresult.errors, :status => :unprocessable_entity }
@@ -109,48 +117,6 @@ class Exam::ExamresultsController < ApplicationController
     end
   end
  
-#     programmeid=params[:examresult][:programme_id]
-#     sem=params[:examresult][:semester]
-#     exammonth=(params[:examresult][:examdts]).to_date.month if !(params[:examresult][:examdts]).to_date.nil?
-#     examyear=(params[:examresult][:examdts]).to_date.year if !(params[:examresult][:examdts]).to_date.nil?
-#     unless programmeid.blank? || programmeid.nil?
-#       unless sem.blank? || sem.nil?
-#         unless examyear.blank? || examyear.nil? || exammonth.blank? || exammonth.nil?
-#           @intake = Examresult.set_intake_group(examyear, exammonth, sem, @current_user.userable.positions)
-#           @subjects = Examresult.get_subjects(programmeid, sem)
-#           @students = Examresult.get_students(programmeid, examyear, exammonth, sem, @current_user.userable.positions)
-#         end
-#       end
-#     end
-#     respond_to do |format|
-#       if @students && @students.count > 0
-#         if @examresult.save
-#           flash[:notice]=t('exam.examresult.title2')+" "+t('actions.created')+" "+t('exam.examresult.update_resultlines')
-#           format.html {render :action => "edit"}
-#           format.xml  { head :ok }
-#           flash.discard
-#            #format.html { redirect_to(exam_examresult_path(@examresult), :notice => t('exam.examresult.title2')+" "+t('created')) }
-#             #format.xml  { render :xml => @examresult, :status => :created, :location => @examresult }
-#         else
-#           flash[:notice]='Error arise!'
-#           redirect_to  exam_examresults_path
-#         end
-#       else
-#         if @students && @students.count==0
-#           flash[:notice]=t('exam.examresult.no_student')
-#           format.html { render :action => "new" }
-#           format.xml  { render :xml => @examresult.errors, :status => :unprocessable_entity }
-#           flash.discard
-#         else
-#           flash[:notice]=t('exam.examresult.all_compulsory')
-#           format.html { render :action => "new" }
-#           format.xml  { render :xml => @examresult.errors, :status => :unprocessable_entity }
-#           flash.discard
-#         end
-#       end
-#     end
-    
-
 
   # PUT /examresults/1
   # PUT /examresults/1.xml
@@ -219,7 +185,7 @@ class Exam::ExamresultsController < ApplicationController
         @search2 = Resultline.search(params[:q])
         @resultlines = @search2.result.search2(programme_id)
         @resultlines = @resultlines.page(params[:page]||1)
-	@progid=programme_id
+        @progid=programme_id
       end
     end
     
@@ -255,19 +221,9 @@ class Exam::ExamresultsController < ApplicationController
     end
     
     def set_edit_update_data
-#       programmeid=@examresult.programme_id
-#       sem=@examresult.semester
-#       exammonth=@examresult.examdts.month
-#       examyear=@examresult.examdts.year
-#       unless programmeid.blank? || programmeid.nil?
-#         unless sem.blank? || sem.nil?
-#           unless examyear.blank? || examyear.nil? || exammonth.blank? || exammonth.nil?
-            @intake = @examresult.intake_group #Examresult.set_intake_group(examyear, exammonth, sem, @current_user.userable.positions)
-            @subjects = @examresult.retrieve_subject #Examresult.get_subjects(programmeid, sem)
-            @students = @examresult.retrieve_student #Examresult.get_students(programmeid, examyear, exammonth, sem, @current_user.userable.positions)
-#           end
-#         end
-#       end
+      @intake = @examresult.intake_group 
+      @subjects = @examresult.retrieve_subject 
+      @students = @examresult.retrieve_student 
     end
     
     # Never trust parameters from the scary internet, only allow the white list through.

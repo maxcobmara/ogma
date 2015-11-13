@@ -48,15 +48,6 @@ class Examresult < ActiveRecord::Base
     Programme.where(id: @subject_ids)
   end
   
-#   def self.get_subjects(programme_id,semester)#,examstartdate)
-#       parent_sem = Programme.find(programme_id).descendants.at_depth(1)
-#       parent_sem.each do |sem|
-#         @subjects_ids = sem.children.map(&:id) if sem.code == semester.to_s   #refer to semester no 
-#       end
-#       subjects = Programme.where(id: @subjects_ids)
-#       subjects
-#   end 
-  
   def intake_group
     examyear=examdts.year 
     exammonth=examdts.month
@@ -94,7 +85,7 @@ class Examresult < ActiveRecord::Base
       elsif (semester.to_i-1) % 2 != 0
         intake_month = '01'
         if (semester.to_i+1)/2.0 > 3  
-          intake_year = examyear.to_i-((semester.to_i+1)%2)-2
+          intake_year = examyear.to_i-((semester.to_i+1)%2)-1#-2
         elsif (semester.to_i+1)/2.0 > 2
           intake_year = examyear.to_i-((semester.to_i+1)%2)#-1
         elsif (semester.to_i+1)/2.0 > 1
@@ -104,121 +95,10 @@ class Examresult < ActiveRecord::Base
     end
     intake_year.to_s+'-'+intake_month+'-01'  
   end
-  
-  #14March2013 - rev 18June2013
-#   def self.set_intake_group(examyear,exammonth,semester, posts)    #semester refers to semester of selected subject - subject taken by student of semester???
-#        
-#     @anc_depth = posts.first.ancestry_depth
-#     @multi_position = posts
-#         @ifmulti_position = @multi_position.count 
-#         if @anc_depth==2 
-#           @dept_unit = posts.first.unit
-#         elsif @anc_depth < 2 
-#         	if @ifmulti_position > 1 
-#         		@dept_unit = Position.where(['staff_id=? and ancestry_depth=?', posts.first.staff_id,2]).unit 
-#         	end 
-#         	if @anc_depth==1 
-#         		@dept_unit = posts.first.unit
-#         	end 
-#         elsif @anc_depth > 2
-#         	if @ifmulti_position > 1 
-#         		@multi_position.each do |x|
-#         			if x.parent.id > 6 && x.parent.id < 17
-#         			  @dept_unit = x.parent.unit
-#         			end
-#         		end
-#         	else
-#         		@dept_unit =posts.first.ancestors.at_depth(2)[0].unit 
-# 			    # Login.current_login.staff.position.ancestors.at_depth(2)[0].unit 
-#         	  if @dept_unit == "Pos Basik" && @anc_depth == 3
-#         			@dept_unit = posts.first.unit #Login.current_login.staff.position.unit 
-#         	 end 
-#         end 
-#         #####--Pos Basik / Diploma Lanjutan / Kebidanan -- 1Nov2015 -- note latest format - Position for Pos Basik / Diploma Lanjutan / Pengkhususan
-#         if ['Pos Basik', 'Kebidanan', 'Diploma Lanjutan'].include?(@dept_unit)
-#            maintask=Login.current_login.staff.position.tasks_main
-#            @dept_unit="Kebidanan" if maintask.include?('Kebidanan')
-#         end
-#         #####
-#        end
-#        
-#        @current_login_roles=[]
-#        #Login.current_login.roles.each do |role|
-#        User.where(userable_id: posts.first.staff_id).first.roles.each do |role|
-#        	  @current_login_roles<< role.id
-#        end 
-# 
-#      
-#      #if @current_login_roles.include?(2)
-#         
-#         #--------------------
-#         
-#          if (@dept_unit && @dept_unit == "Kebidanan" && exammonth.to_i <= 9) || (@dept_unit && @dept_unit != "Kebidanan" && exammonth.to_i <= 7)|| (@current_login_roles.include?(2) && exammonth.to_i <= 9)||(@dept_unit=="Ketua Unit Penilaian & Kualiti" && exammonth.to_i <= 9) #|| (@current_login_roles.include?(2) && exammonth.to_i <= 7) #(@dept_unit && @dept_unit == "Teknologi Maklumat" && exammonth.to_i <= 9)                                         # for 1st semester-month: Jan-July, exam should be between Feb-July
-#             @current_sem = 1 
-#             @current_year = examyear 
-#             if (semester.to_i-1) % 2 == 0                        					      # modulus-no balance - semester genab
-#               @intake_year = @current_year.to_i-((semester.to_i-1)/2)   ###########EXAM MAY - FISIOTERAPI / EXAM OGOS - KEBIDANAN Thn 1, Sem 1
-#               @intake_sem = @current_sem 
-#             elsif (semester.to_i-1) % 2 != 0                      				      # modulus-with balance - semester ganjil
-#               #29June2013-------------------OK
-#               if (semester.to_i+1)/2.0 > 3  
-#                 @intake_year = @current_year.to_i-((semester.to_i+1)%2)-2
-#               elsif (semester.to_i+1)/2.0 > 2
-#                 @intake_year = @current_year.to_i-((semester.to_i+1)%2)-1
-#               elsif (semester.to_i+1)/2.0 > 1
-#                 @intake_year = @current_year.to_i-((semester.to_i+1)%2)  ###########EXAM FEB - KEBIDANAN Thn 1, sem 2
-#               end  
-#               #29June2013-------------------
-#               @intake_sem = @current_sem + 1 
-#       			end 
-#           elsif (@dept_unit&& @dept_unit == "Kebidanan" && exammonth.to_i > 9) || (@dept_unit && @dept_unit != "Kebidanan" && exammonth.to_i > 7) || (@current_login_roles.include?(2) && exammonth.to_i > 7)||(@dept_unit=="Ketua Unit Penilaian & Kualiti" && exammonth.to_i > 7)                                   # 2nd semester starts on July-Dec- exam should be between August-Dec
-#             @current_sem = 2 
-#             @current_year = examyear
-#             if (semester.to_i-1) % 2 == 0  
-#               @intake_year = @current_year.to_i-((semester.to_i-1)/2) 				
-#               @intake_sem = @current_sem 
-#             elsif (semester.to_i-1) % 2 != 0                   					        # modulus-with balance
-#               #@intake_year = @current_year.to_i-((semester.to_i+1)%2)         #@intake_year = @current_year.to_i-((semester.to_i-1)/2).to_i      # (hasil bahagi bukan baki..)..cth semester 6 
-#               #29June2013-------------------
-#               if (semester.to_i+1)/2.0 > 3  
-#                 @intake_year = @current_year.to_i-((semester.to_i+1)%2)-2
-#               elsif (semester.to_i+1)/2.0 > 2
-#                 @intake_year = @current_year.to_i-((semester.to_i+1)%2)#-1        ##############EXAM NOVEMBER - FIFIOTERAPI - THN 2, SEM 2
-#               elsif (semester.to_i+1)/2.0 > 1
-#                 #@intake_year = @current_year.to_i-((semester.to_i+1)%2)
-# 		@intake_year= @current_year ######EXAM NOVEMBER - FISIOTERAPI - THN 1, SEM 2
-#               end  
-#               #29June2013-------------------
-#               
-#               @intake_sem = @current_sem - 1
-#             end 
-#           end
-#       		#return @intake_sem.to_s+'/'+@intake_year.to_s   #giving this format -->  2/2012  --> previously done on examresult(2012)
-# 
-#       		if @intake_sem == 1 
-#       		    @intake_month = '03' if( @dept_unit && @dept_unit == "Kebidanan") 
-#       		    @intake_month = '01' if @dept_unit && @dept_unit != "Kebidanan"  
-#       		    @intake_month = '03' if(@dept_unit && @current_login_roles.include?(2) && exammonth.to_i <=9 && exammonth.to_i > 7) 
-#       		    @intake_month = '03' if(@dept_unit=="Ketua Unit Penilaian & Kualiti" && exammonth.to_i <=9 && exammonth.to_i > 7)
-#       		elsif @intake_sem == 2
-#       		    @intake_month = '03' if (@dept_unit && @dept_unit == "Kebidanan") 
-#       		    @intake_month = '01' if @dept_unit && @dept_unit != "Kebidanan"
-#          		  @intake_month = '03' if(@dept_unit && @current_login_roles.include?(2) && exammonth.to_i >1 && exammonth.to_i <=3 ) 
-#       		    @intake_month = '03' if(@dept_unit=="Ketua Unit Penilaian & Kualiti" && exammonth.to_i >1 && exammonth.to_i <=3)    		  
-#       		end
-# 
-#       		return @intake_year.to_s+'-'+@intake_month+'-01'  #giving this format -->  2/2012
-#       end
-#       #14March2013
  
   def retrieve_student
     Student.where(course_id: programme_id).where('intake=?', intake_group)
   end
-      
-#   def self.get_students(programme_id,examyear,exammonth,semester, posts)
-#     @combine = self.set_intake_group(examyear,exammonth,semester, posts)
-#     Student.where(course_id: programme_id).where('intake=?', @combine)
-#   end
   
   def self.total(finale_all,subject_credits)
     @finaletotal = 0.00
