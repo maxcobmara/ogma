@@ -10,3 +10,12 @@
           
   %dt=t 'exam.examresult.examdte'
   %dd=h l(@examresult.examdte)
+  
+  %dt=t 'exam.examresult.intake'
+  %dd
+    /=Examresult.set_intake_group(@examresult.examdts.year, @examresult.examdts.month, @examresult.semester, @current_user.userable.positions)
+    - intake=@examresult.intake_group
+    - iyear=intake[0,4].to_i
+    - imonth=intake[5,2].to_i
+    - iday=intake[8,2].to_i
+    =Date.new(iyear, imonth, iday).try(:strftime, '%b %Y')

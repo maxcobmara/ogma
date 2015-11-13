@@ -14,8 +14,7 @@
       #exam_details.tab-pane.active
       %br
       = render 'show_main'
-      =Examresult.set_intake_group(@examresult.examdts.year, @examresult.examdts.month, @examresult.semester, @current_user.userable.positions)
-
+      
       #result_details.tab-pane
         %br
         = render 'show_results'

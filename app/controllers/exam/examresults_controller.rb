@@ -255,19 +255,19 @@ class Exam::ExamresultsController < ApplicationController
     end
     
     def set_edit_update_data
-      programmeid=@examresult.programme_id
-      sem=@examresult.semester
-      exammonth=@examresult.examdts.month
-      examyear=@examresult.examdts.year
-      unless programmeid.blank? || programmeid.nil?
-        unless sem.blank? || sem.nil?
-          unless examyear.blank? || examyear.nil? || exammonth.blank? || exammonth.nil?
-            @intake = Examresult.set_intake_group(examyear, exammonth, sem, @current_user.userable.positions)
-            @subjects = Examresult.get_subjects(programmeid, sem)
-            @students = Examresult.get_students(programmeid, examyear, exammonth, sem, @current_user.userable.positions)
-          end
-        end
-      end
+#       programmeid=@examresult.programme_id
+#       sem=@examresult.semester
+#       exammonth=@examresult.examdts.month
+#       examyear=@examresult.examdts.year
+#       unless programmeid.blank? || programmeid.nil?
+#         unless sem.blank? || sem.nil?
+#           unless examyear.blank? || examyear.nil? || exammonth.blank? || exammonth.nil?
+            @intake = @examresult.intake_group #Examresult.set_intake_group(examyear, exammonth, sem, @current_user.userable.positions)
+            @subjects = @examresult.retrieve_subject #Examresult.get_subjects(programmeid, sem)
+            @students = @examresult.retrieve_student #Examresult.get_students(programmeid, examyear, exammonth, sem, @current_user.userable.positions)
+#           end
+#         end
+#       end
     end
     
     # Never trust parameters from the scary internet, only allow the white list through.

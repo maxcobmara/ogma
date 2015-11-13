@@ -2381,6 +2381,7 @@ ms_MY:
       failed: Gagal
       excellent: Cemerlang
       distinction: Kepujian
+      intake: Ambilan
     
     evaluate_course:
       title: "Penilaian Program (Pengajar)"

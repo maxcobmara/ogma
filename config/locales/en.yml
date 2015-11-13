@@ -2440,7 +2440,7 @@ en:
       failed: Failed
       excellent: Excellent
       distinction: Distinction
-
+      intake: Intake
     
     evaluate_course:
       title: "Course Evaluation (Lecturer)"

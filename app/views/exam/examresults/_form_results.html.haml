@@ -10,7 +10,8 @@
         %th{rowspan: 2}=t('student.icno')
         - kebidanan = Programme.roots.where('name ILIKE(?)', '%Kebidanan%').first.id
         - kejururawatan = Programme.roots.where('name ILIKE(?)', '%Kejururawatan%').first.id
-        - @subjects = Examresult.get_subjects(@examresult.programme_id,@examresult.semester)
+        /- @subjects = Examresult.get_subjects(@examresult.programme_id,@examresult.semester)
+        - @subjects = @examresult.retrieve_subject
         - @subject_credits=[]
         - for subject in @subjects
           - @subject_credits << subject.credits
