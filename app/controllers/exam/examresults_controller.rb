@@ -97,49 +97,60 @@ class Exam::ExamresultsController < ApplicationController
   # POST /examresults
   # POST /examresults.xml
   def create
-    @examresult = Examresult.new(params[:examresult])
-    programmeid=params[:examresult][:programme_id]
-    sem=params[:examresult][:semester]
-    exammonth=(params[:examresult][:examdts]).to_date.month if !(params[:examresult][:examdts]).to_date.nil?
-    examyear=(params[:examresult][:examdts]).to_date.year if !(params[:examresult][:examdts]).to_date.nil?
-    unless programmeid.blank? || programmeid.nil?
-      unless sem.blank? || sem.nil?
-        unless examyear.blank? || examyear.nil? || exammonth.blank? || exammonth.nil?
-          @intake = Examresult.set_intake_group(examyear, exammonth, sem, @current_user.userable.positions)
-          @subjects = Examresult.get_subjects(programmeid, sem)
-          @students = Examresult.get_students(programmeid, examyear, exammonth, sem, @current_user.userable.positions)
-        end
-      end
-    end
+    @examresult = Examresult.new(examresult_params)    #(params[:examresult])
     respond_to do |format|
-      if @students && @students.count > 0
-        if @examresult.save
-          flash[:notice]=t('exam.examresult.title2')+" "+t('actions.created')+" "+t('exam.examresult.update_resultlines')
-          format.html {render :action => "edit"}
-          format.xml  { head :ok }
-          flash.discard
-           #format.html { redirect_to(exam_examresult_path(@examresult), :notice => t('exam.examresult.title2')+" "+t('created')) }
-            #format.xml  { render :xml => @examresult, :status => :created, :location => @examresult }
-        else
-          flash[:notice]='Error arise!'
-          redirect_to  exam_examresults_path
-        end
+      if @examresult.save
+        format.html{ redirect_to(exam_examresult_path(@examresult), :notice => t('exam.examresult.title2')+" "+t('actions.created')  ) }
+        format.xml  { render :xml => @examresult, :status => :created, :location => @examresult }
       else
-        if @students && @students.count==0
-          flash[:notice]=t('exam.examresult.no_student')
-          format.html { render :action => "new" }
-          format.xml  { render :xml => @examresult.errors, :status => :unprocessable_entity }
-          flash.discard
-        else
-          flash[:notice]=t('exam.examresult.all_compulsory')
-          format.html { render :action => "new" }
-          format.xml  { render :xml => @examresult.errors, :status => :unprocessable_entity }
-          flash.discard
-        end
+         format.html { render :action => "new" }
+         format.xml  { render :xml => @examresult.errors, :status => :unprocessable_entity }
       end
     end
-    
   end
+ 
+#     programmeid=params[:examresult][:programme_id]
+#     sem=params[:examresult][:semester]
+#     exammonth=(params[:examresult][:examdts]).to_date.month if !(params[:examresult][:examdts]).to_date.nil?
+#     examyear=(params[:examresult][:examdts]).to_date.year if !(params[:examresult][:examdts]).to_date.nil?
+#     unless programmeid.blank? || programmeid.nil?
+#       unless sem.blank? || sem.nil?
+#         unless examyear.blank? || examyear.nil? || exammonth.blank? || exammonth.nil?
+#           @intake = Examresult.set_intake_group(examyear, exammonth, sem, @current_user.userable.positions)
+#           @subjects = Examresult.get_subjects(programmeid, sem)
+#           @students = Examresult.get_students(programmeid, examyear, exammonth, sem, @current_user.userable.positions)
+#         end
+#       end
+#     end
+#     respond_to do |format|
+#       if @students && @students.count > 0
+#         if @examresult.save
+#           flash[:notice]=t('exam.examresult.title2')+" "+t('actions.created')+" "+t('exam.examresult.update_resultlines')
+#           format.html {render :action => "edit"}
+#           format.xml  { head :ok }
+#           flash.discard
+#            #format.html { redirect_to(exam_examresult_path(@examresult), :notice => t('exam.examresult.title2')+" "+t('created')) }
+#             #format.xml  { render :xml => @examresult, :status => :created, :location => @examresult }
+#         else
+#           flash[:notice]='Error arise!'
+#           redirect_to  exam_examresults_path
+#         end
+#       else
+#         if @students && @students.count==0
+#           flash[:notice]=t('exam.examresult.no_student')
+#           format.html { render :action => "new" }
+#           format.xml  { render :xml => @examresult.errors, :status => :unprocessable_entity }
+#           flash.discard
+#         else
+#           flash[:notice]=t('exam.examresult.all_compulsory')
+#           format.html { render :action => "new" }
+#           format.xml  { render :xml => @examresult.errors, :status => :unprocessable_entity }
+#           flash.discard
+#         end
+#       end
+#     end
+    
+
 
   # PUT /examresults/1
   # PUT /examresults/1.xml

@@ -53,9 +53,7 @@ class Examresult < ActiveRecord::Base
   
   #14March2013 - rev 18June2013
   def self.set_intake_group(examyear,exammonth,semester, posts)    #semester refers to semester of selected subject - subject taken by student of semester???
-    #@unit_dept = Login.current_login.staff.position.unit
-    #@unit_dept = Login.current_login.staff.position.ancestors.at_depth(2)[0].unit if @unit_dept==nil
-    #------------in case , error ..use the above 2 lines--------
+   
        
     @anc_depth = posts.first.ancestry_depth
     @multi_position = posts
@@ -110,11 +108,11 @@ class Examresult < ActiveRecord::Base
               @intake_sem = @current_sem 
             elsif (semester.to_i-1) % 2 != 0                      				      # modulus-with balance - semester ganjil
               #29June2013-------------------OK
-              if (semester.to_i+1)/2 > 3  
+              if (semester.to_i+1)/2.0 > 3  
                 @intake_year = @current_year.to_i-((semester.to_i+1)%2)-2
-              elsif (semester.to_i+1)/2 > 2
+              elsif (semester.to_i+1)/2.0 > 2
                 @intake_year = @current_year.to_i-((semester.to_i+1)%2)-1
-              elsif (semester.to_i+1)/2 > 1
+              elsif (semester.to_i+1)/2.0 > 1
                 @intake_year = @current_year.to_i-((semester.to_i+1)%2)
               end  
               #29June2013-------------------
@@ -129,11 +127,11 @@ class Examresult < ActiveRecord::Base
             elsif (semester.to_i-1) % 2 != 0                   					        # modulus-with balance
               #@intake_year = @current_year.to_i-((semester.to_i+1)%2)         #@intake_year = @current_year.to_i-((semester.to_i-1)/2).to_i      # (hasil bahagi bukan baki..)..cth semester 6 
               #29June2013-------------------
-              if (semester.to_i+1)/2 > 3  
+              if (semester.to_i+1)/2.0 > 3  
                 @intake_year = @current_year.to_i-((semester.to_i+1)%2)-2
-              elsif (semester.to_i+1)/2 > 2
+              elsif (semester.to_i+1)/2.0 > 2
                 @intake_year = @current_year.to_i-((semester.to_i+1)%2)-1
-              elsif (semester.to_i+1)/2 > 1
+              elsif (semester.to_i+1)/2.0 > 1
                 @intake_year = @current_year.to_i-((semester.to_i+1)%2)
               end  
               #29June2013-------------------
@@ -149,9 +147,9 @@ class Examresult < ActiveRecord::Base
       		    @intake_month = '03' if(@dept_unit && @current_login_roles.include?(2) && exammonth.to_i <=9 && exammonth.to_i > 7) 
       		    @intake_month = '03' if(@dept_unit=="Ketua Unit Penilaian & Kualiti" && exammonth.to_i <=9 && exammonth.to_i > 7)
       		elsif @intake_sem == 2
-      		    @intake_month = '09' if (@dept_unit && @dept_unit == "Kebidanan") 
-      		    @intake_month = '07' if @dept_unit && @dept_unit != "Kebidanan"
-         		  @intake_month = '09' if(@dept_unit && @current_login_roles.include?(2) && exammonth.to_i >1 && exammonth.to_i <=3 ) 
+      		    @intake_month = '03' if (@dept_unit && @dept_unit == "Kebidanan") 
+      		    @intake_month = '01' if @dept_unit && @dept_unit != "Kebidanan"
+         		  @intake_month = '03' if(@dept_unit && @current_login_roles.include?(2) && exammonth.to_i >1 && exammonth.to_i <=3 ) 
       		    @intake_month = '03' if(@dept_unit=="Ketua Unit Penilaian & Kualiti" && exammonth.to_i >1 && exammonth.to_i <=3)    		  
       		end
 
@@ -162,14 +160,15 @@ class Examresult < ActiveRecord::Base
    
   def self.get_students(programme_id,examyear,exammonth,semester, posts)
     @combine = self.set_intake_group(examyear,exammonth,semester, posts)
-    @all_students=[]
-    Student.where(course_id: programme_id).each do |student|
-      #if student.intakestudent.name == @combine
-      if student.intake.to_s == @combine #'2011-07-01'#
-        @all_students << student
-      end
-    end
-    @all_students
+#     @all_students=[]
+#     Student.where(course_id: programme_id).each do |student|
+#       #if student.intakestudent.name == @combine
+#       if student.intake.to_s == @combine #'2011-07-01'#
+#         @all_students << student
+#       end
+#     end
+#     @all_students
+    Student.where(course_id: programme_id).where('intake=?', @combine)
   end
   
   def self.total(finale_all,subject_credits)
