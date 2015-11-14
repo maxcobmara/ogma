@@ -2443,6 +2443,21 @@ en:
       failed: Failed
       excellent: Excellent
       distinction: Distinction
+      not_allowed: "Update is not allowed as students are not exist for this examresult."
+      transcript: Transcript
+      academic_status: Academic Status
+      completed: Completed
+      subject_code_name: "Subject Code - Subject Name"
+      grade_point: Grade Point
+      grade: Grade
+      term: Term
+      total_point: Total Point
+      completed_credit: Completed Credit
+      total_completed_credit: Total Completed Credit
+      total_grade_point: Total Grade Point
+      gpa: GPA
+      cgpa: CGPA
+      credit: Credit
     
     evaluate_course:
       title: "Course Evaluation (Lecturer)"

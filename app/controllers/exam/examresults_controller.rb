@@ -1,7 +1,7 @@
 class Exam::ExamresultsController < ApplicationController
   #filter_access_to :all
   #filter_resource_access
-  filter_access_to :index, :index2, :new, :create, :show2, :examination_slip, :attribute_check => false
+  filter_access_to :index, :index2, :new, :create, :show2, :show3, :examination_slip, :examination_transcript, :attribute_check => false
   filter_access_to :show, :edit, :update, :destroy, :attribute_check => true
   
   before_action :set_examresult, only: [:show, :edit, :update, :destroy]
@@ -54,6 +54,15 @@ class Exam::ExamresultsController < ApplicationController
        format.xml  { render :xml => @examresult }
      end
    end
+  
+  def show3
+     @resultlines = Resultline.where(student_id: params[:student_id]).sort_by{|x|x.examresult.examdts}
+     @common_subjects=['Sains Tingkahlaku','Sains Perubatan Asas', 'Komunikasi & Sains Pengurusan', 'Anatomi & Fisiologi', 'Komuniti']
+     respond_to do |format|
+       format.html # show.html.erb
+       format.xml  { render :xml => @examresult }
+     end
+   end
 
   def examination_slip
     @resultline = Resultline.find(params[:id])
@@ -67,12 +76,12 @@ class Exam::ExamresultsController < ApplicationController
      end
   end
   
-  def examination_slip_posbasic
-    @resultline = Resultline.find(params[:id])
+  def examination_transcript
+    @resultlines = Resultline.where(student_id: params[:student_id]).sort_by{|x|x.examresult.examdts}
     respond_to do |format|
        format.pdf do
-         pdf = Examination_slip_posbasicPdf.new(@resultline, view_context)
-         send_data pdf.render, filename: "examination_slip-{Date.today}",
+         pdf = Examination_transcriptPdf.new(@resultlines, view_context)
+         send_data pdf.render, filename: "examination_transcript-{Date.today}",
                                type: "application/pdf",
                                disposition: "inline"
        end

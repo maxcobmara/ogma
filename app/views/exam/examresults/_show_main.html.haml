@@ -19,3 +19,7 @@
     - imonth=intake[5,2].to_i
     - iday=intake[8,2].to_i
     =Date.new(iyear, imonth, iday).try(:strftime, '%b %Y')
+    
+  %dt &nbsp;
+  %dd
+    %font{color: "red"}= t'exam.examresult.not_allowed' if @examresult.retrieve_student.count == 0

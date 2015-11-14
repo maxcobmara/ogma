@@ -1,0 +1,118 @@
+.col-md-8.col-md-offset-2
+  %dl.dl-horizontal
+    %dt=t 'exam.examresult.exam_centre'
+    %dd Kolej Sains Kesihatan Bersekutu Johor Bahru
+  
+    %dt=t 'exam.examresult.programme_id'
+    %dd=h @resultlines.first.examresult.programmestudent.programme_list
+    
+    %dt=t 'exam.examresult.intake'
+    %dd
+      -intake=@resultlines.first.examresult.intake_group
+      =Date.new(intake[0,4].to_i, intake[5,2].to_i, intake[8,2].to_i).try(:strftime, '%b %Y')
+    
+    %dt=t 'exam.examresult.academic_status'
+    %dd=t 'exam.examresult.completed'
+
+    %br
+  
+    %dt=t('exam.examresult.student')
+    %dd=h @resultlines.first.student.name
+  
+    %dt=t('student.icno')
+    %dd=h @resultlines.first.student.icno
+  
+    %dt=t('student.students.matrixno')
+    %dd=h @resultlines.first.student.matrixno
+  
+.col-md-10.col-md-offset-1
+  %br
+  %table
+    %head
+      %tr
+        %td{width: "49%"}=@resultlines.first.examresult.render_semester.split("/").join(" ")
+        %td{width: "2%"}
+        %td{width: "49%"}=@resultlines[1].examresult.render_semester.split("/").join(" ")
+      %tr
+        /Year 1, Sem 1
+        %td{style: "vertical-align: top;"}
+          %table.table.table-bordered
+            %head
+              %tr
+                %th=t 'exam.examresult.subject_code_name'
+                %th=t 'exam.examresult.grade_point'
+                %th=t 'exam.examresult.grade'
+                %th=t 'exam.examresult.term'
+            %body
+              - result=@resultlines.first
+              = render 'result_per_semester', :result => result
+        /separator
+        %td &nbsp;
+        /Year 1, Sem 2
+        %td{style: "vertical-align: top;"}
+          %table.table.table-bordered
+            %head
+              %tr
+                %th=t 'exam.examresult.subject_code_name'
+                %th=t 'exam.examresult.grade_point'
+                %th=t 'exam.examresult.grade'
+                %th=t 'exam.examresult.term'
+            %body
+              - result=@resultlines[1]
+              = render 'result_per_semester', :result => result
+      - if Programme.where(course_type: 'Diploma').pluck(:id).include?(@resultlines.first.examresult.programme_id)
+        %tr
+          /Year 2, Sem 1
+          %td{style: "vertical-align: top;"}
+            %table.table.table-bordered
+              %head
+                %tr
+                  %th=t 'exam.examresult.subject_code_name'
+                  %th=t 'exam.examresult.grade_point'
+                  %th=t 'exam.examresult.grade'
+                  %th=t 'exam.examresult.term'
+              %body
+                - result=@resultlines[2]
+                = render 'result_per_semester', :result => result
+          /separator
+          %td &nbsp;
+          /Year 2, Sem 2
+          %td{style: "vertical-align: top;"}
+            %table.table.table-bordered
+              %head
+                %tr
+                  %th=t 'exam.examresult.subject_code_name'
+                  %th=t 'exam.examresult.grade_point'
+                  %th=t 'exam.examresult.grade'
+                  %th=t 'exam.examresult.term'
+              %body
+                - result=@resultlines[3]
+                = render 'result_per_semester', :result => result
+        %tr
+          /Year 3, Sem 1
+          %td{style: "vertical-align: top;"}
+            %table.table.table-bordered
+              %head
+                %tr
+                  %th=t 'exam.examresult.subject_code_name'
+                  %th=t 'exam.examresult.grade_point'
+                  %th=t 'exam.examresult.grade'
+                  %th=t 'exam.examresult.term'
+              %body
+                - result=@resultlines[4]
+                = render 'result_per_semester', :result => result
+          /separator
+          %td &nbsp;
+          /Year 3, Sem 2
+          %td{style: "vertical-align: top;"}
+            %table.table.table-bordered
+              %head
+                %tr
+                  %th=t 'exam.examresult.subject_code_name'
+                  %th=t 'exam.examresult.grade_point'
+                  %th=t 'exam.examresult.grade'
+                  %th=t 'exam.examresult.term'
+              %body
+                - result=@resultlines[5]
+                = render 'result_per_semester', :result => result
+ 

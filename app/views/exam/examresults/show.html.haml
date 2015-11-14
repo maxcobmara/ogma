@@ -14,7 +14,7 @@
       #exam_details.tab-pane.active
       %br
       = render 'show_main'
-      
+
       #result_details.tab-pane
         %br
         = render 'show_results'
@@ -24,7 +24,8 @@
     %hr
     .form-actions
       = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), exam_examresults_path, :class => 'btn btn-default'
-      = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('.edit', :default => t("helpers.links.edit")), edit_exam_examresult_path(@examresult),  :class => 'btn btn-primary' 
+      - if @examresult.retrieve_student.count > 0 
+        = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('.edit', :default => t("helpers.links.edit")), edit_exam_examresult_path(@examresult),  :class => 'btn btn-primary' 
       = link_to content_tag(:i, "", :class => "fa fa-trash-o icon-white") + " " + t('.destroy', :default => t("helpers.links.destroy")), |
         exam_examresult_path(@examresult),                                                                                                    |
         :method => 'delete',                                                                                                           |

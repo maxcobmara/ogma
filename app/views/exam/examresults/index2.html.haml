@@ -21,15 +21,26 @@
 
     %tbody
       = render "search_bar2"
-      - @resultlines.group_by{|x|x.examresult}.sort.each do |examresult, resultlines|
+      - @resultlines.group_by{|x|x.examresult.programmestudent.programme_list}.sort.each do |programme, resultlines|
         %tr
-          %td.group{colspan: 5}=(t 'examresult.programme_id')+" : "+examresult.programmestudent.name+", Semester : "+examresult.render_semester+", "+(t 'exam.examresult.exam_date')+" : "+ l(examresult.examdts)+" - "+l(examresult.examdte) 
-        - resultlines.sort_by{|x|x.student.name}.each do |resultline|
+          %td.group{colspan: 5}=(t 'examresult.programme_id')+" : "+programme
+        - resultlines.group_by{|x|x.examresult.intake_group}.each do |intake, resultlines2|
           %tr
-            %td= link_to resultline.student.name, show2_exam_examresults_path(id: resultline.id)
-            %td=h resultline.total.nil? ? "" : sprintf('%.2f', resultline.total) 
-            %td=h resultline.pngs17.nil? ? "" : sprintf('%.2f', resultline.pngs17) 
-            %td=h resultline.pngk.nil? ? "" : sprintf('%.2f', resultline.pngk) 
-            %td=h resultline.render_status
+            %td.group{colspan: 5}
+              %span
+              =(t 'exam.examresult.intake')+" :"
+              =Date.new(intake[0,4].to_i, intake[5,2].to_i, intake[8,2].to_i).try(:strftime, '%b %Y').upcase
+          - resultlines2.group_by{|x|x.student}.sort.each do |student, resultlines3|
+            %tr
+              %td.group{colspan: 5}
+                =(t 'exam.examresult.student')+" : "+student.matrix_name
+                = link_to (t 'exam.examresult.transcript'), show3_exam_examresults_path(student_id: student.id)
+            - for resultline in resultlines3
+              %tr
+                %td= link_to resultline.examresult.render_semester, show2_exam_examresults_path(id: resultline.id)
+                %td=h resultline.total.nil? ? "" : sprintf('%.2f', resultline.total) 
+                %td=h resultline.pngs17.nil? ? "" : sprintf('%.2f', resultline.pngs17) 
+                %td=h resultline.pngk.nil? ? "" : sprintf('%.2f', resultline.pngk) 
+                %td=h resultline.render_status
         
   .right{style:"padding:0 30px; margin:0;"}= paginate @resultlines, :theme => 'twitter-bootstrap-3'

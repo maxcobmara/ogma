@@ -14,7 +14,12 @@
           
     %dt=t 'exam.examresult.examdte'
     %dd=h l(@resultline.examresult.examdte)
-  
+    
+    %dt=t 'exam.examresult.intake'
+    %dd
+      -intake=@resultline.examresult.intake_group
+      =Date.new(intake[0,4].to_i, intake[5,2].to_i, intake[8,2].to_i).try(:strftime, '%b %Y')
+
     %br
   
     %dt=t('exam.examresult.student')
@@ -38,7 +43,8 @@
         %th.centre=t('exam.examresult.remark')
       - @programme_id = @resultline.examresult.programmestudent.id
       - @semester = @resultline.examresult.semester
-      - @subjects = Examresult.get_subjects(@programme_id ,@semester)
+      - @subjects = @resultline.examresult.retrieve_subject
+      /Examresult.get_subjects(@programme_id ,@semester)
       - @no=0
       - @cara_kerja=Programme.where(course_type: 'Diploma').where('name ILIKE (?)', 'Jurupulih Perubatan Cara Kerja').first.id
       - @perubatan=Programme.where(course_type: 'Diploma').where('name ILIKE (?)', 'Penolong Pegawai Perubatan').first.id

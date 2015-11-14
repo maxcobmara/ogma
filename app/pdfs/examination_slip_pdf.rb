@@ -124,7 +124,7 @@ class Examination_slipPdf < Prawn::Document
   def data2
     programme_id = @resultline.examresult.programmestudent.id
     semester = @resultline.examresult.semester
-    subjects = Examresult.get_subjects(programme_id ,semester)
+    subjects = @resultline.examresult.retrieve_subject
     @grading=[]
     @grading2=[]
     @finale=[]

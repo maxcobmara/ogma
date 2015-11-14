@@ -3,10 +3,9 @@
     %td= f.text_field :keyword_search, class: 'form-control'
     %td= f.text_field :examdts_gteq, class: 'form-control date_picker', size: 2
     %td= f.text_field :examdte_gteq, class: 'form-control date_picker', size: 2
-    %td= select_tag('q[semester_eq]',options_for_select([[t('all_records'),'']]+DropDown::SEMESTER),class: 'selectpicker',"data-width"=>'100px')
     %td
       .input-group
-        
+        = select_tag('q[semester_eq]',options_for_select([[t('all_records'),'']]+DropDown::SEMESTER),class: 'selectpicker',"data-width"=>'100px')
         %span.input-group-btn
           %button.btn.btn-sm.btn-default.right{:type => "submit"}
             %i.fa.fa-search.fa-fw

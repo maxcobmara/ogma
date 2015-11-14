@@ -2383,6 +2383,21 @@ ms_MY:
       failed: Gagal
       excellent: Cemerlang
       distinction: Kepujian
+      not_allowed: "Kemaskini tidak dibenarkan kerana pelajar tidak wujud bagi Keputusan Peperiksaan ini."
+      transcript: Transkrip
+      academic_status: Status Akademik
+      completed: Tamat 
+      subject_code_name: "Kod Subjek - Nama Subjek"
+      grade_point: Mata Gred
+      grade: Gred
+      term: Sem
+      total_point: Jumlah Mata
+      completed_credit: Jumlah Kredit
+      total_completed_credit: Jumlah Kredit Terkumpul
+      total_grade_point: Jumlah Mata Gred
+      gpa: PNGS
+      cgpa: PNGK
+      credit: Kredit
     
     evaluate_course:
       title: "Penilaian Program (Pengajar)"
