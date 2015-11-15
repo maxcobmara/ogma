@@ -2395,6 +2395,7 @@ ms_MY:
       completed_credit: Jumlah Kredit
       total_completed_credit: Jumlah Kredit Terkumpul
       total_grade_point: Jumlah Mata Gred
+      completed_credit_hours: Jumlah Kredit Terkumpul
       gpa: PNGS
       cgpa: PNGK
       credit: Kredit

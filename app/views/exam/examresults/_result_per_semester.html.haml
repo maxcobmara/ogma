@@ -14,19 +14,19 @@
       - if english_subjects.include?(subject.code[0,4])
         \-
       - else
-        =@grading=@student_grade.set_gred unless @student_grade.nil? || @student_grade.blank?
-    %td.centre
-      - if english_subjects.include?(subject.code[0,4])
-        \-
-      - else
         - unless @student_finale.nil? || @student_finale.blank? 
           =sprintf('%.2f', @student_finale.set_NG.to_f)
         - else
           =sprintf('%.2f', 0.00)
     %td.centre
+      - if english_subjects.include?(subject.code[0,4])
+        \-
+      - else
+        =@grading=@student_grade.set_gred unless @student_grade.nil? || @student_grade.blank?
+    %td.centre
       =result.examresult.examdts.try(:strftime, '%b %Y')
 %tr
-  %th{rowspan: 2}=t 'exam.examresult.completed_credit'
+  %th{rowspan: 2}=(t 'exam.examresult.completed_credit')+" = "+result.examresult.total_credit.to_s
   %th.centre=t 'exam.examresult.total_point'
   %th.centre=t 'exam.examresult.gpa'
   %th.centre=t 'exam.examresult.cgpa'
@@ -34,3 +34,4 @@
   %th.centre=h result.total.nil? ? "" : sprintf('%.2f',result.total)
   %th.centre=h result.pngs17.nil? ? "" : sprintf('%.2f',result.pngs17)
   %th.centre=h result.pngk.nil? ? "0.00" : sprintf('%.2f',result.pngk) 
+  

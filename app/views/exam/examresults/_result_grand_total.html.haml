@@ -1,0 +1,13 @@
+- if Programme.where(course_type: 'Diploma').pluck(:id).include?(@resultlines.first.examresult.programme_id)
+  - total_credit_hours = @resultlines.first.examresult.total_credit+@resultlines[1].examresult.total_credit+@resultlines[2].examresult.total_credit+ @resultlines[3].examresult.total_credit+@resultlines[4].examresult.total_credit+@resultlines[5].examresult.total_credit
+- else
+  - total_credit_hours = @resultlines.first.examresult.total_credit+@resultlines[1].examresult.total_credit
+- total_grade_points=Examresult.total_grade_points(@resultlines)
+- final_cgpa=total_grade_points/total_credit_hours
+%tr
+  %th{rowspan: "2"}=t 'exam.examresult.completed_credit_hours'+" = "+total_credit_hours.to_s
+  %th.centre{colspan: "2"}=t 'exam.examresult.total_grade_point'+" :"
+  %th.centre=t 'exam.examresult.cgpa'
+%tr
+  %th.centre{colspan: "2"}=number_with_precision(total_grade_points, precision: 2)
+  %th.centre= number_with_precision(final_cgpa, precision: 2)

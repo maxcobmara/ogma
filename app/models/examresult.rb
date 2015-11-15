@@ -118,4 +118,51 @@ class Examresult < ActiveRecord::Base
     #PNGS -> Purata Nilai Gred Semester(NGS/jum kredit); [jum kredit=(subject_credits.inject{|sum,x|sum+x})]
   end
   
+  def total_credit
+    total=0
+    retrieve_subject.each do |subject|
+      credit=subject.code[10,1] if subject.code.size >9
+      credit=subject.code[-1,1] if subject.code.size < 10
+      total+=credit.to_i
+    end
+    total
+  end
+  
+  def self.total_grade_points(resultlines)
+    total=0
+    if resultlines.first.examresult.total.nil?
+      total+=0
+    else
+      total+=resultlines.first.examresult.total
+    end
+    if resultlines[1].examresult.total.nil?
+      total+=0
+    else
+      total+=resultlines.first.examresult.total
+    end
+    if Programme.where(course_type: 'Diploma').pluck(:id).include?(resultlines.first.examresult.programme_id)
+      if resultlines[2].examresult.total.nil?
+        total+=0
+      else
+        total+=resultlines.first.examresult.total
+      end
+      if resultlines[3].examresult.total.nil?
+        total+=0
+      else
+        total+=resultlines.first.examresult.total
+      end
+      if resultlines[4].examresult.total.nil?
+        total+=0
+      else
+        total+=resultlines.first.examresult.total
+      end
+      if resultlines[5].examresult.total.nil?
+        total+=0
+      else
+        total+=resultlines.first.examresult.total
+      end
+    end
+    total
+  end
+  
 end

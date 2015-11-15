@@ -40,12 +40,16 @@
             %head
               %tr
                 %th=t 'exam.examresult.subject_code_name'
-                %th=t 'exam.examresult.grade_point'
-                %th=t 'exam.examresult.grade'
-                %th=t 'exam.examresult.term'
+                %th.centre=t 'exam.examresult.grade_point'
+                %th.centre=t 'exam.examresult.grade'
+                %th.centre=t 'exam.examresult.term'
             %body
               - result=@resultlines.first
               = render 'result_per_semester', :result => result
+              
+              /DISPLAY Total here (Pengkhususan / Diploma Lanjutan / Pos Basik)              
+              = render 'result_grand_total'
+                
         /separator
         %td &nbsp;
         /Year 1, Sem 2
@@ -54,9 +58,9 @@
             %head
               %tr
                 %th=t 'exam.examresult.subject_code_name'
-                %th=t 'exam.examresult.grade_point'
-                %th=t 'exam.examresult.grade'
-                %th=t 'exam.examresult.term'
+                %th.centre=t 'exam.examresult.grade_point'
+                %th.centre=t 'exam.examresult.grade'
+                %th.centre=t 'exam.examresult.term'
             %body
               - result=@resultlines[1]
               = render 'result_per_semester', :result => result
@@ -68,9 +72,9 @@
               %head
                 %tr
                   %th=t 'exam.examresult.subject_code_name'
-                  %th=t 'exam.examresult.grade_point'
-                  %th=t 'exam.examresult.grade'
-                  %th=t 'exam.examresult.term'
+                  %th.centre=t 'exam.examresult.grade_point'
+                  %th.centre=t 'exam.examresult.grade'
+                  %th.centre=t 'exam.examresult.term'
               %body
                 - result=@resultlines[2]
                 = render 'result_per_semester', :result => result
@@ -82,9 +86,9 @@
               %head
                 %tr
                   %th=t 'exam.examresult.subject_code_name'
-                  %th=t 'exam.examresult.grade_point'
-                  %th=t 'exam.examresult.grade'
-                  %th=t 'exam.examresult.term'
+                  %th.centre=t 'exam.examresult.grade_point'
+                  %th.centre=t 'exam.examresult.grade'
+                  %th.centre=t 'exam.examresult.term'
               %body
                 - result=@resultlines[3]
                 = render 'result_per_semester', :result => result
@@ -95,12 +99,16 @@
               %head
                 %tr
                   %th=t 'exam.examresult.subject_code_name'
-                  %th=t 'exam.examresult.grade_point'
-                  %th=t 'exam.examresult.grade'
-                  %th=t 'exam.examresult.term'
+                  %th.centre=t 'exam.examresult.grade_point'
+                  %th.centre=t 'exam.examresult.grade'
+                  %th.centre=t 'exam.examresult.term'
               %body
                 - result=@resultlines[4]
                 = render 'result_per_semester', :result => result
+                
+                /DISPLAY Total here (Diploma)           
+                = render 'result_grand_total'
+                
           /separator
           %td &nbsp;
           /Year 3, Sem 2
@@ -109,10 +117,12 @@
               %head
                 %tr
                   %th=t 'exam.examresult.subject_code_name'
-                  %th=t 'exam.examresult.grade_point'
-                  %th=t 'exam.examresult.grade'
-                  %th=t 'exam.examresult.term'
+                  %th.centre=t 'exam.examresult.grade_point'
+                  %th.centre=t 'exam.examresult.grade'
+                  %th.centre=t 'exam.examresult.term'
               %body
                 - result=@resultlines[5]
                 = render 'result_per_semester', :result => result
+                
+
  

@@ -2451,10 +2451,11 @@ en:
       grade_point: Grade Point
       grade: Grade
       term: Term
-      total_point: Total Point
+      total_point: Total Points
       completed_credit: Completed Credit
       total_completed_credit: Total Completed Credit
-      total_grade_point: Total Grade Point
+      total_grade_point: Total Grade Points
+      completed_credit_hours: Completed Credit Hours
       gpa: GPA
       cgpa: CGPA
       credit: Credit
