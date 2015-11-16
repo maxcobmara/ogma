@@ -98,12 +98,14 @@ class Examination_slipPdf < Prawn::Document
         data = [["<b>Kod Kursus</b> ", "<b>Kursus</b> ", "<b>Gred</b> ", "<b>Nilai Gred</b> ", "<b>Tahap</b> "]]
         table(data, :column_widths => [50, 210, 50 , 60, 50], :cell_style => { :size => 10, :inline_format => :true}) do
             self.width = 420
+            columns(2).align=:center
         end
     else
         text "KEPUTUSAN PEPERIKSAAN AKHIR #{(@resultline.examresult.render_semester).upcase}", :align => :left, :size => 10, :style => :bold
         data = [["<b>Bil</b> ", "<b>Kod Kursus</b> ", "<b>Gred</b> ", "<b>Nilai Gred</b> ", "<b>Catatan</b> "]]
         table(data, :column_widths => [25, 235, 50 , 60, 50], :cell_style => { :size => 10, :inline_format => :true}) do
             self.width = 420
+            columns(2).align=:center
         end
     end
   end
@@ -117,6 +119,7 @@ class Examination_slipPdf < Prawn::Document
         table(data2, :column_widths => [25, 235, 50 , 60, 50], :cell_style => { :size => 10}) do
             self.width = 420
             columns(0).align =:center
+            columns(2..4).align=:center
         end
     end
   end
@@ -132,11 +135,11 @@ class Examination_slipPdf < Prawn::Document
     for subject in subjects
       student_grade = Grade.where('student_id=? and subject_id=?',@resultline.student.id,subject.id).first
       unless student_grade.nil? || student_grade.blank?
-        grading = student_grade.set_gred 
+        grading = student_grade.render_grading[-1,2] #= student_grade.set_gred
       else
         grading = ""
       end
-      student_finale = Grade.where('student_id=? and subject_id=?',@resultline.student.id,subject.id).first
+      student_finale = Grade.where('student_id=? and subject_id=?', @resultline.student.id,subject.id).first
       
       #Fisioterapi-PTEN, Kejururawatan-NELA, NELB, NELC, Perubatan-MAPE, Radiografi-XBRE, CaraKerja-OTEL
       english_subjects=['PTEN', 'NELA', 'NELB', 'NELC', 'MAPE', 'XBRE', 'OTEL'] 
@@ -146,7 +149,7 @@ class Examination_slipPdf < Prawn::Document
       else
         @grading2 << grading
         unless student_finale.nil? || student_finale.blank? 
-          @finale << @view.sprintf('%.2f', student_finale.set_NG.to_f)
+          @finale << student_finale.set_NG.to_f 
         else
           @finale << "0.00"
         end

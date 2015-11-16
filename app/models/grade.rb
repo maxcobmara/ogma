@@ -63,6 +63,10 @@ class Grade < ActiveRecord::Base
     #((exam1marks * examweight)/100) + ((total_formative * (100 - examweight)/100))
   end
   
+  def render_grading
+    (DropDown::GRADE.find_all{|disp, value| value == set_gred}).map {|disp, value| disp}[0]
+  end
+  
   def set_gred
     if finale <= 35 
       11#"E"

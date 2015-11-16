@@ -60,7 +60,8 @@
             - if english_subjects.include?(subject.code[0,4])
               \-
             - else
-              =@grading=@student_grade.set_gred unless @student_grade.nil? || @student_grade.blank?
+              /=@grading=@student_grade.set_gred unless @student_grade.nil? || @student_grade.blank?
+              =@student_grade.render_grading[-1,2] unless @student_grade.nil? || @student_grade.blank?
           %td.centre
             /- unless @student_finale.nil? || @student_finale.blank? 
             /  =sprintf('%.2f', @student_finale.set_NG.to_f)

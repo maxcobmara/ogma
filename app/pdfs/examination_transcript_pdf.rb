@@ -33,8 +33,8 @@ class Examination_transcriptPdf < Prawn::Document
     data = [["Student ID : #{@resultlines.first.student.matrixno}","Name : #{@resultlines.first.student.name }", "No IC : #{@resultlines.first.student.icno}"],
                  ["Course : #{@resultlines.first.examresult.programmestudent.programme_list}", "Intake : #{@resultlines.first.examresult.intake_group}", "Academic Status : Completed"],
                  ["College : Kolej Sains Kesihatan Bersekutu Johor Bahru","Discipline : #{@resultlines.first.examresult.programmestudent.name}", ""]]
-    table(data, :column_widths => [230 , 190, 130], :cell_style => { :size => 9, :inline_format => true}) do
-      self.width = 550
+    table(data, :column_widths => [230 , 196, 130], :cell_style => { :size => 9, :inline_format => true}) do
+      self.width = 556
       rows(0).columns(0).borders=[:top, :left]
       rows(0).columns(1).borders=[:top]
       rows(0).columns(2).borders=[:top, :right]
@@ -54,6 +54,8 @@ class Examination_transcriptPdf < Prawn::Document
     @cara_kerja=Programme.where(course_type: 'Diploma').where('name ILIKE (?)', 'Jurupulih Perubatan Cara Kerja').first.id
     @perubatan=Programme.where(course_type: 'Diploma').where('name ILIKE (?)', 'Penolong Pegawai Perubatan').first.id
     @detailing=[]
+    @final_all=[]
+    @credit_all=[]
     if @subjects.count > @subjects2.count
       @subject_count=@subjects.count
     else
@@ -71,19 +73,22 @@ class Examination_transcriptPdf < Prawn::Document
           @finale="-"
         else
           unless student_grade.nil? || student_grade.blank?
-            @grading=student_grade.set_gred 
+            @grading=student_grade.render_grading[-1,2] #= student_grade.set_gred
           else
             @grading=""
           end
           unless student_finale.nil? || student_finale.blank? 
             @finale=sprintf('%.2f', student_finale.set_NG.to_f)
+            @final_all << student_finale.set_NG.to_f
           else
             @finale=sprintf('%.2f', 0.00)
+            @final_all << 0.00
           end
         end
         credit=@subjects[cnt].code[10,1] if @subjects[cnt].code.size >9
         credit=@subjects[cnt].code[-1,1] if @subjects[cnt].code.size < 10
         credit_hours+=credit.to_i
+        @credit_all << credit.to_i
       end
       if cnt < @subjects2.count
         student_grade=Grade.where('student_id=? and subject_id=?',@result2.student.id, @subjects2[cnt].id).first 
@@ -94,22 +99,26 @@ class Examination_transcriptPdf < Prawn::Document
           @finale2="-"
         else
           unless student_grade.nil? || student_grade.blank?
-           @grading2=student_grade.set_gred 
+           @grading2=student_grade.render_grading[-1,2] #= student_grade.set_gred
           else
            @grading2=""
           end
           unless student_finale.nil? || student_finale.blank? 
             @finale2=sprintf('%.2f', student_finale.set_NG.to_f)
+            @final_all << student_finale.set_NG.to_f
           else
             @finale2=sprintf('%.2f', 0.00)
+            @final_all << 0.00
           end
         end
         credit=@subjects2[cnt].code[10,1] if @subjects2[cnt].code.size >9
         credit=@subjects2[cnt].code[-1,1] if @subjects2[cnt].code.size < 10
         credit_hours2+=credit.to_i
+        @credit_all << credit.to_i
       end
       @detailing << ["#{@subjects[cnt].nil? ? "" : @subjects[cnt].subject_list}", "#{@subjects[cnt].nil? ? "" : @finale}", "#{@subjects[cnt].nil? ? "" : @grading}"  ,  "#{@subjects[cnt].nil? ? "" : @result.examresult.examdts.try(:strftime, '%b %Y')}", "", "#{@subjects2[cnt].nil? ? "" : @subjects2[cnt].subject_list}", "#{@subjects2[cnt].nil? ? "" : @finale2}","#{@subjects2[cnt].nil? ? "" : @grading2}", "#{@subjects2[cnt].nil? ? "" : @result2.examresult.examdts.try(:strftime, '%b %Y')}"]
     end
+    total_point=@view.number_with_precision(Examresult.total(@final_all, @credit_all), precision: 2)
     data = [[{content: "<b>#{@result.examresult.render_semester.split("/").join(" ")}</b>", colspan: 4},"", 
              {content: "<b>#{@result2.examresult.render_semester.split("/").join(" ")}</b>", colspan: 4}],
             ["<b>#{I18n.t('exam.examresult.subject_code_name')}</b>", "<b>#{I18n.t('exam.examresult.grade_point')}</b>", 
@@ -117,12 +126,12 @@ class Examination_transcriptPdf < Prawn::Document
              "<b>#{I18n.t('exam.examresult.subject_code_name')}</b>", "<b>#{I18n.t('exam.examresult.grade_point')}</b>", 
              "<b>#{I18n.t('exam.examresult.grade')}</b>", "<b>#{I18n.t( 'exam.examresult.term')}</b>" ]]
     data += @detailing
-    data+= [["<b>#{I18n.t('exam.examresult.completed_credit')} = #{credit_hours}</b>", "<b>#{I18n.t('exam.examresult.total_point')}</b>", "<b>#{I18n.t('exam.examresult.gpa')}</b>", "<b>#{I18n.t( 'exam.examresult.cgpa')}</b>", "", "<b>#{I18n.t('exam.examresult.completed_credit')} = #{credit_hours2}</b>", "<b>#{I18n.t('exam.examresult.total_point')}</b>", "<b>#{I18n.t('exam.examresult.gpa')}</b>", "<b>#{I18n.t( 'exam.examresult.cgpa')}</b>",], ["","<b>#{@result.total.nil? ? "" : sprintf('%.2f',@result.total)}</b>", "<b>#{@result.pngs17.nil? ? "" : sprintf('%.2f',@result.pngs17)}</b>", "<b>#{@result.pngk.nil? ? "0.00" : sprintf('%.2f',@result.pngk)}", "", "","<b>#{@result2.total.nil? ? "" : sprintf('%.2f',@result2.total)}</b>", "<b>#{@result2.pngs17.nil? ? "" : sprintf('%.2f',@result2.pngs17)}</b>", "<b>#{@result2.pngk.nil? ? "0.00" : sprintf('%.2f',@result2.pngk) }</b>"]]
+    data+= [["<b>#{I18n.t('exam.examresult.completed_credit')} = #{credit_hours}</b>", "<b>#{I18n.t('exam.examresult.total_point')}</b>", "<b>#{I18n.t('exam.examresult.gpa')}</b>", "<b>#{I18n.t( 'exam.examresult.cgpa')}</b>", "", "<b>#{I18n.t('exam.examresult.completed_credit')} = #{credit_hours2}</b>", "<b>#{I18n.t('exam.examresult.total_point')}</b>", "<b>#{I18n.t('exam.examresult.gpa')}</b>", "<b>#{I18n.t( 'exam.examresult.cgpa')}</b>",], ["","<b>#{total_point}</b>", "<b>#{@result.pngs17.nil? ? "" : sprintf('%.2f',@result.pngs17)}</b>", "<b>#{@result.pngk.nil? ? "0.00" : sprintf('%.2f',@result.pngk)}", "", "","<b>#{@result2.total.nil? ? "" : sprintf('%.2f',@result2.total)}</b>", "<b>#{@result2.pngs17.nil? ? "" : sprintf('%.2f',@result2.pngs17)}</b>", "<b>#{@result2.pngk.nil? ? "0.00" : sprintf('%.2f',@result2.pngk) }</b>"]]
   
    last_row=@subject_count+3
   
-    table(data, :column_widths => [145, 38, 40, 50, 4, 145, 38, 40, 50], :cell_style => { :size => 9, :inline_format => :true}) do
-      self.width = 550
+    table(data, :column_widths => [145, 41, 40, 50, 4, 145, 41, 40, 50], :cell_style => { :size => 9, :inline_format => :true}) do
+      self.width = 556
       rows(0).columns(0..5).borders=[]
       rows(1..last_row).columns(4).borders=[:left]
       columns(1..3).align=:center
@@ -136,8 +145,8 @@ class Examination_transcriptPdf < Prawn::Document
     final_cgpa=total_grade_points/total_credit_hours
     data=[["<b>#{I18n.t('exam.examresult.completed_credit_hours')} = #{total_credit_hours}</b>", "<b>#{I18n.t('exam.examresult.total_grade_point')} : </b>", "<b>#{I18n.t('exam.examresult.cgpa')}</b>"],
               ["", "<b>#{@view.number_with_precision(total_grade_points, :precision => 2)}</b>", "<b>#{@view.number_with_precision(final_cgpa, :precision => 2)}</b>"]]
-    table(data, :column_widths => [145, 78, 50], :cell_style => { :size => 9, :inline_format => :true}) do
-      self.width = 273
+    table(data, :column_widths => [145, 81, 50], :cell_style => { :size => 9, :inline_format => :true}) do
+      self.width = 276
       rows(0).columns(0).borders=[:left, :right, :top]
       rows(1).columns(0).borders=[:left, :right, :bottom]
       columns(1..2).align=:center
@@ -159,7 +168,7 @@ class Examination_transcriptPdf < Prawn::Document
         @finale="-"
       else
         unless student_grade.nil? || student_grade.blank?
-          @grading=student_grade.set_gred 
+          @grading=student_grade.render_grading[-1,2] #= student_grade.set_gred
         else
           @grading=""
         end
@@ -198,7 +207,7 @@ class Examination_transcriptPdf < Prawn::Document
         @finale2="-"
       else
         unless student_grade.nil? || student_grade.blank?
-         @grading2=student_grade.set_gred 
+         @grading2=student_grade.render_grading[-1,2] #= student_grade.set_gred 
         else
          @grading2=""
         end

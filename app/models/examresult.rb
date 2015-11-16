@@ -100,6 +100,7 @@ class Examresult < ActiveRecord::Base
     Student.where(course_id: programme_id).where('intake=?', intake_group)
   end
   
+  #grade points
   def self.total(finale_all,subject_credits)
     @finaletotal = 0.00
     0.upto(finale_all.count-1) do |index|
@@ -128,41 +129,98 @@ class Examresult < ActiveRecord::Base
     total
   end
   
+#   def self.total_grade_points(resultlines)
+#     total=0
+#     if resultlines.first.examresult.total.nil?
+#       total+=0
+#     else
+#       total+=resultlines.first.examresult.total
+#     end
+#     if resultlines[1].examresult.total.nil?
+#       total+=0
+#     else
+#       total+=resultlines.first.examresult.total
+#     end
+#     if Programme.where(course_type: 'Diploma').pluck(:id).include?(resultlines.first.examresult.programme_id)
+#       if resultlines[2].examresult.total.nil?
+#         total+=0
+#       else
+#         total+=resultlines.first.examresult.total
+#       end
+#       if resultlines[3].examresult.total.nil?
+#         total+=0
+#       else
+#         total+=resultlines.first.examresult.total
+#       end
+#       if resultlines[4].examresult.total.nil?
+#         total+=0
+#       else
+#         total+=resultlines.first.examresult.total
+#       end
+#       if resultlines[5].examresult.total.nil?
+#         total+=0
+#       else
+#         total+=resultlines.first.examresult.total
+#       end
+#     end
+#     total
+#   end
+  
+  def self.cgpa_per_sem(resultlines, semester)
+    english_subjects=['PTEN', 'NELA', 'NELB', 'NELC', 'MAPE', 'XBRE', 'OTEL'] 
+    credit_all_sem=[]
+    final_all_sem=[]
+    0.upto(semester).each do |cnt|
+      subjects=resultlines[cnt].examresult.retrieve_subject
+      credit_per_sem=[]
+      final_per_sem=[]
+      for subject in subjects
+        student_finale = Grade.where('student_id=? and subject_id=?', resultlines[cnt].student.id, subject.id).first
+        if subject.code.size >9
+          credit_per_sem << subject.code[10,1].to_i if english_subjects.include?(subject.code[0,4])==false
+        elsif subject.code.size < 10
+          credit_per_sem << subject.code[-1,1].to_i if english_subjects.include?(subject.code[0,4])==false
+        end
+        unless student_finale.nil? || student_finale.blank? 
+          final_per_sem << student_finale.set_NG.to_f if english_subjects.include?(subject.code[0,4])==false
+        else
+          final_per_sem << 0.00  if english_subjects.include?(subject.code[0,4])==false
+        end
+        
+      end
+      credit_all_sem+=credit_per_sem
+      final_all_sem+=final_per_sem
+    end
+    final_all_sem.sum/credit_all_sem.sum
+  end
+  
   def self.total_grade_points(resultlines)
-    total=0
-    if resultlines.first.examresult.total.nil?
-      total+=0
-    else
-      total+=resultlines.first.examresult.total
+    english_subjects=['PTEN', 'NELA', 'NELB', 'NELC', 'MAPE', 'XBRE', 'OTEL'] 
+    credit_all_sem=[]
+    final_all_sem=[]
+    totalgradepoints=0
+    0.upto(1).each do |cnt|
+      subjects=resultlines[cnt].examresult.retrieve_subject
+      credit_per_sem=[]
+      final_per_sem=[]
+      for subject in subjects
+        student_finale = Grade.where('student_id=? and subject_id=?', resultlines[cnt].student.id, subject.id).first
+        if subject.code.size >9
+          credit_per_sem << subject.code[10,1].to_i if english_subjects.include?(subject.code[0,4])==false
+        elsif subject.code.size < 10
+          credit_per_sem << subject.code[-1,1].to_i if english_subjects.include?(subject.code[0,4])==false
+        end
+        unless student_finale.nil? || student_finale.blank? 
+          final_per_sem << student_finale.set_NG.to_f if english_subjects.include?(subject.code[0,4])==false
+        else
+          final_per_sem << 0.00 if english_subjects.include?(subject.code[0,4])==false
+        end
+      end
+      credit_all_sem+=credit_per_sem
+      final_all_sem+=final_per_sem
+      totalgradepoints+=Examresult.total(final_per_sem, credit_per_sem)
     end
-    if resultlines[1].examresult.total.nil?
-      total+=0
-    else
-      total+=resultlines.first.examresult.total
-    end
-    if Programme.where(course_type: 'Diploma').pluck(:id).include?(resultlines.first.examresult.programme_id)
-      if resultlines[2].examresult.total.nil?
-        total+=0
-      else
-        total+=resultlines.first.examresult.total
-      end
-      if resultlines[3].examresult.total.nil?
-        total+=0
-      else
-        total+=resultlines.first.examresult.total
-      end
-      if resultlines[4].examresult.total.nil?
-        total+=0
-      else
-        total+=resultlines.first.examresult.total
-      end
-      if resultlines[5].examresult.total.nil?
-        total+=0
-      else
-        total+=resultlines.first.examresult.total
-      end
-    end
-    total
+    totalgradepoints     #credit_all_sem.to_s+final_all_sem.to_s
   end
   
 end
