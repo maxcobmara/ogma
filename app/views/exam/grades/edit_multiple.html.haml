@@ -46,18 +46,27 @@
               .form-group
                 .col-sm-2.control-label
                   %b= t 'exam.grade.examweight'
-                .col-md-1
-                  - @sum_weight = @grades.map(&:examweight).uniq.count if @grades.count >= 1 
+                .col-md-1 
                   - if diploma_ids.include?(progid)
                     = text_field_tag "grade[summative_weightage]", 70, class: 'form-control', readonly: 'readonly'
                   - else
                     /= f.text_field :examweight, value: 0, class: 'form-control'
-                    =select_tag "grade[summative_weightage]", options_for_select(DropDown::WEIGHTAGE, @grades[0].examweight.to_i), {class: 'selectpicker'}
-                  - if @sum_weight>1 
-                    %span{:style=>"color:red;"}*
+                    - unless @grades[0].examweight==0
+                      =select_tag "grade[summative_weightage]", options_for_select(DropDown::WEIGHTAGE, @grades[0].examweight.to_i), {class: 'selectpicker'}
+                      /ssiiniii
+                    - else
+                      =select_tag "grade[summative_weightage]", options_for_select(DropDown::WEIGHTAGE, 70), {class: 'selectpicker'}
+       
                 - if diploma_ids.include?(progid)
                   .col-md-1
                     \%
+            %br
+            .row
+              %font{color: "red"}
+                - @sum_weight = @grades.map(&:examweight).uniq.count if @grades.count >= 1 
+                - if @sum_weight>1 
+                  %span{:style=>"color:red;"}=t 'exam.grade.standardize_weightage'
+                %span.sum_weight_changed{style: "display:none;"}=t 'exam.grade.summative_weightage_changed'
             /.row
             /  .form-group
             /    .col-sm-2.control-label

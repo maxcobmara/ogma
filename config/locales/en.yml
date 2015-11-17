@@ -2414,6 +2414,8 @@ en:
       marks_weightage_range: "** Marks must be in Weightage range (eg. Weightage=30%, Marks is between 0-30)."
       max_weightage_marks_30: "Maximum value for Formative Scores (Total Weightage and Total Marks) is 30."
       grades_intakes_exist: 'Grades for student(s) of selected Intakes already exist. Delete / edit records accordingly.'
+      summative_weightage_changed: "Summative Weightage is changed. Click 'Apply Changes' to update weightage for 'Total Summative' column before proceeding with data entry."
+      standardize_weightage: "* Click 'Apply Changes' to standardize Summative Weightage to student grades as listed below."
     
     examresult:
       title: Examination Result by Programme

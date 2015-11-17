@@ -45,7 +45,7 @@
                 %th.centre=t 'exam.examresult.term'
             %body
               - result=@resultlines.first
-              %br
+              
               /= cgpa0=number_with_precision(Examresult.cgpa_per_sem(@resultlines, 0), precision: 2)
               /= cgpa0=number_with_precision(Examresult.cgpa_per_sem(@resultlines, 1), precision: 2)
               /= cgpa0=number_with_precision(Examresult.cgpa_per_sem(@resultlines, 2), precision: 2)

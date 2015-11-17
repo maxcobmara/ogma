@@ -23,8 +23,9 @@
         =t 'exam.grade.finalscore'
         %font{:style=>"color: red;"}*
     .col-md-2
-      - if student_exammark && student_exammark.count > 0
-        - finalscor = @grade.total_summative+@grade.scores.pluck(:marks).sum
+      - if (student_exammark && student_exammark.count > 0) || @grade.finale > 0
+        /- finalscor = @grade.total_summative+@grade.scores.pluck(:marks).sum
+        - finalscor = @grade.finale
       - else
         - finalscor = 0
       = f.text_field :finalscore, value: number_with_precision(finalscor, precision: 2), class: 'form-control', readonly: 'readonly'
@@ -33,8 +34,8 @@
       %label
         =t 'exam.grade.grading_id'
         %font{:style=>"color: red;"}*
-    .col-md-2
-      - if student_exammark && student_exammark.count > 0
+    .col-md-3
+      - if student_exammark && student_exammark.count > 0 || @grade.set_gred
         = f.select :grading_id, DropDown::GRADE,{ :prompt =>t('select'),:selected=>@grade.set_gred }, class: 'form-control'
       - else
         = f.select :grading_id, DropDown::GRADE,{:prompt => t('select')}, class: 'form-control'

@@ -103,7 +103,7 @@
 /TRIAL      
 =hidden_field_tag "grade_count", @grades.count
 =hidden_field_tag "scores_count", @score_for_legend_sort_1.count
-=hidden_field_tag "grade_examweight", @grades[0].examweight
+/=hidden_field_tag "grade_examweight", @grades[0].examweight
 :javascript
 
 $(document).ready(function(){
@@ -135,7 +135,7 @@ $(document).ready(function(){
   
   $(".k1").keyup(function(){
     var gradecount = $("#grade_count").val();
-    var summativeweightage = $("#grade_examweight").val(); 
+    var summativeweightage = $("#grade_summative_weightage").val(); 
     
     for (var i=0;i<gradecount;i++){
       window["total_marks"+i]= document.getElementById("finalexam"+i).value;
@@ -148,4 +148,16 @@ $(document).ready(function(){
     }
   });
   
+  var yoyo = $("#examweight0").val();
+  $('#grade_summative_weightage').change(function() {
+    if($(this).val() ==(yoyo*1)) {
+      $('.sum_weight_changed').hide();
+    }else {
+      $('.sum_weight_changed').show("appear");
+    }
+  });
+  
 });
+
+/grade[summative_weightage]
+/var summativeweightage = $("#grade_examweight").val(); 

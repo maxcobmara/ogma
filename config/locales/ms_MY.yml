@@ -2354,6 +2354,8 @@ ms_MY:
       marks_weightage_range: "** Nilai Markah mestilah berada dalam lngkungan julat Wajaran (cth. Wajaran=30%, nilai Markah antara 0-30)."
       max_weightage_marks_30: "Nilai Maksima Skor Formatif (Jumlah Wajaran dan Jumlah Markah) bagi program Diploma adalah 30."
       grades_intakes_exist: 'Gred peperiksaan pelajar bagi Ambilan yang dipilih telah wujud. Padam / sunting rekod berkenaan.'
+      summative_weightage_changed: "Wajaran Sumatif telah diubah. Klik 'Kemaskini Perubahan' untuk mengemaskini wajaran bagi lajur 'Jumlah Sumatif' sebelum meneruskan kemasukan data."
+      standardize_weightage: "* Klik 'Kemaskini Perubahan' untuk menyeragamkan Wajaran Formatif bagi gred - gred pelajar seperti tersenarai di bawah."
 
     examresult:
       title: Keputusan Peperiksaan Mengikut Program

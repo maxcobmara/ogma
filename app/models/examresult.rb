@@ -166,6 +166,7 @@ class Examresult < ActiveRecord::Base
 #     total
 #   end
   
+  #cgpa of ending SEMESTER....
   def self.cgpa_per_sem(resultlines, semester)
     english_subjects=['PTEN', 'NELA', 'NELB', 'NELC', 'MAPE', 'XBRE', 'OTEL'] 
     credit_all_sem=[]
@@ -191,7 +192,12 @@ class Examresult < ActiveRecord::Base
       credit_all_sem+=credit_per_sem
       final_all_sem+=final_per_sem
     end
-    final_all_sem.sum/credit_all_sem.sum
+    #total points /  credit
+    #final_all_sem.sum/credit_all_sem.sum
+    
+    #grade points
+    #self.total(finale_all,subject_credits)
+    Examresult.total(final_all_sem, credit_all_sem) / credit_all_sem.sum
   end
   
   def self.total_grade_points(resultlines)

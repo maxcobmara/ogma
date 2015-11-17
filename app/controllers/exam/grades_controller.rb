@@ -246,6 +246,7 @@ class Exam::GradesController < ApplicationController
   end
   
   def update_multiple
+    #raise params.inspect
     @gradeids = params[:grade_ids]
     unless @gradeids.blank?
       @grades = Grade.find(@gradeids)
@@ -254,11 +255,11 @@ class Exam::GradesController < ApplicationController
       ##########################
       @caplusmse = params[:scores] #**
       @examweights = params[:examweights]  
-      if @subjects_of_grades==1 || submit_type == t('exam.grade.apply_changes')
-        @summative_weightage = params[:grade][:summative_weightage]    
+      #if @subjects_of_grades==1 || submit_type == t('exam.grade.apply_changes')
+        @summative_weightage = (params[:grade][:summative_weightage]).to_f
         @scores = params[:scores_attributes]
         @scores_new_count = @scores.count 
-      end
+      #end
       if submit_type == t('update')
         
         #start-scores (marks) only exist for EXISTing formative_scores (not yet exist if just ADDED - apply_changes)
@@ -305,7 +306,7 @@ class Exam::GradesController < ApplicationController
             grade.examweight = @examweights[0] if @examweights.count==1       #for selected grades with different subject
             grade.examweight = @examweights[index] if @examweights.count>1
           end
-       
+          
           #---BIG PROBLEM-SAVE SCORE TABLE SEPARATELY - RESOLVE..TEMPORARY-10JUN2013-AM-START-replace grades.score... with y.marks...
           scores_of_grades = Score.where('grade_id=?',grade.id)
           scores_of_grades.sort_by{|x|x.created_at}.each_with_index do |y,no| #tak boleh by created_at?
@@ -318,7 +319,7 @@ class Exam::GradesController < ApplicationController
           grade.summative=@summatives[index]
           grade.finalscore=@finalscores[index]
           if @subjects_of_grades==1 
-            grade.examweight = @summative_weightage 
+           
             #--BIG PROBLEM-remove to line 331 but yet replace with direct SAVING DATA INTO SCORES table instead of grades.scores...
             #0.upto(grade.scores.count-1) do |score_count|
               #grade.scores[score_count].marks = params[:scores_attributes][score_count.to_s][:marks][index]
@@ -332,7 +333,7 @@ class Exam::GradesController < ApplicationController
             grade.sent_date = Date.today
           else
             grade.sent_to_BPL = false
-          end
+          end 
           if @eligibleexams && @eligibleexams[index.to_s]!=nil
             grade.eligible_for_exam = true
           else
@@ -378,7 +379,7 @@ class Exam::GradesController < ApplicationController
             scores[score_count].weightage = params[:scores_attributes][score_count.to_s][:weightage]
             scores[score_count].save
           end
-          #grade.examweight = @summative_weightage #this shall ignored prev saved value
+          grade.examweight = @summative_weightage #this shall replace prev saved value
           grade.save
         end
 
@@ -534,7 +535,7 @@ class Exam::GradesController < ApplicationController
     
     # Never trust parameters from the scary internet, only allow the white list through.
     def grade_params
-      params.require(:grade).permit(:student_id, :subject_id, :sent_to_BPL, :sent_date, :formative, :score, :eligible_for_exam, :carry_paper, :summative, :resit, :finalscore, :grading_id, :exam1name, :exam1desc, :exam1marks, :exam2name, :exam2desc, :exam2marks, :examweight, scores_attributes: [:id,:_destroy, :type_id, :description, :marks, :weightage, :score, :completion, :formative])
+      params.require(:grade).permit(:student_id, :subject_id, :sent_to_BPL, :sent_date, :formative, :score, :eligible_for_exam, :carry_paper, :summative, :resit, :finalscore, :grading_id, :exam1name, :exam1desc, :exam1marks, :exam2name, :exam2desc, :exam2marks, :examweight, :summative_weightage, scores_attributes: [:id,:_destroy, :type_id, :description, :marks, :weightage, :score, :completion, :formative])
     end
   
 end
