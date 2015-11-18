@@ -178,14 +178,22 @@ class Examresult < ActiveRecord::Base
       for subject in subjects
         student_finale = Grade.where('student_id=? and subject_id=?', resultlines[cnt].student.id, subject.id).first
         if subject.code.size >9
-          credit_per_sem << subject.code[10,1].to_i if english_subjects.include?(subject.code[0,4])==false
+          unless english_subjects.include?(subject.code[0,4]) || (subject.code.strip.size < 10 && (subject.code.strip[-2,1].to_i==2 || subject.code.strip[-2,1].to_i==3))
+            credit_per_sem << subject.code[10,1].to_i
+          end
         elsif subject.code.size < 10
-          credit_per_sem << subject.code[-1,1].to_i if english_subjects.include?(subject.code[0,4])==false
+          unless english_subjects.include?(subject.code[0,4]) || (subject.code.strip.size < 10 && (subject.code.strip[-2,1].to_i==2 || subject.code.strip[-2,1].to_i==3))
+            credit_per_sem << subject.code[-1,1].to_i 
+          end
         end
         unless student_finale.nil? || student_finale.blank? 
-          final_per_sem << student_finale.set_NG.to_f if english_subjects.include?(subject.code[0,4])==false
+          unless english_subjects.include?(subject.code[0,4]) || (subject.code.strip.size < 10 && (subject.code.strip[-2,1].to_i==2 || subject.code.strip[-2,1].to_i==3))
+            final_per_sem << student_finale.set_NG.to_f 
+          end
         else
-          final_per_sem << 0.00  if english_subjects.include?(subject.code[0,4])==false
+          unless english_subjects.include?(subject.code[0,4]) || (subject.code.strip.size < 10 && (subject.code.strip[-2,1].to_i==2 || subject.code.strip[-2,1].to_i==3))
+            final_per_sem << 0.00
+          end
         end
         
       end
@@ -212,14 +220,22 @@ class Examresult < ActiveRecord::Base
       for subject in subjects
         student_finale = Grade.where('student_id=? and subject_id=?', resultlines[cnt].student.id, subject.id).first
         if subject.code.size >9
-          credit_per_sem << subject.code[10,1].to_i if english_subjects.include?(subject.code[0,4])==false
+          unless english_subjects.include?(subject.code[0,4]) || (subject.code.strip.size < 10 && (subject.code.strip[-2,1].to_i==2 || subject.code.strip[-2,1].to_i==3))
+            credit_per_sem << subject.code[10,1].to_i 
+          end
         elsif subject.code.size < 10
-          credit_per_sem << subject.code[-1,1].to_i if english_subjects.include?(subject.code[0,4])==false
+          unless english_subjects.include?(subject.code[0,4]) || (subject.code.strip.size < 10 && (subject.code.strip[-2,1].to_i==2 || subject.code.strip[-2,1].to_i==3))
+            credit_per_sem << subject.code[-1,1].to_i
+          end
         end
         unless student_finale.nil? || student_finale.blank? 
-          final_per_sem << student_finale.set_NG.to_f if english_subjects.include?(subject.code[0,4])==false
+          unless english_subjects.include?(subject.code[0,4]) || (subject.code.strip.size < 10 && (subject.code.strip[-2,1].to_i==2 || subject.code.strip[-2,1].to_i==3))
+            final_per_sem << student_finale.set_NG.to_f 
+          end
         else
-          final_per_sem << 0.00 if english_subjects.include?(subject.code[0,4])==false
+          unless english_subjects.include?(subject.code[0,4]) || (subject.code.strip.size < 10 && (subject.code.strip[-2,1].to_i==2 || subject.code.strip[-2,1].to_i==3))
+            final_per_sem << 0.00 
+          end
         end
       end
       credit_all_sem+=credit_per_sem
