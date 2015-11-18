@@ -2363,6 +2363,7 @@ ms_MY:
       new: Keputusan Baru Peperiksaan
       edit: Sunting Keputusan Peperiksaan
       exam_slip: Slip Keputusan Peperiksaan
+      exam_slip_transcript: Slip & Transkrip Keputusan Peperiksaan
       exam_transcript: Transkrip Keputusan Peperiksaan
       programme_id: Program
       examdts: Tarikh Mula Peperiksaan

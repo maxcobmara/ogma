@@ -192,7 +192,8 @@ class Exam::ExamresultsController < ApplicationController
         @examresults = @examresults.page(params[:page]||1)
         #INDEX2 use
         @search2 = Resultline.search(params[:q])
-        @resultlines = @search2.result.search2(programme_id)
+        @resultlines = @search2.result.search2(programme_id) 
+        @resultlines = @resultlines.order(student_id: :asc)
         @resultlines = @resultlines.page(params[:page]||1)
         @progid=programme_id
       end

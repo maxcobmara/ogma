@@ -2423,6 +2423,7 @@ en:
       new: New Examination Result
       edit: Edit Examination Result
       exam_slip: Examination Result Slip
+      exam_slip_transcript: Examination Result Slip & Transcript
       exam_transcript: Examination Result Transcript
       programme_id: Programme
       examdts: Exam Date Start
