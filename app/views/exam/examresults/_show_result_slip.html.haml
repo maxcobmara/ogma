@@ -48,20 +48,35 @@
       - @no=0
       - @cara_kerja=Programme.where(course_type: 'Diploma').where('name ILIKE (?)', 'Jurupulih Perubatan Cara Kerja').first.id
       - @perubatan=Programme.where(course_type: 'Diploma').where('name ILIKE (?)', 'Penolong Pegawai Perubatan').first.id
+      - credit_all=[]
+      - credit2_all=[]
+      - final2_all=[]
       - for subject in @subjects 
         - @student_grade = Grade.where('student_id=? and subject_id=?',@resultline.student.id,subject.id).first
         - @student_finale = Grade.where('student_id=? and subject_id=?',@resultline.student.id,subject.id).first
         - english_subjects=['PTEN', 'NELA', 'NELB', 'NELC', 'MAPE', 'XBRE', 'OTEL'] 
+        ////
+        - if subject.code.size >9
+          - credit_all << subject.code[10,1].to_i
+          - credit2_all << subject.code[10,1].to_i if english_subjects.include?(subject.code[0,4])==false || (subject.code.strip.size < 10 && (subject.code.strip[-2,1].to_i!=2 || subject.code.strip[-2,1].to_i!=3))
+        - elsif subject.code.size < 10
+          - credit_all << subject.code[-1,1].to_i 
+          - unless english_subjects.include?(subject.code[0,4]) || (subject.code.strip.size < 10 && (subject.code.strip[-2,1].to_i==2 || subject.code.strip[-2,1].to_i==3)) 
+            - credit2_all << subject.code[-1,1].to_i
+        ////
         %tr
           %td=@no+=1
           %td= subject.subject_list 
-          - english_subjects=['PTEN', 'NELA', 'NELB', 'NELC', 'MAPE', 'XBRE', 'OTEL'] 
+          /- english_subjects=['PTEN', 'NELA', 'NELB', 'NELC', 'MAPE', 'XBRE', 'OTEL'] 
           %td.centre
-            - if english_subjects.include?(subject.code[0,4])
+            - if english_subjects.include?(subject.code[0,4]) || (subject.code.strip.size < 10 && (subject.code.strip[-2,1].to_i==2 || subject.code.strip[-2,1].to_i==3))
               \-
             - else
               /=@grading=@student_grade.set_gred unless @student_grade.nil? || @student_grade.blank?
-              =@student_grade.render_grading[-1,2] unless @student_grade.nil? || @student_grade.blank?
+              - unless @student_grade.nil? || @student_grade.blank?
+                =@grading=@student_grade.render_grading[-1,2] 
+              - else
+                =@grading="E"
           %td.centre
             /- unless @student_finale.nil? || @student_finale.blank? 
             /  =sprintf('%.2f', @student_finale.set_NG.to_f)
@@ -71,13 +86,15 @@
             /Above standard (previous one) - BELOW - same as PDF (slip)
             ///
             /Fisioterapi-PTEN, Kejururawatan-NELA, NELB, NELC, Perubatan-MAPE, Radiografi-XBRE, CaraKerja-OTEL
-            - if english_subjects.include?(subject.code[0,4])
+            - if english_subjects.include?(subject.code[0,4]) || (subject.code.strip.size < 10 && (subject.code.strip[-2,1].to_i==2 || subject.code.strip[-2,1].to_i==3))
               \-
             - else
               - unless @student_finale.nil? || @student_finale.blank? 
                 =sprintf('%.2f', @student_finale.set_NG.to_f)
+                - final2_all << @student_finale.set_NG.to_f
               - else
                 =sprintf('%.2f', 0.00)
+                - final2_all << 0.00
             ///
           %td.centre
             /- if @grading=="A" || @grading=="A-" ||@grading=="B+"||@grading=="B"||@grading=="B-"||@grading=="C+"||@grading=="C"
@@ -87,7 +104,7 @@
             
             /Above standard (previous one) - BELOW - same as PDF (slip)
             ///
-            - if english_subjects.include?(subject.code[0,4])
+            - if english_subjects.include?(subject.code[0,4])|| (subject.code.strip.size < 10 && (subject.code.strip[-2,1].to_i==2 || subject.code.strip[-2,1].to_i==3))
               - if @grading=="A" || @grading=="A-" ||@grading=="B+"||@grading=="B"||@grading=="B-"||@grading=="C+"||@grading=="C"
                 =I18n.t('exam.examresult.passed')
               - else 
@@ -124,14 +141,27 @@
       - fisioterapi=Programme.where(course_type: 'Diploma').where('name ILIKE (?)', '%Fisioterapi%').first.id
       - if @resultline.examresult.programme_id!=fisioterapi
         %tr
-          %td=(t 'exam.examresult.total')+" NGK"
-          %td=h @resultline.total.nil? ? "" : sprintf('%.2f',@resultline.total)
+          %td=(t 'exam.examresult.total_grade_point')
+          %td
+            /=h @resultline.total.nil? ? "" : sprintf('%.2f',@resultline.total)
+            =total_point=number_with_precision(Examresult.total(final2_all, credit2_all), precision: 2)
       %tr
-        %td PNGS
-        %td=h @resultline.pngs17.nil? ? "" : sprintf('%.2f',@resultline.pngs17)
+        %td=t 'exam.examresult.gpa'
+        %td
+          /=h @resultline.pngs17.nil? ? "" : sprintf('%.2f',@resultline.pngs17)
+          =gpa=number_with_precision((Examresult.total(final2_all, credit2_all) / credit2_all.sum), precision: 2)
+          /=final2_all
+          /=credit2_all
+          /=credit2_all.sum
       %tr
-        %td PNGK
-        %td=h @resultline.pngk.nil? ? "" : sprintf('%.2f',@resultline.pngk) 
+        %td=t 'exam.examresult.cgpa'
+        %td
+          /=h @resultline.pngk.nil? ? "" : sprintf('%.2f',@resultline.pngk) 
+          - semno=@resultline.examresult.semester.to_i-1
+          - programmeid=@resultline.examresult.programme_id
+          - examresult_ids=Examresult.where(programme_id: programmeid).pluck(:id)
+          - @resultlines = Resultline.where(examresult_id: examresult_ids, student_id: @resultline.student_id).order(created_at: :asc)
+          =cgpa=number_with_precision(Examresult.cgpa_per_sem(@resultlines, semno), precision: 2)
       %tr
         %td STATUS
         %td=h @resultline.render_status

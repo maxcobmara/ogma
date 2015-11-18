@@ -11,17 +11,19 @@
   - english_subjects=['PTEN', 'NELA', 'NELB', 'NELC', 'MAPE', 'XBRE', 'OTEL'] 
   - if subject.code.size >9
     - credit_all << subject.code[10,1].to_i
-    - credit2_all << subject.code[10,1].to_i if english_subjects.include?(subject.code[0,4])==false
+    - unless english_subjects.include?(subject.code[0,4]) || (subject.code.strip.size < 10 && (subject.code.strip[-2,1].to_i==2 || subject.code.strip[-2,1].to_i==3))
+      - credit2_all << subject.code[10,1].to_i 
   - elsif subject.code.size < 10
     - credit_all << subject.code[-1,1].to_i 
-    - credit2_all << subject.code[-1,1].to_i if english_subjects.include?(subject.code[0,4])==false
+    - unless english_subjects.include?(subject.code[0,4]) || (subject.code.strip.size < 10 && (subject.code.strip[-2,1].to_i==2 || subject.code.strip[-2,1].to_i==3))
+      - credit2_all << subject.code[-1,1].to_i 
   %tr
     %td
       %b=subject.code
       &nbsp;
-      =subject.name
+      =subject.name.titleize
     %td.centre
-      - if english_subjects.include?(subject.code[0,4])
+      - if english_subjects.include?(subject.code[0,4]) || (subject.code.strip.size < 10 && (subject.code.strip[-2,1].to_i==2 || subject.code.strip[-2,1].to_i==3))
         \-
       - else
         - unless @student_finale.nil? || @student_finale.blank? 
@@ -33,7 +35,7 @@
           - final_all << 0.00
           - final2_all << 0.00
     %td.centre
-      - if english_subjects.include?(subject.code[0,4])
+      - if english_subjects.include?(subject.code[0,4]) || (subject.code.strip.size < 10 && (subject.code.strip[-2,1].to_i==2 || subject.code.strip[-2,1].to_i==3))
         \-
       - else
         /=@grading=@student_grade.set_gred unless @student_grade.nil? || @student_grade.blank?

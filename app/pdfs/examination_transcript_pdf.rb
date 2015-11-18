@@ -1,6 +1,6 @@
 class Examination_transcriptPdf < Prawn::Document
   def initialize(resultlines, view)
-    super({top_margin: 30, left_margin:20, right_margin:10, page_size: 'A4', page_layout: :portrait })
+    super({top_margin: 20, left_margin:20, right_margin:10, page_size: 'A4', page_layout: :portrait })
     @resultlines = resultlines
     @view = view
     font "Helvetica"
@@ -75,7 +75,7 @@ class Examination_transcriptPdf < Prawn::Document
         student_grade=Grade.where('student_id=? and subject_id=?',@result.student.id, @subjects[cnt].id).first 
         student_finale = Grade.where('student_id=? and subject_id=?',@result.student.id, @subjects[cnt].id).first
         english_subjects=['PTEN', 'NELA', 'NELB', 'NELC', 'MAPE', 'XBRE', 'OTEL'] 
-        if english_subjects.include?(@subjects[cnt].code[0,4])
+        if english_subjects.include?(@subjects[cnt].code[0,4]) || (@subjects[cnt].code.strip.size < 10 && (@subjects[cnt].code.strip[-2,1].to_i==2 || @subjects[cnt].code.strip[-2,1].to_i==3))
           @grading="-"
           @finale="-"
         else
@@ -92,12 +92,16 @@ class Examination_transcriptPdf < Prawn::Document
             @final_all << 0.00
           end
         end
-	if @subjects[cnt].code.size >9
-          @credit_all << @subjects[cnt].code[10,1].to_i if english_subjects.include?(@subjects[cnt].code[0,4])==false
-          credit=@subjects[cnt].code[10,1] if @subjects[cnt].code.size >9
+        if @subjects[cnt].code.size >9
+          unless english_subjects.include?(@subjects[cnt].code[0,4]) || (@subjects[cnt].code.strip.size < 10 && (@subjects[cnt].code.strip[-2,1].to_i==2 || @subjects[cnt].code.strip[-2,1].to_i==3))
+            @credit_all << @subjects[cnt].code[10,1].to_i 
+          end
+          credit=@subjects[cnt].code[10,1] 
         elsif @subjects[cnt].code.size < 10
-          @credit_all << @subjects[cnt].code[-1,1].to_i if english_subjects.include?(@subjects[cnt].code[0,4])==false
-          credit=@subjects[cnt].code[-1,1] if @subjects[cnt].code.size < 10
+          unless english_subjects.include?(@subjects[cnt].code[0,4]) || (@subjects[cnt].code.strip.size < 10 && (@subjects[cnt].code.strip[-2,1].to_i==2 || @subjects[cnt].code.strip[-2,1].to_i==3))
+            @credit_all << @subjects[cnt].code[-1,1].to_i 
+          end
+          credit=@subjects[cnt].code[-1,1]
         end
         credit_hours+=credit.to_i
       end
@@ -105,7 +109,7 @@ class Examination_transcriptPdf < Prawn::Document
         student_grade=Grade.where('student_id=? and subject_id=?',@result2.student.id, @subjects2[cnt].id).first 
         student_finale = Grade.where('student_id=? and subject_id=?',@result2.student.id, @subjects2[cnt].id).first
         english_subjects=['PTEN', 'NELA', 'NELB', 'NELC', 'MAPE', 'XBRE', 'OTEL'] 
-        if english_subjects.include?(@subjects2[cnt].code[0,4])==true
+        if english_subjects.include?(@subjects2[cnt].code[0,4])==true || (@subjects2[cnt].code.strip.size < 10 && (@subjects2[cnt].code.strip[-2,1].to_i==2 || @subjects2[cnt].code.strip[-2,1].to_i==3))
           @grading2="-"
           @finale2="-"
         else
@@ -123,11 +127,15 @@ class Examination_transcriptPdf < Prawn::Document
           end
         end
         if @subjects2[cnt].code.size >9
-          @credit_all2 << @subjects2[cnt].code[10,1].to_i if english_subjects.include?(@subjects2[cnt].code[0,4])==false
-          credit=@subjects2[cnt].code[10,1] if @subjects2[cnt].code.size >9
-        elsif @subjects[cnt].code.size < 10
-          @credit_all2 << @subjects2[cnt].code[-1,1].to_i if english_subjects.include?(@subjects2[cnt].code[0,4])==false
-          credit=@subjects2[cnt].code[-1,1] if @subjects2[cnt].code.size < 10
+          unless english_subjects.include?(@subjects2[cnt].code[0,4]) || (@subjects2[cnt].code.strip.size < 10 && (@subjects2[cnt].code.strip[-2,1].to_i==2 || @subjects2[cnt].code.strip[-2,1].to_i==3))
+            @credit_all2 << @subjects2[cnt].code[10,1].to_i 
+	  end
+          credit=@subjects2[cnt].code[10,1] 
+        elsif @subjects2[cnt].code.size < 10
+          unless english_subjects.include?(@subjects2[cnt].code[0,4]) || (@subjects2[cnt].code.strip.size < 10 && (@subjects2[cnt].code.strip[-2,1].to_i==2 || @subjects2[cnt].code.strip[-2,1].to_i==3))
+            @credit_all2 << @subjects2[cnt].code[-1,1].to_i 
+          end
+          credit=@subjects2[cnt].code[-1,1]
         end
         credit_hours2+=credit.to_i    
       end
@@ -199,7 +207,7 @@ class Examination_transcriptPdf < Prawn::Document
     for subject in subjects
       student_grade=Grade.where('student_id=? and subject_id=?',@result.student.id, subject.id).first 
       student_finale = Grade.where('student_id=? and subject_id=?',@result.student.id, subject.id).first
-      if english_subjects.include?(subject.code[0,4])
+      if english_subjects.include?(subject.code[0,4])|| (subject.code.strip.size < 10 && (subject.code.strip[-2,1].to_i==2 || subject.code.strip[-2,1].to_i==3))
         @grading="-"
         @finale="-"
       else
@@ -217,11 +225,15 @@ class Examination_transcriptPdf < Prawn::Document
         end
       end
       if subject.code.size >9
-        @credit_all << subject.code[10,1].to_i if english_subjects.include?(subject.code[0,4])==false
-        credit=subject.code[10,1] if subject.code.size >9
+        unless english_subjects.include?(subject.code[0,4])|| (subject.code.strip.size < 10 && (subject.code.strip[-2,1].to_i==2 || subject.code.strip[-2,1].to_i==3))
+          @credit_all << subject.code[10,1].to_i 
+        end
+        credit=subject.code[10,1]
       elsif subject.code.size < 10
-        @credit_all << subject.code[-1,1].to_i if english_subjects.include?(subject.code[0,4])==false
-        credit=subject.code[-1,1] if subject.code.size < 10
+        unless english_subjects.include?(subject.code[0,4]) || (subject.code.strip.size < 10 && (subject.code.strip[-2,1].to_i==2 || subject.code.strip[-2,1].to_i==3))
+          @credit_all << subject.code[-1,1].to_i
+        end
+        credit=subject.code[-1,1]
       end
       credit_hours+=credit.to_i  
       #credit=subject.code[10,1] if subject.code.size >9
@@ -273,13 +285,17 @@ class Examination_transcriptPdf < Prawn::Document
       #credit=subject.code[-1,1] if subject.code.size < 10
       #credit_hours2+=credit.to_i
       if subject.code.size >9
-          @credit_all2 << subject.code[10,1].to_i if english_subjects.include?(subject.code[0,4])==false
-          credit=subject.code[10,1] if subject.code.size >9
-        elsif subject.code.size < 10
-          @credit_all2 << subject.code[-1,1].to_i if english_subjects.include?(subject.code[0,4])==false
-          credit=subject.code[-1,1] if subject.code.size < 10
+        unless english_subjects.include?(subject.code[0,4]) || (subject.code.strip.size < 10 && (subject.code.strip[-2,1].to_i==2 || subject.code.strip[-2,1].to_i==3))
+          @credit_all2 << subject.code[10,1].to_i 
+          credit=subject.code[10,1] 
         end
-        credit_hours2+=credit.to_i
+      elsif subject.code.size < 10
+        unless english_subjects.include?(subject.code[0,4]) || (subject.code.strip.size < 10 && (subject.code.strip[-2,1].to_i==2 || subject.code.strip[-2,1].to_i==3))
+            @credit_all2 << subject.code[-1,1].to_i
+        end
+        credit=subject.code[-1,1] 
+      end
+      credit_hours2+=credit.to_i
       @detailing2 << [subject.subject_list, credit, @finale, @grading, @result2.examresult.examdts.try(:strftime, '%b %Y')]
     end
     @total_point2=@view.number_with_precision(Examresult.total(@final_all2, @credit_all2), precision: 2)

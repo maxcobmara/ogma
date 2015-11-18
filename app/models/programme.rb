@@ -36,7 +36,7 @@ class Programme < ActiveRecord::Base
   end
   
   def subject_list
-      "#{code}" + " " + "#{name}"   
+      "#{code}" + " " + "#{name.titleize}"   
   end
   
   def programme_list

@@ -143,7 +143,7 @@ class Examination_slipPdf < Prawn::Document
       
       #Fisioterapi-PTEN, Kejururawatan-NELA, NELB, NELC, Perubatan-MAPE, Radiografi-XBRE, CaraKerja-OTEL
       english_subjects=['PTEN', 'NELA', 'NELB', 'NELC', 'MAPE', 'XBRE', 'OTEL'] 
-      if english_subjects.include?(subject.code[0,4])
+      if english_subjects.include?(subject.code[0,4]) || (subject.code.strip.size < 10 && (subject.code.strip[-2,1].to_i==2 || subject.code.strip[-2,1].to_i==3))
         @grading2 << "-"
         @finale << "-"
       else
@@ -155,7 +155,7 @@ class Examination_slipPdf < Prawn::Document
         end
       end
       
-      if english_subjects.include?(subject.code[0,4])
+      if english_subjects.include?(subject.code[0,4])|| (subject.code.strip.size < 10 && (subject.code.strip[-2,1].to_i==2 || subject.code.strip[-2,1].to_i==3))
             if grading=="A" || grading=="A-" ||grading=="B+"||grading=="B"||grading=="B-"||grading=="C+"||grading=="C"
                @remark << I18n.t('exam.examresult.passed')
             else 
@@ -205,9 +205,50 @@ class Examination_slipPdf < Prawn::Document
   
   def summary
     #chairman_notes= "Pengerusi dan Ahli-ahli Jawatankuasa Peperiksaan Kursus #{  }yang bermesyuarat pada ....................... telah mengesahkan keputusan Peperiksaan Akhir Tahun #{@resultline.examresult.render_semester} yang telah diadakan pada #{@view.l(@resultline.examresult.examdts)} - #{@view.l(@resultline.examresult.examdte)} seperti di atas."
+    
+    ###########
+    subjects = @resultline.examresult.retrieve_subject
+    credit_all=[]
+    credit2_all=[]
+    final2_all=[]
+    for subject in subjects
+      #####
+      @student_finale = Grade.where('student_id=? and subject_id=?',@resultline.student.id, subject.id).first
+      english_subjects=['PTEN', 'NELA', 'NELB', 'NELC', 'MAPE', 'XBRE', 'OTEL'] 
+      if subject.code.size >9
+        credit_all << subject.code[10,1].to_i
+        unless english_subjects.include?(subject.code[0,4]) || (subject.code.strip.size < 10 && (subject.code.strip[-2,1].to_i==2 || subject.code.strip[-2,1].to_i==3))
+          credit2_all << subject.code[10,1].to_i 
+        end
+      elsif subject.code.size < 10
+        credit_all << subject.code[-1,1].to_i 
+        unless english_subjects.include?(subject.code[0,4]) || (subject.code.strip.size < 10 && (subject.code.strip[-2,1].to_i==2 || subject.code.strip[-2,1].to_i==3))
+          credit2_all << subject.code[-1,1].to_i 
+        end
+      end 
+      if english_subjects.include?(subject.code[0,4]) || (subject.code.strip.size < 10 && (subject.code.strip[-2,1].to_i==2 || subject.code.strip[-2,1].to_i==3))
+      else
+        unless @student_finale.nil? || @student_finale.blank? 
+          final2_all << @student_finale.set_NG.to_f
+        else
+          final2_all << 0.00
+        end
+      end
+      #####
+    end
+    semno=@resultline.examresult.semester.to_i-1
+    programmeid=@resultline.examresult.programme_id
+    examresult_ids=Examresult.where(programme_id: programmeid).pluck(:id)
+    @resultlines = Resultline.where(examresult_id: examresult_ids, student_id: @resultline.student_id).order(created_at: :asc)
+
+    @total_point=@view.number_with_precision(Examresult.total(final2_all, credit_all), precision: 2)
+    @gpa=@view.number_with_precision((Examresult.total(final2_all, credit2_all) / credit2_all.sum), precision: 2)
+    @cgpa=@view.number_with_precision(Examresult.cgpa_per_sem(@resultlines, semno), precision: 2)
+    ###########
+    
     if @resultline.examresult.programme_id==@cara_kerja
-        data = [["Purata Nilai Kredit Semester (PNGS 17)", ": #{@resultline.pngs17.nil? ? "0.00" : @view.number_with_precision(@resultline.pngs17, :precision => 2)}"],
-                  ["Purata Nilai Gred Keseluruhan (PNGK 17)", ": #{@resultline.pngk.nil? ? "0.00" : @view.number_with_precision(@resultline.pngk, :precision => 2)}"],
+        data = [["Purata Nilai Kredit Semester (PNGS 17)", ": #{@gpa}"],
+                  ["Purata Nilai Gred Keseluruhan (PNGK 17)", ": #{@cgpa}"],
                   ["Status", ": #{@resultline.render_status}"], ["",""], 
                   [{content: "Ini adalah cetakan komputer, tandatangan tidak diperlukan. <br><b><i>Tidak sah untuk kegunaan rasmi.</i></b>", colspan: 2}], 
                   [{content: "Tarikh: #{@view.l(Date.today)}", colspan: 2}]]
@@ -225,10 +266,11 @@ class Examination_slipPdf < Prawn::Document
         end
         data = [["<b>#{(@resultline.examresult.render_semester).upcase}</b>","<b> JUMLAH</b>"]]
         if @resultline.examresult.programme_id!=@fisioterapi        
-            data << ["Jumlah NGK (Nilai Gred Kumulatif)", @resultline.total.nil? ? "" : @view.number_with_precision(@resultline.total, :precision => 2)]
+            data << ["Jumlah NGK (Nilai Gred Kumulatif)", @total_point]
         end
-        data+=[["Purata Nilai Gred Semester (PNGS)", @resultline.pngs17.nil? ? "" : @view.number_with_precision(@resultline.pngs17, :precision => 2)],
-                 ["Purata Nilai Gred Kumulatif (PNGK)", @resultline.pngk.nil? ? "" : @view.number_with_precision(@resultline.pngk, :precision => 2) ],
+
+        data+=[["Purata Nilai Gred Semester (PNGS)", @gpa],
+                 ["Purata Nilai Gred Kumulatif (PNGK)", @cgpa ],
                  ["<b>STATUS</b>", render_status_view],
                  [{content: "Ini adalah cetakan komputer, tandatangan tidak diperlukan. <br><b><i>Tidak sah untuk kegunaan rasmi.</i></b>", colspan: 2}], 
                   [{content: "Tarikh: #{@view.l(Date.today)}", colspan: 2}]]
