@@ -31,7 +31,7 @@
         - examresults.group_by {|y|y.programmestudent.programme_list}.each do |programme, examresults2|
           %tr
             %td.group{colspan: 5}=programme
-          - for examresult in examresults2
+          - for examresult in examresults2.sort_by{|x|x.semester}
             %tr
               %td= link_to examresult.programmestudent.programme_list, exam_examresult_path(examresult)
               %td=h l(examresult.examdts)

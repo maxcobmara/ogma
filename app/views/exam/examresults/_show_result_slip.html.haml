@@ -58,7 +58,8 @@
         ////
         - if subject.code.size >9
           - credit_all << subject.code[10,1].to_i
-          - credit2_all << subject.code[10,1].to_i if english_subjects.include?(subject.code[0,4])==false || (subject.code.strip.size < 10 && (subject.code.strip[-2,1].to_i!=2 || subject.code.strip[-2,1].to_i!=3))
+          - unless english_subjects.include?(subject.code[0,4]) || (subject.code.strip.size < 10 && (subject.code.strip[-2,1].to_i==2 || subject.code.strip[-2,1].to_i==3))
+            - credit2_all << subject.code[10,1].to_i 
         - elsif subject.code.size < 10
           - credit_all << subject.code[-1,1].to_i 
           - unless english_subjects.include?(subject.code[0,4]) || (subject.code.strip.size < 10 && (subject.code.strip[-2,1].to_i==2 || subject.code.strip[-2,1].to_i==3)) 

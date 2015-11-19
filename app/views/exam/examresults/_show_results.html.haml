@@ -12,11 +12,11 @@
         - @subjects = @examresult.retrieve_subject
         - for subject in @subjects
           %th.centre{colspan: 2}=h subject.code
-        %th.centre{rowspan: 2}= t 'examresult.total' 
-        %th.centre{rowspan: 2} PNGS17
-        %th.centre{rowspan: 2} PNGK
+        %th.centre{rowspan: 2}= t 'exam.examresult.total_grade_point2' 
+        %th.centre{rowspan: 2}= t 'exam.examresult.gpa2'
+        %th.centre{rowspan: 2}= t 'exam.examresult.cgpa2'
         %th.centre{rowspan: 2} Status
-        %th.centre{rowspan: 2}= t 'examresult.remark'
+        %th.centre{rowspan: 2}= t 'exam.examresult.remark'
       %tr
         - 0.upto(@subjects.count-1) do |count|
           %th=t('exam.grade.grading_id')
@@ -28,39 +28,53 @@
           %td.left=h examresultline.student.name 
           %td.left=h examresultline.student.matrixno
           %td.left=h examresultline.student.icno
-          /- for subject in @subjects
-          /  - @student_grade = Grade.where('student_id=? and subject_id=?',examresultline.student.id,subject.id).first
-          /  - @student_finale = Grade.where('student_id=? and subject_id=?',examresultline.student.id,subject.id).first
-          /  %td.center
-          /    - unless @student_grade.nil? || @student_grade.blank?
-          /      =@student_grade.set_gred
-          /  %td.center
-          /    - unless @student_finale.nil? || @student_finale.blank? 
-          /      =number_with_precision(@student_finale.set_NG.to_f,:precision=>2)
-          /    - else 
-          /      = number_with_precision(0.00,:precision=>2) 
-          //
+          - credit2_all=[]
+          - final2_all=[]
+          - english_subjects=['PTEN', 'NELA', 'NELB', 'NELC', 'MAPE', 'XBRE', 'OTEL'] 
           - for subject in @subjects
             - @grade_student=Grade.where(subject_id: subject.id).where(student_id: examresultline.student_id)
-            - english_subjects=['PTEN', 'NELA', 'NELB', 'NELC', 'MAPE', 'XBRE', 'OTEL'] 
+            - @student_finale=Grade.where('student_id=? and subject_id=?', examresultline.student_id,subject.id).first
+            //--------------
+            - if subject.code.size >9
+              - unless english_subjects.include?(subject.code[0,4]) || (subject.code.strip.size < 10 && (subject.code.strip[-2,1].to_i==2 || subject.code.strip[-2,1].to_i==3))
+                - credit2_all << subject.code[10,1].to_i 
+            - elsif subject.code.size < 10
+              - unless english_subjects.include?(subject.code[0,4]) || (subject.code.strip.size < 10 && (subject.code.strip[-2,1].to_i==2 || subject.code.strip[-2,1].to_i==3)) 
+                - credit2_all << subject.code[-1,1].to_i
+            - unless english_subjects.include?(subject.code[0,4]) || (subject.code.strip.size < 10 && (subject.code.strip[-2,1].to_i==2 || subject.code.strip[-2,1].to_i==3))
+              - unless @student_finale.nil? || @student_finale.blank? 
+                - final2_all << @student_finale.set_NG.to_f
+              - else
+                - final2_all << 0.00
+            //-------------
             - if @grade_student.count > 0
-              - if english_subjects.include?(subject.code[0,4])==false
-                - @gradeit=Grade.where('student_id=? and subject_id=?', examresultline.student_id,subject.id).first.set_gred 
-                - @finale=Grade.where('student_id=? and subject_id=?', examresultline.student_id,subject.id).first.set_NG.to_f 
+              - if english_subjects.include?(subject.code[0,4]) || (subject.code.strip.size < 10 && (subject.code.strip[-2,1].to_i==2 || subject.code.strip[-2,1].to_i==3))
+                %td.centre{colspan: 2}=examresultline.render_status_contra
+              - else
+                %td.centre=@grade_student.first.render_grading.split("-")[2] 
+                %td.centre=@grade_student.first.set_NG.to_f 
             - else
-              - if english_subjects.include?(subject.code[0,4])==false
-                - @gradeit= ""
-                - @finale= "0.00"
-            - if english_subjects.include?(subject.code[0,4])
-              /Lulus OR Gagal 
-              %td.centre{colspan: 2}=examresultline.render_status_contra
-            - else
-              %td.centre=@gradeit
-              %td.centre=@finale
-          //
-          %td=h number_with_precision(examresultline.total,:precision=>2)
-          %td=h number_with_precision(examresultline.pngs17,:precision=>2)
-          %td=h number_with_precision(examresultline.pngk, :precision=>2)
+              - if english_subjects.include?(subject.code[0,4]) || (subject.code.strip.size < 10 && (subject.code.strip[-2,1].to_i==2 || subject.code.strip[-2,1].to_i==3))
+                %td.centre{colspan: 2}= t 'exam.examresult.failed'
+              - else
+                %td.centre &nbsp;
+                %td.centre 0.00
+      
+          - total_point=number_with_precision(Examresult.total(final2_all, credit2_all), precision: 2)
+          - if final2_all.count > 0 && credit2_all.count > 0
+            =gpa=number_with_precision((Examresult.total(final2_all, credit2_all) / credit2_all.sum), precision: 2)
+          - else
+            =gpa=0.00
+          - semno=@examresult.semester.to_i-1
+          - programmeid=@examresult.programme_id
+          - examresult_ids=Examresult.where(programme_id: programmeid).pluck(:id)
+          - @resultlines = Resultline.where(examresult_id: examresult_ids, student_id: examresultline.student_id).order(created_at: :asc)
+          - cgpa=number_with_precision(Examresult.cgpa_per_sem(@resultlines, semno), precision: 2)
+            
+          %td=total_point
+          %td=gpa
+          %td=cgpa
+          
           - fisioterapi=Programme.where(course_type: 'Diploma').where('name ILIKE (?)', '%Fisioterapi%').first.id
           - perubatan=Programme.where(course_type: 'Diploma').where('name ILIKE (?)', 'Penolong Pegawai Perubatan').first.id
           - if [fisioterapi, perubatan].include?(examresultline.examresult.programme_id)

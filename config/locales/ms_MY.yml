@@ -2402,6 +2402,9 @@ ms_MY:
       completed_credit_hours: Jumlah Jam Kredit Terkumpul
       gpa: "Purata Nilai Gred Semester (PNGS)"
       cgpa: "Purata Nilai Gred Kumulatif (PNGK)"
+      total_grade_point2: NGK
+      gpa2: PNGS
+      cgpa2: PNGK
       credit: Kredit
     
     evaluate_course:

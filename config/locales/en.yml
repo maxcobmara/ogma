@@ -2462,6 +2462,9 @@ en:
       completed_credit_hours: Completed Credit Hours
       gpa: GPA
       cgpa: CGPA
+      total_grade_point2: Total Grade Points
+      gpa2: GPA
+      cgpa2: CGPA
       credit: Credit
     
     evaluate_course:
