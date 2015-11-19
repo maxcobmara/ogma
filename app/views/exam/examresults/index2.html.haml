@@ -61,18 +61,19 @@
                 - programmeid=resultline.examresult.programme_id
                 - examresult_ids=Examresult.where(programme_id: programmeid).pluck(:id)
                 - resultlines4 = Resultline.where(examresult_id: examresult_ids, student_id: resultline.student_id).order(created_at: :asc)
+                - total_point=number_with_precision(Examresult.total(final2_all, credit2_all), precision: 2)
+                /NOTE cgpa = pngk (require examresult of previous semester to exist first), eg- sem 2, examresult for sem 1 & 2 must exist.
+                - if resultlines4.count==semno+1 
+                  - cgpa=number_with_precision(Examresult.cgpa_per_sem(resultlines4, semno), precision: 2)
               //////
               %tr
                 %td= link_to resultline.examresult.render_semester, show2_exam_examresults_path(id: resultline.id)
-                %td
-                  /=h resultline.total.nil? ? "" : sprintf('%.2f', resultline.total) 
-                  =total_point=number_with_precision(Examresult.total(final2_all, credit2_all), precision: 2)
-                %td
-                  /=h resultline.pngs17.nil? ? "" : sprintf('%.2f', resultline.pngs17) 
-                  =gpa=number_with_precision((Examresult.total(final2_all, credit2_all) / credit2_all.sum), precision: 2)
-                %td
-                  /=h resultline.pngk.nil? ? "" : sprintf('%.2f', resultline.pngk) 
-                  =cgpa=number_with_precision(Examresult.cgpa_per_sem(resultlines4, semno), precision: 2)
+                %td= total_point.nil? ? "0.00" : total_point
+                %td=gpa=number_with_precision((Examresult.total(final2_all, credit2_all) / credit2_all.sum), precision: 2)
+                %td= cgpa.nil? ? "0.00" : cgpa
+                /for checking
+                /=examresult_ids
+                /=semno
                 %td=h resultline.render_status
         
   .right{style:"padding:0 30px; margin:0;"}= paginate @resultlines, :theme => 'twitter-bootstrap-3'

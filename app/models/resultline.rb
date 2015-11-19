@@ -13,9 +13,10 @@ class Resultline < ActiveRecord::Base
   end
   
   def self.search2(search)
+    valid_examresult=Examresult.pluck(:id)
     if search 
       if search == '0'  #admin
-        @resultlines = Resultline.all.order(examresult_id: :asc)
+        @resultlines = Resultline.where(examresult_id: valid_examresult).order(examresult_id: :asc)
       elsif search == '1' #common subject lecturer
         @result_with_common_subjects=[]
         Examresult.all.each do |result|
@@ -26,10 +27,10 @@ class Resultline < ActiveRecord::Base
            @result_with_common_subjects << result.id
           end
         end
-        @resultlines = Resultline.where(examresult_id: @result_with_common_subjects)
+        @resultlines = Resultline.where(examresult_id: valid_examresult).where(examresult_id: @result_with_common_subjects)
       else
         examresult_ids=Examresult.where(programme_id: search).pluck(:id)
-        @resultlines = Resultline.where(examresult_id: examresult_ids)
+        @resultlines = Resultline.where(examresult_id: valid_examresult).where(examresult_id: examresult_ids)
       end
     end
   end

@@ -193,8 +193,8 @@ class Exam::ExamresultsController < ApplicationController
         #INDEX2 use
         @search2 = Resultline.search(params[:q])
         @resultlines = @search2.result.search2(programme_id) 
-        @resultlines = @resultlines.order(student_id: :asc)
-        @resultlines = @resultlines.page(params[:page]||1)
+        @resultlines = @resultlines.sort_by(&:student_id)#order(student_id: :asc)
+        @resultlines = Kaminari.paginate_array(@resultlines).page(params[:page]||1) #@resultlines.page(params[:page]||1)
         @progid=programme_id
       end
     end
