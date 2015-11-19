@@ -68,12 +68,10 @@
         %tr
           %td=@no+=1
           %td= subject.subject_list 
-          /- english_subjects=['PTEN', 'NELA', 'NELB', 'NELC', 'MAPE', 'XBRE', 'OTEL'] 
           %td.centre
             - if english_subjects.include?(subject.code[0,4]) || (subject.code.strip.size < 10 && (subject.code.strip[-2,1].to_i==2 || subject.code.strip[-2,1].to_i==3))
               \-
             - else
-              /=@grading=@student_grade.set_gred unless @student_grade.nil? || @student_grade.blank?
               - unless @student_grade.nil? || @student_grade.blank?
                 =@grading=@student_grade.render_grading[-1,2] 
               - else
@@ -102,7 +100,7 @@
             /  =t('exam.examresult.passed')
             /- else 
             /  =t('exam.examresult.failed')
-            
+            /NOTE : Status for each subject define based on saved GRADE (set_grade -> Total Formative+Total Summative) of each subject per student
             /Above standard (previous one) - BELOW - same as PDF (slip)
             ///
             - if english_subjects.include?(subject.code[0,4])|| (subject.code.strip.size < 10 && (subject.code.strip[-2,1].to_i==2 || subject.code.strip[-2,1].to_i==3))
@@ -151,9 +149,6 @@
         %td
           /=h @resultline.pngs17.nil? ? "" : sprintf('%.2f',@resultline.pngs17)
           =gpa=number_with_precision((Examresult.total(final2_all, credit2_all) / credit2_all.sum), precision: 2)
-          /=final2_all
-          /=credit2_all
-          /=credit2_all.sum
       %tr
         %td=t 'exam.examresult.cgpa'
         %td

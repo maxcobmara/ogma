@@ -62,9 +62,9 @@
       
           - total_point=number_with_precision(Examresult.total(final2_all, credit2_all), precision: 2)
           - if final2_all.count > 0 && credit2_all.count > 0
-            =gpa=number_with_precision((Examresult.total(final2_all, credit2_all) / credit2_all.sum), precision: 2)
+            - gpa=number_with_precision((Examresult.total(final2_all, credit2_all) / credit2_all.sum), precision: 2)
           - else
-            =gpa=0.00
+            - gpa=0.00
           - semno=@examresult.semester.to_i-1
           - programmeid=@examresult.programme_id
           - examresult_ids=Examresult.where(programme_id: programmeid).pluck(:id)
