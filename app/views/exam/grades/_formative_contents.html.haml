@@ -13,11 +13,14 @@
             =h (DropDown::E_TYPES.find_all{|disp, value| value == score_x.type_id}).map {|disp, value| disp}.first
             %br
             =h "("+score_x.weightage.to_i.to_s+"%)"
-           
-      %th{:style=>"background-color:#E5ECE5; text-align:center;"}
-        CA+MSE 
-        %font{color: "blue"} 
-          ="("+@grades[0].scores.sum(:weightage).to_s+"%) *"
+      /HIDE this part from Fisioterapi - https://trello.com/c/Wht96nbB
+      - fisioterapi=Programme.where(course_type: 'Diploma').where('name ILIKE (?)', '%Fisioterapi%').first.id
+      - if @grades[0].studentgrade.course_id!=fisioterapi
+        %th{:style=>"background-color:#E5ECE5; text-align:center;"}
+          CA+MSE 
+          %font{color: "blue"} 
+            ="("+@grades[0].scores.sum(:weightage).to_s+"%) *"
+      /HIDE-ending
       - if @subjects_of_grades > 1
         /if subject for selected grades is different
         %th{:style=>"background-color:#EEF9F9;text-align:center;"}= t 'exam.grade.examweight'
@@ -61,8 +64,13 @@
               = hidden_field_tag "formweight", score_1.weightage, :id=>"formweight_"+"#{no}"+"_"+score_count.to_s,:size=>2
         
         /23June2013-no changes here but pls refer js part
-        %td{:style=>"background-color:#E5ECE5;text-align:center;"}
-          = text_field_tag "scores[]", number_with_precision(grade.score,:precision=>2), :size=> 4,:id=>"caplusmse"+no.to_s, :readonly => "readonly", class: "form-control"
+        /HIDE this part from Fisioterapi - https://trello.com/c/Wht96nbB
+        - if @grades[0].studentgrade.course_id==fisioterapi
+          = hidden_field_tag "scores[]", number_with_precision(grade.score,:precision=>2), :size=> 4,:id=>"caplusmse"+no.to_s, :readonly => "readonly", class: "form-control"
+        - else
+          %td{:style=>"background-color:#E5ECE5;text-align:center;"}
+            = text_field_tag "scores[]", number_with_precision(grade.score,:precision=>2), :size=> 4,:id=>"caplusmse"+no.to_s, :readonly => "readonly", class: "form-control"
+        //HIDE ending
         - if @subjects_of_grades > 1 
           /if subject for selected grades is different
           %td{:style=>"background-color:#EEF9F9;text-align:center;"}

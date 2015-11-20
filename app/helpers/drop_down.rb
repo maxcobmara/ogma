@@ -679,11 +679,11 @@ module DropDown
      #Displayed       stored in db
 #         ["Select", 0],
         ["Test", 5],
-        ["Formative Assesment / Mid Term Exam", 6],
-        ["Student-Centered / On-going Accessment", 7],
-        ["Affective Assesment", 8],
-        ["CA+MSE : Continuous Assesment+Mid Sem Exam", 9],
-        ["Other Assesment", 10]
+        ["Formative Assessment / Mid Term Exam", 6],
+        ["Student-Centered / On-going Assessment", 7],
+        ["Affective Assessment", 8],
+        ["CA+MSE : Continuous Assessment+Mid Sem Exam", 9],
+        ["Other Assessment", 10]
      ]  
    
    #Grade

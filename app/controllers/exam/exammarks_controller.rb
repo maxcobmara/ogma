@@ -151,13 +151,13 @@ class Exam::ExammarksController < ApplicationController
           @programme_id = @programme.id
           @student_list = Student.where('course_id=?', @programme.id).order(name: :asc)
           @dept_unit_prog = Programme.where(id: @programme_id).first.programme_list
-          @intakes_lt = @student_list.pluck(:intake).uniq
+          @intakes_lt = @student_list.order(:intake).pluck(:intake).uniq
         else
           #for administrator, Posbasik, Diploma Lanjutan & Commonsubject lecturer : to assign programme, based on selected exampaper 
           if @examid
             @dept_unit = Programme.find(Exam.find(@examid).subject_id).root
             @dept_unit_prog = @dept_unit.programme_list
-            @intakes_lt = Student.where('course_id=?',@dept_unit.id).pluck(:intake).uniq #must be among the programme of exampaper coz even common subject...
+            @intakes_lt = Student.where('course_id=?',@dept_unit.id).order(:intake).pluck(:intake).uniq #must be among the programme of exampaper coz even common subject...
             @programme_id=@dept_unit.id
           end
         end
