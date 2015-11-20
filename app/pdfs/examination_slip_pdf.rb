@@ -11,59 +11,73 @@ class Examination_slipPdf < Prawn::Document
       super({top_margin: 20, left_margin:100, right_margin:80, page_size: 'A4', page_layout: :portrait })
     end
     font "Helvetica"
-    if resultline.examresult.programme_id==@cara_kerja
-      image "#{Rails.root}/app/assets/images/logo_kerajaan.png", :position => :center, :scale => 0.8
-    else
-      image "#{Rails.root}/app/assets/images/logo_kerajaan.png", :position => :center, :scale => 0.5
-    end
-    move_down 10
-    if @resultline.examresult.programme_id==@cara_kerja
-      text "LEMBAGA PENDIDIKAN", :align => :center, :size => 11, :style => :bold
-      text "KEMENTERIAN KESIHATAN MALAYSIA", :align => :center, :size => 11, :style => :bold
-    elsif @resultline.examresult.programme_id==@perubatan
-      text "KEMENTERIAN KESIHATAN MALAYSIA", :align => :center, :size => 11, :style => :bold
-      text "BAHAGIAN PENGURUSAN LATIHAN", :align => :center, :size =>10
-    else
-      text "JAWATANKUASA PEPERIKSAAN", :align => :center, :size => 11, :style => :bold
-      text "KURSUS #{@resultline.examresult.programmestudent.programme_list.upcase}", :align => :center, :size => 11, :style => :bold
-      text "LEMBAGA PENDIDIKAN", :align => :center, :size => 11, :style => :bold
-      text "KEMENTERIAN KESIHATAN MALAYSIA", :align => :center, :size => 11, :style => :bold
-    end
-    move_down 10
-    if resultline.examresult.programme_id==@cara_kerja
-      text "Slip Keputusan Peperiksaan Akhir Semester", :align => :center, :size => 11
-      text "#{@resultline.examresult.render_semester.split("/").join(" ")}  (#{@resultline.examresult.examdts.strftime('%b %Y')})", :align => :center, :size => 11
-      text "Program #{@resultline.examresult.programmestudent.programme_list}", :align => :center, :size => 11
-      text "Kolej Sains Kesihatan Bersekutu, Johor Bahru", :align => :center, :size => 11
-    elsif @resultline.examresult.programme_id==@perubatan
+    
+    # NOTE - Diploma Pen Pegawai Perubatan - requires 2 copies for each examination result slip
+    if @resultline.examresult.programme_id==@perubatan
+      pen_peg_perubatan
+      text "SALINAN PELATIH", :align => :left, :size => 10
+      start_new_page
+      pen_peg_perubatan
+      text "SALINAN IL KKM"
+    else #other than PEN PEG PERUBATAN
+      if resultline.examresult.programme_id==@cara_kerja
+        image "#{Rails.root}/app/assets/images/logo_kerajaan.png", :position => :center, :scale => 0.8
+      else
+        image "#{Rails.root}/app/assets/images/logo_kerajaan.png", :position => :center, :scale => 0.5
+      end
       move_down 10
-      text "KEPUTUSAN PEPERIKSAAN AKHIR SEMESTER", :align => :center, :size => 12, :style => :bold
-    else
-      text "SLIP KEPUTUSAN TERPERINCI MENGIKUT KOD KURSUS", :align => :center, :size => 11, :style => :bold
-      move_down 20
-      text " PUSAT PEPERIKSAAN : KOLEJ SAINS KESIHATAN BERSEKUTU JOHOR BAHRU", :align => :left, :size => 10
-      text " KEPUTUSAN PEPERIKSAAN AKHIR : #{(@resultline.examresult.render_semester.split("/").join(" ")).upcase}", :align => :left, :size => 10
-      sesi_data
-      text " TAHUN PENGAMBILAN : #{@view.l(@resultline.student.intake)}", :align => :left, :size => 10
-      text " TARIKH PEPERIKSAAN : #{@view.l(@resultline.examresult.examdts)} - #{@view.l(@resultline.examresult.examdte)}", :align => :left, :size => 10
+      if @resultline.examresult.programme_id==@cara_kerja
+        text "LEMBAGA PENDIDIKAN", :align => :center, :size => 11, :style => :bold
+        text "KEMENTERIAN KESIHATAN MALAYSIA", :align => :center, :size => 11, :style => :bold
+      else
+        text "JAWATANKUASA PEPERIKSAAN", :align => :center, :size => 11, :style => :bold
+        text "KURSUS #{@resultline.examresult.programmestudent.programme_list.upcase}", :align => :center, :size => 11, :style => :bold
+        text "LEMBAGA PENDIDIKAN", :align => :center, :size => 11, :style => :bold
+        text "KEMENTERIAN KESIHATAN MALAYSIA", :align => :center, :size => 11, :style => :bold
+      end
+      move_down 10
+      if resultline.examresult.programme_id==@cara_kerja
+        text "Slip Keputusan Peperiksaan Akhir Semester", :align => :center, :size => 11
+        text "#{@resultline.examresult.render_semester.split("/").join(" ")}  (#{@resultline.examresult.examdts.strftime('%b %Y')})", :align => :center, :size => 11
+        text "Program #{@resultline.examresult.programmestudent.programme_list}", :align => :center, :size => 11
+        text "Kolej Sains Kesihatan Bersekutu, Johor Bahru", :align => :center, :size => 11
+      else
+        text "SLIP KEPUTUSAN TERPERINCI MENGIKUT KOD KURSUS", :align => :center, :size => 11, :style => :bold
+        move_down 20
+        text " PUSAT PEPERIKSAAN : KOLEJ SAINS KESIHATAN BERSEKUTU JOHOR BAHRU", :align => :left, :size => 10
+        text " KEPUTUSAN PEPERIKSAAN AKHIR : #{(@resultline.examresult.render_semester.split("/").join(" ")).upcase}", :align => :left, :size => 10
+        sesi_data
+        text " TAHUN PENGAMBILAN : #{@view.l(@resultline.student.intake)}", :align => :left, :size => 10
+        text " TARIKH PEPERIKSAAN : #{@view.l(@resultline.examresult.examdts)} - #{@view.l(@resultline.examresult.examdte)}", :align => :left, :size => 10
+      end
+      move_down 10
+      trainee
+      move_down 15
+      result_header
+      result
+      move_down 15
+      summary
+      move_down 25
+      certificate     #replacing clause ('chairman_notes') with authority body.
+      #- signatory - remove previous format for Kejururawatan (signature line, staff name, position & college name) for all programmes
     end
+  end
+  
+  def pen_peg_perubatan
+    image "#{Rails.root}/app/assets/images/logo_kerajaan.png", :position => :center, :scale => 0.5
+    move_down 10
+    text "KEMENTERIAN KESIHATAN MALAYSIA", :align => :center, :size => 11, :style => :bold
+    text "BAHAGIAN PENGURUSAN LATIHAN", :align => :center, :size =>10
+    move_down 10
+    text "KEPUTUSAN PEPERIKSAAN AKHIR SEMESTER", :align => :center, :size => 12, :style => :bold
     move_down 10
     trainee
     move_down 15
     result_header
     result
     move_down 15
-    if @resultline.examresult.programme_id==@perubatan
-      text "SALINAN PELATIH", :align => :left, :size => 10
-    else
-      summary
-      move_down 25
-      certificate     #replacing clause ('chairman_notes') with authority body.
-      #- signatory - remove previous format for Kejururawatan (signature line, staff name, position & college name) for all programmes
-    end
-    
   end
-  
+
   def sesi_data
     #sesi data - refer comment by Fisioterapi (Pn Norazebah), note too - Kebidanan intake : Mac / Sept
     #refers to 'academic session' - when the classes / learning & examination takes place).
@@ -176,7 +190,6 @@ class Examination_slipPdf < Prawn::Document
     
   def data2
     summary_data
-    
     programme_id = @resultline.examresult.programmestudent.id
     semester = @resultline.examresult.semester
     subjects = @resultline.examresult.retrieve_subject
@@ -209,34 +222,33 @@ class Examination_slipPdf < Prawn::Document
       end
       
       if english_subjects.include?(subject.code[0,4])|| (subject.code.strip.size < 10 && (subject.code.strip[-2,1].to_i==2 || subject.code.strip[-2,1].to_i==3))
-            if grading=="A" || grading=="A-" ||grading=="B+"||grading=="B"||grading=="B-"||grading=="C+"||grading=="C"
-               @remark << I18n.t('exam.examresult.passed')
-            else 
-               @remark << I18n.t('exam.examresult.failed')
-            end
+        if grading=="A" || grading=="A-" ||grading=="B+"||grading=="B"||grading=="B-"||grading=="C+"||grading=="C"
+          @remark << I18n.t('exam.examresult.passed')
+        else 
+          @remark << I18n.t('exam.examresult.failed')
+        end
       else
-          #******************************
-          #ref : https://trello.com/c/W7hjdKzp (Perubatan)
-          #ref : KEPUTUSAN SEM 4-6 KSKBJB.xlsx - Cara Kerja(subject status - Cemerlang, Kepujian, Lulus, Gagal)
-      
-          if [@cara_kerja, @perubatan].include?(@resultline.examresult.programme_id)
-            if grading=="A" || grading=="A-"
-              @remark << I18n.t('exam.examresult.excellent')
-            elsif grading=="B+"||grading=="B"||grading=="B-"
-              @remark << I18n.t('exam.examresult.distinction')
-            elsif grading=="C+"||grading=="C"
-              @remark << I18n.t('exam.examresult.passed')
-            else
-              @remark << I18n.t('exam.examresult.failed')
-            end
+        #******************************
+        #ref : https://trello.com/c/W7hjdKzp (Perubatan)
+        #ref : KEPUTUSAN SEM 4-6 KSKBJB.xlsx - Cara Kerja(subject status - Cemerlang, Kepujian, Lulus, Gagal)
+        if [@cara_kerja, @perubatan].include?(@resultline.examresult.programme_id)
+          if grading=="A" || grading=="A-"
+            @remark << I18n.t('exam.examresult.excellent')
+          elsif grading=="B+"||grading=="B"||grading=="B-"
+            @remark << I18n.t('exam.examresult.distinction')
+          elsif grading=="C+"||grading=="C"
+            @remark << I18n.t('exam.examresult.passed')
           else
-            if grading=="A" || grading=="A-" ||grading=="B+"||grading=="B"||grading=="B-"||grading=="C+"||grading=="C"
-               @remark << I18n.t('exam.examresult.passed')
-            else 
-               @remark << I18n.t('exam.examresult.failed')
-            end
+            @remark << I18n.t('exam.examresult.failed')
           end
-          #******************************
+        else
+          if grading=="A" || grading=="A-" ||grading=="B+"||grading=="B"||grading=="B-"||grading=="C+"||grading=="C"
+            @remark << I18n.t('exam.examresult.passed')
+          else 
+             @remark << I18n.t('exam.examresult.failed')
+          end
+        end
+        #******************************
       end    
       
       if subject.code.size >9
@@ -250,77 +262,76 @@ class Examination_slipPdf < Prawn::Document
       end 
     end ##--end of ....for subject in subjects
 
-    
     counter = counter || 0
     if @resultline.examresult.programme_id==@cara_kerja
-        result_by_subjectline=[]
-        subjects.each_with_index do |subject, counting|
-            result_by_subjectline << [subject.code, subject.name, @grading2[counting], @finale[counting], @remark[counting]]
-        end 
-        result_by_subjectline
+      result_by_subjectline=[]
+      subjects.each_with_index do |subject, counting|
+        result_by_subjectline << [subject.code, subject.name, @grading2[counting], @finale[counting], @remark[counting]]
+      end 
+      result_by_subjectline
     elsif @resultline.examresult.programme_id==@perubatan
-        result_by_subjectline=[]
-        subjects.each_with_index do |subject, counting|
-            if counting==0
-              subject_line=[subject.code, subject.name, "", @credit[counting], @grading2[counting], @finale[counting], @remark[counting], ""] 
-            else
-              subject_line=[subject.code, {content: subject.name, colspan: 2}, @credit[counting], @grading2[counting], @finale[counting], @remark[counting], "" ] 
-            end
-            if counting==0
-              ulasan_gred=["A", {content: "Cemerlang", rowspan: 2}]
-           elsif counting==1
-              ulasan_gred=["A-"]
-           elsif counting==2
-             ulasan_gred=["B+", {content: "Baik", rowspan: 3}]
-           elsif counting==3
-             ulasan_gred=["B"]
-           elsif counting==4
-              ulasan_gred=["B-"]
-           elsif counting==5
-             ulasan_gred=["C+", {content: "Lulus", rowspan: 2}]
-           elsif counting==6
-             ulasan_gred=["C"]
-           elsif counting==7
-              ulasan_gred=["C-", {content: "Gagal", rowspan: 4}]
-           elsif counting==8
-              ulasan_gred=["D+"]
-           elsif counting==9
-             ulasan_gred=["D"]
-           else
-             ulasan_gred=["E"]
-           end
-            subject_line+=ulasan_gred
-            result_by_subjectline << subject_line
+      result_by_subjectline=[]
+      subjects.each_with_index do |subject, counting|
+      if counting==0
+        subject_line=[subject.code, subject.name, "", @credit[counting], @grading2[counting], @finale[counting], @remark[counting], ""] 
+      else
+        subject_line=[subject.code, {content: subject.name, colspan: 2}, @credit[counting], @grading2[counting], @finale[counting], @remark[counting], "" ] 
+      end
+      if counting==0
+        ulasan_gred=["A", {content: "Cemerlang", rowspan: 2}]
+      elsif counting==1
+        ulasan_gred=["A-"]
+      elsif counting==2
+        ulasan_gred=["B+", {content: "Baik", rowspan: 3}]
+      elsif counting==3
+        ulasan_gred=["B"]
+      elsif counting==4
+        ulasan_gred=["B-"]
+      elsif counting==5
+        ulasan_gred=["C+", {content: "Lulus", rowspan: 2}]
+      elsif counting==6
+        ulasan_gred=["C"]
+      elsif counting==7
+        ulasan_gred=["C-", {content: "Gagal", rowspan: 4}]
+      elsif counting==8
+        ulasan_gred=["D+"]
+      elsif counting==9
+        ulasan_gred=["D"]
+      else
+        ulasan_gred=["E"]
+      end
+      subject_line+=ulasan_gred
+      result_by_subjectline << subject_line
+    end
+    if subjects.count < 11
+      (subjects.count+1).upto(11).each do |y|
+        if y == 10
+          nosubject_line = [{content: "<b>Keputusan<br>Peperiksaan</b>", rowspan: 2},"Jumlah NGK","#{@total_point}", "PNGS","#{@gpa}","PNGK","#{@cgpa}",""]
+        elsif y==11
+          nosubject_line = ["Status","#{@resultline.render_status_contra}","Catatan",{content: "", colspan: 3}, ""]
+        else
+          nosubject_line = ["",{content: "", colspan: 2},"","","","",""]
         end
-        if subjects.count < 11
-          (subjects.count+1).upto(11).each do |y|
-            if y == 10
-              nosubject_line = [{content: "<b>Keputusan<br>Peperiksaan</b>", rowspan: 2},"Jumlah NGK","#{@total_point}", "PNGS","#{@gpa}","PNGK","#{@cgpa}",""]
-            elsif y==11
-              nosubject_line = ["Status","#{@resultline.render_status_contra}","Catatan",{content: "", colspan: 3}, ""]
-            else
-              nosubject_line = ["",{content: "", colspan: 2},"","","","",""]
-            end
-            if y==5
-              ulasan_gred=["B"]
-            elsif y==6
-              ulasan_gred=["B-"]
-            elsif y==7
-              ulasan_gred=["*C+"]
-            elsif y==8
-              ulasan_gred=["*C-"]
-            elsif y==9
-              ulasan_gred=["*D+"]
-            elsif y==10
-              ulasan_gred=["*D"]
-            elsif y==11
-              ulasan_gred=["*E"]
-            end
-            nosubject_line+=ulasan_gred if ulasan_gred
-            result_by_subjectline << nosubject_line
-          end
+        if y==5
+          ulasan_gred=["B"]
+        elsif y==6
+          ulasan_gred=["B-"]
+        elsif y==7
+          ulasan_gred=["*C+"]
+        elsif y==8
+          ulasan_gred=["*C-"]
+        elsif y==9
+          ulasan_gred=["*D+"]
+        elsif y==10
+          ulasan_gred=["*D"]
+        elsif y==11
+          ulasan_gred=["*E"]
         end
-        result_by_subjectline
+        nosubject_line+=ulasan_gred if ulasan_gred
+        result_by_subjectline << nosubject_line
+      end
+    end
+    result_by_subjectline
     else
         subjects.map do |subject|
             ["#{counter += 1}", subject.subject_list, @grading2[counter-1], @finale[counter-1], @remark[counter-1]]
@@ -372,51 +383,51 @@ class Examination_slipPdf < Prawn::Document
     summary_data
     
     if @resultline.examresult.programme_id==@cara_kerja
-        data = [["Purata Nilai Kredit Semester (PNGS 17)", ": #{@gpa}"],
+      data = [["Purata Nilai Kredit Semester (PNGS 17)", ": #{@gpa}"],
                   ["Purata Nilai Gred Keseluruhan (PNGK 17)", ": #{@cgpa}"],
                   ["Status", ": #{@resultline.render_status}"], ["",""], 
                   [{content: "Ini adalah cetakan komputer, tandatangan tidak diperlukan. <br><b><i>Tidak sah untuk kegunaan rasmi.</i></b>", colspan: 2}], 
                   [{content: "Tarikh: #{@view.l(Date.today)}", colspan: 2}]]
-        table(data, :column_widths => [300 , 120], :cell_style => { :size => 10, :inline_format => :true}) do
-            self.width = 420
-            columns(0..1).borders = []
-            rows(0..4).borders = []
-        end
+      table(data, :column_widths => [300 , 120], :cell_style => { :size => 10, :inline_format => :true}) do
+        self.width = 420
+        columns(0..1).borders = []
+        rows(0..4).borders = []
+      end
     else
-        #ref : KEPUTUSAN SEM 4-6 KSKBJB.xlsx - Cara Kerja(overall status - Lulus, Gagal)
-        if [@cara_kerja, @fisioterapi].include?(@resultline.examresult.programme_id)
-          render_status_view=@resultline.render_status_contra #3..4 (Lulus, Gagal)
-        else
-          render_status_view=@resultline.render_status #1..4 (Cemerlang, Kepujian, Lulus, Gagal)
-        end
-        data = [["<b>#{(@resultline.examresult.render_semester).upcase}</b>","<b> JUMLAH</b>"]]
-        if @resultline.examresult.programme_id!=@fisioterapi        
-            data << ["Jumlah NGK (Nilai Gred Kumulatif)", @total_point]
-        end
+      #ref : KEPUTUSAN SEM 4-6 KSKBJB.xlsx - Cara Kerja(overall status - Lulus, Gagal)
+      if [@cara_kerja, @fisioterapi].include?(@resultline.examresult.programme_id)
+        render_status_view=@resultline.render_status_contra #3..4 (Lulus, Gagal)
+      else
+        render_status_view=@resultline.render_status #1..4 (Cemerlang, Kepujian, Lulus, Gagal)
+      end
+      data = [["<b>#{(@resultline.examresult.render_semester).upcase}</b>","<b> JUMLAH</b>"]]
+      if @resultline.examresult.programme_id!=@fisioterapi        
+        data << ["Jumlah NGK (Nilai Gred Kumulatif)", @total_point]
+      end
 
-        data+=[["Purata Nilai Gred Semester (PNGS)", @gpa],
+      data+=[["Purata Nilai Gred Semester (PNGS)", @gpa],
                  ["Purata Nilai Gred Kumulatif (PNGK)", @cgpa ],
                  ["<b>STATUS</b>", render_status_view],
                  [{content: "Ini adalah cetakan komputer, tandatangan tidak diperlukan. <br><b><i>Tidak sah untuk kegunaan rasmi.</i></b>", colspan: 2}], 
                   [{content: "Tarikh: #{@view.l(Date.today)}", colspan: 2}]]
                  #data << [{content: chairman_notes, colspan: 2}]
-        if @resultline.examresult.programme_id!=@fisioterapi
-          table(data, :column_widths => [300 , 120], :cell_style => { :size => 10, :inline_format => :true}) do
-              self.width = 420
-              columns(1).align =:center
-              rows(5).borders=[:top]
-              rows(6).borders=[]
-              rows(6).align=:justify
-          end
-        else
-          table(data, :column_widths => [300 , 120], :cell_style => { :size => 10, :inline_format => :true}) do
-              self.width = 420
-              columns(1).align =:center
-              rows(4).borders=[:top]
-              rows(5).borders=[]
-              rows(5).align=:justify
-          end
+      if @resultline.examresult.programme_id!=@fisioterapi
+        table(data, :column_widths => [300 , 120], :cell_style => { :size => 10, :inline_format => :true}) do
+          self.width = 420
+          columns(1).align =:center
+          rows(5).borders=[:top]
+          rows(6).borders=[]
+          rows(6).align=:justify
         end
+      else
+        table(data, :column_widths => [300 , 120], :cell_style => { :size => 10, :inline_format => :true}) do
+          self.width = 420
+          columns(1).align =:center
+          rows(4).borders=[:top]
+          rows(5).borders=[]
+          rows(5).align=:justify
+        end
+      end
     end
   end 
 
