@@ -6,7 +6,7 @@ class Examination_slipPdf < Prawn::Document
     @cara_kerja=Programme.where(course_type: 'Diploma').where('name ILIKE (?)', 'Jurupulih Perubatan Cara Kerja').first.id
     @fisioterapi=Programme.where(course_type: 'Diploma').where('name ILIKE (?)', '%Fisioterapi%').first.id
     if resultline.examresult.programme_id==@perubatan
-      super({top_margin: 20, left_margin:30, right_margin:80, page_size: 'A4', page_layout: :portrait })
+      super({top_margin: 20, left_margin:30, right_margin:20, page_size: 'A4', page_layout: :portrait })
     else
       super({top_margin: 20, left_margin:100, right_margin:80, page_size: 'A4', page_layout: :portrait })
     end
@@ -18,7 +18,7 @@ class Examination_slipPdf < Prawn::Document
       text "SALINAN PELATIH", :align => :left, :size => 10
       start_new_page
       pen_peg_perubatan
-      text "SALINAN IL KKM"
+      text "SALINAN IL KKM", :align => :left, :size => 10
     else #other than PEN PEG PERUBATAN
       if resultline.examresult.programme_id==@cara_kerja
         image "#{Rails.root}/app/assets/images/logo_kerajaan.png", :position => :center, :scale => 0.8
@@ -69,7 +69,7 @@ class Examination_slipPdf < Prawn::Document
     text "KEMENTERIAN KESIHATAN MALAYSIA", :align => :center, :size => 11, :style => :bold
     text "BAHAGIAN PENGURUSAN LATIHAN", :align => :center, :size =>10
     move_down 10
-    text "KEPUTUSAN PEPERIKSAAN AKHIR SEMESTER", :align => :center, :size => 12, :style => :bold
+    text "KEPUTUSAN PEPERIKSAAN AKHIR SEMESTER", :align => :center, :size => 11, :style => :bold
     move_down 10
     trainee
     move_down 15
@@ -155,6 +155,7 @@ class Examination_slipPdf < Prawn::Document
         data=[["<b>KOD</b>", {content: "<b>SUBJEK</b>", colspan:2}, "<b>KREDIT</b>", "<b>GRED</b>", "<b>N.GRED</b>", "<b>CATATAN</b>", {content: "<b>ULASAN GRED</b>", colspan: 3}]]
         table(data, :column_widths => [70,125,50,50,50,50,60,5,40,50], :cell_style => { :size => 10, :inline_format => :true}) do
             self.width = 550
+            cells[0, 7].borders=[:left, :top, :right]
         end
     else
         text "KEPUTUSAN PEPERIKSAAN AKHIR #{(@resultline.examresult.render_semester).upcase}", :align => :left, :size => 10, :style => :bold
@@ -176,7 +177,11 @@ class Examination_slipPdf < Prawn::Document
             self.width = 550
             columns(1).borders=[]
             columns(1..2).borders=[:bottom]
+            columns(7).borders=[:left, :right]
             rows(9..10).borders=[:left, :top, :bottom, :right]
+            cells[0, 7].borders=[:left, :right]
+            cells[9, 7].borders=[:left, :right]
+            cells[10, 7].borders=[:left, :right, :bottom]
             columns(3..6).align=:center
         end
     else
@@ -203,7 +208,7 @@ class Examination_slipPdf < Prawn::Document
       unless student_grade.nil? || student_grade.blank?
         grading = student_grade.render_grading[-1,2] #= student_grade.set_gred
       else
-        grading = ""
+        grading = "E"
       end
       student_finale = Grade.where('student_id=? and subject_id=?', @resultline.student.id,subject.id).first
       
@@ -273,9 +278,9 @@ class Examination_slipPdf < Prawn::Document
       result_by_subjectline=[]
       subjects.each_with_index do |subject, counting|
       if counting==0
-        subject_line=[subject.code, subject.name, "", @credit[counting], @grading2[counting], @finale[counting], @remark[counting], ""] 
+        subject_line=[subject.code, subject.name.titleize, "", @credit[counting], @grading2[counting], @finale[counting], @remark[counting], ""] 
       else
-        subject_line=[subject.code, {content: subject.name, colspan: 2}, @credit[counting], @grading2[counting], @finale[counting], @remark[counting], "" ] 
+        subject_line=[subject.code, {content: subject.name.titleize, colspan: 2}, @credit[counting], @grading2[counting], @finale[counting], @remark[counting], "" ] 
       end
       if counting==0
         ulasan_gred=["A", {content: "Cemerlang", rowspan: 2}]
@@ -317,15 +322,15 @@ class Examination_slipPdf < Prawn::Document
         elsif y==6
           ulasan_gred=["B-"]
         elsif y==7
-          ulasan_gred=["*C+"]
+          ulasan_gred=["C+"]
         elsif y==8
-          ulasan_gred=["*C-"]
+          ulasan_gred=["C-"]
         elsif y==9
-          ulasan_gred=["*D+"]
+          ulasan_gred=["D+"]
         elsif y==10
-          ulasan_gred=["*D"]
+          ulasan_gred=["D"]
         elsif y==11
-          ulasan_gred=["*E"]
+          ulasan_gred=["E"]
         end
         nosubject_line+=ulasan_gred if ulasan_gred
         result_by_subjectline << nosubject_line
