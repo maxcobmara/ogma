@@ -167,7 +167,7 @@ class Examination_transcriptPdf < Prawn::Document
              "<b>#{I18n.t('exam.examresult.subject_code_name')}</b>", "<b>#{I18n.t('exam.examresult.grade_point')}</b>", 
              "<b>#{I18n.t('exam.examresult.grade')}</b>", "<b>#{I18n.t( 'exam.examresult.term')}</b>" ]]
     data += @detailing
-    data+= [["<b>#{I18n.t('exam.examresult.completed_credit')} = #{credit_hours}</b>", "<b>#{I18n.t('exam.examresult.total_point')}</b>", "<b>#{I18n.t('exam.examresult.gpa')}</b>", "<b>#{I18n.t( 'exam.examresult.cgpa')}</b>", "", "<b>#{I18n.t('exam.examresult.completed_credit')} = #{credit_hours2}</b>", "<b>#{I18n.t('exam.examresult.total_point')}</b>", "<b>#{I18n.t('exam.examresult.gpa')}</b>", "<b>#{I18n.t( 'exam.examresult.cgpa')}</b>",], ["","<b>#{@total_point}</b>", "<b>#{@gpa}</b>", "<b>#{@cgpa}</b>", "", "","<b>#{@total_point2}</b>", "<b>#{@gpa2}</b>", "<b>#{@cgpa2}</b>"]]
+    data+= [["<b>#{I18n.t('exam.examresult.completed_credit')} = #{credit_hours}</b>", "<b>#{I18n.t('exam.examresult.total_point')}</b>", "<b>#{I18n.t('exam.examresult.gpa2')}</b>", "<b>#{I18n.t( 'exam.examresult.cgpa2')}</b>", "", "<b>#{I18n.t('exam.examresult.completed_credit')} = #{credit_hours2}</b>", "<b>#{I18n.t('exam.examresult.total_point')}</b>", "<b>#{I18n.t('exam.examresult.gpa2')}</b>", "<b>#{I18n.t( 'exam.examresult.cgpa2')}</b>",], ["","<b>#{@total_point}</b>", "<b>#{@gpa}</b>", "<b>#{@cgpa}</b>", "", "","<b>#{@total_point2}</b>", "<b>#{@gpa2}</b>", "<b>#{@cgpa2}</b>"]]
   
    last_row=@subject_count+3
   
@@ -184,7 +184,7 @@ class Examination_transcriptPdf < Prawn::Document
     total_credit_hours=@resultlines.first.examresult.total_credit+@resultlines[1].examresult.total_credit+@resultlines[2].examresult.total_credit+@resultlines[3].examresult.total_credit+@resultlines[4].examresult.total_credit+@resultlines[5].examresult.total_credit
     total_grade_points=Examresult.total_grade_points(@resultlines)
     final_cgpa=@view.number_with_precision(Examresult.cgpa_per_sem(@resultlines, 5), precision: 2)
-    data=[["<b>#{I18n.t('exam.examresult.completed_credit_hours')} = #{total_credit_hours}</b>", "<b>#{I18n.t('exam.examresult.total_grade_point')} : </b>", "<b>#{I18n.t('exam.examresult.cgpa')}</b>"], ["", "<b>#{@view.number_with_precision(total_grade_points, :precision => 2)}</b>", "<b>#{@view.number_with_precision(final_cgpa, :precision => 2)}</b>"]]
+    data=[["<b>#{I18n.t('exam.examresult.completed_credit_hours')} = #{total_credit_hours}</b>", "<b>#{I18n.t('exam.examresult.total_grade_point')} : </b>", "<b>#{I18n.t('exam.examresult.cgpa2')}</b>"], ["", "<b>#{@view.number_with_precision(total_grade_points, :precision => 2)}</b>", "<b>#{@view.number_with_precision(final_cgpa, :precision => 2)}</b>"]]
     table(data, :column_widths => [145, 81, 50], :cell_style => { :size => 9, :inline_format => :true}) do
       self.width = 276
       rows(0).columns(0).borders=[:left, :right, :top]
@@ -250,7 +250,7 @@ class Examination_transcriptPdf < Prawn::Document
             ["<b>#{I18n.t('exam.examresult.subject_code_name')}</b>",  "<b>#{I18n.t('exam.examresult.credit')}</b>","<b>#{I18n.t('exam.examresult.grade_point')}</b>", 
              "<b>#{I18n.t('exam.examresult.grade')}</b>", "<b>#{I18n.t( 'exam.examresult.term')}</b>"]]
     data += @detailing1
-    data+= [["<b>#{I18n.t('exam.examresult.completed_credit')}</b>", credit_hours, "<b>#{I18n.t('exam.examresult.total_point')}</b>", "<b>#{I18n.t('exam.examresult.gpa')}</b>", "<b>#{I18n.t( 'exam.examresult.cgpa')}</b>"], ["", "","<b>#{@total_point}</b>", "<b>#{@gpa}</b>", "<b>#{@cgpa}"]]
+    data+= [["<b>#{I18n.t('exam.examresult.completed_credit')}</b>", credit_hours, "<b>#{I18n.t('exam.examresult.total_point')}</b>", "<b>#{I18n.t('exam.examresult.gpa2')}</b>", "<b>#{I18n.t( 'exam.examresult.cgpa2')}</b>"], ["", "","<b>#{@total_point}</b>", "<b>#{@gpa}</b>", "<b>#{@cgpa}"]]
     
     last_row=subjects.count+3
     move_down 10
@@ -306,13 +306,13 @@ class Examination_transcriptPdf < Prawn::Document
             ["<b>#{I18n.t('exam.examresult.subject_code_name')}</b>", "<b>#{I18n.t('exam.examresult.credit')}</b>","<b>#{I18n.t('exam.examresult.grade_point')}</b>", 
              "<b>#{I18n.t('exam.examresult.grade')}</b>", "<b>#{I18n.t( 'exam.examresult.term')}</b>"]]
     data2 += @detailing2
-    data2+= [["<b>#{I18n.t('exam.examresult.completed_credit')}</b>", credit_hours2, "<b>#{I18n.t('exam.examresult.total_point')}</b>", "<b>#{I18n.t('exam.examresult.gpa')}</b>", "<b>#{I18n.t( 'exam.examresult.cgpa')}</b>"], ["","","<b>#{@total_point2}</b>", "<b>#{@gpa2}</b>", "<b>#{@cgpa2}"]]
+    data2+= [["<b>#{I18n.t('exam.examresult.completed_credit')}</b>", credit_hours2, "<b>#{I18n.t('exam.examresult.total_point')}</b>", "<b>#{I18n.t('exam.examresult.gpa2')}</b>", "<b>#{I18n.t( 'exam.examresult.cgpa2')}</b>"], ["","","<b>#{@total_point2}</b>", "<b>#{@gpa2}</b>", "<b>#{@cgpa2}"]]
 
     #assign & add-in grand total value
     total_credit_hours=credit_hours+credit_hours2
     total_grade_points=Examresult.total_grade_points(@resultlines)
     final_cgpa=total_grade_points/total_credit_hours
-    data2+=[["<b>#{I18n.t('exam.examresult.total_completed_credit')}<b>", total_credit_hours, {content: "<b>#{I18n.t('exam.examresult.total_grade_point')} : #{@view.number_with_precision(total_grade_points, precision: 2)}<b> ", colspan: 2}, "<b>#{I18n.t('exam.examresult.cgpa')} : #{@view.number_with_precision(final_cgpa, precision: 2)}</b>"]]
+    data2+=[["<b>#{I18n.t('exam.examresult.total_completed_credit')}<b>", total_credit_hours, {content: "<b>#{I18n.t('exam.examresult.total_grade_point')} : #{@view.number_with_precision(total_grade_points, precision: 2)}<b> ", colspan: 2}, "<b>#{I18n.t('exam.examresult.cgpa2')} : #{@view.number_with_precision(final_cgpa, precision: 2)}</b>"]]
     
     last_row=subjects2.count+3
     move_down 10

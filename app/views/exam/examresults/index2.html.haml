@@ -63,7 +63,7 @@
                 - resultlines4 = Resultline.where(examresult_id: examresult_ids, student_id: resultline.student_id).order(created_at: :asc)
                 - total_point=number_with_precision(Examresult.total(final2_all, credit2_all), precision: 2)
                 /NOTE cgpa = pngk (require examresult of previous semester to exist first), eg- sem 2, examresult for sem 1 & 2 must exist.
-                - if resultlines4.count==semno+1 
+                - if resultlines4.count>=semno+1 
                   - cgpa=number_with_precision(Examresult.cgpa_per_sem(resultlines4, semno), precision: 2)
               //////
               %tr
