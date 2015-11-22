@@ -33,6 +33,7 @@
 .row
   .col-md-12
     - unless student_exammark && student_exammark.count > 0
-      %font{:style=>"color: red;"}* 
-      = t 'exam.grade.weightage_before_marks2'
+      - if @programme==@radiografi || @programme==@carakerja
+        %font{:style=>"color: red;"}* 
+        = t 'exam.grade.weightage_before_marks2'
   %hr

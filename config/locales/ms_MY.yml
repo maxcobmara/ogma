@@ -2454,6 +2454,28 @@ ms_MY:
       total_scores: Jumlah Skor
       average_scores: Purata Skor
 
+    examanalysis:
+      title: Analisis Peperiksaan Mengikut Kertas Peperiksaan
+      title2: Analisis Peperiksaan
+      new: Analisis Baru Peperiksaan
+      edit: Sunting Analisis Peperiksaan
+      details: Butiran Analisis Peperiksaan
+      examtype: Jenis Peperiksaan
+      programme_id: Program
+      subject_id: Subjek
+      examon: Tarikh Peperiksaan
+      grade: Gred
+      examtype: Jenis Peperiksaan
+      total_students: Jumlah Pelajar
+      no_question_paper: Tiada soalan bagi Kertas Peperiksaan
+      no_marks_available: Tiada markah untuk dianalisis
+      select_subject: Sila pilih subjek
+      question: S
+      exam_on: Tarikh Peperiksaan
+      total_marks: Jumlah Markah
+      exam_must_exist: " mesti dipilih."
+      exam_must_uniq: " hanya boleh dianalisis sekali."
+    
   training:
     title: Latihan
     new: Latihan Baru

@@ -1,6 +1,6 @@
 class Exam < ActiveRecord::Base
   belongs_to  :creator,       :class_name => 'Staff',   :foreign_key => 'created_by'
-  belongs_to  :programme,   :foreign_key => 'course_id'
+  #belongs_to  :programme,   :foreign_key => 'course_id'
   belongs_to :subject,  :class_name => 'Programme', :foreign_key => 'subject_id'
   has_and_belongs_to_many :examquestions
   has_many :exammarks   #11Apr2013
@@ -184,7 +184,23 @@ class Exam < ActiveRecord::Base
       oscii_q.each do |t|
         sum_oscii+=t.to_i
       end
-      sum=sum+sum_meq+sum_acq+sum_osci+sum_oscii
+      osce_q = Exam.joins(:examquestions).where('exam_id=? and questiontype=?', id, 'OSCE').pluck(:marks)#.map{|x|x.marks}  
+      sum_osce=0 
+      oscii_q.each{|t| sum_osce+=t.to_i}
+      
+      ospe_q = Exam.joins(:examquestions).where('exam_id=? and questiontype=?', id, 'OSPE').pluck(:marks)#.map{|x|x.marks}  
+      sum_ospe=0 
+      ospe_q.each{|t| sum_ospe+=t.to_i}
+      
+      viva_q = Exam.joins(:examquestions).where('exam_id=? and questiontype=?', id, 'VIVA').pluck(:marks)#.map{|x|x.marks}  
+      sum_viva=0 
+      viva_q.each{|t| sum_viva+=t.to_i}
+      
+      truefalse_q = Exam.joins(:examquestions).where('exam_id=? and questiontype=?', id, 'TRUEFALSE').pluck(:marks)#.map{|x|x.marks}  
+      sum_truefalse=0 
+      truefalse_q.each{|t| sum_truefalse+=t.to_i}
+      
+      sum=sum+sum_meq+sum_acq+sum_osci+sum_oscii+sum_osce+sum_ospe+sum_viva+sum_truefalse
       sum=sum+(seq_count)*10 if seq_count > 0
       return sum
   end

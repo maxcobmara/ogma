@@ -196,7 +196,8 @@ authorization do
    #EXAMINATION modules
    has_permission_on [:exam_examquestions, :exam_exams, :exam_exammarks, :exam_grades], :to => [:menu, :read, :create]
    has_permission_on :exam_examresults, :to => [:menu, :read, :index2, :create, :show2, :examination_slip, :show3, :examination_transcript]   
-   #new & create & examination_slip should not allowed for Commonsubject lecturers - refer HACK - index & show2
+   has_permission_on :exam_examanalyses, :to => [:menu, :read]
+   #new & create & examination_slip should not be allowed for Commonsubject lecturers - refer HACK - index & show2
  
    has_permission_on :exam_exams, :to =>[:manage ,:exampaper, :question_selection] do
      if_attribute :created_by => is {user.userable.id}
@@ -212,6 +213,10 @@ authorization do
    
    has_permission_on :exam_examresults, :to =>[ :edit, :update, :delete] do
      if_attribute :programme_id => is_in {user.lecturers_programme2}
+   end
+   
+   has_permission_on :exam_examanalyses, :to => [:edit, :update, :delete] do
+     if_attribute :programme_id => is_in {user.lecturers_programme2}  
    end
    
 #    has_permission_on :exam_examquestions, :to =>:update, :join_by => :and do

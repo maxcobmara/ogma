@@ -1,0 +1,123 @@
+.col-md-8.col-md-offset-2
+  %dl.dl-horizontal
+    %dt=t 'exam.exams.title'
+    %dd=h @examanalysis.exampaper.exam_name_subject_date 
+    
+  %br
+    - exammarks=Exammark.where(exam_id: @examanalysis.exam_id)
+    - students=Student.where(id: exammarks.pluck(:student_id))
+    - subjectid=@examanalysis.exampaper.subject_id
+    - if @examanalysis.exampaper.klass_id==0
+      /template
+      - examtemplates = @examanalysis.exampaper.examtemplates
+      = qty_ary = examtemplates.map(&:quantity) 
+      = questionscount = qty_ary.inject{|sum,x|sum+x} 
+      = questionstype=examtemplates.map(&:questiontype)
+      = questionstype_count = questionstype.count
+      = @meq_count=examtemplates.meqq[0].quantity
+      - @seq_count=examtemplates.seqq[0].quantity
+      - @acq_count=examtemplates.acqq[0].quantity
+      - @osci_count=examtemplates.osci2q[0].quantity
+      - @oscii_count=examtemplates.osci3q[0].quantity
+      - @osce_count=examtemplates.osceq[0].quantity
+      - @ospe_count=examtemplates.ospeq[0].quantity
+      - @viva_count=examtemplates.vivaq[0].quantity
+      - @truefalse_count=examtemplates.truefalseq[0].quantity
+    - else
+      /c/w questions
+      - examquestions = @examanalysis.exampaper.examquestions
+      =questionscount=examquestions.count
+      =questionstype=examquestions.map(&:questiontype).uniq
+      =questionstype_count=questionstype.count
+      = @meq_count=examquestions.meqq.count
+      - @seq_count=examquestions.seqq.count
+      - @acq_count=examquestions.acqq.count
+      - @osci_count=examquestions.osci2q.count
+      - @oscii_count=examquestions.osci3q.count
+      - @osce_count=examquestions.osceq.count
+      - @ospe_count=examquestions.ospeq.count
+      - @viva_count=examquestions.vivaq.count
+      - @truefalse_count=examquestions.truefalseq.count
+      
+    %table.table.table-bordered
+      %head
+        %tr
+          %th{rowspan: 2} Student
+          %th{rowspan: 2} Matrix No
+          %th{rowspan: 2} MyKad No
+          %th{rowspan: 2} CA+MSE
+          - if questionstype.include?('MCQ')
+            %th.centre{rowspan: 2} MCQ
+          - if @meq_count > 0
+            %th.centre{colspan: "#{@meq_count}"}MEQ
+          - if @seq_count > 0
+            %th.centre{colspan: "#{@seq_count}"}SEQ 
+          - if @acq_count > 0
+            %th.centre{colspan: "#{@acq_count}"}ACQ 
+          - if @osci_count > 0
+            %th.centre{colspan: "#{@osci_count}"}OSCI 
+          - if @oscii_count > 0
+            %th.centre{colspan: "#{@oscii_count}"}OSCII 
+          - if @osce_count > 0
+            %th.centre{colspan: "#{@osce_count}"}OSCE 
+          - if @ospe_count > 0
+            %th.centre{colspan: "#{@ospe_count}"}OSPE 
+          - if @viva_count > 0
+            %th.centre{colspan: "#{@viva_count}"}VIVA 
+          - if @truefalse_count > 0
+            %th.centre{colspan: "#{@truefalse_count}"}TRUE FALSE
+          /- 0.upto(questionstype_count-1).each do |cnt|
+          /  %th=questionstype[cnt]
+        %tr
+          - if @meq_count > 0
+            - 1.upto(@meq_count).each do |y|
+              %th="Q"+y.to_s
+          - if @seq_count > 0
+            - 1.upto(@seq_count).each do |y|
+              %th="Q"+y.to_s
+          - if @acq_count > 0
+            - 1.upto(@acq_count).each do |y|
+              %th="Q"+y.to_s
+          - if @osci_count > 0
+            - 1.upto(@osci_count).each do |y|
+              %th="Q"+y.to_s
+          - if @oscii_count > 0
+            - 1.upto(@oscii_count).each do |y|
+              %th="Q"+y.to_s
+          - if @osce_count > 0
+            - 1.upto(@osce_count).each do |y|
+              %th="Q"+y.to_s
+          - if @ospe_count > 0
+            - 1.upto(@ospe_count).each do |y|
+              %th="Q"+y.to_s
+          - if @viva_count > 0
+            - 1.upto(@viva_count).each do |y|
+              %th="Q"+y.to_s
+          - if @truefalse_count > 0
+            - 1.upto(@truefalse_count).each do |y|
+              %th="Q"+y.to_s
+          
+      - for student in students.sort_by{|x|[x.id, x.name]}     
+        %body 
+          %tr
+            %td=student.matrixno
+            %td=student.name 
+            %td=student.icno
+            %td=Grade.where(student_id: student.id).where(subject_id: subjectid).first.formative
+            %td=exammarks.where(student_id: student.id).first.total_mcq
+          
+/Fisioterapi - MCQ count not exactly 40 but total MCQ will be converted into weightage of 40% - note this card : https://trello.com/c/A4OyDJkv -- sama dgn pem peg perubatan
+/Cara Kerja - MCQ - fix 40 questions - 40%
+/Pem Pegawai Perubatan - MCQ count 60 - weightage 40% - this card : https://trello.com/c/CzOlHCnM  -- sama dgn fisioterapi
+/Radiografi -     J= (MCQ+SEQ)/(total mcq+total seq) * 100  -> J/100 * 70                Note - [total mcq+total seq < 100]
+/                       (MCQ+SEQ)/(total mcq+total seq)  * 100 ->  (MCQ+SEQ)/(total mcq+total seq)  * 70              Note - [total mcq+total seq > 100]
+
+/TODO - to check grades - for all programmes - 70% - 100% calculation - summative -
+/Pem Peg Perubatan - tiada 100% for summative value -> 40% (mcq) +meq(30%) -terus dapat 70% 
+/Fisioterapi - sda - -> 40% (MCQ/100*40)+ 30% (MEQ/total meq*30) - terus dapat 70%
+/Radiografi -     J= (MCQ+SEQ)/(total mcq+total seq) * 100  -> J/100 * 70                Note - [total mcq+total seq < 100]
+/                       (MCQ+SEQ)/(total mcq+total seq)  * 100 ->  (MCQ+SEQ)/(total mcq+total seq)  * 70              Note - [total mcq+total seq > 100]
+/Cara Kerja - Final Exam=(MCQ+SEQ)/(total mcq+total seq),   Total marks = Formative(30%)+(Final Exam*0.70)
+/Pos Basik(KEbidanan) - Summative(60%) : 40%(MCQ) +(MEQ/total meq * 20%)=60%,    JUMLAH BESAR = Formative(40%)+Summative(60%)
+
+/***Radiografi je yg ade 100% - 70%

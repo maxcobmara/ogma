@@ -2513,6 +2513,28 @@ en:
       question: Q
       total_scores: Total Scores
       average_scores: Average Scores
+      
+    examanalysis:
+      title: Examination Analysis by Examination Paper
+      title2: Examination Analysis
+      new: New Examination Analysis
+      edit: Edit Examination Analysis
+      details: Examination Analysis Details
+      examtype: Examination Type
+      programme_id: Programme
+      subject_id: Subject
+      examon: Examination Date
+      grade: Grade
+      examtype: Examination Type
+      total_students: Total Students
+      no_question_paper: No questions available in Examination 
+      no_marks_available: No marks available for analysis
+      select_subject: Please select a subject
+      question: Q
+      exam_on: Examination Date
+      total_marks: Total Marks
+      exam_must_exist: " must be selected."
+      exam_must_uniq: " can be analysed only once."
 
   training:
     title: Training

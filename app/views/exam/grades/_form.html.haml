@@ -11,7 +11,9 @@
 - else
   - @subject = @grade.subject_id
   - @programme = @grade.subjectgrade.root_id
-  
+- diploma=Programme.where(course_type: 'Diploma')
+- @radiografi=diploma.where('name ILIKE?', '%Radiografi%').first.id
+- @carakerja=diploma.where('name ILIKE?', '%Jurupulih Perubatan Cara Kerja%').first.id
 .row
   .col-md-10.col-md-offset-1
     / Nav tabs
@@ -129,7 +131,9 @@
             .col-sm-2= t 'exam.grade.weightage'
             .col-sm-2
               = t 'exam.grade.marks'
-              (100%)                
+              - if @programme==@radiografi 
+                (100%)
+                
             .col-sm-2
               = t 'exam.grade.marks'
               - if Programme.roots.where(course_type: 'Diploma').pluck(:id).include?(@programme.to_i)
@@ -142,8 +146,9 @@
           =f.label t 'exam.grade.final_details'
         %br
         = render 'tab_final_details_edit', :f => f
-        
+      
 =hidden_field_tag "grade[formative_count]", @count 
+=hidden_field_tag "programme_name", Programme.where(id: @programme).first.name
 /$(".i1").keyup(function() {
 
 :javascript
@@ -158,6 +163,8 @@
     var formativecount = document.getElementById("grade_formative_count").value;
     var exam1marks = document.getElementById("grade_exam1marks").value;
     var examweight = document.getElementById("grade_examweight").value;
+    var programme = document.getElementById("programme_name").value;
+    
 
     for (var i=0;i<formativecount;i++)
    {
@@ -176,7 +183,15 @@
     }
       
     caplusmse = (totalformative*1);
-    summative = (exam1marks*1)*(examweight*1)/100;
+    
+    if ((programme=="Radiografi") || (programme=="Jurupulih Perubatan Cara Kerja"))
+    {
+      summative = (exam1marks*1)*(examweight*1)/100;
+    }
+    else
+    {
+      summative=exam1marks*1;
+    }
     forgrade = caplusmse+summative;
     finalscore.value = caplusmse+summative;
     marks70.value = summative;

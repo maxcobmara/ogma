@@ -408,6 +408,8 @@ Ogma::Application.routes.draw do
         get :examination_transcript
       end
     end
+    resources :examanalyses #do
+    #end
     resources :evaluate_courses do
       member do
         get 'courseevaluation'

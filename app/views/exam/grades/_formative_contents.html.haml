@@ -1,3 +1,6 @@
+- diploma=Programme.where(course_type: 'Diploma')
+- radiografi=diploma.where('name ILIKE?', '%Radiografi%').first.id
+- carakerja=diploma.where('name ILIKE?', '%Jurupulih Perubatan Cara Kerja%').first.id
 .col-md-12
   %table.table.table-bordered
     %tr
@@ -28,7 +31,8 @@
         Final Exam
         %br
         %font{:style=>"font size=-2"} (Written Paper)
-        (100%)
+        - if @grades[0].studentgrade.course_id==radiografi
+          (100%)
       %th{:style=>"background-color:#FEE;text-align:center;"}
         Total Summative 
         %font{color: "blue"} 
@@ -66,10 +70,10 @@
         /23June2013-no changes here but pls refer js part
         /HIDE this part from Fisioterapi - https://trello.com/c/Wht96nbB
         - if @grades[0].studentgrade.course_id==fisioterapi
-          = hidden_field_tag "scores[]", number_with_precision(grade.score,:precision=>2), :size=> 4,:id=>"caplusmse"+no.to_s, :readonly => "readonly", class: "form-control"
+          = hidden_field_tag "scores[]", number_with_precision(grade.total_formative,:precision=>2), :size=> 4,:id=>"caplusmse"+no.to_s, :readonly => "readonly", class: "form-control"
         - else
           %td{:style=>"background-color:#E5ECE5;text-align:center;"}
-            = text_field_tag "scores[]", number_with_precision(grade.score,:precision=>2), :size=> 4,:id=>"caplusmse"+no.to_s, :readonly => "readonly", class: "form-control"
+            = text_field_tag "scores[]", number_with_precision(grade.total_formative,:precision=>2), :size=> 4,:id=>"caplusmse"+no.to_s, :readonly => "readonly", class: "form-control"
         //HIDE ending
         - if @subjects_of_grades > 1 
           /if subject for selected grades is different
@@ -86,9 +90,9 @@
             = text_field_tag "exam1markss[]", number_with_precision(grade.exam1marks,:precision=>2), :size=> 4,:id=>"finalexam"+no.to_s,:class=>'k1'
         %td{:style=>"background-color:#FEE;text-align:center;"}
           - if student_exammark && student_exammark.count > 0
-            = text_field_tag "summatives[]", number_with_precision(grade.summative,:precision=>2), :size=> 4,:id=>"summative"+no.to_s, class: 'form-control', readonly: 'readonly'
+            = text_field_tag "summatives[]", number_with_precision(grade.total_summative,:precision=>2), :size=> 4,:id=>"summative"+no.to_s, class: 'form-control', readonly: 'readonly'
           - else
-            = text_field_tag "summatives[]", number_with_precision(grade.summative,:precision=>2), :size=> 4,:id=>"summative"+no.to_s 
+            = text_field_tag "summatives[]", number_with_precision(grade.total_summative,:precision=>2), :size=> 4,:id=>"summative"+no.to_s, class: 'form-control', readonly: 'readonly'
         %td{:style=>"background-color:#EEF;text-align:center;"}
           = text_field_tag "finalscores[]", number_with_precision(grade.finalscore,:precision=>2), :size=> 4,:id=>"finalscore"+no.to_s, :readonly => "readonly", class: "form-control"
         %td
@@ -111,6 +115,8 @@
 /TRIAL      
 =hidden_field_tag "grade_count", @grades.count
 =hidden_field_tag "scores_count", @score_for_legend_sort_1.count
+=hidden_field_tag "programme_name", Programme.where(id: @grades[0].subjectgrade.root_id).first.name
+
 /=hidden_field_tag "grade_examweight", @grades[0].examweight
 :javascript
 
@@ -144,11 +150,15 @@ $(document).ready(function(){
   $(".k1").keyup(function(){
     var gradecount = $("#grade_count").val();
     var summativeweightage = $("#grade_summative_weightage").val(); 
+    var programme = $("#programme_name").val();
     
     for (var i=0;i<gradecount;i++){
       window["total_marks"+i]= document.getElementById("finalexam"+i).value;
       window["summative70"+i] = document.getElementById("summative"+i);
-      window["summative70"+i].value=(window["total_marks"+i])*(summativeweightage/100);
+      if ((programme=="Radiografi") || (programme=="Jurupulih Perubatan Cara Kerja"))
+      { window["summative70"+i].value=(window["total_marks"+i])*(summativeweightage/100); }
+      else
+      {window["summative70"+i].value=window["total_marks"+i]}
       
       window["cplus_val"+i] =  document.getElementById("caplusmse"+i).value;
       window["formative_summative"+i] = document.getElementById("finalscore"+i);
