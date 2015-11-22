@@ -155,14 +155,19 @@ $(document).ready(function(){
     for (var i=0;i<gradecount;i++){
       window["total_marks"+i]= document.getElementById("finalexam"+i).value;
       window["summative70"+i] = document.getElementById("summative"+i);
-      if ((programme=="Radiografi") || (programme=="Jurupulih Perubatan Cara Kerja"))
-      { window["summative70"+i].value=(window["total_marks"+i])*(summativeweightage/100); }
-      else
-      {window["summative70"+i].value=window["total_marks"+i]}
-      
       window["cplus_val"+i] =  document.getElementById("caplusmse"+i).value;
       window["formative_summative"+i] = document.getElementById("finalscore"+i);
-      window["formative_summative"+i].value = (window["total_marks"+i])*(summativeweightage/100) +((window["cplus_val"+i])*1);
+      
+      if ((programme=="Radiografi") || (programme=="Jurupulih Perubatan Cara Kerja"))
+      {
+        window["summative70"+i].value=(window["total_marks"+i])*(summativeweightage/100); 
+        window["formative_summative"+i].value = (window["total_marks"+i])*(summativeweightage/100) +((window["cplus_val"+i])*1);
+      }
+      else
+      {
+        window["summative70"+i].value=window["total_marks"+i]
+        window["formative_summative"+i].value = (window["total_marks"+i])*1+((window["cplus_val"+i])*1);
+      }  
     }
   });
   
