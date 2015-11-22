@@ -2416,6 +2416,7 @@ en:
       grades_intakes_exist: 'Grades for student(s) of selected Intakes already exist. Delete / edit records accordingly.'
       summative_weightage_changed: "Summative Weightage is changed. Click 'Apply Changes' to update weightage for 'Total Summative' column before proceeding with data entry."
       standardize_weightage: "* Click 'Apply Changes' to standardize Summative Weightage to student grades as listed below."
+      redundant_formative_template: "Multiple 'Formative Scores' set / template detected. Note, uneven columns displayed in Student Listing part. Confirm below 'Formative Scores' set / template (ref: first record), if differ, sort and reselect record in Index for multiple edit. Click 'Apply Changes' to standardize 'Formative Scores' set / template for this subject."
     
     examresult:
       title: Examination Result by Programme

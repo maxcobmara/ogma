@@ -42,38 +42,31 @@ class Grade < ActiveRecord::Base
   end
   
   def total_summative
-    # NOTE 
-    # Radiografi - exam1marks (100%), total_summative (70%)
-    # Cara Kerja - exam1marks=Final Exam(written paper)=(MCQ+SEQ)/(total mcq+total seq), total_summative=(Final Exam*0.70)
-    # Pem Peg Perubatan, Fisioterapi - exam1marks=total_formative (70%) -- exam1marks=40%+30% (MCQ+SEQ etc)
-    # Pos Basik(KEbidanan) - Summative(60%) : 40%(MCQ) +(MEQ/total meq * 20%)=60%,    JUMLAH BESAR = Formative(40%)+Summative(60%)
+    if subject_id
+      # NOTE 
+      # Radiografi - exam1marks (100%), total_summative (70%)
+      # Cara Kerja - exam1marks=Final Exam(written paper)=(MCQ+SEQ)/(total mcq+total seq), total_summative=(Final Exam*0.70)
+      # Pem Peg Perubatan, Fisioterapi - exam1marks=total_formative (70%) -- exam1marks=40%+30% (MCQ+SEQ etc)
+      # Pos Basik(KEbidanan) - Summative(60%) : 40%(MCQ) +(MEQ/total meq * 20%)=60%,    JUMLAH BESAR = Formative(40%)+Summative(60%)
     
-    # Radiografi - exam1marks (in 100%) - 2 cases: final exam(total) < 100 & > 100
-    # Cara Kerja - exam1marks (not really in 100%) - summative calculation same as Radiografi
-    diploma=Programme.where(course_type: 'Diploma')
-    radiografi=diploma.where('name ILIKE?', '%Radiografi%').first.id
-    carakerja=diploma.where('name ILIKE?', '%Jurupulih Perubatan Cara Kerja%').first.id
-    if subjectgrade.root_id==radiografi || subjectgrade.root_id==carakerja
-      if exam1marks == 0 || exam1marks == nil
-        0
-      else
-       # if subjectgrade.root_id==carakerja
+      # Radiografi - exam1marks (in 100%) - 2 cases: final exam(total) < 100 & > 100
+      # Cara Kerja - exam1marks (not really in 100%) - summative calculation same as Radiografi
+      diploma=Programme.where(course_type: 'Diploma')
+      radiografi=diploma.where('name ILIKE?', '%Radiografi%').first.id
+      carakerja=diploma.where('name ILIKE?', '%Jurupulih Perubatan Cara Kerja%').first.id
+      if subjectgrade.root_id==radiografi || subjectgrade.root_id==carakerja
+        if exam1marks == 0 || exam1marks == nil
+          0
+        else
           (exam1marks * examweight)/100
-        #else #radiografi
-          #latest_paper=Exam.where(subject_id: subject_id).order(created_at: :desc).first
-          #total_paper_marks=latest_paper.total_marks
-          #if total_paper_marks < 100
-            #(exam1marks * examweight)/100
-          #else
-	    #student_marks=Exammark.where(student_id: student_id).where(exam_id: latest_paper.id).first.total_marks
-            #student_marks / total_paper_marks * examweight
-          #end
-        #end
+        end
+      else
+        #Pem Peg Perubatan & Fisioterapi - FInal Exam(written papaer) already in 70%
+        #Diploma Lanjutan Kebidanan - FInal Exam(written paper) already in 60%
+        exam1marks 
       end
     else
-      #Pem Peg Perubatan & Fisioterapi - FInal Exam(written papaer) already in 70%
-      #Diploma Lanjutan Kebidanan - FInal Exam(written paper) already in 60%
-      exam1marks 
+      0
     end
   end
   

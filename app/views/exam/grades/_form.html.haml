@@ -89,7 +89,7 @@
    
           /Radiografi 
           /1-Formative Assesment : MCQ & SEQ (15%)
-          /2-Student\-Centered Assesment : SC1 & SC2 (10%)
+          /2-Student-Centered Assesment : SC1 & SC2 (10%)
           /3-Affective Assesment : Attendance \/ Punctuality \/ Appearance \/ Enrolment \/ Communication (5%)
           
           /Fisioterapi
@@ -148,7 +148,7 @@
         = render 'tab_final_details_edit', :f => f
       
 =hidden_field_tag "grade[formative_count]", @count 
-=hidden_field_tag "programme_name", Programme.where(id: @programme).first.name
+=hidden_field_tag "programme_name", Programme.where(id: @programme).first.name if @programme
 /$(".i1").keyup(function() {
 
 :javascript
