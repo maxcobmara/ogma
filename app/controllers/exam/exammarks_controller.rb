@@ -11,6 +11,7 @@ class Exam::ExammarksController < ApplicationController
     @valid_exammm = valid_exams.count
     position_exist = @current_user.userable.positions
     posbasiks=["Pos Basik", "Diploma Lanjutan", "Pengkhususan"]
+    roles=@current_user.roles.pluck(:authname)
     if position_exist && position_exist.count > 0
       lecturer_programme = @current_user.userable.positions[0].unit
       unless lecturer_programme.nil?
@@ -35,9 +36,16 @@ class Exam::ExammarksController < ApplicationController
           programme_id=Programme.where(name: lecturer_basicprog_name, ancestry_depth: 0).first.id
           subject_ids = Programme.where(id: programme_id).first.descendants.at_depth(2).pluck(:id)
           @exams_list_raw = Exam.where('subject_id IN(?) and id IN(?)', subject_ids, valid_exams).order(name: :asc, subject_id: :asc)
-        else
+        elsif roles.include?("administration")
           programme_id='0'
           @exams_list_raw = Exam.where('id IN(?)', valid_exams).order(name: :asc, subject_id: :asc)
+        else
+          leader_unit=tasks_main.scan(/Program (.*)/)[0][0].split(" ")[0] if tasks_main!="" && tasks_main.include?('Program')
+          if leader_unit
+            programme_id = Programme.where('name ILIKE (?) AND ancestry_depth=?',"%#{leader_unit}%",0).first.id
+            subjects_ids = Programme.where(id: programme_id).first.descendants.at_depth(2).pluck(:id)
+            @exams_list_raw = Exam.where('subject_id IN(?) and id IN(?)', subjects_ids, valid_exams).order(name: :asc, subject_id: :asc)
+          end
         end
       end
       @exams_list_exist_mark = Exam.joins(:exammarks).where('exam_id IN(?)', @exams_list_raw.pluck(:id)).uniq.pluck(:id)
@@ -241,6 +249,7 @@ class Exam::ExammarksController < ApplicationController
       position_exist = @current_user.userable.positions
       posbasiks=['Pos Basik', 'Diploma Lanjutan', 'Pengkhususan']
       common_subjects=['Sains Tingkahlaku','Sains Perubatan Asas', 'Komunikasi & Sains Pengurusan', 'Anatomi & Fisiologi', 'Komuniti']
+      roles=@current_user.roles.pluck(:authname)
       if position_exist  
         lecturer_programme = @current_user.userable.positions[0].unit
         unless lecturer_programme.nil?
@@ -269,11 +278,18 @@ class Exam::ExammarksController < ApplicationController
               @exams_list = Exam.where('subject_id IN(?) and id IN(?)', subject_ids, valid_exams).order(name: :asc, subject_id: :asc)
               @students_list = Student.where(course_id: programme_id).order('matrixno, name asc')
             end
-          else
-            #admin part
+          elsif roles.include?("administration")
             subject_ids=Programme.where(course_type: ['Subject', 'Commonsubject']).pluck(:id)
             @exams_list = Exam.where('subject_id IN(?) and id IN(?)', subject_ids, valid_exams).order(name: :asc, subject_id: :asc)
             @students_list=Student.all.order('matrixno, name asc')
+          else
+            leader_unit=tasks_main.scan(/Program (.*)/)[0][0].split(" ")[0] if tasks_main!="" && tasks_main.include?('Program')
+            if leader_unit
+              programme_id = Programme.where('name ILIKE (?) AND ancestry_depth=?',"%#{leader_unit}%",0).first.id
+              subject_ids = Programme.where(id: programme_id).first.descendants.at_depth(2).pluck(:id)
+              @exams_list = Exam.where('subject_id IN(?) and id IN(?)', subject_ids, valid_exams).order(name: :asc, subject_id: :asc)
+              @students_list= Student.where(course_id: programme_id).order('matrixno, name asc')
+            end
           end
         end
       end

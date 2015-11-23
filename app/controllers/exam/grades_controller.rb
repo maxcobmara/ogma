@@ -13,17 +13,17 @@ class Exam::GradesController < ApplicationController
     @position_exist = @current_user.userable.positions
     @common_subjects=['Sains Tingkahlaku','Sains Perubatan Asas', 'Komunikasi & Sains Pengurusan', 'Anatomi & Fisiologi', 'Komuniti']
     posbasics=['Pos Basik', 'Diploma Lanjutan', 'Pengkhususan']
+    roles=@current_user.roles.pluck(:authname)
     ###
-    if @position_exist && @position_exist.count > 0
+    if @position_exist && @position_exist.count > 0 
       @lecturer_programme = @current_user.userable.positions[0].unit
       common_subject_a = Programme.where('course_type=?','Commonsubject')
       unless @lecturer_programme.nil?
         @programme = Programme.where('name ILIKE (?) AND ancestry_depth=?',"%#{@lecturer_programme}%",0) if posbasics.include?(@lecturer_programme)==false
       end
       unless @programme.nil? || @programme.count == 0
-        @preselect_prog = @programme.first.id
         programme_id = @programme.first.id
-        @subjectlist_preselec_prog = Programme.find(@preselect_prog).descendants.at_depth(2)  #.sort_by{|y|y.code}
+        @subjectlist_preselec_prog = Programme.find(programme_id).descendants.at_depth(2)  #.sort_by{|y|y.code}
         #subjects - only those with existing exampaper
         @subjectlist_preselec_prog2_raw = Programme.where('id IN (?) AND id IN (?) and id NOT IN(?)',@subjectlist_preselec_prog.map(&:id), Exam.where('id IN(?) and name=?', valid_exams, 'F').map(&:subject_id), common_subject_a.map(&:id))
         #subjects - ALL subject of current programme
@@ -34,23 +34,30 @@ class Exam::GradesController < ApplicationController
           programme_id ='1'
           @subjectlist_preselec_prog = common_subject_a
         elsif posbasics.include?(@lecturer_programme) && tasks_main!=nil
-	  ###
-	  if @current_user.roles.pluck(:authname).include?("programme_manager")
-	      @subjectlist_preselec_prog = Programme.where(course_type: posbasics).first.descendants.at_depth(2)
-	      programme_id='2'
-	  else
-	      
-	      allposbasic_prog = Programme.where(course_type: posbasics).pluck(:name)  #Onkologi, Perioperating, Kebidanan etc
+          ###
+          if @current_user.roles.pluck(:authname).include?("programme_manager")
+              @subjectlist_preselec_prog = Programme.where(course_type: posbasics).first.descendants.at_depth(2)
+              programme_id='2'
+          else
+              allposbasic_prog = Programme.where(course_type: posbasics).pluck(:name)  #Onkologi, Perioperating, Kebidanan etc
               for basicprog in allposbasic_prog
                 lecturer_basicprog_name = basicprog if tasks_main.include?(basicprog)==true
               end
               programme_id=Programme.where(name: lecturer_basicprog_name, ancestry_depth: 0).first.id
               @subjectlist_preselec_prog = Programme.where(id: programme_id).first.descendants.at_depth(2)
-	  end
-	  ###
-        else
+          end
+          ###
+        elsif roles.include?("administration")
           programme_id='0'
           @subjectlist_preselec_prog = Programme.at_depth(2) 
+        else
+          leader_unit=tasks_main.scan(/Program (.*)/)[0][0].split(" ")[0] if tasks_main!="" && tasks_main.include?('Program')
+          if leader_unit
+            @programme = Programme.where('name ILIKE (?) AND ancestry_depth=?',"%#{leader_unit}%",0) 
+            programme_id = @programme.first.id
+            @subjectlist_preselec_prog = Programme.find(programme_id).descendants.at_depth(2) 
+            @subjectlist_preselec_prog2_raw = Programme.where('id IN (?) AND id IN (?) and id NOT IN(?)',@subjectlist_preselec_prog.map(&:id), Exam.where('id IN(?) and name=?', valid_exams, 'F').map(&:subject_id), common_subject_a.map(&:id))
+          end
         end
 
         #subject no longer available for NEW multiple when ALL available Intakes already have at least ONE grade entry
@@ -447,6 +454,7 @@ class Exam::GradesController < ApplicationController
     def set_data_edit_update_new_create
       valid_exams = Exammark.get_valid_exams
       @position_exist = @current_user.userable.positions
+      roles=@current_user.roles.pluck(:authname)
       ##
       if @position_exist     
         @lecturer_programme = @current_user.userable.positions[0].unit
@@ -486,11 +494,22 @@ class Exam::GradesController < ApplicationController
               @subjects=Programme.subject_groupbyoneprogramme2_grade(@preselect_prog) #new only
               @students=Student.groupby_oneprogramme(@preselect_prog)
             end
-          else
+          elsif roles.include?("administration")
             @programme_names=Programme.programme_names
             @subjects=Programme.all_subjects_groupbyprogramme_grade #new only
-	    @students=Student.groupby_programme
-          end
+            @students=Student.groupby_programme
+          else
+            leader_unit=tasks_main.scan(/Program (.*)/)[0][0].split(" ")[0] if tasks_main!="" && tasks_main.include?('Program')
+            if leader_unit
+              @programme = Programme.where('name ILIKE (?) AND ancestry_depth=?',"%#{leader_unit}%",0) 
+              @preselect_prog = @programme.first.id
+              @programme_names=Programme.where(id: @preselect_prog).map(&:programme_list)
+              @programme_detail=@programme.first.programme_list
+              @subjects=Programme.subject_groupbyoneprogramme2_grade(@preselect_prog)
+              @students=Student.groupby_oneprogramme(@preselect_prog)
+            end
+          end 
+	  ## ----------------------------- 
           ####
         end
       end

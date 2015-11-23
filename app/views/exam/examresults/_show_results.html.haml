@@ -69,11 +69,11 @@
           - programmeid=@examresult.programme_id
           - examresult_ids=Examresult.where(programme_id: programmeid).pluck(:id)
           - @resultlines = Resultline.where(examresult_id: examresult_ids, student_id: examresultline.student_id).order(created_at: :asc)
-          - cgpa=number_with_precision(Examresult.cgpa_per_sem(@resultlines, semno), precision: 2)
+          - cgpa=number_with_precision(Examresult.cgpa_per_sem(@resultlines, semno), precision: 2) if @resultlines.count-1==semno
             
           %td=total_point
           %td=gpa
-          %td=cgpa
+          %td=cgpa if cgpa
           
           - fisioterapi=Programme.where(course_type: 'Diploma').where('name ILIKE (?)', '%Fisioterapi%').first.id
           - perubatan=Programme.where(course_type: 'Diploma').where('name ILIKE (?)', 'Penolong Pegawai Perubatan').first.id

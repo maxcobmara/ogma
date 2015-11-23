@@ -190,7 +190,7 @@
     
 =hidden_field_tag "exammark[non_mcq]", @exammark.marks.count
 =hidden_field_tag "exammark[full_marks]", @fullmarks
-=hidden_field_tag "programme_name", Programme.where(id: @exammark.exampaper.subject.root_id).first.name
+=hidden_field_tag "programme_name", Programme.where(id: @exammark.exampaper.subject.root_id).first.name if @exammark.id? 
 
 :javascript
 $(document).ready(function(){

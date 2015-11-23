@@ -48,8 +48,13 @@ class Exam::ExamanalysesController < ApplicationController
               lecturer_basicprog_name = basicprog if tasks_main.include?(basicprog)==true
             end
             programme_id=Programme.where(name: lecturer_basicprog_name, ancestry_depth: 0).first.id
-          else
+          elsif @is_admin==true
             programme_id='0'# if @current_user.roles.pluck(:authname).include?("administration")
+          else
+            leader_unit=tasks_main.scan(/Program (.*)/)[0][0].split(" ")[0] if tasks_main!="" && tasks_main.include?('Program')
+            if leader_unit
+              programme_id = Programme.where('name ILIKE (?) AND ancestry_depth=?',"%#{leader_unit}%",0).first.id
+            end
           end
         end
         #INDEX use

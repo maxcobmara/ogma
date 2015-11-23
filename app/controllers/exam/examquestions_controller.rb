@@ -14,39 +14,49 @@ class Exam::ExamquestionsController < ApplicationController
     #@topic_exams = @examquestions.group_by { |t| t.topic_id }
     #-----in case-use these 4 lines-------
 
-    @position_exist = current_user.userable.positions
+    ##----------
+    @position_exist = @current_user.userable.positions
+    roles=@current_user.roles.pluck(:authname)
+    posbasiks=['Diploma Lanjutan', 'Pos Basik', 'Pengkhususan']
     if @position_exist && @position_exist.count > 0
-      @lecturer_programme = current_user.userable.positions[0].unit
+      @lecturer_programme = @current_user.userable.positions[0].unit
       unless @lecturer_programme.nil?
-        @programme = Programme.where('name ILIKE (?) AND ancestry_depth=?',"%#{@lecturer_programme}%",0)
+        @programme = Programme.where('name ILIKE (?) AND ancestry_depth=?',"%#{@lecturer_programme}%",0) if posbasiks.include?(@lecturer_programme)==false
       end
       unless @programme.nil? || @programme.count==0
         @programme_id = @programme.try(:first).try(:id)
       else
+        @tasks_main = @current_user.userable.positions[0].tasks_main
         common_subjects=['Sains Tingkahlaku','Sains Perubatan Asas', 'Komunikasi & Sains Pengurusan', 'Anatomi & Fisiologi', 'Komuniti']
         if common_subjects.include?(@lecturer_programme) 
-          @programme_id="2" #common subject lecturers
-        else
-          if current_user.roles.pluck(:authname).include?("administration")
-            @programme_id=0  #admin 
+          @programme_id ='1'
+        elsif posbasiks.include?(@lecturer_programme) && @tasks_main!=nil
+          @allposbasic_prog = Programme.where(course_type: posbasiks).pluck(:name)  #Onkologi, Perioperating, Kebidanan etc
+          for basicprog in @allposbasic_prog
+            lecturer_basicprog_name = basicprog if @tasks_main.include?(basicprog)==true
+          end
+          if @lecturer_programme=="Pengkhususan" && current_user.roles.pluck(:authname).include?("programme_manager")
+            @programme_id='2'
           else
-            if @lecturer_programme=="Pengkhususan" && current_user.roles.pluck(:authname).include?("programme_manager")
-              @programme_id="1" #KP Pengkhususan
-            else
-              posbasiks_name = Programme.roots.where(course_type: ["Diploma Lanjutan", "Pos Basik", "Pengkhususan"]).pluck(:name)
-              posbasiks_name.each do |pname|
-                @programme_id = Programme.where(name: pname).first.id if @position_exist.first.tasks_main.include?(pname)
-              end  
-            end
+            @programme_id=Programme.where(name: lecturer_basicprog_name, ancestry_depth: 0).first.id
+          end
+        elsif roles.include?("administration")
+          @programme_id='0'
+        else
+          leader_unit=@tasks_main.scan(/Program (.*)/)[0][0].split(" ")[0] if @tasks_main!="" && @tasks_main.include?('Program')
+          if leader_unit
+            @programme_id = Programme.where('name ILIKE (?) AND ancestry_depth=?',"%#{leader_unit}%",0).first.id
           end
         end
       end
-      
-      @search = Examquestion.search(params[:q])
-      @examquestions = @search.result.search2(@programme_id).sort_by(&:programme_id)
-      @examquestions = Kaminari.paginate_array(@examquestions).page(params[:page]||1)
-      @programme_exams = @examquestions.group_by(&:programme_id)
-    end 
+      if @programme_id
+        @search = Examquestion.search(params[:q])
+        @examquestions = @search.result.search2(@programme_id).sort_by(&:programme_id)
+        @examquestions = Kaminari.paginate_array(@examquestions).page(params[:page]||1)
+        @programme_exams = @examquestions.group_by(&:programme_id)
+      end
+    end
+    ##----------
 
     respond_to do |format|
       if @examquestions && @programme_exams
@@ -146,6 +156,7 @@ class Exam::ExamquestionsController < ApplicationController
       @position_exist = current_user.userable.positions
       @lecturer_programme = current_user.userable.positions[0].unit
       @creator = current_user.userable_id
+      posbasiks=["Diploma Lanjutan", "Pos Basik", "Pengkhususan"]
       unless @lecturer_programme.nil?
         @programme = Programme.where('name ILIKE (?) AND ancestry_depth=?',"%#{@lecturer_programme}%",0)
       end
@@ -158,18 +169,27 @@ class Exam::ExamquestionsController < ApplicationController
         if common_subjects.include?(@lecturer_programme) 
           @programme_list=Programme.roots
           @subjects=Programme.subject_groupbycommonsubjects2
-        elsif current_user.roles.pluck(:authname).include?("administration")
-          @programme_list=Programme.roots
-          @subjects=Programme.subject_groupbyprogramme
-        else
-          posbasiks = Programme.roots.where(course_type: ["Diploma Lanjutan", "Pos Basik", "Pengkhususan"])
+        elsif posbasiks.include?(@lecturer_programme)
+          @allposbasic_prog = Programme.roots.where(course_type: posbasiks)
           if @lecturer_programme=="Pengkhususan" && current_user.roles.pluck(:authname).include?("programme_manager")
-            @programme_list=Programme.where(id: posbasiks.pluck(:id))
+            @programme_list=Programme.where(id: @allposbasic_prog.pluck(:id))
             @subjects=Programme.subject_groupbyposbasiks2
           else
-            posbasiks.pluck(:name).each do |pname|
-              @preselect_prog = Programme.where(name: pname).first.id if @position_exist.first.tasks_main.include?(pname)
+            @allposbasic_prog.pluck(:name).each do |pname|
+               @preselect_prog = Programme.where(name: pname).first.id if @position_exist.first.tasks_main.include?(pname)
             end  
+            @programme_list=Programme.where(id: @preselect_prog)
+            @subjects=Programme.subject_groupbyoneprogramme2(@preselect_prog)
+          end
+        elsif current_user.roles.pluck(:authname).include?("administration")
+           @programme_list=Programme.roots
+           @subjects=Programme.subject_groupbyprogramme
+        else
+          tasks_main=@current_user.userable.positions.first.tasks_main
+          leader_unit=tasks_main.scan(/Program (.*)/)[0][0].split(" ")[0] if tasks_main!="" && tasks_main.include?('Program')
+          if leader_unit       
+            @programme = Programme.where('name ILIKE (?) AND ancestry_depth=?',"%#{leader_unit}%",0).first
+            @preselect_prog=@programme.id
             @programme_list=Programme.where(id: @preselect_prog)
             @subjects=Programme.subject_groupbyoneprogramme2(@preselect_prog)
           end

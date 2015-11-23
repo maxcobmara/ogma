@@ -165,6 +165,7 @@ class Exam::ExamresultsController < ApplicationController
       position_exist = @current_user.userable.positions
       posbasiks=["Pos Basik", "Diploma Lanjutan", "Pengkhususan"]
       @common_subjects=['Sains Tingkahlaku','Sains Perubatan Asas', 'Komunikasi & Sains Pengurusan', 'Anatomi & Fisiologi', 'Komuniti']
+      roles=@current_user.roles.pluck(:authname)
       if position_exist && position_exist.count > 0
         lecturer_programme = @current_user.userable.positions[0].unit
         unless lecturer_programme.nil?
@@ -182,8 +183,13 @@ class Exam::ExamresultsController < ApplicationController
               lecturer_basicprog_name = basicprog if tasks_main.include?(basicprog)==true
             end
             programme_id=Programme.where(name: lecturer_basicprog_name, ancestry_depth: 0).first.id
+          elsif roles.include?("administration")
+            programme_id='0'
           else
-            programme_id='0'# if @current_user.roles.pluck(:authname).include?("administration")
+            leader_unit=tasks_main.scan(/Program (.*)/)[0][0].split(" ")[0] if tasks_main!="" && tasks_main.include?('Program')
+            if leader_unit
+              programme_id = Programme.where('name ILIKE (?) AND ancestry_depth=?',"%#{leader_unit}%",0).first.id
+            end
           end
         end
         #INDEX use
@@ -203,6 +209,7 @@ class Exam::ExamresultsController < ApplicationController
       position_exist = @current_user.userable.positions
       posbasiks=["Pos Basik", "Diploma Lanjutan", "Pengkhususan"]
       common_subjects=['Sains Tingkahlaku','Sains Perubatan Asas', 'Komunikasi & Sains Pengurusan', 'Anatomi & Fisiologi', 'Komuniti']
+      roles=@current_user.roles.pluck(:authname)
       if position_exist && position_exist.count > 0
         lecturer_programme = @current_user.userable.positions[0].unit
         unless lecturer_programme.nil?
@@ -222,10 +229,16 @@ class Exam::ExamresultsController < ApplicationController
             end
             @programme_id=Programme.where(name: lecturer_basicprog_name, ancestry_depth: 0).first.id
             @programmes=Programme.where(id: @programme_id)
-          else
+          elsif roles.include?("administration")
             @programme_id='0'
             @programmes=Programme.roots.where(course_type: ['Diploma', 'Diploma Lanjutan', 'Pos Basik', 'Pengkhususan'])
-          end
+          else
+            leader_unit=tasks_main.scan(/Program (.*)/)[0][0].split(" ")[0] if tasks_main!="" && tasks_main.include?('Program')
+            if leader_unit
+              @programme_id = Programme.where('name ILIKE (?) AND ancestry_depth=?',"%#{leader_unit}%",0).first.id
+              @programmes=Programme.where(id: @programme_id)
+            end
+          end  
         end
       end
     end

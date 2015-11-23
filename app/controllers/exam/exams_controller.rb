@@ -10,19 +10,21 @@ class Exam::ExamsController < ApplicationController
     #@exams = Exam.all
     ##----------
     @position_exist = @current_user.userable.positions
+    roles=@current_user.roles.pluck(:authname)
+    posbasiks=['Diploma Lanjutan', 'Pos Basik', 'Pengkhususan']
     if @position_exist && @position_exist.count > 0
       @lecturer_programme = @current_user.userable.positions[0].unit
       unless @lecturer_programme.nil?
-        @programme = Programme.where('name ILIKE (?) AND ancestry_depth=?',"%#{@lecturer_programme}%",0) if !(@lecturer_programme=="Pos Basik" || @lecturer_programme=="Diploma Lanjutan")
+        @programme = Programme.where('name ILIKE (?) AND ancestry_depth=?',"%#{@lecturer_programme}%",0) if posbasiks.include?(@lecturer_programme)==false
       end
       unless @programme.nil? || @programme.count==0
         @programme_id = @programme.try(:first).try(:id)
       else
         @tasks_main = @current_user.userable.positions[0].tasks_main
         common_subjects=['Sains Tingkahlaku','Sains Perubatan Asas', 'Komunikasi & Sains Pengurusan', 'Anatomi & Fisiologi', 'Komuniti']
-        if common_subjects.include?(@lecturer_programme) #@lecturer_programme =='Commonsubject'
+        if common_subjects.include?(@lecturer_programme) 
           @programme_id ='1'
-        elsif (@lecturer_programme == 'Pos Basik' || @lecturer_programme == 'Diploma Lanjutan' || @lecturer_programme =='Pengkhususan') && @tasks_main!=nil
+        elsif posbasiks.include?(@lecturer_programme) && @tasks_main!=nil
           @allposbasic_prog = Programme.where(course_type: ['Pos Basik', 'Diploma Lanjutan', 'Pengkhususan']).pluck(:name)  #Onkologi, Perioperating, Kebidanan etc
           for basicprog in @allposbasic_prog
             lecturer_basicprog_name = basicprog if @tasks_main.include?(basicprog)==true
@@ -32,8 +34,13 @@ class Exam::ExamsController < ApplicationController
           else
             @programme_id=Programme.where(name: lecturer_basicprog_name, ancestry_depth: 0).first.id
           end
+        elsif roles.include?("administration")
+          @programme_id='0'
         else
-          @programme_id='0' if !@lecturer_programme.nil? && @current_user.roles.pluck(:authname).include?("administration") # @current_user.userable.positions[0].name !='Pengajar'
+          leader_unit=@tasks_main.scan(/Program (.*)/)[0][0].split(" ")[0] if @tasks_main!="" && @tasks_main.include?('Program')
+          if leader_unit
+            @programme_id = Programme.where('name ILIKE (?) AND ancestry_depth=?',"%#{leader_unit}%",0).first.id
+          end
         end
       end
       if @programme_id
@@ -262,6 +269,8 @@ class Exam::ExamsController < ApplicationController
       @items=Examquestion.all 
       @lecturer_programme = @current_user.userable.positions[0].unit  
       posbasiks=['Diploma Lanjutan', 'Pos Basik', 'Pengkhususan']
+      roles=@current_user.roles.pluck(:authname)
+      tasks_main=@current_user.userable.positions[0].tasks_main
       if @exam.id.nil?
         #applicable - new only
         unless @lecturer_programme.nil?
@@ -294,16 +303,28 @@ class Exam::ExamsController < ApplicationController
           if common_subjects.include?(@lecturer_programme) 
             @topics=Programme.topic_groupbycommonsubjects
             @subjects=Programme.subject_groupbycommonsubjects
+            @programme_names=Programme.programme_names
           else
-            @topics=Programme.topic_groupbysubject
-            @subjects=Programme.subject_groupbyprogramme
+            if roles.include?("administration")
+              @programme_names=Programme.programme_names
+              @topics=Programme.topic_groupbysubject
+              @subjects=Programme.subject_groupbyprogramme
+            else
+              leader_unit=tasks_main.scan(/Program (.*)/)[0][0].split(" ")[0] if tasks_main!="" && tasks_main.include?('Program')
+              if leader_unit
+                @programme_id = Programme.where('name ILIKE (?) AND ancestry_depth=?',"%#{leader_unit}%",0).first.id
+                @programme_names=Programme.where(id: @programme_id).map(&:programme_list)
+                @subjects=Programme.subject_groupbyoneprogramme(@programme_id)
+                @topics=Programme.topic_groupbysubject_oneprogramme(@programme_id)
+              end
+            end    
           end
-          @programme_names=Programme.programme_names
       end
     end
     
     # Assign New & Create data only
     def set_new_create_data
+      roles=@current_user.roles.pluck(:authname)
       unless @programme.nil? #|| @programme.count==0
         @staff_listing=@current_user.userable_id
         @programme_detail=@programme.programme_list
@@ -326,9 +347,19 @@ class Exam::ExamsController < ApplicationController
 	    #@programme_detail=@programme2.programme_list
             @subjects_paper=Programme.subject_groupbyoneprogramme2(@programme2.id) #new only
           end
-        else #admin
+        elsif roles.include?("administration")
           @staff_listing=@exam.creator_list
           @subjects_paper=Programme.subject_groupbyprogramme2 #new only
+        else
+          tasks_main=@current_user.userable.positions.first.tasks_main
+          leader_unit=tasks_main.scan(/Program (.*)/)[0][0].split(" ")[0] if tasks_main!="" && tasks_main.include?('Program')
+          if leader_unit
+            @staff_listing=@current_user.userable_id
+            @programme = Programme.where('name ILIKE (?) AND ancestry_depth=?',"%#{leader_unit}%",0).first
+            @programme_id=@programme.id
+            @programme_detail=@programme.programme_list
+            @subjects_paper=Programme.subject_groupbyoneprogramme2(@programme_id)
+          end
         end
       end
     end

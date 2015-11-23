@@ -359,8 +359,17 @@ class User < ActiveRecord::Base
         programmeid=@programmeid
       elsif common_subjects.include?(myunit)
         programmeid=[] #common_subjects lecturer
-      else
+      elsif roles.pluck(:authname).include?("administration")
         programmeid=[0] #default val for admin
+      else
+        ##---
+	tasks_main = userable.positions[0].tasks_main
+	leader_unit=tasks_main.scan(/Program (.*)/)[0][0].split(" ")[0] if tasks_main!="" && tasks_main.include?('Program')
+        if leader_unit
+              programmeid = Programme.where('name ILIKE (?) AND ancestry_depth=?',"%#{leader_unit}%",0).pluck(:id)
+             
+        end
+	##---
       end
     end
     programmeid
