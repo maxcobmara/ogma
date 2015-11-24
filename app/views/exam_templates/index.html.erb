@@ -1,0 +1,31 @@
+<h1>Listing exam_templates</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Created by</th>
+      <th>Data</th>
+      <th>Deleted at</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @exam_templates.each do |exam_template| %>
+      <tr>
+        <td><%= exam_template.name %></td>
+        <td><%= exam_template.created_by %></td>
+        <td><%= exam_template.data %></td>
+        <td><%= exam_template.deleted_at %></td>
+        <td><%= link_to 'Show', exam_template %></td>
+        <td><%= link_to 'Edit', edit_exam_template_path(exam_template) %></td>
+        <td><%= link_to 'Destroy', exam_template, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Exam template', new_exam_template_path %>

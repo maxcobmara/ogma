@@ -1,5 +1,7 @@
 Ogma::Application.routes.draw do
 
+  resources :exam_templates
+
   namespace :staff do
     resources :staffs, as: :infos do
       member do
