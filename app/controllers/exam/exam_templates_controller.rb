@@ -1,4 +1,4 @@
-class ExamTemplatesController < ApplicationController
+class Exam::ExamTemplatesController < ApplicationController
   before_action :set_exam_template, only: [:show, :edit, :update, :destroy]
 
   respond_to :html
@@ -23,7 +23,7 @@ class ExamTemplatesController < ApplicationController
   def create
     @exam_template = ExamTemplate.new(exam_template_params)
     @exam_template.save
-    respond_with(@exam_template)
+    respond_with(:exam, @exam_template)
   end
 
   def update
@@ -42,6 +42,7 @@ class ExamTemplatesController < ApplicationController
     end
 
     def exam_template_params
-      params.require(:exam_template).permit(:name, :created_by, :data, :deleted_at)
+      @allowed_types = DropDown::QTYPE.collect(&:last).map!(&:downcase)
+      params.require(:exam_template).permit(:name, :created_by, :deleted_at, {:question_count => @allowed_types})
     end
 end

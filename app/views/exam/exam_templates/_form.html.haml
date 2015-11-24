@@ -1,0 +1,29 @@
+= form_for [:exam, @exam_template], html: { class: 'form-horizontal' } do |f|
+  = render 'shared/error_messages', object: f.object
+  = f.hidden_field :created_by, value: current_user.id
+
+  .form-group
+    .col-sm-3.control-label
+      = f.label :name, 'Template Name'
+    .col-sm-5
+      = f.text_field :name, class: 'form-control mandatory', type: "input"
+
+
+  .form-group
+    .col-sm-3.control-label
+      = f.label :question_count, "Questions"
+    .col-sm-9
+      = f.fields_for :question_count do |tc|
+        - DropDown::QTYPE.each do |channel|
+          - var_channel = channel[1].parameterize.downcase.underscore
+          .row
+            .col-sm-3
+              .channel_box
+                = check_box_tag var_channel, channel.to_s, ((@exam_template.question_count[var_channel.to_s] != '' ? true : false) rescue false)
+                = channel[0]
+            .col-sm-3{class: "url-field url_#{var_channel}"}
+              = tc.text_field "#{var_channel}", :class => 'form-control', value: (@exam_template.question_count[var_channel.to_s] rescue nil)
+
+
+  .actions
+    = f.submit

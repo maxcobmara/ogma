@@ -1,7 +1,5 @@
 Ogma::Application.routes.draw do
 
-  resources :exam_templates
-
   namespace :staff do
     resources :staffs, as: :infos do
       member do
@@ -57,7 +55,7 @@ Ogma::Application.routes.draw do
         get :index_admin
       end
     end
-    resources :holidays 
+    resources :holidays
     resources :attendances
     resources :travel_requests do
       member do
@@ -83,7 +81,7 @@ Ogma::Application.routes.draw do
     resources :ptbudgets
     resources :ptcourses
     resources :ptschedules do
-      collection do 
+      collection do
         get :participants_expenses
       end
     end
@@ -219,7 +217,7 @@ Ogma::Application.routes.draw do
   end
 
   match '/public/excel_format/student_import.xls', to: 'students#download_excel_format', via: 'get', target: '_self'
-  
+
   namespace :student do
     resources :tenants do
       collection do
@@ -365,6 +363,7 @@ Ogma::Application.routes.draw do
     resources :shortessays
     resources :booleanchoices
     resources :booleananswers
+    resources :exam_templates
     resources :exams do
       #map.connect '/exams/exampaper', :controller => 'exams', :action => 'exampaper'
       #map.connect '/exams/exampaper_separate', :controller => 'exams', :action => 'exampaper_separate'
@@ -379,7 +378,7 @@ Ogma::Application.routes.draw do
 #         get 'exampaper_combine', to: "exams#exampaper_combine"
 #       end
     end
-    
+
     resources :exammarks do
       collection do
         put 'edit_multiple'
