@@ -22,7 +22,8 @@
 - if @subjects_of_grades==1
   /= form_tag update_multiple_exam_grades_path, :id => "form1", :html => {:method => :put} do |f| 
   /ABOVE --- f didn't work coz not bind with any specific record, instead use form_for & bind the first record.
-  = form_for [:exam, @grades_obj], url: update_multiple_exam_grades_path, html: {:method => :post} do |f|
+  /= form_for [:exam, @grades_obj], url: update_multiple_exam_grades_path, html: {:method => :post} do |f|
+  = form_for [:exam, @grades[0]], url: update_multiple_exam_grades_path, html: {:method => :post} do |f|
     = hidden_field_tag :redirect_location, exam_grades_path 
 
     .row  
@@ -39,15 +40,33 @@
                 .col-sm-2.control-label
                   %b= t 'exam.grade.subject_id'
                 .col-md-5=@grades[0].subjectgrade.subject_list
+            - diploma_ids=Programme.roots.where(course_type: 'Diploma').pluck(:id)
+            - progid=Programme.where(id: @grades.first.subject_id).first.root_id
             .row
               .form-group
                 .col-sm-2.control-label
                   %b= t 'exam.grade.examweight'
-                .col-md-1
-                  - @sum_weight = @grades.map(&:examweight).uniq.count if @grades.count >= 1 
-                  =select_tag "grade[summative_weightage]", options_for_select(DropDown::WEIGHTAGE, @grades[0].examweight), {class: 'selectpicker'}
-                  - if @sum_weight>1 
-                    %span{:style=>"color:red;"}*
+                .col-md-1 
+                  - if diploma_ids.include?(progid)
+                    = text_field_tag "grade[summative_weightage]", 70, class: 'form-control', readonly: 'readonly'
+                  - else
+                    /= f.text_field :examweight, value: 0, class: 'form-control'
+                    - unless @grades[0].examweight==0
+                      =select_tag "grade[summative_weightage]", options_for_select(DropDown::WEIGHTAGE, @grades[0].examweight.to_i), {class: 'selectpicker'}
+                      /ssiiniii
+                    - else
+                      =select_tag "grade[summative_weightage]", options_for_select(DropDown::WEIGHTAGE, 70), {class: 'selectpicker'}
+       
+                - if diploma_ids.include?(progid)
+                  .col-md-1
+                    \%
+            %br
+            .row
+              %font{color: "red"}
+                - @sum_weight = @grades.map(&:examweight).uniq.count if @grades.count >= 1 
+                - if @sum_weight>1 
+                  %span{:style=>"color:red;"}=t 'exam.grade.standardize_weightage'
+                %span.sum_weight_changed{style: "display:none;"}=t 'exam.grade.summative_weightage_changed'
             /.row
             /  .form-group
             /    .col-sm-2.control-label
@@ -68,6 +87,11 @@
             = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), exam_grades_path, :class => 'btn btn-default'
           .col-sm-2
             = submit_tag t('update'), :name => :grade_submit_button, class: "btn btn-primary"         
+- elsif @subjects_of_grades==0
+  .row
+    .col-md-12
+      .alert.alert-info
+        = t 'exam.grade.no_grades_created_sebenarnya'
 - else
   .row
     .col-md-12

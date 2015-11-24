@@ -7,13 +7,12 @@ class Exam < ActiveRecord::Base
   has_many :examtemplates, :dependent => :destroy #10June2013
   accepts_nested_attributes_for :examtemplates, :reject_if => lambda { |a| a[:quantity].blank? }
   
-  before_save :set_sequence, :set_duration, :set_full_marks
+  before_save :set_sequence, :set_duration, :set_full_marks, :remove_unused_sequence
   
-  attr_accessor :own_car, :dept_car,:programme_id #18Apr2013-programme_id used in views/exams/new.html.erb #9Apr2013-use course_id (temp) to capture semester (year as well)
   attr_accessor :programme_filter, :subject_filter, :topic_filter, :seq
   
-  validates_presence_of :subject_id, :name  #programme_id
-  validates_uniqueness_of :name, :scope => "subject_id", :message => " - Examination of selected exam type (name) for selected subject already exist."
+  validates_presence_of :subject_id, :name, :exam_on, :starttime, :endtime
+  validates_uniqueness_of :name, :scope => [:subject_id, :exam_on], :message => I18n.t('exam.exams.must_unique')
   validate :sequence_must_be_selected, :sequence_must_be_unique #,:sequence_must_increment_by_one
   
   #remark : validation for:validates_uniqueness_of :name, :scope => "subject_id", 
@@ -64,12 +63,22 @@ class Exam < ActiveRecord::Base
         if examquestion_ids.count > seq.count
             diff_count = examquestion_ids.count - seq.count
             0.upto(diff_count-1) do |c|
-                sequence = sequence + "Select"+","
+                sequence = sequence + I18n.t('select')+","
             end
         end    
         self.sequ = sequence    
+    else
+      #start-set_sequ_after_create
+      if (sequ.nil? || sequ.blank?) && examquestions.count > 0
+        seqq=''
+        0.upto(examquestions.count-1).each do |x|
+          seqq+= I18n.t('select')+','
+        end
+        self.sequ=seqq
+      end
     end
   end
+
   
   def set_duration
     if starttime!=nil && endtime!=nil
@@ -99,6 +108,20 @@ class Exam < ActiveRecord::Base
     end
   end
   
+  def remove_unused_sequence
+    unless id.nil? || id.blank?
+      if !sequ.nil? && sequ.split(',').count > examquestions.count
+        seqq2=''
+        sequ.split(',').each_with_index do |x,index|
+          if index < examquestions.count
+            seqq2+= x+','
+          end
+        end
+        self.sequ=seqq2
+      end 
+    end
+  end
+  
   #def full_marks(exampaper_id)
       #Examquestion.sum(:marks,:joins=>:exammakers, :conditions => ["exammaker_id=?", exampaper_id]).to_f
   #end 
@@ -110,13 +133,21 @@ class Exam < ActiveRecord::Base
         @exams = Exam.all
       elsif search == '1'
         @exams = Exam.where("subject_id IN (?)", common_subject)
+      elsif search == '2'
+        postbasic_ids = Programme.where(course_type: ['Pos Basik', 'Diploma Lanjutan', 'Pengkhususan']).pluck(:id).compact
+        postbasic_subject_ids = []
+        postbasic_ids.each do |pb_id|
+          subject_ids=Programme.where(id: pb_id)[0].descendants.at_depth(2).pluck(:id).compact
+          postbasic_subject_ids << subject_ids if subject_ids.count > 0
+        end
+        @exams = Exam.where(subject_id: postbasic_subject_ids).where('subject_id NOT IN(?)', common_subject)
       else
         subject_of_programme = Programme.find(search).descendants.at_depth(2).map(&:id)
         #@exams = Exam.find(:all, :conditions => ["subject_id IN (?) and subject_id NOT IN (?)", subject_of_program, common_subject])
         @exams = Exam.where('subject_id IN(?) AND subject_id NOT IN(?)',subject_of_programme, common_subject)
       end
-    else
-       @exams = Exam.all
+    #else
+       #@exams = Exam.all
     end
   end
   
@@ -153,7 +184,23 @@ class Exam < ActiveRecord::Base
       oscii_q.each do |t|
         sum_oscii+=t.to_i
       end
-      sum=sum+sum_meq+sum_acq+sum_osci+sum_oscii
+      osce_q = Exam.joins(:examquestions).where('exam_id=? and questiontype=?', id, 'OSCE').pluck(:marks)#.map{|x|x.marks}  
+      sum_osce=0 
+      oscii_q.each{|t| sum_osce+=t.to_i}
+      
+      ospe_q = Exam.joins(:examquestions).where('exam_id=? and questiontype=?', id, 'OSPE').pluck(:marks)#.map{|x|x.marks}  
+      sum_ospe=0 
+      ospe_q.each{|t| sum_ospe+=t.to_i}
+      
+      viva_q = Exam.joins(:examquestions).where('exam_id=? and questiontype=?', id, 'VIVA').pluck(:marks)#.map{|x|x.marks}  
+      sum_viva=0 
+      viva_q.each{|t| sum_viva+=t.to_i}
+      
+      truefalse_q = Exam.joins(:examquestions).where('exam_id=? and questiontype=?', id, 'TRUEFALSE').pluck(:marks)#.map{|x|x.marks}  
+      sum_truefalse=0 
+      truefalse_q.each{|t| sum_truefalse+=t.to_i}
+      
+      sum=sum+sum_meq+sum_acq+sum_osci+sum_oscii+sum_osce+sum_ospe+sum_viva+sum_truefalse
       sum=sum+(seq_count)*10 if seq_count > 0
       return sum
   end
@@ -287,24 +334,28 @@ private
           end 
           y=z 
         end
-        if result == false && seq.include?("Select") == false                     #sequence increment by 1 can only be checked for selected sequence!
-            errors.add_to_base("Sequence for all questions must increase by 1.")  
+        if result == false && seq.include?(I18n.t('select')) == false                     #sequence increment by 1 can only be checked for selected sequence!
+          errors.add(:base, I18n.t('exam.exams.seq_increase_by_one'))  
         end
     end
   end
   
   def sequence_must_be_selected
     if seq!= nil
-        if seq.include?("Select") == true   #means sequence not yet selected
-            errors.add_to_base("Sequence for each question must be selected.")
+        if seq.include?(I18n.t('select')) == true  #means sequence not yet selected
+          if seq.count < sequ.split(',').count
+            errors.add(:base, I18n.t('exam.exams.remove_seq_select'))
+          else
+            errors.add(:base, I18n.t('exam.exams.seq_must_select'))
+          end
         end
     end
   end
   
   def sequence_must_be_unique
     if seq!= nil
-        if seq.uniq.length != seq.length && seq.include?("Select") == false       #sequence UNIQUENESS can only be checked for selected sequence!
-            errors.add_to_base("Sequence for each question must be unique.")
+        if seq.uniq.length != seq.length && seq.include?(I18n.t('select')) == false       #sequence UNIQUENESS can only be checked for selected sequence!
+          errors.add(:base, I18n.t('exam.exams.seq_must_unique'))
         end
     end
   end

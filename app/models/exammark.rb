@@ -17,10 +17,9 @@ class Exammark < ActiveRecord::Base
   end
   
   def self.totalmarks_search(query)
-    marksby_exammark = Mark.all.group_by(&:exammark_id)
     exammarks_ids=[]
-    marksby_exammark.each do |emid, mms|
-      exammarks_ids << emid if Exammark.where(id: emid).first.total_marks==query.to_i
+    Exammark.all.pluck(:id).each do |emid|
+      exammarks_ids << emid if Exammark.where(id: emid).first.total_marks.to_f==query.to_f
     end
     where('id IN(?)', exammarks_ids)
   end
@@ -169,8 +168,8 @@ class Exammark < ActiveRecord::Base
           # TEMPORARY use these FORMULA --> total_marks.to_f/0.9,total_marks.to_f/0.7,total_marks.to_f/1.2  .....OR ELSE
           
           #------if marks entered already in weightage,...exam1marks = total_marks---------------------------------
-          @grade_to_update.exam1marks = total_marks.to_f
-          @grade_to_update.summative = total_marks.to_f/fullmarks.to_f*70 #REQUIRES FORMULA HERE --> SEE ABOVE EXAMPLE ...LINE 76
+          @grade_to_update.exam1marks = total_marks.to_f/fullmarks.to_f*100
+          @grade_to_update.summative = total_marks.to_f/fullmarks.to_f*100*0.70
           #------------------------------use ABOVE formula for all conditions--HIDE ALL @credit_hour statement-----
           
 	        #@grade_to_update.exam1marks = total_marks.to_f/0.9        #depends on weightage 

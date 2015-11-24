@@ -480,6 +480,40 @@ class Student < ActiveRecord::Base
     StudentsHelper.msg_import2(import_result)
   end
   
+  def self.groupby_programme
+    studentby_programmelists=Student.where('course_id is not null').group_by{|x|x.course.programme_list}
+    @groupped_student=[]
+    studentby_programmelists.each do |programmelist, students|
+      pg_students=[[I18n.t('helpers.prompt.select_student'), '']]
+      students.each{|student|pg_students << [student.matrix_name, student.id]} 
+      @groupped_student << [programmelist, pg_students]
+    end
+    @groupped_student
+  end
+  
+  def self.groupby_posbasics
+    posbasics=Programme.where(course_type: ['Pos Basik', 'Diploma Lanjutan', 'Pengkhususan']).pluck(:id)
+    studentby_programmelists=Student.where('course_id is not null').where(course_id: posbasics).group_by{|x|x.course.programme_list}
+    @groupped_student=[]
+    studentby_programmelists.each do |programmelist, students|
+      pg_students=[[I18n.t('helpers.prompt.select_student'), '']]
+      students.each{|student|pg_students << [student.matrix_name, student.id]} 
+      @groupped_student << [programmelist, pg_students]
+    end
+    @groupped_student
+  end
+  
+  def self.groupby_oneprogramme(progid)
+    studentby_programmelists=Student.where(course_id: progid).order(matrixno: :asc).group_by{|x|x.course.programme_list}
+    @groupped_student=[]
+    studentby_programmelists.each do |programmelist, students|
+      pg_students=[[I18n.t('helpers.prompt.select_student'), '']]
+      students.each{|student|pg_students << [student.matrix_name, student.id]} 
+      @groupped_student << [programmelist, pg_students]
+    end
+    @groupped_student
+  end
+  
 STATUS = [
            #  Displayed       stored in db
            [ I18n.t('student.students.current'),"Current" ],

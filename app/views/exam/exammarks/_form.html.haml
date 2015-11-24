@@ -1,3 +1,6 @@
+- diploma=Programme.where(course_type: 'Diploma')
+- radiografi=diploma.where('name ILIKE?', '%Radiografi%').first.id
+- carakerja=diploma.where('name ILIKE?', '%Jurupulih Perubatan Cara Kerja%').first.id
 .row
   .col-md-10.col-md-offset-1
     / Nav tabs
@@ -160,23 +163,64 @@
                             = render 'show_truefalse', :count=>count, :count2=>count2, :task=>2
                             - count2+=1
 
+                      - @fullmarks = Exammark.fullmarks(@exammark.exam_id)
+                     
+                      - if @exammark.exampaper.subject.root_id==radiografi || @exammark.exampaper.subject.root_id==carakerja
+                        %tr
+                          %td{rowspan: 3, colspan: 3, align: "right"}= f.label t 'exam.exammark.total', for: :total
+                          %td= text_field_tag "total_marks_view", number_with_precision(@exammark.total_marks,precision:2), :size=> 5, :readonly=>true, :class => 'form-control'
+                          
+                          %td='/ '+@fullmarks.to_s
                         
-/for use in below JS
-/- if @exammark.new_record? == false 
-/  = hidden_field_tag "exammark[trial1]", nil, :class=>'k1'
-/  = hidden_field_tag "exammark[trial2]", @examquestions.mcqq.count, :class=>'k1'
-/  = hidden_field_tag "exammark[trial3]", @examquestions.count 
-/  - if @exammark
-/    =hidden_field_tag "exammark[total_mcq_in_exammark_single]", @exammark.total_mcq 
-  
-/:javascript
-/$(document).ready(function(){
-/  $(".k1").keyup(function() {  
-/    var trial1 = $("#exammark_trial1").val();
-/    var trial2 = $("#exammark_trial2").val();
-/    var ansP2 = document.getElementById("exammark_trial3");
-/    ansP2.value = (trial1*1)+(trial2*1) 
-/  });
-/});
-            
+                    
+                      - if @exammark.exampaper.name=='F'
+                        - if @exammark.exampaper.subject.root_id==radiografi || @exammark.exampaper.subject.root_id==carakerja
+                          %tr
+                            %td= text_field_tag "marks_in_hundred", number_with_precision((@exammark.total_marks/@fullmarks)*100, precision: 2), :size=> 5, :readonly=>true, :class => 'form-control'
+                            %td (100.00 %)
+                        %tr
+                          - if @exammark.exampaper.subject.root_id==radiografi || @exammark.exampaper.subject.root_id==carakerja
+                            - marks_70=number_with_precision((@exammark.total_marks/@fullmarks)*100*0.7, precision: 2)
+                          - else
+                            /total marks already in 70% weightage
+                            - marks_70=@exammark.total_marks
+                            %td{colspan: 3, align: "right"}= f.label t 'exam.exammark.total', for: :total
+                          %td= text_field_tag "marks_in_70", marks_70, :size=> 5, :readonly=>true, :class => 'form-control'
+                          %td (70.00 %)
+    
+=hidden_field_tag "exammark[non_mcq]", @exammark.marks.count
+=hidden_field_tag "exammark[full_marks]", @fullmarks
+=hidden_field_tag "programme_name", Programme.where(id: @exammark.exampaper.subject.root_id).first.name if @exammark.id? 
+
+:javascript
+$(document).ready(function(){
+  $(".k1").keyup(function(){
+    var totalmcq = $("#total_mcq1").val();
+    var nonmcqcount = $("#exammark_non_mcq").val();
+    var fullmarks = $("#exammark_full_marks").val();
+    var programme = $("#programme_name").val();
+    
+    var totalmarksview = document.getElementById("total_marks_view");
+    var marksinhundred = document.getElementById("marks_in_hundred");
+    var marksin70 = document.getElementById("marks_in_70");
+    
+    a=0;
+    for (var j=0;j<nonmcqcount;j++)
+    {
+      var other = document.getElementById("exammark_marks_attributes_"+j+"_student_mark").value;
+      a=a*1+(other*1);
+    }
+    
+    if ((programme=="Radiografi") || (programme=="Jurupulih Perubatan Cara Kerja"))
+    {
+      totalmarksview.value = totalmcq*1+a;
+      marksinhundred.value = (totalmcq*1+a) / fullmarks * 100;
+      marksin70.value = (totalmcq*1+a) / fullmarks * 100 * 0.7;
+    }
+    else
+    {
+      marksin70.value = totalmcq*1+a;
+    }
+  });
+});            
 /display form for marks entering here (form display upon selection of exam (exam paper))

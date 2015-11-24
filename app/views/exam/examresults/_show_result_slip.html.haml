@@ -1,0 +1,163 @@
+.col-md-8.col-md-offset-2
+  %dl.dl-horizontal
+    %dt=t 'exam.examresult.exam_centre'
+    %dd Kolej Sains Kesihatan Bersekutu Johor Bahru
+  
+    %dt=t 'exam.examresult.programme_id'
+    %dd=h @resultline.examresult.programmestudent.programme_list
+          
+    %dt=t 'exam.examresult.semester'
+    %dd=h @resultline.examresult.render_semester
+            
+    %dt=t 'exam.examresult.examdts'
+    %dd=h l(@resultline.examresult.examdts)
+          
+    %dt=t 'exam.examresult.examdte'
+    %dd=h l(@resultline.examresult.examdte)
+    
+    %dt=t 'exam.examresult.intake'
+    %dd
+      -intake=@resultline.examresult.intake_group
+      =Date.new(intake[0,4].to_i, intake[5,2].to_i, intake[8,2].to_i).try(:strftime, '%b %Y')
+
+    %br
+  
+    %dt=t('exam.examresult.student')
+    %dd=h @resultline.student.name
+  
+    %dt=t('student.icno')
+    %dd=h @resultline.student.icno
+  
+    %dt=t('student.students.matrixno')
+    %dd=h @resultline.student.matrixno
+  
+.col-md-8.col-md-offset-1
+  %br
+  %table.table.table-bordered
+    %head
+      %tr
+        %th No
+        %th.centre=t('exam.examresult.course_code')
+        %th.centre=t('exam.grade.grading_id')
+        %th.centre=t('exam.grade.grade_value')
+        %th.centre=t('exam.examresult.remark')
+      - @programme_id = @resultline.examresult.programmestudent.id
+      - @semester = @resultline.examresult.semester
+      - @subjects = @resultline.examresult.retrieve_subject
+      /Examresult.get_subjects(@programme_id ,@semester)
+      - @no=0
+      - @cara_kerja=Programme.where(course_type: 'Diploma').where('name ILIKE (?)', 'Jurupulih Perubatan Cara Kerja').first.id
+      - @perubatan=Programme.where(course_type: 'Diploma').where('name ILIKE (?)', 'Penolong Pegawai Perubatan').first.id
+      - credit_all=[]
+      - credit2_all=[]
+      - final2_all=[]
+      - for subject in @subjects 
+        - @student_grade = Grade.where('student_id=? and subject_id=?',@resultline.student.id,subject.id).first
+        - @student_finale = Grade.where('student_id=? and subject_id=?',@resultline.student.id,subject.id).first
+        - english_subjects=['PTEN', 'NELA', 'NELB', 'NELC', 'MAPE', 'XBRE', 'OTEL'] 
+        ////
+        - if subject.code.size >9
+          - credit_all << subject.code[10,1].to_i
+          - unless english_subjects.include?(subject.code[0,4]) || (subject.code.strip.size < 10 && (subject.code.strip[-2,1].to_i==2 || subject.code.strip[-2,1].to_i==3))
+            - credit2_all << subject.code[10,1].to_i 
+        - elsif subject.code.size < 10
+          - credit_all << subject.code[-1,1].to_i 
+          - unless english_subjects.include?(subject.code[0,4]) || (subject.code.strip.size < 10 && (subject.code.strip[-2,1].to_i==2 || subject.code.strip[-2,1].to_i==3)) 
+            - credit2_all << subject.code[-1,1].to_i
+        ////
+        %tr
+          %td=@no+=1
+          %td= subject.subject_list 
+          %td.centre
+            - if english_subjects.include?(subject.code[0,4]) || (subject.code.strip.size < 10 && (subject.code.strip[-2,1].to_i==2 || subject.code.strip[-2,1].to_i==3))
+              \-
+            - else
+              - unless @student_grade.nil? || @student_grade.blank?
+                =@grading=@student_grade.render_grading[-1,2] 
+              - else
+                =@grading="E"
+          %td.centre
+            /- unless @student_finale.nil? || @student_finale.blank? 
+            /  =sprintf('%.2f', @student_finale.set_NG.to_f)
+            /- else 
+            /  = sprintf('%.2f', 0.00)
+            
+            /Above standard (previous one) - BELOW - same as PDF (slip)
+            ///
+            /Fisioterapi-PTEN, Kejururawatan-NELA, NELB, NELC, Perubatan-MAPE, Radiografi-XBRE, CaraKerja-OTEL
+            - if english_subjects.include?(subject.code[0,4]) || (subject.code.strip.size < 10 && (subject.code.strip[-2,1].to_i==2 || subject.code.strip[-2,1].to_i==3))
+              \-
+            - else
+              - unless @student_finale.nil? || @student_finale.blank? 
+                =sprintf('%.2f', @student_finale.set_NG.to_f)
+                - final2_all << @student_finale.set_NG.to_f
+              - else
+                =sprintf('%.2f', 0.00)
+                - final2_all << 0.00
+            ///
+          %td.centre
+            /- if @grading=="A" || @grading=="A-" ||@grading=="B+"||@grading=="B"||@grading=="B-"||@grading=="C+"||@grading=="C"
+            /  =t('exam.examresult.passed')
+            /- else 
+            /  =t('exam.examresult.failed')
+            /NOTE : Status for each subject define based on saved GRADE (set_grade -> Total Formative+Total Summative) of each subject per student
+            /Above standard (previous one) - BELOW - same as PDF (slip)
+            ///
+            - if english_subjects.include?(subject.code[0,4])|| (subject.code.strip.size < 10 && (subject.code.strip[-2,1].to_i==2 || subject.code.strip[-2,1].to_i==3))
+              - if @grading=="A" || @grading=="A-" ||@grading=="B+"||@grading=="B"||@grading=="B-"||@grading=="C+"||@grading=="C"
+                =I18n.t('exam.examresult.passed')
+              - else 
+                = I18n.t('exam.examresult.failed')
+            - else
+              /******************************
+              /ref : https://trello.com/c/W7hjdKzp (Perubatan)
+              /ref : KEPUTUSAN SEM 4-6 KSKBJB.xlsx - Cara Kerja(subject status - Cemerlang, Kepujian, Lulus, Gagal)
+      
+              - if [@cara_kerja, @perubatan].include?(@resultline.examresult.programme_id)
+                - if @grading=="A" || @grading=="A-"
+                  = I18n.t('exam.examresult.excellent')
+                - elsif @grading=="B+"||@grading=="B"||@grading=="B-"
+                  = I18n.t('exam.examresult.distinction')
+                - elsif @grading=="C+"||@grading=="C"
+                  = I18n.t('exam.examresult.passed')
+                - else
+                  = I18n.t('exam.examresult.failed')
+              - else
+                - if @grading=="A" || @grading=="A-" ||@grading=="B+"||@grading=="B"||@grading=="B-"||@grading=="C+"||@grading=="C"
+                  = I18n.t('exam.examresult.passed')
+                - else 
+                  = I18n.t('exam.examresult.failed')
+              /******************************
+            ///
+
+.col-md-3.col-md-offset-3
+  %br
+  %table.table.table-bordered
+    %head
+      %tr
+        %th=h @resultline.examresult.render_semester
+        %th=t('exam.examresult.total')
+      - fisioterapi=Programme.where(course_type: 'Diploma').where('name ILIKE (?)', '%Fisioterapi%').first.id
+      - if @resultline.examresult.programme_id!=fisioterapi
+        %tr
+          %td=(t 'exam.examresult.total_grade_point')
+          %td
+            /=h @resultline.total.nil? ? "" : sprintf('%.2f',@resultline.total)
+            =total_point=number_with_precision(Examresult.total(final2_all, credit2_all), precision: 2)
+      %tr
+        %td=t 'exam.examresult.gpa'
+        %td
+          /=h @resultline.pngs17.nil? ? "" : sprintf('%.2f',@resultline.pngs17)
+          =gpa=number_with_precision((Examresult.total(final2_all, credit2_all) / credit2_all.sum), precision: 2)
+      %tr
+        %td=t 'exam.examresult.cgpa'
+        %td
+          /=h @resultline.pngk.nil? ? "" : sprintf('%.2f',@resultline.pngk) 
+          - semno=@resultline.examresult.semester.to_i-1
+          - programmeid=@resultline.examresult.programme_id
+          - examresult_ids=Examresult.where(programme_id: programmeid).pluck(:id)
+          - @resultlines = Resultline.where(examresult_id: examresult_ids, student_id: @resultline.student_id).order(created_at: :asc)
+          =cgpa=number_with_precision(Examresult.cgpa_per_sem(@resultlines, semno), precision: 2)
+      %tr
+        %td STATUS
+        %td=h @resultline.render_status

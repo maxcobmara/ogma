@@ -122,7 +122,10 @@ class Examquestion < ActiveRecord::Base
     
   def question_editor(current_user)
     unless programme_id.nil?
-      if Programme.roots.where(course_type: "Diploma").pluck(:name).include?(course.name)
+      if Programme.where(course_type: 'Commonsubject').pluck(:id).include?(subject_id)
+        common_subjects=['Sains Tingkahlaku','Sains Perubatan Asas', 'Komunikasi & Sains Pengurusan', 'Anatomi & Fisiologi', 'Komuniti']
+        editors = Position.where(unit: common_subjects).pluck(:staff_id).compact
+      elsif Programme.roots.where(course_type: "Diploma").pluck(:name).include?(course.name)
         editors = Position.where(unit: course.name).pluck(:staff_id).compact
       else #must be posbasiks
         posts = Position.where(unit: ["Diploma Lanjutan", "Pos Basik", "Pengkhususan"])
@@ -148,19 +151,29 @@ class Examquestion < ActiveRecord::Base
     staff_with_kprole = Login.joins(:roles).where('role_id IN(?)',role_kp).pluck(:staff_id).compact.uniq
     programme_name = Programme.roots.map(&:name)    #must be among Academic Staff 
     approver = Staff.joins(:positions).where('unit IN(?) AND staff_id IN(?)', programme_name, staff_with_kprole).pluck(:staff_id)
+    #add Ketua Subjek Asas when subject is a Common Subject
+    if Programme.where(course_type: 'Commonsubject').pluck(:id).include?(subject_id)
+      common_subjects=['Sains Tingkahlaku','Sains Perubatan Asas', 'Komunikasi & Sains Pengurusan', 'Anatomi & Fisiologi', 'Komuniti']
+      commonsubject_posts=Position.where(unit: common_subjects)
+      commonsubject_leaders=[]
+      commonsubject_posts.each do |csp|
+        commonsubject_leaders << csp.staff_id if csp.tasks_main.include?('Ketua Subjek') || csp.tasks_other.include?('Ketua Subjek')
+      end
+      approver+=commonsubject_leaders.compact
+    end
     approver   
   end
   
   
   def self.search2(programmeid)
-    common_subject = Programme.where('course_type=?','Commonsubject').pluck(:id)
     if programmeid == 0 #admin 
       @examquestions = Examquestion.all
     elsif programmeid == "1" #KP Pengkhususan
       posbasiks_ids = Programme.roots.where(course_type: ["Diploma Lanjutan", "Pos Basik", "Pengkhususan"]).pluck(:id)
       @examquestions = Examquestion.where(programme_id: posbasiks_ids)
-    elsif common_subject.include?(programmeid)
-      #@examquestions = Examquestion.where("subject_id IN (?)", common_subject)  #pending creation of examquestion by common subject lect??
+    elsif programmeid == "2" #Common Subject lecturers
+      common_subject_ids = Programme.where(course_type: 'Commonsubject').pluck(:id)
+      @examquestions = Examquestion.where(subject_id: common_subject_ids )
     else
       @examquestions = Examquestion.where(programme_id: programmeid)
     end

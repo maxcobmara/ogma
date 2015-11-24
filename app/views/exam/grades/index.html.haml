@@ -51,7 +51,9 @@
                     %span= (t 'exam.grade.subject_id')+' : '+Programme.find(grades_group).subject_list
               %tr
                 %td{:style=>"text-align: center;"}= check_box_tag "grade_ids[]", grade.id, true, :id => "gradeidss_#{index2}"
-                %td= link_to grade.studentgrade.matrix_name, exam_grade_path(grade)
+                %td
+                  = link_to grade.studentgrade.matrix_name, exam_grade_path(grade)
+                  /= grade.studentgrade.intake
                 %td=h grade.subjectgrade.try(:subject_list)
                 %td
                   - if grade.scores.count>0 

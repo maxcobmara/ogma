@@ -35,7 +35,7 @@
           %th{:style=>"width:20px;"} &nbsp;
           %th= sort_link(@search, :student_id, (t 'exam.exammark.student_id'))
           %th= t 'exam.exammark.icno'
-          %th= sort_link(@search, :total_mcq, (t 'exam.exammark.total_mcq'))
+          %th= sort_link(@search, :total_mcq, (t 'exam.exammark.marks'))
 
       %tbody
         = render "search_bar"

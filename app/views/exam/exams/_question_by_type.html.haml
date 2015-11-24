@@ -1,0 +1,63 @@
+/USE in ..exams/_tab_questions_details_edit(existing questions) & ..exams/_items_list(available questions of selected Topic)
+
+/Display diagram (if any), refer: _sub_tab_questions_details
+- if item.diagram.exists? then
+  = link_to(image_tag(item.diagram.url(:thumbnail), :style => "border: solid 1px;"), image_path(item.diagram.url(:original)))
+  %br          
+/Display Question according to question type
+- if item.questiontype=="MCQ"
+  /MCQ Question:answerchoices & examanswers - start
+  //if not exist at all OR exist but 1st item has no value-start (upto answerchoice.description)
+  %b Question :
+  =simple_format(item.question)
+  - if item.answerchoices.count != 0 && item.answerchoices[0].description!=""
+    - for answerchoice in item.answerchoices.sort_by{|x|x.item}
+      = answerchoice.item
+      = answerchoice.description
+      %br
+    %br
+  - if item.examanswers.count != 0 && item.examanswers[0].answer_desc!=""
+    - for examanswer in item.examanswers.sort_by{|y|y.item}
+      = examanswer.item
+      = examanswer.answer_desc
+      %br
+    %b Answer : 
+    =h item.answer.to_s
+            
+- elsif item.questiontype=="SEQ"
+  /SEQ Question:shortessay (subquestions, submarks, subanswer) - start
+  =simple_format(item.question)
+  - for shortessay in item.shortessays.sort_by{|x|x.item}
+    %u= (t 'exam.examquestion.subquestion')+" "+shortessay.item+" :"
+    %br
+    =h shortessay.subquestion+" ("+ shortessay.submark.to_s+" "+(t 'exam.examquestion.marks')+")"
+    %br
+    %u= (t 'exam.examquestion.keyword')+" "+shortessay.item+" :"
+    %br
+    =h shortessay.keyword
+    %br
+    %u= (t 'exam.examquestion.subanswer')+" "+shortessay.item+" :"
+    %br
+    =h simple_format(shortessay.subanswer)
+                
+- elsif item.questiontype=="TRUEFALSE"
+  /TRUEFALSE Question:boolean choices & boolean answers - start
+  =simple_format(item.question)
+  %u= t 'exam.examquestion.booleanchoices'
+  %br
+  - for booleanchoice in item.booleanchoices.sort_by{|x|x.item}
+    = booleanchoice.item+". "
+    = booleanchoice.description
+    %br
+  %u= t 'exam.examquestion.booleananswers'
+  %br
+  - for booleananswer in item.booleananswers.sort_by{|y|y.item}
+    = booleananswer.item+". "
+    = booleananswer.answer
+    %br
+         
+- else
+  %b Question :
+  = simple_format(item.question)
+  %b Answer : 
+  %br=h item.answer

@@ -7,6 +7,9 @@ ms_MY:
       student: Pelajar
       location: Lokasi
       examquestion: Soalan Peperiksaan
+      exam: Peperiksaan
+      examresult: Keputusan Peperiksaan
+      resultline: Keputusan
       travel_request: Permohonan Perjalanan
       leaveforstudent: Cuti Pelajar
       kin: Waris
@@ -27,6 +30,7 @@ ms_MY:
       weeklytimetable: Jadual Waktu Mingguan
       academic_session: Sesi Akademik
       evaluate_course: Penilaian Kursus
+      grade: Gred
     attributes:
       student:
         name: Nama
@@ -62,8 +66,7 @@ ms_MY:
         travel_on: Tarikh
         start_at: Dari
         finish_at: Hingga
-        travel_log: Log Perjalananlash[:notice]= 
-          flash[:error] = msg2
+        travel_log: Log Perjalanan
       leaveforstudent:
         student_id: Nama pelajar
         leavetype: Jenis cuti
@@ -97,7 +100,7 @@ ms_MY:
         e2_months: Bulan
         e1_months: Bulan
         e1_performance: Pencapaian Keseluruhan
-        e1_progress: Perkembangan Karier
+        e1_progress: Perkembangan Karierlless_than_or_equal_toess_than_or_equal_to
         submit_e2_on: Tarikh hantar ke PPK
         skt_pyd_report: Laporan oleh PYD
         evaluation_year: Tahun Penilaian
@@ -161,6 +164,23 @@ ms_MY:
         editdt: Tarikh Semakan
         editor_id: Penyemak
         approver_id: Pelulus
+      exam:
+        name: Nama peperiksaan
+        subject_id: Subjek
+        exam_on: Tarikh
+        starttime: Masa mula
+        endtime: Masa tamat
+      examresult:
+        resultlines: Keputusan
+      resultlines:
+        total: Jumlah
+        pngs17: PNGS17
+        status: Status
+        remark: Catatan
+      grade:
+        examweight: "Wajaran (Sumatif)"
+        exam1marks: "Markah (100%)"
+        finalscore: Jumlah Akhir
     errors:
         template:
           body: "Berikut adalah beberapa masalah:"
@@ -189,6 +209,14 @@ ms_MY:
                 greater_than: mesti lebih besar dari 0 jika kurang dari setahun
               e1_months:
                 greater_than: mesti lebih besar dari 0 jika kurang dari setahun
+          grade:
+            attributes:
+              exam1marks:
+                greater_than_or_equal_to: mesti lebih besar atau sama dengan 0
+                less_than_or_equal_to: mesti lebih kecil atau sama dengan 100
+              finalscore:
+                greater_than_or_equal_to: mesti lebih besar atau sama dengan 0
+                less_than_or_equal_to: mesti lebih kecil atau sama dengan 100
           travel_request: Permohonan Perjalanan
           kin: Maklumat Waris
          
@@ -2190,6 +2218,7 @@ ms_MY:
       diagram_caption: Tajuk Diagram
       no_diagram: Tiada
       selected_if_readyforapproval: " mesti diisi, jika status 'Ready For Approval'('Sedia untuk kelulusan') dipilih.'"
+      exist_in_exampaper: "Soalan ini sedang DIGUNAKAN dalam set kertas peperiksaan dan tidak boleh dipadam."
 
     exams:
       new_title: Set Kertas Soalan Peperiksaan Baru
@@ -2227,6 +2256,17 @@ ms_MY:
       create_exam: Tambah Data Set Peperiksaan
       create_template: Tambah Data Template Peperiksaan
       marks_each: "MCQ - 1 markah/setiap satu, MEQ - 20 markah/setiap satu, SEQ - 10 markah/setiap satu"
+      filters: Saringan
+      existing: Soalan TELAH dipilih
+      programme_subject_topic: "* Pilih Program, Subjek, Topik and klik pautan 'Display Available Questions' untuk memapar soalan yang tersedia bagi topik dipilih."
+      already_selected: "X menandakan soalan telah dipilih"
+      subject_topic_name: "Subjek | Topik"
+      must_unique: " - bagi subjek dan tarikh yang dipilih telah wujud."
+      created_add_question_details: "Butiran Kertas Peperiksaan telah berjaya disimpan, masukkan Butiran Soalan Peperiksaan dan klik Kemaskini untuk menyimpan butiran."
+      seq_must_select: "Urutan bagi setiap soalan mesti dipilih."
+      seq_increase_by_one: "Urutan semua soalan mestilah langkau 1."
+      seq_must_unique: "Urutan soalan mestilah unik."
+      remove_seq_select: "Soalan dikeluarkan Question(s) removed, sequence for remaining questions must be selected."
     
     exammark:
       title: Markah Kertas Peperiksaan
@@ -2250,6 +2290,7 @@ ms_MY:
       total: Jumlah
       summative: Sumatif
       select_one: "Sila pilih sekurang-kurangnya 1 rekod untuk disunting."
+      select_exam: "SIla pilih Kertas Peperiksaan"
       multiple_updated: "Kesemua markah peperiksaan telah berjaya dikemaskini!"
       multiple_created: "Rekod telah berjaya disimpan. Masukkan markah peperiksaan berkenaan!"
       intake: Ambilan Pelajar
@@ -2274,12 +2315,13 @@ ms_MY:
       eligible_for_exam: Layak Mengambil Peperiksaan
       eligible_for_exam2: "Layak mengambil peperiksaan?"
       carry_paper: Markah Terkumpul
-      examweight: Pemberat Sumatif
+      examweight: Wajaran Sumatif
       exam1marks: Peperiksaan Akhir
       summative: Jumlah Sumatif
       resit: Ulangan
       finalscore: Jumlah Akhir
       grading_id: Gred
+      grade_value: Nilai Gred
       new_multiple: "Gred Baru (Pukal)"
       existing_subject: Semua Subjek
       formative: Formatif
@@ -2289,25 +2331,82 @@ ms_MY:
       type: Jenis
       description: Deskripsi
       marks: Markah
-      weightage: Pemberat
+      weightage: Wajaran
       final_details: Butiran Akhir
       summative_final_details: "Jumlah Summatif & Butiran Akhir"
       exam: Peperiksaan
       required: Diperlukan
       not_required: Tidak diperlukan
-      weightage_before_marks: "Masukkan Pemberat Sumatif terlebih dahulu, bagi membolehkan medan Jumlah Akhir dan Gred dikemaskini berdasarkan kemasukan / perubahan data MARKAH Peperiksaan"
+      weightage_before_marks: "Masukkan Wajaran Sumatif terlebih dahulu, bagi membolehkan medan Markah(70%),  Jumlah Akhir dan Gred dikemaskini berdasarkan kemasukan / perubahan data Markah(100%)"
+      weightage_before_marks2: "Masukkan data Markah(100%) untuk menjana Markah(70%), Jumlah Akhir dan Gred"
       sum_of_scores: "Jumlah Skor (%), "
       total_marks: Jumlah Markah
       final_exam: Peperiksaan Akhir
       apply_changes: Kemaskini Perubahan
-      confirm_apply_changes: "Sila PASTIKAN atau TUKAR / TAMBAH 'Pemberat Sumatif' dan item - item 'Skor Formatif' di atas & klik 'Kemaskini Perubahan', sebelum meneruskan kemasukan data di bawah."
-      formative_summative_var_updated: "Item 'Skor Formatif' dan / atau 'Pemberat Sumatif' telah dikemaskini. Sila SUNTING butiran markah berkenaan."
+      confirm_apply_changes: "Sila PASTIKAN atau TUKAR / TAMBAH 'Wajaran Sumatif' dan item - item 'Skor Formatif' di atas & klik 'Kemaskini Perubahan', sebelum meneruskan kemasukan data di bawah."
+      confirm_apply_changes2: "Masukkan butiran 'Skor Formatif' & klik 'Kemaskini Perubahan', sebelum memasukan 'Jumlah Sumatif' dan 'Butiran Akhir'."
+      formative_summative_var_updated: "Item 'Skor Formatif' dan / atau 'Wajaran Sumatif' telah dikemaskini. Sila SUNTING butiran markah berkenaan."
+      formative_summative_var_updated2: "Butiran 'Skor Formatif' telah dikemaskini. Sila masukkan / sunting 'Jumlah Sumatif' dan 'Butiran Akhir'."
       multiple_updated: "Kesemua gred peperiksaan telah berjaya dikemaskini!"
-       
+      scores_not_exist: "Skor Formatif masih belum wujud. Klik 'Tambah Rekod', masukkan butiran skor formatif dan klik 'Kemaskini Perubahan' untuk mengaktifkan struktur Skor Formatif. Sebaik sahaja struktur diaktifkan, masukkan butiran markah dalam lajur - lajur formatif yang telah dijana."
+      marks_in_70: "Markah Sumatif (70%)"
+      diploma_weightage_30: "* Bagi program Diploma, jumlah Wajaran mestilah 30%."
+      marks_weightage_range: "** Nilai Markah mestilah berada dalam lngkungan julat Wajaran (cth. Wajaran=30%, nilai Markah antara 0-30)."
+      max_weightage_marks_30: "Nilai Maksima Skor Formatif (Jumlah Wajaran dan Jumlah Markah) bagi program Diploma adalah 30."
+      grades_intakes_exist: 'Gred peperiksaan pelajar bagi Ambilan yang dipilih telah wujud. Padam / sunting rekod berkenaan.'
+      summative_weightage_changed: "Wajaran Sumatif telah diubah. Klik 'Kemaskini Perubahan' untuk mengemaskini wajaran bagi lajur 'Jumlah Sumatif' sebelum meneruskan kemasukan data."
+      standardize_weightage: "* Klik 'Kemaskini Perubahan' untuk menyeragamkan Wajaran Formatif bagi gred - gred pelajar seperti tersenarai di bawah."
+      redundant_formative_template: "Terdapat lebih daripada satu set / template 'Skor Formatif' digunakan bagi subjek ini. Perhatikan, bilangan lajur tidak selari di bahagian paparan senarai pelajar. Pastikan set / template 'Skor Formatif' di bawah (rujukan: rekod pertama), jika berbeza, sisih rekod dalam laman Indeks untuk suntingan pukal. Klik 'Kemaskini Perubahan' untuk menyeragamkan set / template 'Skor Formatif' bagi subjek ini."
+      
     examresult:
       title: Keputusan Peperiksaan Mengikut Program
       title2: Keputusan Mengikut Program
-      exam_slip: Slip Keputusan
+      new: Keputusan Baru Peperiksaan
+      edit: Sunting Keputusan Peperiksaan
+      exam_slip: Slip Keputusan Peperiksaan
+      exam_slip_transcript: Slip & Transkrip Keputusan Peperiksaan
+      exam_transcript: Transkrip Keputusan Peperiksaan
+      programme_id: Program
+      examdts: Tarikh Mula Peperiksaan
+      examdte: Tarikh Tamat Peperiksaan
+      intake: Ambilan
+      total: Jumlah
+      remark: Catatan
+      details: Butiran Peperiksaan
+      result_details: Butiran Keputusan
+      details2: Keputusan Peperiksaan
+      no_student: "Tiada pelajar yang mengambil program ini bagi semester dan tarikh peperiksaan yang dpilih."
+      update_resultlines: "Sila masukkan butiran keputusan pelajar (PNGK dan Catatan) dan klik 'Kemaskini' untuk menyimpan data."
+      no_student: "Program dan Semester yang dipilih tidak mempunyai data pelajar. Sila masukkan data pelajar terlebih dahulu."
+      record_must_unique: ", Program dan Tarikh Peperiksaan telah wujud. Hanya 1 rekod dibenarkan bagi setiap keputusan peperiksaan."
+      all_compulsory: "Semua medan wajib diisi."
+      student: Pelajar
+      exam_date: Tarikh Peperiksaan
+      course_code: Kod Kursus
+      exam_centre: Pusat Peperiksaan
+      passed: Lulus
+      failed: Gagal
+      excellent: Cemerlang
+      distinction: Kepujian
+      not_allowed: "Kemaskini tidak dibenarkan kerana pelajar tidak wujud bagi Keputusan Peperiksaan ini."
+      transcript: Transkrip
+      academic_status: Status Akademik
+      completed: Tamat 
+      subject_code_name: "Kod Subjek - Nama Subjek"
+      grade_point: Mata Gred
+      grade: Gred
+      term: Sem
+      total_point: Jumlah Mata
+      completed_credit: Jumlah Kredit
+      total_completed_credit: Jumlah Kredit Terkumpul
+      total_grade_point: "Jumlah NGK (Nilai Gred Kumulatif)"
+      completed_credit_hours: Jumlah Jam Kredit Terkumpul
+      gpa: "Purata Nilai Gred Semester (PNGS)"
+      cgpa: "Purata Nilai Gred Kumulatif (PNGK)"
+      total_grade_point2: NGK
+      gpa2: PNGS
+      cgpa2: PNGK
+      credit: Kredit
     
     evaluate_course:
       title: "Penilaian Program (Pengajar)"
@@ -2356,6 +2455,28 @@ ms_MY:
       total_scores: Jumlah Skor
       average_scores: Purata Skor
 
+    examanalysis:
+      title: Analisis Peperiksaan Mengikut Kertas Peperiksaan
+      title2: Analisis Peperiksaan
+      new: Analisis Baru Peperiksaan
+      edit: Sunting Analisis Peperiksaan
+      details: Butiran Analisis Peperiksaan
+      examtype: Jenis Peperiksaan
+      programme_id: Program
+      subject_id: Subjek
+      examon: Tarikh Peperiksaan
+      grade: Gred
+      examtype: Jenis Peperiksaan
+      total_students: Jumlah Pelajar
+      no_question_paper: Tiada soalan bagi Kertas Peperiksaan
+      no_marks_available: Tiada markah untuk dianalisis
+      select_subject: Sila pilih subjek
+      question: S
+      exam_on: Tarikh Peperiksaan
+      total_marks: Jumlah Markah
+      exam_must_exist: " mesti dipilih."
+      exam_must_uniq: " hanya boleh dianalisis sekali."
+    
   training:
     title: Latihan
     new: Latihan Baru

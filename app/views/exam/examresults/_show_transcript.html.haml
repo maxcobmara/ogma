@@ -1,0 +1,178 @@
+.col-md-8.col-md-offset-2
+  %dl.dl-horizontal
+    %dt=t 'exam.examresult.exam_centre'
+    %dd Kolej Sains Kesihatan Bersekutu Johor Bahru
+  
+    %dt=t 'exam.examresult.programme_id'
+    %dd=h @resultlines.first.examresult.programmestudent.programme_list
+    
+    %dt=t 'exam.examresult.intake'
+    %dd
+      -intake=@resultlines.first.examresult.intake_group
+      =Date.new(intake[0,4].to_i, intake[5,2].to_i, intake[8,2].to_i).try(:strftime, '%b %Y')
+    
+    %dt=t 'exam.examresult.academic_status'
+    %dd=t 'exam.examresult.completed'
+
+    %br
+  
+    %dt=t('exam.examresult.student')
+    %dd=h @resultlines.first.student.name
+  
+    %dt=t('student.icno')
+    %dd=h @resultlines.first.student.icno
+  
+    %dt=t('student.students.matrixno')
+    %dd=h @resultlines.first.student.matrixno
+  
+.col-md-10.col-md-offset-1
+  %br
+  %table
+    %head
+      %tr
+        %td{width: "49%"}=@resultlines.first.examresult.render_semester.split("/").join(" ")
+        %td{width: "2%"}
+        %td{width: "49%"}=@resultlines[1].examresult.render_semester.split("/").join(" ")
+      %tr
+        /Year 1, Sem 1
+        %td{style: "vertical-align: top;"}
+          %table.table.table-bordered
+            %head
+              %tr
+                %th=t 'exam.examresult.subject_code_name'
+                %th.centre=t 'exam.examresult.grade_point'
+                %th.centre=t 'exam.examresult.grade'
+                %th.centre=t 'exam.examresult.term'
+            %body
+              - result=@resultlines.first
+              
+              /= cgpa0=number_with_precision(Examresult.cgpa_per_sem(@resultlines, 0), precision: 2)
+              /= cgpa0=number_with_precision(Examresult.cgpa_per_sem(@resultlines, 1), precision: 2)
+              /= cgpa0=number_with_precision(Examresult.cgpa_per_sem(@resultlines, 2), precision: 2)
+              /= cgpa0=number_with_precision(Examresult.cgpa_per_sem(@resultlines, 3), precision: 2)
+              /= cgpa0=number_with_precision(Examresult.cgpa_per_sem(@resultlines, 4), precision: 2)
+              /= cgpa0=number_with_precision(Examresult.cgpa_per_sem(@resultlines, 5), precision: 2)
+              /%br
+              ////
+              /- english_subjects=['PTEN', 'NELA', 'NELB', 'NELC', 'MAPE', 'XBRE', 'OTEL'] 
+              /- credit_all_sem=[]
+              /- final_all_sem=[]
+              /- 0.upto(5).each do |cnt|
+              /  - subjects=@resultlines[cnt].examresult.retrieve_subject
+              /  - credit_per_sem=[]
+              /  - final_per_sem=[]
+              /  - for subject in subjects
+              /    - student_finale = Grade.where('student_id=? and subject_id=?',@resultlines[cnt].student.id, subject.id).first
+              /    - if subject.code.size >9
+              /      - credit_per_sem << subject.code[10,1].to_i if english_subjects.include?(subject.code[0,4])==false
+              /    - elsif subject.code.size < 10
+              /      - credit_per_sem << subject.code[-1,1].to_i if english_subjects.include?(subject.code[0,4])==false
+              /    - unless student_finale.nil? || student_finale.blank? 
+              /      - final_per_sem << student_finale.set_NG.to_f
+              /    - else
+              /      - final_per_sem << 0.00
+              /  - credit_all_sem+=credit_per_sem
+              /  - final_all_sem+=final_per_sem
+
+              /  =credit_all_sem.sum
+              /  =final_all_sem.sum
+              ////
+              - cgpa0=number_with_precision(Examresult.cgpa_per_sem(@resultlines, 0), precision: 2)
+              = render 'result_per_semester', :result => result, :cgpa => cgpa0
+              
+              /DISPLAY Total here (Pengkhususan / Diploma Lanjutan / Pos Basik) 
+              - if Programme.where(course_type: 'Diploma').pluck(:id).include?(@resultlines.first.examresult.programme_id)==false
+                = render 'result_grand_total'
+                
+        /separator
+        %td &nbsp;
+        /Year 1, Sem 2
+        %td{style: "vertical-align: top;"}
+          %table.table.table-bordered
+            %head
+              %tr
+                %th=t 'exam.examresult.subject_code_name'
+                %th.centre=t 'exam.examresult.grade_point'
+                %th.centre=t 'exam.examresult.grade'
+                %th.centre=t 'exam.examresult.term'
+            %body
+              - result=@resultlines[1]
+              - cgpa1=number_with_precision(Examresult.cgpa_per_sem(@resultlines, 1), precision: 2)
+              = render 'result_per_semester', :result => result, :cgpa => cgpa1
+
+      - if Programme.where(course_type: 'Diploma').pluck(:id).include?(@resultlines.first.examresult.programme_id)
+        %tr
+          %td{width: "49%"}=@resultlines[2].examresult.render_semester.split("/").join(" ")
+          %td{width: "2%"}
+          %td{width: "49%"}=@resultlines[3].examresult.render_semester.split("/").join(" ")
+        %tr
+          /Year 2, Sem 1
+          %td{style: "vertical-align: top;"}
+            %table.table.table-bordered
+              %head
+                %tr
+                  %th=t 'exam.examresult.subject_code_name'
+                  %th.centre=t 'exam.examresult.grade_point'
+                  %th.centre=t 'exam.examresult.grade'
+                  %th.centre=t 'exam.examresult.term'
+              %body
+                - result=@resultlines[2]
+                - cgpa2=number_with_precision(Examresult.cgpa_per_sem(@resultlines, 2), precision: 2)
+                = render 'result_per_semester', :result => result, :cgpa => cgpa2
+          /separator
+          %td &nbsp;
+          /Year 2, Sem 2
+          %td{style: "vertical-align: top;"}
+            %table.table.table-bordered
+              %head
+                %tr
+                  %th=t 'exam.examresult.subject_code_name'
+                  %th.centre=t 'exam.examresult.grade_point'
+                  %th.centre=t 'exam.examresult.grade'
+                  %th.centre=t 'exam.examresult.term'
+              %body
+                - result=@resultlines[3]
+                - cgpa3=number_with_precision(Examresult.cgpa_per_sem(@resultlines, 3), precision: 2)
+                = render 'result_per_semester', :result => result, :cgpa => cgpa3
+        
+        %tr
+          %td{width: "49%"}=@resultlines[4].examresult.render_semester.split("/").join(" ")
+          %td{width: "2%"}
+          %td{width: "49%"}=@resultlines[5].examresult.render_semester.split("/").join(" ")
+        %tr
+          /Year 3, Sem 1
+          %td{style: "vertical-align: top;"}
+            %table.table.table-bordered
+              %head
+                %tr
+                  %th=t 'exam.examresult.subject_code_name'
+                  %th.centre=t 'exam.examresult.grade_point'
+                  %th.centre=t 'exam.examresult.grade'
+                  %th.centre=t 'exam.examresult.term'
+              %body
+                - result=@resultlines[4]
+                - cgpa4=number_with_precision(Examresult.cgpa_per_sem(@resultlines, 4), precision: 2)
+                = render 'result_per_semester', :result => result, :cgpa => cgpa4
+                
+                /DISPLAY Total here (Diploma)  
+                - final_cgpa=number_with_precision(Examresult.cgpa_per_sem(@resultlines, 5), precision: 2)
+                = render 'result_grand_total', :final_cgpa => final_cgpa
+                
+          /separator
+          %td &nbsp;
+          /Year 3, Sem 2
+          %td{style: "vertical-align: top;"}
+            %table.table.table-bordered
+              %head
+                %tr
+                  %th=t 'exam.examresult.subject_code_name'
+                  %th.centre=t 'exam.examresult.grade_point'
+                  %th.centre=t 'exam.examresult.grade'
+                  %th.centre=t 'exam.examresult.term'
+              %body
+                - result=@resultlines[5]
+                - cgpa5=number_with_precision(Examresult.cgpa_per_sem(@resultlines, 5), precision: 2)
+                = render 'result_per_semester', :result => result, :cgpa => cgpa5
+                
+
+ 

@@ -1,0 +1,42 @@
+- model_class = Examresult
+.page-header
+  %h1= t('exam.examresult.title')#, :default => model_class.model_name.human.pluralize
+.navbar.navbar-inverse{role: "navigation", style: "padding-right:40px;"}
+  %ul.nav.navbar-nav
+    /HACK - restrict common_subjects lecturers - still accessible via direct url
+    - unless @common_subjects.include?(@current_user.userable.positions[0].unit)
+      %li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'actions.new'))), new_exam_examresult_path
+  %ul.nav.navbar-nav.navbar-right
+    %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "index_search_bar"
+    %li.toga= link_to content_tag(:li, fa_icon("print", text: (t 'actions.print'))), "#", class: 'bogus'  
+
+= render 'shared/flashes'
+.row
+  %table.table-striped.table-hover.ogma
+    %thead
+      %tr
+        %th= sort_link(@search, :programme_id, (t 'exam.examresult.programme_id'))
+        %th= sort_link(@search, :examdts, (t 'exam.examresult.examdts'))
+        %th= sort_link(@search, :examdte, (t 'exam.examresult.examdte'))
+        %th Semester
+
+    %tbody
+      = render "search_bar"
+      - @examresults.group_by{|x|x.intake_group}.each do |intake, examresults|
+        %tr
+          %td.group{colspan: 5}
+            %span
+              =(t 'exam.examresult.intake')+" :"
+              =Date.new(intake[0,4].to_i, intake[5,2].to_i, intake[8,2].to_i).try(:strftime, '%b %Y').upcase
+        - examresults.group_by {|y|y.programmestudent.programme_list}.each do |programme, examresults2|
+          %tr
+            %td.group{colspan: 5}=programme
+          - for examresult in examresults2.sort_by{|x|x.semester}
+            %tr
+              %td= link_to examresult.programmestudent.programme_list, exam_examresult_path(examresult)
+              %td=h l(examresult.examdts)
+              %td=h l(examresult.examdte)
+              %td=h examresult.render_semester
+
+  .right{style:"padding:0 30px; margin:0;"}= paginate @examresults, :theme => 'twitter-bootstrap-3'
+

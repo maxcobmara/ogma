@@ -1,3 +1,6 @@
+- diploma=Programme.where(course_type: 'Diploma')
+- radiografi=diploma.where('name ILIKE?', '%Radiografi%').first.id
+- carakerja=diploma.where('name ILIKE?', '%Jurupulih Perubatan Cara Kerja%').first.id
 .col-md-12
   %table.table.table-bordered
     %tr
@@ -13,8 +16,14 @@
             =h (DropDown::E_TYPES.find_all{|disp, value| value == score_x.type_id}).map {|disp, value| disp}.first
             %br
             =h "("+score_x.weightage.to_i.to_s+"%)"
-           
-      %th{:style=>"background-color:#E5ECE5; text-align:center;"}CA+MSE
+      /HIDE this part from Fisioterapi - https://trello.com/c/Wht96nbB
+      - fisioterapi=Programme.where(course_type: 'Diploma').where('name ILIKE (?)', '%Fisioterapi%').first.id
+      - if @grades[0].studentgrade.course_id!=fisioterapi
+        %th{:style=>"background-color:#E5ECE5; text-align:center;"}
+          CA+MSE 
+          %font{color: "blue"} 
+            ="("+@grades[0].scores.sum(:weightage).to_s+"%) *"
+      /HIDE-ending
       - if @subjects_of_grades > 1
         /if subject for selected grades is different
         %th{:style=>"background-color:#EEF9F9;text-align:center;"}= t 'exam.grade.examweight'
@@ -22,8 +31,16 @@
         Final Exam
         %br
         %font{:style=>"font size=-2"} (Written Paper)
-      %th{:style=>"background-color:#FEE;text-align:center;"}Total Summative
-      %th{:style=>"background-color:#EEF;text-align:center;"}Total Marks
+        - if @grades[0].studentgrade.course_id==radiografi
+          (100%)
+      %th{:style=>"background-color:#FEE;text-align:center;"}
+        Total Summative 
+        %font{color: "blue"} 
+          ="("+@grades[0].examweight.to_s+"%) *"
+      %th{:style=>"background-color:#EEF;text-align:center;"}
+        Total Marks
+        %font{color: "blue"}
+          ="("+@grades[0].scores.sum(:weightage).to_s+"%+"+@grades[0].examweight.to_s+"%)*"
       %th BPL
       %th Exam?
       %th Carry Paper
@@ -48,11 +65,16 @@
           - @score_for_legend_sort_1.each_with_index do |score_1, score_count|
             %td{:style=>"text-align:center;background-color:#EDFDEB;"}
               = text_field_tag "scores_attributes[#{score_count}][marks][]", number_with_precision(score_1.marks,:precision=>2), :size=> 4,:class=>'i1',:id=>"score_"+"#{no}"+"_"+score_count.to_s 
-              = hidden_field_tag "formweight", score_1.weightage, :id=>"formweight_"+"#{no}"+"_"+score_count.to_s,:size=>2,:class=>'i1'
+              = hidden_field_tag "formweight", score_1.weightage, :id=>"formweight_"+"#{no}"+"_"+score_count.to_s,:size=>2
         
         /23June2013-no changes here but pls refer js part
-        %td{:style=>"background-color:#E5ECE5;text-align:center;"}
-          = text_field_tag "scores[]", number_with_precision(grade.score,:precision=>2), :size=> 4,:id=>"caplusmse"+no.to_s
+        /HIDE this part from Fisioterapi - https://trello.com/c/Wht96nbB
+        - if @grades[0].studentgrade.course_id==fisioterapi
+          = hidden_field_tag "scores[]", number_with_precision(grade.total_formative,:precision=>2), :size=> 4,:id=>"caplusmse"+no.to_s, :readonly => "readonly", class: "form-control"
+        - else
+          %td{:style=>"background-color:#E5ECE5;text-align:center;"}
+            = text_field_tag "scores[]", number_with_precision(grade.total_formative,:precision=>2), :size=> 4,:id=>"caplusmse"+no.to_s, :readonly => "readonly", class: "form-control"
+        //HIDE ending
         - if @subjects_of_grades > 1 
           /if subject for selected grades is different
           %td{:style=>"background-color:#EEF9F9;text-align:center;"}
@@ -60,11 +82,19 @@
         - else
           = hidden_field_tag "examweights[]", number_with_precision(grade.examweight,:precision=>2), :id=>"examweight"+no.to_s
         %td{:style=>"background-color:#FEE;text-align:center;"}
-          = text_field_tag "exam1markss[]", number_with_precision(grade.exam1marks,:precision=>2), :size=> 4,:id=>"finalexam"+no.to_s,:class=>'k1'
+          - latest_paper=Exam.where(subject_id: grade.subject_id).order(created_at: :desc).first.id
+          - student_exammark=Exammark.where(exam_id: latest_paper).where(student_id: grade.student_id)
+          - if student_exammark && student_exammark.count > 0
+            = text_field_tag "exam1markss[]", number_with_precision(grade.exam1marks,:precision=>2), :size=> 4,:id=>"finalexam"+no.to_s, class: 'form-control', readonly: 'readonly'
+          - else
+            = text_field_tag "exam1markss[]", number_with_precision(grade.exam1marks,:precision=>2), :size=> 4,:id=>"finalexam"+no.to_s,:class=>'k1'
         %td{:style=>"background-color:#FEE;text-align:center;"}
-          = text_field_tag "summatives[]", number_with_precision(grade.summative,:precision=>2), :size=> 4,:id=>"summative"+no.to_s 
+          - if student_exammark && student_exammark.count > 0
+            = text_field_tag "summatives[]", number_with_precision(grade.total_summative,:precision=>2), :size=> 4,:id=>"summative"+no.to_s, class: 'form-control', readonly: 'readonly'
+          - else
+            = text_field_tag "summatives[]", number_with_precision(grade.total_summative,:precision=>2), :size=> 4,:id=>"summative"+no.to_s, class: 'form-control', readonly: 'readonly'
         %td{:style=>"background-color:#EEF;text-align:center;"}
-          = text_field_tag "finalscores[]", number_with_precision(grade.finalscore,:precision=>2), :size=> 4,:id=>"finalscore"+no.to_s
+          = text_field_tag "finalscores[]", number_with_precision(grade.finalscore,:precision=>2), :size=> 4,:id=>"finalscore"+no.to_s, :readonly => "readonly", class: "form-control"
         %td
           /--asal-http://apidock.com/rails/ActionView/Helpers/FormTagHelper/check_box_tag
           /#= check_box_tag "sent_to_BPLs[#{no}]", true, :name => "sent_to_BPLs[]"
@@ -82,3 +112,75 @@
         %td{:style=>"text-align:center;"}= check_box_tag "carry_papers[#{no}]", true, grade.carry_paper
         %td{:style=>"text-align:center;"}=check_box_tag "resits[#{no}]", true, grade.resit
 
+/TRIAL      
+=hidden_field_tag "grade_count", @grades.count
+=hidden_field_tag "scores_count", @score_for_legend_sort_1.count
+=hidden_field_tag "programme_name", Programme.where(id: @grades[0].subjectgrade.root_id).first.name
+
+/=hidden_field_tag "grade_examweight", @grades[0].examweight
+:javascript
+
+$(document).ready(function(){
+  $(".i1").keyup(function(){  
+    
+    var gradecount = $("#grade_count").val();
+    var scorescount = $("#scores_count").val();
+    
+    var other2 = document.getElementById("score_"+0+"_"+0).value;
+    window["formative"+i] =  document.getElementById("caplusmse0");
+    window["formative"+i].value =  other2;
+    
+    for (var i=0;i<gradecount;i++)
+    {
+      window["cplus"+i] =  document.getElementById("caplusmse"+i);
+      var a = 0;
+      for (var k=0;k<scorescount;k++)
+      {
+        var other = document.getElementById("score_"+i+"_"+k).value;
+        a=a*1+(other*1);
+      }
+      window["cplus"+i].value=a;
+      window["summative70_val"+i] = document.getElementById("summative"+i).value;
+      window["formative_summative"+i] = document.getElementById("finalscore"+i);
+      window["formative_summative"+i].value = a+(window["summative70_val"+i])*1
+    }
+    
+  });
+  
+  $(".k1").keyup(function(){
+    var gradecount = $("#grade_count").val();
+    var summativeweightage = $("#grade_summative_weightage").val(); 
+    var programme = $("#programme_name").val();
+    
+    for (var i=0;i<gradecount;i++){
+      window["total_marks"+i]= document.getElementById("finalexam"+i).value;
+      window["summative70"+i] = document.getElementById("summative"+i);
+      window["cplus_val"+i] =  document.getElementById("caplusmse"+i).value;
+      window["formative_summative"+i] = document.getElementById("finalscore"+i);
+      
+      if ((programme=="Radiografi") || (programme=="Jurupulih Perubatan Cara Kerja"))
+      {
+        window["summative70"+i].value=(window["total_marks"+i])*(summativeweightage/100); 
+        window["formative_summative"+i].value = (window["total_marks"+i])*(summativeweightage/100) +((window["cplus_val"+i])*1);
+      }
+      else
+      {
+        window["summative70"+i].value=window["total_marks"+i]
+        window["formative_summative"+i].value = (window["total_marks"+i])*1+((window["cplus_val"+i])*1);
+      }  
+    }
+  });
+  
+  var yoyo = $("#examweight0").val();
+  $('#grade_summative_weightage').change(function() {
+    if($(this).val() ==(yoyo*1)) {
+      $('.sum_weight_changed').hide();
+    }else {
+      $('.sum_weight_changed').show("appear");
+    }
+  });
+  
+});
+
+/grade[summative_weightage]
+/var summativeweightage = $("#grade_examweight").val(); 

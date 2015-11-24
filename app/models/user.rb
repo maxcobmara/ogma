@@ -333,10 +333,68 @@ class User < ActiveRecord::Base
         end
         programmeid=@programmeid
       else
-        programmeid=0 #default val for admin
+        programmeid=0 #default val for admin, common_subjects lecturer too
       end
     end
     programmeid
+  end
+  
+  #use in - auth_rules(examresult) - return [programme_id] for academician (return [] for common subjects lecturer)
+  def lecturers_programme2 #to exclude common subjects lecturer
+    mypost = Position.where(staff_id: userable_id).first
+    myunit = mypost.unit
+    postbasics=['Pengkhususan', 'Pos Basik', 'Diploma Lanjutan']
+    post_prog=Programme.roots.where(course_type: postbasics)
+    dip_prog=Programme.roots.where(course_type: 'Diploma').pluck(:name)
+    common_subjects=['Sains Tingkahlaku','Sains Perubatan Asas', 'Komunikasi & Sains Pengurusan', 'Anatomi & Fisiologi', 'Komuniti']
+    if dip_prog.include?(myunit)
+      programmeid=Programme.roots.where(name: myunit).pluck(:id)
+    else
+      if myunit=="Pengkhususan" && roles.pluck(:authname).include?("programme_manager")
+        programmeid=post_prog.pluck(:id)
+      elsif postbasics.include?(myunit)
+        post_prog.pluck(:name).each do |pname|
+          @programmeid=Programme.roots.where(name: pname) if mypost.tasks_main.include?(pname).pluck(:id)
+        end
+        programmeid=@programmeid
+      elsif common_subjects.include?(myunit)
+        programmeid=[] #common_subjects lecturer
+      elsif roles.pluck(:authname).include?("administration")
+        programmeid=[0] #default val for admin
+      else
+        ##---
+	tasks_main = userable.positions[0].tasks_main
+	leader_unit=tasks_main.scan(/Program (.*)/)[0][0].split(" ")[0] if tasks_main!="" && tasks_main.include?('Program')
+        if leader_unit
+              programmeid = Programme.where('name ILIKE (?) AND ancestry_depth=?',"%#{leader_unit}%",0).pluck(:id)
+             
+        end
+	##---
+      end
+    end
+    programmeid
+  end
+  
+  def lecturers_programme_subject
+    mypost = Position.where(staff_id: userable_id).first
+    myunit = mypost.unit
+    postbasics=['Pengkhususan', 'Pos Basik', 'Diploma Lanjutan']
+    post_prog=Programme.roots.where(course_type: postbasics)
+    common_subjects=['Sains Tingkahlaku','Sains Perubatan Asas', 'Komunikasi & Sains Pengurusan', 'Anatomi & Fisiologi', 'Komuniti']
+    dip_prog=Programme.roots.where(course_type: 'Diploma').pluck(:name)
+    if dip_prog.include?(myunit)
+      subject_ids=Programme.roots.where(name: myunit).first.descendants.at_depth(2).pluck(:id)
+    elsif postbasics.include?(myunit)
+      post_prog.pluck(:name).each do |pname|
+        @programmeid=Programme.roots.where(name: pname).pluck(:id) if mypost.tasks_main.include?(pname)
+      end
+      subject_ids=Programme.roots.where(id: @programmeid).first.descendants.at_depth(2).pluck(:id)
+    elsif common_subjects.include?(myunit) 
+      subject_ids=Programme.where(course_type: 'Commonsubject').pluck(:id)
+    else
+      subject_ids=Programme.where(course_type: ['Subject', 'Commonsubject']).pluck(:id)
+    end
+    subject_ids
   end
   
   def role_symbols
