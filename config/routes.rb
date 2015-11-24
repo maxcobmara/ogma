@@ -371,6 +371,7 @@ Ogma::Application.routes.draw do
       #map.connect '/exams/exampaper_combine', :controller => 'exams', :action => 'exampaper_combine'
       member do
         get :exampaper
+	#get :question_selection
       end
 #       collection do
 #         get 'exampaper', to: "exams#exampaper"
@@ -378,6 +379,7 @@ Ogma::Application.routes.draw do
 #         get 'exampaper_combine', to: "exams#exampaper_combine"
 #       end
     end
+    
     resources :exammarks do
       collection do
         put 'edit_multiple'
@@ -398,7 +400,18 @@ Ogma::Application.routes.draw do
         get 'add_formative'
       end
     end
-    resources :examresults
+    resources :examresults do
+      collection do
+        get :index2
+        post :index2
+        get :show2
+        get :show3
+        get :examination_slip
+        get :examination_transcript
+      end
+    end
+    resources :examanalyses #do
+    #end
     resources :evaluate_courses do
       member do
         get 'courseevaluation'
@@ -427,6 +440,7 @@ Ogma::Application.routes.draw do
   match '/contact', to: 'static_pages#contact', via: 'get'
   match '/dashboard', to: 'static_pages#dashboard', via: 'get'
   match '/asset_report', to: 'static_pages#asset_report', via: 'get'
+  match '/fetch_items', to: 'exam/exams#question_selection', via: 'get'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

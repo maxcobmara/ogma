@@ -28,6 +28,9 @@ en:
       student: Student
       location: Location
       examquestion: Examquestion
+      exam: Examination
+      examresult: Keputusan Peperiksaan
+      resultline: Keputusan
       leaveforstudent: Student Leave
       travel_request: Travel Request
       travel_claim: Travel Claim
@@ -46,6 +49,7 @@ en:
       weeklytimetable: Weekly Timetable
       academic_session: Academic Session
       evaluate_course: Course Evaluation
+      grade: Grade
     attributes:
       student:
         name: Name
@@ -179,6 +183,23 @@ en:
         editdt: Editing Date
         editor_id: Editor
         approver_id: Approver
+      exam:
+        name: Examination name
+        subject_id: Subject
+        exam_on: Date
+        starttime: Start time
+        endtime: End time
+      examresult:
+        resultlines: Result
+      resultlines:
+        total: Total
+        pngs17: PNGS17
+        status: Status
+        remark: Remark
+      grade:
+        examweight: "Weightage (Summative)"
+        exam1marks: "Marks (100%)"
+        finalscore: Total Marks
     errors:
         template:
           body: "There were problems with the following fields:"
@@ -207,6 +228,14 @@ en:
                 greater_than: must greater than 0 if less than a year
               e1_months:
                 greater_than: must greater than 0 if less than a year
+          grade:
+            attributes:
+              exam1marks:
+                greater_than_or_equal_to: must greater than or equal to 0
+                less_than_or_equal_to: must less than or equal to 100
+              finalscore:
+                greater_than_or_equal_to: must greater than or equal to 0
+                less_than_or_equal_to: must less than or equal to 100
           travel_request: Travel Request
           kin: Next of Kin
           stationery: Office Supplies
@@ -2249,11 +2278,12 @@ en:
       diagram_caption: Diagram Caption
       no_diagram: Nil
       selected_if_readyforapproval: " must be selected, if status is 'Ready For Approval'"
+      exist_in_exampaper: "This examquestion EXIST in examination and is not allowed for deletion."
 
     exams:
-      new_title: New Examination Maker
-      edit: Edit Examination Maker
-      title: Examination Maker
+      new_title: New Examination Paper
+      edit: Edit Examination Paper
+      title: Examination Paper
       title2: Examination Template 
       name: Examination Name 
       description: Description
@@ -2286,6 +2316,17 @@ en:
       create_exam: Add Exam Data
       create_template: Add Exam Template
       marks_each: "MCQ - 1 marks/each, MEQ - 20 marks/each, SEQ - 10 marks/each"
+      filters: Filters
+      existing: Existing Questions
+      programme_subject_topic: "* Select Programme, Subject, Topic and click 'Display Available Questions' link to view available questions."
+      already_selected: "X indicates question already selected"
+      subject_topic_name: "Subject | Topic"
+      must_unique: " - for selected subject and date already exist."
+      created_add_question_details: "Examination Paper Details were successfully saved, enter Question Details accordingly and click Update to save details."
+      seq_must_select: "Sequence for each question must be selected."
+      seq_increase_by_one: "Sequence for all questions must increase by 1."
+      seq_must_unique: "Sequence for each question must be unique."
+      remove_seq_select: "Question(s) removed, sequence for remaining questions must be selected."
 
     exammark:
       title: Marks by Examination Papers
@@ -2309,6 +2350,7 @@ en:
       total: Total
       summative: Summative
       select_one: "Please select at least 1 record for editing."
+      select_exam: "Please select Examination Paper"
       multiple_updated: "All examination marks were successfully updated!"
       multiple_created: "Records were successfully created. Enter examination marks accordingly."
       intake: Student Intake
@@ -2339,6 +2381,7 @@ en:
       resit: Resit
       finalscore: Total Marks
       grading_id: Grade
+      grade_value: Grade Value
       new_multiple: New Multiple Grades
       existing_subject: All Subjects
       formative: Formative
@@ -2354,19 +2397,76 @@ en:
       exam: Examination
       required: Required
       not_required: Not Required
-      weightage_before_marks: "Insert Summative Weightage first, for Total Marks & Grade to takes effect upon entry / changes of Examination MARKS"
+      weightage_before_marks: "Insert Summative Weightage first, for Marks(70%), Total Marks & Grade to takes effect upon entry / changes of Marks(100%)"
+      weightage_before_marks2: "Insert Marks(100%) to generate Marks(70%), Total Marks and Grade"
       sum_of_scores: "Sum of scores(%), "
       total_marks: Total Marks
       final_exam: Final Exam
       apply_changes: Apply Changes
       confirm_apply_changes: "Please CONFIRM or MODIFY & click 'Apply Changes' for above Summative Weightage and Formative Scores items before proceeding with data entry."
+      confirm_apply_changes2: "Please enter 'Formative Scores' details and click 'Apply Changes' before entering 'Total Summative' and 'Final Details'."
       formative_summative_var_updated: "Formative Score items and / or Summative Weightage are updated. Please EDIT marks accordingly."
+      formative_summative_var_updated2: "'Formative Scores' details are updated. Enter / edit 'Total Summative' and 'Final Details' accordingly."
       multiple_updated: "All examination grades were successfully updated!"
+      scores_not_exist: "Formative Scores not exist yet. Click 'Add More', enter formative score details and 'Apply Changes' to activate Formative Scores structure. Once structure is activated, enter scores details in generated formatives columns accordingly."
+      marks_in_70: "Summative Marks (70%)"
+      diploma_weightage_30: "* For Diploma programmes, Weightage must be 30% in TOTAL."
+      marks_weightage_range: "** Marks must be in Weightage range (eg. Weightage=30%, Marks is between 0-30)."
+      max_weightage_marks_30: "Maximum value for Formative Scores (Total Weightage and Total Marks) is 30."
+      grades_intakes_exist: 'Grades for student(s) of selected Intakes already exist. Delete / edit records accordingly.'
+      summative_weightage_changed: "Summative Weightage is changed. Click 'Apply Changes' to update weightage for 'Total Summative' column before proceeding with data entry."
+      standardize_weightage: "* Click 'Apply Changes' to standardize Summative Weightage to student grades as listed below."
+      redundant_formative_template: "Multiple 'Formative Scores' set / template detected. Note, uneven columns displayed in Student Listing part. Confirm below 'Formative Scores' set / template (ref: first record), if differ, sort and reselect record in Index for multiple edit. Click 'Apply Changes' to standardize 'Formative Scores' set / template for this subject."
     
     examresult:
       title: Examination Result by Programme
       title2: Result By Programme
+      new: New Examination Result
+      edit: Edit Examination Result
       exam_slip: Examination Result Slip
+      exam_slip_transcript: Examination Result Slip & Transcript
+      exam_transcript: Examination Result Transcript
+      programme_id: Programme
+      examdts: Exam Date Start
+      examdte: Exam Date End
+      intake: Intake
+      total: Total
+      remark: Remark
+      details: Examination Details
+      result_details: Result Details
+      details2: Examination Result
+      no_student: "No students have taken this programme for selected semester and examination dates."
+      update_resultlines: "Enter student result details (PNGK and Remark) and click 'Update' to save data."
+      no_student: "Selected Programme and Semester has no student. Add student data accordingly."
+      record_must_unique: ", Programme and Examination Date has already been taken. Only 1 record permitted for each examination result. "
+      all_compulsory: "All fields are compulsory."
+      student: Student
+      exam_date: Examination Date
+      course_code: Course Code
+      exam_centre: Exam Centre
+      passed: Passed
+      failed: Failed
+      excellent: Excellent
+      distinction: Distinction
+      not_allowed: "Update is not allowed as students are not exist for this examresult."
+      transcript: Transcript
+      academic_status: Academic Status
+      completed: Completed
+      subject_code_name: "Subject Code - Subject Name"
+      grade_point: Grade Point
+      grade: Grade
+      term: Term
+      total_point: Total Points
+      completed_credit: Completed Credit
+      total_completed_credit: Total Completed Credit
+      total_grade_point: Total Grade Points
+      completed_credit_hours: Completed Credit Hours
+      gpa: GPA
+      cgpa: CGPA
+      total_grade_point2: Total Grade Points
+      gpa2: GPA
+      cgpa2: CGPA
+      credit: Credit
     
     evaluate_course:
       title: "Course Evaluation (Lecturer)"
@@ -2414,6 +2514,28 @@ en:
       question: Q
       total_scores: Total Scores
       average_scores: Average Scores
+      
+    examanalysis:
+      title: Examination Analysis by Examination Paper
+      title2: Examination Analysis
+      new: New Examination Analysis
+      edit: Edit Examination Analysis
+      details: Examination Analysis Details
+      examtype: Examination Type
+      programme_id: Programme
+      subject_id: Subject
+      examon: Examination Date
+      grade: Grade
+      examtype: Examination Type
+      total_students: Total Students
+      no_question_paper: No questions available in Examination 
+      no_marks_available: No marks available for analysis
+      select_subject: Please select a subject
+      question: Q
+      exam_on: Examination Date
+      total_marks: Total Marks
+      exam_must_exist: " must be selected."
+      exam_must_uniq: " can be analysed only once."
 
   training:
     title: Training

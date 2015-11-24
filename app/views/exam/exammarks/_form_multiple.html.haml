@@ -48,6 +48,10 @@
 - @b_count=0
 - @diff_total_mcq=0
 
+- diploma=Programme.where(course_type: 'Diploma')
+- radiografi=diploma.where('name ILIKE?', '%Radiografi%').first.id
+- carakerja=diploma.where('name ILIKE?', '%Jurupulih Perubatan Cara Kerja%').first.id
+
 .row
   %table.table
     %thead
@@ -104,12 +108,18 @@
             %th 
               =t 'exam.exammark.true_false1'
               %br="Q-"+count.to_s
-        %th 
-          =t 'exam.exammark.total'
+        /HIDE - just to avoid confusion (same value as summative, coz data already in weightage - but MCQ, SEQ- marks by WEIGHTAGE still PENDING)
+        - if @exammarks[0].exampaper.subject.root_id==radiografi || @exammarks[0].exampaper.subject.root_id==carakerja
+          %th 
+            =t 'exam.exammark.total'
           %font{:style=>"size:-2;"}="("+(number_with_precision(@fullmarks, precision: 2)).to_s+")"
-        %th
-          =t 'exam.exammark.summative'
-          (70%)
+        /hide end
+        - if @exammarks[0].exampaper.name=='F'
+          - if @exammarks[0].exampaper.subject.root_id==radiografi || @exammarks[0].exampaper.subject.root_id==carakerja
+            %th &nbsp;&nbsp;&nbsp;&nbsp;100%&nbsp;&nbsp;&nbsp;&nbsp;
+          %th
+            =t 'exam.exammark.summative'
+            (70%)
 
     %tbody
       - @exammarks.sort_by{|x|x.studentmark.name}.each_with_index do |exammark,no|
@@ -133,7 +143,66 @@
               = text_field_tag "marks_attributes[#{index}][student_marks][]", number_with_precision(aa.student_mark,:precision=>2),:id=>"student_mark_"+"#{@b_count}"+"_"+@a_count.to_s,:class=>'j1', :size=> 4 
               - @a_count+=1
 
-          %td{:style=>"background-color:#C3E9BF;"}= text_field_tag "total_marks_view[]", number_with_precision(exammark.total_marks,precision:2) ,:id=>"total_marks_view"+@b_count.to_s, :size=> 5, :readonly=>true
-
-          %td{:style=>"background-color:#C3E9BF;"}= text_field_tag "total_summative[]", number_with_precision(exammark.total_marks/Exammark.fullmarks(@examid)*70, precision: 2) ,:id=>"total_summative"+@b_count.to_s, :size=> 5, :readonly=>true 
+          /HIDE - just to avoid confusion (same value as summative, coz data already in weightage - but MCQ, SEQ- marks by WEIGHTAGE still PENDING)
+          - if @exammarks[0].exampaper.subject.root_id==radiografi || @exammarks[0].exampaper.subject.root_id==carakerja
+            %td{:style=>"background-color:#C3E9BF;"}= text_field_tag "total_marks_view[]", number_with_precision(exammark.total_marks,precision:2) ,:id=>"total_marks_view"+@b_count.to_s, :size=> 5, :readonly=>true, :class => 'form-control'
+            /hide end
+          - else
+            = hidden_field_tag "total_marks_view[]", number_with_precision(exammark.total_marks,precision:2) ,:id=>"total_marks_view"+@b_count.to_s, :size=> 5, :readonly=>true, :class => 'form-control'
+            
+          - if @exammarks[0].exampaper.name=='F'
+            - if @exammarks[0].exampaper.subject.root_id==radiografi || @exammarks[0].exampaper.subject.root_id==carakerja
+              %td{:style=>"background-color:#C3E9BF;"}
+                = text_field_tag "marks_in_hundred[]", number_with_precision((exammark.total_marks/Exammark.fullmarks(@examid))*100, precision: 2) ,:id=>"marks_in_hundred"+@b_count.to_s, :size=> 5, :readonly=>true, :class => 'form-control'
+            %td{:style=>"background-color:#C3E9BF;"}
+              = text_field_tag "total_summative[]", number_with_precision((exammark.total_marks/Exammark.fullmarks(@examid))*100*0.70, precision: 2) ,:id=>"total_summative"+@b_count.to_s, :size=> 5, :readonly=>true, :class => 'form-control'
           - @b_count+=1
+          
+/TRIAL      
+=hidden_field_tag "exammark[trial2]", @mcqcount
+=hidden_field_tag "exammark[trial1]", @exammarks.count
+=hidden_field_tag "exammark[trial3]", @allcount
+=hidden_field_tag "exammark[trial4]", @fullmarks
+=hidden_field_tag "programme_name", Programme.where(id: @exammarks[0].exampaper.subject.root_id).first.name
+
+:javascript
+
+$(document).ready(function(){
+  $(".j1").keyup(function() {  
+    
+    var studentcount =document.getElementById("exammark_trial1").value;
+    var mcqcount = $("#exammark_trial2").val();
+    var allcount = $("#exammark_trial3").val();
+    var fullmarks = $("#exammark_trial4").val();
+    var programme = $("#programme_name").val();
+    
+    for (var i=0;i<studentcount;i++)
+    {
+      
+      var total_mcq = document.getElementById("total"+i).value;
+      window["totalmarksview"+i]= document.getElementById("total_marks_view"+i);
+      window["totalsummative"+i]= document.getElementById("total_summative"+i);
+      window["marksinhundred"+i]= document.getElementById("marks_in_hundred"+i);
+      var a = 0;
+      
+      for (var k=0;k<allcount-mcqcount;k++)
+      {
+        var other = document.getElementById("student_mark_"+i+"_"+k).value;
+        a=a*1+(other*1);
+      }
+      window["totalmarksview"+i].value = total_mcq*1+a;
+      if ((programme=="Radiografi") || (programme=="Jurupulih Perubatan Cara Kerja"))
+      {
+        window["marksinhundred"+i].value = (total_mcq*1+a)/fullmarks*100;
+        window["totalsummative"+i].value = (total_mcq*1+a)/fullmarks*100*0.70;
+      }
+      else
+      {
+        window["totalsummative"+i].value = (total_mcq*1+a);
+      }
+    }
+
+  });
+});
+
+        

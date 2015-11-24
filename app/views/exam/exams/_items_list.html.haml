@@ -1,0 +1,31 @@
+%br
+- if items.count > 0
+  .small.right=t('exam.exams.already_selected')
+  %table.table.table-bordered
+    %head
+      %tr
+        %th No
+        %th=t('exam.examquestion.questiontype')
+        %th 
+          =t('exam.examquestion.question') 
+          & 
+          =t('exam.examquestion.answer')
+        %th= t('exam.examquestion.marks')
+        %th=t('select')
+      - nos=0
+      - items.group_by(&:questiontype).sort.each do |qtype, items2|
+        - items2.each do |item|
+          %tr
+            %td=nos+=1
+            %td=qtype
+            %td=render 'question_by_type', :item => item
+            %td= item.marks
+            %td.centre
+              - if Exam.find(@exam.id).examquestions.include?(item)
+                X
+              - else 
+                = check_box_tag "exam[examquestion_ids][]", item.id
+
+- else
+  No question available. Select other subject and / or topic, or create one. 
+  %BR

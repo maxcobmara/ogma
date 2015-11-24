@@ -10,35 +10,37 @@
           .col-sm-2.control-label
             =f.label t 'exam.exams.name', for: :exam_name
           .col-md-3
-            = f.select :name, DropDown::EXAMTYPE,  {:include_blank =>t('select'), :selected=>25},{class: 'selectpicker', "data-width"=>'300px'} 
+            = f.select :name, DropDown::EXAMTYPE,  {:include_blank =>t('select'), :selected=>25},{class: 'selectpicker mandatory', "data-width"=>'300px'} 
         .form-group
           .col-sm-2.control-label
             = f.label  t 'exam.exams.created_by', for: :created_by
           .col-md-4
-            = f.collection_select :created_by, Staff.where('id IN(?)', @exam.creator_list).order(name: :asc), :id,  :staff_name_with_position, {:include_blank =>t('helpers.prompt.select_staff'), :selected=>@current_user.userable_id.to_i},{class: 'selectpicker', "data-width"=>'360px'} 
+            = f.collection_select :created_by, Staff.where('id IN(?)', @staff_listing).order(name: :asc), :id,  :staff_name_with_position, {:include_blank =>t('helpers.prompt.select_staff'), :selected=>@current_user.userable_id.to_i},{class: 'selectpicker mandatory', "data-width"=>'360px'} 
         .form-group
           .col-sm-2.control-label
             = f.label t 'exam.exams.course_id', for: :programme
           .col-md-4
-            = f.collection_select :programme_id, Programme.roots, :id, :programme_list ,{:include_blank => t('select')}, {class: 'selectpicker', "data-width"=>'360px'} 
+            /= f.collection_select :course_id, @programme_listing, :id, :programme_list ,{:include_blank => t('select'), :selected => @preselect_prog}, {class: 'selectpicker', "data-width"=>'360px'} 
+            = select_tag("exam[course_id]", options_for_select(@programme_names, @programme_detail), :include_blank => (t 'select'),  class: 'form-control mandatory')
         .form-group
           .col-sm-2.control-label
             = f.label t 'exam.exams.subject_id', for: :subject
           .col-md-4
-            = f.collection_select :subject_id, Programme.at_depth(2), :id, :subject_list, {:include_blank => t('select')}, {class: 'selectpicker', "data-width"=>'360px'} 
+            /= f.collection_select :subject_id, @subjectlist_preselect_prog, :id, :subject_list, {:include_blank => t('select')}, {class: 'selectpicker', "data-width"=>'360px'} 
+            = select_tag("exam[subject_id]", grouped_options_for_select(@subjects_paper), :include_blank => (t 'select'), :class => 'form-control mandatory')
         .form-group
           .col-sm-2.control-label
             = f.label t 'exam.exams.exam_on', for: :exam_on
           .col-md-2
-            = f.text_field :exam_on, class: 'date_picker form-control'
+            = f.text_field :exam_on, class: 'date_picker form-control mandatory'
         .form-group
           .col-sm-2.control-label
             = f.label t 'exam.exams.starttime', for: :starttime
           .col-md-1
-            = f.text_field :starttime, class: 'time_picker2 form-control'
+            = f.text_field :starttime, class: 'time_picker2 form-control mandatory'
         .form-group
           .col-sm-2.control-label
             = f.label t 'exam.exams.endtime', for: :endtime
           .col-md-1
-            = f.text_field :endtime, class: 'time_picker2 form-control'
+            = f.text_field :endtime, class: 'time_picker2 form-control mandatory'
             

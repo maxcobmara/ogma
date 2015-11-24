@@ -19,7 +19,7 @@
           =h examtemplate.total_marks     
     - else 
       /Complete examaker section
-      - @examquestions_by_type = @exam.examquestions.group_by{|x|x.questiontype} 
+      - @examquestions_by_type = @exam.examquestions.group_by{|x|x.questiontype}.sort
       /first
       /if SEQUENCE Exist
       - if @exam.sequ!= nil 

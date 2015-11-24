@@ -1,0 +1,65 @@
+/=@subjectid 
+- model_class = Grade
+.page-header
+  %h1=t('exam.grade.new_multiple') 
+  
+= render 'shared/flashes'
+
+.row.fluid
+  = form_tag create_multiple_exam_grades_path, :id => "form1", :html => {:method => :put} do |f|
+    .row
+      .col-md-10.col-md-offset-1
+        / Nav tabs
+        %ul.nav.nav-tabs
+          %li.active= link_to ((t 'exam.grade.grade_details')),"#grade_details", "data-toggle" => "tab"
+        / Display
+        .tab-content{style:"padding-top:1em"}
+          #exammark_details.tab-pane.active
+            %br
+            .col-md-offset-2 
+              - @grades.each_with_index do |grade, index|
+                = fields_for "grades[#{index}]", grade do |f|
+                  - if index==0
+                    /- if @dept_unit_prog 
+                    .row
+                      .form-group
+                        .col-sm-2.control-label
+                          %b= t 'exam.grade.subject_id'
+                        .col-md-8
+                          /= text_field_tag :subjectid, @subjectid
+                          = f.hidden_field :subject_id, :value => @subjectid
+                          = @selected_subject
+                          /  =@dept_unit_prog 
+                          /- else
+                          /  = Programme.where(id:@programme_id).first.programme_list
+                    .row
+                      .form-group
+                        .col-sm-2.control-label
+                          %b= t 'exam.exammark.exam_id'
+                        .col-md-8
+                          = f.hidden_field :exam_id, :value =>@examid
+                          -  if @selected_exam
+                            = @selected_exam.exam_name_subject_date
+                            - if @selected_exam.klass_id == 0 
+                              (Template) 
+                    .row
+                      .form-group
+                        .col-sm-2.control-label
+                          %b=t 'exam.grade.intake'
+                        .col-md-2
+                          - unless @iii.nil?
+                            = f.select :intake_id, @intakes_lt, { :include_blank=> t('select'), :selected=>@iii}, {class: 'selectpicker'}
+                          - else
+                            = f.select :intake_id, @intakes_lt, { :include_blank=> t('select')}, class: 'form-control'
+                          /- if !@iii.nil?
+                          /  = f.select :intake_id, @intakes_lt, { :include_blank=> t('select'), :selected=>@iii}, {class: 'selectpicker'}
+                          /- else
+                          /  - if @intakes_lt
+                          /    = f.select :intake_id, @intakes_lt, { :include_blank=> t('select')}, {class: 'selectpicker'}
+
+    .col-md-offset-1  
+      .form-group
+        .col-sm-offset-3.col-sm-1
+          = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), exam_grades_path, :class => 'btn btn-default'
+        .col-sm-2
+          = submit_tag t('create'), class: "btn btn-primary"

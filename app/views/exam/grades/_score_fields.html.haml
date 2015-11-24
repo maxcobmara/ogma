@@ -2,19 +2,20 @@
   - if @job_type && @job_type=="multiple"
     - score_count = @score_count2
     .row
-      .col-sm-4=select_tag "scores_attributes[#{score_count}][type_id]", options_for_select([[t('select'), '']]+DropDown::E_TYPES), {class: 'selectpicker'}
-      .col-sm-5= text_field_tag "scores_attributes[#{score_count}][description]", "", class: 'form-control'
-      .col-sm-2=select_tag "scores_attributes[#{score_count}][weightage]", options_for_select([[t('select'), '']]+DropDown::WEIGHTAGE), {class: 'selectpicker'}
+      .col-sm-4=select_tag "scores_attributes[#{score_count}][type_id]", options_for_select([[t('select'), '']]+DropDown::E_TYPES), {class: 'selectpicker mandatory'}
+      .col-sm-4= text_field_tag "scores_attributes[#{score_count}][description]", "", class: 'form-control mandatory'
+      .col-sm-2=select_tag "scores_attributes[#{score_count}][weightage]", options_for_select([[t('select'), '']]+DropDown::WEIGHTAGE), {class: 'selectpicker mandatory'}
   - else
     - no=@count
     = f.hidden_field :_destroy
     .row
-      .col-sm-3= f.select :type_id, DropDown::E_TYPES, {:prompt => t('select')}, {class: 'selectpicker'}
-      .col-sm-5= f.text_field :description, placeholder: t('exam.grade.description'), class: 'form-control'
-      .col-sm-2= f.text_field :marks, :id=> "formative"+no.to_s, class: 'form-control'
-      .col-sm-2= f.text_field :weightage, :size => 5, :id=> "fweight"+no.to_s, class: 'form-control'
-      .col-sm-1
-        /= link_to content_tag(:i, "", class: "fa fa-trash-o"), data: {"data-toggle" => "tooltip", title: "Delete"}, class: "btn btn-danger remove_fields"
-
+      .col-sm-4= f.select :type_id, DropDown::E_TYPES, {:prompt => t('select')}, {class: 'selectpicker mandatory', "data-width"=>"300px"}
+      .col-sm-4= f.text_field :description, placeholder: t('exam.grade.description'), class: 'form-control mandatory'
+      .col-sm-2= f.text_field :weightage, :size => 5, :id=> "fweight"+no.to_s, class: 'form-control mandatory'
+      .col-sm-2= f.text_field :marks, :id=> "formative"+no.to_s, class: 'form-control mandatory'
+      /.col-sm-1
+      /  /= link_to content_tag(:i, "", class: "fa fa-trash-o"), data: {"data-toggle" => "tooltip", title: "Delete"}, class: "btn btn-danger remove_fields"
+      /  /= f.options[:child_index]
+        
   :javascript
     $('.selectpicker').selectpicker('render');

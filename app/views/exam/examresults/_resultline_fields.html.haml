@@ -1,0 +1,23 @@
+/%fieldset
+%tr
+  = f.hidden_field :_destroy
+  %td=nos
+  %td=f.object.student.name
+  %td=f.object.student.matrixno
+  %td=f.object.student.icno
+  - for subject in @subjects
+    - @student_grade = Grade.where('student_id=? and subject_id=?', f.object.student.id,subject.id).first
+    - @student_finale = Grade.where('student_id=? and subject_id=?', f.object.student.id,subject.id).first
+    %td.center
+      - unless @student_grade.nil? || @student_grade.blank?
+        =@student_grade.set_gred
+    %td.center
+      - unless @student_finale.nil? || @student_finale.blank? 
+        =number_with_precision(@student_finale.set_NG.to_f,:precision=>2)
+      - else 
+        = number_with_precision(0.00,:precision=>2) 
+  %td=f.text_field :total
+  %td=f.text_field :pngs17
+  %td=f.text_field :pngk
+  %td=f.select :status, DropDown::RESULT_STATUS
+  %td=f.text_field :remark, :value => "hohoi"

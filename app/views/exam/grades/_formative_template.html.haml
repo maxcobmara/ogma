@@ -9,12 +9,12 @@
   - @grade_score_weight_diff = []
 
   - @grades.sort_by{|x|x.studentgrade.name}.each_with_index do |grade, no| 
+    - @score_for_legend_1 = Score.where('grade_id=?',grade.id)
+    - @score_for_legend_sort_1 = @score_for_legend_1.sort_by{|x|x.created_at}
     - if no == 0
-      - @score_for_legend_1 = Score.where('grade_id=?',grade.id)
-      - @score_for_legend_sort_1 = @score_for_legend_1.sort_by{|x|x.created_at}
-      - @a_type = @score_for_legend_sort_1.map(&:type_id) 
-      - @a_desc = @score_for_legend_sort_1.map(&:description).uniq  
-      - @a_weight = @score_for_legend_sort_1.map(&:weightage) 
+      - @a_type = @score_for_legend_1.map(&:type_id) 
+      - @a_desc = @score_for_legend_1.map(&:description).uniq  
+      - @a_weight = @score_for_legend_1.map(&:weightage) 
       - @a_sum_weight = grade.examweight
     - else
       - @b_type = @score_for_legend_sort_1.map(&:type_id)
@@ -28,6 +28,11 @@
 
   - @score_for_legend_sort = Score.where('grade_id=?',@grades[0].id).sort_by{|x|x.created_at}
 
+  /display notice
+  - if @grade_score_type_comp.include?(false)
+    %font{color: "red"}
+      =t 'exam.grade.redundant_formative_template'
+    
 /Please note : use this : scores_attributes[#{score_count}][type_id] INSTEAD OF this:scores_attributes[#{score_count}][type_id][]
     
 .col-md-8.col-md-offset-1

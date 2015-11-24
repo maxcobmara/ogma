@@ -28,56 +28,59 @@
 
 %dt=t 'exam.examquestion.question'
 %dd
-  /=raw sanitize(simple_format(examquestion.question), :tags => %w(br) )
-  = simple_format(examquestion.question)
+  %table
+    %tr
+      %td
+        /=raw sanitize(simple_format(examquestion.question), :tags => %w(br) )
+        = simple_format(examquestion.question)
 
-  /MCQ Question:answerchoices & examanswers - start
-  - if examquestion.questiontype=="MCQ"
-    //if not exist at all OR exist but 1st item has no value-start (upto answerchoice.description)
-    - if examquestion.answerchoices.count != 0 && examquestion.answerchoices[0].description!=""
-      - for answerchoice in examquestion.answerchoices.sort_by{|x|x.item}
-        = answerchoice.item
-        = answerchoice.description
-        %br
-      %br
-    - for examanswer in examquestion.examanswers.sort_by{|y|y.item}
-      = examanswer.item
-      = examanswer.answer_desc
-      %br
-  /MCQ Question:answerchoices & examanswers - end
+        /MCQ Question:answerchoices & examanswers - start
+        - if examquestion.questiontype=="MCQ"
+          //if not exist at all OR exist but 1st item has no value-start (upto answerchoice.description)
+          - if examquestion.answerchoices.count != 0 && examquestion.answerchoices[0].description!=""
+            - for answerchoice in examquestion.answerchoices.sort_by{|x|x.item}
+              = answerchoice.item
+              = answerchoice.description
+              %br
+            %br
+          - for examanswer in examquestion.examanswers.sort_by{|y|y.item}
+            = examanswer.item
+            = examanswer.answer_desc
+            %br
+          /MCQ Question:answerchoices & examanswers - end
 
-  /SEQ Question:shortessay (subquestions, submarks, subanswer) - start
-  - if examquestion.questiontype=="SEQ"
-    - for shortessay in examquestion.shortessays.sort_by{|x|x.item}	
-      %br
-      %u= (t 'exam.examquestion.subquestion')+" "+shortessay.item+" :"
-      %br
-      =h shortessay.subquestion+" ("+ shortessay.submark.to_s+" "+(t 'exam.examquestion.marks')+")"
-      %br
-      %u= (t 'exam.examquestion.keyword')+" "+shortessay.item+" :"
-      %br
-      =h shortessay.keyword
-      %br
-      %u= (t 'exam.examquestion.subanswer')+" "+shortessay.item+" :"
-      %br
-      =h simple_format(shortessay.subanswer)
-  /SEQ Question:shortessay (subquestions, submarks, subanswer) - end
+          /SEQ Question:shortessay (subquestions, submarks, subanswer) - start
+        - elsif examquestion.questiontype=="SEQ"
+          - for shortessay in examquestion.shortessays.sort_by{|x|x.item}	
+            %br
+            %u= (t 'exam.examquestion.subquestion')+" "+shortessay.item+" :"
+            %br
+            =h shortessay.subquestion+" ("+ shortessay.submark.to_s+" "+(t 'exam.examquestion.marks')+")"
+            %br
+            %u= (t 'exam.examquestion.keyword')+" "+shortessay.item+" :"
+            %br
+            =h shortessay.keyword
+            %br
+            %u= (t 'exam.examquestion.subanswer')+" "+shortessay.item+" :"
+            %br
+            =h simple_format(shortessay.subanswer)
+          /SEQ Question:shortessay (subquestions, submarks, subanswer) - end
 
-  /TRUEFALSE Question:boolean choices & boolean answers - start
-  - if examquestion.questiontype=="TRUEFALSE"
-    %u= t 'exam.examquestion.booleanchoices'
-    %br
-    - for booleanchoice in examquestion.booleanchoices.sort_by{|x|x.item}
-      = booleanchoice.item+". "
-      = booleanchoice.description
-      %br
-    %u= t 'exam.examquestion.booleananswers'
-    %br
-    - for booleananswer in examquestion.booleananswers.sort_by{|y|y.item}
-      = booleananswer.item+". "
-      = booleananswer.answer
-      %br
-  /TRUEFALSE Question:boolean choices & boolean answers - end
+          /TRUEFALSE Question:boolean choices & boolean answers - start
+        - elsif examquestion.questiontype=="TRUEFALSE"
+          %u= t 'exam.examquestion.booleanchoices'
+          %br
+          - for booleanchoice in examquestion.booleanchoices.sort_by{|x|x.item}
+            = booleanchoice.item+". "
+            = booleanchoice.description
+            %br
+          %u= t 'exam.examquestion.booleananswers'
+          %br
+          - for booleananswer in examquestion.booleananswers.sort_by{|y|y.item}
+            = booleananswer.item+". "
+            = booleananswer.answer
+            %br
+          /TRUEFALSE Question:boolean choices & boolean answers - end
 
 /MCQ final ANSWER
 - if examquestion.questiontype=="MCQ"
@@ -85,7 +88,7 @@
   %dd=h examquestion.answer.to_s
  
 /answer field for other than MCQ & SEQ 
-- if !(examquestion.questiontype=="MCQ" || examquestion.questiontype=="SEQ")
+- if !(examquestion.questiontype=="MCQ" || examquestion.questiontype=="SEQ" || examquestion.questiontype=="TRUEFALSE")
   %dt=t 'exam.examquestion.answer' , :default => model_class.human_attribute_name(:answer) + ":"
   %dd=h examquestion.answer 
 /=raw sanitize(simple_format(examquestion.answer), :tags => %w(br p) )

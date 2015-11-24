@@ -268,15 +268,15 @@
                         %ul
                           /- permitted_to? :manage, :exam_examresults do
                           /activate above, once examresults - lecturers & programme manager ready
-                          %li= link_to (t "exam.examresult.title2"), "#"
+                          %li= link_to (t "exam.examresult.title2"), exam_examresults_path
                           //no need to put any permitted_to here -- as access given above(line 173 -174)
-                          %li= link_to (t "exam.examresult.exam_slip"), "#"
+                          %li= link_to content_tag(:i, "", :class => "icon-numb") + (t "exam.examresult.exam_slip_transcript"), index2_exam_examresults_path
 
             /%li= link_to content_tag(:i, "", :class => "icon-numb") + "Examination Management", '#'
             - permitted_to? :read, :exam_evaluate_courses do
               %li= link_to content_tag(:i, "", :class => "icon-numb") + (t "exam.evaluate_course.title"), exam_evaluate_courses_path
             - permitted_to? :menu, :exam_exams do
-              %li= link_to content_tag(:i, "", :class => "icon-numb") + "Examination Analysis", '#'
+              %li= link_to content_tag(:i, "", :class => "icon-numb") + (t "exam.examanalysis.title"), exam_examanalyses_path
 
     - permitted_to? :read, :library_books do  
       %li.icon.icon-left

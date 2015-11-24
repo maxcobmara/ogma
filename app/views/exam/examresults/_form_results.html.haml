@@ -1,0 +1,129 @@
+- model_class = Exam
+.col-md-11
+  %hr  
+  %table.table.table-bordered
+    %head
+      %tr
+        %th{rowspan: 2} &nbsp;
+        %th{rowspan: 2}=t('student.name')
+        %th{rowspan: 2}=t('student.students.matrixno')
+        %th{rowspan: 2}=t('student.icno')
+        - kebidanan = Programme.roots.where('name ILIKE(?)', '%Kebidanan%').first.id
+        - kejururawatan = Programme.roots.where('name ILIKE(?)', '%Kejururawatan%').first.id
+        /- @subjects = Examresult.get_subjects(@examresult.programme_id,@examresult.semester)
+        - @subjects = @examresult.retrieve_subject
+        - @students = @examresult.retrieve_student
+        - @subject_credits=[]
+        - for subject in @subjects
+          - @subject_credits << subject.credits
+          %th.centre{colspan: 2}=h subject.code
+        %th.centre{rowspan: 2}= t 'exam.examresult.total_grade_point' 
+        %th.centre{rowspan: 2}= t 'exam.examresult.gpa2'
+        %th.centre{rowspan: 2}= t 'exam.examresult.cgpa2'
+        %th.centre{rowspan: 2} Status
+        %th.centre{rowspan: 2}= t 'exam.examresult.remark'
+      %tr
+        - 0.upto(@subjects.count-1) do |count|
+          %th=t('exam.grade.grading_id')
+          %th NG
+    %body
+      /- @nos=0
+      /= f.fields_for :resultlines do |builder|
+      /  - @nos+=1
+      /  = render 'resultline_fields', {:f => builder, :nos => @nos}
+      /- if @students.count > 0 && @examresult.resultlines.count==0 && @examresult.errors.count==0
+      
+      /BELOW - will display fields successfully
+      - if @students.count > 0 
+        - 0.upto(@students.count-1).each do |no|
+          %tr
+            %td=no+1
+            /maintan entered values, although errors arise
+            - if @examresult.resultlines
+              /.count > 0
+              - @value_status = @examresult.resultlines[no].status if @examresult.resultlines[no]
+              - @value_remark = @examresult.resultlines[no].remark if @examresult.resultlines[no]
+              - @value_id = @examresult.resultlines[no].id if @examresult.resultlines[no]
+              - @value_pngk = @examresult.resultlines[no].pngk if @examresult.resultlines[no]
+            
+            = hidden_field "examresult[resultlines_attributes][#{no}]", :id, :size =>8, :value=>@value_id
+            = hidden_field "examresult[resultlines_attributes][#{no}]", :student_id, :size =>8, :value=>@students[no].id
+            %td=@students[no].name
+            %td=@students[no].matrixno
+            %td=@students[no].icno
+            
+            - unless @subjects.nil? || @subjects.blank? 
+              - credit2_all=[]
+              - final2_all=[] 
+              - english_subjects=['PTEN', 'NELA', 'NELB', 'NELC', 'MAPE', 'XBRE', 'OTEL'] 
+              - for subject in @subjects
+                - @grade_student=Grade.where(subject_id: subject.id).where(student_id: @students[no].id)
+                - @student_finale=Grade.where('student_id=? and subject_id=?', @students[no].id,subject.id).first
+                //--------------
+                - if subject.code.size >9
+                  - unless english_subjects.include?(subject.code[0,4]) || (subject.code.strip.size < 10 && (subject.code.strip[-2,1].to_i==2 || subject.code.strip[-2,1].to_i==3))
+                    - credit2_all << subject.code[10,1].to_i 
+                - elsif subject.code.size < 10
+                  - unless english_subjects.include?(subject.code[0,4]) || (subject.code.strip.size < 10 && (subject.code.strip[-2,1].to_i==2 || subject.code.strip[-2,1].to_i==3)) 
+                    - credit2_all << subject.code[-1,1].to_i
+                - unless english_subjects.include?(subject.code[0,4]) || (subject.code.strip.size < 10 && (subject.code.strip[-2,1].to_i==2 || subject.code.strip[-2,1].to_i==3))
+                  - unless @student_finale.nil? || @student_finale.blank? 
+                    - final2_all << @student_finale.set_NG.to_f
+                  - else
+                    - final2_all << 0.00
+                //-------------
+                - if @grade_student.count > 0
+                  - if english_subjects.include?(subject.code[0,4]) || (subject.code.strip.size < 10 && (subject.code.strip[-2,1].to_i==2 || subject.code.strip[-2,1].to_i==3))
+                    %td.centre{colspan: 2}=@examresult.resultlines[no].render_status_contra
+                  - else
+                    %td= @grade_student.first.render_grading.split("-")[2] 
+                    %td= @grade_student.first.set_NG.to_f 
+                  /https://trello.com/c/zlIT9mSO - Kebidanan (STATUS) : gagal if any of subject is failed - Kejururawatan too
+                  - @value_status='4' if [kebidanan, kejururawatan].include?(@examresult.programme_id) && @gradeit=="C-"  
+                - else
+                  - if english_subjects.include?(subject.code[0,4]) || (subject.code.strip.size < 10 && (subject.code.strip[-2,1].to_i==2 || subject.code.strip[-2,1].to_i==3))
+                    /Lulus OR Gagal 
+                    %td.centre{colspan: 2}= t 'exam.examresult.failed'
+                  - else
+                    %td.centre &nbsp;
+                    %td.centre 0.00
+                  /https://trello.com/c/zlIT9mSO - Kebidanan (STATUS) : gagal if any of subject has no grade - Kejururawatan too
+                  - @value_status='4' if [kebidanan, kejururawatan].include?(@examresult.programme_id) && @gradeit=="C-" 
+
+            - total_point=number_with_precision(Examresult.total(final2_all, credit2_all), precision: 2)
+            - if final2_all.count > 0 && credit2_all.count > 0
+              - gpa=number_with_precision((Examresult.total(final2_all, credit2_all) / credit2_all.sum), precision: 2)
+            - else
+              - gpa=0.00
+            - semno=@examresult.semester.to_i-1
+            - programmeid=@examresult.programme_id
+            - examresult_ids=Examresult.where(programme_id: programmeid).pluck(:id)
+            - @resultlines = Resultline.where(examresult_id: examresult_ids, student_id: @students[no].id).order(created_at: :asc)
+            - cgpa=number_with_precision(Examresult.cgpa_per_sem(@resultlines, semno), precision: 2)
+                
+            = hidden_field "examresult[resultlines_attributes][#{no}]", :total, :size =>8, :value => total_point
+            = hidden_field "examresult[resultlines_attributes][#{no}]", :pngs17, :size =>8, :value => gpa
+            = hidden_field "examresult[resultlines_attributes][#{no}]", :pngk, :size =>8, :value => cgpa
+              
+            %td=total_point
+            %td=gpa
+            %td=cgpa
+            
+            - fisioterapi=Programme.where(course_type: 'Diploma').where('name ILIKE (?)', '%Fisioterapi%').first.id
+            - perubatan=Programme.where(course_type: 'Diploma').where('name ILIKE (?)', 'Penolong Pegawai Perubatan').first.id
+            - if [fisioterapi, perubatan].include?(@examresult.programme_id)
+              - status_selection = DropDown::RESULT_STATUS_CONTRA
+            - else
+              - status_selection = DropDown::RESULT_STATUS
+            %td
+              - if [kebidanan, kejururawatan].include?(@examresult.programme_id)
+                = hidden_field "examresult[resultlines_attributes][#{no}]", :status, :size =>8, :value => @value_status
+                =(DropDown::RESULT_STATUS.find_all{|disp, value| value == @value_status}).map {|disp, value| disp}[0]
+              - else
+                = select_tag "examresult[resultlines_attributes][#{no}][status]", options_for_select([[t('select'), '0']]+status_selection, @value_status) 
+            %td= text_field "examresult[resultlines_attributes][#{no}]", :remark, :size =>8, :value => @value_remark
+          
+      /NOTE - as of 1st Nov2015 : Value for STATUS - Kebidanan & Kejururawatan - set to 'Gagal' if any subject status is 'Gagal', otherwise set to 'Lulus'.
+      /Other programmes : requires user to select STATUS accordingly UNLESS define by user.
+      /Total, PNGS17 : auto-generated, non-editable & display only 4 all programmes.
+      /STATUS : auto-generated, non-editable & display only for Kejururawatan & Kebidanan.

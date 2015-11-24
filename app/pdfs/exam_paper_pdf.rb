@@ -496,7 +496,7 @@ class Exam_paperPdf < Prawn::Document
      else
        if @exam.examquestions.seqq.count > 0 && @exam.examquestions.meqq.count > 0
          text "Bahagian C.", :align => :left, :size => 12, :style => :bold
-       elsif @exam.examquestions.seqq.count == 0 && @exam.examquestions.meqq.count > 0
+       elsif @exam.examquestions.seqq.count == 0 && @exam.examquestions.meqq.count > 0  #Kejururawatan - MCQ & MEQ (2 covers)
          text "Bahagian B. Jawab DUA soalan sahaja.", :align => :left, :size => 12, :style => :bold
        end
      end
@@ -584,7 +584,13 @@ class Exam_paperPdf < Prawn::Document
          elsif @exam.subject.root_id==2
            draw_text "muka surat #{page_number-1-@mcq_seqpages}", :at => [230,0], :size => 10
          else
-           draw_text "muka surat #{page_number-1-@mcqpages}", :at => [230,0], :size => 10
+           #3-Kejururawatan - separate (2 covers) (MCQ+MEQ or MEQ/SEQ cover), 
+           #5-Radiografi - separate cover too, but checking not required here coz Radiografi has no MEQ at all (refer Struktur Penilaian)
+           if @exam.subject.root.id==3 #Kejururawatan - 2 covers :  MCQ cover + MEQ/SEQ cover   - sample record ID 19
+             draw_text "muka surat #{page_number-1-@mcqpages}", :at => [230,0], :size => 10 
+           else
+             draw_text "muka surat #{page_number-1}", :at => [230,0], :size => 10  #when there's only 1 cover exist   - sample record ID 84 (Pos Basik Koronari)
+           end
          end
        end
      end #ENDING - @tosort_seqid.count-1

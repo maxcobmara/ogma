@@ -351,6 +351,33 @@ module DropDown
          [ "Rejected", "Rejected" ]
     ]
      
+   #Examresults
+    SEMESTER = [
+              #  Displayed       stored in db
+              [ "Tahun 1/Semester I","1" ],
+              [ "Tahun 1/Semester II","2" ],
+              [ "Tahun 2/Semester I","3" ],
+              [ "Tahun 2/Semester II","4" ],
+              [ "Tahun 3/Semester I","5" ],
+              [ "Tahun 3/Semester II","6" ],
+
+    ]
+    #Resultline
+    RESULT_STATUS =[
+            #  Displayed       stored in db
+            [ "Cemerlang", "1"],
+            [ "Kepujian", "2"],
+            [ "Lulus", "3"],
+            [ "Gagal", "4"]
+  ]
+    
+    #Resultline
+    RESULT_STATUS_CONTRA =[
+            #  Displayed       stored in db
+            [ "Lulus", "3"],
+            [ "Gagal", "4"]
+  ]
+     
     DAY_CHOICE = [
          #  Displayed       stored in db
          [ "Sun-Wed / Mon-Thurs",  1 ],
@@ -639,30 +666,40 @@ module DropDown
      ]
   
    #Score  
-   E_TYPES = [
+   #E_TYPES = [
      #  Displayed       stored in db
-       [ "Clinical Work",1 ],
-       [ "Assignment",2 ],
-       [ "Project", 3 ],
-       [ "Clinical Report", 4 ],
-       [ "Test", 5 ],
-       [ "Exam", 6 ],
-  ]
+   #   [ "Clinical Work",1 ],
+   #   [ "Assignment",2 ],
+   #    [ "Project", 3 ],
+   #    [ "Clinical Report", 4 ],
+   #    [ "Test", 5 ],
+   #    [ "Exam", 6 ],
+  #]
+   E_TYPES = [
+     #Displayed       stored in db
+#         ["Select", 0],
+        ["Test", 5],
+        ["Formative Assessment / Mid Term Exam", 6],
+        ["Student-Centered / On-going Assessment", 7],
+        ["Affective Assessment", 8],
+        ["CA+MSE : Continuous Assessment+Mid Sem Exam", 9],
+        ["Other Assessment", 10]
+     ]  
    
    #Grade
    GRADE = [
   #  Displayed       stored in db
-    [ "80-100% - A",  "A" ],
-    [ "75-79% - A-",  "A-" ],
-    [ "70-74% - B+",  "B+" ],
-    [ "65-69% - B",   "B" ],
-    [ "60-64% - B-",  "B-" ],
-    [ "55-59% - C+",  "C+" ],
-    [ "50-54% - C",   "C" ],
-    [ "45-49% - C-",  "C-" ],
-    [ "40-44% - D+",  "D+" ],
-    [ "35-39% - D",   "D" ],
-    [ "0-34% - E",    "E" ]
+    [ "80-100% - A",  1 ],
+    [ "75-79% - A-",  2 ],
+    [ "70-74% - B+",  3 ],
+    [ "65-69% - B",   4 ],
+    [ "60-64% - B-",  5 ],
+    [ "55-59% - C+",  6 ],
+    [ "50-54% - C",   7 ],
+    [ "45-49% - C-",  8 ],
+    [ "40-44% - D+",  9 ],
+    [ "35-39% - D",  10 ],
+    [ "0-34% - E",     11 ]
   ]
 
 WEIGHTAGE = [

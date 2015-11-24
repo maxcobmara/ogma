@@ -1,50 +1,76 @@
 .col-md-offset-2
-  .form-group
-    .col-sm-2.control-label
-      = f.label :created_by
-    .col-md-6 
-      - if @exam.creator_id!=nil && ["Submit", "Editing", "Re-Edit"].include?(@exam.qstatus)
-        = f.collection_select :creator_by, Staff.where('id IN (?)', @exam.creator_by), :id, :name,{}, {class: 'selectpicker readonly', "data-width"=>"300px"}
-      - else
-        = f.collection_select :creator_by, Staff.where('id IN (?)', @exam.question_creator(current_user)).order('name ASC'), :id, :name, {:include_blank => (t 'select'), :selected =>@creator, :prompt => t('helpers.prompt.select_creator')}, {class: 'selectpicker mandatory', "data-width"=>"300px"}
+  .row
+    %b=t 'exam.exams.filters'
+    .small 
+      =t('exam.exams.programme_subject_topic')
 
   .form-group
     .col-sm-2.control-label
-      = f.label :course_id
+      = f.label :programme_id
     .col-md-6
-      - unless @exam.programme_id.nil?
-        - selected_programme=@exam.programme_id
-      - else
-        - selected_programme=@preselect_prog
-      = f.collection_select :course_id, @programme_list, :id, :programme_list, {:selected => selected_programme, :include_blank => (t 'select')}, {class: 'selectpicker mandatory', "data-width"=>"400px"}
+      = select_tag("course_name", options_for_select(@programme_names), :include_blank => (t 'select'),  class: 'selectpicker')
 
   .form-group
     .col-sm-2.control-label
       = f.label :subject_id
     .col-md-5
-      - unless @preselect_prog.nil?
-        /lecturer
-        = f.select :subject_id, grouped_options_for_select(Programme.subject_groupbyoneprogramme(@preselect_prog), @exam.subject_id), {:include_blank => (t 'select'), :selected => @exam.subject_id.to_i}, {class: 'form-control mandatory'}
-      - else
-        /admin
-        = f.select :subject_id, grouped_options_for_select(Programme.subject_groupbyprogramme, @exam.subject_id), {:include_blank => (t 'select')}, {class: 'form-control mandatory'}
+      = select_tag("subjects", grouped_options_for_select(@subjects), :include_blank => (t 'select'), :class => 'form-control')
+      /= @subjects
 
   .form-group
     .col-sm-2.control-label
       = f.label :topic_id
     .col-md-5
-      - unless @preselect_prog.nil?
-        /lecturer
-        = f.select :topic_id, grouped_options_for_select(Programme.topic_groupbysubject_oneprogramme(@preselect_prog), @exam.topic_id),{:include_blank => (t 'select')}, {class: 'form-control mandatory'}
-      - else
-        /admin
-        = f.select :topic_id, grouped_options_for_select(Programme.topic_groupbysubject, @exam.topic_id),{:include_blank => (t 'select')}, {class: 'form-control mandatory'}
-
-  .form-group
-    .col-sm-2.control-label
-      =f.label :createdt
-    .col-md-2
-      - if @exam.id.nil? || @exam.id.blank?
-        = f.text_field :createdt, class: 'date_picker_reverse form-control mandatory'
-      - else
-        = f.text_field :createdt, value: @exam.createdt.strftime('%d-%m-%Y'), class: 'form-control', readonly: 'readonly'
+      = select_tag("topics", grouped_options_for_select(@topics), :include_blank => (t 'select'), :class => 'form-control')
+      /= @topics
+  
+  /Part 1 : Display AVAILABLE questions (of selected Topic)
+  /https://coderwall.com/p/kqb3xq/rails-4-how-to-partials-ajax-dead-easy   
+  /= text_field_tag(:testing)
+  /= text_field_tag(:test2)
+  = hidden_field_tag(:current_exam, @exam.id)
+  .row
+    #question_title
+    .col-md-10#question_list{:style=>"display: none;"}
+      = render partial: 'item_grid', locals: {items: @items}
+    
+  /Part 2 : Display EXISTING questions
+  .row 
+    %b=t('exam.exams.existing')
+  .row
+    .col-md-10
+      - if @exam.examquestions.count>0  
+        %table.table.table-bordered
+          %thead
+            %tr
+              %th=t('exam.exams.sequ')
+              %th=t('exam.examquestion.questiontype')
+              %th=t('exam.exams.subject_topic_name')
+              %th
+                =t('exam.examquestion.question') 
+                & 
+                =t('exam.examquestion.answer')
+              %th=t('exam.examquestion.marks')
+              %th=t('select')
+          %tbody
+            - if @exam.sequ!= nil 
+              - sequ = @exam.sequ.split(",")
+              - count=0
+              - @sequence = [(t 'select'),1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40]
+              - @exam.examquestions.group_by{|y|y.questiontype}.sort.each do |qtype,examquestions|
+                - for examquestion in examquestions
+                  %tr
+                    %td
+                      - if @exam.sequ!= nil
+                        = select_tag "exam[seq][]", options_for_select(@sequence,sequ[count].to_i)
+                      - else 
+                        = select_tag "exam[seq][]", options_for_select(@sequence)
+                    %td=h examquestion.questiontype
+                    %td
+                      =h examquestion.topic.parent.code
+                      | 
+                      =examquestion.topic.subject_list
+                    %td=render 'question_by_type', :item => examquestion
+                    %td=h examquestion.marks
+                    %td= check_box_tag "exam[examquestion_ids][]", examquestion.id, @exam.examquestions.include?(examquestion)
+                  - count+=1
