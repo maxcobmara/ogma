@@ -45,7 +45,8 @@
     %tbody
       = render "search_bar"
       /- @programme_exams.each do |prog, examquestions|
-      - @exams.group_by{|x|x.subject.root}.each do |programme, exams|
+      /- @exams.group_by{|x|x.subject.root}.each do |programme, exams|
+      - @programme_exams.each do |programme, exams|
         - exams.each do |exam|
           /- if (exam.created_by == User.current_user.staff_id)||(@dept_unit==exam.subject.root.name) ||(@current_user_roles.include?(2))||@kupk == "yes" 
           /STAND BY:HIDE ABOVE LINE to view ALL EXAM paper

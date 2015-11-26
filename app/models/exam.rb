@@ -285,13 +285,16 @@ class Exam < ActiveRecord::Base
        studentyear = "2 / "
      elsif subject_id!=nil && (subject.parent.code == '5' || subject.parent.code == '6')
        studentyear = "3 / "
+     else
+       studentyear = "" #subject.parent.code #rescue for invalid data (parent of subject is semester)
      end
      studentyear
   end
   
   def ids_complete_exampaper
     exam_ids_for_examtemplate = Examtemplate.pluck(:exam_id).uniq
-    exam_ids_for_examquestions = Exam.joins(:examquestions).map(&:id).uniq 
+    exam_ids_for_examquestions2 = Exam.joins(:examquestions).map(&:id).uniq 
+    exam_ids_for_examquestions = Exam.where(id: exam_ids_for_examquestions2).pluck(:id).uniq
     complete_exampaper = Exam.where('id IN (?) OR id IN (?)', exam_ids_for_examtemplate, exam_ids_for_examquestions)
     ids_complete_exampaper = complete_exampaper.pluck(:id) 
     ids_complete_exampaper
