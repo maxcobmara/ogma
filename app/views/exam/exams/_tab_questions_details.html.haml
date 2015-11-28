@@ -54,7 +54,8 @@
 			 
         /START-QUESTIONS WITH & WITHOUT SEQUENCE NO ACCORDINGLY
         /START-WORKABLE ONE-FOR EXAMQUESTION-WITH SEQUENCE NO
-        - current_qtype = "MCQ"
+        /- current_qtype = "MCQ"
+        - current_qtype = Examquestion.find(seq_questionid[0]).questiontype
         - 0.upto(tosort_seqid.count-1) do |count|
           - current_question = Examquestion.find(seq_questionid[count])
           /display header-question type
@@ -62,7 +63,8 @@
             /<tr><td colspan=3><b>
             %dt &nbsp;
             %dd
-              %h4=h (DropDown::QTYPE.find_all{|disp, value| value == "MCQ"}).map {|disp, value| disp}[0]
+              /%h4=h (DropDown::QTYPE.find_all{|disp, value| value == "MCQ"}).map {|disp, value| disp}[0]
+              %h4=h (DropDown::QTYPE.find_all{|disp, value| value == current_question.questiontype}).map {|disp, value| disp}[0]
             /</b></td></tr>
               
           - elsif count > 0 && current_qtype != current_question.questiontype

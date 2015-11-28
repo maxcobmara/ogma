@@ -166,7 +166,7 @@ class Examquestion < ActiveRecord::Base
   
   
   def self.search2(programmeid)
-    if programmeid == 0 #admin 
+    if programmeid == '0' #admin 
       @examquestions = Examquestion.all
     elsif programmeid == "1" #KP Pengkhususan
       posbasiks_ids = Programme.roots.where(course_type: ["Diploma Lanjutan", "Pos Basik", "Pengkhususan"]).pluck(:id)

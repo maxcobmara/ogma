@@ -128,7 +128,7 @@ class Exam_paperPdf < Prawn::Document
           draw_text "MEQ", :at => [430, 310], :size => 12, :style => :bold
         end
       else
-        if @exam.examquestions.seqq.count > 0 && @exam.examquestions.seqq.count > 0
+        if @exam.examquestions.seqq.count > 0 && @exam.examquestions.meqq.count > 0
           draw_text "SEQ / MEQ", :at => [420, 310], :size => 12, :style => :bold
         elsif @exam.examquestions.seqq.count > 0 && @exam.examquestions.meqq.count == 0
           draw_text "SEQ", :at => [430, 310], :size => 12, :style => :bold

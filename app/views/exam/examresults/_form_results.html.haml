@@ -99,7 +99,7 @@
             - programmeid=@examresult.programme_id
             - examresult_ids=Examresult.where(programme_id: programmeid).pluck(:id)
             - @resultlines = Resultline.where(examresult_id: examresult_ids, student_id: @students[no].id).order(created_at: :asc)
-            - cgpa=number_with_precision(Examresult.cgpa_per_sem(@resultlines, semno), precision: 2)
+            - cgpa=number_with_precision(Examresult.cgpa_per_sem(@resultlines, semno), precision: 2) if @resultlines.count-1==semno
                 
             = hidden_field "examresult[resultlines_attributes][#{no}]", :total, :size =>8, :value => total_point
             = hidden_field "examresult[resultlines_attributes][#{no}]", :pngs17, :size =>8, :value => gpa

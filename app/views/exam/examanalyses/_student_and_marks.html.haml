@@ -1,4 +1,4 @@
-.col-md-8.col-md-offset-2
+.col-md-10
   %dl.dl-horizontal
     %dt=t 'exam.exams.title'
     %dd=h @examanalysis.exampaper.exam_name_subject_date 
@@ -66,6 +66,10 @@
             %th.centre{colspan: "#{@viva_count}"}VIVA 
           - if @truefalse_count > 0
             %th.centre{colspan: "#{@truefalse_count}"}TRUE FALSE
+          %th Final Exam 
+          %th Total Marks
+          %th Grade
+          %th NG
           /- 0.upto(questionstype_count-1).each do |cnt|
           /  %th=questionstype[cnt]
         %tr
@@ -96,23 +100,72 @@
           - if @truefalse_count > 0
             - 1.upto(@truefalse_count).each do |y|
               %th="Q"+y.to_s
-          
-      - for student in students.sort_by{|x|[x.id, x.name]}     
-        %body 
-          %tr
-            %td=student.matrixno
-            %td=student.name 
-            %td=student.icno
-            %td=Grade.where(student_id: student.id).where(subject_id: subjectid).first.formative
-            %td=exammarks.where(student_id: student.id).first.total_mcq
-          
+      %body 
+      - a=b=c=d=e=f=g=h=i=j=k=l=m=n=0
+      - all_formative=all_mcq=0
+      - for student in students.sort_by{|x|[x.id, x.name]}    
+        %tr
+          %td=student.matrixno
+          %td=student.name 
+          %td=student.icno
+          - total_formative=Grade.where(student_id: student.id).where(subject_id: subjectid).first.formative
+          - all_formative+=total_formative
+          %td=number_with_precision(total_formative, precision: 2)
+          - total_mcq=exammarks.where(student_id: student.id).first.total_mcq
+          - all_mcq+=total_mcq
+          %td=number_with_precision(total_mcq, precision: 2)
+          - marks_line_per_student=exammarks.where(student_id: student.id).first.marks
+          - stumark=[]
+          - marks_line_per_student.sort_by{|x|x.created_at}.each_with_index do |aa, index|
+            %td=number_with_precision(aa.student_mark.to_f, precision: 2)
+            - a+=aa.student_mark if index==0
+            - b+=aa.student_mark if index==1
+            - c+=aa.student_mark if index==2
+            - d+=aa.student_mark if index==3
+            - e+=aa.student_mark if index==4
+            - f+=aa.student_mark if index==5
+            - g+=aa.student_mark if index==6
+            - h+=aa.student_mark if index==7
+            - i+=aa.student_mark if index==8
+            - j+=aa.student_mark if index==9
+            - k+=aa.student_mark if index==10
+            - l+=aa.student_mark if index==11
+            - m+=aa.student_mark if index==12
+            - n+=aa.student_mark if index==13
+          /=finale=(exammarks.where(student_id: student.id).first.total_marks / Exam.where(id: @examanalysis.exam_id).first.total_marks)*100
+          %td=Grade.where(student_id: student.id).where(subject_id: subjectid).first.exam1marks
+          %td
+          %td
+          %td
+      %tr
+        %td{colspan: 3}
+        %td=number_with_precision(all_formative, precision: 2)
+        %td=number_with_precision(all_mcq, precision: 2)
+        %td=number_with_precision(a, precision: 2)
+        %td=number_with_precision(b, precision: 2)
+        %td=number_with_precision(c, precision: 2)
+        %td=number_with_precision(d, precision: 2)
+        %td=number_with_precision(e, precision: 2)
+        %td=number_with_precision(f, precision: 2)
+        %td=number_with_precision(g, precision: 2)
+        %td=number_with_precision(h, precision: 2)
+        %td=number_with_precision(i, precision: 2)
+        %td=number_with_precision(j, precision: 2)
+        %td=number_with_precision(k, precision: 2)
+        %td=number_with_precision(l, precision: 2)
+        %td=number_with_precision(m, precision: 2)
+        %td=number_with_precision(n, precision: 2)
+        
+            
+              
+              
 /Fisioterapi - MCQ count not exactly 40 but total MCQ will be converted into weightage of 40% - note this card : https://trello.com/c/A4OyDJkv -- sama dgn pem peg perubatan
 /Cara Kerja - MCQ - fix 40 questions - 40%
 /Pem Pegawai Perubatan - MCQ count 60 - weightage 40% - this card : https://trello.com/c/CzOlHCnM  -- sama dgn fisioterapi
 /Radiografi -     J= (MCQ+SEQ)/(total mcq+total seq) * 100  -> J/100 * 70                Note - [total mcq+total seq < 100]
 /                       (MCQ+SEQ)/(total mcq+total seq)  * 100 ->  (MCQ+SEQ)/(total mcq+total seq)  * 70              Note - [total mcq+total seq > 100]
 
-/TODO - to check grades - for all programmes - 70% - 100% calculation - summative -
+/TODO-DONE - to check grades - for all programmes - 70% - 100% calculation - summative -
 /Pem Peg Perubatan - tiada 100% for summative value -> 40% (mcq) +meq(30%) -terus dapat 70% 
 /Fisioterapi - sda - -> 40% (MCQ/100*40)+ 30% (MEQ/total meq*30) - terus dapat 70%
 /Radiografi -     J= (MCQ+SEQ)/(total mcq+total seq) * 100  -> J/100 * 70                Note - [total mcq+total seq < 100]
@@ -120,4 +173,4 @@
 /Cara Kerja - Final Exam=(MCQ+SEQ)/(total mcq+total seq),   Total marks = Formative(30%)+(Final Exam*0.70)
 /Pos Basik(KEbidanan) - Summative(60%) : 40%(MCQ) +(MEQ/total meq * 20%)=60%,    JUMLAH BESAR = Formative(40%)+Summative(60%)
 
-/***Radiografi je yg ade 100% - 70%
+/***Radiografi & cara Kerja- je yg ade 100% - 70%

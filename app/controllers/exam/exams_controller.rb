@@ -44,10 +44,10 @@ class Exam::ExamsController < ApplicationController
         end
       end
       if @programme_id
-        #@exams_all = Exam.search(@programme_id) 
         @search = Exam.search(params[:q])
         @exams = @search.result.search2(@programme_id)
-        @exams = @exams.order(subject_id: :asc).page(params[:page]||1)
+        @exams = @exams.page(params[:page]||1)
+        @programme_exams = @exams.group_by{|x|x.subject.root}
       end
     end
     ##----------
