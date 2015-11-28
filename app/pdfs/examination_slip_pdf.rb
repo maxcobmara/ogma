@@ -20,7 +20,7 @@ class Examination_slipPdf < Prawn::Document
       pen_peg_perubatan
       text "SALINAN IL KKM", :align => :left, :size => 10
     else #other than PEN PEG PERUBATAN
-      if resultline.examresult.programme_id==@cara_kerja
+      if @resultline.examresult.programme_id==@cara_kerja
         image "#{Rails.root}/app/assets/images/logo_kerajaan.png", :position => :center, :scale => 0.8
       else
         image "#{Rails.root}/app/assets/images/logo_kerajaan.png", :position => :center, :scale => 0.5
@@ -36,7 +36,7 @@ class Examination_slipPdf < Prawn::Document
         text "KEMENTERIAN KESIHATAN MALAYSIA", :align => :center, :size => 11, :style => :bold
       end
       move_down 10
-      if resultline.examresult.programme_id==@cara_kerja
+      if @resultline.examresult.programme_id==@cara_kerja
         text "Slip Keputusan Peperiksaan Akhir Semester", :align => :center, :size => 11
         text "#{@resultline.examresult.render_semester.split("/").join(" ")}  (#{@resultline.examresult.examdts.strftime('%b %Y')})", :align => :center, :size => 11
         text "Program #{@resultline.examresult.programmestudent.programme_list}", :align => :center, :size => 11

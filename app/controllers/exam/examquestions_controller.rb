@@ -50,10 +50,10 @@ class Exam::ExamquestionsController < ApplicationController
         end
       end
       if @programme_id
-        @search = Examquestion.search(params[:q])
-        @examquestions = @search.result.search2(@programme_id).sort_by(&:programme_id)
-        @examquestions = Kaminari.paginate_array(@examquestions).page(params[:page]||1)
-        @programme_exams = @examquestions.group_by(&:programme_id)
+      @search = Examquestion.search(params[:q])
+      @examquestions = @search.result.search2(@programme_id)
+      @examquestions = @examquestions.page(params[:page]||1)
+      @programme_exams = @examquestions.group_by{|x|x.programme_id}
       end
     end
     ##----------
