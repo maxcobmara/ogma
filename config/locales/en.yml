@@ -2537,6 +2537,19 @@ en:
       exam_must_exist: " must be selected."
       exam_must_uniq: " can be analysed only once."
 
+    exam_template:
+      title: Exampaper Template
+      new: New Exampaper Template
+      edit: Edit Exampaper Template
+      name: Template Name 
+      count: "No. of Questions"
+      weight: Weightage
+      created_by: Created by
+      questions: Questions
+      type: Type
+      question_weight: " questions, weighted at "
+      name_format: "Programme - Subject Code - Final / Mid Sem, eg.: Jurupulih Cara Kerja - OTAP 1114 - Final"
+      
   training:
     title: Training
     new: New Training

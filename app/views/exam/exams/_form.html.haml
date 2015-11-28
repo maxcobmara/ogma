@@ -13,26 +13,38 @@
         = render 'show_exam'
         
       #questions_details_edit.tab-pane
+        
+          
         - if @exam.klass_id == 0 
-          .col-md-8.col-md-offset-1
-            %br
-            %h4=t 'exam.exams.title2'
-            .row
-              .col-sm-3= t 'exam.examquestion.questiontype'
-              .col-sm-2= t 'exam.exams.quantity' 
-              .col-sm-2= t 'exam.exams.total_marks'
- 
-            %hr
-            = f.fields_for :examtemplates do |builder|
-              = render 'examtemplate_fields', :f => builder
+          - if @exam.examtemplates && @exam.examtemplates.count > 0
+            .col-md-8.col-md-offset-1
+              %br
+              %h4=t 'exam.exams.title2'
+              .row
+                .col-sm-3= t 'exam.examquestion.questiontype'
+                .col-sm-2= t 'exam.exams.quantity' 
+                .col-sm-2= t 'exam.exams.total_marks'
+              %hr
+              = f.fields_for :examtemplates do |builder|
+                = render 'examtemplate_fields', :f => builder
             
-            %BR
-            .row
-              /= link_to_add_fields image_tag("add.png", :border => 0, :title => t('addmore')), f, :examtemplates
-              = link_to_add_fields t('addmore'), f, :examtemplates, "",  ""
-            %br
+              %BR
+              .row
+                /= link_to_add_fields image_tag("add.png", :border => 0, :title => t('addmore')), f, :examtemplates
+                = link_to_add_fields t('addmore'), f, :examtemplates, "",  ""
+
+          - else
+            .col-md-12.col-md-offset-1
+              .form-group
+                .col-sm-2.control-label
+                  = f.label t 'exam.exam_template.title', for: :exam_template
+                .col-md-2
+                  = f.collection_select :topic_id, ExamTemplate.all, :id, :name, {include_blank: true, prompt: (t 'select')}, {class: 'selectpicker', "data-width"=>"auto"}
+
+          .row
+            .col-md-12.col-md-offset-2
               %font{:style=>"size:-2"}=t 'exam.exams.marks_each'
-            %br
+          %br
         - else
           %br
           = render :partial => 'tab_questions_details_edit', :locals => {:f => f}
