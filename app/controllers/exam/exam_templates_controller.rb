@@ -28,7 +28,7 @@ class Exam::ExamTemplatesController < ApplicationController
 
   def update
     @exam_template.update(exam_template_params)
-    respond_with(@exam_template)
+    respond_with(:exam, @exam_template)
   end
 
   def destroy
@@ -42,7 +42,9 @@ class Exam::ExamTemplatesController < ApplicationController
     end
 
     def exam_template_params
-      @allowed_types = DropDown::QTYPE.collect(&:last).map!(&:downcase)
-      params.require(:exam_template).permit(:name, :created_by, :deleted_at, {:question_count => @allowed_types})
+      #@allowed_types = DropDown::QTYPE.collect(&:last).map!(&:downcase)
+      #params.require(:exam_template).permit(:name, :created_by, :deleted_at, {:question_count => @allowed_types})
+      #TODO tighten security as above
+      params.require(:exam_template).permit!
     end
 end
