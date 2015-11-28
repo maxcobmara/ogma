@@ -1,0 +1,25 @@
+- model_class = Exammark
+.page-header
+  %h1=t 'exam.exam_template.title'
+= render 'shared/flashes'
+
+.col-md-8.col-md-offset-1
+  %dl.dl-horizontal
+    %dt Name
+    %dd= @exam_template.name
+
+  %dl.dl-horizontal
+    %dt Create
+    %dd= @exam_template.creator.userable.name
+
+  %dl.dl-horizontal
+    %dt Data
+    %dd
+      .row
+        .col-sm-8
+          = @exam_template.question_count.find_all{|key, value| value != ''}.map { |k, v| "#{k.titleize} : " + v['count'] + " questions, weighted at " + v['weight'] + "%" }.join("<BR/>").html_safe
+
+
+= link_to 'Edit', edit_exam_exam_template_path(@exam_template)
+\|
+= link_to 'Back', exam_exam_templates_path
