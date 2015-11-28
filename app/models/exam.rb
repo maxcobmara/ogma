@@ -161,6 +161,7 @@ class Exam < ActiveRecord::Base
   
   #10Apr2013
   def total_marks   #to confirm full marks calculation - based on questiontype & exam paper format..
+    if klass_id==1
       sum = Exam.joins(:examquestions).where('exam_id=? and questiontype=?', id, 'MCQ').count 
       seq_count = Exam.joins(:examquestions).where('exam_id=? and questiontype=?', id, 'SEQ').count 
       
@@ -202,7 +203,20 @@ class Exam < ActiveRecord::Base
       
       sum=sum+sum_meq+sum_acq+sum_osci+sum_oscii+sum_osce+sum_ospe+sum_viva+sum_truefalse
       sum=sum+(seq_count)*10 if seq_count > 0
-      return sum
+    elsif klass_id==0
+      template=Examtemplate.where(exam_id: id)
+      sum = template.mcqq.first.total_marks
+      sum_acq=template.mcqq.first.total_marks
+      sum_meq=template.meqq.first.total_marks
+      sum_osce=template.osceq.first.total_marks
+      sum_osci=template.osci2q.first.total_marks
+      sum_oscii=template.osci3q.first.total_marks
+      sum_ospe=template.ospeq.first.total_marks
+      sum_viva=template.vivaq.first.total_marks
+      sum_truefalse=template.truefalseq.first.total_marks
+      sum=sum+sum_acq+sum_meq+sum_osce+sum_osce+sum_osci+sum_oscii+sum_ospe+sum_truefalse+sum_viva
+    end
+    return sum
   end
   
   def render_full_name
