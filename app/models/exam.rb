@@ -8,7 +8,7 @@ class Exam < ActiveRecord::Base
   has_many :examtemplates, :dependent => :destroy #10June2013
   accepts_nested_attributes_for :examtemplates, :reject_if => lambda { |a| a[:quantity].blank? }
   
-  before_save :set_sequence, :set_duration, :set_full_marks, :remove_unused_sequence
+  before_save :set_sequence, :set_duration, :set_full_marks, :remove_unused_sequence, :set_paper_type
   
   attr_accessor :programme_filter, :subject_filter, :topic_filter, :seq
   
@@ -120,6 +120,13 @@ class Exam < ActiveRecord::Base
         end
         self.sequ=seqq2
       end 
+    end
+  end
+  
+  def set_paper_type
+    #require klass_id ==1 to display PDF link
+    if examquestions.count > 0 && klass_id.nil?
+     self. klass_id=1
     end
   end
   

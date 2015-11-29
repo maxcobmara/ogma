@@ -28,9 +28,17 @@
         %dt &nbsp;
         %dd=(t 'exam.exam_template.count')+" / "+ (t 'exam.exam_template.weight')+ " (%)"
 
-        %dt= @exam.exam_template.question_count.find_all{|key, value| value != ''}.map { |k, v| "#{k.upcase}"}.join("<BR/>").html_safe
-        %dd= @exam.exam_template.question_count.find_all{|key, value| value != ''}.map { |k, v| v['count'] + "  /  "+ v['weight'] }.join("<BR/>").html_safe
+        /%dt= @exam.exam_template.question_count.find_all{|key, value| value != ''}.map { |k, v| "#{k.upcase}"}.join("<BR/>").html_safe
+        /%dd= @exam.exam_template.question_count.find_all{|key, value| value != ''}.map { |k, v| v['count'] + "  /  "+ v['weight'] }.join("<BR/>").html_safe
         
+        %dt
+          - @exam.exam_template.question_count.each do |key, value|
+            = key.upcase
+            %br
+        %dd
+          - @exam.exam_template.question_count.each do |key, value|
+            = value['count']+" / "+value['weight'] if value['count']!='' && value['weight']!=''
+            %br
       
     - else 
       /Complete examaker section

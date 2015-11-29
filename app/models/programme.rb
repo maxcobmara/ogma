@@ -177,7 +177,7 @@ class Programme < ActiveRecord::Base
     @groupped_subject=[]
     subjectby_programmelists.each do |programmelist, subjects|
       pg_subjects=[[I18n.t('helpers.prompt.select_subject'), '']]
-      subjects.each{|subject|pg_subjects << [subject.subject_list, subject.id]}
+      subjects.sort_by{|x|x.code[-4,4].strip.to_i}.each{|subject|pg_subjects << [subject.subject_list, subject.id]}
       @groupped_subject << [programmelist, pg_subjects]
     end
     @groupped_subject
