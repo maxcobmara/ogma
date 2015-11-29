@@ -2,7 +2,7 @@
 .col-md-8.col-md-offset-1
   %dl.dl-horizontal
 
-    - if @exam.klass_id == 0 
+    - if @exam.klass_id == 0 && (@exam.examtemplates || @exam.exam_template)
       - if @exam.examtemplates && @exam.examtemplates.count > 0
         /Examtemplate section (previous approach)
         %dt &nbsp;
@@ -19,7 +19,7 @@
             &nbsp; / &nbsp;
             =h examtemplate.total_marks     
         
-      - else
+      - elsif @exam.exam_template
         /ExamTemplate section
         %dt &nbsp;
         %dd
