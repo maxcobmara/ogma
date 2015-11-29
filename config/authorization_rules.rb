@@ -194,7 +194,7 @@ authorization do
     #revised - 17May2015-end
    
    #EXAMINATION modules
-   has_permission_on [:exam_examquestions, :exam_exams, :exam_exam_templates, :exam_exammarks, :exam_grades], :to => [:menu, :read, :create]
+   has_permission_on [:exam_examquestions, :exam_exams, :exam_exam_templates, :exam_exammarks, :exam_grades], :to => [:menu, :read, :index, :create]
    has_permission_on :exam_examresults, :to => [:menu, :read, :index2, :create, :show2, :examination_slip, :show3, :examination_transcript]   
    has_permission_on :exam_examanalyses, :to => [:menu, :read]
    #new & create & examination_slip should not be allowed for Commonsubject lecturers - refer HACK - index & show2
