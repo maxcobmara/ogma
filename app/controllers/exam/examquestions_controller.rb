@@ -53,7 +53,7 @@ class Exam::ExamquestionsController < ApplicationController
       @search = Examquestion.search(params[:q])
       @examquestions = @search.result.search2(@programme_id)
       @examquestions = @examquestions.page(params[:page]||1)
-      @programme_exams = @examquestions.group_by{|x|x.programme_id}
+      @programme_exams = @examquestions.group_by{|x|x.subject.root_id}
       end
     end
     ##----------

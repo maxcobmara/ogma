@@ -175,7 +175,8 @@ class Examquestion < ActiveRecord::Base
       common_subject_ids = Programme.where(course_type: 'Commonsubject').pluck(:id)
       @examquestions = Examquestion.where(subject_id: common_subject_ids )
     else
-      @examquestions = Examquestion.where(programme_id: programmeid)
+      subject_ids=Programme.where(id: programmeid).first.descendants.at_depth(2).pluck(:id)
+      @examquestions = Examquestion.where(subject_id: subject_ids)
     end
   end
   
