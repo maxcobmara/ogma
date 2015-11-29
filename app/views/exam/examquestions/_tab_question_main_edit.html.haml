@@ -14,8 +14,9 @@
     .col-md-6
       - unless @examquestion.programme_id.nil?
         - selected_programme=@examquestion.programme_id
-      - else
-        - selected_programme=@preselect_prog
+      /remark below : require field to be selected / changed - in order to populate subject_id field
+      /- else
+      /  - selected_programme=@preselect_prog
       = f.collection_select :programme_id, @programme_list, :id, :programme_list, {:selected => selected_programme, :include_blank => (t 'select')}, {class: 'selectpicker mandatory', "data-width"=>"400px"}
 
   .form-group

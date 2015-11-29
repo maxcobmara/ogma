@@ -17,7 +17,13 @@
     %dd
       .row
         .col-sm-8
-          = @exam_template.question_count.find_all{|key, value| value != ''}.map { |k, v| "#{k.titleize} : " + v['count'] + (t 'exam.exam_template.question_weight')+ v['weight'] + "%" }.join("<BR/>").html_safe
+          /= @exam_template.question_count.find_all{|key, value| value != ''}.map { |k, v| "#{k.titleize} : " + v['count'] + (t 'exam.exam_template.question_weight')+ v['weight'] + "%" }.join("<BR/>").html_safe
+          - @exam_template.question_count.each do |key, value|
+            - if value['count']!='' && value['weight']!=''
+              = "#{key.upcase} : "+ value['count']+ (t 'exam.exam_template.question_weight')+value['weight'] 
+            - else
+              = key.upcase+" : "
+            %br
 
 .row
   .col-md-4.col-md-offset-4

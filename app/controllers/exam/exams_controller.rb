@@ -278,6 +278,9 @@ class Exam::ExamsController < ApplicationController
         end
         unless @programme.nil?
           @programme_id=@programme.id
+	  @programme_names=Programme.where(id: @programme_id).map(&:programme_list) ### --CREATE
+	  @subjects=Programme.subject_groupbyoneprogramme(@programme_id) ### --CREATE
+	  @topics=Programme.topic_groupbysubject_oneprogramme(@programme_id) ### --CREATE
         else
           #posbasik part
           posbasiks_prog = Programme.roots.where(course_type: posbasiks)
@@ -288,6 +291,9 @@ class Exam::ExamsController < ApplicationController
       else
         #applicable - edit, update, create
         @programme_id = @exam.subject.root.id 
+	@programme_names=Programme.where(id: @programme_id).map(&:programme_list) ### --UPDATE
+	@subjects=Programme.subject_groupbyoneprogramme(@programme_id) ### --UPDATE
+	@topics=Programme.topic_groupbysubject_oneprogramme(@programme_id) ### --UPDATE
       end
       
       if Programme.where(course_type: ['Diploma']).pluck(:name).include?(@lecturer_programme) || (posbasiks.include?(@lecturer_programme) && @current_user.roles.pluck(:authname).include?("programme_manager")==false)
