@@ -2476,6 +2476,19 @@ ms_MY:
       total_marks: Jumlah Markah
       exam_must_exist: " mesti dipilih."
       exam_must_uniq: " hanya boleh dianalisis sekali."
+      
+    exam_template:
+      title: Template Kertas Peperiksaan
+      new: Template Kertas Peperiksaan Baru
+      edit: Sunting Kertas Peperiksaan
+      name: Nama Template
+      count: Bilangan Soalan
+      weight: Wajaran
+      created_by: Disediakan Oleh
+      questions: Soalan
+      type: Jenis
+      question_weight: " soalan, dengan wajaran "
+      name_format: "Program - Kod Subjek - Akhir / Pertengahan Semester, eg.: Jurupulih Cara Kerja - OTAP 1114 - Akhir Semester"
     
   training:
     title: Latihan

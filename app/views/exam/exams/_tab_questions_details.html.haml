@@ -3,20 +3,35 @@
   %dl.dl-horizontal
 
     - if @exam.klass_id == 0 
-      /Template section
-      %dt &nbsp;
-      %dd
-        %h4=t 'exam.exams.title2'
-	  
-      %dt &nbsp;
-      %dd=(t 'exam.exams.quantity')+" / "+ (t 'exam.exams.total_marks')
-
-      - for examtemplate in @exam.examtemplates
-        %dt=h (DropDown::QTYPE.find_all{|disp, value| value == examtemplate.questiontype}).map {|disp, value| disp}[0]
+      - if @exam.examtemplates && @exam.examtemplates.count > 0
+        /Examtemplate section (previous approach)
+        %dt &nbsp;
         %dd
-          =h examtemplate.quantity 
-          &nbsp; / &nbsp;
-          =h examtemplate.total_marks     
+          %h4=t 'exam.exams.title2'
+
+        %dt &nbsp;
+        %dd=(t 'exam.exams.quantity')+" / "+ (t 'exam.exams.total_marks')
+        
+        - for examtemplate in @exam.examtemplates
+          %dt=h (DropDown::QTYPE.find_all{|disp, value| value == examtemplate.questiontype}).map {|disp, value| disp}[0]
+          %dd
+            =h examtemplate.quantity 
+            &nbsp; / &nbsp;
+            =h examtemplate.total_marks     
+        
+      - else
+        /ExamTemplate section
+        %dt &nbsp;
+        %dd
+          %h4=t 'exam.exam_template.title'
+
+        %dt &nbsp;
+        %dd=(t 'exam.exam_template.count')+" / "+ (t 'exam.exam_template.weight')+ " (%)"
+
+        %dt= @exam.exam_template.question_count.find_all{|key, value| value != ''}.map { |k, v| "#{k.upcase}"}.join("<BR/>").html_safe
+        %dd= @exam.exam_template.question_count.find_all{|key, value| value != ''}.map { |k, v| v['count'] + "  /  "+ v['weight'] }.join("<BR/>").html_safe
+        
+      
     - else 
       /Complete examaker section
       - @examquestions_by_type = @exam.examquestions.group_by{|x|x.questiontype}.sort

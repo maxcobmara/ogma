@@ -4,19 +4,20 @@
 
   .form-group
     .col-sm-3.control-label
-      = f.label :name, 'Template Name'
+      = f.label :name, (t 'exam.exam_template.name')
     .col-sm-5
       = f.text_field :name, class: 'form-control mandatory', type: "input"
 
 
   .form-group
     .col-sm-3.control-label
-      = f.label :question_count, "Questions"
+      = f.label :question_count, (t 'exam.exam_template.questions')
     .col-sm-9
       .row
-        .col-sm-2 <B>Type</B>
-        .col-sm-2 Amount
-        .col-sm-2 Weightage
+        .col-sm-2 
+          %b=(t 'exam.exam_template.type')
+        .col-sm-2=t 'exam.exam_template.count'
+        .col-sm-2=t 'exam.exam_template.weight'
       = f.fields_for :question_count do |tc|
         - DropDown::QTYPE.each do |channel|
           - var_channel = channel[1].parameterize.downcase.underscore
@@ -34,7 +35,13 @@
 
 
   .form-group{style: "margin-top:20px;"}
-    .col-sm-offset-2.col-sm-1
-      = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), exam_exam_template_path(@exam_template), :class => 'btn btn-default'
-    .col-sm-2
-      = f.submit t('update'), class: "btn btn-primary"
+    - if @exam_template.new_record?
+      .col-sm-offset-4.col-sm-1
+        = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), exam_exam_templates_path, :class => 'btn btn-default'
+      .col-sm-2
+        = f.submit t('create'), class: "btn btn-primary"
+    - else
+      .col-sm-offset-4.col-sm-1
+        = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), exam_exam_template_path(@exam_template), :class => 'btn btn-default'
+      .col-sm-2
+        = f.submit t('update'), class: "btn btn-primary"

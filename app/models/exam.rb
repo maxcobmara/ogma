@@ -2,6 +2,7 @@ class Exam < ActiveRecord::Base
   belongs_to  :creator,       :class_name => 'Staff',   :foreign_key => 'created_by'
   #belongs_to  :programme,   :foreign_key => 'course_id'
   belongs_to :subject,  :class_name => 'Programme', :foreign_key => 'subject_id'
+  belongs_to :exam_template, :foreign_key => 'topic_id'  #temporary use 'topic_id' field
   has_and_belongs_to_many :examquestions
   has_many :exammarks   #11Apr2013
   has_many :examtemplates, :dependent => :destroy #10June2013
