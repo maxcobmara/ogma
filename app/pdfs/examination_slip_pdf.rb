@@ -206,7 +206,7 @@ class Examination_slipPdf < Prawn::Document
     for subject in subjects
       student_grade = Grade.where('student_id=? and subject_id=?',@resultline.student.id,subject.id).first
       unless student_grade.nil? || student_grade.blank?
-        grading = student_grade.render_grading[-1,2] #= student_grade.set_gred
+        grading = student_grade.render_grading[-2,2] #= student_grade.set_gred
       else
         grading = "E"
       end

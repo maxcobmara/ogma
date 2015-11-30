@@ -73,7 +73,7 @@
               \-
             - else
               - unless @student_grade.nil? || @student_grade.blank?
-                =@grading=@student_grade.render_grading[-1,2] 
+                =@grading=@student_grade.render_grading[-2,2] 
               - else
                 =@grading="E"
           %td.centre
