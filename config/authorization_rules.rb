@@ -252,7 +252,7 @@ authorization do
    end
    
    #pending - just in case other programme's grade appear in current programme index page?
-   has_permission_on :exam_grades, :to => [:update, :edit_multiple, :update_multiple, :new_multiple, :create_multiple] do
+   has_permission_on :exam_grades, :to => [:update, :delete, :edit_multiple, :update_multiple, :new_multiple, :create_multiple] do
      if_attribute :subject_id => is_in {user.grades_of_programme}
    end
    

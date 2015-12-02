@@ -9,6 +9,12 @@
     %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "index_search_bar"
     %li.toga= link_to content_tag(:li, fa_icon("print", text: (t 'actions.print'))), "#", class: 'bogus'  
 
+.row
+  .col-md-12
+    .alert.alert-warning
+      %strong= t 'exam.exams.notes'
+      =t('exam.exammark.complete_paper')
+
 = render 'shared/flashes'
 
 /= form_tag :action => 'new_multiple', class: "form-inline" do

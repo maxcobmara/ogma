@@ -4,7 +4,8 @@ class Exammark < ActiveRecord::Base
   has_many :marks, :dependent => :destroy                                                     
   accepts_nested_attributes_for :marks#, :reject_if => lambda { |a| a[:mark].blank? }   #use of validates_presence_of in mark model
   
-  before_save :set_total_mcq, :apply_final_exam_into_grade
+  before_save :set_total_mcq
+  after_save :apply_final_exam_into_grade 
   validates_presence_of   :student_id, :exam_id
   validates_uniqueness_of :student_id, :scope => :exam_id, :message => " - Mark of this exam for selected student already exist. Please edit/delete existing mark accordingly."
   

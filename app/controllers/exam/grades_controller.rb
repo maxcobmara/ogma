@@ -265,7 +265,7 @@ class Exam::GradesController < ApplicationController
       #if @subjects_of_grades==1 || submit_type == t('exam.grade.apply_changes')
         @summative_weightage = (params[:grade][:summative_weightage]).to_f
         @scores = params[:scores_attributes]
-        @scores_new_count = @scores.count 
+        @scores_new_count = @scores.count if @scores
       #end
       if submit_type == t('update')
         

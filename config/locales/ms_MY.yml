@@ -2298,6 +2298,7 @@ ms_MY:
       new_multiple: "Markah Baru (Pukal)"
       programme: Program
       marks_intakes_exist: 'Markah peperiksaan pelajar bagi Ambilan yang dipilih telah wujud. Padam / sunting rekod berkenaan.'
+      complete_paper: 'Markah hanya boleh dimasukkan bagi kertas peperiksaan yang sah (lengkap) sahaja.'
       
     grade:
       title: Gred Peperiksaan
@@ -2357,6 +2358,8 @@ ms_MY:
       summative_weightage_changed: "Wajaran Sumatif telah diubah. Klik 'Kemaskini Perubahan' untuk mengemaskini wajaran bagi lajur 'Jumlah Sumatif' sebelum meneruskan kemasukan data."
       standardize_weightage: "* Klik 'Kemaskini Perubahan' untuk menyeragamkan Wajaran Formatif bagi gred - gred pelajar seperti tersenarai di bawah."
       redundant_formative_template: "Terdapat lebih daripada satu set / template 'Skor Formatif' digunakan bagi subjek ini. Perhatikan, bilangan lajur tidak selari di bahagian paparan senarai pelajar. Pastikan set / template 'Skor Formatif' di bawah (rujukan: rekod pertama), jika berbeza, sisih rekod dalam laman Indeks untuk suntingan pukal. Klik 'Kemaskini Perubahan' untuk menyeragamkan set / template 'Skor Formatif' bagi subjek ini."
+      complete_paper: 'Gred hanya boleh dicipta bagi Subjek dengan kertas peperiksaan yang sah (lengkap) sahaja.'
+      exist_marks: 'Sebaik sahaja rekod Gred bagi satu-satu Subjek dicipta, sila Sunting dan Kemaskini rekod-rekod Markah Kertas Peperiksaan Akhir yang sepadan bagi menyelaras / mengemaskini nilai Jumlah Sumatif dalam rekod Gred.'
       
     examresult:
       title: Keputusan Peperiksaan Mengikut Program

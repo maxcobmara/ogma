@@ -2358,6 +2358,7 @@ en:
       new_multiple: New Multiple Marks
       programme: Programme
       marks_intakes_exist: 'Exammarks for student(s) of selected Intakes already exist. Delete / edit records accordingly.'
+      complete_paper: 'Only valid (complete) exam papers available for marks giving.'
     
     grade:
       title: Examination Grades
@@ -2417,6 +2418,8 @@ en:
       summative_weightage_changed: "Summative Weightage is changed. Click 'Apply Changes' to update weightage for 'Total Summative' column before proceeding with data entry."
       standardize_weightage: "* Click 'Apply Changes' to standardize Summative Weightage to student grades as listed below."
       redundant_formative_template: "Multiple 'Formative Scores' set / template detected. Note, uneven columns displayed in Student Listing part. Confirm below 'Formative Scores' set / template (ref: first record), if differ, sort and reselect record in Index for multiple edit. Click 'Apply Changes' to standardize 'Formative Scores' set / template for this subject."
+      complete_paper: 'Only Subject with valid (complete) FINAL exam paper available for grades creation.'
+      exist_marks: 'Upon Grade creation of a Subject, please Edit and Update corresponding Exam Paper Marks to synchronize / update Total Summative in Grade record.'
     
     examresult:
       title: Examination Result by Programme
