@@ -241,18 +241,18 @@
           %h2.icon Exams
           %a.mp-back{:href => "#"}= t 'helpers.links.back'
           %ul
-            /- permitted_to? :menu, :exam_exams do
             - permitted_to? :create, :exam_examquestions do
+              %li= link_to content_tag(:i, "", :class => "icon-numb") + (t "exam.examquestion.title"), exam_examquestions_path
+            - permitted_to? :menu, :exam_exams do
               %li.icon.icon-left
-                = link_to (t "exam.examquestion.title"), '#'
+                = link_to (t "exam.exams.title"), '#'
                 .mp-level
-                  %h2.icon= t "exam.examquestion.title"
+                  %h2.icon= t "exam.exams.title"
                   %a.mp-back{:href => "#"}= t 'helpers.links.back'
                   %ul
-                    %li= link_to content_tag(:i, "", :class => "icon-numb") + (t "exam.examquestion.title"), exam_examquestions_path
                     %li= link_to content_tag(:i, "", :class => "icon-numb") + (t "exam.exam_template.title"), exam_exam_templates_path
-            - permitted_to? :menu, :exam_exams do
-              %li= link_to content_tag(:i, "", :class => "icon-numb") + (t "exam.exams.title"), exam_exams_path
+                    %li= link_to content_tag(:i, "", :class => "icon-numb") + (t "exam.exams.title"), exam_exams_path
+                    
             /- permitted_to? :menu, :exam_examresults do
             /activate above, once examresult for student access ready
             - permitted_to? :menu, :exam_exammarks do

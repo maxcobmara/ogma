@@ -2313,8 +2313,8 @@ en:
       notes: "Remark :"
       in_minutes: in minutes
       by_semester: by semester
-      create_exam: Add Exam Data
-      create_template: Add Exam Template
+      create_exam: Proceed & Add Question
+      create_template: Proceed  & Select Exam Template
       marks_each: "MCQ - 1 marks/each, MEQ - 20 marks/each, SEQ - 10 marks/each"
       filters: Filters
       existing: Existing Questions

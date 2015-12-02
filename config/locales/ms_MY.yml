@@ -2253,8 +2253,8 @@ ms_MY:
       notes: "Nota :"
       in_minutes: dalam minit
       by_semester: semester
-      create_exam: Tambah Data Set Peperiksaan
-      create_template: Tambah Data Template Peperiksaan
+      create_exam: Teruskan & Tambah Soalan
+      create_template: Teruskan & Pilih Template Peperiksaan
       marks_each: "MCQ - 1 markah/setiap satu, MEQ - 20 markah/setiap satu, SEQ - 10 markah/setiap satu"
       filters: Saringan
       existing: Soalan TELAH dipilih
@@ -2483,7 +2483,7 @@ ms_MY:
     exam_template:
       title: Template Kertas Peperiksaan
       new: Template Kertas Peperiksaan Baru
-      edit: Sunting Kertas Peperiksaan
+      edit: Sunting Template Kertas Peperiksaan
       name: Nama Template
       count: Bilangan Soalan
       weight: Wajaran

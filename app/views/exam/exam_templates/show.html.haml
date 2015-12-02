@@ -21,6 +21,8 @@
           - @exam_template.question_count.each do |key, value|
             - if value['count']!='' && value['weight']!=''
               = "#{key.upcase} : "+ value['count']+ (t 'exam.exam_template.question_weight')+value['weight'] 
+            - elsif value['count']!='' && value['weight']==''
+              = "#{key.upcase} : "+ value['count']
             - else
               = key.upcase+" : "
             %br

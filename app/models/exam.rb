@@ -124,7 +124,7 @@ class Exam < ActiveRecord::Base
   end
   
   def set_paper_type
-    #require klass_id ==1 to display PDF link   # TODO - show examresult_slip - HIDE PDF link if resultlines < sem count
+    #require klass_id ==1 to display PDF link
     if examquestions.count > 0 && klass_id.nil?
      self. klass_id=1
     end
@@ -137,7 +137,7 @@ class Exam < ActiveRecord::Base
           qty=(v['count']).to_i
           if k=="mcq"
             m=qty*1 
-          elsif k=="seq"
+          elsif k=="seq" || k=="ospe"
             m=qty*10
           elsif k=="meq"
             m=qty*20
