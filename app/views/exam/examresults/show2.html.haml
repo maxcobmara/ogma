@@ -21,4 +21,9 @@
       = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), index2_exam_examresults_path, :class => 'btn btn-default'
       /HACK - restrict common_subjects lecturers - still accessible via direct url
       - unless @common_subjects.include?(@current_user.userable.positions[0].unit)
-        = link_to content_tag(:i, "", class: "fa fa-file-pdf-o"), examination_slip_exam_examresults_path(id: @resultline, format: "pdf"), class: "btn btn-default", "data-toggle" => "tooltip", title: (t 'exam.examresult.exam_slip')
+        - semno=@resultline.examresult.semester.to_i-1
+        - programmeid=@resultline.examresult.programme_id
+        - examresult_ids=Examresult.where(programme_id: programmeid).pluck(:id)
+        - @resultlines = Resultline.where(examresult_id: examresult_ids, student_id: @resultline.student_id).order(created_at: :asc)
+        - if @resultlines.count-1 >= semno 
+          = link_to content_tag(:i, "", class: "fa fa-file-pdf-o"), examination_slip_exam_examresults_path(id: @resultline, format: "pdf"), class: "btn btn-default", "data-toggle" => "tooltip", title: (t 'exam.examresult.exam_slip')
