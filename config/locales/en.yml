@@ -2314,7 +2314,7 @@ en:
       in_minutes: in minutes
       by_semester: by semester
       create_exam: Proceed & Add Question
-      create_template: Proceed  & Select Exam Template
+      create_template: Proceed  & Select Exam Template ONLY
       marks_each: "MCQ - 1 marks/each, MEQ - 20 marks/each, SEQ - 10 marks/each"
       filters: Filters
       existing: Existing Questions
@@ -2552,6 +2552,7 @@ en:
       type: Type
       question_weight: " questions, weighted at "
       name_format: "Programme - Subject Code - Final / Mid Sem, eg.: Jurupulih Cara Kerja - OTAP 1114 - Final"
+      template_in_use: Template in Use
       
   training:
     title: Training

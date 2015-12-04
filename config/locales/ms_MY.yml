@@ -2492,6 +2492,7 @@ ms_MY:
       type: Jenis
       question_weight: " soalan, dengan wajaran "
       name_format: "Program - Kod Subjek - Akhir / Pertengahan Semester, eg.: Jurupulih Cara Kerja - OTAP 1114 - Akhir Semester"
+      template_in_use: Template digunakan
     
   training:
     title: Latihan

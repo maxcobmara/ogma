@@ -1,11 +1,12 @@
 %fieldset
   = f.hidden_field :_destroy
   .row
-    .col-sm-3= f.select :questiontype, DropDown::QTYPE,{prompt: (t 'select')}, {class: 'selectpicker', "data-width"=>"auto"}
-    .col-sm-2= f.text_field :quantity, class: 'form-control'
-    .col-sm-2= f.text_field :total_marks, class: 'form-control'
-    .col-sm-1
-      = link_to content_tag(:i, "", class: "fa fa-trash-o"), data: {"data-toggle" => "tooltip", title: "Delete"}, class: "btn btn-danger remove_fields"
+    /.col-sm-3= f.select :questiontype, DropDown::QTYPE,{prompt: (t 'select'), readonly: 'readonly'}, {class: 'selectpicker', "data-width"=>"auto"}
+    .col-sm-3= f.text_field :questiontype, class: 'form-control', readonly: 'readonly', value: f.object.render_type
+    .col-sm-2= f.text_field :quantity, class: 'form-control', :readonly => 'readonly'
+    .col-sm-2= f.text_field :total_marks, class: 'form-control', readonly: 'readonly'
+    /.col-sm-1
+    /  = link_to content_tag(:i, "", class: "fa fa-trash-o"), data: {"data-toggle" => "tooltip", title: "Delete"}, class: "btn btn-danger remove_fields"
 
 :javascript
 
