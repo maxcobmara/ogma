@@ -2226,7 +2226,7 @@ ms_MY:
       title: Set Kertas Soalan Peperiksaan
       title2: Template Kertas Soalan Peperiksaan
       name: Nama Peperiksaan
-      description: Deskripsi
+      description: Ulangan bagi
       year_semester: "Tahun / Semester"
       year: "Tahun "
       semester: "Semester "
@@ -2255,7 +2255,7 @@ ms_MY:
       notes: "Nota :"
       in_minutes: dalam minit
       by_semester: semester
-      create_exam: Teruskan & Tambah Soalan
+      create_exam: Teruskan & Tambah Template dan Soalan
       create_template: Teruskan & Pilih Template Peperiksaan
       marks_each: "MCQ - 1 markah/setiap satu, MEQ - 20 markah/setiap satu, SEQ - 10 markah/setiap satu"
       filters: Saringan

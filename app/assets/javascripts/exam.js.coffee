@@ -44,6 +44,26 @@ jQuery ->
       $('#exam_subject_id').empty
       $('#exam_subject_id').parent().hide()
 
+  $('#exam_name').change ->
+    papertype=$('#exam_name').val()
+    alert(papertype);
+    if papertype=="R"
+      $('#span_desc').show()
+      $('#span_desc2').show()
+      $('#span_subject').hide()
+      $('#span_subject2').hide()
+      $('#span_programme2').hide()
+      $('#span_programme').hide()
+    else
+      $('#span_desc').hide()
+      $('#span_desc2').hide()
+      $('#span_subject').show()
+      $('#span_subject2').show()
+      $('#span_programme2').show()
+      $('#span_programme').show()
+    
+   
+
 
    
      

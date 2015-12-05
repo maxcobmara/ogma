@@ -2286,7 +2286,7 @@ en:
       title: Examination Paper
       title2: Examination Template 
       name: Examination Name 
-      description: Description
+      description: Repeat for
       year_semester: "Year / Semester"
       year: "Year "
       semester: "Semester "
@@ -2315,7 +2315,7 @@ en:
       notes: "Remark :"
       in_minutes: in minutes
       by_semester: by semester
-      create_exam: Proceed & Add Question
+      create_exam: Proceed & Add Template and Question
       create_template: Proceed  & Select Exam Template ONLY
       marks_each: "MCQ - 1 marks/each, MEQ - 20 marks/each, SEQ - 10 marks/each"
       filters: Filters

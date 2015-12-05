@@ -326,6 +326,12 @@ class Exam::ExamsController < ApplicationController
             end    
           end
       end
+      if @programme_id
+        subject_ids=Programme.where(id: @programme_id).first.descendants.where(course_type: 'Subject').pluck(:id)
+        @final_exams=Exam.where(subject_id: subject_ids).where(name: "F")
+      else
+        @final_exams=Exam.where(name: "F")
+      end
     end
     
     # Assign New & Create data only
