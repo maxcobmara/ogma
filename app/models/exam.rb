@@ -8,12 +8,13 @@ class Exam < ActiveRecord::Base
   has_many :examtemplates, :dependent => :destroy #10June2013
   accepts_nested_attributes_for :examtemplates, :reject_if => lambda { |a| a[:quantity].blank? }
   
-  before_save :set_sequence, :set_duration, :set_full_marks, :remove_unused_sequence, :set_paper_type, :set_examtemplates
+  before_save :set_sequence, :set_duration, :set_full_marks, :remove_unused_sequence, :set_paper_type, :set_examtemplates, :set_subject_for_repeat
   
   attr_accessor :programme_filter, :subject_filter, :topic_filter, :seq
   
-  validates_presence_of :subject_id, :name, :exam_on, :starttime, :endtime
-  validates_uniqueness_of :name, :scope => [:subject_id, :exam_on], :message => I18n.t('exam.exams.must_unique')
+  validates_presence_of :name, :exam_on, :starttime, :endtime
+  validates_presence_of :subject_id, :if => :not_repeat_paper?
+  validates_uniqueness_of :name, :scope => [:subject_id, :name, :exam_on], :message => I18n.t('exam.exams.must_unique')
   validate :sequence_must_be_selected, :sequence_must_be_unique #,:sequence_must_increment_by_one
   
   #remark : validation for:validates_uniqueness_of :name, :scope => "subject_id", 
@@ -155,6 +156,14 @@ class Exam < ActiveRecord::Base
         end
       end      
     end
+  end
+  
+  def not_repeat_paper?
+    name!="R"
+  end
+  
+  def set_subject_for_repeat
+    self.subject_id = Exam.where(id: description.to_i).first.subject_id
   end
   
   #def full_marks(exampaper_id)
