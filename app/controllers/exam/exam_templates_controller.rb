@@ -1,10 +1,14 @@
 class Exam::ExamTemplatesController < ApplicationController
+  filter_resource_access
   before_action :set_exam_template, only: [:show, :edit, :update, :destroy]
 
   respond_to :html
 
   def index
-    @exam_templates = ExamTemplate.all
+    #@exam_templates = ExamTemplate.all
+    @search = ExamTemplate.search(params[:q])
+    @exam_templates = @search.result.order('name ASC, created_by ASC')
+    @exam_templates = @exam_templates.page(params[:page]||1)
     respond_with(@exam_templates)
   end
 

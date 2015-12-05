@@ -204,7 +204,7 @@ authorization do
    end
    
    has_permission_on :exam_exam_templates, :to =>[:manage] do
-     if_attribute :created_by => is {user.userable.id}
+     if_attribute :created_by => is {user.id}
    end
    
    has_permission_on :exam_exams, :to => :exampaper do
