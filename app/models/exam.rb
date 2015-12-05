@@ -340,14 +340,95 @@ class Exam < ActiveRecord::Base
      studentyear
   end
   
-  def ids_complete_exampaper
-    exam_ids_for_examtemplate = Examtemplate.pluck(:exam_id).uniq
-    exam_ids_for_examquestions2 = Exam.joins(:examquestions).map(&:id).uniq 
-    exam_ids_for_examquestions = Exam.where(id: exam_ids_for_examquestions2).pluck(:id).uniq
-    complete_exampaper = Exam.where('id IN (?) OR id IN (?)', exam_ids_for_examtemplate, exam_ids_for_examquestions)
-    ids_complete_exampaper = complete_exampaper.pluck(:id) 
-    ids_complete_exampaper
+  def complete_paper
+    unless exam_template.nil?
+      if klass_id==0 
+        complete=true 
+      elsif klass_id==1
+        completeness=[]       
+        exam_template.question_count.each do |k, v|
+          if v['count']!='' 
+            qty=(v['count']).to_i
+            if k=="mcq"
+              if examquestions.mcqq.count==qty
+                completeness << true
+              else
+                completeness << false
+              end
+            elsif k=="meq"
+              if examquestions.meqq.count==qty
+                completeness << true
+              else
+                completeness << false
+              end
+            elsif k=="seq" 
+              if examquestions.seqq.count==qty
+                completeness << true
+              else
+                completeness << false
+              end
+            elsif k=="acq"
+              if examquestions.acqq.count==qty
+                completeness << true
+              else
+                completeness << false
+              end
+            elsif k=="osci"
+              if examquestions.osci2q.count==qty
+                completeness << true
+              else
+                completeness << false
+              end
+            elsif k=="oscii"
+              if examquestions.osci3q.count==qty
+                completeness << true
+              else
+                completeness << false
+              end
+            elsif k=="osce"
+              if examquestions.osceq.count==qty
+                completeness << true
+              else
+                completeness << false
+              end
+            elsif k=="ospe"
+              if examquestions.ospeq.count==qty
+                completeness << true
+              else
+                completeness << false
+              end
+            elsif k=="viva"
+              if examquestions.vivaq.count==qty
+                completeness << true
+              else
+                completeness << false
+              end
+            elsif k=="truefalse"
+              if examquestions.truefalseq.count==qty
+                completeness << true
+              else
+                completeness << false
+              end
+            end
+          end
+        end
+        complete=true if completeness.include?(false)==false
+        complete=false if completeness.include?(false)==true 
+       end
+    else
+      complete=false
+    end
+    complete
   end
+  
+#   def ids_complete_exampaper
+#     exam_ids_for_examtemplate = Examtemplate.pluck(:exam_id).uniq
+#     exam_ids_for_examquestions2 = Exam.joins(:examquestions).map(&:id).uniq 
+#     exam_ids_for_examquestions = Exam.where(id: exam_ids_for_examquestions2).pluck(:id).uniq
+#     complete_exampaper = Exam.where('id IN (?) OR id IN (?)', exam_ids_for_examtemplate, exam_ids_for_examquestions)
+#     ids_complete_exampaper = complete_exampaper.pluck(:id) 
+#     ids_complete_exampaper
+#   end
   
   def separate_cover
     #[3,5,6,7,8,9,10,11,12,13,14]

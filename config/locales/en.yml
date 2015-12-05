@@ -2302,7 +2302,9 @@ en:
       topic_id: Topic
       sequ: Sequence
       time: Time
-      remarks_bottom: " indicates incomplete examination paper. Add question/question template accordingly." 
+      remarks_bottom: " indicates incomplete examination paper. Select template / select template and add questions accordingly."
+      with_questions: "(c/w questions)"
+      template_not_selected: Not selected
       set_sequence: " Please set sequence for each question."
       exams_details: Examination Paper Details
       questions_details: Questions Details

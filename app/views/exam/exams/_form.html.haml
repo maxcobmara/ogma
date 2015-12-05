@@ -27,6 +27,9 @@
               %font{color: 'blue'}Please select above exampaper template accordingly. Should you found there's no suitable template for selection, please create one in Exampaper Template. 
               %font{color: 'red'}Clicking 'Update' button shall remove previous question template/structure (below). 
               / TODO - to remove PREVIOUS examtemplates repeating fields if & only if NO marks has been given for students.
+              - exam_w_marks=Exammark.pluck(:exam_id)
+              - examtempate_valid_for_removal=Examtemplate.where.not(exam_id: exam_w_marks)
+              
               %br
               %h4=(t 'exam.exams.title2')+' (Expiring)'
               .row

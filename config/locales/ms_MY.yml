@@ -2242,7 +2242,9 @@ ms_MY:
       topic_id: Topik
       sequ: Urutan
       time: Masa
-      remarks_bottom: " merujuk kepada set kertas peperiksaan yang tidak lengkap. Sila tambah soalan/template soalan. "
+      remarks_bottom: " merujuk kepada set kertas peperiksaan yang tidak lengkap. Sila pilih template / pilih template dan tambah soalan. "
+      with_questions: "(beserta soalan)"
+      template_not_selected: Belum dipilih
       set_sequence: " Sila tetapkan urutan untuk setiap soalan."
       exams_details: Butiran Kertas Peperiksaan
       questions_details: Butiran Soalan Peperiksaan

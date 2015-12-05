@@ -33,6 +33,12 @@
 
           - if value['count']!='' || value['weight']!=''
             %br
+            
+    - else
+      %dt=(t 'exam.exam_template.template_in_use' ).upcase
+      %dd
+        %font{color: "red"}=t 'exam.exams.template_not_selected'
+      
     %hr
   
     - if @exam.klass_id == 0 && (@exam.examtemplates || @exam.exam_template)
@@ -210,3 +216,5 @@
             = render 'sub_tab_questions_details', :examquestion => examquestion
      
       /first
+
+      

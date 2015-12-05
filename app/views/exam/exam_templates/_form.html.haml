@@ -5,9 +5,14 @@
   .form-group
     .col-sm-3.control-label
       = f.label :name, (t 'exam.exam_template.name')
-    .col-sm-5
+    .col-sm-6
       = f.text_field :name, class: 'form-control mandatory', type: "input"
-
+      .small
+        %b Sample 1 : 
+        Pembantu Perubatan - MAAP 1114 - Final Exam
+        &nbsp; | &nbsp;
+        %b Sample 2 : 
+        Radiografi - Formatif - 2 Jam Kredit
 
   .form-group
     .col-sm-3.control-label
