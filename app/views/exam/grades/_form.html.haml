@@ -146,7 +146,14 @@
           =f.label t 'exam.grade.final_details'
         %br
         = render 'tab_final_details_edit', :f => f
-      
+ 
+- latest_paper=Exam.where(subject_id: @grade.subject_id).pluck(:id)
+- student_exammark=Exammark.where(exam_id: latest_paper).where(student_id: @grade.student_id).first
+- if student_exammark
+  - @fullmarks = Exam.where(id: student_exammark.exam_id).first.set_full_marks 
+- else
+  - @fullmarks=0 
+=hidden_field_tag "full_marks", @fullmarks 
 =hidden_field_tag "grade[formative_count]", @count 
 =hidden_field_tag "programme_name", Programme.where(id: @programme).first.name if @programme
 /$(".i1").keyup(function() {
@@ -164,6 +171,7 @@
     var exam1marks = document.getElementById("grade_exam1marks").value;
     var examweight = document.getElementById("grade_examweight").value;
     var programme = document.getElementById("programme_name").value;
+    var fullmarks = document.getElementById("full_marks").value;
     
 
     for (var i=0;i<formativecount;i++)
@@ -190,7 +198,10 @@
     }
     else
     {
-      summative=exam1marks*1;
+      if (fullmarks==examweight)
+      { summative=exam1marks*1; }
+      else
+      { summative = (exam1marks*1)/fullmarks*(examweight*1); }
     }
     forgrade = caplusmse+summative;
     finalscore.value = caplusmse+summative;
