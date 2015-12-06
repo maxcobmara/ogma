@@ -198,7 +198,10 @@ $(document).ready(function(){
       }
       else
       {
-        window["totalsummative"+i].value = (total_mcq*1+a);
+        if (fullmarks==70)
+        {  window["totalsummative"+i].value = (total_mcq*1+a);}
+        else
+        { window["totalsummative"+i].value = (total_mcq*1+a)/fullmarks*100*0.70;}
       }
     }
 

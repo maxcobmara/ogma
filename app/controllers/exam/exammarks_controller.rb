@@ -27,7 +27,7 @@ class Exam::ExammarksController < ApplicationController
         if common_subjects.include?(lecturer_programme) 
           programme_id ='1'
           subject_ids=Programme.where(course_type: 'Commonsubject').pluck(:id)
-          @exams_list_raw = Exam.where('id IN(?)', valid_exams).where(subject_id: subject_ids).order(name: :asc, subject_id: :asc)
+          @exams_list_raw = Exam.where('id IN(?)', valid_exams).where(subject_id: subject_ids)#.order(name: :asc, subject_id: :asc)
         elsif posbasiks.include?(lecturer_programme) && tasks_main!=nil
           allposbasic_prog = Programme.where(course_type: posbasiks).pluck(:name)  #Onkologi, Perioperating, Kebidanan etc
           for basicprog in allposbasic_prog
@@ -35,24 +35,24 @@ class Exam::ExammarksController < ApplicationController
           end
           programme_id=Programme.where(name: lecturer_basicprog_name, ancestry_depth: 0).first.id
           subject_ids = Programme.where(id: programme_id).first.descendants.at_depth(2).pluck(:id)
-          @exams_list_raw = Exam.where('subject_id IN(?) and id IN(?)', subject_ids, valid_exams).order(name: :asc, subject_id: :asc)
+          @exams_list_raw = Exam.where('subject_id IN(?) and id IN(?)', subject_ids, valid_exams)#.order(name: :asc, subject_id: :asc)
         elsif roles.include?("administration")
           programme_id='0'
-          @exams_list_raw = Exam.where('id IN(?)', valid_exams).order(name: :asc, subject_id: :asc)
+          @exams_list_raw = Exam.where('id IN(?)', valid_exams)#.order(name: :asc, subject_id: :asc)
         else
           leader_unit=tasks_main.scan(/Program (.*)/)[0][0].split(" ")[0] if tasks_main!="" && tasks_main.include?('Program')
           if leader_unit
             programme_id = Programme.where('name ILIKE (?) AND ancestry_depth=?',"%#{leader_unit}%",0).first.id
             subjects_ids = Programme.where(id: programme_id).first.descendants.at_depth(2).pluck(:id)
-            @exams_list_raw = Exam.where('subject_id IN(?) and id IN(?)', subjects_ids, valid_exams).order(name: :asc, subject_id: :asc)
+            @exams_list_raw = Exam.where('subject_id IN(?) and id IN(?)', subjects_ids, valid_exams)#.order(name: :asc, subject_id: :asc)
           end
         end
       end
       @exams_list_exist_mark = Exam.joins(:exammarks).where('exam_id IN(?)', @exams_list_raw.pluck(:id)).uniq.pluck(:id)
       if @exams_list_exist_mark==[]
-        @exams_list=Exam.where(id: @exams_list_raw)
+        @exams_list=Exam.where(id: @exams_list_raw).order(exam_on: :desc, name: :asc, subject_id: :asc)
       elsif @exams_list_exist_mark.count > 0
-        @exams_list= Exam.where('id IN(?) and id NOT IN(?)', @exams_list_raw.pluck(:id), @exams_list_exist_mark)
+        @exams_list= Exam.where('id IN(?) and id NOT IN(?)', @exams_list_raw.pluck(:id), @exams_list_exist_mark).order(exam_on: :desc, name: :asc, subject_id: :asc)
       end
       
       @search = Exammark.search(params[:q])

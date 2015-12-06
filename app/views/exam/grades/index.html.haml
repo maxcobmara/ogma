@@ -85,11 +85,8 @@
                 %td
                   - if grade.resit==true
                     &#10003
-                %td
-                  /column in grades table, once updated-data will be same as grade.finale
-                  - if grade.examweight.blank? == false && grade.exam1marks.blank? == false
-                    =h number_with_precision(grade.finale,:precision=>2)
-                %td=h grade.finale.blank? ? "" : grade.set_gred
+                %td=h number_with_precision(grade.finalscore, :precision => 2)
+                %td=h grade.finale.blank? ? "" : grade.render_grading[-2,2]
                 /grade table - 'score' field must exist, exam1marks, examweight too
               - index2+=1
     

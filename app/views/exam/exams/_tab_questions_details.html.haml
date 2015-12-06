@@ -45,11 +45,10 @@
       - if @exam.exam_template
         /remove to above
       - elsif @exam.examtemplates && @exam.examtemplates.count > 0
-        HOHO
         /Examtemplate section (previous approach)
         %dt &nbsp;
         %dd
-          %h4=t 'exam.exams.title2'
+          %h4=(t 'exam.exams.title2')+(t 'exam.exams.previous_template')
 
         %dt &nbsp;
         %dd=(t 'exam.exams.quantity')+" / "+ (t 'exam.exams.total_marks')

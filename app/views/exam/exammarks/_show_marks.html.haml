@@ -132,7 +132,13 @@
                   %td{colspan: 3, align: "right"}
                     %b=t 'exam.exammark.total'
                   %td
-                    = number_with_precision(@exammark.total_marks, precision: 2)
+                    - @fullmarks = Exammark.fullmarks(@exammark.exam_id)
+                    - if @fullmarks==70
+                      /total marks already in 70% weightage
+                      - marks_70=@exammark.total_marks
+                    - else
+                      - marks_70=number_with_precision((@exammark.total_marks/@fullmarks)*100*0.7, precision: 2) 
+                    = number_with_precision(marks_70, precision: 2)
                   %td (70%)
                 - if @exammark.exampaper.subject.root_id==radiografi || @exammark.exampaper.subject.root_id==carakerja
                   %td

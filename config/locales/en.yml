@@ -2332,6 +2332,11 @@ en:
       remove_seq_select: "Question(s) removed, sequence for remaining questions must be selected."
       repeat_exam: Repeat Examination
       requires_complete_final: " requires complete corresponding Final Examination papers."
+      complete: Complete
+      incomplete: Incomplete
+      remove_previous: "Clicking 'Update' button shall remove previous question template/structure (below). "
+      select_exam_template: "Please select above exampaper template accordingly. Should you found there's no suitable template for selection, please create one in Exampaper Template. "
+      previous_template: " (Expiring)"
 
     exammark:
       title: Marks by Examination Papers

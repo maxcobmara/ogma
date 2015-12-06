@@ -191,11 +191,15 @@ class Exammark < ActiveRecord::Base
   #11June2013------updated 23June2013
   
   def self.get_valid_exams
-    e_full_ids=Exam.where(klass_id: 1).pluck(:id)
-    e_w_exist_questions_ids = Exam.joins(:examquestions).where('exam_id IN(?)',e_full_ids).pluck(:exam_id).uniq
-    e_template_ids=Exam.where(klass_id: 0).pluck(:id)
-    e_w_exist_templates_ids = Examtemplate.where('exam_id IN(?)', e_template_ids).pluck(:exam_id).uniq
-    return e_w_exist_questions_ids+e_w_exist_templates_ids 
+    #previous approach
+#     e_full_ids=Exam.where(klass_id: 1).pluck(:id)
+#     e_w_exist_questions_ids = Exam.joins(:examquestions).where('exam_id IN(?)',e_full_ids).pluck(:exam_id).uniq
+#     e_template_ids=Exam.where(klass_id: 0).pluck(:id)
+#     e_w_exist_templates_ids = Examtemplate.where('exam_id IN(?)', e_template_ids).pluck(:exam_id).uniq
+#     return e_w_exist_questions_ids+e_w_exist_templates_ids 
+    valid_exams=[]
+    Exam.all.each{|x|valid_exams << x.id if x.complete_paper==true}
+    valid_exams
   end
   
   def get_questions_count(examid)

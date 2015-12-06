@@ -8,8 +8,9 @@ class Exam < ActiveRecord::Base
   has_many :examtemplates, :dependent => :destroy #10June2013
   accepts_nested_attributes_for :examtemplates, :reject_if => lambda { |a| a[:quantity].blank? }
   
-  before_save :set_sequence, :set_duration, :set_full_marks, :remove_unused_sequence, :set_paper_type, :set_examtemplates, :set_subject_for_repeat
+  before_save :set_sequence, :set_duration, :set_full_marks, :remove_unused_sequence, :set_paper_type, :set_subject_for_repeat #, :set_examtemplates
   before_destroy :valid_for_removal
+  after_save :remove_prev_examtemplates
   
   attr_accessor :programme_filter, :subject_filter, :topic_filter, :seq
   
@@ -52,10 +53,18 @@ class Exam < ActiveRecord::Base
     end
     where('subject_id IN(?)', bb)
   end
+  
+  def self.complete_search(query)
+    query2=true if query=='1'
+    query2=false if query=='0'
+    aa=[]
+    Exam.all.each{|x|aa << x.id if x.complete_paper==query2}
+    where(id: aa)
+  end
 
   # whitelist the scope
   def self.ransackable_scopes(auth_object = nil)
-    [:subject_search, :programme_search, :semester_search]
+    [:subject_search, :programme_search, :semester_search, :complete_search]
   end
   
   def set_sequence
@@ -133,32 +142,33 @@ class Exam < ActiveRecord::Base
     end
   end
   
-  def set_examtemplates
-    unless topic_id.nil?
-      exam_template.question_count.each do |k, v|
-        if v['count']!='' && v['weight']!=''
-          qty=(v['count']).to_i
-          if k=="mcq"
-            m=qty*1 
-          elsif k=="seq" || k=="ospe"
-            m=qty*10
-          elsif k=="meq"
-            m=qty*20
-          end
-          existone=examtemplates.where(questiontype: k.upcase)
-          if existone==[]
-            a=examtemplates.build 
-          else
-            a=existone.first
-          end
-          a.quantity=qty
-          a.total_marks=m
-          a.questiontype=k.upcase
-          a.save
-        end
-      end      
-    end
-  end
+  # NOTE - FOR later reference -- Exammarks
+#   def set_examtemplates
+#     unless topic_id.nil?
+#       exam_template.question_count.each do |k, v|
+#         if v['count']!='' #&& v['weight']!=''                          # NOTE some template has no weightage
+#           qty=(v['count']).to_i
+#           if k=="mcq"
+#             m=qty*1 
+#           elsif k=="seq" || k=="ospe"
+#             m=qty*10
+#           elsif k=="meq"
+#             m=qty*20
+#           end
+#           existone=examtemplates.where(questiontype: k.upcase)
+#           if existone==[]
+#             a=examtemplates.build 
+#           else
+#             a=existone.first
+#           end
+#           a.quantity=qty
+#           a.total_marks=m
+#           a.questiontype=k.upcase
+#           a.save
+#         end
+#       end      
+#     end
+#   end
   
   def repeat_paper?
     name=="R"
@@ -254,17 +264,41 @@ class Exam < ActiveRecord::Base
       sum=sum+sum_meq+sum_acq+sum_osci+sum_oscii+sum_osce+sum_ospe+sum_viva+sum_truefalse
       sum=sum+(seq_count)*10 if seq_count > 0
     elsif klass_id==0
-      template=Examtemplate.where(exam_id: id)
-      sum = template.mcqq.first.total_marks
-      sum_acq=template.mcqq.first.total_marks
-      sum_meq=template.meqq.first.total_marks
-      sum_osce=template.osceq.first.total_marks
-      sum_osci=template.osci2q.first.total_marks
-      sum_oscii=template.osci3q.first.total_marks
-      sum_ospe=template.ospeq.first.total_marks
-      sum_viva=template.vivaq.first.total_marks
-      sum_truefalse=template.truefalseq.first.total_marks
-      sum=sum+sum_acq+sum_meq+sum_osce+sum_osce+sum_osci+sum_oscii+sum_ospe+sum_truefalse+sum_viva
+      
+      #previous approach--start--requires examtemplates repeating fields to exist....
+#       template=Examtemplate.where(exam_id: id)
+#       sum = template.mcqq.first.total_marks
+#       sum_acq=template.mcqq.first.total_marks
+#       sum_meq=template.meqq.first.total_marks
+#       sum_osce=template.osceq.first.total_marks
+#       sum_osci=template.osci2q.first.total_marks
+#       sum_oscii=template.osci3q.first.total_marks
+#       sum_ospe=template.ospeq.first.total_marks
+#       sum_viva=template.vivaq.first.total_marks
+#       sum_truefalse=template.truefalseq.first.total_marks
+#       sum=sum+sum_acq+sum_meq+sum_osce+sum_osce+sum_osci+sum_oscii+sum_ospe+sum_truefalse+sum_viva
+      #previous approach--end--
+      
+      #new approach
+      unless topic_id.nil?
+        sum=0
+        exam_template.question_count.each do |k, v|
+          if v['count']!='' || v['count']!=nil #&& v['weight']!=''                          # NOTE some template has no weightage
+            qty=(v['count']).to_i
+            if k=="mcq"
+              sum1=qty*1 
+            elsif k=="seq" || k=="ospe"
+              sum1=qty*10
+            elsif k=="meq"
+              sum1=qty*20
+            else
+              sum1=qty #default to 1 first
+            end
+          end
+          sum+=sum1
+        end  
+
+      end
     end
     return sum
   end
@@ -477,6 +511,12 @@ class Exam < ActiveRecord::Base
       return false
     else
       return true
+    end
+  end
+  
+  def remove_prev_examtemplates
+    if exam_template.nil? && examtemplates
+      examtemplates.destroy_all
     end
   end
 

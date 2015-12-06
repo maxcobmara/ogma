@@ -42,9 +42,4 @@
         =h (((@exam.endtime - @exam.starttime)/60) / 60).to_i.to_s+" hours "+(((@exam.endtime - @exam.starttime)/60) % 60).to_i.to_s+" minutes"
 
     %dt= t 'exam.exams.total_marks', :default => model_class.human_attribute_name(:total_marks) + ":total_marks"
-    %dd
-      / is examtemplate when @istemplate =0
-      - if @exam.klass_id  == 0 
-        = @exam.examtemplates.sum(:total_marks).to_i
-      - else
-        = h @exam.total_marks
+    %dd= h @exam.total_marks

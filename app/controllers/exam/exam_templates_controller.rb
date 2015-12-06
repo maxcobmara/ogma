@@ -36,8 +36,11 @@ class Exam::ExamTemplatesController < ApplicationController
   end
 
   def destroy
-    @exam_template.destroy
-    respond_with(@exam_template)
+    if @exam_template.destroy
+      redirect_to(exam_exam_templates_url)
+    else
+      respond_with(:exam, @exam_template)
+    end
   end
 
   private

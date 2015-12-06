@@ -2272,6 +2272,11 @@ ms_MY:
       remove_seq_select: "Soalan dikeluarkan, turutan bagi soalan yang tinggal mestilah ditetapkan."
       repeat_exam: Peperiksaan Ulangan
       requires_complete_final: " memerlukan Kertas Peperiksaan Akhir yang lengkap."
+      complete: Lengkap
+      incomplete: Tidak Lengkap
+      remove_previous: "Template / struktur soalan terdahulu (seperti di bawah) akan dibuang sebaik sahaja butang 'Kemaskini' diklik."
+      select_exam_template: "Sila pilih template kertas peperiksaan di atas. Sekiranya template yang bersesuaian tiada, sila cipta dalam Template Kertas Peperiksaan. "
+      previous_template: " (Terdahulu / Luput)"
     
     exammark:
       title: Markah Kertas Peperiksaan
