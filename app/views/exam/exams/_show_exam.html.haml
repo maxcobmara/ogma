@@ -7,12 +7,24 @@
     %dt= t 'exam.exams.year_semester'
     %dd= h @exam.subject_id? ? (t 'exam.exams.year')+@year.to_s + (t 'exam.exams.semester')+@exam.subject.parent.code.to_s : "" 
 
-    %dt= t 'exam.exams.course_id' , :default => model_class.human_attribute_name(:course_id) + ":"
-    %dd=h @exam.subject_id? ? @exam.subject.root.course_type+" "+@exam.subject.root.name : "" 
-		  
-    %dt= t 'exam.exams.subject_id' , :default => model_class.human_attribute_name(:subject_id) + ":"
-    %dd=h @exam.subject_id? ? @exam.subject.subject_list : ""
- 
+    - if @exam.name=='R'
+      %dt=  t 'exam.exams.description', :default => model_class.human_attribute_name(:description) + ":"
+      %dd= link_to(Exam.where(id: @exam.description.to_i).first.subject_date, exam_exam_path(Exam.where(id: @exam.description.to_i).first.id))
+      
+    - else
+      %dt= t 'exam.exams.course_id' , :default => model_class.human_attribute_name(:course_id) + ":"
+      %dd=h @exam.subject_id? ? @exam.subject.root.course_type+" "+@exam.subject.root.name : "" 
+  
+      %dt= t 'exam.exams.subject_id' , :default => model_class.human_attribute_name(:subject_id) + ":"
+      %dd=h @exam.subject_id? ? @exam.subject.subject_list : ""
+      
+      - unless @exam.valid_for_removal
+        - repeat_exams=Exam.where(name: "R")
+        - repeat_exams.each do |x|
+          - @repeat=x.id if @exam.id==x.description.to_i 
+        %dt=t 'exam.exams.repeat_exam'
+        %dd=link_to(Exam.where(id: @repeat).first.subject_date, exam_exam_path(Exam.where(id: @repeat).first.id))
+
     %dt= t 'exam.exams.created_by' , :default => model_class.human_attribute_name(:created_by) + ":"
     %dd=h @exam.creator_details 
 

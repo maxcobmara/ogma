@@ -170,6 +170,7 @@ ms_MY:
         exam_on: Tarikh
         starttime: Masa mula
         endtime: Masa tamat
+        description: Ulangan bagi
       examresult:
         resultlines: Keputusan
       resultlines:
@@ -2268,7 +2269,9 @@ ms_MY:
       seq_must_select: "Urutan bagi setiap soalan mesti dipilih."
       seq_increase_by_one: "Urutan semua soalan mestilah langkau 1."
       seq_must_unique: "Urutan soalan mestilah unik."
-      remove_seq_select: "Soalan dikeluarkan Question(s) removed, sequence for remaining questions must be selected."
+      remove_seq_select: "Soalan dikeluarkan, turutan bagi soalan yang tinggal mestilah ditetapkan."
+      repeat_exam: Peperiksaan Ulangan
+      requires_complete_final: " memerlukan Kertas Peperiksaan Akhir yang lengkap."
     
     exammark:
       title: Markah Kertas Peperiksaan

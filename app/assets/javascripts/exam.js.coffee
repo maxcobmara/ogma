@@ -61,6 +61,24 @@ jQuery ->
       $('#span_subject2').show()
       $('#span_programme2').show()
       $('#span_programme').show()
+      
+  $('#exam_name').each ->
+    papertype=$('#exam_name').val()
+    
+    if papertype=="R"
+      $('#span_desc').show()
+      $('#span_desc2').show()
+      $('#span_subject').hide()
+      $('#span_subject2').hide()
+      $('#span_programme2').hide()
+      $('#span_programme').hide()
+    else
+      $('#span_desc').hide()
+      $('#span_desc2').hide()
+      $('#span_subject').show()
+      $('#span_subject2').show()
+      $('#span_programme2').show()
+      $('#span_programme').show()
     
    
 

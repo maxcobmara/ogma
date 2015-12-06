@@ -9,11 +9,13 @@ class Exam < ActiveRecord::Base
   accepts_nested_attributes_for :examtemplates, :reject_if => lambda { |a| a[:quantity].blank? }
   
   before_save :set_sequence, :set_duration, :set_full_marks, :remove_unused_sequence, :set_paper_type, :set_examtemplates, :set_subject_for_repeat
+  before_destroy :valid_for_removal
   
   attr_accessor :programme_filter, :subject_filter, :topic_filter, :seq
   
   validates_presence_of :name, :exam_on, :starttime, :endtime
   validates_presence_of :subject_id, :if => :not_repeat_paper?
+  validates_presence_of :description, :if => :repeat_paper?
   validates_uniqueness_of :name, :scope => [:subject_id, :name, :exam_on], :message => I18n.t('exam.exams.must_unique')
   validate :sequence_must_be_selected, :sequence_must_be_unique #,:sequence_must_increment_by_one
   
@@ -158,12 +160,16 @@ class Exam < ActiveRecord::Base
     end
   end
   
+  def repeat_paper?
+    name=="R"
+  end
+  
   def not_repeat_paper?
     name!="R"
   end
   
   def set_subject_for_repeat
-    self.subject_id = Exam.where(id: description.to_i).first.subject_id
+    self.subject_id = Exam.where(id: description.to_i).first.subject_id if description!=nil && name=="R"
   end
   
   #def full_marks(exampaper_id)
@@ -188,7 +194,7 @@ class Exam < ActiveRecord::Base
       else
         subject_of_programme = Programme.find(search).descendants.at_depth(2).map(&:id)
         #@exams = Exam.find(:all, :conditions => ["subject_id IN (?) and subject_id NOT IN (?)", subject_of_program, common_subject])
-        @exams = Exam.where('subject_id IN(?) AND subject_id NOT IN(?)',subject_of_programme, common_subject)
+        @exams = Exam.where('subject_id IN(?) AND subject_id NOT IN(?)',subject_of_programme, common_subject).order('exam_on DESC, subject_id ASC')
       end
     #else
        #@exams = Exam.all
@@ -461,6 +467,17 @@ class Exam < ActiveRecord::Base
     admin_users = Role.joins(:users).where(name: "Administration").pluck(:user_id)
     admins = User.where('id IN(?)', admin_users).pluck(:userable_id)
     creator_ids = pensyarah+lecturers+admins
+  end
+  
+  def valid_for_removal
+    finals_of_repeat=Exam.where(name: "R").pluck(:description)
+    finals=[]
+    finals_of_repeat.each{|y|finals << y.to_i}
+    if name=="F" && finals.include?(id)
+      return false
+    else
+      return true
+    end
   end
 
 private
