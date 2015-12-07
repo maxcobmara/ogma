@@ -195,7 +195,7 @@ authorization do
    
    #EXAMINATION modules
    has_permission_on [:exam_examquestions, :exam_exams, :exam_exam_templates, :exam_exammarks, :exam_grades], :to => [:menu, :read, :index, :create]
-   has_permission_on :exam_examresults, :to => [:menu, :read, :index2, :create, :show2, :examination_slip, :show3, :examination_transcript]   
+   has_permission_on :exam_examresults, :to => [:menu, :read, :index2, :create, :update, :destroy, :show2, :examination_slip, :show3, :examination_transcript]   
    has_permission_on :exam_examanalyses, :to => [:menu, :read]
    #new & create & examination_slip should not be allowed for Commonsubject lecturers - refer HACK - index & show2
  
@@ -204,7 +204,7 @@ authorization do
    end
    
    has_permission_on :exam_exam_templates, :to =>[:manage] do
-     if_attribute :created_by => is {user.userable.id}
+     if_attribute :created_by => is {user.id}
    end
    
    has_permission_on :exam_exams, :to => :exampaper do
@@ -252,7 +252,7 @@ authorization do
    end
    
    #pending - just in case other programme's grade appear in current programme index page?
-   has_permission_on :exam_grades, :to => [:update, :edit_multiple, :update_multiple, :new_multiple, :create_multiple] do
+   has_permission_on :exam_grades, :to => [:update, :delete, :edit_multiple, :update_multiple, :new_multiple, :create_multiple] do
      if_attribute :subject_id => is_in {user.grades_of_programme}
    end
    

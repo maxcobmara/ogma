@@ -265,7 +265,7 @@ class Exam::GradesController < ApplicationController
       #if @subjects_of_grades==1 || submit_type == t('exam.grade.apply_changes')
         @summative_weightage = (params[:grade][:summative_weightage]).to_f
         @scores = params[:scores_attributes]
-        @scores_new_count = @scores.count 
+        @scores_new_count = @scores.count if @scores
       #end
       if submit_type == t('update')
         
@@ -392,29 +392,35 @@ class Exam::GradesController < ApplicationController
 
         #create & save NEW 'Formative Scores' items & 'Summative Weightage' accordingly        
         @grades.sort_by{|x|x.studentgrade.name}.each_with_index do |grade, index|  
-	  if @scores_new_count >= @grades[index].scores.count
-            (grade.scores.count).upto(@scores_new_count-1) do |c|
-              #grade.scores.build
-              #grade.scores[c].type_id = params[:scores_attributes][c.to_s][:type_id]#@grade_scores[2].type_id         
-              #grade.scores[c].description = params[:scores_attributes][c.to_s][:description]#@grade_scores[2].description 
-              #grade.scores[c].weightage = params[:scores_attributes][c.to_s][:weightage]#@grade_scores[2].weightage
-              #grade.scores[c].marks = 0
-              #grade.examweight = @summative_weightage 
-              #grade.save
-              #rails 4 : above FAILS, the other way
-              score = Score.new
-              score.type_id = params[:scores_attributes][c.to_s][:type_id]
-              score.description = params[:scores_attributes][c.to_s][:description]
-              score.weightage = params[:scores_attributes][c.to_s][:weightage]
-              score.marks = 0
-              score.grade_id = grade.id
-              score.save
-            end
+          if @scores_new_count
+            if @scores_new_count >= @grades[index].scores.count
+              (grade.scores.count).upto(@scores_new_count-1) do |c|
+                #grade.scores.build
+                #grade.scores[c].type_id = params[:scores_attributes][c.to_s][:type_id]#@grade_scores[2].type_id         
+                #grade.scores[c].description = params[:scores_attributes][c.to_s][:description]#@grade_scores[2].description 
+                #grade.scores[c].weightage = params[:scores_attributes][c.to_s][:weightage]#@grade_scores[2].weightage
+                #grade.scores[c].marks = 0
+                #grade.examweight = @summative_weightage 
+                #grade.save
+                #rails 4 : above FAILS, the other way
+                score = Score.new
+                score.type_id = params[:scores_attributes][c.to_s][:type_id]
+                score.description = params[:scores_attributes][c.to_s][:description]
+                score.weightage = params[:scores_attributes][c.to_s][:weightage]
+                score.marks = 0
+                score.grade_id = grade.id
+                score.save
+              end
+            end #ending - scores_new_count
           end
         end
         
         respond_to do |format|
-          flash[:notice]=t('exam.grade.formative_summative_var_updated')
+          if @scores_new_count
+            flash[:notice]=t('exam.grade.formative_summative_var_updated')
+          else
+            flash[:notice]=(t 'exam.grade.scores_not_exist')
+          end
           format.html {render :action => 'edit_multiple'}
           format.xml  { head :ok }
           flash.discard

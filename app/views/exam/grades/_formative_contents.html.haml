@@ -82,19 +82,32 @@
         - else
           = hidden_field_tag "examweights[]", number_with_precision(grade.examweight,:precision=>2), :id=>"examweight"+no.to_s
         %td{:style=>"background-color:#FEE;text-align:center;"}
-          - latest_paper=Exam.where(subject_id: grade.subject_id).order(created_at: :desc).first.id
-          - student_exammark=Exammark.where(exam_id: latest_paper).where(student_id: grade.student_id)
-          - if student_exammark && student_exammark.count > 0
-            = text_field_tag "exam1markss[]", number_with_precision(grade.exam1marks,:precision=>2), :size=> 4,:id=>"finalexam"+no.to_s, class: 'form-control', readonly: 'readonly'
+          /- latest_paper=Exam.where(subject_id: grade.subject_id).order(created_at: :desc).first.id
+          /suppose above - latest one, but for testing purpose - use below instead
+          - latest_paper=Exam.where(subject_id: grade.subject_id).pluck(:id)
+          - student_exammark=Exammark.where(exam_id: latest_paper).where(student_id: grade.student_id).first
+          - if student_exammark
+            - @fullmarks = Exam.where(id: student_exammark.exam_id).first.set_full_marks 
           - else
+            - @fullmarks=0
+          /- if student_exammark && student_exammark.count > 0
+          - if student_exammark
+            = text_field_tag "exam1markss[]", number_with_precision(student_exammark.total_marks,:precision=>2), :size=> 4,:id=>"finalexam"+no.to_s, class: 'form-control', readonly: 'readonly'
+          - else
+            /when exammark not exist, there will be no ref for fullmarks of an exampaper, so exampaper marks in GRade must be entered in 100%
             = text_field_tag "exam1markss[]", number_with_precision(grade.exam1marks,:precision=>2), :size=> 4,:id=>"finalexam"+no.to_s,:class=>'k1'
         %td{:style=>"background-color:#FEE;text-align:center;"}
-          - if student_exammark && student_exammark.count > 0
-            = text_field_tag "summatives[]", number_with_precision(grade.total_summative,:precision=>2), :size=> 4,:id=>"summative"+no.to_s, class: 'form-control', readonly: 'readonly'
+          /- if student_exammark && student_exammark.count > 0
+          - if student_exammark 
+            - summative_val=student_exammark.total_marks/Exammark.fullmarks(student_exammark.exam_id)*100*0.7
+            = text_field_tag "summatives[]", number_with_precision(summative_val, :precision=>2), :size=> 4,:id=>"summative"+no.to_s, class: 'form-control', readonly: 'readonly'
           - else
             = text_field_tag "summatives[]", number_with_precision(grade.total_summative,:precision=>2), :size=> 4,:id=>"summative"+no.to_s, class: 'form-control', readonly: 'readonly'
         %td{:style=>"background-color:#EEF;text-align:center;"}
-          = text_field_tag "finalscores[]", number_with_precision(grade.finalscore,:precision=>2), :size=> 4,:id=>"finalscore"+no.to_s, :readonly => "readonly", class: "form-control"
+          - if student_exammark
+            = text_field_tag "finalscores[]", number_with_precision(grade.total_formative+summative_val,:precision=>2), :size=> 4,:id=>"finalscore"+no.to_s, :readonly => "readonly", class: "form-control"
+          - else
+            = text_field_tag "finalscores[]", number_with_precision(grade.finalscore,:precision=>2), :size=> 4,:id=>"finalscore"+no.to_s, :readonly => "readonly", class: "form-control"
         %td
           /--asal-http://apidock.com/rails/ActionView/Helpers/FormTagHelper/check_box_tag
           /#= check_box_tag "sent_to_BPLs[#{no}]", true, :name => "sent_to_BPLs[]"
@@ -112,10 +125,11 @@
         %td{:style=>"text-align:center;"}= check_box_tag "carry_papers[#{no}]", true, grade.carry_paper
         %td{:style=>"text-align:center;"}=check_box_tag "resits[#{no}]", true, grade.resit
 
-/TRIAL      
+/TRIAL    
 =hidden_field_tag "grade_count", @grades.count
 =hidden_field_tag "scores_count", @score_for_legend_sort_1.count
 =hidden_field_tag "programme_name", Programme.where(id: @grades[0].subjectgrade.root_id).first.name
+=hidden_field_tag "fullmark", @fullmarks
 
 /=hidden_field_tag "grade_examweight", @grades[0].examweight
 :javascript
@@ -151,6 +165,7 @@ $(document).ready(function(){
     var gradecount = $("#grade_count").val();
     var summativeweightage = $("#grade_summative_weightage").val(); 
     var programme = $("#programme_name").val();
+    var fullmarks = $("#fullmark").val();
     
     for (var i=0;i<gradecount;i++){
       window["total_marks"+i]= document.getElementById("finalexam"+i).value;
@@ -165,8 +180,18 @@ $(document).ready(function(){
       }
       else
       {
-        window["summative70"+i].value=window["total_marks"+i]
-        window["formative_summative"+i].value = (window["total_marks"+i])*1+((window["cplus_val"+i])*1);
+        
+         if (fullmarks==70)
+        {  
+          window["summative70"+i].value=window["total_marks"+i]
+          window["formative_summative"+i].value = (window["total_marks"+i])*1+((window["cplus_val"+i])*1);
+        
+        }
+        else
+        { 
+          window["summative70"+i].value=(window["total_marks"+i])*(summativeweightage/100); 
+          window["formative_summative"+i].value = (window["total_marks"+i])*(summativeweightage/100) +((window["cplus_val"+i])*1);
+        }
       }  
     }
   });

@@ -1,6 +1,8 @@
 = search_form_for [:exam, @search], url: exam_exams_path,  class: "form-inline" do |f|
   %tr.search_row{style: "display: none;"}
-    %td=select_tag('q[name_eq]',options_for_select([[(t 'actions.all_records'),''],[(t 'exam.midsem'), "M"],[(t 'exam.final'),"F"], [(t 'exam.repeat'),"R"]]),class: 'selectpicker',"data-width"=>'100px')
+    %td
+      =select_tag('q[name_eq]',options_for_select([[(t 'actions.all_records'),''],[(t 'exam.midsem'), "M"],[(t 'exam.final'),"F"], [(t 'exam.repeat'),"R"]]),class: 'selectpicker',"data-width"=>'110px')
+      =select_tag('q[complete_search]', options_for_select([[(t 'actions.all_records'),''],[(t 'exam.exams.complete'), '1'], [(t 'exam.exams.incomplete'), '0']]), class: 'selectpicker',"data-width"=>'110px')
     %td= f.text_field :semester_search, size: 2, class: 'form-control', placeholder: t('exam.exams.by_semester')
     %td= f.text_field :programme_search, size: 2, class: 'form-control'
     %td= f.text_field :subject_search, class: 'form-control'

@@ -1,4 +1,16 @@
+/add-in exam_template for Exam with examquestions too:-
 .col-md-offset-2
+  .form-group
+    .col-sm-2.control-label
+      = f.label t 'exam.exam_template.title', for: :exam_template
+    .col-md-2
+      = f.collection_select :topic_id, ExamTemplate.all.order(name: :asc), :id, :name, {include_blank: true, prompt: (t 'select')}, {class: 'selectpicker', "data-width"=>"auto"}
+
+.col-md-offset-2
+  .col-md-10
+    %hr
+  %BR
+  %br
   .row
     %b=t 'exam.exams.filters'
     .small 

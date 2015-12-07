@@ -2,12 +2,53 @@
 .col-md-8.col-md-offset-1
   %dl.dl-horizontal
 
+    /Exampaper Template 
+    - if @exam.exam_template
+      %dt=(t 'exam.exam_template.template_in_use' ).upcase
+      %dd
+        %b=@exam.exam_template.name.upcase
+
+      %dt &nbsp;
+      %dd
+        %u=(t 'exam.exam_template.count')+" / "+ (t 'exam.exam_template.weight')+ " (%)"
+
+      /%dt= @exam.exam_template.question_count.find_all{|key, value| value != ''}.map { |k, v| "#{k.upcase}"}.join("<BR/>").html_safe
+      /%dd= @exam.exam_template.question_count.find_all{|key, value| value != ''}.map { |k, v| v['count'] + "  /  "+ v['weight'] }.join("<BR/>").html_safe
+        
+      %dt
+        - @exam.exam_template.question_count.each do |key, value|
+          - if value['count']!='' || value['weight']!=''
+            = key.upcase
+            %br
+      %dd
+        - @exam.exam_template.question_count.each do |key, value|
+          - if value['count']!='' && value['weight']!=''
+            = value['count']+" / "+value['weight'] 
+           
+          - elsif value['count']!='' && value['weight']==''
+            = value['count']+" / -"
+            
+          - elsif value['count']=='' && value['weight']!=''
+            = " - / "+value['weight']
+
+          - if value['count']!='' || value['weight']!=''
+            %br
+            
+    - else
+      %dt=(t 'exam.exam_template.template_in_use' ).upcase
+      %dd
+        %font{color: "red"}=t 'exam.exams.template_not_selected'
+      
+    %hr
+  
     - if @exam.klass_id == 0 && (@exam.examtemplates || @exam.exam_template)
-      - if @exam.examtemplates && @exam.examtemplates.count > 0
+      - if @exam.exam_template
+        /remove to above
+      - elsif @exam.examtemplates && @exam.examtemplates.count > 0
         /Examtemplate section (previous approach)
         %dt &nbsp;
         %dd
-          %h4=t 'exam.exams.title2'
+          %h4=(t 'exam.exams.title2')+(t 'exam.exams.previous_template')
 
         %dt &nbsp;
         %dd=(t 'exam.exams.quantity')+" / "+ (t 'exam.exams.total_marks')
@@ -19,26 +60,26 @@
             &nbsp; / &nbsp;
             =h examtemplate.total_marks     
         
-      - elsif @exam.exam_template
-        /ExamTemplate section
-        %dt &nbsp;
-        %dd
-          %h4=t 'exam.exam_template.title'
+      /- elsif @exam.exam_template
+      /  /ExamTemplate section
+      /  %dt &nbsp;
+      /  %dd
+      /    %h4=t 'exam.exam_template.title'
 
-        %dt &nbsp;
-        %dd=(t 'exam.exam_template.count')+" / "+ (t 'exam.exam_template.weight')+ " (%)"
+      /  %dt &nbsp;
+      /  %dd=(t 'exam.exam_template.count')+" / "+ (t 'exam.exam_template.weight')+ " (%)"
 
-        /%dt= @exam.exam_template.question_count.find_all{|key, value| value != ''}.map { |k, v| "#{k.upcase}"}.join("<BR/>").html_safe
-        /%dd= @exam.exam_template.question_count.find_all{|key, value| value != ''}.map { |k, v| v['count'] + "  /  "+ v['weight'] }.join("<BR/>").html_safe
+      /  /%dt= @exam.exam_template.question_count.find_all{|key, value| value != ''}.map { |k, v| "#{k.upcase}"}.join("<BR/>").html_safe
+      /  /%dd= @exam.exam_template.question_count.find_all{|key, value| value != ''}.map { |k, v| v['count'] + "  /  "+ v['weight'] }.join("<BR/>").html_safe
         
-        %dt
-          - @exam.exam_template.question_count.each do |key, value|
-            = key.upcase
-            %br
-        %dd
-          - @exam.exam_template.question_count.each do |key, value|
-            = value['count']+" / "+value['weight'] if value['count']!='' && value['weight']!=''
-            %br
+      /  %dt
+      /    - @exam.exam_template.question_count.each do |key, value|
+      /      = key.upcase
+      /      %br
+      /  %dd
+      /    - @exam.exam_template.question_count.each do |key, value|
+      /      = value['count']+" / "+value['weight'] if value['count']!='' && value['weight']!=''
+      /      %br
       
     - else 
       /Complete examaker section
@@ -174,3 +215,5 @@
             = render 'sub_tab_questions_details', :examquestion => examquestion
      
       /first
+
+      

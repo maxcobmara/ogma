@@ -61,9 +61,20 @@ class Grade < ActiveRecord::Base
           (exam1marks * examweight)/100
         end
       else
-        #Pem Peg Perubatan & Fisioterapi - FInal Exam(written papaer) already in 70%
-        #Diploma Lanjutan Kebidanan - FInal Exam(written paper) already in 60%
-        exam1marks 
+        
+        #####from formative_contents-7Dec2015
+        latest_paper=Exam.where(subject_id: subject_id).pluck(:id)
+        student_exammark=Exammark.where(exam_id: latest_paper).where(student_id: student_id).first
+        if student_exammark && Exammark.fullmarks(student_exammark.exam_id)!=70
+          student_exammark.total_marks/Exammark.fullmarks(student_exammark.exam_id)*100*0.7
+          #####from formative_contents-7Dec2015
+
+        else
+
+          #Pem Peg Perubatan & Fisioterapi - FInal Exam(written papaer) already in 70%
+          #Diploma Lanjutan Kebidanan - FInal Exam(written paper) already in 60%
+          exam1marks 
+        end
       end
     else
       0

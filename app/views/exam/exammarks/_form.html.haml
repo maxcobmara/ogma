@@ -182,8 +182,11 @@
                           - if @exammark.exampaper.subject.root_id==radiografi || @exammark.exampaper.subject.root_id==carakerja
                             - marks_70=number_with_precision((@exammark.total_marks/@fullmarks)*100*0.7, precision: 2)
                           - else
-                            /total marks already in 70% weightage
-                            - marks_70=@exammark.total_marks
+                            - if @fullmarks==70
+                              /total marks already in 70% weightage
+                              - marks_70=@exammark.total_marks
+                            - else
+                              - marks_70=number_with_precision((@exammark.total_marks/@fullmarks)*100*0.7, precision: 2) 
                             %td{colspan: 3, align: "right"}= f.label t 'exam.exammark.total', for: :total
                           %td= text_field_tag "marks_in_70", marks_70, :size=> 5, :readonly=>true, :class => 'form-control'
                           %td (70.00 %)
@@ -219,7 +222,10 @@ $(document).ready(function(){
     }
     else
     {
-      marksin70.value = totalmcq*1+a;
+      if (fullmarks==70)
+      { marksin70.value = totalmcq*1+a;}
+      else
+      { marksin70.value = (totalmcq*1+a) / fullmarks * 100 * 0.7;}
     }
   });
 });            

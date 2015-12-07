@@ -12,6 +12,10 @@ class Examtemplate < ActiveRecord::Base
   scope :vivaq, -> { where(questiontype: 'VIVA')}
   scope :truefalseq, -> { where(questiontype: 'TRUEFALSE')}
 
+  def render_type
+    (DropDown::QTYPE.find_all{|disp, value| value == questiontype}).map {|disp, value| disp}[0]
+  end
+  
 end
 
 # == Schema Information

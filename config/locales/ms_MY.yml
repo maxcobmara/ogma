@@ -170,6 +170,7 @@ ms_MY:
         exam_on: Tarikh
         starttime: Masa mula
         endtime: Masa tamat
+        description: Ulangan bagi
       examresult:
         resultlines: Keputusan
       resultlines:
@@ -2226,7 +2227,7 @@ ms_MY:
       title: Set Kertas Soalan Peperiksaan
       title2: Template Kertas Soalan Peperiksaan
       name: Nama Peperiksaan
-      description: Deskripsi
+      description: Ulangan bagi
       year_semester: "Tahun / Semester"
       year: "Tahun "
       semester: "Semester "
@@ -2242,7 +2243,9 @@ ms_MY:
       topic_id: Topik
       sequ: Urutan
       time: Masa
-      remarks_bottom: " merujuk kepada set kertas peperiksaan yang tidak lengkap. Sila tambah soalan/template soalan. "
+      remarks_bottom: " merujuk kepada set kertas peperiksaan yang tidak lengkap. Sila pilih template / pilih template dan tambah soalan. "
+      with_questions: "(beserta soalan)"
+      template_not_selected: Belum dipilih
       set_sequence: " Sila tetapkan urutan untuk setiap soalan."
       exams_details: Butiran Kertas Peperiksaan
       questions_details: Butiran Soalan Peperiksaan
@@ -2253,8 +2256,8 @@ ms_MY:
       notes: "Nota :"
       in_minutes: dalam minit
       by_semester: semester
-      create_exam: Tambah Data Set Peperiksaan
-      create_template: Tambah Data Template Peperiksaan
+      create_exam: Teruskan & Tambah Template dan Soalan
+      create_template: Teruskan & Pilih Template Peperiksaan
       marks_each: "MCQ - 1 markah/setiap satu, MEQ - 20 markah/setiap satu, SEQ - 10 markah/setiap satu"
       filters: Saringan
       existing: Soalan TELAH dipilih
@@ -2266,7 +2269,14 @@ ms_MY:
       seq_must_select: "Urutan bagi setiap soalan mesti dipilih."
       seq_increase_by_one: "Urutan semua soalan mestilah langkau 1."
       seq_must_unique: "Urutan soalan mestilah unik."
-      remove_seq_select: "Soalan dikeluarkan Question(s) removed, sequence for remaining questions must be selected."
+      remove_seq_select: "Soalan dikeluarkan, turutan bagi soalan yang tinggal mestilah ditetapkan."
+      repeat_exam: Peperiksaan Ulangan
+      requires_complete_final: " memerlukan Kertas Peperiksaan Akhir yang lengkap."
+      complete: Lengkap
+      incomplete: Tidak Lengkap
+      remove_previous: "Template / struktur soalan terdahulu (seperti di bawah) akan dibuang sebaik sahaja butang 'Kemaskini' diklik."
+      select_exam_template: "Sila pilih template kertas peperiksaan di atas. Sekiranya template yang bersesuaian tiada, sila cipta dalam Template Kertas Peperiksaan. "
+      previous_template: " (Terdahulu / Luput)"
     
     exammark:
       title: Markah Kertas Peperiksaan
@@ -2298,6 +2308,7 @@ ms_MY:
       new_multiple: "Markah Baru (Pukal)"
       programme: Program
       marks_intakes_exist: 'Markah peperiksaan pelajar bagi Ambilan yang dipilih telah wujud. Padam / sunting rekod berkenaan.'
+      complete_paper: 'Markah hanya boleh dimasukkan bagi kertas peperiksaan yang sah (lengkap) sahaja.'
       
     grade:
       title: Gred Peperiksaan
@@ -2357,6 +2368,8 @@ ms_MY:
       summative_weightage_changed: "Wajaran Sumatif telah diubah. Klik 'Kemaskini Perubahan' untuk mengemaskini wajaran bagi lajur 'Jumlah Sumatif' sebelum meneruskan kemasukan data."
       standardize_weightage: "* Klik 'Kemaskini Perubahan' untuk menyeragamkan Wajaran Formatif bagi gred - gred pelajar seperti tersenarai di bawah."
       redundant_formative_template: "Terdapat lebih daripada satu set / template 'Skor Formatif' digunakan bagi subjek ini. Perhatikan, bilangan lajur tidak selari di bahagian paparan senarai pelajar. Pastikan set / template 'Skor Formatif' di bawah (rujukan: rekod pertama), jika berbeza, sisih rekod dalam laman Indeks untuk suntingan pukal. Klik 'Kemaskini Perubahan' untuk menyeragamkan set / template 'Skor Formatif' bagi subjek ini."
+      complete_paper: 'Gred hanya boleh dicipta bagi Subjek dengan kertas peperiksaan yang sah (lengkap) sahaja.'
+      exist_marks: 'Sebaik sahaja rekod Gred bagi satu-satu Subjek dicipta, sila Sunting dan Kemaskini rekod-rekod Markah Kertas Peperiksaan Akhir yang sepadan bagi menyelaras / mengemaskini nilai Jumlah Sumatif dalam rekod Gred.'
       
     examresult:
       title: Keputusan Peperiksaan Mengikut Program
@@ -2480,7 +2493,7 @@ ms_MY:
     exam_template:
       title: Template Kertas Peperiksaan
       new: Template Kertas Peperiksaan Baru
-      edit: Sunting Kertas Peperiksaan
+      edit: Sunting Template Kertas Peperiksaan
       name: Nama Template
       count: Bilangan Soalan
       weight: Wajaran
@@ -2489,6 +2502,7 @@ ms_MY:
       type: Jenis
       question_weight: " soalan, dengan wajaran "
       name_format: "Program - Kod Subjek - Akhir / Pertengahan Semester, eg.: Jurupulih Cara Kerja - OTAP 1114 - Akhir Semester"
+      template_in_use: Template digunakan
     
   training:
     title: Latihan

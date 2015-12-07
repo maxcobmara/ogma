@@ -21,6 +21,8 @@
           - @exam_template.question_count.each do |key, value|
             - if value['count']!='' && value['weight']!=''
               = "#{key.upcase} : "+ value['count']+ (t 'exam.exam_template.question_weight')+value['weight'] 
+            - elsif value['count']!='' && value['weight']==''
+              = "#{key.upcase} : "+ value['count']
             - else
               = key.upcase+" : "
             %br
@@ -32,9 +34,10 @@
       = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), exam_exam_templates_path, :class => 'btn btn-default'
       - permitted_to? :update, :exam_exam_templates do
         = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('.edit', :default => t("helpers.links.edit")), edit_exam_exam_template_path(@exam_template),  :class => 'btn btn-primary' 
-      = link_to content_tag(:i, "", :class => "fa fa-trash-o icon-white") + " " + t('.destroy', :default => t("helpers.links.destroy")), |
-        exam_exam_template_path(@exam_template),                                                                                                    |
-        :method => 'delete',                                                                                                           |
-        :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },                   |
-        :class => 'btn btn-danger'
+      - if @exam_template.valid_for_removal
+        = link_to content_tag(:i, "", :class => "fa fa-trash-o icon-white") + " " + t('.destroy', :default => t("helpers.links.destroy")), |
+          exam_exam_template_path(@exam_template),                                                                                                    |
+          :method => 'delete',                                                                                                           |
+          :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },                   |
+          :class => 'btn btn-danger'
  

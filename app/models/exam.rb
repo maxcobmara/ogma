@@ -8,12 +8,16 @@ class Exam < ActiveRecord::Base
   has_many :examtemplates, :dependent => :destroy #10June2013
   accepts_nested_attributes_for :examtemplates, :reject_if => lambda { |a| a[:quantity].blank? }
   
-  before_save :set_sequence, :set_duration, :set_full_marks, :remove_unused_sequence, :set_paper_type
+  before_save :set_sequence, :set_duration, :set_full_marks, :remove_unused_sequence, :set_paper_type, :set_subject_for_repeat #, :set_examtemplates
+  before_destroy :valid_for_removal
+  after_save :remove_prev_examtemplates
   
   attr_accessor :programme_filter, :subject_filter, :topic_filter, :seq
   
-  validates_presence_of :subject_id, :name, :exam_on, :starttime, :endtime
-  validates_uniqueness_of :name, :scope => [:subject_id, :exam_on], :message => I18n.t('exam.exams.must_unique')
+  validates_presence_of :name, :exam_on, :starttime, :endtime
+  validates_presence_of :subject_id, :if => :not_repeat_paper?
+  validates_presence_of :description, :if => :repeat_paper?
+  validates_uniqueness_of :name, :scope => [:subject_id, :name, :exam_on], :message => I18n.t('exam.exams.must_unique')
   validate :sequence_must_be_selected, :sequence_must_be_unique #,:sequence_must_increment_by_one
   
   #remark : validation for:validates_uniqueness_of :name, :scope => "subject_id", 
@@ -49,10 +53,18 @@ class Exam < ActiveRecord::Base
     end
     where('subject_id IN(?)', bb)
   end
+  
+  def self.complete_search(query)
+    query2=true if query=='1'
+    query2=false if query=='0'
+    aa=[]
+    Exam.all.each{|x|aa << x.id if x.complete_paper==query2}
+    where(id: aa)
+  end
 
   # whitelist the scope
   def self.ransackable_scopes(auth_object = nil)
-    [:subject_search, :programme_search, :semester_search]
+    [:subject_search, :programme_search, :semester_search, :complete_search]
   end
   
   def set_sequence
@@ -130,6 +142,46 @@ class Exam < ActiveRecord::Base
     end
   end
   
+  # NOTE - FOR later reference -- Exammarks
+#   def set_examtemplates
+#     unless topic_id.nil?
+#       exam_template.question_count.each do |k, v|
+#         if v['count']!='' #&& v['weight']!=''                          # NOTE some template has no weightage
+#           qty=(v['count']).to_i
+#           if k=="mcq"
+#             m=qty*1 
+#           elsif k=="seq" || k=="ospe"
+#             m=qty*10
+#           elsif k=="meq"
+#             m=qty*20
+#           end
+#           existone=examtemplates.where(questiontype: k.upcase)
+#           if existone==[]
+#             a=examtemplates.build 
+#           else
+#             a=existone.first
+#           end
+#           a.quantity=qty
+#           a.total_marks=m
+#           a.questiontype=k.upcase
+#           a.save
+#         end
+#       end      
+#     end
+#   end
+  
+  def repeat_paper?
+    name=="R"
+  end
+  
+  def not_repeat_paper?
+    name!="R"
+  end
+  
+  def set_subject_for_repeat
+    self.subject_id = Exam.where(id: description.to_i).first.subject_id if description!=nil && name=="R"
+  end
+  
   #def full_marks(exampaper_id)
       #Examquestion.sum(:marks,:joins=>:exammakers, :conditions => ["exammaker_id=?", exampaper_id]).to_f
   #end 
@@ -152,7 +204,7 @@ class Exam < ActiveRecord::Base
       else
         subject_of_programme = Programme.find(search).descendants.at_depth(2).map(&:id)
         #@exams = Exam.find(:all, :conditions => ["subject_id IN (?) and subject_id NOT IN (?)", subject_of_program, common_subject])
-        @exams = Exam.where('subject_id IN(?) AND subject_id NOT IN(?)',subject_of_programme, common_subject)
+        @exams = Exam.where('subject_id IN(?) AND subject_id NOT IN(?)',subject_of_programme, common_subject).order('exam_on DESC, subject_id ASC')
       end
     #else
        #@exams = Exam.all
@@ -212,17 +264,41 @@ class Exam < ActiveRecord::Base
       sum=sum+sum_meq+sum_acq+sum_osci+sum_oscii+sum_osce+sum_ospe+sum_viva+sum_truefalse
       sum=sum+(seq_count)*10 if seq_count > 0
     elsif klass_id==0
-      template=Examtemplate.where(exam_id: id)
-      sum = template.mcqq.first.total_marks
-      sum_acq=template.mcqq.first.total_marks
-      sum_meq=template.meqq.first.total_marks
-      sum_osce=template.osceq.first.total_marks
-      sum_osci=template.osci2q.first.total_marks
-      sum_oscii=template.osci3q.first.total_marks
-      sum_ospe=template.ospeq.first.total_marks
-      sum_viva=template.vivaq.first.total_marks
-      sum_truefalse=template.truefalseq.first.total_marks
-      sum=sum+sum_acq+sum_meq+sum_osce+sum_osce+sum_osci+sum_oscii+sum_ospe+sum_truefalse+sum_viva
+      
+      #previous approach--start--requires examtemplates repeating fields to exist....
+#       template=Examtemplate.where(exam_id: id)
+#       sum = template.mcqq.first.total_marks
+#       sum_acq=template.mcqq.first.total_marks
+#       sum_meq=template.meqq.first.total_marks
+#       sum_osce=template.osceq.first.total_marks
+#       sum_osci=template.osci2q.first.total_marks
+#       sum_oscii=template.osci3q.first.total_marks
+#       sum_ospe=template.ospeq.first.total_marks
+#       sum_viva=template.vivaq.first.total_marks
+#       sum_truefalse=template.truefalseq.first.total_marks
+#       sum=sum+sum_acq+sum_meq+sum_osce+sum_osce+sum_osci+sum_oscii+sum_ospe+sum_truefalse+sum_viva
+      #previous approach--end--
+      
+      #new approach
+      unless topic_id.nil?
+        sum=0
+        exam_template.question_count.each do |k, v|
+          if v['count']!='' || v['count']!=nil #&& v['weight']!=''                          # NOTE some template has no weightage
+            qty=(v['count']).to_i
+            if k=="mcq"
+              sum1=qty*1 
+            elsif k=="seq" || k=="ospe"
+              sum1=qty*10
+            elsif k=="meq"
+              sum1=qty*20
+            else
+              sum1=qty #default to 1 first
+            end
+          end
+          sum+=sum1
+        end  
+
+      end
     end
     return sum
   end
@@ -313,14 +389,95 @@ class Exam < ActiveRecord::Base
      studentyear
   end
   
-  def ids_complete_exampaper
-    exam_ids_for_examtemplate = Examtemplate.pluck(:exam_id).uniq
-    exam_ids_for_examquestions2 = Exam.joins(:examquestions).map(&:id).uniq 
-    exam_ids_for_examquestions = Exam.where(id: exam_ids_for_examquestions2).pluck(:id).uniq
-    complete_exampaper = Exam.where('id IN (?) OR id IN (?)', exam_ids_for_examtemplate, exam_ids_for_examquestions)
-    ids_complete_exampaper = complete_exampaper.pluck(:id) 
-    ids_complete_exampaper
+  def complete_paper
+    unless exam_template.nil?
+      if klass_id==0 
+        complete=true 
+      elsif klass_id==1
+        completeness=[]       
+        exam_template.question_count.each do |k, v|
+          if v['count']!='' 
+            qty=(v['count']).to_i
+            if k=="mcq"
+              if examquestions.mcqq.count==qty
+                completeness << true
+              else
+                completeness << false
+              end
+            elsif k=="meq"
+              if examquestions.meqq.count==qty
+                completeness << true
+              else
+                completeness << false
+              end
+            elsif k=="seq" 
+              if examquestions.seqq.count==qty
+                completeness << true
+              else
+                completeness << false
+              end
+            elsif k=="acq"
+              if examquestions.acqq.count==qty
+                completeness << true
+              else
+                completeness << false
+              end
+            elsif k=="osci"
+              if examquestions.osci2q.count==qty
+                completeness << true
+              else
+                completeness << false
+              end
+            elsif k=="oscii"
+              if examquestions.osci3q.count==qty
+                completeness << true
+              else
+                completeness << false
+              end
+            elsif k=="osce"
+              if examquestions.osceq.count==qty
+                completeness << true
+              else
+                completeness << false
+              end
+            elsif k=="ospe"
+              if examquestions.ospeq.count==qty
+                completeness << true
+              else
+                completeness << false
+              end
+            elsif k=="viva"
+              if examquestions.vivaq.count==qty
+                completeness << true
+              else
+                completeness << false
+              end
+            elsif k=="truefalse"
+              if examquestions.truefalseq.count==qty
+                completeness << true
+              else
+                completeness << false
+              end
+            end
+          end
+        end
+        complete=true if completeness.include?(false)==false
+        complete=false if completeness.include?(false)==true 
+       end
+    else
+      complete=false
+    end
+    complete
   end
+  
+#   def ids_complete_exampaper
+#     exam_ids_for_examtemplate = Examtemplate.pluck(:exam_id).uniq
+#     exam_ids_for_examquestions2 = Exam.joins(:examquestions).map(&:id).uniq 
+#     exam_ids_for_examquestions = Exam.where(id: exam_ids_for_examquestions2).pluck(:id).uniq
+#     complete_exampaper = Exam.where('id IN (?) OR id IN (?)', exam_ids_for_examtemplate, exam_ids_for_examquestions)
+#     ids_complete_exampaper = complete_exampaper.pluck(:id) 
+#     ids_complete_exampaper
+#   end
   
   def separate_cover
     #[3,5,6,7,8,9,10,11,12,13,14]
@@ -344,6 +501,23 @@ class Exam < ActiveRecord::Base
     admin_users = Role.joins(:users).where(name: "Administration").pluck(:user_id)
     admins = User.where('id IN(?)', admin_users).pluck(:userable_id)
     creator_ids = pensyarah+lecturers+admins
+  end
+  
+  def valid_for_removal
+    finals_of_repeat=Exam.where(name: "R").pluck(:description)
+    finals=[]
+    finals_of_repeat.each{|y|finals << y.to_i}
+    if name=="F" && finals.include?(id)
+      return false
+    else
+      return true
+    end
+  end
+  
+  def remove_prev_examtemplates
+    if exam_template.nil? && examtemplates
+      examtemplates.destroy_all
+    end
   end
 
 private

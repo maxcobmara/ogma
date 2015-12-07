@@ -1,0 +1,9 @@
+= search_form_for [:exam_template, @search], url: exam_exam_templates_path,  class: "form-inline" do |f|
+  %tr.search_row{style: "display: none;"}
+    %td= f.text_field :name_cont, size: 2, class: 'form-control'
+    %td
+      .input-group
+        = f.text_field :creator_search, size: 8,  class: 'form-control' 
+        %span.input-group-btn
+          %button.btn.btn-sm.btn-default.right{:type => "submit"}
+            %i.fa.fa-search.fa-fw

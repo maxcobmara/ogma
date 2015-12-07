@@ -9,6 +9,14 @@
     %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "index_search_bar"
     %li.toga= link_to content_tag(:li, fa_icon("print", text: (t 'actions.print'))), "#", class: 'bogus'  
 
+.row
+  .col-md-12
+    .alert.alert-warning
+      %strong= t 'exam.exams.notes'
+      %ol
+        %li=t('exam.grade.complete_paper')
+        %li=t('exam.grade.exist_marks')
+
 = render 'shared/flashes'
 
 = form_tag new_multiple_exam_grades_path, :method => :put , :id => "form2" do
@@ -77,11 +85,8 @@
                 %td
                   - if grade.resit==true
                     &#10003
-                %td
-                  /column in grades table, once updated-data will be same as grade.finale
-                  - if grade.examweight.blank? == false && grade.exam1marks.blank? == false
-                    =h number_with_precision(grade.finale,:precision=>2)
-                %td=h grade.finale.blank? ? "" : grade.set_gred
+                %td=h number_with_precision(grade.finalscore, :precision => 2)
+                %td=h grade.finale.blank? ? "" : grade.render_grading[-2,2]
                 /grade table - 'score' field must exist, exam1marks, examweight too
               - index2+=1
     

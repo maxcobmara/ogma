@@ -207,7 +207,11 @@ class Exam_paperPdf < Prawn::Document
             ["","\u2022 Bahagian A mengandungi 20 soalan Objektif (Respon Tunggal). Jawab SEMUA soalan pada borang OMR yang disediakan."]]
     if [1, 4].include?(@exam.subject.root_id)
       if @exam.examquestions.seqq.count > 0
-        data1 << ["","\u2022 Bahagian B mengandungi 3 soalan SEQ (10 markah setiap satu). Jawab DUA (2) soalan sahaja dari bahagian ini."]
+        if @exam.subject.root_id==1
+          data1 << ["","\u2022 Bahagian B mengandungi 2 soalan SEQ (10 markah setiap satu). Jawab DUA (2) soalan dari bahagian ini."]
+        else
+          data1 << ["","\u2022 Bahagian B mengandungi 3 soalan SEQ (10 markah setiap satu). Jawab DUA (2) soalan sahaja dari bahagian ini."]
+        end
       end 
       if @exam.examquestions.meqq.count > 0
         data1 << ["","\u2022 Bahagian C mengandungi soalan MEQ (20 markah setiap satu)."]

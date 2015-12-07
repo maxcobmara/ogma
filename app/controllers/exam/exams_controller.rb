@@ -326,6 +326,20 @@ class Exam::ExamsController < ApplicationController
             end    
           end
       end
+      
+      #Repeat for Final only
+      finals_of_repeat=Exam.where(name: "R").pluck(:description)
+      finals=[]
+      finals_of_repeat.each{|y|finals << y.to_i}
+      completed_finals=[]
+      Exam.all.each{|x|completed_finals << x.id if x.complete_paper==true}
+      if @programme_id
+        subject_ids=Programme.where(id: @programme_id).first.descendants.where(course_type: 'Subject').pluck(:id)
+        @final_exams=Exam.where(subject_id: subject_ids).where(name: "F").where.not(id: finals).where(id: completed_finals)
+      else
+        @final_exams=Exam.where(name: "F").where.not(id: finals).where(id: completed_finals)
+      end
+                           
     end
     
     # Assign New & Create data only
