@@ -22,28 +22,36 @@
           %tbody
             - if @exammark
               - @marks_for_questions = Mark.where(exammark_id: @exammark.id).sort_by{|x|x.created_at}
- 
+              - @exam_template=@exammark.exampaper.exam_template
+              
               /start-display MCQ questions details
-              - if @examquestions.mcqq.count > 0 || @examtemplates.mcqq.count > 0
+              - @mcq_count=0
+              - @exam_template.question_count.each{|k,v|@mcq_count=v['count'].to_i if k=="mcq"}
+              /- if @examquestions.mcqq.count > 0 || @mcq_count > 0
+              - if @mcq_count > 0
                 = render 'show_mcq', :task=>1
 
               /start-display MEQ questions details
               - count2 = 0
-              - if @examquestions.meqq.count > 0 || @examtemplates.meqq.count > 0
+              - @meq_count=0
+              - @exam_template.question_count.each{|k,v|@ecq_count=v['count'].to_i if k=="meq"}
+              - if @examquestions.meqq.count > 0 || @meq_count > 0
                 - if @examquestions.meqq.count > 0
                   - meq_count = @examquestions.meqq.count-1
                 - else
-                  - meq_count = @examtemplates.meqq[0].try(:quantity)-1
+                  - meq_count = @meq_count-1
                 - 0.upto(meq_count) do |count|
                   = render 'show_meq', :count=>count, :count2=>count2, :task=>1
                   - count2+=1
                 
               /start-display SEQ questions details
-              - if @examquestions.seqq.count > 0 || @examtemplates.seqq.count > 0
+              - @seq_count=0
+              - @exam_template.question_count.each{|k,v|@seq_count=v['count'].to_i if k=="seq"}
+              - if @examquestions.seqq.count > 0 || @seq_count > 0
                 - if @examquestions.seqq.count > 0
                   - seq_count = @examquestions.seqq.count-1
                 - else
-                  - seq_count = @examtemplates.seqq[0].quantity-1 
+                  - seq_count = @seq_count-1 
                 - 0.upto(seq_count) do |count| 
                   = render 'show_seq', :count=>count, :count2=>count2, :task=>1
                   - count2+=1 

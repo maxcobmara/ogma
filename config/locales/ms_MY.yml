@@ -2258,7 +2258,7 @@ ms_MY:
       by_semester: semester
       create_exam: Teruskan & Tambah Template dan Soalan
       create_template: Teruskan & Pilih Template Peperiksaan
-      marks_each: "MCQ - 1 markah/setiap satu, MEQ - 20 markah/setiap satu, SEQ - 10 markah/setiap satu"
+      marks_each: "MCQ - 1 markah/setiap satu, MEQ - 20 markah/setiap satu, SEQ / OSPE - 10 markah/setiap satu"
       filters: Saringan
       existing: Soalan TELAH dipilih
       programme_subject_topic: "* Pilih Program, Subjek, Topik and klik pautan 'Display Available Questions' untuk memapar soalan yang tersedia bagi topik dipilih."
@@ -2277,6 +2277,7 @@ ms_MY:
       remove_previous: "Template / struktur soalan terdahulu (seperti di bawah) akan dibuang sebaik sahaja butang 'Kemaskini' diklik."
       select_exam_template: "Sila pilih template kertas peperiksaan di atas. Sekiranya template yang bersesuaian tiada, sila cipta dalam Template Kertas Peperiksaan. "
       previous_template: " (Terdahulu / Luput)"
+      full_marks: Jumlah Markah
     
     exammark:
       title: Markah Kertas Peperiksaan
