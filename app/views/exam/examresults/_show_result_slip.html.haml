@@ -114,16 +114,16 @@
               /ref : KEPUTUSAN SEM 4-6 KSKBJB.xlsx - Cara Kerja(subject status - Cemerlang, Kepujian, Lulus, Gagal)
       
               - if [@cara_kerja, @perubatan].include?(@resultline.examresult.programme_id)
-                - if @grading=="A" || @grading=="A-"
+                - if @grading.strip=="A" || @grading=="A-"
                   = I18n.t('exam.examresult.excellent')
-                - elsif @grading=="B+"||@grading=="B"||@grading=="B-"
+                - elsif @grading=="B+"||@grading.strip=="B"||@grading=="B-"
                   = I18n.t('exam.examresult.distinction')
-                - elsif @grading=="C+"||@grading=="C"
+                - elsif @grading=="C+"||@grading.strip=="C"
                   = I18n.t('exam.examresult.passed')
                 - else
                   = I18n.t('exam.examresult.failed')
               - else
-                - if @grading=="A" || @grading=="A-" ||@grading=="B+"||@grading=="B"||@grading=="B-"||@grading=="C+"||@grading=="C"
+                - if @grading.strip=="A" || @grading=="A-" ||@grading=="B+"||@grading.strip=="B"||@grading=="B-"||@grading=="C+"||@grading.strip=="C"
                   = I18n.t('exam.examresult.passed')
                 - else 
                   = I18n.t('exam.examresult.failed')

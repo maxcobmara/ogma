@@ -227,7 +227,7 @@ class Examination_slipPdf < Prawn::Document
       end
       
       if english_subjects.include?(subject.code[0,4])|| (subject.code.strip.size < 10 && (subject.code.strip[-2,1].to_i==2 || subject.code.strip[-2,1].to_i==3))
-        if grading=="A" || grading=="A-" ||grading=="B+"||grading=="B"||grading=="B-"||grading=="C+"||grading=="C"
+        if grading.strip=="A" || grading=="A-" ||grading=="B+"||grading.strip=="B"||grading=="B-"||grading=="C+"||grading.strip=="C"
           @remark << I18n.t('exam.examresult.passed')
         else 
           @remark << I18n.t('exam.examresult.failed')
@@ -237,17 +237,17 @@ class Examination_slipPdf < Prawn::Document
         #ref : https://trello.com/c/W7hjdKzp (Perubatan)
         #ref : KEPUTUSAN SEM 4-6 KSKBJB.xlsx - Cara Kerja(subject status - Cemerlang, Kepujian, Lulus, Gagal)
         if [@cara_kerja, @perubatan].include?(@resultline.examresult.programme_id)
-          if grading=="A" || grading=="A-"
+          if grading.strip=="A" || grading=="A-"
             @remark << I18n.t('exam.examresult.excellent')
-          elsif grading=="B+"||grading=="B"||grading=="B-"
+          elsif grading=="B+"||grading.strip=="B"||grading=="B-"
             @remark << I18n.t('exam.examresult.distinction')
-          elsif grading=="C+"||grading=="C"
+          elsif grading=="C+"||grading.strip=="C"
             @remark << I18n.t('exam.examresult.passed')
           else
             @remark << I18n.t('exam.examresult.failed')
           end
         else
-          if grading=="A" || grading=="A-" ||grading=="B+"||grading=="B"||grading=="B-"||grading=="C+"||grading=="C"
+          if grading.strip=="A" || grading=="A-" ||grading=="B+"||grading.strip=="B"||grading=="B-"||grading=="C+"||grading.strip=="C"
             @remark << I18n.t('exam.examresult.passed')
           else 
              @remark << I18n.t('exam.examresult.failed')

@@ -41,6 +41,7 @@
             /maintan entered values, although errors arise
             - if @examresult.resultlines
               /.count > 0
+              - @value_state=[]
               - @value_status = @examresult.resultlines[no].status if @examresult.resultlines[no]
               - @value_remark = @examresult.resultlines[no].remark if @examresult.resultlines[no]
               - @value_id = @examresult.resultlines[no].id if @examresult.resultlines[no]
@@ -75,11 +76,15 @@
                 - if @grade_student.count > 0
                   - if english_subjects.include?(subject.code[0,4]) || (subject.code.strip.size < 10 && (subject.code.strip[-2,1].to_i==2 || subject.code.strip[-2,1].to_i==3))
                     %td.centre{colspan: 2}=@examresult.resultlines[no].render_status_contra
+                    - @grade_eng=@examresult.resultlines[no].status
                   - else
-                    %td= @grade_student.first.render_grading.split("-")[2] 
+                    %td= @gradeit=@grade_student.first.render_grading.split("-")[2] 
                     %td= @grade_student.first.set_NG.to_f 
                   /https://trello.com/c/zlIT9mSO - Kebidanan (STATUS) : gagal if any of subject is failed - Kejururawatan too
-                  - @value_status='4' if [kebidanan, kejururawatan].include?(@examresult.programme_id) && @gradeit=="C-"  
+                  - @value_state << '4' if [kebidanan, kejururawatan].include?(@examresult.programme_id) && ["C-", "D+", "D", "E"].include?(@gradeit)==true
+                  - @value_state << '3' if [kebidanan, kejururawatan].include?(@examresult.programme_id) && ["C-", "D+", "D", "E"].include?(@gradeit)==false
+                  - @value_state << '4' if [kebidanan, kejururawatan].include?(@examresult.programme_id) && @grade_eng=='4'
+                  - @value_state << '3' if [kebidanan, kejururawatan].include?(@examresult.programme_id) && @grade_eng=='3'
                 - else
                   - if english_subjects.include?(subject.code[0,4]) || (subject.code.strip.size < 10 && (subject.code.strip[-2,1].to_i==2 || subject.code.strip[-2,1].to_i==3))
                     /Lulus OR Gagal 
@@ -87,9 +92,10 @@
                   - else
                     %td.centre &nbsp;
                     %td.centre 0.00
+                  - @value_state << '4'
                   /https://trello.com/c/zlIT9mSO - Kebidanan (STATUS) : gagal if any of subject has no grade - Kejururawatan too
-                  - @value_status='4' if [kebidanan, kejururawatan].include?(@examresult.programme_id) && @gradeit=="C-" 
-
+                  
+            
             - total_point=number_with_precision(Examresult.total(final2_all, credit2_all), precision: 2)
             - if final2_all.count > 0 && credit2_all.count > 0
               - gpa=number_with_precision((Examresult.total(final2_all, credit2_all) / credit2_all.sum), precision: 2)
@@ -117,6 +123,10 @@
               - status_selection = DropDown::RESULT_STATUS
             %td
               - if [kebidanan, kejururawatan].include?(@examresult.programme_id)
+                - if @value_state.uniq.include?('4') 
+                  - @value_status='4'
+                - else
+                  - @value_status='3'
                 = hidden_field "examresult[resultlines_attributes][#{no}]", :status, :size =>8, :value => @value_status
                 =(DropDown::RESULT_STATUS.find_all{|disp, value| value == @value_status}).map {|disp, value| disp}[0]
               - else
