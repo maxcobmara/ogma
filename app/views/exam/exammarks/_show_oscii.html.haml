@@ -3,7 +3,7 @@
     - if @examquestions.count>0
       %td{:rowspan=>"#{@examquestions.osci3q.count}"} OSCII
     - else
-      %td{:rowspan=>"#{@examtemplates.osci3q[0].quantity}"} OSCII
+      %td{:rowspan=>"#{@oscii_count}"} OSCII
   %td=count+1
   %td
     - if @examquestions.count>0
@@ -11,6 +11,8 @@
     - else
       \-
   %td
+    - @oscii_totalmarks=0
+    - @exam_template.question_count.each{|k,v|@oscii_totalmarks=v['count'].to_i*1 if k=="oscii"}
     - if task==1
       = number_with_precision(@marks_for_questions[count2].student_mark, precision: 2)
     - elsif task==2
@@ -23,4 +25,4 @@
     - if @examquestions.count>0
       =number_with_precision(@examquestions.osci3q[count].marks,precision: 2) 
     - else
-      =number_with_precision(@examtemplates.osci3q[0].total_marks/@examtemplates.osci3q[0].quantity, precision: 2)
+      =number_with_precision(@oscii_totalmarks/@oscii_count, precision: 2)

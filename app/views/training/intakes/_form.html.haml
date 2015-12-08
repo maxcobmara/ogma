@@ -12,7 +12,7 @@
             .col-sm-2.control-label
               = f.label :programme_id
             .col-md-3
-              = f.collection_select :programme_id, Programme.roots, :id, :programme_list, {:include_blank=> (t 'helpers.prompt.select_programme')},{class: 'selectpicker', "data-width"=>'280px'}
+              = f.collection_select :programme_id, Programme.roots.order(course_type: :asc, name: :asc), :id, :programme_list, {:include_blank=> (t 'helpers.prompt.select_programme')},{class: 'selectpicker', "data-width"=>'280px'}
           .form-group
             .col-sm-2.control-label
               = f.label :name

@@ -377,6 +377,14 @@ module DropDown
             [ "Lulus", "3"],
             [ "Gagal", "4"]
   ]
+    
+    #Resultline
+    RESULT_REMARK =[
+            #  Displayed       stored in db
+            [ "Ulang Subjek", "1"],
+            [ "VIVA", "2"],
+            [ "Berhenti", "3"]
+   ]
      
     DAY_CHOICE = [
          #  Displayed       stored in db

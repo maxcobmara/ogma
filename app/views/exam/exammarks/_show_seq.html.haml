@@ -26,4 +26,4 @@
     - if @examquestions.count>0
       =number_with_precision(@examquestions.seqq[count].marks, precision: 2) 
     - else
-      =number_with_precision(@seq_totalmarks, precision: 2) 
+      =number_with_precision(@seq_totalmarks/@seq_count, precision: 2) 
