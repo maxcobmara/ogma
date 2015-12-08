@@ -209,7 +209,7 @@ class Exam::ExamquestionsController < ApplicationController
         @programme_list=Programme.where(id: posbasiks.pluck(:id))
         @subjects=Programme.subject_groupbyposbasiks2
       else
-        @preselect_prog = @examquestion.programme_id
+        @preselect_prog = @examquestion.subject.root_id
         @programme_list=Programme.where(id: @preselect_prog)
         common_subjects=['Sains Tingkahlaku','Sains Perubatan Asas', 'Komunikasi & Sains Pengurusan', 'Anatomi & Fisiologi', 'Komuniti']
         if common_subjects.include?(@lecturer_programme) 
