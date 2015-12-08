@@ -5,6 +5,8 @@ class Examination_slipPdf < Prawn::Document
     @perubatan=Programme.where(course_type: 'Diploma').where('name ILIKE (?)', 'Penolong Pegawai Perubatan').first.id
     @cara_kerja=Programme.where(course_type: 'Diploma').where('name ILIKE (?)', 'Jurupulih Perubatan Cara Kerja').first.id
     @fisioterapi=Programme.where(course_type: 'Diploma').where('name ILIKE (?)', '%Fisioterapi%').first.id
+    @kebidanan = Programme.roots.where('name ILIKE(?)', '%Kebidanan%').first.id
+    @kejururawatan = Programme.roots.where('name ILIKE(?)', '%Kejururawatan%').first.id
     if resultline.examresult.programme_id==@perubatan
       super({top_margin: 20, left_margin:30, right_margin:20, page_size: 'A4', page_layout: :portrait })
     else
@@ -203,6 +205,7 @@ class Examination_slipPdf < Prawn::Document
     @finale=[]
     @remark=[]
     @credit=[]
+    @value_state=[]
     for subject in subjects
       student_grade = Grade.where('student_id=? and subject_id=?',@resultline.student.id,subject.id).first
       unless student_grade.nil? || student_grade.blank?
@@ -229,8 +232,10 @@ class Examination_slipPdf < Prawn::Document
       if english_subjects.include?(subject.code[0,4])|| (subject.code.strip.size < 10 && (subject.code.strip[-2,1].to_i==2 || subject.code.strip[-2,1].to_i==3))
         if grading.strip=="A" || grading=="A-" ||grading=="B+"||grading.strip=="B"||grading=="B-"||grading=="C+"||grading.strip=="C"
           @remark << I18n.t('exam.examresult.passed')
+          @value_state << '3'
         else 
           @remark << I18n.t('exam.examresult.failed')
+          @value_state << '4'
         end
       else
         #******************************
@@ -239,18 +244,24 @@ class Examination_slipPdf < Prawn::Document
         if [@cara_kerja, @perubatan].include?(@resultline.examresult.programme_id)
           if grading.strip=="A" || grading=="A-"
             @remark << I18n.t('exam.examresult.excellent')
+            @value_state << '3'
           elsif grading=="B+"||grading.strip=="B"||grading=="B-"
             @remark << I18n.t('exam.examresult.distinction')
+            @value_state << '3'
           elsif grading=="C+"||grading.strip=="C"
             @remark << I18n.t('exam.examresult.passed')
+            @value_state << '3'
           else
             @remark << I18n.t('exam.examresult.failed')
+            @value_state << '4'
           end
         else
           if grading.strip=="A" || grading=="A-" ||grading=="B+"||grading.strip=="B"||grading=="B-"||grading=="C+"||grading.strip=="C"
             @remark << I18n.t('exam.examresult.passed')
+            @value_state << '3'
           else 
-             @remark << I18n.t('exam.examresult.failed')
+            @remark << I18n.t('exam.examresult.failed')
+            @value_state << '4'
           end
         end
         #******************************
@@ -271,76 +282,107 @@ class Examination_slipPdf < Prawn::Document
     if @resultline.examresult.programme_id==@cara_kerja
       result_by_subjectline=[]
       subjects.each_with_index do |subject, counting|
-        result_by_subjectline << [subject.code, subject.name, @grading2[counting], @finale[counting], @remark[counting]]
+        # TODO refractor this###
+        if @value_state[counting]=='4' && @resultline.remark=='1'
+          repeat_or_viva="  "+I18n.t('exam.examresult.repeating')
+        elsif @value_state[counting]=='4' && @resultline.remark=='2'
+          repeat_or_viva="  (VIVA)"
+        else
+          repeat_or_viva=""
+        end
+        ###
+        result_by_subjectline << [subject.code, subject.name+repeat_or_viva, @grading2[counting], @finale[counting], @remark[counting]]
       end 
       result_by_subjectline
     elsif @resultline.examresult.programme_id==@perubatan
       result_by_subjectline=[]
       subjects.each_with_index do |subject, counting|
-      if counting==0
-        subject_line=[subject.code, subject.name.titleize, "", @credit[counting], @grading2[counting], @finale[counting], @remark[counting], ""] 
-      else
-        subject_line=[subject.code, {content: subject.name.titleize, colspan: 2}, @credit[counting], @grading2[counting], @finale[counting], @remark[counting], "" ] 
-      end
-      if counting==0
-        ulasan_gred=["A", {content: "Cemerlang", rowspan: 2}]
-      elsif counting==1
-        ulasan_gred=["A-"]
-      elsif counting==2
-        ulasan_gred=["B+", {content: "Baik", rowspan: 3}]
-      elsif counting==3
-        ulasan_gred=["B"]
-      elsif counting==4
-        ulasan_gred=["B-"]
-      elsif counting==5
-        ulasan_gred=["C+", {content: "Lulus", rowspan: 2}]
-      elsif counting==6
-        ulasan_gred=["C"]
-      elsif counting==7
-        ulasan_gred=["C-", {content: "Gagal", rowspan: 4}]
-      elsif counting==8
-        ulasan_gred=["D+"]
-      elsif counting==9
-        ulasan_gred=["D"]
-      else
-        ulasan_gred=["E"]
-      end
-      subject_line+=ulasan_gred
-      result_by_subjectline << subject_line
-    end
-    if subjects.count < 11
-      (subjects.count+1).upto(11).each do |y|
-        if y == 10
-          nosubject_line = [{content: "<b>Keputusan<br>Peperiksaan</b>", rowspan: 2},"Jumlah NGK","#{@total_point}", "PNGS","#{@gpa}","PNGK","#{@cgpa}",""]
-        elsif y==11
-          nosubject_line = ["Status","#{@resultline.render_status_contra}","Catatan",{content: "", colspan: 3}, ""]
+        # TODO refractor this###
+        if @value_state[counting]=='4' && @resultline.remark=='1'
+          repeat_or_viva="  "+I18n.t('exam.examresult.repeating')
+        elsif @value_state[counting]=='4' && @resultline.remark=='2'
+          repeat_or_viva="  (VIVA)"
         else
-          nosubject_line = ["",{content: "", colspan: 2},"","","","",""]
+          repeat_or_viva=""
         end
-        if y==5
+        ###
+        if counting==0
+          subject_line=[subject.code, subject.name.titleize+repeat_or_viva, "", @credit[counting], @grading2[counting], @finale[counting], @remark[counting], ""] 
+        else
+          subject_line=[subject.code, {content: subject.name.titleize+repeat_or_viva, colspan: 2}, @credit[counting], @grading2[counting], @finale[counting], @remark[counting], "" ] 
+        end
+        if counting==0
+          ulasan_gred=["A", {content: "Cemerlang", rowspan: 2}]
+        elsif counting==1
+          ulasan_gred=["A-"]
+        elsif counting==2
+          ulasan_gred=["B+", {content: "Baik", rowspan: 3}]
+        elsif counting==3
           ulasan_gred=["B"]
-        elsif y==6
+        elsif counting==4
           ulasan_gred=["B-"]
-        elsif y==7
-          ulasan_gred=["C+"]
-        elsif y==8
-          ulasan_gred=["C-"]
-        elsif y==9
+        elsif counting==5
+          ulasan_gred=["C+", {content: "Lulus", rowspan: 2}]
+        elsif counting==6
+          ulasan_gred=["C"]
+        elsif counting==7
+          ulasan_gred=["C-", {content: "Gagal", rowspan: 4}]
+        elsif counting==8
           ulasan_gred=["D+"]
-        elsif y==10
+        elsif counting==9
           ulasan_gred=["D"]
-        elsif y==11
+        else
           ulasan_gred=["E"]
         end
-        nosubject_line+=ulasan_gred if ulasan_gred
-        result_by_subjectline << nosubject_line
+        subject_line+=ulasan_gred
+        result_by_subjectline << subject_line
       end
-    end
-    result_by_subjectline
+      if subjects.count < 11
+        (subjects.count+1).upto(11).each do |y|
+          if y == 10
+            nosubject_line = [{content: "<b>Keputusan<br>Peperiksaan</b>", rowspan: 2},"Jumlah NGK","#{@total_point}", "PNGS","#{@gpa}","PNGK","#{@cgpa}",""]
+          elsif y==11
+            nosubject_line = ["Status","#{@resultline.render_status_contra}","Catatan",{content: "", colspan: 3}, ""]
+          else
+            nosubject_line = ["",{content: "", colspan: 2},"","","","",""]
+          end
+          if y==5
+            ulasan_gred=["B"]
+          elsif y==6
+            ulasan_gred=["B-"]
+          elsif y==7
+            ulasan_gred=["C+"]
+          elsif y==8
+            ulasan_gred=["C-"]
+          elsif y==9
+            ulasan_gred=["D+"]
+          elsif y==10
+            ulasan_gred=["D"]
+          elsif y==11
+            ulasan_gred=["E"]
+          end
+          nosubject_line+=ulasan_gred if ulasan_gred
+          result_by_subjectline << nosubject_line
+        end
+      end
+      result_by_subjectline
     else
-        subjects.map do |subject|
-            ["#{counter += 1}", subject.subject_list, @grading2[counter-1], @finale[counter-1], @remark[counter-1]]
+      result_by_subjectline=[]
+        subjects.each_with_index do |subject, counting|
+	    # TODO refractor this###
+            if @value_state[counting]=='4' && @resultline.remark=='1'
+              repeat_or_viva="  "+I18n.t('exam.examresult.repeating')
+            elsif @value_state[counting]=='4' && @resultline.remark=='2'
+              repeat_or_viva="  (VIVA)"
+            else
+              repeat_or_viva=""
+            end
+            ###
+	    subject_line=["#{counting +1}", subject.subject_list+repeat_or_viva, @grading2[counting], @finale[counting], @remark[counting]] 
+            #["#{counter += 1}", subject.subject_list, @grading2[counter-1], @finale[counter-1], @remark[counter-1]+" "+@value_state[counter-1]]
+	    result_by_subjectline << subject_line
         end 
+        result_by_subjectline
     end
   end
   
@@ -400,10 +442,19 @@ class Examination_slipPdf < Prawn::Document
       end
     else
       #ref : KEPUTUSAN SEM 4-6 KSKBJB.xlsx - Cara Kerja(overall status - Lulus, Gagal)
-      if [@cara_kerja, @fisioterapi].include?(@resultline.examresult.programme_id)
-        render_status_view=@resultline.render_status_contra #3..4 (Lulus, Gagal)
+      if [@kebidanan, @kejururawatan].include?(@resultline.examresult.programme_id)
+        if @value_state.uniq.include?("4") 
+          @value_status='4'
+        else
+          @value_status='3'
+        end
+        render_status_view=(DropDown::RESULT_STATUS.find_all{|disp, value| value == @value_status}).map {|disp, value| disp}[0]
       else
-        render_status_view=@resultline.render_status #1..4 (Cemerlang, Kepujian, Lulus, Gagal)
+        if [@cara_kerja, @fisioterapi].include?(@resultline.examresult.programme_id)
+          render_status_view=@resultline.render_status_contra #3..4 (Lulus, Gagal)
+        else
+          render_status_view=@resultline.render_status #1..4 (Cemerlang, Kepujian, Lulus, Gagal)
+        end
       end
       data = [["<b>#{(@resultline.examresult.render_semester).upcase}</b>","<b> JUMLAH</b>"]]
       if @resultline.examresult.programme_id!=@fisioterapi        
@@ -412,7 +463,7 @@ class Examination_slipPdf < Prawn::Document
 
       data+=[["Purata Nilai Gred Semester (PNGS)", @gpa],
                  ["Purata Nilai Gred Kumulatif (PNGK)", @cgpa ],
-                 ["<b>STATUS</b>", render_status_view],
+                 ["<b>STATUS</b>", render_status_view+" & "+@resultline.render_remark ],
                  [{content: "Ini adalah cetakan komputer, tandatangan tidak diperlukan. <br><b><i>Tidak sah untuk kegunaan rasmi.</i></b>", colspan: 2}], 
                   [{content: "Tarikh: #{@view.l(Date.today)}", colspan: 2}]]
                  #data << [{content: chairman_notes, colspan: 2}]

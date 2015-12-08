@@ -12,6 +12,10 @@ class Resultline < ActiveRecord::Base
     (DropDown::RESULT_STATUS_CONTRA.find_all{|disp, value| value == status}).map {|disp, value| disp}[0]
   end
   
+  def render_remark
+    (DropDown::RESULT_REMARK.find_all{|disp, value|value==remark}).map{|disp, value| disp}[0]
+  end
+  
   def self.search2(search)
     valid_examresult=Examresult.pluck(:id)
     if search 

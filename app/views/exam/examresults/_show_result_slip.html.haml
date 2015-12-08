@@ -48,13 +48,20 @@
       - @no=0
       - @cara_kerja=Programme.where(course_type: 'Diploma').where('name ILIKE (?)', 'Jurupulih Perubatan Cara Kerja').first.id
       - @perubatan=Programme.where(course_type: 'Diploma').where('name ILIKE (?)', 'Penolong Pegawai Perubatan').first.id
+      - kebidanan = Programme.roots.where('name ILIKE(?)', '%Kebidanan%').first.id
+      - kejururawatan = Programme.roots.where('name ILIKE(?)', '%Kejururawatan%').first.id
       - credit_all=[]
       - credit2_all=[]
       - final2_all=[]
+      - @value_state=[]
       - for subject in @subjects 
         - @student_grade = Grade.where('student_id=? and subject_id=?',@resultline.student.id,subject.id).first
         - @student_finale = Grade.where('student_id=? and subject_id=?',@resultline.student.id,subject.id).first
         - english_subjects=['PTEN', 'NELA', 'NELB', 'NELC', 'MAPE', 'XBRE', 'OTEL'] 
+        - unless @student_grade.nil? || @student_grade.blank?
+          - @grading=@student_grade.render_grading[-2,2].strip
+        - else
+          - @grading="E"
         ////
         - if subject.code.size >9
           - credit_all << subject.code[10,1].to_i
@@ -67,15 +74,39 @@
         ////
         %tr
           %td=@no+=1
-          %td= subject.subject_list 
+          
+          // TODO - refractor this - START - duplicates below
+          - if english_subjects.include?(subject.code[0,4])|| (subject.code.strip.size < 10 && (subject.code.strip[-2,1].to_i==2 || subject.code.strip[-2,1].to_i==3))
+            - if @grading=="A" || @grading=="A-" ||@grading=="B+"||@grading=="B"||@grading=="B-"||@grading=="C+"||@grading=="C"
+              - value_state = '3'
+            - else 
+              - value_state = '4'
+          - else
+            - if [@cara_kerja, @perubatan].include?(@resultline.examresult.programme_id)
+              - if @grading.strip=="A" || @grading=="A-" || @grading=="B+"||@grading.strip=="B"||@grading=="B-" || @grading=="C+"||@grading.strip=="C"
+                - value_state = '3'
+              - else
+                - value_state = '4'
+            - else
+              - if @grading.strip=="A" || @grading=="A-" ||@grading=="B+"||@grading.strip=="B"||@grading=="B-"||@grading=="C+"||@grading.strip=="C"
+                - value_state = '3'
+              - else 
+                - value_state = '4'
+          // TODO - refractor this - END
+          
+          %td
+            = subject.subject_list 
+            - if value_state=='4' && @resultline.remark=='1'
+              %strong
+                &nbsp;&nbsp;
+                = t('exam.examresult.repeating')
+            - elsif value_state=='4' && @resultline.remark=='2'
+              %strong  &nbsp;&nbsp;(VIVA)
           %td.centre
             - if english_subjects.include?(subject.code[0,4]) || (subject.code.strip.size < 10 && (subject.code.strip[-2,1].to_i==2 || subject.code.strip[-2,1].to_i==3))
               \-
             - else
-              - unless @student_grade.nil? || @student_grade.blank?
-                =@grading=@student_grade.render_grading[-2,2] 
-              - else
-                =@grading="E"
+              =@grading
           %td.centre
             /- unless @student_finale.nil? || @student_finale.blank? 
             /  =sprintf('%.2f', @student_finale.set_NG.to_f)
@@ -106,8 +137,10 @@
             - if english_subjects.include?(subject.code[0,4])|| (subject.code.strip.size < 10 && (subject.code.strip[-2,1].to_i==2 || subject.code.strip[-2,1].to_i==3))
               - if @grading=="A" || @grading=="A-" ||@grading=="B+"||@grading=="B"||@grading=="B-"||@grading=="C+"||@grading=="C"
                 =I18n.t('exam.examresult.passed')
+                - @value_state << '3'
               - else 
                 = I18n.t('exam.examresult.failed')
+                - @value_state << '4'
             - else
               /******************************
               /ref : https://trello.com/c/W7hjdKzp (Perubatan)
@@ -116,17 +149,23 @@
               - if [@cara_kerja, @perubatan].include?(@resultline.examresult.programme_id)
                 - if @grading.strip=="A" || @grading=="A-"
                   = I18n.t('exam.examresult.excellent')
+                  - @value_state << '3'
                 - elsif @grading=="B+"||@grading.strip=="B"||@grading=="B-"
                   = I18n.t('exam.examresult.distinction')
+                  - @value_state << '3'
                 - elsif @grading=="C+"||@grading.strip=="C"
                   = I18n.t('exam.examresult.passed')
+                  - @value_state << '3'
                 - else
                   = I18n.t('exam.examresult.failed')
+                  - @value_state << '4'
               - else
                 - if @grading.strip=="A" || @grading=="A-" ||@grading=="B+"||@grading.strip=="B"||@grading=="B-"||@grading=="C+"||@grading.strip=="C"
                   = I18n.t('exam.examresult.passed')
+                  - @value_state << '3'
                 - else 
                   = I18n.t('exam.examresult.failed')
+                  - @value_state << '4'
               /******************************
             ///
 
@@ -160,4 +199,15 @@
           =cgpa=number_with_precision(Examresult.cgpa_per_sem(@resultlines, semno), precision: 2)  if @resultlines.count-1==semno
       %tr
         %td STATUS
-        %td=h @resultline.render_status
+        %td
+          - if [kebidanan, kejururawatan].include?(@resultline.examresult.programme_id)
+            - if @value_state.uniq.include?('4') 
+              - @value_status='4'
+            - else
+              - @value_status='3'
+            =(DropDown::RESULT_STATUS.find_all{|disp, value| value == @value_status}).map {|disp, value| disp}[0]+" & "+@resultline.render_remark
+          - else
+            - if [@cara_kerja, @fisioterapi].include?(@resultline.examresult.programme_id)
+              =h @resultline.render_status_contra+" & "+@resultline.render_remark
+            - else
+              =h @resultline.render_status+" & "+@resultline.render_remark

@@ -34,7 +34,7 @@
               /start-display MEQ questions details
               - count2 = 0
               - @meq_count=0
-              - @exam_template.question_count.each{|k,v|@ecq_count=v['count'].to_i if k=="meq"}
+              - @exam_template.question_count.each{|k,v|@meq_count=v['count'].to_i if k=="meq"}
               - if @examquestions.meqq.count > 0 || @meq_count > 0
                 - if @examquestions.meqq.count > 0
                   - meq_count = @examquestions.meqq.count-1
