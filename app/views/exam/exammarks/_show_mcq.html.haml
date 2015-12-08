@@ -28,12 +28,14 @@
 - else
   %tr
     %td MCQ
-    %td="1 - "+@examtemplates.mcqq[0].quantity.to_s 
+    %td="1 - "+@mcq_count.to_s 
     %td 
       \-
     %td
-      - marks_ary = @examtemplates.mcqq.pluck(:total_marks) 
-      - @mcq_totalmarks = marks_ary.inject{|sum,x|sum+x}
+      /- marks_ary = @examtemplates.mcqq.pluck(:total_marks) 
+      /- @mcq_totalmarks = marks_ary.inject{|sum,x|sum+x}
+      - @mcq_totalmarks=0
+      - @exam_template.question_count.each{|k,v|@mcq_totalmarks=v['count'].to_i*1 if k=="mcq"}
       - if task==1
         =number_with_precision(@exammark.total_mcq,precision: 2)  
       - elsif task==2

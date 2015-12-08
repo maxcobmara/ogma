@@ -148,7 +148,7 @@ class Exammark < ActiveRecord::Base
   def self.fullmarks(exam_id)
     @istemplate = Exam.find(exam_id).klass_id
     if @istemplate == 0 
-      fullmarks = Exam.find(exam_id).examtemplates.map(&:total_marks).inject{|sum,x|sum+x}
+      fullmarks = Exam.find(exam_id).set_full_marks #examtemplates.map(&:total_marks).inject{|sum,x|sum+x}
     else
       fullmarks = Exam.find(exam_id).examquestions.map(&:marks).to_a.inject{|sum,x|sum+x}
     end
@@ -208,9 +208,36 @@ class Exammark < ActiveRecord::Base
       questions_count = Examquestion.joins(:exams).where('exam_id=? and questiontype!=?', examid, "MCQ").count
                                     #Exam.where(id: examid).first.examquestions.count
     elsif is_template==0
-      qty_ary = Exam.where(id: examid).first.examtemplates.pluck(:quantity) 
-      group_qty = qty_ary-[qty_ary[0]]
-      questions_count = group_qty.sum  #total questions other than MCQ type
+#       qty_ary = Exam.where(id: examid).first.examtemplates.pluck(:quantity) 
+#       group_qty = qty_ary-[qty_ary[0]]
+#       questions_count = group_qty.sum  #total questions other than MCQ type
+      exam_template=Exam.find(examid).exam_template
+      questions_count=0
+      exam_template.question_count.each{|k,v|questions_count+=v['count'].to_i if k!="mcq" && (v['count']!='' || v['count']!=nil)}
+#       exam_template.question_count.each do |k, v|
+#         if v['count']!='' || v['count']!=nil #&& v['weight']!=''                          
+#           qty=(v['count']).to_i
+#           if k=="mcq"
+#             @mcqcount=qty
+#           elsif k=="meq"
+#             @meqcount=qty
+#           elsif k=="seq" 
+#             @seqcount=qty
+#           elsif k=="acq"
+#             @acqcount=qty 
+#           elsif k=="osci"
+#             @oscicount=qty
+#           elsif k=="oscii"
+#             @osciicount=qty
+#           elsif k=="osce"
+#             @oscecount=qty
+#           elsif k=="ospe"
+#             @ospecount=qty
+#           elsif k=="viva"
+#             @oscicount=qty
+#           end
+#         end
+#       end
     end
     questions_count
   end

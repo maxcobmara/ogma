@@ -114,7 +114,7 @@ class Exam < ActiveRecord::Base
   def set_full_marks
     unless id.nil? || id.blank?
       if klass_id == 0
-        self.full_marks = examtemplates.sum(:total_marks).to_i
+        self.full_marks = total_marks  #examtemplates.sum(:total_marks).to_i
       elsif klass_id==1
         self.full_marks = total_marks
       end

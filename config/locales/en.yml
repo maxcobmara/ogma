@@ -2318,7 +2318,7 @@ en:
       by_semester: by semester
       create_exam: Proceed & Add Template and Question
       create_template: Proceed  & Select Exam Template ONLY
-      marks_each: "MCQ - 1 marks/each, MEQ - 20 marks/each, SEQ - 10 marks/each"
+      marks_each: "MCQ - 1 marks/each, MEQ - 20 marks/each, SEQ / OSPE - 10 marks/each"
       filters: Filters
       existing: Existing Questions
       programme_subject_topic: "* Select Programme, Subject, Topic and click 'Display Available Questions' link to view available questions."
@@ -2337,6 +2337,7 @@ en:
       remove_previous: "Clicking 'Update' button shall remove previous question template/structure (below). "
       select_exam_template: "Please select above exampaper template accordingly. Should you found there's no suitable template for selection, please create one in Exampaper Template. "
       previous_template: " (Expiring)"
+      full_marks: Full Marks
 
     exammark:
       title: Marks by Examination Papers

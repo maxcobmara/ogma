@@ -21,10 +21,21 @@
             %dl.dl-horizontal
               %dt= t 'exam.exammark.exam_id'
               %dd
-                =h @exammarks[0].exampaper.full_exam_name
-                - @istemplate = @exammarks[0].exampaper.klass_id
-                - if @istemplate == 0 
-                  (Template)
+                %table
+                  %tr
+                    %td
+                      =h @exammarks[0].exampaper.full_exam_name
+                      =t 'exam.exams.with_questions' if @exammarks[0].exampaper.klass_id == 1
+              %dt=t 'exam.exam_template.template_in_use'
+              %dd=h @exammarks[0].exampaper.exam_template.name
+              %dt=t 'exam.exams.full_marks'
+              %dd
+                %table
+                  %tr
+                    %td=h @exammarks[0].exampaper.total_marks
+                    %td.small
+                      &nbsp;
+                      ="("+t('exam.exams.marks_each')+")"
     
           #exammark_details.tab-pane.active
             .col-md-11

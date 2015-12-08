@@ -17,20 +17,48 @@
 - @examid = @exammarks[0].exam_id 
 - @istemplate = Exam.find(@examid).klass_id
 - if @istemplate == 0
-  - @examtemplates = Exam.find(@examid).examtemplates
-  - qty_ary = @examtemplates.map(&:quantity)
-  - @questioncount = qty_ary.inject{|sum,x|sum+x}
-  - @mcqcount = @examtemplates.mcqq[0].quantity 
-  - @meqcount = @examtemplates.meqq[0].quantity if @examtemplates.map(&:questiontype).include?("MEQ")
-  - @seqcount = @examtemplates.seqq[0].quantity if @examtemplates.map(&:questiontype).include?("SEQ")
-  - @acqcount = @examtemplates.acqq[0].quantity if @examtemplates.map(&:questiontype).include?("ACQ")
-  - @oscicount = @examtemplates.osci2q[0].quantity if @examtemplates.map(&:questiontype).include?("OSCI") 
-  - @osciicount = @examtemplates.osci3q[0].quantity if @examtemplates.map(&:questiontype).include?("OSCII")
-  - @oscecount = @examtemplates.osceq[0].quantity if @examtemplates.map(&:questiontype).include?("OSCE")
-  - @ospecount = @examtemplates.ospeq[0].quantity if @examtemplates.map(&:questiontype).include?("OSPE")
-  - @vivacount = @examtemplates.vivaq[0].quantity if @examtemplates.map(&:questiontype).include?("VIVA") 
-  - @truefalsecount = @examtemplates.truefalseq[0].quantity if @examtemplates.map(&:questiontype).include?("TRUEFALSE") 
-  - @allcount = @questioncount
+  /- @examtemplates = Exam.find(@examid).examtemplates
+  /- qty_ary = @examtemplates.map(&:quantity)
+  /- @questioncount = qty_ary.inject{|sum,x|sum+x}
+  /- @mcqcount = @examtemplates.mcqq[0].quantity 
+  /- @meqcount = @examtemplates.meqq[0].quantity if @examtemplates.map(&:questiontype).include?("MEQ")
+  /- @seqcount = @examtemplates.seqq[0].quantity if @examtemplates.map(&:questiontype).include?("SEQ")
+  /- @acqcount = @examtemplates.acqq[0].quantity if @examtemplates.map(&:questiontype).include?("ACQ")
+  /- @oscicount = @examtemplates.osci2q[0].quantity if @examtemplates.map(&:questiontype).include?("OSCI") 
+  /- @osciicount = @examtemplates.osci3q[0].quantity if @examtemplates.map(&:questiontype).include?("OSCII")
+  /- @oscecount = @examtemplates.osceq[0].quantity if @examtemplates.map(&:questiontype).include?("OSCE")
+  /- @ospecount = @examtemplates.ospeq[0].quantity if @examtemplates.map(&:questiontype).include?("OSPE")
+  /- @vivacount = @examtemplates.vivaq[0].quantity if @examtemplates.map(&:questiontype).include?("VIVA") 
+  /- @truefalsecount = @examtemplates.truefalseq[0].quantity if @examtemplates.map(&:questiontype).include?("TRUEFALSE") 
+  /- @allcount = @questioncount
+
+  - exam_template=Exam.find(@examid).exam_template
+  - exam_template.question_count.each do |k, v|
+    - if v['count']!='' || v['count']!=nil #&& v['weight']!=''                          
+      - qty=(v['count']).to_i
+      - if k=="mcq"
+        - @mcqcount=qty
+      - elsif k=="meq"
+        - @meqcount=qty
+      - elsif k=="seq" 
+        - @seqcount=qty
+      - elsif k=="acq"
+        - @acqcount=qty 
+      - elsif k=="osci"
+        - @oscicount=qty
+      - elsif k=="oscii"
+        - @osciicount=qty
+      - elsif k=="osce"
+        - @oscecount=qty
+      - elsif k=="ospe"
+        - @ospecount=qty
+      - elsif k=="viva"
+        - @vivacount=qty
+      - elsif k=="truefalse"
+        - @truefalsecount=qty
+  - @allcount= @mcqcount+@meqcount+@seqcount+@acqcount+@oscicount+@osciicount+@oscecount+@ospecount+@vivacount+@truefalsecount
+  /@exammarks[0].get_questions_count(@examid)
+
 - else 
   - @mcqcount = Examquestion.joins(:exams).where('questiontype=? and exam_id=?',"MCQ", @examid).count
   - @meqcount = Examquestion.joins(:exams).where('questiontype=? and exam_id=?',"MEQ", @examid).count
@@ -120,6 +148,8 @@
           %th
             =t 'exam.exammark.summative'
             (70%)
+        - else
+          %th=t 'exam.exammark.total'
 
     %tbody
       - @exammarks.sort_by{|x|x.studentmark.name}.each_with_index do |exammark,no|
@@ -143,19 +173,34 @@
               = text_field_tag "marks_attributes[#{index}][student_marks][]", number_with_precision(aa.student_mark,:precision=>2),:id=>"student_mark_"+"#{@b_count}"+"_"+@a_count.to_s,:class=>'j1', :size=> 4 
               - @a_count+=1
 
+          /- if @exammarks[0].exampaper.name=='F'
           /HIDE - just to avoid confusion (same value as summative, coz data already in weightage - but MCQ, SEQ- marks by WEIGHTAGE still PENDING)
-          - if @exammarks[0].exampaper.subject.root_id==radiografi || @exammarks[0].exampaper.subject.root_id==carakerja
-            %td{:style=>"background-color:#C3E9BF;"}= text_field_tag "total_marks_view[]", number_with_precision(exammark.total_marks,precision:2) ,:id=>"total_marks_view"+@b_count.to_s, :size=> 5, :readonly=>true, :class => 'form-control'
-            /hide end
-          - else
+          /- if @exammarks[0].exampaper.subject.root_id==radiografi || @exammarks[0].exampaper.subject.root_id==carakerja
+          
+          - if !(@exammarks[0].exampaper.subject.root_id==radiografi || @exammarks[0].exampaper.subject.root_id==carakerja) && @exammarks[0].exampaper.name=='F'
             = hidden_field_tag "total_marks_view[]", number_with_precision(exammark.total_marks,precision:2) ,:id=>"total_marks_view"+@b_count.to_s, :size=> 5, :readonly=>true, :class => 'form-control'
-            
-          - if @exammarks[0].exampaper.name=='F'
-            - if @exammarks[0].exampaper.subject.root_id==radiografi || @exammarks[0].exampaper.subject.root_id==carakerja
-              %td{:style=>"background-color:#C3E9BF;"}
-                = text_field_tag "marks_in_hundred[]", number_with_precision((exammark.total_marks/Exammark.fullmarks(@examid))*100, precision: 2) ,:id=>"marks_in_hundred"+@b_count.to_s, :size=> 5, :readonly=>true, :class => 'form-control'
+          - else
             %td{:style=>"background-color:#C3E9BF;"}
+              /oklak
+              = text_field_tag "total_marks_view[]", number_with_precision(exammark.total_marks,precision:2) ,:id=>"total_marks_view"+@b_count.to_s, :size=> 5, :readonly=>true, :class => 'form-control'
+
+          /hide end
+          - if (@exammarks[0].exampaper.subject.root_id==radiografi || @exammarks[0].exampaper.subject.root_id==carakerja) && @exammarks[0].exampaper.name=='F'
+            %td{:style=>"background-color:#C3E9BF;"}
+              /sinipun
+              = text_field_tag "marks_in_hundred[]", number_with_precision((exammark.total_marks/Exammark.fullmarks(@examid))*100, precision: 2), :id=>"marks_in_hundred"+@b_count.to_s, :size=> 5, :readonly=>true, :class => 'form-control'
+          
+          /- else
+          /  %td{:style=>"background-color:#C3E9BF;"}= text_field_tag "total_marks_view[]", number_with_precision(exammark.total_marks,precision:2) ,:id=>"total_marks_view"+@b_count.to_s, :size=> 5, :readonly=>true, :class => 'form-control'
+          - if @exammarks[0].exampaper.name=='F'
+            %td{:style=>"background-color:#C3E9BF;"}
+              /sinika
               = text_field_tag "total_summative[]", number_with_precision((exammark.total_marks/Exammark.fullmarks(@examid))*100*0.70, precision: 2) ,:id=>"total_summative"+@b_count.to_s, :size=> 5, :readonly=>true, :class => 'form-control'
+          - else
+            /TEMPORARY - ADD THIS JUST TO MAKE SURE total_marks_view display correctly, or only first student/line works for Repeat Papers(NGYN-Kejururawatan)-8Dec15
+            = hidden_field_tag "total_summative[]", number_with_precision((exammark.total_marks/Exammark.fullmarks(@examid))*100*0.70, precision: 2) ,:id=>"total_summative"+@b_count.to_s, :size=> 5, :readonly=>true, :class => 'form-control'
+         
+         
           - @b_count+=1
           
 /TRIAL      
@@ -190,7 +235,7 @@ $(document).ready(function(){
         var other = document.getElementById("student_mark_"+i+"_"+k).value;
         a=a*1+(other*1);
       }
-      window["totalmarksview"+i].value = total_mcq*1+a;
+      window["totalmarksview"+i].value = (total_mcq*1+a);
       if ((programme=="Radiografi") || (programme=="Jurupulih Perubatan Cara Kerja"))
       {
         window["marksinhundred"+i].value = (total_mcq*1+a)/fullmarks*100;

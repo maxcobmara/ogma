@@ -55,9 +55,9 @@
                 %tr
                   %td.group{:colspan => "8"} 
                     %span= (t 'exam.exammark.exam_id')+' : '+Exam.find(exammarks_group).full_exam_name   
-                    - @istemplate = exammark.exampaper.klass_id
-                    - if @istemplate == 0 
-                      %span{:style=>"color:blue;"}(Template)
+                    - if exammark.exampaper.klass_id == 1
+                      %span{:style=>"color:blue;"}=t 'exam.exams.with_questions'
+
               %tr
                 %td{:style=>"text-align: center;"}= check_box_tag "exammark_ids[]", exammark.id, true, :id => "exammarkidss_#{index2}"
                 %td= link_to exammark.studentmark.matrix_name, exam_exammark_path(exammark)
