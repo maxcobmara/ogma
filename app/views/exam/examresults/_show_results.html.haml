@@ -45,22 +45,53 @@
               - unless english_subjects.include?(subject.code[0,4]) || (subject.code.strip.size < 10 && (subject.code.strip[-2,1].to_i==2 || subject.code.strip[-2,1].to_i==3)) 
                 - credit2_all << subject.code[-1,1].to_i
             - unless english_subjects.include?(subject.code[0,4]) || (subject.code.strip.size < 10 && (subject.code.strip[-2,1].to_i==2 || subject.code.strip[-2,1].to_i==3))
+              /- unless @student_finale.nil? || @student_finale.blank? 
+              /  - final2_all << @student_finale.set_NG.to_f
+              /- else
+              /  - final2_all << 0.00
+              
+              / copy fr EDIT - form_results
+              /with repeat parts
               - unless @student_finale.nil? || @student_finale.blank? 
-                - final2_all << @student_finale.set_NG.to_f
+                - unless (@grade_student.first.exam2marks.nil? || @grade_student.first.exam2marks.blank?) && @grade_student.first.resit==false
+                  - final2_all << @student_finale.set_NG2.to_f
+                - else
+                  - final2_all << @student_finale.set_NG.to_f
               - else
                 - final2_all << 0.00
+              
             //-------------
             - if @grade_student.count > 0
               - if english_subjects.include?(subject.code[0,4]) || (subject.code.strip.size < 10 && (subject.code.strip[-2,1].to_i==2 || subject.code.strip[-2,1].to_i==3))
-                %td.centre{colspan: 2}=examresultline.render_status_contra
-                - @value_state << examresultline.status
+                //////
+                - @gradeit=@grade_student.first.render_grading[-2,2]
+                %td.centre{colspan: 2}
+                  - if ["C-", "D+", "D", "E"].include?(@gradeit.strip)==true
+                    %font{color: "red"}=(t 'exam.examresult.failed')
+                    - @value_state << '4'
+                  - else 
+                    =(t 'exam.examresult.passed')
+                    - @value_state << '3'
+                  //repeat for english papers
+                  - unless (@grade_student.first.exam2marks.nil? || @grade_student.first.exam2marks.blank?) && @grade_student.first.resit==false
+                    %br=@gradeit2=@grade_student.first.render_grading2[-2,2]
+                    - if ["C-", "D+", "D", "E"].include?(@gradeit2.strip)==true
+                      %font{color: "red"}=(t 'exam.examresult.failed')
+                      
+                    - else 
+                      =(t 'exam.examresult.passed')
+                     
+                /////
               - else
                 %td.centre
                   =grade_it=@grade_student.first.render_grading[-2,2]
-                  %br=grade_it=@grade_student.first.render_grading2[-2,2] unless (@grade_student.first.exam2marks.nil? || @grade_student.first.exam2marks.blank?) && @grade_student.first.resit==false
+                  - unless (@grade_student.first.exam2marks.nil? || @grade_student.first.exam2marks.blank?) && @grade_student.first.resit==false
+                    %br=grade_it2=@grade_student.first.render_grading2[-2,2] 
+                    
                 %td.centre
                   =@grade_student.first.set_NG.to_f 
-                  %br=@grade_student.first.set_NG2.to_f unless (@grade_student.first.exam2marks.nil? || @grade_student.first.exam2marks.blank?) && @grade_student.first.resit==false
+                  - unless (@grade_student.first.exam2marks.nil? || @grade_student.first.exam2marks.blank?) && @grade_student.first.resit==false
+                    %br=@grade_student.first.set_NG2.to_f 
                   
                 - @value_state << '4' if [kebidanan, kejururawatan].include?(@examresult.programme_id) && ["C-", "D+", "D", "E"].include?(grade_it.strip)==true
                 - @value_state << '3' if [kebidanan, kejururawatan].include?(@examresult.programme_id) && ["C-", "D+", "D", "E"].include?(grade_it.strip)==false
