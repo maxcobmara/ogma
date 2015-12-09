@@ -167,14 +167,18 @@
                 - @value_state << '3'
               - else 
                 ///CATATAN column - English subjects
-                /repeat start
-                - unless (@student_grade.exam2marks.nil? || @student_grade.exam2marks.blank?) && @student_grade.resit==false
-                  - if @grading2.strip=="A" || @grading2=="A-" ||@grading2=="B+"||@grading2.strip=="B"||@grading2=="B-"||@grading2=="C+"||@grading2.strip=="C"
-                    = I18n.t('exam.examresult.passed')
+                - unless @student_grade.nil? || @student_grade.blank? 
+                  /repeat start
+                  - unless (@student_grade.exam2marks.nil? || @student_grade.exam2marks.blank?) && @student_grade.resit==false
+                    - if @grading2.strip=="A" || @grading2=="A-" ||@grading2=="B+"||@grading2.strip=="B"||@grading2=="B-"||@grading2=="C+"||  @grading2.strip=="C"
+                      = I18n.t('exam.examresult.passed')
+                    - else
+                      = I18n.t('exam.examresult.failed')
+                    /repeat ends
+                    ///
                   - else
                     = I18n.t('exam.examresult.failed')
-                  /repeat ends
-                  ///
+                    - @value_state << '4'
                 - else
                   = I18n.t('exam.examresult.failed')
                   - @value_state << '4'
@@ -202,13 +206,17 @@
                   - @value_state << '3'
                 - else 
                   /CATATAN column - Other subjects
-                  /repeat starts
-                  - unless (@student_grade.exam2marks.nil? || @student_grade.exam2marks.blank?) && @student_grade.resit==false
-                    - if @grading2.strip=="A" || @grading2=="A-" ||@grading2=="B+"||@grading2.strip=="B"||@grading2=="B-"||@grading2=="C+"||@grading2.strip=="C"
-                      = I18n.t('exam.examresult.passed')
+                  - unless @student_grade.nil? || @student_grade.blank? 
+                    /repeat starts
+                    - unless (@student_grade.exam2marks.nil? || @student_grade.exam2marks.blank?) && @student_grade.resit==false
+                      - if @grading2.strip=="A" || @grading2=="A-" ||@grading2=="B+"||@grading2.strip=="B"||@grading2=="B-"||@grading2=="C+"||@grading2.strip=="C"
+                        = I18n.t('exam.examresult.passed')
+                      - else
+                        = I18n.t('exam.examresult.failed')
+                      /repeat ends
                     - else
                       = I18n.t('exam.examresult.failed')
-                    /repeat ends
+                      - @value_state << '4'
                   - else
                     = I18n.t('exam.examresult.failed')
                     - @value_state << '4'
