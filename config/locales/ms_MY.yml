@@ -2311,7 +2311,7 @@ ms_MY:
       marks_intakes_exist: 'Markah peperiksaan pelajar bagi Ambilan yang dipilih telah wujud. Padam / sunting rekod berkenaan.'
       complete_paper: 'Markah hanya boleh dimasukkan bagi kertas peperiksaan yang sah (lengkap) sahaja.'
       error_remark: " menunjukkan data TIDAK SAH : nilai dimasukkan tidak boleh melebihi nilai maksima."
-      exceed_total: "Jumlah, 100% and Sumatif (70%) - nilai dimasukkan tidak boleh melebihi nilai maksima."
+      exceed_total: "Sumatif (70%) - nilai dimasukkan tidak boleh melebihi nilai maksima."
       
     grade:
       title: Gred Peperiksaan
