@@ -55,8 +55,13 @@
                 %td.centre{colspan: 2}=examresultline.render_status_contra
                 - @value_state << examresultline.status
               - else
-                %td.centre=grade_it=@grade_student.first.render_grading[-2,2]
-                %td.centre=@grade_student.first.set_NG.to_f 
+                %td.centre
+                  =grade_it=@grade_student.first.render_grading[-2,2]
+                  %br=grade_it=@grade_student.first.render_grading2[-2,2] unless (@grade_student.first.exam2marks.nil? || @grade_student.first.exam2marks.blank?) && @grade_student.first.resit==false
+                %td.centre
+                  =@grade_student.first.set_NG.to_f 
+                  %br=@grade_student.first.set_NG2.to_f unless (@grade_student.first.exam2marks.nil? || @grade_student.first.exam2marks.blank?) && @grade_student.first.resit==false
+                  
                 - @value_state << '4' if [kebidanan, kejururawatan].include?(@examresult.programme_id) && ["C-", "D+", "D", "E"].include?(grade_it.strip)==true
                 - @value_state << '3' if [kebidanan, kejururawatan].include?(@examresult.programme_id) && ["C-", "D+", "D", "E"].include?(grade_it.strip)==false
             - else

@@ -7,8 +7,15 @@
   .form-group
     .col-sm-2.control-label
       = f.label t 'exam.grade.resit', for: :resit
-    .col-md-2
+    .col-md-6
       = f.check_box :resit 
+      /if repeat paper marks exist in grade
+      - unless @grade.exam2marks.nil? || @grade.exam2marks.blank?
+        %b Jumlah Akhir (Ulangan)
+        &nbsp;/&nbsp; Gred (Ulangan)
+        = @grade.finale2
+        &nbsp;/&nbsp;
+        = @grade.render_grading2[-2,2]
   /.form-group
   /  .col-sm-2.control-label
   /    = f.label t 'exam.grade.marks_in_70'

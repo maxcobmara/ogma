@@ -96,7 +96,7 @@
           
           %td
             = subject.subject_list 
-            - if value_state=='4' && @resultline.remark=='1'
+            - if value_state=='4' && @resultline.remark=='1' && @student_grade.resit==true
               %strong
                 &nbsp;&nbsp;
                 = t('exam.examresult.repeating')
@@ -106,7 +106,13 @@
             - if english_subjects.include?(subject.code[0,4]) || (subject.code.strip.size < 10 && (subject.code.strip[-2,1].to_i==2 || subject.code.strip[-2,1].to_i==3))
               \-
             - else
-              =@grading
+              /=@grading
+              /replace Final gred with Repeat gred
+              - unless (@student_grade.exam2marks.nil? || @student_grade.exam2marks.blank?) && @student_grade.resit==false
+                =@student_grade.render_grading2[-2,2] 
+              - else
+                =@grading
+
           %td.centre
             /- unless @student_finale.nil? || @student_finale.blank? 
             /  =sprintf('%.2f', @student_finale.set_NG.to_f)
@@ -119,9 +125,22 @@
             - if english_subjects.include?(subject.code[0,4]) || (subject.code.strip.size < 10 && (subject.code.strip[-2,1].to_i==2 || subject.code.strip[-2,1].to_i==3))
               \-
             - else
+              /- unless @student_finale.nil? || @student_finale.blank? 
+              /  =sprintf('%.2f', @student_finale.set_NG.to_f)
+              /  - final2_all << @student_finale.set_NG.to_f
+              /- else
+              /  =sprintf('%.2f', 0.00)
+              /  - final2_all << 0.00
+              
+              / TODO - in PDF too
+              /with repeat parts
               - unless @student_finale.nil? || @student_finale.blank? 
-                =sprintf('%.2f', @student_finale.set_NG.to_f)
-                - final2_all << @student_finale.set_NG.to_f
+                - unless (@student_grade.exam2marks.nil? || @student_grade.exam2marks.blank?) && @student_grade.resit==false
+                  =sprintf('%.2f', @student_finale.set_NG2.to_f)
+                  - final2_all << @student_finale.set_NG2.to_f
+                - else
+                  =sprintf('%.2f', @student_finale.set_NG.to_f)
+                  - final2_all << @student_finale.set_NG.to_f
               - else
                 =sprintf('%.2f', 0.00)
                 - final2_all << 0.00
