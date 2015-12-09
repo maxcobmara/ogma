@@ -2481,6 +2481,7 @@ en:
       gpa2: GPA
       cgpa2: CGPA
       credit: Credit
+      repeating: "(Repeat)"
     
     evaluate_course:
       title: "Course Evaluation (Lecturer)"

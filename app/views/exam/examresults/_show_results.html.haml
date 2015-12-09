@@ -31,6 +31,9 @@
           - credit2_all=[]
           - final2_all=[]
           - english_subjects=['PTEN', 'NELA', 'NELB', 'NELC', 'MAPE', 'XBRE', 'OTEL'] 
+          - @value_state=[]
+          - kebidanan = Programme.roots.where('name ILIKE(?)', '%Kebidanan%').first.id
+          - kejururawatan = Programme.roots.where('name ILIKE(?)', '%Kejururawatan%').first.id
           - for subject in @subjects
             - @grade_student=Grade.where(subject_id: subject.id).where(student_id: examresultline.student_id)
             - @student_finale=Grade.where('student_id=? and subject_id=?', examresultline.student_id,subject.id).first
@@ -50,10 +53,19 @@
             - if @grade_student.count > 0
               - if english_subjects.include?(subject.code[0,4]) || (subject.code.strip.size < 10 && (subject.code.strip[-2,1].to_i==2 || subject.code.strip[-2,1].to_i==3))
                 %td.centre{colspan: 2}=examresultline.render_status_contra
+                - @value_state << examresultline.status
               - else
-                %td.centre=@grade_student.first.render_grading.split("-")[2] 
-                %td.centre=@grade_student.first.set_NG.to_f 
+                %td.centre
+                  =grade_it=@grade_student.first.render_grading[-2,2]
+                  %br=grade_it=@grade_student.first.render_grading2[-2,2] unless (@grade_student.first.exam2marks.nil? || @grade_student.first.exam2marks.blank?) && @grade_student.first.resit==false
+                %td.centre
+                  =@grade_student.first.set_NG.to_f 
+                  %br=@grade_student.first.set_NG2.to_f unless (@grade_student.first.exam2marks.nil? || @grade_student.first.exam2marks.blank?) && @grade_student.first.resit==false
+                  
+                - @value_state << '4' if [kebidanan, kejururawatan].include?(@examresult.programme_id) && ["C-", "D+", "D", "E"].include?(grade_it.strip)==true
+                - @value_state << '3' if [kebidanan, kejururawatan].include?(@examresult.programme_id) && ["C-", "D+", "D", "E"].include?(grade_it.strip)==false
             - else
+              - @value_state << '4'
               - if english_subjects.include?(subject.code[0,4]) || (subject.code.strip.size < 10 && (subject.code.strip[-2,1].to_i==2 || subject.code.strip[-2,1].to_i==3))
                 %td.centre{colspan: 2}= t 'exam.examresult.failed'
               - else
@@ -82,4 +94,9 @@
           - else
             - status_viewing=examresultline.render_status
           %td=status_viewing
-          %td=h examresultline.remark
+          %td
+            =h examresultline.render_remark
+            - if examresultline.remark=='1' || examresultline.remark=='2'
+              /display repeated subjects here
+              - @value_state.each_with_index do |val, cnt|
+                .small=@subjects[cnt].code.gsub(" ","") if val=="4"

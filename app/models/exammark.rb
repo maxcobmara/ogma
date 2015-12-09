@@ -169,7 +169,8 @@ class Exammark < ActiveRecord::Base
           # TEMPORARY use these FORMULA --> total_marks.to_f/0.9,total_marks.to_f/0.7,total_marks.to_f/1.2  .....OR ELSE
           
           #------if marks entered already in weightage,...exam1marks = total_marks---------------------------------
-          @grade_to_update.exam1marks = total_marks.to_f/fullmarks.to_f*100
+          @grade_to_update.exam1marks = total_marks.to_f/fullmarks.to_f*100 if Exam.find(exam_id).name=="F"
+	  @grade_to_update.exam2marks = total_marks.to_f/fullmarks.to_f*100 if Exam.find(exam_id).name=="R"
           @grade_to_update.summative = total_marks.to_f/fullmarks.to_f*100*0.70
           #------------------------------use ABOVE formula for all conditions--HIDE ALL @credit_hour statement-----
           
@@ -186,6 +187,7 @@ class Exammark < ActiveRecord::Base
           #@grade_to_update.summative = total_marks.to_f*0.7
         #end
         @grade_to_update.save if @grade_to_update.exam1marks && @examtype == "F"  #F for Peperiksaan Akhir Semester
+	@grade_to_update.save if @grade_to_update.exam2marks && @examtype == "R"
     end
   end
   #11June2013------updated 23June2013

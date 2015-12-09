@@ -43,6 +43,7 @@
                   %table.table
                     - @examquestions = @exammark.exampaper.examquestions
                     - @examtemplates = Exam.where(id: @exammark.exam_id).first.examtemplates
+                    - @exam_template=@exammark.exampaper.exam_template
                     %thead
                       %tr
                         %th=t 'exam.examquestion.questiontype'
@@ -56,7 +57,8 @@
                         - @marks_for_questions = Mark.where(exammark_id: @exammark.id).sort_by{|x|x.created_at} 
 
                         /start-display MCQ questions details
-                        - if @examquestions.mcqq.count > 0 || @examtemplates.mcqq.count > 0
+                        - @exam_template.question_count.each{|k,v|@mcq_count=v['count'].to_i if k=="mcq"}
+                        - if @examquestions.mcqq.count > 0 || @mcq_count > 0
                           - if @exammark
                             - @exist_mark = @current_mark
                           - else
@@ -65,99 +67,108 @@
                           
                         /start-display MEQ questions details
                         - count2 = 0
-                        - if @examquestions.meqq.count > 0 || @examtemplates.meqq.count > 0
+                        - @exam_template.question_count.each{|k,v|@meq_count=v['count'].to_i if k=="meq"}
+                        - if @examquestions.meqq.count > 0 || @meq_count > 0
                           - if @examquestions.meqq.count > 0
                             - meq_count = @examquestions.meqq.count-1 
                           - else
-                            - meq_count = @examtemplates.meqq[0].quantity-1 
+                            - meq_count = @meq_count-1 
                           - 0.upto(meq_count) do |count|
                             = render 'mark_exist', :count2=>count2
                             = render 'show_meq', :count=>count, :count2=>count2, :task=>2
                             - count2+=1
 
                         /start-display SEQ questions details
-                        - if @examquestions.seqq.count > 0 || @examtemplates.seqq.count > 0
+                        - @exam_template.question_count.each{|k,v|@seq_count=v['count'].to_i if k=="seq"}
+                        - if @examquestions.seqq.count > 0 || @seq_count > 0
                           - if @examquestions.seqq.count > 0
                             - seq_count = @examquestions.seqq.count-1 
                           - else
-                            - seq_count = @examtemplates.seqq[0].quantity-1 
+                            - seq_count = @seq_count-1 
                           - 0.upto(seq_count) do |count| 
                             = render 'mark_exist', :count2=>count2
                             = render 'show_seq', :count=>count, :count2=>count2, :task=>2
                             - count2+=1 
 
                         /start-display ACQ questions details
-                        - if @examquestions.acqq.count > 0 || @examtemplates.acqq.count > 0
+                        - @exam_template.question_count.each{|k,v|@acq_count=v['count'].to_i if k=="acq"}
+                        - if @examquestions.acqq.count > 0 || @acq_count > 0
                           - if @examquestions.acqq.count > 0
                             - acq_count = @examquestions.acqq.count-1 
                           - else
-                            - acq_count = @examtemplates.acqq[0].quantity-1
+                            - acq_count = @acq_count-1
                           - 0.upto(acq_count) do |count|
                             = render 'mark_exist', :count2=>count2
                             = render 'show_acq', :count=>count, :count2=>count2,  :task=>2
                             - count2+=1 
                         
                         /start-display OSCI questions details
-                        - if @examquestions.osci2q.count > 0 || @examtemplates.osci2q.count > 0
+                        - @exam_template.question_count.each{|k,v|@osci_count=v['count'].to_i if k=="osci"}
+                        - if @examquestions.osci2q.count > 0 || @osci_count > 0
                           - if @examquestions.osci2q.count > 0
                             - osci_count = @examquestions.osci2q.count-1
                           - else
-                            - osci_count = @examtemplates.osci2q[0].quantity-1
+                            - osci_count = @osci_count-1
                           - 0.upto(osci_count) do |count|
                             = render 'mark_exist', :count2=>count2
                             = render 'show_osci', :count=>count, :count2=>count2, :task=>2
                             - count2+=1 
                 
                         /start-display OSCII questions details
-                        - if @examquestions.osci3q.count > 0 || @examtemplates.osci3q.count > 0 
+                        - @exam_template.question_count.each{|k,v|@oscii_count=v['count'].to_i if k=="oscii"}
+                        - if @examquestions.osci3q.count > 0 || @oscii_count > 0 
                           - if @examquestions.osci3q.count > 0 
                             - oscii_count = @examquestions.osci3q.count-1 
                           - else
-                            - oscii_count = @examtemplates.osci3q[0].quantity-1
+                            - oscii_count = @oscii_count-1
                           - 0.upto(oscii_count) do |count|
                             = render 'mark_exist', :count2=>count2
                             = render 'show_oscii', :count=>count, :count2=>count2, :task=>2
                             - count2+=1 
                   
                         /start-display OSCE questions details
-                        - if @examquestions.osceq.count > 0 || @examtemplates.osceq.count > 0   
+                        - @exam_template.question_count.each{|k,v|@osce_count=v['count'].to_i if k=="osce"}
+                        - if @examquestions.osceq.count > 0 || @osce_count > 0   
                           - if @examquestions.osceq.count > 0
                             - osce_count = @examquestions.osceq.count-1 
                           - else
-                            - osce_count = @examtemplates.osceq[0].quantity-1 
+                            - osce_count = @osce_count-1 
                           - 0.upto(osce_count) do |count|
                             = render 'mark_exist', :count2=>count2
                             = render 'show_osce', :count=>count, :count2=>count2, :task=>2
                             - count2+=1
  
                         /start-display OSPE questions details
-                        - if @examquestions.ospeq.count > 0 || @examtemplates.ospeq.count> 0
+                        - @exam_template.question_count.each{|k,v|@ospe_count=v['count'].to_i if k=="ospe"}
+                        - if @examquestions.ospeq.count > 0 || @ospe_count> 0
                           - if @examquestions.ospeq.count > 0
                             - ospe_count = @examquestions.ospeq.count-1 
                           - else
-                            - ospe_count = @examtemplates.ospeq[0].quantity-1
+                            - ospe_count = @ospe_count-1
                           - 0.upto(ospe_count) do |count|
                             = render 'mark_exist', :count2=>count2
                             = render 'show_ospe', :count=>count, :count2=>count2, :task=>2
                             - count2+=1
  
                         /start-display VIVA questions details
-                        - if @examquestions.vivaq.count > 0 || @examtemplates.vivaq.count > 0
+                        - @exam_template.question_count.each{|k,v|@viva_count=v['count'].to_i if k=="viva"}
+                        - if @examquestions.vivaq.count > 0 || @viva_count > 0
                           - if @examquestions.vivaq.count > 0
                             - viva_count = @examquestions.vivaq.count-1 
                           - else
-                            - viva_count = @examtemplates.vivaq[0].quantity-1
+                            - viva_count = @viva_count-1
                           - 0.upto(viva_count) do |count|
                             = render 'mark_exist', :count2=>count2
                             = render 'show_viva', :count=>count, :count2=>count2, :task=>2
                             - count2+=1
 
                         /start-display TRUEFALSE questions details
-                        - if @examquestions.truefalseq.count > 0 || @examtemplates.truefalseq.count > 0   
+                        - @exam_template.question_count.each{|k,v|@truefalse_count=v['count'].to_i if k=="truefalse"}
+                        - if @examquestions.truefalseq.count > 0 || @truefalse_count > 0   
                           - if @examquestions.truefalseq.count > 0
                             - truefalse_count = @examquestions.truefalseq.count-1
                           - else
-                            - truefalse_count = @examtemplates.truefalseq[0].quantity-1
+                            - truefalse_count = @truefalse_count-1
                           - 0.upto(truefalse_count) do |count| 
                             = render 'mark_exist', :count2=>count2
                             = render 'show_truefalse', :count=>count, :count2=>count2, :task=>2

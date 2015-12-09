@@ -7,7 +7,7 @@
       .col-sm-2.control-label
         = f.label t 'exam.evaluate_course.student_id', for: :student_id
       .col-md-6
-        = f.collection_select :student_id, @student_list, :id, :matrix_name,{:include_blank =>t('select')},{class: 'selectpicker', "data-width"=>'350px'}
+        = f.collection_select :student_id, @student_list.order(matrixno: :asc, name: :asc), :id, :matrix_name,{:include_blank =>t('select')},{class: 'selectpicker', "data-width"=>'350px'}
   .form-group
     .col-sm-2.control-label
       = f.label t 'exam.evaluate_course.course_id', for: :course_id

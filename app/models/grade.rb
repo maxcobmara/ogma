@@ -14,7 +14,7 @@ class Grade < ActiveRecord::Base
   
   #before_save :check_formative_valid
   
-  attr_accessor :intake_id, :marks_70, :formative_weight_sum, :formative_marks_sum
+  attr_accessor :intake_id, :marks_70, :formative_weight_sum, :formative_marks_sum, :marks_70_rev
 
   # define scope
   def self.student_search(query)
@@ -63,7 +63,7 @@ class Grade < ActiveRecord::Base
       else
         
         #####from formative_contents-7Dec2015
-        latest_paper=Exam.where(subject_id: subject_id).pluck(:id)
+        latest_paper=Exam.where(subject_id: subject_id).order(created_at: :desc).where(name: "F").first.id  #Exam.where(subject_id: subject_id).pluck(:id)
         student_exammark=Exammark.where(exam_id: latest_paper).where(student_id: student_id).first
         if student_exammark && Exammark.fullmarks(student_exammark.exam_id)!=70
           student_exammark.total_marks/Exammark.fullmarks(student_exammark.exam_id)*100*0.7
@@ -74,6 +74,46 @@ class Grade < ActiveRecord::Base
           #Pem Peg Perubatan & Fisioterapi - FInal Exam(written papaer) already in 70%
           #Diploma Lanjutan Kebidanan - FInal Exam(written paper) already in 60%
           exam1marks 
+        end
+      end
+    else
+      0
+    end
+  end
+  
+  def total_summative2
+    if subject_id
+      # NOTE 
+      # Radiografi - exam1marks (100%), total_summative (70%)
+      # Cara Kerja - exam1marks=Final Exam(written paper)=(MCQ+SEQ)/(total mcq+total seq), total_summative=(Final Exam*0.70)
+      # Pem Peg Perubatan, Fisioterapi - exam1marks=total_formative (70%) -- exam1marks=40%+30% (MCQ+SEQ etc)
+      # Pos Basik(KEbidanan) - Summative(60%) : 40%(MCQ) +(MEQ/total meq * 20%)=60%,    JUMLAH BESAR = Formative(40%)+Summative(60%)
+    
+      # Radiografi - exam1marks (in 100%) - 2 cases: final exam(total) < 100 & > 100
+      # Cara Kerja - exam1marks (not really in 100%) - summative calculation same as Radiografi
+      diploma=Programme.where(course_type: 'Diploma')
+      radiografi=diploma.where('name ILIKE?', '%Radiografi%').first.id
+      carakerja=diploma.where('name ILIKE?', '%Jurupulih Perubatan Cara Kerja%').first.id
+      if subjectgrade.root_id==radiografi || subjectgrade.root_id==carakerja
+        if exam2marks == 0 || exam2marks == nil
+          0
+        else
+          (exam2marks * examweight)/100
+        end
+      else
+        
+        #####from formative_contents-7Dec2015
+	repeat_paper=Exam.where(subject_id: subject_id).where(name: "R").first.id
+        student_exammark=Exammark.where(exam_id: repeat_paper).where(student_id: student_id).first
+        if student_exammark && Exammark.fullmarks(student_exammark.exam_id)!=70
+          student_exammark.total_marks/Exammark.fullmarks(student_exammark.exam_id)*100*0.7
+          #####from formative_contents-7Dec2015
+
+        else
+
+          #Pem Peg Perubatan & Fisioterapi - FInal Exam(written papaer) already in 70%
+          #Diploma Lanjutan Kebidanan - FInal Exam(written paper) already in 60%
+          exam2marks 
         end
       end
     else
@@ -95,8 +135,16 @@ class Grade < ActiveRecord::Base
     #((exam1marks * examweight)/100) + ((total_formative * (100 - examweight)/100))
   end
   
+  def finale2
+    total_formative+total_summative2
+  end
+  
   def render_grading
     (DropDown::GRADE.find_all{|disp, value| value == set_gred}).map {|disp, value| disp}[0]
+  end
+  
+  def render_grading2
+    (DropDown::GRADE.find_all{|disp, value| value == set_gred2}).map {|disp, value| disp}[0]
   end
   
   def set_gred
@@ -125,6 +173,32 @@ class Grade < ActiveRecord::Base
     end
   end
   
+  def set_gred2
+    if finale2 <= 35 
+      11#"E"
+    elsif finale2 <= 40
+      10#"D"
+    elsif finale2 <= 45
+      9#"D+"
+    elsif finale2 <= 50
+      8#"C-"
+    elsif finale2 <= 55
+      7#"C"
+    elsif finale2 <= 60
+      6#"C+"
+    elsif finale2 <= 65
+      5#"B-"
+    elsif finale2 <= 70
+      4#"B"
+    elsif finale2 <= 75
+      3#"B+"
+    elsif finale2 <= 80
+      2#"A-"
+    else
+      1#"A"
+    end
+  end
+  
   def set_NG
     if finale < 35  #<= 35 
       0.00
@@ -145,6 +219,32 @@ class Grade < ActiveRecord::Base
     elsif finale < 75 #<= 75
       3.33
     elsif finale < 80 #<= 80
+      3.67
+    else
+      4.00
+    end
+  end 
+  
+  def set_NG2
+    if finale2 < 35  #<= 35 
+      0.00
+    elsif finale2 < 40 #<= 40
+      1.00
+    elsif finale2 < 45 #<= 45
+      1.33
+    elsif finale2 < 50 #<= 50
+      1.67
+    elsif finale2 < 55 #<= 55
+      2.00
+    elsif finale2 < 60 #<= 60
+      2.33
+    elsif finale2 < 65 #<= 65
+      2.67
+    elsif finale2 < 70 #<= 70
+      3.00
+    elsif finale2 < 75 #<= 75
+      3.33
+    elsif finale2 < 80 #<= 80
       3.67
     else
       4.00
