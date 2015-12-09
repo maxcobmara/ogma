@@ -237,8 +237,18 @@ class Exam::ExammarksController < ApplicationController
        exammark.save 
     end
     respond_to do |format|
-      format.html { redirect_to(exam_exammarks_url, :notice =>t('exam.exammark.multiple_updated')) }
-      format.xml  { head :ok }
+      @exammarks = exammarks
+      fullmarks=Exammark.fullmarks(exammarks[0].exam_id)
+      exceed_total=[]
+      exammarks.each{|x| exceed_total << x.total_marks.to_f if x.total_marks > fullmarks }
+      if exceed_total.count> 0
+        flash[:notice]=(t 'exam.exammark.exceed_total')
+        format.html {render :action => 'edit_multiple'}
+        format.xml  { head :ok }
+      else
+        format.html { redirect_to(exam_exammarks_url, :notice =>t('exam.exammark.multiple_updated')+totalmarks.count.to_s) }
+        format.xml  { head :ok }
+      end
     end
   end
   
