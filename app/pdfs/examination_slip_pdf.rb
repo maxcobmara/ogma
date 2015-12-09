@@ -250,21 +250,24 @@ class Examination_slipPdf < Prawn::Document
 	  #####
 	  #@value_state << '4' 
 	  #CATATAN column - English subjects
-          #repeat start
-          unless (@student_grade.exam2marks.nil? || @student_grade.exam2marks.blank?) && @student_grade.resit==false
-            if @grading2.strip=="A" || @grading2=="A-" ||@grading2=="B+"||@grading2.strip=="B"||@grading2=="B-"||@grading2=="C+"||@grading2.strip=="C"
-              @remark << I18n.t('exam.examresult.passed')
-              #@value_state << '3' 
+	  unless @student_grade.nil? || @student_grade.blank? 
+            #repeat start
+            unless (@student_grade.exam2marks.nil? || @student_grade.exam2marks.blank?) && @student_grade.resit==false
+              if @grading2.strip=="A" || @grading2=="A-" ||@grading2=="B+"||@grading2.strip=="B"||@grading2=="B-"||@grading2=="C+"||@grading2.strip=="C"
+                @remark << I18n.t('exam.examresult.passed')
+                #@value_state << '3' 
+              else
+                @remark << I18n.t('exam.examresult.failed')
+                #@value_state << '4' 
+              end
+              #repeat ends
             else
               @remark << I18n.t('exam.examresult.failed')
               #@value_state << '4' 
-            end
-            #repeat ends
-          else
-            @remark << I18n.t('exam.examresult.failed')
-            #@value_state << '4' 
+	    end
+	  else
+	    @remark << I18n.t('exam.examresult.failed')
 	  end
-	  
 	  #####
 #           @remark << I18n.t('exam.examresult.failed')
 #           @value_state << '4'
