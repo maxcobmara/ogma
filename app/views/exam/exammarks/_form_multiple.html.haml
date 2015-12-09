@@ -138,14 +138,22 @@
               %br="Q-"+count.to_s
         /HIDE - just to avoid confusion (same value as summative, coz data already in weightage - but MCQ, SEQ- marks by WEIGHTAGE still PENDING)
         - if @exammarks[0].exampaper.subject.root_id==radiografi || @exammarks[0].exampaper.subject.root_id==carakerja
-          %th 
+          %th
+            #error_display_total{:style => "display: none;"}
+              %font{color: "red"}*
             =t 'exam.exammark.total'
           %font{:style=>"size:-2;"}="("+(number_with_precision(@fullmarks, precision: 2)).to_s+")"
         /hide end
         - if @exammarks[0].exampaper.name=='F'
           - if @exammarks[0].exampaper.subject.root_id==radiografi || @exammarks[0].exampaper.subject.root_id==carakerja
-            %th &nbsp;&nbsp;&nbsp;&nbsp;100%&nbsp;&nbsp;&nbsp;&nbsp;
+            %th 
+              #error_display{:style => "display: none;"}
+                %font{color: "red"}*
+              &nbsp;&nbsp;&nbsp;&nbsp;100%&nbsp;&nbsp;&nbsp;&nbsp;
+              
           %th
+            #error_display_70{:style => "display: none;"}
+              %font{color: "red"}*
             =t 'exam.exammark.summative'
             (70%)
         - else
@@ -210,6 +218,11 @@
 =hidden_field_tag "exammark[trial4]", @fullmarks
 =hidden_field_tag "programme_name", Programme.where(id: @exammarks[0].exampaper.subject.root_id).first.name
 
+#error_display_remark{:style => "display: none;"}
+  %font{color: "red"}* 
+  =t 'exam.exammark.error_remark'
+%BR
+
 :javascript
 
 $(document).ready(function(){
@@ -248,8 +261,26 @@ $(document).ready(function(){
         else
         { window["totalsummative"+i].value = (total_mcq*1+a)/fullmarks*100*0.70;}
       }
+      
+      var value_100 = document.getElementById("marks_in_hundred"+i).value;
+      var value_70 = document.getElementById("total_summative"+i).value;
+      if ((value_100 > 100) || (value_70 > 70))
+      {
+        $("#error_display").show();
+        $("#error_display_70").show();
+        $("#error_display_total").show();
+        $("#error_display_remark").show();
+      }
+      else
+      { 
+        $("#error_display").hide(); 
+        $("#error_display_70").hide(); 
+        $("#error_display_total").hide();
+        $("#error_display_remark").hide();
+      }
+      
     }
-
+    
   });
 });
 
