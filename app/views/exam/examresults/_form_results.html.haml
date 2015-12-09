@@ -42,6 +42,7 @@
             - if @examresult.resultlines
               /.count > 0
               - @value_state=[]
+              - @value_state2=[]
               - @value_status = @examresult.resultlines[no].status if @examresult.resultlines[no]
               - @value_remark = @examresult.resultlines[no].remark if @examresult.resultlines[no]
               - @value_id = @examresult.resultlines[no].id if @examresult.resultlines[no]
@@ -68,12 +69,7 @@
                   - unless english_subjects.include?(subject.code[0,4]) || (subject.code.strip.size < 10 && (subject.code.strip[-2,1].to_i==2 || subject.code.strip[-2,1].to_i==3)) 
                     - credit2_all << subject.code[-1,1].to_i
                 - unless english_subjects.include?(subject.code[0,4]) || (subject.code.strip.size < 10 && (subject.code.strip[-2,1].to_i==2 || subject.code.strip[-2,1].to_i==3))
-                  /- unless @student_finale.nil? || @student_finale.blank? 
-                  /  - final2_all << @student_finale.set_NG.to_f
-                  /- else
-                  /  - final2_all << 0.00
                   
-                  / TODO - update in show_results
                   /with repeat parts
                   - unless @student_finale.nil? || @student_finale.blank? 
                     - unless (@grade_student.first.exam2marks.nil? || @grade_student.first.exam2marks.blank?) && @grade_student.first.resit==false
@@ -90,15 +86,34 @@
                     %td.centre{colspan: 2}
                       - if ["C-", "D+", "D", "E"].include?(@gradeit.strip)==true
                         %font{color: "red"}=(t 'exam.examresult.failed')
+                        - @value_state << '4'
                       - else 
                         =(t 'exam.examresult.passed')
+                        - @value_state << '3'
+                      
+                      //repeat for english papers
+                      - unless (@grade_student.first.exam2marks.nil? || @grade_student.first.exam2marks.blank?) && @grade_student.first.resit==false
+                        %br=@gradeit2=@grade_student.first.render_grading2[-2,2]
+                        - if ["C-", "D+", "D", "E"].include?(@gradeit2.strip)==true
+                          %font{color: "red"}=(t 'exam.examresult.failed')
+                          - @value_state2 << '4'
+                        - else 
+                          =(t 'exam.examresult.passed')
+                          - @value_state2 << '3'
+                      
                   - else
                     %td
                       - if [kebidanan, kejururawatan].include?(@examresult.programme_id) && ["C-", "D+", "D", "E"].include?(@gradeit.strip)==true
                         - @value_state << '4'
                         %font{color: "red"}= @gradeit
+                        
                         /repeat paper
-                        %br=grade_it=@grade_student.first.render_grading2[-2,2] unless (@grade_student.first.exam2marks.nil? || @grade_student.first.exam2marks.blank?) && @grade_student.first.resit==false
+                        - unless (@grade_student.first.exam2marks.nil? || @grade_student.first.exam2marks.blank?) && @grade_student.first.resit==false
+                          %br=gradeit2=@grade_student.first.render_grading2[-2,2] 
+                          - if ["C-", "D+", "D", "E"].include?(gradeit2.strip)==true
+                            - @value_state2 << '4'
+                          - else
+                            - @value_state2 << '3'
                         
                       - elsif [kebidanan, kejururawatan].include?(@examresult.programme_id) && ["C-", "D+", "D", "E"].include?(@gradeit.strip)==false
                         - @value_state << '3' 
@@ -152,11 +167,23 @@
             - else
               - status_selection = DropDown::RESULT_STATUS
             %td
-              - if [kebidanan, kejururawatan].include?(@examresult.programme_id)
-                - if @value_state.uniq.include?('4') 
-                  - @value_status='4'
-                - else
+              - if @value_state2.count > 0
+                /START - apply to all programme - when REPEAT papers exist, (inc. Grade 'resit' checkbox activated)
+                - fails_count=@value_state.count('4')
+                - fails_afterrepeat_count=@value_state2.count('4')
+                - passed_afterrepeat_count=@value_state2.count('3')
+                - if fails_count-fails_afterrepeat_count==passed_afterrepeat_count
                   - @value_status='3'
+                - else
+                  - @value_status='4'
+                /END - apply to all programme - when REPEAT papers exist, (inc. Grade 'resit' checkbox activated)
+              
+              - if [kebidanan, kejururawatan].include?(@examresult.programme_id)
+                - if @value_state2.count==0
+                  - if @value_state.uniq.include?('4') 
+                    - @value_status='4'
+                  - else
+                    - @value_status='3'
                 = hidden_field "examresult[resultlines_attributes][#{no}]", :status, :size =>8, :value => @value_status
                 =(DropDown::RESULT_STATUS.find_all{|disp, value| value == @value_status}).map {|disp, value| disp}[0]
               - else
@@ -164,9 +191,8 @@
             %td
               /= text_field "examresult[resultlines_attributes][#{no}]", :remark, :size =>8, :value => @value_remark
               = select_tag "examresult[resultlines_attributes][#{no}][remark]", options_for_select([[t('select'), '0']]+DropDown::RESULT_REMARK, @value_remark) 
-              
-              
-
+             
+      
       /NOTE - as of 1st Nov2015 : Value for STATUS - Kebidanan & Kejururawatan - set to 'Gagal' if any subject status is 'Gagal', otherwise set to 'Lulus'.
       /Other programmes : requires user to select STATUS accordingly UNLESS define by user.
       /Total, PNGS17 : auto-generated, non-editable & display only 4 all programmes.

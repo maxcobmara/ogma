@@ -96,10 +96,14 @@
           
           %td
             = subject.subject_list 
-            - if value_state=='4' && @resultline.remark=='1' && @student_grade.resit==true
-              %strong
-                &nbsp;&nbsp;
-                = t('exam.examresult.repeating')
+            - if value_state=='4' && @resultline.remark=='1' 
+              - unless @student_grade.nil? || @student_grade.blank?
+                - if @student_grade.resit==true
+                  %strong
+                    &nbsp;&nbsp;
+                    = t('exam.examresult.repeating')
+                - else
+                  / NOTE - 'Repeat' won't be displayed if Grade not exist at all OR even if Grade exist, still require RESIT checkbox in Grade to be activated
             - elsif value_state=='4' && @resultline.remark=='2'
               %strong  &nbsp;&nbsp;(VIVA)
           %td.centre
@@ -107,9 +111,13 @@
               \-
             - else
               /=@grading
+              /GRED column
               /replace Final gred with Repeat gred
-              - unless (@student_grade.exam2marks.nil? || @student_grade.exam2marks.blank?) && @student_grade.resit==false
-                =@student_grade.render_grading2[-2,2] 
+              - unless @student_grade.nil? || @student_grade.blank?
+                - unless (@student_grade.exam2marks.nil? || @student_grade.exam2marks.blank?) && @student_grade.resit==false
+                  =@grading2=@student_grade.render_grading2[-2,2] 
+                - else
+                  =@grading
               - else
                 =@grading
 
@@ -132,7 +140,7 @@
               /  =sprintf('%.2f', 0.00)
               /  - final2_all << 0.00
               
-              / TODO - in PDF too
+              /NG column
               /with repeat parts
               - unless @student_finale.nil? || @student_finale.blank? 
                 - unless (@student_grade.exam2marks.nil? || @student_grade.exam2marks.blank?) && @student_grade.resit==false
@@ -158,8 +166,18 @@
                 =I18n.t('exam.examresult.passed')
                 - @value_state << '3'
               - else 
-                = I18n.t('exam.examresult.failed')
-                - @value_state << '4'
+                ///CATATAN column - English subjects
+                /repeat start
+                - unless (@student_grade.exam2marks.nil? || @student_grade.exam2marks.blank?) && @student_grade.resit==false
+                  - if @grading2.strip=="A" || @grading2=="A-" ||@grading2=="B+"||@grading2.strip=="B"||@grading2=="B-"||@grading2=="C+"||@grading2.strip=="C"
+                    = I18n.t('exam.examresult.passed')
+                  - else
+                    = I18n.t('exam.examresult.failed')
+                  /repeat ends
+                  ///
+                - else
+                  = I18n.t('exam.examresult.failed')
+                  - @value_state << '4'
             - else
               /******************************
               /ref : https://trello.com/c/W7hjdKzp (Perubatan)
@@ -183,8 +201,17 @@
                   = I18n.t('exam.examresult.passed')
                   - @value_state << '3'
                 - else 
-                  = I18n.t('exam.examresult.failed')
-                  - @value_state << '4'
+                  /CATATAN column - Other subjects
+                  /repeat starts
+                  - unless (@student_grade.exam2marks.nil? || @student_grade.exam2marks.blank?) && @student_grade.resit==false
+                    - if @grading2.strip=="A" || @grading2=="A-" ||@grading2=="B+"||@grading2.strip=="B"||@grading2=="B-"||@grading2=="C+"||@grading2.strip=="C"
+                      = I18n.t('exam.examresult.passed')
+                    - else
+                      = I18n.t('exam.examresult.failed')
+                    /repeat ends
+                  - else
+                    = I18n.t('exam.examresult.failed')
+                    - @value_state << '4'
               /******************************
             ///
 
@@ -219,14 +246,14 @@
       %tr
         %td STATUS
         %td
+          /STATUS KESELURUHAN
           - if [kebidanan, kejururawatan].include?(@resultline.examresult.programme_id)
-            - if @value_state.uniq.include?('4') 
-              - @value_status='4'
-            - else
-              - @value_status='3'
-            =(DropDown::RESULT_STATUS.find_all{|disp, value| value == @value_status}).map {|disp, value| disp}[0]+" & "+@resultline.render_remark
+            =h @resultline.render_status
+            =" & "+@resultline.render_remark if @resultline.status=='4'
           - else
             - if [@cara_kerja, @fisioterapi].include?(@resultline.examresult.programme_id)
-              =h @resultline.render_status_contra+" & "+@resultline.render_remark
+              =h @resultline.render_status_contra
+              =" & "+@resultline.render_remark if @resultline.status=='4'
             - else
-              =h @resultline.render_status+" & "+@resultline.render_remark
+              =h @resultline.render_status
+              =" & "+@resultline.render_remark if @resultline.status=='4'

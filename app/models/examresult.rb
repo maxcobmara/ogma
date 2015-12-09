@@ -188,7 +188,11 @@ class Examresult < ActiveRecord::Base
         end
         unless student_finale.nil? || student_finale.blank? 
           unless english_subjects.include?(subject.code[0,4]) || (subject.code.strip.size < 10 && (subject.code.strip[-2,1].to_i==2 || subject.code.strip[-2,1].to_i==3))
-            final_per_sem << student_finale.set_NG.to_f 
+            if student_finale.resit==true
+	      final_per_sem << student_finale.set_NG2.to_f
+	    else
+	      final_per_sem << student_finale.set_NG.to_f 
+	    end
           end
         else
           unless english_subjects.include?(subject.code[0,4]) || (subject.code.strip.size < 10 && (subject.code.strip[-2,1].to_i==2 || subject.code.strip[-2,1].to_i==3))
