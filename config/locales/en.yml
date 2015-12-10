@@ -2370,7 +2370,7 @@ en:
       programme: Programme
       marks_intakes_exist: 'Exammarks for student(s) of selected Intakes already exist. Delete / edit records accordingly.'
       complete_paper: 'Only valid (complete) exam papers available for marks giving.'
-      error_remark: " indicates INVALID data : values must not excedd maximum values."
+      #error_remark: " indicates INVALID data : values must not excedd maximum values."
       exceed_total: "Summative (70%) - values must not exceed maximum values."
     
     grade:
