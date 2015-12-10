@@ -512,14 +512,14 @@ class Examination_slipPdf < Prawn::Document
 #      end
       if [@kebidanan, @kejururawatan].include?(@resultline.examresult.programme_id)
         render_status_view= @resultline.render_status
-        render_status_view+=" & "+@resultline.render_remark if @resultline.status=='4'
+        render_status_view+=" & "+@resultline.render_remark if @resultline.status=='4' && @resultline.render_remark!=nil
       else
         if [@cara_kerja, @fisioterapi].include?(@resultline.examresult.programme_id)
           render_status_view=@resultline.render_status_contra
-          render_status_view+=" & "+@resultline.render_remark if @resultline.status=='4'
+          render_status_view+=" & "+@resultline.render_remark if @resultline.status=='4' && @resultline.render_remark!=nil
         else
           render_status_view=@resultline.render_status
-          render_status_view+=" & "+@resultline.render_remark if @resultline.status=='4'
+          render_status_view+=" & "+@resultline.render_remark if @resultline.status=='4' && @resultline.render_remark!=nil
         end
       end
       # --
