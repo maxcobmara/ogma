@@ -168,18 +168,19 @@
             - else
               - status_selection = DropDown::RESULT_STATUS
             %td
-              - unless (@grade_student.first.exam2marks.nil? || @grade_student.first.exam2marks.blank?) && @grade_student.first.resit==false
-                /what if just fail & repeat not yet done? - Overall STATUS should FAIL
-                - if @value_state2.count > 0
-                  /START - apply to all programme - when REPEAT papers exist, (inc. Grade 'resit' checkbox activated)
-                  - fails_count=@value_state.count('4')
-                  - fails_afterrepeat_count=@value_state2.count('4')
-                  - passed_afterrepeat_count=@value_state2.count('3')
-                  - if fails_count-fails_afterrepeat_count==passed_afterrepeat_count
-                    - @value_status='3'
-                  - else
-                    - @value_status='4'
-                  /END - apply to all programme - when REPEAT papers exist, (inc. Grade 'resit' checkbox activated)
+              - unless @grade_student.nil? || @grade_student.blank?
+                - unless (@grade_student.first.exam2marks.nil? || @grade_student.first.exam2marks.blank?) && @grade_student.first.resit==false
+                  /what if just fail & repeat not yet done? - Overall STATUS should FAIL
+                  - if @value_state2.count > 0
+                    /START - apply to all programme - when REPEAT papers exist, (inc. Grade 'resit' checkbox activated)
+                    - fails_count=@value_state.count('4')
+                    - fails_afterrepeat_count=@value_state2.count('4')
+                    - passed_afterrepeat_count=@value_state2.count('3')
+                    - if fails_count-fails_afterrepeat_count==passed_afterrepeat_count
+                      - @value_status='3'
+                    - else
+                      - @value_status='4'
+                    /END - apply to all programme - when REPEAT papers exist, (inc. Grade 'resit' checkbox activated)
               
               - if [kebidanan, kejururawatan].include?(@examresult.programme_id)
                 - if @value_state2.count==0
