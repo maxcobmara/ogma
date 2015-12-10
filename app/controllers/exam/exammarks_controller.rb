@@ -246,7 +246,7 @@ class Exam::ExammarksController < ApplicationController
         format.html {render :action => 'edit_multiple'}
         format.xml  { head :ok }
       else
-        format.html { redirect_to(exam_exammarks_url, :notice =>t('exam.exammark.multiple_updated')+totalmarks.count.to_s) }
+        format.html { redirect_to(exam_exammarks_url, :notice =>t('exam.exammark.multiple_updated')) }
         format.xml  { head :ok }
       end
     end

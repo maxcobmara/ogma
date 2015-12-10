@@ -157,7 +157,10 @@
             =t 'exam.exammark.summative'
             (70%)
         - else
-          %th=t 'exam.exammark.total'
+          %th
+            #error_display_total{:style => "display: none;"}
+              %font{color: "red"}*
+            =t 'exam.exammark.total'
 
     %tbody
       - @exammarks.sort_by{|x|x.studentmark.name}.each_with_index do |exammark,no|
@@ -173,6 +176,10 @@
           - elsif @edit_type == "Edit by Subject" 
             = hidden_field_tag "exam_ids[]", @exam_id 
           %td
+            /TODO - Check if exam_template in use contains WEIGHTAGE
+            /MCQ type - contains weightage? if yes - (entered total_mcq / qty*1mark)*weightage -- contribute to - 70% weightage
+            /other type - contains weightage? if yes (check marks 4 each question -- + column total mark(of this type) + column ((total other type/total mark)*weightage)
+            
             = text_field_tag "total_mcqs[]", exammark.total_mcq.to_i,:id=>"total"+@b_count.to_s, :size=> 4,:class=>'j1' 
           - aaa=exammark.marks 
           - @a_count=0
@@ -262,9 +269,13 @@ $(document).ready(function(){
         { window["totalsummative"+i].value = (total_mcq*1+a)/fullmarks*100*0.70;}
       }
       
-      var value_100 = document.getElementById("marks_in_hundred"+i).value;
+      if ((programme=="Radiografi") || (programme=="Jurupulih Perubatan Cara Kerja"))
+      {
+        var value_100 = document.getElementById("marks_in_hundred"+i).value;
+      }
+      
       var value_70 = document.getElementById("total_summative"+i).value;
-      if ((value_100 > 100) || (value_70 > 70))
+      if (value_70 > 70)
       {
         $("#error_display").show();
         $("#error_display_70").show();
@@ -284,4 +295,18 @@ $(document).ready(function(){
   });
 });
 
-        
+ 
+/ if (value_70 > 70)
+/       {
+/         $("#error_display").show();
+/         $("#error_display_70").show();
+/         $("#error_display_total").show();
+/         $("#error_display_remark").show();
+/       }
+/       else
+/       { 
+/         $("#error_display").hide(); 
+/         $("#error_display_70").hide(); 
+/         $("#error_display_total").hide();
+/         $("#error_display_remark").hide();
+/       } 
