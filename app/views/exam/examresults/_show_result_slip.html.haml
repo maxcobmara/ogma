@@ -257,11 +257,11 @@
           /STATUS KESELURUHAN
           - if [kebidanan, kejururawatan].include?(@resultline.examresult.programme_id)
             =h @resultline.render_status
-            =" & "+@resultline.render_remark if @resultline.status=='4'
+            =" & "+@resultline.render_remark if @resultline.status=='4' && @resultline.render_remark!=nil
           - else
             - if [@cara_kerja, @fisioterapi].include?(@resultline.examresult.programme_id)
               =h @resultline.render_status_contra
-              =" & "+@resultline.render_remark if @resultline.status=='4'
+              =" & "+@resultline.render_remark if @resultline.status=='4' && @resultline.render_remark!=nil
             - else
               =h @resultline.render_status
-              =" & "+@resultline.render_remark if @resultline.status=='4'
+              =" & "+@resultline.render_remark if @resultline.status=='4' && @resultline.render_remark!=nil
