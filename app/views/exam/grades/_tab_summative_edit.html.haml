@@ -29,7 +29,8 @@
     - latest_paper=Exam.where(subject_id: @grade.subject_id).order(created_at: :desc).first.id
     - student_exammark=Exammark.where(exam_id: latest_paper).where(student_id: @grade.student_id)
     /Repeat paper if exist
-    - repeat_paper=Exam.where(subject_id: @grade.subject_id).where(name: "R").first.id
+    - repeats=Exam.where(subject_id: @grade.subject_id).where(name: "R")
+    - repeat_paper=repeats.first.id if repeats && repeats.count > 0
   .col-md-2
     - if (student_exammark && student_exammark.count > 0) && diploma_ids.include?(progid)
       = f.text_field :exam1marks, value: exammarks, class: 'form-control', readonly: 'readonly'
@@ -42,7 +43,8 @@
   .col-md-2
     = f.text_field :marks_70, value: number_with_precision(@grade.total_summative, precision: 2), class: 'form-control', readonly: 'readonly'
     /Repeat paper if exist
-    = f.text_field :marks_70_rev, value: number_with_precision(@grade.total_summative2, precision: 2), class: 'form-control', readonly: 'readonly'
+    - if repeats && repeats.count > 0
+      = f.text_field :marks_70_rev, value: number_with_precision(@grade.total_summative2, precision: 2), class: 'form-control', readonly: 'readonly'
 %br
 .row
   .col-md-12

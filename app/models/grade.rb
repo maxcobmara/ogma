@@ -103,8 +103,12 @@ class Grade < ActiveRecord::Base
       else
         
         #####from formative_contents-7Dec2015
-	repeat_paper=Exam.where(subject_id: subject_id).where(name: "R").first.id
-        student_exammark=Exammark.where(exam_id: repeat_paper).where(student_id: student_id).first
+	repeats=Exam.where(subject_id: subject_id).where(name: "R")
+        
+	if repeats && repeats.count > 0
+	  repeat_paper=repeats.first.id
+          student_exammark=Exammark.where(exam_id: repeat_paper).where(student_id: student_id).first 
+	end
         if student_exammark && Exammark.fullmarks(student_exammark.exam_id)!=70
           student_exammark.total_marks/Exammark.fullmarks(student_exammark.exam_id)*100*0.7
           #####from formative_contents-7Dec2015
