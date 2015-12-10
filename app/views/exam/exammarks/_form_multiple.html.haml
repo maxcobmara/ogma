@@ -139,27 +139,27 @@
         /HIDE - just to avoid confusion (same value as summative, coz data already in weightage - but MCQ, SEQ- marks by WEIGHTAGE still PENDING)
         - if @exammarks[0].exampaper.subject.root_id==radiografi || @exammarks[0].exampaper.subject.root_id==carakerja
           %th
-            #error_display_total{:style => "display: none;"}
-              %font{color: "red"}*
+            /#error_display_total{:style => "display: none;"}
+            /  %font{color: "red"}*
             =t 'exam.exammark.total'
           %font{:style=>"size:-2;"}="("+(number_with_precision(@fullmarks, precision: 2)).to_s+")"
         /hide end
         - if @exammarks[0].exampaper.name=='F'
           - if @exammarks[0].exampaper.subject.root_id==radiografi || @exammarks[0].exampaper.subject.root_id==carakerja
             %th 
-              #error_display{:style => "display: none;"}
-                %font{color: "red"}*
+              /#error_display{:style => "display: none;"}
+              /  %font{color: "red"}*
               &nbsp;&nbsp;&nbsp;&nbsp;100%&nbsp;&nbsp;&nbsp;&nbsp;
               
           %th
-            #error_display_70{:style => "display: none;"}
-              %font{color: "red"}*
+            /#error_display_70{:style => "display: none;"}
+            /  %font{color: "red"}*
             =t 'exam.exammark.summative'
             (70%)
         - else
           %th
-            #error_display_total{:style => "display: none;"}
-              %font{color: "red"}*
+            /#error_display_total{:style => "display: none;"}
+            /  %font{color: "red"}*
             =t 'exam.exammark.total'
 
     %tbody
@@ -225,9 +225,9 @@
 =hidden_field_tag "exammark[trial4]", @fullmarks
 =hidden_field_tag "programme_name", Programme.where(id: @exammarks[0].exampaper.subject.root_id).first.name
 
-#error_display_remark{:style => "display: none;"}
-  %font{color: "red"}* 
-  =t 'exam.exammark.error_remark'
+/#error_display_remark{:style => "display: none;"}
+/  %font{color: "red"}* 
+/  =t 'exam.exammark.error_remark'
 %BR
 
 :javascript
@@ -255,47 +255,64 @@ $(document).ready(function(){
         var other = document.getElementById("student_mark_"+i+"_"+k).value;
         a=a*1+(other*1);
       }
-      window["totalmarksview"+i].value = (total_mcq*1+a);
+      
       if ((programme=="Radiografi") || (programme=="Jurupulih Perubatan Cara Kerja"))
       {
-        window["marksinhundred"+i].value = (total_mcq*1+a)/fullmarks*100;
-        window["totalsummative"+i].value = (total_mcq*1+a)/fullmarks*100*0.70;
+        
+        if (  (total_mcq*1+a)/fullmarks*100*0.70 > 70)
+          {
+            window["totalmarksview"+i].value = 'Max value is '+fullmarks;
+            window["totalsummative"+i].value='Max value is 70';
+            window["marksinhundred"+i].value='Max value is 100';
+            window["totalmarksview"+i].style.color="red";
+            window["totalsummative"+i].style.color="red";
+            window["marksinhundred"+i].style.color="red";
+          }
+          else
+          {
+            window["totalmarksview"+i].value = (total_mcq*1+a);
+            window["marksinhundred"+i].value = (total_mcq*1+a)/fullmarks*100;
+            window["totalsummative"+i].value = (total_mcq*1+a)/fullmarks*100*0.70;
+          }
       }
       else
       {
+        window["totalmarksview"+i].value = (total_mcq*1+a);
         if (fullmarks==70)
-        {  window["totalsummative"+i].value = (total_mcq*1+a);}
+        {  
+          if ( (total_mcq*1+a)/fullmarks*100*0.70 > 70)
+          {
+            window["totalsummative"+i].value='Max value is 70';
+            window["totalsummative"+i].style.color="red";
+          }
+          else
+          {
+             window["totalsummative"+i].value = (total_mcq*1+a);
+          }
+        }
         else
-        { window["totalsummative"+i].value = (total_mcq*1+a)/fullmarks*100*0.70;}
+        { 
+           if ( (total_mcq*1+a)/fullmarks*100*0.70 > 70)
+          {
+            window["totalsummative"+i].value='Max value is 70';
+            window["totalsummative"+i].style.color="red";a
+          }
+          else
+          {
+             window["totalsummative"+i].value = (total_mcq*1+a)/fullmarks*100*0.70;
+          }
+        }
       }
-      
-      if ((programme=="Radiografi") || (programme=="Jurupulih Perubatan Cara Kerja"))
-      {
-        var value_100 = document.getElementById("marks_in_hundred"+i).value;
-      }
-      
-      var value_70 = document.getElementById("total_summative"+i).value;
-      if (value_70 > 70)
-      {
-        $("#error_display").show();
-        $("#error_display_70").show();
-        $("#error_display_total").show();
-        $("#error_display_remark").show();
-      }
-      else
-      { 
-        $("#error_display").hide(); 
-        $("#error_display_70").hide(); 
-        $("#error_display_total").hide();
-        $("#error_display_remark").hide();
-      }
-      
     }
     
   });
 });
 
- 
+
+/       if ((programme=="Radiografi") || (programme=="Jurupulih Perubatan Cara Kerja"))
+/       {
+/         var value_100 = document.getElementById("marks_in_hundred"+i).value;
+/       }
 / if (value_70 > 70)
 /       {
 /         $("#error_display").show();
