@@ -63,7 +63,8 @@ class Grade < ActiveRecord::Base
       else
         
         #####from formative_contents-7Dec2015
-        latest_paper=Exam.where(subject_id: subject_id).order(created_at: :desc).where(name: "F").first.id  #Exam.where(subject_id: subject_id).pluck(:id)
+	exist_paper=Exam.where(subject_id: subject_id).order(created_at: :desc).where(name: "F")
+        latest_paper=exist_paper.first.id  if exist_paper && exist_paper.count > 0 #Exam.where(subject_id: subject_id).pluck(:id)
         student_exammark=Exammark.where(exam_id: latest_paper).where(student_id: student_id).first
         if student_exammark && Exammark.fullmarks(student_exammark.exam_id)!=70
           student_exammark.total_marks/Exammark.fullmarks(student_exammark.exam_id)*100*0.7

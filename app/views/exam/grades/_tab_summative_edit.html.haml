@@ -35,11 +35,13 @@
     - if (student_exammark && student_exammark.count > 0) && diploma_ids.include?(progid)
       = f.text_field :exam1marks, value: exammarks, class: 'form-control', readonly: 'readonly'
       /Repeat paper if exist
-      = f.text_field :exam2marks, value: exammarks2, class: 'form-control', readonly: 'readonly'
+      - if repeats && repeats.count > 0
+        = f.text_field :exam2marks, value: exammarks2, class: 'form-control', readonly: 'readonly'
     - else
       = f.text_field :exam1marks, value: exammarks, class: 'form-control'
       /Repeat paper if exist
-      = f.text_field :exam2marks, value: exammarks2, class: 'form-control'
+      - if repeats && repeats.count > 0
+        = f.text_field :exam2marks, value: exammarks2, class: 'form-control'
   .col-md-2
     = f.text_field :marks_70, value: number_with_precision(@grade.total_summative, precision: 2), class: 'form-control', readonly: 'readonly'
     /Repeat paper if exist
