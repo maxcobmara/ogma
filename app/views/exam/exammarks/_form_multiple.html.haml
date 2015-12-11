@@ -15,63 +15,52 @@
            
 /retrieve data first
 - @examid = @exammarks[0].exam_id 
-- @istemplate = Exam.find(@examid).klass_id
-- if @istemplate == 0
-  /- @examtemplates = Exam.find(@examid).examtemplates
-  /- qty_ary = @examtemplates.map(&:quantity)
-  /- @questioncount = qty_ary.inject{|sum,x|sum+x}
-  /- @mcqcount = @examtemplates.mcqq[0].quantity 
-  /- @meqcount = @examtemplates.meqq[0].quantity if @examtemplates.map(&:questiontype).include?("MEQ")
-  /- @seqcount = @examtemplates.seqq[0].quantity if @examtemplates.map(&:questiontype).include?("SEQ")
-  /- @acqcount = @examtemplates.acqq[0].quantity if @examtemplates.map(&:questiontype).include?("ACQ")
-  /- @oscicount = @examtemplates.osci2q[0].quantity if @examtemplates.map(&:questiontype).include?("OSCI") 
-  /- @osciicount = @examtemplates.osci3q[0].quantity if @examtemplates.map(&:questiontype).include?("OSCII")
-  /- @oscecount = @examtemplates.osceq[0].quantity if @examtemplates.map(&:questiontype).include?("OSCE")
-  /- @ospecount = @examtemplates.ospeq[0].quantity if @examtemplates.map(&:questiontype).include?("OSPE")
-  /- @vivacount = @examtemplates.vivaq[0].quantity if @examtemplates.map(&:questiontype).include?("VIVA") 
-  /- @truefalsecount = @examtemplates.truefalseq[0].quantity if @examtemplates.map(&:questiontype).include?("TRUEFALSE") 
-  /- @allcount = @questioncount
+- exam_template=Exam.find(@examid).exam_template
+- exam_template.question_count.each do |k, v|
+  - if v['count']!='' || v['count']!=nil #&& v['weight']!=''                          
+    - qty=(v['count']).to_i
+    - if k=="mcq"
+      - @mcqcount=qty
+      - if v['weight']!=''
+        = @mcqweight_rate=  v['weight'].to_f/@mcqcount*1
+      - else
+        = @mcqweight_rate=0
+      /or (1/@mcqcount*1) * v['weight']
+    - elsif k=="meq"
+      - @meqcount=qty
+      - if v['weight']!=''
+        - @meqweight_rate=v['weight'].to_f/(@meqcount*20)
+      - else
+        - @meqweight_rate=0
+    - elsif k=="seq" 
+      - @seqcount=qty
+      - if v['weight']!=''
+        = @seqweight_rate=  v['weight'].to_f/(@seqcount*10)
+      - else
+        - @seqweight_rate=0
+    - elsif k=="acq"
+      - @acqcount=qty 
+      - @acqweight=v['weight'].to_i
+    - elsif k=="osci"
+      - @oscicount=qty
+      - @osciweight=v['weight'].to_i
+    - elsif k=="oscii"
+      - @osciicount=qty
+      - @osciiweight=v['weight'].to_i
+    - elsif k=="osce"
+      - @oscecount=qty
+      - @osceweight=v['weight'].to_i
+    - elsif k=="ospe"
+      - @ospecount=qty
+      - @ospeweight=v['weight'].to_i
+    - elsif k=="viva"
+      - @vivacount=qty
+      - @vivaweight=v['weight'].to_i
+    - elsif k=="truefalse"
+      - @truefalsecount=qty
+      - @truefalseweight=v['weight'].to_i
 
-  - exam_template=Exam.find(@examid).exam_template
-  - exam_template.question_count.each do |k, v|
-    - if v['count']!='' || v['count']!=nil #&& v['weight']!=''                          
-      - qty=(v['count']).to_i
-      - if k=="mcq"
-        - @mcqcount=qty
-      - elsif k=="meq"
-        - @meqcount=qty
-      - elsif k=="seq" 
-        - @seqcount=qty
-      - elsif k=="acq"
-        - @acqcount=qty 
-      - elsif k=="osci"
-        - @oscicount=qty
-      - elsif k=="oscii"
-        - @osciicount=qty
-      - elsif k=="osce"
-        - @oscecount=qty
-      - elsif k=="ospe"
-        - @ospecount=qty
-      - elsif k=="viva"
-        - @vivacount=qty
-      - elsif k=="truefalse"
-        - @truefalsecount=qty
-  - @allcount= @mcqcount+@meqcount+@seqcount+@acqcount+@oscicount+@osciicount+@oscecount+@ospecount+@vivacount+@truefalsecount
-  /@exammarks[0].get_questions_count(@examid)
-
-- else 
-  - @mcqcount = Examquestion.joins(:exams).where('questiontype=? and exam_id=?',"MCQ", @examid).count
-  - @meqcount = Examquestion.joins(:exams).where('questiontype=? and exam_id=?',"MEQ", @examid).count
-  - @seqcount= Examquestion.joins(:exams).where('questiontype=? and exam_id=?',"SEQ", @examid).count
-  - @acqcount= Examquestion.joins(:exams).where('questiontype=? and exam_id=?',"ACQ", @examid).count
-  - @oscicount= Examquestion.joins(:exams).where('questiontype=? and exam_id=?',"OSCI", @examid).count
-  - @osciicount= Examquestion.joins(:exams).where('questiontype=? and exam_id=?',"OSCII", @examid).count
-  - @oscecount= Examquestion.joins(:exams).where('questiontype=? and exam_id=?',"OSCE", @examid).count
-  - @ospecount= Examquestion.joins(:exams).where('questiontype=? and exam_id=?',"OSPE", @examid).count
-  - @vivacount= Examquestion.joins(:exams).where('questiontype=? and exam_id=?',"VIVA", @examid).count
-  - @truefalsecount= Examquestion.joins(:exams).where('questiontype=? and exam_id=?',"TRUEFALSE", @examid).count
-  - @allcount = Examquestion.joins(:exams).where('exam_id=?',@examid).count
-
+- @allcount= @mcqcount+@meqcount+@seqcount+@acqcount+@oscicount+@osciicount+@oscecount+@ospecount+@vivacount+@truefalsecount
 - @fullmarks = Exammark.fullmarks(@examid)
 - @b_count=0
 - @diff_total_mcq=0
@@ -90,55 +79,60 @@
         - if @exampaper_of_exammarks==1 
         - else
           %th Examination
-        %th=t 'exam.exammark.total_mcq'
+        %th.centre
+          =t 'exam.exammark.total_mcq'
+          .small="/"+(@mcqcount*1).to_s
         - if @meqcount
           - 1.upto(@meqcount) do |count|
-            %th 
+            %th.centre 
               MEQ
               %br="Q-"+count.to_s
+              .small /20
         - if @seqcount
           - 1.upto(@seqcount) do |count|
-            %th 
+            %th.centre 
               SEQ
               %br="Q-"+count.to_s
+              .small /10
         - if @acqcount
           - 1.upto(@acqcount) do |count|
-            %th 
+            %th.centre 
               ACQ
               %br="Q-"+count.to_s
         - if @oscicount
           - 1.upto(@oscicount) do |count|
-            %th 
+            %th.centre 
               OSCI
               %br="Q-"+count.to_s
         - if @osciicount
           - 1.upto(@osciicount) do |count|
-            %th 
+            %th.centre 
               OSCII
               %br="Q-"+count.to_s
         - if @oscecount 
           - 1.upto(@oscecount) do |count|
-            %th 
+            %th.centre 
               OSCE
               %br="Q-"+count.to_s
         - if @ospecount 
           - 1.upto(@ospecount) do |count|
-            %th 
+            %th.centre 
               OSPE
               %br="Q-"+count.to_s
+              .small /10
         - if @vivacount 
           - 1.upto(@vivacount) do |count|
-            %th 
+            %th.centre 
               VIVA
               %br="Q-"+count.to_s
         - if @truefalsecount
           - 1.upto(@truefalsecount) do |count|
-            %th 
+            %th.centre
               =t 'exam.exammark.true_false1'
               %br="Q-"+count.to_s
         /HIDE - just to avoid confusion (same value as summative, coz data already in weightage - but MCQ, SEQ- marks by WEIGHTAGE still PENDING)
         - if @exammarks[0].exampaper.subject.root_id==radiografi || @exammarks[0].exampaper.subject.root_id==carakerja
-          %th
+          %th.centre
             /#error_display_total{:style => "display: none;"}
             /  %font{color: "red"}*
             =t 'exam.exammark.total'
@@ -146,12 +140,12 @@
         /hide end
         - if @exammarks[0].exampaper.name=='F'
           - if @exammarks[0].exampaper.subject.root_id==radiografi || @exammarks[0].exampaper.subject.root_id==carakerja
-            %th 
+            %th.centre 
               /#error_display{:style => "display: none;"}
               /  %font{color: "red"}*
               &nbsp;&nbsp;&nbsp;&nbsp;100%&nbsp;&nbsp;&nbsp;&nbsp;
               
-          %th
+          %th.centre
             /#error_display_70{:style => "display: none;"}
             /  %font{color: "red"}*
             =t 'exam.exammark.summative'
@@ -175,7 +169,7 @@
           - if @edit_type == "Edit Checked" || @edit_type.nil? 	
           - elsif @edit_type == "Edit by Subject" 
             = hidden_field_tag "exam_ids[]", @exam_id 
-          %td
+          %td.centre
             /TODO - Check if exam_template in use contains WEIGHTAGE
             /MCQ type - contains weightage? if yes - (entered total_mcq / qty*1mark)*weightage -- contribute to - 70% weightage
             /other type - contains weightage? if yes (check marks 4 each question -- + column total mark(of this type) + column ((total other type/total mark)*weightage)
@@ -184,7 +178,7 @@
           - aaa=exammark.marks 
           - @a_count=0
           - aaa.sort_by{|x|x.created_at}.each_with_index do |aa, index|
-            %td
+            %td.centre
               = text_field_tag "marks_attributes[#{index}][student_marks][]", number_with_precision(aa.student_mark,:precision=>2),:id=>"student_mark_"+"#{@b_count}"+"_"+@a_count.to_s,:class=>'j1', :size=> 4 
               - @a_count+=1
 
@@ -195,20 +189,20 @@
           - if !(@exammarks[0].exampaper.subject.root_id==radiografi || @exammarks[0].exampaper.subject.root_id==carakerja) && @exammarks[0].exampaper.name=='F'
             = hidden_field_tag "total_marks_view[]", number_with_precision(exammark.total_marks,precision:2) ,:id=>"total_marks_view"+@b_count.to_s, :size=> 5, :readonly=>true, :class => 'form-control'
           - else
-            %td{:style=>"background-color:#C3E9BF;"}
+            %td.centre{:style=>"background-color:#C3E9BF;"}
               /oklak
               = text_field_tag "total_marks_view[]", number_with_precision(exammark.total_marks,precision:2) ,:id=>"total_marks_view"+@b_count.to_s, :size=> 5, :readonly=>true, :class => 'form-control'
 
           /hide end
           - if (@exammarks[0].exampaper.subject.root_id==radiografi || @exammarks[0].exampaper.subject.root_id==carakerja) && @exammarks[0].exampaper.name=='F'
-            %td{:style=>"background-color:#C3E9BF;"}
+            %td.centre{:style=>"background-color:#C3E9BF;"}
               /sinipun
               = text_field_tag "marks_in_hundred[]", number_with_precision((exammark.total_marks/Exammark.fullmarks(@examid))*100, precision: 2), :id=>"marks_in_hundred"+@b_count.to_s, :size=> 5, :readonly=>true, :class => 'form-control'
           
           /- else
           /  %td{:style=>"background-color:#C3E9BF;"}= text_field_tag "total_marks_view[]", number_with_precision(exammark.total_marks,precision:2) ,:id=>"total_marks_view"+@b_count.to_s, :size=> 5, :readonly=>true, :class => 'form-control'
           - if @exammarks[0].exampaper.name=='F'
-            %td{:style=>"background-color:#C3E9BF;"}
+            %td.centre{:style=>"background-color:#C3E9BF;"}
               /sinika
               = text_field_tag "total_summative[]", number_with_precision((exammark.total_marks/Exammark.fullmarks(@examid))*100*0.70, precision: 2) ,:id=>"total_summative"+@b_count.to_s, :size=> 5, :readonly=>true, :class => 'form-control'
           - else
@@ -218,8 +212,13 @@
          
           - @b_count+=1
           
-/TRIAL      
+/TRIAL  
+=hidden_field_tag "mcqweight_rate", @mcqweight_rate
+=hidden_field_tag "seqweight_rate", @seqweight_rate
+=hidden_field_tag "meqweight_rate", @meqweight_rate
 =hidden_field_tag "exammark[trial2]", @mcqcount
+=hidden_field_tag "seqcount", @seqcount
+=hidden_field_tag "meqcount", @meqcount
 =hidden_field_tag "exammark[trial1]", @exammarks.count
 =hidden_field_tag "exammark[trial3]", @allcount
 =hidden_field_tag "exammark[trial4]", @fullmarks
@@ -235,6 +234,11 @@
 $(document).ready(function(){
   $(".j1").keyup(function() {  
     
+    var mcqweight_rate= document.getElementById("mcqweight_rate").value;
+    var seqweight_rate= document.getElementById("seqweight_rate").value;
+    var meqweight_rate= document.getElementById("meqweight_rate").value;
+    var seq_count= document.getElementById("seqcount").value;
+    var meq_count= document.getElementById("meqcount").value;
     var studentcount =document.getElementById("exammark_trial1").value;
     var mcqcount = $("#exammark_trial2").val();
     var allcount = $("#exammark_trial3").val();
@@ -253,13 +257,30 @@ $(document).ready(function(){
       for (var k=0;k<allcount-mcqcount;k++)
       {
         var other = document.getElementById("student_mark_"+i+"_"+k).value;
-        a=a*1+(other*1);
+        meq_count2=meq_count;
+        seq_count2=meq_count+seq_count;
+        if (k < meq_count2)
+        {  rate=meqweight_rate;}
+        else
+        {
+          if ((k >= meq_count2) && (k < seq_count2))
+          { rate=seqweight_rate;}
+        }
+        if (rate!='0')
+        {  a=a*1+(other*rate);}
+        else
+        {  a=a*1+(other*1);}
       }
+      
+      if (mcqweight_rate!='0')
+      {aaa=(total_mcq*mcqweight_rate+a)}
+      else
+      {aaa=(total_mcq*1+a)/fullmarks*100*0.70}
       
       if ((programme=="Radiografi") || (programme=="Jurupulih Perubatan Cara Kerja"))
       {
         
-        if (  (total_mcq*1+a)/fullmarks*100*0.70 > 70)
+        if (  aaa > 70) 
           {
             window["totalmarksview"+i].value = 'Max value is '+fullmarks;
             window["totalsummative"+i].value='Max value is 70';
@@ -272,7 +293,10 @@ $(document).ready(function(){
           {
             window["totalmarksview"+i].value = (total_mcq*1+a);
             window["marksinhundred"+i].value = (total_mcq*1+a)/fullmarks*100;
-            window["totalsummative"+i].value = (total_mcq*1+a)/fullmarks*100*0.70;
+            window["totalsummative"+i].value = aaa;
+            window["totalmarksview"+i].style.color="black";
+            window["totalsummative"+i].style.color="black";
+            window["marksinhundred"+i].style.color="black";
           }
       }
       else
@@ -280,26 +304,28 @@ $(document).ready(function(){
         window["totalmarksview"+i].value = (total_mcq*1+a);
         if (fullmarks==70)
         {  
-          if ( (total_mcq*1+a)/fullmarks*100*0.70 > 70)
+          if ( aaa > 70)
           {
             window["totalsummative"+i].value='Max value is 70';
             window["totalsummative"+i].style.color="red";
           }
           else
           {
-             window["totalsummative"+i].value = (total_mcq*1+a);
+             window["totalsummative"+i].value =aaa;
+             window["totalsummative"+i].style.color="black";
           }
         }
         else
         { 
-           if ( (total_mcq*1+a)/fullmarks*100*0.70 > 70)
+           if ( aaa > 70)
           {
             window["totalsummative"+i].value='Max value is 70';
-            window["totalsummative"+i].style.color="red";a
+            window["totalsummative"+i].style.color="red";
           }
           else
           {
-             window["totalsummative"+i].value = (total_mcq*1+a)/fullmarks*100*0.70;
+             window["totalsummative"+i].value = aaa;
+             window["totalsummative"+i].style.color="black";
           }
         }
       }
@@ -308,6 +334,9 @@ $(document).ready(function(){
   });
 });
 
+
+/if ( (total_mcq*mcqweight_rate+a)/fullmarks*100*0.70 > 70)
+/window["totalsummative"+i].value = (total_mcq*1+a)/fullmarks*100*0.70;
 
 /       if ((programme=="Radiografi") || (programme=="Jurupulih Perubatan Cara Kerja"))
 /       {
