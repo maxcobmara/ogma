@@ -24,6 +24,19 @@ class ExamTemplate < ActiveRecord::Base
     [:creator_search]
   end
   
+  def template_in_use
+    in_string="("
+    question_count.each do |k, v|
+      if v['count']!='' || v['weight']!=''
+        in_string += k.upcase+" : " 
+        in_string += v['count'] if v['count']!=''
+        in_string += "/"+ v['weight']+"%" if v["weight"]!=''
+        in_string+=", "
+      end
+    end
+    in_string.gsub(/, $/,"")+")"
+  end
+  
   def valid_for_removal
     if Exam.where(topic_id: id).count > 0
       return false

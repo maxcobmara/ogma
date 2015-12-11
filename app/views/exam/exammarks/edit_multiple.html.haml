@@ -27,7 +27,13 @@
                       =h @exammarks[0].exampaper.full_exam_name
                       =t 'exam.exams.with_questions' if @exammarks[0].exampaper.klass_id == 1
               %dt=t 'exam.exam_template.template_in_use'
-              %dd=h @exammarks[0].exampaper.exam_template.name
+              %dd
+                %table
+                  %tr
+                    %td=h @exammarks[0].exampaper.exam_template.name
+                    %td.small
+                      &nbsp;
+                      =h @exammarks[0].exampaper.exam_template.template_in_use
               %dt=t 'exam.exams.full_marks'
               %dd
                 %table
