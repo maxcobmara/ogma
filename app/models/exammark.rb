@@ -64,12 +64,21 @@ class Exammark < ActiveRecord::Base
 #   end
   
   def total_marks
-    if self.id
-      return Mark.where(exammark_id: self.id).sum(:student_mark)+total_mcq.to_i
+    diploma=Programme.where(course_type: 'Diploma')
+    radiografi=diploma.where('name ILIKE?', '%Radiografi%').first.id
+    carakerja=diploma.where('name ILIKE?', '%Jurupulih Perubatan Cara Kerja%').first.id
+    if exampaper.subject.root_id==radiografi || exampaper.subject.root_id==carakerja
+      total=marks.sum(:student_mark)+total_mcq.to_i       #actual total entered by user
     else
-      @total_marks	#any input by user will be ignored either edit form or new (including re-submission-invalid data)
-       #value assigned from partial..(1) single entry(_form.html.erb-line 44-47) (2) multiple entry(_form_by_paper.html.erb-line88-91)
+      total=totalsummative    #refer _form_multiple: total marks view shall display total marks entered if weightage not exist, otherwise display total in weightage 
     end
+    total
+#     if self.id
+#       return Mark.where(exammark_id: self.id).sum(:student_mark)+total_mcq.to_i
+#     else
+#       @total_marks	#any input by user will be ignored either edit form or new (including re-submission-invalid data)
+#        #value assigned from partial..(1) single entry(_form.html.erb-line 44-47) (2) multiple entry(_form_by_paper.html.erb-line88-91)
+#     end
   end
 
   #14March2013 - rev 17June2013 - rev 30Nov14
@@ -175,9 +184,9 @@ class Exammark < ActiveRecord::Base
           # TEMPORARY use these FORMULA --> total_marks.to_f/0.9,total_marks.to_f/0.7,total_marks.to_f/1.2  .....OR ELSE
           
           #------if marks entered already in weightage,...exam1marks = total_marks---------------------------------
-          @grade_to_update.exam1marks = total_marks.to_f/fullmarks.to_f*100 if Exam.find(exam_id).name=="F"
+          @grade_to_update.exam1marks = total_marks #total_marks.to_f/fullmarks.to_f*100 if Exam.find(exam_id).name=="F"
 	  @grade_to_update.exam2marks = total_marks.to_f/fullmarks.to_f*100 if Exam.find(exam_id).name=="R"
-          @grade_to_update.summative = total_marks.to_f/fullmarks.to_f*100*0.70
+          @grade_to_update.summative =totalsummative # total_marks.to_f/fullmarks.to_f*100*0.70
           #------------------------------use ABOVE formula for all conditions--HIDE ALL @credit_hour statement-----
           
 	        #@grade_to_update.exam1marks = total_marks.to_f/0.9        #depends on weightage 
@@ -252,7 +261,7 @@ class Exammark < ActiveRecord::Base
   
   def totalsummative
     #exammark.total_marks/Exammark.fullmarks(@examid))*100*0.70
-    a=0
+    @a=0
     ###
     exam_template=exampaper.exam_template
     exam_template.question_count.each do |k, v|
@@ -264,122 +273,118 @@ class Exammark < ActiveRecord::Base
             @mcqweight_rate=  v['weight'].to_f/@mcqcount*1
           else
             @mcqweight_rate=0
-	  end
-       elsif k=="meq"
-         @meqcount=qty
-         if v['weight']!=''
-           @meqweight_rate=v['weight'].to_f/(@meqcount*20)
-         else
-           @meqweight_rate=0
-	 end
-       elsif k=="seq" 
-         @seqcount=qty
-         if v['weight']!=''
-           @seqweight_rate=  v['weight'].to_f/(@seqcount*10)
-         else
-           @seqweight_rate=0
-	 end
-       elsif k=="acq"
-         @acqcount=qty 
-         if v['weight']!=''
-           @acqweight_rate=  v['weight'].to_f/(@acqcount*1)
-         else
-           @acqweight_rate=0
-	 end
-       elsif k=="osci"
-         @oscicount=qty
-         if v['weight']!=''
-           @osciweight_rate=  v['weight'].to_f/(@oscicount*1)
-         else
-           @osciweight_rate=0
-	 end
-       elsif k=="oscii"
-         @osciicount=qty
-         if v['weight']!=''
-           @osciiweight_rate=  v['weight'].to_f/(@osciicount*1)
-         else
-           @osciiweight_rate=0
-	 end
-       elsif k=="osce"
-         @oscecount=qty
-         if v['weight']!=''
-           @osceweight_rate=  v['weight'].to_f/(@oscecount*1)
-         else
-           @osceweight_rate=0
-	 end
-       elsif k=="ospe"
-         @ospecount=qty
-         if v['weight']!=''
-           @ospeweight_rate=  v['weight'].to_f/(@ospecount*10)
-         else
-           @ospeweight_rate=0
-	 end
-       elsif k=="viva"
-         @vivacount=qty
-         if v['weight']!=''
-           @vivaweight_rate=  v['weight'].to_f/(@vivacount*1)
-         else
-           @vivaweight_rate=0
-	 end
-       elsif k=="truefalse"
-         @truefalsecount=qty
-         if v['weight']!=''
-           @truefalseweight_rate=  v['weight'].to_f/(@truefalsecount*1)
-        else
-          @truefalseweight_rate=0
-	 end
-	end
+          end
+        elsif k=="meq"
+          @meqcount=qty
+          if v['weight']!=''
+            @meqweight_rate=v['weight'].to_f/(@meqcount*20)
+          else
+            @meqweight_rate=0
+          end
+        elsif k=="seq" 
+          @seqcount=qty
+          if v['weight']!=''
+            @seqweight_rate=  v['weight'].to_f/(@seqcount*10)
+          else
+            @seqweight_rate=0
+          end
+        elsif k=="acq"
+          @acqcount=qty 
+          if v['weight']!=''
+            @acqweight_rate=  v['weight'].to_f/(@acqcount*1)
+          else
+            @acqweight_rate=0
+          end
+        elsif k=="osci"
+          @oscicount=qty
+          if v['weight']!=''
+            @osciweight_rate=  v['weight'].to_f/(@oscicount*1)
+          else
+            @osciweight_rate=0
+          end
+        elsif k=="oscii"
+          @osciicount=qty
+          if v['weight']!=''
+            @osciiweight_rate=  v['weight'].to_f/(@osciicount*1)
+          else
+            @osciiweight_rate=0
+          end
+        elsif k=="osce"
+          @oscecount=qty
+          if v['weight']!=''
+            @osceweight_rate=  v['weight'].to_f/(@oscecount*1)
+          else
+            @osceweight_rate=0
+          end
+        elsif k=="ospe"
+          @ospecount=qty
+          if v['weight']!=''
+            @ospeweight_rate=  v['weight'].to_f/(@ospecount*10)
+          else
+            @ospeweight_rate=0
+          end
+        elsif k=="viva"
+          @vivacount=qty
+          if v['weight']!=''
+            @vivaweight_rate=  v['weight'].to_f/(@vivacount*1)
+          else
+            @vivaweight_rate=0
+          end
+        elsif k=="truefalse"
+          @truefalsecount=qty
+          if v['weight']!=''
+             @truefalseweight_rate=  v['weight'].to_f/(@truefalsecount*1)
+          else
+             @truefalseweight_rate=0
+          end
+        end
       end
     end
+    meq_count2=@meqcount;
+    seq_count2=meq_count2+@seqcount;
+    acq_count2=seq_count2+@acqcount;
+    osci_count2=acq_count2+@oscicount;
+    oscii_count2=osci_count2+@osciicount;
+    osce_count2=oscii_count2+@oscecount;
+    ospe_count2=osce_count2+@ospecount;
+    viva_count2=ospe_count2+@vivacount;
+    truefalse_count2=viva_count2+@truefalsecount;
     marks.each_with_index do |m, k|
-        meq_count2=@meqcount;
-        seq_count2=meq_count2+@seqcount;
-        acq_count2=seq_count2+@acqcount;
-        osci_count2=acq_count2+@oscicount;
-        oscii_count2=osci_count2+@osciicount;
-        osce_count2=oscii_count2+@oscecount;
-        ospe_count2=osce_count2+@ospecount;
-        viva_count2=ospe_count2+@vivacount;
-        truefalse_count2=viva_count2+@truefalsecount;
-        if (k < meq_count2)
-          rate=@meqweight_rate
+      if (k < meq_count2)
+        rate=@meqweight_rate
+      elsif ((k >= meq_count2) && (k < seq_count2))
+        rate=@seqweight_rate
+      elsif ((k >= seq_count2) && (k < acq_count2))
+        rate=@acqweight_rate
+      elsif ((k >= acq_count2) && (k < osci_count2))
+        rate=@osciweight_rate
+      elsif ((k >= osci_count2) && (k < oscii_count2))
+       rate=@osciiweight_rate
+      elsif ((k >= oscii_count2) && (k < osce_count2))
+        rate=@osceweight_rate
+      elsif ((k >= osce_count2) && (k < ospe_count2))
+        rate=@ospeweight_rate
+      elsif ((k >= ospe_count2) && (k < viva_count2))
+        rate=@vivaweight_rate
+      elsif ((k >= viva_count2) && (k < truefalse_count2))
+        rate=@truefalseweight_rate
+      end
+      if m.student_mark
+        if rate==0
+          @a+=m.student_mark
         else
-       
-          if ((k >= meq_count2) && (k < seq_count2))
-            rate=@seqweight_rate
-          elsif ((k >= seq_count2) && (k < acq_count2))
-            rate=@acqweight_rate
-          elsif ((k >= acq_count2) && (k < osci_count2))
-            rate=@osciweight_rate
-          elsif ((k >= osci_count2) && (k < oscii_count2))
-            rate=@osciiweight_rate
-          elsif ((k >= oscii_count2) && (k < osce_count2))
-            rate=@osceweight_rate
-          elsif ((k >= osce_count2) && (k < ospe_count2))
-            rate=@ospeweight_rate
-          elsif ((k >= ospe_count2) && (k < viva_count2))
-            rate=@vivaweight_rate
-          elsif ((k >= viva_count2) && (k < truefalse_count2))
-            rate=@truefalseweight_rate
-	  end
-	end
-        if m.student_mark && (rate!='0' || rate !=0) 
-          a=a*1+(m.student_mark*rate)
-        else
-	  if m.student_mark
-            a=a*1+(m.student_mark*1) 
-	  else
-	    a=a*1+0
-	  end
-	end
+          @a+=m.student_mark*rate
+        end
+      else
+        @a=0
+      end
     end
-    ###
-    if (@mcqweight_rate!='0' || @mcqweight_rate!=0)
-      aaa=(total_mcq*@mcqweight_rate+a)
+    if @mcqweight_rate==0
+      fullmarks = exampaper.total_marks
+      aaa=(total_mcq*1+@a)/fullmarks*100*0.70 
     else
-      aaa=(total_mcq*1+a)/fullmarks*100*0.70
+      aaa=(total_mcq*@mcqweight_rate+@a)
     end
-    aaa
+    aaa  
   end
-  
 end
