@@ -35,42 +35,22 @@ class Exammark < ActiveRecord::Base
       self.total_mcq=0.0
     end
   end
-# Latest - Combine MCQ values - just key-in once - as commented Apr-June 2013
-#   def set_total_mcq
-#     if total_mcq==nil   #5June2013-added-calculate here if not assign in _view_marks_form(otal_mcq==nil)
-#       count=0
-#       @examquestions = Exam.where(id: exam_id).first.examquestions
-#       @examquestions.each do |x|
-#          if x.questiontype=="MCQ"
-#            count+=1
-#          end
-#       end
-#       @allmarks = Mark.where(exammark_id: self.id)
-#       @sum_mcq = 0
-#       @allmarks.each_with_index do |y, index|
-#          if index< count
-#            unless y.student_mark.nil?
-#              @sum_mcq +=y.student_mark
-#            else
-#              @sum_mcq+=0
-#            end
-#          end
-#       end
-#       if self.total_mcq != 0 && @sum_mcq == 0     #in case - only total MCQ entered instead of entering each of MCQ marks
-#       else
-#         self.total_mcq = @sum_mcq       
-#       end
-#     end               #5June2013-added-calculate here if not assign in _view_marks_form(otal_mcq==nil)
-#   end
   
   def total_marks
     diploma=Programme.where(course_type: 'Diploma')
     radiografi=diploma.where('name ILIKE?', '%Radiografi%').first.id
     carakerja=diploma.where('name ILIKE?', '%Jurupulih Perubatan Cara Kerja%').first.id
+    ###
+     #if !(@exammarks[0].exampaper.subject.root_id==radiografi || @exammarks[0].exampaper.subject.root_id==carakerja) && @exammarks[0].exampaper.name=='F'
+    ###
     if exampaper.subject.root_id==radiografi || exampaper.subject.root_id==carakerja
       total=marks.sum(:student_mark)+total_mcq.to_i       #actual total entered by user
     else
-      total=totalsummative    #refer _form_multiple: total marks view shall display total marks entered if weightage not exist, otherwise display total in weightage 
+      if exampaper.name=='F'
+        total=marks.sum(:student_mark)+total_mcq.to_i  
+      else
+        total=totalsummative    #refer _form_multiple: total marks view shall display total marks entered if weightage not exist, otherwise display total in weightage 
+      end
     end
     total
 #     if self.id
@@ -184,9 +164,12 @@ class Exammark < ActiveRecord::Base
           # TEMPORARY use these FORMULA --> total_marks.to_f/0.9,total_marks.to_f/0.7,total_marks.to_f/1.2  .....OR ELSE
           
           #------if marks entered already in weightage,...exam1marks = total_marks---------------------------------
-          @grade_to_update.exam1marks = total_marks #total_marks.to_f/fullmarks.to_f*100 if Exam.find(exam_id).name=="F"
-	  @grade_to_update.exam2marks = total_marks.to_f/fullmarks.to_f*100 if Exam.find(exam_id).name=="R"
-          @grade_to_update.summative =totalsummative # total_marks.to_f/fullmarks.to_f*100*0.70
+          if exampaper.name=="F"
+            @grade_to_update.exam1marks=total_marks  #total_marks.to_f/fullmarks.to_f*100 if Exam.find(exam_id).name=="F"
+            @grade_to_update.summative=totalsummative # total_marks.to_f/fullmarks.to_f*100*0.70
+          elsif exampaper.name=="R"
+            @grade_to_update.exam2marks=total_marks #total_marks.to_f/fullmarks.to_f*100 if Exam.find(exam_id).name=="R"
+          end
           #------------------------------use ABOVE formula for all conditions--HIDE ALL @credit_hour statement-----
           
 	        #@grade_to_update.exam1marks = total_marks.to_f/0.9        #depends on weightage 
@@ -220,49 +203,14 @@ class Exammark < ActiveRecord::Base
   end
   
   def get_questions_count(examid)
-    is_template = Exam.where(id: examid).first.klass_id
-    if is_template==1
-      questions_count = Examquestion.joins(:exams).where('exam_id=? and questiontype!=?', examid, "MCQ").count
-                                    #Exam.where(id: examid).first.examquestions.count
-    elsif is_template==0
-#       qty_ary = Exam.where(id: examid).first.examtemplates.pluck(:quantity) 
-#       group_qty = qty_ary-[qty_ary[0]]
-#       questions_count = group_qty.sum  #total questions other than MCQ type
-      exam_template=Exam.find(examid).exam_template
-      questions_count=0
-      exam_template.question_count.each{|k,v|questions_count+=v['count'].to_i if k!="mcq" && (v['count']!='' || v['count']!=nil)}
-#       exam_template.question_count.each do |k, v|
-#         if v['count']!='' || v['count']!=nil #&& v['weight']!=''                          
-#           qty=(v['count']).to_i
-#           if k=="mcq"
-#             @mcqcount=qty
-#           elsif k=="meq"
-#             @meqcount=qty
-#           elsif k=="seq" 
-#             @seqcount=qty
-#           elsif k=="acq"
-#             @acqcount=qty 
-#           elsif k=="osci"
-#             @oscicount=qty
-#           elsif k=="oscii"
-#             @osciicount=qty
-#           elsif k=="osce"
-#             @oscecount=qty
-#           elsif k=="ospe"
-#             @ospecount=qty
-#           elsif k=="viva"
-#             @oscicount=qty
-#           end
-#         end
-#       end
-    end
+    exam_template=exampaper.exam_template
+    questions_count=0
+    exam_template.question_count.each{|k,v|questions_count+=v['count'].to_i if k!="mcq" && (v['count']!='' || v['count']!=nil)}
     questions_count
   end
   
   def totalsummative
-    #exammark.total_marks/Exammark.fullmarks(@examid))*100*0.70
     @a=0
-    ###
     exam_template=exampaper.exam_template
     exam_template.question_count.each do |k, v|
       if v['count']!='' || v['count']!=nil #&& v['weight']!=''                          

@@ -211,8 +211,7 @@
             = hidden_field_tag "total_marks_view[]", number_with_precision(exammark.total_marks,precision:2) ,:id=>"total_marks_view"+@b_count.to_s, :size=> 5, :readonly=>true, :class => 'form-control'
           - else
             %td.centre{:style=>"background-color:#C3E9BF;"}
-              /oklak
-              ssiiinnnii
+              /ssiiinnnii - mid sem+other than radiografi & cara kerja
               = text_field_tag "total_marks_view[]", number_with_precision(exammark.total_marks,precision:2) ,:id=>"total_marks_view"+@b_count.to_s, :size=> 5, :readonly=>true, :class => 'form-control'
 
           /hide end
@@ -225,8 +224,8 @@
           /  %td{:style=>"background-color:#C3E9BF;"}= text_field_tag "total_marks_view[]", number_with_precision(exammark.total_marks,precision:2) ,:id=>"total_marks_view"+@b_count.to_s, :size=> 5, :readonly=>true, :class => 'form-control'
           - if @exammarks[0].exampaper.name=='F'
             %td.centre{:style=>"background-color:#C3E9BF;"}
-              sinika
-              =@mcqweight_rate
+              /sinika
+              /=@mcqweight_rate
               = text_field_tag "total_summative[]", number_with_precision(exammark.totalsummative, precision: 2) ,:id=>"total_summative"+@b_count.to_s, :size=> 5, :readonly=>true, :class => 'form-control'
           - else
             /TEMPORARY - ADD THIS JUST TO MAKE SURE total_marks_view display correctly, or only first student/line works for Repeat Papers(NGYN-Kejururawatan)-8Dec15
@@ -410,7 +409,7 @@ $(document).ready(function(){
         { 
            if ( aaa > 70)
           {
-            window["totalsummative"+i].value='Max value is 70k';
+            window["totalsummative"+i].value='Max value is 70';
             window["totalsummative"+i].style.color="red";
           }
           else
