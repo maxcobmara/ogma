@@ -97,9 +97,10 @@
             /when exammark not exist, there will be no ref for fullmarks of an exampaper, so exampaper marks in GRade must be entered in 100%
             = text_field_tag "exam1markss[]", number_with_precision(grade.exam1marks,:precision=>2), :size=> 4,:id=>"finalexam"+no.to_s,:class=>'k1'
         %td{:style=>"background-color:#FEE;text-align:center;"}
+          /NOTE - 12DEC2015 : MUST RETRIEVE Total Formative from Exammark, if exist (coz Weightage calculation apllied in Exammarks model - refer exammarks/_form_multiple too.)
           /- if student_exammark && student_exammark.count > 0
           - if student_exammark 
-            - summative_val=student_exammark.total_marks/Exammark.fullmarks(student_exammark.exam_id)*100*0.7
+            - summative_val=student_exammark.totalsummative
             = text_field_tag "summatives[]", number_with_precision(summative_val, :precision=>2), :size=> 4,:id=>"summative"+no.to_s, class: 'form-control', readonly: 'readonly'
           - else
             = text_field_tag "summatives[]", number_with_precision(grade.total_summative,:precision=>2), :size=> 4,:id=>"summative"+no.to_s, class: 'form-control', readonly: 'readonly'

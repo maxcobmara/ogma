@@ -238,9 +238,15 @@ class Exam::ExammarksController < ApplicationController
     end
     respond_to do |format|
       @exammarks = exammarks
+      
+      # TODO - refractor this
       fullmarks=Exammark.fullmarks(exammarks[0].exam_id)
       exceed_total=[]
-      exammarks.each{|x| exceed_total << x.total_marks.to_f if x.total_marks > fullmarks }
+      mcq_max=0
+      exammarks[0].exampaper.exam_template.question_count.each{|k,v|mcq_max=(v['count'].to_i) if k=="mcq"}
+      other_max=fullmarks-mcq_max
+      exammarks.each{|x| exceed_total << x.total_marks.to_f if x.total_marks > fullmarks || x.total_mcq > mcq_max || x.marks.sum(:student_mark) > other_max }
+      
       if exceed_total.count> 0
         flash[:notice]=(t 'exam.exammark.exceed_total')
         format.html {render :action => 'edit_multiple'}

@@ -29,33 +29,39 @@ class Exammark < ActiveRecord::Base
   def self.ransackable_scopes(auth_object = nil)
     [:keyword_search, :totalmarks_search]
   end
-  
+
   def set_total_mcq
-    if total_mcq==nil   #5June2013-added-calculate here if not assign in _view_marks_form(otal_mcq==nil)
-      count=0
-      @examquestions = Exam.where(id: exam_id).first.examquestions
-      @examquestions.each do |x|
-         if x.questiontype=="MCQ"
-           count+=1
-         end
-      end
-      @allmarks = Mark.where(exammark_id: self.id)
-      @sum_mcq = 0
-      @allmarks.each_with_index do |y, index|
-         if index< count
-           unless y.student_mark.nil?
-             @sum_mcq +=y.student_mark
-           else
-             @sum_mcq+=0
-           end
-         end
-      end
-      if self.total_mcq != 0 && @sum_mcq == 0     #in case - only total MCQ entered instead of entering each of MCQ marks
-      else
-        self.total_mcq = @sum_mcq       
-      end
-    end               #5June2013-added-calculate here if not assign in _view_marks_form(otal_mcq==nil)
+    if total_mcq.nil? || total_mcq.blank?
+      self.total_mcq=0.0
+    end
   end
+# Latest - Combine MCQ values - just key-in once - as commented Apr-June 2013
+#   def set_total_mcq
+#     if total_mcq==nil   #5June2013-added-calculate here if not assign in _view_marks_form(otal_mcq==nil)
+#       count=0
+#       @examquestions = Exam.where(id: exam_id).first.examquestions
+#       @examquestions.each do |x|
+#          if x.questiontype=="MCQ"
+#            count+=1
+#          end
+#       end
+#       @allmarks = Mark.where(exammark_id: self.id)
+#       @sum_mcq = 0
+#       @allmarks.each_with_index do |y, index|
+#          if index< count
+#            unless y.student_mark.nil?
+#              @sum_mcq +=y.student_mark
+#            else
+#              @sum_mcq+=0
+#            end
+#          end
+#       end
+#       if self.total_mcq != 0 && @sum_mcq == 0     #in case - only total MCQ entered instead of entering each of MCQ marks
+#       else
+#         self.total_mcq = @sum_mcq       
+#       end
+#     end               #5June2013-added-calculate here if not assign in _view_marks_form(otal_mcq==nil)
+#   end
   
   def total_marks
     if self.id
@@ -242,6 +248,138 @@ class Exammark < ActiveRecord::Base
 #       end
     end
     questions_count
+  end
+  
+  def totalsummative
+    #exammark.total_marks/Exammark.fullmarks(@examid))*100*0.70
+    a=0
+    ###
+    exam_template=exampaper.exam_template
+    exam_template.question_count.each do |k, v|
+      if v['count']!='' || v['count']!=nil #&& v['weight']!=''                          
+        qty=(v['count']).to_i
+        if k=="mcq"
+          @mcqcount=qty
+          if v['weight']!=''
+            @mcqweight_rate=  v['weight'].to_f/@mcqcount*1
+          else
+            @mcqweight_rate=0
+	  end
+       elsif k=="meq"
+         @meqcount=qty
+         if v['weight']!=''
+           @meqweight_rate=v['weight'].to_f/(@meqcount*20)
+         else
+           @meqweight_rate=0
+	 end
+       elsif k=="seq" 
+         @seqcount=qty
+         if v['weight']!=''
+           @seqweight_rate=  v['weight'].to_f/(@seqcount*10)
+         else
+           @seqweight_rate=0
+	 end
+       elsif k=="acq"
+         @acqcount=qty 
+         if v['weight']!=''
+           @acqweight_rate=  v['weight'].to_f/(@acqcount*1)
+         else
+           @acqweight_rate=0
+	 end
+       elsif k=="osci"
+         @oscicount=qty
+         if v['weight']!=''
+           @osciweight_rate=  v['weight'].to_f/(@oscicount*1)
+         else
+           @osciweight_rate=0
+	 end
+       elsif k=="oscii"
+         @osciicount=qty
+         if v['weight']!=''
+           @osciiweight_rate=  v['weight'].to_f/(@osciicount*1)
+         else
+           @osciiweight_rate=0
+	 end
+       elsif k=="osce"
+         @oscecount=qty
+         if v['weight']!=''
+           @osceweight_rate=  v['weight'].to_f/(@oscecount*1)
+         else
+           @osceweight_rate=0
+	 end
+       elsif k=="ospe"
+         @ospecount=qty
+         if v['weight']!=''
+           @ospeweight_rate=  v['weight'].to_f/(@ospecount*10)
+         else
+           @ospeweight_rate=0
+	 end
+       elsif k=="viva"
+         @vivacount=qty
+         if v['weight']!=''
+           @vivaweight_rate=  v['weight'].to_f/(@vivacount*1)
+         else
+           @vivaweight_rate=0
+	 end
+       elsif k=="truefalse"
+         @truefalsecount=qty
+         if v['weight']!=''
+           @truefalseweight_rate=  v['weight'].to_f/(@truefalsecount*1)
+        else
+          @truefalseweight_rate=0
+	 end
+	end
+      end
+    end
+    marks.each_with_index do |m, k|
+        meq_count2=@meqcount;
+        seq_count2=meq_count2+@seqcount;
+        acq_count2=seq_count2+@acqcount;
+        osci_count2=acq_count2+@oscicount;
+        oscii_count2=osci_count2+@osciicount;
+        osce_count2=oscii_count2+@oscecount;
+        ospe_count2=osce_count2+@ospecount;
+        viva_count2=ospe_count2+@vivacount;
+        truefalse_count2=viva_count2+@truefalsecount;
+        if (k < meq_count2)
+          rate=@meqweight_rate
+        else
+       
+          if ((k >= meq_count2) && (k < seq_count2))
+            rate=@seqweight_rate
+          elsif ((k >= seq_count2) && (k < acq_count2))
+            rate=@acqweight_rate
+          elsif ((k >= acq_count2) && (k < osci_count2))
+            rate=@osciweight_rate
+          elsif ((k >= osci_count2) && (k < oscii_count2))
+            rate=@osciiweight_rate
+          elsif ((k >= oscii_count2) && (k < osce_count2))
+            rate=@osceweight_rate
+          elsif ((k >= osce_count2) && (k < ospe_count2))
+            rate=@ospeweight_rate
+          elsif ((k >= ospe_count2) && (k < viva_count2))
+            rate=@vivaweight_rate
+          elsif ((k >= viva_count2) && (k < truefalse_count2))
+            rate=@truefalseweight_rate
+	  end
+	end
+        if m.student_mark && (rate!='0' || rate !=0) 
+          a=a*1+(m.student_mark*rate)
+        else
+	  if m.student_mark
+            a=a*1+(m.student_mark*1) 
+	  else
+	    a=a*1+0
+	  end
+	end
+    end
+    ###
+    if (@mcqweight_rate!='0' || @mcqweight_rate!=0)
+      aaa=(total_mcq*@mcqweight_rate+a)
+    else
+      aaa=(total_mcq*1+a)/fullmarks*100*0.70
+    end
+    aaa
   end
   
 end
