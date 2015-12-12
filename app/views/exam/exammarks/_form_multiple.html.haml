@@ -40,25 +40,46 @@
         - @seqweight_rate=0
     - elsif k=="acq"
       - @acqcount=qty 
-      - @acqweight=v['weight'].to_i
+      - if v['weight']!=''
+        = @acqweight_rate=  v['weight'].to_f/(@acqcount*1)
+      - else
+        - @acqweight_rate=0
     - elsif k=="osci"
       - @oscicount=qty
-      - @osciweight=v['weight'].to_i
+      - if v['weight']!=''
+        = @osciweight_rate=  v['weight'].to_f/(@oscicount*1)
+      - else
+        - @osciweight_rate=0
     - elsif k=="oscii"
       - @osciicount=qty
-      - @osciiweight=v['weight'].to_i
+      - if v['weight']!=''
+        = @osciiweight_rate=  v['weight'].to_f/(@osciicount*1)
+      - else
+        - @osciiweight_rate=0
     - elsif k=="osce"
       - @oscecount=qty
-      - @osceweight=v['weight'].to_i
+      - if v['weight']!=''
+        = @osceweight_rate=  v['weight'].to_f/(@oscecount*1)
+      - else
+        - @osceweight_rate=0
     - elsif k=="ospe"
       - @ospecount=qty
-      - @ospeweight=v['weight'].to_i
+      - if v['weight']!=''
+        = @ospeweight_rate=  v['weight'].to_f/(@ospecount*10)
+      - else
+        - @ospeweight_rate=0
     - elsif k=="viva"
       - @vivacount=qty
-      - @vivaweight=v['weight'].to_i
+      - if v['weight']!=''
+        = @vivaweight_rate=  v['weight'].to_f/(@vivacount*1)
+      - else
+        - @vivaweight_rate=0
     - elsif k=="truefalse"
       - @truefalsecount=qty
-      - @truefalseweight=v['weight'].to_i
+      - if v['weight']!=''
+        = @truefalseweight_rate=  v['weight'].to_f/(@truefalsecount*1)
+      - else
+        - @truefalseweight_rate=0
 
 - @allcount= @mcqcount+@meqcount+@seqcount+@acqcount+@oscicount+@osciicount+@oscecount+@ospecount+@vivacount+@truefalsecount
 - @fullmarks = Exammark.fullmarks(@examid)
@@ -204,10 +225,10 @@
           - if @exammarks[0].exampaper.name=='F'
             %td.centre{:style=>"background-color:#C3E9BF;"}
               /sinika
-              = text_field_tag "total_summative[]", number_with_precision((exammark.total_marks/Exammark.fullmarks(@examid))*100*0.70, precision: 2) ,:id=>"total_summative"+@b_count.to_s, :size=> 5, :readonly=>true, :class => 'form-control'
+              = text_field_tag "total_summative[]", number_with_precision(exammark.totalsummative, precision: 2) ,:id=>"total_summative"+@b_count.to_s, :size=> 5, :readonly=>true, :class => 'form-control'
           - else
             /TEMPORARY - ADD THIS JUST TO MAKE SURE total_marks_view display correctly, or only first student/line works for Repeat Papers(NGYN-Kejururawatan)-8Dec15
-            = hidden_field_tag "total_summative[]", number_with_precision((exammark.total_marks/Exammark.fullmarks(@examid))*100*0.70, precision: 2) ,:id=>"total_summative"+@b_count.to_s, :size=> 5, :readonly=>true, :class => 'form-control'
+            = hidden_field_tag "total_summative[]", number_with_precision(exammark.totalsummative, precision: 2) ,:id=>"total_summative"+@b_count.to_s, :size=> 5, :readonly=>true, :class => 'form-control'
          
          
           - @b_count+=1
@@ -216,9 +237,23 @@
 =hidden_field_tag "mcqweight_rate", @mcqweight_rate
 =hidden_field_tag "seqweight_rate", @seqweight_rate
 =hidden_field_tag "meqweight_rate", @meqweight_rate
+=hidden_field_tag "acqweight_rate", @acqweight_rate
+=hidden_field_tag "osciweight_rate", @osciweight_rate
+=hidden_field_tag "osciiweight_rate", @osciiweight_rate
+=hidden_field_tag "osceweight_rate", @osceweight_rate
+=hidden_field_tag "ospeweight_rate", @ospeweight_rate
+=hidden_field_tag "vivaweight_rate", @vivaweight_rate
+=hidden_field_tag "truefalseweight_rate", @truefalseweight_rate
 =hidden_field_tag "exammark[trial2]", @mcqcount
 =hidden_field_tag "seqcount", @seqcount
 =hidden_field_tag "meqcount", @meqcount
+=hidden_field_tag "acqcount", @acqcount
+=hidden_field_tag "oscicount", @oscicount
+=hidden_field_tag "osciicount", @osciicount
+=hidden_field_tag "oscecount", @oscecount
+=hidden_field_tag "ospecount", @ospecount
+=hidden_field_tag "vivacount", @vivacount
+=hidden_field_tag "truefalsecount", @truefalsecount
 =hidden_field_tag "exammark[trial1]", @exammarks.count
 =hidden_field_tag "exammark[trial3]", @allcount
 =hidden_field_tag "exammark[trial4]", @fullmarks
@@ -237,13 +272,29 @@ $(document).ready(function(){
     var mcqweight_rate= document.getElementById("mcqweight_rate").value;
     var seqweight_rate= document.getElementById("seqweight_rate").value;
     var meqweight_rate= document.getElementById("meqweight_rate").value;
+    var acqweight_rate= document.getElementById("acqweight_rate").value;
+    var osciweight_rate= document.getElementById("osciweight_rate").value;
+    var osciiweight_rate= document.getElementById("osciiweight_rate").value;
+    var osceweight_rate= document.getElementById("osceweight_rate").value;
+    var ospeweight_rate= document.getElementById("ospeweight_rate").value;
+    var vivaweight_rate= document.getElementById("vivaweight_rate").value;
+    var truefalseweight_rate= document.getElementById("truefalseweight_rate").value;
     var seq_count= document.getElementById("seqcount").value;
     var meq_count= document.getElementById("meqcount").value;
+    var acq_count= document.getElementById("acqcount").value;
+    var osci_count= document.getElementById("oscicount").value;
+    var oscii_count= document.getElementById("osciicount").value;
+    var osce_count= document.getElementById("oscecount").value;
+    var ospe_count= document.getElementById("ospecount").value;
+    var viva_count= document.getElementById("vivacount").value;
+    var truefalse_count= document.getElementById("truefalsecount").value;
     var studentcount =document.getElementById("exammark_trial1").value;
     var mcqcount = $("#exammark_trial2").val();
     var allcount = $("#exammark_trial3").val();
     var fullmarks = $("#exammark_trial4").val();
     var programme = $("#programme_name").val();
+    
+    total_weight=mcqweight_rate*mcqcount+meqweight_rate*20*meq_count+seqweight_rate*10*seq_count+acqweight_rate*1+osciweight_rate*1+osciiweight_rate*1+osceweight_rate*1+ospeweight_rate*1+vivaweight_rate*1+truefalseweight_rate*1
     
     for (var i=0;i<studentcount;i++)
     {
@@ -258,13 +309,34 @@ $(document).ready(function(){
       {
         var other = document.getElementById("student_mark_"+i+"_"+k).value;
         meq_count2=meq_count;
-        seq_count2=meq_count+seq_count;
+        seq_count2=meq_count2+seq_count;
+        acq_count2=seq_count2+acq_count;
+        osci_count2=acq_count2+osci_count;
+        oscii_count2=osci_count2+oscii_count;
+        osce_count2=oscii_count2+osce_count;
+        ospe_count2=osce_count2+ospe_count;
+        viva_count2=ospe_count2+viva_count;
+        truefalse_count2=viva_count2+truefalse_count;
         if (k < meq_count2)
         {  rate=meqweight_rate;}
         else
         {
           if ((k >= meq_count2) && (k < seq_count2))
           { rate=seqweight_rate;}
+          else if ((k >= seq_count2) && (k < acq_count2))
+          { rate=acqweight_rate;}
+          else if ((k >= acq_count2) && (k < osci_count2))
+          { rate=osciweight_rate;}
+          else if ((k >= osci_count2) && (k < oscii_count2))
+          { rate=osciiweight_rate;}
+          else if ((k >= oscii_count2) && (k < osce_count2))
+          { rate=osceweight_rate;}
+          else if ((k >= osce_count2) && (k < ospe_count2))
+          { rate=ospeweight_rate;}
+          else if ((k >= ospe_count2) && (k < viva_count2))
+          { rate=vivaweight_rate;}
+          else if ((k >= viva_count2) && (k < truefalse_count2))
+          { rate=truefalseweight_rate;}
         }
         if (rate!='0')
         {  a=a*1+(other*rate);}
@@ -301,7 +373,24 @@ $(document).ready(function(){
       }
       else
       {
-        window["totalmarksview"+i].value = (total_mcq*1+a);
+
+        /*BELOW : total marks view shall display total marks entered if weightage not exist, otherwise display total in weightage %*/      
+        if (mcqweight_rate!='0')
+        {  bbb=(total_mcq*mcqweight_rate+a)}
+        else
+        {  bbb=(total_mcq*1+a);}
+        
+        if (bbb > total_weight)
+        {  
+          window["totalmarksview"+i].value='Max value is '+total_weight;
+          window["totalmarksview"+i].style.color="red";
+        }
+        else
+        {  
+          window["totalmarksview"+i].value = bbb;
+          window["totalmarksview"+i].style.color="black";
+         }
+
         if (fullmarks==70)
         {  
           if ( aaa > 70)
