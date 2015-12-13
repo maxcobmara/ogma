@@ -242,13 +242,27 @@ class Exam::ExammarksController < ApplicationController
       # TODO - refractor this
       fullmarks=Exammark.fullmarks(exammarks[0].exam_id)
       exceed_total=[]
-      mcq_max=0
-      exammarks[0].exampaper.exam_template.question_count.each{|k,v|mcq_max=(v['count'].to_i) if k=="mcq"}
-      other_max=fullmarks-mcq_max
-      exammarks.each{|x| exceed_total << x.total_marks.to_f if x.total_marks > fullmarks || x.total_mcq > mcq_max || x.marks.sum(:student_mark) > other_max }
       
+#       if exammarks[0].exampaper.name=="M"
+#         midsem_mcq_max=0
+# 	other_max=0
+#         exammarks[0].exampaper.exam_template.question_count.each{|k,v|midsem_mcq_max=((v['count'].to_i)*(v['weight'].to_f)) if k=="mcq"}
+# 	exammarks[0].exampaper.exam_template.question_count.each{|k,v|other_max+=((v['count'].to_i)*(v['weight'].to_f)) if k!="mcq"}
+# 	#other_max=fullmarks-midsem_mcq_max
+#       else #FINAL (@repeat?)
+      
+      # NOTE - workable for Final only - mid sem - requires other_max & mcq_max in weightage %
+       if exammarks[0].exampaper.name!="M"
+	mcq_max=0
+        exammarks[0].exampaper.exam_template.question_count.each{|k,v|mcq_max=(v['count'].to_i) if k=="mcq"}
+        other_max=fullmarks-mcq_max
+#       end
+      exammarks.each{|x| exceed_total << x.total_marks.to_f if x.total_marks > fullmarks || x.total_mcq > mcq_max || x.marks.sum(:student_mark) > other_max }
+      #final - total marks - ENTERED values BUT display summative (% weightage)
+      #mid sem - total marks - generated values (% weightage)
+       end
       if exceed_total.count> 0
-        flash[:notice]=(t 'exam.exammark.exceed_total')
+        flash[:notice]=(t 'exam.exammark.exceed_total')#+mcq_max.to_s+"~"+other_max.to_s+" "+exammarks[0].total_marks.to_s+" "+fullmarks.to_s+"--"+midsem_mcq_max.to_s+"++"+other_max.to_s
         format.html {render :action => 'edit_multiple'}
         format.xml  { head :ok }
       else

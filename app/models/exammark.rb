@@ -169,6 +169,8 @@ class Exammark < ActiveRecord::Base
             @grade_to_update.summative=totalsummative # total_marks.to_f/fullmarks.to_f*100*0.70
           elsif exampaper.name=="R"
             @grade_to_update.exam2marks=total_marks #total_marks.to_f/fullmarks.to_f*100 if Exam.find(exam_id).name=="R"
+          elsif exampaper.name=="M"
+            @grade_to_update.scores.where(type_id: 6).first.marks=total_marks if @grade_to_update.scores.where(type_id: 6).count > 0
           end
           #------------------------------use ABOVE formula for all conditions--HIDE ALL @credit_hour statement-----
           
@@ -203,7 +205,8 @@ class Exammark < ActiveRecord::Base
   end
   
   def get_questions_count(examid)
-    exam_template=exampaper.exam_template
+    #exam_template=exampaper.exam_template
+    exam_template=Exam.where(id: examid).first.exam_template
     questions_count=0
     exam_template.question_count.each{|k,v|questions_count+=v['count'].to_i if k!="mcq" && (v['count']!='' || v['count']!=nil)}
     questions_count
