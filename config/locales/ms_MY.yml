@@ -2373,6 +2373,7 @@ ms_MY:
       redundant_formative_template: "Terdapat lebih daripada satu set / template 'Skor Formatif' digunakan bagi subjek ini. Perhatikan, bilangan lajur tidak selari di bahagian paparan senarai pelajar. Pastikan set / template 'Skor Formatif' di bawah (rujukan: rekod pertama), jika berbeza, sisih rekod dalam laman Indeks untuk suntingan pukal. Klik 'Kemaskini Perubahan' untuk menyeragamkan set / template 'Skor Formatif' bagi subjek ini."
       complete_paper: 'Gred hanya boleh dicipta bagi Subjek dengan kertas peperiksaan yang sah (lengkap) sahaja.'
       exist_marks: 'Sebaik sahaja rekod Gred bagi satu-satu Subjek dicipta, sila Sunting dan Kemaskini rekod-rekod Markah Kertas Peperiksaan Akhir yang sepadan bagi menyelaras / mengemaskini nilai Jumlah Sumatif dalam rekod Gred.'
+      apply_finalscore: " : Sunting & Kemaskini rekod gred berkenaan untuk menyimpan Jumlah Akhir yang terkini. "
       
     examresult:
       title: Keputusan Peperiksaan Mengikut Program

@@ -16,6 +16,9 @@
       %ol
         %li=t('exam.grade.complete_paper')
         %li=t('exam.grade.exist_marks')
+        %li
+          %font{color: "red"}=t('exam.grade.finalscore')
+          =t('exam.grade.apply_finalscore')
 
 = render 'shared/flashes'
 
@@ -85,7 +88,11 @@
                 %td
                   - if grade.resit==true
                     &#10003
-                %td=h number_with_precision(grade.finalscore, :precision => 2)
+                %td
+                  - if grade.finalscore==grade.summative+grade.formative
+                    %font{color: "black"}=h number_with_precision(grade.finalscore, :precision => 2)
+                  - else
+                    %font{color: "red"}=h number_with_precision(grade.finalscore, :precision => 2)
                 %td=h grade.finale.blank? ? "" : grade.render_grading[-2,2]
                 /grade table - 'score' field must exist, exam1marks, examweight too
               - index2+=1
