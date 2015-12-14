@@ -182,7 +182,24 @@
                           %td= text_field_tag "total_marks_view", number_with_precision(@exammark.total_marks,precision:2), :size=> 5, :readonly=>true, :class => 'form-control'
                           
                           %td='/ '+@fullmarks.to_s
-                        
+                      - else
+                        - if @exammark.exampaper.name=='M'
+                          %tr
+                            %td{rowspan: 3, colspan: 3, align: "right"}= f.label t 'exam.exammark.total', for: :total
+                            %td
+                              hmm
+                              = text_field_tag "total_marks_view", number_with_precision(@exammark.total_marks,precision:2), :size=> 5, :readonly=>true, :class => 'form-control'
+                            - total_in_weight=0
+                            - @exammark.exampaper.exam_template.question_count.each{|k,v|total_in_weight=v['weight'].to_f if k=="mcq"}
+                            - @exammark.exampaper.exam_template.question_count.each{|k,v|total_in_weight+=v['weight'].to_f if k!="mcq"}
+                            
+                            / TODO - apply weightage for ALL (edit)
+                            /temp hide - midsem one & display full marks first UNTIL weightage applied
+                            /%td='/'+total_in_weight.to_s
+                            %td='/ '+@fullmarks.to_s
+                            
+                        - else
+                          = hidden_field_tag "total_marks_view", number_with_precision(@exammark.total_marks,precision:2), :size=> 5, :readonly=>true, :class => 'form-control'
                     
                       - if @exammark.exampaper.name=='F'
                         - if @exammark.exampaper.subject.root_id==radiografi || @exammark.exampaper.subject.root_id==carakerja
@@ -201,10 +218,13 @@
                             %td{colspan: 3, align: "right"}= f.label t 'exam.exammark.total', for: :total
                           %td= text_field_tag "marks_in_70", marks_70, :size=> 5, :readonly=>true, :class => 'form-control'
                           %td (70.00 %)
+                          
+
     
 =hidden_field_tag "exammark[non_mcq]", @exammark.marks.count
 =hidden_field_tag "exammark[full_marks]", @fullmarks
 =hidden_field_tag "programme_name", Programme.where(id: @exammark.exampaper.subject.root_id).first.name if @exammark.id? 
+=hidden_field_tag "papertype", @exammark.exampaper.name
 
 :javascript
 $(document).ready(function(){
@@ -213,8 +233,10 @@ $(document).ready(function(){
     var nonmcqcount = $("#exammark_non_mcq").val();
     var fullmarks = $("#exammark_full_marks").val();
     var programme = $("#programme_name").val();
+    var papertype= $("#papertype").val();
     
     var totalmarksview = document.getElementById("total_marks_view");
+    var totalmarksview2 = document.getElementById("total_marks_view2");
     var marksinhundred = document.getElementById("marks_in_hundred");
     var marksin70 = document.getElementById("marks_in_70");
     
@@ -233,10 +255,16 @@ $(document).ready(function(){
     }
     else
     {
+      totalmarksview.value=totalmcq*1+a;
       if (fullmarks==70)
-      { marksin70.value = totalmcq*1+a;}
+      { 
+        marksin70.value = totalmcq*1+a;
+      }
       else
-      { marksin70.value = (totalmcq*1+a) / fullmarks * 100 * 0.7;}
+      { 
+        marksin70.value = (totalmcq*1+a) / fullmarks * 100 * 0.7;
+      }
+      
     }
   });
 });            
