@@ -13,6 +13,7 @@ class Grade < ActiveRecord::Base
   accepts_nested_attributes_for :scores,:allow_destroy => true, :reject_if => lambda { |a| a[:description].blank? } #allow for destroy - 17June2013
   
   #before_save :check_formative_valid
+  before_save :apply_finalscore
   
   attr_accessor :intake_id, :marks_70, :formative_weight_sum, :formative_marks_sum, :marks_70_rev
 
@@ -39,6 +40,10 @@ class Grade < ActiveRecord::Base
   # whitelist the scope
   def self.ransackable_scopes(auth_object = nil)
     [:student_search, :subject_search, :grading_search]
+  end
+  
+  def apply_finalscore
+    self.finalscore=summative+formative
   end
   
   def total_summative

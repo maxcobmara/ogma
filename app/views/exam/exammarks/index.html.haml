@@ -17,6 +17,10 @@
 
 = render 'shared/flashes'
 
+- exam_ids=[]
+- @exammarks_group.each{|k,v|exam_ids << k}
+- final_exist=Exam.where(id: exam_ids).where(name: "F")
+
 /= form_tag :action => 'new_multiple', class: "form-inline" do
 = form_tag new_multiple_exam_exammarks_path, :method => :put , :id => "form2" do
   .form-group
@@ -42,6 +46,8 @@
           %th= sort_link(@search, :student_id, (t 'exam.exammark.student_id'))
           %th= t 'exam.exammark.icno'
           %th= sort_link(@search, :total_mcq, (t 'exam.exammark.marks'))
+          - if final_exist.count > 0
+            %th= (t 'exam.exammark.summative')+" (70%)"
 
       %tbody
         = render "search_bar"
@@ -49,8 +55,6 @@
           - index2=0
           - @exammarks_group.sort.each do |exammarks_group, exammarks|
             - exammarks.sort_by{|x|x.studentmark.name}.each_with_index do |exammark,index|
-              /--STAND BY:HIDE THIS LINE & LINE 149 to view ALL EXAM marks
-              /-if (@dept_unit==exammark.exampaper.subject.root.name) ||(@current_login_roles.include?(2))||@kupk == "yes"
               - if index == 0
                 %tr
                   %td.group{:colspan => "8"} 
@@ -63,6 +67,12 @@
                 %td= link_to exammark.studentmark.matrix_name, exam_exammark_path(exammark)
                 %td=h exammark.studentmark.icno
                 %td=number_with_precision(exammark.total_marks, precision: 2)  
+                %td
+                  - if exammark.exampaper.name=="M"
+                    \-
+                  - else
+                    =number_with_precision(exammark.totalsummative, precision: 2)
+                  
               - index2+=1
       
           /.row

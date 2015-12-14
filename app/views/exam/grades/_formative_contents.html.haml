@@ -82,9 +82,8 @@
         - else
           = hidden_field_tag "examweights[]", number_with_precision(grade.examweight,:precision=>2), :id=>"examweight"+no.to_s
         %td{:style=>"background-color:#FEE;text-align:center;"}
-          /- latest_paper=Exam.where(subject_id: grade.subject_id).order(created_at: :desc).first.id
-          /suppose above - latest one, but for testing purpose - use below instead
-          - latest_paper=Exam.where(subject_id: grade.subject_id).pluck(:id)
+          /summative marks fr Exammark
+          - latest_paper=Exam.where(subject_id: grade.subject_id).where(name: 'F').pluck(:id)
           - student_exammark=Exammark.where(exam_id: latest_paper).where(student_id: grade.student_id).first
           - if student_exammark
             - @fullmarks = Exam.where(id: student_exammark.exam_id).first.set_full_marks 
