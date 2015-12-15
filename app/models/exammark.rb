@@ -150,44 +150,30 @@ class Exammark < ActiveRecord::Base
     fullmarks
   end
   
-  #11June2013---updated 23June2013
+  #11June2013---updated 23June20 13--revised 1-15Dec2015
+  #Use ExamTemplate to apply weightage
   def apply_final_exam_into_grade
-    @subject_id = Exam.find(exam_id).subject_id
-    @examtype = Exam.find(exam_id).name
+    subject_id = Exam.find(exam_id).subject_id
+    examtype = Exam.find(exam_id).name
     fullmarks = Exammark.fullmarks(exam_id)
-    @grade_to_update = Grade.where('student_id=? and subject_id=?', student_id, @subject_id).first
-    #@credit_hour=Programme.find(@subject_id).credits.to_i
-    
-    unless @grade_to_update.nil? || @grade_to_update.blank?
-        #if @credit_hour == 3
-          # if marks entered not in weightage marks, eg, weightage : mcq=40%(40 que), seq=30%(4 que=40marks), but marks were entered according to actual total marks : 80/80 (but weightage 70%) 
-          # TEMPORARY use these FORMULA --> total_marks.to_f/0.9,total_marks.to_f/0.7,total_marks.to_f/1.2  .....OR ELSE
-          
-          #------if marks entered already in weightage,...exam1marks = total_marks---------------------------------
-          if exampaper.name=="F"
-            @grade_to_update.exam1marks=total_marks  #total_marks.to_f/fullmarks.to_f*100 if Exam.find(exam_id).name=="F"
-            @grade_to_update.summative=totalsummative # total_marks.to_f/fullmarks.to_f*100*0.70
-          elsif exampaper.name=="R"
-            @grade_to_update.exam2marks=total_marks #total_marks.to_f/fullmarks.to_f*100 if Exam.find(exam_id).name=="R"
-          elsif exampaper.name=="M"
-            @grade_to_update.scores.where(type_id: 6).first.marks=total_marks if @grade_to_update.scores.where(type_id: 6).count > 0
-          end
-          #------------------------------use ABOVE formula for all conditions--HIDE ALL @credit_hour statement-----
-          
-	        #@grade_to_update.exam1marks = total_marks.to_f/0.9        #depends on weightage 
-	        #@grade_to_update.summative = total_marks.to_f/0.9*0.7
-        #elsif @credit_hour == 4
-          #@grade_to_update.exam1marks = total_marks.to_f/1.2        #depends on weightage
-          #@grade_to_update.summative = total_marks.to_f/1.2*0.7
-        #elsif @credit_hour == 2
-          #@grade_to_update.exam1marks = total_marks.to_f/0.7        #depends on weightage
-          #@grade_to_update.summative = total_marks.to_f/0.7*0.7
-        #else
-          #@grade_to_update.exam1marks = total_marks.to_f            #depends on weightage
-          #@grade_to_update.summative = total_marks.to_f*0.7
-        #end
-        @grade_to_update.save if @grade_to_update.exam1marks && @examtype == "F"  #F for Peperiksaan Akhir Semester
-	@grade_to_update.save if @grade_to_update.exam2marks && @examtype == "R"
+    grade_to_update = Grade.where('student_id=? and subject_id=?', student_id, subject_id).first
+    diploma_subjects=[]
+    Programme.roots.where(course_type: 'Diploma').each do |programme|
+      programme.descendants.each do |descendant|
+        diploma_subjects << descendant.id if descendant.course_type=='Subject'
+      end
+    end
+    unless grade_to_update.nil? || grade_to_update.blank?
+      if exampaper.name=="F" 
+        grade_to_update.exam1marks=total_marks
+        grade_to_update.summative=totalsummative if diploma_subjects.include?(subject_id) && exammark.total_mcq
+      elsif exampaper.name=="R"
+        grade_to_update.exam2marks=total_marks 
+      elsif exampaper.name=="M"
+        grade_to_update.scores.where(type_id: 6).first.marks=total_marks if @grade_to_update.scores.where(type_id: 6).count > 0
+      end
+      grade_to_update.save if grade_to_update.exam1marks && examtype == "F" 
+      grade_to_update.save if grade_to_update.exam2marks && examtype == "R"
     end
   end
   #11June2013------updated 23June2013
