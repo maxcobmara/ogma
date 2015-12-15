@@ -13,6 +13,13 @@ class ExamTemplate < ActiveRecord::Base
     data[:question_count]
   end
   
+  def total_marks=(value)
+    data[:total_marks] = value
+  end
+  def total_marks
+    data[:total_marks]
+  end
+  
   # define scope
   def self.creator_search(query) 
     staff_ids = Staff.where('name ILIKE(?)', "%#{query}%").pluck(:id)
