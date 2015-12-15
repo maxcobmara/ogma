@@ -161,7 +161,7 @@
                     - else
                       - marks_70=number_with_precision(@exammark.totalsummative, precision: 2) 
                     = number_with_precision(marks_70, precision: 2)
-                  %td (70%)
+                  %td="("+@exammark.exampaper.exam_template.total_in_weight.to_s+" %)"
                 - if @exammark.exampaper.subject.root_id==radiografi || @exammark.exampaper.subject.root_id==carakerja
                   %td
                     \/ 

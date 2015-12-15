@@ -171,6 +171,8 @@ ms_MY:
         starttime: Masa mula
         endtime: Masa tamat
         description: Ulangan bagi
+      exammark:
+        mark: "Markah : "
       examresult:
         resultlines: Keputusan
       resultlines:

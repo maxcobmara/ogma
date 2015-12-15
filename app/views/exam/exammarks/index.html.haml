@@ -52,10 +52,8 @@
           %th= t 'exam.exammark.icno'
           %th= sort_link(@search, :total_mcq, (t 'exam.exammark.marks'))
           - if final_exist.count > 0
-            %th
-              = (t 'exam.exammark.summative')
-              - if @exammarks[0].exampaper.name!="M" && diploma_subjects.include?(@exammarks[0].exampaper.subject_id) 
-                (70%)
+            %th= (t 'exam.exammark.summative')
+              
 
       %tbody
         = render "search_bar"
@@ -76,10 +74,12 @@
                 %td=h exammark.studentmark.icno
                 %td=number_with_precision(exammark.total_marks, precision: 2)  
                 %td
-                  - if exammark.exampaper.name!="M" && diploma_subjects.include?(exammark.exampaper.subject_id) && exammark.total_mcq
+                  /- if exammark.exampaper.name!="M" && diploma_subjects.include?(exammark.exampaper.subject_id) && exammark.total_mcq
+                  - if exammark.exampaper.name!="M" && exammark.total_mcq
                     =number_with_precision(exammark.totalsummative, precision: 2)
                   - else
                     \-
+                  =" / "+exammark.exampaper.exam_template.total_in_weight.to_s+" %"
                   
               - index2+=1
       

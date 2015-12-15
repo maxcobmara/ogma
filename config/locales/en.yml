@@ -190,6 +190,8 @@ en:
         starttime: Start time
         endtime: End time
         description: Repeat for
+      exammark:
+        mark: "Marks : "
       examresult:
         resultlines: Result
       resultlines:

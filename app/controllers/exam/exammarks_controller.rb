@@ -33,8 +33,19 @@ class Exam::ExammarksController < ApplicationController
           for basicprog in allposbasic_prog
             lecturer_basicprog_name = basicprog if tasks_main.include?(basicprog)==true
           end
-          programme_id=Programme.where(name: lecturer_basicprog_name, ancestry_depth: 0).first.id
-          subject_ids = Programme.where(id: programme_id).first.descendants.at_depth(2).pluck(:id)
+          if @current_user.roles.pluck(:authname).include?("programme_manager")
+            programme_id='2'
+            programme_ids=Programme.where(course_type: posbasiks).pluck(:id)
+            subject_ids=[]
+            programme_ids.each do |progid|
+              Programme.where(id: progid).first.descendants.each do |descendant|
+                subject_ids << descendant.id if descendant.course_type=='Subject'
+              end
+            end
+          else
+            programme_id=Programme.where(name: lecturer_basicprog_name, ancestry_depth: 0).first.id
+            subject_ids = Programme.where(id: programme_id).first.descendants.at_depth(2).pluck(:id)
+          end
           @exams_list_raw = Exam.where('subject_id IN(?) and id IN(?)', subject_ids, valid_exams)#.order(name: :asc, subject_id: :asc)
         elsif roles.include?("administration")
           programme_id='0'
