@@ -38,8 +38,7 @@
                           = f.hidden_field :exam_id, :value =>@examid
                           -  if @selected_exam
                             = @selected_exam.exam_name_subject_date
-                            - if @selected_exam.klass_id == 0 
-                              (Template) 
+                            =t 'exam.exams.with_questions' if @selected_exam.klass_id==1
                     .row
                       .form-group
                         .col-sm-2.control-label

@@ -89,7 +89,7 @@
                   - if grade.resit==true
                     &#10003
                 %td
-                  - if grade.finalscore==grade.summative+grade.formative
+                  - if grade.finalscore && grade.summative && grade.formative && grade.finalscore==grade.summative+grade.formative
                     %font{color: "black"}=h number_with_precision(grade.finalscore, :precision => 2)
                   - else
                     %font{color: "red"}=h number_with_precision(grade.finalscore, :precision => 2)
