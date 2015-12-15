@@ -1,6 +1,73 @@
 - diploma=Programme.where(course_type: 'Diploma')
 - radiografi=diploma.where('name ILIKE?', '%Radiografi%').first.id
 - carakerja=diploma.where('name ILIKE?', '%Jurupulih Perubatan Cara Kerja%').first.id
+
+- unless @exammark.new_record?
+  - @exammark.exampaper.exam_template.question_count.each do |k, v|
+    - if v['count']!='' || v['count']!=nil #&& v['weight']!=''                          
+      - qty=(v['count']).to_i
+      - if k=="mcq"
+        - @mcqcount=qty
+        - if v['weight']!=''
+          - @mcqweight_rate=  v['weight'].to_f/@mcqcount*1
+        - else
+          = @mcqweight_rate=0
+        /or (1/@mcqcount*1) * v['weight']
+      - elsif k=="meq"
+        - @meqcount=qty
+        - if v['weight']!=''
+          - @meqweight_rate=v['weight'].to_f/(@meqcount*20)
+        - else
+          - @meqweight_rate=0
+      - elsif k=="seq" 
+        - @seqcount=qty
+        - if v['weight']!=''
+          - @seqweight_rate=  v['weight'].to_f/(@seqcount*10)
+        - else
+          - @seqweight_rate=0
+      - elsif k=="acq"
+        - @acqcount=qty 
+        - if v['weight']!=''
+          - @acqweight_rate=  v['weight'].to_f/(@acqcount*1)
+        - else
+          - @acqweight_rate=0
+      - elsif k=="osci"
+        - @oscicount=qty
+        - if v['weight']!=''
+          - @osciweight_rate=  v['weight'].to_f/(@oscicount*1)
+        - else
+          - @osciweight_rate=0
+      - elsif k=="oscii"
+        - @osciicount=qty
+        - if v['weight']!=''
+          - @osciiweight_rate=  v['weight'].to_f/(@osciicount*1)
+        - else
+          - @osciiweight_rate=0
+      - elsif k=="osce"
+        - @oscecount=qty
+        - if v['weight']!=''
+          = @osceweight_rate=  v['weight'].to_f/(@oscecount*1)
+        - else
+          - @osceweight_rate=0
+      - elsif k=="ospe"
+        - @ospecount=qty
+        - if v['weight']!=''
+          - @ospeweight_rate=  v['weight'].to_f/(@ospecount*10)
+        - else
+          - @ospeweight_rate=0
+      - elsif k=="viva"
+        - @vivacount=qty
+        - if v['weight']!=''
+          - @vivaweight_rate=  v['weight'].to_f/(@vivacount*1)
+        - else
+          - @vivaweight_rate=0
+      - elsif k=="truefalse"
+        - @truefalsecount=qty
+        - if v['weight']!=''
+          - @truefalseweight_rate=  v['weight'].to_f/(@truefalsecount*1)
+        - else
+          - @truefalseweight_rate=0
+
 .row
   .col-md-10.col-md-offset-1
     / Nav tabs
@@ -175,7 +242,8 @@
                             - count2+=1
 
                       - @fullmarks = Exammark.fullmarks(@exammark.exam_id)
-                     
+                      - posbasic_ids=Programme.roots.where(course_type: ['Diploma Lanjutan', 'Pos Basik', 'Pengkhususan']).pluck(:id)
+                      
                       - if @exammark.exampaper.subject.root_id==radiografi || @exammark.exampaper.subject.root_id==carakerja
                         %tr
                           %td{rowspan: 3, colspan: 3, align: "right"}= f.label t 'exam.exammark.total', for: :total
@@ -189,9 +257,9 @@
                             %td
                               /total marks - mid sem in weightage if weigh exist, otherwise view total
                               = text_field_tag "total_marks_view", number_with_precision(@exammark.total_marks,precision:2), :size=> 5, :readonly=>true, :class => 'form-control'
-                            - total_in_weight=0
-                            - @exammark.exampaper.exam_template.question_count.each{|k,v|total_in_weight=v['weight'].to_f if k=="mcq"}
-                            - @exammark.exampaper.exam_template.question_count.each{|k,v|total_in_weight+=v['weight'].to_f if k!="mcq"}
+                            /- @total_in_weight=0
+                            /- @exammark.exampaper.exam_template.question_count.each{|k,v|@total_in_weight=v['weight'].to_f if k=="mcq"}
+                            /- @exammark.exampaper.exam_template.question_count.each{|k,v|@total_in_weight+=v['weight'].to_f if k!="mcq"}
                             
                             %td='/ '+@fullmarks.to_s
                             
@@ -214,73 +282,10 @@
                               - marks_70=number_with_precision(@exammark.totalsummative, precision: 2) 
                             %td{colspan: 3, align: "right"}= f.label t 'exam.exammark.total', for: :total
                           %td= text_field_tag "marks_in_70", marks_70, :size=> 5, :readonly=>true, :class => 'form-control'
-                          %td (70.00 %)
+                          %td="("+@exammark.exampaper.exam_template.total_in_weight.to_s+" %)"
+                           
+                            
 
-- unless @exammark.new_record?
-  - @exammark.exampaper.exam_template.question_count.each do |k, v|
-    - if v['count']!='' || v['count']!=nil #&& v['weight']!=''                          
-      - qty=(v['count']).to_i
-      - if k=="mcq"
-        - @mcqcount=qty
-        - if v['weight']!=''
-          = @mcqweight_rate=  v['weight'].to_f/@mcqcount*1
-        - else
-          = @mcqweight_rate=0
-        /or (1/@mcqcount*1) * v['weight']
-      - elsif k=="meq"
-        - @meqcount=qty
-        - if v['weight']!=''
-          - @meqweight_rate=v['weight'].to_f/(@meqcount*20)
-        - else
-          - @meqweight_rate=0
-      - elsif k=="seq" 
-        - @seqcount=qty
-        - if v['weight']!=''
-          = @seqweight_rate=  v['weight'].to_f/(@seqcount*10)
-        - else
-          - @seqweight_rate=0
-      - elsif k=="acq"
-        - @acqcount=qty 
-        - if v['weight']!=''
-          = @acqweight_rate=  v['weight'].to_f/(@acqcount*1)
-        - else
-          - @acqweight_rate=0
-      - elsif k=="osci"
-        - @oscicount=qty
-        - if v['weight']!=''
-          = @osciweight_rate=  v['weight'].to_f/(@oscicount*1)
-        - else
-          - @osciweight_rate=0
-      - elsif k=="oscii"
-        - @osciicount=qty
-        - if v['weight']!=''
-          = @osciiweight_rate=  v['weight'].to_f/(@osciicount*1)
-        - else
-          - @osciiweight_rate=0
-      - elsif k=="osce"
-        - @oscecount=qty
-        - if v['weight']!=''
-          = @osceweight_rate=  v['weight'].to_f/(@oscecount*1)
-        - else
-          - @osceweight_rate=0
-      - elsif k=="ospe"
-        - @ospecount=qty
-        - if v['weight']!=''
-          = @ospeweight_rate=  v['weight'].to_f/(@ospecount*10)
-        - else
-          - @ospeweight_rate=0
-      - elsif k=="viva"
-        - @vivacount=qty
-        - if v['weight']!=''
-          = @vivaweight_rate=  v['weight'].to_f/(@vivacount*1)
-        - else
-          - @vivaweight_rate=0
-      - elsif k=="truefalse"
-        - @truefalsecount=qty
-        - if v['weight']!=''
-          = @truefalseweight_rate=  v['weight'].to_f/(@truefalsecount*1)
-        - else
-          - @truefalseweight_rate=0
 =hidden_field_tag "mcqweight_rate", @mcqweight_rate
 =hidden_field_tag "seqweight_rate", @seqweight_rate
 =hidden_field_tag "meqweight_rate", @meqweight_rate
@@ -444,7 +449,7 @@ $(document).ready(function(){
       else
       { 
         
-        if ( aaa > 70)
+        if ( aaa > total_weight)
         {
           marksin70.value=aaa;
           marksin70.style.color="red";

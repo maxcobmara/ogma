@@ -44,6 +44,13 @@ class ExamTemplate < ActiveRecord::Base
     in_string.gsub(/, $/,"")+")"
   end
   
+  def total_in_weight
+    total=0
+    question_count.each{|k,v|total=v['weight'].to_f if k=="mcq"}
+    question_count.each{|k,v|total+=v['weight'].to_f if k!="mcq"}
+    total
+  end
+  
   def valid_for_removal
     if Exam.where(topic_id: id).count > 0
       return false

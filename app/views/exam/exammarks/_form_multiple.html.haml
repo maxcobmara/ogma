@@ -170,7 +170,7 @@
             /#error_display_70{:style => "display: none;"}
             /  %font{color: "red"}*
             =t 'exam.exammark.summative'
-            (70%)
+            ="("+@exammarks[0].exampaper.exam_template.total_in_weight.to_s+" %)"
         - else
           %th
             /#error_display_total{:style => "display: none;"}
@@ -186,8 +186,8 @@
           %td=h exammark.studentmark.icno
           - if @exampaper_of_exammarks==1
           - else
-            %td=h exammark.exampaper.subject_date 
-          - if @edit_type == "Edit Checked" || @edit_type.nil? 	
+            %td=h exammark.exampaper.subject_date
+          - if @edit_type == "Edit Checked" || @edit_type.nil? 
           - elsif @edit_type == "Edit by Subject" 
             = hidden_field_tag "exam_ids[]", @exam_id 
           %td.centre
@@ -407,9 +407,9 @@ $(document).ready(function(){
         }
         else
         { 
-           if ( aaa > 70)
+           if ( aaa > total_weight)
           {
-            window["totalsummative"+i].value='Max value is 70';
+            window["totalsummative"+i].value='Max value is '+total_weight;
             window["totalsummative"+i].style.color="red";
           }
           else

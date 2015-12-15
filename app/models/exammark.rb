@@ -8,6 +8,7 @@ class Exammark < ActiveRecord::Base
   after_save :apply_final_exam_into_grade 
   validates_presence_of   :student_id, :exam_id
   validates_uniqueness_of :student_id, :scope => :exam_id, :message => " - Mark of this exam for selected student already exist. Please edit/delete existing mark accordingly."
+  validate :marks_must_not_exceed_maximum
   
   attr_accessor :total_marks, :subject_id, :intake_id,:trial1,:trial2, :total_marks_view, :trial3, :total_mcq_in_exammark_single, :trial4, :newrecord_type
   
@@ -33,6 +34,29 @@ class Exammark < ActiveRecord::Base
   def set_total_mcq
     if total_mcq.nil? || total_mcq.blank?
       self.total_mcq=0.0
+    end
+  end
+  
+  def marks_must_not_exceed_maximum
+    #########
+    paper=Exam.find(exam_id)
+    fullmarks=paper.set_full_marks
+    exceed_total=[]
+    mcq_max=0
+    if paper.name!="M"
+      # NOTE Final - total marks is entered values[displayed only for Radiografi & Cara Kerja], + display of summative (in % weightage) [for all programmes]
+      paper.exam_template.question_count.each{|k,v|mcq_max=(v['count'].to_i) if k=="mcq"}
+      other_max=fullmarks-mcq_max
+      exceed_total << total_marks.to_f if total_marks > fullmarks || total_mcq > mcq_max || (marks && marks.sum(:student_mark) > other_max) 
+    else
+      # NOTE Mid sem - based on entered values --> total marks is generated values (in % weightage)
+      paper.exam_template.question_count.each{|k,v|mcq_max=v['count'].to_f if k=="mcq"}
+      other_max=fullmarks-mcq_max
+      exceed_total << total_mcq.to_f if total_mcq > mcq_max || (marks && marks.sum(:student_mark) > other_max)
+    end
+    ##########
+    if exceed_total.count > 0
+      errors.add(:mark, I18n.t('exam.exammark.exceed_total')) 
     end
   end
   
@@ -62,6 +86,7 @@ class Exammark < ActiveRecord::Base
   end
 
   #14March2013 - rev 17June2013 - rev 30Nov14
+  # TODO - to confirm ALL posbasic programme - Intake March & September?
   def self.set_intake_group(examyear,exammonth,semester,cuser)    #semester refers to semester of selected subject - subject taken by student of semester???
     @unit_dept = cuser.userable.positions.first.unit
 
@@ -122,11 +147,22 @@ class Exammark < ActiveRecord::Base
   
   def self.search2(search)
     common_subject = Programme.where('course_type=?','Commonsubject').pluck(:id)
+    posbasiks=["Pos Basik", "Diploma Lanjutan", "Pengkhususan"]
     if search 
       if search == '0'
         @exammarks = Exammark.all.order(:exam_id)
       elsif search == '1'
          exampapers = Exam.where("subject_id IN (?)", common_subject).pluck(:id)
+        @exammarks = Exammark.where("exam_id IN (?)", exampapers).order(:exam_id)
+      elsif search=='2'
+        programme_ids=Programme.where(course_type: posbasiks).pluck(:id)
+        subject_ids=[]
+        programme_ids.each do |progid|
+          Programme.where(id: progid).first.descendants.each do |descendant|
+            subject_ids << descendant.id if descendant.course_type=='Subject'
+          end
+        end
+        exampapers = Exam.where("subject_id IN (?)", subject_ids).pluck(:id)
         @exammarks = Exammark.where("exam_id IN (?)", exampapers).order(:exam_id)
       else
         subject_of_programme = Programme.find(search).descendants.at_depth(2).map(&:id)
