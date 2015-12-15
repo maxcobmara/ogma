@@ -113,11 +113,7 @@ class Exam < ActiveRecord::Base
   
   def set_full_marks
     unless id.nil? || id.blank?
-      if klass_id == 0
-        self.full_marks = total_marks  #examtemplates.sum(:total_marks).to_i
-      elsif klass_id==1
-        self.full_marks = total_marks
-      end
+      self.full_marks = total_marks
     end
   end
   
@@ -219,88 +215,30 @@ class Exam < ActiveRecord::Base
      end
   end
   
-  #10Apr2013
-  def total_marks   #to confirm full marks calculation - based on questiontype & exam paper format..
-    if klass_id==1
-      sum = Exam.joins(:examquestions).where('exam_id=? and questiontype=?', id, 'MCQ').count 
-      seq_count = Exam.joins(:examquestions).where('exam_id=? and questiontype=?', id, 'SEQ').count 
-      
-      meq_q = Exam.joins(:examquestions).where('exam_id=? and questiontype=?', id, 'MEQ').pluck(:marks)#.map{|x|x.marks}  
-      sum_meq=0
-      meq_q.each do |t|
-        sum_meq+=t.to_i
-      end
-      acq_q = Exam.joins(:examquestions).where('exam_id=? and questiontype=?', id, 'ACQ').pluck(:marks)#.map{|x|x.marks}  
-      sum_acq=0
-      acq_q.each do |t|
-        sum_acq+=t.to_i
-      end 
-      osci_q = Exam.joins(:examquestions).where('exam_id=? and questiontype=?', id, 'OSCI').pluck(:marks)#.map{|x|x.marks}  
-      sum_osci=0
-      osci_q.each do |t|
-        sum_osci+=t.to_i
-      end
-      oscii_q = Exam.joins(:examquestions).where('exam_id=? and questiontype=?', id, 'OSCII').pluck(:marks)#.map{|x|x.marks}  
-      sum_oscii=0 
-      oscii_q.each do |t|
-        sum_oscii+=t.to_i
-      end
-      osce_q = Exam.joins(:examquestions).where('exam_id=? and questiontype=?', id, 'OSCE').pluck(:marks)#.map{|x|x.marks}  
-      sum_osce=0 
-      oscii_q.each{|t| sum_osce+=t.to_i}
-      
-      ospe_q = Exam.joins(:examquestions).where('exam_id=? and questiontype=?', id, 'OSPE').pluck(:marks)#.map{|x|x.marks}  
-      sum_ospe=0 
-      ospe_q.each{|t| sum_ospe+=t.to_i}
-      
-      viva_q = Exam.joins(:examquestions).where('exam_id=? and questiontype=?', id, 'VIVA').pluck(:marks)#.map{|x|x.marks}  
-      sum_viva=0 
-      viva_q.each{|t| sum_viva+=t.to_i}
-      
-      truefalse_q = Exam.joins(:examquestions).where('exam_id=? and questiontype=?', id, 'TRUEFALSE').pluck(:marks)#.map{|x|x.marks}  
-      sum_truefalse=0 
-      truefalse_q.each{|t| sum_truefalse+=t.to_i}
-      
-      sum=sum+sum_meq+sum_acq+sum_osci+sum_oscii+sum_osce+sum_ospe+sum_viva+sum_truefalse
-      sum=sum+(seq_count)*10 if seq_count > 0
-    elsif klass_id==0
-      
-      #previous approach--start--requires examtemplates repeating fields to exist....
-#       template=Examtemplate.where(exam_id: id)
-#       sum = template.mcqq.first.total_marks
-#       sum_acq=template.mcqq.first.total_marks
-#       sum_meq=template.meqq.first.total_marks
-#       sum_osce=template.osceq.first.total_marks
-#       sum_osci=template.osci2q.first.total_marks
-#       sum_oscii=template.osci3q.first.total_marks
-#       sum_ospe=template.ospeq.first.total_marks
-#       sum_viva=template.vivaq.first.total_marks
-#       sum_truefalse=template.truefalseq.first.total_marks
-#       sum=sum+sum_acq+sum_meq+sum_osce+sum_osce+sum_osci+sum_oscii+sum_ospe+sum_truefalse+sum_viva
-      #previous approach--end--
-      
-      #new approach
-      unless topic_id.nil?
-        sum=0
-        exam_template.question_count.each do |k, v|
-          if v['count']!='' || v['count']!=nil #&& v['weight']!=''                          # NOTE some template has no weightage
-            qty=(v['count']).to_i
-            if k=="mcq"
-              sum1=qty*1 
-            elsif k=="seq" || k=="ospe"
-              sum1=qty*10
-            elsif k=="meq"
-              sum1=qty*20
-            else
-              sum1=qty #default to 1 first
-            end
+  
+  def total_marks
+    # TODO - to update total of marks according to TOTAL MARKS field in exam_template module (question type other than MCQ, MEQ, SEQ)
+    # restriction - in exam_template - compulsory field - STANDARD MARKS (marks per question) or TOTAL MARKS
+    # NOTE too - each examquestion also have MARKS field
+    unless topic_id.nil?
+      sum=0
+      exam_template.question_count.each do |k, v|
+        if v['count']!='' || v['count']!=nil #&& v['weight']!=''                          # NOTE some template has no weightage
+          qty=(v['count']).to_i
+          if k=="mcq"
+            sum1=qty*1 
+          elsif k=="seq" || k=="ospe"
+            sum1=qty*10
+          elsif k=="meq"
+            sum1=qty*20
+          else
+            sum1=qty #default to 1 first
           end
-          sum+=sum1
-        end  
-
-      end
+        end
+        sum+=sum1
+      end  
     end
-    return sum
+    sum
   end
   
   def render_full_name

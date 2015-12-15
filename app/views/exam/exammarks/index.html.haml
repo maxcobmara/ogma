@@ -20,6 +20,11 @@
 - exam_ids=[]
 - @exammarks_group.each{|k,v|exam_ids << k}
 - final_exist=Exam.where(id: exam_ids).where(name: "F")
+- diploma_subjects=[]
+- Programme.roots.where(course_type: 'Diploma').each do |programme|
+  - programme.descendants.each do |descendant|
+    - diploma_subjects << descendant.id if descendant.course_type=='Subject'
+
 
 /= form_tag :action => 'new_multiple', class: "form-inline" do
 = form_tag new_multiple_exam_exammarks_path, :method => :put , :id => "form2" do
@@ -47,7 +52,10 @@
           %th= t 'exam.exammark.icno'
           %th= sort_link(@search, :total_mcq, (t 'exam.exammark.marks'))
           - if final_exist.count > 0
-            %th= (t 'exam.exammark.summative')+" (70%)"
+            %th
+              = (t 'exam.exammark.summative')
+              - if @exammarks[0].exampaper.name!="M" && diploma_subjects.include?(@exammarks[0].exampaper.subject_id) 
+                (70%)
 
       %tbody
         = render "search_bar"
@@ -68,10 +76,10 @@
                 %td=h exammark.studentmark.icno
                 %td=number_with_precision(exammark.total_marks, precision: 2)  
                 %td
-                  - if exammark.exampaper.name=="M"
-                    \-
-                  - else
+                  - if exammark.exampaper.name!="M" && diploma_subjects.include?(exammark.exampaper.subject_id) && exammark.total_mcq
                     =number_with_precision(exammark.totalsummative, precision: 2)
+                  - else
+                    \-
                   
               - index2+=1
       
