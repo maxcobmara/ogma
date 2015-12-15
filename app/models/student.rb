@@ -41,8 +41,8 @@ class Student < ActiveRecord::Base
   accepts_nested_attributes_for :kins, :reject_if => lambda { |a| a[:kintype_id].blank? }
 
   def self.course_search(query)
-    programme_id = Programme.roots.where('name ILIKE(?)', "%#{query}%").first.id
-    where(course_id: programme_id)
+    programme_ids = Programme.roots.where('name ILIKE(?)', "%#{query}%").pluck(:id)
+    where(course_id: programme_ids)
   end
   
   # whitelist the scope
