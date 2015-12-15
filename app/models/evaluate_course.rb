@@ -101,6 +101,9 @@ class EvaluateCourse < ActiveRecord::Base
     else
       if programmeid==0
         evaluate_courses = EvaluateCourse.all
+      elsif programmeid==2
+        posbasic_ids=Programme.roots.where(course_type: ['Pos Basik', 'Pengkhususan', 'Diploma Lanjutan']).pluck(:id)
+        evaluate_courses= EvaluateCourse.where(course_id: posbasic_ids)
       else
         evaluate_courses = EvaluateCourse.where(course_id: programmeid)
       end
