@@ -328,7 +328,7 @@ class Exammark < ActiveRecord::Base
     ospe_count2=osce_count2+@ospecount;
     viva_count2=ospe_count2+@vivacount;
     truefalse_count2=viva_count2+@truefalsecount;
-    marks.each_with_index do |m, k|
+    marks.sort_by{|x|x.created_at}.each_with_index do |m, k|
       if (k < meq_count2)
         rate=@meqweight_rate
       elsif ((k >= meq_count2) && (k < seq_count2))
@@ -352,7 +352,7 @@ class Exammark < ActiveRecord::Base
         if rate==0
           @a+=m.student_mark
         else
-          @a+=m.student_mark*rate
+          @a+=m.student_mark*rate.to_f
         end
       else
         @a=0
@@ -360,7 +360,7 @@ class Exammark < ActiveRecord::Base
     end
     if @mcqweight_rate==0
       fullmarks = exampaper.total_marks
-      aaa=(total_mcq*1+@a)/fullmarks*100*0.70 
+      aaa=(total_mcq*1+@a)/fullmarks*100*exam_template.total_in_weight.to_f    #0.70 
     else
       aaa=(total_mcq*@mcqweight_rate+@a)
     end

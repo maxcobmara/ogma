@@ -55,7 +55,14 @@
                       =select_tag "grade[summative_weightage]", options_for_select(DropDown::WEIGHTAGE, @grades[0].examweight.to_i), {class: 'selectpicker'}
                       /ssiiniii
                     - else
-                      =select_tag "grade[summative_weightage]", options_for_select(DropDown::WEIGHTAGE, 70), {class: 'selectpicker'}
+                      - latest_paper=Exam.where(subject_id: @grades[0].subject_id).where(name: 'F').pluck(:id)
+                      - student_exammark=Exammark.where(exam_id: latest_paper).where(student_id: @grades[0].student_id).first
+                      - if student_exammark
+                        - weight=student_exammark.exampaper.exam_template.total_in_weight.to_i
+                      - else
+                        - weight=70
+                      /set summative weightage according to exampaper weightage if final paaper
+                      =select_tag "grade[summative_weightage]", options_for_select(DropDown::WEIGHTAGE, weight), {class: 'selectpicker'}
        
                 - if diploma_ids.include?(progid)
                   .col-md-1
