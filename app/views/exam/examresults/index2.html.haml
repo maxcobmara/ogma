@@ -37,7 +37,10 @@
                 - if Programme.where(course_type: 'Diploma').pluck(:id).include?(resultlines3.first.examresult.programme_id) 
                   = link_to (t 'exam.examresult.transcript'), show3_exam_examresults_path(student_id: student.id) if resultlines3.count == 6
                 - else
-                  = link_to (t 'exam.examresult.transcript'), show3_exam_examresults_path(student_id: student.id) if resultlines3.count == 2
+                  / NOTE : Semester count should be based on Curriculum Management
+                  - total_semester= Programme.where(id: resultlines3[0].examresult.programme_id).first.descendants.where(course_type: 'Semester').count
+                  = link_to (t 'exam.examresult.transcript'), show3_exam_examresults_path(student_id: student.id) if resultlines3.count == total_semester
+                  
             - for resultline in resultlines3.sort_by{|x|x.examresult_id}
               //////
               - @subjects = resultline.examresult.retrieve_subject

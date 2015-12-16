@@ -76,9 +76,14 @@ class Examresult < ActiveRecord::Base
           intake_month='07'
         end
       end
-    elsif exammonth < 9 #kebidanan only
-      intake_year = examyear
-      intake_month = '03'
+    elsif exammonth < 9 && exammonth > 6 #kebidanan only
+      if semester.to_i==1
+        intake_year = examyear
+        intake_month = '03'
+      elsif semester.to_i==2
+        intake_year = examyear-1
+        intake_month = '09'
+      end
     elsif exammonth > 9 #others only 
       if (semester.to_i-1) % 2 == 0  
         intake_year = examyear.to_i-((semester.to_i-1)/2) 

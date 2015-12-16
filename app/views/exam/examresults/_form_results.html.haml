@@ -8,7 +8,8 @@
         %th{rowspan: 2}=t('student.name')
         %th{rowspan: 2}=t('student.students.matrixno')
         %th{rowspan: 2}=t('student.icno')
-        - kebidanan = Programme.roots.where('name ILIKE(?)', '%Kebidanan%').first.id
+        /- kebidanan = Programme.roots.where('name ILIKE(?)', '%Kebidanan%').first.id
+        - posbasiks = Programme.roots.where(course_type: ['Pos Basik', 'Diploma Lanjutan', 'Pengkhususan']).pluck(:id)
         - kejururawatan = Programme.roots.where('name ILIKE(?)', '%Kejururawatan%').first.id
         /- @subjects = Examresult.get_subjects(@examresult.programme_id,@examresult.semester)
         - @subjects = @examresult.retrieve_subject
@@ -107,7 +108,7 @@
                       
                   - else
                     %td
-                      - if [kebidanan, kejururawatan].include?(@examresult.programme_id) && ["C-", "D+", "D", "E"].include?(@gradeit.strip)==true
+                      - if (posbasiks+[kejururawatan]).include?(@examresult.programme_id) && ["C-", "D+", "D", "E"].include?(@gradeit.strip)==true
                         - @value_state << '4'
                         %font{color: "red"}= @gradeit
                         
@@ -119,19 +120,25 @@
                           - else
                             - @value_state2 << '3'
                         
-                      - elsif [kebidanan, kejururawatan].include?(@examresult.programme_id) && ["C-", "D+", "D", "E"].include?(@gradeit.strip)==false
+                      - elsif (posbasiks+[kejururawatan]).include?(@examresult.programme_id) && ["C-", "D+", "D", "E"].include?(@gradeit.strip)==false
                         - @value_state << '3' 
                         = @gradeit
+                      
+                      - else
+                        =@gradeit
                     %td
-                      - if [kebidanan, kejururawatan].include?(@examresult.programme_id) && ["C-", "D+", "D", "E"].include?(@gradeit.strip)==true
+                      - if (posbasiks+[kejururawatan]).include?(@examresult.programme_id) && ["C-", "D+", "D", "E"].include?(@gradeit.strip)==true
                         %font{color: "red"}= @grade_student.first.set_NG.to_f 
                         
                         /repeat paper
                         %br=@grade_student.first.set_NG2.to_f unless (@grade_student.first.exam2marks.nil? || @grade_student.first.exam2marks.blank?) && @grade_student.first.resit==false
                         
-                      - elsif [kebidanan, kejururawatan].include?(@examresult.programme_id) && ["C-", "D+", "D", "E"].include?(@gradeit.strip)==false
+                      - elsif (posbasiks+[kejururawatan]).include?(@examresult.programme_id) && ["C-", "D+", "D", "E"].include?(@gradeit.strip)==false
                         =@grade_student.first.set_NG.to_f
-                  /https://trello.com/c/zlIT9mSO - Kebidanan (STATUS) : gagal if any of subject is failed - Kejururawatan too
+                        /https://trello.com/c/zlIT9mSO - Kebidanan (STATUS) : gagal if any of subject is failed - Kejururawatan too
+                        
+                      - else
+                        =@grade_student.first.set_NG.to_f
                   
                 - else
                   - if english_subjects.include?(subject.code[0,4]) || (subject.code.strip.size < 10 && (subject.code.strip[-2,1].to_i==2 || subject.code.strip[-2,1].to_i==3))
@@ -186,7 +193,7 @@
                       - @value_status='4'
                     /END - apply to all programme - when REPEAT papers exist, (inc. Grade 'resit' checkbox activated)
               
-              - if [kebidanan, kejururawatan].include?(@examresult.programme_id)
+              - if (posbasiks+[kejururawatan]).include?(@examresult.programme_id)
                 - if @value_state2.count==0
                   - if @value_state.uniq.include?('4') 
                     - @value_status='4'
