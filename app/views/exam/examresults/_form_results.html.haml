@@ -63,12 +63,15 @@
                 - @grade_student=Grade.where(subject_id: subject.id).where(student_id: @students[no].id)
                 - @student_finale=Grade.where('student_id=? and subject_id=?', @students[no].id,subject.id).first
                 //--------------
-                - if subject.code.size >9
-                  - unless english_subjects.include?(subject.code[0,4]) || (subject.code.strip.size < 10 && (subject.code.strip[-2,1].to_i==2 || subject.code.strip[-2,1].to_i==3))
-                    - credit2_all << subject.code[10,1].to_i 
-                - elsif subject.code.size < 10
-                  - unless english_subjects.include?(subject.code[0,4]) || (subject.code.strip.size < 10 && (subject.code.strip[-2,1].to_i==2 || subject.code.strip[-2,1].to_i==3)) 
-                    - credit2_all << subject.code[-1,1].to_i
+                /16Dec2015-Pn Manicka Valli - latest - Pos Basics module code - ADCB 510102 - credit=2
+                /- if subject.code.size >9
+                /  - unless english_subjects.include?(subject.code[0,4]) || (subject.code.strip.size < 10 && (subject.code.strip[-2,1].to_i==2 || subject.code.strip[-2,1].to_i==3))
+                /    - credit2_all << subject.code[10,1].to_i 
+                /- elsif subject.code.size < 10
+                /  - unless english_subjects.include?(subject.code[0,4]) || (subject.code.strip.size < 10 && (subject.code.strip[-2,1].to_i==2 || subject.code.strip[-2,1].to_i==3)) 
+                /    - credit2_all << subject.code[-1,1].to_i
+                - unless english_subjects.include?(subject.code[0,4]) || (subject.code.strip.size < 10 && (subject.code.strip[-2,1].to_i==2 || subject.code.strip[-2,1].to_i==3)) 
+                  - credit2_all << subject.code[-1,1].to_i
                 - unless english_subjects.include?(subject.code[0,4]) || (subject.code.strip.size < 10 && (subject.code.strip[-2,1].to_i==2 || subject.code.strip[-2,1].to_i==3))
                   
                   /with repeat parts
@@ -143,6 +146,7 @@
                   
             
             - total_point=number_with_precision(Examresult.total(final2_all, credit2_all), precision: 2)
+            /NOTE - requires Correct Subject/Module code to be entered into Curriculum Mgmt - or will get NaN for gpa.
             - if final2_all.count > 0 && credit2_all.count > 0
               - gpa=number_with_precision((Examresult.total(final2_all, credit2_all) / credit2_all.sum), precision: 2)
             - else

@@ -55,7 +55,8 @@ class Grade < ActiveRecord::Base
       # Cara Kerja - exam1marks=Final Exam(written paper)=(MCQ+SEQ)/(total mcq+total seq), total_summative=(Final Exam*0.70)
       # Pem Peg Perubatan, Fisioterapi - exam1marks=total_formative (70%) -- exam1marks=40%+30% (MCQ+SEQ etc)
       # Pos Basik(KEbidanan) - Summative(60%) : 40%(MCQ) +(MEQ/total meq * 20%)=60%,    JUMLAH BESAR = Formative(40%)+Summative(60%)
-    
+      # Confirmed by Pn Manicka Valli on 16th December 2015 - Summative:60%, Formative:40% for ALL Diploma Lanjutan (06,08,09,10) except 4 Renal & Psikitari
+      
       # Radiografi - exam1marks (in 100%) - 2 cases: final exam(total) < 100 & > 100
       # Cara Kerja - exam1marks (not really in 100%) - summative calculation same as Radiografi
       diploma=Programme.where(course_type: 'Diploma')
@@ -73,8 +74,8 @@ class Grade < ActiveRecord::Base
 	exist_paper=Exam.where(subject_id: subject_id).order(created_at: :desc).where(name: "F")
         latest_paper=exist_paper.first.id  if exist_paper && exist_paper.count > 0 #Exam.where(subject_id: subject_id).pluck(:id)
         student_exammark=Exammark.where(exam_id: latest_paper).where(student_id: student_id).first
-        if student_exammark && Exammark.fullmarks(student_exammark.exam_id)!=70
-          student_exammark.total_marks/Exammark.fullmarks(student_exammark.exam_id)*100*0.7
+        if student_exammark && Exammark.fullmarks(student_exammark.exam_id)!=examweight                    #70 # NOTE - flexible summative weightage for Pos Basik etc
+          student_exammark.total_marks/Exammark.fullmarks(student_exammark.exam_id)*examweight          #*100*0.7
           #####from formative_contents-7Dec2015
 
         else
@@ -117,8 +118,8 @@ class Grade < ActiveRecord::Base
 	  repeat_paper=repeats.first.id
           student_exammark=Exammark.where(exam_id: repeat_paper).where(student_id: student_id).first 
 	end
-        if student_exammark && Exammark.fullmarks(student_exammark.exam_id)!=70
-          student_exammark.total_marks/Exammark.fullmarks(student_exammark.exam_id)*100*0.7
+        if student_exammark && Exammark.fullmarks(student_exammark.exam_id)!=examweight                    #70 # NOTE - flexible summative weightage for Pos Basik etc
+          student_exammark.total_marks/Exammark.fullmarks(student_exammark.exam_id)*examweight          #*100*0.7
           #####from formative_contents-7Dec2015
 
         else
