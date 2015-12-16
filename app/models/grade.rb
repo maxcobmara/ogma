@@ -43,7 +43,7 @@ class Grade < ActiveRecord::Base
   end
   
   def apply_finalscore
-    unless summative.nil? && formative.nil?
+    if summative && formative
       self.finalscore=summative+formative 
     end
   end
@@ -149,7 +149,7 @@ class Grade < ActiveRecord::Base
   end
   
   def finale2
-    total_formative+total_summative2
+    total_formative2+total_summative2
   end
   
   def render_grading
