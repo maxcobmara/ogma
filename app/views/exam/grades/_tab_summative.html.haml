@@ -11,7 +11,7 @@
       (%)
     .col-md-2
       = t 'exam.grade.marks' 
-      (70%)
+      = "("+@grade.examweight.to_s+" %)"
     %hr
   .row
     .col-md-2=h @grade.exam1name

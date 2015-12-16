@@ -5,7 +5,7 @@
     %dd
       - if (@grade.exam1marks!= nil && @grade.examweight !=nil && @grade.total_formative != nil)
         =h number_with_precision(@grade.finale,:precision=>2) 
-        %b=@grade.set_gred 
+        %b=@grade.render_grading[-2,2]
       %font{:style=>"color: #AAA; size: -2"}
         Formative x 
         = number_with_precision((100 - @grade.examweight),:precision=>2)

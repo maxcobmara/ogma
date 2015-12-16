@@ -51,10 +51,11 @@ class Examresult < ActiveRecord::Base
   def intake_group
     examyear=examdts.year 
     exammonth=examdts.month
-    kebidanan=Programme.where(name: 'Kebidanan').first.id
+    #kebidanan=Programme.where(name: 'Kebidanan').first.id
+    posbasiks_ids=Programme.where(course_type: ['Pos Basik', 'Diploma Lanjutan', 'Pengkhususan']).pluck(:id)
     if exammonth < 7 #kebidanan sept-prev year [jan-feb](sem 1) or others [mei-jun](sem 1) 
       if (semester.to_i-1) % 2 == 0                                         # sem 1, thn 1 (semester=1), sem 3, sem 5 - semester GANJIL
-        if programme_id==kebidanan
+        if posbasiks_ids.include?(programme_id) #programme_id==kebidanan
           intake_month = '09'
           intake_year = examyear-1
         else
@@ -69,7 +70,7 @@ class Examresult < ActiveRecord::Base
         elsif (semester.to_i+1)/2.0 > 1
           intake_year = examyear.to_i-((semester.to_i+1)%2)  
         end
-        if programme_id==kebidanan
+        if posbasiks_ids.include?(programme_id) #programme_id==kebidanan
           intake_month='03'
         else
           intake_month='07'
@@ -122,8 +123,9 @@ class Examresult < ActiveRecord::Base
   def total_credit
     total=0
     retrieve_subject.each do |subject|
-      credit=subject.code[10,1] if subject.code.size >9
-      credit=subject.code[-1,1] if subject.code.size < 10
+      #16Dec2015-Pn Manicka Valli - latest - Pos Basics module code - ADCB 510102 - credit=2
+      #credit=subject.code[10,1] if subject.code.size >9
+      credit=subject.code[-1,1] #if subject.code.size < 10
       total+=credit.to_i
     end
     total

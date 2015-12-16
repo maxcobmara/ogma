@@ -38,25 +38,29 @@ class Exammark < ActiveRecord::Base
   end
   
   def marks_must_not_exceed_maximum
-    #########
-    paper=Exam.find(exam_id)
-    fullmarks=paper.set_full_marks
-    exceed_total=[]
-    mcq_max=0
-    if paper.name!="M"
-      # NOTE Final - total marks is entered values[displayed only for Radiografi & Cara Kerja], + display of summative (in % weightage) [for all programmes]
-      paper.exam_template.question_count.each{|k,v|mcq_max=(v['count'].to_i) if k=="mcq"}
-      other_max=fullmarks-mcq_max
-      exceed_total << total_marks.to_f if total_marks > fullmarks || total_mcq > mcq_max || (marks && marks.sum(:student_mark) > other_max) 
-    else
-      # NOTE Mid sem - based on entered values --> total marks is generated values (in % weightage)
-      paper.exam_template.question_count.each{|k,v|mcq_max=v['count'].to_f if k=="mcq"}
-      other_max=fullmarks-mcq_max
-      exceed_total << total_mcq.to_f if total_mcq > mcq_max || (marks && marks.sum(:student_mark) > other_max)
-    end
-    ##########
-    if exceed_total.count > 0
-      errors.add(:mark, I18n.t('exam.exammark.exceed_total')) 
+    unless id.nil? || id.blank?
+      
+      #########
+      paper=Exam.find(exam_id)
+      fullmarks=paper.set_full_marks
+      exceed_total=[]
+      mcq_max=0
+      if paper.name!="M"
+        # NOTE Final - total marks is entered values[displayed only for Radiografi & Cara Kerja], + display of summative (in % weightage) [for all programmes]
+        paper.exam_template.question_count.each{|k,v|mcq_max=(v['count'].to_i) if k=="mcq"}
+        other_max=fullmarks-mcq_max
+        exceed_total << total_marks.to_f if total_marks > fullmarks || total_mcq > mcq_max || (marks && marks.sum(:student_mark) > other_max) 
+      else
+        # NOTE Mid sem - based on entered values --> total marks is generated values (in % weightage)
+        paper.exam_template.question_count.each{|k,v|mcq_max=v['count'].to_f if k=="mcq"}
+        other_max=fullmarks-mcq_max
+        exceed_total << total_mcq.to_f if total_mcq > mcq_max || (marks && marks.sum(:student_mark) > other_max)
+      end
+      ##########
+      if exceed_total.count > 0
+        errors.add(:mark, I18n.t('exam.exammark.exceed_total')) 
+      end
+    
     end
   end
   
@@ -88,10 +92,12 @@ class Exammark < ActiveRecord::Base
   #14March2013 - rev 17June2013 - rev 30Nov14
   # TODO - to confirm ALL posbasic programme - Intake March & September?
   def self.set_intake_group(examyear,exammonth,semester,cuser)    #semester refers to semester of selected subject - subject taken by student of semester???
-    @unit_dept = cuser.userable.positions.first.unit
+    posbasiks=['Pos Basik', 'Diploma Lanjutan', 'Pengkhususan']
+    @unit_dept = cuser.userable.positions.first.unit 
+    #Unit = Pengkhususan/Diploma Lanjutan/Pos Basik , Main Tasks = Ketua Program Pengkhususan/Pos Basik Perawatan Koronari/Diploma Lanjutan Kebidanan
 
      #if exammonth.to_i <= 7
-     if (@unit_dept && @unit_dept == "Kebidanan" && exammonth.to_i <= 9) || (@unit_dept && @unit_dept != "Kebidanan" && exammonth.to_i <= 7)                                                  # for 1st semester-month: Jan-July, exam should be between Feb-July
+     if (@unit_dept && posbasiks.include?(@unit_dept)==true && exammonth.to_i <= 9) || (@unit_dept && posbasiks.include?(@unit_dept)==false && exammonth.to_i <= 7)                                                  # for 1st semester-month: Jan-July, exam should be between Feb-July
         @current_sem = 1 
         @current_year = examyear 
         if (semester.to_i-1) % 2 == 0                                                                                 # modulus-no balance
@@ -110,7 +116,7 @@ class Exammark < ActiveRecord::Base
           #29June2013-------------------
           @intake_sem = @current_sem + 1 
         end 
-     elsif (@unit_dept && @unit_dept == "Kebidanan" && exammonth.to_i > 9) || (@unit_dept && @unit_dept != "Kebidanan" && exammonth.to_i > 7)                                                  # 2nd semester starts on July-Dec- exam should be between August-Dec
+     elsif (@unit_dept && posbasiks.include?(@unit_dept)==true && exammonth.to_i > 9) || (@unit_dept && posbasiks.include?(@unit_dept)==false && exammonth.to_i > 7)                                                  # 2nd semester starts on July-Dec- exam should be between August-Dec
      #elsif exammonth.to_i > 7
         @current_sem = 2 
         @current_year = examyear
