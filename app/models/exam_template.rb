@@ -3,9 +3,9 @@ class ExamTemplate < ActiveRecord::Base
 
   belongs_to  :creator,       :class_name => 'User',   :foreign_key => 'created_by'
   has_many :exams
-  
+
   before_destroy :valid_for_removal
-  
+
   def question_count=(value)
     data[:question_count] = value
   end
@@ -13,15 +13,9 @@ class ExamTemplate < ActiveRecord::Base
     data[:question_count]
   end
   
-  def total_marks=(value)
-    data[:total_marks] = value
-  end
-  def total_marks
-    data[:total_marks]
-  end
-  
+
   # define scope
-  def self.creator_search(query) 
+  def self.creator_search(query)
     staff_ids = Staff.where('name ILIKE(?)', "%#{query}%").pluck(:id)
     user_ids = User.where(userable_id: staff_ids).pluck(:id)
     where(created_by: user_ids)
@@ -30,12 +24,12 @@ class ExamTemplate < ActiveRecord::Base
   def self.ransackable_scopes(auth_object = nil)
     [:creator_search]
   end
-  
+
   def template_in_use
     in_string="("
     question_count.each do |k, v|
       if v['count']!='' || v['weight']!=''
-        in_string += k.upcase+" : " 
+        in_string += k.upcase+" : "
         in_string += v['count'] if v['count']!=''
         in_string += "/"+ v['weight']+"%" if v["weight"]!=''
         in_string+=", "
@@ -43,14 +37,14 @@ class ExamTemplate < ActiveRecord::Base
     end
     in_string.gsub(/, $/,"")+")"
   end
-  
+
   def total_in_weight
     total=0
     question_count.each{|k,v|total=v['weight'].to_f if k=="mcq"}
     question_count.each{|k,v|total+=v['weight'].to_f if k!="mcq"}
     total
   end
-  
+
   def valid_for_removal
     if Exam.where(topic_id: id).count > 0
       return false
