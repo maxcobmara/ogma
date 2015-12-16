@@ -38,16 +38,34 @@ ActiveRecord::Schema.define(version: 20151124133213) do
   add_index "accessions", ["accession_no"], name: "index_accessions_on_accession_no", using: :btree
   add_index "accessions", ["id"], name: "index_accessions_on_id", using: :btree
 
-  create_table "address_books", force: true do |t|
-    t.string   "name",       limit: nil
-    t.string   "phone",      limit: nil
-    t.string   "address",    limit: nil
-    t.string   "mail",       limit: nil
-    t.string   "web",        limit: nil
-    t.string   "fax",        limit: nil
+  create_table "address_book_items", force: true do |t|
+    t.integer  "address_book_id"
+    t.string   "item"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "shortname",  limit: nil
+  end
+
+  create_table "address_books", force: true do |t|
+    t.string   "name"
+    t.string   "phone"
+    t.string   "address"
+    t.string   "mail"
+    t.string   "web"
+    t.string   "fax"
+    t.string   "shortname"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "addsuppliers", force: true do |t|
+    t.integer  "supplier_id"
+    t.string   "lpono"
+    t.string   "document"
+    t.decimal  "quantity"
+    t.decimal  "unitcost"
+    t.date     "received"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "answerchoices", force: true do |t|
@@ -1246,7 +1264,6 @@ ActiveRecord::Schema.define(version: 20151124133213) do
     t.datetime "updated_at"
     t.string   "combo_code"
     t.integer  "ancestry_depth", default: 0
-    t.boolean  "damaged"
     t.string   "status"
   end
 
@@ -1442,8 +1459,6 @@ ActiveRecord::Schema.define(version: 20151124133213) do
     t.text     "trainee_report"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "payment"
-    t.text     "remark"
   end
 
   create_table "ptdosearches", force: true do |t|
@@ -2385,8 +2400,20 @@ ActiveRecord::Schema.define(version: 20151124133213) do
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
+  add_index "users", ["id"], name: "index_users_on_id", using: :btree
+  add_index "users", ["login"], name: "index_users_on_login", unique: true, using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
   add_index "users", ["userable_id", "userable_type"], name: "index_users_on_userable_id_and_userable_type", using: :btree
+
+  create_table "usesupplies", force: true do |t|
+    t.integer  "supplier_id"
+    t.integer  "issuedby"
+    t.integer  "receivedby"
+    t.decimal  "quantity"
+    t.date     "issuedate"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "vehicles", force: true do |t|
     t.string  "type_model"

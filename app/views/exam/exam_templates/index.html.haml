@@ -1,7 +1,7 @@
 - model_class = ExamTemplate
 .page-header
   %h1= t('exam.exam_template.title')#, :default => model_class.model_name.human.pluralize
-  
+
 .navbar.navbar-inverse{role: "navigation", style: "padding-right:40px;"}
   %ul.nav.navbar-nav
     - permitted_to? :create, :exam_exam_templates do
@@ -17,7 +17,7 @@
         %li
           =t('exam.exams.marks_each')
 
-.row 
+.row
   %table.table-striped.table-hover.ogma
     %thead
       %tr
@@ -37,11 +37,12 @@
           %td=h exam_template.creator.userable.name
           - DropDown::QTYPE.each do |channel|
             - var_channel = channel[1].parameterize.downcase.underscore
+            - @weight = (exam_template.question_count[var_channel.to_s]['weight']rescue nil)
             %td.centre
-              =exam_template.question_count[var_channel.to_s]['count'] rescue nil
-              ="  /  " if exam_template.question_count[var_channel.to_s]['count']!="" 
-              =exam_template.question_count[var_channel.to_s]['weight']rescue nil
-              =" %" if exam_template.question_count[var_channel.to_s]['weight']!="" 
-              =" -" if exam_template.question_count[var_channel.to_s]['weight']==""
+              = @counter = (exam_template.question_count[var_channel.to_s]['count'] rescue nil)
+              =  " / " unless @weight.blank?
+              = @weight
+              = "%" unless @weight.blank?
+
 
     .right{style:"padding:0 30px; margin:0;"}= paginate @exam_templates, :theme => 'twitter-bootstrap-3'
