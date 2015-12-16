@@ -23,7 +23,7 @@
           %b=(t 'exam.exam_template.type')
         .col-sm-2=t 'exam.exam_template.count'
         .col-sm-2=t 'exam.exam_template.weight'
-        .col-sm-2=t 'exam.exam_template.total_marks'
+        .col-sm-2=t 'exam.exam_template.full_marks'
       = f.fields_for :question_count do |tc|
         - DropDown::QTYPE.each do |channel|
           - var_channel = channel[1].parameterize.downcase.underscore
@@ -39,7 +39,7 @@
                 = tc.text_field "#{var_channel}[weight]", class: 'form-control', value: (@exam_template.question_count[var_channel.to_s]['weight'] rescue nil)
                 %span.input-group-addon %
             .col-sm-2{class: "url-field url_#{var_channel}"}
-              = tc.number_field "#{var_channel}[total_marks]", class: 'form-control', :in => 0..100, :step => 0.5, value: (@exam_template.question_count[var_channel.to_s]['total_marks'] rescue nil)
+              = tc.number_field "#{var_channel}[full_marks]", class: 'form-control', :in => 0..100, :step => 0.5, value: (@exam_template.question_count[var_channel.to_s]['full_marks'] rescue nil)
 
 
 
