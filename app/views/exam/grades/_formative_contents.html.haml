@@ -130,6 +130,7 @@
 =hidden_field_tag "scores_count", @score_for_legend_sort_1.count
 =hidden_field_tag "programme_name", Programme.where(id: @grades[0].subjectgrade.root_id).first.name
 =hidden_field_tag "fullmark", @fullmarks
+=hidden_field_tag "formative_weight", @grades[0].scores.sum(:weightage)
 
 /=hidden_field_tag "grade_examweight", @grades[0].examweight
 :javascript
@@ -139,6 +140,7 @@ $(document).ready(function(){
     
     var gradecount = $("#grade_count").val();
     var scorescount = $("#scores_count").val();
+    var formativeweight = $("#formative_weight").val();
     
     var other2 = document.getElementById("score_"+0+"_"+0).value;
     window["formative"+i] =  document.getElementById("caplusmse0");
@@ -154,9 +156,18 @@ $(document).ready(function(){
         a=a*1+(other*1);
       }
       window["cplus"+i].value=a;
+      if (a > formativeweight)
+      {  window["cplus"+i].style.color="red";}
+      else
+      {  window["cplus"+i].style.color="black";}
       window["summative70_val"+i] = document.getElementById("summative"+i).value;
       window["formative_summative"+i] = document.getElementById("finalscore"+i);
-      window["formative_summative"+i].value = a+(window["summative70_val"+i])*1
+      finale=a+(window["summative70_val"+i])*1;
+      window["formative_summative"+i].value = a+(window["summative70_val"+i])*1;
+      if (finale > 100)
+      {  window["formative_summative"+i].style.color="red";}
+      else
+      {  window["formative_summative"+i].style.color="black";}
     }
     
   });

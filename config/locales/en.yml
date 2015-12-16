@@ -201,7 +201,7 @@ en:
         remark: Remark
       grade:
         examweight: "Weightage (Summative)"
-        exam1marks: "Marks (100%)"
+        exam1marks: "Marks "
         finalscore: Total Marks
     errors:
         template:
@@ -2436,6 +2436,10 @@ en:
       complete_paper: 'Only Subject with valid (complete) FINAL exam paper available for grades creation.'
       exist_marks: 'Upon Grade creation of a Subject, please Edit and Update corresponding Exam Paper Marks to synchronize / update Total Summative in Grade record.'
       apply_finalscore: ' : Edit & Update grade record to saved latest Final Score.'
+      exceed_maximum: "Values entered must not exceed maximum values "
+      formative_exceed_maximum: "Marks (Formative Scores) must not exceed "
+      total_weight: "Total Weightage must be 100%. "
+      summative: Summative
     
     examresult:
       title: Examination Result by Programme

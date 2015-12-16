@@ -304,6 +304,8 @@ class Exam::GradesController < ApplicationController
   
       if submit_type == t('update')
         ####
+        @exceed_maximum=[]
+        @exceed_maximum2=[]
         #below (add-in sort_by) in order to get data match accordingly to form values (sorted by student name)
         @grades.sort_by{|x|x.studentgrade.name}.each_with_index do |grade, index| 
 
@@ -356,14 +358,28 @@ class Exam::GradesController < ApplicationController
           else
             grade.resit = false
           end
-          
+          @exceed_maximum << grade.studentgrade.matrix_name if grade.formative > grade.scores.sum(:weightage) || grade.summative > grade.examweight
+          @exceed_maximum2 << grade.id if (grade.scores.sum(:weightage)+grade.examweight).to_f > 100.0
           grade.save
         end  #--end of @grades.each_with_index do |grade,index|--
         ####
         respond_to do |format|
           if all_scores && all_scores["0"]["marks"]
-              format.html { redirect_to(exam_grades_url, :notice =>t('exam.grade.multiple_updated')+" ("+"#{@grades[0].subjectgrade.subject_list}"+" - "+"#{@grades.count}"+" "+t('records')+")") }
-              format.xml  { head :ok }
+              if @exceed_maximum.count==0 && @exceed_maximum2.count==0
+                  format.html { redirect_to(exam_grades_url, :notice =>t('exam.grade.multiple_updated')+" ("+"#{@grades[0].subjectgrade.subject_list}"+" - "+"#{@grades.count}"+" "+t('records')+")") }
+                  format.xml  { head :ok }
+              else
+                  if @exceed_maximum.count > 0
+                    students=""
+                    @exceed_maximum.each{|x|students+=x+", "}
+                    flash[:notice]=(t 'exam.grade.exceed_maximum')+" ("+@exceed_maximum.count.to_s+" "+(t 'records')+") : " +students.gsub(students[-2,2],"")
+                  end
+                  if @exceed_maximum2.count > 0
+                    flash[:notice]=t('exam.grade.total_weight')+"("+(t 'exam.grade.formative')+" : "+@grades[0].scores.sum(:weightage).to_i.to_s+"%, "+(t 'exam.grade.summative2')+" : "+@grades[0].examweight.to_i.to_s+"%)"
+                  end
+                  format.html {render :action => 'edit_multiple'}
+                  format.xml  { head :ok }
+              end
           else
               flash[:notice]=(t 'exam.grade.scores_not_exist')
               format.html {render :action => 'edit_multiple'}

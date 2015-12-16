@@ -2,9 +2,11 @@ class Grade < ActiveRecord::Base
   
   validates_presence_of :student_id, :subject_id, :examweight#, :exam1marks #added examweight for multiple edit - same subject - this item must exist
   validates_uniqueness_of :subject_id, :scope => :student_id, :message => " - This student has already taken this subject"
-  validates :exam1marks, :finalscore, numericality: {greater_than_or_equal_to: 0, less_than_or_equal_to: 100}
+  validates :finalscore, numericality: {greater_than_or_equal_to: 0, less_than_or_equal_to: 100}
+  #validates :exam1marks, :finalscore, numericality: {greater_than_or_equal_to: 0, less_than_or_equal_to: 100}
+      
  # validates_presence_of :sent_date, :if => :sent_to_BPL?
-  validate :check_formative_valid
+  validate :formative_allowed, :total_weightage_allowed#, :check_formative_valid,
   
   belongs_to :studentgrade, :class_name => 'Student', :foreign_key => 'student_id'  #Link to Model student
   belongs_to :subjectgrade, :class_name => 'Programme', :foreign_key => 'subject_id'  #Link to Model subject
@@ -12,7 +14,6 @@ class Grade < ActiveRecord::Base
   has_many :scores, :dependent => :destroy
   accepts_nested_attributes_for :scores,:allow_destroy => true, :reject_if => lambda { |a| a[:description].blank? } #allow for destroy - 17June2013
   
-  #before_save :check_formative_valid
   before_save :apply_finalscore
   
   attr_accessor :intake_id, :marks_70, :formative_weight_sum, :formative_marks_sum, :marks_70_rev
@@ -43,7 +44,7 @@ class Grade < ActiveRecord::Base
   end
   
   def apply_finalscore
-    if summative && formative
+    if summative && formative  #refers to fields in the form
       self.finalscore=summative+formative 
     end
   end
@@ -288,19 +289,31 @@ class Grade < ActiveRecord::Base
   
   private 
   
-    def check_formative_valid #add error msg in controller
-    if subject_id
-       if Programme.roots.where(course_type: 'Diploma').pluck(:id).include?(subjectgrade.root_id)
-         if scores && scores.count > 0
-           if scores.map(&:weightage).sum > 30 || scores.map(&:marks).sum > 30
-	     errors.add(:base, I18n.t('exam.grade.max_weightage_marks_30'))
-             #return false
-           else
-             #return true
-           end
-         end
-       end
+#     def check_formative_valid #add error msg in controller
+#     if subject_id
+#        if Programme.roots.where(course_type: 'Diploma').pluck(:id).include?(subjectgrade.root_id)
+#          if scores && scores.count > 0
+#            if scores.map(&:weightage).sum > 30 || scores.map(&:marks).sum > 30
+# 	     errors.add(:base, I18n.t('exam.grade.max_weightage_marks_30'))
+#              #return false
+#            else
+#              #return true
+#            end
+#          end
+#        end
+#     end
+#     end
+    
+    def formative_allowed
+      if scores && (scores.map(&:marks).sum > scores.sum(:weightage))
+        errors.add(:base, I18n.t('exam.grade.formative_exceed_maximum')+scores.sum(:weightage).to_s)
+      end
     end
+    
+    def total_weightage_allowed
+      if ((scores && scores.sum(:weightage))+examweight) > 100.0
+        errors.add(:base, I18n.t('exam.grade.total_weight')+"("+I18n.t('exam.grade.formative')+" : "+scores.sum(:weightage).to_i.to_s+"%, "+I18n.t('exam.grade.summative2')+" : "+examweight.to_i.to_s+"%)")
+      end
     end
   
 end
