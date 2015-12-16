@@ -208,7 +208,8 @@ class Exammark < ActiveRecord::Base
     unless grade_to_update.nil? || grade_to_update.blank?
       if exampaper.name=="F" 
         grade_to_update.exam1marks=total_marks
-        grade_to_update.summative=totalsummative if diploma_subjects.include?(subject_id) && exammark.total_mcq
+        #grade_to_update.summative=totalsummative if diploma_subjects.include?(subject_id) && total_mcq
+        grade_to_update.summative=totalsummative if total_mcq
       elsif exampaper.name=="R"
         grade_to_update.exam2marks=total_marks 
       elsif exampaper.name=="M"

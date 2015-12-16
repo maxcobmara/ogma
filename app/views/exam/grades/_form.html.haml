@@ -166,7 +166,7 @@
   }
 :javascript
   
-  $("#grade_exam1marks").keyup(function() {  
+  $(".k1").keyup(function() {  
     var formativecount = document.getElementById("grade_formative_count").value;
     var exam1marks = document.getElementById("grade_exam1marks").value;
     var examweight = document.getElementById("grade_examweight").value;
@@ -206,6 +206,11 @@
     forgrade = caplusmse+summative;
     finalscore.value = caplusmse+summative;
     marks70.value = summative;
+    
+    if (caplusmse+summative > 100)
+    {  finalscore.style.color="red";}
+    else
+    {  finalscore.style.color="black";}
 
     if ((caplusmse+summative) > 79)
     {
@@ -253,6 +258,7 @@
     }
   });
   
+/  $("#grade_exam1marks").keyup(function() {  
 //above - latest (formative marks requested to be entered within weightage range)
 //below - previous
 //caplusmse = (totalformative*1)*(100-examweight)/100;

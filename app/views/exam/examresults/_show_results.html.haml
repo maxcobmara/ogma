@@ -32,7 +32,8 @@
           - final2_all=[]
           - english_subjects=['PTEN', 'NELA', 'NELB', 'NELC', 'MAPE', 'XBRE', 'OTEL'] 
           - @value_state=[]
-          - kebidanan = Programme.roots.where('name ILIKE(?)', '%Kebidanan%').first.id
+          /- kebidanan = Programme.roots.where('name ILIKE(?)', '%Kebidanan%').first.id
+          - posbasiks = Programme.roots.where(course_type: ['Pos Basik', 'Diploma Lanjutan', 'Pengkhususan']).pluck(:id)
           - kejururawatan = Programme.roots.where('name ILIKE(?)', '%Kejururawatan%').first.id
           - for subject in @subjects
             - @grade_student=Grade.where(subject_id: subject.id).where(student_id: examresultline.student_id)
@@ -93,8 +94,8 @@
                   - unless (@grade_student.first.exam2marks.nil? || @grade_student.first.exam2marks.blank?) && @grade_student.first.resit==false
                     %br=@grade_student.first.set_NG2.to_f 
                   
-                - @value_state << '4' if [kebidanan, kejururawatan].include?(@examresult.programme_id) && ["C-", "D+", "D", "E"].include?(grade_it.strip)==true
-                - @value_state << '3' if [kebidanan, kejururawatan].include?(@examresult.programme_id) && ["C-", "D+", "D", "E"].include?(grade_it.strip)==false
+                - @value_state << '4' if (posbasiks+[kejururawatan]).include?(@examresult.programme_id) && ["C-", "D+", "D", "E"].include?(grade_it.strip)==true
+                - @value_state << '3' if (posbasiks+[kejururawatan]).include?(@examresult.programme_id) && ["C-", "D+", "D", "E"].include?(grade_it.strip)==false
             - else
               - @value_state << '4'
               - if english_subjects.include?(subject.code[0,4]) || (subject.code.strip.size < 10 && (subject.code.strip[-2,1].to_i==2 || subject.code.strip[-2,1].to_i==3))

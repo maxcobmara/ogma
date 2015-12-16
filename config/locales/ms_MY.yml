@@ -182,7 +182,7 @@ ms_MY:
         remark: Catatan
       grade:
         examweight: "Wajaran (Sumatif)"
-        exam1marks: "Markah (100%)"
+        exam1marks: "Markah "
         finalscore: Jumlah Akhir
     errors:
         template:
@@ -2376,6 +2376,10 @@ ms_MY:
       complete_paper: 'Gred hanya boleh dicipta bagi Subjek dengan kertas peperiksaan yang sah (lengkap) sahaja.'
       exist_marks: 'Sebaik sahaja rekod Gred bagi satu-satu Subjek dicipta, sila Sunting dan Kemaskini rekod-rekod Markah Kertas Peperiksaan Akhir yang sepadan bagi menyelaras / mengemaskini nilai Jumlah Sumatif dalam rekod Gred.'
       apply_finalscore: " : Sunting & Kemaskini rekod gred berkenaan untuk menyimpan Jumlah Akhir yang terkini. "
+      exceed_maximum: "Nilai dimasukkan tidak boleh melebihi nilai maksima "
+      formative_exceed_maximum: "Markah (Skor Formatif) tidak boleh melebihi "
+      total_weight: "Jumlah keseluruhan Wajaran mestilah 100%. "
+      summative2: Sumatif
       
     examresult:
       title: Keputusan Peperiksaan Mengikut Program

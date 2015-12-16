@@ -12,7 +12,7 @@
       .col-sm-4= f.select :type_id, DropDown::E_TYPES, {:prompt => t('select')}, {class: 'selectpicker mandatory', "data-width"=>"300px"}
       .col-sm-4= f.text_field :description, placeholder: t('exam.grade.description'), class: 'form-control mandatory'
       .col-sm-2= f.text_field :weightage, :size => 5, :id=> "fweight"+no.to_s, class: 'form-control mandatory'
-      .col-sm-2= f.text_field :marks, :id=> "formative"+no.to_s, class: 'form-control mandatory'
+      .col-sm-2= f.text_field :marks, :id=> "formative"+no.to_s, class: 'k1 form-control mandatory'
       /.col-sm-1
       /  /= link_to content_tag(:i, "", class: "fa fa-trash-o"), data: {"data-toggle" => "tooltip", title: "Delete"}, class: "btn btn-danger remove_fields"
       /  /= f.options[:child_index]
