@@ -217,25 +217,28 @@ class Exam < ActiveRecord::Base
   
   
   def total_marks
-    # TODO - to update total of marks according to TOTAL MARKS field in exam_template module (question type other than MCQ, MEQ, SEQ)
     # restriction - in exam_template - compulsory field - STANDARD MARKS (marks per question) or TOTAL MARKS
     # NOTE too - each examquestion also have MARKS field
     unless topic_id.nil?
       sum=0
       exam_template.question_count.each do |k, v|
-        if v['count']!='' || v['count']!=nil #&& v['weight']!=''                          # NOTE some template has no weightage
+        if v['count']!='' || v['count']!=nil 
           qty=(v['count']).to_i
-          if k=="mcq"
-            sum1=qty*1 
-          elsif k=="seq" || k=="ospe"
-            sum1=qty*10
-          elsif k=="meq"
-            sum1=qty*20
+          if v["full_marks"] && v["full_marks"]!='' || v["full_marks"]!=nil
+            sum1=v["full_marks"].to_f
           else
-            sum1=qty #default to 1 first
+            if k=="mcq"
+              sum1=qty*1 
+            elsif k=="seq" || k=="ospe"
+              sum1=qty*10
+            elsif k=="meq"
+              sum1=qty*20
+            else
+              sum1=qty #default to 1 first
+            end
           end
+          sum+=sum1
         end
-        sum+=sum1
       end  
     end
     sum

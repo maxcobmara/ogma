@@ -16,7 +16,7 @@
           %dd
             =h @exammark.exampaper.exam_name_subject_date
             =t 'exam.exams.with_questions' if @exammark.exampaper.klass_id==1
-        
+            =h @exammark.exampaper.exam_template.template_in_use
           %dt=t 'exam.exammark.student_id'
           %dd=h @exammark.studentmark.matrix_name
 

@@ -21,9 +21,10 @@
         = hidden_field "exammark[marks_attributes][#{count2}]", :id, :value => @marks_for_questions[count2].id
   %td
     \/ 
-    - if @examquestions.count>0
-      =number_with_precision(@examquestions.acqq[count].marks, precision: 2)
-    - else
-      =number_with_precision(@acq_totalmarks/@acq_count, precision: 2)
+    / NOTE - examquestions marks - no longer in use - use exam_template - full_marks instead
+    /- if @examquestions.count>0
+    /  =number_with_precision(@examquestions.acqq[count].marks, precision: 2)
+    /- else
+    =number_with_precision(@acq_totalmarks/@acq_count, precision: 2)
 
 

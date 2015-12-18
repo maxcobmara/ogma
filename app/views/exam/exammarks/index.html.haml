@@ -76,7 +76,7 @@
                 %td
                   /- if exammark.exampaper.name!="M" && diploma_subjects.include?(exammark.exampaper.subject_id) && exammark.total_mcq
                   - if exammark.exampaper.name!="M" && exammark.total_mcq
-                    =number_with_precision(exammark.totalsummative, precision: 2)
+                    =number_with_precision(exammark.totalsummative, precision: 2) 
                   - else
                     \-
                   =" / "+exammark.exampaper.exam_template.total_in_weight.to_s+" %"

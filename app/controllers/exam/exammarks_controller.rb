@@ -250,19 +250,30 @@ class Exam::ExammarksController < ApplicationController
     respond_to do |format|
       @exammarks = exammarks
       # TODO - refractor this
-      fullmarks=Exammark.fullmarks(exammarks[0].exam_id)
       exceed_total=[]
       mcq_max=0
+      arr_current_marks=[]
+      @exammarks.each do |exammrk|
+        current_marks=0
+        exammrk.marks.each{|m|current_marks+=m.student_mark}
+        arr_current_marks << current_marks
+      end
       if exammarks[0].exampaper.name!="M"
         # NOTE Final - total marks is entered values[displayed only for Radiografi & Cara Kerja], + display of summative (in % weightage) [for all programmes]
+	fullmarks=Exammark.fullmarks(exammarks[0].exam_id)
         exammarks[0].exampaper.exam_template.question_count.each{|k,v|mcq_max=(v['count'].to_i) if k=="mcq"}
         other_max=fullmarks-mcq_max
-        exammarks.each{|x| exceed_total << x.total_marks.to_f if x.total_marks > fullmarks || x.total_mcq > mcq_max || x.marks.sum(:student_mark) > other_max }
+        exammarks.each_with_index{|x, ind| exceed_total << x.total_marks.to_f if x.total_marks > fullmarks || x.total_mcq > mcq_max || arr_current_marks[ind] > other_max }
       else
         # NOTE Mid sem - based on entered values --> total marks is generated values (in % weightage)
+        if exammarks[0].exampaper.exam_template.total_in_weight==0
+          fullmarks=exammarks[0].exampaper.total_marks
+        else
+          fullmarks=exammarks[0].exampaper.exam_template.total_in_weight
+        end
         exammarks[0].exampaper.exam_template.question_count.each{|k,v|mcq_max=v['count'].to_f if k=="mcq"}
         other_max=fullmarks-mcq_max
-        exammarks.each{|x| exceed_total << x.total_mcq.to_f if x.total_mcq > mcq_max || x.marks.sum(:student_mark) > other_max}
+        exammarks.each_with_index{|x, ind| exceed_total << x.total_mcq.to_f if x.total_mcq > mcq_max || arr_current_marks[ind] > other_max}
       end
       if exceed_total.count> 0
         flash[:notice]=(t 'exam.exammark.exceed_total')

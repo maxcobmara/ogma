@@ -16,70 +16,117 @@
 /retrieve data first
 - @examid = @exammarks[0].exam_id 
 - exam_template=Exam.find(@examid).exam_template
-- exam_template.question_count.each do |k, v|
-  - if v['count']!='' || v['count']!=nil #&& v['weight']!=''                          
-    - qty=(v['count']).to_i
-    - if k=="mcq"
-      - @mcqcount=qty
-      - if v['weight']!=''
-        = @mcqweight_rate=  v['weight'].to_f/@mcqcount*1
+- qcount=[]
+- qrate=[]
+- exam_template.question_count.each do |k,v|
+  - qcount << v["count"].to_i
+  /- if v["weight"]!='' 
+  /  - if v["full_marks"]!=''
+  /    - qrate << v["weight"].to_f / v["full_marks"].to_f
+  /  - else
+  /    /assume 1 for marks for ea question
+  /    - qrate << v["weight"].to_f / v["count"].to_i
+  - if v["weight"]!='' && v["count"]!=''
+    - if v["full_marks"] && v["full_marks"]!='' 
+      - qrate << v["weight"].to_f / v["full_marks"].to_f
+    - else
+      //when full marks not exist, use STANDARD MARKS as below : pls note - applicable to MCQ, MEQ & SEQ only
+      - if k=="mcq"
+        - qrate << v["weight"].to_f / v["count"].to_i*1 
+      - elsif k=="seq" || k=="ospe"
+        - qrate << v["weight"].to_f / (v["count"].to_i*10)
+      - elsif k=="meq"
+        - qrate << v["weight"].to_f / (v["count"].to_i*20)
       - else
-        = @mcqweight_rate=0
-      /or (1/@mcqcount*1) * v['weight']
-    - elsif k=="meq"
-      - @meqcount=qty
-      - if v['weight']!=''
-        - @meqweight_rate=v['weight'].to_f/(@meqcount*20)
-      - else
-        - @meqweight_rate=0
-    - elsif k=="seq" 
-      - @seqcount=qty
-      - if v['weight']!=''
-        = @seqweight_rate=  v['weight'].to_f/(@seqcount*10)
-      - else
-        - @seqweight_rate=0
-    - elsif k=="acq"
-      - @acqcount=qty 
-      - if v['weight']!=''
-        = @acqweight_rate=  v['weight'].to_f/(@acqcount*1)
-      - else
-        - @acqweight_rate=0
-    - elsif k=="osci"
-      - @oscicount=qty
-      - if v['weight']!=''
-        = @osciweight_rate=  v['weight'].to_f/(@oscicount*1)
-      - else
-        - @osciweight_rate=0
-    - elsif k=="oscii"
-      - @osciicount=qty
-      - if v['weight']!=''
-        = @osciiweight_rate=  v['weight'].to_f/(@osciicount*1)
-      - else
-        - @osciiweight_rate=0
-    - elsif k=="osce"
-      - @oscecount=qty
-      - if v['weight']!=''
-        = @osceweight_rate=  v['weight'].to_f/(@oscecount*1)
-      - else
-        - @osceweight_rate=0
-    - elsif k=="ospe"
-      - @ospecount=qty
-      - if v['weight']!=''
-        = @ospeweight_rate=  v['weight'].to_f/(@ospecount*10)
-      - else
-        - @ospeweight_rate=0
-    - elsif k=="viva"
-      - @vivacount=qty
-      - if v['weight']!=''
-        = @vivaweight_rate=  v['weight'].to_f/(@vivacount*1)
-      - else
-        - @vivaweight_rate=0
-    - elsif k=="truefalse"
-      - @truefalsecount=qty
-      - if v['weight']!=''
-        = @truefalseweight_rate=  v['weight'].to_f/(@truefalsecount*1)
-      - else
-        - @truefalseweight_rate=0
+        /assume 1 for marks for ea question
+        qrate << v["weight"].to_f / v["count"].to_i
+  - else
+    - qrate << 0
+- @mcqcount= qcount[0]
+- @mcqweight_rate= qrate[0]
+- @meqcount= qcount[1]
+- @meqweight_rate=qrate[1]
+- @seqcount=qcount[2]
+- @seqweight_rate=qrate[2]
+  
+- @acqcount=qcount[3]
+- @acqweight_rate=qrate[3]
+- @oscicount=qcount[4]
+- @osciweight_rate=qrate[4]
+- @osciicount=qcount[5]
+- @osciiweight_rate=qrate[5]
+- @oscecount=qcount[6]
+- @osceweight_rate=qrate[6]
+- @ospecount=qcount[7]
+- @ospeweight_rate=qrate[7]
+- @vivacount=qcount[8]
+- @vivaweight_rate=qrate[8]
+- @truefalsecount=qcount[9]
+- @truefalseweight_rate=qrate[9]
+/ - exam_template.question_count.each do |k, v|
+/   - if v['count']!='' || v['count']!=nil #&& v['weight']!=''                          
+/     - qty=(v['count']).to_i
+/     - if k=="mcq"
+/       - @mcqcount=qty
+/       - if v['weight']!=''
+/         = @mcqweight_rate=  v['weight'].to_f/@mcqcount*1
+/       - else
+/         = @mcqweight_rate=0
+/       /or (1/@mcqcount*1) * v['weight']
+/     - elsif k=="meq"
+/       - @meqcount=qty
+/       - if v['weight']!=''
+/         - @meqweight_rate=v['weight'].to_f/(@meqcount*20)
+/       - else
+/         - @meqweight_rate=0
+/     - elsif k=="seq" 
+/       - @seqcount=qty
+/       - if v['weight']!=''
+/         = @seqweight_rate=  v['weight'].to_f/(@seqcount*10)
+/       - else
+/         - @seqweight_rate=0
+/     - elsif k=="acq"
+/       - @acqcount=qty 
+/       - if v['weight']!=''
+/         = @acqweight_rate=  v['weight'].to_f/(@acqcount*1)
+/       - else
+/         - @acqweight_rate=0
+/     - elsif k=="osci"
+/       - @oscicount=qty
+/       - if v['weight']!=''
+/         = @osciweight_rate=  v['weight'].to_f/(@oscicount*1)
+/       - else
+/         - @osciweight_rate=0
+/     - elsif k=="oscii"
+/       - @osciicount=qty
+/       - if v['weight']!=''
+/         = @osciiweight_rate=  v['weight'].to_f/(@osciicount*1)
+/       - else
+/         - @osciiweight_rate=0
+/     - elsif k=="osce"
+/       - @oscecount=qty
+/       - if v['weight']!=''
+/         = @osceweight_rate=  v['weight'].to_f/(@oscecount*1)
+/       - else
+/         - @osceweight_rate=0
+/     - elsif k=="ospe"
+/       - @ospecount=qty
+/       - if v['weight']!=''
+/         = @ospeweight_rate=  v['weight'].to_f/(@ospecount*10)
+/       - else
+/         - @ospeweight_rate=0
+/     - elsif k=="viva"
+/       - @vivacount=qty
+/       - if v['weight']!=''
+/         = @vivaweight_rate=  v['weight'].to_f/(@vivacount*1)
+/       - else
+/         - @vivaweight_rate=0
+/     - elsif k=="truefalse"
+/       - @truefalsecount=qty
+/       - if v['weight']!=''
+/         = @truefalseweight_rate=  v['weight'].to_f/(@truefalsecount*1)
+/       - else
+/         - @truefalseweight_rate=0
 
 - @allcount= @mcqcount+@meqcount+@seqcount+@acqcount+@oscicount+@osciicount+@oscecount+@ospecount+@vivacount+@truefalsecount
 - @fullmarks = Exammark.fullmarks(@examid)
@@ -170,7 +217,19 @@
             /#error_display_70{:style => "display: none;"}
             /  %font{color: "red"}*
             =t 'exam.exammark.summative'
-            ="("+@exammarks[0].exampaper.exam_template.total_in_weight.to_s+" %)"
+            //
+            - if @exammarks[0].exampaper.exam_template.total_in_weight==0
+              /weightage in exam_template - not exist
+              - sumweightage=@exammarks[0].total_weightage
+            - else
+              - sumweightage=@exammarks[0].exampaper.exam_template.total_in_weight
+            ="("+sumweightage.to_s+" %)"
+            //
+            /- if @exammarks[0].exampaper.exam_template.total_in_weight==0
+            /  /weightage in exam_template - not exist
+            /  ="("+@exammarks[0].total_weightage.to_s+" %)"
+            /- else
+            /  ="("+@exammarks[0].exampaper.exam_template.total_in_weight.to_s+" %)"
         - else
           %th
             /#error_display_total{:style => "display: none;"}
@@ -190,12 +249,7 @@
           - if @edit_type == "Edit Checked" || @edit_type.nil? 
           - elsif @edit_type == "Edit by Subject" 
             = hidden_field_tag "exam_ids[]", @exam_id 
-          %td.centre
-            /TODO - Check if exam_template in use contains WEIGHTAGE
-            /MCQ type - contains weightage? if yes - (entered total_mcq / qty*1mark)*weightage -- contribute to - 70% weightage
-            /other type - contains weightage? if yes (check marks 4 each question -- + column total mark(of this type) + column ((total other type/total mark)*weightage)
-            
-            = text_field_tag "total_mcqs[]", exammark.total_mcq.to_i,:id=>"total"+@b_count.to_s, :size=> 4,:class=>'j1' 
+          %td.centre= text_field_tag "total_mcqs[]", exammark.total_mcq.to_i,:id=>"total"+@b_count.to_s, :size=> 4,:class=>'j1' 
           - aaa=exammark.marks 
           - @a_count=0
           - aaa.sort_by{|x|x.created_at}.each_with_index do |aa, index|
@@ -207,22 +261,32 @@
           /HIDE - just to avoid confusion (same value as summative, coz data already in weightage - but MCQ, SEQ- marks by WEIGHTAGE still PENDING)
           /- if @exammarks[0].exampaper.subject.root_id==radiografi || @exammarks[0].exampaper.subject.root_id==carakerja
           
-          - if !(@exammarks[0].exampaper.subject.root_id==radiografi || @exammarks[0].exampaper.subject.root_id==carakerja) && @exammarks[0].exampaper.name=='F'
+          - if !(@exammarks[0].exampaper.subject.root_id==radiografi || @exammarks[0].exampaper.subject.root_id==carakerja) && (@exammarks[0].exampaper.name=='F' || @exammarks[0].exampaper.name=='R')
             = hidden_field_tag "total_marks_view[]", number_with_precision(exammark.total_marks,precision:2) ,:id=>"total_marks_view"+@b_count.to_s, :size=> 5, :readonly=>true, :class => 'form-control'
           - else
             %td.centre{:style=>"background-color:#C3E9BF;"}
               /ssiiinnnii - mid sem+other than radiografi & cara kerja
-              = text_field_tag "total_marks_view[]", number_with_precision(exammark.total_marks,precision:2) ,:id=>"total_marks_view"+@b_count.to_s, :size=> 5, :readonly=>true, :class => 'form-control'
+              / NOTE Mid Sem : Total Marks (1)displayed in Weightage %, when weightage exist (2)displayed by 'SAVEd ENTERED values', when weightage not present
+              /but for values checking purposes - sumweightage must be supplied with : (1) paper's Full_marks(exam.total_marks) if weightage ==0
+              /(2) total_in_weight if weightage > 0 [remarks : exam.total_marks <> exammark.total_marks]
+              - if exammark.exampaper.exam_template.total_in_weight==0
+                /weight not exist
+                - sumweightage=exammark.exampaper.total_marks
+              - else
+                - sumweightage=exammark.exampaper.exam_template.total_in_weight
+              
+              /= text_field_tag "total_marks_view[]", number_with_precision(exammark.total_marks,precision:2) ,:id=>"total_marks_view"+@b_count.to_s, :size=> 5, :readonly=>true, :class => 'form-control'
+              = text_field_tag "total_marks_view[]", number_with_precision(exammark.total_marks, precision:2) ,:id=>"total_marks_view"+@b_count.to_s, :size=> 5, :readonly=>true, :class => 'form-control'
 
           /hide end
-          - if (@exammarks[0].exampaper.subject.root_id==radiografi || @exammarks[0].exampaper.subject.root_id==carakerja) && @exammarks[0].exampaper.name=='F'
+          - if (@exammarks[0].exampaper.subject.root_id==radiografi || @exammarks[0].exampaper.subject.root_id==carakerja) && (@exammarks[0].exampaper.name=='F'|| @exammarks[0].exampaper.name=='R')            
             %td.centre{:style=>"background-color:#C3E9BF;"}
               /sinipun
               = text_field_tag "marks_in_hundred[]", number_with_precision((exammark.total_marks/Exammark.fullmarks(@examid))*100, precision: 2), :id=>"marks_in_hundred"+@b_count.to_s, :size=> 5, :readonly=>true, :class => 'form-control'
           
           /- else
           /  %td{:style=>"background-color:#C3E9BF;"}= text_field_tag "total_marks_view[]", number_with_precision(exammark.total_marks,precision:2) ,:id=>"total_marks_view"+@b_count.to_s, :size=> 5, :readonly=>true, :class => 'form-control'
-          - if @exammarks[0].exampaper.name=='F'
+          - if @exammarks[0].exampaper.name=='F' || @exammarks[0].exampaper.name=='R'
             %td.centre{:style=>"background-color:#C3E9BF;"}
               /sinika
               /=@mcqweight_rate
@@ -259,6 +323,7 @@
 =hidden_field_tag "exammark[trial3]", @allcount
 =hidden_field_tag "exammark[trial4]", @fullmarks
 =hidden_field_tag "programme_name", Programme.where(id: @exammarks[0].exampaper.subject.root_id).first.name
+=hidden_field_tag "sum_weightage", sumweightage
 
 /#error_display_remark{:style => "display: none;"}
 /  %font{color: "red"}* 
@@ -294,8 +359,7 @@ $(document).ready(function(){
     var allcount = $("#exammark_trial3").val();
     var fullmarks = $("#exammark_trial4").val();
     var programme = $("#programme_name").val();
-    
-    total_weight=mcqweight_rate*mcqcount+meqweight_rate*20*meq_count+seqweight_rate*10*seq_count+acqweight_rate*1+osciweight_rate*1+osciiweight_rate*1+osceweight_rate*1+ospeweight_rate*1+vivaweight_rate*1+truefalseweight_rate*1
+    var total_weight= $("#sum_weightage").val();
     
     for (var i=0;i<studentcount;i++)
     {
@@ -396,7 +460,7 @@ $(document).ready(function(){
         {  
           if ( aaa > 70)
           {
-            window["totalsummative"+i].value='Max value is 70j';
+            window["totalsummative"+i].value='Max value is 70';
             window["totalsummative"+i].style.color="red";
           }
           else
