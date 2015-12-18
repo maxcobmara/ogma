@@ -153,15 +153,15 @@
                 - else
                   %td{colspan: 3, align: "right"}
                     %b=t 'exam.exammark.total'
+                  /Below : total_marks - refer NOTE in' _form_multiple'
+                  %td= number_with_precision(@exammark.total_marks, precision: 2)
                   %td
-                    - @fullmarks = Exammark.fullmarks(@exammark.exam_id)
-                    - if @fullmarks==70
-                      /total marks already in 70% weightage
-                      - marks_70=@exammark.total_marks
+                    - if @exammark.exampaper.exam_template.total_in_weight==0
+                      /weightage in exam_template - not exist
+                      \/
+                      =number_with_precision(@exammark.exampaper.total_marks, precision: 2)
                     - else
-                      - marks_70=number_with_precision(@exammark.totalsummative, precision: 2) 
-                    = number_with_precision(marks_70, precision: 2)
-                  %td="("+@exammark.exampaper.exam_template.total_in_weight.to_s+" %)"
+                      ="("+number_with_precision(@exammark.exampaper.exam_template.total_in_weight, precision: 2).to_s+" %)"
                 - if @exammark.exampaper.subject.root_id==radiografi || @exammark.exampaper.subject.root_id==carakerja
                   %td
                     \/ 
@@ -170,7 +170,7 @@
                     - else
                       =number_with_precision(@examtemplates.all.map(&:total_marks).inject{|sum, x|sum+x}, precision: 2)
                     
-              - if @exammark.exampaper.name=='F'
+              - if @exammark.exampaper.name=='F' || @exammark.exampaper.name=='R'
                 - if @exammark.exampaper.subject.root_id==radiografi || @exammark.exampaper.subject.root_id==carakerja
                   %tr
                     %td=number_with_precision((@exammark.total_marks/Exammark.fullmarks(@exammark.exam_id))*100, precision: 2)

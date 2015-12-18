@@ -37,33 +37,8 @@ class Exammark < ActiveRecord::Base
     end
   end
   
-  def marks_must_not_exceed_maximum
-    unless id.nil? || id.blank?
-      
-      #########
-      paper=Exam.find(exam_id)
-      fullmarks=paper.set_full_marks
-      exceed_total=[]
-      mcq_max=0
-      if paper.name!="M"
-        # NOTE Final - total marks is entered values[displayed only for Radiografi & Cara Kerja], + display of summative (in % weightage) [for all programmes]
-        paper.exam_template.question_count.each{|k,v|mcq_max=(v['count'].to_i) if k=="mcq"}
-        other_max=fullmarks-mcq_max
-        exceed_total << total_marks.to_f if total_marks > fullmarks || total_mcq > mcq_max || (marks && marks.sum(:student_mark) > other_max) 
-      else
-        # NOTE Mid sem - based on entered values --> total marks is generated values (in % weightage)
-        paper.exam_template.question_count.each{|k,v|mcq_max=v['count'].to_f if k=="mcq"}
-        other_max=fullmarks-mcq_max
-        exceed_total << total_mcq.to_f if total_mcq > mcq_max || (marks && marks.sum(:student_mark) > other_max)
-      end
-      ##########
-      if exceed_total.count > 0
-        errors.add(:mark, I18n.t('exam.exammark.exceed_total')) 
-      end
-    
-    end
-  end
-  
+  # NOTE - total_marks refers to SAVED marks not current value
+  # refer - marks_must_not_exceed_maximum - 4 sample of current value
   def total_marks
     diploma=Programme.where(course_type: 'Diploma')
     radiografi=diploma.where('name ILIKE?', '%Radiografi%').first.id
@@ -74,10 +49,21 @@ class Exammark < ActiveRecord::Base
     if exampaper.subject.root_id==radiografi || exampaper.subject.root_id==carakerja
       total=marks.sum(:student_mark)+total_mcq.to_i       #actual total entered by user
     else
-      if exampaper.name=='F'
+      if exampaper.name=='F' || exampaper.name=='R'
+        #For Final / Repeat - other than Radiografi & Cara Kerja
         total=marks.sum(:student_mark)+total_mcq.to_i  
       else
-        total=totalsummative    #refer _form_multiple: total marks view shall display total marks entered if weightage not exist, otherwise display total in weightage 
+        #For Mid Sem Papers - other than Radiografi & Cara Kerja 
+        mcqweight=exampaper.exam_template.question_count['mcq']['weight']
+        if mcqweight && mcqweight!=''
+          #weightage exist
+          total=totalsummative
+        else
+          #weightage not exist - collect entered values
+          total=total_mcq
+          marks.each{|x|total+=x.student_mark}
+        end
+        #total=totalsummative    #refer _form_multiple: total marks view shall display total marks entered if weightage not exist, otherwise display total in weightage 
       end
     end
     total
@@ -241,85 +227,148 @@ class Exammark < ActiveRecord::Base
     questions_count
   end
   
+  #use this if total_in_weight in exam_template ==0 (weightage not exist in exam template)
+  def total_weightage
+    if Programme.where(id: exampaper.subject.root_id).first.course_type=='Diploma'
+      total_weight=70 if exampaper.name=='F' || exampaper.name=='R'
+      total_weight=30 if exampaper.name=='M'
+    else
+      total_weight=60 if exampaper.name=='F' || exampaper.name=='R'
+      total_weight=40 if exampaper.name=='M'
+    end
+    total_weight
+  end
+  
   def totalsummative
     @a=0
     exam_template=exampaper.exam_template
-    exam_template.question_count.each do |k, v|
-      if v['count']!='' || v['count']!=nil #&& v['weight']!=''                          
-        qty=(v['count']).to_i
-        if k=="mcq"
-          @mcqcount=qty
-          if v['weight']!=''
-            @mcqweight_rate=  v['weight'].to_f/@mcqcount*1
+    qrate=[]
+    qcount=[]
+    exam_template.question_count.each do |k,v|
+      qcount << v["count"].to_i
+      if v["weight"]!='' && v["count"]!=''
+        #previous structure (has no full_marks) - MUST check if v["full_marks"] of previously SAVED templates EXIST first 
+        #division by 0.0 shall gives infinity, as error : Index pg (Infinity --> app/models/exammark.rb:383:in `to_r')
+        if v["full_marks"] && v["full_marks"]!='' 
+          qrate << v["weight"].to_f / v["full_marks"].to_f
+        else
+          #when full marks not exist, use STANDARD MARKS as below : pls note - applicable to MCQ, MEQ & SEQ only
+          if k=="mcq"
+            qrate << v["weight"].to_f / v["count"].to_i*1 
+          elsif k=="seq" || k=="ospe"
+            qrate << v["weight"].to_f / (v["count"].to_i*10)
+          elsif k=="meq"
+            qrate << v["weight"].to_f / (v["count"].to_i*20)
           else
-            @mcqweight_rate=0
-          end
-        elsif k=="meq"
-          @meqcount=qty
-          if v['weight']!=''
-            @meqweight_rate=v['weight'].to_f/(@meqcount*20)
-          else
-            @meqweight_rate=0
-          end
-        elsif k=="seq" 
-          @seqcount=qty
-          if v['weight']!=''
-            @seqweight_rate=  v['weight'].to_f/(@seqcount*10)
-          else
-            @seqweight_rate=0
-          end
-        elsif k=="acq"
-          @acqcount=qty 
-          if v['weight']!=''
-            @acqweight_rate=  v['weight'].to_f/(@acqcount*1)
-          else
-            @acqweight_rate=0
-          end
-        elsif k=="osci"
-          @oscicount=qty
-          if v['weight']!=''
-            @osciweight_rate=  v['weight'].to_f/(@oscicount*1)
-          else
-            @osciweight_rate=0
-          end
-        elsif k=="oscii"
-          @osciicount=qty
-          if v['weight']!=''
-            @osciiweight_rate=  v['weight'].to_f/(@osciicount*1)
-          else
-            @osciiweight_rate=0
-          end
-        elsif k=="osce"
-          @oscecount=qty
-          if v['weight']!=''
-            @osceweight_rate=  v['weight'].to_f/(@oscecount*1)
-          else
-            @osceweight_rate=0
-          end
-        elsif k=="ospe"
-          @ospecount=qty
-          if v['weight']!=''
-            @ospeweight_rate=  v['weight'].to_f/(@ospecount*10)
-          else
-            @ospeweight_rate=0
-          end
-        elsif k=="viva"
-          @vivacount=qty
-          if v['weight']!=''
-            @vivaweight_rate=  v['weight'].to_f/(@vivacount*1)
-          else
-            @vivaweight_rate=0
-          end
-        elsif k=="truefalse"
-          @truefalsecount=qty
-          if v['weight']!=''
-             @truefalseweight_rate=  v['weight'].to_f/(@truefalsecount*1)
-          else
-             @truefalseweight_rate=0
+            #assume 1 for marks for ea question
+            qrate << v["weight"].to_f / v["count"].to_i
           end
         end
+      else
+        qrate << 0
       end
     end
+    @mcqcount= qcount[0]
+    @mcqweight_rate= qrate[0]
+    @meqcount= qcount[1]
+    @meqweight_rate=qrate[1]
+    @seqcount=qcount[2]
+    @seqweight_rate=qrate[2]
+  
+    @acqcount=qcount[3]
+    @acqweight_rate=qrate[3]
+    @oscicount=qcount[4]
+    @osciweight_rate=qrate[4]
+    @osciicount=qcount[5]
+    @osciiweight_rate=qrate[5]
+    @oscecount=qcount[6]
+    @osceweight_rate=qrate[6]
+    @ospecount=qcount[7]
+    @ospeweight_rate=qrate[7]
+    @vivacount=qcount[8]
+    @vivaweight_rate=qrate[8]
+    @truefalsecount=qcount[9]
+    @truefalseweight_rate=qrate[9]
+    
+    
+    
+    #######
+#     exam_template.question_count.each do |k, v|
+#       if v['count']!='' || v['count']!=nil #&& v['weight']!=''                          
+#         qty=(v['count']).to_i
+#         if k=="mcq"
+#           @mcqcount=qty
+#           if v['weight']!=''
+#             @mcqweight_rate=  v['weight'].to_f/@mcqcount*1
+#           else
+#             @mcqweight_rate=0
+#           end
+#         elsif k=="meq"
+#           @meqcount=qty
+#           if v['weight']!=''
+#             @meqweight_rate=v['weight'].to_f/(@meqcount*20)
+#           else
+#             @meqweight_rate=0
+#           end
+#         elsif k=="seq" 
+#           @seqcount=qty
+#           if v['weight']!=''
+#             @seqweight_rate=  v['weight'].to_f/(@seqcount*10)
+#           else
+#             @seqweight_rate=0
+#           end
+#         elsif k=="acq"
+#           @acqcount=qty 
+#           if v['weight']!=''
+#             @acqweight_rate=  v['weight'].to_f/(@acqcount*1)
+#           else
+#             @acqweight_rate=0
+#           end
+#         elsif k=="osci"
+#           @oscicount=qty
+#           if v['weight']!=''
+#             @osciweight_rate=  v['weight'].to_f/(@oscicount*1)
+#           else
+#             @osciweight_rate=0
+#           end
+#         elsif k=="oscii"
+#           @osciicount=qty
+#           if v['weight']!=''
+#             @osciiweight_rate=  v['weight'].to_f/(@osciicount*1)
+#           else
+#             @osciiweight_rate=0
+#           end
+#         elsif k=="osce"
+#           @oscecount=qty
+#           if v['weight']!=''
+#             @osceweight_rate=  v['weight'].to_f/(@oscecount*1)
+#           else
+#             @osceweight_rate=0
+#           end
+#         elsif k=="ospe"
+#           @ospecount=qty
+#           if v['weight']!=''
+#             @ospeweight_rate=  v['weight'].to_f/(@ospecount*10)
+#           else
+#             @ospeweight_rate=0
+#           end
+#         elsif k=="viva"
+#           @vivacount=qty
+#           if v['weight']!=''
+#             @vivaweight_rate=  v['weight'].to_f/(@vivacount*1)
+#           else
+#             @vivaweight_rate=0
+#           end
+#         elsif k=="truefalse"
+#           @truefalsecount=qty
+#           if v['weight']!=''
+#              @truefalseweight_rate=  v['weight'].to_f/(@truefalsecount*1)
+#           else
+#              @truefalseweight_rate=0
+#           end
+#         end
+#       end
+#     end
     meq_count2=@meqcount;
     seq_count2=meq_count2+@seqcount;
     acq_count2=seq_count2+@acqcount;
@@ -353,18 +402,53 @@ class Exammark < ActiveRecord::Base
         if rate==0
           @a+=m.student_mark
         else
-          @a+=m.student_mark*rate.to_f
+          @a+=m.student_mark*rate
         end
       else
         @a=0
       end
     end
-    if @mcqweight_rate==0
+    if @mcqweight_rate==0 || @mcqweight_rate==0.0
       fullmarks = exampaper.total_marks
-      aaa=(total_mcq*1+@a)/fullmarks*100*exam_template.total_in_weight.to_f    #0.70 
+      if exam_template.total_in_weight > 0
+        aaa=(total_mcq*1+@a)/(fullmarks*exam_template.total_in_weight.to_f)  #weight in decimal (0.70)
+      else
+        aaa=(total_mcq*1+@a)/fullmarks*total_weightage.to_f   #weight already in  % (30, 70, 40, 60)
+      end
     else
-      aaa=(total_mcq*@mcqweight_rate+@a)
+      aaa=(total_mcq*@mcqweight_rate)+@a
     end
     aaa  
   end
+  
+  def marks_must_not_exceed_maximum
+    unless id.nil? || id.blank?
+      
+      #########
+      paper=Exam.find(exam_id)
+      fullmarks=paper.set_full_marks
+      exceed_total=[]
+      mcq_max=0
+      current_marks=0
+      marks.each{|m|current_marks+=m.student_mark}
+      current_total_marks=total_mcq+current_marks
+      if paper.name!="M"
+        # NOTE Final - total marks is entered values[displayed only for Radiografi & Cara Kerja], + display of summative (in % weightage) [for all programmes]
+        paper.exam_template.question_count.each{|k,v|mcq_max=(v['count'].to_i) if k=="mcq"}
+        other_max=fullmarks-mcq_max
+        exceed_total << current_total_marks.to_f if current_total_marks > fullmarks || total_mcq > mcq_max || (marks && current_marks > other_max) 
+      else
+        # NOTE Mid sem - based on entered values --> total marks is generated values (in % weightage)
+        paper.exam_template.question_count.each{|k,v|mcq_max=v['count'].to_f if k=="mcq"}
+        other_max=fullmarks-mcq_max
+        exceed_total << total_mcq.to_f if total_mcq > mcq_max || (marks && current_marks > other_max)
+      end
+      ##########
+      if exceed_total.count > 0
+        errors.add(:mark, I18n.t('exam.exammark.exceed_total')) 
+      end
+    
+    end
+  end
+  
 end
