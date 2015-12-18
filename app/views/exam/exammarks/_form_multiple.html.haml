@@ -18,30 +18,44 @@
 - exam_template=Exam.find(@examid).exam_template
 - qcount=[]
 - qrate=[]
+- qmarks_ea=[]
 - exam_template.question_count.each do |k,v|
   - qcount << v["count"].to_i
-  /- if v["weight"]!='' 
-  /  - if v["full_marks"]!=''
-  /    - qrate << v["weight"].to_f / v["full_marks"].to_f
-  /  - else
-  /    /assume 1 for marks for ea question
-  /    - qrate << v["weight"].to_f / v["count"].to_i
   - if v["weight"]!='' && v["count"]!=''
     - if v["full_marks"] && v["full_marks"]!='' 
       - qrate << v["weight"].to_f / v["full_marks"].to_f
+      - qmarks_ea << v["full_marks"].to_f / v["count"].to_i
     - else
       //when full marks not exist, use STANDARD MARKS as below : pls note - applicable to MCQ, MEQ & SEQ only
       - if k=="mcq"
         - qrate << v["weight"].to_f / v["count"].to_i*1 
+        - qmarks_ea << 1 
       - elsif k=="seq" || k=="ospe"
         - qrate << v["weight"].to_f / (v["count"].to_i*10)
+        - qmarks_ea << 10
       - elsif k=="meq"
         - qrate << v["weight"].to_f / (v["count"].to_i*20)
+        - qmarks_ea << 20
       - else
         /assume 1 for marks for ea question
-        qrate << v["weight"].to_f / v["count"].to_i
+        - qrate << v["weight"].to_f / v["count"].to_i
+        - qmarks_ea << 1 
+  - elsif  v["weight"]=='' && v["count"]!=''
+    //when weightage not exist, but count exist
+    - qrate << 0
+    - if k=="mcq"
+      - qmarks_ea << 1 
+    - elsif k=="seq"
+      - qmarks_ea << 10
+    - elsif k=="meq"
+      - qmarks_ea << 20
+    - else
+      /assume 1 for marks for ea question
+      - qmarks_ea << 1
   - else
     - qrate << 0
+    - qmarks_ea << 1 
+
 - @mcqcount= qcount[0]
 - @mcqweight_rate= qrate[0]
 - @meqcount= qcount[1]
@@ -63,70 +77,8 @@
 - @vivaweight_rate=qrate[8]
 - @truefalsecount=qcount[9]
 - @truefalseweight_rate=qrate[9]
-/ - exam_template.question_count.each do |k, v|
-/   - if v['count']!='' || v['count']!=nil #&& v['weight']!=''                          
-/     - qty=(v['count']).to_i
-/     - if k=="mcq"
-/       - @mcqcount=qty
-/       - if v['weight']!=''
-/         = @mcqweight_rate=  v['weight'].to_f/@mcqcount*1
-/       - else
-/         = @mcqweight_rate=0
-/       /or (1/@mcqcount*1) * v['weight']
-/     - elsif k=="meq"
-/       - @meqcount=qty
-/       - if v['weight']!=''
-/         - @meqweight_rate=v['weight'].to_f/(@meqcount*20)
-/       - else
-/         - @meqweight_rate=0
-/     - elsif k=="seq" 
-/       - @seqcount=qty
-/       - if v['weight']!=''
-/         = @seqweight_rate=  v['weight'].to_f/(@seqcount*10)
-/       - else
-/         - @seqweight_rate=0
-/     - elsif k=="acq"
-/       - @acqcount=qty 
-/       - if v['weight']!=''
-/         = @acqweight_rate=  v['weight'].to_f/(@acqcount*1)
-/       - else
-/         - @acqweight_rate=0
-/     - elsif k=="osci"
-/       - @oscicount=qty
-/       - if v['weight']!=''
-/         = @osciweight_rate=  v['weight'].to_f/(@oscicount*1)
-/       - else
-/         - @osciweight_rate=0
-/     - elsif k=="oscii"
-/       - @osciicount=qty
-/       - if v['weight']!=''
-/         = @osciiweight_rate=  v['weight'].to_f/(@osciicount*1)
-/       - else
-/         - @osciiweight_rate=0
-/     - elsif k=="osce"
-/       - @oscecount=qty
-/       - if v['weight']!=''
-/         = @osceweight_rate=  v['weight'].to_f/(@oscecount*1)
-/       - else
-/         - @osceweight_rate=0
-/     - elsif k=="ospe"
-/       - @ospecount=qty
-/       - if v['weight']!=''
-/         = @ospeweight_rate=  v['weight'].to_f/(@ospecount*10)
-/       - else
-/         - @ospeweight_rate=0
-/     - elsif k=="viva"
-/       - @vivacount=qty
-/       - if v['weight']!=''
-/         = @vivaweight_rate=  v['weight'].to_f/(@vivacount*1)
-/       - else
-/         - @vivaweight_rate=0
-/     - elsif k=="truefalse"
-/       - @truefalsecount=qty
-/       - if v['weight']!=''
-/         = @truefalseweight_rate=  v['weight'].to_f/(@truefalsecount*1)
-/       - else
-/         - @truefalseweight_rate=0
+
+
 
 - @allcount= @mcqcount+@meqcount+@seqcount+@acqcount+@oscicount+@osciicount+@oscecount+@ospecount+@vivacount+@truefalsecount
 - @fullmarks = Exammark.fullmarks(@examid)
@@ -319,6 +271,18 @@
 =hidden_field_tag "ospecount", @ospecount
 =hidden_field_tag "vivacount", @vivacount
 =hidden_field_tag "truefalsecount", @truefalsecount
+
+=hidden_field_tag "mcq_marks", qmarks_ea[0]
+=hidden_field_tag "meq_marks", qmarks_ea[1]
+=hidden_field_tag "seq_marks", qmarks_ea[2]
+=hidden_field_tag "acq_marks", qmarks_ea[3]
+=hidden_field_tag "osci_marks", qmarks_ea[4]
+=hidden_field_tag "oscii_marks", qmarks_ea[5]
+=hidden_field_tag "osce_marks", qmarks_ea[6]
+=hidden_field_tag "ospe_marks", qmarks_ea[7]
+=hidden_field_tag "viva_marks", qmarks_ea[8]
+=hidden_field_tag "truefalse_marks", qmarks_ea[9]
+
 =hidden_field_tag "exammark[trial1]", @exammarks.count
 =hidden_field_tag "exammark[trial3]", @allcount
 =hidden_field_tag "exammark[trial4]", @fullmarks
@@ -361,6 +325,17 @@ $(document).ready(function(){
     var programme = $("#programme_name").val();
     var total_weight= $("#sum_weightage").val();
     
+    var mcqmarks = document.getElementById("mcq_marks").value;
+    var meqmarks = document.getElementById("meq_marks").value;
+    var seqmarks = document.getElementById("seq_marks").value;
+    var acqmarks = document.getElementById("acq_marks").value;
+    var oscimarks = document.getElementById("osci_marks").value;
+    var osciimarks = document.getElementById("oscii_marks").value;
+    var oscemarks = document.getElementById("osce_marks").value;
+    var ospemarks = document.getElementById("ospe_marks").value;
+    var vivamarks = document.getElementById("viva_marks").value;
+    var truefalsemarks = document.getElementById("truefalse_marks").value;
+    
     for (var i=0;i<studentcount;i++)
     {
       
@@ -368,11 +343,23 @@ $(document).ready(function(){
       window["totalmarksview"+i]= document.getElementById("total_marks_view"+i);
       window["totalsummative"+i]= document.getElementById("total_summative"+i);
       window["marksinhundred"+i]= document.getElementById("marks_in_hundred"+i);
+      
+      /* MCQ question field - change to red when exceed maximum value*/
+      window["mcq_field"+i] = document.getElementById("total"+i);
+      if (window["mcq_field"+i].value > mcqcount*1.00 )
+      {  window["mcq_field"+i].style.color="red";}
+      else
+      {  window["mcq_field"+i].style.color="black";}
+      
       var a = 0;
       
       for (var k=0;k<allcount-mcqcount;k++)
       {
         var other = document.getElementById("student_mark_"+i+"_"+k).value;
+        
+        /* step1-Individual question fields - change to red when exceed maximum value*/
+        window["other_field_"+i+"_"+k] = document.getElementById("student_mark_"+i+"_"+k);
+      
         meq_count2=meq_count;
         seq_count2=meq_count2+seq_count;
         acq_count2=seq_count2+acq_count;
@@ -382,31 +369,278 @@ $(document).ready(function(){
         ospe_count2=osce_count2+ospe_count;
         viva_count2=ospe_count2+viva_count;
         truefalse_count2=viva_count2+truefalse_count;
+       
         if (k < meq_count2)
-        {  rate=meqweight_rate;}
-        else
+       {  
+          rate=meqweight_rate;
+          marks_each=meqmarks;
+        }
+        else 
         {
           if ((k >= meq_count2) && (k < seq_count2))
-          { rate=seqweight_rate;}
+          { 
+            rate=seqweight_rate;
+            marks_each=seqmarks;
+          }
           else if ((k >= seq_count2) && (k < acq_count2))
-          { rate=acqweight_rate;}
+          { 
+            rate=acqweight_rate;
+            marks_each=acqmarks;
+          }
           else if ((k >= acq_count2) && (k < osci_count2))
-          { rate=osciweight_rate;}
+          {
+            rate=osciweight_rate;
+            marks_each=oscimarks;
+          }
           else if ((k >= osci_count2) && (k < oscii_count2))
-          { rate=osciiweight_rate;}
+          { 
+            rate=osciiweight_rate;
+            marks_each=osciimarks;
+          }
           else if ((k >= oscii_count2) && (k < osce_count2))
-          { rate=osceweight_rate;}
+          { 
+            rate=osceweight_rate;
+            marks_each=oscemarks;
+          }
           else if ((k >= osce_count2) && (k < ospe_count2))
-          { rate=ospeweight_rate;}
+          { 
+            rate=ospeweight_rate;
+            marks_each=ospemarks;
+          }
           else if ((k >= ospe_count2) && (k < viva_count2))
-          { rate=vivaweight_rate;}
+          { 
+            rate=vivaweight_rate;
+            marks_each=vivamarks;
+          }
           else if ((k >= viva_count2) && (k < truefalse_count2))
-          { rate=truefalseweight_rate;}
+          { 
+            rate=truefalseweight_rate;
+            marks_each=truefalsemarks;
+          }
         }
+       
         if (rate!='0')
         {  a=a*1+(other*rate);}
         else
         {  a=a*1+(other*1);}
+        
+        if (window["other_field_"+i+"_"+k].value > marks_each*1.0)
+        {  window["other_field_"+i+"_"+k].style.color = "red";}
+        else
+        {  window["other_field_"+i+"_"+k].style.color = "black";}
+      
+      }
+      
+      if (mcqweight_rate!='0')
+      {aaa=(total_mcq*mcqweight_rate+a)}
+      else
+      {aaa=(total_mcq*1+a)/fullmarks*100*0.70}
+      
+      if ((programme=="Radiografi") || (programme=="Jurupulih Perubatan Cara Kerja"))
+      {
+        
+        if (  aaa > 70) 
+          {
+            window["totalmarksview"+i].value = 'Max value is '+fullmarks;
+            window["totalsummative"+i].value='Max value is 70';
+            window["marksinhundred"+i].value='Max value is 100';
+            window["totalmarksview"+i].style.color="red";
+            window["totalsummative"+i].style.color="red";
+            window["marksinhundred"+i].style.color="red";
+          }
+          else
+          {
+            window["totalmarksview"+i].value = (total_mcq*1+a);
+            window["marksinhundred"+i].value = (total_mcq*1+a)/fullmarks*100;
+            window["totalsummative"+i].value = aaa;
+            window["totalmarksview"+i].style.color="black";
+            window["totalsummative"+i].style.color="black";
+            window["marksinhundred"+i].style.color="black";
+          }
+      }
+      else
+      {
+
+        /*BELOW : total marks view shall display total marks entered if weightage not exist, otherwise display total in weightage %*/      
+        if (mcqweight_rate!='0')
+        {  bbb=(total_mcq*mcqweight_rate+a);}
+        else
+        {  bbb=(total_mcq*1+a);}
+        
+        if (bbb > total_weight)
+        {  
+          window["totalmarksview"+i].value='Max value is '+total_weight;
+          window["totalmarksview"+i].style.color="red";
+        }
+        else
+        {  
+          window["totalmarksview"+i].value = bbb;
+          window["totalmarksview"+i].style.color="black";
+         }
+
+        if (fullmarks==70)
+        {  
+          if ( aaa > 70)
+          {
+            window["totalsummative"+i].value='Max value is 70';
+            window["totalsummative"+i].style.color="red";
+          }
+          else
+          {
+             window["totalsummative"+i].value =aaa;
+             window["totalsummative"+i].style.color="black";
+          }
+        }
+        else
+        { 
+           if ( aaa > total_weight)
+          {
+            window["totalsummative"+i].value='Max value is '+total_weight;
+            window["totalsummative"+i].style.color="red";
+          }
+          else
+          {
+             window["totalsummative"+i].value = aaa;
+             window["totalsummative"+i].style.color="black";
+          }
+        }
+      }
+    }
+    
+  });
+  
+  $(".j1").each(function() {  
+    
+    var mcqweight_rate= document.getElementById("mcqweight_rate").value;
+    var seqweight_rate= document.getElementById("seqweight_rate").value;
+    var meqweight_rate= document.getElementById("meqweight_rate").value;
+    var acqweight_rate= document.getElementById("acqweight_rate").value;
+    var osciweight_rate= document.getElementById("osciweight_rate").value;
+    var osciiweight_rate= document.getElementById("osciiweight_rate").value;
+    var osceweight_rate= document.getElementById("osceweight_rate").value;
+    var ospeweight_rate= document.getElementById("ospeweight_rate").value;
+    var vivaweight_rate= document.getElementById("vivaweight_rate").value;
+    var truefalseweight_rate= document.getElementById("truefalseweight_rate").value;
+    var seq_count= document.getElementById("seqcount").value;
+    var meq_count= document.getElementById("meqcount").value;
+    var acq_count= document.getElementById("acqcount").value;
+    var osci_count= document.getElementById("oscicount").value;
+    var oscii_count= document.getElementById("osciicount").value;
+    var osce_count= document.getElementById("oscecount").value;
+    var ospe_count= document.getElementById("ospecount").value;
+    var viva_count= document.getElementById("vivacount").value;
+    var truefalse_count= document.getElementById("truefalsecount").value;
+    var studentcount =document.getElementById("exammark_trial1").value;
+    var mcqcount = $("#exammark_trial2").val();
+    var allcount = $("#exammark_trial3").val();
+    var fullmarks = $("#exammark_trial4").val();
+    var programme = $("#programme_name").val();
+    var total_weight= $("#sum_weightage").val();
+    
+    var mcqmarks = document.getElementById("mcq_marks").value;
+    var meqmarks = document.getElementById("meq_marks").value;
+    var seqmarks = document.getElementById("seq_marks").value;
+    var acqmarks = document.getElementById("acq_marks").value;
+    var oscimarks = document.getElementById("osci_marks").value;
+    var osciimarks = document.getElementById("oscii_marks").value;
+    var oscemarks = document.getElementById("osce_marks").value;
+    var ospemarks = document.getElementById("ospe_marks").value;
+    var vivamarks = document.getElementById("viva_marks").value;
+    var truefalsemarks = document.getElementById("truefalse_marks").value;
+    
+    for (var i=0;i<studentcount;i++)
+    {
+      
+      var total_mcq = document.getElementById("total"+i).value;
+      window["totalmarksview"+i]= document.getElementById("total_marks_view"+i);
+      window["totalsummative"+i]= document.getElementById("total_summative"+i);
+      window["marksinhundred"+i]= document.getElementById("marks_in_hundred"+i);
+      
+      /* MCQ question field - change to red when exceed maximum value*/
+      window["mcq_field"+i] = document.getElementById("total"+i);
+      if (window["mcq_field"+i].value > mcqcount*1.00 )
+      {  window["mcq_field"+i].style.color="red";}
+      else
+      {  window["mcq_field"+i].style.color="black";}
+      
+      var a = 0;
+      
+      for (var k=0;k<allcount-mcqcount;k++)
+      {
+        var other = document.getElementById("student_mark_"+i+"_"+k).value;
+        
+        /* step1-Individual question fields - change to red when exceed maximum value*/
+        window["other_field_"+i+"_"+k] = document.getElementById("student_mark_"+i+"_"+k);
+      
+        meq_count2=meq_count;
+        seq_count2=meq_count2+seq_count;
+        acq_count2=seq_count2+acq_count;
+        osci_count2=acq_count2+osci_count;
+        oscii_count2=osci_count2+oscii_count;
+        osce_count2=oscii_count2+osce_count;
+        ospe_count2=osce_count2+ospe_count;
+        viva_count2=ospe_count2+viva_count;
+        truefalse_count2=viva_count2+truefalse_count;
+       
+        if (k < meq_count2)
+       {  
+          rate=meqweight_rate;
+          marks_each=meqmarks;
+        }
+        else 
+        {
+          if ((k >= meq_count2) && (k < seq_count2))
+          { 
+            rate=seqweight_rate;
+            marks_each=seqmarks;
+          }
+          else if ((k >= seq_count2) && (k < acq_count2))
+          { 
+            rate=acqweight_rate;
+            marks_each=acqmarks;
+          }
+          else if ((k >= acq_count2) && (k < osci_count2))
+          {
+            rate=osciweight_rate;
+            marks_each=oscimarks;
+          }
+          else if ((k >= osci_count2) && (k < oscii_count2))
+          { 
+            rate=osciiweight_rate;
+            marks_each=osciimarks;
+          }
+          else if ((k >= oscii_count2) && (k < osce_count2))
+          { 
+            rate=osceweight_rate;
+            marks_each=oscemarks;
+          }
+          else if ((k >= osce_count2) && (k < ospe_count2))
+          { 
+            rate=ospeweight_rate;
+            marks_each=ospemarks;
+          }
+          else if ((k >= ospe_count2) && (k < viva_count2))
+          { 
+            rate=vivaweight_rate;
+            marks_each=vivamarks;
+          }
+          else if ((k >= viva_count2) && (k < truefalse_count2))
+          { 
+            rate=truefalseweight_rate;
+            marks_each=truefalsemarks;
+          }
+        }
+       
+        if (rate!='0')
+        {  a=a*1+(other*rate);}
+        else
+        {  a=a*1+(other*1);}
+        
+        if (window["other_field_"+i+"_"+k].value > marks_each*1.0)
+        {  window["other_field_"+i+"_"+k].style.color = "red";}
+        else
+        {  window["other_field_"+i+"_"+k].style.color = "black";}
+      
       }
       
       if (mcqweight_rate!='0')
