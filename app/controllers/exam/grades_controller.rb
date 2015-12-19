@@ -372,7 +372,7 @@ class Exam::GradesController < ApplicationController
                   if @exceed_maximum.count > 0
                     students=""
                     @exceed_maximum.each{|x|students+=x+", "}
-                    flash[:notice]=(t 'exam.grade.exceed_maximum')+" ("+@exceed_maximum.count.to_s+" "+(t 'records')+") : " +students.gsub(students[-2,2],"")
+                    flash[:notice]=(t 'exam.grade.exceed_maximum')+" ("+@exceed_maximum.count.to_s+" "+(t 'records')+") : " +students.gsub(/, $/,"") #students.gsub(students[-2,2],"")
                   end
                   if @exceed_maximum2.count > 0
                     flash[:notice]=t('exam.grade.total_weight')+"("+(t 'exam.grade.formative')+" : "+@grades[0].scores.sum(:weightage).to_i.to_s+"%, "+(t 'exam.grade.summative2')+" : "+@grades[0].examweight.to_i.to_s+"%)"
