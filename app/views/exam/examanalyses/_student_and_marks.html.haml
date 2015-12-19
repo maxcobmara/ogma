@@ -7,37 +7,116 @@
     - exammarks=Exammark.where(exam_id: @examanalysis.exam_id)
     - students=Student.where(id: exammarks.pluck(:student_id))
     - subjectid=@examanalysis.exampaper.subject_id
-    - if @examanalysis.exampaper.klass_id==0
-      /template
-      - examtemplates = @examanalysis.exampaper.examtemplates
-      = qty_ary = examtemplates.map(&:quantity) 
-      = questionscount = qty_ary.inject{|sum,x|sum+x} 
-      = questionstype=examtemplates.map(&:questiontype)
-      = questionstype_count = questionstype.count
-      = @meq_count=examtemplates.meqq[0].quantity
-      - @seq_count=examtemplates.seqq[0].quantity
-      - @acq_count=examtemplates.acqq[0].quantity
-      - @osci_count=examtemplates.osci2q[0].quantity
-      - @oscii_count=examtemplates.osci3q[0].quantity
-      - @osce_count=examtemplates.osceq[0].quantity
-      - @ospe_count=examtemplates.ospeq[0].quantity
-      - @viva_count=examtemplates.vivaq[0].quantity
-      - @truefalse_count=examtemplates.truefalseq[0].quantity
-    - else
-      /c/w questions
-      - examquestions = @examanalysis.exampaper.examquestions
-      =questionscount=examquestions.count
-      =questionstype=examquestions.map(&:questiontype).uniq
-      =questionstype_count=questionstype.count
-      = @meq_count=examquestions.meqq.count
-      - @seq_count=examquestions.seqq.count
-      - @acq_count=examquestions.acqq.count
-      - @osci_count=examquestions.osci2q.count
-      - @oscii_count=examquestions.osci3q.count
-      - @osce_count=examquestions.osceq.count
-      - @ospe_count=examquestions.ospeq.count
-      - @viva_count=examquestions.vivaq.count
-      - @truefalse_count=examquestions.truefalseq.count
+    
+    /- @examanalysis.exampaper.exam_template.question_count.each
+    //////////////////
+    - qcount=[]
+    - qrate=[]
+    /- qweight=[]
+    /- qfullmarks=[]
+    - qmarks_ea=[]
+    - qtype=[]
+
+    - @examanalysis.exampaper.exam_template.question_count.each do |k,v|
+      - qtype << k if v["count"]!=''
+      - qcount << v["count"].to_i
+      /- qweight << v["weight"].to_f
+      /- qfullmarks << v["full_marks"].to_f
+      - if v["weight"]!='' && v["count"]!=''
+        - if v["full_marks"] && v["full_marks"]!='' 
+          - qrate << v["weight"].to_f / v["full_marks"].to_f
+          - qmarks_ea << v["full_marks"].to_f / v["count"].to_i
+        - else
+          //when full marks not exist, use STANDARD MARKS as below : pls note - applicable to MCQ, MEQ & SEQ only
+          - if k=="mcq"
+            - qrate << v["weight"].to_f / v["count"].to_i*1 
+            - qmarks_ea << 1 
+          - elsif k=="seq" 
+            - qrate << v["weight"].to_f / (v["count"].to_i*10)
+            - qmarks_ea << 10
+          - elsif k=="meq"
+            - qrate << v["weight"].to_f / (v["count"].to_i*20)
+            - qmarks_ea << 20
+          - else
+            /assume 1 for marks for ea question
+            - qrate << v["weight"].to_f / v["count"].to_i
+            - qmarks_ea << 1
+      - elsif  v["weight"]=='' && v["count"]!=''
+        //when weightage not exist, but count exist
+        - qrate << 0
+        - if k=="mcq"
+          - qmarks_ea << 1 
+        - elsif k=="seq"
+          - qmarks_ea << 10
+        - elsif k=="meq"
+          - qmarks_ea << 20
+        - else
+          /assume 1 for marks for ea question
+          - qmarks_ea << 1
+      - else
+        - qrate << 0
+        - qmarks_ea << 1
+    
+    - @mcq_count= qcount[0]
+    /- @mcqweight_rate= qrate[0]
+    - @meq_count= qcount[1]
+    /- @meqweight_rate=qrate[1]
+    - @seq_count=qcount[2]
+    /- @seqweight_rate=qrate[2]
+  
+    - @acq_count=qcount[3]
+    /- @acqweight_rate=qrate[3]
+    - @osci_count=qcount[4]
+    /- @osciweight_rate=qrate[4]
+    - @oscii_count=qcount[5]
+    /- @osciiweight_rate=qrate[5]
+    - @osce_count=qcount[6]
+    /- @osceweight_rate=qrate[6]
+    - @ospe_count=qcount[7]
+    /- @ospeweight_rate=qrate[7]
+    - @viva_count=qcount[8]
+    /- @vivaweight_rate=qrate[8]
+    - @truefalse_count=qcount[9]
+    /- @truefalseweight_rate=qrate[9]
+
+    /= qty_ary = examtemplates.map(&:quantity) 
+    = questionscount = qcount.sum
+    = questionstype=qtype
+    = questionstype_count = questionstype.count
+    
+    //////////////////
+    
+    /- if @examanalysis.exampaper.klass_id==0
+    /  /template
+    /  - examtemplates = @examanalysis.exampaper.examtemplates
+    /  = qty_ary = examtemplates.map(&:quantity) 
+    /  = questionscount = qty_ary.inject{|sum,x|sum+x} 
+    /  = questionstype=examtemplates.map(&:questiontype)
+    /  = questionstype_count = questionstype.count
+    /  = @meq_count=examtemplates.meqq[0].quantity
+    /  - @seq_count=examtemplates.seqq[0].quantity
+    /  - @acq_count=examtemplates.acqq[0].quantity
+    /  - @osci_count=examtemplates.osci2q[0].quantity
+    /  - @oscii_count=examtemplates.osci3q[0].quantity
+    /  - @osce_count=examtemplates.osceq[0].quantity
+    /  - @ospe_count=examtemplates.ospeq[0].quantity
+    /  - @viva_count=examtemplates.vivaq[0].quantity
+    /  - @truefalse_count=examtemplates.truefalseq[0].quantity
+    /- else
+    /  /c/w questions
+    /  - examquestions = @examanalysis.exampaper.examquestions
+    /  =questionscount=examquestions.count
+    /  =questionstype=examquestions.map(&:questiontype).uniq
+    /  =questionstype_count=questionstype.count
+    /  = @meq_count=examquestions.meqq.count
+    /  - @seq_count=examquestions.seqq.count
+    /  - @acq_count=examquestions.acqq.count
+    /  - @osci_count=examquestions.osci2q.count
+    /  - @oscii_count=examquestions.osci3q.count
+    /  - @osce_count=examquestions.osceq.count
+    /  - @ospe_count=examquestions.ospeq.count
+    /  - @viva_count=examquestions.vivaq.count
+    /  - @truefalse_count=examquestions.truefalseq.count
       
     %table.table.table-bordered
       %head

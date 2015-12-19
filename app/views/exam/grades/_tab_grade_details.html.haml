@@ -17,7 +17,7 @@
         .col-md-3=h score.description 
         .col-md-2=h number_with_precision(score.weightage,:precision=>2) 
         .col-md-2
-          - if score.marks > score.weightage
+          - if score && score.marks > score.weightage
             %font{color: "red"}=h number_with_precision(score.marks,:precision=>2) 
           - else
             %font{color: "black"}=h number_with_precision(score.marks,:precision=>2) 
