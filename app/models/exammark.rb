@@ -51,7 +51,12 @@ class Exammark < ActiveRecord::Base
     else
       if exampaper.name=='F' || exampaper.name=='R'
         #For Final / Repeat - other than Radiografi & Cara Kerja
-        total=marks.sum(:student_mark)+total_mcq.to_i  
+        mcqweight=exampaper.exam_template.question_count['mcq']['weight']
+        if mcqweight && mcqweight!=''
+         total=totalsummative
+        else
+          total=marks.sum(:student_mark)+total_mcq.to_i  
+        end
       else
         #For Mid Sem Papers - other than Radiografi & Cara Kerja 
         mcqweight=exampaper.exam_template.question_count['mcq']['weight']
