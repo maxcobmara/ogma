@@ -83,7 +83,7 @@
           = hidden_field_tag "examweights[]", number_with_precision(grade.examweight,:precision=>2), :id=>"examweight"+no.to_s
         %td{:style=>"background-color:#FEE;text-align:center;"}
           /summative marks fr Exammark
-          - latest_paper=Exam.where(subject_id: grade.subject_id).where(name: 'F').pluck(:id)
+          - latest_paper=Exam.where(subject_id: grade.subject_id).where(name: 'F').order(created_at: :desc).pluck(:id)
           - student_exammark=Exammark.where(exam_id: latest_paper).where(student_id: grade.student_id).first
           - if student_exammark
             - @fullmarks = Exam.where(id: student_exammark.exam_id).first.set_full_marks 
@@ -102,7 +102,10 @@
             - summative_val=student_exammark.totalsummative
             = text_field_tag "summatives[]", number_with_precision(summative_val, :precision=>2), :size=> 4,:id=>"summative"+no.to_s, class: 'form-control', readonly: 'readonly'
           - else
+            - summative_val=0.0
             = text_field_tag "summatives[]", number_with_precision(grade.total_summative,:precision=>2), :size=> 4,:id=>"summative"+no.to_s, class: 'form-control', readonly: 'readonly'
+          =hidden_field_tag "summatives2[]", number_with_precision(summative_val, precision: 2), :id=> "summatives2_"+no.to_s
+
         %td{:style=>"background-color:#EEF;text-align:center;"}
           - if student_exammark
             = text_field_tag "finalscores[]", number_with_precision(grade.total_formative+summative_val,:precision=>2), :size=> 4,:id=>"finalscore"+no.to_s, :readonly => "readonly", class: "form-control"
@@ -291,27 +294,36 @@ $(document).ready(function(){
       window["summative70"+i] = document.getElementById("summative"+i);
       window["cplus_val"+i] =  document.getElementById("caplusmse"+i).value;
       window["formative_summative"+i] = document.getElementById("finalscore"+i);
+      window["summative2_"+i]=document.getElementById("summatives2_"+i).value;
       
-      if ((programme=="Radiografi") || (programme=="Jurupulih Perubatan Cara Kerja"))
+      if (window["summative2_"+i]!=0.0)
       {
-        window["summative70"+i].value=(window["total_marks"+i])*(summativeweightage/100); 
-        window["formative_summative"+i].value = (window["total_marks"+i])*(summativeweightage/100) +((window["cplus_val"+i])*1);
+        window["summative70"+i].value=window["summative2_"+i];
+        window["formative_summative"+i].value =window["summative2_"+i]*1.0+((window["cplus_val"+i])*1);
       }
       else
       {
-        
-         if (fullmarks==70)
-        {  
-          window["summative70"+i].value=window["total_marks"+i]
-          window["formative_summative"+i].value = (window["total_marks"+i])*1+((window["cplus_val"+i])*1);
-        
-        }
-        else
-        { 
+        if ((programme=="Radiografi") || (programme=="Jurupulih Perubatan Cara Kerja"))
+        {
           window["summative70"+i].value=(window["total_marks"+i])*(summativeweightage/100); 
           window["formative_summative"+i].value = (window["total_marks"+i])*(summativeweightage/100) +((window["cplus_val"+i])*1);
         }
-      }  
+        else
+        {
+        
+           if (fullmarks==70)
+          {  
+            window["summative70"+i].value=window["total_marks"+i]
+            window["formative_summative"+i].value = (window["total_marks"+i])*1+((window["cplus_val"+i])*1);
+        
+          }
+          else
+          { 
+            window["summative70"+i].value=(window["total_marks"+i])*(summativeweightage/100); 
+            window["formative_summative"+i].value = (window["total_marks"+i])*(summativeweightage/100) +((window["cplus_val"+i])*1);
+          }
+        }  
+      }
       
       window["totalmarks_field"+i]=document.getElementById("finalexam"+i);
       if (window["total_marks"+i] > 100)
