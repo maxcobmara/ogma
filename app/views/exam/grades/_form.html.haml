@@ -147,12 +147,15 @@
         %br
         = render 'tab_final_details_edit', :f => f
  
-- latest_paper=Exam.where(subject_id: @grade.subject_id).pluck(:id)
+- latest_paper=Exam.where(subject_id: @grade.subject_id).where(name: 'F').order(created_at: :desc).pluck(:id)
 - student_exammark=Exammark.where(exam_id: latest_paper).where(student_id: @grade.student_id).first
 - if student_exammark
   - @fullmarks = Exam.where(id: student_exammark.exam_id).first.set_full_marks 
+  - totalsummative=student_exammark.totalsummative
 - else
   - @fullmarks=0 
+  - totalsummative=0
+=hidden_field_tag "totalsummative", totalsummative
 =hidden_field_tag "full_marks", @fullmarks 
 =hidden_field_tag "grade[formative_count]", @count 
 =hidden_field_tag "programme_name", Programme.where(id: @programme).first.name if @programme
@@ -172,7 +175,7 @@ $(document).ready(function(){
     var examweight = document.getElementById("grade_examweight").value;
     var programme = document.getElementById("programme_name").value;
     var fullmarks = document.getElementById("full_marks").value;
-    
+    var totalsummative2 = document.getElementById("totalsummative").value;
 
     for (var i=0;i<formativecount;i++)
     {
@@ -217,7 +220,11 @@ $(document).ready(function(){
     }
     forgrade = caplusmse+summative;
     finalscore.value = caplusmse+summative;
-    marks70.value = summative;
+    
+    if (totalsummative2==0.0)
+    {  marks70.value = summative;}
+    else
+    {  marks70.value = totalsummative2;}
     
     if (summative > examweight)
     {  marks70.style.color="red";}
@@ -281,6 +288,7 @@ $(document).ready(function(){
     var examweight = document.getElementById("grade_examweight").value;
     var programme = document.getElementById("programme_name").value;
     var fullmarks = document.getElementById("full_marks").value;
+    var totalsummative2= document.getElementById("totalsummative").value;
     
 
     for (var i=0;i<formativecount;i++)
@@ -326,7 +334,11 @@ $(document).ready(function(){
     }
     forgrade = caplusmse+summative;
     finalscore.value = caplusmse+summative;
-    marks70.value = summative;
+    
+    if (totalsummative2==0.0)
+    {  marks70.value = summative;}
+    else
+    {  marks70.value = totalsummative2;}
     
     if (summative > examweight)
     {  marks70.style.color="red";}
