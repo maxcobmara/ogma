@@ -2547,6 +2547,7 @@ en:
       details: Examination Analysis Details
       examtype: Examination Type
       programme_id: Programme
+      student: Student
       subject_id: Subject
       examon: Examination Date
       grade: Grade
@@ -2560,6 +2561,7 @@ en:
       total_marks: Total Marks
       exam_must_exist: " must be selected."
       exam_must_uniq: " can be analysed only once."
+      final_exam: Final Exam 
 
     exam_template:
       title: Exampaper Template

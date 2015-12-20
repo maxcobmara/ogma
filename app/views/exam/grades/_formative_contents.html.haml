@@ -161,13 +161,13 @@ $(document).ready(function(){
         window["weightage2_"+i+"_"+k]=document.getElementById("formweight_"+i+"_"+k).value;
         window["otherfield_"+i+"_"+k]=document.getElementById("score_"+i+"_"+k);
         
-        if (other > window["weightage2_"+i+"_"+k])
+        if (other > window["weightage2_"+i+"_"+k]*1.0)
         {  window["otherfield_"+i+"_"+k].style.color="red";}
         else
         {  window["otherfield_"+i+"_"+k].style.color="black";}
       }
       window["cplus"+i].value=a;
-      if (a > formativeweight)
+      if (a > formativeweight*1.0)
       {  window["cplus"+i].style.color="red";}
       else
       {  window["cplus"+i].style.color="black";}
