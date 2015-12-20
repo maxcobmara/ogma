@@ -2487,6 +2487,7 @@ ms_MY:
       details: Butiran Analisis Peperiksaan
       examtype: Jenis Peperiksaan
       programme_id: Program
+      student: Pelajar
       subject_id: Subjek
       examon: Tarikh Peperiksaan
       grade: Gred
@@ -2500,6 +2501,7 @@ ms_MY:
       total_marks: Jumlah Markah
       exam_must_exist: " mesti dipilih."
       exam_must_uniq: " hanya boleh dianalisis sekali."
+      final_exam: Peperiksaan Akhir
       
     exam_template:
       title: Template Kertas Peperiksaan

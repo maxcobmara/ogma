@@ -72,7 +72,7 @@
                 %td{:style=>"text-align: center;"}= check_box_tag "exammark_ids[]", exammark.id, true, :id => "exammarkidss_#{index2}"
                 %td= link_to exammark.studentmark.matrix_name, exam_exammark_path(exammark)
                 %td=h exammark.studentmark.icno
-                %td=number_with_precision(exammark.total_marks, precision: 2)  
+                %td=number_with_precision(exammark.total_marks, precision: 2) if exammark.total_mcq
                 %td
                   /- if exammark.exampaper.name!="M" && diploma_subjects.include?(exammark.exampaper.subject_id) && exammark.total_mcq
                   - if exammark.exampaper.name!="M" && exammark.total_mcq
