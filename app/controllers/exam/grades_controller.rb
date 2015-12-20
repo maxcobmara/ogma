@@ -390,7 +390,7 @@ class Exam::GradesController < ApplicationController
   
         #edit & update EXISTING 'Formative Scores' items & 'Summative Weightage' accordingly (if there's any changes)
         @grades.sort_by{|x|x.studentgrade.name}.each_with_index do |grade, index| 
-          scores = Score.where(grade_id: grade.id).sort_by{|y|y.created_at}
+          scores = Score.where(grade_id: grade.id).order(created_at: :asc)#sort_by{|y|y.created_at}
           0.upto(grade.scores.count-1) do |score_count|
             #Please note : use this : params[:scores_attributes][score_count.to_s][:type_id] INSTEAD OF this:params[:scores_attributes][score_count.to_s][:type_id][index]
             #grade.scores[score_count].type_id = params[:scores_attributes][score_count.to_s][:type_id]

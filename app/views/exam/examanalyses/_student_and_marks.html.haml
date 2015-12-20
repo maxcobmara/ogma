@@ -12,7 +12,8 @@
     - onegrade=Grade.where(student_id: students[0].id).where(subject_id: subjectid).first
     - formative_weightage=onegrade.scores.sum(:weightage)
     - mid_formative=formative_weightage/2.0
-    - mid_summative=onegrade.examweight/2.0
+    - summative_weightage=onegrade.examweight
+    - mid_summative=summative_weightage/2.0
     
     /Final Full marks (exam.total_marks != exammark.total_marks)
     - finalmarks_full=@examanalysis.exampaper.total_marks
@@ -26,51 +27,64 @@
 
     - @examanalysis.exampaper.exam_template.question_count.each do |k,v|
       - qtype << k if v["count"]!=''
-      - qcount << v["count"].to_i
+      /- qcount << v["count"].to_i
       - if v["weight"]!='' && v["count"]!=''
         - if v["full_marks"] && v["full_marks"]!='' 
-          - qrate << v["weight"].to_f / v["full_marks"].to_f
+          /- qrate << v["weight"].to_f / v["full_marks"].to_f
           - qmarks_ea << v["full_marks"].to_f / v["count"].to_i
           - qfullmarks << v["full_marks"].to_f
+          - qcount << v["count"].to_i
         - else
           //when full marks not exist, use STANDARD MARKS as below : pls note - applicable to MCQ, MEQ & SEQ only
           - if k=="mcq"
-            - qrate << v["weight"].to_f / v["count"].to_i*1 
+            /- qrate << v["weight"].to_f / v["count"].to_i*1 
             - qmarks_ea << 1 
             - qfullmarks << v["count"].to_i*1 
+            - qcount << v["count"].to_i
           - elsif k=="seq" 
-            - qrate << v["weight"].to_f / (v["count"].to_i*10)
+            /- qrate << v["weight"].to_f / (v["count"].to_i*10)
             - qmarks_ea << 10
             - qfullmarks << (v["count"].to_i*10)
+            - qcount << v["count"].to_i
           - elsif k=="meq"
-            - qrate << v["weight"].to_f / (v["count"].to_i*20)
+            /- qrate << v["weight"].to_f / (v["count"].to_i*20)
             - qmarks_ea << 20
             - qfullmarks << (v["count"].to_i*20)
+            - qcount << v["count"].to_i
           - else
             /assume 1 for marks for ea question
-            - qrate << v["weight"].to_f / v["count"].to_i
+            /- qrate << v["weight"].to_f / v["count"].to_i
             - qmarks_ea << 1
             - qfullmarks <<  v["count"].to_i
+            - qcount << v["count"].to_i
       - elsif  v["weight"]=='' && v["count"]!=''
         //when weightage not exist, but count exist
         - qrate << 0
         - if k=="mcq"
           - qmarks_ea << 1 
           - qfullmarks << v["count"].to_i*1 
+          - qcount << v["count"].to_i
         - elsif k=="seq"
           - qmarks_ea << 10
           - qfullmarks << v["count"].to_i*10
+          - qcount << v["count"].to_i
         - elsif k=="meq"
           - qmarks_ea << 20
           - qfullmarks << v["count"].to_i*20
+          - qcount << v["count"].to_i
         - else
           /assume 1 for marks for ea question
           - qmarks_ea << 1
           - qfullmarks << v["count"].to_i*1 
+          - qcount << v["count"].to_i
       - else
-        - qrate << 0
-        - qmarks_ea << 1
+        /- qrate << 0 if v["count"]!=''
+        - qmarks_ea << 1 if v["count"]!=''
+        - qcount << v["count"].to_i if v["count"]!=''
     
+    /=qtype
+    /=qcount
+    /=qmarks_ea
     - @mcq_count= qcount[0]
     - @meq_count= qcount[1]
     - @seq_count=qcount[2]  
@@ -99,6 +113,8 @@
           %th{rowspan: 2}=t 'student.students.icno'
           %th.centre{rowspan: 2} 
             CA+MSE
+            \/
+            =t 'exam.examanalysis.formative'
             .small=formative_weightage.to_s+"%"
           - if questionstype.include?('mcq')
             %th.centre{rowspan: 2} 
@@ -125,8 +141,12 @@
           /  %th.centre{colspan: "#{@viva_count}"}VIVA 
           /- if @truefalse_count > 0
           /  %th.centre{colspan: "#{@truefalse_count}"}TRUE FALSE
-          %th.centre{rowspan: 2}=t 'exam.examanalysis.final_exam' 
-          %th.centre{rowspan: 2}=t 'exam.examanalysis.total_marks'
+          %th.centre{rowspan: 2}
+            =t 'exam.examanalysis.final_exam' 
+            .small=summative_weightage.to_s+"%"
+          %th.centre{rowspan: 2}
+            =t 'exam.examanalysis.final_score'
+            .small=(formative_weightage+summative_weightage).to_s+"%"
           %th.centre{rowspan: 2}=t 'exam.examanalysis.grade'
           %th.centre{rowspan: 2} NG
         /HEADING - line 2  
@@ -231,7 +251,7 @@
       /COUNT
       %tr
         %td{colspan: 3}
-        %th Count
+        %th=t 'exam.examanalysis.count'
         %td=formatives.count
         %td=mcqs.count
         - 0.upto(total_nonmcq_questions-1).each do |x|
@@ -243,7 +263,7 @@
       /MIN 
       %tr
         %td{colspan: 3}
-        %th Min
+        %th=t 'exam.examanalysis.min'
         %td=number_with_precision(formatives.min, precision:2)
         %td=number_with_precision(mcqs.min, precision: 2)
         - 0.upto(total_nonmcq_questions-1).each do |x|
@@ -255,7 +275,7 @@
       /MAX
       %tr
         %td{colspan: 3}
-        %th Max
+        %th=t 'exam.examanalysis.max'
         %td=number_with_precision(formatives.max, precision: 2)
         %td=number_with_precision(mcqs.max, precision: 2)
         - 0.upto(total_nonmcq_questions-1).each do |x|
@@ -272,7 +292,7 @@
       /MEAN (AVERAGE)
       %tr
         %td{colspan: 3}
-        %th Mean
+        %th=t 'exam.examanalysis.average'
         %td=number_with_precision(@examanalysis.average_data(formatives), precision: 2)
         %td=number_with_precision(@examanalysis.average_data(mcqs), precision: 2)
         - 0.upto(total_nonmcq_questions-1).each do |x|
@@ -284,7 +304,7 @@
       /SD-Population / SD- Deviation
       %tr
         %td{colspan: 3}
-        %th SD-Population
+        %th=t 'exam.examanalysis.sd_deviation'
         %td=number_with_precision(@examanalysis.standard_deviation(formatives), precision: 2)
         %td=number_with_precision(@examanalysis.standard_deviation(mcqs), precision: 2)
         - 0.upto(total_nonmcq_questions-1).each do |x|
@@ -301,7 +321,7 @@
       /Pass % -  Jumlah kelulusan (dr jumlah pelajar)
       %tr
         %td{colspan: 3}
-        %th Pass Rate
+        %th=t 'exam.examanalysis.pass_rate'
         %td= @examanalysis.pass_rate(formatives, mid_formative)
         %td= @examanalysis.pass_rate(mcqs, qfullmarks[0]/2.0) 
         - item=0
@@ -324,7 +344,7 @@
       /% Pass -  Peratus kelulusan (dr jumlah pelajar)
       %tr
         %td{colspan: 3}
-        %th % Pass 
+        %th=t 'exam.examanalysis.percent_pass'
         %td=number_with_precision(@examanalysis.percent_pass(formatives, mid_formative), precision: 2)
         %td=number_with_precision(@examanalysis.percent_pass(mcqs, qfullmarks[0]/2.0), precision: 2)
         - item=0
@@ -348,7 +368,7 @@
       /Marks=0 count per question
       %tr
         %td{colspan: 3}
-        %th.small Markah 0
+        %th.small=(t 'exam.examanalysis.marks')+' 0'
         %td=@examanalysis.marks_zero(formatives)
         %td=@examanalysis.marks_zero(mcqs)
         - item=0
@@ -366,7 +386,7 @@
       /Marks < 20% per question
       %tr
         %td{colspan: 3}
-        %th.small Markah < 20%
+        %th.small=(t 'exam.examanalysis.marks')+' < 20%'
         %td=@examanalysis.marks_20percent(formatives, formative_weightage) 
         %td=@examanalysis.marks_20percent(mcqs, qcount[0])
         - item=0
@@ -385,7 +405,7 @@
       /Marks < 50% per question
       %tr
         %td{colspan: 3}
-        %th.small Markah < 50%
+        %th.small=(t 'exam.examanalysis.marks')+' < 50%'
         %td=@examanalysis.marks_50percent(formatives, formative_weightage) 
         %td=@examanalysis.marks_50percent(mcqs, qcount[0])
         - item=0
@@ -404,7 +424,7 @@
       /Marks <=80% per question
       %tr
         %td{colspan: 3}
-        %th.small Markah <= 80%
+        %th.small=(t 'exam.examanalysis.marks')+' <= 80%'
         %td=@examanalysis.marks_less80percent(formatives, formative_weightage)
         %td=@examanalysis.marks_less80percent(mcqs, qcount[0])
         - item=0
@@ -423,7 +443,7 @@
       /Marks > 80% per question
       %tr
         %td{colspan: 3}
-        %th.small Markah > 80%
+        %th.small=(t 'exam.examanalysis.marks')+' > 80%'
         %td=@examanalysis.marks_80abovepercent(formatives, formative_weightage) 
         %td=@examanalysis.marks_80abovepercent(mcqs, qcount[0])
         - item=0

@@ -2377,7 +2377,7 @@ ms_MY:
       exist_marks: 'Sebaik sahaja rekod Gred bagi satu-satu Subjek dicipta, sila Sunting dan Kemaskini rekod-rekod Markah Kertas Peperiksaan Akhir yang sepadan bagi menyelaras / mengemaskini nilai Jumlah Sumatif dalam rekod Gred.'
       apply_finalscore: " : Sunting & Kemaskini rekod gred berkenaan untuk menyimpan Jumlah Akhir yang terkini. "
       exceed_maximum: "Nilai dimasukkan tidak boleh melebihi nilai maksima "
-      formative_exceed_maximum: "Markah (Skor Formatif) tidak boleh melebihi "
+      formative_exceed_maximum: "Markah / Wajaran (Skor Formatif) tidak boleh melebihi nilai maksima."
       total_weight: "Jumlah keseluruhan Wajaran mestilah 100%. "
       summative2: Sumatif
       
@@ -2498,11 +2498,20 @@ ms_MY:
       select_subject: Sila pilih subjek
       question: S
       exam_on: Tarikh Peperiksaan
-      total_marks: Jumlah Markah
+      final_score: Jumlah Akhir
       exam_must_exist: " mesti dipilih."
       exam_must_uniq: " hanya boleh dianalisis sekali."
       final_exam: Peperiksaan Akhir
-      
+      marks: Markah
+      count: Bilangan
+      min: Minima
+      max: Maksima
+      average: Purata
+      sd_deviation: Piawai Sisihan
+      pass_rate: Jumlah Lulus
+      percent_pass: "% Lulus"
+      formative: Formatif
+
     exam_template:
       title: Template Kertas Peperiksaan
       new: Template Kertas Peperiksaan Baru

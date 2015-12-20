@@ -2,8 +2,8 @@ class Grade < ActiveRecord::Base
   
   validates_presence_of :student_id, :subject_id, :examweight#, :exam1marks #added examweight for multiple edit - same subject - this item must exist
   validates_uniqueness_of :subject_id, :scope => :student_id, :message => " - This student has already taken this subject"
-  validates :finalscore, numericality: {greater_than_or_equal_to: 0, less_than_or_equal_to: 100}
-  #validates :exam1marks, :finalscore, numericality: {greater_than_or_equal_to: 0, less_than_or_equal_to: 100}
+  #validates :finalscore, numericality: {greater_than_or_equal_to: 0, less_than_or_equal_to: 100}
+  validates :exam1marks, :finalscore, numericality: {greater_than_or_equal_to: 0, less_than_or_equal_to: 100}
       
  # validates_presence_of :sent_date, :if => :sent_to_BPL?
   validate :formative_allowed, :total_weightage_allowed#, :check_formative_valid,
@@ -305,14 +305,29 @@ class Grade < ActiveRecord::Base
 #     end
     
     def formative_allowed
-      if scores && (scores.map(&:marks).sum > scores.sum(:weightage))
-        errors.add(:base, I18n.t('exam.grade.formative_exceed_maximum')+scores.sum(:weightage).to_s)
+      if id
+      exceed=0
+      scores.each{|m|exceed+=1 if m.marks > m.weightage }
+      total_formative=0
+      scores.each{|m| total_formative+=m.marks}
+      total_weightage_formative=0
+      scores.each{|m|total_weightage_formative+=m.weightage}
+      #if scores && (scores.map(&:marks).sum > scores.sum(:weightage))
+      if scores && ((total_formative > total_weightage_formative) || (total_weightage_formative != (100-examweight)) || exceed > 0)
+        #errors.add(:base, I18n.t('exam.grade.formative_exceed_maximum')+scores.sum(:weightage).to_s)
+        errors.add(:base, I18n.t('exam.grade.formative_exceed_maximum'))
+      end
       end
     end
     
     def total_weightage_allowed
-      if ((scores && scores.sum(:weightage))+examweight) > 100.0
+      if id
+      total_weightage_formative=0
+      scores.each{|m|total_weightage_formative+=m.weightage}
+      #if ((scores && scores.sum(:weightage))+examweight) > 100.0
+      if ((scores && total_weightage_formative)+examweight) > 100.0 
         errors.add(:base, I18n.t('exam.grade.total_weight')+"("+I18n.t('exam.grade.formative')+" : "+scores.sum(:weightage).to_i.to_s+"%, "+I18n.t('exam.grade.summative2')+" : "+examweight.to_i.to_s+"%)")
+      end
       end
     end
   
