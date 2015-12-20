@@ -236,7 +236,7 @@ class Exammark < ActiveRecord::Base
   def total_weightage
     if Programme.where(id: exampaper.subject.root_id).first.course_type=='Diploma'
       total_weight=70 if exampaper.name=='F' || exampaper.name=='R'
-      total_weight=30 if exampaper.name=='M'
+      total_weight=30 if exampaper.name=='M' #other formula : 15% exam, 10% continuous assessment, 5% affective
     else
       total_weight=60 if exampaper.name=='F' || exampaper.name=='R'
       total_weight=40 if exampaper.name=='M'

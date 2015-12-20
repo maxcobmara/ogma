@@ -2437,7 +2437,7 @@ en:
       exist_marks: 'Upon Grade creation of a Subject, please Edit and Update corresponding Exam Paper Marks to synchronize / update Total Summative in Grade record.'
       apply_finalscore: ' : Edit & Update grade record to saved latest Final Score.'
       exceed_maximum: "Values entered must not exceed maximum values "
-      formative_exceed_maximum: "Marks (Formative Scores) must not exceed "
+      formative_exceed_maximum: "Marks / Weightage (Formative Scores) must not exceed maximum value."
       total_weight: "Total Weightage must be 100%. "
       summative: Summative
     
@@ -2558,10 +2558,19 @@ en:
       select_subject: Please select a subject
       question: Q
       exam_on: Examination Date
-      total_marks: Total Marks
+      final_score: Final Score
       exam_must_exist: " must be selected."
       exam_must_uniq: " can be analysed only once."
       final_exam: Final Exam 
+      marks: Marks
+      count: Count
+      min: Minimum
+      max: Maximum
+      average: Average
+      sd_deviation: "SD-Deviation"
+      pass_rate: Pass Rate
+      percent_pass: "% Pass"
+      formative: Formative
 
     exam_template:
       title: Exampaper Template
