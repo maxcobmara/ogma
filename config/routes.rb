@@ -337,6 +337,7 @@ Ogma::Application.routes.draw do
         get   :manager
         post  :manager
         get :iis
+	get :analysis
         get :analysis_book
         get :general_analysis
         get :general_analysis_ext
@@ -409,8 +410,11 @@ Ogma::Application.routes.draw do
         get :examination_transcript
       end
     end
-    resources :examanalyses #do
-    #end
+    resources :examanalyses do
+      collection do
+        get :analysis_data
+      end
+    end
     resources :evaluate_courses do
       member do
         get 'courseevaluation'

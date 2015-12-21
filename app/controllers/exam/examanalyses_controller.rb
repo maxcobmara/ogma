@@ -1,5 +1,5 @@
 class Exam::ExamanalysesController < ApplicationController
-  filter_access_to :index,:attribute_check => false
+  filter_access_to :index, :analysis_data, :attribute_check => false
   filter_access_to :show, :edit, :update, :destroy, :attribute_check => true
   
   before_action :set_examanalysis, only: [:show, :edit, :update, :destroy]
@@ -14,6 +14,17 @@ class Exam::ExamanalysesController < ApplicationController
         format.html { redirect_to(dashboard_url, :notice =>t('positions_required')+(t 'exam.title')+" - "+(t 'exam.examanalysis.title'))}
         format.xml  { render :xml => @examanalyses.errors, :status => :unprocessable_entity }
       end
+    end
+  end
+  
+  def analysis_data
+    @exam_id = params[:exam_id]
+    @analysis=Examanalysis.where(exam_id: @exam_id) #result must be in hash/arr
+
+    respond_to do |format|
+      format.html
+      format.csv { send_data @analysis.to_csv3}
+      format.xls { send_data @analysis.to_csv3(col_sep: "\t") } 
     end
   end
     
