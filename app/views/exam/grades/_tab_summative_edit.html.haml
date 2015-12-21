@@ -37,7 +37,7 @@
     - if @grade.exam1marks && @grade.exam1marks > 0.0
       - exammarks = number_with_precision(@grade.exam1marks, precision: 2)
     - else
-      - if student_exammark
+      - if student_exammark && student_exammark.count > 0
         - exammarks = student_exammark.first.total_marks
       - else
         - exammarks = 0

@@ -7,7 +7,13 @@
     - exammarks=@examanalysis.exampaper.exammarks
     - students=Student.where(id: exammarks.pluck(:student_id))
     - subjectid=@examanalysis.exampaper.subject_id
-
+    /Absent data
+    - absent_grades=Grade.where(subject_id: subjectid).where.not(student_id: students)
+    - absent_exammark_exist=[]
+    - exammarks.each do |exammark|
+      - if exammark.total_marks==0 || exammark.totalsummative==0
+        - absent_exammark_exist << exammark
+      
     /Formative Full marks = total formative weightage, Summative Marks
     - onegrade=Grade.where(student_id: students[0].id).where(subject_id: subjectid).first
     - formative_weightage=onegrade.scores.sum(:weightage)
@@ -231,6 +237,48 @@
       /=marks_by_students[2][0]
       /=marks_by_students[3][0]
       
+      /Absent Student (Final Exam) - Grade MUST EXIST & Exammark no need to exist, even if exist (due to Create Multiple), MUST be exammark.totalsummative==0 || exammark.total_marks==0, to be considered as ABSENT
+      - absent_formatives=[]
+      - present_formatives=[]
+      - absent_exammarks=[]
+      - absent_final_scores=[]
+      - absent_gradings=[]
+      - absent_ngs=[]
+      - if absent_exammark_exist.count > 0 || absent_grades.count > 0
+        - for grade in absent_grades
+          %tr
+            %td{style: "color: #FE2E64;"}=bil+=1
+            %td{style: "color: #FE2E64;"}=grade.studentgrade.name
+            %td{style: "color: #FE2E64;"}=grade.studentgrade.matrixno
+            %td{style: "color: #FE2E64;"}=grade.studentgrade.icno
+            %td{style: "color: #FE2E64;"}=absent_formative=number_with_precision(grade.scores.sum(:marks), precision:2)
+            - if absent_exammark_exist.map(&:student_id).include?(grade.student_id)
+              /exammarks & grade exist
+              - mcqmarks=0.00
+              - othermarks=0.00
+              - finalmarks=0.00
+            - else
+              /only grade exist
+              - mcqmarks="-"
+              - othermarks="-"
+              - finalpapermarks="-"
+            %td{style: "color: #FE2E64;"}=mcqmarks
+            - 0.upto(total_nonmcq_questions-1).each do |x|
+              %td{style: "color: #FE2E64;"}=othermarks
+            %td{style: "color: #FE2E64;"}=finalpapermarks
+
+            %td{style: "color: #FE2E64;"}=absent_final_score=number_with_precision(grade.finalscore, precision: 2)
+            %td{style: "color: #FE2E64;"}=absent_grading=grade.render_grading[-2,2]
+            %td{style: "color: #FE2E64;"}=absent_ng=number_with_precision(grade.set_NG, precision: 2)
+            - if absent_formative.to_f > 0
+              - present_formatives << absent_formative 
+            - else
+              - absent_formatives << absent_formative
+            - absent_exammarks << 0
+            - absent_final_scores << absent_final_score
+            - absent_gradings << absent_grading
+            - absent_ngs << absent_ng
+            
       /separator
       %tr
         %td{colspan: "#{4+2+marks_by_students[0].count+4}"}
@@ -252,14 +300,50 @@
       %tr
         %td{colspan: 3}
         %th=t 'exam.examanalysis.count'
-        %td=formatives.count
+        %td=total_candidates=formatives.count+absent_formatives.count+present_formatives.count
+        /Below : use standard absent_exammarks for ALL final paper related columns
+        %td=total_mcqs=mcqs.count+absent_exammarks.count
+        - 0.upto(total_nonmcq_questions-1).each do |x|
+          %td=marks_by_questions[x].count+absent_exammarks.count
+        %td=finalmarks.count+absent_exammarks.count
+        /Above : & for both conditions : 1)Grade with Exammark exist 2) Grade w/o Exammark existance
+        %td=finalscores.count+absent_final_scores.count
+        %td &nbsp;
+        %td=ngs.count+absent_ngs.count
+      /ATTEND
+      %tr
+        %td{colspan: 3}
+        %th=t 'exam.examanalysis.attend'
+        %td=total_attendees=formatives.count+present_formatives.count
+        /exammarks section should not consist any absent data
         %td=mcqs.count
         - 0.upto(total_nonmcq_questions-1).each do |x|
           %td=marks_by_questions[x].count
         %td=finalmarks.count
-        %td=finalscores.count
+        /exammarks section ended here
+        - if present_formatives.count > 0
+          - all_final_scores=finalscores.count+absent_final_scores.count
+          - all_ngs=ngs.count+absent_ngs.count
+        - else
+          - all_final_scores=finalscores.count
+          - all_ngs=ngs.count
+        %td=all_final_scores
         %td &nbsp;
-        %td=ngs.count
+        %td=all_ngs
+      /ABSENT
+      %tr
+        %td{colspan: 3}
+        %th=t 'exam.examanalysis.absent'
+        %td=total_candidates-total_attendees
+        /exammarks related
+        %td=total_candidates-mcqs.count
+        - 0.upto(total_nonmcq_questions-1).each do |x|
+          %td=total_candidates-marks_by_questions[x].count
+        %td=total_candidates-finalmarks.count
+        /exammarks
+        %td=total_candidates-total_attendees
+        %td &nbsp;
+        %td=total_candidates-total_attendees
       /MIN 
       %tr
         %td{colspan: 3}

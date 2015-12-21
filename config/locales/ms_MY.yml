@@ -2503,7 +2503,9 @@ ms_MY:
       exam_must_uniq: " hanya boleh dianalisis sekali."
       final_exam: Peperiksaan Akhir
       marks: Markah
-      count: Bilangan
+      count: Bilangan calon 
+      attend: Hadir
+      absent: Tidak Hadir
       min: Minima
       max: Maksima
       average: Purata

@@ -183,7 +183,7 @@ $(document).ready(function(){
       window["fweight"+i] = document.getElementById("fweight"+i).value;
       
       window["fmark_field"+i] = document.getElementById("formative"+i);
-      if (window["fmark"+i] >window["fweight"+i])
+      if (window["fmark"+i]*1.0 >window["fweight"+i])
       {  window["fmark_field"+i].style.color="red";}
       else
       {  window["fmark_field"+i].style.color="black";}
@@ -297,7 +297,7 @@ $(document).ready(function(){
       window["fweight"+i] = document.getElementById("fweight"+i).value;
       
       window["fmark_field"+i] = document.getElementById("formative"+i);
-      if (window["fmark"+i] >window["fweight"+i])
+      if (window["fmark"+i]*1.0 >window["fweight"+i])
       {  window["fmark_field"+i].style.color="red";}
       else
       {  window["fmark_field"+i].style.color="black";}

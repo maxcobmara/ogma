@@ -2530,7 +2530,7 @@ en:
       kp_which_programme: "Programme Manager must have 'Unit' in Task & Responsibilities (Positions)."
       prepared_by: PREPARED BY
       date_updated: LAST UPDATED
-      by_student: "(Prepared by Student)"
+      by_student: "(Prepared by Student)"#FE2E64
       staff_or_invited: "Tick if KSKB lecturers, untick if Invitation Lecturer."
       no_staff: "Invitation - "
       evaluation_once: " - Evaluation for a taught Subject can only be done once"
@@ -2564,6 +2564,8 @@ en:
       final_exam: Final Exam 
       marks: Marks
       count: Count
+      attend: Attend
+      absent: Absent
       min: Minimum
       max: Maximum
       average: Average
