@@ -1732,6 +1732,13 @@ ms_MY:
       others: "Lain - lain"
       no_case: Tiada kes
       advise: Nasihat
+      warning_letter: Amaran Bertulis
+      discharge_leave: Lucut Cuti
+      charity_works: Kerja Amal
+      refer_bpl_counseling: "Rujuk kepada BPL & Kaunseling"
+      warning_letter_counseling: "Amaran Bertulis & Kaunseling"
+      discharge_leave_counseling: "Lucut Cuti & Kaunseling"
+      charity_works_counseling: "Kerja Amal & Kaunseling"
     
     counseling:
       title: Sesi Kaunseling Pelajar

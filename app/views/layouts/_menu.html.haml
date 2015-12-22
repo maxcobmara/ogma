@@ -181,6 +181,7 @@
                     %li= link_to (t "student.students.students_quantity_report"), students_quantity_report_students_path(format: 'pdf')
                     - permitted_to? :reports, :student_student_discipline_cases do
                       %li= link_to (t "student.discipline.report_title"), reports_student_student_discipline_cases_path
+                      %li= link_to (t "student.discipline.list"), discipline_report_student_student_discipline_cases_path(coverage: "all", format: 'pdf' )                  
             - permitted_to? [:create, :update, :approve, :approve2], :student_leaveforstudents do
               %li= link_to content_tag(:i, "", :class => "icon-numb") + t("student.leaveforstudent.title"), student_leaveforstudents_path
             - permitted_to? :manage, :student_student_attendances do

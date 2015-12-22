@@ -1819,6 +1819,13 @@ en:
       others: Others
       no_case: No case
       advise: Advise
+      warning_letter: Warning Letter
+      discharge_leave: Discharge Leave
+      charity_works: Charity Works
+      refer_bpl_counseling: "Refer to BPL & Counseling"
+      warning_letter_counseling: "Warning Letter & Counseling"
+      discharge_leave_counseling: "Discharge Leave & Counseling"
+      charity_works_counseling: "Charity Works & Counseling"
       
     counseling:
       title: Student Counseling Session
