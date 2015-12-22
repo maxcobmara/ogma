@@ -113,15 +113,15 @@ authorization do
 
     has_permission_on :student_student_discipline_cases, :to => :create
     has_permission_on :student_student_discipline_cases, :to => :approve do 
-      if_attribute :assigned_to =>  is {user.userable.id} #is {current_user.userable.id}
+      if_attribute :assigned_to =>  is {current_user.userable.id} #is {current_user.userable.id}
     end
-    has_permission_on :student_student_discipline_cases, :to => [:manage, :actiontaken] do
-      if_attribute :assigned2_to => is {user.userable.id}
+    has_permission_on :student_student_discipline_cases, :to => [:manage, :actiontaken, :referbpl, :discipline_report] do
+      if_attribute :assigned2_to => is {current_user.userable.id}
     end
     
     ###read - temp : to avoid using :read -> inc :index where necessary
     has_permission_on :student_student_discipline_cases, :to => :read do
-      if_attribute :reported_by => is {user.userable.id}
+      if_attribute :reported_by => is {current_user.userable.id}
     end
 #    has_permission_on :student_discipline_cases, :to => :read, :join_by => :or do
 #      if_attribute :reported_by => is {current_user.userable.id}
@@ -339,12 +339,16 @@ authorization do
   end
 
    role :disciplinary_officer do
-     has_permission_on :student_student_discipline_cases, :to => [:manage, :reports, :discipline_report, :anacdotal_report]
+     has_permission_on :student_student_discipline_cases, :to => [:manage, :reports, :discipline_report, :anacdotal_report, :referbpl]
      has_permission_on :student_student_counseling_sessions, :to => :feedback_referrer do
        if_attribute :case_id =>  is_not {nil}
      end
    end
 
+   role :student_counsellor do
+     has_permission_on :student_student_counseling_sessions, :to => [:manage, :feedback_referrer]
+     has_permission_on :students, :to => :core
+   end
 #####
 #   role :student_counsellor do
 #     has_permission_on :student_counseling_sessions, :to => [:manage, :feedback_referrer]
