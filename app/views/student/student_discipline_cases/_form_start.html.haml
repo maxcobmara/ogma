@@ -15,7 +15,7 @@
           .col-sm-2.control-label
             = f.label t 'student.discipline.student_id', for: :student_id
           .col-md-3
-            = f.collection_select :student_id, Student.where('end_training>?',Date.today).order(icno: :asc), :id, :formatted_mykad_and_student_name, {:prompt => t('helpers.prompt.select_student')},{class: 'selectpicker', "data-width"=>'460px'}
+            = f.collection_select :student_id, Student.where('end_training>?',Date.today).order('course_id asc, matrixno asc'), :id, :matrix_name_programme, {:prompt => t('helpers.prompt.select_student')},{class: 'selectpicker', "data-width"=>'460px'}
         .form-group
           .col-sm-2.control-label
             = f.label t 'student.discipline.infraction_id', for: :infraction_id
