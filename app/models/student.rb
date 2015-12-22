@@ -124,6 +124,18 @@ class Student < ActiveRecord::Base
   def matrix_name
     " #{matrixno} #{name}"
   end
+  
+  def matrix_name_programme
+     "#{matrix_name} (#{programme_name})"
+  end
+  
+  def programme_name
+    if course.blank?
+      "N/A"
+    else
+      "#{course.name}"
+    end
+  end
 
   def bil
     v=1
