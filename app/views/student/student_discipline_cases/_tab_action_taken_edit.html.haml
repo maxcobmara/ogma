@@ -14,6 +14,13 @@
     .col-md-1= f.radio_button :action_type, "Charity Works", 	:id => 'cw', :class => 'radio_action_type'
     .col-md-1 Kerja Amal
 
+  / TODO
+  /translation - action types as above
+  /In SHOW -- revise action taken (action type) --- 
+  /1) display if Warning letter, lucut cuti @ Charity works +(counseling)
+  /2)+++ when counseling also occured - for BPL
+  /3) if only -any of  these above 3 item selected & counseling NO LONGER required....
+  
   .form-group.co_item{style: "display: none;"}
     .col-sm-2.control-label
       = f.label t 'student.discipline.action', for: :action_done
