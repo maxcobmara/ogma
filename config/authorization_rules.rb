@@ -219,7 +219,7 @@ authorization do
      if_attribute :programme_id => is_in {user.lecturers_programme2}
    end
    
-   has_permission_on :exam_examanalyses, :to => [:edit, :update, :delete] do
+   has_permission_on :exam_examanalyses, :to => [:edit, :update, :delete, :analysis_data] do
      if_attribute :programme_id => is_in {user.lecturers_programme2}  
    end
    

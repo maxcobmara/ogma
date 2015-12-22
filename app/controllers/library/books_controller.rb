@@ -133,7 +133,7 @@ class Library::BooksController < ApplicationController
     @book.destroy
 
     respond_to do |format|
-      format.html { redirect_to(books_url) }
+      format.html { redirect_to library_books_path }
       format.xml  { head :ok }
     end
   end
