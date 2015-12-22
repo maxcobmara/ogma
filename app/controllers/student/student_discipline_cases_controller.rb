@@ -32,21 +32,17 @@ class Student::StudentDisciplineCasesController < ApplicationController
   end
   
   def discipline_report
-    @search = StudentDisciplineCase.search(params[:q])
-    @student_discipline_cases2 = @search.result.sort_by{|x|x.student.course_id}
-
-    respond_to do |format|
-       format.pdf do
-         pdf = Discipline_reportPdf.new(@student_discipline_cases2, view_context)
-                   send_data pdf.render, filename: "discipline_report-{Date.today}",
-                   type: "application/pdf",
-                   disposition: "inline"
-       end
-     end
-  end
-  
-  def discipline_report2
-    @search = StudentDisciplineCase.search(params[:q])
+    roles = current_user.roles.pluck(:id)
+    @is_admin = roles.include?(2)
+    if @is_admin
+      @search = StudentDisciplineCase.search(params[:q])
+    else
+      if params[:coverage] && params[:coverage]=="all"
+        @search = StudentDisciplineCase.search(params[:q])
+      else
+        @search = StudentDisciplineCase.sstaff2(current_user.userable.id).search(params[:q])
+      end
+    end 
     @student_discipline_cases2 = @search.result.sort_by{|x|x.student.course_id}
 
     respond_to do |format|
@@ -151,8 +147,19 @@ class Student::StudentDisciplineCasesController < ApplicationController
   end
   
   def anacdotal_report
-    @student_id=params[:student].to_i
-    @discipline_cases=StudentDisciplineCase.where(student_id: @student_id)
+    @student_id=params[:student].to_i    
+    roles = current_user.roles.pluck(:id)
+    @is_admin = roles.include?(2)
+    if @is_admin
+      @discipline_cases=StudentDisciplineCase.where(student_id: @student_id)
+    else
+      if params[:coverage]=="logged"           #from Index - display result based on logged-in user 
+        @discipline_cases=StudentDisciplineCase.sstaff2(current_user.userable.id).where(student_id: @student_id)
+      elsif params[:coverage]=="all"             #from reporting - reports page, display ALL searched records
+        @discipline_cases=StudentDisciplineCase.where(student_id: @student_id)
+      end
+    end
+    
     respond_to do |format|
       format.pdf do
         pdf = Anacdotal_reportPdf.new(@discipline_cases, view_context)
