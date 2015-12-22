@@ -14,10 +14,20 @@
     %dd
       /=h @student_discipline_case.action_type.try(:titleize)
       - unless @student_discipline_case.action_type.blank?
-        =h t('student.discipline.refer_bpl') if @student_discipline_case.action_type=="Ref to BPL"
-        =h t('student.discipline.refer_tphep') if @student_discipline_case.action_type=="Ref TPHEP"
-        =h t('student.discipline.no_case') if @student_discipline_case.action_type=="no_case"
-        =h t('student.discipline.advise') if @student_discipline_case.action_type=="advise"
+        %font{style: "color: blue; font-weight: bold;"}
+          =h t('student.discipline.refer_bpl') if @student_discipline_case.action_type=="Ref to BPL"
+          =h t('student.discipline.refer_tphep') if @student_discipline_case.action_type=="Ref TPHEP"
+          =h t('student.discipline.no_case') if @student_discipline_case.action_type=="no_case"
+          =h t('student.discipline.advise') if @student_discipline_case.action_type=="advise"
+        
+          =h t('student.discipline.refer_bpl_counseling') if @student_discipline_case.action_type=="Ref to BPL & counseling"
+          =h t('student.discipline.counseling') if @student_discipline_case.action_type=="counseling"
+          =h t('student.discipline.warning_letter') if @student_discipline_case.action_type=="Warning Letter"
+          =h t('student.discipline.warning_letter_counseling') if @student_discipline_case.action_type=="Warning Letter & counseling"
+          =h t('student.discipline.discharge_leave') if @student_discipline_case.action_type=="Discharge Leave"
+          =h t('student.discipline.discharge_leave_counseling') if @student_discipline_case.action_type=="Discharge Leave & counseling"
+          =h t('student.discipline.charity_works') if @student_discipline_case.action_type=="Charity Works"
+          =h t('student.discipline.charity_works_counseling') if @student_discipline_case.action_type=="Charity Works & counseling"
     
     - if @student_discipline_case.action_type == "no_case"
       %dt=t 'student.discipline.closed_at_college_on', :default => model_class.human_attribute_name(:closed_at_college_on)+":"
@@ -27,7 +37,7 @@
       %dt=t 'student.discipline.other_info', :default => model_class.human_attribute_name(:other_info)+":"
       %dd=h @student_discipline_case.other_info 
       
-    -  if @student_discipline_case.action_type == "counseling" 
+    -  if @student_discipline_case.action_type == "counseling" || @student_discipline_case.action_type.include?("counseling")
       %dt=t 'student.discipline.counseling_session', :default => model_class.human_attribute_name(:counseling_session)+":"
       %dd &nbsp;
       %br

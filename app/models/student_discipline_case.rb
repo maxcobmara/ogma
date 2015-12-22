@@ -145,21 +145,18 @@ class StudentDisciplineCase < ActiveRecord::Base
       #full_msg
     #end
     
-#     def action_type2
-#       
-#     end
-    
     def rev_action_type
-      if action_type2 && (action_type2==1 || action_type2=='1')
-        #if status=="Refer to TPHEP" && action_type!="Ref TPHEP" #previously saved action type tak berubah (only counseling activated)
-        if action_type 
-	  if action_type !="Refer to TPHEP"  #additional action type checked
-            self.action_type=action_type+"  & counseling"
-	  else
-	    self.action_type="counseling"
-	  end
-        else
-          self.action_type="counseling"
+      if status=="Closed" 
+        if action_type2 && (action_type2==1 || action_type2=='1') 
+          if  (action_type=="" || action_type==nil)
+            self.action_type="counseling"
+          else
+            self.action_type=action_type+" & counseling"
+          end
+        end
+      elsif status=="Refer to BPL"
+        if action_type2 && (action_type2==1 || action_type2=='1') 
+          self.action_type=action_type+" & counseling"
         end
       end
     end

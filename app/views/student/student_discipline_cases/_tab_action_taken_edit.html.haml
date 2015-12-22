@@ -8,14 +8,13 @@
     .col-md-1= f.radio_button :action_type, "Ref to BPL", 	:id => 'bpl', :class => 'radio_action_type'
     .col-md-1=t('student.discipline.refer_bpl')
     .col-md-1= f.radio_button :action_type, "Warning Letter", 	:id => 'warning', :class => 'radio_action_type'
-    .col-md-1 Amaran Bertulis
+    .col-md-1=t('student.discipline.warning_letter')
     .col-md-1= f.radio_button :action_type, "Discharge Leave", 	:id => 'dl', :class => 'radio_action_type'
-    .col-md-1 Lucut Cuti
+    .col-md-1=t('student.discipline.discharge_leave')
     .col-md-1= f.radio_button :action_type, "Charity Works", 	:id => 'cw', :class => 'radio_action_type'
-    .col-md-1 Kerja Amal
+    .col-md-1=t('student.discipline.charity_works')
 
   / TODO
-  /translation - action types as above
   /In SHOW -- revise action taken (action type) --- 
   /1) display if Warning letter, lucut cuti @ Charity works +(counseling)
   /2)+++ when counseling also occured - for BPL
@@ -191,19 +190,24 @@ $(document).ready(function(){
   $("input[id='co']").change(function() {  
     if($('#co').is(':checked')) 
     {  
-      $(".co_item").show();
-      if ((('#warning').is(':checked')) ||  (('#dl').is(':checked')) ||  (('#cw').is(':checked')))
-      {  $(".co_item2").show();}
-      else
-      {  $(".co_item2").hide();}
       var ansM = document.getElementById("student_discipline_case_status");
-      ansM.value = "Closed";
+      $(".co_item").show();
+      if($('#bpl').is(':checked'))
+      {  
+        $(".co_item2").hide();
+        ansM.value = "Refer to BPL";
+      }
+      else
+      {  
+        $(".co_item2").show();
+        ansM.value = "Closed";
+      }
     }
     else
     {  
       $(".co_item").hide();
       if ((('#warning').is(':checked')) ||  (('#dl').is(':checked')) ||  (('#cw').is(':checked')))
-      {  $(".co_item").show();}
+      {  $(".co_item2").show();}
       else
       {  $(".co_item2").hide();}
     }
@@ -212,13 +216,19 @@ $(document).ready(function(){
   $("input[id='co']").each(function() {  
     if($('#co').is(':checked')) 
     { 
-      $(".co_item").show();
-      if ((('#warning').is(':checked')) ||  (('#dl').is(':checked')) ||  (('#cw').is(':checked')))
-      {  $(".co_item2").show();}
-      else
-      {  $(".co_item2").hide();}
       var ansM = document.getElementById("student_discipline_case_status");
-      ansM.value = "Closed";}
+      $(".co_item").show();
+      if($('#bpl').is(':checked'))
+      {  
+        $(".co_item2").hide();
+        ansM.value = "Refer to BPL";
+      }
+      else
+      {  
+        $(".co_item2").show();
+        ansM.value = "Closed";
+      }
+    }
     else
     {  
       $(".co_item").hide();
