@@ -16,7 +16,6 @@ class StudentDisciplineCase < ActiveRecord::Base
   has_many :student_counseling_sessions, :foreign_key => 'case_id', :validate => false#, :dependent => :destroy
   accepts_nested_attributes_for :student_counseling_sessions#, :reject_if => lambda { |a| a[:requested_at].blank? }
   
-  
   validates_presence_of :reported_by, :student_id, :status, :infraction_id, :assigned_to
   
   #validate :confimed_date
@@ -111,7 +110,7 @@ class StudentDisciplineCase < ActiveRecord::Base
     (DropDown::INFRACTION.find_all{|disp, value| value == infraction_id }).map {|disp, value| disp}.first
   end
     
-    def reporter_details 
+  def reporter_details 
           suid = Array(reported_by)
           exists = Staff.all.pluck(:id)
           checker = suid & exists     
@@ -123,43 +122,43 @@ class StudentDisciplineCase < ActiveRecord::Base
           else
             staff.mykad_with_staff_name
           end
-    end
+  end
     
-    def student_name
-      student.blank? ? "Student No Longer Exists" : " #{student.formatted_mykad_and_student_name}" 
-    end
+  def student_name
+    student.blank? ? "Student No Longer Exists" : " #{student.formatted_mykad_and_student_name}" 
+  end
     
-    def file_name
-      cofile.blank? ? "Not Assigned" : " #{cofile.name}"  
-    end
+  def file_name
+    cofile.blank? ? "Not Assigned" : " #{cofile.name}"  
+  end
     
-    def room_no
-      location.blank? ? "Not Assigned" : " #{location.location_list}"  
-    end
+  def room_no
+    location.blank? ? "Not Assigned" : " #{location.location_list}"  
+  end
     
-    #def self.display_msg(err)
-      #full_msg=[]
-      #err.each do |k,v|
-        #full_msg << v
-      #end
-      #full_msg
+  #def self.display_msg(err)
+    #full_msg=[]
+    #err.each do |k,v|
+      #full_msg << v
     #end
+    #full_msg
+  #end
     
-    def rev_action_type
-      if status=="Closed" 
-        if action_type2 && (action_type2==1 || action_type2=='1') 
-          if  (action_type=="" || action_type==nil)
-            self.action_type="counseling"
-          else
-            self.action_type=action_type+" & counseling"
-          end
-        end
-      elsif status=="Refer to BPL"
-        if action_type2 && (action_type2==1 || action_type2=='1') 
+  def rev_action_type
+    if status=="Closed" 
+      if action_type2 && (action_type2==1 || action_type2=='1') 
+        if  (action_type=="" || action_type==nil)
+          self.action_type="counseling"
+        else
           self.action_type=action_type+" & counseling"
         end
       end
+    elsif status=="Refer to BPL"
+      if action_type2 && (action_type2==1 || action_type2=='1') 
+        self.action_type=action_type+" & counseling"
+      end
     end
+  end
     
     private
     

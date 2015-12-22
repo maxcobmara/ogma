@@ -13,12 +13,6 @@
     .col-md-1=t('student.discipline.discharge_leave')
     .col-md-1= f.radio_button :action_type, "Charity Works", 	:id => 'cw', :class => 'radio_action_type'
     .col-md-1=t('student.discipline.charity_works')
-
-  / TODO
-  /In SHOW -- revise action taken (action type) --- 
-  /1) display if Warning letter, lucut cuti @ Charity works +(counseling)
-  /2)+++ when counseling also occured - for BPL
-  /3) if only -any of  these above 3 item selected & counseling NO LONGER required....
   
   .form-group.co_item{style: "display: none;"}
     .col-sm-2.control-label
@@ -242,28 +236,4 @@ $(document).ready(function(){
 });
 
 
-
-
-
-/     else if($('#co').is(':checked')){
-/       $("#nc_item").hide();
-/       $("#ja_item").hide();
-/       $(".co_item").show();
-/       $(".co_item2").show();
-/       $(".au_item").hide();
-/       $(".bpl_item").hide();
-/ 
-/       var ansM = document.getElementById("student_discipline_case_status");
-/       ansM.value = "Closed";
-/     
-/     }
-    
-    
-/ }else if($('#co').is(':checked')){
-/       $("#nc_item").hide();
-/       $("#ja_item").hide();
-/       $(".co_item").show();
-/       $(".co_item2").show();
-/       $(".au_item").hide();
-/       $(".bpl_item").hide();
 
