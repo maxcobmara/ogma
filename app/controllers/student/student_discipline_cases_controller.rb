@@ -44,6 +44,20 @@ class Student::StudentDisciplineCasesController < ApplicationController
        end
      end
   end
+  
+  def discipline_report2
+    @search = StudentDisciplineCase.search(params[:q])
+    @student_discipline_cases2 = @search.result.sort_by{|x|x.student.course_id}
+
+    respond_to do |format|
+       format.pdf do
+         pdf = Discipline_reportPdf.new(@student_discipline_cases2, view_context)
+                   send_data pdf.render, filename: "discipline_report-{Date.today}",
+                   type: "application/pdf",
+                   disposition: "inline"
+       end
+     end
+  end
 
   # GET /student_discipline_cases/1
   # GET /student_discipline_cases/1.xml

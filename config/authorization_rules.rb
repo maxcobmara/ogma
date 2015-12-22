@@ -115,7 +115,7 @@ authorization do
     has_permission_on :student_student_discipline_cases, :to => :approve do 
       if_attribute :assigned_to =>  is {current_user.userable.id} #is {current_user.userable.id}
     end
-    has_permission_on :student_student_discipline_cases, :to => [:manage, :actiontaken, :referbpl, :discipline_report] do
+    has_permission_on :student_student_discipline_cases, :to => [:manage, :actiontaken, :referbpl, :discipline_report, :anacdotal_report] do
       if_attribute :assigned2_to => is {current_user.userable.id}
     end
     

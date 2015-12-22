@@ -17,6 +17,9 @@
         /%li= link_to (fa_icon "file-excel-o", text: (t "student.tenant.list")), student_tenants_path(params.merge(format: "xls"))
         /%li= link_to (fa_icon "file-pdf-o", text: (t "student.tenant.list")), tenant_report_student_tenants_path(params.merge(format: 'pdf' ))
         %li= link_to (fa_icon "file-pdf-o", text: (t "student.discipline.list")), discipline_report_student_student_discipline_cases_path(params.merge(format: 'pdf' ))
+        - if @student_discipline_cases.group_by{|x|x.student_id}.count==1
+          - stu= @student_discipline_cases[0].student_id
+          %li= link_to (fa_icon "file-pdf-o", text: (t "student.discipline.report_title")), anacdotal_report_student_student_discipline_cases_path(student: stu, format: 'pdf')
 
 .row.filter{style: "display:none;"}
   .col-md-2
