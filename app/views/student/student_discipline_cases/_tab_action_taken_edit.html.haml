@@ -2,11 +2,25 @@
   .form-group
     .col-sm-2.control-label
       = f.label  t 'student.discipline.action_type', for: :action_type
-    .col-md-1= f.radio_button :action_type, "counseling",	:id => 'co', :class => 'radio_action_type' 
+    /.col-md-1= f.radio_button :action_type, "counseling",	:id => 'co', :class => 'radio_action_type' 
+    .col-md-1=f.check_box :action_type2, :id => 'co'
     .col-md-1=t('student.discipline.counseling')
     .col-md-1= f.radio_button :action_type, "Ref to BPL", 	:id => 'bpl', :class => 'radio_action_type'
-    .col-md-2=t('student.discipline.refer_bpl')
+    .col-md-1=t('student.discipline.refer_bpl')
+    .col-md-1= f.radio_button :action_type, "Warning Letter", 	:id => 'warning', :class => 'radio_action_type'
+    .col-md-1 Amaran Bertulis
+    .col-md-1= f.radio_button :action_type, "Discharge Leave", 	:id => 'dl', :class => 'radio_action_type'
+    .col-md-1 Lucut Cuti
+    .col-md-1= f.radio_button :action_type, "Charity Works", 	:id => 'cw', :class => 'radio_action_type'
+    .col-md-1 Kerja Amal
 
+  / TODO
+  /translation - action types as above
+  /In SHOW -- revise action taken (action type) --- 
+  /1) display if Warning letter, lucut cuti @ Charity works +(counseling)
+  /2)+++ when counseling also occured - for BPL
+  /3) if only -any of  these above 3 item selected & counseling NO LONGER required....
+  
   .form-group.co_item{style: "display: none;"}
     .col-sm-2.control-label
       = f.label t 'student.discipline.action', for: :action_done
@@ -22,7 +36,7 @@
         = builder.hidden_field :student_id, :value => @student_discipline_case.student_id
         = builder.hidden_field :case_id, :value => @student_discipline_case.id
       
-  .form-group.co_item{style: "display: none;"}
+  .form-group.co_item2{style: "display: none;"}
     .col-sm-2.control-label
       = f.label t 'student.discipline.closed_at_college_on', for: :closed_at_college_on
     .col-md-2
@@ -48,6 +62,7 @@ $(document).ready(function(){
       $("#nc_item").show();
       $("#ja_item").hide();
       $(".co_item").hide();
+      $(".co_item2").hide();
       $(".au_item").hide();
  
       var ansM = document.getElementById("student_discipline_case_status");
@@ -57,6 +72,7 @@ $(document).ready(function(){
       $("#nc_item").hide();
       $("#ja_item").show();
       $(".co_item").hide();
+      $(".co_item2").hide();
       $(".au_item").hide();
  
       var ansM = document.getElementById("student_discipline_case_status");
@@ -66,32 +82,59 @@ $(document).ready(function(){
       $("#nc_item").hide();
       $("#ja_item").hide();
       $(".co_item").hide();
+      $(".co_item2").hide();
       $(".au_item").show();
       $(".bpl_item").hide();
 
       var ansM = document.getElementById("student_discipline_case_status");
       ansM.value = "Refer to TPHEP";
  
-    }else if($('#co').is(':checked')){
-      $("#nc_item").hide();
-      $("#ja_item").hide();
-      $(".co_item").show();
-      $(".au_item").hide();
-      $(".bpl_item").hide();
-
-      var ansM = document.getElementById("student_discipline_case_status");
-      ansM.value = "Closed";
-    
     }else if ($('#bpl').is(':checked')){
       $("#nc_item").hide();
       $("#ja_item").hide();
-      $(".co_item").hide();
+      /*$(".co_item").hide();*/
+      $(".co_item2").hide();
       $(".au_item").hide();
       $(".bpl_item").show();
 
       var ansM = document.getElementById("student_discipline_case_status");
       ansM.value = "Refer to BPL";
+
+    }else if($('#warning').is(':checked')){ 
+      $("#nc_item").hide();
+      $("#ja_item").hide();
+      /*$(".co_item").hide();*/
+      $(".co_item2").show();
+      $(".au_item").hide();
+      $(".bpl_item").hide();
+      
+      var ansM = document.getElementById("student_discipline_case_status");
+      ansM.value = "Closed";
+    
+    }else if($('#dl').is(':checked')){ 
+      $("#nc_item").hide();
+      $("#ja_item").hide();
+      /*$(".co_item").hide();*/
+      $(".co_item2").show();
+      $(".au_item").hide();
+      $(".bpl_item").hide();
+      
+      var ansM = document.getElementById("student_discipline_case_status");
+      ansM.value = "Closed";
+    
+    }else if($('#cw').is(':checked')){ 
+      $("#nc_item").hide();
+      $("#ja_item").hide();
+      /*$(".co_item").hide();*/
+      $(".co_item2").show();
+      $(".au_item").hide();
+      $(".bpl_item").hide();
+      
+      var ansM = document.getElementById("student_discipline_case_status");
+      ansM.value = "Closed";
     }
+    
+   
   });
 
   $("input[class='radio_action_type']").each(function() {  
@@ -99,31 +142,118 @@ $(document).ready(function(){
       $("#nc_item").show();
       $("#ja_item").hide();
       $(".co_item").hide();
+      $(".co_item2").hide();
       $(".au_item").hide();
     }else if ($('#ja').is(':checked')){
       $("#nc_item").hide();
       $("#ja_item").show();
       $(".co_item").hide();
+      $(".co_item2").hide();
       $(".au_item").hide();
     }else if ($('#au').is(':checked')){
       $("#nc_item").hide();
       $("#ja_item").hide();
       $(".co_item").hide();
+      $(".co_item2").hide();
       $(".au_item").show();
-      $(".bpl_item").hide();
-    }else if($('#co').is(':checked')){
-      $("#nc_item").hide();
-      $("#ja_item").hide();
-      $(".co_item").show();
-      $(".au_item").hide();
       $(".bpl_item").hide();
     }else if ($('#bpl').is(':checked')){
       $("#nc_item").hide();
       $("#ja_item").hide();
-      $(".co_item").hide();
+      /*$(".co_item").hide();*/
+      $(".co_item2").hide();
       $(".au_item").hide();
       $(".bpl_item").show();
+    }else if($('#warning').is(':checked')){ 
+      $("#nc_item").hide();
+      $("#ja_item").hide();
+      /*$(".co_item").hide();*/
+      $(".co_item2").show();
+      $(".au_item").hide();
+      $(".bpl_item").hide();
+    }else if($('#dl').is(':checked')){ 
+      $("#nc_item").hide();
+      $("#ja_item").hide();
+      /*$(".co_item").hide();*/
+      $(".co_item2").show();
+      $(".au_item").hide();
+      $(".bpl_item").hide();
+    }else if($('#cw').is(':checked')){ 
+      $("#nc_item").hide();
+      $("#ja_item").hide();
+      /*$(".co_item").hide();*/
+      $(".co_item2").show();
+      $(".au_item").hide();
+      $(".bpl_item").hide();
     }
   });
 
+  $("input[id='co']").change(function() {  
+    if($('#co').is(':checked')) 
+    {  
+      $(".co_item").show();
+      if ((('#warning').is(':checked')) ||  (('#dl').is(':checked')) ||  (('#cw').is(':checked')))
+      {  $(".co_item2").show();}
+      else
+      {  $(".co_item2").hide();}
+      var ansM = document.getElementById("student_discipline_case_status");
+      ansM.value = "Closed";
+    }
+    else
+    {  
+      $(".co_item").hide();
+      if ((('#warning').is(':checked')) ||  (('#dl').is(':checked')) ||  (('#cw').is(':checked')))
+      {  $(".co_item").show();}
+      else
+      {  $(".co_item2").hide();}
+    }
+  });
+
+  $("input[id='co']").each(function() {  
+    if($('#co').is(':checked')) 
+    { 
+      $(".co_item").show();
+      if ((('#warning').is(':checked')) ||  (('#dl').is(':checked')) ||  (('#cw').is(':checked')))
+      {  $(".co_item2").show();}
+      else
+      {  $(".co_item2").hide();}
+      var ansM = document.getElementById("student_discipline_case_status");
+      ansM.value = "Closed";}
+    else
+    {  
+      $(".co_item").hide();
+      if ((('#warning').is(':checked')) ||  (('#dl').is(':checked')) ||  (('#cw').is(':checked')))
+      {  $(".co_item").show();}
+      else
+      {  $(".co_item2").hide();}
+    }
+  });
+  
 });
+
+
+
+
+
+/     else if($('#co').is(':checked')){
+/       $("#nc_item").hide();
+/       $("#ja_item").hide();
+/       $(".co_item").show();
+/       $(".co_item2").show();
+/       $(".au_item").hide();
+/       $(".bpl_item").hide();
+/ 
+/       var ansM = document.getElementById("student_discipline_case_status");
+/       ansM.value = "Closed";
+/     
+/     }
+    
+    
+/ }else if($('#co').is(':checked')){
+/       $("#nc_item").hide();
+/       $("#ja_item").hide();
+/       $(".co_item").show();
+/       $(".co_item2").show();
+/       $(".au_item").hide();
+/       $(".bpl_item").hide();
+

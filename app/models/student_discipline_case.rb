@@ -2,7 +2,7 @@ class StudentDisciplineCase < ActiveRecord::Base
   # befores, relationships, validations, before logic, validation logic, 
   #controller searches, variables, lists, relationship checking
   
-  before_save :close_if_no_case
+  before_save :close_if_no_case, :rev_action_type
   before_destroy :check_case_referred_for_counseling
   
   belongs_to :staff, :foreign_key => 'reported_by'
@@ -27,6 +27,8 @@ class StudentDisciplineCase < ActiveRecord::Base
     #end
   #end
   
+  #attr_accessor :counseling_required
+  
   scope :new2, -> { where(status: 'New')}
   scope :opencase, -> { where(status: 'Open')}
   scope :tphep, -> {where(status: 'Refer to TPHEP')}
@@ -41,6 +43,8 @@ class StudentDisciplineCase < ActiveRecord::Base
     {:scope => "bpl",   :label =>  I18n.t('student.discipline.refer_bpl')},
     {:scope => "closed",:label => I18n.t('student.discipline.closed')}
   ]  
+ 
+  attr_accessor :action_type2
  
   def self.sstaff2(u)
      where('reported_by=? OR assigned_to=? OR assigned2_to=?', u,u,u)
@@ -140,6 +144,25 @@ class StudentDisciplineCase < ActiveRecord::Base
       #end
       #full_msg
     #end
+    
+#     def action_type2
+#       
+#     end
+    
+    def rev_action_type
+      if action_type2 && (action_type2==1 || action_type2=='1')
+        #if status=="Refer to TPHEP" && action_type!="Ref TPHEP" #previously saved action type tak berubah (only counseling activated)
+        if action_type 
+	  if action_type !="Refer to TPHEP"  #additional action type checked
+            self.action_type=action_type+"  & counseling"
+	  else
+	    self.action_type="counseling"
+	  end
+        else
+          self.action_type="counseling"
+        end
+      end
+    end
     
     private
     
