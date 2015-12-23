@@ -1,7 +1,10 @@
 class Student::StudentDisciplineCasesController < ApplicationController
   
   #filter_resource_access
-  filter_access_to :all
+  #filter_access_to :all
+   filter_access_to :index, :new, :create, :discipline_report, :anacdotal_report, :actiontaken, :referbpl, :attribute_check => false
+  filter_access_to :show, :edit, :update, :destroy, :attribute_check => true
+  
   before_action :set_student_discipline_case, only: [:show, :edit, :update, :destroy]
    
   # GET /student_discipline_cases
