@@ -111,18 +111,25 @@ authorization do
 
    has_permission_on :students, :to => :show ###temp - required for access to students menu items
 
-    has_permission_on :student_student_discipline_cases, :to => :create
-    has_permission_on :student_student_discipline_cases, :to => :approve do 
-      if_attribute :assigned_to =>  is {current_user.userable.id} #is {current_user.userable.id}
-    end
-    has_permission_on :student_student_discipline_cases, :to => [:manage, :actiontaken, :referbpl, :discipline_report, :anacdotal_report] do
-      if_attribute :assigned2_to => is {current_user.userable.id}
+   #MOST WORKABLE ONE-start-student_discipline 23 Dec 2015
+    has_permission_on :student_discipline_cases, :to => :create
+    ###read - temp : to avoid using :read -> inc :index where necessary
+    #working too
+    has_permission_on :student_student_discipline_cases, :to => :read do
+      if_attribute :reported_by => is {user.userable.id}
     end
     
-    ###read - temp : to avoid using :read -> inc :index where necessary
-    has_permission_on :student_student_discipline_cases, :to => :read do
-      if_attribute :reported_by => is {current_user.userable.id}
+    #working - refer student/student_discipline_cases/show.html.haml (compare between case creator show & programme mgr show page)
+    has_permission_on :student_discipline_cases, :to => :approve do 
+      if_attribute :assigned_to =>  is {user.userable.id} #is {current_user.userable.id}
     end
+    
+    has_permission_on :student_discipline_cases, :to => [:manage, :actiontaken, :referbpl, :discipline_report, :anacdotal_report] do
+      if_attribute :assigned2_to => is {user.userable.id}
+    end
+    #MOST WORKABLE ONE-end of student discipline
+    
+    
 #    has_permission_on :student_discipline_cases, :to => :read, :join_by => :or do
 #      if_attribute :reported_by => is {current_user.userable.id}
 #      if_attribute :assigned_to => is {current_user.userable.id}
@@ -346,8 +353,8 @@ authorization do
    end
 
    role :student_counsellor do
-     has_permission_on :student_student_counseling_sessions, :to => [:manage, :feedback_referrer]
-     has_permission_on :students, :to => :core
+     has_permission_on :student_counseling_sessions, :to => [:manage, :feedback_referrer]
+     has_permission_on :students, :to => :read
    end
 #####
 #   role :student_counsellor do
