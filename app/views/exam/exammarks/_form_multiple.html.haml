@@ -30,7 +30,8 @@
       - if k=="mcq"
         - qrate << v["weight"].to_f / v["count"].to_i*1 
         - qmarks_ea << 1 
-      - elsif k=="seq" || k=="ospe"
+        /- elsif k=="seq" || k=="ospe"
+      - elsif k=="seq" 
         - qrate << v["weight"].to_f / (v["count"].to_i*10)
         - qmarks_ea << 10
       - elsif k=="meq"
@@ -76,9 +77,11 @@
 - @vivacount=qcount[8]
 - @vivaweight_rate=qrate[8]
 - @truefalsecount=qcount[9]
-- @truefalseweight_rate=qrate[9]
+= @truefalseweight_rate=qrate[9]
 
-
+=qmarks_ea
+=qcount
+=qrate
 
 - @allcount= @mcqcount+@meqcount+@seqcount+@acqcount+@oscicount+@osciicount+@oscecount+@ospecount+@vivacount+@truefalsecount
 - @fullmarks = Exammark.fullmarks(@examid)
@@ -361,14 +364,14 @@ $(document).ready(function(){
         window["other_field_"+i+"_"+k] = document.getElementById("student_mark_"+i+"_"+k);
       
         meq_count2=meq_count;
-        seq_count2=meq_count2+seq_count;
-        acq_count2=seq_count2+acq_count;
-        osci_count2=acq_count2+osci_count;
-        oscii_count2=osci_count2+oscii_count;
-        osce_count2=oscii_count2+osce_count;
-        ospe_count2=osce_count2+ospe_count;
-        viva_count2=ospe_count2+viva_count;
-        truefalse_count2=viva_count2+truefalse_count;
+        seq_count2=meq_count2*1+seq_count*1 /*meq_count2+seq_count;*/
+        acq_count2=seq_count2*1+acq_count*1;
+        osci_count2=acq_count2*1+osci_count*1;
+        oscii_count2=osci_count2*1+oscii_count*1;
+        osce_count2=oscii_count2*1+osce_count*1;
+        ospe_count2=osce_count2*1+ospe_count*1;
+        viva_count2=ospe_count2*1+viva_count*1;
+        truefalse_count2=viva_count2*1+truefalse_count*1;
        
         if (k < meq_count2)
        {  
@@ -377,10 +380,11 @@ $(document).ready(function(){
         }
         else 
         {
-          if ((k >= meq_count2) && (k < seq_count2))
+          if ((k >= meq_count2) && (k < seq_count2)) /*seq_count2 = 22*/
           { 
             rate=seqweight_rate;
             marks_each=seqmarks;
+            
           }
           else if ((k >= seq_count2) && (k < acq_count2))
           { 
