@@ -79,7 +79,11 @@
                     =number_with_precision(exammark.totalsummative, precision: 2) 
                   - else
                     \-
-                  =" / "+exammark.exampaper.exam_template.total_in_weight.to_s+" %"
+                  \/
+                  - if exammark.exampaper.exam_template.total_in_weight==0
+                    = number_with_precision(exammark.total_weightage, precision: 2).to_s+" %"
+                  - else
+                    = exammark.exampaper.exam_template.total_in_weight.to_s+" %"
                   
               - index2+=1
       

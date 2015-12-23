@@ -175,7 +175,7 @@ $(document).ready(function(){
       window["formative_summative"+i] = document.getElementById("finalscore"+i);
       finale=a+(window["summative70_val"+i])*1;
       window["formative_summative"+i].value = a+(window["summative70_val"+i])*1;
-      if (finale > 100)
+      if (finale > 100.0)
       {  window["formative_summative"+i].style.color="red";}
       else
       {  window["formative_summative"+i].style.color="black";}
@@ -217,19 +217,19 @@ $(document).ready(function(){
       }  
       
       window["totalmarks_field"+i]=document.getElementById("finalexam"+i);
-      if (window["total_marks"+i] > 100)
+      if (window["total_marks"+i] > 100.0)
       {  window["totalmarks_field"+i].style.color="red";}
       else
       {  window["totalmarks_field"+i].style.color="black";}
       
       summative=window["summative"+i].value;
-      if (summative > summativeweightage)
+      if (summative > summativeweightage*1.0)
       {  window["summative"+i].style.color="red";}
       else
       {  window["summative"+i].style.color="black";}
       
       sum_both=window["formative_summative"+i].value;
-      if (sum_both > 100)
+      if (sum_both > 100.0)
       {  window["finalscore"+i].style.color="red";}
       else
       {  window["finalscore"+i].style.color="black";}
@@ -267,7 +267,7 @@ $(document).ready(function(){
         {  window["otherfield_"+i+"_"+k].style.color="black";}
       }
       window["cplus"+i].value=a;
-      if (a > formativeweight)
+      if (a > formativeweight*1.0)
       {  window["cplus"+i].style.color="red";}
       else
       {  window["cplus"+i].style.color="black";}
@@ -275,7 +275,7 @@ $(document).ready(function(){
       window["formative_summative"+i] = document.getElementById("finalscore"+i);
       finale=a+(window["summative70_val"+i])*1;
       window["formative_summative"+i].value = a+(window["summative70_val"+i])*1;
-      if (finale > 100)
+      if (finale > 100.0)
       {  window["formative_summative"+i].style.color="red";}
       else
       {  window["formative_summative"+i].style.color="black";}
@@ -326,19 +326,19 @@ $(document).ready(function(){
       }
       
       window["totalmarks_field"+i]=document.getElementById("finalexam"+i);
-      if (window["total_marks"+i] > 100)
+      if (window["total_marks"+i] > 100.0)
       {  window["totalmarks_field"+i].style.color="red";}
       else
       {  window["totalmarks_field"+i].style.color="black";}
       
       summative=window["summative"+i].value;
-      if (summative > summativeweightage)
+      if (summative > summativeweightage*1.0)
       {  window["summative"+i].style.color="red";}
       else
       {  window["summative"+i].style.color="black";}
       
       sum_both=window["formative_summative"+i].value;
-      if (sum_both > 100)
+      if (sum_both > 100.0)
       {  window["finalscore"+i].style.color="red";}
       else
       {  window["finalscore"+i].style.color="black";}

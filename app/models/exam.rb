@@ -224,7 +224,8 @@ class Exam < ActiveRecord::Base
       exam_template.question_count.each do |k, v|
         if v['count']!='' || v['count']!=nil 
           qty=(v['count']).to_i
-          if v["full_marks"] && v["full_marks"]!='' || v["full_marks"]!=nil
+          #if v["full_marks"] && v["full_marks"]!='' || v["full_marks"]!=nil
+	  unless v["full_marks"] && v["full_marks"]==''
             sum1=v["full_marks"].to_f
           else
             if k=="mcq"
