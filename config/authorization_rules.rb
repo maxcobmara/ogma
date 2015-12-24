@@ -313,6 +313,7 @@ authorization do
    has_permission_on :exam_evaluate_courses, :to => [:read, :courseevaluation, :evaluation_report] do
      if_attribute :course_id => is_in {user.evaluations_of_programme}
    end
+   has_permission_on :exam_examresults, :to => [:menu, :read, :index2, :show2, :examination_slip, :show3, :examination_transcript]# :create, :update, :destroy]   
    has_permission_on :exam_examanalyses, :to => [:menu, :read] do
       if_attribute :exam_id => is_in {user.by_programme_exams}  
    end
