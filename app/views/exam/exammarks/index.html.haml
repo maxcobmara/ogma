@@ -4,7 +4,8 @@
   /=@valid_exammm
 .navbar.navbar-inverse{role: "navigation", style: "padding-right:40px;"}
   %ul.nav.navbar-nav
-    %li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'actions.new'))), new_exam_exammark_path
+    - permitted_to? :create, :exam_exammarks do
+      %li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'actions.new'))), new_exam_exammark_path
   %ul.nav.navbar-nav.navbar-right
     %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "index_search_bar"
     %li.toga= link_to content_tag(:li, fa_icon("print", text: (t 'actions.print'))), "#", class: 'bogus'  
@@ -25,17 +26,17 @@
   - programme.descendants.each do |descendant|
     - diploma_subjects << descendant.id if descendant.course_type=='Subject'
 
-
-/= form_tag :action => 'new_multiple', class: "form-inline" do
-= form_tag new_multiple_exam_exammarks_path, :method => :put , :id => "form2" do
-  .form-group
-    .col-md-3
-      .input-group
-        .input-group-addon
-          = t 'exam.exammark.exam_id'
-        = select_tag('examid', options_from_collection_for_select(@exams_list, :id, :exam_code_date_type), class: "form-control", width: "50px;") 
-    .col-md-2
-      = submit_tag t('exam.exammark.new_multiple'), :subject_id => nil, class: "btn btn-default"
+- permitted_to? :create, :exam_exammarks do
+  /= form_tag :action => 'new_multiple', class: "form-inline" do
+  = form_tag new_multiple_exam_exammarks_path, :method => :put , :id => "form2" do
+    .form-group
+      .col-md-3
+        .input-group
+          .input-group-addon
+            = t 'exam.exammark.exam_id'
+          = select_tag('examid', options_from_collection_for_select(@exams_list, :id, :exam_code_date_type), class: "form-control", width: "50px;") 
+      .col-md-2
+        = submit_tag t('exam.exammark.new_multiple'), :subject_id => nil, class: "btn btn-default"
 .row
   .col-md-12
     /.alert.alert-warning
@@ -69,7 +70,9 @@
                       %span{:style=>"color:blue;"}=t 'exam.exams.with_questions'
 
               %tr
-                %td{:style=>"text-align: center;"}= check_box_tag "exammark_ids[]", exammark.id, true, :id => "exammarkidss_#{index2}"
+                %td{:style=>"text-align: center;"}
+                  - permitted_to? :edit_multiple, :exam_exammarks do
+                    = check_box_tag "exammark_ids[]", exammark.id, true, :id => "exammarkidss_#{index2}"
                 %td= link_to exammark.studentmark.matrix_name, exam_exammark_path(exammark)
                 %td=h exammark.studentmark.icno
                 %td=number_with_precision(exammark.total_marks, precision: 2) if exammark.total_mcq
@@ -96,12 +99,13 @@
           /      = t('actions.check_all')
     
           %br
-          %table
-            %tr
-              %td{:style=> "width:200px; text-align: right; padding:5px;"}
-                = submit_tag t('edit_checked'), :name => :exammark_submit_button, class: "btn btn-default"
-              %td{:style=>"padding:5px;"}= check_box_tag :check_all
-              %td{:style=>"padding:5px;"}= t('actions.check_all')   
+          - permitted_to? :edit_multiple, :exam_exammarks do
+            %table
+              %tr
+                %td{:style=> "width:200px; text-align: right; padding:5px;"}
+                  = submit_tag t('edit_checked'), :name => :exammark_submit_button, class: "btn btn-default"
+                %td{:style=>"padding:5px;"}= check_box_tag :check_all
+                %td{:style=>"padding:5px;"}= t('actions.check_all')   
         
   .right{style:"padding:0 30px; margin:0;"}= paginate @exammarks, :theme => 'twitter-bootstrap-3'
 
