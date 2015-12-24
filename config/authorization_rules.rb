@@ -307,6 +307,7 @@ authorization do
 
  role :programme_manager do
    has_permission_on :exam_examquestions, :to => :manage
+   has_permission_on :exam_exam_templates, :to => [:menu, :read]
    has_permission_on :exam_exams, :to => [:menu, :read, :exampaper, :question_selection] #[:manage, :exampaper, :question_selection]
    has_permission_on :exam_exammarks, :to => [:menu, :read] #[:manage, :edit_multiple, :update_multiple, :new_multiple, :create_multiple]
    has_permission_on :exam_evaluate_courses, :to => [:read, :courseevaluation, :evaluation_report] do

@@ -44,6 +44,22 @@ class ExamTemplate < ActiveRecord::Base
     question_count.each{|k,v|total+=v['weight'].to_f if k!="mcq"}
     total
   end
+  
+  def self.search2(search)
+    if search
+      admin_ids=Role.joins(:users).where(authname: 'administration').pluck(:user_id)
+      if search=='0'
+        @exam_templates=ExamTemplate.all
+      elsif search=='1' #common subject - on hold (currently programme / postbasic SUP only)
+      elsif search=='2'
+        creators=Position.where('unit ILIKE (?) OR unit ILIKE (?) OR unit ILIKE (?)', "%Pengkhususan%", "%Pos Basik%", "%Diploma Lanjutan%").pluck(:staff_id)
+        @exam_templates=ExamTemplate.where(created_by: creators+admin_ids)
+      else
+        creators=Position.where(unit: Programme.where(id: search).first.name).pluck(:staff_id)
+        @exam_templates=ExamTemplate.where(created_by: creators+admin_ids)
+      end
+    end
+  end
 
   def valid_for_removal
     if Exam.where(topic_id: id).count > 0
