@@ -1,16 +1,35 @@
 .col-md-10
+  = link_to t('actions.download_excel'), analysis_data_exam_examanalyses_path(exam_id: @examanalysis.exam_id , format: 'xls')
+  = link_to (fa_icon "file-excel-o"), analysis_data_exam_examanalyses_path(exam_id: @examanalysis.exam_id , format: 'xls')
+  
+  - paper=@examanalysis.exampaper
+      
   %dl.dl-horizontal
-    %dt=t 'exam.exams.title'
-    %dd
-      =h @examanalysis.exampaper.exam_name_subject_date 
-      = link_to (fa_icon "file-excel-o"), analysis_data_exam_examanalyses_path(exam_id: @examanalysis.exam_id , format: 'xls')
-      /= link_to  (fa_icon "file-pdf-o"), laporan_penginapan2_student_tenants_path(blockid: building.id, format: 'pdf')
-      /= "  "+building.name
+    %dt= t 'exam.exams.course_id'
+    %dd=h paper.subject_id? ? paper.subject.root.course_type+" "+paper.subject.root.name : "" 
+    
+    %dt= t 'exam.exams.subject_id'
+    %dd=h paper.subject_id? ? paper.subject.subject_list : ""
+      
+    %dt=t 'exam.exams.semester'
+    %dd= (t 'exam.exams.year')+paper.set_year+", "+(t 'exam.exams.semester')+paper.set_semester
+    
+    %dt=t 'training.academic_session.title'
+    %dd=paper.sesi_data
+    
+    - intake=Exammark.set_intake_group(paper.exam_on.year, paper.exam_on.month, paper.subject.parent.code,@current_user).to_date
+    %dt=t 'exam.exammark.intake'
+    %dd=intake.try(:strftime, '%b %Y')
+    
+    %dt= t 'exam.examanalysis.final_exam'
+    %dd=link_to paper.exam_name_subject_date, exam_exam_path(@examanalysis.exam_id)
+     
+      
     
   %br
-    - exammarks=@examanalysis.exampaper.exammarks
+    - exammarks=paper.exammarks
     - students=Student.where(id: exammarks.pluck(:student_id))
-    - subjectid=@examanalysis.exampaper.subject_id
+    - subjectid=paper.subject_id
     /Absent data
     - absent_grades=Grade.where(subject_id: subjectid).where.not(student_id: students)
     - absent_exammark_exist=[]
@@ -26,7 +45,7 @@
     - mid_summative=summative_weightage/2.0
     
     /Final Full marks (exam.total_marks != exammark.total_marks)
-    - finalmarks_full=@examanalysis.exampaper.total_marks
+    - finalmarks_full=paper.total_marks
     - mid_finalmarks=finalmarks_full/2.0
     - mid_finalscores=100/2.0
     - qcount=[]
@@ -35,7 +54,7 @@
     - qmarks_ea=[]
     - qtype=[]
 
-    - @examanalysis.exampaper.exam_template.question_count.each do |k,v|
+    - paper.exam_template.question_count.each do |k,v|
       - qtype << k if v["count"]!=''
       /- qcount << v["count"].to_i
       - if v["weight"]!='' && v["count"]!=''
@@ -108,7 +127,7 @@
 
     - total_questions = qcount.sum
     - total_mcq_questions=0
-    - @examanalysis.exampaper.exam_template.question_count.each{|k,v|total_mcq_questions=v['count'].to_i if k=="mcq"}
+    - paper.exam_template.question_count.each{|k,v|total_mcq_questions=v['count'].to_i if k=="mcq"}
     - total_nonmcq_questions=total_questions - total_mcq_questions
     - questionstype=qtype
     - questionstype_count = qtype.count
@@ -596,8 +615,16 @@
           %font{color: "grey", size: "-2"} (<35)
         %th.centre 0.00
         %td.centre=@examanalysis.e_count(ngs)
-        
-        
+
+- @formatives=formatives
+- @mcqs=mcqs
+- @ngs=ngs
+- @qmarks_ea=qmarks_ea
+- @qtype=qtype
+- @qcount=qcount
+- @marks_by_questions=marks_by_questions
+- @formative_weightage=formative_weightage
+- @total_nonmcq_questions=total_nonmcq_questions
     
         
 /Fisioterapi - MCQ count not exactly 40 but total MCQ will be converted into weightage of 40% - note this card : https://trello.com/c/A4OyDJkv -- sama dgn pem peg perubatan

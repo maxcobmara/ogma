@@ -3,7 +3,7 @@ class Exam::ExamanalysesController < ApplicationController
   filter_access_to :show, :edit, :update, :destroy, :attribute_check => true
   
   before_action :set_examanalysis, only: [:show, :edit, :update, :destroy]
-  before_action :set_index_index2_data, only: [:index, :index2]
+  before_action :set_index_new_data, only: [:index, :new]
   
   def index
     respond_to do |format|
@@ -17,6 +17,62 @@ class Exam::ExamanalysesController < ApplicationController
     end
   end
   
+  def new
+    @examanalysis=Examanalysis.new
+    exist=Examanalysis.pluck(:exam_id)
+    grades_subject_ids=Grade.where(subject_id: @subject_ids).pluck(:subject_id)
+    @exams=Exam.where(name: "F").where(subject_id: grades_subject_ids).where.not(id: exist)
+    respond_to do |format|
+      format.html # new.html.erb
+      format.xml  { render :xml => @examanalysis }
+    end
+  end
+    
+  def create
+    @examanalysis = Examanalysis.new(examanalysis_params)
+    exist=Examanalysis.pluck(:exam_id)
+    grades_subject_ids=Grade.where(subject_id: @subject_ids).pluck(:subject_id)
+    @exams=Exam.where(name: "F").where(subject_id: grades_subject_ids).where.not(id: exist)
+    respond_to do |format|
+      if @examanalysis.save
+        flash[:notice]=t('exam.examanalysis.analysis_created')
+        format.html {render :action => "edit"}
+        format.xml  { render :xml => @examanalysis, :status => :created}
+      else
+        format.html { render :action => "new" }
+        format.xml  { render :xml => @examanalysis.errors, :status => :unprocessable_entity }
+      end
+    end
+  end
+  
+  # PUT /examanalyses/1
+  # PUT /examanalyses/1.xml
+  def update
+    @examanalysis = Examanalysis.find(params[:id])
+    respond_to do |format|
+      if @examanalysis.update(examanalysis_params)
+        format.html { redirect_to(exam_examanalysis_path(@examanalysis), :notice => t('exam.examanalysis.title')+t('actions.updated')) }
+        format.xml  { head :ok }
+      else
+        format.html { render :action => "edit" }
+        format.xml  { render :xml => @exammark.errors, :status => :unprocessable_entity }
+      end
+    end
+  end
+  
+    
+  # DELETE /examanalyses/1
+  # DELETE /examanalyses/1.xml
+  def destroy
+    @examanalysis = Examanalysis.find(params[:id])
+    @examanalysis.destroy
+
+    respond_to do |format|
+      format.html { redirect_to(exam_examanalyses_url) }
+      format.xml  { head :ok }
+    end
+  end
+  
   def analysis_data
     @exam_id = params[:exam_id]
     @analysis=Examanalysis.where(exam_id: @exam_id) #result must be in hash/arr
@@ -27,8 +83,7 @@ class Exam::ExamanalysesController < ApplicationController
       format.xls { send_data @analysis.to_csv3(col_sep: "\t") } 
     end
   end
-    
-  
+
   private 
   
   # Use callbacks to share common setup or constraints between actions.
@@ -36,7 +91,7 @@ class Exam::ExamanalysesController < ApplicationController
       @examanalysis = Examanalysis.find(params[:id])
     end
     
-    def set_index_index2_data
+    def set_index_new_data
       position_exist = @current_user.userable.positions
       roles= @current_user.roles.pluck(:authname)
       @is_admin=true if roles.include?("administration")
@@ -68,16 +123,21 @@ class Exam::ExamanalysesController < ApplicationController
             end
           end
         end
+        if programme_id=='0'
+          @subject_ids=Programme.where(course_type: 'Subject').pluck(:id)
+        else
+          @subject_ids=Programme.where(id: programme_id).first.descendants.where(course_type: 'Subject').pluck(:id)
+        end
         #INDEX use
         @search = Examanalysis.search(params[:q])
         @examanalyses = @search.result.search2(programme_id)
         @examanalyses = @examanalyses.page(params[:page]||1)
-        #INDEX2 use
-#         @search2 = Resultline.search(params[:q])
-#         @resultlines = @search2.result.search2(programme_id) 
-#         @resultlines = @resultlines.sort_by(&:student_id)#order(student_id: :asc)
-#         @resultlines = Kaminari.paginate_array(@resultlines).page(params[:page]||1) #@resultlines.page(params[:page]||1)
-#         @progid=programme_id
       end
     end
+    
+     # Never trust parameters from the scary internet, only allow the white list through.
+    def examanalysis_params
+      params.require(:examanalysis).permit(:exam_id, :gradeA, :gradeAminus, :gradeBplus, :gradeB, :gradeBminus, :gradeCplus, :gradeC, :gradeCminus, :gradeDplus, :gradeD, :gradeE)
+    end
+    
 end

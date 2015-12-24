@@ -203,6 +203,8 @@ en:
         examweight: "Weightage (Summative)"
         exam1marks: "Marks "
         finalscore: Total Marks
+      examanalysis:
+        exam_id: Final Exam
     errors:
         template:
           body: "There were problems with the following fields:"
@@ -2580,6 +2582,7 @@ en:
       pass_rate: Pass Rate
       percent_pass: "% Pass"
       formative: Formative
+      analysis_created: "Examination Paper data was saved, click 'Update' to save grading details accordingly."
 
     exam_template:
       title: Exampaper Template

@@ -227,7 +227,7 @@ authorization do
    end
    
    has_permission_on :exam_examanalyses, :to => [:edit, :update, :delete, :analysis_data] do
-     if_attribute :programme_id => is_in {user.lecturers_programme2}  
+     if_attribute :exam_id => is_in {user.sup_programme_exams}  
    end
    
 #    has_permission_on :exam_examquestions, :to =>:update, :join_by => :and do
