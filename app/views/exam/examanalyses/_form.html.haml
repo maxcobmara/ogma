@@ -1,1 +1,24 @@
- 
+- model_class = Examanalysis
+.row
+  .col-md-offset-1
+    / Nav tabs
+    %ul.nav.nav-tabs
+      %li.active= link_to ((t 'exam.examanalysis.details')),"#examanalysis_details", "data-toggle" => "tab"
+
+    / display 
+    .tab-content{style:"padding-top:1em"}
+      #examanalysis_details.tab-pane.active
+        %br
+        = render 'student_and_marks'
+        
+        =f.hidden_field :gradeA, value: @examanalysis.a_count(@ngs), class: 'form-control', readonly: true
+        =f.hidden_field :gradeAminus, value: @examanalysis.a_minus_count(@ngs), class: 'form-control', readonly: true
+        =f.hidden_field :gradeBplus, value: @examanalysis.b_plus_count(@ngs), class: 'form-control', readonly: true
+        =f.hidden_field :gradeB, value: @examanalysis.b_count(@ngs), class: 'form-control', readonly: true
+        =f.hidden_field :gradeBminus, value: @examanalysis.b_minus_count(@ngs), class: 'form-control', readonly: true
+        =f.hidden_field :gradeCplus, value: @examanalysis.c_plus_count(@ngs), class: 'form-control', readonly: true
+        =f.hidden_field :gradeC, value: @examanalysis.c_count(@ngs), class: 'form-control', readonly: true
+        =f.hidden_field :gradeCminus, value: @examanalysis.c_minus_count(@ngs), class: 'form-control', readonly: true
+        =f.hidden_field :gradeDplus, value: @examanalysis.d_plus_count(@ngs), class: 'form-control', readonly: true
+        =f.hidden_field :gradeD, value: @examanalysis.d_count(@ngs), class: 'form-control', readonly: true
+        =f.hidden_field :gradeE, value: @examanalysis.e_count(@ngs), class: 'form-control', readonly: true

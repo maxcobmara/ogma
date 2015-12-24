@@ -397,6 +397,28 @@ class User < ActiveRecord::Base
     subject_ids
   end
   
+  def sup_programme_exams
+    mypost = Position.where(staff_id: userable_id).first
+    myunit = mypost.unit
+    postbasics=['Pengkhususan', 'Pos Basik', 'Diploma Lanjutan']
+    post_prog=Programme.roots.where(course_type: postbasics)
+    common_subjects=['Sains Tingkahlaku','Sains Perubatan Asas', 'Komunikasi & Sains Pengurusan', 'Anatomi & Fisiologi', 'Komuniti']
+    dip_prog=Programme.roots.where(course_type: 'Diploma').pluck(:name)
+    if dip_prog.include?(myunit)
+      subject_ids=Programme.roots.where(name: myunit).first.descendants.at_depth(2).pluck(:id)
+    elsif postbasics.include?(myunit)
+      post_prog.pluck(:name).each do |pname|
+        @programmeid=Programme.roots.where(name: pname).pluck(:id) if mypost.tasks_main.include?(pname)
+      end
+      subject_ids=Programme.roots.where(id: @programmeid).first.descendants.at_depth(2).pluck(:id)
+    elsif common_subjects.include?(myunit) 
+      subject_ids=Programme.where(course_type: 'Commonsubject').pluck(:id)
+    else
+      subject_ids=Programme.where(course_type: ['Subject', 'Commonsubject']).pluck(:id)
+    end
+    exam_ids=Exam.where(subject_id: subject_ids).pluck(:id)
+  end
+  
   def role_symbols
    roles.map do |role|
     role.authname.to_sym

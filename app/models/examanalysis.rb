@@ -526,7 +526,12 @@ class Examanalysis < ActiveRecord::Base
       csv << title_row
       csv << title_row2
       for student in students.sort_by{|x|[x.id, x.name]}    
-        csv << ["#{bil2+=1}", student.name, student.matrixno.nil? ? "\'\'" : student.matrixno, student.icno, formatives[bil2-1], mcqs[bil2-1]]+marks_by_students[bil2-1]+[finalmarks[bil2-1], finalscores[bil2-1], grading[bil2-1], ngs[bil2-1]]
+        if student.matrixno==''|| student.matrixno.nil? || student.matrixno.blank?
+          matrix="\'\'"
+        else
+          matrix=student.matrixno
+        end
+        csv << ["#{bil2+=1}", student.name, matrix, student.icno, formatives[bil2-1], mcqs[bil2-1]]+marks_by_students[bil2-1]+[finalmarks[bil2-1], finalscores[bil2-1], grading[bil2-1], ngs[bil2-1]]
       end
       absent_lines.each do |abl|
         csv << ["#{bil2+=1}"]+abl 

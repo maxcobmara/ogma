@@ -461,6 +461,45 @@ class Exam < ActiveRecord::Base
       examtemplates.destroy_all
     end
   end
+  
+  #use in examanalysis
+  def sesi_data
+    #sesi data - refer comment by Fisioterapi (Pn Norazebah), note too - Kebidanan intake : Mac / Sept
+    #refers to 'academic session' - when the classes / learning & examination takes place).
+    diplomas=Programme.roots.where(course_type: 'Diploma')#.pluck(:id)
+    posbasiks=Programme.roots.where(course_type: ['Diploma Lanjutan', 'Pos Basik', 'Pengkhususan'])#.pluck(:id)
+    diploma_subject_ids=[]
+    posbasik_subject_ids=[]
+    diplomas.each do |dip|
+      dip.descendants.each{|x|diploma_subject_ids << x.id if x.course_type=='Subject'}
+    end
+    posbasiks.each do |postb|
+      postb.descendants.each{|x|posbasik_subject_ids << x.id if x.course_type=='Subject'}
+    end
+    exam_month=exam_on.month
+    exam_year=exam_on.year
+    if diploma_subject_ids.include?(subject_id)
+      if exam_month <= 6
+        sesi="Januari - Jun "+exam_year.to_s
+      else
+        sesi="Julai - Disember "+exam_year.to_s
+      end
+    elsif posbasik_subject_ids.include?(subject_id)
+      if exam_month > 3 && exam_month <= 9    #inc. 9 when... eg. awal bln exam, akhir bln new intake?
+        sesi="Mac - Ogos "+exam_year.to_s
+      else
+        if exam_month <=3
+          sesi="Sept "+(exam_year-1).to_s+" - Februari "+exam_year.to_s
+        elsif exam_month > 9
+          sesi="Sept "+(exam_year-1).to_s+" - Februari "+(exam_year+1).to_s  #almost impossible Exam held > 2 months be4 semester ended?
+        end
+      end
+    end
+    sesi
+  end
+  
+  
+  ###########
 
 private
 

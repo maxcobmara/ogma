@@ -43,8 +43,8 @@
             %td=h l(examanalysis.exampaper.exam_on, :format => "%d %b %Y") 
             %td
               =h examanalysis.exampaper.render_examtype[0]
-              - if examanalysis.exampaper.klass_id==0 
-                %font{color: "blue"} (Template)
+              - if examanalysis.exampaper.klass_id==1
+                %font{color: "blue"}=t('exam.exams.with_questions')
             %td=h examanalysis.gradeA 
             %td=h examanalysis.gradeAminus
             %td=h examanalysis.gradeBplus 
