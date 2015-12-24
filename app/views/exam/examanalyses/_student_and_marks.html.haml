@@ -1,6 +1,7 @@
 .col-md-10
-  = link_to t('actions.download_excel'), analysis_data_exam_examanalyses_path(exam_id: @examanalysis.exam_id , format: 'xls')
-  = link_to (fa_icon "file-excel-o"), analysis_data_exam_examanalyses_path(exam_id: @examanalysis.exam_id , format: 'xls')
+  - permitted_to? :analysis_data, :exam_examanalyses do
+    = link_to t('actions.download_excel'), analysis_data_exam_examanalyses_path(exam_id: @examanalysis.exam_id , format: 'xls')
+    = link_to (fa_icon "file-excel-o"), analysis_data_exam_examanalyses_path(exam_id: @examanalysis.exam_id , format: 'xls')
   
   - paper=@examanalysis.exampaper
       

@@ -4,7 +4,8 @@
   
 .navbar.navbar-inverse{role: "navigation", style: "padding-right:40px;"}
   %ul.nav.navbar-nav
-    %li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'actions.new'))), new_exam_exam_path
+    - permitted_to? :create, :exam_exams do
+      %li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'actions.new'))), new_exam_exam_path
     %li= link_to (t 'actions.download_excel'), exam_exams_path(format: "xls"), class: 'bogus'
   %ul.nav.navbar-nav.navbar-right
     %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: 'index_search_bar'
