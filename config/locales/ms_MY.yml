@@ -184,6 +184,8 @@ ms_MY:
         examweight: "Wajaran (Sumatif)"
         exam1marks: "Markah "
         finalscore: Jumlah Akhir
+      examanalysis:
+        exam_id: Peperiksaan Akhir
     errors:
         template:
           body: "Berikut adalah beberapa masalah:"
@@ -2520,6 +2522,7 @@ ms_MY:
       pass_rate: Jumlah Lulus
       percent_pass: "% Lulus"
       formative: Formatif
+      analysis_created: "Data Kertas Peperiksaan telah disimpan, klik butang 'Kemaskini' untuk menyimpan maklumat pengredan."
 
     exam_template:
       title: Template Kertas Peperiksaan

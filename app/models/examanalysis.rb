@@ -1,7 +1,7 @@
 class Examanalysis < ActiveRecord::Base
   
-  validates_presence_of :exam_id, :message => I18n.t('examanalysis.exam_must_exist')
-  validates_uniqueness_of :exam_id, :message => I18n.t('examanalysis.exam_must_uniq')
+  validates_presence_of :exam_id, :message => I18n.t('exam.examanalysis.exam_must_exist')
+  validates_uniqueness_of :exam_id, :message => I18n.t('exam.examanalysis.exam_must_uniq')
   has_many :examquestionanalyses#, :dependent => :destroy                                                     
   accepts_nested_attributes_for :examquestionanalyses, :reject_if => lambda { |a| a[:examquestion_id].blank? }
   belongs_to :exampaper, :class_name => 'Exam', :foreign_key => 'exam_id'

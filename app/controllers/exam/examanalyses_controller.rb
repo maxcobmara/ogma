@@ -3,7 +3,7 @@ class Exam::ExamanalysesController < ApplicationController
   filter_access_to :show, :edit, :update, :destroy, :attribute_check => true
   
   before_action :set_examanalysis, only: [:show, :edit, :update, :destroy]
-  before_action :set_index_index2_data, only: [:index, :index2]
+  before_action :set_index_new_data, only: [:index, :new]
   
   def index
     respond_to do |format|
@@ -13,6 +13,34 @@ class Exam::ExamanalysesController < ApplicationController
       else
         format.html { redirect_to(dashboard_url, :notice =>t('positions_required')+(t 'exam.title')+" - "+(t 'exam.examanalysis.title'))}
         format.xml  { render :xml => @examanalyses.errors, :status => :unprocessable_entity }
+      end
+    end
+  end
+  
+  def new
+    @examanalysis=Examanalysis.new
+    exist=Examanalysis.pluck(:exam_id)
+    grades_subject_ids=Grade.where(subject_id: @subject_ids).pluck(:subject_id)
+    @exams=Exam.where(name: "F").where(subject_id: grades_subject_ids).where.not(id: exist)
+    respond_to do |format|
+      format.html # new.html.erb
+      format.xml  { render :xml => @examanalysis }
+    end
+  end
+    
+  def create
+    @examanalysis = Examanalysis.new(examanalysis_params)
+    exist=Examanalysis.pluck(:exam_id)
+    grades_subject_ids=Grade.where(subject_id: @subject_ids).pluck(:subject_id)
+    @exams=Exam.where(name: "F").where(subject_id: grades_subject_ids).where.not(id: exist)
+    respond_to do |format|
+      if @examanalysis.save
+        flash[:notice]=t('exam.examanalysis.analysis_created')
+        format.html {render :action => "edit"}
+        format.xml  { render :xml => @examanalysis, :status => :created}
+      else
+        format.html { render :action => "new" }
+        format.xml  { render :xml => @examanalysis.errors, :status => :unprocessable_entity }
       end
     end
   end
@@ -63,7 +91,7 @@ class Exam::ExamanalysesController < ApplicationController
       @examanalysis = Examanalysis.find(params[:id])
     end
     
-    def set_index_index2_data
+    def set_index_new_data
       position_exist = @current_user.userable.positions
       roles= @current_user.roles.pluck(:authname)
       @is_admin=true if roles.include?("administration")
@@ -94,6 +122,11 @@ class Exam::ExamanalysesController < ApplicationController
               programme_id = Programme.where('name ILIKE (?) AND ancestry_depth=?',"%#{leader_unit}%",0).first.id
             end
           end
+        end
+        if programme_id=='0'
+          @subject_ids=Programme.where(course_type: 'Subject').pluck(:id)
+        else
+          @subject_ids=Programme.where(id: programme_id).first.descendants.where(course_type: 'Subject').pluck(:id)
         end
         #INDEX use
         @search = Examanalysis.search(params[:q])
