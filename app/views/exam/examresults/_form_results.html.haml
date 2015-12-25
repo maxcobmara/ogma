@@ -11,6 +11,8 @@
         /- kebidanan = Programme.roots.where('name ILIKE(?)', '%Kebidanan%').first.id
         - posbasiks = Programme.roots.where(course_type: ['Pos Basik', 'Diploma Lanjutan', 'Pengkhususan']).pluck(:id)
         - kejururawatan = Programme.roots.where('name ILIKE(?)', '%Kejururawatan%').first.id
+        - perubatan=Programme.where(course_type: 'Diploma').where('name ILIKE (?)', 'Penolong Pegawai Perubatan').first.id
+        - radiografi=Programme.where(course_type: 'Diploma').where('name ILIKE (?)', 'Radiografi').first.id
         /- @subjects = Examresult.get_subjects(@examresult.programme_id,@examresult.semester)
         - @subjects = @examresult.retrieve_subject
         - @students = @examresult.retrieve_student
@@ -108,7 +110,7 @@
                       
                   - else
                     %td
-                      - if (posbasiks+[kejururawatan]).include?(@examresult.programme_id) && ["C-", "D+", "D", "E"].include?(@gradeit.strip)==true
+                      - if (posbasiks+[kejururawatan, perubatan, radiografi]).include?(@examresult.programme_id) && ["C-", "D+", "D", "E"].include?(@gradeit.strip)==true
                         - @value_state << '4'
                         %font{color: "red"}= @gradeit
                         
@@ -120,20 +122,20 @@
                           - else
                             - @value_state2 << '3'
                         
-                      - elsif (posbasiks+[kejururawatan]).include?(@examresult.programme_id) && ["C-", "D+", "D", "E"].include?(@gradeit.strip)==false
+                      - elsif (posbasiks+[kejururawatan, perubatan, radiografi]).include?(@examresult.programme_id) && ["C-", "D+", "D", "E"].include?(@gradeit.strip)==false
                         - @value_state << '3' 
                         = @gradeit
                       
                       - else
                         =@gradeit
                     %td
-                      - if (posbasiks+[kejururawatan]).include?(@examresult.programme_id) && ["C-", "D+", "D", "E"].include?(@gradeit.strip)==true
+                      - if (posbasiks+[kejururawatan, perubatan, radiografi]).include?(@examresult.programme_id) && ["C-", "D+", "D", "E"].include?(@gradeit.strip)==true
                         %font{color: "red"}= @grade_student.first.set_NG.to_f 
                         
                         /repeat paper
                         %br=@grade_student.first.set_NG2.to_f unless (@grade_student.first.exam2marks.nil? || @grade_student.first.exam2marks.blank?) && @grade_student.first.resit==false
                         
-                      - elsif (posbasiks+[kejururawatan]).include?(@examresult.programme_id) && ["C-", "D+", "D", "E"].include?(@gradeit.strip)==false
+                      - elsif (posbasiks+[kejururawatan, perubatan, radiografi]).include?(@examresult.programme_id) && ["C-", "D+", "D", "E"].include?(@gradeit.strip)==false
                         =@grade_student.first.set_NG.to_f
                         /https://trello.com/c/zlIT9mSO - Kebidanan (STATUS) : gagal if any of subject is failed - Kejururawatan too
                         
@@ -162,7 +164,7 @@
             - programmeid=@examresult.programme_id
             - examresult_ids=Examresult.where(programme_id: programmeid).pluck(:id)
             - @resultlines = Resultline.where(examresult_id: examresult_ids, student_id: @students[no].id).order(created_at: :asc)
-            - cgpa=number_with_precision(Examresult.cgpa_per_sem(@resultlines, semno), precision: 2) if @resultlines.count-1==semno
+            - cgpa=number_with_precision(Examresult.cgpa_per_sem(@resultlines, semno), precision: 2) if @resultlines.count-1>=semno
                 
             = hidden_field "examresult[resultlines_attributes][#{no}]", :total, :size =>8, :value => total_point
             = hidden_field "examresult[resultlines_attributes][#{no}]", :pngs17, :size =>8, :value => gpa
@@ -193,7 +195,7 @@
                       - @value_status='4'
                     /END - apply to all programme - when REPEAT papers exist, (inc. Grade 'resit' checkbox activated)
               
-              - if (posbasiks+[kejururawatan]).include?(@examresult.programme_id)
+              - if (posbasiks+[kejururawatan, perubatan, radiografi]).include?(@examresult.programme_id)
                 - if @value_state2.count==0
                   - if @value_state.uniq.include?('4') 
                     - @value_status='4'
@@ -213,10 +215,13 @@
                 = select_tag "examresult[resultlines_attributes][#{no}][status]", options_for_select([[t('select'), '0']]+status_selection, @value_status) 
             %td
               /= text_field "examresult[resultlines_attributes][#{no}]", :remark, :size =>8, :value => @value_remark
+              - unless @value_remark=='' || @value_remark==0
+                - @value_remark='4' if ['3','2','1'].include?(@value_status)
               = select_tag "examresult[resultlines_attributes][#{no}][remark]", options_for_select([[t('select'), '0']]+DropDown::RESULT_REMARK, @value_remark) 
              
       
       /NOTE - as of 1st Nov2015 : Value for STATUS - Kebidanan & Kejururawatan - set to 'Gagal' if any subject status is 'Gagal', otherwise set to 'Lulus'.
+      /Perubatan & radiografi - same conditions as Kebidanan & Kejururawatan (when 1 subject GAGAL, means GAGAL for status keseluruhan) - based on supplied Excel file
       /Other programmes : requires user to select STATUS accordingly UNLESS define by user.
       /Total, PNGS17 : auto-generated, non-editable & display only 4 all programmes.
       /STATUS : auto-generated, non-editable & display only for Kejururawatan & Kebidanan.
