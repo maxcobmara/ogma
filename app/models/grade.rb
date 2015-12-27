@@ -333,7 +333,8 @@ class Grade < ActiveRecord::Base
     
     def exam1marks_allowed
       exam_ids_curr_student=Exammark.where(student_id: student_id).pluck(:exam_id)  
-      if exam1marks > Exam.where(subject_id: subject_id).where(id: exam_ids_curr_student).where(name: 'F').first.total_marks #100 or full_marks
+      paper=Exam.where(subject_id: subject_id).where(id: exam_ids_curr_student).where(name: 'F')
+      if (paper && paper.count > 0) && exam1marks > paper.first.total_marks  #100 or full_marks
         errors.add(:base, 'Tidak boleh melebihi markah maksimum')
       end
     end

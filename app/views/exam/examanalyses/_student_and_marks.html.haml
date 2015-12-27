@@ -30,9 +30,12 @@
   %br
     - exammarks=paper.exammarks
     - students=Student.where(id: exammarks.pluck(:student_id))
+    - student_intake=students[0].intake
+    - student_programme=students[0].course_id
+    - other_students_ids=Student.where(intake: student_intake, course_id: student_programme).pluck(:id)
     - subjectid=paper.subject_id
-    /Absent data
-    - absent_grades=Grade.where(subject_id: subjectid).where.not(student_id: students)
+    /Absent data - must be within same intake & programme
+    - absent_grades=Grade.where(subject_id: subjectid).where(student_id: other_students_ids).where.not(student_id: students)
     - absent_exammark_exist=[]
     - exammarks.each do |exammark|
       - if exammark.total_marks==0 || exammark.totalsummative==0

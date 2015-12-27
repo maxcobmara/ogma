@@ -216,7 +216,12 @@ $(document).ready(function(){
       if (fullmarks==examweight)
       { summative=exam1marks*1; }
       else
-      { summative = (exam1marks*1)/fullmarks*(examweight*1); }
+      {
+        if (fullmarks==0)
+        {  summative=0;}
+        else
+        {  summative = (exam1marks*1)/fullmarks*(examweight*1); }
+      }
     }
     forgrade = caplusmse+summative;
     finalscore.value = caplusmse+summative;
@@ -330,7 +335,14 @@ $(document).ready(function(){
       if (fullmarks==examweight)
       { summative=exam1marks*1; }
       else
-      { summative = (exam1marks*1)/fullmarks*(examweight*1); }
+      { 
+        /*summative = (exam1marks*1)/fullmarks*(examweight*1);*/
+        
+        if (fullmarks==0)
+        {  summative=0; }
+        else
+        {  summative = (exam1marks*1)/fullmarks*(examweight*1); }
+      }
     }
     forgrade = caplusmse+summative;
     finalscore.value = caplusmse+summative;
