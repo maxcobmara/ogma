@@ -1,5 +1,10 @@
 .row
-  .col-md-3= f.text_field :exam1name, class: 'form-control'
+  .col-md-3
+    = f.text_field :exam1name, class: 'form-control'
+    /Repeat paper if exist
+    - repeats=Exam.where(subject_id: @grade.subject_id).where(name: "R")
+    - if repeats && repeats.count > 0
+      = text_field_tag :test, (t 'exam.grade.repeat_paper'), class: 'form-control'
   .col-md-3= f.text_field :exam1desc, class: 'form-control'
   - diploma_ids=Programme.roots.where(course_type: 'Diploma').pluck(:id)
   - if @grade.subject_id

@@ -37,6 +37,7 @@
           - posbasiks = Programme.roots.where(course_type: ['Pos Basik', 'Diploma Lanjutan', 'Pengkhususan']).pluck(:id)
           - kejururawatan = Programme.roots.where('name ILIKE(?)', '%Kejururawatan%').first.id
           - ng=[]
+          - @non_ng=0
           - for subject in @subjects
             - @grade_student=Grade.where(subject_id: subject.id).where(student_id: examresultline.student_id)
             - @student_finale=Grade.where('student_id=? and subject_id=?', examresultline.student_id,subject.id).first
@@ -68,6 +69,7 @@
               - if english_subjects.include?(subject.code[0,4]) || (subject.code.strip.size < 10 && (subject.code.strip[-2,1].to_i==2 || subject.code.strip[-2,1].to_i==3))
                 //////
                 - @gradeit=@grade_student.first.render_grading[-2,2]
+                - @non_ng+=1
                 %td.centre{colspan: 2}
                   - if ["C-", "D+", "D", "E"].include?(@gradeit.strip)==true
                     %font{color: "red"}=(t 'exam.examresult.failed')

@@ -218,6 +218,12 @@
           
           - if !(@exammarks[0].exampaper.subject.root_id==radiografi || @exammarks[0].exampaper.subject.root_id==carakerja) && (@exammarks[0].exampaper.name=='F' || @exammarks[0].exampaper.name=='R')
             = hidden_field_tag "total_marks_view[]", number_with_precision(exammark.total_marks,precision:2) ,:id=>"total_marks_view"+@b_count.to_s, :size=> 5, :readonly=>true, :class => 'form-control'
+            - if exammark.exampaper.exam_template.total_in_weight==0
+              /weight not exist
+              - sumweightage=exammark.total_weightage
+              /- sumweightage=exammark.exampaper.total_marks
+            - else
+              - sumweightage=exammark.exampaper.exam_template.total_in_weight
           - else
             %td.centre{:style=>"background-color:#C3E9BF;"}
               /ssiiinnnii - mid sem+other than radiografi & cara kerja
@@ -226,7 +232,8 @@
               /(2) total_in_weight if weightage > 0 [remarks : exam.total_marks <> exammark.total_marks]
               - if exammark.exampaper.exam_template.total_in_weight==0
                 /weight not exist
-                - sumweightage=exammark.exampaper.total_marks
+                - sumweightage=exammark.total_weightage
+                /- sumweightage=exammark.exampaper.total_marks
               - else
                 - sumweightage=exammark.exampaper.exam_template.total_in_weight
               
@@ -499,7 +506,7 @@ $(document).ready(function(){
         { 
            if ( aaa > total_weight)
           {
-            window["totalsummative"+i].value='Max value is '+total_weight;
+            window["totalsummative"+i].value='Max value is yy'+total_weight;
             window["totalsummative"+i].style.color="red";
           }
           else

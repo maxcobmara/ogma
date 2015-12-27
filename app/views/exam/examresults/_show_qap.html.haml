@@ -49,7 +49,7 @@
             - else
               = image_tag("cross.png")
           %td.centre
-            - if @ng.count==@subjects.count
+            - if @ng[nos-1].count+@non_ng==@subjects.count
               - if @ng[nos-1].min >= 3.0
                 = image_tag("tick.png")
                 - grade_b+=1

@@ -51,12 +51,12 @@ class Exammark < ActiveRecord::Base
     else
       if exampaper.name=='F' || exampaper.name=='R'
         #For Final / Repeat - other than Radiografi & Cara Kerja
-        mcqweight=exampaper.exam_template.question_count['mcq']['weight']
-        if mcqweight && mcqweight!=''
-         total=totalsummative
-        else
+        #mcqweight=exampaper.exam_template.question_count['mcq']['weight']
+        #if mcqweight && mcqweight!=''
+        #  total=totalsummative
+        #else
           total=marks.sum(:student_mark)+total_mcq.to_i  
-        end
+        #end
       else
         #For Mid Sem Papers - other than Radiografi & Cara Kerja 
         mcqweight=exampaper.exam_template.question_count['mcq']['weight']
@@ -174,12 +174,12 @@ class Exammark < ActiveRecord::Base
   end
   
   def self.fullmarks(exam_id)
-    @istemplate = Exam.find(exam_id).klass_id
-    if @istemplate == 0 
+#     @istemplate = Exam.find(exam_id).klass_id
+#     if @istemplate == 0 
       fullmarks = Exam.find(exam_id).set_full_marks #examtemplates.map(&:total_marks).inject{|sum,x|sum+x}
-    else
-      fullmarks = Exam.find(exam_id).examquestions.map(&:marks).to_a.inject{|sum,x|sum+x}
-    end
+#     else
+#       fullmarks = Exam.find(exam_id).examquestions.map(&:marks).to_a.inject{|sum,x|sum+x}
+#     end
     fullmarks
   end
   

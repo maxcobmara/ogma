@@ -2389,6 +2389,9 @@ ms_MY:
       formative_exceed_maximum: "Markah / Wajaran (Skor Formatif) tidak boleh melebihi nilai maksima."
       total_weight: "Jumlah keseluruhan Wajaran mestilah 100%. "
       summative2: Sumatif
+      repeat_paper: Peperiksaan Ulangan
+      finalscore2: "Jumlah Akhir (Ulangan)"
+      finalscore_repeat: "Jumlah Akhir (Ulangan) / Gred (Ulangan) : "
       
     examresult:
       title: Keputusan Peperiksaan Mengikut Program

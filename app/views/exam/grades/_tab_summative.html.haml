@@ -5,7 +5,10 @@
     .col-md-3= t 'exam.grade.description' 
     .col-md-2
       = t 'exam.grade.marks' 
-      (100%)
+      (
+      - latest_paper=Exam.where(subject_id: @grade.subject_id).order(created_at: :desc).first
+      =latest_paper.total_marks
+      \%)
     .col-md-2
       = t 'exam.grade.weightage'
       (%)
@@ -22,3 +25,14 @@
       %b=h number_with_precision(@grade.examweight,:precision=>2) 
     .col-md-2
       %b=h check_kin {number_with_precision(@grade.summative,:precision=>2)} 
+  /Repeat paper if exist
+  - repeats=Exam.where(subject_id: @grade.subject_id).where(name: "R")
+  - if repeats && repeats.count > 0
+    .row
+      .col-md-2= t 'exam.grade.repeat_paper'
+      .col-md-3 &nbsp;
+      .col-md-2
+        %b=h number_with_precision(@grade.exam2marks,:precision=>2)
+      .col-md-2 &nbsp;
+      .col-md-2
+        %b=h check_kin {number_with_precision(@grade.total_summative2,:precision=>2)} 
