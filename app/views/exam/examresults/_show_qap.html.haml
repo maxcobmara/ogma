@@ -52,7 +52,7 @@
             - if @ng[nos-1].count+@non_ng==@subjects.count
               - if @ng[nos-1].min >= 3.0
                 = image_tag("tick.png")
-                - grade_b+=1
+                - grade_b_count+=1
               - else
                 = image_tag("cross.png")
             - else
@@ -61,11 +61,11 @@
             - total_students=@examresult.resultlines.count
             %td{rowspan: total_students, style: 'vertical-align: middle; text-align: center;'}=total_students
             %td{rowspan: total_students, style: 'vertical-align: middle; text-align: center;'}=naik_sem=@examresult.resultlines.where(remark: '4').count
-            %td{rowspan: total_students, style: 'vertical-align: middle; text-align: center;'}=number_with_precision(naik_sem/total_students*100, precision: 2) 
+            %td{rowspan: total_students, style: 'vertical-align: middle; text-align: center;'}=number_with_precision(naik_sem.to_f/total_students*100, precision: 2) 
             %td{rowspan: total_students, style: 'vertical-align: middle; text-align: center;'}=ngs_2_5_count=@examresult.resultlines.where(status: '3').where('pngs17 >?', 2.50).count
-            %td{rowspan: total_students, style: 'vertical-align: middle; text-align: center;'}=number_with_precision(ngs_2_5_count/total_students*100, precision: 2)
+            %td{rowspan: total_students, style: 'vertical-align: middle; text-align: center;'}=number_with_precision(ngs_2_5_count.to_f/total_students*100, precision: 2)
             %td{rowspan: total_students, style: 'vertical-align: middle; text-align: center;'}=grade_b_count
-            %td{rowspan: total_students, style: 'vertical-align: middle; text-align: center;'}=number_with_precision(grade_b_count/total_students*100, precision: 2)
+            %td{rowspan: total_students, style: 'vertical-align: middle; text-align: center;'}=number_with_precision(grade_b_count.to_f/total_students*100, precision: 2)
           
 .small=@ng
         
