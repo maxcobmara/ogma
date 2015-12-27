@@ -93,7 +93,7 @@
                     
                 %td.centre
                   =@grade_student.first.set_NG.to_f 
-                  = ng << @grade_student.first.set_NG.to_f 
+                  - ng << @grade_student.first.set_NG.to_f 
                   - unless (@grade_student.first.exam2marks.nil? || @grade_student.first.exam2marks.blank?) && @grade_student.first.resit==false
                     %br=@grade_student.first.set_NG2.to_f 
                   

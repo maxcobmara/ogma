@@ -1,8 +1,8 @@
 - model_class = Examresult
 .col-md-11
   %hr
-  /%table.table.table-bordered
-  %table.table.table-striped.table-hover.ogma
+  /%table.table.table-striped.table-hover.ogma
+  %table.table.table-bordered
     %thead
       %tr
         %th{rowspan: 3}No
@@ -11,24 +11,23 @@
         %th{rowspan: 3}=t('student.icno')
         %th{rowspan: 3}= t 'exam.examresult.gpa2'
         %th{rowspan: 3}Status
-        %th.centre{colspan: 9} QAP
+        %th.centre{colspan: 9}=t('exam.examresult.quality_assurance')
       %tr
-        %th{rowspan: 2} PNGS 2.50
-        %th{rowspan: 2} Gred B
-        %th{rowspan: 2} Bilangan Pelatih
-        %th{colspan: 2} Naik Semester
-        %th{colspan: 2} PNGS 2.50
-        %th{colspan: 2} Gred > B
+        %th.centre{rowspan: 2} PNGS 2.50
+        %th.centre{rowspan: 2}=(t 'exam.examresult.grade')+" B"
+        %th.centre{rowspan: 2}=t('exam.examresult.total_students')
+        %th.centre{colspan: 2} Naik Semester
+        %th.centre{colspan: 2} PNGS 2.50
+        %th.centre{colspan: 2}=(t 'exam.examresult.grade')+" > B"
       %tr
-        %th Bilangan 
-        %th %
-        %th Bilangan
-        %th %
-        %th Bilangan
-        %th %
+        %th.centre=t('exam.examresult.total') 
+        %th.centre %
+        %th.centre=t('exam.examresult.total')
+        %th.centre %
+        %th.centre=t('exam.examresult.total')
+        %th.centre %
     %tbody
       - nos=0
-      /- ngs_2_5_count=0
       - grade_b_count=0
       - for examresultline in @examresult.resultlines
         %tr
@@ -44,21 +43,20 @@
           - else
             - status_viewing=examresultline.render_status          
           %td=status_viewing
-          %td
+          %td.centre
             - if examresultline.status==3 && examresultline.pngs17 > 2.50
-              OK
-              /- ngs_2_5+=1
+              = image_tag("tick.png")
             - else
-              no
-          %td
+              = image_tag("cross.png")
+          %td.centre
             - if @ng.count==@subjects.count
               - if @ng[nos-1].min >= 3.0
-                OK
+                = image_tag("tick.png")
                 - grade_b+=1
               - else
-                no
+                = image_tag("cross.png")
             - else
-              Grade incomplete
+              %font{style: "color: red;"}=t('exam.examresult.incomplete_grade')
           - if nos-1==0
             - total_students=@examresult.resultlines.count
             %td{rowspan: total_students, style: 'vertical-align: middle; text-align: center;'}=total_students
@@ -69,5 +67,5 @@
             %td{rowspan: total_students, style: 'vertical-align: middle; text-align: center;'}=grade_b_count
             %td{rowspan: total_students, style: 'vertical-align: middle; text-align: center;'}=number_with_precision(grade_b_count/total_students*100, precision: 2)
           
-=@ng
+.small=@ng
         

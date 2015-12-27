@@ -9,7 +9,7 @@
     %ul.nav.nav-tabs
       %li.active= link_to ((t 'exam.examresult.details')),"#exam_details", "data-toggle" => "tab"
       %li= link_to ((t 'exam.examresult.result_details')),"#result_details", "data-toggle" => "tab"
-      %li= link_to "QAP", "#qap_details", "data-toggle" => "tab"
+      %li= link_to ((t 'exam.examresult.quality_assurance')), "#qap_details", "data-toggle" => "tab"
       
     .tab-content{style:"padding-top:1em"}
       #exam_details.tab-pane.active

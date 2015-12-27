@@ -2440,6 +2440,10 @@ ms_MY:
       cgpa2: PNGK
       credit: Kredit
       repeating: "(Ulangan)"
+      quality_assurance: "Jaminan Kualiti (QAP)"
+      total_students: Bilangan Pelatih
+      total: Bilangan
+      incomplete_grade: Gred Tidak Lengkap
     
     evaluate_course:
       title: "Penilaian Program (Pengajar)"

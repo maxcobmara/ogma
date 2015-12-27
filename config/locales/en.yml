@@ -2500,6 +2500,10 @@ en:
       cgpa2: CGPA
       credit: Credit
       repeating: "(Repeat)"
+      quality_assurance: "Quality Assurance (QAP)"
+      total_students: Total Students
+      total: Total
+      incomplete_grade: Incomplete Grade
     
     evaluate_course:
       title: "Course Evaluation (Lecturer)"
