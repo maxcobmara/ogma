@@ -36,7 +36,7 @@
         %th= sort_link(@search, :name_cont, (t 'exam.exams.name'))
         %th=(t 'exam.exams.year_semester')
         %th=(t 'exam.exams.course_id')
-        %th=(t 'exam.exams.subject_id')
+        %th= sort_link(@search, :subject_id, (t 'exam.exams.subject_id'))
         %th= sort_link(@search, :exam_on, (t 'exam.exams.exam_on'))
         %th= sort_link(@search, :starttime, (t 'exam.exams.time'))
         %th= sort_link(@search, :created_by, (t 'exam.exams.created_by'))
@@ -61,11 +61,11 @@
               - if exam.klass_id == 1
                 %span{:style=>"color:blue;"}
                   =t 'exam.exams.with_questions'
-              /- if exam.ids_complete_exampaper.include?(exam.id)
               - if exam.complete_paper==false
                 %span{:style=>"color:red;"}
                   *
-            %td{:align=>"center"}=h exam.subject_id? ? exam.syear + exam.subject.parent.code.to_s : "" 
+            - semno= exam.subject.parent.code.to_i%2 == 0 ? '2' : '1'
+            %td{:align=>"center"}=h exam.subject_id? ? exam.syear + semno : "" 
             %td=h exam.subject.try(:root).try(:course_type)+" "+exam.subject.try(:root).try(:name)
             %td=h exam.subject.try(:subject_list)
             %td=h exam.exam_on.try(:strftime, '%d %b %Y')

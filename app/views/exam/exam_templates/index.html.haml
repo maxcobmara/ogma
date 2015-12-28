@@ -22,8 +22,8 @@
     %thead
       %tr
         /%th= sort_link(@search, :studentevaluate_name_cont, (t 'exam.exam_template.student_id'))
-        %th{rowspan: 2}=t 'exam.exam_template.name'
-        %th{rowspan: 2}=t 'exam.exam_template.created_by'
+        %th{rowspan: 2}= sort_link(@search, :name, (t 'exam.exam_template.name'))
+        %th{rowspan: 2}= sort_link(@search, :created_by, (t 'exam.exam_template.created_by'))
         %th.centre{colspan: 10}= (t 'exam.exam_template.count')+"  /  "+(t 'exam.exam_template.weight')
       %tr
         - DropDown::QTYPE.each do |channel|
