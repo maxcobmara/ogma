@@ -96,15 +96,16 @@
           
           %td
             = subject.subject_list 
-            - if value_state=='4' && @resultline.remark=='1' 
-              - unless @student_grade.nil? || @student_grade.blank?
-                - if @student_grade.resit==true
-                  %strong
-                    &nbsp;&nbsp;
-                    = t('exam.examresult.repeating')
-                - else
-                  / NOTE - 'Repeat' won't be displayed if Grade not exist at all OR even if Grade exist, still require RESIT checkbox in Grade to be activated
-            - elsif value_state=='4' && @resultline.remark=='2'
+            /- if value_state=='4' && @resultline.remark=='1' 
+            - unless @student_grade.nil? || @student_grade.blank?
+              - if @student_grade.resit==true
+                %strong
+                  &nbsp;&nbsp;
+                  = t('exam.examresult.repeating')
+              - else
+                / NOTE - 'Repeat' won't be displayed if Grade not exist at all OR even if Grade exist, still require RESIT checkbox in Grade to be activated
+            /- elsif value_state=='4' && @resultline.remark=='2'
+            - if value_state=='4' && @resultline.remark=='2'
               %strong  &nbsp;&nbsp;(VIVA)
           %td.centre
             - if english_subjects.include?(subject.code[0,4]) || (subject.code.strip.size < 10 && (subject.code.strip[-2,1].to_i==2 || subject.code.strip[-2,1].to_i==3))
@@ -257,11 +258,11 @@
           /STATUS KESELURUHAN
           - if [kebidanan, kejururawatan].include?(@resultline.examresult.programme_id)
             =h @resultline.render_status
-            =" & "+@resultline.render_remark if @resultline.status=='4' && @resultline.render_remark!=nil
+            =" & "+@resultline.render_remark if @resultline.render_remark!=nil
           - else
             - if [@cara_kerja, @fisioterapi].include?(@resultline.examresult.programme_id)
               =h @resultline.render_status_contra
-              =" & "+@resultline.render_remark if @resultline.status=='4' && @resultline.render_remark!=nil
+              =" & "+@resultline.render_remark if @resultline.render_remark!=nil
             - else
               =h @resultline.render_status
-              =" & "+@resultline.render_remark if @resultline.status=='4' && @resultline.render_remark!=nil
+              =" & "+@resultline.render_remark if @resultline.render_remark!=nil
