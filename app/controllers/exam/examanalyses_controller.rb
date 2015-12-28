@@ -125,6 +125,8 @@ class Exam::ExamanalysesController < ApplicationController
         end
         if programme_id=='0'
           @subject_ids=Programme.where(course_type: 'Subject').pluck(:id)
+	elsif programme_id=='1'
+	  @subject_ids=Programme.where(course_type: 'Commonsubject').pluck(:id)
         else
           @subject_ids=Programme.where(id: programme_id).first.descendants.where(course_type: 'Subject').pluck(:id)
         end

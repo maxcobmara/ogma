@@ -11,19 +11,12 @@ class Examanalysis < ActiveRecord::Base
       if search == '0'  #admin
         @examanalyses = Examanalysis.all
       elsif search == '1' #common subject lecturer
-        @result_with_common_subjects=[]
-        Examanalysis.all.each do |result|
-          subject_ids=Examanalysis.get_subjects(result.programme_id, result.semester).map(&:id)
-          common_subject_ids=Programme.where(course_type: 'Commonsubject').pluck(:id)
-          common_exist=common_subject_ids & subject_ids
-          if common_exist.count > 0
-           @result_with_common_subjects << result.id
-          end
-        end
-        @examanalyses = Examanalysis.where(id: @result_with_common_subjects)
+        subject_ids=Programme.where(course_type: 'Commonsubject').pluck(:id)
+        exam_ids=Exam.where(subject_id: subject_ids).pluck(:id)
+        @examanalyses = Examanalysis.where(exam_id: exam_ids)
       else
         subject_ids=Programme.where(id: search).first.descendants.at_depth(2).pluck(:id)
-	exam_ids=Exam.where(subject_id: subject_ids).pluck(:id)
+        exam_ids=Exam.where(subject_id: subject_ids).pluck(:id)
         @examanalyses = Examanalysis.where(exam_id: exam_ids)
       end
     end
