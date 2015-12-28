@@ -2448,7 +2448,10 @@ en:
       exceed_maximum: "Values entered must not exceed maximum values "
       formative_exceed_maximum: "Marks / Weightage (Formative Scores) must not exceed maximum value."
       total_weight: "Total Weightage must be 100%. "
-      summative: Summative
+      summative2: Summative
+      repeat_paper: Repeat Paper
+      finalscore2: "Final Score (Repeat)"
+      finalscore_repeat: "Total Marks (Repeat) / Grade (Repeat) : "
     
     examresult:
       title: Examination Result by Programme
@@ -2500,6 +2503,10 @@ en:
       cgpa2: CGPA
       credit: Credit
       repeating: "(Repeat)"
+      quality_assurance: "Quality Assurance (QAP)"
+      total_students: Total Students
+      total: Total
+      incomplete_grade: Incomplete Grade
     
     evaluate_course:
       title: "Course Evaluation (Lecturer)"

@@ -87,7 +87,7 @@ class Exam::GradesController < ApplicationController
       end
       
       #existing subject of all grades for Search
-      @grade_list_exist_subject_raw= Programme.where('id IN(?) and id IN(?)', @existing_grade_subject_ids, @subjectlist_preselec_prog.pluck(:id))
+      @grade_list_exist_subject_raw= Programme.where('id IN(?) and id IN(?)', @existing_grade_subject_ids, @subjectlist_preselec_prog.pluck(:id)).order(id: :asc)
       @grade_list_exist_subject = []
       @grade_list_exist_subject_raw.each do |x|
         @grade_list_exist_subject << [x.programme_subject, x.id]

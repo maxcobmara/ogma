@@ -250,7 +250,7 @@
           - programmeid=@resultline.examresult.programme_id
           - examresult_ids=Examresult.where(programme_id: programmeid).pluck(:id)
           - @resultlines = Resultline.where(examresult_id: examresult_ids, student_id: @resultline.student_id).order(created_at: :asc)
-          =cgpa=number_with_precision(Examresult.cgpa_per_sem(@resultlines, semno), precision: 2)  if @resultlines.count-1==semno
+          =cgpa=number_with_precision(Examresult.cgpa_per_sem(@resultlines, semno), precision: 2)  if @resultlines.count-1>=semno
       %tr
         %td STATUS
         %td

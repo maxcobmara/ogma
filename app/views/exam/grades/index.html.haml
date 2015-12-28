@@ -4,7 +4,8 @@
   
 .navbar.navbar-inverse{role: "navigation", style: "padding-right:40px;"}
   %ul.nav.navbar-nav
-    %li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'actions.new'))), new_exam_grade_path
+    - permitted_to? :create, :exam_grades do
+      %li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'actions.new'))), new_exam_grade_path
   %ul.nav.navbar-nav.navbar-right
     %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "index_search_bar"
     %li.toga= link_to content_tag(:li, fa_icon("print", text: (t 'actions.print'))), "#", class: 'bogus'  
@@ -22,16 +23,17 @@
 
 = render 'shared/flashes'
 
-= form_tag new_multiple_exam_grades_path, :method => :put , :id => "form2" do
-  .form-group
-    .col-md-3
-      .input-group
-        .input-group-addon
-          = t 'exam.grade.subject_id'
-        = select_tag('subjectid', options_for_select(@subjectlist_preselec_prog2), class: "form-control", width: "50px;")
-        /= select_tag('subjectid', options_from_collection_for_select(@subjectlist_preselec_prog2, :id, :programme_subject), class: "form-control", width: "50px;")
-    .col-md-2
-      = submit_tag t('exam.grade.new_multiple'), :subject_id => nil, class: "btn btn-default"
+- permitted_to? :create, :exam_grades do
+  = form_tag new_multiple_exam_grades_path, :method => :put , :id => "form2" do
+    .form-group
+      .col-md-3
+        .input-group
+          .input-group-addon
+            = t 'exam.grade.subject_id'
+          = select_tag('subjectid', options_for_select(@subjectlist_preselec_prog2), class: "form-control", width: "50px;")
+          /= select_tag('subjectid', options_from_collection_for_select(@subjectlist_preselec_prog2, :id, :programme_subject), class: "form-control", width: "50px;")
+      .col-md-2
+        = submit_tag t('exam.grade.new_multiple'), :subject_id => nil, class: "btn btn-default"
 .row
   .col-md-12
     %table.table-striped.table-hover.ogma
@@ -61,7 +63,9 @@
                   %td.group{:colspan => "15"} 
                     %span= (t 'exam.grade.subject_id')+' : '+Programme.find(grades_group).subject_list
               %tr
-                %td{:style=>"text-align: center;"}= check_box_tag "grade_ids[]", grade.id, true, :id => "gradeidss_#{index2}"
+                %td{:style=>"text-align: center;"}
+                  - permitted_to? :edit_multiple, :exam_grades do
+                    = check_box_tag "grade_ids[]", grade.id, true, :id => "gradeidss_#{index2}"
                 %td
                   = link_to grade.studentgrade.matrix_name, exam_grade_path(grade)
                   /= grade.studentgrade.intake
@@ -98,12 +102,13 @@
               - index2+=1
     
           %br
-          %table
-            %tr
-              %td{:style=> "width:200px; text-align: right; padding:5px;"}
-                = submit_tag t('edit_checked'), :name => :grade_submit_button, class: "btn btn-default"
-              %td{:style=>"padding:5px;"}= check_box_tag :check_all
-              %td{:style=>"padding:5px;"}= t('actions.check_all')   
+          - permitted_to? :edit_multiple, :exam_grades do
+            %table
+              %tr
+                %td{:style=> "width:200px; text-align: right; padding:5px;"}
+                  = submit_tag t('edit_checked'), :name => :grade_submit_button, class: "btn btn-default"
+                %td{:style=>"padding:5px;"}= check_box_tag :check_all
+                %td{:style=>"padding:5px;"}= t('actions.check_all')   
         
   .right{style:"padding:0 30px; margin:0;"}= paginate @grades, :theme => 'twitter-bootstrap-3'
  

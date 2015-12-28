@@ -154,7 +154,9 @@
                   %td{colspan: 3, align: "right"}
                     %b=t 'exam.exammark.total'
                   /Below : total_marks - refer NOTE in' _form_multiple'
-                  %td= number_with_precision(@exammark.total_marks, precision: 2)
+                  /%td= number_with_precision(@exammark.total_marks, precision: 2)
+                  /other than radiografi & cara kerja - display summative terus
+                  %td= number_with_precision(@exammark.totalsummative, precision: 2)
                   %td
                     - if @exammark.exampaper.exam_template.total_in_weight==0
                       /weightage in exam_template - not exist

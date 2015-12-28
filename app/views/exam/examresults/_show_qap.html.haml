@@ -1,0 +1,71 @@
+- model_class = Examresult
+.col-md-11
+  %hr
+  /%table.table.table-striped.table-hover.ogma
+  %table.table.table-bordered
+    %thead
+      %tr
+        %th{rowspan: 3}No
+        %th{rowspan: 3}=t('student.name')
+        %th{rowspan: 3}=t('student.students.matrixno')
+        %th{rowspan: 3}=t('student.icno')
+        %th{rowspan: 3}= t 'exam.examresult.gpa2'
+        %th{rowspan: 3}Status
+        %th.centre{colspan: 9}=t('exam.examresult.quality_assurance')
+      %tr
+        %th.centre{rowspan: 2} PNGS 2.50
+        %th.centre{rowspan: 2}=(t 'exam.examresult.grade')+" B"
+        %th.centre{rowspan: 2}=t('exam.examresult.total_students')
+        %th.centre{colspan: 2} Naik Semester
+        %th.centre{colspan: 2} PNGS 2.50
+        %th.centre{colspan: 2}=(t 'exam.examresult.grade')+" > B"
+      %tr
+        %th.centre=t('exam.examresult.total') 
+        %th.centre %
+        %th.centre=t('exam.examresult.total')
+        %th.centre %
+        %th.centre=t('exam.examresult.total')
+        %th.centre %
+    %tbody
+      - nos=0
+      - grade_b_count=0
+      - for examresultline in @examresult.resultlines
+        %tr
+          %td=nos+=1
+          %td.left=h examresultline.student.name 
+          %td.left=h examresultline.student.matrixno
+          %td.left=h examresultline.student.icno
+          %td.left=h examresultline.pngs17
+          - fisioterapi=Programme.where(course_type: 'Diploma').where('name ILIKE (?)', '%Fisioterapi%').first.id
+          - perubatan=Programme.where(course_type: 'Diploma').where('name ILIKE (?)', 'Penolong Pegawai Perubatan').first.id
+          - if [fisioterapi, perubatan].include?(examresultline.examresult.programme_id)
+            - status_viewing=examresultline.render_status_contra
+          - else
+            - status_viewing=examresultline.render_status          
+          %td=status_viewing
+          %td.centre
+            - if examresultline.status==3 && examresultline.pngs17 > 2.50
+              = image_tag("tick.png")
+            - else
+              = image_tag("cross.png")
+          %td.centre
+            - if @ng[nos-1].count+@non_ng==@subjects.count
+              - if @ng[nos-1].min >= 3.0
+                = image_tag("tick.png")
+                - grade_b_count+=1
+              - else
+                = image_tag("cross.png")
+            - else
+              %font{style: "color: red;"}=t('exam.examresult.incomplete_grade')
+          - if nos-1==0
+            - total_students=@examresult.resultlines.count
+            %td{rowspan: total_students, style: 'vertical-align: middle; text-align: center;'}=total_students
+            %td{rowspan: total_students, style: 'vertical-align: middle; text-align: center;'}=naik_sem=@examresult.resultlines.where(remark: '4').count
+            %td{rowspan: total_students, style: 'vertical-align: middle; text-align: center;'}=number_with_precision(naik_sem.to_f/total_students*100, precision: 2) 
+            %td{rowspan: total_students, style: 'vertical-align: middle; text-align: center;'}=ngs_2_5_count=@examresult.resultlines.where(status: '3').where('pngs17 >?', 2.50).count
+            %td{rowspan: total_students, style: 'vertical-align: middle; text-align: center;'}=number_with_precision(ngs_2_5_count.to_f/total_students*100, precision: 2)
+            %td{rowspan: total_students, style: 'vertical-align: middle; text-align: center;'}=grade_b_count
+            %td{rowspan: total_students, style: 'vertical-align: middle; text-align: center;'}=number_with_precision(grade_b_count.to_f/total_students*100, precision: 2)
+          
+.small=@ng
+        

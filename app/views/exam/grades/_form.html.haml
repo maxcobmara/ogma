@@ -194,7 +194,7 @@ $(document).ready(function(){
     var marks70 = document.getElementById("grade_marks_70");
     var exam1marks_field = document.getElementById("grade_exam1marks");
     
-    if (exam1marks > 100)
+    if (exam1marks > fullmarks)
     {  exam1marks_field.style.color="red";}
     else
     {  exam1marks_field.style.color="black";}
@@ -216,7 +216,12 @@ $(document).ready(function(){
       if (fullmarks==examweight)
       { summative=exam1marks*1; }
       else
-      { summative = (exam1marks*1)/fullmarks*(examweight*1); }
+      {
+        if (fullmarks==0)
+        {  summative=0;}
+        else
+        {  summative = (exam1marks*1)/fullmarks*(examweight*1); }
+      }
     }
     forgrade = caplusmse+summative;
     finalscore.value = caplusmse+summative;
@@ -308,7 +313,7 @@ $(document).ready(function(){
     var marks70 = document.getElementById("grade_marks_70");
     var exam1marks_field = document.getElementById("grade_exam1marks");
     
-    if (exam1marks > 100)
+    if (exam1marks > fullmarks)
     {  exam1marks_field.style.color="red";}
     else
     {  exam1marks_field.style.color="black";}
@@ -330,7 +335,14 @@ $(document).ready(function(){
       if (fullmarks==examweight)
       { summative=exam1marks*1; }
       else
-      { summative = (exam1marks*1)/fullmarks*(examweight*1); }
+      { 
+        /*summative = (exam1marks*1)/fullmarks*(examweight*1);*/
+        
+        if (fullmarks==0)
+        {  summative=0; }
+        else
+        {  summative = (exam1marks*1)/fullmarks*(examweight*1); }
+      }
     }
     forgrade = caplusmse+summative;
     finalscore.value = caplusmse+summative;

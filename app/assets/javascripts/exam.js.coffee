@@ -46,7 +46,6 @@ jQuery ->
 
   $('#exam_name').change ->
     papertype=$('#exam_name').val()
-    alert(papertype);
     if papertype=="R"
       $('#span_desc').show()
       $('#span_desc2').show()

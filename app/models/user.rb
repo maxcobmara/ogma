@@ -397,7 +397,7 @@ class User < ActiveRecord::Base
     subject_ids
   end
   
-  def sup_programme_exams
+  def by_programme_exams
     mypost = Position.where(staff_id: userable_id).first
     myunit = mypost.unit
     postbasics=['Pengkhususan', 'Pos Basik', 'Diploma Lanjutan']

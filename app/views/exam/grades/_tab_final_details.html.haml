@@ -9,6 +9,7 @@
           %font{:style => "color: red;"}=h number_with_precision(@grade.finale,:precision=>2) 
         - else
           %font{:style => "color: black;"}=h number_with_precision(@grade.finale,:precision=>2) 
+        &nbsp;
         %b
           - if (gred =='C-' || gred=='D+' || gred.strip=='D' || gred.strip=='E')
             %font{:style => "color: red;"}=gred
@@ -20,6 +21,13 @@
         \% + Summative x 
         = number_with_precision(@grade.examweight,:precision=>2)
         \%
+    /if repeat paper marks exist in grade
+    - unless @grade.exam2marks.nil? || @grade.exam2marks.blank?
+      %dt=t 'exam.grade.finalscore2'
+      %dd
+        = number_with_precision(@grade.finale2, precision: 2)
+        &nbsp;
+        = @grade.render_grading2[-2,2]        
     %dt= t 'exam.grade.carry_paper'
     %dd=h @grade.carry_paper? ? t('exam.grade.required') : t('exam.grade.not_required')
     

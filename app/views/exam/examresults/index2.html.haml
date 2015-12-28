@@ -77,6 +77,22 @@
                 /for checking
                 /=examresult_ids
                 /=semno
-                %td=h resultline.render_status
+                %td
+                  /=h resultline.render_status
+                  /STATUS KESELURUHAN
+                  - kebidanan = Programme.roots.where('name ILIKE(?)', '%Kebidanan%').first.id
+                  - kejururawatan = Programme.roots.where('name ILIKE(?)', '%Kejururawatan%').first.id
+                  - cara_kerja=Programme.roots.where('name ILIKE(?)', '%Cara Kerja%').first.id
+                  - fisioterapi=Programme.roots.where('name ILIKE(?)', '%Fisioterapi%').first.id
+                  - if [kebidanan, kejururawatan].include?(resultline.examresult.programme_id)
+                    =h resultline.render_status
+                    =" & "+resultline.render_remark if resultline.status=='4' && resultline.render_remark!=nil
+                  - else
+                    - if [cara_kerja, fisioterapi].include?(resultline.examresult.programme_id)
+                      =h resultline.render_status_contra
+                      =" & "+resultline.render_remark if resultline.status=='4' && resultline.render_remark!=nil
+                    - else
+                      =h resultline.render_status
+                      =" & "+resultline.render_remark if resultline.status=='4' && resultline.render_remark!=nil
         
   .right{style:"padding:0 30px; margin:0;"}= paginate @resultlines, :theme => 'twitter-bootstrap-3'

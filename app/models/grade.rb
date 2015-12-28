@@ -2,11 +2,11 @@ class Grade < ActiveRecord::Base
   
   validates_presence_of :student_id, :subject_id, :examweight#, :exam1marks #added examweight for multiple edit - same subject - this item must exist
   validates_uniqueness_of :subject_id, :scope => :student_id, :message => " - This student has already taken this subject"
-  #validates :finalscore, numericality: {greater_than_or_equal_to: 0, less_than_or_equal_to: 100}
-  validates :exam1marks, :finalscore, numericality: {greater_than_or_equal_to: 0, less_than_or_equal_to: 100}
+  validates :finalscore, numericality: {greater_than_or_equal_to: 0, less_than_or_equal_to: 100}
+  #validates :exam1marks, :finalscore, numericality: {greater_than_or_equal_to: 0, less_than_or_equal_to: 100}
       
  # validates_presence_of :sent_date, :if => :sent_to_BPL?
-  validate :formative_allowed, :total_weightage_allowed#, :check_formative_valid,
+  validate :formative_allowed, :total_weightage_allowed, :exam1marks_allowed #, :check_formative_valid,
   
   belongs_to :studentgrade, :class_name => 'Student', :foreign_key => 'student_id'  #Link to Model student
   belongs_to :subjectgrade, :class_name => 'Programme', :foreign_key => 'subject_id'  #Link to Model subject
@@ -150,7 +150,7 @@ class Grade < ActiveRecord::Base
   end
   
   def finale2
-    total_formative2+total_summative2
+    total_formative+total_summative2 #repeat only for Final paper (formative - remain use current one)
   end
   
   def render_grading
@@ -328,6 +328,14 @@ class Grade < ActiveRecord::Base
       if ((scores && total_weightage_formative)+examweight) > 100.0 
         errors.add(:base, I18n.t('exam.grade.total_weight')+"("+I18n.t('exam.grade.formative')+" : "+scores.sum(:weightage).to_i.to_s+"%, "+I18n.t('exam.grade.summative2')+" : "+examweight.to_i.to_s+"%)")
       end
+      end
+    end
+    
+    def exam1marks_allowed
+      exam_ids_curr_student=Exammark.where(student_id: student_id).pluck(:exam_id)  
+      paper=Exam.where(subject_id: subject_id).where(id: exam_ids_curr_student).where(name: 'F')
+      if (paper && paper.count > 0) && exam1marks > paper.first.total_marks  #100 or full_marks
+        errors.add(:base, 'Tidak boleh melebihi markah maksimum')
       end
     end
   

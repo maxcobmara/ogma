@@ -200,10 +200,44 @@ authorization do
     end
     #revised - 17May2015-end
    
+   has_permission_on :student_student_attendances, :to => [:manage, :new_multiple, :new_multiple_intake, :create_multiple, :edit_multiple, :update_multiple, :student_attendan_form]
+   
+   #TRAINING modules
+   #HACK : INDEX (new) - restricted access except for Penyelaras Kumpulan (diploma & posbasics)
+   has_permission_on :training_weeklytimetables, :to => [:menu, :read, :create]
+   
+   #HACK : INDEX (list+show)- restricted access except for Penyelaras Kumpulan/Ketua Program/Ketua Subjek(+'unit_leader' role)/Administration/creator(prepared_by)
+   #HACK : SHOW (+edit) - restricted access UNLESS is_submitted!=true (+submission only allowed for Penyelaras Kumpulan)
+   has_permission_on :training_weeklytimetables, :to => [:manage, :weekly_timetable] 
+   
+   has_permission_on :training_weeklytimetables, :to => [:personalize_index, :personalize_show, :personalize_timetable, :personalizetimetable] do
+       if_attribute :staff_id => is {user.userable_id}
+   end
+   
+   has_permission_on :training_trainingnotes, :to => :manage, :join_by => :or do
+     if_attribute :topicdetail_id => is_in {user.topicdetails_of_programme}
+     if_attribute :timetable_id => is_in {user.timetables_of_programme} 
+   end
+   
+   has_permission_on :training_trainingnotes, :to => :manage, :join_by => :and do
+     if_attribute :topicdetail_id => is {nil}
+     if_attribute :timetable_id => is {nil}
+   end
+   
+   #moved examination modules to role - exam_administration
+   has_permission_on :exam_examquestions, :to => [:menu, :read, :index, :create]
+   has_permission_on :exam_examquestions, :to => :update do
+     if_attribute :programme_id => is_in {user.lecturers_programme}
+   end
+ end
+ 
+ role :exam_administration do
+   
    #EXAMINATION modules
-   has_permission_on [:exam_examquestions, :exam_exams, :exam_exam_templates, :exam_exammarks, :exam_grades], :to => [:menu, :read, :index, :create]
+   #has_permission_on [:exam_examquestions, :exam_exams, :exam_exam_templates, :exam_exammarks, :exam_grades], :to => [:menu, :read, :index, :create]
+   has_permission_on [:exam_exams, :exam_exam_templates, :exam_exammarks, :exam_grades], :to => [:menu, :read, :index, :create]
    has_permission_on :exam_examresults, :to => [:menu, :read, :index2, :create, :update, :destroy, :show2, :examination_slip, :show3, :examination_transcript]   
-   has_permission_on :exam_examanalyses, :to => [:menu, :read]
+   has_permission_on :exam_examanalyses, :to => [:menu, :read, :create]
    #new & create & examination_slip should not be allowed for Commonsubject lecturers - refer HACK - index & show2
  
    has_permission_on :exam_exams, :to =>[:manage ,:exampaper, :question_selection] do
@@ -218,16 +252,17 @@ authorization do
      if_attribute :subject_id => is_in {user.lecturers_programme_subject}
    end
    
-   has_permission_on :exam_examquestions, :to => :update do
-     if_attribute :programme_id => is_in {user.lecturers_programme}
-   end
+#    has_permission_on :exam_examquestions, :to => :update do
+#      if_attribute :programme_id => is_in {user.lecturers_programme}
+#    end
    
    has_permission_on :exam_examresults, :to =>[ :edit, :update, :delete] do
      if_attribute :programme_id => is_in {user.lecturers_programme2}
    end
    
+   #has_permission_on :exam_examanalyses, :to => [:edit, :update, :delete, :analysis_data] do
    has_permission_on :exam_examanalyses, :to => [:edit, :update, :delete, :analysis_data] do
-     if_attribute :exam_id => is_in {user.sup_programme_exams}  
+     if_attribute :exam_id => is_in {user.by_programme_exams}  
    end
    
 #    has_permission_on :exam_examquestions, :to =>:update, :join_by => :and do
@@ -267,41 +302,20 @@ authorization do
    has_permission_on :exam_evaluate_courses, :to =>[:index, :show, :courseevaluation] do
      if_attribute :staff_id => is {user.userable.id}
    end
-   has_permission_on :student_student_attendances, :to => [:manage, :new_multiple, :new_multiple_intake, :create_multiple, :edit_multiple, :update_multiple, :student_attendan_form]
    
-   #TRAINING modules
-   #HACK : INDEX (new) - restricted access except for Penyelaras Kumpulan (diploma & posbasics)
-   has_permission_on :training_weeklytimetables, :to => [:menu, :read, :create]
-   
-   #HACK : INDEX (list+show)- restricted access except for Penyelaras Kumpulan/Ketua Program/Ketua Subjek(+'unit_leader' role)/Administration/creator(prepared_by)
-   #HACK : SHOW (+edit) - restricted access UNLESS is_submitted!=true (+submission only allowed for Penyelaras Kumpulan)
-   has_permission_on :training_weeklytimetables, :to => [:manage, :weekly_timetable] 
-   
-   has_permission_on :training_weeklytimetables, :to => [:personalize_index, :personalize_show, :personalize_timetable, :personalizetimetable] do
-       if_attribute :staff_id => is {user.userable_id}
-   end
-   
-   has_permission_on :training_trainingnotes, :to => :manage, :join_by => :or do
-     if_attribute :topicdetail_id => is_in {user.topicdetails_of_programme}
-     if_attribute :timetable_id => is_in {user.timetables_of_programme} 
-   end
-   
-   has_permission_on :training_trainingnotes, :to => :manage, :join_by => :and do
-     if_attribute :topicdetail_id => is {nil}
-     if_attribute :timetable_id => is {nil}
-   end
  end
 
  role :programme_manager do
    has_permission_on :exam_examquestions, :to => :manage
-   has_permission_on :exam_exams, :to => [:manage, :exampaper, :question_selection]
-   has_permission_on :exam_exammarks, :to => [:manage, :edit_multiple, :update_multiple, :new_multiple, :create_multiple]
-#    has_permission_on :exam_evaluate_courses, :to => :create 
-#    has_permission_on :exam_evaluate_courses, :to => [:manage, :courseevaluation] do
+   has_permission_on [:exam_exam_templates, :exam_grades], :to => [:menu, :read]
+   has_permission_on :exam_exams, :to => [:menu, :read, :exampaper, :question_selection] #[:manage, :exampaper, :question_selection]
+   has_permission_on :exam_exammarks, :to => [:menu, :read] #[:manage, :edit_multiple, :update_multiple, :new_multiple, :create_multiple]
    has_permission_on :exam_evaluate_courses, :to => [:read, :courseevaluation, :evaluation_report] do
-     #if_attribute :course_id => is {user.evaluations_of_programme}
      if_attribute :course_id => is_in {user.evaluations_of_programme}
-     #if_attribute :course_id => is_in {Position.my_programmeid(Login.current_login.staff_id)} # is_in {[5]}
+   end
+   has_permission_on :exam_examresults, :to => [:menu, :read, :index2, :show2, :examination_slip, :show3, :examination_transcript]# :create, :update, :destroy]   
+   has_permission_on :exam_examanalyses, :to => [:menu, :read] do
+      if_attribute :exam_id => is_in {user.by_programme_exams}  
    end
    has_permission_on :staff_training_ptdos, :to => :approve do
      if_attribute :staff_id => is_in {user.unit_members}#is {69}#is_in {[69, 106]}  #

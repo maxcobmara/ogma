@@ -217,7 +217,8 @@ $(document).ready(function(){
       }  
       
       window["totalmarks_field"+i]=document.getElementById("finalexam"+i);
-      if (window["total_marks"+i] > 100.0)
+      /*if (window["total_marks"+i] > 100.0) */
+      if (window["total_marks"+i] > window["totalmarks_field"+i])
       {  window["totalmarks_field"+i].style.color="red";}
       else
       {  window["totalmarks_field"+i].style.color="black";}
@@ -326,7 +327,8 @@ $(document).ready(function(){
       }
       
       window["totalmarks_field"+i]=document.getElementById("finalexam"+i);
-      if (window["total_marks"+i] > 100.0)
+      /*if (window["total_marks"+i] > 100.0)*/
+      if (window["total_marks"+i] > window["totalmarks_field"+i])
       {  window["totalmarks_field"+i].style.color="red";}
       else
       {  window["totalmarks_field"+i].style.color="black";}
