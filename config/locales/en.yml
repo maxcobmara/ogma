@@ -2349,6 +2349,7 @@ en:
       select_exam_template: "Please select above exampaper template accordingly. Should you found there's no suitable template for selection, please create one in Exampaper Template. "
       previous_template: " (Expiring)"
       full_marks: Full Marks
+      must_start_before_end: End Time must after examination has started
 
     exammark:
       title: Marks by Examination Papers

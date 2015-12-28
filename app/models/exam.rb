@@ -18,7 +18,7 @@ class Exam < ActiveRecord::Base
   validates_presence_of :subject_id, :if => :not_repeat_paper?
   validates_presence_of :description, :if => :repeat_paper?
   validates_uniqueness_of :name, :scope => [:subject_id, :name, :exam_on], :message => I18n.t('exam.exams.must_unique')
-  validate :sequence_must_be_selected, :sequence_must_be_unique #,:sequence_must_increment_by_one
+  validate :sequence_must_be_selected, :sequence_must_be_unique, :must_start_before_end #,:sequence_must_increment_by_one
   
   #remark : validation for:validates_uniqueness_of :name, :scope => "subject_id", 
   #-> exam must unique for each subject, academic session, name(exam type) in full set @ template.
@@ -537,6 +537,12 @@ private
         if seq.uniq.length != seq.length && seq.include?(I18n.t('select')) == false       #sequence UNIQUENESS can only be checked for selected sequence!
           errors.add(:base, I18n.t('exam.exams.seq_must_unique'))
         end
+    end
+  end
+  
+  def must_start_before_end
+    if starttime > endtime
+      errors.add(:base, I18n.t('exam.exams.must_start_before_end'))
     end
   end
   

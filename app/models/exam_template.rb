@@ -51,6 +51,8 @@ class ExamTemplate < ActiveRecord::Base
       if search=='0'
         @exam_templates=ExamTemplate.all
       elsif search=='1' #common subject - on hold (currently programme / postbasic SUP only)
+        # TODO - revise for common subject lecturer
+        @exam_templates=ExamTemplate.all
       elsif search=='2'
         staff_ids=Position.where('unit ILIKE (?) OR unit ILIKE (?) OR unit ILIKE (?)', "%Pengkhususan%", "%Pos Basik%", "%Diploma Lanjutan%").pluck(:staff_id)
         creators_ids=User.where(userable_id: staff_ids).pluck(:id)
