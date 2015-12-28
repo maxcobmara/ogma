@@ -256,7 +256,7 @@
  
           /- permitted_to? :menu, :exam_examresults do
           /activate above, once examresult for student access ready
-          - permitted_to? :menu, :exam_exammarks do
+          - permitted_to? :menu, :exam_examresults do
             %li.icon.icon-left
               = link_to (t "exam.management"), '#'
               .mp-level
@@ -265,24 +265,20 @@
                 %ul
                   - permitted_to? :menu, :exam_exammarks do
                     %li= link_to (t "exam.exammark.title"), exam_exammarks_path
-                  /- permitted_to? :menu, :exam_grades do
-                  /activate above, once grades - lecturers & programme manager ready
-                  %li= link_to (t "exam.grade.title"), exam_grades_path
+                  - permitted_to? :menu, :exam_grades do
+                    %li= link_to (t "exam.grade.title"), exam_grades_path
                   
-                  /HACK - common subject lecturer should not hv access to Examresult
-                  - unit_name=current_user.userable.positions.first.unit
-                  - common_subjects = ["Sains Perubatan Asas", "Anatomi & Fisiologi", "Sains Tingkahlaku", "Komunikasi & Sains Pengurusan", "Komuniti"]
-                  - unless common_subjects.include?(unit_name)
-                    %li.icon.icon-left
-                      = link_to (t "exam.result"), '#'
-                      .mp-level
-                        %h2.icon= t "exam.result"
-                        %a.mp-back{:href => "#"}= t 'helpers.links.back'
-                        %ul
-                          /- permitted_to? :manage, :exam_examresults do
-                          /activate above, once examresults - lecturers & programme manager ready
-                          %li= link_to (t "exam.examresult.title2"), exam_examresults_path
-                          //no need to put any permitted_to here -- as access given above(line 173 -174)
+                  %li.icon.icon-left
+                    = link_to (t "exam.result"), '#'
+                    .mp-level
+                      %h2.icon= t "exam.result"
+                      %a.mp-back{:href => "#"}= t 'helpers.links.back'
+                      %ul
+                        /- permitted_to? :manage, :exam_examresults do
+                        /activate above, once examresults - lecturers & programme manager ready
+                        %li= link_to (t "exam.examresult.title2"), exam_examresults_path
+                        //no need to put any permitted_to here -- as access given above(line 173 -174)
+                        - permitted_to? :examination_slip, :exam_examresults do
                           %li= link_to content_tag(:i, "", :class => "icon-numb") + (t "exam.examresult.exam_slip_transcript"), index2_exam_examresults_path
 
           /%li= link_to content_tag(:i, "", :class => "icon-numb") + "Examination Management", '#'
