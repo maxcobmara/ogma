@@ -44,7 +44,7 @@
             - status_viewing=examresultline.render_status          
           %td=status_viewing
           %td.centre
-            - if examresultline.status==3 && examresultline.pngs17 > 2.50
+            - if examresultline.status=='3' && examresultline.pngs17 >= 2.50
               = image_tag("tick.png")
             - else
               = image_tag("cross.png")
@@ -62,7 +62,7 @@
             %td{rowspan: total_students, style: 'vertical-align: middle; text-align: center;'}=total_students
             %td{rowspan: total_students, style: 'vertical-align: middle; text-align: center;'}=naik_sem=@examresult.resultlines.where(remark: '4').count
             %td{rowspan: total_students, style: 'vertical-align: middle; text-align: center;'}=number_with_precision(naik_sem.to_f/total_students*100, precision: 2) 
-            %td{rowspan: total_students, style: 'vertical-align: middle; text-align: center;'}=ngs_2_5_count=@examresult.resultlines.where(status: '3').where('pngs17 >?', 2.50).count
+            %td{rowspan: total_students, style: 'vertical-align: middle; text-align: center;'}=ngs_2_5_count=@examresult.resultlines.where(status: '3').where('pngs17 >=?', 2.50).count
             %td{rowspan: total_students, style: 'vertical-align: middle; text-align: center;'}=number_with_precision(ngs_2_5_count.to_f/total_students*100, precision: 2)
             %td{rowspan: total_students, style: 'vertical-align: middle; text-align: center;'}=grade_b_count
             %td{rowspan: total_students, style: 'vertical-align: middle; text-align: center;'}=number_with_precision(grade_b_count.to_f/total_students*100, precision: 2)

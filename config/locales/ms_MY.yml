@@ -2289,6 +2289,7 @@ ms_MY:
       select_exam_template: "Sila pilih template kertas peperiksaan di atas. Sekiranya template yang bersesuaian tiada, sila cipta dalam Template Kertas Peperiksaan. "
       previous_template: " (Terdahulu / Luput)"
       full_marks: Jumlah Markah
+      must_start_before_end: "Masa Tamat mesti selepas peperiksaan bermula."
     
     exammark:
       title: Markah Kertas Peperiksaan
