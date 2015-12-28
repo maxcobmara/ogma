@@ -173,7 +173,7 @@ class Programme < ActiveRecord::Base
   
   #orignal one-start
   def self.subject_groupbyoneprogramme2(progid)
-    subjectby_programmelists=Programme.find(progid).descendants.where(course_type: "Subject").group_by{|x|x.root.programme_list}
+    subjectby_programmelists=Programme.find(progid).descendants.where(course_type: ["Subject", "Commonsubject"]).group_by{|x|x.root.programme_list}
     @groupped_subject=[]
     subjectby_programmelists.each do |programmelist, subjects|
       pg_subjects=[[I18n.t('helpers.prompt.select_subject'), '']]

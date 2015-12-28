@@ -50,9 +50,11 @@ class ExamTemplate < ActiveRecord::Base
       admin_ids=Role.joins(:users).where(authname: 'administration').pluck(:user_id)
       if search=='0'
         @exam_templates=ExamTemplate.all
-      elsif search=='1' #common subject - on hold (currently programme / postbasic SUP only)
-        # TODO - revise for common subject lecturer
-        @exam_templates=ExamTemplate.all
+      elsif search=='1' 
+        common_subjects = ["Sains Perubatan Asas", "Anatomi & Fisiologi", "Sains Tingkahlaku", "Komunikasi & Sains Pengurusan", "Komuniti"]
+        staff_ids=Position.where(unit: common_subjects).pluck(:staff_id)
+        creators_ids=User.where(userable_id: staff_ids).pluck(:id)
+        @exam_templates=ExamTemplate.where(created_by: creators_ids+admin_ids)
       elsif search=='2'
         staff_ids=Position.where('unit ILIKE (?) OR unit ILIKE (?) OR unit ILIKE (?)', "%Pengkhususan%", "%Pos Basik%", "%Diploma Lanjutan%").pluck(:staff_id)
         creators_ids=User.where(userable_id: staff_ids).pluck(:id)

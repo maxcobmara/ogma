@@ -224,45 +224,11 @@ authorization do
      if_attribute :timetable_id => is {nil}
    end
    
+   #EXAMINATION modules
    #moved examination modules to role - exam_administration
    has_permission_on :exam_examquestions, :to => [:menu, :read, :index, :create]
    has_permission_on :exam_examquestions, :to => :update do
      if_attribute :programme_id => is_in {user.lecturers_programme}
-   end
- end
- 
- role :exam_administration do
-   
-   #EXAMINATION modules
-   #has_permission_on [:exam_examquestions, :exam_exams, :exam_exam_templates, :exam_exammarks, :exam_grades], :to => [:menu, :read, :index, :create]
-   has_permission_on [:exam_exams, :exam_exam_templates, :exam_exammarks, :exam_grades], :to => [:menu, :read, :index, :create]
-   has_permission_on :exam_examresults, :to => [:menu, :read, :index2, :create, :update, :destroy, :show2, :examination_slip, :show3, :examination_transcript]   
-   has_permission_on :exam_examanalyses, :to => [:menu, :read, :create]
-   #new & create & examination_slip should not be allowed for Commonsubject lecturers - refer HACK - index & show2
- 
-   has_permission_on :exam_exams, :to =>[:manage ,:exampaper, :question_selection] do
-     if_attribute :created_by => is {user.userable.id}
-   end
-   
-   has_permission_on :exam_exam_templates, :to =>[:manage] do
-     if_attribute :created_by => is {user.id}
-   end
-   
-   has_permission_on :exam_exams, :to => :exampaper do
-     if_attribute :subject_id => is_in {user.lecturers_programme_subject}
-   end
-   
-#    has_permission_on :exam_examquestions, :to => :update do
-#      if_attribute :programme_id => is_in {user.lecturers_programme}
-#    end
-   
-   has_permission_on :exam_examresults, :to =>[ :edit, :update, :delete] do
-     if_attribute :programme_id => is_in {user.lecturers_programme2}
-   end
-   
-   #has_permission_on :exam_examanalyses, :to => [:edit, :update, :delete, :analysis_data] do
-   has_permission_on :exam_examanalyses, :to => [:edit, :update, :delete, :analysis_data] do
-     if_attribute :exam_id => is_in {user.by_programme_exams}  
    end
    
 #    has_permission_on :exam_examquestions, :to =>:update, :join_by => :and do
@@ -289,6 +255,26 @@ authorization do
 #      if_attribute :qstatus => is {"Re-Edit"}
 #    end
    
+ end
+ 
+ role :exam_administration do
+   
+   has_permission_on [:exam_exams, :exam_exam_templates, :exam_exammarks, :exam_grades], :to => [:menu, :read, :index, :create]
+   has_permission_on :exam_examresults, :to => [:menu, :read, :index2, :create, :update, :destroy, :show2, :examination_slip, :show3, :examination_transcript]   
+   has_permission_on :exam_examanalyses, :to => [:menu, :read, :create]
+
+   has_permission_on :exam_exam_templates, :to =>[:manage] do
+     if_attribute :created_by => is {user.id}
+   end
+
+   has_permission_on :exam_exams, :to =>[:manage ,:exampaper, :question_selection] do
+     if_attribute :created_by => is {user.userable.id}
+   end
+   
+   has_permission_on :exam_exams, :to => :exampaper do
+     if_attribute :subject_id => is_in {user.lecturers_programme_subject}
+   end
+
    has_permission_on :exam_exammarks, :to =>[:update, :delete, :edit_multiple, :update_multiple, :new_multiple, :create_multiple] do
      if_attribute :exam_id => is_in {user.exams_of_programme}
    end
@@ -298,22 +284,31 @@ authorization do
      if_attribute :subject_id => is_in {user.grades_of_programme}
    end
    
+   has_permission_on :exam_examresults, :to =>[ :edit, :update, :delete] do
+     if_attribute :programme_id => is_in {user.lecturers_programme2}
+   end
+   
    #has_permission_on :exam_evaluate_courses, :to => :manage - evaluation supposed by student - lecturer being evaluate shouldn't hv EDIT access
    has_permission_on :exam_evaluate_courses, :to =>[:index, :show, :courseevaluation] do
      if_attribute :staff_id => is {user.userable.id}
    end
    
+   has_permission_on :exam_examanalyses, :to => [:edit, :update, :delete, :analysis_data] do
+     if_attribute :exam_id => is_in {user.by_programme_exams}  
+   end
+   
  end
 
+ #28Dec2015- confirmed by EN Ahmad - access for Examination modules restricted ONLY for Exam Admin (except for Programme Mgr : Examresult by Prog, Examanalysis, Examquestions & Course Evaluation)
  role :programme_manager do
    has_permission_on :exam_examquestions, :to => :manage
-   has_permission_on [:exam_exam_templates, :exam_grades], :to => [:menu, :read]
-   has_permission_on :exam_exams, :to => [:menu, :read, :exampaper, :question_selection] #[:manage, :exampaper, :question_selection]
-   has_permission_on :exam_exammarks, :to => [:menu, :read] #[:manage, :edit_multiple, :update_multiple, :new_multiple, :create_multiple]
+   #has_permission_on [:exam_exam_templates, :exam_grades], :to => [:menu, :read]
+   #has_permission_on :exam_exams, :to => [:menu, :read, :exampaper, :question_selection] #[:manage, :exampaper, :question_selection]
+   #has_permission_on :exam_exammarks, :to => [:menu, :read] #[:manage, :edit_multiple, :update_multiple, :new_multiple, :create_multiple]
    has_permission_on :exam_evaluate_courses, :to => [:read, :courseevaluation, :evaluation_report] do
      if_attribute :course_id => is_in {user.evaluations_of_programme}
    end
-   has_permission_on :exam_examresults, :to => [:menu, :read, :index2, :show2, :examination_slip, :show3, :examination_transcript]# :create, :update, :destroy]   
+   has_permission_on :exam_examresults, :to => [:menu, :read]#, :index2, :show2, :examination_slip, :show3, :examination_transcript]# :create, :update, :destroy]   
    has_permission_on :exam_examanalyses, :to => [:menu, :read] do
       if_attribute :exam_id => is_in {user.by_programme_exams}  
    end
