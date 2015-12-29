@@ -1,9 +1,12 @@
+/Repeat paper if exist
+- repeats=Exam.where(subject_id: @grade.subject_id).where(name: "R")
+- repeat_paper=repeats.first.id if repeats && repeats.count > 0
+/check if current student resit this repeat paper too
+- student_exammark2=Exammark.where(exam_id: repeat_paper).where(student_id: @grade.student_id)
 .row
   .col-md-3
     = f.text_field :exam1name, class: 'form-control'
-    /Repeat paper if exist
-    - repeats=Exam.where(subject_id: @grade.subject_id).where(name: "R")
-    - if repeats && repeats.count > 0
+    - if repeats && repeats.count > 0 && student_exammark2 && student_exammark2.count > 0
       = text_field_tag :test, (t 'exam.grade.repeat_paper'), class: 'form-control'
   .col-md-3= f.text_field :exam1desc, class: 'form-control'
   - diploma_ids=Programme.roots.where(course_type: 'Diploma').pluck(:id)
@@ -34,9 +37,9 @@
     - latest_paper=Exam.where(subject_id: @grade.subject_id).order(created_at: :desc).first.id
     - student_exammark=Exammark.where(exam_id: latest_paper).where(student_id: @grade.student_id)
     /Repeat paper if exist
-    - repeats=Exam.where(subject_id: @grade.subject_id).where(name: "R")
-    - repeat_paper=repeats.first.id if repeats && repeats.count > 0
-    - student_exammark2=Exammark.where(exam_id: repeat_paper).where(student_id: @grade.student_id)
+    /- repeats=Exam.where(subject_id: @grade.subject_id).where(name: "R")
+    /- repeat_paper=repeats.first.id if repeats && repeats.count > 0
+    /- student_exammark2=Exammark.where(exam_id: repeat_paper).where(student_id: @grade.student_id)
 
     ////
     - if @grade.exam1marks && @grade.exam1marks > 0.0
@@ -50,7 +53,7 @@
     - if @grade.exam2marks && @grade.exam2marks > 0.0
       - exammarks2 = number_with_precision(@grade.exam2marks, precision: 2)
     - else
-      - if repeats && repeats.count > 0
+      - if repeats && repeats.count > 0 && student_exammark2 && student_exammark2.count > 0
         - exammarks2 = student_exammark2.first.total_marks
       - else
         - exammarks2 = 0
@@ -58,20 +61,20 @@
 
   .col-md-2
     /- if (student_exammark && student_exammark.count > 0) && diploma_ids.include?(progid)
-    - if (student_exammark && student_exammark.count > 0) 
+    - if (student_exammark && student_exammark.count > 0) || @grade.exam1marks && @grade.exam1marks > 0.0
       = f.text_field :exam1marks, value: exammarks, class: 'k1 form-control', readonly: 'readonly'
-      /Repeat paper if exist
-      - if repeats && repeats.count > 0
+      /Repeat paper if exist & student resit repeat paper
+      - if repeats && repeats.count > 0 && student_exammark2 && student_exammark2.count > 0
         = f.text_field :exam2marks, value: exammarks2, class: 'form-control', readonly: 'readonly'
     - else
       = f.text_field :exam1marks, value: exammarks, class: 'k1 form-control'
-      /Repeat paper if exist
-      - if repeats && repeats.count > 0
+      /Repeat paper if exist & student resit repeat paper
+      - if repeats && repeats.count > 0 && student_exammark2 && student_exammark2.count > 0
         = f.text_field :exam2marks, value: exammarks2, class: 'form-control'
   .col-md-2
     = f.text_field :marks_70, value: number_with_precision(@grade.summative, precision: 2), class: 'form-control', readonly: 'readonly'
-    /Repeat paper if exist
-    - if repeats && repeats.count > 0
+    /Repeat paper if exist & student resit repeat paper
+    - if repeats && repeats.count > 0 && student_exammark2 && student_exammark2.count > 0
       = f.text_field :marks_70_rev, value: number_with_precision(@grade.total_summative2, precision: 2), class: 'form-control', readonly: 'readonly'
 %br
 .row

@@ -23,7 +23,11 @@
     %dd=intake.try(:strftime, '%b %Y')
     
     %dt= t 'exam.examanalysis.final_exam'
-    %dd=link_to paper.exam_name_subject_date, exam_exam_path(@examanalysis.exam_id)
+    %dd
+      - if permitted_to? :read, :exam_exams
+        =link_to paper.exam_name_subject_date, exam_exam_path(@examanalysis.exam_id)
+      - else
+        =paper.exam_name_subject_date
      
       
     

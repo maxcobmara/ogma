@@ -27,6 +27,15 @@ $(document).ready(function(e) {
    	formatDate:'Y-m-d',
         minDate: 0
   });
+  var curdt=new Date();
+  $curdtfull=curdt.getFullYear()+'-'+curdt.getMonth()+'-'+curdt.getDay();
+  $('.date_picker_after_reverse2').datetimepicker({
+        timepicker:false,
+        format:'d-m-Y',
+        formatDate:'Y-m-d',
+        minDate: 0,
+        maxDate: +$curdtfull
+  });
   //tenant - datekeyprovided
   //$tahun = '2010';
   //minDate: $tahun+'-07-01'

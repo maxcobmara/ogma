@@ -317,13 +317,18 @@ class Examination_slipPdf < Prawn::Document
     if @resultline.examresult.programme_id==@cara_kerja
       result_by_subjectline=[]
       subjects.each_with_index do |subject, counting|
-        # TODO refractor this###
-        if @value_state2[counting]=='4' && @resultline.remark=='1'
-          repeat_or_viva="  "+I18n.t('exam.examresult.repeating')
-        elsif @value_state2[counting]=='4' && @resultline.remark=='2'
+        ######
+	# TODO refractor this###
+        student_grade = Grade.where('student_id=? and subject_id=?',@resultline.student.id,subject.id).first
+        #if @value_state2[counting]=='4' && @resultline.remark=='1'
+	repeat_or_viva=""
+	unless student_grade.nil? || student_grade.blank?
+          if student_grade.resit==true
+            repeat_or_viva="  "+I18n.t('exam.examresult.repeating')
+	  end
+        end
+        if @value_state2[counting]=='4' && @resultline.remark=='2'
           repeat_or_viva="  (VIVA)"
-        else
-          repeat_or_viva=""
         end
         ###
         result_by_subjectline << [subject.code, subject.name+repeat_or_viva, @grading2[counting], @finale[counting], @remark[counting]]
@@ -332,13 +337,18 @@ class Examination_slipPdf < Prawn::Document
     elsif @resultline.examresult.programme_id==@perubatan
       result_by_subjectline=[]
       subjects.each_with_index do |subject, counting|
-        # TODO refractor this###
-        if @value_state2[counting]=='4' && @resultline.remark=='1'
-          repeat_or_viva="  "+I18n.t('exam.examresult.repeating')
-        elsif @value_state2[counting]=='4' && @resultline.remark=='2'
+        ######
+	# TODO refractor this###
+	student_grade = Grade.where('student_id=? and subject_id=?',@resultline.student.id,subject.id).first
+        #if @value_state2[counting]=='4' && @resultline.remark=='1'
+	repeat_or_viva=""
+	unless student_grade.nil? || student_grade.blank?
+          if student_grade.resit==true
+            repeat_or_viva="  "+I18n.t('exam.examresult.repeating')
+         end
+	end
+        if @value_state2[counting]=='4' && @resultline.remark=='2'
           repeat_or_viva="  (VIVA)"
-        else
-          repeat_or_viva=""
         end
         ###
         if counting==0
@@ -416,12 +426,16 @@ class Examination_slipPdf < Prawn::Document
 # 	    end
 	    ######
 	    # TODO refractor this###
-            if @value_state2[counting]=='4' && @resultline.remark=='1'
-              repeat_or_viva="  "+I18n.t('exam.examresult.repeating')
-            elsif @value_state2[counting]=='4' && @resultline.remark=='2'
+	    student_grade = Grade.where('student_id=? and subject_id=?',@resultline.student.id,subject.id).first
+            #if @value_state2[counting]=='4' && @resultline.remark=='1'
+	    repeat_or_viva=""
+	    unless student_grade.nil? || student_grade.blank?
+              if student_grade.resit==true
+                repeat_or_viva="  "+I18n.t('exam.examresult.repeating')
+	      end
+	    end
+            if @value_state2[counting]=='4' && @resultline.remark=='2'
               repeat_or_viva="  (VIVA)"
-            else
-              repeat_or_viva=""
             end
             ###
 	    subject_line=["#{counting +1}", subject.subject_list+repeat_or_viva, @grading2[counting], @finale[counting], @remark[counting]] 
@@ -512,14 +526,14 @@ class Examination_slipPdf < Prawn::Document
 #      end
       if [@kebidanan, @kejururawatan].include?(@resultline.examresult.programme_id)
         render_status_view= @resultline.render_status
-        render_status_view+=" & "+@resultline.render_remark if @resultline.status=='4' && @resultline.render_remark!=nil
+        render_status_view+=" & "+@resultline.render_remark if @resultline.render_remark!=nil
       else
         if [@cara_kerja, @fisioterapi].include?(@resultline.examresult.programme_id)
           render_status_view=@resultline.render_status_contra
-          render_status_view+=" & "+@resultline.render_remark if @resultline.status=='4' && @resultline.render_remark!=nil
+          render_status_view+=" & "+@resultline.render_remark if @resultline.render_remark!=nil
         else
           render_status_view=@resultline.render_status
-          render_status_view+=" & "+@resultline.render_remark if @resultline.status=='4' && @resultline.render_remark!=nil
+          render_status_view+=" & "+@resultline.render_remark if @resultline.render_remark!=nil
         end
       end
       # --
