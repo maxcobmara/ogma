@@ -1,3 +1,5 @@
+a {text-decoration: none; color:black;}
+a:hover {text-decoration: underline;}
 div.orgChart {
     border                : 1px solid #cccccc;
     background-color      : #ffffe8;
@@ -7,15 +9,17 @@ div.orgChart {
 
 div.orgChart h2 {
     margin                : 0px;
-    font-size             : 1em;
+    font-size             : 0.7em;
+    font-family           : Arial;
     border-bottom         : none;
+    
 }
 
 div.orgChart ul {
     list-style            : none;
     margin                : 4px;
     padding               : 0px;
-    font-size             : 0.8em;
+    font-size             : 0.6em;
     text-align            : left;
 }
 
@@ -55,11 +59,11 @@ div.orgChart div.node {
     cursor                : default;
     border                : 2px solid black;
     display               : inline-block;
-    padding               : 0 4px;
-    width                 : 96px;
+    padding               : 0 8px;
+    width                 : 110px;
     height                : 60px;
     background-color      : #ffffcf;
-    line-height           : 1.3em;
+    line-height           : 0.9em;
     border-radius         : 8px;
     box-shadow            : 4px 4px 6px #888888;
     -moz-border-radius    : 8px;

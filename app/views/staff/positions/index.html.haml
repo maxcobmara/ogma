@@ -1,13 +1,31 @@
 - model_class = Position
-= javascript_include_tag "jquery.jOrgChart"
-= stylesheet_link_tag    "jquery.jOrgChart", media: "all"
+= stylesheet_link_tag    "jquery.orgchart", media: "all"
+= javascript_include_tag "jquery"
+= javascript_include_tag "jquery.orgchart.min"
+
+:javascript
+  $(function() {
+    $('#myorgchart ul:first').attr('id', 'chart-source');
+    $('#myorgchart ul:first').attr('class', 'hide');
+    $("#chart-source").orgChart({
+      container: $("#myorgchart"),
+      interactive: true,
+      showLevels: 2
+    });
+    
+  });
+
+
 
 
 .page-header
   %h1= t('position.index')#, :default => model_class.model_name.human.pluralize
   
-.orgchart
-  = @positions.inspect
-  .tree
+  
+.row
+  .orgchart
+    =# @positions.inspect
+.row
+  #myorgchart
     = nested_groups(@positions.order("combo_code ASC").arrange)
     

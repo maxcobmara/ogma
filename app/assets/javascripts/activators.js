@@ -118,6 +118,13 @@ $(document).ready(function(e) {
         $input.val($input.val().substr(0,4) + '-01-01');
       }
   });
+  $(function() {
+    $('#myorgchart ul:first').attr('id', 'chart-source');
+    $('#myorgchart ul:first').attr('class', 'hide');
+    $("#chart-source").orgChart({container: $("#myorgchart")});
+    
+  });
+  
   $(".bogus").click(function (e) {
       alert("Sorry! Feature not yet implemented");
   });
