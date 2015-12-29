@@ -209,7 +209,10 @@ $(document).ready(function(){
     
     if ((programme=="Radiografi") || (programme=="Jurupulih Perubatan Cara Kerja"))
     {
-      summative = (exam1marks*1)*(examweight*1)/100;
+      if (fullmarks==0)
+      {  summative = (exam1marks*1)*(examweight*1)/100; }
+      else
+      {  summative = (exam1marks*1)*(examweight*1)/fullmarks;}
     }
     else
     {
@@ -218,7 +221,8 @@ $(document).ready(function(){
       else
       {
         if (fullmarks==0)
-        {  summative=0;}
+        /*{  summative=0;}*/
+        {  summative= (exam1marks*1)*(examweight*1)/100; }
         else
         {  summative = (exam1marks*1)/fullmarks*(examweight*1); }
       }
@@ -328,7 +332,10 @@ $(document).ready(function(){
     
     if ((programme=="Radiografi") || (programme=="Jurupulih Perubatan Cara Kerja"))
     {
-      summative = (exam1marks*1)*(examweight*1)/100;
+      if (fullmarks==0)
+      {  summative = (exam1marks*1)*(examweight*1)/100; }
+      else
+      {  summative = (exam1marks*1)*(examweight*1)/fullmarks;}
     }
     else
     {
@@ -339,7 +346,8 @@ $(document).ready(function(){
         /*summative = (exam1marks*1)/fullmarks*(examweight*1);*/
         
         if (fullmarks==0)
-        {  summative=0; }
+        {  summative= (exam1marks*1)*(examweight*1)/100; }
+        /*0; }*/
         else
         {  summative = (exam1marks*1)/fullmarks*(examweight*1); }
       }

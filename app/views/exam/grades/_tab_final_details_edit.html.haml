@@ -41,6 +41,9 @@
         =t 'exam.grade.grading_id'
         %font{:style=>"color: red;"}*
     .col-md-3
+      /for checking
+      /= @grade.render_grading[-2,2]
+      /= @grade.finale
       - if student_exammark && student_exammark.count > 0 || @grade.set_gred
         = f.select :grading_id, DropDown::GRADE,{ :prompt =>t('select'),:selected=>@grade.set_gred }, class: 'form-control'
       - else

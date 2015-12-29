@@ -67,7 +67,16 @@ class Grade < ActiveRecord::Base
         if exam1marks == 0 || exam1marks == nil
           0
         else
-          (exam1marks * examweight)/100
+          ##(exam1marks * examweight)/100
+	  #(exam1marks * examweight)/60
+	  exist_paper=Exam.where(subject_id: subject_id).order(created_at: :desc).where(name: "F")
+          latest_paper=exist_paper.first.id  if exist_paper && exist_paper.count > 0
+          if latest_paper
+            fullmarks=Exammark.fullmarks(latest_paper)
+	    (exam1marks * examweight)/fullmarks
+	  else
+	    (exam1marks * examweight)/100
+          end
         end
       else
         
