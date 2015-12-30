@@ -13,18 +13,19 @@
     %dd= @exam_template.creator.userable.name
 
   %dl.dl-horizontal
-    %dt=(t 'exam.exam_template.count')+"  &  "+(t 'exam.exam_template.weight')
+    %dt
+      =(t 'exam.exam_template.count')+", "
+      %br=(t 'exam.exam_template.weight')+" & "
+      =(t 'exam.exam_template.full_marks')
     %dd
       .row
         .col-sm-8
           /= @exam_template.question_count.find_all{|key, value| value != ''}.map { |k, v| "#{k.titleize} : " + v['count'] + (t 'exam.exam_template.question_weight')+ v['weight'] + "%" }.join("<BR/>").html_safe
           - @exam_template.question_count.each do |key, value|
-            - if value['count']!='' && value['weight']!=''
-              = "#{key.upcase} : "+ value['count']+ (t 'exam.exam_template.question_weight')+value['weight'] 
-            - elsif value['count']!='' && value['weight']==''
-              = "#{key.upcase} : "+ value['count']
-            - else
-              = key.upcase+" : "
+            = "#{key.upcase} : "
+            = value['count'] unless value['count'].blank?
+            = (t 'exam.exam_template.question_weight')+value['weight']  unless value['weight'].blank?
+            = (t 'exam.exam_template.question_full_marks')+value['full_marks'] unless value['full_marks'].blank?
             %br
 
 .row

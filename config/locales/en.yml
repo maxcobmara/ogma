@@ -205,6 +205,8 @@ en:
         finalscore: Total Marks
       examanalysis:
         exam_id: Final Exam
+      exam_template:
+        name: Template Name
     errors:
         template:
           body: "There were problems with the following fields:"
@@ -2308,7 +2310,7 @@ en:
       klass_id: Template
       exam_on: Date
       duration: Duration
-      total_marks: Full Marks
+      full_marks: Full Marks
       starttime: Start Time
       endtime: End Time
       topic_id: Topic
@@ -2329,7 +2331,6 @@ en:
       by_semester: by semester
       create_exam: Proceed & Add Template and Question
       create_template: Proceed  & Select Exam Template ONLY
-      marks_each: "MCQ - 1 marks/each, MEQ - 20 marks/each, SEQ / OSPE - 10 marks/each"
       filters: Filters
       existing: Existing Questions
       programme_subject_topic: "* Select Programme, Subject, Topic and click 'Display Available Questions' link to view available questions."
@@ -2348,7 +2349,6 @@ en:
       remove_previous: "Clicking 'Update' button shall remove previous question template/structure (below). "
       select_exam_template: "Please select above exampaper template accordingly. Should you found there's no suitable template for selection, please create one in Exampaper Template. "
       previous_template: " (Expiring)"
-      full_marks: Full Marks
       must_start_before_end: End Time must after examination has started
 
     exammark:
@@ -2599,17 +2599,23 @@ en:
       name: Template Name 
       count: "No. of Questions"
       weight: Weightage
+      full_marks: Full Marks
       created_by: Created by
       questions: Questions
       type: Type
       question_weight: " questions, weighted at "
+      question_full_marks: ", full marks : "
       name_format: "Programme - Subject Code - Final / Mid Sem, eg.: Jurupulih Cara Kerja - OTAP 1114 - Final"
       template_in_use: Template in Use
-      
+      #marks_each: "MCQ - 1 marks/each, MEQ - 20 marks/each, SEQ - 10 marks/each"
+      other_marks_define: "Insert 'Full Marks' for each question type in use, otherwise marks/each question is default to 1 for MCQ, 20 for MEQ, 10 for SEQ and 1 for other type of questions."
+      weightage_define: "Insert 'Weightage' for each question type in use to apply weightage on marks obtained(per question type), otherwise weightage will be imposed on total marks obtained(of all question type)."
+      min_onetype_withcount: "Template requires at least 1 type of question c/w No.of questions"
+
   training:
     title: Training
     new: New Training
-    edit: Editing Training
+    edit: Edit Training
     create_timetable: Create Timetable
     create_intake: Create Intake
     create_academic_session: Create Academic Session

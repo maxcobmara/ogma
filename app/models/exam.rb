@@ -215,18 +215,21 @@ class Exam < ActiveRecord::Base
      end
   end
   
-  
+  # NOTE - this total_marks refers to FULL MARKS for examination paper - use in exams/_show_exam 
+  # TODO - rename this as template_full_marks & move to exam_template
   def total_marks
     # restriction - in exam_template - compulsory field - STANDARD MARKS (marks per question) or TOTAL MARKS
     # NOTE too - each examquestion also have MARKS field
     unless topic_id.nil?
       sum=0
       exam_template.question_count.each do |k, v|
-	
-        if v['count']!='' || v['count']!=nil 
+
+        #if v['count']!='' || v['count']!=nil 
+	unless v['count'].blank?
           qty=(v['count']).to_i
-          #if v["full_marks"] && v["full_marks"]!='' || v["full_marks"]!=nil
-	  unless v["full_marks"] && v["full_marks"]==''
+          ##if v["full_marks"] && v["full_marks"]!='' || v["full_marks"]!=nil
+          #unless v["full_marks"] && v["full_marks"]==''
+          if !v["full_marks"].nil? && !v["full_marks"].blank?
             sum1=v["full_marks"].to_f
           else
             if k=="mcq"
@@ -241,7 +244,7 @@ class Exam < ActiveRecord::Base
           end
           sum+=sum1
         end
-	
+
       end
       
     else  # 29 December 2015 - start

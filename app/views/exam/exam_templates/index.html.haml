@@ -14,8 +14,8 @@
     .alert.alert-warning
       %strong= t 'exam.exams.notes'
       %ol
-        %li
-          =t('exam.exams.marks_each')
+        %li=t('exam.exam_template.other_marks_define')
+        %li=t('exam.exam_template.weightage_define')
 
 .row
   %table.table-striped.table-hover.ogma
@@ -24,7 +24,7 @@
         /%th= sort_link(@search, :studentevaluate_name_cont, (t 'exam.exam_template.student_id'))
         %th{rowspan: 2}= sort_link(@search, :name, (t 'exam.exam_template.name'))
         %th{rowspan: 2}= sort_link(@search, :created_by, (t 'exam.exam_template.created_by'))
-        %th.centre{colspan: 10}= (t 'exam.exam_template.count')+"  /  "+(t 'exam.exam_template.weight')
+        %th.centre{colspan: 10}= (t 'exam.exam_template.count')+"  /  "+(t 'exam.exam_template.weight')+" (%) /  "+(t 'exam.exam_template.full_marks')
       %tr
         - DropDown::QTYPE.each do |channel|
           %th.centre=channel[1]
@@ -43,6 +43,9 @@
               =  " / " unless @weight.blank?
               = @weight
               = "%" unless @weight.blank?
+              - @full_marks =  (exam_template.question_count[var_channel.to_s]['full_marks'] rescue nil)
+              = " / " unless @full_marks.blank?
+              = @full_marks
 
 
     .right{style:"padding:0 30px; margin:0;"}= paginate @exam_templates, :theme => 'twitter-bootstrap-3'
