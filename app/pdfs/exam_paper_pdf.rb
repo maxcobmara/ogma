@@ -95,14 +95,14 @@ class Exam_paperPdf < Prawn::Document
         vertical_line 0, 278, :at => 450
         if [1, 4].include?(@exam.subject.root_id)
           horizontal_line 400, 500, :at => 210
-          horizontal_line 400, 500, :at => 140
-          horizontal_line 400, 500, :at => 70
+          horizontal_line 400, 500, :at => 140 if @exam.examquestions.seqq.count >=2
+          horizontal_line 400, 500, :at => 70 if @exam.examquestions.seqq.count >=3
         end
       end
       if [1, 4].include?(@exam.subject.root_id) 
         draw_text "S1", :at => [420, 240], :size => 11
-        draw_text "S2", :at => [420, 170], :size => 11
-        draw_text "S3", :at => [420, 100], :size => 11
+        draw_text "S2", :at => [420, 170], :size => 11 if @exam.examquestions.seqq.count >=2
+        draw_text "S3", :at => [420, 100], :size => 11 if @exam.examquestions.seqq.count >=3
       end
       if [1, 4].include?(@exam.subject.root_id) 
         draw_text "Jumlah", :at => [410, 30], :size => 11
@@ -141,15 +141,15 @@ class Exam_paperPdf < Prawn::Document
         vertical_line 0, 278, :at => 450
         if @exam.subject.root_id!=2 || (@exam.subject.root_id==2 && @coverof=="seq")
           horizontal_line 400, 500, :at => 210
-          horizontal_line 400, 500, :at => 140
-          horizontal_line 400, 500, :at => 70
+          horizontal_line 400, 500, :at => 140 if @exam.examquestions.seqq.count >=2
+          horizontal_line 400, 500, :at => 70 if @exam.examquestions.seqq.count >=3
         end
       end
       if @exam.subject.root_id!=2 || (@exam.subject.root_id==2 && @coverof=="seq")
         #may require additional conditions for MEQ
         draw_text "S1", :at => [420, 240], :size => 11
-        draw_text "S2", :at => [420, 170], :size => 11
-        draw_text "S3", :at => [420, 100], :size => 11
+        draw_text "S2", :at => [420, 170], :size => 11 if @exam.examquestions.seqq.count >=2
+        draw_text "S3", :at => [420, 100], :size => 11 if @exam.examquestions.seqq.count >=3
       end  
       if @exam.subject.root_id==2
         draw_text "Jumlah", :at => [410, 30], :size => 11 if @coverof=="seq"
