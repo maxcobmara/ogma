@@ -95,14 +95,14 @@ class Exam_paperPdf < Prawn::Document
         vertical_line 0, 278, :at => 450
         if [1, 4].include?(@exam.subject.root_id)
           horizontal_line 400, 500, :at => 210
-          horizontal_line 400, 500, :at => 140
-          horizontal_line 400, 500, :at => 70
+          horizontal_line 400, 500, :at => 140 if @exam.examquestions.seqq.count >=2
+          horizontal_line 400, 500, :at => 70 if @exam.examquestions.seqq.count >=3
         end
       end
       if [1, 4].include?(@exam.subject.root_id) 
         draw_text "S1", :at => [420, 240], :size => 11
-        draw_text "S2", :at => [420, 170], :size => 11
-        draw_text "S3", :at => [420, 100], :size => 11
+        draw_text "S2", :at => [420, 170], :size => 11 if @exam.examquestions.seqq.count >=2
+        draw_text "S3", :at => [420, 100], :size => 11 if @exam.examquestions.seqq.count >=3
       end
       if [1, 4].include?(@exam.subject.root_id) 
         draw_text "Jumlah", :at => [410, 30], :size => 11
@@ -141,15 +141,15 @@ class Exam_paperPdf < Prawn::Document
         vertical_line 0, 278, :at => 450
         if @exam.subject.root_id!=2 || (@exam.subject.root_id==2 && @coverof=="seq")
           horizontal_line 400, 500, :at => 210
-          horizontal_line 400, 500, :at => 140
-          horizontal_line 400, 500, :at => 70
+          horizontal_line 400, 500, :at => 140 if @exam.examquestions.seqq.count >=2
+          horizontal_line 400, 500, :at => 70 if @exam.examquestions.seqq.count >=3
         end
       end
       if @exam.subject.root_id!=2 || (@exam.subject.root_id==2 && @coverof=="seq")
         #may require additional conditions for MEQ
         draw_text "S1", :at => [420, 240], :size => 11
-        draw_text "S2", :at => [420, 170], :size => 11
-        draw_text "S3", :at => [420, 100], :size => 11
+        draw_text "S2", :at => [420, 170], :size => 11 if @exam.examquestions.seqq.count >=2
+        draw_text "S3", :at => [420, 100], :size => 11 if @exam.examquestions.seqq.count >=3
       end  
       if @exam.subject.root_id==2
         draw_text "Jumlah", :at => [410, 30], :size => 11 if @coverof=="seq"
@@ -226,7 +226,12 @@ class Exam_paperPdf < Prawn::Document
   def table_instructions2
     data1 = [["", "\u2022 Jangan buka buku soalan ini sehingga diberitahu."]]
     if @exam.examquestions.seqq.count > 0 && (@exam.subject.root_id!=2 || (@exam.subject.root_id==2 && @coverof=="seq"))
-      data1 << ["","\u2022 Bahagian B mengandungi 3 soalan SEQ (10 markah setiap satu). Jawab DUA (2) soalan sahaja dari bahagian ini."]
+      if @exam.subject.root_id==5
+        answer_note="Jawab semua soalan."
+      else
+        answer_note="Jawab DUA (2) soalan sahaja dari bahagian ini."
+      end
+      data1 << ["","\u2022 Bahagian B mengandungi #{@exam.examquestions.seqq.count} soalan SEQ (10 markah setiap satu). "+answer_note]
     elsif @exam.examquestions.meqq.count > 0 && (@exam.subject.root_id!=2 || (@exam.subject.root_id==2 && @coverof=="meq"))
       data1 << ["","\u2022 Bahagian C mengandungi soalan MEQ (20 markah setiap satu)."]
     end
@@ -347,7 +352,11 @@ class Exam_paperPdf < Prawn::Document
   def seq_part
      start_new_page
      move_down 20
-     text "Bahagian B. Jawab DUA soalan sahaja.", :align => :left, :size => 12, :style => :bold
+     if @exam.subject.root_id==5
+       text "Bahagian B. Jawab semua soalan.", :align => :left, :size => 12, :style => :bold
+     else
+       text "Bahagian B. Jawab DUA soalan sahaja.", :align => :left, :size => 12, :style => :bold
+     end
      move_down 10
      
      #########
@@ -376,30 +385,40 @@ class Exam_paperPdf < Prawn::Document
      #@exam.examquestions.seqq.each_with_index do |q, indx|
      0.upto(@tosort_seqid.count-1) do |indx|
        q = Examquestion.find(@seq_questionid[indx])
-       
-       #check COMPLETE Main SEQ question set HEIGHT (main question+diagram[if any]), set default as 180 if less than 180
+ 
+       #reactivate this part to DISPLAY Main SEQ question in remaining space of Previous SEQ question set - start- En Iz (29Dec2015)
+       ##check COMPLETE Main SEQ question set HEIGHT (main question+diagram[if any]), set default as 180 if less than 180
        q_string=q.question
        lines=q_string.size/89
        mod_lines=q_string.size%89
        aa= (lines*20) if mod_lines==0
        aa= ((lines+1)*20) if mod_lines>0
-       if q.diagram.exists? then
-         imageheight=130+5+10
-       else
-         imageheight=0
-       end
-       qset_height=20+10+aa+20+imageheight
-       #qset_height=180 if qset_height <180
-       qset_height=70 if qset_height < 70 && imageheight==0
-       qset_height=215 if qset_height < 215 && imageheight==145
-       #text "qset_height = #{qset_height}  y = #{y}"
+       #if q.diagram.exists? then
+       #  imageheight=130+5+10
+       #else
+       #  imageheight=0
+       #end
+       #qset_height=20+10+aa+20+imageheight
+       ##qset_height=180 if qset_height <180
+       #qset_height=70 if qset_height < 70 && imageheight==0
+       #qset_height=215 if qset_height < 215 && imageheight==145
+       ##text "qset_height = #{qset_height}  y = #{y}"
       
-      #move to next page if space is inadequate for Main SEQ question set
-       if qset_height > y
+       ##move to next page if space is inadequate for Main SEQ question set
+       #if qset_height > y
+       #  start_new_page
+       #  move_down 20
+       #  #text "sebab tak muat mainQ"
+       #end
+       #reactivate this part to DISPLAY Main SEQ question in remaining space of Previous SEQ question set - end- En Iz (29Dec2015) 
+
+       #otherwise - use BELOW - start   
+       #start a NEW page for every SEQ question set (for 2nd question onwards)
+       if indx > 0
          start_new_page
          move_down 20
-         #text "sebab tak muat mainQ"
        end
+       #otherwise - end
 
        #display diagram
        if q.diagram.exists? then
