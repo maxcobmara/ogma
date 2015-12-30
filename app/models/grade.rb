@@ -73,7 +73,13 @@ class Grade < ActiveRecord::Base
           latest_paper=exist_paper.first.id  if exist_paper && exist_paper.count > 0
           if latest_paper
             fullmarks=Exammark.fullmarks(latest_paper)
-	    (exam1marks * examweight)/fullmarks
+	    #29 Dec 2015 - start
+	    if fullmarks==0
+	      (exam1marks * examweight)/100
+	    else
+	      (exam1marks * examweight)/fullmarks  #######################
+	    end
+	    #29 Dec 2015 - end
 	  else
 	    (exam1marks * examweight)/100
           end

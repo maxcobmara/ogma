@@ -222,6 +222,7 @@ class Exam < ActiveRecord::Base
     unless topic_id.nil?
       sum=0
       exam_template.question_count.each do |k, v|
+	
         if v['count']!='' || v['count']!=nil 
           qty=(v['count']).to_i
           #if v["full_marks"] && v["full_marks"]!='' || v["full_marks"]!=nil
@@ -240,8 +241,14 @@ class Exam < ActiveRecord::Base
           end
           sum+=sum1
         end
-      end  
-    end
+	
+      end
+      
+    else  # 29 December 2015 - start
+      #when template not yet selected?? - no full marks could be count
+      sum=0
+      # 29 December 2015 - end
+    end 
     sum
   end
   
