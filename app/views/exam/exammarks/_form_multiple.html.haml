@@ -216,46 +216,71 @@
           /HIDE - just to avoid confusion (same value as summative, coz data already in weightage - but MCQ, SEQ- marks by WEIGHTAGE still PENDING)
           /- if @exammarks[0].exampaper.subject.root_id==radiografi || @exammarks[0].exampaper.subject.root_id==carakerja
           
-          - if !(@exammarks[0].exampaper.subject.root_id==radiografi || @exammarks[0].exampaper.subject.root_id==carakerja) && (@exammarks[0].exampaper.name=='F' || @exammarks[0].exampaper.name=='R')
-            = hidden_field_tag "total_marks_view[]", number_with_precision(exammark.total_marks,precision:2) ,:id=>"total_marks_view"+@b_count.to_s, :size=> 5, :readonly=>true, :class => 'form-control'
-            - if exammark.exampaper.exam_template.total_in_weight==0
-              /weight not exist
-              - sumweightage=exammark.total_weightage
-              /- sumweightage=exammark.exampaper.total_marks
-            - else
-              - sumweightage=exammark.exampaper.exam_template.total_in_weight
+          ////////
+          - if exammark.exampaper.exam_template.total_in_weight==0
+            /weight not exist
+            - sumweightage=exammark.total_weightage
           - else
+            - sumweightage=exammark.exampaper.exam_template.total_in_weight
+            
+          - if (@exammarks[0].exampaper.subject.root_id==radiografi || @exammarks[0].exampaper.subject.root_id==carakerja)
+            /Display these 2 columns for Radiografi & Cara Kerja Only
+            /entered total marks
             %td.centre{:style=>"background-color:#C3E9BF;"}
-              /ssiiinnnii - mid sem+other than radiografi & cara kerja
-              / NOTE Mid Sem : Total Marks (1)displayed in Weightage %, when weightage exist (2)displayed by 'SAVEd ENTERED values', when weightage not present
-              /but for values checking purposes - sumweightage must be supplied with : (1) paper's Full_marks(exam.total_marks) if weightage ==0
-              /(2) total_in_weight if weightage > 0 [remarks : exam.total_marks <> exammark.total_marks]
-              - if exammark.exampaper.exam_template.total_in_weight==0
-                /weight not exist
-                - sumweightage=exammark.total_weightage
-                /- sumweightage=exammark.exampaper.total_marks
-              - else
-                - sumweightage=exammark.exampaper.exam_template.total_in_weight
-              
-              /= text_field_tag "total_marks_view[]", number_with_precision(exammark.total_marks,precision:2) ,:id=>"total_marks_view"+@b_count.to_s, :size=> 5, :readonly=>true, :class => 'form-control'
               = text_field_tag "total_marks_view[]", number_with_precision(exammark.total_marks, precision:2) ,:id=>"total_marks_view"+@b_count.to_s, :size=> 5, :readonly=>true, :class => 'form-control'
+            /total in 100
+            %td.centre{:style=>"background-color:#C3E9BF;"}
+              = text_field_tag "marks_in_hundred[]", number_with_precision((exammark.total_marks/Exammark.fullmarks(@examid))*100, precision: 2), :id=>"marks_in_hundred"+@b_count.to_s, :size=> 5, :readonly=>true, :class => 'form-control'
+          - else
+            /Still these 2 columns added to make sure it works, but no need to display
+            = hidden_field_tag "total_marks_view[]", number_with_precision(exammark.total_marks, precision:2) ,:id=>"total_marks_view"+@b_count.to_s, :size=> 5, :readonly=>true, :class => 'form-control'
+            = hidden_field_tag "marks_in_hundred[]", number_with_precision((exammark.total_marks/Exammark.fullmarks(@examid))*100, precision: 2), :id=>"marks_in_hundred"+@b_count.to_s, :size=> 5, :readonly=>true, :class => 'form-control'
+
+          /Both groups - total in 70 (summative)
+          %td.centre{:style=>"background-color:#C3E9BF;"}
+            = text_field_tag "total_summative[]", number_with_precision(exammark.totalsummative, precision: 2) ,:id=>"total_summative"+@b_count.to_s, :size=> 5, :readonly=>true, :class => 'form-control'
+          ////////
+          
+          /- if !(@exammarks[0].exampaper.subject.root_id==radiografi || @exammarks[0].exampaper.subject.root_id==carakerja) && (@exammarks[0].exampaper.name=='F' || @exammarks[0].exampaper.name=='R')
+          /  = hidden_field_tag "total_marks_view[]", number_with_precision(exammark.total_marks,precision:2) ,:id=>"total_marks_view"+@b_count.to_s, :size=> 5, :readonly=>true, :class => 'form-control'
+          /  - if exammark.exampaper.exam_template.total_in_weight==0
+          /    /weight not exist
+          /    - sumweightage=exammark.total_weightage
+          /    /- sumweightage=exammark.exampaper.total_marks
+          /  - else
+          /    - sumweightage=exammark.exampaper.exam_template.total_in_weight
+          /- else
+          /  %td.centre{:style=>"background-color:#C3E9BF;"}
+          /    /ssiiinnnii - mid sem+other than radiografi & cara kerja
+          /    / NOTE Mid Sem : Total Marks (1)displayed in Weightage %, when weightage exist (2)displayed by 'SAVEd ENTERED values', when weightage not present
+          /    /but for values checking purposes - sumweightage must be supplied with : (1) paper's Full_marks(exam.total_marks) if weightage ==0
+          /    /(2) total_in_weight if weightage > 0 [remarks : exam.total_marks <> exammark.total_marks]
+          /    - if exammark.exampaper.exam_template.total_in_weight==0
+          /      /weight not exist
+          /      - sumweightage=exammark.total_weightage
+          /      /- sumweightage=exammark.exampaper.total_marks
+          /    - else
+          /      - sumweightage=exammark.exampaper.exam_template.total_in_weight
+              
+          /    /= text_field_tag "total_marks_view[]", number_with_precision(exammark.total_marks,precision:2) ,:id=>"total_marks_view"+@b_count.to_s, :size=> 5, :readonly=>true, :class => 'form-control'
+          /    = text_field_tag "total_marks_view[]", number_with_precision(exammark.total_marks, precision:2) ,:id=>"total_marks_view"+@b_count.to_s, :size=> 5, :readonly=>true, :class => 'form-control'
 
           /hide end
-          - if (@exammarks[0].exampaper.subject.root_id==radiografi || @exammarks[0].exampaper.subject.root_id==carakerja) && (@exammarks[0].exampaper.name=='F'|| @exammarks[0].exampaper.name=='R')            
-            %td.centre{:style=>"background-color:#C3E9BF;"}
-              /sinipun
-              = text_field_tag "marks_in_hundred[]", number_with_precision((exammark.total_marks/Exammark.fullmarks(@examid))*100, precision: 2), :id=>"marks_in_hundred"+@b_count.to_s, :size=> 5, :readonly=>true, :class => 'form-control'
+          /- if (@exammarks[0].exampaper.subject.root_id==radiografi || @exammarks[0].exampaper.subject.root_id==carakerja) && (@exammarks[0].exampaper.name=='F'|| @exammarks[0].exampaper.name=='R')            
+          /  %td.centre{:style=>"background-color:#C3E9BF;"}
+          /    /sinipun
+          /    = text_field_tag "marks_in_hundred[]", number_with_precision((exammark.total_marks/Exammark.fullmarks(@examid))*100, precision: 2), :id=>"marks_in_hundred"+@b_count.to_s, :size=> 5, :readonly=>true, :class => 'form-control'
           
           /- else
           /  %td{:style=>"background-color:#C3E9BF;"}= text_field_tag "total_marks_view[]", number_with_precision(exammark.total_marks,precision:2) ,:id=>"total_marks_view"+@b_count.to_s, :size=> 5, :readonly=>true, :class => 'form-control'
-          - if @exammarks[0].exampaper.name=='F' || @exammarks[0].exampaper.name=='R'
-            %td.centre{:style=>"background-color:#C3E9BF;"}
-              /sinika
-              /=@mcqweight_rate
-              = text_field_tag "total_summative[]", number_with_precision(exammark.totalsummative, precision: 2) ,:id=>"total_summative"+@b_count.to_s, :size=> 5, :readonly=>true, :class => 'form-control'
-          - else
-            /TEMPORARY - ADD THIS JUST TO MAKE SURE total_marks_view display correctly, or only first student/line works for Repeat Papers(NGYN-Kejururawatan)-8Dec15
-            = hidden_field_tag "total_summative[]", number_with_precision(exammark.totalsummative, precision: 2) ,:id=>"total_summative"+@b_count.to_s, :size=> 5, :readonly=>true, :class => 'form-control'
+          /- if @exammarks[0].exampaper.name=='F' || @exammarks[0].exampaper.name=='R'
+          /  %td.centre{:style=>"background-color:#C3E9BF;"}
+          /    /sinika
+          /    /=@mcqweight_rate
+          /    = text_field_tag "total_summative[]", number_with_precision(exammark.totalsummative, precision: 2) ,:id=>"total_summative"+@b_count.to_s, :size=> 5, :readonly=>true, :class => 'form-control'
+          /- else
+          /  /TEMPORARY - ADD THIS JUST TO MAKE SURE total_marks_view display correctly, or only first student/line works for Repeat Papers(NGYN-Kejururawatan)-8Dec15
+          /  = hidden_field_tag "total_summative[]", number_with_precision(exammark.totalsummative, precision: 2) ,:id=>"total_summative"+@b_count.to_s, :size=> 5, :readonly=>true, :class => 'form-control'
          
          
           - @b_count+=1
@@ -362,7 +387,7 @@ $(document).ready(function(){
       {  window["mcq_field"+i].style.color="black";}
       
       var a = 0;
-      
+      nonmcq_entered_marks=0;
       for (var k=0;k<allcount-mcqcount;k++)
       {
         var other = document.getElementById("student_mark_"+i+"_"+k).value;
@@ -440,82 +465,32 @@ $(document).ready(function(){
         else
         {  window["other_field_"+i+"_"+k].style.color = "black";}
       
+        nonmcq_entered_marks=nonmcq_entered_marks*1+other*1;
       }
       
       if (mcqweight_rate!='0')
-      {aaa=(total_mcq*mcqweight_rate+a)}
+      {aaa=(total_mcq*mcqweight_rate+a);}
       else
-      {aaa=(total_mcq*1+a)/fullmarks*100*0.70}
+      {aaa=(total_mcq*1+a)/fullmarks*100*0.70;}
       
-      if ((programme=="Radiografi") || (programme=="Jurupulih Perubatan Cara Kerja"))
+      window["totalmarksview"+i].value = (total_mcq*1+nonmcq_entered_marks);
+      window["totalsummative"+i].value=aaa;
+      /* Below (marksinhundred) : applicable to ALL programme but only DISPLAY for Radiografi & Cara Kerja */
+      window["marksinhundred"+i].value=(total_mcq*1+nonmcq_entered_marks) / fullmarks*100;
+      
+      if ((total_mcq*1+nonmcq_entered_marks) > fullmarks*1.0)
       {
-        
-        if (  aaa > 70) 
-          {
-            window["totalmarksview"+i].value = 'Max value is '+fullmarks;
-            window["totalsummative"+i].value='Max value is 70';
-            window["marksinhundred"+i].value='Max value is 100';
-            window["totalmarksview"+i].style.color="red";
-            window["totalsummative"+i].style.color="red";
-            window["marksinhundred"+i].style.color="red";
-          }
-          else
-          {
-            window["totalmarksview"+i].value = (total_mcq*1+a);
-            window["marksinhundred"+i].value = (total_mcq*1+a)/fullmarks*100;
-            window["totalsummative"+i].value = aaa;
-            window["totalmarksview"+i].style.color="black";
-            window["totalsummative"+i].style.color="black";
-            window["marksinhundred"+i].style.color="black";
-          }
+        window["totalmarksview"+i].style.color="red";
+        window["totalsummative"+i].style.color="red";
+        window["marksinhundred"+i].style.color="red";
       }
       else
       {
-
-        /*BELOW : total marks view shall display total marks entered if weightage not exist, otherwise display total in weightage %*/      
-        if (mcqweight_rate!='0')
-        {  bbb=(total_mcq*mcqweight_rate+a);}
-        else
-        {  bbb=(total_mcq*1+a);}
-        
-        if (bbb > total_weight)
-        {  
-          window["totalmarksview"+i].value='Max value is '+total_weight;
-          window["totalmarksview"+i].style.color="red";
-        }
-        else
-        {  
-          window["totalmarksview"+i].value = bbb;
-          window["totalmarksview"+i].style.color="black";
-         }
-
-        if (fullmarks==70)
-        {  
-          if ( aaa > 70)
-          {
-            window["totalsummative"+i].value='Max value is 70';
-            window["totalsummative"+i].style.color="red";
-          }
-          else
-          {
-             window["totalsummative"+i].value =aaa;
-             window["totalsummative"+i].style.color="black";
-          }
-        }
-        else
-        { 
-           if ( aaa > total_weight)
-          {
-            window["totalsummative"+i].value='Max value is '+total_weight;
-            window["totalsummative"+i].style.color="red";
-          }
-          else
-          {
-             window["totalsummative"+i].value = aaa;
-             window["totalsummative"+i].style.color="black";
-          }
-        }
+        window["totalmarksview"+i].style.color="black";
+        window["totalsummative"+i].style.color="black";
+        window["marksinhundred"+i].style.color="black";
       }
+      
     }
     
   });
@@ -575,7 +550,7 @@ $(document).ready(function(){
       {  window["mcq_field"+i].style.color="black";}
       
       var a = 0;
-      
+      nonmcq_entered_marks=0;
       for (var k=0;k<allcount-mcqcount;k++)
       {
         var other = document.getElementById("student_mark_"+i+"_"+k).value;
@@ -584,14 +559,14 @@ $(document).ready(function(){
         window["other_field_"+i+"_"+k] = document.getElementById("student_mark_"+i+"_"+k);
       
         meq_count2=meq_count;
-        seq_count2=meq_count2+seq_count;
-        acq_count2=seq_count2+acq_count;
-        osci_count2=acq_count2+osci_count;
-        oscii_count2=osci_count2+oscii_count;
-        osce_count2=oscii_count2+osce_count;
-        ospe_count2=osce_count2+ospe_count;
-        viva_count2=ospe_count2+viva_count;
-        truefalse_count2=viva_count2+truefalse_count;
+        seq_count2=meq_count2*1+seq_count*1 /*meq_count2+seq_count;*/
+        acq_count2=seq_count2*1+acq_count*1;
+        osci_count2=acq_count2*1+osci_count*1;
+        oscii_count2=osci_count2*1+oscii_count*1;
+        osce_count2=oscii_count2*1+osce_count*1;
+        ospe_count2=osce_count2*1+ospe_count*1;
+        viva_count2=ospe_count2*1+viva_count*1;
+        truefalse_count2=viva_count2*1+truefalse_count*1;
        
         if (k < meq_count2)
        {  
@@ -651,7 +626,8 @@ $(document).ready(function(){
         {  window["other_field_"+i+"_"+k].style.color = "red";}
         else
         {  window["other_field_"+i+"_"+k].style.color = "black";}
-      
+        
+        nonmcq_entered_marks=nonmcq_entered_marks*1+other*1;
       }
       
       if (mcqweight_rate!='0')
@@ -659,99 +635,25 @@ $(document).ready(function(){
       else
       {aaa=(total_mcq*1+a)/fullmarks*100*0.70}
       
-      if ((programme=="Radiografi") || (programme=="Jurupulih Perubatan Cara Kerja"))
+      window["totalmarksview"+i].value = (total_mcq*1+nonmcq_entered_marks);
+      window["totalsummative"+i].value=aaa;
+      /* Below (marksinhundred) : applicable to ALL programme but only DISPLAY for Radiografi & Cara Kerja */
+      window["marksinhundred"+i].value=(total_mcq*1+nonmcq_entered_marks) / fullmarks*100;
+      
+      if ((total_mcq*1+nonmcq_entered_marks) > fullmarks*1.0)
       {
-        
-        if (  aaa > 70) 
-          {
-            window["totalmarksview"+i].value = 'Max value is '+fullmarks;
-            window["totalsummative"+i].value='Max value is 70';
-            window["marksinhundred"+i].value='Max value is 100';
-            window["totalmarksview"+i].style.color="red";
-            window["totalsummative"+i].style.color="red";
-            window["marksinhundred"+i].style.color="red";
-          }
-          else
-          {
-            window["totalmarksview"+i].value = (total_mcq*1+a);
-            window["marksinhundred"+i].value = (total_mcq*1+a)/fullmarks*100;
-            window["totalsummative"+i].value = aaa;
-            window["totalmarksview"+i].style.color="black";
-            window["totalsummative"+i].style.color="black";
-            window["marksinhundred"+i].style.color="black";
-          }
+        window["totalmarksview"+i].style.color="red";
+        window["totalsummative"+i].style.color="red";
+        window["marksinhundred"+i].style.color="red";
       }
       else
       {
-
-        /*BELOW : total marks view shall display total marks entered if weightage not exist, otherwise display total in weightage %*/      
-        if (mcqweight_rate!='0')
-        {  bbb=(total_mcq*mcqweight_rate+a);}
-        else
-        {  bbb=(total_mcq*1+a);}
-        
-        if (bbb > total_weight)
-        {  
-          window["totalmarksview"+i].value='Max value is '+total_weight;
-          window["totalmarksview"+i].style.color="red";
-        }
-        else
-        {  
-          window["totalmarksview"+i].value = bbb;
-          window["totalmarksview"+i].style.color="black";
-         }
-
-        if (fullmarks==70)
-        {  
-          if ( aaa > 70)
-          {
-            window["totalsummative"+i].value='Max value is 70';
-            window["totalsummative"+i].style.color="red";
-          }
-          else
-          {
-             window["totalsummative"+i].value =aaa;
-             window["totalsummative"+i].style.color="black";
-          }
-        }
-        else
-        { 
-           if ( aaa > total_weight)
-          {
-            window["totalsummative"+i].value='Max value is '+total_weight;
-            window["totalsummative"+i].style.color="red";
-          }
-          else
-          {
-             window["totalsummative"+i].value = aaa;
-             window["totalsummative"+i].style.color="black";
-          }
-        }
+        window["totalmarksview"+i].style.color="black";
+        window["totalsummative"+i].style.color="black";
+        window["marksinhundred"+i].style.color="black";
       }
+      
     }
     
   });
 });
-
-
-/if ( (total_mcq*mcqweight_rate+a)/fullmarks*100*0.70 > 70)
-/window["totalsummative"+i].value = (total_mcq*1+a)/fullmarks*100*0.70;
-
-/       if ((programme=="Radiografi") || (programme=="Jurupulih Perubatan Cara Kerja"))
-/       {
-/         var value_100 = document.getElementById("marks_in_hundred"+i).value;
-/       }
-/ if (value_70 > 70)
-/       {
-/         $("#error_display").show();
-/         $("#error_display_70").show();
-/         $("#error_display_total").show();
-/         $("#error_display_remark").show();
-/       }
-/       else
-/       { 
-/         $("#error_display").hide(); 
-/         $("#error_display_70").hide(); 
-/         $("#error_display_total").hide();
-/         $("#error_display_remark").hide();
-/       } 

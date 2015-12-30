@@ -199,7 +199,7 @@ class Exammark < ActiveRecord::Base
       elsif exampaper.name=="R"
         grade_to_update.exam2marks=total_marks 
       elsif exampaper.name=="M"
-        grade_to_update.scores.where(type_id: 6).first.marks=total_marks if @grade_to_update.scores.where(type_id: 6).count > 0
+        grade_to_update.scores.where(type_id: 6).first.marks=total_marks if grade_to_update.scores.where(type_id: 6).count > 0
       end
       grade_to_update.save if grade_to_update.exam1marks && examtype == "F" 
       grade_to_update.save if grade_to_update.exam2marks && examtype == "R"
