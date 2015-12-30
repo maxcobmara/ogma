@@ -73,7 +73,7 @@ class ExamTemplate < ActiveRecord::Base
     end
   end
   
-  #####use in 1)exams/_show_exam 2)exammarks/edit_multiple 3)exammarks/_form, Index, _show_marks
+  #####use in 1)exams/_show_exam 2)exammarks/edit_multiple 3)exammarks/_form, Index, _show_marks, _form_multiple
   def template_full_marks
     sum=0
     question_count.each do |k, v|

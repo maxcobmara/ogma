@@ -84,7 +84,7 @@
 /=qrate
 
 - @allcount= @mcqcount+@meqcount+@seqcount+@acqcount+@oscicount+@osciicount+@oscecount+@ospecount+@vivacount+@truefalsecount
-- @fullmarks = Exammark.fullmarks(@examid)
+- @fullmarks = Exam.find(@examid).exam_template.template_full_marks
 - @b_count=0
 - @diff_total_mcq=0
 
@@ -153,43 +153,66 @@
             %th.centre
               =t 'exam.exammark.true_false1'
               %br="Q-"+count.to_s
+        
+        ///Columns heading
+        - if (@exammarks[0].exampaper.subject.root_id==radiografi || @exammarks[0].exampaper.subject.root_id==carakerja)
+          /display for Radiografi & Cara Kerja only
+          /entered total marks
+          %th.centre
+            =t 'exam.exammark.total'
+            %font{:style=>"size:-2;"}="("+(number_with_precision(@fullmarks, precision: 2)).to_s+")"
+          /total marks in 100%
+          %th.centre 
+            &nbsp;&nbsp;&nbsp;&nbsp;100%&nbsp;&nbsp;&nbsp;&nbsp;
+        
+        /Display for both groups
+        %th.centre
+          =t 'exam.exammark.summative'
+          - if @exammarks[0].exampaper.exam_template.total_in_weight==0
+            /weightage in exam_template - not exist
+            - sumweightage=@exammarks[0].total_weightage
+          - else
+            - sumweightage=@exammarks[0].exampaper.exam_template.total_in_weight
+          ="("+sumweightage.to_s+" %)"
+        ///
+        
         /HIDE - just to avoid confusion (same value as summative, coz data already in weightage - but MCQ, SEQ- marks by WEIGHTAGE still PENDING)
-        - if @exammarks[0].exampaper.subject.root_id==radiografi || @exammarks[0].exampaper.subject.root_id==carakerja
-          %th.centre
-            /#error_display_total{:style => "display: none;"}
-            /  %font{color: "red"}*
-            =t 'exam.exammark.total'
-          %font{:style=>"size:-2;"}="("+(number_with_precision(@fullmarks, precision: 2)).to_s+")"
+        /- if @exammarks[0].exampaper.subject.root_id==radiografi || @exammarks[0].exampaper.subject.root_id==carakerja
+        /  %th.centre
+        /    /#error_display_total{:style => "display: none;"}
+        /    /  %font{color: "red"}*
+        /    =t 'exam.exammark.total'
+        /    %font{:style=>"size:-2;"}="("+(number_with_precision(@fullmarks, precision: 2)).to_s+")"
         /hide end
-        - if @exammarks[0].exampaper.name=='F'
-          - if @exammarks[0].exampaper.subject.root_id==radiografi || @exammarks[0].exampaper.subject.root_id==carakerja
-            %th.centre 
-              /#error_display{:style => "display: none;"}
-              /  %font{color: "red"}*
-              &nbsp;&nbsp;&nbsp;&nbsp;100%&nbsp;&nbsp;&nbsp;&nbsp;
+        /- if @exammarks[0].exampaper.name=='F'
+        /  - if @exammarks[0].exampaper.subject.root_id==radiografi || @exammarks[0].exampaper.subject.root_id==carakerja
+        /    %th.centre 
+        /      /#error_display{:style => "display: none;"}
+        /      /  %font{color: "red"}*
+        /      &nbsp;&nbsp;&nbsp;&nbsp;100%&nbsp;&nbsp;&nbsp;&nbsp;
               
-          %th.centre
-            /#error_display_70{:style => "display: none;"}
-            /  %font{color: "red"}*
-            =t 'exam.exammark.summative'
-            //
-            - if @exammarks[0].exampaper.exam_template.total_in_weight==0
-              /weightage in exam_template - not exist
-              - sumweightage=@exammarks[0].total_weightage
-            - else
-              - sumweightage=@exammarks[0].exampaper.exam_template.total_in_weight
-            ="("+sumweightage.to_s+" %)"
-            //
-            /- if @exammarks[0].exampaper.exam_template.total_in_weight==0
-            /  /weightage in exam_template - not exist
-            /  ="("+@exammarks[0].total_weightage.to_s+" %)"
-            /- else
-            /  ="("+@exammarks[0].exampaper.exam_template.total_in_weight.to_s+" %)"
-        - else
-          %th
-            /#error_display_total{:style => "display: none;"}
-            /  %font{color: "red"}*
-            =t 'exam.exammark.total'
+        /  %th.centre
+        /    /#error_display_70{:style => "display: none;"}
+        /    /  %font{color: "red"}*
+        /    =t 'exam.exammark.summative'
+        /    //
+        /    - if @exammarks[0].exampaper.exam_template.total_in_weight==0
+        /      /weightage in exam_template - not exist
+        /      - sumweightage=@exammarks[0].total_weightage
+        /    - else
+        /      - sumweightage=@exammarks[0].exampaper.exam_template.total_in_weight
+        /    ="("+sumweightage.to_s+" %)"
+        /    //
+        /    /- if @exammarks[0].exampaper.exam_template.total_in_weight==0
+        /    /  /weightage in exam_template - not exist
+        /    /  ="("+@exammarks[0].total_weightage.to_s+" %)"
+        /    /- else
+        /    /  ="("+@exammarks[0].exampaper.exam_template.total_in_weight.to_s+" %)"
+        /- else
+        /  %th
+        /    /#error_display_total{:style => "display: none;"}
+        /    /  %font{color: "red"}*
+        /    =t 'exam.exammark.total'
 
     %tbody
       - @exammarks.sort_by{|x|x.studentmark.name}.each_with_index do |exammark,no|
@@ -216,7 +239,7 @@
           /HIDE - just to avoid confusion (same value as summative, coz data already in weightage - but MCQ, SEQ- marks by WEIGHTAGE still PENDING)
           /- if @exammarks[0].exampaper.subject.root_id==radiografi || @exammarks[0].exampaper.subject.root_id==carakerja
           
-          ////////
+          ////////Columns data
           - if exammark.exampaper.exam_template.total_in_weight==0
             /weight not exist
             - sumweightage=exammark.total_weightage
@@ -230,11 +253,11 @@
               = text_field_tag "total_marks_view[]", number_with_precision(exammark.total_marks, precision:2) ,:id=>"total_marks_view"+@b_count.to_s, :size=> 5, :readonly=>true, :class => 'form-control'
             /total in 100
             %td.centre{:style=>"background-color:#C3E9BF;"}
-              = text_field_tag "marks_in_hundred[]", number_with_precision((exammark.total_marks/Exammark.fullmarks(@examid))*100, precision: 2), :id=>"marks_in_hundred"+@b_count.to_s, :size=> 5, :readonly=>true, :class => 'form-control'
+              = text_field_tag "marks_in_hundred[]", number_with_precision((exammark.total_marks/@fullmarks)*100, precision: 2), :id=>"marks_in_hundred"+@b_count.to_s, :size=> 5, :readonly=>true, :class => 'form-control'
           - else
             /Still these 2 columns added to make sure it works, but no need to display
             = hidden_field_tag "total_marks_view[]", number_with_precision(exammark.total_marks, precision:2) ,:id=>"total_marks_view"+@b_count.to_s, :size=> 5, :readonly=>true, :class => 'form-control'
-            = hidden_field_tag "marks_in_hundred[]", number_with_precision((exammark.total_marks/Exammark.fullmarks(@examid))*100, precision: 2), :id=>"marks_in_hundred"+@b_count.to_s, :size=> 5, :readonly=>true, :class => 'form-control'
+            = hidden_field_tag "marks_in_hundred[]", number_with_precision((exammark.total_marks/@fullmarks)*100, precision: 2), :id=>"marks_in_hundred"+@b_count.to_s, :size=> 5, :readonly=>true, :class => 'form-control'
 
           /Both groups - total in 70 (summative)
           %td.centre{:style=>"background-color:#C3E9BF;"}
