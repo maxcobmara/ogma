@@ -186,6 +186,8 @@ ms_MY:
         finalscore: Jumlah Akhir
       examanalysis:
         exam_id: Peperiksaan Akhir
+      exam_template:
+        name: Nama Template
     errors:
         template:
           body: "Berikut adalah beberapa masalah:"
@@ -2248,7 +2250,7 @@ ms_MY:
       klass_id: Template
       exam_on: Tarikh
       duration: Tempoh
-      total_marks: Markah Penuh
+      full_marks: Markah Penuh
       starttime: Masa Mula
       endtime: Masa Tamat
       topic_id: Topik
@@ -2269,7 +2271,6 @@ ms_MY:
       by_semester: semester
       create_exam: Teruskan & Tambah Template dan Soalan
       create_template: Teruskan & Pilih Template Peperiksaan
-      marks_each: "MCQ - 1 markah/setiap satu, MEQ - 20 markah/setiap satu, SEQ / OSPE - 10 markah/setiap satu"
       filters: Saringan
       existing: Soalan TELAH dipilih
       programme_subject_topic: "* Pilih Program, Subjek, Topik and klik pautan 'Display Available Questions' untuk memapar soalan yang tersedia bagi topik dipilih."
@@ -2288,7 +2289,6 @@ ms_MY:
       remove_previous: "Template / struktur soalan terdahulu (seperti di bawah) akan dibuang sebaik sahaja butang 'Kemaskini' diklik."
       select_exam_template: "Sila pilih template kertas peperiksaan di atas. Sekiranya template yang bersesuaian tiada, sila cipta dalam Template Kertas Peperiksaan. "
       previous_template: " (Terdahulu / Luput)"
-      full_marks: Jumlah Markah
       must_start_before_end: "Masa Tamat mesti selepas peperiksaan bermula."
     
     exammark:
@@ -2539,12 +2539,18 @@ ms_MY:
       name: Nama Template
       count: Bilangan Soalan
       weight: Wajaran
+      full_marks: Markah Penuh
       created_by: Disediakan Oleh
       questions: Soalan
       type: Jenis
       question_weight: " soalan, dengan wajaran "
+      question_full_marks: ", markah penuh : "
       name_format: "Program - Kod Subjek - Akhir / Pertengahan Semester, eg.: Jurupulih Cara Kerja - OTAP 1114 - Akhir Semester"
       template_in_use: Template digunakan
+      #marks_each: "MCQ - 1 markah/setiap satu, MEQ - 20 markah/setiap satu, SEQ - 10 markah/setiap satu"
+      other_marks_define: "Masukkan 'Markah Penuh' bagi setiap jenis soalan yang digunakan, jika tiada nilai diberikan, markah/setiap soalan disetkan kepada 1 bagi MCQ, 20 bagi MEQ 10 bagi SEQ dan 1 bagi lain-lain jenis soalan."
+      weightage_define: "Masukkan 'Wajaran' bagi setiap jenis soalan bagi mengira markah akhir (setiap soalan) berdasarkan wajaran, jika tiada nilai diberikan, peratusan wajaran akan dikenakan ke atas jumlah keseluruhan markah yag diperolehi (bagi semua jenis soalan)."
+      min_onetype_withcount: "Template memerlukan sekurang-kurangnya 1 jenis soalan beserta Bilangan Soalan"
     
   training:
     title: Latihan

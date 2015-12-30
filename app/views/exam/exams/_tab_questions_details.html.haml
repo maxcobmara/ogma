@@ -10,28 +10,22 @@
 
       %dt &nbsp;
       %dd
-        %u=(t 'exam.exam_template.count')+" / "+ (t 'exam.exam_template.weight')+ " (%)"
+        %u=(t 'exam.exam_template.count')+" / "+ (t 'exam.exam_template.weight')+ " (%)"+" / "+(t 'exam.exam_template.full_marks')
 
       /%dt= @exam.exam_template.question_count.find_all{|key, value| value != ''}.map { |k, v| "#{k.upcase}"}.join("<BR/>").html_safe
       /%dd= @exam.exam_template.question_count.find_all{|key, value| value != ''}.map { |k, v| v['count'] + "  /  "+ v['weight'] }.join("<BR/>").html_safe
         
       %dt
         - @exam.exam_template.question_count.each do |key, value|
-          - if value['count']!='' || value['weight']!=''
+          - if !value['count'].blank? || !value['weight'].blank? || !value['full_marks'].blank?
             = key.upcase
             %br
       %dd
         - @exam.exam_template.question_count.each do |key, value|
-          - if value['count']!='' && value['weight']!=''
-            = value['count']+" / "+value['weight'] 
-           
-          - elsif value['count']!='' && value['weight']==''
-            = value['count']+" / -"
-            
-          - elsif value['count']=='' && value['weight']!=''
-            = " - / "+value['weight']
-
-          - if value['count']!='' || value['weight']!=''
+          - if !value['count'].blank? || !value['weight'].blank? || !value['full_marks'].blank?
+            = value['count'] unless value['count'].blank?
+            = " / "+value['weight']+" %" unless value['weight'].blank?
+            = " / "+value['full_marks'] unless value['full_marks'].blank?
             %br
             
     - else

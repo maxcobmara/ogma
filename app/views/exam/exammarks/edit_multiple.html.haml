@@ -38,10 +38,8 @@
               %dd
                 %table
                   %tr
-                    %td=h @exammarks[0].exampaper.total_marks
-                    %td.small
-                      &nbsp;
-                      ="("+t('exam.exams.marks_each')+")"
+                    %td=h number_with_precision(@exammarks[0].exampaper.exam_template.template_full_marks, precision: 2)
+                    %td &nbsp;
     
           #exammark_details.tab-pane.active
             .col-md-11

@@ -20,7 +20,7 @@
               .col-sm-2.control-label
                 = f.label t 'exam.exam_template.title', for: :exam_template
               .col-md-2
-                = f.collection_select :topic_id, ExamTemplate.search2(@exam.subject.root_id).order(name: :asc), :id, :name, {include_blank: true, prompt: (t 'select')}, {class: 'selectpicker', "data-width"=>"auto"}
+                = f.collection_select :topic_id, ExamTemplate.search2(@exam.subject.root_id).order(name: :asc), :id, :name, {include_blank: (t 'select')}, {class: 'selectpicker', "data-width"=>"auto"}
                      
           - if @exam.examtemplates && @exam.examtemplates.count > 0 && @exam.exam_template.nil?
             .col-md-8.col-md-offset-1
@@ -42,22 +42,9 @@
                 //= link_to_add_fields image_tag("add.png", :border => 0, :title => t('addmore')), f, :examtemplates
                 /= link_to_add_fields t('addmore'), f, :examtemplates, "",  ""
 
-          /- else
-          /  .col-md-12.col-md-offset-1
-          /    .form-group
-          /      .col-sm-2.control-label
-          /        = f.label t 'exam.exam_template.title', for: :exam_template
-          /      .col-md-2
-          /        = f.collection_select :topic_id, ExamTemplate.all, :id, :name, {include_blank: true, prompt: (t 'select')}, {class: 'selectpicker', "data-width"=>"auto"}
-
-          .row
-            .col-md-12.col-md-offset-2
-              %font{:style=>"size:-2"}=t 'exam.exams.marks_each'
-          %br
         - else
           %br
-          = render :partial => 'tab_questions_details_edit', :locals => {:f => f}
-            
+          = render :partial => 'tab_questions_details_edit', :locals => {:f => f}    
 
 :javascript
   function add_fields(link, association, content) {
