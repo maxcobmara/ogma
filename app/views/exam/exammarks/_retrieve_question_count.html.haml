@@ -1,0 +1,45 @@
+- qcount=[]
+- qrate=[]
+- qmarks_ea=[]
+
+- @exammark.exampaper.exam_template.question_count.each do |k,v|
+  - qcount << v["count"].to_i
+  - if !v["weight"].blank? && !v["count"].blank?
+    - if v["full_marks"] && !v["full_marks"].blank?
+      - qrate << v["weight"].to_f / v["full_marks"].to_f
+      - qmarks_ea << v["full_marks"].to_f / v["count"].to_i
+    - else
+      //when full marks not exist, use STANDARD MARKS as below : pls note - applicable to MCQ, MEQ & SEQ only
+      - if k=="mcq"
+        - qrate << v["weight"].to_f / v["count"].to_i*1 
+        - qmarks_ea << 1 
+      - elsif k=="seq" 
+        - qrate << v["weight"].to_f / (v["count"].to_i*10)
+        - qmarks_ea << 10
+      - elsif k=="meq"
+        - qrate << v["weight"].to_f / (v["count"].to_i*20)
+        - qmarks_ea << 20
+      - else
+        /assume 1 for marks for ea question
+        - qrate << v["weight"].to_f / v["count"].to_i
+        - qmarks_ea << 1
+      
+  - elsif v["weight"].blank? && !v["count"].blank?
+    //when weightage not exist, but count exist
+    - qrate << 0
+    - if k=="mcq"
+      - qmarks_ea << 1 
+    - elsif k=="seq"
+      - qmarks_ea << 10
+    - elsif k=="meq"
+      - qmarks_ea << 20
+    - else
+      /assume 1 for marks for ea question
+      - qmarks_ea << 1
+  - else
+    - qrate << 0
+    - qmarks_ea << 1
+
+- @qcount=qcount
+- @qmarks_ea=qmarks_ea
+- @qrate=qrate

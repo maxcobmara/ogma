@@ -4,180 +4,209 @@
 
     %dt= t 'exam.exammark.marks' , :default => model_class.human_attribute_name(:marks) + ":"
     %dd
-      - unless (@exammark.exampaper.klass_id == 1|| @exammark.exampaper.klass_id == 0)
-        =number_with_precision(@exammark.total_marks, precision: 2)
-        \/
-        =number_with_precision(@exammark.exampaper.examtemplates.pluck(:total_marks).inject{|sum, x|sum+x}, precision: 2) 
-      - else
-        /################################################
-        %table.table
-          - @examquestions = @exammark.exampaper.examquestions
-          - @examtemplates = Exam.where(id: @exammark.exam_id).first.examtemplates
-          %thead
-            %tr
-              %th=t 'exam.examquestion.questiontype'
-              %th No
-              %th=t 'exam.exammark.question'
-              %th=t 'exam.exammark.mark'
-          %tbody
-            - if @exammark
-              - @marks_for_questions = Mark.where(exammark_id: @exammark.id).sort_by{|x|x.created_at}
-              - @exam_template=@exammark.exampaper.exam_template
+      /- unless (@exammark.exampaper.klass_id == 1|| @exammark.exampaper.klass_id == 0)
+      /  =number_with_precision(@exammark.total_marks, precision: 2)
+      /  \/
+      /  =number_with_precision(@exammark.exampaper.examtemplates.pluck(:total_marks).inject{|sum, x|sum+x}, precision: 2) 
+      /- else
+      /################################################
+      %table.table
+        - @examquestions = @exammark.exampaper.examquestions
+        - @examtemplates = Exam.where(id: @exammark.exam_id).first.examtemplates
+        %thead
+          %tr
+            %th=t 'exam.examquestion.questiontype'
+            %th No
+            %th=t 'exam.exammark.question'
+            %th=t 'exam.exammark.mark'
+        %tbody
+          - if @exammark
+            - @marks_for_questions = @exammark.marks.sort_by{|x|x.created_at}
+            /Mark.where(exammark_id: @exammark.id).sort_by{|x|x.created_at}
+            - @exam_template=@exammark.exampaper.exam_template
               
-              /start-display MCQ questions details
-              - @mcq_count=0
-              - @exam_template.question_count.each{|k,v|@mcq_count=v['count'].to_i if k=="mcq"}
-              /- if @examquestions.mcqq.count > 0 || @mcq_count > 0
-              - if @mcq_count > 0
-                = render 'show_mcq', :task=>1
+            /start-display MCQ questions details
+            /- @mcq_count=0
+            /- @exam_template.question_count.each{|k,v|@mcq_count=v['count'].to_i if k=="mcq"}
+            /- if @examquestions.mcqq.count > 0 || @mcq_count > 0
+            - if @qcount[0] > 0
+              = render 'show_mcq', :task=>1
 
-              /start-display MEQ questions details
-              - count2 = 0
-              - @meq_count=0
-              - @exam_template.question_count.each{|k,v|@meq_count=v['count'].to_i if k=="meq"}
-              - if @examquestions.meqq.count > 0 || @meq_count > 0
-                - if @examquestions.meqq.count > 0
-                  - meq_count = @examquestions.meqq.count-1
-                - else
-                  - meq_count = @meq_count-1
-                - 0.upto(meq_count) do |count|
-                  = render 'show_meq', :count=>count, :count2=>count2, :task=>1
-                  - count2+=1
+            /start-display MEQ questions details
+            - count2 = 0
+            /- @meq_count=0
+            /- @exam_template.question_count.each{|k,v|@meq_count=v['count'].to_i if k=="meq"}
+            - if @examquestions.meqq.count > 0 || @qcount[1] > 0
+              - if @examquestions.meqq.count > 0
+                - meq_count = @examquestions.meqq.count-1
+              - else
+                - meq_count = @qcount[1]-1
+              - 0.upto(meq_count) do |count|
+                = render 'show_meq', :count=>count, :count2=>count2, :task=>1
+                - count2+=1
                 
-              /start-display SEQ questions details
-              - @seq_count=0
-              - @exam_template.question_count.each{|k,v|@seq_count=v['count'].to_i if k=="seq"}
-              - if @examquestions.seqq.count > 0 || @seq_count > 0
-                - if @examquestions.seqq.count > 0
-                  - seq_count = @examquestions.seqq.count-1
-                - else
-                  - seq_count = @seq_count-1 
-                - 0.upto(seq_count) do |count| 
-                  = render 'show_seq', :count=>count, :count2=>count2, :task=>1
-                  - count2+=1 
+            /start-display SEQ questions details
+            /- @seq_count=0
+            /- @exam_template.question_count.each{|k,v|@seq_count=v['count'].to_i if k=="seq"}
+            - if @examquestions.seqq.count > 0 || @qcount[2] > 0
+              - if @examquestions.seqq.count > 0
+                - seq_count = @examquestions.seqq.count-1
+              - else
+                - seq_count = @qcount[2]-1 
+              - 0.upto(seq_count) do |count| 
+                = render 'show_seq', :count=>count, :count2=>count2, :task=>1
+                - count2+=1 
                 
-              /start-display ACQ questions details
-              - @acq_count=0
-              - @exam_template.question_count.each{|k,v|@acq_count=v['count'].to_i if k=="acq"}
-              - if @examquestions.acqq.count > 0 || @acq_count > 0 
-                - if @examquestions.acqq.count > 0
-                  - acq_count = @examquestions.acqq.count-1
-                - else
-                  - acq_count = @acq_count-1
-                - 0.upto(acq_count) do |count|
-                  = render 'show_acq', :count=>count, :count2=>count2, :task=>1
-                  - count2+=1 
+            /start-display ACQ questions details
+            /- @acq_count=0
+            /- @exam_template.question_count.each{|k,v|@acq_count=v['count'].to_i if k=="acq"}
+            - if @examquestions.acqq.count > 0 || @qcount[3] > 0 
+              - if @examquestions.acqq.count > 0
+                - acq_count = @examquestions.acqq.count-1
+              - else
+                - acq_count = @qcount[3]-1
+              - 0.upto(acq_count) do |count|
+                = render 'show_acq', :count=>count, :count2=>count2, :task=>1
+                - count2+=1 
                 
-              /start-display OSCI questions details
-              - @osci_count=0
-              - @exam_template.question_count.each{|k,v|@osci_count=v['count'].to_i if k=="osci"}
-              - if @examquestions.osci2q.count > 0 || @osci_count > 0
-                - if @examquestions.osci2q.count > 0
-                  - osci_count = @examquestions.osci2q.count-1 
-                - else
-                  - osci_count = @osci_count-1        
-                - 0.upto(osci_count) do |count|
-                  = render 'show_osci', :count=>count, :count2=>count2, :task=>1
-                  - count2+=1 
+            /start-display OSCI questions details
+            /- @osci_count=0
+            /- @exam_template.question_count.each{|k,v|@osci_count=v['count'].to_i if k=="osci"}
+            - if @examquestions.osci2q.count > 0 || @qcount[4] > 0
+              - if @examquestions.osci2q.count > 0
+                - osci_count = @examquestions.osci2q.count-1 
+              - else
+                - osci_count = @qcount[4]-1        
+              - 0.upto(osci_count) do |count|
+                = render 'show_osci', :count=>count, :count2=>count2, :task=>1
+                - count2+=1 
                 
-              /start-display OSCII questions details
-              - @oscii_count=0
-              - @exam_template.question_count.each{|k,v|@oscii_count=v['count'].to_i if k=="oscii"}
-              - if @examquestions.osci3q.count > 0 || @oscii_count > 0  
-                - if @examquestions.osci3q.count > 0
-                  - oscii_count = @examquestions.osci3q.count-1
-                - else
-                  - oscii_count = @oscii_count-1
-                - 0.upto(oscii_count) do |count|
-                  = render 'show_oscii', :count=>count, :count2=>count2, :task=>1
-                  - count2+=1
+            /start-display OSCII questions details
+            /- @oscii_count=0
+            /- @exam_template.question_count.each{|k,v|@oscii_count=v['count'].to_i if k=="oscii"}
+            - if @examquestions.osci3q.count > 0 || @qcount[5] > 0  
+              - if @examquestions.osci3q.count > 0
+                - oscii_count = @examquestions.osci3q.count-1
+              - else
+                - oscii_count = @qcount[5]-1
+              - 0.upto(oscii_count) do |count|
+                = render 'show_oscii', :count=>count, :count2=>count2, :task=>1
+                - count2+=1
 
-              /start-display OSCE questions details
-              - @osce_count=0
-              - @exam_template.question_count.each{|k,v|@osce_count=v['count'].to_i if k=="osce"}
-              - if @examquestions.osceq.count > 0 || @osce_count > 0   
-                - if @examquestions.osceq.count > 0
-                  - osce_count = @examquestions.osceq.count-1 
-                - else
-                  - osce_count = @osce_count-1
-                - 0.upto(osce_count) do |count|
-                  = render 'show_osce', :count=>count, :count2=>count2, :task=>1
-                  - count2+=1
+            /start-display OSCE questions details
+            /- @osce_count=0
+            /- @exam_template.question_count.each{|k,v|@osce_count=v['count'].to_i if k=="osce"}
+            - if @examquestions.osceq.count > 0 || @qcount[6] > 0   
+              - if @examquestions.osceq.count > 0
+                - osce_count = @examquestions.osceq.count-1 
+              - else
+                - osce_count = @qcount[6]-1
+              - 0.upto(osce_count) do |count|
+                = render 'show_osce', :count=>count, :count2=>count2, :task=>1
+                - count2+=1
 
-              /start-display OSPE questions details
-              - @ospe_count=0
-              - @exam_template.question_count.each{|k,v|@ospe_count=v['count'].to_i if k=="ospe"}
-              - if @examquestions.ospeq.count > 0 || @ospe_count > 0   
-                - if @examquestions.ospeq.count > 0
-                  - ospe_count = @examquestions.ospeq.count-1
-                - else
-                  - ospe_count = @ospe_count-1
-                - 0.upto(ospe_count) do |count|
-                  = render 'show_ospe', :count=>count, :count2=>count2, :task=>1
-                  - count2+=1
+            /start-display OSPE questions details
+            /- @ospe_count=0
+            /- @exam_template.question_count.each{|k,v|@ospe_count=v['count'].to_i if k=="ospe"}
+            - if @examquestions.ospeq.count > 0 || @qcount[7] > 0   
+              - if @examquestions.ospeq.count > 0
+                - ospe_count = @examquestions.ospeq.count-1
+              - else
+                - ospe_count = @qcount[7]-1
+              - 0.upto(ospe_count) do |count|
+                = render 'show_ospe', :count=>count, :count2=>count2, :task=>1
+                - count2+=1
 
-              /start-display VIVA questions details
-              - @viva_count=0
-              - @exam_template.question_count.each{|k,v|@viva_count=v['count'].to_i if k=="viva"}
-              - if @examquestions.vivaq.count > 0 || @viva_count > 0 
-                - if @examquestions.vivaq.count > 0
-                  - viva_count = @examquestions.vivaq.count-1 
-                - else
-                  - viva_count = @viva_count-1 
-                - 0.upto(viva_count) do |count|
-                  = render 'show_viva', :count=>count, :count2=>count2, :task=>1
-                  - count2+=1
+            /start-display VIVA questions details
+            /- @viva_count=0
+            /- @exam_template.question_count.each{|k,v|@viva_count=v['count'].to_i if k=="viva"}
+            - if @examquestions.vivaq.count > 0 || @qcount[8] > 0 
+              - if @examquestions.vivaq.count > 0
+                - viva_count = @examquestions.vivaq.count-1 
+              - else
+                - viva_count = @qcount[8]-1 
+              - 0.upto(viva_count) do |count|
+                = render 'show_viva', :count=>count, :count2=>count2, :task=>1
+                - count2+=1
                 
-              /start-display TRUEFALSE questions details
-              - @truefalse_count=0
-              - @exam_template.question_count.each{|k,v|@truefalse_count=v['count'].to_i if k=="truefalse"}
-              - if @examquestions.truefalseq.count > 0 || @truefalse_count > 0  
-                - if @examquestions.truefalseq.count > 0
-                  - truefalse_count = @examquestions.truefalseq.count-1 
-                - else
-                  - truefalse_count = @truefalse_count-1 
-                - 0.upto(truefalse_count) do |count| 
-                  = render 'show_truefalse', :count=>count, :count2=>count2, :task=>1
-                  - count2+=1
+            /start-display TRUEFALSE questions details
+            /- @truefalse_count=0
+            /- @exam_template.question_count.each{|k,v|@truefalse_count=v['count'].to_i if k=="truefalse"}
+            - if @examquestions.truefalseq.count > 0 || @qcount[9] > 0  
+              - if @examquestions.truefalseq.count > 0
+                - truefalse_count = @examquestions.truefalseq.count-1 
+              - else
+                - truefalse_count = @qcount[9]-1 
+              - 0.upto(truefalse_count) do |count| 
+                = render 'show_truefalse', :count=>count, :count2=>count2, :task=>1
+                - count2+=1
               
-              - diploma=Programme.where(course_type: 'Diploma')
-              - radiografi=diploma.where('name ILIKE?', '%Radiografi%').first.id
-              - carakerja=diploma.where('name ILIKE?', '%Jurupulih Perubatan Cara Kerja%').first.id
+            - diploma=Programme.where(course_type: 'Diploma')
+            - radiografi=diploma.where('name ILIKE?', '%Radiografi%').first.id
+            - carakerja=diploma.where('name ILIKE?', '%Jurupulih Perubatan Cara Kerja%').first.id
+            - fullmarks=@exammark.exampaper.exam_template.template_full_marks
 
+            ///////////////
+            - if @exammark.exampaper.subject.root_id==radiografi || @exammark.exampaper.subject.root_id==carakerja
               %tr
-                - if @exammark.exampaper.subject.root_id==radiografi || @exammark.exampaper.subject.root_id==carakerja
-                  %td{rowspan: 3, colspan: 3, align: "right"}
-                    %b=t 'exam.exammark.total'
-                  %td
-                    = number_with_precision(@exammark.total_marks, precision: 2)
+                %td{rowspan: 3, colspan: 3, align: "right"}
+                  %b=t 'exam.exammark.total'
+                %td= number_with_precision(@exammark.total_marks, precision: 2)
+                %td='/ '+number_with_precision(fullmarks, precision: 2).to_s
+              %tr
+                %td=number_with_precision((@exammark.total_marks/Exammark.fullmarks(@exammark.exam_id))*100, precision: 2)
+                %td (100.00 %)
+            %tr
+              - if @exammark.exampaper.subject.root_id==radiografi || @exammark.exampaper.subject.root_id==carakerja
+              - else
+                %td{colspan: 3, align: "right"}
+                  %b=t 'exam.exammark.total'
+
+              /this part exist for both groups  
+              %td= number_with_precision(@exammark.totalsummative, precision: 2)
+              %td
+                - if @exammark.exampaper.exam_template.total_in_weight==0
+                  /weightage in exam_template - not exist
+                  - sumweightage=@exammark.total_weightage
                 - else
-                  %td{colspan: 3, align: "right"}
-                    %b=t 'exam.exammark.total'
-                  /Below : total_marks - refer NOTE in' _form_multiple'
-                  /%td= number_with_precision(@exammark.total_marks, precision: 2)
-                  /other than radiografi & cara kerja - display summative terus
-                  %td= number_with_precision(@exammark.totalsummative, precision: 2)
-                  %td
-                    - if @exammark.exampaper.exam_template.total_in_weight==0
-                      /weightage in exam_template - not exist
-                      \/
-                      =number_with_precision(@exammark.exampaper.total_marks, precision: 2)
-                    - else
-                      ="("+number_with_precision(@exammark.exampaper.exam_template.total_in_weight, precision: 2).to_s+" %)"
-                - if @exammark.exampaper.subject.root_id==radiografi || @exammark.exampaper.subject.root_id==carakerja
-                  %td
-                    \/ 
-                    - if @examquestions.count > 0
-                      =number_with_precision(@examquestions.all.map(&:marks).inject{|sum, x|sum+x}, precision: 2)
-                    - else
-                      =number_with_precision(@examtemplates.all.map(&:total_marks).inject{|sum, x|sum+x}, precision: 2)
+                  - sumweightage=@exammark.exampaper.exam_template.total_in_weight
+                ="("+sumweightage.to_s+" %)"
+            //////////////
+            
+            /%tr
+            /  - if @exammark.exampaper.subject.root_id==radiografi || @exammark.exampaper.subject.root_id==carakerja
+            /    %td{rowspan: 3, colspan: 3, align: "right"}
+            /      %b=t 'exam.exammark.total'
+            /    %td
+            /      = number_with_precision(@exammark.total_marks, precision: 2)
+            /  - else
+            /    %td{colspan: 3, align: "right"}
+            /      %b=t 'exam.exammark.total'
+            /    /Below : total_marks - refer NOTE in' _form_multiple'
+            /    /%td= number_with_precision(@exammark.total_marks, precision: 2)
+            /    /other than radiografi & cara kerja - display summative terus
+            /    %td= number_with_precision(@exammark.totalsummative, precision: 2)
+            /    %td
+            /      - if @exammark.exampaper.exam_template.total_in_weight==0
+            /        /weightage in exam_template - not exist
+            /        \/
+            /        =number_with_precision(@exammark.exampaper.total_marks, precision: 2)
+            /      - else
+            /        ="("+number_with_precision(@exammark.exampaper.exam_template.total_in_weight, precision: 2).to_s+" %)"
+            /  - if @exammark.exampaper.subject.root_id==radiografi || @exammark.exampaper.subject.root_id==carakerja
+            /    %td
+            /      \/ 
+            /      - if @examquestions.count > 0
+            /        =number_with_precision(@examquestions.all.map(&:marks).inject{|sum, x|sum+x}, precision: 2)
+            /      - else
+            /        =number_with_precision(@examtemplates.all.map(&:total_marks).inject{|sum, x|sum+x}, precision: 2)
                     
-              - if @exammark.exampaper.name=='F' || @exammark.exampaper.name=='R'
-                - if @exammark.exampaper.subject.root_id==radiografi || @exammark.exampaper.subject.root_id==carakerja
-                  %tr
-                    %td=number_with_precision((@exammark.total_marks/Exammark.fullmarks(@exammark.exam_id))*100, precision: 2)
-                    %td (100.00 %)
-                  %tr
-                    %td=number_with_precision((@exammark.total_marks/Exammark.fullmarks(@exammark.exam_id))*100*0.7, precision: 2)
-                    %td (70.00 %)
-        /################################################
+            /- if @exammark.exampaper.name=='F' || @exammark.exampaper.name=='R'
+            /  - if @exammark.exampaper.subject.root_id==radiografi || @exammark.exampaper.subject.root_id==carakerja
+            /    %tr
+            /      %td=number_with_precision((@exammark.total_marks/Exammark.fullmarks(@exammark.exam_id))*100, precision: 2)
+            /      %td (100.00 %)
+            /    %tr
+            /      %td=number_with_precision((@exammark.total_marks/Exammark.fullmarks(@exammark.exam_id))*100*0.7, precision: 2)
+            /      %td (70.00 %)
+      /################################################

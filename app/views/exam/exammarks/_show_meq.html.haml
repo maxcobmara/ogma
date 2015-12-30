@@ -3,7 +3,7 @@
     - if @examquestions.count>0
       %td{:rowspan=>"#{@examquestions.meqq.count}"} MEQ
     - else
-      %td{:rowspan=>"#{@meq_count}"} MEQ
+      %td{:rowspan=>"#{@qcount[1]}"} MEQ
   %td=count+1
   %td
     - if @examquestions.count>0
@@ -11,8 +11,9 @@
     - else
       \-
   %td
-    - @meq_totalmarks=0
-    - @exam_template.question_count.each{|k,v|@meq_totalmarks=v['count'].to_i*20 if k=="meq"}
+    /- @meq_totalmarks=0
+    /- @exam_template.question_count.each{|k,v|@meq_totalmarks=v['count'].to_i*20 if k=="meq"}
+    - @meq_totalmarks=@qmarks_ea[1]*@qcount[1]
     - if task==1
       =number_with_precision(@marks_for_questions[count2].student_mark, precision: 2)
     - elsif task==2
@@ -25,4 +26,4 @@
     - if @examquestions.count>0
       =number_with_precision(@examquestions.meqq[count2].marks,precision: 2)
     - else
-      =number_with_precision(@meq_totalmarks/@meq_count, precision: 2)
+      =number_with_precision(@meq_totalmarks/@qcount[1], precision: 2)

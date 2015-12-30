@@ -3,15 +3,16 @@
     - if @examquestions.count>0
       %td{:rowspan=>"#{@examquestions.acqq.count}"} ACQ
     - else
-      %td{:rowspan=>"#{@acq_count}"} ACQ
+      %td{:rowspan=>"#{@qcount[3]}"} ACQ
   %td=count+1
   %td
     =@examquestions.acqq[count].question if @examquestions.count>0
     - if @examtemplates
       \-
   %td
-    - @acq_totalmarks=0
-    - @exam_template.question_count.each{|k,v|@acq_totalmarks=v['count'].to_i*1 if k=="acq"}
+    /- @acq_totalmarks=0
+    /- @exam_template.question_count.each{|k,v|@acq_totalmarks=v['count'].to_i*1 if k=="acq"}
+    - @acq_totalmarks=@qmarks_ea[3]*@qcount[3]
     - if task==1
       = number_with_precision(@marks_for_questions[count2].student_mark, precision: 2)
     - elsif task==2
@@ -25,6 +26,6 @@
     /- if @examquestions.count>0
     /  =number_with_precision(@examquestions.acqq[count].marks, precision: 2)
     /- else
-    =number_with_precision(@acq_totalmarks/@acq_count, precision: 2)
+    =number_with_precision(@acq_totalmarks/@qcount[3], precision: 2)
 
 

@@ -3,7 +3,7 @@
     - if @examquestions.count>0
       %td{:rowspan=>"#{@examquestions.seqq.count}"} SEQ
     - else
-      %td{:rowspan=>"#{@seq_count}"} SEQ
+      %td{:rowspan=>"#{@qcount[2]}"} SEQ
   %td=count+1
   %td
     - if @examquestions.count>0
@@ -11,8 +11,9 @@
     - else
       \-
   %td
-    - @seq_totalmarks=0
-    - @exam_template.question_count.each{|k,v|@seq_totalmarks=v['count'].to_i*10 if k=="seq"}
+    /- @seq_totalmarks=0
+    /- @exam_template.question_count.each{|k,v|@seq_totalmarks=v['count'].to_i*10 if k=="seq"}
+    - @seq_totalmarks=@qmarks_ea[2]*@qcount[2]
     - if task == 1
       /= @exammark.marks[count2].student_mark
       = number_with_precision(@marks_for_questions[count2].student_mark, precision: 2) 
@@ -26,4 +27,4 @@
     - if @examquestions.count>0
       =number_with_precision(@examquestions.seqq[count].marks, precision: 2) 
     - else
-      =number_with_precision(@seq_totalmarks/@seq_count, precision: 2) 
+      =number_with_precision(@seq_totalmarks/@qcount[2], precision: 2) 

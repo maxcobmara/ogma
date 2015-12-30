@@ -3,7 +3,7 @@
     - if @examquestions.count>0
       %td{:rowspan=>"#{@examquestions.osceq.count}"} OSCE
     - else
-      %td{:rowspan=>"#{@osce_count}"} OSCE
+      %td{:rowspan=>"#{@qcount[6]}"} OSCE
   %td=count+1
   %td
     - if @examquestions.count>0
@@ -11,8 +11,9 @@
     - else
       \-
   %td
-    - @osce_totalmarks=0
-    - @exam_template.question_count.each{|k,v|@osce_totalmarks=v['count'].to_i*1 if k=="osce"}
+    /- @osce_totalmarks=0
+    /- @exam_template.question_count.each{|k,v|@osce_totalmarks=v['count'].to_i*1 if k=="osce"}
+    - @osce_totalmarks=@qmarks_ea[6]*@qcount[6]
     - if task==1
       = number_with_precision(@marks_for_questions[count2].student_mark, precision: 2)
     - elsif task==2
@@ -25,5 +26,5 @@
     - if @examquestions.count>0
       =number_with_precision(@examquestions.osceq[count].marks, precision: 2) 
     - else
-      =number_with_precision(@osce_totalmarks/@osce_count, precision: 2)
+      =number_with_precision(@osce_totalmarks/@qcount[6], precision: 2)
 
