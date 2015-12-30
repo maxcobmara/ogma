@@ -3,7 +3,7 @@
     %td &nbsp;
     %td= f.text_field :student_search, class: 'form-control'
     %td= select_tag('q[subject_id_eq]', options_for_select([[(t 'exam.grade.existing_subject'),'']]+@grade_list_exist_subject), class: 'selectpicker',"data-width"=>"200px")
-    %td &nbsp;
+    %td= f.text_field :formative_eq, class: 'form-control'
     %td= select_tag('q[sent_to_BPL_eq]',options_for_select([[t('actions.all_records'), ''],[t('exam.grade.sent_bpl'), true],[t('exam.grade.notsent_bpl'), false]]), {class: 'selectpicker', "data-width"=>"100px"} )  
     %td= f.text_field :sent_date_cont, class: 'date_picker form-control'
     %td= select_tag('q[eligible_for_exam_eq]',options_for_select([[t('actions.all_records'), ''],[t('yes2'), true],[t('no2'), false]]), {class: 'selectpicker', "data-width"=>"100px"} )  
