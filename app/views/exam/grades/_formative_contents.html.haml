@@ -20,7 +20,8 @@
       - fisioterapi=Programme.where(course_type: 'Diploma').where('name ILIKE (?)', '%Fisioterapi%').first.id
       - if @grades[0].studentgrade.course_id!=fisioterapi
         %th{:style=>"background-color:#E5ECE5; text-align:center;"}
-          CA+MSE 
+          /CA+MSE 
+          =t 'exam.grade.total_formative'
           %font{color: "blue"} 
             ="("+@grades[0].scores.sum(:weightage).to_s+"%) *"
       /HIDE-ending
@@ -28,23 +29,25 @@
         /if subject for selected grades is different
         %th{:style=>"background-color:#EEF9F9;text-align:center;"}= t 'exam.grade.examweight'
       %th{:style=>"background-color:#FEE;text-align:center;"}
-        Final Exam
+        =t 'exam.grade.exam1marks'
         %br
-        %font{:style=>"font size=-2"} (Written Paper)
+        %font{:style=>"font size=-2"}=t 'exam.grade.written_paper'
         - if @grades[0].studentgrade.course_id==radiografi
           (100%)
       %th{:style=>"background-color:#FEE;text-align:center;"}
-        Total Summative 
+        =t 'exam.grade.summative'
         %font{color: "blue"} 
           ="("+@grades[0].examweight.to_s+"%) *"
       %th{:style=>"background-color:#EEF;text-align:center;"}
-        Total Marks
+        =t 'exam.grade.total_marks'
         %font{color: "blue"}
           ="("+@grades[0].scores.sum(:weightage).to_s+"%+"+@grades[0].examweight.to_s+"%)*"
+      %th=(t 'exam.grade.grading_id2')
+        
       %th BPL
-      %th Exam?
-      %th Carry Paper
-      %th Resit
+      %th=t 'exam.grade.exam2'
+      %th=t 'exam.grade.carry_paper'
+      %th=t 'exam.grade.resit'
     - @grades.sort_by{|x|x.studentgrade.name}.each_with_index do |grade, no|
       /note: DIV:grade_weightage_multiple NOT grades_0_weightage_multiple-refer grades/_update_weightage.html.erb
       /= tag("div", :id => form_tag_id(f.object_name, :weightage_multiple)) 
@@ -64,7 +67,7 @@
           - @score_for_legend_sort_1 = Score.where('grade_id=?',grade.id).sort_by{|x|x.created_at}
           - @score_for_legend_sort_1.each_with_index do |score_1, score_count|
             %td{:style=>"text-align:center;background-color:#EDFDEB;"}
-              = text_field_tag "scores_attributes[#{score_count}][marks][]", number_with_precision(score_1.marks,:precision=>2), :size=> 4,:class=>'i1',:id=>"score_"+"#{no}"+"_"+score_count.to_s 
+              = text_field_tag "scores_attributes[#{score_count}][marks][]", number_with_precision(score_1.marks,:precision=>2), :size=> 4,:class=>'i1 form-control',:id=>"score_"+"#{no}"+"_"+score_count.to_s 
               = hidden_field_tag "formweight", score_1.weightage, :id=>"formweight_"+"#{no}"+"_"+score_count.to_s,:size=>2
         
         /23June2013-no changes here but pls refer js part
@@ -111,6 +114,11 @@
             = text_field_tag "finalscores[]", number_with_precision(grade.total_formative+summative_val,:precision=>2), :size=> 4,:id=>"finalscore"+no.to_s, :readonly => "readonly", class: "form-control"
           - else
             = text_field_tag "finalscores[]", number_with_precision(grade.finalscore,:precision=>2), :size=> 4,:id=>"finalscore"+no.to_s, :readonly => "readonly", class: "form-control"
+        //////grading columns
+        %td
+          =text_field_tag "grading_ids2[]", grade.render_grading[-2,2], :id => "grading2"+no.to_s, :readonly => "readonly", class: "form-control"
+          =hidden_field_tag "grading_ids[]", grade.set_gred, :id => "grading"+no.to_s, :readonly => "readonly"
+        //////
         %td
           /--asal-http://apidock.com/rails/ActionView/Helpers/FormTagHelper/check_box_tag
           /#= check_box_tag "sent_to_BPLs[#{no}]", true, :name => "sent_to_BPLs[]"
@@ -175,6 +183,69 @@ $(document).ready(function(){
       window["formative_summative"+i] = document.getElementById("finalscore"+i);
       finale=a+(window["summative70_val"+i])*1;
       window["formative_summative"+i].value = a+(window["summative70_val"+i])*1;
+      
+      /*grading starts here*/
+      if (finale <= 35) 
+      { 
+        grade_val=11;
+        grade="E";
+      }
+      else if (finale <= 40)
+      { 
+        grade_val=10;
+        grade="D";
+      }
+      else if (finale <= 45)
+      { 
+        grade_val=9;
+        grade="D+";
+      }
+      else if (finale <= 50)
+      { 
+        grade_val=8;
+        grade="C-";
+      } 
+      else if (finale <= 55)
+      { 
+        grade_val=7;
+        grade="C";
+      }
+      else if (finale <= 60)
+      { 
+        grade_val=6;
+        grade="C+";
+      }
+      else if (finale <= 65)
+      { 
+        grade_val=5;
+        grade="B-";
+      }
+      else if (finale <= 70)
+      { 
+        grade_val=4;
+        grade="B";
+      }
+      else if (finale <= 75)
+      { 
+        grade_val=3;
+        grade="B+";
+      }
+      else if (finale <= 80)
+      { 
+        grade_val=2;
+        grade="A-";
+      }
+      else
+      { 
+        grade_val=1;
+        grade="A";
+      }
+      window["grading2"+i]=document.getElementById("grading2"+i);
+      window["grading2"+i].value = grade;
+      window["grading"+i]=document.getElementById("grading"+i);
+      window["grading"+i].value = grade_val;
+      /*grading ends here*/
+      
       if (finale > 100.0)
       {  window["formative_summative"+i].style.color="red";}
       else
@@ -194,6 +265,9 @@ $(document).ready(function(){
       window["summative70"+i] = document.getElementById("summative"+i);
       window["cplus_val"+i] =  document.getElementById("caplusmse"+i).value;
       window["formative_summative"+i] = document.getElementById("finalscore"+i);
+      
+      window["grading"+i]=document.getElementById("grading"+i);
+      window["grading"+i].value = '11';
       
       if ((programme=="Radiografi") || (programme=="Jurupulih Perubatan Cara Kerja"))
       {
@@ -234,6 +308,68 @@ $(document).ready(function(){
       {  window["finalscore"+i].style.color="red";}
       else
       {  window["finalscore"+i].style.color="black";}
+      
+      /*grading starts here*/
+      if (sum_both <= 35) 
+      { 
+        grade_val=11;
+        grade="E";
+      }
+      else if (sum_both <= 40)
+      { 
+        grade_val=10;
+        grade="D";
+      }
+      else if (sum_both <= 45)
+      { 
+        grade_val=9;
+        grade="D+";
+      }
+      else if (sum_both <= 50)
+      { 
+        grade_val=8;
+        grade="C-";
+      } 
+      else if (sum_both <= 55)
+      { 
+        grade_val=7;
+        grade="C";
+      }
+      else if (sum_both <= 60)
+      { 
+        grade_val=6;
+        grade="C+";
+      }
+      else if (sum_both <= 65)
+      { 
+        grade_val=5;
+        grade="B-";
+      }
+      else if (sum_both <= 70)
+      { 
+        grade_val=4;
+        grade="B";
+      }
+      else if (sum_both <= 75)
+      { 
+        grade_val=3;
+        grade="B+";
+      }
+      else if (sum_both <= 80)
+      { 
+        grade_val=2;
+        grade="A-";
+      }
+      else
+      { 
+        grade_val=1;
+        grade="A";
+      }
+      window["grading2"+i]=document.getElementById("grading2"+i);
+      window["grading2"+i].value = grade;
+      window["grading"+i]=document.getElementById("grading"+i);
+      window["grading"+i].value = grade_val;
+      /*grading ends here*/
       
     }
   });
@@ -276,6 +412,69 @@ $(document).ready(function(){
       window["formative_summative"+i] = document.getElementById("finalscore"+i);
       finale=a+(window["summative70_val"+i])*1;
       window["formative_summative"+i].value = a+(window["summative70_val"+i])*1;
+      
+      /*grading starts here*/
+      if (finale <= 35) 
+      { 
+        grade_val=11;
+        grade="E";
+      }
+      else if (finale <= 40)
+      { 
+        grade_val=10;
+        grade="D";
+      }
+      else if (finale <= 45)
+      { 
+        grade_val=9;
+        grade="D+";
+      }
+      else if (finale <= 50)
+      { 
+        grade_val=8;
+        grade="C-";
+      } 
+      else if (finale <= 55)
+      { 
+        grade_val=7;
+        grade="C";
+      }
+      else if (finale <= 60)
+      { 
+        grade_val=6;
+        grade="C+";
+      }
+      else if (finale <= 65)
+      { 
+        grade_val=5;
+        grade="B-";
+      }
+      else if (finale <= 70)
+      { 
+        grade_val=4;
+        grade="B";
+      }
+      else if (finale <= 75)
+      { 
+        grade_val=3;
+        grade="B+";
+      }
+      else if (finale <= 80)
+      { 
+        grade_val=2;
+        grade="A-";
+      }
+      else
+      { 
+        grade_val=1;
+        grade="A";
+      }
+      window["grading2"+i]=document.getElementById("grading2"+i);
+      window["grading2"+i].value = grade;
+      window["grading"+i]=document.getElementById("grading"+i);
+      window["grading"+i].value = grade_val;
+      /*grading ends here*/
+      
       if (finale > 100.0)
       {  window["formative_summative"+i].style.color="red";}
       else
@@ -344,6 +543,68 @@ $(document).ready(function(){
       {  window["finalscore"+i].style.color="red";}
       else
       {  window["finalscore"+i].style.color="black";}
+      
+      /*grading starts here*/
+      if (sum_both <= 35) 
+      { 
+        grade_val=11;
+        grade="E";
+      }
+      else if (sum_both <= 40)
+      { 
+        grade_val=10;
+        grade="D";
+      }
+      else if (sum_both <= 45)
+      { 
+        grade_val=9;
+        grade="D+";
+      }
+      else if (sum_both <= 50)
+      { 
+        grade_val=8;
+        grade="C-";
+      } 
+      else if (sum_both <= 55)
+      { 
+        grade_val=7;
+        grade="C";
+      }
+      else if (sum_both <= 60)
+      { 
+        grade_val=6;
+        grade="C+";
+      }
+      else if (sum_both <= 65)
+      { 
+        grade_val=5;
+        grade="B-";
+      }
+      else if (sum_both <= 70)
+      { 
+        grade_val=4;
+        grade="B";
+      }
+      else if (sum_both <= 75)
+      { 
+        grade_val=3;
+        grade="B+";
+      }
+      else if (sum_both <= 80)
+      { 
+        grade_val=2;
+        grade="A-";
+      }
+      else
+      { 
+        grade_val=1;
+        grade="A";
+      }
+      window["grading2"+i]=document.getElementById("grading2"+i);
+      window["grading2"+i].value = grade;
+      window["grading"+i]=document.getElementById("grading"+i);
+      window["grading"+i].value = grade_val;
+      /*grading ends here*/
       
     }
   });

@@ -60,50 +60,66 @@ class Grade < ActiveRecord::Base
       
       # Radiografi - exam1marks (in 100%) - 2 cases: final exam(total) < 100 & > 100
       # Cara Kerja - exam1marks (not really in 100%) - summative calculation same as Radiografi
-      diploma=Programme.where(course_type: 'Diploma')
-      radiografi=diploma.where('name ILIKE?', '%Radiografi%').first.id
-      carakerja=diploma.where('name ILIKE?', '%Jurupulih Perubatan Cara Kerja%').first.id
-      if subjectgrade.root_id==radiografi || subjectgrade.root_id==carakerja
-        if exam1marks == 0 || exam1marks == nil
-          0
-        else
-          ##(exam1marks * examweight)/100
-	  #(exam1marks * examweight)/60
-	  exist_paper=Exam.where(subject_id: subject_id).order(created_at: :desc).where(name: "F")
-          latest_paper=exist_paper.first.id  if exist_paper && exist_paper.count > 0
-          if latest_paper
-            fullmarks=Exammark.fullmarks(latest_paper)
-	    #29 Dec 2015 - start
-	    if fullmarks==0
-	      (exam1marks * examweight)/100
-	    else
-	      (exam1marks * examweight)/fullmarks  #######################
-	    end
-	    #29 Dec 2015 - end
-	  else
-	    (exam1marks * examweight)/100
-          end
-        end
-      else
+      #diploma=Programme.where(course_type: 'Diploma')
+      #radiografi=diploma.where('name ILIKE?', '%Radiografi%').first.id
+      #carakerja=diploma.where('name ILIKE?', '%Jurupulih Perubatan Cara Kerja%').first.id
+      #if subjectgrade.root_id==radiografi || subjectgrade.root_id==carakerja
+      #  if exam1marks == 0 || exam1marks == nil
+      #    0
+      #  else
+      #    ##(exam1marks * examweight)/100
+      #  #(exam1marks * examweight)/60
+      #    exist_paper=Exam.where(subject_id: subject_id).order(created_at: :desc).where(name: "F")
+      #    latest_paper=exist_paper.first.id  if exist_paper && exist_paper.count > 0
+      #    if latest_paper
+      #      fullmarks=Exammark.fullmarks(latest_paper)
+      #    #29 Dec 2015 - start
+      #      if fullmarks==0
+      #        (exam1marks * examweight)/100
+      #      else
+      #        (exam1marks * examweight)/fullmarks  #######################
+      #      end
+      #      #29 Dec 2015 - end
+      #    else
+      #      (exam1marks * examweight)/100
+      #    end
+      #  end
+      #else
         
-        #####from formative_contents-7Dec2015
-	exist_paper=Exam.where(subject_id: subject_id).order(created_at: :desc).where(name: "F")
-        latest_paper=exist_paper.first.id  if exist_paper && exist_paper.count > 0 #Exam.where(subject_id: subject_id).pluck(:id)
+      #####from formative_contents-7Dec2015
+      # exist_paper=Exam.where(subject_id: subject_id).order(created_at: :desc).where(name: "F")
+      # latest_paper=exist_paper.first.id  if exist_paper && exist_paper.count > 0 #Exam.where(subject_id: subject_id).pluck(:id)
+      #  student_exammark=Exammark.where(exam_id: latest_paper).where(student_id: student_id).first
+      #  if student_exammark && Exammark.fullmarks(student_exammark.exam_id)!=examweight                    #70 # NOTE - flexible summative weightage for Pos Basik etc
+      #   student_exammark.total_marks/Exammark.fullmarks(student_exammark.exam_id)*examweight          #*100*0.7
+      #   #####from formative_contents-7Dec2015
+
+      # else
+
+      #   #Pem Peg Perubatan & Fisioterapi - FInal Exam(written papaer) already in 70%
+      #   #Diploma Lanjutan Kebidanan - FInal Exam(written paper) already in 60%
+      #   exam1marks 
+      #  end
+      #end
+      
+      ####
+      unless summative.blank?
+        sum=summative   #retrieve saved one, previously updated from exammarks (exam1marks should exist too)
+      else
+        exist_paper=Exam.where(subject_id: subject_id).order(created_at: :desc).where(name: "F")
+        latest_paper=exist_paper.first.id  if exist_paper && exist_paper.count > 0 
         student_exammark=Exammark.where(exam_id: latest_paper).where(student_id: student_id).first
-        if student_exammark && Exammark.fullmarks(student_exammark.exam_id)!=examweight                    #70 # NOTE - flexible summative weightage for Pos Basik etc
-          student_exammark.total_marks/Exammark.fullmarks(student_exammark.exam_id)*examweight          #*100*0.7
-          #####from formative_contents-7Dec2015
-
+        if student_exammark 
+          sum=student_exammark.totalsummative 
         else
-
-          #Pem Peg Perubatan & Fisioterapi - FInal Exam(written papaer) already in 70%
-          #Diploma Lanjutan Kebidanan - FInal Exam(written paper) already in 60%
-          exam1marks 
+          sum=0
         end
       end
+      ####
     else
-      0
+      sum=0
     end
+    sum
   end
   
   def total_summative2
@@ -116,38 +132,56 @@ class Grade < ActiveRecord::Base
     
       # Radiografi - exam1marks (in 100%) - 2 cases: final exam(total) < 100 & > 100
       # Cara Kerja - exam1marks (not really in 100%) - summative calculation same as Radiografi
-      diploma=Programme.where(course_type: 'Diploma')
-      radiografi=diploma.where('name ILIKE?', '%Radiografi%').first.id
-      carakerja=diploma.where('name ILIKE?', '%Jurupulih Perubatan Cara Kerja%').first.id
-      if subjectgrade.root_id==radiografi || subjectgrade.root_id==carakerja
-        if exam2marks == 0 || exam2marks == nil
-          0
+      #diploma=Programme.where(course_type: 'Diploma')
+      #radiografi=diploma.where('name ILIKE?', '%Radiografi%').first.id
+      #carakerja=diploma.where('name ILIKE?', '%Jurupulih Perubatan Cara Kerja%').first.id
+      #if subjectgrade.root_id==radiografi || subjectgrade.root_id==carakerja
+      #  if exam2marks == 0 || exam2marks == nil
+      #    0
+      #  else
+      #    (exam2marks * examweight)/100
+      #  end
+      #else
+        
+      #  #####from formative_contents-7Dec2015
+      # repeats=Exam.where(subject_id: subject_id).where(name: "R")
+        
+      # if repeats && repeats.count > 0
+      #  repeat_paper=repeats.first.id
+      #    student_exammark=Exammark.where(exam_id: repeat_paper).where(student_id: student_id).first 
+      # end
+      #  if student_exammark && Exammark.fullmarks(student_exammark.exam_id)!=examweight                    #70 # NOTE - flexible summative weightage for Pos Basik etc
+      #    student_exammark.total_marks/Exammark.fullmarks(student_exammark.exam_id)*examweight          #*100*0.7
+      #    #####from formative_contents-7Dec2015
+
+      #  else
+
+      #    #Pem Peg Perubatan & Fisioterapi - FInal Exam(written papaer) already in 70%
+      #    #Diploma Lanjutan Kebidanan - FInal Exam(written paper) already in 60%
+      #    exam2marks 
+      #  end
+      #end
+      
+      #####
+      unless exam2marks.blank?  #retrieve saved exam2marks, previously updated from exammarks, means repeat paper exist
+        repeats_ids=Exam.where(subject_id: subject_id).where(name: "R").pluck(:id)
+        student_exammark=Exammark.where(exam_id: repeats_ids).where(student_id: student_id).first
+        #exam_id=student_exammark.exam_id #confirmed exam_id among various repeat paper of the same subject
+        #fullmarks= Exam.where(id: exam_id).first.exam_template.template_full_marks
+        if student_exammark
+          sum2=student_exammark.totalsummative  
+          # NOTE : sum2=exam2marks/fullmarks*examweight may not accurate for programme with individual weightage for diff question type
         else
-          (exam2marks * examweight)/100
+          sum2=0
         end
       else
-        
-        #####from formative_contents-7Dec2015
-	repeats=Exam.where(subject_id: subject_id).where(name: "R")
-        
-	if repeats && repeats.count > 0
-	  repeat_paper=repeats.first.id
-          student_exammark=Exammark.where(exam_id: repeat_paper).where(student_id: student_id).first 
-	end
-        if student_exammark && Exammark.fullmarks(student_exammark.exam_id)!=examweight                    #70 # NOTE - flexible summative weightage for Pos Basik etc
-          student_exammark.total_marks/Exammark.fullmarks(student_exammark.exam_id)*examweight          #*100*0.7
-          #####from formative_contents-7Dec2015
-
-        else
-
-          #Pem Peg Perubatan & Fisioterapi - FInal Exam(written papaer) already in 70%
-          #Diploma Lanjutan Kebidanan - FInal Exam(written paper) already in 60%
-          exam2marks 
-        end
+        sum2=0
       end
+      #####     
     else
-      0
+      sum2=0
     end
+    sum2
   end
   
   def total_per
@@ -211,20 +245,24 @@ class Grade < ActiveRecord::Base
       9#"D+"
     elsif finale2 <= 50
       8#"C-"
-    elsif finale2 <= 55
-      7#"C"
-    elsif finale2 <= 60
-      6#"C+"
-    elsif finale2 <= 65
-      5#"B-"
-    elsif finale2 <= 70
-      4#"B"
-    elsif finale2 <= 75
-      3#"B+"
-    elsif finale2 <= 80
-      2#"A-"
     else
-      1#"A"
+      7 #C
+    #as confirmed by En Iz on 29 Dec 2015 - for REPEAT papers, the highest grade honoured to students is 'C'. 
+      
+    #elsif finale2 <= 55  
+    #  7#"C"
+    #elsif finale2 <= 60
+    #  6#"C+"
+    #elsif finale2 <= 65
+    #  5#"B-"
+    #elsif finale2 <= 70
+    #  4#"B"
+    #elsif finale2 <= 75
+    #  3#"B+"
+    #elsif finale2 <= 80
+    #  2#"A-"
+    #else
+    #  1#"A"
     end
   end
   
