@@ -2347,6 +2347,7 @@ ms_MY:
       resit: Ulangan
       finalscore: Jumlah Akhir
       grading_id: Gred
+      grading_id2: Gred Pelajar
       grade_value: Nilai Gred
       new_multiple: "Gred Baru (Pukal)"
       existing_subject: Semua Subjek
@@ -2368,6 +2369,7 @@ ms_MY:
       sum_of_scores: "Jumlah Skor (%), "
       total_marks: Jumlah Markah
       final_exam: Peperiksaan Akhir
+      written_paper: "(Ujian Bertulis)"
       apply_changes: Kemaskini Perubahan
       confirm_apply_changes: "Sila PASTIKAN atau TUKAR / TAMBAH 'Wajaran Sumatif' dan item - item 'Skor Formatif' di atas & klik 'Kemaskini Perubahan', sebelum meneruskan kemasukan data di bawah."
       confirm_apply_changes2: "Masukkan butiran 'Skor Formatif' & klik 'Kemaskini Perubahan', sebelum memasukan 'Jumlah Sumatif' dan 'Butiran Akhir'."
@@ -2393,6 +2395,10 @@ ms_MY:
       repeat_paper: Peperiksaan Ulangan
       finalscore2: "Jumlah Akhir (Ulangan)"
       finalscore_repeat: "Jumlah Akhir (Ulangan) / Gred (Ulangan) : "
+      exam2: "Peperiksaan?"
+      student_same_subject: Hanya gred pelajar bagi Subjek yang sama dibenarkan untuk suntingan secara pukal.
+      summative_exceed_maximum: "Markah Sumatif tidak boleh melebihi markah penuh kertas peperiksaan."
+      summative_exceed_hundred: "Markah Sumatif tidak boleh melebihi 100%."
       
     examresult:
       title: Keputusan Peperiksaan Mengikut Program

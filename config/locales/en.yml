@@ -2407,6 +2407,7 @@ en:
       resit: Resit
       finalscore: Total Marks
       grading_id: Grade
+      grading_id2: Grade
       grade_value: Grade Value
       new_multiple: New Multiple Grades
       existing_subject: All Subjects
@@ -2428,6 +2429,7 @@ en:
       sum_of_scores: "Sum of scores(%), "
       total_marks: Total Marks
       final_exam: Final Exam
+      written_paper: "(Written Paper)"
       apply_changes: Apply Changes
       confirm_apply_changes: "Please CONFIRM or MODIFY & click 'Apply Changes' for above Summative Weightage and Formative Scores items before proceeding with data entry."
       confirm_apply_changes2: "Please enter 'Formative Scores' details and click 'Apply Changes' before entering 'Total Summative' and 'Final Details'."
@@ -2453,6 +2455,10 @@ en:
       repeat_paper: Repeat Paper
       finalscore2: "Final Score (Repeat)"
       finalscore_repeat: "Total Marks (Repeat) / Grade (Repeat) : "
+      exam2: "Exam?"
+      student_same_grade: Please select students grade of the same Subject for multiple edit.
+      summative_exceed_maximum: "Summative Marks must not exceed examination paper full marks."
+      summative_exceed_hundred: "Summative Marks must less than or equal to 100%."
     
     examresult:
       title: Examination Result by Programme

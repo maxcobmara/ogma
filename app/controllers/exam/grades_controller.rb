@@ -295,7 +295,8 @@ class Exam::GradesController < ApplicationController
       #@scores1 = params[:scores] #caplusmse
       @exam1markss = params[:exam1markss]
       @summatives = params[:summatives]
-      @finalscores = params[:finalscores]                             
+      @finalscores = params[:finalscores]
+      @grading_ids = params[:grading_ids]
       @senttobpls = params[:sent_to_BPLs]                    # "sent_to_BPLs"=>{"2"=>"true"}, "sent_to_BPLs"=>{"1"=>"true","2"=>"true"}	  
       @eligibleexams = params[:eligible_for_exams]
       @carrypapers = params[:carry_papers] 
@@ -327,6 +328,7 @@ class Exam::GradesController < ApplicationController
           grade.exam1marks=@exam1markss[index]
           grade.summative=@summatives[index]
           grade.finalscore=@finalscores[index]
+          grade.grading_id=@grading_ids[index]
           if @subjects_of_grades==1 
            
             #--BIG PROBLEM-remove to line 331 but yet replace with direct SAVING DATA INTO SCORES table instead of grades.scores...

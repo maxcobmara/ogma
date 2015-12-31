@@ -3,7 +3,7 @@
     - if @examquestions.count>0
       %td{:rowspan=>"#{@examquestions.truefalseq.count}"} TRUE or FALSE
     - else
-      %td{:rowspan=>"#{@truefalse_count}"} TRUE or FALSE
+      %td{:rowspan=>"#{@qcount[9]}"} TRUE or FALSE
   %td=count+1
   %td
     - if @examquestions.count>0
@@ -11,8 +11,9 @@
     - else
       \-
   %td
-    - @truefalse_totalmarks=0
-    - @exam_template.question_count.each{|k,v|@truefalse_totalmarks=v['count'].to_i*1 if k=="truefalse"}
+    /- @truefalse_totalmarks=0
+    /- @exam_template.question_count.each{|k,v|@truefalse_totalmarks=v['full_marks'].to_f if k=="truefalse"}
+    - @truefalse_totalmarks=@qmarks_ea[9]*@qcount[9]
     - if task==1
       = number_with_precision(@marks_for_questions[count2].student_mark, precision: 2)
     - elsif task==2
@@ -25,6 +26,6 @@
     - if @examquestions.count>0
       =number_with_precision(@examquestions.truefalseq[count].marks, precision: 2)
     - else
-      =number_with_precision(@truefalse_totalmarks/@truefalse_count, precision: 2)
+      =number_with_precision(@truefalse_totalmarks/@qcount[9], precision: 2)
 
 

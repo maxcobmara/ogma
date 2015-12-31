@@ -1,0 +1,776 @@
+- diploma=Programme.where(course_type: 'Diploma')
+- radiografi=diploma.where('name ILIKE?', '%Radiografi%').first.id
+- carakerja=diploma.where('name ILIKE?', '%Jurupulih Perubatan Cara Kerja%').first.id
+
+- qcount=[]
+- qrate=[]
+/- qweight=[]
+/- qfullmarks=[]
+- qmarks_ea=[]
+
+- unless @exammark.new_record?
+  - @exammark.exampaper.exam_template.question_count.each do |k,v|
+    - qcount << v["count"].to_i
+    /- qweight << v["weight"].to_f
+    /- qfullmarks << v["full_marks"].to_f
+    /- if !v["weight"]!='' && v["count"]!=''
+    - if !v["weight"].blank? && !v["count"].blank?
+      /- if v["full_marks"] && v["full_marks"]!='' 
+      - if v["full_marks"] && !v["full_marks"].blank?
+        - qrate << v["weight"].to_f / v["full_marks"].to_f
+        - qmarks_ea << v["full_marks"].to_f / v["count"].to_i
+      - else
+        //when full marks not exist, use STANDARD MARKS as below : pls note - applicable to MCQ, MEQ & SEQ only
+        - if k=="mcq"
+          - qrate << v["weight"].to_f / v["count"].to_i*1 
+          - qmarks_ea << 1 
+        - elsif k=="seq" 
+          - qrate << v["weight"].to_f / (v["count"].to_i*10)
+          - qmarks_ea << 10
+        - elsif k=="meq"
+          - qrate << v["weight"].to_f / (v["count"].to_i*20)
+          - qmarks_ea << 20
+        - else
+          /assume 1 for marks for ea question
+          - qrate << v["weight"].to_f / v["count"].to_i
+          - qmarks_ea << 1
+      
+    - elsif v["weight"].blank? && !v["count"].blank?
+      /- elsif  v["weight"]=='' && v["count"]!=''
+      //when weightage not exist, but count exist
+      - qrate << 0
+      - if k=="mcq"
+        - qmarks_ea << 1 
+      - elsif k=="seq"
+        - qmarks_ea << 10
+      - elsif k=="meq"
+        - qmarks_ea << 20
+      - else
+        /assume 1 for marks for ea question
+        - qmarks_ea << 1
+    - else
+      - qrate << 0
+      - qmarks_ea << 1
+ 
+  /= qrate
+  /= qcount
+  /= qweight
+  /= qfullmarks
+  /= qmarks_ea
+  - @mcq_count= qcount[0]
+  - @mcqweight_rate= qrate[0]
+  - @meq_count= qcount[1]
+  - @meqweight_rate=qrate[1]
+  - @seq_count=qcount[2]
+  - @seqweight_rate=qrate[2]
+  
+  - @acq_count=qcount[3]
+  - @acqweight_rate=qrate[3]
+  - @osci_count=qcount[4]
+  - @osciweight_rate=qrate[4]
+  - @oscii_count=qcount[5]
+  - @osciiweight_rate=qrate[5]
+  - @osce_count=qcount[6]
+  - @osceweight_rate=qrate[6]
+  - @ospe_count=qcount[7]
+  - @ospeweight_rate=qrate[7]
+  - @viva_count=qcount[8]
+  - @vivaweight_rate=qrate[8]
+  - @truefalse_count=qcount[9]
+  - @truefalseweight_rate=qrate[9]
+
+.row
+  .col-md-10.col-md-offset-1
+    / Nav tabs
+    %ul.nav.nav-tabs
+      %li.active= link_to ((t 'exam.exammark.exammark_details')),"#exammark_details", "data-toggle" => "tab"
+      
+    .tab-content{style:"padding-top:1em"}
+      #exammark_details.tab-pane.active
+        %br
+        .col-md-offset-2 
+          .form-group
+            .col-sm-2.control-label
+              =f.label t 'exam.exammark.exam_id', for: :exam_id
+            .col-md-8
+              - if @exammark.new_record? == true
+                = f.collection_select :exam_id, @exams_list, :id, :exam_name_subject_date,{:include_blank =>t('select')},{class: 'selectpicker', "data-width"=>'550px'} 
+              - else
+                = @exammark.exampaper.exam_name_subject_date+" "+@exammark.exampaper.exam_template.template_in_use
+          .form-group
+            .col-sm-2.control-label
+              = f.label  t 'exam.exammark.student_id', for: :student_id
+            .col-md-4
+              - if @exammark.new_record? == true
+                = f.collection_select :student_id, @students_list, :id, :matrix_name, {:include_blank=>t('select'), :selected=>@exammark.student_id}, {class: 'selectpicker', "data-width"=>'400px'} 
+              - else
+                = @exammark.studentmark.matrix_name
+
+          - if @exammark.new_record? == false 
+            .form-group
+              .col-sm-2.control-label
+                = f.label t 'exam.exammark.marks', for: :marks
+              .col-md-8
+                - unless (@exammark.exampaper.klass_id == 1 || @exammark.exampaper.klass_id == 0)
+                  =number_with_precision(@exammark.total_marks, precision: 2)
+                  \/
+                  =number_with_precision(@exammark.exampaper.examtemplates.pluck(:total_marks).inject{|sum, x|sum+x}, precision: 2) 
+                  
+                - else
+                  /################################################
+                  %table.table
+                    - @examquestions = @exammark.exampaper.examquestions
+                    /- @examtemplates = Exam.where(id: @exammark.exam_id).first.examtemplates
+                    - @exam_template=@exammark.exampaper.exam_template
+                    %thead
+                      %tr
+                        %th=t 'exam.examquestion.questiontype'
+                        %th No
+                        %th=t 'exam.exammark.question'
+                        %th=t 'exam.exammark.mark'
+                    %tbody
+                      - if @exammark
+                        /retrieve existing marks first
+                        - @current_mark = @exammark.total_mcq
+                        /- @marks_for_questions = Mark.where(exammark_id: @exammark.id).sort_by{|x|x.created_at} 
+                        - @marks_for_questions = @exammark.marks
+
+                        /start-display MCQ questions details
+                        /- @exam_template.question_count.each{|k,v|@mcq_count=v['count'].to_i if k=="mcq"}
+                        /- if @examquestions.mcqq.count > 0 || @mcq_count > 0
+                        - if qcount[0] > 0
+                          - if @exammark
+                            - @exist_mark = @current_mark
+                          - else
+                            - @exist_mark = 0.00
+                          = render 'show_mcq', :task=>2, :exist_mark=>@exist_mark
+                          
+                        /start-display MEQ questions details
+                        - count2 = 0
+                        /- @exam_template.question_count.each{|k,v|@meq_count=v['count'].to_i if k=="meq"}
+                        /- if @examquestions.meqq.count > 0 || @meq_count > 0
+                        - if @meq_count > 0
+                          /- if @examquestions.meqq.count > 0
+                          /  - meq_count = @examquestions.meqq.count-1 
+                          /- else
+                          /  - meq_count = @meq_count-1 
+                          /- 0.upto(meq_count) do |count|
+                          - 0.upto(@meq_count-1) do |count|
+                            = render 'mark_exist', :count2=>count2
+                            = render 'show_meq', :count=>count, :count2=>count2, :task=>2
+                            - count2+=1
+
+                        /start-display SEQ questions details
+                        /- @exam_template.question_count.each{|k,v|@seq_count=v['count'].to_i if k=="seq"}
+                        /- if @examquestions.seqq.count > 0 || @seq_count > 0
+                        - if qcount[2] > 0
+                          /- if @examquestions.seqq.count > 0
+                          /  - seq_count = @examquestions.seqq.count-1 
+                          /- else
+                          /  - seq_count = @seq_count-1 
+                          /- 0.upto(seq_count) do |count| 
+                          - 0.upto(qcount[2]-1) do |count|
+                            = render 'mark_exist', :count2=>count2
+                            = render 'show_seq', :count=>count, :count2=>count2, :task=>2
+                            - count2+=1 
+
+                        /start-display ACQ questions details
+                        /- @exam_template.question_count.each{|k,v|@acq_count=v['count'].to_i if k=="acq"}
+                        /- if @examquestions.acqq.count > 0 || @acq_count > 0
+                        - if qcount[3] > 0
+                          /- if @examquestions.acqq.count > 0
+                          /  - acq_count = @examquestions.acqq.count-1 
+                          /- else
+                          /  - acq_count = @acq_count-1
+                          /- 0.upto(acq_count) do |count|
+                          - 0.upto(qcount[3]-1) do |count|
+                            = render 'mark_exist', :count2=>count2
+                            = render 'show_acq', :count=>count, :count2=>count2,  :task=>2
+                            - count2+=1 
+                        
+                        /start-display OSCI questions details
+                        /- @exam_template.question_count.each{|k,v|@osci_count=v['count'].to_i if k=="osci"}
+                        /- if @examquestions.osci2q.count > 0 || @osci_count > 0
+                        - if qcount[4] > 0
+                          /- if @examquestions.osci2q.count > 0
+                          /  - osci_count = @examquestions.osci2q.count-1
+                          /- else
+                          /  - osci_count = @osci_count-1
+                          /- 0.upto(osci_count) do |count|
+                          - 0.upto(qcount[4]-1) do |count|
+                            = render 'mark_exist', :count2=>count2
+                            = render 'show_osci', :count=>count, :count2=>count2, :task=>2
+                            - count2+=1 
+                
+                        /start-display OSCII questions details
+                        /- @exam_template.question_count.each{|k,v|@oscii_count=v['count'].to_i if k=="oscii"}
+                        /- if @examquestions.osci3q.count > 0 || @oscii_count > 0 
+                        - if qcount[5] > 0
+                          /- if @examquestions.osci3q.count > 0 
+                          /  - oscii_count = @examquestions.osci3q.count-1 
+                          /- else
+                          /  - oscii_count = @oscii_count-1
+                          /- 0.upto(oscii_count) do |count|
+                          - 0.upto(qcount[5]-1) do |count|
+                            = render 'mark_exist', :count2=>count2
+                            = render 'show_oscii', :count=>count, :count2=>count2, :task=>2
+                            - count2+=1 
+                  
+                        /start-display OSCE questions details
+                        /- @exam_template.question_count.each{|k,v|@osce_count=v['count'].to_i if k=="osce"}
+                        /- if @examquestions.osceq.count > 0 || @osce_count > 0   
+                        - if qcount[6] > 0
+                          /- if @examquestions.osceq.count > 0
+                          /  - osce_count = @examquestions.osceq.count-1 
+                          /- else
+                          /  - osce_count = @osce_count-1 
+                          /- 0.upto(osce_count) do |count|
+                          - 0.upto(qcount[6]-1) do |count|
+                            = render 'mark_exist', :count2=>count2
+                            = render 'show_osce', :count=>count, :count2=>count2, :task=>2
+                            - count2+=1
+ 
+                        /start-display OSPE questions details
+                        /- @exam_template.question_count.each{|k,v|@ospe_count=v['count'].to_i if k=="ospe"}
+                        /- if @examquestions.ospeq.count > 0 || @ospe_count> 0
+                        - if qcount[7] > 0
+                          /- if @examquestions.ospeq.count > 0
+                          /  - ospe_count = @examquestions.ospeq.count-1 
+                          /- else
+                          /  - ospe_count = @ospe_count-1
+                          /- 0.upto(ospe_count) do |count|
+                          - 0.upto(qcount[7]-1) do |count|
+                            = render 'mark_exist', :count2=>count2
+                            = render 'show_ospe', :count=>count, :count2=>count2, :task=>2
+                            - count2+=1
+ 
+                        /start-display VIVA questions details
+                        /- @exam_template.question_count.each{|k,v|@viva_count=v['count'].to_i if k=="viva"}
+                        /- if @examquestions.vivaq.count > 0 || @viva_count > 0
+                        - if qcount[8] > 0
+                          /- if @examquestions.vivaq.count > 0
+                          /  - viva_count = @examquestions.vivaq.count-1 
+                          /- else
+                          /  - viva_count = @viva_count-1
+                          /- 0.upto(viva_count) do |count|
+                          - 0.upto(qcount[8]-1) do |count|
+                            = render 'mark_exist', :count2=>count2
+                            = render 'show_viva', :count=>count, :count2=>count2, :task=>2
+                            - count2+=1
+
+                        /start-display TRUEFALSE questions details
+                        /- @exam_template.question_count.each{|k,v|@truefalse_count=v['count'].to_i if k=="truefalse"}
+                        /- if @examquestions.truefalseq.count > 0 || @truefalse_count > 0  
+                        - if qcount[9] > 0
+                          /- if @examquestions.truefalseq.count > 0
+                          /  - truefalse_count = @examquestions.truefalseq.count-1
+                          /- else
+                          /  - truefalse_count = @truefalse_count-1
+                          /- 0.upto(truefalse_count) do |count| 
+                          - 0.upto(qcount[9]-1) do |count|
+                            = render 'mark_exist', :count2=>count2
+                            = render 'show_truefalse', :count=>count, :count2=>count2, :task=>2
+                            - count2+=1
+
+                      /= @fullmarks = Exammark.fullmarks(@exammark.exam_id)
+                      - @fullmarks = @exammark.exampaper.exam_template.template_full_marks
+                      - posbasic_ids=Programme.roots.where(course_type: ['Diploma Lanjutan', 'Pos Basik', 'Pengkhususan']).pluck(:id)
+                      
+                      - if @exammark.exampaper.subject.root_id==radiografi || @exammark.exampaper.subject.root_id==carakerja
+                        %tr
+                          %td{rowspan: 3, colspan: 3, align: "right"}= f.label t 'exam.exammark.total', for: :total
+                          %td= text_field_tag "total_marks_view", number_with_precision(@exammark.total_marks,precision:2), :size=> 5, :readonly=>true, :class => 'form-control'
+                          
+                          %td='/ '+number_with_precision(@fullmarks, precision: 2).to_s
+                      - else
+                        - if @exammark.exampaper.name=='M'
+                          %tr
+                            %td{rowspan: 3, colspan: 3, align: "right"}= f.label t 'exam.exammark.total', for: :total
+                            %td
+                              /total marks - mid sem in weightage if weight exist, otherwise view total
+                              - if @exammark.exampaper.exam_template.total_in_weight==0
+                                /weightage in exam_template - not exist
+                                - sumweightage=@exammark.exampaper.total_marks
+                              - else
+                                /weightage exist
+                                - sumweightage=@exammark.exampaper.exam_template.total_in_weight
+                              = text_field_tag "total_marks_view", number_with_precision(@exammark.total_marks,precision:2), :size=> 5, :readonly=>true, :class => 'form-control'
+                            %td='/ '+number_with_precision(sumweightage, precision: 2).to_s
+                            
+                        - else
+                          = hidden_field_tag "total_marks_view", number_with_precision(@exammark.total_marks,precision:2), :size=> 5, :readonly=>true, :class => 'form-control'
+                    
+                      - if @exammark.exampaper.name=='F' || @exammark.exampaper.name=='R' 
+                        - if @exammark.exampaper.subject.root_id==radiografi || @exammark.exampaper.subject.root_id==carakerja
+                          %tr
+                            %td= text_field_tag "marks_in_hundred", number_with_precision((@exammark.total_marks/@fullmarks)*100, precision: 2), :size=> 5, :readonly=>true, :class => 'form-control'
+                            %td (100.00 %)
+                        %tr
+                          - if @exammark.exampaper.subject.root_id==radiografi || @exammark.exampaper.subject.root_id==carakerja
+                            - marks_70=number_with_precision((@exammark.total_marks/@fullmarks)*100*0.7, precision: 2)
+                          - else
+                            - if @fullmarks==70
+                              /total marks already in 70% weightage
+                              - marks_70=@exammark.total_marks
+                            - else
+                              - marks_70=number_with_precision(@exammark.totalsummative, precision: 2) 
+                            %td{colspan: 3, align: "right"}= f.label t 'exam.exammark.total', for: :total
+                          %td= text_field_tag "marks_in_70", marks_70, :size=> 5, :readonly=>true, :class => 'form-control'
+                          %td
+                            - if @exammark.exampaper.exam_template.total_in_weight==0
+                              /weightage in exam_template - not exist
+                              - sumweightage=@exammark.total_weightage
+                            - else
+                              - sumweightage=@exammark.exampaper.exam_template.total_in_weight
+                            ="("+sumweightage.to_s+" %)"
+
+=hidden_field_tag "mcqweight_rate", qrate[0]
+=hidden_field_tag "meqweight_rate", qrate[1]
+=hidden_field_tag "seqweight_rate", qrate[2]
+=hidden_field_tag "acqweight_rate", qrate[3]
+=hidden_field_tag "osciweight_rate", qrate[4]
+=hidden_field_tag "osciiweight_rate", qrate[5]
+=hidden_field_tag "osceweight_rate", qrate[6]
+=hidden_field_tag "ospeweight_rate", qrate[7]
+=hidden_field_tag "vivaweight_rate", qrate[8]
+=hidden_field_tag "truefalseweight_rate", qrate[9]
+
+=hidden_field_tag "mcqcount", qcount[0]
+=hidden_field_tag "meqcount", qcount[1]
+=hidden_field_tag "seqcount", qcount[2]
+=hidden_field_tag "acqcount", qcount[3]
+=hidden_field_tag "oscicount", qcount[4]
+=hidden_field_tag "osciicount", qcount[5]
+=hidden_field_tag "oscecount", qcount[6]
+=hidden_field_tag "ospecount", qcount[7]
+=hidden_field_tag "vivacount", qcount[8]
+=hidden_field_tag "truefalsecount", qcount[9]
+
+=hidden_field_tag "mcq_marks", qmarks_ea[0]
+=hidden_field_tag "meq_marks", qmarks_ea[1]
+=hidden_field_tag "seq_marks", qmarks_ea[2]
+=hidden_field_tag "acq_marks", qmarks_ea[3]
+=hidden_field_tag "osci_marks", qmarks_ea[4]
+=hidden_field_tag "oscii_marks", qmarks_ea[5]
+=hidden_field_tag "osce_marks", qmarks_ea[6]
+=hidden_field_tag "ospe_marks", qmarks_ea[7]
+=hidden_field_tag "viva_marks", qmarks_ea[8]
+=hidden_field_tag "truefalse_marks", qmarks_ea[9]
+       
+=hidden_field_tag "exammark[non_mcq]", @exammark.marks.count
+=hidden_field_tag "exammark[full_marks]", @fullmarks
+=hidden_field_tag "programme_name", Programme.where(id: @exammark.exampaper.subject.root_id).first.name if @exammark.id? 
+=hidden_field_tag "sum_weightage", sumweightage
+
+:javascript
+$(document).ready(function(){
+  $(".k1").keyup(function(){
+    
+    var mcqweight_rate= document.getElementById("mcqweight_rate").value;
+    var seqweight_rate= document.getElementById("seqweight_rate").value;
+    var meqweight_rate= document.getElementById("meqweight_rate").value;
+    var acqweight_rate= document.getElementById("acqweight_rate").value;
+    var osciweight_rate= document.getElementById("osciweight_rate").value;
+    var osciiweight_rate= document.getElementById("osciiweight_rate").value;
+    var osceweight_rate= document.getElementById("osceweight_rate").value;
+    var ospeweight_rate= document.getElementById("ospeweight_rate").value;
+    var vivaweight_rate= document.getElementById("vivaweight_rate").value;
+    var truefalseweight_rate= document.getElementById("truefalseweight_rate").value;
+    var mcq_count=document.getElementById("mcqcount").value;
+    var seq_count= document.getElementById("seqcount").value;
+    var meq_count= document.getElementById("meqcount").value;
+    var acq_count= document.getElementById("acqcount").value;
+    var osci_count= document.getElementById("oscicount").value;
+    var oscii_count= document.getElementById("osciicount").value;
+    var osce_count= document.getElementById("oscecount").value;
+    var ospe_count= document.getElementById("ospecount").value;
+    var viva_count= document.getElementById("vivacount").value;
+    var truefalse_count= document.getElementById("truefalsecount").value;
+    
+
+    var totalmcq = $("#total_mcq1").val();
+    var nonmcqcount = $("#exammark_non_mcq").val();
+    var fullmarks = $("#exammark_full_marks").val();
+    var programme = $("#programme_name").val();
+    var total_weight= $("#sum_weightage").val();
+    
+    var totalmarksview = document.getElementById("total_marks_view");
+    var totalmarksview2 = document.getElementById("total_marks_view2");
+    var marksinhundred = document.getElementById("marks_in_hundred");
+    var marksin70 = document.getElementById("marks_in_70");
+    
+    var mcqmarks = document.getElementById("mcq_marks").value;
+    var meqmarks = document.getElementById("meq_marks").value;
+    var seqmarks = document.getElementById("seq_marks").value;
+    var acqmarks = document.getElementById("acq_marks").value;
+    var oscimarks = document.getElementById("osci_marks").value;
+    var osciimarks = document.getElementById("oscii_marks").value;
+    var oscemarks = document.getElementById("osce_marks").value;
+    var ospemarks = document.getElementById("ospe_marks").value;
+    var vivamarks = document.getElementById("viva_marks").value;
+    var truefalsemarks = document.getElementById("truefalse_marks").value;
+    
+    /* MCQ question field - change to red when exceed maximum value*/
+    var mcq_field = document.getElementById("total_mcq1");
+    if (totalmcq > mcq_count*1.00 )
+    {  mcq_field.style.color="red";}
+    else
+    {  mcq_field.style.color="black";}
+    
+    a=0;
+    for (var k=0;k<nonmcqcount;k++)
+    {
+      var other = document.getElementById("exammark_marks_attributes_"+k+"_student_mark").value;
+      
+      /* step1-Individual question fields - change to red when exceed maximum value*/
+      var other_field = document.getElementById("exammark_marks_attributes_"+k+"_student_mark");
+      
+      meq_count2=meq_count;
+      seq_count2=meq_count2+seq_count;
+      acq_count2=seq_count2+acq_count;
+      osci_count2=acq_count2+osci_count;
+      oscii_count2=osci_count2+oscii_count;
+      osce_count2=oscii_count2+osce_count;
+      ospe_count2=osce_count2+ospe_count;
+      viva_count2=ospe_count2+viva_count;
+      truefalse_count2=viva_count2+truefalse_count;
+      
+      if (k < meq_count2)
+      {  
+        rate=meqweight_rate;
+        marks_each=meqmarks;
+      }
+      else 
+      {
+        if ((k >= meq_count2) && (k < seq_count2))
+        { 
+          rate=seqweight_rate;
+          marks_each=seqmarks;
+        }
+        else if ((k >= seq_count2) && (k < acq_count2))
+        { 
+          rate=acqweight_rate;
+          marks_each=acqmarks;
+        }
+        else if ((k >= acq_count2) && (k < osci_count2))
+        {
+          rate=osciweight_rate;
+          marks_each=oscimarks;
+        }
+        else if ((k >= osci_count2) && (k < oscii_count2))
+        { 
+          rate=osciiweight_rate;
+          marks_each=osciimarks;
+        }
+        else if ((k >= oscii_count2) && (k < osce_count2))
+        { 
+          rate=osceweight_rate;
+          marks_each=oscemarks;
+        }
+        else if ((k >= osce_count2) && (k < ospe_count2))
+        { 
+          rate=ospeweight_rate;
+          marks_each=ospemarks;
+        }
+        else if ((k >= ospe_count2) && (k < viva_count2))
+        { 
+          rate=vivaweight_rate;
+          marks_each=vivamarks;
+        }
+        else if ((k >= viva_count2) && (k < truefalse_count2))
+        { 
+          rate=truefalseweight_rate;
+          marks_each=truefalsemarks;
+        }
+      }
+      
+      if ((rate!='0') || (rate!=0))
+      {  a=a*1+(other*rate);}
+      else
+      {  a=a*1+(other*1);}
+      
+      
+      if (other > marks_each*1.0)
+      {  other_field.style.color = "red";}
+      else
+      {  other_field.style.color = "black";}
+    }
+    
+    aaa=0;
+    if (mcqweight_rate==0)
+    {  aaa=(totalmcq*1+a) / fullmarks * 100 * 0.7;}
+    else
+    {  aaa=totalmcq*mcqweight_rate+a;}
+      
+    if ((programme=="Radiografi") || (programme=="Jurupulih Perubatan Cara Kerja"))
+    {
+      totalmarksview.value = (totalmcq*1+a);
+      marksinhundred.value = (totalmcq*1+a) / fullmarks*100;
+      marksin70.value = aaa;
+      if (  aaa > 70) 
+      {
+        totalmarksview.style.color="red";
+        marksin70.style.color="red";
+        marksinhundred.style.color="red";
+      }
+      else
+      {
+        totalmarksview.style.color="black";
+        marksin70.style.color="black";
+        marksinhundred.style.color="black";
+      }
+    }
+    else
+    {
+    
+      /*BELOW : total marks view shall display total marks entered if weightage not exist, otherwise display total in weightage %*/      
+      if (mcqweight_rate!=0)
+      {  bbb=(totalmcq*mcqweight_rate+a);}
+      else
+      {  bbb=(totalmcq*1+a);}
+      
+      totalmarksview.value = bbb;
+      if (bbb > total_weight)
+      {  totalmarksview.style.color="red";}
+      else
+      {  totalmarksview.style.color="black";}
+      
+      if (fullmarks==70)
+      { 
+        
+        if ( aaa > 70)
+        {
+          marksin70.value=aaa;
+          marksin70.style.color="red";
+        }
+        else
+        {
+          marksin70.value =aaa;
+          marksin70.style.color="black";
+        }
+      }
+      else
+      { 
+        if ( aaa > total_weight)
+        {
+          marksin70.value=aaa;
+          marksin70.style.color="red";
+        }
+        else
+        {
+          marksin70.value = aaa;
+          marksin70.style.color="black";
+        }
+      }
+      
+    }
+  });
+  
+  $(".k1").each(function(){
+    
+    var mcqweight_rate= document.getElementById("mcqweight_rate").value;
+    var seqweight_rate= document.getElementById("seqweight_rate").value;
+    var meqweight_rate= document.getElementById("meqweight_rate").value;
+    var acqweight_rate= document.getElementById("acqweight_rate").value;
+    var osciweight_rate= document.getElementById("osciweight_rate").value;
+    var osciiweight_rate= document.getElementById("osciiweight_rate").value;
+    var osceweight_rate= document.getElementById("osceweight_rate").value;
+    var ospeweight_rate= document.getElementById("ospeweight_rate").value;
+    var vivaweight_rate= document.getElementById("vivaweight_rate").value;
+    var truefalseweight_rate= document.getElementById("truefalseweight_rate").value;
+    var mcq_count=document.getElementById("mcqcount").value;
+    var seq_count= document.getElementById("seqcount").value;
+    var meq_count= document.getElementById("meqcount").value;
+    var acq_count= document.getElementById("acqcount").value;
+    var osci_count= document.getElementById("oscicount").value;
+    var oscii_count= document.getElementById("osciicount").value;
+    var osce_count= document.getElementById("oscecount").value;
+    var ospe_count= document.getElementById("ospecount").value;
+    var viva_count= document.getElementById("vivacount").value;
+    var truefalse_count= document.getElementById("truefalsecount").value;
+    
+
+    var totalmcq = $("#total_mcq1").val();
+    var nonmcqcount = $("#exammark_non_mcq").val();
+    var fullmarks = $("#exammark_full_marks").val();
+    var programme = $("#programme_name").val();
+    var total_weight= $("#sum_weightage").val();
+    
+    var totalmarksview = document.getElementById("total_marks_view");
+    var totalmarksview2 = document.getElementById("total_marks_view2");
+    var marksinhundred = document.getElementById("marks_in_hundred");
+    var marksin70 = document.getElementById("marks_in_70");
+    
+    var mcqmarks = document.getElementById("mcq_marks").value;
+    var meqmarks = document.getElementById("meq_marks").value;
+    var seqmarks = document.getElementById("seq_marks").value;
+    var acqmarks = document.getElementById("acq_marks").value;
+    var oscimarks = document.getElementById("osci_marks").value;
+    var osciimarks = document.getElementById("oscii_marks").value;
+    var oscemarks = document.getElementById("osce_marks").value;
+    var ospemarks = document.getElementById("ospe_marks").value;
+    var vivamarks = document.getElementById("viva_marks").value;
+    var truefalsemarks = document.getElementById("truefalse_marks").value;
+    
+    /* MCQ question field - change to red when exceed maximum value*/
+    var mcq_field = document.getElementById("total_mcq1");
+    if (totalmcq > mcq_count*1.00 )
+    {  mcq_field.style.color="red";}
+    else
+    {  mcq_field.style.color="black";}
+    
+    a=0;
+    for (var k=0;k<nonmcqcount;k++)
+    {
+      var other = document.getElementById("exammark_marks_attributes_"+k+"_student_mark").value;
+      
+      /* step1-Individual question fields - change to red when exceed maximum value*/
+      var other_field = document.getElementById("exammark_marks_attributes_"+k+"_student_mark");
+      
+      meq_count2=meq_count;
+      seq_count2=meq_count2+seq_count;
+      acq_count2=seq_count2+acq_count;
+      osci_count2=acq_count2+osci_count;
+      oscii_count2=osci_count2+oscii_count;
+      osce_count2=oscii_count2+osce_count;
+      ospe_count2=osce_count2+ospe_count;
+      viva_count2=ospe_count2+viva_count;
+      truefalse_count2=viva_count2+truefalse_count;
+      
+      if (k < meq_count2)
+      {  
+        rate=meqweight_rate;
+        marks_each=meqmarks;
+      }
+      else 
+      {
+        if ((k >= meq_count2) && (k < seq_count2))
+        { 
+          rate=seqweight_rate;
+          marks_each=seqmarks;
+        }
+        else if ((k >= seq_count2) && (k < acq_count2))
+        { 
+          rate=acqweight_rate;
+          marks_each=acqmarks;
+        }
+        else if ((k >= acq_count2) && (k < osci_count2))
+        {
+          rate=osciweight_rate;
+          marks_each=oscimarks;
+        }
+        else if ((k >= osci_count2) && (k < oscii_count2))
+        { 
+          rate=osciiweight_rate;
+          marks_each=osciimarks;
+        }
+        else if ((k >= oscii_count2) && (k < osce_count2))
+        { 
+          rate=osceweight_rate;
+          marks_each=oscemarks;
+        }
+        else if ((k >= osce_count2) && (k < ospe_count2))
+        { 
+          rate=ospeweight_rate;
+          marks_each=ospemarks;
+        }
+        else if ((k >= ospe_count2) && (k < viva_count2))
+        { 
+          rate=vivaweight_rate;
+          marks_each=vivamarks;
+        }
+        else if ((k >= viva_count2) && (k < truefalse_count2))
+        { 
+          rate=truefalseweight_rate;
+          marks_each=truefalsemarks;
+        }
+      }
+      
+      if ((rate!='0') || (rate!=0))
+      {  a=a*1+(other*rate);}
+      else
+      {  a=a*1+(other*1);}
+      
+      
+      if (other > marks_each*1.0)
+      {  other_field.style.color = "red";}
+      else
+      {  other_field.style.color = "black";}
+    }
+    
+    aaa=0;
+    if (mcqweight_rate==0)
+    {  aaa=(totalmcq*1+a) / fullmarks * 100 * 0.7;}
+    else
+    {  aaa=totalmcq*mcqweight_rate+a;}
+      
+    if ((programme=="Radiografi") || (programme=="Jurupulih Perubatan Cara Kerja"))
+    {
+      totalmarksview.value = (totalmcq*1+a);
+      marksinhundred.value = (totalmcq*1+a) / fullmarks*100;
+      marksin70.value = aaa;
+      if (  aaa > 70) 
+      {
+        totalmarksview.style.color="red";
+        marksin70.style.color="red";
+        marksinhundred.style.color="red";
+      }
+      else
+      {
+        totalmarksview.style.color="black";
+        marksin70.style.color="black";
+        marksinhundred.style.color="black";
+      }
+    }
+    else
+    {
+    
+      /*BELOW : total marks view shall display total marks entered if weightage not exist, otherwise display total in weightage %*/      
+      if (mcqweight_rate!=0)
+      {  bbb=(totalmcq*mcqweight_rate+a);}
+      else
+      {  bbb=(totalmcq*1+a);}
+      
+      totalmarksview.value = bbb;
+      if (bbb > total_weight)
+      {  totalmarksview.style.color="red";}
+      else
+      {  totalmarksview.style.color="black";}
+      
+      if (fullmarks==70)
+      { 
+        
+        if ( aaa > 70)
+        {
+          marksin70.value=aaa;
+          marksin70.style.color="red";
+        }
+        else
+        {
+          marksin70.value =aaa;
+          marksin70.style.color="black";
+        }
+      }
+      else
+      { 
+        if ( aaa > total_weight)
+        {
+          marksin70.value=aaa;
+          marksin70.style.color="red";
+        }
+        else
+        {
+          marksin70.value = aaa;
+          marksin70.style.color="black";
+        }
+      }
+      
+    }
+  });
+  
+  
+});   
+
+      
+/display form for marks entering here (form display upon selection of exam (exam paper))
+/total_weight=mcqweight_rate*mcq_count+meqweight_rate*20*meq_count+seqweight_rate*10*seq_count+acqweight_rate*1+osciweight_rate*1+osciiweight_rate*1+osceweight_rate*1+ospeweight_rate*1+vivaweight_rate*1+truefalseweight_rate*1;

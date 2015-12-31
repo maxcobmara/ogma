@@ -174,13 +174,8 @@ class Exammark < ActiveRecord::Base
   end
   
   def self.fullmarks(exam_id)
-#     @istemplate = Exam.find(exam_id).klass_id
-#     if @istemplate == 0 
-      fullmarks = Exam.find(exam_id).set_full_marks #examtemplates.map(&:total_marks).inject{|sum,x|sum+x}
-#     else
-#       fullmarks = Exam.find(exam_id).examquestions.map(&:marks).to_a.inject{|sum,x|sum+x}
-#     end
-    fullmarks
+    #Exam.find(exam_id).set_full_marks #examtemplates.map(&:total_marks).inject{|sum,x|sum+x}
+    Exam.find(exam_id).exam_template.template_full_marks
   end
   
   #11June2013---updated 23June20 13--revised 1-15Dec2015
@@ -204,7 +199,7 @@ class Exammark < ActiveRecord::Base
       elsif exampaper.name=="R"
         grade_to_update.exam2marks=total_marks 
       elsif exampaper.name=="M"
-        grade_to_update.scores.where(type_id: 6).first.marks=total_marks if @grade_to_update.scores.where(type_id: 6).count > 0
+        grade_to_update.scores.where(type_id: 6).first.marks=total_marks if grade_to_update.scores.where(type_id: 6).count > 0
       end
       grade_to_update.save if grade_to_update.exam1marks && examtype == "F" 
       grade_to_update.save if grade_to_update.exam2marks && examtype == "R"

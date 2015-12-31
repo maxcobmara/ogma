@@ -1,0 +1,106 @@
+/ - @marks_for_questions = Mark.where(exammark_id: @exammark.id).sort_by{|x|x.created_at} 
+/ - if @exammark && @marks_for_questions.count!=0
+/   /for edit (exist ib db)
+/   - @exist_mark = @marks_for_questions[count2].student_mark
+/ - else
+/   - if @exammark
+/     /for resubmission (new) with data
+/     - @exist_mark = @exammark.marks[count2].student_mark
+/   - else
+/     - @exist_mark = 0.00
+
+/- @marks_for_questions = @exammark.marks
+- if @exammark
+  /for resubmission (new) with data
+  /- @exist_mark = @exammark.marks[count2].student_mark
+  - @exist_mark =  @exammark.marks.sort_by{|x|x.created_at}[count2].student_mark
+- else
+  - @exist_mark = 0.00    
+    
+    
+/seq
+/- if @exammark && @marks_for_questions.count!=0 
+/  /for edit (exist ib db)
+/  - @exist_mark = @marks_for_questions[count2].student_mark
+/- else
+/  - if @exammark
+/    /for resubmission (new) with data
+/    - @exist_mark = @exammark.marks[count2].student_mark
+/  - else
+/    - @exist_mark = 0.00
+
+/acq
+/- if @exammark && @marks_for_questions.count!=0
+/  /for edit (exist ib db)
+/  - @exist_mark = @marks_for_questions[count2].student_mark
+/- else
+/  - if @exammark
+/    /for resubmission (new) with data
+/    - @exist_mark = @exammark.marks[count2].student_mark
+/  - else
+/    - @exist_mark = 0.00 
+
+/osci
+/- if @exammark && @marks_for_questions.count!=0
+/  /for edit (exist ib db)
+/  - @exist_mark = @marks_for_questions[count2].student_mark
+/- else
+/  - if @exammark
+/    /for resubmission (new) with data
+/    - @exist_mark = @exammark.marks[count2].student_mark
+/  - else
+/    - @exist_mark = 0.00 
+ 
+/oscii
+/- if @exammark && @marks_for_questions.count!=0
+/  /for edit (exist ib db)
+/  - @exist_mark = @marks_for_questions[count2].student_mark
+/- else
+/  - if @exammark
+/    /for resubmission (new) with data
+/    - @exist_mark = @exammark.marks[count2].student_mark
+/  - else
+/    - @exist_mark = 0.00     
+
+/osce
+/- if @exammark && @marks_for_questions.count!=0
+/  /for edit (exist ib db)
+/  - @exist_mark = @marks_for_questions[count2].student_mark
+/- else
+/  - if @exammark
+/    /for resubmission (new) with data
+/    - @exist_mark = @exammark.marks[count2].student_mark
+/  - else
+/    - @exist_mark = 0.00
+
+/ospe
+/- if @exammark && @marks_for_questions.count!=0
+/  /for edit (exist ib db)
+/  - @exist_mark = @marks_for_questions[count2].student_mark
+/- else
+/  - if @exammark
+/    /for resubmission (new) with data
+/    - @exist_mark = @exammark.marks[count2].student_mark
+/  - else
+/    - @exist_mark = 0.00
+
+/viva
+/- if @exammark && @marks_for_questions.count!=0
+/  /for edit (exist ib db)
+/  - @exist_mark = @marks_for_questions[count2].student_mark
+/- else
+/  - if @exammark
+/    /for resubmission (new) with data
+/    - @exist_mark = @exammark.marks[count2].student_mark
+/  - else
+/    - @exist_mark = 0.00
+
+/truefalse
+/- if @exammark && @marks_for_questions.count!=0
+/  - @exist_mark = @marks_for_questions[count2].student_mark
+/- else
+/  - if @exammark
+/    /for resubmission (new) with data
+/    - @exist_mark = @exammark.marks[count2].student_mark
+/  - else
+/    - @exist_mark = 0.00
