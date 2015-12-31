@@ -153,13 +153,14 @@
   - @fullmarks = Exam.where(id: student_exammark.exam_id).first.set_full_marks 
   - totalsummative=student_exammark.totalsummative
 - else
-  - @fullmarks=0 
+  /temp set as full marks as 100% for Final exam (exam1marks) when NO Exammark record exist 
+  - @fullmarks=100 
   - totalsummative=0
+
 =hidden_field_tag "totalsummative", totalsummative
 =hidden_field_tag "full_marks", @fullmarks 
 =hidden_field_tag "grade[formative_count]", @count 
 =hidden_field_tag "programme_name", Programme.where(id: @programme).first.name if @programme
-/$(".i1").keyup(function() {
 
 :javascript
   function add_fields(link, association, content) {  
@@ -204,101 +205,84 @@ $(document).ready(function(){
     {
       totalformative = totalformative+(window["fmark"+i]*1)
     }
-      
-    caplusmse = (totalformative*1);
     
-    if ((programme=="Radiografi") || (programme=="Jurupulih Perubatan Cara Kerja"))
-    {
-      if (fullmarks==0)
-      {  summative = (exam1marks*1)*(examweight*1)/100; }
-      else
-      {  summative = (exam1marks*1)*(examweight*1)/fullmarks;}
-    }
-    else
-    {
-      if (fullmarks==examweight)
-      { summative=exam1marks*1; }
-      else
-      {
-        if (fullmarks==0)
-        /*{  summative=0;}*/
-        {  summative= (exam1marks*1)*(examweight*1)/100; }
-        else
-        {  summative = (exam1marks*1)/fullmarks*(examweight*1); }
-      }
-    }
-    forgrade = caplusmse+summative;
-    finalscore.value = caplusmse+summative;
-    
+    /*change of summative score - must check for exammark existance, when exist - retrieve totalsummative2 accodingly */
+    /*otherwise check for ENTERED values*/
     if (totalsummative2==0.0)
-    {  marks70.value = summative;}
+    {   totalsummative = exam1marks*1.0*examweight/100.0; }
     else
-    {  marks70.value = totalsummative2;}
+    {   totalsummative = totalsummative2*1.0;}
     
-    if (summative > examweight)
+    finale = totalformative+totalsummative;
+    
+    marks70.value = totalsummative;
+    finalscore.value = finale;
+    
+    if (totalsummative > examweight)
     {  marks70.style.color="red";}
     else
     {  marks70.style.color="black";}
 
-    if (caplusmse+summative > 100)
+    if (finale > 100*1.0)
     {  finalscore.style.color="red";}
     else
     {  finalscore.style.color="black";}
 
-    if ((caplusmse+summative) > 79)
+    if (finale > 79)
     {
       setgrade.value = 1;
     }
-    else if ((caplusmse+summative) > 74)
+    else if (finale > 74)
     {
       setgrade.value = 2;
      }
-    else if ((caplusmse+summative) > 69)
+    else if (finale > 69)
     {
       setgrade.value = 3;
     }
-    else if ((caplusmse+summative) > 64)
+    else if (finale > 64)
     {
        setgrade.value = 4;
      }
-    else if ((caplusmse+summative) > 59)
+    else if (finale > 59)
     {
       setgrade.value = 5;
     }
-    else if ((caplusmse+summative) > 54)
+    else if (finale > 54)
     {
       setgrade.value = 6;
     }
-    else if ((caplusmse+summative) > 49)
+    else if (finale > 49)
     {
       setgrade.value = 7;
      }
-    else if ((caplusmse+summative) > 44)
+    else if (finale > 44)
     {
       setgrade.value = 8;
      }
-    else if ((caplusmse+summative) > 39)
+    else if (finale > 39)
     {
       setgrade.value = 9;
      }
-    else if ((caplusmse+summative) > 34)
+    else if (finale > 34)
     {
       setgrade.value = 10;
      }
-    else if ((caplusmse+summative) > 0)
+    else if (finale > 0)
     {
        setgrade.value = 11;
     }
   });
   
-  $(".k1").each(function() {  
+  /* just in case - no exammark record, but requires to enter exam1marks (final exam) marks manually -start*/
+  $(".i1").keyup(function() {
+    /*alert("anything!");*/
     var formativecount = document.getElementById("grade_formative_count").value;
     var exam1marks = document.getElementById("grade_exam1marks").value;
     var examweight = document.getElementById("grade_examweight").value;
     var programme = document.getElementById("programme_name").value;
     var fullmarks = document.getElementById("full_marks").value;
-    var totalsummative2= document.getElementById("totalsummative").value;
-    
+    /*var totalsummative2 = document.getElementById("totalsummative").value;*/
 
     for (var i=0;i<formativecount;i++)
     {
@@ -328,97 +312,172 @@ $(document).ready(function(){
       totalformative = totalformative+(window["fmark"+i]*1)
     }
       
-    caplusmse = (totalformative*1);
+    totalsummative = exam1marks*1.0*examweight/100.0;
+    finale = totalformative+totalsummative;
     
-    if ((programme=="Radiografi") || (programme=="Jurupulih Perubatan Cara Kerja"))
-    {
-      if (fullmarks==0)
-      {  summative = (exam1marks*1)*(examweight*1)/100; }
-      else
-      {  summative = (exam1marks*1)*(examweight*1)/fullmarks;}
-    }
-    else
-    {
-      if (fullmarks==examweight)
-      { summative=exam1marks*1; }
-      else
-      { 
-        /*summative = (exam1marks*1)/fullmarks*(examweight*1);*/
-        
-        if (fullmarks==0)
-        {  summative= (exam1marks*1)*(examweight*1)/100; }
-        /*0; }*/
-        else
-        {  summative = (exam1marks*1)/fullmarks*(examweight*1); }
-      }
-    }
-    forgrade = caplusmse+summative;
-    finalscore.value = caplusmse+summative;
+    marks70.value = totalsummative;
+    finalscore.value = finale;
     
-    if (totalsummative2==0.0)
-    {  marks70.value = summative;}
-    else
-    {  marks70.value = totalsummative2;}
-    
-    if (summative > examweight)
+    if (totalsummative > examweight)
     {  marks70.style.color="red";}
     else
     {  marks70.style.color="black";}
 
-    if (caplusmse+summative > 100)
+    if (finale > 100*1.0)
     {  finalscore.style.color="red";}
     else
     {  finalscore.style.color="black";}
 
-    if ((caplusmse+summative) > 79)
+    if (finale > 79)
     {
       setgrade.value = 1;
     }
-    else if ((caplusmse+summative) > 74)
+    else if (finale > 74)
     {
       setgrade.value = 2;
      }
-    else if ((caplusmse+summative) > 69)
+    else if (finale > 69)
     {
       setgrade.value = 3;
     }
-    else if ((caplusmse+summative) > 64)
+    else if (finale > 64)
     {
        setgrade.value = 4;
      }
-    else if ((caplusmse+summative) > 59)
+    else if (finale > 59)
     {
       setgrade.value = 5;
     }
-    else if ((caplusmse+summative) > 54)
+    else if (finale > 54)
     {
       setgrade.value = 6;
     }
-    else if ((caplusmse+summative) > 49)
+    else if (finale > 49)
     {
       setgrade.value = 7;
      }
-    else if ((caplusmse+summative) > 44)
+    else if (finale > 44)
     {
       setgrade.value = 8;
      }
-    else if ((caplusmse+summative) > 39)
+    else if (finale > 39)
     {
       setgrade.value = 9;
      }
-    else if ((caplusmse+summative) > 34)
+    else if (finale > 34)
     {
       setgrade.value = 10;
      }
-    else if ((caplusmse+summative) > 0)
+    else if (finale > 0)
+    {
+       setgrade.value = 11;
+    }  
+  
+  });
+  /* just in case - no exammark record, but requires to enter exam1marks (final exam) marks manually -end*/
+  
+  $(".k1").each(function() {  
+    var formativecount = document.getElementById("grade_formative_count").value;
+    var exam1marks = document.getElementById("grade_exam1marks").value;
+    var examweight = document.getElementById("grade_examweight").value;
+    var programme = document.getElementById("programme_name").value;
+    var fullmarks = document.getElementById("full_marks").value;
+    var totalsummative2= document.getElementById("totalsummative").value;
+
+    for (var i=0;i<formativecount;i++)
+    {
+      window["fmark"+i] = document.getElementById("formative"+i).value;
+      window["fweight"+i] = document.getElementById("fweight"+i).value;
+      
+      window["fmark_field"+i] = document.getElementById("formative"+i);
+      if (window["fmark"+i]*1.0 >window["fweight"+i])
+      {  window["fmark_field"+i].style.color="red";}
+      else
+      {  window["fmark_field"+i].style.color="black";}
+    }
+      
+    var finalscore = document.getElementById("grade_finalscore");
+    var setgrade = document.getElementById("grade_grading_id");
+    var marks70 = document.getElementById("grade_marks_70");
+    var exam1marks_field = document.getElementById("grade_exam1marks");
+    
+    if (exam1marks > fullmarks*1.0)
+    {  exam1marks_field.style.color="red";}
+    else
+    {  exam1marks_field.style.color="black";}
+    
+    totalformative = 0
+    for (var i=0;i<formativecount;i++)
+    {
+      totalformative = totalformative+(window["fmark"+i]*1)
+    }
+          
+    /*change of summative score - must check for exammark existance, when exist - retrieve totalsummative2 accodingly */
+    /*otherwise check for ENTERED values*/
+    if (totalsummative2==0.0)
+    {   totalsummative = exam1marks*1.0*examweight/100.0; }
+    else
+    {   totalsummative = totalsummative2*1.0;}
+    
+    finale = totalformative+totalsummative;
+    
+    marks70.value = totalsummative;
+    finalscore.value = finale;
+    
+    if (totalsummative > examweight)
+    {  marks70.style.color="red";}
+    else
+    {  marks70.style.color="black";}
+
+    if (finale > 100*1.0)
+    {  finalscore.style.color="red";}
+    else
+    {  finalscore.style.color="black";}
+
+    if (finale > 79)
+    {
+      setgrade.value = 1;
+    }
+    else if (finale > 74)
+    {
+      setgrade.value = 2;
+     }
+    else if (finale > 69)
+    {
+      setgrade.value = 3;
+    }
+    else if (finale > 64)
+    {
+       setgrade.value = 4;
+     }
+    else if (finale > 59)
+    {
+      setgrade.value = 5;
+    }
+    else if (finale > 54)
+    {
+      setgrade.value = 6;
+    }
+    else if (finale > 49)
+    {
+      setgrade.value = 7;
+     }
+    else if (finale > 44)
+    {
+      setgrade.value = 8;
+     }
+    else if (finale > 39)
+    {
+      setgrade.value = 9;
+     }
+    else if (finale > 34)
+    {
+      setgrade.value = 10;
+     }
+    else if (finale > 0)
     {
        setgrade.value = 11;
     }
   });  
 
 });
-/  $("#grade_exam1marks").keyup(function() {  
-//above - latest (formative marks requested to be entered within weightage range)
-//below - previous
-//caplusmse = (totalformative*1)*(100-examweight)/100;
-//totalformative = totalformative+(window["fmark"+i]*1)*((window["fweight"+i]*1)/100)

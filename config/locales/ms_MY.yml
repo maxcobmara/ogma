@@ -2396,6 +2396,9 @@ ms_MY:
       finalscore2: "Jumlah Akhir (Ulangan)"
       finalscore_repeat: "Jumlah Akhir (Ulangan) / Gred (Ulangan) : "
       exam2: "Peperiksaan?"
+      student_same_subject: Hanya gred pelajar bagi Subjek yang sama dibenarkan untuk suntingan secara pukal.
+      summative_exceed_maximum: "Markah Sumatif tidak boleh melebihi markah penuh kertas peperiksaan."
+      summative_exceed_hundred: "Markah Sumatif tidak boleh melebihi 100%."
       
     examresult:
       title: Keputusan Peperiksaan Mengikut Program

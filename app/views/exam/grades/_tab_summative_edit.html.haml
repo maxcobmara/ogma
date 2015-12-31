@@ -61,13 +61,14 @@
 
   .col-md-2
     /- if (student_exammark && student_exammark.count > 0) && diploma_ids.include?(progid)
-    - if (student_exammark && student_exammark.count > 0) || @grade.exam1marks && @grade.exam1marks > 0.0
-      = f.text_field :exam1marks, value: exammarks, class: 'k1 form-control', readonly: 'readonly'
+    /- if (student_exammark && student_exammark.count > 0) || @grade.exam1marks && @grade.exam1marks > 0.0
+    - if (student_exammark && student_exammark.count > 0) 
+      = f.text_field :exam1marks, value: exammarks, class: 'form-control', readonly: 'readonly'
       /Repeat paper if exist & student resit repeat paper
       - if repeats && repeats.count > 0 && student_exammark2 && student_exammark2.count > 0
         = f.text_field :exam2marks, value: exammarks2, class: 'form-control', readonly: 'readonly'
     - else
-      = f.text_field :exam1marks, value: exammarks, class: 'k1 form-control'
+      = f.text_field :exam1marks, value: exammarks, class: 'form-control i1'
       /Repeat paper if exist & student resit repeat paper
       - if repeats && repeats.count > 0 && student_exammark2 && student_exammark2.count > 0
         = f.text_field :exam2marks, value: exammarks2, class: 'form-control'

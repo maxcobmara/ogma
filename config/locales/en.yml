@@ -2456,6 +2456,9 @@ en:
       finalscore2: "Final Score (Repeat)"
       finalscore_repeat: "Total Marks (Repeat) / Grade (Repeat) : "
       exam2: "Exam?"
+      student_same_grade: Please select students grade of the same Subject for multiple edit.
+      summative_exceed_maximum: "Summative Marks must not exceed examination paper full marks."
+      summative_exceed_hundred: "Summative Marks must less than or equal to 100%."
     
     examresult:
       title: Examination Result by Programme
