@@ -79,17 +79,16 @@
                   - if exammark.total_mcq
                     =number_with_precision(exammark.total_marks, precision: 2)+" / "+number_with_precision(exammark.exampaper.exam_template.template_full_marks, precision: 2)
                 %td
-                  /- if exammark.exampaper.name!="M" && diploma_subjects.include?(exammark.exampaper.subject_id) && exammark.total_mcq
-                  - if exammark.exampaper.name!="M" && exammark.total_mcq
-                    =number_with_precision(exammark.totalsummative, precision: 2) 
+                  - if exammark.exampaper.name!="M" 
+                    - if exammark.total_mcq
+                      =number_with_precision(exammark.totalsummative, precision: 2) 
+                    \/
+                    - if exammark.exampaper.exam_template.total_in_weight==0
+                      = number_with_precision(exammark.total_weightage, precision: 2).to_s+" %"
+                    - else
+                      = exammark.exampaper.exam_template.total_in_weight.to_s+" %"
                   - else
                     \-
-                  \/
-                  - if exammark.exampaper.exam_template.total_in_weight==0
-                    = number_with_precision(exammark.total_weightage, precision: 2).to_s+" %"
-                  - else
-                    = exammark.exampaper.exam_template.total_in_weight.to_s+" %"
-                  
               - index2+=1
       
           /.row
