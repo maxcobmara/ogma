@@ -40,9 +40,9 @@
       %thead
         %tr
           %th{:style=>"width:20px;"} &nbsp;
-          %th= sort_link(@search, :student_id, (t 'exam.grade.student_id'))
+          %th= sort_link(@search, :student_search, (t 'exam.grade.student_id'))
           %th= sort_link(@search, :subject_id, (t 'exam.grade.subject_id'))
-          %th= sort_link(@search, :formatie, (t 'exam.grade.total_formative'))
+          %th= sort_link(@search, :formative, (t 'exam.grade.total_formative'))
           %th{:colspan=>"2"}=sort_link(@search, :sent_date, (t 'exam.grade.sent_date'))
           %th=sort_link(@search, :eligible_for_exam, (t 'exam.grade.eligible_for_exam'))
           %th=sort_link(@search, :carry_paper, (t 'exam.grade.carry_paper'))

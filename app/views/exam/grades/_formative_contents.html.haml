@@ -92,12 +92,13 @@
             - @fullmarks = Exam.where(id: student_exammark.exam_id).first.set_full_marks 
           - else
             - @fullmarks=0
+          = hidden_field_tag "fullmarkss[]", @fullmarks, :id=> "fullmarks"+no.to_s
           /- if student_exammark && student_exammark.count > 0
           - if student_exammark
             = text_field_tag "exam1markss[]", number_with_precision(student_exammark.total_marks,:precision=>2), :size=> 4,:id=>"finalexam"+no.to_s, class: 'k1 form-control', readonly: 'readonly'
           - else
             /when exammark not exist, there will be no ref for fullmarks of an exampaper, so exampaper marks in GRade must be entered in 100%
-            = text_field_tag "exam1markss[]", number_with_precision(grade.exam1marks,:precision=>2), :size=> 4,:id=>"finalexam"+no.to_s,:class=>'k1'
+            = text_field_tag "exam1markss[]", number_with_precision(grade.exam1marks,:precision=>2), :size=> 4,:id=>"finalexam"+no.to_s,:class=>'k1 form-control'
         %td{:style=>"background-color:#FEE;text-align:center;"}
           /NOTE - 12DEC2015 : MUST RETRIEVE Total Formative from Exammark, if exist (coz Weightage calculation apllied in Exammarks model - refer exammarks/_form_multiple too.)
           /- if student_exammark && student_exammark.count > 0
@@ -258,57 +259,42 @@ $(document).ready(function(){
     var gradecount = $("#grade_count").val();
     var summativeweightage = $("#grade_summative_weightage").val(); 
     var programme = $("#programme_name").val();
-    var fullmarks = $("#fullmark").val();
     
     for (var i=0;i<gradecount;i++){
-      window["total_marks"+i]= document.getElementById("finalexam"+i).value;
-      window["summative70"+i] = document.getElementById("summative"+i);
+      window["exam1marks"+i]= document.getElementById("finalexam"+i).value;
+      window["totalsummative"+i]=document.getElementById("summative"+i).value;
+      window["summative_field"+i] = document.getElementById("summative"+i);
       window["cplus_val"+i] =  document.getElementById("caplusmse"+i).value;
       window["formative_summative"+i] = document.getElementById("finalscore"+i);
-      
+      window["fullmarks"+i]=document.getElementById("fullmarks"+i).value;
       window["grading"+i]=document.getElementById("grading"+i);
-      window["grading"+i].value = '11';
       
-      if ((programme=="Radiografi") || (programme=="Jurupulih Perubatan Cara Kerja"))
+      /* NOTE - calculation done only for grade without exammarks, therefor fullmarks retrieval should be done individually */
+      if (window["fullmarks"+i]==0)
       {
-        window["summative70"+i].value=(window["total_marks"+i])*(summativeweightage/100); 
-        window["formative_summative"+i].value = (window["total_marks"+i])*(summativeweightage/100) +((window["cplus_val"+i])*1);
-      }
-      else
-      {
+        window["summative_field"+i].value=(window["exam1marks"+i])*(summativeweightage/100); 
+        window["formative_summative"+i].value = (window["exam1marks"+i])*(summativeweightage/100) +((window["cplus_val"+i])*1);
         
-         if (fullmarks==70)
-        {  
-          window["summative70"+i].value=window["total_marks"+i]
-          window["formative_summative"+i].value = (window["total_marks"+i])*1+((window["cplus_val"+i])*1);
+        /*get exam1marks field*/
+        window["exam1marks_field"+i]=document.getElementById("finalexam"+i);
         
+        if (window["exam1marks"+i] > 100)
+        {
+          window["exam1marks_field"+i].style.color="red";
+          window["summative_field"+i].style.color="red";
+          window["formative_summative"+i].style.color="red";
         }
         else
-        { 
-          window["summative70"+i].value=(window["total_marks"+i])*(summativeweightage/100); 
-          window["formative_summative"+i].value = (window["total_marks"+i])*(summativeweightage/100) +((window["cplus_val"+i])*1);
+        {
+          window["exam1marks_field"+i].style.color="black";
+          window["summative_field"+i].style.color="black";
+          window["formative_summative"+i].style.color="black";
         }
-      }  
-      
-      window["totalmarks_field"+i]=document.getElementById("finalexam"+i);
-      /*if (window["total_marks"+i] > 100.0) */
-      if (window["total_marks"+i] > window["totalmarks_field"+i])
-      {  window["totalmarks_field"+i].style.color="red";}
+      }
       else
-      {  window["totalmarks_field"+i].style.color="black";}
-      
-      summative=window["summative"+i].value;
-      if (summative > summativeweightage*1.0)
-      {  window["summative"+i].style.color="red";}
-      else
-      {  window["summative"+i].style.color="black";}
-      
+      {/*should have no effect for record containing exammarks (fullmarks > 0) */}     
+       
       sum_both=window["formative_summative"+i].value;
-      if (sum_both > 100.0)
-      {  window["finalscore"+i].style.color="red";}
-      else
-      {  window["finalscore"+i].style.color="black";}
-      
       /*grading starts here*/
       if (sum_both <= 35) 
       { 
@@ -487,63 +473,42 @@ $(document).ready(function(){
     var gradecount = $("#grade_count").val();
     var summativeweightage = $("#grade_summative_weightage").val(); 
     var programme = $("#programme_name").val();
-    var fullmarks = $("#fullmark").val();
     
     for (var i=0;i<gradecount;i++){
-      window["total_marks"+i]= document.getElementById("finalexam"+i).value;
-      window["summative70"+i] = document.getElementById("summative"+i);
+      window["exam1marks"+i]= document.getElementById("finalexam"+i).value;
+      window["totalsummative"+i]=document.getElementById("summative"+i).value;
+      window["summative_field"+i] = document.getElementById("summative"+i);
       window["cplus_val"+i] =  document.getElementById("caplusmse"+i).value;
       window["formative_summative"+i] = document.getElementById("finalscore"+i);
-      window["summative2_"+i]=document.getElementById("summatives2_"+i).value;
+      window["fullmarks"+i]=document.getElementById("fullmarks"+i).value;
+      window["grading"+i]=document.getElementById("grading"+i);
       
-      if (window["summative2_"+i]!=0.0)
+      /* NOTE - calculation done only for grade without exammarks, therefor fullmarks retrieval should be done individually */
+      if (window["fullmarks"+i]==0)
       {
-        window["summative70"+i].value=window["summative2_"+i];
-        window["formative_summative"+i].value =window["summative2_"+i]*1.0+((window["cplus_val"+i])*1);
-      }
-      else
-      {
-        if ((programme=="Radiografi") || (programme=="Jurupulih Perubatan Cara Kerja"))
+        window["summative_field"+i].value=(window["exam1marks"+i])*(summativeweightage/100); 
+        window["formative_summative"+i].value = (window["exam1marks"+i])*(summativeweightage/100) +((window["cplus_val"+i])*1);
+        
+        /*get exam1marks field*/
+        window["exam1marks_field"+i]=document.getElementById("finalexam"+i);
+        
+        if (window["exam1marks"+i] > 100)
         {
-          window["summative70"+i].value=(window["total_marks"+i])*(summativeweightage/100); 
-          window["formative_summative"+i].value = (window["total_marks"+i])*(summativeweightage/100) +((window["cplus_val"+i])*1);
+          window["exam1marks_field"+i].style.color="red";
+          window["summative_field"+i].style.color="red";
+          window["formative_summative"+i].style.color="red";
         }
         else
         {
-        
-           if (fullmarks==70)
-          {  
-            window["summative70"+i].value=window["total_marks"+i]
-            window["formative_summative"+i].value = (window["total_marks"+i])*1+((window["cplus_val"+i])*1);
-        
-          }
-          else
-          { 
-            window["summative70"+i].value=(window["total_marks"+i])*(summativeweightage/100); 
-            window["formative_summative"+i].value = (window["total_marks"+i])*(summativeweightage/100) +((window["cplus_val"+i])*1);
-          }
-        }  
+          window["exam1marks_field"+i].style.color="black";
+          window["summative_field"+i].style.color="black";
+          window["formative_summative"+i].style.color="black";
+        }
       }
-      
-      window["totalmarks_field"+i]=document.getElementById("finalexam"+i);
-      /*if (window["total_marks"+i] > 100.0)*/
-      if (window["total_marks"+i] > window["totalmarks_field"+i])
-      {  window["totalmarks_field"+i].style.color="red";}
       else
-      {  window["totalmarks_field"+i].style.color="black";}
-      
-      summative=window["summative"+i].value;
-      if (summative > summativeweightage*1.0)
-      {  window["summative"+i].style.color="red";}
-      else
-      {  window["summative"+i].style.color="black";}
-      
+      {/*should have no effect for record containing exammarks (fullmarks > 0) */}     
+       
       sum_both=window["formative_summative"+i].value;
-      if (sum_both > 100.0)
-      {  window["finalscore"+i].style.color="red";}
-      else
-      {  window["finalscore"+i].style.color="black";}
-      
       /*grading starts here*/
       if (sum_both <= 35) 
       { 
