@@ -66,14 +66,9 @@
                 %td{:style=>"text-align: center;"}
                   - permitted_to? :edit_multiple, :exam_grades do
                     = check_box_tag "grade_ids[]", grade.id, true, :id => "gradeidss_#{index2}"
-                %td
-                  = link_to grade.studentgrade.matrix_name, exam_grade_path(grade)
-                  /= grade.studentgrade.intake
+                %td= link_to grade.studentgrade.matrix_name, exam_grade_path(grade)
                 %td=h grade.subjectgrade.try(:subject_list)
-                %td
-                  - if grade.scores.count>0 
-                    =number_with_precision(grade.score, precision: 2)
-                    /use score field to save CA+MSE value, from model exammark
+                %td=number_with_precision(grade.total_formative, precision: 2) 
                 %td
                   - if grade.sent_to_BPL == true 
                     &#10003;
@@ -97,7 +92,15 @@
                     %font{color: "black"}=h number_with_precision(grade.finalscore, :precision => 2)
                   - else
                     %font{color: "red"}=h number_with_precision(grade.finalscore, :precision => 2)
-                %td=h grade.finale.blank? ? "" : grade.render_grading[-2,2]
+                %td
+                  - unless grade.finale.blank?
+                    - grading=grade.render_grading[-2,2].strip 
+                    - if ["E", "D", "D+", "C-"].include?(grading)
+                      %font{style: "color: red;"}=grading
+                    - else
+                      %font{style: "color: black;"}=grading
+                    
+                  /=h grade.finale.blank? ? "" : grade.render_grading[-2,2]
                 /grade table - 'score' field must exist, exam1marks, examweight too
               - index2+=1
     

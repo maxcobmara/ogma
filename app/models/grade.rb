@@ -44,8 +44,9 @@ class Grade < ActiveRecord::Base
   end
   
   def apply_finalscore
-    if summative && formative  #refers to fields in the form
-      self.finalscore=summative+formative 
+    if summative && total_formative  #refers to fields in the form
+      self.formative=total_formative
+      self.finalscore=summative+total_formative 
     end
   end
   

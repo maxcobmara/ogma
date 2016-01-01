@@ -138,34 +138,6 @@ class Exam < ActiveRecord::Base
     end
   end
   
-  # NOTE - FOR later reference -- Exammarks
-#   def set_examtemplates
-#     unless topic_id.nil?
-#       exam_template.question_count.each do |k, v|
-#         if v['count']!='' #&& v['weight']!=''                          # NOTE some template has no weightage
-#           qty=(v['count']).to_i
-#           if k=="mcq"
-#             m=qty*1 
-#           elsif k=="seq" || k=="ospe"
-#             m=qty*10
-#           elsif k=="meq"
-#             m=qty*20
-#           end
-#           existone=examtemplates.where(questiontype: k.upcase)
-#           if existone==[]
-#             a=examtemplates.build 
-#           else
-#             a=existone.first
-#           end
-#           a.quantity=qty
-#           a.total_marks=m
-#           a.questiontype=k.upcase
-#           a.save
-#         end
-#       end      
-#     end
-#   end
-  
   def repeat_paper?
     name=="R"
   end
@@ -177,11 +149,7 @@ class Exam < ActiveRecord::Base
   def set_subject_for_repeat
     self.subject_id = Exam.where(id: description.to_i).first.subject_id if description!=nil && name=="R"
   end
-  
-  #def full_marks(exampaper_id)
-      #Examquestion.sum(:marks,:joins=>:exammakers, :conditions => ["exammaker_id=?", exampaper_id]).to_f
-  #end 
-  
+
   def self.search2(search)
     common_subject = Programme.where('course_type=?','Commonsubject').map(&:id)
     if search 
@@ -199,11 +167,8 @@ class Exam < ActiveRecord::Base
         @exams = Exam.where(subject_id: postbasic_subject_ids).where('subject_id NOT IN(?)', common_subject)
       else
         subject_of_programme = Programme.find(search).descendants.at_depth(2).map(&:id)
-        #@exams = Exam.find(:all, :conditions => ["subject_id IN (?) and subject_id NOT IN (?)", subject_of_program, common_subject])
         @exams = Exam.where('subject_id IN(?) AND subject_id NOT IN(?)',subject_of_programme, common_subject).order('exam_on DESC, subject_id ASC')
       end
-    #else
-       #@exams = Exam.all
     end
   end
   
@@ -215,8 +180,8 @@ class Exam < ActiveRecord::Base
      end
   end
   
+  # TODO removed this part - full marks - should retrieve fr Exam Template
   # NOTE - this total_marks refers to FULL MARKS for examination paper - use in exams/_show_exam 
-  # TODO - rename this as template_full_marks & move to exam_template
   def total_marks
     # restriction - in exam_template - compulsory field - STANDARD MARKS (marks per question) or TOTAL MARKS
     # NOTE too - each examquestion also have MARKS field

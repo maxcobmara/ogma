@@ -37,9 +37,15 @@ class Exammark < ActiveRecord::Base
     end
   end
   
+  #########should refers to Saved Entered marks
+  def total_marks
+    marks.sum(:student_mark)+total_mcq.to_i
+  end
+  #########
+  
   # NOTE - total_marks refers to SAVED marks not current value
   # refer - marks_must_not_exceed_maximum - 4 sample of current value
-  def total_marks
+  def total_marks2
     diploma=Programme.where(course_type: 'Diploma')
     radiografi=diploma.where('name ILIKE?', '%Radiografi%').first.id
     carakerja=diploma.where('name ILIKE?', '%Jurupulih Perubatan Cara Kerja%').first.id
@@ -131,11 +137,11 @@ class Exammark < ActiveRecord::Base
      #return @intake_sem.to_s+'/'+@intake_year.to_s   #giving this format -->  2/2012  --> previously done on examresult(2012)
 
      if @intake_sem == 1 
-       @intake_month = '03' if @unit_dept && @unit_dept == "Kebidanan"
-       @intake_month = '01' if @unit_dept && @unit_dept != "Kebidanan"
+       @intake_month = '03' if @unit_dept && posbasiks.include?(@unit_dept) #@unit_dept == "Kebidanan"
+       @intake_month = '01' if @unit_dept && !posbasiks.include?(@unit_dept) #@unit_dept != "Kebidanan"
      elsif @intake_sem == 2
-       @intake_month = '09' if @unit_dept && @unit_dept == "Kebidanan"
-       @intake_month = '07' if @unit_dept && @unit_dept != "Kebidanan"
+       @intake_month = '09' if @unit_dept && posbasiks.include?(@unit_dept) #@unit_dept == "Kebidanan"
+       @intake_month = '07' if @unit_dept && !posbasiks.include?(@unit_dept) #@unit_dept != "Kebidanan"
      end
 
      return @intake_year.to_s+'-'+@intake_month+'-01'  #giving this format -->  2/2012
@@ -174,7 +180,6 @@ class Exammark < ActiveRecord::Base
   end
   
   def self.fullmarks(exam_id)
-    #Exam.find(exam_id).set_full_marks #examtemplates.map(&:total_marks).inject{|sum,x|sum+x}
     Exam.find(exam_id).exam_template.template_full_marks
   end
   
@@ -208,12 +213,6 @@ class Exammark < ActiveRecord::Base
   #11June2013------updated 23June2013
   
   def self.get_valid_exams
-    #previous approach
-#     e_full_ids=Exam.where(klass_id: 1).pluck(:id)
-#     e_w_exist_questions_ids = Exam.joins(:examquestions).where('exam_id IN(?)',e_full_ids).pluck(:exam_id).uniq
-#     e_template_ids=Exam.where(klass_id: 0).pluck(:id)
-#     e_w_exist_templates_ids = Examtemplate.where('exam_id IN(?)', e_template_ids).pluck(:exam_id).uniq
-#     return e_w_exist_questions_ids+e_w_exist_templates_ids 
     valid_exams=[]
     Exam.all.each{|x|valid_exams << x.id if x.complete_paper==true}
     valid_exams
@@ -246,10 +245,12 @@ class Exammark < ActiveRecord::Base
     qcount=[]
     exam_template.question_count.each do |k,v|
       qcount << v["count"].to_i
-      if v["weight"]!='' && v["count"]!=''
+      #if v["weight"]!='' && v["count"]!=''
+      if !v["weight"].blank? && !v["count"].blank?
         #previous structure (has no full_marks) - MUST check if v["full_marks"] of previously SAVED templates EXIST first 
         #division by 0.0 shall gives infinity, as error : Index pg (Infinity --> app/models/exammark.rb:383:in `to_r')
-        if v["full_marks"] && v["full_marks"]!='' 
+        #if v["full_marks"] && v["full_marks"]!='' 
+        if v["full_marks"] && !v["full_marks"].blank?
           qrate << v["weight"].to_f / v["full_marks"].to_f
         else
           #when full marks not exist, use STANDARD MARKS as below : pls note - applicable to MCQ, MEQ & SEQ only
@@ -290,85 +291,6 @@ class Exammark < ActiveRecord::Base
     @truefalsecount=qcount[9]
     @truefalseweight_rate=qrate[9]
     
-    
-    
-    #######
-#     exam_template.question_count.each do |k, v|
-#       if v['count']!='' || v['count']!=nil #&& v['weight']!=''                          
-#         qty=(v['count']).to_i
-#         if k=="mcq"
-#           @mcqcount=qty
-#           if v['weight']!=''
-#             @mcqweight_rate=  v['weight'].to_f/@mcqcount*1
-#           else
-#             @mcqweight_rate=0
-#           end
-#         elsif k=="meq"
-#           @meqcount=qty
-#           if v['weight']!=''
-#             @meqweight_rate=v['weight'].to_f/(@meqcount*20)
-#           else
-#             @meqweight_rate=0
-#           end
-#         elsif k=="seq" 
-#           @seqcount=qty
-#           if v['weight']!=''
-#             @seqweight_rate=  v['weight'].to_f/(@seqcount*10)
-#           else
-#             @seqweight_rate=0
-#           end
-#         elsif k=="acq"
-#           @acqcount=qty 
-#           if v['weight']!=''
-#             @acqweight_rate=  v['weight'].to_f/(@acqcount*1)
-#           else
-#             @acqweight_rate=0
-#           end
-#         elsif k=="osci"
-#           @oscicount=qty
-#           if v['weight']!=''
-#             @osciweight_rate=  v['weight'].to_f/(@oscicount*1)
-#           else
-#             @osciweight_rate=0
-#           end
-#         elsif k=="oscii"
-#           @osciicount=qty
-#           if v['weight']!=''
-#             @osciiweight_rate=  v['weight'].to_f/(@osciicount*1)
-#           else
-#             @osciiweight_rate=0
-#           end
-#         elsif k=="osce"
-#           @oscecount=qty
-#           if v['weight']!=''
-#             @osceweight_rate=  v['weight'].to_f/(@oscecount*1)
-#           else
-#             @osceweight_rate=0
-#           end
-#         elsif k=="ospe"
-#           @ospecount=qty
-#           if v['weight']!=''
-#             @ospeweight_rate=  v['weight'].to_f/(@ospecount*10)
-#           else
-#             @ospeweight_rate=0
-#           end
-#         elsif k=="viva"
-#           @vivacount=qty
-#           if v['weight']!=''
-#             @vivaweight_rate=  v['weight'].to_f/(@vivacount*1)
-#           else
-#             @vivaweight_rate=0
-#           end
-#         elsif k=="truefalse"
-#           @truefalsecount=qty
-#           if v['weight']!=''
-#              @truefalseweight_rate=  v['weight'].to_f/(@truefalsecount*1)
-#           else
-#              @truefalseweight_rate=0
-#           end
-#         end
-#       end
-#     end
     meq_count2=@meqcount;
     seq_count2=meq_count2+@seqcount;
     acq_count2=seq_count2+@acqcount;
