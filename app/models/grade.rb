@@ -212,25 +212,25 @@ class Grade < ActiveRecord::Base
   end
   
   def set_gred
-    if finale <= 35 
+    if finale < 35 #<= 35 
       11#"E"
-    elsif finale <= 40
+    elsif finale < 40 #<= 40
       10#"D"
-    elsif finale <= 45
+    elsif finale < 45 #<= 45
       9#"D+"
-    elsif finale <= 50
+    elsif finale < 50 #<= 50
       8#"C-"
-    elsif finale <= 55
+    elsif finale < 55 #<= 55
       7#"C"
-    elsif finale <= 60
+    elsif finale < 60 #<= 60
       6#"C+"
-    elsif finale <= 65
+    elsif finale < 65 #<= 65
       5#"B-"
-    elsif finale <= 70
+    elsif finale < 70 #<= 70
       4#"B"
-    elsif finale <= 75
+    elsif finale < 75 #<= 75
       3#"B+"
-    elsif finale <= 80
+    elsif finale < 80 #<= 80
       2#"A-"
     else
       1#"A"
@@ -238,13 +238,13 @@ class Grade < ActiveRecord::Base
   end
   
   def set_gred2
-    if finale2 <= 35 
+    if finale2 < 35 #<= 35 
       11#"E"
-    elsif finale2 <= 40
+    elsif finale2 < 40 #<= 40
       10#"D"
-    elsif finale2 <= 45
+    elsif finale2 < 45 #<= 45
       9#"D+"
-    elsif finale2 <= 50
+    elsif finale2 < 50 #<= 50
       8#"C-"
     else
       7 #C
@@ -302,20 +302,24 @@ class Grade < ActiveRecord::Base
       1.33
     elsif finale2 < 50 #<= 50
       1.67
-    elsif finale2 < 55 #<= 55
-      2.00
-    elsif finale2 < 60 #<= 60
-      2.33
-    elsif finale2 < 65 #<= 65
-      2.67
-    elsif finale2 < 70 #<= 70
-      3.00
-    elsif finale2 < 75 #<= 75
-      3.33
-    elsif finale2 < 80 #<= 80
-      3.67
     else
-      4.00
+      2.00
+    #as confirmed by En Iz on 29 Dec 2015 - for REPEAT papers, the highest grade honoured to students is 'C'. 
+    
+    #elsif finale2 < 55 #<= 55
+    #  2.00
+    #elsif finale2 < 60 #<= 60
+    #  2.33
+    #elsif finale2 < 65 #<= 65
+    #  2.67
+    #elsif finale2 < 70 #<= 70
+    #  3.00
+    #elsif finale2 < 75 #<= 75
+    #  3.33
+    #elsif finale2 < 80 #<= 80
+    #  3.67
+    #else
+    #  4.00
     end
   end 
   

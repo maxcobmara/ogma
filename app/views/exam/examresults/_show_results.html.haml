@@ -4,11 +4,10 @@
   %table.table.table-bordered
     %head
       %tr
-        %th{rowspan: 2} &nbsp;
+        %th{rowspan: 2} No
         %th{rowspan: 2}=t('student.name')
         %th{rowspan: 2}=t('student.students.matrixno')
         %th{rowspan: 2}=t('student.icno')
-        /- @subjects = Examresult.get_subjects(@examresult.programme_id,@examresult.semester)
         - @subjects = @examresult.retrieve_subject
         - for subject in @subjects
           %th.centre{colspan: 2}=h subject.code
@@ -21,6 +20,7 @@
         - 0.upto(@subjects.count-1) do |count|
           %th=t('exam.grade.grading_id')
           %th NG
+    %body
       - nos=0
       - @ng=[]
       - for examresultline in @examresult.resultlines
@@ -32,50 +32,54 @@
           - credit2_all=[]
           - final2_all=[]
           - final2b_all=[]
-          - english_subjects=['PTEN', 'NELA', 'NELB', 'NELC', 'MAPE', 'XBRE', 'OTEL'] 
+          - ng=[]
+          - ng2=[]
+          - repeated_subjects=[]
+          - @non_ng=0
           - @value_state=[]
-          /- kebidanan = Programme.roots.where('name ILIKE(?)', '%Kebidanan%').first.id
+          - english_subjects=['PTEN', 'NELA', 'NELB', 'NELC', 'MAPE', 'XBRE', 'OTEL'] 
           - posbasiks = Programme.roots.where(course_type: ['Pos Basik', 'Diploma Lanjutan', 'Pengkhususan']).pluck(:id)
           - kejururawatan = Programme.roots.where('name ILIKE(?)', '%Kejururawatan%').first.id
-          - ng=[]
-          - @non_ng=0
-          - repeated_subjects=[]
           - for subject in @subjects
             - @grade_student=Grade.where(subject_id: subject.id).where(student_id: examresultline.student_id)
             - @student_finale=Grade.where('student_id=? and subject_id=?', examresultline.student_id,subject.id).first
-            //--------------
-            - if subject.code.size >9
-              - unless english_subjects.include?(subject.code[0,4]) || (subject.code.strip.size < 10 && (subject.code.strip[-2,1].to_i==2 || subject.code.strip[-2,1].to_i==3))
-                - credit2_all << subject.code[10,1].to_i 
-            - elsif subject.code.size < 10
-              - unless english_subjects.include?(subject.code[0,4]) || (subject.code.strip.size < 10 && (subject.code.strip[-2,1].to_i==2 || subject.code.strip[-2,1].to_i==3)) 
-                - credit2_all << subject.code[-1,1].to_i
+            
+            /retrieve & sum-up Credit Hours for all subject except for English subject (TODO-confirm if elective & minor are of the same case?)
+            /16Dec2015-Pn Manicka Valli - latest - Pos Basics module code - ADCB 510102 - credit=2
+            - unless english_subjects.include?(subject.code[0,4]) || (subject.code.strip.size < 10 && (subject.code.strip[-2,1].to_i==2 || subject.code.strip[-2,1].to_i==3)) 
+              - credit2_all << subject.code[-1,1].to_i
+            /- if subject.code.size >9
+            /  - unless english_subjects.include?(subject.code[0,4]) || (subject.code.strip.size < 10 && (subject.code.strip[-2,1].to_i==2 || subject.code.strip[-2,1].to_i==3))
+            /    - credit2_all << subject.code[10,1].to_i 
+            /- elsif subject.code.size < 10
+            /  - unless english_subjects.include?(subject.code[0,4]) || (subject.code.strip.size < 10 && (subject.code.strip[-2,1].to_i==2 || subject.code.strip[-2,1].to_i==3)) 
+            /    - credit2_all << subject.code[-1,1].to_i
+                
+            /For NON-English subjects :-
             - unless english_subjects.include?(subject.code[0,4]) || (subject.code.strip.size < 10 && (subject.code.strip[-2,1].to_i==2 || subject.code.strip[-2,1].to_i==3))
-              /- unless @student_finale.nil? || @student_finale.blank? 
-              /  - final2_all << @student_finale.set_NG.to_f
-              /- else
-              /  - final2_all << 0.00
               
-              / copy fr EDIT - form_results
-              /with repeat parts
+              /Final : Retrieve NGs (final2_all)
+              /Repeat : Retrieve NGs+NG2s (final2b_all) & subjects repeated
               - unless @student_finale.nil? || @student_finale.blank? 
+                /when grade exist
                 - unless (@grade_student.first.exam2marks.nil? || @grade_student.first.exam2marks.blank?) 
                   - if @grade_student.first.resit==true
-                    /////step1- final2_all << @student_finale.set_NG2.to_f
+                    /Repeat : step1- retrieve latest NG & subject
                     - final2b_all << @student_finale.set_NG2.to_f
                     - repeated_subjects << subject.id
-                    /= @grade_student.first.resit
                 - else
                   - final2_all << @student_finale.set_NG.to_f
-                  //////step2-collect those not repeated too
+                  /Repeat : step2-collect those not repeated too
                   - final2b_all << @student_finale.set_NG.to_f
               - else
+                /when grade not exist
                 - final2_all << 0.00
               
-            //-------------
+            /Display subjects results column accordingly-----------------------
+            /Case 1:Grade exist
             - if @grade_student.count > 0
               - if english_subjects.include?(subject.code[0,4]) || (subject.code.strip.size < 10 && (subject.code.strip[-2,1].to_i==2 || subject.code.strip[-2,1].to_i==3))
-                //////
+                /English subjects column-start
                 - @gradeit=@grade_student.first.render_grading[-2,2]
                 - @non_ng+=1
                 %td.centre{colspan: 2}
@@ -91,67 +95,151 @@
                       %br=@gradeit2=@grade_student.first.render_grading2[-2,2]
                       - if ["C-", "D+", "D", "E"].include?(@gradeit2.strip)==true
                         %font{color: "red"}=(t 'exam.examresult.failed')
-                      
                       - else 
-                        =(t 'exam.examresult.passed')
-                     
-                /////
+                        =(t 'exam.examresult.passed')  
+                /English subject column-end
+                
               - else
+                /Other than English subjects 2 columns-start
+                /Column 1: GRADE
                 %td.centre
-                  =grade_it=@grade_student.first.render_grading[-2,2]
+                  - grade_it=@grade_student.first.render_grading[-2,2]
+                  - if ["C-", "D+", "D", "E"].include?(grade_it.strip)==true
+                    %font{color: "red"}=grade_it
+                  - else
+                    =grade_it
+                  //repeat for non english subject
                   - unless (@grade_student.first.exam2marks.nil? || @grade_student.first.exam2marks.blank?) 
                     - if @grade_student.first.resit==true
-                      %br=grade_it2=@grade_student.first.render_grading2[-2,2] 
-                    
+                      %br
+                      - grade_it2=@grade_student.first.render_grading2[-2,2] 
+                      - if ["C-", "D+", "D", "E"].include?(grade_it2.strip)==true
+                        %font{color: "red"}=grade_it2
+                      - else
+                        =grade_it2
+                /Column 2: NG    
                 %td.centre
-                  =@grade_student.first.set_NG.to_f 
-                  - ng << @grade_student.first.set_NG.to_f 
+                  - ng_it=@grade_student.first.set_NG.to_f
+                  - if ["C-", "D+", "D", "E"].include?(grade_it.strip)==true
+                    %font{color: "red"}=ng_it 
+                  - else
+                    =ng_it
+                  - ng << ng_it 
                   - unless (@grade_student.first.exam2marks.nil? || @grade_student.first.exam2marks.blank?) 
                     - if @grade_student.first.resit==true
-                      %br=@grade_student.first.set_NG2.to_f 
-                  
+                      - ng_it2=@grade_student.first.set_NG2.to_f
+                      - ng2 << ng_it2
+                      %br
+                      - if ["C-", "D+", "D", "E"].include?(grade_it2.strip)==true
+                        %font{color: "red"}=ng_it2 
+                      - else
+                        =ng_it2 
+                /Other than English subjects 2 columns-end
+                /Retrieve STATUS for each subject (ALL = English+Non-English)
                 - @value_state << '4' if (posbasiks+[kejururawatan]).include?(@examresult.programme_id) && ["C-", "D+", "D", "E"].include?(grade_it.strip)==true
                 - @value_state << '3' if (posbasiks+[kejururawatan]).include?(@examresult.programme_id) && ["C-", "D+", "D", "E"].include?(grade_it.strip)==false
             - else
+              /Case2:Grade Not Exist yet
               - @value_state << '4'
               - if english_subjects.include?(subject.code[0,4]) || (subject.code.strip.size < 10 && (subject.code.strip[-2,1].to_i==2 || subject.code.strip[-2,1].to_i==3))
                 %td.centre{colspan: 2}= t 'exam.examresult.failed'
               - else
                 %td.centre &nbsp;
                 %td.centre 0.00
-          - @ng << ng       
-          - total_point=number_with_precision(Examresult.total(final2_all, credit2_all), precision: 2)
+
+          /Assign Final NG of all subjects (value doesn't matters, only count will be use in QAP)
+          - @ng << final2b_all
+          
+          /NOTE - start - for checking purpose only
+          .small Jum Kredit
+          = credit2_all
+          %br
+          .small Result ASAL
+          =ng
+          %br
+          .small Result repeated shj (sebenar)
+          =final2_all
+          %br
+          .small Result repeated shj (highest is C)
+          =ng2
+          %br
+          .small Result TERBARU
+          = final2b_all
+          %br 
+          %br
+          /NOTE - end - for checking purpose only
+          
+          /Calculate (i)NGK (Total Grade Points) - Final & Repeat
+          /Calculate (ii)PNGS (GPA) - Final & Repeat
+          - total_point=number_with_precision(Examresult.total(ng, credit2_all), precision: 2)
+          - repeated_total_point=number_with_precision(Examresult.total(final2b_all, credit2_all), precision: 2) if final2b_all
           - if final2_all.count > 0 && credit2_all.count > 0
-            - gpa=number_with_precision((Examresult.total(final2_all, credit2_all) / credit2_all.sum), precision: 2)
+            - gpa=number_with_precision((Examresult.total(ng, credit2_all) / credit2_all.sum), precision: 2)
           - else
             - gpa=0.00
-          /////step3---repeat
+          /Repeat : step3 
           - if final2b_all.count > 0 && credit2_all.count > 0
             - gpa_repeat=number_with_precision((Examresult.total(final2b_all, credit2_all) / credit2_all.sum), precision: 2)
           - else
             - gpa_repeat=0.00
-          /////
+          
+          /Calculate (iii)PNGK (CGPA)
           - semno=@examresult.semester.to_i-1
           - programmeid=@examresult.programme_id
           - examresult_ids=Examresult.where(programme_id: programmeid).pluck(:id)
           - @resultlines = Resultline.where(examresult_id: examresult_ids, student_id: examresultline.student_id).order(created_at: :asc)
           - cgpa=number_with_precision(Examresult.cgpa_per_sem(@resultlines, semno), precision: 2) if @resultlines.count-1>=semno
-            
-          %td=total_point
+          - cgpa_be4_repeat= number_with_precision(Examresult.total(ng, credit2_all) / credit2_all.sum, precision: 2)  
           %td
-            =gpa
+            /2-when FAIL final exam & repeat exam happens
+            - if @value_state.include?('4') && repeated_subjects.count > 0
+              =total_point
+            /1-display LATEST status 
+            =repeated_total_point if repeated_total_point
+          %td
+            /2-when FAIL final exam & repeat exam happens
+            /- if @value_state.include?('4') && repeated_subjects.count > 0
+            -  if @value_state.include?('4') 
+              /- if gpa_repeat
+              %font{style: "color: red;"}=gpa
+              %br
+            - else
+              =gpa  
+            /%br
+            /1-display LATEST status 
             //////step4----repeat
-            %br=gpa_repeat if gpa_repeat
-          %td=cgpa if cgpa
-          
+            =gpa_repeat if gpa_repeat
+          %td
+            /2-when FAIL final exam & repeat exam happens
+            - if @value_state.include?('4') && repeated_subjects.count > 0
+              = cgpa_be4_repeat if cgpa_be4_repeat
+            /1-display LATEST status
+            = cgpa if cgpa
+       
+          /Display STATUS
           - fisioterapi=Programme.where(course_type: 'Diploma').where('name ILIKE (?)', '%Fisioterapi%').first.id
           - perubatan=Programme.where(course_type: 'Diploma').where('name ILIKE (?)', 'Penolong Pegawai Perubatan').first.id
           - if [fisioterapi, perubatan].include?(examresultline.examresult.programme_id)
             - status_viewing=examresultline.render_status_contra
           - else
             - status_viewing=examresultline.render_status          
-          %td=status_viewing
           %td
+            /2-when FAIL final exam
+            - if @value_state.include?('4')
+              /display previous (FAIL) Final exam status as failed
+              %font{color: "red"}=(t 'exam.examresult.failed')
+            /1-display LATEST status accordingly (saved status in DB, when repeat result exist: LATEST status shall replaced status of Final exam)
+            =status_viewing
+          
+          /Display REMARK
+          %td
+            /Display Ulang Subjek...when NG2 exist
+            - if @value_state.uniq.include?('4') && repeated_subjects.count > 0
+              %font{style: "color: red;"}
+                =(DropDown::RESULT_REMARK.find_all{|disp, value| value == "1"}).map {|disp, value| disp}[0]
+                - Programme.where(id: repeated_subjects).each do |subject|
+                  .small=subject.code.gsub(" ", "")
+            //
             =h examresultline.render_remark
             - if examresultline.remark=='1' || examresultline.remark=='2'
               /display repeated subjects here

@@ -8,7 +8,7 @@ class Exammark < ActiveRecord::Base
   after_save :apply_final_exam_into_grade 
   validates_presence_of   :student_id, :exam_id
   validates_uniqueness_of :student_id, :scope => :exam_id, :message => " - Mark of this exam for selected student already exist. Please edit/delete existing mark accordingly."
-  validate :marks_must_not_exceed_maximum
+  validate :marks_must_not_exceed_maximum, :total_mcq_must_an_integer
   
   attr_accessor :total_marks, :subject_id, :intake_id,:trial1,:trial2, :total_marks_view, :trial3, :total_mcq_in_exammark_single, :trial4, :newrecord_type
   
@@ -370,6 +370,12 @@ class Exammark < ActiveRecord::Base
         errors.add(:mark, I18n.t('exam.exammark.exceed_total')) 
       end
     
+    end
+  end
+  
+  def total_mcq_must_an_integer
+    if total_mcq && total_mcq/total_mcq.to_i > 1.0
+      errors.add(:base, I18n.t('exam.exammark.mcq_must_an_integer'))
     end
   end
   
