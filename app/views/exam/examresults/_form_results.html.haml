@@ -132,7 +132,11 @@
                     /Column 1: GRADE
                     %td
                       - if (posbasiks+[kejururawatan, perubatan, radiografi]).include?(@examresult.programme_id) && ["C-", "D+", "D", "E"].include?(@gradeit.strip)==true
+                        
+                        /TODO - confirm all programmes - same conditions?, previously confirmed by En Iz on 30Dec2015-just double confirm 
+                        ///////1st checking - ANY subject FAIL means FAIL the whole semester//////////
                         - @value_state << '4'
+                        
                         %font{color: "red"}= @gradeit
                         
                         /repeat paper
@@ -198,10 +202,11 @@
             - else
               - gpa=0.00
             /Repeat : step3 
-            - if final2b_all.count > 0 && credit2_all.count > 0
+            /For Repeat - final2b_all != final2_all
+            - if final2b_all.count > 0 && credit2_all.count > 0 && final2b_all != final2_all
               - gpa_repeat=number_with_precision((Examresult.total(final2b_all, credit2_all) / credit2_all.sum), precision: 2)
-            - else
-              - gpa_repeat=0.00
+            /- else
+            /  - gpa_repeat=0.00
             /determine LATEST GPA must be saved in DB
             - if gpa_repeat
               - gpa_to_save=gpa_repeat
@@ -307,14 +312,40 @@
             /Display REMARK
             %td
               /Display - Ulang Subjek (previous status) if really repeated
-              /@value_state - final status, final2_all - NG of Final, @value_state2 - status of repeated subject
-              /= final2_all
               - if @value_state.uniq.include?('4') && final2_all && @value_state2.count > 0
                 %font{style: "color: red;"}=(DropDown::RESULT_REMARK.find_all{|disp, value| value == "1"}).map {|disp, value| disp}[0]
                 
               /= text_field "examresult[resultlines_attributes][#{no}]", :remark, :size =>8, :value => @value_remark
               - unless @value_remark=='' || @value_remark==0
-                - @value_remark='4' if ['3','2','1'].include?(@value_status)
+              
+                /NOTE-For Checking-start 
+                /Final :
+                /=@value_state
+                /%br Repeat only :
+                /=@value_state2
+                /%br Status :
+                /=@value_status
+                /%br Remark:
+                /=@value_remark
+                /For Checking-end
+                
+                /ASSIGN Remark according to Status
+                - if @value_status=='1' || @value_status=='2' || @value_status=='3'
+                  /Status : Passed (3-Lulus, 2-Kepujian, 1-Cemerlang) - Remark : 4-Naik Semester
+                  - @value_remark='4' 
+                - elsif @value_status=='4'
+                  /Failed (4-Gagal) - Remark : (1-Ulang Subjek, 2-Viva, 3-Tamat Latihan)
+                  /Status is Gagal, check COUNT of failed subjects
+                  - if @value_state.count("4")==5 && @examresult.semester=="1"
+                    /(a) Semester 1 : FAIL 5 subjects, set REMARK : Tamat Latihan
+                    - @value_remark="3"
+                  - elsif @value_state.count('4')<=4
+                    /(b) Any semester : FAIL 4 or less subjects, set REMARK : Ulang Subjek
+                    - @value_remark="1"
+                  
+                
+                %br Remark (after checking):
+                = @value_remark
               = select_tag "examresult[resultlines_attributes][#{no}][remark]", options_for_select([[t('select'), '0']]+DropDown::RESULT_REMARK, @value_remark) 
 
       /FINAL status before REPEAT papers         

@@ -383,7 +383,7 @@ module DropDown
             #  Displayed       stored in db
             [ "Ulang Subjek", "1"],
             [ "VIVA", "2"],
-            [ "Berhenti", "3"],
+            [ "Tamat Latihan", "3"],
             [ "Naik Semester", "4"]
    ]
      

@@ -178,10 +178,11 @@
           - else
             - gpa=0.00
           /Repeat : step3 
-          - if final2b_all.count > 0 && credit2_all.count > 0
+          /For Repeat - final2b_all != final2_all
+          - if final2b_all.count > 0 && credit2_all.count > 0 && final2b_all!=final2_all
             - gpa_repeat=number_with_precision((Examresult.total(final2b_all, credit2_all) / credit2_all.sum), precision: 2)
-          - else
-            - gpa_repeat=0.00
+          /- else
+          /  - gpa_repeat=0.00
           
           /Calculate (iii)PNGK (CGPA)
           - semno=@examresult.semester.to_i-1
@@ -194,6 +195,7 @@
             /2-when FAIL final exam & repeat exam happens
             - if @value_state.include?('4') && repeated_subjects.count > 0
               =total_point
+              %br
             /1-display LATEST status 
             =repeated_total_point if repeated_total_point
           %td
@@ -225,11 +227,17 @@
             - status_viewing=examresultline.render_status          
           %td
             /2-when FAIL final exam
-            - if @value_state.include?('4')
+            /For Repeat - final2b_all != final2_all
+            - if @value_state.include?('4') && final2b_all!=final2_all
               /display previous (FAIL) Final exam status as failed
-              %font{color: "red"}=(t 'exam.examresult.failed')
+              %font{style: "color: red;"}=(t 'exam.examresult.failed')
+              %br
+           
             /1-display LATEST status accordingly (saved status in DB, when repeat result exist: LATEST status shall replaced status of Final exam)
-            =status_viewing
+            - if status_viewing==(t 'exam.examresult.failed')
+              %font{style: "color: red;"}=status_viewing
+            - else
+              %font{style: "color: black;"}=status_viewing
           
           /Display REMARK
           %td
