@@ -201,7 +201,14 @@ class Exam::ExammarksController < ApplicationController
     @exammark = Exammark.new
     qcount = @exammark.get_questions_count(@examid)
     current_program = Programme.find(Exam.find(@examid).subject_id).root_id
-    selected_student = Student.where(course_id: current_program.to_i, intake: selected_intake)
+    if @selected_exam.name=="R"
+      failed_students=[]
+      grades=Grade.where(subject_id: @selected_exam.subject_id)
+      grades.each{|g|failed_students << g.student_id if ["C-", "D+", "D", "E"].include?(g.render_grading[-2,2].strip)}
+      selected_student = Student.where(course_id: current_program.to_i, intake: selected_intake, id: failed_students)
+    else
+      selected_student = Student.where(course_id: current_program.to_i, intake: selected_intake)
+    end
     rec_count = selected_student.count
     @exammarks = Array.new(rec_count) { Exammark.new }                      
     @exammarks.each_with_index do |exammark,ind|                                     

@@ -94,7 +94,8 @@
                   //repeat for english papers
                   - unless (@grade_student.first.exam2marks.nil? || @grade_student.first.exam2marks.blank?)
                     - if @grade_student.first.resit==true
-                      %br=@gradeit2=@grade_student.first.render_grading2[-2,2]
+                      %br
+                      - @gradeit2=@grade_student.first.render_grading2[-2,2]
                       - if ["C-", "D+", "D", "E"].include?(@gradeit2.strip)==true
                         %font{color: "red"}=(t 'exam.examresult.failed')
                       - else 
@@ -288,5 +289,11 @@
                       
             - else
               /Display Remark other than 'Ulang Subjek' & 'VIVA'
-              =h examresultline.render_remark
+              - if examresultline.remark=="4"
+                /naik semester
+                =h examresultline.render_remark
+              - else
+                /ulang semester 
+                %font{style: "color: red; text-decoration: underline;"}=h examresultline.render_remark
+              
               

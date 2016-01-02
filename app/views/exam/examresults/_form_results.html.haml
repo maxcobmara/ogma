@@ -120,7 +120,8 @@
                       //repeat for english papers
                       - unless (@grade_student.first.exam2marks.nil? || @grade_student.first.exam2marks.blank?) 
                         - if @grade_student.first.resit==true
-                          %br=@gradeit2=@grade_student.first.render_grading2[-2,2]
+                          %br
+                          - @gradeit2=@grade_student.first.render_grading2[-2,2]
                           - if ["C-", "D+", "D", "E"].include?(@gradeit2.strip)==true
                             %font{color: "red"}=(t 'exam.examresult.failed')
                             - @value_state2 << '4'
