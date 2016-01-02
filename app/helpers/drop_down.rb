@@ -384,7 +384,8 @@ module DropDown
             [ "Ulang Subjek", "1"],
             [ "VIVA", "2"],
             [ "Tamat Latihan", "3"],
-            [ "Naik Semester", "4"]
+            [ "Naik Semester", "4"],
+            [ "Ulang Semester", "5"]
    ]
      
     DAY_CHOICE = [
