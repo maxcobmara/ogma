@@ -106,7 +106,11 @@
                 / NOTE - 'Repeat' won't be displayed if Grade not exist at all OR even if Grade exist, still require RESIT checkbox in Grade to be activated
             /- elsif value_state=='4' && @resultline.remark=='2'
             - if value_state=='4' && @resultline.remark=='2'
-              %strong  &nbsp;&nbsp;(VIVA)
+              /NOTE - VIVA only granted for student - repeating 4 or less failed final paper, whereby ONLY 1 of these (4 or less repeat result) IS FAIL while the rest already PASS && this 1 repeat result (repeat marks should higher than final marks). Note too, "C" is the highest(best) grade that could be given to repeat paper.
+              /look for the One & Only repeat marks that still FAIL (& repeat marks > final marks )
+              - grading2= @student_grade.render_grading2[-2,2].strip
+              - if grading2.strip != "C"
+                %strong  &nbsp;&nbsp;(VIVA) 
           %td.centre
             - if english_subjects.include?(subject.code[0,4]) || (subject.code.strip.size < 10 && (subject.code.strip[-2,1].to_i==2 || subject.code.strip[-2,1].to_i==3))
               \-

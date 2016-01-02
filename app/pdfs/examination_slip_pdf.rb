@@ -328,7 +328,10 @@ class Examination_slipPdf < Prawn::Document
 	  end
         end
         if @value_state2[counting]=='4' && @resultline.remark=='2'
-          repeat_or_viva="  (VIVA)"
+          grading2=student_grade.render_grading2[-2,2].strip
+          if grading2!="C"
+            repeat_or_viva+="  (VIVA) "
+          end
         end
         ###
         result_by_subjectline << [subject.code, subject.name+repeat_or_viva, @grading2[counting], @finale[counting], @remark[counting]]
@@ -348,7 +351,10 @@ class Examination_slipPdf < Prawn::Document
          end
 	end
         if @value_state2[counting]=='4' && @resultline.remark=='2'
-          repeat_or_viva="  (VIVA)"
+          grading2=student_grade.render_grading2[-2,2].strip
+          if grading2!="C"
+            repeat_or_viva+="  (VIVA) "
+         end
         end
         ###
         if counting==0
@@ -414,20 +420,8 @@ class Examination_slipPdf < Prawn::Document
     else
       result_by_subjectline=[]
         subjects.each_with_index do |subject, counting|
-	    ######
-# 	    if value_state=='4' && @resultline.remark=='1' 
-#               unless @student_grade.nil? || @student_grade.blank?
-#                 if @student_grade.resit==true
-#                   = t('exam.examresult.repeating')
-#                 else
-#                   # NOTE - 'Repeat' won't be displayed if Grade not exist at all OR even if Grade exist, still require RESIT checkbox in Grade to be activated
-# 		end 
-# 	      end 
-# 	    end
-	    ######
 	    # TODO refractor this###
 	    student_grade = Grade.where('student_id=? and subject_id=?',@resultline.student.id,subject.id).first
-            #if @value_state2[counting]=='4' && @resultline.remark=='1'
 	    repeat_or_viva=""
 	    unless student_grade.nil? || student_grade.blank?
               if student_grade.resit==true
@@ -435,7 +429,10 @@ class Examination_slipPdf < Prawn::Document
 	      end
 	    end
             if @value_state2[counting]=='4' && @resultline.remark=='2'
-              repeat_or_viva="  (VIVA)"
+              grading2=student_grade.render_grading2[-2,2].strip
+              if grading2!="C"
+                repeat_or_viva+="  (VIVA) "
+              end
             end
             ###
 	    subject_line=["#{counting +1}", subject.subject_list+repeat_or_viva, @grading2[counting], @finale[counting], @remark[counting]] 
