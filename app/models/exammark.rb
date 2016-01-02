@@ -107,8 +107,11 @@ class Exammark < ActiveRecord::Base
             @intake_year = @current_year.to_i-((semester.to_i+1)%2)-2
           elsif (semester.to_i+1)/2 > 2
             @intake_year = @current_year.to_i-((semester.to_i+1)%2)-1
-          elsif (semester.to_i+1)/2 > 1
+          elsif (semester.to_i+1)/2 > 1                                                           #>=1***
             @intake_year = @current_year.to_i-((semester.to_i+1)%2)
+	  #3Jan 2015 - sample : Kejururawatan - Semester 2 - intake 1 July 2014, exam on 28 April 2015, intake year should be previous year***
+	  elsif (semester.to_i+1)/2 ==1
+            @intake_year = @current_year.to_i-1
           end  
           #29June2013-------------------
           @intake_sem = @current_sem + 1 
@@ -127,8 +130,11 @@ class Exammark < ActiveRecord::Base
               @intake_year = @current_year.to_i-((semester.to_i+1)%2)-2
             elsif (semester.to_i+1)/2 > 2
               @intake_year = @current_year.to_i-((semester.to_i+1)%2)-1
-            elsif (semester.to_i+1)/2 > 1
+            elsif (semester.to_i+1)/2 > 1                                               #>=***
               @intake_year = @current_year.to_i-((semester.to_i+1)%2)
+            #3Jan 2015 - sample : Kejururawatan - Semester 2 - intake 1 Jan 2015, exam on 28 Dec 2015, intake year should be current year***
+	    elsif (semester.to_i+1)/2 ==1
+	      @intake_year = @current_year.to_i
             end  
             #29June2013-------------------
           @intake_sem = @current_sem - 1
@@ -137,11 +143,11 @@ class Exammark < ActiveRecord::Base
      #return @intake_sem.to_s+'/'+@intake_year.to_s   #giving this format -->  2/2012  --> previously done on examresult(2012)
 
      if @intake_sem == 1 
-       @intake_month = '03' if @unit_dept && posbasiks.include?(@unit_dept) #@unit_dept == "Kebidanan"
-       @intake_month = '01' if @unit_dept && !posbasiks.include?(@unit_dept) #@unit_dept != "Kebidanan"
+       @intake_month = '03' if @unit_dept && posbasiks.include?(@unit_dept)==true #@unit_dept == "Kebidanan"
+       @intake_month = '01' if @unit_dept && posbasiks.include?(@unit_dept)== false #@unit_dept != "Kebidanan"
      elsif @intake_sem == 2
-       @intake_month = '09' if @unit_dept && posbasiks.include?(@unit_dept) #@unit_dept == "Kebidanan"
-       @intake_month = '07' if @unit_dept && !posbasiks.include?(@unit_dept) #@unit_dept != "Kebidanan"
+       @intake_month = '09' if @unit_dept && posbasiks.include?(@unit_dept)==true #@unit_dept == "Kebidanan"
+       @intake_month = '07' if @unit_dept && posbasiks.include?(@unit_dept)==false #@unit_dept != "Kebidanan"
      end
 
      return @intake_year.to_s+'-'+@intake_month+'-01'  #giving this format -->  2/2012
