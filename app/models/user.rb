@@ -378,19 +378,26 @@ class User < ActiveRecord::Base
   def lecturers_programme_subject
     mypost = Position.where(staff_id: userable_id).first
     myunit = mypost.unit
+    # NOTE - posbasic SUP has access to all posbasic programme (PDF only)
     postbasics=['Pengkhususan', 'Pos Basik', 'Diploma Lanjutan']
     post_prog=Programme.roots.where(course_type: postbasics)
-    common_subjects=['Sains Tingkahlaku','Sains Perubatan Asas', 'Komunikasi & Sains Pengurusan', 'Anatomi & Fisiologi', 'Komuniti']
+    #common_subjects=['Sains Tingkahlaku','Sains Perubatan Asas', 'Komunikasi & Sains Pengurusan', 'Anatomi & Fisiologi', 'Komuniti']
     dip_prog=Programme.roots.where(course_type: 'Diploma').pluck(:name)
     if dip_prog.include?(myunit)
       subject_ids=Programme.roots.where(name: myunit).first.descendants.at_depth(2).pluck(:id)
     elsif postbasics.include?(myunit)
-      post_prog.pluck(:name).each do |pname|
-        @programmeid=Programme.roots.where(name: pname).pluck(:id) if mypost.tasks_main.include?(pname)
+      # NOTE - posbasic SUP has access to all posbasic programme (PDF only, restriction on Edit - only creator allowed)
+      subject_ids=[]
+      post_prog.each do |postb|
+        postb.descendants.each{|des|subject_ids << des.id if des.course_type=="Subject" || des.course_type=="Commonsubject"}
       end
-      subject_ids=Programme.roots.where(id: @programmeid).first.descendants.at_depth(2).pluck(:id)
-    elsif common_subjects.include?(myunit) 
-      subject_ids=Programme.where(course_type: 'Commonsubject').pluck(:id)
+    #  post_prog.pluck(:name).each do |pname|
+    #    @programmeid=Programme.roots.where(name: pname).pluck(:id) if mypost.tasks_main.include?(pname)
+    #  end
+    #  subject_ids=Programme.roots.where(id: @programmeid).first.descendants.at_depth(2).pluck(:id)
+    # NOTE - common subjects lecturer no longer hv access
+    #elsif common_subjects.include?(myunit) 
+    #  subject_ids=Programme.where(course_type: 'Commonsubject').pluck(:id)
     else
       subject_ids=Programme.where(course_type: ['Subject', 'Commonsubject']).pluck(:id)
     end
