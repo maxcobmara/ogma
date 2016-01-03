@@ -178,11 +178,13 @@ class Exam::ExamresultsController < ApplicationController
           if @common_subjects.include?(lecturer_programme) 
             programme_id ='1'
           elsif posbasiks.include?(lecturer_programme) && tasks_main!=nil
-            allposbasic_prog = Programme.where(course_type: posbasiks).pluck(:name)  #Onkologi, Perioperating, Kebidanan etc
-            for basicprog in allposbasic_prog
-              lecturer_basicprog_name = basicprog if tasks_main.include?(basicprog)==true
-            end
-            programme_id=Programme.where(name: lecturer_basicprog_name, ancestry_depth: 0).first.id
+            # NOTE - have access to all postbasic programme
+            programme_id='2'
+            #allposbasic_prog = Programme.where(course_type: posbasiks).pluck(:name)  #Onkologi, Perioperating, Kebidanan etc
+            #for basicprog in allposbasic_prog
+            #  lecturer_basicprog_name = basicprog if tasks_main.include?(basicprog)==true
+            #end
+            #programme_id=Programme.where(name: lecturer_basicprog_name, ancestry_depth: 0).first.id
           elsif roles.include?("administration")
             programme_id='0'
           else

@@ -32,6 +32,11 @@ class Resultline < ActiveRecord::Base
           end
         end
         @resultlines = Resultline.where(examresult_id: valid_examresult).where(examresult_id: @result_with_common_subjects)
+      elsif search=='2' #posbasic SUP
+        posbasiks=["Diploma Lanjutan", "Pos Basik", "Pengkhususan"]
+        postbasic_prog_ids=Programme.roots.where(course_type: posbasiks).pluck(:id)
+        examresult_ids=Examresult.where(programme_id: postbasic_prog_ids).pluck(:id)
+        @resultlines = Resultline.where(examresult_id: valid_examresult).where(examresult_id: examresult_ids)
       else
         examresult_ids=Examresult.where(programme_id: search).pluck(:id)
         @resultlines = Resultline.where(examresult_id: valid_examresult).where(examresult_id: examresult_ids)

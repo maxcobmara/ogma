@@ -98,23 +98,46 @@ class Exammark < ActiveRecord::Base
         @current_sem = 1 
         @current_year = examyear 
         if (semester.to_i-1) % 2 == 0                                                                                 # modulus-no balance
-          @intake_year = @current_year.to_i-((semester.to_i-1)/2) 
-          @intake_sem = @current_sem 
+          if posbasiks.include?(@unit_dept)==true
+            if exammonth.to_i < 3
+              @intake_year=@current_year.to_i-1
+              #sampel-Exam dt:5Feb2015, Sem:1, Intake (Sem 2/Sept, thn 2014)
+              @intake_sem = @current_sem+1 
+            else
+              #sample-Exam dt:15Aug2014, Sem:1, Intake (Sem 1/Mac, thn 2014)
+             @intake_year=@current_year.to_i
+             @intake_sem=@current_sem
+            end
+          else
+            @intake_year = @current_year.to_i-((semester.to_i-1)/2) 
+            @intake_sem = @current_sem 
+          end
         elsif (semester.to_i-1) % 2 != 0                                                                             # modulus-with balance
           #29June2013-@intake_year = @current_year.to_i-((semester.to_i+1)%2)           #@intake_year = @current_year.to_i-((semester.to_i+1)%2) --> giving error : 2043/2
           #29June2013-------------------OK
-          if (semester.to_i+1)/2 > 3  
-            @intake_year = @current_year.to_i-((semester.to_i+1)%2)-2
-          elsif (semester.to_i+1)/2 > 2
-            @intake_year = @current_year.to_i-((semester.to_i+1)%2)-1
-          elsif (semester.to_i+1)/2 > 1                                                           #>=1***
-            @intake_year = @current_year.to_i-((semester.to_i+1)%2)
-	  #3Jan 2015 - sample : Kejururawatan - Semester 2 - intake 1 July 2014, exam on 28 April 2015, intake year should be previous year***
-	  elsif (semester.to_i+1)/2 ==1
-            @intake_year = @current_year.to_i-1
-          end  
-          #29June2013-------------------
-          @intake_sem = @current_sem + 1 
+          if posbasiks.include?(@unit_dept)==true
+            @intake_year=@current_year.to_i-1
+            if exammonth.to_i < 3
+              #sampel-Exam dt:4Feb2015, Sem:2, Intake (Sem 1/Mac, thn 2014)
+              @intake_sem=@current_sem
+            else
+              #sampel-Exam dt:4Aug2015, Sem:2, Intake (Sem 2/Sept, thn 2014)
+              @intake_sem=@current_sem+1
+            end
+          else
+            if (semester.to_i+1)/2 > 3  
+              @intake_year = @current_year.to_i-((semester.to_i+1)%2)-2
+            elsif (semester.to_i+1)/2 > 2
+              @intake_year = @current_year.to_i-((semester.to_i+1)%2)-1
+            elsif (semester.to_i+1)/2 > 1                                                           #>=1***
+              @intake_year = @current_year.to_i-((semester.to_i+1)%2)
+              #3Jan 2015 - sample : Kejururawatan - Semester 2 - intake 1 July 2014, exam on 28 April 2015, intake year should be previous year***
+            elsif (semester.to_i+1)/2 ==1
+              @intake_year = @current_year.to_i-1
+            end  
+            #29June2013-------------------
+            @intake_sem = @current_sem + 1 
+          end
         end 
      elsif (@unit_dept && posbasiks.include?(@unit_dept)==true && exammonth.to_i > 9) || (@unit_dept && posbasiks.include?(@unit_dept)==false && exammonth.to_i > 7)                                                  # 2nd semester starts on July-Dec- exam should be between August-Dec
      #elsif exammonth.to_i > 7

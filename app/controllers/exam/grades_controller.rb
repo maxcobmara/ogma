@@ -25,7 +25,8 @@ class Exam::GradesController < ApplicationController
         programme_id = @programme.first.id
         @subjectlist_preselec_prog = Programme.find(programme_id).descendants.at_depth(2)  #.sort_by{|y|y.code}
         #subjects - only those with existing exampaper
-        @subjectlist_preselec_prog2_raw = Programme.where('id IN (?) AND id IN (?) and id NOT IN(?)',@subjectlist_preselec_prog.map(&:id), Exam.where('id IN(?) and name=?', valid_exams, 'F').map(&:subject_id), common_subject_a.map(&:id))
+        @subjectlist_preselec_prog2_raw = Programme.where('id IN (?) AND id IN (?)',@subjectlist_preselec_prog.map(&:id), Exam.where('id IN(?) and name=?', valid_exams, 'F').map(&:subject_id))
+        #@subjectlist_preselec_prog2_raw = Programme.where('id IN (?) AND id IN (?) and id NOT IN(?)',@subjectlist_preselec_prog.map(&:id), Exam.where('id IN(?) and name=?', valid_exams, 'F').map(&:subject_id), common_subject_a.map(&:id))
         #subjects - ALL subject of current programme
         #@subjectlist_preselec_prog2_raw = Programme.where('id IN (?) AND id NOT IN(?)',@subjectlist_preselec_prog.map(&:id), common_subject_a.map(&:id))
       else
@@ -35,17 +36,26 @@ class Exam::GradesController < ApplicationController
           @subjectlist_preselec_prog = common_subject_a
         elsif posbasics.include?(@lecturer_programme) && tasks_main!=nil
           ###
-          if @current_user.roles.pluck(:authname).include?("programme_manager")
-              @subjectlist_preselec_prog = Programme.where(course_type: posbasics).first.descendants.at_depth(2)
-              programme_id='2'
-          else
-              allposbasic_prog = Programme.where(course_type: posbasics).pluck(:name)  #Onkologi, Perioperating, Kebidanan etc
-              for basicprog in allposbasic_prog
-                lecturer_basicprog_name = basicprog if tasks_main.include?(basicprog)==true
+          # NOTE - posbasic SUP has access to all posbasic programmes
+          #if @current_user.roles.pluck(:authname).include?("programme_manager")
+              #@subjectlist_preselec_prog = Programme.where(course_type: posbasics).first.descendants.at_depth(2)
+              post_prog=Programme.where(course_type: posbasics)
+              subject_ids=[]
+              post_prog.each do |postb|
+                postb.descendants.each{|des|subject_ids << des.id if des.course_type=="Subject" || des.course_type=="Commonsubject"}
               end
-              programme_id=Programme.where(name: lecturer_basicprog_name, ancestry_depth: 0).first.id
-              @subjectlist_preselec_prog = Programme.where(id: programme_id).first.descendants.at_depth(2)
-          end
+              @subjectlist_preselec_prog=Programme.where(id: subject_ids)
+              programme_id='2'
+              subjects_valid_exam= Exam.where(id: valid_exams).where(name: 'F').pluck(:subject_id)
+              @subjectlist_preselec_prog2_raw = Programme.where(id: @subjectlist_preselec_prog.map(&:id)).where(id: subjects_valid_exam)
+          #else
+          #    allposbasic_prog = Programme.where(course_type: posbasics).pluck(:name)  #Onkologi, Perioperating, Kebidanan etc
+          #    for basicprog in allposbasic_prog
+          #      lecturer_basicprog_name = basicprog if tasks_main.include?(basicprog)==true
+          #    end
+          #    programme_id=Programme.where(name: lecturer_basicprog_name, ancestry_depth: 0).first.id
+          #    @subjectlist_preselec_prog = Programme.where(id: programme_id).first.descendants.at_depth(2)
+          #end
           ###
         elsif roles.include?("administration")
           programme_id='0'
@@ -504,20 +514,17 @@ class Exam::GradesController < ApplicationController
             @subjects=Programme.subject_groupbycommonsubjects2_grade #new only
             @students=Student.groupby_programme
           elsif posbasics.include?(@lecturer_programme) && tasks_main!=nil
-            allposbasic_prog = Programme.where(course_type: posbasics).pluck(:name)  #Onkologi, Perioperating, Kebidanan etc
-            for basicprog in allposbasic_prog
-              lecturer_basicprog_name = basicprog if tasks_main.include?(basicprog)==true
-            end
-            if @current_user.roles.pluck(:authname).include?("programme_manager")
+            # NOTE - Posbasic SUP has access to all Postbasic programme
+            #if @current_user.roles.pluck(:authname).include?("programme_manager")
               @programme_names=Programme.where(course_type: posbasics).map(&:programme_list)
               @subjects=Programme.subject_groupbyposbasiks2_grade #new only
               @students=Student.groupby_posbasics
-            else#all posbasic lecturer EXCEPT Ketua Program Pengkhususan
-              @preselect_prog=Programme.where(name: lecturer_basicprog_name, ancestry_depth: 0).first.id
-              @programme_names=Programme.where(id: @preselect_prog).map(&:programme_list)
-              @subjects=Programme.subject_groupbyoneprogramme2_grade(@preselect_prog) #new only
-              @students=Student.groupby_oneprogramme(@preselect_prog)
-            end
+            #else#all posbasic lecturer EXCEPT Ketua Program Pengkhususan
+            #  @preselect_prog=Programme.where(name: lecturer_basicprog_name, ancestry_depth: 0).first.id
+            #  @programme_names=Programme.where(id: @preselect_prog).map(&:programme_list)
+            #  @subjects=Programme.subject_groupbyoneprogramme2_grade(@preselect_prog) #new only
+            #  @students=Student.groupby_oneprogramme(@preselect_prog)
+            #end
           elsif roles.include?("administration")
             @programme_names=Programme.programme_names
             @subjects=Programme.all_subjects_groupbyprogramme_grade #new only

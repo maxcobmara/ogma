@@ -179,9 +179,17 @@ class Exam::ExammarksController < ApplicationController
           if @examid
             @dept_unit = Programme.find(Exam.find(@examid).subject_id).root
             @dept_unit_prog = @dept_unit.programme_list
-            # NOTE - limiting student intakes to MATCHING exampaper (exam date do matters!) - unremark below for testing purpose only
-            @intakes_lt = Student.where('course_id=?',@dept_unit.id).order(:intake).pluck(:intake).uniq #must be among the programme of exampaper coz even common subject...
-            @intakes_lt= Student.where('course_id=?',@dept_unit.id).where(intake: @iii).pluck(:intake).uniq
+            # NOTE - for selected paper, somebody must fail, then only corresponding intake will appear
+            if @selected_exam.name=="R"
+              failed_students=[]
+              grades=Grade.where(subject_id: @selected_exam.subject_id)
+              grades.each{|g|failed_students << g.student_id if ["C-", "D+", "D", "E"].include?(g.render_grading[-2,2].strip)}
+              # NOTE - limiting student intakes to MATCHING exampaper (exam date do matters!) - unremark below for testing purpose only
+              @intakes_lt = Student.where('course_id=?',@dept_unit.id).where(id: failed_students).order(:intake).pluck(:intake).uniq #must be among the programme of exampaper coz even common subject...
+            else
+              # NOTE - limiting student intakes to MATCHING exampaper (exam date do matters!) - unremark below for testing purpose only
+              @intakes_lt = Student.where('course_id=?',@dept_unit.id).order(:intake).pluck(:intake).uniq #must be among the programme of exampaper coz even common subject...
+            end
             @programme_id=@dept_unit.id
           end
         end

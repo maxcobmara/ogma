@@ -21,6 +21,10 @@ class Examresult < ActiveRecord::Base
           end
         end
         @examresults = Examresult.where(id: @result_with_common_subjects)
+      elsif search=='2' #posbasic SUP
+        posbasiks=["Diploma Lanjutan", "Pos Basik", "Pengkhususan"]
+        postbasic_prog_ids=Programme.roots.where(course_type: posbasiks).pluck(:id)
+        @examresults = Examresult.where(programme_id: postbasic_prog_ids)
       else
         @examresults = Examresult.where(programme_id: search)
       end
