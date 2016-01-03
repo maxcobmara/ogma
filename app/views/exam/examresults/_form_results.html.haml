@@ -81,8 +81,11 @@
                 /    - credit2_all << subject.code[-1,1].to_i
                 - unless english_subjects.include?(subject.code[0,4]) || (subject.code.strip.size < 10 && (subject.code.strip[-2,1].to_i==2 || subject.code.strip[-2,1].to_i==3)) 
                   - credit2_all << subject.code[-1,1].to_i
-                  - final_all << @student_finale.set_NG.to_f
-                 
+                  - unless @student_finale.nil? || @student_finale.blank? 
+                    - final_all << @student_finale.set_NG.to_f
+                  - else
+                    - final_all << 0.00
+
                 /For NON-English subjects :-
                 - unless english_subjects.include?(subject.code[0,4]) || (subject.code.strip.size < 10 && (subject.code.strip[-2,1].to_i==2 || subject.code.strip[-2,1].to_i==3))
                   
