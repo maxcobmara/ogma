@@ -28,12 +28,13 @@ class Exam::ExammarksController < ApplicationController
           programme_id ='1'
           subject_ids=Programme.where(course_type: 'Commonsubject').pluck(:id)
           @exams_list_raw = Exam.where('id IN(?)', valid_exams).where(subject_id: subject_ids)#.order(name: :asc, subject_id: :asc)
-        elsif posbasiks.include?(lecturer_programme) && tasks_main!=nil
-          allposbasic_prog = Programme.where(course_type: posbasiks).pluck(:name)  #Onkologi, Perioperating, Kebidanan etc
-          for basicprog in allposbasic_prog
-            lecturer_basicprog_name = basicprog if tasks_main.include?(basicprog)==true
-          end
-          if @current_user.roles.pluck(:authname).include?("programme_manager")
+        elsif posbasiks.include?(lecturer_programme) && @current_user.roles.pluck(:authname).include?("exam_administration")#tasks_main!=nil
+          # NOTE - posbasic SUP has access to All postbasic programme 
+          #allposbasic_prog = Programme.where(course_type: posbasiks).pluck(:name)  #Onkologi, Perioperating, Kebidanan etc
+          #for basicprog in allposbasic_prog
+          #  lecturer_basicprog_name = basicprog if tasks_main.include?(basicprog)==true
+          #end
+          #if @current_user.roles.pluck(:authname).include?("programme_manager")
             programme_id='2'
             programme_ids=Programme.where(course_type: posbasiks).pluck(:id)
             subject_ids=[]
@@ -42,10 +43,10 @@ class Exam::ExammarksController < ApplicationController
                 subject_ids << descendant.id if descendant.course_type=='Subject'
               end
             end
-          else
-            programme_id=Programme.where(name: lecturer_basicprog_name, ancestry_depth: 0).first.id
-            subject_ids = Programme.where(id: programme_id).first.descendants.at_depth(2).pluck(:id)
-          end
+          #else
+          #  programme_id=Programme.where(name: lecturer_basicprog_name, ancestry_depth: 0).first.id
+          #  subject_ids = Programme.where(id: programme_id).first.descendants.at_depth(2).pluck(:id)
+          #end
           @exams_list_raw = Exam.where('subject_id IN(?) and id IN(?)', subject_ids, valid_exams)#.order(name: :asc, subject_id: :asc)
         elsif roles.include?("administration")
           programme_id='0'
@@ -322,17 +323,25 @@ class Exam::ExammarksController < ApplicationController
             @exams_list = Exam.where('subject_id IN(?) and id IN(?)', subject_ids, valid_exams).order(name: :asc, subject_id: :asc)
             @students_list=Student.all.order('matrixno, name asc')
           elsif posbasiks.include?(lecturer_programme) && tasks_main!=nil
-            allposbasic_prog = Programme.where('course_type=? or course_type=?', "Pos Basik", "Diploma Lanjutan").pluck(:name)  #Onkologi, Perioperating, Kebidanan etc
-            for basicprog in allposbasic_prog
-              lecturer_basicprog_name = basicprog if tasks_main.include?(basicprog)==true
+            #allposbasic_prog = Programme.where('course_type=? or course_type=?', "Pos Basik", "Diploma Lanjutan").pluck(:name)  #Onkologi, Perioperating, Kebidanan etc
+            #for basicprog in allposbasic_prog
+            #  lecturer_basicprog_name = basicprog if tasks_main.include?(basicprog)==true
+            #end
+            #if @current_user.roles.pluck(:authname).include?("programme_manager")
+            #else
+            #  programme_id=Programme.where(name: lecturer_basicprog_name, ancestry_depth: 0).first.id
+            #  subject_ids = Programme.where(id: programme_id).first.descendants.at_depth(2).pluck(:id)
+            #  @exams_list = Exam.where('subject_id IN(?) and id IN(?)', subject_ids, valid_exams).order(name: :asc, subject_id: :asc)
+            #  @students_list = Student.where(course_id: programme_id).order('matrixno, name asc')
+            #end
+            post_prog=Programme.roots.where(course_type: posbasiks)
+            programme_ids=Programme.where(course_type: posbasiks).pluck(:id)
+            subject_ids=[]
+            post_prog.each do |postb|
+              postb.descendants.each{|des|subject_ids << des.id if des.course_type=="Subject" || des.course_type=="Commonsubject"}
             end
-            if @current_user.roles.pluck(:authname).include?("programme_manager")
-            else
-              programme_id=Programme.where(name: lecturer_basicprog_name, ancestry_depth: 0).first.id
-              subject_ids = Programme.where(id: programme_id).first.descendants.at_depth(2).pluck(:id)
-              @exams_list = Exam.where('subject_id IN(?) and id IN(?)', subject_ids, valid_exams).order(name: :asc, subject_id: :asc)
-              @students_list = Student.where(course_id: programme_id).order('matrixno, name asc')
-            end
+            @exams_list=Exam.where(subject_id: subject_ids).where(id: valid_exams).order(name: :asc, subject_id: :asc)
+            @students_list=Student.where(course_id: programme_ids).order('matrixno, name asc')
           elsif roles.include?("administration")
             subject_ids=Programme.where(course_type: ['Subject', 'Commonsubject']).pluck(:id)
             @exams_list = Exam.where('subject_id IN(?) and id IN(?)', subject_ids, valid_exams).order(name: :asc, subject_id: :asc)
