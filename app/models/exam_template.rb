@@ -61,13 +61,22 @@ class ExamTemplate < ActiveRecord::Base
         staff_ids=Position.where(unit: common_subjects).pluck(:staff_id)
         creators_ids=User.where(userable_id: staff_ids).pluck(:id)
         @exam_templates=ExamTemplate.where(created_by: creators_ids+admin_ids)
-      elsif search=='2'
+      elsif search=='2' #used in exam_template (index)
         staff_ids=Position.where('unit ILIKE (?) OR unit ILIKE (?) OR unit ILIKE (?)', "%Pengkhususan%", "%Pos Basik%", "%Diploma Lanjutan%").pluck(:staff_id)
         creators_ids=User.where(userable_id: staff_ids).pluck(:id)
         @exam_templates=ExamTemplate.where(created_by: creators_ids+admin_ids)
       else
-        staff_ids=Position.where(unit: Programme.where(id: search).first.name).pluck(:staff_id)
-        creators_ids=User.where(userable_id: staff_ids).pluck(:id)
+        posbasiks=["Pengkhususan", "Pos Basik", "Diploma Lanjutan"]
+        posbasic_prog_ids=Programme.roots.where(course_type: posbasiks).pluck(:id)
+        if posbasic_prog_ids.include?(search)
+          # NOTE - for use in exam edit pg (template selection) - posbasic SUP (not just own programme, should cover for other postbasic programme too), although SUP changed
+          staff_ids=Position.where('unit ILIKE (?) OR unit ILIKE (?) OR unit ILIKE (?)', "%Pengkhususan%", "%Pos Basik%", "%Diploma Lanjutan%").pluck(:staff_id)
+          creators_ids=User.where(userable_id: staff_ids).pluck(:id)
+        else
+          #SUP of diploma programmes
+          staff_ids=Position.where(unit: Programme.where(id: search).first.name).pluck(:staff_id)
+          creators_ids=User.where(userable_id: staff_ids).pluck(:id)
+        end
         @exam_templates=ExamTemplate.where(created_by: creators_ids+admin_ids)
       end
     end

@@ -290,6 +290,7 @@ class Exam::ExamsController < ApplicationController
           posbasiks_prog.pluck(:name).each do |pname|
             @programme_id = Programme.where('name ILIKE(?)', pname).first.id if @current_user.userable.positions.first.tasks_main.include?(pname)
           end  
+	  @subjects=Programme.subject_groupbyposbasiks2
         end
       else
         #applicable - edit, update, create
@@ -306,7 +307,7 @@ class Exam::ExamsController < ApplicationController
           @topics=Programme.topic_groupbysubject_oneprogramme(@programme_id)
       elsif posbasiks.include?(@lecturer_programme)
           @programme_names=Programme.where(course_type: posbasiks).map(&:programme_list)
-          @subjects=Programme.subject_groupbyposbasiks
+          @subjects=Programme.subject_groupbyposbasiks2
           @topics=Programme.topic_groupbyposbasiks
       else  #Commonsubject LECTURER have no selected programme
           common_subjects=['Sains Tingkahlaku','Sains Perubatan Asas', 'Komunikasi & Sains Pengurusan', 'Anatomi & Fisiologi', 'Komuniti']
@@ -371,7 +372,7 @@ class Exam::ExamsController < ApplicationController
           #  end  
 	  #  #@programme_detail=@programme2.programme_list
           #  @subjects_paper=Programme.subject_groupbyoneprogramme2(@programme2.id) #new only
-          @subjects_paper=Programme.subject_groupbyposbasiks #new only
+          @subjects_paper=Programme.subject_groupbyposbasiks2 #new only
           #end
         elsif roles.include?("administration")
           @staff_listing=@exam.creator_list
