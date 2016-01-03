@@ -23,17 +23,20 @@ class Exam::ExamsController < ApplicationController
         @tasks_main = @current_user.userable.positions[0].tasks_main
         common_subjects=['Sains Tingkahlaku','Sains Perubatan Asas', 'Komunikasi & Sains Pengurusan', 'Anatomi & Fisiologi', 'Komuniti']
         if common_subjects.include?(@lecturer_programme) 
-          @programme_id ='1'
+          # NOTE - common subject lecturer no longer hv access
+          #@programme_id ='1'
         elsif posbasiks.include?(@lecturer_programme) && @tasks_main!=nil
           @allposbasic_prog = Programme.where(course_type: ['Pos Basik', 'Diploma Lanjutan', 'Pengkhususan']).pluck(:name)  #Onkologi, Perioperating, Kebidanan etc
-          for basicprog in @allposbasic_prog
-            lecturer_basicprog_name = basicprog if @tasks_main.include?(basicprog)==true
-          end
-          if @lecturer_programme=="Pengkhususan" && current_user.roles.pluck(:authname).include?("programme_manager")
-            @programme_id='2'
-          else
-            @programme_id=Programme.where(name: lecturer_basicprog_name, ancestry_depth: 0).first.id
-          end
+          #for basicprog in @allposbasic_prog
+            #lecturer_basicprog_name = basicprog if @tasks_main.include?(basicprog)==true
+          #end
+          # NOTE - whoever (posbasic lecturer) becoming SUP, shall have access to all Posbasic programmes
+	  # NOTE - posbasic (Ketua Pengkhususan) also no longer hv access
+          #if @lecturer_programme=="Pengkhususan" && current_user.roles.pluck(:authname).include?("programme_manager")
+          #  @programme_id='2'
+          #else
+            @programme_id='2'#Programme.where(name: lecturer_basicprog_name, ancestry_depth: 0).first.id
+          #end
         elsif roles.include?("administration")
           @programme_id='0'
         else
@@ -296,7 +299,8 @@ class Exam::ExamsController < ApplicationController
 	@topics=Programme.topic_groupbysubject_oneprogramme(@programme_id) ### --UPDATE
       end
       
-      if Programme.where(course_type: ['Diploma']).pluck(:name).include?(@lecturer_programme) || (posbasiks.include?(@lecturer_programme) && @current_user.roles.pluck(:authname).include?("programme_manager")==false)
+      #if Programme.where(course_type: ['Diploma']).pluck(:name).include?(@lecturer_programme) || (posbasiks.include?(@lecturer_programme) && @current_user.roles.pluck(:authname).include?("programme_manager")==false)
+      if Programme.where(course_type: ['Diploma']).pluck(:name).include?(@lecturer_programme) && @current_user.roles.pluck(:authname).include?("programme_manager")==false
           @programme_names=Programme.where(id: @programme_id).map(&:programme_list)
           @subjects=Programme.subject_groupbyoneprogramme(@programme_id)
           @topics=Programme.topic_groupbysubject_oneprogramme(@programme_id)
@@ -357,16 +361,18 @@ class Exam::ExamsController < ApplicationController
           @subjects_paper=Programme.subject_groupbycommonsubjects2 #new only
         elsif posbasiks.include?(@lecturer_programme)
           @staff_listing=@current_user.userable_id
-          if @current_user.roles.pluck(:authname).include?("programme_manager")
-            @subjects_paper=Programme.subject_groupbyposbasiks2 #new only
-          else#all posbasic lecturer EXCEPT Ketua Program Pengkhususan
-            posbasiks_prog = Programme.roots.where(course_type: posbasiks)
-            posbasiks_prog.pluck(:name).each do |pname|
-              @programme2 = Programme.where('name ILIKE(?)', pname).first if @current_user.userable.positions.first.tasks_main.include?(pname)
-            end  
-	    #@programme_detail=@programme2.programme_list
-            @subjects_paper=Programme.subject_groupbyoneprogramme2(@programme2.id) #new only
-          end
+          # NOTE - no longer accessible by Ketua Program Pengkhususan
+          #if @current_user.roles.pluck(:authname).include?("programme_manager")
+          #  @subjects_paper=Programme.subject_groupbyposbasiks2 #new only
+          #else#all posbasic lecturer EXCEPT Ketua Program Pengkhususan
+          #  posbasiks_prog = Programme.roots.where(course_type: posbasiks)
+          #  posbasiks_prog.pluck(:name).each do |pname|
+          #    @programme2 = Programme.where('name ILIKE(?)', pname).first if @current_user.userable.positions.first.tasks_main.include?(pname)
+          #  end  
+	  #  #@programme_detail=@programme2.programme_list
+          #  @subjects_paper=Programme.subject_groupbyoneprogramme2(@programme2.id) #new only
+          @subjects_paper=Programme.subject_groupbyposbasiks #new only
+          #end
         elsif roles.include?("administration")
           @staff_listing=@exam.creator_list
           @subjects_paper=Programme.subject_groupbyprogramme2 #new only

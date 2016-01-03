@@ -168,7 +168,7 @@ class Exammark < ActiveRecord::Base
         subject_ids=[]
         programme_ids.each do |progid|
           Programme.where(id: progid).first.descendants.each do |descendant|
-            subject_ids << descendant.id if descendant.course_type=='Subject'
+            subject_ids << descendant.id if descendant.course_type=='Subject' || descendant.course_type=='Commonsubject'
           end
         end
         exampapers = Exam.where("subject_id IN (?)", subject_ids).pluck(:id)
