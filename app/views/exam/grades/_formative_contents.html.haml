@@ -117,7 +117,7 @@
             = text_field_tag "finalscores[]", number_with_precision(grade.finalscore,:precision=>2), :size=> 4,:id=>"finalscore"+no.to_s, :readonly => "readonly", class: "form-control"
         //////grading columns
         %td
-          =text_field_tag "grading_ids2[]", grade.render_grading[-2,2], :id => "grading2"+no.to_s, :readonly => "readonly", class: "form-control"
+          =text_field_tag "grading_ids2[]", grade.render_grading[-2,2], :id => "grading_two"+no.to_s, :readonly => "readonly", class: "form-control"
           =hidden_field_tag "grading_ids[]", grade.set_gred, :id => "grading"+no.to_s, :readonly => "readonly"
         //////
         %td
@@ -241,8 +241,8 @@ $(document).ready(function(){
         grade_val=1;
         grade="A";
       }
-      window["grading2"+i]=document.getElementById("grading2"+i);
-      window["grading2"+i].value = grade;
+      window["grading_two"+i]=document.getElementById("grading_two"+i);
+      window["grading_two"+i].value = grade;
       window["grading"+i]=document.getElementById("grading"+i);
       window["grading"+i].value = grade_val;
       /*grading ends here*/
@@ -351,8 +351,8 @@ $(document).ready(function(){
         grade_val=1;
         grade="A";
       }
-      window["grading2"+i]=document.getElementById("grading2"+i);
-      window["grading2"+i].value = grade;
+      window["grading_two"+i]=document.getElementById("grading_two"+i);
+      window["grading_two"+i].value = grade;
       window["grading"+i]=document.getElementById("grading"+i);
       window["grading"+i].value = grade_val;
       /*grading ends here*/
@@ -455,8 +455,8 @@ $(document).ready(function(){
         grade_val=1;
         grade="A";
       }
-      window["grading2"+i]=document.getElementById("grading2"+i);
-      window["grading2"+i].value = grade;
+      window["grading_two"+i]=document.getElementById("grading_two"+i);
+      window["grading_two"+i].value = grade;
       window["grading"+i]=document.getElementById("grading"+i);
       window["grading"+i].value = grade_val;
       /*grading ends here*/
@@ -565,8 +565,8 @@ $(document).ready(function(){
         grade_val=1;
         grade="A";
       }
-      window["grading2"+i]=document.getElementById("grading2"+i);
-      window["grading2"+i].value = grade;
+      window["grading_two"+i]=document.getElementById("grading_two"+i);
+      window["grading_two"+i].value = grade;
       window["grading"+i]=document.getElementById("grading"+i);
       window["grading"+i].value = grade_val;
       /*grading ends here*/

@@ -494,7 +494,7 @@ $(document).ready(function(){
       if (mcqweight_rate!='0')
       {aaa=(total_mcq*mcqweight_rate+a);}
       else
-      {aaa=(total_mcq*1+a)/fullmarks*100*0.70;}
+      {aaa=(total_mcq*1+a)/fullmarks*total_weight*1.0;}
       
       window["totalmarksview"+i].value = (total_mcq*1+nonmcq_entered_marks);
       window["totalsummative"+i].value=aaa;
@@ -656,7 +656,7 @@ $(document).ready(function(){
       if (mcqweight_rate!='0')
       {aaa=(total_mcq*mcqweight_rate+a)}
       else
-      {aaa=(total_mcq*1+a)/fullmarks*100*0.70}
+      {aaa=(total_mcq*1+a)/fullmarks*total_weight*1.0;}
       
       window["totalmarksview"+i].value = (total_mcq*1+nonmcq_entered_marks);
       window["totalsummative"+i].value=aaa;
