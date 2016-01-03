@@ -21,7 +21,8 @@ class Exam::ExamanalysesController < ApplicationController
     @examanalysis=Examanalysis.new
     exist=Examanalysis.pluck(:exam_id)
     grades_subject_ids=Grade.where(subject_id: @subject_ids).pluck(:subject_id)
-    @exams=Exam.where(name: "F").where(subject_id: grades_subject_ids).where.not(id: exist)
+    exist_exammark=Exammark.pluck(:exam_id)
+    @exams=Exam.where(name: "F").where(id: exist_exammark).where(subject_id: grades_subject_ids).where.not(id: exist)
     respond_to do |format|
       format.html # new.html.erb
       format.xml  { render :xml => @examanalysis }
@@ -32,7 +33,8 @@ class Exam::ExamanalysesController < ApplicationController
     @examanalysis = Examanalysis.new(examanalysis_params)
     exist=Examanalysis.pluck(:exam_id)
     grades_subject_ids=Grade.where(subject_id: @subject_ids).pluck(:subject_id)
-    @exams=Exam.where(name: "F").where(subject_id: grades_subject_ids).where.not(id: exist)
+    exist_exammark=Exammark.pluck(:exam_id)
+    @exams=Exam.where(name: "F").where(id: exist_exammark).where(subject_id: grades_subject_ids).where.not(id: exist)
     respond_to do |format|
       if @examanalysis.save
         flash[:notice]=t('exam.examanalysis.analysis_created')
