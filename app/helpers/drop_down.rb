@@ -383,8 +383,9 @@ module DropDown
             #  Displayed       stored in db
             [ "Ulang Subjek", "1"],
             [ "VIVA", "2"],
-            [ "Berhenti", "3"],
-            [ "Naik Semester", "4"]
+            [ "Tamat Latihan", "3"],
+            [ "Naik Semester", "4"],
+            [ "Ulang Semester", "5"]
    ]
      
     DAY_CHOICE = [

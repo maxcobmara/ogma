@@ -21,13 +21,24 @@
         \% + Summative x 
         = number_with_precision(@grade.examweight,:precision=>2)
         \%
-    /if repeat paper marks exist in grade
+    /when repeat paper marks exist in grade
     - unless @grade.exam2marks.nil? || @grade.exam2marks.blank?
       %dt=t 'exam.grade.finalscore2'
       %dd
-        = number_with_precision(@grade.finale2, precision: 2)
-        &nbsp;
-        = @grade.render_grading2[-2,2]        
+        - gred2 = @grade.render_grading2[-2,2]   
+        - finale2 = number_with_precision(@grade.finale2, precision: 2)
+        - if (gred2 =='C-' || gred2=='D+' || gred2.strip=='D' || gred2.strip=='E')
+          /highlight IN RED after re-sit for Repeat paper - GRADE of current subject still FAIL!!
+          %font{:style => "color: red;"}
+            = finale2
+            &nbsp;
+            %b=gred2
+        - else
+          %font{:style => "color: black;"}
+            = finale2
+            &nbsp;
+            %b=gred2
+             
     %dt= t 'exam.grade.carry_paper'
     %dd=h @grade.carry_paper? ? t('exam.grade.required') : t('exam.grade.not_required')
     

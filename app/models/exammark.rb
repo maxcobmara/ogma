@@ -8,7 +8,7 @@ class Exammark < ActiveRecord::Base
   after_save :apply_final_exam_into_grade 
   validates_presence_of   :student_id, :exam_id
   validates_uniqueness_of :student_id, :scope => :exam_id, :message => " - Mark of this exam for selected student already exist. Please edit/delete existing mark accordingly."
-  validate :marks_must_not_exceed_maximum
+  validate :marks_must_not_exceed_maximum, :total_mcq_must_an_integer
   
   attr_accessor :total_marks, :subject_id, :intake_id,:trial1,:trial2, :total_marks_view, :trial3, :total_mcq_in_exammark_single, :trial4, :newrecord_type
   
@@ -107,8 +107,11 @@ class Exammark < ActiveRecord::Base
             @intake_year = @current_year.to_i-((semester.to_i+1)%2)-2
           elsif (semester.to_i+1)/2 > 2
             @intake_year = @current_year.to_i-((semester.to_i+1)%2)-1
-          elsif (semester.to_i+1)/2 > 1
+          elsif (semester.to_i+1)/2 > 1                                                           #>=1***
             @intake_year = @current_year.to_i-((semester.to_i+1)%2)
+	  #3Jan 2015 - sample : Kejururawatan - Semester 2 - intake 1 July 2014, exam on 28 April 2015, intake year should be previous year***
+	  elsif (semester.to_i+1)/2 ==1
+            @intake_year = @current_year.to_i-1
           end  
           #29June2013-------------------
           @intake_sem = @current_sem + 1 
@@ -127,8 +130,11 @@ class Exammark < ActiveRecord::Base
               @intake_year = @current_year.to_i-((semester.to_i+1)%2)-2
             elsif (semester.to_i+1)/2 > 2
               @intake_year = @current_year.to_i-((semester.to_i+1)%2)-1
-            elsif (semester.to_i+1)/2 > 1
+            elsif (semester.to_i+1)/2 > 1                                               #>=***
               @intake_year = @current_year.to_i-((semester.to_i+1)%2)
+            #3Jan 2015 - sample : Kejururawatan - Semester 2 - intake 1 Jan 2015, exam on 28 Dec 2015, intake year should be current year***
+	    elsif (semester.to_i+1)/2 ==1
+	      @intake_year = @current_year.to_i
             end  
             #29June2013-------------------
           @intake_sem = @current_sem - 1
@@ -137,11 +143,11 @@ class Exammark < ActiveRecord::Base
      #return @intake_sem.to_s+'/'+@intake_year.to_s   #giving this format -->  2/2012  --> previously done on examresult(2012)
 
      if @intake_sem == 1 
-       @intake_month = '03' if @unit_dept && posbasiks.include?(@unit_dept) #@unit_dept == "Kebidanan"
-       @intake_month = '01' if @unit_dept && !posbasiks.include?(@unit_dept) #@unit_dept != "Kebidanan"
+       @intake_month = '03' if @unit_dept && posbasiks.include?(@unit_dept)==true #@unit_dept == "Kebidanan"
+       @intake_month = '01' if @unit_dept && posbasiks.include?(@unit_dept)== false #@unit_dept != "Kebidanan"
      elsif @intake_sem == 2
-       @intake_month = '09' if @unit_dept && posbasiks.include?(@unit_dept) #@unit_dept == "Kebidanan"
-       @intake_month = '07' if @unit_dept && !posbasiks.include?(@unit_dept) #@unit_dept != "Kebidanan"
+       @intake_month = '09' if @unit_dept && posbasiks.include?(@unit_dept)==true #@unit_dept == "Kebidanan"
+       @intake_month = '07' if @unit_dept && posbasiks.include?(@unit_dept)==false #@unit_dept != "Kebidanan"
      end
 
      return @intake_year.to_s+'-'+@intake_month+'-01'  #giving this format -->  2/2012
@@ -370,6 +376,12 @@ class Exammark < ActiveRecord::Base
         errors.add(:mark, I18n.t('exam.exammark.exceed_total')) 
       end
     
+    end
+  end
+  
+  def total_mcq_must_an_integer
+    if total_mcq && total_mcq/total_mcq.to_i > 1.0
+      errors.add(:base, I18n.t('exam.exammark.mcq_must_an_integer'))
     end
   end
   

@@ -2384,6 +2384,7 @@ en:
       complete_paper: 'Only valid (complete) exam papers available for marks giving.'
       #error_remark: " indicates INVALID data : values must not excedd maximum values."
       exceed_total: "Values entered must not exceed maximum values."
+      mcq_must_an_integer: MCQ marks must an integer
     
     grade:
       title: Examination Grades

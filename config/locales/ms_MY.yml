@@ -2324,6 +2324,7 @@ ms_MY:
       complete_paper: 'Markah hanya boleh dimasukkan bagi kertas peperiksaan yang sah (lengkap) sahaja.'
       #error_remark: " menunjukkan data TIDAK SAH : nilai dimasukkan tidak boleh melebihi nilai maksima."
       exceed_total: "Nilai dimasukkan tidak boleh melebihi nilai maksima."
+      mcq_must_an_integer: Markah MCQ mestilah integer
       
     grade:
       title: Gred Peperiksaan
