@@ -258,7 +258,9 @@
               - if @value_state.include?('4') && @value_state2.count > 0
                 = total_point if total_point
               /1-display LATEST status
-              = repeated_total_point if repeated_total_point
+              - if repeated_total_point
+                %br
+                = repeated_total_point
             %td
               /2-when FAIL final exam
               - if @value_state.include?('4')
@@ -400,7 +402,7 @@
                         - @value_remark="5"
                       - else
                         /passed
-                        - @value_remark="4"
+                        - @value_remark="4" if @value_state2.count('4')==0 && @value_state2.count==@value_state.count('4')
                 
                 /%br Remark (after checking):
                 /= @value_remark
