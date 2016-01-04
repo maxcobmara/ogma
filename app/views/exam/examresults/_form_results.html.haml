@@ -258,7 +258,9 @@
               - if @value_state.include?('4') && @value_state2.count > 0
                 = total_point if total_point
               /1-display LATEST status
-              = repeated_total_point if repeated_total_point
+              - if repeated_total_point
+                %br
+                = repeated_total_point
             %td
               /2-when FAIL final exam
               - if @value_state.include?('4')
@@ -334,18 +336,32 @@
                       - @value_status='4' 
 
                 /ASSIGN latest status value for record saving
-                = hidden_field "examresult[resultlines_attributes][#{no}]", :status, :size =>8, :value => @value_status
+                /= hidden_field "examresult[resultlines_attributes][#{no}]", :status, :size =>8, :value => @value_status
                 - disp_status=(DropDown::RESULT_STATUS.find_all{|disp, value| value == @value_status}).map {|disp, value| disp}[0]
                 - if @value_status=='4'
                   - if @value_state2.count==0
                     /when latest status is Final
                     %font{style: "color: red;"}=disp_status
+                    = hidden_field "examresult[resultlines_attributes][#{no}]", :status, :size =>8, :value => @value_status
                   - else
                     /when latest status is Repeat
-                    %font{style: "color: red; text-decoration: underline;"}=disp_status
+                    ///
+                    - if @value_state2.count('4')==1 
+                      /- @value_state2.map('4').each_with_index do |st, ind|
+                      /  - if st=='4'  
+                      - if @repeat_marks[0] > @final_marks[0]
+                        /FAIL 1 subject of repeated papers - qualified for VIVA (when Repeat marks > Final marks)
+                        /- @value_remark="2"
+                        = select_tag "examresult[resultlines_attributes][#{no}][status]", options_for_select([[t('select'), '0']]+status_selection, @value_status) 
+                    - else
+                      ///
+                      %font{style: "color: red; text-decoration: underline;"}=disp_status
+                      = hidden_field "examresult[resultlines_attributes][#{no}]", :status, :size =>8, :value => @value_status
                 - else
                   = disp_status
+                  = hidden_field "examresult[resultlines_attributes][#{no}]", :status, :size =>8, :value => @value_status
                 /=@value_state
+              
               - else
                 = select_tag "examresult[resultlines_attributes][#{no}][status]", options_for_select([[t('select'), '0']]+status_selection, @value_status) 
                 
@@ -387,20 +403,20 @@
                     - else
                       /when REPEAT done,..
                       - if @value_state2.count('4')==1 
-                        - @value_state2.each_with_index do |st, ind|
-                          - if st=='4'  
-                            - if @repeat_marks[ind] > @final_marks[ind]
-                              /FAIL 1 subject of repeated papers - qualified for VIVA (when Repeat marks > Final marks)
-                              - @value_remark="2"
-                            - else
-                              /FAIL 1 subject of repeated papers - Ulang Semester (when Repeat marks < Final marks)
-                              - @value_remark="5"
+                        /- @value_state2.each_with_index do |st, ind|
+                        /  - if st=='4'  
+                        - if @repeat_marks[0] > @final_marks[0]
+                          /FAIL 1 subject of repeated papers - qualified for VIVA (when Repeat marks > Final marks)
+                          - @value_remark="2"
+                        - else
+                          /FAIL 1 subject of repeated papers - Ulang Semester (when Repeat marks < Final marks)
+                          - @value_remark="5"
                       - elsif @value_state2.count('4') >=2
                         /FAIL 2 subjects or more of repeated papers - MUST 'Ulang Semester'
                         - @value_remark="5"
                       - else
                         /passed
-                        - @value_remark="4"
+                        - @value_remark="4" if @value_state2.count('4')==0 && @value_state2.count==@value_state.count('4')
                 
                 /%br Remark (after checking):
                 /= @value_remark

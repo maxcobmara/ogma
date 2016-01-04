@@ -227,6 +227,7 @@
             /2-when FAIL final exam & repeat exam happens
             - if @value_state.include?('4') && repeated_subjects.count > 0
               = cgpa_be4_repeat if cgpa_be4_repeat
+              %br
             /1-display LATEST status
             = cgpa if cgpa
        
