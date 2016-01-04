@@ -220,7 +220,7 @@
             /Calculate (i)NGK (Total Grade Points) - Final & Repeat
             /Calculate (ii)PNGS (GPA) - Final & Repeat
             - total_point=number_with_precision(Examresult.total(final_all, credit2_all), precision: 2)
-            - repeated_total_point=number_with_precision(Examresult.total(final2b_all, credit2_all), precision: 2)
+            - repeated_total_point=number_with_precision(Examresult.total(final2b_all, credit2_all), precision: 2) if @value_state.count('4') > 0
             /NOTE - requires Correct Subject/Module code to be entered into Curriculum Mgmt - or will get NaN for gpa.
             - if final2_all.count > 0 && credit2_all.count > 0
               - gpa=number_with_precision((Examresult.total(final_all, credit2_all) / credit2_all.sum), precision: 2)
@@ -261,6 +261,8 @@
               - if repeated_total_point
                 %br
                 = repeated_total_point
+              - else
+                = total_point
             %td
               /2-when FAIL final exam
               - if @value_state.include?('4')

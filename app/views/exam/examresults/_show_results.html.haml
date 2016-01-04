@@ -1,6 +1,7 @@
 - model_class = Examresult
 .col-md-11
   %hr
+  = link_to content_tag(:i, "", class: "fa fa-file-pdf-o"), results_exam_examresults_path(id: @examresult.id, format: "pdf"), class: "btn btn-default", "data-toggle" => "tooltip", title: (t 'print')
   %table.table.table-bordered
     %head
       %tr
@@ -23,7 +24,7 @@
     %body
       - nos=0
       - @ng=[]
-      - for examresultline in @examresult.resultlines
+      - for examresultline in @examresult.resultlines.sort_by{|x|x.status}
         %tr
           %td=nos+=1
           %td.left=h examresultline.student.name 
@@ -179,7 +180,8 @@
           /Calculate (i)NGK (Total Grade Points) - Final & Repeat
           /Calculate (ii)PNGS (GPA) - Final & Repeat
           - total_point=number_with_precision(Examresult.total(ng, credit2_all), precision: 2)
-          - repeated_total_point=number_with_precision(Examresult.total(final2b_all, credit2_all), precision: 2) if final2b_all
+          /- repeated_total_point=number_with_precision(Examresult.total(final2b_all, credit2_all), precision: 2) if final2b_all
+          - repeated_total_point=number_with_precision(Examresult.total(final2b_all, credit2_all), precision: 2) if @value_state.count('4') > 0
           - if final2_all.count > 0 && credit2_all.count > 0
             - gpa=number_with_precision((Examresult.total(ng, credit2_all) / credit2_all.sum), precision: 2)
           - else
@@ -204,7 +206,10 @@
               =total_point
               %br
             /1-display LATEST status 
-            =repeated_total_point if repeated_total_point
+            - if repeated_total_point
+              =repeated_total_point
+            - else
+              = total_point
           %td
             /2-when FAIL final exam & repeat exam happens 
             /Display FINAL here
