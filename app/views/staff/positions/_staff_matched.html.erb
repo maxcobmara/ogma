@@ -1,2 +1,0 @@
-<%= f.collection_select :staff_id, Staff.where('staffgrade_id =?', @position.staffgrade_id).order(name: :asc), :id, :name, {:include_blank => true} , {class: 'selectpicker', "data-width"=>"auto"}%>
-<!--<a id="get_all" href="#"><img border="0" src="/images/fav.png" alt="Get All"></a>-->
