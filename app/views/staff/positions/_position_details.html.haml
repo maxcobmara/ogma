@@ -1,0 +1,36 @@
+- model_class = Staff
+.col-md-8.col-md-offset-1
+  %dl.dl-horizontal
+    %dt=t 'staff.positions.combo_code'
+    %dd=h @position.combo_code
+    
+    %dt= t 'staff.positions.name'
+    %dd=h @position.name
+
+    %dt= t 'staff.positions.staff_id'
+    %dd=h @position.staff.blank? ? "-" : @position.staff.name
+    
+    - if @position.parent_id != nil 
+      %dt= t 'staff.positions.parent_id' 
+      %dd
+        =h @position.parent.name 
+        \- 
+        =h @position.parent.staff_id.blank? ? (t 'staff.positions.no_staff') : @position.parent.staff.name
+   
+    %dt= t 'staff.positions.grade_id' 
+    %dd=h @position.staffgrade_id.blank? ? "" : @position.staffgrade.name_and_group
+    
+    %dt= t 'staff.positions.unit' 
+    %dd=h @position.unit 
+    
+    %dt= t 'staff.positions.tasks_main' 
+    %dd=h @position.tasks_main
+    
+    %dt= t 'staff.positions.tasks_other'
+    %dd=h @position.tasks_other
+    
+    %dt= t 'staff.positions.postinfo_id'
+    %dd=h @position.postinfo_id.blank? ? "-" : @position.postinfo.details_grade 
+    
+    %dt= t 'staff.positions.status'
+    %dd=h @position.postinfo_id.blank? ? "-" : (DropDown::POSITION_STATUS.find_all{|disp, value| value == @position.status.to_i}).map {|disp, value| disp}[0]

@@ -260,7 +260,7 @@ authorization do
  role :exam_administration do
    
    has_permission_on [:exam_exams, :exam_exam_templates, :exam_exammarks, :exam_grades], :to => [:menu, :read, :index, :create]
-   has_permission_on :exam_examresults, :to => [:menu, :read, :index2, :create, :update, :destroy, :show2, :examination_slip, :show3, :examination_transcript]   
+   has_permission_on :exam_examresults, :to => [:menu, :read, :index2, :create, :update, :destroy, :show2, :examination_slip, :show3, :examination_transcript, :results]   
    has_permission_on :exam_examanalyses, :to => [:menu, :read, :create]
 
    has_permission_on :exam_exam_templates, :to =>[:manage] do

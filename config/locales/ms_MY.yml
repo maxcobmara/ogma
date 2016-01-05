@@ -466,6 +466,22 @@ ms_MY:
     search:
       ic_no: Carian Kakitangan
     
+    positions: 
+      title: Maklumat Perjawatan
+      details: Jawatan
+      combo_code: Kod Jawatan
+      name: Nama
+      unit: Unit
+      tasks_main: Tugas Utama
+      tasks_other: Lain - lain Tugas
+      staffgrade_id: Gred Minima Diperlukan
+      staff_id: Staf
+      is_acting: Bertindak Sebagai 
+      postinfo_id: Butiran Perjawatan
+      status: Status
+      parent_id: Bawahan kepada
+      no_staff: Tiada Staff
+    
     vehicles:
       title: Butiran Kenderaan
       type_model: "Jenis / Model Kenderaan"

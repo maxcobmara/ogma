@@ -6,6 +6,12 @@ class Staff::PositionsController < ApplicationController
     render :layout => 'basic'
   end
   
+  def show
+  end
+  
+  def edit
+  end
+  
   def maklumat_perjawatan
     @positions=[]
     #BELOW SAME AS : unless position.staffgrade.blank? && position.postinfo_id.blank?    #must include those w/o butiran - to match with Maklumat Perjawatan
