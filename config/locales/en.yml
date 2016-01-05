@@ -474,22 +474,6 @@ en:
     reports_to: Reports To 
     search:
       ic_no: Staff Search
-     
-    positions:
-      title: Positions Information
-      details: Position
-      combo_code: Position Code
-      name: Name
-      unit: Unit
-      tasks_main: Main Tasks
-      tasks_other: Other Tasks
-      staffgrade_id: Minimum Grade Requirement
-      staff_id: Staff
-      is_acting: Is Acting 
-      postinfo_id: Position Info
-      status: Status
-      parent_id: Subordinate of
-      no_staff: No Staff
 
     vehicles:
       title: Vehicle Details
@@ -1105,10 +1089,24 @@ en:
       
   position:
     title: "Tasks & Responsibilities"
+    list: List of Positions
     index: Organisation Chart
     name: Position
     report: Positions Information
     report_excel: "Positions Information (Excel)"
+    details: Details
+    combo_code: Position Code
+    #name: Name
+    unit: Unit
+    tasks_main: Main Tasks
+    tasks_other: Other Tasks
+    grade_id: Minimum Grade Requirement
+    staff_id: Staff
+    is_acting: Is Acting 
+    postinfo_id: Position Info
+    status: Status
+    parent_id: Subordinate of
+    no_staff: No Staff
     
   staff_attendance:
     title: Staff Attendance

@@ -1,1 +1,11 @@
- 
+- model_class = Position
+.page-header
+  %h1
+    = t 'edit'
+    = @position.name
+
+= render 'shared/flashes'
+= render 'form'
+
+//= f.submit (t 'icms.submit')
+//= link_to (t 'icms.back'), staffs_path
