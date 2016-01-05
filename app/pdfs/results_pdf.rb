@@ -1,6 +1,6 @@
 class ResultsPdf < Prawn::Document 
   def initialize(examresult, view)
-    super({top_margin: 30, page_size: 'A4', page_layout: :landscape })
+    super({top_margin: 30, left_margin: 20, page_size: 'A4', page_layout: :landscape })
     @examresult = examresult
     @view = view
     font "Times-Roman"
@@ -13,27 +13,28 @@ class ResultsPdf < Prawn::Document
     imonth=intake[5,2].to_i
     iday=intake[8,2].to_i
     student_intake=Date.new(iyear, imonth, iday).try(:strftime, '%b %Y')
-    text "#{I18n.t 'exam.examresult.intake'} : #{student_intake}", :align => :left, :size => 12, :style => :bold
+    text "#{I18n.t 'exam.examresult.intake'} : #{student_intake}", :align => :left, :size => 10, :style => :bold
     @subjects = @examresult.retrieve_subject
     move_down 20
     result_table
   end
   
   def result_table
-    aa=[20, 100, 40, 60 ]
-    ww=400/(@subjects.count*2)
+    aa=[25, 80, 40, 60 ]
+    bb=0
     for subject in @subjects
-      aa << ww
-      aa << ww
+      aa << 10
+      aa << 30
+      bb+=40
     end
-    aa+=[30, 35, 35, 35, 40]
+    aa+=[30, 30, 30, 30, 40]
      table(line_item_rows, :column_widths =>aa, :cell_style => { :size => 8,  :inline_format => :true}) do
       row(0).font_style = :bold
       row(0..1).background_color = 'FFE34D'
       self.row_colors = ["FEFEFE", "FFFFFF"]
-      self.header = true
-      self.width = 787#745#663 #600
-      header = true
+      #self.header = true
+      self.width=(365+bb)
+      #header = true
      end
   end
   
@@ -42,7 +43,7 @@ class ResultsPdf < Prawn::Document
     bb=[]
     0.upto(@subjects.count-1).each do |cnt|
       aa << {content: @subjects[cnt].code.gsub(" ",""), colspan:2}
-      bb << I18n.t('exam.grade.grading_id')
+      bb << "G"#I18n.t('exam.grade.grading_id')
       bb << "NG"
     end
     counter = counter || 0
@@ -164,7 +165,7 @@ class ResultsPdf < Prawn::Document
         #Calculate (i)NGK (Total Grade Points) - Final & Repeat
         #Calculate (ii)PNGS (GPA) - Final & Repeat
         total_point=@view.number_with_precision(Examresult.total(ng, credit2_all), precision: 2)
-        repeated_total_point=@view.number_with_precision(Examresult.total(final2b_all, credit2_all), precision: 2) if @value_state.count('4') > 0
+        repeated_total_point=@view.number_with_precision(Examresult.total(final2b_all, credit2_all), precision: 2) if @value_state.count('4') > 0 && final2b_all.count > 0 
         if final2_all.count > 0 && credit2_all.count > 0
           gpa=@view.number_with_precision((Examresult.total(ng, credit2_all) / credit2_all.sum), precision: 2)
         else

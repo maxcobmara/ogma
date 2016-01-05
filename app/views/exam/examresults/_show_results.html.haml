@@ -43,6 +43,8 @@
           - english_subjects=['PTEN', 'NELA', 'NELB', 'NELC', 'MAPE', 'XBRE', 'OTEL'] 
           - posbasiks = Programme.roots.where(course_type: ['Pos Basik', 'Diploma Lanjutan', 'Pengkhususan']).pluck(:id)
           - kejururawatan = Programme.roots.where('name ILIKE(?)', '%Kejururawatan%').first.id
+          - perubatan=Programme.where(course_type: 'Diploma').where('name ILIKE (?)', 'Penolong Pegawai Perubatan').first.id
+          - radiografi=Programme.where(course_type: 'Diploma').where('name ILIKE (?)', 'Radiografi').first.id
           - for subject in @subjects
             - @grade_student=Grade.where(subject_id: subject.id).where(student_id: examresultline.student_id)
             - @student_finale=Grade.where('student_id=? and subject_id=?', examresultline.student_id,subject.id).first
@@ -144,8 +146,8 @@
                         =ng_it2 
                 /Other than English subjects 2 columns-end
                 /Retrieve STATUS for each subject (ALL = English+Non-English)
-                - @value_state << '4' if (posbasiks+[kejururawatan]).include?(@examresult.programme_id) && ["C-", "D+", "D", "E"].include?(grade_it.strip)==true
-                - @value_state << '3' if (posbasiks+[kejururawatan]).include?(@examresult.programme_id) && ["C-", "D+", "D", "E"].include?(grade_it.strip)==false
+                - @value_state << '4' if (posbasiks+[kejururawatan, perubatan, radiografi]).include?(@examresult.programme_id) && ["C-", "D+", "D", "E"].include?(grade_it.strip)==true
+                - @value_state << '3' if (posbasiks+[kejururawatan, perubatan, radiografi]).include?(@examresult.programme_id) && ["C-", "D+", "D", "E"].include?(grade_it.strip)==false
             - else
               /Case2:Grade Not Exist yet
               - @value_state << '4'
