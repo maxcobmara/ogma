@@ -1107,6 +1107,8 @@ en:
     status: Status
     parent_id: Subordinate of
     no_staff: No Staff
+    get_all: Get all 
+    get_matched: Get Matched
     
   staff_attendance:
     title: Staff Attendance

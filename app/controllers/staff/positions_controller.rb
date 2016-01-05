@@ -80,6 +80,6 @@ class Staff::PositionsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def position_params
-      params.require(:position).permit(:code, :combo_code, :name, :unit, :tasks_main, :tasks_other, :staffgrade_id, :staff_id, :is_acting, :ancestry, :ancestry_depth, :postinfo_id, :status)
+      params.require(:position).permit(:code, :combo_code, :name, :unit, :tasks_main, :tasks_other, :staffgrade_id, :staff_id, :staff_id2, :is_acting, :ancestry, :ancestry_depth, :postinfo_id, :status)
     end
 end

@@ -18,22 +18,26 @@
           %br
           = render 'position_details_edit', :f => f
 
-    .col-md-8.col-md-offset-3
-      .col-sm-offset-2.col-sm-2
-        = f.submit t('update'), class: "btn btn-primary"
+    %br
+    .row
+      .form-group
+        .col-sm-offset-4.col-sm-1
+          = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), staff_position_path(@position), :class => 'btn btn-default'
+        .col-sm-2
+          = f.submit t('update'), class: "btn btn-primary"
 
 :javascript
-/  alert("hhh");
-/ $(document).ready(function(){
-/     $("#get_matched").click(function(evt) {
-/       $("#person").replaceWith('<%= escape_javascript(render :partial => 'staff_matched', :locals => {:f => f}) %>');
-/       $("#person").load("edit #person");
-/     });
-/   });
-/   $(document).ready(function(){
-/     $("#get_all").click(function(evt) {
-/       $("#person").replaceWith('<%= escape_javascript(render :partial => 'staff_all', :locals => {:f => f}) %>');
-/       $("#person").load("edit #person");
-/       alert("hui");
-/     });
-/   });
+  $(document).ready(function(){
+    $("#get_all").click(function(evt) {
+      $("#person").hide();
+      $("#person2").show();
+    });
+  });
+  
+  $(document).ready(function(){
+    $("#get_matched").click(function(evt) {
+      $("#person").show();
+      $("#person2").hide();
+    });
+  });
+
