@@ -66,3 +66,16 @@
     = f.label t 'position.status', for: :status
   .col-md-4
     = f.select :status, DropDown::POSITION_STATUS, {:include_blank => t('select')}, {class: 'selectpicker', "data-width"=>"auto"}
+
+
+:javascript
+  $(document).ready(function(){
+    $("#get_all").click(function(evt) {
+      $("#person").hide();
+      $("#person2").show();
+    });
+    $("#get_matched").click(function(evt) {
+      $("#person").show();
+      $("#person2").hide();
+    });
+  });

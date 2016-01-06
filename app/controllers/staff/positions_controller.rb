@@ -6,6 +6,27 @@ class Staff::PositionsController < ApplicationController
     render :layout => 'basic'
   end
   
+  def new
+    @position=Position.new(:parent_id => params[:parent_id])
+    respond_to do |format|
+      format.html # new.html.erb
+      format.xml  { render :xml => @position }
+    end
+  end
+  
+  def create
+    @position=Position.new(position_params)
+    respond_to do |format|
+      if @position.save
+        format.html { redirect_to(staff_position_path(@position)) }
+        format.xml  { head :ok }
+      else
+        format.html { render :action => "new" }
+        format.xml  { render :xml => @position.errors, :status => :unprocessable_entity }
+      end
+    end
+  end
+  
   def update
     respond_to do |format|
       if @position.update_attributes(position_params)
@@ -80,6 +101,6 @@ class Staff::PositionsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def position_params
-      params.require(:position).permit(:code, :combo_code, :name, :unit, :tasks_main, :tasks_other, :staffgrade_id, :staff_id, :staff_id2, :is_acting, :ancestry, :ancestry_depth, :postinfo_id, :status)
+      params.require(:position).permit(:parent_id,:code, :combo_code, :name, :unit, :tasks_main, :tasks_other, :staffgrade_id, :staff_id, :staff_id2, :is_acting, :ancestry, :ancestry_depth, :postinfo_id, :status)
     end
 end
