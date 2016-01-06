@@ -1,4 +1,5 @@
 class Staff::PositionsController < ApplicationController
+  filter_access_to :all
   before_action :set_position, only: [:show, :edit, :update, :destroy]
   
   def index
