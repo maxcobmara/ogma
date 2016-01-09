@@ -19,7 +19,7 @@ authorization do
 
  role :staff do
    has_permission_on [:attendances, :documents],     :to => :menu              # Access for Menus
-   has_permission_on :asset_assets, :to => [:read, :loanables]
+   has_permission_on :asset_assets, :to => [:read, :loanables]                     #requested by asset admin (all staff-w/o price: defect, writeoff, penyelia asrama: location dmg)
    has_permission_on [:staff_staff_attendances], :to => [:manager, :menu]
    #has_permission_on :staffs, :to => [:show, :menu]                                     # A staff see the staff list
    #has_permission_on :staffs, :to => [:edit, :update, :menu] do
@@ -173,7 +173,7 @@ authorization do
    has_permission_on :asset_assets, :to => [:manage, :kewpa2, :kewpa3, :kewpa4, :kewpa5, :kewpa6, :kewpa13, :kewpa14, :loanables]
    has_permission_on :asset_asset_defects, :to =>[:manage, :kewpa9, :process2] #3nov2013
    has_permission_on :assetsearches, :to => :read
-   has_permission_on :locations, :to => :manage
+   has_permission_on :campus_locations, :to => :manage
    has_permission_on :asset_disposals, :to => :manage
    has_permission_on :asset_losses, :to => :manage
    has_permission_on :asset_loans, :to => [:manage, :approve, :lampiran_a]
@@ -374,15 +374,21 @@ authorization do
 #####
   
   #Group Location --------------------------------------------------------------------------------
+  role :facilities_administrator do
+    has_permission_on :campus_locations, :to => [:manage, :kewpa7, :kewpa10, :kewpa11, :statistic_level, :census_level2, :statistic_block] 
+    has_permission_on :student_tenants, :to => [:manage, :index_staff, :reports,:census_level, :room_map, :room_map2, :statistics, :return_key, :return_key2, :census, :tenant_report, :tenant_report_staff, :laporan_penginapan, :laporan_penginapan2]
+  end
   role :warden do
-    has_permission_on :locations, :to => :core
+    has_permission_on :campus_locations, :to => [:read, :kewpa7] #:core - NOTE - kewpa7 visible to all (sticked on wall)
+    has_permission_on :student_tenants, :to => :read
     #all wardens have access - [relationship: second_approver, FK: staff_id2, page: approve_warden]
     has_permission_on :student_leaveforstudents, :to => [:index, :menu, :create, :show, :update, :approve_warden] do
       if_attribute :studentsubmit => true
     end
-    has_permission_on :library_books, :to => :read
-    has_permission_on :asset_assets, :to => :read
     has_permission_on :students, :to => :read
+    has_permission_on :student_attendances, :to => :read
+    has_permission_on :student_student_counseling_sessions, :to => :read
+    has_permission_on :student_student_discipline_cases, :to => :read
   end
   
   role :unit_leader do

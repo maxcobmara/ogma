@@ -1,5 +1,5 @@
 class Campus::LocationsController < ApplicationController
-  
+  filter_access_to :all
   before_action :set_location, only: [:show, :edit, :update, :destroy]
   
   def index

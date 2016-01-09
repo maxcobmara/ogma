@@ -1,5 +1,5 @@
 class Student::TenantsController < ApplicationController
-  
+  filter_access_to :all
   before_action :set_tenant, only: [:show, :edit, :update, :destroy]
   
   def index
