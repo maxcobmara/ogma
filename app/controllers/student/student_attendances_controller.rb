@@ -22,6 +22,7 @@ class Student::StudentAttendancesController < ApplicationController
         @intake_list2 = Student.where('course_id IS NOT NULL and course_id IN(?)',@programme_list_ids).select("DISTINCT intake, course_id").order("course_id, intake") 
         @topics_ids_this_prog = Programme.at_depth(3).map(&:id)  
         @student_ids = Student.all.pluck(:id)
+        # TODO - common subjects - refer final UAT doc
       end
       @schedule_list = WeeklytimetableDetail.where('topic IN(?)',@topics_ids_this_prog).order(:topic)
       

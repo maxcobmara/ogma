@@ -373,9 +373,9 @@ authorization do
     has_permission_on :student_leaveforstudents, :to => [:index, :menu, :create, :show, :update, :approve_warden] do
       if_attribute :studentsubmit => true
     end
-    has_permission_on :students, :to => :read
-    has_permission_on :student_attendances, :to => :read
-    #has_permission_on :student_student_counseling_sessions, :to => :read
+    has_permission_on :student_students, :to => :read
+    #has_permission_on :student_student_attendances, :to => :read #refer latest UAT (common subject)-this rule override by role :lecturer (common subject?)
+    #has_permission_on :student_student_counseling_sessions, :to => :read #discipline should works 1st, then counseling should follows
     #has_permission_on :student_student_discipline_cases, :to => :read #not working, shall override access rules define for role :staff
   end
   
