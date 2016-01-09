@@ -19,7 +19,7 @@ authorization do
 
  role :staff do
    has_permission_on [:attendances, :documents],     :to => :menu              # Access for Menus
-   has_permission_on :asset_assets, :to => [:read, :loanables]
+   has_permission_on :asset_assets, :to => [:read, :loanables]                     #requested by asset admin (all staff-w/o price: defect, writeoff, penyelia asrama: location dmg)
    has_permission_on [:staff_staff_attendances], :to => [:manager, :menu]
    #has_permission_on :staffs, :to => [:show, :menu]                                     # A staff see the staff list
    #has_permission_on :staffs, :to => [:edit, :update, :menu] do
@@ -43,14 +43,7 @@ authorization do
 #        if_attribute :approve_id => is {user.userable.id}  #approved_by (no field - approve_id)
 #    end
 
-   ###
-   has_permission_on :student_student_discipline_cases, :to => :approve do 
-      if_attribute :assigned_to =>  is {user.userable.id} 
-    end
-    has_permission_on :student_student_discipline_cases, :to => [:manage, :actiontaken] do
-      if_attribute :assigned2_to => is {user.userable.id}
-    end
-   ####
+   
    
    has_permission_on :staff_staff_appraisals, :to => :create
    has_permission_on :staff_staff_appraisals, :to => [ :update, :appraisal_form] do 
@@ -120,21 +113,16 @@ authorization do
     end
     
     #working - refer student/student_discipline_cases/show.html.haml (compare between case creator show & programme mgr show page)
-    has_permission_on :student_discipline_cases, :to => :approve do 
+    #prev : student_discipline_cases
+    has_permission_on :student_discipline_cases, :to => :approve do                             
       if_attribute :assigned_to =>  is {user.userable.id} #is {current_user.userable.id}
     end
     
-    has_permission_on :student_discipline_cases, :to => [:manage, :actiontaken, :referbpl, :discipline_report, :anacdotal_report] do
+    #prev : student_discipline_cases
+    has_permission_on :student_student_discipline_cases, :to => [:manage, :actiontaken, :referbpl, :discipline_report, :anacdotal_report] do
       if_attribute :assigned2_to => is {user.userable.id}
     end
     #MOST WORKABLE ONE-end of student discipline
-    
-    
-#    has_permission_on :student_discipline_cases, :to => :read, :join_by => :or do
-#      if_attribute :reported_by => is {current_user.userable.id}
-#      if_attribute :assigned_to => is {current_user.userable.id}
-#      if_attribute :assigned2_to => is {current_user.userable.id}
-#    end
 
    #disable this part first - suppose in index, view only - transaction where current_user is a borrower - but ALL record are displayed when this part is enable
    #has_permission_on :library_librarytransactions, :to => :read do
@@ -173,7 +161,7 @@ authorization do
    has_permission_on :asset_assets, :to => [:manage, :kewpa2, :kewpa3, :kewpa4, :kewpa5, :kewpa6, :kewpa13, :kewpa14, :loanables]
    has_permission_on :asset_asset_defects, :to =>[:manage, :kewpa9, :process2] #3nov2013
    has_permission_on :assetsearches, :to => :read
-   has_permission_on :locations, :to => :manage
+   has_permission_on :campus_locations, :to => :manage
    has_permission_on :asset_disposals, :to => :manage
    has_permission_on :asset_losses, :to => :manage
    has_permission_on :asset_loans, :to => [:manage, :approve, :lampiran_a]
@@ -260,7 +248,7 @@ authorization do
  role :exam_administration do
    
    has_permission_on [:exam_exams, :exam_exam_templates, :exam_exammarks, :exam_grades], :to => [:menu, :read, :index, :create]
-   has_permission_on :exam_examresults, :to => [:menu, :read, :index2, :create, :update, :destroy, :show2, :examination_slip, :show3, :examination_transcript]   
+   has_permission_on :exam_examresults, :to => [:menu, :read, :index2, :create, :update, :destroy, :show2, :examination_slip, :show3, :examination_transcript, :results]   
    has_permission_on :exam_examanalyses, :to => [:menu, :read, :create]
 
    has_permission_on :exam_exam_templates, :to =>[:manage] do
@@ -374,15 +362,21 @@ authorization do
 #####
   
   #Group Location --------------------------------------------------------------------------------
+  role :facilities_administrator do
+    has_permission_on :campus_locations, :to => [:manage, :kewpa7, :kewpa10, :kewpa11, :statistic_level, :census_level2, :statistic_block] 
+    has_permission_on :student_tenants, :to => [:manage, :index_staff, :reports,:census_level, :room_map, :room_map2, :statistics, :return_key, :return_key2, :census, :tenant_report, :tenant_report_staff, :laporan_penginapan, :laporan_penginapan2]
+  end
   role :warden do
-    has_permission_on :locations, :to => :core
+    has_permission_on :campus_locations, :to => [:read, :kewpa7] #:core - NOTE - kewpa7 visible to all (sticked on wall)
+    has_permission_on :student_tenants, :to => :read
     #all wardens have access - [relationship: second_approver, FK: staff_id2, page: approve_warden]
     has_permission_on :student_leaveforstudents, :to => [:index, :menu, :create, :show, :update, :approve_warden] do
       if_attribute :studentsubmit => true
     end
-    has_permission_on :library_books, :to => :read
-    has_permission_on :asset_assets, :to => :read
-    has_permission_on :students, :to => :read
+    has_permission_on :student_students, :to => :read
+    #has_permission_on :student_student_attendances, :to => :read #refer latest UAT (common subject)-this rule override by role :lecturer (common subject?)
+    #has_permission_on :student_student_counseling_sessions, :to => :read #discipline should works 1st, then counseling should follows
+    #has_permission_on :student_student_discipline_cases, :to => :read #not working, shall override access rules define for role :staff
   end
   
   role :unit_leader do

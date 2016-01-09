@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151124133213) do
+ActiveRecord::Schema.define(version: 20160106144252) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -53,17 +53,6 @@ ActiveRecord::Schema.define(version: 20151124133213) do
     t.string   "web"
     t.string   "fax"
     t.string   "shortname"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "addsuppliers", force: true do |t|
-    t.integer  "supplier_id"
-    t.string   "lpono"
-    t.string   "document"
-    t.decimal  "quantity"
-    t.decimal  "unitcost"
-    t.date     "received"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -1265,6 +1254,7 @@ ActiveRecord::Schema.define(version: 20151124133213) do
     t.string   "combo_code"
     t.integer  "ancestry_depth", default: 0
     t.string   "status"
+    t.boolean  "damaged"
   end
 
   add_index "locations", ["ancestry"], name: "index_locations_on_ancestry", using: :btree
@@ -1364,6 +1354,16 @@ ActiveRecord::Schema.define(version: 20151124133213) do
     t.datetime "updated_at"
     t.date     "startdate"
     t.date     "enddate"
+  end
+
+  create_table "photos", force: true do |t|
+    t.string   "caption"
+    t.string   "diagram_file_name"
+    t.string   "diagram_content_type"
+    t.integer  "diagram_file_size"
+    t.datetime "diagram_updated_at"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "positions", force: true do |t|
@@ -2400,20 +2400,8 @@ ActiveRecord::Schema.define(version: 20151124133213) do
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
-  add_index "users", ["id"], name: "index_users_on_id", using: :btree
-  add_index "users", ["login"], name: "index_users_on_login", unique: true, using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
   add_index "users", ["userable_id", "userable_type"], name: "index_users_on_userable_id_and_userable_type", using: :btree
-
-  create_table "usesupplies", force: true do |t|
-    t.integer  "supplier_id"
-    t.integer  "issuedby"
-    t.integer  "receivedby"
-    t.decimal  "quantity"
-    t.date     "issuedate"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
 
   create_table "vehicles", force: true do |t|
     t.string  "type_model"

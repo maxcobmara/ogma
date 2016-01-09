@@ -1,6 +1,7 @@
 - model_class = Examresult
 .col-md-11
   %hr
+  = link_to content_tag(:i, "", class: "fa fa-file-pdf-o"), results_exam_examresults_path(id: @examresult.id, format: "pdf"), class: "btn btn-default", "data-toggle" => "tooltip", title: (t 'print')
   %table.table.table-bordered
     %head
       %tr
@@ -23,7 +24,7 @@
     %body
       - nos=0
       - @ng=[]
-      - for examresultline in @examresult.resultlines
+      - for examresultline in @examresult.resultlines.sort_by{|x|x.status}
         %tr
           %td=nos+=1
           %td.left=h examresultline.student.name 
@@ -42,6 +43,8 @@
           - english_subjects=['PTEN', 'NELA', 'NELB', 'NELC', 'MAPE', 'XBRE', 'OTEL'] 
           - posbasiks = Programme.roots.where(course_type: ['Pos Basik', 'Diploma Lanjutan', 'Pengkhususan']).pluck(:id)
           - kejururawatan = Programme.roots.where('name ILIKE(?)', '%Kejururawatan%').first.id
+          - perubatan=Programme.where(course_type: 'Diploma').where('name ILIKE (?)', 'Penolong Pegawai Perubatan').first.id
+          - radiografi=Programme.where(course_type: 'Diploma').where('name ILIKE (?)', 'Radiografi').first.id
           - for subject in @subjects
             - @grade_student=Grade.where(subject_id: subject.id).where(student_id: examresultline.student_id)
             - @student_finale=Grade.where('student_id=? and subject_id=?', examresultline.student_id,subject.id).first
@@ -143,8 +146,8 @@
                         =ng_it2 
                 /Other than English subjects 2 columns-end
                 /Retrieve STATUS for each subject (ALL = English+Non-English)
-                - @value_state << '4' if (posbasiks+[kejururawatan]).include?(@examresult.programme_id) && ["C-", "D+", "D", "E"].include?(grade_it.strip)==true
-                - @value_state << '3' if (posbasiks+[kejururawatan]).include?(@examresult.programme_id) && ["C-", "D+", "D", "E"].include?(grade_it.strip)==false
+                - @value_state << '4' if (posbasiks+[kejururawatan, perubatan, radiografi]).include?(@examresult.programme_id) && ["C-", "D+", "D", "E"].include?(grade_it.strip)==true
+                - @value_state << '3' if (posbasiks+[kejururawatan, perubatan, radiografi]).include?(@examresult.programme_id) && ["C-", "D+", "D", "E"].include?(grade_it.strip)==false
             - else
               /Case2:Grade Not Exist yet
               - @value_state << '4'
@@ -158,28 +161,29 @@
           - @ng << final2b_all
           
           /NOTE - start - for checking purpose only
-          .small Jum Kredit
-          = credit2_all
-          %br
-          .small Result ASAL
-          =ng
-          %br
-          .small Result repeated shj (sebenar)
-          =final2_all
-          %br
-          .small Result repeated shj (highest is C)
-          =ng2
-          %br
-          .small Result TERBARU
-          = final2b_all
-          %br 
-          %br
+          /.small Jum Kredit
+          /= credit2_all
+          /%br
+          /.small Result ASAL
+          /=ng
+          /%br
+          /.small Result repeated shj (sebenar)
+          /=final2_all
+          /%br
+          /.small Result repeated shj (highest is C)
+          /=ng2
+          /%br
+          /.small Result TERBARU
+          /= final2b_all
+          /%br 
+          /%br
           /NOTE - end - for checking purpose only
           
           /Calculate (i)NGK (Total Grade Points) - Final & Repeat
           /Calculate (ii)PNGS (GPA) - Final & Repeat
           - total_point=number_with_precision(Examresult.total(ng, credit2_all), precision: 2)
-          - repeated_total_point=number_with_precision(Examresult.total(final2b_all, credit2_all), precision: 2) if final2b_all
+          /- repeated_total_point=number_with_precision(Examresult.total(final2b_all, credit2_all), precision: 2) if final2b_all
+          - repeated_total_point=number_with_precision(Examresult.total(final2b_all, credit2_all), precision: 2) if @value_state.count('4') > 0
           - if final2_all.count > 0 && credit2_all.count > 0
             - gpa=number_with_precision((Examresult.total(ng, credit2_all) / credit2_all.sum), precision: 2)
           - else
@@ -204,7 +208,10 @@
               =total_point
               %br
             /1-display LATEST status 
-            =repeated_total_point if repeated_total_point
+            - if repeated_total_point
+              =repeated_total_point
+            - else
+              = total_point
           %td
             /2-when FAIL final exam & repeat exam happens 
             /Display FINAL here

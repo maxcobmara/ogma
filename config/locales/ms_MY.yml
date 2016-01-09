@@ -1005,10 +1005,26 @@ ms_MY:
   
   position:
     title: "Tugas & Tanggungjawab"
+    list: Senarai Jawatan
     index: Carta Organisasi
     name: Jawatan
     report: Maklumat Perjawatan
     report_excel: "Maklumat Perjawatan (Excel)"
+    details: Butiran
+    combo_code: Kod Jawatan
+    #name: Nama
+    unit: Unit
+    tasks_main: Tugas Utama
+    tasks_other: Lain - lain Tugas
+    grade_id: Gred Minima Diperlukan
+    staff_id: Staf
+    is_acting: Bertindak Sebagai 
+    postinfo_id: Butiran Perjawatan
+    status: Status
+    parent_id: Bawahan kepada
+    no_staff: Tiada Staff
+    get_all: Semua
+    get_matched: Sepadan
        
   staff_attendance:
     title: Kedatangan Staf

@@ -1,0 +1,81 @@
+.form-group
+  .col-sm-2.control-label
+    = f.label t 'staff.name', for: :name
+  .col-md-4
+    /= f.collection_select :titlecd_id, Title.all, :id, :name, {:include_blank => true}, {class: 'selectpicker', "data-width"=>"80px"}
+    = f.text_field :name, class: 'form-control mandatory'
+
+.form-group
+  .col-sm-2.control-label
+    = f.label t 'position.combo_code', for: :combo_code
+  .col-md-4
+    .input-group
+      .input-group-addon= h @position.is_root? ? "" : @position.parent.combo_code + "-" 
+      = f.text_field :code, class: 'form-control mandatory' 
+      
+
+.form-group
+  .col-sm-2.control-label
+    = f.label t 'position.grade_id', for: :grade_id
+  .col-md-4
+    = f.collection_select :staffgrade_id, Employgrade.all.order(name: :asc), :id, :name_and_group, {:include_blank => t('select') },{class: 'selectpicker', "data-width"=>"auto"}
+  
+.form-group
+  .col-sm-2.control-label
+    = f.label t 'position.unit', for: :unit
+  .col-md-4
+    = f.text_field :unit, class: 'form-control'
+    
+.form-group
+  .col-sm-2.control-label
+    = f.label t 'position.tasks_main', for: :tasks_main
+  .col-md-4
+    = f.text_area :tasks_main, :size => "60x7", class: 'form-control'
+    
+.form-group
+  .col-sm-2.control-label
+    = f.label t 'position.staff_id', for: :staff_id
+  .col-md-4
+    #person
+      = f.collection_select :staff_id2, Staff.where('staffgrade_id =?', @position.staffgrade_id).order(name: :asc), :id, :name, {:include_blank => (t 'select') , :selected => @position.staff_id} , {class: 'selectpicker', "data-width"=>"auto"}
+      = link_to (t 'position.get_all'), "#", id: "get_all"
+
+    #person2{style: "display: none;"}
+      /must deselect staff_id2 - to takes effect
+      = f.collection_select :staff_id, Staff.all.order(name: :asc), :id, :name, {:include_blank => (t 'select')}, {class: 'selectpicker', "data-width"=>"auto"}
+      = link_to (t 'position.get_matched'), "#", id: "get_matched"
+      /= render :partial => 'staff_all', :locals => {:f => f} 
+
+.form-group
+  .col-sm-2.control-label
+    = f.label t 'position.is_acting', for: :is_acting
+  .col-md-4
+    = f.check_box :is_acting 
+.form-group
+  .col-sm-2.control-label
+    = f.label t 'position.tasks_other', for: :tasks_other
+  .col-md-4
+    = f.text_area :tasks_other, :size => "60x7", class: 'form-control'
+.form-group
+  .col-sm-2.control-label
+    = f.label t 'position.postinfo_id', for: :postinfo_id
+  .col-md-4
+    = f.collection_select :postinfo_id, Postinfo.all.order(details: :asc), :id, :details_grade, {:include_blank => t('select')}, {class: 'selectpicker', "data-width"=>"auto"}
+.form-group
+  .col-sm-2.control-label
+    = f.label t 'position.status', for: :status
+  .col-md-4
+    = f.select :status, DropDown::POSITION_STATUS, {:include_blank => t('select')}, {class: 'selectpicker', "data-width"=>"auto"}
+
+
+:javascript
+  $(document).ready(function(){
+    $("#get_all").click(function(evt) {
+      $("#person").hide();
+      $("#person2").show();
+    });
+    $("#get_matched").click(function(evt) {
+      $("#person").show();
+      $("#person2").hide();
+    });
+  });

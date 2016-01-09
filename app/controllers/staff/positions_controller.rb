@@ -1,9 +1,54 @@
 class Staff::PositionsController < ApplicationController
+  filter_access_to :all
   before_action :set_position, only: [:show, :edit, :update, :destroy]
   
   def index
     @positions = Position.order("combo_code ASC")#.where("ancestry_depth < ?", 2)
     render :layout => 'basic'
+  end
+  
+  def new
+    @position=Position.new(:parent_id => params[:parent_id])
+    respond_to do |format|
+      format.html # new.html.erb
+      format.xml  { render :xml => @position }
+    end
+  end
+  
+  def create
+    @position=Position.new(position_params)
+    respond_to do |format|
+      if @position.save
+        format.html { redirect_to(staff_position_path(@position)) }
+        format.xml  { head :ok }
+      else
+        format.html { render :action => "new" }
+        format.xml  { render :xml => @position.errors, :status => :unprocessable_entity }
+      end
+    end
+  end
+  
+  def update
+    respond_to do |format|
+      if @position.update_attributes(position_params)
+        flash[:notice] = (t 'position.name')+(t 'actions.updated')
+        format.html { redirect_to(staff_position_path(@position)) }
+        format.xml  { head :ok }
+      else
+        format.html { render :action => "edit" }
+        format.xml  { render :xml => @position.errors, :status => :unprocessable_entity }
+      end
+    end
+  end
+  
+  def destroy
+    @position = Position.find(params[:id])
+    @position.destroy
+
+    respond_to do |format|
+      format.html { redirect_to("http://#{request.host}:3000/positions") }
+      format.xml  { head :ok }
+    end
   end
   
   def maklumat_perjawatan
@@ -39,7 +84,7 @@ class Staff::PositionsController < ApplicationController
     end
   end
   
-  #Excel - Statistic by block (room status & tenants group by programme) - link at app/views/student/tenants/statistics.html.haml
+  #Excel - Menu : Staff | Reports | Position Informations
   def maklumat_perjawatan_excel
     @positions_raw = Position.where('staffgrade_id IS NOT NULL AND name!=?', 'ICMS Vendor Admin') 
     respond_to do |format|
@@ -56,7 +101,7 @@ class Staff::PositionsController < ApplicationController
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
-    def staff_params
-      params.require(:position).permit(:icno, :name, :code, :fileno, :coemail, :cobirthdt, :thumb_id)
+    def position_params
+      params.require(:position).permit(:parent_id,:code, :combo_code, :name, :unit, :tasks_main, :tasks_other, :staffgrade_id, :staff_id, :staff_id2, :is_acting, :ancestry, :ancestry_depth, :postinfo_id, :status)
     end
 end

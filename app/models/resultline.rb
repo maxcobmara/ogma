@@ -3,6 +3,13 @@ class Resultline < ActiveRecord::Base
   belongs_to :student, :foreign_key => 'student_id'
   validates_presence_of :student_id, :total, :pngs17, :status   #total (keep first)==>value obtained from grade.rb-> works like total_marks (previously be4 changed to virtual attr) -> changes does not take effect on 1st edit
                                                                 #total refers to sum of.. [(set_NG*credit hour)..of each subject]
+  before_save :default_next_semester_if_pass
+  
+  def default_next_semester_if_pass
+    #rescue for (status: gagal, remark: VIVA), status : gagal was selected, but remark remain VIVA
+    #note too, DropDown RESULT_STATUS && RESULT_STATUS_CONTRA (status 2 & 1)
+    self.remark = '4' if status=='3' || status=='2' || status=='1'
+  end
   
   def render_status
     (DropDown::RESULT_STATUS.find_all{|disp, value| value == status}).map {|disp, value| disp}[0]

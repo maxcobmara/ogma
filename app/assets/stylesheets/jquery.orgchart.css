@@ -86,18 +86,23 @@ div.orgChart div.node.hover {
 
 div.orgChart div.adjunct.node {
     position              : absolute;
-    margin-top            : 8px;
-    margin-left           : -110px;
-    width                 : 80px;
+    margin-top            : 15px;
+    margin-left           : -145px;
+    width                 : 105px;
     height                : 40px;
     background-color      : #efefef;
+    font-size             : 0.7em;
+    font-family           : Arial;
+    font-weight   :bold;
+    text-align: center;
+    padding-top: 10px;
 }
 
 div.orgChart div.adjunct-link {
     display               : inline-block;
     position              : absolute;
-    margin-left           : -20px;
+    margin-left           : -21px;
     margin-top            : 25px;
     width                 : 20px;
-    border                : 1px dashed black;
+    border                : 1px dashed grey;
 }

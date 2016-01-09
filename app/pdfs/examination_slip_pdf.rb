@@ -318,21 +318,36 @@ class Examination_slipPdf < Prawn::Document
       result_by_subjectline=[]
       subjects.each_with_index do |subject, counting|
         ######
-	# TODO refractor this###
+        # TODO refractor this###
         student_grade = Grade.where('student_id=? and subject_id=?',@resultline.student.id,subject.id).first
         #if @value_state2[counting]=='4' && @resultline.remark=='1'
-	repeat_or_viva=""
-	unless student_grade.nil? || student_grade.blank?
+        repeat_or_viva=""
+        unless student_grade.nil? || student_grade.blank?
           if student_grade.resit==true
             repeat_or_viva="  "+I18n.t('exam.examresult.repeating')
-	  end
-        end
-        if @value_state2[counting]=='4' && @resultline.remark=='2'
-          grading2=student_grade.render_grading2[-2,2].strip
-          if grading2!="C"
-            repeat_or_viva+="  (VIVA) "
           end
         end
+        
+        #When REPEAT paper - FAIL
+        if @value_state2[counting]=='4' 
+          #1-VIVA not yet completed, note SAVED remark is '2' - VIVA
+          if @resultline.remark=='2'
+            grading2=student_grade.render_grading2[-2,2].strip
+            if grading2!="C"
+              repeat_or_viva+="  (VIVA) "
+            end
+          end
+          #2-VIVA completed, note SAVED status is '3' (@2, @1) - Lulus, Kepujian or Cemerlang... & remark is '4' (Naik semester)
+          #VIVA only happen for FAIL repeat paper, which means grading2 MUST be less than grade 'C' (not equal, highest is C or fail)
+          if ['3','2','1'].include?(@resultline.status) && @resultline.remark=='4'
+            #lulus, naik semester
+            grading2=student_grade.render_grading2[-2,2].strip
+            if grading2!="C"
+              repeat_or_viva+="(VIVA) "
+            end
+          end
+        end
+
         ###
         result_by_subjectline << [subject.code, subject.name+repeat_or_viva, @grading2[counting], @finale[counting], @remark[counting]]
       end 
@@ -350,12 +365,27 @@ class Examination_slipPdf < Prawn::Document
             repeat_or_viva="  "+I18n.t('exam.examresult.repeating')
          end
 	end
-        if @value_state2[counting]=='4' && @resultline.remark=='2'
-          grading2=student_grade.render_grading2[-2,2].strip
-          if grading2!="C"
-            repeat_or_viva+="  (VIVA) "
-         end
+
+        #When REPEAT paper - FAIL
+        if @value_state2[counting]=='4' 
+        #1-VIVA not yet completed, note SAVED remark is '2' - VIVA
+          if @resultline.remark=='2'
+            grading2=student_grade.render_grading2[-2,2].strip
+            if grading2!="C"
+              repeat_or_viva+="  (VIVA) "
+            end
+          end
+          #2-VIVA completed, note SAVED status is '3' (@2, @1) - Lulus, Kepujian or Cemerlang... & remark is '4' (Naik semester)
+          #VIVA only happen for FAIL repeat paper, which means grading2 MUST be less than grade 'C' (not equal, highest is C or fail)
+          if ['3','2','1'].include?(@resultline.status) && @resultline.remark=='4'
+            #lulus, naik semester
+            grading2=student_grade.render_grading2[-2,2].strip
+            if grading2!="C"
+              repeat_or_viva+="(VIVA) "
+            end
+          end
         end
+
         ###
         if counting==0
           subject_line=[subject.code, subject.name.titleize+repeat_or_viva, "", @credit[counting], @grading2[counting], @finale[counting], @remark[counting], ""] 
@@ -428,12 +458,27 @@ class Examination_slipPdf < Prawn::Document
                 repeat_or_viva="  "+I18n.t('exam.examresult.repeating')
 	      end
 	    end
-            if @value_state2[counting]=='4' && @resultline.remark=='2'
-              grading2=student_grade.render_grading2[-2,2].strip
-              if grading2!="C"
-                repeat_or_viva+="  (VIVA) "
+
+            #When REPEAT paper - FAIL
+            if @value_state2[counting]=='4' 
+              #1-VIVA not yet completed, note SAVED remark is '2' - VIVA
+              if @resultline.remark=='2'
+                grading2=student_grade.render_grading2[-2,2].strip
+                if grading2!="C"
+                  repeat_or_viva+="  (VIVA) "
+                end
+              end
+              #2-VIVA completed, note SAVED status is '3' (@2, @1) - Lulus, Kepujian or Cemerlang... & remark is '4' (Naik semester)
+              #VIVA only happen for FAIL repeat paper, which means grading2 MUST be less than grade 'C' (not equal, highest is C or fail)
+              if ['3','2','1'].include?(@resultline.status) && @resultline.remark=='4'
+                #lulus, naik semester
+                grading2=student_grade.render_grading2[-2,2].strip
+                if grading2!="C"
+                  repeat_or_viva+="(VIVA) "
+                end
               end
             end
+
             ###
 	    subject_line=["#{counting +1}", subject.subject_list+repeat_or_viva, @grading2[counting], @finale[counting], @remark[counting]] 
             #["#{counter += 1}", subject.subject_list, @grading2[counter-1], @finale[counter-1], @remark[counter-1]+" "+@value_state[counter-1]]

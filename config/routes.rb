@@ -408,6 +408,7 @@ Ogma::Application.routes.draw do
         get :show3
         get :examination_slip
         get :examination_transcript
+        get :results
       end
     end
     resources :examanalyses do

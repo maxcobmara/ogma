@@ -12,6 +12,13 @@ module DropDown
        [ "Berpisah", 6 ],
        [ "Tiada Maklumat", 9 ]
   ]
+  
+  POSITION_STATUS = [
+        #  Displayed       stored in db
+        [ "Hakiki", 1],
+        [ "Kontrak", 2],
+        [ "KUP",3]
+  ]
    
   BLOOD_TYPE = [
       #  Displayed       stored in db

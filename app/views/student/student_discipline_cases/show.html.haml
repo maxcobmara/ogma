@@ -61,22 +61,25 @@
         - if @student_discipline_case.action_type == 'counseling'
           = link_to content_tag(:i, "", class: "fa fa-file-pdf-o"), feedback_referrer_student_student_counseling_sessions_path(id: @student_discipline_case.id, format: "pdf"), class: "btn btn-default", "data-toggle" => "tooltip", title: (t 'student.discipline.counselor_feedback')
 
-      /- permitted_to? :approve, :student_student_discipline_cases do
-      - permitted_to? :approve, @student_discipline_case do
+      /- permitted_to? :approve, @student_discipline_case do
+      - permitted_to? :approve, :student_student_discipline_cases do
         - if ["New", "Open"].include? (@student_discipline_case.status) 
           = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('actions.edit'), edit_student_student_discipline_case_path(@student_discipline_case),  :class => 'btn btn-primary' 
 
       /- permitted_to? :manage, :student_student_discipline_cases do
       /  /- if (["Refer to TPHEP"].include? (@student_discipline_case.status)) && (@student_discipline_case.assigned2_to == @current_user.userable_id || @current_user.roles.pluck(:name).include?("Administration"))
-      - permitted_to? :actiontaken, @student_discipline_case do
+      /- permitted_to? :actiontaken, @student_discipline_case do
+      - permitted_to? :actiontaken, :student_student_discipline_cases do
         - if ["Refer to TPHEP"].include? (@student_discipline_case.status)
           = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('student.discipline.action_details'), actiontaken_student_student_discipline_case_path(@student_discipline_case),  :class => 'btn btn-primary'
       
-      - permitted_to? :referbpl, @student_discipline_case do
+      /- permitted_to? :referbpl, @student_discipline_case do
+      - permitted_to? :referbpl, :student_student_discipline_cases do
         - if @student_discipline_case.status == "Refer to BPL" 
           = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('student.discipline.refer_to_bpl'), referbpl_student_student_discipline_case_path(@student_discipline_case), :class => 'btn btn-primary' 
       
-      - permitted_to? :destroy, @student_discipline_case do
+      /- permitted_to? :destroy, @student_discipline_case do
+      - permitted_to? :destroy, :student_student_discipline_cases do
         = link_to content_tag(:i, "", :class => "fa fa-trash-o icon-white") + " " + t('helpers.links.destroy'), |
           student_student_discipline_case_path(@student_discipline_case),                                                                                                    |
           :method => 'delete',                                                                                                           |

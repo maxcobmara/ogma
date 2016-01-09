@@ -87,6 +87,18 @@ class Exam::ExamresultsController < ApplicationController
        end
      end
   end
+  
+  def results
+    @examresult = Examresult.find(params[:id])
+    respond_to do |format|
+       format.pdf do
+         pdf = ResultsPdf.new(@examresult, view_context)
+         send_data pdf.render, filename: "results-{Date.today}",
+                               type: "application/pdf",
+                               disposition: "inline"
+       end
+     end
+  end
 
   # GET /examresults/new
   # GET /examresults/new.xml

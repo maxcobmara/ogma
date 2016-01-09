@@ -220,7 +220,7 @@
             /Calculate (i)NGK (Total Grade Points) - Final & Repeat
             /Calculate (ii)PNGS (GPA) - Final & Repeat
             - total_point=number_with_precision(Examresult.total(final_all, credit2_all), precision: 2)
-            - repeated_total_point=number_with_precision(Examresult.total(final2b_all, credit2_all), precision: 2)
+            - repeated_total_point=number_with_precision(Examresult.total(final2b_all, credit2_all), precision: 2) if @value_state.count('4') > 0
             /NOTE - requires Correct Subject/Module code to be entered into Curriculum Mgmt - or will get NaN for gpa.
             - if final2_all.count > 0 && credit2_all.count > 0
               - gpa=number_with_precision((Examresult.total(final_all, credit2_all) / credit2_all.sum), precision: 2)
@@ -261,6 +261,8 @@
               - if repeated_total_point
                 %br
                 = repeated_total_point
+              - else
+                = total_point
             %td
               /2-when FAIL final exam
               - if @value_state.include?('4')
@@ -347,12 +349,18 @@
                     /when latest status is Repeat
                     ///
                     - if @value_state2.count('4')==1 
-                      /- @value_state2.map('4').each_with_index do |st, ind|
-                      /  - if st=='4'  
                       - if @repeat_marks[0] > @final_marks[0]
-                        /FAIL 1 subject of repeated papers - qualified for VIVA (when Repeat marks > Final marks)
-                        /- @value_remark="2"
-                        = select_tag "examresult[resultlines_attributes][#{no}][status]", options_for_select([[t('select'), '0']]+status_selection, @value_status) 
+                        /By default - FAIL 1 subject of repeated papers - qualified for VIVA (when Repeat marks > Final marks) (ie. @value_status is '4')
+                        - if @examresult.resultlines[no] && @examresult.resultlines[no].status!=@value_status
+                          /shall display LULUS if SAVED status in DB is PASS (coz VIVA was completed & passed) 
+                          /- require user to manually select 'Lulus' (Status) & 'Naik Semester' (Remark)
+                          - status_viva = @examresult.resultlines[no].status
+                          //baca DB
+                        - else
+                          /shall display select(GAGAL) if SAVED status in DB is still FAIL (coz VIVA not yet done)
+                          - status_viva = @value_status
+                          //baca current value
+                        = select_tag "examresult[resultlines_attributes][#{no}][status]", options_for_select([[t('select'), '0']]+status_selection, status_viva) 
                     - else
                       ///
                       %font{style: "color: red; text-decoration: underline;"}=disp_status
@@ -403,11 +411,16 @@
                     - else
                       /when REPEAT done,..
                       - if @value_state2.count('4')==1 
-                        /- @value_state2.each_with_index do |st, ind|
-                        /  - if st=='4'  
                         - if @repeat_marks[0] > @final_marks[0]
-                          /FAIL 1 subject of repeated papers - qualified for VIVA (when Repeat marks > Final marks)
-                          - @value_remark="2"
+                          /By default - FAIL 1 subject of repeated papers - qualified for VIVA (when Repeat marks > Final marks) (ie. @value_status is '4')
+                          - if @examresult.resultlines[no] && @examresult.resultlines[no].status!=@value_status
+                            /shall display 'Naik Semester' (Remark) if SAVED status in DB is PASS (coz VIVA was completed & passed) 
+                            /- require user to manually select 'Lulus' (Status) & 'Naik Semester' (Remark)
+                            - @value_remark="4"
+                            /supposed read DB (but may just assign default as Naik Semester) if status already LULUS - but condition state this student rrequire a vVIVA
+                          - else
+                            - @value_remark="2"
+                          
                         - else
                           /FAIL 1 subject of repeated papers - Ulang Semester (when Repeat marks < Final marks)
                           - @value_remark="5"

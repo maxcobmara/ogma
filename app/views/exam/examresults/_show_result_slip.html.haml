@@ -104,13 +104,25 @@
                   = t('exam.examresult.repeating')
               - else
                 / NOTE - 'Repeat' won't be displayed if Grade not exist at all OR even if Grade exist, still require RESIT checkbox in Grade to be activated
-            /- elsif value_state=='4' && @resultline.remark=='2'
-            - if value_state=='4' && @resultline.remark=='2'
-              /NOTE - VIVA only granted for student - repeating 4 or less failed final paper, whereby ONLY 1 of these (4 or less repeat result) IS FAIL while the rest already PASS && this 1 repeat result (repeat marks should higher than final marks). Note too, "C" is the highest(best) grade that could be given to repeat paper.
-              /look for the One & Only repeat marks that still FAIL (& repeat marks > final marks )
-              - grading2= @student_grade.render_grading2[-2,2].strip
-              - if grading2.strip != "C"
-                %strong  &nbsp;&nbsp;(VIVA) 
+            
+            /when REPEAT paper - FAIL
+            - if value_state=='4' 
+              /1-VIVA not yet completed, note SAVED remark is '2' - VIVA
+              - if @resultline.remark=='2'
+                /NOTE - VIVA only granted for student - repeating 4 or less failed final paper, whereby ONLY 1 of these (4 or less repeat result) IS FAIL while the rest already PASS && this 1 repeat result (repeat marks should higher than final marks). Note too, "C" is the highest(best) grade that could be given to repeat paper.
+                /look for the One & Only repeat marks that still FAIL (& repeat marks > final marks )
+                - grading2= @student_grade.render_grading2[-2,2].strip
+                - if grading2.strip != "C"
+                  %strong  &nbsp;&nbsp;(VIVA) 
+
+              /2-VIVA completed, note SAVED status is '3' (@2, @1) - Lulus, Kepujian or Cemerlang... & remark is '4' (Naik semester)
+              /VIVA only happen for FAIL repeat paper, which means grading2 MUST be less than grade 'C' (not equal, highest is C or fail)
+              - if ['3','2','1'].include?(@resultline.status) && @resultline.remark=='4'
+                /lulus , naik semester
+                - grading2= @student_grade.render_grading2[-2,2].strip
+                - if grading2.strip != "C"
+                  %strong  &nbsp;&nbsp;(VIVA) 
+            
           %td.centre
             - if english_subjects.include?(subject.code[0,4]) || (subject.code.strip.size < 10 && (subject.code.strip[-2,1].to_i==2 || subject.code.strip[-2,1].to_i==3))
               \-

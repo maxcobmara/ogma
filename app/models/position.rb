@@ -1,6 +1,6 @@
 class Position < ActiveRecord::Base
   
-  before_save :set_combo_code, :titleize_name
+  before_save :set_combo_code, :titleize_name, :set_staff_if_staff_id2_exist
   has_ancestry :cache_depth => true
   
   validates_uniqueness_of :combo_code
@@ -9,6 +9,17 @@ class Position < ActiveRecord::Base
   belongs_to :staff
   belongs_to :staffgrade, :class_name => 'Employgrade'
   belongs_to :postinfo
+  
+  attr_accessor :staff_id2
+  
+  def set_staff_if_staff_id2_exist
+    unless staff_id2.blank?
+      self.staff_id=staff_id2 if staff_id.blank? || staff_id!=staff_id2
+    end
+     unless staff_id.blank?
+      self.staff_id=staff_id if staff_id2.blank? 
+     end
+  end
   
   def titleize_name
     self.name = name.titleize

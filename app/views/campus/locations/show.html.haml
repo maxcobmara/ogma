@@ -67,19 +67,24 @@
               = link_to content_tag(:i, "", :class => "fa fa-bug "), new_campus_location_damage_path(:location_id => @location),
                 {id: 'load_damage_form', class: "btn btn-default", "data-toggle" => "tooltip", title: t("location.damage.report")}
               - if @location.assets.exists?
-                = link_to content_tag(:i, "", :class => "fa fa-file "), kewpa7_campus_location_path(@location, format: "pdf"),
-                  {class: "btn btn-default", "data-toggle" => "tooltip", title: "KEW.PA 7 PDF"}
-                = link_to content_tag(:i, "", :class => "fa fa-file "), kewpa10_campus_location_path(@location, format: "pdf"),
-                  {class: "btn btn-default", "data-toggle" => "tooltip", title: "KEW.PA 10 PDF"}
-                = link_to content_tag(:i, "", :class => "fa fa-file "), kewpa11_campus_location_path(@location, format: "pdf"),
-                  {class: "btn btn-default", "data-toggle" => "tooltip", title: "KEW.PA 11 PDF"}				  				  
-              = link_to content_tag(:i, "", :class => "fa fa-edit"), edit_campus_location_path(@location),
+                - permitted_to? :kewpa7, :campus_locations do
+                  = link_to content_tag(:i, "", :class => "fa fa-file "), kewpa7_campus_location_path(@location, format: "pdf"),
+                    {class: "btn btn-default", "data-toggle" => "tooltip", title: "KEW.PA 7 PDF"}
+                - permitted_to? :kewpa10, :campus_locations do
+                  = link_to content_tag(:i, "", :class => "fa fa-file "), kewpa10_campus_location_path(@location, format: "pdf"),
+                    {class: "btn btn-default", "data-toggle" => "tooltip", title: "KEW.PA 10 PDF"}
+                - permitted_to? :kewpa11, :campus_locations do
+                  = link_to content_tag(:i, "", :class => "fa fa-file "), kewpa11_campus_location_path(@location, format: "pdf"),
+                    {class: "btn btn-default", "data-toggle" => "tooltip", title: "KEW.PA 11 PDF"}
+              - permitted_to? :edit, :campus_locations do
+                = link_to content_tag(:i, "", :class => "fa fa-edit"), edit_campus_location_path(@location),
                   {class: "btn btn-primary", "data-toggle" => "tooltip", title: t("actions.edit")}
             .btn-group  
-              = link_to content_tag(:i, "", :class => "fa fa-trash-o icon-white"), campus_location_path(@location),                                                                                                    |
-                :method => 'delete',                                                                                                           |
-                :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },                   |
-                :class => 'btn btn-danger', "data-toggle" => "tooltip", title: t("actions.delete")
+              - permitted_to? :destroy, :campus_locations do
+                = link_to content_tag(:i, "", :class => "fa fa-trash-o icon-white"), campus_location_path(@location),                                                                                                    |
+                  :method => 'delete',                                                                                                           |
+                  :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },                   |
+                  :class => 'btn btn-danger', "data-toggle" => "tooltip", title: t("actions.delete")
 
 
 
