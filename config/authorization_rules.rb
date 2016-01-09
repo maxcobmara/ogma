@@ -43,14 +43,7 @@ authorization do
 #        if_attribute :approve_id => is {user.userable.id}  #approved_by (no field - approve_id)
 #    end
 
-   ###
-   has_permission_on :student_student_discipline_cases, :to => :approve do 
-      if_attribute :assigned_to =>  is {user.userable.id} 
-    end
-    has_permission_on :student_student_discipline_cases, :to => [:manage, :actiontaken] do
-      if_attribute :assigned2_to => is {user.userable.id}
-    end
-   ####
+   
    
    has_permission_on :staff_staff_appraisals, :to => :create
    has_permission_on :staff_staff_appraisals, :to => [ :update, :appraisal_form] do 
@@ -120,21 +113,16 @@ authorization do
     end
     
     #working - refer student/student_discipline_cases/show.html.haml (compare between case creator show & programme mgr show page)
-    has_permission_on :student_discipline_cases, :to => :approve do 
+    #prev : student_discipline_cases
+    has_permission_on :student_discipline_cases, :to => :approve do                             
       if_attribute :assigned_to =>  is {user.userable.id} #is {current_user.userable.id}
     end
     
-    has_permission_on :student_discipline_cases, :to => [:manage, :actiontaken, :referbpl, :discipline_report, :anacdotal_report] do
+    #prev : student_discipline_cases
+    has_permission_on :student_student_discipline_cases, :to => [:manage, :actiontaken, :referbpl, :discipline_report, :anacdotal_report] do
       if_attribute :assigned2_to => is {user.userable.id}
     end
     #MOST WORKABLE ONE-end of student discipline
-    
-    
-#    has_permission_on :student_discipline_cases, :to => :read, :join_by => :or do
-#      if_attribute :reported_by => is {current_user.userable.id}
-#      if_attribute :assigned_to => is {current_user.userable.id}
-#      if_attribute :assigned2_to => is {current_user.userable.id}
-#    end
 
    #disable this part first - suppose in index, view only - transaction where current_user is a borrower - but ALL record are displayed when this part is enable
    #has_permission_on :library_librarytransactions, :to => :read do
@@ -387,8 +375,8 @@ authorization do
     end
     has_permission_on :students, :to => :read
     has_permission_on :student_attendances, :to => :read
-    has_permission_on :student_student_counseling_sessions, :to => :read
-    has_permission_on :student_student_discipline_cases, :to => :read
+    #has_permission_on :student_student_counseling_sessions, :to => :read
+    #has_permission_on :student_student_discipline_cases, :to => :read #not working, shall override access rules define for role :staff
   end
   
   role :unit_leader do
