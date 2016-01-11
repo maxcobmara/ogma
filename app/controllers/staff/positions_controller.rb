@@ -94,6 +94,20 @@ class Staff::PositionsController < ApplicationController
     end
   end
   
+  #static PDF for Index
+  def organisation_chart
+    @positions = Position.order("combo_code ASC")
+    @pa=Position.where('tasks_main ILIKE(?) or tasks_other ILIKE(?)', '%PA Pengarah%', '%PA Pengarah%')
+    respond_to do |format|
+      format.pdf do
+        pdf = Organisation_chartPdf.new(@positions, @pa, view_context)
+        send_data pdf.render, filename: "organisation_chart-{Date.today}",
+                              type: "application/pdf",
+                              disposition: "inline"
+      end
+    end
+  end
+  
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_position

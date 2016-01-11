@@ -26,6 +26,7 @@
   
 .row
   .orgchart
+    = link_to (t 'pdf_format'), organisation_chart_staff_positions_path(format: "pdf")
     =# @positions.inspect
 .row
   #myorgchart

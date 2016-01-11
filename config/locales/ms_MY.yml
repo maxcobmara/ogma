@@ -292,6 +292,7 @@ ms_MY:
   add_details: Tambah Butiran
   or: atau
   excel_format: Format Excel
+  pdf_format: Format PDF
   select_excel_file: Sila pilih fail Excel untuk diimport
   reports: Laporan
   all_records: Semua Rekod
@@ -1007,6 +1008,9 @@ ms_MY:
     title: "Tugas & Tanggungjawab"
     list: Senarai Jawatan
     index: Carta Organisasi
+    management: "(Pengurusan)"
+    academic: "(Akademik)"
+    general: "(Umum)"
     name: Jawatan
     report: Maklumat Perjawatan
     report_excel: "Maklumat Perjawatan (Excel)"
