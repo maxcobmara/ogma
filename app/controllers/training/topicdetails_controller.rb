@@ -1,4 +1,5 @@
 class Training::TopicdetailsController < ApplicationController
+  filter_resource_access
   before_action :set_topicdetail, only: [:show, :edit, :update, :destroy]
   # GET /topicdetails
   # GET /topicdetails.xml

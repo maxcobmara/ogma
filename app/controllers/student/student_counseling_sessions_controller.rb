@@ -1,5 +1,6 @@
 class Student::StudentCounselingSessionsController < ApplicationController
-  
+  filter_access_to :index, :new, :create, :feedback_referrer, :attribute_check => false
+  filter_access_to :show, :edit, :update, :destroy, :attribute_check => true
   before_action :set_student_counseling_session, only: [:show, :edit, :update, :destroy]
    
   # GET /student_counseling_sessions

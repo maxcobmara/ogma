@@ -4,6 +4,7 @@ ms_MY:
     models: 
       staff: Kakitangan
       asset: Aset
+      asset_defect: Kerosakan Aset
       student: Pelajar
       location: Lokasi
       examquestion: Soalan Peperiksaan
@@ -12,6 +13,7 @@ ms_MY:
       resultline: Keputusan
       travel_request: Permohonan Perjalanan
       leaveforstudent: Cuti Pelajar
+      leaveforstaff: Cuti Staf
       kin: Waris
       travel_request: Permohonan Perjalanan
       travel_claim: Tuntutan Perjalanan
@@ -32,6 +34,12 @@ ms_MY:
       evaluate_course: Penilaian Kursus
       grade: Gred
     attributes:
+      asset_defect:
+        processed_by: Diproses oleh
+        process_type: Jenis tindakan
+        processed_on: Diproses pada
+        decision_by: Keputusan oleh
+        decision_on: Diputuskan pada
       student:
         name: Nama
         sstatus: Status Pelajar
@@ -299,6 +307,7 @@ ms_MY:
   rejected: Tidak Diluluskan
   active: Aktif
   not_active: Tidak Aktif
+  must_exist: mesti wujud
  
   actions:
     new: Baru
@@ -371,6 +380,12 @@ ms_MY:
     available_roles: Peranan sedia ada
     assigned_roles: Peranan diperuntukkan
     user_not_link_entity: "Pengguna belum disuaipadan dengan mana-mana entiti"
+    access_by_module: Akses Mengikut Modul
+    roles_vs_modules: "Peruntukan peranan / akses "
+    subject_to: "mengikut modul tertakluk kepada : "
+    subject1: "sss"
+    subject2: "ddd"
+    
   
   role:
     title: Senarai Peranan
@@ -708,6 +723,7 @@ ms_MY:
       status_movement: "Status & Pergerakan"
       no_registered_vehicle: "Anda tidak mempunyai rekod kenderaan berdaftar dalam sistem ini. Sila daftarkan kenderaan anda dalam submodul Staf terlebih dahulu."
       vehicle_must_exist: " mesti diisi jika 'kenderaan sendiri' dipilih"
+      no_longer_editable: Permohonan Perjalanan tidak lagi boleh disunting
       
     travel_claim:
       title: Tuntutan Perjalanan
@@ -791,6 +807,7 @@ ms_MY:
       claim_exist: "yang dipilih telah wujud"
       travel_requests_must_exist: mesti dipilih
       mileage_xor_km_money: " : Masukkan Batuan (km) atau Nilai (RM), bukan kedua-duanya (diisi / dibiarkan kosong)"
+      edit_by_applicant: Suntingan hanya boleh dibuat oleh pemohon
 
     staff_appraisal:
       title: Penilaian Prestasi
@@ -1003,6 +1020,7 @@ ms_MY:
     balance_after: "(selepas cuti ini diambil)"
     leave_already_taken: "Cuti telah diambil pada tarikh cuti yang sedang dimohon!"
     begin_before_ends: "Tarikh mula cuti mestilah sebelum cuti berakhir dan selepas tarikh semasa"
+    submit: Hantar
   
   position:
     title: "Tugas & Tanggungjawab"
@@ -1123,6 +1141,7 @@ ms_MY:
     compulsory_monthly: "Unit / Jabatan dan Bulan mestilah diisi untuk carian Laporan Bulanan"
     compulsory_listing: "Unit / Jabatan, Nama Staf dan Bulan Carian mestilah diisi untuk carian Senarai Bulanan"
     compulsory_details: "Unit / Jabatan, Nama Staf, Bulan Carian dan Jenis Paparan mestilah diisi untuk carian Perincian Bulanan (termasuk Pengecualian)"
+    attendance_not_exist: "Rekod kedatangan tidak wujud"
   
   attendance:
     title: "Pengurusan Datang Lambat & Pulang Awal"
@@ -1377,6 +1396,7 @@ ms_MY:
       remarks: Catatan
       released_on: "Dikeluarkan pada  "
       loan_officer: Pegawai Pengeluar
+      received_officer: Pegawai Pemulangan
       approve: Meluluskan
       reject: Ditolak
       loanable: Senarai Aset Boleh Dipinjam
@@ -1749,7 +1769,8 @@ ms_MY:
       refer_tphep: Rujuk ke TPHEP
       refer_bpl: Rujuk ke BPL
       closed: Tutup
-      all: Semua Kes
+      all_case: Semua Kes
+      all_infraction: Semua Kesalahan
       smooking: Merokok
       skip_class: Ponteng Kelas
       quarrel: Bergaduh
@@ -1871,7 +1892,8 @@ ms_MY:
       edit_absent_by_class: "Sila sunting kehadiran pelajar mengikut jadual / kelas masing-masing untuk kemasukan butiran 'Kedatangan' (sebab, tindakan diambil, tindakan selesai dan catatan)."
       
   cofile:
-    index: Senarai
+    title: Daftar Fail
+    index: Senarai Fail
     cofileno: No Fail 
     name: Nama Fail
     location: Lokasi
@@ -1881,7 +1903,9 @@ ms_MY:
     control: Tindakan  
     file_details: Maklumat Fail
     onloanxdt: Tarikh Dipulangkan
-    onloan: Dipinjam	  
+    onloan: Dipinjam
+    new: Fail Baru
+    edit: Sunting Fail
   
   library:
     title: Perpustakaan
@@ -2096,10 +2120,11 @@ ms_MY:
     cc1action: Tindakan yang diambil
     cc1remarks: Catatan
     cc1closed: Selesai Tindakan
-    cc1actiondate: Taikh Tindakan Diambil
+    cc1actiondate: Tarikh Tindakan Diambil
     action_by: Tindakan Oleh
     attachment_action: "Lampiran (Tindakan)"
     generate_report: Laporan
+    new: Dokumen Baru
 
   campus:
     tenants:

@@ -40,7 +40,7 @@ class Exam::ExamquestionsController < ApplicationController
           else
             @programme_id=Programme.where(name: lecturer_basicprog_name, ancestry_depth: 0).first.id
           end
-        elsif roles.include?("administration")
+        elsif roles.include?("administration") || roles.include?("examquestions_module")
           @programme_id='0'
         else
           leader_unit=@tasks_main.scan(/Program (.*)/)[0][0].split(" ")[0] if @tasks_main!="" && @tasks_main.include?('Program')
@@ -181,7 +181,7 @@ class Exam::ExamquestionsController < ApplicationController
             @programme_list=Programme.where(id: @preselect_prog)
             @subjects=Programme.subject_groupbyoneprogramme2(@preselect_prog)
           end
-        elsif current_user.roles.pluck(:authname).include?("administration")
+        elsif current_user.roles.pluck(:authname).include?("administration") || current_user.roles.pluck(:authname).include?("examquestions_module")
            @programme_list=Programme.roots
            @subjects=Programme.subject_groupbyprogramme
         else
@@ -201,7 +201,7 @@ class Exam::ExamquestionsController < ApplicationController
       @examquestion = Examquestion.find(params[:id])
       @creator = @examquestion.creator_id
       @lecturer_programme = current_user.userable.positions[0].unit
-      if current_user.roles.pluck(:authname).include?("administration")
+      if current_user.roles.pluck(:authname).include?("administration") || current_user.roles.pluck(:authname).include?("examquestions_module")
         @programme_list=Programme.roots
         @subjects=Programme.subject_groupbyprogramme
       elsif current_user.roles.pluck(:authname).include?("programme_manager") && @lecturer_programme=="Pengkhususan" 

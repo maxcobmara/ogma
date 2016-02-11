@@ -98,7 +98,7 @@ class Slip_pengesahan_cuti_pelajarPdf < Prawn::Document
           ["",""],
           ["4. Keputusan Warden", ": #{@leaveforstudent.approved2? ? 'Diluluskan' : 'Tidak Diluluskan'}"],
           ["5. Nama Pelulus", ": #{@leaveforstudent.approver_details2}"],
-          ["6. Tarikh Diluluskan", ": #{@leaveforstudent.approved? ? I18n.l(@leaveforstudent.approvedate2) : @leaveforstudent.approvedate2.try(:strftime, '%d %b %Y')}"]]
+          ["6. Tarikh Diluluskan", ": #{@leaveforstudent.approved? ? (@leaveforstudent.approvedate2.try(:strftime, '%d %b %Y')) : @leaveforstudent.approvedate2.try(:strftime, '%d %b %Y')}"]]
   
     table(data, :column_widths => [200, 300], :cell_style => { :size => 11})  do
       a = 0

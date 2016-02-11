@@ -25,6 +25,7 @@ en:
     models:
       staff: Staff
       asset: Asset
+      asset_defect: Asset Defect
       student: Student
       location: Location
       examquestion: Examquestion
@@ -32,6 +33,7 @@ en:
       examresult: Keputusan Peperiksaan
       resultline: Keputusan
       leaveforstudent: Student Leave
+      leaveforstaff: Staff Leave
       travel_request: Travel Request
       travel_claim: Travel Claim
       stationery: Office Supplies
@@ -51,6 +53,12 @@ en:
       evaluate_course: Course Evaluation
       grade: Grade
     attributes:
+      asset_defect:
+        processed_by: Processed by
+        process_type: Process type
+        processed_on: Processed on
+        decision_by: Decision by
+        decision_on: Decision on
       student:
         name: Name
         sstatus: Student Status
@@ -321,6 +329,7 @@ en:
   rejected: Rejected
   active: Active
   not_active: Not Active
+  must_exist: must exist
 
   actions:
     new: New
@@ -393,6 +402,11 @@ en:
     available_roles: Available Roles
     assigned_roles: Assigned Roles
     user_not_link_entity: User not yet link with any entity
+    access_by_module: Access by Module
+    roles_vs_modules: "Role / modules access assignment "
+    subject_to: "are subjected to :"
+    subject1: "Upon selection of Administration..."
+    subject2: "Note, upon certain role assignment may restrict user access on certain modules as stated in below table"
 
   role:
     title: List of Roles
@@ -602,7 +616,7 @@ en:
       application_status:
         title: Application Status 
         title_apply: Apply for Training
-        training_request: Training Requests List
+        training_request: Training Application List
         schedule: Schedule
         course_name: Course Name
         staff_name: Staff Name
@@ -718,6 +732,7 @@ en:
       status_movement: "Status & Movement"
       no_registered_vehicle: "You have NO registered vehicle in this system. Please register your vehicle in Staff submodule first."
       vehicle_must_exist: " must exist if 'own car' is selected"
+      no_longer_editable: Travel Request no longer editable
 
     travel_claim:
       title: Travel Claims
@@ -800,6 +815,7 @@ en:
       claim_exist: "already exist"
       travel_requests_must_exist: must be selected
       mileage_xor_km_money: " : Specify a Mileage (km) or a Payment (RM), not both (entered / blank)"
+      edit_by_applicant: Editing only allowed by applicant
       
     staff_appraisal:
       title: Staff Appraisal
@@ -1087,6 +1103,7 @@ en:
     balance_after: "(after this leave is taken)"
     leave_already_taken: "Leave already taken for current applied dates!"
     begin_before_ends: "Your leave must begin before it ends"
+    submit: Submit
       
   position:
     title: "Tasks & Responsibilities"
@@ -1210,6 +1227,7 @@ en:
     compulsory_monthly: "Unit / Department and Month are compulsory fields for Monthly Report"
     compulsory_listing: "Unit / Department, Staff Name and Search Month are compulsory fields for Monthly Listing"
     compulsory_details: "Unit / Department, Staff Name, Search Month and Display Type are compulsory fields for Month Details (inc. Exception)"
+    attendance_not_exist: "Attendance records not exist"
  
   attendance:
     title: "Manage Lateness & Early Return"
@@ -1451,7 +1469,7 @@ en:
       onloan: On loan
       is_returned: Is returned
       is_approved: "Approved?"
-      notfy_hod: Notify HOD
+      notify_hod: Notify HOD
       due_date: Due date
       overdue: Overdue
       assetcode_name: Asset code or name
@@ -1465,6 +1483,7 @@ en:
       remarks: Remarks
       release_on: "Released on  "
       loan_officer: Loan Officer
+      received_officer: Received Officer
       approve: Approve
       reject: Reject
       loanable: Loanable Assets
@@ -1780,7 +1799,7 @@ en:
       title: Student Discipline Case
       title2: Discipline Cases
       report_title: "Discipline Case Listing (by Student)"
-      list: Student Discipline Case LIsting
+      list: Student Discipline Case Listing
       new: New Student Discipline Case
       edit: Edit Student Discipline Case
       new_case: New Case 
@@ -1836,7 +1855,8 @@ en:
       refer_tphep: Refer to TPHEP
       refer_bpl: Refer to BPL
       closed: Closed
-      all: All Case
+      all_case: All Case
+      all_infraction: All Infraction
       smooking: Smooking
       skip_class: Skip Class
       quarrel: Quarrel
@@ -1958,6 +1978,7 @@ en:
       edit_absent_by_class: "Please edit student attendances by schedule / class (one class) to enter 'Absence' details (reason, actions taken, action close/completeness and remark)."
 
   cofile:
+    title: File Registry
     index: List
     cofileno: Cofile No
     name: Fail Name
@@ -1968,7 +1989,8 @@ en:
     control: Control
     file_details: File Details
     onloanxdt: On Loan Returned Date
-    onloan: On Loan      
+    onloan: On Loan
+    new: New File
   
   library:
     title: Library
@@ -2186,6 +2208,7 @@ en:
     action_by: Action By
     attachment_action: "Attachment (Action)"
     generate_report: Report
+    new: New Document
 
   events:
     campus_events: Campus Events

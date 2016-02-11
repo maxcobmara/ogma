@@ -1,6 +1,9 @@
  class Staff::TravelRequestsController < ApplicationController
-  #before_filter :set_current_user
-  before_action :set_travel_request, only: [:show, :edit, :update, :destroy]
+   filter_access_to :index, :new, :create, :travel_log_index, :attribute_check => false
+   filter_access_to :show, :edit, :update, :destroy, :travel_log, :approval, :status_movement, :attribute_check => true
+   #before_filter :set_current_user
+   before_action :set_travel_request, only: [:show, :edit, :update, :destroy]
+   before_action :set_admin, only: [:new, :edit]
     
   # GET /travel_requests
   # GET /travel_requests.xml
@@ -81,11 +84,11 @@
 	  format.html {render :action => "travel_log"}
 	  format.xml  { render :xml => @travel_request.errors, :status => :unprocessable_entity }
 	elsif params[:task] && params[:task]=="2"
-	  w = []
-	  @travel_request.errors.each do |k,v|
-	    w << k
-	  end
-	  flash[:notice]= "whhh"+w.to_s
+# 	  w = []
+# 	  @travel_request.errors.each do |k,v|
+# 	    w << v
+# 	  end
+# 	  flash[:notice]= "whhh"+w.to_s
 	   format.html {render :action => "approval"}
 	   format.xml  { render :xml => @travel_request.errors, :status => :unprocessable_entity }
 	else
@@ -150,6 +153,11 @@
     @travel_request = TravelRequest.find(params[:id])
     @travel_log = @travel_request
   end
+  
+  def set_admin
+      roles = current_user.roles.pluck(:authname)
+      @is_admin = true if roles.include?("administration") || roles.include?("staff_leaves_module_admin") || roles.include?("staff_leaves_module_viewer") || roles.include?("staff_leaves_module_user")
+    end
   
   def travel_request_params
     params.require(:travel_request).permit(:staff_id, :document_id, :staff_course_conducted_id, :destination, :depart_at, :return_at, :own_car, :own_car_notes, :dept_car, :others_car, :taxi, :bus, :train, :plane, :other, :other_desc, :is_submitted, :submitted_on, :replaced_by, :mileage, :mileage_replace, :hod_id, :hod_accept, :hod_accept_on, :travel_claim_id, :is_travel_log_complete, :log_mileage, :log_fare, :code, :others_car_notes, travel_claim_logs_attributes: [:id, :travel_request_id, :travel_on, :start_at, :finish_at, :destination, :mileage, :km_money, :checker, :checker_notes,:_destroy])

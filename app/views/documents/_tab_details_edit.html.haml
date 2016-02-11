@@ -59,8 +59,7 @@
       = f.label t 'document.file_no'   , for: :file_id
     .col-md-6
       = f.collection_select :file_id, Cofile.order(cofileno: :asc), :id, :file_no_and_name, {:include_blank => true}, {class: 'selectpicker', "data-width"=>"500px"}
-		  
-		  
+  
   .form-group
     .col-sm-2.control-label
       = f.label t 'document.uploaded'  , for: :data_dsiplay

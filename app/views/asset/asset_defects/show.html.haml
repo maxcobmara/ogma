@@ -41,8 +41,8 @@
         
       - if @defective.is_processed
         - permitted_to? :decision, :asset_asset_defects do
-          - if @defective.decision_by==current_user.userable_id
-            = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('.decision', :default => t("helpers.links.decision")), decision_asset_defect_path(@defective), :class => 'btn btn-primary'
+          /- if @defective.decision_by==current_user.userable_id
+          = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('.decision', :default => t("helpers.links.decision")), decision_asset_defect_path(@defective), :class => 'btn btn-primary'
        
       - permitted_to? :delete, :asset_asset_defects do
         = link_to content_tag(:i, "", :class => "fa fa-trash-o icon-white") + " " + t('.destroy', :default => t("helpers.links.destroy")), |

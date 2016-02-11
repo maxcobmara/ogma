@@ -181,9 +181,12 @@ class Kewpa2Pdf < Prawn::Document
      discard_option = "Tanam" if @asset.asset_disposal.first.disposal_type == "discard" && @asset.asset_disposal.first.discard_options == "bury"
      discard_option = "Bakar" if @asset.asset_disposal.first.disposal_type == "discard" && @asset.asset_disposal.first.discard_options == "burn"
      discard_option = "Tenggelam" if @asset.asset_disposal.first.disposal_type == "discard" && @asset.asset_disposal.first.discard_options == "sink"
+   else
+     disposal_type=""
+     discard_option=""
    end
    data = [ ["Rujukan Kelulusan", "Tarikh", "Kaedah Pelupusan", "Tandatangan"],
-           ["#{@asset.asset_disposal.blank? ? "" : @asset.asset_disposal.first.try(:document).try(:title)}", "#{@asset.asset_disposal.blank? ? "" : @asset.asset_disposal.first.disposed_on.try(:strftime, '%d/%m/%y')}", "#{@asset.asset_disposal.blank? ? "" : disposal_type} #{' - '+ discard_option if @asset.asset_disposal.first.disposal_type=='discard'}", ""]]
+           ["#{@asset.asset_disposal.blank? ? "" : @asset.asset_disposal.first.try(:document).try(:title)}", "#{@asset.asset_disposal.blank? ? "" : @asset.asset_disposal.first.disposed_on.try(:strftime, '%d/%m/%y')}", "#{@asset.asset_disposal.blank? ? "" : disposal_type} #{' - '+ discard_option if @asset.asset_disposal.first && @asset.asset_disposal.first.disposal_type=='discard'}", ""]]
    table(data, :column_widths => [150, 74, 148, 148], :cell_style => { :size => 8})
    start_new_page
   end

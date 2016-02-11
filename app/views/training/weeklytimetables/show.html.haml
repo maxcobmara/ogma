@@ -54,7 +54,8 @@
       = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), training_weeklytimetables_path, :class => 'btn btn-default'
       = link_to content_tag(:i, "", class: "fa fa-file-pdf-o"), weekly_timetable_training_weeklytimetable_path(@weeklytimetable, format: "pdf"), class: "btn btn-default", "data-toggle" => "tooltip", title: "Weekly Timetable"
 
-      - permitted_to? :manage, :training_weeklytimetables do
+      /- permitted_to? :manage, :training_weeklytimetables do
+      - permitted_to? :update, :training_weeklytimetables do
         /HACK - restrict access when WT submitted (role:lecturer, index already restrict listing)
         - if @weeklytimetable.is_submitted!=true
           = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('.edit', :default => t("helpers.links.edit")), edit_training_weeklytimetable_path(@weeklytimetable),  :class => 'btn btn-primary'        
@@ -64,7 +65,7 @@
         - if @weeklytimetable.is_submitted==true
           = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('.edit', :default => t("helpers.links.approve")), approval_training_weeklytimetable_path(@weeklytimetable),  :class => 'btn btn-primary' 
 
-      - permitted_to? :manage, :training_weeklytimetables do
+      - permitted_to? :delete, :training_weeklytimetables do
         = link_to content_tag(:i, "", :class => "fa fa-trash-o icon-white") + " " + t('.destroy', :default => t("helpers.links.destroy")), |
         training_weeklytimetable_path(@weeklytimetable),                                                                                                    |
         :method => 'delete',                                                                                                           |

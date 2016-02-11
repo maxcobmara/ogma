@@ -16,7 +16,7 @@ class Leaveforstaff < ActiveRecord::Base
   
     def validate_positions_exist
       if applicant.position_for_staff == "-"
-        errors.add(:position, "must exist")
+        errors.add(:position,I18n.t('must_exist'))
       end
     end
     
@@ -51,7 +51,7 @@ class Leaveforstaff < ActiveRecord::Base
         end
       end
       duplicates = (e_leavedates & c_leavedates).count
-      if duplicates > 0 
+      if duplicates > 0 && (id.nil? || id.blank?)
         errors.add(:base, I18n.t('staff_leave.leave_already_taken'))
         return false
       else

@@ -1,4 +1,6 @@
 class StaffTraining::PtbudgetsController < ApplicationController
+  filter_access_to :index, :new, :create, :attribute_check => false
+  filter_access_to :show, :edit, :update, :destroy, :attribute_check => true
   helper_method :sort_column, :sort_direction
   before_action :set_ptbudget, only: [:show, :edit, :update, :destroy]
   #filter_resource_access
@@ -72,7 +74,7 @@ class StaffTraining::PtbudgetsController < ApplicationController
 
     respond_to do |format|
       if @ptbudget.update_attributes(ptbudget_params)
-        flash[:notice] =t('ptbudgets.budget')+t('updated')
+        flash[:notice] =t('ptbudgets.budget')+t('actions.updated')
         format.html { redirect_to(staff_training_ptbudgets_path(@ptbudget)) }
         format.xml  { head :ok }
       else

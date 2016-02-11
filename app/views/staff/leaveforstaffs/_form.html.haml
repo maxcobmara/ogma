@@ -11,8 +11,17 @@
           .col-sm-2.control-label
             = f.label t 'staff_leave.name', for: :staff_id
           .col-md-3
-            = f.collection_select :staff_id, Staff.all.order(name: :asc), :id,  :staff_name_with_position, {:include_blank =>t('helpers.prompt.select_staff'), :selected=>@current_user.userable_id},{class: 'selectpicker mandatory', "data-width"=>'440px'}
-			
+            - if @leaveforstaff.staff_id
+              - staff_list=Staff.where(id: @leaveforstaff.staff_id)
+              - selected=@leaveforstaff.staff_id
+            - else
+              - if @is_admin
+                - staff_list= Staff.all.order(name: :asc)
+              - else
+                - staff_list=Staff.where(id: @current_user.userable_id)
+              - selected=@current_user.userable_id
+            = f.collection_select :staff_id, staff_list, :id,  :staff_name_with_position, {:include_blank =>t('helpers.prompt.select_staff'), :selected=>selected},{class: 'selectpicker mandatory', "data-width"=>'440px'}
+
         .form-group
           .col-sm-2.control-label
             = f.label t 'staff_leave.leavetype', for: :leavetype
@@ -36,12 +45,18 @@
             = f.label t 'staff_leave.reason', for: :reason
           .col-md-3
             = f.text_field :reason , class: 'form-control'
-			
+
         .form-group
           .col-sm-2.control-label
             = f.label t 'staff_leave.notes', for: :notes
           .col-md-3
             = f.text_area :notes, :size => "30x5", class: 'form-control'
+
+        /.form-group
+        /  .col-sm-2.control-label
+        /    = f.label t 'staff_leave.submit', for: :submit
+        /  .col-md-3
+        /    = f.check_box :submit
 
   
   :javascript

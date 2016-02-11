@@ -75,7 +75,7 @@ class StudentDisciplineCase < ActiveRecord::Base
   #note : status - in English all the time
   def status_workflow
     flow = Array.new
-      if status == nil
+      if status == nil || status.blank?
         flow << [ I18n.t('student.discipline.new2'),"New"]
       #------------
       elsif status == "New"  
@@ -107,7 +107,9 @@ class StudentDisciplineCase < ActiveRecord::Base
   end
     
   def render_infraction
-    (DropDown::INFRACTION.find_all{|disp, value| value == infraction_id }).map {|disp, value| disp}.first
+    a=(DropDown::INFRACTION.find_all{|disp, value| value == infraction_id }).map {|disp, value| disp}.first
+    a+=" - "+description if infraction_id==4
+    a
   end
     
   def reporter_details 

@@ -1,5 +1,6 @@
 class Exam::GradesController < ApplicationController
-  filter_access_to :all 
+  filter_access_to :index, :new, :create, :new_multiple, :create_multiple, :edit_multiple, :update_multiple, :attribute_check => false
+  filter_access_to :show, :edit, :update, :destroy, :attribute_check => true
   before_action :set_grade, only: [:show, :edit, :update, :destroy]
   before_action :set_data_edit_update_new_create, only: [:edit, :update, :new, :create]
   before_action :set_new_multiple_create_multiple, only: [:new_multiple, :create_multiple]
@@ -57,7 +58,7 @@ class Exam::GradesController < ApplicationController
           #    @subjectlist_preselec_prog = Programme.where(id: programme_id).first.descendants.at_depth(2)
           #end
           ###
-        elsif roles.include?("administration")
+        elsif roles.include?("administration") || roles.include?("exam_grade_module")
           programme_id='0'
           @subjectlist_preselec_prog = Programme.at_depth(2) 
         else
@@ -525,7 +526,7 @@ class Exam::GradesController < ApplicationController
             #  @subjects=Programme.subject_groupbyoneprogramme2_grade(@preselect_prog) #new only
             #  @students=Student.groupby_oneprogramme(@preselect_prog)
             #end
-          elsif roles.include?("administration")
+          elsif roles.include?("administration") || roles.include?("exam_grade_module")
             @programme_names=Programme.programme_names
             @subjects=Programme.all_subjects_groupbyprogramme_grade #new only
             @students=Student.groupby_programme

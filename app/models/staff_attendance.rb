@@ -588,6 +588,10 @@ class StaffAttendance < ActiveRecord::Base
     		      jam = (StaffShift.where(id: shift).first.end_at.strftime('%H').to_i) - 8
     		      minit = minit_shift
     		  end
+		  ######
+		  minit=minit_shift
+		  jam=(StaffShift.where(id: shift).first.end_at.strftime('%H').to_i) - 8
+		  ######
   		    #==================
   		else
   		    #1700 --> 8j60m (if shift end at 5pm)
@@ -623,20 +627,24 @@ class StaffAttendance < ActiveRecord::Base
           #DO NOT REMOVE YET-below-working one!
           #early = "#{ending_shift} ~ #{timmy}" + " minutes" + "<BR>JAM_SHIFT:#{jam} MINIT_SHIFT:#{minit_shift} MINIT:#{minit}"+"<BR>TIMMYJAM:#{timmy_jam} TIMMYMINUTES:#{timmy_minutes}"
           jam_diff = (jam - timmy_jam)
-          minit_diff = (minit - timmy_minutes)
+          minit_diff = (minit - timmy_minutes) 
           #early = (jam_diff.to_s+" hours " if jam_diff>0) + (minit_diff.to_s+" minutes" if minit_diff>0) # +"#{timmy} ~ #{ending_shift} "
           #replace above early with these line : (page 15:http://localhost:3000/staff_attendances?id=2012-10-02)
           #$$$$$$-----------------------------
           if jam_diff > 0 && minit_diff <= 0 
-              early = "#{jam_diff} hours"
+            if minit_diff ==0
+              early = "#{jam_diff} hours" 
+            else
+              early = "#{jam_diff-1} hours #{60-timmy_minutes} minutes"
+            end
           elsif jam_diff > 0 && minit_diff > 0 
-	      if minit_diff==60
-                early="#{jam_diff+1} hours"
-	      else
-                early = "#{jam_diff} hours #{minit_diff} minutes"#+" timmy "+timmy.to_s+" ending_shift "+ending_shift.to_s+" timmy2 "+timmy2.to_s+" timmjam " +timmy_jam.to_s+"timmy minute"+timmy_minutes.to_s+" jam  "+jam.to_s
-	      end
+            if minit_diff==60
+              early="#{jam_diff+1} hours"
+            else
+                early = "#{jam_diff} hours #{minit_diff} minutes"
+            end
           elsif minit_diff > 0 && jam_diff <= 0
-              early ="#{minit_diff} minutes" 
+              early ="#{minit_diff} minutes"
           else 
               early ="" #rescue for punctual
           end

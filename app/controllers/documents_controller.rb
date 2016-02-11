@@ -1,10 +1,18 @@
 class DocumentsController < ApplicationController
+  filter_access_to :index, :new, :create, :document_report, :attribute_check => false
+  filter_access_to :show, :edit, :update,  :attribute_check => true
   before_action :set_document, only: [:show, :edit, :update, :destroy]
-  #filter_access_to :all#filter_resource_access #temp 5Apr2013
+
   # GET /documents
   # GET /documents.xml
   def index
-    @search = Document.search(params[:q])
+    roles = current_user.roles.pluck(:authname)
+    @is_admin = roles.include?("administration") || roles.include?("e_filing") || roles.include?("documents_module_admin") || roles.include?("documents_module_viewer") || roles.include?("documents_module_user")
+    if @is_admin
+      @search = Document.search(params[:q])
+    else
+      @search = Document.sstaff2(current_user.userable.id).search(params[:q])
+    end 
     @documents = @search.result
     @documents_pagi = @documents.page(params[:page]||1) 
   end
@@ -78,7 +86,7 @@ class DocumentsController < ApplicationController
 
      respond_to do |format|
        if @document.save
-         format.html { redirect_to @document, notice: 'Document was successfully created.' }
+         format.html { redirect_to @document, notice: (t 'document.title')+(t 'actions.created') }
          format.json { render action: 'show', status: :created, location: @document }
        else
          format.html { render action: 'new' }
@@ -92,7 +100,7 @@ class DocumentsController < ApplicationController
    def update
      respond_to do |format|
        if @document.update(document_params)
-         format.html { redirect_to document_path, notice: 'Document was successfully updated.' }
+         format.html { redirect_to document_path, notice: (t 'document.title')+(t 'actions.updated') }
          format.json { head :no_content }
        else
          format.html { render action: 'edit' }
@@ -121,7 +129,7 @@ class DocumentsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def document_params
-      params.require(:document).permit(:serialno, :refno, :title, :category, :letterdt, :letterxdt, :from, :stafffiled_id, :file_id, :otherinfo, :cc1date, :cctype_id, :closed, :data)
+      params.require(:document).permit(:id, :serialno, :refno, :title, :category, :letterdt, :letterxdt, :from, :stafffiled_id, :file_id, :otherinfo, :cc1date, :cctype_id, :closed, :data, circulations_attributes: [:id, :_destroy, :document_id, :staff_id, :action_date, :action_taken, :action_closed, :action_remarks, :action]) 
     end
 
 end

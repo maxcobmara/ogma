@@ -17,8 +17,9 @@
       = link_to content_tag(:i, "", class: "fa fa-file-pdf-o"), appraisal_form_staff_staff_appraisal_path(@staff_appraisal, format: "pdf"), class: "btn btn-default", "data-toggle" => "tooltip", title: "Appraisal Form" 
       -  if @staff_appraisal.edit_icon(@current_user) != "noedit" 
         = link_to content_tag(:i, "", class: "fa fa-edit") + " " + t('actions.edit', :default => t("helpers.links.edit")), edit_staff_staff_appraisal_path(@staff_appraisal), class: 'btn btn-primary'
-      = link_to content_tag(:i, "", :class => "fa fa-trash-o icon-white") + " " + t('helpers.links.destroy'), |
-      staff_staff_appraisal_path(@staff_appraisal),                                                                                                    |
-      :method => 'delete',                                                                                                           |
-      :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },                   |
-      :class => 'btn btn-danger'
+      - permitted_to? :destroy, :staff_staff_appraisals do
+        = link_to content_tag(:i, "", :class => "fa fa-trash-o icon-white") + " " + t('helpers.links.destroy'), |
+        staff_staff_appraisal_path(@staff_appraisal),                                                                                                    |
+        :method => 'delete',                                                                                                           |
+        :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },                   |
+        :class => 'btn btn-danger'

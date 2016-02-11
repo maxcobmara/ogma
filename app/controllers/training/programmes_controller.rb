@@ -1,4 +1,5 @@
 class Training::ProgrammesController < ApplicationController
+  filter_resource_access
   before_action :set_programme, only: [:show, :edit, :update, :destroy]
   # GET /programmes
   # GET /programmes.xml

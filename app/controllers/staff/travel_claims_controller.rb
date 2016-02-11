@@ -1,8 +1,9 @@
 class Staff::TravelClaimsController < ApplicationController
+  filter_access_to :index, :new, :create, :attribute_check => false
+  filter_access_to :show, :edit, :update, :destroy, :check, :approve, :claimprint, :attribute_check => true
   before_action :set_travel_claim, only: [:show, :edit, :update, :destroy]
+  before_action :set_admin, only: [:index, :edit]
   def index
-    roles = current_user.roles.pluck(:id)
-    @is_admin = roles.include?(2)
     if @is_admin
       @search = TravelClaim.search(params[:q])
     else
@@ -53,11 +54,14 @@ class Staff::TravelClaimsController < ApplicationController
   # POST /travel_claims.xml
   def create
     @travel_claim = TravelClaim.new(travel_claim_params)
-    @travelrequests = params[:travel_claim][:travel_request_ids] #array
+    #@travelrequests = params[:travel_claim][:travel_request_ids] #array
+    @travelrequests= params[:travel_request_ids]
+    @travelrequest_ids=[]
+    @travelrequests.each{|x|@travelrequest_ids << x.to_i}
     
     respond_to do |format|
       if @travel_claim.save
-	TravelRequest.where('id IN (?)',@travelrequests).update_all(travel_claim_id: @travel_claim.id)
+        TravelRequest.where('id IN (?)', @travelrequest_ids).update_all(travel_claim_id: @travel_claim.id)
         format.html { redirect_to(staff_travel_claim_path(@travel_claim), :notice =>t('staff.travel_claim.title')+t('actions.created')) }
         format.xml  { render :xml => @travel_claim, :status => :created, :location => @travel_claim }
       else
@@ -116,8 +120,14 @@ class Staff::TravelClaimsController < ApplicationController
     @travel_claim = TravelClaim.find(params[:id])
   end
   
+  def set_admin
+    roles = current_user.roles.pluck(:authname)
+    mypost = Position.where(staff_id: current_user.userable_id).first
+    @is_admin = true if roles.include?("administration") || roles.include?("finance_unit") || roles.include?("travel_claims_module_admin")|| roles.include?("travel_claims_module_viewer")|| roles.include?("travel_claims_module_user") || mypost.is_root?
+  end
+  
   def travel_claim_params
-    params.require(:travel_claim).permit(:staff_id, :claim_month, :advance, :total, :is_submitted, :submitted_on, :is_checked, :is_returned, :checked_on, :checked_by, :notes, :is_approved, :approved_on, :approved_by, :accommodations, travel_claim_receipts_attributes: [:id,:expenditure_type, :receipt_code, :amount, :checker, :checker_notes, :_destroy], travel_claim_allowances_attributes: [:id, :quantity, :expenditure_type, :amount, :receipt_code,:checker, :checker_notes,:_destroy])
+    params.require(:travel_claim).permit(:jobtype, :travel_request_ids, :staff_id, :claim_month, :advance, :total, :is_submitted, :submitted_on, :is_checked, :is_returned, :checked_on, :checked_by, :notes, :is_approved, :approved_on, :approved_by, :accommodations, travel_claim_receipts_attributes: [:id,:expenditure_type, :receipt_code, :amount, :checker, :checker_notes, :_destroy], travel_claim_allowances_attributes: [:id, :travel_claim_id, :quantity, :expenditure_type, :amount, :receipt_code,:checker, :checker_notes,:_destroy])  # travel_requests_attributes: [:id, :travel_claim_id],
   end
   
 end

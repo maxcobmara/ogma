@@ -1,9 +1,12 @@
 class Staff::LeaveforstaffsController < ApplicationController
+  filter_access_to :index, :new, :create, :attribute_check => false
+  filter_access_to :show, :edit, :update, :destroy,  :processing_level_1, :processing_level_2, :attribute_check => true
   before_action :set_leaveforstaff, only: [:show, :edit, :update, :destroy]
-  
+  before_action :set_admin, only: [:new, :edit]
+   
   def index
-    roles = current_user.roles.pluck(:id)
-    @is_admin = roles.include?(2)
+    roles = current_user.roles.pluck(:authname)
+    @is_admin = true if roles.include?("administration") || roles.include?("staff_leaves_module_admin") || roles.include?("staff_leaves_module_viewer") || roles.include?("staff_leaves_module_user")
     if @is_admin
       @search = Leaveforstaff.search(params[:q])
     else
@@ -25,7 +28,7 @@ class Staff::LeaveforstaffsController < ApplicationController
     @leaveforstaff = Leaveforstaff.find(params[:id])
     respond_to do |format|
       if @leaveforstaff.update(leaveforstaff_params)
-        format.html { redirect_to staff_leaveforstaff_path, notice:t('staff_leave.update_notice')}
+        format.html { redirect_to staff_leaveforstaff_path, notice: t('staff_leave.update_notice')}
         format.json { head :no_content }
       else
         format.html { render action: 'edit' }
@@ -70,7 +73,7 @@ class Staff::LeaveforstaffsController < ApplicationController
 
   def processing_level_1
     @leaveforstaff = Leaveforstaff.find(params[:id])
-    LeaveforstaffsMailer.approve_leave_notification(@leaveforstaff).deliver 
+    #LeaveforstaffsMailer.approve_leave_notification(@leaveforstaff).deliver 
   end
   
   def processing_level_2
@@ -81,6 +84,11 @@ class Staff::LeaveforstaffsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_leaveforstaff
       @leaveforstaffs = Leaveforstaff.find(params[:id])
+    end
+    
+    def set_admin
+      roles = current_user.roles.pluck(:authname)
+      @is_admin = true if roles.include?("administration") || roles.include?("travel_requests_module_admin") || roles.include?("travel_requests_module_viewer") || roles.include?("travel_requests_module_user")
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

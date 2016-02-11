@@ -61,7 +61,8 @@ class AssetLoan < ActiveRecord::Base
   end
   
   def self.sstaff2(u)
-     where('staff_id=? OR loaned_by=? OR loan_officer=? OR hod=? OR received_officer=?', u,u,u,u,u)
+     aa=User.where(userable_id: u).first.unit_members
+     where('staff_id=? OR loaned_by=? OR loan_officer=? OR hod=? OR received_officer=? OR loaned_by IN(?)', u,u,u,u,u,aa)
   end    
   
   def set_staff_when_blank

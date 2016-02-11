@@ -57,8 +57,11 @@
     %hr
     .form-actions
       = link_to content_tag(:i, "", class: "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), staff_training_ptdos_path, class: 'btn btn-default'
-      = link_to content_tag(:i, "", class: "fa fa-edit") + " " + t('.edit', :default => t("helpers.links.edit")), edit_staff_training_ptdo_path, class: 'btn btn-primary'
-      - permitted_to? :approve, :staff_training_ptdos do
+      - permitted_to? :update, :staff_training_ptdos do
+        /- if @ptdo.unit_approve.blank? || @ptdo.unit_approve &&@ptdo.dept_approve &&  ((User.where(userable_id: @ptdo.staff_id).first.roles.map(&:name).include?("Lecturer") || Programme.roots.map(&:name).include?(@ptdo.applicant.positions.first.unit)) && @current_user.userable.positions.first.name != "Timbalan Pengarah (Pengurusan)" ) || (User.where(userable_id: @ptdo.staff_id).first.roles.map(&:name).include?("Lecturer")==false && Programme.roots.map(&:name).include?(@ptdo.applicant.positions.first.unit)==false && @current_user.userable.positions.first.name == "Timbalan Pengarah (Pengurusan)") || @current_user.roles.map(&:name).include?("Training Manager") || @current_user.roles.map(&:name).include?("Training Administration")
+        = link_to content_tag(:i, "", class: "fa fa-edit") + " " + t('.edit', :default => t("helpers.links.edit")), edit_staff_training_ptdo_path, class: 'btn btn-primary'
+
+      - permitted_to? :update, :staff_training_ptdos do
         - if @ptdo.trainee_report.blank?
           = link_to content_tag(:i, "", class: "fa fa-trash-o icon-white") + " " + t('.destroy', :default => t("helpers.links.destroy")), |
               staff_training_ptdo_path(@ptdo),                                                                                                    |

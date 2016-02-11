@@ -1,19 +1,17 @@
 class Student::StudentDisciplineCasesController < ApplicationController
-  
-  #filter_resource_access
-  #filter_access_to :all
-   filter_access_to :index, :new, :create, :discipline_report, :anacdotal_report, :actiontaken, :referbpl, :attribute_check => false
-  filter_access_to :show, :edit, :update, :destroy, :attribute_check => true
+  filter_access_to :index, :new, :create, :discipline_report, :anacdotal_report, :attribute_check => false
+  filter_access_to :show, :edit, :update, :referbpl, :actiontaken, :destroy, :attribute_check => true
   
   before_action :set_student_discipline_case, only: [:show, :edit, :update, :destroy]
    
   # GET /student_discipline_cases
   # GET /student_discipline_cases.xml
   def index
-    roles = current_user.roles.pluck(:id)
-    @is_admin = roles.include?(2)
-    if @is_admin
-      @search = StudentDisciplineCase.search(params[:q])
+    roles = current_user.roles.pluck(:authname)
+    @is_admin = roles.include?("administration") || roles.include?("disciplinary_officer") || roles.include?("student_discipline_module_admin") || roles.include?("student_discipline_module_viewer") || roles.include?("student_discipline_module_user") || roles.include?("warden")
+    #@viewer_only=roles.include?(25)
+    if @is_admin #|| @viewer_only
+      @search = StudentDisciplineCase.search(params[:q])      #have access to discipline_report & anacdotal_report
     else
       @search = StudentDisciplineCase.sstaff2(current_user.userable.id).search(params[:q])
     end 
@@ -36,7 +34,7 @@ class Student::StudentDisciplineCasesController < ApplicationController
   
   def discipline_report
     roles = current_user.roles.pluck(:id)
-    @is_admin = roles.include?(2)
+    @is_admin = roles.include?(2) || roles.include?(40)
     if @is_admin
       @search = StudentDisciplineCase.search(params[:q])
     else
@@ -152,7 +150,7 @@ class Student::StudentDisciplineCasesController < ApplicationController
   def anacdotal_report
     @student_id=params[:student].to_i    
     roles = current_user.roles.pluck(:id)
-    @is_admin = roles.include?(2)
+    @is_admin = roles.include?(2) || roles.include?(40)
     if @is_admin
       @discipline_cases=StudentDisciplineCase.where(student_id: @student_id)
     else

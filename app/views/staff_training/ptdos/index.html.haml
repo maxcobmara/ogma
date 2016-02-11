@@ -23,7 +23,11 @@
     = render "index_search"
     - @ptdos.each do |ptdo|
       %tr
-        %td= link_to (t 'staff.training.application_status.group_by') + ptdo.ptschedule_id.to_s + " ("+ptdo.ptschedule.start.try(:strftime, '%d %b %y')+" )", staff_training_ptdo_path(ptdo)
+        %td
+          - if ptdo.applicant.positions.count > 0
+            = link_to (t 'staff.training.application_status.group_by') + ptdo.ptschedule_id.to_s + " ("+ptdo.ptschedule.start.try(:strftime, '%d %b %y')+" )", staff_training_ptdo_path(ptdo)
+          - else
+            = (t 'staff.training.application_status.group_by') + ptdo.ptschedule_id.to_s + " ("+ptdo.ptschedule.start.try(:strftime, '%d %b %y')+" )"
         %td= ptdo.try(:ptschedule).try(:course).try(:name)
         %td= ptdo.applicant_details
         %td= ptdo.apply_dept_status

@@ -7,8 +7,8 @@ class AssetDefect < ActiveRecord::Base
   belongs_to :confirmer,   :class_name => 'Staff', :foreign_key => 'decision_by'
   
   validates :asset_id, :reported_by, :presence => true
-  validates :processed_by, :process_type, :processed_on, presence: true, :if => :is_processed
-  validates :decision_by, :decision_on, presence: true, :if => :decision
+  validates :processed_by, :process_type, :processed_on, :decision_by, presence: true, :if => :is_processed
+  validates :decision_on, presence: true, :if => :decision
   
   attr_accessor :editing_page
   
@@ -27,8 +27,8 @@ class AssetDefect < ActiveRecord::Base
   
   def self.sstaff2(u)
      where('reported_by=? OR processed_by=? OR decision_by=?', u,u,u)
-  end    
-  
+  end  
+
 end
 
 # == Schema Information

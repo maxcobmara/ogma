@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-
+ filter_resource_access
  before_action :set_user, only: [:show, :edit, :update, :destroy]
  before_filter :load_userable, only: [:link, :edit, :update]
 

@@ -12,35 +12,45 @@ class TravelClaim < ActiveRecord::Base
   accepts_nested_attributes_for :travel_requests
   
   has_many :travel_claim_receipts, :dependent => :destroy
-  accepts_nested_attributes_for :travel_claim_receipts, :reject_if => lambda { |a| a[:amount].blank? }, :allow_destroy =>true
+  accepts_nested_attributes_for :travel_claim_receipts, :reject_if => lambda { |a| a[:amount].blank? }, :allow_destroy =>true #must include for Update too
   
   #has_many :travel_claim_logs, :through => :travel_requests
   
   has_many :travel_claim_allowances, :dependent => :destroy
-  accepts_nested_attributes_for :travel_claim_allowances, :reject_if => lambda { |a| a[:amount].blank? }, :allow_destroy =>true
+  accepts_nested_attributes_for :travel_claim_allowances, :reject_if => lambda { |a| a[:amount].blank? }, :allow_destroy =>true #must include for Update too
   
-  validates_presence_of :travel_requests, :message => I18n.t('staff.travel_claim.travel_requests_must_exist')
+  #validates_presence_of :travel_requests, :message => I18n.t('staff.travel_claim.travel_requests_must_exist')
   validates_uniqueness_of :claim_month, :scope => :staff_id, :message => I18n.t('staff.travel_claim.claim_exist')
   validate :accommodations_must_exist_for_lodging_hotel_claims
   
+  attr_accessor :jobtype
+
   def set_to_nil_where_false
     if is_submitted == true
       self.submitted_on= Date.today
-      #finance check
-      if is_returned == true
-        self.is_checked == false
+      #owner resubmit amended form
+      if is_checked == false && jobtype=="editing" #staff_id==Login.current_login.staff_id  #during resubmission of amended form by owner
+        self.is_returned = false 
       end
-      #check part
-      if is_checked == false #&& staff_id != Login.current_login.staff_id  #2nd time return by finance   #current_user not accessible fr model? 19Dec14
+      #check part?
+      if is_checked == false && jobtype=="checking"#staff_id != Login.current_login.staff_id  #2nd time return by finance
         self.is_returned = true
       end
-      if is_checked == true
+      if is_checked == true && jobtype=="checking"#staff_id != Login.current_login.staff_id
         self.checked_on = Date.today
-        #self.checked_by =  Login.current_login.staff_id  #current_user???
       end
     else
       self.submitted_on= nil
     end
+  end
+  
+  def hods
+    hod_posts = Position.where('ancestry_depth<?',2)
+    approver=[] 
+    hod_posts.each do |hod|
+      approver << hod.staff_id if (hod.name.include?("Pengarah")||(hod.name.include?("Timbalan Pengarah")) && hod.staff_id!=nil)
+    end
+    approver
   end
   
   def remove_claim_from_travel_request

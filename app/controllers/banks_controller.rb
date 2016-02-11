@@ -1,4 +1,5 @@
 class BanksController < ApplicationController
+  filter_resource_access
   before_action :set_bank, only: [:show, :edit, :update, :destroy]
   # GET /banks
   # GET /banks.xml

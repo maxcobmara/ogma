@@ -76,7 +76,8 @@
             %td
               = link_to (l(ptbudget.fiscalstart).to_s+" "+t('to')+" "+l(ptbudget.fiscal_end)), staff_training_ptbudget_path(ptbudget)
               - if ptbudget.fiscal_end > Date.today && ptbudget.fiscal_end <= Date.today.end_of_year 
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<%= link_to image_tag("money_add.png", :border => 0, :title => (t 'ptbudget.additional_budget')) + " "+(t 'ptbudget.additional_budget'), :action =>'new', :newtype=> "2" 
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                = link_to (t 'ptbudget.additional_budget'), new_staff_training_ptbudget_path(:newtype=> "2")
                 /--ccc--
             %td{:style =>"text-align: right;"}=h ringgols(ptbudget.budget) 
             %td{:style =>"text-align: right;"}=h ringgols(ptbudget.used_budget)

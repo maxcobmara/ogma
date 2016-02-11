@@ -57,13 +57,14 @@
     %hr
     .form-actions
       = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('helpers.links.back'), student_student_discipline_cases_path, :class => 'btn btn-default'
-      - permitted_to? :feedback_referrer, :student_counseling_sessions do
-        - if @student_discipline_case.action_type == 'counseling'
-          = link_to content_tag(:i, "", class: "fa fa-file-pdf-o"), feedback_referrer_student_student_counseling_sessions_path(id: @student_discipline_case.id, format: "pdf"), class: "btn btn-default", "data-toggle" => "tooltip", title: (t 'student.discipline.counselor_feedback')
+      - permitted_to? :feedback_referrer, :student_student_counseling_sessions do
+        /- if @student_discipline_case.action_type == 'counseling'
+        = link_to content_tag(:i, "", class: "fa fa-file-pdf-o"), feedback_referrer_student_student_counseling_sessions_path(id: @student_discipline_case.id, format: "pdf"), class: "btn btn-default", "data-toggle" => "tooltip", title: (t 'student.discipline.counselor_feedback')
 
       /- permitted_to? :approve, @student_discipline_case do
-      - permitted_to? :approve, :student_student_discipline_cases do
-        - if ["New", "Open"].include? (@student_discipline_case.status) 
+      - permitted_to? :update, :student_student_discipline_cases do
+        /- if ["New", "Open"].include? (@student_discipline_case.status) 
+        - if @student_discipline_case.assigned2_to!=@current_user.userable_id
           = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('actions.edit'), edit_student_student_discipline_case_path(@student_discipline_case),  :class => 'btn btn-primary' 
 
       /- permitted_to? :manage, :student_student_discipline_cases do

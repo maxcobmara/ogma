@@ -1,5 +1,5 @@
 .col-md-8.col-md-offset-1
-        
+  /TODO - to include / display - mileage / claim rates table - ref:ICMS
   /Allowances section
   %BR
   %b= t 'staff.travel_claim.misc_allowances'
@@ -8,6 +8,7 @@
     .col-sm-3= t 'staff.travel_claim.type' 
     .col-sm-2= t 'staff.travel_claim.value'
     .col-sm-3= t 'staff.travel_claim.receipt_no'
+    .col-sm-2= t 'staff.travel_claim.claims_verification'
     %hr
   = f.fields_for :travel_claim_allowances do |builder|
     = render 'travel_claim_allowance_fields', :f => builder
@@ -31,7 +32,8 @@
   .row
     .col-sm-3= t 'staff.travel_claim.type' 
     .col-sm-3= t 'staff.travel_claim.receipt_no'
-    .col-sm-2= t 'staff.travel_claim.value'
+    .col-sm-3= t 'staff.travel_claim.value'
+    .col-sm-2= t 'staff.travel_claim.claims_verification'
     %hr
   = f.fields_for :travel_claim_receipts do |builder|
     = render 'travel_claim_receipt_fields', :f => builder
@@ -54,5 +56,23 @@
 
 .col-md-8.col-md-offset-1
   %hr
-%BR
 
+/CLAIM verification by Finance Unit
+- if @travel_claim.is_submitted==true && @travel_claim.is_returned==true
+  .col-md-10.col-md-offset-1
+    %dl.dl-horizontal
+      %dt= t 'staff.travel_claim.verification'
+      %dd
+        - if @travel_claim.is_checked==true
+          = t 'staff.travel_claim.verified_ok'
+        - elsif @travel_claim.is_checked==false
+          %font{style: 'color: red;'}= t 'staff.travel_claim.return_to_staff'
+   
+      %dt= t 'staff.travel_claim.note_by_finance'
+      %dd
+        - if @travel_claim.is_checked==false
+          %font{style: 'color: red;'}= @travel_claim.notes
+        - elsif @travel_claim.is_checked==true
+          = @travel_claim.notes
+        
+    %BR

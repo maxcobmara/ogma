@@ -47,13 +47,14 @@
             %br
             = render 'tab_submission'
         
-          #lesson_reporting_edit.tab-pane.active
-            %br
-            = render 'tab_reporting_edit', :f => f
-        
-          #lesson_report_review_edit.tab-pane
-            %br
-            = render 'tab_report_review_edit', :f => f
+          - if @lesson_plan.report_submit!=true
+            #lesson_reporting_edit.tab-pane.active
+              %br
+              = render 'tab_reporting_edit', :f => f
+          - else
+            #lesson_report_review_edit.tab-pane
+              %br
+              = render 'tab_report_review_edit', :f => f
     %br        
     .row
       .form-group

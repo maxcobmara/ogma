@@ -1,4 +1,6 @@
 class Asset::AssetDisposalsController < ApplicationController
+  filter_access_to :index, :new, :create, :kewpa16, :kewpa18, :kewpa19, :kewpa17_20, :kewpa17, :kewpa20, :attribute_check => false
+  filter_access_to :show, :edit, :update, :destroy, :revalue, :dispose, :verify, :view_close, :attribute_check => true
   before_action :set_disposed, only: [:show, :edit, :update, :destroy]
   
   def index
@@ -177,6 +179,15 @@ class Asset::AssetDisposalsController < ApplicationController
       end
     end
   end
+  
+  def destroy
+    @disposed.destroy
+    respond_to do |format|
+      format.html { redirect_to(asset_disposals_url) }
+      format.xml  { head :ok }
+    end
+  end
+  
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_disposed

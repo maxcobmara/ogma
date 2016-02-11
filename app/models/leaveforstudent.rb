@@ -149,7 +149,7 @@ class Leaveforstudent < ActiveRecord::Base
       userable_id=curr_user.userable_id
       leaveforstudents = Leaveforstudent.where(student_id: userable_id)
     else
-      if curr_user.roles.pluck(:id).include?(2)
+      if curr_user.roles.pluck(:id).include?(2) || curr_user.roles.pluck(:authname).include?("student_leaves_module_admin") || curr_user.roles.pluck(:authname).include?("student_leaves_module_viewer") || curr_user.roles.pluck(:authname).include?("student_leaves_module_user")
         leaveforstudents = Leaveforstudent.all
       else
 ###

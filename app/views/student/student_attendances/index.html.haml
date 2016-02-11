@@ -4,7 +4,8 @@
   
 .navbar.navbar-inverse{role: "navigation", style: "padding-right:40px;"}
   %ul.nav.navbar-nav
-    %li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'actions.new'))), new_student_student_attendance_path
+    - permitted_to? :create, :student_student_attendances do 
+      %li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'actions.new'))), new_student_student_attendance_path
   %ul.nav.navbar-nav.navbar-right
     %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "index_search_bar"
     %li.dropdown
@@ -14,35 +15,35 @@
       %ul.dropdown-menu
         %li
           %a{:href => student_attendan_form_student_student_attendances_path(:format => 'pdf')} Student Attendences
-        %li
-          %a{:href => examination_slip_student_student_attendances_path(:format => 'pdf')} Examination slip
 
 = render 'shared/flashes'
 
 .row
-  .col-md-6
-    = form_tag new_multiple_intake_student_student_attendances_path, :method => :put , :id => "form2" do
-      = hidden_field_tag( "new_type","3" )
-      .form-group
-        .col-md-6
-          .input-group
-            .input-group-addon
-              = t 'student.attendance.intake'
-            = select_tag('intake', options_from_collection_for_select(@intake_list2,:intake_course, :intake_acryn_prog), class: "form-control", width: "50px;") 
-        .col-md-4
-          = submit_tag t('student.attendance.new_multiple_intake'), :subject_id => nil, class: "btn btn-default"
+  - permitted_to? :new_multiple_intake, :student_student_attendances do
+    .col-md-6
+      = form_tag new_multiple_intake_student_student_attendances_path, :method => :put , :id => "form2" do
+        = hidden_field_tag( "new_type","3" )
+        .form-group
+          .col-md-6
+            .input-group
+              .input-group-addon
+                = t 'student.attendance.intake'
+              = select_tag('intake', options_from_collection_for_select(@intake_list2,:intake_course, :intake_acryn_prog), class: "form-control", width: "50px;") 
+          .col-md-4
+            = submit_tag t('student.attendance.new_multiple_intake'), :subject_id => nil, class: "btn btn-default"
 
-  .col-md-6
-    = form_tag new_multiple_student_student_attendances_path, :method => :put , :id => "form3" do
-      = hidden_field_tag( "new_type","2" )
-      .form-group
-        .col-md-8
-          .input-group
-            .input-group-addon
-              = t 'student.attendance.class_schedule'
-            = select_tag('classid', options_from_collection_for_select(@schedule_list, :id, :subject_day_time), class: "form-control", width: "50px;") 
-        .col-md-4
-          = submit_tag t('student.attendance.new_multiple_schedule'), :subject_id => nil, class: "btn btn-default"
+  - permitted_to? :new_multiple_intake, :student_student_attendances do
+    .col-md-6
+      = form_tag new_multiple_student_student_attendances_path, :method => :put , :id => "form3" do
+        = hidden_field_tag( "new_type","2" )
+        .form-group
+          .col-md-8
+            .input-group
+              .input-group-addon
+                = t 'student.attendance.class_schedule'
+              = select_tag('classid', options_from_collection_for_select(@schedule_list, :id, :subject_day_time), class: "form-control", width: "50px;") 
+          .col-md-4
+            = submit_tag t('student.attendance.new_multiple_schedule'), :subject_id => nil, class: "btn btn-default"
 
 .row
   .col-md-12
@@ -88,7 +89,8 @@
               - classes_schedule[1].sort_by{|x|x.student.name}.each do |student_attendance|
                 %tr
                   %td
-                    = check_box_tag "student_attendance_ids[]", student_attendance.id, true, :id => "student_attendanceidss_#{index2}"    
+                    - permitted_to? :edit_multiple, :student_student_attendances do
+                      = check_box_tag "student_attendance_ids[]", student_attendance.id, true, :id => "student_attendanceidss_#{index2}"    
                   %td=link_to student_attendance.student.matrix_name, student_student_attendance_path(student_attendance)
                   %td
                     - if student_attendance.attend == true
@@ -115,15 +117,16 @@
                           = t 'student.attendance.incomplete'
                   - index2+=1    
          
-          .row
-            %table
-              %tr
-                %td{:style=> "width:200px; text-align: right; padding:5px;"}
-                  = submit_tag t('edit_checked'), :name => :student_attendance_submit_button, class: "btn btn-default"
-                %td{:style=>"padding:5px;"}= check_box_tag :check_all
-                %td{:style=>"padding:5px;"}= t('actions.check_all') 
-              %tr
-                %td{:colspan=>"3", :style=> "padding-left:55px;",}= t('student.attendance.edit_remark')
+          - permitted_to? :edit_multiple, :student_student_attendances do
+            .row
+              %table
+                %tr
+                  %td{:style=> "width:200px; text-align: right; padding:5px;"}
+                    = submit_tag t('edit_checked'), :name => :student_attendance_submit_button, class: "btn btn-default"
+                  %td{:style=>"padding:5px;"}= check_box_tag :check_all
+                  %td{:style=>"padding:5px;"}= t('actions.check_all') 
+                %tr
+                  %td{:colspan=>"3", :style=> "padding-left:55px;",}= t('student.attendance.edit_remark')
         
   .right{style:"padding:0 30px; margin:0;"}= paginate @student_attendances, :theme => 'twitter-bootstrap-3'
 

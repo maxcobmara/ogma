@@ -17,7 +17,7 @@
   .form-group
     .col-sm-2.control-label
       = f.label t 'student.leaveforstudent.requestdate', for: :requestdate
-    .col-md-4 
+    .col-md-2 
       = f.text_field :requestdate, class: 'date_picker form-control'
   
   .form-group
@@ -41,13 +41,13 @@
   .form-group
     .col-sm-2.control-label
       = f.label t 'student.leaveforstudent.leave_startdate', for: :leave_startdate
-    .col-md-4 
+    .col-md-2
       = f.text_field :leave_startdate, class: 'date_picker form-control mandatory'
   
   .form-group
     .col-sm-2.control-label
       = f.label t 'student.leaveforstudent.leave_enddate', for: :leave_enddate
-    .col-md-4 
+    .col-md-2
       = f.text_field :leave_enddate, class: 'date_picker form-control mandatory'
 
   .form-group

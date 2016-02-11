@@ -5,7 +5,7 @@
       %dd=h @asset_loan.is_approved? ? (t 'asset.loan.released_on') + (@asset_loan.approved_date.strftime('%d %b %Y')) + t('by2') + @asset_loan.loanofficer.name : "" 
   
       %dt=t 'asset.loan.notify_hod'
-      %dd=Staff.find(@asset_loan.hod).name
+      %dd= @asset_loan.hod.nil? ? "" : Staff.find(@asset_loan.hod).name
     
     - else
  

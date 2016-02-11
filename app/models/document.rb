@@ -64,7 +64,7 @@ class Document < ActiveRecord::Base
   end
 
   def staffiled_list
-    (User.joins(:roles).where('authname=?',"e_filing").pluck(:userable_id)+Array(stafffiled_id)).compact.uniq
+    (User.joins(:roles).where('authname=? or authname=? or authname=? or authname=?', "e_filing", "files_module_admin", "files_module_user", "files_module_member").pluck(:userable_id)+Array(stafffiled_id)).compact.uniq
     #add existing stafffiled_id just in case of changed of person in charge
   end
   
@@ -102,10 +102,15 @@ class Document < ActiveRecord::Base
 
 
   def to_name=(name)
-	  self.staffs = Staff.find_by_name(name) unless name.blank?
+    self.staffs = Staff.find_by_name(name) unless name.blank?
   end
 
-
+  def self.sstaff2(search)
+    if search
+      document_ids=Document.joins(:staffs).where('staff_id=?', search).pluck(:id)   #recepients
+      @documents=Document.where('stafffiled_id=? OR prepared_by=? OR id IN(?)', search, search, document_ids)
+    end
+  end
   
 end
 
