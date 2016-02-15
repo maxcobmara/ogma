@@ -221,35 +221,38 @@
           %a.mp-back{:href => "#"}= t 'helpers.links.back'
           %ul
             /- permitted_to? :menu, :training_weeklytimetables do
-            - roles=current_user.roles.pluck(:authname)
-            - unit_name=current_user.userable.positions.first.unit
-            - common_subjects = ["Sains Perubatan Asas", "Anatomi & Fisiologi", "Sains Tingkahlaku", "Komunikasi & Sains Pengurusan", "Komuniti"]
-            - unless unit_name.blank?
+            /- roles=current_user.roles.pluck(:authname)
+            /- unit_name=current_user.userable.positions.first.unit
+            /- common_subjects = ["Sains Perubatan Asas", "Anatomi & Fisiologi", "Sains Tingkahlaku", "Komunikasi & Sains Pengurusan", "Komuniti"]
+            /- unless unit_name.blank?
               
-              /Ketua Subjek should not have access
-              /- if roles.include?("administration") || (roles.include?("programme_manager") && (Programme.roots.where(course_type: "Diploma").pluck(:name).include?(unit_name) ||  ["Pos Basik", "Pengkhususan", "Diploma Lanjutan"].include?(unit_name))) || Intake.where(staff_id: current_user.userable_id).count > 0  || Weeklytimetable.all.pluck(:prepared_by).include?(current_user.userable_id) || roles.include?("academic_session_module") || roles.include?("student_intake_module") || roles.include?("timetables_module")
+            /  /Ketua Subjek should not have access
+            /  /- if roles.include?("administration") || (roles.include?("programme_manager") && (Programme.roots.where(course_type: "Diploma").pluck(:name).include?(unit_name) ||  ["Pos Basik", "Pengkhususan", "Diploma Lanjutan"].include?(unit_name))) || Intake.where(staff_id: current_user.userable_id).count > 0  || Weeklytimetable.all.pluck(:prepared_by).include?(current_user.userable_id) || roles.include?("academic_session_module") || roles.include?("student_intake_module") || roles.include?("timetables_module")
               
-              /29Jan2016-for Penyelaras - may now use 'academic_session_module', 'student_intake_module' & 'timetables_module'
-              /- permitted_to? :read, :training_timetables do
+            /  /29Jan2016-for Penyelaras - may now use 'academic_session_module', 'student_intake_module' & 'timetables_module'
+            - permitted_to? :read, :training_timetables do
               %li.icon.icon-left
                 = link_to (t "setup"), '#'
                 .mp-level
                   %h2.icon=(t "setup")
                   %a.mp-back{:href => "#"}= t 'helpers.links.back'
                   %ul
-                    - permitted_to? :read, :training_timetables do
-                      %li= link_to t("training.create_timetable"), training_timetables_path
+                    %li= link_to t("training.create_timetable"), training_timetables_path
                     - permitted_to? :read, :training_intakes do
                       %li= link_to t("training.create_intake"), training_intakes_path
                     - permitted_to? :read, :training_academic_sessions do
                       %li= link_to t("training.create_academic_session"), training_academic_sessions_path
-                /TODO - fix below - permit access by training_weeklytimetables only - also requires fixing in Index/controller & auth rules (role: lecturer)
-                /Ketua Program/Ketua Subjek/Penyelaras Kumpulan/prev creator
-                - if roles.include?("administration") || (roles.include?("programme_manager") && (Programme.roots.where(course_type: "Diploma").pluck(:name).include?(unit_name) ||  ["Pos Basik", "Pengkhususan", "Diploma Lanjutan"].include?(unit_name))) || (roles.include?("unit_leader") && common_subjects.include?(unit_name)) || Intake.where(staff_id: current_user.userable_id).count > 0 || Weeklytimetable.all.pluck(:prepared_by).include?(current_user.userable_id) || roles.include?("weeklytimetables_module")
-                  %li= link_to content_tag(:i, "", :class => "icon-numb") + t("training.timetable_entries"), training_weeklytimetables_path
+
             /Ketua Program & Ketua Subjek only - manage Curriculum
             - permitted_to? :read, :training_programmes do
               %li= link_to content_tag(:i, "", :class => "icon-numb") + t("training.programme.title"), training_programmes_path
+              
+            /TODO - fix below - permit access by training_weeklytimetables only - also requires fixing in Index/controller & auth rules (role: lecturer)
+            /Ketua Program/Ketua Subjek/Penyelaras Kumpulan/prev creator
+            /- if roles.include?("administration") || (roles.include?("programme_manager") && (Programme.roots.where(course_type: "Diploma").pluck(:name).include?(unit_name) ||  ["Pos Basik", "Pengkhususan", "Diploma Lanjutan"].include?(unit_name))) || (roles.include?("unit_leader") && common_subjects.include?(unit_name)) || Intake.where(staff_id: current_user.userable_id).count > 0 || Weeklytimetable.all.pluck(:prepared_by).include?(current_user.userable_id) || roles.include?("weeklytimetables_module")
+            
+            - permitted_to? :read, :training_weeklytimetables do
+              %li= link_to content_tag(:i, "", :class => "icon-numb") + t("training.timetable_entries"), training_weeklytimetables_path
             - permitted_to? :read, :training_lesson_plans do
               %li.icon.icon-left
                 = link_to t('training.lesson_plan.title'), '#'
@@ -257,12 +260,16 @@
                   %h2.icon=t("training.lesson_plan.title")
                   %a.mp-back{:href => "#"}= t 'helpers.links.back'
                   %ul
-                    %li= link_to t('training.topicdetail.create'), training_topicdetails_path
+                    - permitted_to? :read, :training_topicdetails do
+                      %li= link_to t('training.topicdetail.create'), training_topicdetails_path
                     %li= link_to t('training.lesson_plan.title'), training_lesson_plans_path
                     /%li= link_to t('training.lesson_plan.reporting'), index_report_training_lesson_plans_path
             - permitted_to? :menu, :training_trainingnotes do
               %li= link_to content_tag(:i, "", :class => "icon-numb") + t('training.trainingnote.title2'), training_trainingnotes_path
-            %li= link_to content_tag(:i, "", :class => "icon-numb") + t('training.weeklytimetable.personalize'), personalize_index_training_weeklytimetables_path
+            - permitted_to? :personalize_index, :training_weeklytimetables do
+              %li= link_to content_tag(:i, "", :class => "icon-numb") + t('training.weeklytimetable.personalize'), personalize_index_training_weeklytimetables_path
+            
+            
 
     //- permitted_to? :menu, :exam_exams do
     /- permitted_to? :index, :exam_evaluate_courses do
