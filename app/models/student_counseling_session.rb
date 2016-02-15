@@ -1,7 +1,7 @@
 class StudentCounselingSession < ActiveRecord::Base
   # befores, relationships, validations, before logic, validation logic, 
   #controller searches, variables, lists, relationship checking
-  before_save :set_to_nil_where_false, :set_date_to_notimezone, :set_default_referred_case
+  before_save :set_to_nil_where_false, :set_default_referred_case
   before_destroy :check_referred_case
   
   belongs_to :student
@@ -18,11 +18,8 @@ class StudentCounselingSession < ActiveRecord::Base
       self.confirmed_at= nil
     end
   end
-  
-  def set_date_to_notimezone
-    self.requested_at = requested_at-8.hours if requested_at!=nil
-    self.confirmed_at = confirmed_at-8.hours if confirmed_at!=nil
-  end
+
+# ref : config/application (set only this & data saved in DB in UTC) - config.time_zone = "Kuala Lumpur"
   
   def set_default_referred_case
     unless case_id.nil? || case_id.blank?
