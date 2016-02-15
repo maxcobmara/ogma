@@ -18,7 +18,7 @@ authorization do
  #Group Staff
  role :staff do
    has_permission_on :staff_staffs, :to => :menu                                                                 # A staff see the staff list
-   has_permission_on :staff_staffs, :to => [:update, :show, :borang_maklumat_staff] do
+   has_permission_on :staff_staffs, :to => [:read, :update, :borang_maklumat_staff] do
      if_attribute :id => is {user.userable.id}                                                                         # but only sees himself
    end
    
@@ -41,7 +41,7 @@ authorization do
    end
    
    has_permission_on :staff_staff_appraisals, :to => :create                                                # A staff can create appraisal
-   has_permission_on :staff_staff_appraisals, :to => :show do                                             # but cannot see marking parts
+   has_permission_on :staff_staff_appraisals, :to => [:show, :appraisal_form] do                                             # but cannot see marking parts
      if_attribute :staff_id => is {user.userable.id}
    end
    has_permission_on :staff_staff_appraisals, :to => :update, :join_by => :and do              # can enter SKT, when skt not yet submitted

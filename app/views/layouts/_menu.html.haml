@@ -1,8 +1,7 @@
 .mp-level
   %h2.icon.icon-world Menu
   %ul
-    /- permitted_to? :menu, :staffs do             - inc index
-    - permitted_to? :read, :staff_staffs do
+    - permitted_to? :menu, :staff_staffs do
       %li.icon.icon-left
         = link_to t('staff.title'), '#'
         .mp-level
