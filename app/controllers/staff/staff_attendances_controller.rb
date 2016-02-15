@@ -1,8 +1,10 @@
 class Staff::StaffAttendancesController < ApplicationController
+  filter_access_to :index, :new, :create, :manager, :manager_admin, :status, :attendance_report, :attendance_report_main, :daily_report, :weekly_report, :monthly_report, :monthly_listing, :monthly_details,  :actionable, :attribute_check => false
+  filter_access_to :show, :edit, :update, :approval,  :destroy, :attribute_check => true
   before_action :set_staff_attendance, only: [:show, :edit, :update, :destroy]
 
   #filter_resource_access
-  filter_access_to :all
+  #filter_access_to :all
   
   # GET /staff_attendances
   # GET /staff_attendances.xml
@@ -185,7 +187,8 @@ class Staff::StaffAttendancesController < ApplicationController
   end
 
   def manager
-    @udept=Position.unit_department2
+    #@udept=Position.unit_department2
+    @udept=StaffAttendance.get_thumb_ids_unit_names(2)
     unit_name=current_user.userable.positions.first.unit
     if @udept.include?(unit_name) ==true #matching unit_name with valid department
       @mylate_attendances = StaffAttendance.find_mylate(current_user) 
@@ -193,7 +196,11 @@ class Staff::StaffAttendancesController < ApplicationController
       @approvelate_attendances = StaffAttendance.find_approvelate(current_user)
       @approveearly_attendances = StaffAttendance.find_approveearly(current_user)  
     elsif @udept.include?(unit_name)==false  #elsif @udept.include?("--"+unit_name)
-      redirect_to('/dashboard', :notice => I18n.t('staff_attendance.require_complete_data_manage'))
+      if current_user.userable.thumb_id.blank? && current_user.userable.staff_shift_id.blank? && current_user.userable.positions.first.unit.blank?
+        redirect_to('/dashboard', :notice => I18n.t('staff_attendance.require_complete_data_manage'))
+      #else
+        #redirect_to('/dashboard', :notice => I18n.t('staff_attendance.attendance_not_exist')
+      end
     end
   end
   

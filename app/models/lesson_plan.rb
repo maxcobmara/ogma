@@ -142,6 +142,34 @@ class LessonPlan < ActiveRecord::Base
     "("+"#{ (((l.end_meth - l.start_meth )/60 ) % 60).to_i }"+" minutes)"
   end
   
+  def self.sstaff2(u)
+    where(lecturer: u)
+  end
+  
+  def self.search2(search)
+    if search
+      if search == '1'
+        topics=[]
+        common_subject = Programme.where('course_type=?','Commonsubject')
+        common_subject.each do |csubject|
+          csubject.descendants.each{|x| topics << x.id if x.course_type=='Topic'}
+        end
+      elsif search=='2'
+        topics=[]
+        posbasiks=["Pos Basik", "Diploma Lanjutan", "Pengkhususan"]
+        postbasic_progs=Programme.where(course_type: posbasiks)
+        pb_topics=[]
+        postbasic_progs.each do |pbprog|
+          pbprog.descendants.each{|x| topics << x.id if x.course_type=='Topic'}
+        end
+      else
+        topics = Programme.find(search).descendants.where(course_type: 'Topic').pluck(:id)
+      end
+      schedule_ids=WeeklytimetableDetail.where(topic: topics).pluck(:id)
+      @lesson_plans=LessonPlan.where(schedule: schedule_ids)
+    end
+  end
+
 end
 
 #

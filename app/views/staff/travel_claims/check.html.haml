@@ -7,6 +7,8 @@
 .row
   = form_for [:staff, @travel_claim], html: { multipart: true, class: 'form-horizontal' }  do |f| 
     = render 'shared/error_messages', object: f.object
+    = f.hidden_field :jobtype, value: "checking"
+    = f.hidden_field :checked_by, value: @current_user.userable_id
 
     .col-md-offset-1
       / Nav tabs

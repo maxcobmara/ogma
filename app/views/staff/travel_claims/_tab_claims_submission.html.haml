@@ -1,35 +1,36 @@
 .col-md-6.col-md-offset-2
   /- if @travel_claim.my_claim_status != "returned" 
-  .form-group
-    .col-sm-2.control-label
-      = f.label :is_submitted
-    .col-md-1
-      = f.check_box :is_submitted, :id => 'submit1' 
-    .col-md-6
-      .span_submit1{:style=>"display:none;"}
-        = l(Date.today)
-  .span_submit1{:style=>"display:none;"}
+  - if @travel_claim.is_returned!=true
     .form-group
-      .col-sm-2.control-label 
-        &nbsp;
+      .col-sm-2.control-label
+        = f.label :is_submitted
+      .col-md-1
+        = f.check_box :is_submitted, :id => 'submit1' 
       .col-md-6
-        = t 'staff.travel_claim.submit_notify'
-  /- else
-  .form-group
-    .col-sm-2.control-label
-      = f.label :is_returned
-    .col-md-1
-      = f.check_box :is_returned, :id => 'submit1' 
-    .col-md-6
-      .span_submit1{:style=>"display:none;"}
-        = l(Date.today)
-  .span_submit1{:style=>"display:none;"}
+        .span_submit1{:style=>"display:none;"}
+          = l(Date.today)
+    .span_submit1{:style=>"display:none;"}
+      .form-group
+        .col-sm-2.control-label 
+          &nbsp;
+        .col-md-6
+          = t 'staff.travel_claim.submit_notify'
+  - else
     .form-group
-      .col-sm-2.control-label 
-        &nbsp;
+      .col-sm-2.control-label
+        = f.label :is_returned
+      .col-md-1
+        = f.check_box :is_returned, :id => 'submit2' 
       .col-md-6
-        = t 'staff.travel_claim.submit_notify'
-    
+        .span_submit2{:style=>"display:none;"}
+          = l(Date.today)
+    .span_submit2{:style=>"display:none;"}
+      .form-group
+        .col-sm-2.control-label 
+          &nbsp;
+        .col-md-6
+          = t 'staff.travel_claim.submit_notify'
+
 :javascript
 
 $(document).ready(function(){
@@ -38,6 +39,13 @@ $(document).ready(function(){
       $(".span_submit1").show("highlight"); 
     }else{
       $(".span_submit1").hide(""); 
+    }
+  });
+  $("input[id='submit2']").change(function() {  
+    if($('#submit2').is(':checked')) { 
+      $(".span_submit2").show("highlight"); 
+    }else{
+      $(".span_submit2").hide(""); 
     }
   });
 });

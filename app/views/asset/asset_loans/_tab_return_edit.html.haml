@@ -14,8 +14,12 @@
     .col-md-6.return_it{:style=> "display: none;"}
       = f.text_area :remarks, :size=>'60x4' , class: 'form-control'
 
-/= f.hidden_field :received_officer, :value => current_login.staff_id  
-= f.hidden_field :received_officer, :value => 25
+  .form-group
+    .col-sm-2.control-label.return_it{:style=> "display: none;"}
+      = f.label t 'asset.loan.received_officer', for: :received_officer
+    .col-md-6.return_it{:style=> "display: none;"}
+      = Staff.where(id: @current_user.userable_id).first.name
+      = f.hidden_field :received_officer, :value => @current_user.userable_id
 %br
 
 :javascript

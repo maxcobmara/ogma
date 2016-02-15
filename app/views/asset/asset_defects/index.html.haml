@@ -25,7 +25,8 @@
         %td= "#{defect.asset.try(:typename)} - #{defect.asset.name} - #{defect.asset.modelname}"  
         %td= defect.asset.try(:serialno)
         %td= link_to defect.asset.asset_placements.last.try(:location).try(:location_list), (campus_location_path(defect.asset.asset_placements.last.location.id)) rescue nil
-        %td= defect.id
+        %td
+          /= defect.id
          
   .right{style:"padding:0 30px; margin:0;"}= paginate @defective, :theme => 'twitter-bootstrap-3'
 

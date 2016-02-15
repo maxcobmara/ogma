@@ -1,4 +1,5 @@
 class Training::TimetablesController < ApplicationController
+  filter_resource_access
   before_action :set_timetable, only: [:show, :edit, :update, :destroy]
   # GET /timetables
   # GET /timetables.xml

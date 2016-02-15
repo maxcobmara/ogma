@@ -1,4 +1,5 @@
 class Training::IntakesController < ApplicationController
+  filter_resource_access
   before_action :set_intake, only: [:show, :edit, :update, :destroy]
   # GET /intakes
   # GET /intakes.xml

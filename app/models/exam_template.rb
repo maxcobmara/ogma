@@ -93,7 +93,7 @@ class ExamTemplate < ActiveRecord::Base
         else
           if k=="mcq"
             sum1=qty*1 
-          elsif k=="seq" || k=="ospe"
+          elsif k=="seq"# || k=="ospe"
             sum1=qty*10
           elsif k=="meq"
             sum1=qty*20

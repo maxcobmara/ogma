@@ -308,7 +308,7 @@ class Weeklytimetable < ActiveRecord::Base
 #       end
 #       intakeid=Intake.where(programme_id: programmeid, description: intake_desc).first.id
 #     end
-    if roles.include?("programme_manager") || roles.include?("coordinator") #coordinator here - w/o group name/no  may see all
+    if roles.include?("programme_manager") || roles.include?("coordinator") || roles.include?("weeklytimetables_module_member")#coordinator here - w/o group name/no  may see all
       weeklytimetables= Weeklytimetable.where(programme_id: programmeid)
 #     elsif main_task_first.include?("Penyelaras Kumpulan") && intakeid
 #       #weeklytimetables= Weeklytimetable.where(programme_id: programmeid, intake_id: intakeid) - betulnye, suppose must assign Penyelaras Kumpulan XXXX

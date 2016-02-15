@@ -120,17 +120,20 @@
       = link_to content_tag(:i, "", :class => "fa fa-arrow-left "), asset_assets_path, {class: "btn btn-default", "data-toggle" => "tooltip", title: "Asset Index"}
       - if @asset.assettype == 1
         = link_to content_tag(:i, "", :class => "fa fa-bug ") , new_asset_defect_path(:asset_id => @asset),{class: "btn btn-default", "data-toggle" => "tooltip", title: "Report Defect"}
-        = link_to content_tag(:i, "", :class => "fa fa-file-pdf-o "), kewpa2_asset_asset_path(@asset, format: "pdf"), {class: "btn btn-default", "data-toggle" => "tooltip", title: "KEW.PA 2 PDF"} if permitted_to? :manage, :assets
+        = link_to content_tag(:i, "", :class => "fa fa-file-pdf-o "), kewpa2_asset_asset_path(@asset, format: "pdf"), {class: "btn btn-default", "data-toggle" => "tooltip", title: "KEW.PA 2 PDF"} if permitted_to? :manage, :asset_assets
 
       - elsif @asset.assettype == 2
-        - permitted_to? :manage, :assets do
+        - permitted_to? :manage, :asset_assets do
           = link_to content_tag(:i, "", :class => "fa fa-file-pdf-o "), kewpa3_asset_asset_path(@asset, format: "pdf"), {class: "btn btn-default", "data-toggle" => "tooltip", title: "KEW.PA 3 PDF"}
           
-      - permitted_to? :manage, :assets do
+      - permitted_to? :kewpa6, :asset_assets do
         = link_to content_tag(:i, "", :class => "fa fa-file-pdf-o"), kewpa6_asset_asset_path(@asset, format: "pdf"), {class: "btn btn-default", "data-toggle" => "tooltip", title: "KEW.PA 6 PDF"}
-        - if @asset.is_maintainable==true
+      - if @asset.is_maintainable==true
+        - permitted_to? :kewpa14, :asset_assets do
           = link_to content_tag(:i, "", :class => "fa fa-file-pdf-o"), kewpa14_asset_asset_path(@asset, format: "pdf"), {class: "btn btn-default", "data-toggle" => "tooltip", title: "KEW.PA 14 PDF"}
+      - permitted_to? :update, :asset_assets do
         = link_to content_tag(:i, "", :class => "fa fa-edit") , edit_asset_asset_path(@asset),  {class: "btn btn-primary", "data-toggle" => "tooltip", title: t("actions.edit")}
+      - permitted_to? :destroy, :asset_assets do
         = link_to content_tag(:i, "", :class => "fa fa-trash-o icon-white"), |
           asset_asset_path(@asset),                                                                                                    |
           :method => 'delete',                                                                                                           |

@@ -1,9 +1,9 @@
 class Library::BooksController < ApplicationController
   
+  filter_access_to :index, :new, :create, :import_excel, :import, :download_excel_format, :attribute_check => false
+  filter_access_to :show, :edit, :update, :destroy, :attribute_check => true
   before_action :set_book, only: [:show, :edit, :update, :destroy]
-  #filter_resource_access
-   filter_access_to :all
-  
+ 
   # GET /books
   # GET /books.xml
   def index

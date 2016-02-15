@@ -1,13 +1,10 @@
 class Asset::AssetDefectsController < ApplicationController
-  #filter_resource_access
-  filter_access_to :all
+  filter_access_to :index, :new, :create, :attribute_check => false
+  filter_access_to :show, :edit, :update, :destroy, :kewpa9, :decision, :process2, :attribute_check => true
   before_action :set_defective, only: [:show, :edit, :update, :destroy]
+  before_action :set_admin, only: [:index, :edit, :show]
 
   def index
-    roles = @current_user.roles.pluck(:id)
-    if roles.include?(2) || roles.include?(11)
-      @is_admin=true
-    end
     if @is_admin
       @search = AssetDefect.where('decision is not true').search(params[:q])
     else
@@ -58,9 +55,9 @@ class Asset::AssetDefectsController < ApplicationController
         format.html { redirect_to asset_defect_path, notice: (t 'asset.defect.title')+(t 'actions.updated')}
         format.json { head :no_content }
       else
-        if editingpage=="process2"
+        if editingpage=='process2'
           format.html { render action: 'process2'}
-        elsif editingpage=="decision"
+        elsif editingpage=='decision'
           format.html { render action: 'decision'}
         else
           format.html { render action: 'edit' }
@@ -99,10 +96,17 @@ class Asset::AssetDefectsController < ApplicationController
       @asset_defect = AssetDefect.find(params[:id])
       @defective = @asset_defect
     end
+    
+    def set_admin
+      roles = @current_user.roles.pluck(:authname)
+      if roles.include?("administration") || roles.include?("asset_administrator") || roles.include?("asset_defect_module_admin") || roles.include?("asset_defect_module_viewer") || roles.include?("asset_defect_module_user")
+        @is_admin=true
+      end
+    end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def asset_defect_params
-      params.require(:asset_defect).permit(:description, :asset_id, :asset_show, :reported_by, :notes,:process_type, :recommendation, :is_processed, :processed_by, :processed_on, :decision, :decision_by, :decision_on)
+      params.require(:asset_defect).permit(:editing_page, :description, :asset_id, :asset_show, :reported_by, :notes,:process_type, :recommendation, :is_processed, :processed_by, :processed_on, :decision, :decision_by, :decision_on)
     end
 end
 

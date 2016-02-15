@@ -102,7 +102,7 @@ class Ptdo < ActiveRecord::Base
         I18n.t("staff.training.application_status.app_by_unit_head")#"Approved by Unit head, awaiting Dept approval"
       end  
     elsif dept_approve == true && dept_approve == true && final_approve.nil? == true
-      I18n.t("staff.training.application_status.app_by_dept_headl") #"Approved by Dept head, awaiting Pengarah approval"
+      I18n.t("staff.training.application_status.app_by_dept_head") #"Approved by Dept head, awaiting Pengarah approval"
     elsif dept_approve == true && dept_approve == true && final_approve == true && trainee_report.nil? == true
       I18n.t("staff.training.application_status.all_app_comp") #"All approvals complete"
     elsif dept_approve == true && dept_approve == true && final_approve == true && trainee_report.nil? == false

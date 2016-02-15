@@ -1,6 +1,6 @@
 class Exam::ExammarksController < ApplicationController
-  filter_access_to :all #use this for new_multiple, create_multiple, edit_multiple & update_multiple to works
-  #filter_resource_access
+  filter_access_to :index, :new, :create, :new_multiple, :create_multiple, :edit_multiple, :update_multiple, :attribute_check => false
+  filter_access_to :show, :edit, :update, :destroy, :attribute_check => true
   before_action :set_exammark, only: [:show, :edit, :update, :destroy]
   before_action :set_students_exam_list, only: [:new, :create, :edit]
 
@@ -48,7 +48,7 @@ class Exam::ExammarksController < ApplicationController
           #  subject_ids = Programme.where(id: programme_id).first.descendants.at_depth(2).pluck(:id)
           #end
           @exams_list_raw = Exam.where('subject_id IN(?) and id IN(?)', subject_ids, valid_exams)#.order(name: :asc, subject_id: :asc)
-        elsif roles.include?("administration")
+        elsif roles.include?("administration") || roles.include?("exammarks_module")
           programme_id='0'
           @exams_list_raw = Exam.where('id IN(?)', valid_exams)#.order(name: :asc, subject_id: :asc)
         else
@@ -350,7 +350,7 @@ class Exam::ExammarksController < ApplicationController
             end
             @exams_list=Exam.where(subject_id: subject_ids).where(id: valid_exams).order(name: :asc, subject_id: :asc)
             @students_list=Student.where(course_id: programme_ids).order('matrixno, name asc')
-          elsif roles.include?("administration")
+          elsif roles.include?("administration") || roles.include?("exammarks_module")
             subject_ids=Programme.where(course_type: ['Subject', 'Commonsubject']).pluck(:id)
             @exams_list = Exam.where('subject_id IN(?) and id IN(?)', subject_ids, valid_exams).order(name: :asc, subject_id: :asc)
             @students_list=Student.all.order('matrixno, name asc')

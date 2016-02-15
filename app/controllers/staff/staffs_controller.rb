@@ -1,6 +1,8 @@
 class Staff::StaffsController < ApplicationController
+  filter_access_to :index, :new, :create, :attribute_check => false
+  filter_access_to :show, :edit, :update, :destroy, :borang_maklumat_staff, :attribute_check => true
+  
   before_action :set_staff, only: [:show, :edit, :update, :destroy]
-
 
   # GET /staffs
   # GET /staffs.json

@@ -1,4 +1,5 @@
 class Training::AcademicSessionsController < ApplicationController
+  filter_resource_access
   before_action :set_academic_session, only: [:show, :edit, :update, :destroy]
   # GET /academic_sessions
   # GET /academic_sessions.xml

@@ -1,7 +1,9 @@
 class StudentsController < ApplicationController
+  #filter_access_to :all
+  filter_access_to :index, :new, :create, :borang_maklumat_pelajar, :import_excel, :import, :download_excel_format, :report, :kumpulan_etnik, :kumpulan_etnik_main, :kumpulan_etnik_excel, :student_report, :students_quantity_sponsor, :students_quantity_report, :attribute_check => false
+  filter_access_to :show, :edit, :update, :destroy, :attribute_check => true
   before_action :set_student, only: [:show, :edit, :update, :destroy]
-  #filter_resource_access
-  filter_access_to :all
+
   # GET /students
   # GET /students.xml
 

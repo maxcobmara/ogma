@@ -33,4 +33,4 @@
           %td= evaluate_course.evaluate_date.blank? ? "-" : evaluate_course.evaluate_date.try(:strftime, "%d %b %Y") 
           %td=h evaluate_course.staff_id.blank? ? (t 'exam.evaluate_course.no_staff')+evaluate_course.invite_lec : evaluate_course.staffevaluate.name 
 
-    .right{style:"padding:0 30px; margin:0;"}= paginate @evaluate_courses, :theme => 'twitter-bootstrap-3'
+  .right{style:"padding:0 30px; margin:0;"}= paginate @evaluate_courses, :theme => 'twitter-bootstrap-3'

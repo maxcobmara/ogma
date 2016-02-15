@@ -1,5 +1,6 @@
 class Student::TenantsController < ApplicationController
-  filter_access_to :all
+  filter_access_to :index,:index_staff, :reports, :statistics, :tenant_report, :tenant_report_staff, :return_key, :return_key2, :room_map, :room_map2, :new, :create,  :laporan_penginapan, :laporan_penginapan2, :census, :census_level, :attribute_check => false
+  filter_access_to :show, :edit, :update, :destroy, :attribute_check => true
   before_action :set_tenant, only: [:show, :edit, :update, :destroy]
   
   def index
@@ -51,6 +52,7 @@ class Student::TenantsController < ApplicationController
   end
   
   #Census by level
+  #fr menu - 'Statistik Penginapan & Bancian Penghuni Mengikut Aras' / pautan Bancian (X penghuni)
   def census_level
     @floor_id = params[:id]
     @floor=Location.find(@floor_id) #103, 1181
@@ -310,7 +312,8 @@ class Student::TenantsController < ApplicationController
      end
   end
 
-  #PDF for Statistic (general) - room status(part of laporan/statistik penginapan) & tenant programme
+  #PDF for Statistic (general) - room status(part of laporan/statistik penginapan) & tenant programme 
+  #-- fr menu, Statistik Umum / Blok / Program - 'Statistik Penempatan Pelatih'
   def laporan_penginapan2
     blockid= params[:blockid]
     @residentials = Location.find(blockid).descendants.where('typename = ? OR typename =?', 2, 8)    #beds

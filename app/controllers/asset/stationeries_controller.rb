@@ -1,4 +1,6 @@
 class Asset::StationeriesController < ApplicationController
+  filter_access_to :index, :new, :create, :kewps13, :attribute_check => false
+  filter_access_to :show, :edit, :update, :destroy, :attribute_check => true
   before_action :set_stationery, only: [:show, :edit, :update, :destroy]
   
   def index
@@ -46,11 +48,12 @@ class Asset::StationeriesController < ApplicationController
     end
   end
   
+  # TODO - fix here
   def destroy
     @stationery = Stationery.find(params[:id])
     @stationery.destroy
     respond_to do |format|
-      format.html { redirect_to(asset_stationeries_url) }
+      format.html { redirect_to(asset_stationeries_url) } 
       format.xml  { head :ok }
     end
   end

@@ -8,7 +8,8 @@
 .row
   = form_for @asset_loan,  html: { multipart: true, class: 'form-horizontal' }  do |f| 
     = render 'shared/error_messages', object: f.object
- 
+    
+    
     .col-md-offset-1
       / Nav tabs
       %ul.nav.nav-tabs
@@ -31,9 +32,9 @@
             %br
         #request_edit.tab-pane.fade.in.active 
           %br
-          - if @asset_loan.is_approved == nil 
+          - if @asset_loan.is_approved == nil && @asset_loan.staff_id==@current_user.userable_id
             = render 'tab_request_edit', :f => f
-          - elsif @asset_loan.is_approved == true
+          - elsif @asset_loan.is_approved == true || @asset_loan.is_approved == nil && @asset_loan.staff_id!=@current_user.userable_id
             = render 'tab_show_request'
       
         - if @asset_loan.is_approved == true
@@ -51,4 +52,5 @@
           .col-sm-offset-1.col-sm-2
             = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), asset_loan_path(@asset_loan), :class => 'btn btn-default'
           .col-sm-2
-            = f.submit t('update'), class: "btn btn-primary" 
+            - if @asset_loan.is_approved == true || (@asset_loan.is_approved == nil && @asset_loan.staff_id==@current_user.userable_id)
+              = f.submit t('update'), class: "btn btn-primary" 

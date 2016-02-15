@@ -1,12 +1,11 @@
 class Staff::StaffAppraisalsController < ApplicationController
+  filter_access_to :index, :new, :create, :attribute_check => false
+  filter_access_to :show, :edit, :update, :destroy, :appraisal_form, :attribute_check => true
   before_action :set_staff_appraisal, only: [:show, :edit, :update, :destroy] 
   
-  #filter_resource_access
-  filter_access_to :all
-  
   def index
-    roles = current_user.roles.pluck(:id)
-    @is_admin = roles.include?(2)
+    roles = current_user.roles.pluck(:authname)
+    @is_admin = roles.include?("administration") || roles.include?("staff_appraisals_module_admin") || roles.include?("staff_appraisals_module_viewer") || roles.include?("staff_appraisals_module_user")
     if @is_admin
       @search = StaffAppraisal.search(params[:q])
     else
