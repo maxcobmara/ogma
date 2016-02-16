@@ -177,14 +177,15 @@
       .panel-heading
         %h3.panel-title=t 'user.available_roles'
       .panel-body
-        - for role in Role.where.not('authname ILIKE(?)', '%module%').order(id: :asc)
+        - for role in Role.where.not('authname ILIKE(?)', '%module%').where.not('authname=?', 'coordinator').order(id: :asc)
           .row
-            .col-md-9= role.name if role.authname!="coordinator"
+            .col-md-9= role.name
+            /role.name if role.authname!="coordinator"
             .col-md-1
-              - if role.authname!="coordinator"
-                = check_box_tag "user[role_ids][]", role.id, @user.roles.include?(role), class: "byrole"
-              - else
-                %span{style: 'display: none;'}= check_box_tag "user[role_ids][]", role.id, @user.roles.include?(role), class: "byrole"
+              /- if role.authname!="coordinator"
+              = check_box_tag "user[role_ids][]", role.id, @user.roles.include?(role), class: "byrole"
+              /- else
+              /  %span{style: 'display: none;'}= check_box_tag "user[role_ids][]", role.id, @user.roles.include?(role), class: "byrole"
               /HIDE - coordinator first/
   
     /2nd column - E-FILLING SECTION - later to include page, local msg, equery
@@ -393,7 +394,7 @@
               /%th.centre{width: "12%"} 
           %body
             - cnt=0
-            - for role in Role.where('authname ILIKE(?)', '%module_admin').where.not('name ILIKE(?)', '%Mailer%').where(description: ["Address Book", "Banks"]).order(id: :asc)
+            - for role in Role.where('authname ILIKE(?)', '%module_admin').where.not('name ILIKE(?)', '%Mailer%').where(description: ["Address Book", "Banks", "Titles", "Staff Shifts", "Travel Claims Transport Groups", "Travel Claim Mileage Rates", "Asset Categories"]).order(id: :asc)
               - read=Role.where('id !=?', role.id).where(description: role.description).first
               /- user=Role.where.not(id: [role.id, read.id]).where(description: role.description).first
               /- owner=Role.where.not(id: [role.id, read.id, user.id]).where(description: role.description).first
@@ -406,7 +407,11 @@
               - rolename2=rolename.downcase
               %tr
                 %td.left=check_box_tag "efilemain_#{cnt}", cnt, false, class: "supportmain"
-                %td.left=rolename
+                %td.left
+                  - if ["Address Book", "Banks"].include?(rolename)
+                    =rolename
+                  - else
+                    %font{style: 'color: grey;'}=rolename
                 %td.centre=radio_button_tag "user_role_#{rolename2}", role.id, @user.roles.include?(role), class: "supportmanage2"
                 %td.centre=radio_button_tag "user_role_#{rolename2}", read.id, @user.roles.include?(read), class: "supportread2"
                 /%td.centre=radio_button_tag "user_role_#{rolename2}", user.id, @user.roles.include?(user), class: "libraryuser2"

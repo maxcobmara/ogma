@@ -600,7 +600,7 @@ $(function(){
     var esupportmg = document.getElementsByClassName('supportmanage');
     var esupportrd = document.getElementsByClassName('supportread');
     
-    for(i=0; i<2; i++)
+    for(i=0; i<7; i++)
     {
       if(supportmg[i].checked) {
         esupportmg[i].checked=true;
@@ -817,7 +817,7 @@ $(function(){
     /*EACH - requires for each RADIO BUTTONS (saved values) - END*/
 
     /*when Exam Admin is selected, uncheck all exams modules*/
-    if(inputElements[22].checked){
+    if(inputElements[21].checked){
       for(i=0; i<7; i++){
         exammg[i].disabled=true;
         examrd[i].disabled=true;
@@ -862,7 +862,7 @@ $(function(){
     }
     /*EACH - requires for each RADIO BUTTONS (saved values) - END*/
 
-    /*when Exam Admin is selected, uncheck all exams modules*/
+    /*when Staff Admin is selected, uncheck all exams modules*/
     if(inputElements[14].checked){
       for(i=0; i<4; i++){
         a_staffmg[i].disabled=true;
@@ -1077,7 +1077,7 @@ $(function(){
     var esupportmg = document.getElementsByClassName('supportmanage');
     var esupportrd = document.getElementsByClassName('supportread');
     
-    for(i=0; i<2; i++){
+    for(i=0; i<7; i++){
       if(supportmg[i].checked)
       {  esupportmg[i].checked=true;}
       else if(supportrd[i].checked)
@@ -1699,7 +1699,7 @@ $(function(){
     }
     
     /*when Exam Admin is selected, uncheck all exam modules*/
-    if(inputElements[22].checked){
+    if(inputElements[21].checked){
       for(i=0; i<7; i++){
         eexammg[i].checked=false;
         eexamrd[i].checked=false;
@@ -2253,7 +2253,7 @@ $(function(){
     var esupportm = document.getElementsByClassName('supportmain');
     
     /* 12) Admin & support tables when UNCHECK , all training main is false*/
-    for(i=0; i < 2; i++){
+    for(i=0; i < 7; i++){
       if (esupportm[i].checked==false) {
         supportmg[i].checked=false;
         supportrd[i].checked=false;

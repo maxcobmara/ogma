@@ -1747,6 +1747,14 @@ authorization do
      has_permission_on :campus_address_books, :to => :read
   end
   
+  # TODO 50-54 when pages ready in Ogma
+#   titles
+#   staff_shifts
+#   travel_claims_transport_groups
+#   travel_claim_mileage_rates
+#   asset_categories
+  
+  
 #   role :titles
 #   role :staff_shift
 #   role :travel_claims_transport_group
