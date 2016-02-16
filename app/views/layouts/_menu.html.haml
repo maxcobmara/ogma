@@ -255,7 +255,7 @@
               %li= link_to content_tag(:i, "", :class => "icon-numb") + t("training.timetable_entries"), training_weeklytimetables_path
             - permitted_to? :read, :training_lesson_plans do
               %li.icon.icon-left
-                = link_to t('training.lesson_plan.title'), '#'
+                = link_to t('training.teaching_learning'), '#'
                 .mp-level
                   %h2.icon=t("training.lesson_plan.title")
                   %a.mp-back{:href => "#"}= t 'helpers.links.back'

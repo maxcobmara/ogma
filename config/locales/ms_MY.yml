@@ -2612,6 +2612,7 @@ ms_MY:
     create_intake: Cipta Pengambilan
     create_academic_session: Cipta Sesi Akademik
     timetable_entries: Kemasukan Jadual Waktu
+    teaching_learning: "Pengajaran & Pembelajaran"
     intake:
       title: Sesi Pengambilan
       new: Sesi Pengambilan Baru

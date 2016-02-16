@@ -2670,6 +2670,7 @@ en:
     create_intake: Create Intake
     create_academic_session: Create Academic Session
     timetable_entries: Timetable Entries
+    teaching_learning: "Teaching & Learning"
     intake:
       title: Intake
       new: New Intake

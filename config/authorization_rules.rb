@@ -244,7 +244,10 @@ authorization do
      has_permission_on :staff_staffs, :to => [:manage, :borang_maklumat_staff]
      has_permission_on :staff_staff_attendances, :to =>[:manage, :manager, :actionable, :approval, :manager_admin, :attendance_report, :attendance_report_main, :daily_report, :weekly_report, :monthly_report, :monthly_listing, :monthly_details, :import_excel, :import, :status ]   #29Apr2013-refer routes.rb
      has_permission_on :staff_fingerprints, :to => [:manage, :approval, :index_admin]
+     # TODO - addin StaffShift when ready in Ogma #has_permission_on :staff_shifts, :to => :manage
      has_permission_on :staff_positions, :to =>[:manage, :maklumat_perjawatan, :organisation_chart]
+     # TODO - add-in Employgrade & Postinfos when ready in Ogma
+     # TODO - addin Title & Banks when ready in Ogma
      ###restricted as of in Staff role
      #has_permission_on :staff_staff_appraisals, :to => [:manage, :appraisal_form]    # NOTE : restricted - PPP & PPK + marks by PPP & PPK become viewable 
      #has_permission_on :staff_leaveforstaffs, :to => :manage                                    # restricted - Penyokong & Pelulus                                
@@ -260,6 +263,7 @@ authorization do
       if_attribute :is_returned => is_not {true}
       if_attribute :is_checked => is_not {true}
     end
+    # TODO - addin transportgroup & mileagerate when ready in Ogma - has_permission_on [:travel_claims_transport_groups, :travel_claim_mileage_rates], :to => :manage
     has_permission_on [:staff_travel_claim_allowances, :travel_claim_receipts, :travel_claim_logs], :to => :manage
     has_permission_on :staff_training_ptbudgets, :to => :manage
   end
@@ -280,6 +284,7 @@ authorization do
   
   #Group Assets  -------------------------------------------------------------------------------
   role :asset_administrator do
+    # TODO - addin Assetcategories when ready in Ogma
     has_permission_on :asset_assets, :to => [:manage, :kewpa2, :kewpa3, :kewpa4, :kewpa5, :kewpa6, :kewpa8, :kewpa13, :kewpa14, :loanables]
     has_permission_on :asset_asset_defects, :to =>[:read, :kewpa9]
     has_permission_on :asset_asset_defects, :to =>[:update, :process2], :join_by => :and do #3nov2013, 21Jan2016
@@ -640,6 +645,7 @@ authorization do
   
   #3)OK - all 4 - 4Feb2016
   #NOTE - a) Staff Attendance should come with Fingerprints.
+  # TODO - addin StaffShift when ready in Ogma - Admin/User(manage), Viewer/Member(read) #has_permission_on :staff_shifts, :to => :manage
   role :staff_attendances_module_admin do
     has_permission_on :staff_staff_attendances, :to =>[:manage, :manager, :manager_admin, :approval, :actionable, :status, :attendance_report, :attendance_report_main, :daily_report, :weekly_report, :monthly_report, :monthly_listing, :monthly_details] 
   end
