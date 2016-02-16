@@ -644,8 +644,7 @@ authorization do
   end
   
   #3)OK - all 4 - 4Feb2016
-  #NOTE - a) Staff Attendance should come with Fingerprints.
-  # TODO - addin StaffShift when ready in Ogma - Admin/User(manage), Viewer/Member(read) #has_permission_on :staff_shifts, :to => :manage
+  #NOTE - a) Staff Attendance should come with Fingerprints, StaffShifts
   role :staff_attendances_module_admin do
     has_permission_on :staff_staff_attendances, :to =>[:manage, :manager, :manager_admin, :approval, :actionable, :status, :attendance_report, :attendance_report_main, :daily_report, :weekly_report, :monthly_report, :monthly_listing, :monthly_details] 
   end

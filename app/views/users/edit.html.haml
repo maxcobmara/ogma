@@ -1320,7 +1320,7 @@ $(function(){
     }
     
     /*when role : Unit Leader is selected, uncheck Training Attendance(O-Ptdo), Staff Attendance(O), Programmes*/
-    if(inputElements[21].checked){
+    if(inputElements[20].checked){
       c_staffown[3].disabled=true;
       a_staffown[2].disabled=true;
       trainingmg[6].disabled=true;
@@ -1799,7 +1799,7 @@ $(function(){
     else
     {
       /*when staff admin not selected, but Unit Leader OR Administration Staff OR Staff is selected, Staff Attendance is not activated */
-      if((inputElements[21].checked) || (inputElements[3].checked) || (inputElements[5].checked) )
+      if((inputElements[20].checked) || (inputElements[3].checked) || (inputElements[5].checked) )
       {
         a_staffown[2].disabled=true;
       }
@@ -1996,7 +1996,7 @@ $(function(){
     else
     {
       /*when Training Manager OR Training Administration is not selected, but Unit Leader OR Administration Staff OR Staff is selected, Training Attendance(O-Ptdo) is disable*/
-      if((inputElements[21].checked) || (inputElements[3].checked) || (inputElements[5].checked))
+      if((inputElements[20].checked) || (inputElements[3].checked) || (inputElements[5].checked))
       {  
         c_staffown[3].checked=false;
         c_staffown[3].disabled=true;
@@ -2940,7 +2940,7 @@ $(function(){
         }
       }
       /*when PROGRAMME MANAGER is not selected, but Unit Leader is selected, programme (Manage) is hide*/
-      if(inputElements[21].checked)
+      if(inputElements[20].checked)
       {  trainingmg[6].disabled=true;}
       else
       {  trainingmg[6].disabled=false;}

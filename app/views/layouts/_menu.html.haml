@@ -1,7 +1,7 @@
 .mp-level
   %h2.icon.icon-world Menu
   %ul
-    - permitted_to? :menu, :staff_staffs do
+    - permitted_to? :read, :staff_staffs do
       %li.icon.icon-left
         = link_to t('staff.title'), '#'
         .mp-level
@@ -32,8 +32,8 @@
                       %li= link_to t('holiday.title'), staff_holidays_path
             - permitted_to? :index, :staff_staff_appraisals do        
               %li= link_to t('staff.staff_appraisal.title'), staff_staff_appraisals_path
-            - permitted_to? :read, :staffs do
-              %li= link_to t('position.title'), staff_positions_path
+            /- permitted_to? :read, :staffs do
+            /  %li= link_to t('position.title'), staff_positions_path
             %li.icon.icon-left
               = link_to t('staff_leave.leave'), '#'
               .mp-level
