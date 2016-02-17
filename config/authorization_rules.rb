@@ -866,7 +866,7 @@ authorization do
   
   #9-OK - 2/4 OK (Manage & User) whereas Viewer & Member access are similar? - 6Feb2016
   # NOTE - for access by 'Training Budget Module'/'Training Courses Module' (Admin/Viewer/User/Member), must activate at least 'Training Attendance Module'(Member/Viewer)
-  # TODO - 'Training Budget Module' - Viewer & Member access are similar?, may have TO DISABLE one
+  # NOTE 'Training Budget Module' - Viewer & Member access are similar?, Member (disable) - as records has no ownership data
   role :training_budget_module_admin do
      has_permission_on :staff_training_ptbudgets, :to => :manage
   end
@@ -876,12 +876,13 @@ authorization do
   role :training_budget_module_user do
      has_permission_on :staff_training_ptbudgets, :to => [:read, :update]
   end
-  role :training_budget_module_member do
-     has_permission_on :staff_training_ptbudgets, :to => :read
-  end
+#   role :training_budget_module_member do
+#      has_permission_on :staff_training_ptbudgets, :to => :read
+#   end
   
-  #10 - 2/4 OK (Manage & Viewer) TODO whereas User & Member access are similar? - 6Feb2016
+  #10 - 2/4 OK (Manage & Viewer) 
   # NOTE - for access by 'Training Budget Module'/'Training Courses Module' (Admin/Viewer/User/Member), must activate at least 'Training Attendance Module'(Member/Viewer)
+  # NOTE 'Training Courses Module' - Viewer & Member access are similar?, Member (disable) - as records has no ownership data
   #10-OK, in show - link 'schedule a course' requires manage for ptschedules
   role :training_courses_module_admin do
      has_permission_on :staff_training_ptcourses, :to =>:manage
@@ -892,9 +893,9 @@ authorization do
   role :training_courses_module_user do
      has_permission_on :staff_training_ptcourses, :to =>[:read, :update]
   end
-  role :training_courses_module_member do
-     has_permission_on :staff_training_ptcourses, :to =>[:read, :update]
-  end
+#   role :training_courses_module_member do
+#      has_permission_on :staff_training_ptcourses, :to =>[:read, :update]
+#   end
   
   #11 - 2/4 OK (Manage & Viewer) TODO User & Member access are similar? - 6Feb2016
   #11-OK - note pending 'Apply for Training' menu link
@@ -912,7 +913,7 @@ authorization do
   end 
   
   #12-OK, but 'Show Total Days' & 'Training Report' restricted to own record only.
-  #12 - 3/4 OK (Admin, Viewer & User)- NOTE - 'Training Attendance Module' - requires minimum access of 'Training Schedule Module' - either Viewer or Member 
+  #12 - 3/4 OK (Admin, Viewer & User)
   role :training_attendance_module_admin do
     #asal - tested OK - Admin : has_permission_on :staff_training_ptdos, :to => [:manage, :approve]
     has_permission_on :staff_training_ptdos, :to => [:create, :read, :show_total_days, :training_report, :delete]

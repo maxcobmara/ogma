@@ -682,6 +682,18 @@ $(function(){
     assetown[3].checked=false;
     assetown[3].disabled=true;
     
+    /*set by default at all time - Staff Training Budget (ptbudget) has no owner*/
+    c_staffown[0].checked=false;
+    c_staffown[0].disabled=true;
+    
+    /*set by default at all time - Staff Training Courses (ptcourse) has no owner*/
+    c_staffown[1].checked=false;
+    c_staffown[1].disabled=true;
+    
+    /*set by default at all time - Staff Training Schedule (ptschedule) has no owner*/
+    c_staffown[2].checked=false;
+    c_staffown[2].disabled=true;
+    
   });
   
     
@@ -1322,6 +1334,9 @@ $(function(){
     /*when role : Unit Leader is selected, uncheck Training Attendance(O-Ptdo), Staff Attendance(O), Programmes*/
     if(inputElements[20].checked){
       c_staffown[3].disabled=true;
+      c_staffown[3].checked=false;
+      ec_staffmn[3].checked=false;
+      
       a_staffown[2].disabled=true;
       trainingmg[6].disabled=true;
     }
@@ -1463,6 +1478,18 @@ $(function(){
     /*set by default at all time - Asset Disposals (Member) not applicable - refer auth rules*/
     assetown[3].checked=false;
     assetown[3].disabled=true;
+    
+    /*set by default at all time - Staff Training Budget (ptbudget) has no owner*/
+    c_staffown[0].checked=false;
+    c_staffown[0].disabled=true;
+    
+    /*set by default at all time - Staff Training Courses (ptcourse) has no owner*/
+    c_staffown[1].checked=false;
+    c_staffown[1].disabled=true;
+    
+    /*set by default at all time - Staff Training Schedule (ptschedule) has no owner*/
+    c_staffown[2].checked=false;
+    c_staffown[2].disabled=true;
     
   });
   
@@ -1995,11 +2022,15 @@ $(function(){
     } 
     else
     {
-      /*when Training Manager OR Training Administration is not selected, but Unit Leader OR Administration Staff OR Staff is selected, Training Attendance(O-Ptdo) is disable*/
-      if((inputElements[20].checked) || (inputElements[3].checked) || (inputElements[5].checked))
+      /*when Training Manager OR Training Administration is not selected, but Unit Leader  OR Programme Mgr OR Administration Staff OR Staff is selected, Training Attendance(O-Ptdo) is disable*/
+      if((inputElements[20].checked) || (inputElements[17].checked) || (inputElements[3].checked) || (inputElements[5].checked))
       {  
         c_staffown[3].checked=false;
         c_staffown[3].disabled=true;
+        if ((c_staffmg[3].checked==false) && (c_staffrd[3].checked==false) && (c_staffusr[3].checked==false) )
+        { ec_staffm[3].checked=false;}
+        else
+        { ec_staffm[3].checked=true;}
       }
       else
       {  c_staffown[3].disabled=false;}
@@ -3061,6 +3092,18 @@ $(function(){
     /*set by default at all time - Asset Disposals (Member) not applicable - refer auth rules*/
     assetown[3].checked=false;
     assetown[3].disabled=true;
+    
+    /*set by default at all time - Staff Training Budget (ptbudget) has no owner*/
+    c_staffown[0].checked=false;
+    c_staffown[0].disabled=true;
+    
+    /*set by default at all time - Staff Training Courses (ptcourse) has no owner*/
+    c_staffown[1].checked=false;
+    c_staffown[1].disabled=true;
+    
+    /*set by default at all time - Staff Training Schedule (ptschedule) has no owner*/
+    c_staffown[2].checked=false;
+    c_staffown[2].disabled=true;
     
     $("#form1").submit();
   });
