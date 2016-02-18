@@ -1020,13 +1020,13 @@ authorization do
   #16-OK - 1) for READ & Manage, note 'discipline_report' & 'anacdotal_report' accessibility is same as INDEX pg, 2) New - open for all staff
   #3) additional report - fr menu, Students | Reporting -- (i) Discipline Case Listing by Students, (ii) Student Discipline Case Listing
   role :student_discipline_module_admin do
-     has_permission_on :student_student_discipline_cases, :to => :manage
+     has_permission_on :student_student_discipline_cases, :to => [:manage, :actiontaken, :referbpl,:reports, :discipline_report, :anacdotal_report]
   end
   role :student_discipline_module_viewer do
-     has_permission_on :student_student_discipline_cases, :to => [:menu, :read, :reports] 
+     has_permission_on :student_student_discipline_cases, :to => [:menu, :read, :reports, :discipline_report] 
   end
   role :student_discipline_module_user do
-     has_permission_on :student_student_discipline_cases, :to => [:menu, :read, :reports, :update] 
+     has_permission_on :student_student_discipline_cases, :to => [:menu, :read, :update, :actiontaken, :referbpl,:reports, :discipline_report, :anacdotal_report] 
   end
   # NOTE workable SELECTION of auth rules for members: (positions data must complete) 
   #1) Reporter, Programme Manager & TPHEP - 'Staff' role / Student Discipline Module Member
