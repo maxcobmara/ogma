@@ -41,7 +41,7 @@
         %tr
           %td= link_to tenant.location.try(:combo_code), campus_location_path(tenant.location)
           %td= link_to tenant.try(:staff).try(:icno), student_tenant_path(tenant)
-          %td= link_to tenant.try(:staff).try(:name), student_path(tenant.staff)
+          %td= link_to tenant.try(:staff).try(:name), staff_info_path(tenant.staff)
           %td= tenant.keyaccept.try(:strftime, '%d %b %Y')
           %td= tenant.keyexpectedreturn.try(:strftime, '%d %b %Y')
           %td= tenant.keyreturned.try(:strftime, '%d %b %Y')

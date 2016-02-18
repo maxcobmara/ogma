@@ -3,13 +3,12 @@ class Training::LessonPlansController < ApplicationController
    filter_access_to :show, :edit, :update, :destroy, :lesson_plan,:lesson_report, :attribute_check => true  # :lessonplan_reporting, - no longer use -ditto-
    before_action :set_index_data, only: :index
    before_action :set_lesson_plan, only: [:show, :edit, :update, :destroy]
+   before_action :set_admin, only: [:index, :new, :edit,:update, :show,  :lessonplan_reporting, :index_report]
 
   # GET /lesson_plans
   # GET /lesson_plans.xml
   def index
     #reference : Staff Appraisal, Exammark, Exam Template
-    roles = current_user.roles.pluck(:authname)
-    @is_admin = roles.include?("administration") || roles.include?("lesson_plans_module_admin") || roles.include?("lesson_plans_module_viewer") || roles.include?("lesson_plans_module_user")
     if @is_admin
       @search = LessonPlan.search(params[:q])
     else
@@ -33,10 +32,6 @@ class Training::LessonPlansController < ApplicationController
   # GET /lesson_plans/1.xml
   def show
     @lesson_plan = LessonPlan.find(params[:id])
-    @current_roles=[]
-    current_user.roles.each do |x|
-      @current_roles << x.name
-    end
     @location_display="show"
     respond_to do |format|
       format.html # show.html.erb
@@ -48,10 +43,6 @@ class Training::LessonPlansController < ApplicationController
   # GET /lesson_plans/new.xml
   def new
     @lesson_plan = LessonPlan.new
-    @current_roles=[]
-    current_user.roles.each do |x|
-      @current_roles << x.name
-    end
 
     respond_to do |format|
       format.html # new.html.erb
@@ -62,18 +53,10 @@ class Training::LessonPlansController < ApplicationController
   # GET /lesson_plans/1/edit
   def edit
     @lesson_plan = LessonPlan.find(params[:id])
-    @current_roles=[]
-    current_user.roles.each do |x|
-      @current_roles << x.name
-    end
   end
   
   def lessonplan_reporting
     @lesson_plan = LessonPlan.find(params[:id])
-    @current_roles=[]
-    current_user.roles.each do |x|
-      @current_roles << x.name
-    end
     @location_display="reporting"
   end
   
@@ -100,10 +83,6 @@ class Training::LessonPlansController < ApplicationController
   # PUT /lesson_plans/1.xml
   def update
     @lesson_plan = LessonPlan.find(params[:id])
-    @current_roles=[]
-    current_user.roles.each do |x|
-      @current_roles << x.name
-    end 
     newlocation = params[:new_location]
     if newlocation!=nil
       scheduleid = params[:lesson_plan][:schedule]
@@ -168,10 +147,6 @@ class Training::LessonPlansController < ApplicationController
       @lesson_plans2 = @search.result.where('hod_approved=?', true)
       @lesson_plans3 = @lesson_plans2.sort_by{|t|t.lecturer} 
       @lesson_plans =  Kaminari.paginate_array(@lesson_plans3).page(params[:page]||1) 
-      @current_roles=[]
-      current_user.roles.each do |x|
-        @current_roles << x.name
-      end 
   end
   
   private
@@ -179,6 +154,11 @@ class Training::LessonPlansController < ApplicationController
   # Use callbacks to share common setup or constraints between actions.
   def set_lesson_plan
     @lesson_plan = LessonPlan.find(params[:id])
+  end
+  
+  def set_admin
+    roles = current_user.roles.pluck(:authname)
+    @is_admin = roles.include?("administration") || roles.include?("lesson_plans_module_admin") || roles.include?("lesson_plans_module_viewer") || roles.include?("lesson_plans_module_user")
   end
   
   #sample from exam_templates########

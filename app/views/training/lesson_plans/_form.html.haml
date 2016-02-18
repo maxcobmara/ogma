@@ -22,7 +22,7 @@
               = f.label :schedule
             .col-md-3
               - arr=[[t('select'),"", {'data'=>""}]]
-              - if @current_roles.include?('Administration')
+              - if @is_admin
                 /admin
                 - @lessonplan_schedule = LessonPlan.all.map(&:schedule).uniq.compact
                 - WeeklytimetableDetail.all.sort_by{|x|x.weeklytimetable_lecturer.name}.each do |c|

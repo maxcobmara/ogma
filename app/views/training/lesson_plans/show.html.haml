@@ -62,15 +62,15 @@
       
       = link_to content_tag(:i, "", class: "fa fa-file-pdf-o"), lesson_report_training_lesson_plan_path(@lesson_plan, format: "pdf"), class: "btn btn-default", "data-toggle" => "tooltip", title: t('training.lesson_plan.reporting')  
       
-      - if ((@lesson_plan.prepared_by == @current_user.userable_id) || @current_roles.include?('Administration')) && @lesson_plan.is_submitted == true && !@lesson_plan.report_submit
+      - if ((@lesson_plan.prepared_by == @current_user.userable_id) || @is_admin) && @lesson_plan.is_submitted == true && !@lesson_plan.report_submit
         = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('lesson_plan.add_notes'), add_notes_training_lesson_plan_path(@lesson_plan),  :class => 'btn btn-primary' 
         
-      /- if (@lesson_plan.is_submitted == false && @lesson_plan.prepared_by == @current_user.userable_id) || (@lesson_plan.prepared_by == @current_user.userable_id && @lesson_plan.hod_rejected? == true && @lesson_plan.is_submitted != true) || (@lesson_plan.is_submitted == false) || (@current_roles.include?('Administration'))
+      /- if (@lesson_plan.is_submitted == false && @lesson_plan.prepared_by == @current_user.userable_id) || (@lesson_plan.prepared_by == @current_user.userable_id && @lesson_plan.hod_rejected? == true && @lesson_plan.is_submitted != true) || (@lesson_plan.is_submitted == false) || (@is_admin)
       - permitted_to? :update, :training_lesson_plans do
-        - if @lesson_plan.is_submitted != true
-          = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('helpers.links.edit'), edit_training_lesson_plan_path(@lesson_plan),  :class => 'btn btn-primary' 
+        /- if @lesson_plan.is_submitted != true
+        = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('helpers.links.edit'), edit_training_lesson_plan_path(@lesson_plan),  :class => 'btn btn-primary' 
 
-      /- if (@lesson_plan.hod_approved == true && @lesson_plan.report_submit != true && @lesson_plan.lecturer == @current_user.userable_id) || (@current_roles.include?('Administration') && @lesson_plan.hod_approved == true)
+      /- if (@lesson_plan.hod_approved == true && @lesson_plan.report_submit != true && @lesson_plan.lecturer == @current_user.userable_id) || (@is_admin && @lesson_plan.hod_approved == true)
       - permitted_to? :lessonplan_reporting, :training_lesson_plans do
         = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('training.lesson_plan.report'), lessonplan_reporting_training_lesson_plan_path(@lesson_plan),  :class => 'btn btn-primary' 
         /= link_to 'Lesson Plan Reporting', :action => 'lessonplan_reporting', :id => @lesson_plan 
