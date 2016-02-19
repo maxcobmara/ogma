@@ -38,7 +38,7 @@ class Exam::ExamsController < ApplicationController
           #else
             @programme_id='2'#Programme.where(name: lecturer_basicprog_name, ancestry_depth: 0).first.id
           #end
-        elsif roles.include?("administration") || roles.include?("exampaper_module")
+        elsif roles.include?("administration") || roles.include?("exampaper_module_admin")|| roles.include?("exampaper_module_viewer")||  roles.include?("exampaper_module_member")
           @programme_id='0'
         else
           leader_unit=@tasks_main.scan(/Program (.*)/)[0][0].split(" ")[0] if @tasks_main!="" && @tasks_main.include?('Program')

@@ -1469,7 +1469,7 @@ authorization do
     end
   end
   
-  #37-OK
+  #37-OK - 3/4 OK (Admin, Viewer, User) - revised on 19Feb2016, disable Member (use 'Lecturer' role instead)
   role :examquestions_module_admin do
      has_permission_on :exam_examquestions, :to => :manage
   end
@@ -1479,12 +1479,12 @@ authorization do
   role :examquestions_module_user do
      has_permission_on :exam_examquestions, :to => [:menu, :read, :index, :update]
   end
-  role :examquestions_module_member do
-    has_permission_on :exam_examquestions, :to => [:menu, :read, :index, :create]
-    has_permission_on :exam_examquestions, :to => :update do
-      if_attribute :programme_id => is_in {user.lecturers_programme}
-    end
-  end
+#   role :examquestions_module_member do
+#     has_permission_on :exam_examquestions, :to => [:menu, :read, :index, :create]
+#     has_permission_on :exam_examquestions, :to => :update do
+#       if_attribute :programme_id => is_in {user.lecturers_programme}
+#     end
+#   end
   
   #50-added 10Feb2016
   #50 OK but (Admin/Viewer/User-may be assigned to anybody-All records whereas MEMBER - must be assigned to lecturers to get this programme mgr's access)

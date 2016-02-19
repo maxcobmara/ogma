@@ -48,7 +48,7 @@ class Exam::ExammarksController < ApplicationController
           #  subject_ids = Programme.where(id: programme_id).first.descendants.at_depth(2).pluck(:id)
           #end
           @exams_list_raw = Exam.where('subject_id IN(?) and id IN(?)', subject_ids, valid_exams)#.order(name: :asc, subject_id: :asc)
-        elsif roles.include?("administration") || roles.include?("exammarks_module")
+        elsif roles.include?("administration") || roles.include?("exammarks_module_admin") || roles.include?("exammarks_module_viewer") || roles.include?("exammarks_module_user")
           programme_id='0'
           @exams_list_raw = Exam.where('id IN(?)', valid_exams)#.order(name: :asc, subject_id: :asc)
         else

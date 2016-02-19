@@ -195,7 +195,7 @@ class Exam::ExamresultsController < ApplicationController
             #  lecturer_basicprog_name = basicprog if tasks_main.include?(basicprog)==true
             #end
             #programme_id=Programme.where(name: lecturer_basicprog_name, ancestry_depth: 0).first.id
-          elsif roles.include?("administration") || roles.include?("examresults_module")
+          elsif roles.include?("administration") || roles.include?("examresults_module_admin")|| roles.include?("examresults_module_viewer")|| roles.include?("examresults_module_user")
             programme_id='0'
           else
             leader_unit=tasks_main.scan(/Program (.*)/)[0][0].split(" ")[0] if tasks_main!="" && tasks_main.include?('Program')

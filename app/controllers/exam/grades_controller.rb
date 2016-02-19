@@ -58,7 +58,7 @@ class Exam::GradesController < ApplicationController
           #    @subjectlist_preselec_prog = Programme.where(id: programme_id).first.descendants.at_depth(2)
           #end
           ###
-        elsif roles.include?("administration") || roles.include?("exam_grade_module")
+        elsif roles.include?("administration") || roles.include?("exam_grade_module_admin") || roles.include?("exam_grade_module_viewer") || roles.include?("exam_grade_module_user")
           programme_id='0'
           @subjectlist_preselec_prog = Programme.at_depth(2) 
         else
@@ -526,7 +526,7 @@ class Exam::GradesController < ApplicationController
             #  @subjects=Programme.subject_groupbyoneprogramme2_grade(@preselect_prog) #new only
             #  @students=Student.groupby_oneprogramme(@preselect_prog)
             #end
-          elsif roles.include?("administration") || roles.include?("exam_grade_module")
+          elsif roles.include?("administration") || roles.include?("exam_grade_module_admin")  || roles.include?("exam_grade_module_viewer") || roles.include?("exam_grade_module_user")
             @programme_names=Programme.programme_names
             @subjects=Programme.all_subjects_groupbyprogramme_grade #new only
             @students=Student.groupby_programme
