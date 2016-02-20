@@ -1,5 +1,6 @@
 $("#testing").empty();
 <% for role in @user.roles.order(id: :asc) %>
+  <% rolename=(I18n.t 'user.'+role.authname) %>
   $("#testing").append("<div class='col-md-12'>");
-  $("#testing").append("<%= role.name %></div><BR>");
+  $("#testing").append("<%= rolename %></div><BR>");
 <% end %>

@@ -13,42 +13,40 @@
   .col-md-10.col-md-offset-1
     .panel.panel-warning
       .panel-heading
-        %h3.panel-title Roles & corresponding modules
+        %h3.panel-title=t 'user.roles_modules'
       .panel-body
         %table
           %tr
             %td{style: "vertical-align: top; width: 30%; padding: 5px;"}
-              %strong Staff Administrator
-              .small Staffs, Staff Attendances, Fingerprints, Positions
+              %strong=t('role.staff_administrator')
+              .small=t('user.staff_administrator_modules')
               /Staff Appraisals(* marks), Staff Leaves(blm)
-              %strong Finance Unit
-              .small Travel Claims, Training Budget
-              %strong Training Administration
-              .small Training Budget, Training Courses, Training Schedules, Training Attendance 
-              %strong Training Manager
-              .small Training Budget, Training Courses, Training Schedules, Training Attendance
-              %strong Staff
-              .small Staffs(O), Staff Attendance(O), Training Attendance(O), Staff Appraisal(O), Staff Leaves(O), Travel Requests(O), Travel Claims(O), Asset List(R), Asset Defect(O), Asset Loan(O), Student Discipline Case(O), Locations(R), Events(O), Bulletins(R), Document Registry(O), Library Books(R), Library Analysis & Statistics(R)
-              %strong E-FIlling
-              .small File Registry, Document Registry
-              
-              
+              %strong=t('role.finance_unit')
+              .small=t('user.finance_unit_modules')
+              %strong=t('role.training_administration')
+              .small=t('user.training_administration_modules')
+              %strong=t('role.training_manager')
+              .small=t('user.training_manager_modules')
+              %strong=t('role.staff')
+              .small=t('user.staff_modules')
+              %strong=t('role.e_filing')
+              .small=t('user.e_filing_modules')
               
             %td{style: "vertical-align: top; width: 35%"}
-              %strong Asset Administrator
-              .small Asset Losses, Asset Loans, Asset Disposals, Asset Defect, Asset List, Locations
-              %strong Facilities Administrator
-              .small Locations, Location Damages, Student Residences, Staff Residences
-              %strong Warden
-              .small Locations(R), Student Residences(R), Student Leaves, Student Infos(R), Student Attendances(R), Student Discipline Cases(R), Student Counseling Session(R)
-              %strong Student Administrator
-              .small Student Infos, Student Attendances
-              %strong Student Counsellor
-              .small Student Counselling, Student Discipline Case(R), Student Infos(R), Student Attendances(R)
-              %strong Disciplinary Officer
-              .small Student Discipline Case, Student Counseling Session(Case), Student Infos(R), Student Attendances(R)
-              %strong Student
-              .small Course Evaluation, Student Infos(O), Student Leaves(O) 
+              %strong=t('role.asset_administrator')
+              .small=t('user.asset_administrator_modules')
+              %strong=t('role.facilities_administrator')
+              .small=t('user.facilities_administrator_modules')
+              %strong=t('role.warden')
+              .small=t('user.warden_modules')
+              %strong=t('role.student_administrator')
+              .small=t('user.student_administrator_modules')
+              %strong=t('role.student_counsellor')
+              .small=t('user.student_counsellor_modules')
+              %strong=t('role.disciplinary_officer')
+              .small=t('user.disciplinary_officer_modules')
+              %strong=t('role.student')
+              .small=t('user.student_modules')
               %br
               /%BR
               /%strong User
@@ -57,108 +55,91 @@
               /.small lll
             
             %td{style: "vertical-align: top; width: 35%"}
-              %strong Lecturer
-              .small Student Leaves(Coordinator), Student Attendances, Weeklytimetables(Coordinator), Weeklytimetables(O:Personalize Timetables), Training Notes(O), Lesson Plans(O), Examquestions(O)
-              %strong Programme Manager
-              .small Programmes, Academic Sessions, Intakes, Timetables, Topic Details, Examquestions, Course Evaluation, Examresults(R), Examanalysis(R), Training Attendance(O), Staff Attendance(O), Weeklytimetables(O), Lesson Plans(O).
-              %strong Exam Administration
-              .small Examquestions, Exam Templates, Exampaper, Exammarks, Exam Grade, Examresults, Exam Analysis
-              %strong Unit Leader
-              .small Training Attendance(O), Staff Attendance(O), Programmes(Common Subjects)
-              %strong Administration Staff
-              .small Training Attendance(HOD), Staff Attendance(HOD)
-              %strong Librarian
-              .small Library Books, Library Transactions, Student Info(R)
+              %strong=t('role.lecturer')
+              .small=t('user.lecturer_modules')
+              %strong=t('role.programme_manager')
+              .small=t('user.programme_manager_modules')
+              %strong=t('role.exam_administration')
+              .small=t('user.exam_administration_modules')
+              %strong=t('role.unit_leader')
+              .small=t('user.unit_leader_modules')
+              %strong=t('role.administration_staff')
+              .small=t('user.administration_staff_modules')
+              %strong=t('role.librarian')
+              .small=t('user.librarian_modules')
               %br
               /%BR
               /%strong Administration
               /.small aaaa
               /%strong Coordinator
               /.small aaaa
-        
 
         .small{style: 'color: red;'}
-          Remark : Upon selection of 
-          %strong roles,
-          select 
-          %strong available modules
-          for additional access. Otherwise remove 
-          %strong selected roles 
-          and select required module access
-          %strong separately.
+          =t 'user.remark1'
+          %strong=t 'user.remark2'
+          =(t 'select').downcase
+          %strong=t 'user.remark3'
+          =t 'user.remark4'
+          %strong=t 'user.remark5'
+          =t 'user.remark6'
+          %strong=t 'user.remark7'
         
         %br
-        %strong Access by Module
+        %strong= t 'user.access_module'
         .small
-          %strong Admin :
-          can do everything (CRUD/A)
+          %strong=t('user.admin')+" :"
+          =t('user.admin_access')+" (CRUD/A)"
           %br
-          %strong Viewer :
-          can list, print & reports only (R/A)
+          %stron=t('user.viewer')+" :"
+          =t('user.viewer_access')+" (R/A)"
           %br
-          %strong User :
-          can view everything & update data (RU/A)
+          %strong=t('user.user')+" :"
+          =t('user.user_access')+" (RU/A)"
           %br
-          %strong Member :
-          should only see his own record & be able to edit it (CRUD/O)
+          %strong=t('user.member')+" :"
+          =t('user.member_access')+" (CRUD/O)"
           %br
           %br
           %u
-            %strong Related Rules : 
+            %strong=t('user.related_rules')+" :"
         %ol 
-          %li.small
-            For all modules to works, either activate 'Staff' role or activate access by module ie. 'Staff Module' (Admin/Viewer/User/Member).
-          %li.small
-            Staff Attendance should come with Fingerprints, for Manage Lateness and Early Return to works.
-          %li.small
-            Travel Claim should come with Travel Request, for approved travel records.
-          %li.small
-            Travel Claims Module (Member) - applicable for Applicant & Final Approver only. Finance Checker require 'Finance Unit' role to be activated.
-            Please note, assigning user with 'Finance Unit' role shall disable all types of module access for Travel Claims & Training Budget.
-          %li.small
-            Training Budget Module and Training Courses Module require access of Training Attendance Module (Viewer or Member).
+          %li.small=t('user.rule1')
+          %li.small=t('user.rule2')
+          %li.small=t('user.rule3')
+          %li.small=t('user.rule4')
+          %li.small=t('user.rule5')
           /%li.small
           /  Training Attendance Module require access of Training Schedule Module (Viewer or Member).
           %li.small
-            Training Attendance Module (Member) only applicable for applicants. Approvers require additional / replacement role activation as follows :
+            =t('user.rule7')
             %ul
-              %li Department Approval (Academic) - require additional 'Programme Manager' role to be activated.
-              %li Unit Approval (Management), Department Approval (Management) & Final Approval (Director) -  these 3 functions are not available at all. Uncheck Training Attendance Module (Member) and activate 'Finance Unit' role instead.
-          %li.small
-            Student Leaves Module (Member) only applicable for applicants. For approving purposes (Warden & Penyelaras) activate Warden and / or Lecturer role instead.
+              %li=t('user.rule7a')
+              %li=t('user.rule7b')
+          %li.small=t('user.rule8')
           /%li.small
           /  **Student Attendance Module (Member) only applicable for lecturers. Activating'Lecturer' role shall disable Student Attendance Module access.
           /%li.small
           /  **Student Counsellor Module (Member) only applicable for counsellors. Activating 'Student Counsellor' role shall disable Student Counselor Module access.
           %li.small
-            Student Discipline Cases 
+            =t('student.discipline.title')
             %ul
-              %li Activate 'Staff' role OR Student Discipline Module Member for Case reporter, Programme Manager and TPHEP.
-              %li Activate 'Disciplinary Officer' role for Discipline Officer access.
+              %li=t('user.rule9a')
+              %li=t('user.rule9b')
           %li.small
-            Training Notes Module (Admin/Viewer/User) must be activated for menu listing of :
+            =t('user.rule10')
             %ul
-              %li Training support tables (setup) : Academic Sessions, Student Intakes, Timetables.
-              %li Training related modules : Weeklytimetables (Timetable Entries) and Lesson Plan & Report, Topic Details
-          %li.small 
-            Topic Details Module require access of Lesson Plan & Report Module (Admin/Viewer/User)
-          %li.small
-            Exam Templates to be used with Exampaper
-          %li.small
-            Examination Management (Exammarks, Exam Grade) requires Examresults Module (Admin/Viewer/Users/Member) to be activated.
-          %li.small
-            Asset Loan, Asset Disposals and Asset Defect (loanable & menu items) requires Asset List (Admin/Viewer/User/Member) to be activated.
-          %li.small
-            Asset Defect Module (Member) only workable for defective reporter and decisioner, for processing purpose, please use 'Asset Administrator' role instead.
-          %li.small
-            Asset Loan Module (Member) only applicable for members of responsible Unit (of loaned asset). For full access on asset loan, please activate either Asset Loan Module (Admin) or Asset Administrator' role.
-          %li.small 
-            Asset pricing details viewable only to user with 'Administration' or 'Asset Administrator' roles or those with Asset List Module (Admin/User) access.
-          %li.small
-            E-Filing modules (Events, Bulletins, Files) requires access to Documents modules (Admin/Viewer/User/Member) to be activated.
-          %li.small
-            Weeklytimetable Module (Member) only applicable to creator of Weeklytimetable (Penyelaras) and Weeklytimetable time slot owner. For approval of weeklytimetable, please use 'Programme Manager' role.
-          /Below - Unremark when ready in Ogma
+              %li=t('user.rule10a')
+              %li=t('user.rule10b')
+          %li.small=t('user.rule11')
+          %li.small=t('user.rule12')
+          %li.small=t('user.rule13')
+          %li.small=t('user.rule14')
+          %li.small=t('user.rule15')
+          %li.small=t('user.rule20')
+          %li.small=t('user.rule16')
+          %li.small=t('user.rule17')
+          %li.small=t('user.rule19')
+          /Below - Unremark when ready in Ogma - rule18, rule18a, rule18b, rule18c
           /%li.small
           /  Support Tables :
           /  %ul
@@ -177,7 +158,8 @@
           - for user_role in @user.roles.order(id: :asc)
             .row
               .col-md-12
-                =user_role.name
+                =h t('user.'+user_role.authname)
+                /=user_role.name
           
           //ALL assigned roles
           /= text_field_tag "roling", @user.roles.pluck(:id)
@@ -190,7 +172,9 @@
       .panel-body
         - for role in Role.where.not('authname ILIKE(?)', '%module%').where.not('authname=?', 'coordinator').order(id: :asc)
           .row
-            .col-md-9= role.name
+            .col-md-9
+              /= role.name
+              =h t('user.'+role.authname) 
             /role.name if role.authname!="coordinator"
             .col-md-1
               /- if role.authname!="coordinator"
@@ -203,10 +187,15 @@
     .panel.panel-default
       .panel-heading
         %h3.panel-title
-          E-Filling Modules
+          =t 'role.e_filing'
           .right.small
-            /Manage&nbsp;&nbsp;&nbsp;Read&nbsp;
-            Admin&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Viewer&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;User&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Member&nbsp;
+            =t 'user.admin'
+            &nbsp;
+            =t 'user.viewer'
+            &nbsp;
+            =t 'user.user'
+            &nbsp;
+            =t 'user.member'
       .panel-body
         /- for role in Role.where('authname ILIKE(?)', '%module').where.not('name ILIKE(?)', '%Mailer%').where(description: ["Events", "Bulletins", "Files", "Documents"]).order(id: :asc)
         /      /.row
@@ -218,7 +207,6 @@
         /      /  /=radio_button_tag 'user_role_ids[]', role.id, class: "efilingmanage"
         
         %table{width:"100%"}
-          /.table-condensed
           %head 
             %tr
               %th.left{width: "5%"}
@@ -239,8 +227,11 @@
                 = check_box_tag "user[role_ids][]", read.id, @user.roles.include?(read), class: "efilingread"
                 = check_box_tag "user[role_ids][]", user.id, @user.roles.include?(user), class: "efilinguser"
                 = check_box_tag "user[role_ids][]", owner.id, @user.roles.include?(owner), class: "efilingowner"
-              - rolename=role.name.split("Module")[0].strip
-              - rolename2=rolename.downcase
+              /- rolename=role.name.split("Module")[0].strip
+              /- rolename2=rolename.downcase
+              - rolename1=role.authname.split("_module")[0].strip
+              - rolename= t('user.'+rolename1)
+              - rolename2=rolename1.downcase
               %tr
                 %td.left=check_box_tag "efilemain_#{cnt}", cnt, false, class: "filemain"
                 %td.left=rolename
@@ -248,19 +239,24 @@
                 %td.centre=radio_button_tag "user_role_#{rolename2}", read.id, @user.roles.include?(read), class: "efilingread2"
                 %td.centre=radio_button_tag "user_role_#{rolename2}", user.id, @user.roles.include?(user), class: "efilinguser2"
                 %td.centre=radio_button_tag "user_role_#{rolename2}", owner.id, @user.roles.include?(owner), class: "efilingowner2"
-              /= cnt
               - cnt+=1
         .small 
-          Uncheck 
+          =t 'actions.uncheck'
           %font{style: "color: red;"}*
-          to remove selected module access
+          =t 'user.remove_module_access'
     /2nd column - Library SECTION
     .panel.panel-default
       .panel-heading
         %h3.panel-title
-          E-Library Modules
+          =t 'user.e_library'
           .right.small
-            Admin&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Viewer&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;User&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Member&nbsp;
+            =t 'user.admin'
+            &nbsp;
+            =t 'user.viewer'
+            &nbsp;
+            =t 'user.user'
+            &nbsp;
+            =t 'user.member'
       .panel-body
         %table{width:"100%"}
           %head
@@ -283,8 +279,9 @@
                 = check_box_tag "user[role_ids][]", read.id, @user.roles.include?(read), class: "libraryread"
                 = check_box_tag "user[role_ids][]", user.id, @user.roles.include?(user), class: "libraryuser"
                 = check_box_tag "user[role_ids][]", owner.id, @user.roles.include?(owner), class: "libraryowner"
-              - rolename=role.name.split("Module")[0].strip
-              - rolename2=rolename.downcase
+              - rolename1=role.authname.split("_module")[0].strip
+              - rolename= t('user.'+rolename1)
+              - rolename2=rolename1.downcase
               %tr
                 %td.left=check_box_tag "efilemain_#{cnt}", cnt, false, class: "librarymain"
                 %td.left=rolename
@@ -292,20 +289,25 @@
                 %td.centre=radio_button_tag "user_role_#{rolename2}", read.id, @user.roles.include?(read), class: "libraryread2"
                 %td.centre=radio_button_tag "user_role_#{rolename2}", user.id, @user.roles.include?(user), class: "libraryuser2"
                 %td.centre=radio_button_tag "user_role_#{rolename2}", owner.id, @user.roles.include?(owner), class: "libraryowner2"
-              /= cnt
               - cnt+=1
         .small 
-          Uncheck 
+          =t 'actions.uncheck'
           %font{style: "color: red;"}*
-          to remove selected module access
+          =t 'user.remove_module_access'
 
     /2nd column - Examination SECTION
     .panel.panel-default
       .panel-heading
         %h3.panel-title
-          Examination Dev & Management
+          =t 'user.exam'
           .right.small
-            Admin&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Viewer&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;User&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Member&nbsp;
+            =t 'user.admin'
+            &nbsp;
+            =t 'user.viewer'
+            &nbsp;
+            =t 'user.user'
+            &nbsp;
+            =t 'user.member'
       .panel-body
         %table{width:"100%"}
           %head
@@ -328,8 +330,9 @@
                 = check_box_tag "user[role_ids][]", read.id, @user.roles.include?(read), class: "examread"
                 = check_box_tag "user[role_ids][]", user.id, @user.roles.include?(user), class: "examuser"
                 = check_box_tag "user[role_ids][]", owner.id, @user.roles.include?(owner), class: "examowner"
-              - rolename=role.name.split("Module")[0].strip
-              - rolename2=rolename.downcase
+              - rolename1=role.authname.split("_module")[0].strip
+              - rolename= t('user.'+rolename1)
+              - rolename2=rolename1.downcase
               %tr
                 %td.left=check_box_tag "efilemain_#{cnt}", cnt, false, class: "exammain"
                 %td.left=rolename
@@ -337,12 +340,11 @@
                 %td.centre=radio_button_tag "user_role_#{rolename2}", read.id, @user.roles.include?(read), class: "examread2"
                 %td.centre=radio_button_tag "user_role_#{rolename2}", user.id, @user.roles.include?(user), class: "examuser2"
                 %td.centre=radio_button_tag "user_role_#{rolename2}", owner.id, @user.roles.include?(owner), class: "examowner2"
-              /= cnt
               - cnt+=1
         .small 
-          Uncheck 
+          =t 'actions.uncheck'
           %font{style: "color: red;"}*
-          to remove selected module access
+          =t 'user.remove_module_access'
 
         %hr
         /COURSE EVALUATION    
@@ -367,8 +369,9 @@
                 = check_box_tag "user[role_ids][]", read.id, @user.roles.include?(read), class: "courseevalread"
                 = check_box_tag "user[role_ids][]", user.id, @user.roles.include?(user), class: "courseevaluser"
                 = check_box_tag "user[role_ids][]", owner.id, @user.roles.include?(owner), class: "courseevalowner"
-              - rolename=role.name.split("Module")[0].strip
-              - rolename2=rolename.downcase
+              - rolename1=role.authname.split("_module")[0].strip
+              - rolename= t('user.'+rolename1)
+              - rolename2=rolename1.downcase
               %tr
                 %td.left=check_box_tag "efilemain_#{cnt}", cnt, false, class: "courseevalmain"
                 %td.left=rolename
@@ -376,22 +379,24 @@
                 %td.centre=radio_button_tag "user_role_#{rolename2}", read.id, @user.roles.include?(read), class: "courseevalread2"
                 %td.centre=radio_button_tag "user_role_#{rolename2}", user.id, @user.roles.include?(user), class: "courseevaluser2"
                 %td.centre=radio_button_tag "user_role_#{rolename2}", owner.id, @user.roles.include?(owner), class: "courseevalowner2"
-              /= cnt
               - cnt+=1
         /COURSE EVALUATION ends
         .small
-          Uncheck 
+          =t 'actions.uncheck'
           %font{style: "color: red;"}*
-          to remove selected module access
+          =t 'user.remove_module_access'
 
     /2nd column - Admin SECTION
     .panel.panel-default
       .panel-heading
         %h3.panel-title
-          Administration / Support Tables
+          =t 'user.support'
           .right.small
-            &nbsp;&nbsp;&nbsp;&nbsp;Admin&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Viewer&nbsp;
-            /User&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Member&nbsp;
+            &nbsp;&nbsp;&nbsp;&nbsp;
+            =t 'user.admin'
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            =t 'user.viewer'
+           
       .panel-body
         %table{width:"100%"}
           %head
@@ -414,8 +419,9 @@
                 = check_box_tag "user[role_ids][]", read.id, @user.roles.include?(read), class: "supportread"
                 /= check_box_tag "user[role_ids][]", user.id, @user.roles.include?(user), class: "libraryuser"
                 /= check_box_tag "user[role_ids][]", owner.id, @user.roles.include?(owner), class: "libraryowner"
-              - rolename=role.name.split("Module")[0].strip
-              - rolename2=rolename.downcase
+              - rolename1=role.authname.split("_module")[0].strip
+              - rolename= t('user.'+rolename1)
+              - rolename2=rolename1.downcase
               %tr
                 %td.left=check_box_tag "efilemain_#{cnt}", cnt, false, class: "supportmain"
                 %td.left
@@ -430,9 +436,9 @@
               /= cnt
               - cnt+=1
         .small 
-          Uncheck 
+          =t 'actions.uncheck'
           %font{style: "color: red;"}*
-          to remove selected module access
+          =t 'user.remove_module_access'
 
           
   .col-md-3
@@ -440,10 +446,15 @@
     .panel.panel-default
       .panel-heading
         %h3.panel-title
-          /=t 'user.access_by_module'
-          Staffs Registry
+          =t 'user.staff_registry'
           .right.small
-            Admin&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Viewer&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;User&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Member&nbsp;
+            =t 'user.admin'
+            &nbsp;
+            =t 'user.viewer'
+            &nbsp;
+            =t 'user.user'
+            &nbsp;
+            =t 'user.member'
       .panel-body   
         /STAFF part 1
         %table{width:"100%"}
@@ -469,8 +480,9 @@
                 = check_box_tag "user[role_ids][]", read.id, @user.roles.include?(read), class: "a_staffread"
                 = check_box_tag "user[role_ids][]", user.id, @user.roles.include?(user), class: "a_staffuser"
                 = check_box_tag "user[role_ids][]", owner.id, @user.roles.include?(owner), class: "a_staffowner"
-              - rolename=role.name.split("Module")[0].strip
-              - rolename2=rolename.downcase
+              - rolename1=role.authname.split("_module")[0].strip
+              - rolename= t('user.'+rolename1)
+              - rolename2=rolename1.downcase
               %tr
                 %td.left=check_box_tag "efilemain_#{cnt}", cnt, false, class: "a_staffmain"
                 %td.left=rolename
@@ -478,12 +490,11 @@
                 %td.centre=radio_button_tag "user_role_#{rolename2}", read.id, @user.roles.include?(read), class: "a_staffread2"
                 %td.centre=radio_button_tag "user_role_#{rolename2}", user.id, @user.roles.include?(user), class: "a_staffuser2"
                 %td.centre=radio_button_tag "user_role_#{rolename2}", owner.id, @user.roles.include?(owner), class: "a_staffowner2"
-              /= cnt
               - cnt+=1
         .small 
-          Uncheck 
+          =t 'actions.uncheck'
           %font{style: "color: red;"}*
-          to remove selected module access
+          =t 'user.remove_module_access'
 
         %hr
         
@@ -510,8 +521,9 @@
                 = check_box_tag "user[role_ids][]", read.id, @user.roles.include?(read), class: "b_staffread"
                 = check_box_tag "user[role_ids][]", user.id, @user.roles.include?(user), class: "b_staffuser"
                 = check_box_tag "user[role_ids][]", owner.id, @user.roles.include?(owner), class: "b_staffowner"
-              - rolename=role.name.split("Module")[0].strip
-              - rolename2=rolename.downcase
+              - rolename1=role.authname.split("_module")[0].strip
+              - rolename= t('user.'+rolename1)
+              - rolename2=rolename1.downcase
               %tr
                 %td.left=check_box_tag "efilemain_#{cnt}", cnt, false, class: "b_staffmain"
                 %td.left=rolename
@@ -519,12 +531,11 @@
                 %td.centre=radio_button_tag "user_role_#{rolename2}", read.id, @user.roles.include?(read), class: "b_staffread2"
                 %td.centre=radio_button_tag "user_role_#{rolename2}", user.id, @user.roles.include?(user), class: "b_staffuser2"
                 %td.centre=radio_button_tag "user_role_#{rolename2}", owner.id, @user.roles.include?(owner), class: "b_staffowner2"
-              /= cnt
               - cnt+=1
         .small 
-          Uncheck 
+          =t 'actions.uncheck'
           %font{style: "color: red;"}*
-          to remove selected module access
+          =t 'user.remove_module_access'
 
         %hr
 
@@ -551,8 +562,9 @@
                 = check_box_tag "user[role_ids][]", read.id, @user.roles.include?(read), class: "c_staffread"
                 = check_box_tag "user[role_ids][]", user.id, @user.roles.include?(user), class: "c_staffuser"
                 = check_box_tag "user[role_ids][]", owner.id, @user.roles.include?(owner), class: "c_staffowner"
-              - rolename=role.name.split("Module")[0].strip
-              - rolename2=rolename.downcase
+              - rolename1=role.authname.split("_module")[0].strip
+              - rolename= t('user.'+rolename1)
+              - rolename2=rolename1.downcase
               %tr
                 %td.left=check_box_tag "efilemain_#{cnt}", cnt, false, class: "c_staffmain"
                 %td.left=rolename
@@ -560,12 +572,11 @@
                 %td.centre=radio_button_tag "user_role_#{rolename2}", read.id, @user.roles.include?(read), class: "c_staffread2"
                 %td.centre=radio_button_tag "user_role_#{rolename2}", user.id, @user.roles.include?(user), class: "c_staffuser2"
                 %td.centre=radio_button_tag "user_role_#{rolename2}", owner.id, @user.roles.include?(owner), class: "c_staffowner2"
-              /= cnt
               - cnt+=1
         .small 
-          Uncheck 
+          =t 'actions.uncheck'
           %font{style: "color: red;"}*
-          to remove selected module access
+          =t 'user.remove_module_access'
 
         %hr
         
@@ -592,8 +603,9 @@
                 = check_box_tag "user[role_ids][]", read.id, @user.roles.include?(read), class: "d_staffread"
                 = check_box_tag "user[role_ids][]", user.id, @user.roles.include?(user), class: "d_staffuser"
                 = check_box_tag "user[role_ids][]", owner.id, @user.roles.include?(owner), class: "d_staffowner"
-              - rolename=role.name.split("Module")[0].strip
-              - rolename2=rolename.downcase
+              - rolename1=role.authname.split("_module")[0].strip
+              - rolename= t('user.'+rolename1)
+              - rolename2=rolename1.downcase
               %tr
                 %td.left=check_box_tag "efilemain_#{cnt}", cnt, false, class: "d_staffmain"
                 %td.left=rolename
@@ -601,21 +613,25 @@
                 %td.centre=radio_button_tag "user_role_#{rolename2}", read.id, @user.roles.include?(read), class: "d_staffread2"
                 %td.centre=radio_button_tag "user_role_#{rolename2}", user.id, @user.roles.include?(user), class: "d_staffuser2"
                 %td.centre=radio_button_tag "user_role_#{rolename2}", owner.id, @user.roles.include?(owner), class: "d_staffowner2"
-              /= cnt
               - cnt+=1
         .small 
-          Uncheck 
+          =t 'actions.uncheck'
           %font{style: "color: red;"}*
-          to remove selected module access
+          =t 'user.remove_module_access'
 
-              
     /3rd column - ASSETS, FACILITY, RESIDENCES SECTION
     .panel.panel-default
       .panel-heading
         %h3.panel-title
-          Assets, Facility & Residences
+          =t 'user.asset_facilities_residences'
           .right.small
-            Admin&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Viewer&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;User&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Member&nbsp;
+            =t 'user.admin'
+            &nbsp;
+            =t 'user.viewer'
+            &nbsp;
+            =t 'user.user'
+            &nbsp;
+            =t 'user.member'
       .panel-body   
         %table{width:"100%"}
           %head
@@ -639,8 +655,9 @@
                 = check_box_tag "user[role_ids][]", read.id, @user.roles.include?(read), class: "assetread"
                 = check_box_tag "user[role_ids][]", user.id, @user.roles.include?(user), class: "assetuser"
                 = check_box_tag "user[role_ids][]", owner.id, @user.roles.include?(owner), class: "assetowner"
-              - rolename=role.name.split("Module")[0].strip
-              - rolename2=rolename.downcase
+              - rolename1=role.authname.split("_module")[0].strip
+              - rolename= t('user.'+rolename1)
+              - rolename2=rolename1.downcase
               %tr
                 %td.left=check_box_tag "efilemain_#{cnt}", cnt, false, class: "assetmain"
                 %td.left=rolename
@@ -648,12 +665,11 @@
                 %td.centre=radio_button_tag "user_role_#{rolename2}", read.id, @user.roles.include?(read), class: "assetread2"
                 %td.centre=radio_button_tag "user_role_#{rolename2}", user.id, @user.roles.include?(user), class: "assetuser2"
                 %td.centre=radio_button_tag "user_role_#{rolename2}", owner.id, @user.roles.include?(owner), class: "assetowner2"
-              /= cnt
               - cnt+=1
         .small 
-          Uncheck 
+          =t 'actions.uncheck'
           %font{style: "color: red;"}*
-          to remove selected module access
+          =t 'user.remove_module_access'
       
         %hr
         
@@ -679,8 +695,9 @@
                 = check_box_tag "user[role_ids][]", read.id, @user.roles.include?(read), class: "locationread"
                 = check_box_tag "user[role_ids][]", user.id, @user.roles.include?(user), class: "locationuser"
                 = check_box_tag "user[role_ids][]", owner.id, @user.roles.include?(owner), class: "locationowner"
-              - rolename=role.name.split("Module")[0].strip
-              - rolename2=rolename.downcase
+              - rolename1=role.authname.split("_module")[0].strip
+              - rolename= t('user.'+rolename1)
+              - rolename2=rolename1.downcase
               %tr
                 %td.left=check_box_tag "efilemain_#{cnt}", cnt, false, class: "locationmain"
                 %td.left=rolename
@@ -688,20 +705,25 @@
                 %td.centre=radio_button_tag "user_role_#{rolename2}", read.id, @user.roles.include?(read), class: "locationread2"
                 %td.centre=radio_button_tag "user_role_#{rolename2}", user.id, @user.roles.include?(user), class: "locationuser2"
                 %td.centre=radio_button_tag "user_role_#{rolename2}", owner.id, @user.roles.include?(owner), class: "locationowner2"
-              /= cnt
               - cnt+=1
         .small 
-          Uncheck 
+          =t 'actions.uncheck'
           %font{style: "color: red;"}*
-          to remove selected module access
+          =t 'user.remove_module_access'
 
     /Student related modules
     .panel.panel-default
       .panel-heading
         %h3.panel-title
-          Student Affairs
+          =t 'user.student_affairs'
           .right.small
-            Admin&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Viewer&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;User&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Member&nbsp;
+            =t 'user.admin'
+            &nbsp;
+            =t 'user.viewer'
+            &nbsp;
+            =t 'user.user'
+            &nbsp;
+            =t 'user.member'
       .panel-body
         %table{width:"100%"}
           %head
@@ -724,8 +746,9 @@
                 = check_box_tag "user[role_ids][]", read.id, @user.roles.include?(read), class: "studentread"
                 = check_box_tag "user[role_ids][]", user.id, @user.roles.include?(user), class: "studentuser"
                 = check_box_tag "user[role_ids][]", owner.id, @user.roles.include?(owner), class: "studentowner"
-              - rolename=role.name.split("Module")[0].strip
-              - rolename2=rolename.downcase
+              - rolename1=role.authname.split("_module")[0].strip
+              - rolename= t('user.'+rolename1)
+              - rolename2=rolename1.downcase
               %tr
                 %td.left=check_box_tag "efilemain_#{cnt}", cnt, false, class: "studentmain"
                 %td.left=rolename
@@ -733,21 +756,25 @@
                 %td.centre=radio_button_tag "user_role_#{rolename2}", read.id, @user.roles.include?(read), class: "studentread2"
                 %td.centre=radio_button_tag "user_role_#{rolename2}", user.id, @user.roles.include?(user), class: "studentuser2"
                 %td.centre=radio_button_tag "user_role_#{rolename2}", owner.id, @user.roles.include?(owner), class: "studentowner2"
-              /= cnt
               - cnt+=1
         .small 
-          Uncheck 
+          =t 'actions.uncheck'
           %font{style: "color: red;"}*
-          to remove selected module access
-          
+          =t 'user.remove_module_access'
 
     /Training related modules
     .panel.panel-default
       .panel-heading
         %h3.panel-title
-          Training Support
+          =t 'user.training'
           .right.small
-            Admin&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Viewer&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;User&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Member&nbsp;
+            =t 'user.admin'
+            &nbsp;
+            =t 'user.viewer'
+            &nbsp;
+            =t 'user.user'
+            &nbsp;
+            =t 'user.member'
       .panel-body
         %table{width:"100%"}
           %head
@@ -771,8 +798,9 @@
                 = check_box_tag "user[role_ids][]", read.id, @user.roles.include?(read), class: "trainingread"
                 = check_box_tag "user[role_ids][]", user.id, @user.roles.include?(user), class: "traininguser"
                 = check_box_tag "user[role_ids][]", owner.id, @user.roles.include?(owner), class: "trainingowner"
-              - rolename=role.name.split("Module")[0].strip
-              - rolename2=rolename.downcase
+              - rolename1=role.authname.split("_module")[0].strip
+              - rolename= t('user.'+rolename1)
+              - rolename2=rolename1.downcase
               %tr
                 %td.left=check_box_tag "efilemain_#{cnt}", cnt, false, class: "trainingmain"
                 %td.left=rolename
@@ -780,12 +808,11 @@
                 %td.centre=radio_button_tag "user_role_#{rolename2}", read.id, @user.roles.include?(read), class: "trainingread2"
                 %td.centre=radio_button_tag "user_role_#{rolename2}", user.id, @user.roles.include?(user), class: "traininguser2"
                 %td.centre=radio_button_tag "user_role_#{rolename2}", owner.id, @user.roles.include?(owner), class: "trainingowner2"
-              /= cnt
               - cnt+=1
         .small 
-          Uncheck 
+          =t 'actions.uncheck'
           %font{style: "color: red;"}*
-          to remove selected module access
+          =t 'user.remove_module_access'
 
 // testing section///////////////////
 
