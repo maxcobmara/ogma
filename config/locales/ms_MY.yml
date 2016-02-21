@@ -2836,6 +2836,7 @@ ms_MY:
       student_same_subject: Hanya gred pelajar bagi Subjek yang sama dibenarkan untuk suntingan secara pukal.
       summative_exceed_maximum: "Markah Sumatif tidak boleh melebihi markah penuh kertas peperiksaan."
       summative_exceed_hundred: "Markah Sumatif tidak boleh melebihi 100%."
+      subject_already_taken: Pelajar bagi ambilan yang dipilih telah mengambil subjek ini
       
     examresult:
       title: Keputusan Peperiksaan Mengikut Program

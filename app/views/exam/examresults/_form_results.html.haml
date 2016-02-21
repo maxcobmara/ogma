@@ -427,6 +427,7 @@
                       - elsif @value_state2.count('4') >=2
                         /FAIL 2 subjects or more of repeated papers - MUST 'Ulang Semester'
                         - @value_remark="5"
+
                       - else
                         /passed
                         - @value_remark="4" if @value_state2.count('4')==0 && @value_state2.count==@value_state.count('4')
@@ -434,7 +435,23 @@
                 /%br Remark (after checking):
                 /= @value_remark
               = select_tag "examresult[resultlines_attributes][#{no}][remark]", options_for_select([[t('select'), '0']]+DropDown::RESULT_REMARK, @value_remark) 
-
+              
+              /NOTE - 22Feb2016-below : removed to 1) model/examresult.rb
+              / Usage - update Student Info (Status & Status Remark - Repeat Semester, Semester No) - to be use in (retrieval of student):
+              /2) Exammarks(controller - create_multiple), 3)Grades(controller - create_multiple) & 4)model/grade.rb - redundants allowed only for student with sstatus=='Repeat' (Repeat Semester)
+              /- if @value_remark=="5"
+              /  = @students[no].id
+              /  = @examresult.semester
+              /  - all_resultlines=Resultline.where(student_id: @students[no].id).pluck(:examresult_id)
+              /  - examresults_sem=Examresult.where(id: all_resultlines).pluck(:semester)
+              /  - latest_sem=examresults_sem.max
+              /  - if latest_sem==@examresult.semester
+              /    - student_toupdate=Student.where(id: @students[no].id).first
+              /    - student_toupdate.sstatus="Repeat"
+              /    - status_remark=@examresult.semester.to_s+","
+              /    - student_toupdate.sstatus_remark=status_remark
+              /    - student_toupdate.save
+              
       /FINAL status before REPEAT papers         
       /= @value_state     
       /FINAL status after REPEAT papers

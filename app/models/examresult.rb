@@ -6,6 +6,36 @@ class Examresult < ActiveRecord::Base
   has_many :resultlines, :dependent => :destroy                                                     
   accepts_nested_attributes_for :resultlines, :reject_if => lambda { |a| a[:student_id].blank? }
     
+  after_save :update_student_status_when_repeated
+  
+  #22Feb2016-Steps when Repeat Sem in Examresult - 
+  #1) Update Student (sstatus & status_remark fields) 
+  #2) During next semester, Create Exammarks & Grade as usual (select intake, -> student for prev intake[of selected intake] with status 'Repeat' will be takes into acct)
+  # note - validation required in Grades, duplicates for a student/subject set only allowed when student status is 'Repeat' ie. 'Ulang semester'
+  def update_student_status_when_repeated
+    for rline in resultlines
+      if rline.remark=="5"
+        all_resultlines=Resultline.where(student_id: rline.student_id).pluck(:examresult_id)
+        examresults_sem=Examresult.where(id: all_resultlines).pluck(:semester)
+        latest_sem=examresults_sem.max
+        if latest_sem==semester
+          student_toupdate=Student.where(id: rline.student_id).first
+          student_toupdate.sstatus="Repeat"
+          prev_remark=student_toupdate.sstatus_remark
+          if prev_remark=='' || prev_remark.nil?
+            status_remark=semester.to_s
+          else
+            status_remark=prev_remark+","+semester.to_s if prev_remark.include?(semester.to_s)==false
+          end
+          if status_remark
+            student_toupdate.sstatus_remark=status_remark
+            student_toupdate.save
+          end
+        end
+      end
+    end
+  end
+  
   def self.search2(search)
     if search 
       if search == '0'  #admin

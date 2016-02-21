@@ -220,7 +220,14 @@ class Exam::GradesController < ApplicationController
     #qcount = @exammark.get_questions_count(@examid)
     #current_program = Programme.find(Exam.find(@examid).subject_id).root_id
     #selected_student = Student.where(course_id: current_program.to_i, intake: selected_intake)
-    selected_student = Student.where(course_id: @programme_id, intake: selected_intake)
+    
+    #selected_student = Student.where(course_id: @programme_id, intake: selected_intake)
+    #above - before include previous intake(repeat semester) students
+    # NOTE - 22Feb2016 - include Repeat Semester students (previous Intake) 
+    #related files: 1) views/examresults/_form_results.html.haml, 2)model/examresult.rb 3)exammarks_controllers.rb 4)model/grade.rb - redundants allowed only for student with sstatus=='Repeat' (Repeat Semester)
+    previous_intake = Student.where(course_id: @programme_id).where('intake < ?', selected_intake).order(intake: :desc).first.intake
+    selected_student = Student.where(course_id: @programme_id).where('intake=? or (intake=? and sstatus=?)', selected_intake, previous_intake, 'Repeat')
+    
     rec_count = selected_student.count
     @grades = Array.new(rec_count) { Grade.new }                      
     @grades.each_with_index do |grade,ind|                                     
