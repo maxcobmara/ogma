@@ -1,0 +1,19 @@
+- @receipts.each do |receipt|
+  - message = receipt.message
+  .media
+    .media-left
+      / user avators can go here
+      %a{:href => "#"}
+        %img.media-object{:alt => "...", :src => "http://placehold.it/64x64"}
+    .media-body
+      %h4.media-heading
+        = message.sender.name
+        %br
+          %small
+            %b Subject:
+            = message.subject
+          %br
+            %small
+              %b Date:
+              = message.created_at.strftime("%A, %b %d, %Y at %I:%M%p")
+      = message.body

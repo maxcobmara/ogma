@@ -1,0 +1,17 @@
+.row
+  .spacer
+  .col-md-12
+    = link_to "Compose", new_conversation_path, class: "btn btn-success"
+    .spacer
+  .col-md-4
+    .panel.panel-default
+      .panel-body
+        = render 'mailbox/folders'
+  .col-md-8
+    .panel.panel-default
+      .panel-body
+        / individual conversations will show here
+        - if is_conversation
+          = render 'conversations/form'
+        - else
+          = render partial: 'conversations/conversation', collection: messages

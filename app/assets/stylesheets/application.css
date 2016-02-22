@@ -10,6 +10,7 @@
  *
  *= require font-awesome
  *= require jquery.datetimepicker
+ *= require chosen
  *= require_tree
  */
 

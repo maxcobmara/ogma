@@ -6,6 +6,8 @@ class User < ActiveRecord::Base
 
   belongs_to :userable, polymorphic: true
   has_and_belongs_to_many :roles
+  
+  acts_as_messageable
 
  #Now you can easily fetch the current_user in models by User.current, enjoy it!
   def self.current
@@ -24,6 +26,14 @@ class User < ActiveRecord::Base
   # whitelist the scope
   def self.ransackable_scopes(auth_object = nil)
    [:keyword_search]
+  end
+  
+  def mailboxer_name
+    self.userable.name
+  end
+  
+  def mailboxer_email(object)
+    self.email
   end
 
   def exams_of_programme

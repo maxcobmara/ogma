@@ -6,6 +6,7 @@ class ApplicationController < ActionController::Base
   before_filter :set_locale
   before_filter { |c| Authorization.current_user = c.current_user }
   helper :bootstrap_icon, :devise
+  helper_method :mailbox, :conversation
 
   #set current user for development
   #def current_user
@@ -28,6 +29,8 @@ class ApplicationController < ActionController::Base
   def after_sign_in_path_for(resource)
    '/dashboard'
   end
+  
+  
 
   private
 
@@ -46,5 +49,12 @@ class ApplicationController < ActionController::Base
     def permission_denied
       flash[:error] = "Sorry, you are not allowed to access that page."
       redirect_to dashboard_path
+    end
+    
+    def mailbox
+      @mailbox ||= current_user.mailbox
+    end
+    def conversation
+      @conversation ||= mailbox.conversations.find(params[:id])
     end
 end

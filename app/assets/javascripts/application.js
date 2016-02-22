@@ -16,6 +16,7 @@
 //= require nicEdit
 //= require jsapi
 //= require chartkick
+//= require chosen-jquery
 //= require_tree
 
 // See http://stackoverflow.com/a/16984739/64904

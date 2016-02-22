@@ -16,12 +16,13 @@ gem "prawn", "~> 1.3.0"
 gem 'prawn-table', '~> 0.2.1'
 gem "chartkick", "~> 1.3.2"
 gem 'country_select', '~> 2.1.0'
+gem 'mailboxer', '~> 0.13.0'
 
 
 
 #stuff for layout
 #gem "bootstrap-sass", "~> 3.0.3.0"
-gem 'sass-rails', '~> 4.0.0'
+gem 'sass-rails', '~> 5.0', '>= 5.0.4'
 gem 'uglifier', '~> 2.1.1'  # Use Uglifier as compressor for JavaScript assets
 gem 'coffee-rails', '~> 4.0.0'  # Use CoffeeScript for .js.coffee assets and views
 gem "jquery-ui-rails", "~> 4.1.1"
@@ -41,6 +42,7 @@ gem "whenever", "~> 0.9.2", require: false
 #gem 'rmagick', '2.13.2', :require => 'RMagick'
 gem 'ruby_parser', '~> 3.6.3' #requirement for graphviz
 gem "roo"
+gem 'chosen-rails', '~> 1.4', '>= 1.4.3'
 
 
 
