@@ -167,7 +167,7 @@
             - permitted_to? :read, :events do
               %li= link_to content_tag(:i, "", :class => "icon-numb") + (t "events.campus_events"), events_path
               %li= link_to content_tag(:i, "", :class => "icon-numb") + "Campus Events Calendar", '#'
-            %li= link_to content_tag(:i, "", :class => "icon-numb") + "Local Messaging", '#'
+            %li= link_to content_tag(:i, "", :class => "icon-numb") + "Local Messaging", mailbox_inbox_path
             - permitted_to? :read, :bulletins do
               %li= link_to content_tag(:i, "", :class => "icon-numb") + "Bulletin Board", bulletins_path
             %li= link_to content_tag(:i, "", :class => "icon-numb") + "Equery/Reports", '#'
