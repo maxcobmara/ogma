@@ -1,6 +1,6 @@
 class Asset::AssetsController < ApplicationController
-  #filter_resource_access
-  filter_access_to :all
+  filter_access_to :index, :new, :create, :kewpa2, :kewpa3, :kewpa4, :kewpa5, :kewpa6, :kewpa8, :kewpa13, :kewpa14, :loanables, :attribute_check => false
+  filter_access_to :show, :edit, :update, :destroy, :attribute_check => true
   before_action :set_asset, only: [:show, :edit, :update, :destroy]
   
   def index

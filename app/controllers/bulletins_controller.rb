@@ -1,4 +1,5 @@
 class BulletinsController < ApplicationController
+  filter_resource_access
   before_action :set_bulletin, only: [:show, :edit, :update, :destroy]
   
   # GET /bulletins

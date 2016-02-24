@@ -25,7 +25,7 @@ class Kewpa19Pdf < Prawn::Document
     move_down 10
     text "3.  Aset berikut telah dilupuskan secara musnah.", :align => :left, :width => 200, :size => 10
     text "Bilangan item : <b>#{@disposal.quantity}</b>", :align => :left, :width => 200, :size => 10, :indent_paragraphs => 13,:inline_format => true
-    text  "Cara dimusnahkan : <b>#{I18n.t('asset.disposal.'+@disposal.discard_options)}</b>", :align => :left, :width => 200, :size => 10, :indent_paragraphs => 13,:inline_format => true
+    text  "Cara dimusnahkan : <b>#{I18n.t('asset.disposal.'+@disposal.discard_options) if @disposal.discard_options}</b>", :align => :left, :width => 200, :size => 10, :indent_paragraphs => 13,:inline_format => true
     text "(Sijil Menyaksikan Pemusnahan disertakan)", :align => :left, :width => 200, :size => 10, :indent_paragraphs => 13
     
     move_down 10

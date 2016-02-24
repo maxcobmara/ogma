@@ -1,5 +1,6 @@
 class Student::LeaveforstudentsController < ApplicationController
-  filter_access_to :all
+  filter_access_to :index, :new, :create, :slip_pengesahan_cuti_pelajar, :studentleave_report, :attribute_check => false
+  filter_access_to :show, :edit, :update, :destroy, :new_multiple, :new_multiple_intake, :attribute_check => true
   before_action :set_leaveforstudent, only: [:show, :edit, :update, :destroy]
 
   def index

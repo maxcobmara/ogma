@@ -1,20 +1,18 @@
 .mp-level
   %h2.icon.icon-world Menu
   %ul
-    /- permitted_to? :menu, :staffs do             - inc index
-    - permitted_to? :show, :staffs do
+    - permitted_to? :read, :staff_staffs do
       %li.icon.icon-left
         = link_to t('staff.title'), '#'
         .mp-level
           %h2.icon=t('staff.title')
           %a.mp-back{:href => "#"}=t('back')
           %ul
-            - if permitted_to? :read, :staffs
+            - permitted_to? :read, :staff_staffs do
               %li= link_to t('staff.list'), staff_infos_path
-            - else
-              - permitted_to? :update, :staffs do
-                %li= link_to content_tag(:i, "", :class => "icon-numb") + t("staff.title"), staff_info_path(current_user.userable.id)
-            - permitted_to? :menu, :staff_staff_attendances do
+            - permitted_to? :read, :staff_positions do
+              %li= link_to content_tag(:i, "", :class => "icon-numb") + t("position.index"), staff_positions_path
+            - permitted_to? :manager, :staff_staff_attendances do
               %li.icon.icon-left
                 = link_to t('staff_attendance.title'), '#'
                 .mp-level
@@ -22,16 +20,20 @@
                   %a.mp-back{:href => "#"}= t 'helpers.links.back'
                   %ul
                     %li= link_to t('attendance.manage_lateness_earlyreturn'), '/attendance/manager'
-                    %li= link_to t('fingerprint.title2'), staff_fingerprints_path
-                    - permitted_to? :manage, :staff_staff_attendances do
+                    - permitted_to? :read, :staff_fingerprints do
+                      %li= link_to t('fingerprint.title2'), staff_fingerprints_path
+                    - permitted_to? :read, :staff_staff_attendances do
                       %li= link_to t('staff_attendance.title'), staff_staff_attendances_path
+                    - permitted_to? :status, :staff_staff_attendances do
                       %li= link_to t('staff_attendance.status_pcard'), '/attendance/status'
+                    - permitted_to? :attendance_report, :staff_staff_attendances do
                       %li= link_to t('staff_attendance.report'), attendance_report_staff_staff_attendances_path
+                    - permitted_to? :manage, :staff_holidays do
                       %li= link_to t('holiday.title'), staff_holidays_path
             - permitted_to? :index, :staff_staff_appraisals do        
               %li= link_to t('staff.staff_appraisal.title'), staff_staff_appraisals_path
-            - permitted_to? :read, :staffs do
-              %li= link_to t('position.title'), staff_positions_path
+            /- permitted_to? :read, :staffs do
+            /  %li= link_to t('position.title'), staff_positions_path
             %li.icon.icon-left
               = link_to t('staff_leave.leave'), '#'
               .mp-level
@@ -51,22 +53,23 @@
                     %li= link_to t('staff.travel_request.title'), staff_travel_requests_path
                     %li= link_to t('staff.travel_request.my_travel_logs'), travel_log_index_staff_travel_requests_path
                     %li= link_to t('staff.travel_claim.title'), staff_travel_claims_path
-            - permitted_to? :create, :staff_training_ptdos do
+            - permitted_to? :read, :staff_training_ptdos do
               %li.icon.icon-left
                 = link_to t('staff.professional_development'), '#'
                 .mp-level
                   %h2.icon=t ('staff.professional_development')
                   %a.mp-back{:href => "#"}= t 'helpers.links.back'
                   %ul
-                    - permitted_to? :manage, :staff_training_ptbudgets do
+                    - permitted_to? :read, :staff_training_ptbudgets do
                       %li= link_to t('staff.training.budget.title'), staff_training_ptbudgets_path
-                    - permitted_to? :manage, :staff_training_ptcourses do
+                    - permitted_to? :read, :staff_training_ptcourses do
                       %li= link_to t('staff.training.course.title_course'), staff_training_ptcourses_path
-                    /- permitted_to? :manage, :staff_training_ptschedules do
-                    %li= link_to t('staff.training.schedule.title_schedule'), staff_training_ptschedules_path
-                    %li= link_to t('staff.training.application_status.title_apply'), '#', class: 'bogus'
+                    - permitted_to? :read, :staff_training_ptschedules do
+                      %li= link_to t('staff.training.schedule.title_schedule'), staff_training_ptschedules_path
+                    - permitted_to? :menu, :staff_training_ptschedules do
+                      %li= link_to t('staff.training.application_status.title_apply'), staff_training_ptschedules_path
                     %li= link_to t('staff.training.application_status.title'), staff_training_ptdos_path
-                    - permitted_to? :manage, :staff_training_ptbudgets do
+                    - permitted_to? :participants_expenses, :staff_training_ptschedules do
                       %li=link_to t('staff.training.schedule.participants_expenses'), participants_expenses_staff_training_ptschedules_path
             - permitted_to? :create, :staff_travel_requests do
               %li= link_to t('staff.travel_request.status_movement'), staff_travel_requests_path
@@ -80,8 +83,8 @@
                     %li= link_to t('position.report'), '/staff/positions/maklumat_perjawatan.pdf'
                     %li= link_to t('position.report_excel'), maklumat_perjawatan_excel_staff_positions_path(format: 'xls')
 
-    /- permitted_to? :read, :assets do
-    - permitted_to? :create, :asset_asset_loans do
+    - permitted_to? :read, :asset_assets do
+      /- permitted_to? :create, :asset_asset_loans do
       %li.icon.icon-left
         = link_to content_tag(:i, "", :class => "icon-numb") + (t "asset.title"), '#'
         .mp-level
@@ -90,52 +93,54 @@
           %ul
             - permitted_to? :read, :asset_assets do
               %li= link_to content_tag(:i, "", :class => "icon-numb") + (t "asset.title"), asset_assets_path
-            - permitted_to? :manage, :assets do
+            - permitted_to? :read, :asset_stationeries do
               %li= link_to content_tag(:i, "", :class => "icon-numb") + (t "stationery.title_menu"), asset_stationeries_path
             - permitted_to? :read, :asset_asset_defects do
               %li= link_to content_tag(:i, "", :class => "icon-numb") + (t "asset.defect.title"), asset_defects_path
-            - permitted_to? :manage, :asset_losses do
+            - permitted_to? :read, :asset_asset_losses do
               %li= link_to content_tag(:i, "", :class => "icon-numb") + (t "asset.loss.title"), asset_losses_path
-            - permitted_to? :manage, :asset_disposals do
+            - permitted_to? :read, :asset_asset_disposals do
               %li= link_to content_tag(:i, "", :class => "icon-numb") + (t "asset.disposal.title"), asset_disposals_path
-            %li.icon.icon-left
-              = link_to t('asset.loan.title'), '#'
-              .mp-level
-                %h2.icon=t('asset.loan.title')
-                %a.mp-back{:href => "#"}= t 'helpers.links.back'
-                %ul
-                  %li= link_to t('asset.loan.application'), loanables_asset_assets_path
-                  %li= link_to t('asset.loan.asset_on_loan'), asset_loans_path
-            %li= link_to content_tag(:i, "", :class => "icon-numb") + (t "asset.reportdownload"), "/asset_report"
-
-    - permitted_to? :read, :campus_locations do
-      %li.icon.icon-left
-        = link_to content_tag(:i, "", :class => "icon-numb") + (t "location.title"), '#'
-        .mp-level
-          %h2.icon= (t "location.title")
-          %a.mp-back{:href => "#"}=t("back")
-          %ul
-            %li= link_to content_tag(:i, "", :class => "icon-numb") +  (t "location.title"), campus_locations_path
-            /%li= link_to content_tag(:i, "", :class => "icon-numb") + "Assignment", '#'
-            - permitted_to? :read, :student_tenants do
+            - permitted_to? :create, :asset_asset_loans do
               %li.icon.icon-left
-                = link_to (t "student.tenant.title"), '#'
+                = link_to t('asset.loan.title'), '#'
                 .mp-level
-                  %h2.icon= t "student.tenant.title"
+                  %h2.icon=t('asset.loan.title')
                   %a.mp-back{:href => "#"}= t 'helpers.links.back'
                   %ul
-                    - permitted_to? :room_map, :student_tenants do
-                      %li= link_to (t "student.tenant.room_map"), room_map_student_tenants_path
-                    - permitted_to? :read, :student_tenants do
-                      %li= link_to (t "student.tenant.list"), student_tenants_path
-                    - permitted_to? :return_key, :student_tenants do
-                      %li= link_to (t "student.tenant.return_key"), return_key_student_tenants_path
-                    %li= link_to (t "location.damage.list2"), campus_location_damages_path
-                    - permitted_to? :reports, :student_tenants do
-                      %li= link_to (t "student.tenant.report_census"), reports_student_tenants_path
-                    - permitted_to? :statistics, :student_tenants do
-                      %li= link_to (t "student.tenant.statistics_menu"), statistics_student_tenants_path
+                    %li= link_to t('asset.loan.application'), loanables_asset_assets_path
+                    %li= link_to t('asset.loan.asset_on_loan'), asset_loans_path
+            %li= link_to content_tag(:i, "", :class => "icon-numb") + (t "asset.reportdownload"), "/asset_report"
 
+    %li.icon.icon-left
+      = link_to content_tag(:i, "", :class => "icon-numb") + (t "location.title"), '#'
+      .mp-level
+        %h2.icon= (t "location.title")
+        %a.mp-back{:href => "#"}=t("back")
+        %ul
+          - permitted_to? :read, :campus_locations do
+            %li= link_to content_tag(:i, "", :class => "icon-numb") +  (t "location.title"), campus_locations_path
+          - permitted_to? :read, :student_tenants do
+            %li.icon.icon-left
+              = link_to (t "student.tenant.title"), '#'
+              .mp-level
+                %h2.icon= t "student.tenant.title"
+                %a.mp-back{:href => "#"}= t 'helpers.links.back'
+                %ul
+                  - permitted_to? :room_map, :student_tenants do
+                    %li= link_to (t "student.tenant.room_map"), room_map_student_tenants_path
+                  - permitted_to? :read, :student_tenants do
+                    %li= link_to (t "student.tenant.list"), student_tenants_path
+                  - permitted_to? :return_key, :student_tenants do
+                    %li= link_to (t "student.tenant.return_key"), return_key_student_tenants_path
+                  - permitted_to? :read, :campus_location_damages do
+                    %li= link_to (t "location.damage.list2"), campus_location_damages_path
+                  - permitted_to? :reports, :student_tenants do
+                    %li= link_to (t "student.tenant.report_census"), reports_student_tenants_path
+                  - permitted_to? :statistics, :student_tenants do
+                    %li= link_to (t "student.tenant.statistics_menu"), statistics_student_tenants_path
+            
+            - permitted_to? :index_staff, :student_tenants do
               %li.icon.icon-left
                 = link_to (t "student.tenant.title2"), '#'
                 .mp-level
@@ -148,9 +153,10 @@
                       %li= link_to (t "student.tenant.list"), index_staff_student_tenants_path
                     - permitted_to? :return_key2, :student_tenants do
                       %li= link_to (t "student.tenant.return_key"), return_key2_student_tenants_path
-                    %li= link_to (t "location.damage.list2"), index_staff_campus_location_damages_path
+                    - permitted_to? :index_staff, :campus_location_damages do
+                      %li= link_to (t "location.damage.list2"), index_staff_campus_location_damages_path
 
-    - permitted_to? :read, :documents do
+    - permitted_to? :menu, :documents do
       %li.icon.icon-left
         = link_to content_tag(:i, "", :class => "icon-numb") + "E-Filing", '#'
         .mp-level
@@ -158,47 +164,53 @@
           %a.mp-back{:href => "#"}=t('back')
           %ul
             %li= link_to content_tag(:i, "", :class => "icon-numb") + "Campus Info", '#'
-            %li= link_to content_tag(:i, "", :class => "icon-numb") + (t "events.campus_events"), events_path
-            %li= link_to content_tag(:i, "", :class => "icon-numb") + "Campus Events Calendar", '#'
+            - permitted_to? :read, :events do
+              %li= link_to content_tag(:i, "", :class => "icon-numb") + (t "events.campus_events"), events_path
+              %li= link_to content_tag(:i, "", :class => "icon-numb") + "Campus Events Calendar", '#'
             %li= link_to content_tag(:i, "", :class => "icon-numb") + "Local Messaging", '#'
-            %li= link_to content_tag(:i, "", :class => "icon-numb") + "Bulletin Board", bulletins_path
+            - permitted_to? :read, :bulletins do
+              %li= link_to content_tag(:i, "", :class => "icon-numb") + "Bulletin Board", bulletins_path
             %li= link_to content_tag(:i, "", :class => "icon-numb") + "Equery/Reports", '#'
-            %li= link_to content_tag(:i, "", :class => "icon-numb") + (t "document.title"), documents_path
-            %li= link_to content_tag(:i, "", :class => "icon-numb") + "File Registry", cofiles_path
+            - permitted_to? :read, :documents do
+              %li= link_to content_tag(:i, "", :class => "icon-numb") + (t "document.title"), documents_path
+            - permitted_to? :read, :cofiles do
+              %li= link_to content_tag(:i, "", :class => "icon-numb") + (t "cofile.title"), cofiles_path
 
-    - permitted_to? :show, :students do        
-      %li.icon.icon-left
-        = link_to content_tag(:i, "", :class => "icon-numb") + t("student.title"), '#'
-        .mp-level
-          %h2.icon=t "student.title"
-          %a.mp-back{:href => "#"}=t('back')
-          %ul
-            - permitted_to? :update, :students do
-              - if current_user.userable_type=="Student"
-                %li= link_to content_tag(:i, "", :class => "icon-numb") + t("student.students.title"), student_path(current_user.userable.id)
-            - permitted_to? :read, :students do
-              %li= link_to content_tag(:i, "", :class => "icon-numb") + t("student.students.title"), students_path
-            - permitted_to? :reports, :students do
-              %li.icon.icon-left
-                = link_to (t "student.students.reporting"), '#'
-                .mp-level
-                  %h2.icon= t "student.students.reporting"
-                  %a.mp-back{:href => "#"}= t 'helpers.links.back'
-                  %ul
-                    %li= link_to (t "student.students.ethnic"), reports_students_path
-                    %li= link_to (t "student.students.students_quantity_sponsor"), students_quantity_sponsor_students_path(format: 'pdf')
-                    %li= link_to (t "student.students.students_quantity_report"), students_quantity_report_students_path(format: 'pdf')
-                    - permitted_to? :reports, :student_student_discipline_cases do
-                      %li= link_to (t "student.discipline.report_title"), reports_student_student_discipline_cases_path
-                      %li= link_to (t "student.discipline.list"), discipline_report_student_student_discipline_cases_path(coverage: "all", format: 'pdf' )                  
-            - permitted_to? [:create, :update, :approve, :approve2], :student_leaveforstudents do
-              %li= link_to content_tag(:i, "", :class => "icon-numb") + t("student.leaveforstudent.title"), student_leaveforstudents_path
-            - permitted_to? :manage, :student_student_attendances do
-              %li= link_to content_tag(:i, "", :class => "icon-numb") + t("student.attendance.title2"), student_student_attendances_path
-            - permitted_to? :create, :student_student_discipline_cases do
-              %li= link_to content_tag(:i, "", :class => "icon-numb") + t("student.discipline.title2"), student_student_discipline_cases_path
-            - permitted_to? :manage, :student_student_counseling_sessions do
-              %li= link_to content_tag(:i, "", :class => "icon-numb") + t("student.counseling.title2"), student_student_counseling_sessions_path
+    /- permitted_to? :menu, :student_student_discipline_cases do        
+    %li.icon.icon-left
+      = link_to content_tag(:i, "", :class => "icon-numb") + t("student.title"), '#'
+      .mp-level
+        %h2.icon=t "student.title"
+        %a.mp-back{:href => "#"}=t('back')
+        %ul
+          - permitted_to? :update, :students do
+            - if current_user.userable_type=="Student"
+              %li= link_to content_tag(:i, "", :class => "icon-numb") + t("student.students.title"), student_path(current_user.userable.id)
+          - permitted_to? :read, :students do
+            %li= link_to content_tag(:i, "", :class => "icon-numb") + t("student.students.title"), students_path
+          - permitted_to? :reports, :students do
+            %li.icon.icon-left
+              = link_to (t "student.students.reporting"), '#'
+              .mp-level
+                %h2.icon= t "student.students.reporting"
+                %a.mp-back{:href => "#"}= t 'helpers.links.back'
+                %ul
+                  %li= link_to (t "student.students.ethnic"), reports_students_path
+                  %li= link_to (t "student.students.students_quantity_sponsor"), students_quantity_sponsor_students_path(format: 'pdf')
+                  %li= link_to (t "student.students.students_quantity_report"), students_quantity_report_students_path(format: 'pdf')
+                  - permitted_to? :reports, :student_student_discipline_cases do
+                    %li= link_to (t "student.discipline.report_title"), reports_student_student_discipline_cases_path
+                    %li= link_to (t "student.discipline.list"), discipline_report_student_student_discipline_cases_path(coverage: "all", format: 'pdf' )                  
+          /- permitted_to? [:create, :update, :approve_coordinator, :approve_warden], :student_leaveforstudents do
+          - permitted_to? :menu, :student_leaveforstudents do
+            %li= link_to content_tag(:i, "", :class => "icon-numb") + t("student.leaveforstudent.title"), student_leaveforstudents_path
+          /- permitted_to? :read, :student_student_attendances do
+          - permitted_to? :create, :student_student_attendances do
+            %li= link_to content_tag(:i, "", :class => "icon-numb") + t("student.attendance.title2"), student_student_attendances_path
+          - permitted_to? :menu, :student_student_discipline_cases do
+            %li= link_to content_tag(:i, "", :class => "icon-numb") + t("student.discipline.title2"), student_student_discipline_cases_path
+          - permitted_to? :read, :student_student_counseling_sessions do
+            %li= link_to content_tag(:i, "", :class => "icon-numb") + t("student.counseling.title2"), student_student_counseling_sessions_path
 
 
     - permitted_to? :menu, :training_trainingnotes do
@@ -208,40 +220,56 @@
           %h2.icon= t ("training.title")
           %a.mp-back{:href => "#"}= t 'helpers.links.back'
           %ul
-            - permitted_to? :menu, :training_weeklytimetables do
-              - roles=current_user.roles.pluck(:authname)
-              - unit_name=current_user.userable.positions.first.unit
-              - common_subjects = ["Sains Perubatan Asas", "Anatomi & Fisiologi", "Sains Tingkahlaku", "Komunikasi & Sains Pengurusan", "Komuniti"]
-              - unless unit_name.blank?
-                /Ketua Subjek should not have access
-                - if roles.include?("administration") || (roles.include?("programme_manager") && (Programme.roots.where(course_type: "Diploma").pluck(:name).include?(unit_name) ||  ["Pos Basik", "Pengkhususan", "Diploma Lanjutan"].include?(unit_name))) || Intake.where(staff_id: current_user.userable_id).count > 0  || Weeklytimetable.all.pluck(:prepared_by).include?(current_user.userable_id)           
-                  %li.icon.icon-left
-                    = link_to (t "setup"), '#'
-                    .mp-level
-                      %h2.icon=(t "setup")
-                      %a.mp-back{:href => "#"}= t 'helpers.links.back'
-                      %ul
-                        %li= link_to t("training.create_timetable"), training_timetables_path
-                        %li= link_to t("training.create_intake"), training_intakes_path
-                        %li= link_to t("training.create_academic_session"), training_academic_sessions_path
-                /Ketua Program/Ketua Subjek/Penyelaras Kumpulan/prev creator
-                - if roles.include?("administration") || (roles.include?("programme_manager") && (Programme.roots.where(course_type: "Diploma").pluck(:name).include?(unit_name) ||  ["Pos Basik", "Pengkhususan", "Diploma Lanjutan"].include?(unit_name))) || (roles.include?("unit_leader") && common_subjects.include?(unit_name)) || Intake.where(staff_id: current_user.userable_id).count > 0 || Weeklytimetable.all.pluck(:prepared_by).include?(current_user.userable_id)
-                  %li= link_to content_tag(:i, "", :class => "icon-numb") + t("training.timetable_entries"), training_weeklytimetables_path
+            /- permitted_to? :menu, :training_weeklytimetables do
+            /- roles=current_user.roles.pluck(:authname)
+            /- unit_name=current_user.userable.positions.first.unit
+            /- common_subjects = ["Sains Perubatan Asas", "Anatomi & Fisiologi", "Sains Tingkahlaku", "Komunikasi & Sains Pengurusan", "Komuniti"]
+            /- unless unit_name.blank?
+              
+            /  /Ketua Subjek should not have access
+            /  /- if roles.include?("administration") || (roles.include?("programme_manager") && (Programme.roots.where(course_type: "Diploma").pluck(:name).include?(unit_name) ||  ["Pos Basik", "Pengkhususan", "Diploma Lanjutan"].include?(unit_name))) || Intake.where(staff_id: current_user.userable_id).count > 0  || Weeklytimetable.all.pluck(:prepared_by).include?(current_user.userable_id) || roles.include?("academic_session_module") || roles.include?("student_intake_module") || roles.include?("timetables_module")
+              
+            /  /29Jan2016-for Penyelaras - may now use 'academic_session_module', 'student_intake_module' & 'timetables_module'
+            - permitted_to? :read, :training_timetables do
+              %li.icon.icon-left
+                = link_to (t "setup"), '#'
+                .mp-level
+                  %h2.icon=(t "setup")
+                  %a.mp-back{:href => "#"}= t 'helpers.links.back'
+                  %ul
+                    %li= link_to t("training.create_timetable"), training_timetables_path
+                    - permitted_to? :read, :training_intakes do
+                      %li= link_to t("training.create_intake"), training_intakes_path
+                    - permitted_to? :read, :training_academic_sessions do
+                      %li= link_to t("training.create_academic_session"), training_academic_sessions_path
+
             /Ketua Program & Ketua Subjek only - manage Curriculum
-            - permitted_to? :manage, :training_programmes do
+            - permitted_to? :read, :training_programmes do
               %li= link_to content_tag(:i, "", :class => "icon-numb") + t("training.programme.title"), training_programmes_path
-            %li.icon.icon-left
-              = link_to t('training.lesson_plan.title'), '#'
-              .mp-level
-                %h2.icon=t("training.lesson_plan.title")
-                %a.mp-back{:href => "#"}= t 'helpers.links.back'
-                %ul
-                  %li= link_to t('training.topicdetail.create'), training_topicdetails_path
-                  %li= link_to t('training.lesson_plan.title'), training_lesson_plans_path
-                  /%li= link_to t('training.lesson_plan.reporting'), index_report_training_lesson_plans_path
+              
+            /TODO - fix below - permit access by training_weeklytimetables only - also requires fixing in Index/controller & auth rules (role: lecturer)
+            /Ketua Program/Ketua Subjek/Penyelaras Kumpulan/prev creator
+            /- if roles.include?("administration") || (roles.include?("programme_manager") && (Programme.roots.where(course_type: "Diploma").pluck(:name).include?(unit_name) ||  ["Pos Basik", "Pengkhususan", "Diploma Lanjutan"].include?(unit_name))) || (roles.include?("unit_leader") && common_subjects.include?(unit_name)) || Intake.where(staff_id: current_user.userable_id).count > 0 || Weeklytimetable.all.pluck(:prepared_by).include?(current_user.userable_id) || roles.include?("weeklytimetables_module")
+            
+            - permitted_to? :read, :training_weeklytimetables do
+              %li= link_to content_tag(:i, "", :class => "icon-numb") + t("training.timetable_entries"), training_weeklytimetables_path
+            - permitted_to? :read, :training_lesson_plans do
+              %li.icon.icon-left
+                = link_to t('training.teaching_learning'), '#'
+                .mp-level
+                  %h2.icon=t("training.lesson_plan.title")
+                  %a.mp-back{:href => "#"}= t 'helpers.links.back'
+                  %ul
+                    - permitted_to? :read, :training_topicdetails do
+                      %li= link_to t('training.topicdetail.create'), training_topicdetails_path
+                    %li= link_to t('training.lesson_plan.title'), training_lesson_plans_path
+                    /%li= link_to t('training.lesson_plan.reporting'), index_report_training_lesson_plans_path
             - permitted_to? :menu, :training_trainingnotes do
               %li= link_to content_tag(:i, "", :class => "icon-numb") + t('training.trainingnote.title2'), training_trainingnotes_path
-            %li= link_to content_tag(:i, "", :class => "icon-numb") + t('training.weeklytimetable.personalize'), personalize_index_training_weeklytimetables_path
+            - permitted_to? :personalize_index, :training_weeklytimetables do
+              %li= link_to content_tag(:i, "", :class => "icon-numb") + t('training.weeklytimetable.personalize'), personalize_index_training_weeklytimetables_path
+            
+            
 
     //- permitted_to? :menu, :exam_exams do
     /- permitted_to? :index, :exam_evaluate_courses do
@@ -251,7 +279,8 @@
         %h2.icon Exams
         %a.mp-back{:href => "#"}= t 'helpers.links.back'
         %ul
-          - permitted_to? :create, :exam_examquestions do
+          /- permitted_to? :create, :exam_examquestions do
+          - permitted_to? :menu, :exam_examquestions do
             %li= link_to content_tag(:i, "", :class => "icon-numb") + (t "exam.examquestion.title"), exam_examquestions_path
           - permitted_to? :menu, :exam_exams do
             %li.icon.icon-left
@@ -311,32 +340,33 @@
               %li= link_to content_tag(:i, "", :class => "icon-numb") + (t "library.transaction.manager"), manager_library_librarytransactions_path
             - permitted_to? :read, :library_books do  
               %li= link_to content_tag(:i, "", :class => "icon-numb") + (t "library.book.list"), library_books_path
-            - permitted_to? :read, :library_librarytransactions do 
-              /%li= link_to content_tag(:i, "", :class => "icon-numb") + "Analysis", analysis_library_librarytransactions_path
-              /%li= link_to content_tag(:i, fa_icon("bar-chart-o", text: "Statistics")), '#'
+            - permitted_to? :analysis_statistic, :library_librarytransactions do 
               %li= link_to content_tag(:i, "", :class => "icon_numb") + (t "library.transaction.analysis_statistic"), analysis_statistic_library_librarytransactions_path
 
-    - permitted_to? :core, :roles do
-      %li.icon.icon-left
-        = link_to content_tag(:i, "", :class => "icon-numb") + t('administration.title'), '#'
-        .mp-level
-          %h2.icon= t('administration.title')
-          %a.mp-back{:href => "#"}=t('back')
-          %ul
+    /- permitted_to? :core, :roles do
+    %li.icon.icon-left
+      = link_to content_tag(:i, "", :class => "icon-numb") + t('administration.title'), '#'
+      .mp-level
+        %h2.icon= t('administration.title')
+        %a.mp-back{:href => "#"}=t('back')
+        %ul
+          - permitted_to? :manage, :roles do
             %li= link_to content_tag(:i, "", :class => "icon-numb") + t('user.title'), users_path
             %li= link_to content_tag(:i, "", :class => "icon-numb") + t('role.title'), roles_path
             %li= link_to content_tag(:i, "", :class => "icon-numb") + "Pages", '#'
-            %li= link_to content_tag(:i, "", :class => "icon-numb") + "Address Book", campus_address_books_path
-            %li.icon.icon-left
-              = link_to t('support.title'), '#'
-              .mp-level
-                %h2.icon= t('support.title')
-                %a.mp-back{:href => "#"}= t 'helpers.links.back'
-                %ul
-                  %li= link_to "Staff Titles", '#'
-                  %li= link_to "Staff Shifts", '#'
-                  %li= link_to "Mileage Rates", '#'
-                  %li= link_to "Employee Schemes", '#'
+          - permitted_to? :read, :campus_address_books do
+            %li= link_to content_tag(:i, "", :class => "icon-numb") + t('campus.address.title'), campus_address_books_path
+          %li.icon.icon-left
+            = link_to t('support.title'), '#'
+            .mp-level
+              %h2.icon= t('support.title')
+              %a.mp-back{:href => "#"}= t 'helpers.links.back'
+              %ul
+                %li= link_to "Staff Titles", '#'
+                %li= link_to "Staff Shifts", '#'
+                %li= link_to "Mileage Rates", '#'
+                %li= link_to "Employee Schemes", '#'
+                - permitted_to? :read, :banks do
                   %li= link_to t('banks.title'), banks_path
-                  %li= link_to "Asset Categories", '#'
-            %li= link_to content_tag(:i, "", :class => "icon-numb") + "Release Notes", '#'
+                %li= link_to "Asset Categories", '#'
+          %li= link_to content_tag(:i, "", :class => "icon-numb") + "Release Notes", '#'

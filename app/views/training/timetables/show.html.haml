@@ -25,7 +25,7 @@
             %dd=h @timetable.description
 
             %dt= t'training.timetable.created_by'
-            %dd=h @timetable.creator.name
+            %dd=h @timetable.try(:creator).try(:name)
             %hr
             %dt &nbsp;
             %dd

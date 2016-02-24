@@ -7,9 +7,149 @@
 
       %dt= t 'user.userable_type', :default => model_class.human_attribute_name(:userable_type)+":"
       %dd=h @user.userable_type
+%br
+       
+.row
+  .col-md-10.col-md-offset-1
+    .panel.panel-warning
+      .panel-heading
+        %h3.panel-title=t 'user.roles_modules'
+      .panel-body
+        %table
+          %tr
+            %td{style: "vertical-align: top; width: 30%; padding: 5px;"}
+              %strong=t('role.staff_administrator')
+              .small=t('user.staff_administrator_modules')
+              /Staff Appraisals(* marks), Staff Leaves(blm)
+              %strong=t('role.finance_unit')
+              .small=t('user.finance_unit_modules')
+              %strong=t('role.training_administration')
+              .small=t('user.training_administration_modules')
+              %strong=t('role.training_manager')
+              .small=t('user.training_manager_modules')
+              %strong=t('role.staff')
+              .small=t('user.staff_modules')
+              %strong=t('role.e_filing')
+              .small=t('user.e_filing_modules')
+              
+            %td{style: "vertical-align: top; width: 35%"}
+              %strong=t('role.asset_administrator')
+              .small=t('user.asset_administrator_modules')
+              %strong=t('role.facilities_administrator')
+              .small=t('user.facilities_administrator_modules')
+              %strong=t('role.warden')
+              .small=t('user.warden_modules')
+              %strong=t('role.student_administrator')
+              .small=t('user.student_administrator_modules')
+              %strong=t('role.student_counsellor')
+              .small=t('user.student_counsellor_modules')
+              %strong=t('role.disciplinary_officer')
+              .small=t('user.disciplinary_officer_modules')
+              %strong=t('role.student')
+              .small=t('user.student_modules')
+              %br
+              /%BR
+              /%strong User
+              /.small llll
+              /%strong Guest
+              /.small lll
+            
+            %td{style: "vertical-align: top; width: 35%"}
+              %strong=t('role.lecturer')
+              .small=t('user.lecturer_modules')
+              %strong=t('role.programme_manager')
+              .small=t('user.programme_manager_modules')
+              %strong=t('role.exam_administration')
+              .small=t('user.exam_administration_modules')
+              %strong=t('role.unit_leader')
+              .small=t('user.unit_leader_modules')
+              %strong=t('role.administration_staff')
+              .small=t('user.administration_staff_modules')
+              %strong=t('role.librarian')
+              .small=t('user.librarian_modules')
+              %br
+              /%BR
+              /%strong Administration
+              /.small aaaa
+              /%strong Coordinator
+              /.small aaaa
 
+        .small{style: 'color: red;'}
+          =t 'user.remark1'
+          %strong=t 'user.remark2'
+          =(t 'select').downcase
+          %strong=t 'user.remark3'
+          =t 'user.remark4'
+          %strong=t 'user.remark5'
+          =t 'user.remark6'
+          %strong=t 'user.remark7'
+        
+        %br
+        %strong= t 'user.access_module'
+        .small
+          %strong=t('user.admin')+" :"
+          =t('user.admin_access')+" (CRUD/A)"
+          %br
+          %stron=t('user.viewer')+" :"
+          =t('user.viewer_access')+" (R/A)"
+          %br
+          %strong=t('user.user')+" :"
+          =t('user.user_access')+" (RU/A)"
+          %br
+          %strong=t('user.member')+" :"
+          =t('user.member_access')+" (CRUD/O)"
+          %br
+          %br
+          %u
+            %strong=t('user.related_rules')+" :"
+        %ol 
+          %li.small=t('user.rule1')
+          %li.small=t('user.rule2')
+          %li.small=t('user.rule3')
+          %li.small=t('user.rule4')
+          %li.small=t('user.rule5')
+          /%li.small
+          /  Training Attendance Module require access of Training Schedule Module (Viewer or Member).
+          %li.small
+            =t('user.rule7')
+            %ul
+              %li=t('user.rule7a')
+              %li=t('user.rule7b')
+          %li.small=t('user.rule8')
+          /%li.small
+          /  **Student Attendance Module (Member) only applicable for lecturers. Activating'Lecturer' role shall disable Student Attendance Module access.
+          /%li.small
+          /  **Student Counsellor Module (Member) only applicable for counsellors. Activating 'Student Counsellor' role shall disable Student Counselor Module access.
+          %li.small
+            =t('student.discipline.title')
+            %ul
+              %li=t('user.rule9a')
+              %li=t('user.rule9b')
+          %li.small
+            =t('user.rule10')
+            %ul
+              %li=t('user.rule10a')
+              %li=t('user.rule10b')
+          %li.small=t('user.rule11')
+          %li.small=t('user.rule12')
+          %li.small=t('user.rule13')
+          %li.small=t('user.rule14')
+          %li.small=t('user.rule15')
+          %li.small=t('user.rule20')
+          %li.small=t('user.rule16')
+          %li.small=t('user.rule17')
+          %li.small=t('user.rule19')
+          /Below - Unremark when ready in Ogma - rule18, rule18a, rule18b, rule18c
+          /%li.small
+          /  Support Tables :
+          /  %ul
+          /    %li Activate 'Titles', 'Banks' & 'Staff Shifts' in addition to access by Staffs modules.
+          /    %li Activate 'Travel Claims Transport Groups' & 'Travel Claim Mileage Rates'in addition to access by Travel Claims modules.
+          /    %li Activate 'Asset Categories' in addition to access by Asset List modules.
+            
 .row{style: "padding-top:1em;"}
-  .col-md-3.col-md-offset-2
+  /.col-md-3.col-md-offset-2
+  .col-md-3.col-md-offset-1
     .panel.panel-primary
       .panel-heading
         %h3.panel-title=t 'user.assigned_roles'
@@ -18,14 +158,694 @@
           - for user_role in @user.roles.order(id: :asc)
             .row
               .col-md-12
-                =user_role.name
-              
-  .col-md-3.col-md-offset-2
-    .panel.panel-default
+                =h t('user.'+user_role.authname)
+                /=user_role.name
+          
+          //ALL assigned roles
+          /= text_field_tag "roling", @user.roles.pluck(:id)
+          
+  /.col-md-3.col-md-offset-2
+  .col-md-3.col-md-offset-1
+    .panel.panel-info
       .panel-heading
         %h3.panel-title=t 'user.available_roles'
       .panel-body
-        - for role in Role.all.order(id: :asc)
+        - for role in Role.where.not('authname ILIKE(?)', '%module%').where.not('authname=?', 'coordinator').order(id: :asc)
           .row
-            .col-md-9= role.name  
-            .col-md-1= check_box_tag "user[role_ids][]", role.id, @user.roles.include?(role)
+            .col-md-9
+              /= role.name
+              =h t('user.'+role.authname) 
+            /role.name if role.authname!="coordinator"
+            .col-md-1
+              /- if role.authname!="coordinator"
+              = check_box_tag "user[role_ids][]", role.id, @user.roles.include?(role), class: "byrole"
+              /- else
+              /  %span{style: 'display: none;'}= check_box_tag "user[role_ids][]", role.id, @user.roles.include?(role), class: "byrole"
+              /HIDE - coordinator first/
+  
+    /2nd column - E-FILLING SECTION - later to include page, local msg, equery
+    .panel.panel-default
+      .panel-heading
+        %h3.panel-title
+          =t 'role.e_filing'
+          .right.small
+            =t 'user.admin'
+            &nbsp;
+            =t 'user.viewer'
+            &nbsp;
+            =t 'user.user'
+            &nbsp;
+            =t 'user.member'
+      .panel-body
+        /- for role in Role.where('authname ILIKE(?)', '%module').where.not('name ILIKE(?)', '%Mailer%').where(description: ["Events", "Bulletins", "Files", "Documents"]).order(id: :asc)
+        /      /.row
+        /      /  /.col-md-9= role.name
+        /      /  /.col-md-1= check_box_tag "user[role_ids][]", role.id, @user.roles.include?(role), class: "efilingmanage"
+        /      /  /- read=Role.where('id !=?', role.id).where(description: role.description).first
+        /      /  /- if read
+        /      /  /  .col-md-1= check_box_tag "user[role_ids][]", read.id, @user.roles.include?(read), class: "efilingread"
+        /      /  /=radio_button_tag 'user_role_ids[]', role.id, class: "efilingmanage"
+        
+        %table{width:"100%"}
+          %head 
+            %tr
+              %th.left{width: "5%"}
+                %font{style: "color: red;"}*
+              %th.centre{width: "47%"} 
+              %th.centre{width: "12%"} 
+              %th.centre{width: "12%"} 
+              %th.centre{width: "12%"} 
+              %th.centre{width: "12%"} 
+          %body
+            - cnt=0
+            - for role in Role.where('authname ILIKE(?)', '%module_admin').where.not('name ILIKE(?)', '%Mailer%').where(description: ["Events", "Bulletins", "Files", "Documents"]).order(id: :asc)
+              - read=Role.where('id !=?', role.id).where(description: role.description).first
+              - user=Role.where.not(id: [role.id, read.id]).where(description: role.description).first
+              - owner=Role.where.not(id: [role.id, read.id, user.id]).where(description: role.description).first
+              %span{style: 'display: none;'}
+                = check_box_tag "user[role_ids][]", role.id, @user.roles.include?(role), class: "efilingmanage"
+                = check_box_tag "user[role_ids][]", read.id, @user.roles.include?(read), class: "efilingread"
+                = check_box_tag "user[role_ids][]", user.id, @user.roles.include?(user), class: "efilinguser"
+                = check_box_tag "user[role_ids][]", owner.id, @user.roles.include?(owner), class: "efilingowner"
+              /- rolename=role.name.split("Module")[0].strip
+              /- rolename2=rolename.downcase
+              - rolename1=role.authname.split("_module")[0].strip
+              - rolename= t('user.'+rolename1)
+              - rolename2=rolename1.downcase
+              %tr
+                %td.left=check_box_tag "efilemain_#{cnt}", cnt, false, class: "filemain"
+                %td.left=rolename
+                %td.centre=radio_button_tag "user_role_#{rolename2}", role.id, @user.roles.include?(role), class: "efilingmanage2"
+                %td.centre=radio_button_tag "user_role_#{rolename2}", read.id, @user.roles.include?(read), class: "efilingread2"
+                %td.centre=radio_button_tag "user_role_#{rolename2}", user.id, @user.roles.include?(user), class: "efilinguser2"
+                %td.centre=radio_button_tag "user_role_#{rolename2}", owner.id, @user.roles.include?(owner), class: "efilingowner2"
+              - cnt+=1
+        .small 
+          =t 'actions.uncheck'
+          %font{style: "color: red;"}*
+          =t 'user.remove_module_access'
+    /2nd column - Library SECTION
+    .panel.panel-default
+      .panel-heading
+        %h3.panel-title
+          =t 'user.e_library'
+          .right.small
+            =t 'user.admin'
+            &nbsp;
+            =t 'user.viewer'
+            &nbsp;
+            =t 'user.user'
+            &nbsp;
+            =t 'user.member'
+      .panel-body
+        %table{width:"100%"}
+          %head
+            %tr
+              %th.left{width: "5%"}
+                %font{style: "color: red;"}*
+              %th.centre{width: "47%"} 
+              %th.centre{width: "12%"} 
+              %th.centre{width: "12%"} 
+              %th.centre{width: "12%"} 
+              %th.centre{width: "12%"} 
+          %body
+            - cnt=0
+            - for role in Role.where('authname ILIKE(?)', '%module_admin').where.not('name ILIKE(?)', '%Mailer%').where(description: ["Library Books", "Library Transactions"]).order(id: :asc)
+              - read=Role.where('id !=?', role.id).where(description: role.description).first
+              - user=Role.where.not(id: [role.id, read.id]).where(description: role.description).first
+              - owner=Role.where.not(id: [role.id, read.id, user.id]).where(description: role.description).first
+              %span{style: 'display: none;'}
+                = check_box_tag "user[role_ids][]", role.id, @user.roles.include?(role), class: "librarymanage"
+                = check_box_tag "user[role_ids][]", read.id, @user.roles.include?(read), class: "libraryread"
+                = check_box_tag "user[role_ids][]", user.id, @user.roles.include?(user), class: "libraryuser"
+                = check_box_tag "user[role_ids][]", owner.id, @user.roles.include?(owner), class: "libraryowner"
+              - rolename1=role.authname.split("_module")[0].strip
+              - rolename= t('user.'+rolename1)
+              - rolename2=rolename1.downcase
+              %tr
+                %td.left=check_box_tag "efilemain_#{cnt}", cnt, false, class: "librarymain"
+                %td.left=rolename
+                %td.centre=radio_button_tag "user_role_#{rolename2}", role.id, @user.roles.include?(role), class: "librarymanage2"
+                %td.centre=radio_button_tag "user_role_#{rolename2}", read.id, @user.roles.include?(read), class: "libraryread2"
+                %td.centre=radio_button_tag "user_role_#{rolename2}", user.id, @user.roles.include?(user), class: "libraryuser2"
+                %td.centre=radio_button_tag "user_role_#{rolename2}", owner.id, @user.roles.include?(owner), class: "libraryowner2"
+              - cnt+=1
+        .small 
+          =t 'actions.uncheck'
+          %font{style: "color: red;"}*
+          =t 'user.remove_module_access'
+
+    /2nd column - Examination SECTION
+    .panel.panel-default
+      .panel-heading
+        %h3.panel-title
+          =t 'user.exam'
+          .right.small
+            =t 'user.admin'
+            &nbsp;
+            =t 'user.viewer'
+            &nbsp;
+            =t 'user.user'
+            &nbsp;
+            =t 'user.member'
+      .panel-body
+        %table{width:"100%"}
+          %head
+            %tr
+              %th.left{width: "5%"}
+                %font{style: "color: red;"}*
+              %th.centre{width: "47%"} 
+              %th.centre{width: "12%"} 
+              %th.centre{width: "12%"} 
+              %th.centre{width: "12%"} 
+              %th.centre{width: "12%"} 
+          %body
+            - cnt=0
+            - for role in Role.where('authname ILIKE(?)', '%module_admin').where.not('name ILIKE(?)', '%Mailer%').where(description: ["Exam Templates", "Examresults", "Exam Grade", "Exammarks", "Exam Analysis", "Exampaper", "Examquestions"])
+              - read=Role.where('id !=?', role.id).where(description: role.description).first
+              - user=Role.where.not(id: [role.id, read.id]).where(description: role.description).first
+              - owner=Role.where.not(id: [role.id, read.id, user.id]).where(description: role.description).first
+              %span{style: 'display: none;'}
+                = check_box_tag "user[role_ids][]", role.id, @user.roles.include?(role), class: "exammanage"
+                = check_box_tag "user[role_ids][]", read.id, @user.roles.include?(read), class: "examread"
+                = check_box_tag "user[role_ids][]", user.id, @user.roles.include?(user), class: "examuser"
+                = check_box_tag "user[role_ids][]", owner.id, @user.roles.include?(owner), class: "examowner"
+              - rolename1=role.authname.split("_module")[0].strip
+              - rolename= t('user.'+rolename1)
+              - rolename2=rolename1.downcase
+              %tr
+                %td.left=check_box_tag "efilemain_#{cnt}", cnt, false, class: "exammain"
+                %td.left=rolename
+                %td.centre=radio_button_tag "user_role_#{rolename2}", role.id, @user.roles.include?(role), class: "exammanage2"
+                %td.centre=radio_button_tag "user_role_#{rolename2}", read.id, @user.roles.include?(read), class: "examread2"
+                %td.centre=radio_button_tag "user_role_#{rolename2}", user.id, @user.roles.include?(user), class: "examuser2"
+                %td.centre=radio_button_tag "user_role_#{rolename2}", owner.id, @user.roles.include?(owner), class: "examowner2"
+              - cnt+=1
+        .small 
+          =t 'actions.uncheck'
+          %font{style: "color: red;"}*
+          =t 'user.remove_module_access'
+
+        %hr
+        /COURSE EVALUATION    
+        %table{width:"100%"}
+          %head
+            %tr
+              %th.left{width: "5%"}
+                %font{style: "color: red;"}*
+              %th.centre{width: "47%"} 
+              %th.centre{width: "12%"} 
+              %th.centre{width: "12%"} 
+              %th.centre{width: "12%"} 
+              %th.centre{width: "12%"} 
+          %body
+            - cnt=0
+            - for role in Role.where('authname ILIKE(?)', '%module_admin').where.not('name ILIKE(?)', '%Mailer%').where(description: ["Course Evaluation"])
+              - read=Role.where('id !=?', role.id).where(description: role.description).first
+              - user=Role.where.not(id: [role.id, read.id]).where(description: role.description).first
+              - owner=Role.where.not(id: [role.id, read.id, user.id]).where(description: role.description).first
+              %span{style: 'display: none;'}
+                = check_box_tag "user[role_ids][]", role.id, @user.roles.include?(role), class: "courseevalmanage"
+                = check_box_tag "user[role_ids][]", read.id, @user.roles.include?(read), class: "courseevalread"
+                = check_box_tag "user[role_ids][]", user.id, @user.roles.include?(user), class: "courseevaluser"
+                = check_box_tag "user[role_ids][]", owner.id, @user.roles.include?(owner), class: "courseevalowner"
+              - rolename1=role.authname.split("_module")[0].strip
+              - rolename= t('user.'+rolename1)
+              - rolename2=rolename1.downcase
+              %tr
+                %td.left=check_box_tag "efilemain_#{cnt}", cnt, false, class: "courseevalmain"
+                %td.left=rolename
+                %td.centre=radio_button_tag "user_role_#{rolename2}", role.id, @user.roles.include?(role), class: "courseevalmanage2"
+                %td.centre=radio_button_tag "user_role_#{rolename2}", read.id, @user.roles.include?(read), class: "courseevalread2"
+                %td.centre=radio_button_tag "user_role_#{rolename2}", user.id, @user.roles.include?(user), class: "courseevaluser2"
+                %td.centre=radio_button_tag "user_role_#{rolename2}", owner.id, @user.roles.include?(owner), class: "courseevalowner2"
+              - cnt+=1
+        /COURSE EVALUATION ends
+        .small
+          =t 'actions.uncheck'
+          %font{style: "color: red;"}*
+          =t 'user.remove_module_access'
+
+    /2nd column - Admin SECTION
+    .panel.panel-default
+      .panel-heading
+        %h3.panel-title
+          =t 'user.support'
+          .right.small
+            &nbsp;&nbsp;&nbsp;&nbsp;
+            =t 'user.admin'
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            =t 'user.viewer'
+           
+      .panel-body
+        %table{width:"100%"}
+          %head
+            %tr
+              %th.left{width: "5%"}
+                %font{style: "color: red;"}*
+              %th.centre{width: "47%"} 
+              %th.centre{width: "12%"} 
+              %th.centre{width: "12%"} 
+              /%th.centre{width: "12%"} 
+              /%th.centre{width: "12%"} 
+          %body
+            - cnt=0
+            - for role in Role.where('authname ILIKE(?)', '%module_admin').where.not('name ILIKE(?)', '%Mailer%').where(description: ["Address Book", "Banks", "Titles", "Staff Shifts", "Travel Claims Transport Groups", "Travel Claim Mileage Rates", "Asset Categories"]).order(id: :asc)
+              - read=Role.where('id !=?', role.id).where(description: role.description).first
+              /- user=Role.where.not(id: [role.id, read.id]).where(description: role.description).first
+              /- owner=Role.where.not(id: [role.id, read.id, user.id]).where(description: role.description).first
+              %span{style: 'display: none;'}
+                = check_box_tag "user[role_ids][]", role.id, @user.roles.include?(role), class: "supportmanage"
+                = check_box_tag "user[role_ids][]", read.id, @user.roles.include?(read), class: "supportread"
+                /= check_box_tag "user[role_ids][]", user.id, @user.roles.include?(user), class: "libraryuser"
+                /= check_box_tag "user[role_ids][]", owner.id, @user.roles.include?(owner), class: "libraryowner"
+              - rolename1=role.authname.split("_module")[0].strip
+              - rolename= t('user.'+rolename1)
+              - rolename2=rolename1.downcase
+              %tr
+                %td.left=check_box_tag "efilemain_#{cnt}", cnt, false, class: "supportmain"
+                %td.left
+                  - if ["Address Book", "Banks"].include?(rolename)
+                    =rolename
+                  - else
+                    %font{style: 'color: grey;'}=rolename
+                %td.centre=radio_button_tag "user_role_#{rolename2}", role.id, @user.roles.include?(role), class: "supportmanage2"
+                %td.centre=radio_button_tag "user_role_#{rolename2}", read.id, @user.roles.include?(read), class: "supportread2"
+                /%td.centre=radio_button_tag "user_role_#{rolename2}", user.id, @user.roles.include?(user), class: "libraryuser2"
+                /%td.centre=radio_button_tag "user_role_#{rolename2}", owner.id, @user.roles.include?(owner), class: "libraryowner2"
+              /= cnt
+              - cnt+=1
+        .small 
+          =t 'actions.uncheck'
+          %font{style: "color: red;"}*
+          =t 'user.remove_module_access'
+
+          
+  .col-md-3
+    /3rd column - STAFF SECTION
+    .panel.panel-default
+      .panel-heading
+        %h3.panel-title
+          =t 'user.staff_registry'
+          .right.small
+            =t 'user.admin'
+            &nbsp;
+            =t 'user.viewer'
+            &nbsp;
+            =t 'user.user'
+            &nbsp;
+            =t 'user.member'
+      .panel-body   
+        /STAFF part 1
+        %table{width:"100%"}
+          %head
+            %tr
+              %th.left{width: "5%"}
+                %font{style: "color: red;"}*
+              %th.centre{width: "47%"} 
+              %th.centre{width: "12%"} 
+              %th.centre{width: "12%"} 
+              %th.centre{width: "12%"} 
+              %th.centre{width: "12%"} 
+          %body
+            - cnt=0
+            ///- for role in Role.where('authname ILIKE(?)', '%module').where.not('name ILIKE(?)', '%Mailer%').order(id: :asc)
+            /Staffs related modules (same access as 'Staff Administrator' role) 
+            - for role in Role.where('authname ILIKE(?)', '%module_admin').where.not('name ILIKE(?)', '%Mailer%').where(description: ["Staffs", "Positions","Staff Attendances","Fingerprints"]).order(id: :asc)
+              - read=Role.where('id !=?', role.id).where(description: role.description).first
+              - user=Role.where.not(id: [role.id, read.id]).where(description: role.description).first
+              - owner=Role.where.not(id: [role.id, read.id, user.id]).where(description: role.description).first
+              %span{style: 'display: none;'}
+                = check_box_tag "user[role_ids][]", role.id, @user.roles.include?(role), class: "a_staffmanage"
+                = check_box_tag "user[role_ids][]", read.id, @user.roles.include?(read), class: "a_staffread"
+                = check_box_tag "user[role_ids][]", user.id, @user.roles.include?(user), class: "a_staffuser"
+                = check_box_tag "user[role_ids][]", owner.id, @user.roles.include?(owner), class: "a_staffowner"
+              - rolename1=role.authname.split("_module")[0].strip
+              - rolename= t('user.'+rolename1)
+              - rolename2=rolename1.downcase
+              %tr
+                %td.left=check_box_tag "efilemain_#{cnt}", cnt, false, class: "a_staffmain"
+                %td.left=rolename
+                %td.centre=radio_button_tag "user_role_#{rolename2}", role.id, @user.roles.include?(role), class: "a_staffmanage2"
+                %td.centre=radio_button_tag "user_role_#{rolename2}", read.id, @user.roles.include?(read), class: "a_staffread2"
+                %td.centre=radio_button_tag "user_role_#{rolename2}", user.id, @user.roles.include?(user), class: "a_staffuser2"
+                %td.centre=radio_button_tag "user_role_#{rolename2}", owner.id, @user.roles.include?(owner), class: "a_staffowner2"
+              - cnt+=1
+        .small 
+          =t 'actions.uncheck'
+          %font{style: "color: red;"}*
+          =t 'user.remove_module_access'
+
+        %hr
+        
+        /STAFF part 2
+        %table{width:"100%"}
+          %head
+            %tr
+              %th.left{width: "5%"}
+                %font{style: "color: red;"}*
+              %th.centre{width: "47%"} 
+              %th.centre{width: "12%"} 
+              %th.centre{width: "12%"} 
+              %th.centre{width: "12%"} 
+              %th.centre{width: "12%"} 
+          %body
+            - cnt=0
+            /Staff related modules (same access as 'Finance Unit' role)
+            - for role in Role.where('authname ILIKE(?)', '%module_admin').where.not('name ILIKE(?)', '%Mailer%').where(description: ["Travel Requests", "Travel Claims"]).order(id: :desc)
+              - read=Role.where('id !=?', role.id).where(description: role.description).first
+              - user=Role.where.not(id: [role.id, read.id]).where(description: role.description).first
+              - owner=Role.where.not(id: [role.id, read.id, user.id]).where(description: role.description).first
+              %span{style: 'display: none;'}
+                = check_box_tag "user[role_ids][]", role.id, @user.roles.include?(role), class: "b_staffmanage"
+                = check_box_tag "user[role_ids][]", read.id, @user.roles.include?(read), class: "b_staffread"
+                = check_box_tag "user[role_ids][]", user.id, @user.roles.include?(user), class: "b_staffuser"
+                = check_box_tag "user[role_ids][]", owner.id, @user.roles.include?(owner), class: "b_staffowner"
+              - rolename1=role.authname.split("_module")[0].strip
+              - rolename= t('user.'+rolename1)
+              - rolename2=rolename1.downcase
+              %tr
+                %td.left=check_box_tag "efilemain_#{cnt}", cnt, false, class: "b_staffmain"
+                %td.left=rolename
+                %td.centre=radio_button_tag "user_role_#{rolename2}", role.id, @user.roles.include?(role), class: "b_staffmanage2"
+                %td.centre=radio_button_tag "user_role_#{rolename2}", read.id, @user.roles.include?(read), class: "b_staffread2"
+                %td.centre=radio_button_tag "user_role_#{rolename2}", user.id, @user.roles.include?(user), class: "b_staffuser2"
+                %td.centre=radio_button_tag "user_role_#{rolename2}", owner.id, @user.roles.include?(owner), class: "b_staffowner2"
+              - cnt+=1
+        .small 
+          =t 'actions.uncheck'
+          %font{style: "color: red;"}*
+          =t 'user.remove_module_access'
+
+        %hr
+
+        /STAFF part 3
+        %table{width:"100%"}
+          %head
+            %tr
+              %th.left{width: "5%"}
+                %font{style: "color: red;"}*
+              %th.centre{width: "47%"} 
+              %th.centre{width: "12%"} 
+              %th.centre{width: "12%"} 
+              %th.centre{width: "12%"} 
+              %th.centre{width: "12%"} 
+          %body
+            - cnt=0
+            /Staff related modules (same access as 'Training Administration' OR 'Training Manager' role)
+            - for role in Role.where('authname ILIKE(?)', '%module_admin').where.not('name ILIKE(?)', '%Mailer%').where(description: ["Training Budget", "Training Courses", "Training Schedule", "Training Attendance"]).order(id: :asc)
+              - read=Role.where('id !=?', role.id).where(description: role.description).first
+              - user=Role.where.not(id: [role.id, read.id]).where(description: role.description).first
+              - owner=Role.where.not(id: [role.id, read.id, user.id]).where(description: role.description).first
+              %span{style: 'display: none;'}
+                = check_box_tag "user[role_ids][]", role.id, @user.roles.include?(role), class: "c_staffmanage"
+                = check_box_tag "user[role_ids][]", read.id, @user.roles.include?(read), class: "c_staffread"
+                = check_box_tag "user[role_ids][]", user.id, @user.roles.include?(user), class: "c_staffuser"
+                = check_box_tag "user[role_ids][]", owner.id, @user.roles.include?(owner), class: "c_staffowner"
+              - rolename1=role.authname.split("_module")[0].strip
+              - rolename= t('user.'+rolename1)
+              - rolename2=rolename1.downcase
+              %tr
+                %td.left=check_box_tag "efilemain_#{cnt}", cnt, false, class: "c_staffmain"
+                %td.left=rolename
+                %td.centre=radio_button_tag "user_role_#{rolename2}", role.id, @user.roles.include?(role), class: "c_staffmanage2"
+                %td.centre=radio_button_tag "user_role_#{rolename2}", read.id, @user.roles.include?(read), class: "c_staffread2"
+                %td.centre=radio_button_tag "user_role_#{rolename2}", user.id, @user.roles.include?(user), class: "c_staffuser2"
+                %td.centre=radio_button_tag "user_role_#{rolename2}", owner.id, @user.roles.include?(owner), class: "c_staffowner2"
+              - cnt+=1
+        .small 
+          =t 'actions.uncheck'
+          %font{style: "color: red;"}*
+          =t 'user.remove_module_access'
+
+        %hr
+        
+        /STAFF part 4
+        %table{width:"100%"}
+          %head
+            %tr
+              %th.left{width: "5%"}
+                %font{style: "color: red;"}*
+              %th.centre{width: "47%"} 
+              %th.centre{width: "12%"} 
+              %th.centre{width: "12%"} 
+              %th.centre{width: "12%"} 
+              %th.centre{width: "12%"} 
+          %body
+            - cnt=0
+            /Staff related modules (Access to all Staff Appraisals & Staff Leaves records)
+            - for role in Role.where('authname ILIKE(?)', '%module_admin').where.not('name ILIKE(?)', '%Mailer%').where(description: ["Staff Appraisals", "Staff Leaves"]).order(id: :asc)
+              - read=Role.where('id !=?', role.id).where(description: role.description).first
+              - user=Role.where.not(id: [role.id, read.id]).where(description: role.description).first
+              - owner=Role.where.not(id: [role.id, read.id, user.id]).where(description: role.description).first
+              %span{style: 'display: none;'}
+                = check_box_tag "user[role_ids][]", role.id, @user.roles.include?(role), class: "d_staffmanage"
+                = check_box_tag "user[role_ids][]", read.id, @user.roles.include?(read), class: "d_staffread"
+                = check_box_tag "user[role_ids][]", user.id, @user.roles.include?(user), class: "d_staffuser"
+                = check_box_tag "user[role_ids][]", owner.id, @user.roles.include?(owner), class: "d_staffowner"
+              - rolename1=role.authname.split("_module")[0].strip
+              - rolename= t('user.'+rolename1)
+              - rolename2=rolename1.downcase
+              %tr
+                %td.left=check_box_tag "efilemain_#{cnt}", cnt, false, class: "d_staffmain"
+                %td.left=rolename
+                %td.centre=radio_button_tag "user_role_#{rolename2}", role.id, @user.roles.include?(role), class: "d_staffmanage2"
+                %td.centre=radio_button_tag "user_role_#{rolename2}", read.id, @user.roles.include?(read), class: "d_staffread2"
+                %td.centre=radio_button_tag "user_role_#{rolename2}", user.id, @user.roles.include?(user), class: "d_staffuser2"
+                %td.centre=radio_button_tag "user_role_#{rolename2}", owner.id, @user.roles.include?(owner), class: "d_staffowner2"
+              - cnt+=1
+        .small 
+          =t 'actions.uncheck'
+          %font{style: "color: red;"}*
+          =t 'user.remove_module_access'
+
+    /3rd column - ASSETS, FACILITY, RESIDENCES SECTION
+    .panel.panel-default
+      .panel-heading
+        %h3.panel-title
+          =t 'user.asset_facilities_residences'
+          .right.small
+            =t 'user.admin'
+            &nbsp;
+            =t 'user.viewer'
+            &nbsp;
+            =t 'user.user'
+            &nbsp;
+            =t 'user.member'
+      .panel-body   
+        %table{width:"100%"}
+          %head
+            %tr
+              %th.left{width: "5%"}
+                %font{style: "color: red;"}*
+              %th.centre{width: "47%"} 
+              %th.centre{width: "12%"} 
+              %th.centre{width: "12%"} 
+              %th.centre{width: "12%"} 
+              %th.centre{width: "12%"} 
+          %body
+            - cnt=0
+            /Asset related modules
+            - for role in Role.where('authname ILIKE(?)', '%module_admin').where.not('name ILIKE(?)', '%Mailer%').where(description: ["Stationeries", "Asset List", "Asset Losses", "Asset Defect", "Asset Disposals", "Asset Loans"]).order(id: :asc)
+              - read=Role.where('id !=?', role.id).where(description: role.description).first
+              - user=Role.where.not(id: [role.id, read.id]).where(description: role.description).first
+              - owner=Role.where.not(id: [role.id, read.id, user.id]).where(description: role.description).first
+              %span{style: 'display: none;'}
+                = check_box_tag "user[role_ids][]", role.id, @user.roles.include?(role), class: "assetmanage"
+                = check_box_tag "user[role_ids][]", read.id, @user.roles.include?(read), class: "assetread"
+                = check_box_tag "user[role_ids][]", user.id, @user.roles.include?(user), class: "assetuser"
+                = check_box_tag "user[role_ids][]", owner.id, @user.roles.include?(owner), class: "assetowner"
+              - rolename1=role.authname.split("_module")[0].strip
+              - rolename= t('user.'+rolename1)
+              - rolename2=rolename1.downcase
+              %tr
+                %td.left=check_box_tag "efilemain_#{cnt}", cnt, false, class: "assetmain"
+                %td.left=rolename
+                %td.centre=radio_button_tag "user_role_#{rolename2}", role.id, @user.roles.include?(role), class: "assetmanage2"
+                %td.centre=radio_button_tag "user_role_#{rolename2}", read.id, @user.roles.include?(read), class: "assetread2"
+                %td.centre=radio_button_tag "user_role_#{rolename2}", user.id, @user.roles.include?(user), class: "assetuser2"
+                %td.centre=radio_button_tag "user_role_#{rolename2}", owner.id, @user.roles.include?(owner), class: "assetowner2"
+              - cnt+=1
+        .small 
+          =t 'actions.uncheck'
+          %font{style: "color: red;"}*
+          =t 'user.remove_module_access'
+      
+        %hr
+        
+        %table{width:"100%"}
+          %head
+            %tr
+              %th.left{width: "5%"}
+                %font{style: "color: red;"}*
+              %th.centre{width: "47%"} 
+              %th.centre{width: "12%"} 
+              %th.centre{width: "12%"} 
+              %th.centre{width: "12%"} 
+              %th.centre{width: "12%"} 
+          %body
+            - cnt=0
+            /Locations, Residences related
+            - for role in Role.where('authname ILIKE(?)', '%module_admin').where.not('name ILIKE(?)', '%Mailer%').where(description: ["Tenants", "Locations", "Location Damages"]).order(id: :asc)
+              - read=Role.where('id !=?', role.id).where(description: role.description).first
+              - user=Role.where.not(id: [role.id, read.id]).where(description: role.description).first
+              - owner=Role.where.not(id: [role.id, read.id, user.id]).where(description: role.description).first
+              %span{style: 'display: none;'}
+                = check_box_tag "user[role_ids][]", role.id, @user.roles.include?(role), class: "locationmanage"
+                = check_box_tag "user[role_ids][]", read.id, @user.roles.include?(read), class: "locationread"
+                = check_box_tag "user[role_ids][]", user.id, @user.roles.include?(user), class: "locationuser"
+                = check_box_tag "user[role_ids][]", owner.id, @user.roles.include?(owner), class: "locationowner"
+              - rolename1=role.authname.split("_module")[0].strip
+              - rolename= t('user.'+rolename1)
+              - rolename2=rolename1.downcase
+              %tr
+                %td.left=check_box_tag "efilemain_#{cnt}", cnt, false, class: "locationmain"
+                %td.left=rolename
+                %td.centre=radio_button_tag "user_role_#{rolename2}", role.id, @user.roles.include?(role), class: "locationmanage2"
+                %td.centre=radio_button_tag "user_role_#{rolename2}", read.id, @user.roles.include?(read), class: "locationread2"
+                %td.centre=radio_button_tag "user_role_#{rolename2}", user.id, @user.roles.include?(user), class: "locationuser2"
+                %td.centre=radio_button_tag "user_role_#{rolename2}", owner.id, @user.roles.include?(owner), class: "locationowner2"
+              - cnt+=1
+        .small 
+          =t 'actions.uncheck'
+          %font{style: "color: red;"}*
+          =t 'user.remove_module_access'
+
+    /Student related modules
+    .panel.panel-default
+      .panel-heading
+        %h3.panel-title
+          =t 'user.student_affairs'
+          .right.small
+            =t 'user.admin'
+            &nbsp;
+            =t 'user.viewer'
+            &nbsp;
+            =t 'user.user'
+            &nbsp;
+            =t 'user.member'
+      .panel-body
+        %table{width:"100%"}
+          %head
+            %tr
+              %th.left{width: "5%"}
+                %font{style: "color: red;"}*
+              %th.centre{width: "47%"} 
+              %th.centre{width: "12%"} 
+              %th.centre{width: "12%"} 
+              %th.centre{width: "12%"} 
+              %th.centre{width: "12%"} 
+          %body
+            - cnt=0
+            - for role in Role.where('authname ILIKE(?)', '%module_admin').where.not('name ILIKE(?)', '%Mailer%').where(description: ["Student Leaves", "Student Attendances", "Student Counseling", "Student Discipline", "Student Infos"]).order(id: :asc)
+              - read=Role.where('id !=?', role.id).where(description: role.description).first
+              - user=Role.where.not(id: [role.id, read.id]).where(description: role.description).first
+              - owner=Role.where.not(id: [role.id, read.id, user.id]).where(description: role.description).first
+              %span{style: 'display: none;'}
+                = check_box_tag "user[role_ids][]", role.id, @user.roles.include?(role), class: "studentmanage"
+                = check_box_tag "user[role_ids][]", read.id, @user.roles.include?(read), class: "studentread"
+                = check_box_tag "user[role_ids][]", user.id, @user.roles.include?(user), class: "studentuser"
+                = check_box_tag "user[role_ids][]", owner.id, @user.roles.include?(owner), class: "studentowner"
+              - rolename1=role.authname.split("_module")[0].strip
+              - rolename= t('user.'+rolename1)
+              - rolename2=rolename1.downcase
+              %tr
+                %td.left=check_box_tag "efilemain_#{cnt}", cnt, false, class: "studentmain"
+                %td.left=rolename
+                %td.centre=radio_button_tag "user_role_#{rolename2}", role.id, @user.roles.include?(role), class: "studentmanage2"
+                %td.centre=radio_button_tag "user_role_#{rolename2}", read.id, @user.roles.include?(read), class: "studentread2"
+                %td.centre=radio_button_tag "user_role_#{rolename2}", user.id, @user.roles.include?(user), class: "studentuser2"
+                %td.centre=radio_button_tag "user_role_#{rolename2}", owner.id, @user.roles.include?(owner), class: "studentowner2"
+              - cnt+=1
+        .small 
+          =t 'actions.uncheck'
+          %font{style: "color: red;"}*
+          =t 'user.remove_module_access'
+
+    /Training related modules
+    .panel.panel-default
+      .panel-heading
+        %h3.panel-title
+          =t 'user.training'
+          .right.small
+            =t 'user.admin'
+            &nbsp;
+            =t 'user.viewer'
+            &nbsp;
+            =t 'user.user'
+            &nbsp;
+            =t 'user.member'
+      .panel-body
+        %table{width:"100%"}
+          %head
+            %tr
+              %th.left{width: "5%"}
+                %font{style: "color: red;"}*
+              %th.centre{width: "47%"} 
+              %th.centre{width: "12%"} 
+              %th.centre{width: "12%"} 
+              %th.centre{width: "12%"} 
+              %th.centre{width: "12%"} 
+          %body
+            - cnt=0
+            /Training related
+            - for role in Role.where('authname ILIKE(?)', '%module_admin').where.not('name ILIKE(?)', '%Mailer%').where(description: ["Training Notes", "Academic Session", "Student Intake", "Timetables", "Lesson Plans", "Topic Details", "Programmes", "Weeklytimetables"]).order(id: :asc)
+              - read=Role.where('id !=?', role.id).where(description: role.description).first
+              - user=Role.where.not(id: [role.id, read.id]).where(description: role.description).first
+              - owner=Role.where.not(id: [role.id, read.id, user.id]).where(description: role.description).first
+              %span{style: 'display: none;'}
+                = check_box_tag "user[role_ids][]", role.id, @user.roles.include?(role), class: "trainingmanage"
+                = check_box_tag "user[role_ids][]", read.id, @user.roles.include?(read), class: "trainingread"
+                = check_box_tag "user[role_ids][]", user.id, @user.roles.include?(user), class: "traininguser"
+                = check_box_tag "user[role_ids][]", owner.id, @user.roles.include?(owner), class: "trainingowner"
+              - rolename1=role.authname.split("_module")[0].strip
+              - rolename= t('user.'+rolename1)
+              - rolename2=rolename1.downcase
+              %tr
+                %td.left=check_box_tag "efilemain_#{cnt}", cnt, false, class: "trainingmain"
+                %td.left=rolename
+                %td.centre=radio_button_tag "user_role_#{rolename2}", role.id, @user.roles.include?(role), class: "trainingmanage2"
+                %td.centre=radio_button_tag "user_role_#{rolename2}", read.id, @user.roles.include?(read), class: "trainingread2"
+                %td.centre=radio_button_tag "user_role_#{rolename2}", user.id, @user.roles.include?(user), class: "traininguser2"
+                %td.centre=radio_button_tag "user_role_#{rolename2}", owner.id, @user.roles.include?(owner), class: "trainingowner2"
+              - cnt+=1
+        .small 
+          =t 'actions.uncheck'
+          %font{style: "color: red;"}*
+          =t 'user.remove_module_access'
+
+// testing section///////////////////
+
+/ .row{style: "padding-top:1em;"}
+/   .col-md-3.col-md-offset-1
+/     .panel.panel-default
+/       .panel-heading
+/         %h3.panel-title Row kedua
+/       .panel-body
+/         - for role in Role.where('authname ILIKE(?)', '%module%').where.not(description: ["Staffs", "Positions","Staff Attendances","Fingerprints","Travel Requests", "Travel Claims","Training Budget", "Training Courses", "Training Schedule", "Training Attendance","Staff Appraisals", "Staff Leaves"]).order(id: :asc)
+/           .row
+/             .col-md-9=role.name
+/             .col-md-1
+/               /= check_box_tag "user[role_ids][]", role.id, @user.roles.include?(role), class: "byrole"
+/  
+/   .col-md-3
+/     .panel.panel-default
+/       .panel-heading
+/         %h3.panel-title Row kedua
+/       .panel-body
+/         - for role in Role.where('authname ILIKE(?)', '%module%').where.not(description: ["Staffs", "Positions","Staff Attendances","Fingerprints","Travel Requests", "Travel Claims","Training Budget", "Training Courses", "Training Schedule", "Training Attendance","Staff Appraisals", "Staff Leaves"]).order(id: :asc)
+/           .row
+/             .col-md-9=role.name
+/             .col-md-1
+/               /= check_box_tag "user[role_ids][]", role.id, @user.roles.include?(role), class: "byrole"
+/             
+/   .col-md-3
+/     .panel.panel-default
+/       .panel-heading
+/         %h3.panel-title Row kedua
+/       .panel-body
+/         - for role in Role.where('authname ILIKE(?)', '%module%').where.not(description: ["Staffs", "Positions","Staff Attendances","Fingerprints","Travel Requests", "Travel Claims","Training Budget", "Training Courses", "Training Schedule", "Training Attendance","Staff Appraisals", "Staff Leaves"]).order(id: :asc)
+/           .row
+/             .col-md-9=role.name
+/             .col-md-1
+/               /= check_box_tag "user[role_ids][]", role.id, @user.roles.include?(role), class: "byrole"

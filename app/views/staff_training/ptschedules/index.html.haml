@@ -35,5 +35,5 @@
     .col-md-1
       %td= link_to scheduled.course.name, new_staff_training_ptdo_path(:ptschedule_id => scheduled) 
     .col-md-1
-      - permitted_to? :manage, :staff_training_ptschedules do
+      - permitted_to? :update, :staff_training_ptschedules do
         %td= link_to(t('staff.training.schedule.manage'), staff_training_ptschedule_path(scheduled))

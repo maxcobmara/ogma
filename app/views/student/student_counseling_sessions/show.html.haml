@@ -37,15 +37,19 @@
     %hr
     .form-actions
       = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('helpers.links.back'), student_student_counseling_sessions_path, :class => 'btn btn-default'
-      - permitted_to? :feedback_referrer, @student_counseling_session do
+      /- permitted_to? :feedback_referrer, @student_counseling_session do
+      - permitted_to? :feedback_referrer, :student_student_counseling_sessions do
         - if StudentDisciplineCase.all.pluck(:id).include?(@student_counseling_session.case_id)==true && (!@student_counseling_session.case_id.nil? ||  !@student_counseling_session.case_id.blank?) 
           = link_to content_tag(:i, "", class: "fa fa-file-pdf-o"), feedback_referrer_student_student_counseling_sessions_path(id: @student_counseling_session.case_id, format: "pdf"), class: "btn btn-default", "data-toggle" => "tooltip", title: (t 'student.counseling.feedback_referrer')
-      - permitted_to? :manage, @student_counseling_session do
+      /- permitted_to? :manage, @student_counseling_session do
+      - permitted_to? :update, :student_student_counseling_sessions do
         = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('helpers.links.edit'), edit_student_student_counseling_session_path(@student_counseling_session),  :class => 'btn btn-primary' 
-      - permitted_to? :feedback_referrer, @student_counseling_session do
+      /- permitted_to? :feedback_referrer, @student_counseling_session do
+      - permitted_to? :feedback_referrer, :student_student_counseling_sessions do
         - if (@student_counseling_session.is_confirmed? && (@student_counseling_session.issue_desc? || @student_counseling_session.notes? || @student_counseling_session.suggestions?)) && @student_counseling_session.c_scope == "case" && !@student_counseling_session.case_id.blank?
           = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('student.counseling.feedback_referrer'), feedback_student_student_counseling_session_path(@student_counseling_session),  :class => 'btn btn-primary'
-      - permitted_to? :manage, @student_counseling_session do
+      /- permitted_to? :manage, @student_counseling_session do
+      - permitted_to? :destroy, :student_student_counseling_sessions do
         = link_to content_tag(:i, "", :class => "fa fa-trash-o icon-white") + " " + t('helpers.links.destroy'), |
           student_student_counseling_session_path(@student_counseling_session),                                                                                                    |
           :method => 'delete',                                                                                                           |

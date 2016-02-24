@@ -41,7 +41,7 @@ class TravelRequest < ActiveRecord::Base
   end
   
   def repl_staff(currentuser)
-    unit_name = Staff.find(currentuser).positions.first.unit   #User.current.userable.positions.first.unit
+    unit_name = Staff.find(currentuser.userable_id).positions.first.unit   #User.current.userable.positions.first.unit
     siblings = Position.joins(:staff).where(unit: unit_name).pluck(:staff_id)  
     #children = User.current.userable.positions.first.children.pluck(:staff_id)
     replacements = siblings # + children #not suitable for Pn Nabilah, Pn Rokiah - Timbalan2 Pengarah
@@ -118,7 +118,7 @@ class TravelRequest < ActiveRecord::Base
       self.hod_accept_on	= nil
     end
     
-    if !mycar?#own_car == false 
+    if !mycar? #own_car == false 
       self.own_car_notes =''
       self.mileage = nil
     end
@@ -139,6 +139,7 @@ class TravelRequest < ActiveRecord::Base
     end
   end
   
+  #works only when total_claim_logs already saved, refer travel_claim_logs.rb
   def set_total
     self.log_mileage = total_mileage_request
     self.log_fare = total_km_money_request
@@ -158,7 +159,7 @@ class TravelRequest < ActiveRecord::Base
   end
   
   def staff_vehicle_must_exist_if_own_car
-    if own_car == true && User.current.userable.vehicles.count==0
+    if own_car == true && applicant.vehicles.count==0 #User.current.userable.vehicles.count==0
       errors.add(I18n.t('staff.vehicles.title'), I18n.t('staff.travel_request.vehicle_must_exist'))
     end
   end
@@ -182,11 +183,13 @@ class TravelRequest < ActiveRecord::Base
     end
   end
   
+  #value available only when total_claim_logs already saved, refer travel_claim_logs.rb
   def total_mileage_request
     #other_claims_total + public_transport_totals
     travel_claim_logs.sum(:mileage)
   end
   
+  #value available only when total_claim_logs already saved, refer travel_claim_logs.rb
   def total_km_money_request
     #other_claims_total + public_transport_totals
     travel_claim_logs.sum(:km_money)
@@ -196,12 +199,14 @@ class TravelRequest < ActiveRecord::Base
     "#{depart_at.try(:strftime, "%d %b %Y")}"+" - "+"#{ return_at.try(:strftime, "%d %b %Y") }"
   end
   
-  def transport_class
+  #def transport_class     #17Jan2016-auth rules
+  def transport_class2(curr)
     abc = TravelClaimsTransportGroup.abcrate
     de = TravelClaimsTransportGroup.derate
     mid = 1820.75
     if applicant.nil? || applicant.blank?
-      app2 = Staff.where(id: User.current.userable.id).first
+      #app2 = Staff.where(id: User.current.userable.id).first
+      app2 = Staff.where(id: curr.userable.id).first
       if app2.vehicles && app2.vehicles.count>0
         TravelClaimsTransportGroup.transport_class(app2.vehicles.first.id, app2.current_salary, abc, de, mid)
       else
@@ -213,6 +218,17 @@ class TravelRequest < ActiveRecord::Base
       else
         'Z'
       end
+    end
+  end
+  
+  def transport_class
+    abc = TravelClaimsTransportGroup.abcrate
+    de = TravelClaimsTransportGroup.derate
+    mid = 1820.75
+    if applicant.vehicles && applicant.vehicles.count>0
+      TravelClaimsTransportGroup.transport_class(applicant.vehicles.first.id, applicant.current_salary, abc, de, mid)
+    else
+      'Z'
     end
   end
   

@@ -191,6 +191,10 @@ class User < ActiveRecord::Base
     end
   end
   
+  def document_recepient
+    Document.joins(:staffs).where('staff_id=?', userable_id).pluck(:id)
+  end
+  
   ###Use in Ptdo(for use in auth_rules & Edit pages (approve)) - start
   def unit_members#(current_unit, current_staff, current_roles)
     #Academicians & Mgmt staff : "Teknologi Maklumat", "Perpustakaan", "Kewangan & Akaun", "Sumber Manusia","logistik", "perkhidmatan" ETC.. - by default staff with the same unit in Position will become unit members, whereby Ketua Unit='unit_leader' role & Ketua Program='programme_manager' role.
@@ -241,6 +245,18 @@ class User < ActiveRecord::Base
       adm_sub=[]
     end
     adm_sub
+  end
+  
+  #for Pengarah - access - staff training - ptdo
+  def director_subordinates
+    mypost=userable.positions.first
+    post_name=mypost.name
+    if post_name=="Pengarah"
+      dir_sub=mypost.descendants.map(&:staff_id)
+    else
+      dir_sub=[]
+    end
+    dir_sub
   end
   
   #for Timbalan Pengarah Urusan / Head of Management side - able to approve - refer auth, should MATCH with StaffAttendance.peeps

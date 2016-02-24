@@ -1,6 +1,6 @@
 class Training::WeeklytimetablesController < ApplicationController
-  #filter_resource_access
-  filter_access_to :all
+    filter_access_to :index, :new, :create, :personalize_index, :weekly_timetable, :personalizetimetable,:personalize_show, :attribute_check => false
+    filter_access_to :show, :edit, :update, :destroy, :approval, :attribute_check => true
   
   before_action :set_weeklytimetable, only: [:show, :edit, :update, :destroy]
   # GET /weeklytimetables
@@ -11,7 +11,7 @@ class Training::WeeklytimetablesController < ApplicationController
     @weeklytimetables2= @search.result  
     
     roles = current_user.roles.pluck(:authname)
-    @is_admin = roles.include?("administration") 
+    @is_admin = roles.include?("administration") || roles.include?("weeklytimetables_module_admin") || roles.include?("weeklytimetables_module_viewer") || roles.include?("weeklytimetables_module_user")
     @position_exist = current_user.userable.positions
     if @position_exist && @position_exist.count > 0 && !@position_exist.first.unit.blank?
       main_task_first=@position_exist.first.tasks_main
@@ -21,7 +21,11 @@ class Training::WeeklytimetablesController < ApplicationController
       end
       unless programme.nil? || programme.count==0
         programme_id = programme.try(:first).try(:id)
-        @weeklytimetables3 = @weeklytimetables2.search2(programme_id, roles, current_user.userable_id)
+        if @is_admin
+          @weeklytimetables3 = @weeklytimetables2
+        else
+          @weeklytimetables3 = @weeklytimetables2.search2(programme_id, roles, current_user.userable_id)
+        end
       else
         if @is_admin
           @weeklytimetables3 = @weeklytimetables2
@@ -69,7 +73,7 @@ class Training::WeeklytimetablesController < ApplicationController
     @staffid=current_user.userable_id
     roles=current_user.roles.pluck(:authname)
     lecturer_programme = current_user.userable.positions[0].unit
-    @is_admin=roles.include?("administration")
+    @is_admin=true if roles.include?("administration") || roles.include?("weeklytimetables_module_admin") || roles.include?("weeklytimetables_module_viewer") || roles.include?("weeklytimetables_module_user")
     @is_coordinator= Intake.where(programme_id: @weeklytimetable.programme_id, staff_id: current_user.userable_id).count > 0 
     @is_creator=@weeklytimetable.prepared_by==@staffid
     @is_common_leader=["Sains Perubatan Asas", "Anatomi & Fisiologi", "Sains Tingkahlaku", "Komunikasi & Sains Pengurusan", "Komuniti"].include?(lecturer_programme) && roles.include?("unit_leader")
@@ -97,7 +101,7 @@ class Training::WeeklytimetablesController < ApplicationController
     @weeklytimetable = Weeklytimetable.new
     @staffid = current_user.userable_id 
     roles = current_user.roles.pluck(:authname)
-    @is_admin = roles.include?("administration") 
+    @is_admin = roles.include?("administration") || roles.include?("weeklytimetables_module_admin") || roles.include?("weeklytimetables_module_viewer") || roles.include?("weeklytimetables_module_user")
     if @is_admin
       @programme_list=Programme.roots
       @intake_list=Intake.all.order(programme_id: :asc, monthyear_intake: :desc)
@@ -121,7 +125,7 @@ class Training::WeeklytimetablesController < ApplicationController
   # GET /weeklytimetables/1/edit
   def edit
     roles = current_user.roles.pluck(:authname)
-    @is_admin = roles.include?("administration")
+    @is_admin = roles.include?("administration") || roles.include?("weeklytimetables_module_admin") || roles.include?("weeklytimetables_module_viewer") || roles.include?("weeklytimetables_module_user")
     @staffid = current_user.userable_id
     lecturer_programme = current_user.userable.positions[0].unit
     @is_coordinator= Intake.where(programme_id: @weeklytimetable.programme_id, staff_id: current_user.userable_id).count > 0
@@ -191,7 +195,7 @@ class Training::WeeklytimetablesController < ApplicationController
     #Admin & Coordinator ONLY - diploma & pos basik/pengkhususan/dip lanjutan (common subjects lecturer has no access)
     @staffid = current_user.userable_id 
     roles = current_user.roles.pluck(:authname)
-    @is_admin = roles.include?("administration") 
+    @is_admin = roles.include?("administration") || roles.include?("weeklytimetables_module_admin") || roles.include?("weeklytimetables_module_viewer") || roles.include?("weeklytimetables_module_user")
     if @is_admin
       @programme_list=Programme.roots
       @intake_list=Intake.all.order(programme_id: :asc, monthyear_intake: :desc)
@@ -223,7 +227,7 @@ class Training::WeeklytimetablesController < ApplicationController
   def update
     @weeklytimetable = Weeklytimetable.find(params[:id])
     roles = current_user.roles.pluck(:authname)
-    @is_admin = roles.include?("administration")
+    @is_admin = roles.include?("administration") || roles.include?("weeklytimetables_module_admin") || roles.include?("weeklytimetables_module_viewer") || roles.include?("weeklytimetables_module_user")
     @staffid = current_user.userable_id
     lecturer_programme = current_user.userable.positions[0].unit
     @is_coordinator= Intake.where(programme_id: @weeklytimetable.programme_id, staff_id: current_user.userable_id).count > 0

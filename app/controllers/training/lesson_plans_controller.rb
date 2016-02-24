@@ -1,9 +1,23 @@
 class Training::LessonPlansController < ApplicationController
+   filter_access_to :index, :new, :create, :attribute_check => false  # :index_report, - no longer use, Inde already combine plan & report
+   filter_access_to :show, :edit, :update, :destroy, :lesson_plan,:lesson_report, :attribute_check => true  # :lessonplan_reporting, - no longer use -ditto-
+   before_action :set_index_data, only: :index
    before_action :set_lesson_plan, only: [:show, :edit, :update, :destroy]
+   before_action :set_admin, only: [:index, :new, :edit,:update, :show,  :lessonplan_reporting, :index_report]
+
   # GET /lesson_plans
   # GET /lesson_plans.xml
   def index
-    @search = LessonPlan.search(params[:q])
+    #reference : Staff Appraisal, Exammark, Exam Template
+    if @is_admin
+      @search = LessonPlan.search(params[:q])
+    else
+      if roles.include?("programme_manager")
+        @search = LessonPlan.search2(@programme_id).search(params[:q])
+      else
+        @search = LessonPlan.sstaff2(current_user.userable.id).search(params[:q])
+      end
+    end
     @lesson_plans2 = @search.result
     @lesson_plans3 = @lesson_plans2.sort_by{|t|t.lecturer} 
     @lesson_plans =  Kaminari.paginate_array(@lesson_plans3).page(params[:page]||1) 
@@ -18,10 +32,6 @@ class Training::LessonPlansController < ApplicationController
   # GET /lesson_plans/1.xml
   def show
     @lesson_plan = LessonPlan.find(params[:id])
-    @current_roles=[]
-    current_user.roles.each do |x|
-      @current_roles << x.name
-    end
     @location_display="show"
     respond_to do |format|
       format.html # show.html.erb
@@ -33,10 +43,6 @@ class Training::LessonPlansController < ApplicationController
   # GET /lesson_plans/new.xml
   def new
     @lesson_plan = LessonPlan.new
-    @current_roles=[]
-    current_user.roles.each do |x|
-      @current_roles << x.name
-    end
 
     respond_to do |format|
       format.html # new.html.erb
@@ -47,18 +53,10 @@ class Training::LessonPlansController < ApplicationController
   # GET /lesson_plans/1/edit
   def edit
     @lesson_plan = LessonPlan.find(params[:id])
-    @current_roles=[]
-    current_user.roles.each do |x|
-      @current_roles << x.name
-    end
   end
   
   def lessonplan_reporting
     @lesson_plan = LessonPlan.find(params[:id])
-    @current_roles=[]
-    current_user.roles.each do |x|
-      @current_roles << x.name
-    end
     @location_display="reporting"
   end
   
@@ -85,10 +83,6 @@ class Training::LessonPlansController < ApplicationController
   # PUT /lesson_plans/1.xml
   def update
     @lesson_plan = LessonPlan.find(params[:id])
-    @current_roles=[]
-    current_user.roles.each do |x|
-      @current_roles << x.name
-    end 
     newlocation = params[:new_location]
     if newlocation!=nil
       scheduleid = params[:lesson_plan][:schedule]
@@ -153,10 +147,6 @@ class Training::LessonPlansController < ApplicationController
       @lesson_plans2 = @search.result.where('hod_approved=?', true)
       @lesson_plans3 = @lesson_plans2.sort_by{|t|t.lecturer} 
       @lesson_plans =  Kaminari.paginate_array(@lesson_plans3).page(params[:page]||1) 
-      @current_roles=[]
-      current_user.roles.each do |x|
-        @current_roles << x.name
-      end 
   end
   
   private
@@ -165,6 +155,44 @@ class Training::LessonPlansController < ApplicationController
   def set_lesson_plan
     @lesson_plan = LessonPlan.find(params[:id])
   end
+  
+  def set_admin
+    roles = current_user.roles.pluck(:authname)
+    @is_admin = roles.include?("administration") || roles.include?("lesson_plans_module_admin") || roles.include?("lesson_plans_module_viewer") || roles.include?("lesson_plans_module_user")
+  end
+  
+  #sample from exam_templates########
+  def set_index_data
+    position_exist = @current_user.userable.positions
+    roles= @current_user.roles.pluck(:authname)
+    @is_admin=true if roles.include?("administration") || roles.include?("lesson_plans_module")
+    posbasiks=["Pos Basik", "Diploma Lanjutan", "Pengkhususan"]
+    @common_subjects=['Sains Tingkahlaku','Sains Perubatan Asas', 'Komunikasi & Sains Pengurusan', 'Anatomi & Fisiologi', 'Komuniti']
+    if position_exist && position_exist.count > 0
+      lecturer_programme = @current_user.userable.positions[0].unit
+      unless lecturer_programme.nil?
+        programme = Programme.where('name ILIKE (?) AND ancestry_depth=?',"%#{lecturer_programme}%",0)  if posbasiks.include?(lecturer_programme)==false
+      end
+      unless programme.nil? || programme.count==0
+        programme_id = programme.try(:first).try(:id)
+      else
+        tasks_main = @current_user.userable.positions[0].tasks_main
+        if @common_subjects.include?(lecturer_programme) 
+          programme_id ='1'
+        elsif posbasiks.include?(lecturer_programme) && tasks_main!=nil
+          programme_id='2'
+        else
+          leader_unit=tasks_main.scan(/Program (.*)/)[0][0].split(" ")[0] if tasks_main!="" && tasks_main.include?('Program')
+          if leader_unit
+            programme_id = Programme.where('name ILIKE (?) AND ancestry_depth=?',"%#{leader_unit}%",0).first.id
+          end
+        end
+      end
+      @programme_id=programme_id
+    end
+  end
+  #########
+  
   
   # Never trust parameters from the scary internet, only allow the white list through.
   def lesson_plan_params

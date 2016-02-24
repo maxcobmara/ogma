@@ -2,7 +2,9 @@
   %dl.dl-horizontal
   
     %dt=t 'asset.loan.is_returned'
-    %dd=h @asset_loan.returned_on.strftime("%d %b %Y")+t('by2')+@asset_loan.receivedofficer.try(:name)
+    %dd
+      =h @asset_loan.returned_on.try(:strftime, "%d %b %Y")
+      =t('by2')+@asset_loan.receivedofficer.try(:name) if @asset_loan.receivedofficer
   
     %dt= t 'asset.loan.remarks'
     %dd=h @asset_loan.remarks 

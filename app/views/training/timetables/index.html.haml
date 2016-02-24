@@ -31,6 +31,6 @@
         %td=h link_to timetable.code, training_timetable_path(timetable)     
         %td=h timetable.name
         %td=h timetable.description
-        %td=h timetable.try(:creator).name
+        %td=h timetable.try(:creator).try(:name)
 
   .right{style:"padding:0 30px; margin:0;"}= paginate @timetables, :theme => 'twitter-bootstrap-3'

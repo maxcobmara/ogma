@@ -37,9 +37,9 @@
         - replacements = @ptdo.repl_staff2(c_unit, c_staff, c_roles)
                   
       /Unit Approval Block
-      - permitted_to? :approve, :staff_training_ptdos do
+      - permitted_to? :update, :staff_training_ptdos do
         /Hack : Training Administration should not approved siblings application, must be done by Training Manager
-        - if (@current_user.roles.map(&:name).include?("Training Administration") && @current_user.unit_members.include?(@ptdo.staff_id)==false) || @current_user.roles.map(&:name).include?("Training Manager") || (@current_user.roles.map(&:name).include?("Training Administration")==false && @current_user.roles.map(&:name).include?("Training Manager")==false)
+        - if (@current_user.roles.map(&:name).include?("Training Administration") && @current_user.unit_members.include?(@ptdo.staff_id)==false) || @current_user.roles.map(&:name).include?("Training Manager") || (@current_user.roles.map(&:name).include?("Training Administration")==false && @current_user.roles.map(&:name).include?("Training Manager")==false)|| @current_user.roles.map(&:authname).include?("training_attendance_module_admin") || @current_user.roles.map(&:authname).include?("training_attendance_module_user")
           - if @ptdo.unit_approve.blank?
             .form-group
               .col-sm-2.control-label
@@ -67,9 +67,9 @@
                 = f.collection_select :replacement_id, Staff.where("id IN (?)", replacements), :id, :staff_name_with_position, {:include_blank => t('helpers.prompt.select_staff')}, {class: 'selectpicker', "data-width"=>'300px'} 
       
       /Department Approval Block  
-      - permitted_to? :approve, :staff_training_ptdos do
+      - permitted_to? :update, :staff_training_ptdos do
         - if @ptdo.unit_approve? && @ptdo.dept_approve.blank?          
-          - if ((User.where(userable_id: @ptdo.staff_id).first.roles.map(&:name).include?("Lecturer") || Programme.roots.map(&:name).include?(@ptdo.applicant.positions.first.unit)) && @current_user.userable.positions.first.name != "Timbalan Pengarah (Pengurusan)" ) || (User.where(userable_id: @ptdo.staff_id).first.roles.map(&:name).include?("Lecturer")==false && Programme.roots.map(&:name).include?(@ptdo.applicant.positions.first.unit)==false && @current_user.userable.positions.first.name == "Timbalan Pengarah (Pengurusan)") || @current_user.roles.map(&:name).include?("Training Manager") || @current_user.roles.map(&:name).include?("Training Administration")
+          - if ((User.where(userable_id: @ptdo.staff_id).first.roles.map(&:name).include?("Lecturer") || Programme.roots.map(&:name).include?(@ptdo.applicant.positions.first.unit)) && @current_user.userable.positions.first.name != "Timbalan Pengarah (Pengurusan)" ) || (User.where(userable_id: @ptdo.staff_id).first.roles.map(&:name).include?("Lecturer")==false && Programme.roots.map(&:name).include?(@ptdo.applicant.positions.first.unit)==false && @current_user.userable.positions.first.name == "Timbalan Pengarah (Pengurusan)") || @current_user.roles.map(&:name).include?("Training Manager") || @current_user.roles.map(&:name).include?("Training Administration") || @current_user.roles.map(&:authname).include?("training_attendance_module_admin") || @current_user.roles.map(&:authname).include?("training_attendance_module_user")
             .form-group
               .col-sm-2.control-label
                 = f.label t 'staff.training.application_status.dept_review'
@@ -89,8 +89,9 @@
                 .col-md-3
                   = f.collection_select :replacement_id, Staff.where("id IN (?)", replacements).order(name: :asc), :id, :staff_name_with_position, {:include_blank => t('helpers.prompt.select_staff')}, {class: 'selectpicker', "data-width"=>'300px'} 
               
-      - permitted_to? :approve, :staff_training_ptdos do
-        - if @ptdo.dept_approve? && @ptdo.final_approve.blank? && @current_user.userable.positions.first.name == "Pengarah"  
+      - permitted_to? :update, :staff_training_ptdos do
+        - if @ptdo.dept_approve? && @ptdo.final_approve.blank? 
+          /&& @current_user.userable.positions.first.name == "Pengarah" ||  
           .form-group
             .col-sm-2.control-label
               = f.label t 'staff.training.application_status.final_approve'

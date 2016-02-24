@@ -17,15 +17,13 @@
     .col-sm-2.control-label
       = f.label t 'asset.loan.loan_officer', for: :loan_officer
     .col-md-4
-      = Staff.where(id:25).first.name
-      /=h current_login.staff.name 
-      = f.hidden_field :loan_officer, :value => 25
-      /= f.hidden_field :loan_officer, :value=>current_login.staff_id 
+      = Staff.where(id: @current_user.userable_id).first.name
+      = f.hidden_field :loan_officer, :value => @current_user.userable_id
   .form-group
-    .col-sm-2.control-label#notify_hod
+    .col-sm-2.control-label.notify_hod
       = f.label t 'asset.loan.notify_hod', for: :notify_hod
       
-    .col-md-4#notify_hod
+    .col-md-4.notify_hod
       - @unit_members = @asset_loan.unit_members 
       - if @asset_loan.loantype == 1
         - if @unit_members.count==1 
@@ -45,17 +43,17 @@
 $(document).ready(function(){ 
   $("input[class='approval']").each(function() {  
     if($('#is_approved_true').is(':checked')) { 
-      $("#notify_hod").show("highlight");
+      $(".notify_hod").show("highlight");
     }else if ($j('#is_approved_false').is(':checked')){
-      $("#notify_hod").hide("highlight");
+      $(".notify_hod").hide("highlight");
     }
   });
 
   $("input[class='approval']").change(function() {  
     if($('#is_approved_true').is(':checked')) { 
-      $("#notify_hod").show("highlight");
+      $(".notify_hod").show("highlight");
     }else if ($('#is_approved_false').is(':checked')){
-      $("#notify_hod").hide("highlight");
+      $(".notify_hod").hide("highlight");
     }
   });
 });

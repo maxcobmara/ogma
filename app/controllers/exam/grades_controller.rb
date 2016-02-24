@@ -1,5 +1,6 @@
 class Exam::GradesController < ApplicationController
-  filter_access_to :all 
+  filter_access_to :index, :new, :create, :new_multiple, :create_multiple, :edit_multiple, :update_multiple, :attribute_check => false
+  filter_access_to :show, :edit, :update, :destroy, :attribute_check => true
   before_action :set_grade, only: [:show, :edit, :update, :destroy]
   before_action :set_data_edit_update_new_create, only: [:edit, :update, :new, :create]
   before_action :set_new_multiple_create_multiple, only: [:new_multiple, :create_multiple]
@@ -57,7 +58,7 @@ class Exam::GradesController < ApplicationController
           #    @subjectlist_preselec_prog = Programme.where(id: programme_id).first.descendants.at_depth(2)
           #end
           ###
-        elsif roles.include?("administration")
+        elsif roles.include?("administration") || roles.include?("exam_grade_module_admin") || roles.include?("exam_grade_module_viewer") || roles.include?("exam_grade_module_user")
           programme_id='0'
           @subjectlist_preselec_prog = Programme.at_depth(2) 
         else
@@ -219,7 +220,14 @@ class Exam::GradesController < ApplicationController
     #qcount = @exammark.get_questions_count(@examid)
     #current_program = Programme.find(Exam.find(@examid).subject_id).root_id
     #selected_student = Student.where(course_id: current_program.to_i, intake: selected_intake)
-    selected_student = Student.where(course_id: @programme_id, intake: selected_intake)
+    
+    #selected_student = Student.where(course_id: @programme_id, intake: selected_intake)
+    #above - before include previous intake(repeat semester) students
+    # NOTE - 22Feb2016 - include Repeat Semester students (previous Intake) 
+    #related files: 1) views/examresults/_form_results.html.haml, 2)model/examresult.rb 3)exammarks_controllers.rb 4)model/grade.rb - redundants allowed only for student with sstatus=='Repeat' (Repeat Semester)
+    previous_intake = Student.where(course_id: @programme_id).where('intake < ?', selected_intake).order(intake: :desc).first.intake
+    selected_student = Student.where(course_id: @programme_id).where('intake=? or (intake=? and sstatus=?)', selected_intake, previous_intake, 'Repeat')
+    
     rec_count = selected_student.count
     @grades = Array.new(rec_count) { Grade.new }                      
     @grades.each_with_index do |grade,ind|                                     
@@ -525,7 +533,7 @@ class Exam::GradesController < ApplicationController
             #  @subjects=Programme.subject_groupbyoneprogramme2_grade(@preselect_prog) #new only
             #  @students=Student.groupby_oneprogramme(@preselect_prog)
             #end
-          elsif roles.include?("administration")
+          elsif roles.include?("administration") || roles.include?("exam_grade_module_admin")  || roles.include?("exam_grade_module_viewer") || roles.include?("exam_grade_module_user")
             @programme_names=Programme.programme_names
             @subjects=Programme.all_subjects_groupbyprogramme_grade #new only
             @students=Student.groupby_programme

@@ -1,7 +1,8 @@
 class Grade < ActiveRecord::Base
   
   validates_presence_of :student_id, :subject_id, :examweight#, :exam1marks #added examweight for multiple edit - same subject - this item must exist
-  validates_uniqueness_of :subject_id, :scope => :student_id, :message => " - This student has already taken this subject"
+  #validates_uniqueness_of :subject_id, :scope => :student_id, :message => " - This student has already taken this subject"
+  validate :uniq_subject_per_student_except_sem_repeated
   validates :finalscore, numericality: {greater_than_or_equal_to: 0, less_than_or_equal_to: 100}
   #validates :exam1marks, :finalscore, numericality: {greater_than_or_equal_to: 0, less_than_or_equal_to: 100}
       
@@ -398,5 +399,16 @@ class Grade < ActiveRecord::Base
         errors.add(:base, I18n.t('exam.grade.summative_exceed_hundred'))
       end
     end
+    
+    # NOTE - 22Feb2016 - include Repeat Semester students (previous Intake) - validate if Grade redundant for a student/subject set, grade record being created MUST BE for Repeated Semester (of the same student)
+    #related files: 1) views/examresults/_form_results.html.haml, 2)model/examresult.rb 3)exammarks_controllers.rb 4)model/grade.rb - redundants allowed only for student with sstatus=='Repeat' (Repeat Semester)
+    #validates_uniqueness_of :subject_id, :scope => :student_id, :message => " - This student has already taken this subject"
+    def uniq_subject_per_student_except_sem_repeated
+      redundant=Grade.where(student_id: student_id, subject_id: subject_id)
+      if (redundant && redundant.count > 0) && Student.where(id: student_id).first.sstatus!='Repeat'
+        errors.add(:base, I18n.t('exam.grade.subject_already_taken'))
+      end
+    end
+    
   
 end

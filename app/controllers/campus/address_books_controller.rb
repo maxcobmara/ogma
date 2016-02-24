@@ -1,5 +1,5 @@
 class Campus::AddressBooksController < ApplicationController
-
+  filter_resource_access
   before_action :set_address_book, only: [:show, :edit, :update, :destroy]
   
   def index

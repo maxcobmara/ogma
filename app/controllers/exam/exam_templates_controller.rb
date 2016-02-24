@@ -51,7 +51,7 @@ class Exam::ExamTemplatesController < ApplicationController
     def set_index_data
       position_exist = @current_user.userable.positions
       roles= @current_user.roles.pluck(:authname)
-      @is_admin=true if roles.include?("administration")
+      @is_admin=true if roles.include?("administration") || roles.include?("exam_templates_module_admin")|| roles.include?("exam_templates_module_viewer") || roles.include?("exam_templates_module_user")
       posbasiks=["Pos Basik", "Diploma Lanjutan", "Pengkhususan"]
       @common_subjects=['Sains Tingkahlaku','Sains Perubatan Asas', 'Komunikasi & Sains Pengurusan', 'Anatomi & Fisiologi', 'Komuniti']
       if position_exist && position_exist.count > 0

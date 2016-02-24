@@ -1,5 +1,6 @@
 class Exam::ExamsController < ApplicationController
-  filter_resource_access
+  filter_access_to :index, :new, :create, :exampaper, :question_selection, :attribute_check => false
+  filter_access_to :show, :edit, :update, :destroy, :attribute_check => true
   before_action :set_exam, only: [:show, :edit, :update, :destroy]
   before_action :set_shareable_data, only: [:new, :edit, :update, :create]
   before_action :set_new_create_data, only: [:new, :create]
@@ -37,7 +38,7 @@ class Exam::ExamsController < ApplicationController
           #else
             @programme_id='2'#Programme.where(name: lecturer_basicprog_name, ancestry_depth: 0).first.id
           #end
-        elsif roles.include?("administration")
+        elsif roles.include?("administration") || roles.include?("exampaper_module_admin")|| roles.include?("exampaper_module_viewer")||  roles.include?("exampaper_module_member")
           @programme_id='0'
         else
           leader_unit=@tasks_main.scan(/Program (.*)/)[0][0].split(" ")[0] if @tasks_main!="" && @tasks_main.include?('Program')
@@ -274,7 +275,7 @@ class Exam::ExamsController < ApplicationController
       posbasiks=['Diploma Lanjutan', 'Pos Basik', 'Pengkhususan']
       roles=@current_user.roles.pluck(:authname)
       tasks_main=@current_user.userable.positions[0].tasks_main
-      if @exam.id.nil?
+      if @exam.nil?
         #applicable - new only
         unless @lecturer_programme.nil?
           @programme = Programme.where('name ILIKE (?) AND ancestry_depth=?',"%#{@lecturer_programme}%",0).first
@@ -316,7 +317,7 @@ class Exam::ExamsController < ApplicationController
             @subjects=Programme.subject_groupbycommonsubjects
             @programme_names=Programme.programme_names
           else
-            if roles.include?("administration")
+            if roles.include?("administration") || roles.include?("exampaper_module")
               @programme_names=Programme.programme_names
               @topics=Programme.topic_groupbysubject
               @subjects=Programme.subject_groupbyprogramme
@@ -374,8 +375,8 @@ class Exam::ExamsController < ApplicationController
           #  @subjects_paper=Programme.subject_groupbyoneprogramme2(@programme2.id) #new only
           @subjects_paper=Programme.subject_groupbyposbasiks2 #new only
           #end
-        elsif roles.include?("administration")
-          @staff_listing=@exam.creator_list
+        elsif roles.include?("administration") || roles.include?("exampaper_module")
+          @staff_listing=@exam.creator_list unless @exam.nil?
           @subjects_paper=Programme.subject_groupbyprogramme2 #new only
         else
           tasks_main=@current_user.userable.positions.first.tasks_main

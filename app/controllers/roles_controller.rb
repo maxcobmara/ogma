@@ -1,4 +1,5 @@
 class RolesController < ApplicationController
+  filter_resource_access
   before_action :set_role, only: [:show, :edit, :update, :destroy]
   # GET /roles
   # GET /roles.xml

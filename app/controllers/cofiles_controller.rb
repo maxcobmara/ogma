@@ -1,8 +1,9 @@
 class CofilesController < ApplicationController
+  filter_resource_access
   before_action :set_cofile, only: [:show, :edit, :update, :destroy]
+
   # GET /cofiles
   # GET /cofiles.xml
-
   def index
     @search = Cofile.search(params[:q])
     @cofiles = @search.result

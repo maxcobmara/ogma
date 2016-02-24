@@ -8,13 +8,44 @@
     .col-sm-2.control-label
       = f.label (t 'staff.travel_claim.verification')
     .col-md-2
-      = f.radio_button :is_checked, 'false' 
+      = f.radio_button :is_checked, 'false'
       = t 'staff.travel_claim.return_to_staff'
     .col-md-2
-      = f.radio_button :is_checked, 'true'  
+      = f.radio_button :is_checked, 'true'
       = t 'staff.travel_claim.verified_ok'
+    .col-md-4.span_verified_ok{style: 'display: none; '}
+      = f.label :approved_by
+      /= f.collection_select :approved_by, Staff.all, :id, :name, {:include_blank=>t('select'), :selected=>Position.roots.first.staff_id},{class: 'selectpicker', "data-width"=>"220px"}
+      /TODO next - sort / order by postion rank   
+      = f.collection_select :approved_by, Staff.joins(:positions).where('staffs.id IN(?)', @travel_claim.hods).uniq, :id, :name, {:include_blank => t('helpers.prompt.select_hod')}, {class: 'selectpicker', "data-width"=>'320px'} 
   .form-group
     .col-sm-2.control-label
       = f.label (t 'staff.travel_claim.note_by_finance')
     .col-md-8
       =f.text_field :notes, class: 'form-control'
+      
+:javascript
+$(document).ready(function(){
+  $("input[id='travel_claim_is_checked_true']").change(function() {  
+    if($('#travel_claim_is_checked_true').is(':checked')) { 
+      $(".span_verified_ok").show("highlight"); 
+    }
+  });
+  $("input[id='travel_claim_is_checked_true']").each(function() {  
+    if($('#travel_claim_is_checked_true').is(':checked')) { 
+      $(".span_verified_ok").show("highlight"); 
+    }
+  });
+  
+  $("input[id='travel_claim_is_checked_false']").change(function() {  
+    if($('#travel_claim_is_checked_false').is(':checked')) { 
+      $(".span_verified_ok").hide(""); 
+    }
+  });
+  $("input[id='travel_claim_is_checked_false']").each(function() {  
+    if($('#travel_claim_is_checked_false').is(':checked')) { 
+      $(".span_verified_ok").hide(""); 
+    }
+  });
+});
+

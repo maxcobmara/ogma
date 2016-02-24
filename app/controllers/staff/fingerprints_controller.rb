@@ -1,4 +1,6 @@
 class Staff::FingerprintsController < ApplicationController
+  filter_access_to :index, :new, :create, :attribute_check => false
+  filter_access_to :show, :edit, :update,  :destroy, :attribute_check => true
   before_action :set_fingerprint, only: [:show, :edit, :update, :destroy]
 
   #filter_resource_access

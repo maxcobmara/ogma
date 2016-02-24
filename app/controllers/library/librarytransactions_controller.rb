@@ -1,8 +1,9 @@
 class Library::LibrarytransactionsController < ApplicationController
 
   before_action :set_librarytransaction, only: [:show, :edit, :update, :destroy]
-  filter_access_to :manager, :require => :manage
-  filter_access_to :index
+  filter_access_to :manager, :require => :manage,  :attribute_check => false
+  filter_access_to :show, :edit, :update, :destroy, :check_status, :late_books, :extend, :extend2, :return, :return2, :attribute_check => true
+  filter_access_to :index, :new, :create,  :analysis_statistic, :analysis_statistic_main, :analysis, :analysis_book, :general_analysis, :general_analysis_ext,:attribute_check => false
 
   def index
 #     @filters = Librarytransaction::FILTERS
@@ -149,7 +150,7 @@ class Library::LibrarytransactionsController < ApplicationController
   end
 
 
-
+  # TODO - page not ready - acceptance (ICMS) - start
   def extend
     @librarytransaction = Librarytransaction.find(params[:id])
   end
@@ -167,6 +168,7 @@ class Library::LibrarytransactionsController < ApplicationController
     @librarytransaction = Librarytransaction.find(params[:id])
     render :layout => false
   end
+  # TODO - page not ready - acceptance (ICMS) - end
   
   def analysis
     yyear = params[:reporting_year]

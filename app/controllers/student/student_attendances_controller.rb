@@ -1,5 +1,6 @@
 class Student::StudentAttendancesController < ApplicationController
-  filter_access_to :all
+  filter_access_to :index, :new, :create, :new_multiple, :new_multiple_intake, :create_multiple, :student_attendan_form, :edit_multiple, :update_multiple, :attribute_check => false
+  filter_access_to :show, :edit, :update, :destroy, :attribute_check => true
   before_action :set_student_attendance, only: [:show, :edit, :update, :destroy]
   before_action :set_schedule_student_list, only: [:new, :create, :new_multiple_intake]
   
@@ -22,7 +23,7 @@ class Student::StudentAttendancesController < ApplicationController
         @intake_list2 = Student.where('course_id IS NOT NULL and course_id IN(?)',@programme_list_ids).select("DISTINCT intake, course_id").order("course_id, intake") 
         @topics_ids_this_prog = Programme.at_depth(3).map(&:id)  
         @student_ids = Student.all.pluck(:id)
-        # TODO - common subjects - refer final UAT doc
+        # TODO - common subjects - refer final UAT doc - refer catechumen (acceptance)
       end
       @schedule_list = WeeklytimetableDetail.where('topic IN(?)',@topics_ids_this_prog).order(:topic)
       
@@ -121,21 +122,21 @@ class Student::StudentAttendancesController < ApplicationController
     end
   end
   
-  def examination_slip
-    @programme_id = 3            #params[:programme].to_i
-    @student =   35 #Student.where('course_id=?',@programme_id )  
-    
-    
-   # @student = Student.all
-    respond_to do |format|
-      format.pdf do
-        pdf = Examination_slipPdf.new(@student, view_context, @programme_id)
-        send_data pdf.render, filename: "Examination_slip-{Date.today}",
-                              type: "application/pdf",
-                              disposition: "inline"
-      end
-    end
-  end
+#   def examination_slip
+#     @programme_id = 3            #params[:programme].to_i
+#     @student =   35 #Student.where('course_id=?',@programme_id )  
+#     
+#     
+#    # @student = Student.all
+#     respond_to do |format|
+#       format.pdf do
+#         pdf = Examination_slipPdf.new(@student, view_context, @programme_id)
+#         send_data pdf.render, filename: "Examination_slip-{Date.today}",
+#                               type: "application/pdf",
+#                               disposition: "inline"
+#       end
+#     end
+#   end
     
   def new_multiple
     @create_type = params[:new_submit]

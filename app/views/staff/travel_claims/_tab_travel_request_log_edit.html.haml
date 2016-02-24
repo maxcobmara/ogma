@@ -12,7 +12,8 @@
     %hr
   - for travel_request in @my_approved_unclaimed_requests 
     .row
-      .col-md-1=check_box_tag "travel_claim[travel_request_ids][]", travel_request.id, @travel_claim.travel_requests.include?(travel_request) 
+      /.col-md-1=check_box_tag "travel_claim[travel_request_ids][]", travel_request.id, @travel_claim.travel_requests.include?(travel_request) 
+      .col-md-1=check_box_tag "travel_request_ids[]", travel_request.id, @travel_claim.travel_requests.include?(travel_request) 
       .col-md-3=check_kin {travel_request.document.refno}
       .col-md-2=travel_request.destination 
       .col-md-2=check_kin {travel_request.document.title} 

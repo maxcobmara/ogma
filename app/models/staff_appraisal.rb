@@ -18,7 +18,7 @@ class StaffAppraisal < ActiveRecord::Base
    accepts_nested_attributes_for :trainneeds, :allow_destroy => true, :reject_if => lambda { |a| a[:name].blank? }
   
    validates_presence_of :skt_pyd_report, :if => :is_skt_pyd_report_done?
-   validates_presence_of :evaluation_year
+   validates_presence_of :evaluation_year, :staff_appraisal_skts, :if => :is_skt_submit?
    validates_uniqueness_of :evaluation_year, :scope => :staff_id, :message => I18n.t("staff.staff_appraisal.evaluation_year_must_unique")
    #validates_presence_of  :e1g1q1, :e1g1q2,:e1g1q3, :e1g1q4, :e1g1q5,:e1g1_total, :e1g1_percent,:e1g2q1, :e1g2q2, :e1g2q3, :e1g2q4, :e1g2_total, :e1g2_percent, :e1g3q1, :e1g3q2, :e1g3q3, :e1g3q4, :e1g3q5, :e1g3_total, :e1g3_percent,:e1g4,:e1g4_percent, :e1_total, :e1_years, :e1_months,  :e1_performance, :e1_progress, :if => :is_submit_e2? #pending - update page (when validation fails)
    #validates_presence_of :e2g1q1, :e2g1q2, :e2g1q3,:e2g1q4, :e2g1q5,:e2g1_total, :e2g1_percent, :e2g2q1, :e2g2q2,:e2g2q3, :e2g2q4, :e2g2_total, :e2g2_percent, :e2g3q1, :e2g3q2, :e2g3q3,:e2g3q4,:e2g3q5, :e2g3_total,:e2g3_percent, :e2g4, :e2g4_percent,:e2_total, :e2_years, :e2_months, :e2_performance, :if => :is_complete? #pending - update page (when validation fails)
@@ -39,8 +39,12 @@ class StaffAppraisal < ActiveRecord::Base
      is_complete ==true #&& I18n.t('staff.staff_appraisal.submitted_by_ppp_for_evaluation_to_PPK')
    end
    
-    def ppk_eval2?
+   def ppk_eval2?
      is_complete ==true && e2_years==0 #&& I18n.t('staff.staff_appraisal.submitted_by_ppp_for_evaluation_to_PPK') && e2_years==0
+   end
+   
+   def is_skt_submit?
+     is_skt_submit==true
    end
    
    # define scope

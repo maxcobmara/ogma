@@ -36,10 +36,10 @@ class Kewpa6Pdf < Prawn::Document
   end
   
   def table1
-    data = [["Jenis:", "#{@assetloans.first.asset.typename}", "", ""],
-             ["Jenama dan Model:", "#{@assetloans.first.asset.name} : #{@assetloans.first.asset.modelname}","",""],
-             ["No. Siri Pembuat:", "#{@assetloans.first.asset.serialno}", "Pegawai Pengeluar",""],
-             ["No. Siri Pendaftaran:", "#{@assetloans.first.asset.assetcode}", "","Catatan"]]
+    data = [["Jenis:", "#{@assetloans.first.try(:asset).try(:typename)}", "", ""],
+             ["Jenama dan Model:", "#{@assetloans.first.try(:asset).try(:name)} : #{@assetloans.first.try(:asset).try(:modelname)}","",""],
+             ["No. Siri Pembuat:", "#{@assetloans.first.try(:asset).try(:serialno)}", "Pegawai Pengeluar",""],
+             ["No. Siri Pendaftaran:", "#{@assetloans.first.try(:asset).try(:assetcode)}", "","Catatan"]]
              
     table(data, :column_widths => [170, 220, 220,159], :cell_style => { :size => 9}) do
           row(3).column(3).align = :center

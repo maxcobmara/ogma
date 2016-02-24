@@ -1,13 +1,13 @@
 class Asset::AssetLoansController < ApplicationController
-  #filter_resource_access
-  filter_access_to :all
+  filter_access_to :index, :new, :create, :lampiran_a, :attribute_check => false
+  filter_access_to :edit, :show, :update, :destroy, :approval, :attribute_check => true
   before_action :set_asset_loan, only: [:show, :edit, :update, :destroy]
 
   # GET /asset_loans
   # GET /asset_loans.xml
   def index
-    roles = @current_user.roles.pluck(:id)
-    @is_admin = true if roles.include?(2) || roles.include?(11)
+    roles = @current_user.roles.pluck(:authname)
+    @is_admin = true if roles.include?("administration") || roles.include?("asset_administrator") || roles.include?("asset_loans_module")
     if @is_admin
       @search = AssetLoan.search(params[:q])
     else
@@ -94,7 +94,7 @@ class Asset::AssetLoansController < ApplicationController
     end
   end
   
-  def approve
+  def approval
     @asset_loan = AssetLoan.find(params[:id])
   end
   

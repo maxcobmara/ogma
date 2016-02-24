@@ -6,9 +6,15 @@ class Exam::EvaluateCoursesController < ApplicationController
   before_action :set_data_new_create, only: [:new, :create, :edit, :update]
   before_action :set_data_index_show, only: [:index, :show, :evaluation_report]
   
-   def index  
+   def index
+     roles = current_user.roles.pluck(:authname)
+    @is_admin = roles.include?("administration") || roles.include?("course_evaluation_module_admin") || roles.include?("course_evaluation_module_viewer") || roles.include?("course_evaluation_module_user")
     @search = EvaluateCourse.search(params[:q])
-    @evaluate_courses = @search.result.search2(@programme_id)
+    if @is_admin
+      @evaluate_courses = @search.result
+    else 
+      @evaluate_courses = @search.result.search2(@programme_id)
+    end
     @evaluate_courses = @evaluate_courses.order('course_id, staff_id, subject_id ASC').page(params[:page]||1)
     
     respond_to do |format|
@@ -110,8 +116,14 @@ class Exam::EvaluateCoursesController < ApplicationController
   end
   
   def evaluation_report
+     roles = current_user.roles.pluck(:authname)
+    @is_admin = roles.include?("administration") || roles.include?("course_evaluation_module_admin") || roles.include?("course_evaluation_module_viewer") || roles.include?("course_evaluation_module_user")
     @search = EvaluateCourse.search(params[:q])
-    @evaluate_courses = @search.result.search2(@programme_id)
+    if @is_admin
+      @evaluate_courses = @search.result
+    else 
+      @evaluate_courses = @search.result.search2(@programme_id)
+    end
      respond_to do |format|
        format.pdf do
          pdf = Evaluation_reportPdf.new(@evaluate_courses, view_context)

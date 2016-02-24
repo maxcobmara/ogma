@@ -27,7 +27,11 @@
             .col-sm-2.control-label
               = f.label :created_by
             .col-md-3
-              = f.collection_select :created_by, Staff.where('id =?', @current_user.userable_id), :id, :name,{ :include_blank => t('select')},{ class: 'selectpicker',  "data-width"=>"200px"}
+              - if @timetable.created_by
+                - createdby=@timetable.created_by
+              - else
+                - createdby=@current_user.userable_id
+              = f.collection_select :created_by, Staff.where('id =?', createdby), :id, :name,{ :include_blank => t('select')},{ class: 'selectpicker',  "data-width"=>"200px"}
 
         %br
         .row

@@ -1,4 +1,6 @@
 class EventsController < ApplicationController
+  filter_access_to :index, :new, :create, :attribute_check => false  #calendar
+  filter_access_to :show, :edit, :update, :destroy, :attribute_check => true
   helper_method :sort_column, :sort_direction
   before_action :set_event, only: [:show, :edit, :update, :destroy]
 
@@ -7,7 +9,6 @@ class EventsController < ApplicationController
     @events = @search.result
     @events = @events.order(:start_at).reverse_order.page(params[:page]||1)
   end
-
 
   def calendar
     @events = Event.all

@@ -17,9 +17,7 @@
     .col-sm-2.control-label
       = f.label :approved_by
     .col-md-6
-      /= f.collection_select :approved_by, Staff.where(id: Login.current_login.staff_id), :id, :name
-      =f.collection_select :approved_by, Staff.all, :id, :name, {:include_blank=>t('select'), :selected=>98},{class: 'selectpicker', "data-width"=>"220px"}
-      /Confirmation
+      =f.collection_select :approved_by, Staff.all, :id, :name, {:include_blank=>t('select')},{class: 'selectpicker', "data-width"=>"220px"}
 
 :javascript
 $(document).ready(function(){

@@ -16,7 +16,7 @@
           %li= link_to (t 'student.discipline.report_details'),"#report_details", "data-toggle" => "tab"
           /add-in  && @student_discipline_case.assigned2_to == Login.current_login.staff_id below condition - only TPHEP can view action details-19dec2012
           / if (["Refer to TPHEP"].include? (@student_discipline_case.status) && @student_discipline_case.assigned2_to == Login.current_login.staff_id) ||(["Open"].include? (@student_discipline_case.status) && @student_discipline_case.assigned2_to == Login.current_login.staff_id)
-          - if (["Refer to TPHEP"].include? (@student_discipline_case.status)) && (@student_discipline_case.assigned2_to == @current_user.userable_id || @current_user.roles.pluck(:name).include?("Administration"))
+          - if (["Refer to TPHEP"].include? (@student_discipline_case.status)) && (@student_discipline_case.assigned2_to == @current_user.userable_id || @current_user.roles.pluck(:authname).include?("administration") || @current_user.roles.pluck(:authname).include?("student_discipline_module_admin") || @current_user.roles.pluck(:authname).include?("student_discipline_module_viewer") || @current_user.roles.pluck(:authname).include?("student_discipline_module_user"))
             %li=link_to (t 'student.discipline.case_info'), "#case_info", "data-toggle" => "tab" 
           %li.active=link_to (t 'student.discipline.action_details'), "#action_taken", "data-toggle" => "tab" 
 

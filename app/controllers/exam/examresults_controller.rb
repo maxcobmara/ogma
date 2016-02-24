@@ -1,7 +1,5 @@
 class Exam::ExamresultsController < ApplicationController
-  #filter_access_to :all
-  #filter_resource_access
-  filter_access_to :index, :index2, :new, :create, :show2, :show3, :examination_slip, :examination_transcript, :attribute_check => false
+  filter_access_to :index, :index2, :new, :create, :show2, :show3, :results, :examination_slip, :examination_transcript, :attribute_check => false
   filter_access_to :show, :edit, :update, :destroy, :attribute_check => true
   
   before_action :set_examresult, only: [:show, :edit, :update, :destroy]
@@ -197,7 +195,7 @@ class Exam::ExamresultsController < ApplicationController
             #  lecturer_basicprog_name = basicprog if tasks_main.include?(basicprog)==true
             #end
             #programme_id=Programme.where(name: lecturer_basicprog_name, ancestry_depth: 0).first.id
-          elsif roles.include?("administration")
+          elsif roles.include?("administration") || roles.include?("examresults_module_admin")|| roles.include?("examresults_module_viewer")|| roles.include?("examresults_module_user")
             programme_id='0'
           else
             leader_unit=tasks_main.scan(/Program (.*)/)[0][0].split(" ")[0] if tasks_main!="" && tasks_main.include?('Program')
@@ -243,7 +241,7 @@ class Exam::ExamresultsController < ApplicationController
             end
             @programme_id=Programme.where(name: lecturer_basicprog_name, ancestry_depth: 0).first.id
             @programmes=Programme.where(id: @programme_id)
-          elsif roles.include?("administration")
+          elsif roles.include?("administration") || roles.include?("examresults_module")
             @programme_id='0'
             @programmes=Programme.roots.where(course_type: ['Diploma', 'Diploma Lanjutan', 'Pos Basik', 'Pengkhususan'])
           else

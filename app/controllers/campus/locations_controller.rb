@@ -1,5 +1,7 @@
 class Campus::LocationsController < ApplicationController
-  filter_access_to :all
+  #filter_access_to :all
+  filter_access_to :index, :new, :create, :statistic_level, :census_level2, :statistic_block, :attribute_check => false
+  filter_access_to :show, :edit, :update, :destroy, :kewpa7, :kewpa10, :kewpa11,  :attribute_check => true
   before_action :set_location, only: [:show, :edit, :update, :destroy]
   
   def index

@@ -1,4 +1,6 @@
 class Campus::LocationDamagesController < ApplicationController
+  filter_access_to :index, :new, :create, :index_staff, :damage_report, :damage_report_staff, :attribute_check => false
+  filter_access_to :show, :edit, :update, :destroy, :attribute_check => true
   before_action :set_location_damage, only: [:show, :edit, :update, :destroy]
   
   def index

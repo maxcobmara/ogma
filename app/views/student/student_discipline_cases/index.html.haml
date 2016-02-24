@@ -8,15 +8,12 @@
       %li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'actions.new'))), new_student_student_discipline_case_path
   %ul.nav.navbar-nav.navbar-right
     %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class:  "index_search_bar"
-    /%li= link_to content_tag(:li, fa_icon("print", text: (t 'actions.print'))), "#", class: 'bogus'
     - permitted_to? :discipline_report, :student_student_discipline_cases do
       %li.dropdown
         %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#"}
           = fa_icon "print", text: (t 'actions.print')
           %b.caret
         %ul.dropdown-menu
-          /%li= link_to (fa_icon "file-excel-o", text: (t "student.tenant.list")), student_tenants_path(params.merge(format: "xls"))
-          /%li= link_to (fa_icon "file-pdf-o", text: (t "student.tenant.list")), tenant_report_student_tenants_path(params.merge(format: 'pdf' ))
           %li= link_to (fa_icon "file-pdf-o", text: (t "student.discipline.list")), discipline_report_student_student_discipline_cases_path(params.merge(format: 'pdf' ))
           - if @student_discipline_cases.group_by{|x|x.student_id}.count==1
             - stu= @student_discipline_cases[0].student_id
@@ -34,7 +31,7 @@
         %th{:width=>'80px'}= t 'student.discipline.year_semester'
         %th= sort_link(@search, :matrix_no, (t 'student.discipline.matrix_no'))
         %th= sort_link(@search, :student_id, (t 'student.discipline.student_id'))
-        %th= sort_link(@search, :description, (t 'student.discipline.description'))
+        %th= sort_link(@search, :infraction_id, (t 'student.discipline.infraction'))
         %th= sort_link(@search, :reported_on, (t 'student.discipline.reported_on'))
         %th= sort_link(@search, :file_id, (t 'student.discipline.file_id'))
         %th=sort_link(@search, :location_id, (t 'student.discipline.location_id'))
@@ -52,7 +49,7 @@
           = Student.year_and_sem(@intake)
         %td=h student_discipline_case.student.matrixno
         %td=h student_discipline_case.student.name 
-        %td=h student_discipline_case.description
+        %td=h student_discipline_case.render_infraction
         %td=h student_discipline_case.try(:reported_on).try(:strftime, '%d %b %Y')
         %td=h student_discipline_case.cofile.try(:name)
         %td=h student_discipline_case.location.try(:name)
