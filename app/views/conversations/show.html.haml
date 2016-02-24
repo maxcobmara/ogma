@@ -1,26 +1,3 @@
-/ .row
-/   .spacer
-/   .col-md-12
-/     = link_to "Compose", new_conversation_path, class: "btn btn-success"
-/     .spacer
-/   .col-md-4
-/     .panel.panel-default
-/       .panel-body
-/         = render 'mailbox/folders'
-/   .col-md-8
-/     .panel.panel-default
-/       .panel-body
-/         = render partial: 'messages'
-/       .panel-footer
-/         / Reply Form
-/         = form_for :message, url: reply_conversation_path(conversation) do |f|
-/           .form-group
-/             = f.text_area :body, placeholder: "Reply Message", rows: 4, class: "form-control"
-/           = f.submit "Reply", class: 'btn btn-danger pull-right'
-/         .clearfix
-
-
-/below - copied from ../views/convvvvversations/_convvvvversation
 .row
   .spacer
   .col-md-6
@@ -41,10 +18,12 @@
     .panel.panel-default
       .panel-body
         = render partial: 'messages'
-      .panel-footer
-        / Reply Form
-        = form_for :message, url: reply_conversation_path(conversation) do |f|
-          .form-group
-            = f.text_area :body, placeholder: "Reply Message", rows: 4, class: "form-control"
-          = f.submit "Reply", class: 'btn btn-danger pull-right'
-        .clearfix
+ 
+      - if @receipts.first.message.sender.userable_id != current_user.userable_id
+        .panel-footer
+          / Reply Form
+          = form_for :message, url: reply_conversation_path(conversation) do |f|
+            .form-group
+              = f.text_area :body, placeholder: "Reply Message", rows: 4, class: "form-control"
+            = f.submit "Reply", class: 'btn btn-danger pull-right'
+          .clearfix

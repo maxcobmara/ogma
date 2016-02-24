@@ -1,44 +1,24 @@
-/ .row
-/   .spacer
-/   .col-md-6
-/     = link_to "Compose", new_conversation_path, class: "btn btn-success"
-/   .col-md-6.text-right
-/     - if conversation.is_trashed?(current_user)
-/       = link_to 'Untrash', untrash_conversation_path(conversation), class: 'btn btn-info', method: :post
-/     - else
-/       = link_to 'Move to trash', trash_conversation_path(conversation), class: 'btn btn-danger', method: :post, |
-/         data: {confirm: 'Are you sure?'}                                                                        |
-/ .row
-/   .spacer
-/   .col-md-4
-/     .panel.panel-default
-/       .panel-body
-/         = render 'mailbox/folders'
-/   .col-md-8
-/     .panel.panel-default
-/       .panel-body
-/         = render partial: 'messages'
-/       .panel-footer
-/         / Reply Form
-/         = form_for :message, url: reply_conversation_path(conversation) do |f|
-/           .form-group
-/             = f.text_area :body, placeholder: "Reply Message", rows: 4, class: "form-control"
-/           = f.submit "Reply", class: 'btn btn-danger pull-right'
-/         .clearfix
-
 .media
   .media-left
-    /<a href="#">
-    /  <img class="media-object" src="http://placehold.it/64x64" alt="...">
-    /</a>
-    /= link_to (),'#'
-    = link_to content_tag(:i, "http://placehold.it/64x64", class: "media-object"), "#"
+    %a{:href => "#"}
+      %img.media-object{:alt => "...", :src => "http://placehold.it/64x64"}
   .media-body
     %h4.media-heading
+      =(t 'from')+" : "
       = conversation.originator.userable.name
-      (
-      = conversation.originator.email
-      )
+      %br
+      =(t 'to')+" : "
+      - @receipts = conversation.receipts_for(current_user)
+      - if @receipts.last.mailbox_type=="inbox"
+        = @receipts.last.receiver.userable.name 
+      - else
+        = conversation.receipts_for(User.find(conversation.receipts.first.receiver_id)).first.receiver.userable.name
+      
+      /=conversation.receipts.first.id
+      /=conversation.receipts.second.id
+      /=conversation.receipts.first.receiver_id
+      /=conversation.receipts.second.receiver_id
+
       %br
       .small
         %strong Subject: 
@@ -50,3 +30,7 @@
     
     = truncate conversation.messages.last.body, length: 145
     = link_to "View", conversation_path(conversation) 
+
+    - if @receipts.first.is_read==false
+      %font{style: 'color: red;'}
+        *
