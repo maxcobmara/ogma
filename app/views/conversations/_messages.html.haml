@@ -7,7 +7,10 @@
         %img.media-object{:alt => "...", :src => "http://placehold.it/64x64"}
     .media-body
       %h4.media-heading
-        = message.sender.name
+        = message.sender.userable.name
+        (
+        = message.sender.email
+        )
         %br
           %small
             %b Subject:
