@@ -7,10 +7,17 @@
         %img.media-object{:alt => "...", :src => "http://placehold.it/64x64"}
     .media-body
       %h4.media-heading
+        =(t 'from')+" : "
         = message.sender.userable.name
-        (
-        = message.sender.email
-        )
+        %br
+        =(t 'to')+" : "
+        - @receipts = conversation.receipts_for(current_user)
+        - if @receipts.last.mailbox_type=="inbox"
+          = @receipts.last.receiver.userable.name 
+        - else
+          = conversation.receipts_for(User.find(conversation.receipts.first.receiver_id)).first.receiver.userable.name
+        /SINI LAK
+          
         %br
           %small
             %b Subject:

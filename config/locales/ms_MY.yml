@@ -395,7 +395,7 @@ ms_MY:
     related_rules: Peraturan Berkaitan
     remark1: "Catatan : Selesai memilih"
     remark2: "peranan,"
-    remark3: pilih akses mengikut modul
+    remark3: akses mengikut modul
     remark4: "untuk akses tambahan. Sekiranya akses keseluruhan yang dipilih tidak menepati keperluan, nyahpilih "
     remark5: peranan yang telah dipilih
     remark6: dan pilih akses modul yang diingini 
@@ -449,7 +449,7 @@ ms_MY:
     rule7: "Modul Kehadiran Latihan (Pemilik) hanya berfungsi bagi pemohon. Pelulus memerlukan peranan tambahan / gantian seperti berikut :"
     rule7a: "Kelulusan Jabatan (Akademik) - memerlukan peranan tambahan 'Ketua Program' diaktifkan."
     rule7b: "Kelulusan Unit (Pengurusan), Kelulusan Jabatan (Pengurusan) & Kelulusan Akhir (Pengarah) tidak dapat berfungsi. Penyelesaiannya, nyahpilih modul Kehadiran Latihan (Pemilik) dan aktifkan peranan 'Unit Kewangan'."
-    rule8: "Modul Cuti Pelajar (Pemilik) hanya berfungsi bagi pemohon. Bagi tujuan kelulusan (Warden & Penyelaras) aktifkan peranan Wardan dan / atauPengajar."
+    rule8: "Modul Cuti Pelajar (Pemilik) hanya berfungsi bagi pemohon. Bagi tujuan kelulusan (Warden & Penyelaras) aktifkan peranan Wardan dan / atau Pengajar."
     rule9a: "Aktifkan peranan 'Staf' atau modul Kes Disiplin Pelajar (pemilik) bagi menggunakan fungsian pelapor kes, Ketua Program dan TPHEP."
     rule9b: "Aktifkan peranan 'Pegawai Disiplin' bagi mendapatkan akses Pegawai Disiplin."
     rule10: "Modul Nota Latihan (Pentadbir/Paparan/Pengguna) perlu diaktifkan bagi paparan item - item menu :"
@@ -460,9 +460,9 @@ ms_MY:
     rule13: "Pengurusan Peperiksaan (Markah Peperiksaan, Gred Peperiksaan) memerlukan akses modul Keputusan Peperiksaan (Pentadbir/Paparan/ Pengguna/Pemilik) diaktifkan."
     rule14: "Bagi mengakses modul - modul Peminjaman Aset, Pelupusan Aset dan Kerosakan Asset (aset boleh dipinjam & item menu), perlu aktifkan modul Senarai Aset (Pentadbir/Paparan/ Pengguna/ Pemilik)."
     rule15: "Modul Kerosakan Aset (Pemilik) hanya berfungsi untuk pelapor kerosakan dan pembuat keputusan. Bagi memproses kerosakan aset yang dilaporkan, sila gunakan peranan 'Pentadbir Aset'."
-    rule20: "Modul Peminjaman Aset (Pemilik) hanya berfungsi di kalangan staf dalam Unit yang bertanggungjawab ke atas aset - aset yang dipinjam. Bagi akses penuh ke atas peminjaman aset, sila aktifkan samada Modul Peminjaman Aset (Pentadbir) atau peranan 'Pentadbor Aset'."
+    rule20: "Modul Peminjaman Aset (Pemilik) hanya berfungsi di kalangan staf dalam Unit yang bertanggungjawab ke atas aset - aset yang dipinjam. Bagi akses penuh ke atas peminjaman aset, sila aktifkan samada Modul Peminjaman Aset (Pentadbir) atau peranan 'Pentadbir Aset'."
     rule16: "Butiran harga aset hanya boleh disemak oleh pengguna dengan peranan 'Pentadbiran' atau 'Pentadbir Aset' atau pengguna yang mempunyai akses kepada modul Senarai Aset (Pentadbir/Pengguna)."
-    rule17: "Modul E-Filing modules (Acara, Buletin, Daftar Fail) memerlukan akses kepada modul Daftar Dokumen (Pentadbir/Paparan/Pengguna/Pemilik) diaktifkan."
+    rule17: "Modul E-Filing (Acara, Buletin, Daftar Fail) memerlukan akses kepada modul Daftar Dokumen (Pentadbir/Paparan/Pengguna/Pemilik) diaktifkan."
     rule18: "Data Sokongan :"
     rule18a: "Aktifkan modul 'Sokongan', 'Bank' & 'Jadual Waktu Anjal' untuk digunakan bersama modul 'Staf'."
     rule18b: "Aktifkan modul 'Kumpulan Kenderaan' & 'Kadar Batuan' untuk digunakan bersama modul 'Tuntutan Perjalanan'."
