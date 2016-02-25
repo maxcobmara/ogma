@@ -773,6 +773,30 @@ en:
     tenants: Tenants
     locations: Locations
     location_damages: Location Damages
+
+    administration_staff: Administration Staff
+    administration: Administration
+    librarian: Librarian
+    warden: Warden
+    training_administration: Training Administration
+    training_manager: Training Manager
+    asset_administrator: Asset Administrator
+    student_counsellor: Student Counsellor
+    facilities_administrator: Facilities Administrator
+    lecturer: Lecturer
+    finance_unit: Finance Unit
+    student_administrator: Student Administrator
+    staff_administrator: Staff Administrator
+    guest: Guest
+    programme_manager: Programme Manager
+    disciplinary_officer: Disciplinary Officer
+    #coordinator: Penyelaras
+    #testing_role: Peranan Cubaan
+    unit_leader: Unit Leader
+    e_filing: "E-Filling"
+    exam_administration: Exam Administration
+    student: Student
+    staff: Staff
     ###
 
   role:
