@@ -45,7 +45,7 @@
             %b
               =(t 'to2')+" : "
               = @receipts.last.receiver.userable.name 
-            /PENERIMA ASAL (recepient page)
+            PENERIMA ASAL (recepient page)
           - else
             =(t 'to2')+" : "
             = @receipts.last.receiver.userable.name 
@@ -57,8 +57,14 @@
             /penerima reply (recepient page)
           - else
             /= @receipts.count
-            = @receipts.second.message.sender.userable.name
-            /penerima asal (sender page)
+            - if @receipts.count > 1
+              /penerima asal (sender page) - reply exist
+              = @receipts.second.message.sender.userable.name 
+            - else
+              /penerima asal (sender page) - no reply yet
+              /= message.conversation_id
+              =message.conversation.receipts.first.receiver.userable.name
+            
          
         %br
           %small

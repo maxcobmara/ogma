@@ -26,7 +26,7 @@
       %br
       .small
         %b=(t 'conversation.subject')+": "
-        - unless @receipts.last.mailbox_type=="inbox"
+        - if @receipts.last.mailbox_type=="inbox" && conversation.messages.count > 1
           = t 'conversation.reply2'
         = conversation.subject
       %br

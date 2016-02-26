@@ -1,6 +1,8 @@
+= render 'shared/flashes'
+
 = form_for :conversation, url: :conversations, html: { class: "" } do |f|
   .form-group
-    = f.label :recipients
+    = f.label (t 'conversation.recipients')
     /= f.select(:recipients, User.all.collect {|p| [ p.email, p.id ] }, {}, { multiple: true , class: "chosen-select form-control" })
     - user_ids=User.where(userable_type: 'Staff').where('userable_id is not null').order(userable_id: :asc).pluck(:id)
     - staff_list=[]
@@ -10,10 +12,10 @@
     = f.select(:recipients, staff_list, {}, { multiple: true , class: "chosen-select form-control" })
     
   .form-group
-    = f.label :subject
-    = f.text_field :subject, placeholder: "Subject", class: "form-control"
+    = f.label (t 'conversation.subject')
+    = f.text_field :subject, placeholder: (t 'conversation.subject'), class: "form-control"
   .form-group
-    = f.label :message
-    = f.text_area :body, class: 'form-control',placeholder: "Type your message here", rows: 4
+    = f.label (t 'conversation.message')
+    = f.text_area :body, class: 'form-control',placeholder: (t 'conversation.message_here'), rows: 4
 
-    = f.submit "Send Message", class: "btn btn-success"
+    = f.submit (t 'conversation.send_message'), class: "btn btn-success"

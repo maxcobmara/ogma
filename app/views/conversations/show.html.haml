@@ -20,7 +20,6 @@
         = render partial: 'messages'
  
       - if ((@receipts.first.message.sender.userable_id != current_user.userable_id) ||(@receipts.first.message.sender.userable_id == current_user.userable_id && @receipts.count > 1))
-        /&& @receipts.count == 1
         .panel-footer
           / Reply Form
           = form_for :message, url: reply_conversation_path(conversation) do |f|
