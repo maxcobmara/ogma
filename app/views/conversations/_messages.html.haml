@@ -1,29 +1,74 @@
-- @receipts.each do |receipt|
+- @receipts.order(created_at: :asc).each_with_index do |receipt, ind|
   - message = receipt.message
   .media
     .media-left
+      - if ind==0
+        %i
+          %u=t 'conversation.original_msg'
+      - elsif ind==1
+        %i
+          %u 
+            =(@receipts.count-1).to_s+" "+(t 'conversation.reply_msg')
+            
       / user avators can go here
       %a{:href => "#"}
         %img.media-object{:alt => "...", :src => "http://placehold.it/64x64"}
     .media-body
       %h4.media-heading
-        =(t 'from')+" : "
-        = message.sender.userable.name
-        %br
-        =(t 'to')+" : "
-        - @receipts = conversation.receipts_for(current_user)
-        - if @receipts.last.mailbox_type=="inbox"
-          = @receipts.last.receiver.userable.name 
-        - else
-          = conversation.receipts_for(User.find(conversation.receipts.first.receiver_id)).first.receiver.userable.name
-        /SINI LAK
+
+        /REPLY section - for checking
+        /- if (receipt.mailbox_type=="sentbox" && message.sender.userable_id==current_user.userable_id && @receipts.first.message.sender.userable_id!=current_user.userable_id)  
+        /  /recepient page
+        /  %font{style: "color: green;"} (R)
+          
+        /- if (receipt.mailbox_type=="inbox" && @receipts.first.message.sender.userable_id==current_user.userable_id)
+        /  /sender page
+        /  %font{style: "color: blue;"} (R)
+        
+        /ORIGINAL section
+        - if (receipt.mailbox_type=="sentbox" && message.sender.userable_id==current_user.userable_id && @receipts.first.message.sender.userable_id==current_user.userable_id)
+          /sender
+          %b
+            =(t 'from')+" : "
+            = message.sender.userable.name 
+          /PENGHANTAR ASAL (sender page)
+        - if (receipt.mailbox_type=="inbox" && message.sender.userable_id!=current_user.userable_id&& @receipts.first.message.sender.userable_id!=current_user.userable_id )
+          /sender
+          =(t 'from')+" : "
+          = message.sender.userable.name 
+          /penghantar asal (recepient page)
           
         %br
+        /PENERIMA
+        - if receipt.mailbox_type=="inbox"
+          - if @receipts.first.message.sender.userable_id!=current_user.userable_id
+            %b
+              =(t 'to2')+" : "
+              = @receipts.last.receiver.userable.name 
+            /PENERIMA ASAL (recepient page)
+          - else
+            =(t 'to2')+" : "
+            = @receipts.last.receiver.userable.name 
+            /penerima reply (sender page)
+        - else
+          =(t 'to2')+" : "
+          - if @receipts.first.message.sender.userable_id!=current_user.userable_id
+            =@receipts.first.message.sender.userable.name
+            /penerima reply (recepient page)
+          - else
+            /= @receipts.count
+            = @receipts.second.message.sender.userable.name
+            /penerima asal (sender page)
+         
+        %br
           %small
-            %b Subject:
+            %b=(t 'conversation.subject')+": tt"
             = message.subject
           %br
             %small
-              %b Date:
+              %b=(t 'conversation.date')+": "
               = message.created_at.strftime("%A, %b %d, %Y at %I:%M%p")
       = message.body
+     
+      - if ind==0
+        %hr

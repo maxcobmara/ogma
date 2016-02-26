@@ -300,6 +300,7 @@ en:
   on2: " on "
   from: From
   to: To
+  to2: To
   return: Return
   confirmed: Confirmed
   confirmed_on: Confirmed on
@@ -3335,6 +3336,17 @@ en:
       fax: Fax No
       mail: Email
       web: Web 
+
+  conversation:
+    subject: Subject
+    date: Date
+    compose: Compose
+    inbox: Inbox
+    sent: Sent
+    trash: Trash
+    original_msg: Original Message
+    reply_msg: "Reply Message(s)"
+    reply2: "Re: "
 
   helpers:
     links:

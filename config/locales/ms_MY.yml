@@ -278,6 +278,7 @@ ms_MY:
   on2: " pada "
   from: Dari
   to: Hingga
+  to2: Kepada
   return: Pemulangan
   confirmed: Disahkan
   confirmed_on: Disahkan pada
@@ -3253,6 +3254,17 @@ ms_MY:
       fax: Fax No
       mail: Email
       web: Web 
+  
+  conversation:
+    subject: Subjek
+    date: Tarikh
+    compose: Karang
+    inbox: Peti Masuk
+    sent: Hantar
+    trash: Buang
+    original_msg: Mesej Asal
+    reply_msg: Mesej Balas
+    reply2: "Balas: "
 
   helpers:
     links:

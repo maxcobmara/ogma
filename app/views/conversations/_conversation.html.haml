@@ -4,16 +4,20 @@
       %img.media-object{:alt => "...", :src => "http://placehold.it/64x64"}
   .media-body
     %h4.media-heading
-      =(t 'from')+" : "
+      /=(t 'from')+": "
       = conversation.originator.userable.name
-      %br
-      =(t 'to')+" : "
       - @receipts = conversation.receipts_for(current_user)
-      - if @receipts.last.mailbox_type=="inbox"
-        = @receipts.last.receiver.userable.name 
-      - else
-        = conversation.receipts_for(User.find(conversation.receipts.first.receiver_id)).first.receiver.userable.name
+      = "("+@receipts.count.to_s+") " if @receipts.count > 1
+      /%br
+      /=(t 'to2')+": "
       
+      /- if @receipts.last.mailbox_type=="inbox"
+      /  /= @receipts.last.receiver.userable.name 
+      /  /%strong terima
+      /- else
+      /  Re :
+      /  /= conversation.receipts_for(User.find(conversation.receipts.first.receiver_id)).first.receiver.userable.name
+      /  /%strong balas
       /=conversation.receipts.first.id
       /=conversation.receipts.second.id
       /=conversation.receipts.first.receiver_id
@@ -21,16 +25,19 @@
 
       %br
       .small
-        %strong Subject: 
+        %b=(t 'conversation.subject')+": "
+        - unless @receipts.last.mailbox_type=="inbox"
+          = t 'conversation.reply2'
         = conversation.subject
       %br
       .small
-        %strong Date:
+        %strong=(t 'conversation.date')+": "
         =  conversation.messages.last.created_at.strftime("%A, %b %d, %Y at %I:%M%p")
     
     = truncate conversation.messages.last.body, length: 145
-    = link_to "View", conversation_path(conversation) 
-
-    - if @receipts.first.is_read==false
-      %font{style: 'color: red;'}
-        *
+    %b
+      = link_to ("- "+(t 'view')), conversation_path(conversation) 
+      - if @receipts.first.is_read==false
+        %font{style: 'color: red;'}
+          *
+    %hr
