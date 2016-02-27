@@ -23,13 +23,13 @@
       /=conversation.receipts.first.receiver_id
       /=conversation.receipts.second.receiver_id
 
-      %br
+      /%br
       .small
         %b=(t 'conversation.subject')+": "
         - if @receipts.last.mailbox_type=="inbox" && conversation.messages.count > 1
           = t 'conversation.reply2'
         = conversation.subject
-      %br
+      /%br
       .small
         %strong=(t 'conversation.date')+": "
         =  conversation.messages.last.created_at.strftime("%A, %b %d, %Y at %I:%M%p")

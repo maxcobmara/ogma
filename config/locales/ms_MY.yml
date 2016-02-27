@@ -3265,12 +3265,17 @@ ms_MY:
     original_msg: Mesej Asal
     reply_msg: Mesej Balas
     reply2: "Balas: "
+    forward: "Dimajukan: "
     recipients: Penerima
     message: Mesej
     message_here: Masukkan mesej anda di sini
     send_message: "Hantar Mesej"
-    select_recipient: "Sila masukkan penerima mesej!"
+    select_recipient_message: "Penerima mesti dipilih dan mesej perlu dimasukkan sebelum mesej dapat dimajukan"
     message_sent: "Mesej anda telah berjaya dihantar"
+    message_forwarded: "Mesej anda telah berjaya dimajukan"
+    message_replied:  "Mesej balas anda telah berjaya dihantar"
+    message_required: "Sila masukkan mesej balas"
+    send_message: Hantar Mesej
 
   helpers:
     links:

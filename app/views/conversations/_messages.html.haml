@@ -8,64 +8,59 @@
       - elsif ind==1
         %i
           %u 
-            =(@receipts.count-1).to_s+" "+(t 'conversation.reply_msg')
+            =(@receipts.count-1).to_s+" "+(t 'conversation.reply_msg')+ "/ forward"
             
       / user avators can go here
       %a{:href => "#"}
         %img.media-object{:alt => "...", :src => "http://placehold.it/64x64"}
     .media-body
       %h4.media-heading
-
-        /REPLY section - for checking
-        /- if (receipt.mailbox_type=="sentbox" && message.sender.userable_id==current_user.userable_id && @receipts.first.message.sender.userable_id!=current_user.userable_id)  
-        /  /recepient page
-        /  %font{style: "color: green;"} (R)
-          
-        /- if (receipt.mailbox_type=="inbox" && @receipts.first.message.sender.userable_id==current_user.userable_id)
-        /  /sender page
-        /  %font{style: "color: blue;"} (R)
         
-        /ORIGINAL section
-        - if (receipt.mailbox_type=="sentbox" && message.sender.userable_id==current_user.userable_id && @receipts.first.message.sender.userable_id==current_user.userable_id)
-          /sender
-          %b
-            =(t 'from')+" : "
-            = message.sender.userable.name 
-          /PENGHANTAR ASAL (sender page)
-        - if (receipt.mailbox_type=="inbox" && message.sender.userable_id!=current_user.userable_id&& @receipts.first.message.sender.userable_id!=current_user.userable_id )
-          /sender
-          =(t 'from')+" : "
-          = message.sender.userable.name 
-          /penghantar asal (recepient page)
-          
-        %br
-        /PENERIMA
-        - if receipt.mailbox_type=="inbox"
-          - if @receipts.first.message.sender.userable_id!=current_user.userable_id
-            %b
-              =(t 'to2')+" : "
-              = @receipts.last.receiver.userable.name 
-            PENERIMA ASAL (recepient page)
-          - else
-            =(t 'to2')+" : "
-            = @receipts.last.receiver.userable.name 
-            /penerima reply (sender page)
+        /For CHECKING only------
+        /HHHH
+        /=message.sender.userable.name
+        /=message.sender.userable.id
+        /%BR
+        /Receipt ID
+        /=receipt.id
+        /%br
+        /Notification ID
+        /=receipt.notification_id
+        /%br
+        /Receipt Count
+        /=@receipts.count
+        /%br
+        /Receipt Count Main
+        /=message.conversation.receipts.count
+        /%br
+        /%br
+        
+        - msg_sender=message.conversation.receipts.where(notification_id: receipt.notification_id).where(mailbox_type:'sentbox').first.receiver.userable.name
+        - msg_recepient=message.conversation.receipts.where(notification_id: receipt.notification_id).where(mailbox_type: 'inbox').first.receiver.userable.name
+        /SENTBOX
+        /- msg_sender= message.conversation.receipts.order(created_at: :asc).where(mailbox_type: 'sentbox')[ind].receiver.userable.name
+        /INBOX
+        /- msg_recepient=message.conversation.receipts.order(created_at: :asc).where(mailbox_type: 'inbox')[ind].receiver.userable.name
+        
+        - if ind==0
+          /ORIGINAL Message section-------------
+          /Sender Page
+          - if receipt.mailbox_type=="sentbox"
+            %b=(t 'from')+" : "+msg_sender if message.sender.userable_id==current_user.userable_id
+            %br
+            =(t 'to2')+" : "+msg_recepient
+          /Recepient Page  
+          - if receipt.mailbox_type=="inbox"
+            =(t 'from')+" : "+msg_sender if message.sender.userable_id!=current_user.userable_id
+            %br  
+            %b=(t 'to2')+" : "+msg_recepient
         - else
-          =(t 'to2')+" : "
-          - if @receipts.first.message.sender.userable_id!=current_user.userable_id
-            =@receipts.first.message.sender.userable.name
-            /penerima reply (recepient page)
-          - else
-            /= @receipts.count
-            - if @receipts.count > 1
-              /penerima asal (sender page) - reply exist
-              = @receipts.second.message.sender.userable.name 
-            - else
-              /penerima asal (sender page) - no reply yet
-              /= message.conversation_id
-              =message.conversation.receipts.first.receiver.userable.name
-            
-         
+          /OTHER related messages------------
+          /Sender & Recipient Page
+          =(t 'from')+" : "+msg_sender
+          %br
+          =(t 'to2')+" : "+msg_recepient
+        
         %br
           %small
             %b=(t 'conversation.subject')+": tt"
@@ -74,7 +69,5 @@
             %small
               %b=(t 'conversation.date')+": "
               = message.created_at.strftime("%A, %b %d, %Y at %I:%M%p")
-      = message.body
-     
-      - if ind==0
-        %hr
+      = message.body     
+      %hr
