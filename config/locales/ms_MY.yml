@@ -3264,6 +3264,7 @@ ms_MY:
     trash: Buang
     original_msg: Mesej Asal
     reply_msg: Mesej Balas
+    forward_msg: Majukan Mesej
     reply2: "Balas: "
     forward: "Dimajukan: "
     recipients: Penerima
@@ -3278,6 +3279,7 @@ ms_MY:
     send_message: Hantar Mesej
     remark: Catatan
     indicates_unread: menunjukkan mesej belum dibaca
+    forwarded_message: "Mesej Dimajukan : "
 
   helpers:
     links:

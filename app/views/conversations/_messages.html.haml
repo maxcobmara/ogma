@@ -8,7 +8,7 @@
       - elsif ind==1
         %i
           %u 
-            =(@receipts.count-1).to_s+" "+(t 'conversation.reply_msg')+ "/ forward"
+            =(@receipts.count-1).to_s+" "+(t 'conversation.reply_msg')+ "/ "
             
       / user avators can go here
       %a{:href => "#"}
@@ -69,5 +69,5 @@
             %small
               %b=(t 'conversation.date')+": "
               = message.created_at.strftime("%A, %b %d, %Y at %I:%M%p")
-      = message.body     
+      = simple_format(message.body)   
       %hr
