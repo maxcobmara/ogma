@@ -3358,6 +3358,8 @@ en:
     message_replied:  "Your reply message was successfully sent"
     message_required: "Please enter reply message"
     send: Send Message
+    remark: Remark
+    indicates_unread: indicates unread messages
 
   helpers:
     links:

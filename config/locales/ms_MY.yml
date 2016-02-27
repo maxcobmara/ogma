@@ -3276,6 +3276,8 @@ ms_MY:
     message_replied:  "Mesej balas anda telah berjaya dihantar"
     message_required: "Sila masukkan mesej balas"
     send_message: Hantar Mesej
+    remark: Catatan
+    indicates_unread: menunjukkan mesej belum dibaca
 
   helpers:
     links:
