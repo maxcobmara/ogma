@@ -1,3 +1,4 @@
+= render 'shared/flashes'
 .row
   .spacer
   .col-md-6
@@ -19,11 +20,60 @@
       .panel-body
         = render partial: 'messages'
  
-      - if @receipts.first.message.sender.userable_id != current_user.userable_id
+      - if ((@receipts.first.message.sender.userable_id != current_user.userable_id) ||(@receipts.first.message.sender.userable_id == current_user.userable_id && @receipts.count > 1))
         .panel-footer
+          - user_ids=User.where(userable_type: 'Staff').where('userable_id is not null').order(userable_id: :asc).pluck(:id)
+          - staff_list=[]
+          - for user_id in user_ids
+            - sname = Staff.joins(:users).where('users.id=?', user_id).first.name
+            - staff_list << [sname, user_id]
+            
+          /Retrieve receipt for REPLYING message
+          - notification_id= @receipts.where(mailbox_type: 'inbox').where(receiver_id: current_user.id).first.notification_id
+          - receipt_toreply=conversation.receipts.where(mailbox_type: 'sentbox').where(notification_id: notification_id).last          
+
           / Reply Form
-          = form_for :message, url: reply_conversation_path(conversation) do |f|
+          = form_for :message, url: reply_conversation_path(conversation) , html: {class: 'edit_form'} do |f|
+            /forward section
             .form-group
-              = f.text_area :body, placeholder: "Reply Message", rows: 4, class: "form-control"
-            = f.submit "Reply", class: 'btn btn-danger pull-right'
+              .col-md-1=radio_button_tag "reply", 2, {},class: 'replying'
+              .col-md-2
+                %b Forward To :
+              .col-md-7= f.select(:recipients, staff_list, {}, { multiple: true , class: "chosen-select form-control" })
+            %br
+            /reply section
+            .form-group
+              .col-md-1=radio_button_tag "reply", 1, {}, class: 'replying'
+              .col-md-2
+                %b Reply To :
+              .col-md-7= receipt_toreply.receiver.userable.name
+              =hidden_field_tag "receiptid", receipt_toreply.id
+              
+              / TODO - refactor this
+              /begin forwarding msg...
+              /=conversation.id
+              - forwarded=Mailboxer::Notification.where(conversation_id: conversation.id).last
+              - forward_body=forwarded.body
+              - recipient=forwarded.receipts.where(mailbox_type: 'inbox').first.receiver.userable.name
+              - details=" ("+(t 'from')+":"+forwarded.sender.userable.name+", "+(t 'to2')+":"+recipient+", "+(t 'conversation.subject')+":"+forwarded.subject+", "+(t 'conversation.date')+":"+forwarded.created_at.strftime("%A, %b %d, %Y at %I:%M%p")+")   "+(t 'conversation.message').upcase+": "
+              - forward_text=(t 'conversation.forwarded_message')+details+forward_body +" ---------------------------------------"
+              =hidden_field_tag "forwardmsg", forward_text
+            
+            = f.text_area :body, placeholder: "Reply / Forward Message", rows: 4, class: "form-control"
+            = f.submit (t 'conversation.send_message'), class: 'btn btn-danger pull-right'
           .clearfix
+          
+    
+:javascript
+
+$(function(){
+  $('.edit_form input[type=radio]').click(function(){
+    var reply_forward = document.getElementsByClassName('replying');
+    var bodytofwd = document.getElementById('message_body');
+    var toforward = $("#forwardmsg").val();
+    if (reply_forward[0].checked)
+    { bodytofwd.value = toforward;}
+    else if(reply_forward[1].checked)
+    { bodytofwd.value = "";}
+  });
+});

@@ -300,6 +300,7 @@ en:
   on2: " on "
   from: From
   to: To
+  to2: To
   return: Return
   confirmed: Confirmed
   confirmed_on: Confirmed on
@@ -3335,6 +3336,32 @@ en:
       fax: Fax No
       mail: Email
       web: Web 
+
+  conversation:
+    subject: Subject
+    date: Date
+    compose: Compose
+    inbox: Inbox
+    sent: Sent
+    trash: Trash
+    original_msg: Original Message
+    reply_msg: "Reply Message(s)"
+    forward_msg: "Forward Message"
+    reply2: "Re: "
+    forward: "FW: "
+    recipients: Recipients
+    message: Message
+    message_here: Type your message here
+    send_message: "Send Message"
+    select_recipient_message: "Forwarding Message is failed. Recipient must be selected and message must be entered"
+    message_sent:  "Your message was successfully sent"
+    message_forwarded: "Your message was successfully forwarded"
+    message_replied:  "Your reply message was successfully sent"
+    message_required: "Please enter reply message"
+    send: Send Message
+    remark: Remark
+    indicates_unread: indicates unread messages
+    forwarded_message: "Forwarded Message : "
 
   helpers:
     links:

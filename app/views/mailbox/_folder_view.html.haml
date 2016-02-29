@@ -1,7 +1,7 @@
 .row
   .spacer
   .col-md-12
-    = link_to "Compose", new_conversation_path, class: "btn btn-success"
+    = link_to (t 'conversation.compose'), new_conversation_path, class: "btn btn-success"
     .spacer
   .col-md-4
     .panel.panel-default
@@ -14,4 +14,8 @@
         - if is_conversation
           = render 'conversations/form'
         - else
+          .alert.alert-warning
+            %strong=(t 'conversation.remark')+": "
+            %font{style: 'color: red;'}*
+            =t 'conversation.indicates_unread'
           = render partial: 'conversations/conversation', collection: messages

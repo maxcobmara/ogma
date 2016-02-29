@@ -4,33 +4,53 @@
       %img.media-object{:alt => "...", :src => "http://placehold.it/64x64"}
   .media-body
     %h4.media-heading
-      =(t 'from')+" : "
+      /=(t 'from')+": "
       = conversation.originator.userable.name
-      %br
-      =(t 'to')+" : "
       - @receipts = conversation.receipts_for(current_user)
-      - if @receipts.last.mailbox_type=="inbox"
-        = @receipts.last.receiver.userable.name 
-      - else
-        = conversation.receipts_for(User.find(conversation.receipts.first.receiver_id)).first.receiver.userable.name
+      = "("+@receipts.count.to_s+") " if @receipts.count > 1
       
-      /=conversation.receipts.first.id
-      /=conversation.receipts.second.id
-      /=conversation.receipts.first.receiver_id
-      /=conversation.receipts.second.receiver_id
+      /Check if REPLIES exist
+      - receivers=[]
+      - all_receivers=[]
+      - conversation.receipts.order(created_at: :asc).group_by(&:notification_id).each do |message, receipts|
+        - receivers << receipts.map(&:receiver_id) if receipts.map(&:receiver_id).include?(current_user.id)
+        - all_receivers << receipts.map(&:receiver_id)
+      /= receivers
+      
+      - replies=0
+      - receivers.each do |receiver_set|
+        - receivers.each do |rec_set2|
+          //ref: sample usage [1,2]==[2,1].reverse
+          - if rec_set2==receiver_set.reverse
+            - replies = 1
+      /=replies
+      
+      /Check if FORWARDS exist
+      /= all_receivers
+      - locate_currentusr=0
+      - cnt=0
+      - all_receivers.each_with_index do |rec, nos|
+        - if rec.include?(current_user.id)
+          - if locate_currentusr==0 && cnt==0
+            - locate_currentusr=nos 
+            - cnt+=1
+      /msg is forwarded when locate_currentusr > 0
+      /=locate_currentusr
 
-      %br
       .small
-        %strong Subject: 
+        %b=(t 'conversation.subject')+": "
+        /- if @receipts.last.mailbox_type=="inbox" && conversation.messages.count > 1
+        = t 'conversation.reply2' if replies==1
+        = t 'conversation.forward' if locate_currentusr > 0
         = conversation.subject
-      %br
       .small
-        %strong Date:
-        =  conversation.messages.last.created_at.strftime("%A, %b %d, %Y at %I:%M%p")
+        %strong=(t 'conversation.date')+": "
+        = conversation.messages.last.created_at.strftime("%A, %b %d, %Y at %I:%M%p")
     
     = truncate conversation.messages.last.body, length: 145
-    = link_to "View", conversation_path(conversation) 
-
-    - if @receipts.first.is_read==false
-      %font{style: 'color: red;'}
-        *
+    %b
+      = link_to ("- "+(t 'view')), conversation_path(conversation) 
+      - if @receipts.first.is_read==false
+        %font{style: 'color: red;'}
+          *
+    %hr

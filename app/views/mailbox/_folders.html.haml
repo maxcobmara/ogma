@@ -3,12 +3,12 @@
     = link_to mailbox_inbox_path do
       %span.label.label-danger.pull-right= unread_messages_count
       %em.fa.fa-inbox.fa-lg
-      %span Inbox
+      %span=t('conversation.inbox')
   %li{:class => active_page(:sent)}
     = link_to mailbox_sent_path do
       %em.fa.fa-paper-plane-o.fa-lg
-      %span Sent
+      %span=t('conversation.sent')
   %li{:class => active_page(:trash)}
     = link_to mailbox_trash_path do
       %em.fa.fa-trash-o.fa-lg
-      %span Trash
+      %span=t('conversation.trash')

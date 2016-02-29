@@ -278,6 +278,7 @@ ms_MY:
   on2: " pada "
   from: Dari
   to: Hingga
+  to2: Kepada
   return: Pemulangan
   confirmed: Disahkan
   confirmed_on: Disahkan pada
@@ -3253,6 +3254,32 @@ ms_MY:
       fax: Fax No
       mail: Email
       web: Web 
+  
+  conversation:
+    subject: Subjek
+    date: Tarikh
+    compose: Karang
+    inbox: Peti Masuk
+    sent: Hantar
+    trash: Buang
+    original_msg: Mesej Asal
+    reply_msg: Mesej Balas
+    forward_msg: Majukan Mesej
+    reply2: "Balas: "
+    forward: "Dimajukan: "
+    recipients: Penerima
+    message: Mesej
+    message_here: Masukkan mesej anda di sini
+    send_message: "Hantar Mesej"
+    select_recipient_message: "Penerima mesti dipilih dan mesej perlu dimasukkan sebelum mesej dapat dimajukan"
+    message_sent: "Mesej anda telah berjaya dihantar"
+    message_forwarded: "Mesej anda telah berjaya dimajukan"
+    message_replied:  "Mesej balas anda telah berjaya dihantar"
+    message_required: "Sila masukkan mesej balas"
+    send_message: Hantar Mesej
+    remark: Catatan
+    indicates_unread: menunjukkan mesej belum dibaca
+    forwarded_message: "Mesej Dimajukan : "
 
   helpers:
     links:

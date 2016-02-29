@@ -1,29 +1,73 @@
-- @receipts.each do |receipt|
+- @receipts.order(created_at: :asc).each_with_index do |receipt, ind|
   - message = receipt.message
   .media
     .media-left
+      - if ind==0
+        %i
+          %u=t 'conversation.original_msg'
+      - elsif ind==1
+        %i
+          %u 
+            =(@receipts.count-1).to_s+" "+(t 'conversation.reply_msg')+ "/ "
+            
       / user avators can go here
       %a{:href => "#"}
         %img.media-object{:alt => "...", :src => "http://placehold.it/64x64"}
     .media-body
       %h4.media-heading
-        =(t 'from')+" : "
-        = message.sender.userable.name
-        %br
-        =(t 'to')+" : "
-        - @receipts = conversation.receipts_for(current_user)
-        - if @receipts.last.mailbox_type=="inbox"
-          = @receipts.last.receiver.userable.name 
+        
+        /For CHECKING only------
+        /HHHH
+        /=message.sender.userable.name
+        /=message.sender.userable.id
+        /%BR
+        /Receipt ID
+        /=receipt.id
+        /%br
+        /Notification ID
+        /=receipt.notification_id
+        /%br
+        /Receipt Count
+        /=@receipts.count
+        /%br
+        /Receipt Count Main
+        /=message.conversation.receipts.count
+        /%br
+        /%br
+        
+        - msg_sender=message.conversation.receipts.where(notification_id: receipt.notification_id).where(mailbox_type:'sentbox').first.receiver.userable.name
+        - msg_recepient=message.conversation.receipts.where(notification_id: receipt.notification_id).where(mailbox_type: 'inbox').first.receiver.userable.name
+        /SENTBOX
+        /- msg_sender= message.conversation.receipts.order(created_at: :asc).where(mailbox_type: 'sentbox')[ind].receiver.userable.name
+        /INBOX
+        /- msg_recepient=message.conversation.receipts.order(created_at: :asc).where(mailbox_type: 'inbox')[ind].receiver.userable.name
+        
+        - if ind==0
+          /ORIGINAL Message section-------------
+          /Sender Page
+          - if receipt.mailbox_type=="sentbox"
+            %b=(t 'from')+" : "+msg_sender if message.sender.userable_id==current_user.userable_id
+            %br
+            =(t 'to2')+" : "+msg_recepient
+          /Recepient Page  
+          - if receipt.mailbox_type=="inbox"
+            =(t 'from')+" : "+msg_sender if message.sender.userable_id!=current_user.userable_id
+            %br  
+            %b=(t 'to2')+" : "+msg_recepient
         - else
-          = conversation.receipts_for(User.find(conversation.receipts.first.receiver_id)).first.receiver.userable.name
-        /SINI LAK
-          
+          /OTHER related messages------------
+          /Sender & Recipient Page
+          =(t 'from')+" : "+msg_sender
+          %br
+          =(t 'to2')+" : "+msg_recepient
+        
         %br
           %small
-            %b Subject:
+            %b=(t 'conversation.subject')+": tt"
             = message.subject
           %br
             %small
-              %b Date:
+              %b=(t 'conversation.date')+": "
               = message.created_at.strftime("%A, %b %d, %Y at %I:%M%p")
-      = message.body
+      = simple_format(message.body)   
+      %hr
