@@ -99,6 +99,7 @@ class Exam::ExamquestionsController < ApplicationController
   # POST /examquestions
   # POST /examquestions.xml
   def create
+    raise params.inspect
     @examquestion= Examquestion.new(examquestion_params)
     respond_to do |format|
       if @examquestion.save

@@ -70,4 +70,17 @@
               %b=(t 'conversation.date')+": "
               = message.created_at.strftime("%A, %b %d, %Y at %I:%M%p")
       = simple_format(message.body)   
+      
+      /display uploaded files when exist
+      
+      - notify_id=message.conversation.receipts.first.notification_id
+      - uploaded_files=AttachmentUploader.where(msgnotification_id: notify_id)
+      .small 
+        - if uploaded_files && uploaded_files.count > 0 
+          %u Attachment(s)
+          \:
+          - cnt=0
+          - for upload_file in uploaded_files
+            = " ("+(cnt+=1).to_s+") "+upload_file.data_file_name
+      
       %hr

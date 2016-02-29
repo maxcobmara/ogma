@@ -3362,6 +3362,7 @@ en:
     remark: Remark
     indicates_unread: indicates unread messages
     forwarded_message: "Forwarded Message : "
+    uploaded_invalid: "Uploaded file is invalid"
 
   helpers:
     links:
