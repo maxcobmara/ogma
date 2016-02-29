@@ -1,6 +1,20 @@
 = render 'shared/flashes'
-
-= form_for :conversation, url: :conversations, html: { class: "" } do |f|
+- if params[:id]
+  - subj= Mailboxer::Conversation.where(id: params[:id]).first.subject  
+  - bod= Mailboxer::Notification.where(id: Mailboxer::Conversation.where(id: params[:id]).first.receipts.first.notification_id).first.body
+  - recv= Mailboxer::Conversation.where(id: params[:id]).first.receipts.where(mailbox_type: 'inbox').pluck(:receiver_id)
+  - notify_id=Mailboxer::Conversation.where(id: params[:id]).first.receipts.first.notification_id
+  - uploaded_files=AttachmentUploader.where(msgnotification_id: notify_id)
+  - thisurl=send_draft_conversation_path
+- else
+  - subj=nil
+  - bod=nil
+  - recv=nil
+  - thisurl=:conversations
+  
+= form_for :conversation, url: thisurl, html: { class: "" } do |f|
+  = f.hidden_field :id, value: params[:id] if params[:id]
+  
   .form-group
     = f.label (t 'conversation.recipients')
     /= f.select(:recipients, User.all.collect {|p| [ p.email, p.id ] }, {}, { multiple: true , class: "chosen-select form-control" })
@@ -9,13 +23,41 @@
     - for user_id in user_ids
       - sname = Staff.joins(:users).where('users.id=?', user_id).first.name
       - staff_list << [sname, user_id]
-    = f.select(:recipients, staff_list, {}, { multiple: true , class: "chosen-select form-control" })
+    = f.select(:recipients, staff_list, {selected: recv}, { multiple: true , class: "chosen-select form-control" })
     
   .form-group
     = f.label (t 'conversation.subject')
-    = f.text_field :subject, placeholder: (t 'conversation.subject'), class: "form-control"
+    = f.text_field :subject, placeholder: (t 'conversation.subject'), value: subj, class: "form-control"
+
   .form-group
     = f.label (t 'conversation.message')
-    = f.text_area :body, class: 'form-control',placeholder: (t 'conversation.message_here'), rows: 4
+    = f.text_area :body, class: 'form-control',placeholder: (t 'conversation.message_here'), rows: 4, value: bod
+  
+  .form-group
+    = f.label "Attachment"
+    = f.file_field :data, class: 'uploads'
+  
+  - if params[:id]
+    .small 
+      Uploaded files : 
+      - cnt=0
+      - for upload_file in uploaded_files
+        = " ("+(cnt+=1).to_s+") "+upload_file.data_file_name
+  %br
+    .col-md-12.centre
+      .col-md-3= f.submit (t 'conversation.send_message'), class: "btn btn-success",  :name => :submit_button
 
-    = f.submit (t 'conversation.send_message'), class: "btn btn-success"
+:javascript
+  $(document).ready(function() {
+    $('.uploads').on('change', function() {
+      this.form.submit();
+    });
+  });
+
+/     UPLOAD Attachment
+/     
+/   = form_for @attachment_uploader, url: upload_conversations_path,  html: { multipart: true, class: 'form-horizontal' }  do |f|   
+/     .form-group
+/       = f.label "Attachment"
+/       = f.file_field :data
+/     = f.submit "Upload file"

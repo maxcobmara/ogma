@@ -3280,6 +3280,7 @@ ms_MY:
     remark: Catatan
     indicates_unread: menunjukkan mesej belum dibaca
     forwarded_message: "Mesej Dimajukan : "
+    uploaded_invalid: "Fail yang dimuatnaik adalah tidak sah"
 
   helpers:
     links:

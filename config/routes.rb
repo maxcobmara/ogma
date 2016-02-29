@@ -450,7 +450,14 @@ Ogma::Application.routes.draw do
       post :reply
       post :trash
       post :untrash
+      get :edit_draft
+      post :send_draft
+      #get :upload
     end
+    #collection do
+    #  get :upload
+    #  post :upload
+    #end
   end
   
 

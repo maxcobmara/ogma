@@ -14,8 +14,9 @@
         - if is_conversation
           = render 'conversations/form'
         - else
-          .alert.alert-warning
-            %strong=(t 'conversation.remark')+": "
-            %font{style: 'color: red;'}*
-            =t 'conversation.indicates_unread'
+          - if current_page?(controller: 'mailbox', action: 'inbox')
+            .alert.alert-warning
+              %strong=(t 'conversation.remark')+": "
+              %font{style: 'color: red;'}*
+              =t 'conversation.indicates_unread'
           = render partial: 'conversations/conversation', collection: messages

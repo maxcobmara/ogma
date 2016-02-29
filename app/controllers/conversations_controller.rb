@@ -5,17 +5,75 @@ class ConversationsController < ApplicationController
   def new
   end
   
+  def edit_draft
+  end
+  
   def create
+    #raise params.inspect
     recipients = User.where(id: conversation_params[:recipients])
     if conversation_params[:recipients].count > 1
       conversation = current_user.send_message(recipients, conversation_params[:body], conversation_params[:subject]).conversation
-      flash[:success] =(t 'conversation.message_sent')#+conversation_params[:recipients].count.to_s
-      redirect_to conversation_path(conversation)
+      notify_id=conversation.receipts.first.notification_id
+      unless conversation_params[:data].nil?  #when upload exist
+        newattach = AttachmentUploader.new
+        newattach.data = conversation_params[:data]
+        if newattach.valid?
+          newattach.msgnotification_id=notify_id  
+          newattach.save
+          if params[:submit_button]
+            flash[:notice]="mesej sent c/w attachment"
+            redirect_to conversation_path(conversation)
+          #########
+          else
+            flash[:notice]="Selected file uploaded, add another file or click 'Send Message' to submit message!"
+            redirect_to action: 'edit_draft', id: conversation.id
+          end  
+          #########
+        else
+          notify_todraft=Mailboxer::Notification.where(id: notify_id).first.update_attributes(draft: true)
+          flash[:notice]="Attach file is invalid"
+          redirect_to action: 'edit_draft', id: conversation.id
+        end
+      else
+        flash[:success] =(t 'conversation.message_sent')
+        redirect_to conversation_path(conversation)
+      end   
     else
       flash[:error] =t 'conversation.select_recipient'
-      redirect_to(:back)
+      redirect_to(:back) #no saving occured at all (body include but recipient is blank, data will lost) - provide checker in New form instead?
     end
   end
+  
+   def send_draft
+     #raise params.inspect
+     conversation = Mailboxer::Conversation.where(id: params[:id]).first
+     notify_id=conversation.receipts.first.notification_id
+     unless conversation_params[:data].nil? #when attachment exist
+       newattach = AttachmentUploader.new
+       newattach.data = conversation_params[:data]
+       if newattach.valid?
+         newattach.msgnotification_id=notify_id  
+         newattach.save
+         if params[:submit_button]
+           Mailboxer::Notification.where(id: notify_id).first.update_attributes(draft: false) #send draft (with attachment)
+           flash[:notice]="mesej sent c/w attachment"+"yea yea"
+           redirect_to conversation_path(conversation)
+         #########
+         else
+           flash[:notice]="Selected file uploaded, add another file or click 'Send Message' to submit message! yea yea"
+           redirect_to action: 'edit_draft', id: conversation.id
+         end  
+         #########
+       else
+         flash[:notice]="Attach file is Invalid yea yea"
+         redirect_to action: 'edit_draft', id: conversation.id
+       end
+     else #no attachment
+       Mailboxer::Notification.where(id: notify_id).first.update_attributes(draft: false) 
+       flash[:success] =(t 'conversation.message_sent')+"yea yea"
+       redirect_to conversation_path(conversation)
+     end
+   end
 
   def show
     @receipts = conversation.receipts_for(current_user)
@@ -71,11 +129,26 @@ class ConversationsController < ApplicationController
     redirect_to mailbox_inbox_path
   end
 
-
+#   def upload
+#      @attachment_uploader= AttachmentUploader.new
+#      if params[:attachment_uploader] && params[:attachment_uploader][:data].present?
+#        @attachment_uploader.data = params[:attachment_uploader][:data]
+#         #@attachment_uploader.msgnotification_id=conversation.receipts.first.notification_id 
+#         #if @attachment_uploader.valid?
+#         if @attachment_uploader.save
+#           flash[:notice]="FIle uploaded"
+#           redirect_to upload_conversations_path
+#         else
+#           flash[:notice]="Attach file not valid"
+#           render "new"
+#         end
+#      end
+#   end
+  
   private
 
   def conversation_params
-    params.require(:conversation).permit(:subject, :body,recipients:[])
+    params.require(:conversation).permit(:id, :subject, :body, :data, recipients:[])
   end
   
   def message_params
