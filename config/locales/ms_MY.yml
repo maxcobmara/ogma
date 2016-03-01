@@ -3275,20 +3275,20 @@ ms_MY:
     send_message: "Hantar Mesej"
     select_recipient_message: "Penerima mesti dipilih dan mesej perlu dimasukkan sebelum mesej dapat dimajukan"
     message_sent: "Mesej anda telah berjaya dihantar"
-    message_forwarded: "Mesej anda telah berjaya dimajukan"
-    message_replied:  "Mesej balas anda telah berjaya dihantar"
+    message_replied_forwarded:  "Mesej telah berjaya dibalas / dimajukan"
     message_required: "Sila masukkan mesej balas"
     send_message: Hantar Mesej
     remark: Catatan
     indicates_unread: menunjukkan mesej belum dibaca
     forwarded_message: "Mesej Dimajukan : "
-    uploaded_invalid: "Muatnaik fail gagal. Fail yang dipilih adalah tidak sah."
+    upload_invalid: "Muatnaik fail gagal. Fail yang dipilih adalah tidak sah."
     file_uploaded_send_message: "Muatnaik fail berjaya, pilih fail lain untuk dimuatnaik atau klik ikon 'Hantar Mesej' untuk menghantar mesej."
     attachments: Lampiran
     forward_to: "Dimajukan kepada : "
     reply_to: "Balas kepada : "
     untrash: Kembalikan
     move_to_trash: Buang
+    allowed_format: "Saiz & Format fail dibenarkan - Maksima : 5 Megabytes & Format : Pdf,  Ms Office(doc, docx, xls, xlsx), Open Office(ods, odt), imej(png, jpg, jpeg,gif)"
 
   helpers:
     links:

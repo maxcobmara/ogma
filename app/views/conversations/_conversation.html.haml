@@ -2,9 +2,9 @@
   .media-left
     /%a{:href => "#"}
     /  %img.media-object{:alt => "...", :src => "http://placehold.it/64x64"}
-    - if current_page?(controller: 'mailbox', action: 'inbox')
-      %a{:href => "/staff/staffs/#{conversation.originator.userable.id}"}
-        %img.media-object{:alt => "...", :src => "#{conversation.originator.userable.photo.url}"} 
+    /- if current_page?(controller: 'mailbox', action: 'inbox')
+    /  %a{:href => "/staff/staffs/#{conversation.originator.userable.id}"}
+    /    %img.media-object{:alt => "...", :src => "#{conversation.originator.userable.photo.url}"} 
   .media-body
     %h4.media-heading   
       = conversation.originator.userable.name
