@@ -22,6 +22,7 @@
   
   .form-group
     = f.label (t 'conversation.attachments')
+    .small=t 'conversation.allowed_format'
     = f.file_field :data, class: 'uploads'
   
   - if params[:id]

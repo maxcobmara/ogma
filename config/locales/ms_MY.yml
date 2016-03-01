@@ -3288,6 +3288,7 @@ ms_MY:
     reply_to: "Balas kepada : "
     untrash: Kembalikan
     move_to_trash: Buang
+    allowed_format: "Saiz & Format fail dibenarkan - Maksima : 5 Megabytes & Format : Pdf,  Ms Office(doc, docx, xls, xlsx), Open Office(ods, odt), imej(png, jpg, jpeg,gif)"
 
   helpers:
     links:

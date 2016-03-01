@@ -3370,6 +3370,7 @@ en:
     reply_to: "Reply to : "
     untrash: Untrash
     move_to_trash: Move to trash
+    allowed_format: "Allowed Size & File Format - Maximum : 5 Megabytes & Format : Pdf,  Ms Office(doc, docx, xls, xlsx), Open Office(ods, odt), images(png, jpg, jpeg,gif)"
 
   helpers:
     links:

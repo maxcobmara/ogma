@@ -24,15 +24,20 @@
         .panel-footer
 
           /when reply / forward DRAFT exist
-          - if @receipts.count != @receipts_all.count
-            - draft=Mailboxer::Notification.where(conversation_id: conversation.id, draft: true).first
+          - draft=Mailboxer::Notification.where(conversation_id: conversation.id, draft: true).first
+          - if @receipts.count != @receipts_all.count && draft.sender_id==current_user.id
+            /- draft=Mailboxer::Notification.where(conversation_id: conversation.id, draft: true).first
+            = draft.sender_id
+            = current_user.id
             - body_text=draft.body
             - latest_recipients=Mailboxer::Receipt.where(mailbox_type: 'inbox', notification_id: conversation.receipts.last.notification_id).pluck(:receiver_id)
             /when recipient is not originator of current conversation
             - if latest_recipients!=[conversation.originator.id]
+              /forward
               - reply_val="2"
               - recv=latest_recipients
             - else
+              /reply
               - reply_val="1"
               - recv=[]
           - else
@@ -46,7 +51,7 @@
           
           / Reply / Forward Form
           = form_for :message, url: reply_conversation_path(conversation) , html: {class: 'edit_form', id: 'form1'} do |f|
-            = f.hidden_field :notify_id, value: draft.id if @receipts.count != @receipts_all.count
+            = f.hidden_field :notify_id, value: draft.id if @receipts.count != @receipts_all.count && draft.sender_id==current_user.id
             = hidden_field_tag :reply_method, reply_val
             /forward section
             .form-group
@@ -69,9 +74,10 @@
             /sharing items
             = f.text_area :body, placeholder: "Reply / Forward Message", rows: 4, class: "form-control", value: body_text
             = f.label (t 'conversation.attachments')
+            .small=t 'conversation.allowed_format'
 
-            ////draft-uploaded files if any
-            - if @receipts.count != @receipts_all.count
+            ////draft-list uploaded files if any
+            - if @receipts.count != @receipts_all.count && draft.sender_id==current_user.id
               .small 
                 - cnt=0
                 - uploaded_files=AttachmentUploader.where(msgnotification_id: draft.id)
