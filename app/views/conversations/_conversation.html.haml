@@ -1,14 +1,16 @@
 .media
   .media-left
-    %a{:href => "#"}
-      %img.media-object{:alt => "...", :src => "http://placehold.it/64x64"}
+    /%a{:href => "#"}
+    /  %img.media-object{:alt => "...", :src => "http://placehold.it/64x64"}
+    - if current_page?(controller: 'mailbox', action: 'inbox')
+      %a{:href => "/staff/staffs/#{conversation.originator.userable.id}"}
+        %img.media-object{:alt => "...", :src => "#{conversation.originator.userable.photo.url}"} 
   .media-body
-    %h4.media-heading
-      /=(t 'from')+": "
+    %h4.media-heading   
       = conversation.originator.userable.name
       - @receipts = conversation.receipts_for(current_user)
-      = "("+@receipts.count.to_s+") " if @receipts.count > 1
-      
+      = "("+@receipts.group_by(&:notification_id).count.to_s+") " if @receipts.group_by(&:notification_id).count > 1
+
       /Check if REPLIES exist
       - receivers=[]
       - all_receivers=[]
@@ -22,7 +24,7 @@
         - receivers.each do |rec_set2|
           //ref: sample usage [1,2]==[2,1].reverse
           - if rec_set2==receiver_set.reverse
-            - replies = 1
+            - replies = 1 if @receipts.group_by(&:notification_id).count > 1
       /=replies
       
       /Check if FORWARDS exist
@@ -47,18 +49,18 @@
         %strong=(t 'conversation.date')+": "
         = conversation.messages.last.created_at.strftime("%A, %b %d, %Y at %I:%M%p")
 
-    //
     /display uploaded files when exist 
     - notify_id=conversation.receipts.first.notification_id
     - uploaded_files=AttachmentUploader.where(msgnotification_id: notify_id)
     .small 
       - if uploaded_files && uploaded_files.count > 0 
-        %u Attachment(s) 
+        %u=t 'conversation.attachments'
         \: 
         - cnt=0
         - for upload_file in uploaded_files
-          = " ("+(cnt+=1).to_s+") "+upload_file.data_file_name.to_s
-    //    
+          = " ("+(cnt+=1).to_s+") "
+          = link_to upload_file.data_file_name, upload_file.data.url 
+  
     = truncate conversation.messages.last.body, length: 145
     %b
       = link_to ("- "+(t 'view')), conversation_path(conversation) 

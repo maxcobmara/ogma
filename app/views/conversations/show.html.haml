@@ -2,13 +2,13 @@
 .row
   .spacer
   .col-md-6
-    = link_to "Compose", new_conversation_path, class: "btn btn-success"
+    = link_to (t 'conversation.compose'), new_conversation_path, class: "btn btn-success"
   .col-md-6.text-right
     - if conversation.is_trashed?(current_user)
-      = link_to 'Untrash', untrash_conversation_path(conversation), class: 'btn btn-info', method: :post
+      = link_to (t 'conversation.untrash'), untrash_conversation_path(conversation), class: 'btn btn-info', method: :post
     - else
-      = link_to 'Move to trash', trash_conversation_path(conversation), class: 'btn btn-danger', method: :post, |
-        data: {confirm: 'Are you sure?'}                                                                        |
+      = link_to (t 'conversation.move_to_trash'), trash_conversation_path(conversation), class: 'btn btn-danger', method: :post, |
+        data: {confirm: (t 'actions.are_you_sure')}                                                                        |
 .row
   .spacer
   .col-md-4
@@ -22,51 +22,90 @@
  
       - if ((@receipts.first.message.sender.userable_id != current_user.userable_id) ||(@receipts.first.message.sender.userable_id == current_user.userable_id && @receipts.count > 1))
         .panel-footer
-          - user_ids=User.where(userable_type: 'Staff').where('userable_id is not null').order(userable_id: :asc).pluck(:id)
-          - staff_list=[]
-          - for user_id in user_ids
-            - sname = Staff.joins(:users).where('users.id=?', user_id).first.name
-            - staff_list << [sname, user_id]
-            
-          /Retrieve receipt for REPLYING message
+
+          /when reply / forward DRAFT exist
+          - if @receipts.count != @receipts_all.count
+            - draft=Mailboxer::Notification.where(conversation_id: conversation.id, draft: true).first
+            - body_text=draft.body
+            - latest_recipients=Mailboxer::Receipt.where(mailbox_type: 'inbox', notification_id: conversation.receipts.last.notification_id).pluck(:receiver_id)
+            /when recipient is not originator of current conversation
+            - if latest_recipients!=[conversation.originator.id]
+              - reply_val="2"
+              - recv=latest_recipients
+            - else
+              - reply_val="1"
+              - recv=[]
+          - else
+            - body_text=""
+            - reply_val="0"
+            - recv=[]
+
+          /Retrieve receipt for REPLYING message to originator
           - notification_id= @receipts.where(mailbox_type: 'inbox').where(receiver_id: current_user.id).first.notification_id
           - receipt_toreply=conversation.receipts.where(mailbox_type: 'sentbox').where(notification_id: notification_id).last          
-
-          / Reply Form
-          = form_for :message, url: reply_conversation_path(conversation) , html: {class: 'edit_form'} do |f|
+          
+          / Reply / Forward Form
+          = form_for :message, url: reply_conversation_path(conversation) , html: {class: 'edit_form', id: 'form1'} do |f|
+            = f.hidden_field :notify_id, value: draft.id if @receipts.count != @receipts_all.count
+            = hidden_field_tag :reply_method, reply_val
             /forward section
             .form-group
               .col-md-1=radio_button_tag "reply", 2, {},class: 'replying'
               .col-md-2
-                %b Forward To :
-              .col-md-7= f.select(:recipients, staff_list, {}, { multiple: true , class: "chosen-select form-control" })
+                %b=t 'conversation.forward_to'
+              .col-md-7= f.select(:recipients, @staff_list, {selected: recv}, { multiple: true , class: "chosen-select form-control" })
+            =hidden_field_tag "forwardmsg", @forward_text
+
             %br
             /reply section
             .form-group
               .col-md-1=radio_button_tag "reply", 1, {}, class: 'replying'
               .col-md-2
-                %b Reply To :
+                %b=t 'conversation.reply_to'
               .col-md-7= receipt_toreply.receiver.userable.name
               =hidden_field_tag "receiptid", receipt_toreply.id
-              
-              / TODO - refactor this
-              /begin forwarding msg...
-              /=conversation.id
-              - forwarded=Mailboxer::Notification.where(conversation_id: conversation.id).last
-              - forward_body=forwarded.body
-              - recipient=forwarded.receipts.where(mailbox_type: 'inbox').first.receiver.userable.name
-              - details=" ("+(t 'from')+":"+forwarded.sender.userable.name+", "+(t 'to2')+":"+recipient+", "+(t 'conversation.subject')+":"+forwarded.subject+", "+(t 'conversation.date')+":"+forwarded.created_at.strftime("%A, %b %d, %Y at %I:%M%p")+")   "+(t 'conversation.message').upcase+": "
-              - forward_text=(t 'conversation.forwarded_message')+details+forward_body +" ---------------------------------------"
-              =hidden_field_tag "forwardmsg", forward_text
             
-            = f.text_area :body, placeholder: "Reply / Forward Message", rows: 4, class: "form-control"
-            = f.submit (t 'conversation.send_message'), class: 'btn btn-danger pull-right'
+            /sharing items
+            = f.text_area :body, placeholder: "Reply / Forward Message", rows: 4, class: "form-control", value: body_text
+            = f.label (t 'conversation.attachments')
+
+            ////draft-uploaded files if any
+            - if @receipts.count != @receipts_all.count
+              .small 
+                - cnt=0
+                - uploaded_files=AttachmentUploader.where(msgnotification_id: draft.id)
+                - for upload_file in uploaded_files
+                  = " ("+(cnt+=1).to_s+") "
+                  = link_to upload_file.data_file_name, upload_file.data.url
+            
+            /upload file for selection
+            = f.file_field :data, class: 'uploads'
+            %br
+            .col-md-12
+              .col-md-3= f.submit (t 'conversation.send_message'), class: 'btn btn-danger pull-right', :name => :submit_button
           .clearfix
-          
     
 :javascript
 
 $(function(){
+  $('.edit_form input[type=radio]').each(function(){
+    var replymethod  =$("#reply_method").val();
+    var reply_forward = document.getElementsByClassName('replying');
+    
+    if (replymethod=="2")
+    {  
+      reply_forward[0].checked=true;
+      reply_forward[1].checked=false;
+      reply_forward[1].disabled=true;
+    }
+    else if(replymethod=="1")
+    {
+      reply_forward[1].checked=true;
+      reply_forward[0].checked=false;
+      reply_forward[0].disabled=true;
+    }
+  });
+  
   $('.edit_form input[type=radio]').click(function(){
     var reply_forward = document.getElementsByClassName('replying');
     var bodytofwd = document.getElementById('message_body');
@@ -75,5 +114,11 @@ $(function(){
     { bodytofwd.value = toforward;}
     else if(reply_forward[1].checked)
     { bodytofwd.value = "";}
+  });
+});
+
+$(document).ready(function() {
+  $('.uploads').on('change', function() {
+    $("#form1").submit();
   });
 });

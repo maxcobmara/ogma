@@ -364,6 +364,7 @@ en:
     export: Export
     line_no_excel: " (excel file - line no : "
     uncheck: Uncheck
+    are_you_sure: "Are you sure?"
     
   errors:
 
@@ -3347,6 +3348,7 @@ en:
     original_msg: Original Message
     reply_msg: "Reply Message(s)"
     forward_msg: "Forward Message"
+    reply_forward: "Reply / Forward Message"
     reply2: "Re: "
     forward: "FW: "
     recipients: Recipients
@@ -3362,7 +3364,13 @@ en:
     remark: Remark
     indicates_unread: indicates unread messages
     forwarded_message: "Forwarded Message : "
-    uploaded_invalid: "Uploaded file is invalid"
+    uploaded_invalid: "Upload failed. Selected file is invalid."
+    file_uploaded_send_message: "Selected file uploaded, add another file or click 'Send Message' to submit message."
+    attachments: "Attachment(s)"
+    forward_to: "Forward to : "
+    reply_to: "Reply to : "
+    untrash: Untrash
+    move_to_trash: Move to trash
 
   helpers:
     links:

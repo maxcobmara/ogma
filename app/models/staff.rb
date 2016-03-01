@@ -61,8 +61,11 @@ class Staff < ActiveRecord::Base
   
   has_attached_file :photo,
                     :url => "/assets/staffs/:id/:style/:basename.:extension",
-                    :path => ":rails_root/public/assets/staffs/:id/:style/:basename.:extension"#, :styles => {:thumb => "40x60"}
-
+                    :path => ":rails_root/public/assets/staffs/:id/:style/:basename.:extension", #, :styles => {:thumb => "40x60"}
+                    :styles => { :original => "250x300>", :thumbnail => "50x60" } #default size of uploaded image
+  validates_attachment_size :photo, :less_than => 5.megabytes
+  validates_attachment_content_type :photo, :content_type => ["image/jpg", "image/jpeg", "image/png", "image/gif"]
+                    #may require validation
 
   #Link to model Staff Appraisal
   has_many :appraisals,     :class_name => 'StaffAppraisal', :foreign_key => 'staff_id', :dependent => :destroy

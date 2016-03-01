@@ -6,13 +6,23 @@
         %i
           %u=t 'conversation.original_msg'
       - elsif ind==1
-        %i
-          %u 
-            =(@receipts.count-1).to_s+" "+(t 'conversation.reply_msg')+ "/ "
-            
+        - if @receipts.group_by(&:notification_id).count > 1
+          %i
+            %u 
+              =(@receipts.count-1).to_s+" "+(t 'conversation.reply_forward')
+
+      - msgsend=message.conversation.receipts.where(notification_id: receipt.notification_id).where(mailbox_type:'sentbox').first.receiver.userable
+      - msgreceipt=message.conversation.receipts.where(notification_id: receipt.notification_id).where(mailbox_type: 'inbox').first.receiver.userable
+      
       / user avators can go here
-      %a{:href => "#"}
-        %img.media-object{:alt => "...", :src => "http://placehold.it/64x64"}
+      - if @receipts.group_by(&:notification_id).count > 1 || ind==0
+        - if receipt.mailbox_type=="sentbox"
+          %a{:href => "/staff/staffs/#{msgreceipt.id}"}
+            %img.media-object{:alt => "...", :src => "#{msgreceipt.photo.url}"}
+        - elsif receipt.mailbox_type=="inbox"
+          %a{:href => "/staff/staffs/#{msgsend.id}"}
+            %img.media-object{:alt => "...", :src => "#{msgsend.photo.url}"} 
+
     .media-body
       %h4.media-heading
         
@@ -35,8 +45,8 @@
         /%br
         /%br
         
-        - msg_sender=message.conversation.receipts.where(notification_id: receipt.notification_id).where(mailbox_type:'sentbox').first.receiver.userable.name
-        - msg_recepient=message.conversation.receipts.where(notification_id: receipt.notification_id).where(mailbox_type: 'inbox').first.receiver.userable.name
+        - msg_sender=msgsend.name
+        - msg_recepient=msgreceipt.name
         /SENTBOX
         /- msg_sender= message.conversation.receipts.order(created_at: :asc).where(mailbox_type: 'sentbox')[ind].receiver.userable.name
         /INBOX
@@ -52,15 +62,17 @@
           /Recepient Page  
           - if receipt.mailbox_type=="inbox"
             =(t 'from')+" : "+msg_sender if message.sender.userable_id!=current_user.userable_id
-            %br  
+            %br
             %b=(t 'to2')+" : "+msg_recepient
         - else
           /OTHER related messages------------
           /Sender & Recipient Page
-          =(t 'from')+" : "+msg_sender
-          %br
-          =(t 'to2')+" : "+msg_recepient
+          - if @receipts.group_by(&:notification_id).count > 1
+            =(t 'from')+" : "+msg_sender
+            %br
+            =(t 'to2')+" : "+msg_recepient
         
+      - if @receipts.group_by(&:notification_id).count > 1 || ind==0
         %br
           %small
             %b=(t 'conversation.subject')+": tt"
@@ -69,18 +81,18 @@
             %small
               %b=(t 'conversation.date')+": "
               = message.created_at.strftime("%A, %b %d, %Y at %I:%M%p")
-      = simple_format(message.body)   
+        = simple_format(message.body)   
       
-      /display uploaded files when exist
-      
-      - notify_id=message.conversation.receipts.first.notification_id
-      - uploaded_files=AttachmentUploader.where(msgnotification_id: notify_id)
-      .small 
-        - if uploaded_files && uploaded_files.count > 0 
-          %u Attachment(s)
-          \:
-          - cnt=0
-          - for upload_file in uploaded_files
-            = " ("+(cnt+=1).to_s+") "+upload_file.data_file_name
-      
-      %hr
+        /display uploaded files when exist
+        /- notify_id=message.conversation.receipts.first.notification_id
+        = notify_id=receipt.notification_id
+        - uploaded_files=AttachmentUploader.where(msgnotification_id: notify_id)
+        .small 
+          - if uploaded_files && uploaded_files.count > 0 
+            %u=t 'conversation.attachments'
+            \:
+            - cnt=0
+            - for upload_file in uploaded_files
+              = " ("+(cnt+=1).to_s+") "
+              = link_to upload_file.data_file_name, upload_file.data.url 
+        %hr
