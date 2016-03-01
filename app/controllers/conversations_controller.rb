@@ -104,116 +104,89 @@ class ConversationsController < ApplicationController
     method=params["reply"]
     receipt_id=params["receiptid"]
     receipt=Mailboxer::Receipt.where(id: receipt_id).first
-    if method=="1"
-      if (!message_params[:body].blank?)
+    if !message_params[:body].blank?
+      if method=="1"
+        #REPLY
         #current_user.reply_to_conversation(conversation, message_params[:body])
         if message_params[:notify_id].nil? #new form
           replied=current_user.reply_to_sender(receipt, message_params[:body]) 
-        #####
           notify_id=replied.conversation.receipts.last.notification_id ####
         else #draft form
           notify_id=message_params[:notify_id].to_i
         end
-        #########################################
-        unless message_params[:data].nil? #when attachment exist
-          newattach = AttachmentUploader.new
-          newattach.data = message_params[:data]
-          if newattach.valid?
-            newattach.msgnotification_id=notify_id  
-            newattach.save
-            if params[:submit_button]
-              Mailboxer::Notification.where(id: notify_id).first.update_attributes(draft: false) if message_params[:notify_id] #send draft (with attachment)
-              flash[:notice]=(t 'conversation.message_replied')
-              redirect_to conversation_path(conversation)
-            #########
-            else
-	      notify_todraft=Mailboxer::Notification.where(id: notify_id).first.update_attributes(draft: true)
-              flash[:notice]=(t 'conversation.file_uploaded_send_message')
-              redirect_to action: 'show', id: conversation.id  ###
-            end  
-            #########
-          else
-	    notify_todraft=Mailboxer::Notification.where(id: notify_id).first.update_attributes(draft: true) 
-            flash[:notice]=(t 'conversation.uploaded_invalid')
-            redirect_to action: 'show', id: conversation.id
-          end
-        else #no attachment
-          Mailboxer::Notification.where(id: notify_id).first.update_attributes(draft: false) if message_params[:notify_id] 
-          flash[:success] =(t 'conversation.message_replied')
-          redirect_to conversation_path(conversation)
-        end
-	############################################
-	
-	#####
-        #flash[:notice]=t 'conversation.message_replied'
-        #redirect_to conversation_path(conversation)
+        form_complete="1"
       else
-        flash[:notice]=t 'conversation.message_required'
-        redirect_to conversation_path(conversation)
+        #FORWARD
+        recipients = User.where(id: message_params[:recipients]-[" "])
+        if message_params[:recipients].count > 1 
+          if message_params[:notify_id].nil? #new form
+            # TODO - upon removal of conversation record, set pointer in DB (table Mailboxer::Conversation) to last record - ref: duplicates keys / violates related note
+            # NOTE Forwarding Message - temp solution 27Feb2016 
+            #1)send as new message first, 
+            #2)then update conversation ID in Notification same as current conversation
+            #3)remove newly created conversation
+            #conversation2 = current_user.send_message(recipients, message_params[:body], conversation.subject).conversation
+            #Mailboxer::Notification.where(conversation_id: conversation2.id).first.update_attributes(conversation_id: conversation.id)
+            #Mailboxer::Conversation.where(id: conversation2.id).first.destroy
+          
+            conversation2 = current_user.send_message(recipients, message_params[:body], conversation.subject).conversation
+            Mailboxer::Notification.where(conversation_id: conversation2.id).first.update_attributes(conversation_id: conversation.id)
+            Mailboxer::Conversation.where(id: conversation2.id).first.destroy
+            notify_id=conversation.receipts.last.notification_id # NOTE above updated record, use conversation instead of conversation2
+          else #draft form
+            notify_id=message_params[:notify_id].to_i
+          end
+          form_complete="1"
+        else
+          #no recipient for forwarding selected
+          form_complete="0"
+        end
       end
     else
-      #raise params.inspect
-      recipients = User.where(id: message_params[:recipients]-[" "])
-      if message_params[:recipients].count > 1 && !message_params[:body].blank?
-
-        if message_params[:notify_id].nil? #new form
-          # TODO - upon removal of conversation record, set pointer in DB (table Mailboxer::Conversation) to last record - ref: duplicates keys / violates related note
-          # NOTE Forwarding Message - temp solution 27Feb2016 
-          #1)send as new message first, 
-          #2)then update conversation ID in Notification same as current conversation
-          #3)remove newly created conversation
-          #conversation2 = current_user.send_message(recipients, message_params[:body], conversation.subject).conversation
-          #Mailboxer::Notification.where(conversation_id: conversation2.id).first.update_attributes(conversation_id: conversation.id)
-          #Mailboxer::Conversation.where(id: conversation2.id).first.destroy
-          
-          conversation2 = current_user.send_message(recipients, message_params[:body], conversation.subject).conversation
-          Mailboxer::Notification.where(conversation_id: conversation2.id).first.update_attributes(conversation_id: conversation.id)
-          Mailboxer::Conversation.where(id: conversation2.id).first.destroy
-          #notify_id=Mailboxer::Notification.where(conversation_id: conversation2.id).first.id
-          #replied.conversation.receipts.last.notification_id
-          notify_id=conversation.receipts.last.notification_id # NOTE above updated record, use conversation instead of conversation2
-        else #draft form
-          notify_id=message_params[:notify_id].to_i
-        end
-        #########################################
-        unless message_params[:data].nil? #when attachment exist
-          newattach = AttachmentUploader.new
-          newattach.data = message_params[:data]
-          if newattach.valid?
-            newattach.msgnotification_id=notify_id  
-            newattach.save
-            if params[:submit_button]
-              Mailboxer::Notification.where(id: notify_id).first.update_attributes(draft: false) if message_params[:notify_id] #send draft (with attachment)
-              flash[:notice]=(t 'conversation.message_replied')+"huhu"
-              redirect_to conversation_path(conversation)
-            #########
-            else
-	      Mailboxer::Notification.where(id: notify_id).first.update_attributes(draft: true)
-              flash[:notice]=(t 'conversation.file_uploaded_send_message')+"hihi"
-              redirect_to action: 'show', id: conversation.id  ###
-            end  
-            #########
+      flash[:notice]=(t 'conversation.message_required')
+      redirect_to conversation_path(conversation)
+    end
+    if (!message_params[:body].blank?) && form_complete=="1"
+      #########################################
+      unless message_params[:data].nil? #when attachment exist
+        newattach = AttachmentUploader.new
+        newattach.data = message_params[:data]
+        if newattach.valid?
+          newattach.msgnotification_id=notify_id  
+          newattach.save
+          if params[:submit_button]
+            Mailboxer::Notification.where(id: notify_id).first.update_attributes(draft: false) if message_params[:notify_id] #send draft (with attachment)
+            flash[:notice]=(t 'conversation.message_replied_forwarded')
+            redirect_to conversation_path(conversation)
+          #########
           else
-	    notify_todraft=Mailboxer::Notification.where(id: notify_id).first.update_attributes(draft: true) 
-            flash[:notice]=(t 'conversation.uploaded_invalid')+"haha"
+            notify_todraft=Mailboxer::Notification.where(id: notify_id).first.update_attributes(draft: true)
+            flash[:notice]=(t 'conversation.file_uploaded_send_message')
             redirect_to action: 'show', id: conversation.id
-          end
-        else #no attachment
-          Mailboxer::Notification.where(id: notify_id).first.update_attributes(draft: false) if message_params[:notify_id] 
-          flash[:success] =(t 'conversation.message_replied')+"hoho"
-          redirect_to conversation_path(conversation)
+          end  
+          #########
+        else
+          notify_todraft=Mailboxer::Notification.where(id: notify_id).first.update_attributes(draft: true) 
+          flash[:notice]=(t 'conversation.upload_invalid')
+          redirect_to action: 'show', id: conversation.id
         end
-	############################################
-
-        #flash[:notice] =(t 'conversation.message_forwarded')
-        #redirect_to conversation_path(conversation)
-      else
-        flash[:error] =t 'conversation.select_recipient_message'
-        redirect_to(:back)
+      else #no attachment
+        Mailboxer::Notification.where(id: notify_id).first.update_attributes(draft: false) if message_params[:notify_id] 
+        flash[:success] =(t 'conversation.message_replied_forwarded')
+        redirect_to conversation_path(conversation)
       end
+      ############################################
+      #flash[:notice]=t 'conversation.message_replied'
+      #redirect_to conversation_path(conversation)
+    else
+      if form_complete=="0"
+        flash[:error]=t 'conversation.select_recipient_message'
+      else
+        flash[:notice]=t 'conversation.message_required'
+      end
+      redirect_to conversation_path(conversation) if (!message_params[:body].blank?)
     end
   end
-  
 
   def trash
     conversation.move_to_trash(current_user)
@@ -257,6 +230,5 @@ class ConversationsController < ApplicationController
   def message_params
     params.require(:message).permit(:body, :subject, :data, :notify_id, recipients:[])
   end
-  
-  
+
 end

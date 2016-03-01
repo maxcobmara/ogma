@@ -18,10 +18,12 @@
       - if @receipts.group_by(&:notification_id).count > 1 || ind==0
         - if receipt.mailbox_type=="sentbox"
           %a{:href => "/staff/staffs/#{msgreceipt.id}"}
-            %img.media-object{:alt => "...", :src => "#{msgreceipt.photo.url}"}
+            /%img.media-object{:alt => "...", :src => "#{msgreceipt.photo.url(:thumbnail)}"}
+            .media-object=image_tag msgsend.photo.url(:thumbnail)
         - elsif receipt.mailbox_type=="inbox"
           %a{:href => "/staff/staffs/#{msgsend.id}"}
-            %img.media-object{:alt => "...", :src => "#{msgsend.photo.url}"} 
+            /%img.media-object{:alt => "...", :src => "#{msgsend.photo.url(:thumbnail)}"} 
+            .media-object=image_tag msgsend.photo.url(:thumbnail)
 
     .media-body
       %h4.media-heading
@@ -75,7 +77,7 @@
       - if @receipts.group_by(&:notification_id).count > 1 || ind==0
         %br
           %small
-            %b=(t 'conversation.subject')+": tt"
+            %b=(t 'conversation.subject')+": "
             = message.subject
           %br
             %small
@@ -84,8 +86,7 @@
         = simple_format(message.body)   
       
         /display uploaded files when exist
-        /- notify_id=message.conversation.receipts.first.notification_id
-        = notify_id=receipt.notification_id
+        - notify_id=receipt.notification_id
         - uploaded_files=AttachmentUploader.where(msgnotification_id: notify_id)
         .small 
           - if uploaded_files && uploaded_files.count > 0 

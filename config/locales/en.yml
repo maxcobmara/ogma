@@ -3357,14 +3357,13 @@ en:
     send_message: "Send Message"
     select_recipient_message: "Forwarding Message is failed. Recipient must be selected and message must be entered"
     message_sent:  "Your message was successfully sent"
-    message_forwarded: "Your message was successfully forwarded"
-    message_replied:  "Your reply message was successfully sent"
-    message_required: "Please enter reply message"
+    message_replied_forwarded: "Message was successfully replied / forwarded"
+    message_required: "Please enter message"
     send: Send Message
     remark: Remark
     indicates_unread: indicates unread messages
     forwarded_message: "Forwarded Message : "
-    uploaded_invalid: "Upload failed. Selected file is invalid."
+    upload_invalid: "Upload failed. Selected file is invalid."
     file_uploaded_send_message: "Selected file uploaded, add another file or click 'Send Message' to submit message."
     attachments: "Attachment(s)"
     forward_to: "Forward to : "

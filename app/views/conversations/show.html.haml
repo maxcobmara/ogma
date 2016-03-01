@@ -55,6 +55,7 @@
                 %b=t 'conversation.forward_to'
               .col-md-7= f.select(:recipients, @staff_list, {selected: recv}, { multiple: true , class: "chosen-select form-control" })
             =hidden_field_tag "forwardmsg", @forward_text
+            =hidden_field_tag "replymsg", body_text
 
             %br
             /reply section
@@ -110,10 +111,11 @@ $(function(){
     var reply_forward = document.getElementsByClassName('replying');
     var bodytofwd = document.getElementById('message_body');
     var toforward = $("#forwardmsg").val();
+    var bodyreply = $("#replymsg").val();
     if (reply_forward[0].checked)
     { bodytofwd.value = toforward;}
     else if(reply_forward[1].checked)
-    { bodytofwd.value = "";}
+    { bodytofwd.value = bodyreply;}
   });
 });
 
