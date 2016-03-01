@@ -342,6 +342,7 @@ ms_MY:
     export: Eksport
     line_no_excel:  " (fail excel - no baris : "
     uncheck: Nyahpilih
+    are_you_sure: "Anda pasti?"
     
   errors:
   
@@ -3264,7 +3265,8 @@ ms_MY:
     trash: Buang
     original_msg: Mesej Asal
     reply_msg: Mesej Balas
-    forward_msg: Majukan Mesej
+    forward_msg: Mesej Dimajukan
+    reply_forward: "Mesej Balas / Dimajukan"
     reply2: "Balas: "
     forward: "Dimajukan: "
     recipients: Penerima
@@ -3280,7 +3282,13 @@ ms_MY:
     remark: Catatan
     indicates_unread: menunjukkan mesej belum dibaca
     forwarded_message: "Mesej Dimajukan : "
-    uploaded_invalid: "Fail yang dimuatnaik adalah tidak sah"
+    uploaded_invalid: "Muatnaik fail gagal. Fail yang dipilih adalah tidak sah."
+    file_uploaded_send_message: "Muatnaik fail berjaya, pilih fail lain untuk dimuatnaik atau klik ikon 'Hantar Mesej' untuk menghantar mesej."
+    attachments: Lampiran
+    forward_to: "Dimajukan kepada : "
+    reply_to: "Balas kepada : "
+    untrash: Kembalikan
+    move_to_trash: Buang
 
   helpers:
     links:
