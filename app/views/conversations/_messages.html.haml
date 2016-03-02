@@ -16,12 +16,12 @@
                 =(@receipts.where(id: receipt_ids).count-1).to_s+" "+(t 'conversation.reply_forward')
 
         - msgsend=message.conversation.receipts.where(notification_id: receipt.notification_id).where(mailbox_type:'sentbox').first.receiver.userable
-        - msgreceipt=message.conversation.receipts.where(notification_id: receipt.notification_id).where(mailbox_type: 'inbox').first.receiver.userable
-      
+        /- msgreceipt=message.conversation.receipts.where(notification_id: receipt.notification_id).where(mailbox_type: 'inbox').first.receiver.userable
+        - msgreceipts=message.conversation.receipts.where(notification_id: receipt.notification_id).where(mailbox_type: 'inbox').pluck(:receiver_id)
         / user avators can go here
         - if @receipts.group_by(&:notification_id).count > 1 || ind==0
-          - if receipt.mailbox_type=="sentbox"
-            %a{:href => "/staff/staffs/#{msgreceipt.id}"}
+          - if receipt.mailbox_type=="sentbox" && msgreceipts.count==1
+            %a{:href => "/staff/staffs/#{msgreceipts.first}"}
               /%img.media-object{:alt => "...", :src => "#{msgreceipt.photo.url(:thumbnail)}"}
               .media-object=image_tag msgsend.photo.url(:thumbnail)
           - elsif receipt.mailbox_type=="inbox"
@@ -52,7 +52,13 @@
           /%br
         
           - msg_sender=msgsend.name
-          - msg_recepient=msgreceipt.name
+          /- msg_recepient=msgreceipt.name
+          - msg_recipients=""
+          - Staff.where(id: User.where(id: msgreceipts).pluck(:userable_id)).order(id: :asc).pluck(:name).each_with_index do |x, ind|
+            - msg_recipients+=x
+            - msg_recipients+=", " if ind < msgreceipts.count-1
+          /=msgreceipts
+          
           /SENTBOX
           /- msg_sender= message.conversation.receipts.order(created_at: :asc).where(mailbox_type: 'sentbox')[ind].receiver.userable.name
           /INBOX
@@ -64,19 +70,19 @@
             - if receipt.mailbox_type=="sentbox"
               %b=(t 'from')+" : "+msg_sender if message.sender.userable_id==current_user.userable_id
               %br
-              =(t 'to2')+" : "+msg_recepient
+              =(t 'to2')+" : "+msg_recipients
             /Recepient Page  
             - if receipt.mailbox_type=="inbox"
               =(t 'from')+" : "+msg_sender if message.sender.userable_id!=current_user.userable_id
               %br
-              %b=(t 'to2')+" : "+msg_recepient
+              %b=(t 'to2')+" : "+msg_recipients
           - else
             /OTHER related messages------------
             /Sender & Recipient Page
             - if @receipts.group_by(&:notification_id).count > 1
               =(t 'from')+" : "+msg_sender
               %br
-              =(t 'to2')+" : "+msg_recepient
+              =(t 'to2')+" : "+msg_recipients
         
         - if @receipts.group_by(&:notification_id).count > 1 || ind==0
           %br
