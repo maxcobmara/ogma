@@ -92,7 +92,13 @@ class ConversationsController < ApplicationController
     # mark conversation as read
     conversation.mark_as_read(current_user)
     #default forward text
-    fw=Mailboxer::Notification.where(conversation_id: conversation.id).where(sender_id: current_user.id).last
+    if@receipts.count == @receipts_rev.count 
+      #w/o draft existance
+      fw=@receipts.last.message
+    else
+      #with draft existance
+      fw=Mailboxer::Notification.where(conversation_id: conversation.id).where(sender_id: current_user.id).last
+    end
     if fw
       forward_body=fw.body
       recipient=fw.receipts.where(mailbox_type: 'inbox').first.receiver.userable.name
