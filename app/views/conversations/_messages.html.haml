@@ -1,99 +1,103 @@
 - @receipts.order(created_at: :asc).each_with_index do |receipt, ind|
   - message = receipt.message
-  .media
-    .media-left
-      - if ind==0
-        %i
-          %u=t 'conversation.original_msg'
-      - elsif ind==1
-        - if @receipts.group_by(&:notification_id).count > 1
-          %i
-            %u 
-              =(@receipts.count-1).to_s+" "+(t 'conversation.reply_forward')
-
-      - msgsend=message.conversation.receipts.where(notification_id: receipt.notification_id).where(mailbox_type:'sentbox').first.receiver.userable
-      - msgreceipt=message.conversation.receipts.where(notification_id: receipt.notification_id).where(mailbox_type: 'inbox').first.receiver.userable
-      
-      / user avators can go here
-      - if @receipts.group_by(&:notification_id).count > 1 || ind==0
-        - if receipt.mailbox_type=="sentbox"
-          %a{:href => "/staff/staffs/#{msgreceipt.id}"}
-            /%img.media-object{:alt => "...", :src => "#{msgreceipt.photo.url(:thumbnail)}"}
-            .media-object=image_tag msgsend.photo.url(:thumbnail)
-        - elsif receipt.mailbox_type=="inbox"
-          %a{:href => "/staff/staffs/#{msgsend.id}"}
-            /%img.media-object{:alt => "...", :src => "#{msgsend.photo.url(:thumbnail)}"} 
-            .media-object=image_tag msgsend.photo.url(:thumbnail)
-
-    .media-body
-      %h4.media-heading
-        
-        /For CHECKING only------
-        /HHHH
-        /=message.sender.userable.name
-        /=message.sender.userable.id
-        /%BR
-        /Receipt ID
-        /=receipt.id
-        /%br
-        /Notification ID
-        /=receipt.notification_id
-        /%br
-        /Receipt Count
-        /=@receipts.count
-        /%br
-        /Receipt Count Main
-        /=message.conversation.receipts.count
-        /%br
-        /%br
-        
-        - msg_sender=msgsend.name
-        - msg_recepient=msgreceipt.name
-        /SENTBOX
-        /- msg_sender= message.conversation.receipts.order(created_at: :asc).where(mailbox_type: 'sentbox')[ind].receiver.userable.name
-        /INBOX
-        /- msg_recepient=message.conversation.receipts.order(created_at: :asc).where(mailbox_type: 'inbox')[ind].receiver.userable.name
-        
+  - if message.draft==false
+    .media
+      .media-left
         - if ind==0
-          /ORIGINAL Message section-------------
-          /Sender Page
+          %i
+            %u=t 'conversation.original_msg'
+        - elsif ind==1
+          /sent one (not draft)
+          - receipt_ids=[]
+          - @receipts.each{|x|receipt_ids << x.id if x.message.draft==false}
+          - if @receipts.where(id: receipt_ids).group_by(&:notification_id).count > 1
+            %i
+              %u 
+                =(@receipts.where(id: receipt_ids).count-1).to_s+" "+(t 'conversation.reply_forward')
+
+        - msgsend=message.conversation.receipts.where(notification_id: receipt.notification_id).where(mailbox_type:'sentbox').first.receiver.userable
+        - msgreceipt=message.conversation.receipts.where(notification_id: receipt.notification_id).where(mailbox_type: 'inbox').first.receiver.userable
+      
+        / user avators can go here
+        - if @receipts.group_by(&:notification_id).count > 1 || ind==0
           - if receipt.mailbox_type=="sentbox"
-            %b=(t 'from')+" : "+msg_sender if message.sender.userable_id==current_user.userable_id
-            %br
-            =(t 'to2')+" : "+msg_recepient
-          /Recepient Page  
-          - if receipt.mailbox_type=="inbox"
-            =(t 'from')+" : "+msg_sender if message.sender.userable_id!=current_user.userable_id
-            %br
-            %b=(t 'to2')+" : "+msg_recepient
-        - else
-          /OTHER related messages------------
-          /Sender & Recipient Page
-          - if @receipts.group_by(&:notification_id).count > 1
-            =(t 'from')+" : "+msg_sender
-            %br
-            =(t 'to2')+" : "+msg_recepient
+            %a{:href => "/staff/staffs/#{msgreceipt.id}"}
+              /%img.media-object{:alt => "...", :src => "#{msgreceipt.photo.url(:thumbnail)}"}
+              .media-object=image_tag msgsend.photo.url(:thumbnail)
+          - elsif receipt.mailbox_type=="inbox"
+            %a{:href => "/staff/staffs/#{msgsend.id}"}
+              /%img.media-object{:alt => "...", :src => "#{msgsend.photo.url(:thumbnail)}"} 
+              .media-object=image_tag msgsend.photo.url(:thumbnail)
+
+      .media-body
+        %h4.media-heading
         
-      - if @receipts.group_by(&:notification_id).count > 1 || ind==0
-        %br
-          %small
-            %b=(t 'conversation.subject')+": "
-            = message.subject
+          /For CHECKING only------
+          /HHHH
+          /=message.sender.userable.name
+          /=message.sender.userable.id
+          /%BR
+          /Receipt ID
+          /=receipt.id
+          /%br
+          /Notification ID
+          /=receipt.notification_id
+          /%br
+          /Receipt Count
+          /=@receipts.count
+          /%br
+          /Receipt Count Main
+          /=message.conversation.receipts.count
+          /%br
+          /%br
+        
+          - msg_sender=msgsend.name
+          - msg_recepient=msgreceipt.name
+          /SENTBOX
+          /- msg_sender= message.conversation.receipts.order(created_at: :asc).where(mailbox_type: 'sentbox')[ind].receiver.userable.name
+          /INBOX
+          /- msg_recepient=message.conversation.receipts.order(created_at: :asc).where(mailbox_type: 'inbox')[ind].receiver.userable.name
+        
+          - if ind==0
+            /ORIGINAL Message section-------------
+            /Sender Page
+            - if receipt.mailbox_type=="sentbox"
+              %b=(t 'from')+" : "+msg_sender if message.sender.userable_id==current_user.userable_id
+              %br
+              =(t 'to2')+" : "+msg_recepient
+            /Recepient Page  
+            - if receipt.mailbox_type=="inbox"
+              =(t 'from')+" : "+msg_sender if message.sender.userable_id!=current_user.userable_id
+              %br
+              %b=(t 'to2')+" : "+msg_recepient
+          - else
+            /OTHER related messages------------
+            /Sender & Recipient Page
+            - if @receipts.group_by(&:notification_id).count > 1
+              =(t 'from')+" : "+msg_sender
+              %br
+              =(t 'to2')+" : "+msg_recepient
+        
+        - if @receipts.group_by(&:notification_id).count > 1 || ind==0
           %br
             %small
-              %b=(t 'conversation.date')+": "
-              = message.created_at.strftime("%A, %b %d, %Y at %I:%M%p")
-        = simple_format(message.body)   
+              %b=(t 'conversation.subject')+": "
+              = message.subject
+            %br
+              %small
+                %b=(t 'conversation.date')+": "
+                = message.created_at.strftime("%A, %b %d, %Y at %I:%M%p")
+          = simple_format(message.body)   
       
-        /display uploaded files when exist
-        - notify_id=receipt.notification_id
-        - uploaded_files=AttachmentUploader.where(msgnotification_id: notify_id)
-        .small 
-          - if uploaded_files && uploaded_files.count > 0 
-            %u=t 'conversation.attachments'
-            \:
-            - cnt=0
-            - for upload_file in uploaded_files
-              = " ("+(cnt+=1).to_s+") "
-              = link_to upload_file.data_file_name, upload_file.data.url 
-        %hr
+          /display uploaded files when exist
+          - notify_id=receipt.notification_id
+          - uploaded_files=AttachmentUploader.where(msgnotification_id: notify_id)
+          .small 
+            - if uploaded_files && uploaded_files.count > 0 
+              %u=t 'conversation.attachments'
+              \:
+              - cnt=0
+              - for upload_file in uploaded_files
+                = " ("+(cnt+=1).to_s+") "
+                = link_to upload_file.data_file_name, upload_file.data.url 
+          %hr
