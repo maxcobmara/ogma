@@ -3289,6 +3289,9 @@ ms_MY:
     untrash: Kembalikan
     move_to_trash: Buang
     allowed_format: "Saiz & Format fail dibenarkan - Maksima : 5 Megabytes & Format : Pdf,  Ms Office(doc, docx, xls, xlsx), Open Office(ods, odt), imej(png, jpg, jpeg,gif)"
+    
+  group:
+    groups: "Kumpulan : "
 
   helpers:
     links:

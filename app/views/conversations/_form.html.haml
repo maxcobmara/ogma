@@ -3,10 +3,9 @@
   - thisurl=send_draft_conversation_path
 - else
   - thisurl=:conversations
-  
+
 = form_for :conversation, url: thisurl, html: { class: "" } do |f|
   = f.hidden_field :id, value: params[:id] if params[:id]
-  
   .form-group
     = f.label (t 'conversation.recipients')
     /= f.select(:recipients, User.all.collect {|p| [ p.email, p.id ] }, {}, { multiple: true , class: "chosen-select form-control" })

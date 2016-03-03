@@ -12,14 +12,38 @@ class ConversationsController < ApplicationController
   def edit_draft
     @subj= Mailboxer::Conversation.where(id: params[:id]).first.subject  
     @bod= Mailboxer::Notification.where(id: Mailboxer::Conversation.where(id: params[:id]).first.receipts.first.notification_id).first.body
-    @recv= Mailboxer::Conversation.where(id: params[:id]).first.receipts.where(mailbox_type: 'inbox').pluck(:receiver_id)
+    
+    #RECIPIENT by group and / or person
+    #@recv= Mailboxer::Conversation.where(id: params[:id]).first.receipts.where(mailbox_type: 'inbox').pluck(:receiver_id)
+    recv= Mailboxer::Conversation.where(id: params[:id]).first.receipts.where(mailbox_type: 'inbox').pluck(:receiver_id)
+    included_group_ids=[]
+    Group.all.each do |x|
+      if x.listing.all? {|x| recv.include?(x)}
+        included_group_ids << x.listing
+        recv-= x.listing
+      end
+    end
+    include_group=included_group_ids.join(",")
+    @recv=recv+[include_group]
+    
     notify_id=Mailboxer::Conversation.where(id: params[:id]).first.receipts.first.notification_id
     @uploaded_files=AttachmentUploader.where(msgnotification_id: notify_id)
   end
   
   def create
     #raise params.inspect
-    recipients = User.where(id: conversation_params[:recipients])
+    # NOTE : retrieve recipient by group and / or person
+    all_recipients=conversation_params[:recipients]
+    selected_recipients=[]
+    for selected in all_recipients
+      if selected.include?(",")
+        selected_recipients+=selected.split(",")
+      else
+      selected_recipients << selected
+      end
+    end
+    recipients = User.where(id: selected_recipients)
+
     if conversation_params[:recipients].count > 1
       conversation = current_user.send_message(recipients, conversation_params[:body], conversation_params[:subject]).conversation
       notify_id=conversation.receipts.first.notification_id
@@ -101,7 +125,25 @@ class ConversationsController < ApplicationController
     end
     if fw
       forward_body=fw.body
-      recipient=fw.receipts.where(mailbox_type: 'inbox').first.receiver.userable.name
+      
+      #RECIPIENT by Group and / or person
+      #recipient=fw.receipts.where(mailbox_type: 'inbox').first.receiver.userable.name
+      #recipient=Staff.where(id: User.where(id: fw.receipts.where(mailbox_type: 'inbox').pluck(:receiver_id)).pluck(:userable_id) ).pluck(:name).join(", ")
+      receiver_ids=fw.receipts.where(mailbox_type: 'inbox').pluck(:receiver_id)
+      included_group_name_person=""
+      Group.all.each do |x|
+        if x.listing.all? {|x| receiver_ids.include?(x)}
+          members_name=Staff.where(id: User.where(id: x.listing).pluck(:userable_id)).pluck(:name).join(", ")
+          included_group_name_person+=x.name+"("+members_name+") "
+          receiver_ids-= x.listing
+        end
+      end
+      recipient=included_group_name_person
+      if receiver_ids.count > 0
+        receivers=Staff.where(id: User.where(id: receiver_ids).pluck(:userable_id) ).pluck(:name).join(", ")
+        recipient+=receivers
+      end
+    
       details=" ("+(t 'from')+":"+fw.sender.userable.name+", "+(t 'to2')+":"+recipient+", "+(t 'conversation.subject')+":"+fw.subject+", "+(t 'conversation.date')+":"+fw.created_at.strftime("%A, %b %d, %Y at %I:%M%p")+")   "+(t 'conversation.message').upcase+": "
       @forward_text=(t 'conversation.forwarded_message')+details+forward_body +" ---------------------------------------"
     end
@@ -126,7 +168,19 @@ class ConversationsController < ApplicationController
         form_complete="1"
       else
         #FORWARD
-        recipients = User.where(id: message_params[:recipients]-[" "])
+        #recipients = User.where(id: message_params[:recipients]-[" "])
+        # NOTE : retrieve recipient by group and / or person
+        all_recipients=message_params[:recipients]
+        selected_recipients=[]
+        for selected in all_recipients
+          if selected.include?(",")
+            selected_recipients+=selected.split(",")
+          else
+            selected_recipients << selected
+          end
+        end
+        recipients = User.where(id: selected_recipients)
+        ###
         if message_params[:recipients].count > 1 
           if message_params[:notify_id].nil? #new form
             # TODO - upon removal of conversation record, set pointer in DB (table Mailboxer::Conversation) to last record - ref: duplicates keys / violates related note
@@ -235,6 +289,8 @@ class ConversationsController < ApplicationController
     staff_list=[]
     user_ids.each{|user_id|  staff_list << [Staff.joins(:users).where('users.id=?', user_id).first.name, user_id]}
     @staff_list=staff_list.sort
+    @group_list=Group.all.collect{|x|[(t 'group.groups')+x.name, (x.members[:user_ids]-[""]).join(",") ]}
+    @staff_list+=@group_list
   end
 
   def conversation_params
