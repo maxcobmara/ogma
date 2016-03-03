@@ -54,6 +54,8 @@
           - msg_sender=msgsend.name
           /- msg_recepient=msgreceipt.name
           
+          /NOTE - display recipient by group and / or by person
+          /arr2.all?{|x| arr1.include?(x)}   
           - included_group_ids=[]
           - Group.all.each do |x|
             - if x.listing.all? {|x| msgreceipts.include?(x)}
@@ -64,15 +66,6 @@
             - msg_recipients+=x
             - msg_recipients+=", " if ind < msgreceipts.count-1
             
-            
-          /=msgreceipts
-          /arr2.all?{|x| arr1.include?(x)}
-          /= library_group= Group.find(6).listing
-         
-          /- Group.all.each{|x|included_group_ids << x.id if x.listing.all? {|x| msgreceipts.include?(x)}}
-         
-         
-              
           %br
           
           /SENTBOX

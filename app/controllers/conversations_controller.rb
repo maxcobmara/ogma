@@ -13,7 +13,7 @@ class ConversationsController < ApplicationController
     @subj= Mailboxer::Conversation.where(id: params[:id]).first.subject  
     @bod= Mailboxer::Notification.where(id: Mailboxer::Conversation.where(id: params[:id]).first.receipts.first.notification_id).first.body
     
-    #RECIPIENT by group and / or person
+    # NOTE - RECIPIENT by group and / or person (in saved draft)
     #@recv= Mailboxer::Conversation.where(id: params[:id]).first.receipts.where(mailbox_type: 'inbox').pluck(:receiver_id)
     recv= Mailboxer::Conversation.where(id: params[:id]).first.receipts.where(mailbox_type: 'inbox').pluck(:receiver_id)
     included_group_ids=[]
@@ -32,7 +32,7 @@ class ConversationsController < ApplicationController
   
   def create
     #raise params.inspect
-    # NOTE : retrieve recipient by group and / or person
+    # NOTE : retrieve recipient by group and / or person - same as FORWARD (refer Reply)
     all_recipients=conversation_params[:recipients]
     selected_recipients=[]
     for selected in all_recipients
@@ -77,37 +77,36 @@ class ConversationsController < ApplicationController
     end
   end
   
-   def send_draft
-     #raise params.inspect
-     conversation = Mailboxer::Conversation.where(id: params[:id]).first
-     notify_id=conversation.receipts.first.notification_id
-     unless conversation_params[:data].nil? #when attachment exist
-       newattach = AttachmentUploader.new
-       newattach.data = conversation_params[:data]
-       if newattach.valid?
-         newattach.msgnotification_id=notify_id  
-         newattach.save
-         if params[:submit_button]
-           Mailboxer::Notification.where(id: notify_id).first.update_attributes(draft: false) #send draft (with attachment)
-           flash[:notice]=(t 'conversation.message_sent')
-           redirect_to conversation_path(conversation)
-         #########
-         else
-           flash[:notice]=t 'conversation.file_uploaded_send_message'
-           redirect_to action: 'edit_draft', id: conversation.id
-         end  
-         #########
-       else
-         
-         flash[:notice]=(t 'conversation.uploaded_invalid')
-         redirect_to action: 'edit_draft', id: conversation.id
-       end
-     else #no attachment
-       Mailboxer::Notification.where(id: notify_id).first.update_attributes(draft: false) 
-       flash[:success] =(t 'conversation.message_sent')
-       redirect_to conversation_path(conversation)
-     end
-   end
+  def send_draft
+    #raise params.inspect
+    conversation = Mailboxer::Conversation.where(id: params[:id]).first
+    notify_id=conversation.receipts.first.notification_id
+    unless conversation_params[:data].nil? #when attachment exist
+      newattach = AttachmentUploader.new
+      newattach.data = conversation_params[:data]
+      if newattach.valid?
+        newattach.msgnotification_id=notify_id  
+        newattach.save
+        if params[:submit_button]
+          Mailboxer::Notification.where(id: notify_id).first.update_attributes(draft: false) #send draft (with attachment)
+          flash[:notice]=(t 'conversation.message_sent')
+          redirect_to conversation_path(conversation)
+          #########
+        else
+          flash[:notice]=t 'conversation.file_uploaded_send_message'
+          redirect_to action: 'edit_draft', id: conversation.id
+        end  
+        #########
+      else
+        flash[:notice]=(t 'conversation.uploaded_invalid')
+        redirect_to action: 'edit_draft', id: conversation.id
+      end
+    else #no attachment
+      Mailboxer::Notification.where(id: notify_id).first.update_attributes(draft: false) 
+      flash[:success] =(t 'conversation.message_sent')
+      redirect_to conversation_path(conversation)
+    end
+  end
 
   def show
     drafts_notify_ids=Mailboxer::Notification.where(draft: true).pluck(:id)
@@ -126,7 +125,7 @@ class ConversationsController < ApplicationController
     if fw
       forward_body=fw.body
       
-      #RECIPIENT by Group and / or person
+      # NOTE - RECIPIENT by Group and / or person - for use in FORWARD body
       #recipient=fw.receipts.where(mailbox_type: 'inbox').first.receiver.userable.name
       #recipient=Staff.where(id: User.where(id: fw.receipts.where(mailbox_type: 'inbox').pluck(:receiver_id)).pluck(:userable_id) ).pluck(:name).join(", ")
       receiver_ids=fw.receipts.where(mailbox_type: 'inbox').pluck(:receiver_id)
@@ -169,7 +168,7 @@ class ConversationsController < ApplicationController
       else
         #FORWARD
         #recipients = User.where(id: message_params[:recipients]-[" "])
-        # NOTE : retrieve recipient by group and / or person
+        # NOTE : retrieve recipient by group and / or person - same as Create
         all_recipients=message_params[:recipients]
         selected_recipients=[]
         for selected in all_recipients
