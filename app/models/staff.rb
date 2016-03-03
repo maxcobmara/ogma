@@ -88,7 +88,7 @@ class Staff < ActiveRecord::Base
   #25Jan2015
   has_many :circulations
   has_many :documents, :through => :circulations
-  
+
   #validates_attachment_size         :photo, :less_than => 500.kilobytes
   #validates_attachment_content_type :photo, :content_type => ['image/jpeg', 'image/png']
  #---------------Validations------------------------------------------------
@@ -164,6 +164,10 @@ class Staff < ActiveRecord::Base
 
     def staff_name_with_position_grade_unit
       "#{name}  (#{position_for_staff}-#{grade_for_staff}-#{unit_for_staff})"
+    end
+    
+    def staff_name_with_unit
+      "#{name} (#{unit_for_staff})"
     end
 
     def unit_for_staff

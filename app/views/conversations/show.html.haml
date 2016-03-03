@@ -36,12 +36,22 @@
             /= current_user.id
             /= draft.id
             - body_text=draft.body
+            
+            
+            /#RECIPIENT by group and / or person
             /- latest_recipients=Mailboxer::Receipt.where(mailbox_type: 'inbox', notification_id: conversation.receipts.last.notification_id).pluck(:receiver_id)
             - latest_recipients=Mailboxer::Receipt.where(mailbox_type: 'inbox', notification_id: draft.id).pluck(:receiver_id)
+            - included_group_ids=[]
+            - Group.all.each do |x|
+              - if x.listing.all? {|x| latest_recipients.include?(x)}
+                - included_group_ids << x.listing
+                - latest_recipients-= x.listing
+            - include_group=included_group_ids.join(",")
+            - latest_recipients+=[include_group]
+            /=included_group_ids
+            
             /when recipient is not sender of current message (notification)
-            /sape
             /=latest_recipients
-            /= receipt_toreply.receiver_id
             - if latest_recipients!=[receipt_toreply.receiver_id]
               /forward
               - reply_val="2"
@@ -83,7 +93,7 @@
             = f.label (t 'conversation.attachments')
             .small=t 'conversation.allowed_format'
 
-            ////draft-list uploaded files if any
+            /draft-list of uploaded files if any
             - if @receipts.count != @receipts_rev.count && draft &&draft.sender_id==current_user.id
               .small 
                 - cnt=0

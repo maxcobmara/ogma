@@ -53,11 +53,20 @@
         
           - msg_sender=msgsend.name
           /- msg_recepient=msgreceipt.name
+          
+          /NOTE - display recipient by group and / or by person
+          /arr2.all?{|x| arr1.include?(x)}   
+          - included_group_ids=[]
+          - Group.all.each do |x|
+            - if x.listing.all? {|x| msgreceipts.include?(x)}
+              - included_group_ids << x.id
+              - msgreceipts-= x.listing
           - msg_recipients=""
           - Staff.where(id: User.where(id: msgreceipts).pluck(:userable_id)).order(id: :asc).pluck(:name).each_with_index do |x, ind|
             - msg_recipients+=x
             - msg_recipients+=", " if ind < msgreceipts.count-1
-          /=msgreceipts
+            
+          %br
           
           /SENTBOX
           /- msg_sender= message.conversation.receipts.order(created_at: :asc).where(mailbox_type: 'sentbox')[ind].receiver.userable.name
@@ -70,19 +79,56 @@
             - if receipt.mailbox_type=="sentbox"
               %b=(t 'from')+" : "+msg_sender if message.sender.userable_id==current_user.userable_id
               %br
-              =(t 'to2')+" : "+msg_recipients
+              =(t 'to2')+" : "
+              - if included_group_ids.count > 0
+                %ol
+                  - for inc_group in included_group_ids
+                    - user_group=Group.find(inc_group)
+                    %li
+                      %u=(t 'group.groups')+user_group.name
+                      .small="("+Staff.where(id: User.where(id: user_group.listing).pluck(:userable_id)).pluck(:name).join(", ")+")"
+                  - if msgreceipts.count > 0
+                    %li=msg_recipients
+              - else
+                =msg_recipients
+
             /Recepient Page  
             - if receipt.mailbox_type=="inbox"
               =(t 'from')+" : "+msg_sender if message.sender.userable_id!=current_user.userable_id
               %br
-              %b=(t 'to2')+" : "+msg_recipients
+              %b
+                =(t 'to2')+" : "
+                /=msg_recipients
+                - if included_group_ids.count > 0
+                  %ol
+                    - for inc_group in included_group_ids
+                      - user_group=Group.find(inc_group)
+                      %li
+                        %u=(t 'group.groups')+user_group.name
+                        .small="("+Staff.where(id: User.where(id: user_group.listing).pluck(:userable_id)).pluck(:name).join(", ")+")"
+                    - if msgreceipts.count > 0
+                      %li=msg_recipients
+                - else
+                  =msg_recipients
           - else
             /OTHER related messages------------
             /Sender & Recipient Page
             - if @receipts.group_by(&:notification_id).count > 1
               =(t 'from')+" : "+msg_sender
               %br
-              =(t 'to2')+" : "+msg_recipients
+              =(t 'to2')+" : "
+              /+msg_recipients
+              - if included_group_ids.count > 0
+                %ol
+                  - for inc_group in included_group_ids
+                    - user_group=Group.find(inc_group)
+                    %li
+                      %u=(t 'group.groups')+user_group.name
+                      .small="("+Staff.where(id: User.where(id: user_group.listing).pluck(:userable_id)).pluck(:name).join(", ")+")"
+                  - if msgreceipts.count > 0
+                    %li=msg_recipients
+              - else
+                =msg_recipients
         
         - if @receipts.group_by(&:notification_id).count > 1 || ind==0
           %br

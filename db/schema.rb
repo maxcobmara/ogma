@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160228161605) do
+ActiveRecord::Schema.define(version: 20160302145157) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -1023,6 +1023,14 @@ ActiveRecord::Schema.define(version: 20160228161605) do
     t.string   "exam2desc"
     t.decimal  "exam2marks"
     t.decimal  "examweight"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "groups", force: true do |t|
+    t.string   "name"
+    t.string   "description"
+    t.text     "members"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
