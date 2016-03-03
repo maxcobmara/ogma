@@ -1,7 +1,5 @@
 Ogma::Application.routes.draw do
 
-  resources :groups
-
   namespace :staff do
     resources :staffs, as: :infos do
       member do
@@ -461,6 +459,8 @@ Ogma::Application.routes.draw do
     #  post :upload
     #end
   end
+
+  resources :groups
   
 
   root  'static_pages#home'

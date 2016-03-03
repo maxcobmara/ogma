@@ -12,3 +12,7 @@
     = link_to mailbox_trash_path do
       %em.fa.fa-trash-o.fa-lg
       %span=t('conversation.trash')
+  %li{:class => active_page(:group)}
+    = link_to groups_path do
+      %em.fa.fa-users.fa-lg
+      %span=t('group.list')

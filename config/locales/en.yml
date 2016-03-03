@@ -3374,6 +3374,14 @@ en:
   
   group:
     groups: "Group : "
+    list: Group Listing
+    name: Name
+    description: Description
+    members: Members
+    position: Position
+    new: New Group
+    edit: Edit Group
+    details: Group Details
 
   helpers:
     links:

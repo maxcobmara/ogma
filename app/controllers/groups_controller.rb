@@ -4,8 +4,10 @@ class GroupsController < ApplicationController
   respond_to :html
 
   def index
-    @groups = Group.all
-    respond_with(@groups)
+    @search = Group.search(params[:q])
+    @groups = @search.result.page(params[:page]).per(5)
+    @active = :group
+    #respond_with(@groups)
   end
 
   def show

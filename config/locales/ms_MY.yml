@@ -3292,6 +3292,14 @@ ms_MY:
     
   group:
     groups: "Kumpulan : "
+    list: Senarai Kumpulan
+    name: Nama
+    description: Deskripsi
+    members: Ahli Kumpulan
+    position: Jawatan
+    new: Kumpulan Baru
+    edit: Sunting Kumpulan
+    details: Butiran Kumpulan
 
   helpers:
     links:

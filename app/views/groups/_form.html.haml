@@ -1,0 +1,44 @@
+= form_for(@group) do |f| 
+  = render 'shared/flashes'
+  .col-md-offset-1
+    .row
+      .form-group
+        .col-sm-2.control-label
+          = f.label t 'group.name' , for: :name
+        .col-md-6
+          = f.text_field :name, class: 'form-control'
+    .row
+      .form-group
+        .col-sm-2.control-label
+          = f.label t 'group.description' , for: :description
+        .col-md-9
+          = f.text_field :description, class: 'form-control'
+    .row
+      .form-group
+        .col-sm-2.control-label
+          = f.label t 'group.members' , for: :menbers
+        .col-md-9
+          - user_ids=User.where(userable_type: 'Staff').where('userable_id is not null').order(userable_id: :asc).pluck(:id)
+          - staff_list=[]
+          - user_ids.each{|user_id|  staff_list << [Staff.joins(:users).where('users.id=?', user_id).first.name, user_id]}
+          - @staff_list=staff_list.sort
+          - if @group.members[:user_ids].nil?
+            - recipient_list=[]
+          - else
+            - recipient_list=(@group.members[:user_ids]-[""]).collect{|x|x.to_i}
+          = f.fields_for :members do |ff| 
+            = ff.select("user_ids", @staff_list, {selected: recipient_list}, { multiple: true , class: "chosen-select form-control" } )
+  
+  .col-md-8.col-md-offset-2
+    .row
+      %hr
+    .form-group
+      .col-sm-3.col-md-offset-2
+        = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), groups_path, :class => 'btn btn-default'
+      .col-sm-4
+        = f.submit t('submit'), class: "btn btn-primary" 
+   
+
+  
+    
+
