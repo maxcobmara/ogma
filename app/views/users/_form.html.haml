@@ -410,7 +410,7 @@
               /%th.centre{width: "12%"} 
           %body
             - cnt=0
-            - for role in Role.where('authname ILIKE(?)', '%module_admin').where.not('name ILIKE(?)', '%Mailer%').where(description: ["Address Book", "Banks", "Titles", "Staff Shifts", "Travel Claims Transport Groups", "Travel Claim Mileage Rates", "Asset Categories"]).order(id: :asc)
+            - for role in Role.where('authname ILIKE(?)', '%module_admin').where.not('name ILIKE(?)', '%Mailer%').where(description: ["Address Book", "Banks", "Messaging Groups","Titles", "Staff Shifts", "Travel Claims Transport Groups", "Travel Claim Mileage Rates", "Asset Categories"]).order(id: :asc)
               - read=Role.where('id !=?', role.id).where(description: role.description).first
               /- user=Role.where.not(id: [role.id, read.id]).where(description: role.description).first
               /- owner=Role.where.not(id: [role.id, read.id, user.id]).where(description: role.description).first
@@ -425,7 +425,7 @@
               %tr
                 %td.left=check_box_tag "efilemain_#{cnt}", cnt, false, class: "supportmain"
                 %td.left
-                  - if ["Address Book", "Banks"].include?(rolename)
+                  - if ["Address Book", "Banks", "Messaging Groups"].include?(rolename)
                     =rolename
                   - else
                     %font{style: 'color: grey;'}=rolename

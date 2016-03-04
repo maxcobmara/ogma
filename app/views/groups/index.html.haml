@@ -17,37 +17,38 @@
             %li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'actions.new'))), new_group_path
           %ul.nav.navbar-nav.navbar-right
             %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "index_search_bar"
-            %li.dropdown
-              %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#"}
-                = fa_icon "print", text: (t 'actions.print')
-                %b.caret
-              %ul.dropdown-menu
-                %li= link_to  (fa_icon "file-pdf-o", text: (t 'document.generate_report')),  document_report_documents_path(params.merge(format: 'pdf' ))
+            /%li.dropdown
+            /  %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#"}
+            /    = fa_icon "print", text: (t 'actions.print')
+            /    %b.caret
+            /  %ul.dropdown-menu
+            /    %li= link_to  (fa_icon "file-pdf-o", text: (t 'document.generate_report')),  document_report_documents_path(params.merge(format: 'pdf' ))
         
         .row
           %table.table-striped.table-hover.ogma
             %thead
               %tr
-                %th=t 'group.name'
-                /= sort_link(@search, :serialno, (t 'document.serial_no'))
-                %th=t 'group.description'
-                /= sort_link(@search, :refno, (t 'document.ref_no'))
-                %th=(t 'group.members')+"    ("+(t 'group.position')+")"
-                /= sort_link(@search, :category, (t 'document.category'))
+                %th=(t 'group.membership')
+                %th= sort_link(@search, :name, (t 'group.name'))
+                %th= sort_link(@search, :description, (t 'group.description'))
+                - permitted_to? :read, :groups do
+                  %th= sort_link(@search, :members, ((t 'group.members')+"    ("+(t 'group.position')+")"))
             %tbody
               = render "index_search"
               - @groups.each do |group| 
                 %tr
+                  %td.centre=group.is_member(current_user.id) ? image_tag("tick.png") : image_tag("cross.png")
                   %td=link_to group.name, group_path(group)
                   %td=group.description
-                  - if group.members[:user_ids].nil? 
-                    - recipient_list=[]
-                  - else
-                    - recipient_list=(group.members[:user_ids]-[""]).collect{|x|x.to_i}
-                  %td
-                    %ol
-                      - for recipient in recipient_list
-                        - staff=Staff.find(User.find(recipient).userable_id)
-                        %li=staff.name+"    ("+staff.position_for_staff+")"
+                  - permitted_to? :read, :groups do
+                    - if group.members[:user_ids].nil? 
+                      - recipient_list=[]
+                    - else
+                      - recipient_list=(group.members[:user_ids]-[""]).collect{|x|x.to_i}
+                    %td
+                      %ol
+                        - for recipient in recipient_list
+                          - staff=Staff.find(User.find(recipient).userable_id)
+                          %li=staff.name+"    ("+staff.position_for_staff+")"
 
           .right{style:"padding:0 30px; margin:0;"}= paginate @groups, :theme => 'twitter-bootstrap-3'

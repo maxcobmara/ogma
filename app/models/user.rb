@@ -452,6 +452,15 @@ class User < ActiveRecord::Base
     exam_ids=Exam.where(subject_id: subject_ids).pluck(:id)
   end
   
+  #local messaging - group
+  def members_of_msg_group
+    group_ids=[]
+    Group.all.each do |gr|
+      group_ids << gr.id if gr.listing.include?(id)
+    end
+    group_ids
+  end
+  
   def role_symbols
    roles.map do |role|
     role.authname.to_sym

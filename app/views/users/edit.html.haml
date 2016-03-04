@@ -600,7 +600,7 @@ $(function(){
     var esupportmg = document.getElementsByClassName('supportmanage');
     var esupportrd = document.getElementsByClassName('supportread');
     
-    for(i=0; i<7; i++)
+    for(i=0; i<8; i++)
     {
       if(supportmg[i].checked) {
         esupportmg[i].checked=true;
@@ -697,6 +697,16 @@ $(function(){
     /*set by default at all time - Examquestion (Member) not applicable - refer auth rules*/
     examown[6].checked=false;
     examown[6].disabled=true;
+    
+    /*NOTE - enable these when Admin & Support tables ready*/
+    for (i=2;i<7;i++)
+    {
+      supportmg[i].checked=false;
+      supportmg[i].disabled=true;
+      supportrd[i].checked=false;
+      supportrd[i].disabled=true;
+      esupportmn[i].disabled=true;
+    }
     
   });
   
@@ -1093,7 +1103,7 @@ $(function(){
     var esupportmg = document.getElementsByClassName('supportmanage');
     var esupportrd = document.getElementsByClassName('supportread');
     
-    for(i=0; i<7; i++){
+    for(i=0; i<8; i++){
       if(supportmg[i].checked)
       {  esupportmg[i].checked=true;}
       else if(supportrd[i].checked)
@@ -1498,6 +1508,16 @@ $(function(){
     /*set by default at all time - Examquestion (Member) not applicable - refer auth rules*/
     examown[6].checked=false;
     examown[6].disabled=true;
+    
+    /*NOTE - enable these when Admin & Support tables ready*/
+    for (i=2;i<7; i++)
+    {
+      supportmg[i].checked=false;
+      supportmg[i].disabled=true;
+      supportrd[i].checked=false;
+      supportrd[i].disabled=true;
+      esupportmn[i].disabled=true;
+    }
     
   });
   
@@ -2292,7 +2312,7 @@ $(function(){
     var esupportm = document.getElementsByClassName('supportmain');
     
     /* 12) Admin & support tables when UNCHECK , all training main is false*/
-    for(i=0; i < 7; i++){
+    for(i=0; i < 8; i++){
       if (esupportm[i].checked==false) {
         supportmg[i].checked=false;
         supportrd[i].checked=false;
@@ -3116,6 +3136,16 @@ $(function(){
     /*set by default at all time - Examquestion (Member) not applicable - refer auth rules*/
     examown[6].checked=false;
     examown[6].disabled=true;
+    
+    /*NOTE - enable these when Admin & Support tables ready*/
+    for (i=2;i<7;i++)
+    {
+      supportmg[i].checked=false;
+      supportmg[i].disabled=true;
+      supportrd[i].checked=false;
+      supportrd[i].disabled=true;
+      esupportm[i].disabled=true;
+    }
     
     $("#form1").submit();
   });
