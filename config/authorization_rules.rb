@@ -238,6 +238,11 @@ authorization do
    has_permission_on :library_books, :to => :read                                                                # A staff can view all books
    has_permission_on :library_librarytransactions, :to => [:analysis_statistic, :analysis_statistic_main, :analysis, :analysis_book, :general_analysis, :general_analysis_ext] 
                                                                                                                                              # A staff can read all - Transaction Analysis & Resource Statistics
+   #group for local messaging
+   has_permission_on :groups, :to => :menu
+   has_permission_on :groups, :to => :show do
+     if_attribute :id => is_in {user.members_of_msg_group}
+   end
  end
    
   role :staff_administrator do
@@ -1779,7 +1784,13 @@ authorization do
 #      has_permission_on :library_mailer, :to => :manage
 #   end
  
-
+  #55 - Ogma Only - Recipient GROUP for Local Messaging
+  role :messaging_groups_module_admin do
+    has_permission_on :groups, :to => :manage
+  end
+  role :messaging_groups_module_viewer do
+    has_permission_on :groups, :to => :read
+  end
 end
 
 =begin

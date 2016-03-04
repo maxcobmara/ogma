@@ -1,0 +1,19 @@
+= search_form_for @search, url: groups_path,  class: "form-inline" do |f|
+  %tr.search_row{style: "display: none;"}
+    %td{style: 'width:80px;'}=select_tag('q[membership_search]', options_for_select([['All Records',''],['Member',"#{current_user.id}"],['Not a member',0]]), class: 'selectpicker',"data-width"=>'60px') 
+    %td{style: 'width:80px;'}=f.text_field :name_cont, :size=> 2,  class:  'form-control'
+    - if permitted_to? :read, :groups
+      %td=f.text_field :description_cont, :size=> 2,  class:  'form-control'
+      %td
+        .input-group
+          =f.text_field :members_search, size: 2, class: 'form-control'
+          %span.input-group-btn
+            %button.btn.btn-sm.btn-default.right{:type => "submit"}
+              %i.fa.fa-search.fa-fw
+    - else
+      %td
+        .input-group
+          =f.text_field :description_cont, :size=> 2,  class:  'form-control'
+          %span.input-group-btn
+            %button.btn.btn-sm.btn-default.right{:type => "submit"}
+              %i.fa.fa-search.fa-fw

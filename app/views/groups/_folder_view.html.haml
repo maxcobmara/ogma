@@ -1,0 +1,20 @@
+.row
+  .spacer
+  .col-md-12
+    = link_to (t 'conversation.compose'), new_group_path, class: "btn btn-success"
+    .spacer
+  .col-md-4
+    .panel.panel-default
+      .panel-body
+        = render 'mailbox/folders'
+  .col-md-8
+    .panel.panel-default
+      .panel-body
+        - if is_group
+          = render 'groups/show'
+        - else
+          - if current_page?(controller: 'groups', action: 'new')
+            %h1=t 'group.new' 
+          - else
+            %h1=t 'group.edit'
+          = render 'groups/form'

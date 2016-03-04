@@ -614,12 +614,15 @@ en:
     address_book_module_admin: Address Book Module Admin
     banks_module_viewer: Banks Module Viewer
     address_book_module_viewer: Address Book Module Viewer
+    messaging_groups_module_admin: Messaging Groups Module Admin
+    messaging_groups_module_viewer: Messaging Groups Module Viewer
     #banks_module_user: Banks Module User
     #address_book_module_user: Address Book Module User
     #banks_module_member: Banks Module Member
     #address_book_module_member: Address Book Module Member
     banks: Banks
     address_book: Address Book
+    messaging_groups: Messaging Groups
     
     titles_module_admin: Titles Module Admin
     titles_module_viewer: Titles Module Viewer
@@ -3374,6 +3377,15 @@ en:
   
   group:
     groups: "Group : "
+    list: Group Listing
+    name: Name
+    description: Description
+    members: Members
+    position: Position
+    new: New Group
+    edit: Edit Group
+    details: Group Details
+    membership: Membership
 
   helpers:
     links:

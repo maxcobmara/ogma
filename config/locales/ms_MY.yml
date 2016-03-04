@@ -594,12 +594,15 @@ ms_MY:
     address_book_module_admin: Pentadbir Modul Buku Alamat
     banks_module_viewer: Paparan Modul Bank
     address_book_module_viewer: Paparan Modul Buku Alamat
+    messaging_groups_module_admin: Pentadbir Modul Kumpulan Pemesejan
+    messaging_groups_module_viewer: Paparan Modul Kumpulan Pemesejan
     #banks_module_user: Pengguna Modul Bank
     #address_book_module_user: Pengguna Modul Buku Alamat
     #banks_module_member: Pemilik Modul Bank
     #address_book_module_member: Pemilik Modul Buku Alamat
     banks: Bank
     address_book: Buku Alamat
+    messaging_groups: Kumpulan Pemesejan
     
     titles_module_admin: Pentadbir Modul Gelaran
     titles_module_viewer: Paparan Modul Gelaran
@@ -3292,6 +3295,15 @@ ms_MY:
     
   group:
     groups: "Kumpulan : "
+    list: Senarai Kumpulan
+    name: Nama
+    description: Deskripsi
+    members: Ahli Kumpulan
+    position: Jawatan
+    new: Kumpulan Baru
+    edit: Sunting Kumpulan
+    details: Butiran Kumpulan
+    membership: Keahlian
 
   helpers:
     links:

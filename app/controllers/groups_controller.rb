@@ -1,11 +1,14 @@
 class GroupsController < ApplicationController
+  filter_resource_access
   before_action :set_group, only: [:show, :edit, :update, :destroy]
 
   respond_to :html
 
   def index
-    @groups = Group.all
-    respond_with(@groups)
+    @search = Group.search(params[:q])
+    @groups = @search.result.page(params[:page]).per(5)
+    @active = :group
+    #respond_with(@groups)
   end
 
   def show
