@@ -24,7 +24,7 @@
             - first_staff=Staff.where(id: User.where(id: msgreceipts.first).first.userable_id).first
             /%a{:href => "/staff/staffs/#{first_staff.id}"}
             /  /%img.media-object{:alt => "...", :src => "#{msgreceipt.photo.url(:thumbnail)}"}
-            - if first_staff.photo.blank?
+            - if msgsend.photo.blank?
               %img.media-object{:src => "http://placekitten.com/150/200", :width => "50", :height => "60"}
             - else
               .media-object=image_tag msgsend.photo.url(:thumbnail)
