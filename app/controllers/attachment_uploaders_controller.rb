@@ -73,6 +73,6 @@ class AttachmentUploadersController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def attachment_uploader_params
-      params.require(:attachment_uploader).permit(:id, :msgnotification_id, :created_at, :updated_at, :data, :data_file_name, :data_content_type, :data_file_size, :data_updated_at])
+      params.require(:attachment_uploader).permit(:id, :msgnotification_id, :created_at, :updated_at, :data, :data_file_name, :data_content_type, :data_file_size, :data_updated_at)
     end
 end
