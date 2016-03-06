@@ -597,6 +597,7 @@ authorization do
   end
   
   role :guest do
+    has_permission_on :users, :to => [:link, :update]
     #has_permission_on :users, :to => :create
     #has_permission_on :library_books, :to => :read   
     #hide ALL modules from guest first --> 14 March 2015 & temporary add 3 items for permission for warden library_books, assets & students

@@ -21,12 +21,19 @@
         / user avators can go here
         - if @receipts.group_by(&:notification_id).count > 1 || ind==0
           - if receipt.mailbox_type=="sentbox" && msgreceipts.count==1
-            %a{:href => "/staff/staffs/#{msgreceipts.first}"}
-              /%img.media-object{:alt => "...", :src => "#{msgreceipt.photo.url(:thumbnail)}"}
+            - first_staff=Staff.where(id: User.where(id: msgreceipts.first).first.userable_id).first
+            /%a{:href => "/staff/staffs/#{first_staff.id}"}
+            /  /%img.media-object{:alt => "...", :src => "#{msgreceipt.photo.url(:thumbnail)}"}
+            - if msgsend.photo.blank?
+              %img.media-object{:src => "http://placekitten.com/150/200", :width => "50", :height => "60"}
+            - else
               .media-object=image_tag msgsend.photo.url(:thumbnail)
           - elsif receipt.mailbox_type=="inbox"
-            %a{:href => "/staff/staffs/#{msgsend.id}"}
-              /%img.media-object{:alt => "...", :src => "#{msgsend.photo.url(:thumbnail)}"} 
+            /%a{:href => "/staff/staffs/#{msgsend.id}"}
+            /  /%img.media-object{:alt => "...", :src => "#{msgsend.photo.url(:thumbnail)}"} 
+            - if msgsend.photo.blank?
+              %img.media-object{:src => "http://placekitten.com/150/200", :width => "50", :height => "60"}
+            - else
               .media-object=image_tag msgsend.photo.url(:thumbnail)
 
       .media-body
