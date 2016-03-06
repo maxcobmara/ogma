@@ -21,9 +21,10 @@
         / user avators can go here
         - if @receipts.group_by(&:notification_id).count > 1 || ind==0
           - if receipt.mailbox_type=="sentbox" && msgreceipts.count==1
-            %a{:href => "/staff/staffs/#{Staff.where(id: User.where(id: msgreceipts.first).first.userable_id).first.id}"}
+            - first_staff=Staff.where(id: User.where(id: msgreceipts.first).first.userable_id).first.id
+            %a{:href => "/staff/staffs/#{first_staff}"}
               /%img.media-object{:alt => "...", :src => "#{msgreceipt.photo.url(:thumbnail)}"}
-              - if msgsend.photo.blank?
+              - if first_staff.photo.blank?
                 %img.media-object{:src => "http://placekitten.com/150/200", :width => "50", :height => "60"}
               - else
                 .media-object=image_tag msgsend.photo.url(:thumbnail)
