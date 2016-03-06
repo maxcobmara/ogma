@@ -21,13 +21,19 @@
         / user avators can go here
         - if @receipts.group_by(&:notification_id).count > 1 || ind==0
           - if receipt.mailbox_type=="sentbox" && msgreceipts.count==1
-            %a{:href => "/staff/staffs/#{msgreceipts.first}"}
+            %a{:href => "/staff/staffs/#{Staff.where(id: User.where(id: msgreceipts.first).first.userable_id).first.id}"}
               /%img.media-object{:alt => "...", :src => "#{msgreceipt.photo.url(:thumbnail)}"}
-              .media-object=image_tag msgsend.photo.url(:thumbnail)
+              - if msgsend.photo.blank?
+                %img.media-object{:src => "http://placekitten.com/150/200", :size => "50x50"}
+              - else
+                .media-object=image_tag msgsend.photo.url(:thumbnail)
           - elsif receipt.mailbox_type=="inbox"
             %a{:href => "/staff/staffs/#{msgsend.id}"}
               /%img.media-object{:alt => "...", :src => "#{msgsend.photo.url(:thumbnail)}"} 
-              .media-object=image_tag msgsend.photo.url(:thumbnail)
+              - if msgsend.photo.blank?
+                %img.media-object{:src => "http://placekitten.com/150/200", :width => "50", :height => "60"}
+              - else
+                .media-object=image_tag msgsend.photo.url(:thumbnail)
 
       .media-body
         %h4.media-heading
