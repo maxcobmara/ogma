@@ -240,6 +240,19 @@
                 %td.centre=radio_button_tag "user_role_#{rolename2}", user.id, @user.roles.include?(user), class: "efilinguser2"
                 %td.centre=radio_button_tag "user_role_#{rolename2}", owner.id, @user.roles.include?(owner), class: "efilingowner2"
               - cnt+=1
+            
+            /Local Messaging Only
+            - local_msg_owner=Role.where('authname ILIKE(?)', '%module_member').where.not('name ILIKE(?)', '%Mailer%').where(description: ["Local Messaging"]).first
+            %span{style: 'display: none;'}
+              = check_box_tag "user[role_ids][]", local_msg_owner.id, @user.roles.include?(local_msg_owner), class: "efilingowner"
+            - rolename1=local_msg_owner.authname.split("_module")[0].strip
+            - rolename= t('user.'+rolename1)
+            - rolename2=rolename1.downcase
+            %tr
+              %td.left=check_box_tag "efilemain_#{cnt}", cnt, false, class: "filemain"
+              %td.left{colspan: 4}=rolename+(t 'user.group_member_access')
+              %td.centre=radio_button_tag "user_role_#{rolename2}", local_msg_owner.id, @user.roles.include?(local_msg_owner), class: "efilingowner2"
+                
         .small 
           =t 'actions.uncheck'
           %font{style: "color: red;"}*

@@ -238,11 +238,13 @@ authorization do
    has_permission_on :library_books, :to => :read                                                                # A staff can view all books
    has_permission_on :library_librarytransactions, :to => [:analysis_statistic, :analysis_statistic_main, :analysis, :analysis_book, :general_analysis, :general_analysis_ext] 
                                                                                                                                              # A staff can read all - Transaction Analysis & Resource Statistics
-   #group for local messaging
+   #local messaging & group for local messaging
+   has_permission_on :conversations, :to => [:create, :show, :edit_draft, :send_draft, :reply, :trash, :untrash]
    has_permission_on :groups, :to => :menu
    has_permission_on :groups, :to => :show do
      if_attribute :id => is_in {user.members_of_msg_group}
    end
+   
  end
    
   role :staff_administrator do
@@ -617,7 +619,7 @@ authorization do
   #User : can view everything & update data (RU/A)
   #Member(Owner) : should only see his own record & be able to edit it (CRUD/O)
   #####start of Staff Module#######################################
-  #1)OK - all 4 - 4Feb2016
+  #1)OK - all 4 - 4Feb2016 ** NOTE - local messaging & groups added into Staff modules - all access as of 'Staff' role
   role :staffs_module_admin do
     has_permission_on :staff_staffs, :to => [:manage, :borang_maklumat_staff] #1) OK - if read (for all), Own data - can update / pdf, if manage also OK
   end
@@ -1719,7 +1721,7 @@ authorization do
     has_permission_on :documents, :to => [:menu, :read, :update, :document_report]
   end
   role :documents_module_member do
-    has_permission_on :documents, :to => [:read, :create]
+    has_permission_on :documents, :to => [:menu, :read, :create]
     has_permission_on :documents, :to => [:update]   do 
       if_attribute :stafffiled_id => is {user.userable.id}
     end
@@ -1792,6 +1794,15 @@ authorization do
   role :messaging_groups_module_viewer do
     has_permission_on :groups, :to => :read
   end
+  #56 - Ogma Only - Local Messaging - FULL access for Conversation but MEMBER access for Group - as in 'Staff' role
+  role :local_messaging_module_member do
+    has_permission_on :conversations, :to => [:create, :show, :edit_draft, :send_draft, :reply, :trash, :untrash]
+    has_permission_on :groups, :to => :menu
+    has_permission_on :groups, :to => :show do
+      if_attribute :id => is_in {user.members_of_msg_group}
+    end
+  end
+  
 end
 
 =begin

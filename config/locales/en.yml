@@ -484,7 +484,7 @@ en:
     rule15: "Asset Defect Module (Member) only workable for defective reporter and decisioner, for processing purpose, please use 'Asset Administrator' role instead."
     rule20: "Asset Loan Module (Member) only applicable for members of responsible Unit (of loaned asset). For full access on asset loan, please activate either Asset Loan Module (Admin) or 'Asset Administrator' role."
     rule16: "Asset pricing details viewable only to user with 'Administration' or 'Asset Administrator' roles or those with Asset List Module (Admin/User) access."
-    rule17: "E-Filing modules (Events, Bulletins, Files) requires access to Documents modules (Admin/Viewer/User/Member) to be activated."
+    rule17: "E-Filing modules (Events, Bulletins, Files, Local Messaging) requires access to Documents modules (Admin/Viewer/User/Member) to be activated."
     rule18: "Support Tables :"
     rule18a: "Activate 'Titles', 'Banks' & 'Staff Shifts' in addition to access by Staffs modules."
     rule18b: "Activate 'Travel Claims Transport Groups' & 'Travel Claim Mileage Rates'in addition to access by Travel Claims modules."
@@ -508,10 +508,13 @@ en:
     bulletins_module_member: Bulletins Module  Member
     files_module_member: Files Module Member
     documents_module_member: Documents Module Member
+    local_messaging_module_member: Local Messaging Module Member
     events: Events
     bulletins: Bulletins
     files: File Registry
     documents: Document Registry
+    local_messaging: Local Messaging
+    group_member_access: " (with Group Member Access)"
     
     #Library Parts
     library_transactions_module_admin: Library Transactions Module Admin
