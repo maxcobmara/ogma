@@ -52,7 +52,7 @@
             
             /when recipient is not sender of current message (notification)
             /=latest_recipients
-            - if latest_recipients!=[receipt_toreply.receiver_id]
+            - if latest_recipients-[""]!=[receipt_toreply.receiver_id]
               /forward
               - reply_val="2"
               - recv=latest_recipients
