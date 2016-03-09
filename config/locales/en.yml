@@ -411,6 +411,7 @@ en:
     subject1: "Upon selection of Administration..."
     subject2: "Note, upon certain role assignment may restrict user access on certain modules as stated in below table"
     remove_module_access: to remove selected module access
+    sign_in_required: "Selected menu link require access in NEW version of ICMS. Please sign-in accordingly. For sign-up purpose, kindly use email account as of your PREVIOUS ICMS version staff record."
     
     ###
     roles_modules: "Roles & Corresponding Modules"
