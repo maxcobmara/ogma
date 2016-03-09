@@ -30,6 +30,9 @@ class ApplicationController < ActionController::Base
    '/dashboard'
   end
   
+  def after_sign_out_path_for(resource)
+    "http://#{request.host}:3000/logout"
+  end
   
 
   private
