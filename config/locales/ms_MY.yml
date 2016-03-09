@@ -464,7 +464,7 @@ ms_MY:
     rule15: "Modul Kerosakan Aset (Pemilik) hanya berfungsi untuk pelapor kerosakan dan pembuat keputusan. Bagi memproses kerosakan aset yang dilaporkan, sila gunakan peranan 'Pentadbir Aset'."
     rule20: "Modul Peminjaman Aset (Pemilik) hanya berfungsi di kalangan staf dalam Unit yang bertanggungjawab ke atas aset - aset yang dipinjam. Bagi akses penuh ke atas peminjaman aset, sila aktifkan samada Modul Peminjaman Aset (Pentadbir) atau peranan 'Pentadbir Aset'."
     rule16: "Butiran harga aset hanya boleh disemak oleh pengguna dengan peranan 'Pentadbiran' atau 'Pentadbir Aset' atau pengguna yang mempunyai akses kepada modul Senarai Aset (Pentadbir/Pengguna)."
-    rule17: "Modul E-Filing (Acara, Buletin, Daftar Fail) memerlukan akses kepada modul Daftar Dokumen (Pentadbir/Paparan/Pengguna/Pemilik) diaktifkan."
+    rule17: "Modul E-Filing (Acara, Buletin, Daftar Fail, Pemesejan Dalaman) memerlukan akses kepada modul Daftar Dokumen (Pentadbir/Paparan/Pengguna/Pemilik) diaktifkan."
     rule18: "Data Sokongan :"
     rule18a: "Aktifkan modul 'Sokongan', 'Bank' & 'Jadual Waktu Anjal' untuk digunakan bersama modul 'Staf'."
     rule18b: "Aktifkan modul 'Kumpulan Kenderaan' & 'Kadar Batuan' untuk digunakan bersama modul 'Tuntutan Perjalanan'."
@@ -488,10 +488,13 @@ ms_MY:
     bulletins_module_member: Pemilik Modul Buletin
     files_module_member: Pemilik Modul Fail
     documents_module_member: Pemilik Modul Daftar Dokumen
+    local_messaging_module_member: Pemilik Modul Pemesejan Dalaman
     events: Acara
     bulletins: Buletin
     files: Daftar Fail
     documents: Daftar Dokumen
+    local_messaging: Pemesejan Dalaman
+    group_member_access: " (dengan Akses Pemilik Kumpulan)"
     
     #Library Parts
     library_transactions_module_admin: Pentadbir Modul Transaksi Perpustakaan

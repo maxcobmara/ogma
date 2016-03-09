@@ -1,5 +1,6 @@
 class ConversationsController < ApplicationController
-  
+  filter_access_to :new, :create, :edit_draft, :send_draft, :show, :reply, :trash, :untrash, :attribute_check => false
+      
   before_action :authenticate_user!
   before_action :set_staff_list, only: [:show, :new, :edit_draft]
   

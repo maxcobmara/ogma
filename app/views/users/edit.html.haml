@@ -76,6 +76,15 @@ $(function(){
       $("#form1").submit();
     }
     
+    /*Local Messaging Only*/
+    if(fileown[4].checked)
+    {  
+      efilingown[4].checked=true;
+      efilemn[4].checked=true;
+      efilemn[4].disabled=false;
+      $("#form1").submit();
+    }
+    
     /* 2) E-Library*/
     var librarymg = document.getElementsByClassName('librarymanage2');
     var libraryrd = document.getElementsByClassName('libraryread2');
@@ -744,6 +753,13 @@ $(function(){
       /* main must be checked*/
       {  efilemn[i].checked=true;}
     }
+    /*Local Messaging only*/
+    if(fileown[4].checked)
+    { 
+      efilingown[4].checked=true;
+      efilemn[4].checked=true;
+      efilemn[4].disabled=false;
+    }
     /*EACH - requires for each RADIO BUTTONS (saved values) - END*/
     
     /*when E-Filling is selected, uncheck Cofiles & Documents*/
@@ -763,6 +779,10 @@ $(function(){
         efilemn[i].disabled=true;
       }
     }
+    /*Local Messaging only*/
+    if(fileown[4].checked==false)
+    { efilemn[4].disabled=true;}
+    
     
     /* 2)  E-Library*/
     var librarymg = document.getElementsByClassName('librarymanage2');
@@ -1581,6 +1601,15 @@ $(function(){
       }
     }
     
+    /*Local Messaging only*/
+    if (efilem[4].checked==false)
+    {
+      fileown[4].checked=false;  
+      efilingown[4].checked=false;
+      efilem[4].checked=false;
+      efilem[4].disabled=true;
+    }
+    
     /*when E-Filling is selected, uncheck Cofiles & Documents*/
     if(inputElements[15].checked){
       for(i=2; i<4; i++)
@@ -1605,12 +1634,18 @@ $(function(){
     } 
     else
     {
-      /*when E-filing is not selected, but Staff role is selected, disable Events(O), Bulletins(R), Document Registry(O)*/
+      /*when E-filing is not selected, but Staff role is selected, disable Events(O), Bulletins(R), Document Registry(O) & Local Messaging(O)*/
       /*for(i=2; i < 4; i++)*/
       if(inputElements[5].checked)
-      {  fileown[3].disabled=true;}
+      {  
+        fileown[3].disabled=true;
+        fileown[4].disabled=true;
+      }
       else
-      {  fileown[3].disabled=false;}
+      {  
+        fileown[3].disabled=false;
+        fileown[4].disabled=true;
+      }
       filemg[2].disabled=false;
       filerd[2].disabled=false;
       fileusr[2].disabled=false;
@@ -3046,6 +3081,7 @@ $(function(){
       /*locationrd[1].disabled=true;*/
       fileown[0].disabled=true;
       filerd[1].disabled=true;
+      fileown[4].disabled=true;
       /*fileown[3].disabled=true;*/
       /*libraryrd[1].disabled=true;*/
       /*libraryrd[0].disabled=true;*/
@@ -3055,6 +3091,7 @@ $(function(){
       b_staffown[0].disabled=false;
       fileown[0].disabled=false;
       filerd[1].disabled=false;
+      fileown[4].disabled=false;
     }
     ///
     
