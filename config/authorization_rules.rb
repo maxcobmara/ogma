@@ -622,37 +622,17 @@ authorization do
   #1)OK - all 4 - 4Feb2016 ** NOTE - local messaging & groups added into Staff modules - all access as of 'Staff' role
   role :staffs_module_admin do
     has_permission_on :staff_staffs, :to => [:manage, :borang_maklumat_staff] #1) OK - if read (for all), Own data - can update / pdf, if manage also OK
-#     has_permission_on :groups, :to => :menu
-#     has_permission_on :groups, :to => :show do
-#       if_attribute :id => is_in {user.members_of_msg_group}
-#     end
-#     has_permission_on :conversations, :to => [:create, :show, :edit_draft, :send_draft, :reply, :trash, :untrash]
   end
   role :staffs_module_viewer do
     has_permission_on :staff_staffs, :to => [:read, :borang_maklumat_staff]
-#     has_permission_on :groups, :to => :menu
-#     has_permission_on :groups, :to => :show do
-#       if_attribute :id => is_in {user.members_of_msg_group}
-#     end
-#     has_permission_on :conversations, :to => [:create, :show, :edit_draft, :send_draft, :reply, :trash, :untrash]
   end
   role :staffs_module_user do
     has_permission_on :staff_staffs, :to => [:read, :update, :borang_maklumat_staff]
-#     has_permission_on :groups, :to => :menu
-#     has_permission_on :groups, :to => :show do
-#       if_attribute :id => is_in {user.members_of_msg_group}
-#     end
-#     has_permission_on :conversations, :to => [:create, :show, :edit_draft, :send_draft, :reply, :trash, :untrash]
   end
   role :staffs_module_member do
     has_permission_on :staff_staffs, :to => [:read, :update, :borang_maklumat_staff] do
       if_attribute :id => is {user.userable.id}
     end
-#     has_permission_on :groups, :to => :menu
-#     has_permission_on :groups, :to => :show do
-#       if_attribute :id => is_in {user.members_of_msg_group}
-#     end
-#     has_permission_on :conversations, :to => [:create, :show, :edit_draft, :send_draft, :reply, :trash, :untrash]
   end
   
   #2)OK - all 4 - 4Feb2016
