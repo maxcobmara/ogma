@@ -30,9 +30,11 @@
   %table
     %head
       %tr
+        - total_semester= Programme.where(id: @resultlines.first.examresult.programme_id).first.descendants.where(course_type: 'Semester').count
         %td{width: "49%"}=@resultlines.first.examresult.render_semester.split("/").join(" ")
-        %td{width: "2%"}
-        %td{width: "49%"}=@resultlines[1].examresult.render_semester.split("/").join(" ")
+        - if @resultlines.count > 1
+          %td{width: "2%"}
+          %td{width: "49%"}=@resultlines[1].examresult.render_semester.split("/").join(" ") 
       %tr
         /Year 1, Sem 1
         %td{style: "vertical-align: top;"}
@@ -83,22 +85,22 @@
               /DISPLAY Total here (Pengkhususan / Diploma Lanjutan / Pos Basik) 
               - if Programme.where(course_type: 'Diploma').pluck(:id).include?(@resultlines.first.examresult.programme_id)==false
                 = render 'result_grand_total'
-                
-        /separator
-        %td &nbsp;
-        /Year 1, Sem 2
-        %td{style: "vertical-align: top;"}
-          %table.table.table-bordered
-            %head
-              %tr
-                %th=t 'exam.examresult.subject_code_name'
-                %th.centre=t 'exam.examresult.grade_point'
-                %th.centre=t 'exam.examresult.grade'
-                %th.centre=t 'exam.examresult.term'
-            %body
-              - result=@resultlines[1]
-              - cgpa1=number_with_precision(Examresult.cgpa_per_sem(@resultlines, 1), precision: 2)
-              = render 'result_per_semester', :result => result, :cgpa => cgpa1
+        - if @resultlines.count > 1      
+          /separator
+          %td &nbsp;
+          /Year 1, Sem 2
+          %td{style: "vertical-align: top;"}
+            %table.table.table-bordered
+              %head
+                %tr
+                  %th=t 'exam.examresult.subject_code_name'
+                  %th.centre=t 'exam.examresult.grade_point'
+                  %th.centre=t 'exam.examresult.grade'
+                  %th.centre=t 'exam.examresult.term'
+              %body
+                - result=@resultlines[1]
+                - cgpa1=number_with_precision(Examresult.cgpa_per_sem(@resultlines, 1), precision: 2)
+                = render 'result_per_semester', :result => result, :cgpa => cgpa1
 
       - if Programme.where(course_type: 'Diploma').pluck(:id).include?(@resultlines.first.examresult.programme_id)
         %tr
