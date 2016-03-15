@@ -2,8 +2,12 @@
   - total_credit_hours = @resultlines.first.examresult.total_credit+@resultlines[1].examresult.total_credit+@resultlines[2].examresult.total_credit+ @resultlines[3].examresult.total_credit+@resultlines[4].examresult.total_credit+@resultlines[5].examresult.total_credit
   - sem_no=5
 - else
-  - total_credit_hours = @resultlines.first.examresult.total_credit+@resultlines[1].examresult.total_credit
-  - sem_no=1
+  - total_credit_hours = @resultlines.first.examresult.total_credit
+  - if @resultlines.count > 1
+    - total_credit_hours+=@resultlines[1].examresult.total_credit 
+    - sem_no=1
+  - else
+    - sem_no=0
 - final_cgpa=Examresult.cgpa_per_sem(@resultlines, sem_no)
 %tr
   %th{rowspan: "2", bgcolor: "#E6E6E6"}=t 'exam.examresult.completed_credit_hours'+" = "+total_credit_hours.to_s

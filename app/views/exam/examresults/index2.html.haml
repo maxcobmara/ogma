@@ -37,7 +37,11 @@
                 - if Programme.where(course_type: 'Diploma').pluck(:id).include?(resultlines3.first.examresult.programme_id) 
                   = link_to (t 'exam.examresult.transcript'), show3_exam_examresults_path(student_id: student.id) if resultlines3.count == 6
                 - else
-                  / NOTE : Semester count should be based on Curriculum Management
+                  / NOTE : Semester count should be based on Curriculum Management, [resultlines3.count == total_semester]
+                  / but Curriculum Management not yet completed, so requires check in show3(_show_transcript.html.haml) page
+                  /as advised by Pn Manicka Valli a/p Ramahsendran on 16 Dec 2015 :
+                  / (1) Pos Basik - Renal (6 bln) & Psikitari (1 thn), Neonate & Orthopedik blm run lagi
+                  / (2) Diploma Lanjutan - (2 semester), Kebidanan - 2 intakes (Mac & Sept)
                   - total_semester= Programme.where(id: resultlines3[0].examresult.programme_id).first.descendants.where(course_type: 'Semester').count
                   = link_to (t 'exam.examresult.transcript'), show3_exam_examresults_path(student_id: student.id) if resultlines3.count == total_semester
                   

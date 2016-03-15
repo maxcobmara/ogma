@@ -258,7 +258,7 @@ class Examresult < ActiveRecord::Base
     credit_all_sem=[]
     final_all_sem=[]
     totalgradepoints=0
-    0.upto(1).each do |cnt|
+    0.upto(resultlines.count-1).each do |cnt|
       subjects=resultlines[cnt].examresult.retrieve_subject
       credit_per_sem=[]
       final_per_sem=[]
