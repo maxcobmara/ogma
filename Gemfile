@@ -82,6 +82,11 @@ end
 group :production do
   gem 'rails_12factor', '0.0.2'
   gem 'rack-cache', '~> 1.2'
+  gem 'unicorn'
+  gem 'capistrano'
+  gem 'capistrano-rails', '~> 1.1'
+  gem 'capistrano-rvm'
+  gem 'capistrano-bundler'
 end
 
 # Use ActiveModel has_secure_password
