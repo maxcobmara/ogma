@@ -2,7 +2,7 @@
 /.bundle
 
 #Ignore Configs
-Gemfile.lock
+#Gemfile.lock
 config/database.yml
 
 # Ignore the default SQLite database.
