@@ -52,7 +52,7 @@ set :rvm_custom_path, '/home/nurhashimah/.rvm/'  # only needed if not detected
 ### task :restart_app do ...on roles(... end.... end### - github.com/capistrano/capistrano
 
 # set path to application
-shared_path = "/opt/app/ogma/current/shared"
+#shared_path = "/opt/app/ogma/current/shared"
 
 namespace :deploy do
   desc "Unicorn - load default var, mkdir & start unicorn service (ogma)"
@@ -61,22 +61,7 @@ namespace :deploy do
     invoke "unicorn:setup"
     invoke "unicorn:start"
   end
-  
-  desc "Nginx - stop nginx"
-  task :stop_nginx_proxy do
-    on roles([:web, :app]) do |host|
-      execute "sudo service nginx stop"
-    end
-  end
-  
-  desc "Nginx - start nginx"
-  task :run_nginx_proxy do
-    on roles([:web, :app]) do |host|
-      execute "sudo service nginx start"
-    end
-  end
-
 end
 
-before "deploy:symlink:linked_files", "unicorn:stop"
-after "deploy:log_revision", "deploy:run_unicorn_ogma"
+#before "deploy:symlink:linked_files", "unicorn:stop"
+#after "deploy:log_revision", "deploy:run_unicorn_ogma"
