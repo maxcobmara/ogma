@@ -46,7 +46,7 @@ set :stages, ["staging", "production"]
 #set :default_stage, "staging" ##no longer needed in Capistrano 3
 
 set :rvm_type, :user                     # Defaults to: :auto
-set :rvm_ruby_version, '2.2.3'      # Defaults to: 'default'
+set :rvm_ruby_version, '2.1.4@ogma4'      # Defaults to: 'default'
 set :rvm_custom_path, '/home/nurhashimah/.rvm/'  # only needed if not detected
 
 ### task :restart_app do ...on roles(... end.... end### - github.com/capistrano/capistrano
@@ -61,21 +61,6 @@ namespace :deploy do
     invoke "unicorn:setup"
     invoke "unicorn:start"
   end
-  
-  desc "Nginx - stop nginx"
-  task :stop_nginx_proxy do
-    on roles([:web, :app]) do |host|
-      execute "sudo service nginx stop"
-    end
-  end
-  
-  desc "Nginx - start nginx"
-  task :run_nginx_proxy do
-    on roles([:web, :app]) do |host|
-      execute "sudo service nginx start"
-    end
-  end
-
 end
 
 before "deploy:symlink:linked_files", "unicorn:stop"
