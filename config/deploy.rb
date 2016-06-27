@@ -61,6 +61,10 @@ namespace :deploy do
     invoke "unicorn:setup"
     invoke "unicorn:start"
   end
+  #Stop unicorn fr running
+  task :stop_unicorn do
+    invoke "unicorn:stop"
+  end
 end
 
 before "deploy:symlink:linked_files", "unicorn:stop"
