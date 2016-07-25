@@ -1,0 +1,6 @@
+/=@librarytransaction.id
+- @lib=@librarytransaction
+- if @lib.ru_staff==true
+  = Librarytransaction.where(staff_id: @lib.staff_id).count
+- else
+  = Librarytransaction.where(student_id: @lib.student_id).count

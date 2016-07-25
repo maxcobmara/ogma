@@ -11,7 +11,10 @@
   - @existing_library_transactions.each do | transaction |
     - if transaction.returnduedate < Date.today.yesterday && transaction.returneddate.blank?; @style = "overdue"; else; @style = "plain"; end
     #insert_book_details
-    .row{:class => @style}
+    .row{:class => @style, :id => "row_#{transaction.id}"}
       .col-sm-2= transaction.try(:accession).try(:accession_no)
       .col-sm-7= link_to transaction.try(:accession).try(:book).try(:title), '#', class: "bogus"
-      .col-sm-2= transaction.returnduedate
+      .col-sm-2
+        - @transaction_id=transaction.id
+        = transaction.returnduedate
+        =link_to "(return book)", library_librarytransaction_path(@transaction_id), method: :delete, remote: true

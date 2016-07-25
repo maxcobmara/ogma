@@ -51,6 +51,14 @@ class Library::LibrarytransactionsController < ApplicationController
       format.js
     end
   end
+  
+  def destroy
+    @librarytransaction=Librarytransaction.destroy(params[:id])
+    respond_to do |format|
+      format.html { redirect_to manager_library_librarytransactions_path }
+      format.js
+    end
+  end
 
   def update
     respond_to do |format|
