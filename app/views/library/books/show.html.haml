@@ -15,6 +15,12 @@
 
     / display 
     .tab-content{style:"padding-top:1em"}
+      .col-md-1
+        - if @book.photo.exists? then
+          = image_tag @book.photo.url,:style => "border: solid 1px;"
+        - else
+          %img{:src => "http://placekitten.com/150/200"}/
+    
       .col-md-8.col-md-offset-1
         %dl.dl-horizontal   
           %dt ISBN
@@ -26,15 +32,28 @@
       #book_details.tab-pane.active
         %br
         =render 'tab_details'
-        
+       
       #accessionno_details.tab-pane
         .col-md-8.col-md-offset-1
           %dl.dl-horizontal  
-            %dt= t 'library.book.accessionno' 
+            %dt
+              /= t 'library.book.accessionno' 
             %dd
-              - @book.accessions.in_groups_of(10, false) do |row_accessions| 
-                - for accession in row_accessions
-                  = accession.accession_no
+              /- @book.accessions.in_groups_of(10, false) do |row_accessions| 
+              /  - for accession in row_accessions
+              /    = accession.accession_no
+              %table.table.table-bordered.table-condensed
+                %thead
+                  %tr
+                    %th= t 'library.book.accessionno' 
+                    %th= t 'library.book.location'
+                    %th Status
+                %tbody
+                  - for accession in @book.accessions
+                    %tr
+                      %td= accession.accession_no
+                      %td= accession.order_no
+                      %td= (DropDown::STATUS.find_all{|disp, value| value==accession.received_by}).map{|disp, value|disp}.first
         
       - permitted_to? :manage, :library_books do 
         #purchase_details.tab-pane

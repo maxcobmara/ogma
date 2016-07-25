@@ -333,7 +333,7 @@
           %h2.icon= fa_icon "book", text: (t "library.title")
           %a.mp-back{:href => "#"}=t('back')
           %ul
-            %li= link_to content_tag(:i, "", :class => "icon-numb") + "Rules & Regulations", '#'
+            %li= link_to content_tag(:i, "", :class => "icon-numb") + "Rules & Regulations", rules_regulations_path
             - permitted_to? :read, :library_librarytransactions do 
               %li= link_to content_tag(:i, "", :class => "icon-numb") + (t "library.transaction.title"), library_librarytransactions_path
             - permitted_to? :manage, :library_librarytransactions do

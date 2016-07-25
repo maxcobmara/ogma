@@ -30,7 +30,9 @@
           %br
           .row
             .col-sm-2.col-md-offset-2= t 'library.book.accessionno'
-           
+            .col-sm-2=t 'book.location'
+            .col-sm-2 Status
+
             %hr
           = f.fields_for :accessions do |builder|
             = render 'accession_fields', :f => builder

@@ -2,7 +2,9 @@
   = f.hidden_field :_destroy
   .row
     .col-sm-2.col-md-offset-2= f.text_field :accession_no, :class => 'form-control'
-    .col-sm-1
+    .col-sm-2=f.text_field :order_no, :class => 'form-control'
+    .col-sm-2=f.select :received_by, DropDown::STATUS, {:include_blank => t('actions.select')}, {:class => 'selectpicker'}
+    .col-sm-1.col-md-offset-3
       = link_to content_tag(:i, "", class: "fa fa-trash-o"), data: {"data-toggle" => "tooltip", title: "Delete"}, class: "btn btn-danger remove_fields"
  
 :javascript

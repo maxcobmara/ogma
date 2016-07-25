@@ -12,7 +12,8 @@ class Book < ActiveRecord::Base
   #-----------Attach Photo---------------
   has_attached_file :photo,
 			      :url => "/assets/books/:id/:style/:basename.:extension",
-			      :path => ":rails_root/public/assets/books/:id/:style/:basename.:extension"
+			      :path => ":rails_root/public/assets/books/:id/:style/:basename.:extension",
+                              :styles => { :original => "250x300>", :thumbnail => "50x60" }
   validates_attachment_size :photo, :less_than => 500.kilobytes
   validates_attachment_content_type :photo, :content_type => ['image/jpeg', 'image/png']    
   

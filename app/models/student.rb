@@ -114,7 +114,11 @@ class Student < ActiveRecord::Base
  # end
 
   def formatted_mykad
+    if icno.size==12
     "#{icno[0,6]}-#{icno[6,2]}-#{icno[-4,4]}"
+    else
+      icno
+    end
   end
 
   def formatted_mykad_and_student_name
@@ -528,12 +532,16 @@ class Student < ActiveRecord::Base
   
 STATUS = [
            #  Displayed       stored in db
-           [ I18n.t('student.students.current'),"Current" ],
-           [ I18n.t('student.students.graduated'),"Graduated" ],
-           [ I18n.t('student.students.repeat'), "Repeat" ],
-           [ I18n.t('student.students.on_leave'), "On Leave" ],
-           [ I18n.t('student.students.transfer_college'), "Transfer College"],
-           [ I18n.t('student.students.expelled'), "Expelled"]
+               ['Asas Pegawai', 'asaspeg' ],
+               ['Asas LLP', 'asasllp'],
+               ['Lanjutan Pegawai', 'lanpeg'],
+               ['Lanjutan LLP', 'lanllp']
+#            [ I18n.t('student.students.current'),"Current" ],
+#            [ I18n.t('student.students.graduated'),"Graduated" ],
+#            [ I18n.t('student.students.repeat'), "Repeat" ],
+#            [ I18n.t('student.students.on_leave'), "On Leave" ],
+#            [ I18n.t('student.students.transfer_college'), "Transfer College"],
+#            [ I18n.t('student.students.expelled'), "Expelled"]
 ] 
 
 SPONSOR = [

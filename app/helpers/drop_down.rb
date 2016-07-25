@@ -434,9 +434,12 @@ module DropDown
     
     COURSE_TYPES_PROG =  [
       # Displayed	stored in db
-      ['Diploma','Diploma'],
-      ['Pos Basik','Pos Basik'],
-      ['Diploma Lanjutan','Diploma Lanjutan']
+          ['Asas', 'Asas'],
+          ['Pertengahan', 'Pertengahan'],
+          ['Lanjutan', 'Lanjutan']
+#       ['Diploma','Diploma'],
+#       ['Pos Basik','Pos Basik'],
+#       ['Diploma Lanjutan','Diploma Lanjutan']
     ]
     
     COURSE_TYPES_SUB = [
@@ -460,14 +463,17 @@ module DropDown
      # ]
     
     COURSE_TYPES = [
-       ['Diploma','Diploma'],
-       ['Pos Basik','Pos Basik'],
-       ['Diploma Lanjutan','Diploma Lanjutan'],
-       ['Semester','Semester'],
-       ['Subject','Subject'],
-       ['Commonsubject','Commonsubject'],
-       ['Topic','Topic'],
-       ['Subtopic', 'Subtopic']
+          ['Asas', 'Asas'],
+          ['Pertengahan', 'Pertengahan'],
+          ['Lanjutan', 'Lanjutan']
+#        ['Diploma','Diploma'],
+#        ['Pos Basik','Pos Basik'],
+#        ['Diploma Lanjutan','Diploma Lanjutan'],
+#        ['Semester','Semester'],
+#        ['Subject','Subject'],
+#        ['Commonsubject','Commonsubject'],
+#        ['Topic','Topic'],
+#        ['Subtopic', 'Subtopic']
       ]
 
     LECTURE_TIME = [
