@@ -329,8 +329,8 @@ Ogma::Application.routes.draw do
   namespace :library do
     resources :librarytransactions do
       member do
-        get :extend
-        get :return
+        get :extending
+        get :returning
       end
       collection do
         get :check_status

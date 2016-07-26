@@ -2,7 +2,7 @@ class Library::LibrarytransactionsController < ApplicationController
 
   before_action :set_librarytransaction, only: [:show, :edit, :update, :destroy]
   filter_access_to :manager, :require => :manage,  :attribute_check => false
-  filter_access_to :show, :edit, :update, :destroy, :check_status, :late_books, :extend, :extend2, :return, :return2, :attribute_check => true
+  filter_access_to :show, :edit, :update, :destroy, :check_status, :late_books, :extending, :returning, :attribute_check => true
   filter_access_to :index, :new, :create,  :analysis_statistic, :analysis_statistic_main, :analysis, :analysis_book, :general_analysis, :general_analysis_ext,:attribute_check => false
 
   def index
@@ -63,8 +63,10 @@ class Library::LibrarytransactionsController < ApplicationController
   def update
     respond_to do |format|
       if @librarytransaction.update(librarytransaction_params)
-        format.html { redirect_to library_librarytransaction_path(@librarytransaction), notice: (t 'location.title')+(t 'actions.updated')  }
+        #format.html { redirect_to library_librarytransaction_path(@librarytransaction), notice: (t 'location.title')+(t 'actions.updated')  }
+        format.html {redirect_to library_librarytransactions_path}
         format.json { head :no_content }
+        format.js
       else
         format.html { render action: 'edit' }
         format.json { render json: @librarytransaction.errors, status: :unprocessable_entity }
@@ -157,26 +159,13 @@ class Library::LibrarytransactionsController < ApplicationController
 
   end
 
-
-  # TODO - page not ready - acceptance (ICMS) - start
-  def extend
+  def extending
     @librarytransaction = Librarytransaction.find(params[:id])
   end
 
-  def extend2
-    @librarytransaction = Librarytransaction.find(params[:id])
-    render :layout => false
-  end
-
-  def return
+  def returning
     @librarytransaction = Librarytransaction.find(params[:id])
   end
-
-  def return2
-    @librarytransaction = Librarytransaction.find(params[:id])
-    render :layout => false
-  end
-  # TODO - page not ready - acceptance (ICMS) - end
   
   def analysis
     yyear = params[:reporting_year]
@@ -274,7 +263,7 @@ class Library::LibrarytransactionsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def librarytransaction_params
-      params.require(:librarytransaction).permit(:accession_id, :ru_staff, :staff_id, :student_id, :checkoutdate, :returnduedate, :accession, :accession_no, :accession_acc_book, :libcheckout_by)
+      params.require(:librarytransaction).permit(:accession_id, :ru_staff, :staff_id, :student_id, :checkoutdate, :returnduedate, :accession, :accession_no, :accession_acc_book, :libcheckout_by, :returned, :returneddate, :extended)
       # <-- insert editable fields here inside here e.g (:date, :name)
     end
 

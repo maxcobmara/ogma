@@ -7,6 +7,6 @@ $('#insert_book_details').after('<%= j render("list") %>');
 
 
 
-<% if (@librarytransaction.ru_staff==true && Librarytransaction.where(staff_id: @lib.staff_id).count < 5) || (@librarytransaction.ru_staff==false && Librarytransaction.where(student_id: @lib.student_id).count < 2) %>
+<% if (@librarytransaction.ru_staff==true && Librarytransaction.where(staff_id: @lib.staff_id, returned: [nil, false]).count < 5) || (@librarytransaction.ru_staff==false && Librarytransaction.where(student_id: @lib.student_id,  returned: [nil, false]).count < 2) %>
 $('#new_link').show();
 <% end%>

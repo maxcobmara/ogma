@@ -57,12 +57,14 @@
               = fa_icon "check" if librarytransaction.extended?
               - if librarytransaction.extended != true && librarytransaction.returned != true
                 %div.btn.btn-default{:type => "button", "data-toggle" => "tooltip", title: "Extend"}
-                  = link_to fa_icon "clock-o", :action => 'extend', :id => librarytransaction
+                  /= link_to fa_icon "clock-o", :action => 'extend2', :id => librarytransaction
+                  = link_to content_tag(:li, fa_icon("clock-o")), extending_library_librarytransaction_path(librarytransaction)
             %td.date
               = librarytransaction.returneddate.try(:strftime, '%d %b %Y')
               - if librarytransaction.returned != true
                 %div.btn.btn-default{:type => "button", "data-toggle" => "tooltip", title: "Return"}
-                  = link_to fa_icon "inbox", :action => 'return', :id => librarytransaction
+                  /= link_to fa_icon "inbox", :action => 'return', :id => librarytransaction
+                  = link_to content_tag(:li, fa_icon("inbox")), returning_library_librarytransaction_path(librarytransaction)
             //= permitted_to? :manage, :librarytransactions do %>
             %td
 

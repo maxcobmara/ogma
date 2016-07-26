@@ -1,8 +1,9 @@
 .row{:id => "row_#{@librarytransaction.id}"}
   .col-sm-2= @librarytransaction.try(:accession).try(:accession_no)
-  .col-sm-7= link_to @librarytransaction.try(:accession).try(:book).try(:title), '#', class: "bogus"
-  .col-sm-2
-    =@librarytransaction.returnduedate
-    - @transaction_id=@librarytransaction.id
-    =link_to " (return book)", library_librarytransaction_path(@transaction_id), method: :delete, remote: true
-    /=@librarytransaction.returnduedate
+  .col-sm-6= link_to @librarytransaction.try(:accession).try(:book).try(:title), '#', class: "bogus"
+  .col-sm-2=@librarytransaction.returnduedate
+  .col-sm-1 
+    /RETURN
+  .col-sm-1
+    /=link_to " (return book)", library_librarytransaction_path(@transaction_id), method: :delete, remote: true
+    =link_to content_tag(:i, "", class: "fa fa-trash-o"),  library_librarytransaction_path(@librarytransaction), method: :delete, remote: true

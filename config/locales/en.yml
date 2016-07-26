@@ -2435,8 +2435,15 @@ en:
       returnby: Received By
       studentname: Borrowed By
       duedate: Due Date
+      returnduedate: Return Due Date
+      returning: Return of Book
+      return: Return?
       extend: Extend
       extended: Returned
+      extending: Loan Extension
+      extend_for: "Extend loan for : "
+      fourteen_days: another 14 days
+      cancel: Cancel
       returneddate: Returned On
       new: Create New Transaction
       returnrec: Return Transaction

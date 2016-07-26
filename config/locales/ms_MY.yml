@@ -2325,9 +2325,17 @@ ms_MY:
       checkoutby: Pengawai Pengeluar Pinjaman
       extendby: Pegawai Pengeluar Pinjaman (sambungan)
       returnby: Pegawai Pemulangan Pinjaman 
-      duedate: Tarikh Harus Pulang
+      #duedate: Tarikh Harus Pulang
+      returnduedate: Tarikh Harus Pulang
+      returning: Pemulangan Pinjaman
+      return: Pulang?
       extend: Sambung?
       extended: Returned
+      extending: Lanjutan Pinjaman
+      extend_for: "Pinjaman dilanjutkan : "
+      fourteen_days: sebanyak 14 hari
+      return: Pemulangan
+      cancel: Batal
       returneddate: Tarikh Dipulang
       new: Cipta Transaksi Baru
       returnrec: Transaksi Pemulangan
