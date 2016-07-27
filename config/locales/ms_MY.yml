@@ -2342,6 +2342,8 @@ ms_MY:
       edit: Kemaskini Transaksi Perpustakaan
       details: Butiran Buku Yang Dipinjam
       loanedtotype: Dipinjam oleh Staf?
+      late_by: lewat 
+      fine_rate: " hari x RM 1.00 / sehari"
       fine: Denda Perlu Dibayar
       finepay: Bayar?
       finepaydate: Tarikh Membayar Denda

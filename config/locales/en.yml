@@ -2450,6 +2450,8 @@ en:
       edit: Edit Library Transaction
       details: Loaned Book Details
       loanedtotype: Member is Staff?
+      late_by:  late by 
+      fine_rate: " days x RM 1.00 / day"
       fine: Fine to be Paid
       finepay: Fine Paid?
       finepaydate: Fine Paid Date

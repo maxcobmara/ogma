@@ -8,7 +8,7 @@ class Librarytransaction < ActiveRecord::Base
   belongs_to :libextendby, :class_name => 'Staff', :foreign_key => 'libextended_by'
   belongs_to :libreturnby, :class_name => 'Staff', :foreign_key => 'libreturned_by'
   
-  attr_accessor :booktitle, :staf_who, :student_who, :newduedate
+  attr_accessor :booktitle, :staf_who, :student_who, :newduedate, :late_days_count
   
   #validates_presence_of :accession_id
   
@@ -43,14 +43,6 @@ class Librarytransaction < ActiveRecord::Base
       staff.try(:name)
     else
       student.try(:name)
-    end
-  end
-  
-  def recommended_fine_value
-    if returnduedate < Date.today
-    (returnduedate - Date.today).to_i * -1 
-    else
-      0
     end
   end
 

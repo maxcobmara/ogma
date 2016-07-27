@@ -34,7 +34,11 @@
           .col-sm-2.control-label
             = f.label (t 'library.transaction.returneddate')
           .col-md-2
-            = f.text_field :returneddate, class: 'date_picker_reverse form-control', value: "#{Date.today.strftime('%d-%m-%Y')}"
+            - if @librarytransaction.returneddate.nil?
+              - rdate=''
+            - else
+              - rdate=@librarytransaction.returneddate.strftime('%d-%m-%Y')
+            = f.text_field :returneddate, class: 'date_picker_reverse form-control', value: rdate
 
         /exceed due date
         .span_fine
@@ -42,19 +46,25 @@
             .col-sm-2.control-label
               = f.label (t 'library.transaction.fine')
             .col-md-2
-              = f.text_field :fine, class: 'form-control',  :value => @librarytransaction.recommended_fine_value
-              - if @librarytransaction.returnduedate < Date.today 
-                late by 
-                =(Date.today-@librarytransaction.returnduedate).to_i
-                days x RM 1.00/day
+              = f.text_field :fine, class: 'form-control'
               
-              
-          /#TODO  to implement fine = returned date - duedate * RM1/day 
+        .span_late
+          .form-group
+            .col-sm-2
+            .col-md-4
+              %table.table-condensed{style: "color: red;"}
+                %tr
+                  %td=t 'library.transaction.late_by'
+                  %td=f.text_field :late_days_count, size: "1px", class: 'form-control', readonly: 'readonly'
+                  %td=t 'library.transaction.fine_rate'
+
           .form-group
             .col-sm-2.control-label
               = f.label (t 'library.transaction.finepay')
             .col-md-1
-              = f.check_box :finepay
+              = f.check_box :finepay, :id => 'is_paid'
+        
+        .span_pay
           .form-group
             .col-sm-2.control-label
               = f.label (t 'library.transaction.finepaydate')
@@ -76,14 +86,12 @@ $(document).ready(function(){
     if($('#is_returned').is(':checked')) { 
       $('.span_returned_on').show("highlight");
       $('.span_fine').show("highlight");
-       /*var returndate=document.getElementById("librarytransaction_returneddate").value;*/
-       /*var fine=document.getElementById("librarytransaction_fine").value;*/
-       /*alert(fine);*/
     }
     else
     { 
       $('.span_returned_on').hide();
       $('.span_fine').hide();
+      $('.span_late').hide();
     }
   });
   $("input[id='is_returned']").each(function() {  
@@ -94,8 +102,95 @@ $(document).ready(function(){
     else
     {
       $('.span_returned_on').hide();
-      $('.span_fine').hide();;
+      $('.span_fine').hide();
+      $('.span_late').hide();
     }
+  });
+
+  /*ref start: http://stackoverflow.com/questions/3224834/get-difference-between-2-dates-in-javascript*/
+  var _MS_PER_DAY = 1000 * 60 * 60 * 24;
+
+  /* a and b are javascript Date objects*/
+  function dateDiffInDays(a, b) {
+    /*Discard the time and time-zone information.*/
+    var utc1 = Date.UTC(a.getFullYear(), a.getMonth(), a.getDate());
+    var utc2 = Date.UTC(b.getFullYear(), b.getMonth(), b.getDate());
+    return Math.floor((utc2 - utc1) / _MS_PER_DAY);
+  }
+  /*ref end: http://stackoverflow.com/questions/3224834/get-difference-between-2-dates-in-javascript*/
+  
+  $("input[id='librarytransaction_returneddate']").change(function(){
+    var returndate=document.getElementById("librarytransaction_returneddate").value;
+    var duedate=document.getElementById("librarytransaction_returnduedate").value;
+    var yearreturn=returndate.slice(6,10);
+    var monthreturn=returndate.slice(3,5);
+    var dayreturn=returndate.slice(0,2);
+    var jsreturndate=new Date(yearreturn, monthreturn-1, dayreturn);
+    var jsduedate=new Date(duedate);
+    
+    var finetopay=document.getElementById("librarytransaction_fine");
+    var latedays=document.getElementById("librarytransaction_late_days_count");
+    if (jsreturndate > jsduedate){
+      var extra_days=dateDiffInDays(jsduedate, jsreturndate);
+      finetopay.value=extra_days*1.0;
+      latedays.value=extra_days;
+      latedays.style.color="red";
+      $('.span_late').show("highlight");
+    }
+    else
+    {
+      finetopay.value=0;
+      $('.span_late').hide();
+    }
+  });
+  
+  $("input[id='librarytransaction_returneddate']").each(function(){
+    var returndate=document.getElementById("librarytransaction_returneddate").value;
+    var duedate=document.getElementById("librarytransaction_returnduedate").value;
+    var yearreturn=returndate.slice(6,10);
+    var monthreturn=returndate.slice(3,5);
+    var dayreturn=returndate.slice(0,2);
+    var jsreturndate=new Date(yearreturn, monthreturn-1, dayreturn);
+    var jsduedate=new Date(duedate);
+    
+    var finetopay=document.getElementById("librarytransaction_fine");
+    var latedays=document.getElementById("librarytransaction_late_days_count");
+    
+    /*saved item if exist*/
+    var actualpaid=document.getElementById("librarytransaction_fine").value;
+    
+    if (jsreturndate > jsduedate){
+      var extra_days=dateDiffInDays(jsduedate, jsreturndate);
+      topay=extra_days*1.0;
+      if (actualpaid!=topay)
+      {  
+        finetopay.value=actualpaid; 
+        finetopay.style.color="blue";
+      }
+      else
+      {  finetopay.value=topay; }
+      latedays.value=extra_days;
+      latedays.style.color="red";
+      $('.span_late').show("highlight");
+    }
+    else
+    {
+      finetopay.value=0;
+      $('.span_late').hide();
+    }
+  });
+  
+  $("input[id='is_paid']").change(function() {  
+    if($('#is_paid').is(':checked')) 
+    { $('.span_pay').show("highlight"); }
+    else
+    { $('.span_pay').hide(); }
+  });
+  $("input[id='is_paid']").each(function() {  
+    if($('#is_paid').is(':checked')) 
+    { $('.span_pay').show("highlight"); }
+    else
+    { $('.span_pay').hide(); }
   });
  
 }); 
