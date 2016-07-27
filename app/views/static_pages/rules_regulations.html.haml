@@ -1,11 +1,11 @@
 - provide(:title, 'Rules & Regulations')
 .page_header
-  %h1 Peraturan Perpustakaan
+  %h1=t 'library.transaction.rules_regulations'
   
-
+%hr
 .row
-  .col-md-1
-  .col-md-3
+  .col-md-4
+  .col-md-4
     %h2 Waktu Perkhidmatan - Sesi akademik
     %table.table.table-bordered
       /.table-striped.table-hover.ogma
@@ -18,7 +18,7 @@
       %tr
         %th{style: 'text-align: right;'} AHAD & CUTI UMUM
         %td TUTUP
-        
+  .col-md-3
 .row
   .col-md-1
   .col-md-10

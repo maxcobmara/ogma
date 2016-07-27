@@ -2313,6 +2313,7 @@ ms_MY:
     transaction: 
       title: Transaksi Perpustakaan
       list: Senarai Transaksi Perpustakaan
+      rules_regulations: Peraturan Perpustakaan
       book_id: ID Buku
       borrower: Peminjam
       add: Tambah
@@ -2326,7 +2327,7 @@ ms_MY:
       extendby: Pegawai Pengeluar Pinjaman (sambungan)
       returnby: Pegawai Pemulangan Pinjaman 
       #duedate: Tarikh Harus Pulang
-      returnduedate: Tarikh Harus Pulang
+      returnduedate: Tarikh Luput
       returning: Pemulangan Pinjaman
       return: Pulang?
       extend: Sambung?
@@ -2334,7 +2335,8 @@ ms_MY:
       extending: Lanjutan Pinjaman
       extend_for: "Pinjaman dilanjutkan : "
       fourteen_days: sebanyak 14 hari
-      return: Pemulangan
+      twentyone_days: sebanyak 21 hari
+      returned: Pemulangan
       cancel: Batal
       returneddate: Tarikh Dipulang
       new: Cipta Transaksi Baru
@@ -2346,6 +2348,9 @@ ms_MY:
       fine_rate: " hari x RM 1.00 / sehari"
       fine: Denda Perlu Dibayar
       finepay: Bayar?
+      finepay2: Denda dibayar
+      fine_remark: "Sila kosongkan medan 'Denda dibayar' atau masukkan sifar jika tiada bayaran dibuat."
+      fine_remark2: Sila pastikan amaun 'Denda dibayar' (jika ada) dikemaskini terlebih dahulu, sebelum memilih kotak semak
       finepaydate: Tarikh Membayar Denda
       lost: Hilang?
       reportdetails: Laporan

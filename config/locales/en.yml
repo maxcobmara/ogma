@@ -2422,6 +2422,7 @@ en:
       manager: Library Transaction Manager
       title: Library Transactions
       list: Library Transaction List
+      rules_regulations: Rules & Regulations
       book_id: Book ID
       borrower: Borrowed By
       add: Add
@@ -2443,6 +2444,7 @@ en:
       extending: Loan Extension
       extend_for: "Extend loan for : "
       fourteen_days: another 14 days
+      twentyone_days: another 21 days
       cancel: Cancel
       returneddate: Returned On
       new: Create New Transaction
@@ -2454,6 +2456,9 @@ en:
       fine_rate: " days x RM 1.00 / day"
       fine: Fine to be Paid
       finepay: Fine Paid?
+      finepay2: Pay Fine?
+      fine_remark: "Please leaves 'Pay Fine?' field blank OR insert zero if no payment is made."
+      fine_remark2: Please confirm 'Pay Fine?' amount (if there's any) before checking 
       finepaydate: Fine Paid Date
       lost: Lost?
       reportdetails: Report Details

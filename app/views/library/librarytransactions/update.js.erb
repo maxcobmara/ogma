@@ -1,20 +1,16 @@
-$('#add_book_form_page').remove();
-$('#no_books').remove();
+$('#row_<%=@librarytransaction.id%>').remove();  
+<% if @librarytransaction.extended==true && @librarytransaction.returned!=true%>
+$('#insert_book_details').after('<%= j render("list") %>');
+<% end %>
 $('#onload_count').remove();
 $('#onchange_count').html('<%= j render("books_count") %>');
-$('#main_panel_form').remove();
-$('#insert_book_details').after('<%= j render("list") %>');
-
-
+<% if @librarytransaction.returned==true %>
+$('#onload_links').remove();
+$('#onchange_links').html('<%= j render("linknew") %>');
+<% end %>
 
 <% if (@librarytransaction.ru_staff==true && Librarytransaction.where(staff_id: @lib.staff_id, returned: [nil, false]).count < 5) || (@librarytransaction.ru_staff==false && Librarytransaction.where(student_id: @lib.student_id,  returned: [nil, false]).count < 2) %>
 document.getElementById("changing_panel").className = "panel panel-info";
-$('#new_link').show();
 <% else %>
 document.getElementById("changing_panel").className = "panel panel-danger";
 <% end%>
-
-
-
-
-

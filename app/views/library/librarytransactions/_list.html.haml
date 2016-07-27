@@ -1,9 +1,12 @@
 .row{:id => "row_#{@librarytransaction.id}"}
-  .col-sm-2= @librarytransaction.try(:accession).try(:accession_no)
-  .col-sm-6= link_to @librarytransaction.try(:accession).try(:book).try(:title), '#', class: "bogus"
-  .col-sm-2=@librarytransaction.returnduedate
-  .col-sm-1 
+  .col-sm-1= @librarytransaction.try(:accession).try(:accession_no)
+  .col-sm-5= link_to @librarytransaction.try(:accession).try(:book).try(:title), '#', class: "bogus"
+  .col-sm-2=@librarytransaction.returnduedate.try(:strftime, '%d-%m-%Y')
+  .col-sm-2 
     /RETURN
+  .col-sm-1
+    /EXTEND
+    =@librarytransaction.extended==true ? image_tag("tick.png") : ""
   .col-sm-1
     /=link_to " (return book)", library_librarytransaction_path(@transaction_id), method: :delete, remote: true
     =link_to content_tag(:i, "", class: "fa fa-trash-o"),  library_librarytransaction_path(@librarytransaction), method: :delete, remote: true

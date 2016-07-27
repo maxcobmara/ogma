@@ -16,7 +16,7 @@
           %dd=@librarytransaction.accession.try(:acc_book)
 
           %dt=t 'library.transaction.borrower'
-          %dd=@librarytransaction.ru_staff==true ? @librarytransaction.staff.name : @librarytransaction.student.name
+          %dd=@librarytransaction.ru_staff==true ?  (t 'library.transaction.staff')+": "+@librarytransaction.staff.name :  (t 'library.transaction.student')+": "+ @librarytransaction.student.name
           
           %dt=t 'library.transaction.checkoutdate'
           %dd=@librarytransaction.checkoutdate.try(:strftime, '%d %b %Y')+" ("+@librarytransaction.libcheckoutby.try(:name)+")"
@@ -30,14 +30,14 @@
             = f.label (t 'library.transaction.extend_for')
           .col-md-6
             = f.check_box :extended, :id => 'is_extended'
-            =t 'library.transaction.fourteen_days'
+            =@librarytransaction.ru_staff==true ? (t 'library.transaction.twentyone_days') : (t 'library.transaction.fourteen_days')
           
         .form-group.span_checked_on
           .col-sm-2.control-label
             = f.label (t 'library.transaction.returnduedate')
           .col-md-2
-            = f.hidden_field :returnduedate, value: "#{Date.today}"
-            = f.text_field :newduedate, class: 'form-control', readonly: 'readonly', placeholder: "#{Date.today.strftime('%d-%m-%Y')}"
+            = f.hidden_field :returnduedate, value: @librarytransaction.extended_due
+            = f.text_field :newduedate, class: 'form-control', readonly: 'readonly', placeholder: @librarytransaction.extended_due.strftime('%d-%m-%Y')
  
     .row
       .form-group

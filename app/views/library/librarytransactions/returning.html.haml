@@ -16,7 +16,7 @@
           %dd=@librarytransaction.accession.try(:acc_book)
 
           %dt=t 'library.transaction.borrower'
-          %dd=@librarytransaction.ru_staff==true ? @librarytransaction.staff.name : @librarytransaction.student.name
+          %dd=@librarytransaction.ru_staff==true ?  (t 'library.transaction.staff')+": "+@librarytransaction.staff.name :  (t 'library.transaction.student')+": "+ @librarytransaction.student.name
           
           %dt=t 'library.transaction.checkoutdate'
           %dd=@librarytransaction.checkoutdate.try(:strftime, '%d %b %Y')+" ("+@librarytransaction.libcheckoutby.try(:name)+")"
@@ -69,7 +69,7 @@
             .col-sm-2.control-label
               = f.label (t 'library.transaction.finepaydate')
             .col-md-2
-              = f.text_field :finepaydate, class: 'date_picker_reverse form-control'
+              = f.text_field :finepaydate, class: 'date_picker_reverse form-control', value: "#{@librarytransaction.try(:finepaydate).try(:strftime, '%d-%m-%Y')}"
           
     .row
       .form-group

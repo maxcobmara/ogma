@@ -15,7 +15,7 @@ $(document).ready ->
     $("#new-post-modal").modal "hide"
     return
   
-  #partial book_list
+  #librarytransactions/book_list
   $('.edit_loan input[type=submit]').remove()
   $('.edit_loan input[type=checkbox]').click ->
     ###alert("Nak return!"); ###
