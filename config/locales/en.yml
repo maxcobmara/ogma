@@ -2440,13 +2440,17 @@ en:
       returning: Return of Book
       return: Return?
       extend: Extend
-      extended: Returned
+      extended: Extended
       extending: Loan Extension
       extend_for: "Extend loan for : "
+      extension_remark: Loan extension allocated for staffs is 21 days, whereas for students is 14 days.
       fourteen_days: another 14 days
       twentyone_days: another 21 days
+      not_extended: No extension
       cancel: Cancel
       returneddate: Returned On
+      not_overdue: Not overdue
+      overdue: Overdue
       new: Create New Transaction
       returnrec: Return Transaction
       edit: Edit Library Transaction
@@ -2466,6 +2470,7 @@ en:
       replaceddate: Replaced Date
       report: Report Lost
       analysis_statistic: "Analysis & Statistics"
+      loan_details: Book on-loan details
       analysis:
         main_title: "Analysis & Statistic (Borrower) - "
         main_title2: "Analysis & Statistic (Monograph) - "

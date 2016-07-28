@@ -9,7 +9,7 @@
     - permitted_to? [:check_availability, :check_availability2], :library_librarytransactions do
       %li= link_to content_tag(:li, fa_icon("info-circle", text: (t 'library.check.status'))), check_status_library_librarytransactions_path
   %ul.nav.navbar-nav.navbar-right
-    %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'search'))), "#", class: "toga"
+    %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'search'))), "#", class: "index_search_bar"
     %li= link_to content_tag(:li, fa_icon("print", text: (t 'print'))), "#"
       
 .row.filter{style: "display:none;"}
@@ -33,7 +33,8 @@
         %th.date= t 'library.transaction.return'
         %th.action= fa_icon "cogs"
     
-    %tbody  
+    %tbody
+      = render "index_search"
       - @libtran_days.each do |checkoutdate, librarytransactions|
         %tr
           %td.group{colspan: '12'}= checkoutdate.strftime("%A, %v")

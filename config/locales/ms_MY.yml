@@ -2311,6 +2311,7 @@ ms_MY:
   library:
     title: Perpustakaan
     transaction: 
+      manager: Pengurusan Transaksi Perpustakaan
       title: Transaksi Perpustakaan
       list: Senarai Transaksi Perpustakaan
       rules_regulations: Peraturan Perpustakaan
@@ -2331,14 +2332,18 @@ ms_MY:
       returning: Pemulangan Pinjaman
       return: Pulang?
       extend: Sambung?
-      extended: Returned
-      extending: Lanjutan Pinjaman
+      extended: Disambung
+      extending: Sambung Pinjaman
       extend_for: "Pinjaman dilanjutkan : "
+      extension_remark: Sambungan pinjaman bagi staf adalah 21 hari, manakala bagi pelatih adalah 14 hari.
       fourteen_days: sebanyak 14 hari
       twentyone_days: sebanyak 21 hari
+      not_extended: Tiada sambungan
       returned: Pemulangan
       cancel: Batal
       returneddate: Tarikh Dipulang
+      not_overdue: Belum tamat tempoh
+      overdue: Tamat tempoh
       new: Cipta Transaksi Baru
       returnrec: Transaksi Pemulangan
       edit: Kemaskini Transaksi Perpustakaan
@@ -2349,7 +2354,7 @@ ms_MY:
       fine: Denda Perlu Dibayar
       finepay: Bayar?
       finepay2: Denda dibayar
-      fine_remark: "Sila kosongkan medan 'Denda dibayar' atau masukkan sifar jika tiada bayaran dibuat."
+      fine_remark: "Sila kosongkan medan 'Denda dibayar' atau masukkan sifar jika tiada bayaran dibuat (diskaun/pengecualian)."
       fine_remark2: Sila pastikan amaun 'Denda dibayar' (jika ada) dikemaskini terlebih dahulu, sebelum memilih kotak semak
       finepaydate: Tarikh Membayar Denda
       lost: Hilang?
@@ -2358,6 +2363,7 @@ ms_MY:
       replaceddate: Tarikh Ganti
       report: Laporan Kehilangan
       analysis_statistic: "Analisis & Statistik"
+      loan_details: Butiran buku dipinjam
       analysis:
         main_title: "Analisis & Statistik (Peminjam) - "
         main_title2: "Analisis & Statistik (Monograf) - "
@@ -2412,8 +2418,8 @@ ms_MY:
         back_general: "Kembali ke Analisis & Statistik (Umum) - Laman Utama"
           
     check:  
-      status: Semak Taraf
-      search: "Carian semak taraf"
+      status: Semak Status
+      search: "Carian semak status"
       
       
     book:

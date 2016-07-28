@@ -1,0 +1,16 @@
+= search_form_for @search, url: library_librarytransactions_path,  class: "form-inline" do |f|
+  %tr.search_row{style: "display:none;"}  
+    %td= f.text_field :accession_accession_no_cont, size: 2, :class => "form-control"
+    %td= f.text_field :callno_search, size: 2, :class => "form-control"
+    %td= f.text_field :accession_book_author_cont, size: 2,  :class => "form-control"
+    %td= f.text_field :accession_book_title_cont, size: 2,  :class => "form-control"
+    %td= select_tag('q[ru_staff_eq]', options_for_select([[(t 'people.staff'), true], [(t 'people.student'), false]]), :prompt => (t 'all_records'), class: 'selectpicker')
+    %td= f.text_field :borrower_search, size: 2, :class => "form-control"
+    %td= f.text_field :returnduedate_eq, size: 2, :class => "form-control date_picker_reverse", value: @search.returnduedate_eq.try(:strftime, '%d-%m-%Y')
+    %td= select_tag('q[borrowed_overdue_search]', options_for_select([[(t 'library.transaction.not_overdue'), '1'],[(t 'library.transaction.overdue'), '2']]), :prompt => (t 'all_records'), class: 'selectpicker')
+    /= select_tag('q[extended_eq]', options_for_select([[(t 'library.transaction.extended'), true], [(t 'library.transaction.not_extended'), nil]]), :prompt => (t 'all_records'), class: 'selectpicker')
+    %td.input-group
+      %span.input-group-btn
+        %button.btn.btn-sm.btn-default.right{:type => "submit"}
+          %i.fa.fa-search.fa-fw 
+    %td &nbsp;

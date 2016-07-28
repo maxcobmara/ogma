@@ -2,8 +2,8 @@ class Library::LibrarytransactionsController < ApplicationController
 
   before_action :set_librarytransaction, only: [:show, :edit, :update, :destroy]
   filter_access_to :manager, :require => :manage,  :attribute_check => false
-  filter_access_to :show, :edit, :update, :destroy, :check_status, :late_books, :extending, :returning, :attribute_check => true
-  filter_access_to :index, :new, :create,  :analysis_statistic, :analysis_statistic_main, :analysis, :analysis_book, :general_analysis, :general_analysis_ext,:attribute_check => false
+  filter_access_to :show, :edit, :update, :destroy, :late_books, :extending, :returning, :attribute_check => true
+  filter_access_to :index, :new, :create, :check_status, :analysis_statistic, :analysis_statistic_main, :analysis, :analysis_book, :general_analysis, :general_analysis_ext,:attribute_check => false
 
   def index
 #     @filters = Librarytransaction::FILTERS
@@ -12,7 +12,9 @@ class Library::LibrarytransactionsController < ApplicationController
 #     else
 #       @librarytransactions = Librarytransaction.all
 #     end
-    @librarytransactions=Librarytransaction.borrowed
+    #@librarytransactions=Librarytransaction.borrowed
+    @search=Librarytransaction.borrowed.search(params[:q])
+    @librarytransactions=@search.result
     @paginated_transaction = @librarytransactions.order(checkoutdate: :desc).page(params[:page]).per(15)
     @libtran_days = @paginated_transaction.group_by {|t| t.checkoutdate}
   end

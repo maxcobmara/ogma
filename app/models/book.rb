@@ -116,6 +116,15 @@ class Book < ActiveRecord::Base
     LibraryHelper.msg_import2(import_result)
   end
   
+  def callingno
+    if classlcc!=""
+      c=classlcc
+    else
+      c=classddc
+    end
+    c
+  end
+  
 end
 
 # == Schema Information
