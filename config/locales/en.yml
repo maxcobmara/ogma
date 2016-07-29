@@ -215,6 +215,10 @@ en:
         exam_id: Final Exam
       exam_template:
         name: Template Name
+      book:
+        isbn: ISBN
+        title: Title
+        language: Language
     errors:
         template:
           body: "There were problems with the following fields:"
@@ -2597,6 +2601,15 @@ en:
       bibliography: 
       indice: Index
       photo: Cover page
+      avalability_title: ISBN Availability Checking
+      check_availability: Check Availability
+      existing_book: Existing Book
+      no_isbn: No ISBN no was entered.
+      isbn_exist1: "A book record with entered ISBN already exist. (Title : "
+      isbn_exist2: "). Please edit "
+      isbn_exist3: record accordingly.
+      enter_isbn: Please enter ISBN for checking.
+      not_exist_proceed: ISBN not yet exist. You may proceed with new book creation.
       
   buletin:
     list: List of Bulletins

@@ -1,6 +1,6 @@
 class Library::BooksController < ApplicationController
   
-  filter_access_to :index, :new, :create, :import_excel, :import, :download_excel_format, :attribute_check => false
+  filter_access_to :index, :new, :create, :import_excel, :import, :download_excel_format, :check_availability, :attribute_check => false
   filter_access_to :show, :edit, :update, :destroy, :attribute_check => true
   before_action :set_book, only: [:show, :edit, :update, :destroy]
  
@@ -136,6 +136,27 @@ class Library::BooksController < ApplicationController
     respond_to do |format|
       format.html { redirect_to library_books_path }
       format.xml  { head :ok }
+    end
+  end
+  
+  def check_availability
+    @isbnsearch = params[:isbn_search].to_s
+    @isbnsearch2 = @isbnsearch.split('-').to_s
+    @result = Book.find_by_isbn(@isbnsearch)
+    if !@result && @isbnsearch!= '' 
+      @isbn_only = Book.pluck(:isbn)
+      @isbn_only.each do |isbn|
+        if isbn != nil
+          aa = isbn.split('-').to_s
+          if aa == @isbnsearch2
+            @result2 = Book.find_by_isbn(isbn)
+          end
+        end
+      end
+    end
+    #@result = Book.find(:first, :conditions => ['isbn=? OR isbn=?',@isbnsearch,@isbnsearch2])
+    respond_to do |format|
+      format.js
     end
   end
   

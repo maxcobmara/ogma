@@ -11,8 +11,8 @@
         .form-group
           .col-sm-2.control-label
             %b ISBN
-          .col-md-4
-            = f.text_field :isbn, class: 'form-control'
+          #span_isbn.col-md-3
+            = f.text_field :isbn, class: 'form-control mandatory', readonly: 'readonly'
         .form-group
           .col-sm-2.control-label
             =  f.label t 'library.book.title', for: :title
