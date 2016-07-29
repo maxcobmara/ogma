@@ -21,5 +21,11 @@ $(document).ready ->
     ###alert("Nak return!"); ###
     $(this).parent('form').submit()
     return
+  
+  $('.extend_loan input[type=submit]').remove()
+  $('.extend_loan input[type=checkbox]').click ->
+    ###alert("Nak extend!"); ###
+    $(this).parent('form').submit()
+    return
 
   return

@@ -40,9 +40,10 @@
         %tr
           %td{:colspan=>"2"} &nbsp;
           %td
-            =h link_to (ind+1).to_s+") "+bk.title, library_book_path(bk)
+            =h link_to (ind+1).to_s+") "+bk.try(:title), library_book_path(bk.id)
             - permitted_to? :update, :library_books do
-              =h link_to "EDIT","http://#{request.host}:3000/books/#{bk.id}/edit"  
+              /=h link_to "EDIT","http://#{request.host}:3000/books/#{bk.id}/edit"  
+              =h link_to (t 'actions.links.edit')+bk.try(:title), edit_library_book_path(bk.id)
           %td{:colspan=>"3"} &nbsp;
           %td{:style=>"color:red;"}=t'library.book.acc_not_exist'
           %td{:colspan=>"4"} &nbsp;

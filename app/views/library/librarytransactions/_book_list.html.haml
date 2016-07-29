@@ -63,15 +63,13 @@
 /     $(this).parent('form').submit();
 /   });
 /   
-  
+/ $('.extend_loan input[type=submit]').remove();
+/   $('.extend_loan input[type=checkbox]').click(function(){
+/     /*alert("Nak extend!"); */
+/     $(this).parent('form').submit();
+/   });  
 
 :javascript
-  $('.extend_loan input[type=submit]').remove();
-  $('.extend_loan input[type=checkbox]').click(function(){
-    /*alert("Nak extend!"); */
-    $(this).parent('form').submit();
-  });
-
   $('.loanbook_details').click(function(){
     var title = $(this).data('title');
     var isbn = $(this).data('isbn');

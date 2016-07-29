@@ -218,7 +218,7 @@ en:
       book:
         isbn: ISBN
         title: Title
-        language: Language
+        language: Languagebulletin
     errors:
         template:
           body: "There were problems with the following fields:"
@@ -2601,7 +2601,7 @@ en:
       bibliography: 
       indice: Index
       photo: Cover page
-      avalability_title: ISBN Availability Checking
+      availability_title: ISBN Availability Checking
       check_availability: Check Availability
       existing_book: Existing Book
       no_isbn: No ISBN no was entered.

@@ -46,8 +46,10 @@
             .col-sm-2.control-label
               = f.label (t 'library.transaction.fine')
             .col-md-2
-              = f.text_field :fine, class: 'form-control'
-              
+              .input-group
+                .input-group-addon
+                  RM
+                = f.text_field :fine, class: 'form-control'
         .span_late
           .form-group
             .col-sm-2
