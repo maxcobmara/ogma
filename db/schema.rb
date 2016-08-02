@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160302145157) do
+ActiveRecord::Schema.define(version: 20160802061914) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -21,6 +21,8 @@ ActiveRecord::Schema.define(version: 20160302145157) do
     t.integer  "total_week"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "college_id"
+    t.string   "data"
   end
 
   create_table "accessions", force: true do |t|
@@ -33,6 +35,8 @@ ActiveRecord::Schema.define(version: 20160302145157) do
     t.integer  "supplied_by"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "college_id"
+    t.string   "data"
   end
 
   add_index "accessions", ["accession_no"], name: "index_accessions_on_accession_no", using: :btree
@@ -55,6 +59,8 @@ ActiveRecord::Schema.define(version: 20160302145157) do
     t.string   "shortname"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "college_id"
+    t.string   "data"
   end
 
   create_table "answerchoices", force: true do |t|
@@ -63,6 +69,8 @@ ActiveRecord::Schema.define(version: 20160302145157) do
     t.string   "description"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "college_id"
+    t.string   "data"
   end
 
   create_table "appraisals", force: true do |t|
@@ -130,6 +138,8 @@ ActiveRecord::Schema.define(version: 20160302145157) do
     t.date     "decision_on"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "college_id"
+    t.string   "data"
   end
 
   create_table "asset_disposals", force: true do |t|
@@ -186,6 +196,8 @@ ActiveRecord::Schema.define(version: 20160302145157) do
     t.boolean  "witness_is_staff2"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "college_id"
+    t.string   "data"
   end
 
   create_table "asset_loans", force: true do |t|
@@ -207,6 +219,8 @@ ActiveRecord::Schema.define(version: 20160302145157) do
     t.integer  "received_officer"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "college_id"
+    t.string   "data"
   end
 
   create_table "asset_losses", force: true do |t|
@@ -252,6 +266,8 @@ ActiveRecord::Schema.define(version: 20160302145157) do
     t.integer  "document_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "college_id"
+    t.string   "data"
   end
 
   create_table "asset_placements", force: true do |t|
@@ -262,6 +278,8 @@ ActiveRecord::Schema.define(version: 20160302145157) do
     t.integer  "quantity"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "college_id"
+    t.string   "data"
   end
 
   create_table "assetcategories", force: true do |t|
@@ -270,6 +288,8 @@ ActiveRecord::Schema.define(version: 20160302145157) do
     t.integer  "cattype_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "college_id"
+    t.string   "data"
   end
 
   create_table "assetlosses", force: true do |t|
@@ -366,6 +386,8 @@ ActiveRecord::Schema.define(version: 20160302145157) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "remark"
+    t.integer  "college_id"
+    t.string   "data"
   end
 
   create_table "assetsearches", force: true do |t|
@@ -410,6 +432,8 @@ ActiveRecord::Schema.define(version: 20160302145157) do
     t.date     "expectedreturndate2"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "college_id"
+    t.string   "data"
   end
 
   create_table "assettracks", force: true do |t|
@@ -436,6 +460,8 @@ ActiveRecord::Schema.define(version: 20160302145157) do
     t.datetime "data_updated_at"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "college_id"
+    t.string   "data"
   end
 
   create_table "attendances", force: true do |t|
@@ -475,6 +501,8 @@ ActiveRecord::Schema.define(version: 20160302145157) do
     t.integer  "account_type"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "college_id"
+    t.string   "data"
   end
 
   create_table "banks", force: true do |t|
@@ -483,6 +511,8 @@ ActiveRecord::Schema.define(version: 20160302145157) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.boolean  "active"
+    t.integer  "college_id"
+    t.string   "data"
   end
 
   create_table "books", force: true do |t|
@@ -532,6 +562,8 @@ ActiveRecord::Schema.define(version: 20160302145157) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "finance_source"
+    t.integer  "college_id"
+    t.string   "data"
   end
 
   add_index "books", ["id"], name: "index_books_on_id", using: :btree
@@ -550,6 +582,8 @@ ActiveRecord::Schema.define(version: 20160302145157) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "publisher"
+    t.integer  "college_id"
+    t.string   "data"
   end
 
   create_table "booleananswers", force: true do |t|
@@ -558,6 +592,8 @@ ActiveRecord::Schema.define(version: 20160302145157) do
     t.boolean  "answer"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "college_id"
+    t.string   "data"
   end
 
   create_table "booleanchoices", force: true do |t|
@@ -566,6 +602,8 @@ ActiveRecord::Schema.define(version: 20160302145157) do
     t.string   "description"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "college_id"
+    t.string   "data"
   end
 
   create_table "bulletins", force: true do |t|
@@ -579,6 +617,8 @@ ActiveRecord::Schema.define(version: 20160302145157) do
     t.datetime "data_updated_at"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "college_id"
+    t.string   "data"
   end
 
   create_table "circulations", force: true do |t|
@@ -592,6 +632,8 @@ ActiveRecord::Schema.define(version: 20160302145157) do
     t.string   "action_content_type"
     t.integer  "action_file_size"
     t.datetime "action_updated_at"
+    t.integer  "college_id"
+    t.string   "data"
   end
 
   create_table "cofiles", force: true do |t|
@@ -603,6 +645,16 @@ ActiveRecord::Schema.define(version: 20160302145157) do
     t.integer  "staffloan_id"
     t.date     "onloandt"
     t.date     "onloanxdt"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "college_id"
+    t.string   "data"
+  end
+
+  create_table "colleges", force: true do |t|
+    t.string   "code"
+    t.string   "name"
+    t.text     "data"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -620,6 +672,8 @@ ActiveRecord::Schema.define(version: 20160302145157) do
     t.integer  "subject_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "college_id"
+    t.string   "data"
   end
 
   create_table "curriculumsearches", force: true do |t|
@@ -629,6 +683,8 @@ ActiveRecord::Schema.define(version: 20160302145157) do
     t.integer  "topic"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "college_id"
+    t.string   "data"
   end
 
   create_table "disposals", force: true do |t|
@@ -680,11 +736,15 @@ ActiveRecord::Schema.define(version: 20160302145157) do
     t.string   "sender"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "college_id"
+    t.string   "data"
   end
 
   create_table "documents_staffs", id: false, force: true do |t|
     t.integer "document_id"
     t.integer "staff_id"
+    t.integer "college_id"
+    t.string  "data"
   end
 
   create_table "documentsearches", force: true do |t|
@@ -701,6 +761,8 @@ ActiveRecord::Schema.define(version: 20160302145157) do
     t.date     "letterxdtend"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "college_id"
+    t.string   "data"
   end
 
   create_table "employgrades", force: true do |t|
@@ -708,6 +770,8 @@ ActiveRecord::Schema.define(version: 20160302145157) do
     t.integer  "group_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "college_id"
+    t.string   "data"
   end
 
   create_table "evactivities", force: true do |t|
@@ -718,6 +782,8 @@ ActiveRecord::Schema.define(version: 20160302145157) do
     t.date     "actdt"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "college_id"
+    t.string   "data"
   end
 
   create_table "evaluate_courses", force: true do |t|
@@ -741,6 +807,8 @@ ActiveRecord::Schema.define(version: 20160302145157) do
     t.datetime "updated_at"
     t.string   "invite_lec_topic"
     t.integer  "ev_assessment"
+    t.integer  "college_id"
+    t.string   "data"
   end
 
   create_table "evaluatecoursesearches", force: true do |t|
@@ -754,6 +822,8 @@ ActiveRecord::Schema.define(version: 20160302145157) do
     t.date     "evaldate_end"
     t.integer  "programme_id2"
     t.boolean  "is_staff"
+    t.integer  "college_id"
+    t.string   "data"
   end
 
   create_table "events", force: true do |t|
@@ -767,6 +837,8 @@ ActiveRecord::Schema.define(version: 20160302145157) do
     t.boolean  "event_is_publik"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "college_id"
+    t.string   "data"
   end
 
   create_table "exam_templates", force: true do |t|
@@ -776,6 +848,8 @@ ActiveRecord::Schema.define(version: 20160302145157) do
     t.date     "deleted_at"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "college_id"
+    t.string   "data2"
   end
 
   create_table "examanalyses", force: true do |t|
@@ -793,6 +867,8 @@ ActiveRecord::Schema.define(version: 20160302145157) do
     t.integer  "gradeE"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "college_id"
+    t.string   "data"
   end
 
   create_table "examanalysissearches", force: true do |t|
@@ -803,6 +879,8 @@ ActiveRecord::Schema.define(version: 20160302145157) do
     t.integer  "programme_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "college_id"
+    t.string   "data"
   end
 
   create_table "examanswers", force: true do |t|
@@ -811,6 +889,8 @@ ActiveRecord::Schema.define(version: 20160302145157) do
     t.string   "answer_desc"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "college_id"
+    t.string   "data"
   end
 
   create_table "exammakers", force: true do |t|
@@ -834,6 +914,8 @@ ActiveRecord::Schema.define(version: 20160302145157) do
     t.decimal  "total_mcq"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "college_id"
+    t.string   "data"
   end
 
   create_table "exammcqanswers", force: true do |t|
@@ -842,6 +924,8 @@ ActiveRecord::Schema.define(version: 20160302145157) do
     t.string   "answer"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "college_id"
+    t.string   "data"
   end
 
   create_table "examquestionanalyses", force: true do |t|
@@ -861,6 +945,8 @@ ActiveRecord::Schema.define(version: 20160302145157) do
     t.integer  "examanalysis_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "college_id"
+    t.string   "data"
   end
 
   create_table "examquestions", force: true do |t|
@@ -902,6 +988,8 @@ ActiveRecord::Schema.define(version: 20160302145157) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "diagram_caption"
+    t.integer  "college_id"
+    t.string   "data"
   end
 
   create_table "examquestions_exams", id: false, force: true do |t|
@@ -910,6 +998,8 @@ ActiveRecord::Schema.define(version: 20160302145157) do
     t.integer  "sequence"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "college_id"
+    t.string   "data"
   end
 
   create_table "examresults", force: true do |t|
@@ -923,11 +1013,15 @@ ActiveRecord::Schema.define(version: 20160302145157) do
     t.date     "examdte"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "college_id"
+    t.string   "data"
   end
 
   create_table "examresults_students", id: false, force: true do |t|
     t.integer "examresult_id"
     t.integer "student_id"
+    t.integer "college_id"
+    t.string  "data"
   end
 
   create_table "examresultsearches", force: true do |t|
@@ -939,6 +1033,8 @@ ActiveRecord::Schema.define(version: 20160302145157) do
     t.date     "examdte"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "college_id"
+    t.string   "data"
   end
 
   create_table "exams", force: true do |t|
@@ -957,6 +1053,8 @@ ActiveRecord::Schema.define(version: 20160302145157) do
     t.string   "sequ"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "college_id"
+    t.string   "data"
   end
 
   create_table "examsearches", force: true do |t|
@@ -969,6 +1067,8 @@ ActiveRecord::Schema.define(version: 20160302145157) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "valid_papertype"
+    t.integer  "college_id"
+    t.string   "data"
   end
 
   create_table "examsubquestions", force: true do |t|
@@ -981,6 +1081,8 @@ ActiveRecord::Schema.define(version: 20160302145157) do
     t.text     "answer"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "college_id"
+    t.string   "data"
   end
 
   create_table "examtemplates", force: true do |t|
@@ -1001,6 +1103,8 @@ ActiveRecord::Schema.define(version: 20160302145157) do
     t.boolean "is_approved"
     t.date    "approved_on"
     t.integer "status"
+    t.integer "college_id"
+    t.string  "data"
   end
 
   create_table "grades", force: true do |t|
@@ -1025,6 +1129,8 @@ ActiveRecord::Schema.define(version: 20160302145157) do
     t.decimal  "examweight"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "college_id"
+    t.string   "data"
   end
 
   create_table "groups", force: true do |t|
@@ -1033,11 +1139,15 @@ ActiveRecord::Schema.define(version: 20160302145157) do
     t.text     "members"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "college_id"
+    t.string   "data"
   end
 
   create_table "holidays", force: true do |t|
-    t.string "hname"
-    t.date   "hdate"
+    t.string  "hname"
+    t.date    "hdate"
+    t.integer "college_id"
+    t.string  "data"
   end
 
   create_table "intakes", force: true do |t|
@@ -1050,6 +1160,8 @@ ActiveRecord::Schema.define(version: 20160302145157) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "staff_id"
+    t.integer  "college_id"
+    t.string   "data"
   end
 
   create_table "kins", force: true do |t|
@@ -1064,6 +1176,8 @@ ActiveRecord::Schema.define(version: 20160302145157) do
     t.string   "mykadno"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "college_id"
+    t.string   "data"
   end
 
   create_table "klasses", force: true do |t|
@@ -1098,6 +1212,8 @@ ActiveRecord::Schema.define(version: 20160302145157) do
     t.date     "approval2date"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "college_id"
+    t.string   "data"
   end
 
   create_table "leaveforstudents", force: true do |t|
@@ -1119,6 +1235,8 @@ ActiveRecord::Schema.define(version: 20160302145157) do
     t.boolean  "approved2"
     t.integer  "staff_id2"
     t.date     "approvedate2"
+    t.integer  "college_id"
+    t.string   "data"
   end
 
   create_table "lesson_plan_trainingnotes", force: true do |t|
@@ -1126,6 +1244,8 @@ ActiveRecord::Schema.define(version: 20160302145157) do
     t.integer  "trainingnote_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "college_id"
+    t.string   "data"
   end
 
   create_table "lesson_plans", force: true do |t|
@@ -1168,6 +1288,8 @@ ActiveRecord::Schema.define(version: 20160302145157) do
     t.integer  "schedule"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "college_id"
+    t.string   "data"
   end
 
   create_table "lessonplan_methodologies", force: true do |t|
@@ -1181,6 +1303,8 @@ ActiveRecord::Schema.define(version: 20160302145157) do
     t.time     "end_meth"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "college_id"
+    t.string   "data"
   end
 
   create_table "lessonplansearches", force: true do |t|
@@ -1193,6 +1317,8 @@ ActiveRecord::Schema.define(version: 20160302145157) do
     t.integer  "valid_schedule"
     t.integer  "subject"
     t.integer  "loggedin_staff"
+    t.integer  "college_id"
+    t.string   "data"
   end
 
   create_table "librarytransactions", force: true do |t|
@@ -1217,6 +1343,8 @@ ActiveRecord::Schema.define(version: 20160302145157) do
     t.integer  "libreturned_by"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "college_id"
+    t.string   "data"
   end
 
   create_table "librarytransactionsearches", force: true do |t|
@@ -1228,6 +1356,8 @@ ActiveRecord::Schema.define(version: 20160302145157) do
     t.integer  "details"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "college_id"
+    t.string   "data"
   end
 
   create_table "loans", force: true do |t|
@@ -1243,6 +1373,8 @@ ActiveRecord::Schema.define(version: 20160302145157) do
     t.decimal  "enddeduction"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "college_id"
+    t.string   "data"
   end
 
   create_table "location_damages", force: true do |t|
@@ -1256,6 +1388,7 @@ ActiveRecord::Schema.define(version: 20160302145157) do
     t.integer  "college_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "data"
   end
 
   create_table "locations", force: true do |t|
@@ -1272,6 +1405,8 @@ ActiveRecord::Schema.define(version: 20160302145157) do
     t.string   "combo_code"
     t.integer  "ancestry_depth", default: 0
     t.string   "status"
+    t.integer  "college_id"
+    t.string   "data"
   end
 
   add_index "locations", ["ancestry"], name: "index_locations_on_ancestry", using: :btree
@@ -1306,6 +1441,8 @@ ActiveRecord::Schema.define(version: 20160302145157) do
     t.integer "unsubscriber_id"
     t.string  "unsubscriber_type"
     t.integer "conversation_id"
+    t.integer "college_id"
+    t.string  "data"
   end
 
   add_index "mailboxer_conversation_opt_outs", ["conversation_id"], name: "index_mailboxer_conversation_opt_outs_on_conversation_id", using: :btree
@@ -1315,6 +1452,8 @@ ActiveRecord::Schema.define(version: 20160302145157) do
     t.string   "subject",    default: ""
     t.datetime "created_at",              null: false
     t.datetime "updated_at",              null: false
+    t.integer  "college_id"
+    t.string   "data"
   end
 
   create_table "mailboxer_notifications", force: true do |t|
@@ -1333,6 +1472,8 @@ ActiveRecord::Schema.define(version: 20160302145157) do
     t.datetime "created_at",                           null: false
     t.boolean  "global",               default: false
     t.datetime "expires"
+    t.integer  "college_id"
+    t.string   "data"
   end
 
   add_index "mailboxer_notifications", ["conversation_id"], name: "index_mailboxer_notifications_on_conversation_id", using: :btree
@@ -1350,6 +1491,8 @@ ActiveRecord::Schema.define(version: 20160302145157) do
     t.string   "mailbox_type",    limit: 25
     t.datetime "created_at",                                 null: false
     t.datetime "updated_at",                                 null: false
+    t.integer  "college_id"
+    t.string   "data"
   end
 
   add_index "mailboxer_receipts", ["notification_id"], name: "index_mailboxer_receipts_on_notification_id", using: :btree
@@ -1363,6 +1506,8 @@ ActiveRecord::Schema.define(version: 20160302145157) do
     t.text     "details"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "college_id"
+    t.string   "data"
   end
 
   create_table "marks", force: true do |t|
@@ -1370,6 +1515,8 @@ ActiveRecord::Schema.define(version: 20160302145157) do
     t.decimal  "student_mark"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "college_id"
+    t.string   "data"
   end
 
   create_table "messages", force: true do |t|
@@ -1389,6 +1536,8 @@ ActiveRecord::Schema.define(version: 20160302145157) do
     t.date    "cpd_year"
     t.decimal "cpd_value"
     t.integer "staff_id"
+    t.integer "college_id"
+    t.string  "data"
   end
 
   create_table "pages", force: true do |t|
@@ -1404,6 +1553,8 @@ ActiveRecord::Schema.define(version: 20160302145157) do
     t.string   "controller_name"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "college_id"
+    t.string   "data"
   end
 
   create_table "parts", force: true do |t|
@@ -1424,6 +1575,8 @@ ActiveRecord::Schema.define(version: 20160302145157) do
     t.datetime "updated_at"
     t.date     "startdate"
     t.date     "enddate"
+    t.integer  "college_id"
+    t.string   "data"
   end
 
   create_table "photos", force: true do |t|
@@ -1434,6 +1587,8 @@ ActiveRecord::Schema.define(version: 20160302145157) do
     t.datetime "diagram_updated_at"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "college_id"
+    t.string   "data"
   end
 
   create_table "positions", force: true do |t|
@@ -1452,6 +1607,8 @@ ActiveRecord::Schema.define(version: 20160302145157) do
     t.datetime "updated_at"
     t.integer  "postinfo_id"
     t.integer  "status"
+    t.integer  "college_id"
+    t.string   "data"
   end
 
   add_index "positions", ["ancestry"], name: "index_positions_on_ancestry", using: :btree
@@ -1462,6 +1619,8 @@ ActiveRecord::Schema.define(version: 20160302145157) do
     t.integer  "post_count"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "college_id"
+    t.string   "data"
   end
 
   create_table "programmes", force: true do |t|
@@ -1485,6 +1644,8 @@ ActiveRecord::Schema.define(version: 20160302145157) do
     t.integer  "practical_time"
     t.decimal  "duration"
     t.string   "subject_abbreviation"
+    t.integer  "college_id"
+    t.string   "data"
   end
 
   create_table "programmes_subjects", id: false, force: true do |t|
@@ -1497,6 +1658,8 @@ ActiveRecord::Schema.define(version: 20160302145157) do
     t.date     "fiscalstart"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "college_id"
+    t.string   "data"
   end
 
   create_table "ptcourses", force: true do |t|
@@ -1513,6 +1676,8 @@ ActiveRecord::Schema.define(version: 20160302145157) do
     t.datetime "updated_at"
     t.integer  "training_classification"
     t.integer  "level"
+    t.integer  "college_id"
+    t.string   "data"
   end
 
   create_table "ptdos", force: true do |t|
@@ -1529,6 +1694,8 @@ ActiveRecord::Schema.define(version: 20160302145157) do
     t.text     "trainee_report"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "college_id"
+    t.string   "data"
   end
 
   create_table "ptdosearches", force: true do |t|
@@ -1539,6 +1706,8 @@ ActiveRecord::Schema.define(version: 20160302145157) do
     t.string  "icno"
     t.date    "schedulestart_start"
     t.date    "schedulestart_end"
+    t.integer "college_id"
+    t.string  "data"
   end
 
   create_table "ptschedules", force: true do |t|
@@ -1553,6 +1722,8 @@ ActiveRecord::Schema.define(version: 20160302145157) do
     t.datetime "updated_at"
     t.integer  "payment"
     t.text     "remark"
+    t.integer  "college_id"
+    t.string   "data"
   end
 
   create_table "qualifications", force: true do |t|
@@ -1564,6 +1735,8 @@ ActiveRecord::Schema.define(version: 20160302145157) do
     t.string   "institute"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "college_id"
+    t.string   "data"
   end
 
   create_table "residences", force: true do |t|
@@ -1597,6 +1770,8 @@ ActiveRecord::Schema.define(version: 20160302145157) do
     t.decimal  "pngk"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "college_id"
+    t.string   "data"
   end
 
   create_table "roles", force: true do |t|
@@ -1605,11 +1780,15 @@ ActiveRecord::Schema.define(version: 20160302145157) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "description"
+    t.integer  "college_id"
+    t.string   "data"
   end
 
   create_table "roles_users", id: false, force: true do |t|
     t.integer "role_id"
     t.integer "user_id"
+    t.integer "college_id"
+    t.string  "data"
   end
 
   create_table "rxparts", force: true do |t|
@@ -1635,6 +1814,8 @@ ActiveRecord::Schema.define(version: 20160302145157) do
     t.integer  "grade_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "college_id"
+    t.string   "data"
   end
 
   create_table "scsessions", force: true do |t|
@@ -1656,6 +1837,8 @@ ActiveRecord::Schema.define(version: 20160302145157) do
     t.date     "deactivate_date"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "college_id"
+    t.string   "data"
   end
 
   create_table "shortessays", force: true do |t|
@@ -1667,6 +1850,8 @@ ActiveRecord::Schema.define(version: 20160302145157) do
     t.string   "keyword"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "college_id"
+    t.string   "data"
   end
 
   create_table "spmresults", force: true do |t|
@@ -1676,6 +1861,8 @@ ActiveRecord::Schema.define(version: 20160302145157) do
     t.string   "grade"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "college_id"
+    t.string   "data"
   end
 
   create_table "staff_appraisal_skts", force: true do |t|
@@ -1708,6 +1895,8 @@ ActiveRecord::Schema.define(version: 20160302145157) do
     t.string   "notes_quality"
     t.string   "notes_cost"
     t.text     "description"
+    t.integer  "college_id"
+    t.string   "data"
   end
 
   create_table "staff_appraisals", force: true do |t|
@@ -1790,6 +1979,8 @@ ActiveRecord::Schema.define(version: 20160302145157) do
     t.date     "is_completed_on"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "college_id"
+    t.string   "data"
   end
 
   create_table "staff_attendances", force: true do |t|
@@ -1805,6 +1996,8 @@ ActiveRecord::Schema.define(version: 20160302145157) do
     t.string   "review"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "college_id"
+    t.string   "data"
   end
 
   create_table "staff_grades", force: true do |t|
@@ -1816,6 +2009,8 @@ ActiveRecord::Schema.define(version: 20160302145157) do
     t.string   "classification_id"
     t.string   "group_id"
     t.string   "schemename"
+    t.integer  "college_id"
+    t.string   "data"
   end
 
   create_table "staff_shifts", force: true do |t|
@@ -1824,6 +2019,8 @@ ActiveRecord::Schema.define(version: 20160302145157) do
     t.time     "end_at"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "college_id"
+    t.string   "data"
   end
 
   create_table "staffattendancesearches", force: true do |t|
@@ -1832,6 +2029,8 @@ ActiveRecord::Schema.define(version: 20160302145157) do
     t.datetime "logged_at"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "college_id"
+    t.string   "data"
   end
 
   create_table "staffcourses", force: true do |t|
@@ -1927,6 +2126,8 @@ ActiveRecord::Schema.define(version: 20160302145157) do
     t.decimal  "current_salary"
     t.decimal  "allowance"
     t.string   "salary_no"
+    t.integer  "college_id"
+    t.string   "data"
   end
 
   add_index "staffs", ["icno"], name: "index_staffs_on_icno", using: :btree
@@ -1942,6 +2143,8 @@ ActiveRecord::Schema.define(version: 20160302145157) do
     t.integer  "position2"
     t.integer  "position3"
     t.integer  "blank_post"
+    t.integer  "college_id"
+    t.string   "data"
   end
 
   create_table "staffsearches", force: true do |t|
@@ -1960,6 +2163,8 @@ ActiveRecord::Schema.define(version: 20160302145157) do
     t.datetime "updated_at"
     t.integer  "maxquantity"
     t.integer  "minquantity"
+    t.integer  "college_id"
+    t.string   "data"
   end
 
   create_table "stationery_adds", force: true do |t|
@@ -1971,6 +2176,8 @@ ActiveRecord::Schema.define(version: 20160302145157) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "quantity"
+    t.integer  "college_id"
+    t.string   "data"
   end
 
   create_table "stationery_uses", force: true do |t|
@@ -1981,6 +2188,8 @@ ActiveRecord::Schema.define(version: 20160302145157) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "quantity"
+    t.integer  "college_id"
+    t.string   "data"
   end
 
   create_table "stationerysearches", force: true do |t|
@@ -1992,6 +2201,8 @@ ActiveRecord::Schema.define(version: 20160302145157) do
     t.integer "receivedby"
     t.date    "issuedate"
     t.date    "issuedate2"
+    t.integer "college_id"
+    t.string  "data"
   end
 
   create_table "student_attendances", force: true do |t|
@@ -2004,6 +2215,8 @@ ActiveRecord::Schema.define(version: 20160302145157) do
     t.string   "remark"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "college_id"
+    t.string   "data"
   end
 
   create_table "student_counseling_sessions", force: true do |t|
@@ -2028,6 +2241,8 @@ ActiveRecord::Schema.define(version: 20160302145157) do
     t.text     "remark"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "college_id"
+    t.string   "data"
   end
 
   create_table "student_discipline_cases", force: true do |t|
@@ -2060,6 +2275,8 @@ ActiveRecord::Schema.define(version: 20160302145157) do
     t.text     "counselor_feedback"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "college_id"
+    t.string   "data"
   end
 
   create_table "studentattendances", force: true do |t|
@@ -2076,6 +2293,8 @@ ActiveRecord::Schema.define(version: 20160302145157) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "intake_id"
+    t.integer  "college_id"
+    t.string   "data"
   end
 
   create_table "studentcounselingsearches", force: true do |t|
@@ -2087,6 +2306,8 @@ ActiveRecord::Schema.define(version: 20160302145157) do
     t.datetime "confirmed_at_end"
     t.boolean  "is_confirmed"
     t.string   "name"
+    t.integer  "college_id"
+    t.string   "data"
   end
 
   create_table "studentdisciplinesearches", force: true do |t|
@@ -2097,6 +2318,8 @@ ActiveRecord::Schema.define(version: 20160302145157) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "icno"
+    t.integer  "college_id"
+    t.string   "data"
   end
 
   create_table "students", force: true do |t|
@@ -2137,6 +2360,8 @@ ActiveRecord::Schema.define(version: 20160302145157) do
     t.string   "course_remarks"
     t.integer  "race2"
     t.string   "sstatus_remark"
+    t.integer  "college_id"
+    t.string   "data"
   end
 
   add_index "students", ["icno"], name: "index_students_on_icno", using: :btree
@@ -2161,6 +2386,8 @@ ActiveRecord::Schema.define(version: 20160302145157) do
     t.date     "end_training2"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "college_id"
+    t.string   "data"
   end
 
   create_table "suppliers", force: true do |t|
@@ -2183,6 +2410,8 @@ ActiveRecord::Schema.define(version: 20160302145157) do
     t.boolean  "force_vacate"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "college_id"
+    t.string   "data"
   end
 
   add_index "tenants", ["id"], name: "index_tenants_on_id", using: :btree
@@ -2196,6 +2425,8 @@ ActiveRecord::Schema.define(version: 20160302145157) do
     t.boolean  "is_break"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "college_id"
+    t.string   "data"
   end
 
   create_table "timetables", force: true do |t|
@@ -2205,6 +2436,8 @@ ActiveRecord::Schema.define(version: 20160302145157) do
     t.integer  "created_by"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "college_id"
+    t.string   "data"
   end
 
   create_table "titles", force: true do |t|
@@ -2213,6 +2446,8 @@ ActiveRecord::Schema.define(version: 20160302145157) do
     t.boolean  "berhormat"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "college_id"
+    t.string   "data"
   end
 
   create_table "topicdetails", force: true do |t|
@@ -2228,6 +2463,8 @@ ActiveRecord::Schema.define(version: 20160302145157) do
     t.integer  "prepared_by"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "college_id"
+    t.string   "data"
   end
 
   create_table "trainingnotes", force: true do |t|
@@ -2244,6 +2481,8 @@ ActiveRecord::Schema.define(version: 20160302145157) do
     t.integer  "topicdetail_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "college_id"
+    t.string   "data"
   end
 
   create_table "trainingreports", force: true do |t|
@@ -2258,6 +2497,8 @@ ActiveRecord::Schema.define(version: 20160302145157) do
     t.integer  "tpa_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "college_id"
+    t.string   "data"
   end
 
   create_table "trainingrequests", force: true do |t|
@@ -2272,6 +2513,8 @@ ActiveRecord::Schema.define(version: 20160302145157) do
     t.date     "approveddate"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "college_id"
+    t.string   "data"
   end
 
   create_table "trainings", force: true do |t|
@@ -2297,6 +2540,8 @@ ActiveRecord::Schema.define(version: 20160302145157) do
     t.integer  "evaluation_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "college_id"
+    t.string   "data"
   end
 
   create_table "travel_claim_allowances", force: true do |t|
@@ -2311,6 +2556,8 @@ ActiveRecord::Schema.define(version: 20160302145157) do
     t.decimal  "total"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "college_id"
+    t.string   "data"
   end
 
   create_table "travel_claim_logs", force: true do |t|
@@ -2325,6 +2572,8 @@ ActiveRecord::Schema.define(version: 20160302145157) do
     t.string   "checker_notes"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "college_id"
+    t.string   "data"
   end
 
   create_table "travel_claim_mileage_rates", force: true do |t|
@@ -2337,6 +2586,8 @@ ActiveRecord::Schema.define(version: 20160302145157) do
     t.decimal  "e_group",    precision: 4, scale: 2
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "college_id"
+    t.string   "data"
   end
 
   create_table "travel_claim_receipts", force: true do |t|
@@ -2350,6 +2601,8 @@ ActiveRecord::Schema.define(version: 20160302145157) do
     t.string   "checker_notes"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "college_id"
+    t.string   "data"
   end
 
   create_table "travel_claims", force: true do |t|
@@ -2370,6 +2623,8 @@ ActiveRecord::Schema.define(version: 20160302145157) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.text     "accommodations"
+    t.integer  "college_id"
+    t.string   "data"
   end
 
   create_table "travel_claims_transport_groups", force: true do |t|
@@ -2380,6 +2635,8 @@ ActiveRecord::Schema.define(version: 20160302145157) do
     t.integer  "cc_high"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "college_id"
+    t.string   "data"
   end
 
   create_table "travel_requests", force: true do |t|
@@ -2416,6 +2673,8 @@ ActiveRecord::Schema.define(version: 20160302145157) do
     t.string   "code"
     t.string   "others_car_notes"
     t.integer  "mileage_history"
+    t.integer  "college_id"
+    t.string   "data"
   end
 
   create_table "traveldetailreceipts", force: true do |t|
@@ -2467,6 +2726,8 @@ ActiveRecord::Schema.define(version: 20160302145157) do
     t.inet     "last_sign_in_ip"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "college_id"
+    t.string   "data"
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
@@ -2478,6 +2739,8 @@ ActiveRecord::Schema.define(version: 20160302145157) do
     t.string  "reg_no"
     t.integer "cylinder_capacity"
     t.integer "staff_id"
+    t.integer "college_id"
+    t.string  "data"
   end
 
   create_table "weeklytimetable_details", force: true do |t|
@@ -2494,6 +2757,8 @@ ActiveRecord::Schema.define(version: 20160302145157) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "location_desc"
+    t.integer  "college_id"
+    t.string   "data"
   end
 
   create_table "weeklytimetables", force: true do |t|
@@ -2517,6 +2782,8 @@ ActiveRecord::Schema.define(version: 20160302145157) do
     t.string   "reason"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "college_id"
+    t.string   "data"
   end
 
   create_table "weeklytimetablesearches", force: true do |t|
@@ -2529,6 +2796,8 @@ ActiveRecord::Schema.define(version: 20160302145157) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "validintake"
+    t.integer  "college_id"
+    t.string   "data"
   end
 
   Foreigner.load
