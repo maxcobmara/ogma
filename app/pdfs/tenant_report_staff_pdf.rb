@@ -1,10 +1,10 @@
 class Tenant_report_staffPdf < Prawn::Document 
-  def initialize(tenants, view)
+  def initialize(tenants, view, college)
     super({top_margin: 50, page_size: 'A4', page_layout: :landscape })
     @tenants = tenants
     @view = view
     font "Times-Roman"
-    text "Kolej Sains Kesihatan Bersekutu Johor Bahru", :align => :center, :size => 12, :style => :bold
+    text "#{college.name}", :align => :center, :size => 12, :style => :bold
     text "#{I18n.t('student.tenant.list_full2')}", :align => :center, :size => 12, :style => :bold
     move_down 10
     record

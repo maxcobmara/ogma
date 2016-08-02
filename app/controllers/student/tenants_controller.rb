@@ -253,7 +253,7 @@ class Student::TenantsController < ApplicationController
     
     respond_to do |format|
       format.pdf do
-	pdf = CensusStudentTenantsPdf.new(@all_beds_single,@all_rooms.count, @damaged_rooms.count,@occupied_rooms.count, @students_prog, @all_tenants_wstudent.count, @all_tenants_wostudent.count, @tenantbed_per_level.count, view_context)
+	pdf = CensusStudentTenantsPdf.new(@all_beds_single,@all_rooms.count, @damaged_rooms.count,@occupied_rooms.count, @students_prog, @all_tenants_wstudent.count, @all_tenants_wostudent.count, @tenantbed_per_level.count, view_context, current_user.college)
         send_data pdf.render, filename: "census",
                               type: "application/pdf",
                               disposition: "inline"
@@ -270,7 +270,7 @@ class Student::TenantsController < ApplicationController
     @tenants = @search.result.where('student_id is not null')
     respond_to do |format|
        format.pdf do
-         pdf = Tenant_reportPdf.new(@tenants, view_context)
+         pdf = Tenant_reportPdf.new(@tenants, view_context, current_user.college)
                    send_data pdf.render, filename: "tenant_report-{Date.today}",
                    type: "application/pdf",
                    disposition: "inline"
@@ -287,7 +287,7 @@ class Student::TenantsController < ApplicationController
     @tenants = @search.result.where('staff_id is not null')
     respond_to do |format|
        format.pdf do
-         pdf = Tenant_report_staffPdf.new(@tenants, view_context)
+         pdf = Tenant_report_staffPdf.new(@tenants, view_context, current_user.college)
                    send_data pdf.render, filename: "tenant_report-{Date.today}",
                    type: "application/pdf",
                    disposition: "inline"
@@ -304,7 +304,7 @@ class Student::TenantsController < ApplicationController
     @current_tenants = Tenant.where("keyreturned IS ? AND force_vacate != ? and location_id IN(?)", nil, true, student_bed_ids)
     respond_to do |format|
        format.pdf do
-         pdf = Laporan_penginapanPdf.new(@residential, @current_tenants, view_context)
+         pdf = Laporan_penginapanPdf.new(@residential, @current_tenants, view_context, current_user.college)
                    send_data pdf.render, filename: "laporan_penginapan-{Date.today}",
                    type: "application/pdf",
                    disposition: "inline"
@@ -322,7 +322,7 @@ class Student::TenantsController < ApplicationController
     @current_tenants = Tenant.where("keyreturned IS ? AND force_vacate != ? and location_id IN(?)", nil, true, student_bed_ids)
     respond_to do |format|
        format.pdf do
-         pdf = Laporan_penginapan2Pdf.new(@residentials, @current_tenants, view_context)
+         pdf = Laporan_penginapan2Pdf.new(@residentials, @current_tenants, view_context, current_user.college)
                    send_data pdf.render, filename: "laporan_penginapan-{Date.today}",
                    type: "application/pdf",
                    disposition: "inline"

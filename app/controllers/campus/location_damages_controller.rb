@@ -84,7 +84,7 @@ class Campus::LocationDamagesController < ApplicationController
     @damages = @search.result.joins(:location).where('typename IN(?) or lclass IN(?)',[2,8,6],[4,2]) #4-block, 2-flr, 2-bed f, 8-bed m, 6-room
     respond_to do |format|
        format.pdf do
-         pdf = Damage_reportPdf.new(@damages, view_context)
+         pdf = Damage_reportPdf.new(@damages, view_context, current_user.college)
                    send_data pdf.render, filename: "damage_report-{Date.today}",
                    type: "application/pdf",
                    disposition: "inline"
@@ -97,7 +97,7 @@ class Campus::LocationDamagesController < ApplicationController
     @damages = @search.result.joins(:location).where('locations.typename=?',1) 
     respond_to do |format|
        format.pdf do
-         pdf = Damage_report_staffPdf.new(@damages, view_context)
+         pdf = Damage_report_staffPdf.new(@damages, view_context, current_user.college)
                    send_data pdf.render, filename: "damage_report-{Date.today}",
                    type: "application/pdf",
                    disposition: "inline"

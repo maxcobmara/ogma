@@ -1,0 +1,46 @@
+- model_class = College
+.page-header
+  %h1 College
+
+= render 'shared/flashes'
+
+.row
+  .col-md-8.col-md-offset-1
+    %dl.dl-horizontal
+      %dt Code
+      %dd=@college.code
+      
+      %dt Name
+      %dd=@college.name
+      
+      %dt Address
+      %dd
+        %table
+          %tr
+            %td=@college.address
+      
+      %dt Phone
+      %dd=@college.phone
+      
+      %dt Fax
+      %dd=@college.fax
+      
+      %dt Email
+      %dd=@college.email
+      
+      %dt Logo
+      %dd=@college. logo
+
+.row
+  .col-md-4.col-md-offset-3
+    %hr
+    .form-actions
+      = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), colleges_path, :class => 'btn btn-default'
+      = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('.edit', :default => t("helpers.links.edit")), edit_college_path(@college), :class => 'btn btn-primary'
+      = link_to content_tag(:i, "", :class => "fa fa-trash-o icon-white") + " " + t('.destroy', :default => t("helpers.links.destroy")), |
+        college_path(@college),                                                                                                    |
+        :method => 'delete',                                                                                                           |
+        :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },                   |
+        :class => 'btn btn-danger'
+		
+		

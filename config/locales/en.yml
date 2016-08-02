@@ -1988,6 +1988,7 @@ en:
       repaired: Repaired
       not_repaired: Not Repaired
       damage_report: Location Damage Report for Student Residence
+      damage_report_staff: Location Damage Report for Staff Residence
       match_asset: "Match Asset ?"
       no_match_asset: No matching asset
       repairs_of: Repairs of

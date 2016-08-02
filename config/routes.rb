@@ -463,7 +463,7 @@ Ogma::Application.routes.draw do
   end
 
   resources :groups
-  
+  resources :colleges
 
   root  'static_pages#home'
   match '/help',    to: 'static_pages#help',    via: 'get'
