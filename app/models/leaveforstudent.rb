@@ -8,6 +8,8 @@ class Leaveforstudent < ActiveRecord::Base
   validates_numericality_of :telno
   validate :validate_kin_exist
   validate :validate_end_date_before_start_date
+  validates_presence_of :staff_id, :if => :is_approved?
+  validates_presence_of :staffid2, :if => :is_approved2?
 
   before_save :update_student_college
   
@@ -73,6 +75,14 @@ class Leaveforstudent < ActiveRecord::Base
      if student.kins.count < 1
       errors.add( I18n.t('student.leaveforstudent.has_no_kin'), I18n.t('student.leaveforstudent.update_student_kin')) 
      end
+  end
+  
+  def is_approved?
+    approved==true
+  end
+  
+  def is_approved2?
+    approved2==true
   end
   
   def self.find_main

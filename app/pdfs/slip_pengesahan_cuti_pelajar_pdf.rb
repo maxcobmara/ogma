@@ -3,7 +3,7 @@ class Slip_pengesahan_cuti_pelajarPdf < Prawn::Document
     super({top_margin: 50, page_size: 'A4', page_layout: :portrait })
     @leaveforstudent = leaveforstudent
     @view = view
-
+    @college=college
     
     
     font "Times-Roman"
@@ -90,15 +90,22 @@ class Slip_pengesahan_cuti_pelajarPdf < Prawn::Document
   end
 
   def table3
-      
-    data =[["Maklumat Kelulusan Cuti", ""],
-          ["1. Keputusan Penyelaras Kumpulan", ": #{@leaveforstudent.approved? ? 'Diluluskan' : 'Tidak Diluluskan'}"],
-          ["2. Nama Pelulus", ": #{@leaveforstudent.approver_details}"],
-          ["3. Tarikh Diluluskan", ": #{@leaveforstudent.approved? ? I18n.l(@leaveforstudent.approvedate) : @leaveforstudent.approvedate.try(:strftime, '%d %b %Y')}"],
-          ["",""],
-          ["4. Keputusan Warden", ": #{@leaveforstudent.approved2? ? 'Diluluskan' : 'Tidak Diluluskan'}"],
-          ["5. Nama Pelulus", ": #{@leaveforstudent.approver_details2}"],
-          ["6. Tarikh Diluluskan", ": #{@leaveforstudent.approved? ? (@leaveforstudent.approvedate2.try(:strftime, '%d %b %Y')) : @leaveforstudent.approvedate2.try(:strftime, '%d %b %Y')}"]]
+    
+    if @college.code=="kskbjb"  
+      data =[["Maklumat Kelulusan Cuti", ""],
+            ["1. Keputusan Penyelaras Kumpulan", ": #{@leaveforstudent.approved? ? 'Diluluskan' : 'Tidak Diluluskan'}"],
+            ["2. Nama Pelulus", ": #{@leaveforstudent.approver_details}"],
+            ["3. Tarikh Diluluskan", ": #{@leaveforstudent.approved? ? I18n.l(@leaveforstudent.approvedate) : @leaveforstudent.approvedate.try(:strftime, '%d %b %Y')}"],
+            ["",""],
+            ["4. Keputusan Warden", ": #{@leaveforstudent.approved2? ? 'Diluluskan' : 'Tidak Diluluskan'}"],
+            ["5. Nama Pelulus", ": #{@leaveforstudent.approver_details2}"],
+            ["6. Tarikh Diluluskan", ": #{@leaveforstudent.approved? ? (@leaveforstudent.approvedate2.try(:strftime, '%d %b %Y')) : @leaveforstudent.approvedate2.try(:strftime, '%d %b %Y')}"]]
+    else
+      data =[["Maklumat Kelulusan Cuti", ""],
+            ["1. Keputusan Permohonan", ": #{@leaveforstudent.approved? ? 'Diluluskan' : 'Tidak Diluluskan'}"],
+            ["2. Nama Pelulus", ": #{@leaveforstudent.approver_details}"],
+            ["3. Tarikh Diluluskan", ": #{@leaveforstudent.approved? ? I18n.l(@leaveforstudent.approvedate) : @leaveforstudent.approvedate.try(:strftime, '%d %b %Y')}"]]
+    end
   
     table(data, :column_widths => [200, 300], :cell_style => { :size => 11})  do
       a = 0

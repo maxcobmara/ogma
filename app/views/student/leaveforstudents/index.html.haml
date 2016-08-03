@@ -26,16 +26,23 @@
         %th= sort_link(@search, :requestdate, (t 'student.leaveforstudent.requestdate'))
         %th= sort_link(@search, :leave_startdate, (t 'student.leaveforstudent.leaves_date'))
         %th= sort_link(@search, :studentsubmit, (t 'student.leaveforstudent.studentsubmit'))
-        %th= sort_link(@search, :staff_name, (t 'student.leaveforstudent.coordinator'))
+        - if current_user.college.code=="icmskskb"
+          %th= sort_link(@search, :staff_name, (t 'student.leaveforstudent.coordinator'))
+        - else
+          %th= sort_link(@search, :staff_name, (t 'student.leaveforstudent.approver'))
         %th= sort_link(@search, :approved, (t 'student.leaveforstudent.approved'))
-        %th= sort_link(@search, :second_approver_name, (t 'student.leaveforstudent.warden'))
-        %th= sort_link(@search, :approved2, (t 'student.leaveforstudent.approved'))
+        - if current_user.college.code=="icmskskb"
+          %th= sort_link(@search, :second_approver_name, (t 'student.leaveforstudent.warden'))
+          %th= sort_link(@search, :approved2, (t 'student.leaveforstudent.approved'))
     %tbody
     = render "index_search"
     - @leaveforstudent.each do |leaveforstudent|
       %tr
         %td= link_to leaveforstudent.student_details, student_leaveforstudent_path(leaveforstudent)
-        %td=h leaveforstudent.student.course.name
+        %td
+          - programmes=Programme.roots.where(college_id: current_user.college_id)
+          - pnames=programmes.pluck(:name)
+          = pnames.count==pnames.uniq.count ? leaveforstudent.student.course.name :  leaveforstudent.student.course.fullname 
         %td.centre=h leaveforstudent.student.intake.try(:strftime, '%b %Y')
         %td.centre=h leaveforstudent.student.tenants.last.location.root.code if !leaveforstudent.student.tenants.nil? && leaveforstudent.student.tenants.count > 0 
         %td=h ((DropDown::STUDENTLEAVETYPE.find_all{|disp, value| value ==leaveforstudent.leavetype }).map {|disp, value| disp}).first
@@ -50,11 +57,12 @@
             =h leaveforstudent.approved? ? image_tag("tick.png") : image_tag("cross.png")
           - else
             %font{:color =>"red"}=t('student.leaveforstudent.expired') if leaveforstudent.studentsubmit==true
-        %td=h leaveforstudent.staff_id2? ? leaveforstudent.approver_details2 : ""
-        %td.centre
-          - unless leaveforstudent.leave_startdate < Date.tomorrow && leaveforstudent.approved2==nil 
-            =h leaveforstudent.approved2? ? image_tag("tick.png") : image_tag("cross.png")
-          - else
-            %font{:color=>"red"}=t('student.leaveforstudent.expired') if leaveforstudent.studentsubmit==true
+        - if current_user.college.code=="icmskskb"
+          %td=h leaveforstudent.staff_id2? ? leaveforstudent.approver_details2 : ""
+          %td.centre
+            - unless leaveforstudent.leave_startdate < Date.tomorrow && leaveforstudent.approved2==nil 
+              =h leaveforstudent.approved2? ? image_tag("tick.png") : image_tag("cross.png")
+            - else
+              %font{:color=>"red"}=t('student.leaveforstudent.expired') if leaveforstudent.studentsubmit==true
 
         

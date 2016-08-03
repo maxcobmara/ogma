@@ -71,7 +71,17 @@ class Student::LeaveforstudentsController < ApplicationController
         format.html { redirect_to student_leaveforstudents_path }
         format.xml  { head :ok }
       else
-        format.html { render :action => "edit" }
+        if @leaveforstudent.approved==true 
+          if current_user.college.code=="kskbjb"
+            format.html {render :action => "approve_coordinator"}
+          else
+          format.html {render :action => "approving"}
+          end
+        elsif @leaveforstudent.approved2==true
+          format.html {render :action => "approve_warden"}
+        else
+          format.html { render :action => "edit" }
+        end
         format.xml  { render :xml => @leaveforstudent.errors, :status => :unprocessable_entity }
       end
     end
@@ -94,6 +104,10 @@ class Student::LeaveforstudentsController < ApplicationController
   end
   
   def approve_warden
+    @leaveforstudent = Leaveforstudent.find(params[:id])
+  end
+  
+  def approving
     @leaveforstudent = Leaveforstudent.find(params[:id])
   end
   

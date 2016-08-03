@@ -269,6 +269,7 @@ Ogma::Application.routes.draw do
       member do
         get :approve_coordinator
         get :approve_warden
+        get :approving
         get :slip_pengesahan_cuti_pelajar
       end
       collection do

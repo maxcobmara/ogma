@@ -2206,6 +2206,7 @@ en:
       update_student_kin: ". Please update next of kin details in Student submodule first."
       student_approve_leave_coordinator: "Approve Student Leave Application (Coordinator)"
       student_approve_leave_warden: "Approve Student Leave Application (Warden)"
+      student_leave_approval: Approve Student Leave Application
       approve_student_leave: Approve Student Leave
       approved_by: Approved By
       approve_date: Approve Date
@@ -2213,8 +2214,10 @@ en:
       not_approve: Not Approve
       coordinator: Group Coordinator
       warden: Warden
+      approver: Approver
       coordinator_result: Coordinator Result
       warden_result: Warden Result
+      approver_result: Approver Result
       programme: Programme
       group: Group
       intake: Ambilan
@@ -3448,6 +3451,7 @@ en:
       endorse: Endorse
       coordinator_approval: Coordinator Approval
       warden_approval: Warden Approval
+      approving: Leave Approval
 
     label:
       examquestion:

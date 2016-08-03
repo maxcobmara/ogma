@@ -7,7 +7,7 @@ class Position < ActiveRecord::Base
   validates_presence_of   :name
   
   belongs_to :staff
-  belongs_to :staffgrade, :class_name => 'Employgrade'
+  belongs_to :staffgrade, :class_name => 'Employgrade', :foreign_key => 'staffgrade_id'
   belongs_to :postinfo
   
   attr_accessor :staff_id2

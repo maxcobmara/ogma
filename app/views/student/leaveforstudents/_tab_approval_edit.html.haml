@@ -6,19 +6,19 @@
       .form-inline
         .form-group
           = t 'student.leaveforstudent.approve'
-          = f.radio_button :approved2, true
+          = f.radio_button :approved, true
         .form-group
           = t 'student.leaveforstudent.not_approve'
-          = f.radio_button :approved2, false
+          = f.radio_button :approved, false
 
   .form-group
     .col-sm-2.control-label
       = f.label t 'student.leaveforstudent.approved_by'
     .col-md-4
-      = f.collection_select :staff_id2, Staff.where('id IN(?)', @leaveforstudent.warden_list).order(name: :asc), :id,  :staff_name_with_position, {:include_blank => t('helpers.prompt.select_staff')}, {class: 'selectpicker', "data-width"=>'300px'}
+      = f.collection_select :staff_id, Staff.where('id IN(?)', Position.where(id: [2,55]).pluck(:staff_id)).order(name: :asc), :id,  :staff_name_with_position, {:include_blank => t('helpers.prompt.select_staff')}, {class: 'selectpicker', "data-width"=>'300px'}
 
   .form-group
     .col-sm-2.control-label
       = f.label t 'student.leaveforstudent.approvedate'
     .col-md-3
-      = f.text_field :approvedate2, class: 'date_picker_reverse form-control', value: @leaveforstudent.approvedate.try(:strftime, '%d-%m-%Y')
+      = f.text_field :approvedate, class: 'date_picker_reverse form-control', value: @leaveforstudent.approvedate.try(:strftime, '%d-%m-%Y')
