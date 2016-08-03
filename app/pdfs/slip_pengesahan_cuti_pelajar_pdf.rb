@@ -1,5 +1,5 @@
 class Slip_pengesahan_cuti_pelajarPdf < Prawn::Document
-  def initialize(leaveforstudent, view)
+  def initialize(leaveforstudent, view, college)
     super({top_margin: 50, page_size: 'A4', page_layout: :portrait })
     @leaveforstudent = leaveforstudent
     @view = view
@@ -7,7 +7,7 @@ class Slip_pengesahan_cuti_pelajarPdf < Prawn::Document
     
     
     font "Times-Roman"
-    text "KOLEJ SAINS KESIHATAN BERSEKUTU JOHOR BAHRU", :align => :center, :size => 14, :style => :bold
+    text "#{college.name.upcase}", :align => :center, :size => 14, :style => :bold
     move_down 5
     text "SLIP PENGESAHAN CUTI PELAJAR", :align => :center, :size => 14, :style => :bold
     move_down 20

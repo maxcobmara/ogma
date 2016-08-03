@@ -4,7 +4,7 @@ class Student < ActiveRecord::Base
   before_save  :titleize_name
   validates_presence_of     :icno, :name, :sstatus, :stelno, :ssponsor, :gender, :sbirthdt, :mrtlstatuscd, :intake,:course_id
   validates_numericality_of :icno, :stelno
-  validates_length_of       :icno, :is =>12
+  #validates_length_of       :icno, :is =>12
   validates_uniqueness_of   :icno
   #validates_format_of       :name, :with => /^[a-zA-Z'`\/\.\@\ ]+$/, :message => I18n.t('activerecord.errors.messages.illegal_char') #add allowed chars between bracket
   has_attached_file :photo,

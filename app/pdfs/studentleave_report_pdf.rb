@@ -1,10 +1,11 @@
 class Studentleave_reportPdf < Prawn::Document
-  def initialize(leaveforstudents, expired_wc, view)
+  def initialize(leaveforstudents, expired_wc, view, college)
     super({top_margin: 50, page_size: 'A4', page_layout: :landscape })
     @leaveforstudents = leaveforstudents
     @view = view
     @expired_wc=expired_wc
     font "Times-Roman"
+    text "#{college.name}", :align => :center, :size => 12, :style => :bold
     text I18n.t('student.leaveforstudent.list'), :align => :center, :size => 12, :style => :bold
     move_down 20
     record

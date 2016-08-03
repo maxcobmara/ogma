@@ -46,6 +46,13 @@ class Programme < ActiveRecord::Base
     end
   end
   
+  def fullname
+    if is_root?
+      "#{name}" + " - " + "#{course_type}"   
+    else
+    end
+  end
+  
   def semester_subject_topic
     if ancestry_depth == 3
       "Sem #{parent.parent.code}"+"-"+"#{parent.code}"+" | "+"#{name}"

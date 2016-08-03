@@ -9,6 +9,8 @@ class Leaveforstudent < ActiveRecord::Base
   validate :validate_kin_exist
   validate :validate_end_date_before_start_date
 
+  before_save :update_student_college
+  
   #scope :pending_coor, -> { where(assettype: 1)}
   
   scope :approved_coordinator, -> { where('studentsubmit=? and approved=?', true, true) }
@@ -170,6 +172,10 @@ class Leaveforstudent < ActiveRecord::Base
       end
     end
     leaveforstudents
+  end
+  
+  def update_student_college
+    self.college_id=student.college_id unless student.college_id.nil?
   end
 
 end

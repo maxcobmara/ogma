@@ -16,8 +16,16 @@
           = fa_icon "print", text: (t 'actions.print')
           %b.caret
         %ul.dropdown-menu
-          - Programme.roots.each do |programme|
-            %li= link_to  (fa_icon "file-pdf-o", text: programme.name), student_report_students_path(programme_id: programme.id, format: 'pdf')
+          - programmes=Programme.roots.where(college_id: current_user.college_id)
+          - pnames=programmes.pluck(:name)
+          - programmes.each do |programme|
+            /NOTE - kskb : distinct programme name already differentiate type of course
+            /NOTE - amsas : require both to be displayed
+            - if pnames.count==pnames.uniq.count
+              %li= link_to  (fa_icon "file-pdf-o", text: programme.name), student_report_students_path(programme_id: programme.id, format: 'pdf')
+              ss
+            - else
+              %li= link_to  (fa_icon "file-pdf-o", text: programme.fullname), student_report_students_path(programme_id: programme.id, format: 'pdf')
     - permitted_to? :manage, :students do
       %li.dropdown
         %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#"}

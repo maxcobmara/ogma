@@ -8,7 +8,8 @@ class StudentsController < ApplicationController
   # GET /students.xml
 
   def index
-    @search = Student.search(params[:q])
+    #scope - student of college - based on current_user.college_id?
+    @search = Student.where(college_id: current_user.college_id).search(params[:q])
     @students_all = @search.result.order(intake: :asc, course_id: :asc)
     @students = @students_all.page(params[:page]||1)
     respond_to do |format|
@@ -175,7 +176,7 @@ class StudentsController < ApplicationController
     @student= Student.find(params[:id])
     respond_to do |format|
       format.pdf do
-        pdf = Borang_maklumat_pelajarPdf.new(@student, view_context)
+        pdf = Borang_maklumat_pelajarPdf.new(@student, view_context, current_user.college)
         send_data pdf.render, filename: "borang_maklumat_pelajar-{Date.today}",
         type: "application/pdf",
         disposition: "inline"
@@ -188,10 +189,14 @@ class StudentsController < ApplicationController
   
   def student_report
     @programme_id=params[:programme_id].to_i
-    @students = Student.where(sstatus: ['Current', 'Repeat'], course_id: @programme_id).order(intake: :asc, course_id: :asc)
+    if current_user.college.code=="kskbjb"
+      @students = Student.where(sstatus: ['Current', 'Repeat'], course_id: @programme_id).order(intake: :asc, course_id: :asc)
+    else
+      @students=Student.where(course_id: @programme_id).order(intake: :asc, course_id: :asc) #.where(college_id: current_user.college.id)
+    end
     respond_to do |format|
       format.pdf do
-        pdf = Student_reportPdf.new(@students, view_context)
+        pdf = Student_reportPdf.new(@students, view_context, @programme_id, current_user.college)
         send_data pdf.render, filename: "student-list-{Date.today}",
         type: "application/pdf",
         disposition: "inline"
@@ -246,7 +251,7 @@ class StudentsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def student_params
-      params.require(:student).permit(:address, :address_posbasik, :allergy, :bloodtype, :course_id, :course_remarks, :created_at, :disease, :end_training, :gender, :group_id, :icno, :id, :intake, :intake_id, :matrixno, :medication, :mrtlstatuscd, :name, :offer_letter_serial, :photo_content_type, :photo_file_name, :photo_file_size, :photo_updated_at, :physical, :race, :race2, :regdate, :remarks, :sbirthdt, :semail, :specialisation, :specilisation, :ssponsor, :sstatus, :stelno, :updated_at, :sstatus_remark, kins_attributes: [:id,:destroy, :kintype_id,  :name, :mykadno, :phone, :profession, :kinaddr], qualifications_attributes:[:id,:destroy, :level_id, :qname, :institute], spmresults_attributes: [:id, :destroy, :spm_subject, :grade])
+      params.require(:student).permit(:address, :address_posbasik, :allergy, :bloodtype, :course_id, :course_remarks, :created_at, :disease, :end_training, :gender, :group_id, :icno, :id, :intake, :intake_id, :matrixno, :medication, :mrtlstatuscd, :name, :offer_letter_serial, :photo_content_type, :photo_file_name, :photo_file_size, :photo_updated_at, :physical, :race, :race2, :regdate, :remarks, :sbirthdt, :semail, :specialisation, :specilisation, :ssponsor, :sstatus, :stelno, :updated_at, :sstatus_remark,  :college_id, {:data=>[]}, kins_attributes: [:id,:destroy, :kintype_id,  :name, :mykadno, :phone, :profession, :kinaddr], qualifications_attributes:[:id,:destroy, :level_id, :qname, :institute], spmresults_attributes: [:id, :destroy, :spm_subject, :grade])
     end
 
     def sort_column
