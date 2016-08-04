@@ -3156,6 +3156,15 @@ ms_MY:
       credits: Kredit
       status: Status
       remarks: "Klik pada NAMA Program / Subjek / Topik untuk papar KOMBO KOD dan senarai subitem di bawahnya. Seterusnya klik pada KOD KOMBO untuk ke laman Pamer"
+      remark_title: Rujukan
+      remark_text1: Klik
+      remark_text2: untuk
+      remark_text3: papar
+      remark_text4: sorok
+      remark_text5: nod - nod warisan.
+      remark_text6: Bagi mencipta nod
+      remark_text7: waris
+      remark_text8: baru, pilih 'Nod Baru' dalam laman papar nod induk.
       method: Kaedah Pengajaran
       practical: Amali
       tutorial: Tutorial

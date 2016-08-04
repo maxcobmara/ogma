@@ -311,10 +311,12 @@ table.inline_display {
 #header_tree, #programme_tree, #semester_tree, #subject_tree, #topic_tree, #subtopic_tree, #subsubtopic_tree {
 	 list-style: none;
 }
+.non_bulleted
+{ list-style: none;}
 
 #header_tree {
 	font-size:0.9em; color:white; background-color:#3574C4; padding:10px 5px;
-	li span.combo_code { width: 40%; }
+	li span.combo_code { width: 30%; }
 	li span.credits { position:absolute; left:750px; }
 	li span.status { position:absolute; left:850px; text-align:right; }
 	li span.duration { position:absolute; left:950px; }

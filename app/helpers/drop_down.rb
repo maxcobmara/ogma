@@ -444,9 +444,9 @@ module DropDown
     
     COURSE_TYPES_SUB = [
       # Displayed	stored in db
-       [I18n.t('training.programme.semester'),'Semester'],
+#        [I18n.t('training.programme.semester'),'Semester'],
        [I18n.t('training.programme.subject'),'Subject'],
-       [I18n.t('training.programme.commonsubject'),'Commonsubject'],
+#        [I18n.t('training.programme.commonsubject'),'Commonsubject'],
        [I18n.t('training.programme.topic'),'Topic'],
        [I18n.t('training.programme.subtopic'), 'Subtopic']
       ]
