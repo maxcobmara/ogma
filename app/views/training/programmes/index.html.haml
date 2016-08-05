@@ -39,6 +39,7 @@
           \/ 
           %u=t 'training.programme.remark_text4'
           =t 'training.programme.remark_text5'
+        %li=t 'training.programme.remark_text9'
         %li 
           =t 'training.programme.remark_text6'
           %i=t 'training.programme.remark_text7'
@@ -75,121 +76,88 @@
     /%span.status= sort_link(@search, :status, (t 'training.programme.status'))
     /%span.duration= sort_link(@search, :duration, (t 'training.programme.duration'))
 
+/Programme @ 1st level
 %ul#programme_tree
   = hidden_field_tag(:course_count, @programmes.group_by(&:root_id).count)
   - count=-1
-  
   - @programmes.group_by(&:root_id).sort.each do |course,programmes| 
     - count+=1
-    = hidden_field_tag("semester_count_#{count}", programmes.first.descendants.at_depth(1).count)
+    /= hidden_field_tag("semester_count_#{count}", programmes.first.descendants.at_depth(1).count)
     %li
       - course_rec = Programme.where(id:course)[0]
-      %span.link_to_show
-        /= link_to course_rec.code+" ", training_programme_path(course_rec)
-        /&nbsp;|&nbsp;
       %span.Collapsable
-        /- course_rec = Programme.where(id:course)[0]
         - if course_rec.descendants.count > 0
-          %span{id: "anchor_programme_#{count}", class: "anc2"}= link_to fa_icon("plus-square-o"), "#"
+          %span{id: "anchor_#{count}", class: "ancmain"}= link_to fa_icon("plus-square-o"), "#"
         - else
-          /= link_to fa_icon("minus-square-o"), "#"
           = fa_icon("minus-square-o")
         %span.programme_list
-          &nbsp;
-          /= link_to course_rec.code+" ", training_programme_path(course_rec)
+          &nbsp;&nbsp;
           = link_to course_rec.code+" "+course_rec.programme_list, training_programme_path(course_rec)
-          /= course_rec.programme_list
-        %span.credits
-          - if course_rec.credits != 0
-            =h course_rec.credits
+        %span.credits=h course_rec.credits if course_rec.credits != 0
         %span.status=h check_kin_blank {(DropDown::COURSE_STATUS.find_all{|disp, value| value == course_rec.status}).map {|disp, value| disp} }[0]
         %span.duration
           =h course_rec.duration
           =h check_kin_blank {(DropDown::DURATION_TYPES.find_all{|disp, value| value == course_rec.duration_type}).map {|disp, value| disp} }[0]
       
-      /%ul#semester_tree
-      %ul{id: "semester_tree_#{count}", class: 'non_bulleted'}
+      /Semester @ 2nd level
+      %ul{id: "tree_#{count}", class: 'non_bulleted'}
         - programmes.each do |programme|
           - sem_count=-1
           - programme.descendants.at_depth(1).sort_by(&:code).each do |semester|
             - sem_count+=1
             %li
-              %span.link_to_show
-                /= link_to semester.code+" ", training_programme_path(semester)
-                /&nbsp;|&nbsp;
               %span.Collapsable
                 - if semester.descendants.count > 0
-                  %span{id: "anchor_semester_#{count}_#{sem_count}", class: "anc3"}
-                    = link_to fa_icon("plus-square-o"), "#"
+                  %span{id: "anchor_#{count}_#{sem_count}", class: "ancmain"}= link_to fa_icon("plus-square-o"), "#"
                 - else
                   = fa_icon("minus-square-o")
                 %span.programme_list
                   &nbsp;
                   - if semester.course_type=='Semester'
-                    /= link_to semester.code+" ", training_programme_path(semester)
-                    Semester
-                    =semester.name
+                    ="Semester "+semester.name
                   - else
-                    /sini kan
                     = link_to semester.code+" "+semester.name, training_programme_path(semester)
-                    /=semester.name
-                %span.credits
-                  - if semester.credits != 0 
-                    =h semester.credits
+                %span.credits=h semester.credits if semester.credits != 0 
                 %span.status=h check_kin_blank {(DropDown::COURSE_STATUS.find_all{|disp, value| value == semester.status}).map {|disp, value| disp} }[0]
                 %span.duration
                   =h semester.duration
                   =h check_kin_blank {(DropDown::DURATION_TYPES.find_all{|disp, value| value == semester.duration_type}).map {|disp, value| disp} }[0]  
-              /%ul#subject_tree
-              %ul{id: "subject_tree_#{count}_#{sem_count}", class: 'non_bulleted'}
+              
+              /Subject @ 3rd level
+              %ul{id: "tree_#{count}_#{sem_count}", class: 'non_bulleted'}
                 - subject_count=-1
                 - semester.descendants.at_depth(2).sort_by(&:code).each do |subject|
                   - subject_count+=1
                   %li 
-                    %span.link_to_show
-                      /= link_to subject.code+" ", training_programme_path(subject)
-                      /&nbsp;|&nbsp;
                     %span.Collapsable
                       - if subject.descendants.count > 0
-                        %span{id: "anchor_subject_#{count}_#{sem_count}_#{subject_count}", class: "anc4"}
-                          = link_to fa_icon("plus-square-o"), "#"
+                        %span{id: "anchor_#{count}_#{sem_count}_#{subject_count}", class: "ancmain"}= link_to fa_icon("plus-square-o"), "#"
                       - else
                         = fa_icon("minus-square-o")
                       %span.programme_list
                         &nbsp;
-                        /= link_to subject.code+" ", training_programme_path(subject)
-                        /= subject.name
                         = link_to subject.code+" "+subject.name, training_programme_path(subject)
-                      %span.credits
-                        - if subject.credits != 0
-                          =h subject.credits
+                      %span.credits=h subject.credits if subject.credits != 0
                       %span.status=h check_kin_blank {(DropDown::COURSE_STATUS.find_all{|disp, value| value == subject.status}).map {|disp, value| disp} }[0]
                       %span.duration
                         =h subject.duration
                         =h check_kin_blank {(DropDown::DURATION_TYPES.find_all{|disp, value| value == subject.duration_type}).map {|disp, value| disp} }[0]
-                    /%ul#topic_tree
-                    %ul{id: "topic_tree_#{count}_#{sem_count}_#{subject_count}", class: 'non_bulleted'}
+                   
+                    /Topic @ 4th level
+                    %ul{id: "tree_#{count}_#{sem_count}_#{subject_count}", class: 'non_bulleted'}
                       - topic_count=-1
                       - subject.descendants.at_depth(3).sort_by(&:code2).each do |topic|
                         - topic_count+=1
                         %li
-                          %span.link_to_show
-                            /= link_to topic.code, training_programme_path(topic)
-                            /&nbsp;|&nbsp;
                           %span.Collapsable
                             - if topic.descendants.count > 0
-                              %span{id: "anchor_topic_#{count}_#{sem_count}_#{subject_count}_#{topic_count}", class: "anc5"}
-                                = link_to fa_icon("plus-square-o"), "#"
+                              %span{id: "anchor_#{count}_#{sem_count}_#{subject_count}_#{topic_count}", class: "ancmain"}= link_to fa_icon("plus-square-o"), "#"
                             - else
                               = fa_icon("minus-square-o")
                             %span.programme_list
                               &nbsp;
-                              /= link_to topic.code, training_programme_path(topic)
-                              /= topic.name
                               = link_to topic.code+" "+topic.name, training_programme_path(topic)
-                            %span.credits
-                              - if topic.credits != 0
-                                =h topic.credits
+                            %span.credits=h topic.credits if topic.credits != 0
                             %span.status=h check_kin_blank {(DropDown::COURSE_STATUS.find_all{|disp, value| value == topic.status}).map {|disp, value| disp} }[0]
                             %span.duration
                               =h topic.duration
@@ -203,29 +171,21 @@
                             %span.practical
                               =h topic.practical.to_s
                               =(DropDown::LECTURE_TIME.find_all{|disp, value| value == topic.practical_time}).map {|disp, value| disp}[0] if topic.practical
-                          /%ul#subtopic_tree
-                          %ul{id: "subtopic_tree_#{count}_#{sem_count}_#{subject_count}_#{topic_count}", class: 'non_bulleted'}
+                          
+                          /Subtopic @ 5th level
+                          %ul{id: "tree_#{count}_#{sem_count}_#{subject_count}_#{topic_count}", class: 'non_bulleted'}
                             - subtopic_count=-1
                             - topic.descendants.at_depth(4).sort_by(&:code2).each do |subtopic|
                               - subtopic_count+=1
                               %li
-                                %span.link_to_show
-                                  /= link_to subtopic.code, training_programme_path(subtopic)
-                                  /&nbsp;|&nbsp;
                                 %span.Collapsable
                                   - if subtopic.descendants.count > 0
-                                    %span{id: "anchor_subtopic_#{count}_#{sem_count}_#{subject_count}_#{topic_count}_#{subtopic_count}", class: "anc6"}
+                                    %span{id: "anchor_#{count}_#{sem_count}_#{subject_count}_#{topic_count}_#{subtopic_count}", class: "ancmain"}
                                       = link_to fa_icon("plus-square-o"), "#"
                                   - else
                                     = fa_icon("minus-square-o")
-                                  /%span.programme_list= subtopic.code_course_type_name
-                                  %span.programme_list
-                                    /= link_to subtopic.code, training_programme_path(subtopic)
-                                    /= subtopic.name
-                                    = link_to subtopic.code+" "+subtopic.name, training_programme_path(subtopic)
-                                  %span.credits
-                                    - if subtopic.credits != 0
-                                      =h subtopic.credits
+                                  %span.programme_list= link_to subtopic.code+" "+subtopic.name, training_programme_path(subtopic)
+                                  %span.credits=h subtopic.credits if subtopic.credits != 0
                                   %span.status=h check_kin_blank {(DropDown::COURSE_STATUS.find_all{|disp, value| value == subtopic.status}).map {|disp, value| disp} }[0]
                                   %span.duration
                                     =h subtopic.duration
@@ -239,29 +199,21 @@
                                   %span.practical
                                     =h subtopic.practical.to_s
                                     =(DropDown::LECTURE_TIME.find_all{|disp, value| value == subtopic.practical_time}).map {|disp, value| disp}[0] if subtopic.practical
-                                /%ul#subsubtopic_tree
-                                %ul{id: "subsubtopic_tree_#{count}_#{sem_count}_#{subject_count}_#{topic_count}_#{subtopic_count}", class: 'non_bulleted'}
+                                
+                                /SubSubTopic @6th level
+                                %ul{id: "tree_#{count}_#{sem_count}_#{subject_count}_#{topic_count}_#{subtopic_count}", class: 'non_bulleted'}
                                   - subsubtopic_count=-1
                                   - subtopic.descendants.at_depth(5).sort_by(&:code).each do |subsubtopic|
                                     - subsubtopic_count+=1
                                     %li
-                                      %span.link_to_shows
-                                        /= link_to subsubtopic.code, training_programme_path(subsubtopic)
-                                        /&nbsp;|&nbsp;
                                       %span.Collapsable
-                                        /%span.programme_list=subsubtopic.code_course_type_name
                                         - if subsubtopic.descendants.count > 0
-                                          %span{id: "anchor_subsubtopic_#{count}_#{sem_count}_#{subject_count}_#{topic_count}_#{subtopic_count}_#{subsubtopic_count}", class: "anc7"}
+                                          %span{id: "anchor_#{count}_#{sem_count}_#{subject_count}_#{topic_count}_#{subtopic_count}_#{subsubtopic_count}", class: "ancmain"}
                                             = link_to fa_icon("plus-square-o"), "#"
                                         - else
                                           = fa_icon("minus-square-o")
-                                        %span.programme_list
-                                          /= link_to subsubtopic.code, training_programme_path(subtopic)
-                                          /= subsubtopic.name
-                                          = link_to subsubtopic.code+" "+subsubtopic.name
-                                        %span.credits
-                                          - if subsubtopic.credits !=0
-                                            =h subsubtopic.credits
+                                        %span.programme_list= link_to subsubtopic.code+" "+subsubtopic.name
+                                        %span.credits=h subsubtopic.credits if subsubtopic.credits !=0
                                         %span.status=h check_kin_blank {(DropDown::COURSE_STATUS.find_all{|disp, value| value == subsubtopic.status}).map {|disp, value| disp} }[0]
                                         %span.duration
                                           =h subsubtopic.duration
@@ -290,63 +242,23 @@
   var coursecount=document.getElementById("course_count").value;
   /*alert(coursecount);*/
  
-  $('.anc2').click(function(){
+  $('.ancmain').click(function(){
     /*alert($(this).attr('id'));*/
     var thisid=$(this).attr('id');
-    var aaa=thisid.substring(thisid.lastIndexOf("_")+1, thisid.length)
-    var anc=document.getElementById("anchor_programme_"+aaa);
+    var aaa=thisid.substring(7, thisid.length)
+    var anc=document.getElementById("anchor_"+aaa);
     /*alert(anc.innerHTML);*/
-    if($('#semester_tree_'+aaa).css('display')=='none')
+    /*alert(aaa);*/
+    if($('#tree_'+aaa).css('display')=='none')
     {
       anc.innerHTML='<a href="#"><i class="fa fa-plus-square"></i></a>';
     }
-    else if($('#semester_tree_'+aaa).css('display')=='block')
+    else if($('#tree_'+aaa).css('display')=='block')
     {
       anc.innerHTML='<a href="#"><i class="fa fa-plus-square-o"></i></a>';
     }
   });
-  
-  $('.anc3').click(function(){
-    var thisid=$(this).attr('id');
-    /*alert(thisid);*/
-    var aaa=thisid.substring(16, thisid.length)
-    var anc=document.getElementById("anchor_semester_"+aaa);
-    /*alert(aaa);*/
-    if($('#subject_tree_'+aaa).css('display')=='none')
-    {  anc.innerHTML='<a href="#"><i class="fa fa-plus-square"></i></a>';}
-    else
-    {  anc.innerHTML='<a href="#"><i class="fa fa-plus-square-o"></i></a>';}
-  });
-  
-  $('.anc4').click(function(){
-    var thisid=$(this).attr('id');
-    var aaa=thisid.substring(15, thisid.length)
-    var anc=document.getElementById("anchor_subject_"+aaa);
-    if($('#topic_tree_'+aaa).css('display')=='none')
-    {  anc.innerHTML='<a href="#"><i class="fa fa-plus-square"></i></a>';}
-    else
-    {  anc.innerHTML='<a href="#"><i class="fa fa-plus-square-o"></i></a>';}
-  });
  
-  $('.anc5').click(function(){
-    var thisid=$(this).attr('id');
-    var aaa=thisid.substring(13, thisid.length)
-    var anc=document.getElementById("anchor_topic_"+aaa);
-    if($('#subtopic_tree_'+aaa).css('display')=='none')
-    {  anc.innerHTML='<a href="#"><i class="fa fa-plus-square"></i></a>';}
-    else
-    {  anc.innerHTML='<a href="#"><i class="fa fa-plus-square-o"></i></a>';}
-  });
-  
-  $('.anc6').click(function(){
-    var thisid=$(this).attr('id');
-    var aaa=thisid.substring(16, thisid.length)
-    var anc=document.getElementById("anchor_subtopic_"+aaa);
-    if($('#subsubtopic_tree_'+aaa).css('display')=='none')
-    {  anc.innerHTML='<a href="#"><i class="fa fa-plus-square"></i></a>';}
-    else
-    {  anc.innerHTML='<a href="#"><i class="fa fa-plus-square-o"></i></a>';}
-  });
   
   
 :javascript
@@ -377,3 +289,64 @@ $(document).ready(function(){
 /     
 /     
 /   }
+
+
+/DRY-5Aug2016
+ 
+/   $('.anc2').click(function(){
+/     /*alert($(this).attr('id'));*/
+/     var thisid=$(this).attr('id');
+/     var aaa=thisid.substring(thisid.lastIndexOf("_")+1, thisid.length)
+/     var anc=document.getElementById("anchor_programme_"+aaa);
+/     /*alert(anc.innerHTML);*/
+/     if($('#semester_tree_'+aaa).css('display')=='none')
+/     {
+/       anc.innerHTML='<a href="#"><i class="fa fa-plus-square"></i></a>';
+/     }
+/     else if($('#semester_tree_'+aaa).css('display')=='block')
+/     {
+/       anc.innerHTML='<a href="#"><i class="fa fa-plus-square-o"></i></a>';
+/     }
+/   });
+/   
+/   $('.anc3').click(function(){
+/     var thisid=$(this).attr('id');
+/     /*alert(thisid);*/
+/     var aaa=thisid.substring(16, thisid.length)
+/     var anc=document.getElementById("anchor_semester_"+aaa);
+/     /*alert(aaa);*/
+/     if($('#subject_tree_'+aaa).css('display')=='none')
+/     {  anc.innerHTML='<a href="#"><i class="fa fa-plus-square"></i></a>';}
+/     else
+/     {  anc.innerHTML='<a href="#"><i class="fa fa-plus-square-o"></i></a>';}
+/   });
+/   
+/   $('.anc4').click(function(){
+/     var thisid=$(this).attr('id');
+/     var aaa=thisid.substring(15, thisid.length)
+/     var anc=document.getElementById("anchor_subject_"+aaa);
+/     if($('#topic_tree_'+aaa).css('display')=='none')
+/     {  anc.innerHTML='<a href="#"><i class="fa fa-plus-square"></i></a>';}
+/     else
+/     {  anc.innerHTML='<a href="#"><i class="fa fa-plus-square-o"></i></a>';}
+/   });
+/  
+/   $('.anc5').click(function(){
+/     var thisid=$(this).attr('id');
+/     var aaa=thisid.substring(13, thisid.length)
+/     var anc=document.getElementById("anchor_topic_"+aaa);
+/     if($('#subtopic_tree_'+aaa).css('display')=='none')
+/     {  anc.innerHTML='<a href="#"><i class="fa fa-plus-square"></i></a>';}
+/     else
+/     {  anc.innerHTML='<a href="#"><i class="fa fa-plus-square-o"></i></a>';}
+/   });
+/   
+/   $('.anc6').click(function(){
+/     var thisid=$(this).attr('id');
+/     var aaa=thisid.substring(16, thisid.length)
+/     var anc=document.getElementById("anchor_subtopic_"+aaa);
+/     if($('#subsubtopic_tree_'+aaa).css('display')=='none')
+/     {  anc.innerHTML='<a href="#"><i class="fa fa-plus-square"></i></a>';}
+/     else
+/     {  anc.innerHTML='<a href="#"><i class="fa fa-plus-square-o"></i></a>';}
+/   });

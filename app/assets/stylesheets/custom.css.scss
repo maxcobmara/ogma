@@ -308,11 +308,10 @@ table.inline_display {
 }
 
 //TODO: move to own css file <modelname.css> //Curriculum Management - tree view
-#header_tree, #programme_tree, #semester_tree, #subject_tree, #topic_tree, #subtopic_tree, #subsubtopic_tree {
+//#header_tree, #programme_tree, #semester_tree, #subject_tree, #topic_tree, #subtopic_tree, #subsubtopic_tree {
+#header_tree, #programme_tree, .non_bulleted{
 	 list-style: none;
 }
-.non_bulleted
-{ list-style: none;}
 
 #header_tree {
 	font-size:0.9em; color:white; background-color:#3574C4; padding:10px 5px;
@@ -327,9 +326,11 @@ table.inline_display {
 
 //#programme_tree, #semester_tree { background-color: #f9f9f9; }
 #programme_tree li span.Collapsable{ font-size:1.0em;  }
-#semester_tree, #subject_tree, #topic_tree, #subtopic_free, #subsubtopic_tree{ li span.Collapsable{ font-size:0.9em; }}
+//#semester_tree, #subject_tree, #topic_tree, #subtopic_free, #subsubtopic_tree{ li span.Collapsable{ font-size:0.9em; }}
 
-#programme_tree, #semester_tree , #subject_tree, #topic_tree, #subtopic_tree, #subsubtopic_tree{
+
+//#programme_tree, #semester_tree , #subject_tree, #topic_tree, #subtopic_tree, #subsubtopic_tree{
+#programme_tree{
 	li span.Collapsable
 	{
 		span.programme_list{ width: 750px;}

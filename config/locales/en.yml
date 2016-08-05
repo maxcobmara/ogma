@@ -3228,7 +3228,7 @@ en:
       new: New Curriculum Item
       new_programme: New Programme
       edit: Edit Curriculum Item
-      combo_code: "Combo Code  |  Programme / Subject / Topic Name"
+      combo_code: "Combo Code  |  Programme / Semester / Subject / Topic / Subtopic Name"
       code: Code
       code2: Combo Code
       name: Name
@@ -3245,7 +3245,8 @@ en:
       remark_text5: descendants of a node.
       remark_text6: To create a new 
       remark_text7: descending 
-      remark_text8: node, select 'New node' in a parent node show page.
+      remark_text8: node, select 'New node' in a parent node 'Show' page.
+      remark_text9: "Click at 'Programme / Semester / Subject / Topic / Subtopic Name' to display 'Show' page."
       method: Lecture Method
       practical: Practical
       tutorial: Tutorial
