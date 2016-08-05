@@ -105,9 +105,13 @@ class Training::WeeklytimetablesController < ApplicationController
     if @is_admin
       @programme_list=Programme.roots
       @intake_list=Intake.all.order(programme_id: :asc, monthyear_intake: :desc)
-      posbasics=["Diploma Lanjutan", "Pos Basik", "Pengkhususan"]
-      prog_names=@programme_list.where(course_type: "Diploma").pluck(:name)
-      @lecturer_list= Staff.joins(:positions).where('positions.unit IN(?) or positions.unit IN(?)', prog_names, posbasics).order(name: :asc)
+      if current_user.college.code=="kskbjb"
+        posbasics=["Diploma Lanjutan", "Pos Basik", "Pengkhususan"]
+        prog_names=@programme_list.where(course_type: "Diploma").pluck(:name)
+        @lecturer_list= Staff.joins(:positions).where('positions.unit IN(?) or positions.unit IN(?)', prog_names, posbasics).order(name: :asc)
+      else
+        @lecturer_list=Staff.joins(:positions).where('positions.name=?', 'Jurulatih')
+      end
     else
       #retrieve programme & groups coordinated from Intake
       @programme_id=Intake.where(staff_id: @staffid).first.programme_id
@@ -179,6 +183,8 @@ class Training::WeeklytimetablesController < ApplicationController
       lecturer_ids=Staff.joins(:positions).where('unit IN(?) and unit=?', common_subjects, lecturer_programme).pluck(:id)
       @semester_subject_topic_list = Programme.find(@weeklytimetable.programme_id).descendants.where('ancestry_depth=? OR ancestry_depth=?',3,4).where(id: @comms_topic).sort_by(&:combo_code)
     end
+    ###AMSAS
+    lecturer_ids=Staff.joins(:positions).where('positions.name=?', 'Jurulatih') if current_user.college.code=="amsas"
     if @is_admin
       lecturer_ids+=Staff.joins(:positions).where('unit IN(?)', common_subjects).pluck(:id)
       @semester_subject_topic_list = full_topics
@@ -282,6 +288,8 @@ class Training::WeeklytimetablesController < ApplicationController
       lecturer_ids=Staff.joins(:positions).where('unit IN(?) and unit=?', common_subjects, lecturer_programme).pluck(:id)
       @semester_subject_topic_list = Programme.find(@weeklytimetable.programme_id).descendants.where('ancestry_depth=? OR ancestry_depth=?',3,4).where(id: @comms_topic).sort_by(&:combo_code)
     end
+    ###AMSAS
+    lecturer_ids=Staff.joins(:positions).where('positions.name=?', 'Jurulatih') if current_user.college.code=="amsas"
     if @is_admin
       lecturer_ids+=Staff.joins(:positions).where('unit IN(?)', common_subjects).pluck(:id)
     end

@@ -69,6 +69,7 @@ Ogma::Application.routes.draw do
       end
     end
     resources :vehicles
+    resources :ranks
   end
 
   match '/travel_requests/logs', to: 'staff/travel_requests#travel_log_index', via: 'get'

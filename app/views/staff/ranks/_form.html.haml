@@ -1,0 +1,27 @@
+.row
+  .col-md-10.col-md-offset-1
+    / Nav tabs
+    %ul.nav.nav-tabs
+      %li.active= link_to ((t 'rank.details')),"#rank_edit", "data-toggle" => "tab"
+
+    .tab-content{style:"padding-top:1em"}
+      #rank_edit.tab-pane.active
+        %br
+        .col-md-offset-2
+          .form-group
+            .col-sm-2.control-label
+              = f.label t('rank.name')
+            .col-md-6
+              = f.text_field :name, class: 'form-control mandatory'
+              
+          .form-group
+            .col-sm-2.control-label
+              = f.label t('rank.category')
+            .col-md-2
+              = f.select :category, Rank::RANK_CATEGORY, {:include_blank => t('helpers.select')}, {class: 'selectpicker'}
+
+          .form-group
+            .col-sm-2.control-label
+              = f.label t('rank.maritime_grade')
+            .col-md-2
+              = f.collection_select :maritime_grade, Employgrade.where('name ILIKE(?) or name ILIKE(?)', "xa%", "XA%").order(name: :asc), :name, :name, {:include_blank => t('helpers.select')}, {class: 'selectpicker'}

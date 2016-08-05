@@ -859,6 +859,7 @@ ms_MY:
     employment_details: Butir Perkerjaan
     employscheme: Skim Perjawatan
     staffgrade_id: Gred Jawatan
+    rank_id: Pangkat
     employstatus: Status Perkerjaan
     appointstatus: Status Lantikan
     appointdt: Tarikh Lantikan Pertama
@@ -1601,6 +1602,15 @@ ms_MY:
     notes:  "Nota : Kenyataan Fingerprint (Tidak Fingerprint) hanya boleh dibuat bagi hari (tarikh) yang TIADA sekurang-kurangnya 1 rekod kedatangan (masuk atau keluar). Sekiranya Kenyataan Fingerprint diperlukan bagi hari yang mempunyai kedua-dua rekod keluar dan masuk, sila ke laman 'Pengurusan Datang Lambat & Pulang Awal'. Sila hubungi 'Pentadbir Staf' sekiranya rekod kedatangan yang diperlukan tiada dalam senarai."
     statement_exist: "Kenyataan Fingerprint (Tdak Fingerprint) telah wujud!"
     logrecord_exist: "Kenyataan Fingerprint (Tidak FIngerprint) hanya dibenarkan bagi hari-hari yang tidak mempunyai rekod kedatangan yang lengkap (log-masuk dan log-keluar)!"
+    
+  rank:
+    title: Senarai Pangkat
+    new: Pangkat Baru
+    edit: Sunting Pangkat
+    details: Butiran Pangkat
+    name: Nama Pangkat
+    category: Kategori Pangkat
+    maritime_grade: Gred (Maritim)
     
   asset:
     title: Aset

@@ -1,0 +1,33 @@
+-model_class = Rank
+.page-header
+  %h1= t('rank.title')
+= render 'shared/flashes'
+  
+.navbar.navbar-inverse{role: "navigation", style: "padding-right:40px;"}
+  %ul.nav.navbar-nav
+    %li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'actions.new'))), new_staff_rank_path
+  %ul.nav.navbar-nav.navbar-right
+    %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "index_search_bar"
+
+.row
+  %table.table-striped.table-hover.ogma
+    %thead
+      %tr
+        %th{width: "45%"}=sort_link(@search, :name, (t 'rank.name'))
+        %th{width: "40%"}=sort_link(@search, :category, (t 'rank.category'))
+        %th{width: "15%"}=sort_link(@search, :maritime_grade, (t 'rank.maritime_grade'))
+    %tbody
+      = render "index_search"
+      - @ranks.each do |rank|
+        %tr
+          %td=h link_to rank.name, staff_rank_path(rank)
+          %td=h (Rank::RANK_CATEGORY.find_all{|disp, value| value == rank.category}).map {|disp, value| disp}[0]     
+          %td.centre=h rank.maritime_grade
+        
+  .right{style:"padding:0 30px; margin:0;"}= paginate @ranks, :theme => 'twitter-bootstrap-3'            
+            
+            
+%BR
+%BR
+%BR
+%BR

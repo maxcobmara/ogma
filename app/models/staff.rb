@@ -8,6 +8,7 @@ class Staff < ActiveRecord::Base
   belongs_to :title,        :class_name => 'Title',           :foreign_key => 'titlecd_id'
   belongs_to :staffgrade,   :class_name => 'Employgrade',     :foreign_key => 'staffgrade_id'
   belongs_to :staff_shift,  :foreign_key => 'staff_shift_id'
+  belongs_to :rank, :foreign_key => 'rank_id'
 
   has_many :users, as: :userable
 
@@ -119,6 +120,10 @@ class Staff < ActiveRecord::Base
   
     def age
       Date.today.year - cobirthdt.year unless cobirthdt == nil
+    end
+    
+    def staff_with_rank
+      "#{rank.try(:name)} #{name}"
     end
 
     def staff_list

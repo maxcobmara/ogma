@@ -366,6 +366,9 @@
                 %li= link_to "Staff Shifts", '#'
                 %li= link_to "Mileage Rates", '#'
                 %li= link_to "Employee Schemes", '#'
+                - if current_user.college.code=="amsas"
+                  %li=link_to (t 'rank.title'), staff_ranks_path
+                %li
                 - permitted_to? :read, :banks do
                   %li= link_to t('banks.title'), banks_path
                 %li= link_to "Asset Categories", '#'

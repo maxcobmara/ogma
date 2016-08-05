@@ -891,6 +891,7 @@ en:
     employment_details: Employment Details
     employscheme: Employment Scheme
     staffgrade_id: Staff Grade
+    rank_id: Rank
     employstatus: Employment Status
     appointstatus: Appointment Status
     appointdt: Appointment Date
@@ -1710,6 +1711,15 @@ en:
     notes:  "Note : Fingerprint Statement (No Fingerprint) can only be created for days (dates) without at least 1 attendance record (in or out). Please visit 'Manage Lateness & Early Return' page, should you require to create one for days with both in and out records exist. Consult 'Staff Administrator' if required attendance record is not in the list."
     statement_exist: "Fingerprint Statement (Not Fingerprint) already exist!"
     logrecord_exist: "Creating Fingerprint Statement (Not Fingerprint) for days with complete logged-in and logged-out record is not allowed!"
+    
+  rank:
+    title: Rank Listing
+    new: New Rank
+    edit: Edit Rank
+    details: Rank Details
+    name: Rank Name
+    category: Rank Category
+    maritime_grade: Grade (Maritim)
     
   asset:
     title: Assets

@@ -274,8 +274,15 @@
             .col-sm-2.control-label
               = f.label t 'staff.staffgrade_id', for: :staffgrade_id
             .col-md-2
-              = f.collection_select :staffgrade_id, Employgrade.order('name'), :id, :name_and_group, {include_blank: true}, {class: 'selectpicker', "data-width"=>"auto"}
+              = f.collection_select :staffgrade_id, Employgrade.order('name'), :id, :name_and_group, {include_blank: (t 'helpers.select')}, {class: 'selectpicker', "data-width"=>"auto"}
               //additional filters :conditions => ["id != ?",@travelrequest.treplace.id || @travelrequest.staffid.id]
+
+          - if current_user.college.code=="amsas"
+            .form-group
+              .col-sm-2.control-label
+                = f.label t 'staff.rank_id', for: :rank_id
+              .col-md-2
+                = f.collection_select :rank_id, Rank.order(name: :asc), :id, :name, {include_blank: (t 'helpers.select')}, {class: 'selectpicker', "data-width"=>"auto"}
 
           .form-group
             .col-sm-2.control-label

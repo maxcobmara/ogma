@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160802061914) do
+ActiveRecord::Schema.define(version: 20160805091238) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -1739,6 +1739,15 @@ ActiveRecord::Schema.define(version: 20160802061914) do
     t.string   "data"
   end
 
+  create_table "ranks", force: true do |t|
+    t.string   "name"
+    t.integer  "category"
+    t.integer  "college_id"
+    t.text     "data"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "residences", force: true do |t|
     t.string   "rescode"
     t.string   "resname"
@@ -2128,6 +2137,7 @@ ActiveRecord::Schema.define(version: 20160802061914) do
     t.string   "salary_no"
     t.integer  "college_id"
     t.string   "data"
+    t.integer  "rank_id"
   end
 
   add_index "staffs", ["icno"], name: "index_staffs_on_icno", using: :btree

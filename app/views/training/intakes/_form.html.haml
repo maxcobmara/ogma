@@ -38,7 +38,10 @@
             .col-sm-2.control-label
               = f.label :staff_id
             .col-md-3
-              - programme_names = Programme.roots.where(course_type: "Diploma").pluck(:name)
-              - commonsubject_names = Programme.roots.where(course_type: "Commonsubject").pluck(:name)
-              - academician_post_ids=Position.where('unit IN(?) or unit IN(?) or unit=? or unit=? or unit=?', programme_names, commonsubject_names, "Pos Basik", "Diploma Lanjutan", "Pengkhususan").pluck(:staff_id).compact
-              = f.collection_select :staff_id, Staff.where(id: academician_post_ids).order(name: :asc), :id, :name, {:include_blank=> (t 'select')},{class: 'selectpicker', "data-width"=>'280px'}
+              - if current_user.college.code=="kskbjb"
+                - programme_names = Programme.roots.where(course_type: "Diploma").pluck(:name)
+                - commonsubject_names = Programme.roots.where(course_type: "Commonsubject").pluck(:name)
+                - academician_post_ids=Position.where('unit IN(?) or unit IN(?) or unit=? or unit=? or unit=?', programme_names, commonsubject_names, "Pos Basik", "Diploma Lanjutan", "Pengkhususan").pluck(:staff_id).compact
+                = f.collection_select :staff_id, Staff.where(id: academician_post_ids).order(name: :asc), :id, :name, {:include_blank=> (t 'select')},{class: 'selectpicker', "data-width"=>'280px'}
+              - else
+                = f.collection_select :staff_id, Staff.order(name: :asc), :id, :name, {:include_blank=> (t 'select')},{class: 'selectpicker', "data-width"=>'280px'}
