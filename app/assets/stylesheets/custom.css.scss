@@ -343,3 +343,20 @@ table.inline_display {
 	}
 
 }
+
+.divider {
+  height: 1px;
+  width: 100%;
+  display: block;
+  margin: 5px 0;
+  overflow: hidden;
+  background-color: #EDEDEC;
+}
+.divider2 {
+  height: 1px;
+  width: 100%;
+  display: block;
+  margin: 1px 0;
+  overflow: hidden;
+  background-color: #F5F5F3;
+}

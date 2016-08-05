@@ -16,8 +16,10 @@
       %dd= @programme.combo_code
 
       %dt=t 'training.programme.course_type', :default => model_class.human_attribute_name(:course_type) + ":"
-      %dd= h (DropDown::COURSE_TYPES.find_all{|disp, value| value == @programme.course_type}).map {|disp, value| disp}[0]
-      
+      %dd
+        =h @programme.root.nil? ?  (DropDown::COURSE_TYPES.find_all{|disp, value| value == @programme.course_type}).map {|disp, value| disp}[0] :  (DropDown::COURSE_TYPES_SUB.find_all{|disp, value| value == @programme.course_type}).map {|disp, value| disp}[0]
+        /= h (DropDown::COURSE_TYPES.find_all{|disp, value| value == @programme.course_type}).map {|disp, value| disp}[0]
+       
       - if @programme.course_type=="Topic"||@programme.course_type=="Subtopic"
         %dt=t 'training.programme.method', :default => model_class.human_attribute_name(:course_type) + ":"
         %dd

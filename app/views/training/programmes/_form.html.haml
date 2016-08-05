@@ -15,11 +15,11 @@
       = f.label t 'training.programme.course_type'
     .col-md-9
       - if @programme.parent_id == nil
-        = f.select :course_type,DropDown::COURSE_TYPES_PROG,{:prompt => t('helpers.prompt.select_course_type')},{ class: 'selectpicker', "data-width"=>'160px'} 
+        = f.select :course_type,DropDown::COURSE_TYPES_PROG,{:include_blank => t('helpers.prompt.select_course_type')},{ class: 'selectpicker', "data-width"=>'160px'} 
       - else
         %table
           %tr
-            %td{:style=>"padding: 0 12px 0 0;  vertical-align: top;"}= f.select :course_type, DropDown::COURSE_TYPES_SUB,{:prompt => t('helpers.prompt.select_course_type')},{ class: 'selectpicker', "data-width"=>'160px'} 
+            %td{:style=>"padding: 0 12px 0 0;  vertical-align: top;"}= f.select :course_type, DropDown::COURSE_TYPES_SUB,{:include_blank => t('helpers.prompt.select_course_type')},{ class: 'selectpicker', "data-width"=>'160px'} 
             %td.bbb{:style=>"padding: 0 12px 0 0;"}= f.label t 'training.programme.lecture'
             %td.bbb{:style=>"padding: 0 12px 0 0;"}= f.text_field :lecture, :size=>'2', class: 'form-control'
             %td.bbb{:style=>"padding: 0 12px 0 0;"}= f.select :lecture_time, DropDown::LECTURE_TIME,{:prompt =>t('select')},{ class: 'selectpicker', "data-width"=>'80px'} 

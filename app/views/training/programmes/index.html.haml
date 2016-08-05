@@ -92,7 +92,8 @@
           = fa_icon("minus-square-o")
         %span.programme_list
           &nbsp;&nbsp;
-          = link_to course_rec.code+" "+course_rec.programme_list, training_programme_path(course_rec)
+          %strong=course_rec.code
+          = link_to course_rec.programme_list, training_programme_path(course_rec)
         %span.credits=h course_rec.credits if course_rec.credits != 0
         %span.status=h check_kin_blank {(DropDown::COURSE_STATUS.find_all{|disp, value| value == course_rec.status}).map {|disp, value| disp} }[0]
         %span.duration
@@ -112,11 +113,13 @@
                 - else
                   = fa_icon("minus-square-o")
                 %span.programme_list
-                  &nbsp;
+                  &nbsp;&nbsp;
                   - if semester.course_type=='Semester'
                     ="Semester "+semester.name
                   - else
-                    = link_to semester.code+" "+semester.name, training_programme_path(semester)
+                    %strong=semester.code
+                    \-
+                    = link_to semester.name, training_programme_path(semester)
                 %span.credits=h semester.credits if semester.credits != 0 
                 %span.status=h check_kin_blank {(DropDown::COURSE_STATUS.find_all{|disp, value| value == semester.status}).map {|disp, value| disp} }[0]
                 %span.duration
@@ -135,8 +138,10 @@
                       - else
                         = fa_icon("minus-square-o")
                       %span.programme_list
-                        &nbsp;
-                        = link_to subject.code+" "+subject.name, training_programme_path(subject)
+                        &nbsp;&nbsp;
+                        %strong=subject.code
+                        \-
+                        = link_to subject.name, training_programme_path(subject)
                       %span.credits=h subject.credits if subject.credits != 0
                       %span.status=h check_kin_blank {(DropDown::COURSE_STATUS.find_all{|disp, value| value == subject.status}).map {|disp, value| disp} }[0]
                       %span.duration
@@ -155,8 +160,10 @@
                             - else
                               = fa_icon("minus-square-o")
                             %span.programme_list
-                              &nbsp;
-                              = link_to topic.code+" "+topic.name, training_programme_path(topic)
+                              &nbsp;&nbsp;
+                              %strong=topic.code
+                              \-
+                              = link_to topic.name, training_programme_path(topic)
                             %span.credits=h topic.credits if topic.credits != 0
                             %span.status=h check_kin_blank {(DropDown::COURSE_STATUS.find_all{|disp, value| value == topic.status}).map {|disp, value| disp} }[0]
                             %span.duration
@@ -184,7 +191,11 @@
                                       = link_to fa_icon("plus-square-o"), "#"
                                   - else
                                     = fa_icon("minus-square-o")
-                                  %span.programme_list= link_to subtopic.code+" "+subtopic.name, training_programme_path(subtopic)
+                                  %span.programme_list
+                                    &nbsp;&nbsp;
+                                    %strong=subtopic.code
+                                    \-
+                                    = link_to subtopic.name, training_programme_path(subtopic)
                                   %span.credits=h subtopic.credits if subtopic.credits != 0
                                   %span.status=h check_kin_blank {(DropDown::COURSE_STATUS.find_all{|disp, value| value == subtopic.status}).map {|disp, value| disp} }[0]
                                   %span.duration
@@ -212,7 +223,11 @@
                                             = link_to fa_icon("plus-square-o"), "#"
                                         - else
                                           = fa_icon("minus-square-o")
-                                        %span.programme_list= link_to subsubtopic.code+" "+subsubtopic.name
+                                        %span.programme_list
+                                          &nbsp;&nbsp;
+                                          %strong=subtopic.code
+                                          \-
+                                          = link_to subsubtopic.name
                                         %span.credits=h subsubtopic.credits if subsubtopic.credits !=0
                                         %span.status=h check_kin_blank {(DropDown::COURSE_STATUS.find_all{|disp, value| value == subsubtopic.status}).map {|disp, value| disp} }[0]
                                         %span.duration
@@ -228,6 +243,11 @@
                                           =h subsubtopic.practical.to_s
                                           =(DropDown::LECTURE_TIME.find_all{|disp, value| value == subsubtopic.practical_time}).map {|disp, value| disp}[0] if subsubtopic.practical
                                           \- up to this level
+                                  %span.divider2
+                            %span.divider2
+                    %span.divider2
+              %span.divider2
+      %span.divider
 %BR
 
 

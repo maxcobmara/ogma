@@ -3147,7 +3147,7 @@ ms_MY:
       new: Sukatan Kurikulum Baru
       new_programme: Program Baru
       edit: Sunting Sukatan Kurikulum
-      combo_code: "Kod Kombo  |  Nama Program / Semester / Subjek / Topik / Subtopik"
+      combo_code: "Kod  -  Nama Program / Semester / Subjek / Topik / Subtopik"
       code: Kod
       code2: Kod Kombo
       name: Nama
@@ -3164,7 +3164,7 @@ ms_MY:
       remark_text5: nod - nod warisan.
       remark_text6: Bagi mencipta nod
       remark_text7: waris
-      remark_text8: baru, pilih 'Nod Baru' dalam laman 'Papar' nod induk.
+      remark_text8: baru (selain Program), pilih 'Nod Baru' dalam laman 'Papar' nod induk.
       remark_text9: "Klik pada 'Nama Program / Semester / Subjek / Topik / Subtopik' untuk ke laman 'Papar'."
       method: Kaedah Pengajaran
       practical: Amali
