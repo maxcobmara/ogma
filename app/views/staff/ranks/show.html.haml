@@ -19,6 +19,9 @@
 
             %dt= t 'rank.category'
             %dd=h (Rank::RANK_CATEGORY.find_all{|disp, value| value == @rank.category}).map{|disp, value| disp}[0]    
+            
+            %dt=t 'rank.employgrade_id'
+            %dd=h @rank.try(:staffgrade).try(:name)
 
 .row
   .col-md-7.col-md-offset-3

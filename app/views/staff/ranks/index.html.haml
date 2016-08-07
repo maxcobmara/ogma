@@ -15,14 +15,14 @@
       %tr
         %th{width: "45%"}=sort_link(@search, :name, (t 'rank.name'))
         %th{width: "40%"}=sort_link(@search, :category, (t 'rank.category'))
-        %th{width: "15%"}=sort_link(@search, :maritime_grade, (t 'rank.maritime_grade'))
+        %th{width: "15%"}=sort_link(@search, :grade, (t 'rank.employgrade_id'))
     %tbody
       = render "index_search"
       - @ranks.each do |rank|
         %tr
           %td=h link_to rank.name, staff_rank_path(rank)
           %td=h (Rank::RANK_CATEGORY.find_all{|disp, value| value == rank.category}).map {|disp, value| disp}[0]     
-          %td.centre=h rank.maritime_grade
+          %td.centre=h rank.try(:staffgrade).try(:name)
         
   .right{style:"padding:0 30px; margin:0;"}= paginate @ranks, :theme => 'twitter-bootstrap-3'            
             

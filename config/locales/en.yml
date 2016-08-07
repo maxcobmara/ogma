@@ -52,6 +52,7 @@ en:
       academic_session: Academic Session
       evaluate_course: Course Evaluation
       grade: Grade
+      rank: Rank
     attributes:
       asset_defect:
         processed_by: Processed by
@@ -218,7 +219,9 @@ en:
       book:
         isbn: ISBN
         title: Title
-        language: Languagebulletin
+        language: Language
+      rank:
+        employgrade_id: Grade
     errors:
         template:
           body: "There were problems with the following fields:"
@@ -1719,7 +1722,7 @@ en:
     details: Rank Details
     name: Rank Name
     category: Rank Category
-    maritime_grade: Grade (Maritim)
+    employgrade_id: Grade
     
   asset:
     title: Assets

@@ -1,15 +1,9 @@
 class Rank < ActiveRecord::Base 
-  serialize :data, Hash
   
   has_many :staffs
+  belongs_to :staffgrade, class_name: 'Employgrade',  foreign_key: 'employgrade_id'
   
-  def maritime_grade=(value)
-    data[:maritime_grade]=value
-  end
-  
-  def maritime_grade
-    data[:maritime_grade]
-  end
+  validates :employgrade_id, uniqueness: true
   
   RANK_CATEGORY= [
     #display         #stored in DB

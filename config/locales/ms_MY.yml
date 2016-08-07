@@ -33,6 +33,7 @@ ms_MY:
       academic_session: Sesi Akademik
       evaluate_course: Penilaian Kursus
       grade: Gred
+      rank: Pangkat
     attributes:
       asset_defect:
         processed_by: Diproses oleh
@@ -200,6 +201,8 @@ ms_MY:
         isbn: ISBN
         title: Tajuk
         language: Bahasa
+      rank:
+        employgrade_id: Gred
     errors:
         template:
           body: "Berikut adalah beberapa masalah:"
@@ -1610,7 +1613,7 @@ ms_MY:
     details: Butiran Pangkat
     name: Nama Pangkat
     category: Kategori Pangkat
-    maritime_grade: Gred (Maritim)
+    employgrade_id: Gred
     
   asset:
     title: Aset

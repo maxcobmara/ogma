@@ -22,6 +22,6 @@
 
           .form-group
             .col-sm-2.control-label
-              = f.label t('rank.maritime_grade')
+              = f.label t('rank.employgrade_id')
             .col-md-2
-              = f.collection_select :maritime_grade, Employgrade.where('name ILIKE(?) or name ILIKE(?)', "xa%", "XA%").order(name: :asc), :name, :name, {:include_blank => t('helpers.select')}, {class: 'selectpicker'}
+              = f.collection_select :employgrade_id, Employgrade.where('name ILIKE(?) or name ILIKE(?)', "xa%", "XA%"), :id, :name,{ :include_blank => t('helpers.select'), :selected => @rank.try(:employgrade_id)}, {class: 'selectpicker'}
