@@ -35,7 +35,7 @@
           %dd= @weeklytimetable.week.to_s+" / "+@weeklytimetable.academic_semester.try(:total_week).to_s
 
           %dt= t 'training.weeklytimetable.prepared_by' , :default => model_class.human_attribute_name(:prepared_by) + ":"
-          %dd= @weeklytimetable.schedule_creator.name
+          %dd= current_user.college.code=="amsas" ? @weeklytimetable.schedule_creator.staff_with_rank : @weeklytimetable.schedule_creator.name
 
           %dt= t 'training.weeklytimetable.endorsed_by' , :default => model_class.human_attribute_name(:endorsed_by) + ":"
           %dd= @weeklytimetable.endorsed_by? ? @weeklytimetable.schedule_approver.name+(t 'on2')+@weeklytimetable.submitted_on.try(:strftime, '%d %b %Y') : "-"

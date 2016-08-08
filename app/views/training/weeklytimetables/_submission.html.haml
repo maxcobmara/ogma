@@ -13,6 +13,6 @@
       %b= t 'training.weeklytimetable.hod'
     .col-md-4
       - if current_user.college.code=="amsas"
-        = f.collection_select :endorsed_by, @lecturer_list.order(name: :asc), :id, :staff_with_rank, {:include_blank =>(t 'select'), :selected => @staffid},{class: 'selectpicker mandatory', "data-width"=>'280px'}
+        = f.collection_select :endorsed_by, Staff.all.order('rank_id ASC, name ASC'), :id, :staff_with_rank, {:include_blank =>(t 'select'), :selected => @staffid},{class: 'selectpicker mandatory', "data-width"=>'280px'}
       - else
         = f.collection_select :endorsed_by, Staff.where('id IN (?)', @weeklytimetable.hods).order('name ASC'), :id, :name, {:include_blank => (t 'helpers.prompt.select_hod')},{class: 'selectpicker', "data-width"=>'260px'}

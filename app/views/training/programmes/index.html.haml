@@ -227,7 +227,7 @@
                                           &nbsp;&nbsp;
                                           %strong=subtopic.code
                                           \-
-                                          = link_to subsubtopic.name
+                                          = link_to subsubtopic.name, training_programme_path(subsubtopic)
                                         %span.credits=h subsubtopic.credits if subsubtopic.credits !=0
                                         %span.status=h check_kin_blank {(DropDown::COURSE_STATUS.find_all{|disp, value| value == subsubtopic.status}).map {|disp, value| disp} }[0]
                                         %span.duration

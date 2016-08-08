@@ -11,7 +11,7 @@ class Weekly_timetablePdf < Prawn::Document
     @daycount=4
     @weekdays_end = @weeklytimetable.startdate.to_date+4.days
     @daycount2 = (@weeklytimetable.enddate.to_date - @weekdays_end).to_i 
-    @college=college.code.upcase
+    @college=college
     
     font "Times-Roman"
     if college.code=="kskbjb"
@@ -338,11 +338,16 @@ class Weekly_timetablePdf < Prawn::Document
   end
   
   def table_signatory
+    if @college.code=="amsas"
+      approver="Nama: #{@weeklytimetable.endorsed_by? ? @weeklytimetable.schedule_approver.staff_with_rank : "-"}"
+    else
+      approver="Nama: #{@weeklytimetable.endorsed_by? ? @weeklytimetable.schedule_approver.name : "-"}"
+    end
     data1 = [["Disediakan Oleh :","Disemak Oleh :" ],
                   ["#{'.'*90}","#{'.'*90}"],
-                  ["Nama: #{@weeklytimetable.schedule_creator.name}","Nama #{@weeklytimetable.endorsed_by? ? @weeklytimetable.schedule_approver.name : "-"}"],
+                  ["Nama: #{@college.code=="amsas" ? @weeklytimetable.schedule_creator.staff_with_rank : @weeklytimetable.schedule_creator.name}", approver],
                   ["Pengajar Penyelaras","#{@weeklytimetable.endorsed_by? ? @weeklytimetable.schedule_approver.positions.first.try(:name) : "-"}"],
-                  ["Pelatih Ambilan #{@weeklytimetable.try(:schedule_intake).try(:name)}", @college_code]]
+                  ["Pelatih Ambilan #{@weeklytimetable.try(:schedule_intake).try(:name)}", @college.code.upcase]]
     table(data1, :column_widths => [350], :cell_style => { :size => 10}) do
       columns(0..1).borders=[]
       rows(0..4).height=18

@@ -20,8 +20,13 @@ class Intake < ActiveRecord::Base
   end  
   
   def programme_group_intake
-    "#{description}"+" ("+"#{name}"+")"+" | "+"#{programme.name}"
+    "#{description} (#{name}) | #{programme.name}"
   end
+  
+  def programme_group_intake2
+    "#{description} ( #{name} ) | #{programme.course_type} #{programme.name}"
+  end
+  
   
   def self.get_intake(student_intake, courseid)
     intakeid=0

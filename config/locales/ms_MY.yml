@@ -3669,6 +3669,7 @@ ms_MY:
       select_format: Pilih Format Jadual Waktu
       select_lecture_method: Pilih Kaedah Pembelajaran
       select_sem_subject_topic: Pilih Sem-Subjek|Topik
+      select_subject_topic: Pilih Subjek > Topik / Subtopik
       select_location: Pilih Lokasi
       select_lecturer: Pilih Pengajar
       select_hod: "Pilih Ketua Jabatan / Pelulus"

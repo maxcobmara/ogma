@@ -3,7 +3,11 @@
 /topic (sem-subject-topic)
 = t'training.weeklytimetable_detail.topic'
 %font{:color=>"blue"}*
-=select_tag "weeklytimetable[weeklytimetable_details_attributes][#{@ind}][topic]", options_from_collection_for_select(@semester_subject_topic_list, :id,:semester_subject_topic), :prompt=>(t 'helpers.prompt.select_sem_subject_topic')
+- if current_user.college.code=="amsas"
+  - prompt_text=(t 'helpers.prompt.select_subject_topic')
+- else
+  - prompt_text=(t 'helpers.prompt.select_sem_subject_topic')
+=select_tag "weeklytimetable[weeklytimetable_details_attributes][#{@ind}][topic]", options_from_collection_for_select(@semester_subject_topic_list, :id,:semester_subject_topic), :prompt=>prompt_text
 
 /lecturer_id
 = t 'training.weeklytimetable_detail.lecturer_id'
