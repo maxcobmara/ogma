@@ -1726,6 +1726,7 @@ en:
     edit: Edit Rank
     details: Rank Details
     name: Rank Name
+    shortname: Short Name
     category: Rank Category
     employgrade_id: Grade
     

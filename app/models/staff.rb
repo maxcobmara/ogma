@@ -123,7 +123,7 @@ class Staff < ActiveRecord::Base
     end
     
     def staff_with_rank
-      "#{rank.try(:name)} #{name}"
+      "#{rank.try(:shortname)} #{name}"
     end
 
     def staff_list

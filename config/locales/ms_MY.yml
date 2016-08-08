@@ -1617,6 +1617,7 @@ ms_MY:
     edit: Sunting Pangkat
     details: Butiran Pangkat
     name: Nama Pangkat
+    shortname: Nama Ringkas
     category: Kategori Pangkat
     employgrade_id: Gred
     

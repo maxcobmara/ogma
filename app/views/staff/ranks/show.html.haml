@@ -16,6 +16,9 @@
           %dl.dl-horizontal
             %dt= t 'rank.name'
             %dd=h @rank.name
+            
+            %dt= t 'rank.shortname'
+            %dd=h @rank.try(:shortname)
 
             %dt= t 'rank.category'
             %dd=h (Rank::RANK_CATEGORY.find_all{|disp, value| value == @rank.category}).map{|disp, value| disp}[0]    

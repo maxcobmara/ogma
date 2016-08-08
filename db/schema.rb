@@ -1747,6 +1747,7 @@ ActiveRecord::Schema.define(version: 20160807064939) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "employgrade_id"
+    t.string   "shortname"
   end
 
   create_table "residences", force: true do |t|

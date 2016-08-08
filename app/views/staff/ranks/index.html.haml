@@ -13,13 +13,15 @@
   %table.table-striped.table-hover.ogma
     %thead
       %tr
-        %th{width: "45%"}=sort_link(@search, :name, (t 'rank.name'))
-        %th{width: "40%"}=sort_link(@search, :category, (t 'rank.category'))
+        %th{width: "15%"}=sort_link(@search, :shortname, (t 'rank.shortname'))
+        %th{width: "40%"}=sort_link(@search, :name, (t 'rank.name'))
+        %th{width: "30%"}=sort_link(@search, :category, (t 'rank.category'))
         %th{width: "15%"}=sort_link(@search, :grade, (t 'rank.employgrade_id'))
     %tbody
       = render "index_search"
       - @ranks.each do |rank|
         %tr
+          %td=h rank.try(:shortname)
           %td=h link_to rank.name, staff_rank_path(rank)
           %td=h (Rank::RANK_CATEGORY.find_all{|disp, value| value == rank.category}).map {|disp, value| disp}[0]     
           %td.centre=h rank.try(:staffgrade).try(:name)

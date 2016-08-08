@@ -3,7 +3,7 @@ class Rank < ActiveRecord::Base
   has_many :staffs
   belongs_to :staffgrade, class_name: 'Employgrade',  foreign_key: 'employgrade_id'
   
-  validates :employgrade_id, uniqueness: true
+  validates :employgrade_id, uniqueness: true, allow_nil: true
   
   RANK_CATEGORY= [
     #display         #stored in DB

@@ -328,7 +328,7 @@ class Training::WeeklytimetablesController < ApplicationController
     
     respond_to do |format|
       format.pdf do
-        pdf = Weekly_timetablePdf.new(@weeklytimetable, view_context)
+        pdf = Weekly_timetablePdf.new(@weeklytimetable, view_context, current_user.college)
         send_data pdf.render, filename: "timetable_blank-{Date.today}",
                               type: "application/pdf",
                               disposition: "inline"

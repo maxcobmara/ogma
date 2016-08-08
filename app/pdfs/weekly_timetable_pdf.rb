@@ -1,5 +1,5 @@
 class Weekly_timetablePdf < Prawn::Document
-  def initialize(weeklytimetable, view)
+  def initialize(weeklytimetable, view, college)
     super({top_margin: 20, page_size: 'A4', page_layout: :landscape })
     @weeklytimetable = weeklytimetable
     @view = view
@@ -11,15 +11,24 @@ class Weekly_timetablePdf < Prawn::Document
     @daycount=4
     @weekdays_end = @weeklytimetable.startdate.to_date+4.days
     @daycount2 = (@weeklytimetable.enddate.to_date - @weekdays_end).to_i 
+    @college=college.code.upcase
     
     font "Times-Roman"
-    text "BPL.KKM.PK(T)", :align => :right, :size => 8
+    if college.code=="kskbjb"
+      text "BPL.KKM.PK(T)", :align => :right, :size => 8
+    else
+      move_down 5
+    end
     image "#{Rails.root}/app/assets/images/logo_kerajaan.png", :position => :center, :scale => 0.5
     move_down 3
-    text "KEMENTERIAN KESIHATAN MALAYSIA", :align => :center, :size => 9
+    if college.code=="kskbjb"
+      text "KEMENTERIAN KESIHATAN MALAYSIA", :align => :center, :size => 9
+    else
+      move_down 5
+    end
     text "JADUAL WAKTU MINGGUAN", :align => :center, :size => 9
     move_down 3
-    text "INSTITUSI : KOLEJ SAINS KESIHATAN BERSEKUTU JOHOR BAHRU", :align => :left, :size => 9
+    text "INSTITUSI : #{college.name.upcase}", :align => :left, :size => 9
     text "KUMPULAN PELATIH : #{@weeklytimetable.try(:schedule_intake).try(:group_with_intake_name)}", :align => :left, :size => 9
     table_date_semester_week
     table_schedule_sun_wed
@@ -27,13 +36,21 @@ class Weekly_timetablePdf < Prawn::Document
     if @daycount2 > 0
       start_new_page
       ##same page header
-      text "BPL.KKM.PK(T)", :align => :right, :size => 8
+      if college.code=="kskbjb"
+        text "BPL.KKM.PK(T)", :align => :right, :size => 8
+      else
+        move_down 5
+      end
       image "#{Rails.root}/app/assets/images/logo_kerajaan.png", :position => :center, :scale => 0.5
       move_down 3
-      text "KEMENTERIAN KESIHATAN MALAYSIA", :align => :center, :size => 9
+      if college.code=="kskbjb"
+        text "KEMENTERIAN KESIHATAN MALAYSIA", :align => :center, :size => 9
+      else
+        move_down 5
+      end
       text "JADUAL WAKTU MINGGUAN", :align => :center, :size => 9
       move_down 3
-      text "INSTITUSI : KOLEJ SAINS KESIHATAN BERSEKUTU JOHOR BAHRU", :align => :left, :size => 9
+      text "INSTITUSI : #{college.name.upcase}", :align => :left, :size => 9
       text "KUMPULAN PELATIH : #{@weeklytimetable.try(:schedule_intake).try(:group_with_intake_name)}", :align => :left, :size => 9
       table_date_semester_week
       ##same page header
@@ -325,7 +342,7 @@ class Weekly_timetablePdf < Prawn::Document
                   ["#{'.'*90}","#{'.'*90}"],
                   ["Nama: #{@weeklytimetable.schedule_creator.name}","Nama #{@weeklytimetable.endorsed_by? ? @weeklytimetable.schedule_approver.name : "-"}"],
                   ["Pengajar Penyelaras","#{@weeklytimetable.endorsed_by? ? @weeklytimetable.schedule_approver.positions.first.try(:name) : "-"}"],
-                  ["Pelatih Ambilan #{@weeklytimetable.try(:schedule_intake).try(:name)}","KSKB JB"]]
+                  ["Pelatih Ambilan #{@weeklytimetable.try(:schedule_intake).try(:name)}", @college_code]]
     table(data1, :column_widths => [350], :cell_style => { :size => 10}) do
       columns(0..1).borders=[]
       rows(0..4).height=18

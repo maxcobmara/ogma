@@ -4,7 +4,7 @@ class Staff::RanksController < ApplicationController
   
   def index
     @search=Rank.search(params[:q])
-    @ranks=@search.result.page(params[:page]||1)
+    @ranks=@search.result.order(id: :asc).page(params[:page]||1)
   end
   
   def new
@@ -32,7 +32,7 @@ class Staff::RanksController < ApplicationController
     @rank=Rank.find(params[:id])
     respond_to do |format|
       if @rank.update(rank_params)
-        format.html { redirect_to staff_ranks_url, notice: (t 'rank.title')+(t 'actions.created')  }
+        format.html { redirect_to staff_ranks_url, notice: (t 'rank.title')+(t 'actions.updated')  }
         format.json { render action: 'show', status: :created, location: @rank }
       else
         format.html { render action: 'new' }
@@ -55,7 +55,7 @@ class Staff::RanksController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def rank_params
-      params.require(:rank).permit(:name, :category, :employgrade_id, :college_id, {:data=> []})
+      params.require(:rank).permit(:name, :category, :employgrade_id, :shortname, :college_id, {:data=> []})
     end
   
 end
