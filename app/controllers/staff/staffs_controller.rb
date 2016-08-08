@@ -47,7 +47,7 @@ class Staff::StaffsController < ApplicationController
   @staff = Staff.new(staff_params)
   respond_to do |format|
     if @staff.save
-      format.html { redirect_to @staff, notice: 'Staff was successfully created.' }
+      format.html { redirect_to @staff, notice: (t 'staff.title')+(t 'actions.created')}
       format.json { render action: 'show', status: :created, location: @staff }
     else
       format.html { render action: 'new' }
@@ -68,7 +68,7 @@ end
     end
     respond_to do |format|
       if @info.update(staff_params)
-        format.html { redirect_to staff_info_path, notice: 'Staff was successfully updated.' }
+        format.html { redirect_to staff_info_path, notice: (t 'staff.title')+(t 'actions.updated') }
         format.json { head :no_content }
       else
         format.html { render action: 'edit' }
@@ -92,7 +92,7 @@ end
     @staff = Staff.find(params[:id])
     respond_to do |format|
       format.pdf do
-        pdf = Borang_maklumat_staffPdf.new(@staff, view_context)
+        pdf = Borang_maklumat_staffPdf.new(@staff, view_context, current_user.college)
         send_data pdf.render, filename: "borang_maklumat_staff-{Date.today}",
                               type: "application/pdf",
                               disposition: "inline"

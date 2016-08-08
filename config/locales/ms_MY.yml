@@ -115,7 +115,7 @@ ms_MY:
         evaluation_year: Tahun Penilaian
       staff:
         mycpds: "Jumlah Mata Kumulatif (MyCPD)"
-      mycpd:
+      mycpds:
         cpd_year: Tahun
         cpd_value: Jumlah Mata Kumulatif
       staff_attendance:
@@ -316,6 +316,7 @@ ms_MY:
   active: Aktif
   not_active: Tidak Aktif
   must_exist: mesti wujud
+  download: Muat turun
  
   actions:
     new: Baru
@@ -857,6 +858,10 @@ ms_MY:
     country_cd: Kewarganegaraan
     transportclass_id: Kelas Kenderaan
     upload: Muat Naik Gambar
+    uploaded_file: Fail dimuatnaik
+    current_upload: Gambar Semasa
+    current_file: "Fail semasa : "
+    new_photo: Gambar Baru
     professional_development: Pembangunan Profesional
 
     employment_details: Butir Perkerjaan
@@ -2554,7 +2559,7 @@ ms_MY:
     letterdt: Tarikh Surat
     letterxdt: Tarikh Terima
     circulation_date: Tarikh Edaran
-    uploaded: Fail Dimuatnaik 
+    uploaded: Fail dimuatnaik 
     upload_change_file: "Memuatnaik/Tukar Fail"
     document_details: Butiran Dokumen
     action_details: Butiran Tindakan

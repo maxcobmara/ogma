@@ -1,5 +1,5 @@
 class Borang_maklumat_staffPdf < Prawn::Document
-  def initialize(staff, view)
+  def initialize(staff, view, college)
     super({top_margin: 50, page_size: 'A4', page_layout: :portrait })
     @staff = staff
     @view = view
@@ -7,7 +7,7 @@ class Borang_maklumat_staffPdf < Prawn::Document
     
     
     font "Times-Roman"
-    text "KOLEJ SAINS KESIHATAN BERSEKUTU JOHOR BAHRU", :align => :center, :size => 14, :style => :bold
+    text "#{college.name.upcase}", :align => :center, :size => 14, :style => :bold
     move_down 5
     text "BORANG MAKLUMAT STAFF BAGI SISTEM ICMS", :align => :center, :size => 14, :style => :bold
     move_down 20

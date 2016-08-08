@@ -338,6 +338,7 @@ en:
   active: Active
   not_active: Not Active
   must_exist: must exist
+  download: Download
 
   actions:
     new: New
@@ -889,6 +890,10 @@ en:
     country_cd: Nationality
     transportclass_id: Transport Class
     upload: Upload Photo
+    uploaded_file: Uploaded file
+    current_upload: Current Photo
+    current_file: "Current file is : "
+    new_photo: New Photo
     professional_development: Professional Development
 
     employment_details: Employment Details
