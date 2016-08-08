@@ -1,0 +1,23 @@
+%fieldset
+  .row
+    .col-sm-3
+      = f.hidden_field :_destroy
+      = f.select :level_id, DropDown::QUALIFICATION_LEVEL, {:prompt => t('select')}, {class: 'form-control selectpicker'}
+    .col-md-3
+      = f.text_field :qname, :placeholder => 'Qualification Name', class: 'form-control'
+    .col-md-3
+      = f.text_field :institute, :size => '50', :placeholder => 'Institute Name', class: 'form-control'
+    .col-sm-1= link_to content_tag(:i, "", class: "fa fa-trash-o"), "#", class: "removing_fields"
+     
+:javascript
+  $('.selectpicker').selectpicker('render');
+
+/TODO -- depends on partial _kin_fields?
+/   $('.removing_fields').click(function(){
+/     var fieldset=$(this).parent().parent().parent();
+/     var row=$(this).parent().parent();
+/     var all_fields=row.children().children();
+/     var destroyer=all_fields[0];
+/     destroyer.value=true;    
+/     fieldset.hide();
+/   });

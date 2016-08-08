@@ -410,14 +410,14 @@ class Student < ActiveRecord::Base
 
 # ------------------------------code for repeating field qualification---------------------------------------------------
  has_many :qualifications, :dependent => :destroy
- accepts_nested_attributes_for :qualifications, :reject_if => lambda { |a| a[:level_id].blank? }
+ accepts_nested_attributes_for :qualifications, :allow_destroy => true, :reject_if => lambda { |a| a[:level_id].blank? }
 
  has_many :kins, :dependent => :destroy
  accepts_nested_attributes_for :kins, :allow_destroy => true, :reject_if => lambda { |a| a[:kintype_id].blank? }
  validates_associated :kins
 
  has_many :spmresults, :dependent => :destroy
- accepts_nested_attributes_for :spmresults, :reject_if => lambda { |a| a[:spm_subject].blank? }
+ accepts_nested_attributes_for :spmresults, :allow_destroy => true, :reject_if => lambda { |a| a[:spm_subject].blank? }
 
  #export excel section ---
  
