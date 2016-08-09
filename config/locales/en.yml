@@ -222,6 +222,8 @@ en:
         language: Language
       rank:
         employgrade_id: Grade
+      programme:
+        durationtype: Duration type
     errors:
         template:
           body: "There were problems with the following fields:"
@@ -3294,7 +3296,7 @@ en:
       subject: Subject
       topic_code: Topic
       version_no: Version No
-      duration: "Duration (Total Hours)"
+      duration: "Duration (Total)"
       #caution1: "Removed topic or subtopic (Curriculum Management) - before 31st October 2013"
       #caution2: "Removed topic or subtopic (Curriculum Management) - 31st October 2013 onwards"
       descriptions: Descriptions

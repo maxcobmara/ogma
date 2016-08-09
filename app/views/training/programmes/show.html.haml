@@ -20,18 +20,19 @@
         =h @programme.is_root? ?  (DropDown::COURSE_TYPES.find_all{|disp, value| value == @programme.course_type}).map {|disp, value| disp}[0] :  (DropDown::COURSE_TYPES_SUB.find_all{|disp, value| value == @programme.course_type}).map {|disp, value| disp}[0]
         /= h (DropDown::COURSE_TYPES.find_all{|disp, value| value == @programme.course_type}).map {|disp, value| disp}[0]
        
-      - if @programme.course_type=="Topic"||@programme.course_type=="Subtopic"
+      - if ['Topic', 'Subtopic'].include?(@programme.course_type)
         %dt=t 'training.programme.method', :default => model_class.human_attribute_name(:course_type) + ":"
-        %dd
-          - if @programme.lecture
-            %b= t('training.programme.lecture')+" : "
-            =@programme.lecture.to_s+" "+(DropDown::LECTURE_TIME.find_all{|disp, value| value == @programme.lecture_time}).map {|disp, value| disp}[0]+" / "
-          - if @programme.tutorial
-            %b= t('training.programme.tutorial')+" : "
-            =@programme.tutorial.to_s+" "+(DropDown::LECTURE_TIME.find_all{|disp, value| value == @programme.tutorial_time}).map {|disp, value| disp}[0]+" / "
-          - if @programme.practical
-            %b= t('training.programme.practical')+" : "
-            =@programme.practical.to_s+" "+(DropDown::LECTURE_TIME.find_all{|disp, value| value == @programme.practical_time}).map {|disp, value| disp}[0]
+        %dd  
+          (
+          %strong= (t 'training.programme.lecture')+" : "
+          =@programme.lecture_duration if @programme.lecture_d?
+          \/ 
+          %strong= t('training.programme.tutorial')+" : "
+          =@programme.tutorial_duration if @programme.tutorial_d?
+          \/
+          %strong= t('training.programme.practical')+" : "
+          =@programme.practical_duration if @programme.practical_d?
+          )     
       
       %dt= t 'training.programme.name', :default => model_class.human_attribute_name(:name) + ":"
       %dd= @programme.name
@@ -45,6 +46,11 @@
       
       %dt= t 'training.programme.status', :default => model_class.human_attribute_name(:status) + ":"
       %dd= (DropDown::COURSE_STATUS.find_all{|disp, value| value == @programme.status}).map {|disp, value| disp} [0]
+      
+      %dt=t 'training.programme.duration', :default => model_class.human_attribute_name(:duration) + ":"
+      %dd
+        =h @programme.duration
+        =h @programme.durationtype? ? (DropDown::DURATIONTYPES.find_all{|disp, value| value == @programme.durationtype}).map {|disp, value| disp}[0] :  (DropDown::DURATION_TYPES.find_all{|disp, value| value == @programme.duration_type}).map {|disp, value| disp}[0]
 
 .row
   .col-md-5.col-md-offset-3

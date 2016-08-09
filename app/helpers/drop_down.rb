@@ -252,6 +252,7 @@ module DropDown
        [ I18n.t("staff.training.course.jurnal_reading"), 22],  
   ]
   
+  # TODO - db field : change to string -> hours, days, months, years - backup kskb data first
   DURATION_TYPE = [
        #  Displayed       stored in db
        [ I18n.t("time.hours"), 0],
@@ -430,6 +431,15 @@ module DropDown
          [ I18n.t('training.programme.weeks'),      7 ],
          [ I18n.t('training.programme.months'),     30 ],
          [ I18n.t('training.programme.years'),      365 ]
+    ]
+    
+    DURATIONTYPES = [
+         #  Displayed       stored in db
+         [ I18n.t('training.programme.hours'),      'hours' ],
+         [ I18n.t('training.programme.days'),       'days' ],
+         [ I18n.t('training.programme.weeks'),     'weeks' ],
+         [ I18n.t('training.programme.months'),     'months' ],
+         [ I18n.t('training.programme.years'),      'years' ]
     ]
     
     COURSE_TYPES_PROG =  [

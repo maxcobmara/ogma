@@ -96,10 +96,11 @@
           = link_to course_rec.programme_list, training_programme_path(course_rec)
         %span.credits=h course_rec.credits if course_rec.credits != 0
         %span.status=h check_kin_blank {(DropDown::COURSE_STATUS.find_all{|disp, value| value == course_rec.status}).map {|disp, value| disp} }[0]
-        %span.duration
-          =h course_rec.duration
-          =h check_kin_blank {(DropDown::DURATION_TYPES.find_all{|disp, value| value == course_rec.duration_type}).map {|disp, value| disp} }[0]
-      
+        %span.duration=h course_rec.try(:total_duration) if course_rec.duration?
+        %span.lecture -
+        %span.tutorial -
+        %span.practical -
+        
       /Semester @ 2nd level
       %ul{id: "tree_#{count}", class: 'non_bulleted'}
         - programmes.each do |programme|
@@ -122,10 +123,11 @@
                     = link_to semester.name, training_programme_path(semester)
                 %span.credits=h semester.credits if semester.credits != 0 
                 %span.status=h check_kin_blank {(DropDown::COURSE_STATUS.find_all{|disp, value| value == semester.status}).map {|disp, value| disp} }[0]
-                %span.duration
-                  =h semester.duration
-                  =h check_kin_blank {(DropDown::DURATION_TYPES.find_all{|disp, value| value == semester.duration_type}).map {|disp, value| disp} }[0]  
-              
+                %span.duration=h semester.try(:total_duration) if semester.duration?
+                %span.lecture -
+                %span.tutorial -
+                %span.practical -
+        
               /Subject @ 3rd level
               %ul{id: "tree_#{count}_#{sem_count}", class: 'non_bulleted'}
                 - subject_count=-1
@@ -144,9 +146,11 @@
                         = link_to subject.name, training_programme_path(subject)
                       %span.credits=h subject.credits if subject.credits != 0
                       %span.status=h check_kin_blank {(DropDown::COURSE_STATUS.find_all{|disp, value| value == subject.status}).map {|disp, value| disp} }[0]
-                      %span.duration
-                        =h subject.duration
-                        =h check_kin_blank {(DropDown::DURATION_TYPES.find_all{|disp, value| value == subject.duration_type}).map {|disp, value| disp} }[0]
+                      %span.duration=h subject.try(:total_duration) if subject.duration?
+                      - if ['Topic', 'Subtopic'].include?(subject.course_type)
+                        %span.lecture=subject.lecture_duration if subject.lecture_d?
+                        %span.tutorial=subject.tutorial_duration if subject.tutorial_d?
+                        %span.practical=subject.practical_duration if subject.practical_d?
                    
                     /Topic @ 4th level
                     %ul{id: "tree_#{count}_#{sem_count}_#{subject_count}", class: 'non_bulleted'}
@@ -166,19 +170,12 @@
                               = link_to topic.name, training_programme_path(topic)
                             %span.credits=h topic.credits if topic.credits != 0
                             %span.status=h check_kin_blank {(DropDown::COURSE_STATUS.find_all{|disp, value| value == topic.status}).map {|disp, value| disp} }[0]
-                            %span.duration
-                              =h topic.duration
-                              =h check_kin_blank {(DropDown::DURATION_TYPES.find_all{|disp, value| value == topic.duration_type}).map {|disp, value| disp} }[0]
-                            %span.lecture
-                              =h topic.lecture
-                              =(DropDown::LECTURE_TIME.find_all{|disp, value| value == topic.lecture_time}).map {|disp, value| disp}[0] if topic.lecture
-                            %span.tutorial
-                              =h topic.tutorial
-                              =(DropDown::LECTURE_TIME.find_all{|disp, value| value == topic.tutorial_time}).map {|disp, value| disp}[0] if topic.tutorial
-                            %span.practical
-                              =h topic.practical.to_s
-                              =(DropDown::LECTURE_TIME.find_all{|disp, value| value == topic.practical_time}).map {|disp, value| disp}[0] if topic.practical
-                          
+                            %span.duration=h topic.try(:total_duration) if topic.duration?
+                            - if ['Topic', 'Subtopic'].include?(topic.course_type)
+                              %span.lecture=topic.lecture_duration if topic.lecture_d?
+                              %span.tutorial=topic.tutorial_duration if topic.tutorial_d?
+                              %span.practical=topic.practical_duration if topic.practical_d?
+
                           /Subtopic @ 5th level
                           %ul{id: "tree_#{count}_#{sem_count}_#{subject_count}_#{topic_count}", class: 'non_bulleted'}
                             - subtopic_count=-1
@@ -198,18 +195,11 @@
                                     = link_to subtopic.name, training_programme_path(subtopic)
                                   %span.credits=h subtopic.credits if subtopic.credits != 0
                                   %span.status=h check_kin_blank {(DropDown::COURSE_STATUS.find_all{|disp, value| value == subtopic.status}).map {|disp, value| disp} }[0]
-                                  %span.duration
-                                    =h subtopic.duration
-                                    =h check_kin_blank {(DropDown::DURATION_TYPES.find_all{|disp, value| value == subtopic.duration_type}).map {|disp, value| disp} }[0]
-                                  %span.lecture
-                                    =h subtopic.lecture
-                                    =(DropDown::LECTURE_TIME.find_all{|disp, value| value == subtopic.lecture_time}).map {|disp, value| disp}[0] if subtopic.lecture
-                                  %span.tutorial
-                                    =h subtopic.tutorial
-                                    =(DropDown::LECTURE_TIME.find_all{|disp, value| value == subtopic.tutorial_time}).map {|disp, value| disp}[0] if subtopic.tutorial
-                                  %span.practical
-                                    =h subtopic.practical.to_s
-                                    =(DropDown::LECTURE_TIME.find_all{|disp, value| value == subtopic.practical_time}).map {|disp, value| disp}[0] if subtopic.practical
+                                  %span.duration=h subtopic.try(:total_duration) if subtopic.duration?
+                                  - if ['Topic', 'Subtopic'].include?(subtopic.course_type)
+                                    %span.lecture=subtopic.lecture_duration if subtopic.lecture_d?
+                                    %span.tutorial=subtopic.tutorial_duration if subtopic.tutorial_d?
+                                    %span.practical=subtopic.practical_duration if subtopic.practical_d?
                                 
                                 /SubSubTopic @6th level
                                 %ul{id: "tree_#{count}_#{sem_count}_#{subject_count}_#{topic_count}_#{subtopic_count}", class: 'non_bulleted'}
@@ -230,19 +220,12 @@
                                           = link_to subsubtopic.name, training_programme_path(subsubtopic)
                                         %span.credits=h subsubtopic.credits if subsubtopic.credits !=0
                                         %span.status=h check_kin_blank {(DropDown::COURSE_STATUS.find_all{|disp, value| value == subsubtopic.status}).map {|disp, value| disp} }[0]
-                                        %span.duration
-                                          =h subsubtopic.duration
-                                          =h check_kin_blank {(DropDown::DURATION_TYPES.find_all{|disp, value| value == subsubtopic.duration_type}).map {|disp, value| disp} }[0]
-                                        %span.lecture
-                                          =h subsubtopic.lecture
-                                          =(DropDown::LECTURE_TIME.find_all{|disp, value| value == subsubtopic.lecture_time}).map {|disp, value| disp}[0] if subsubtopic.lecture
-                                        %span.tutorial
-                                          =h subsubtopic.tutorial
-                                          =(DropDown::LECTURE_TIME.find_all{|disp, value| value == subsubtopic.tutorial_time}).map {|disp, value| disp}[0] if subsubtopic.tutorial
-                                        %span.practical
-                                          =h subsubtopic.practical.to_s
-                                          =(DropDown::LECTURE_TIME.find_all{|disp, value| value == subsubtopic.practical_time}).map {|disp, value| disp}[0] if subsubtopic.practical
-                                          \- up to this level
+                                        %span.duration=h subsubtopic.try(:total_duration) if subsubtopic.duration?
+                                        - if ['Topic', 'Subtopic'].include?(subsubtopic.course_type)
+                                          %span.lecture=subsubtopic.lecture_duration if subsubtopic.lecture_d?
+                                          %span.tutorial=subsubtopic.tutorial_duration if subsubtopic.tutorial_d?
+                                          %span.practical=subsubtopic.practical_duration if subsubtopic.practical_d?
+                                            
                                   %span.divider2
                             %span.divider2
                     %span.divider2

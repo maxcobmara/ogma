@@ -12,8 +12,13 @@ class Programme < ActiveRecord::Base
   attr_accessor :programme_listng, :subject_listing, :topic_listing, :subject_listing2
   
   validates_uniqueness_of :combo_code
+  validates_presence_of :durationtype, :if => :duration_exist?
 
   #scope :by_semester, -> { where(course_type: 'Semester')}
+  def duration_exist?
+    duration!=nil || duration!=0
+  end
+  
   def code2
     code.to_i
   end
@@ -365,6 +370,59 @@ class Programme < ActiveRecord::Base
       @groupped_subject << [programmelist, pg_subjects]
     end
     @groupped_subject
+  end
+  
+  def lecture_duration
+     if lecture_d.try(:strftime, '%l') == '12' 
+       dura="" 
+     else
+       dura=lecture_d.try(:strftime, "%l ")+(I18n.t 'training.programme.hours')
+     end
+     if lecture_d.try(:strftime, '%M') == '00' 
+       dura+=""
+     else
+       dura+=(lecture_d.try(:strftime, " %M ")+(I18n.t 'training.programme.minutes'))
+     end
+     dura
+  end
+  
+  def tutorial_duration
+    if tutorial_d.try(:strftime, '%l') == '12' 
+      dura="" 
+    else
+      dura=tutorial_d.try(:strftime, "%l ")+(I18n.t 'training.programme.hours')
+    end
+    if tutorial_d.try(:strftime, '%M') == '00'  
+      dura+=""
+    else
+      dura+=(tutorial_d.try(:strftime, " %M ")+(I18n.t 'training.programme.minutes'))
+    end
+    dura
+  end
+  
+  def practical_duration
+    if practical_d.try(:strftime, '%l') == '12'
+      dura=""
+    else
+      dura=practical_d.try(:strftime, "%l ")+(I18n.t 'training.programme.hours')
+    end 
+    if practical_d.try(:strftime, '%M') == '00' 
+      dura+="" 
+    else
+      dura+=(practical_d.try(:strftime, " %M ")+(I18n.t 'training.programme.minutes'))
+    end
+    dura
+  end
+  
+  def total_duration
+    if durationtype
+     total=duration.to_s+" "+(DropDown::DURATIONTYPES.find_all{|disp, value| value == durationtype}).map {|disp, value| disp}[0] 
+    elsif duration_type
+      total=duration.to_s+" "+(DropDown::DURATION_TYPES.find_all{|disp, value| value == duration_type}).map {|disp, value| disp}[0]
+    else
+      total=""
+    end
+    total
   end
   
   private

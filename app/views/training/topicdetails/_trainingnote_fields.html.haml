@@ -1,7 +1,7 @@
 %fieldset
-  = f.hidden_field :_destroy
   .row
     .col-sm-8
+      = f.hidden_field :_destroy
       - if f.object.document_file_name
         %b=t('training.trainingnote.current_file')
         = f.object.document_file_name
@@ -19,7 +19,7 @@
     .col-sm-8
       = f.file_field :document, class: 'form-control'
     .col-sm-4
-      = f.text_field :release,  class: 'form-control input-date'
+      = f.text_field :release,  class: 'form-control date_picker_reverse', value: f.object.try(:release).try(:strftime, '%d-%m-%Y')
   .row 
     .col-sm-8
       = f.label :title
@@ -29,11 +29,17 @@
       = f.text_field :version, :placeholder => t('training.trainingnote.version'), :size => '2', class: 'form-control'
     .col-sm-1
       /= link_to image_tag("delete.png", :border => 0, :title => 'Remove'), class: "remove_fields"
-      = link_to content_tag(:i, "", class: "fa fa-trash-o"), data: {"data-toggle" => "tooltip", title: "Delete"}, class: "btn btn-danger remove_fields"
+      /= link_to content_tag(:i, "", class: "fa fa-trash-o"), data: {"data-toggle" => "tooltip", title: "Delete"}, class: "btn btn-danger remove_fields"
+      = link_to content_tag(:i, "", class: "fa fa-trash-o"), "#", class: "removing_fields"
+  %hr
 
   :javascript
-    $('.input-date').datetimepicker({
-     timepicker:false,
-       format: "Y-m-d",
-       autoclose: true
-     });
+    $('.date_picker_reverse').date_picker_reverse('render');
+    $('.removing_fields').click(function(){
+      var fieldset=$(this).parent().parent().parent();
+      var row=$(this).parent().parent();
+      var all_fields=row.children().children();
+      var destroyer=all_fields[0];
+      destroyer.value=true;    
+      fieldset.hide();
+    });

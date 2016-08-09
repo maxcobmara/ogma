@@ -203,6 +203,8 @@ ms_MY:
         language: Bahasa
       rank:
         employgrade_id: Gred
+      programme:
+        durationtype: Jenis jangka masa
     errors:
         template:
           body: "Berikut adalah beberapa masalah:"
@@ -3213,7 +3215,7 @@ ms_MY:
       subject: Subjek
       topic_code: Topik
       version_no: Versi
-      duration: "Durasi (Jumlah Jam)"
+      duration: "Durasi (Jumlah)"
       #caution1: "Topic atau Subtopic telah dibuang dari Sukatan Kurikulum - sebelum 31Oktober 2013"
       #caution2: "Topik atau Subtopik telah dibuang dari Sukatan Kurikulum - bermula 31 Oktober 2013"
       descriptions: Deskripsi
