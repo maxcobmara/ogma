@@ -162,7 +162,7 @@ class Training::WeeklytimetablesController < ApplicationController
     prog_topics_ifcommon_exist= Programme.find(@weeklytimetable.programme_id).descendants.where('ancestry_depth=? OR ancestry_depth=?',3,4).where('id not in(?)', @comms_topic).sort_by(&:combo_code)
     if current_user.college.code=="amsas"
       ##########amsas
-      full_topics=Programme.find(@weeklytimetable.programme_id).descendants.where(course_type: ['Topic', 'Subtopic']).order(:ancestry)
+      full_topics=Programme.find(@weeklytimetable.programme_id).descendants.where(course_type: ['Topic', 'Subtopic']).order('ancestry ASC, name ASC')
     else
       full_topics=Programme.find(@weeklytimetable.programme_id).descendants.where('ancestry_depth=? OR ancestry_depth=?',3,4).sort_by(&:combo_code)
     end
@@ -356,7 +356,7 @@ class Training::WeeklytimetablesController < ApplicationController
     @personalize = @all_combine.group_by{|t|t.startdate}
     respond_to do |format|
       format.pdf do
-        pdf = PersonalizetimetablePdf.new(@personalize, view_context, current_user, @selected_date)
+        pdf = PersonalizetimetablePdf.new(@personalize, view_context, current_user, @selected_date, current_user.college)
         send_data pdf.render, filename: "timetable_blank-{Date.today}",
                               type: "application/pdf",
                               disposition: "inline"

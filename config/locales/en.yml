@@ -343,6 +343,7 @@ en:
   actions:
     new: New
     new_node: New Node
+    parent_node: Parent Node
     search: Search
     print: Print
     show: Show

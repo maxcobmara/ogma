@@ -321,6 +321,7 @@ ms_MY:
   actions:
     new: Baru
     new_node: Nod Baru
+    parent_node: Nod Induk
     search: Cari
     print: Cetak
     show: Pamer
