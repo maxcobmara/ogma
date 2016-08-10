@@ -1,9 +1,11 @@
 class Lesson_planPdf< Prawn::Document
-  def initialize(lesson_plan, view, college, obj)
+  def initialize(lesson_plan, view, college)
     super({top_margin: 10, page_size: 'A4', page_layout: :landscape })
     @lesson_plan = lesson_plan
     @view = view
-    @objectives_lines=obj
+    @college=college
+    @objectives_lines=LessonPlan.in_string(@lesson_plan.schedule_item.weeklytimetable_topic.topic_details.last.try(:objctives))
+    @references_lines=LessonPlan.in_string(@lesson_plan.reference)
     
     font "Times-Roman"
     if college.code=="kskbjb"
@@ -23,7 +25,11 @@ class Lesson_planPdf< Prawn::Document
     move_down 15
     text "PELAN PENGAJARAN#{'KULIAH'  if @lesson_plan.schedule_item.lecture_method == 1} #{'TUTORIAL'  if @lesson_plan.schedule_item.lecture_method == 2} #{'AMALI'  if @lesson_plan.schedule_item.lecture_method == 3}", :style => :bold, :align => :center, :size => 11
     move_down 5
-    table_details
+    if college.code=="kskbjb"
+      table_details
+    elsif college.code=="amsas"
+      table_details_amsas
+    end
     start_new_page
     move_down 30
     table_methodologies
@@ -41,7 +47,7 @@ class Lesson_planPdf< Prawn::Document
             ["", "Tarikh & Masa","#{@lesson_plan.schedule_item.get_date_for_lesson_plan} (#{@lesson_plan.schedule_item.get_start_time+' - '+ @lesson_plan.schedule_item.get_end_time})"],
             ["", "Pengetahuan Terdahulu<br><i>(Prerequisite)</i>","#{@lesson_plan.prerequisites}"],
             ["","Objektif Pembelajaran", @objectives_lines],
-            ["","Rujukan","#{@lesson_plan.reference}"]
+            ["","Rujukan", @references_lines]
             ]
           
     table(data, :column_widths => [30,290,430], :cell_style => { :size => 11, :align=> :center,  :inline_format => true}) do
@@ -52,6 +58,28 @@ class Lesson_planPdf< Prawn::Document
       column(1).font_style = :bold
       rows(0..7).height = 20
       row(8..9).height=100
+    end
+  end
+  
+  def table_details_amsas
+    data = [["", "Nama Pengajar","#{@lesson_plan.lessonplan_owner.rank_id? ? @lesson_plan.lessonplan_owner.staff_with_rank : @lesson_plan.lessonplan_owner.name }"],
+            ["", "Kumpulan Pelatih","#{@lesson_plan.schedule_item.weeklytimetable.schedule_intake.group_with_intake_name}"],
+            ["", "Bilangan Pelatih","#{@lesson_plan.student_qty}"],
+            ["", "Topik / Tajuk","#{@lesson_plan.schedule_item.weeklytimetable_topic.full_parent}<br>#{@lesson_plan.schedule_item.weeklytimetable_topic.name}"],
+            ["", "Tarikh & Masa","#{@lesson_plan.schedule_item.get_date_for_lesson_plan} (#{@lesson_plan.schedule_item.get_start_time+' - '+ @lesson_plan.schedule_item.get_end_time})"],
+            ["", "Pengetahuan Terdahulu<br><i>(Prerequisite)</i>","#{@lesson_plan.prerequisites}"],
+            ["","Objektif Pembelajaran", @objectives_lines],
+            ["","Rujukan", @references_lines]
+            ]
+          
+    table(data, :column_widths => [30,290,430], :cell_style => { :size => 11, :align=> :center,  :inline_format => true}) do
+      self.width = 750
+      columns(0).borders =[]
+      columns(1).align = :left
+      columns(2).align = :left
+      column(1).font_style = :bold
+      rows(0..5).height = 20
+      row(6..7).height=120
     end
   end
   
@@ -88,11 +116,17 @@ class Lesson_planPdf< Prawn::Document
   end
   
   def table_signatory
-    data = [["","#{@lesson_plan.prepared_by? ? @lesson_plan.lessonplan_creator.name : '-' }", 
-             "#{@lesson_plan.endorsed_by? ? @lesson_plan.endorser.name : "-"  }"],
-              ["","#{ @lesson_plan.prepared_by? ? @lesson_plan.lessonplan_creator.positions.first.try(:name) : '-' }",
+    if @college.code=="amsas"
+      owner="#{@lesson_plan.lecturer? ? @lesson_plan.lessonplan_owner.staff_with_rank : "-"}"
+      endorser= "#{@lesson_plan.endorsed_by? ? @lesson_plan.endorser.staff_with_rank : "-"  }"
+    else
+      owner="#{@lesson_plan.lecturer? ? @lesson_plan.lessonplan_owner.name : "-"}"
+      endorser= "#{@lesson_plan.endorsed_by? ? @lesson_plan.endorser.name : "-"  }"
+    end
+    data = [["", owner, endorser],
+              ["","#{ @lesson_plan.lecturer? ? @lesson_plan.lessonplan_owner.positions.first.try(:name) : '-' }",
                "#{@lesson_plan.endorsed_by? ? @lesson_plan.endorser.positions.first.try(:name) : "-" }"],
-             ["","Kolej Sains Kesihatan Bersekutu Johor Bahru","Kolej Sains Kesihatan Bersekutu Johor Bahru"],
+             ["","#{@college.name}","#{@college.name}"],
              ["","Tarikh : #{@lesson_plan.submitted_on? ? @lesson_plan.submitted_on.try(:strftime,'%d-%b-%Y') : "Belum Dihantar"}","Tarikh : #{@lesson_plan.hod_approved_on? ? @lesson_plan.hod_approved_on.try(:strftime,'%d-%b-%Y') : "Belum Diluluskan"}"],
             ]
           

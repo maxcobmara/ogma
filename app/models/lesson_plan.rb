@@ -174,6 +174,17 @@ class LessonPlan < ActiveRecord::Base
     end
   end
   
+  # TODO
+  def self.in_string(ol)
+    #br=ol.gsub(%r[</(.*?)><(.*?)>],'<br>').gsub(%r[<(.*?)><(.*?)>],'')
+    #br=ol.gsub('<ol><li>', '').gsub('</ol>','').gsub('<li>', '<br>').gsub('</li>', '')
+    br=ol.gsub(%r[<ol><li>|<ul><li>], '').gsub(%r[</ol>|</ul>],'').gsub('<li>', '<br>').gsub('</li>', '').gsub('&nbsp;', ' ')
+    arr=br.split('<br>')
+    str=""
+    arr.each_with_index{|x, ind|str+=(ind+1).to_s+'. '+x+'<br>'}
+    str
+  end
+  
   private
   
     def schedule_and_plan_owner_must_match

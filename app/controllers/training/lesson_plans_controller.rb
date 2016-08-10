@@ -119,25 +119,9 @@ class Training::LessonPlansController < ApplicationController
   
   def lesson_plan
     @lesson_plan = LessonPlan.find(params[:id])
-    
-    # TODO - to revise
-    aa=@lesson_plan.schedule_item.weeklytimetable_topic.topic_details.last.try(:objctives)
-    #ab=aa.gsub('<ol><li>', '')
-    #ac=ab.gsub('</ol>','')
-    #ad=ac.gsub('<li>', '<br>')
-    #ae=ad.gsub('</li>', '')
-    #af=ae.split('<br>')
-    objectives_string=aa.gsub('<ol><li>', '').gsub('</ol>','').gsub('<li>', '<br>').gsub('</li>', '')
-    objectives_arr=objectives_string.split('<br>')
-    @objectives_lines_str=""
-    objectives_arr.each_with_index do |x, ind|
-      line=(ind+1).to_s+'. '+x+'<br>'
-      @objectives_lines_str+=line 
-    end
-    
     respond_to do |format|
       format.pdf do
-        pdf = Lesson_planPdf.new(@lesson_plan, view_context, current_user.college, @objectives_lines_str)
+        pdf = Lesson_planPdf.new(@lesson_plan, view_context, current_user.college)
         send_data pdf.render, filename: "lesson_plan-{Date.today}",
                               type: "application/pdf",
                               disposition: "inline"
