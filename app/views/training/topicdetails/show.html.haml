@@ -21,13 +21,13 @@
         .col-md-8.col-md-offset-1
           %dl.dl-horizontal         
             %dt= t 'training.topicdetail.theory', :default => model_class.human_attribute_name(:theory)+":"
-            %dd= @topicdetail.subject_topic.try(:lecture_duration)
+            %dd= @topicdetail.subject_topic.try(:lecture_duration) if @topicdetail.subject_topic.lecture_d?
       
             %dt=t 'training.topicdetail.tutorial', :default => model_class.human_attribute_name(:tutorial)+":"
-            %dd= @topicdetail.subject_topic.try(:tutorial_duration)
+            %dd= @topicdetail.subject_topic.try(:tutorial_duration) if @topicdetail.subject_topic.tutorial_d?
         
             %dt=t 'training.topicdetail.practical', :default => model_class.human_attribute_name(:practical)+":"
-            %dd=@topicdetail.subject_topic.try(:practical_duration)
+            %dd=@topicdetail.subject_topic.try(:practical_duration) if @topicdetail.subject_topic.practical_d?
              
             %dt= t 'training.topicdetail.duration', :default => model_class.human_attribute_name(:duration) + ":"
             %dd=h @topicdetail.subject_topic.total_duration if @topicdetail.subject_topic.duration

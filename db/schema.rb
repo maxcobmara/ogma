@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160809043703) do
+ActiveRecord::Schema.define(version: 20160810064753) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -1289,7 +1289,8 @@ ActiveRecord::Schema.define(version: 20160809043703) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "college_id"
-    t.string   "data"
+    t.text     "college_data"
+    t.string   "data_title"
   end
 
   create_table "lessonplan_methodologies", force: true do |t|
@@ -2488,7 +2489,6 @@ ActiveRecord::Schema.define(version: 20160809043703) do
     t.string   "title"
     t.string   "reference"
     t.string   "version"
-    t.string   "staff_id"
     t.date     "release"
     t.string   "document_file_name"
     t.string   "document_content_type"
@@ -2499,6 +2499,7 @@ ActiveRecord::Schema.define(version: 20160809043703) do
     t.datetime "updated_at"
     t.integer  "college_id"
     t.string   "data"
+    t.integer  "staff_id"
   end
 
   create_table "trainingreports", force: true do |t|

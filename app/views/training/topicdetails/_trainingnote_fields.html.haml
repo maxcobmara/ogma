@@ -19,7 +19,7 @@
     .col-sm-8
       = f.file_field :document, class: 'form-control'
     .col-sm-4
-      = f.text_field :release,  class: 'form-control date_picker_reverse', value: f.object.try(:release).try(:strftime, '%d-%m-%Y')
+      = f.text_field :release,  class: 'date_picker_reverse form-control', value: f.object.try(:release).try(:strftime, '%d-%m-%Y')
   .row 
     .col-sm-8
       = f.label :title
@@ -34,7 +34,13 @@
   %hr
 
   :javascript
-    $('.date_picker_reverse').date_picker_reverse('render');
+    /*$('.date_picker_reverse').date_picker_reverse('render');*/
+    $('.date_picker_reverse').datetimepicker({
+      timepicker:false,
+      format:'d-m-Y',
+      formatDate:'Y-m-d'
+    });
+
     $('.removing_fields').click(function(){
       var fieldset=$(this).parent().parent().parent();
       var row=$(this).parent().parent();

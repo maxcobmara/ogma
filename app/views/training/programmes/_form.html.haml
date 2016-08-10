@@ -28,7 +28,9 @@
             %td.bbb{:style=>"padding: 0 12px 0 0;"}= f.text_field :practical_d, :size => '4', class: 'form-control time_picker_duration', value: @programme.try(:practical_d).try(:strftime, '%H:%M')
             /%td.bbb{:style=>"padding: 0 12px 0 0;"}= f.select :practical_time, DropDown::LECTURE_TIME,{:prompt =>t('select')},{ class: 'selectpicker', "data-width"=>'80px'}
             %td.bbb
-              .help-block.small="Format : HH:MM"+" (prev rec: "+@programme.lecture.to_s+", "+@programme.tutorial.to_s+", "+@programme.practical.to_s+")"
+              .help-block.small
+                Format : HH:MM
+                =" (prev rec: "+@programme.lecture.to_s+", "+@programme.tutorial.to_s+", "+@programme.practical.to_s+")" if @programme.lecture? || @programme.tutorial? || @programme.practical?
 
   - unless @programme.parent_id == nil        
     .form-group

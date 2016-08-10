@@ -42,7 +42,10 @@
     .col-sm-2.control-label
       = f.label :endorsed_by
     .col-md-6
-      = f.collection_select :endorsed_by, Staff.where("id IN (?)", @lesson_plan.hods).order(name: :asc), :id, :name, {:selected => @lesson_plan.endorsed_by},{class: 'selectpicker', "data-width"=>'230px'}
+      - if current_user.college.code=="kskbjb"
+        = f.collection_select :endorsed_by, Staff.where("id IN (?)", @lesson_plan.hods).order(name: :asc), :id, :name, {:selected => @lesson_plan.endorsed_by},{class: 'selectpicker', "data-width"=>'230px'}
+      - else
+      = f.collection_select :endorsed_by, Staff.all.order('rank_id ASC, name ASC'), :id, :staff_with_rank, {:selected => @lesson_plan.endorsed_by},{class: 'selectpicker', "data-width"=>'230px'}
 
 :javascript
     /$(document).ready(function(){

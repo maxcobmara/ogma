@@ -1,15 +1,25 @@
 class Lesson_planPdf< Prawn::Document
-  def initialize(lesson_plan, view)
+  def initialize(lesson_plan, view, college, obj)
     super({top_margin: 10, page_size: 'A4', page_layout: :landscape })
     @lesson_plan = lesson_plan
     @view = view
+    @objectives_lines=obj
+    
     font "Times-Roman"
-    text "BPL.KKM.PK(T04D/09)", :align => :right, :size => 9
+    if college.code=="kskbjb"
+      text "BPL.KKM.PK(T04D/09)", :align => :right, :size => 9
+    else
+      move_down 5
+    end
     move_down 20
     image "#{Rails.root}/app/assets/images/logo_kerajaan.png", :position => :center, :scale => 0.65
     move_down 10
-    text "KEMENTERIAN KESIHATAN MALAYSIA", :style => :bold, :align => :center
-    text "KOLEJ SAINS KESIHATAN BERSEKUTU JOHOR BAHRU", :style => :bold, :align => :center
+    if college.code=="kskbjb"
+      text "KEMENTERIAN KESIHATAN MALAYSIA", :style => :bold, :align => :center
+    else
+      move_down 5
+    end
+    text "#{college.name.upcase}", :style => :bold, :align => :center
     move_down 15
     text "PELAN PENGAJARAN#{'KULIAH'  if @lesson_plan.schedule_item.lecture_method == 1} #{'TUTORIAL'  if @lesson_plan.schedule_item.lecture_method == 2} #{'AMALI'  if @lesson_plan.schedule_item.lecture_method == 3}", :style => :bold, :align => :center, :size => 11
     move_down 5
@@ -22,7 +32,7 @@ class Lesson_planPdf< Prawn::Document
   end
   
   def table_details
-    data = [["", "Nama Pengajar","#{@lesson_plan.lessonplan_owner.name }"],
+    data = [["", "Nama Pengajar","#{@lesson_plan.lessonplan_owner.rank_id? ? @lesson_plan.lessonplan_owner.staff_with_rank : @lesson_plan.lessonplan_owner.name }"],
             ["", "Kumpulan Pelatih","#{@lesson_plan.schedule_item.weeklytimetable.schedule_intake.group_with_intake_name}"],
             ["", "Bilangan Pelatih","#{@lesson_plan.student_qty}"],
             ["", "Tahun","#{ @lesson_plan.year}"],
@@ -30,7 +40,7 @@ class Lesson_planPdf< Prawn::Document
             ["", "Topik / Tajuk","#{@lesson_plan.schedule_item.weeklytimetable_topic.full_parent}<br>#{@lesson_plan.schedule_item.weeklytimetable_topic.name}"],
             ["", "Tarikh & Masa","#{@lesson_plan.schedule_item.get_date_for_lesson_plan} (#{@lesson_plan.schedule_item.get_start_time+' - '+ @lesson_plan.schedule_item.get_end_time})"],
             ["", "Pengetahuan Terdahulu<br><i>(Prerequisite)</i>","#{@lesson_plan.prerequisites}"],
-            ["","Objektif Pembelajaran","#{ @lesson_plan.schedule_item.weeklytimetable_topic.topic_details.last.try(:objctives)}"],
+            ["","Objektif Pembelajaran", @objectives_lines],
             ["","Rujukan","#{@lesson_plan.reference}"]
             ]
           
@@ -40,7 +50,8 @@ class Lesson_planPdf< Prawn::Document
       columns(1).align = :left
       columns(2).align = :left
       column(1).font_style = :bold
-      rows(0..9).height = 20
+      rows(0..7).height = 20
+      row(8..9).height=100
     end
   end
   

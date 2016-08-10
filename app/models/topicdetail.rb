@@ -7,7 +7,8 @@
   accepts_nested_attributes_for :trainingnotes, :allow_destroy => true , :reject_if => lambda { |a| a[:title].blank? }
   #:allow_destroy--> what if this newly inserted ...suddenly selected for other lesson_plan.
   
-  validates :topic_code, presence: true
+  validates :topic_code, :prepared_by, presence: true
+  validates :topic_code, uniqueness: true
   
   attr_accessor :programme_id, :subject_id
   

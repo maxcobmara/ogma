@@ -15,6 +15,7 @@ class LessonPlan < ActiveRecord::Base
   
   #validate :approved_or_rejected, :satisfy_or_notsatisfy
   validates_presence_of :schedule    #hide on 31st October 2013
+  validate :schedule_and_plan_owner_must_match
   
   #trial section------------
   has_many :lesson_plan_trainingnotes
@@ -23,14 +24,14 @@ class LessonPlan < ActiveRecord::Base
   accepts_nested_attributes_for :trainingnotes, :reject_if => lambda {|a| a[:topic_id].blank?}
   #trial section-----------
   
-  attr_accessor :title, :schedule2
+  attr_accessor :schedule2
 
   #---------------------AttachFile------------------------------------------------------------------------
    has_attached_file :data,
                       :url => "/assets/lesson_plans/:id/:style/:basename.:extension",
                       :path => ":rails_root/public/assets/lesson_plans/:id/:style/:basename.:extension"
    validates_attachment_content_type :data, 
-                          :content_type => ['application/pdf', 'application/msword','application/msexcel','image/png','text/plain'],
+                          :content_type => ['application/pdf', 'application/msword','application/msexcel','image/png','image/jpg', 'image/jpeg','text/plain'],
                           :storage => :file_system,
                           :message => "Invalid File Format" 
    validates_attachment_size :data, :less_than => 5.megabytes 
@@ -86,14 +87,14 @@ class LessonPlan < ActiveRecord::Base
      #TO REVISE - once user matched with staff ready
      #current_user = User.find(11)  ##### 
      #current_user = Login.find(11) Maslinda
-     if data
+     if data?
          notes_for_lessonplan = Trainingnote.new     
          notes_for_lessonplan.document_file_name = data_file_name
          notes_for_lessonplan.document_content_type = data_content_type
          notes_for_lessonplan.document_file_size = data_file_size
          notes_for_lessonplan.timetable_id = schedule
-         notes_for_lessonplan.staff_id = 25 #current_user.staff_id
-         notes_for_lessonplan.title = title
+         notes_for_lessonplan.staff_id = lecturer #25 #current_user.staff_id
+         notes_for_lessonplan.title = data_title
 
          #check if topicdetails for topic of selected schedule really exist 
          #topiccode = WeeklytimetableDetail.find(schedule).topic
@@ -104,7 +105,7 @@ class LessonPlan < ActiveRecord::Base
          end 
 
          #check training note existance for current lesson plan(schedule) (IN TRAININGNOTES TABLE)
-         @trainingnote_lessonplan =  Trainingnote.where(timetable_id: schedule).first  #Trainingnote.find_by_timetable_id(schedule)
+         @trainingnote_lessonplan =  Trainingnote.where(timetable_id: schedule).last  #Trainingnote.find_by_timetable_id(schedule)
 
          #if (new/changed) uploaded file & timetable_id(schedule) not exist[training note NOT EXIST for lesson plan], 
          #==>INSERT NEW note (into trainingnotes table)
@@ -113,8 +114,11 @@ class LessonPlan < ActiveRecord::Base
 
 	 if Trainingnote.where('document_file_name=? and timetable_id=?', data_file_name, schedule).count==0
            notes_for_lessonplan.save   
+	   if Trainingnote.where(timetable_id: schedule).count>1
+	     @trainingnote_lessonplan.update_attributes(:timetable_id=>nil)
+	   end
 	 elsif Trainingnote.where('document_file_name=? and timetable_id=?', data_file_name, schedule).count>0
-	   @trainingnote_lessonplan.update_attributes(:document_file_name=>data_file_name, :document_content_type=>data_content_type,:document_file_size=>data_file_size, :timetable_id=>schedule, :staff_id=>prepared_by, :title=>title,:topicdetail_id=>@topicdetail_id)
+	   @trainingnote_lessonplan.update_attributes(:document_file_name=>data_file_name, :document_content_type=>data_content_type,:document_file_size=>data_file_size, :timetable_id=>schedule, :staff_id=>prepared_by, :title=> data_title, :topicdetail_id=>@topicdetail_id)
          end
      end 
    end
@@ -169,6 +173,14 @@ class LessonPlan < ActiveRecord::Base
       @lesson_plans=LessonPlan.where(schedule: schedule_ids)
     end
   end
+  
+  private
+  
+    def schedule_and_plan_owner_must_match
+      if lecturer!=schedule_item.lecturer_id
+        errors.add(:base, I18n.t('training.lesson_plan.owner_must_match'))
+      end
+    end
 
 end
 

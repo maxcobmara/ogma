@@ -205,6 +205,9 @@ ms_MY:
         employgrade_id: Gred
       programme:
         durationtype: Jenis jangka masa
+      topicdetail:
+        prepared_by: Disediakan Oleh
+        topic_code: Topik
     errors:
         template:
           body: "Berikut adalah beberapa masalah:"
@@ -3246,6 +3249,11 @@ ms_MY:
       programme: Program
       subject: Subjek
       staff_id: Disediakan oleh
+      plan: PP
+      plan_remark: " - Status penggunaan nota dalam Pelan Pengajaran"
+      plan_remark1: " - Nota tidak boleh dipadam dan hanya sebahagian medan sahaja boleh disunting."
+      plan_remark2: " - Nota tidak boleh dipadam."
+      remark_title: Rujukan
     lesson_plan:
       title: Senarai Pelan & Laporan Pengajaran
       title2: Pengajaran dan Pembelajaran
@@ -3314,11 +3322,12 @@ ms_MY:
       group: Kumpulan
       schedule_removed: "Jadual Waktu tidak dipilih atau telah dikeluarkan. Sila pilih Jadual Waktu."
       no_attachment_yet: "Tiada Nota dilampirkan. Klik 'Browse' untuk muatnaik fail."
-      exist_attachment: "Nota dilampirkan. Klik 'Browse' untuk tukar fail."
+      exist_attachment: "Nota dilampirkan. Klik 'Browse' / 'Choose File' untuk tukar fail."
       to: hingga
       status: Status Kelulusan
       add_notes: Tambah Nota
       adding_notes: "Tambah Nota Latihan (selepas Pelan Pengajaran dihantar untuk kelulusan)"
+      owner_must_match: "Pengajar mestilah sepadan dengan pemilik Jadual Waktu."
 
   campus:
     address: 
@@ -3563,7 +3572,7 @@ ms_MY:
         #condition_isnotgood:
         class_condition: Keadaan Kelas
         condition_desc: "Deskripsi Keadaan Kelas"
-        training_aids: Alan Bantuan Mengajar
+        training_aids: Alat Bantuan Mengajar
         summary: "Ringkasan (Ulasan)"
         lecturer_review: Ulasan Pengajar
         total_absent: Jumlah Tidak Hadir

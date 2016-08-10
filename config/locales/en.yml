@@ -224,6 +224,9 @@ en:
         employgrade_id: Grade
       programme:
         durationtype: Duration type
+      topicdetail:
+        prepared_by: Prepared by
+        topic_code: Topic
     errors:
         template:
           body: "There were problems with the following fields:"
@@ -3327,6 +3330,11 @@ en:
       programme: Programme
       subject: Subject
       staff_id: Prepared By
+      plan: LP
+      plan_remark: " - Notes usage status in Lesson Plans."
+      plan_remark1: " - Notes are non-removable and limited fields allowed for editing."
+      plan_remark2: " - Notes are non-removable."
+      remark_title: Reference
     lesson_plan:
       title: Lesson Plan & Report Listing
       title2: Lesson and Learning
@@ -3394,12 +3402,13 @@ en:
       group: Group
       schedule_removed: "Schedule was not defined or removed. Please select a schedule."
       no_attachment_yet: "No Attachment yet. Click 'Browse' to Upload File."
-      exist_attachment: "Existing Attachment. Click 'Browse' to Change File."
+      exist_attachment: "Existing Attachment. Click 'Browse' / 'Choose File' to Change File."
       to: to
       status: Approval Status
       location: Location
       add_notes: Add Notes
       adding_notes: "Add Training Notes (after Lesson Plan submitted for approval)"
+      owner_must_match: "Lecturer must match with Timetable owner."
  
   campus:
     address: 
