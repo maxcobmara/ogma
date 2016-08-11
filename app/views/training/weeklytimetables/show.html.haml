@@ -38,8 +38,12 @@
           %dd= current_user.college.code=="amsas" ? @weeklytimetable.schedule_creator.staff_with_rank : @weeklytimetable.schedule_creator.name
 
           %dt= t 'training.weeklytimetable.endorsed_by' , :default => model_class.human_attribute_name(:endorsed_by) + ":"
-          %dd= @weeklytimetable.endorsed_by? ? @weeklytimetable.schedule_approver.name+(t 'on2')+@weeklytimetable.submitted_on.try(:strftime, '%d %b %Y') : "-"
-		  
+          %dd
+            - if current_user.college.code=="amsas"
+              = @weeklytimetable.endorsed_by? ? @weeklytimetable.schedule_approver.staff_with_rank+(t 'on2')+@weeklytimetable.submitted_on.try(:strftime, '%d %b %Y') : "-"
+            - else
+              = @weeklytimetable.endorsed_by? ? @weeklytimetable.schedule_approver.name+(t 'on2')+@weeklytimetable.submitted_on.try(:strftime, '%d %b %Y') : "-"
+
       #weeklytimetable_details.tab-pane.active
         = render 'tab_timetable_period'
       #daily_details.tab-pane

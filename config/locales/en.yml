@@ -2108,6 +2108,7 @@ en:
       formatted_mykad: MyKad No
       name: Name
       matrixno: Matrix No
+      rank_id: Rank
       race: Race
       icno: MyKad No
       sstatus: Student Status
@@ -3083,8 +3084,9 @@ en:
       kp_which_programme: "Programme Manager must have 'Unit' in Task & Responsibilities (Positions)."
       prepared_by: PREPARED BY
       date_updated: LAST UPDATED
-      by_student: "(Prepared by Student)"#FE2E64
-      staff_or_invited: "Tick if KSKB lecturers, untick if Invitation Lecturer."
+      by_student: "(Prepared by Student)"
+      staff_or_invited1: Tick if 
+      staff_or_invited2: " lecturers, untick if Invitation Lecturer."
       no_staff: "Invitation - "
       evaluation_once: " - Evaluation for a taught Subject can only be done once"
       total: Total
@@ -3283,6 +3285,7 @@ en:
       subtopic: Subtopic
       hours: Hours
       minutes: Minutes
+      minutes2: Min
       days: Days
       weeks: Weeks
       months: Months

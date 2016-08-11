@@ -1999,6 +1999,7 @@ ms_MY:
       formatted_mykad: No Mykad
       name: Nama
       matrixno: No Matrik
+      rank_id: Pangkat
       race: Bangsa
       icno: No MyKad 
       sstatus: Status Pelajar
@@ -3004,7 +3005,8 @@ ms_MY:
       prepared_by: DISEDIAKAN OLEH
       date_updated: TARIKH KEMASKINI
       by_student: "(Diisi oleh Pelatih)"
-      staff_or_invited: "Pilih kotak semak jika  Pengajar KSKB, nyahpilih jika Pensyarah Jemputan."
+      staff_or_invited1: Pilih kotak semak jika pengajar
+      staff_or_invited2: ", nyahpilih jika Pengajar Jemputan."
       no_staff: "Jemputan -  "
       evaluation_once: " - Penilaian bagi Subjek yang diajar hanya dibenarkan sekali"
       total: Jumlah
@@ -3202,6 +3204,7 @@ ms_MY:
       subtopic: Subtopik
       hours: Jam
       minutes: Minit
+      minutes2: Minit
       days: Hari
       weeks: Minggu
       months: Bulan

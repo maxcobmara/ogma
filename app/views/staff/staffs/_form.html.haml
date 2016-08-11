@@ -302,7 +302,7 @@
               .col-sm-2.control-label
                 = f.label t 'staff.rank_id', for: :rank_id
               .col-md-2
-                = f.collection_select :rank_id, Rank.order(name: :asc), :id, :name, {include_blank: (t 'select')}, {class: 'selectpicker', "data-width"=>"auto"}
+                = f.collection_select :rank_id, Rank.order(name: :asc), :id, :short_full_name, {include_blank: (t 'select')}, {class: 'selectpicker', "data-width"=>"auto"}
 
           .form-group
             .col-sm-2.control-label

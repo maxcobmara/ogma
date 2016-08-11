@@ -1,7 +1,7 @@
 %dl.dl-horizontal
   - if @position_exist
     %dt= t 'exam.evaluate_course.student_id'
-    %dd=h @evaluate_course.studentevaluate.try(:matrix_name)
+    %dd=h @evaluate_course.studentevaluate.rank_id? ? @evaluate_course.studentevaluate.student_with_rank :  @evaluate_course.studentevaluate.try(:matrix_name)
     
   %dt= t 'exam.evaluate_course.course_id'
   %dd=h @evaluate_course.stucourse.programme_list
@@ -13,7 +13,7 @@
       = t 'exam.evaluate_course.invite_lec'
   %dd
     - unless @evaluate_course.staff_id.blank? 
-      =h @evaluate_course.staffevaluate.name
+      =h @evaluate_course.staffevaluate.try(:staff_with_rank)
     - else
       =h @evaluate_course.invite_lec
 

@@ -107,7 +107,7 @@ class Exam::EvaluateCoursesController < ApplicationController
     @evs << @evaluate_course.ev_assessment
     respond_to do |format|
        format.pdf do
-         pdf = CourseevaluationPdf.new(@evaluate_course, view_context, @evs)
+         pdf = CourseevaluationPdf.new(@evaluate_course, view_context, @evs, current_user.college)
          send_data pdf.render, filename: "courseevaluation-{Date.today}",
                                type: "application/pdf",
                                disposition: "inline"
@@ -217,6 +217,12 @@ class Exam::EvaluateCoursesController < ApplicationController
             end
           end
         #end
+      end
+      
+      #####amsas
+      if current_user.college.code=="amsas"
+        @lecturer_list = Staff.joins(:positions).where('positions.name=?', "Jurulatih").order(rank_id: :asc, name: :asc)
+        @subjectlist_preselect_prog=Programme.where(course_type: 'Subject').order(:code)
       end
     end
     

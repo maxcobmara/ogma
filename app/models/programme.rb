@@ -381,7 +381,7 @@ class Programme < ActiveRecord::Base
      if lecture_d.try(:strftime, '%M') == '00' 
        dura+=""
      else
-       dura+=(lecture_d.try(:strftime, " %M ")+(I18n.t 'training.programme.minutes'))
+       dura+=(lecture_d.try(:strftime, " %M ")+(I18n.t 'training.programme.minutes2'))
      end
      dura
   end
@@ -395,7 +395,7 @@ class Programme < ActiveRecord::Base
     if tutorial_d.try(:strftime, '%M') == '00'  
       dura+=""
     else
-      dura+=(tutorial_d.try(:strftime, " %M ")+(I18n.t 'training.programme.minutes'))
+      dura+=(tutorial_d.try(:strftime, " %M ")+(I18n.t 'training.programme.minutes2'))
     end
     dura
   end
@@ -409,7 +409,7 @@ class Programme < ActiveRecord::Base
     if practical_d.try(:strftime, '%M') == '00' 
       dura+="" 
     else
-      dura+=(practical_d.try(:strftime, " %M ")+(I18n.t 'training.programme.minutes'))
+      dura+=(practical_d.try(:strftime, " %M ")+(I18n.t 'training.programme.minutes2'))
     end
     dura
   end

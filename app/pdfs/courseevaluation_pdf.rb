@@ -1,31 +1,57 @@
 class CourseevaluationPdf < Prawn::Document  
-  def initialize(evaluate_course, view, evs)
-    super({top_margin: 50, page_size: 'A4', page_layout: :portrait })
+  def initialize(evaluate_course, view, evs, college)
+    super({top_margin: 40, page_size: 'A4', page_layout: :portrait })
     @evaluate_course  = evaluate_course
     @view = view
     @evs = evs
     font "Times-Roman"
-    move_down 10
+    if college.code=="kskbjb"
+      move_down 10
+    end
     #image "#{Rails.root}/app/assets/images/logo_kerajaan.png",  :width =>97.2, :height =>77.76
-    bounding_box([10,750], :width => 400, :height => 100) do |y2|
+    bounding_box([10,770], :width => 400, :height => 100) do |y2|
        image "#{Rails.root}/app/assets/images/logo_kerajaan.png",  :width =>97.2, :height =>77.76
     end
     bounding_box([150,750], :width => 350, :height => 100) do |y2|
-      move_down 30
-      text "Kolej Sains Kesihatan Bersekutu Johor Bahru"
-      move_down 1
-      text "#{I18n.t('exam.evaluate_course.title')}"
+      if college.code=="kskbjb"
+        move_down 30
+        text "#{college.name}"
+        move_down 1
+        text "#{I18n.t('exam.evaluate_course.title')}"
+      else
+        draw_text "PPL APMM", :at => [80, 85], :style => :bold
+        draw_text "NO.DOKUMEN: BK-KKM-KS-04-04", :at => [15, 60], :style => :bold
+        draw_text "BORANG PENILAI PENSYARAH", :at => [20, 45], :style => :bold
+      end
     end
-    bounding_box([400,750], :width => 400, :height => 100) do |y2|
+    
+    if college.code=="kskbjb"
+      bounding_box([400,750], :width => 400, :height => 100) do |y2|
         image "#{Rails.root}/app/assets/images/kskb_logo-6.png",  :width =>97.2, :height =>77.76
+      end
+    else
+      bounding_box([430,770], :width => 400, :height => 90) do |y2|
+        image "#{Rails.root}/app/assets/images/amsas_logo_small.png"
+      end
     end
+    
     #move_down 5
-    #table_heading
-    #move_down 10
+    if college.code=="amsas"
+      table_heading
+      move_down 20
+    end
     text "#{I18n.t('exam.evaluate_course.by_student')}", :align => :center, :size => 12
-    move_down 20
+    if college.code=="kskbjb"
+      move_down 20
+    end
     table_detailing
-    move_down 20
+    if college.code=="kskbjb"
+      move_down 20
+    else
+      bounding_box([50,530], :width => 410, :height => 80) do |y2|
+        image "#{Rails.root}/app/assets/images/skala.png", :width => 400
+      end
+    end
     table_score
     move_down 20
     text "#{I18n.t('exam.evaluate_course.comment')}"
@@ -36,7 +62,7 @@ class CourseevaluationPdf < Prawn::Document
   end
   
   def table_heading
-    data=[["",""],["#{I18n.t('exam.evaluate_course.prepared_by')} : #{@evaluate_course.student_id? ? @evaluate_course.studentevaluate.matrix_name : '' }","#{I18n.t('exam.evaluate_course.date_updated')} : #{@evaluate_course.updated_at.try(:strftime, '%d %b %Y')} "]]
+    data=[["#{I18n.t('exam.evaluate_course.prepared_by')} : #{@evaluate_course.student_id? ? @evaluate_course.studentevaluate.student_with_rank : '' }","#{I18n.t('exam.evaluate_course.date_updated')} : #{@evaluate_course.updated_at.try(:strftime, '%d %b %Y')} "]]
     table(data, :column_widths => [255,255], :cell_style => {:size=>11, :borders => [:left, :right, :top, :bottom]}) do
       a = 0
       b = 1
@@ -51,7 +77,7 @@ class CourseevaluationPdf < Prawn::Document
   def table_detailing
     data=[["#{I18n.t('exam.evaluate_course.course_id')} :","#{@evaluate_course.stucourse.programme_list}","",""],
           ["#{I18n.t('exam.evaluate_course.subject_id') unless @evaluate_course.subject_id.blank? } #{I18n.t('exam.evaluate_course.invite_lec_topic') unless @evaluate_course.invite_lec.blank?} :","#{@evaluate_course.subjectevaluate.subject_list unless @evaluate_course.subject_id.blank?} #{@evaluate_course.invite_lec_topic unless @evaluate_course.invite_lec.blank?}","#{I18n.t('exam.evaluate_course.evaluate_date')} : ","#{@evaluate_course.evaluate_date.try(:strftime, '%d %b %Y')}"],
-          ["#{I18n.t('exam.evaluate_course.staff_id') unless @evaluate_course.staff_id.blank?} #{I18n.t('exam.evaluate_course.invite_lec') unless @evaluate_course.invite_lec.blank?} : ","#{@evaluate_course.staff_id? ? @evaluate_course.staffevaluate.name : @evaluate_course.invite_lec}","",""]]
+          ["#{I18n.t('exam.evaluate_course.staff_id') unless @evaluate_course.staff_id.blank?} #{I18n.t('exam.evaluate_course.invite_lec') unless @evaluate_course.invite_lec.blank?} : ","#{@evaluate_course.staff_id? ? @evaluate_course.staffevaluate.try(:staff_with_rank) : @evaluate_course.invite_lec}","",""]]
     table(data, :column_widths => [100, 190, 110, 110], :cell_style => { :size => 11})  do
               a = 0
               b = 3

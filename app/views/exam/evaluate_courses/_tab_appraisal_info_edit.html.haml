@@ -7,7 +7,10 @@
       .col-sm-2.control-label
         = f.label t 'exam.evaluate_course.student_id', for: :student_id
       .col-md-6
-        = f.collection_select :student_id, @student_list.order(matrixno: :asc, name: :asc), :id, :matrix_name,{:include_blank =>t('select')},{class: 'selectpicker', "data-width"=>'350px'}
+        - if current_user.college.code=="kskbjb"
+          = f.collection_select :student_id, @student_list.order(matrixno: :asc, name: :asc), :id, :matrix_name,{:include_blank =>t('select')},{class: 'selectpicker', "data-width"=>'350px'}
+        - else
+          = f.collection_select :student_id, @student_list.order(rank_id: :asc, name: :asc), :id, :student_with_rank,{:include_blank =>t('select')},{class: 'selectpicker', "data-width"=>'350px'}
   .form-group
     .col-sm-2.control-label
       = f.label t 'exam.evaluate_course.course_id', for: :course_id
@@ -32,9 +35,12 @@
         - else
           - isstaff="unchecked"
       = f.check_box :is_staff, :checked => isstaff, :id => 'is_staff'
-      = t('exam.evaluate_course.staff_or_invited')
+      = (t 'exam.evaluate_course.staff_or_invited1')+" "+current_user.college.code.upcase+(t 'exam.evaluate_course.staff_or_invited2')
       .span_staff{:style=>"display: block;"}
-        = f.collection_select :staff_id, @lecturer_list, :id, :name, {:include_blank =>t('select')},{class: 'selectpicker mandatory', "data-width"=>'350px'}
+        - if current_user.college.code=="kskbjb"
+          = f.collection_select :staff_id, @lecturer_list, :id, :name, {:include_blank =>t('select')},{class: 'selectpicker mandatory', "data-width"=>'350px'}
+        - else
+          = f.collection_select :staff_id, @lecturer_list, :id, :staff_with_rank, {:include_blank =>t('select')},{class: 'selectpicker mandatory', "data-width"=>'350px'}
       .span_invited{:style=>"display: none;"}
         = f.text_field :invite_lec, class: 'form-control mandatory'
 
@@ -53,7 +59,7 @@
   .form-group
     .col-sm-2.control-label
       = f.label t 'exam.evaluate_course.comment', for: :comment
-    .col-md-6
+    .col-md-8
       = f.text_field :comment, class: 'form-control'  
 
   .form-group

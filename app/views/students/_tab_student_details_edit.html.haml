@@ -5,7 +5,12 @@
     .col-md-2
       = f.text_field :matrixno, class: 'form-control'
 
-
+  .form-group
+    .col-sm-2.control-label
+      = f.label t 'student.students.rank_id', for: :rank_id
+    .col-md-2
+      = f.collection_select :rank_id, Rank.order(id: :asc), :id, :short_full_name, {:include_blank => (t 'select')}, {class: 'selectpicker', "data-width"=>"280px"}
+      
   .form-group
     .col-sm-2.control-label
       =f.label t 'student.students.address', for: :remarks

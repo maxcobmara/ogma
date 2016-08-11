@@ -16,6 +16,7 @@ class Student < ActiveRecord::Base
 
   belongs_to :course,         :class_name => 'Programme', :foreign_key => 'course_id'       #Link to Programme
   belongs_to :intakestudent,  :class_name => 'Intake',    :foreign_key => 'intake_id'       #Link to Model intake
+  belongs_to :rank, :foreign_key => 'rank_id'
 
   #has_one   :user,              :dependent => :destroy                                      #Link to Model user
   has_many  :leaveforstudents,  :dependent => :destroy                                      #Link to LeaveStudent
@@ -56,7 +57,10 @@ class Student < ActiveRecord::Base
   
   def student_list
     "#{icno}"+" "+"#{name}"
-
+  end
+  
+  def student_with_rank
+    "#{rank.try(:shortname)} #{name}"
   end
 
   def self.year_and_sem(intake)
