@@ -40,6 +40,10 @@
       - unless @programme.parent_id == nil
         %dt= t 'training.programme.subject_abbreviation', :default => model_class.human_attribute_name(:subject_abbreviation) + ":"
         %dd= @programme.subject_abbreviation
+
+      - if @programme.is_root?
+        %dt= t 'training.programme.level', :default => model_class.human_attribute_name(:level) + ":"
+        %dd= (DropDown::COURSE_LEVEL.find_all{|disp, value| value == @programme.level}).map {|disp, value| disp} [0]
       
       %dt= t 'training.programme.credits', :default => model_class.human_attribute_name(:credits) + ":"
       %dd= @programme.credits

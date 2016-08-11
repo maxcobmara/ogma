@@ -55,6 +55,13 @@
           /%td{:style=>"padding: 0 6px 0 0;"}= f.select :duration_type, DropDown::DURATION_TYPES,{:prompt => t('helpers.prompt.select_duration')},{ class: 'selectpicker', "data-width"=>'100px'}
           %td{:style=>"padding: 0 6px 0 0;"}= f.select :durationtype, DropDown::DURATIONTYPES,{:include_blank => t('helpers.prompt.select_duration')},{ class: 'selectpicker', "data-width"=>'100px'}
 
+  - if current_user.college.code=="amsas" && @programme.is_root?
+    .form-group
+      .col-sm-2.control-label
+        = f.label t 'training.programme.level'
+      .col-md-3
+        = f.select :level, DropDown::COURSE_LEVEL,{:include_blank => t('select')},{ class: 'selectpicker', "data-width"=>'160px'} 
+     
   .form-group
     .col-sm-2.control-label
       = f.label t 'training.programme.credits'

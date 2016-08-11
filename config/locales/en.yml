@@ -3085,6 +3085,7 @@ en:
       prepared_by: PREPARED BY
       date_updated: LAST UPDATED
       by_student: "(Prepared by Student)"
+      by_quality_dept: "(Prepared by Competency & Quality Control Department)"
       staff_or_invited1: Tick if 
       staff_or_invited2: " lecturers, untick if Invitation Lecturer."
       no_staff: "Invitation - "
@@ -3261,6 +3262,7 @@ en:
       name: Name
       course_type: Course Type
       duration: Duration
+      level: Level
       credits: Credits
       status: Status
       remarks: "Click at Programme / Subject / Topic NAME to hide / display COMBO CODE and its' subitem list. Next click at COMBO CODE to show details"
@@ -3271,7 +3273,7 @@ en:
       remark_text4: hide
       remark_text5: descendants of a node.
       remark_text6: To create a new 
-      remark_text7: descending 
+      remark_text7: descendant 
       remark_text8: node (other than Programme), select 'New node' in a parent node 'Show' page.
       remark_text9: "Click at 'Programme / Semester / Subject / Topic / Subtopic Name' to display 'Show' page."
       method: Lecture Method

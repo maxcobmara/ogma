@@ -46,9 +46,11 @@ class Programme < ActiveRecord::Base
   
   def programme_list
     if is_root?
-      "#{course_type}" + " " + "#{name}"   
+      prog="#{course_type}" + " " + "#{name}"   
+      prog+=" ("+level.upcase+")" if level?
     else
     end
+    prog
   end
   
   def fullname

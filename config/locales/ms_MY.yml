@@ -3005,6 +3005,7 @@ ms_MY:
       prepared_by: DISEDIAKAN OLEH
       date_updated: TARIKH KEMASKINI
       by_student: "(Diisi oleh Pelatih)"
+      by_quality_dept: "(Diisi oleh Bahagian Kompetensi dan Kawalan Mutu)"
       staff_or_invited1: Pilih kotak semak jika pengajar
       staff_or_invited2: ", nyahpilih jika Pengajar Jemputan."
       no_staff: "Jemputan -  "
@@ -3180,6 +3181,7 @@ ms_MY:
       name: Nama
       course_type: Jenis Kurikulum
       duration: Jangka Masa
+      level: Peringkat
       credits: Kredit
       status: Status
       remarks: "Klik pada NAMA Program / Subjek / Topik untuk papar KOMBO KOD dan senarai subitem di bawahnya. Seterusnya klik pada KOD KOMBO untuk ke laman Pamer"

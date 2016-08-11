@@ -485,6 +485,11 @@ module DropDown
 #        ['Topic','Topic'],
 #        ['Subtopic', 'Subtopic']
       ]
+    
+    COURSE_LEVEL=[
+        ['Pegawai', 'peg'],
+        ['Lain-lain Pangkat', 'llp']
+      ]
 
     LECTURE_TIME = [
       [I18n.t('training.programme.hours'), 1],

@@ -1,12 +1,12 @@
 class Evaluation_reportPdf < Prawn::Document
-  def initialize(evaluate_courses, view)
+  def initialize(evaluate_courses, view, college)
     super({top_margin: 50, page_size: 'A4', page_layout: :portrait })
     @evaluate_courses = evaluate_courses
     @evaluate_courses_g=@evaluate_courses.group_by(&:subject_id)
     @view = view
     font "Times-Roman"
     move_down 10
-    text "KOLEJ SAINS KESIHATAN BERSEKUTU JOHOR BAHRU", :align => :center, :size => 12, :style => :bold
+    text "#{college.name.upcase}", :align => :center, :size => 12, :style => :bold
     text (I18n.t 'exam.evaluate_course.title'), :align => :center, :size => 12, :style => :bold
     move_down 20
     record
@@ -98,14 +98,14 @@ class Evaluation_reportPdf < Prawn::Document
                      "#{I18n.t('exam.evaluate_course.question')}7","#{I18n.t('exam.evaluate_course.question')}8","#{I18n.t('exam.evaluate_course.question')}9", "#{I18n.t('exam.evaluate_course.total')}"]
             evaluate_courses.each do |ec|
                 eval_content << ["#{counter += 1}",ec.evaluate_date.strftime('%d/%m/%Y'),
-                                              "#{ec.staff_id.blank? ? ec.invite_lec : ec.staffevaluate.name}",ec.ev_obj, ec.ev_knowledge, ec.ev_deliver, ec.ev_content, ec.ev_tool, ec.ev_topic, ec.ev_work, ec.ev_note, ec.ev_assessment, @total_line[counter-1] ]
+                                              "#{ec.staff_id.blank? ? ec.invite_lec : ec.staffevaluate.try(:staff_with_rank)}",ec.ev_obj, ec.ev_knowledge, ec.ev_deliver, ec.ev_content, ec.ev_tool, ec.ev_topic, ec.ev_work, ec.ev_note, ec.ev_assessment, @total_line[counter-1] ]
            end 
            eval_content << [{content: "#{I18n.t('exam.evaluate_course.total_scores')}", colspan: 3}, @sum_obj[no], @sum_knowledge[no],                       
                                       @sum_deliver[no], @sum_content[no], @sum_tool[no], @sum_topic[no], @sum_work[no], 
                                       @sum_note[no], @sum_assessment[no], @acc_total_score[no]]
            eval_content << [{content: "#{I18n.t('exam.evaluate_course.average_scores')}", colspan: 3},   
                                      "#{(@sum_obj[no].to_f/@eval_counts[no]).to_i if (@sum_obj[no].to_f/@eval_counts[no])%1==0} #{@view.pukka(@sum_obj[no].to_f/@eval_counts[no]) if (@sum_obj[no].to_f/@eval_counts[no]) % 1!=0}", "#{(@sum_knowledge[no].to_f/@eval_counts[no]).to_i if (@sum_knowledge[no].to_f/@eval_counts[no])%1==0} #{@view.pukka(@sum_knowledge[no].to_f/@eval_counts[no]) if (@sum_knowledge[no].to_f/@eval_counts[no]) % 1!=0}", "#{(@sum_deliver[no].to_f/@eval_counts[no]).to_i if (@sum_deliver[no].to_f/@eval_counts[no])%1==0} #{@view.pukka(@sum_deliver[no].to_f/@eval_counts[no]) if (@sum_deliver[no].to_f/@eval_counts[no]) % 1!=0}", "#{(@sum_content[no].to_f/@eval_counts[no]).to_i if (@sum_content[no].to_f/@eval_counts[no])%1==0} #{@view.pukka(@sum_content[no].to_f/@eval_counts[no]) if (@sum_content[no].to_f/@eval_counts[no]) % 1!=0}", "#{(@sum_tool[no].to_f/@eval_counts[no]).to_i if (@sum_tool[no].to_f/@eval_counts[no])%1==0} #{@view.pukka(@sum_tool[no].to_f/@eval_counts[no]) if (@sum_tool[no].to_f/@eval_counts[no]) % 1!=0}", "#{(@sum_topic[no].to_f/@eval_counts[no]).to_i if (@sum_topic[no].to_f/@eval_counts[no])%1==0} #{@view.pukka(@sum_topic[no].to_f/@eval_counts[no]) if (@sum_topic[no].to_f/@eval_counts[no]) % 1!=0}", "#{(@sum_work[no].to_f/@eval_counts[no]).to_i if (@sum_work[no].to_f/@eval_counts[no])%1==0} #{@view.pukka(@sum_work[no].to_f/@eval_counts[no]) if (@sum_work[no].to_f/@eval_counts[no]) % 1!=0}", "#{(@sum_note[no].to_f/@eval_counts[no]).to_i if (@sum_note[no].to_f/@eval_counts[no])%1==0} #{@view.pukka(@sum_note[no].to_f/@eval_counts[no]) if (@sum_note[no].to_f/@eval_counts[no]) % 1!=0}", "#{(@sum_assessment[no].to_f/@eval_counts[no]).to_i if (@sum_assessment[no].to_f/@eval_counts[no])%1==0} #{@view.pukka(@sum_assessment[no].to_f/@eval_counts[no]) if (@sum_assessment[no].to_f/@eval_counts[no]) % 1!=0}", "#{@avg_total_score[no].to_i if @avg_total_score[no]%1==0}#{@view.pukka(@avg_total_score[no]) if @avg_total_score[no] % 1!=0}"]
-           eval_content << ["","","", "","","","","","","","","",""]
+           eval_content << [{content: "<i><a href='http://localhost:3003/exam/evaluate_courses/#{@evaluate_courses.first.id}/evaluation_analysis.pdf?locale=ms_MY'>Display <b>Score Analysis</b> for: <b>#{@evaluate_courses.first.staffevaluate.try(:staff_with_rank)}</b>, of subject: <b>#{@evaluate_courses.first.subjectevaluate.subject_list}.</b></a><br> Note : average scores rounded to nearest (lower) score.</i>", colspan: 11},"",""]
            no+=1
         end #separate by lecturer
       end

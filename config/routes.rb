@@ -424,6 +424,7 @@ Ogma::Application.routes.draw do
     resources :evaluate_courses do
       member do
         get 'courseevaluation'
+        get :evaluation_analysis
       end
       collection do
         get :evaluation_report

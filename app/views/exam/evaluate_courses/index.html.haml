@@ -31,6 +31,6 @@
           /%td= evaluate_course.student_id.blank? ? "No Student" : evaluate_course.studentevaluate.name
           %td= link_to (evaluate_course.stucourse.programme_coursetype_name+" - " +(evaluate_course.subject_id.blank? ? (t 'exam.evaluate_course.invite_lec_topic')+" : "+evaluate_course.invite_lec_topic : evaluate_course.subjectevaluate.subject_list)), exam_evaluate_course_path(evaluate_course)
           %td= evaluate_course.evaluate_date.blank? ? "-" : evaluate_course.evaluate_date.try(:strftime, "%d %b %Y") 
-          %td=h evaluate_course.staff_id.blank? ? (t 'exam.evaluate_course.no_staff')+evaluate_course.invite_lec : evaluate_course.staffevaluate.name 
+          %td=h evaluate_course.staff_id.blank? ? (t 'exam.evaluate_course.no_staff')+evaluate_course.invite_lec : evaluate_course.staffevaluate.try(:staff_with_rank)
 
   .right{style:"padding:0 30px; margin:0;"}= paginate @evaluate_courses, :theme => 'twitter-bootstrap-3'
