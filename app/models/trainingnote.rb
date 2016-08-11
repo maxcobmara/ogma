@@ -10,6 +10,7 @@ class Trainingnote < ActiveRecord::Base
   belongs_to :note_creator, :class_name => 'Staff', :foreign_key => :staff_id
   belongs_to :topicdetail, :foreign_key=> 'topicdetail_id'
   
+  belongs_to :reference_plan, :class_name => 'LessonPlan', :foreign_key => 'timetable_id'
   #trial section
   has_many :lesson_plan_trainingnotes# , :dependent => :nullify #:destroy # --> once trainingnote in topic details removed, lesson_plan_trainingnote's record will be REMOVED
   has_many :lesson_plans, :through => :lesson_plan_trainingnotes

@@ -12,6 +12,7 @@ class Training::LessonPlansController < ApplicationController
     if @is_admin
       @search = LessonPlan.search(params[:q])
     else
+      roles=current_user.roles
       if roles.include?("programme_manager")
         @search = LessonPlan.search2(@programme_id).search(params[:q])
       else
