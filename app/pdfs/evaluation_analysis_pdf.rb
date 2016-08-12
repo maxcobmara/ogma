@@ -1,10 +1,13 @@
 class Evaluation_analysisPdf < Prawn::Document  
-  def initialize(evaluate_course, view, evs, college, actual_scores, evaluator)
+  def initialize(average_course, view, evs_int, college, actual_scores, evaluator)
     super({top_margin: 40, page_size: 'A4', page_layout: :portrait })
-    @evaluate_course= evaluate_course
+    @average_course= average_course
     @view = view
-    @evs = evs
+    @evs_int = evs_int
     @evaluator_count=evaluator
+    topic_ids=Programme.find(@average_course.subject_id).descendants.where(course_type: ['Topic', 'Subtopic']).pluck(:id)
+    lecturer_classes=WeeklytimetableDetail.where(lecturer_id: @average_course.lecturer_id, topic: topic_ids).pluck(:id)
+    @total_student==StudentAttendance.where(weeklytimetable_details_id: lecturer_classes).pluck(:student_id).uniq.count
     font "Helvetica"
     if college.code=="kskbjb"
       move_down 10
@@ -35,12 +38,7 @@ class Evaluation_analysisPdf < Prawn::Document
         image "#{Rails.root}/app/assets/images/amsas_logo_small.png"
       end
     end
-    
-    #move_down 5
-    if college.code=="amsas"
-      table_heading
-      move_down 20
-    end
+   
     text "#{I18n.t('exam.evaluate_course.by_quality_dept')}", :align => :center, :size => 12
     if college.code=="kskbjb"
       move_down 20
@@ -49,39 +47,29 @@ class Evaluation_analysisPdf < Prawn::Document
     table_detailing
     table_score
     move_down 2
-    text "Actual Scores : #{actual_scores.split(',').join(', ').to_s}", :size => 8
+    if actual_scores!=@evs_int
+      text "#{I18n.t('exam.average_course.score_rounded_actual')} : #{actual_scores.split(',').join(', ').to_s}", :size => 8
+    end
     start_new_page
     table_detailing2
     move_down 50
     table_footer
   end
   
-  def table_heading
-    data=[["#{I18n.t('exam.evaluate_course.prepared_by')} : #{@evaluate_course.student_id? ? @evaluate_course.studentevaluate.student_with_rank : '' }","#{I18n.t('exam.evaluate_course.date_updated')} : #{@evaluate_course.updated_at.try(:strftime, '%d %b %Y')} "]]
-    table(data, :column_widths => [255,255], :cell_style => {:size=>11, :borders => [:left, :right, :top, :bottom]}) do
-      a = 0
-      b = 1
-      column(0).font_style = :bold
-      column(1).font_style = :bold
-      while a < b do
-        a=+1
-      end
-    end
-  end
-  
   def table_detailing
     data=[["<u>DATA PENSYARAH</u>"],
-          ["1.  #{I18n.t('exam.evaluate_course.staff_id') unless @evaluate_course.staff_id.blank?} #{I18n.t('exam.evaluate_course.invite_lec') unless @evaluate_course.invite_lec.blank?} :  #{@evaluate_course.staff_id? ? @evaluate_course.staffevaluate.try(:staff_with_rank) : @evaluate_course.invite_lec}"],
-          ["2.  No K/P : #{@evaluate_course.staff_id? ? @evaluate_course.staffevaluate.try(:formatted_mykad) : @evaluate_course.invite_lec}     Pangkat/Jawatan : #{@evaluate_course.staff_id? ? @evaluate_course.staffevaluate.try(:positions).try(:first).try(:name) : '-'}"],
-          ["3.  Organisasi : "], ["4.  Kepakaran/Kelayakan : "],[""],
+          ["1.  #{I18n.t('exam.average_course.lecturer_id')} : #{@average_course.lecturer.try(:staff_with_rank) }"],
+          ["2. #{I18n.t('exam.average_course.icno')} : #{@average_course.lecturer.try(:formatted_mykad) }    #{I18n.t('staff.rank_id')}/Jawatan : #{@average_course.lecturer.try(:rank).try(:name)}/#{@average_course.lecturer.try(:positions).try(:first).name}"],
+          ["3.  #{I18n.t('exam.average_course.organisation')} : #{@average_course.organisation}"], 
+          ["4.  #{I18n.t('exam.average_course.expertise_qualification')} : #{@average_course.expertise_qualification}"],[""],
           ["<u>DATA KURSUS</u>"],
-          ["5.  #{I18n.t('exam.evaluate_course.course_id')} : #{@evaluate_course.stucourse.name}"],
-          ["6.  Jenis Kursus : #{@evaluate_course.stucourse.course_type=='Asas' ? '<b>Asas</b>' : 'Asas'}  #{@evaluate_course.stucourse.course_type=='Pertengahan' ? '<b>Pertengahan</b>' : 'Pertengahan'}  #{@evaluate_course.stucourse.course_type=='Lanjutan' ? '<b>Lanjutan</b>' : 'Asas'}"],
-          ["7.  Jumlah pelatih : #{@evaluator_count} / #{Student.where(course_id: @evaluate_course.course_id).count}"],
-          ["8.  Peringkat : #{@evaluate_course.stucourse.level=='peg' ? '<b>PEG</b>' : 'PEG'}  #{@evaluate_course.stucourse.level=='llp' ? '<b>LLP</b>' : 'LLP'} "],[""],
+          ["5.  #{I18n.t('exam.evaluate_course.course_id')} : #{@average_course.subject.root.name}"],
+          ["6.  #{I18n.t('training.programme.course_type')} : #{@average_course.subject.root.course_type=='Asas' ? '<b>Asas</b>' : 'Asas'}  #{@average_course.subject.root.course_type=='Pertengahan' ? '<b>Pertengahan</b>' : 'Pertengahan'}  #{@average_course.subject.root.course_type=='Lanjutan' ? '<b>Lanjutan</b>' : 'Asas'}"],
+          ["7.  #{I18n.t('exam.average_course.total_students')} : #{@evaluator_count} / #{@total_student}"],
+          ["8.  #{I18n.t('training.programme.level')} : #{@average_course.subject.root.level=='peg' ? '<b>PEG</b>' : 'PEG'}  #{@average_course.subject.root.level=='llp' ? '<b>LLP</b>' : 'LLP'} "],[""],
           ["<u>DATA ANALISIS PENILAIAN</u>"],
-          ["9.  #{I18n.t('exam.evaluate_course.subject_id') unless @evaluate_course.subject_id.blank? } #{I18n.t('exam.evaluate_course.invite_lec_topic') unless @evaluate_course.invite_lec.blank?} : #{@evaluate_course.subjectevaluate.subject_list unless @evaluate_course.subject_id.blank?} #{@evaluate_course.invite_lec_topic unless @evaluate_course.invite_lec.blank?}"],
-          ["10.  Skor Purata : "], [""]
+          ["9.  #{I18n.t('exam.average_course.subject_id') } : #{@average_course.subject.subject_list}"],
+          ["10.  #{I18n.t('exam.evaluate_course.average_scores')} : "], [""]
           ]
     table(data, :column_widths => [510], :cell_style => { :size => 11, :inline_format => true, :padding => [0, 0, 0, 0]})  do
       rows(0..2).borders=[]
@@ -106,15 +94,15 @@ class Evaluation_analysisPdf < Prawn::Document
   
    def table_score
        data=[["No","#{I18n.t('exam.evaluate_course.description')}",{content: "#{I18n.t('exam.evaluate_course.score')}", colspan: 9}],
-             ["1.","#{I18n.t('exam.evaluate_course.objective_achieved')}", "#{@evs[0]==1? '<b>'+@evs[0].to_s+'</b>' : ""}","#{@evs[0]==2? '<b>'+@evs[0].to_s+'</b>' : ""}", "#{@evs[0]==3? '<b>'+@evs[0].to_s+'</b>' : ""}", "#{@evs[0]==4? '<b>'+@evs[0].to_s+'</b>' : ""}","#{@evs[0]==5? '<b>'+@evs[0].to_s+'</b>' : ""}", "#{@evs[0]==6? '<b>'+@evs[0].to_s+'</b>' : ""}","#{@evs[0]==7? '<b>'+@evs[0].to_s+'</b>' : ""}" ,"#{@evs[0]==8? '<b>'+@evs[0].to_s+'</b>' : ""}", "#{@evs[0]==9? '<b>'+@evs[0].to_s+'</b>' : ""}"],
-             ["2.","#{I18n.t('exam.evaluate_course.lecturer_knowledge')}", "#{@evs[1]==1? '<b>'+@evs[1].to_s+'</b>' : ""}","#{@evs[1]==2? '<b>'+@evs[1].to_s+'</b>' : ""}", "#{@evs[1]==3? '<b>'+@evs[1].to_s+'</b>' : ""}", "#{@evs[1]==4? '<b>'+@evs[1].to_s+'</b>' : ""}","#{@evs[1]==5? '<b>'+@evs[1].to_s+'</b>' : ""}", "#{@evs[1]==6? '<b>'+@evs[1].to_s+'</b>' : ""}","#{@evs[1]==7? '<b>'+@evs[1].to_s+'</b>' : ""}" ,"#{@evs[1]==8? '<b>'+@evs[1].to_s+'</b>' : ""}", "#{@evs[1]==9? '<b>'+@evs[1].to_s+'</b>' : ""}"],
-             ["3.","#{I18n.t('exam.evaluate_course.lecturer_q_achievement')}", "#{@evs[2]==1?  '<b>'+@evs[2].to_s+'</b>' : ""}","#{@evs[2]==2? '<b>'+@evs[2].to_s+'</b>' : ""}", "#{@evs[2]==3? '<b>'+@evs[2].to_s+'</b>' : ""}", "#{@evs[2]==4? '<b>'+@evs[2].to_s+'</b>' : ""}","#{@evs[2]==5? '<b>'+@evs[2].to_s+'</b>' : ""}", "#{@evs[2]==6? '<b>'+@evs[2].to_s+'</b>' : ""}","#{@evs[2]==7? '<b>'+@evs[2].to_s+'</b>' : ""}" ,"#{@evs[2]==8? '<b>'+@evs[2].to_s+'</b>' : ""}", "#{@evs[2]==9? '<b>'+@evs[2].to_s+'</b>' : ""}"],
-             ["4.","#{I18n.t('exam.evaluate_course.content')}", "#{@evs[3]==1? '<b>'+@evs[3].to_s+'</b>' : ""}","#{@evs[3]==2? '<b>'+@evs[3].to_s+'</b>' : ""}", "#{@evs[3]==3? '<b>'+@evs[3].to_s+'</b>' : ""}", "#{@evs[3]==4? '<b>'+@evs[3].to_s+'</b>' : ""}","#{@evs[3]==5? '<b>'+@evs[3].to_s+'</b>' : ""}", "#{@evs[3]==6? '<b>'+@evs[3].to_s+'</b>' : ""}","#{@evs[3]==7? '<b>'+@evs[3].to_s+'</b>' : ""}" ,"#{@evs[3]==8? '<b>'+@evs[3].to_s+'</b>' : ""}", "#{@evs[3]==9? '<b>'+@evs[3].to_s+'</b>' : ""}"],
-             ["5.","#{I18n.t('exam.evaluate_course.training_aids_quality')}", "#{@evs[4]==1? '<b>'+@evs[4].to_s+'</b>' : ""}","#{@evs[4]==2? '<b>'+@evs[4].to_s+'</b>' : ""}", "#{@evs[4]==3? '<b>'+@evs[4].to_s+'</b>' : ""}", "#{@evs[4]==4? '<b>'+@evs[4].to_s+'</b>' : ""}","#{@evs[4]==5? '<b>'+@evs[4].to_s+'</b>' : ""}", "#{@evs[4]==6? '<b>'+@evs[4].to_s+'</b>' : ""}","#{@evs[4]==7? '<b>'+@evs[4].to_s+'</b>' : ""}" ,"#{@evs[4]==8? '<b>'+@evs[4].to_s+'</b>' : ""}", "#{@evs[4]==9? '<b>'+@evs[4].to_s+'</b>' : ""}"],
-             ["6.","#{I18n.t('exam.evaluate_course.suitability_topic_sequence')}", "#{@evs[5]==1? '<b>'+@evs[5].to_s+'</b>' : ""}","#{@evs[5]==2? '<b>'+@evs[5].to_s+'</b>' : ""}", "#{@evs[5]==3? '<b>'+@evs[5].to_s+'</b>' : ""}", "#{@evs[5]==4? '<b>'+@evs[5].to_s+'</b>' : ""}","#{@evs[5]==5? '<b>'+@evs[5].to_s+'</b>' : ""}", "#{@evs[5]==6? '<b>'+@evs[5].to_s+'</b>' : ""}","#{@evs[5]==7? '<b>'+@evs[5].to_s+'</b>' : ""}" ,"#{@evs[5]==8? '<b>'+@evs[5].to_s+'</b>' : ""}", "#{@evs[5]==9? '<b>'+@evs[5].to_s+'</b>' : ""}"],
-             ["7.","#{I18n.t('exam.evaluate_course.effectiveness_teaching_learning')}", "#{@evs[6]==1? '<b>'+@evs[6].to_s+'</b>' : ""}","#{@evs[6]==2? '<b>'+@evs[6].to_s+'</b>' : ""}", "#{@evs[6]==3? '<b>'+@evs[6].to_s+'</b>' : ""}", "#{@evs[6]==4? '<b>'+@evs[6].to_s+'</b>' : ""}","#{@evs[6]==5? '<b>'+@evs[6].to_s+'</b>' : ""}", "#{@evs[6]==6? '<b>'+@evs[6].to_s+'</b>' : ""}","#{@evs[6]==7? '<b>'+@evs[6].to_s+'</b>' : ""}" ,"#{@evs[6]==8? '<b>'+@evs[6].to_s+'</b>' : ""}", "#{@evs[6]==9? '<b>'+@evs[6].to_s+'</b>' : ""}"],
-             ["8.","#{I18n.t('exam.evaluate_course.benefit_notes')}","#{@evs[7]==1? '<b>'+@evs[7].to_s+'</b>' : ""}","#{@evs[7]==2? '<b>'+@evs[7].to_s+'</b>' : ""}", "#{@evs[7]==3? '<b>'+@evs[7].to_s+'</b>' : ""}", "#{@evs[7]==4? '<b>'+@evs[7].to_s+'</b>' : ""}","#{@evs[7]==5? '<b>'+@evs[7].to_s+'</b>' : ""}", "#{@evs[7]==6? '<b>'+@evs[7].to_s+'</b>' : ""}","#{@evs[7]==7? '<b>'+@evs[7].to_s+'</b>' : ""}" ,"#{@evs[7]==8? '<b>'+@evs[7].to_s+'</b>' : ""}", "#{@evs[7]==9? '<b>'+@evs[7].to_s+'</b>' : ""}"],
-             ["9.","#{I18n.t('exam.evaluate_course.suitable_assessment')}","#{@evs[8]==1? '<b>'+@evs[8].to_s+'</b>' : ""}","#{@evs[8]==2? '<b>'+@evs[8].to_s+'</b>' : ""}", "#{@evs[8]==3? '<b>'+@evs[8].to_s+'</b>' : ""}", "#{@evs[8]==4? '<b>'+@evs[8].to_s+'</b>' : ""}","#{@evs[8]==5? '<b>'+@evs[8].to_s+'</b>' : ""}", "#{@evs[8]==6? '<b>'+@evs[8].to_s+'</b>' : ""}","#{@evs[8]==7? '<b>'+@evs[8].to_s+'</b>' : ""}" ,"#{@evs[8]==8? '<b>'+@evs[8].to_s+'</b>' : ""}", "#{@evs[8]==9? '<b>'+@evs[8].to_s+'</b>' : ""}"]
+             ["1.","#{I18n.t('exam.evaluate_course.objective_achieved')}", "#{@evs_int[0]==1? '<b>'+@evs_int[0].to_s+'</b>' : ""}","#{@evs_int[0]==2? '<b>'+@evs_int[0].to_s+'</b>' : ""}", "#{@evs_int[0]==3? '<b>'+@evs_int[0].to_s+'</b>' : ""}", "#{@evs_int[0]==4? '<b>'+@evs_int[0].to_s+'</b>' : ""}","#{@evs_int[0]==5? '<b>'+@evs_int[0].to_s+'</b>' : ""}", "#{@evs_int[0]==6? '<b>'+@evs_int[0].to_s+'</b>' : ""}","#{@evs_int[0]==7? '<b>'+@evs_int[0].to_s+'</b>' : ""}" ,"#{@evs_int[0]==8? '<b>'+@evs_int[0].to_s+'</b>' : ""}", "#{@evs_int[0]==9? '<b>'+@evs_int[0].to_s+'</b>' : ""}"],
+             ["2.","#{I18n.t('exam.evaluate_course.lecturer_knowledge')}", "#{@evs_int[1]==1? '<b>'+@evs_int[1].to_s+'</b>' : ""}","#{@evs_int[1]==2? '<b>'+@evs_int[1].to_s+'</b>' : ""}", "#{@evs_int[1]==3? '<b>'+@evs_int[1].to_s+'</b>' : ""}", "#{@evs_int[1]==4? '<b>'+@evs_int[1].to_s+'</b>' : ""}","#{@evs_int[1]==5? '<b>'+@evs_int[1].to_s+'</b>' : ""}", "#{@evs_int[1]==6? '<b>'+@evs_int[1].to_s+'</b>' : ""}","#{@evs_int[1]==7? '<b>'+@evs_int[1].to_s+'</b>' : ""}" ,"#{@evs_int[1]==8? '<b>'+@evs_int[1].to_s+'</b>' : ""}", "#{@evs_int[1]==9? '<b>'+@evs_int[1].to_s+'</b>' : ""}"],
+             ["3.","#{I18n.t('exam.evaluate_course.lecturer_q_achievement')}", "#{@evs_int[2]==1?  '<b>'+@evs_int[2].to_s+'</b>' : ""}","#{@evs_int[2]==2? '<b>'+@evs_int[2].to_s+'</b>' : ""}", "#{@evs_int[2]==3? '<b>'+@evs_int[2].to_s+'</b>' : ""}", "#{@evs_int[2]==4? '<b>'+@evs_int[2].to_s+'</b>' : ""}","#{@evs_int[2]==5? '<b>'+@evs_int[2].to_s+'</b>' : ""}", "#{@evs_int[2]==6? '<b>'+@evs_int[2].to_s+'</b>' : ""}","#{@evs_int[2]==7? '<b>'+@evs_int[2].to_s+'</b>' : ""}" ,"#{@evs_int[2]==8? '<b>'+@evs_int[2].to_s+'</b>' : ""}", "#{@evs_int[2]==9? '<b>'+@evs_int[2].to_s+'</b>' : ""}"],
+             ["4.","#{I18n.t('exam.evaluate_course.content')}", "#{@evs_int[3]==1? '<b>'+@evs_int[3].to_s+'</b>' : ""}","#{@evs_int[3]==2? '<b>'+@evs_int[3].to_s+'</b>' : ""}", "#{@evs_int[3]==3? '<b>'+@evs_int[3].to_s+'</b>' : ""}", "#{@evs_int[3]==4? '<b>'+@evs_int[3].to_s+'</b>' : ""}","#{@evs_int[3]==5? '<b>'+@evs_int[3].to_s+'</b>' : ""}", "#{@evs_int[3]==6? '<b>'+@evs_int[3].to_s+'</b>' : ""}","#{@evs_int[3]==7? '<b>'+@evs_int[3].to_s+'</b>' : ""}" ,"#{@evs_int[3]==8? '<b>'+@evs_int[3].to_s+'</b>' : ""}", "#{@evs_int[3]==9? '<b>'+@evs_int[3].to_s+'</b>' : ""}"],
+             ["5.","#{I18n.t('exam.evaluate_course.training_aids_quality')}", "#{@evs_int[4]==1? '<b>'+@evs_int[4].to_s+'</b>' : ""}","#{@evs_int[4]==2? '<b>'+@evs_int[4].to_s+'</b>' : ""}", "#{@evs_int[4]==3? '<b>'+@evs_int[4].to_s+'</b>' : ""}", "#{@evs_int[4]==4? '<b>'+@evs_int[4].to_s+'</b>' : ""}","#{@evs_int[4]==5? '<b>'+@evs_int[4].to_s+'</b>' : ""}", "#{@evs_int[4]==6? '<b>'+@evs_int[4].to_s+'</b>' : ""}","#{@evs_int[4]==7? '<b>'+@evs_int[4].to_s+'</b>' : ""}" ,"#{@evs_int[4]==8? '<b>'+@evs_int[4].to_s+'</b>' : ""}", "#{@evs_int[4]==9? '<b>'+@evs_int[4].to_s+'</b>' : ""}"],
+             ["6.","#{I18n.t('exam.evaluate_course.suitability_topic_sequence')}", "#{@evs_int[5]==1? '<b>'+@evs_int[5].to_s+'</b>' : ""}","#{@evs_int[5]==2? '<b>'+@evs_int[5].to_s+'</b>' : ""}", "#{@evs_int[5]==3? '<b>'+@evs_int[5].to_s+'</b>' : ""}", "#{@evs_int[5]==4? '<b>'+@evs_int[5].to_s+'</b>' : ""}","#{@evs_int[5]==5? '<b>'+@evs_int[5].to_s+'</b>' : ""}", "#{@evs_int[5]==6? '<b>'+@evs_int[5].to_s+'</b>' : ""}","#{@evs_int[5]==7? '<b>'+@evs_int[5].to_s+'</b>' : ""}" ,"#{@evs_int[5]==8? '<b>'+@evs_int[5].to_s+'</b>' : ""}", "#{@evs_int[5]==9? '<b>'+@evs_int[5].to_s+'</b>' : ""}"],
+             ["7.","#{I18n.t('exam.evaluate_course.effectiveness_teaching_learning')}", "#{@evs_int[6]==1? '<b>'+@evs_int[6].to_s+'</b>' : ""}","#{@evs_int[6]==2? '<b>'+@evs_int[6].to_s+'</b>' : ""}", "#{@evs_int[6]==3? '<b>'+@evs_int[6].to_s+'</b>' : ""}", "#{@evs_int[6]==4? '<b>'+@evs_int[6].to_s+'</b>' : ""}","#{@evs_int[6]==5? '<b>'+@evs_int[6].to_s+'</b>' : ""}", "#{@evs_int[6]==6? '<b>'+@evs_int[6].to_s+'</b>' : ""}","#{@evs_int[6]==7? '<b>'+@evs_int[6].to_s+'</b>' : ""}" ,"#{@evs_int[6]==8? '<b>'+@evs_int[6].to_s+'</b>' : ""}", "#{@evs_int[6]==9? '<b>'+@evs_int[6].to_s+'</b>' : ""}"],
+             ["8.","#{I18n.t('exam.evaluate_course.benefit_notes')}","#{@evs_int[7]==1? '<b>'+@evs_int[7].to_s+'</b>' : ""}","#{@evs_int[7]==2? '<b>'+@evs_int[7].to_s+'</b>' : ""}", "#{@evs_int[7]==3? '<b>'+@evs_int[7].to_s+'</b>' : ""}", "#{@evs_int[7]==4? '<b>'+@evs_int[7].to_s+'</b>' : ""}","#{@evs_int[7]==5? '<b>'+@evs_int[7].to_s+'</b>' : ""}", "#{@evs_int[7]==6? '<b>'+@evs_int[7].to_s+'</b>' : ""}","#{@evs_int[7]==7? '<b>'+@evs_int[7].to_s+'</b>' : ""}" ,"#{@evs_int[7]==8? '<b>'+@evs_int[7].to_s+'</b>' : ""}", "#{@evs_int[7]==9? '<b>'+@evs_int[7].to_s+'</b>' : ""}"],
+             ["9.","#{I18n.t('exam.evaluate_course.suitable_assessment')}","#{@evs_int[8]==1? '<b>'+@evs_int[8].to_s+'</b>' : ""}","#{@evs_int[8]==2? '<b>'+@evs_int[8].to_s+'</b>' : ""}", "#{@evs_int[8]==3? '<b>'+@evs_int[8].to_s+'</b>' : ""}", "#{@evs_int[8]==4? '<b>'+@evs_int[8].to_s+'</b>' : ""}","#{@evs_int[8]==5? '<b>'+@evs_int[8].to_s+'</b>' : ""}", "#{@evs_int[8]==6? '<b>'+@evs_int[8].to_s+'</b>' : ""}","#{@evs_int[8]==7? '<b>'+@evs_int[8].to_s+'</b>' : ""}" ,"#{@evs_int[8]==8? '<b>'+@evs_int[8].to_s+'</b>' : ""}", "#{@evs_int[8]==9? '<b>'+@evs_int[8].to_s+'</b>' : ""}"]
              ] 
      
        table(data, :column_widths => [30, 340, 15, 15,15,15,15,15,15,15,20], :cell_style=>{:size=>10, :borders=>[:left, :right, :top, :bottom], :inline_format => :true}) do
@@ -130,12 +118,13 @@ class Evaluation_analysisPdf < Prawn::Document
   end
   
   def table_detailing2
-    data=[[{content: "11.  Ketidakpuasan Am : ", colspan: 2}], [{content: "12.  Cadangan Penambahbaikan : ", colspan: 2}],
+    data=[[{content: "11.  #{I18n.t('exam.average_course.dissatisfaction')} : #{@average_course.dissatisfaction}", colspan: 2}], [{content: "12.  #{I18n.t('exam.average_course.recommend_for_improvement')} : #{@average_course.recommend_for_improvement}", colspan: 2}],
           [{content: "", colspan: 2}], [{content: "<u>RUMUSAN PENILAIAN</u>", colspan: 2}], [{content: "", colspan: 2}],
-          [{content: "13.  Kriteria Penilaian LAYAK atau TIDAK LAYAK adalah berdasarkan tiga aspek teras di bawah yang mana skor purata setiap aspek tidak boleh kurang dari nilai 5 :", colspan: 2}], ["","a.      Pengetahuan Pensyarah"],
-         ["","b.      Mutu Penyampaian"], ["","c.      Isi Kandungan Pelajaran"], [{content: "14.  Kategori Pilihan :   LAYAK   TIDAK LAYAK", colspan: 2}], [""],
-         [{content: "15.  <b>JUSTIFIKASI SOKONGAN</b> :", colspan: 2}],[{content: "PENGESAHAN KETUA SEKOLAH", colspan: 2}],
-         [{content: "Tandatangan : ", colspan: 2}], [{content: "Nama Penuh : ", colspan: 2}], [{content: "Pangkat :", colspan: 2}], [{content: "Tarikh : ", colspan: 2}] ]
+          [{content: "13.  #{I18n.t('exam.average_course.criteria_notes')}", colspan: 2}], ["","a.      #{I18n.t('exam.average_course.lecturer_knowledge')}   #{@average_course.lecturer_knowledge}"],
+         ["","b.      #{I18n.t('exam.average_course.delivery_quality')}             #{@average_course.delivery_quality}"], ["","c.      #{I18n.t('exam.average_course.lesson_content')}    #{@average_course.lesson_content}"], 
+          [{content: "14.  #{I18n.t('exam.average_course.evaluation_category')} :  #{@average_course.evaluation_category==true ? '<b>'+I18n.t('exam.average_course.qualified')+'</b>' : I18n.t('exam.average_course.qualified')} #{@average_course.evaluation_category==false ? '<b>'+I18n.t('exam.average_course.not_qualified')+'</b>' : I18n.t('exam.average_course.not_qualified')}", colspan: 2}], [""],
+         [{content: "15.  <b>#{I18n.t('exam.average_course.support_justify')}</b> : #{@average_course.support_justify}", colspan: 2}],[{content: "PENGESAHAN KETUA SEKOLAH", colspan: 2}],
+         [{content: "#{I18n.t('exam.average_course.signatory')} : ", colspan: 2}], [{content: "#{I18n.t('exam.average_course.principal_id')} : #{@average_course.verifier.try(:staff_with_rank)}", colspan: 2}], [{content: "#{I18n.t('staff.rank_id')} : #{@average_course.verifier.try(:rank).try(:name)}", colspan: 2}], [{content: "#{I18n.t('exam.average_course.principal_date')} : #{@average_course.principal_date.try(:strftime, '%d-%m-%Y')}", colspan: 2}] ]
     table(data, :column_widths => [70,440], :cell_style => { :size => 11, :inline_format => true, :padding => [0, 0, 0, 0]})  do
       a=0
       b=1
@@ -162,7 +151,7 @@ class Evaluation_analysisPdf < Prawn::Document
   end
   
   def table_footer
-    data=[["#{I18n.t('exam.evaluate_course.prepared_by')} : BKMM ","#{I18n.t('exam.evaluate_course.date_updated')} : #{@evaluate_course.updated_at.try(:strftime, '%d %b %Y')} "]]
+    data=[["#{I18n.t('exam.evaluate_course.prepared_by')} : BKMM ","#{I18n.t('exam.evaluate_course.date_updated')} : #{@average_course.updated_at.try(:strftime, '%d-%m- %Y')} "]]
     table(data, :column_widths => [255,255], :cell_style => {:size=>11, :borders => [:left, :right, :top, :bottom]}) do
       a = 0
       b = 1

@@ -89,6 +89,10 @@ class Staff < ActiveRecord::Base
   #25Jan2015
   has_many :circulations
   has_many :documents, :through => :circulations
+  
+  has_many :evaluate_courses
+  has_many :average_scores_lecturer, class_name: 'AverageCourse'
+  has_many :average_scores_verifier, class_name: 'AverageCourse'
 
   #validates_attachment_size         :photo, :less_than => 500.kilobytes
   #validates_attachment_content_type :photo, :content_type => ['image/jpeg', 'image/png']

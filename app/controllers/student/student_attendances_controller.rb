@@ -17,11 +17,13 @@ class Student::StudentAttendancesController < ApplicationController
       unless programme.nil? || programme.count==0
         @programme_id = programme.try(:first).try(:id)
         @intake_list2 = Student.where('course_id=?',@programme_id).select("DISTINCT intake, course_id").order(:intake) 
-        @topics_ids_this_prog = Programme.find(@programme_id).descendants.at_depth(3).map(&:id)
+        #@topics_ids_this_prog = Programme.find(@programme_id).descendants.at_depth(3).map(&:id)
+        @topics_ids_this_prog = Programme.find(@programme_id).descendants.where(course_type: ['Topic', 'Subtopic']).map(&:id)
         @student_ids = Student.where('course_id=?',@programme_id).pluck(:id)
       else
         @intake_list2 = Student.where('course_id IS NOT NULL and course_id IN(?)',@programme_list_ids).select("DISTINCT intake, course_id").order("course_id, intake") 
-        @topics_ids_this_prog = Programme.at_depth(3).map(&:id)  
+        #@topics_ids_this_prog = Programme.at_depth(3).map(&:id)  
+        @topics_ids_this_prog = Programme.where(course_type: ['Topic', 'Subtopic']).map(&:id)  
         @student_ids = Student.all.pluck(:id)
         # TODO - common subjects - refer final UAT doc - refer catechumen (acceptance)
       end

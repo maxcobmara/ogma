@@ -3094,6 +3094,38 @@ en:
       question: Q
       total_scores: Total Scores
       average_scores: Average Scores
+    
+    average_course:
+      title: Analysis Data for Average Score of Evaluation for Lecturer
+      new: New Data Analysis for Average Score of Evaluation for Lecturer
+      edit: Edit Data Analysis for Average Score of Evaluation for Lecturer
+      lecturer_id: Lecturer
+      programme_id: Programme
+      dissatisfaction: General Dissactifaction
+      recommend_for_improvement: Recommendations for Improvement
+      lesson_content: "c. Lesson Content"
+      evaluation_category: Evaluation Category
+      support_justify: Support Justification
+      principal_id: Verified by
+      principal_date: Date
+      subject_id: Lesson Title
+      delivery_quality: "b. Quality of Delivery"
+      lecturer_knowledge: "a. Knowledge of Lecturer"
+      organisation: Organisation
+      expertise_qualification: Expertise/ Qualification
+      
+      criteria_notes: "Evaluation Criteria QUALIFIED or NOT QUALIFIED is based on the following 3 aspects whereby average of each aspect must not less than 5:"
+      icno: IC No
+      rank_position: Rank/Position
+      total_students: Total of Students
+      signatory: Signatory
+      qualified: Qualified
+      not_qualified: Not Qualified
+      principal_name: Name
+      score_rounded: "Note: average scores rounded to nearest (lower) score."
+      score_rounded_actual: "Note: average scores rounded to nearest (lower) score. (Actual values : "
+      analyse_average_data: Analyse Average Score
+      view_analysis_data: View Analysis Data
       
     examanalysis:
       title: Examination Analysis by Examination Paper

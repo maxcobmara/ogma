@@ -3013,7 +3013,39 @@ ms_MY:
       total: Jumlah
       question: S
       total_scores: Jumlah Skor
-      average_scores: Purata Skor
+      average_scores: Skor Purata
+      
+    average_course:
+      title: Data Analisa Skor Purata Penilaian Pensyarah
+      new: Data Analisa Baru bagi Skor Purata Penilaian Pensyarah
+      edit: Sunting Data Analisa bagi Skor Purata Penilaian Pensyarah
+      lecturer_id: Nama Pensyarah
+      programme_id: Nama Kursus/Program
+      dissatisfaction: Ketidakpuasan Am
+      recommend_for_improvement: Cadangan Pembaikan
+      lesson_content: "c. Isi Kandungan Pelajaran"
+      evaluation_category: Kategori Pilihan
+      support_justify: Justifikasi Sokongan
+      principal_id: Pengesahan Ketua Sekolah
+      principal_date: Tarikh
+      subject_id: Tajuk Pelajaran
+      delivery_quality: "b. Mutu Penyampaian"
+      lecturer_knowledge: "a. Pengetahuan Pensyarah"
+      organisation: Organisasi
+      expertise_qualification: Kepakaran/ Kelayakan
+      
+      criteria_notes: "Kriteria Penilaian LAYAK atau TIDAK LAYAK adalah berdasarkan tiga aspek teras di bawah yang mana skor purata setiap aspek tidak boleh kurang dari nilai 5:"
+      icno: No K/P
+      rank_position: Pangkat/Jawatan
+      total_students: Jumlah Pelatih
+      signatory: Tandatangan
+      qualified: Layak
+      not_qualified: Tidak Layak
+      principal_name: Nama Penuh
+      score_rounded: "Nota: Skor Purata dibulatkan kepada nilai skor (rendah) yang terdekat."
+      score_rounded_actual: "Nota: Skor Purata dibulatkan kepada nilai skor (rendah) yang terdekat. Nilai sebenar : "
+      analyse_average_data: Analisis Skor Purata
+      view_analysis_data: Papar Data Analisis
 
     examanalysis:
       title: Analisis Peperiksaan Mengikut Kertas Peperiksaan

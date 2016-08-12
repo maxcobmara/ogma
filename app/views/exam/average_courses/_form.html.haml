@@ -1,0 +1,121 @@
+.row
+  .col-md-offset-1
+    / Nav tabs
+    %ul.nav.nav-tabs
+      %li.active= link_to (t 'exam.evaluate_course.appraisal_details'),"#appraisal_details", "data-toggle" => "tab"
+      
+    .tab-content{style:"padding-top:1em"}
+      .col-md-8.col-md-offset-1
+        - if @average_course.new_record?
+          - subject_rec=Programme.find(params[:subject_id])
+          - lecturer_rec=Staff.find(params[:lecturer_id])
+        - else
+          - subject_rec=@average_course.subject 
+          - lecturer_rec=@average_course.lecturer
+        %dl.dl-horizontal
+          %dt=t 'exam.average_course.lecturer_id'
+          %dd=lecturer_rec.try(:staff_with_rank)
+          
+          %dt=t 'exam.average_course.icno'
+          %dd=lecturer_rec.try(:formatted_mykad)
+   
+          %dt=t 'exam.average_course.programme_id'
+          %dd=subject_rec.root.name
+          
+          %dt=t 'training.programme.course_type'
+          %dd=subject_rec.root.course_type
+          
+          %dt=t 'exam.average_course.total_students'
+          %dd
+            =@total_eval.to_s+" / "
+            /=Student.where(course_id: subject_rec.root_id).count.to_s
+            - topic_ids=subject_rec.descendants.where(course_type: ['Topic', 'Subtopic']).pluck(:id)
+            - lecturer_classes=WeeklytimetableDetail.where(lecturer_id: params[:lecturer_id], topic: topic_ids).pluck(:id)
+            = total_student=StudentAttendance.where(weeklytimetable_details_id: lecturer_classes).pluck(:student_id).uniq.count
+          
+          %dt=t 'training.programme.level'
+          %dd=subject_rec.root.level.upcase
+          
+          %dt=t 'exam.average_course.subject_id'
+          %dd=subject_rec.subject_list
+ 
+          = render 'average_scores'
+          
+      #appraisal_details.tab-pane.active
+        %br
+        .col-md-8.col-md-offset-2
+          .form-group
+            .col-sm-2.control-label
+              = f.label (t 'exam.average_course.organisation')
+            .col-md-6
+              = f.text_field :organisation, class: 'form-control'
+
+          .form-group
+            .col-sm-2.control-label
+              = f.label (t 'exam.average_course.expertise_qualification')
+            .col-md-6
+              = f.text_field :expertise_qualification, class: 'form-control'
+
+          .form-group
+            .col-sm-2.control-label
+              = f.label (t 'exam.average_course.dissatisfaction')
+            .col-md-6
+              = f.text_area :dissatisfaction, :size => "40x5", class: 'form-control'
+              
+          .form-group
+            .col-sm-2.control-label
+              = f.label (t 'exam.average_course.recommend_for_improvement')
+            .col-md-6
+              = f.text_area :recommend_for_improvement, :size => "40x5" , class: 'form-control'
+          %br
+          .col-md-10
+            %hr
+            =t 'exam.average_course.criteria_notes'
+          .row
+            .col-md-8 
+              &nbsp;
+          .row
+            .col-md-4.col-md-offset-2
+              %strong=(t 'exam.average_course.lecturer_knowledge')
+            .col-md-1=f.text_field :lecturer_knowledge, class: 'form-control'
+          .row
+            .col-md-4.col-md-offset-2
+              %strong=(t 'exam.average_course.delivery_quality')
+            .col-md-1=f.text_field :delivery_quality, class: 'form-control'
+          .row
+            .col-md-4.col-md-offset-2
+              %strong=(t 'exam.average_course.lesson_content')
+            .col-md-1=f.text_field :lesson_content, class: 'form-control'
+          
+          .form-group
+            .col-sm-2.control-label
+              =f.label (t 'exam.average_course.evaluation_category')
+            .col-md-6
+              .form-inline
+                .form-group
+                  = t 'exam.average_course.qualified'
+                  =f.radio_button :evaluation_category, true
+                .form-group
+                  = t 'exam.average_course.not_qualified'
+                  =f.radio_button :evaluation_category, false
+           
+          .col-md-10
+            %hr
+          .row         
+          .form-group
+            .col-sm-2.control-label
+              =f.label (t 'exam.average_course.support_justify')
+            .col-md-6
+              =f.text_area :support_justify, size: '40x2', class: 'form-control'
+          .form-group
+            .col-sm-2.control-label
+              =f.label (t 'exam.average_course.principal_id')
+            .col-md-6
+              =f.collection_select :principal_id, Staff.all.order(rank_id: :asc, name: :asc), :id, :staff_with_rank, {:include_blank => (t 'select')}, {class: 'selectpicker', "data-width"=>"280px"}
+          .form-group
+            .col-sm-2.control-label
+              =f.label (t 'exam.average_course.principal_date')
+            .col-md-2
+              =f.text_field :principal_date, class: 'date_picker_reverse form-control'
+          %br
+   
