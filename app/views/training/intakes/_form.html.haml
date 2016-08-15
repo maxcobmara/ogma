@@ -28,7 +28,7 @@
             .col-sm-2.control-label
               = f.label :register_on
             .col-md-3
-              = f.text_field :register_on, class: 'form-control date_picker_reverse'
+              = f.text_field :register_on, class: 'form-control date_picker_reverse', value: @intake.try(:register_on).try(:strftime, '%d-%m-%Y')
           .form-group
             .col-sm-2.control-label
               = f.label :is_active

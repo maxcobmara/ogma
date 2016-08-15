@@ -313,6 +313,7 @@ en:
   from: From
   to: To
   to2: To
+  for: for
   return: Return
   confirmed: Confirmed
   confirmed_on: Confirmed on
@@ -3103,14 +3104,14 @@ en:
       programme_id: Programme
       dissatisfaction: General Dissactifaction
       recommend_for_improvement: Recommendations for Improvement
-      lesson_content: "c. Lesson Content"
+      lesson_content: Lesson Content
       evaluation_category: Evaluation Category
       support_justify: Support Justification
       principal_id: Verified by
       principal_date: Date
       subject_id: Lesson Title
-      delivery_quality: "b. Quality of Delivery"
-      lecturer_knowledge: "a. Knowledge of Lecturer"
+      delivery_quality: Quality of Delivery
+      lecturer_knowledge: Knowledge of Lecturer
       organisation: Organisation
       expertise_qualification: Expertise/ Qualification
       
@@ -3126,6 +3127,12 @@ en:
       score_rounded_actual: "Note: average scores rounded to nearest (lower) score. (Actual values : "
       analyse_average_data: Analyse Average Score
       view_analysis_data: View Analysis Data
+      of_subject: of subject
+      lecturer_data: Lecturer data
+      course_data: Course data
+      evaluation_analysis_data: Evaluation analysis data
+      evaluation_summary: Evaluation Summary
+      principal_verification: Principal Verification
       
     examanalysis:
       title: Examination Analysis by Examination Paper

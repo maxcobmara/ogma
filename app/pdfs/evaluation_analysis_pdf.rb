@@ -57,17 +57,17 @@ class Evaluation_analysisPdf < Prawn::Document
   end
   
   def table_detailing
-    data=[["<u>DATA PENSYARAH</u>"],
+    data=[["<u>#{I18n.t('exam.average_course.lecturer_data').upcase}</u>"],
           ["1.  #{I18n.t('exam.average_course.lecturer_id')} : #{@average_course.lecturer.try(:staff_with_rank) }"],
           ["2. #{I18n.t('exam.average_course.icno')} : #{@average_course.lecturer.try(:formatted_mykad) }    #{I18n.t('staff.rank_id')}/Jawatan : #{@average_course.lecturer.try(:rank).try(:name)}/#{@average_course.lecturer.try(:positions).try(:first).name}"],
           ["3.  #{I18n.t('exam.average_course.organisation')} : #{@average_course.organisation}"], 
           ["4.  #{I18n.t('exam.average_course.expertise_qualification')} : #{@average_course.expertise_qualification}"],[""],
-          ["<u>DATA KURSUS</u>"],
+          ["<u>#{I18n.t('exam.average_course.course_data').upcase}</u>"],
           ["5.  #{I18n.t('exam.evaluate_course.course_id')} : #{@average_course.subject.root.name}"],
           ["6.  #{I18n.t('training.programme.course_type')} : #{@average_course.subject.root.course_type=='Asas' ? '<b>Asas</b>' : 'Asas'}  #{@average_course.subject.root.course_type=='Pertengahan' ? '<b>Pertengahan</b>' : 'Pertengahan'}  #{@average_course.subject.root.course_type=='Lanjutan' ? '<b>Lanjutan</b>' : 'Asas'}"],
           ["7.  #{I18n.t('exam.average_course.total_students')} : #{@evaluator_count} / #{@total_student}"],
           ["8.  #{I18n.t('training.programme.level')} : #{@average_course.subject.root.level=='peg' ? '<b>PEG</b>' : 'PEG'}  #{@average_course.subject.root.level=='llp' ? '<b>LLP</b>' : 'LLP'} "],[""],
-          ["<u>DATA ANALISIS PENILAIAN</u>"],
+          ["<u>#{I18n.t('exam.average_course.evaluation_analysis_data').upcase}</u>"],
           ["9.  #{I18n.t('exam.average_course.subject_id') } : #{@average_course.subject.subject_list}"],
           ["10.  #{I18n.t('exam.evaluate_course.average_scores')} : "], [""]
           ]
@@ -119,11 +119,11 @@ class Evaluation_analysisPdf < Prawn::Document
   
   def table_detailing2
     data=[[{content: "11.  #{I18n.t('exam.average_course.dissatisfaction')} : #{@average_course.dissatisfaction}", colspan: 2}], [{content: "12.  #{I18n.t('exam.average_course.recommend_for_improvement')} : #{@average_course.recommend_for_improvement}", colspan: 2}],
-          [{content: "", colspan: 2}], [{content: "<u>RUMUSAN PENILAIAN</u>", colspan: 2}], [{content: "", colspan: 2}],
+          [{content: "", colspan: 2}], [{content: "<u>#{I18n.t('exam.average_course.evaluation_summary').upcase}</u>", colspan: 2}], [{content: "", colspan: 2}],
           [{content: "13.  #{I18n.t('exam.average_course.criteria_notes')}", colspan: 2}], ["","a.      #{I18n.t('exam.average_course.lecturer_knowledge')}   #{@average_course.lecturer_knowledge}"],
          ["","b.      #{I18n.t('exam.average_course.delivery_quality')}             #{@average_course.delivery_quality}"], ["","c.      #{I18n.t('exam.average_course.lesson_content')}    #{@average_course.lesson_content}"], 
           [{content: "14.  #{I18n.t('exam.average_course.evaluation_category')} :  #{@average_course.evaluation_category==true ? '<b>'+I18n.t('exam.average_course.qualified')+'</b>' : I18n.t('exam.average_course.qualified')} #{@average_course.evaluation_category==false ? '<b>'+I18n.t('exam.average_course.not_qualified')+'</b>' : I18n.t('exam.average_course.not_qualified')}", colspan: 2}], [""],
-         [{content: "15.  <b>#{I18n.t('exam.average_course.support_justify')}</b> : #{@average_course.support_justify}", colspan: 2}],[{content: "PENGESAHAN KETUA SEKOLAH", colspan: 2}],
+         [{content: "15.  <b>#{I18n.t('exam.average_course.support_justify')}</b> : #{@average_course.support_justify}", colspan: 2}],[{content: "#{I18n.t('exam.average_course.principal_verification').upcase}", colspan: 2}],
          [{content: "#{I18n.t('exam.average_course.signatory')} : ", colspan: 2}], [{content: "#{I18n.t('exam.average_course.principal_id')} : #{@average_course.verifier.try(:staff_with_rank)}", colspan: 2}], [{content: "#{I18n.t('staff.rank_id')} : #{@average_course.verifier.try(:rank).try(:name)}", colspan: 2}], [{content: "#{I18n.t('exam.average_course.principal_date')} : #{@average_course.principal_date.try(:strftime, '%d-%m-%Y')}", colspan: 2}] ]
     table(data, :column_widths => [70,440], :cell_style => { :size => 11, :inline_format => true, :padding => [0, 0, 0, 0]})  do
       a=0

@@ -59,15 +59,21 @@
                 &nbsp;
             .row
               .col-md-4.col-md-offset-2
-                %strong=(t 'exam.average_course.lecturer_knowledge')
+                %strong
+                  a.&nbsp;&nbsp;
+                  =(t 'exam.average_course.lecturer_knowledge')
               .col-md-1=@average_course.lecturer_knowledge
             .row
               .col-md-4.col-md-offset-2
-                %strong=(t 'exam.average_course.delivery_quality')
+                %strong
+                  b.&nbsp;&nbsp;
+                  =(t 'exam.average_course.delivery_quality')
               .col-md-1=@average_course.delivery_quality
             .row
               .col-md-4.col-md-offset-2
-                %strong=(t 'exam.average_course.lesson_content')
+                %strong
+                  c.&nbsp;&nbsp;
+                  =(t 'exam.average_course.lesson_content')
               .col-md-1=@average_course.lesson_content
             
             %br

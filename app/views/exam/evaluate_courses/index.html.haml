@@ -21,9 +21,10 @@
       %tr
         - if current_user.college.code=="amsas"
           %th= sort_link(@search, :studentevaluate_name_cont, (t 'exam.evaluate_course.student_id'))
+          %th{width: '30%'}= (t 'exam.evaluate_course.staff_id')+" - "+(t 'exam.evaluate_course.subject_id')
         - if current_user.college.code=="kskbjb"
           %th= (t 'exam.evaluate_course.programme_subject')
-        %th= sort_link(@search, :evaluate_date_eq, (t 'exam.evaluate_course.evaluate_date'))
+        %th{width: '50%'}= sort_link(@search, :evaluate_date_eq, (t 'exam.evaluate_course.evaluate_date'))
         - if current_user.college.code=="kskbjb"
           %th= sort_link(@search, :staffevaluate_name_cont, (t 'exam.evaluate_course.staff_id'))
 
@@ -31,25 +32,46 @@
       = render "search_bar"
       - @evaluate_courses.group_by(&:subject_id).each do |subject, all_evaluations|  
         - all_evaluations.group_by(&:staff_id).sort.each do |lecturer, evaluations|
-          - if current_user.college.code=="amsas"
-            %tr
-              %td.group{:colspan => "2"}
-                =Staff.find(lecturer).try(:staff_with_rank)+" | "+(evaluations.first.stucourse.programme_coursetype_name+" - " +(evaluations.first.subject_id.blank? ? (t 'exam.evaluate_course.invite_lec_topic')+" : "+evaluations.first.invite_lec_topic : evaluations.first.subjectevaluate.subject_list))
-                - analysis=AverageCourse.where(subject_id: evaluations.first.subject_id).where(lecturer_id: lecturer)
-                - if analysis.count==0
-                  = link_to (t 'exam.average_course.analyse_average_data'), new_exam_average_course_path(subject_id: evaluations.first.subject_id, lecturer_id: lecturer)
-                - else
-                  = link_to (t 'exam.average_course.view_analysis_data'), exam_average_course_path(analysis.first)
+          - if lecturer
+            - if current_user.college.code=="amsas"
+              %tr
+                %td.group{:colspan => "3"}
+                  =Staff.find(lecturer).try(:staff_with_rank)+" | "+(evaluations.first.stucourse.programme_list+" - " +(evaluations.first.subject_id.blank? ? (t 'exam.evaluate_course.invite_lec_topic')+" : "+evaluations.first.invite_lec_topic : evaluations.first.subjectevaluate.subject_list))
+                  - analysis=AverageCourse.where(subject_id: evaluations.first.subject_id).where(lecturer_id: lecturer)
+                  |
+                  - if analysis.count==0
+                    = link_to (t 'exam.average_course.analyse_average_data'), new_exam_average_course_path(subject_id: evaluations.first.subject_id, lecturer_id: lecturer)
+                  - else
+                    = link_to (t 'exam.average_course.view_analysis_data'), exam_average_course_path(analysis.first)
     
-          - for evaluate_course in evaluations
-            %tr
-              - if current_user.college.code=="amsas"
-                %td= link_to evaluate_course.studentevaluate.try(:student_with_rank), exam_evaluate_course_path(evaluate_course)
-              - if current_user.college.code=="kskbjb"
-                /%td= evaluate_course.student_id.blank? ? "No Student" : evaluate_course.studentevaluate.try(:matrix_name)
-                %td= link_to (evaluate_course.stucourse.programme_coursetype_name+" - " +(evaluate_course.subject_id.blank? ? (t 'exam.evaluate_course.invite_lec_topic')+" : "+evaluate_course.invite_lec_topic : evaluate_course.subjectevaluate.subject_list)), exam_evaluate_course_path(evaluate_course)
-              %td= evaluate_course.evaluate_date.blank? ? "-" : evaluate_course.evaluate_date.try(:strftime, "%d %b %Y") 
-              - if current_user.college.code=="kskbjb"
-                %td=h evaluate_course.staff_id.blank? ? (t 'exam.evaluate_course.no_staff')+evaluate_course.invite_lec : evaluate_course.staffevaluate.try(:staff_with_rank)
-      
+            - for evaluate_course in evaluations
+              %tr
+                - if current_user.college.code=="amsas"
+                  %td{:colspan=>"2"}= link_to evaluate_course.studentevaluate.try(:student_with_rank), exam_evaluate_course_path(evaluate_course)
+                - if current_user.college.code=="kskbjb"
+                  /%td= evaluate_course.student_id.blank? ? "No Student" : evaluate_course.studentevaluate.try(:matrix_name)
+                  /%td= link_to (evaluate_course.stucourse.programme_coursetype_name+" - " +(evaluate_course.subject_id.blank? ? (t 'exam.evaluate_course.invite_lec_topic')+" : "+evaluate_course.invite_lec_topic : evaluate_course.subjectevaluate.subject_list)), exam_evaluate_course_path(evaluate_course)
+                  %td= link_to (evaluate_course.stucourse.programme_coursetype_name+" - "+evaluate_course.subjectevaluate.subject_list), exam_evaluate_course_path(evaluate_course)
+                %td= evaluate_course.evaluate_date.blank? ? "-" : evaluate_course.evaluate_date.try(:strftime, "%d %b %Y") 
+                - if current_user.college.code=="kskbjb"
+                  %td=h evaluate_course.staff_id.blank? ? (t 'exam.evaluate_course.no_staff')+evaluate_course.invite_lec : evaluate_course.staffevaluate.try(:staff_with_rank)
+
+        
+      - @evaluate_courses.group_by(&:invite_lec_topic).each do |topic, all_evaluations|
+        - all_evaluations.group_by(&:invite_lec).each do |invite_lec, evaluations|
+          - if invite_lec!=""
+            - if current_user.college.code=="amsas"
+              %tr
+                / TODO - 15Aug2016 - average score for invitation lecturer - require registration of lecturer & topic? to ensure precise data selection?
+                %td.group{:colspan => "3"}=(t 'exam.evaluate_course.invite_lec')+": "+invite_lec+" | "+topic
+            - for evaluate_course in evaluations
+              %tr
+                - if current_user.college.code=="amsas"
+                  %td{:colspan=>"2"}=link_to evaluate_course.studentevaluate.try(:student_with_rank), exam_evaluate_course_path(evaluate_course)
+                - if current_user.college.code=="kskbjb"
+                  %td=link_to topic, exam_evaluate_course_path(evaluate_course)
+                %td=evaluate_course.evaluate_date.blank? ? "-" : evaluate_course.evaluate_date.try(:strftime, "%d %b %Y") 
+                - if current_user.college.code=="kskbjb"
+                  %td=evaluate_course.invite_lec_topic
+          
   .right{style:"padding:0 30px; margin:0;"}= paginate @evaluate_courses, :theme => 'twitter-bootstrap-3'

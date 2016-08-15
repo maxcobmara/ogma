@@ -291,6 +291,7 @@ ms_MY:
   from: Dari
   to: Hingga
   to2: Kepada
+  for: untuk
   return: Pemulangan
   confirmed: Disahkan
   confirmed_on: Disahkan pada
@@ -3023,14 +3024,14 @@ ms_MY:
       programme_id: Nama Kursus/Program
       dissatisfaction: Ketidakpuasan Am
       recommend_for_improvement: Cadangan Pembaikan
-      lesson_content: "c. Isi Kandungan Pelajaran"
+      lesson_content: Isi Kandungan Pelajaran
       evaluation_category: Kategori Pilihan
       support_justify: Justifikasi Sokongan
       principal_id: Pengesahan Ketua Sekolah
       principal_date: Tarikh
       subject_id: Tajuk Pelajaran
-      delivery_quality: "b. Mutu Penyampaian"
-      lecturer_knowledge: "a. Pengetahuan Pensyarah"
+      delivery_quality: Mutu Penyampaian
+      lecturer_knowledge: Pengetahuan Pensyarah"
       organisation: Organisasi
       expertise_qualification: Kepakaran/ Kelayakan
       
@@ -3044,8 +3045,14 @@ ms_MY:
       principal_name: Nama Penuh
       score_rounded: "Nota: Skor Purata dibulatkan kepada nilai skor (rendah) yang terdekat."
       score_rounded_actual: "Nota: Skor Purata dibulatkan kepada nilai skor (rendah) yang terdekat. Nilai sebenar : "
-      analyse_average_data: Analisis Skor Purata
-      view_analysis_data: Papar Data Analisis
+      analyse_average_data: Analisa Skor Purata
+      view_analysis_data: Papar Data Analisa
+      of_subject: bagi subjek
+      lecturer_data: Data pensyarah
+      course_data: Data kursus
+      evaluation_analysis_data: Data analisis penilaian
+      evaluation_summary: Rumusan Penilaian
+      principal_verification: Pengesahan Ketua Sekolah
 
     examanalysis:
       title: Analisis Peperiksaan Mengikut Kertas Peperiksaan
