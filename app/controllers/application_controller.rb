@@ -28,6 +28,10 @@ class ApplicationController < ActionController::Base
   end
   ###
 
+  def current_college
+    current_user.college.code
+  end
+
   def after_sign_in_path_for(resource)
    '/dashboard'
   end
@@ -37,10 +41,13 @@ class ApplicationController < ActionController::Base
   end
 
   def setup_college_scope
-    current_college = current_user.college.code
 
     prepend_view_path(
       ActionView::FileSystemResolver.new(Rails.root.join("app/views"), ":prefix/#{current_college}/:action{.:locale,}{.:formats,}{.:handlers,}")
+    )
+
+    prepend_view_path(
+      ActionView::FileSystemResolver.new(Rails.root.join("app/pdf"), ":prefix/#{current_college}/:action{.:locale,}{.:formats,}{.:handlers,}")
     )
   end
 
