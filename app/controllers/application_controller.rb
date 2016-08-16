@@ -6,6 +6,7 @@ class ApplicationController < ActionController::Base
 
   before_filter :set_locale
   before_filter { |c| Authorization.current_user = c.current_user }
+  before_filter :setup_college_scope
   helper :bootstrap_icon, :devise
   helper_method :mailbox, :conversation
 
@@ -13,12 +14,12 @@ class ApplicationController < ActionController::Base
   #def current_user
     #Login.first
   #end
-  
+
   #http://rails-bestpractices.com/posts/47-fetch-current-user-in-models (sample:travel_requests)
   def set_current_user
     User.current = current_user
   end
-  
+
   ### http://stackoverflow.com/questions/19861067/activemodelforbiddenattributeserror-in-commentscontrollercreate?rq=1
   before_filter do
     resource = controller_name.singularize.to_sym
@@ -30,11 +31,19 @@ class ApplicationController < ActionController::Base
   def after_sign_in_path_for(resource)
    '/dashboard'
   end
-  
+
   def after_sign_out_path_for(resource)
     "http://#{request.host}:3000/logout"
   end
-  
+
+  def setup_college_scope
+    current_college = current_user.college.code
+
+    prepend_view_path(
+      ActionView::FileSystemResolver.new(Rails.root.join("app/views"), ":prefix/#{current_college}/:action{.:locale,}{.:formats,}{.:handlers,}")
+    )
+  end
+
 
   private
 
@@ -54,7 +63,7 @@ class ApplicationController < ActionController::Base
       flash[:error] = "Sorry, you are not allowed to access that page."
       redirect_to dashboard_path
     end
-    
+
     def mailbox
       @mailbox ||= current_user.mailbox
     end
