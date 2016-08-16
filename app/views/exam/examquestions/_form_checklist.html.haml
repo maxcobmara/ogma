@@ -71,7 +71,11 @@
     .col-sm-2.control-label
       = f.label :approver_id
     .col-md-6
-      = f.collection_select :approver_id, Staff.where("id IN (?)", @examquestion.question_approver).order('staffgrade_id DESC, name ASC'), :id, :name, {:include_blank => (t 'helpers.prompt.select_approver')},{class: 'selectpicker', "data-width"=>"230px"}
+      - if current_user.college.code=="kskb"
+        = f.collection_select :approver_id, Staff.where("id IN (?)", @examquestion.question_approver).order('staffgrade_id DESC, name ASC'), :id, :name, {:include_blank => (t 'helpers.prompt.select_approver')},{class: 'selectpicker', "data-width"=>"230px"}
+      - else
+        = f.collection_select :approver_id, Staff.all.order(rank_id: :asc, name: :asc), :id, :staff_with_rank, {:include_blank => (t 'helpers.prompt.select_approver')},{class: 'selectpicker', "data-width"=>"230px"}
+      
   //copied from partial : form_approval.html.haml in order to assign HOD accordingly - end
 
 / This stuff is for subs

@@ -283,7 +283,7 @@ class Exam::ExamsController < ApplicationController
         unless @programme.nil?
           @programme_id=@programme.id
 	  @programme_names=Programme.where(id: @programme_id).map(&:programme_list) ### --CREATE
-	  @subjects=Programme.subject_groupbyoneprogramme(@programme_id) ### --CREATE
+	  @subjects=Programme.subject_groupbyoneprogramme2(@programme_id) ### --CREATE
 	  @topics=Programme.topic_groupbysubject_oneprogramme(@programme_id) ### --CREATE
         else
           #posbasik part
@@ -297,14 +297,14 @@ class Exam::ExamsController < ApplicationController
         #applicable - edit, update, create
         @programme_id = @exam.subject.root.id 
 	@programme_names=Programme.where(id: @programme_id).map(&:programme_list) ### --UPDATE
-	@subjects=Programme.subject_groupbyoneprogramme(@programme_id) ### --UPDATE
+	@subjects=Programme.subject_groupbyoneprogramme2(@programme_id) ### --UPDATE
 	@topics=Programme.topic_groupbysubject_oneprogramme(@programme_id) ### --UPDATE
       end
       
       #if Programme.where(course_type: ['Diploma']).pluck(:name).include?(@lecturer_programme) || (posbasiks.include?(@lecturer_programme) && @current_user.roles.pluck(:authname).include?("programme_manager")==false)
       if Programme.where(course_type: ['Diploma']).pluck(:name).include?(@lecturer_programme) && @current_user.roles.pluck(:authname).include?("programme_manager")==false
           @programme_names=Programme.where(id: @programme_id).map(&:programme_list)
-          @subjects=Programme.subject_groupbyoneprogramme(@programme_id)
+          @subjects=Programme.subject_groupbyoneprogramme2(@programme_id)
           @topics=Programme.topic_groupbysubject_oneprogramme(@programme_id)
       elsif posbasiks.include?(@lecturer_programme)
           @programme_names=Programme.where(course_type: posbasiks).map(&:programme_list)
@@ -319,14 +319,14 @@ class Exam::ExamsController < ApplicationController
           else
             if roles.include?("administration") || roles.include?("exampaper_module")
               @programme_names=Programme.programme_names
-              @topics=Programme.topic_groupbysubject
-              @subjects=Programme.subject_groupbyprogramme
+              @topics=Programme.topic_groupbysubject2
+              @subjects=Programme.subject_groupbyprogramme2
             else
               leader_unit=tasks_main.scan(/Program (.*)/)[0][0].split(" ")[0] if tasks_main!="" && tasks_main.include?('Program')
               if leader_unit
                 @programme_id = Programme.where('name ILIKE (?) AND ancestry_depth=?',"%#{leader_unit}%",0).first.id
                 @programme_names=Programme.where(id: @programme_id).map(&:programme_list)
-                @subjects=Programme.subject_groupbyoneprogramme(@programme_id)
+                @subjects=Programme.subject_groupbyoneprogramme2(@programme_id)
                 @topics=Programme.topic_groupbysubject_oneprogramme(@programme_id)
               end
             end    

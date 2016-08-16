@@ -44,6 +44,10 @@ class Programme < ActiveRecord::Base
       "#{code}" + " " + "#{name.titleize}"   
   end
   
+  def subject_list2
+      "#{combo_code}" + " " + "#{name.titleize}"   
+  end
+  
   def programme_list
     if is_root?
       prog="#{course_type}" + " " + "#{name}"   
@@ -158,16 +162,27 @@ class Programme < ActiveRecord::Base
     @groupped_subject
   end
   
-  def self.subject_groupbyprogramme2
+  def self.subject_groupbyprogramme_amsas
     subjectby_programmelists=Programme.where(course_type: "Subject").group_by{|x|x.root.programme_list}
     @groupped_subject=[]
     subjectby_programmelists.each do |programmelist, subjects|
       pg_subjects=[[I18n.t('helpers.prompt.select_subject'), '']]
-      subjects.each{|subject|pg_subjects << [subject.subject_list, subject.id]} 
+      subjects.each{|subject|pg_subjects << [subject.subject_list2, subject.id]} 
       @groupped_subject << [programmelist, pg_subjects]
     end
     @groupped_subject
   end
+  
+#   def self.subject_groupbyprogramme2
+#     subjectby_programmelists=Programme.where(course_type: "Subject").group_by{|x|x.root.programme_list}
+#     @groupped_subject=[]
+#     subjectby_programmelists.each do |programmelist, subjects|
+#       pg_subjects=[[I18n.t('helpers.prompt.select_subject'), '']]
+#       subjects.each{|subject|pg_subjects << [subject.subject_list, subject.id]} 
+#       @groupped_subject << [programmelist, pg_subjects]
+#     end
+#     @groupped_subject
+#   end
   
   def self.subject_groupbyposbasiks
     posbasik_ids=Programme.where(course_type: ['Diploma Lanjutan', 'Pos Basik', 'Pengkhususan']).pluck(:id)
@@ -198,10 +213,18 @@ class Programme < ActiveRecord::Base
   #use in exam controller - set shareable data - programme lecturers
   def self.subject_groupbyoneprogramme(progid)
     subjectby_programmelists=Programme.find(progid).descendants.where(course_type: "Subject").group_by{|x|x.root.programme_list}
+    #check first / one subject - code format
+    subject_code_format=Programme.where(course_type: 'Subject').first.code.size
     @groupped_subject=[]
     subjectby_programmelists.each do |programmelist, subjects|
       pg_subjects=[[I18n.t('helpers.prompt.select_subject'), '']]
-      subjects.sort_by{|x|x.code[-4,4]}.each{|subject|pg_subjects << [subject.subject_list]} # [subject.subject_list]}
+      if subject_code_format >= 4
+        #kskb
+        subjects.sort_by{|x|x.code[-4,4]}.each{|subject|pg_subjects << [subject.subject_list]} # [subject.subject_list]}
+      else
+        #amsas
+        subjects.sort_by(&:code).each{|subject|pg_subjects << [subject.subject_list]} # [subject.subject_list]}
+      end
       @groupped_subject << [programmelist, pg_subjects]
     end
     @groupped_subject
@@ -210,10 +233,16 @@ class Programme < ActiveRecord::Base
   #orignal one-start
   def self.subject_groupbyoneprogramme2(progid)
     subjectby_programmelists=Programme.find(progid).descendants.where(course_type: ["Subject", "Commonsubject"]).group_by{|x|x.root.programme_list}
+    #check first / one subject - code format
+    subject_code_format=Programme.where(course_type: 'Subject').first.code.size
     @groupped_subject=[]
     subjectby_programmelists.each do |programmelist, subjects|
       pg_subjects=[[I18n.t('helpers.prompt.select_subject'), '']]
-      subjects.sort_by{|x|x.code[-4,4].strip.to_i}.each{|subject|pg_subjects << [subject.subject_list, subject.id]}
+      if subject_code_format >= 4
+        subjects.sort_by{|x|x.code[-4,4].strip.to_i}.each{|subject|pg_subjects << [subject.subject_list, subject.id]}
+      else
+        subjects.sort_by(&:code).each{|subject|pg_subjects << [subject.subject_list, subject.id]}
+      end
       @groupped_subject << [programmelist, pg_subjects]
     end
     @groupped_subject
@@ -253,6 +282,28 @@ class Programme < ActiveRecord::Base
       sb_topics=[[I18n.t('helpers.prompt.select_topic'), '']]
       topics.sort_by{|x|x.code}.each{|topic|sb_topics << [topic.subject_list, topic.id]}  #[topic.subject_list]}
       @groupped_topic << [Programme.find(subjectid).subject_list, sb_topics]
+    end
+    @groupped_topic
+  end
+  
+  def self.topic_groupbysubject2
+    topicby_subjectids=Programme.where(course_type: "Topic").group_by{|x|x.ancestry.split("/").last}
+    @groupped_topic=[]
+    topicby_subjectids.each do |subjectid, topics|
+      sb_topics=[[I18n.t('helpers.prompt.select_topic'), '']]
+      topics.sort_by{|x|x.code}.each{|topic|sb_topics << [topic.subject_list, topic.id]}  #[topic.subject_list]}
+      @groupped_topic << [subjectid, sb_topics]
+    end
+    @groupped_topic
+  end
+  
+  def self.topic_groupbysubject_amsas
+    topicby_subjectids=Programme.where(course_type: "Topic").group_by{|x|x.ancestry.split("/").last}
+    @groupped_topic=[]
+    topicby_subjectids.each do |subjectid, topics|
+      sb_topics=[[I18n.t('helpers.prompt.select_topic'), '']]
+      topics.sort_by{|x|x.code}.each{|topic|sb_topics << [topic.subject_list, topic.id]}  #[topic.subject_list]}
+      @groupped_topic << [Programme.find(subjectid).subject_list2, sb_topics]
     end
     @groupped_topic
   end
