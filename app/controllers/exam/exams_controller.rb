@@ -79,11 +79,13 @@ class Exam::ExamsController < ApplicationController
     elsif @exam.subject_id!=nil && (@exam.subject.parent.code == '5' || @exam.subject.parent.code == '6')
      @year = "3 / "
     end
+    
+    render "exam/exams/#{current_user.college.code}/show"
 
-    respond_to do |format|
-      format.html # show.html.erb
-      format.xml  { render :xml => @exam }
-    end
+#     respond_to do |format|
+#       format.html # show.html.erb
+#       format.xml  { render :xml => @exam }
+#     end
   end
 
   # GET /exams/new
