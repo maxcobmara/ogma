@@ -126,7 +126,7 @@ class Programme < ActiveRecord::Base
   end
   
   def programme_subject
-    "#{root.course_type}"+" "+"#{root.name}"+" - "+"#{code}"+" "+"#{name} "
+    "#{root.course_type}"+" "+"#{root.programme_list}"+" - "+"#{code}"+" "+"#{name} "
   end
   
   def programmelist_subject

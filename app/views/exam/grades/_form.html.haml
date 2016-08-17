@@ -11,9 +11,10 @@
 - else
   - @subject = @grade.subject_id
   - @programme = @grade.subjectgrade.root_id
-- diploma=Programme.where(course_type: 'Diploma')
-- @radiografi=diploma.where('name ILIKE?', '%Radiografi%').first.id
-- @carakerja=diploma.where('name ILIKE?', '%Jurupulih Perubatan Cara Kerja%').first.id
+- if current_user.college.code=="kskbjb"
+  - diploma=Programme.where(course_type: 'Diploma')
+  - @radiografi=diploma.where('name ILIKE?', '%Radiografi%').first.id
+  - @carakerja=diploma.where('name ILIKE?', '%Jurupulih Perubatan Cara Kerja%').first.id
 .row
   .col-md-10.col-md-offset-1
     / Nav tabs
