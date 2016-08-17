@@ -87,10 +87,10 @@
 - @fullmarks = Exam.find(@examid).exam_template.template_full_marks
 - @b_count=0
 - @diff_total_mcq=0
-
-- diploma=Programme.where(course_type: 'Diploma')
-- radiografi=diploma.where('name ILIKE?', '%Radiografi%').first.id
-- carakerja=diploma.where('name ILIKE?', '%Jurupulih Perubatan Cara Kerja%').first.id
+- if current_user.college.code=="kskbjb"
+  - diploma=Programme.where(course_type: 'Diploma')
+  - radiografi=diploma.where('name ILIKE?', '%Radiografi%').first.id
+  - carakerja=diploma.where('name ILIKE?', '%Jurupulih Perubatan Cara Kerja%').first.id
 
 .row
   %table.table
