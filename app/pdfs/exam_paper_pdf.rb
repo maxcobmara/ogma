@@ -1,15 +1,10 @@
 class Exam_paperPdf < Prawn::Document 
-  def initialize(exam, view)
+  def initialize(exam, view, college)
     super({top_margin: 30, page_size: 'A4', page_layout: :portrait })
     @exam = exam
     @view = view
-    if @exam.subject_id!=nil && (@exam.subject.parent.code == '1' || @exam.subject.parent.code == '2') 
-      @year = "TAHUN 1  SEMESTER "
-    elsif @exam.subject_id!=nil && (@exam.subject.parent.code == '3' || @exam.subject.parent.code == '4')
-      @year = "TAHUN 2  SEMESTER "
-    elsif @exam.subject_id!=nil && (@exam.subject.parent.code == '5' || @exam.subject.parent.code == '6')
-      @year = "TAHUN 3  SEMESTER "
-    end
+    @college = college
+    font "Helvetica"
     if @exam.starttime.strftime('%p')=="AM"
       @meridian_timing=" pagi"
     elsif @exam.starttime.strftime('%p')=="PM"
@@ -28,42 +23,59 @@ class Exam_paperPdf < Prawn::Document
         @meridian_timing2="petang"
       end
     end
-    font "Times-Roman"
-    cover_page
-    if @exam.subject.root_id ==2 #Fisioterapi have 3 cover pages
-      repeat(lambda {|pg| pg > 1 && pg!=@mcqpages+1 && pg!=@mcq_seqpages+1}) do
-        page_header_non_cover
-      end
-    else
-      if [1,4].include?(@exam.subject.root_id)
-        repeat(lambda {|pg| pg > 1 && pg!=@mcqpages+1}) do #1 cover / combine
-          page_header_non_cover
-        end
-      else
-        repeat(lambda {|pg| pg > 1 && pg!=@mcqpages+1}) do #2 covers / separate
-          page_header_non_cover
-        end
-      end
-    end
     
-    mcq_part if @exam.examquestions.mcqq.count > 0
-    @mcqpages=page_number
-    if [1, 4].include?(@exam.subject.root_id)==false
-      if @exam.examquestions.seqq.count > 0
-        @coverof="seq" if @exam.subject.root_id==2
-        cover_page2
+    if @college.code=="kskbjb"
+      if @exam.subject_id!=nil && (@exam.subject.parent.code == '1' || @exam.subject.parent.code == '2') 
+	@year = "TAHUN 1  SEMESTER "
+      elsif @exam.subject_id!=nil && (@exam.subject.parent.code == '3' || @exam.subject.parent.code == '4')
+	@year = "TAHUN 2  SEMESTER "
+      elsif @exam.subject_id!=nil && (@exam.subject.parent.code == '5' || @exam.subject.parent.code == '6')
+	@year = "TAHUN 3  SEMESTER "
       end
-    end
-    seq_part if @exam.examquestions.seqq.count > 0
-    @mcq_seqpages=page_number
-    if @exam.subject.root_id==2
-      if @exam.examquestions.meqq.count > 0
-        @coverof="meq"
-        cover_page2
+      cover_page
+      if @exam.subject.root_id ==2 #Fisioterapi have 3 cover pages
+	repeat(lambda {|pg| pg > 1 && pg!=@mcqpages+1 && pg!=@mcq_seqpages+1}) do
+	  page_header_non_cover
+	end
+      else
+	if [1,4].include?(@exam.subject.root_id)
+	  repeat(lambda {|pg| pg > 1 && pg!=@mcqpages+1}) do #1 cover / combine
+	    page_header_non_cover
+	  end
+	else
+	  repeat(lambda {|pg| pg > 1 && pg!=@mcqpages+1}) do #2 covers / separate
+	    page_header_non_cover
+	  end
+	end
       end
-    end
-    @before_meq=page_number
-    meq_part if @exam.examquestions.meqq.count > 0
+      mcq_part if @exam.examquestions.mcqq.count > 0
+      @mcqpages=page_number
+      if [1, 4].include?(@exam.subject.root_id)==false
+	if @exam.examquestions.seqq.count > 0
+	  @coverof="seq" if @exam.subject.root_id==2
+	  cover_page2
+	end
+      end
+      seq_part if @exam.examquestions.seqq.count > 0
+      @mcq_seqpages=page_number
+      if @exam.subject.root_id==2
+	if @exam.examquestions.meqq.count > 0
+	  @coverof="meq"
+	  cover_page2
+	end
+      end
+      @before_meq=page_number
+      meq_part if @exam.examquestions.meqq.count > 0
+ 
+    elsif @college.code=="amsas"
+      cover_page_amsas
+      mcq_part if @exam.examquestions.mcqq.count > 0
+      @mcqpages=page_number
+      seq_part if @exam.examquestions.seqq.count > 0
+      @mcq_seqpages=page_number
+      @before_meq=page_number
+      meq_part if @exam.examquestions.meqq.count > 0
+    end  
   end
   
   def page_header_non_cover
@@ -162,6 +174,27 @@ class Exam_paperPdf < Prawn::Document
     end  
   end
   
+  def cover_page_amsas
+    text "SULIT", :align => :left, :size => 10
+    image "#{Rails.root}/app/assets/images/amsas.png",  :width =>80, :height =>80, :position => :center
+    move_down 10
+    text "#{@college.name.upcase}", :align => :center, :style => :bold, :size => 11
+    text "PUSAT LATIHAN APMM", :align => :center, :style => :bold, :size => 11
+    draw_text "PEPERIKSAAN", :at => [60, 620], :size => 11
+    draw_text "KURSUS", :at => [60, 600], :size => 11
+    draw_text "TARIKH", :at => [60, 580], :size => 11
+    draw_text "MASA", :at => [60, 560], :size => 11
+    draw_text "MARKAH PENUH", :at => [60, 540], :size => 11
+    draw_text "MARKAH LULUS", :at => [60, 520], :size => 11
+    draw_text ":  #{@exam.subject.root.name.upcase}", :at => [200, 620], :size => 11
+    draw_text ":  #{@exam.subject.name.upcase}", :at => [200, 600], :size => 11
+    draw_text ":  #{@exam.exam_on.try(:strftime, '%d-%m-%Y')}", :at => [200, 580], :size => 10
+    draw_text ":  #{@exam.starttime.try(:strftime, '%H:%M %P ')} - #{@exam.endtime.try(:strftime, '%H:%M %P')}", :at => [200, 560], :size => 11
+    draw_text ":  #{@exam.full_marks}", :at => [200, 540], :size => 11
+    draw_text ":  #{@exam.full_marks/2}", :at => [200, 520], :size => 11
+    table_instructions_amsas
+  end
+  
   def cover_header
       move_down 20
       stroke_bounds
@@ -238,6 +271,21 @@ class Exam_paperPdf < Prawn::Document
     table(data1 , :column_widths => [20,300], :cell_style => { :size => 11}) do
          row(0..2).borders = []
          columns(0..2).borders =[]
+    end 
+  end
+  
+  def table_instructions_amsas
+    move_down 180
+    data1 = [["",{content: "<u>ARAHAN</u>", colspan: 2}], ["", "1.", "<b>JAWAB SEMUA SOALAN</b>"], ["", "2.", "PASTIKAN PERKARA BERIKUT <b>DITULIS PADA KERTAS JAWAPAN:</b>"], ["","", "2.1  NAMA"], ["","", "2.2  NO. KAD PENGENALAN"], ["","", "2.3  KELAS"], ["","", "2.4  TARIKH"], ["","", "2.5  PEPERIKSAAN"], ["","3", "<b><u>DILARANG</u></b> MEMBUKA KERTAS SOALAN SEBELUM DIARAHKAN OLEH PENGAWAS PEPERIKSAAN."], ["", "4.", "'"+"ADALAH INI KAMU DENGAN SECARA RASMINYA DIBERI AMARAN BAHAWA MENIRU SEMASA PEPERIKSAAN ADALAH SATU PERBUATAN YANG DILARANG. JIKA KAMU DISABIT DENGAN KESALAHAN INI, TINDAKAN TATATERTIB DAN TINDAKAN YANG PERLU BOLEH DIAMBIL KE ATAS KAMU SESUAI DENGAN ARAHAN YANG DIBERIKAN. SEBELUM PEPERIKSAAN DIMULAKAN, KAMU DIBERIKAN PELUANG TERAKHIR UNTUK MEMBUAT SEBARANG PENGAKUAN DAN BOLEH SETERUSNYA MEMBERSIHKAN DIRI DARI BAHAN YANG BOLEH MENYABITKAN KEPADA KES MENIRU SEMASA PEPERIKSAAN."+"'"]]
+    table(data1 , :column_widths => [30, 20, 460], :cell_style => { :size => 11, :inline_format => true, :padding => [0, 0, 0, 0]}) do
+         row(0..2).borders = []
+         row(0).font_style=:bold
+         columns(0..2).borders =[]
+	 rows(0..2).height=30
+         rows(3..6).height=15
+         rows(7..8).height=35
+	 rows(9).height=162
+	 row(9).column(2).font_style=:bold
     end 
   end
 

@@ -202,7 +202,7 @@ class Exam::ExamsController < ApplicationController
     @exam = Exam.find(params[:id])
     respond_to do |format|
       format.pdf do
-        pdf = Exam_paperPdf.new(@exam, view_context)
+        pdf = Exam_paperPdf.new(@exam, view_context, current_user.college)
         send_data pdf.render, filename: "exampaper-{Date.today}",
                               type: "application/pdf",
                               disposition: "inline"
