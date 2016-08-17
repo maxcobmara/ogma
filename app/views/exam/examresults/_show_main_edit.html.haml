@@ -1,29 +1,29 @@
-.col-md-offset-2 
-  .form-group
-    .col-sm-2.control-label
-      =f.label t 'exam.examresult.programme_id', for: :programme_id
-    .col-md-8
-      = f.collection_select :programme_id, @programmes.order(course_type: :asc), :id, :programme_list,{:include_blank =>t('select'), :selected => @programme_id}, {class: 'mandatory selectpicker', "data-width"=>'350px'} 
-  - if current_user.college.code=="kskbjb"
-    .form-group
-      .col-sm-2.control-label
-        %b Semester
-      .col-md-8
-        = f.select :semester, DropDown::SEMESTER,{:include_blank => t('select')}, {class: 'mandatory selectpicker', "data-width"=>'250px'}
-  - else
-    .form-group
-      .col-sm-2.control-label
-        %b Intake
-      .col-md-8
-        = f.collection_select :intake_id, Intake.all, :id, :programmelist_group_intake, {:include_blank => t('select')}, {class: 'mandatory selectpicker', "data-width"=>'250px'}
-    = f.hidden_field :semester, value: "not applicable"
-  .form-group
-    .col-sm-2.control-label
-      = f.label t 'exam.examresult.examdts'
-    .col-md-2
-      = f.text_field :examdts, class: 'form-control mandatory date_picker'
-  .form-group
-    .col-sm-2.control-label
-      = f.label t 'exam.examresult.examdte'
-    .col-md-2
-      = f.text_field :examdte, class: 'form-control mandatory date_picker'
+/ .col-md-offset-2 
+/   .form-group
+/     .col-sm-2.control-label
+/       =f.label t 'exam.examresult.programme_id', for: :programme_id
+/     .col-md-8
+/       = f.collection_select :programme_id, @programmes.order(course_type: :asc), :id, :programme_list,{:include_blank =>t('select'), :selected => @programme_id}, {class: 'mandatory selectpicker', "data-width"=>'350px'} 
+/   - if current_user.college.code=="kskbjb"
+/     .form-group
+/       .col-sm-2.control-label
+/         %b Semester
+/       .col-md-8
+/         = f.select :semester, DropDown::SEMESTER,{:include_blank => t('select')}, {class: 'mandatory selectpicker', "data-width"=>'250px'}
+/   - else
+/     .form-group
+/       .col-sm-2.control-label
+/         %b Intake
+/       .col-md-8
+/         = f.collection_select :intake_id, Intake.all, :id, :programmelist_group_intake, {:include_blank => t('select')}, {class: 'mandatory selectpicker', "data-width"=>'250px'}
+/     = f.hidden_field :semester, value: "not applicable"
+/   .form-group
+/     .col-sm-2.control-label
+/       = f.label t 'exam.examresult.examdts'
+/     .col-md-2
+/       = f.text_field :examdts, class: 'form-control mandatory date_picker'
+/   .form-group
+/     .col-sm-2.control-label
+/       = f.label t 'exam.examresult.examdte'
+/     .col-md-2
+/       = f.text_field :examdte, class: 'form-control mandatory date_picker'

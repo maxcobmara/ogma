@@ -2931,6 +2931,7 @@ ms_MY:
       details2: Keputusan Peperiksaan
       no_student: "Tiada pelajar yang mengambil program ini bagi semester dan tarikh peperiksaan yang dpilih."
       update_resultlines: "Sila masukkan butiran keputusan pelajar (PNGK dan Catatan) dan klik 'Kemaskini' untuk menyimpan data."
+      update_resultlines2: "Sila pilih Status pelajar dan klik 'Kemaskini' untuk menyimpan data."
       no_student: "Program dan Semester yang dipilih tidak mempunyai data pelajar. Sila masukkan data pelajar terlebih dahulu."
       record_must_unique: ", Program dan Tarikh Peperiksaan telah wujud. Hanya 1 rekod dibenarkan bagi setiap keputusan peperiksaan."
       all_compulsory: "Semua medan wajib diisi."

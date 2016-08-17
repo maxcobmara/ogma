@@ -90,7 +90,7 @@ class Exam::ExamresultsController < ApplicationController
     @examresult = Examresult.find(params[:id])
     respond_to do |format|
        format.pdf do
-         pdf = ResultsPdf.new(@examresult, view_context)
+         pdf = ResultsPdf.new(@examresult, view_context, current_user.college)
          send_data pdf.render, filename: "results-{Date.today}",
                                type: "application/pdf",
                                disposition: "inline"
@@ -121,7 +121,11 @@ class Exam::ExamresultsController < ApplicationController
       if @examresult.save
         students=@examresult.retrieve_student
         if students
-          flash[:notice]=t('exam.examresult.title2')+" "+t('actions.created')+" "+t('exam.examresult.update_resultlines')
+          if current_user.college.code=="kskbjb"
+            flash[:notice]=t('exam.examresult.title2')+" "+t('actions.created')+" "+t('exam.examresult.update_resultlines')
+          else
+            flash[:notice]=t('exam.examresult.title2')+" "+t('actions.created')+" "+t('exam.examresult.update_resultlines2')
+          end
           format.html {render :action => "edit"}
           format.xml  { head :ok }
           flash.discard
@@ -271,7 +275,7 @@ class Exam::ExamresultsController < ApplicationController
     
     # Never trust parameters from the scary internet, only allow the white list through.
     def examresult_params
-      params.require(:examresult).permit(:programme_id, :total, :pngs17, :status, :remark, :semester, :examdts, :examdte,  :college_id, {:data =>[]}, resultlines_attributes: [:id, :_destroy, :total, :pngs17, :status, :remark, :student_id, :pngk, :remark])
+      params.require(:examresult).permit(:programme_id, :total, :pngs17, :status, :remark, :semester, :examdts, :examdte,  :college_id, {:data =>[]}, :intake_id, resultlines_attributes: [:id, :_destroy, :total, :pngs17, :status, :remark, :student_id, :pngk, :remark])
     end
   
 end

@@ -11,7 +11,8 @@
       /.col-md-8.col-md-offset-1
       #exam_details
         - if @examresult.new_record?
-          = render :partial => 'show_main_edit', :locals => {:f => f}
+          /= render :partial => 'show_main_edit', :locals => {:f => f}
+          = render :partial => "exam/examresults/#{current_user.college.code}/show_main_edit", :locals => {:f => f}
         - else
           = render 'show_main'
 

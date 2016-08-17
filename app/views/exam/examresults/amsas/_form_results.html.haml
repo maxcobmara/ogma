@@ -1,4 +1,3 @@
-yg amsas
 - model_class = Exam
 .col-md-11
   %hr  
@@ -6,32 +5,28 @@ yg amsas
     %head
       %tr
         %th &nbsp;
-        %th=t('student.name')
-        %th=t('student.students.matrixno')
+        %th=t('exam.examresult.student')
         %th=t('student.icno')
         - prog_id=Intake.find(@examresult.intake_id).programme_id
-        - @subjects=Programme.find(prog_id).descendants.where(course_type: 'Subject')
-        - @students = @examresult.retrieve_student
-        - @subject_credits=[]
-        - for subject in @subjects
-          %th.centre{width: '5%'}=h subject.code
+        - subjects=Programme.find(prog_id).descendants.where(course_type: 'Subject')
+        - students = @examresult.retrieve_student
+        - for subject in subjects
+          %th.centre{width: '5%'}=h subject.name
         %th.centre Status
     %body
-      
-      /BELOW - will display fields successfully
-      - if @students.count > 0 
-        - 0.upto(@students.count-1).each do |no|
+      - if students.count > 0 
+        - 0.upto(students.count-1).each do |no|
+          - value_id = @examresult.resultlines[no].id if @examresult.resultlines[no]
+          - finalscore=Grade.where(subject_id: subject.id).where(student_id: students[no].id).first.finalscore
           %tr
             %td=no+1
-            = hidden_field "examresult[resultlines_attributes][#{no}]", :id, :size =>8, :value=>@value_id
-            = hidden_field "examresult[resultlines_attributes][#{no}]", :student_id, :size =>8, :value=>@students[no].id
-            %td=@students[no].name
-            %td=@students[no].matrixno
-            %td=@students[no].icno  
-            /= hidden_field "examresult[resultlines_attributes][#{no}]", :pngk, :size =>8, :value => cgpa
-            %td display marks here
-            %td
-              /= hidden_field "examresult[resultlines_attributes][#{no}]", :status, :size =>8, :value => @value_status
-              = select_tag "examresult[resultlines_attributes][#{no}][status]", options_for_select([[t('select'), '0']]+DropDown::RESULT_STATUS_CONTRA, @value_status) 
+            = hidden_field "examresult[resultlines_attributes][#{no}]", :id, :size =>8, :value=> value_id
+            = hidden_field "examresult[resultlines_attributes][#{no}]", :student_id, :size =>8, :value=>students[no].id
+            %td=students[no].student_with_rank
+            %td=students[no].icno  
+            - for subject in subjects
+              %td=number_with_precision(finalscore, precision: 2).to_s+" %"
+              = hidden_field "examresult[resultlines_attributes][#{no}]", :total, :size =>8, :value=> finalscore
+            %td= select_tag "examresult[resultlines_attributes][#{no}][status]", options_for_select([[t('select'), '0']]+DropDown::RESULT_STATUS_CONTRA) 
 
               
