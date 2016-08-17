@@ -19,4 +19,5 @@
         .col-md-11
           %br
           - unless @examresult.new_record?
-            = render :partial => 'form_results', :locals => {:f => f}   
+            /= render :partial => 'form_results', :locals => {:f => f}   
+            =render :partial => "exam/examresults/#{current_user.college.code}/form_results", :locals => {:f => f}

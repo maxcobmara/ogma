@@ -2,6 +2,7 @@ class Examresult < ActiveRecord::Base
   validates_presence_of :semester, :programme_id, :examdts, :examdte
   #ref:http://stackoverflow.com/questions/923796/how-do-you-validate-uniqueness-of-a-pair-of-ids-in-ruby-on-rails
   validates_uniqueness_of :semester, :scope => [:programme_id, :examdts], :message => I18n.t('exam.examresult.record_must_unique')
+  belongs_to :intake, :foreign_key => 'intake_id'
   belongs_to :programmestudent, :class_name => 'Programme', :foreign_key => 'programme_id' 
   has_many :resultlines, :dependent => :destroy                                                     
   accepts_nested_attributes_for :resultlines, :reject_if => lambda { |a| a[:student_id].blank? }
@@ -137,7 +138,11 @@ class Examresult < ActiveRecord::Base
   end
  
   def retrieve_student
-    Student.where(course_id: programme_id).where('intake=?', intake_group)
+    if intake_id
+      Student.where(course_id: programme_id).where(intake_id: intake_id)
+    else
+      Student.where(course_id: programme_id).where('intake=?', intake_group)
+    end
   end
   
   #grade points

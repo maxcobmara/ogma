@@ -8,6 +8,7 @@ class Intake < ActiveRecord::Base
   has_many   :students
   has_many   :weeklytimetables
   has_many   :lessonplans, :class_name => 'LessonPlan', :foreign_key=>'intake_id' 
+  has_one :examresult
   
   def apply_month_year_if_nil
     if monthyear_intake==nil && register_on!=nil

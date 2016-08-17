@@ -21,12 +21,19 @@
 
     %tbody
       = render "search_bar"
-      - @examresults.group_by{|x|x.intake_group}.each do |intake, examresults|
+      - if current_user.college.code=="kskbjb"
+        - grouping=@examresults.group_by{|x|x.intake_group}
+      - elsif current_user.college.code=="amsas"
+        - grouping=@examresults.group_by(&:intake_id)
+      - grouping.each do |intake, examresults|
         %tr
           %td.group{colspan: 5}
             %span
               =(t 'exam.examresult.intake')+" :"
-              =Date.new(intake[0,4].to_i, intake[5,2].to_i, intake[8,2].to_i).try(:strftime, '%b %Y').upcase
+              - if current_user.college.code=="kskbjb"
+                =Date.new(intake[0,4].to_i, intake[5,2].to_i, intake[8,2].to_i).try(:strftime, '%b %Y').upcase
+              - else
+                = Intake.find(intake).monthyear_intake.try(:strftime, '%b %Y').upcase
         - examresults.group_by {|y|y.programmestudent.programme_list}.each do |programme, examresults2|
           %tr
             %td.group{colspan: 5}=programme

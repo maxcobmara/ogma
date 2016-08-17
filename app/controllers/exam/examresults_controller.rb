@@ -243,7 +243,11 @@ class Exam::ExamresultsController < ApplicationController
             @programmes=Programme.where(id: @programme_id)
           elsif roles.include?("administration") || roles.include?("examresults_module")
             @programme_id='0'
-            @programmes=Programme.roots.where(course_type: ['Diploma', 'Diploma Lanjutan', 'Pos Basik', 'Pengkhususan'])
+            if current_user.college.code=="kskbjb"
+              @programmes=Programme.roots.where(course_type: ['Diploma', 'Diploma Lanjutan', 'Pos Basik', 'Pengkhususan'])
+            else
+              @programmes=Programme.roots.where(course_type: ['Asas', 'Pertengahan', 'Lanjutan'])
+            end
           else
             leader_unit=tasks_main.scan(/Program (.*)/)[0][0].split(" ")[0] if tasks_main!="" && tasks_main.include?('Program')
             if leader_unit
@@ -256,14 +260,18 @@ class Exam::ExamresultsController < ApplicationController
     end
     
     def set_edit_update_data
-      @intake = @examresult.intake_group 
+      if current_user.college.code=="kskbjb"
+        @intake = @examresult.intake_group 
+      elsif current_user.college.code=="amsas"
+        @intake = Intake.find(@examresult.intake_id).monthyear_intake   #'2011-03-01'
+      end
       @subjects = @examresult.retrieve_subject 
       @students = @examresult.retrieve_student 
     end
     
     # Never trust parameters from the scary internet, only allow the white list through.
     def examresult_params
-      params.require(:examresult).permit(:programme_id, :total, :pngs17, :status, :remark, :semester, :examdts, :examdte, resultlines_attributes: [:id, :_destroy, :total, :pngs17, :status, :remark, :student_id, :pngk, :remark])
+      params.require(:examresult).permit(:programme_id, :total, :pngs17, :status, :remark, :semester, :examdts, :examdte,  :college_id, {:data =>[]}, resultlines_attributes: [:id, :_destroy, :total, :pngs17, :status, :remark, :student_id, :pngk, :remark])
     end
   
 end
