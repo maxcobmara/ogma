@@ -141,7 +141,7 @@ class Exam::ExamanalysesController < ApplicationController
     
      # Never trust parameters from the scary internet, only allow the white list through.
     def examanalysis_params
-      params.require(:examanalysis).permit(:exam_id, :gradeA, :gradeAminus, :gradeBplus, :gradeB, :gradeBminus, :gradeCplus, :gradeC, :gradeCminus, :gradeDplus, :gradeD, :gradeE)
+      params.require(:examanalysis).permit(:exam_id, :gradeA, :gradeAminus, :gradeBplus, :gradeB, :gradeBminus, :gradeCplus, :gradeC, :gradeCminus, :gradeDplus, :gradeD, :gradeE, :college_id, {:data => []})
     end
     
 end
