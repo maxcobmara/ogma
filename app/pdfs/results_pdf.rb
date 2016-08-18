@@ -23,13 +23,12 @@ class ResultsPdf < Prawn::Document
       student_intake=@examresult.intake.monthyear_intake.try(:strftime, '%b %Y')
       prog_id=Intake.find(@examresult.intake_id).programme_id
       bounding_box([30,530], :width => 400, :height => 90) do |y2|
-        image "#{Rails.root}/app/assets/images/amsas_logo_small.png"
+        image "#{Rails.root}/app/assets/images/logo_kerajaan.png", :scale => 0.80
       end
       bounding_box([680,530], :width => 400, :height => 90) do |y2|
         image "#{Rails.root}/app/assets/images/amsas_logo_small.png"
       end
       @subjects=Programme.find(prog_id).descendants.where(course_type: 'Subject')
-      #draw_text "NO.DOKUMEN: BK-KKM-KS-04-04", :at => [15, 60], :style => :bold
       draw_text "PUSAT LATIHAN DAN AKADEMI MARITIM MALAYSIA (PLAMM)", :at => [225, 505], :size => 11, :style => :bold
       draw_text "LAPORAN PEMARKAHAN PEPERIKSAAN", :at => [285, 490], :size => 11, :style => :bold
       draw_text "#{@examresult.programmestudent.programme_list.upcase}", :at => [325, 475], :size => 11, :style => :bold

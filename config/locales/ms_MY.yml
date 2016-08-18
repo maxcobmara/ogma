@@ -2967,6 +2967,7 @@ ms_MY:
       total_students: Bilangan Pelatih
       total: Bilangan
       incomplete_grade: Gred Tidak Lengkap
+      final_status: Status Keseluruhan
     
     evaluate_course:
       title: "Penilaian Program (Pengajar)"

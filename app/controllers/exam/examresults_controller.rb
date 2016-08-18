@@ -66,7 +66,7 @@ class Exam::ExamresultsController < ApplicationController
     @resultline = Resultline.find(params[:id])
     respond_to do |format|
        format.pdf do
-         pdf = Examination_slipPdf.new(@resultline, view_context)
+         pdf = Examination_slipPdf.new(@resultline, view_context, current_user.college)
          send_data pdf.render, filename: "examination_slip-{Date.today}",
                                type: "application/pdf",
                                disposition: "inline"
