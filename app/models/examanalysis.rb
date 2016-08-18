@@ -599,7 +599,11 @@ class Examanalysis < ActiveRecord::Base
     #----------------
     bil2=0
     CSV.generate(options) do |csv|
-      csv << ["\'\'", exam_paper.exam_name_subject_date ] #title added
+      if exam_paper.college.code=="kskbjb"
+        csv << ["\'\'", exam_paper.exam_name_subject_date ] #title added      
+      elsif exam_paper.college.code=="amsas"
+        csv << ["\'\'", exam_paper.exam_name_subject_date2 ] #title added
+      end
       csv << [] #blank row added
       csv << title_row
       csv << title_row2

@@ -3469,6 +3469,7 @@ en:
       web: Web 
 
   conversation:
+    local_messaging: Local Messaging
     subject: Subject
     date: Date
     compose: Compose

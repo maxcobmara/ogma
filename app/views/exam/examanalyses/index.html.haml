@@ -19,17 +19,21 @@
         %th=sort_link(@search, :exampaper_subject_id, (t 'exam.examanalysis.subject_id'))
         %th=sort_link(@search, :exampaper_exam_on, (t 'exam.examanalysis.exam_on'))
         %th=t('exam.examanalysis.examtype')
-        %th=t('exam.exam.examanalysis.grade')+" A"
-        %th=t('exam.exam.examanalysis.grade')+" A-"
-        %th=t('exam.examanalysis.grade')+" B+"
-        %th=t('exam.examanalysis.grade')+" B"
-        %th=t('exam.examanalysis.grade')+" B-"
-        %th=t('exam.examanalysis.grade')+" C+"
-        %th=t('exam.examanalysis.grade')+" C"
-        %th=t('exam.examanalysis.grade')+" C-"
-        %th=t('exam.examanalysis.grade')+" D+"
-        %th=t('exam.examanalysis.grade')+" D"
-        %th=t('exam.examanalysis.grade')+" E"
+        - if current_user.college.code =="kskbjb"
+          %th=t('exam.exam.examanalysis.grade')+" A"
+          %th=t('exam.exam.examanalysis.grade')+" A-"
+          %th=t('exam.examanalysis.grade')+" B+"
+          %th=t('exam.examanalysis.grade')+" B"
+          %th=t('exam.examanalysis.grade')+" B-"
+          %th=t('exam.examanalysis.grade')+" C+"
+          %th=t('exam.examanalysis.grade')+" C"
+          %th=t('exam.examanalysis.grade')+" C-"
+          %th=t('exam.examanalysis.grade')+" D+"
+          %th=t('exam.examanalysis.grade')+" D"
+          %th=t('exam.examanalysis.grade')+" E"
+        - else
+          %th=t('exam.examresult.passed')
+          %th=t('exam.examresult.failed')
 
     %tbody
       = render "search_bar"
@@ -46,17 +50,30 @@
               =h examanalysis.exampaper.render_examtype[0]
               - if examanalysis.exampaper.klass_id==1
                 %font{color: "blue"}=t('exam.exams.with_questions')
-            %td=h examanalysis.gradeA 
-            %td=h examanalysis.gradeAminus
-            %td=h examanalysis.gradeBplus 
-            %td=h examanalysis.gradeB 
-            %td=h examanalysis.gradeBminus
-            %td=h examanalysis.gradeCplus 
-            %td=h examanalysis.gradeC
-            %td=h examanalysis.gradeCminus 
-            %td=h examanalysis.gradeDplus
-            %td=h examanalysis.gradeD 
-            %td=h examanalysis.gradeE 
+            - if current_user.college.code=="kskbjb"
+              %td=h examanalysis.gradeA 
+              %td=h examanalysis.gradeAminus
+              %td=h examanalysis.gradeBplus 
+              %td=h examanalysis.gradeB 
+              %td=h examanalysis.gradeBminus
+              %td=h examanalysis.gradeCplus 
+              %td=h examanalysis.gradeC
+              %td=h examanalysis.gradeCminus 
+              %td=h examanalysis.gradeDplus
+              %td=h examanalysis.gradeD 
+              %td=h examanalysis.gradeE 
+            - else 
+              - exammarks=examanalysis.exampaper.exammarks
+              - subjectid=examanalysis.exampaper.subject_id
+              - students=Student.where(id: exammarks.pluck(:student_id))
+              - finalscores=[]
+              - students.each{|x|finalscores << Grade.where(student_id: x.id).where(subject_id: subjectid).first.finalscore}
+              - passed=[]
+              - failed=[]
+              - finalscores.each{|y|passed << y if y>=50}
+              - finalscores.each{|z|failed << z if z < 50}
+              %td=passed.count
+              %td=failed.count
   
   .right{style:"padding:0 30px; margin:0;"}= paginate @examanalyses, :theme => 'twitter-bootstrap-3'
 

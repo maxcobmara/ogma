@@ -3389,6 +3389,7 @@ ms_MY:
       web: Web 
   
   conversation:
+    local_messaging: Pemesejan Dalaman
     subject: Subjek
     date: Tarikh
     compose: Karang
