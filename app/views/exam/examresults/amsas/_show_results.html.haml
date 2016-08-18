@@ -15,16 +15,19 @@
     %body
       - nos=0
       - @ng=[]
-      - for examresultline in @examresult.resultlines.sort_by{|x|x.status}
-        %tr
+      %tr
+        - for examresultline in @examresult.resultlines.sort_by{|x|x.status}
           %td=nos+=1
           %td.left=h examresultline.student.student_with_rank
           %td.left=h examresultline.student.icno
           - for subject in subjects
-            - finalscore=Grade.where(subject_id: subject.id).where(student_id: examresultline.student_id).first.finalscore
-            %td.centre=h number_with_precision(finalscore, precision: 2).to_s+" %"
-          - status_viewing=examresultline.render_status_contra    
+            - grades=Grade.where(subject_id: subject.id).where(student_id: examresultline.student_id)
+            %td.centre
+              - if grades.count > 0 
+                - finalscore=grades.first.finalscore
+                =number_with_precision(grades.first.finalscore, precision: 2).to_s+" %"
           %td
+            - status_viewing=examresultline.render_status_contra    
             - if status_viewing==(t 'exam.examresult.failed')
               %font{style: "color: red; text-decoration: underline"}=status_viewing
             - else

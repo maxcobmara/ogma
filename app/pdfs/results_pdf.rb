@@ -22,14 +22,21 @@ class ResultsPdf < Prawn::Document
     elsif college.code=="amsas"
       student_intake=@examresult.intake.monthyear_intake.try(:strftime, '%b %Y')
       prog_id=Intake.find(@examresult.intake_id).programme_id
+      bounding_box([30,530], :width => 400, :height => 90) do |y2|
+        image "#{Rails.root}/app/assets/images/amsas_logo_small.png"
+      end
+      bounding_box([680,530], :width => 400, :height => 90) do |y2|
+        image "#{Rails.root}/app/assets/images/amsas_logo_small.png"
+      end
       @subjects=Programme.find(prog_id).descendants.where(course_type: 'Subject')
-      text "PUSAT LATIHAN DAN AKADEMI MARITIM MALAYSIA (PLAMM)", :align => :center, :size => 11, :style => :bold
-      text "LAPORAN PEMARKAHAN PEPERIKSAAN", :align => :center, :size => 11, :style => :bold
-      text "#{@examresult.programmestudent.programme_list.upcase}", :align => :center, :size => 11, :style => :bold
-      text "SEHINGGA #{Date.today.strftime('%d-%m-%Y')}", :align => :center, :size => 11, :style => :bold
+      #draw_text "NO.DOKUMEN: BK-KKM-KS-04-04", :at => [15, 60], :style => :bold
+      draw_text "PUSAT LATIHAN DAN AKADEMI MARITIM MALAYSIA (PLAMM)", :at => [225, 505], :size => 11, :style => :bold
+      draw_text "LAPORAN PEMARKAHAN PEPERIKSAAN", :at => [285, 490], :size => 11, :style => :bold
+      draw_text "#{@examresult.programmestudent.programme_list.upcase}", :at => [325, 475], :size => 11, :style => :bold
+      draw_text "SEHINGGA #{Date.today.strftime('%d-%m-%Y')}", :at => [335 ,460], :size => 11, :style => :bold
       move_down 20
-      text "#{I18n.t 'exam.examresult.examdts'} : #{@examresult.examdts.try(:strftime, '%d %b %Y')}", :align => :left, :size => 10
-      text "#{I18n.t 'exam.examresult.examdte'} : #{@examresult.examdte.try(:strftime, '%d %b %Y')}", :align => :left, :size => 10
+      text "#{I18n.t 'exam.examresult.examdts'} : #{@examresult.examdts.try(:strftime, '%d-%m-%Y')}", :align => :left, :size => 10
+      text "#{I18n.t 'exam.examresult.examdte'} : #{@examresult.examdte.try(:strftime, '%d-%m- %Y')}", :align => :left, :size => 10
       result_table2
     end
   end
@@ -264,14 +271,16 @@ class ResultsPdf < Prawn::Document
     aa=[25, 150, 70]
     bb=0
     for subject in @subjects
-       bb+=25
+       bb+=40
        aa << 40
     end
+    aa << 35
+    bb+=35
     table(line_item_rows2, :column_widths =>aa, :cell_style => { :size => 8,  :inline_format => :true}) do
       row(0).font_style = :bold
-      row(0..1).background_color = 'FFE34D'
+      row(0).background_color = 'FFE34D'
       self.row_colors = ["FEFEFE", "FFFFFF"]
-      self.width=(296+bb)
+      self.width=(245+bb)
     end
   end
   
@@ -286,8 +295,18 @@ class ResultsPdf < Prawn::Document
     count=count || 0
     
     for examresultline in @examresult.resultlines.sort_by{|x|x.status}
-      status_viewing=examresultline.render_status_contra
-      data << [count+=1, examresultline.student.student_with_rank, examresultline.student.icno, @view.number_with_precision(examresultline.total, precision: 2).to_s+" %", status_viewing]
+      details= [count+=1, examresultline.student.student_with_rank, examresultline.student.icno]
+      subjectscol=[]
+      for subject in @subjects
+        grades=Grade.where(subject_id: subject.id).where(student_id: examresultline.student_id)
+        if grades.count > 0
+          finalscore=@view.number_with_precision(grades.first.finalscore, precision: 2).to_s+" %"
+        else
+          finalscore=""
+        end
+        subjectscol << finalscore
+      end
+      data << details+subjectscol+[examresultline.render_status_contra]
     end
     header+data
   end
