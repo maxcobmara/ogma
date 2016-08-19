@@ -15,7 +15,10 @@
           .col-sm-2.control-label
             = f.label  t 'exam.exams.created_by', for: :created_by
           .col-md-4
-            = f.collection_select :created_by, Staff.where('id IN(?)', @staff_listing).order(name: :asc), :id,  :staff_name_with_position, {:include_blank =>t('helpers.prompt.select_staff'), :selected=>@current_user.userable_id.to_i},{class: 'selectpicker mandatory', "data-width"=>'360px'} 
+            - if current_user.college.code=="kskbjb"
+              = f.collection_select :created_by, Staff.where('id IN(?)', @staff_listing).order(name: :asc), :id,  :staff_name_with_position, {:include_blank =>t('helpers.prompt.select_staff'), :selected=>@current_user.userable_id.to_i},{class: 'selectpicker mandatory', "data-width"=>'360px'} 
+            - else
+              = f.collection_select :created_by, Staff.all.order(rank_id: :asc, name: :asc), :id,  :staff_with_rank, {:include_blank =>t('helpers.prompt.select_staff'), :selected=>@current_user.userable_id.to_i},{class: 'selectpicker mandatory', "data-width"=>'360px'} 
         .form-group
           .col-sm-2.control-label
             #span_programme2
@@ -42,7 +45,7 @@
           .col-sm-2.control-label
             = f.label t 'exam.exams.exam_on', for: :exam_on
           .col-md-2
-            = f.text_field :exam_on, class: 'date_picker form-control mandatory'
+            = f.text_field :exam_on, class: 'date_picker_reverse form-control mandatory', value: @exam.try(:exam_on).try(:strftime, '%d-%m-%Y')
         .form-group
           .col-sm-2.control-label
             = f.label t 'exam.exams.starttime', for: :starttime

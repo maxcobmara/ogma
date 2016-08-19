@@ -47,7 +47,7 @@ class Staff::StaffsController < ApplicationController
   @staff = Staff.new(staff_params)
   respond_to do |format|
     if @staff.save
-      format.html { redirect_to @staff, notice: 'Staff was successfully created.' }
+      format.html { redirect_to @staff, notice: (t 'staff.title')+(t 'actions.created')}
       format.json { render action: 'show', status: :created, location: @staff }
     else
       format.html { render action: 'new' }
@@ -68,7 +68,7 @@ end
     end
     respond_to do |format|
       if @info.update(staff_params)
-        format.html { redirect_to staff_info_path, notice: 'Staff was successfully updated.' }
+        format.html { redirect_to staff_info_path, notice: (t 'staff.title')+(t 'actions.updated') }
         format.json { head :no_content }
       else
         format.html { render action: 'edit' }
@@ -92,7 +92,7 @@ end
     @staff = Staff.find(params[:id])
     respond_to do |format|
       format.pdf do
-        pdf = Borang_maklumat_staffPdf.new(@staff, view_context)
+        pdf = Borang_maklumat_staffPdf.new(@staff, view_context, current_user.college)
         send_data pdf.render, filename: "borang_maklumat_staff-{Date.today}",
                               type: "application/pdf",
                               disposition: "inline"
@@ -110,7 +110,7 @@ end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def staff_params
-      params.require(:staff).permit(:icno, :name, :code, :fileno, :coemail, :cobirthdt, :thumb_id, :starting_salary, :current_salary, :allowance, :salary_no, :transportclass_id, :addr, :appointby, :appointdt, :appointstatus, :att_colour, :birthcertno, :bloodtype, :confirmdt, :cooftelext , :cooftelno, :country_cd, :country_id, :created_at, :employscheme, :employstatus, :gender, :kwspcode , :mrtlstatuscd, :pension_confirm_date, :pensiondt,:pensionstat, :phonecell, :phonehome, :photo, :posconfirmdate, :position_old, :poskod_id, :promotion_date, :race, :reconfirmation_date, :religion, :schemedt, :staff_shift_id, :staffgrade_id, :starting_salary, :statecd, :svchead, :svctype, :taxcode, :time_group_id, :titlecd_id, :to_current_grade_date, :uniformstat, :updated_at, :wealth_decleration_date, qualifications_attributes: [:id, :_destroy, :level_id, :qname, :institute_id, :institute],kins_attributes: [:id,:destroy, :kintype_id,  :name, :mykadno, :phone, :profession, :kinaddr],vehicles_attributes: [:id, :_destroy, :type_model, :reg_no, :cylinder_capacity], mycpds_attributes: [:id, :_destroy, :staff_id, :cpd_year, :cpd_value],shift_histories_attributes: [:shift_id, :deactivate_date] ) #without id & destroy
+      params.require(:staff).permit(:icno, :name, :code, :fileno, :coemail, :cobirthdt, :thumb_id, :starting_salary, :current_salary, :allowance, :salary_no, :transportclass_id, :addr, :appointby, :appointdt, :appointstatus, :att_colour, :birthcertno, :bloodtype, :confirmdt, :cooftelext , :cooftelno, :country_cd, :country_id, :created_at, :employscheme, :employstatus, :gender, :kwspcode , :mrtlstatuscd, :pension_confirm_date, :pensiondt,:pensionstat, :phonecell, :phonehome, :photo, :posconfirmdate, :position_old, :poskod_id, :promotion_date, :race, :reconfirmation_date, :religion, :schemedt, :staff_shift_id, :staffgrade_id, :starting_salary, :statecd, :svchead, :svctype, :taxcode, :time_group_id, :titlecd_id, :to_current_grade_date, :uniformstat, :updated_at, :wealth_decleration_date, :college_id, {:data=>[]}, :rank_id, qualifications_attributes: [:id, :_destroy, :level_id, :qname, :institute_id, :institute],kins_attributes: [:id,:destroy, :kintype_id,  :name, :mykadno, :phone, :profession, :kinaddr],vehicles_attributes: [:id, :_destroy, :type_model, :reg_no, :cylinder_capacity], mycpds_attributes: [:id, :_destroy, :staff_id, :cpd_year, :cpd_value],shift_histories_attributes: [:shift_id, :deactivate_date] ) #without id & destroy
     end
 end
 

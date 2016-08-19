@@ -1,22 +1,31 @@
 %fieldset
-  = f.hidden_field :_destroy
+  /for checking - unremark to display this text outside of row
   .row
-    .col-sm-2.col-md-offset-2= f.text_field :accession_no, :class => 'form-control'
-    .col-sm-1
-      = link_to content_tag(:i, "", class: "fa fa-trash-o"), data: {"data-toggle" => "tooltip", title: "Delete"}, class: "btn btn-danger remove_fields"
- 
-:javascript
-  
-  $(document).ready(function(){
-  });
-  
-  function rmv_field(curr_fieldset) {
-    $(curr_fieldset).parent().parent().hide();
-  }
+    .col-sm-2.col-md-offset-2
+      /= f.text_field :_destroy
+      = f.hidden_field :_destroy
+      = f.text_field :accession_no, :class => 'form-control'
+    .col-sm-2=f.text_field :order_no, :class => 'form-control'
+    .col-sm-2=f.select :received_by, DropDown::STATUS, {:include_blank => t('actions.select')}, {:class => 'selectpicker form-control'}
+    .col-sm-1.col-md-offset-3
+      = link_to content_tag(:i, "", class: "fa fa-trash-o"), "#", class: "removing_fields"
+      /below - also works
+      /= link_to "Remove", "#", class: "removing_fields"
 
-  function remove_fields(link,fm) {
-    $(link).parent().parent().hide();
-    $(fm).$("input[type=hidden]").value = "1";
-  }
-/document.getElementByName(fm+'[_destroy]').val()=true;
-/$(fm).value= '1';
+:javascript
+  $('.removing_fields').click(function(){
+    var row=$(this).parent().parent();
+    var all_fields=row.children().children();
+    var destroyer=all_fields[0];
+    destroyer.value=true;    
+    row.hide();
+  });
+
+/   $('.removing_fields').click(function(){
+/     var row=$(this).parent().parent();
+/     var all_fields=row.children().children();
+/     var destroyer=all_fields[0];
+/     destroyer.value=true;
+/     alert(destroyer.value);
+/     row.hide();
+/   });

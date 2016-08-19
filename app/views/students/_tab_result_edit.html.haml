@@ -1,14 +1,11 @@
-.col-md-offset-2
+.col-md-offset-1
   .form-group
-    .col-sm-3.control-label
+    .col-sm-5
       =f.label t 'student.students.subject'
-    .col-sm-2.control-label
+    .col-sm-3
       =f.label t 'student.students.grade'
 
-
-  .form-group
-    .col-sm-8.control-label
-      = f.fields_for :spmresults do |builder|
-        = render 'spmresult_fields', :f => builder
-
-      = link_to_add_fields (fa_icon("asterisk", text: (t 'addmore'), :border => 0)), f, :spmresults, "", "text"
+  .row
+    = f.fields_for :spmresults do |builder|
+      = render 'spmresult_fields', :f => builder
+    .col-sm-2= link_to_add_fields content_tag(:i, "", class: "fa fa-plus-square")+" "+(t 'addmore'), f, :spmresults, "", t('addmore')

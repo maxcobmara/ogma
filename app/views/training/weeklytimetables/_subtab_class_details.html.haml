@@ -15,4 +15,4 @@
 = "(A)" if xx.lecture_method == 3
 %BR
 .text-right
-  = xx.weeklytimetable_lecturer.name
+  = xx.weeklytimetable_lecturer.rank_id? ? xx.weeklytimetable_lecturer.staff_with_rank : xx.weeklytimetable_lecturer.name

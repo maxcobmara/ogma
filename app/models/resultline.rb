@@ -1,14 +1,23 @@
 class Resultline < ActiveRecord::Base
   belongs_to :examresult, :foreign_key => 'examresult_id'
   belongs_to :student, :foreign_key => 'student_id'
-  validates_presence_of :student_id, :total, :pngs17, :status   #total (keep first)==>value obtained from grade.rb-> works like total_marks (previously be4 changed to virtual attr) -> changes does not take effect on 1st edit
+  validates_presence_of :student_id, :total, :pngs17, :status, :if => :is_first_college?   #total (keep first)==>value obtained from grade.rb-> works like total_marks (previously be4 changed to virtual attr) -> changes does not take effect on 1st edit
                                                                 #total refers to sum of.. [(set_NG*credit hour)..of each subject]
+  validates_presence_of :student_id, :total, :status, :if => :is_second_college?
   before_save :default_next_semester_if_pass
   
   def default_next_semester_if_pass
     #rescue for (status: gagal, remark: VIVA), status : gagal was selected, but remark remain VIVA
     #note too, DropDown RESULT_STATUS && RESULT_STATUS_CONTRA (status 2 & 1)
     self.remark = '4' if status=='3' || status=='2' || status=='1'
+  end
+  
+  def is_first_college?
+    college_id==1
+  end
+  
+  def is_second_college?
+    college_id==2
   end
   
   def render_status

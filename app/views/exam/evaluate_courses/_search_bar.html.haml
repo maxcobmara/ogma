@@ -1,14 +1,16 @@
 = search_form_for [:evaluate_course, @search], url: exam_evaluate_courses_path,  class: "form-inline" do |f|
   %tr.search_row{style: "display: none;"}
-    /%td= f.text_field :studentevaluate_name_cont, size: 2, class: 'form-control'
-    %td= f.text_field :programme_subject_search, size: 2, :placeholder=>(t 'exam.evaluate_course.programme_or_subject'), class: 'form-control'
-    %td
-      .col-md-3= f.text_field :evaluate_date_gteq, class: 'date_picker form-control'
-      .col-md-3= f.text_field :evaluate_date_lteq, class: 'date_picker form-control'
-    %td
+    - if current_user.college.code=="amsas"
+      %td= f.text_field :studentevaluate_name_cont, size: 2, :placeholder=>(t 'exam.evaluate_course.student_id'), class: 'form-control'
+    %td{width: '30%'}
+      .col-md-5= f.text_field :evaluated_search, size: 8, :placeholder=>(t 'exam.evaluate_course.staff_id'), class: 'form-control'
+      - if current_user.college.code=="amsas"
+        .col-md-6= f.text_field :programme_subject_search, size: 2, :placeholder=>(t 'exam.evaluate_course.programme_or_subject'), class: 'form-control'
+    %td{width: '50%'}
       .input-group
         /= f.text_field :staffevaluate_name_cont, size: 8,  class: 'form-control'
-        = f.text_field :evaluated_search, size: 8,  class: 'form-control'
+        .col-md-3= f.text_field :evaluate_date_gteq, class: 'date_picker_reverse form-control', size: 2
+        .col-md-3= f.text_field :evaluate_date_lteq, class: 'date_picker_reverse form-control', size: 2
         %span.input-group-btn
           %button.btn.btn-sm.btn-default.right{:type => "submit"}
             %i.fa.fa-search.fa-fw

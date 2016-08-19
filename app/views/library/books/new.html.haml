@@ -1,2 +1,57 @@
+- model_class = Book
+.page-header
+  %h1= t 'library.book.new'
+
+= render 'shared/flashes'
+
+.row
+  = form_tag(url_for(check_availability_library_books_path), :remote => true) do
+    .row
+      .col-md-5.col-md-offset-3
+        .panel.panel-info
+          .panel-heading=t 'library.book.availability_title'
+          .panel-body
+            .form-group
+              .col-sm-2.control-label
+                %label ISBN
+              .col-md-5= text_field_tag(:isbn_search, params[:isbn_search], class: 'form-control')
+              .col-md-5= submit_tag (t 'library.book.check_availability'), class: "btn btn-primary"
+            %br
+            %br
+            /.form-group
+            .col-md-12
+              .small
+                %strong Sample: 
+                978-0-9787-3923-2, 9780978739232, 978983461test
+            .col-md-12#span_isbn_comments
+            
+
+/       .col-md-10.col-md-offset-3
+/         .form-group
+/           .col-sm-1.control-label
+/             %label ISBN 
+/           .col-md-2= text_field_tag(:isbn_search, params[:isbn_search], class: 'form-control')
+/           .col-md-3= submit_tag (t 'library.book.check_availability'), class: "btn btn-primary"
+/           .col-md-4#span_isbn_comments
+/ %br
+/ .row
+/   .col-md-10.col-md-offset-3
+/     .small 
+/       =t 'library.book.availability_remark'
+/       %strong Sample: 
+/       978-0-9787-3923-2, 9780978739232, 978983461test
+/ %hr
+
+.row
+  = form_for [:library, @book], html: { multipart: true, class: 'form-horizontal'}  do |f| 
+    = render 'shared/error_messages', object: f.object
+    = hidden_field_tag :redirect_location, library_books_path 
+    = render :partial => 'form', :locals => {:f => f}
+    .row
+      .form-group
+        .col-md-1.col-md-offset-2
+          /= link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), library_book_path(@book), :class => 'btn btn-default'
+        .col-md-2
+          .div{style: "margin-left:-40px;"}
+            = f.submit t('create'), class: "btn btn-primary"
  
-new book page

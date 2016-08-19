@@ -1,14 +1,22 @@
 class Lesson_reportPdf< Prawn::Document
-  def initialize(lesson_plan, view)
+  def initialize(lesson_plan, view, college)
     super({top_margin: 10, page_size: 'A4', page_layout: :portrait })
     @lesson_plan = lesson_plan
     @view = view
     font "Times-Roman"
-    text "BPL.KKM.PK(T04D/09)", :align => :right, :size => 9
+    if college.code=="kskbjb"
+      text "BPL.KKM.PK(T04D/09)", :align => :right, :size => 9
+    else
+      move_down 5
+    end
     move_down 40
     image "#{Rails.root}/app/assets/images/logo_kerajaan.png", :position => :center, :scale => 0.55
     move_down 20
-    text "KEMENTERIAN KESIHATAN MALAYSIA", :style => :bold, :align => :center
+    if college.code=="kskbjb"
+      text "KEMENTERIAN KESIHATAN MALAYSIA", :style => :bold, :align => :center
+    else
+      text "#{college.name.upcase}", :style => :bold, :align => :center
+    end
     move_down 5
     text "LAPORAN AKTIVITI PENGAJARAN DAN PEMBELAJARAN", :align => :center, :size => 11
     move_down 25
@@ -37,7 +45,7 @@ class Lesson_reportPdf< Prawn::Document
   end
   
   def table_plan
-    data = [["","Nama Pengajar",":","#{@lesson_plan.lessonplan_owner.name}"],
+    data = [["","Nama Pengajar",":","#{@lesson_plan.lessonplan_owner.rank_id? ? @lesson_plan.lessonplan_owner.staff_with_rank : @lesson_plan.lessonplan_owner.name}"],
                 ["","Bidang Subjek",":","#{@lesson_plan.schedule_item.weeklytimetable_topic.full_parent }"],
                 ["","Topik",":","#{@lesson_plan.schedule_item.weeklytimetable_topic.name}"],
                 ["","Tarikh (Mengikut jadual)",":","#{@lesson_plan.schedule_item.get_date_for_lesson_plan }"],
@@ -105,12 +113,12 @@ class Lesson_reportPdf< Prawn::Document
   
   def table_signatory
     data = [["","Tandatangan Pengajar :"],
-                ["","<b>Nama Pengajar :</b> #{@lesson_plan.lessonplan_owner.name}"],
+                ["","<b>Nama Pengajar :</b> #{@lesson_plan.lessonplan_owner.rank_id? ? @lesson_plan.lessonplan_owner.staff_with_rank : @lesson_plan.lessonplan_owner.name }"],
                 ["","Ulasan TPA/KP : "],
                 ["", "#{@lesson_plan.report_summary }"],
                 ["", ""],
                 ["", "Tandatangan"],
-                ["", "<b>TPA/KP </b>#{@lesson_plan.endorser.name }"],
+                ["", "<b>TPA/KP </b>#{@lesson_plan.endorser.rank_id? ? @lesson_plan.endorser.staff_with_rank : @lesson_plan.endorser.name }"],
                 ["","<b>Tarikh : </b>#{Date.today.try(:strftime, '%d %b %Y')}"]
              ]
           

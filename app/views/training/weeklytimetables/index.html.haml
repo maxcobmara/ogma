@@ -38,7 +38,7 @@
           %td=h weeklytimetable.try(:startdate).try(:strftime, "%d %b %Y") 
           %td=h weeklytimetable.try(:enddate).try(:strftime, "%d %b %Y") 
           %td=h weeklytimetable.try(:academic_semester).try(:semester)
-          %td=h weeklytimetable.try(:schedule_creator).try(:name) 
+          %td=h weeklytimetable.try(:schedule_creator).rank_id? ? weeklytimetable.try(:schedule_creator).staff_with_rank :  weeklytimetable.try(:schedule_creator).try(:name) 
           %td
             =h weeklytimetable.is_submitted? ? image_tag("tick.png") : image_tag("cross.png") 
             - if weeklytimetable.hod_rejected==true && weeklytimetable.is_submitted==nil 

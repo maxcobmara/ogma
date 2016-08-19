@@ -5,7 +5,7 @@ class Student::LeaveforstudentsController < ApplicationController
 
   def index
     #@leaveforstudent = Leaveforstudent.all
-    @search = Leaveforstudent.search(params[:q])
+    @search = Leaveforstudent.where(college_id: current_user.college_id).search(params[:q])
     #@leaveforstudent = @search.result
     @leaveforstudent = @search.result.search2(@current_user)
     @leaveforstudent = @leaveforstudent.page(params[:page]||1)
@@ -71,7 +71,17 @@ class Student::LeaveforstudentsController < ApplicationController
         format.html { redirect_to student_leaveforstudents_path }
         format.xml  { head :ok }
       else
-        format.html { render :action => "edit" }
+        if @leaveforstudent.approved==true 
+          if current_user.college.code=="kskbjb"
+            format.html {render :action => "approve_coordinator"}
+          else
+          format.html {render :action => "approving"}
+          end
+        elsif @leaveforstudent.approved2==true
+          format.html {render :action => "approve_warden"}
+        else
+          format.html { render :action => "edit" }
+        end
         format.xml  { render :xml => @leaveforstudent.errors, :status => :unprocessable_entity }
       end
     end
@@ -97,12 +107,16 @@ class Student::LeaveforstudentsController < ApplicationController
     @leaveforstudent = Leaveforstudent.find(params[:id])
   end
   
+  def approving
+    @leaveforstudent = Leaveforstudent.find(params[:id])
+  end
+  
   def slip_pengesahan_cuti_pelajar
 
     @leaveforstudent = Leaveforstudent.find(params[:id])
     respond_to do |format|
       format.pdf do
-        pdf = Slip_pengesahan_cuti_pelajarPdf.new(@leaveforstudent, view_context)
+        pdf = Slip_pengesahan_cuti_pelajarPdf.new(@leaveforstudent, view_context, current_user.college)
         send_data pdf.render, filename: "slip_pengesahan_cuti_pelajar-{Date.today}",
                               type: "application/pdf",
                               disposition: "inline"
@@ -119,7 +133,7 @@ class Student::LeaveforstudentsController < ApplicationController
     end
     respond_to do |format|
        format.pdf do
-         pdf = Studentleave_reportPdf.new(@leaveforstudents, @expired_wc, view_context)
+         pdf = Studentleave_reportPdf.new(@leaveforstudents, @expired_wc, view_context, current_user.college)
          send_data pdf.render, filename: "studentleave_report-{Date.today}",
                                type: "application/pdf",
                                disposition: "inline"
@@ -135,8 +149,7 @@ class Student::LeaveforstudentsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def leaveforstudent_params
-      params.require(:leaveforstudent).permit(:student_id, :leavetype, :requestdate, :reason, :address, :telno, :leave_startdate, :leave_enddate, :studentsubmit, :approved, :staff_id, :approvedate,
-                                              :notes, :approved2, :staff_id2, :approvedate2)
+      params.require(:leaveforstudent).permit(:student_id, :leavetype, :requestdate, :reason, :address, :telno, :leave_startdate, :leave_enddate, :studentsubmit, :approved, :staff_id, :approvedate, :notes, :approved2, :staff_id2, :approvedate2, :college_id, {:data => []})
     end
 end
 

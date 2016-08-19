@@ -27,7 +27,7 @@ class Campus::LocationsController < ApplicationController
   def edit
     #@location.damages.new if @location.occupied==0
     #@location.damages.build
-    @location.damages.build if (@location.damages && !@location.damages.pluck(:repaired_on).include?(nil))  #create new if ALL previous damages repaired
+    #@location.damages.build if (@location.damages && !@location.damages.pluck(:repaired_on).include?(nil))  #create new if ALL previous damages repaired
     
   end
   

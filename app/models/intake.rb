@@ -8,6 +8,7 @@ class Intake < ActiveRecord::Base
   has_many   :students
   has_many   :weeklytimetables
   has_many   :lessonplans, :class_name => 'LessonPlan', :foreign_key=>'intake_id' 
+  has_one :examresult
   
   def apply_month_year_if_nil
     if monthyear_intake==nil && register_on!=nil
@@ -20,7 +21,11 @@ class Intake < ActiveRecord::Base
   end  
   
   def programme_group_intake
-    "#{description}"+" ("+"#{name}"+")"+" | "+"#{programme.name}"
+    "#{description} (#{name}) | #{programme.name}"
+  end
+  
+  def programmelist_group_intake
+    "#{description} (#{name}) | #{programme.programme_list}"
   end
   
   def self.get_intake(student_intake, courseid)

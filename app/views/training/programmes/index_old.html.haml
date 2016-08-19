@@ -1,0 +1,205 @@
+- model_class = Programme
+.page-header
+  %h1= t('training.programme.title')
+  
+.navbar.navbar-inverse{role: "navigation", style: "padding-right:40px;"}
+  %ul.nav.navbar-nav
+    %li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'training.programme.new_programme'))), new_training_programme_path
+  %ul.nav.navbar-nav.navbar-right
+    /%li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "toga"
+    %li= link_to content_tag(:li, fa_icon("print", text: (t 'actions.print'))), "#", class: 'bogus'
+
+.row.filter{style: "display:none;"}
+  .col-md-2
+   
+= render 'shared/flashes'
+   
+.row
+  %table.table-striped.table-hover.ogma
+    %thead
+    /%tr
+    /%th= sort_link(@search, :code, (t 'training.programme.combo_code'))
+    /%th= sort_link(@search, :name, (t 'training.programme.duration'))
+    /%th= sort_link(@search, :description, (t 'training.programme.credits'))
+    /%th= sort_link(@search, :created_by, (t 'training.programme.status'))
+    %tbody
+      /= render "index_search"
+      /- @programmes.each do |timetable| 
+      /%tr
+      /%td=h link_to timetable.combo_code, training_timetable_path(timetable)     
+      /%td=h timetable.duration
+      /%td=h timetable.credits
+      /%td=h timetable.status
+
+%ul#header_tree
+  %li
+    %span.combo_code= (t 'training.programme.combo_code')
+    %span.credits= (t 'training.programme.credits')
+    %span.status=  (t 'training.programme.status')
+    %span.duration= (t 'training.programme.duration')
+    %span.lecture= (t 'training.programme.lecture')
+    %span.tutorial= (t 'training.programme.tutorial')
+    %span.practical= (t 'training.programme.practical')
+    /%span.combo_code= sort_link(@search, :code, (t 'training.programme.combo_code'))
+    /%span.credits= sort_link(@search, :credits, (t 'training.programme.credits'))
+    /%span.status= sort_link(@search, :status, (t 'training.programme.status'))
+    /%span.duration= sort_link(@search, :duration, (t 'training.programme.duration'))
+
+%ul#programme_tree
+  - @programmes.group_by(&:root_id).sort.each do |course,programmes| 
+    %li
+      - course_rec = Programme.where(id:course)[0]
+      %span.link_to_show
+        = link_to course_rec.code+" ", training_programme_path(course_rec)
+        &nbsp;|&nbsp;
+      %span.Collapsable
+        /- course_rec = Programme.where(id:course)[0]
+        %span.programme_list
+          /= link_to course_rec.code+" ", training_programme_path(course_rec)
+          = course_rec.programme_list
+        %span.credits
+          - if course_rec.credits != 0 
+            =h course_rec.credits 
+        %span.status=h check_kin_blank {(DropDown::COURSE_STATUS.find_all{|disp, value| value == course_rec.status}).map {|disp, value| disp} }[0]
+        %span.duration
+          =h course_rec.duration 
+          =h check_kin_blank {(DropDown::DURATION_TYPES.find_all{|disp, value| value == course_rec.duration_type}).map {|disp, value| disp} }[0]
+      %ul#semester_tree
+        - programmes.each do |programme|
+          - programme.descendants.at_depth(1).sort_by(&:code).each do |semester|
+            %li
+              %span.link_to_show
+                = link_to semester.code+" ", training_programme_path(semester)
+                &nbsp;|&nbsp;
+              %span.Collapsable
+                %span.programme_list
+                  - if semester.course_type=='Semester'
+                    /= link_to semester.code+" ", training_programme_path(semester)
+                    Semester
+                    =semester.name
+                  - else
+                    = link_to semester.code+" ", training_programme_path(semester)
+                    =semester.name
+                %span.credits
+                  - if semester.credits != 0 
+                    =h semester.credits
+                %span.status=h check_kin_blank {(DropDown::COURSE_STATUS.find_all{|disp, value| value == semester.status}).map {|disp, value| disp} }[0]
+                %span.duration
+                  =h semester.duration
+                  =h check_kin_blank {(DropDown::DURATION_TYPES.find_all{|disp, value| value == semester.duration_type}).map {|disp, value| disp} }[0]  
+              %ul#subject_tree
+                - semester.descendants.at_depth(2).sort_by(&:code).each do |subject|
+                  %li 
+                    %span.link_to_show
+                      = link_to subject.code+" ", training_programme_path(subject)
+                      &nbsp;|&nbsp;
+                    %span.Collapsable
+                      %span.programme_list
+                        /= link_to subject.code+" ", training_programme_path(subject)
+                        = subject.name
+                      %span.credits
+                        - if subject.credits != 0
+                          =h subject.credits
+                      %span.status=h check_kin_blank {(DropDown::COURSE_STATUS.find_all{|disp, value| value == subject.status}).map {|disp, value| disp} }[0]
+                      %span.duration
+                        =h subject.duration
+                        =h check_kin_blank {(DropDown::DURATION_TYPES.find_all{|disp, value| value == subject.duration_type}).map {|disp, value| disp} }[0]
+                    %ul#topic_tree
+                      - subject.descendants.at_depth(3).sort_by(&:code2).each do |topic|
+                        %li
+                          %span.link_to_show
+                            = link_to topic.code, training_programme_path(topic)
+                            &nbsp;|&nbsp;
+                          %span.Collapsable
+                            %span.programme_list
+                              /= link_to topic.code, training_programme_path(topic)
+                              = topic.name
+                            %span.credits
+                              - if topic.credits != 0
+                                =h topic.credits
+                            %span.status=h check_kin_blank {(DropDown::COURSE_STATUS.find_all{|disp, value| value == topic.status}).map {|disp, value| disp} }[0]
+                            %span.duration
+                              =h topic.duration
+                              =h check_kin_blank {(DropDown::DURATION_TYPES.find_all{|disp, value| value == topic.duration_type}).map {|disp, value| disp} }[0]
+                            %span.lecture
+                              =h topic.lecture
+                              =(DropDown::LECTURE_TIME.find_all{|disp, value| value == topic.lecture_time}).map {|disp, value| disp}[0] if topic.lecture
+                            %span.tutorial
+                              =h topic.tutorial
+                              =(DropDown::LECTURE_TIME.find_all{|disp, value| value == topic.tutorial_time}).map {|disp, value| disp}[0] if topic.tutorial
+                            %span.practical
+                              =h topic.practical.to_s
+                              =(DropDown::LECTURE_TIME.find_all{|disp, value| value == topic.practical_time}).map {|disp, value| disp}[0] if topic.practical
+                          %ul#subtopic_tree
+                            - topic.descendants.at_depth(4).sort_by(&:code2).each do |subtopic|
+                              %li
+                                %span.link_to_show
+                                  = link_to subtopic.code, training_programme_path(subtopic)
+                                  &nbsp;|&nbsp;
+                                %span.Collapsable
+                                  /%span.programme_list= subtopic.code_course_type_name
+                                  %span.programme_list
+                                    /= link_to subtopic.code, training_programme_path(subtopic)
+                                    = subtopic.name
+                                  %span.credits
+                                    - if subtopic.credits != 0
+                                      =h subtopic.credits
+                                  %span.status=h check_kin_blank {(DropDown::COURSE_STATUS.find_all{|disp, value| value == subtopic.status}).map {|disp, value| disp} }[0]
+                                  %span.duration
+                                    =h subtopic.duration
+                                    =h check_kin_blank {(DropDown::DURATION_TYPES.find_all{|disp, value| value == subtopic.duration_type}).map {|disp, value| disp} }[0]
+                                  %span.lecture
+                                    =h subtopic.lecture
+                                    =(DropDown::LECTURE_TIME.find_all{|disp, value| value == subtopic.lecture_time}).map {|disp, value| disp}[0] if subtopic.lecture
+                                  %span.tutorial
+                                    =h subtopic.tutorial
+                                    =(DropDown::LECTURE_TIME.find_all{|disp, value| value == subtopic.tutorial_time}).map {|disp, value| disp}[0] if subtopic.tutorial
+                                  %span.practical
+                                    =h subtopic.practical.to_s
+                                    =(DropDown::LECTURE_TIME.find_all{|disp, value| value == subtopic.practical_time}).map {|disp, value| disp}[0] if subtopic.practical
+                                %ul#subsubtopic_tree
+                                  - subtopic.descendants.at_depth(5).sort_by(&:code).each do |subsubtopic|
+                                    %li
+                                      %span.link_to_show
+                                        = link_to subsubtopic.code, training_programme_path(subsubtopic)
+                                        &nbsp;|&nbsp;
+                                      %span.Collapsable
+                                        /%span.programme_list=subsubtopic.code_course_type_name
+                                        %span.programme_list
+                                          /= link_to subsubtopic.code, training_programme_path(subtopic)
+                                          = subsubtopic.name
+                                        %span.credits
+                                          - if subsubtopic.credits !=0
+                                            =h subsubtopic.credits
+                                        %span.status=h check_kin_blank {(DropDown::COURSE_STATUS.find_all{|disp, value| value == subsubtopic.status}).map {|disp, value| disp} }[0]
+                                        %span.duration
+                                          =h subsubtopic.duration
+                                          =h check_kin_blank {(DropDown::DURATION_TYPES.find_all{|disp, value| value == subsubtopic.duration_type}).map {|disp, value| disp} }[0]
+                                        %span.lecture
+                                          =h subsubtopic.lecture
+                                          =(DropDown::LECTURE_TIME.find_all{|disp, value| value == subsubtopic.lecture_time}).map {|disp, value| disp}[0] if subsubtopic.lecture
+                                        %span.tutorial
+                                          =h subsubtopic.tutorial
+                                          =(DropDown::LECTURE_TIME.find_all{|disp, value| value == subsubtopic.tutorial_time}).map {|disp, value| disp}[0] if subsubtopic.tutorial
+                                        %span.practical
+                                          =h subsubtopic.practical.to_s
+                                          =(DropDown::LECTURE_TIME.find_all{|disp, value| value == subsubtopic.practical_time}).map {|disp, value| disp}[0] if subsubtopic.practical
+
+%BR
+  %font{:color=>"blue"}=t 'training.programme.remarks'
+
+:javascript
+  var toggle = function () {
+    $(this).parent().children().toggle();
+    $(this).toggle();
+  };
+  $(".Collapsable").click(toggle);
+  $(".Collapsable").each(toggle);
+  
+:javascript
+$(document).ready(function(){
+  $('.toga').click(function() {
+    $('.search_row').toggle(); 
+  });
+})
+  

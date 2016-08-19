@@ -110,13 +110,19 @@
       %tr
         - latest_books.each do |e| 
           %td.centre{:width=>"10%", :height=>"10%"}
-            - if e.photo_file_name == nil 
-              =t 'library.book.no_image'
-            - else 
-              /= image_tag e.photo.url
-              //=image_tag "http://localhost:3000/assets/books/21001/original/display%20div%20of%20selected%20menu%20item%20ON%20LOAD.png?1410749822"
-              //acc.book.photo.url GIVING THIS-assets/books/21001/original/no_cover_thumb.png?1410753027 
-              =image_tag "http://#{request.host}:3000"+e.photo.url, :width => '57px'  
+            - if current_user.college.code=="kskbjb"
+              - if e.photo_file_name == nil 
+                =t 'library.book.no_image'
+              - else 
+                /= image_tag e.photo.url
+                //=image_tag "http://localhost:3000/assets/books/21001/original/display%20div%20of%20selected%20menu%20item%20ON%20LOAD.png?1410749822"
+                //acc.book.photo.url GIVING THIS-assets/books/21001/original/no_cover_thumb.png?1410753027 
+                =image_tag "http://#{request.host}:3000"+e.photo.url, :width => '57px'  
+            - else
+              - if e.photo_file_name == nil 
+                =t 'library.book.no_image'
+              - else 
+                =image_tag e.photo.url, :width => '57px'  
       %tr
         - latest_books.each do |e| 
           %td.left.small

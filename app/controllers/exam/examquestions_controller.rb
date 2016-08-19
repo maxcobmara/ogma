@@ -99,7 +99,7 @@ class Exam::ExamquestionsController < ApplicationController
   # POST /examquestions
   # POST /examquestions.xml
   def create
-    raise params.inspect
+    #raise params.inspect
     @examquestion= Examquestion.new(examquestion_params)
     respond_to do |format|
       if @examquestion.save
@@ -184,7 +184,11 @@ class Exam::ExamquestionsController < ApplicationController
           end
         elsif current_user.roles.pluck(:authname).include?("administration") || current_user.roles.pluck(:authname).include?("examquestions_module")
            @programme_list=Programme.roots
-           @subjects=Programme.subject_groupbyprogramme
+           if current_user.college.code=="kskbjb"
+             @subjects=Programme.subject_groupbyprogramme
+           elsif current_user.college.code=="amsas"
+             @subjects=Programme.subject_groupbyprogramme_amsas
+           end
         else
           tasks_main=@current_user.userable.positions.first.tasks_main
           leader_unit=tasks_main.scan(/Program (.*)/)[0][0].split(" ")[0] if tasks_main!="" && tasks_main.include?('Program')
@@ -204,7 +208,11 @@ class Exam::ExamquestionsController < ApplicationController
       @lecturer_programme = current_user.userable.positions[0].unit
       if current_user.roles.pluck(:authname).include?("administration") || current_user.roles.pluck(:authname).include?("examquestions_module")
         @programme_list=Programme.roots
-        @subjects=Programme.subject_groupbyprogramme
+        if current_user.college.code=="kskbjb"
+          @subjects=Programme.subject_groupbyprogramme
+	elsif current_user.college.code="amsas"
+          @subjects=Programme.subject_groupbyprogramme2
+        end
       elsif current_user.roles.pluck(:authname).include?("programme_manager") && @lecturer_programme=="Pengkhususan" 
         posbasiks = Programme.roots.where(course_type: ["Diploma Lanjutan", "Pos Basik", "Pengkhususan"])
         @programme_list=Programme.where(id: posbasiks.pluck(:id))

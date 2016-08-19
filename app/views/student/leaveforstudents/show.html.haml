@@ -42,8 +42,10 @@
 
       #approve_leave.tab-pane.fade
         %br
-          = render 'approve_leave'
-          
+          - if current_user.college.code=="kskbjb"
+            = render 'approve_leave'
+          - else
+            = render 'approval_leave'
 .row
   .col-md-8.col-md-offset-2
     %hr
@@ -56,11 +58,16 @@
         - if @leaveforstudent.studentsubmit != true
           = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('.edit', :default => t("helpers.links.edit")), edit_student_leaveforstudent_path(@leaveforstudent), :class => 'btn btn-primary'
    
-        - if @leaveforstudent.studentsubmit==true && @leaveforstudent.student.kins.count>0   
-          - permitted_to? :approve_coordinator, :student_leaveforstudents do
-            = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('.approve', :default => t("helpers.links.coordinator_approval")), approve_coordinator_student_leaveforstudent_path(@leaveforstudent), :class => 'btn btn-primary'
-          - permitted_to? :approve_warden, :student_leaveforstudents do
-            = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('.approve', :default => t("helpers.links.warden_approval")), approve_warden_student_leaveforstudent_path(@leaveforstudent),       :class => 'btn btn-primary'
+        - if @leaveforstudent.studentsubmit==true && @leaveforstudent.student.kins.count>0 
+          - if current_user.college.code=="kskbjb"
+            - permitted_to? :approve_coordinator, :student_leaveforstudents do
+              = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('.approve', :default => t("helpers.links.coordinator_approval")), approve_coordinator_student_leaveforstudent_path(@leaveforstudent), :class => 'btn btn-primary'
+            - permitted_to? :approve_warden, :student_leaveforstudents do
+              = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('.approve', :default => t("helpers.links.warden_approval")), approve_warden_student_leaveforstudent_path(@leaveforstudent),       :class => 'btn btn-primary'
+          - else
+            /template for other than KSKBJB
+            - permitted_to? :approving, :student_leaveforstudents do
+              = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('.approve', :default => t("helpers.links.approving")), approving_student_leaveforstudent_path(@leaveforstudent), :class => 'btn btn-primary'
 
       - unless @leaveforstudent.studentsubmit==true
         = link_to content_tag(:i, "", :class => "fa fa-trash-o icon-white") + " " + t('helpers.links.destroy'), |

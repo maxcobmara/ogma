@@ -86,7 +86,11 @@
             .col-sm-2.control-label
               = f.label :prepared_by
             .col-md-9
-              = f.collection_select :prepared_by, Staff.joins(:positions).where('positions.name=?','Pengajar').order('name ASC'), :id, :name, {:prompt =>t('helpers.prompt.select_lecturer')},{ class: 'selectpicker', "data-width"=>'230px'} 
+              - if current_user.college.code=="kskbjb"
+                - lecturers=Staff.joins(:positions).where('positions.name=?','Pengajar').order('name ASC')
+              - else
+                - lecturers=Staff.joins(:positions).where('positions.name=?', 'Jurulatih').order('rank_id ASC, name ASC')
+              = f.collection_select :prepared_by, lecturers, :id, :staff_with_rank, {:prompt =>t('helpers.prompt.select_lecturer')},{ class: 'selectpicker', "data-width"=>'280px'} 
 
       #training_notes_edit.tab-pane
         %br
@@ -96,10 +100,12 @@
               = f.label :training_notes
             .col-md-6
               - @index=0
-              = f.fields_for :trainingnotes do |p|
-                = render 'trainingnote_fields', :f => p
-              .row  
-                = link_to_add_fields t('training.topicdetail.add_details'), f, :trainingnotes, "",  t('training.topicdetail.add_details')  
+            %hr{width: "100%"}
+          .row
+            = f.fields_for :trainingnotes do |p|
+              = render 'trainingnote_fields', :f => p
+            .row  
+              = link_to_add_fields content_tag(:i, "", class: "fa fa-plus-square")+" "+(t 'addmore'), f, :trainingnotes, "", t('addmore')
           
 /= f.fields_for :trainingnotes do |builder|
 /  = render 'trainingnote_fields', :f => builder, :locals=>{:aaa=> params[:topic_code],:index=>@index }

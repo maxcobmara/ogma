@@ -39,7 +39,10 @@
         = f.select :topic_id, grouped_options_for_select(Programme.topic_groupbysubject_oneprogramme(@preselect_prog), @examquestion.topic_id),{:include_blank => (t 'select')}, {class: 'form-control mandatory'}
       - else
         /admin
-        = f.select :topic_id, grouped_options_for_select(Programme.topic_groupbysubject, @examquestion.topic_id),{:include_blank => (t 'select')}, {class: 'form-control mandatory'}
+        - if current_user.college.code=="kskbjb"
+          = f.select :topic_id, grouped_options_for_select(Programme.topic_groupbysubject, @examquestion.topic_id),{:include_blank => (t 'select')}, {class: 'form-control mandatory'}
+        - elsif current_user.college.code=="amsas"
+          = f.select :topic_id, grouped_options_for_select(Programme.topic_groupbysubject_amsas, @examquestion.topic_id),{:include_blank => (t 'select')}, {class: 'form-control mandatory'}
 
   .form-group
     .col-sm-2.control-label

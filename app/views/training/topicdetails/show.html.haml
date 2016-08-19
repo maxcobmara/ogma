@@ -21,16 +21,16 @@
         .col-md-8.col-md-offset-1
           %dl.dl-horizontal         
             %dt= t 'training.topicdetail.theory', :default => model_class.human_attribute_name(:theory)+":"
-            %dd=@topicdetail.lecture_d if @topicdetail.subject_topic.lecture
+            %dd= @topicdetail.subject_topic.try(:lecture_duration) if @topicdetail.subject_topic.lecture_d?
       
             %dt=t 'training.topicdetail.tutorial', :default => model_class.human_attribute_name(:tutorial)+":"
-            %dd=@topicdetail.tutorial_d if @topicdetail.subject_topic.tutorial
+            %dd= @topicdetail.subject_topic.try(:tutorial_duration) if @topicdetail.subject_topic.tutorial_d?
         
             %dt=t 'training.topicdetail.practical', :default => model_class.human_attribute_name(:practical)+":"
-            %dd=h @topicdetail.subject_topic.practical.to_s+" "+(DropDown::LECTURE_TIME.find_all{|disp, value| value == @topicdetail.subject_topic.practical_time}).map {|disp, value| disp}[0] if @topicdetail.subject_topic.practical
+            %dd=@topicdetail.subject_topic.try(:practical_duration) if @topicdetail.subject_topic.practical_d?
              
             %dt= t 'training.topicdetail.duration', :default => model_class.human_attribute_name(:duration) + ":"
-            %dd=h @topicdetail.duration_d if @topicdetail.subject_topic.duration
+            %dd=h @topicdetail.subject_topic.total_duration if @topicdetail.subject_topic.duration
 
             %dt=t 'training.topicdetail.version_no', :default => model_class.human_attribute_name(:version_no) + ":"
             %dd=h @topicdetail.version_no
@@ -48,7 +48,7 @@
                   %td=h simple_format(@topicdetail.contents)
                   
             %dt=t 'training.topicdetail.prepared_by', :default => model_class.human_attribute_name(:prepared_by)+":"
-            %dd=@topicdetail.try(:topic_creator).try(:name)
+            %dd=current_user.college.code=="kskbjb" ? @topicdetail.try(:topic_creator).try(:name) : @topicdetail.try(:topic_creator).try(:staff_with_rank)
 
       #topicdetail_trainingnotes.tab-pane
         .col-md-8.col-md-offset-1

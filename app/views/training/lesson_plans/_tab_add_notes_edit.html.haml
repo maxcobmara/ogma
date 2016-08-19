@@ -7,6 +7,6 @@
       = render 'lesson_plan_trainingnote_fields', :f => p
     %br
     .row  
-      = link_to_add_fields t('helpers.label.lesson_plan.add_notes'), f, :lesson_plan_trainingnotes, "",  t('helpers.label.lesson_plan.add_notes')
+      = link_to_add_fields content_tag(:i, "", class: "fa fa-plus-square")+" "+(t 'addmore'), f, :lesson_plan_trainingnotes, "", t('helpers.label.lesson_plan.add_notes')
     %br
     %font{:color=>"green"}=t 'helpers.label.lesson_plan.remark'

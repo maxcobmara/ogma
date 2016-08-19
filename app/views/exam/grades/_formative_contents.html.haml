@@ -1,6 +1,7 @@
-- diploma=Programme.where(course_type: 'Diploma')
-- radiografi=diploma.where('name ILIKE?', '%Radiografi%').first.id
-- carakerja=diploma.where('name ILIKE?', '%Jurupulih Perubatan Cara Kerja%').first.id
+- if current_user.college.code=="kskbjb"
+  - diploma=Programme.where(course_type: 'Diploma')
+  - radiografi=diploma.where('name ILIKE?', '%Radiografi%').first.id
+  - carakerja=diploma.where('name ILIKE?', '%Jurupulih Perubatan Cara Kerja%').first.id
 .col-md-12
   %table.table.table-bordered
     %tr
@@ -17,7 +18,8 @@
             %br
             =h "("+score_x.weightage.to_i.to_s+"%)"
       /HIDE this part from Fisioterapi - https://trello.com/c/Wht96nbB
-      - fisioterapi=Programme.where(course_type: 'Diploma').where('name ILIKE (?)', '%Fisioterapi%').first.id
+      - if current_user.college.code=="kskbjb"
+        - fisioterapi=Programme.where(course_type: 'Diploma').where('name ILIKE (?)', '%Fisioterapi%').first.id
       - if @grades[0].studentgrade.course_id!=fisioterapi
         %th{:style=>"background-color:#E5ECE5; text-align:center;"}
           /CA+MSE 

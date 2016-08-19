@@ -1,17 +1,26 @@
 %fieldset
-  = f.hidden_field :_destroy
   .row
-    .col-md-offset-1.col-sm-1= f.select :kintype_id, DropDown::KIN_TYPE, {prompt: "Select Type"}, {class: 'selectpicker', "data-width"=>"auto"}
+    .col-md-offset-1.col-sm-1
+      = f.hidden_field :_destroy
+      = f.select :kintype_id, DropDown::KIN_TYPE, {prompt: (t 'select')}, {class: 'selectpicker', "data-width"=>"auto"}
     .col-sm-2= f.text_field :name,      :placeholder => "Name",       class: 'form-control'
     .col-sm-1= f.text_field :mykadno,   :placeholder => "MYKad No",   class: 'form-control'
     .col-sm-1= f.text_field :phone,     :placeholder => "Phone No",   class: 'form-control'
     .col-sm-2= f.text_field :profession,:placeholder => "Profession", class: 'form-control'
-    .col-sm-1
-      = link_to content_tag(:i, "", class: "fa fa-trash-o"), data: {"data-toggle" => "tooltip", title: "Delete"}, class: "btn btn-danger remove_fields"
+    .col-sm-1= link_to content_tag(:i, "", class: "fa fa-trash-o"), "#", class: "removing_fields"
   .row
     .col-sm-offset-2.col-sm-6
       %br
       = f.text_area :kinaddr, :placeholder => 'Address', class: "form-control", rows: "5"
     
-  :javascript
-    $('.selectpicker').selectpicker('render');
+:javascript
+  $('.selectpicker').selectpicker('render');
+
+  $('.removing_fields').click(function(){
+    var fieldset=$(this).parent().parent().parent();
+    var row=$(this).parent().parent();
+    var all_fields=row.children().children();
+    var destroyer=all_fields[0];
+    destroyer.value=true;    
+    fieldset.hide();
+  });

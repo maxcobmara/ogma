@@ -33,6 +33,7 @@ ms_MY:
       academic_session: Sesi Akademik
       evaluate_course: Penilaian Kursus
       grade: Gred
+      rank: Pangkat
     attributes:
       asset_defect:
         processed_by: Diproses oleh
@@ -114,7 +115,7 @@ ms_MY:
         evaluation_year: Tahun Penilaian
       staff:
         mycpds: "Jumlah Mata Kumulatif (MyCPD)"
-      mycpd:
+      mycpds:
         cpd_year: Tahun
         cpd_value: Jumlah Mata Kumulatif
       staff_attendance:
@@ -196,6 +197,17 @@ ms_MY:
         exam_id: Peperiksaan Akhir
       exam_template:
         name: Nama Template
+      book:
+        isbn: ISBN
+        title: Tajuk
+        language: Bahasa
+      rank:
+        employgrade_id: Gred
+      programme:
+        durationtype: Jenis jangka masa
+      topicdetail:
+        prepared_by: Disediakan Oleh
+        topic_code: Topik
     errors:
         template:
           body: "Berikut adalah beberapa masalah:"
@@ -279,6 +291,7 @@ ms_MY:
   from: Dari
   to: Hingga
   to2: Kepada
+  for: untuk
   return: Pemulangan
   confirmed: Disahkan
   confirmed_on: Disahkan pada
@@ -309,10 +322,12 @@ ms_MY:
   active: Aktif
   not_active: Tidak Aktif
   must_exist: mesti wujud
+  download: Muat turun
  
   actions:
     new: Baru
     new_node: Nod Baru
+    parent_node: Nod Induk
     search: Cari
     print: Cetak
     show: Pamer
@@ -850,11 +865,16 @@ ms_MY:
     country_cd: Kewarganegaraan
     transportclass_id: Kelas Kenderaan
     upload: Muat Naik Gambar
+    uploaded_file: Fail dimuatnaik
+    current_upload: Gambar Semasa
+    current_file: "Fail semasa : "
+    new_photo: Gambar Baru
     professional_development: Pembangunan Profesional
 
     employment_details: Butir Perkerjaan
     employscheme: Skim Perjawatan
     staffgrade_id: Gred Jawatan
+    rank_id: Pangkat
     employstatus: Status Perkerjaan
     appointstatus: Status Lantikan
     appointdt: Tarikh Lantikan Pertama
@@ -1598,6 +1618,16 @@ ms_MY:
     statement_exist: "Kenyataan Fingerprint (Tdak Fingerprint) telah wujud!"
     logrecord_exist: "Kenyataan Fingerprint (Tidak FIngerprint) hanya dibenarkan bagi hari-hari yang tidak mempunyai rekod kedatangan yang lengkap (log-masuk dan log-keluar)!"
     
+  rank:
+    title: Senarai Pangkat
+    new: Pangkat Baru
+    edit: Sunting Pangkat
+    details: Butiran Pangkat
+    name: Nama Pangkat
+    shortname: Nama Ringkas
+    category: Kategori Pangkat
+    employgrade_id: Gred
+    
   asset:
     title: Aset
     fixed: Harta Modal
@@ -1970,6 +2000,7 @@ ms_MY:
       formatted_mykad: No Mykad
       name: Nama
       matrixno: No Matrik
+      rank_id: Pangkat
       race: Bangsa
       icno: No MyKad 
       sstatus: Status Pelajar
@@ -2092,6 +2123,7 @@ ms_MY:
       update_student_kin: ". Sila kemaskini maklumat waris dalam submodul Pelajar terlebih dahulu."
       student_approve_leave_coordinator: "Kelulusan Permohonan Cuti Pelajar (Penyelaras Kumpulan)"
       student_approve_leave_warden: "Kelulusan Permohonan Cuti Pelajar (Warden)"
+      student_leave_approval: Kelulusan Permohonan Cuti Pelajar
       approve_student_leave: Kelulusan Cuti Pelajar
       approved_by: Diluluskan Oleh
       approve_date: Tarikh Kelulusan
@@ -2099,8 +2131,10 @@ ms_MY:
       not_approve: Tidak Meluluskan
       coordinator: Penyelaras Kumpulan
       warden: Warden
+      approver: Pelulus
       coordinator_result: Keputusan Penyelaras Kumpulan
       warden_result: Keputusan Warden
+      approver_result: Keputusan Pelulus
       programme: Program
       group: Kumpulan
       intake: Ambilan
@@ -2311,8 +2345,10 @@ ms_MY:
   library:
     title: Perpustakaan
     transaction: 
+      manager: Pengurusan Transaksi Perpustakaan
       title: Transaksi Perpustakaan
       list: Senarai Transaksi Perpustakaan
+      rules_regulations: Peraturan Perpustakaan
       book_id: ID Buku
       borrower: Peminjam
       add: Tambah
@@ -2325,17 +2361,35 @@ ms_MY:
       checkoutby: Pengawai Pengeluar Pinjaman
       extendby: Pegawai Pengeluar Pinjaman (sambungan)
       returnby: Pegawai Pemulangan Pinjaman 
-      duedate: Tarikh Harus Pulang
+      #duedate: Tarikh Harus Pulang
+      returnduedate: Tarikh Luput
+      returning: Pemulangan Pinjaman
+      return: Pulang?
       extend: Sambung?
-      extended: Returned
+      extended: Disambung
+      extending: Sambung Pinjaman
+      extend_for: "Pinjaman dilanjutkan : "
+      extension_remark: Sambungan pinjaman bagi staf adalah 21 hari, manakala bagi pelatih adalah 14 hari.
+      fourteen_days: sebanyak 14 hari
+      twentyone_days: sebanyak 21 hari
+      not_extended: Tiada sambungan
+      returned: Pemulangan
+      cancel: Batal
       returneddate: Tarikh Dipulang
+      not_overdue: Belum tamat tempoh
+      overdue: Tamat tempoh
       new: Cipta Transaksi Baru
       returnrec: Transaksi Pemulangan
       edit: Kemaskini Transaksi Perpustakaan
       details: Butiran Buku Yang Dipinjam
       loanedtotype: Dipinjam oleh Staf?
+      late_by: lewat 
+      fine_rate: " hari x RM 1.00 / sehari"
       fine: Denda Perlu Dibayar
       finepay: Bayar?
+      finepay2: Denda dibayar
+      fine_remark: "Sila kosongkan medan 'Denda dibayar' atau masukkan sifar jika tiada bayaran dibuat (diskaun/pengecualian)."
+      fine_remark2: Sila pastikan amaun 'Denda dibayar' (jika ada) dikemaskini terlebih dahulu, sebelum memilih kotak semak
       finepaydate: Tarikh Membayar Denda
       lost: Hilang?
       reportdetails: Laporan
@@ -2343,6 +2397,7 @@ ms_MY:
       replaceddate: Tarikh Ganti
       report: Laporan Kehilangan
       analysis_statistic: "Analisis & Statistik"
+      loan_details: Butiran buku dipinjam
       analysis:
         main_title: "Analisis & Statistik (Peminjam) - "
         main_title2: "Analisis & Statistik (Monograf) - "
@@ -2397,8 +2452,8 @@ ms_MY:
         back_general: "Kembali ke Analisis & Statistik (Umum) - Laman Utama"
           
     check:  
-      status: Semak Taraf
-      search: "Carian semak taraf"
+      status: Semak Status
+      search: "Carian semak status"
       
       
     book:
@@ -2470,7 +2525,16 @@ ms_MY:
       bibliography: Bibliografi
       indice: Indeks
       photo: "Muka depan (kulit buku)"
-  
+      availability_title: Semakan Ketersediaan ISBN
+      check_availability: Semak Ketersediaan
+      existing_book: Buku Sedia Ada
+      no_isbn: No ISBN tidak dimasukkan.
+      isbn_exist1: "Rekod buku menggunakan no ISBN yang dimasukkan telah wujud. (Tajuk : "
+      isbn_exist2: "). Sila sunting rekod "
+      isbn_exist3: " (jika perlu)."
+      enter_isbn: Sila masukkan ISBN untuk semakan.
+      not_exist_proceed: ISBN belum digunakan. Anda boleh teruskan mencipta rekod baru.
+
   buletin:
     list: Senarai Buletin
     headline: Tajuk Utama
@@ -2504,7 +2568,7 @@ ms_MY:
     letterdt: Tarikh Surat
     letterxdt: Tarikh Terima
     circulation_date: Tarikh Edaran
-    uploaded: Fail Dimuatnaik 
+    uploaded: Fail dimuatnaik 
     upload_change_file: "Memuatnaik/Tukar Fail"
     document_details: Butiran Dokumen
     action_details: Butiran Tindakan
@@ -2867,6 +2931,7 @@ ms_MY:
       details2: Keputusan Peperiksaan
       no_student: "Tiada pelajar yang mengambil program ini bagi semester dan tarikh peperiksaan yang dpilih."
       update_resultlines: "Sila masukkan butiran keputusan pelajar (PNGK dan Catatan) dan klik 'Kemaskini' untuk menyimpan data."
+      update_resultlines2: "Sila pilih Status pelajar dan klik 'Kemaskini' untuk menyimpan data."
       no_student: "Program dan Semester yang dipilih tidak mempunyai data pelajar. Sila masukkan data pelajar terlebih dahulu."
       record_must_unique: ", Program dan Tarikh Peperiksaan telah wujud. Hanya 1 rekod dibenarkan bagi setiap keputusan peperiksaan."
       all_compulsory: "Semua medan wajib diisi."
@@ -2902,6 +2967,7 @@ ms_MY:
       total_students: Bilangan Pelatih
       total: Bilangan
       incomplete_grade: Gred Tidak Lengkap
+      final_status: Status Keseluruhan
     
     evaluate_course:
       title: "Penilaian Program (Pengajar)"
@@ -2942,13 +3008,53 @@ ms_MY:
       prepared_by: DISEDIAKAN OLEH
       date_updated: TARIKH KEMASKINI
       by_student: "(Diisi oleh Pelatih)"
-      staff_or_invited: "Pilih kotak semak jika  Pengajar KSKB, nyahpilih jika Pensyarah Jemputan."
+      by_quality_dept: "(Diisi oleh Bahagian Kompetensi dan Kawalan Mutu)"
+      staff_or_invited1: Pilih kotak semak jika pengajar
+      staff_or_invited2: ", nyahpilih jika Pengajar Jemputan."
       no_staff: "Jemputan -  "
       evaluation_once: " - Penilaian bagi Subjek yang diajar hanya dibenarkan sekali"
       total: Jumlah
       question: S
       total_scores: Jumlah Skor
-      average_scores: Purata Skor
+      average_scores: Skor Purata
+      
+    average_course:
+      title: Data Analisa Skor Purata Penilaian Pensyarah
+      new: Data Analisa Baru bagi Skor Purata Penilaian Pensyarah
+      edit: Sunting Data Analisa bagi Skor Purata Penilaian Pensyarah
+      lecturer_id: Nama Pensyarah
+      programme_id: Nama Kursus/Program
+      dissatisfaction: Ketidakpuasan Am
+      recommend_for_improvement: Cadangan Pembaikan
+      lesson_content: Isi Kandungan Pelajaran
+      evaluation_category: Kategori Pilihan
+      support_justify: Justifikasi Sokongan
+      principal_id: Pengesahan Ketua Sekolah
+      principal_date: Tarikh
+      subject_id: Tajuk Pelajaran
+      delivery_quality: Mutu Penyampaian
+      lecturer_knowledge: Pengetahuan Pensyarah"
+      organisation: Organisasi
+      expertise_qualification: Kepakaran/ Kelayakan
+      
+      criteria_notes: "Kriteria Penilaian LAYAK atau TIDAK LAYAK adalah berdasarkan tiga aspek teras di bawah yang mana skor purata setiap aspek tidak boleh kurang dari nilai 5:"
+      icno: No K/P
+      rank_position: Pangkat/Jawatan
+      total_students: Jumlah Pelatih
+      signatory: Tandatangan
+      qualified: Layak
+      not_qualified: Tidak Layak
+      principal_name: Nama Penuh
+      score_rounded: "Nota: Skor Purata dibulatkan kepada nilai skor (rendah) yang terdekat."
+      score_rounded_actual: "Nota: Skor Purata dibulatkan kepada nilai skor (rendah) yang terdekat. Nilai sebenar : "
+      analyse_average_data: Analisa Skor Purata
+      view_analysis_data: Papar Data Analisa
+      of_subject: bagi subjek
+      lecturer_data: Data pensyarah
+      course_data: Data kursus
+      evaluation_analysis_data: Data analisis penilaian
+      evaluation_summary: Rumusan Penilaian
+      principal_verification: Pengesahan Ketua Sekolah
 
     examanalysis:
       title: Analisis Peperiksaan Mengikut Kertas Peperiksaan
@@ -3110,15 +3216,26 @@ ms_MY:
       new: Sukatan Kurikulum Baru
       new_programme: Program Baru
       edit: Sunting Sukatan Kurikulum
-      combo_code: "Kod Kombo  |  Nama Program / Subjek / Topik"
+      combo_code: "Kod  -  Nama Program / Semester / Subjek / Topik / Subtopik"
       code: Kod
       code2: Kod Kombo
       name: Nama
       course_type: Jenis Kurikulum
       duration: Jangka Masa
+      level: Peringkat
       credits: Kredit
       status: Status
       remarks: "Klik pada NAMA Program / Subjek / Topik untuk papar KOMBO KOD dan senarai subitem di bawahnya. Seterusnya klik pada KOD KOMBO untuk ke laman Pamer"
+      remark_title: Rujukan
+      remark_text1: Klik
+      remark_text2: untuk
+      remark_text3: papar
+      remark_text4: sorok
+      remark_text5: nod - nod warisan.
+      remark_text6: Bagi mencipta nod
+      remark_text7: waris
+      remark_text8: baru (selain Program), pilih 'Nod Baru' dalam laman 'Papar' nod induk.
+      remark_text9: "Klik pada 'Nama Program / Semester / Subjek / Topik / Subtopik' untuk ke laman 'Papar'."
       method: Kaedah Pengajaran
       practical: Amali
       tutorial: Tutorial
@@ -3130,6 +3247,7 @@ ms_MY:
       subtopic: Subtopik
       hours: Jam
       minutes: Minit
+      minutes2: Minit
       days: Hari
       weeks: Minggu
       months: Bulan
@@ -3146,7 +3264,7 @@ ms_MY:
       subject: Subjek
       topic_code: Topik
       version_no: Versi
-      duration: "Durasi (Jumlah Jam)"
+      duration: "Durasi (Jumlah)"
       #caution1: "Topic atau Subtopic telah dibuang dari Sukatan Kurikulum - sebelum 31Oktober 2013"
       #caution2: "Topik atau Subtopik telah dibuang dari Sukatan Kurikulum - bermula 31 Oktober 2013"
       descriptions: Deskripsi
@@ -3177,9 +3295,15 @@ ms_MY:
       programme: Program
       subject: Subjek
       staff_id: Disediakan oleh
+      plan: PP
+      plan_remark: " - Status penggunaan nota dalam Pelan Pengajaran"
+      plan_remark1: " - Nota tidak boleh dipadam dan hanya sebahagian medan sahaja boleh disunting."
+      plan_remark2: " - Nota tidak boleh dipadam."
+      remark_title: Rujukan
     lesson_plan:
       title: Senarai Pelan & Laporan Pengajaran
       title2: Pengajaran dan Pembelajaran
+      title3: Pelan Pengajaran
       reporting: Laporan Aktiviti Pengajaran dan Pembelajaran
       report: Laporan
       new: Pelan Pengajaran Baru
@@ -3245,11 +3369,12 @@ ms_MY:
       group: Kumpulan
       schedule_removed: "Jadual Waktu tidak dipilih atau telah dikeluarkan. Sila pilih Jadual Waktu."
       no_attachment_yet: "Tiada Nota dilampirkan. Klik 'Browse' untuk muatnaik fail."
-      exist_attachment: "Nota dilampirkan. Klik 'Browse' untuk tukar fail."
+      exist_attachment: "Nota dilampirkan. Klik 'Browse' / 'Choose File' untuk tukar fail."
       to: hingga
       status: Status Kelulusan
       add_notes: Tambah Nota
       adding_notes: "Tambah Nota Latihan (selepas Pelan Pengajaran dihantar untuk kelulusan)"
+      owner_must_match: "Pengajar mestilah sepadan dengan pemilik Jadual Waktu."
 
   campus:
     address: 
@@ -3264,6 +3389,7 @@ ms_MY:
       web: Web 
   
   conversation:
+    local_messaging: Pemesejan Dalaman
     subject: Subjek
     date: Tarikh
     compose: Karang
@@ -3333,6 +3459,7 @@ ms_MY:
       endorse: Sokongan
       coordinator_approval: Kelulusan Penyelaras
       warden_approval: Kelulusan Warden
+      approving: Kelulusan Cuti
       
     label:
       examquestion:
@@ -3493,7 +3620,7 @@ ms_MY:
         #condition_isnotgood:
         class_condition: Keadaan Kelas
         condition_desc: "Deskripsi Keadaan Kelas"
-        training_aids: Alan Bantuan Mengajar
+        training_aids: Alat Bantuan Mengajar
         summary: "Ringkasan (Ulasan)"
         lecturer_review: Ulasan Pengajar
         total_absent: Jumlah Tidak Hadir
@@ -3602,6 +3729,7 @@ ms_MY:
       select_format: Pilih Format Jadual Waktu
       select_lecture_method: Pilih Kaedah Pembelajaran
       select_sem_subject_topic: Pilih Sem-Subjek|Topik
+      select_subject_topic: Pilih Subjek > Topik / Subtopik
       select_location: Pilih Lokasi
       select_lecturer: Pilih Pengajar
       select_hod: "Pilih Ketua Jabatan / Pelulus"

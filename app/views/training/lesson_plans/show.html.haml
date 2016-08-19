@@ -19,7 +19,7 @@
       .col-md-8.col-md-offset-1
         %dl.dl-horizontal
           %dt= t 'training.lesson_plan.lecturer', :default => model_class.human_attribute_name(:lecturer) + ":"
-          %dd=h @lesson_plan.lessonplan_owner.name
+          %dd=h @lesson_plan.lessonplan_owner.rank_id? ? @lesson_plan.lessonplan_owner.staff_with_rank : @lesson_plan.lessonplan_owner.name
           
           %dt= t 'training.lesson_plan.intake_id', :default => model_class.human_attribute_name(:intake_id)+":"
           %dd
@@ -58,12 +58,12 @@
       /- if @lesson_plan.report_submit == true
       /  = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('helpers.links.back_lesson_report'), index_report_training_lesson_plans_path, :class => 'btn btn-default'
       
-      = link_to content_tag(:i, "", class: "fa fa-file-pdf-o"), lesson_plan_training_lesson_plan_path(@lesson_plan, format: "pdf"), class: "btn btn-default", "data-toggle" => "tooltip", title: t('training.lesson_plan.title')  
+      = link_to content_tag(:i, "", class: "fa fa-file-pdf-o"), lesson_plan_training_lesson_plan_path(@lesson_plan, format: "pdf"), class: "btn btn-default", "data-toggle" => "tooltip", title: t('training.lesson_plan.title3')  
       
       = link_to content_tag(:i, "", class: "fa fa-file-pdf-o"), lesson_report_training_lesson_plan_path(@lesson_plan, format: "pdf"), class: "btn btn-default", "data-toggle" => "tooltip", title: t('training.lesson_plan.reporting')  
       
       - if ((@lesson_plan.prepared_by == @current_user.userable_id) || @is_admin) && @lesson_plan.is_submitted == true && !@lesson_plan.report_submit
-        = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('lesson_plan.add_notes'), add_notes_training_lesson_plan_path(@lesson_plan),  :class => 'btn btn-primary' 
+        = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('training.lesson_plan.add_notes'), add_notes_training_lesson_plan_path(@lesson_plan),  :class => 'btn btn-primary' 
         
       /- if (@lesson_plan.is_submitted == false && @lesson_plan.prepared_by == @current_user.userable_id) || (@lesson_plan.prepared_by == @current_user.userable_id && @lesson_plan.hod_rejected? == true && @lesson_plan.is_submitted != true) || (@lesson_plan.is_submitted == false) || (@is_admin)
       - permitted_to? :update, :training_lesson_plans do

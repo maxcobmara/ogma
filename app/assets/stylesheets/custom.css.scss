@@ -308,13 +308,14 @@ table.inline_display {
 }
 
 //TODO: move to own css file <modelname.css> //Curriculum Management - tree view
-#header_tree, #programme_tree, #semester_tree, #subject_tree, #topic_tree, #subtopic_tree, #subsubtopic_tree {
+//#header_tree, #programme_tree, #semester_tree, #subject_tree, #topic_tree, #subtopic_tree, #subsubtopic_tree {
+#header_tree, #programme_tree, .non_bulleted{
 	 list-style: none;
 }
 
 #header_tree {
 	font-size:0.9em; color:white; background-color:#3574C4; padding:10px 5px;
-	li span.combo_code { width: 40%; }
+	li span.combo_code { width: 30%; }
 	li span.credits { position:absolute; left:750px; }
 	li span.status { position:absolute; left:850px; text-align:right; }
 	li span.duration { position:absolute; left:950px; }
@@ -325,18 +326,37 @@ table.inline_display {
 
 //#programme_tree, #semester_tree { background-color: #f9f9f9; }
 #programme_tree li span.Collapsable{ font-size:1.0em;  }
-#semester_tree, #subject_tree, #topic_tree, #subtopic_free, #subsubtopic_tree{ li span.Collapsable{ font-size:0.9em; }}
+//#semester_tree, #subject_tree, #topic_tree, #subtopic_free, #subsubtopic_tree{ li span.Collapsable{ font-size:0.9em; }}
 
-#programme_tree, #semester_tree , #subject_tree, #topic_tree, #subtopic_tree, #subsubtopic_tree{
+
+//#programme_tree, #semester_tree , #subject_tree, #topic_tree, #subtopic_tree, #subsubtopic_tree{
+#programme_tree{
 	li span.Collapsable
 	{
 		span.programme_list{ width: 750px;}
 		span.credits{ position:absolute; left:750px; }
 		span.status{ position:absolute; left:850px; }
 		span.duration{ position:absolute; left:950px; }
-		span.lecture{ position:absolute; left:1100px; }
-		span.tutorial{ position:absolute; left:1200px; }
-		span.practical{ position:absolute; left:1300px; }
+		span.lecture{ position:absolute; left:1100px; font-size:0.95em;}
+		span.tutorial{ position:absolute; left:1200px; font-size:0.95em;}
+		span.practical{ position:absolute; left:1300px; font-size:0.95em;}
 	}
 
+}
+
+.divider {
+  height: 1px;
+  width: 100%;
+  display: block;
+  margin: 5px 0;
+  overflow: hidden;
+  background-color: #EDEDEC;
+}
+.divider2 {
+  height: 1px;
+  width: 100%;
+  display: block;
+  margin: 1px 0;
+  overflow: hidden;
+  background-color: #F5F5F3;
 }

@@ -14,5 +14,18 @@ $(document).ready ->
   $("#closeme").click ->
     $("#new-post-modal").modal "hide"
     return
+  
+  #librarytransactions/book_list
+  $('.edit_loan input[type=submit]').remove()
+  $('.edit_loan input[type=checkbox]').click ->
+    ###alert("Nak return!"); ###
+    $(this).parent('form').submit()
+    return
+  
+  $('.extend_loan input[type=submit]').remove()
+  $('.extend_loan input[type=checkbox]').click ->
+    ###alert("Nak extend!"); ###
+    $(this).parent('form').submit()
+    return
 
   return

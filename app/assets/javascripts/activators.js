@@ -94,6 +94,18 @@ $(document).ready(function(e) {
         $input.val($input.val()+ ':00');
       }
   });
+  $('.time_picker_duration').datetimepicker({
+     datepicker:false,
+     format:'H:i',
+     step:15,
+     minTime: '00:15',
+     maxTime: '12:00',
+     mask: true,
+     autoclose: true,
+     onSelectDate: function(dp, $input) {
+        $input.val($input.val()+ ':00');
+      }
+  });
   $('.monthyear_picker').datetimepicker({
       format: "Y-m-d",
       timepicker: false,

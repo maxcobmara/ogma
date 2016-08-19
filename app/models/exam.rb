@@ -3,6 +3,7 @@ class Exam < ActiveRecord::Base
   #belongs_to  :programme,   :foreign_key => 'course_id'
   belongs_to :subject,  :class_name => 'Programme', :foreign_key => 'subject_id'
   belongs_to :exam_template, :foreign_key => 'topic_id'  #temporary use 'topic_id' field
+  belongs_to :college, :foreign_key => 'college_id'
   has_and_belongs_to_many :examquestions
   has_many :exammarks   #11Apr2013
   has_many :examtemplates, :dependent => :destroy #10June2013
@@ -229,6 +230,10 @@ class Exam < ActiveRecord::Base
     "#{render_full_name}"+" - "+"#{exam_on.strftime("%d-%B-%Y")}"
   end
   #10Apr2013
+  
+  def exam_name_subject_date2
+     "#{render_full_name} - #{subject.subject_list} (#{subject.root.level.upcase}) - #{exam_on.strftime("%d %B %Y")}"
+  end
   
   def exam_name_subject_date
      "#{render_full_name}"+" - "+"#{subject.subject_list}"+" - "+"#{exam_on.strftime("%d %B %Y")}"# +"#{subject.parent.course_type}"

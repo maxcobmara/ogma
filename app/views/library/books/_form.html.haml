@@ -11,8 +11,8 @@
         .form-group
           .col-sm-2.control-label
             %b ISBN
-          .col-md-4
-            = f.text_field :isbn, class: 'form-control'
+          #span_isbn.col-md-3
+            = f.text_field :isbn, class: 'form-control mandatory', readonly: 'readonly'
         .form-group
           .col-sm-2.control-label
             =  f.label t 'library.book.title', for: :title
@@ -30,7 +30,9 @@
           %br
           .row
             .col-sm-2.col-md-offset-2= t 'library.book.accessionno'
-           
+            .col-sm-2=t 'book.location'
+            .col-sm-2 Status
+
             %hr
           = f.fields_for :accessions do |builder|
             = render 'accession_fields', :f => builder

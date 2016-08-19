@@ -20,7 +20,7 @@
               - if sdate.to_s == @selected_date.to_s
                 - if index == 0 
                   %dt= t 'training.weeklytimetable.lecturer_name'
-                  %dd=h @test_lecturer.userable.name
+                  %dd=h @test_lecturer.userable.rank_id? ? @test_lecturer.userable.staff_with_rank : @test_lecturer.userable.name
       
                   %dt= t 'training.weeklytimetable.startdate' , :default => model_class.human_attribute_name(:startdate) + ":"
                   %dd=h item.try(:startdate).try(:strftime, "%d/%m/%Y") 

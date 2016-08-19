@@ -193,9 +193,9 @@ class Examquestion < ActiveRecord::Base
       "edit.png"
     elsif qstatus=="Re-Edit" && approver_id==curr_user.userable_id
       "noedit"
-    elsif ["Ready For Approval", "For Approval"].include?(qstatus) && (creator_id==curr_user.userable_id || editor_id==curr_user.userable_id)
+    elsif ["Ready For Approval", "For Approval"].include?(qstatus) && (creator_id==curr_user.userable_id || editor_id==curr_user.userable_id) && !is_admin
       "noedit"
-    elsif  ["Ready For Approval", "For ApprovalFor Approval"].include?(qstatus) && (approver_id==curr_user.userable_id || is_admin)
+    elsif  ["Ready For Approval", "For Approval"].include?(qstatus) && (approver_id==curr_user.userable_id || is_admin)
       "edit.png"
     elsif qstatus=="Approved" && (approver_id==curr_user.userable_id || is_admin)
       "edit.png"

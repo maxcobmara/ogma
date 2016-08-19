@@ -1,5 +1,5 @@
 class Weekly_timetablePdf < Prawn::Document
-  def initialize(weeklytimetable, view)
+  def initialize(weeklytimetable, view, college)
     super({top_margin: 20, page_size: 'A4', page_layout: :landscape })
     @weeklytimetable = weeklytimetable
     @view = view
@@ -11,15 +11,24 @@ class Weekly_timetablePdf < Prawn::Document
     @daycount=4
     @weekdays_end = @weeklytimetable.startdate.to_date+4.days
     @daycount2 = (@weeklytimetable.enddate.to_date - @weekdays_end).to_i 
+    @college=college
     
     font "Times-Roman"
-    text "BPL.KKM.PK(T)", :align => :right, :size => 8
+    if college.code=="kskbjb"
+      text "BPL.KKM.PK(T)", :align => :right, :size => 8
+    else
+      move_down 5
+    end
     image "#{Rails.root}/app/assets/images/logo_kerajaan.png", :position => :center, :scale => 0.5
     move_down 3
-    text "KEMENTERIAN KESIHATAN MALAYSIA", :align => :center, :size => 9
+    if college.code=="kskbjb"
+      text "KEMENTERIAN KESIHATAN MALAYSIA", :align => :center, :size => 9
+    else
+      move_down 5
+    end
     text "JADUAL WAKTU MINGGUAN", :align => :center, :size => 9
     move_down 3
-    text "INSTITUSI : KOLEJ SAINS KESIHATAN BERSEKUTU JOHOR BAHRU", :align => :left, :size => 9
+    text "INSTITUSI : #{college.name.upcase}", :align => :left, :size => 9
     text "KUMPULAN PELATIH : #{@weeklytimetable.try(:schedule_intake).try(:group_with_intake_name)}", :align => :left, :size => 9
     table_date_semester_week
     table_schedule_sun_wed
@@ -27,13 +36,21 @@ class Weekly_timetablePdf < Prawn::Document
     if @daycount2 > 0
       start_new_page
       ##same page header
-      text "BPL.KKM.PK(T)", :align => :right, :size => 8
+      if college.code=="kskbjb"
+        text "BPL.KKM.PK(T)", :align => :right, :size => 8
+      else
+        move_down 5
+      end
       image "#{Rails.root}/app/assets/images/logo_kerajaan.png", :position => :center, :scale => 0.5
       move_down 3
-      text "KEMENTERIAN KESIHATAN MALAYSIA", :align => :center, :size => 9
+      if college.code=="kskbjb"
+        text "KEMENTERIAN KESIHATAN MALAYSIA", :align => :center, :size => 9
+      else
+        move_down 5
+      end
       text "JADUAL WAKTU MINGGUAN", :align => :center, :size => 9
       move_down 3
-      text "INSTITUSI : KOLEJ SAINS KESIHATAN BERSEKUTU JOHOR BAHRU", :align => :left, :size => 9
+      text "INSTITUSI : #{college.name.upcase}", :align => :left, :size => 9
       text "KUMPULAN PELATIH : #{@weeklytimetable.try(:schedule_intake).try(:group_with_intake_name)}", :align => :left, :size => 9
       table_date_semester_week
       ##same page header
@@ -93,7 +110,7 @@ class Weekly_timetablePdf < Prawn::Document
             @weeklytimetable.weeklytimetable_details.each do |xx|
 	      if xx.day2 == row && xx.time_slot2 == col 
 	        #render 'subtab_class_details', {:xx=>xx}
-                gg+="#{xx.weeklytimetable_topic.parent.parent.subject_abbreviation.blank? ? "-" :  xx.weeklytimetable_topic.parent.parent.subject_abbreviation.upcase  if xx.weeklytimetable_topic.ancestry_depth == 4} #{ '<br>'+xx.weeklytimetable_topic.parent.name if xx.weeklytimetable_topic.ancestry_depth == 4}  #{xx.weeklytimetable_topic.parent.subject_abbreviation.blank? ? "-" :  xx.weeklytimetable_topic.parent.subject_abbreviation.upcase if xx.weeklytimetable_topic.ancestry_depth != 4} #{'<br>'+xx.weeklytimetable_topic.name  if xx.weeklytimetable_topic.ancestry_depth != 4} #{xx.location_desc}#{"(K)" if xx.lecture_method==1} #{"(T)" if xx.lecture_method==2}#{"(A)" if xx.lecture_method==3} #{xx.weeklytimetable_lecturer.name}"
+                gg+="#{xx.weeklytimetable_topic.parent.parent.subject_abbreviation.blank? ? "-" :  xx.weeklytimetable_topic.parent.parent.subject_abbreviation.upcase  if xx.weeklytimetable_topic.ancestry_depth == 4} #{ '<br>'+xx.weeklytimetable_topic.parent.name if xx.weeklytimetable_topic.ancestry_depth == 4}  #{xx.weeklytimetable_topic.parent.subject_abbreviation.blank? ? "-" :  xx.weeklytimetable_topic.parent.subject_abbreviation.upcase if xx.weeklytimetable_topic.ancestry_depth != 4} #{'<br>'+xx.weeklytimetable_topic.name  if xx.weeklytimetable_topic.ancestry_depth != 4} #{xx.location_desc}#{"(K)" if xx.lecture_method==1} #{"(T)" if xx.lecture_method==2}#{"(A)" if xx.lecture_method==3} #{@college.code=="amsas" ? xx.weeklytimetable_lecturer.staff_with_rank : xx.weeklytimetable_lecturer.name}"
 	      end 
 	    end
 	    onerow_content << gg
@@ -198,7 +215,7 @@ class Weekly_timetablePdf < Prawn::Document
             @weeklytimetable.weeklytimetable_details.each do |xx|
               if xx.is_friday == true && xx.time_slot == col2 #@count1+col2 
                 #= render 'subtab_class_details', {:xx=>xx}   
-                gg+="#{xx.weeklytimetable_topic.parent.parent.subject_abbreviation.blank? ? "-" :  xx.weeklytimetable_topic.parent.parent.subject_abbreviation.upcase  if xx.weeklytimetable_topic.ancestry_depth == 4} #{ '<br>'+xx.weeklytimetable_topic.parent.name if xx.weeklytimetable_topic.ancestry_depth == 4}  #{xx.weeklytimetable_topic.parent.subject_abbreviation.blank? ? "-" :  xx.weeklytimetable_topic.parent.subject_abbreviation.upcase if xx.weeklytimetable_topic.ancestry_depth != 4} #{'<br>'+xx.weeklytimetable_topic.name  if xx.weeklytimetable_topic.ancestry_depth != 4} #{ xx.location_desc}#{"(K)" if xx.lecture_method==1} #{"(T)" if xx.lecture_method==2}#{"(A)" if xx.lecture_method==3} #{'<br>'+xx.weeklytimetable_lecturer.name}"
+                gg+="#{xx.weeklytimetable_topic.parent.parent.subject_abbreviation.blank? ? "-" :  xx.weeklytimetable_topic.parent.parent.subject_abbreviation.upcase  if xx.weeklytimetable_topic.ancestry_depth == 4} #{ '<br>'+xx.weeklytimetable_topic.parent.name if xx.weeklytimetable_topic.ancestry_depth == 4}  #{xx.weeklytimetable_topic.parent.subject_abbreviation.blank? ? "-" :  xx.weeklytimetable_topic.parent.subject_abbreviation.upcase if xx.weeklytimetable_topic.ancestry_depth != 4} #{'<br>'+xx.weeklytimetable_topic.name  if xx.weeklytimetable_topic.ancestry_depth != 4} #{ xx.location_desc}#{"(K)" if xx.lecture_method==1} #{"(T)" if xx.lecture_method==2}#{"(A)" if xx.lecture_method==3} #{'<br>'+@college.code=="amsas" ? xx.weeklytimetable_lecturer.staff_with_rank : xx.weeklytimetable_lecturer.name}"
               end
             end
             allrows_content<< {content: gg, colspan: @span_count}
@@ -207,7 +224,7 @@ class Weekly_timetablePdf < Prawn::Document
             @weeklytimetable.weeklytimetable_details.each do |xx|
               if xx.is_friday == true && xx.time_slot == col2 #@count1+col2
                 #=render 'subtab_class_details', {:xx=>xx}
-                hh+="#{xx.weeklytimetable_topic.parent.parent.subject_abbreviation.blank? ? "-" :  xx.weeklytimetable_topic.parent.parent.subject_abbreviation.upcase  if xx.weeklytimetable_topic.ancestry_depth == 4} #{ '<br>'+xx.weeklytimetable_topic.parent.name if xx.weeklytimetable_topic.ancestry_depth == 4}  #{xx.weeklytimetable_topic.parent.subject_abbreviation.blank? ? "-" :  xx.weeklytimetable_topic.parent.subject_abbreviation.upcase if xx.weeklytimetable_topic.ancestry_depth != 4} #{'<br>'+xx.weeklytimetable_topic.name  if xx.weeklytimetable_topic.ancestry_depth != 4} #{ xx.location_desc}#{"(K)" if xx.lecture_method==1} #{"(T)" if xx.lecture_method==2}#{"(A)" if xx.lecture_method==3} #{'<br>'+xx.weeklytimetable_lecturer.name}"
+                hh+="#{xx.weeklytimetable_topic.parent.parent.subject_abbreviation.blank? ? "-" :  xx.weeklytimetable_topic.parent.parent.subject_abbreviation.upcase  if xx.weeklytimetable_topic.ancestry_depth == 4} #{ '<br>'+xx.weeklytimetable_topic.parent.name if xx.weeklytimetable_topic.ancestry_depth == 4}  #{xx.weeklytimetable_topic.parent.subject_abbreviation.blank? ? "-" :  xx.weeklytimetable_topic.parent.subject_abbreviation.upcase if xx.weeklytimetable_topic.ancestry_depth != 4} #{'<br>'+xx.weeklytimetable_topic.name  if xx.weeklytimetable_topic.ancestry_depth != 4} #{ xx.location_desc}#{"(K)" if xx.lecture_method==1} #{"(T)" if xx.lecture_method==2}#{"(A)" if xx.lecture_method==3} #{'<br>'+@college.code=="amsas" ? xx.weeklytimetable_lecturer.staff_with_rank : xx.weeklytimetable_lecturer.name}"
               end
             end
             allrows_content<< hh
@@ -287,7 +304,7 @@ class Weekly_timetablePdf < Prawn::Document
                 #2-OR display Weekends slot (Sat & Sun) for week starting on Monday    
                 @weeklytimetable.weeklytimetable_details.each do |xx|
                   if xx.day2 == row2+@daycount+1 && xx.time_slot2 == col2 
-                    gg+="#{xx.weeklytimetable_topic.parent.parent.subject_abbreviation.blank? ? "-" :  xx.weeklytimetable_topic.parent.parent.subject_abbreviation.upcase  if xx.weeklytimetable_topic.ancestry_depth == 4} #{ '<br>'+xx.weeklytimetable_topic.parent.name if xx.weeklytimetable_topic.ancestry_depth == 4}  #{xx.weeklytimetable_topic.parent.subject_abbreviation.blank? ? "-" :  xx.weeklytimetable_topic.parent.subject_abbreviation.upcase if xx.weeklytimetable_topic.ancestry_depth != 4} #{'<br>'+xx.weeklytimetable_topic.name  if xx.weeklytimetable_topic.ancestry_depth != 4}#{"(K)" if xx.lecture_method==1} #{xx.location_desc}#{"(T)" if xx.lecture_method==2}#{"(A)" if xx.lecture_method==3} #{'<br>'+xx.weeklytimetable_lecturer.name}"
+                    gg+="#{xx.weeklytimetable_topic.parent.parent.subject_abbreviation.blank? ? "-" :  xx.weeklytimetable_topic.parent.parent.subject_abbreviation.upcase  if xx.weeklytimetable_topic.ancestry_depth == 4} #{ '<br>'+xx.weeklytimetable_topic.parent.name if xx.weeklytimetable_topic.ancestry_depth == 4}  #{xx.weeklytimetable_topic.parent.subject_abbreviation.blank? ? "-" :  xx.weeklytimetable_topic.parent.subject_abbreviation.upcase if xx.weeklytimetable_topic.ancestry_depth != 4} #{'<br>'+xx.weeklytimetable_topic.name  if xx.weeklytimetable_topic.ancestry_depth != 4}#{"(K)" if xx.lecture_method==1} #{xx.location_desc}#{"(T)" if xx.lecture_method==2}#{"(A)" if xx.lecture_method==3} #{'<br>'+@college.code=="amsas" ? xx.weeklytimetable_lecturer.staff_with_rank : xx.weeklytimetable_lecturer.name}"
                   end
                 end
               end #end for weekend_dayname friday
@@ -321,11 +338,16 @@ class Weekly_timetablePdf < Prawn::Document
   end
   
   def table_signatory
+    if @college.code=="amsas"
+      approver="Nama: #{@weeklytimetable.endorsed_by? ? @weeklytimetable.schedule_approver.staff_with_rank : "-"}"
+    else
+      approver="Nama: #{@weeklytimetable.endorsed_by? ? @weeklytimetable.schedule_approver.name : "-"}"
+    end
     data1 = [["Disediakan Oleh :","Disemak Oleh :" ],
                   ["#{'.'*90}","#{'.'*90}"],
-                  ["Nama: #{@weeklytimetable.schedule_creator.name}","Nama #{@weeklytimetable.endorsed_by? ? @weeklytimetable.schedule_approver.name : "-"}"],
+                  ["Nama: #{@college.code=="amsas" ? @weeklytimetable.schedule_creator.staff_with_rank : @weeklytimetable.schedule_creator.name}", approver],
                   ["Pengajar Penyelaras","#{@weeklytimetable.endorsed_by? ? @weeklytimetable.schedule_approver.positions.first.try(:name) : "-"}"],
-                  ["Pelatih Ambilan #{@weeklytimetable.try(:schedule_intake).try(:name)}","KSKB JB"]]
+                  ["Pelatih Ambilan #{@weeklytimetable.try(:schedule_intake).try(:name)}", @college.code.upcase]]
     table(data1, :column_widths => [350], :cell_style => { :size => 10}) do
       columns(0..1).borders=[]
       rows(0..4).height=18

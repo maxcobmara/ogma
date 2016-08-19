@@ -12,6 +12,7 @@ class Training::LessonPlansController < ApplicationController
     if @is_admin
       @search = LessonPlan.search(params[:q])
     else
+      roles=current_user.roles
       if roles.include?("programme_manager")
         @search = LessonPlan.search2(@programme_id).search(params[:q])
       else
@@ -121,7 +122,7 @@ class Training::LessonPlansController < ApplicationController
     @lesson_plan = LessonPlan.find(params[:id])
     respond_to do |format|
       format.pdf do
-        pdf = Lesson_planPdf.new(@lesson_plan, view_context)
+        pdf = Lesson_planPdf.new(@lesson_plan, view_context, current_user.college)
         send_data pdf.render, filename: "lesson_plan-{Date.today}",
                               type: "application/pdf",
                               disposition: "inline"
@@ -133,7 +134,7 @@ class Training::LessonPlansController < ApplicationController
     @lesson_plan = LessonPlan.find(params[:id])   
     respond_to do |format|
       format.pdf do
-        pdf = Lesson_reportPdf.new(@lesson_plan, view_context)
+        pdf = Lesson_reportPdf.new(@lesson_plan, view_context, current_user.college)
         send_data pdf.render, filename: "lesson_report-{Date.today}",
                               type: "application/pdf",
                               disposition: "inline"
@@ -196,7 +197,7 @@ class Training::LessonPlansController < ApplicationController
   
   # Never trust parameters from the scary internet, only allow the white list through.
   def lesson_plan_params
-    params.require(:lesson_plan).permit(:lecturer, :intake_id, :student_qty, :location, :semester, :topic, :lecture_title, :lecture_date, :start_time, :end_time, :reference, :is_submitted, :submitted_on, :hod_approved, :hod_approved_on, :hod_rejected, :hod_rejected_on, :data, :prerequisites, :year, :reason, :prepared_by, :endorsed_by, :condition_isgood, :condition_isnotgood, :condition_desc, :training_aids, :summary, :total_absent, :report_submit, :report_submit_on, :report_endorsed, :report_endorsed_on, :report_summary, :schedule,  lessonplan_methodologies_attributes: [:id,:content,:lecturer_activity, :student_activity, :training_aids, :evaluation, :start_meth, :end_meth, :_destroy], lesson_plan_trainingnotes_attributes: [:id,:_destroy,:lesson_plan_id,:trainingnote_id], trainingnotes_attributes: [:id,:_destroy,:document,:timetable_id,:staff_id,:title] )
+    params.require(:lesson_plan).permit(:lecturer, :intake_id, :student_qty, :location, :semester, :topic, :lecture_title, :lecture_date, :start_time, :end_time, :reference, :is_submitted, :submitted_on, :hod_approved, :hod_approved_on, :hod_rejected, :hod_rejected_on, :data, :prerequisites, :year, :reason, :prepared_by, :endorsed_by, :condition_isgood, :condition_isnotgood, :condition_desc, :training_aids, :summary, :total_absent, :report_submit, :report_submit_on, :report_endorsed, :report_endorsed_on, :report_summary, :schedule, :college, {:college_data=>[]}, :data_title, lessonplan_methodologies_attributes: [:id,:content,:lecturer_activity, :student_activity, :training_aids, :evaluation, :start_meth, :end_meth, :_destroy], lesson_plan_trainingnotes_attributes: [:id,:_destroy,:lesson_plan_id,:trainingnote_id], trainingnotes_attributes: [:id,:_destroy,:document,:timetable_id,:staff_id,:title] )
   end
   
 end

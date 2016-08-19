@@ -1,7 +1,8 @@
 class CensusStudentTenantsPdf < Prawn::Document
   include StudentsHelper
-  def initialize(all_beds_single, all, damaged, occupied, students_prog, all_tenants_wstudent, all_tenants_wostudent, tenantbed_per_level, view)
+  def initialize(all_beds_single, all, damaged, occupied, students_prog, all_tenants_wstudent, all_tenants_wostudent, tenantbed_per_level, view, college)
     super({top_margin: 30, page_size: 'A4', page_layout: :portrait })
+    @college=college
     @all_beds_single = all_beds_single
     @all=all 
     @damaged=damaged
@@ -33,8 +34,9 @@ class CensusStudentTenantsPdf < Prawn::Document
   
   def line_logo
     line_item=[[{:image => "#{Rails.root}/app/assets/images/logo_kerajaan.png", :scale => 0.5},
-                     "PENEMPATAN PELATIH ASRAMA #{(@all_beds_single[0].root.name[4,20]).upcase} BLOK #{@all_beds_single[0].root.code+'<br>'} KOLEJ SAINS KESIHATAN BERSEKUTU #{'<br>'} JOHOR BAHRU",
-                     {:image => "#{Rails.root}/app/assets/images/kskb_logo.png", :scale => 0.65}]]
+                     "PENEMPATAN PELATIH ASRAMA #{(@all_beds_single[0].root.name[4,20]).upcase} BLOK #{@all_beds_single[0].root.code+'<br>'} #{@college.name.upcase}",
+                     {:image => "#{Rails.root}/app/assets/images/#{@college.logo}", :scale => 0.65}]]
+    #:scale => 0.65
   end
   
   def record

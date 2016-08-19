@@ -8,13 +8,17 @@
   = form_for [:exam, @examanalysis], html: { class: 'form-horizontal' }  do |f| 
     = render 'shared/error_messages', object: f.object
     = hidden_field_tag :redirect_location, exam_examanalyses_path 
+    = f.hidden_field :college_id, value: current_user.college_id
     
     .col-md-8.col-md-offset-3
       .form-group
         .col-sm-2.control-label
           = f.label t 'exam.examanalysis.final_exam', for: :exam_id
         .col-md-6
-          = f.collection_select :exam_id, @exams, :id, :exam_name_subject_date, {:include_blank => t('select')}, {class: 'selectpicker mandatory', "data-width"=>"450px"}
+          - if current_user.college.code=="kskbjb"
+            = f.collection_select :exam_id, @exams, :id, :exam_name_subject_date, {:include_blank => t('select')}, {class: 'selectpicker mandatory', "data-width"=>"450px"}
+          - else
+            = f.collection_select :exam_id, @exams, :id, :exam_name_subject_date2, {:include_blank => t('select')}, {class: 'selectpicker mandatory', "data-width"=>"500px"}
 
     .row
       .col-md-10.col-md-offset-1
