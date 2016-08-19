@@ -10,7 +10,7 @@ set :scm_passphrase, ""
 
 # Default branch is :master
 # ask :branch, `git rev-parse --abbrev-ref HEAD`.chomp
-set :branch, "master"
+set :branch, "amsas_production"
 set :rails_env, "production"
 set :assets_roles, [:web, :app]
 set :deploy_via, :copy
