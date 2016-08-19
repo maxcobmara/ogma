@@ -29,7 +29,7 @@ class ApplicationController < ActionController::Base
   ###
 
   def current_college
-    current_user.college.code
+    current_user.try(:college).try(:code)
   end
 
   def after_sign_in_path_for(resource)
