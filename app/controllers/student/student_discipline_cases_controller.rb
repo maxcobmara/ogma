@@ -163,7 +163,7 @@ class Student::StudentDisciplineCasesController < ApplicationController
     
     respond_to do |format|
       format.pdf do
-        pdf = Anacdotal_reportPdf.new(@discipline_cases, view_context)
+        pdf = Anacdotal_reportPdf.new(@discipline_cases, view_context, current_user.college)
         send_data pdf.render, filename: "discipline-bystudent-{Date.today}",
         type: "application/pdf",
         disposition: "inline"

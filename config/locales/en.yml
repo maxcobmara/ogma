@@ -2413,6 +2413,7 @@ en:
       absent: Absent
       complete: Yes
       incomplete: No
+      student_not_exist: "(No student)"
       new_multiple_intake: "New Multiple (by Intake)"
       new_multiple_schedule: "New Multiple (by Schedule)"
       edit_remark: "For multiple edit, select students from the same Class / Schedule OR students from multiple Classes / Schedules of the same Intake(and Programme)."
