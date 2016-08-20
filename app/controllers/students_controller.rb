@@ -59,6 +59,10 @@ class StudentsController < ApplicationController
   def download_excel_format
     send_file ("#{::Rails.root.to_s}/public/excel_format/student_import.xls")
   end
+  
+  def download_excel_format_amsas
+    send_file ("#{::Rails.root.to_s}/public/excel_format/student_import_amsas.xls")
+  end
   #end - import excel
   
   # GET /students/1

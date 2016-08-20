@@ -195,9 +195,10 @@
                 %h2.icon= t "student.students.reporting"
                 %a.mp-back{:href => "#"}= t 'helpers.links.back'
                 %ul
-                  %li= link_to (t "student.students.ethnic"), reports_students_path
-                  %li= link_to (t "student.students.students_quantity_sponsor"), students_quantity_sponsor_students_path(format: 'pdf')
-                  %li= link_to (t "student.students.students_quantity_report"), students_quantity_report_students_path(format: 'pdf')
+                  - if current_user.college.code=="kskbjb"
+                    %li= link_to (t "student.students.ethnic"), reports_students_path
+                    %li= link_to (t "student.students.students_quantity_sponsor"), students_quantity_sponsor_students_path(format: 'pdf')
+                    %li= link_to (t "student.students.students_quantity_report"), students_quantity_report_students_path(format: 'pdf')
                   - permitted_to? :reports, :student_student_discipline_cases do
                     %li= link_to (t "student.discipline.report_title"), reports_student_student_discipline_cases_path
                     %li= link_to (t "student.discipline.list"), discipline_report_student_student_discipline_cases_path(coverage: "all", format: 'pdf' )                  

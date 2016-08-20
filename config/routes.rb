@@ -219,7 +219,8 @@ Ogma::Application.routes.draw do
   end
 
   match '/public/excel_format/student_import.xls', to: 'students#download_excel_format', via: 'get', target: '_self'
-
+  match '/public/excel_format/student_import_amsas.xls', to: 'students#download_excel_format_amsas', via: 'get', target: '_self'
+  
   namespace :student do
     resources :tenants do
       collection do

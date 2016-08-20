@@ -3,10 +3,16 @@
     .col-sm-2.control-label
       = f.label t 'student.leaveforstudent.student_id', for: :student
     .col-md-2
-      - if @current_user.userable_type=="Student"
-        = f.collection_select :student_id, Student.where(id: @current_user.userable_id), :id, :formatted_mykad_and_student_name, {:selected => @current_user.userable_id},{class: 'selectpicker', "data-width"=>'320px'} 
+      - if current_user.college.code=="kskbjb"
+        - if current_user.userable_type=="Student"
+          = f.collection_select :student_id, Student.where(id: current_user.userable_id), :id, :formatted_mykad_and_student_name, {:selected => current_user.userable_id},{class: 'selectpicker', "data-width"=>'320px'} 
+        - else
+          = f.collection_select :student_id, Student.all.order(name: :asc), :id, :formatted_mykad_and_student_name, {:include_blank =>t('helpers.prompt.select_student')},{class: 'selectpicker mandatory', "data-width"=>'320px'} 
       - else
-        = f.collection_select :student_id, Student.all.order(name: :asc), :id, :formatted_mykad_and_student_name, {:include_blank =>t('helpers.prompt.select_student')},{class: 'selectpicker mandatory', "data-width"=>'320px'} 
+        - if current_user.userable_type=="Student"
+          = f.collection_select :student_id, Student.where(id: current_user.userable_id), :id, :student_with_rank, {:selected => current_user.userable_id},{class: 'selectpicker', "data-width"=>'320px'} 
+        - else
+          = f.collection_select :student_id, Student.all.order(rank_id: :asc, name: :asc), :id, :student_with_rank, {:include_blank =>t('helpers.prompt.select_student')},{class: 'selectpicker mandatory', "data-width"=>'320px'} 
   
   .form-group
     .col-sm-2.control-label

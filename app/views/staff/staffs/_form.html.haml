@@ -89,17 +89,17 @@
               - if @info.new_record?
                 = f.collection_select :staff_shift_id, StaffShift.all, :id, :start_end, {:include_blank => true, :prompt=>t('select')}, {class: 'selectpicker', "data-width"=>"auto"}
               - else
-                - if @staff.staff_shift_id.blank? 
+                - if @info.staff_shift_id.blank? 
                   = f.collection_select :staff_shift_id, StaffShift.all, :id, :start_end, {:include_blank => true, :prompt=>t('select')}, {class: 'selectpicker', "data-width"=>"auto"}
                 - else
-                  = f.collection_select :staff_shift_id, StaffShift.all, :id, :start_end, {:include_blank => true, :selected=>@staff.staff_shift_id}, {class: 'selectpicker', "data-width"=>"auto"}
+                  = f.collection_select :staff_shift_id, StaffShift.all, :id, :start_end, {:include_blank => true, :selected=>@info.staff_shift_id}, {class: 'selectpicker', "data-width"=>"auto"}
 
             .previous_shift{:style=>"display: none;"}
               = f.fields_for :shift_histories do |builder|
                 - if builder.object.deactivate_date.blank? == true
                   .col-md-1= f.label t 'staff.shift_histories.deactivate_date', for: :deactivate_date
                   .col-md-2= builder.text_field :deactivate_date, class: 'date_picker form-control'
-                  = builder.hidden_field :shift_id, :value =>@staff.staff_shift_id
+                  = builder.hidden_field :shift_id, :value =>@info.staff_shift_id
 
           .form-group
             .col-sm-2.control-label
@@ -253,16 +253,16 @@
       //photo upload pane
       #photo_upload.tab-pane
         .col-md-offset-2         
-          - if @staff.photo.exists? then
+          - if @info.photo.exists? then
             .form-group
               .col-sm-2.control-label
                 = f.label (t 'staff.current_upload')
               .col-md-6
-                =image_tag @staff.photo.url, :style => "border: solid 1px;"
+                =image_tag @info.photo.url, :style => "border: solid 1px;"
                 .help-block.small
                   = t'staff.uploaded_file'
                   \:
-                  = @staff.photo_file_name
+                  = @info.photo_file_name
           
           .form-group
             /preview diagram before upload
@@ -275,7 +275,7 @@
             .col-sm-2.control-label
               = f.label t 'staff.upload', for: :upload
             .col-md-4
-              - if @staff.photo.exists? then
+              - if @info.photo.exists? then
                 =(t 'staff.current_file') + f.object.photo_file_name
                 &nbsp;(
                 = link_to (t 'download'), f.object.photo.url

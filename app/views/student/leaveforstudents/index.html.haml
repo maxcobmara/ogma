@@ -38,11 +38,15 @@
     = render "index_search"
     - @leaveforstudent.each do |leaveforstudent|
       %tr
-        %td= link_to leaveforstudent.student_details, student_leaveforstudent_path(leaveforstudent)
+        %td
+          - if current_user.college.code=="amsas"
+            = link_to leaveforstudent.student.student_with_rank, student_leaveforstudent_path(leaveforstudent)
+          - else
+            = link_to leaveforstudent.student_details, student_leaveforstudent_path(leaveforstudent)
         %td
           - programmes=Programme.roots.where(college_id: current_user.college_id)
           - pnames=programmes.pluck(:name)
-          = pnames.count==pnames.uniq.count ? leaveforstudent.student.course.name :  leaveforstudent.student.course.fullname 
+          = pnames.count==pnames.uniq.count ? leaveforstudent.student.course.name :  leaveforstudent.student.course.programme_list
         %td.centre=h leaveforstudent.student.intake.try(:strftime, '%b %Y')
         %td.centre=h leaveforstudent.student.tenants.last.location.root.code if !leaveforstudent.student.tenants.nil? && leaveforstudent.student.tenants.count > 0 
         %td=h ((DropDown::STUDENTLEAVETYPE.find_all{|disp, value| value ==leaveforstudent.leavetype }).map {|disp, value| disp}).first

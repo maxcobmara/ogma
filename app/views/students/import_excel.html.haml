@@ -14,7 +14,10 @@
         = submit_tag "Import", :class => 'btn btn-primary'
     .form-group
       .col-md-4.col-md-offset-2
-        = link_to (t 'excel_format'), '/public/excel_format/student_import.xls', :action => 'download_excel_format'
+        - if current_user.college.code=="amsas"
+          = link_to (t 'excel_format'), '/public/excel_format/student_import_amsas.xls', :action => 'download_excel_format'
+        - else
+          = link_to (t 'excel_format'), '/public/excel_format/student_import.xls', :action => 'download_excel_format_amsas'
 %br
 %h4=t('library.book.excel_conditions')
 
@@ -34,7 +37,10 @@
   %li 
     %b sstatus
     %font{color: "red"}*
-    =" - "+t('student.students.sstatus_must_use')
+    - if current_user.college.code=="amsas"
+      =" - "+t('student.students.sstatus_must_use2')
+    - else
+      =" - "+t('student.students.sstatus_must_use')
   %li 
     %b sstatus_remark
     ="- ("+t('student.students.additional_notes')+t('student.students.sstatus_remark')+" "+(t 'or').upcase+" "+t('student.students.sstatus_remark2')+" "+" - "+t('student.students.repeated_notes')+")"
@@ -93,6 +99,9 @@
   %li 
     %b address_posbasik 
     =" - "+t('student.students.address_posbasik')
+  %li
+    %b college_id
+    = " - "+t('student.students.college_id_default')+" "+current_user.college.name.upcase+" : "+current_user.college_id.to_s
 %br
 %B 
   %u=t('notes')+" : "

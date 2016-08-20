@@ -23,7 +23,7 @@ class Slip_pengesahan_cuti_pelajarPdf < Prawn::Document
   def table1
     
     data =[["Butiran Cuti Pelajar", ""],
-          ["1. Nama Pelajar", ": #{@leaveforstudent.student.formatted_mykad_and_student_name}"],
+          ["1. Nama Pelajar", ": #{@college.code=="amsas" ? @leaveforstudent.student.student_with_rank :  @leaveforstudent.student.formatted_mykad_and_student_name}"],
           ["2. Jenis Cuti", ": #{((DropDown::STUDENTLEAVETYPE2.find_all{|disp, value| value == @leaveforstudent.leavetype }).map {|disp, value| disp})[0]}"],
           ["3. Tarikh Mohon Cuti", ": #{I18n.l(@leaveforstudent.requestdate)}"],
           ["4. Sebab", ": #{@leaveforstudent.reason}"],

@@ -536,18 +536,35 @@ class Student < ActiveRecord::Base
   
 STATUS = [
            #  Displayed       stored in db
-               ['Asas Pegawai', 'asaspeg' ],
-               ['Asas LLP', 'asasllp'],
-               ['Lanjutan Pegawai', 'lanpeg'],
-               ['Lanjutan LLP', 'lanllp']
-#            [ I18n.t('student.students.current'),"Current" ],
-#            [ I18n.t('student.students.graduated'),"Graduated" ],
-#            [ I18n.t('student.students.repeat'), "Repeat" ],
-#            [ I18n.t('student.students.on_leave'), "On Leave" ],
-#            [ I18n.t('student.students.transfer_college'), "Transfer College"],
-#            [ I18n.t('student.students.expelled'), "Expelled"]
+            [ I18n.t('student.students.current'),"Current" ],
+            [ I18n.t('student.students.graduated'),"Graduated" ],
+            [ I18n.t('student.students.repeat'), "Repeat" ],
+            [ I18n.t('student.students.on_leave'), "On Leave" ],
+            [ I18n.t('student.students.transfer_college'), "Transfer College"],
+            [ I18n.t('student.students.expelled'), "Expelled"]
 ] 
 
+STATUS_AMSAS = [
+           #  Displayed       stored in db
+               ['Asas Pegawai', 'Asaspeg' ],
+               ['Asas LLP', 'Asasllp'],
+               ['Lanjutan Pegawai', 'Lanpeg'],
+               ['Lanjutan LLP', 'Lanllp']
+] 
+
+STATUS_COMBINE = [
+           #  Displayed       stored in db
+            [ I18n.t('student.students.current'),"Current" ],
+            [ I18n.t('student.students.graduated'),"Graduated" ],
+            [ I18n.t('student.students.repeat'), "Repeat" ],
+            [ I18n.t('student.students.on_leave'), "On Leave" ],
+            [ I18n.t('student.students.transfer_college'), "Transfer College"],
+            [ I18n.t('student.students.expelled'), "Expelled"],
+            ['Asas Pegawai', 'Asaspeg' ],
+            ['Asas LLP', 'Asasllp'],
+            ['Lanjutan Pegawai', 'Lanpeg'],
+            ['Lanjutan LLP', 'Lanllp']
+] 
 SPONSOR = [
          #  Displayed       stored in db
          [ "Kementerian Kesihatan Malaysia","KKM" ],

@@ -21,13 +21,21 @@
       .col-md-8.col-md-offset-1
         %dl.dl-horizontal
           %dt= t 'student.discipline.reported_by', :default => model_class.human_attribute_name(:reported_by) + ":"
-          %dd=h @student_discipline_case.reporter_details
+          %dd
+            - if current_user.college.code=="amsas"
+              =h @student_discipline_case.staff.staff_with_rank
+            - else
+              =h @student_discipline_case.reporter_details
           
           %dt= t 'student.discipline.reported_on', :default => model_class.human_attribute_name(:reported_on) + ":"
           %dd=h @student_discipline_case.reported_on.try(:strftime, "%d %b %Y")
           
           %dt= t 'student.discipline.student_id', :default => model_class.human_attribute_name(:student_id)+":"
-          %dd=h @student_discipline_case.student.try(:matrix_name)
+          %dd
+            - if current_user.college.code=="kskbjb"
+              =h @student_discipline_case.student.try(:matrix_name)
+            - elsif current_user.college.code=="amsas"
+              =h @student_discipline_case.student.student_with_rank
           
           %dt Status :
           %dd=h @student_discipline_case.render_status 
