@@ -19,9 +19,10 @@
         %li
           %span{:style=>"color:red;"}= "* "
           =t('exam.exams.remarks_bottom')
-        %li
-          %strong= t('exam.exams.separate_combine')
-          =" - "+t('exam.exams.separate_combine_text')
+        - if current_user.college.code=="kskbjb"
+          %li
+            %strong= t('exam.exams.separate_combine')
+            =" - "+t('exam.exams.separate_combine_text')
         %li 
           %strong= t('exam.exams.repeat_exam')
           = t('exam.exams.requires_complete_final')
@@ -34,7 +35,8 @@
     %thead
       %tr
         %th= sort_link(@search, :name_cont, (t 'exam.exams.name'))
-        %th=(t 'exam.exams.year_semester')
+        - if current_user.college.code=="kskbjb"
+          %th=(t 'exam.exams.year_semester')
         %th=(t 'exam.exams.course_id')
         %th= sort_link(@search, :subject_id, (t 'exam.exams.subject_id'))
         %th= sort_link(@search, :exam_on, (t 'exam.exams.exam_on'))
@@ -44,7 +46,8 @@
         %th=(t 'exam.exams.duration')
         /%th= sort_link(@search, :full_marks, (t 'exam.exams.full_marks'))
         %th=(t 'exam.exams.full_marks')
-        %th=(t 'exam.exams.separate_combine')
+        - if current_user.college.code=="kskbjb"
+          %th=(t 'exam.exams.separate_combine')
 
     %tbody
       = render "search_bar"
@@ -64,9 +67,10 @@
               - if exam.complete_paper==false
                 %span{:style=>"color:red;"}
                   *
-            - semno= exam.subject.parent.code.to_i%2 == 0 ? '2' : '1'
-            %td{:align=>"center"}=h exam.subject_id? ? exam.syear + semno : "" 
-            %td=h exam.subject.try(:root).try(:course_type)+" "+exam.subject.try(:root).try(:name)
+            - if current_user.college.code=="kskbjb" 
+              - semno= exam.subject.parent.code.to_i%2 == 0 ? '2' : '1'
+              %td{:align=>"center"}=h exam.subject_id? ? exam.syear + semno : "" 
+            %td=h exam.subject.try(:root).try(:programme_list)
             %td=h exam.subject.try(:subject_list)
             %td=h exam.exam_on.try(:strftime, '%d %b %Y')
             %td=h exam.timing
@@ -77,12 +81,13 @@
               - else
                 =h (((exam.endtime - exam.starttime)/60) / 60).to_i.to_s+" hours "+ (((exam.endtime - exam.starttime)/60) % 60).to_i.to_s+" mins"
             %td{:align=>"center"}=h exam.total_marks
-            %td{:align=>"center"}
-              - if exam.sequ!=nil
-                - sequ = exam.sequ.split(",")
-              - if sequ!=nil && sequ.uniq.length == sequ.length && exam.separate_cover.include?(exam.subject.root.id)
-                S
-              - if sequ!=nil && sequ.uniq.length == sequ.length && exam.combine_cover.include?(exam.subject.root.id)
-                C
+            - if current_user.college.code=="kskbjb"
+              %td{:align=>"center"}
+                - if exam.sequ!=nil
+                  - sequ = exam.sequ.split(",")
+                - if sequ!=nil && sequ.uniq.length == sequ.length && exam.separate_cover.include?(exam.subject.root.id)
+                  S
+                - if sequ!=nil && sequ.uniq.length == sequ.length && exam.combine_cover.include?(exam.subject.root.id)
+                  C
 
   .right{style:"padding:0 30px; margin:0;"}= paginate @exams, :theme => 'twitter-bootstrap-3'

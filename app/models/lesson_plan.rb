@@ -17,7 +17,6 @@ class LessonPlan < ActiveRecord::Base
   validates_presence_of :schedule    #hide on 31st October 2013
   validate :schedule_and_plan_owner_must_match
   
-  has_one :main_notes, :class_name => 'Trainingnote'
   #trial section------------
   has_many :lesson_plan_trainingnotes
   accepts_nested_attributes_for :lesson_plan_trainingnotes, :allow_destroy => true, :reject_if => lambda {|a| a[:trainingnote_id].blank?}

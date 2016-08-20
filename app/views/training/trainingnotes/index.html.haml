@@ -91,7 +91,7 @@
               %td
                 - if y.timetable_id?
                   /= fa_icon("check-square") 
-                  = link_to content_tag(:i, "", :class => "fa fa-check-square"), training_lesson_plan_path(y.reference_plan)
+                  = link_to content_tag(:i, "", :class => "fa fa-check-square"), training_lesson_plan_path(LessonPlan.where(schedule: y.timetable_id).first.id)
                 - else
                   - if y.lesson_plan_trainingnotes.count > 0
                     = fa_icon("check-square-o")
