@@ -197,7 +197,7 @@ module StudentsHelper
     header = spreadsheet.row(1)
     
     student_status=[]
-    Student::STATUS.each do |name, saved_status|
+    Student::STATUS_COMBINE.each do |name, saved_status|
       student_status << saved_status
     end
     
@@ -229,6 +229,7 @@ module StudentsHelper
     sponsor_not_valid=[]
     gender_not_valid=[]
     course_id_not_valid=[]
+    college_id_not_valid=[]
     sbirthdt_not_valid=[]
     intake_not_valid=[]
     marital_not_valid=[]
@@ -408,6 +409,24 @@ module StudentsHelper
         intake_not_valid << i
       end
       
+      college_id_e=row["college_id"]
+      if college_id_e.is_a? String 
+        if LibraryHelper.all_digits(college_id_e) && student_course.include?(college_id_e.to_i)
+          college_id_e=college_id_e.to_i
+        else
+          #wrong data ignored - number required
+          college_id_e=nil
+          college_id_not_valid << i
+        end
+      else
+        if student_course.include?(college_id_e)
+          college_id_e=college_id_e.to_i 
+        else
+          college_id_e=nil
+          college_id_not_valid << i
+        end
+      end
+      
       ##validates_presence_of     :icno, :name, :sstatus, :stelno, :ssponsor, :sbirthdt,     :gender, :mrtlstatuscd, :intake,:course_id
       
       #based on above UNIQUE fields, retrieve existing record(s) Or create new
@@ -415,12 +434,13 @@ module StudentsHelper
       student_rec = student_recs.first || Student.new
 
       #columns in excel - icno, name, stelno, sstatus, ssponsor, sbirthdt, gender, mrtlstatuscd, course_id & intake MUST EXIST
-      if icno_e && name_e && stelno_e && sstatus_e && ssponsor_e && sbirthdt_e && gender_e && mrtlstatuscd_e && course_id_e && intake_e  ##&& race2_e
+      if icno_e && name_e && stelno_e && sstatus_e && ssponsor_e && sbirthdt_e && gender_e && mrtlstatuscd_e && course_id_e && intake_e  && college_id_e ##&& race2_e
         student_rec.icno = icno_e
         student_rec.name = name_e
         student_rec.stelno = stelno_e
         student_rec.gender = gender_e
         student_rec.course_id = course_id_e
+        student_rec.college_id = college_id_e
         student_rec.race2 = race2_e
         student_rec.mrtlstatuscd = mrtlstatuscd_e
         student_rec.sstatus = sstatus_e
@@ -433,7 +453,7 @@ module StudentsHelper
         saved_students << i #if !student_rec.id.nil?
       end
     end
-    result={:svs=>saved_students, :ine=> icno_not_exist, :stnv=>status_not_valid, :spnv=>sponsor_not_valid, :nne => name_not_exist, :stne =>stelno_not_exist, :sbnv => sbirthdt_not_valid, :gnv =>gender_not_valid, :mnv=>marital_not_valid, :cinv=>course_id_not_valid, :inv =>intake_not_valid} 
+    result={:svs=>saved_students, :ine=> icno_not_exist, :stnv=>status_not_valid, :spnv=>sponsor_not_valid, :nne => name_not_exist, :stne =>stelno_not_exist, :sbnv => sbirthdt_not_valid, :gnv =>gender_not_valid, :mnv=>marital_not_valid, :cinv=>course_id_not_valid, :inv =>intake_not_valid, :colnv => college_id_not_valid} 
   end
   
   def self.msg_import(a) 
@@ -566,7 +586,19 @@ module StudentsHelper
       end
       msg+=a[:inv].count.to_s+(I18n.t 'student.students.intake_invalid')+(I18n.t 'actions.line_no_excel')+lines11+")"
     end   
-    
+    ##
+    if (a[:ine].count>0 || a[:nne].count>0 || a[:stne].count>0 || a[:stnv].count>0 || a[:spnv].count>0 ||  a[:sbnv].count>0 || a[:gnv].count>0 || a[:mnv].count>0|| a[:cinv].count>0 || a[:inv].count>0)  && a[:colnv].count > 0
+      msg+=", "
+    end
+    if a[:colnv].count>0
+      lines12=''
+      a[:colnv].each_with_index do |l,no|
+        lines12+=l.to_s
+        lines12+=", " if no < (a[:colnv].count)-1
+      end
+      msg+=a[:colnv].count.to_s+(I18n.t 'student.students.college_invalid')+(I18n.t 'actions.line_no_excel')+lines12+")"
+    end 
+    ##
     msg
   end
   #for Import Excel -- end

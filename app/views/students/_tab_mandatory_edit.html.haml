@@ -16,7 +16,10 @@
     .col-sm-2.control-label
       = f.label t 'student.students.sstatus', for: :sstatus
     .col-md-3
-      = f.select :sstatus, Student::STATUS, {:include_blank =>t('helpers.prompt.select_student_status')}, {class: 'selectpicker mandatory'}
+      - if current_user.college.code=="amsas"
+        = f.select :sstatus, Student::STATUS_AMSAS, {:include_blank =>t('helpers.prompt.select_student_status')}, {class: 'selectpicker mandatory'}
+      - else
+        = f.select :sstatus, Student::STATUS, {:include_blank =>t('helpers.prompt.select_student_status')}, {class: 'selectpicker mandatory'}
 
   .form-group.bong2{style: "display: none;"}
     .col-sm-2.control-label

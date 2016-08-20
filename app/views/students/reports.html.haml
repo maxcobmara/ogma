@@ -12,7 +12,7 @@
           .col-sm-1.control-label
             %b= t 'student.students.course_id'
           .col-md-4
-            = select_tag('programme', options_from_collection_for_select(@programme_diploma_only,:id, :programme_list), class: 'selectpicker', 'data-width'=>"90%")
+            = select_tag('programme', options_from_collection_for_select(@programme_diploma_only,:id, :programme_list), :include_blank => (t 'select'), class: 'selectpicker', 'data-width'=>"90%")
   
     .row
       .col-md-offset-3

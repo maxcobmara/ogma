@@ -3,7 +3,10 @@
   %dl.dl-horizontal
     %dt= t 'student.students.sstatus' , :default => model_class.human_attribute_name(:sstatus) + ":"
     %dd
-      =@student.sstatus.blank? ? "" : (Student::STATUS.find_all{|disp, value| value == @student.sstatus}).map {|disp, value| disp}[0]
+      - if current_user.college.code=="amsas"
+        =@student.sstatus.blank? ? "" : (Student::STATUS_AMSAS.find_all{|disp, value| value == @student.sstatus}).map {|disp, value| disp}[0]
+      - else
+        =@student.sstatus.blank? ? "" : (Student::STATUS.find_all{|disp, value| value == @student.sstatus}).map {|disp, value| disp}[0]
       /= (t('student.students.'+@student.sstatus.downcase)).try(:titleize)
       /= " ("+@student.sstatus_remark+")" if @student.sstatus=="Transfer College" && @student.sstatus_remark!=""
       /=" ("+(t 'student.students.semester_repeated')+": "+@student.sstatus_remark+")" if @student.sstatus=="Repeat" && @student.sstatus_remark!="" 

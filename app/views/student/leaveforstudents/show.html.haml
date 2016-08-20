@@ -19,7 +19,11 @@
           %font{:style=>"color: red;"}=t('student.leaveforstudent.application_due')
         %dl.dl-horizontal  
           %dt= t 'student.leaveforstudent.student_id'
-          %dd=h @leaveforstudent.student_id.blank? ? "No Student" : @leaveforstudent.student.formatted_mykad_and_student_name
+          %dd
+            - if current_user.college.code=="amsas"
+              =h @leaveforstudent.student.student_with_rank
+            - else
+              =h @leaveforstudent.student_id.blank? ? "No Student" : @leaveforstudent.student.formatted_mykad_and_student_name
           
           %dt= t 'student.leaveforstudent.programme'
           %dd=h @leaveforstudent.student.course.programme_list

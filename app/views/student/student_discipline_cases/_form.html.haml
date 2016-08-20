@@ -18,7 +18,7 @@
           %dd=h @student_discipline_case.reported_on.try(:strftime, "%d %b %Y")
           
           %dt= t 'student.discipline.student_id', :default => model_class.human_attribute_name(:student_id)+":"
-          %dd=h @student_discipline_case.student.try(:matrix_name)
+          %dd=h current_user.college.code=="kskbjb" ? @student_discipline_case.student.try(:matrix_name) : @student_discipline_case.student.student_with_rank
 
       #report_details.tab-pane
         %br

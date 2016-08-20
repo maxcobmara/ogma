@@ -33,8 +33,10 @@
       = f.label  t 'student.discipline.other_info', for: :other_info
     .col-md-5
       = f.text_area :other_info, :size => "40x5"
-      
-  - myhod = Position.where(id: 3).first.staff_id
+  - if current_user.college.code=="kskbjb"
+    - myhod = Position.where(id: 3).first.staff_id
+  - else
+    - myhod = Position.where('staff_id is not null').pluck(:staff_id)
   .form-group.au_item{style: "display: none;"}
     .col-sm-2.control-label
       = f.label  t 'student.discipline.assigned2_to', for: :notify_hod
