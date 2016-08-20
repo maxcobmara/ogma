@@ -23,7 +23,7 @@ class Feedback_referrerPdf < Prawn::Document
   end
 
   def table_case
-    data=[["Nama Pelajar","#{@case_details.student.name}","Pelapor Kes","#{@case_details.staff.name}"],
+    data=[["Nama Pelajar","#{@case_details.student.name}","Pelapor Kes","#{@case_details.staff.staff_with_rank}"],
           ["No Matrik","#{@case_details.student.matrixno}","Ambilan","#{@case_details.student_id.blank? ? "" : @case_details.student.try(:intake).try(:strftime,"%B %Y")}"],
           ["Program","#{@case_details.student.try(:course).try(:programme_list)}","Tahun/Semester","#{Student.year_and_sem(@intake)}"],
           ["Kesalahan","#{(DropDown::INFRACTION.find_all{|disp, value| value == @case_details.infraction_id}).map {|disp, value| disp}[0]}","Lokasi Kes","#{@case_details.location.try(:location_list)}"],

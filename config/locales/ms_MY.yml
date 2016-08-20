@@ -2303,6 +2303,7 @@ ms_MY:
       absent: Tidak Hadir
       complete: Ya
       incomplete: Tidak
+      student_not_exist: "(Tiada pelajar)"
       new_multiple_intake: "Kedatangan Baru (Ambilan)"
       new_multiple_schedule: "Kedatangan Baru (Jadual)"
       edit_remark: "Bagi suntingan (pukal), pilih pelajar dari Kelas / Jadual yang sama ATAU pelajar dari beberapa Kelas / Jadual bagi sesi Ambilan(serta Program) yang sama."

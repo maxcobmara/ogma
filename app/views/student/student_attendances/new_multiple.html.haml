@@ -33,11 +33,9 @@
                   %dd
                     =intake_name=@iii.try(:strftime,'%b %Y')
                     - if @student_intake.count==0
-                      %font{:style=>"color: red;"}
-                        ="("+(t 'no3')+" "+(t 'student.attendance.student_id')+")"
+                      %font{:style=>"color: red;"}=(t 'student.attendance.student_not_exist')
                     - else
-                      %font{:style=>"color: blue;"}
-                        =" ("+@student_intake.count.to_s+" "+t('student.attendance.student_id')+") "
+                      %font{:style=>"color: blue;"}=" ("+@student_intake.count.to_s+" "+t('student.attendance.student_id')+") "
               
               #attendance_details.tab-pane.active 
                 .col-md-8.col-md-offset-1
