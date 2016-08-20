@@ -5,5 +5,5 @@
     .col-md-6
       = f.fields_for :lessonplan_methodologies do |p|
         = render 'lessonplan_methodology_fields', :f => p
-      .row  
-        = link_to_add_fields t('training.topicdetail.add_details'), f, :lessonplan_methodologies, "",  t('training.topicdetail.add_details') 
+      .row
+        = link_to_add_fields content_tag(:i, "", class: "fa fa-plus-square")+" "+(t 'addmore'), f, :lessonplan_methodologies, "", t('training.topicdetail.add_details') 

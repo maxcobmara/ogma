@@ -1,0 +1,77 @@
+- @resultlines.group_by{|x|x.examresult.programmestudent.programme_list}.sort.each do |programme, resultlines|
+  %tr
+    %td.group{colspan: 5}=(t 'examresult.programme_id')+" : "+programme
+  - resultlines.group_by{|x|x.examresult.intake_group}.each do |intake, resultlines2|
+    %tr
+      %td.group{colspan: 5}
+        %span
+          =(t 'exam.examresult.intake')+" :"
+          =Date.new(intake[0,4].to_i, intake[5,2].to_i, intake[8,2].to_i).try(:strftime, '%b %Y').upcase
+    - resultlines2.group_by{|x|x.student}.sort.each do |student, resultlines3|
+      %tr
+        %td.group{colspan: 5}
+          =(t 'exam.examresult.student')+" : "+student.matrix_name
+          - if Programme.where(course_type: 'Diploma').pluck(:id).include?(resultlines3.first.examresult.programme_id) 
+            = link_to (t 'exam.examresult.transcript'), show3_exam_examresults_path(student_id: student.id) if resultlines3.count == 6
+          - else
+            / NOTE : Semester count should be based on Curriculum Management, [resultlines3.count == total_semester]
+            / but Curriculum Management not yet completed, so requires check in show3(_show_transcript.html.haml) page
+            /as advised by Pn Manicka Valli a/p Ramahsendran on 16 Dec 2015 :
+            / (1) Pos Basik - Renal (6 bln) & Psikitari (1 thn), Neonate & Orthopedik blm run lagi
+            / (2) Diploma Lanjutan - (2 semester), Kebidanan - 2 intakes (Mac & Sept)
+            - total_semester= Programme.where(id: resultlines3[0].examresult.programme_id).first.descendants.where(course_type: 'Semester').count
+            = link_to (t 'exam.examresult.transcript'), show3_exam_examresults_path(student_id: student.id) if resultlines3.count == total_semester
+                  
+      - for resultline in resultlines3.sort_by{|x|x.examresult_id}
+        //////
+        - @subjects = resultline.examresult.retrieve_subject
+        - credit2_all=[]
+        - final2_all=[]
+        - for subject in @subjects 
+          - @student_finale = Grade.where('student_id=? and subject_id=?',resultline.student.id,subject.id).first
+          - english_subjects=['PTEN', 'NELA', 'NELB', 'NELC', 'MAPE', 'XBRE', 'OTEL'] 
+          - if subject.code.size >9
+            - credit2_all << subject.code[10,1].to_i if english_subjects.include?(subject.code[0,4])==false || (subject.code.strip.size < 10 && (subject.code.strip[-2,1].to_i!=2 || subject.code.strip[-2,1].to_i!=3))
+          - elsif subject.code.size < 10
+            - unless english_subjects.include?(subject.code[0,4]) || (subject.code.strip.size < 10 && (subject.code.strip[-2,1].to_i==2 || subject.code.strip[-2,1].to_i==3)) 
+              - credit2_all << subject.code[-1,1].to_i
+          - unless english_subjects.include?(subject.code[0,4]) || (subject.code.strip.size < 10 && (subject.code.strip[-2,1].to_i==2 || subject.code.strip[-2,1].to_i==3))
+            - unless @student_finale.nil? || @student_finale.blank? 
+              - final2_all << @student_finale.set_NG.to_f
+            - else
+              - final2_all << 0.00
+          /data for cgpa calculation
+          - semno=resultline.examresult.semester.to_i-1
+          - programmeid=resultline.examresult.programme_id
+          - examresult_ids=Examresult.where(programme_id: programmeid).pluck(:id)
+          - resultlines4 = Resultline.where(examresult_id: examresult_ids, student_id: resultline.student_id).order(created_at: :asc)
+          - total_point=number_with_precision(Examresult.total(final2_all, credit2_all), precision: 2)
+          /NOTE cgpa = pngk (require examresult of previous semester to exist first), eg- sem 2, examresult for sem 1 & 2 must exist.
+          - if resultlines4.count>=semno+1 
+            - cgpa=number_with_precision(Examresult.cgpa_per_sem(resultlines4, semno), precision: 2)
+        //////
+        %tr
+          %td= link_to resultline.examresult.render_semester, show2_exam_examresults_path(id: resultline.id)
+          %td= total_point.nil? ? "0.00" : total_point
+          %td=gpa=number_with_precision((Examresult.total(final2_all, credit2_all) / credit2_all.sum), precision: 2)
+          %td= cgpa.nil? ? "0.00" : cgpa
+          /for checking
+          /=examresult_ids
+          /=semno
+          %td
+            /=h resultline.render_status
+            /STATUS KESELURUHAN
+            - kebidanan = Programme.roots.where('name ILIKE(?)', '%Kebidanan%').first.id
+            - kejururawatan = Programme.roots.where('name ILIKE(?)', '%Kejururawatan%').first.id
+            - cara_kerja=Programme.roots.where('name ILIKE(?)', '%Cara Kerja%').first.id
+            - fisioterapi=Programme.roots.where('name ILIKE(?)', '%Fisioterapi%').first.id
+            - if [kebidanan, kejururawatan].include?(resultline.examresult.programme_id)
+              =h resultline.render_status
+              =" & "+resultline.render_remark if resultline.status=='4' && resultline.render_remark!=nil
+            - else
+              - if [cara_kerja, fisioterapi].include?(resultline.examresult.programme_id)
+                =h resultline.render_status_contra
+                =" & "+resultline.render_remark if resultline.status=='4' && resultline.render_remark!=nil
+              - else
+                =h resultline.render_status
+                =" & "+resultline.render_remark if resultline.status=='4' && resultline.render_remark!=nil

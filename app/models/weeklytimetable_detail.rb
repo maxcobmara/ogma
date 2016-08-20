@@ -86,7 +86,12 @@ class WeeklytimetableDetail < ActiveRecord::Base
    end
    
    def day_time_slot3
-     "#{weeklytimetable_lecturer.name[0,10]}"+" | "+"#{day_time_slot}"
+     wl=weeklytimetable_lecturer
+     if wl.rank_id?
+       "#{wl.rank.shortname} #{wl.name[0,10]}"+" | "+"#{day_time_slot}"
+     else
+       "#{wl.name[0,10]}"+" | "+"#{day_time_slot}"
+     end
    end
    
    def subject_day_time

@@ -107,7 +107,7 @@ class Exam::EvaluateCoursesController < ApplicationController
     @evs << @evaluate_course.ev_assessment
     respond_to do |format|
        format.pdf do
-         pdf = CourseevaluationPdf.new(@evaluate_course, view_context, @evs)
+         pdf = CourseevaluationPdf.new(@evaluate_course, view_context, @evs, current_user.college)
          send_data pdf.render, filename: "courseevaluation-{Date.today}",
                                type: "application/pdf",
                                disposition: "inline"
@@ -126,13 +126,41 @@ class Exam::EvaluateCoursesController < ApplicationController
     end
      respond_to do |format|
        format.pdf do
-         pdf = Evaluation_reportPdf.new(@evaluate_courses, view_context)
+         pdf = Evaluation_reportPdf.new(@evaluate_courses, view_context, current_user.college)
          send_data pdf.render, filename: "evaluation_report-{Date.today}",
                                type: "application/pdf",
                                disposition: "inline"
        end
      end
    end
+   
+#    def evaluation_analysis
+#      @evaluate_course = EvaluateCourse.find(params[:id])
+#      @evs = []
+#      @actual_scores=[]
+#      evaluations=EvaluateCourse.where(staff_id: @evaluate_course.staff_id).where(subject_id: @evaluate_course.subject_id)
+#      total_evaluations=evaluations.count
+#      total_evaluations_d=total_evaluations*1.0
+#      @evs << evaluations.sum(:ev_obj)/total_evaluations
+#      @evs << evaluations.sum(:ev_knowledge)/total_evaluations
+#      @evs << evaluations.sum(:ev_deliver)/total_evaluations
+#      @evs << evaluations.sum(:ev_content)/total_evaluations
+#      @evs << evaluations.sum(:ev_tool)/total_evaluations
+#      @evs << evaluations.sum(:ev_topic)/total_evaluations
+#      @evs << evaluations.sum(:ev_work)/total_evaluations
+#      @evs << evaluations.sum(:ev_note)/total_evaluations
+#      @evs << evaluations.sum(:ev_assessment)/total_evaluations
+#      @actual_scores << evaluations.sum(:ev_obj)/total_evaluations_d << evaluations.sum(:ev_knowledge)/total_evaluations_d << evaluations.sum(:ev_deliver)/total_evaluations_d << evaluations.sum(:ev_content)/total_evaluations_d << evaluations.sum(:ev_tool)/total_evaluations_d << evaluations.sum(:ev_topic)/total_evaluations_d << evaluations.sum(:ev_work)/total_evaluations_d << evaluations.sum(:ev_note)/total_evaluations_d << evaluations.sum(:ev_assessment)/total_evaluations_d
+#      
+#      respond_to do |format|
+#         format.pdf do
+#           pdf = Evaluation_analysisPdf.new(@evaluate_course, view_context, @evs, current_user.college, @actual_scores, evaluations.count)
+#           send_data pdf.render, filename: "evaluation_analysis-{Date.today}",
+#                                 type: "application/pdf",
+#                                 disposition: "inline"
+#         end
+#      end
+#    end
   
   private
     # Use callbacks to share common setup or constraints between actions.
@@ -217,6 +245,12 @@ class Exam::EvaluateCoursesController < ApplicationController
             end
           end
         #end
+      end
+      
+      #####amsas
+      if current_user.college.code=="amsas"
+        @lecturer_list = Staff.joins(:positions).where('positions.name=?', "Jurulatih").order(rank_id: :asc, name: :asc)
+        @subjectlist_preselect_prog=Programme.where(course_type: 'Subject').order(:code)
       end
     end
     

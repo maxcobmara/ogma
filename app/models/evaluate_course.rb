@@ -14,7 +14,7 @@ class EvaluateCourse < ActiveRecord::Base
 
   # define scope
   def self.programme_subject_search(query) 
-    prog_ids=Programme.where('name ILIKE (?) and ancestry_depth=?', "#{query}", 0).pluck(:id)
+    prog_ids=Programme.where('name ILIKE (?) and ancestry_depth=?', "%#{query}%", 0).pluck(:id)
     sub_ids=Programme.where('(name ILIKE(?) or code ILIKE(?)) and course_type=?', "%#{query}%", "%#{query}%", "Subject").pluck(:id)
     where('course_id IN(?) or subject_id IN(?) or invite_lec_topic ILIKE(?)', prog_ids, sub_ids, "%#{query}%")
   end

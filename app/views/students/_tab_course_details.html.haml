@@ -2,7 +2,7 @@
 .col-md-8.col-md-offset-1
   %dl.dl-horizontal
     %dt= t 'student.students.course_id' , :default => model_class.human_attribute_name(:course_id) + ":"
-    %dd= @student.course_id.blank? ? " " : @student.course.try(:code_course_type_name)
+    %dd= @student.course_id.blank? ? " " : @student.course.try(:programme_list)
 
     %dt= t 'student.students.intake_id' , :default => model_class.human_attribute_name(:intake_id) + ":"
     %dd

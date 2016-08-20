@@ -1,0 +1,19 @@
+- model_class = Bulletin
+.page-header
+  %h1
+    = t 'new'
+    College
+
+= render 'shared/flashes'
+
+.row
+  = form_for @college,  html: { multipart: true, class: 'form-horizontal' }  do |f| 
+    = render 'shared/error_messages', object: f.object
+    .col-md-offset-1
+      = render :partial => 'form', :locals => {:f => f}
+      .form-group
+        .col-sm-offset-4.col-sm-1
+          = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), colleges_path, :class => 'btn btn-default'
+        .col-sm-2
+          = f.submit t('create'), class: "btn btn-primary"
+ 

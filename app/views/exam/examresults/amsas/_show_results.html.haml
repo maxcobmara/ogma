@@ -1,0 +1,34 @@
+- model_class = Examresult
+.col-md-11
+  %hr
+  = link_to content_tag(:i, "", class: "fa fa-file-pdf-o"), results_exam_examresults_path(id: @examresult.id, format: "pdf"), class: "btn btn-default", "data-toggle" => "tooltip", title: (t 'print')
+  %table.table.table-bordered
+    %head
+      %tr
+        %th No
+        %th=t('exam.examresult.student')
+        %th=t('student.icno')
+        - subjects =Programme.find(@examresult.intake.programme_id).descendants.where(course_type: 'Subject')
+        - for subject in subjects
+          %th.centre=h subject.code
+        %th.centre Status
+    %body
+      - nos=0
+      - @ng=[]
+      %tr
+        - for examresultline in @examresult.resultlines.sort_by{|x|x.status}
+          %td=nos+=1
+          %td.left=h examresultline.student.student_with_rank
+          %td.left=h examresultline.student.icno
+          - for subject in subjects
+            - grades=Grade.where(subject_id: subject.id).where(student_id: examresultline.student_id)
+            %td.centre
+              - if grades.count > 0 
+                - finalscore=grades.first.finalscore
+                =number_with_precision(grades.first.finalscore, precision: 2).to_s+" %"
+          %td
+            - status_viewing=examresultline.render_status_contra    
+            - if status_viewing==(t 'exam.examresult.failed')
+              %font{style: "color: red; text-decoration: underline"}=status_viewing
+            - else
+              %font{style: "color: black;"}=status_viewing

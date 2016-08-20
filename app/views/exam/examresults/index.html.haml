@@ -17,25 +17,37 @@
         %th= sort_link(@search, :programme_id, (t 'exam.examresult.programme_id'))
         %th= sort_link(@search, :examdts, (t 'exam.examresult.examdts'))
         %th= sort_link(@search, :examdte, (t 'exam.examresult.examdte'))
-        %th Semester
+        - if current_user.college.code=="kskbjb"
+          %th Semester
 
     %tbody
       = render "search_bar"
-      - @examresults.group_by{|x|x.intake_group}.each do |intake, examresults|
+      - if current_user.college.code=="kskbjb"
+        - grouping=@examresults.group_by{|x|x.intake_group}
+      - elsif current_user.college.code=="amsas"
+        - grouping=@examresults.group_by(&:intake_id)
+      - grouping.each do |intake, examresults|
         %tr
           %td.group{colspan: 5}
             %span
               =(t 'exam.examresult.intake')+" :"
-              =Date.new(intake[0,4].to_i, intake[5,2].to_i, intake[8,2].to_i).try(:strftime, '%b %Y').upcase
+              - if current_user.college.code=="kskbjb"
+                =Date.new(intake[0,4].to_i, intake[5,2].to_i, intake[8,2].to_i).try(:strftime, '%b %Y').upcase
+              - else
+                = Intake.find(intake).monthyear_intake.try(:strftime, '%b %Y').upcase
         - examresults.group_by {|y|y.programmestudent.programme_list}.each do |programme, examresults2|
           %tr
-            %td.group{colspan: 5}=programme
+            - if current_user.college.code=="kskbjb"
+              %td.group{colspan: 5}=programme
+            - else
+              %td.group{colspan: 4}=programme
           - for examresult in examresults2.sort_by{|x|x.semester}
             %tr
               %td= link_to examresult.programmestudent.programme_list, exam_examresult_path(examresult)
               %td=h l(examresult.examdts)
               %td=h l(examresult.examdte)
-              %td=h examresult.render_semester
+              - if current_user.college.code=="kskbjb"
+                %td=h examresult.render_semester
 
   .right{style:"padding:0 30px; margin:0;"}= paginate @examresults, :theme => 'twitter-bootstrap-3'
 

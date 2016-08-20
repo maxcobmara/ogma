@@ -12,8 +12,13 @@ class Programme < ActiveRecord::Base
   attr_accessor :programme_listng, :subject_listing, :topic_listing, :subject_listing2
   
   validates_uniqueness_of :combo_code
+  validates_presence_of :durationtype, :if => :duration_exist?
 
   #scope :by_semester, -> { where(course_type: 'Semester')}
+  def duration_exist?
+    duration!=nil || duration!=0
+  end
+  
   def code2
     code.to_i
   end
@@ -39,18 +44,49 @@ class Programme < ActiveRecord::Base
       "#{code}" + " " + "#{name.titleize}"   
   end
   
+  def subject_list2
+      "#{combo_code}" + " " + "#{name.titleize}"   
+  end
+  
   def programme_list
     if is_root?
-      "#{course_type}" + " " + "#{name}"   
+      prog="#{course_type}" + " " + "#{name}"   
+      prog+=" ("+level.upcase+")" if level?
+    else
+    end
+    prog
+  end
+  
+  def fullname
+    if is_root?
+      "#{name}" + " - " + "#{course_type}"   
     else
     end
   end
   
   def semester_subject_topic
-    if ancestry_depth == 3
-      "Sem #{parent.parent.code}"+"-"+"#{parent.code}"+" | "+"#{name}"
+    if ancestry_depth == 2
+      if parent.course_type=="Subject"
+        #amsas only
+        "#{parent.code} #{parent.name} > #{name}"
+      end
+    elsif ancestry_depth == 3 
+      if parent.parent.course_type=="Semester"
+        #kskb
+        "Sem #{parent.parent.code}"+"-"+"#{parent.code}"+" | "+"#{name}"
+      elsif parent.parent.course_type=="Subject"
+        #amsas
+        "#{parent.parent.code} #{parent.parent.name} >> #{name}"
+      end
     elsif ancestry_depth == 4
-      ">>Sem #{parent.parent.parent.code}"+"-"+"#{parent.parent.code}"+" | "+"#{code} "+"#{name}"
+      if parent.parent.parent.course_type=="Semester"
+        ">>Sem #{parent.parent.parent.code}"+"-"+"#{parent.parent.code}"+" | "+"#{code} "+"#{name}"
+      elsif parent.parent.parent.course_type=="Subject"
+        "#{parent.parent.parent.code} #{parent.parent.parent.name} >>> #{name} "
+      end 
+    elsif ancestry_depth == 5
+      #amsas only
+      "#{parent.parent.parent.parent.code} #{parent.parent.parent.parent.name} >>>>#{name} "
     end
   end
 
@@ -90,7 +126,11 @@ class Programme < ActiveRecord::Base
   end
   
   def programme_subject
-    "#{root.course_type}"+" "+"#{root.name}"+" "+"#{code}"+" "+"#{name} "
+    "#{root.course_type}"+" "+"#{root.programme_list}"+" - "+"#{code}"+" "+"#{name} "
+  end
+  
+  def programmelist_subject
+    "#{root.programme_list}"+" - "+"#{code}"+" "+"#{name} "
   end
   
   def self.programme_names
@@ -122,16 +162,27 @@ class Programme < ActiveRecord::Base
     @groupped_subject
   end
   
-  def self.subject_groupbyprogramme2
+  def self.subject_groupbyprogramme_amsas
     subjectby_programmelists=Programme.where(course_type: "Subject").group_by{|x|x.root.programme_list}
     @groupped_subject=[]
     subjectby_programmelists.each do |programmelist, subjects|
       pg_subjects=[[I18n.t('helpers.prompt.select_subject'), '']]
-      subjects.each{|subject|pg_subjects << [subject.subject_list, subject.id]} 
+      subjects.each{|subject|pg_subjects << [subject.subject_list2, subject.id]} 
       @groupped_subject << [programmelist, pg_subjects]
     end
     @groupped_subject
   end
+  
+#   def self.subject_groupbyprogramme2
+#     subjectby_programmelists=Programme.where(course_type: "Subject").group_by{|x|x.root.programme_list}
+#     @groupped_subject=[]
+#     subjectby_programmelists.each do |programmelist, subjects|
+#       pg_subjects=[[I18n.t('helpers.prompt.select_subject'), '']]
+#       subjects.each{|subject|pg_subjects << [subject.subject_list, subject.id]} 
+#       @groupped_subject << [programmelist, pg_subjects]
+#     end
+#     @groupped_subject
+#   end
   
   def self.subject_groupbyposbasiks
     posbasik_ids=Programme.where(course_type: ['Diploma Lanjutan', 'Pos Basik', 'Pengkhususan']).pluck(:id)
@@ -162,10 +213,18 @@ class Programme < ActiveRecord::Base
   #use in exam controller - set shareable data - programme lecturers
   def self.subject_groupbyoneprogramme(progid)
     subjectby_programmelists=Programme.find(progid).descendants.where(course_type: "Subject").group_by{|x|x.root.programme_list}
+    #check first / one subject - code format
+    subject_code_format=Programme.where(course_type: 'Subject').first.code.size
     @groupped_subject=[]
     subjectby_programmelists.each do |programmelist, subjects|
       pg_subjects=[[I18n.t('helpers.prompt.select_subject'), '']]
-      subjects.sort_by{|x|x.code[-4,4]}.each{|subject|pg_subjects << [subject.subject_list]} # [subject.subject_list]}
+      if subject_code_format >= 4
+        #kskb
+        subjects.sort_by{|x|x.code[-4,4]}.each{|subject|pg_subjects << [subject.subject_list]} # [subject.subject_list]}
+      else
+        #amsas
+        subjects.sort_by(&:code).each{|subject|pg_subjects << [subject.subject_list]} # [subject.subject_list]}
+      end
       @groupped_subject << [programmelist, pg_subjects]
     end
     @groupped_subject
@@ -174,10 +233,16 @@ class Programme < ActiveRecord::Base
   #orignal one-start
   def self.subject_groupbyoneprogramme2(progid)
     subjectby_programmelists=Programme.find(progid).descendants.where(course_type: ["Subject", "Commonsubject"]).group_by{|x|x.root.programme_list}
+    #check first / one subject - code format
+    subject_code_format=Programme.where(course_type: 'Subject').first.code.size
     @groupped_subject=[]
     subjectby_programmelists.each do |programmelist, subjects|
       pg_subjects=[[I18n.t('helpers.prompt.select_subject'), '']]
-      subjects.sort_by{|x|x.code[-4,4].strip.to_i}.each{|subject|pg_subjects << [subject.subject_list, subject.id]}
+      if subject_code_format >= 4
+        subjects.sort_by{|x|x.code[-4,4].strip.to_i}.each{|subject|pg_subjects << [subject.subject_list, subject.id]}
+      else
+        subjects.sort_by(&:code).each{|subject|pg_subjects << [subject.subject_list, subject.id]}
+      end
       @groupped_subject << [programmelist, pg_subjects]
     end
     @groupped_subject
@@ -217,6 +282,28 @@ class Programme < ActiveRecord::Base
       sb_topics=[[I18n.t('helpers.prompt.select_topic'), '']]
       topics.sort_by{|x|x.code}.each{|topic|sb_topics << [topic.subject_list, topic.id]}  #[topic.subject_list]}
       @groupped_topic << [Programme.find(subjectid).subject_list, sb_topics]
+    end
+    @groupped_topic
+  end
+  
+  def self.topic_groupbysubject2
+    topicby_subjectids=Programme.where(course_type: "Topic").group_by{|x|x.ancestry.split("/").last}
+    @groupped_topic=[]
+    topicby_subjectids.each do |subjectid, topics|
+      sb_topics=[[I18n.t('helpers.prompt.select_topic'), '']]
+      topics.sort_by{|x|x.code}.each{|topic|sb_topics << [topic.subject_list, topic.id]}  #[topic.subject_list]}
+      @groupped_topic << [subjectid, sb_topics]
+    end
+    @groupped_topic
+  end
+  
+  def self.topic_groupbysubject_amsas
+    topicby_subjectids=Programme.where(course_type: "Topic").group_by{|x|x.ancestry.split("/").last}
+    @groupped_topic=[]
+    topicby_subjectids.each do |subjectid, topics|
+      sb_topics=[[I18n.t('helpers.prompt.select_topic'), '']]
+      topics.sort_by{|x|x.code}.each{|topic|sb_topics << [topic.subject_list, topic.id]}  #[topic.subject_list]}
+      @groupped_topic << [Programme.find(subjectid).subject_list2, sb_topics]
     end
     @groupped_topic
   end
@@ -340,6 +427,59 @@ class Programme < ActiveRecord::Base
       @groupped_subject << [programmelist, pg_subjects]
     end
     @groupped_subject
+  end
+  
+  def lecture_duration
+     if lecture_d.try(:strftime, '%l') == '12' 
+       dura="" 
+     else
+       dura=lecture_d.try(:strftime, "%l ")+(I18n.t 'training.programme.hours')
+     end
+     if lecture_d.try(:strftime, '%M') == '00' 
+       dura+=""
+     else
+       dura+=(lecture_d.try(:strftime, " %M ")+(I18n.t 'training.programme.minutes2'))
+     end
+     dura
+  end
+  
+  def tutorial_duration
+    if tutorial_d.try(:strftime, '%l') == '12' 
+      dura="" 
+    else
+      dura=tutorial_d.try(:strftime, "%l ")+(I18n.t 'training.programme.hours')
+    end
+    if tutorial_d.try(:strftime, '%M') == '00'  
+      dura+=""
+    else
+      dura+=(tutorial_d.try(:strftime, " %M ")+(I18n.t 'training.programme.minutes2'))
+    end
+    dura
+  end
+  
+  def practical_duration
+    if practical_d.try(:strftime, '%l') == '12'
+      dura=""
+    else
+      dura=practical_d.try(:strftime, "%l ")+(I18n.t 'training.programme.hours')
+    end 
+    if practical_d.try(:strftime, '%M') == '00' 
+      dura+="" 
+    else
+      dura+=(practical_d.try(:strftime, " %M ")+(I18n.t 'training.programme.minutes2'))
+    end
+    dura
+  end
+  
+  def total_duration
+    if durationtype
+     total=duration.to_s+" "+(DropDown::DURATIONTYPES.find_all{|disp, value| value == durationtype}).map {|disp, value| disp}[0] 
+    elsif duration_type
+      total=duration.to_s+" "+(DropDown::DURATION_TYPES.find_all{|disp, value| value == duration_type}).map {|disp, value| disp}[0]
+    else
+      total=""
+    end
+    total
   end
   
   private

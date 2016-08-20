@@ -374,7 +374,7 @@ class Grade < ActiveRecord::Base
       #if scores && (scores.map(&:marks).sum > scores.sum(:weightage))
       if scores && ((total_formative > total_weightage_formative) || (total_weightage_formative != (100-examweight)) || exceed > 0)
         #errors.add(:base, I18n.t('exam.grade.formative_exceed_maximum')+scores.sum(:weightage).to_s)
-        errors.add(:base, I18n.t('exam.grade.formative_exceed_maximum'))
+        errors.add(:base, I18n.t('exam.grade.formative_exceed_maximum')+total_formative.to_s+"~"+total_weightage_formative.to_s+"~"+examweight.to_s)
       end
       end
     end
@@ -405,7 +405,7 @@ class Grade < ActiveRecord::Base
     #validates_uniqueness_of :subject_id, :scope => :student_id, :message => " - This student has already taken this subject"
     def uniq_subject_per_student_except_sem_repeated
       redundant=Grade.where(student_id: student_id, subject_id: subject_id)
-      if (redundant && redundant.count > 0) && Student.where(id: student_id).first.sstatus!='Repeat'
+      if (redundant && redundant.count > 1) && Student.where(id: student_id).first.sstatus!='Repeat'
         errors.add(:base, I18n.t('exam.grade.subject_already_taken'))
       end
     end

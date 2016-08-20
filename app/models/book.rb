@@ -12,9 +12,12 @@ class Book < ActiveRecord::Base
   #-----------Attach Photo---------------
   has_attached_file :photo,
 			      :url => "/assets/books/:id/:style/:basename.:extension",
-			      :path => ":rails_root/public/assets/books/:id/:style/:basename.:extension"
+			      :path => ":rails_root/public/assets/books/:id/:style/:basename.:extension",
+                              :styles => { :original => "250x300>", :thumbnail => "50x60" }
   validates_attachment_size :photo, :less_than => 500.kilobytes
-  validates_attachment_content_type :photo, :content_type => ['image/jpeg', 'image/png']    
+  validates_attachment_content_type :photo, :content_type => ['image/jpeg', 'image/png']
+  validates_presence_of :isbn, :title, :language
+  validates_uniqueness_of :isbn
   
   def update_tag_no
      if tagno == nil
@@ -113,6 +116,15 @@ class Book < ActiveRecord::Base
   
   def self.messages2(import_result) 
     LibraryHelper.msg_import2(import_result)
+  end
+  
+  def callingno
+    if classlcc!=""
+      c=classlcc
+    else
+      c=classddc
+    end
+    c
   end
   
 end

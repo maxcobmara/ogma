@@ -9,9 +9,10 @@
     %td
       = f.text_field :release_gteq, size:2, :class => "form-control date_picker", :placeholder => t('from')
       = f.text_field :release_lteq, size:2, :class => "form-control date_picker", :placeholder => t('to')
+    %td= f.text_field :document_file_name_cont, size:2, :class => "form-control"
     %td
       .input-group 
-        = f.text_field :document_file_name_cont, size:2, :class => "form-control"
+        = f.text_field :note_creator_name_cont, size:2, :class => "form-control"
         %span.input-group-btn
           %button.btn.btn-sm.btn-default.right{:type => "submit"}
             %i.fa.fa-search.fa-fw

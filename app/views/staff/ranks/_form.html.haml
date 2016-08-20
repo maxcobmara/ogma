@@ -1,0 +1,33 @@
+.row
+  .col-md-10.col-md-offset-1
+    / Nav tabs
+    %ul.nav.nav-tabs
+      %li.active= link_to ((t 'rank.details')),"#rank_edit", "data-toggle" => "tab"
+
+    .tab-content{style:"padding-top:1em"}
+      #rank_edit.tab-pane.active
+        %br
+        .col-md-offset-2
+          .form-group
+            .col-sm-2.control-label
+              = f.label t('rank.name')
+            .col-md-6
+              = f.text_field :name, class: 'form-control mandatory'
+             
+          .form-group
+            .col-sm-2.control-label
+              = f.label t('rank.shortname')
+            .col-md-6
+              = f.text_field :shortname, class: 'form-control'
+
+          .form-group
+            .col-sm-2.control-label
+              = f.label t('rank.category')
+            .col-md-5
+              = f.select :category, Rank::RANK_CATEGORY, {:include_blank => t('helpers.select')}, {class: 'selectpicker', "data-width" => "310px"}
+
+          .form-group
+            .col-sm-2.control-label
+              = f.label t('rank.employgrade_id')
+            .col-md-2
+              = f.collection_select :employgrade_id, Employgrade.where('name ILIKE(?) or name ILIKE(?)', "xa%", "XA%"), :id, :name,{ :include_blank => t('helpers.select'), :selected => @rank.try(:employgrade_id)}, {class: 'selectpicker'}

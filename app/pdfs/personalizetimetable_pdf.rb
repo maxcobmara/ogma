@@ -1,5 +1,5 @@
 class PersonalizetimetablePdf < Prawn::Document
-  def initialize(personalize, view, test_lecturer,selected_date)
+  def initialize(personalize, view, test_lecturer,selected_date, college)
     super({top_margin: 20, page_size: 'A4', page_layout: :landscape })
     @personalize = personalize
     @view = view
@@ -8,6 +8,7 @@ class PersonalizetimetablePdf < Prawn::Document
     @detailing=[]
     @detailing_monthurs=[]
     @detailing_friday=[]
+    @college=college
     @personalize.each do |sdate, items2|       
       items2.each_with_index do |item, index|
         if sdate.to_s == @selected_date.to_s
@@ -37,28 +38,44 @@ class PersonalizetimetablePdf < Prawn::Document
     @weekdays_end = @j.weeklytimetable.startdate.to_date+4.days
     @daycount2 = (@j.weeklytimetable.enddate.to_date - @weekdays_end).to_i 
     font "Times-Roman"
-    text "BPL.KKM.PK(T)", :align => :right, :size => 8
+    if college.code=="kskbjb"
+      text "BPL.KKM.PK(T)", :align => :right, :size => 8
+    else
+      move_down 5
+    end
     image "#{Rails.root}/app/assets/images/logo_kerajaan.png", :position => :center, :scale => 0.5
     move_down 3
-    text "KEMENTERIAN KESIHATAN MALAYSIA", :align => :center, :size => 9
+    if college.code=="kskbjb"
+      text "KEMENTERIAN KESIHATAN MALAYSIA", :align => :center, :size => 9
+    else
+      move_down 5
+    end
     #text "JADUAL WAKTU MINGGUAN", :align => :center, :size => 9
     move_down 3
-    text "INSTITUSI : KOLEJ SAINS KESIHATAN BERSEKUTU JOHOR BAHRU", :align => :left, :size => 9
-    text "NAMA PENSYARAH : #{@test_lecturer.userable.name}", :align => :left, :size => 9
+    text "INSTITUSI : #{college.name.upcase}", :align => :left, :size => 9
+    text "NAMA PENSYARAH : #{@test_lecturer.userable.rank_id? ? @test_lecturer.userable.staff_with_rank : @test_lecturer.userable.name}", :align => :left, :size => 9
     text "TARIKH : #{@sdt} HINGGA : #{@edt}", :align =>:left, :size => 9
     table_schedule_sun_wed
     table_schedule_thurs
     if @daycount2 > 0
       start_new_page
       ##same page header
-      text "BPL.KKM.PK(T)", :align => :right, :size => 8
+      if college.code=="kskbjb"
+        text "BPL.KKM.PK(T)", :align => :right, :size => 8
+      else
+        move_down 5
+      end
       image "#{Rails.root}/app/assets/images/logo_kerajaan.png", :position => :center, :scale => 0.5
       move_down 3
-      text "KEMENTERIAN KESIHATAN MALAYSIA", :align => :center, :size => 9
+      if college.code=="kskbjb"
+        text "KEMENTERIAN KESIHATAN MALAYSIA", :align => :center, :size => 9
+      else
+        move_down 5
+      end
       #text "JADUAL WAKTU MINGGUAN", :align => :center, :size => 9
       move_down 3
-      text "INSTITUSI : KOLEJ SAINS KESIHATAN BERSEKUTU JOHOR BAHRU", :align => :left, :size => 9
-      text "NAMA PENSYARAH : #{@test_lecturer.userable.name}", :align => :left, :size => 9
+      text "INSTITUSI : #{college.name.upcase}", :align => :left, :size => 9
+      text "NAMA PENSYARAH : #{@test_lecturer.userable.rank_id? ? @test_lecturer.userable.staff_with_rank : @test_lecturer.userable.name}", :align => :left, :size => 9
       text "TARIKH : #{@j.weeklytimetable.startdate.try(:strftime, '%d/%m/%Y') } HINGGA : #{@j.weeklytimetable.enddate.try(:strftime, '%d/%m/%Y')}", :align =>:left, :size =>9
       ##same page header
       table_weekend 
@@ -353,11 +370,16 @@ class PersonalizetimetablePdf < Prawn::Document
   end
   
   def table_signatory
+    if @college.code=="amsas"
+      approver="Nama: #{@j.weeklytimetable.endorsed_by? ? @j.weeklytimetable.schedule_approver.staff_with_rank : "-"}"
+    else
+      approver="Nama: #{@j.weeklytimetable.endorsed_by? ? @j.weeklytimetable.schedule_approver.name : "-"}"
+    end
     data1 = [["Disediakan Oleh :","Disemak Oleh :" ],
                   ["#{'.'*90}","#{'.'*90}"],
-                  ["Nama: #{@j.weeklytimetable.schedule_creator.name}","Nama #{@j.weeklytimetable.endorsed_by? ? @j.weeklytimetable.schedule_approver.name : "-"}"],
+                  ["Nama: #{@college.code=="amsas" ? @j.weeklytimetable.schedule_creator.staff_with_rank : @j.weeklytimetable.schedule_creator.name}","Nama #{approver}"],
                   ["Pengajar Penyelaras","#{@j.weeklytimetable.endorsed_by? ? @j.weeklytimetable.schedule_approver.positions.first.try(:name) : "-"}"],
-                  ["Pelatih Ambilan #{@j.weeklytimetable.try(:schedule_intake).try(:name)}","KSKB JB"]]
+                  ["Pelatih Ambilan #{@j.weeklytimetable.try(:schedule_intake).try(:name)}","#{@college.code.upcase}"]]
     table(data1, :column_widths => [350], :cell_style => { :size => 9}) do
       columns(0..1).borders=[]
       rows(0..4).height=18

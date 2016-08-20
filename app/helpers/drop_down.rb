@@ -252,6 +252,7 @@ module DropDown
        [ I18n.t("staff.training.course.jurnal_reading"), 22],  
   ]
   
+  # TODO - db field : change to string -> hours, days, months, years - backup kskb data first
   DURATION_TYPE = [
        #  Displayed       stored in db
        [ I18n.t("time.hours"), 0],
@@ -432,18 +433,30 @@ module DropDown
          [ I18n.t('training.programme.years'),      365 ]
     ]
     
+    DURATIONTYPES = [
+         #  Displayed       stored in db
+         [ I18n.t('training.programme.hours'),      'hours' ],
+         [ I18n.t('training.programme.days'),       'days' ],
+         [ I18n.t('training.programme.weeks'),     'weeks' ],
+         [ I18n.t('training.programme.months'),     'months' ],
+         [ I18n.t('training.programme.years'),      'years' ]
+    ]
+    
     COURSE_TYPES_PROG =  [
       # Displayed	stored in db
-      ['Diploma','Diploma'],
-      ['Pos Basik','Pos Basik'],
-      ['Diploma Lanjutan','Diploma Lanjutan']
+          ['Asas', 'Asas'],
+          ['Pertengahan', 'Pertengahan'],
+          ['Lanjutan', 'Lanjutan']
+#       ['Diploma','Diploma'],
+#       ['Pos Basik','Pos Basik'],
+#       ['Diploma Lanjutan','Diploma Lanjutan']
     ]
     
     COURSE_TYPES_SUB = [
       # Displayed	stored in db
-       [I18n.t('training.programme.semester'),'Semester'],
+#        [I18n.t('training.programme.semester'),'Semester'],
        [I18n.t('training.programme.subject'),'Subject'],
-       [I18n.t('training.programme.commonsubject'),'Commonsubject'],
+#        [I18n.t('training.programme.commonsubject'),'Commonsubject'],
        [I18n.t('training.programme.topic'),'Topic'],
        [I18n.t('training.programme.subtopic'), 'Subtopic']
       ]
@@ -460,14 +473,22 @@ module DropDown
      # ]
     
     COURSE_TYPES = [
-       ['Diploma','Diploma'],
-       ['Pos Basik','Pos Basik'],
-       ['Diploma Lanjutan','Diploma Lanjutan'],
-       ['Semester','Semester'],
-       ['Subject','Subject'],
-       ['Commonsubject','Commonsubject'],
-       ['Topic','Topic'],
-       ['Subtopic', 'Subtopic']
+          ['Asas', 'Asas'],
+          ['Pertengahan', 'Pertengahan'],
+          ['Lanjutan', 'Lanjutan']
+#        ['Diploma','Diploma'],
+#        ['Pos Basik','Pos Basik'],
+#        ['Diploma Lanjutan','Diploma Lanjutan'],
+#        ['Semester','Semester'],
+#        ['Subject','Subject'],
+#        ['Commonsubject','Commonsubject'],
+#        ['Topic','Topic'],
+#        ['Subtopic', 'Subtopic']
+      ]
+    
+    COURSE_LEVEL=[
+        ['Pegawai', 'peg'],
+        ['Lain-lain Pangkat', 'llp']
       ]
 
     LECTURE_TIME = [

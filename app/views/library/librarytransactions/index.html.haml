@@ -9,7 +9,7 @@
     - permitted_to? [:check_availability, :check_availability2], :library_librarytransactions do
       %li= link_to content_tag(:li, fa_icon("info-circle", text: (t 'library.check.status'))), check_status_library_librarytransactions_path
   %ul.nav.navbar-nav.navbar-right
-    %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'search'))), "#", class: "toga"
+    %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'search'))), "#", class: "index_search_bar"
     %li= link_to content_tag(:li, fa_icon("print", text: (t 'print'))), "#"
       
 .row.filter{style: "display:none;"}
@@ -21,19 +21,20 @@
   %table.table-striped.table-hover.ogma
     %thead
       %tr
-        %th Accession No
-        %th Call No (NLM/LC)
+        %th= t 'library.book.accessionno'
+        %th= (t 'library.book.classno')+" (NLM) / (DDC)"
         %th= t 'library.transaction.author'
         %th= t 'library.book.title'
         %th= t 'library.transaction.staffstudent'
         %th= t 'library.transaction.borrower'
         //%th No
-        %th.date= t 'library.transaction.duedate'
+        %th.date= t 'library.transaction.returnduedate'
         %th.centre= t 'library.transaction.extend'
-        %th.date= t 'library.transaction.returneddate'
+        %th.date= t 'library.transaction.return'
         %th.action= fa_icon "cogs"
     
-    %tbody  
+    %tbody
+      = render "index_search"
       - @libtran_days.each do |checkoutdate, librarytransactions|
         %tr
           %td.group{colspan: '12'}= checkoutdate.strftime("%A, %v")
@@ -57,12 +58,14 @@
               = fa_icon "check" if librarytransaction.extended?
               - if librarytransaction.extended != true && librarytransaction.returned != true
                 %div.btn.btn-default{:type => "button", "data-toggle" => "tooltip", title: "Extend"}
-                  = link_to fa_icon "clock-o", :action => 'extend', :id => librarytransaction
+                  /= link_to fa_icon "clock-o", :action => 'extend2', :id => librarytransaction
+                  = link_to content_tag(:li, fa_icon("clock-o")), extending_library_librarytransaction_path(librarytransaction)
             %td.date
               = librarytransaction.returneddate.try(:strftime, '%d %b %Y')
               - if librarytransaction.returned != true
                 %div.btn.btn-default{:type => "button", "data-toggle" => "tooltip", title: "Return"}
-                  = link_to fa_icon "inbox", :action => 'return', :id => librarytransaction
+                  /= link_to fa_icon "inbox", :action => 'return', :id => librarytransaction
+                  = link_to content_tag(:li, fa_icon("inbox")), returning_library_librarytransaction_path(librarytransaction)
             //= permitted_to? :manage, :librarytransactions do %>
             %td
 

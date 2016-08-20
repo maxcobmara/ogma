@@ -7,15 +7,18 @@
       .col-sm-2.control-label
         = f.label t 'exam.evaluate_course.student_id', for: :student_id
       .col-md-6
-        = f.collection_select :student_id, @student_list.order(matrixno: :asc, name: :asc), :id, :matrix_name,{:include_blank =>t('select')},{class: 'selectpicker', "data-width"=>'350px'}
+        - if current_user.college.code=="kskbjb"
+          = f.collection_select :student_id, @student_list.order(matrixno: :asc, name: :asc), :id, :matrix_name,{:include_blank =>t('select')},{class: 'selectpicker', "data-width"=>'350px'}
+        - else
+          = f.collection_select :student_id, @student_list.order(rank_id: :asc, name: :asc), :id, :student_with_rank,{:include_blank =>t('select')},{class: 'selectpicker', "data-width"=>'350px'}
   .form-group
     .col-sm-2.control-label
       = f.label t 'exam.evaluate_course.course_id', for: :course_id
     .col-md-6
       - if @evaluate_course.new_record?
-        = f.collection_select :course_id, @programme_list, :id, :programme_coursetype_name,{:include_blank =>t('select'),:selected =>@preselect_prog},{class: 'selectpicker mandatory', "data-width"=>'350px'}
+        = f.collection_select :course_id, @programme_list, :id, :programme_list,{:include_blank =>t('select'),:selected =>@preselect_prog},{class: 'selectpicker mandatory', "data-width"=>'350px'}
       - else 
-        = f.collection_select :course_id, @programme_list, :id, :programme_coursetype_name, {:include_blank =>t('select'),:selected =>@evaluate_course.course_id},{class: 'selectpicker mandatory', "data-width"=>'350px'}   
+        = f.collection_select :course_id, @programme_list, :id, :programme_list, {:include_blank =>t('select'),:selected =>@evaluate_course.course_id},{class: 'selectpicker mandatory', "data-width"=>'350px'}   
 
   .form-group
     .col-sm-2.control-label
@@ -32,9 +35,12 @@
         - else
           - isstaff="unchecked"
       = f.check_box :is_staff, :checked => isstaff, :id => 'is_staff'
-      = t('exam.evaluate_course.staff_or_invited')
+      = (t 'exam.evaluate_course.staff_or_invited1')+" "+current_user.college.code.upcase+(t 'exam.evaluate_course.staff_or_invited2')
       .span_staff{:style=>"display: block;"}
-        = f.collection_select :staff_id, @lecturer_list, :id, :name, {:include_blank =>t('select')},{class: 'selectpicker mandatory', "data-width"=>'350px'}
+        - if current_user.college.code=="kskbjb"
+          = f.collection_select :staff_id, @lecturer_list, :id, :name, {:include_blank =>t('select')},{class: 'selectpicker mandatory', "data-width"=>'350px'}
+        - else
+          = f.collection_select :staff_id, @lecturer_list, :id, :staff_with_rank, {:include_blank =>t('select')},{class: 'selectpicker mandatory', "data-width"=>'350px'}
       .span_invited{:style=>"display: none;"}
         = f.text_field :invite_lec, class: 'form-control mandatory'
 
@@ -46,21 +52,21 @@
         = f.label t 'exam.evaluate_course.invite_lec_topic', for: :invite_lec_topic
     .col-md-6
       .span_staff{:style=>"display: block;"}
-        = f.collection_select :subject_id, @subjectlist_preselect_prog, :id, :subject_list, {:include_blank =>t('select')},{class: 'selectpicker mandatory', "data-width"=>'350px'}
+        = f.collection_select :subject_id, @subjectlist_preselect_prog, :id, :programmelist_subject, {:include_blank =>t('select')},{class: 'selectpicker mandatory', "data-width"=>'350px'}
       .span_invited{:style=>"display: none;"}
         = f.text_field :invite_lec_topic, class: 'form-control mandatory'
       
   .form-group
     .col-sm-2.control-label
       = f.label t 'exam.evaluate_course.comment', for: :comment
-    .col-md-6
+    .col-md-8
       = f.text_field :comment, class: 'form-control'  
 
   .form-group
     .col-sm-2.control-label
       = f.label t 'exam.evaluate_course.evaluate_date', for: :evaluate_date
     .col-md-3
-      = f.text_field :evaluate_date, class: 'date_picker_after_reverse2 form-control mandatory'
+      = f.text_field :evaluate_date, class: 'date_picker_after_reverse2 form-control mandatory', value: @evaluate_course.try(:evaluate_date).try(:strftime, '%d-%m-%Y')
 %BR
 
 :javascript

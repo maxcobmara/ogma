@@ -17,7 +17,11 @@
       %tr
         %th= sort_link(@search, :icno, (t 'staff.icno'))
         %th= sort_link(@search, :name, (t 'staff.name'))
-        %th{style: "width:33%;"}= sort_link(@search, :staff_position_name,(t 'staff.position'))
+        - if current_user.college.code=="amsas"
+          %th{style: "width:20%;"}= sort_link(@search, :staff_position_name,(t 'staff.position'))
+          %th{style: "width:20%;"}=sort_link(@search, :rank, (t 'staff.rank_id'))
+        - else
+          %th{style: "width:33%;"}= sort_link(@search, :staff_position_name,(t 'staff.position'))
     %tbody
       = render "search_bar"
       - @staffs.each do |staff|
@@ -28,6 +32,8 @@
             -for position in staff.positions
               = position.name
               <BR>
+          - if current_user.college.code=="amsas"
+            %td=staff.try(:rank).try(:name)
           
   .right{style:"padding:0 30px; margin:0;"}= paginate @staffs, :theme => 'twitter-bootstrap-3'
 

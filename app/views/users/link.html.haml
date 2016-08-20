@@ -9,6 +9,7 @@
   = render 'shared/error_messages', object: f.object
   = f.hidden_field :userable_id, :value => @entity.id
   = f.hidden_field :userable_type, :value => @entity.class.name
+  = f.hidden_field :college_id, :value => @entity.college_id
   /.div{:style =>"display: block;"}
   / = check_box_tag "user[role_ids][]", 3, true if @entity.class.name=="Student"
   //= check_box_tag "user[role_ids][]", role.id, @user.roles.include?(role)

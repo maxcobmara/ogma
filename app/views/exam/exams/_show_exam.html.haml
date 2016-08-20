@@ -13,7 +13,7 @@
       
     - else
       %dt= t 'exam.exams.course_id' , :default => model_class.human_attribute_name(:course_id) + ":"
-      %dd=h @exam.subject_id? ? @exam.subject.root.course_type+" "+@exam.subject.root.name : "" 
+      %dd=h @exam.subject_id? ? @exam.subject.root.course_type+" "+@exam.subject.root.programme_list : "" 
   
       %dt= t 'exam.exams.subject_id' , :default => model_class.human_attribute_name(:subject_id) + ":"
       %dd=h @exam.subject_id? ? @exam.subject.subject_list : ""

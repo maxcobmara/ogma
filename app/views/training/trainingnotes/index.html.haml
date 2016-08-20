@@ -13,17 +13,26 @@
   .col-md-2
     
 .row
+  .col-md-12
+    .alert.alert-warning
+      %strong=t 'training.trainingnote.remark_title'
+      =" ("+(t 'training.trainingnote.plan')+(t 'training.trainingnote.plan_remark')+")"
+      %ol
+        %li= fa_icon("check-square")+" "+(t 'training.trainingnote.plan_remark1')
+        %li= fa_icon("check-square-o")+" "+(t 'training.trainingnote.plan_remark2')
   %table.table-striped.table-hover.ogma
     %thead
       %tr
-        %th=t 'training.trainingnote.programme'
-        %th=t 'training.trainingnote.subject'
-        %th= sort_link(@search, :topic_subtopic, (t 'training.trainingnote.topic_subtopic'))
-        %th= sort_link(@search, :title, (t 'training.trainingnote.title'))
-        %th= sort_link(@search, :reference, (t 'training.trainingnote.reference'))
-        %th= sort_link(@search, :version, (t 'training.trainingnote.version'))
-        %th{:width=>'90px'}= sort_link(@search, :release, (t 'training.trainingnote.release'))
-        %th= sort_link(@search, :file_name, (t 'training.trainingnote.file_name'))
+        %th{width: '3%'}=t 'training.trainingnote.plan'
+        %th{width: '10%'}=t 'training.trainingnote.programme'
+        %th{width: '10%'}=t 'training.trainingnote.subject'
+        %th{width: '10%'}= sort_link(@search, :topic_subtopic, (t 'training.trainingnote.topic_subtopic'))
+        %th{width: '15%'}= sort_link(@search, :title, (t 'training.trainingnote.title'))
+        %th{width: '10%'}= sort_link(@search, :reference, (t 'training.trainingnote.reference'))
+        %th{width: '6%'}= sort_link(@search, :version, (t 'training.trainingnote.version'))
+        %th{width: '7%'}= sort_link(@search, :release, (t 'training.trainingnote.release'))
+        %th{width: '15%'}= sort_link(@search, :file_name, (t 'training.trainingnote.file_name'))
+        %th{width: '14%'}=sort_link(@search, :staff_id, (t 'training.trainingnote.staff_id'))
        
     %tbody
     = render "index_search"
@@ -79,6 +88,15 @@
           - if y.topicdetail.topic_code
             %tr
               /%td=y.id
+              %td
+                - if y.timetable_id?
+                  /= fa_icon("check-square") 
+                  = link_to content_tag(:i, "", :class => "fa fa-check-square"), training_lesson_plan_path(LessonPlan.where(schedule: y.timetable_id).first.id)
+                - else
+                  - if y.lesson_plan_trainingnotes.count > 0
+                    = fa_icon("check-square-o")
+                  - else
+                    = fa_icon("minus")
               %td=Programme.find(y.topicdetail.topic_code).root.name if y.topicdetail.topic_code
               %td=Programme.find(y.topicdetail.topic_code).parent.subject_list if y.topicdetail.topic_code
               %td 
@@ -105,9 +123,18 @@
               /&nbsp; 
               /=link_to y.document_file_name, y.document.url
               /%BR
+              %td= y.note_creator.rank_id? ? y.note_creator.staff_with_rank : y.note_creator.try(:name)
       - else
         %tr
           /%td=prog.id
+          %td
+            - if prog.timetable_id?
+              = fa_icon("check-square") 
+            - else
+              - if prog.lesson_plan_trainingnotes.count > 0
+                = fa_icon("check-square-o")
+              - else
+                = fa_icon("minus")
           %td &nbsp;
           %td &nbsp;
           %td &nbsp;
@@ -132,6 +159,7 @@
           /&nbsp; 
           /= link_to prog.document_file_name,prog.document.url
           /%BR
+          %td= prog.note_creator.rank_id? ? prog.note_creator.staff_with_rank : prog.note_creator.try(:name)
      
 
   .right{style:"padding:0 30px; margin:0;"}= paginate @trainingnotes_lala, :theme => 'twitter-bootstrap-3'

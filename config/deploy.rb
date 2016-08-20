@@ -10,7 +10,8 @@ set :scm_passphrase, ""
 
 # Default branch is :master
 # ask :branch, `git rev-parse --abbrev-ref HEAD`.chomp
-set :branch, "master"
+#set :branch, "amsas_production"
+set :branch, ENV['BRANCH'] || "master"
 set :rails_env, "production"
 set :assets_roles, [:web, :app]
 set :deploy_via, :copy
@@ -65,7 +66,15 @@ namespace :deploy do
   task :stop_unicorn do
     invoke "unicorn:stop"
   end
+#   #create database
+#   task :create_database do
+#     on roles([:web, :app]) do |host|
+#       execute "/home/nurhashimah/.rvm//bin/rvm 2.1.4@ogma4 do bundle exec rake db:create RAILS_ENV=production"
+#       execute "pg_restore icms_demo_development < icms_demo_development_frlocal.dump"
+#     end
+#   end
 end
 
+# before "deploy:migrate", "deploy:create_database"
 before "deploy:symlink:linked_files", "unicorn:stop"
 after "deploy:log_revision", "deploy:run_unicorn_ogma"

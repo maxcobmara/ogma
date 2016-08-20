@@ -71,7 +71,9 @@ class Training::TopicdetailsController < ApplicationController
   # POST /topicdetails.xml
   def create
     @topicdetail = Topicdetail.new(topicdetail_params)
-
+    @exist_valid_topicdetails_ids=Programme.joins(:topic_details).where('course_type=? or course_type=?','Topic','Subtopic').pluck(:id)
+    @semester_subject_topic_list = Programme.where('course_type=? or course_type=? and id not in (?)','Topic','Subtopic',@exist_valid_topicdetails_ids).sort_by{|x|x.parent}
+    
     respond_to do |format|
       if @topicdetail.save
         format.html { redirect_to(training_topicdetail_path(@topicdetail), :notice => t('training.topicdetail.title')+t('actions.created')) }
@@ -87,7 +89,9 @@ class Training::TopicdetailsController < ApplicationController
   # PUT /topicdetails/1.xml
   def update
     @topicdetail = Topicdetail.find(params[:id])
-
+    @exist_valid_topicdetails_ids=Programme.joins(:topic_details).where('course_type=? or course_type=?','Topic','Subtopic').pluck(:id)
+    @semester_subject_topic_list = Programme.where('course_type=? or course_type=? and id not in (?)','Topic','Subtopic',@exist_valid_topicdetails_ids).sort_by{|x|x.parent}
+    
     respond_to do |format|
       if @topicdetail.update(topicdetail_params)
         format.html { redirect_to(training_topicdetail_url, :notice => t('training.topicdetail.title')+t('actions.updated')) }

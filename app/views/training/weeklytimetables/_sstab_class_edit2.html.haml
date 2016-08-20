@@ -10,7 +10,10 @@
 %font{:color => "green"}= t 'training.weeklytimetable_detail.lecturer_id'
 %font{:color=>"blue"}*
 /=select_tag "weeklytimetable[weeklytimetable_details_attributes][#{@ind}][lecturer_id]", options_from_collection_for_select(Staff.joins(:positions).where('positions.name=?','Pengajar').sort_by(&:name), :id,:name, xx.lecturer_id), :prompt=>(t 'helpers.prompt.select_lecturer')
-=select_tag "weeklytimetable[weeklytimetable_details_attributes][#{@ind}][lecturer_id]", options_from_collection_for_select(@lecturer_list, :id,:name, xx.lecturer_id), :prompt=>(t 'helpers.prompt.select_lecturer')
+- if current_user.college.code=="amsas"
+  =select_tag "weeklytimetable[weeklytimetable_details_attributes][#{@ind}][lecturer_id]", options_from_collection_for_select(@lecturer_list, :id, :staff_with_rank, xx.lecturer_id), :prompt=>(t 'helpers.prompt.select_lecturer')
+- else
+  =select_tag "weeklytimetable[weeklytimetable_details_attributes][#{@ind}][lecturer_id]", options_from_collection_for_select(@lecturer_list, :id,:name, xx.lecturer_id), :prompt=>(t 'helpers.prompt.select_lecturer')
 	
 /location
 %font{:color => "green"}= t 'training.weeklytimetable_detail.location'

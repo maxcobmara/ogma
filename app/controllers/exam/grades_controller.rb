@@ -24,7 +24,11 @@ class Exam::GradesController < ApplicationController
       end
       unless @programme.nil? || @programme.count == 0
         programme_id = @programme.first.id
-        @subjectlist_preselec_prog = Programme.find(programme_id).descendants.at_depth(2)  #.sort_by{|y|y.code}
+        if current_user.college.code=="kskbjb"
+          @subjectlist_preselec_prog = Programme.find(programme_id).descendants.at_depth(2)  #.sort_by{|y|y.code}
+        else 
+          @subjectlist_preselec_prog = Programme.find(programme_id).descendants.where(course_type: 'Subject')
+        end
         #subjects - only those with existing exampaper
         @subjectlist_preselec_prog2_raw = Programme.where('id IN (?) AND id IN (?)',@subjectlist_preselec_prog.map(&:id), Exam.where('id IN(?) and name=?', valid_exams, 'F').map(&:subject_id))
         #@subjectlist_preselec_prog2_raw = Programme.where('id IN (?) AND id IN (?) and id NOT IN(?)',@subjectlist_preselec_prog.map(&:id), Exam.where('id IN(?) and name=?', valid_exams, 'F').map(&:subject_id), common_subject_a.map(&:id))
@@ -60,7 +64,11 @@ class Exam::GradesController < ApplicationController
           ###
         elsif roles.include?("administration") || roles.include?("exam_grade_module_admin") || roles.include?("exam_grade_module_viewer") || roles.include?("exam_grade_module_user")
           programme_id='0'
-          @subjectlist_preselec_prog = Programme.at_depth(2) 
+          if current_user.college.code=="kskbjb"
+            @subjectlist_preselec_prog = Programme.at_depth(2) 
+          else
+            @subjectlist_preselec_prog = Programme.where(course_type: 'Subject')
+          end
         else
           leader_unit=tasks_main.scan(/Program (.*)/)[0][0].split(" ")[0] if tasks_main!="" && tasks_main.include?('Program')
           if leader_unit
@@ -225,7 +233,7 @@ class Exam::GradesController < ApplicationController
     #above - before include previous intake(repeat semester) students
     # NOTE - 22Feb2016 - include Repeat Semester students (previous Intake) 
     #related files: 1) views/examresults/_form_results.html.haml, 2)model/examresult.rb 3)exammarks_controllers.rb 4)model/grade.rb - redundants allowed only for student with sstatus=='Repeat' (Repeat Semester)
-    previous_intake = Student.where(course_id: @programme_id).where('intake < ?', selected_intake).order(intake: :desc).first.intake
+    previous_intake = Student.where(course_id: @programme_id).where('intake < ?', selected_intake).order(intake: :desc).first.try(:intake)
     selected_student = Student.where(course_id: @programme_id).where('intake=? or (intake=? and sstatus=?)', selected_intake, previous_intake, 'Repeat')
     
     rec_count = selected_student.count

@@ -1,22 +1,43 @@
 class ResultsPdf < Prawn::Document 
-  def initialize(examresult, view)
+  def initialize(examresult, view, college)
     super({top_margin: 30, left_margin: 20, page_size: 'A4', page_layout: :landscape })
     @examresult = examresult
     @view = view
-    font "Times-Roman"
-    text "#{I18n.t 'exam.examresult.programme_id'} : #{@examresult.programmestudent.programme_list}", :align => :left, :size => 10, :style => :bold
-    text "Semester : #{@examresult.render_semester}", :align => :left, :size => 10, :style => :bold
-    text "#{I18n.t 'exam.examresult.examdts'} : #{@examresult.examdts.try(:strftime, '%d %b %Y')}", :align => :left, :size => 10, :style => :bold
-    text "#{I18n.t 'exam.examresult.examdte'} : #{@examresult.examdte.try(:strftime, '%d %b %Y')}", :align => :left, :size => 10, :style => :bold
-    intake=@examresult.intake_group
-    iyear=intake[0,4].to_i
-    imonth=intake[5,2].to_i
-    iday=intake[8,2].to_i
-    student_intake=Date.new(iyear, imonth, iday).try(:strftime, '%b %Y')
-    text "#{I18n.t 'exam.examresult.intake'} : #{student_intake}", :align => :left, :size => 10, :style => :bold
-    @subjects = @examresult.retrieve_subject
-    move_down 20
-    result_table
+    font "Helvetica"
+   
+    if college.code=="kskbjb"
+      text "#{I18n.t 'exam.examresult.programme_id'} : #{@examresult.programmestudent.programme_list}", :align => :left, :size => 10, :style => :bold
+      text "Semester : #{@examresult.render_semester}", :align => :left, :size => 10, :style => :bold
+      text "#{I18n.t 'exam.examresult.examdts'} : #{@examresult.examdts.try(:strftime, '%d %b %Y')}", :align => :left, :size => 10, :style => :bold
+      text "#{I18n.t 'exam.examresult.examdte'} : #{@examresult.examdte.try(:strftime, '%d %b %Y')}", :align => :left, :size => 10, :style => :bold
+      intake=@examresult.intake_group
+      iyear=intake[0,4].to_i
+      imonth=intake[5,2].to_i
+      iday=intake[8,2].to_i
+      student_intake=Date.new(iyear, imonth, iday).try(:strftime, '%b %Y')
+      text "#{I18n.t 'exam.examresult.intake'} : #{student_intake}", :align => :left, :size => 10, :style => :bold
+      @subjects = @examresult.retrieve_subject
+      move_down 20
+      result_table
+    elsif college.code=="amsas"
+      student_intake=@examresult.intake.monthyear_intake.try(:strftime, '%b %Y')
+      prog_id=Intake.find(@examresult.intake_id).programme_id
+      bounding_box([30,530], :width => 400, :height => 90) do |y2|
+        image "#{Rails.root}/app/assets/images/logo_kerajaan.png", :scale => 0.80
+      end
+      bounding_box([680,530], :width => 400, :height => 90) do |y2|
+        image "#{Rails.root}/app/assets/images/amsas_logo_small.png"
+      end
+      @subjects=Programme.find(prog_id).descendants.where(course_type: 'Subject')
+      draw_text "PUSAT LATIHAN DAN AKADEMI MARITIM MALAYSIA (PLAMM)", :at => [225, 505], :size => 11, :style => :bold
+      draw_text "LAPORAN PEMARKAHAN PEPERIKSAAN", :at => [285, 490], :size => 11, :style => :bold
+      draw_text "#{@examresult.programmestudent.programme_list.upcase}", :at => [325, 475], :size => 11, :style => :bold
+      draw_text "SEHINGGA #{Date.today.strftime('%d-%m-%Y')}", :at => [335 ,460], :size => 11, :style => :bold
+      move_down 20
+      text "#{I18n.t 'exam.examresult.examdts'} : #{@examresult.examdts.try(:strftime, '%d-%m-%Y')}", :align => :left, :size => 10
+      text "#{I18n.t 'exam.examresult.examdte'} : #{@examresult.examdte.try(:strftime, '%d-%m- %Y')}", :align => :left, :size => 10
+      result_table2
+    end
   end
   
   def result_table
@@ -243,6 +264,50 @@ class ResultsPdf < Prawn::Document
       
     end
     header+[bb]+data
+  end
+  
+  def result_table2
+    aa=[25, 150, 70]
+    bb=0
+    for subject in @subjects
+       bb+=40
+       aa << 40
+    end
+    aa << 35
+    bb+=35
+    table(line_item_rows2, :column_widths =>aa, :cell_style => { :size => 8,  :inline_format => :true}) do
+      row(0).font_style = :bold
+      row(0).background_color = 'FFE34D'
+      self.row_colors = ["FEFEFE", "FFFFFF"]
+      self.width=(245+bb)
+    end
+  end
+  
+  def line_item_rows2
+    aa=["No", "#{I18n.t('exam.examresult.student')}", "#{ I18n.t('student.icno')}"]
+    0.upto(@subjects.count-1).each do |cnt|
+       aa << "#{@subjects[cnt].code}"
+    end
+    counter = counter || 0
+    header=[aa+["Status"]]
+    data=[]
+    count=count || 0
+    
+    for examresultline in @examresult.resultlines.sort_by{|x|x.status}
+      details= [count+=1, examresultline.student.student_with_rank, examresultline.student.icno]
+      subjectscol=[]
+      for subject in @subjects
+        grades=Grade.where(subject_id: subject.id).where(student_id: examresultline.student_id)
+        if grades.count > 0
+          finalscore=@view.number_with_precision(grades.first.finalscore, precision: 2).to_s+" %"
+        else
+          finalscore=""
+        end
+        subjectscol << finalscore
+      end
+      data << details+subjectscol+[examresultline.render_status_contra]
+    end
+    header+data
   end
  
 end

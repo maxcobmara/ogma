@@ -40,39 +40,79 @@
         %tr
           %td{:colspan=>"2"} &nbsp;
           %td
-            =h link_to (ind+1).to_s+") "+bk.title, library_book_path(bk)
+            =h link_to (ind+1).to_s+") "+bk.try(:title), library_book_path(bk.id)
             - permitted_to? :update, :library_books do
-              =h link_to "EDIT","http://#{request.host}:3000/books/#{bk.id}/edit"  
+              /=h link_to "EDIT","http://#{request.host}:3000/books/#{bk.id}/edit"  
+              =h link_to (t 'actions.links.edit')+bk.try(:title), edit_library_book_path(bk.id)
           %td{:colspan=>"3"} &nbsp;
           %td{:style=>"color:red;"}=t'library.book.acc_not_exist'
           %td{:colspan=>"4"} &nbsp;
             
       - @acc_by_book.each do |bookid3, acc3|
-        - acc3.each_with_index do |acc,index2|
-          - if (@search.accessionno_search && @result_by_accession.include?(acc.accession_no)) || !@search.accessionno_search
-            %tr
-              %td=h (DropDown::MEDIA.find_all{|disp, value| value == acc.book.try(:mediatype)}).map {|disp, value| disp}[0] 
-              %td
-                - if acc.book
-                  - if acc.book.photo_file_name == nil
-                    =t 'book.no_image'
-                  - else
-                    /=image_tag "http://localhost:3000/assets/books/21001/original/display%20div%20of%20selected%20menu%20item%20ON%20LOAD.png?1410749822"
-                    //acc.book.photo.url GIVING THIS-assets/books/21001/original/no_cover_thumb.png?1410753027 
-                    =image_tag "http://#{request.host}:3000"+acc.book.photo.url, :width => '57px'  
-              %td=h link_to acc.book.title, library_book_path(acc.book)
-              %td=acc.book.try(:author)
-              %td=acc.book.try(:isbn)
-              %td
-                =h acc.book.book_quantity if index2 == 0 && !@search.accessionno_search
-                = 1 if @search.accessionno_search
-              %td=h acc.accession_no
-              %td=h acc.book.classlcc
-              %td=h acc.book.location
-              %td=h (DropDown::STATUS.find_all{|disp, value| value == acc.book.status}).map {|disp, value| disp}[0]
-              %td
-                - if acc.book.roman != nil 
-                  - if acc.book.roman.include?(';') || acc.book.roman.include?(':') || acc.book.roman.include?(',')
-                    &#10003;
+        /AMSAS view
+        - book=Book.find(bookid3)
+        %tr
+          %td=h (DropDown::MEDIA.find_all{|disp, value| value == book.try(:mediatype)}).map {|disp, value| disp}[0] 
+          %td
+            - if book
+              - if book.photo_file_name == nil
+                =t 'book.no_image'
+              - else
+                /=image_tag "http://localhost:3000/assets/books/21001/original/display%20div%20of%20selected%20menu%20item%20ON%20LOAD.png?1410749822"
+                //acc.book.photo.url GIVING THIS-assets/books/21001/original/no_cover_thumb.png?1410753027 
+                /KSKB-previously uploaded in icms
+                /=image_tag "http://#{request.host}:3000"+book.photo.url, :width => '57px'  
+                /AMSAS:
+                =image_tag book.photo.url(:thumbnail)
+          %td=h link_to book.title, library_book_path(book)
+          %td=book.try(:author)
+          %td=book.try(:isbn)
+          %td
+            =h book.book_quantity 
+            /if index2 == 0 && !@search.accessionno_search
+            = 1 if @search.accessionno_search
+          %td
+            - acc3.each_with_index do |acc,index2|
+              =h acc.accession_no 
+              %br
+          %td=h book.classlcc
+          %td=h book.location
+          %td
+            /=h (DropDown::STATUS.find_all{|disp, value| value == book.status}).map {|disp, value| disp}[0]
+            - acc3.each_with_index do |acc,index2|
+              =h (DropDown::STATUS.find_all{|disp, value| value == acc.received_by}).map {|disp, value| disp}[0]
+              %br
+          %td
+            - if book.roman != nil 
+              - if book.roman.include?(';') || book.roman.include?(':') || book.roman.include?(',')
+                &#10003;
+        
+        /KSKB view - As per user acceptance
+        /- acc3.each_with_index do |acc,index2|
+        /  - if (@search.accessionno_search && @result_by_accession.include?(acc.accession_no)) || !@search.accessionno_search
+        /    %tr
+        /      %td=h (DropDown::MEDIA.find_all{|disp, value| value == acc.book.try(:mediatype)}).map {|disp, value| disp}[0] 
+        /      %td
+        /        - if acc.book
+        /          - if acc.book.photo_file_name == nil
+        /            =t 'book.no_image'
+        /          - else
+        /            /=image_tag "http://localhost:3000/assets/books/21001/original/display%20div%20of%20selected%20menu%20item%20ON%20LOAD.png?1410749822"
+        /            //acc.book.photo.url GIVING THIS-assets/books/21001/original/no_cover_thumb.png?1410753027 
+        /            =image_tag "http://#{request.host}:3000"+acc.book.photo.url, :width => '57px'  
+        /      %td=h link_to acc.book.title, library_book_path(acc.book)
+        /      %td=acc.book.try(:author)
+        /      %td=acc.book.try(:isbn)
+        /      %td
+        /        =h acc.book.book_quantity if index2 == 0 && !@search.accessionno_search
+        /        = 1 if @search.accessionno_search
+        /      %td=h acc.accession_no
+        /      %td=h acc.book.classlcc
+        /      %td=h acc.book.location
+        /      %td=h (DropDown::STATUS.find_all{|disp, value| value == acc.book.status}).map {|disp, value| disp}[0]
+        /      %td
+        /        - if acc.book.roman != nil 
+        /          - if acc.book.roman.include?(';') || acc.book.roman.include?(':') || acc.book.roman.include?(',')
+        /            &#10003;
                          
   .right{style:"padding:0 30px; margin:0;"}= paginate @accessions, :theme => 'twitter-bootstrap-3'

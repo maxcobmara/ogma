@@ -1,6 +1,6 @@
 class Library::BooksController < ApplicationController
   
-  filter_access_to :index, :new, :create, :import_excel, :import, :download_excel_format, :attribute_check => false
+  filter_access_to :index, :new, :create, :import_excel, :import, :download_excel_format, :check_availability, :attribute_check => false
   filter_access_to :show, :edit, :update, :destroy, :attribute_check => true
   before_action :set_book, only: [:show, :edit, :update, :destroy]
  
@@ -22,6 +22,7 @@ class Library::BooksController < ApplicationController
     #@accessions_by_book =@all_accessions.group_by(&:book_id)						#dah paginate yg asal - group by book id	#just for checking
     @accessions = Kaminari.paginate_array(@all_accessions).page(params[:page]||1)    
     @acc_by_book = @accessions.group_by(&:book_id)
+    
     
     #retrieve book without accession no
     @book_wo_acc=Book.where('id NOT IN(?)', Accession.all.pluck(:book_id).uniq)
@@ -138,6 +139,27 @@ class Library::BooksController < ApplicationController
     end
   end
   
+  def check_availability
+    @isbnsearch = params[:isbn_search].to_s
+    @isbnsearch2 = @isbnsearch.split('-').to_s
+    @result = Book.find_by_isbn(@isbnsearch)
+    if !@result && @isbnsearch!= '' 
+      @isbn_only = Book.pluck(:isbn)
+      @isbn_only.each do |isbn|
+        if isbn != nil
+          aa = isbn.split('-').to_s
+          if aa == @isbnsearch2
+            @result2 = Book.find_by_isbn(isbn)
+          end
+        end
+      end
+    end
+    #@result = Book.find(:first, :conditions => ['isbn=? OR isbn=?',@isbnsearch,@isbnsearch2])
+    respond_to do |format|
+      format.js
+    end
+  end
+  
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_book
@@ -146,7 +168,7 @@ class Library::BooksController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def book_params
-      params.require(:book).permit(:tagno, :controlno,:isbn,:bookcode,:accessionno,:catsource,:classlcc,:classddc,:title,:author,:publisher,:description, :loantype,:mediatype,:status,:series,:location,:topic,:orderno,:purchaseprice,:purchasedate,:receiveddate,:receiver_id,:supplier_id,:issn, :edition, :photo_file_name, :photo_content_type,:photo_file_size,:photo_updated_at, :publish_date,:publish_location, :language, :links, :subject, :quantity, :roman, :size, :pages, :bibliography,:indice,:notes,:backuproman,:finance_source, accessions_attributes: [:id, :_destroy, :accession_no])
+      params.require(:book).permit(:tagno, :controlno,:isbn,:bookcode,:accessionno,:catsource,:classlcc,:classddc,:title,:author,:publisher,:description, :loantype,:mediatype,:status,:series,:location,:topic,:orderno,:purchaseprice,:purchasedate,:receiveddate,:receiver_id,:supplier_id,:issn, :edition, :photo, :photo_file_name, :photo_content_type,:photo_file_size,:photo_updated_at, :publish_date,:publish_location, :language, :links, :subject, :quantity, :roman, :size, :pages, :bibliography,:indice,:notes,:backuproman,:finance_source, accessions_attributes: [:id, :_destroy, :accession_no, :order_no, :received_by])
     end
   
 end

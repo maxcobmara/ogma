@@ -6,6 +6,10 @@
 
     %dt= t 'staff.fileno', :default => model_class.human_attribute_name(:fileno) + ":"
     %dd= @staff.fileno
+    
+    - if current_user.college.code=="amsas"
+      %dt= t 'staff.rank_id'
+      %dd= @staff.try(:rank).try(:name)
 
     %dt= t 'staff.position'
     %dd= @staff.try(:position).try(:name)

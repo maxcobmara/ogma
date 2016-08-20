@@ -1,0 +1,10 @@
+= search_form_for [:rank, @search], url: staff_ranks_path,  class: "form-inline" do |f|
+  %tr.search_row{style: "display: none;"}
+    %td= f.text_field :shortname_cont, size: 8,  :class => "form-control" 
+    %td= f.text_field :name_cont, size: 8,  :class => "form-control" 
+    %td= select_tag('q[category_eq]',options_for_select(Rank::RANK_CATEGORY),:prompt=>(t 'all_records'), class: 'form-control selectpicker')
+    %td.input-group
+      = f.text_field :staffgrade_name_cont, size: 2,  :class => "form-control"
+      %span.input-group-btn
+        %button.btn.btn-sm.btn-default.right{:type => "submit"}
+          %i.fa.fa-search.fa-fw

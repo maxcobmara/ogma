@@ -1,10 +1,10 @@
 class Damage_reportPdf < Prawn::Document 
-  def initialize(damages, view)
+  def initialize(damages, view, college)
     super({top_margin: 50, page_size: 'A4', page_layout: :portrait })
     @damages = damages
     @view = view
     font "Times-Roman"
-    text "Kolej Sains Kesihatan Bersekutu Johor Bahru", :align => :center, :size => 12, :style => :bold
+    text "#{college.name}", :align => :center, :size => 12, :style => :bold
     text "#{I18n.t('location.damage.damage_report')}", :align => :center, :size => 12, :style => :bold
     move_down 10
     record

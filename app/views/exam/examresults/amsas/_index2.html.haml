@@ -1,0 +1,14 @@
+- @resultlines.group_by{|x|x.examresult.programmestudent.programme_list}.sort.each do |programme, resultlines|
+  %tr
+    %td.group{colspan: 5}=(t 'examresult.programme_id')+" : "+programme
+  - resultlines.group_by{|x|x.examresult.intake}.each do |intake, resultlines2|
+    %tr
+      %td.group{colspan: 5}
+        %span
+          =(t 'exam.examresult.intake')+" :"
+          =intake.monthyear_intake.try(:strftime, '%b %Y').upcase
+    - resultlines2.group_by{|x|x.student}.sort.each do |student, resultlines3|  
+      - for resultline in resultlines3.sort_by{|x|x.examresult_id}
+        %tr
+          %td= link_to resultline.student.student_with_rank, show2_exam_examresults_path(id: resultline.id)
+          %td=h resultline.render_status_contra

@@ -1,68 +1,124 @@
 class Examination_slipPdf < Prawn::Document
-  def initialize(resultline, view)
+  def initialize(resultline, view, college)
     @resultline = resultline
     @view = view
-    @perubatan=Programme.where(course_type: 'Diploma').where('name ILIKE (?)', 'Penolong Pegawai Perubatan').first.id
-    @cara_kerja=Programme.where(course_type: 'Diploma').where('name ILIKE (?)', 'Jurupulih Perubatan Cara Kerja').first.id
-    @fisioterapi=Programme.where(course_type: 'Diploma').where('name ILIKE (?)', '%Fisioterapi%').first.id
-    @kebidanan = Programme.roots.where('name ILIKE(?)', '%Kebidanan%').first.id
-    @kejururawatan = Programme.roots.where('name ILIKE(?)', '%Kejururawatan%').first.id
-    if resultline.examresult.programme_id==@perubatan
-      super({top_margin: 20, left_margin:30, right_margin:20, page_size: 'A4', page_layout: :portrait })
-    else
-      super({top_margin: 20, left_margin:100, right_margin:80, page_size: 'A4', page_layout: :portrait })
+    if college.code=="kskbjb"
+      @perubatan=Programme.where(course_type: 'Diploma').where('name ILIKE (?)', 'Penolong Pegawai Perubatan').first.id
+      @cara_kerja=Programme.where(course_type: 'Diploma').where('name ILIKE (?)', 'Jurupulih Perubatan Cara Kerja').first.id
+      @fisioterapi=Programme.where(course_type: 'Diploma').where('name ILIKE (?)', '%Fisioterapi%').first.id
+      @kebidanan = Programme.roots.where('name ILIKE(?)', '%Kebidanan%').first.id
+      @kejururawatan = Programme.roots.where('name ILIKE(?)', '%Kejururawatan%').first.id
+      if resultline.examresult.programme_id==@perubatan
+	super({top_margin: 20, left_margin:30, right_margin:20, page_size: 'A4', page_layout: :portrait })
+      else
+	super({top_margin: 20, left_margin:100, right_margin:80, page_size: 'A4', page_layout: :portrait })
+      end
+      font "Helvetica"
+      
+      # NOTE - Diploma Pen Pegawai Perubatan - requires 2 copies for each examination result slip
+      if @resultline.examresult.programme_id==@perubatan
+	pen_peg_perubatan
+	text "SALINAN PELATIH", :align => :left, :size => 10
+	start_new_page
+	pen_peg_perubatan
+	text "SALINAN IL KKM", :align => :left, :size => 10
+      else #other than PEN PEG PERUBATAN
+	if @resultline.examresult.programme_id==@cara_kerja
+	  image "#{Rails.root}/app/assets/images/logo_kerajaan.png", :position => :center, :scale => 0.8
+	else
+	  image "#{Rails.root}/app/assets/images/logo_kerajaan.png", :position => :center, :scale => 0.5
+	end
+	move_down 10
+	if @resultline.examresult.programme_id==@cara_kerja
+	  text "LEMBAGA PENDIDIKAN", :align => :center, :size => 11, :style => :bold
+	  text "KEMENTERIAN KESIHATAN MALAYSIA", :align => :center, :size => 11, :style => :bold
+	else
+	  text "JAWATANKUASA PEPERIKSAAN", :align => :center, :size => 11, :style => :bold
+	  text "KURSUS #{@resultline.examresult.programmestudent.programme_list.upcase}", :align => :center, :size => 11, :style => :bold
+	  text "LEMBAGA PENDIDIKAN", :align => :center, :size => 11, :style => :bold
+	  text "KEMENTERIAN KESIHATAN MALAYSIA", :align => :center, :size => 11, :style => :bold
+	end
+	move_down 10
+	if @resultline.examresult.programme_id==@cara_kerja
+	  text "Slip Keputusan Peperiksaan Akhir Semester", :align => :center, :size => 11
+	  text "#{@resultline.examresult.render_semester.split("/").join(" ")}  (#{@resultline.examresult.examdts.strftime('%b %Y')})", :align => :center, :size => 11
+	  text "Program #{@resultline.examresult.programmestudent.programme_list}", :align => :center, :size => 11
+	  text "Kolej Sains Kesihatan Bersekutu, Johor Bahru", :align => :center, :size => 11
+	else
+	  text "SLIP KEPUTUSAN TERPERINCI MENGIKUT KOD KURSUS", :align => :center, :size => 11, :style => :bold
+	  move_down 20
+	  text " PUSAT PEPERIKSAAN : KOLEJ SAINS KESIHATAN BERSEKUTU JOHOR BAHRU", :align => :left, :size => 10
+	  text " KEPUTUSAN PEPERIKSAAN AKHIR : #{(@resultline.examresult.render_semester.split("/").join(" ")).upcase}", :align => :left, :size => 10
+	  sesi_data
+	  text " TAHUN PENGAMBILAN : #{@view.l(@resultline.student.intake)}", :align => :left, :size => 10
+	  text " TARIKH PEPERIKSAAN : #{@view.l(@resultline.examresult.examdts)} - #{@view.l(@resultline.examresult.examdte)}", :align => :left, :size => 10
+	end
+	move_down 10
+	trainee
+	move_down 15
+	result_header
+	result
+	move_down 15
+	summary
+	move_down 25
+	certificate     #replacing clause ('chairman_notes') with authority body.
+	#- signatory - remove previous format for Kejururawatan (signature line, staff name, position & college name) for all programmes
+      end
+    elsif college.code=="amsas"
+      super({top_margin: 20, left_margin:70, right_margin:80, page_size: 'A4', page_layout: :portrait })
+      font "Helvetica"
+      bounding_box([-30,760], :width => 100, :height => 90) do |y2|
+        image "#{Rails.root}/app/assets/images/logo_kerajaan.png", :scale => 0.80
+      end
+      bounding_box([410,760], :width => 100, :height => 90) do |y2|
+        image "#{Rails.root}/app/assets/images/amsas_logo_small.png"
+      end
+      draw_text "PUSAT LATIHAN DAN AKADEMI MARITIM MALAYSIA (PLAMM)", :at => [70, 735], :size => 11, :style => :bold
+      draw_text "SLIP KEPUTUSAN PEPERIKSAAN", :at => [135, 720], :size => 11, :style => :bold
+      draw_text "#{@resultline.examresult.programmestudent.programme_list.upcase}", :at => [150, 705], :size => 11, :style => :bold
+      move_down 20
+      text " #{I18n.t('exam.examresult.student')} : #{@resultline.student.student_with_rank}",  :align => :left, :size => 11, :style => :bold
+      text " #{I18n.t('student.icno')} : #{@resultline.student.formatted_mykad}",  :align => :left, :size => 11, :style => :bold      
+      text " #{I18n.t('exam.examresult.intake')} : #{@view.l(@resultline.examresult.intake.monthyear_intake)}", :align => :left, :size => 11, :style => :bold
+      text " #{I18n.t('exam.examresult.exam_date')} : #{@view.l(@resultline.examresult.examdts)} - #{@view.l(@resultline.examresult.examdte)}",  :align => :left, :size => 11, :style => :bold
+      move_down 20
+      prog_id=Intake.find(@resultline.examresult.intake_id).programme_id
+      @subjects=Programme.find(prog_id).descendants.where(course_type: 'Subject')
+      result_amsas
     end
-    font "Helvetica"
-    
-    # NOTE - Diploma Pen Pegawai Perubatan - requires 2 copies for each examination result slip
-    if @resultline.examresult.programme_id==@perubatan
-      pen_peg_perubatan
-      text "SALINAN PELATIH", :align => :left, :size => 10
-      start_new_page
-      pen_peg_perubatan
-      text "SALINAN IL KKM", :align => :left, :size => 10
-    else #other than PEN PEG PERUBATAN
-      if @resultline.examresult.programme_id==@cara_kerja
-        image "#{Rails.root}/app/assets/images/logo_kerajaan.png", :position => :center, :scale => 0.8
-      else
-        image "#{Rails.root}/app/assets/images/logo_kerajaan.png", :position => :center, :scale => 0.5
-      end
-      move_down 10
-      if @resultline.examresult.programme_id==@cara_kerja
-        text "LEMBAGA PENDIDIKAN", :align => :center, :size => 11, :style => :bold
-        text "KEMENTERIAN KESIHATAN MALAYSIA", :align => :center, :size => 11, :style => :bold
-      else
-        text "JAWATANKUASA PEPERIKSAAN", :align => :center, :size => 11, :style => :bold
-        text "KURSUS #{@resultline.examresult.programmestudent.programme_list.upcase}", :align => :center, :size => 11, :style => :bold
-        text "LEMBAGA PENDIDIKAN", :align => :center, :size => 11, :style => :bold
-        text "KEMENTERIAN KESIHATAN MALAYSIA", :align => :center, :size => 11, :style => :bold
-      end
-      move_down 10
-      if @resultline.examresult.programme_id==@cara_kerja
-        text "Slip Keputusan Peperiksaan Akhir Semester", :align => :center, :size => 11
-        text "#{@resultline.examresult.render_semester.split("/").join(" ")}  (#{@resultline.examresult.examdts.strftime('%b %Y')})", :align => :center, :size => 11
-        text "Program #{@resultline.examresult.programmestudent.programme_list}", :align => :center, :size => 11
-        text "Kolej Sains Kesihatan Bersekutu, Johor Bahru", :align => :center, :size => 11
-      else
-        text "SLIP KEPUTUSAN TERPERINCI MENGIKUT KOD KURSUS", :align => :center, :size => 11, :style => :bold
-        move_down 20
-        text " PUSAT PEPERIKSAAN : KOLEJ SAINS KESIHATAN BERSEKUTU JOHOR BAHRU", :align => :left, :size => 10
-        text " KEPUTUSAN PEPERIKSAAN AKHIR : #{(@resultline.examresult.render_semester.split("/").join(" ")).upcase}", :align => :left, :size => 10
-        sesi_data
-        text " TAHUN PENGAMBILAN : #{@view.l(@resultline.student.intake)}", :align => :left, :size => 10
-        text " TARIKH PEPERIKSAAN : #{@view.l(@resultline.examresult.examdts)} - #{@view.l(@resultline.examresult.examdte)}", :align => :left, :size => 10
-      end
-      move_down 10
-      trainee
-      move_down 15
-      result_header
-      result
-      move_down 15
-      summary
-      move_down 25
-      certificate     #replacing clause ('chairman_notes') with authority body.
-      #- signatory - remove previous format for Kejururawatan (signature line, staff name, position & college name) for all programmes
+  end
+  
+  def result_amsas
+    last_line=@subjects.count+1
+    table(data_amsas, :column_widths => [30, 280, 80, 80], :cell_style => { :size => 10}) do
+      self.width = 470
+      columns(0).align =:left
+      columns(2..3).align=:center
+      row(0).font_style=:bold
+      row(last_line).font_style=:bold
     end
+  end
+  
+  def data_amsas
+    header=[["No.", "#{I18n.t('exam.examresult.subject_code_name')}", "#{I18n.t('exam.exammark.total')}", "Status"]]
+    data=[]
+    count=0
+    for subject in @subjects
+      subject_status=""
+      grades=Grade.where(student_id: @resultline.student_id).where(subject_id: subject.id)
+      if grades.count > 0
+        finalscore=@view.number_with_precision(grades.first.finalscore, precision: 2)
+        if grades.first.finalscore > 50
+          subject_status="#{I18n.t('exam.examresult.passed')}"
+        else
+          subject_status="#{I18n.t('exam.examresult.failed')}"
+        end
+      else
+        finalscore=""
+      end
+      data << ["#{count+=1}", "#{subject.code} - #{subject.name}", "#{finalscore}", "#{subject_status}"]
+    end
+    header+data+[[{content: "#{I18n.t('exam.examresult.final_status').upcase}", colspan: 2}, {content: "#{@resultline.render_status_contra.upcase}", colspan:2}]]
   end
   
   def pen_peg_perubatan

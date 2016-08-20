@@ -4,7 +4,7 @@ class Student < ActiveRecord::Base
   before_save  :titleize_name
   validates_presence_of     :icno, :name, :sstatus, :stelno, :ssponsor, :gender, :sbirthdt, :mrtlstatuscd, :intake,:course_id
   validates_numericality_of :icno, :stelno
-  validates_length_of       :icno, :is =>12
+  #validates_length_of       :icno, :is =>12
   validates_uniqueness_of   :icno
   #validates_format_of       :name, :with => /^[a-zA-Z'`\/\.\@\ ]+$/, :message => I18n.t('activerecord.errors.messages.illegal_char') #add allowed chars between bracket
   has_attached_file :photo,
@@ -16,6 +16,7 @@ class Student < ActiveRecord::Base
 
   belongs_to :course,         :class_name => 'Programme', :foreign_key => 'course_id'       #Link to Programme
   belongs_to :intakestudent,  :class_name => 'Intake',    :foreign_key => 'intake_id'       #Link to Model intake
+  belongs_to :rank, :foreign_key => 'rank_id'
 
   #has_one   :user,              :dependent => :destroy                                      #Link to Model user
   has_many  :leaveforstudents,  :dependent => :destroy                                      #Link to LeaveStudent
@@ -56,7 +57,10 @@ class Student < ActiveRecord::Base
   
   def student_list
     "#{icno}"+" "+"#{name}"
-
+  end
+  
+  def student_with_rank
+    "#{rank.try(:shortname)} #{name}"
   end
 
   def self.year_and_sem(intake)
@@ -114,7 +118,11 @@ class Student < ActiveRecord::Base
  # end
 
   def formatted_mykad
+    if icno.size==12
     "#{icno[0,6]}-#{icno[6,2]}-#{icno[-4,4]}"
+    else
+      icno
+    end
   end
 
   def formatted_mykad_and_student_name
@@ -406,14 +414,14 @@ class Student < ActiveRecord::Base
 
 # ------------------------------code for repeating field qualification---------------------------------------------------
  has_many :qualifications, :dependent => :destroy
- accepts_nested_attributes_for :qualifications, :reject_if => lambda { |a| a[:level_id].blank? }
+ accepts_nested_attributes_for :qualifications, :allow_destroy => true, :reject_if => lambda { |a| a[:level_id].blank? }
 
  has_many :kins, :dependent => :destroy
  accepts_nested_attributes_for :kins, :allow_destroy => true, :reject_if => lambda { |a| a[:kintype_id].blank? }
  validates_associated :kins
 
  has_many :spmresults, :dependent => :destroy
- accepts_nested_attributes_for :spmresults, :reject_if => lambda { |a| a[:spm_subject].blank? }
+ accepts_nested_attributes_for :spmresults, :allow_destroy => true, :reject_if => lambda { |a| a[:spm_subject].blank? }
 
  #export excel section ---
  
@@ -528,12 +536,16 @@ class Student < ActiveRecord::Base
   
 STATUS = [
            #  Displayed       stored in db
-           [ I18n.t('student.students.current'),"Current" ],
-           [ I18n.t('student.students.graduated'),"Graduated" ],
-           [ I18n.t('student.students.repeat'), "Repeat" ],
-           [ I18n.t('student.students.on_leave'), "On Leave" ],
-           [ I18n.t('student.students.transfer_college'), "Transfer College"],
-           [ I18n.t('student.students.expelled'), "Expelled"]
+               ['Asas Pegawai', 'asaspeg' ],
+               ['Asas LLP', 'asasllp'],
+               ['Lanjutan Pegawai', 'lanpeg'],
+               ['Lanjutan LLP', 'lanllp']
+#            [ I18n.t('student.students.current'),"Current" ],
+#            [ I18n.t('student.students.graduated'),"Graduated" ],
+#            [ I18n.t('student.students.repeat'), "Repeat" ],
+#            [ I18n.t('student.students.on_leave'), "On Leave" ],
+#            [ I18n.t('student.students.transfer_college'), "Transfer College"],
+#            [ I18n.t('student.students.expelled'), "Expelled"]
 ] 
 
 SPONSOR = [

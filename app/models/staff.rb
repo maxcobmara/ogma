@@ -8,6 +8,7 @@ class Staff < ActiveRecord::Base
   belongs_to :title,        :class_name => 'Title',           :foreign_key => 'titlecd_id'
   belongs_to :staffgrade,   :class_name => 'Employgrade',     :foreign_key => 'staffgrade_id'
   belongs_to :staff_shift,  :foreign_key => 'staff_shift_id'
+  belongs_to :rank, :foreign_key => 'rank_id'
 
   has_many :users, as: :userable
 
@@ -88,6 +89,10 @@ class Staff < ActiveRecord::Base
   #25Jan2015
   has_many :circulations
   has_many :documents, :through => :circulations
+  
+  has_many :evaluate_courses
+  has_many :average_scores_lecturer, class_name: 'AverageCourse'
+  has_many :average_scores_verifier, class_name: 'AverageCourse'
 
   #validates_attachment_size         :photo, :less_than => 500.kilobytes
   #validates_attachment_content_type :photo, :content_type => ['image/jpeg', 'image/png']
@@ -119,6 +124,10 @@ class Staff < ActiveRecord::Base
   
     def age
       Date.today.year - cobirthdt.year unless cobirthdt == nil
+    end
+    
+    def staff_with_rank
+      "#{rank.try(:shortname)} #{name}"
     end
 
     def staff_list

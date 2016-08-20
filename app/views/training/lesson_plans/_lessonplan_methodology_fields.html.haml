@@ -1,6 +1,4 @@
 %fieldset
-  = f.hidden_field :_destroy
-  = f.hidden_field :lesson_plan_id 
   .row
     .col-sm-3
       = t 'training.lesson_plan.time'
@@ -39,11 +37,23 @@
     .col-sm-3
     .col-sm-8
     .col-sm-1
-      = link_to content_tag(:i, "", class: "fa fa-trash-o"), data: {"data-toggle" => "tooltip", title: "Delete"}, class: "btn btn-danger remove_fields"
+      = f.hidden_field :_destroy
+      = f.hidden_field :lesson_plan_id 
+      = link_to content_tag(:i, "", class: "fa fa-trash-o"), "#", class: "removing_fields"
+  %hr
+  
   :javascript
     $('.selectpicker').selectpicker('render');
     $('.time_picker').datetimepicker({
      datepicker:false,
-     	format:'H:i',
-     	step:5,
+        format:'H:i',
+        step:5,
+    });
+    $('.removing_fields').click(function(){
+      var fieldset=$(this).parent().parent().parent();
+      var row=$(this).parent().parent();
+      var all_fields=row.children().children();
+      var destroyer=all_fields[0];
+      destroyer.value=true;    
+      fieldset.hide();
     });

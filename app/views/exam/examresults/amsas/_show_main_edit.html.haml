@@ -1,0 +1,16 @@
+.col-md-offset-2 
+  .form-group
+    .col-sm-2.control-label
+      =f.label t 'exam.examresult.intake', for: :intake_id
+    .col-md-8
+      = f.collection_select :intake_id, Intake.all, :id, :programmelist_group_intake, {:include_blank => t('select')}, {class: 'mandatory selectpicker', "data-width"=>'250px'}
+  .form-group
+    .col-sm-2.control-label
+      = f.label t 'exam.examresult.examdts'
+    .col-md-2
+      = f.text_field :examdts, class: 'form-control mandatory date_picker'
+  .form-group
+    .col-sm-2.control-label
+      = f.label t 'exam.examresult.examdte'
+    .col-md-2
+      = f.text_field :examdte, class: 'form-control mandatory date_picker'

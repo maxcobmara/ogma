@@ -16,14 +16,15 @@
   %table.table-striped.table-hover.ogma
     %thead
       %tr
-        %th= t 'training.topicdetail.subject'
-        %th= sort_link(@search, :topic_code, (t 'training.topicdetail.topic_code'))
-        %th= t 'training.topicdetail.version_no'
-        %th= t 'training.topicdetail.duration'
-        %th= t 'training.topicdetail.theory'
-        %th= t 'training.topicdetail.tutorial'
-        %th= t 'training.topicdetail.practical'
-        %th= sort_link(@search, :prepared_by, (t 'training.topicdetail.prepared_by'))
+        %th{width: '8%'}= t 'training.topicdetail.subject'
+        %th{width: '22%'}= sort_link(@search, :topic_code, (t 'training.topicdetail.topic_code'))
+        %th{width: '8%'}= t 'training.topicdetail.version_no'
+        %th{width: '10%'}= t 'training.topicdetail.duration'
+        %th{width: '8%'}= t 'training.topicdetail.theory'
+        %th{width: '8%'}= t 'training.topicdetail.tutorial'
+        %th{width: '8%'}= t 'training.topicdetail.practical'
+        %th{width: '8%'}= t 'training.topicdetail.training_notes'
+        %th{width: '20%'}= sort_link(@search, :prepared_by, (t 'training.topicdetail.prepared_by'))
         
     %tbody
     = render "index_search"
@@ -37,7 +38,8 @@
           - elsif topicdetail.subject_topic.ancestry_depth == 4
             = topicdetail.subject_topic.parent.parent.code
           - else 
-            = topicdetail.subject_topic.ancestors.at_depth(2)
+            = topicdetail.subject_topic.ancestors.where(course_type: "Subject").first.subject_list
+
         /topic @ subtopic column
         %td
           - if topicdetail.subject_topic.ancestry_depth == 3
@@ -46,15 +48,17 @@
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             =topicdetail.subject_topic.code+" - "   
           =h link_to topicdetail.subject_topic.name, training_topicdetail_path(topicdetail)
+
         %td=h topicdetail.version_no
-        %td=h topicdetail.duration.try(:strftime, "%H Jam %M Min")
-        %td=h topicdetail.theory.try(:strftime, "%H Jam %M Min")
-        %td=h topicdetail.tutorial.try(:strftime, "%H Jam %M Min")
-        %td=h topicdetail.practical.try(:strftime, "%H Jam %M Min") 
-        %td=h topicdetail.topic_creator.try(:name)
+        %td=h topicdetail.subject_topic.try(:total_duration)
+        %td=h topicdetail.subject_topic.try(:lecture_duration) if topicdetail.subject_topic.lecture_d?
+        %td=h topicdetail.subject_topic.try(:tutorial_duration) if topicdetail.subject_topic.tutorial_d?
+        %td=h topicdetail.subject_topic.try(:practical_duration) if topicdetail.subject_topic.practical_d?
+        %td.centre=h topicdetail.trainingnotes.count > 0 ? fa_icon("check") : fa_icon("minus")
+        %td=h topicdetail.topic_creator.rank_id? ? topicdetail.topic_creator.try(:staff_with_rank) : topicdetail.topic_creator.try(:name)
 
   .right{style:"padding:0 30px; margin:0;"}= paginate @topicdetails, :theme => 'twitter-bootstrap-3'
- 
+
 :javascript
 $(document).ready(function(){
   $('.toga').click(function() {

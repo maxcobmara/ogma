@@ -12,8 +12,8 @@
     .tab-content{style:"padding-top:1em"}
       #examanalysis_details.tab-pane.active
       %br
-      = render 'student_and_marks'
-
+      /= render 'student_and_marks'
+      = render "exam/examanalyses/#{current_user.college.code}/student_and_marks"
 .row
   .col-md-4.col-md-offset-4
     %hr

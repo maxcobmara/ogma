@@ -1,6 +1,7 @@
 class Employgrade < ActiveRecord::Base
   has_many :staffs, :class_name => 'Staffs', :foreign_key => 'staffgrade_id'
   has_many :staffgrades, :class_name => 'Positions', :foreign_key => 'staffgrade_id'
+  has_one :rank
   
   has_many :staffemploygrades
   has_many :staffemployschemes, :through => :staffemploygrades

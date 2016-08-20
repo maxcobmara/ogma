@@ -1,0 +1,10 @@
+.col-md-8.col-md-offset-1
+  %dl.dl-horizontal
+    %dt= t 'student.leaveforstudent.approver_result'
+    %dd=h @leaveforstudent.approved? ? (t 'approved') : (t 'not_approved')
+          
+    %dt= t 'student.leaveforstudent.staff_id'
+    %dd=h @leaveforstudent.approver_details
+  
+    %dt= t 'student.leaveforstudent.approvedate'
+    %dd=h @leaveforstudent.approvedate.try(:strftime, '%d %b %Y')

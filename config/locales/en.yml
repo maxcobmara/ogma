@@ -52,6 +52,7 @@ en:
       academic_session: Academic Session
       evaluate_course: Course Evaluation
       grade: Grade
+      rank: Rank
     attributes:
       asset_defect:
         processed_by: Processed by
@@ -215,6 +216,17 @@ en:
         exam_id: Final Exam
       exam_template:
         name: Template Name
+      book:
+        isbn: ISBN
+        title: Title
+        language: Language
+      rank:
+        employgrade_id: Grade
+      programme:
+        durationtype: Duration type
+      topicdetail:
+        prepared_by: Prepared by
+        topic_code: Topic
     errors:
         template:
           body: "There were problems with the following fields:"
@@ -301,6 +313,7 @@ en:
   from: From
   to: To
   to2: To
+  for: for
   return: Return
   confirmed: Confirmed
   confirmed_on: Confirmed on
@@ -331,10 +344,12 @@ en:
   active: Active
   not_active: Not Active
   must_exist: must exist
+  download: Download
 
   actions:
     new: New
     new_node: New Node
+    parent_node: Parent Node
     search: Search
     print: Print
     show: Show
@@ -882,11 +897,16 @@ en:
     country_cd: Nationality
     transportclass_id: Transport Class
     upload: Upload Photo
+    uploaded_file: Uploaded file
+    current_upload: Current Photo
+    current_file: "Current file is : "
+    new_photo: New Photo
     professional_development: Professional Development
 
     employment_details: Employment Details
     employscheme: Employment Scheme
     staffgrade_id: Staff Grade
+    rank_id: Rank
     employstatus: Employment Status
     appointstatus: Appointment Status
     appointdt: Appointment Date
@@ -1707,6 +1727,16 @@ en:
     statement_exist: "Fingerprint Statement (Not Fingerprint) already exist!"
     logrecord_exist: "Creating Fingerprint Statement (Not Fingerprint) for days with complete logged-in and logged-out record is not allowed!"
     
+  rank:
+    title: Rank Listing
+    new: New Rank
+    edit: Edit Rank
+    details: Rank Details
+    name: Rank Name
+    shortname: Short Name
+    category: Rank Category
+    employgrade_id: Grade
+    
   asset:
     title: Assets
     fixed: Fixed Assets
@@ -1984,6 +2014,7 @@ en:
       repaired: Repaired
       not_repaired: Not Repaired
       damage_report: Location Damage Report for Student Residence
+      damage_report_staff: Location Damage Report for Staff Residence
       match_asset: "Match Asset ?"
       no_match_asset: No matching asset
       repairs_of: Repairs of
@@ -2078,6 +2109,7 @@ en:
       formatted_mykad: MyKad No
       name: Name
       matrixno: Matrix No
+      rank_id: Rank
       race: Race
       icno: MyKad No
       sstatus: Student Status
@@ -2201,6 +2233,7 @@ en:
       update_student_kin: ". Please update next of kin details in Student submodule first."
       student_approve_leave_coordinator: "Approve Student Leave Application (Coordinator)"
       student_approve_leave_warden: "Approve Student Leave Application (Warden)"
+      student_leave_approval: Approve Student Leave Application
       approve_student_leave: Approve Student Leave
       approved_by: Approved By
       approve_date: Approve Date
@@ -2208,8 +2241,10 @@ en:
       not_approve: Not Approve
       coordinator: Group Coordinator
       warden: Warden
+      approver: Approver
       coordinator_result: Coordinator Result
       warden_result: Warden Result
+      approver_result: Approver Result
       programme: Programme
       group: Group
       intake: Ambilan
@@ -2422,6 +2457,7 @@ en:
       manager: Library Transaction Manager
       title: Library Transactions
       list: Library Transaction List
+      rules_regulations: Rules & Regulations
       book_id: Book ID
       borrower: Borrowed By
       add: Add
@@ -2435,16 +2471,33 @@ en:
       returnby: Received By
       studentname: Borrowed By
       duedate: Due Date
+      returnduedate: Return Due Date
+      returning: Return of Book
+      return: Return?
       extend: Extend
-      extended: Returned
+      extended: Extended
+      extending: Loan Extension
+      extend_for: "Extend loan for : "
+      extension_remark: Loan extension allocated for staffs is 21 days, whereas for students is 14 days.
+      fourteen_days: another 14 days
+      twentyone_days: another 21 days
+      not_extended: No extension
+      cancel: Cancel
       returneddate: Returned On
+      not_overdue: Not overdue
+      overdue: Overdue
       new: Create New Transaction
       returnrec: Return Transaction
       edit: Edit Library Transaction
       details: Loaned Book Details
       loanedtotype: Member is Staff?
+      late_by:  late by 
+      fine_rate: " days x RM 1.00 / day"
       fine: Fine to be Paid
       finepay: Fine Paid?
+      finepay2: Pay Fine?
+      fine_remark: "Please leaves 'Pay Fine?' field blank OR insert zero if no payment is made."
+      fine_remark2: Please confirm 'Pay Fine?' amount (if there's any) before checking 
       finepaydate: Fine Paid Date
       lost: Lost?
       reportdetails: Report Details
@@ -2452,6 +2505,7 @@ en:
       replaceddate: Replaced Date
       report: Report Lost
       analysis_statistic: "Analysis & Statistics"
+      loan_details: Book on-loan details
       analysis:
         main_title: "Analysis & Statistic (Borrower) - "
         main_title2: "Analysis & Statistic (Monograph) - "
@@ -2578,6 +2632,15 @@ en:
       bibliography: 
       indice: Index
       photo: Cover page
+      availability_title: ISBN Availability Checking
+      check_availability: Check Availability
+      existing_book: Existing Book
+      no_isbn: No ISBN no was entered.
+      isbn_exist1: "A book record with entered ISBN already exist. (Title : "
+      isbn_exist2: "). Please edit "
+      isbn_exist3: record accordingly.
+      enter_isbn: Please enter ISBN for checking.
+      not_exist_proceed: ISBN not yet exist. You may proceed with new book creation.
       
   buletin:
     list: List of Bulletins
@@ -2948,6 +3011,7 @@ en:
       details2: Examination Result
       no_student: "No students have taken this programme for selected semester and examination dates."
       update_resultlines: "Enter student result details (PNGK and Remark) and click 'Update' to save data."
+      update_resultlines2: "Select student Status and click 'Update' to save data."
       no_student: "Selected Programme and Semester has no student. Add student data accordingly."
       record_must_unique: ", Programme and Examination Date has already been taken. Only 1 record permitted for each examination result. "
       all_compulsory: "All fields are compulsory."
@@ -3022,14 +3086,54 @@ en:
       kp_which_programme: "Programme Manager must have 'Unit' in Task & Responsibilities (Positions)."
       prepared_by: PREPARED BY
       date_updated: LAST UPDATED
-      by_student: "(Prepared by Student)"#FE2E64
-      staff_or_invited: "Tick if KSKB lecturers, untick if Invitation Lecturer."
+      by_student: "(Prepared by Student)"
+      by_quality_dept: "(Prepared by Competency & Quality Control Department)"
+      staff_or_invited1: Tick if 
+      staff_or_invited2: " lecturers, untick if Invitation Lecturer."
       no_staff: "Invitation - "
       evaluation_once: " - Evaluation for a taught Subject can only be done once"
       total: Total
       question: Q
       total_scores: Total Scores
       average_scores: Average Scores
+    
+    average_course:
+      title: Analysis Data for Average Score of Evaluation for Lecturer
+      new: New Data Analysis for Average Score of Evaluation for Lecturer
+      edit: Edit Data Analysis for Average Score of Evaluation for Lecturer
+      lecturer_id: Lecturer
+      programme_id: Programme
+      dissatisfaction: General Dissactifaction
+      recommend_for_improvement: Recommendations for Improvement
+      lesson_content: Lesson Content
+      evaluation_category: Evaluation Category
+      support_justify: Support Justification
+      principal_id: Verified by
+      principal_date: Date
+      subject_id: Lesson Title
+      delivery_quality: Quality of Delivery
+      lecturer_knowledge: Knowledge of Lecturer
+      organisation: Organisation
+      expertise_qualification: Expertise/ Qualification
+      
+      criteria_notes: "Evaluation Criteria QUALIFIED or NOT QUALIFIED is based on the following 3 aspects whereby average of each aspect must not less than 5:"
+      icno: IC No
+      rank_position: Rank/Position
+      total_students: Total of Students
+      signatory: Signatory
+      qualified: Qualified
+      not_qualified: Not Qualified
+      principal_name: Name
+      score_rounded: "Note: average scores rounded to nearest (lower) score."
+      score_rounded_actual: "Note: average scores rounded to nearest (lower) score. (Actual values : "
+      analyse_average_data: Analyse Average Score
+      view_analysis_data: View Analysis Data
+      of_subject: of subject
+      lecturer_data: Lecturer data
+      course_data: Course data
+      evaluation_analysis_data: Evaluation analysis data
+      evaluation_summary: Evaluation Summary
+      principal_verification: Principal Verification
       
     examanalysis:
       title: Examination Analysis by Examination Paper
@@ -3192,15 +3296,26 @@ en:
       new: New Curriculum Item
       new_programme: New Programme
       edit: Edit Curriculum Item
-      combo_code: "Combo Code  |  Programme / Subject / Topic Name"
+      combo_code: "Code  -  Programme / Semester / Subject / Topic / Subtopic Name"
       code: Code
       code2: Combo Code
       name: Name
       course_type: Course Type
       duration: Duration
+      level: Level
       credits: Credits
       status: Status
       remarks: "Click at Programme / Subject / Topic NAME to hide / display COMBO CODE and its' subitem list. Next click at COMBO CODE to show details"
+      remark_title: Remark
+      remark_text1: Click
+      remark_text2: to
+      remark_text3: display
+      remark_text4: hide
+      remark_text5: descendants of a node.
+      remark_text6: To create a new 
+      remark_text7: descendant 
+      remark_text8: node (other than Programme), select 'New node' in a parent node 'Show' page.
+      remark_text9: "Click at 'Programme / Semester / Subject / Topic / Subtopic Name' to display 'Show' page."
       method: Lecture Method
       practical: Practical
       tutorial: Tutorial
@@ -3212,6 +3327,7 @@ en:
       subtopic: Subtopic
       hours: Hours
       minutes: Minutes
+      minutes2: Min
       days: Days
       weeks: Weeks
       months: Months
@@ -3228,7 +3344,7 @@ en:
       subject: Subject
       topic_code: Topic
       version_no: Version No
-      duration: "Duration (Total Hours)"
+      duration: "Duration (Total)"
       #caution1: "Removed topic or subtopic (Curriculum Management) - before 31st October 2013"
       #caution2: "Removed topic or subtopic (Curriculum Management) - 31st October 2013 onwards"
       descriptions: Descriptions
@@ -3259,9 +3375,15 @@ en:
       programme: Programme
       subject: Subject
       staff_id: Prepared By
+      plan: LP
+      plan_remark: " - Notes usage status in Lesson Plans."
+      plan_remark1: " - Notes are non-removable and limited fields allowed for editing."
+      plan_remark2: " - Notes are non-removable."
+      remark_title: Reference
     lesson_plan:
       title: Lesson Plan & Report Listing
       title2: Lesson and Learning
+      title3: Lesson Plan
       reporting: Lesson and Learning Activity Report
       report: Report
       new: New Lesson Plan
@@ -3326,12 +3448,13 @@ en:
       group: Group
       schedule_removed: "Schedule was not defined or removed. Please select a schedule."
       no_attachment_yet: "No Attachment yet. Click 'Browse' to Upload File."
-      exist_attachment: "Existing Attachment. Click 'Browse' to Change File."
+      exist_attachment: "Existing Attachment. Click 'Browse' / 'Choose File' to Change File."
       to: to
       status: Approval Status
       location: Location
       add_notes: Add Notes
       adding_notes: "Add Training Notes (after Lesson Plan submitted for approval)"
+      owner_must_match: "Lecturer must match with Timetable owner."
  
   campus:
     address: 
@@ -3346,6 +3469,7 @@ en:
       web: Web 
 
   conversation:
+    local_messaging: Local Messaging
     subject: Subject
     date: Date
     compose: Compose
@@ -3415,6 +3539,7 @@ en:
       endorse: Endorse
       coordinator_approval: Coordinator Approval
       warden_approval: Warden Approval
+      approving: Leave Approval
 
     label:
       examquestion:
@@ -3683,6 +3808,7 @@ en:
       select_format: Select Timetable Format
       select_lecture_method: Select Lecture Method
       select_sem_subject_topic: Select Sem-Subject|Topic
+      select_subject_topic: Select Subject > Topic / Subtopic
       select_location: Select Location
       select_lecturer: Select Lecturer
       select_hod: "Select HOD / Approver"

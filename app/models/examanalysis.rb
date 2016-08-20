@@ -5,6 +5,7 @@ class Examanalysis < ActiveRecord::Base
   has_many :examquestionanalyses#, :dependent => :destroy                                                     
   accepts_nested_attributes_for :examquestionanalyses, :reject_if => lambda { |a| a[:examquestion_id].blank? }
   belongs_to :exampaper, :class_name => 'Exam', :foreign_key => 'exam_id'
+  belongs_to :college, :foreign_key => 'college_id'
    
   def self.search2(search)
     if search 
@@ -272,8 +273,13 @@ class Examanalysis < ActiveRecord::Base
         non_mcq_2titlecolumns << "Q #{y} (#{qmarks_ea[x]})"
       end
     end
-    title_row=[ 'No', I18n.t('student.students.name'), I18n.t('student.students.matrixno'), I18n.t('student.students.icno'), 
-	         'CA+MSE / '+I18n.t( 'exam.examanalysis.formative'),'MCQ' ]+non_mcq_titlecolumns+[I18n.t('exam.examanalysis.final_exam'), I18n.t('exam.examanalysis.final_score'), I18n.t('exam.examanalysis.grade'), 'NG' ]
+    titleline=[ 'No', I18n.t('student.students.name'), I18n.t('student.students.matrixno'), I18n.t('student.students.icno'), 
+	         'CA+MSE / '+I18n.t( 'exam.examanalysis.formative'),'MCQ' ]+non_mcq_titlecolumns+[I18n.t('exam.examanalysis.final_exam'), I18n.t('exam.examanalysis.final_score')]
+    if exam_paper.college.code=="kskbjb"
+      title_row= titleline+[I18n.t('exam.examanalysis.grade'), 'NG' ]
+    elsif exam_paper.college.code=="amsas"
+      title_row= titleline+['Status']
+    end
     title_row2=["\'\'","\'\'","\'\'","\'\'",formative_weightage.to_s+"%",qfullmarks[0]]+non_mcq_2titlecolumns+[summative_weightage.to_s+"%", (formative_weightage+summative_weightage).to_s+"%", "\'\'","\'\'"]
     bil=0
     marks_by_students=[]
@@ -342,7 +348,12 @@ class Examanalysis < ActiveRecord::Base
         absent_final_scores << absent_final_score
         absent_gradings << absent_grading
         absent_ngs << absent_ng
-        absent_line=[ grade.studentgrade.name, grade.studentgrade.matrixno.nil? ? "\'\'" : student.matrixno, grade.studentgrade.icno, absent_formative, mcqmarks]+aa+[finalpapermarks, absent_final_score, absent_grading, absent_ng]     
+        absentln=[ grade.studentgrade.name, grade.studentgrade.matrixno.nil? ? "\'\'" : student.matrixno, grade.studentgrade.icno, absent_formative, mcqmarks]+aa+[finalpapermarks, absent_final_score]
+        if exam_paper.college.code=="kskbjb"
+          absent_line=absentln+ [absent_grading, absent_ng]     
+        elsif exam_paper.college.code=="amsas"
+          absent_line=absentln
+        end
       end
       absent_lines << absent_line
     end
@@ -359,7 +370,12 @@ class Examanalysis < ActiveRecord::Base
     finalscore_count=finalscores.count+absent_final_scores.count
     ngs_count=ngs.count+absent_ngs.count
     #Above : & for both conditions : 1)Grade with Exammark exist 2) Grade w/o Exammark existance
-    count_line =["\'\'","\'\'","\'\'", I18n.t('exam.examanalysis.count'), total_candidates, total_mcqs]+non_mcq_count+[finalexam_count, finalscore_count, "\'\'", ngs_count]
+    countln=["\'\'","\'\'","\'\'", I18n.t('exam.examanalysis.count'), total_candidates, total_mcqs]+non_mcq_count+[finalexam_count, finalscore_count]
+    if exam_paper.college.code=="kskbjb"
+      count_line =countln+["\'\'", ngs_count]
+    elsif exam_paper.college.code=="amsas"
+      count_line =countln
+    end
     
     #ATTEND
     total_attendees=formatives.count+present_formatives.count
@@ -376,7 +392,12 @@ class Examanalysis < ActiveRecord::Base
       all_final_scores=finalscores.count
       all_ngs=ngs.count
     end
-    attend_line=["\'\'","\'\'","\'\'", I18n.t('exam.examanalysis.attend'), total_attendees, mcqs.count]+non_mcq_count_attend+[finalmarks.count, all_final_scores, "\'\'", all_ngs]
+    attendln=["\'\'","\'\'","\'\'", I18n.t('exam.examanalysis.attend'), total_attendees, mcqs.count]+non_mcq_count_attend+[finalmarks.count, all_final_scores]
+    if exam_paper.college.code=="kskbjb"
+      attend_line=attendln+["\'\'", all_ngs]
+    elsif exam_paper.college.code=="amsas"
+      attend_line=attendln
+    end
     
     #ABSENT
     #exammarks related
@@ -385,21 +406,36 @@ class Examanalysis < ActiveRecord::Base
         non_mcq_count_absent << total_candidates-marks_by_questions[x].count
     end
     #exammarks
-    absent_line=["\'\'","\'\'","\'\'", I18n.t('exam.examanalysis.absent'), total_candidates-total_attendees, total_candidates-mcqs.count]+non_mcq_count_absent+ [total_candidates-finalmarks.count, total_candidates-total_attendees, "\'\'", total_candidates-total_attendees]
+    absentln=["\'\'","\'\'","\'\'", I18n.t('exam.examanalysis.absent'), total_candidates-total_attendees, total_candidates-mcqs.count]+non_mcq_count_absent+ [total_candidates-finalmarks.count, total_candidates-total_attendees]
+    if exam_paper.college.code=="kskbjb"
+      absent_line=absentln+["\'\'", total_candidates-total_attendees]
+    elsif exam_paper.college.code=="amsas"
+      absent_line=absentln
+    end
     
      #MIN 
      non_mcq_min=[]
      0.upto(total_nonmcq_questions-1).each do |x|
          non_mcq_min << marks_by_questions[x].min
      end 
-     min_line=["\'\'","\'\'","\'\'", I18n.t('exam.examanalysis.min'), formatives.min, mcqs.min]+non_mcq_min+[finalmarks.min, finalscores.min, "\'\'", ngs.min]
-    
+     minln=["\'\'","\'\'","\'\'", I18n.t('exam.examanalysis.min'), formatives.min, mcqs.min]+non_mcq_min+[finalmarks.min, finalscores.min]
+     if exam_paper.college.code=="kskbjb"
+       min_line=minln+["\'\'", ngs.min]
+     elsif exam_paper.college.code=="amsas"
+       min_line=minln
+     end
+     
      #MAX
      non_mcq_max=[]
      0.upto(total_nonmcq_questions-1).each do |x|
          non_mcq_max << marks_by_questions[x].max
      end
-     max_line=["\'\'","\'\'","\'\'", I18n.t('exam.examanalysis.max'), formatives.max, mcqs.max]+non_mcq_max+[finalmarks.max, finalscores.max, "\'\'", ngs.max]
+     maxln=["\'\'","\'\'","\'\'", I18n.t('exam.examanalysis.max'), formatives.max, mcqs.max]+non_mcq_max+[finalmarks.max, finalscores.max]
+     if exam_paper.college.code=="kskbjb"
+       max_line=maxln+["\'\'", ngs.max]
+     elsif exam_paper.college.code=="amsas"
+       max_line=maxln
+     end
      
      #MEAN (AVERAGE)
      analysis=all.first
@@ -407,15 +443,25 @@ class Examanalysis < ActiveRecord::Base
      0.upto(total_nonmcq_questions-1).each do |x|
           non_mcq_average << analysis.average_data(marks_by_questions[x])
      end
-     average_line=["\'\'","\'\'","\'\'", I18n.t('exam.examanalysis.average'), analysis.average_data(formatives), analysis.average_data(mcqs)]+non_mcq_average+ [analysis.average_data(finalmarks), analysis.average_data(finalscores), "\'\'", analysis.average_data(ngs)]
+     averageln=["\'\'","\'\'","\'\'", I18n.t('exam.examanalysis.average'), analysis.average_data(formatives), analysis.average_data(mcqs)]+non_mcq_average+ [analysis.average_data(finalmarks), analysis.average_data(finalscores)]
+     if exam_paper.college.code=="kskbjb"
+       average_line=averageln+["\'\'", analysis.average_data(ngs)]
+     elsif exam_paper.college.code=="amsas"
+       average_line=averageln
+     end
 
      #SD-Population / SD- Deviation
      non_mcq_sd_deviation=[]
      0.upto(total_nonmcq_questions-1).each do |x|
          non_mcq_sd_deviation << sprintf('%.2f', analysis.standard_deviation(marks_by_questions[x]))
      end 
-     sd_deviation_line=["\'\'","\'\'","\'\'", I18n.t('exam.examanalysis.sd_deviation'), sprintf('%.2f', analysis.standard_deviation(formatives)), sprintf('%.2f',analysis.standard_deviation(mcqs))]+ non_mcq_sd_deviation+[sprintf('%.2f', analysis.standard_deviation(finalmarks)), sprintf('%.2f',analysis.standard_deviation(finalscores)), "\'\'", sprintf('%.2f',analysis.standard_deviation(ngs))]
-
+     sd_deviationln=["\'\'","\'\'","\'\'", I18n.t('exam.examanalysis.sd_deviation'), sprintf('%.2f', analysis.standard_deviation(formatives)), sprintf('%.2f',analysis.standard_deviation(mcqs))]+ non_mcq_sd_deviation+[sprintf('%.2f', analysis.standard_deviation(finalmarks)), sprintf('%.2f',analysis.standard_deviation(finalscores))]
+     if exam_paper.college.code=="kskbjb"
+       sd_deviation_line=sd_deviationln+["\'\'", sprintf('%.2f',analysis.standard_deviation(ngs))]
+     elsif exam_paper.college.code=="amsas"
+       sd_deviation_line=sd_deviationln
+     end
+     
      #Pass % -  Jumlah kelulusan (dr jumlah pelajar)
      item=0
      non_mcq_passing_rate=[]
@@ -425,7 +471,12 @@ class Examanalysis < ActiveRecord::Base
          item+=1
        end
      end 
-     passing_rate_line=["\'\'","\'\'","\'\'", I18n.t('exam.examanalysis.pass_rate'), analysis.pass_rate(formatives, mid_formative), analysis.pass_rate(mcqs, qfullmarks[0]/2.0)]+ non_mcq_passing_rate+[analysis.pass_rate(finalmarks, mid_finalmarks), analysis.pass_rate(finalscores, mid_finalscores), "\'\'", analysis.pass_rate(ngs, 2.00)]
+     passing_rateln=["\'\'","\'\'","\'\'", I18n.t('exam.examanalysis.pass_rate'), analysis.pass_rate(formatives, mid_formative), analysis.pass_rate(mcqs, qfullmarks[0]/2.0)]+ non_mcq_passing_rate+[analysis.pass_rate(finalmarks, mid_finalmarks), analysis.pass_rate(finalscores, mid_finalscores)]
+     if exam_paper.college.code=="kskbjb"
+       passing_rate_line=passing_rateln+["\'\'", analysis.pass_rate(ngs, 2.00)]
+     elsif exam_paper.college.code=="amsas"
+       passing_rate_line=passing_rateln
+     end
 
      #% Pass -  Peratus kelulusan (dr jumlah pelajar)  
      item=0
@@ -438,7 +489,12 @@ class Examanalysis < ActiveRecord::Base
          item+=1
        end
      end
-     percent_passed_line=["\'\'","\'\'","\'\'", I18n.t('exam.examanalysis.percent_pass'), analysis.percent_pass(formatives, mid_formative), analysis.percent_pass(mcqs, qfullmarks[0]/2.0)]+non_mcq_percent_passed+[analysis.percent_pass(finalmarks, mid_finalmarks), analysis.percent_pass(finalscores, mid_finalscores), "\'\'", analysis.percent_pass(ngs, 2.00)]
+     percent_passedln=["\'\'","\'\'","\'\'", I18n.t('exam.examanalysis.percent_pass'), analysis.percent_pass(formatives, mid_formative), analysis.percent_pass(mcqs, qfullmarks[0]/2.0)]+non_mcq_percent_passed+[analysis.percent_pass(finalmarks, mid_finalmarks), analysis.percent_pass(finalscores, mid_finalscores)]
+     if exam_paper.college.code=="kskbjb"
+       percent_passed_line=percent_passedln+["\'\'", analysis.percent_pass(ngs, 2.00)]
+     elsif exam_paper.college.code=="amsas"
+       percent_passed_line=percent_passedln
+     end
 
     #Marks=0 count per question
     item=0
@@ -449,8 +505,15 @@ class Examanalysis < ActiveRecord::Base
         item+=1
       end
     end
-    marks_zero_line=["\'\'","\'\'","\'\'", I18n.t('exam.examanalysis.marks')+' 0', analysis.marks_zero(formatives), analysis.marks_zero(mcqs)]+non_mcq_marks_zero+ ['GRED', 'A (>80)', '4.00', analysis.a_count(ngs)]
-         
+    zeroline=["\'\'","\'\'","\'\'", I18n.t('exam.examanalysis.marks')+' 0', analysis.marks_zero(formatives), analysis.marks_zero(mcqs)]+non_mcq_marks_zero
+    if exam_paper.college.code=="kskbjb"
+      marks_zero_line=zeroline+ ['GRED', 'A (>80)', '4.00', analysis.a_count(ngs)]
+    elsif exam_paper.college.code=="amsas"
+      passed_count=0
+      finalscores.each{|x|passed_count+=1 if x >= 50}
+      marks_zero_line=zeroline+ ['STATUS', 'Lulus', "#{passed_count}"]
+    end 
+    
     #Marks < 20% per question
     item=0
     non_mcq_marks_less20=[]
@@ -461,8 +524,15 @@ class Examanalysis < ActiveRecord::Base
       end
     end
     #/%td GRED
-    marks_less20_line=["\'\'","\'\'","\'\'", I18n.t('exam.examanalysis.marks')+' < 20%', analysis.marks_20percent(formatives, formative_weightage), analysis.marks_20percent(mcqs, qcount[0])]+non_mcq_marks_less20+["\'\'", 'A- (75-79)', '3.67', analysis.a_minus_count(ngs)]
-
+    less20=["\'\'","\'\'","\'\'", I18n.t('exam.examanalysis.marks')+' < 20%', analysis.marks_20percent(formatives, formative_weightage), analysis.marks_20percent(mcqs, qcount[0])]
+    if exam_paper.college.code=="kskbjb"
+     marks_less20_line=less20+non_mcq_marks_less20+["\'\'", 'A- (75-79)', '3.67', analysis.a_minus_count(ngs)]
+    elsif exam_paper.college.code=="amsas"
+      failed_count=0
+      finalscores.each{|x|failed_count+=1 if x < 50}
+      marks_less20_line=less20+non_mcq_marks_less20+["\'\'",'Gagal', "#{failed_count}"]
+    end
+    
     #Marks < 50% per question
     non_mcq_marks_less50=[]
     item=0
@@ -473,8 +543,13 @@ class Examanalysis < ActiveRecord::Base
       end
     end
     #/%td GRED
-    marks_less50_line=["\'\'","\'\'","\'\'", I18n.t('exam.examanalysis.marks')+' < 50%', analysis.marks_50percent(formatives, formative_weightage), analysis.marks_50percent(mcqs, qcount[0])]+non_mcq_marks_less50+["\'\'", 'B+ (70-74)', '3.33',analysis.b_plus_count(ngs) ]
-
+    less50=["\'\'","\'\'","\'\'", I18n.t('exam.examanalysis.marks')+' < 50%', analysis.marks_50percent(formatives, formative_weightage), analysis.marks_50percent(mcqs, qcount[0])]+non_mcq_marks_less50
+    if exam_paper.college.code=="kskbjb"
+      marks_less50_line=less50+["\'\'", 'B+ (70-74)', '3.33',analysis.b_plus_count(ngs) ]
+    elsif exam_paper.college.code=="amsas"
+      marks_less50_line=less50
+    end
+    
     #Marks <=80% per question
     non_mcq_marks_less80=[]
     item=0
@@ -485,8 +560,13 @@ class Examanalysis < ActiveRecord::Base
       end
     end
     #/%td GRED
-    marks_less80_line=["\'\'","\'\'","\'\'", I18n.t('exam.examanalysis.marks')+' <=80%', analysis.marks_less80percent(formatives, formative_weightage), analysis.marks_less80percent(mcqs, qcount[0])]+non_mcq_marks_less80+["\'\'", 'B (65-69)', '3.00', analysis.b_count(ngs)]
-     
+    less80=["\'\'","\'\'","\'\'", I18n.t('exam.examanalysis.marks')+' <=80%', analysis.marks_less80percent(formatives, formative_weightage), analysis.marks_less80percent(mcqs, qcount[0])]+non_mcq_marks_less80
+    if exam_paper.college.code=="kskbjb"
+      marks_less80_line=less80+["\'\'", 'B (65-69)', '3.00', analysis.b_count(ngs)]
+    elsif exam_paper.college.code=="amsas" 
+      marks_less80_line=less80
+    end
+    
     #/Marks > 80% per question
     item=0
     non_mcq_marks_more80=[]
@@ -497,7 +577,12 @@ class Examanalysis < ActiveRecord::Base
       end
     end
     #/%td GRED
-    marks_more80_line=["\'\'","\'\'","\'\'", I18n.t('exam.examanalysis.marks')+' >80%', analysis.marks_80abovepercent(formatives, formative_weightage), analysis.marks_80abovepercent(mcqs, qcount[0])]+non_mcq_marks_more80+["\'\'", 'B- (60-64)', '2.67', analysis.b_minus_count(ngs)]
+    more80=["\'\'","\'\'","\'\'", I18n.t('exam.examanalysis.marks')+' >80%', analysis.marks_80abovepercent(formatives, formative_weightage), analysis.marks_80abovepercent(mcqs, qcount[0])]+non_mcq_marks_more80
+    if exam_paper.college.code=="kskbjb"
+      marks_more80_line=more80+["\'\'", 'B- (60-64)', '2.67', analysis.b_minus_count(ngs)]
+    elsif exam_paper.college.code=="amsas" 
+      marks_more80_line=more80
+    end
     
     #GRADING ONLY
     bb=[]
@@ -514,7 +599,11 @@ class Examanalysis < ActiveRecord::Base
     #----------------
     bil2=0
     CSV.generate(options) do |csv|
-      csv << ["\'\'", exam_paper.exam_name_subject_date ] #title added
+      if exam_paper.college.code=="kskbjb"
+        csv << ["\'\'", exam_paper.exam_name_subject_date ] #title added      
+      elsif exam_paper.college.code=="amsas"
+        csv << ["\'\'", exam_paper.exam_name_subject_date2 ] #title added
+      end
       csv << [] #blank row added
       csv << title_row
       csv << title_row2
@@ -524,7 +613,16 @@ class Examanalysis < ActiveRecord::Base
         else
           matrix=student.matrixno
         end
-        csv << ["#{bil2+=1}", student.name, matrix, student.icno, formatives[bil2-1], mcqs[bil2-1]]+marks_by_students[bil2-1]+[finalmarks[bil2-1], finalscores[bil2-1], grading[bil2-1], ngs[bil2-1]]
+        if finalscores[bil2] >= 50
+          student_status="Lulus"
+        else
+          student_status="Gagal"
+        end
+        if exam_paper.college.code=="kskbjb"
+          csv << ["#{bil2+=1}", student.name, matrix, student.icno, formatives[bil2-1], mcqs[bil2-1]]+marks_by_students[bil2-1]+[finalmarks[bil2-1], finalscores[bil2-1], grading[bil2-1], ngs[bil2-1]]
+        elsif exam_paper.college.code=="amsas"
+          csv << ["#{bil2+=1}", student.name, matrix, student.icno, formatives[bil2-1], mcqs[bil2-1]]+marks_by_students[bil2-1]+[finalmarks[bil2-1], finalscores[bil2-1], student_status]
+        end
       end
       absent_lines.each do |abl|
         csv << ["#{bil2+=1}"]+abl 
@@ -548,12 +646,14 @@ class Examanalysis < ActiveRecord::Base
       csv << marks_less50_line
       csv << marks_less80_line
       csv << marks_more80_line
-      csv << cplus_line
-      csv << c_line
-      csv << cminus_line
-      csv << dplus_line
-      csv << d_line
-      csv << e_line
+      if exam_paper.college.code=="kskbjb"
+        csv << cplus_line
+        csv << c_line
+        csv << cminus_line
+        csv << dplus_line
+        csv << d_line
+        csv << e_line
+      end
     end
   end
   

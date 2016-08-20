@@ -1,4 +1,3 @@
- 
 - model_class = LessonPlan
 .page-header
   %h1= t('training.lesson_plan.title')
@@ -20,8 +19,9 @@
         %th= sort_link(@search, :lecturer, (t 'training.lesson_plan.lecturer'))
         %th= sort_link(@search, :intake, (t 'training.lesson_plan.intake'))
         %th= t 'training.lesson_plan.student_qty'
-        %th= t 'training.lesson_plan.year'
-        %th Sem
+        - if current_user.college.code=="kskbjb"
+          %th= t 'training.lesson_plan.year'
+          %th Sem
         %th= sort_link(@search, :topic, (t 'training.lesson_plan.topic'))
         %th= sort_link(@search, :lecture_title, (t 'training.lesson_plan.lecture_title'))
         %th= sort_link(@search, :lecture_date, (t 'training.lesson_plan.lecture_date'))
@@ -37,11 +37,16 @@
     
     - @lesson_plans.each do |lesson_plan|
       %tr
-        %td=h link_to lesson_plan.lessonplan_owner.name, training_lesson_plan_path(lesson_plan)
+        %td
+          - if lesson_plan.lessonplan_owner.rank_id? 
+            = link_to lesson_plan.lessonplan_owner.staff_with_rank, training_lesson_plan_path(lesson_plan)
+          - else
+            = link_to lesson_plan.lessonplan_owner.name, training_lesson_plan_path(lesson_plan)
         %td=h lesson_plan.lessonplan_intake.name
-        %td=h lesson_plan.student_qty
-        %td=h lesson_plan.year
-        %td=h lesson_plan.semester
+        %td.centre=h lesson_plan.student_qty
+        - if current_user.college.code=="kskbjb"
+          %td=h lesson_plan.year
+          %td=h lesson_plan.semester
         %td
           =h lesson_plan.schedule_item.try(:weeklytimetable_topic).try(:subject_list).to_s+"-"
           %b=lesson_plan.schedule_item.try(:render_class_method).try(:first)

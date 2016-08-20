@@ -69,6 +69,7 @@ Ogma::Application.routes.draw do
       end
     end
     resources :vehicles
+    resources :ranks
   end
 
   match '/travel_requests/logs', to: 'staff/travel_requests#travel_log_index', via: 'get'
@@ -269,6 +270,7 @@ Ogma::Application.routes.draw do
       member do
         get :approve_coordinator
         get :approve_warden
+        get :approving
         get :slip_pengesahan_cuti_pelajar
       end
       collection do
@@ -329,8 +331,8 @@ Ogma::Application.routes.draw do
   namespace :library do
     resources :librarytransactions do
       member do
-        get :extend
-        get :return
+        get :extending
+        get :returning
       end
       collection do
         get :check_status
@@ -351,6 +353,8 @@ Ogma::Application.routes.draw do
       collection do
 	post 'import'
 	get 'import_excel', to: "books#import_excel"
+        get 'check_availability'
+        post 'check_availability'
       end
     end
   end
@@ -420,9 +424,15 @@ Ogma::Application.routes.draw do
     resources :evaluate_courses do
       member do
         get 'courseevaluation'
+        #get :evaluation_analysis
       end
       collection do
         get :evaluation_report
+      end
+    end
+    resources :average_courses do
+      member do
+        get :evaluation_analysis
       end
     end
   end
@@ -461,7 +471,7 @@ Ogma::Application.routes.draw do
   end
 
   resources :groups
-  
+  resources :colleges
 
   root  'static_pages#home'
   match '/help',    to: 'static_pages#help',    via: 'get'
@@ -470,6 +480,7 @@ Ogma::Application.routes.draw do
   match '/dashboard', to: 'static_pages#dashboard', via: 'get'
   match '/asset_report', to: 'static_pages#asset_report', via: 'get'
   match '/fetch_items', to: 'exam/exams#question_selection', via: 'get'
+  match '/rules_regulations', to: 'static_pages#rules_regulations', via: 'get'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

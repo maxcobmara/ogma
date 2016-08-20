@@ -9,7 +9,7 @@
     %ul.nav.nav-tabs
       %li.active= link_to "Info", "#info", "data-toggle" => "tab"
       %li= link_to t('staff.personal_details'),     "#personal",        "data-toggle" => "tab"
-      %li= link_to t('staff.photo_upload'),         "#photo_upload",    "data-toggle" => "tab"
+      %li= link_to t('staff.upload'),         "#photo_upload",    "data-toggle" => "tab"
       %li= link_to t('staff.employment_details'),   "#employment",      "data-toggle" => "tab"
       %li= link_to t('staff.qualifications.title'), "#qualifications",  "data-toggle" => "tab"
       %li= link_to t('staff.finance.title'),        "#finance",         "data-toggle" => "tab"
@@ -40,7 +40,7 @@
               = f.label t 'staff.name', for: :name
             .col-md-4
               .input-group
-                = f.collection_select :titlecd_id, Title.all, :id, :name, {:include_blank => true}, {class: 'selectpicker', "data-width"=>"80px"}
+                = f.collection_select :titlecd_id, Title.all, :id, :name, {:include_blank => (t 'select')}, {class: 'selectpicker', "data-width"=>"80px"}
                 = f.text_field :name, class: 'form-control mandatory'
 
           .form-group
@@ -74,9 +74,9 @@
               .col-md-1
                 = f.text_field :thumb_id, class: 'form-control mandatory'
 
-          .form-group
-            .col-sm-offset-2.col-sm-2
-              = f.submit t('update'), class: "btn btn-primary"
+          /.form-group
+          /  .col-sm-offset-2.col-sm-2
+          /    = f.submit t('update'), class: "btn btn-primary"
 
 
       //photo upload pane
@@ -117,7 +117,7 @@
             .col-sm-2.control-label
               = f.label t 'staff.bloodtype', for: :bloodtype
             .col-md-2
-              = f.select :bloodtype, DropDown::BLOOD_TYPE, {prompt: "Select"}, {class: 'selectpicker', "data-width"=>"80px"}
+              = f.select :bloodtype, DropDown::BLOOD_TYPE, {prompt: t('select')}, {class: 'selectpicker', "data-width"=>"80px"}
 
           .form-group
             .col-sm-2.control-label
@@ -158,7 +158,7 @@
 
           .form-group
             .col-sm-2.control-label
-              = f.label t 'staff.addr', for: :addr
+              = f.label t 'staff.address', for: :addr
             .col-md-4
               = f.text_area :addr, class: "form-control", rows: "5"
 
@@ -172,32 +172,32 @@
             .col-sm-2.control-label
               = f.label t 'staff.mrtlstatuscd', for: :mrtlstatuscd
             .col-md-2
-              = f.select :bloodtype, DropDown::MARITAL_STATUS, {prompt: "Select"}, {class: 'selectpicker', "data-width"=>"auto"}
+              = f.select :bloodtype, DropDown::MARITAL_STATUS, {prompt: t('select')}, {class: 'selectpicker', "data-width"=>"auto"}
 
           .form-group
             .col-sm-2.control-label
               = f.label t 'staff.statecd', for: :statecd
             .col-md-2
-              = f.select :statecd, DropDown::STATECD, {prompt: "Select"}, {class: 'selectpicker', "data-width"=>"auto"}
+              = f.select :statecd, DropDown::STATECD, {prompt: t('select')}, {class: 'selectpicker', "data-width"=>"auto"}
 
           .form-group
             .col-sm-2.control-label
               = f.label t 'staff.race', for: :race
             .col-md-2
-              = f.select :race, DropDown::RACE, {prompt: "Select"}, {class: 'selectpicker', "data-width"=>"auto"}
+              = f.select :race, DropDown::RACE, {prompt:  t('select')}, {class: 'selectpicker', "data-width"=>"auto"}
 
           .form-group
             .col-sm-2.control-label
               = f.label t 'staff.religion', for: :religion
             .col-md-2
-              = f.select :religion, DropDown::RELIGION, {prompt: "Select"}, {class: 'selectpicker', "data-width"=>"auto"}
+              = f.select :religion, DropDown::RELIGION, {prompt:  t('select')}, {class: 'selectpicker', "data-width"=>"auto"}
 
           .form-group
             .col-sm-2.control-label
               = f.label t 'staff.country_cd', for: :country_cd
             .col-md-2
               //= country_select("vehicle_manufacturer", "country", [ "Malaysia", "Korea", "Germany" ])
-              = f.select :country_cd, DropDown::NATIONALITY, {prompt: "Select"}, {class: 'selectpicker', "data-width"=>"autos"}
+              = f.select :country_cd, DropDown::NATIONALITY, {prompt:  t('select')}, {class: 'selectpicker', "data-width"=>"autos"}
 
           .form-group
             .col-sm-2.control-label
@@ -209,8 +209,9 @@
           .row
             .col-sm-5= t 'staff.vehicles.type_model'
             .col-sm-2= t 'staff.vehicles.reg_no'
-            .col-sm-2= t 'staff.vehicles.cylinder_capacity'
-            %hr
+            .col-sm-3= t 'staff.vehicles.cylinder_capacity'
+            .row 
+              %hr{width: '100%'}
           = f.fields_for :vehicles do |builder|
             = render 'vehicle_fields', :f => builder
 
@@ -219,10 +220,11 @@
             /working one - 2nd line - hide first (limit to one & only 1 car per staff)
             /= link_to_add_fields content_tag(:i, "", class: "fa fa-plus-square"), f, :vehicles
             /= link_to_add_fields t('addmore'), f, :vehicles, "",  t('addmore')
-            
-
+     
+        %br
+        .col-md-10.col-md-offset-2
           .form-group
-            .col-sm-3.control-label
+            .col-sm-2.control-label
               = f.label t 'staff.training.mycpd.accumulated_cpd_points'
 
         /staff myCPD point
@@ -240,31 +242,49 @@
             =(t 'staff.training.mycpd.inserted_values')
             = link_to ((t 'staff.training.application_status.viewsummary')+" "+Date.today.year.to_s), show_total_days_staff_training_ptdos_path(:id=>@current_user.userable_id)
           .col-sm-2
-            /working one - 2nd line - hide first (limit to one & only 1 car per staff)
             /= link_to_add_fields content_tag(:i, "", class: "fa fa-plus-square"), f, :vehicles
-            = link_to_add_fields t('addmore'), f, :mycpds, "",  t('addmore')
+            /= link_to_add_fields t('addmore'), f, :mycpds, "",  t('addmore')
+            = link_to_add_fields content_tag(:i, "", class: "fa fa-plus-square")+" "+(t 'addmore'), f, :mycpds, "", t('addmore')
 
-          .form-group
-            .col-sm-offset-2.col-sm-2
-              = f.submit t('update', class: "btn btn-primary")
+          /.form-group
+          /  .col-sm-offset-2.col-sm-2
+          /    = f.submit t('update', class: "btn btn-primary")
 
       //photo upload pane
       #photo_upload.tab-pane
-        .col-md-offset-2
-          //TODO Show picture as well
+        .col-md-offset-2         
+          - if @staff.photo.exists? then
+            .form-group
+              .col-sm-2.control-label
+                = f.label (t 'staff.current_upload')
+              .col-md-6
+                =image_tag @staff.photo.url, :style => "border: solid 1px;"
+                .help-block.small
+                  = t'staff.uploaded_file'
+                  \:
+                  = @staff.photo_file_name
+          
+          .form-group
+            /preview diagram before upload
+            .col-sm-2.control-label
+              = f.label t 'staff.new_photo'
+            .col-md-6
+              %img#uploadPreview{:alt => (t 'exam.examquestion.browse_preview'), :style=>"width: 100px; height:100px;border: solid 1px; padding: 5px;"}
+        
           .form-group
             .col-sm-2.control-label
               = f.label t 'staff.upload', for: :upload
-            .col-md-2
-              - if f.object.photo!= nil
-                Current file is : #{f.object.photo_file_name}
-                = link_to (t 'document.download'), f.object.photo.url
+            .col-md-4
+              - if @staff.photo.exists? then
+                =(t 'staff.current_file') + f.object.photo_file_name
+                &nbsp;(
+                = link_to (t 'download'), f.object.photo.url
+                )
+              = f.file_field :photo, :onchange=>"PreviewImage();"
 
-              = f.file_field :photo
-
-          .form-group
-            .col-sm-offset-2.col-sm-2
-              = f.submit t('update', class: "btn btn-primary")
+          /.form-group
+          /  .col-sm-offset-2.col-sm-2
+          /    = f.submit t('update', class: "btn btn-primary")
 
       //employment pane
       #employment.tab-pane
@@ -274,20 +294,27 @@
             .col-sm-2.control-label
               = f.label t 'staff.staffgrade_id', for: :staffgrade_id
             .col-md-2
-              = f.collection_select :staffgrade_id, Employgrade.order('name'), :id, :name_and_group, {include_blank: true}, {class: 'selectpicker', "data-width"=>"auto"}
+              = f.collection_select :staffgrade_id, Employgrade.order('name'), :id, :name_and_group, {include_blank: (t 'select')}, {class: 'selectpicker', "data-width"=>"auto"}
               //additional filters :conditions => ["id != ?",@travelrequest.treplace.id || @travelrequest.staffid.id]
+
+          - if current_user.college.code=="amsas"
+            .form-group
+              .col-sm-2.control-label
+                = f.label t 'staff.rank_id', for: :rank_id
+              .col-md-2
+                = f.collection_select :rank_id, Rank.order(name: :asc), :id, :short_full_name, {include_blank: (t 'select')}, {class: 'selectpicker', "data-width"=>"auto"}
 
           .form-group
             .col-sm-2.control-label
               = f.label t 'staff.employstatus', for: :employstatus
             .col-md-2
-              = f.select :employstatus, DropDown::STAFF_STATUS, {include_blank: true, prompt: "Select"}, {class: 'selectpicker', "data-width"=>"auto"}
+              = f.select :employstatus, DropDown::STAFF_STATUS, {include_blank: true, prompt: (t 'select')}, {class: 'selectpicker', "data-width"=>"auto"}
 
           .form-group
             .col-sm-2.control-label
               = f.label t 'staff.appointstatus', for: :appointstatus
             .col-md-2
-              = f.select :appointstatus, DropDown::APPOINTMENT, {include_blank: true, prompt: "Select"}, {class: 'selectpicker', "data-width"=>"auto"}
+              = f.select :appointstatus, DropDown::APPOINTMENT, {include_blank: true, prompt: (t 'select')}, {class: 'selectpicker', "data-width"=>"auto"}
 
           .form-group
             .col-sm-2.control-label
@@ -311,7 +338,7 @@
             .col-sm-2.control-label
               = f.label t 'staff.pensionstat', for: :pensionstat
             .col-md-2
-              = f.select :pensionstat, DropDown::PENSION, {include_blank: true, prompt: "Select"}, {class: 'selectpicker', "data-width"=>"auto"}
+              = f.select :pensionstat, DropDown::PENSION, {include_blank: true, prompt: (t 'select')}, {class: 'selectpicker', "data-width"=>"auto"}
 
           .form-group
             .col-sm-2.control-label
@@ -390,42 +417,42 @@
             .col-sm-2.control-label
               = f.label t 'staff.appointby', for: :appointby
             .col-md-2
-              = f.select :appointby, DropDown::APPOINTED, {include_blank: true, prompt: "Select"}, {class: 'selectpicker', "data-width"=>"auto"}
+              = f.select :appointby, DropDown::APPOINTED, {include_blank: true, prompt: (t 'select')}, {class: 'selectpicker', "data-width"=>"auto"}
 
           .form-group
             .col-sm-2.control-label
               = f.label t 'staff.svchead', for: :svchead
             .col-md-2
-              = f.select :appointby, DropDown::HOS, {include_blank: true, prompt: "Select"}, {class: 'selectpicker', "data-width"=>"auto"}
+              = f.select :appointby, DropDown::HOS, {include_blank: true, prompt: (t 'select')}, {class: 'selectpicker', "data-width"=>"auto"}
 
           .form-group
             .col-sm-2.control-label
               = f.label t 'staff.svctype', for: :svctype
             .col-md-2
-              = f.select :svctype, DropDown::TOS, {include_blank: true, prompt: "Select"}, {class: 'selectpicker', "data-width"=>"auto"}
+              = f.select :svctype, DropDown::TOS, {include_blank: true, prompt: (t 'select')}, {class: 'selectpicker', "data-width"=>"auto"}
 
           .form-group
             .col-sm-2.control-label
               = f.label t 'staff.uniformstat', for: :uniformstat
             .col-md-2
-              = f.select :uniformstat, DropDown::UNIFORM, {include_blank: true, prompt: "Select"}, {class: 'selectpicker', "data-width"=>"auto"}
+              = f.select :uniformstat, DropDown::UNIFORM, {include_blank: true, prompt: (t 'select')}, {class: 'selectpicker', "data-width"=>"auto"}
 
-          .form-group
-            .col-sm-offset-2.col-sm-2
-              = f.submit t('update', class: "btn btn-primary")
+          /.form-group
+          /  .col-sm-offset-2.col-sm-2
+          /    = f.submit t('update', class: "btn btn-primary")
 
       #qualifications.tab-pane
         .row
-          .col-sm-offset-2.col-sm-2= t 'staff.level_id'
-          .col-sm-3= t 'staff.qname'
-          .col-sm-4= t 'staff.institute'
-        = f.fields_for :qualifications do |builder|
-          = render 'qualification_fields', :f => builder
-
+          .col-sm-offset-2.col-sm-2= t 'staff.qualifications.level_id'
+          .col-sm-3= t 'staff.qualifications.qname'
+          .col-sm-4= t 'staff.qualifications.institute'
+          .row 
+            %hr{width: '70%'}
+        .row
+          = f.fields_for :qualifications do |builder|
+            = render 'qualification_fields', :f => builder
           .col-sm-offset-2.col-sm-2
-            /= link_to_add_fields content_tag(:i, "", class: "fa fa-plus-square"), f, :qualifications
-            = link_to_add_fields t('addmore'), f, :qualifications, "",  t('addmore')
-            = f.submit t('update'), class: "btn btn-primary"
+            = link_to_add_fields content_tag(:i, "", class: "fa fa-plus-square")+" "+(t 'addmore'), f, :qualifications, "", t('addmore')
 
       #finance.tab-pane
         .row
@@ -449,18 +476,16 @@
 
         .row
           .col-sm-offset-2.col-sm-2= t 'staff.banks.bankaccno'
-          .col-sm-2= t 'staff.bank.bankacctype'
-          .col-sm-3= t 'staff.bank.bankname'
-
-        = f.fields_for :bankaccounts do |builder|
-          = render 'bankaccount_fields', :f => builder
+          .col-sm-2= t 'staff.banks.bankacctype'
+          .col-sm-3= t 'staff.banks.bankname'
+          .row 
+            %hr{width: '70%'}
+        
         .row
-          /= link_to_add_fields image_tag("add.png", :border => 0, :title => t('addmore')), f, :bankaccounts
-          = link_to_add_fields t('addmore'), f, :bankaccounts, "",  t('addmore')
-
-        .form-group
+          = f.fields_for :bankaccounts do |builder|
+            = render 'bankaccount_fields', :f => builder
           .col-sm-offset-2.col-sm-2
-            = f.submit t('update', class: "btn btn-primary")
+            = link_to_add_fields content_tag(:i, "", class: "fa fa-plus-square")+" "+(t 'addmore'), f, :bankaccounts, "", t('addmore')
 
       #loans.tab-pane
         .row
@@ -473,34 +498,39 @@
           .col-sm-1= t 'staff.loans.firstdate'
           .col-sm-1= t 'staff.loans.enddate'
           .col-sm-1= t 'staff.loans.enddeduction'
-          %hr
-        = f.fields_for :loans do |builder|
-          = render 'loan_fields', :f => builder
+          .row 
+            %hr{width: '80%'}
         .row
-          /= link_to_add_fields image_tag("add.png", :border => 0, :title => t('addmore')), f, :loans
-          = link_to_add_fields t('addmore'), f, :loans, "",  t('addmore')
-
-        .form-group
+          = f.fields_for :loans do |builder|
+            = render 'loan_fields', :f => builder
           .col-sm-offset-2.col-sm-2
-            = f.submit t('update', class: "btn btn-primary")
+            = link_to_add_fields content_tag(:i, "", class: "fa fa-plus-square")+" "+(t 'addmore'), f, :loans, "", t('addmore')
 
       #contacts.tab-pane
         .row
-          .col-sm-offset-1.col-sm-1= t 'staff.kintype_id'
+          .col-sm-offset-1.col-sm-1= t 'staff.contacts.kintype_id'
           .col-sm-2= t 'staff.name'
-          .col-sm-1= t 'staff.icno'
-          .col-sm-1= t 'staff.phone'
-          .col-sm-2 Profession
-          .col-sm-4 Address
-        = f.fields_for :kins do |builder|
-          = render 'kin_fields', :f => builder
-        .row
-          /= link_to_add_fields image_tag("add.png", :border => 0, :title => t('addmore')), f, :kins
-          = link_to_add_fields t('addmore'), f, :kins, "",  t('addmore')
-
-
-        .form-group
+          .col-sm-1= t 'staff.contacts.kinmykadno'
+          .col-sm-1= t 'staff.contacts.phone'
+          .col-sm-2= t 'staff.contacts.profession'
+          .col-sm-4= t 'staff.contacts.kinaddr'
+          .row 
+            %hr{width: '80%'}
+        .row 
+          = f.fields_for :kins do |builder|
+            = render 'kin_fields', :f => builder
           .col-sm-offset-2.col-sm-2
+            = link_to_add_fields content_tag(:i, "", class: "fa fa-plus-square")+" "+(t 'addmore'), f, :kins, "", t('addmore')
+
+
+    .row
+      .form-group
+        .col-sm-offset-4.col-sm-1
+          = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), staff_infos_path, :class => 'btn btn-default'
+        .col-sm-2
+          - if @info.new_record? == true
+            = f.submit t('create'), class: "btn btn-primary"
+          - else
             = f.submit t('update'), class: "btn btn-primary"
 
 
@@ -519,3 +549,12 @@
     var regexp = new RegExp("new_" + association, "g");
     $(link).parent().before(content.replace(regexp, new_id));
   }
+
+  function PreviewImage() {
+    var oFReader = new FileReader();
+    oFReader.readAsDataURL(document.getElementById("staff_photo").files[0]);
+
+    oFReader.onload = function(oFREvent) {
+      document.getElementById("uploadPreview").src = oFREvent.target.result;
+    };
+  };

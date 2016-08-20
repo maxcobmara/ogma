@@ -8,9 +8,10 @@ class Librarytransaction < ActiveRecord::Base
   belongs_to :libextendby, :class_name => 'Staff', :foreign_key => 'libextended_by'
   belongs_to :libreturnby, :class_name => 'Staff', :foreign_key => 'libreturned_by'
   
-  attr_accessor :booktitle, :staf_who, :student_who
+  attr_accessor :booktitle, :staf_who, :student_who, :newduedate, :late_days_count
   
   #validates_presence_of :accession_id
+  before_save :set_fine_paid_value_exist, :set_default_finepaydate
   
   #18May2013-compulsory to have this method in order for autocomplete field to work
 
@@ -29,6 +30,46 @@ class Librarytransaction < ActiveRecord::Base
     {:scope => "overdue",    :label => "Tamat Tempoh"}        #Overdue
   ]
   
+  #define scope
+  def self.borrower_search(query)
+    staff_ids=Staff.where('name ILIKE(?)', "%#{query}%").pluck(:id)
+    student_ids=Student.where('name ILIKE(?)', "%#{query}%").pluck(:id)
+    where('student_id=? OR staff_id=?', student_ids, staff_ids)
+  end 
+  
+  def self.callno_search(query)
+    book_ids=Book.where('classlcc ILIKE(?) or classddc ILIKE(?)', "%#{query}%", "%#{query}%").pluck(:id)
+    accession_ids=Accession.where(book_id: book_ids).pluck(:id)
+    where(accession_id: accession_ids)
+  end
+  
+  def self.borrowed_overdue_search(query)
+    if query=='1'
+      where(returned: nil).where('returnduedate >=?', Date.today.yesterday)
+    elsif query=='2'
+      where(returned: nil).where('returnduedate <?', Date.today.yesterday)
+    end
+  end
+  
+  #whitelist the scope
+  def self.ransackable_scopes(auth_object = nil)
+    [:borrower_search, :callno_search, :borrowed_overdue_search]
+  end
+  
+  #return due books fr manager pg
+  def set_fine_paid_value_exist
+    if fine && fine > 0 && finepay!=true
+      self.finepay=true
+      self.finepaydate=Date.today
+    end
+  end
+  
+  def set_default_finepaydate
+    if finepay==true && finepaydate==nil
+      self.finepaydate=Date.today
+    end
+  end
+  
   def accession_acc_book
     accession.try(:acc_book)
   end
@@ -46,7 +87,17 @@ class Librarytransaction < ActiveRecord::Base
     end
   end
   
+  def extended_due
+    if ru_staff==true
+      returnduedate+21.days
+    else
+      returnduedate+14.days
+    end
+  end
   
+  def recommended_fine
+    (Date.today.yesterday-returnduedate)*1.0
+  end
 
 end
 

@@ -1,5 +1,5 @@
 class Borang_maklumat_pelajarPdf < Prawn::Document
-  def initialize(student, view)
+  def initialize(student, view, college)
     super({top_margin: 50, page_size: 'A4', page_layout: :portrait })
     @student = student
     @view = view
@@ -7,7 +7,7 @@ class Borang_maklumat_pelajarPdf < Prawn::Document
     
     
     font "Times-Roman"
-    text "KOLEJ KEJURURAWATAN JOHOR BAHRU", :align => :center, :size => 14, :style => :bold
+    text "#{college.name.upcase}", :align => :center, :size => 14, :style => :bold
     move_down 5
     text "KUMPULAN: #{@student.intake.try(:strftime,"%B %Y")}",  :align => :center, :size => 14, :style => :bold
     move_down 5

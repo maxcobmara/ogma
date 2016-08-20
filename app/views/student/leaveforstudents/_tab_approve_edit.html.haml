@@ -28,4 +28,4 @@
     .col-sm-2.control-label
       = f.label t 'student.leaveforstudent.approvedate'
     .col-md-3
-      = f.text_field :approvedate, :order => [:day, :month, :year],  class: 'date_picker form-control'
+      = f.text_field :approvedate, class: 'date_picker_reverse form-control', value: @leaveforstudent.approvedate.try(:strftime, '%d-%m-%Y')

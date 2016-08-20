@@ -10,17 +10,35 @@
           .col-sm-2.control-label
             = f.label t('training.trainingnote.topic_subtopic')
           .col-md-3
-            = f.collection_select :topicdetail_id,@semester_subject_topic_list_bytopicdetail , :id, :semester_subject_topic, {:prompt=>t('select'), :selected=>@trainingnote.topicdetail_id}, {class: 'selectpicker', "data-width"=>'460px'}   
+            - if @trainingnote.timetable_id?
+              = text_field_tag(:topicdetail, @trainingnote.topicdetail.semester_subject_topic, class: 'form-control', readonly: 'readonly')
+              = f.hidden_field :topicdetail_id
+            - else
+              = f.collection_select :topicdetail_id,@semester_subject_topic_list_bytopicdetail , :id, :semester_subject_topic, {:prompt=>t('select'), :selected=>@trainingnote.topicdetail_id}, {class: 'selectpicker', "data-width"=>'460px'}   
+            
         .form-group
           .col-sm-2.control-label
             = f.label t('training.trainingnote.staff_id'), for: :staff_id
           .col-md-3
-            - unless @trainingnote.staff_id.nil? || @trainingnote.staff_id.blank?
+            - if @trainingnote.staff_id?
               - prepared_by = @trainingnote.staff_id
+              - lecturers=Staff.joins(:positions).where('positions.name=? OR staffs.id IN(?)','Pengajar', @staff_w_adminrole).order('name ASC')
             - else
               - prepared_by = @current_user.userable_id
+              - lecturers=Staff.joins(:positions).where('positions.name=? OR staffs.id IN(?)','Jurulatih', @staff_w_adminrole).order('rank_id ASC, name ASC')
 
-            = f.collection_select :staff_id, Staff.joins(:positions).where('positions.name=? OR staffs.id IN(?)','Pengajar', @staff_w_adminrole).order('name ASC'), :id, :name, {:include_blank =>t('select'), :selected=>prepared_by},{class: 'selectpicker', "data-width"=>'260px'} 
+            - if current_user.college.code=="kskbjb"
+              - if @trainingnote.timetable_id?
+                = text_field_tag(:staff, Staff.find(prepared_by).name, class: 'form-control', readonly: 'readonly')
+                = f.hidden_field :staff_id
+              - else
+                = f.collection_select :staff_id, lecturers, :id, :name, {:include_blank =>t('select'), :selected=>prepared_by},{class: 'selectpicker', "data-width"=>'260px'} 
+            - else
+              - if @trainingnote.timetable_id?
+                = text_field_tag(:staff, Staff.find(prepared_by).staff_with_rank, class: 'form-control', readonly: 'readonly')
+                = f.hidden_field :staff_id
+              - else
+                = f.collection_select :staff_id, lecturers, :id, :staff_with_rank, {:include_blank =>t('select'), :selected=>prepared_by},{class: 'selectpicker', "data-width"=>'260px'} 
 
       #trainingnote_details.tab-pane.active
         %br
@@ -39,15 +57,19 @@
      
               - if f.object.document_file_name
                 %br
-                %b=t('training.trainingnote.or')
+                %b=t('training.trainingnote.or') unless @trainingnote.timetable_id?
               %br
-              = f.file_field :document, class: 'form-control'
+              = f.file_field :document, class: 'form-control' unless @trainingnote.timetable_id?
           
           .form-group
             .col-sm-2.control-label
               = f.label t('training.trainingnote.title'), for: :title
             .col-md-5
-              = f.text_field :title, :placeholder => t('training.trainingnote.title'), class: 'form-control'
+              - if @trainingnote.timetable_id?
+                = text_field_tag(:tt, @trainingnote.title, class: 'form-control', readonly: 'readonly')
+                = f.hidden_field :title
+              - else
+                = f.text_field :title, :placeholder => t('training.trainingnote.title'), class: 'form-control'
           
           .form-group
             .col-sm-2.control-label
@@ -59,7 +81,7 @@
             .col-sm-2.control-label
               = f.label t('training.trainingnote.release'), for: :release
             .col-md-2
-              = f.text_field :release,  class: 'form-control date_picker'
+              = f.text_field :release,  class: 'form-control date_picker_reverse', value: @trainingnote.release.try(:strftime, '%d-%m-%Y')
 
           .form-group
             .col-sm-2.control-label

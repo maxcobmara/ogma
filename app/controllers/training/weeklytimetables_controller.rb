@@ -105,9 +105,13 @@ class Training::WeeklytimetablesController < ApplicationController
     if @is_admin
       @programme_list=Programme.roots
       @intake_list=Intake.all.order(programme_id: :asc, monthyear_intake: :desc)
-      posbasics=["Diploma Lanjutan", "Pos Basik", "Pengkhususan"]
-      prog_names=@programme_list.where(course_type: "Diploma").pluck(:name)
-      @lecturer_list= Staff.joins(:positions).where('positions.unit IN(?) or positions.unit IN(?)', prog_names, posbasics).order(name: :asc)
+      if current_user.college.code=="kskbjb"
+        posbasics=["Diploma Lanjutan", "Pos Basik", "Pengkhususan"]
+        prog_names=@programme_list.where(course_type: "Diploma").pluck(:name)
+        @lecturer_list= Staff.joins(:positions).where('positions.unit IN(?) or positions.unit IN(?)', prog_names, posbasics).order(name: :asc)
+      else
+        @lecturer_list=Staff.joins(:positions).where('positions.name=?', 'Jurulatih')
+      end
     else
       #retrieve programme & groups coordinated from Intake
       @programme_id=Intake.where(staff_id: @staffid).first.programme_id
@@ -156,7 +160,12 @@ class Training::WeeklytimetablesController < ApplicationController
     @comms_topic=[]
     common_subjects_ids.each{|x|@comms_topic += Programme.find(x).descendant_ids}
     prog_topics_ifcommon_exist= Programme.find(@weeklytimetable.programme_id).descendants.where('ancestry_depth=? OR ancestry_depth=?',3,4).where('id not in(?)', @comms_topic).sort_by(&:combo_code)
-    full_topics=Programme.find(@weeklytimetable.programme_id).descendants.where('ancestry_depth=? OR ancestry_depth=?',3,4).sort_by(&:combo_code)
+    if current_user.college.code=="amsas"
+      ##########amsas
+      full_topics=Programme.find(@weeklytimetable.programme_id).descendants.where(course_type: ['Topic', 'Subtopic']).order('ancestry ASC, name ASC')
+    else
+      full_topics=Programme.find(@weeklytimetable.programme_id).descendants.where('ancestry_depth=? OR ancestry_depth=?',3,4).sort_by(&:combo_code)
+    end
     if dip_programmes.include?(prog_name) && (@is_coordinator || @is_admin || roles.include?("programme_manager")) 
       lecturer_ids= Staff.joins(:positions).where('unit=?', prog_name).pluck(:id)
       if @comms_topic==[]
@@ -179,11 +188,18 @@ class Training::WeeklytimetablesController < ApplicationController
       lecturer_ids=Staff.joins(:positions).where('unit IN(?) and unit=?', common_subjects, lecturer_programme).pluck(:id)
       @semester_subject_topic_list = Programme.find(@weeklytimetable.programme_id).descendants.where('ancestry_depth=? OR ancestry_depth=?',3,4).where(id: @comms_topic).sort_by(&:combo_code)
     end
+    ##########amsas
+    lecturer_ids=Staff.joins(:positions).where('positions.name=?', 'Jurulatih') if current_user.college.code=="amsas"
     if @is_admin
       lecturer_ids+=Staff.joins(:positions).where('unit IN(?)', common_subjects).pluck(:id)
       @semester_subject_topic_list = full_topics
     end
-    @lecturer_list=Staff.where('id IN(?)', lecturer_ids).order(name: :asc)
+    ##########amsas
+    if current_user.college.code=="amsas"
+      @lecturer_list=Staff.where('id IN(?)', lecturer_ids).order('rank_id ASC, name ASC')
+    else
+      @lecturer_list=Staff.where('id IN(?)', lecturer_ids).order(name: :asc)
+    end
     #end-lecture list   
   end
 
@@ -282,6 +298,8 @@ class Training::WeeklytimetablesController < ApplicationController
       lecturer_ids=Staff.joins(:positions).where('unit IN(?) and unit=?', common_subjects, lecturer_programme).pluck(:id)
       @semester_subject_topic_list = Programme.find(@weeklytimetable.programme_id).descendants.where('ancestry_depth=? OR ancestry_depth=?',3,4).where(id: @comms_topic).sort_by(&:combo_code)
     end
+    ###AMSAS
+    lecturer_ids=Staff.joins(:positions).where('positions.name=?', 'Jurulatih') if current_user.college.code=="amsas"
     if @is_admin
       lecturer_ids+=Staff.joins(:positions).where('unit IN(?)', common_subjects).pluck(:id)
     end
@@ -320,7 +338,7 @@ class Training::WeeklytimetablesController < ApplicationController
     
     respond_to do |format|
       format.pdf do
-        pdf = Weekly_timetablePdf.new(@weeklytimetable, view_context)
+        pdf = Weekly_timetablePdf.new(@weeklytimetable, view_context, current_user.college)
         send_data pdf.render, filename: "timetable_blank-{Date.today}",
                               type: "application/pdf",
                               disposition: "inline"
@@ -338,7 +356,7 @@ class Training::WeeklytimetablesController < ApplicationController
     @personalize = @all_combine.group_by{|t|t.startdate}
     respond_to do |format|
       format.pdf do
-        pdf = PersonalizetimetablePdf.new(@personalize, view_context, current_user, @selected_date)
+        pdf = PersonalizetimetablePdf.new(@personalize, view_context, current_user, @selected_date, current_user.college)
         send_data pdf.render, filename: "timetable_blank-{Date.today}",
                               type: "application/pdf",
                               disposition: "inline"

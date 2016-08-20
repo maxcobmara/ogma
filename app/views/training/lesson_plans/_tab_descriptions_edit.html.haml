@@ -11,14 +11,20 @@
       = f.text_field :student_qty,  class: 'form-control'
   .form-group
     .col-sm-2.control-label
-      = f.label :year
-    .col-md-9
-      = f.select :year, 1..3, {:prompt=>t('helpers.prompt.select_year')},{ class: 'selectpicker', "data-width"=>'150px'}
-  .form-group
-    .col-sm-2.control-label
-      = f.label :semester
-    .col-md-9
-      = f.select :semester, 1..6, {:prompt=>t('helpers.prompt.select_semester')},{ class: 'selectpicker', "data-width"=>'150px'}
+      = f.label :lecture_title
+    .col-md-3
+      = f.text_field :lecture_title,  class: 'form-control'
+  - if current_user.college.code=="kskbjb"
+    .form-group
+      .col-sm-2.control-label
+        = f.label :year
+      .col-md-9
+        = f.select :year, 1..3, {:prompt=>t('helpers.prompt.select_year')},{ class: 'selectpicker', "data-width"=>'150px'}
+    .form-group
+      .col-sm-2.control-label
+        = f.label :semester
+      .col-md-9
+        = f.select :semester, 1..6, {:prompt=>t('helpers.prompt.select_semester')},{ class: 'selectpicker', "data-width"=>'150px'}
   .form-group
     .col-sm-2.control-label
       = f.label :reference
@@ -30,19 +36,18 @@
     .col-md-6
       /THIS ONE WILL SAVE TRAINING NOTES IN lesson_plans table instead of trainingnotes table.
       - if @lesson_plan.data.exists? then
-        =t 'training.lesson_plan.exist_attachment'
-        = @lesson_plan.data_file_name
-        &nbsp;&nbsp;&nbsp;
-        = link_to (t 'document.download'), @lesson_plan.data.url
-        ||
-        = link_to "ALT", @lesson_plan.data.url
-        - @title_fr_trainingnotes = Trainingnote.find_by_timetable_id(@lesson_plan.schedule).title
+        %strong=t 'training.lesson_plan.exist_attachment'
+        .small
+          =t('training.trainingnote.current_file')+" : "
+          = @lesson_plan.data_file_name
+          %br= link_to image_tag('attach.png')+" || "+(t 'download'), @lesson_plan.data.url
+        /- @title_fr_trainingnotes = Trainingnote.where(timetable_id: @lesson_plan.schedule).last.title
       - else
         =t 'training.lesson_plan.no_attachment_yet'
-        - @title_fr_trainingnotes =''
+        /- @title_fr_trainingnotes =''
               
       = f.file_field :data, class: 'form-control'
-      = f.text_field :title, :placeholder =>t('helpers.label.lesson_plan.note_title'), :value=>@title_fr_trainingnotes, class: 'form-control'
+      = f.text_field :data_title, :placeholder =>t('helpers.label.lesson_plan.note_title'), class: 'form-control'
       
   = render 'tab_add_notes_edit', :f => f
 

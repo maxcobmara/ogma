@@ -1,0 +1,14 @@
+- if @result || @result2
+  = text_field_tag(:inuseisbn, @isbnsearch, class: 'form-control', disabled: true)
+  = hidden_field_tag("book[isbn]", @isbnsearch) 
+- else
+  - if @isbnsearch==''
+    %span{style: 'color: red;'}=t 'library.book.no_isbn'
+  - else
+    /display purpose
+    = text_field_tag(:validisbn, @isbnsearch, class: 'form-control', disabled: true)
+    /this one will actually be sent
+    = hidden_field_tag("book[isbn]", @isbnsearch) 
+:javascript
+  var inuse_isbn=document.getElementById("inuseisbn");
+  inuse_isbn.style.color="red";

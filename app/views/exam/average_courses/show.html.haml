@@ -1,0 +1,111 @@
+- model_class=AverageCourse
+.page-header
+  %h1=t 'exam.average_course.title'
+  
+= render 'shared/flashes'
+
+.row
+  .col-md-offset-1
+    / Nav tabs
+    %ul.nav.nav-tabs
+      %li.active= link_to (t 'exam.evaluate_course.appraisal_details'),"#appraisal_details", "data-toggle" => "tab"
+    .tab-content{style:"padding-top:1em"}
+      .col-md-8.col-md-offset-1
+        %dl.dl-horizontal
+          %dt=t 'exam.average_course.lecturer_id'
+          %dd=@average_course.lecturer.name
+          
+          %dt=t 'exam.average_course.icno'
+          %dd=@average_course.lecturer.try(:formatted_mykad)
+        
+          %dt=t 'exam.average_course.programme_id'
+          %dd=@average_course.subject.root.name
+          
+          %dt=t 'training.programme.course_type'
+          %dd=@average_course.subject.root.course_type
+          
+          %dt=t 'exam.average_course.total_students' 
+          %dd
+            =@total_eval.to_s+" / "
+            /=Student.where(course_id: @average_course.subject.root_id).count.to_s
+            - topic_ids=Programme.find(@average_course.subject_id).descendants.where(course_type: ['Topic', 'Subtopic']).pluck(:id)
+            - lecturer_classes=WeeklytimetableDetail.where(lecturer_id: @lecturer_id, topic: topic_ids).pluck(:id)
+            = total_student=StudentAttendance.where(weeklytimetable_details_id: lecturer_classes).pluck(:student_id).uniq.count
+          
+          %dt=t 'training.programme.level'
+          %dd=@average_course.subject.root.level.upcase
+          
+          %dt=t 'exam.average_course.subject_id'
+          %dd=@average_course.subject.subject_list
+ 
+          = render 'average_scores'
+        
+      #appraisal_details.tab-pane.active
+        %br
+        .col-md-8.col-md-offset-1
+          %dl.dl-horizontal
+            %dt=t 'exam.average_course.dissatisfaction'
+            %dd=@average_course.dissatisfaction
+            
+            %dt=t 'exam.average_course.recommend_for_improvement'
+            %dd=@average_course.recommend_for_improvement
+            
+            %br
+            .col-md-12
+              %hr
+              =t 'exam.average_course.criteria_notes'
+            .row
+              .col-md-8 
+                &nbsp;
+            .row
+              .col-md-4.col-md-offset-2
+                %strong
+                  a.&nbsp;&nbsp;
+                  =(t 'exam.average_course.lecturer_knowledge')
+              .col-md-1=@average_course.lecturer_knowledge
+            .row
+              .col-md-4.col-md-offset-2
+                %strong
+                  b.&nbsp;&nbsp;
+                  =(t 'exam.average_course.delivery_quality')
+              .col-md-1=@average_course.delivery_quality
+            .row
+              .col-md-4.col-md-offset-2
+                %strong
+                  c.&nbsp;&nbsp;
+                  =(t 'exam.average_course.lesson_content')
+              .col-md-1=@average_course.lesson_content
+            
+            %br
+            %dt=t 'exam.average_course.evaluation_category'
+            %dd=@average_course.evaluation_category==true ? (t 'exam.average_course.qualified') : (t 'exam.average_course.not_qualified')
+            
+            %br
+            .col-md-12
+              %hr
+
+            %dt=t 'exam.average_course.support_justify'
+            %dd=@average_course.support_justify
+            
+            %dt=t 'exam.average_course.principal_id'
+            %dd=@average_course.verifier.try(:staff_with_rank)
+            
+            %dt=t 'exam.average_course.principal_date'
+            %dd=@average_course.principal_date.try(:strftime, '%d-%m-%Y')
+            
+            
+            
+.row
+  .col-md-4.col-md-offset-3
+    %hr
+    .form-actions
+      = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), exam_evaluate_courses_path, :class => 'btn btn-default'
+      = link_to content_tag(:i, "", class: "fa fa-file-pdf-o"), evaluation_analysis_exam_average_course_path(@average_course, format: "pdf"), class: "btn btn-default", "data-toggle" => "tooltip", title: t('exam.average_course.title')
+      /- permitted_to? :update, :exam_evaluate_courses do
+      = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('.edit', :default => t("helpers.links.edit")), edit_exam_average_course_path(@average_course),  :class => 'btn btn-primary' 
+      /- permitted_to? :manage, :exam_evaluate_courses do
+      /= link_to content_tag(:i, "", :class => "fa fa-trash-o icon-white") + " " + t('.destroy', :default => t("helpers.links.destroy")), |
+      /exam_average_course_path(@average_course),                                                                                                    |
+      /:method => 'delete',                                                                                                           |
+      /:data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },                   |
+      /:class => 'btn btn-danger'

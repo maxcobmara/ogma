@@ -24,7 +24,7 @@
           .col-md-8.col-md-offset-1
             %dl.dl-horizontal
               %dt= t 'training.lesson_plan.lecturer', :default => model_class.human_attribute_name(:lecturer) + ":"
-              %dd=h @lesson_plan.lessonplan_owner.name
+              %dd=h @lesson_plan.lessonplan_owner.rank_id? ? @lesson_plan.lessonplan_owner.staff_with_rank : @lesson_plan.lessonplan_owner.name
           
               %dt= t 'training.lesson_plan.intake_id', :default => model_class.human_attribute_name(:intake_id)+":"
               %dd
