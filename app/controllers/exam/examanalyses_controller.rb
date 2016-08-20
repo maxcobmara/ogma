@@ -110,7 +110,7 @@ class Exam::ExamanalysesController < ApplicationController
           tasks_main = @current_user.userable.positions[0].tasks_main
           if @common_subjects.include?(lecturer_programme) 
             programme_id ='1'
-          elsif posbasiks.include?(lecturer_programme) && tasks_main!=nil
+          elsif posbasiks.include?(lecturer_programme) && tasks_main!=nil && lecturer_programme!=''
             allposbasic_prog = Programme.where(course_type: posbasiks).pluck(:name)  #Onkologi, Perioperating, Kebidanan etc
             for basicprog in allposbasic_prog
               lecturer_basicprog_name = basicprog if tasks_main.include?(basicprog)==true
@@ -132,6 +132,7 @@ class Exam::ExamanalysesController < ApplicationController
         else
           @subject_ids=Programme.where(id: programme_id).first.descendants.where(course_type: 'Subject').pluck(:id)
         end
+	@programme_id= programme_id
         #INDEX use
         @search = Examanalysis.search(params[:q])
         @examanalyses = @search.result.search2(programme_id)
