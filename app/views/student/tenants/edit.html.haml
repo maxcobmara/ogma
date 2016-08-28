@@ -13,10 +13,11 @@
       = render :partial => 'form', :locals => {:f => f}
       .form-group
         .col-sm-offset-2
-          .col-sm-1
-            - if [2,8].include? @tenant.try(:location).try(:typename)
-              = link_to t('back'), room_map_student_tenants_path,class: "btn btn-primary"
-            - if @tenant.try(:location).try(:typename)==1
-              = link_to t('back'), room_map2_student_tenants_path,class: "btn btn-primary"
+          /.col-sm-1
+          - if [2,8].include? @tenant.try(:location).try(:typename)
+            .col-sm-1= link_to t('back'), student_tenant_path(@tenant), class: "btn btn-primary"
+            .col-sm-2= link_to t('back_to_room_map'), room_map_student_tenants_path,class: "btn btn-primary"
+          - if @tenant.try(:location).try(:typename)==1
+            .col-sm-1= link_to t('back'), room_map2_student_tenants_path,class: "btn btn-primary"
           .col-sm-2
             = f.submit t('update'), class: "btn btn-primary"

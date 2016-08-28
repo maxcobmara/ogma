@@ -38,7 +38,7 @@ class Tenant_formPdf < Prawn::Document
         text "#{@college.name}"
         move_down 1
         text "#{I18n.t('student.tenant.title')}"
-      else
+      elsif @college.code="amsas"
         draw_text "PPL APMM", :at => [80, 85], :style => :bold
         draw_text "NO.DOKUMEN: BK-LAT-KS-02-02", :at => [15, 60], :style => :bold
         draw_text "BORANG KEDIAMAN ASRAMA", :at => [20, 45], :style => :bold
@@ -49,14 +49,14 @@ class Tenant_formPdf < Prawn::Document
       bounding_box([400,760], :width => 400, :height => 100) do |y2|
         image "#{Rails.root}/app/assets/images/kskb_logo-6.png",  :width =>97.2, :height =>77.76
       end
-    else
+    elsif @college.code="amsas"
       bounding_box([430,780], :width => 400, :height => 90) do |y2|
         image "#{Rails.root}/app/assets/images/amsas_logo_small.png"
       end
     end
   end
   def table_heading
-    data=[["#{I18n.t('exam.evaluate_course.prepared_by')} : #{@tenant.location.administrator.try(:staff_with_rank)}", "#{I18n.t('exam.evaluate_course.date_updated')} : #{@tenant.updated_at.try(:strftime, '%d %b %Y')} "],["",""]]
+    data=[["#{I18n.t('exam.evaluate_course.prepared_by')} : #{@tenant.location.staffadmin_id? ? @tenant.location.administrator.try(:staff_with_rank) : '<br><br>'}", "#{I18n.t('exam.evaluate_course.date_updated')} : #{@tenant.updated_at.try(:strftime, '%d-%m-%Y')} "],["",""]]
     if @page_number==1
       data <<  [{content: "<u>BORANG KEDIAMAN ASRAMA</u>", colspan: 2}]
     else
@@ -139,7 +139,7 @@ class Tenant_formPdf < Prawn::Document
           ["5. <u>Oleh Pelatih</u>", "<u>Oleh : KULA / BLA / JL</u>"],
           ["Nama Pelatih : ", "Nama Pelatih : "],
           ["Tandatangan : ", "Tandatangan : "],
-          ["Tarikh : #{@tenant.updated_at.try(:strftime, '%d %b %Y')}", "Tarikh : #{@tenant.updated_at.try(:strftime, '%d %b %Y')}"],["",""]]
+          ["Tarikh : #{@tenant.updated_at.try(:strftime, '%d-%m-%Y')}", "Tarikh : #{@tenant.updated_at.try(:strftime, '%d-%m-%Y')}"],["",""]]
     table(data, :column_widths => [255, 255], :cell_style => {:inline_format => true, :size => 11, :padding => [5,0,0,5]})  do
       a = 0
       b = 5
