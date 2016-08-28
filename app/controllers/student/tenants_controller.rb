@@ -329,6 +329,19 @@ class Student::TenantsController < ApplicationController
        end
      end
   end
+  
+  #PDF for Show - Tenant
+  def tenant_form
+    @tenant = Tenant.find(params[:id])
+    respond_to do |format|
+       format.pdf do
+         pdf = Tenant_formPdf.new(@tenant, view_context, current_user)
+                   send_data pdf.render, filename: "tenant_report-{Date.today}",
+                   type: "application/pdf",
+                   disposition: "inline"
+       end
+     end
+  end
 
   def destroy
     @tenant.destroy
@@ -347,7 +360,7 @@ class Student::TenantsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def tenant_params
-      params.require(:tenant).permit(:location_id, :staff_id, :student_id, :keyaccept, :keyexpectedreturn, :keyreturned, :force_vacate, :student_icno, :staff_icno,:staff_icno_location, :student_icno_location, damages_attributes: [:id, :description,:reported_on,:document_id,:location_id])
+      params.require(:tenant).permit(:location_id, :staff_id, :student_id, :keyaccept, :keyexpectedreturn, :keyreturned, :force_vacate, :student_icno, :staff_icno,:staff_icno_location, :student_icno_location, :total_keys, :deposit, :meal_requirement, :college_id, {:data => []}, damages_attributes: [:id, :description,:reported_on,:document_id,:location_id])
     end
 
 end

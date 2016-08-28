@@ -42,4 +42,26 @@
   .col-md-2
     = f.text_field :keyexpectedreturn, type: "text", :class => 'form-control date_picker_reverse', value: @tenant.try(:keyexpectedreturn).try(:strftime, '%d-%m-%Y')
     
+- if current_user.college.code=="amsas"
+  .form-group
+    %label.col-sm-2.control-label{:for => "total_keys"}= t 'student.tenant.total_keys'
+    .col-md-2
+      = f.text_field :total_keys, class: 'form-control'
 
+  .form-group
+    %label.col-sm-2.control-label{:for => "deposit"} Deposit
+    .col-md-2
+      .input-group
+        .input-group-addon RM
+        = f.text_field :deposit, class: 'form-control'
+
+  .form-group
+    %label.col-sm-2.control-label{:for => "total_keys"}= t 'student.tenant.meal_requirement'
+    .col-md-2
+      .form-inline
+        .form-group
+          = t('student.tenant.meal_required')
+          =f.radio_button :meal_requirement, true
+        .form-group
+          = t('student.tenant.meal_not_required')
+          =f.radio_button :meal_requirement, false

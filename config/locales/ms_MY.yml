@@ -1989,6 +1989,10 @@ ms_MY:
       tenant_programme_title: Pecahan Penghuni Mengikut Program
       block: Blok
       unit_no: "No. Unit"
+      total_keys: Bilangan Kunci Diberikan
+      meal_requirement: Keperluan Sajian
+      meal_required: Diperlukan
+      meal_not_required: Tidak Diperlukan
       
     students:
       title: Maklumat Pelajar
@@ -2001,6 +2005,10 @@ ms_MY:
       name: Nama
       matrixno: No Matrik
       rank_id: Pangkat
+      position: Jawatan
+      department: Unit / Bahagian / Cawangan
+      vehicle_no: No Kenderaan
+      vehicle_type: Jenis / Model Kenderaan
       race: Bangsa
       icno: No MyKad 
       sstatus: Status Pelajar

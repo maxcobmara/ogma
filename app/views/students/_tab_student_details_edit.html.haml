@@ -10,7 +10,33 @@
       = f.label t 'student.students.rank_id', for: :rank_id
     .col-md-2
       = f.collection_select :rank_id, Rank.order(id: :asc), :id, :short_full_name, {:include_blank => (t 'select')}, {class: 'selectpicker', "data-width"=>"280px"}
-      
+
+  /required for AMSAS /:position, :department, :vehicle_no, :vehicle_type
+  - if current_user.college.code=="amsas"
+    .form-group
+      .col-sm-2.control-label
+        = f.label t 'student.students.position', for: :position
+      .col-md-3
+        = f.text_field :position, class: 'form-control'
+
+    .form-group
+      .col-sm-2.control-label
+        = f.label t 'student.students.department', for: :department
+      .col-md-3
+        = f.text_field :department, class: 'form-control'
+
+    .form-group
+      .col-sm-2.control-label
+        = f.label t 'student.students.vehicle_no', for: :vehicle_no
+      .col-md-2
+        = f.text_field :vehicle_no, class: 'form-control'
+
+    .form-group
+      .col-sm-2.control-label
+        = f.label t 'student.students.vehicle_type', for: :vehicle_type
+      .col-md-3
+        = f.text_field :vehicle_type, class: 'form-control'
+  
   .form-group
     .col-sm-2.control-label
       =f.label t 'student.students.address', for: :remarks
