@@ -264,6 +264,7 @@ ms_MY:
   months_label: bulan
   action: Tindakan
   back: Kembali
+  back_to_room_map: Kembali ke peta bilik
   new: Cipta
   edit: Sunting
   update: Kemaskini
