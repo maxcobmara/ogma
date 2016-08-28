@@ -2098,6 +2098,10 @@ en:
       tenant_programme_title: Tenant Programme Breakdown
       block: Block
       unit_no: Unit No
+      total_keys: Total Keys Given
+      meal_requirement: Meal Requirement
+      meal_required: Required
+      meal_not_required: Not Required
       
     students:
       title: Student Info
@@ -2110,6 +2114,10 @@ en:
       name: Name
       matrixno: Matrix No
       rank_id: Rank
+      position: Position
+      department: Unit /  Department / Branch
+      vehicle_no: Vehicle No
+      vehicle_type: Vehicle Type / Model
       race: Race
       icno: MyKad No
       sstatus: Student Status

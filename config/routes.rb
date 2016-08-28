@@ -245,6 +245,7 @@ Ogma::Application.routes.draw do
         get :census_level
 	get :return_key
         get :return_key2
+        get :tenant_form
       end
     end
     resources :student_discipline_cases do

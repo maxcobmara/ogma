@@ -33,9 +33,10 @@
         %dt= t 'student.icno', :default =>  model_class.human_attribute_name(:student_id) + ":"
         %dd= link_to @tenant.student.formatted_mykad, student_path(@tenant.student_id)
         
-      %dl.dl-horizontal
-        %dt= t 'student.matrixno', :default =>  model_class.human_attribute_name(:matrixno) + ":"
-        %dd= @tenant.student.try(:matrixno)
+      - if current_user.college.code=="kskbjb"
+        %dl.dl-horizontal
+          %dt= t 'student.matrixno', :default =>  model_class.human_attribute_name(:matrixno) + ":"
+          %dd= @tenant.student.try(:matrixno)
         
       %dl.dl-horizontal
         %dt= t 'programme.name', :default =>  model_class.human_attribute_name(:name) + ":"
@@ -44,10 +45,11 @@
       %dl.dl-horizontal
         %dt= t 'student.intake', :default =>  model_class.human_attribute_name(:intake) + ":"
         %dd= @tenant.student.try(:intake).try(:strftime, "%b %Y")#.try(:name)#, student_path(@tenant.student_id)
-        
-      %dl.dl-horizontal
-        %dt= t 'student.semester', :default =>  model_class.human_attribute_name(:semester) + ":"
-        %dd= @tenant.student.year_and_sem rescue ''
+
+      - if current_user.college.code=="kskbjb"
+        %dl.dl-horizontal
+          %dt= t 'student.semester', :default =>  model_class.human_attribute_name(:semester) + ":"
+          %dd= @tenant.student.year_and_sem rescue ''
         
       %dl.dl-horizontal
         %dt= t 'student.name', :default =>  model_class.human_attribute_name(:student_id) + ":"
@@ -79,6 +81,19 @@
     %dl.dl-horizontal
       %dt= t 'student.tenant.vacate', :default =>  model_class.human_attribute_name(:force_vacate) + ":"
       %dd= @tenant.force_vacate? ? "Yes" : "No"
+ 
+    - if current_user.college.code=="amsas"  
+      %dl.dl-horizontal
+        %dt= t 'student.tenant.total_keys', :default =>  model_class.human_attribute_name(:total_keys) + ":"
+        %dd= @tenant.total_keys
+      
+      %dl.dl-horizontal
+        %dt= t 'student.tenant.deposit', :default =>  model_class.human_attribute_name(:deposit) + ":"
+        %dd= ringgols(@tenant.deposit)
+    
+      %dl.dl-horizontal
+        %dt= t 'student.tenant.meal_requirement', :default =>  model_class.human_attribute_name(:meal_requirement) + ":"
+        %dd= @tenant.meal_requirement==true ? fa_icon("check") : fa_icon("times")
 
 .row
   %br
@@ -90,6 +105,7 @@
       - if @tenant.location.typename==1
         = link_to content_tag(:i, "", :class => "fa fa-map-marker ") + " " + t('.back', :default => t("student.tenant.unit_map")), room_map2_student_tenants_path, :class => 'btn btn-default'
         = link_to content_tag(:i, "", :class => "fa fa-list-alt ") + " " + t('.back', :default => t("student.tenant.list")), index_staff_student_tenants_path, :class => 'btn btn-default'
+      = link_to content_tag(:i, "", class: "fa fa-file-pdf-o"), tenant_form_student_tenant_path(@tenant, format: "pdf"), class: "btn btn-default", "data-toggle" => "tooltip", title: "Borang Kediaman Asrama"
       = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('.edit', :default => t("helpers.links.edit")), edit_student_tenant_path(@tenant), :class => 'btn btn-primary'
       - unless @tenant.student.blank?
         = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('.edit', :default => t("student.tenant.return_key")), return_key_student_tenant_path(@tenant), :class => 'btn btn-primary'

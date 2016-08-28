@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160817092353) do
+ActiveRecord::Schema.define(version: 20160828130350) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -2384,6 +2384,10 @@ ActiveRecord::Schema.define(version: 20160817092353) do
     t.integer  "college_id"
     t.string   "data"
     t.integer  "rank_id"
+    t.string   "position"
+    t.string   "department"
+    t.string   "vehicle_no"
+    t.string   "vehicle_type"
   end
 
   add_index "students", ["icno"], name: "index_students_on_icno", using: :btree
@@ -2434,6 +2438,9 @@ ActiveRecord::Schema.define(version: 20160817092353) do
     t.datetime "updated_at"
     t.integer  "college_id"
     t.string   "data"
+    t.integer  "total_keys"
+    t.decimal  "deposit"
+    t.boolean  "meal_requirement"
   end
 
   add_index "tenants", ["id"], name: "index_tenants_on_id", using: :btree
