@@ -1,0 +1,17 @@
+- model_class = InstructorAppraisal
+.page-header
+  %h1= t 'instructor_appraisal.new'
+= render 'shared/flashes'
+
+.row.fluid
+  = form_for [:staff, @instructor_appraisal], html: { multipart: true, class: 'form-horizontal' }  do |f| 
+    = render 'shared/error_messages', object: f.object
+    = render :partial => 'form', :locals => {:f => f}
+
+    .col-md-offset-1
+      .form-group
+        .col-sm-offset-2
+          .col-sm-2
+            = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('back'), staff_instructor_appraisals_path, :class => 'btn btn-default'
+          .col-sm-2
+            = f.submit t('create'), class: "btn btn-primary"

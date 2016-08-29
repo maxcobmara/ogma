@@ -32,6 +32,9 @@
                       %li= link_to t('holiday.title'), staff_holidays_path
             - permitted_to? :index, :staff_staff_appraisals do        
               %li= link_to t('staff.staff_appraisal.title'), staff_staff_appraisals_path
+            - permitted_to? :menu, :staff_instructor_appraisals do
+              - if current_user.college.code=="amsas" || Position.where(name: 'Jurulatih').count > 0
+                %li= link_to t('instructor_appraisal.title'), staff_instructor_appraisals_path
             /- permitted_to? :read, :staffs do
             /  %li= link_to t('position.title'), staff_positions_path
             %li.icon.icon-left

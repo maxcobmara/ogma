@@ -34,6 +34,7 @@ ms_MY:
       evaluate_course: Penilaian Kursus
       grade: Gred
       rank: Pangkat
+      instructor_appraisal: Penilaian Diri  Jurulatih
     attributes:
       asset_defect:
         processed_by: Diproses oleh
@@ -208,6 +209,8 @@ ms_MY:
       topicdetail:
         prepared_by: Disediakan Oleh
         topic_code: Topik
+      instructor_appraisal:
+        check_qc: Disemak Oleh
     errors:
         template:
           body: "Berikut adalah beberapa masalah:"
@@ -1628,6 +1631,76 @@ ms_MY:
     shortname: Nama Ringkas
     category: Kategori Pangkat
     employgrade_id: Gred
+    
+  instructor_appraisal:
+    title: Penilaian Diri Jurulatih
+    list: Senarai Penilaian Diri Jurulatih
+    new: Penilaian Diri Jurulatih Baru
+    edit: Sunting Penilaian Diri Jurulatih
+    staff_id: Jurulatih
+    appraisal_date: Tarikh Penilaian
+    qc_sent: Dihantar ke Unit Kawalan Mutu
+    total_mark: Jumlah Markah
+    check_qc: Disemak Oleh
+    check_date: Tarikh Disemak
+    checked: Disemak?
+    qc: Kawalan Mutu
+    always_practice: Jika Dipraktikkan Setiap Masa      
+    frequently_practice: Jika Kerap Dipraktikkan
+    rarely_practice: Jika Jarang Atau Tidak Dipraktikkan
+    question: Soalan
+    score: Skor
+    details: Butiran Penilaian
+    quality_control: Semakan Kawalan Mutu
+    q1: Adakah saya menyusun tempat duduk di bilik darjah agar semua pelatih dapat mengikut pembelajaran dengan selesa? 
+    q2: Adakah saya memastikan semua pelatih berada di dalam bilik darjah yang cukup terang pencahayaan?       
+    q3: Adakah saya mempunyai bahan bantuan mengajar yang mencukupi bila diperlukan?    
+    q4: Adakah saya memperkenalkan diri terlebih dahulu sebelum memulakan pelajaran di awal pembelajaran?       
+    q5: Bolehkah saya mengingatkan nama semua pelatih dalam bilik darjah?       
+    q6: Adakah saya memperoleh maklumat secukupnya bagi setiap pelatih dari kad rekod mereka?   
+    q7: Adakah saya berbincang dengan Pegawai Bahagian dan Ketua Bahagian pelatih sewajarnya?   
+    q8: Adakah saya memulakan kelas pada masa yang telah ditetapkan?    
+    q9: Adakah pakaian seragam saya bersih,kemas dan di gosok dengan rapi?      
+    q10: Adakah rupacara saya segak?     
+    q11: Adakah pengajaran saya merangkumi semua pelatih termasuk di barisan belakang?   
+    q12: Adakah saya mengelak diri dari melakukan perkara yang boleh mengganggu pelatih? 
+    q13: Adakah saya menilai keberkesanan pengajaran saya berpandukan tindak balas dan reaksi pelatih?   
+    q14: Adakah saya mengelak dari bercakap dengan papan kapor atau kanta lutsinar dan bertentangan mata dengan pelatih? 
+    q15: Adakah saya menggunakan perkataan yang mudah difahami?  
+    q16: Adakah saya bersopan dan mengelak dari menggunakan bahasa yang kesat?   
+    q17: Adakah saya memberi penerangan ke atas perkataan ke atas perkataan yang sukar dan menulisnya di papan kapor?    
+    q18: Adakah saya mengelak dari menyindir pelatih?    
+    q19: Adakah saya menpunyai rancangan mengajar untuk setiap mata pelajaran?   
+    q20: Adakah ini menjadi satu tebiat kepada saya untuk ke kelas dengan membawa kesemua bahan bantuan mengajar yang diperlukan?        
+    q21: Adakah rancangan mengajar saya dapat membantu persembahan mata pelajaran mengikut urutan yang betul?    
+    q22: Adakah ia menepati masa bagi setiap mata pelajaran yang diajar? 
+    q23: Adakah ia dapat menimbulkan pertanyaan soalan?  
+    q24: Semasa mengendalikan latihan amali di bengkel adakah saya mengehadkan percakapan saya ke tahap minimum,agar pelatih dapat menumpu kepada kerja masing-masing?   
+    q25: Adakah saya sering kali mengulangi ungkapan yang kurang penting?        
+    q26: Adakah saya mengelak dari mengganggu pelatih?   
+    q27: Adakah saya mengelakkan pelatih membuat kerja sehingga selesai waktu?   
+    q28: Adakah saya menyesuaikan diri saya dengan kelas? 
+    q29: Adakah saya mengalakkan pelatih menanya soalan? 
+    q30: Adakah pelatih menghormati saya sebagai seorang jurulatih?      
+    q31: Adakah saya menggunakan bahan bantuan mengajar pada waktu yang bersesuaian?     
+    q32: Adakah saya mengubahsuai bahan bantuan mengajar jika perlu?     
+    q33: Adakah saya membuat penelitian ke atas bahan bantuan mengajar sebelum digunakan?      
+    q34: Adakah saya memperolehi tumpuan sepenuhnya dari semua pelatih?  
+    q35: Adakah saya memberi motivasi kepada pelatih dengan membuat huraian berhubung kait dengan pembelajaran?  
+    q36: Adakah saya memberitahu pelatih objektif pelajaran?
+    q37: Adakah saya mengulangkaji kemahiran atau keperluan pengetahuan diri untuk mengajar? 
+    q38: Adakah saya mempersembahkan maklumat mengikut urutan yang terbaik?   
+    q39: Adakah saya mempersembahkan contoh yang senang sebelum memberikan yang lebih susah?      
+    q40: Adakah saya membuat perbelajaran menjadi lebih mudah dengan cara memberi contoh-contoh yang baik untuk mempertingkatkan daya ingatan?   
+    q41: Adakah saya menanya soalan kepada pelatih semasa pembelajaran?  
+    q42: Adakah saya memastikan pelatih memperolehi pengetahuan dan keupayaan yang dinyatakan pada objektif?     
+    q43: Adakah saya memberi masa yang cukup kepada pelatih untuk melatih kemahiran?     
+    q44: Adakah maklum balas diberi kepada setiap pelatih selepas setiap soalan atau pelaksanaan?        
+    q45: Adakah saya menguji tahap pengetahuan dan keupayaan untuk setiap objektif?      
+    q46: Adakah saya membuat latihan susulan pada kemahiran yang penting supaya pelatih tidak cepat lupa?        
+    q47: Adakah saya mengubahsuai cara mengajar setelah mengambil kira tahap kebolehan dan pengalaman pelatih yang berlainan?     
+    q48: Adakah saya memberi perhatian yang lebih kepada pelatih yang lemah?
+
     
   asset:
     title: Aset

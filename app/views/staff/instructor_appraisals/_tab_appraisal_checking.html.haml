@@ -1,0 +1,10 @@
+%dl.dl-horizontal
+  %dt=t 'instructor_appraisal.check_qc'
+  %dd=h @instructor_appraisal.checker.try(:staff_with_rank)
+  
+  %dt=t 'instructor_appraisal.checked'
+  %dd=h @instructor_appraisal.checked==true ? fa_icon("check") : fa_icon("times")
+    
+  %dt=t 'instructor_appraisal.check_date'
+  %dd=h @instructor_appraisal.check_date.try(:strftime, '%d-%m-%Y')
+%br 

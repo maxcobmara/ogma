@@ -1,0 +1,46 @@
+- model_class = InstructorAppraisal
+.page-header
+  %h1=t 'instructor_appraisal.title'
+= render 'shared/flashes'
+
+.row
+  .col-md-offset-1
+    / Nav tabs
+    %ul.nav.nav-tabs
+      %li.active=link_to (t 'instructor_appraisal.details'), "#details", "data-toggle" => "tab"
+      %li= link_to (t 'instructor_appraisal.qc'), "#appraisal_checking", "data-toggle" => "tab"
+      
+    .tab-content{style:"padding-top:1em"}
+      .col-md-8.col-md-offset-1
+        %dl.dl-horizontal
+          = render 'tab_info'
+          %dt=t 'instructor_appraisal.qc_sent'
+          %dd=h @instructor_appraisal.qc_sent==true ? fa_icon("check") : fa_icon("times")
+        %br
+      
+      #details.tab-pane.active
+        .col-md-8.col-md-offset-1
+          = render 'tab_appraisal'
+
+      #appraisal_checking.tab-pane
+        .col-md-8.col-md-offset-1
+          = render 'tab_appraisal_checking'
+
+      
+      
+.row
+  .col-md-6.col-md-offset-3
+    %hr
+    .form-actions
+      = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), staff_instructor_appraisals_path, :class => 'btn btn-default'
+      = link_to content_tag(:i, "", class: "fa fa-file-pdf-o"), instructorevaluation_staff_instructor_appraisal_path(@instructor_appraisal, format: "pdf"), class: "btn btn-default", "data-toggle" => "tooltip", title: t('instructor_appraisal.title')
+      - permitted_to? :update, :staff_instructor_appraisals do
+        = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('.edit', :default => t("helpers.links.edit")), edit_staff_instructor_appraisal_path(@instructor_appraisal),  :class => 'btn btn-primary' 
+      - permitted_to? :qc_appraisal, :staff_instructor_appraisals do
+        = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('.edit', :default => t("instructor_appraisal.quality_control")), qc_appraisal_staff_instructor_appraisal_path(@instructor_appraisal),  :class => 'btn btn-primary' 
+      - permitted_to? :manage, :staff_instructor_appraisals do
+        = link_to content_tag(:i, "", :class => "fa fa-trash-o icon-white") + " " + t('.destroy', :default => t("helpers.links.destroy")), |
+        staff_instructor_appraisal_path(@instructor_appraisal),                                                                                                    |
+        :method => 'delete',                                                                                                           |
+        :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },                   |
+        :class => 'btn btn-danger'

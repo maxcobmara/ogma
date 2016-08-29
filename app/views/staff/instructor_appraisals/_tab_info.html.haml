@@ -1,0 +1,5 @@
+%dt=t 'instructor_appraisal.staff_id'
+%dd=h @instructor_appraisal.instructor.staff_with_rank
+    
+%dt=t 'instructor_appraisal.appraisal_date'
+%dd=h @instructor_appraisal.appraisal_date.try(:strftime, '%d-%m-%Y')
