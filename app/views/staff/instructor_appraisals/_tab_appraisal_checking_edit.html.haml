@@ -1,0 +1,13 @@
+.col-md-offset-2     
+  .form-group
+    .col-sm-2.control-label
+      = f.label t 'instructor_appraisal.checked', for: :checked
+    .col-md-3
+      = f.check_box :checked
+      
+  .form-group
+    .col-sm-2.control-label
+      = f.label t 'instructor_appraisal.check_date', for: :appraisal_date
+    .col-md-3
+      = f.text_field :check_date, class: 'date_picker_reverse form-control mandatory', value: @instructor_appraisal.check_date.try(:strftime, '%d-%m-%Y')
+            

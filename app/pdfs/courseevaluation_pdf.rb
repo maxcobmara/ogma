@@ -21,7 +21,7 @@ class CourseevaluationPdf < Prawn::Document
       else
         draw_text "PPL APMM", :at => [80, 85], :style => :bold
         draw_text "NO.DOKUMEN: BK-KKM-KS-04-04", :at => [15, 60], :style => :bold
-        draw_text "BORANG PENILAI PENSYARAH", :at => [20, 45], :style => :bold
+        draw_text "BORANG PENILAIAN PENSYARAH", :at => [20, 45], :style => :bold
       end
     end
     

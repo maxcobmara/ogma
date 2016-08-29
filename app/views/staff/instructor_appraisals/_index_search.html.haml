@@ -1,0 +1,13 @@
+= search_form_for [:instructor_appraisal, @search], url: staff_instructor_appraisals_path,  class: "form-inline" do |f|
+  %tr.search_row{style: "display: none;"}
+    %td= f.text_field :instructor_name_or_instructor_rank_name_or_instructor_rank_shortname_cont, size: 8,  :class => "form-control" 
+    %td= f.text_field :appraisal_date_eq, size: 8,  :class => "form-control date_picker_reverse", value: @search.appraisal_date.try(:strftime, '%d-%m-%Y')
+    %td=f.text_field :total_mark_eq, class: 'form-control'
+    %td= select_tag('q[qc_sent_eq]',options_for_select([[(t 'actions.all_records'),''],[(t 'yes2'),true],[(t 'no2'),false]]),class: 'selectpicker',"data-width"=>'125px')
+    %td= select_tag('q[checked_eq]',options_for_select([[(t 'actions.all_records'),''],[(t 'yes2'),true],[(t 'no2'),false]]),class: 'selectpicker',"data-width"=>'125px')
+    %td=f.text_field :checker_name_or_checker_rank_name_or_checker_rank_shortname_cont, class: 'form-control'
+    %td.input-group
+      =f.text_field :check_date_eq, size: 8,  :class => "form-control date_picker_reverse", value: @search.appraisal_date.try(:strftime, '%d-%m-%Y')
+      %span.input-group-btn
+        %button.btn.btn-sm.btn-default.right{:type => "submit"}
+          %i.fa.fa-search.fa-fw

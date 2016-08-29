@@ -40,6 +40,16 @@ authorization do
      if_attribute :staff_id => is {user.userable.id}                                                                 # but onle see his own registrations
    end
    
+   has_permission_on :staff_instructor_appraisals, :to => :menu
+   has_permission_on :staff_instructor_appraisals, :to => :create
+   has_permission_on :staff_instructor_appraisals, :to => :update do
+     if_attribute :staff_id => is {user.userable.id}
+   end
+   has_permission_on :staff_instructor_appraisals, :to => :read, :join_by => :or do
+     if_attribute :staff_id => is {user.userable.id}
+     if_attribute :check_qc => is {user.userable.id}
+   end
+   
    has_permission_on :staff_staff_appraisals, :to => :create                                                # A staff can create appraisal
    has_permission_on :staff_staff_appraisals, :to => [:show, :appraisal_form] do                                             # but cannot see marking parts
      if_attribute :staff_id => is {user.userable.id}

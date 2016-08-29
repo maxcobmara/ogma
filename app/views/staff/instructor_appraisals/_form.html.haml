@@ -1,0 +1,18 @@
+.row
+  .col-md-offset-1
+    / Nav tabs
+    %ul.nav.nav-tabs
+      %li.active=link_to (t 'instructor_appraisal.details'), "#details", "data-toggle" => "tab"
+
+    .tab-content{style:"padding-top:1em"}
+      .col-md-8.col-md-offset-1
+        - if @instructor_appraisal.new_record?
+          = render 'tab_info_edit', :f => f
+        - else
+          %dl.dl-horizontal
+            = render 'tab_info'
+          %br
+          
+      #details.tab-pane.active
+        .col-md-8.col-md-offset-1
+          = render 'tab_appraisal_edit', :f => f

@@ -1,0 +1,237 @@
+<%= form_for [:staff, @instructor_appraisal], html: { multipart: true, class: 'form-horizontal' }  do |f| %>
+  <% if @instructor_appraisal.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@instructor_appraisal.errors.count, "error") %> prohibited this instructor_appraisal from being saved:</h2>
+
+      <ul>
+      <% @instructor_appraisal.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :staff_id %><br>
+    <%= f.number_field :staff_id %>
+  </div>
+  <div class="field">
+    <%= f.label :appraisal_date %><br>
+    <%= f.text_field :appraisal_date, class: 'form-control date_picker_reverse' %>
+  </div>
+  <div class="field">
+    <%= f.label :qc_sent %><br>
+    <%= f.check_box :qc_sent %>
+  </div>
+  <div class="field">
+    <%= f.label :q1 %><br>
+    <%= f.number_field :q1 %>
+  </div>
+  <div class="field">
+    <%= f.label :q2 %><br>
+    <%= f.number_field :q2 %>
+  </div>
+  <div class="field">
+    <%= f.label :q3 %><br>
+    <%= f.number_field :q3 %>
+  </div>
+  <div class="field">
+    <%= f.label :q4 %><br>
+    <%= f.number_field :q4 %>
+  </div>
+  <div class="field">
+    <%= f.label :q5 %><br>
+    <%= f.number_field :q5 %>
+  </div>
+  <div class="field">
+    <%= f.label :q6 %><br>
+    <%= f.number_field :q6 %>
+  </div>
+  <div class="field">
+    <%= f.label :q7 %><br>
+    <%= f.number_field :q7 %>
+  </div>
+  <div class="field">
+    <%= f.label :q8 %><br>
+    <%= f.number_field :q8 %>
+  </div>
+  <div class="field">
+    <%= f.label :q9 %><br>
+    <%= f.number_field :q9 %>
+  </div>
+  <div class="field">
+    <%= f.label :q10 %><br>
+    <%= f.number_field :q10 %>
+  </div>
+  <div class="field">
+    <%= f.label :q11 %><br>
+    <%= f.number_field :q11 %>
+  </div>
+  <div class="field">
+    <%= f.label :q12 %><br>
+    <%= f.number_field :q12 %>
+  </div>
+  <div class="field">
+    <%= f.label :q13 %><br>
+    <%= f.number_field :q13 %>
+  </div>
+  <div class="field">
+    <%= f.label :q14 %><br>
+    <%= f.number_field :q14 %>
+  </div>
+  <div class="field">
+    <%= f.label :q15 %><br>
+    <%= f.number_field :q15 %>
+  </div>
+  <div class="field">
+    <%= f.label :q16 %><br>
+    <%= f.number_field :q16 %>
+  </div>
+  <div class="field">
+    <%= f.label :q17 %><br>
+    <%= f.number_field :q17 %>
+  </div>
+  <div class="field">
+    <%= f.label :q18 %><br>
+    <%= f.number_field :q18 %>
+  </div>
+  <div class="field">
+    <%= f.label :q19 %><br>
+    <%= f.number_field :q19 %>
+  </div>
+  <div class="field">
+    <%= f.label :q20 %><br>
+    <%= f.number_field :q20 %>
+  </div>
+  <div class="field">
+    <%= f.label :q21 %><br>
+    <%= f.number_field :q21 %>
+  </div>
+  <div class="field">
+    <%= f.label :q22 %><br>
+    <%= f.number_field :q22 %>
+  </div>
+  <div class="field">
+    <%= f.label :q23 %><br>
+    <%= f.number_field :q23 %>
+  </div>
+  <div class="field">
+    <%= f.label :q24 %><br>
+    <%= f.number_field :q24 %>
+  </div>
+  <div class="field">
+    <%= f.label :q25 %><br>
+    <%= f.number_field :q25 %>
+  </div>
+  <div class="field">
+    <%= f.label :q26 %><br>
+    <%= f.number_field :q26 %>
+  </div>
+  <div class="field">
+    <%= f.label :q27 %><br>
+    <%= f.number_field :q27 %>
+  </div>
+  <div class="field">
+    <%= f.label :q28 %><br>
+    <%= f.number_field :q28 %>
+  </div>
+  <div class="field">
+    <%= f.label :q29 %><br>
+    <%= f.number_field :q29 %>
+  </div>
+  <div class="field">
+    <%= f.label :q30 %><br>
+    <%= f.number_field :q30 %>
+  </div>
+  <div class="field">
+    <%= f.label :q31 %><br>
+    <%= f.number_field :q31 %>
+  </div>
+  <div class="field">
+    <%= f.label :q32 %><br>
+    <%= f.number_field :q32 %>
+  </div>
+  <div class="field">
+    <%= f.label :q33 %><br>
+    <%= f.number_field :q33 %>
+  </div>
+  <div class="field">
+    <%= f.label :q34 %><br>
+    <%= f.number_field :q34 %>
+  </div>
+  <div class="field">
+    <%= f.label :q35 %><br>
+    <%= f.number_field :q35 %>
+  </div>
+  <div class="field">
+    <%= f.label :q36 %><br>
+    <%= f.number_field :q36 %>
+  </div>
+  <div class="field">
+    <%= f.label :q37 %><br>
+    <%= f.number_field :q37 %>
+  </div>
+  <div class="field">
+    <%= f.label :q38 %><br>
+    <%= f.number_field :q38 %>
+  </div>
+  <div class="field">
+    <%= f.label :q39 %><br>
+    <%= f.number_field :q39 %>
+  </div>
+  <div class="field">
+    <%= f.label :q40 %><br>
+    <%= f.number_field :q40 %>
+  </div>
+  <div class="field">
+    <%= f.label :q41 %><br>
+    <%= f.number_field :q41 %>
+  </div>
+  <div class="field">
+    <%= f.label :q42 %><br>
+    <%= f.number_field :q42 %>
+  </div>
+  <div class="field">
+    <%= f.label :q43 %><br>
+    <%= f.number_field :q43 %>
+  </div>
+  <div class="field">
+    <%= f.label :q44 %><br>
+    <%= f.number_field :q44 %>
+  </div>
+  <div class="field">
+    <%= f.label :q45 %><br>
+    <%= f.number_field :q45 %>
+  </div>
+  <div class="field">
+    <%= f.label :q46 %><br>
+    <%= f.number_field :q46 %>
+  </div>
+  <div class="field">
+    <%= f.label :q47 %><br>
+    <%= f.number_field :q47 %>
+  </div>
+  <div class="field">
+    <%= f.label :q48 %><br>
+    <%= f.number_field :q48 %>
+  </div>
+  <div class="field">
+    <%= f.label :total_mark %><br>
+    <%= f.number_field :total_mark %>
+  </div>
+  <div class="field">
+    <%= f.label :check_qc %><br>
+    <%= f.number_field :check_qc %>
+  </div>
+  <div class="field">
+    <%= f.label :check_date %><br>
+    <%= f.text_field :check_date, class: 'form-control date_picker_reverse' %>
+  </div>
+  <div class="field">
+    <%= f.label :checked %><br>
+    <%= f.check_box :checked %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

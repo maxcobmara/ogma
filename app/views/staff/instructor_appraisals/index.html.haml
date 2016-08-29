@@ -1,0 +1,51 @@
+-model_class = InstructorAppraisal
+.page-header
+  %h1= t('instructor_appraisal.list')
+= render 'shared/flashes'
+  
+.navbar.navbar-inverse{role: "navigation", style: "padding-right:40px;"}
+  %ul.nav.navbar-nav
+    - permitted_to? :create, :staff_instructor_appraisals do
+      %li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'actions.new'))), new_staff_instructor_appraisal_path
+  %ul.nav.navbar-nav.navbar-right
+    %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "index_search_bar"
+
+.row
+  %table.table-striped.table-hover.ogma
+    %thead
+      %tr
+        %th{width: "25%"}=sort_link(@search, :staff_id, (t 'instructor_appraisal.staff_id'))
+        %th.centre{width: "10%"}=sort_link(@search, :appraisal_date, (t 'instructor_appraisal.appraisal_date'))
+        %th.centre{width: "10%"}=sort_link(@search, :total_mark, (t 'instructor_appraisal.total_mark'))
+        %th.centre{width: "10%"}=sort_link(@search, :qc_sent, (t 'instructor_appraisal.qc_sent'))
+        %th.centre{width: "10%"}=sort_link(@search, :checked, (t 'instructor_appraisal.checked'))
+        %th{width: "25%"}=sort_link(@search, :check_qc, (t 'instructor_appraisal.check_qc'))
+        %th.centre{width: "10%"}=sort_link(@search, :check_date, (t 'instructor_appraisal.check_date'))
+        
+    %tbody
+      = render "index_search"
+      - @instructor_appraisals.each do |instructor_appraisal|
+        %tr
+          %td=h link_to instructor_appraisal.instructor.staff_with_rank, staff_instructor_appraisal_path(instructor_appraisal)
+          %td.centre=h instructor_appraisal.appraisal_date.try(:strftime, '%d-%m-%Y')
+          %td.centre=h instructor_appraisal.total_mark
+          %td.centre
+            - if instructor_appraisal.qc_sent==nil
+              \-
+            - else
+              =h instructor_appraisal.qc_sent==true ? fa_icon("check") : fa_icon("times")
+          %td.centre
+            - if instructor_appraisal.checked==nil
+              \-
+            - else
+              =h instructor_appraisal.checked==true ?  fa_icon("check") : fa_icon("times")
+          %td=h instructor_appraisal.checker.try(:staff_with_rank)
+          %td.centre=h instructor_appraisal.check_date.try(:strftime, '%d-%m-%Y')
+        
+  .right{style:"padding:0 30px; margin:0;"}= paginate @instructor_appraisals, :theme => 'twitter-bootstrap-3'            
+            
+            
+%BR
+%BR
+%BR
+%BR

@@ -70,6 +70,13 @@ Ogma::Application.routes.draw do
     end
     resources :vehicles
     resources :ranks
+    resources :instructor_appraisals do
+      member do
+        get :instructorevaluation
+        get :qc_appraisal
+        post :qc_appraisal
+      end
+    end
   end
 
   match '/travel_requests/logs', to: 'staff/travel_requests#travel_log_index', via: 'get'

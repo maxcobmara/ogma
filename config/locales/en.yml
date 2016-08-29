@@ -53,6 +53,7 @@ en:
       evaluate_course: Course Evaluation
       grade: Grade
       rank: Rank
+      instructor_appraisal: Instructor Appraisal
     attributes:
       asset_defect:
         processed_by: Processed by
@@ -227,6 +228,8 @@ en:
       topicdetail:
         prepared_by: Prepared by
         topic_code: Topic
+      instructor_appraisal:
+        check_qc: Checked By
     errors:
         template:
           body: "There were problems with the following fields:"
@@ -1738,6 +1741,76 @@ en:
     category: Rank Category
     employgrade_id: Grade
     
+    
+  instructor_appraisal:
+    title: Instructor Appraisal
+    list: Instructor Appraisal Listing
+    new: New Instructor Appraisal
+    edit: Edit Instructor Appraisal
+    staff_id: Instructor
+    appraisal_date: Appraisal Date
+    qc_sent: Sent to Quality Control
+    total_mark: Total Marks
+    check_qc: Checked by
+    check_date: Date Checked
+    checked: Checked
+    qc: Quality Control
+    always_practice: In Practice Most of TheTime
+    frequently_practice: Frequently Practice
+    rarely_practice: Rarely Practice
+    question: Question
+    score: Score
+    details: Appraisal Details
+    quality_control: QC Check
+    q1: Do I arrange seating in the classroom so that all students can have a comfortable learning?
+    q2: Do I ensure all students are in classrooms that are bright enough lighting?    
+    q3: Do I have enough teaching aids if needed?
+    q4: Do I introduce myself first before starting lessons?    
+    q5: Do I remember the names of all students in the classroom? 
+    q6: Do I get adequate information for every student from their record card?   
+    q7: Do I discuss with the Officer and Head of Division accordingly?  
+    q8: Do I start classes at a predetermined time?
+    q9: Does my uniform clean, neat and tidy ironed?   
+    q10: Do my apperance looks good?
+    q11: Do I include all students in my teaching included those in the back row? 
+    q12: Do I refrain from doing things that can intrude students?
+    q13: Do I assess my teaching effectiveness based on response and reaction of the students?
+    q14: Do I avoid talking with white boards or transparent projector and avoid eye contact with the students?
+    q15: Do I use a word that is easily understood?
+    q16: Do I polite and refrain from using vulgar language?
+    q17: Do I give a description of difficult word and write it on the white board?   
+    q18: Do I avoid being sarcastic during teaching?   
+    q19: Do I had a lesson plan for each subject? 
+    q20: Is my habit to bring to class with all necessary materials and teaching aids?      
+    q21: Is my lesson plans assist me to teach in a correct sequence?   
+    q22: Is the timing punctual for each subject taught?
+    q23: Will it be able to raise questions?
+    q24: Do I limit my conversations to a minimum, to ensure student concentration on work during practical training in the workshop?   
+    q25: Do I often repeat phrases that are less important?
+    q26: Do I avoid disturbing the students? 
+    q27: Do I avoid the students from doing work until the class ended? 
+    q28: Do I adapt my classes?
+    q29: Do I encourage students to ask questions?
+    q30: Are students respect me as a coach?  
+    q31: Do I use teaching aids at the appropriate time?    
+    q32: Do I modify teaching aids if needed?  
+    q33: Do I check on teaching aids before use?     
+    q34: Do I get full attention from all students?
+    q35: Did I motivate the students by describing things related to learning?
+    q36: Have I inform student the objective of learning?
+    q37: Do I revise the skills or knowledge to teach? 
+    q38: Do I present the information in the best sequence?   
+    q39: Do I present an easier example before giving a more difficult one?    
+    q40: Do I make learning becomes easier by giving good examples to improve memory?
+    q41: Do I ask questions to the student during the learning?
+    q42: Do I ensure students gain knowledge and ability as outlined in the objectives?     
+    q43: Do I give enough time to the student to practice their skills?   
+    q44: Is feedback given to each student after each question or implementation?     
+    q45: Do I test the level of knowledge and ability for each objective?
+    q46: Did I make a follow-up training in essential skills so that trainers do not quickly forget?       
+    q47: Do I change the way of teaching after taking into account the level of ability and experience of each student?   
+    q48: Do I pay more attention to the weak student?
+
   asset:
     title: Assets
     fixed: Fixed Assets

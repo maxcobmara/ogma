@@ -1,0 +1,133 @@
+<h1>Listing instructor_appraisals</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Staff</th>
+      <th>Appraisal date</th>
+      <th>Qc sent</th>
+      <th>Q1</th>
+      <th>Q2</th>
+      <th>Q3</th>
+      <th>Q4</th>
+      <th>Q5</th>
+      <th>Q6</th>
+      <th>Q7</th>
+      <th>Q8</th>
+      <th>Q9</th>
+      <th>Q10</th>
+      <th>Q11</th>
+      <th>Q12</th>
+      <th>Q13</th>
+      <th>Q14</th>
+      <th>Q15</th>
+      <th>Q16</th>
+      <th>Q17</th>
+      <th>Q18</th>
+      <th>Q19</th>
+      <th>Q20</th>
+      <th>Q21</th>
+      <th>Q22</th>
+      <th>Q23</th>
+      <th>Q24</th>
+      <th>Q25</th>
+      <th>Q26</th>
+      <th>Q27</th>
+      <th>Q28</th>
+      <th>Q29</th>
+      <th>Q30</th>
+      <th>Q31</th>
+      <th>Q32</th>
+      <th>Q33</th>
+      <th>Q34</th>
+      <th>Q35</th>
+      <th>Q36</th>
+      <th>Q37</th>
+      <th>Q38</th>
+      <th>Q39</th>
+      <th>Q40</th>
+      <th>Q41</th>
+      <th>Q42</th>
+      <th>Q43</th>
+      <th>Q44</th>
+      <th>Q45</th>
+      <th>Q46</th>
+      <th>Q47</th>
+      <th>Q48</th>
+      <th>Total mark</th>
+      <th>Check qc</th>
+      <th>Check date</th>
+      <th>Checked</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @instructor_appraisals.each do |instructor_appraisal| %>
+      <tr>
+        <td><%= instructor_appraisal.staff_id %></td>
+        <td><%= instructor_appraisal.appraisal_date %></td>
+        <td><%= instructor_appraisal.qc_sent %></td>
+        <td><%= instructor_appraisal.q1 %></td>
+        <td><%= instructor_appraisal.q2 %></td>
+        <td><%= instructor_appraisal.q3 %></td>
+        <td><%= instructor_appraisal.q4 %></td>
+        <td><%= instructor_appraisal.q5 %></td>
+        <td><%= instructor_appraisal.q6 %></td>
+        <td><%= instructor_appraisal.q7 %></td>
+        <td><%= instructor_appraisal.q8 %></td>
+        <td><%= instructor_appraisal.q9 %></td>
+        <td><%= instructor_appraisal.q10 %></td>
+        <td><%= instructor_appraisal.q11 %></td>
+        <td><%= instructor_appraisal.q12 %></td>
+        <td><%= instructor_appraisal.q13 %></td>
+        <td><%= instructor_appraisal.q14 %></td>
+        <td><%= instructor_appraisal.q15 %></td>
+        <td><%= instructor_appraisal.q16 %></td>
+        <td><%= instructor_appraisal.q17 %></td>
+        <td><%= instructor_appraisal.q18 %></td>
+        <td><%= instructor_appraisal.q19 %></td>
+        <td><%= instructor_appraisal.q20 %></td>
+        <td><%= instructor_appraisal.q21 %></td>
+        <td><%= instructor_appraisal.q22 %></td>
+        <td><%= instructor_appraisal.q23 %></td>
+        <td><%= instructor_appraisal.q24 %></td>
+        <td><%= instructor_appraisal.q25 %></td>
+        <td><%= instructor_appraisal.q26 %></td>
+        <td><%= instructor_appraisal.q27 %></td>
+        <td><%= instructor_appraisal.q28 %></td>
+        <td><%= instructor_appraisal.q29 %></td>
+        <td><%= instructor_appraisal.q30 %></td>
+        <td><%= instructor_appraisal.q31 %></td>
+        <td><%= instructor_appraisal.q32 %></td>
+        <td><%= instructor_appraisal.q33 %></td>
+        <td><%= instructor_appraisal.q34 %></td>
+        <td><%= instructor_appraisal.q35 %></td>
+        <td><%= instructor_appraisal.q36 %></td>
+        <td><%= instructor_appraisal.q37 %></td>
+        <td><%= instructor_appraisal.q38 %></td>
+        <td><%= instructor_appraisal.q39 %></td>
+        <td><%= instructor_appraisal.q40 %></td>
+        <td><%= instructor_appraisal.q41 %></td>
+        <td><%= instructor_appraisal.q42 %></td>
+        <td><%= instructor_appraisal.q43 %></td>
+        <td><%= instructor_appraisal.q44 %></td>
+        <td><%= instructor_appraisal.q45 %></td>
+        <td><%= instructor_appraisal.q46 %></td>
+        <td><%= instructor_appraisal.q47 %></td>
+        <td><%= instructor_appraisal.q48 %></td>
+        <td><%= instructor_appraisal.total_mark %></td>
+        <td><%= instructor_appraisal.check_qc %></td>
+        <td><%= instructor_appraisal.check_date %></td>
+        <td><%= instructor_appraisal.checked %></td>
+        <td><%= link_to 'Show', instructor_appraisal %></td>
+        <td><%= link_to 'Edit', edit_instructor_appraisal_path(instructor_appraisal) %></td>
+        <td><%= link_to 'Destroy', instructor_appraisal, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Instructor appraisal', new_staff_instructor_appraisal_path %>

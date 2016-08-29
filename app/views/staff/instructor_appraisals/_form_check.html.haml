@@ -1,0 +1,29 @@
+.row
+  .col-md-offset-1
+    / Nav tabs
+    %ul.nav.nav-tabs
+      %li=link_to (t 'instructor_appraisal.details'), "#details", "data-toggle" => "tab"
+      %li.active= link_to (t 'instructor_appraisal.qc'),"#appraisal_checking", "data-toggle" => "tab"
+      
+    .tab-content{style:"padding-top:1em"}
+      .col-md-10.col-md-offset-1
+        .col-md-8-col-md-offset-1
+          %br
+          %dl.dl-horizontal
+            = render 'tab_info'
+
+      #details.tab-pane
+        .col-md-8.col-md-offset-1
+          %br
+          = render 'tab_appraisal'
+    
+      #appraisal_checking.tab-pane.active
+        %br
+        .col-md-8.col-md-offset-1
+          %dl.dl-horizontal
+            %dt=t 'instructor_appraisal.check_qc'
+            %dd=h @instructor_appraisal.checker.try(:staff_with_rank)
+            
+          = render 'tab_appraisal_checking_edit', :f => f 
+
+     
