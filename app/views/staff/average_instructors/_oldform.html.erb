@@ -1,0 +1,369 @@
+<%= form_for(@average_instructor) do |f| %>
+  <% if @average_instructor.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@average_instructor.errors.count, "error") %> prohibited this average_instructor from being saved:</h2>
+
+      <ul>
+      <% @average_instructor.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :programme_id %><br>
+    <%= f.number_field :programme_id %>
+  </div>
+  <div class="field">
+    <%= f.label :instructor_id %><br>
+    <%= f.number_field :instructor_id %>
+  </div>
+  <div class="field">
+    <%= f.label :evaluate_date %><br>
+    <%= f.date_select :evaluate_date %>
+  </div>
+  <div class="field">
+    <%= f.label :title %><br>
+    <%= f.text_field :title %>
+  </div>
+  <div class="field">
+    <%= f.label :objective %><br>
+    <%= f.text_area :objective %>
+  </div>
+  <div class="field">
+    <%= f.label :start_on %><br>
+    <%= f.time_select :start_on %>
+  </div>
+  <div class="field">
+    <%= f.label :end_on %><br>
+    <%= f.time_select :end_on %>
+  </div>
+  <div class="field">
+    <%= f.label :delivery_type %><br>
+    <%= f.number_field :delivery_type %>
+  </div>
+  <div class="field">
+    <%= f.label :pbq1 %><br>
+    <%= f.number_field :pbq1 %>
+  </div>
+  <div class="field">
+    <%= f.label :pbq2 %><br>
+    <%= f.number_field :pbq2 %>
+  </div>
+  <div class="field">
+    <%= f.label :pbq3 %><br>
+    <%= f.number_field :pbq3 %>
+  </div>
+  <div class="field">
+    <%= f.label :pbq4 %><br>
+    <%= f.number_field :pbq4 %>
+  </div>
+  <div class="field">
+    <%= f.label :pbq1review %><br>
+    <%= f.text_field :pbq1review %>
+  </div>
+  <div class="field">
+    <%= f.label :pbq2review %><br>
+    <%= f.text_field :pbq2review %>
+  </div>
+  <div class="field">
+    <%= f.label :pbq3review %><br>
+    <%= f.text_field :pbq3review %>
+  </div>
+  <div class="field">
+    <%= f.label :pbq4review %><br>
+    <%= f.text_field :pbq4review %>
+  </div>
+  <div class="field">
+    <%= f.label :pdq1 %><br>
+    <%= f.number_field :pdq1 %>
+  </div>
+  <div class="field">
+    <%= f.label :pdq2 %><br>
+    <%= f.number_field :pdq2 %>
+  </div>
+  <div class="field">
+    <%= f.label :pdq3 %><br>
+    <%= f.number_field :pdq3 %>
+  </div>
+  <div class="field">
+    <%= f.label :pdq4 %><br>
+    <%= f.number_field :pdq4 %>
+  </div>
+  <div class="field">
+    <%= f.label :pdq5 %><br>
+    <%= f.number_field :pdq5 %>
+  </div>
+  <div class="field">
+    <%= f.label :pdq1review %><br>
+    <%= f.text_field :pdq1review %>
+  </div>
+  <div class="field">
+    <%= f.label :pdq2review %><br>
+    <%= f.text_field :pdq2review %>
+  </div>
+  <div class="field">
+    <%= f.label :pdq3review %><br>
+    <%= f.number_field :pdq3review %>
+  </div>
+  <div class="field">
+    <%= f.label :pdq4review %><br>
+    <%= f.number_field :pdq4review %>
+  </div>
+  <div class="field">
+    <%= f.label :pdq5review %><br>
+    <%= f.text_field :pdq5review %>
+  </div>
+  <div class="field">
+    <%= f.label :dq1 %><br>
+    <%= f.number_field :dq1 %>
+  </div>
+  <div class="field">
+    <%= f.label :dq2 %><br>
+    <%= f.number_field :dq2 %>
+  </div>
+  <div class="field">
+    <%= f.label :dq3 %><br>
+    <%= f.number_field :dq3 %>
+  </div>
+  <div class="field">
+    <%= f.label :dq4 %><br>
+    <%= f.number_field :dq4 %>
+  </div>
+  <div class="field">
+    <%= f.label :dq5 %><br>
+    <%= f.number_field :dq5 %>
+  </div>
+  <div class="field">
+    <%= f.label :dq6 %><br>
+    <%= f.number_field :dq6 %>
+  </div>
+  <div class="field">
+    <%= f.label :dq7 %><br>
+    <%= f.number_field :dq7 %>
+  </div>
+  <div class="field">
+    <%= f.label :dq8 %><br>
+    <%= f.number_field :dq8 %>
+  </div>
+  <div class="field">
+    <%= f.label :dq9 %><br>
+    <%= f.number_field :dq9 %>
+  </div>
+  <div class="field">
+    <%= f.label :dq10 %><br>
+    <%= f.number_field :dq10 %>
+  </div>
+  <div class="field">
+    <%= f.label :dq11 %><br>
+    <%= f.number_field :dq11 %>
+  </div>
+  <div class="field">
+    <%= f.label :dq12 %><br>
+    <%= f.number_field :dq12 %>
+  </div>
+  <div class="field">
+    <%= f.label :dq1review %><br>
+    <%= f.text_field :dq1review %>
+  </div>
+  <div class="field">
+    <%= f.label :dq2review %><br>
+    <%= f.text_field :dq2review %>
+  </div>
+  <div class="field">
+    <%= f.label :dq3review %><br>
+    <%= f.text_field :dq3review %>
+  </div>
+  <div class="field">
+    <%= f.label :dq4review %><br>
+    <%= f.text_field :dq4review %>
+  </div>
+  <div class="field">
+    <%= f.label :dq5review %><br>
+    <%= f.text_field :dq5review %>
+  </div>
+  <div class="field">
+    <%= f.label :dq6review %><br>
+    <%= f.text_field :dq6review %>
+  </div>
+  <div class="field">
+    <%= f.label :dq7review %><br>
+    <%= f.text_field :dq7review %>
+  </div>
+  <div class="field">
+    <%= f.label :dq8review %><br>
+    <%= f.text_field :dq8review %>
+  </div>
+  <div class="field">
+    <%= f.label :dq9reiew %><br>
+    <%= f.text_field :dq9reiew %>
+  </div>
+  <div class="field">
+    <%= f.label :dq10review %><br>
+    <%= f.text_field :dq10review %>
+  </div>
+  <div class="field">
+    <%= f.label :dq11review %><br>
+    <%= f.text_field :dq11review %>
+  </div>
+  <div class="field">
+    <%= f.label :dq12review %><br>
+    <%= f.text_field :dq12review %>
+  </div>
+  <div class="field">
+    <%= f.label :uq1 %><br>
+    <%= f.number_field :uq1 %>
+  </div>
+  <div class="field">
+    <%= f.label :uq2 %><br>
+    <%= f.number_field :uq2 %>
+  </div>
+  <div class="field">
+    <%= f.label :uq3 %><br>
+    <%= f.number_field :uq3 %>
+  </div>
+  <div class="field">
+    <%= f.label :uq4 %><br>
+    <%= f.number_field :uq4 %>
+  </div>
+  <div class="field">
+    <%= f.label :uq1review %><br>
+    <%= f.text_field :uq1review %>
+  </div>
+  <div class="field">
+    <%= f.label :uq2review %><br>
+    <%= f.text_field :uq2review %>
+  </div>
+  <div class="field">
+    <%= f.label :uq3review %><br>
+    <%= f.text_field :uq3review %>
+  </div>
+  <div class="field">
+    <%= f.label :uq4review %><br>
+    <%= f.text_field :uq4review %>
+  </div>
+  <div class="field">
+    <%= f.label :vq1 %><br>
+    <%= f.number_field :vq1 %>
+  </div>
+  <div class="field">
+    <%= f.label :vq2 %><br>
+    <%= f.number_field :vq2 %>
+  </div>
+  <div class="field">
+    <%= f.label :vq3 %><br>
+    <%= f.number_field :vq3 %>
+  </div>
+  <div class="field">
+    <%= f.label :vq4 %><br>
+    <%= f.number_field :vq4 %>
+  </div>
+  <div class="field">
+    <%= f.label :vq5 %><br>
+    <%= f.number_field :vq5 %>
+  </div>
+  <div class="field">
+    <%= f.label :vq1review %><br>
+    <%= f.text_field :vq1review %>
+  </div>
+  <div class="field">
+    <%= f.label :vq2review %><br>
+    <%= f.text_field :vq2review %>
+  </div>
+  <div class="field">
+    <%= f.label :vq3review %><br>
+    <%= f.text_field :vq3review %>
+  </div>
+  <div class="field">
+    <%= f.label :vq4review %><br>
+    <%= f.text_field :vq4review %>
+  </div>
+  <div class="field">
+    <%= f.label :vq5review %><br>
+    <%= f.text_field :vq5review %>
+  </div>
+  <div class="field">
+    <%= f.label :gttq1 %><br>
+    <%= f.number_field :gttq1 %>
+  </div>
+  <div class="field">
+    <%= f.label :gttq2 %><br>
+    <%= f.number_field :gttq2 %>
+  </div>
+  <div class="field">
+    <%= f.label :gttq3 %><br>
+    <%= f.number_field :gttq3 %>
+  </div>
+  <div class="field">
+    <%= f.label :gttq4 %><br>
+    <%= f.number_field :gttq4 %>
+  </div>
+  <div class="field">
+    <%= f.label :gttq5 %><br>
+    <%= f.number_field :gttq5 %>
+  </div>
+  <div class="field">
+    <%= f.label :gttq6 %><br>
+    <%= f.number_field :gttq6 %>
+  </div>
+  <div class="field">
+    <%= f.label :gttq7 %><br>
+    <%= f.number_field :gttq7 %>
+  </div>
+  <div class="field">
+    <%= f.label :gttq8 %><br>
+    <%= f.number_field :gttq8 %>
+  </div>
+  <div class="field">
+    <%= f.label :gttq9 %><br>
+    <%= f.number_field :gttq9 %>
+  </div>
+  <div class="field">
+    <%= f.label :gttq1review %><br>
+    <%= f.text_field :gttq1review %>
+  </div>
+  <div class="field">
+    <%= f.label :gttq2review %><br>
+    <%= f.text_field :gttq2review %>
+  </div>
+  <div class="field">
+    <%= f.label :gttq3review %><br>
+    <%= f.text_field :gttq3review %>
+  </div>
+  <div class="field">
+    <%= f.label :gttq4review %><br>
+    <%= f.text_field :gttq4review %>
+  </div>
+  <div class="field">
+    <%= f.label :gttq5review %><br>
+    <%= f.text_field :gttq5review %>
+  </div>
+  <div class="field">
+    <%= f.label :gttq6review %><br>
+    <%= f.text_field :gttq6review %>
+  </div>
+  <div class="field">
+    <%= f.label :gttq7review %><br>
+    <%= f.text_field :gttq7review %>
+  </div>
+  <div class="field">
+    <%= f.label :gttq8review %><br>
+    <%= f.text_field :gttq8review %>
+  </div>
+  <div class="field">
+    <%= f.label :gttq9review %><br>
+    <%= f.text_field :gttq9review %>
+  </div>
+  <div class="field">
+    <%= f.label :review %><br>
+    <%= f.text_area :review %>
+  </div>
+  <div class="field">
+    <%= f.label :evaluator_id %><br>
+    <%= f.number_field :evaluator_id %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

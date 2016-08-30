@@ -1811,6 +1811,9 @@ authorization do
     end
   end
   
+  # TODO - instructor_appraisals - other than positions.name=='Jurulatih'
+  # TODO average_instructor - supposed those - Bhg Kawalan Mutu / kompetensi, temp - programme mgr
+  
 end
 
 =begin

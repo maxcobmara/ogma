@@ -1,0 +1,17 @@
+%dt=t 'average_instructor.instructor_id'
+%dd=h @average_instructor.instructor.staff_with_rank
+
+%dt=t 'average_instructor.programme_id'
+%dd=h @average_instructor.programme.try(:programme_list)
+
+%dt=t 'average_instructor.evaluate_date'
+%dd=h @average_instructor.evaluate_date.try(:strftime, '%d-%m-%Y')
+
+%dt=t 'average_instructor.title2'
+%dd=h @average_instructor.title
+
+%dt=t 'average_instructor.objective'
+%dd=h @average_instructor.objective
+
+%dt=t 'average_instructor.delivery_type'
+%dd=h @average_instructor.render_delivery

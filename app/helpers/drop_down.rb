@@ -802,4 +802,13 @@ KTYPE = [
         [ "Cuti Akhir Semester", "End of Semester" ]
     ]
    
+   #Average Instructor
+    DELIVERY_TYPE = [
+      #Display      #Stored in db 
+      ["Teori",           1 ],
+      ["Praktikal",       2 ],
+      ["Lain-lain",       3 ]
+      
+    ]
+   
 end

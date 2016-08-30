@@ -1,0 +1,49 @@
+-model_class = AverageInstructor
+.page-header
+  %h1= t('average_instructor.list')
+= render 'shared/flashes'
+
+.navbar.navbar-inverse{role: "navigation", style: "padding-right:40px;"}
+  %ul.nav.navbar-nav
+    /- permitted_to? :create, :staff_average_instructors do
+    %li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'actions.new'))), new_staff_average_instructor_path
+  %ul.nav.navbar-nav.navbar-right
+    %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "index_search_bar"
+    /%li.dropdown
+    /  %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#"}
+    /    = fa_icon "external-link", text: (t 'actions.print')
+    /    %b.caret
+    /  %ul.dropdown-menu
+    /    %li= link_to (fa_icon "file-pdf-o", text: (t "average_instructor.report")), instructorevaluation_report_staff_average_instructors_path(params.merge(format: 'pdf' ))
+
+.row
+  %table.table-striped.table-hover.ogma
+    %thead
+      %tr
+        %th{width: "23%"}=sort_link(@search, :instructor_id, (t 'average_instructor.instructor_id'))
+        %th{width: "14%"}=sort_link(@search, :programme_id, (t 'average_instructor.programme_id'))
+        %th{width: "8%"}=sort_link(@search, :evaluate_date, (t 'average_instructor.evaluate_date'))
+        %th{width: "8%"}=sort_link(@search, :title, (t 'average_instructor.title2'))
+        %th{width: "16%"}=t 'average_instructor.objective'
+        %th{width: "8%"}=sort_link(@search, :delivery_type, (t 'average_instructor.delivery_type'))
+        %th{width: "23%"}=sort_link(@search, :evaluator_id, (t 'average_instructor.evaluator_id'))
+        
+    %tbody
+      = render "index_search"
+      - @average_instructors.each do |average_instructor|
+        %tr
+          %td=h link_to average_instructor.instructor.staff_with_rank, staff_average_instructor_path(average_instructor)
+          %td=h average_instructor.programme.try(:programme_list)
+          %td.centre=h average_instructor.evaluate_date.try(:strftime, '%d-%m-%Y')
+          %td=h average_instructor.title
+          %td=h average_instructor.objective
+          %td=h average_instructor.render_delivery
+          %td=h average_instructor.evaluator.try(:staff_with_rank)
+        
+  .right{style:"padding:0 30px; margin:0;"}= paginate @average_instructors, :theme => 'twitter-bootstrap-3'            
+            
+            
+%BR
+%BR
+%BR
+%BR
