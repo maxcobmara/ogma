@@ -76,6 +76,9 @@ Ogma::Application.routes.draw do
         get :qc_appraisal
         post :qc_appraisal
       end
+      collection do
+        get :instructorevaluation_report
+      end
     end
   end
 
