@@ -1648,6 +1648,11 @@ ms_MY:
     always_practice: Jika Dipraktikkan Setiap Masa      
     frequently_practice: Jika Kerap Dipraktikkan
     rarely_practice: Jika Jarang Atau Tidak Dipraktikkan
+    good: "-   Baik"
+    satisfactory: "-   Memuaskan"
+    unsatisfactory: "-   Tidak memuaskan"
+    and_above: dan ke atas
+    or_below: atau kurang
     question: Soalan
     score: Skor
     details: Butiran Penilaian
@@ -1700,7 +1705,24 @@ ms_MY:
     q46: Adakah saya membuat latihan susulan pada kemahiran yang penting supaya pelatih tidak cepat lupa?        
     q47: Adakah saya mengubahsuai cara mengajar setelah mengambil kira tahap kebolehan dan pengalaman pelatih yang berlainan?     
     q48: Adakah saya memberi perhatian yang lebih kepada pelatih yang lemah?
-
+    document_no: "No.Dokumen"
+    form_title: Borang Penilaian Diri Untuk Jurulatih
+    purpose: Tujuan
+    general_notes1: "Panduan ini adalah untuk anda sendiri mengukur tahap kebolehan anda untuk melakukan tugas sebagai seorang jurulatih. Tiada sesiapa perlu melihat pencapaian anda. Jujurlah dengan diri anda sendiri. Jangan keterlaluan dalam memberi skor dan kenalpasti aspek yang perlu anda perbaiki."
+    notes2: "Borang ini perlu diisi oleh anda setiap 3 BULAN bagi mengukur kebolehan anda dan ianya akan diaudit oleh staf penilai Bahagian Pembangunan Kompetensi dan Kawalan Mutu."
+    notes3: "Teliti setiap soalan betul-betul, kemudian isikan ruang dengan skor yang memaparkan pengamalan anda dalam melaksanakan tugas kejurulatihan. Skor yang diguna pakai adalah seperti berikut:"
+    notes4: "Campurkan kesemua skor anda dan kenalpasti di peringkat mana anda berada:"
+    notes5: "Jika pencapaian skor anda adalah di bawah 79, anda harus sedar bahawa anda memerlukan peningkatan kemahiran sikap dan pengetahuan. Anda dikehendaki mengubah cara dan tabiat mengajar demi kepentingan pelatih dan organisasi ini."
+    notes6: "Sila hubungi Bahagian Pembangunan Kompetensi dan Kawalan Mutu untuk perbincangan dan bantuan khidmat nasihat."
+    total: Jumlah
+    total_score1: Skor 
+    total_score2: Keseluruhan
+    date2: Tarikh
+    name: Nama
+    rank: Pangkat
+    signatory: Tandatangan
+    prepared: Disediakan
+    from: daripada
     
   asset:
     title: Aset

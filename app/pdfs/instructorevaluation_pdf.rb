@@ -7,7 +7,6 @@ class InstructorevaluationPdf < Prawn::Document
     if college.code=="kskbjb"
       move_down 10
     end
-    #image "#{Rails.root}/app/assets/images/logo_kerajaan.png",  :width =>97.2, :height =>77.76
     bounding_box([10,770], :width => 400, :height => 100) do |y2|
        image "#{Rails.root}/app/assets/images/logo_kerajaan.png",  :width =>97.2, :height =>77.76
     end
@@ -19,8 +18,8 @@ class InstructorevaluationPdf < Prawn::Document
         text "#{I18n.t('exam.evaluate_course.title')}"
       else
         draw_text "PPL APMM", :at => [80, 85], :style => :bold
-        draw_text "NO.DOKUMEN: BK-KKM-04-01", :at => [15, 70], :style => :bold
-        draw_text "BORANG PENILAIAN DIRI UNTUK JURULATIH", :at => [-25, 45], :style => :bold
+        draw_text "#{I18n.t('instructor_appraisal.document_no').upcase}: BK-KKM-04-01", :at => [15, 70], :style => :bold
+        draw_text "#{I18n.t('instructor_appraisal.form_title').upcase}", :at => [-25, 45], :style => :bold
       end
     end
     
@@ -55,17 +54,17 @@ class InstructorevaluationPdf < Prawn::Document
       total_one+=mark if mark==1
     end
     
-    @general_notes1="Panduan ini adalah untuk anda sendiri mengukur tahap kebolehan anda untuk melakukan tugas sebagai seorang jurulatih. Tiada sesiapa perlu melihat pencapaian anda. Jujurlah dengan diri anda sendiri. Jangan keterlaluan dalam memberi skor dan kenalpasti aspek yang perlu anda perbaiki."
-    @notes2="Borang ini perlu diisi oleh anda setiap 3 BULAN bagi mengukur kebolehan anda dan ianya akan diaudit oleh staf penilai Bahagian Pembangunan Kompetensi dan Kawalan Mutu."
-    @notes3="Teliti setiap soalan betul-betul, kemudian isikan ruang dengan skor yang memaparkan pengamalan anda dalam melaksanakan tugas kejurulatihan. Skor yang diguna pakai adalah seperti berikut:"
-    @notes3a="Jika dipraktikkan setiap masa <br>Jika kerap dipraktikkan<br> Jika jarang tidak dipraktikkan"
+    @general_notes1="#{I18n.t('instructor_appraisal.general_notes1')}"
+    @notes2="#{I18n.t('instructor_appraisal.notes2')}"
+    @notes3="#{I18n.t('instructor_appraisal.notes3')}"
+    @notes3a="#{I18n.t('instructor_appraisal.always_practice')} <br>#{I18n.t('instructor_appraisal.frequently_practice')}<br> #{I18n.t('instructor_appraisal.rarely_practice')}"
     @notes3b="- 2<br>- 1<br>- 0"
-    @notes4="Campurkan kesemua skor anda dan kenalpasti di peringkat mana anda berada:"
-    @notes4a="90 dan ke atas                  -     <b>BAIK</b><br>89-65                                -     <b>MEMUASKAN</b><br>64 atau kurang                 -     <b>TIDAK MEMUASKAN</b>"
-    @notes5="Jika pencapaian skor anda adalah di bawah 79, anda harus sedar bahawa anda memerlukan peningkatan kemahiran sikap dan pengetahuan. Anda dikehendaki mengubah cara dan tabiat mengajar demi kepentingan pelatih dan organisasi ini."
-    @notes6="Sila hubungi Bahagian Pembangunan Kompetensi dan Kawalan Mutu untuk perbincangan dan bantuan khidmat nasihat."
+    @notes4="#{I18n.t('instructor_appraisal.notes4')}"
+    @notes4a="90 #{I18n.t('instructor_appraisal.and_above')}                       <b>#{I18n.t('instructor_appraisal.good').upcase}</b><br>89-65                                     <b>#{I18n.t('instructor_appraisal.satisfactory').upcase}</b><br>64 #{I18n.t('instructor_appraisal.or_below')}                      <b>#{I18n.t('instructor_appraisal.unsatisfactory').upcase}</b>"
+    @notes5="#{I18n.t('instructor_appraisal.notes5')}"
+    @notes6="#{I18n.t('instructor_appraisal.notes6')}"
     
-    data2=[[{content: "<u>TUJUAN</u>", colspan: 7}],
+    data2=[[{content: "<u>#{I18n.t('instructor_appraisal.purpose').upcase}</u>", colspan: 7}],
           ["*", {content: @general_notes1, colspan: 6}], 
           ["*", {content: @notes2, colspan: 6}],
           ["*", {content: @notes3, colspan: 6}],
@@ -100,7 +99,7 @@ class InstructorevaluationPdf < Prawn::Document
       end
     end
     
-    data=[[{content: "SIRI", colspan: 2},{content: "SOALAN", colspan: 2},"2","1","0"]]
+    data=[[{content: "SIRI", colspan: 2},{content: "#{I18n.t('instructor_appraisal.question').upcase}", colspan: 2},"2","1","0"]]
     
     data << [{content: "1", colspan: 2},{content: "#{I18n.t('instructor_appraisal.q1')}", colspan: 2},"#{@appraisal.q1==2 ? '<b>2</b>' : '2'}","#{@appraisal.q1==1 ? '<b>1</b>' : '1'}","#{@appraisal.q1==0 ? '<b>0</b>' : 0}"]
     data << [{content: "2", colspan: 2},{content: "#{I18n.t('instructor_appraisal.q2')}", colspan: 2},"#{@appraisal.q2==2 ? '<b>2</b>' : '2'}","#{@appraisal.q2==1 ? '<b>1</b>' : '1'}","#{@appraisal.q2==0 ? '<b>0</b>' : 0}"]
@@ -158,7 +157,7 @@ class InstructorevaluationPdf < Prawn::Document
     data << [{content: "47", colspan: 2},{content: "#{I18n.t('instructor_appraisal.q47')}", colspan: 2},"#{@appraisal.q47==2 ? '<b>2</b>' : '2'}","#{@appraisal.q47==1 ? '<b>1</b>' : '1'}","#{@appraisal.q47==0 ? '<b>0</b>' : 0}"]
     data << [{content: "48", colspan: 2},{content: "#{I18n.t('instructor_appraisal.q48')}", colspan: 2},"#{@appraisal.q48==2 ? '<b>2</b>' : '2'}","#{@appraisal.q48==1 ? '<b>1</b>' : '1'}","#{@appraisal.q48==0 ? '<b>0</b>' : 0}"]
     
-    data << ["","","","JUMLAH", total_two, total_one, "0"]
+    data << ["","","","#{I18n.t('instructor_appraisal.total').upcase}", total_two, total_one, "0"]
     
     table(data, :header => true, :column_widths => [25,15, 190,185, 35, 35, 35], :cell_style => {:size=>11, :borders => [:left, :right, :top, :bottom],  :inline_format => :true, :padding=>[2,5,3,5]}) do
       a = 0
@@ -178,6 +177,20 @@ class InstructorevaluationPdf < Prawn::Document
       column(4..6).rows(1..50).style :align => :center
       column(0).rows(1..49).style :valign => :center
       column(4..6).rows(1..50).style :valign => :center
+      row(1..4).height=30
+      row(6..7).height=30
+      row(11).height=30
+      row(13..15).height=30
+      row(17..18).height=30
+      row(20..22).height=30
+      row(25).height=30
+      row(28).height=30
+      row(30).height=30
+      row(32).height=30
+      row(34).height=30
+      row(38).height=30
+      row(40).height=30
+      row(44..48).height=30
       
       rowno=1
       0.upto(48).each do |cnt|
@@ -198,8 +211,8 @@ class InstructorevaluationPdf < Prawn::Document
     
     move_down 30
     totalmarks=(arr_marks-[""]).sum
-    data3=[["", "> 90", "80 - 65", "&lt; 64"], 
-          ["SKOR<br>KESELURUHAN", "#{totalmarks if totalmarks > 80}", "#{totalmarks if totalmarks > 64 && totalmarks <=80 }", "#{totalmarks if totalmarks < 65}"]]
+    data3=[["", ">= 90", "89 - 65", "&lt; 64"], 
+          ["#{I18n.t('instructor_appraisal.total_score1').upcase}<br>#{I18n.t('instructor_appraisal.total_score2').upcase}", "#{totalmarks if totalmarks >= 90}", "#{totalmarks if totalmarks > 64 && totalmarks <90 }", "#{totalmarks if totalmarks < 65}"]]
     table(data3, :column_widths => [100, 50, 50, 50], :cell_style => {:size=>11, :borders => [], :inline_format => :true}, :position => :center) do
       a=0
       b=1
@@ -218,12 +231,12 @@ class InstructorevaluationPdf < Prawn::Document
   end
   
   def table_signatory
-    data=[["TARIKH: <u>#{@appraisal.appraisal_date.try(:strftime, '%d-%m-%Y')}</u>", "TANDATANGAN: ..............................................."], ["", "Nama: <u>#{@appraisal.instructor.staff_with_rank}</u>"], ["", "Pangkat: <u>#{@appraisal.instructor.rank.name}</u>"]]
+    data=[["#{I18n.t('instructor_appraisal.date2').upcase}: <u>#{@appraisal.appraisal_date.try(:strftime, '%d-%m-%Y')}</u>", "#{I18n.t('instructor_appraisal.signatory').upcase}: ..............................................."], ["", "#{I18n.t('instructor_appraisal.name')}: <u>#{@appraisal.instructor.staff_with_rank}</u>"], ["", "#{I18n.t('instructor_appraisal.rank').upcase}: <u>#{@appraisal.instructor.rank.name}</u>"]]
     table(data, :column_widths => [255, 255],  :cell_style => {:size=>11, :borders => [], :inline_format => :true})
   end
   
   def table_ending
-    data=[["DISEDIAKAN: BKKM","#{I18n.t('exam.evaluate_course.date_updated')} : #{@appraisal.updated_at.try(:strftime, '%d-%m-%Y')} "]]
+    data=[["#{I18n.t('instructor_appraisal.prepared').upcase}: BKKM","#{I18n.t('exam.evaluate_course.date_updated')} : #{@appraisal.updated_at.try(:strftime, '%d-%m-%Y')} "]]
     table(data, :column_widths => [310,200], :cell_style => {:size=>11, :borders => [:left, :right, :top, :bottom]}) do
       a = 0
       b = 1
@@ -236,7 +249,7 @@ class InstructorevaluationPdf < Prawn::Document
   end
   
   def footer
-    draw_text "#{page_number} daripada 3",  :size => 8, :at => [230,-5]
+    draw_text "#{page_number} #{I18n.t('instructor_appraisal.from')} 3",  :size => 8, :at => [240,-5]
   end
   
 end
