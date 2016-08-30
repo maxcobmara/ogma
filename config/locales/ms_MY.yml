@@ -1637,6 +1637,7 @@ ms_MY:
     list: Senarai Penilaian Diri Jurulatih
     new: Penilaian Diri Jurulatih Baru
     edit: Sunting Penilaian Diri Jurulatih
+    report: Laporan Penilaian Diri Jurulatih
     staff_id: Jurulatih
     appraisal_date: Tarikh Penilaian
     qc_sent: Dihantar ke Unit Kawalan Mutu
@@ -1723,6 +1724,7 @@ ms_MY:
     signatory: Tandatangan
     prepared: Disediakan
     from: daripada
+    marks: Markah
     
   asset:
     title: Aset

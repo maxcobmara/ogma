@@ -1747,6 +1747,7 @@ en:
     list: Instructor Appraisal Listing
     new: New Instructor Appraisal
     edit: Edit Instructor Appraisal
+    report: Instructor Appraisal Report
     staff_id: Instructor
     appraisal_date: Appraisal Date
     qc_sent: Sent to Quality Control
@@ -1818,7 +1819,7 @@ en:
     document_no: "Document No."
     form_title: Self Evaluation Form For Trainers
     purpose: Purpose
-    general_notes1: "This guide is for you personally assess the level of your ability to do the job as an instructor. No one needs to see your achievements. Be honest to yourself."
+    general_notes1: "This guide is for you personally assess the level of your ability to do the job as an instructor. No one needs to see your achievements. Be honest to yourself. Do not overdo the score and identify aspects that you need to improve."
     notes2: "This form must be filled in every 3 MONTHS to measure your ability and it will be audited by an appraiser from the Competency Development and Quality Control Division."
     notes3: "Examine each question carefully, then fill in th score that shows your practice in carrying out the tasks of teaching. Scores evaluated as follows:"
     notes4: "Total up your scores and identify at what stage you are:"
@@ -1833,6 +1834,7 @@ en:
     signatory: Signatory
     prepared: Prepared by
     from: of
+    marks: Marks
 
   asset:
     title: Assets

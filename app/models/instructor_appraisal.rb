@@ -19,4 +19,10 @@ class InstructorAppraisal < ActiveRecord::Base
     	  q31 + q32 + q33 + q34 + q35 + q36 + q37 + q38 + q39 + q40 + 
     	  q41 + q42 + q43 + q44 + q45 + q46 + q47 + q48
   end
+  
+  def level
+      return I18n.t('instructor_appraisal.good').split("-")[1] if total_mark>=90
+      return I18n.t('instructor_appraisal.satisfactory').split("-")[1] if total_mark<90 && total_mark>64
+      return I18n.t('instructor_appraisal.unsatisfactory').split("-")[1] if total_mark<65
+    end
 end

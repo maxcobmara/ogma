@@ -210,7 +210,7 @@ class InstructorevaluationPdf < Prawn::Document
     end
     
     move_down 30
-    totalmarks=(arr_marks-[""]).sum
+    totalmarks=@appraisal.total_mark#(arr_marks-[""]).sum
     data3=[["", ">= 90", "89 - 65", "&lt; 64"], 
           ["#{I18n.t('instructor_appraisal.total_score1').upcase}<br>#{I18n.t('instructor_appraisal.total_score2').upcase}", "#{totalmarks if totalmarks >= 90}", "#{totalmarks if totalmarks > 64 && totalmarks <90 }", "#{totalmarks if totalmarks < 65}"]]
     table(data3, :column_widths => [100, 50, 50, 50], :cell_style => {:size=>11, :borders => [], :inline_format => :true}, :position => :center) do

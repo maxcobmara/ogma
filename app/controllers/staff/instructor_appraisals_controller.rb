@@ -1,5 +1,8 @@
 class Staff::InstructorAppraisalsController < ApplicationController
-  before_action :set_instructor_appraisal, only: [:show, :edit, :update, :destroy]
+  #filter_access_to :index, :new, :create, :instructorevaluation, :instructorevaluation_report, :attribute_check => false
+  #filter_access_to :show, :edit, :update, :destroy, :attribute_check => true
+  
+  before_action :set_instructor_appraisal, only: [:show, :edit, :update, :destroy] 
 
   respond_to :html
 
@@ -65,7 +68,20 @@ class Staff::InstructorAppraisalsController < ApplicationController
     respond_to do |format|
        format.pdf do
          pdf = InstructorevaluationPdf.new(@instructor_appraisal, view_context, current_user.college)
-         send_data pdf.render, filename: "courseevaluation-{Date.today}",
+         send_data pdf.render, filename: "instructorevaluation-{Date.today}",
+                               type: "application/pdf",
+                               disposition: "inline"
+       end
+     end
+  end
+  
+   def instructorevaluation_report
+     @search = InstructorAppraisal.search(params[:q]) 
+     @instructor_appraisals = @search.result
+     respond_to do |format|
+       format.pdf do
+         pdf = Instructorevaluation_reportPdf.new(@instructor_appraisals, view_context, current_user.college)
+         send_data pdf.render, filename: "instructorevaluation_report-{Date.today}",
                                type: "application/pdf",
                                disposition: "inline"
        end
