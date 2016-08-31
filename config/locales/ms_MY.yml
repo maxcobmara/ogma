@@ -1746,6 +1746,7 @@ ms_MY:
     duration: Jumlah Masa
     details: Butiran
     instrument: "Instrument ini mengandungi lima dimensi dengan wajaran seperti berikut:"
+    dimension: Dimensi
     preparation: Persediaan
     delivery: Penyampaian
     usage: Penggunaan
@@ -1809,6 +1810,7 @@ ms_MY:
     performance_component: Komponen Prestasi
     max_score: Skor Max
     weightage: Pemberat/ Kewajaran
+    weightage2: Wajaran
     percent: Peratus
     score_range: Julat Skor
     grade: Gred

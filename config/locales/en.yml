@@ -1852,6 +1852,7 @@ en:
     delivery_type: Delivery Type
     details: Details
     instrument: "This instrument contains five dimension of weightages as listed below:"
+    dimension: Dimension
     preparation: Preparation
     delivery: Delivery
     usage: Usage
@@ -1915,6 +1916,7 @@ en:
     performance_component: Performance Component
     max_score: Max Score
     weightage: Weightage
+    weightage2: Weightage
     percent: Percent
     score_range: Score Range
     grade: Grade
