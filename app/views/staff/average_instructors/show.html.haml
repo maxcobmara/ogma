@@ -18,16 +18,13 @@
       #details.tab-pane.active
         .col-md-8.col-md-offset-1
           = render 'tab_appraisal'
-
-
-      
-      
+          
 .row
   .col-md-6.col-md-offset-3
     %hr
     .form-actions
       = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), staff_average_instructors_path, :class => 'btn btn-default'
-      /= link_to content_tag(:i, "", class: "fa fa-file-pdf-o"), instructorevaluation_staff_average_instructor_path(@average_instructor, format: "pdf"), class: "btn btn-default", "data-toggle" => "tooltip", title: t('average_instructor.title')
+      = link_to content_tag(:i, "", class: "fa fa-file-pdf-o"), averageinstructor_evaluation_staff_average_instructor_path(@average_instructor, format: "pdf"), class: "btn btn-default", "data-toggle" => "tooltip", title: t('average_instructor.title')
       - permitted_to? :update, :staff_average_instructors do
         = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('.edit', :default => t("helpers.links.edit")), edit_staff_average_instructor_path(@average_instructor),  :class => 'btn btn-primary' 
       - permitted_to? :manage, :staff_average_instructors do

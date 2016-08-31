@@ -1731,8 +1731,10 @@ ms_MY:
     list: Senarai Penilaian & Analisa Skor Purata Jurulatih
     new: Penilaian & Analisa Skor Purata Jurulatih Baru
     edit: Sunting Penilaian & Analisa Skor Purata Jurulatih
-    instructor_id: Jurulatih
-    programme_id: Program
+    form_title1: Borang Penilaian dan Analisa 
+    form_title2: Skor Purata Jurulatih 
+    instructor_id: Nama Jurulatih
+    programme_id: Kursus
     evaluator_id: Pegawai Penilai
     evaluate_date: Tarikh Penilaian
     title2: Tajuk

@@ -1841,6 +1841,8 @@ en:
     list: Evaluation & Average Score Analysis for Instructor Listing 
     new: New Evaluation & Average Score Analysis for Instructor
     edit: Edit Evaluation & Average Score Analysis for Instructor
+    form_title1: Evaluation & Average Score Analysis 
+    form_title2: for Instructor Form
     instructor_id: Instructor
     programme_id: Programme
     evaluator_id: Evaluating Officer
@@ -1911,7 +1913,7 @@ en:
     gttq9: Student always follow lessons
     evaluation_summary: Evaluation Summary
     performance_component: Performance Component
-    max_score: Skor Max
+    max_score: Max Score
     weightage: Weightage
     percent: Percent
     score_range: Score Range

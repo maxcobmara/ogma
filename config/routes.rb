@@ -80,7 +80,11 @@ Ogma::Application.routes.draw do
         get :instructorevaluation_report
       end
     end
-    resources :average_instructors
+    resources :average_instructors do
+      member do
+        get :averageinstructor_evaluation
+      end
+    end
   end
 
   match '/travel_requests/logs', to: 'staff/travel_requests#travel_log_index', via: 'get'

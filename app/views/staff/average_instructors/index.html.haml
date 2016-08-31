@@ -20,13 +20,15 @@
   %table.table-striped.table-hover.ogma
     %thead
       %tr
-        %th{width: "23%"}=sort_link(@search, :instructor_id, (t 'average_instructor.instructor_id'))
-        %th{width: "14%"}=sort_link(@search, :programme_id, (t 'average_instructor.programme_id'))
-        %th{width: "8%"}=sort_link(@search, :evaluate_date, (t 'average_instructor.evaluate_date'))
-        %th{width: "8%"}=sort_link(@search, :title, (t 'average_instructor.title2'))
-        %th{width: "16%"}=t 'average_instructor.objective'
-        %th{width: "8%"}=sort_link(@search, :delivery_type, (t 'average_instructor.delivery_type'))
-        %th{width: "23%"}=sort_link(@search, :evaluator_id, (t 'average_instructor.evaluator_id'))
+        %th{width: "17%"}=sort_link(@search, :instructor_id, (t 'average_instructor.instructor_id'))
+        %th{width: "12%"}=sort_link(@search, :programme_id, (t 'average_instructor.programme_id'))
+        %th{width: "7%"}=sort_link(@search, :evaluate_date, (t 'average_instructor.evaluate_date'))
+        %th{width: "10%"}=sort_link(@search, :title, (t 'average_instructor.title2'))
+        %th{width: "10%"}=t 'average_instructor.objective'
+        %th{width: "7%"}=sort_link(@search, :delivery_type, (t 'average_instructor.delivery_type'))
+        %th{width: "17%"}=sort_link(@search, :evaluator_id, (t 'average_instructor.evaluator_id'))
+        %th{width: "5%"}=(t 'average_instructor.grade')
+        %th{width: "5%"}=(t 'average_instructor.obtained_score')
         
     %tbody
       = render "index_search"
@@ -39,6 +41,8 @@
           %td=h average_instructor.objective
           %td=h average_instructor.render_delivery
           %td=h average_instructor.evaluator.try(:staff_with_rank)
+          %td=h average_instructor.try(:grade)
+          %td=h average_instructor.total_score.nil? ? "" : number_with_precision(average_instructor.total_score, precision: 2) 
         
   .right{style:"padding:0 30px; margin:0;"}= paginate @average_instructors, :theme => 'twitter-bootstrap-3'            
             

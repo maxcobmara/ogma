@@ -55,6 +55,18 @@ class Staff::AverageInstructorsController < ApplicationController
     @average_instructor.destroy
     respond_with(@average_instructor)
   end
+  
+  def averageinstructor_evaluation
+    @average_instructor= AverageInstructor.find(params[:id])
+    respond_to do |format|
+       format.pdf do
+         pdf = Averageinstructor_evaluationPdf.new(@average_instructor, view_context, current_user.college)
+         send_data pdf.render, filename: "averageinstructor_evaluation-{Date.today}",
+                               type: "application/pdf",
+                               disposition: "inline"
+       end
+     end
+  end
 
   private
     def set_average_instructor

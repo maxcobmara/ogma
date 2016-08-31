@@ -26,8 +26,28 @@ class AverageInstructor < ActiveRecord::Base
       gttq1+gttq2+gttq3+gttq4+gttq5+gttq6+gttq7+gttq8+gttq9
     end  
     
+    def percent_a
+      marks_a/45.0*25
+    end
+    
+    def percent_b
+      marks_b/60.0*30
+    end
+    
+    def percent_c
+      marks_c/20.0*5
+    end
+    
+    def percent_d
+      marks_d/25.0*20
+    end
+    
+    def percent_e
+      marks_e/45.0*20
+    end
+    
     def total_score
-      (marks_a/45.0*25) + (marks_b/60.0*30) + (marks_c/20.0*5) + (marks_d/25.0*20) + (marks_e/45.0*20)
+      percent_a+percent_b+percent_c+percent_d+percent_e
     end
     
     def grade
@@ -40,6 +60,49 @@ class AverageInstructor < ActiveRecord::Base
     
     def render_delivery
        (DropDown::DELIVERY_TYPE.find_all{|disp, value| value == delivery_type}).map{|disp, value| disp}.first
+    end
+    
+    def display_delivery
+      if delivery_type==1
+        a="T"
+      elsif delivery_type==2
+	a="P"
+      elsif delivery_type==3
+	a="L"
+      end
+      a
+    end
+    
+    def display_objective
+      str=[]
+      if objective?
+        str << objective.slice(0, 45)
+        lines=objective.size/45
+        1.upto(lines-1).each do |cnt|
+	  str << objective.slice(cnt*45+1, 45)
+        end
+      end
+      str
+    end
+    
+    def duration
+      durr=""
+      jam=( (end_at-start_at) %60).to_i
+      minit= (((end_at-start_at)/60)%60) .to_i
+      if jam <= 0
+	durr+="00"
+      elsif jam < 10
+	durr+="0"+jam.to_s
+      elsif jam > 9
+	durr+=jam.to_s
+      end
+      if minit <= 0
+	durr+=":00"
+      elsif minit< 10
+	durr+=":0"+minit.to_s
+      elsif minit > 9
+	durr+=":"+minit.to_s
+      end
     end
     
 end

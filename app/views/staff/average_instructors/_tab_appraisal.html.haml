@@ -349,35 +349,35 @@
       %td.centre 45
       %td.col-md-1=@average_instructor.marks_a
       %td.centre 25
-      %td.col-md-2=@average_instructor.marks_a.to_f/45*25
+      %td.col-md-2=number_with_precision(@average_instructor.percent_a, precision: 2)
     %tr
       %th B
       %td=t('average_instructor.delivery').upcase
       %td.centre 60
       %td.col-md-1=@average_instructor.marks_b
       %td.centre 30
-      %td.col-md-2=@average_instructor.marks_b.to_f/60*30
+      %td.col-md-2=number_with_precision(@average_instructor.percent_b, precision: 2)
     %tr
       %th C
       %td=t('average_instructor.usage').upcase
       %td.centre 20
       %td.col-md-1=@average_instructor.marks_c
       %td.centre 5
-      %td.col-md-2=@average_instructor.marks_c.to_f/20*5
+      %td.col-md-2=number_with_precision(@average_instructor.percent_c, precision: 2)
     %tr
       %th D
       %td=t('average_instructor.verification').upcase
       %td.centre 25
       %td.col-md-1=@average_instructor.marks_d
       %td.centre 20
-      %td.col-md-2=@average_instructor.marks_d.to_f/25*20
+      %td.col-md-2=number_with_precision(@average_instructor.percent_d, precision: 2)
     %tr
       %th E
       %td=t('average_instructor.general_teaching_technique').upcase
       %td.centre 45
       %td.col-md-1=@average_instructor.marks_e
       %td.centre 20
-      %td.col-md-2=@average_instructor.marks_e.to_f/45*20
+      %td.col-md-2=number_with_precision(@average_instructor.percent_e, precision: 2)
       
    
   %table.table.table-bordered.table-condensed
@@ -386,32 +386,57 @@
       %th.centre=t('average_instructor.grade')
       %th.centre=t('average_instructor.performance')
     %tr
-      %td.centre 85 - 100
-      %td.centre A
-      %td.centre=t('average_instructor.excellent')
+      - if @average_instructor.grade=="A"
+        %th.active.centre 85 - 100
+        %th.active.centre A
+        %th.active.centre=t('average_instructor.excellent')
+      - else
+        %td.centre 85 - 100
+        %td.centre A
+        %td.centre=t('average_instructor.excellent')
     %tr
-      %td.centre 70 - 84
-      %td.centre B
-      %td.centre=t('average_instructor.good')
+      - if @average_instructor.grade=="B"
+        %th.active.centre 70 - 84
+        %th.active.centre B
+        %th.active.centre=t('average_instructor.good')
+      - else
+        %td.centre 70 - 84
+        %td.centre B
+        %td.centre=t('average_instructor.good')
     %tr
-      %td.centre 50 - 69
-      %td.centre C
-      %td.centre=t('average_instructor.average')
+      - if @average_instructor.grade=="C"
+        %th.active.centre 50 - 69
+        %th.active.centre C
+        %th.active.centre=t('average_instructor.average')
+      - else
+        %td.centre 50 - 69
+        %td.centre C
+        %td.centre=t('average_instructor.average')
     %tr
-      %td.centre 40 - 49
-      %td.centre D
-      %td.centre=t('average_instructor.weak')
+      - if @average_instructor.grade=="D"
+        %th.active.centre 40 - 49
+        %th.active.centre D
+        %th.active.centre=t('average_instructor.weak')
+      - else
+        %td.centre 40 - 49
+        %td.centre D
+        %td.centre=t('average_instructor.weak')
     %tr
-      %td.centre < 40
-      %td.centre E
-      %td.centre=t('average_instructor.very_weak')
+      - if @average_instructor.grade=="E"
+        %th.active.centre < 40
+        %th.active.centre E
+        %th.active.centre=t('average_instructor.very_weak')
+      - else
+        %td.centre < 40
+        %td.centre E
+        %td.centre=t('average_instructor.very_weak')
       
   %table.table.table-condensed
     %tr
       %td=t('average_instructor.grade').upcase
       %td=@average_instructor.grade
       %td=t('average_instructor.obtained_score').upcase
-      %td=@average_instructor.total_score
+      %td=number_with_precision(@average_instructor.total_score, precision: 2)
 
 
 .col-md-12
