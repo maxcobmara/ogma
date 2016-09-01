@@ -2830,7 +2830,7 @@ en:
       acc_not_exist: "Not Exist"
       acc_must_unique: "(Additional Notes : Accession No must UNIQUE)"
       use_language: "(Additional Notes : Use 'ing' or 'en' for English, use 'mel' or 'ms_MY' for Malay)"
-      bibliography: 
+      bibliography: Bibliography
       indice: Index
       photo: Cover page
       availability_title: ISBN Availability Checking
