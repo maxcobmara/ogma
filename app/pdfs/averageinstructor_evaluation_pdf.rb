@@ -71,7 +71,7 @@ class Averageinstructor_evaluationPdf < Prawn::Document
     ["#{I18n.t('average_instructor.evaluate_date')}",": ", {content: "#{@average_instructor.evaluate_date.try(:strftime,'%d-%m-%Y')} ", colspan: 3}],
     ["#{I18n.t('average_instructor.title2')}",": ", {content: "#{@average_instructor.title} ", colspan: 3}],
     ["#{I18n.t('average_instructor.objective')}", ": ","#{@average_instructor.display_objective[0]}", {content: "#{I18n.t('average_instructor.time')}: ", colspan: 2}],
-           ["mm",": ","#{@average_instructor.display_objective[1]}","",""],
+           ["",": ","#{@average_instructor.display_objective[1]}","",""],
            ["",": ","#{@average_instructor.display_objective[2]}","#{I18n.t('average_instructor.start_at')}","#{@average_instructor.start_at.try(:strftime, '%H:%M')}"],
            ["",": ","#{@average_instructor.display_objective[3]}","#{I18n.t('average_instructor.end_at')}","#{@average_instructor.end_at.try(:strftime, '%H:%M')}"],
            ["",": ","#{@average_instructor.display_objective[4]}","#{I18n.t('average_instructor.duration')}","#{@average_instructor.duration}"],
@@ -482,7 +482,7 @@ class Averageinstructor_evaluationPdf < Prawn::Document
           ["70 - 84", "B", "#{I18n.t('average_instructor.good')}"], 
           ["50 - 69", "C", "#{I18n.t('average_instructor.average')}"], 
           ["40 - 49", "D", "#{I18n.t('average_instructor.weak')}"], 
-          ["< 40", "E", "#{I18n.t('average_instructor.very_weak')}"], ]
+          ["&lt; 40", "E", "#{I18n.t('average_instructor.very_weak')}"], ]
     table(data, :column_widths => [100,100,100],  :cell_style => {:size=>11,:borders => [:left, :right, :top, :bottom], :inline_format => :true, :padding => [0,2,2,2]}, :position => :center) do
        row(0).font_style=:bold
        row(0).column(0..1).style :align => :center
@@ -495,7 +495,7 @@ class Averageinstructor_evaluationPdf < Prawn::Document
                         ["", "<u>#{@average_instructor.review}</u>"]]
     table(data_review, :column_widths => [80, 430],  :cell_style => {:size=>11,:borders => [], :inline_format => :true, :padding => [0,0,0,0]}) do
        row(0).column(0).font_style=:bold
-       row(1).height=120
+       row(1).height=100
     end
   end
   

@@ -442,7 +442,10 @@
 .col-md-12
   %dl.dl-horizontal
     %dt=t 'average_instructor.review'
-    %dd=h @average_instructor.review
+    %dd
+      %table
+        %tr
+          %td=h @average_instructor.review
   
     %dt=t 'average_instructor.evaluator_id'
     %dd=h @average_instructor.evaluator.try(:staff_with_rank)

@@ -424,7 +424,7 @@
     .col-sm-2.control-label
       = f.label t 'average_instructor.evaluator_id', for: :evaluator_id
     .col-md-8
-      = f.collection_select :evaluator_id, Staff.joins(:positions).where('positions.name!=?', 'Jurulatih').order(rank_id: :asc, name: :asc), :id, :staff_with_rank,{ include_blank: (t 'select')},{class: 'selectpicker mandatory', "data-width"=> "300px"}
+      = f.collection_select :evaluator_id, Staff.joins(:positions).where('positions.name!=?', 'Jurulatih').order(rank_id: :asc, name: :asc), :id, :staff_with_rank,{ include_blank: (t 'select'), selected: current_user.userable_id},{class: 'selectpicker mandatory', "data-width"=> "300px"}
  
 :javascript
 
