@@ -1850,6 +1850,10 @@ en:
     title2: Title
     objective: Objective
     delivery_type: Delivery Type
+    start_at: Start at
+    end_at: End at
+    time: Time
+    duration: Duration
     details: Details
     instrument: "This instrument contains five dimension of weightages as listed below:"
     dimension: Dimension
