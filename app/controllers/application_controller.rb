@@ -37,7 +37,14 @@ class ApplicationController < ActionController::Base
   end
 
   def after_sign_out_path_for(resource)
-    "http://#{request.host}:3000/logout"
+    #"http://#{request.host}:3000/logout"
+    #related pages : static_pages/dashboard.html.haml, static_pages/home.html.haml & static_pages_controller.rb
+    # TODO - to revise below : Temporary solution as of 1 Sept 2016 (same temp solution as static_pages/home.html.haml)
+    if Page.find(1).college.code=="kskbjb"
+      "http://#{request.host}:3000/logout"
+    elsif Page.find(1).college.code=="amsas"
+      root_path
+    end
   end
 
   def setup_college_scope

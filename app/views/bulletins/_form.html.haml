@@ -16,13 +16,13 @@
     .col-sm-2.control-label
       = f.label t 'buletin.posted_by', for: :postedby_id
     .col-md-5
-      = f.collection_select :postedby_id, Staff.all, :id, :name, {:include_blank => true}, {class: 'selectpicker', "data-width"=>"300px"}
+      = f.collection_select :postedby_id, Staff.all.order(rank_id: :asc, name: :asc), :id, :staff_with_rank, {:include_blank => (t 'select'), :selected => current_user.userable_id}, {class: 'selectpicker', "data-width"=>"300px"}
 		  
   .form-group
     .col-sm-2.control-label
       = f.label t 'buletin.publish_date', for: :publishdt
     .col-md-3
-      = f.text_field :publishdt, class: 'form-control mandatory date_picker'
+      = f.text_field :publishdt, value: @bulletin.publishdt.try(:strftime, '%d-%m-%Y'), class: 'form-control mandatory date_picker_reverse'
 	  
   .form-group
     .col-sm-2.control-label
