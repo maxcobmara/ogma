@@ -1,0 +1,18 @@
+- model_class = AverageInstructor
+.page-header
+  %h1= t 'average_instructor.edit'
+= render 'shared/flashes'
+
+.row
+  = form_for [:staff, @average_instructor],  :html => { :class => 'edit_form form-horizontal' } do |f| 
+    = render 'shared/error_messages', object: f.object
+    = render :partial => 'form', :locals => {:f => f}
+
+    .row
+      .col-md-7.col-md-offset-3
+        .form-group
+          .col-md-1
+            = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), staff_average_instructor_path, :class => 'btn btn-default'
+          .col-md-2.col-md-offset-1
+            /.div{style: "margin-left:-40px;"}
+            = f.submit t('update'), class: "btn btn-primary"	 

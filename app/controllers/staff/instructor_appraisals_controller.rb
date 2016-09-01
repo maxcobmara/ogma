@@ -32,10 +32,10 @@ class Staff::InstructorAppraisalsController < ApplicationController
     respond_to do |format|
       if @instructor_appraisal.save
         format.html { redirect_to staff_instructor_appraisals_url, notice: (t 'instructor_appraisal.title')+(t 'actions.updated')  }
-        format.json { render action: 'show', status: :created, location: @rank }
+        format.json { render action: 'show', status: :created, location: @instructor_appraisal }
       else
         format.html { render action: 'new' }
-        format.json { render json: @rank.errors, status: :unprocessable_entity }
+        format.json { render json: @instructor_appraisal.errors, status: :unprocessable_entity }
       end
     end
   end

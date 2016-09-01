@@ -1835,6 +1835,93 @@ en:
     prepared: Prepared by
     from: of
     marks: Marks
+    
+  average_instructor:
+    title: Evaluation & Average Score Analysis for Instructor
+    list: Evaluation & Average Score Analysis for Instructor Listing 
+    new: New Evaluation & Average Score Analysis for Instructor
+    edit: Edit Evaluation & Average Score Analysis for Instructor
+    form_title1: Evaluation & Average Score Analysis 
+    form_title2: for Instructor Form
+    instructor_id: Instructor
+    programme_id: Programme
+    evaluator_id: Evaluating Officer
+    evaluate_date: Evaluation Date
+    title2: Title
+    objective: Objective
+    delivery_type: Delivery Type
+    details: Details
+    instrument: "This instrument contains five dimension of weightages as listed below:"
+    dimension: Dimension
+    preparation: Preparation
+    delivery: Delivery
+    usage: Usage
+    verification: Verification
+    general_teaching_technique: General Teaching Technique
+    instructions: Instructions
+    instruction1: Tick / at related score according to provided scale
+    instruction2: Include review where appropiate
+    scale: Measurement Scale
+    excellent: Excellent
+    good: Baik
+    average: Average
+    weak: Weak
+    very_weak: Very Weak
+    part: Part
+    before_session: Before Teaching Session
+    during_session: During Teaching Session
+    obtained_score: Obtained score
+    score: Score
+    review: Review
+    pbq1: Neat appearance
+    pbq2: Create comfortable environment
+    pbq3: Equiped with teaching material
+    pbq4: Ensure equipment adequate and functioning well 
+    pdq1: Greeting
+    pdq2: Makes student comfortable and check attendance
+    pdq3: Introduce topic / title clearly
+    pdq4: Provides overview
+    pdq5: Explain objective / result
+    dq1: Revise previous lesson and relates it to the lesson to be taught
+    dq2: Content delivered in a logic sequence
+    dq3: Theory / practical lesson conducted by various appropriate method
+    dq4: Deliver lesson directly and 
+    dq5: Teaching at student ability level
+    dq6: Highlight on important matter
+    dq7: Highlight on security aspects
+    dq8: Giving relevant examples
+    dq9: Involve student in learning activitiesMelibatkan pelajar dalam aktiviti pembelajaran
+    dq10: Maintain eye contact
+    dq11: Using appropiate and clear language
+    dq12: Limit content appropiately
+    uq1: Student use important things
+    uq2: Correct student mistakes immediately
+    uq3: Level of understanding always chekc
+    uq4: Ensure purpose of teaching achieved
+    vq1: Evaluation conducted at a suitable time.
+    vq2: Explain students task clearly
+    vq3: Evaluation carried out based on content
+    vq4: State the evaluation criteria
+    vq5: Able to measure purpose of teaching
+    gttq1: Follow lesson plan
+    gttq2: Speaks well
+    gttq3: Control emotions while teaching
+    gttq4: Distribute teaching time correctly
+    gttq5: Get students understanding
+    gttq6: Using the techniques of good questions
+    gttq7: Using BBM correctly
+    gttq8: Shows mastery of the topic taught
+    gttq9: Student always follow lessons
+    evaluation_summary: Evaluation Summary
+    performance_component: Performance Component
+    max_score: Max Score
+    weightage: Weightage
+    weightage2: Weightage
+    percent: Percent
+    score_range: Score Range
+    grade: Grade
+    performance: Performance
+    evaluated_instructor: Evaluated Instructor
 
   asset:
     title: Assets

@@ -1,0 +1,35 @@
+- model_class = AverageInstructor
+.page-header
+  %h1=t 'average_instructor.title'
+= render 'shared/flashes'
+
+.row
+  .col-md-offset-1
+    / Nav tabs
+    %ul.nav.nav-tabs
+      %li.active=link_to (t 'average_instructor.details'), "#details", "data-toggle" => "tab"
+      
+    .tab-content{style:"padding-top:1em"}
+      .col-md-8.col-md-offset-1
+        %dl.dl-horizontal
+          = render 'tab_info'
+        %br
+      
+      #details.tab-pane.active
+        .col-md-8.col-md-offset-1
+          = render 'tab_appraisal'
+          
+.row
+  .col-md-6.col-md-offset-3
+    %hr
+    .form-actions
+      = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), staff_average_instructors_path, :class => 'btn btn-default'
+      = link_to content_tag(:i, "", class: "fa fa-file-pdf-o"), averageinstructor_evaluation_staff_average_instructor_path(@average_instructor, format: "pdf"), class: "btn btn-default", "data-toggle" => "tooltip", title: t('average_instructor.title')
+      - permitted_to? :update, :staff_average_instructors do
+        = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('.edit', :default => t("helpers.links.edit")), edit_staff_average_instructor_path(@average_instructor),  :class => 'btn btn-primary' 
+      - permitted_to? :manage, :staff_average_instructors do
+        = link_to content_tag(:i, "", :class => "fa fa-trash-o icon-white") + " " + t('.destroy', :default => t("helpers.links.destroy")), |
+        staff_average_instructor_path(@average_instructor),                                                                                                    |
+        :method => 'delete',                                                                                                           |
+        :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },                   |
+        :class => 'btn btn-danger'

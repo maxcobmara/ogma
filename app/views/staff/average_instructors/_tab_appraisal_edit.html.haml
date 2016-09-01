@@ -1,0 +1,1531 @@
+.col-md-10.col-md-offset-1
+  .col-md-4.col-md-offset-2
+    %table.table.table-bordered.table-sm
+      %head
+        %tr.warning
+          %th=t 'average_instructor.dimension'
+          %th=t 'average_instructor.weightage'
+      %body
+        %tr
+          %td="A. "+(t 'average_instructor.preparation').upcase
+          %td.centre 25 %
+        %tr
+          %td="B. "+(t 'average_instructor.delivery').upcase
+          %td.centre 30 %
+        %tr
+          %td="C. "+(t 'average_instructor.usage').upcase
+          %td.centre 5 %
+        %tr
+          %td="D. "+(t 'average_instructor.verification').upcase
+          %td.centre 20 %
+        %tr
+          %td="E. "+(t 'average_instructor.general_teaching_technique').upcase
+          %td.centre 20 %
+          
+.col-md-9.col-md-offset-1         
+  .row
+    %b=t('average_instructor.instructions')
+    %ol
+      %li=t('average_instructor.instruction1')
+      %li=t('average_instructor.instruction2')
+      
+  %table.table.table-bordered.table-condensed.bg-warning
+    %tr
+      %th=t('average_instructor.scale')
+      %td="5 : "+(t 'average_instructor.excellent')
+      %td="4 : "+(t 'average_instructor.good')
+      %td="3 : "+(t 'average_instructor.average')
+      %td="2 : "+(t 'average_instructor.weak')
+      %td="1 : "+(t 'average_instructor.very_weak')
+ 
+.col-md-9.col-md-offset-1
+  %table.table.table-bordered.table-condensed
+    %tr.bg-info
+      %th{:width=>"400px;", :rowspan=> 2}=(t 'average_instructor.part').upcase+" A : "+(t 'average_instructor.preparation').upcase
+      %th.centre{:colspan=>"5"}= t 'average_instructor.score'
+      %th{:width=>"350px;", :rowspan=> 2}=(t 'average_instructor.review').upcase
+    %tr.bg-info
+      %th 5
+      %th 4
+      %th 3
+      %th 2
+      %th 1
+    %tr.active
+      /{style: 'background-color: #F0F0F0;'}
+      %th{:colspan=>"7"}=(t 'average_instructor.before_session')
+    %tr
+      %td="1.  "+(t 'average_instructor.pbq1')
+      - 5.downto(1).each do |count|
+        %td= f.radio_button :pbq1,"#{count}", class: 'a1'
+      %td{:width=>"20px"}=f.text_field :pbq1review, class: 'form-control'
+    %tr
+      %td="2.  "+(t 'average_instructor.pbq2')
+      - 5.downto(1).each do |count|
+        %td= f.radio_button :pbq2,"#{count}", class: 'a2'
+      %td{:width=>"20px"}=f.text_field :pbq2review, class: 'form-control'
+    %tr
+      %td="3.  "+(t 'average_instructor.pbq3')
+      - 5.downto(1).each do |count|
+        %td= f.radio_button :pbq3,"#{count}", class: 'a3'
+      %td{:width=>"20px"}=f.text_field :pbq3review, class: 'form-control'
+    %tr
+      %td="4.  "+(t 'average_instructor.pbq4')
+      - 5.downto(1).each do |count|
+        %td= f.radio_button :pbq4,"#{count}", class: 'a4'
+      %td{:width=>"20px"}=f.text_field :pbq4review, class: 'form-control'
+
+    /////   
+    %tr.active
+      /{style: 'background-color: #F0F0F0;'}
+      %th{:colspan=>"7"}=(t 'average_instructor.during_session')
+    %tr
+      %td="1.  "+(t 'average_instructor.pdq1')
+      - 5.downto(1).each do |count|
+        %td= f.radio_button :pdq1,"#{count}", class: 'a5'
+      %td{:width=>"20px"}=f.text_field :pdq1review, class: 'form-control'
+    %tr
+      %td="2.  "+(t 'average_instructor.pbq2')
+      - 5.downto(1).each do |count|
+        %td= f.radio_button :pdq2,"#{count}",class: 'a6'
+      %td{:width=>"20px"}=f.text_field :pdq2review, class: 'form-control'
+    %tr
+      %td="3.  "+(t 'average_instructor.pbq3')
+      - 5.downto(1).each do |count|
+        %td= f.radio_button :pdq3,"#{count}", class: 'a7'
+      %td{:width=>"20px"}=f.text_field :pdq3review, class: 'form-control'
+    %tr
+      %td="4.  "+(t 'average_instructor.pdq4')
+      - 5.downto(1).each do |count|
+        %td= f.radio_button :pdq4,"#{count}", class: 'a8'
+      %td{:width=>"20px"}=f.text_field :pdq4review, class: 'form-control'
+    %tr
+      %td="5.  "+(t 'average_instructor.pdq5')
+      - 5.downto(1).each do |count|
+        %td= f.radio_button :pdq5,"#{count}", class: 'a9'
+      %td{:width=>"20px"}=f.text_field :pdq5review, class: 'form-control'
+    %tr
+      %td
+      %th{colspan: 3}=t('average_instructor.obtained_score')
+      %td{width: '50px'}=text_field_tag "total_part_a"
+      %td / 45
+      %td
+    /////end of part A
+
+    %tr.bg-info
+      %th{:width=>"400px;", :rowspan=> 2}=(t 'average_instructor.part').upcase+" B : "+(t 'average_instructor.delivery').upcase
+      %th.centre{:colspan=>"5"}= t 'average_instructor.score'
+      %th{:width=>"350px;", :rowspan=> 2}=(t 'average_instructor.review').upcase
+    %tr.bg-info
+      %th 5
+      %th 4
+      %th 3
+      %th 2
+      %th 1
+    %tr
+      %td="1.  "+(t 'average_instructor.dq1')
+      - 5.downto(1).each do |count|
+        %td= f.radio_button :dq1,"#{count}", class: 'b1'
+      %td{:width=>"20px"}=f.text_field :dq1review, class: 'form-control'
+    %tr
+      %td="2.  "+(t 'average_instructor.dq2')
+      - 5.downto(1).each do |count|
+        %td= f.radio_button :dq2,"#{count}", class: 'b2'
+      %td{:width=>"20px"}=f.text_field :dq2review, class: 'form-control'
+    %tr
+      %td="3.  "+(t 'average_instructor.dq3')
+      - 5.downto(1).each do |count|
+        %td= f.radio_button :dq3,"#{count}", class: 'b3'
+      %td{:width=>"20px"}=f.text_field :dq3review, class: 'form-control'
+    %tr
+      %td="4.  "+(t 'average_instructor.dq4')
+      - 5.downto(1).each do |count|
+        %td= f.radio_button :dq4,"#{count}", class: 'b4'
+      %td{:width=>"20px"}=f.text_field :dq4review, class: 'form-control'
+    %tr
+      %td="5.  "+(t 'average_instructor.dq5')
+      - 5.downto(1).each do |count|
+        %td= f.radio_button :dq5,"#{count}", class: 'b5'
+      %td{:width=>"20px"}=f.text_field :dq5review, class: 'form-control'
+    %tr
+      %td="6.  "+(t 'average_instructor.dq6')
+      - 5.downto(1).each do |count|
+        %td= f.radio_button :dq6,"#{count}", class: 'b6'
+      %td{:width=>"20px"}=f.text_field :dq6review, class: 'form-control'
+    %tr
+      %td="7.  "+(t 'average_instructor.dq7')
+      - 5.downto(1).each do |count|
+        %td= f.radio_button :dq7,"#{count}", class: 'b7'
+      %td{:width=>"20px"}=f.text_field :dq7review, class: 'form-control'
+    %tr
+      %td="8.  "+(t 'average_instructor.dq8')
+      - 5.downto(1).each do |count|
+        %td= f.radio_button :dq8,"#{count}", class: 'b8'
+      %td{:width=>"20px"}=f.text_field :dq8review, class: 'form-control'
+    %tr
+      %td="9.  "+(t 'average_instructor.dq9')
+      - 5.downto(1).each do |count|
+        %td= f.radio_button :dq9,"#{count}", class: 'b9'
+      %td{:width=>"20px"}=f.text_field :dq9review, class: 'form-control'
+    %tr
+      %td="10.  "+(t 'average_instructor.dq10')
+      - 5.downto(1).each do |count|
+        %td= f.radio_button :dq10,"#{count}", class: 'b10'
+      %td{:width=>"20px"}=f.text_field :dq10review, class: 'form-control'
+    %tr
+      %td="11.  "+(t 'average_instructor.dq11')
+      - 5.downto(1).each do |count|
+        %td= f.radio_button :dq11,"#{count}", class: 'b11'
+      %td{:width=>"20px"}=f.text_field :dq11review, class: 'form-control'
+    %tr
+      %td="12.  "+(t 'average_instructor.dq12')
+      - 5.downto(1).each do |count|
+        %td= f.radio_button :dq12,"#{count}", class: 'b12'
+      %td{:width=>"20px"}=f.text_field :dq12review, class: 'form-control'
+    %tr
+      %td
+      %th{colspan: 3}=t('average_instructor.obtained_score')
+      %td{width: '50px'}=text_field_tag "total_part_b"
+      %td / 60
+      %td
+    ///////end of part B
+    
+    
+    %tr.bg-info
+      %th{:width=>"400px;", :rowspan=> 2}=(t 'average_instructor.part').upcase+" C : "+(t 'average_instructor.usage').upcase
+      %th.centre{:colspan=>"5"}= t 'average_instructor.score'
+      %th{:width=>"350px;", :rowspan=> 2}=(t 'average_instructor.review').upcase
+    %tr.bg-info
+      %th 5
+      %th 4
+      %th 3
+      %th 2
+      %th 1
+    %tr
+      %td="1.  "+(t 'average_instructor.uq1')
+      - 5.downto(1).each do |count|
+        %td= f.radio_button :uq1,"#{count}", class: 'c1'
+      %td{:width=>"20px"}=f.text_field :uq1review, class: 'form-control'
+    %tr
+      %td="2.  "+(t 'average_instructor.uq2')
+      - 5.downto(1).each do |count|
+        %td= f.radio_button :uq2,"#{count}", class: 'c2'
+      %td{:width=>"20px"}=f.text_field :uq2review, class: 'form-control'
+    %tr
+      %td="3.  "+(t 'average_instructor.uq3')
+      - 5.downto(1).each do |count|
+        %td= f.radio_button :uq3,"#{count}", class: 'c3'
+      %td{:width=>"20px"}=f.text_field :uq3review, class: 'form-control'
+    %tr
+      %td="4.  "+(t 'average_instructor.uq4')
+      - 5.downto(1).each do |count|
+        %td= f.radio_button :uq4,"#{count}", class: 'c4'
+      %td{:width=>"20px"}=f.text_field :uq4review, class: 'form-control'
+    %tr
+      %td
+      %th{colspan: 3}=t('average_instructor.obtained_score')
+      %td{width: '50px'}=text_field_tag "total_part_c"
+      %td / 20
+      %td      
+    ///end of part C
+    
+    
+    %tr.bg-info
+      %th{:width=>"400px;", :rowspan=> 2}=(t 'average_instructor.part').upcase+" D : "+(t 'average_instructor.verification').upcase
+      %th.centre{:colspan=>"5"}= t 'average_instructor.score'
+      %th{:width=>"350px;", :rowspan=> 2}=(t 'average_instructor.review').upcase
+    %tr.bg-info
+      %th 5
+      %th 4
+      %th 3
+      %th 2
+      %th 1
+    %tr
+      %td="1.  "+(t 'average_instructor.vq1')
+      - 5.downto(1).each do |count|
+        %td= f.radio_button :vq1,"#{count}", class: 'd1'
+      %td{:width=>"20px"}=f.text_field :vq1review, class: 'form-control'
+    %tr
+      %td="2.  "+(t 'average_instructor.vq2')
+      - 5.downto(1).each do |count|
+        %td= f.radio_button :vq2,"#{count}", class: 'd2'
+      %td{:width=>"20px"}=f.text_field :vq2review, class: 'form-control'
+    %tr
+      %td="3.  "+(t 'average_instructor.vq3')
+      - 5.downto(1).each do |count|
+        %td= f.radio_button :vq3,"#{count}", class: 'd3'
+      %td{:width=>"20px"}=f.text_field :vq3review, class: 'form-control'
+    %tr
+      %td="4.  "+(t 'average_instructor.vq4')
+      - 5.downto(1).each do |count|
+        %td= f.radio_button :vq4,"#{count}", class: 'd4'
+      %td{:width=>"20px"}=f.text_field :vq4review, class: 'form-control'
+    %tr
+      %td="5.  "+(t 'average_instructor.vq5')
+      - 5.downto(1).each do |count|
+        %td= f.radio_button :vq5,"#{count}", class: 'd5'
+      %td{:width=>"20px"}=f.text_field :vq5review, class: 'form-control'
+    %tr
+      %td
+      %th{colspan: 3}=t('average_instructor.obtained_score')
+      %td{width: '50px'}=text_field_tag "total_part_d"
+      %td / 25
+      %td
+    /// end of part D
+    
+    %tr.bg-info
+      %th{:width=>"400px;", :rowspan=> 2}=(t 'average_instructor.part').upcase+" E : "+(t 'average_instructor.general_teaching_technique').upcase
+      %th.centre{:colspan=>"5"}= t 'average_instructor.score'
+      %th{:width=>"350px;", :rowspan=> 2}=(t 'average_instructor.review').upcase
+    %tr.bg-info
+      %th 5
+      %th 4
+      %th 3
+      %th 2
+      %th 1
+    %tr
+      %td="1.  "+(t 'average_instructor.gttq1')
+      - 5.downto(1).each do |count|
+        %td= f.radio_button :gttq1,"#{count}", class: 'e1'
+      %td{:width=>"20px"}=f.text_field :gttq1review, class: 'form-control'
+    %tr
+      %td="2.  "+(t 'average_instructor.gttq2')
+      - 5.downto(1).each do |count|
+        %td= f.radio_button :gttq2,"#{count}", class: 'e2'
+      %td{:width=>"20px"}=f.text_field :gttq2review, class: 'form-control'
+    %tr
+      %td="3.  "+(t 'average_instructor.gttq3')
+      - 5.downto(1).each do |count|
+        %td= f.radio_button :gttq3,"#{count}", class: 'e3'
+      %td{:width=>"20px"}=f.text_field :gttq3review, class: 'form-control'
+    %tr
+      %td="4.  "+(t 'average_instructor.gttq4')
+      - 5.downto(1).each do |count|
+        %td= f.radio_button :gttq4,"#{count}", class: 'e4'
+      %td{:width=>"20px"}=f.text_field :gttq4review, class: 'form-control'
+    %tr
+      %td="5.  "+(t 'average_instructor.gttq5')
+      - 5.downto(1).each do |count|
+        %td= f.radio_button :gttq5,"#{count}", class: 'e5'
+      %td{:width=>"20px"}=f.text_field :gttq5review, class: 'form-control'
+    %tr
+      %td="6.  "+(t 'average_instructor.gttq6')
+      - 5.downto(1).each do |count|
+        %td= f.radio_button :gttq6,"#{count}", class: 'e6'
+      %td{:width=>"20px"}=f.text_field :gttq6review, class: 'form-control'
+    %tr
+      %td="7.  "+(t 'average_instructor.gttq7')
+      - 5.downto(1).each do |count|
+        %td= f.radio_button :gttq7,"#{count}", class: 'e7'
+      %td{:width=>"20px"}=f.text_field :gttq7review, class: 'form-control'
+    %tr
+      %td="8.  "+(t 'average_instructor.gttq8')
+      - 5.downto(1).each do |count|
+        %td= f.radio_button :gttq8,"#{count}", class: 'e8'
+      %td{:width=>"20px"}=f.text_field :gttq8review, class: 'form-control'
+    %tr
+      %td="9.  "+(t 'average_instructor.gttq9')
+      - 5.downto(1).each do |count|
+        %td= f.radio_button :gttq9,"#{count}", class: 'e9'
+      %td{:width=>"20px"}=f.text_field :gttq9review, class: 'form-control'    
+    %tr
+      %td
+      %th{colspan: 3}=t('average_instructor.obtained_score')
+      %td{width: '50px'}=text_field_tag "total_part_e"
+      %td / 45
+      %td      
+      
+.col-md-6.col-md-offset-1   
+  %b=t('average_instructor.evaluation_summary')
+  %table.table.table-bordered.table-condensed
+    %tr.warning
+      %th{colspan: 2}=t('average_instructor.performance_component')
+      %th.centre=((t 'average_instructor.max_score')+'<br> (x)').html_safe
+      %th.centre=((t 'average_instructor.obtained_score')+'<br> (y)').html_safe
+      %th.centre=((t 'average_instructor.weightage')+'<br> (w)').html_safe
+      %th=((t 'average_instructor.percent')+'<br><u>y</u> X w<br>x').html_safe
+    %tr
+      %th A
+      %td=t('average_instructor.preparation').upcase
+      %td.centre 45
+      %td.col-md-1=text_field_tag "total_part_a_summary"
+      %td.centre 25
+      %td.col-md-2=text_field_tag "total_part_a_percent"
+    %tr
+      %th B
+      %td=t('average_instructor.delivery').upcase
+      %td.centre 60
+      %td.col-md-1=text_field_tag "total_part_b_summary"
+      %td.centre 30
+      %td.col-md-2=text_field_tag "total_part_b_percent"
+    %tr
+      %th C
+      %td=t('average_instructor.usage').upcase
+      %td.centre 20
+      %td.col-md-1=text_field_tag "total_part_c_summary"
+      %td.centre 5
+      %td.col-md-2=text_field_tag "total_part_c_percent"
+    %tr
+      %th D
+      %td=t('average_instructor.verification').upcase
+      %td.centre 25
+      %td.col-md-1=text_field_tag "total_part_d_summary"
+      %td.centre 20
+      %td.col-md-2=text_field_tag "total_part_d_percent"
+    %tr
+      %th E
+      %td=t('average_instructor.general_teaching_technique').upcase
+      %td.centre 45
+      %td.col-md-1=text_field_tag "total_part_e_summary"
+      %td.centre 20
+      %td.col-md-2=text_field_tag "total_part_e_percent"
+
+  %table.table.table-bordered.table-condensed
+    %tr.warning
+      %th.centre=t('average_instructor.score_range')
+      %th.centre=t('average_instructor.grade')
+      %th.centre=t('average_instructor.performance')
+    %tr
+      %td.centre 85 - 100
+      %td.centre A
+      %td.centre=t('average_instructor.excellent')
+    %tr
+      %td.centre 70 - 84
+      %td.centre B
+      %td.centre=t('average_instructor.good')
+    %tr
+      %td.centre 50 - 69
+      %td.centre C
+      %td.centre=t('average_instructor.average')
+    %tr
+      %td.centre 40 - 49
+      %td.centre D
+      %td.centre=t('average_instructor.weak')
+    %tr
+      %td.centre < 40
+      %td.centre E
+      %td.centre=t('average_instructor.very_weak')
+      
+  %table.table.table-condensed
+    %tr
+      %td=t('average_instructor.grade').upcase
+      %td=text_field_tag "final_grade"
+      %td=t('average_instructor.obtained_score').upcase
+      %td=text_field_tag "total_score"
+      
+
+ 
+  .form-group
+    .col-sm-2.control-label
+      = f.label t 'average_instructor.review', for: :evaluator_id
+    .col-md-8
+      = f.text_area :review, size: '5x10'
+    
+  .form-group
+    .col-sm-2.control-label
+      = f.label t 'average_instructor.evaluator_id', for: :evaluator_id
+    .col-md-8
+      = f.collection_select :evaluator_id, Staff.joins(:positions).where('positions.name!=?', 'Jurulatih').order(rank_id: :asc, name: :asc), :id, :staff_with_rank,{ include_blank: (t 'select')},{class: 'selectpicker mandatory', "data-width"=> "300px"}
+ 
+:javascript
+
+  $(document).ready(function(){
+    $('.edit_form input[type=radio]').click(function(){
+      
+      /*Part A*/
+      
+      var total_a=document.getElementById('total_part_a');
+      var total_a_summary=document.getElementById('total_part_a_summary')
+      var total_a_percent=document.getElementById('total_part_a_percent')
+      var sum_a=0
+      var a1checkbox = document.getElementsByClassName('a1');
+      var a2checkbox = document.getElementsByClassName('a2');
+      var a3checkbox = document.getElementsByClassName('a3');
+      var a4checkbox = document.getElementsByClassName('a4');
+      var a5checkbox = document.getElementsByClassName('a5');
+      var a6checkbox = document.getElementsByClassName('a6');
+      var a7checkbox = document.getElementsByClassName('a7');
+      var a8checkbox = document.getElementsByClassName('a8');
+      var a9checkbox = document.getElementsByClassName('a9');
+    
+      if(a1checkbox[0].checked==true)
+      {sum_a+=5}
+      else if (a1checkbox[1].checked==true)
+      {sum_a+=4}
+      else if (a1checkbox[2].checked==true)
+      {sum_a+=3}
+      else if (a1checkbox[3].checked==true)
+      {sum_a+=2}
+      else if (a1checkbox[4].checked==true)
+      {sum_a+=1}
+      
+      if(a2checkbox[0].checked==true)
+      {sum_a+=5}
+      else if (a2checkbox[1].checked==true)
+      {sum_a+=4}
+      else if (a2checkbox[2].checked==true)
+      {sum_a+=3}
+      else if (a2checkbox[3].checked==true)
+      {sum_a+=2}
+      else if (a2checkbox[4].checked==true)
+      {sum_a+=1}
+      
+      if(a3checkbox[0].checked==true)
+      {sum_a+=5}
+      else if (a3checkbox[1].checked==true)
+      {sum_a+=4}
+      else if (a3checkbox[2].checked==true)
+      {sum_a+=3}
+      else if (a3checkbox[3].checked==true)
+      {sum_a+=2}
+      else if (a3checkbox[4].checked==true)
+      {sum_a+=1}
+      
+      if(a4checkbox[0].checked==true)
+      {sum_a+=5}
+      else if (a4checkbox[1].checked==true)
+      {sum_a+=4}
+      else if (a4checkbox[2].checked==true)
+      {sum_a+=3}
+      else if (a4checkbox[3].checked==true)
+      {sum_a+=2}
+      else if (a4checkbox[4].checked==true)
+      {sum_a+=1}
+      
+      if(a5checkbox[0].checked==true)
+      {sum_a+=5}
+      else if (a5checkbox[1].checked==true)
+      {sum_a+=4}
+      else if (a5checkbox[2].checked==true)
+      {sum_a+=3}
+      else if (a5checkbox[3].checked==true)
+      {sum_a+=2}
+      else if (a5checkbox[4].checked==true)
+      {sum_a+=1}
+      
+      if(a6checkbox[0].checked==true)
+      {sum_a+=5}
+      else if (a6checkbox[1].checked==true)
+      {sum_a+=4}
+      else if (a6checkbox[2].checked==true)
+      {sum_a+=3}
+      else if (a6checkbox[3].checked==true)
+      {sum_a+=2}
+      else if (a6checkbox[4].checked==true)
+      {sum_a+=1}
+      
+      if(a7checkbox[0].checked==true)
+      {sum_a+=5}
+      else if (a7checkbox[1].checked==true)
+      {sum_a+=4}
+      else if (a7checkbox[2].checked==true)
+      {sum_a+=3}
+      else if (a7checkbox[3].checked==true)
+      {sum_a+=2}
+      else if (a7checkbox[4].checked==true)
+      {sum_a+=1}
+      
+      if(a8checkbox[0].checked==true)
+      {sum_a+=5}
+      else if (a8checkbox[1].checked==true)
+      {sum_a+=4}
+      else if (a8checkbox[2].checked==true)
+      {sum_a+=3}
+      else if (a8checkbox[3].checked==true)
+      {sum_a+=2}
+      else if (a8checkbox[4].checked==true)
+      {sum_a+=1}
+      
+      if(a9checkbox[0].checked==true)
+      {sum_a+=5}
+      else if (a9checkbox[1].checked==true)
+      {sum_a+=4}
+      else if (a9checkbox[2].checked==true)
+      {sum_a+=3}
+      else if (a9checkbox[3].checked==true)
+      {sum_a+=2}
+      else if (a9checkbox[4].checked==true)
+      {sum_a+=1}
+      
+      total_a.value=sum_a;
+      total_a_summary.value=sum_a;
+      percent_a=sum_a/45.0*25;
+      total_a_percent.value=percent_a;
+      
+      /*Part B*/
+      
+      var total_b=document.getElementById('total_part_b');
+      var total_b_summary=document.getElementById('total_part_b_summary')
+      var total_b_percent=document.getElementById('total_part_b_percent')
+      var sum_b=0
+      var b1checkbox = document.getElementsByClassName('b1');
+      var b2checkbox = document.getElementsByClassName('b2');
+      var b3checkbox = document.getElementsByClassName('b3');
+      var b4checkbox = document.getElementsByClassName('b4');
+      var b5checkbox = document.getElementsByClassName('b5');
+      var b6checkbox = document.getElementsByClassName('b6');
+      var b7checkbox = document.getElementsByClassName('b7');
+      var b8checkbox = document.getElementsByClassName('b8');
+      var b9checkbox = document.getElementsByClassName('b9');
+      var b10checkbox = document.getElementsByClassName('b10');
+      var b11checkbox = document.getElementsByClassName('b11');
+      var b12checkbox = document.getElementsByClassName('b12');
+    
+      if(b1checkbox[0].checked==true)
+      {sum_b+=5}
+      else if (b1checkbox[1].checked==true)
+      {sum_b+=4}
+      else if (b1checkbox[2].checked==true)
+      {sum_b+=3}
+      else if (b1checkbox[3].checked==true)
+      {sum_b+=2}
+      else if (b1checkbox[4].checked==true)
+      {sum_b+=1}
+      
+      if(b2checkbox[0].checked==true)
+      {sum_b+=5}
+      else if (b2checkbox[1].checked==true)
+      {sum_b+=4}
+      else if (b2checkbox[2].checked==true)
+      {sum_b+=3}
+      else if (b2checkbox[3].checked==true)
+      {sum_b+=2}
+      else if (b2checkbox[4].checked==true)
+      {sum_b+=1}
+      
+      if(b3checkbox[0].checked==true)
+      {sum_b+=5}
+      else if (b3checkbox[1].checked==true)
+      {sum_b+=4}
+      else if (b3checkbox[2].checked==true)
+      {sum_b+=3}
+      else if (b3checkbox[3].checked==true)
+      {sum_b+=2}
+      else if (b3checkbox[4].checked==true)
+      {sum_b+=1}
+      
+      if(b4checkbox[0].checked==true)
+      {sum_b+=5}
+      else if (b4checkbox[1].checked==true)
+      {sum_b+=4}
+      else if (b4checkbox[2].checked==true)
+      {sum_b+=3}
+      else if (b4checkbox[3].checked==true)
+      {sum_b+=2}
+      else if (b4checkbox[4].checked==true)
+      {sum_b+=1}
+      
+      if(b5checkbox[0].checked==true)
+      {sum_b+=5}
+      else if (b5checkbox[1].checked==true)
+      {sum_b+=4}
+      else if (b5checkbox[2].checked==true)
+      {sum_b+=3}
+      else if (b5checkbox[3].checked==true)
+      {sum_b+=2}
+      else if (b5checkbox[4].checked==true)
+      {sum_b+=1}
+      
+      if(b6checkbox[0].checked==true)
+      {sum_b+=5}
+      else if (b6checkbox[1].checked==true)
+      {sum_b+=4}
+      else if (b6checkbox[2].checked==true)
+      {sum_b+=3}
+      else if (b6checkbox[3].checked==true)
+      {sum_b+=2}
+      else if (b6checkbox[4].checked==true)
+      {sum_b+=1}
+      
+      if(b7checkbox[0].checked==true)
+      {sum_b+=5}
+      else if (b7checkbox[1].checked==true)
+      {sum_b+=4}
+      else if (b7checkbox[2].checked==true)
+      {sum_b+=3}
+      else if (b7checkbox[3].checked==true)
+      {sum_b+=2}
+      else if (b7checkbox[4].checked==true)
+      {sum_b+=1}
+      
+      if(b8checkbox[0].checked==true)
+      {sum_b+=5}
+      else if (b8checkbox[1].checked==true)
+      {sum_b+=4}
+      else if (b8checkbox[2].checked==true)
+      {sum_b+=3}
+      else if (b8checkbox[3].checked==true)
+      {sum_b+=2}
+      else if (b8checkbox[4].checked==true)
+      {sum_b+=1}
+      
+      if(b9checkbox[0].checked==true)
+      {sum_b+=5}
+      else if (b9checkbox[1].checked==true)
+      {sum_b+=4}
+      else if (b9checkbox[2].checked==true)
+      {sum_b+=3}
+      else if (b9checkbox[3].checked==true)
+      {sum_b+=2}
+      else if (b9checkbox[4].checked==true)
+      {sum_b+=1}
+      
+      if(b10checkbox[0].checked==true)
+      {sum_b+=5}
+      else if (b10checkbox[1].checked==true)
+      {sum_b+=4}
+      else if (b10checkbox[2].checked==true)
+      {sum_b+=3}
+      else if (b10checkbox[3].checked==true)
+      {sum_b+=2}
+      else if (b10checkbox[4].checked==true)
+      {sum_b+=1}
+     
+      if(b11checkbox[0].checked==true)
+      {sum_b+=5}
+      else if (b11checkbox[1].checked==true)
+      {sum_b+=4}
+      else if (b11checkbox[2].checked==true)
+      {sum_b+=3}
+      else if (b11checkbox[3].checked==true)
+      {sum_b+=2}
+      else if (b11checkbox[4].checked==true)
+      {sum_b+=1}
+      
+      if(b12checkbox[0].checked==true)
+      {sum_b+=5}
+      else if (b12checkbox[1].checked==true)
+      {sum_b+=4}
+      else if (b12checkbox[2].checked==true)
+      {sum_b+=3}
+      else if (b12checkbox[3].checked==true)
+      {sum_b+=2}
+      else if (b12checkbox[4].checked==true)
+      {sum_b+=1}
+     
+      total_b.value=sum_b;
+      total_b_summary.value=sum_b;
+      percent_b=sum_b/60.0*30;
+      total_b_percent.value=percent_b;
+      
+      /*Part C*/
+      
+      var total_c=document.getElementById('total_part_c');
+      var total_c_summary=document.getElementById('total_part_c_summary')
+      var total_c_percent=document.getElementById('total_part_c_percent')
+      var sum_c=0
+      var c1checkbox = document.getElementsByClassName('c1');
+      var c2checkbox = document.getElementsByClassName('c2');
+      var c3checkbox = document.getElementsByClassName('c3');
+      var c4checkbox = document.getElementsByClassName('c4');
+    
+      if(c1checkbox[0].checked==true)
+      {sum_c+=5}
+      else if (c1checkbox[1].checked==true)
+      {sum_c+=4}
+      else if (c1checkbox[2].checked==true)
+      {sum_c+=3}
+      else if (c1checkbox[3].checked==true)
+      {sum_c+=2}
+      else if (c1checkbox[4].checked==true)
+      {sum_c+=1}
+      
+      if(c2checkbox[0].checked==true)
+      {sum_c+=5}
+      else if (c2checkbox[1].checked==true)
+      {sum_c+=4}
+      else if (c2checkbox[2].checked==true)
+      {sum_c+=3}
+      else if (c2checkbox[3].checked==true)
+      {sum_c+=2}
+      else if (c2checkbox[4].checked==true)
+      {sum_c+=1}
+      
+      if(c3checkbox[0].checked==true)
+      {sum_c+=5}
+      else if (c3checkbox[1].checked==true)
+      {sum_c+=4}
+      else if (c3checkbox[2].checked==true)
+      {sum_c+=3}
+      else if (c3checkbox[3].checked==true)
+      {sum_c+=2}
+      else if (c3checkbox[4].checked==true)
+      {sum_c+=1}
+      
+      if(c4checkbox[0].checked==true)
+      {sum_c+=5}
+      else if (c4checkbox[1].checked==true)
+      {sum_c+=4}
+      else if (c4checkbox[2].checked==true)
+      {sum_c+=3}
+      else if (c4checkbox[3].checked==true)
+      {sum_c+=2}
+      else if (c4checkbox[4].checked==true)
+      {sum_c+=1}
+     
+      total_c.value=sum_c;
+      total_c_summary.value=sum_c;
+      percent_c=sum_c/20.0*5;
+      total_c_percent.value=percent_c;
+      
+      /*Part D*/
+      
+      var total_d=document.getElementById('total_part_d');
+      var total_d_summary=document.getElementById('total_part_d_summary')
+      var total_d_percent=document.getElementById('total_part_d_percent')
+      var sum_d=0
+      var d1checkbox = document.getElementsByClassName('d1');
+      var d2checkbox = document.getElementsByClassName('d2');
+      var d3checkbox = document.getElementsByClassName('d3');
+      var d4checkbox = document.getElementsByClassName('d4');
+      var d5checkbox = document.getElementsByClassName('d5');
+    
+      if(d1checkbox[0].checked==true)
+      {sum_d+=5}
+      else if (d1checkbox[1].checked==true)
+      {sum_d+=4}
+      else if (d1checkbox[2].checked==true)
+      {sum_d+=3}
+      else if (d1checkbox[3].checked==true)
+      {sum_d+=2}
+      else if (d1checkbox[4].checked==true)
+      {sum_d+=1}
+      
+      if(d2checkbox[0].checked==true)
+      {sum_d+=5}
+      else if (d2checkbox[1].checked==true)
+      {sum_d+=4}
+      else if (d2checkbox[2].checked==true)
+      {sum_d+=3}
+      else if (d2checkbox[3].checked==true)
+      {sum_d+=2}
+      else if (d2checkbox[4].checked==true)
+      {sum_d+=1}
+      
+      if(d3checkbox[0].checked==true)
+      {sum_d+=5}
+      else if (d3checkbox[1].checked==true)
+      {sum_d+=4}
+      else if (d3checkbox[2].checked==true)
+      {sum_d+=3}
+      else if (d3checkbox[3].checked==true)
+      {sum_d+=2}
+      else if (d3checkbox[4].checked==true)
+      {sum_d+=1}
+      
+      if(d4checkbox[0].checked==true)
+      {sum_d+=5}
+      else if (d4checkbox[1].checked==true)
+      {sum_d+=4}
+      else if (d4checkbox[2].checked==true)
+      {sum_d+=3}
+      else if (d4checkbox[3].checked==true)
+      {sum_d+=2}
+      else if (d4checkbox[4].checked==true)
+      {sum_d+=1}
+      
+      if(d5checkbox[0].checked==true)
+      {sum_d+=5}
+      else if (d5checkbox[1].checked==true)
+      {sum_d+=4}
+      else if (d5checkbox[2].checked==true)
+      {sum_d+=3}
+      else if (d5checkbox[3].checked==true)
+      {sum_d+=2}
+      else if (d5checkbox[4].checked==true)
+      {sum_d+=1}
+      
+      total_d.value=sum_d;
+      total_d_summary.value=sum_d;
+      percent_d=sum_d/25.0*20;
+      total_d_percent.value=percent_d;
+  
+      /*Part E*/
+      
+      var total_e=document.getElementById('total_part_e');
+      var total_e_summary=document.getElementById('total_part_e_summary')
+      var total_e_percent=document.getElementById('total_part_e_percent')
+      var sum_e=0
+      var e1checkbox = document.getElementsByClassName('e1');
+      var e2checkbox = document.getElementsByClassName('e2');
+      var e3checkbox = document.getElementsByClassName('e3');
+      var e4checkbox = document.getElementsByClassName('e4');
+      var e5checkbox = document.getElementsByClassName('e5');
+      var e6checkbox = document.getElementsByClassName('e6');
+      var e7checkbox = document.getElementsByClassName('e7');
+      var e8checkbox = document.getElementsByClassName('e8');
+      var e9checkbox = document.getElementsByClassName('e9');
+    
+      if(e1checkbox[0].checked==true)
+      {sum_e+=5}
+      else if (e1checkbox[1].checked==true)
+      {sum_e+=4}
+      else if (e1checkbox[2].checked==true)
+      {sum_e+=3}
+      else if (e1checkbox[3].checked==true)
+      {sum_e+=2}
+      else if (e1checkbox[4].checked==true)
+      {sum_e+=1}
+      
+      if(e2checkbox[0].checked==true)
+      {sum_e+=5}
+      else if (e2checkbox[1].checked==true)
+      {sum_e+=4}
+      else if (e2checkbox[2].checked==true)
+      {sum_e+=3}
+      else if (e2checkbox[3].checked==true)
+      {sum_e+=2}
+      else if (e2checkbox[4].checked==true)
+      {sum_e+=1}
+      
+      if(e3checkbox[0].checked==true)
+      {sum_e+=5}
+      else if (e3checkbox[1].checked==true)
+      {sum_e+=4}
+      else if (e3checkbox[2].checked==true)
+      {sum_e+=3}
+      else if (e3checkbox[3].checked==true)
+      {sum_e+=2}
+      else if (e3checkbox[4].checked==true)
+      {sum_e+=1}
+      
+      if(e4checkbox[0].checked==true)
+      {sum_e+=5}
+      else if (e4checkbox[1].checked==true)
+      {sum_e+=4}
+      else if (e4checkbox[2].checked==true)
+      {sum_e+=3}
+      else if (e4checkbox[3].checked==true)
+      {sum_e+=2}
+      else if (e4checkbox[4].checked==true)
+      {sum_e+=1}
+      
+      if(e5checkbox[0].checked==true)
+      {sum_e+=5}
+      else if (e5checkbox[1].checked==true)
+      {sum_e+=4}
+      else if (e5checkbox[2].checked==true)
+      {sum_e+=3}
+      else if (e5checkbox[3].checked==true)
+      {sum_e+=2}
+      else if (e5checkbox[4].checked==true)
+      {sum_e+=1}
+      
+      if(e6checkbox[0].checked==true)
+      {sum_e+=5}
+      else if (e6checkbox[1].checked==true)
+      {sum_e+=4}
+      else if (e6checkbox[2].checked==true)
+      {sum_e+=3}
+      else if (e6checkbox[3].checked==true)
+      {sum_e+=2}
+      else if (e6checkbox[4].checked==true)
+      {sum_e+=1}
+      
+      if(e7checkbox[0].checked==true)
+      {sum_e+=5}
+      else if (e7checkbox[1].checked==true)
+      {sum_e+=4}
+      else if (e7checkbox[2].checked==true)
+      {sum_e+=3}
+      else if (e7checkbox[3].checked==true)
+      {sum_e+=2}
+      else if (e7checkbox[4].checked==true)
+      {sum_e+=1}
+      
+      if(e8checkbox[0].checked==true)
+      {sum_e+=5}
+      else if (e8checkbox[1].checked==true)
+      {sum_e+=4}
+      else if (e8checkbox[2].checked==true)
+      {sum_e+=3}
+      else if (e8checkbox[3].checked==true)
+      {sum_e+=2}
+      else if (e8checkbox[4].checked==true)
+      {sum_e+=1}
+      
+      if(e9checkbox[0].checked==true)
+      {sum_e+=5}
+      else if (e9checkbox[1].checked==true)
+      {sum_e+=4}
+      else if (e9checkbox[2].checked==true)
+      {sum_e+=3}
+      else if (e9checkbox[3].checked==true)
+      {sum_e+=2}
+      else if (e9checkbox[4].checked==true)
+      {sum_e+=1}
+      
+      total_e.value=sum_e;
+      total_e_summary.value=sum_e;
+      percent_e=sum_e/45.0*20;
+      total_e_percent.value=percent_e;
+      
+      var totalscore=document.getElementById('total_score');
+      var finalgrade=document.getElementById('final_grade');
+      
+      total_all=percent_a+percent_b+percent_c+percent_d+percent_e
+      if(total_all < 40)
+      { grade="E"}
+      else if(total_all > 39 && total_all < 50)
+      { grade="D"}
+      else if(total_all > 49 && total_all < 70)
+      { grade="C"}
+      else if(total_all > 69 && total_all < 85)
+      { grade="B"}
+      else
+      { grade="A"}
+      
+      totalscore.value=total_all;
+      finalgrade.value=grade;
+      
+    });
+  
+    $('.edit_form input[type=radio]').each(function(){
+      
+      /*Part A*/
+      
+      var total_a=document.getElementById('total_part_a');
+      var total_a_summary=document.getElementById('total_part_a_summary')
+      var total_a_percent=document.getElementById('total_part_a_percent')
+      var sum_a=0
+      var a1checkbox = document.getElementsByClassName('a1');
+      var a2checkbox = document.getElementsByClassName('a2');
+      var a3checkbox = document.getElementsByClassName('a3');
+      var a4checkbox = document.getElementsByClassName('a4');
+      var a5checkbox = document.getElementsByClassName('a5');
+      var a6checkbox = document.getElementsByClassName('a6');
+      var a7checkbox = document.getElementsByClassName('a7');
+      var a8checkbox = document.getElementsByClassName('a8');
+      var a9checkbox = document.getElementsByClassName('a9');
+    
+      if(a1checkbox[0].checked==true)
+      {sum_a+=5}
+      else if (a1checkbox[1].checked==true)
+      {sum_a+=4}
+      else if (a1checkbox[2].checked==true)
+      {sum_a+=3}
+      else if (a1checkbox[3].checked==true)
+      {sum_a+=2}
+      else if (a1checkbox[4].checked==true)
+      {sum_a+=1}
+      
+      if(a2checkbox[0].checked==true)
+      {sum_a+=5}
+      else if (a2checkbox[1].checked==true)
+      {sum_a+=4}
+      else if (a2checkbox[2].checked==true)
+      {sum_a+=3}
+      else if (a2checkbox[3].checked==true)
+      {sum_a+=2}
+      else if (a2checkbox[4].checked==true)
+      {sum_a+=1}
+      
+      if(a3checkbox[0].checked==true)
+      {sum_a+=5}
+      else if (a3checkbox[1].checked==true)
+      {sum_a+=4}
+      else if (a3checkbox[2].checked==true)
+      {sum_a+=3}
+      else if (a3checkbox[3].checked==true)
+      {sum_a+=2}
+      else if (a3checkbox[4].checked==true)
+      {sum_a+=1}
+      
+      if(a4checkbox[0].checked==true)
+      {sum_a+=5}
+      else if (a4checkbox[1].checked==true)
+      {sum_a+=4}
+      else if (a4checkbox[2].checked==true)
+      {sum_a+=3}
+      else if (a4checkbox[3].checked==true)
+      {sum_a+=2}
+      else if (a4checkbox[4].checked==true)
+      {sum_a+=1}
+      
+      if(a5checkbox[0].checked==true)
+      {sum_a+=5}
+      else if (a5checkbox[1].checked==true)
+      {sum_a+=4}
+      else if (a5checkbox[2].checked==true)
+      {sum_a+=3}
+      else if (a5checkbox[3].checked==true)
+      {sum_a+=2}
+      else if (a5checkbox[4].checked==true)
+      {sum_a+=1}
+      
+      if(a6checkbox[0].checked==true)
+      {sum_a+=5}
+      else if (a6checkbox[1].checked==true)
+      {sum_a+=4}
+      else if (a6checkbox[2].checked==true)
+      {sum_a+=3}
+      else if (a6checkbox[3].checked==true)
+      {sum_a+=2}
+      else if (a6checkbox[4].checked==true)
+      {sum_a+=1}
+      
+      if(a7checkbox[0].checked==true)
+      {sum_a+=5}
+      else if (a7checkbox[1].checked==true)
+      {sum_a+=4}
+      else if (a7checkbox[2].checked==true)
+      {sum_a+=3}
+      else if (a7checkbox[3].checked==true)
+      {sum_a+=2}
+      else if (a7checkbox[4].checked==true)
+      {sum_a+=1}
+      
+      if(a8checkbox[0].checked==true)
+      {sum_a+=5}
+      else if (a8checkbox[1].checked==true)
+      {sum_a+=4}
+      else if (a8checkbox[2].checked==true)
+      {sum_a+=3}
+      else if (a8checkbox[3].checked==true)
+      {sum_a+=2}
+      else if (a8checkbox[4].checked==true)
+      {sum_a+=1}
+      
+      if(a9checkbox[0].checked==true)
+      {sum_a+=5}
+      else if (a9checkbox[1].checked==true)
+      {sum_a+=4}
+      else if (a9checkbox[2].checked==true)
+      {sum_a+=3}
+      else if (a9checkbox[3].checked==true)
+      {sum_a+=2}
+      else if (a9checkbox[4].checked==true)
+      {sum_a+=1}
+     
+      total_a.value=sum_a;
+      total_a_summary.value=sum_a;
+      percent_a=sum_a/45.0*25;
+      total_a_percent.value=percent_a;
+      
+      /*Part B*/
+      
+      var total_b=document.getElementById('total_part_b');
+      var total_b_summary=document.getElementById('total_part_b_summary')
+      var total_b_percent=document.getElementById('total_part_b_percent')
+      var sum_b=0
+      var b1checkbox = document.getElementsByClassName('b1');
+      var b2checkbox = document.getElementsByClassName('b2');
+      var b3checkbox = document.getElementsByClassName('b3');
+      var b4checkbox = document.getElementsByClassName('b4');
+      var b5checkbox = document.getElementsByClassName('b5');
+      var b6checkbox = document.getElementsByClassName('b6');
+      var b7checkbox = document.getElementsByClassName('b7');
+      var b8checkbox = document.getElementsByClassName('b8');
+      var b9checkbox = document.getElementsByClassName('b9');
+      var b10checkbox = document.getElementsByClassName('b10');
+      var b11checkbox = document.getElementsByClassName('b11');
+      var b12checkbox = document.getElementsByClassName('b12');
+    
+      if(b1checkbox[0].checked==true)
+      {sum_b+=5}
+      else if (b1checkbox[1].checked==true)
+      {sum_b+=4}
+      else if (b1checkbox[2].checked==true)
+      {sum_b+=3}
+      else if (b1checkbox[3].checked==true)
+      {sum_b+=2}
+      else if (b1checkbox[4].checked==true)
+      {sum_b+=1}
+      
+      if(b2checkbox[0].checked==true)
+      {sum_b+=5}
+      else if (b2checkbox[1].checked==true)
+      {sum_b+=4}
+      else if (b2checkbox[2].checked==true)
+      {sum_b+=3}
+      else if (b2checkbox[3].checked==true)
+      {sum_b+=2}
+      else if (b2checkbox[4].checked==true)
+      {sum_b+=1}
+      
+      if(b3checkbox[0].checked==true)
+      {sum_b+=5}
+      else if (b3checkbox[1].checked==true)
+      {sum_b+=4}
+      else if (b3checkbox[2].checked==true)
+      {sum_b+=3}
+      else if (b3checkbox[3].checked==true)
+      {sum_b+=2}
+      else if (b3checkbox[4].checked==true)
+      {sum_b+=1}
+      
+      if(b4checkbox[0].checked==true)
+      {sum_b+=5}
+      else if (b4checkbox[1].checked==true)
+      {sum_b+=4}
+      else if (b4checkbox[2].checked==true)
+      {sum_b+=3}
+      else if (b4checkbox[3].checked==true)
+      {sum_b+=2}
+      else if (b4checkbox[4].checked==true)
+      {sum_b+=1}
+      
+      if(b5checkbox[0].checked==true)
+      {sum_b+=5}
+      else if (b5checkbox[1].checked==true)
+      {sum_b+=4}
+      else if (b5checkbox[2].checked==true)
+      {sum_b+=3}
+      else if (b5checkbox[3].checked==true)
+      {sum_b+=2}
+      else if (b5checkbox[4].checked==true)
+      {sum_b+=1}
+      
+      if(b6checkbox[0].checked==true)
+      {sum_b+=5}
+      else if (b6checkbox[1].checked==true)
+      {sum_b+=4}
+      else if (b6checkbox[2].checked==true)
+      {sum_b+=3}
+      else if (b6checkbox[3].checked==true)
+      {sum_b+=2}
+      else if (b6checkbox[4].checked==true)
+      {sum_b+=1}
+      
+      if(b7checkbox[0].checked==true)
+      {sum_b+=5}
+      else if (b7checkbox[1].checked==true)
+      {sum_b+=4}
+      else if (b7checkbox[2].checked==true)
+      {sum_b+=3}
+      else if (b7checkbox[3].checked==true)
+      {sum_b+=2}
+      else if (b7checkbox[4].checked==true)
+      {sum_b+=1}
+      
+      if(b8checkbox[0].checked==true)
+      {sum_b+=5}
+      else if (b8checkbox[1].checked==true)
+      {sum_b+=4}
+      else if (b8checkbox[2].checked==true)
+      {sum_b+=3}
+      else if (b8checkbox[3].checked==true)
+      {sum_b+=2}
+      else if (b8checkbox[4].checked==true)
+      {sum_b+=1}
+      
+      if(b9checkbox[0].checked==true)
+      {sum_b+=5}
+      else if (b9checkbox[1].checked==true)
+      {sum_b+=4}
+      else if (b9checkbox[2].checked==true)
+      {sum_b+=3}
+      else if (b9checkbox[3].checked==true)
+      {sum_b+=2}
+      else if (b9checkbox[4].checked==true)
+      {sum_b+=1}
+      
+      if(b10checkbox[0].checked==true)
+      {sum_b+=5}
+      else if (b10checkbox[1].checked==true)
+      {sum_b+=4}
+      else if (b10checkbox[2].checked==true)
+      {sum_b+=3}
+      else if (b10checkbox[3].checked==true)
+      {sum_b+=2}
+      else if (b10checkbox[4].checked==true)
+      {sum_b+=1}
+     
+      if(b11checkbox[0].checked==true)
+      {sum_b+=5}
+      else if (b11checkbox[1].checked==true)
+      {sum_b+=4}
+      else if (b11checkbox[2].checked==true)
+      {sum_b+=3}
+      else if (b11checkbox[3].checked==true)
+      {sum_b+=2}
+      else if (b11checkbox[4].checked==true)
+      {sum_b+=1}
+      
+      if(b12checkbox[0].checked==true)
+      {sum_b+=5}
+      else if (b12checkbox[1].checked==true)
+      {sum_b+=4}
+      else if (b12checkbox[2].checked==true)
+      {sum_b+=3}
+      else if (b12checkbox[3].checked==true)
+      {sum_b+=2}
+      else if (b12checkbox[4].checked==true)
+      {sum_b+=1}
+     
+      total_b.value=sum_b;
+      total_b_summary.value=sum_b;
+      percent_b=sum_b/60.0*30;
+      total_b_percent.value=percent_b;
+      
+      /*Part C*/
+      
+      var total_c=document.getElementById('total_part_c');
+      var total_c_summary=document.getElementById('total_part_c_summary')
+      var total_c_percent=document.getElementById('total_part_c_percent')
+      var sum_c=0
+      var c1checkbox = document.getElementsByClassName('c1');
+      var c2checkbox = document.getElementsByClassName('c2');
+      var c3checkbox = document.getElementsByClassName('c3');
+      var c4checkbox = document.getElementsByClassName('c4');
+    
+      if(c1checkbox[0].checked==true)
+      {sum_c+=5}
+      else if (c1checkbox[1].checked==true)
+      {sum_c+=4}
+      else if (c1checkbox[2].checked==true)
+      {sum_c+=3}
+      else if (c1checkbox[3].checked==true)
+      {sum_c+=2}
+      else if (c1checkbox[4].checked==true)
+      {sum_c+=1}
+      
+      if(c2checkbox[0].checked==true)
+      {sum_c+=5}
+      else if (c2checkbox[1].checked==true)
+      {sum_c+=4}
+      else if (c2checkbox[2].checked==true)
+      {sum_c+=3}
+      else if (c2checkbox[3].checked==true)
+      {sum_c+=2}
+      else if (c2checkbox[4].checked==true)
+      {sum_c+=1}
+      
+      if(c3checkbox[0].checked==true)
+      {sum_c+=5}
+      else if (c3checkbox[1].checked==true)
+      {sum_c+=4}
+      else if (c3checkbox[2].checked==true)
+      {sum_c+=3}
+      else if (c3checkbox[3].checked==true)
+      {sum_c+=2}
+      else if (c3checkbox[4].checked==true)
+      {sum_c+=1}
+      
+      if(c4checkbox[0].checked==true)
+      {sum_c+=5}
+      else if (c4checkbox[1].checked==true)
+      {sum_c+=4}
+      else if (c4checkbox[2].checked==true)
+      {sum_c+=3}
+      else if (c4checkbox[3].checked==true)
+      {sum_c+=2}
+      else if (c4checkbox[4].checked==true)
+      {sum_c+=1}
+     
+      total_c.value=sum_c;
+      total_c_summary.value=sum_c;
+      percent_c=sum_c/20.0*5;
+      total_c_percent.value=percent_c;
+      
+      /*Part D*/
+      
+      var total_d=document.getElementById('total_part_d');
+      var total_d_summary=document.getElementById('total_part_d_summary')
+      var total_d_percent=document.getElementById('total_part_d_percent')
+      var sum_d=0
+      var d1checkbox = document.getElementsByClassName('d1');
+      var d2checkbox = document.getElementsByClassName('d2');
+      var d3checkbox = document.getElementsByClassName('d3');
+      var d4checkbox = document.getElementsByClassName('d4');
+      var d5checkbox = document.getElementsByClassName('d5');
+    
+      if(d1checkbox[0].checked==true)
+      {sum_d+=5}
+      else if (d1checkbox[1].checked==true)
+      {sum_d+=4}
+      else if (d1checkbox[2].checked==true)
+      {sum_d+=3}
+      else if (d1checkbox[3].checked==true)
+      {sum_d+=2}
+      else if (d1checkbox[4].checked==true)
+      {sum_d+=1}
+      
+      if(d2checkbox[0].checked==true)
+      {sum_d+=5}
+      else if (d2checkbox[1].checked==true)
+      {sum_d+=4}
+      else if (d2checkbox[2].checked==true)
+      {sum_d+=3}
+      else if (d2checkbox[3].checked==true)
+      {sum_d+=2}
+      else if (d2checkbox[4].checked==true)
+      {sum_d+=1}
+      
+      if(d3checkbox[0].checked==true)
+      {sum_d+=5}
+      else if (d3checkbox[1].checked==true)
+      {sum_d+=4}
+      else if (d3checkbox[2].checked==true)
+      {sum_d+=3}
+      else if (d3checkbox[3].checked==true)
+      {sum_d+=2}
+      else if (d3checkbox[4].checked==true)
+      {sum_d+=1}
+      
+      if(d4checkbox[0].checked==true)
+      {sum_d+=5}
+      else if (d4checkbox[1].checked==true)
+      {sum_d+=4}
+      else if (d4checkbox[2].checked==true)
+      {sum_d+=3}
+      else if (d4checkbox[3].checked==true)
+      {sum_d+=2}
+      else if (d4checkbox[4].checked==true)
+      {sum_d+=1}
+      
+      if(d5checkbox[0].checked==true)
+      {sum_d+=5}
+      else if (d5checkbox[1].checked==true)
+      {sum_d+=4}
+      else if (d5checkbox[2].checked==true)
+      {sum_d+=3}
+      else if (d5checkbox[3].checked==true)
+      {sum_d+=2}
+      else if (d5checkbox[4].checked==true)
+      {sum_d+=1}
+      
+      total_d.value=sum_d;
+      total_d_summary.value=sum_d;
+      percent_d=sum_d/25.0*20;
+      total_d_percent.value=percent_d;
+  
+      /*Part E*/
+      
+      var total_e=document.getElementById('total_part_e');
+      var total_e_summary=document.getElementById('total_part_e_summary')
+      var total_e_percent=document.getElementById('total_part_e_percent')
+      var sum_e=0
+      var e1checkbox = document.getElementsByClassName('e1');
+      var e2checkbox = document.getElementsByClassName('e2');
+      var e3checkbox = document.getElementsByClassName('e3');
+      var e4checkbox = document.getElementsByClassName('e4');
+      var e5checkbox = document.getElementsByClassName('e5');
+      var e6checkbox = document.getElementsByClassName('e6');
+      var e7checkbox = document.getElementsByClassName('e7');
+      var e8checkbox = document.getElementsByClassName('e8');
+      var e9checkbox = document.getElementsByClassName('e9');
+    
+      if(e1checkbox[0].checked==true)
+      {sum_e+=5}
+      else if (e1checkbox[1].checked==true)
+      {sum_e+=4}
+      else if (e1checkbox[2].checked==true)
+      {sum_e+=3}
+      else if (e1checkbox[3].checked==true)
+      {sum_e+=2}
+      else if (e1checkbox[4].checked==true)
+      {sum_e+=1}
+      
+      if(e2checkbox[0].checked==true)
+      {sum_e+=5}
+      else if (e2checkbox[1].checked==true)
+      {sum_e+=4}
+      else if (e2checkbox[2].checked==true)
+      {sum_e+=3}
+      else if (e2checkbox[3].checked==true)
+      {sum_e+=2}
+      else if (e2checkbox[4].checked==true)
+      {sum_e+=1}
+      
+      if(e3checkbox[0].checked==true)
+      {sum_e+=5}
+      else if (e3checkbox[1].checked==true)
+      {sum_e+=4}
+      else if (e3checkbox[2].checked==true)
+      {sum_e+=3}
+      else if (e3checkbox[3].checked==true)
+      {sum_e+=2}
+      else if (e3checkbox[4].checked==true)
+      {sum_e+=1}
+      
+      if(e4checkbox[0].checked==true)
+      {sum_e+=5}
+      else if (e4checkbox[1].checked==true)
+      {sum_e+=4}
+      else if (e4checkbox[2].checked==true)
+      {sum_e+=3}
+      else if (e4checkbox[3].checked==true)
+      {sum_e+=2}
+      else if (e4checkbox[4].checked==true)
+      {sum_e+=1}
+      
+      if(e5checkbox[0].checked==true)
+      {sum_e+=5}
+      else if (e5checkbox[1].checked==true)
+      {sum_e+=4}
+      else if (e5checkbox[2].checked==true)
+      {sum_e+=3}
+      else if (e5checkbox[3].checked==true)
+      {sum_e+=2}
+      else if (e5checkbox[4].checked==true)
+      {sum_e+=1}
+      
+      if(e6checkbox[0].checked==true)
+      {sum_e+=5}
+      else if (e6checkbox[1].checked==true)
+      {sum_e+=4}
+      else if (e6checkbox[2].checked==true)
+      {sum_e+=3}
+      else if (e6checkbox[3].checked==true)
+      {sum_e+=2}
+      else if (e6checkbox[4].checked==true)
+      {sum_e+=1}
+      
+      if(e7checkbox[0].checked==true)
+      {sum_e+=5}
+      else if (e7checkbox[1].checked==true)
+      {sum_e+=4}
+      else if (e7checkbox[2].checked==true)
+      {sum_e+=3}
+      else if (e7checkbox[3].checked==true)
+      {sum_e+=2}
+      else if (e7checkbox[4].checked==true)
+      {sum_e+=1}
+      
+      if(e8checkbox[0].checked==true)
+      {sum_e+=5}
+      else if (e8checkbox[1].checked==true)
+      {sum_e+=4}
+      else if (e8checkbox[2].checked==true)
+      {sum_e+=3}
+      else if (e8checkbox[3].checked==true)
+      {sum_e+=2}
+      else if (e8checkbox[4].checked==true)
+      {sum_e+=1}
+      
+      if(e9checkbox[0].checked==true)
+      {sum_e+=5}
+      else if (e9checkbox[1].checked==true)
+      {sum_e+=4}
+      else if (e9checkbox[2].checked==true)
+      {sum_e+=3}
+      else if (e9checkbox[3].checked==true)
+      {sum_e+=2}
+      else if (e9checkbox[4].checked==true)
+      {sum_e+=1}
+      
+      total_e.value=sum_e;
+      total_e_summary.value=sum_e;
+      percent_e=sum_e/45.0*20;
+      total_e_percent.value=percent_e;
+      
+      var totalscore=document.getElementById('total_score');
+      var finalgrade=document.getElementById('final_grade');
+      
+      total_all=percent_a+percent_b+percent_c+percent_d+percent_e
+      if(total_all < 40)
+      { grade="E"}
+      else if(total_all > 39 && total_all < 50)
+      { grade="D"}
+      else if(total_all > 49 && total_all < 70)
+      { grade="C"}
+      else if(total_all > 69 && total_all < 85)
+      { grade="B"}
+      else
+      { grade="A"}
+      
+      totalscore.value=total_all;
+      finalgrade.value=grade;
+    });
+  
+  });

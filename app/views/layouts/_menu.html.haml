@@ -35,6 +35,11 @@
             - permitted_to? :menu, :staff_instructor_appraisals do
               - if current_user.college.code=="amsas" || Position.where(name: 'Jurulatih').count > 0
                 %li= link_to t('instructor_appraisal.title'), staff_instructor_appraisals_path
+                
+            /TODO - RESTRICT ACCESS - TO Bhg Kaw Mutu (Kompetensi..)
+            - if current_user.college.code=="amsas"
+              %li= link_to t('average_instructor.title'), staff_average_instructors_path
+              
             /- permitted_to? :read, :staffs do
             /  %li= link_to t('position.title'), staff_positions_path
             %li.icon.icon-left

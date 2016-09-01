@@ -1,0 +1,449 @@
+.col-md-6.col-md-offset-1
+  %table.table.table-bordered.table-sm
+    %head
+      %tr.warning
+        %th=t 'average_instructor.dimension'
+        %th=t 'average_instructor.weightage'
+    %body
+      %tr
+        %td="A. "+(t 'average_instructor.preparation').upcase
+        %td.centre 25 %
+      %tr
+        %td="B. "+(t 'average_instructor.delivery').upcase
+        %td.centre 30 %
+      %tr
+        %td="C. "+(t 'average_instructor.usage').upcase
+        %td.centre 5 %
+      %tr
+        %td="D. "+(t 'average_instructor.verification').upcase
+        %td.centre 20 %
+      %tr
+        %td="E. "+(t 'average_instructor.general_teaching_technique').upcase
+        %td.centre 20 %
+          
+.col-md-9.col-md-offset-1         
+  .row
+    %b=t('average_instructor.instructions')
+    %ol
+      %li=t('average_instructor.instruction1')
+      %li=t('average_instructor.instruction2')
+      
+  %table.table.table-bordered.table-condensed.bg-warning
+    %tr
+      %th=t('average_instructor.scale')
+      %td="5 : "+(t 'average_instructor.excellent')
+      %td="4 : "+(t 'average_instructor.good')
+      %td="3 : "+(t 'average_instructor.average')
+      %td="2 : "+(t 'average_instructor.weak')
+      %td="1 : "+(t 'average_instructor.very_weak')
+ 
+.col-md-12.col-md-offset-1
+  %table.table.table-bordered.table-condensed
+    %tr.bg-info
+      %th{:width=>"400px;", :rowspan=> 2}=(t 'average_instructor.part').upcase+" A : "+(t 'average_instructor.preparation').upcase
+      %th.centre{:colspan=>"5"}= t 'average_instructor.score'
+      %th{:width=>"350px;", :rowspan=> 2}=(t 'average_instructor.review').upcase
+    %tr.bg-info
+      %th 5
+      %th 4
+      %th 3
+      %th 2
+      %th 1
+    %tr.active
+      /{style: 'background-color: #F0F0F0;'}
+      %th{:colspan=>"7"}=(t 'average_instructor.before_session')
+    %tr
+      %td="1.  "+(t 'average_instructor.pbq1')
+      - 5.downto(1).each do |count|
+        %td=@average_instructor.pbq1==count ? ("<p><b>#{count}</b></p>").html_safe : ("<p style='color: #A0A0A0;'>#{count}</p>").html_safe
+      %td{:width=>"20px"}=@average_instructor.pbq1review
+ 
+    %tr
+      %td="2.  "+(t 'average_instructor.pbq2')
+      - 5.downto(1).each do |count|
+        %td=@average_instructor.pbq2==count ? ("<p><b>#{count}</b></p>").html_safe : ("<p style='color: #A0A0A0;'>#{count}</p>").html_safe
+      %td{:width=>"20px"}=@average_instructor.pbq2review
+    %tr
+      %td="3.  "+(t 'average_instructor.pbq3')
+      - 5.downto(1).each do |count|
+        %td=@average_instructor.pbq3==count ? ("<p><b>#{count}</b></p>").html_safe : ("<p style='color: #A0A0A0;'>#{count}</p>").html_safe
+      %td{:width=>"20px"}=@average_instructor.pbq3review
+    %tr
+      %td="4.  "+(t 'average_instructor.pbq4')
+      - 5.downto(1).each do |count|
+        %td=@average_instructor.pbq4==count ? ("<p><b>#{count}</b></p>").html_safe : ("<p style='color: #A0A0A0;'>#{count}</p>").html_safe
+      %td{:width=>"20px"}=@average_instructor.pbq4review
+
+    /////   
+    %tr.active
+      /{style: 'background-color: #F0F0F0;'}
+      %th{:colspan=>"7"}=(t 'average_instructor.during_session')
+    %tr
+      %td="1.  "+(t 'average_instructor.pdq1')
+      - 5.downto(1).each do |count|
+        %td=@average_instructor.pdq1==count ? ("<p><b>#{count}</b></p>").html_safe : ("<p style='color: #A0A0A0;'>#{count}</p>").html_safe
+      %td{:width=>"20px"}=@average_instructor.pdq1review
+    %tr
+      %td="2.  "+(t 'average_instructor.pbq2')
+      - 5.downto(1).each do |count|
+        %td=@average_instructor.pdq2==count ? ("<p><b>#{count}</b></p>").html_safe : ("<p style='color: #A0A0A0;'>#{count}</p>").html_safe
+      %td{:width=>"20px"}=@average_instructor.pdq2review
+    %tr
+      %td="3.  "+(t 'average_instructor.pbq3')
+      - 5.downto(1).each do |count|
+        %td=@average_instructor.pdq3==count ? ("<p><b>#{count}</b></p>").html_safe : ("<p style='color: #A0A0A0;'>#{count}</p>").html_safe
+      %td{:width=>"20px"}=@average_instructor.pdq3review
+    %tr
+      %td="4.  "+(t 'average_instructor.pdq4')
+      - 5.downto(1).each do |count|
+        %td=@average_instructor.pdq4==count ? ("<p><b>#{count}</b></p>").html_safe : ("<p style='color: #A0A0A0;'>#{count}</p>").html_safe
+      %td{:width=>"20px"}=@average_instructor.pdq4review
+    %tr
+      %td="5.  "+(t 'average_instructor.pdq5')
+      - 5.downto(1).each do |count|
+        %td=@average_instructor.pdq5==count ? ("<p><b>#{count}</b></p>").html_safe : ("<p style='color: #A0A0A0;'>#{count}</p>").html_safe
+      %td{:width=>"20px"}=@average_instructor.pdq5review
+    %tr
+      %td
+      %th{colspan: 3}=t('average_instructor.obtained_score')
+      %td{width: '50px'}=@average_instructor.marks_a
+      %td / 45
+      %td
+    /////end of part A
+
+    %tr.bg-info
+      %th{:width=>"400px;", :rowspan=> 2}=(t 'average_instructor.part').upcase+" B : "+(t 'average_instructor.delivery').upcase
+      %th.centre{:colspan=>"5"}= t 'average_instructor.score'
+      %th{:width=>"350px;", :rowspan=> 2}=(t 'average_instructor.review').upcase
+    %tr.bg-info
+      %th 5
+      %th 4
+      %th 3
+      %th 2
+      %th 1
+    %tr
+      %td="1.  "+(t 'average_instructor.dq1')
+      - 5.downto(1).each do |count|
+        %td=@average_instructor.dq1==count ? ("<p><b>#{count}</b></p>").html_safe : ("<p style='color: #A0A0A0;'>#{count}</p>").html_safe
+      %td{:width=>"20px"}=@average_instructor.dq1review
+    %tr
+      %td="2.  "+(t 'average_instructor.dq2')
+      - 5.downto(1).each do |count|
+        %td=@average_instructor.dq2==count ? ("<p><b>#{count}</b></p>").html_safe : ("<p style='color: #A0A0A0;'>#{count}</p>").html_safe
+      %td{:width=>"20px"}=@average_instructor.dq2review
+    %tr
+      %td="3.  "+(t 'average_instructor.dq3')
+      - 5.downto(1).each do |count|
+        %td=@average_instructor.dq3==count ? ("<p><b>#{count}</b></p>").html_safe : ("<p style='color: #A0A0A0;'>#{count}</p>").html_safe
+      %td{:width=>"20px"}=@average_instructor.dq3review
+    %tr
+      %td="4.  "+(t 'average_instructor.dq4')
+      - 5.downto(1).each do |count|
+        %td=@average_instructor.dq4==count ? ("<p><b>#{count}</b></p>").html_safe : ("<p style='color: #A0A0A0;'>#{count}</p>").html_safe
+      %td{:width=>"20px"}=@average_instructor.dq4review
+    %tr
+      %td="5.  "+(t 'average_instructor.dq5')
+      - 5.downto(1).each do |count|
+        %td=@average_instructor.dq5==count ? ("<p><b>#{count}</b></p>").html_safe : ("<p style='color: #A0A0A0;'>#{count}</p>").html_safe
+      %td{:width=>"20px"}=@average_instructor.dq5review
+    %tr
+      %td="6.  "+(t 'average_instructor.dq6')
+      - 5.downto(1).each do |count|
+        %td=@average_instructor.dq6==count ? ("<p><b>#{count}</b></p>").html_safe : ("<p style='color: #A0A0A0;'>#{count}</p>").html_safe
+      %td{:width=>"20px"}=@average_instructor.dq6review
+    %tr
+      %td="7.  "+(t 'average_instructor.dq7')
+      - 5.downto(1).each do |count|
+        %td=@average_instructor.dq7==count ? ("<p><b>#{count}</b></p>").html_safe : ("<p style='color: #A0A0A0;'>#{count}</p>").html_safe
+      %td{:width=>"20px"}=@average_instructor.dq7review
+    %tr
+      %td="8.  "+(t 'average_instructor.dq8')
+      - 5.downto(1).each do |count|
+        %td=@average_instructor.dq8==count ? ("<p><b>#{count}</b></p>").html_safe : ("<p style='color: #A0A0A0;'>#{count}</p>").html_safe
+      %td{:width=>"20px"}=@average_instructor.dq8review
+    %tr
+      %td="9.  "+(t 'average_instructor.dq9')
+      - 5.downto(1).each do |count|
+        %td=@average_instructor.dq9==count ? ("<p><b>#{count}</b></p>").html_safe : ("<p style='color: #A0A0A0;'>#{count}</p>").html_safe
+      %td{:width=>"20px"}=@average_instructor.dq9review
+    %tr
+      %td="10.  "+(t 'average_instructor.dq10')
+      - 5.downto(1).each do |count|
+        %td=@average_instructor.dq10==count ? ("<p><b>#{count}</b></p>").html_safe : ("<p style='color: #A0A0A0;'>#{count}</p>").html_safe
+      %td{:width=>"20px"}=@average_instructor.dq10review
+    %tr
+      %td="11.  "+(t 'average_instructor.dq11')
+      - 5.downto(1).each do |count|
+        %td=@average_instructor.dq11==count ? ("<p><b>#{count}</b></p>").html_safe : ("<p style='color: #A0A0A0;'>#{count}</p>").html_safe
+      %td{:width=>"20px"}=@average_instructor.dq11review
+    %tr
+      %td="12.  "+(t 'average_instructor.dq12')
+      - 5.downto(1).each do |count|
+        %td=@average_instructor.dq12==count ? ("<p><b>#{count}</b></p>").html_safe : ("<p style='color: #A0A0A0;'>#{count}</p>").html_safe
+      %td{:width=>"20px"}=@average_instructor.dq12review
+    %tr
+      %td
+      %th{colspan: 3}=t('average_instructor.obtained_score')
+      %td{width: '50px'}=@average_instructor.marks_b
+      %td / 60
+      %td
+    ///////end of part B
+    
+    
+    %tr.bg-info
+      %th{:width=>"400px;", :rowspan=> 2}=(t 'average_instructor.part').upcase+" C : "+(t 'average_instructor.usage').upcase
+      %th.centre{:colspan=>"5"}= t 'average_instructor.score'
+      %th{:width=>"350px;", :rowspan=> 2}=(t 'average_instructor.review').upcase
+    %tr.bg-info
+      %th 5
+      %th 4
+      %th 3
+      %th 2
+      %th 1
+    %tr
+      %td="1.  "+(t 'average_instructor.uq1')
+      - 5.downto(1).each do |count|
+        %td=@average_instructor.uq1==count ? ("<p><b>#{count}</b></p>").html_safe : ("<p style='color: #A0A0A0;'>#{count}</p>").html_safe
+      %td{:width=>"20px"}=@average_instructor.uq1review
+    %tr
+      %td="2.  "+(t 'average_instructor.uq2')
+      - 5.downto(1).each do |count|
+        %td=@average_instructor.uq2==count ? ("<p><b>#{count}</b></p>").html_safe : ("<p style='color: #A0A0A0;'>#{count}</p>").html_safe
+      %td{:width=>"20px"}=@average_instructor.uq2review
+    %tr
+      %td="3.  "+(t 'average_instructor.uq3')
+      - 5.downto(1).each do |count|
+        %td=@average_instructor.uq3==count ? ("<p><b>#{count}</b></p>").html_safe : ("<p style='color: #A0A0A0;'>#{count}</p>").html_safe
+      %td{:width=>"20px"}=@average_instructor.uq3review
+    %tr
+      %td="4.  "+(t 'average_instructor.uq4')
+      - 5.downto(1).each do |count|
+        %td=@average_instructor.uq4==count ? ("<p><b>#{count}</b></p>").html_safe : ("<p style='color: #A0A0A0;'>#{count}</p>").html_safe
+      %td{:width=>"20px"}=@average_instructor.uq4review
+    %tr
+      %td
+      %th{colspan: 3}=t('average_instructor.obtained_score')
+      %td{width: '50px'}=@average_instructor.marks_c
+      %td / 20
+      %td      
+    ///end of part C
+    
+    
+    %tr.bg-info
+      %th{:width=>"400px;", :rowspan=> 2}=(t 'average_instructor.part').upcase+" D : "+(t 'average_instructor.verification').upcase
+      %th.centre{:colspan=>"5"}= t 'average_instructor.score'
+      %th{:width=>"350px;", :rowspan=> 2}=(t 'average_instructor.review').upcase
+    %tr.bg-info
+      %th 5
+      %th 4
+      %th 3
+      %th 2
+      %th 1
+    %tr
+      %td="1.  "+(t 'average_instructor.vq1')
+      - 5.downto(1).each do |count|
+        %td=@average_instructor.vq1==count ? ("<p><b>#{count}</b></p>").html_safe : ("<p style='color: #A0A0A0;'>#{count}</p>").html_safe
+      %td{:width=>"20px"}=@average_instructor.vq1review
+    %tr
+      %td="2.  "+(t 'average_instructor.vq2')
+      - 5.downto(1).each do |count|
+        %td=@average_instructor.vq2==count ? ("<p><b>#{count}</b></p>").html_safe : ("<p style='color: #A0A0A0;'>#{count}</p>").html_safe
+      %td{:width=>"20px"}=@average_instructor.vq2review
+    %tr
+      %td="3.  "+(t 'average_instructor.vq3')
+      - 5.downto(1).each do |count|
+        %td=@average_instructor.vq3==count ? ("<p><b>#{count}</b></p>").html_safe : ("<p style='color: #A0A0A0;'>#{count}</p>").html_safe
+      %td{:width=>"20px"}=@average_instructor.vq3review
+    %tr
+      %td="4.  "+(t 'average_instructor.vq4')
+      - 5.downto(1).each do |count|
+        %td=@average_instructor.vq4==count ? ("<p><b>#{count}</b></p>").html_safe : ("<p style='color: #A0A0A0;'>#{count}</p>").html_safe
+      %td{:width=>"20px"}=@average_instructor.vq4review
+    %tr
+      %td="5.  "+(t 'average_instructor.vq5')
+      - 5.downto(1).each do |count|
+        %td=@average_instructor.vq5==count ? ("<p><b>#{count}</b></p>").html_safe : ("<p style='color: #A0A0A0;'>#{count}</p>").html_safe
+      %td{:width=>"20px"}=@average_instructor.vq5review
+    %tr
+      %td
+      %th{colspan: 3}=t('average_instructor.obtained_score')
+      %td{width: '50px'}=@average_instructor.marks_d
+      %td / 25
+      %td
+    /// end of part D
+    
+    %tr.bg-info
+      %th{:width=>"400px;", :rowspan=> 2}=(t 'average_instructor.part').upcase+" E : "+(t 'average_instructor.general_teaching_technique').upcase
+      %th.centre{:colspan=>"5"}= t 'average_instructor.score'
+      %th{:width=>"350px;", :rowspan=> 2}=(t 'average_instructor.review').upcase
+    %tr.bg-info
+      %th 5
+      %th 4
+      %th 3
+      %th 2
+      %th 1
+    %tr
+      %td="1.  "+(t 'average_instructor.gttq1')
+      - 5.downto(1).each do |count|
+        %td=@average_instructor.gttq1==count ? ("<p><b>#{count}</b></p>").html_safe : ("<p style='color: #A0A0A0;'>#{count}</p>").html_safe
+      %td{:width=>"20px"}=@average_instructor.gttq1review
+    %tr
+      %td="2.  "+(t 'average_instructor.gttq2')
+      - 5.downto(1).each do |count|
+        %td=@average_instructor.gttq2==count ? ("<p><b>#{count}</b></p>").html_safe : ("<p style='color: #A0A0A0;'>#{count}</p>").html_safe
+      %td{:width=>"20px"}=@average_instructor.gttq2review
+    %tr
+      %td="3.  "+(t 'average_instructor.gttq3')
+      - 5.downto(1).each do |count|
+        %td=@average_instructor.gttq3==count ? ("<p><b>#{count}</b></p>").html_safe : ("<p style='color: #A0A0A0;'>#{count}</p>").html_safe
+      %td{:width=>"20px"}=@average_instructor.gttq3review
+    %tr
+      %td="4.  "+(t 'average_instructor.gttq4')
+      - 5.downto(1).each do |count|
+        %td=@average_instructor.gttq4==count ? ("<p><b>#{count}</b></p>").html_safe : ("<p style='color: #A0A0A0;'>#{count}</p>").html_safe
+      %td{:width=>"20px"}=@average_instructor.gttq4review
+    %tr
+      %td="5.  "+(t 'average_instructor.gttq5')
+      - 5.downto(1).each do |count|
+        %td=@average_instructor.gttq5==count ? ("<p><b>#{count}</b></p>").html_safe : ("<p style='color: #A0A0A0;'>#{count}</p>").html_safe
+      %td{:width=>"20px"}=@average_instructor.gttq5review
+    %tr
+      %td="6.  "+(t 'average_instructor.gttq6')
+      - 5.downto(1).each do |count|
+        %td=@average_instructor.gttq6==count ? ("<p><b>#{count}</b></p>").html_safe : ("<p style='color: #A0A0A0;'>#{count}</p>").html_safe
+      %td{:width=>"20px"}=@average_instructor.gttq6review
+    %tr
+      %td="7.  "+(t 'average_instructor.gttq7')
+      - 5.downto(1).each do |count|
+        %td=@average_instructor.gttq7==count ? ("<p><b>#{count}</b></p>").html_safe : ("<p style='color: #A0A0A0;'>#{count}</p>").html_safe
+      %td{:width=>"20px"}=@average_instructor.gttq7review
+    %tr
+      %td="8.  "+(t 'average_instructor.gttq8')
+      - 5.downto(1).each do |count|
+        %td=@average_instructor.gttq8==count ? ("<p><b>#{count}</b></p>").html_safe : ("<p style='color: #A0A0A0;'>#{count}</p>").html_safe
+      %td{:width=>"20px"}=@average_instructor.gttq8review
+    %tr
+      %td="9.  "+(t 'average_instructor.gttq9')
+      - 5.downto(1).each do |count|
+        %td=@average_instructor.gttq9==count ? ("<p><b>#{count}</b></p>").html_safe : ("<p style='color: #A0A0A0;'>#{count}</p>").html_safe
+      %td{:width=>"20px"}=@average_instructor.gttq9review    
+    %tr
+      %td
+      %th{colspan: 3}=t('average_instructor.obtained_score')
+      %td{width: '50px'}=@average_instructor.marks_e
+      %td / 45
+      %td      
+      
+.col-md-6.col-md-offset-1   
+  %b=t('average_instructor.evaluation_summary')
+  %table.table.table-bordered.table-condensed
+    %tr.warning
+      %th{colspan: 2}=t('average_instructor.performance_component')
+      %th.centre=((t 'average_instructor.max_score')+'<br> (x)').html_safe
+      %th.centre=((t 'average_instructor.obtained_score')+'<br> (y)').html_safe
+      %th.centre=((t 'average_instructor.weightage')+'<br> (w)').html_safe
+      %th=((t 'average_instructor.percent')+'<br><u>y</u> X w<br>x').html_safe
+    %tr
+      %th A
+      %td=t('average_instructor.preparation').upcase
+      %td.centre 45
+      %td.col-md-1=@average_instructor.marks_a
+      %td.centre 25
+      %td.col-md-2=number_with_precision(@average_instructor.percent_a, precision: 2)
+    %tr
+      %th B
+      %td=t('average_instructor.delivery').upcase
+      %td.centre 60
+      %td.col-md-1=@average_instructor.marks_b
+      %td.centre 30
+      %td.col-md-2=number_with_precision(@average_instructor.percent_b, precision: 2)
+    %tr
+      %th C
+      %td=t('average_instructor.usage').upcase
+      %td.centre 20
+      %td.col-md-1=@average_instructor.marks_c
+      %td.centre 5
+      %td.col-md-2=number_with_precision(@average_instructor.percent_c, precision: 2)
+    %tr
+      %th D
+      %td=t('average_instructor.verification').upcase
+      %td.centre 25
+      %td.col-md-1=@average_instructor.marks_d
+      %td.centre 20
+      %td.col-md-2=number_with_precision(@average_instructor.percent_d, precision: 2)
+    %tr
+      %th E
+      %td=t('average_instructor.general_teaching_technique').upcase
+      %td.centre 45
+      %td.col-md-1=@average_instructor.marks_e
+      %td.centre 20
+      %td.col-md-2=number_with_precision(@average_instructor.percent_e, precision: 2)
+      
+   
+  %table.table.table-bordered.table-condensed
+    %tr.warning
+      %th.centre=t('average_instructor.score_range')
+      %th.centre=t('average_instructor.grade')
+      %th.centre=t('average_instructor.performance')
+    %tr
+      - if @average_instructor.grade=="A"
+        %th.active.centre 85 - 100
+        %th.active.centre A
+        %th.active.centre=t('average_instructor.excellent')
+      - else
+        %td.centre 85 - 100
+        %td.centre A
+        %td.centre=t('average_instructor.excellent')
+    %tr
+      - if @average_instructor.grade=="B"
+        %th.active.centre 70 - 84
+        %th.active.centre B
+        %th.active.centre=t('average_instructor.good')
+      - else
+        %td.centre 70 - 84
+        %td.centre B
+        %td.centre=t('average_instructor.good')
+    %tr
+      - if @average_instructor.grade=="C"
+        %th.active.centre 50 - 69
+        %th.active.centre C
+        %th.active.centre=t('average_instructor.average')
+      - else
+        %td.centre 50 - 69
+        %td.centre C
+        %td.centre=t('average_instructor.average')
+    %tr
+      - if @average_instructor.grade=="D"
+        %th.active.centre 40 - 49
+        %th.active.centre D
+        %th.active.centre=t('average_instructor.weak')
+      - else
+        %td.centre 40 - 49
+        %td.centre D
+        %td.centre=t('average_instructor.weak')
+    %tr
+      - if @average_instructor.grade=="E"
+        %th.active.centre < 40
+        %th.active.centre E
+        %th.active.centre=t('average_instructor.very_weak')
+      - else
+        %td.centre < 40
+        %td.centre E
+        %td.centre=t('average_instructor.very_weak')
+      
+  %table.table.table-condensed
+    %tr
+      %td=t('average_instructor.grade').upcase
+      %td=@average_instructor.grade
+      %td=t('average_instructor.obtained_score').upcase
+      %td=number_with_precision(@average_instructor.total_score, precision: 2)
+
+
+.col-md-12
+  %dl.dl-horizontal
+    %dt=t 'average_instructor.review'
+    %dd=h @average_instructor.review
+  
+    %dt=t 'average_instructor.evaluator_id'
+    %dd=h @average_instructor.evaluator.try(:staff_with_rank)
+      

@@ -1,0 +1,50 @@
+.col-md-offset-2     
+  .form-group
+    .col-sm-2.control-label
+      = f.label t 'average_instructor.instructor_id', for: :instructor_id
+    .col-md-8
+      = f.collection_select :instructor_id, Staff.joins(:positions).where('positions.name=?', 'Jurulatih').order(rank_id: :asc, name: :asc), :id, :staff_with_rank,{ include_blank: (t 'select')},{class: 'selectpicker mandatory', "data-width"=> "300px"}
+
+  .form-group
+    .col-sm-2.control-label
+      = f.label t 'average_instructor.programme_id', for: :programme_id
+    .col-md-8
+      = f.collection_select :programme_id, Programme.roots, :id, :programme_list,{ include_blank: (t 'select')},{class: 'selectpicker', "data-width"=> "300px"}
+
+  .form-group
+    .col-sm-2.control-label
+      = f.label t 'average_instructor.evaluate_date', for: :evaluate_date
+    .col-md-3
+      = f.text_field :evaluate_date, class: 'date_picker_reverse form-control mandatory', value: @average_instructor.evaluate_date.try(:strftime, '%d-%m-%Y')
+
+
+  .form-group
+    .col-sm-2.control-label
+      = f.label t 'average_instructor.title2', for: :title
+    .col-md-6
+      = f.text_field :title, class: 'form-control'
+
+
+  .form-group
+    .col-sm-2.control-label
+      = f.label t 'average_instructor.objective', for: :objective
+    .col-md-6
+      = f.text_area :objective, class: 'form-control', size: '100x5'
+
+  .form-group
+    .col-sm-2.control-label
+      = f.label t 'average_instructor.start_at', for: :start_at
+    .col-md-3
+      = f.text_field :start_at, class: 'time_picker form-control mandatory', value: @average_instructor.start_at.try(:strftime, '%H:%M')
+
+  .form-group
+    .col-sm-2.control-label
+      = f.label t 'average_instructor.end_at', for: :end_at
+    .col-md-3
+      = f.text_field :end_at, class: 'time_picker form-control mandatory', value: @average_instructor.end_at.try(:strftime, '%H:%M')
+
+  .form-group
+    .col-sm-2.control-label
+      = f.label t 'average_instructor.delivery_type', for: :delivery_type
+    .col-md-3
+      = f.select :delivery_type, DropDown::DELIVERY_TYPE, {:include_blank => (t 'select')}, {class: 'selectpicker mandatory'}

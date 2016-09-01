@@ -1726,6 +1726,97 @@ ms_MY:
     from: daripada
     marks: Markah
     
+  average_instructor:
+    title: Penilaian & Analisa Skor Purata Jurulatih
+    list: Senarai Penilaian & Analisa Skor Purata Jurulatih
+    new: Penilaian & Analisa Skor Purata Jurulatih Baru
+    edit: Sunting Penilaian & Analisa Skor Purata Jurulatih
+    form_title1: Borang Penilaian dan Analisa 
+    form_title2: Skor Purata Jurulatih 
+    instructor_id: Nama Jurulatih
+    programme_id: Kursus
+    evaluator_id: Pegawai Penilai
+    evaluate_date: Tarikh Penilaian
+    title2: Tajuk
+    objective: Objektif
+    delivery_type: Jenis Penyampaian
+    start_at: Masa Mula
+    end_at: Masa Selesai
+    time: Masa
+    duration: Jumlah Masa
+    details: Butiran
+    instrument: "Instrument ini mengandungi lima dimensi dengan wajaran seperti berikut:"
+    dimension: Dimensi
+    preparation: Persediaan
+    delivery: Penyampaian
+    usage: Penggunaan
+    verification: Pengesahan
+    general_teaching_technique: Teknik Umum Mengajar
+    instructions: Arahan
+    instruction1: Tandakan / pada ruangan skor yang berkaitan mengikut skala yang telah ditetapkan.
+    instruction2: Tuliskan ulasan jika perlu.
+    scale: Skala Pengukuran
+    excellent: Cemerlang
+    good: Baik
+    average: Sederhana
+    weak: Lemah
+    very_weak: Sangat Lemah
+    part: Bahagian
+    before_session: Sebelum Sesi Mengajar
+    during_session: Semasa Sesi Mengajar
+    obtained_score: Skor diperolehi
+    score: Skor
+    review: Ulasan
+    pbq1: Penampilan diri yang kemas
+    pbq2: Mewujudkan persekitaran yang selesa
+    pbq3: Bersedia dengan bahan pembelajaran
+    pbq4: Memastikan peralatan yang cukup dan berfungsi dengan baik 
+    pdq1: Memberi salam
+    pdq2: Selesakan pelajar dan semak kehadiran 
+    pdq3: Tajuk diperkenalkan dengan jelas
+    pdq4: Memberi gambaran keseluruhan pelajaran
+    pdq5: Objektif/hasil diperjelaskan
+    dq1: Mengulangkaji pelajaran lepas dan kaitkan dengan pelajaran yang akan diajar
+    dq2: Kandungan disampaikan dalam susunan yang logik
+    dq3: Pelajaran teori/amali disampaikan menggunakan pelbagai kaedah yang bersesuaian
+    dq4: Penyampaian yang terang dan jelas
+    dq5: Mengajar ditahap keupayaan pelajar
+    dq6: Menekankan perkara yang mustahak
+    dq7: Menekankan aspek keselamatan
+    dq8: Memberi contoh-contoh yang relevan
+    dq9: Melibatkan pelajar dalam aktiviti pembelajaran
+    dq10: Mengekalkan eye contact
+    dq11: Bahasa yang sesuai dan jelas digunakan
+    dq12: Menghadkan kandungan sewajarnya
+    uq1: Pelajar menggunakan perkara penting
+    uq2: Segera perbetulkan kesilapan pelajar
+    uq3: Peringkat kefahaman pelajar selalu disemak
+    uq4: Pastikan tujuan pembelajaran sudah dicapai
+    vq1: Penilaian dijalankan pada masa yang bersesuaian
+    vq2: Nyatakan dengan terang tugas pelajar
+    vq3: Penilaian berasaskan kandungan pelajaran
+    vq4: Nyatakan kriteria penilaian
+    vq5: Dapat mengukur tujuan pelajaran
+    gttq1: Mengikut Pelan Mengajar
+    gttq2: Bertutur dengan baik dan berkesan
+    gttq3: Mengawalkan emosi semasa mengajar
+    gttq4: Pembahagian masa mengajar yang betul
+    gttq5: Mendapatkan persefahaman pelajar
+    gttq6: Menggunakan teknik soalan yang baik
+    gttq7: Menggunakan BBM dengan baik
+    gttq8: Menunjukkan penguasaan dalam tajuk yang diajar
+    gttq9: Pelajar sentiasa mengikuti pelajaran
+    evaluation_summary: Ringkasan Penilaian
+    performance_component: Komponen Prestasi
+    max_score: Skor Max
+    weightage: Pemberat/ Kewajaran
+    weightage2: Wajaran
+    percent: Peratus
+    score_range: Julat Skor
+    grade: Gred
+    performance: Prestasi
+    evaluated_instructor: Jurulatih Yang Dinilai
+    
   asset:
     title: Aset
     fixed: Harta Modal
