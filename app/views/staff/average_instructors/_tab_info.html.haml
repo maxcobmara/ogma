@@ -11,7 +11,10 @@
 %dd=h @average_instructor.title
 
 %dt=t 'average_instructor.objective'
-%dd=h @average_instructor.objective
+%dd
+  %table
+    %tr
+      %td=h @average_instructor.objective
 
 %dt=t 'average_instructor.delivery_type'
 %dd=h @average_instructor.render_delivery
