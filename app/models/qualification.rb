@@ -1,6 +1,10 @@
 class Qualification < ActiveRecord::Base
   belongs_to :staff
   belongs_to :student
+  
+  def level_name
+    (DropDown::QUALIFICATION_LEVEL.find_all{|disp, value| value == level_id.to_i}).map {|disp, value| disp}[0]+": "+institute
+  end
 end
 
 # == Schema Information
