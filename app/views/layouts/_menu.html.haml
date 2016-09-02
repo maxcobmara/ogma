@@ -362,6 +362,8 @@
         %h2.icon= t('administration.title')
         %a.mp-back{:href => "#"}=t('back')
         %ul
+          - if user_signed_in?
+            %li= link_to t('activerecord.attributes.user.change_password'), edit_user_registration_path(current_user.id)
           - permitted_to? :manage, :roles do
             %li= link_to content_tag(:i, "", :class => "icon-numb") + t('user.title'), users_path
             %li= link_to content_tag(:i, "", :class => "icon-numb") + t('role.title'), roles_path
