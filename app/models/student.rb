@@ -9,8 +9,11 @@ class Student < ActiveRecord::Base
   #validates_format_of       :name, :with => /^[a-zA-Z'`\/\.\@\ ]+$/, :message => I18n.t('activerecord.errors.messages.illegal_char') #add allowed chars between bracket
   has_attached_file :photo,
                     :url => "/assets/students/:id/:style/:basename.:extension",
-                    :path => ":rails_root/public/assets/students/:id/:style/:basename.:extension"
-
+                    :path => ":rails_root/public/assets/students/:id/:style/:basename.:extension",
+                    :styles => { :original => "250x300>", :thumbnail => "50x60" , :form => "80x90"} #default size of uploaded image
+  validates_attachment_size :photo, :less_than => 5.megabytes
+  validates_attachment_content_type :photo, :content_type => ["image/jpg", "image/jpeg", "image/png", "image/gif"]
+  
   has_many :users, as: :userable
   has_and_belongs_to_many :klasses          #has_and_belongs_to_many :programmes
 
