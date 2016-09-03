@@ -72,6 +72,8 @@ en:
         intake: Intake Session
         course_id: Programme
         icno: Mykad No
+        birthplace: Place Of Birth
+        religion: Religion
       location:
         combo_code: Location Code
         damages: Location Damages
@@ -2308,6 +2310,7 @@ en:
       department: Unit /  Department / Branch
       vehicle_no: Vehicle No
       vehicle_type: Vehicle Type / Model
+      religion: Religion
       race: Race
       icno: MyKad No
       sstatus: Student Status
@@ -2317,6 +2320,7 @@ en:
       ssponsor: Sponsor
       gender: Gender
       sbirthd: Date Of Birth
+      birthplace: Place Of Birth
       age: Age
       mrtlstatuscd: Marital Status
       ethnic: Ethnic

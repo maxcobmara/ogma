@@ -30,8 +30,21 @@
           %dt= t 'student.students.name' , :default => model_class.human_attribute_name(:refno) + ":"
           %dd=  @student.name
 		  
-          %dt= t 'student.students.matrixno' , :default => model_class.human_attribute_name(:title) + ":"
+          %dt
+            - if current_user.college.code=="amsas"
+              Body No
+            - else
+              = t 'student.students.matrixno' , :default => model_class.human_attribute_name(:title) + ":"
           %dd= @student.matrixno
+          
+          %dt=t 'student.students.rank_id' , :default => model_class.human_attribute_name(:rank_id) + ":"
+          %dd=@student.rank.try(:name)
+          
+          %dt=t 'student.students.position' , :default => model_class.human_attribute_name(:rank_id) + ":"
+          %dd=@student.position
+          
+          %dt=t 'student.students.department' , :default => model_class.human_attribute_name(:rank_id) + ":"
+          %dd=@student.department
 
       #student_details.tab-pane.active
         %br

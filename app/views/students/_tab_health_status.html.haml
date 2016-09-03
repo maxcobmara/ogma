@@ -11,7 +11,7 @@
     %dd= @student.disease
  
     %dt= t 'student.students.bloodtype' , :default => model_class.human_attribute_name(:bloodtype) + ":"
-    %dd= (Student::BLOOD_TYPE.find_all{|disp, value| value == @student.bloodtype.to_s}).map {|disp, value| disp} [0]
+    %dd= @student.render_bloodtype
 
     %dt= t 'student.students.medication' , :default => model_class.human_attribute_name(:medication) + ":"
     %dd= @student.physical

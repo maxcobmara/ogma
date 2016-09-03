@@ -27,14 +27,22 @@
 		  
     %dt= t 'student.students.sbirthd' , :default => model_class.human_attribute_name(:sbirthd) + ":"
     %dd= @student.sbirthdt.try(:strftime, '%d-%m-%Y')
+    
+    - if current_user.college.code=="amsas"
+      %dt= t 'student.students.birthplace' , :default => model_class.human_attribute_name(:birthplace) + ":"
+      %dd= @student.render_birthplace
+      
+      %dt= t 'student.students.religion' , :default => model_class.human_attribute_name(:sbirthd) + ":"
+      %dd= @student.render_religion
+    
     %dt= t 'student.students.age' , :default => model_class.human_attribute_name(:age) + ":"
     %dd= @student.age
  
     %dt= t 'student.students.mrtlstatuscd' , :default => model_class.human_attribute_name(:mrtlstatuscd) + ":"
-    %dd= (Student::MARITAL_STATUS.find_all{|disp, value| value == @student.mrtlstatuscd.to_s}).map {|disp, value| disp} [0]
+    %dd= @student.render_marital
 
     %dt= t 'student.students.race' , :default => model_class.human_attribute_name(:race2) + ":"
-    %dd= (Student::RACE.find_all{|disp, value| value == @student.race2.to_i}).map {|disp, value| disp} [0]
+    %dd=@student.race2? ? @student.render_race : @student.try(:race)
    
     - if @student.race2 == 21
       %dt= t 'student.students.ethnic'

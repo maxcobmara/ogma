@@ -1,7 +1,10 @@
-.col-md-offset-2
+.col-md-offset-2  
   .form-group
     .col-sm-2.control-label
-      = f.label t 'student.students.matrixno', for: :matrixno
+      - if current_user.college.code=="amsas"
+        = f.label "Body No", for: :matrixno
+      - else
+        = f.label t 'student.students.matrixno', for: :matrixno
     .col-md-2
       = f.text_field :matrixno, class: 'form-control'
 
@@ -75,7 +78,8 @@
       =f.label t 'student.students.upload', for: :upload
     .col-md-3
       =f.file_field :photo, class: 'form-control'
-
+      %b= t'exam.examquestion.uploaded_file'
+      = @student.photo_file_name
   .form-group
     .col-sm-2.control-label
       =f.label t 'student.students.semail', for: :semail

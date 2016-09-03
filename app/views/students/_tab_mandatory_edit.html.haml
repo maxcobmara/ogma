@@ -67,6 +67,19 @@
     .col-md-2
       = f.text_field :sbirthdt, class: 'form-control date_picker_reverse mandatory', 'data-behaviour' => 'datepicker_today', value: @student.try(:sbirthdt).try(:strftime, '%d-%m-%Y')
 
+  - if current_user.college.code=="amsas"
+    .form-group
+      .col-sm-2.control-label
+        =f.label t 'student.students.birthplace', for: :birthplace
+      .col-md-2
+        =f.select :birthplace, Student::STATECD, {:include_blank => (t 'select')}, {class: 'selectpicker mandatory'}
+    
+    .form-group
+      .col-sm-2.control-label
+        =f.label t 'student.students.religion', for: :religion
+      .col-md-2
+        =f.select :religion, Student::RELIGION, {:include_blank => (t 'select')}, {class: 'selectpicker mandatory'}
+    
   .form-group
     .col-sm-2.control-label
       =f.label t 'student.students.mrtlstatuscd', for: :mrtlstatuscd
