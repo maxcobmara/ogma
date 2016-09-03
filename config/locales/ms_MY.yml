@@ -53,6 +53,8 @@ ms_MY:
         intake: Sesi Pengambilan
         course_id: Program
         icno: No Mykad
+        birthplace: Tempat Lahir
+        religion: Agama
       location:
         combo_code: Kod Lokasi
         damages: Kerosakan di Lokasi
@@ -2198,6 +2200,7 @@ ms_MY:
       department: Unit / Bahagian / Cawangan
       vehicle_no: No Kenderaan
       vehicle_type: Jenis / Model Kenderaan
+      religion: Agama
       race: Bangsa
       icno: No MyKad 
       sstatus: Status Pelajar
@@ -2207,6 +2210,7 @@ ms_MY:
       ssponsor: Penaja
       gender: Jantina
       sbirthd: Tarikh Lahir
+      birthplace: Tempat Lahir
       age: Umur
       mrtlstatuscd: Status Kahwin
       ethnic: Etnik

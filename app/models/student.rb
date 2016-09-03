@@ -3,6 +3,7 @@ class Student < ActiveRecord::Base
   
   before_save  :titleize_name
   validates_presence_of     :icno, :name, :sstatus, :stelno, :ssponsor, :gender, :sbirthdt, :mrtlstatuscd, :intake,:course_id
+  validates_presence_of :birthplace, :religion, :if => :college_is_amsas?
   validates_numericality_of :icno, :stelno
   #validates_length_of       :icno, :is =>12
   validates_uniqueness_of   :icno
@@ -66,6 +67,30 @@ class Student < ActiveRecord::Base
     "#{rank.try(:shortname)} #{name}"
   end
 
+  def render_race
+     (Student::RACE.find_all{|disp, value| value == race2.to_i}).map {|disp, value| disp} [0]
+  end
+  
+  def render_marital
+    (Student::MARITAL_STATUS.find_all{|disp, value| value == mrtlstatuscd.to_s}).map {|disp, value| disp} [0]
+  end
+  
+  def render_bloodtype
+    (Student::BLOOD_TYPE.find_all{|disp, value| value == bloodtype.to_s}).map {|disp, value| disp} [0]
+  end
+  
+  def render_religion
+     (Student::RELIGION.find_all{|disp, value| value == religion}).map {|disp, value| disp} [0]
+  end
+  
+  def render_birthplace
+     (Student::STATECD.find_all{|disp, value| value == birthplace}).map {|disp, value| disp} [0]
+  end
+  
+  def college_is_amsas?
+    college_id==2
+  end
+  
   def self.year_and_sem(intake)
       current_month = Date.today.strftime("%m")
 		  current_year = Date.today.strftime("%Y")
@@ -644,7 +669,35 @@ BLOOD_TYPE = [
              [ "AB+", "8" ]
     ]
 
-
+STATECD = [
+    #  Displayed       stored in db
+    [ "Johor",                            1],
+    [ "Kedah",                            2],
+    [ "Kelantan",                         3 ],
+    [ "Melaka",                           4],
+    [ "Negeri Sembilan",                  5 ],
+    [ "Pahang",                           6 ],
+    [ "Pulau Pinang",                     7 ],
+    [ "Perak",                            8 ], 
+    [ "Perlis",                           9 ],
+    [ "Selangor",                         10 ], 
+    [ "Terengganu",                       11 ], 
+    [ "Sabah",                            12 ], 
+    [ "Sarawak",                          13 ],
+    [ "Wilayah Persekutuan Kuala Lumpur", 14 ],
+    [ "Wilayah Persekutuan Labuan",       15 ],
+    [ "Wilayah Persekutuan Putrajaya",    16 ],
+    [ "Luar Negara",                      98 ],       
+]
+ 
+ RELIGION = [
+       #  Displayed       stored in db
+       [ "Islam",    1],
+       [ "Buddha",   2 ],
+       [ "Hindu",    3 ],
+       [ "Kristian", 5],
+       [ "Others",   4 ],
+ ]
 
 
 end
@@ -691,3 +744,5 @@ end
 #  stelno              :string(255)
 #  updated_at          :datetime
 #
+#religion :integer
+#birthplace :integer

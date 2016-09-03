@@ -27,7 +27,7 @@
     - @intakes.each do |intakedate,intakedetails|
       %tr
         %td.group{:colspan => "8", :style => "background-color:#EFF1F1;"}
-          %span{:style => "color:#218AFB;font-weight:bold;"}=h intakedate.strftime('%b %Y')
+          %span{:style => "color:#218AFB;font-weight:bold;"}=h current_user.college.code=="amsas"? "Siri "+intakedate.strftime('%m / %Y') : intakedate.strftime('%b %Y')
       - for details in intakedetails 
         %tr
           %td=h link_to details.description, training_intake_path(details)
