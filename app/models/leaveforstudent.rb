@@ -112,7 +112,8 @@ class Leaveforstudent < ActiveRecord::Base
          #elsif checker == []
          #"Staff No Longer Exists" 
       else
-        staff.name
+        #staff.name
+	staff.try(:staff_with_rank)
       end
   end
 

@@ -14,7 +14,8 @@
         %b.caret
       %ul.dropdown-menu
         %li
-          %a{:href => student_attendan_form_student_student_attendances_path(:format => 'pdf')} Student Attendences
+          %a{:href => student_attendan_form_student_student_attendances_path(params.merge(:format => 'pdf'))} Student Attendences
+          /= link_to (fa_icon "file-pdf-o", text: "Student Attendences"), student_attendan_form_student_student_attendances_path(params.merge(format: 'pdf' ))
 
 = render 'shared/flashes'
 
@@ -67,7 +68,11 @@
             %tr
               %td.group{:colspan => "6"} 
                 = (t 'student.attendance.student_intake').upcase 
-                =intake.to_date.strftime("%b %Y").upcase 
+                - if current_user.college.code=="kskbjb"
+                  =intake.to_date.strftime("%b %Y").upcase 
+                - elsif current_user.college.code=="amsas"
+                  Siri
+                  =intake.to_date.strftime("%m / %Y")
             
             - student_attendances.group_by{|xx|xx.weeklytimetable_details_id}.each do |classes_schedule| 
               - if classes_schedule[0] != nil 

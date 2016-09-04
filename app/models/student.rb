@@ -136,7 +136,12 @@ class Student < ActiveRecord::Base
   end
 
   def intake_acryn_prog
-      intake.to_date.strftime("%b %Y")+" | #{course.course_type} - #{course.name}"
+      #intake.to_date.strftime("%b %Y")+" | #{course.course_type} - #{course.name}"
+#     if intake_id?
+#       "#{intakestudent.monthyear_intake.strftime("%b %Y")} | #{course.programme_list}"
+#     else
+      "#{intake.to_date.strftime("%b %Y")} | #{course.programme_list}"
+    #end
   end
 
   #group by intake
