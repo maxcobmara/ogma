@@ -109,14 +109,17 @@ class Student::StudentAttendancesController < ApplicationController
   end
   
   def student_attendan_form
-    @programme_id = 3            #params[:programme].to_i
-    @student = Student.where('course_id=?',@programme_id )  
+    #@programme_id = 3            #params[:programme].to_i
+    #@student = Student.where('course_id=?',@programme_id )  
+    # @student = Student.all
     
-    
-   # @student = Student.all
+    @search = StudentAttendance.search(params[:q])
+    @student_attendances = @search.result
+    classes_count=@student_attendances.group_by(&:weeklytimetable_details_id).count
+    @groupped_attendances=@student_attendances.group_by(&:weeklytimetable_details_id)
     respond_to do |format|
       format.pdf do
-        pdf = Student_attendan_formPdf.new(@student, view_context, @programme_id)
+        pdf = Student_attendan_formPdf.new(@student_attendances, view_context, current_user.college, classes_count)
         send_data pdf.render, filename: "student_attendan_form-{Date.today}",
                               type: "application/pdf",
                               disposition: "inline"
