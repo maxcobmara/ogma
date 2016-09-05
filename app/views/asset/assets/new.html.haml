@@ -8,13 +8,18 @@
 
 .row
   = form_for [:asset, @asset], html: { class: 'form-horizontal' }  do |f| 
+    = f.text_field :college_id, value: current_user.college_id
     .form-group
       .col-sm-2.control-label
         = f.label t 'asset.assetcode', for: :asset_show
       .col-md-8
         %table.inline_display
           %tr
-            %td KKM/BPL/010619/
+            %td
+              - if current_user.college.code=="kskbjb"
+                KKM/BPL/010619/
+              - elsif current_user.college.code=="amsas"
+                JPM/APMM/PL/
             %td= f.select :assettype, DropDown::ASSETTYPES, {prompt: "Select", id: "asset_type_select"}, {class: 'selectpicker mandatory', "data-width"=>"80px"}
             %td /
             %td= f.date_select :receiveddate,  {:end_year => (Time.now.year+1), :order => [:year], id: "asset_receiveddate_select"}, class: 'selectpicker', "data-width" => "80px"

@@ -175,6 +175,7 @@ Ogma::Application.routes.draw do
         get :lampiran_a
       end
     end
+    resources :assetcategories
   end
 
   namespace :campus do

@@ -2027,8 +2027,15 @@ ms_MY:
 
     category:
       title: Kategori Aset
+      list: Senarai Kategori Aset
+      new: Kategori Baru Aset
+      edit: Sunting Kategori Aset
       type_model_name: "Jenis / Model / Nama"
       type_name_model: "Jenis - Jenama - Model"
+      parent_id: Induk
+      description: Deskripsi
+      cattype_id: Jenis Kategori
+      details: Butiran
     
     maint:
       maintainer_id: Penyelenggara

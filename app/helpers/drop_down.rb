@@ -811,4 +811,38 @@ KTYPE = [
       
     ]
    
+    #Asset 
+    COUNTRYLIST = [
+             #  Displayed       stored in db
+             ["AF|Afghanistan",     93],
+             ["AL|Albania",         355],
+             ["DZ|Algeria",         213],
+             ["AR|Argentina",       54],
+             ["AU|Australia",       61],
+             ["BR|Brazil",          55],
+             ["CA|Canada",          1011],
+             ["CN|China",           86],
+             ["FI|Finland",         358],
+             ["FR|France",          33],
+             ["DE|Germany",         49],
+             ["HK|Hong Kong",       852],
+             ["IN|India",           91],
+             ["ID|Indonesia",       62],
+             ["IE|Ireland",         353],
+             ["IT|Italy",           39],
+             ["JP|Japan",           81],
+             ["MY|Malaysia",        60],
+             ["MX|Mexico",          52],
+             ["NZ|New Zealand",     64],
+             ["NO|Norway",          47],
+             ["PT|Portugal",        351],
+             ["ES|Spain",           34],
+             ["SE|Sweden",          46],
+             ["TW|Taiwan",         886],
+             ["TH|Thailand",        66],
+             ["TR|Turkey",          90],
+             ["GB|United Kingdom",  44],
+             ["US|United States",   1]
+  ]
+
 end

@@ -36,7 +36,7 @@
       %dt= t 'asset.manufacturer' 
       %dd= @asset.manufacturer_id
       %dt= t 'asset.country_id'
-      %dd= @asset.country_id
+      %dd= @asset.render_origin
       %dt= t 'asset.model' 
       %dd= @asset.modelname
       %dt= t 'asset.serial_no'
@@ -45,7 +45,8 @@
       %dd
         .col-md-8
           - if @asset.assettype==1
-            =@asset.try(:asset_placements).last.try(:location).try(:name)
+            /=@asset.try(:asset_placements).last.try(:location).try(:name)
+            =@asset.hmlocation.try(:location_list)
           - elsif @asset.assettype==2
             - for asset_placement in @asset.asset_placements
               = asset_placement.location.name+" "

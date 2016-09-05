@@ -2138,8 +2138,15 @@ en:
       
     category:
       title: Asset Category
+      list: Asset Category List
+      new: New Asset Category
+      edit: Edit Asset Category
       type_model_name: "Type / Model / Name"
       type_name_model: "Type - Brand - Model"
+      parent_id: Parent
+      description: Description
+      cattype_id: Category Type
+      details: Details
     
     maint:
       maintainer_id: Maintainer
@@ -3252,6 +3259,7 @@ en:
       total_students: Total Students
       total: Total
       incomplete_grade: Incomplete Grade
+      final_status: Final Status
     
     evaluate_course:
       title: "Course Evaluation (Lecturer)"
