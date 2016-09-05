@@ -811,7 +811,7 @@ KTYPE = [
       
     ]
    
-    #Asset 
+    #Asset
     COUNTRYLIST = [
              #  Displayed       stored in db
              ["AF|Afghanistan",     93],
