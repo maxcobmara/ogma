@@ -19,6 +19,7 @@ class Asset::AssetcategoriesController < ApplicationController
   end
   
   def create
+    #raise params.inspect
     @assetcategory=Assetcategory.new(assetcategory_params)
     respond_to do |format|
       if @assetcategory.save
