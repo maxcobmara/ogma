@@ -81,7 +81,7 @@ class Asset::AssetsController < ApplicationController
     @asset = Asset.find(params[:id])
     respond_to do |format|
       format.pdf do
-        pdf = Kewpa3Pdf.new(@asset, view_context, @lead, current_user.college)
+        pdf = Kewpa3Pdf.new(@asset, view_context, @lead)
         send_data pdf.render, filename: "kewpa3-{Date.today}",
                               type: "application/pdf",
                               disposition: "inline"
@@ -94,7 +94,7 @@ class Asset::AssetsController < ApplicationController
       @assets = Asset.where('substring(assetcode, 18, 2 ) =? AND assettype =?', "#{params[:search]}", 1).sort_by{|x|[x.assetcode.split("/")[3], (x.assetcode.split("/")[4]).to_i, (x.assetcode.split("/")[5]).to_i]}
       respond_to do |format|
         format.pdf do
-          pdf = Kewpa4Pdf.new(@assets, view_context, current_user.college)
+          pdf = Kewpa4Pdf.new(@assets, view_context)
           send_data pdf.render, filename: "kewpa4-{Date.today}",
                                 type: "application/pdf",
                                 disposition: "inline"
@@ -118,7 +118,7 @@ end
       @assets = Asset.where('substring(assetcode, 18, 2 ) =? AND assettype =?', "#{params[:search]}", 2).sort_by{|x|[x.assetcode.split("/")[3], (x.assetcode.split("/")[4]).to_i, (x.assetcode.split("/")[5]).to_i]}
       respond_to do |format|
         format.pdf do
-          pdf = Kewpa5Pdf.new(@assets, view_context, current_user.college)
+          pdf = Kewpa5Pdf.new(@assets, view_context)
           send_data pdf.render, filename: "kewpa5-{Date.today}",
                                 type: "application/pdf",
                                 disposition: "inline"

@@ -1,5 +1,5 @@
 class Kewpa8Pdf < Prawn::Document
-  def initialize(fa, inv, view)
+  def initialize(fa, inv, view, college)
     super({top_margin: 50, page_size: 'A4', page_layout: :landscape })
     @fa = fa
     @inv = inv
@@ -9,7 +9,11 @@ class Kewpa8Pdf < Prawn::Document
     move_down 20  
     text "LAPORAN TAHUNAN HARTA MODAL DAN INVENTORI BAGI TAHUN ", :align => :center, :size => 12, :style => :bold
     move_down 10
-    text "KEMENTERIAN : KESIHATAN MALAYSIA ", :align => :center, :size => 12, :style => :bold
+    if college.code=="kskbjb"
+      text "KEMENTERIAN : KESIHATAN MALAYSIA ", :align => :center, :size => 12, :style => :bold
+    else
+      text "KEMENTERIAN :  ", :align => :center, :size => 12, :style => :bold
+    end
     move_down 30
     table1
     move_down 50
