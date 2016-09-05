@@ -1,5 +1,5 @@
 class Kewpa2Pdf < Prawn::Document
-  def initialize(asset, view, lead)
+  def initialize(asset, view, lead, college)
     super({top_margin: 50, page_size: 'A4', page_layout: :portrait })
     @asset = asset
     @view = view
@@ -11,7 +11,7 @@ class Kewpa2Pdf < Prawn::Document
     move_down 5
     text "DAFTAR HARTA MODAL", :align => :center, :size => 12, :style => :bold
     move_down 5
-    text "Kementerian/Jabatan   : Kolej Kesihatan Bersekutu Johor Bahru", :align => :left, :size => 12
+    text "Kementerian/Jabatan   : #{college.name}", :align => :left, :size => 12
     text "Bahagian  : #{@asset.try(:location).try(:name)}", :align => :left, :size => 12
     text "Bahagian A ", :align => :center, :size => 12, :style => :bold
     
@@ -36,11 +36,11 @@ class Kewpa2Pdf < Prawn::Document
   end
     
   def make_tables1
-    data = [ [ "Kod Nasional", " "], [ "Kategori ", "#{@asset.try(:assetcategoryies).try(:description)}"], [ "Sub Kategori", "#{@asset.subcategory} "], 
+    data = [ [ "Kod Nasional", "#{@asset.assetcode}"], [ "Kategori ", "#{@asset.try(:category).try(:description)}"], [ "Sub Kategori", "#{@asset.subcategory} "], 
              [ "Jenis/Jenama/Model", "#{@asset.typename} " "/" "#{@asset.name}" "/" "#{@asset.modelname}"]  ]
     table(data, :column_widths => [130, 390], :cell_style => { :size => 9})
           
-    data1 = [ ["Buatan", "#{@asset.country_id}", "Harga Perolehan Asal", @view.currency(@asset.purchaseprice.to_f)], 
+    data1 = [ ["Buatan", "#{@asset.render_origin}", "Harga Perolehan Asal", @view.currency(@asset.purchaseprice.to_f)], 
                 ["Jenis Dan No Enjin", "#{@asset.engine_type_id}" "-" "#{@asset.engine_no}", "Tarikh Terima", "#{@asset.receiveddate.try(:strftime, "%d-%m-%Y")}"],
                 ["No Casis/Siri Pembuatan", "#{@asset.serialno}", "No Pesanan Rasmi Kerajaan", "#{@asset.orderno}"],
             ["No Pendaftaran (Bagi Kenderaan)", "#{@asset.registration} ", "Tempoh Jaminan","#{@asset.warranty_length} "] ]

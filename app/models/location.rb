@@ -13,7 +13,9 @@ class Location < ActiveRecord::Base
   has_many  :damages, :class_name => 'LocationDamage', :foreign_key => 'location_id', :dependent => :destroy
   accepts_nested_attributes_for :damages, :allow_destroy => true#, reject_if: proc { |damages| damages[:description].blank?}
   validates_associated :damages
-  has_many :asset_placements
+  
+  has_many :fixed_assets, :class_name => 'Asset' #Harta Modal
+  has_many :asset_placements #Inventori
   has_many :assets, :through => :asset_placements
   #has_many :asset, :foreign_key => "location_id" --> not required - refer line 15 & 16
   has_many :asset_loss

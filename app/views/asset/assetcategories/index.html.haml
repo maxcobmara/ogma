@@ -1,0 +1,49 @@
+- model_class = Assetcategory
+.page-header
+  %h1= t('asset.category.title')
+  
+.navbar.navbar-inverse{role: "navigation", style: "padding-right:40px;"}
+  %ul.nav.navbar-nav
+    %li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'actions.new'))), new_asset_assetcategory_path
+  %ul.nav.navbar-nav.navbar-right
+    %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "bogus"
+    /class: "index_search_bar"
+    %li.dropdown
+      %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#"}
+        = fa_icon "print", text: (t 'actions.print')
+        %b.caret
+      /%ul.dropdown-menu
+      /  %li
+      /    %a{:href => kewps13_asset_assetcategories_path(:format => 'pdf', :yyear => Date.today.year)} KEW PS13
+
+
+.row
+  %table.table-striped.table-hover.ogma
+    %thead
+      %tr
+        /%th= sort_link(@search, :code, (t 'assetcategory.code'))
+        /%th= sort_link(@search, :category, (t 'assetcategory.category'))
+        /%th= sort_link(@search, :quantity, (t 'assetcategory.quantity'))
+        /%th= sort_link(@search, :maxquantity, (t 'assetcategory.max'))
+        /%th{style: "width:33%;"}= sort_link(@search, :minquantity, (t 'assetcategory.min'))
+        %th=(t 'asset.category.description')
+        %th=(t 'asset.category.parent_id')
+        %th=(t 'asset.category.cattype_id')
+
+    %tbody
+    /= render "index_search"
+    - @assetcategories.each do |assetcategory|
+      %tr
+        %td=link_to assetcategory.description, asset_assetcategory_path(assetcategory)
+        %td=assetcategory.render_cattype
+        %td=assetcategory.try(:parent).try(:description)
+        /%td= link_to assetcategory.code, asset_assetcategory_path(assetcategory)
+        /%td= link_to assetcategory.category, asset_assetcategory_path(assetcategory)
+        /%td
+        /  = assetcategory.current_quantity.to_i rescue 0
+        /  &nbsp; 
+        /  = assetcategory.unittype
+        /%td= assetcategory.maxquantity.to_i
+        /%td= assetcategory.minquantity.to_i
+
+  .right{style:"padding:0 30px; margin:0;"}= paginate @assetcategories, :theme => 'twitter-bootstrap-3'

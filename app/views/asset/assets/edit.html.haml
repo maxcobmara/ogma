@@ -88,7 +88,7 @@
           .col-sm-2.control-label
             = f.label t 'asset.country_id', for: :country_id
           .col-md-5
-            = f.text_field :country_id, class: 'form-control input-xxlarge' 	
+            = f.select :country_id, DropDown::COUNTRYLIST, {:include_blank => (t 'select')}, {class: 'selectpicker'}
 		  
         .form-group
           .col-sm-2.control-label
