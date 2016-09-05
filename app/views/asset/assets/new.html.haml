@@ -8,7 +8,7 @@
 
 .row
   = form_for [:asset, @asset], html: { class: 'form-horizontal' }  do |f| 
-    = f.text_field :college_id, value: current_user.college_id
+    = f.hidden_field :college_id, value: current_user.college_id
     .form-group
       .col-sm-2.control-label
         = f.label t 'asset.assetcode', for: :asset_show
@@ -26,10 +26,18 @@
             %td /
             %td
               .fixed_selector{style: "display:none; margin:0; padding-top:12px;"}
-                = f.text_field :cardno, class: "form-control", :default => ( Asset.where(assettype: 1).last[:assetcode].split("/")[5].to_i + 1) rescue 0
+                - if Asset.where(assettype: 1).count > 0
+                  = f.text_field :cardno, class: "form-control", :default => ( Asset.where(assettype: 1).last[:assetcode].split("/")[5].to_i + 1) 
+                  /rescue 0
+                - else
+                  = f.text_field :cardno, class: "form-control", value: 1, readonly: 'readonly'
             %td
               .inventory_selector{style: "display:none;  margin:0; padding-top:12px;"}
-                = f.text_field :cardno, class: "form-control", :default => ( Asset.where(assettype: 2).last[:assetcode].split(/[\/\-]/)[6].to_i + 1) rescue 0
+                - if Asset.where(assettype: 2).count > 0
+                  = f.text_field :cardno2, class: "form-control", :default => ( Asset.where(assettype: 2).last[:assetcode].split(/[\/\-]/)[6].to_i + 1) 
+                  /rescue 0
+                - else
+                  = f.text_field :cardno2, class: "form-control", value: 1, readonly: 'readonly'
             %td
               .inventory_selector{style: "display:none;"}
                 \-
