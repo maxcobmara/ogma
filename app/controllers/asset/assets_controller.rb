@@ -90,18 +90,8 @@ class Asset::AssetsController < ApplicationController
   end
   
   def kewpa4
-    unless params[:search] == '0'
-      @assets = Asset.where('substring(assetcode, 18, 2 ) =? AND assettype =?', "#{params[:search]}", 1).sort_by{|x|[x.assetcode.split("/")[3], (x.assetcode.split("/")[4]).to_i, (x.assetcode.split("/")[5]).to_i]}
-      respond_to do |format|
-        format.pdf do
-          pdf = Kewpa4Pdf.new(@assets, view_context)
-          send_data pdf.render, filename: "kewpa4-{Date.today}",
-                                type: "application/pdf",
-                                disposition: "inline"
-                 end
-             end
-        else
-    @assets = Asset.where(assettype: 1).sort_by{|x|[x.assetcode.split("/")[3], (x.assetcode.split("/")[4]).to_i, (x.assetcode.split("/")[5]).to_i]}
+    @search=Asset.search(params[:q])
+    @assets=@search.result.where(assettype: 1)
     respond_to do |format|
       format.pdf do
         pdf = Kewpa4Pdf.new(@assets, view_context)
@@ -110,32 +100,20 @@ class Asset::AssetsController < ApplicationController
                               disposition: "inline"
       end
     end
-  end
-end  
+  end  
   
   def kewpa5
-    unless params[:search] == '0'
-      @assets = Asset.where('substring(assetcode, 18, 2 ) =? AND assettype =?', "#{params[:search]}", 2).sort_by{|x|[x.assetcode.split("/")[3], (x.assetcode.split("/")[4]).to_i, (x.assetcode.split("/")[5]).to_i]}
-      respond_to do |format|
-        format.pdf do
-          pdf = Kewpa5Pdf.new(@assets, view_context)
-          send_data pdf.render, filename: "kewpa5-{Date.today}",
-                                type: "application/pdf",
-                                disposition: "inline"
-        end
-      end
-    else
-    @assets = Asset.where(assettype: 2).sort_by{|x|[x.assetcode.split("/")[3], (x.assetcode.split("/")[4]).to_i, (x.assetcode.split("/")[5]).to_i]}
+    @search=Asset.search(params[:q])
+    @assets=@search.result.where(assettype: 2)
     respond_to do |format|
       format.pdf do
         pdf = Kewpa5Pdf.new(@assets, view_context)
-        send_data pdf.render, filename: "kewpa5-{Date.today}",
+        send_data pdf.render, filename: "kewpas-{Date.today}",
                               type: "application/pdf",
                               disposition: "inline"
       end
     end
   end
-end
   
   def kewpa6
     @asset = Asset.find(params[:id])
@@ -203,7 +181,7 @@ end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def asset_params
-      params.require(:asset).permit(:assetcode, :assettype, :assignedto_id, :bookable, :cardno, :category_id, :engine_no, :engine_type_id, :is_maintainable, 
+      params.require(:asset).permit(:assetcode, :assettype, :assignedto_id, :bookable, :cardno, :cardno2,  :category_id, :engine_no, :engine_type_id, :is_maintainable, 
         :locassigned, :location_id, :manufacturer_id, :country_id, :mark_as_lost, :mark_disposal, :modelname, :name, :purchasedate, :purchaseprice, :quantity, :quantity_type, 
         :receiveddate, :receiver_id, :registration, :serialno, :status, :subcategory, :supplier_id, :typename, :warranty_length, :warranty_length_type, :college_id, :data,
         damages_attributes: [:id, :description,:reported_on,:document_id,:location_id], asset_placements_attributes: [:id, :_destroy, :location_id, :staff_id, :reg_on, :quantity])

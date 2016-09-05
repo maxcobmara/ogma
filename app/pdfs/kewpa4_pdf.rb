@@ -1,7 +1,7 @@
 class Kewpa4Pdf < Prawn::Document
-  def initialize(asset, view)
+  def initialize(assets, view)
     super({top_margin: 50, page_size: 'A4', page_layout: :portrait })
-    @assets = asset
+    @assets = assets
     @view = view
     font "Times-Roman"
     text "KEW.PA-4", :align => :right, :size => 16, :style => :bold

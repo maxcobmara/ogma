@@ -51,7 +51,11 @@
             - for asset_placement in @asset.asset_placements
               = asset_placement.location.name+" "
       %dt= t 'asset.assigned_to'
-      %dd= @asset.assignedto.try(:name)
+      %dd
+        - if current_user.college.code=="kskbjb"
+          = @asset.assignedto.try(:name)
+        - else
+          = @asset.assignedto.try(:staff_with_rank)
       %dt= t 'asset.status'
       %dd= @asset.status
       %dt= t 'asset.other_information'
