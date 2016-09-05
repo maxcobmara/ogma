@@ -1,0 +1,12 @@
+= search_form_for @search, url: asset_assetcategories_path,  class: "form-inline" do |f|
+  %tr.search_row{style: "display: none;"}
+    %td=f.text_field :description_cont, class:  'form-control'
+    %td=select_tag('q[cattype_id_eq]', options_for_select([[(t 'select'), '']]+DropDown::ASSETTYPE, @search.cattype_id_eq), class:  'selectpicker', "data-width" => '200px')
+    %td
+      .input-group
+        - parent_ids=Assetcategory.where('parent_id is not null').pluck(:parent_id).uniq
+        - parents=Assetcategory.where(id: parent_ids)
+        =select_tag('q[parent_id_eq]', options_for_select([[(t 'select'), '']]+parents.collect{|u|[u.description, u.id]}, @search.parent_id_eq), class:  'selectpicker', "data-width" => '200px')
+        %span.input-group-btn
+          %button.btn.btn-sm.btn-default.right{:type => "submit"}
+            %i.fa.fa-search.fa-fw

@@ -19,11 +19,10 @@ class Asset::AssetcategoriesController < ApplicationController
   end
   
   def create
-    #raise params.inspect
     @assetcategory=Assetcategory.new(assetcategory_params)
     respond_to do |format|
       if @assetcategory.save
-        format.html { redirect_to asset_assetcategories_path, :notice =>t('assetcategory.caption')+t('actions.created')}
+        format.html { redirect_to asset_assetcategory_path(@assetcategory), :notice =>t('asset.category.title')+t('actions.created')}
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }
@@ -44,7 +43,7 @@ class Asset::AssetcategoriesController < ApplicationController
 
     respond_to do |format|
       if @assetcategory.update(assetcategory_params)
-        format.html { redirect_to asset_assetcategories_path, :notice =>t('assetcategory.caption')+t('actions.updated')}
+        format.html { redirect_to asset_assetcategory_path(@assetcategory), :notice =>t('asset.category.title')+t('actions.updated')}
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }

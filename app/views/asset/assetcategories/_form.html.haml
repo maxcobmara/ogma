@@ -1,0 +1,17 @@
+.form-group
+  .col-sm-2.control-label
+    = f.label t 'asset.category.description', for: :description
+  .col-md-8
+    = f.text_field :description, class: 'form-control'
+     
+.form-group
+  .col-sm-2.control-label
+    = f.label t 'asset.category.cattype_id', for: :description
+  .col-md-8
+    = f.select :cattype_id, DropDown::ASSETTYPE , {:include_blank => (t 'select')},{class: 'selectpicker'}
+                
+.form-group
+  .col-sm-2.control-label
+    = f.label t 'asset.category.parent_id', for: :description
+  .col-md-8
+    = f.collection_select :parent_id, Assetcategory.all, :id, :description, {:include_blank => (t 'select')},{class: 'selectpicker'}
