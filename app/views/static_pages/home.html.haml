@@ -5,13 +5,16 @@
    //{:style => "background:#F99;"}
    %h1 Welcome to
    //TODO when database available use #college.name Kolej Sains Kesihatan Bersekutu
-   %h2=Page.find(1).college.name
+   %h2
+    /=Page.find(1).college.name
+    =@college.name
   .col-md-3
   .col-md-3.piclogo{:style => "float:right; height:120px; background:#999;"}
    logo
  .row.title
   .col-md-4
-   = simple_format(Page.find(1).body)
+   /= simple_format(Page.find(1).body)
+   = simple_format(Page.where(name: 'home').where(college_id: @college).try(:first).try(:body))
    
  .row.buttons
   .col-md-1.col-md-offset-3
@@ -68,6 +71,7 @@
  .row.developers
   =render 'about'
 
+= link_to 'All Colleges', root_url(:subdomain => false)
 :javascript
   $(document).ready(function(){
     var yy=document.querySelectorAll("p");

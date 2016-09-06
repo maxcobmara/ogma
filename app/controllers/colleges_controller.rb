@@ -1,11 +1,18 @@
 class CollegesController < ApplicationController
-  filter_resource_access
-  before_action :set_college, only: [:show, :edit, :update, :destroy]
+ # filter_resource_access
+  filter_access_to :index, :new, :create, :attribute_check => false
+  filter_access_to :show, :edit, :update, :destroy, :attribute_check => true
+  before_action :set_college, only: [:show, :edit, :update]
 
   respond_to :html
 
   def index
-    @colleges=College.all
+    if current_user.college.code=="tpsb" || current_user.email.split("@")[1]=="teknikpadu.com"
+      @colleges=College.all
+    else
+      @colleges=College.where(id: current_user.college_id)
+    end
+    
 #     @search = College.search(params[:q])
 #     @colleges = @search.result.page(params[:page]).per(5)
     #@active = :college
@@ -36,13 +43,26 @@ class CollegesController < ApplicationController
   end
 
   def destroy
-    @college.destroy
-    respond_with(@college)
+    @college=College.find(params[:id])
+    respond_to do |format|
+       if @college.destroy
+         format.html { redirect_to colleges_path, notice: (t 'college.title')+(t 'actions.deleted') }
+         format.json { head :no_content }
+       else
+         format.html { redirect_to college_path(@college), notice: (t 'college.restrict_deletion')}
+         format.json { render json: @college.errors, status: :unprocessable_entity }
+       end
+     end
+    
   end
 
   private
     def set_college
-      @college = College.find(params[:id])
+      if current_user.college.code=="tpsb" || current_user.email.split("@")[1]=="teknikpadu.com"
+        @college=College.find(params[:id])
+      else
+        @college = College.find(current_user.college_id)
+      end
     end
 
     def college_params

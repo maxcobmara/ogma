@@ -1,4 +1,6 @@
 class College < ActiveRecord::Base
+  
+  before_destroy :valid_for_removal
   has_many :users
   has_many :pages
   has_many :examanalyses
@@ -46,5 +48,13 @@ class College < ActiveRecord::Base
   def logo
     data[:logo]
   end  
+
+  def valid_for_removal
+    if users.count ==0
+      return true
+    else
+      return false
+    end
+  end
   
 end

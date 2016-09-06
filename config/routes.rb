@@ -489,9 +489,21 @@ Ogma::Application.routes.draw do
   end
 
   resources :groups
-  resources :colleges
+  resources :colleges 
 
-  root  'static_pages#home'
+  #refer 1)lib/Subdomain.rb & 2)config/application.rb (auto loader for lib files)
+  #ref: http://stackoverflow.com/questions/4027736/add-constraint-to-route-to-exclude-certain-keyword
+  constraints (Subdomain.new) do
+    match '/' => 'static_pages#home', via: 'get'
+  end
+  #match '/' => 'static_pages#home', via: 'get', :constraints => Subdomain.new #OK - also works
+  #match '/' => 'static_pages#home', via: 'get', :constraints => {:subdomain => /.+/}  #OK but "www" will fail
+  root 'static_pages#landing'  #root 'colleges#index'
+  
+  #match '/home', to: 'static_pages#home', via: 'get'
+  
+  #previous one
+  #root  'static_pages#home'
   match '/help',    to: 'static_pages#help',    via: 'get'
   match '/about',   to: 'static_pages#about',   via: 'get'
   match '/contact', to: 'static_pages#contact', via: 'get'

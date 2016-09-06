@@ -1,43 +1,46 @@
 .col-md-offset-1
   .form-group
     .col-sm-2.control-label
-      = f.label "Code"
+      = f.label (t 'college.code')
     .col-md-4
-      =f.text_field :code, class: 'form-control'
+      - if @college.new_record? 
+        =f.text_field :code, class: 'form-control'
+      - else
+        %b{style: 'color: blue;'}=@college.code
     
   .form-group
     .col-sm-2.control-label
-      Name
+      = f.label (t 'college.name')
     .col-md-4
       =f.text_field :name, class: 'form-control'
     
   .form-group
     .col-sm-2.control-label
-      Address
+      = f.label (t 'college.address')
     .col-md-4
       =f.text_area :address, class: 'form-control', size: '100x5'
   
   .form-group
     .col-sm-2.control-label
-      Phone
+      = f.label (t 'college.phone')
     .col-md-4 
       =f.text_field :phone, class: 'form-control'
   
   .form-group
     .col-sm-2.control-label
-      Fax
+      = f.label (t 'college.fax')
     .col-md-4 
       =f.text_field :fax, class: 'form-control'
 
   .form-group
     .col-sm-2.control-label
-      Email
+      = f.label (t 'college.email')
     .col-md-4
       =f.text_field :email, class: 'form-control'
     
   .form-group
     .col-sm-2.control-label
-      Logo
+      = f.label (t 'college.logo')
     .col-md-4
       =f.text_field :logo, class: 'form-control'
     
