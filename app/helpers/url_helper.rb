@@ -4,7 +4,7 @@ module UrlHelper
     subdomain+="." unless subdomain.empty?
     #[subdomain, request.domain, request.port_string].join
      #[subdomain, request.domain(2), request.port_string].join
-    [subdomain, request.domain(3), request.port_string].join
+    [subdomain, request.domain(4), request.port_string].join
   end
   
   def url_for(options = nil)
