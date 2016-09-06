@@ -1,0 +1,23 @@
+= render 'shared/flashes'
+.row.home_page
+ .row.title
+  .col-md-6
+   //{:style => "background:#F99;"}
+   %h1 Integrated Campus Management System 
+   %h2 (ICMS)
+   
+ .row.title
+  .col-md-4
+   %h3 Colleges
+   %p
+    - cnt=0
+    - for college in @colleges
+     = (cnt+=1).to_s+". "
+     = link_to college.code.titleize, root_url(:subdomain => college.code)
+     %br
+
+
+ .row
+  %h2
+   This is the home page for the
+   %a{:href => "https://github.com/maxcobmara/ogma"} New ICMS : Ogma

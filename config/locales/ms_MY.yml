@@ -380,7 +380,20 @@ ms_MY:
     
   support:
     title: Jadual Sokongan
-    
+
+  college:
+    title: Butiran Kolej
+    list: Senarai Kolej
+    edit: Sunting Kolej
+    code: Kod
+    name: Nama
+    address: Alamat
+    email: Emel
+    phone: No Telefon
+    fax: No Faks
+    logo: Logo
+    restrict_deletion: "Rekod kolej tidak boleh dipadam. Masih terdapat pengguna bagi kolej ini."
+
   banks:
     title: Bank
     list: Senarai Bank

@@ -402,6 +402,19 @@ en:
     
   support:
     title: Support Tables
+  
+  college:
+    title: College Details
+    list: College List
+    edit: Edit College
+    code: Code
+    name: Name
+    address: Address
+    email: Email
+    phone: Phone No
+    fax: Fax No
+    logo: Logo
+    restrict_deletion: "Deletion is restricted. College user still exist."
     
   banks:
     title: Banks
