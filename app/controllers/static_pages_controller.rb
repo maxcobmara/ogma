@@ -3,7 +3,7 @@ class StaticPagesController < ApplicationController
 
   def home
    @bulletins = Bulletin.order(publishdt: :desc).limit(10)
-   @college=College.find_by_code!(request.subdomain)
+   @college=College.find_by_code!(request.subdomain(2))
   end
   
   def landing
