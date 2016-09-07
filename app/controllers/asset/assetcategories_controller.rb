@@ -1,5 +1,5 @@
 class Asset::AssetcategoriesController < ApplicationController
-  #filter_resource_access
+  filter_resource_access
   before_action :set_assetcategory, only: [:show, :edit, :update, :destroy]
   # GET /assetcategories
   # GET /assetcategories.xml

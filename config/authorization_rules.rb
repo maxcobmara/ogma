@@ -301,7 +301,7 @@ authorization do
   
   #Group Assets  -------------------------------------------------------------------------------
   role :asset_administrator do
-    # TODO - addin Assetcategories when ready in Ogma
+    has_permission_on :asset_assetcategories, :to => :manage
     has_permission_on :asset_assets, :to => [:manage, :kewpa2, :kewpa3, :kewpa4, :kewpa5, :kewpa6, :kewpa8, :kewpa13, :kewpa14, :loanables]
     has_permission_on :asset_asset_defects, :to =>[:read, :kewpa9]
     has_permission_on :asset_asset_defects, :to =>[:update, :process2], :join_by => :and do #3nov2013, 21Jan2016
@@ -1763,19 +1763,29 @@ authorization do
      has_permission_on :campus_address_books, :to => :read
   end
   
-  # TODO 50-54 when pages ready in Ogma
+  #50 - OK --NOTE-- In roles table(name & authname -> asset_categories....), but model/controller (asset_assetcategories)
+  role :asset_categories_module_admin do
+    has_permission_on :asset_assetcategories, :to => :manage
+  end
+  role :asset_categories_module_viewer do
+    has_permission_on :asset_assetcategories, :to => :read
+  end
+  
+
+  
+  # TODO 51-54 when pages ready in Ogma
 #   titles
 #   staff_shifts
 #   travel_claims_transport_groups
 #   travel_claim_mileage_rates
-#   asset_categories
+
   
   
 #   role :titles
 #   role :staff_shift
 #   role :travel_claims_transport_group
 #   role :travel_claim_mileage_rates
-#   role :assetcategories  
+ 
   #end for Support table / E- Filling modules##################################
   
   role :users_module do
