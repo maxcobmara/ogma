@@ -438,7 +438,7 @@
               %tr
                 %td.left=check_box_tag "efilemain_#{cnt}", cnt, false, class: "supportmain"
                 %td.left
-                  - if ["Address Book", "Banks", "Messaging Groups"].include?(rolename)
+                  - if ["Address Book", "Banks", "Messaging Groups", "Asset Categories"].include?(rolename)
                     =rolename
                   - else
                     %font{style: 'color: grey;'}=rolename

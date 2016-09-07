@@ -482,7 +482,7 @@ en:
     training_administration_modules: "Training Budget, Training Courses, Training Schedules, Training Attendance"
     training_manager_modules: "Training Budget, Training Courses, Training Schedules, Training Attendance"
     staff_modules: "Staffs(O), Staff Attendance(O), Training Attendance(O), Staff Appraisal(O), Staff Leaves(O), Travel Requests(O), Travel Claims(O), Asset List(R), Asset Defect(O), Asset Loan(O), Student List(R), Student Discipline Case(O), Locations(R), Events(O), Bulletins(R), Document Registry(O), Library Books(R), Library Analysis & Statistics(R)"
-    asset_administrator_modules: "Asset Losses, Asset Loans, Asset Disposals, Asset Defect, Asset List, Locations"
+    asset_administrator_modules: "Asset Losses, Asset Loans, Asset Disposals, Asset Defect, Asset List, Asset Categories, Locations"
     e_filing_modules: "File Registry, Document Registry"
     facilities_administrator_modules: "Locations, Location Damages, Student Residences, Staff Residences"
     warden_modules: "Locations(R), Student Residences(R), Student Leaves, Student Infos(R), Student Attendances(R), Student Discipline Cases(R), Student Counseling Session(R)"

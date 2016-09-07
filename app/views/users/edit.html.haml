@@ -708,7 +708,7 @@ $(function(){
     examown[6].disabled=true;
     
     /*NOTE - enable these when Admin & Support tables ready*/
-    for (i=2;i<7;i++)
+    for (i=2;i<6;i++)
     {
       supportmg[i].checked=false;
       supportmg[i].disabled=true;
@@ -1133,6 +1133,15 @@ $(function(){
       /* main must be checked*/
       {  esupportmn[i].checked=true;}
     }
+    
+    /*disable this main checkbox if no support tables module selected*/
+    for(i=0; i<8; i++){
+      if ((esupportmg[i].checked==false) && (esupportrd[i].checked==false) ){
+        esupportmn[i].disabled=true;
+      }
+    }
+    /**/
+    
     /*EACH - requires for each RADIO BUTTONS (saved values) - END*/
     /*EACH - requires for each RADIO BUTTONS (saved values), to update checkboxes - START*/
     var elocationmg = document.getElementsByClassName('locationmanage');
@@ -1173,6 +1182,11 @@ $(function(){
           assetown[i].disabled=true;
           eassetmn[i].disabled=true;
         } 
+        /*asset categories - disable when asset admin is selected*/
+        supportmg[6].disabled=true;
+        supportrd[6].disabled=true
+        esupportmn[6].disabled=true;
+        
       }
  
       /* when Facilites Administrator is selected, uncheck Location & Tenant*/
@@ -1530,7 +1544,7 @@ $(function(){
     examown[6].disabled=true;
     
     /*NOTE - enable these when Admin & Support tables ready*/
-    for (i=2;i<7; i++)
+    for (i=2;i<6; i++)
     {
       supportmg[i].checked=false;
       supportmg[i].disabled=true;
@@ -2419,14 +2433,22 @@ $(function(){
         eassetm[i].checked=false;
         eassetm[i].disabled=true;
       }
+      /*asset categories - disable when asset admin is selected*/
+      supportmg[6].checked=false;
+      supportrd[6].checked=false;
+      supportmg[6].disabled=true;
+      supportrd[6].disabled=true;
+        
+      esupportm[6].checked=false;
+      esupportm[6].disabled=true;
     } 
     else
     {
       /* when Asset Administrator is not selected, but Staff role is selected, disable Asset List(R), Asset Defect(O), Asset Loan(O)*/
       if(inputElements[5].checked){
-        assetrd[5].disabled=true;
-        assetown[4].disabled=true;
-        assetown[1].disabled=true;
+        assetrd[5].disabled=true;    /*list*/
+        assetown[4].disabled=true; /*defect*/
+        assetown[1].disabled=true; /*loan*/
       }
       else
       {
@@ -2434,6 +2456,11 @@ $(function(){
         assetown[4].disabled=false;
         assetown[1].disabled=false; 
       }
+      /*asset categories - available when asset admin is not selected*/
+      supportmg[6].disabled=false;
+      supportrd[6].disabled=false;
+      esupportm[6].disabled=false;
+      
       assetmg[5].disabled=false;
       assetusr[5].disabled=false;
       assetown[5].disabled=false;
@@ -3175,7 +3202,7 @@ $(function(){
     examown[6].disabled=true;
     
     /*NOTE - enable these when Admin & Support tables ready*/
-    for (i=2;i<7;i++)
+    for (i=2;i<6;i++)
     {
       supportmg[i].checked=false;
       supportmg[i].disabled=true;

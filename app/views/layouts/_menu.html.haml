@@ -386,7 +386,8 @@
                 %li
                 - permitted_to? :read, :banks do
                   %li= link_to t('banks.title'), banks_path
-                %li= link_to (t "asset.category.title"), asset_assetcategories_path
+                - permitted_to? :read, :asset_assetcategories do
+                  %li= link_to (t "asset.category.title"), asset_assetcategories_path
           - permitted_to? :manage, :colleges do
             %li= link_to content_tag(:i, "", :class => "icon-numb") + t('college.title'), college_path(current_user.college_id)
           %li= link_to content_tag(:i, "", :class => "icon-numb") + "Release Notes", '#'
