@@ -10,9 +10,101 @@ end
 
 authorization do
 
- role :administration do
+ role :developer do
    has_omnipotence
    has_permission_on :authorization_rules, :to => :read
+ end
+
+ role :administration do
+   has_permission_on :authorization_rules, :to => :read
+   has_permission_on :roles, :to => :manage
+   has_permission_on :users, :to =>[:index, :update], :join_by => :and do
+     if_attribute :college_id => is {user.college_id}
+     if_attribute :email => is_not {User.where(college_id: user.college_id).joins(:roles).where('roles.authname=?', 'developer').pluck(:email).first}
+   end
+  #by existing roles?
+#    includes :staff
+#    includes :staff_administrator
+#    includes :finance_unit
+#    includes :training_manager
+#    includes :training_administration
+#    includes :asset_administrator
+#    includes :lecturer
+#    includes :exam_administration
+#    includes :programme_manager
+#    includes :librarian
+#    includes :student
+#    includes :student_administrator
+#    includes :disciplinary_officer
+#    includes :student_counsellor
+#    includes :facilities_administrator
+#    includes :warden
+#    includes :unit_leader
+#    includes :administration_staff
+#    includes :e_filing
+#    includes :guest
+   #by module admin?
+   includes :staffs_module_admin 
+   includes :positions_module_admin
+   includes :staff_attendances_module_admin 
+   includes :fingerprints_module_admin
+   includes :staff_appraisals_module_admin 
+   includes :staff_leaves_module_admin 
+   includes :travel_claims_module_admin  
+   includes :travel_requests_module_admin
+   includes :training_budget_module_admin 
+   includes :training_courses_module_admin
+   includes :training_schedule_module_admin
+   includes :training_attendance_module_admin
+   includes :student_leaves_module_admin 
+   includes :student_attendances_module_admin
+   includes :student_counseling_module_admin 
+   includes :student_discipline_module_admin 
+   includes :tenants_module_admin
+   includes :locations_module_admin 
+   includes :location_damages_module_admin 
+   includes :student_infos_module_admin
+   includes :training_notes_module_admin  
+   includes :academic_session_module_admin
+   includes :student_intake_module_admin 
+   includes :timetables_module_admin 
+   includes :lesson_plans_module_admin 
+   includes :topic_details_module_admin  
+   includes :programmes_module_admin 
+   includes :weeklytimetables_module_admin 
+   includes :library_transactions_module_admin 
+   includes :library_books_module_admin 
+   includes :exam_templates_module_admin
+   includes :examresults_module_admin 
+   includes :exam_grade_module_admin 
+   includes :exammarks_module_admin
+   includes :exam_analysis_module_admin 
+   includes :exampaper_module_admin
+   includes :examquestions_module_admin
+   includes :course_evaluation_module_admin 
+   includes :stationeries_module_admin
+   includes :asset_losses_module_admin 
+   includes :asset_loans_module_admin
+   includes :asset_disposals_module_admin
+   includes :asset_defect_module_admin 
+   includes :asset_list_module_admin 
+   includes :events_module_admin 
+   includes :bulletins_module_admin 
+   includes :files_module_admin 
+   includes :documents_module_admin 
+   includes :banks_module_admin 
+   includes :address_book_module_admin
+   includes :titles_module_admin
+   includes :staff_shifts_module_admin
+   includes :travel_claims_transport_groups_module_admin
+   includes :travel_claim_mileage_rates_module_admin
+   includes :staff_ranks_module_admin
+   includes :staff_employgrades_module_admin
+   includes :staff_postinfos_module_admin
+   includes :asset_categories_module_admin 
+   includes :messaging_groups_module_admin
+   includes :users_module
+   includes :roles_module
  end
 
  #Group Staff
@@ -261,10 +353,12 @@ authorization do
      has_permission_on :staff_staffs, :to => [:manage, :borang_maklumat_staff]
      has_permission_on :staff_staff_attendances, :to =>[:manage, :manager, :actionable, :approval, :manager_admin, :attendance_report, :attendance_report_main, :daily_report, :weekly_report, :monthly_report, :monthly_listing, :monthly_details, :import_excel, :import, :status ]   #29Apr2013-refer routes.rb
      has_permission_on :staff_fingerprints, :to => [:manage, :approval, :index_admin]
-     # TODO - addin StaffShift when ready in Ogma #has_permission_on :staff_shifts, :to => :manage
+     has_permission_on :staff_staff_shifts, :to => :manage
+     has_permission_on :staff_titles, :to => :manage
      has_permission_on :staff_positions, :to =>[:manage, :maklumat_perjawatan, :organisation_chart]
-     # TODO - add-in Employgrade & Postinfos when ready in Ogma
-     # TODO - addin Title & Banks when ready in Ogma
+     has_permission_on :banks, :to => :manage
+     has_permission_on :staff_employgrades, :to => :manage
+     has_permission_on :staff_postinfos, :to => :manage
      ###restricted as of in Staff role
      #has_permission_on :staff_staff_appraisals, :to => [:manage, :appraisal_form]    # NOTE : restricted - PPP & PPK + marks by PPP & PPK become viewable 
      #has_permission_on :staff_leaveforstaffs, :to => :manage                                    # restricted - Penyokong & Pelulus                                
@@ -280,7 +374,7 @@ authorization do
       if_attribute :is_returned => is_not {true}
       if_attribute :is_checked => is_not {true}
     end
-    # TODO - addin transportgroup & mileagerate when ready in Ogma - has_permission_on [:travel_claims_transport_groups, :travel_claim_mileage_rates], :to => :manage
+    has_permission_on [:staff_travel_claims_transport_groups, :staff_travel_claim_mileage_rates], :to => :manage
     has_permission_on [:staff_travel_claim_allowances, :travel_claim_receipts, :travel_claim_logs], :to => :manage
     has_permission_on :staff_training_ptbudgets, :to => :manage
   end
@@ -1735,18 +1829,9 @@ authorization do
     end
   end
   
-  
-  
-  
-  
-  
   #OK until here 10Feb2016==============
   #for all modules to work, must activate Staff role OR Staff (Admin/Viewer/User/Member)
-  
-  
-  
-  
-  
+
   #48-OK
   role :banks_module_admin do
      has_permission_on :banks, :to => :manage
@@ -1763,7 +1848,7 @@ authorization do
      has_permission_on :campus_address_books, :to => :read
   end
   
-  #50 - OK --NOTE-- In roles table(name & authname -> asset_categories....), but model/controller (asset_assetcategories)
+  #50 - OK 7-8Sept2016--NOTE-- In roles table(name & authname -> asset_categories....), but model/controller (asset_assetcategories)
   role :asset_categories_module_admin do
     has_permission_on :asset_assetcategories, :to => :manage
   end
@@ -1771,25 +1856,69 @@ authorization do
     has_permission_on :asset_assetcategories, :to => :read
   end
   
-
+  #51-OK 8Sept2016
+  role :titles_module_admin do
+    has_permission_on :staff_titles, :to => :manage
+  end
+  role :titles_module_viewer do
+    has_permission_on :staff_titles, :to => :read
+  end
+    
+  #52-OK 8 Sept2016
+  role :staff_shifts_module_admin do
+    has_permission_on :staff_staff_shifts, :to => :manage
+  end
+  role :staff_shifts_module_viewer do
+    has_permission_on :staff_staff_shifts, :to => :read
+  end
+ 
+  #53-OK 19 Sept2016
+  role :travel_claims_transport_groups_module_admin do
+    has_permission_on :staff_travel_claims_transport_groups, :to => :manage
+  end
+  role :travel_claims_transport_groups_module_viewer do
+    has_permission_on :staff_travel_claims_transport_groups, :to => :read
+  end
   
-  # TODO 51-54 when pages ready in Ogma
-#   titles
-#   staff_shifts
-#   travel_claims_transport_groups
-#   travel_claim_mileage_rates
-
+  #54-OK 19 Sept2016
+  role :travel_claim_mileage_rates_module_admin do
+    has_permission_on :staff_travel_claim_mileage_rates, :to => :manage
+  end
+  role :travel_claim_mileage_rates_module_viewer do
+    has_permission_on :staff_travel_claim_mileage_rates, :to => :read
+  end
   
+  #55-OK 19 Sept2016
+  role :staff_ranks_module_admin do
+    has_permission_on :staff_ranks, :to => :manage
+  end
+  role :staff_ranks_module_viewer do
+    has_permission_on :staff_ranks, :to => :read
+  end
   
-#   role :titles
-#   role :staff_shift
-#   role :travel_claims_transport_group
-#   role :travel_claim_mileage_rates
+  #56-OK 19 Sept2016
+  role :staff_employgrades_module_admin do
+    has_permission_on :staff_employgrades, :to => :manage
+  end
+  role :staff_employgrades_module_viewer do
+    has_permission_on :staff_employgrades, :to => :read
+  end
+  
+  #57-OK 19 Sept2016
+  role :staff_postinfos_module_admin do
+    has_permission_on :staff_postinfos, :to => :manage
+  end
+  role :staff_postinfos_module_viewer do
+    has_permission_on :staff_postinfos, :to => :read
+  end
  
   #end for Support table / E- Filling modules##################################
   
   role :users_module do
-    has_permission_on :users, :to => :manage
+    #has_permission_on :users, :to => :manage
+    has_permission_on :users, :to =>[:index, :update] do
+      if_attribute :college_id => is {user.college_id}
+    end
   end
   
   role :roles_module do

@@ -1,4 +1,6 @@
 class Title < ActiveRecord::Base
+  has_many :staffs
+  validates :titlecode, :name, presence: true
 end
 
 # == Schema Information

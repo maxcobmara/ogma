@@ -3,6 +3,20 @@ class StaffShift < ActiveRecord::Base
   has_many :staffs
   has_many :shift_histories
   
+  # define scope
+  def self.start_at_search(query)
+    where(start_at: ((query+":00").to_time.utc)+8.hours)
+  end
+  
+  def self.end_at_search(query)
+    where(end_at: ((query+":00").to_time.utc)+8.hours)
+  end
+ 
+  # whitelist the scope
+  def self.ransackable_scopes(auth_object = nil)
+    [:start_at_search, :end_at_search]
+  end
+  
   def start_end
     "#{start_at.strftime('%l:%M %p')} - #{end_at.strftime('%l:%M %p')}" 
   end

@@ -1,0 +1,11 @@
+.form-group
+  .col-sm-2.control-label
+    = f.label t 'staff.employgrades.name', for: :name
+  .col-md-4
+    = f.text_field :name, class: 'form-control'
+     
+.form-group
+  .col-sm-2.control-label
+    =f.label t 'staff.employgrades.group_id', for: :salary
+  .col-sm-4
+    = f.select :group_id, DropDown::GROUP,{ :include_blank => (t 'select')}, {class: 'selectpicker'}

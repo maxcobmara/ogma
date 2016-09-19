@@ -1,0 +1,17 @@
+.form-group
+  .col-sm-2.control-label
+    = f.label t 'staff.staff_shifts.name', for: :name
+  .col-md-6
+    = f.text_field :name, class: 'form-control mandatory'
+     
+.form-group
+  .col-sm-2.control-label
+    =f.label t 'staff.staff_shifts.start_at', for: :start_at
+  .col-sm-2
+    = f.text_field :start_at, value: @staff_shift.start_at.try(:strftime, '%H:%M'), class: 'time_picker2 form-control mandatory'
+    
+.form-group
+  .col-sm-2.control-label
+    = f.label t 'staff.staff_shifts.end_at', for: :end_at
+  .col-md-2
+    = f.text_field :end_at, value: @staff_shift.end_at.try(:strftime, '%H:%M'), class: 'time_picker2 form-control mandatory'

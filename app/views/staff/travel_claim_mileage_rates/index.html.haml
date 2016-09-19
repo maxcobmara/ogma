@@ -1,0 +1,38 @@
+- model_class = TravelClaimMileageRate
+.page-header
+  %h1= t('staff.travel_claim_mileage_rates.title')
+  
+.navbar.navbar-inverse{role: "navigation", style: "padding-right:40px;"}
+  %ul.nav.navbar-nav
+    - permitted_to? :create, :staff_travel_claim_mileage_rates do
+      %li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'actions.new'))), new_staff_travel_claim_mileage_rate_path
+  %ul.nav.navbar-nav.navbar-right
+    %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "index_search_bar"
+    %li.dropdown
+      %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#"}
+        = fa_icon "print", text: (t 'actions.print')
+        %b.caret
+
+.row
+  %table.table-striped.table-hover.ogma
+    %thead
+      %tr
+        %th{width: '25%'}=sort_link(@search, :km_low, "KM")
+        %th{width: '15%'} A
+        %th{width: '15%'} B
+        %th{width: '15%'} C
+        %th{width: '15%'} D
+        %th{width: '15%'} E
+        
+    %tbody
+    = render "index_search"
+    - @travel_claim_mileage_rates.each do |travel_claim_mileage_rate|
+      %tr
+        %td=link_to (travel_claim_mileage_rate.km_low.to_s+" km "+t('to')+" "+travel_claim_mileage_rate.km_high.to_s+" km"), edit_staff_travel_claim_mileage_rate_path(travel_claim_mileage_rate)
+        %td=h ringgols (travel_claim_mileage_rate.a_group) 
+        %td=h ringgols (travel_claim_mileage_rate.b_group) 
+        %td=h ringgols (travel_claim_mileage_rate.c_group) 
+        %td=h ringgols (travel_claim_mileage_rate.d_group) 
+        %td=h ringgols (travel_claim_mileage_rate.e_group) 
+
+  .right{style:"padding:0 30px; margin:0;"}= paginate @travel_claim_mileage_rates, :theme => 'twitter-bootstrap-3'

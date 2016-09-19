@@ -5,7 +5,12 @@ class UsersController < ApplicationController
 
 
  def index
-   @search = User.search(params[:q])
+   roles=current_user.roles.map(&:authname)
+   if roles.include?('developer')
+     @search = User.search(params[:q])
+   else
+     @search = current_user.college.users.search(params[:q])  #http://stackoverflow.com/questions/32300349/restrict-index-view-to-users-records NOTE-0 voted
+   end
    @users = @search.result
    @users = @users.page(params[:page]||1)
    @user_by_type = @users.group_by(&:userable_type)
@@ -25,7 +30,7 @@ class UsersController < ApplicationController
     @user.roles << Role.find(3) if params[:user][:userable_type]=="Student" && @user.roles.count==0 
     respond_to do |format|
        if @user.update(user_params)
-         format.html { redirect_to "/dashboard", notice: 'User was successfully updated.' }
+         format.html { redirect_to "/dashboard", notice: (t 'user.title')+(t 'actions.updated') }
          format.json { head :no_content }
 	 format.js
        else

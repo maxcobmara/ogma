@@ -1,6 +1,6 @@
 class Employgrade < ActiveRecord::Base
   has_many :staffs, :class_name => 'Staffs', :foreign_key => 'staffgrade_id'
-  has_many :staffgrades, :class_name => 'Positions', :foreign_key => 'staffgrade_id'
+  has_many :staffgrades, :class_name => 'Positions'
   has_one :rank
   
   has_many :staffemploygrades
@@ -9,22 +9,17 @@ class Employgrade < ActiveRecord::Base
   validates_uniqueness_of :name, :scope => :group_id
   
   def grade_group
-    (Employgrade::GROUP.find_all{|disp, value| value == group_id}).map {|disp, value| disp}
+    (DropDown::GROUP.find_all{|disp, value| value == group_id}).map {|disp, value| disp}[0]
   end
   
   def name_and_group
-    "#{name}  (#{grade_group[0]})"
+    "#{name}  (#{grade_group})"
   end
   
   def gred_no
     "#{name[1,2]}"
   end
-  
-  GROUP = [
-       [ "Pengurusan & Professional", 1 ],
-       [ "Sokongan", 2 ],
-       [ "Bersepadu", 4 ]
-  ]
+ 
 end
 
 # == Schema Information

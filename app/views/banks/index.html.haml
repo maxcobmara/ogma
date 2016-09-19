@@ -4,7 +4,8 @@
   
 .navbar.navbar-inverse{role: "navigation", style: "padding-right:40px;"}
   %ul.nav.navbar-nav
-    %li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'actions.new'))), new_bank_path
+    - permitted_to? :create, :banks do
+      %li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'actions.new'))), new_bank_path
   %ul.nav.navbar-nav.navbar-right
     %li= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "index_search_bar"
       
@@ -21,6 +22,6 @@
         %tr
           %td= link_to bank.short_name, bank_path(bank)
           %td= bank.long_name
-          %td= bank.active? ? image_tag("tick.png") : image_tag("cross.png")
+          %td= bank.active? ? fa_icon("check") : fa_icon("times")
      
   .right{style:"padding:0 30px; margin:0;"}= paginate @bank, :theme => 'twitter-bootstrap-3'

@@ -1,5 +1,33 @@
 class TravelClaimsTransportGroup < ActiveRecord::Base 
   
+  def salary_details
+    if salary_low?
+      low=salary_low
+    else
+      low="-- " 
+    end
+    if salary_high?
+      high=salary_high
+    else
+      high=" --"
+    end
+    low.to_s+high.to_s
+  end
+  
+  def cc_details
+    if cc_low?
+      low=cc_low
+    else
+      low="-- "
+    end
+    if cc_high?
+      high=cc_high
+    else
+      high=" --"
+    end
+    low.to_s+high.to_s
+  end
+  
   def self.abcrate
     where('salary_low is not null').order(group_name: :asc)
   end

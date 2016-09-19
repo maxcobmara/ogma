@@ -1,0 +1,21 @@
+.form-group
+  .col-sm-2.control-label
+    = f.label t 'staff.travel_claims_transport_groups.group_name', for: :group_name
+  .col-md-4
+    = f.text_field :group_name, class: 'form-control'
+     
+.form-group
+  .col-sm-2.control-label
+    =f.label t 'staff.travel_claims_transport_groups.salary', for: :salary
+  .col-sm-2
+    = f.text_field :salary_low, class: 'form-control', placeholder: (t 'staff.travel_claims_transport_groups.low')
+  .col-sm-2
+    = f.text_field :salary_high, class: 'form-control', placeholder: (t 'staff.travel_claims_transport_groups.high')
+    
+.form-group
+  .col-sm-2.control-label
+    =f.label t 'staff.travel_claims_transport_groups.cylinder_capacity', for: :cylinder_capacity
+  .col-sm-2
+    = f.text_field :cc_low, class: 'form-control', placeholder: (t 'staff.travel_claims_transport_groups.low')
+  .col-sm-2
+    = f.text_field :cc_high, class: 'form-control', placeholder: (t 'staff.travel_claims_transport_groups.high')

@@ -1,0 +1,13 @@
+= search_form_for @search, url: staff_staff_shifts_path,  class: "form-inline" do |f|
+  %tr.search_row{style: "display: none;"}
+    %td=f.text_field :name_cont, class:  'form-control'
+    %td
+      /=@search.start_at_search.to_time.utc
+      /=@search.start_at_search
+      .col-md-2=f.text_field :start_at_search, class: 'time_picker2 form-control', value: @search.start_at_search
+      .col-md-3
+        .input-group
+          =f.text_field :end_at_search, class: 'time_picker2 form-control', value: @search.end_at_search
+          %span.input-group-btn
+            %button.btn.btn-sm.btn-default.right{:type => "submit"}
+              %i.fa.fa-search.fa-fw

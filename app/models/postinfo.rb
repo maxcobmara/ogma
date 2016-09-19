@@ -5,4 +5,14 @@ class Postinfo < ActiveRecord::Base
   def details_grade 
     "#{details}"+" - "+"#{employgrade.name_and_group}"
   end
+  
+  def self.position_search(query)
+    ids=Position.where(id: query).pluck(:postinfo_id)
+    where(id: ids)
+  end
+  
+  # whitelist the scope
+  def self.ransackable_scopes(auth_object = nil)
+    [:position_search]
+  end
 end
