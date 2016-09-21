@@ -116,4 +116,15 @@ module ApplicationHelper
   def is_staff?
    current_user.userable_type == 'Staff'
   end
+  
+  def is_developer?
+    current_user.roles.pluck(:authname).include?('developer')==true
+  end
+  
+  def list_comma(arr)
+    a=""
+    arr.each{|x|a+=x+", "}
+    a[0, a.size-2] if a.size > 0
+  end
+  
 end

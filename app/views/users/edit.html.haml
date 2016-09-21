@@ -609,7 +609,7 @@ $(function(){
     var esupportmg = document.getElementsByClassName('supportmanage');
     var esupportrd = document.getElementsByClassName('supportread');
     
-    for(i=0; i<8; i++)
+    for(i=0; i<11; i++)
     {
       if(supportmg[i].checked) {
         esupportmg[i].checked=true;
@@ -708,20 +708,26 @@ $(function(){
     examown[6].disabled=true;
     
     /*NOTE - enable these when Admin & Support tables ready*/
-    for (i=2;i<6;i++)
-    {
-      supportmg[i].checked=false;
-      supportmg[i].disabled=true;
-      supportrd[i].checked=false;
-      supportrd[i].disabled=true;
-      esupportmn[i].disabled=true;
-    }
+    /*for (i=5;i<6;i++)*/
+    /*{*/
+      /*supportmg[i].checked=false;*/
+      /*supportmg[i].disabled=true;*/
+      /*supportrd[i].checked=false;*/
+      /*supportrd[i].disabled=true;*/
+      /*esupportmn[i].disabled=true;*/
+    /*}*/
     
   });
   
     
   $('.edit_form input[type=checkbox]').each(function(){
     var inputElements = document.getElementsByClassName('byrole');
+    
+    /*8 Sept 2016-if not a developer */
+    if(inputElements[22].checked==false)
+    {  inputElements[22].disabled=true;}
+    else
+    { inputElements[22].disabled=false;}
     
     /* 1) E-Filing*/
     /*var filemg = document.getElementById('user_role_files_73');*/
@@ -880,6 +886,38 @@ $(function(){
       }
     }
     
+    /**** bring upwards as staff admin requires support table - Title & Staff Shift ****/
+    /* 13) Admin / Support Tables */
+    var supportmg = document.getElementsByClassName('supportmanage2');
+    var supportrd = document.getElementsByClassName('supportread2');
+    var esupportmn = document.getElementsByClassName('supportmain');
+
+    /*EACH - requires for each RADIO BUTTONS (saved values), to update checkboxes - START*/
+    var esupportmg = document.getElementsByClassName('supportmanage');
+    var esupportrd = document.getElementsByClassName('supportread');
+    
+    for(i=0; i<11; i++){
+      if(supportmg[i].checked)
+      {  esupportmg[i].checked=true;}
+      else if(supportrd[i].checked)
+      {  esupportrd[i].checked=true;}
+     
+      if ((supportmg[i].checked) || (supportrd[i].checked))
+      /* main must be checked*/
+      {  esupportmn[i].checked=true;}
+    }
+    
+    /*disable this main checkbox if no support tables module selected*/
+    for(i=0; i<11; i++){
+      if ((esupportmg[i].checked==false) && (esupportrd[i].checked==false) ){
+        esupportmn[i].disabled=true;
+      }
+    }
+    /**/
+    
+    /*EACH - requires for each RADIO BUTTONS (saved values) - END*/
+    /**** bring upwards as staff admin requires support table - Bank, Title & Staff Shift ****/
+    
     /* 4) Staff part 1 : Staffs, Positions, Staff Attendances, Fingerprint */
     var a_staffmg = document.getElementsByClassName('a_staffmanage2');
     var a_staffrd = document.getElementsByClassName('a_staffread2');
@@ -908,7 +946,7 @@ $(function(){
     }
     /*EACH - requires for each RADIO BUTTONS (saved values) - END*/
 
-    /*when Staff Admin is selected, uncheck all exams modules*/
+    /*when Staff Admin is selected, uncheck all staffs modules*/
     if(inputElements[14].checked){
       for(i=0; i<4; i++){
         a_staffmg[i].disabled=true;
@@ -917,6 +955,39 @@ $(function(){
         a_staffown[i].disabled=true;
         ea_staffmn[i].disabled=true;
       }
+      /* when Staff Admin is selected, disable Bank, Staff Title & Staff Shifts, plus employgrades & postinofs - support tables*/
+      supportmg[1].disabled=true;
+      supportmg[1].checked=false;
+      supportmg[2].disabled=true;
+      supportmg[2].checked=false;
+      supportmg[3].disabled=true;
+      supportmg[3].checked=false;
+      supportmg[8].disabled=true;
+      supportmg[8].checked=false;
+      supportmg[9].disabled=true;
+      supportmg[9].checked=false;
+      supportmg[10].disabled=true;
+      supportmg[10].checked=false;
+      
+      supportrd[1].disabled=true;
+      supportrd[1].checked=false;
+      supportrd[2].disabled=true;
+      supportrd[2].checked=false;
+      supportrd[3].disabled=true;
+      supportrd[3].checked=false;
+      supportrd[8].disabled=true;
+      supportrd[8].checked=false;
+      supportrd[9].disabled=true;
+      supportrd[9].checked=false;
+      supportrd[10].disabled=true;
+      supportrd[10].checked=false;
+      
+      esupportmn[1].disabled=true;
+      esupportmn[2].disabled=true;
+      esupportmn[3].disabled=true;
+      esupportmn[8].disabled=true;
+      esupportmn[9].disabled=true;
+      esupportmn[10].disabled=true;
     }
     
     /*disable this main checkbox if no file module selected*/
@@ -981,6 +1052,7 @@ $(function(){
     /*EACH - requires for each RADIO BUTTONS (saved values) - END*/
     
     /*when Finance Unit is selected, uncheck Travel Claim & Training Budget only*/
+    /*when Finance Unit is selected, disable supports - Transport Groups & Mileage Rates*/
     if(inputElements[19].checked){
         b_staffmg[1].disabled=true;
         b_staffrd[1].disabled=true;
@@ -992,6 +1064,10 @@ $(function(){
         c_staffusr[0].disabled=true;
         c_staffown[0].disabled=true;
         ec_staffmn[0].disabled=true;
+        supportmg[4].disabled=true;
+        supportrd[4].disabled=true;
+        supportmg[5].disabled=true;
+        supportrd[5].disabled=true;
     }
     
     /*when Training Manager OR Training Administration is selected, uncheck all Training modules*/
@@ -1114,35 +1190,6 @@ $(function(){
     }
     /*EACH - requires for each RADIO BUTTONS (saved values) - END*/
     
-    /* 13) Admin / Support Tables */
-    var supportmg = document.getElementsByClassName('supportmanage2');
-    var supportrd = document.getElementsByClassName('supportread2');
-    var esupportmn = document.getElementsByClassName('supportmain');
-
-    /*EACH - requires for each RADIO BUTTONS (saved values), to update checkboxes - START*/
-    var esupportmg = document.getElementsByClassName('supportmanage');
-    var esupportrd = document.getElementsByClassName('supportread');
-    
-    for(i=0; i<8; i++){
-      if(supportmg[i].checked)
-      {  esupportmg[i].checked=true;}
-      else if(supportrd[i].checked)
-      {  esupportrd[i].checked=true;}
-     
-      if ((supportmg[i].checked) || (supportrd[i].checked))
-      /* main must be checked*/
-      {  esupportmn[i].checked=true;}
-    }
-    
-    /*disable this main checkbox if no support tables module selected*/
-    for(i=0; i<8; i++){
-      if ((esupportmg[i].checked==false) && (esupportrd[i].checked==false) ){
-        esupportmn[i].disabled=true;
-      }
-    }
-    /**/
-    
-    /*EACH - requires for each RADIO BUTTONS (saved values) - END*/
     /*EACH - requires for each RADIO BUTTONS (saved values), to update checkboxes - START*/
     var elocationmg = document.getElementsByClassName('locationmanage');
     var elocationrd = document.getElementsByClassName('locationread');
@@ -1544,20 +1591,27 @@ $(function(){
     examown[6].disabled=true;
     
     /*NOTE - enable these when Admin & Support tables ready*/
-    for (i=2;i<6; i++)
-    {
-      supportmg[i].checked=false;
-      supportmg[i].disabled=true;
-      supportrd[i].checked=false;
-      supportrd[i].disabled=true;
-      esupportmn[i].disabled=true;
-    }
+    /*for (i=5;i<6; i++)*/
+    /*{*/
+      /*supportmg[i].checked=false;*/
+      /*supportmg[i].disabled=true;*/
+      /*supportrd[i].checked=false;*/
+      /*supportrd[i].disabled=true;*/
+      /*esupportmn[i].disabled=true;*/
+    /*}*/
     
   });
   
   $('.edit_form input[type=checkbox]').click(function(){
    
     var inputElements = document.getElementsByClassName('byrole');
+    
+    /*8 Sept 2016-if not a developer */
+    if(inputElements[22].checked==false)
+    {  inputElements[22].disabled=true;}
+    else
+    { inputElements[22].disabled=false;}
+    
     /*var staffmg = document.getElementsByClassName('staffmanage');*/
     /*var staffrd = document.getElementsByClassName('staffread');*/
     /*var staffmg2 = document.getElementsByClassName('staffmanage2');*/
@@ -1844,6 +1898,24 @@ $(function(){
       {  examown[6].disabled=false;}
     }
     
+    
+    /***bring upwards as checking required for Staff Administrator***/
+    /* 13) Admin / Support Tables*/
+    /*Admin & support tables checkboxes*/
+    var esupportmg = document.getElementsByClassName('supportmanage');
+    var esupportrd = document.getElementsByClassName('supportread');
+    
+    /*Admin & support tables radio buttons*/
+    var supportmg = document.getElementsByClassName('supportmanage2');
+    var supportrd = document.getElementsByClassName('supportread2');
+    
+    /*Admin & support tables main UNCHECK checkbox*/
+    var esupportm = document.getElementsByClassName('supportmain');
+    /*bring upwards as checking required for Staff Administrator*/
+    
+    
+    
+    
     /* 4) Staff part 1 : Staffs, Positions, Staff Attendances, Fingerprints */
     /*Staff part 1 checkboxes*/
     var ea_staffmg = document.getElementsByClassName('a_staffmanage');
@@ -1899,6 +1971,48 @@ $(function(){
         ea_staffm[i].checked=false;
         ea_staffm[i].disabled=true;
       }
+      /* when Staff Admin is selected, disable Banks, Staff Title & Staff Shifts, plus Employgrades & Postinfos too - support tables*/
+      supportmg[1].checked=false;
+      supportmg[2].checked=false;
+      supportmg[3].checked=false;
+      supportmg[8].checked=false;
+      supportmg[9].checked=false;
+      supportmg[10].checked=false;
+      
+      supportmg[1].disabled=true;
+      supportmg[2].disabled=true;
+      supportmg[3].disabled=true
+      supportmg[8].disabled=true;
+      supportmg[9].disabled=true;
+      supportmg[10].disabled=true;
+      
+      supportrd[1].checked=false;
+      supportrd[2].checked=false;
+      supportrd[3].checked=false;
+      supportrd[8].checked=false;
+      supportrd[9].checked=false;
+      supportrd[10].checked=false; 
+      
+      supportrd[1].disabled=true;
+      supportrd[2].disabled=true;
+      supportrd[3].disabled=true;
+      supportrd[8].disabled=true;
+      supportrd[9].disabled=true;
+      supportrd[10].disabled=true;
+      
+      esupportm[1].disabled=true;
+      esupportm[2].disabled=true;
+      esupportm[3].disabled=true;
+      esupportm[8].disabled=true;
+      esupportm[9].disabled=true;
+      esupportm[10].disabled=true;
+      
+      esupportm[1].checked=false;
+      esupportm[2].checked=false;
+      esupportm[3].checked=false;
+      esupportm[8].checked=false;
+      esupportm[9].checked=false;
+      esupportm[10].checked=false;
     } 
     else
     {
@@ -1929,6 +2043,26 @@ $(function(){
       a_staffusr[3].disabled=false;
       a_staffown[3].disabled=false;
       ea_staffm[3].disabled=false;
+      
+      /* when Staff Admin is NOT selected, re/-enable Bank, Staff Title & Staff Shifts, plus Employgrades & Postinfos too - support tables*/
+      supportmg[1].disabled=false;
+      supportmg[2].disabled=false;
+      supportmg[3].disabled=false;
+      supportmg[8].disabled=false;
+      supportmg[9].disabled=false;
+      supportmg[10].disabled=false;
+      supportrd[1].disabled=false;
+      supportrd[2].disabled=false;
+      supportrd[3].disabled=false;
+      supportrd[8].disabled=false;
+      supportrd[9].disabled=false;
+      supportrd[10].disabled=false;
+      esupportm[1].disabled=false;
+      esupportm[2].disabled=false;
+      esupportm[3].disabled=false;
+      esupportm[8].disabled=false;
+      esupportm[9].disabled=false;
+      esupportm[10].disabled=false;
     }
         
     /* 5) Staff part 2 : Travel Requests & Travel Claims & part 3 : Training Budget, Training Courses, Training Schedule, Training Attendances */
@@ -1999,6 +2133,7 @@ $(function(){
     
     
     /*when Finance Unit selected, uncheck Training Budget & Travel Claim are disable*/
+    /*when Finance Unit selected, uncheck & disable Transport Groups & Mileage Rates*/
     if(inputElements[19].checked){
       /*Travel Claim*/
       eb_staffmg[1].checked=false;
@@ -2036,6 +2171,26 @@ $(function(){
       ec_staffm[0].checked=false;
       ec_staffm[0].disabled=true;
       
+      /*Supports - Transport Groups & Mileage Rates*/
+      supportmg[4].checked=false;
+      supportrd[4].checked=false;
+      supportmg[4].disabled=true;
+      supportrd[4].disabled=true;
+      
+      supportmg[5].checked=false;
+      supportrd[5].checked=false;
+      supportmg[5].disabled=true;
+      supportrd[5].disabled=true;
+      
+      esupportmg[4].checked=false;
+      esupportrd[4].checked=false;
+      esupportmg[5].checked=false;
+      esupportrd[5].checked=false;
+      
+      esupportm[4].checked=false
+      esupportm[4].disabled=true;
+      esupportm[5].checked=false
+      esupportm[5].disabled=true;
     } 
     else
     {
@@ -2054,6 +2209,16 @@ $(function(){
       c_staffusr[0].disabled=false;
       c_staffown[0].disabled=false;
       ec_staffm[0].disabled=false;
+      
+      /*Supports - Transport Groups & Mileage Rates*/
+      supportmg[4].disabled=false;
+      supportrd[4].disabled=false;
+      
+      supportmg[5].disabled=false;
+      supportrd[5].disabled=false;
+      
+      esupportm[4].disabled=false;
+      esupportm[5].disabled=false;
     }
     
     /*when Training Manager OR Training Administration is selected, uncheck Training Budget, Training Schedule, Training Courses, Training Attendance*/
@@ -2348,20 +2513,10 @@ $(function(){
       }
     }
     
-    /* 13) Admin / Support Tables*/
-    /*Admin & support tables checkboxes*/
-    var esupportmg = document.getElementsByClassName('supportmanage');
-    var esupportrd = document.getElementsByClassName('supportread');
     
-    /*Admin & support tables radio buttons*/
-    var supportmg = document.getElementsByClassName('supportmanage2');
-    var supportrd = document.getElementsByClassName('supportread2');
-    
-    /*Admin & support tables main UNCHECK checkbox*/
-    var esupportm = document.getElementsByClassName('supportmain');
     
     /* 12) Admin & support tables when UNCHECK , all training main is false*/
-    for(i=0; i < 8; i++){
+    for(i=0; i < 11; i++){
       if (esupportm[i].checked==false) {
         supportmg[i].checked=false;
         supportrd[i].checked=false;
@@ -3202,14 +3357,14 @@ $(function(){
     examown[6].disabled=true;
     
     /*NOTE - enable these when Admin & Support tables ready*/
-    for (i=2;i<6;i++)
-    {
-      supportmg[i].checked=false;
-      supportmg[i].disabled=true;
-      supportrd[i].checked=false;
-      supportrd[i].disabled=true;
-      esupportm[i].disabled=true;
-    }
+    /*for (i=5;i<6;i++)*/
+    /*{*/
+      /*supportmg[i].checked=false;*/
+      /*supportmg[i].disabled=true;*/
+      /*supportrd[i].checked=false;*/
+      /*supportrd[i].disabled=true;*/
+      /*esupportm[i].disabled=true;*/
+    /*}*/
     
     $("#form1").submit();
   });

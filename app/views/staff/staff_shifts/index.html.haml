@@ -1,0 +1,30 @@
+- model_class = StaffShift
+.page-header
+  %h1= t('staff.staff_shifts.title')
+  
+.navbar.navbar-inverse{role: "navigation", style: "padding-right:40px;"}
+  %ul.nav.navbar-nav
+    - permitted_to? :create, :staff_staff_shifts do
+      %li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'actions.new'))), new_staff_staff_shift_path
+  %ul.nav.navbar-nav.navbar-right
+    %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "index_search_bar"
+    %li.dropdown
+      %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#"}
+        = fa_icon "print", text: (t 'actions.print')
+        %b.caret
+
+.row
+  %table.table-striped.table-hover.ogma
+    %thead
+      %tr
+        %th{width: '30%'}=sort_link(@search, :name,(t 'staff.staff_shifts.name'))
+        %th{width: '45%'}=sort_link(@search, :start_at, ((t 'staff.staff_shifts.start_at')+" - "+(t 'staff.staff_shifts.end_at')))
+
+    %tbody
+    = render "index_search"
+    - @staff_shifts.each do |staff_shift|
+      %tr
+        %td=link_to staff_shift.name, staff_staff_shift_path(staff_shift)
+        %td=l(staff_shift.start_at)+" - "+l(staff_shift.end_at)
+
+  .right{style:"padding:0 30px; margin:0;"}= paginate @staff_shifts, :theme => 'twitter-bootstrap-3'

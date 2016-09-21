@@ -1,0 +1,13 @@
+= search_form_for @search, url: staff_travel_claim_mileage_rates_path,  class: "form-inline" do |f|
+  %tr.search_row{style: "display: none;"}
+    %td=f.text_field :km_low_lteq, class: 'form-control', placeholder: (t 'staff.travel_claim_mileage_rates.km_low')
+    %td=f.text_field :a_group_eq, class:  'form-control'
+    %td=f.text_field :b_group_eq, class:  'form-control'
+    %td=f.text_field :c_group_eq, class:  'form-control'
+    %td=f.text_field :d_group_eq, class:  'form-control'
+    %td 
+      .input-group
+        =f.text_field :e_group_eq, class: 'form-control'
+        %span.input-group-btn
+          %button.btn.btn-sm.btn-default.right{:type => "submit"}
+            %i.fa.fa-search.fa-fw

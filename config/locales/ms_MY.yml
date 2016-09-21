@@ -213,6 +213,8 @@ ms_MY:
         topic_code: Topik
       instructor_appraisal:
         check_qc: Disemak Oleh
+      user:
+        change_password: Ubah Kata Laluan
     errors:
         template:
           body: "Berikut adalah beberapa masalah:"
@@ -397,8 +399,8 @@ ms_MY:
   banks:
     title: Bank
     list: Senarai Bank
-    short_name: Nama Pendek
-    long_name: Nama Panjang
+    short_name: Nama Ringkas
+    long_name: Nama Penuh
     active: Aktif
     details: Maklumat Bank
     new: Bank Baru
@@ -407,9 +409,12 @@ ms_MY:
     update_flash: "Bank berjaya dikemaskini."
       
   user:
-    title: Senarai Pengguna
+    title: Akaun Pengguna
+    list: Senarai Pengguna
     edit: Sunting Peranan Pengguna
     userable_id: Nama Pengguna
+    position: Jawatan
+    college: Kolej
     email: Emel
     userable_type: Kategori Pengguna
     roles: Peranan
@@ -457,8 +462,8 @@ ms_MY:
     asset_facilities_residences: "Aset, Kemudahan & Kediaman"
    
     
-    staff_administrator_modules: "Staf, Kedatangan Staf, Fingerprint, Perjawatan"
-    finance_unit_modules: "Tuntutan Perjalanan, Belanjawan Latihan"
+    staff_administrator_modules: "Staf, Kedatangan Staf, Fingerprint, Perjawatan, Bank, Gelaran, Jadual Waktu Anjal, Pangkat, Gred Perkhidmatan, Butiran Perjawatan"
+    finance_unit_modules: "Tuntutan Perjalanan, Belanjawan Latihan, Kumpulan Kenderaan, Kadar Batuan"
     training_administration_modules: "Belanjawan Latihan, Kursus Latihan, Jadual Latihan, Kedatangan Latihan"
     training_manager_modules: "Belanjawan Latihan, Kursus Latihan, Jadual Latihan, Kedatangan Latihan"
     staff_modules: "Staf(O), Kedatangan Staf(O), Kedatangan Latihan(O), Penilaian Staf(O), Cuti Staf(O), Permohonan Perjalanan(O), Tuntutan Perjalanan(O), Senarai Aset(R), Kerosakan Aset(O), Peminjaman Aset(O), Senarai Pelajar(R), Kes Disiplin Pelajar(O), Lokasi(R), Acara(O), Buletin(R), Daftar Dokumen(O), Buku Perpustakaan(R), Analisis & Statistik Perpustakaan(R)"
@@ -486,7 +491,7 @@ ms_MY:
     rule7: "Modul Kehadiran Latihan (Pemilik) hanya berfungsi bagi pemohon. Pelulus memerlukan peranan tambahan / gantian seperti berikut :"
     rule7a: "Kelulusan Jabatan (Akademik) - memerlukan peranan tambahan 'Ketua Program' diaktifkan."
     rule7b: "Kelulusan Unit (Pengurusan), Kelulusan Jabatan (Pengurusan) & Kelulusan Akhir (Pengarah) tidak dapat berfungsi. Penyelesaiannya, nyahpilih modul Kehadiran Latihan (Pemilik) dan aktifkan peranan 'Unit Kewangan'."
-    rule8: "Modul Cuti Pelajar (Pemilik) hanya berfungsi bagi pemohon. Bagi tujuan kelulusan (Warden & Penyelaras) aktifkan peranan Wardan dan / atau Pengajar."
+    rule8: "Modul Cuti Pelajar (Pemilik) hanya berfungsi bagi pemohon. Bagi tujuan kelulusan (Warden & Penyelaras) aktifkan peranan Warden dan / atau Pengajar."
     rule9a: "Aktifkan peranan 'Staf' atau modul Kes Disiplin Pelajar (pemilik) bagi menggunakan fungsian pelapor kes, Ketua Program dan TPHEP."
     rule9b: "Aktifkan peranan 'Pegawai Disiplin' bagi mendapatkan akses Pegawai Disiplin."
     rule10: "Modul Nota Latihan (Pentadbir/Paparan/Pengguna) perlu diaktifkan bagi paparan item - item menu :"
@@ -501,7 +506,7 @@ ms_MY:
     rule16: "Butiran harga aset hanya boleh disemak oleh pengguna dengan peranan 'Pentadbiran' atau 'Pentadbir Aset' atau pengguna yang mempunyai akses kepada modul Senarai Aset (Pentadbir/Pengguna)."
     rule17: "Modul E-Filing (Acara, Buletin, Daftar Fail, Pemesejan Dalaman) memerlukan akses kepada modul Daftar Dokumen (Pentadbir/Paparan/Pengguna/Pemilik) diaktifkan."
     rule18: "Data Sokongan :"
-    rule18a: "Aktifkan modul 'Sokongan', 'Bank' & 'Jadual Waktu Anjal' untuk digunakan bersama modul 'Staf'."
+    rule18a: "Aktifkan modul 'Bank', 'Gelaran', 'Jadual Waktu Anjal', 'Pangkat', 'Gred Perkhidmatan' & 'Butiran Perjawatan' untuk digunakan bersama modul 'Staf'."
     rule18b: "Aktifkan modul 'Kumpulan Kenderaan' & 'Kadar Batuan' untuk digunakan bersama modul 'Tuntutan Perjalanan'."
     rule18c: "Aktifkan modul 'Kategori Aset' untuk digunakan bersama modul Senarai Aset."
     rule19: "Modul Jadual Waktu Mingguan (Pemilik) hanya berfungsi untuk penyedia jadual (Penyelaras) dan pemilik slot - slot masa dalam jadual. Bagi fungsian kelulusan jadual, sila gunakan peranan 'Ketua Program'."
@@ -652,11 +657,21 @@ ms_MY:
     travel_claim_mileage_rates_module_viewer: Paparan Modul Kadar Batuan
     asset_categories_module_admin: Pentadbir Modul Kategori Aset
     asset_categories_module_viewer: Paparan Modul Kategori Aset
+    staff_ranks_module_admin: Pentadbir Modul Jawatan
+    staff_ranks_module_viewer: Paparan Modul Jawatan
+    staff_employgrades_module_admin: Pentadbir Modul Gred Perkhidmatan
+    staff_employgrades_module_viewer: Paparan Modul Gred Perkhidmatan
+    staff_postinfos_module_admin: Pentadbir Modul Butiran Perjawatan
+    staff_postinfos_module_viewer: Paparan Modul Butiran Perjawatan
+    
     titles: Gelaran
     staff_shifts: Jadual Waktu Anjal
     travel_claims_transport_groups: Kumpulan Kenderaan
     travel_claim_mileage_rates: Kadar Batuan
     asset_categories: Kategori Aset
+    staff_ranks: Pangkat
+    staff_employgrades: Gred Perkhidmatan
+    staff_postinfos: Butiran Perjawatan
     
     #Staffs Parts
     staffs_module_admin: Pentadbir Modul Staf
@@ -819,6 +834,7 @@ ms_MY:
     exam_administration: Pentadbir Peperiksaan
     student: Pelajar
     staff: Staf
+    developer: Pembangun Sistem
     ###
 
   role:
@@ -921,11 +937,30 @@ ms_MY:
     search:
       ic_no: Carian Kakitangan
     
+    titles:
+      title: Gelaran
+      list: Senarai Gelaran
+      new: Gelaran Baru
+      edit: Sunting Gelaran
+      titlecode: Kod Gelaran
+      name: Nama Gelaran
+      details: Butiran Gelaran
+      
     vehicles:
       title: Butiran Kenderaan
       type_model: "Jenis / Model Kenderaan"
       reg_no: "No. Pendaftaran"
       cylinder_capacity: "Cc (Sukatan Silinder)"
+    
+    staff_shifts:
+      title: Jadual Waktu Anjal
+      list: Senarai Jadual Waktu Anjal
+      new:  Jadual Waktu Anjal Baru
+      edit: Sunting Jadual Waktu Anjal
+      name: Nama Waktu Anjal
+      start_at: Masa Masuk
+      end_at: Masa Keluar
+      details: Butiran Jadual Waktu Anjal
     
     shift_histories:
       title: Sejarah Waktu Anjal
@@ -1248,6 +1283,41 @@ ms_MY:
       mileage_xor_km_money: " : Masukkan Batuan (km) atau Nilai (RM), bukan kedua-duanya (diisi / dibiarkan kosong)"
       edit_by_applicant: Suntingan hanya boleh dibuat oleh pemohon
 
+    travel_claims_transport_groups:
+      title: Kumpulan Kenderaan
+      new: Kumpulan Kenderaan Baru
+      edit: Sunting Kumpulan Kenderaan
+      details: Butiran Kumpulan Kenderaan
+      group_name: Nama Kumpulan Kenderaan
+      salary: Gaji
+      cylinder_capacity: Kapasiti Silinder (CC)
+      low: Minima
+      high: Maksima
+      
+    travel_claim_mileage_rates:
+      title: Kadar Batuan Bagi Kumpulan Kenderaan
+      new: Kadar Batuan Baru
+      edit: Sunting Kadar Batuan
+      details: Butiran Kadar Batuan
+      km_low: KM Dari
+      km_high: KM Hingga
+     
+    employgrades:
+      title: Skim Perkhidmatan (Gred)
+      new: Skim Perkhidmatan Baru (Gred)
+      edit: Sunting Skim / Gred Perkhidmatan
+      name: Gred 
+      group_id: Kumpulan Perkhidmatan
+    
+    postinfos:
+      title: Butiran Perjawatan
+      new: Butiran Perjawatan Baru
+      edit: Sunting Butiran Perjawatan
+      details: Butiran
+      staffgrade_id: Gred
+      post_count: Bilangan Jawatan
+      position: Jawatan
+      
     staff_appraisal:
       title: Penilaian Prestasi
       new: Penilaian Prestasi Baru

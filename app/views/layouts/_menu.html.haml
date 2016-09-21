@@ -376,18 +376,27 @@
               %h2.icon= t('support.title')
               %a.mp-back{:href => "#"}= t 'helpers.links.back'
               %ul
-                %li= link_to "Staff Titles", '#'
-                %li= link_to "Staff Shifts", '#'
-                %li= link_to "Mileage Rates", '#'
-                %li= link_to "Employee Schemes", '#'
-                /- if current_user.college.code=="amsas"
-                - if Rank.count > 0
-                  %li=link_to (t 'rank.title'), staff_ranks_path
-                %li
                 - permitted_to? :read, :banks do
-                  %li= link_to t('banks.title'), banks_path
+                  %li= link_to t('banks.list'), banks_path
+                - permitted_to? :read, :staff_titles do
+                  %li= link_to t('staff.titles.title'), staff_titles_path
+                - permitted_to? :read, :staff_staff_shifts do
+                  %li= link_to t('staff.staff_shifts.title'), staff_staff_shifts_path
+                - permitted_to? :read, :staff_travel_claims_transport_groups do
+                  %li= link_to t('staff.travel_claims_transport_groups.title'), staff_travel_claims_transport_groups_path
+                - permitted_to? :read, :staff_travel_claim_mileage_rates do
+                  %li= link_to t('staff.travel_claim_mileage_rates.title'), staff_travel_claim_mileage_rates_path
                 - permitted_to? :read, :asset_assetcategories do
                   %li= link_to (t "asset.category.title"), asset_assetcategories_path
+                - permitted_to? :read, :staff_ranks do
+                  %li=link_to (t 'rank.title'), staff_ranks_path
+                - permitted_to? :read, :staff_employgrades do
+                  %li= link_to t('staff.employgrades.title'), staff_employgrades_path
+                - permitted_to? :read, :staff_postinfos do
+                  %li= link_to t('staff.postinfos.title'), staff_postinfos_path
+                
+                
+                
           - permitted_to? :manage, :colleges do
             %li= link_to content_tag(:i, "", :class => "icon-numb") + t('college.title'), college_path(current_user.college_id)
           %li= link_to content_tag(:i, "", :class => "icon-numb") + "Release Notes", '#'

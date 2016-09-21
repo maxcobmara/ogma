@@ -129,6 +129,15 @@ class Staff < ActiveRecord::Base
     def staff_with_rank
       "#{rank.try(:shortname)} #{name}"
     end
+    
+    def staff_with_rank_position
+      if positions.count > 0
+        a=" (#{position_for_staff})"
+      else
+	a=""
+      end
+      staff_with_rank+a 
+    end
 
     def staff_list
     "#{icno}"+" "+"#{name}"

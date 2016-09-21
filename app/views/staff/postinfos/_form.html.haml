@@ -1,0 +1,17 @@
+.form-group
+  .col-sm-2.control-label
+    = f.label t 'staff.postinfos.details', for: :details
+  .col-md-4
+    = f.text_field :details, class: 'form-control'
+
+.form-group
+  .col-sm-2.control-label
+    =f.label t 'staff.postinfos.staffgrade_id', for: :staffgrade_id
+  .col-sm-4
+    = f.collection_select :staffgrade_id, Employgrade.all.order(group_id: :asc, name: :asc), :id, :name_and_group,{ :include_blank => (t 'select')}, {class: 'selectpicker'}
+
+.form-group
+  .col-sm-2.control-label
+    = f.label t 'staff.postinfos.post_count', for: :post_count
+  .col-md-4
+    = f.text_field :post_count, class: 'form-control'

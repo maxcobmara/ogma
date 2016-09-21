@@ -232,6 +232,8 @@ en:
         topic_code: Topic
       instructor_appraisal:
         check_qc: Checked By
+      user:
+        change_password: Change Password
     errors:
         template:
           body: "There were problems with the following fields:"
@@ -429,9 +431,12 @@ en:
     update_flash: "Bank was successfully updated."
       
   user:
-    title: List of Users
+    title: User Accounts
+    list: List of Users
     edit: Edit User Role
     userable_id: User Name
+    position: Position
+    college: College
     email: Email
     userable_type: User Type
     roles: Roles
@@ -477,8 +482,8 @@ en:
     student_affairs: Student Affairs
     asset_facilities_residences: "Asset, Facilities & Residences"
     
-    staff_administrator_modules: "Staffs, Staff Attendances, Fingerprints, Positions"
-    finance_unit_modules: "Travel Claims, Training Budget"
+    staff_administrator_modules: "Staffs, Staff Attendances, Fingerprints, Positions, Banks, Titles, Staff Shifts, Ranks, Employment Grades, Post Information"
+    finance_unit_modules: "Travel Claims, Training Budget, Transport Groups, Mileage Rates"
     training_administration_modules: "Training Budget, Training Courses, Training Schedules, Training Attendance"
     training_manager_modules: "Training Budget, Training Courses, Training Schedules, Training Attendance"
     staff_modules: "Staffs(O), Staff Attendance(O), Training Attendance(O), Staff Appraisal(O), Staff Leaves(O), Travel Requests(O), Travel Claims(O), Asset List(R), Asset Defect(O), Asset Loan(O), Student List(R), Student Discipline Case(O), Locations(R), Events(O), Bulletins(R), Document Registry(O), Library Books(R), Library Analysis & Statistics(R)"
@@ -521,7 +526,7 @@ en:
     rule16: "Asset pricing details viewable only to user with 'Administration' or 'Asset Administrator' roles or those with Asset List Module (Admin/User) access."
     rule17: "E-Filing modules (Events, Bulletins, Files, Local Messaging) requires access to Documents modules (Admin/Viewer/User/Member) to be activated."
     rule18: "Support Tables :"
-    rule18a: "Activate 'Titles', 'Banks' & 'Staff Shifts' in addition to access by Staffs modules."
+    rule18a: "Activate 'Banks', 'Titles', 'Staff Shifts', 'Ranks', 'Employment Grades' & Post Information' in addition to access by Staffs modules."
     rule18b: "Activate 'Travel Claims Transport Groups' & 'Travel Claim Mileage Rates'in addition to access by Travel Claims modules."
     rule18c: "Activate 'Asset Categories' in addition to access by Asset List modules."
     rule19: "Weeklytimetable Module (Member) only applicable to creator of Weeklytimetable (Penyelaras) and Weeklytimetable time slot owner. For approval of weeklytimetable, please use 'Programme Manager' role."
@@ -672,12 +677,21 @@ en:
     travel_claim_mileage_rates_module_viewer: Mileage Rates Module Viewer
     asset_categories_module_admin: Asset Categories Module Admin
     asset_categories_module_viewer: Asset Categories Module Viewer
+    staff_ranks_module_admin: Ranks Module Admin
+    staff_ranks_module_viewer: Ranks Module Viewer
+    staff_employgrades_module_admin: Staff Employgrades Module Admin
+    staff_employgrades_module_viewer: Staff Employgrades Module Viewer
+    staff_postinfos_module_admin: Staff Postinfos Module Admin
+    staff_postinfos_module_viewer: Staff Postinfos Module Viwer
     
     titles: Titles
     staff_shifts: Staff Shifts
     travel_claims_transport_groups: Transport Groups
     travel_claim_mileage_rates: Mileage Rates
     asset_categories: Asset Categories
+    staff_ranks: Ranks
+    staff_employgrades: Employment Grades
+    staff_postinfos: Post Information
     
     #Staff Parts
     staffs_module_admin: Staffs Module Admin
@@ -840,6 +854,7 @@ en:
     exam_administration: Exam Administration
     student: Student
     staff: Staff
+    developer: Developer
     ###
 
   role:
@@ -953,11 +968,30 @@ en:
     search:
       ic_no: Staff Search
 
+    titles:
+      title: Title
+      list: Title List
+      new: New Title
+      edit: Edit Title
+      titlecode: Title Code
+      name: Title Name
+      details: Details
+      
     vehicles:
       title: Vehicle Details
       type_model: "Vehicle Type / Model"
       reg_no: Registration No
       cylinder_capacity: "Cc (Cylinder Capacity)"
+    
+    staff_shifts:
+      title: Staff Shifts
+      list: Staff Shifts List
+      new: New Staff Shift
+      edit: Edit Staff Shift
+      name: Shift Name
+      start_at: Start at
+      end_at: End at
+      details: Details
       
     shift_histories:
       title: Shift Histories
@@ -1280,6 +1314,41 @@ en:
       mileage_xor_km_money: " : Specify a Mileage (km) or a Payment (RM), not both (entered / blank)"
       edit_by_applicant: Editing only allowed by applicant
       
+    travel_claims_transport_groups:
+      title: Transport Group
+      new: New Transport Group
+      edit: Edit Transport Group
+      details: Details
+      group_name: Group name
+      salary: Salary
+      cylinder_capacity: Cylinder Capacity (CC)
+      low: Minimum
+      high: Maximum
+  
+    travel_claim_mileage_rates:
+      title: Mileage Rates for Transport Group
+      new: New Mileage Rate
+      edit: Edit Mileage Rate
+      details: Mileage Rate Details
+      km_low: KM From
+      km_high: KM To
+
+    employgrades:
+      title: Employment Scheme (Grade)
+      new: New Employment Scheme (Grade)
+      edit: Edit Employment Scheme / Grade
+      name: Grade
+      group_id: Employment Group
+    
+    postinfos:
+      title: Post Information
+      new: New Post Information
+      edit: Edit Post Information
+      details: Details
+      staffgrade_id: Grade
+      post_count: Position Count
+      position: Position
+
     staff_appraisal:
       title: Staff Appraisal
       new: New Staff Appraisal
@@ -3971,7 +4040,7 @@ en:
         is_returned: "Resubmit?"
         is_approved: "Approved?"
         approved_by: Approval By
-
+      
       staff_appraisal:
         staff_id: Staff
         evaluation_year: Evaluation Year

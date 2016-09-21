@@ -1,0 +1,17 @@
+.form-group
+  .col-sm-2.control-label
+    = f.label t 'staff.titles.titlecode', for: :titlecode
+  .col-md-8
+    = f.text_field :titlecode, class: 'form-control mandatory'
+     
+.form-group
+  .col-sm-2.control-label
+    = f.label t 'staff.titles.name', for: :name
+  .col-md-8
+    = f.text_field :name, class: 'form-control mandatory'
+                
+.form-group
+  .col-sm-2.control-label
+    = f.label "Berhormat", for: :berhormat
+  .col-md-8
+    = f.select :berhormat, [[(t 'yes2'), true],[(t 'no2'), false]], {:include_blank => (t 'select'), :selected => @title.try(:berhormat)},{class: 'selectpicker'}

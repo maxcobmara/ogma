@@ -845,4 +845,10 @@ KTYPE = [
              ["US|United States",   1]
   ]
 
+  #Employgrades
+  GROUP = [
+       [ "Pengurusan & Professional", 1 ],
+       [ "Sokongan", 2 ],
+       [ "Bersepadu", 4 ]
+  ]
 end

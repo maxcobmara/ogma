@@ -24,10 +24,15 @@ class User < ActiveRecord::Base
    student_ids=Student.where('name ILIKE(?)', "%#{query}%").pluck(:id)
    where('(userable_id IN(?) and userable_type=?) OR userable_id IN(?) and userable_type=? ', staff_ids, "Staff", student_ids, "Student")
   end
+  
+  def self.position_search(query)
+    staff_ids=Position.where('name ILIKE(?)', "%#{query}%").pluck(:staff_id)
+    where(userable_id: staff_ids).where(userable_type: "Staff")
+  end
 
   # whitelist the scope
   def self.ransackable_scopes(auth_object = nil)
-   [:keyword_search]
+   [:keyword_search, :position_search]
   end
   
   def mailboxer_name

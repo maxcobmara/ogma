@@ -1,0 +1,38 @@
+.row
+  .col-md-9.col-md-offset-1
+    %table.table.table-bordered
+      %head
+        %tr{style: 'background-color: #F0F0F0;'}
+          %th{rowspan: 2}=t('staff.travel_claim_mileage_rates.km_low')
+          %th{rowspan: 2}=t('staff.travel_claim_mileage_rates.km_high')
+          %th.centre{colspan: 5}=t('staff.travel_claims_transport_groups.title')
+        %tr{style: 'background-color: #F0F0F0;'}
+          %th.centre A
+          %th.centre B
+          %th.centre C
+          %th.centre D
+          %th.centre E
+      %body
+        %tr
+          %td=f.text_field :km_low, class: 'form-control'
+          %td=f.text_field :km_high, class: 'form-control'
+          %td{width: '15%'}
+            .input-group
+              %span.input-group-addon RM
+              =f.text_field :a_group, class: 'form-control', "data-width"=> "10px"
+          %td{width: '15%'}
+            .input-group
+              %span.input-group-addon RM
+              =f.text_field :b_group, class: 'form-control'
+          %td{width: '15%'}
+            .input-group
+              %span.input-group-addon RM
+              =f.text_field :c_group, class: 'form-control'
+          %td{width: '15%'}
+            .input-group
+              %span.input-group-addon RM
+              =f.text_field :d_group, class: 'form-control'
+          %td{width: '15%'}
+            .input-group
+              %span.input-group-addon RM
+              =f.text_field :e_group, class: 'form-control'

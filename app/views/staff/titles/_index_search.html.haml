@@ -1,0 +1,10 @@
+= search_form_for @search, url: staff_titles_path,  class: "form-inline" do |f|
+  %tr.search_row{style: "display: none;"}
+    %td=f.text_field :titlecode_cont, class:  'form-control'
+    %td=f.text_field :name_cont, class: 'form-control'
+    %td
+      .input-group
+        =select_tag('q[berhormat_eq]', options_for_select([[(t 'select'), ''], [(t 'yes2'), true], [(t 'no2'), false]], @search.berhormat_eq), class:  'selectpicker', "data-width" => '200px')
+        %span.input-group-btn
+          %button.btn.btn-sm.btn-default.right{:type => "submit"}
+            %i.fa.fa-search.fa-fw

@@ -3,7 +3,7 @@
   .col-md-10.col-md-offset-1
     %dl.dl-horizontal
       %dt= t 'user.userable_id', :default => model_class.human_attribute_name(:userable_id) + ":"
-      %dd=h @user.userable_type == "Staff" ? @user.userable.try(:staff_name_with_position) : @user.userable.try(:formatted_mykad_and_student_name)
+      %dd=h @user.userable_type == "Staff" ? @user.userable.try(:staff_with_rank_position) : @user.userable.try(:formatted_mykad_and_student_name)
 
       %dt= t 'user.userable_type', :default => model_class.human_attribute_name(:userable_type)+":"
       %dd=h @user.userable_type
@@ -139,13 +139,12 @@
           %li.small=t('user.rule16')
           %li.small=t('user.rule17')
           %li.small=t('user.rule19')
-          /Below - Unremark when ready in Ogma - rule18, rule18a, rule18b, rule18c
-          /%li.small
-          /  Support Tables :
-          /  %ul
-          /    %li Activate 'Titles', 'Banks' & 'Staff Shifts' in addition to access by Staffs modules.
-          /    %li Activate 'Travel Claims Transport Groups' & 'Travel Claim Mileage Rates'in addition to access by Travel Claims modules.
-          /    %li Activate 'Asset Categories' in addition to access by Asset List modules.
+          %li.small
+            =t('user.rule18')
+            %ul
+              %li=t('user.rule18a')
+              %li=t('user.rule18b')
+              %li=t('user.rule18c')
             
 .row{style: "padding-top:1em;"}
   /.col-md-3.col-md-offset-2
@@ -423,7 +422,7 @@
               /%th.centre{width: "12%"} 
           %body
             - cnt=0
-            - for role in Role.where('authname ILIKE(?)', '%module_admin').where.not('name ILIKE(?)', '%Mailer%').where(description: ["Address Book", "Banks", "Messaging Groups","Titles", "Staff Shifts", "Travel Claims Transport Groups", "Travel Claim Mileage Rates", "Asset Categories"]).order(id: :asc)
+            - for role in Role.where('authname ILIKE(?)', '%module_admin').where.not('name ILIKE(?)', '%Mailer%').where(description: ["Address Book", "Banks", "Messaging Groups","Titles", "Staff Shifts", "Travel Claims Transport Groups", "Travel Claim Mileage Rates", "Asset Categories", "Ranks", "Employgrades", "Postinfos"]).order(id: :asc)
               - read=Role.where('id !=?', role.id).where(description: role.description).first
               /- user=Role.where.not(id: [role.id, read.id]).where(description: role.description).first
               /- owner=Role.where.not(id: [role.id, read.id, user.id]).where(description: role.description).first
@@ -438,7 +437,7 @@
               %tr
                 %td.left=check_box_tag "efilemain_#{cnt}", cnt, false, class: "supportmain"
                 %td.left
-                  - if ["Address Book", "Banks", "Messaging Groups", "Asset Categories"].include?(rolename)
+                  - if ["address_book", "banks", "messaging_groups", "asset_categories", "titles", "staff_shifts", "travel_claims_transport_groups", "travel_claim_mileage_rates", "staff_ranks", "staff_employgrades", "staff_postinfos"].include?(rolename1)
                     =rolename
                   - else
                     %font{style: 'color: grey;'}=rolename
