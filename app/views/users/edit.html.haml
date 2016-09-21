@@ -367,6 +367,54 @@ $(function(){
       }
       $("#form1").submit();
     }
+  
+    ///////* 14) Staff part 5 : Instructor Appraisals & Average Instructors */
+    var e_staffmg = document.getElementsByClassName('e_staffmanage2');
+    var e_staffrd = document.getElementsByClassName('e_staffread2');
+    var e_staffusr = document.getElementsByClassName('e_staffuser2');
+    var e_staffown = document.getElementsByClassName('e_staffowner2');
+
+    var ee_staffmn = document.getElementsByClassName('e_staffmain');
+    
+    var ee_staffmg = document.getElementsByClassName('e_staffmanage');
+    var ee_staffrd = document.getElementsByClassName('e_staffread');
+    var ee_staffusr = document.getElementsByClassName('e_staffuser');
+    var ee_staffown = document.getElementsByClassName('e_staffowner');
+    
+    for(i=0; i<2; i++)
+    {
+      if(e_staffmg[i].checked) {
+        ee_staffmg[i].checked=true;
+        ee_staffrd[i].checked=false;
+        ee_staffusr[i].checked=false;
+        ee_staffown[i].checked=false;
+      }
+      else if(e_staffrd[i].checked) {
+        ee_staffmg[i].checked=false;
+        ee_staffrd[i].checked=true;
+        ee_staffusr[i].checked=false;
+        ee_staffown[i].checked=false;
+      }
+      else if(e_staffusr[i].checked) {
+        ee_staffmg[i].checked=false;
+        ee_staffrd[i].checked=false;
+        ee_staffusr[i].checked=true;
+        ee_staffown[i].checked=false;
+      }
+      else if(e_staffown[i].checked) {
+        ee_staffmg[i].checked=false;
+        ee_staffrd[i].checked=false;
+        ee_staffusr[i].checked=false;
+        ee_staffown[i].checked=true;
+      }
+      /*when any access is selected, file main will be activated too*/
+      if((e_staffmg[i].checked) || (e_staffrd[i].checked) || (e_staffusr[i].checked) || (e_staffown[i].checked)){
+        ee_staffmn[i].checked=true;
+        ee_staffmn[i].disabled=false;
+      }
+      $("#form1").submit();
+    }
+    //////
     
     /* 8) Assets*/
     var assetmg = document.getElementsByClassName('assetmanage2');
@@ -706,16 +754,6 @@ $(function(){
     /*set by default at all time - Examquestion (Member) not applicable - refer auth rules*/
     examown[6].checked=false;
     examown[6].disabled=true;
-    
-    /*NOTE - enable these when Admin & Support tables ready*/
-    /*for (i=5;i<6;i++)*/
-    /*{*/
-      /*supportmg[i].checked=false;*/
-      /*supportmg[i].disabled=true;*/
-      /*supportrd[i].checked=false;*/
-      /*supportrd[i].disabled=true;*/
-      /*esupportmn[i].disabled=true;*/
-    /*}*/
     
   });
   
@@ -1124,14 +1162,48 @@ $(function(){
     }
     /*EACH - requires for each RADIO BUTTONS (saved values) - END*/
 
-    /* when Staff role is selected, checking this 2 modules shall override Staff role access */
-    
     /*disable this main checkbox if no file module selected*/
     for(i=0; i<2; i++){
       if ((d_staffmg[i].checked==false) && (d_staffrd[i].checked==false) && (d_staffusr[i].checked==false) && (d_staffown[i].checked==false)){
         ed_staffmn[i].disabled=true;
       }
     }
+    
+    /////
+    /* 14?) START of Staff part 5 : Instructor Appraisals, Average Instructors */
+    var e_staffmg = document.getElementsByClassName('e_staffmanage2');
+    var e_staffrd = document.getElementsByClassName('e_staffread2');
+    var e_staffusr = document.getElementsByClassName('e_staffuser2');
+    var e_staffown = document.getElementsByClassName('e_staffowner2');
+    var ee_staffmn = document.getElementsByClassName('e_staffmain');
+
+    /*EACH - requires for each RADIO BUTTONS (saved values), to update checkboxes - START*/
+    var ee_staffmg = document.getElementsByClassName('e_staffmanage');
+    var ee_staffrd = document.getElementsByClassName('e_staffread');
+    var ee_staffusr = document.getElementsByClassName('e_staffuser');
+    var ee_staffown = document.getElementsByClassName('e_staffowner');
+    
+    for(i=0; i<2; i++){
+      if(e_staffmg[i].checked)
+      {  ee_staffmg[i].checked=true;}
+      else if(e_staffrd[i].checked)
+      {  ee_staffrd[i].checked=true;}
+      else if(e_staffusr[i].checked)
+      {  ee_staffusr[i].checked=true;}
+      else if(e_staffown[i].checked)
+      {  ee_staffown[i].checked=true;}
+      if ((e_staffmg[i].checked) || (e_staffrd[i].checked) || (e_staffusr[i].checked) || (e_staffown[i].checked))
+      /* main must be checked*/
+      {  ee_staffmn[i].checked=true;}
+    }
+    /*EACH - requires for each RADIO BUTTONS (saved values) - END*/    
+    /*disable this main checkbox if no module selected*/
+    for(i=0; i<2; i++){
+      if ((e_staffmg[i].checked==false) && (e_staffrd[i].checked==false) && (e_staffusr[i].checked==false) && (e_staffown[i].checked==false)){
+        ee_staffmn[i].disabled=true;
+      }
+    }
+    ////// END of Staff part 5
     
     /* 8) Assets */
     /* 9) Tenants, Locations, Location Damages */ 
@@ -1440,7 +1512,7 @@ $(function(){
       c_staffown[3].disabled=true;
       a_staffown[2].disabled=true;
     }
-    /*when role : Staff is selected, uncheck Staffs(O), Staff Attendance(O), Training Attendance(O), Staff Appraisal(O), Staff Leaves(O), Travel Requests(O), Travel Claims(O), Asset List(R), Asset Defect(O), Asset Loan(O), Student Discipline Case(O), Events(O), Bulletins(R), Document Registry(O), Library Books(R), Library Analysis & Statistics(R)*/
+    /*when role : Staff is selected, uncheck Staffs(O), Staff Attendance(O), Training Attendance(O), Staff Appraisal(O), Staff Leaves(O), Travel Requests(O), Travel Claims(O), Asset List(R), Asset Defect(O), Asset Loan(O), Student Discipline Case(O), Events(O), Bulletins(R), Document Registry(O), Library Books(R), Library Analysis & Statistics(R), Instructor Appraisals(O), Average Instructors(O)*/
     if(inputElements[5].checked){
       a_staffown[2].disabled=true;
       c_staffown[3].disabled=true;
@@ -1457,6 +1529,8 @@ $(function(){
       fileown[3].disabled=true;
       libraryrd[1].disabled=true;
       libraryrd[0].disabled=true;
+      e_staffown[0].disabled=true;
+      e_staffown[1].disabled=true;
     }
 
     /*8) assets - disable this main checkbox if no file module selected*/
@@ -1589,16 +1663,6 @@ $(function(){
     /*set by default at all time - Examquestion (Member) not applicable - refer auth rules*/
     examown[6].checked=false;
     examown[6].disabled=true;
-    
-    /*NOTE - enable these when Admin & Support tables ready*/
-    /*for (i=5;i<6; i++)*/
-    /*{*/
-      /*supportmg[i].checked=false;*/
-      /*supportmg[i].disabled=true;*/
-      /*supportrd[i].checked=false;*/
-      /*supportrd[i].disabled=true;*/
-      /*esupportmn[i].disabled=true;*/
-    /*}*/
     
   });
   
@@ -2338,12 +2402,77 @@ $(function(){
     if(inputElements[5].checked){
       d_staffown[0].disabled=true;
       d_staffown[1].disabled=true;
+      d_staffown[0].checked=false;
+      d_staffown[1].checked=false;
+      /*hidden checboxes*/
+      ed_staffown[0].checked=false;
+      ed_staffown[1].checked=false;
+      /*main checkboxes*/
+      ed_staffm[0].checked=false;
+      ed_staffm[1].checked=false;
     }
     else
     {
       d_staffown[0].disabled=false;
       d_staffown[1].disabled=false;
     }
+    
+    /////////
+    /* START of 14?) Staff part 5 : Instructor Appraisals, Average Instructors */
+    /*Staff part 5 checkboxes*/
+    var ee_staffmg = document.getElementsByClassName('e_staffmanage');
+    var ee_staffrd = document.getElementsByClassName('e_staffread');
+    var ee_staffusr = document.getElementsByClassName('e_staffuser');
+    var ee_staffown = document.getElementsByClassName('e_staffowner');
+    
+    /*Staff part 5 radio buttons*/
+    var e_staffmg = document.getElementsByClassName('e_staffmanage2');
+    var e_staffrd = document.getElementsByClassName('e_staffread2');
+    var e_staffusr = document.getElementsByClassName('e_staffuser2');
+    var e_staffown = document.getElementsByClassName('e_staffowner2');
+    
+    /*Staff part 5 main UNCHECK checkbox*/
+    var ee_staffm = document.getElementsByClassName('e_staffmain');
+    
+    /*when UNCHECK , all staffs part 4 main is false*/
+    for(i=0; i < 2; i++){
+      if (ee_staffm[i].checked==false) {
+        e_staffmg[i].checked=false;
+        e_staffrd[i].checked=false;
+        e_staffusr[i].checked=false;
+        e_staffown[i].checked=false;
+        ee_staffmg[i].checked=false;
+        ee_staffrd[i].checked=false;
+        ee_staffusr[i].checked=false;
+        ee_staffown[i].checked=false;
+      }
+      
+      /*file main checkbox REMAINS FALSE(cannot be checked) if no module selected*/
+      if ((e_staffmg[i].checked==false) && (e_staffrd[i].checked==false) && (e_staffusr[i].checked==false) && (e_staffown[i].checked==false)){
+        ee_staffm[i].checked=false;
+      }
+    }
+    
+    /*Staff - part 5 : Instructor Appraisals & Average Instructors - when Staff role is selected, selecting these 2 roles shall override Staff role access*/
+    /*When Staff role is selected, Instructor Appraisals(O) & Average Instructors(O) will be disabled*/
+    if(inputElements[5].checked){
+      e_staffown[0].disabled=true;
+      e_staffown[1].disabled=true;
+      e_staffown[0].checked=false;
+      e_staffown[1].checked=false;
+      /*hidden checboxes*/
+      ee_staffown[0].checked=false;
+      ee_staffown[1].checked=false;
+      /*main checkboxes*/
+      ee_staffm[0].checked=false;
+      ee_staffm[1].checked=false;
+    }
+    else
+    {
+      e_staffown[0].disabled=false;
+      e_staffown[1].disabled=false;
+    }
+    ///////// END of Staff part 5 - Instructor Appraisal & Average Instructors
     
     /* 8) Asset Section*/
     /*Assets checkboxes*/
@@ -3356,26 +3485,7 @@ $(function(){
     examown[6].checked=false;
     examown[6].disabled=true;
     
-    /*NOTE - enable these when Admin & Support tables ready*/
-    /*for (i=5;i<6;i++)*/
-    /*{*/
-      /*supportmg[i].checked=false;*/
-      /*supportmg[i].disabled=true;*/
-      /*supportrd[i].checked=false;*/
-      /*supportrd[i].disabled=true;*/
-      /*esupportm[i].disabled=true;*/
-    /*}*/
-    
     $("#form1").submit();
   });
 
-  
-  
 });
-
-/ 
-/ $('.edit_form input[type=radio]').click(function(){
-/     if(document.getElementById('user_role_files_73').checked) {
-/       alert("huhu"); 
-/     }
-/   });

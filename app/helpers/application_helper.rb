@@ -127,4 +127,10 @@ module ApplicationHelper
     a[0, a.size-2] if a.size > 0
   end
   
+  def translated_list_comma(arr)
+    a=""
+    arr.each{|x|a+=I18n.t('user.'+x)+", "}
+    a[0, a.size-2] if a.size > 0
+  end
+  
 end

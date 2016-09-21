@@ -29,21 +29,26 @@
       %dd=@college.email
       
       %dt=t 'college.logo'
-      %dd=@college.logo
+      %dd{style: 'vertical-align: bottom;'}
+        - if @college.logo.present?
+          =image_tag(@college.logo)
+          =@college.logo
 
 .row
   .col-md-4.col-md-offset-3
     %hr
     .form-actions
       /TODO - super admin only
-      - if current_user.college.code=="tpsb" || current_user.email.split("@")[1]=="teknikpadu.com"
+      /- if current_user.college.code=="tpsb" || current_user.email.split("@")[1]=="teknikpadu.com"
+      - if is_developer?
         = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), colleges_path, :class => 'btn btn-default'
         
-      - permitted_to? :update, :college do
+      - permitted_to? :update, :colleges do
         = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('.edit', :default => t("helpers.links.edit")), edit_college_path(@college), :class => 'btn btn-primary'
         
       /TODO - super admin only
-      - if current_user.college.code=="tpsb" || current_user.email.split("@")[1]=="teknikpadu.com"
+      /- if current_user.college.code=="tpsb" || current_user.email.split("@")[1]=="teknikpadu.com"
+      - if is_developer?
         = link_to content_tag(:i, "", :class => "fa fa-trash-o icon-white") + " " + t('.destroy', :default => t("helpers.links.destroy")), |
           college_path(@college),                                                                                                    |
           :method => 'delete',                                                                                                           |

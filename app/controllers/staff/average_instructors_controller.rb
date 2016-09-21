@@ -1,4 +1,7 @@
 class Staff::AverageInstructorsController < ApplicationController
+  filter_access_to :index, :new, :create, :averageinstructor_evaluation, :attribute_check => false 
+  filter_access_to :show, :edit, :update, :destroy, :attribute_check => true
+  
   before_action :set_average_instructor, only: [:show, :edit, :update, :destroy]
 
   respond_to :html
@@ -74,6 +77,6 @@ class Staff::AverageInstructorsController < ApplicationController
     end
 
     def average_instructor_params
-      params.require(:average_instructor).permit(:programme_id, :instructor_id, :evaluate_date, :title, :objective, :start_at, :end_at, :delivery_type, :pbq1, :pbq2, :pbq3, :pbq4, :pbq1review, :pbq2review, :pbq3review, :pbq4review, :pdq1, :pdq2, :pdq3, :pdq4, :pdq5, :pdq1review, :pdq2review, :pdq3review, :pdq4review, :pdq5review, :dq1, :dq2, :dq3, :dq4, :dq5, :dq6, :dq7, :dq8, :dq9, :dq10, :dq11, :dq12, :dq1review, :dq2review, :dq3review, :dq4review, :dq5review, :dq6review, :dq7review, :dq8review, :dq9review, :dq10review, :dq11review, :dq12review, :uq1, :uq2, :uq3, :uq4, :uq1review, :uq2review, :uq3review, :uq4review, :vq1, :vq2, :vq3, :vq4, :vq5, :vq1review, :vq2review, :vq3review, :vq4review, :vq5review, :gttq1, :gttq2, :gttq3, :gttq4, :gttq5, :gttq6, :gttq7, :gttq8, :gttq9, :gttq1review, :gttq2review, :gttq3review, :gttq4review, :gttq5review, :gttq6review, :gttq7review, :gttq8review, :gttq9review, :review, :evaluator_id)
+      params.require(:average_instructor).permit(:programme_id, :instructor_id, :evaluate_date, :title, :objective, :start_at, :end_at, :delivery_type, :pbq1, :pbq2, :pbq3, :pbq4, :pbq1review, :pbq2review, :pbq3review, :pbq4review, :pdq1, :pdq2, :pdq3, :pdq4, :pdq5, :pdq1review, :pdq2review, :pdq3review, :pdq4review, :pdq5review, :dq1, :dq2, :dq3, :dq4, :dq5, :dq6, :dq7, :dq8, :dq9, :dq10, :dq11, :dq12, :dq1review, :dq2review, :dq3review, :dq4review, :dq5review, :dq6review, :dq7review, :dq8review, :dq9review, :dq10review, :dq11review, :dq12review, :uq1, :uq2, :uq3, :uq4, :uq1review, :uq2review, :uq3review, :uq4review, :vq1, :vq2, :vq3, :vq4, :vq5, :vq1review, :vq2review, :vq3review, :vq4review, :vq5review, :gttq1, :gttq2, :gttq3, :gttq4, :gttq5, :gttq6, :gttq7, :gttq8, :gttq9, :gttq1review, :gttq2review, :gttq3review, :gttq4review, :gttq5review, :gttq6review, :gttq7review, :gttq8review, :gttq9review, :review, :evaluator_id, :college_id,{ :data => []})
     end
 end

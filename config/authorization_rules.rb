@@ -22,6 +22,10 @@ authorization do
      if_attribute :college_id => is {user.college_id}
      if_attribute :email => is_not {User.where(college_id: user.college_id).joins(:roles).where('roles.authname=?', 'developer').pluck(:email).first}
    end
+   has_permission_on :colleges, :to => [:show, :update] do
+     if_attribute :id => is {user.college_id}
+   end
+    
   #by existing roles?
 #    includes :staff
 #    includes :staff_administrator
@@ -105,6 +109,8 @@ authorization do
    includes :messaging_groups_module_admin
    includes :users_module
    includes :roles_module
+   includes :instructor_appraisals_module_admin
+   includes :average_instructors_module_admin
  end
 
  #Group Staff
@@ -131,17 +137,32 @@ authorization do
    has_permission_on :staff_training_ptdos, :to => [:read, :show_total_days, :training_report, :delete] do
      if_attribute :staff_id => is {user.userable.id}                                                                 # but onle see his own registrations
    end
-   
+  
+   #instructor Appraisal
    has_permission_on :staff_instructor_appraisals, :to => :menu
    has_permission_on :staff_instructor_appraisals, :to => :create
    has_permission_on :staff_instructor_appraisals, :to => :update do
      if_attribute :staff_id => is {user.userable.id}
    end
-   has_permission_on :staff_instructor_appraisals, :to => :read, :join_by => :or do
+   has_permission_on :staff_instructor_appraisals, :to => [:read, :instructorevaluation], :join_by => :or do
      if_attribute :staff_id => is {user.userable.id}
      if_attribute :check_qc => is {user.userable.id}
    end
+   # HACK restriction to Administration, Developer & instructor_appraisals_module_admin in INDEX page
+   has_permission_on :staff_instructor_appraisals, :to => :instructorevaluation_report 
    
+   
+   #Average instructor
+   has_permission_on :staff_average_instructors, :to => [:menu, :create]                       
+   has_permission_on :staff_average_instructors, :to => [:manage, :averageinstructor_evaluation] do
+     if_attribute :evaluator_id => is {user.userable.id}
+   end
+   has_permission_on :staff_average_instructors, :to => [:read, :averageinstructor_evaluation] do
+     if_attribute :instructor_id => is {user.userable.id}
+   end
+    
+    
+    
    has_permission_on :staff_staff_appraisals, :to => :create                                                # A staff can create appraisal
    has_permission_on :staff_staff_appraisals, :to => [:show, :appraisal_form] do                                             # but cannot see marking parts
      if_attribute :staff_id => is {user.userable.id}
@@ -346,9 +367,8 @@ authorization do
    has_permission_on :groups, :to => :show do
      if_attribute :id => is_in {user.members_of_msg_group}
    end
-   
  end
-   
+  
   role :staff_administrator do
      has_permission_on :staff_staffs, :to => [:manage, :borang_maklumat_staff]
      has_permission_on :staff_staff_attendances, :to =>[:manage, :manager, :actionable, :approval, :manager_admin, :attendance_report, :attendance_report_main, :daily_report, :weekly_report, :monthly_report, :monthly_listing, :monthly_details, :import_excel, :import, :status ]   #29Apr2013-refer routes.rb
@@ -512,7 +532,6 @@ authorization do
 #      if_attribute :editor_id => is {user.userable.id}
 #      if_attribute :qstatus => is {"Re-Edit"}
 #    end
-   
   end
  
   #OK - 29Jan2016 - this role + programme mgr (exam parts) works fine as of latest Nov 2015-Jan 2016 accepted unless stated below..
@@ -1950,8 +1969,54 @@ authorization do
     end
   end
   
-  # TODO - instructor_appraisals - other than positions.name=='Jurulatih'
-  # TODO average_instructor - supposed those - Bhg Kawalan Mutu / kompetensi, temp - programme mgr
+  #58 - OK 21 Sept2016
+  role :instructor_appraisals_module_admin do
+    has_permission_on :staff_instructor_appraisals , :to => [:manage, :instructorevaluation, :instructorevaluation_report]
+  end
+  role :instructor_appraisals_module_viewer do
+    has_permission_on :staff_instructor_appraisals, :to => [:menu, :show, :instructorevaluation, :instructorevaluation_report]
+  end
+  role :instructor_appraisals_module_member do
+    has_permission_on :staff_instructor_appraisals, :to => :menu
+    has_permission_on :staff_instructor_appraisals, :to => :create
+    has_permission_on :staff_instructor_appraisals, :to => :update do
+      if_attribute :staff_id => is {user.userable.id}
+    end
+    has_permission_on :staff_instructor_appraisals, :to => [:read, :instructorevaluation], :join_by => :or do
+      if_attribute :staff_id => is {user.userable.id}
+      if_attribute :check_qc => is {user.userable.id}
+    end
+    # HACK restriction to Administration, Developer & instructor_appraisals_module_admin in INDEX page
+    has_permission_on :staff_instructor_appraisals, :to => :instructorevaluation_report 
+  end
+  role :instructor_appraisals_module_user do
+    has_permission_on :staff_instructor_appraisals, :to => [:menu, :read, :update, :instructorevaluation, :instructorevaluation_report]
+  end
+  
+  #59 OK 21 Sept2016 - Bhg Kawalan Mutu / Kompetensi - seperti Nazir Sekolah
+  #Pentadbir : boleh lakukan kesemuanya (CRUD/A) 
+  role :average_instructors_module_admin do                  
+    has_permission_on :staff_average_instructors, :to => [:manage, :averageinstructor_evaluation]
+  end
+  #Paparan : boleh menyenarai, mencetak rekod serta menyemak laporan sahaja (R/A) - anybody can view
+  role :average_instructors_module_viewer do
+    has_permission_on :staff_average_instructors, :to => [:read, :averageinstructor_evaluation] 
+  end
+  #Pemilik : hanya boleh memapar dan menyunting rekod sendiri (CRUD/O)
+  # NOTE - although instructor_id refers to 'Jurulatih', record is SOLELY created/updated by Kaw Mutu / Kompetensi
+  role :average_instructors_module_member do
+    has_permission_on :staff_average_instructors, :to => [:menu, :create]                       
+    has_permission_on :staff_average_instructors, :to => [:manage, :averageinstructor_evaluation] do
+      if_attribute :evaluator_id => is {user.userable.id}
+    end
+    has_permission_on :staff_average_instructors, :to => [:read, :averageinstructor_evaluation] do
+      if_attribute :instructor_id => is {user.userable.id}
+    end
+  end
+  #Pengguna : boleh memapar & mengemaskini semua rekod (RU/A) - whoever except for 'Jurulatih'
+  role :average_instructors_module_user do
+    has_permission_on :staff_average_instructors, :to => [:read, :update, :averageinstructor_evaluation]
+  end
   
 end
 
