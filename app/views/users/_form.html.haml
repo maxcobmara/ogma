@@ -139,6 +139,8 @@
           %li.small=t('user.rule16')
           %li.small=t('user.rule17')
           %li.small=t('user.rule19')
+          %li.small=t('user.rule20')
+          %li.small=t('user.rule21')
           %li.small
             =t('user.rule18')
             %ul
@@ -186,7 +188,7 @@
     .panel.panel-default
       .panel-heading
         %h3.panel-title
-          =t 'role.e_filing'
+          =t 'user.e_filing'
           .right.small
             =t 'user.admin'
             &nbsp;
@@ -630,6 +632,50 @@
           =t 'actions.uncheck'
           %font{style: "color: red;"}*
           =t 'user.remove_module_access'
+          
+        ////////==============================
+        %hr
+        
+        /STAFF part 5 - Instructor Appraisals & Average Instructors
+        %table{width:"100%"}
+          %head
+            %tr
+              %th.left{width: "5%"}
+                %font{style: "color: red;"}*
+              %th.centre{width: "47%"} 
+              %th.centre{width: "12%"} 
+              %th.centre{width: "12%"} 
+              %th.centre{width: "12%"} 
+              %th.centre{width: "12%"} 
+          %body
+            - cnt=0
+            /Staff related modules (Access to all Instructor Appraisals & Average Instructors records)
+            - for role in Role.where('authname ILIKE(?)', '%module_admin').where.not('name ILIKE(?)', '%Mailer%').where(description: ["Instructor Appraisals", "Average Instructors"]).order(id: :asc)
+              - read=Role.where('id !=?', role.id).where(description: role.description).first
+              - user=Role.where.not(id: [role.id, read.id]).where(description: role.description).first
+              - owner=Role.where.not(id: [role.id, read.id, user.id]).where(description: role.description).first
+              %span{style: 'display: none;'}
+                = check_box_tag "user[role_ids][]", role.id, @user.roles.include?(role), class: "e_staffmanage"
+                = check_box_tag "user[role_ids][]", read.id, @user.roles.include?(read), class: "e_staffread"
+                = check_box_tag "user[role_ids][]", user.id, @user.roles.include?(user), class: "e_staffuser"
+                = check_box_tag "user[role_ids][]", owner.id, @user.roles.include?(owner), class: "e_staffowner"
+              - rolename1=role.authname.split("_module")[0].strip
+              - rolename= t('user.'+rolename1)
+              - rolename2=rolename1.downcase
+              %tr
+                %td.left=check_box_tag "efilemain_#{cnt}", cnt, false, class: "e_staffmain"
+                %td.left=rolename
+                %td.centre=radio_button_tag "user_role_#{rolename2}", role.id, @user.roles.include?(role), class: "e_staffmanage2"
+                %td.centre=radio_button_tag "user_role_#{rolename2}", read.id, @user.roles.include?(read), class: "e_staffread2"
+                %td.centre=radio_button_tag "user_role_#{rolename2}", user.id, @user.roles.include?(user), class: "e_staffuser2"
+                %td.centre=radio_button_tag "user_role_#{rolename2}", owner.id, @user.roles.include?(owner), class: "e_staffowner2"
+              - cnt+=1
+        .small 
+          =t 'actions.uncheck'
+          %font{style: "color: red;"}*
+          =t 'user.remove_module_access'
+
+        ////////================================
 
     /3rd column - ASSETS, FACILITY, RESIDENCES SECTION
     .panel.panel-default

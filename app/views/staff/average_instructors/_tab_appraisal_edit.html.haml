@@ -424,7 +424,12 @@
     .col-sm-2.control-label
       = f.label t 'average_instructor.evaluator_id', for: :evaluator_id
     .col-md-8
-      = f.collection_select :evaluator_id, Staff.joins(:positions).where('positions.name!=?', 'Jurulatih').order(rank_id: :asc, name: :asc), :id, :staff_with_rank,{ include_blank: (t 'select'), selected: current_user.userable_id},{class: 'selectpicker mandatory', "data-width"=> "300px"}
+      - current_roles=current_user.roles.pluck(:authname)
+      - if (@average_instructor.new_record? && current_roles.include?('average_instructors_module_admin')) || (!@average_instructor.new_record? && current_roles.include?('average_instructors_module_user'))
+        = f.collection_select :evaluator_id, Staff.joins(:positions).where('positions.name!=?', 'Jurulatih').order(rank_id: :asc, name: :asc), :id, :staff_with_rank,{ include_blank: (t 'select'), selected: current_user.userable_id},{class: 'selectpicker mandatory', "data-width"=> "300px"}
+      - else
+        /role :staff - restricted list to authorised person only
+        = f.collection_select :evaluator_id, Staff.joins(:positions).where('positions.unit ILIKE(?) or positions.unit ILIKE(?)', '%Kompetensi%', '%Kawalan Mutu%').where('positions.staff_id=?', current_user.userable_id).order(rank_id: :asc, name: :asc), :id, :staff_with_rank,{ include_blank: (t 'select'), selected: current_user.userable_id},{class: 'selectpicker mandatory', "data-width"=> "300px"}
  
 :javascript
 

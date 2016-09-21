@@ -368,4 +368,4 @@
     .col-sm-2.control-label
       = f.label t 'instructor_appraisal.check_qc', for: :check_qc
     .col-md-8
-      = f.collection_select :check_qc, Staff.joins(:positions).where('positions.name!=?', 'Jurulatih').order(rank_id: :asc, name: :asc), :id, :staff_with_rank, {:include_blank => (t 'select')}, {class: 'selectpicker', "data-width" => "300px"}
+      = f.collection_select :check_qc, Staff.joins(:positions).where('positions.unit ILIKE(?) OR positions.unit ILIKE(?)', '%Kompetensi%', '%Kawalan Mutu%').order(rank_id: :asc, name: :asc), :id, :staff_with_rank_unit, {:include_blank => (t 'select')}, {class: 'selectpicker', "data-width" => "300px"}

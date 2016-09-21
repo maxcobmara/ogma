@@ -138,6 +138,15 @@ class Staff < ActiveRecord::Base
       end
       staff_with_rank+a 
     end
+    
+    def staff_with_rank_unit
+      if positions.count > 0
+        a=" (#{positions.try(:first).try(:unit)})"
+      else
+        a=""
+      end
+      staff_with_rank+a
+    end
 
     def staff_list
     "#{icno}"+" "+"#{name}"

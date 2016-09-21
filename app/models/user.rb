@@ -26,7 +26,7 @@ class User < ActiveRecord::Base
   end
   
   def self.position_search(query)
-    staff_ids=Position.where('name ILIKE(?)', "%#{query}%").pluck(:staff_id)
+    staff_ids=Position.where('name ILIKE(?)or unit ILIKE(?)', "%#{query}%", "%#{query}%").pluck(:staff_id)
     where(userable_id: staff_ids).where(userable_type: "Staff")
   end
 

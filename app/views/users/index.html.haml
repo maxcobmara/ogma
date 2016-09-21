@@ -15,7 +15,7 @@
           %th{style: "width:8%;"}=(t 'user.college') 
         %th{style: "width:20%;"}= sort_link(@search, :email, (t 'user.email'))
         %th{style: "width:15%;"}= sort_link(@search, :keyword, (t 'user.userable_id'))
-        %th{style: "width:17%;"}=(t 'user.position')
+        %th{style: "width:17%;"}=(t 'user.position')+" / Unit"
         %th{style: "width:10%;"}= sort_link(@search, :userable_type, (t 'user.userable_type'))
         %th{style: "width:30%;"}= (t 'user.roles')
     %tbody
@@ -25,10 +25,12 @@
         - for user in users
           %tr
             - if is_developer?
-              %td=user.college.try(:code).upcase
+              %td=user.college.try(:code).try(:upcase)
             %td= link_to user.email, edit_user_path(user)
             %td=h user.userable.try(:staff_with_rank)
-            %td= user.userable_type == "Staff" ? list_comma(user.userable.positions.pluck(:name)) : ""
+            %td
+              = user.userable_type == "Staff" ? list_comma(user.userable.positions.pluck(:name)) : ""
+              = user.userable_type == "Staff" && user.userable.positions.pluck(:unit).present? ? " / "+user.userable.positions.pluck(:unit).first : ""
             %td.centre
               - if user.userable_type == "Staff" 
                 = (t 'staff.title') 
@@ -36,7 +38,8 @@
                 = (t 'student.title')
               - else
                 =(t 'user.user_not_link_entity')
-            %td=list_comma(user.roles.pluck(:name))
-     
+            %td=translated_list_comma(user.roles.pluck(:authname))
+            /=list_comma(user.roles.pluck(:name))
+
   .right{style:"padding:0 30px; margin:0;"}= paginate @users, :theme => 'twitter-bootstrap-3'
 

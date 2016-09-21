@@ -486,7 +486,7 @@ en:
     finance_unit_modules: "Travel Claims, Training Budget, Transport Groups, Mileage Rates"
     training_administration_modules: "Training Budget, Training Courses, Training Schedules, Training Attendance"
     training_manager_modules: "Training Budget, Training Courses, Training Schedules, Training Attendance"
-    staff_modules: "Staffs(O), Staff Attendance(O), Training Attendance(O), Staff Appraisal(O), Staff Leaves(O), Travel Requests(O), Travel Claims(O), Asset List(R), Asset Defect(O), Asset Loan(O), Student List(R), Student Discipline Case(O), Locations(R), Events(O), Bulletins(R), Document Registry(O), Library Books(R), Library Analysis & Statistics(R)"
+    staff_modules: "Staffs(O), Staff Attendance(O), Training Attendance(O), Staff Appraisal(O), Staff Leaves(O), Travel Requests(O), Travel Claims(O), Asset List(R), Asset Defect(O), Asset Loan(O), Student List(R), Student Discipline Case(O), Locations(R), Events(O), Bulletins(R), Document Registry(O), Library Books(R), Library Analysis & Statistics(R), Instructor Appraisals(O), Average Instructors(O)"
     asset_administrator_modules: "Asset Losses, Asset Loans, Asset Disposals, Asset Defect, Asset List, Asset Categories, Locations"
     e_filing_modules: "File Registry, Document Registry"
     facilities_administrator_modules: "Locations, Location Damages, Student Residences, Staff Residences"
@@ -530,6 +530,7 @@ en:
     rule18b: "Activate 'Travel Claims Transport Groups' & 'Travel Claim Mileage Rates'in addition to access by Travel Claims modules."
     rule18c: "Activate 'Asset Categories' in addition to access by Asset List modules."
     rule19: "Weeklytimetable Module (Member) only applicable to creator of Weeklytimetable (Penyelaras) and Weeklytimetable time slot owner. For approval of weeklytimetable, please use 'Programme Manager' role."
+    rule21: "Average Instructor Module (Member) access for updating records are limited to Evaluator, while evaluated Instructor can only view his records."
     
     #Filling Parts
     events_module_admin: Events Module Admin
@@ -830,6 +831,18 @@ en:
     tenants: Tenants
     locations: Locations
     location_damages: Location Damages
+    
+    #Instructor evaluation
+    instructor_appraisals_module_admin: Instructor Appraisals Module Admin
+    instructor_appraisals_module_viewer: Instructor Appraisals Module Viewer
+    instructor_appraisals_module_member: Instructor Appraisals Module Member
+    instructor_appraisals_module_user: Instructor Appraisals Module User
+    average_instructors_module_admin: Average Instructors Module Admin
+    average_instructors_module_viewer: Average Instructors Module Viewer
+    average_instructors_module_member: Average Instructors Module Member
+    average_instructors_module_user: Average Instructors Module User
+    instructor_appraisals: Instructor Appraisals
+    average_instructors: Average Instructors
 
     administration_staff: Administration Staff
     administration: Administration
