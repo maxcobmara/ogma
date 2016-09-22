@@ -1,0 +1,59 @@
+- unless @page.body.split.include?("<table>")
+  =h simple_format(@page.body)
+- else
+  - cust_tables=@page.body.split(/<table>|<\/table>/)
+  - first_table=(cust_tables[1].gsub("</table>","")).gsub("</tr>", "")
+
+  - for cust_table in cust_tables
+    - unless cust_table.include?("<tr>")
+      %h2=cust_table
+    - else
+      - ctable=(cust_table.gsub("</table>","")).gsub("</tr>", "").gsub("</tbody>","")
+      
+      %table.table.table-bordered
+        - for row in ctable.split("<tr>")
+          %tr
+            - row.split("<td>").each_with_index do |col, ind|
+              - tdval=col.gsub("</td>","")
+              - unless col==""
+                - if ind==1 
+                  - if row.split("<td>").count > 2
+                    %th{style: 'text-align: right;'}= tdval
+                  - else
+                    %td
+                        
+                      - if tdval.include?("<ol>")
+                        /text in list
+                        - tdvalue=(tdval.gsub("<ol>","")).gsub("</ol>","")
+                        - items=tdvalue.split(/<li>|<\/li>/).compact-["\r\n"]-[""]
+                        %ol
+                          - for item in items
+                            %li=item
+                      - else
+                        /normal text
+                        =tdval
+                            
+                - elsif ind==0
+                  /remove blank columns
+                - else
+                  %td=tdval
+    
+  
+/   - cust_tables2=@page.body.split(/<table>|<\/table>/)
+/   %br
+/   %br
+/   - if cust_tables2[0].include?("<tr>") 
+/     %br=cust_tables2[0]
+/   - else
+/     %H4=cust_tables2[0]
+/   %br
+/   %br=cust_tables2[1]
+/   %br
+/   - if cust_tables2[2].include?("<tr>")
+/     %br=cust_tables2[2]
+/   - else
+/     %H4=cust_tables2[2]
+/   %br
+/   %br=cust_tables2[3]
+  
+  

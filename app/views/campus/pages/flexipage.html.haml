@@ -1,0 +1,8 @@
+- model_class = Page
+.page-header
+  %h1=@page.title
+= render 'shared/flashes'
+
+.row
+  .col-md-6.col-md-offset-3
+    = render 'tab_body'
