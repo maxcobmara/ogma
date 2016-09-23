@@ -234,6 +234,13 @@ en:
         check_qc: Checked By
       user:
         change_password: Change Password
+        email: Email
+        password: Password
+        password_confirmation: Password Confirmation
+        current_password: Current Password
+        leaves_blank: "(leave blank if you don't want to change it)"
+        current_required: "(we need your current password to confirm your changes)"
+        details: Account Details
     errors:
         template:
           body: "There were problems with the following fields:"
@@ -3775,6 +3782,26 @@ en:
       fax: Fax No
       mail: Email
       web: Web 
+    
+    pages:
+      title: Pages
+      list: Pages List
+      edit: Edit Page
+      position: Position
+      navlabel: Navigation Label
+      name: Page Name
+      title2: Page Title
+      admin: Admin
+      redirect: Redirect
+      parent_id: Parent
+      body: Body
+      details2: Page Content
+      details: Page Details
+      navigation: Navigation
+      view_editor: Text Editor
+      view_html: HTML Tags
+      remark_editor: "(Remark : Click 'Text Editor' to edit 'body' in the Text Editor)"
+      remark_html: "(Remark : Click 'HTML Tags' to edit 'body' in HTML format)"
 
   conversation:
     local_messaging: Local Messaging
@@ -3848,6 +3875,8 @@ en:
       coordinator_approval: Coordinator Approval
       warden_approval: Warden Approval
       approving: Leave Approval
+      new_subpage: Sublaman Baru
+      links: Links
 
     label:
       examquestion:

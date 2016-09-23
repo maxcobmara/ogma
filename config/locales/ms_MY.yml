@@ -215,6 +215,13 @@ ms_MY:
         check_qc: Disemak Oleh
       user:
         change_password: Ubah Kata Laluan
+        email: Emel
+        password: Kata Laluan
+        password_confirmation: Sahkan Kata Laluan
+        current_password: Kata Laluan Semasa
+        leaves_blank: "(dibiarkan kosong jika tiada perubahan diperlukan)"
+        current_required: "(kata laluan semasa diperlukan untuk sahkan perubahan kata laluan)"
+        details: Butiran Akaun
     errors:
         template:
           body: "Berikut adalah beberapa masalah:"
@@ -3694,6 +3701,26 @@ ms_MY:
       fax: Fax No
       mail: Email
       web: Web 
+
+    pages:
+      title: Laman
+      list: Senarai Laman
+      edit: Sunting Laman
+      position: Kedudukan
+      navlabel: Label Navigasi
+      name: Nama Laman
+      title2: Tajuk Laman
+      admin: Tadbir
+      redirect: Lencongan / Alihan
+      parent_id: Induk
+      body: Kandungan
+      details2: Kandungan Laman
+      details: Butiran Laman
+      navigation: Navigasi
+      view_editor: Penyunting Teks
+      view_html: Tag HTML
+      remark_editor: "(Catatan : Klik 'Penyunting Teks' untuk suntingan dalam Penyunting Teks)"
+      remark_html: "(Catatan : Klik 'Tag HTML' untuk suntingan teks dalam format HTML)"
   
   conversation:
     local_messaging: Pemesejan Dalaman
@@ -3767,6 +3794,8 @@ ms_MY:
       coordinator_approval: Kelulusan Penyelaras
       warden_approval: Kelulusan Warden
       approving: Kelulusan Cuti
+      new_subpage: Sublaman Baru
+      links: Pautan
       
     label:
       examquestion:

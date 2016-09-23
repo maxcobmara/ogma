@@ -1,0 +1,28 @@
+.col-md-offset-2
+  = f.hidden_field :parent_id
+  = f.hidden_field :college_id, value: current_user.college_id
+  
+  .form-group
+    = f.label (t 'campus.pages.navigation'), class: 'col-sm-2 control-label'
+    .col-sm-6
+      .input-group
+        .input-group-addon= @page.parent.position_navlabel unless @page.parent.nil?
+        = f.text_field :navlabel, class: 'form-control', placeholder: (t 'campus.pages.navlabel')
+
+  .form-group
+    .col-sm-2.control-label
+      = f.label t('campus.pages.position'), for: :position
+    .col-md-6
+      = f.text_field :position, class: 'form-control'
+
+  .form-group
+    .col-sm-2.control-label
+      = f.label t('campus.pages.name'), for: :name
+    .col-md-6
+      = f.text_field :name, class: 'form-control'
+
+  .form-group
+    .col-sm-2.control-label
+      = f.label t('campus.pages.title2'), for: :title
+    .col-md-6
+      = f.text_field :title, class: 'form-control'

@@ -1,0 +1,9 @@
+.row
+  .col-md-10.col-md-offset-1
+    / Nav tabs
+    %ul.nav.nav-tabs
+      %li.active=link_to t('activerecord.attributes.user.details'), "#details", "data-toggle" => "tab"
+
+    .tab-content{style:"padding-top:1em"}
+      .col-md-8.col-md-offset-1
+        = render 'tab_info_edit', :f => f

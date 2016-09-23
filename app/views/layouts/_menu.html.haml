@@ -168,7 +168,7 @@
           %h2.icon E-Filing
           %a.mp-back{:href => "#"}=t('back')
           %ul
-            %li= link_to content_tag(:i, "", :class => "icon-numb") + "Campus Info", '#'
+            %li= link_to content_tag(:i, "", :class => "icon-numb") + "Campus Info", campus_page_path(1)
             - permitted_to? :read, :events do
               %li= link_to content_tag(:i, "", :class => "icon-numb") + (t "events.campus_events"), events_path
               %li= link_to content_tag(:i, "", :class => "icon-numb") + "Campus Events Calendar", '#'
@@ -342,7 +342,8 @@
           %h2.icon= fa_icon "book", text: (t "library.title")
           %a.mp-back{:href => "#"}=t('back')
           %ul
-            %li= link_to content_tag(:i, "", :class => "icon-numb") + (t "library.transaction.rules_regulations"), rules_regulations_path
+            /%li= link_to content_tag(:i, "", :class => "icon-numb") + (t "library.transaction.rules_regulations"), rules_regulations_path
+            %li= link_to content_tag(:i, "", :class => "icon-numb") + (t "library.transaction.rules_regulations"), flexipage_campus_page_path(74)
             - permitted_to? :read, :library_librarytransactions do 
               %li= link_to content_tag(:i, "", :class => "icon-numb") + (t "library.transaction.title"), library_librarytransactions_path
             - permitted_to? :manage, :library_librarytransactions do
@@ -364,7 +365,7 @@
           - permitted_to? :manage, :roles do
             %li= link_to content_tag(:i, "", :class => "icon-numb") + t('user.title'), users_path
             %li= link_to content_tag(:i, "", :class => "icon-numb") + t('role.title'), roles_path
-            %li= link_to content_tag(:i, "", :class => "icon-numb") + "Pages", '#'
+            %li= link_to content_tag(:i, "", :class => "icon-numb") + t('campus.pages.list'), campus_pages_path
           - permitted_to? :read, :campus_address_books do
             %li= link_to content_tag(:i, "", :class => "icon-numb") + t('campus.address.title'), campus_address_books_path
           %li.icon.icon-left
