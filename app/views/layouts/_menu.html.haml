@@ -365,6 +365,7 @@
           - permitted_to? :manage, :roles do
             %li= link_to content_tag(:i, "", :class => "icon-numb") + t('user.title'), users_path
             %li= link_to content_tag(:i, "", :class => "icon-numb") + t('role.title'), roles_path
+          - permitted_to? :menu, :campus_pages do
             %li= link_to content_tag(:i, "", :class => "icon-numb") + t('campus.pages.list'), campus_pages_path
           - permitted_to? :read, :campus_address_books do
             %li= link_to content_tag(:i, "", :class => "icon-numb") + t('campus.address.title'), campus_address_books_path

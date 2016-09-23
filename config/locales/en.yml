@@ -538,6 +538,7 @@ en:
     rule18c: "Activate 'Asset Categories' in addition to access by Asset List modules."
     rule19: "Weeklytimetable Module (Member) only applicable to creator of Weeklytimetable (Penyelaras) and Weeklytimetable time slot owner. For approval of weeklytimetable, please use 'Programme Manager' role."
     rule21: "Average Instructor Module (Member) access for updating records are limited to Evaluator, while evaluated Instructor can only view his records."
+    rule22: "For display of non-static pages eg. 'Library Rules & Regulation', either activate 'Student' role, 'Staff' role or activate access by module ie. 'Staff Module' (Admin/Viewer/User/Member)."
     
     #Filling Parts
     events_module_admin: Events Module Admin
