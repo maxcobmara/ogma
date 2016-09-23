@@ -1,9 +1,4 @@
 .col-md-offset-2
-  /.form-group
-  /  .col-sm-2.control-label
-  /    = f.label t('campus.pages.parent_id'), for: :parent_id
-  /  .col-md-6
-  /    = f.collection_select :parent_id, Page.order(position: :asc), :id, :position_navlabel, {:include_blank => (t 'select')}, {class: 'selectpicker'}
   = f.hidden_field :parent_id
   = f.hidden_field :college_id, value: current_user.college_id
   
@@ -19,12 +14,6 @@
       = f.label t('campus.pages.position'), for: :position
     .col-md-6
       = f.text_field :position, class: 'form-control'
-      
-  /.form-group
-  /  .col-sm-2.control-label
-  /    = f.label t('campus.pages.navlabel'), for: :navlabel
-  /  .col-md-6
-  /    = f.text_field :navlabel, class: 'form-control'
 
   .form-group
     .col-sm-2.control-label
