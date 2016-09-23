@@ -1,3 +1,7 @@
+- if @page.parent_id.present?
+  %dt=t 'campus.pages.parent_id'
+  %dd=h @page.parent.position_navlabel
+
 %dt=t 'campus.pages.position'
 %dd=h @page.position
     
@@ -6,3 +10,6 @@
 
 %dt=t 'campus.pages.name'
 %dd=h @page.name
+
+%dt=t 'campus.pages.title2'
+%dd=h @page.title

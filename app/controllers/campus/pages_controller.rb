@@ -11,7 +11,8 @@ class Campus::PagesController < ApplicationController
   end
 
   def new
-    @page = Page.new
+    #@page = Page.new
+    @page= Page.new(:parent_id => params[:parent_id])
   end
 
   def show

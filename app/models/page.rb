@@ -5,6 +5,8 @@ class Page < ActiveRecord::Base
    
    before_save :set_body_val
    
+   validates :name, :title, :navlabel, :position, presence: true
+   
    attr_accessor :body2, :body3
    
    def set_body_val
@@ -15,4 +17,7 @@ class Page < ActiveRecord::Base
      end
    end
    
+   def position_navlabel
+     "#{position} | #{navlabel}"
+   end
 end

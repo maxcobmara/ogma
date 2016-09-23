@@ -207,6 +207,7 @@ table.ogma {
   }
   tbody {
     tr {font-size:0.85em !important;}
+    td.group2{background-color: #ECFAFE; font-weight: bold;}
     td.group{background-color: #999; color:#FFF; font-weight:bold; font-size:1.2em; padding: 5px 0; text-align:center;}
     td {height:35px; padding:5px; vertical-align: top;
       &.number {text-align:right; padding-right:15px;}

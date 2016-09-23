@@ -3790,6 +3790,7 @@ en:
       position: Position
       navlabel: Navigation Label
       name: Page Name
+      title2: Page Title
       admin: Admin
       redirect: Redirect
       parent_id: Parent
@@ -3874,6 +3875,8 @@ en:
       coordinator_approval: Coordinator Approval
       warden_approval: Warden Approval
       approving: Leave Approval
+      new_subpage: Sublaman Baru
+      links: Links
 
     label:
       examquestion:

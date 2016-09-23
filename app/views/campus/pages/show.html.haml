@@ -1,6 +1,6 @@
 - model_class = Page
 .page-header
-  %h1=(t 'campus.pages.title')+" : "+@page.name
+  %h1=(t 'campus.pages.title')+" : "+@page.title
 = render 'shared/flashes'
 
 .row
@@ -35,6 +35,7 @@
       .form-actions
         = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), campus_pages_path, :class => 'btn btn-default'
         = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('.edit', :default => t("helpers.links.edit")), edit_campus_page_path(@page),  :class => 'btn btn-primary'
+        = link_to content_tag(:i, "", :class => "fa fa-leaf") + " " + t('.edit', :default => t("helpers.links.new_subpage")), new_campus_page_path(:parent_id =>@page.id),  :class => 'btn btn-warning' 
         - if is_developer?
           = link_to content_tag(:i, "", :class => "fa fa-trash-o icon-white") + " " + t('.destroy', :default => t("helpers.links.destroy")), |
           campus_page_path(@page),                                                                                                    |

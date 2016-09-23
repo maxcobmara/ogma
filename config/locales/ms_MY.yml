@@ -3709,6 +3709,7 @@ ms_MY:
       position: Kedudukan
       navlabel: Label Navigasi
       name: Nama Laman
+      title2: Tajuk Laman
       admin: Tadbir
       redirect: Lencongan / Alihan
       parent_id: Induk
@@ -3793,6 +3794,8 @@ ms_MY:
       coordinator_approval: Kelulusan Penyelaras
       warden_approval: Kelulusan Warden
       approving: Kelulusan Cuti
+      new_subpage: Sublaman Baru
+      links: Pautan
       
     label:
       examquestion:

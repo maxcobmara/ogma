@@ -1,4 +1,4 @@
-- unless @page.body.split.include?("<table>")
+- unless @page.body.include?("<table>")
   =h simple_format(@page.body)
 - else
   - cust_tables=@page.body.split(/<table>|<\/table>/)
@@ -6,7 +6,16 @@
 
   - for cust_table in cust_tables
     - unless cust_table.include?("<tr>")
-      %h2=cust_table
+      - if cust_table.include?("</a>")
+        - connecting_pgs=cust_table.split(/<a href=|<\/a>/)
+        %b{style: 'color: blue;'}=t('helpers.links.links')
+        %ul
+        - for connecting_pg in connecting_pgs
+          - if connecting_pg.include?("flexipage")
+            %li= ("<a href="+connecting_pg+"</a>").html_safe 
+        %h2=connecting_pgs.last
+      - else
+        %h2=cust_table
     - else
       - ctable=(cust_table.gsub("</table>","")).gsub("</tr>", "").gsub("</tbody>","")
       
