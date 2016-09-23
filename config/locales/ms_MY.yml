@@ -518,6 +518,7 @@ ms_MY:
     rule18c: "Aktifkan modul 'Kategori Aset' untuk digunakan bersama modul Senarai Aset."
     rule19: "Modul Jadual Waktu Mingguan (Pemilik) hanya berfungsi untuk penyedia jadual (Penyelaras) dan pemilik slot - slot masa dalam jadual. Bagi fungsian kelulusan jadual, sila gunakan peranan 'Ketua Program'."
     rule21: "Akses Modul Penilaian & Analisa Skor Purata Jurulatih(Pemilik) untuk mengemaskini rekod adalah terhad kepada Pegawai Penilai sahaja, manakala Jurulatih yang dinilai hanya boleh membuat semakan."
+    rule22: "Aktifkan peranan 'Pelajar' atau peranan 'Staf' atau akses bagi modul Staf (Pentadbir/Paparan/Pengguna/Pemilik) bagi memberikan akses paparan bagi laman-laman tidak statik seperti laman 'Peraturan Perpustakaan'."
     
     #Filling Parts
     events_module_admin: Pentadbir Modul Acara
