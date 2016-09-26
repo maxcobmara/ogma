@@ -524,6 +524,7 @@ ms_MY:
     rule19: "Modul Jadual Waktu Mingguan (Pemilik) hanya berfungsi untuk penyedia jadual (Penyelaras) dan pemilik slot - slot masa dalam jadual. Bagi fungsian kelulusan jadual, sila gunakan peranan 'Ketua Program'."
     rule21: "Akses Modul Penilaian & Analisa Skor Purata Jurulatih(Pemilik) untuk mengemaskini rekod adalah terhad kepada Pegawai Penilai sahaja, manakala Jurulatih yang dinilai hanya boleh membuat semakan."
     rule22: "Aktifkan peranan 'Pelajar' atau peranan 'Staf' atau akses bagi modul Staf (Pentadbir/Paparan/Pengguna/Pemilik) bagi memberikan akses paparan bagi laman-laman tidak statik seperti laman 'Peraturan Perpustakaan'."
+    rule23: "Semua pemilik akaun dengan peranan 'Staf' boleh memuatnaik dan memuatturun fail dokumen MS:ISO dalam bentuk PDF/imej. Namun begitu, suntingan dihadkan kepada penyedia repositori dan pengguna dengan peranan 'Pentadbir Sistem' dan 'Pembangun Sistem' sahaja."
     
     #Filling Parts
     events_module_admin: Pentadbir Modul Acara
@@ -3729,12 +3730,12 @@ ms_MY:
       remark_html: "(Catatan : Klik 'Tag HTML' untuk suntingan teks dalam format HTML)"
   
   repositories:
-    title: Repositori
-    list: Senarai Repositori
-    title2: Tajuk
-    details: Butiran Repositori
-    new: Repositori Baru
-    edit: Sunting Repositori
+    title: "Repositori Dokumen MS:ISO"
+    list: "Senarai Repositori (Dokumen MS:ISO)"
+    title2: "Tajuk dokumen"
+    details: "Butiran Repositori Dokumen MS:ISO"
+    new: "Repositori Baru Dokumen MS:ISO"
+    edit: "Sunting Repositori Dokumen MS:ISO"
     staff_id: Disediakan oleh
     category: Kategori
     uploaded: Nama Fail

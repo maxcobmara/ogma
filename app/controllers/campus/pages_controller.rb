@@ -49,7 +49,7 @@ class Campus::PagesController < ApplicationController
     respond_to do |format|
       if @page.update(page_params)
         flash[:notice] = (t 'campus.pages.title')+(t 'actions.updated')
-        format.html { redirect_to campus_page_path(@page)}
+        format.html { redirect_to flexipage_campus_page_path(@page)}
         format.json { render action: 'show', status: :created, location: @page }
       else
         format.html { render action: 'new' }

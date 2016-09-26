@@ -543,6 +543,7 @@ en:
     rule19: "Weeklytimetable Module (Member) only applicable to creator of Weeklytimetable (Penyelaras) and Weeklytimetable time slot owner. For approval of weeklytimetable, please use 'Programme Manager' role."
     rule21: "Average Instructor Module (Member) access for updating records are limited to Evaluator, while evaluated Instructor can only view his records."
     rule22: "For display of non-static pages eg. 'Library Rules & Regulation', either activate 'Student' role, 'Staff' role or activate access by module ie. 'Staff Module' (Admin/Viewer/User/Member)."
+    rule23: "All user accounts with 'Staff' role may upload or download MS:ISO document in PDF/image format. However, editing is restricted to repository creator and user with 'administration' and 'developer'."
     
     #Filling Parts
     events_module_admin: Events Module Admin
@@ -3809,12 +3810,12 @@ en:
       remark_html: "(Remark : Click 'HTML Tags' to edit 'body' in HTML format)"
 
   repositories:
-    title: Repository
-    list: Repositories
-    title2: Title
-    details: Repository Details
-    new: New Repository
-    edit: Edit Repository
+    title: "MS:ISO Document Repository"
+    list: "MS:ISO Document Repositories List"
+    title2: Document Title
+    details: "MS:ISO Document Repository Details"
+    new: "New MS:ISO Document Repository"
+    edit: "Edit MS:ISO Document Repository"
     staff_id: Prepared by
     category: Category
     uploaded: File Name

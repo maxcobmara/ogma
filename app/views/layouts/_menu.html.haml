@@ -369,7 +369,8 @@
             %li= link_to content_tag(:i, "", :class => "icon-numb") + t('campus.pages.list'), campus_pages_path
           - permitted_to? :read, :campus_address_books do
             %li= link_to content_tag(:i, "", :class => "icon-numb") + t('campus.address.title'), campus_address_books_path
-          %li=link_to content_tag(:i, "", :class => "icon-numb") + t('repositories.list'), repositories_path
+          - permitted_to? :read, :repositories do
+            %li=link_to content_tag(:i, "", :class => "icon-numb") + t('repositories.list'), repositories_path
           %li.icon.icon-left
             = link_to t('support.title'), '#'
             .mp-level

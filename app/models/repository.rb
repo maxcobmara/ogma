@@ -7,7 +7,7 @@ class Repository < ActiveRecord::Base
   validates_attachment_size :uploaded, :less_than => 5.megabytes
   validates_attachment_content_type :uploaded, :content_type => ["image/jpg", "image/jpeg", "image/png", "image/gif", "application/pdf"]
   
-  validates :category, :title, :uploaded, presence: true
+  validates :category, :title, :uploaded, :staff_id, presence: true
   
   def render_category
     (Repository::CATEGORY.find_all{|disp, value| value == category }).map {|disp, value| disp}[0]

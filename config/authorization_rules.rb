@@ -29,6 +29,7 @@ authorization do
    has_permission_on :campus_pages, :to =>[:update, :show, :flexipage] do
      if_attribute :admin => is {true}
    end
+   has_permission_on :repositories, :to => [:manage, :download]
     
   #by existing roles?
 #    includes :staff
@@ -111,8 +112,6 @@ authorization do
    includes :staff_postinfos_module_admin
    includes :asset_categories_module_admin 
    includes :messaging_groups_module_admin
-   includes :users_module
-   includes :roles_module
    includes :instructor_appraisals_module_admin
    includes :average_instructors_module_admin
  end
@@ -372,6 +371,10 @@ authorization do
      if_attribute :id => is_in {user.members_of_msg_group}
    end
    has_permission_on :campus_pages, :to => :flexipage
+   has_permission_on :repositories, :to => [:read, :create, :download]
+   has_permission_on :repositories, :to => :update do
+     if_attribute :staff_id => is {user.userable.id}
+   end
  end
   
   role :staff_administrator do
@@ -618,6 +621,9 @@ authorization do
     has_permission_on :library_books, :to => [:manage, :import_excel, :download_excel_format, :import]
     has_permission_on :library_librarytransactions, :to => [:manage, :extending, :returning, :check_status, :analysis_statistic, :analysis_statistic_main, :analysis, :analysis_book, :general_analysis, :general_analysis_ext]
     has_permission_on :students, :to => [:read, :borang_maklumat_pelajar]
+    has_permission_on :campus_pages, :to => :update do
+      if_attribute :id => is_in {Page.where('(name ILIKE(?) or title ILIKE(?) or name ILIKE(?) or title ILIKE(?)) and admin=?', '%library%', '%library%', '%perpustakaan%', '%perpustakaan%', true).pluck(:id)}
+    end
   end
 
   #Group Student --------------------------------------------------------------------------------
@@ -753,20 +759,24 @@ authorization do
   role :staffs_module_admin do
     has_permission_on :staff_staffs, :to => [:manage, :borang_maklumat_staff] #1) OK - if read (for all), Own data - can update / pdf, if manage also OK
     has_permission_on :campus_pages, :to => :flexipage
+    has_permission_on :repositories, :to => [:menu, :download]
   end
   role :staffs_module_viewer do
     has_permission_on :staff_staffs, :to => [:read, :borang_maklumat_staff]
     has_permission_on :campus_pages, :to => :flexipage
+    has_permission_on :repositories, :to => [:menu, :download]
   end
   role :staffs_module_user do
     has_permission_on :staff_staffs, :to => [:read, :update, :borang_maklumat_staff]
     has_permission_on :campus_pages, :to => :flexipage
+    has_permission_on :repositories, :to => [:menu, :download]
   end
   role :staffs_module_member do
     has_permission_on :staff_staffs, :to => [:read, :update, :borang_maklumat_staff] do
       if_attribute :id => is {user.userable.id}
     end
     has_permission_on :campus_pages, :to => :flexipage
+    has_permission_on :repositories, :to => [:menu, :download]
   end
   
   #2)OK - all 4 - 4Feb2016
@@ -1946,8 +1956,9 @@ authorization do
   
   role :users_module do
     #has_permission_on :users, :to => :manage
-    has_permission_on :users, :to =>[:index, :update] do
+    has_permission_on :users, :to =>[:index, :update], :join_by => :and do
       if_attribute :college_id => is {user.college_id}
+      if_attribute :email => is_not {User.where(college_id: user.college_id).joins(:roles).where('roles.authname=?', 'developer').pluck(:email).first}
     end
   end
   
@@ -2028,6 +2039,7 @@ authorization do
   role :average_instructors_module_user do
     has_permission_on :staff_average_instructors, :to => [:read, :update, :averageinstructor_evaluation]
   end
+  
   
 end
 
