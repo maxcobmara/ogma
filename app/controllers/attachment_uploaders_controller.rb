@@ -56,6 +56,7 @@ class AttachmentUploadersController < ApplicationController
 
   # DELETE /banks/1
   # DELETE /banks/1.xml
+  # TODO - check, to remove if not required
   def destroy
     @attachment_uploader.destroy
     respond_to do |format|

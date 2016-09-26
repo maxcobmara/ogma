@@ -211,7 +211,11 @@ Ogma::Application.routes.draw do
       end
     end
   end
-
+  resources :repositories do
+    member do
+      get :download
+    end
+  end
   resources :events do
     member do
       get :calendar

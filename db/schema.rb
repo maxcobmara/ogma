@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160920032911) do
+ActiveRecord::Schema.define(version: 20160926041709) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -1914,6 +1914,20 @@ ActiveRecord::Schema.define(version: 20160920032911) do
     t.datetime "updated_at"
     t.integer  "employgrade_id"
     t.string   "shortname"
+  end
+
+  create_table "repositories", force: true do |t|
+    t.string   "title"
+    t.integer  "staff_id"
+    t.integer  "category"
+    t.string   "uploaded_file_name"
+    t.string   "uploaded_content_type"
+    t.integer  "uploaded_file_size"
+    t.datetime "uploaded_updated_at"
+    t.integer  "college_id"
+    t.text     "data"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "residences", force: true do |t|

@@ -35,6 +35,7 @@ ms_MY:
       grade: Gred
       rank: Pangkat
       instructor_appraisal: Penilaian Diri  Jurulatih
+      repository:
     attributes:
       asset_defect:
         processed_by: Diproses oleh
@@ -222,6 +223,10 @@ ms_MY:
         leaves_blank: "(dibiarkan kosong jika tiada perubahan diperlukan)"
         current_required: "(kata laluan semasa diperlukan untuk sahkan perubahan kata laluan)"
         details: Butiran Akaun
+      repository: 
+        title: Tajuk
+        category: Kategori
+        uploaded: Nama Fail
     errors:
         template:
           body: "Berikut adalah beberapa masalah:"
@@ -3723,6 +3728,18 @@ ms_MY:
       remark_editor: "(Catatan : Klik 'Penyunting Teks' untuk suntingan dalam Penyunting Teks)"
       remark_html: "(Catatan : Klik 'Tag HTML' untuk suntingan teks dalam format HTML)"
   
+  repositories:
+    title: Repositori
+    list: Senarai Repositori
+    title2: Tajuk
+    details: Butiran Repositori
+    new: Repositori Baru
+    edit: Sunting Repositori
+    staff_id: Disediakan oleh
+    category: Kategori
+    uploaded: Nama Fail
+    current_file: Fail semasa
+
   conversation:
     local_messaging: Pemesejan Dalaman
     subject: Subjek

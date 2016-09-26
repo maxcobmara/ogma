@@ -1,0 +1,33 @@
+.row
+  .col-md-offset-3
+    .form-group
+      .col-sm-2.control-label
+        = f.label t 'repositories.title2', for: :title
+      .col-md-5
+        = f.text_field :title, class: 'form-control mandatory'
+        
+    .form-group
+      .col-sm-2.control-label
+        = f.label t 'repositories.category', for: :category
+      .col-md-2
+        = f.select :category, Repository::CATEGORY,{ include_blank: (t 'select')}, {class: 'selectpicker form-control mandatory'}
+        
+    .form-group
+      .col-sm-2.control-label
+        = f.label t 'repositories.uploaded', for: :uploaded
+      .col-md-5
+        = f.file_field :uploaded, class: 'form-control mandatory'
+        .small 
+          - if @repository.uploaded.present?
+            = (t 'repositories.current_file')+": "+@repository.uploaded_file_name
+ 
+    .form-group
+      .col-sm-2.control-label
+        = f.label t 'repositories.staff_id', for: :staff_id
+      .col-md-5
+        = f.collection_select :staff_id, Staff.order(rank_id: :asc, name: :asc), :id, :staff_with_rank, {include_blank: (t 'select')}, {class: 'selectpicker', "data-width"=>"auto"}
+
+%br
+    
+        
+        
