@@ -241,6 +241,10 @@ en:
         leaves_blank: "(leave blank if you don't want to change it)"
         current_required: "(we need your current password to confirm your changes)"
         details: Account Details
+      repository: 
+        title: Title
+        category: Category
+        uploaded: File Name
     errors:
         template:
           body: "There were problems with the following fields:"
@@ -3804,6 +3808,18 @@ en:
       remark_editor: "(Remark : Click 'Text Editor' to edit 'body' in the Text Editor)"
       remark_html: "(Remark : Click 'HTML Tags' to edit 'body' in HTML format)"
 
+  repositories:
+    title: Repository
+    list: Repositories
+    title2: Title
+    details: Repository Details
+    new: New Repository
+    edit: Edit Repository
+    staff_id: Prepared by
+    category: Category
+    uploaded: File Name
+    current_file: Current file
+    
   conversation:
     local_messaging: Local Messaging
     subject: Subject
