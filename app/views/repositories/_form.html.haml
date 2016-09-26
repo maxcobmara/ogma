@@ -25,7 +25,7 @@
       .col-sm-2.control-label
         = f.label t 'repositories.staff_id', for: :staff_id
       .col-md-5
-        = f.collection_select :staff_id, Staff.order(rank_id: :asc, name: :asc), :id, :staff_with_rank, {include_blank: (t 'select')}, {class: 'selectpicker', "data-width"=>"auto"}
+        = f.collection_select :staff_id, Staff.order(rank_id: :asc, name: :asc), :id, :staff_with_rank, {include_blank: (t 'select')}, {class: 'selectpicker mandatory', "data-width"=>"auto"}
 
 %br
     

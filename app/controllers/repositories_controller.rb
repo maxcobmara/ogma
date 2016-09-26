@@ -1,6 +1,9 @@
 class RepositoriesController < ApplicationController
   #filter_resource_access
+  filter_access_to :index, :new, :create, :attribute_check => false
+  filter_access_to :show, :edit, :update, :destroy, :download, :attribute_check => true
   before_action :set_repository, only: [:show, :edit, :update, :destroy, :download]
+
   # GET /repositories
   # GET /repositories.xml
   def index
