@@ -3,7 +3,8 @@ class Bookingfacility < ActiveRecord::Base
   belongs_to :booking_staff, class_name: 'Staff', foreign_key: 'staff_id'
   belongs_to :approving_staff, class_name: 'Staff', foreign_key: 'approver_id'
 
-  validates :location_id, :staff_id, :request_date, :start_date, :end_date, presence: true  
+  validates :location_id, :staff_id, :request_date, :start_date, :end_date, :total_participant, :purpose, presence: true  
+  validates :total_participant, numericality: true
   validates :approval_date, :if => :reservation_approved?, presence: true
   validates :approval_date2, :if => :facility_approved?, presence: true
   

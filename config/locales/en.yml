@@ -247,6 +247,13 @@ en:
         category: Category
         uploaded: File Name
       bookingfacility:
+        location_id: Booked Facility
+        staff_id: Booking Staff
+        request_date: Request Date
+        start_date: Start Date
+        end_date: End Date
+        total_participant: Total Participant
+        purpose: Purpose
         approval_date: Approval Date
         approval_date2: Approval Date (Facility)
     errors:
@@ -3852,6 +3859,7 @@ en:
       date: Date
       official_use: Official Use
       until: Until
+      computer_generated: "This is a computer generated document. No signature required."
 
   repositories:
     title: "MS:ISO Document Repository"

@@ -16,15 +16,10 @@
   %table.table-striped.table-hover.ogma
     %thead
       %tr
-        /%th{width: '10%'}=sort_link(@search, :position, (t 'campus.bookingfacilities.position'))
-        /%th{width: '30%'}=sort_link(@search, :navlabel, (t 'campus.bookingfacilities.navlabel'))
-        /%th{width: '30%'}=sort_link(@search, :name, (t 'campus.bookingfacilities.name'))
-        /%th{width: '15%'}=(t 'campus.bookingfacilities.admin')
-        /%th{width: '15%'}=(t 'campus.bookingfacilities.redirect')
-        %th{width: '20%'}=(t 'campus.bookingfacilities.location_id')
-        %th{width: '27%'}=(t 'campus.bookingfacilities.staff_id')
+        %th{width: '20%'}=sort_link(@search, :location_id, (t 'campus.bookingfacilities.location_id'))
+        %th{width: '27%'}=sort_link(@search, :staff_id, (t 'campus.bookingfacilities.staff_id'))
         %th{width: '10%'}=(t 'campus.bookingfacilities.request_date')
-        %th{width: '23%'}=(t 'campus.bookingfacilities.start_date')+" - "+(t 'campus.bookingfacilities.end_date')
+        %th{width: '23%'}=sort_link(@search, :start_date, (t 'campus.bookingfacilities.start_date'))+" - "+(t 'campus.bookingfacilities.end_date')
         %th{width: '8%'}=(t 'campus.bookingfacilities.approval')
         %th{width: '10%'}=(t 'campus.bookingfacilities.approval2')
         

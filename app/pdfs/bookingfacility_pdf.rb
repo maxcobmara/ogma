@@ -34,10 +34,7 @@ class BookingfacilityPdf < Prawn::Document
   end
   
   def table_main
-   #{content: @general_notes1, colspan: 6}
     #:padding=>[2,5,3,5] #tlbr
-    # I18n.t('campus.bookingfacilities.')
-    
     data=[[{content: "#{ I18n.t('campus.bookingfacilities.applicant_details').upcase}", colspan: 6}],
           ["#{ I18n.t('campus.bookingfacilities.applicant')}", ":",{content:  @bookingfacility.booking_staff.staff_with_rank, colspan: 4}], 
           [I18n.t('campus.bookingfacilities.icno'), ":", @view.formatted_mykad(@bookingfacility.booking_staff.icno), I18n.t('campus.bookingfacilities.phoneno'),":", @bookingfacility.booking_staff.try(:cooftelno)],
@@ -47,19 +44,19 @@ class BookingfacilityPdf < Prawn::Document
           [ I18n.t('campus.bookingfacilities.location_id'), ":", {content: @bookingfacility.booked_facility.location_list, colspan: 4}],
           [ I18n.t('campus.bookingfacilities.usage_date'), ":", @bookingfacility.start_date.strftime("%d-%m-%Y"),  I18n.t('campus.bookingfacilities.until'), ":", @bookingfacility.end_date.strftime("%d-%m-%Y")],
           [ I18n.t('campus.bookingfacilities.usage_time'), ":", @bookingfacility.start_date.strftime("%H:%M %P"),  I18n.t('campus.bookingfacilities.usage_time'), ":", @bookingfacility.end_date.strftime("%H:%M %P")],
-          [ I18n.t('campus.bookingfacilities.total_participant'), ":", "", "", "", ""],
-          [ I18n.t('campus.bookingfacilities.purpose'), ":", "", "", "", ""],
+          [ I18n.t('campus.bookingfacilities.total_participant'), ":", @bookingfacility.total_participant, "", "", ""],
+          [ I18n.t('campus.bookingfacilities.purpose'), ":", {content: @bookingfacility.purpose, colspan: 4}],
           [{content: I18n.t('campus.bookingfacilities.applicant_assurance').upcase, colspan: 6}],
           [ {content: I18n.t('campus.bookingfacilities.assurance_text'), colspan: 6}],
           ["","","","","", "#{I18n.t('campus.bookingfacilities.date')} : #{@bookingfacility.request_date.strftime('%d-%m-%Y')}"],
           [ "(#{I18n.t('campus.bookingfacilities.applicant_signatory')})", {content: "", colspan: 5}],
           [{content:  I18n.t('campus.bookingfacilities.official_use').upcase, colspan: 6}],
           [ {content: "#{I18n.t('campus.bookingfacilities.your_application')} <b>#{@bookingfacility.approval==true ?  I18n.t('approved') :  I18n.t('not_approved')}</b>", colspan: 6}],
-           ["","","","","", "#{I18n.t('campus.bookingfacilities.date')} : #{@bookingfacility.approval_date.strftime('%d-%m-%Y')}"],
+           ["","","","","", "#{I18n.t('campus.bookingfacilities.date')} : #{@bookingfacility.approval_date.try(:strftime, '%d-%m-%Y')}"],
            [ "(#{I18n.t('campus.bookingfacilities.approver_signatory')})", {content: "", colspan: 5}],
           [{content: "#{I18n.t('campus.bookingfacilities.name')} : #{@bookingfacility.approving_staff.staff_with_rank}", colspan: 6}],
           [{content: "#{I18n.t('campus.bookingfacilities.position')} : #{ @bookingfacility.approving_staff.positions.try(:first).try(:name)}", colspan: 6}],
-          ["", "", "", "", "", ""], [{content: "<i>Dokumen ini adalah cetekan komputer dan tidak memerlukan tandatangan</i>", colspan:6}]]
+          ["", "", "", "", "", ""], [{content: "<i>#{I18n.t('campus.bookingfacilities.computer_generated')}</i>", colspan: 6}]]
     
     table(data, :column_widths => [135,15,140,70,10,140], :cell_style => {:size=>11, :borders => [:left, :right, :top, :bottom],  :inline_format => :true, :padding=>[5,5,5,2]}) do
         row(0).style :align => :center
@@ -82,7 +79,8 @@ class BookingfacilityPdf < Prawn::Document
 	row(6).column(1).borders=[]
 	row(6).column(2).borders=[:right]
 	row(7..10).column(1..4).borders=[]
-	row(7..10).column(5).borders=[:right]
+	row(7..9).column(5).borders=[:right]
+	row(10).column(2).borders=[:right]
 	row(12).column(0).borders=[:left, :right]
 	row(13).column(0).borders=[:left, :bottom]
 	row(13).column(1..4).borders=[]
