@@ -3780,6 +3780,7 @@ ms_MY:
       official_use: Kegunaan Pejabat
       until: Hingga
       computer_generated: "Dokumen ini adalah cetakan komputer dan tidak memerlukan tandatangan"
+      begin_before_ends: "Tarikh mula mestilah sebelum tarikh akhir dan selepas tarikh semasa"
 
   repositories:
     title: "Repositori Dokumen MS:ISO"

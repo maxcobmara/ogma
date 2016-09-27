@@ -3860,6 +3860,7 @@ en:
       official_use: Official Use
       until: Until
       computer_generated: "This is a computer generated document. No signature required."
+      begin_before_ends: "Your start date must begin before it ends"
 
   repositories:
     title: "MS:ISO Document Repository"
