@@ -30,7 +30,6 @@ authorization do
      if_attribute :admin => is {true}
    end
    has_permission_on :repositories, :to => [:manage, :download]
-   has_permission_on :campus_bookingfacilities, :to => [:manage, :approval, :approval_facility, :booking_facility]
     
   #by existing roles?
 #    includes :staff
@@ -115,6 +114,7 @@ authorization do
    includes :messaging_groups_module_admin
    includes :instructor_appraisals_module_admin
    includes :average_instructors_module_admin
+   includes :bookingfacilities_module_admin
  end
 
  #Group Staff
