@@ -20,6 +20,8 @@ class Location < ActiveRecord::Base
   #has_many :asset, :foreign_key => "location_id" --> not required - refer line 15 & 16
   has_many :asset_loss
   
+  has_many :reservations, class_name: 'Bookingfacility'
+  
   attr_accessor :repairdate
   
   def staff_name

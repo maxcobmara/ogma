@@ -35,7 +35,8 @@ ms_MY:
       grade: Gred
       rank: Pangkat
       instructor_appraisal: Penilaian Diri  Jurulatih
-      repository:
+      repository: Repositori
+      bookingfacility: Tempahan Fasiliti
     attributes:
       asset_defect:
         processed_by: Diproses oleh
@@ -227,6 +228,9 @@ ms_MY:
         title: Tajuk
         category: Kategori
         uploaded: Nama Fail
+      bookingfacility:
+        approval_date: Tarikh Kelulusan
+        approval_date2: Tarikh Kelulusan (Fasiliti)
     errors:
         template:
           body: "Berikut adalah beberapa masalah:"
@@ -3729,6 +3733,46 @@ ms_MY:
       remark_editor: "(Catatan : Klik 'Penyunting Teks' untuk suntingan dalam Penyunting Teks)"
       remark_html: "(Catatan : Klik 'Tag HTML' untuk suntingan teks dalam format HTML)"
   
+    bookingfacilities:
+      title: Tempahan Kemudahan
+      list: Senarai Tempahan Kemudahan
+      edit: Sunting Tempahan Fasiliti
+      new: Tempahan Kemudahani Baru
+      location_id: Kemudahan Ditempah
+      staff_id: Tempahan Oleh
+      request_date: Tarikh Permohonan
+      start_date: Tarikh Mula
+      end_date: Tarikh Tamat
+      approver_id: Pelulus
+      approval: Kelulusan
+      approval_date: Tarikh Kelulusan
+      remark: Catatan
+      approval2: Kelulusan Pegawai Kemudahan
+      approval_date2: Tarikh Kelulusan (Peg Kemudahan)
+      remark2: Catatan (Peg Kemudahan)
+      facility_officer: Pegawai Kemudahan
+      details: Butiran Tempahan
+      form_title: Tempahan Kemudahan di Pusat Latihan
+      applicant_details: Butiran Pemohon
+      applicant: Nama Pemohon
+      icno: "No K/P"
+      position: Jawatan
+      phoneno: No Telefon
+      booked_facility_details: Butiran Kemudahan Tempahan
+      usage_date: Tarikh Penggunaan
+      usage_time: Masa
+      total_participant: "Bilangan Hadirin/Peserta"
+      purpose: Tujuan
+      applicant_assurance: Perakuan Pemohon
+      assurance_text: "Dengan ini saya memperakukan bahawa saya akan bertanggungjawab dan berhak menggantikan segala kerosakan kemudahan semasa di bawah penggunaan saya."
+      applicant_signatory: Tandatangan Pemohon
+      approver_signatory: Tandatangan Pegawai
+      your_application: "Permohonan anda "
+      name: Nama
+      date: Tarikh
+      official_use: Kegunaan Pejabat
+      until: Hingga
+
   repositories:
     title: "Repositori Dokumen MS:ISO"
     list: "Senarai Repositori (Dokumen MS:ISO)"

@@ -160,6 +160,8 @@
                       %li= link_to (t "student.tenant.return_key"), return_key2_student_tenants_path
                     - permitted_to? :index_staff, :campus_location_damages do
                       %li= link_to (t "location.damage.list2"), index_staff_campus_location_damages_path
+ 
+          %li= link_to content_tag(:i, "", :class => "icon-numb") +   (t "campus.bookingfacilities.title"), campus_bookingfacilities_path
 
     - permitted_to? :menu, :documents do
       %li.icon.icon-left

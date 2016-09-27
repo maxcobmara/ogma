@@ -15,6 +15,14 @@ $(document).ready(function(e) {
    	format:'d-m-Y',
    	formatDate:'Y-m-d'
   });
+ $('.datetime_picker_reverse').datetimepicker({
+    timepicker:true,
+    format:'d-m-Y H:i',
+    formatDate:'Y-m-d H:i',
+    step: 15,
+    defaultSeconds: 0,
+    autoclose: true
+  });
   $('.date_picker_after').datetimepicker({
    timepicker:false,
    	format:'Y-m-d',
