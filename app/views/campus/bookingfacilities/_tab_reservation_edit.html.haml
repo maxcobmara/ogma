@@ -1,0 +1,38 @@
+.col-md-offset-2
+  = f.hidden_field :college_id, value: current_user.college_id
+
+  .form-group
+    .col-sm-2.control-label
+      = f.label t('campus.bookingfacilities.location_id'), for: :location_id
+    .col-md-5
+      = f.collection_select :location_id, Location.where(typename: 3).where('staffadmin_id is not null'), :id, :location_list, {include_blank: (t 'select')}, {class: 'form-control selectpicker', "data-width" => "auto"}
+
+  .form-group
+    .col-sm-2.control-label
+      = f.label t('campus.bookingfacilities.staff_id'), for: :staff_id
+    .col-md-5
+      = f.collection_select :staff_id, Staff.order(rank_id: :asc, name: :asc), :id, :staff_with_rank, {include_blank: (t 'select')}, {class: 'form-control selectpicker', "data-width" =>"auto"}
+
+  .form-group
+    .col-sm-2.control-label
+      = f.label t('campus.bookingfacilities.request_date'), for: :request_date
+    .col-md-3
+      = f.text_field :request_date, class: 'form-control date_picker_reverse', value: @bookingfacility.request_date.try(:strftime, '%d-%m-%Y')
+      
+  .form-group
+    .col-sm-2.control-label
+      = f.label t('campus.bookingfacilities.start_date'), for: :start_date
+    .col-md-3
+      = f.text_field :start_date, class: 'form-control datetime_picker_reverse', value: @bookingfacility.start_date.try(:strftime, '%d-%m-%Y %H:%M')
+      
+  .form-group
+    .col-sm-2.control-label
+      = f.label t('campus.bookingfacilities.end_date'), for: :end_date
+    .col-md-3
+      = f.text_field :end_date, class: 'form-control datetime_picker_reverse', value: @bookingfacility.end_date.try(:strftime, '%d-%m-%Y %H:%M')
+
+  .form-group
+    .col-sm-2.control-label
+      = f.label t('campus.bookingfacilities.approver_id'), for: :approver_id
+    .col-md-5
+      = f.collection_select :approver_id, Staff.order(rank_id: :asc, name: :asc), :id, :staff_with_rank, {include_blank: (t 'select')}, {class: 'form-control selectpicker', "data-width" =>"auto"}

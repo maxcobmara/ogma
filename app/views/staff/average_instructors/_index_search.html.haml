@@ -2,7 +2,7 @@
   %tr.search_row{style: "display: none;"}
     %td= f.text_field :instructor_name_or_instructor_rank_name_or_instructor_rank_shortname_cont, size: 8, :class => "form-control" 
     %td= f.text_field :programme_name_cont, size: 8, :class => "form-control" 
-    %td= f.text_field :evaluate_date_eq, size: 8,  :class => "form-control date_picker_reverse", value: @search.evaluate_date.try(:strftime, '%d-%m-%Y')
+    %td= f.text_field :evaluate_date_eq, size: 8,  :class => "form-control date_picker_reverse", value: @search.evaluate_date_eq.try(:strftime, '%d-%m-%Y')
     %td= f.text_field :title_cont, class: 'form-control'
     %td= f.text_field :objective_cont, class: 'form-control'
     %td= select_tag('q[delivery_type_eq]',options_for_select([[(t 'actions.all_records'),'']]+DropDown::DELIVERY_TYPE), class: 'selectpicker',"data-width"=>'125px')

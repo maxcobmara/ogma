@@ -1,0 +1,29 @@
+.form-group
+  .col-sm-2.control-label
+    = f.label t('campus.bookingfacilities.approver_id'), for: :approver_id
+  .col-md-5
+    = f.collection_select :approver_id, Staff.order(rank_id: :asc, name: :asc), :id, :staff_with_rank, {include_blank: (t 'select')}, {class: 'form-control selectpicker', "data-width" =>"auto"}
+     
+.form-group
+  .col-sm-2.control-label
+    = f.label t('campus.bookingfacilities.approval'), for: :approval
+  .col-md-6
+    .form-inline
+      .form-group
+        = t 'yes2'
+        = f.radio_button :approval, true
+      .form-group
+        = t 'no2'
+        = f.radio_button :approval, false
+      
+.form-group
+  .col-sm-2.control-label
+    = f.label t('campus.bookingfacilities.approval_date'), for: :approval_date
+  .col-md-2
+    = f.text_field :approval_date, class: 'form-control date_picker_reverse', value: @bookingfacility.approval_date.try(:strftime, '%d-%m-%Y')
+    
+.form-group
+  .col-sm-2.control-label
+    = f.label t('campus.bookingfacilities.remark'), for: :remark
+  .col-md-6
+    = f.text_field :remark, class: 'form-control'

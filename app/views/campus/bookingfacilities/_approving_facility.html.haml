@@ -1,0 +1,33 @@
+.row
+  .col-md-offset-1
+    / Nav tabs
+    %ul.nav.nav-tabs
+      %li=link_to (t 'campus.bookingfacilities.details'), "#details", "data-toggle" => "tab"
+      %li=link_to (t 'campus.bookingfacilities.approval'), "#approval", "data-toggle" => "tab"
+      %li.active=link_to (t 'campus.bookingfacilities.approval2'), "#approval2", "data-toggle" => "tab"
+
+    .tab-content{style:"padding-top:1em"}
+      .col-md-8.col-md-offset-1
+        %dl.dl-horizontal
+          %dt=t 'campus.bookingfacilities.location_id'
+          %dd=h @bookingfacility.booked_facility.location_list
+    
+          %dt=t 'campus.bookingfacilities.staff_id'
+          %dd=h @bookingfacility.booking_staff.staff_with_rank
+
+          %dt=t 'campus.bookingfacilities.request_date'
+          %dd=h @bookingfacility.request_date.strftime('%d-%m-%Y')
+        
+      #details.tab-pane
+        .col-md-8.col-md-offset-1
+          = render 'tab_reservation'
+
+      #approval.tab-pane
+        .col-md-8.col-md-offset-1
+          = render 'tab_approval'
+          
+      #approval2.tab-pane.active
+        .col-md-8.col-md-offset-2
+          %BR
+          = render 'tab_approval_facility_edit', :f => f 
+          

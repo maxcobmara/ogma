@@ -1,0 +1,12 @@
+= search_form_for [:pages, @search], url: campus_bookingfacilities_path,  class: "form-inline" do |f|
+  %tr.search_row{style: "display: none;"}
+    %td= f.text_field :booked_facility_name_or_booked_facility_combo_code_cont, size: 8,  :class => "form-control" 
+    %td= f.text_field :booking_staff_name_cont, size: 8,  :class => "form-control"
+    %td= f.text_field :request_date_eq, size: 8,  :class => "form-control date_picker_reverse", value: @search.request_date_eq.try(:strftime, '%d-%m-%Y')
+    %td= f.text_field :start_date_eq, size: 8, placeholder: (t 'campus.bookingfacilities.start_date'), :class => "form-control datetime_picker_reverse", value: @search.start_date_eq.try(:strftime, '%d-%m-%Y %H:%M')
+    %td= select_tag('q[approval_eq]',options_for_select([[(t 'actions.all_records'),''],[(t 'yes2'),true],[(t 'no2'),false]]),class: 'selectpicker')
+    %td.input-group
+      = select_tag('q[approval2_eq]',options_for_select([[(t 'actions.all_records'),''],[(t 'yes2'),true],[(t 'no2'),false]]),class: 'selectpicker')
+      %span.input-group-btn
+        %button.btn.btn-sm.btn-default.right{:type => "submit"}
+          %i.fa.fa-search.fa-fw

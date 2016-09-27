@@ -210,6 +210,13 @@ Ogma::Application.routes.draw do
         get :flexipage
       end
     end
+    resources :bookingfacilities do
+      member do
+        get :approval
+        get :approval_facility
+        get :booking_facility
+      end
+    end
   end
   resources :repositories do
     member do

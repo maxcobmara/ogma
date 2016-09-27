@@ -1,0 +1,29 @@
+.form-group
+  .col-sm-2.control-label
+    = f.label t('campus.bookingfacilities.facility_officer')
+  .col-md-5
+    = f.text_field :facility_officer, value: @bookingfacility.booked_facility.administrator.staff_with_rank_position, readonly: 'readonly', class: 'form-control'
+     
+.form-group
+  .col-sm-2.control-label
+    = f.label t('campus.bookingfacilities.approval'), for: :approval2
+  .col-md-6
+    .form-inline
+      .form-group
+        = t 'yes2'
+        = f.radio_button :approval2, true
+      .form-group
+        = t 'no2'
+        = f.radio_button :approval2, false
+      
+.form-group
+  .col-sm-2.control-label
+    = f.label t('campus.bookingfacilities.approval_date2'), for: :approval_date2
+  .col-md-2
+    = f.text_field :approval_date2, class: 'form-control date_picker_reverse', value: @bookingfacility.approval_date2.try(:strftime, '%d-%m-%Y')
+
+.form-group
+  .col-sm-2.control-label
+    = f.label t('campus.bookingfacilities.remark2'), for: :remark2
+  .col-md-6
+    = f.text_field :remark2, class: 'form-control'

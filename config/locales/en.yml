@@ -54,6 +54,7 @@ en:
       grade: Grade
       rank: Rank
       instructor_appraisal: Instructor Appraisal
+      bookingfacility: Facilities Reservation
     attributes:
       asset_defect:
         processed_by: Processed by
@@ -245,6 +246,9 @@ en:
         title: Title
         category: Category
         uploaded: File Name
+      bookingfacility:
+        approval_date: Approval Date
+        approval_date2: Approval Date (Facility)
     errors:
         template:
           body: "There were problems with the following fields:"
@@ -3808,6 +3812,46 @@ en:
       view_html: HTML Tags
       remark_editor: "(Remark : Click 'Text Editor' to edit 'body' in the Text Editor)"
       remark_html: "(Remark : Click 'HTML Tags' to edit 'body' in HTML format)"
+      
+    bookingfacilities:
+      title: Facilities Reservation
+      list: Facilities Reservation List
+      edit: Edit Facility Reservation
+      new: New Facility Reservation
+      location_id: Booked Facility
+      staff_id: Booking Staff
+      request_date: Request Date
+      start_date: Start Date
+      end_date: End Date
+      approver_id: Approver
+      approval: Approval
+      approval_date: Approval Date
+      remark: Remark
+      approval2: Facility Officer
+      approval_date2: Facility Approval Date
+      remark2: Remark
+      facility_officer: Facility Officer
+      details: Reservation Details
+      form_title: Facility Reservation at Training Centre
+      applicant_details: Applicant Details
+      applicant: Applicant Name
+      icno: IC No
+      position: Position
+      phoneno: Phone No
+      booked_facility_details: Facility Booking Details
+      usage_date: Date of Use
+      usage_time: Time
+      total_participant: "Total Audience/Participant"
+      purpose: Purpose
+      applicant_assurance: Applicant Assurance
+      assurance_text: "I hereby certify that I will be responsible for any damages and the right to replace the current facility under my use."
+      applicant_signatory: Applicant Signatory
+      approver_signatory: Approver Signatory
+      your_application: "Your application "
+      name: Name
+      date: Date
+      official_use: Official Use
+      until: Until
 
   repositories:
     title: "MS:ISO Document Repository"

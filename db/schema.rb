@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160926041709) do
+ActiveRecord::Schema.define(version: 20160926145739) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -610,6 +610,25 @@ ActiveRecord::Schema.define(version: 20160926041709) do
     t.boolean  "active"
     t.integer  "college_id"
     t.string   "data"
+  end
+
+  create_table "bookingfacilities", force: true do |t|
+    t.integer  "location_id"
+    t.integer  "staff_id"
+    t.date     "request_date"
+    t.datetime "start_date"
+    t.datetime "end_date"
+    t.integer  "approver_id"
+    t.boolean  "approval"
+    t.date     "approval_date"
+    t.string   "remark"
+    t.boolean  "approval2"
+    t.date     "approval_date2"
+    t.string   "remark2"
+    t.integer  "college_id"
+    t.text     "data"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "books", force: true do |t|
