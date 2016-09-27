@@ -1,7 +1,7 @@
 class Campus::BookingfacilitiesController < ApplicationController
   #filter_resource_access
-  #filter_access_to :index, :new, :create, :attribute_check => false
-  #filter_access_to :show, :edit, :update, :destroy, :attribute_check => true
+  filter_access_to :index, :new, :create, :booking_facility, :attribute_check => false
+  filter_access_to :show, :edit, :update, :destroy, :approval, :approval_facility, :attribute_check => true
   before_action :set_bookingfacility, only: [:show, :edit, :update, :destroy, :approval, :approval_facility, :booking_facility]
 
   # GET /bookingfacilities
@@ -35,7 +35,7 @@ class Campus::BookingfacilitiesController < ApplicationController
     
     respond_to do |format|
       if @bookingfacility.save
-        format.html { redirect_to campus_bookingfacility_path(@bookingfacility), notice: t('campus.bookingfacilities.title')+t('actions.created')}
+        format.html { redirect_to campus_bookingfacilities_path, notice: t('campus.bookingfacilities.title')+t('actions.created')}
         format.json { render action: 'show', status: :created, location: @bookingfacility}
       else
         format.html { render action: 'new' }
@@ -97,6 +97,6 @@ class Campus::BookingfacilitiesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def bookingfacility_params
-      params.require(:bookingfacility).permit(:id, :location_id, :staff_id, :request_date, :start_date, :end_date, :approver_id, :approval, :approval_date, :remark, :approval2, :approval_date2, :remark2, :total_participant, :purpose, :college_id, {:data => []})
+      params.require(:bookingfacility).permit(:id, :location_id, :staff_id, :request_date, :start_date, :end_date, :approver_id, :approval, :approval_date, :remark, :approval2, :approval_date2, :remark2, :total_participant, :purpose, :approver_id2, :college_id, {:data => []})
     end
 end

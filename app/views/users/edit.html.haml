@@ -475,7 +475,7 @@ $(function(){
     var elocationusr = document.getElementsByClassName('locationuser');
     var elocationown = document.getElementsByClassName('locationowner');
     
-    for(i=0; i<3; i++)
+    for(i=0; i<4; i++)
     {
       if(locationmg[i].checked) {
         elocationmg[i].checked=true;
@@ -1268,7 +1268,7 @@ $(function(){
     var elocationusr = document.getElementsByClassName('locationuser');
     var elocationown = document.getElementsByClassName('locationowner');
     
-    for(i=0; i<3; i++){
+    for(i=0; i<4; i++){
       if(locationmg[i].checked)
       {  elocationmg[i].checked=true;}
       else if(locationrd[i].checked)
@@ -1308,7 +1308,7 @@ $(function(){
         
       }
  
-      /* when Facilites Administrator is selected, uncheck Location & Tenant*/
+      /* when Facilites Administrator is selected, uncheck Location & Tenant, disable Facilities Booking (User & Viewer-redundant) */
       if(inputElements[11].checked){
         locationmg[0].disabled=true;
         locationrd[0].disabled=true;
@@ -1320,6 +1320,8 @@ $(function(){
         locationusr[2].disabled=true;
         locationown[2].disabled=true;
         elocationmn[2].disabled=true;
+        locationusr[3].disabled=true;
+        locationrd[3].disabled=true;
       }
     }
     
@@ -1512,7 +1514,7 @@ $(function(){
       c_staffown[3].disabled=true;
       a_staffown[2].disabled=true;
     }
-    /*when role : Staff is selected, uncheck Staffs(O), Staff Attendance(O), Training Attendance(O), Staff Appraisal(O), Staff Leaves(O), Travel Requests(O), Travel Claims(O), Asset List(R), Asset Defect(O), Asset Loan(O), Student Discipline Case(O), Events(O), Bulletins(R), Document Registry(O), Library Books(R), Library Analysis & Statistics(R), Instructor Appraisals(O), Average Instructors(O)*/
+    /*when role : Staff is selected, uncheck Staffs(O), Staff Attendance(O), Training Attendance(O), Staff Appraisal(O), Staff Leaves(O), Travel Requests(O), Travel Claims(O), Asset List(R), Asset Defect(O), Asset Loan(O), Student Discipline Case(O), Events(O), Bulletins(R), Document Registry(O), Library Books(R), Library Analysis & Statistics(R), Instructor Appraisals(O), Average Instructors(O), Facilities Reservation(O)*/
     if(inputElements[5].checked){
       a_staffown[2].disabled=true;
       c_staffown[3].disabled=true;
@@ -1531,6 +1533,7 @@ $(function(){
       libraryrd[0].disabled=true;
       e_staffown[0].disabled=true;
       e_staffown[1].disabled=true;
+      locationown[3].disabled=true;
     }
 
     /*8) assets - disable this main checkbox if no file module selected*/
@@ -2557,7 +2560,7 @@ $(function(){
     }
     
     /* 9) LOCATION when UNCHECK , all location main are false*/
-    for(i=0; i < 3; i++){
+    for(i=0; i < 4; i++){
       if (elocationm[i].checked==false) {
         locationmg[i].checked=false;
         locationrd[i].checked=false;
@@ -2773,7 +2776,7 @@ $(function(){
       eassetm[3].disabled=false;
     }
     
-    /* when Facilites Administrator is selected, uncheck Location & Tenant*/
+    /* when Facilites Administrator is selected, uncheck Location & Tenant, disable & uncheck Facilities Reservation (User)*/
     /* if not a warden - hide location read & tenant read too */
     if(inputElements[11].checked){
       /* hide tenant R*/
@@ -2814,6 +2817,13 @@ $(function(){
       elocationm[2].checked=false;
       elocationm[2].disabled=true;
       
+      /*uncheck Facilites Reservation (User & Viewer-redundant), but do not disable*/
+      locationusr[3].checked=false;
+      locationusr[3].disabled=true;
+      locationrd[3].checked=false;
+      locationrd[3].disabled=true;
+      elocationm[3].checked=false;
+      
       
     } 
     else
@@ -2832,6 +2842,9 @@ $(function(){
       locationusr[2].disabled=false;
       locationown[2].disabled=false;
       elocationm[2].disabled=false;
+      
+      locationusr[3].disabled=false;
+      locationrd[3].disabled=false;
     }
 
     /* when Student administrator is selected, uncheck Student Info*/
@@ -3022,14 +3035,27 @@ $(function(){
     {
       /*Requires checking here, IF NOT a Warden, but either Asset Administrator OR Facilities Administrator*/
       if(inputElements[11].checked)
-      {  locationrd[0].disabled=true;}
+      {  
+        locationrd[0].disabled=true;
+        locationusr[3].disabled=true;
+      }
       else
-      {  locationrd[0].disabled=false;}
+      {  
+        locationrd[0].disabled=false;
+        locationusr[3].disabled=false;
+      }
       /* When warden is not selected, but Asset Administrator OR Facilities Administrator */
       /*OR Staff role is selected, disable Location(R) - NOTE - staff role exclude Location reporting-PDF / Excel  */
       /*|| (inputElements[5].checked))*/
+      /* when Facilities Admnistrator selected, disable Facilities Reservation (User & Viewer-redundant)*/
       if((inputElements[9].checked) || (inputElements[11].checked) )
-      {  locationrd[1].disabled=true;}
+      {  locationrd[1].disabled=true;
+        if(inputElements[11].checked)
+        { 
+          locationusr[3].disabled=true;
+          locationrd[3].disabled=true;
+        }
+      }
       else
       {  locationrd[1].disabled=false;}
       
@@ -3377,7 +3403,7 @@ $(function(){
     
     
     ///
-    /*when role : Staff is selected, uncheck Staffs(O), Staff Attendance(O), Training Attendance(O), Staff Appraisal(O), Staff Leaves(O), Travel Requests(O), Travel Claims(O), Asset List(R), Asset Defect(O), Asset Loan(O), Student Discipline Case(O), Locations(R), Events(O), Bulletins(R), Document Registry(O), Library Books(R), Library Analysis & Statistics(R)*/
+    /*when role : Staff is selected, uncheck Staffs(O), Staff Attendance(O), Training Attendance(O), Staff Appraisal(O), Staff Leaves(O), Travel Requests(O), Travel Claims(O), Asset List(R), Asset Defect(O), Asset Loan(O), Student Discipline Case(O), Locations(R), Events(O), Bulletins(R), Document Registry(O), Library Books(R), Library Analysis & Statistics(R), Facilities Resevation(O)*/
     if(inputElements[5].checked){
       /*a_staffown[2].disabled=true;*/
       /*c_staffown[3].disabled=true;*/
@@ -3390,6 +3416,7 @@ $(function(){
       /*assetown[1].disabled=true;*/
       /*studentown[3].disabled=true;*/
       /*locationrd[1].disabled=true;*/
+      locationown[3].disabled=true;
       fileown[0].disabled=true;
       filerd[1].disabled=true;
       fileown[4].disabled=true;
@@ -3403,6 +3430,7 @@ $(function(){
       fileown[0].disabled=false;
       filerd[1].disabled=false;
       fileown[4].disabled=false;
+      locationown[3].disabled=false;
     }
     ///
     

@@ -114,6 +114,7 @@ authorization do
    includes :messaging_groups_module_admin
    includes :instructor_appraisals_module_admin
    includes :average_instructors_module_admin
+   includes :bookingfacilities_module_admin
  end
 
  #Group Staff
@@ -374,6 +375,14 @@ authorization do
    has_permission_on :repositories, :to => [:read, :create, :download]
    has_permission_on :repositories, :to => :update do
      if_attribute :staff_id => is {user.userable.id}
+   end
+   has_permission_on :campus_bookingfacilities, :to => [:menu, :create]
+   has_permission_on :campus_bookingfacilities, :to => [:update, :show, :booking_facility] do
+     if_attribute :staff_id => is {user.userable.id}
+   end
+   # HACK :approval --> will :update too, avoid combine w above :update, to restrict approval page access
+   has_permission_on :campus_bookingfacilities, :to => [:approval, :update, :show, :booking_facility] do 
+     if_attribute :approver_id => is {user.userable.id}
    end
  end
   
@@ -671,6 +680,7 @@ authorization do
     has_permission_on :campus_locations, :to => [:manage, :kewpa7, :kewpa10, :kewpa11, :statistic_level, :census_level2, :statistic_block] 
     has_permission_on :campus_location_damages, :to =>[:manage, :index_staff, :damage_report, :damage_report_staff]
     has_permission_on :student_tenants, :to => [:manage, :index_staff, :reports,:census_level, :room_map, :room_map2, :statistics, :return_key, :return_key2, :census, :tenant_report, :tenant_report_staff, :laporan_penginapan, :laporan_penginapan2]
+    has_permission_on :campus_bookingfacilities, :to => [:index, :show, :update, :approval_facility, :booking_facility]
   end
   role :warden do
     has_permission_on :campus_locations, :to => [:read, :kewpa7] #:core - NOTE - kewpa7 visible to all (sticked on wall)
@@ -2040,7 +2050,29 @@ authorization do
     has_permission_on :staff_average_instructors, :to => [:read, :update, :averageinstructor_evaluation]
   end
   
-  
+  #60-OK 27 Sept2016
+  role :bookingfacilities_module_admin do
+    has_permission_on :campus_bookingfacilities, :to => [:manage, :approval, :approval_facility, :booking_facility]
+  end
+  role :bookingfacilities_module_viewer do
+    has_permission_on :campus_bookingfacilities, :to => [:menu, :show, :booking_facility]
+  end
+  role :bookingfacilities_module_member do
+    #creator (staff_id)
+    has_permission_on :campus_bookingfacilities, :to => [:menu, :create]
+    has_permission_on :campus_bookingfacilities, :to => [:update, :show, :booking_facility] do
+      if_attribute :staff_id => is {user.userable.id}
+    end
+    #approver1 (approver_id)
+    # HACK :approval --> will :update too, avoid combine w above :update, to restrict approval page access
+    has_permission_on :campus_bookingfacilities, :to => [:approval, :update, :show, :booking_facility] do 
+      if_attribute :approver_id => is {user.userable.id}
+    end
+  end
+  role :bookingfacilities_module_user do
+    #facilities_administrator 
+    has_permission_on :campus_bookingfacilities, :to => [:menu, :show, :update, :approval_facility, :booking_facility]
+  end
 end
 
 =begin

@@ -746,7 +746,7 @@
           %body
             - cnt=0
             /Locations, Residences related
-            - for role in Role.where('authname ILIKE(?)', '%module_admin').where.not('name ILIKE(?)', '%Mailer%').where(description: ["Tenants", "Locations", "Location Damages"]).order(id: :asc)
+            - for role in Role.where('authname ILIKE(?)', '%module_admin').where.not('name ILIKE(?)', '%Mailer%').where(description: ["Tenants", "Locations", "Location Damages", "Bookingfacilities"]).order(id: :asc)
               - read=Role.where('id !=?', role.id).where(description: role.description).first
               - user=Role.where.not(id: [role.id, read.id]).where(description: role.description).first
               - owner=Role.where.not(id: [role.id, read.id, user.id]).where(description: role.description).first
