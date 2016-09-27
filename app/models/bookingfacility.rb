@@ -7,6 +7,7 @@ class Bookingfacility < ActiveRecord::Base
   validates :total_participant, numericality: true
   validates :approval_date, :if => :reservation_approved?, presence: true
   validates :approval_date2, :if => :facility_approved?, presence: true
+  validate :validate_end_date_before_start_date
   
   def reservation_dates
     "#{start_date.strftime('%d-%m-%Y %H:%M')} - #{end_date.strftime('%d-%m-%Y %H:%M')}"
@@ -20,4 +21,10 @@ class Bookingfacility < ActiveRecord::Base
     approval2==true
   end
   
+  def validate_end_date_before_start_date
+    if end_date && start_date
+      errors.add(:base, I18n.t('campus.bookingfacilities.begin_before_ends')) if end_date < start_date || start_date < DateTime.now
+    end
+  end
+
 end
