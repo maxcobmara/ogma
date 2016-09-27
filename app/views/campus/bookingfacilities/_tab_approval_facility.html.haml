@@ -2,8 +2,8 @@
   %dt=t 'campus.bookingfacilities.approval2'
   %dd=@bookingfacility.approval2==true ? (t 'approved')+(t 'on2')+@bookingfacility.approval_date2.strftime('%d-%m-%Y') : (t 'not_approved')
   
-  %dt=t 'campus.bookingfacilities.facility_officer'
-  %dd=@bookingfacility.booked_facility.administrator.staff_with_rank_position
+  %dt=t 'campus.bookingfacilities.approver_id2'
+  %dd=@bookingfacility.facility_officer.try(:staff_with_rank_position)
     
   %dt=t 'campus.bookingfacilities.remark'
   %dd=@bookingfacility.remark2

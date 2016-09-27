@@ -508,10 +508,10 @@ en:
     finance_unit_modules: "Travel Claims, Training Budget, Transport Groups, Mileage Rates"
     training_administration_modules: "Training Budget, Training Courses, Training Schedules, Training Attendance"
     training_manager_modules: "Training Budget, Training Courses, Training Schedules, Training Attendance"
-    staff_modules: "Staffs(O), Staff Attendance(O), Training Attendance(O), Staff Appraisal(O), Staff Leaves(O), Travel Requests(O), Travel Claims(O), Asset List(R), Asset Defect(O), Asset Loan(O), Student List(R), Student Discipline Case(O), Locations(R), Events(O), Bulletins(R), Document Registry(O), Library Books(R), Library Analysis & Statistics(R), Instructor Appraisals(O), Average Instructors(O)"
+    staff_modules: "Staffs(O), Staff Attendance(O), Training Attendance(O), Staff Appraisal(O), Staff Leaves(O), Travel Requests(O), Travel Claims(O), Asset List(R), Asset Defect(O), Asset Loan(O), Student List(R), Student Discipline Case(O), Locations(R), Facilities Reservation(O), Events(O), Bulletins(R), Document Registry(O), Library Books(R), Library Analysis & Statistics(R), Instructor Appraisals(O), Average Instructors(O)"
     asset_administrator_modules: "Asset Losses, Asset Loans, Asset Disposals, Asset Defect, Asset List, Asset Categories, Locations"
     e_filing_modules: "File Registry, Document Registry"
-    facilities_administrator_modules: "Locations, Location Damages, Student Residences, Staff Residences"
+    facilities_administrator_modules: "Locations, Location Damages, Student Residences, Staff Residences, Facilities Reservation"
     warden_modules: "Locations(R), Student Residences(R), Student Leaves, Student Infos(R), Student Attendances(R), Student Discipline Cases(R), Student Counseling Session(R)"
     student_administrator_modules: "Student Infos, Student Attendances"
     student_counsellor_modules: "Student Counselling, Student Discipline Case(R), Student Infos(R), Student Attendances(R)"
@@ -852,9 +852,14 @@ en:
     tenants_module_member: Tenants Module Member
     locations_module_member: Locations Module Member
     location_damages_module_member: Location Damages Module Member
+    bookingfacilities_module_admin: Facilities Reservation Module Admin
+    bookingfacilities_module_viewer: Facilities Reservation Module Viewer
+    bookingfacilities_module_user: Facilities Reservation Module User
+    bookingfacilities_module_member: Facilities Reservation Module Member
     tenants: Tenants
     locations: Locations
     location_damages: Location Damages
+    bookingfacilities: Facilities Reservation
     
     #Instructor evaluation
     instructor_appraisals_module_admin: Instructor Appraisals Module Admin
@@ -3837,7 +3842,7 @@ en:
       approval2: Facility Officer
       approval_date2: Facility Approval Date
       remark2: Remark
-      facility_officer: Facility Officer
+      approver_id2: Facility Officer
       details: Reservation Details
       form_title: Facility Reservation at Training Centre
       applicant_details: Applicant Details

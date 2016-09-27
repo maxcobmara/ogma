@@ -41,7 +41,9 @@
       .form-actions
         = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), campus_bookingfacilities_path, :class => 'btn btn-default'
         = link_to content_tag(:i, "", class: "fa fa-file-pdf-o"), booking_facility_campus_bookingfacility_path(@bookingfacility, format: "pdf"), class: "btn btn-default", "data-toggle" => "tooltip", title: t('campus.bookingfacilities.title')
-        = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('.edit', :default => t("helpers.links.edit")), edit_campus_bookingfacility_path(@bookingfacility),  :class => 'btn btn-primary'
+        - current_roles=current_user.roles.pluck(:authname)
+        - if is_developer? || current_roles.include?('facilities_administrator') || current_roles.include?('administration') || current_roles.include?('bookingfacilities_module_admin') || current_roles.include?('bookingfacilities_module_user') || @bookingfacility.staff_id==current_user.userable_id
+          = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('.edit', :default => t("helpers.links.edit")), edit_campus_bookingfacility_path(@bookingfacility),  :class => 'btn btn-primary'
         = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('.edit', :default => t("campus.bookingfacilities.approval")), approval_campus_bookingfacility_path(@bookingfacility),  :class => 'btn btn-primary'
         = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('.edit', :default => t("campus.bookingfacilities.approval2")), approval_facility_campus_bookingfacility_path(@bookingfacility),  :class => 'btn btn-primary'
         = link_to content_tag(:i, "", :class => "fa fa-trash-o icon-white") + " " + t('.destroy', :default => t("helpers.links.destroy")), |

@@ -1,8 +1,9 @@
 .form-group
   .col-sm-2.control-label
-    = f.label t('campus.bookingfacilities.facility_officer')
+    = f.label t('campus.bookingfacilities.approver_id2'), for: :approver_id2
   .col-md-5
-    = f.text_field :facility_officer, value: @bookingfacility.booked_facility.administrator.staff_with_rank_position, readonly: 'readonly', class: 'form-control'
+    - facilities_officers=Staff.where('id=? or id=?', @bookingfacility.booked_facility.staffadmin_id, current_user.userable_id).order(rank_id: :asc, name: :asc)
+    = f.collection_select :approver_id2, facilities_officers, :id, :staff_with_rank, {selected: current_user.userable_id}, {class: 'form-control selectpicker mandatory', "data-width" =>"auto"}
      
 .form-group
   .col-sm-2.control-label
