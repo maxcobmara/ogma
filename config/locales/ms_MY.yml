@@ -229,6 +229,13 @@ ms_MY:
         category: Kategori
         uploaded: Nama Fail
       bookingfacility:
+        location_id: Kemudahan Ditempah
+        staff_id: Ditempah Oleh
+        request_date: Tarikh Tempahan
+        start_date: Tarikh Mula
+        end_date: Tarikh Tamat
+        total_participant: Jumlah Hadirin/Peserta
+        purpose: Tujuan
         approval_date: Tarikh Kelulusan
         approval_date2: Tarikh Kelulusan (Fasiliti)
     errors:
@@ -3737,7 +3744,7 @@ ms_MY:
       title: Tempahan Kemudahan
       list: Senarai Tempahan Kemudahan
       edit: Sunting Tempahan Fasiliti
-      new: Tempahan Kemudahani Baru
+      new: Tempahan Kemudahan Baru
       location_id: Kemudahan Ditempah
       staff_id: Tempahan Oleh
       request_date: Tarikh Permohonan
@@ -3772,6 +3779,7 @@ ms_MY:
       date: Tarikh
       official_use: Kegunaan Pejabat
       until: Hingga
+      computer_generated: "Dokumen ini adalah cetakan komputer dan tidak memerlukan tandatangan"
 
   repositories:
     title: "Repositori Dokumen MS:ISO"

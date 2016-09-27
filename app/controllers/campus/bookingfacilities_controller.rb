@@ -97,6 +97,6 @@ class Campus::BookingfacilitiesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def bookingfacility_params
-      params.require(:bookingfacility).permit(:id, :location_id, :staff_id, :request_date, :start_date, :end_date, :approver_id, :approval, :approval_date, :remark, :approval2, :approval_date2, :remark2, :college_id, {:data => []})
+      params.require(:bookingfacility).permit(:id, :location_id, :staff_id, :request_date, :start_date, :end_date, :approver_id, :approval, :approval_date, :remark, :approval2, :approval_date2, :remark2, :total_participant, :purpose, :college_id, {:data => []})
     end
 end

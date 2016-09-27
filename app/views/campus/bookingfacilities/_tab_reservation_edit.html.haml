@@ -30,6 +30,18 @@
       = f.label t('campus.bookingfacilities.end_date'), for: :end_date
     .col-md-3
       = f.text_field :end_date, class: 'form-control datetime_picker_reverse', value: @bookingfacility.end_date.try(:strftime, '%d-%m-%Y %H:%M')
+      
+  .form-group
+    .col-sm-2.control-label
+      = f.label t('campus.bookingfacilities.purpose'), for: :purpose
+    .col-md-6
+      = f.text_field :purpose, class: 'form-control'
+      
+  .form-group
+    .col-sm-2.control-label
+      = f.label t('campus.bookingfacilities.total_participant'), for: :total_participant
+    .col-md-2
+      = f.text_field :total_participant, class: 'form-control'
 
   .form-group
     .col-sm-2.control-label
