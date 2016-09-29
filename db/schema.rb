@@ -224,6 +224,8 @@ ActiveRecord::Schema.define(version: 20160928082426) do
     t.integer  "driver_id"
     t.boolean  "is_endorsed"
     t.date     "endorsed_date"
+    t.string   "endorsed_note"
+    t.string   "approved_note"
   end
 
   create_table "asset_losses", force: true do |t|

@@ -182,6 +182,7 @@ Ogma::Application.routes.draw do
         get :vehicle_endorsement
         get :vehicle_approval
         get :vehicle_return
+        get :vehicle_reservation
       end
     end
     resources :assetcategories

@@ -5,6 +5,7 @@ ms_MY:
       staff: Kakitangan
       asset: Aset
       asset_defect: Kerosakan Aset
+      asset_loan: Peminjaman Aset
       student: Pelajar
       location: Lokasi
       examquestion: Soalan Peperiksaan
@@ -46,6 +47,13 @@ ms_MY:
         processed_on: Diproses pada
         decision_by: Keputusan oleh
         decision_on: Diputuskan pada
+      asset_loan:
+        returned_on: Tarikh dipulangkan
+        loaned_on: Tarikh mula
+        expected_on: Tarikh tamat
+        staff_id: Staf
+        reasons: Sebab
+        driver_id: Pemandu
       student:
         name: Nama
         sstatus: Status Pelajar
@@ -2162,6 +2170,8 @@ ms_MY:
       endorsement: Sokongan
       is_endorsed: "Disokong?"
       endorsed_date: "Disokong pada "
+      endorsed_note: Catatan
+      approved_note: Catatan
 
     category:
       title: Kategori Aset

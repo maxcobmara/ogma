@@ -15,6 +15,12 @@
       = f.text_field :approved_date, class: 'date_picker_reverse form-control', :value => Date.today.strftime('%d-%m-%Y')
 
   .form-group
+    .col-sm-2.control-label
+      =f.label t 'asset.loan.approved_note', for: :approved_note
+    .col-md-6
+      = f.text_area :approved_note, :size=>'60x4' , class: 'form-control'
+ 
+  .form-group
     .col-sm-2.control-label.notify_hod
       = f.label t 'asset.loan.approve_hod', for: :hod
     .col-md-4.notify_hod

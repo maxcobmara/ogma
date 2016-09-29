@@ -13,6 +13,13 @@
       = f.label t 'asset.loan.endorsed_date', for: :endorsed_date
     .col-md-4
       = f.text_field :endorsed_date, class: 'date_picker_reverse form-control', :value => Date.today.strftime('%d-%m-%Y')
+      
+  .form-group
+    .col-sm-2.control-label
+      =f.label t 'asset.loan.endorsed_note', for: :endorsed_note
+    .col-md-6
+      = f.text_area :endorsed_note, :size=>'60x4' , class: 'form-control'
+
   .form-group
     .col-sm-2.control-label
       = f.label t 'asset.loan.loan_officer', for: :loan_officer
