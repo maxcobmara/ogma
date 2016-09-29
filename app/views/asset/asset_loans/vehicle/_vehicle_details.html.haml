@@ -1,0 +1,10 @@
+%dl.dl-horizontal
+  %dt= t 'asset.assetcode'
+  %dd= @asset_loan.asset.assetcode
+      
+  %dt= t 'asset.registration'
+  %dd=@asset_loan.asset.registration
+     
+  %dt=(t 'asset.loan.loaned_by')+(t 'asset.loan.separator_slash')+(t 'asset.loan.responsible_unit')
+  %dd=h @asset_loan.owner.try(:staff_with_rank)+(t 'asset.loan.separator_slash')+@asset_loan.asset.assignedto.try(:positions).first.try(:unit).to_s
+  %br

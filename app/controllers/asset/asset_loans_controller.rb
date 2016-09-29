@@ -1,13 +1,13 @@
 class Asset::AssetLoansController < ApplicationController
   filter_access_to :index, :new, :create, :lampiran_a, :attribute_check => false
-  filter_access_to :edit, :show, :update, :destroy, :approval, :attribute_check => true
-  before_action :set_asset_loan, only: [:show, :edit, :update, :destroy]
+  filter_access_to :edit, :show, :update, :destroy, :approval, :vehicle_endorsement, :vehicle_approval, :vehicle_return, :attribute_check => true
+  before_action :set_asset_loan, only: [:show, :edit, :update, :destroy, :vehicle_endorsement, :vehicle_approval, :vehicle_return]
 
   # GET /asset_loans
   # GET /asset_loans.xml
   def index
     roles = @current_user.roles.pluck(:authname)
-    @is_admin = true if roles.include?("administration") || roles.include?("asset_administrator") || roles.include?("asset_loans_module")
+    @is_admin = true if roles.include?("developer") || roles.include?("administration") || roles.include?("asset_administrator") || roles.include?("asset_loans_module")
     if @is_admin
       @search = AssetLoan.search(params[:q])
     else
@@ -37,6 +37,7 @@ class Asset::AssetLoansController < ApplicationController
   # GET /asset_loans/new.xml
   def new
     @asset_loan = AssetLoan.new(:asset_id => params[:asset_id])
+    @current_asset=Asset.where(id: params[:asset_id]).first
 
     respond_to do |format|
       format.html # new.html.erb
@@ -53,7 +54,7 @@ class Asset::AssetLoansController < ApplicationController
   # POST /asset_loans.xml
   def create
     @asset_loan = AssetLoan.new(asset_loan_params)
-
+    @current_asset=@asset_loan.asset
     respond_to do |format|
       if @asset_loan.save
         format.html { redirect_to @asset_loan, :notice => t('asset.loan.title')+t('actions.created') }
@@ -98,6 +99,15 @@ class Asset::AssetLoansController < ApplicationController
     @asset_loan = AssetLoan.find(params[:id])
   end
   
+  def vehicle_endorsement
+  end
+  
+  def vehicle_approval
+  end
+  
+  def vehicle_return
+  end
+  
   def lampiran_a
     @asset_loan = AssetLoan.find(params[:id]) 
     respond_to do |format|
@@ -119,7 +129,7 @@ class Asset::AssetLoansController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def asset_loan_params
-      params.require(:asset_loan).permit(:asset_id, :staff_id, :reasons, :loaned_by, :is_approved, :approved_date, :loaned_on, :expected_on, :is_returned, :returned_on, :remarks, :loan_officer, :hod, :hod_date, :loantype, :received_officer)
+      params.require(:asset_loan).permit(:asset_id, :staff_id, :reasons, :loaned_by, :is_approved, :approved_date, :loaned_on, :expected_on, :is_returned, :returned_on, :remarks, :loan_officer, :hod, :hod_date, :loantype, :received_officer, :driver_id, :is_endorsed, :endorsed_date, :college_id, {:data => []})
     end
   
 end

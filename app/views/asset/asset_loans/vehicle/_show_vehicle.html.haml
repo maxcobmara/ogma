@@ -1,0 +1,44 @@
+.row
+  .col-md-offset-1
+    / Nav tabs
+    %ul.nav.nav-tabs
+      %li.active= link_to (t "asset.loan.request"), "#request",  "data-toggle" => "tab" 
+      %li=link_to (t "asset.loan.endorsement"), "#endorsement", "data-toggle" => "tab"
+      %li=link_to (t "asset.loan.approval"), "#approval", "data-toggle" => "tab"
+      %li=link_to (t "asset.loan.return"), "#return", "data-toggle" => "tab"
+
+.tab-content.col-md-offset-1
+  .col-md-8.col-md-offset-1
+    /=render 'vehicle_details'
+    = render "asset/asset_loans/vehicle/vehicle_details"
+    
+  #request.tab-pane.fade.in.active
+    = render 'tab_show_request'
+    
+  #endorsement.tab-pane.in
+    /=render 'tab_show_endorsement'
+    = render "asset/asset_loans/vehicle/tab_show_endorsement"
+    
+  #approval.tab-pane.fade.in
+    /= render 'tab_show_vehicle_approval' 
+    = render "asset/asset_loans/vehicle/tab_show_vehicle_approval"
+  
+  #return.tab-pane.fade.in
+    = render 'tab_show_return' 
+
+.row
+  .col-md-6.col-md-offset-3
+    %hr
+    .form-actions
+      = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), asset_loans_path, :class => 'btn btn-default'
+      /= link_to content_tag(:i, "", :class => "fa fa-file-pdf-o"), lampiran_a_asset_loan_path(@asset_loan, format: "pdf"), {class: "btn btn-default", "data-toggle" => "tooltip", title: "Lampiran A PDF"}
+      /= link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('.approve', :default => t("helpers.links.approve")), approval_asset_loan_path(@asset_loan), :class => 'btn btn-primary'
+      = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('.edit', :default => t("helpers.links.edit")), edit_asset_loan_path(@asset_loan), :class => 'btn btn-primary'
+      = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('.edit', :default => t("asset.loan.endorsement")), vehicle_endorsement_asset_loan_path(@asset_loan), :class => 'btn btn-primary'
+      = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('.return', :default => t("asset.loan.approval")), vehicle_approval_asset_loan_path(@asset_loan), :class => 'btn btn-primary'
+      = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('.return', :default => t("asset.loan.return")), vehicle_return_asset_loan_path(@asset_loan), :class => 'btn btn-primary'
+      /= link_to content_tag(:i, "", :class => "fa fa-trash-o icon-white") + " " + t('.destroy', :default => t("helpers.links.destroy")), |
+      /  asset_loan_path(@asset_loan),                                                                                                    |
+      /  :method => 'delete',                                                                                                           |
+      /  :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },                   |
+      /  :class => 'btn btn-danger'

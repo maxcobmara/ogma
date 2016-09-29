@@ -167,9 +167,9 @@ class Asset::AssetsController < ApplicationController
   
   def loanables
    loaned = AssetLoan.where('is_returned IS NOT true').pluck(:asset_id)
-   loaned = [0] if @loaned == []    
+   loaned = [0] if loaned == []    
    @search = Asset.search(params[:q])
-   @loanables = @search.result.where('bookable = ? and assets.id NOT IN (?) ', true, loaned)
+   @loanables = @search.result.where('assignedto_id is not null and bookable = ? and assets.id NOT IN (?) ', true, loaned)
    @loanables = @loanables.order(assetcode: :asc).page(params[:page]||1)    
   end
   

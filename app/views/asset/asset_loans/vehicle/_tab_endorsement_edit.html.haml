@@ -1,0 +1,40 @@
+.col-md-8.col-md-offset-2
+  .form-group
+    .col-sm-2.control-label
+      = f.label t 'asset.loan.is_endorsed', for: :is_endorsed
+    .col-md-6
+      .row
+        .col-md-2= f.radio_button :is_endorsed, true, :id => 'is_approved_true'  , :class => 'approval' 
+        .col-md-2= t 'endorsed'
+        .col-md-2= f.radio_button :is_endorsed, false, :id => 'is_approved_false' , :class => 'approval' 
+        .col-md-2= t 'not_endorsed'
+  .form-group
+    .col-sm-2.control_label
+      = f.label t 'asset.loan.endorsed_date', for: :endorsed_date
+    .col-md-4
+      = f.text_field :endorsed_date, class: 'date_picker_reverse form-control', :value => Date.today.strftime('%d-%m-%Y')
+  .form-group
+    .col-sm-2.control-label
+      = f.label t 'asset.loan.loan_officer', for: :loan_officer
+    .col-md-4
+      =f.collection_select :loan_officer, Staff.joins(:positions).where('positions.unit ILIKE(?) or staffs.id=?', '%Kenderaan%', @asset_loan.loaned_by), :id, :staff_with_rank, {include_blank: (t 'select')}, {class: 'selectpicker', "data-width"=>'350px'}    
+
+:javascript
+
+$(document).ready(function(){ 
+  $("input[class='approval']").each(function() {  
+    if($('#is_approved_true').is(':checked')) { 
+      $(".notify_hod").show("highlight");
+    }else if ($j('#is_approved_false').is(':checked')){
+      $(".notify_hod").hide("highlight");
+    }
+  });
+
+  $("input[class='approval']").change(function() {  
+    if($('#is_approved_true').is(':checked')) { 
+      $(".notify_hod").show("highlight");
+    }else if ($('#is_approved_false').is(':checked')){
+      $(".notify_hod").hide("highlight");
+    }
+  });
+});

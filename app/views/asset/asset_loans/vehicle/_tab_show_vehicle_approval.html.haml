@@ -1,0 +1,8 @@
+.col-md-10.col-md-offset-1
+  %dl.dl-horizontal
+    - if @asset_loan.is_approved == true
+      %dt=t 'asset.loan.is_approved'
+      %dd=h @asset_loan.is_approved? ? (t 'asset.loan.approved_date') + (@asset_loan.approved_date.strftime('%d %b %Y')) + t('by2') + @asset_loan.hodept.staff_with_rank : "" 
+    - else
+      %dt Status
+      %dd=t 'not_approved'

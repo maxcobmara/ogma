@@ -179,6 +179,9 @@ Ogma::Application.routes.draw do
       member do
         get :approval
         get :lampiran_a
+        get :vehicle_endorsement
+        get :vehicle_approval
+        get :vehicle_return
       end
     end
     resources :assetcategories

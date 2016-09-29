@@ -1,0 +1,8 @@
+.col-md-10.col-md-offset-1
+  %dl.dl-horizontal
+    - if @asset_loan.is_endorsed == true
+      %dt=t 'asset.loan.is_endorsed'
+      %dd=h @asset_loan.is_endorsed? ? (t 'asset.loan.endorsed_date') + (@asset_loan.endorsed_date.strftime('%d %b %Y')) + t('by2') + @asset_loan.loanofficer.name : "" 
+    - else
+      %dt Status
+      %dd=t 'not_endorsed'
