@@ -4,7 +4,7 @@
     .col-sm-2
       = f.hidden_field :_destroy
       = f.collection_select :location_id, Location.all.order(combo_code: :asc), :id, :location_list, {include_blank: (t 'select')}, {class: 'selectpicker'}
-    .col-sm-2= f.collection_select :staff_id, Staff.all.order(name: :asc), :id, :staff_name_with_position, {include_blank: (t 'helpers.prompt.select_staff')}, {class: 'selectpicker',}
+    .col-sm-2= f.collection_select :staff_id, Staff.all.order(rank_id: :asc, name: :asc), :id, :staff_with_rank_position, {include_blank: (t 'helpers.prompt.select_staff')}, {class: 'selectpicker',}
     .col-sm-2= f.text_field :reg_on, class: 'date-picker form-control', value: f.object.try(:reg_on).try(:strftime, '%d-%m-%Y')
     .col-sm-1= f.text_field :quantity, class: 'form-control'
     .col-sm-1

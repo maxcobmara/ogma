@@ -25,9 +25,9 @@
       %dt= t 'asset.typename'
       %dd= @asset.typename
       %dt= t 'asset.bookable'
-      %dd= @asset.bookable? ? (t "bookable_text") : (t 'no')
+      %dd= @asset.bookable? ? (t "asset.bookable_text") : (t 'no')
       %dt= t 'asset.maintainable'
-      %dd= @asset.is_maintainable? ? (t "asset.maintainable_text") : (t 'no')
+      %dd= @asset.is_maintainable? ? (t "asset.maintainable_text") : (t 'no2')
         
   #description.tab-pane.fade
     %dl.dl-horizontal

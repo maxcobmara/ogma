@@ -6,24 +6,24 @@
   %ul.nav.navbar-nav.navbar-right
     %li= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "index_search_bar"
     %li= link_to content_tag(:li, fa_icon("print", text: (t 'actions.print'))), "#"
-      
+
 .row
   %table.table-striped.table-hover.ogma
     %thead
       %tr
-        %th= sort_link(@search, :asset_id, (t 'asset.loan.asset_id'))
-        %th
+        %th{width: '20%'}= sort_link(@search, :asset_id, (t 'asset.loan.asset_id'))
+        %th{width: '20%'}
           = sort_link(@search, :staff_id, (t 'asset.loan.staff_id'))
           = (t 'asset.loan.separator_slash')+(t 'asset.loan.reasons')
-        %th
+        %th{width: '20%'}
           = sort_link(@search, :loaned_by, (t 'asset.loan.loaned_by'))
           =  (t 'asset.loan.separator_slash')+(t 'asset.loan.responsible_unit')
-        %th
+        %th{width: '15%'}
           = sort_link(@search, :loaned_on, (t 'asset.loan.requested_for'))
           = t 'asset.loan.separator_slash'
           = sort_link(@search, :expected_on, (t 'asset.loan.returned_date'))
-        %th= sort_link(@search, :approved_date, (t 'asset.loan.approved_date'))
-        %th Status
+        %th{width: '10%'}= sort_link(@search, :approved_date, (t 'asset.loan.approved_date'))
+        %th{width: '15%'}Status
     %tbody
       = render "search_bar"
       /to revised later - upon completion of roles assignment - Admin, Asset Admin & Owner+Responsible Unit (index list)

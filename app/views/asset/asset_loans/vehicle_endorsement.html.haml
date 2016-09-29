@@ -1,0 +1,39 @@
+- model_class = AssetLoan
+.page-header
+  %h1
+    = (t 'asset.loan.endorsement')+" "+(t 'asset.loan.title2')+" : "
+    = @asset_loan.asset.registration
+    - @unit_members = @asset_loan.unit_members
+.row
+  = form_for @asset_loan,  html: { multipart: true, class: 'form-horizontal' }  do |f| 
+    = render 'shared/error_messages', object: f.object
+ 
+    .col-md-offset-1
+      / Nav tabs
+      %ul.nav.nav-tabs
+        %li= link_to (t "asset.loan.request"), "#request",  "data-toggle" => "tab" 
+        %li.active=link_to (t "asset.loan.endorsement"), "#endorsement", "data-toggle" => "tab"
+      
+      /display
+      .tab-content{style:"padding-top:1em"}
+        .col-md-8.col-md-offset-1
+          /=render 'vehicle_details'
+          = render "asset/asset_loans/vehicle/vehicle_details"
+          %br
+          
+        #request.tab-pane.fade
+          %br
+          = render 'tab_show_request'
+      
+        #endorsement.tab-pane.fade.in.active
+          %br
+          /= render 'tab_endorsement_edit', :f => f
+          = render "asset/asset_loans/vehicle/tab_endorsement_edit", :f => f
+
+      .col-md-8.col-md-offset-1
+        %BR
+        .form-group
+          .col-sm-offset-1.col-sm-2
+            = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), asset_loan_path(@asset_loan), :class => 'btn btn-default'
+          .col-sm-2
+            = f.submit t('update'), class: "btn btn-primary" 

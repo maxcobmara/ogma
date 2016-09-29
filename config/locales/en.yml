@@ -56,6 +56,8 @@ en:
       instructor_appraisal: Instructor Appraisal
       bookingfacility: Facilities Reservation
     attributes:
+      asset:
+        assignedto_id: Assigned to
       asset_defect:
         processed_by: Processed by
         process_type: Process type
@@ -375,6 +377,8 @@ en:
   not_active: Not Active
   must_exist: must exist
   download: Download
+  endorsed: Endorsed
+  not_endorsed: Not Endorsed
 
   actions:
     new: New
@@ -2071,7 +2075,7 @@ en:
     assetcode: Registration Serial No 
     cardno: Card No
     name: Manufacturer/Brand
-    category: Category
+    #category: Category
     subcategory_name: Subcategory
     typename: Asset Type
     bookable: Bookable
@@ -2220,10 +2224,13 @@ en:
       
     loan:
       title: Asset Loan
+      title2: Vehicle Reservation
       new: New Asset Loan
+      new: New Vehicle Reservation
       edit: Edit Asset Loan
-      application: Loan Asset Application
-      asset_on_loan: Asset On Loan
+      edit: Edit Vehicle Reservation
+      application: Loan Vehicle / Other Asset Application
+      asset_on_loan: Vehicle / Other Asset Loan List
       approve_loan: Loan Approval
       asset_id: Asset
       staff_id: Loaned by
@@ -2240,6 +2247,7 @@ en:
       is_returned: Is returned
       is_approved: "Approved?"
       notify_hod: Notify HOD
+      approve_hod: HOD Approval
       due_date: Due date
       overdue: Overdue
       assetcode_name: Asset code or name
@@ -2259,9 +2267,14 @@ en:
       loanable: Loanable Assets
       available: "Available?"
       apply: Apply to loan
+      driver_id: Driver
+      endorsement: Endorsement
+      is_endorsed: "Endorsed?"
+      endorsed_date: "Endorsed on "
       
     category:
       title: Asset Category
+      title2: Category
       list: Asset Category List
       new: New Asset Category
       edit: Edit Asset Category

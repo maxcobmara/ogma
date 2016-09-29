@@ -1,0 +1,26 @@
+.col-md-offset-1
+  / Nav tabs
+  %ul.nav.nav-tabs
+    %li.active= link_to (t "asset.loan.request"), "#request_edit",  "data-toggle" => "tab" 
+    %li=link_to (t "asset.loan.endorsement"), "#endorsement", "data-toggle" => "tab"
+    %li=link_to (t "asset.loan.approval"), "#approval", "data-toggle" => "tab"
+    /%li=link_to (t "asset.loan.return"), "#return", "data-toggle" => "tab"
+      
+  /display
+  .tab-content{style:"padding-top:1em"}
+    .col-md-8.col-md-offset-1
+      /= render 'vehicle_details'
+      = render "asset/asset_loans/vehicle/vehicle_details"
+      
+    #request_edit.tab-pane.fade.in.active 
+      %br
+        /= render 'tab_request_vehicle_edit', :f => f
+        = render "asset/asset_loans/vehicle/tab_request_vehicle_edit", :f => f
+        
+  .col-md-8.col-md-offset-2
+    %BR
+    .form-group
+      .col-sm-offset-1.col-sm-2
+        = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), asset_loan_path(@asset_loan), :class => 'btn btn-default'
+      .col-sm-2
+        = f.submit t('update'), class: "btn btn-primary" 

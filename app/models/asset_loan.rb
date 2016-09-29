@@ -8,8 +8,10 @@ class AssetLoan < ActiveRecord::Base
   belongs_to :loanofficer,   :class_name => 'Staff', :foreign_key => 'loan_officer'
   belongs_to :hodept,   :class_name => 'Staff', :foreign_key => 'hod'
   belongs_to :receivedofficer, :class_name => 'Staff', :foreign_key => 'received_officer'
+  belongs_to :driver, :class_name => 'Staff', :foreign_key => 'driver_id'
   
-  validates_presence_of :loantype, :loaned_on
+  validates_presence_of :loaned_on
+  validates_presence_of :loantype, :if => :other_asset?
   validates_presence_of :reasons, :if => :must_assign_if_external?   
   validates_presence_of :hod, :if => :is_approved?
   validates_presence_of :returned_on, :received_officer, :if => :is_returned?
@@ -41,7 +43,7 @@ class AssetLoan < ActiveRecord::Base
       loanstatus = where('is_approved IS TRUE AND is_returned IS NULL AND expected_on=?',Date.today)
     elsif query == '6'
       loanstatus = where('is_approved IS TRUE AND is_returned IS TRUE')
-    else
+    elsif query =='0'
       loanstatus = AssetLoan.all
     end 
     loanstatus
@@ -54,6 +56,10 @@ class AssetLoan < ActiveRecord::Base
   
   def must_assign_if_external?  #16July2013
     loantype==2 
+  end
+  
+  def other_asset?
+    !(asset.category_id==3 || asset.category.description.downcase.include?('kenderaan'))
   end
   
   def self.borrowings

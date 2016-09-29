@@ -29,6 +29,13 @@ class Staff < ActiveRecord::Base
   has_many :processors, :class_name => 'AssetDisposal', :foreign_key => 'checked_by'
   has_many :verifiers,  :class_name => 'AssetDisposal', :foreign_key => 'verified_by'
   has_many :revaluers,  :class_name => 'AssetDisposal', :foreign_key => 'revalued_by'
+  
+  has_many :asset_loans, :foreign_key => 'staff_id' #peminjam / loaner
+  has_many :assignedto_assetloans, :foreign_key => 'loaned_by'  #bertanggungjawab
+  has_many :released_assetloans, :foreign_key => 'loan_officer' #loan_officer
+  has_many :approved_assetloans, :foreign_key => 'hod' #hod 
+  has_many :returned_assetloans, :foreign_key => 'received_officer' #received_officer
+  has_many :driven_vehicles, :foreign_key => 'driver_id'
 
   has_many :timetables
   has_many :prepared_weekly_schedules, :class_name => 'Weeklytimetable', :foreign_key => 'prepared_by', :dependent => :nullify

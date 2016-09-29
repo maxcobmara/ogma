@@ -38,6 +38,8 @@ ms_MY:
       repository: Repositori
       bookingfacility: Tempahan Fasiliti
     attributes:
+      asset:
+        assignedto_id: Pegawai Bertanggungjawab
       asset_defect:
         processed_by: Diproses oleh
         process_type: Jenis tindakan
@@ -354,6 +356,8 @@ ms_MY:
   not_active: Tidak Aktif
   must_exist: mesti wujud
   download: Muat turun
+  endorsed: Disokong
+  not_endorsed: Tidak Disokong
  
   actions:
     new: Baru
@@ -1964,7 +1968,7 @@ ms_MY:
     assetcode: No Siri Pendaftaran  
     cardno: No Kad
     name: Jenama
-    category: Kategori
+    #category: Kategori
     subcategory_name: Subkategori
     typename: Jenis Aset
     bookable: Tempahan
@@ -2111,10 +2115,13 @@ ms_MY:
     
     loan:
       title: Peminjaman Aset
+      title2: Peminjaman Kenderaan
       new: Peminjaman Baru Aset
+      new2: Peminjaman Baru Kenderaan
       edit: Sunting Peminjaman Aset
-      application: Permohonan Pinjaman
-      asset_on_loan: Senarai Pinjaman Aset
+      edit2: Sunting Peminjaman Kenderaan
+      application: Permohonan Pinjaman Kenderaan / Aset Lain
+      asset_on_loan: Senarai Pinjaman Kenderaan / Aset Lain
       approve_loan: Kelulusan Pinjaman 
       asset_id: Aset
       staff_id: Peminjam
@@ -2124,13 +2131,14 @@ ms_MY:
       responsible_unit: Unit Bertanggungjawab
       requested_for: Tarikh Mula
       returned_date: Tarikh Tamat
-      approved_date: Diluluskan pada
+      approved_date: "Diluluskan pada "
       rejected: Ditolak
       pending: Sedang diproses
       onloan: Sedang dipinjam
       is_returned: Telah dipulangkan
       is_approved: "Diluluskan?"
       notify_hod: Makluman Ketua Jabatan
+      approve_hod: Kelulusan Ketua Jabatan
       due_date: Tarikh akhir
       overdue: Tamat tempoh
       assetcode_name: Kod atau nama aset
@@ -2150,9 +2158,14 @@ ms_MY:
       loanable: Senarai Aset Boleh Dipinjam
       available: "Sedia dipinjam?"
       apply: Mohon pinjaman
+      driver_id: Pemandu
+      endorsement: Sokongan
+      is_endorsed: "Disokong?"
+      endorsed_date: "Disokong pada "
 
     category:
       title: Kategori Aset
+      title2: Kategori
       list: Senarai Kategori Aset
       new: Kategori Baru Aset
       edit: Sunting Kategori Aset

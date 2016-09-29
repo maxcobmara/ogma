@@ -8,15 +8,19 @@
     %dd=h @asset_loan.reasons
   
     %dt=t 'asset.loan.requested_for'
-    %dd=h @asset_loan.approved_date.try(:strftime, '%d %b %Y')
+    %dd=h @asset_loan.loaned_on.try(:strftime, '%d %b %Y')
 
     %dt= t 'asset.loan.returned_date'
     %dd=h @asset_loan.expected_on.try(:strftime, '%d %b %Y')
-  
-    %dt=t 'asset.loan.loantype'
-    %dd
-      - if @asset_loan.loantype==1
-        = t 'asset.loan.internal'
-      - elsif @asset_loan.loantype==2
-        = t 'asset.loan.external'
+    
+    - if (@asset_loan.asset.category_id==3 || @asset_loan.asset.category.description.downcase.include?("kenderaan"))
+      %dt=t 'asset.loan.driver_id'
+      %dd=@asset_loan.driver.staff_with_rank
+    - else  
+      %dt=t 'asset.loan.loantype'
+      %dd
+        - if @asset_loan.loantype==1
+          = t 'asset.loan.internal'
+        - elsif @asset_loan.loantype==2
+          = t 'asset.loan.external'
       

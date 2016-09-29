@@ -11,26 +11,11 @@
     = f.hidden_field :asset_id
     = f.hidden_field :staff_id, :value => current_user.userable_id
     
-    .col-md-offset-1
-      / Nav tabs
-      %ul.nav.nav-tabs
-        %li.active= link_to (t "asset.loan.request"), "#request",  "data-toggle" => "tab" 
-      
-      /display
-      .tab-content{style:"padding-top:1em"}
-        .col-md-8.col-md-offset-1
-          %dl.dl-horizontal
-            %dt= t 'asset.assetcode'
-            %dd= @asset_loan.asset.code_typename_name_modelname_serialno
-    
-            %dt= t('asset.loan.loaned_by')+t('asset.loan.separator_slash')+t('asset.loan.responsible_unit')
-            %dd= @asset_loan.asset.assignedto.try(:name)+t('asset.loan.separator_slash')+@asset_loan.asset.assignedto.try(:positions).first.try(:unit)
-            %br
-            
-        #request.tab-pane.fade.in.active 
-          %br
-          = render 'tab_request_edit', :f => f
-         
+    - if @current_asset.category_id==3 || @current_asset.category.description.downcase.include?("kenderaan")
+      = render 'form_vehicle', :f => f
+    - else
+      = render 'form', :f => f
+    %br  
     .row 
       .col-md-10
         .col-md-1.col-sm-offset-4

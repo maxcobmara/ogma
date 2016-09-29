@@ -12,7 +12,8 @@
     %thead
       %tr
         %th= sort_link(@search, :assetcode, (t 'asset.assetcode'))
-        %th= sort_link(@search, :typename, (t 'asset.typename'))
+        /%th= sort_link(@search, :typename, (t 'asset.typename'))
+        %th= sort_link(@search, :category, (t 'asset.category.title2'))
         %th= sort_link(@search, :name, (t 'asset.name'))
         %th= sort_link(@search, :modelname, (t 'asset.model'))
         %th= sort_link(@search, :serialno, (t 'asset.serial_no'))
@@ -26,7 +27,7 @@
       - @loanables.each do |loanable|
         %tr
           %td=h loanable.assetcode 
-          %td=h loanable.typename
+          %td=h loanable.category.description
           %td=h loanable.name
           %td=h loanable.modelname
           %td=h loanable.serialno
