@@ -54,6 +54,10 @@ ms_MY:
         staff_id: Staf
         reasons: Sebab
         driver_id: Pemandu
+        endorsed_date: Disokong pada
+        loan_officer: Pegawai Pengeluar
+        approved_date: Diluluskan pada
+        hod: Kelulusan Ketua Jabatan
       student:
         name: Nama
         sstatus: Status Pelajar

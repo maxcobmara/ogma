@@ -6,7 +6,7 @@
       = f.check_box :is_returned
     .col-md-3
       %span.return_it{:style=> "display: none;"}
-        = f.text_field :returned_on, class: 'date_picker_reverse form-control', value: @asset_loan.returned_on.try(:strftime, '%d-%m-%Y')
+        = f.text_field :returned_on, class: 'date_picker_reverse form-control mandatory', value: @asset_loan.returned_on.try(:strftime, '%d-%m-%Y')
 
   .form-group
     .col-sm-2.control-label.return_it{:style=> "display: none;"}
