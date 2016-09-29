@@ -26,6 +26,7 @@ en:
       staff: Staff
       asset: Asset
       asset_defect: Asset Defect
+      asset_loan: Asset Loan
       student: Student
       location: Location
       examquestion: Examquestion
@@ -64,6 +65,13 @@ en:
         processed_on: Processed on
         decision_by: Decision by
         decision_on: Decision on
+      asset_loan:
+        returned_on: Returned date
+        loaned_on: Requested for
+        expected_on: To be returned on
+        staff_id: Staff
+        reasons: Reasons
+        driver_id: Driver
       student:
         name: Name
         sstatus: Student Status
@@ -2271,6 +2279,8 @@ en:
       endorsement: Endorsement
       is_endorsed: "Endorsed?"
       endorsed_date: "Endorsed on "
+      endorsed_note: Remarks
+      approved_note: Remarks
       
     category:
       title: Asset Category

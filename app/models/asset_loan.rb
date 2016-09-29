@@ -1,6 +1,6 @@
 class AssetLoan < ActiveRecord::Base
    
-  before_save :set_staff_when_blank, :set_loaned_by
+  before_save :set_loaned_by # :set_staff_when_blank,
   
   belongs_to :asset, :foreign_key => 'asset_id'
   belongs_to :staff, :foreign_key => 'staff_id'   #peminjam / loaner
@@ -10,9 +10,10 @@ class AssetLoan < ActiveRecord::Base
   belongs_to :receivedofficer, :class_name => 'Staff', :foreign_key => 'received_officer'
   belongs_to :driver, :class_name => 'Staff', :foreign_key => 'driver_id'
   
-  validates_presence_of :loaned_on
+  validates_presence_of :loaned_on, :staff_id, :expected_on
   validates_presence_of :loantype, :if => :other_asset?
   validates_presence_of :reasons, :if => :must_assign_if_external?   
+  validates_presence_of :reasons, :driver_id, :if => :must_assign_if_vehicle?
   validates_presence_of :hod, :if => :is_approved?
   validates_presence_of :returned_on, :received_officer, :if => :is_returned?
   
@@ -58,6 +59,10 @@ class AssetLoan < ActiveRecord::Base
     loantype==2 
   end
   
+  def must_assign_if_vehicle?
+    asset.category_id==3 || asset.category.description.downcase.include?('kenderaan')
+  end
+  
   def other_asset?
     !(asset.category_id==3 || asset.category.description.downcase.include?('kenderaan'))
   end
@@ -71,11 +76,11 @@ class AssetLoan < ActiveRecord::Base
      where('staff_id=? OR loaned_by=? OR loan_officer=? OR hod=? OR received_officer=? OR loaned_by IN(?)', u,u,u,u,u,aa)
   end    
   
-  def set_staff_when_blank
-    if staff_id.blank?
-      self.staff_id = Login.current_login.staff_id
-    end
-  end
+#   def set_staff_when_blank
+#     if staff_id.blank?
+#       self.staff_id = Login.current_login.staff_id
+#     end
+#   end
   
   def set_loaned_by
     if loaned_by.blank?

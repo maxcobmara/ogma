@@ -1,5 +1,5 @@
 class Asset::AssetLoansController < ApplicationController
-  filter_access_to :index, :new, :create, :lampiran_a, :attribute_check => false
+  filter_access_to :index, :new, :create, :vehicle_reservation, :attribute_check => false
   filter_access_to :edit, :show, :update, :destroy, :approval, :vehicle_endorsement, :vehicle_approval, :vehicle_return, :attribute_check => true
   before_action :set_asset_loan, only: [:show, :edit, :update, :destroy, :vehicle_endorsement, :vehicle_approval, :vehicle_return]
 
@@ -77,8 +77,13 @@ class Asset::AssetLoansController < ApplicationController
         format.html { redirect_to(@asset_loan, :notice => t('asset.loan.title')+t('actions.updated')) }
         format.xml  { head :ok }
       else
-        format.html { render :action => "edit" }
-        format.xml  { render :xml => @asset_loan.errors, :status => :unprocessable_entity }
+	if @asset_loan.returned_on.blank? && (@asset_loan.asset.category_id==3 || @asset_loan.category.description.downcase.include?('kenderaan'))
+          format.html { render :action => "vehicle_return" }
+          format.xml  { render :xml => @asset_loan.errors, :status => :unprocessable_entity }
+	else
+          format.html { render :action => "edit" }
+          format.xml  { render :xml => @asset_loan.errors, :status => :unprocessable_entity }
+	end
       end
     end
   end
@@ -108,12 +113,12 @@ class Asset::AssetLoansController < ApplicationController
   def vehicle_return
   end
   
-  def lampiran_a
-    @asset_loan = AssetLoan.find(params[:id]) 
+  def vehicle_reservation
+    @asset_loan = AssetLoan.find(params[:id])
     respond_to do |format|
        format.pdf do
-         pdf = Lampiran_aPdf.new(@asset_loan, view_context)
-         send_data pdf.render, filename: "lampiran_a-{Date.today}",
+         pdf = BookingvehiclePdf.new(@asset_loan, view_context, current_user.college)
+         send_data pdf.render, filename: "booking_vehicle-{Date.today}",
                                type: "application/pdf",
                                disposition: "inline"
        end
@@ -129,7 +134,7 @@ class Asset::AssetLoansController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def asset_loan_params
-      params.require(:asset_loan).permit(:asset_id, :staff_id, :reasons, :loaned_by, :is_approved, :approved_date, :loaned_on, :expected_on, :is_returned, :returned_on, :remarks, :loan_officer, :hod, :hod_date, :loantype, :received_officer, :driver_id, :is_endorsed, :endorsed_date, :college_id, {:data => []})
+      params.require(:asset_loan).permit(:asset_id, :staff_id, :reasons, :loaned_by, :is_approved, :approved_date, :loaned_on, :expected_on, :is_returned, :returned_on, :remarks, :loan_officer, :hod, :hod_date, :loantype, :received_officer, :driver_id, :is_endorsed, :endorsed_date, :endorsed_note, :approved_note, :college_id, {:data => []})
     end
   
 end
