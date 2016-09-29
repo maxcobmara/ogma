@@ -72,6 +72,10 @@ en:
         staff_id: Staff
         reasons: Reasons
         driver_id: Driver
+        endorsed_date: Endorsed Date
+        loan_officer: Loan Officer
+        approved_date: Approve on
+        hod: Hod Approval
       student:
         name: Name
         sstatus: Student Status

@@ -80,6 +80,12 @@ class Asset::AssetLoansController < ApplicationController
 	if @asset_loan.returned_on.blank? && (@asset_loan.asset.category_id==3 || @asset_loan.category.description.downcase.include?('kenderaan'))
           format.html { render :action => "vehicle_return" }
           format.xml  { render :xml => @asset_loan.errors, :status => :unprocessable_entity }
+	elsif @asset_loan.endorsed_date.blank? || @asset_loan.loan_officer.blank?
+	  format.html { render :action => "vehicle_endorsement" }
+          format.xml  { render :xml => @asset_loan.errors, :status => :unprocessable_entity }
+	elsif @asset_loan.approved_date.blank? || @asset_loan.hod.blank?
+	  format.html { render :action => "vehicle_approval" }
+          format.xml  { render :xml => @asset_loan.errors, :status => :unprocessable_entity }
 	else
           format.html { render :action => "edit" }
           format.xml  { render :xml => @asset_loan.errors, :status => :unprocessable_entity }

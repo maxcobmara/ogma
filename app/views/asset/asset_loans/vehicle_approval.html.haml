@@ -1,8 +1,8 @@
 - model_class = AssetLoan
 .page-header
   %h1
-    = t 'asset.loan.approve_loan'
-    = @asset_loan.asset.assetcode
+    = (t 'asset.loan.approve_loan')+" : "
+    = @asset_loan.asset.registration
     - @unit_members = @asset_loan.unit_members
 .row
   = form_for @asset_loan,  html: { multipart: true, class: 'form-horizontal' }  do |f| 

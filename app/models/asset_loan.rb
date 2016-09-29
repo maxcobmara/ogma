@@ -1,6 +1,6 @@
 class AssetLoan < ActiveRecord::Base
    
-  before_save :set_loaned_by # :set_staff_when_blank,
+  before_save :set_loaned_by
   
   belongs_to :asset, :foreign_key => 'asset_id'
   belongs_to :staff, :foreign_key => 'staff_id'   #peminjam / loaner
@@ -14,7 +14,8 @@ class AssetLoan < ActiveRecord::Base
   validates_presence_of :loantype, :if => :other_asset?
   validates_presence_of :reasons, :if => :must_assign_if_external?   
   validates_presence_of :reasons, :driver_id, :if => :must_assign_if_vehicle?
-  validates_presence_of :hod, :if => :is_approved?
+  validates_presence_of :endorsed_date,  :loan_officer, :if => :is_endorsed?
+  validates_presence_of :approved_date, :hod, :if => :is_approved?
   validates_presence_of :returned_on, :received_officer, :if => :is_returned?
   
   #scope :myloan, -> { where(staff_id: Login.current_login.staff_id)}
@@ -74,13 +75,7 @@ class AssetLoan < ActiveRecord::Base
   def self.sstaff2(u)
      aa=User.where(userable_id: u).first.unit_members
      where('staff_id=? OR loaned_by=? OR loan_officer=? OR hod=? OR received_officer=? OR loaned_by IN(?)', u,u,u,u,u,aa)
-  end    
-  
-#   def set_staff_when_blank
-#     if staff_id.blank?
-#       self.staff_id = Login.current_login.staff_id
-#     end
-#   end
+  end
   
   def set_loaned_by
     if loaned_by.blank?
