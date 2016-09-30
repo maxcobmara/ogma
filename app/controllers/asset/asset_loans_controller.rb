@@ -1,6 +1,6 @@
 class Asset::AssetLoansController < ApplicationController
-  filter_access_to :index, :new, :create, :lampiran_a, :vehicle_reservation, :attribute_check => false
-  filter_access_to :edit, :show, :update, :destroy, :approval, :vehicle_endorsement, :vehicle_approval, :vehicle_return, :attribute_check => true
+  filter_access_to :index, :new, :create, :lampiran_a,  :attribute_check => false
+  filter_access_to :edit, :show, :update, :destroy, :approval, :vehicle_endorsement, :vehicle_approval, :vehicle_return, :vehicle_reservation, :attribute_check => true
   before_action :set_asset_loan, only: [:show, :edit, :update, :destroy, :vehicle_endorsement, :vehicle_approval, :vehicle_return]
 
   # GET /asset_loans
@@ -77,15 +77,23 @@ class Asset::AssetLoansController < ApplicationController
         format.html { redirect_to(@asset_loan, :notice => t('asset.loan.title')+t('actions.updated')) }
         format.xml  { head :ok }
       else
-	if @asset_loan.returned_on.blank? && (@asset_loan.asset.category_id==3 || @asset_loan.category.description.downcase.include?('kenderaan'))
-          format.html { render :action => "vehicle_return" }
+	if @asset_loan.returned_on.blank? 
+	  if Asset.vehicle.include?(@asset_loan.asset)
+            format.html { render :action => "vehicle_return" }
+	  else
+	    format.html { render :action => "edit" }
+	  end
           format.xml  { render :xml => @asset_loan.errors, :status => :unprocessable_entity }
-	elsif @asset_loan.endorsed_date.blank? || @asset_loan.loan_officer.blank?
+	elsif Asset.vehicle.include?(@asset_loan.asset) && (@asset_loan.endorsed_date.blank? || @asset_loan.loan_officer.blank?)
 	  format.html { render :action => "vehicle_endorsement" }
           format.xml  { render :xml => @asset_loan.errors, :status => :unprocessable_entity }
-	elsif @asset_loan.approved_date.blank? || @asset_loan.hod.blank?
-	  format.html { render :action => "vehicle_approval" }
-          format.xml  { render :xml => @asset_loan.errors, :status => :unprocessable_entity }
+	  
+	elsif Asset.vehicle.include?(@asset_loan.asset) &&  (@asset_loan.approved_date.blank? || @asset_loan.hod.blank?)
+	   format.html { render :action => "vehicle_approval" }
+	   format.xml  { render :xml => @asset_loan.errors, :status => :unprocessable_entity }
+	elsif Asset.vehicle.include?(@asset_loan.asset)==false &&  (@asset_loan.approved_date.blank? || @asset_loan.loan_officer.blank?)  
+	   format.html { render :action => "approval" }
+           format.xml  { render :xml => @asset_loan.errors, :status => :unprocessable_entity }
 	else
           format.html { render :action => "edit" }
           format.xml  { render :xml => @asset_loan.errors, :status => :unprocessable_entity }

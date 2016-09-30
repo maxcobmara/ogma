@@ -17,20 +17,20 @@
     .col-sm-2.control-label
       = f.label t 'asset.loan.requested_for', for: :loaned_on
     .col-md-3
-      = f.text_field :loaned_on, class: 'date_picker form-control'
+      = f.text_field :loaned_on, class: 'date_picker_reverse form-control', value: @asset_loan.loaned_on.try(:strftime, '%d-%m-%Y')
   .form-group
     .col-sm-2.control-label
       = f.label t 'asset.loan.returned_date'
     .col-md-3
-      = f.text_field :expected_on, class: 'date_picker form-control'  
+      = f.text_field :expected_on, class: 'date_picker_reverse form-control', value: @asset_loan.expected_on.try(:strftime, '%d-%m-%Y')
   .form-group
     .col-sm-2.control-label
       = f.label t 'asset.loan.loantype', for: :loantype
       %br
     .col-md-6
       .row
-        .col-md-1= f.radio_button :loantype, 1, :id => 'loanmodeinternal',  :class => 'radio_action_options'
-        .col-md-2= t 'asset.loan.internal'
-        .col-md-1= f.radio_button :loantype, 2, :id => 'loanmodexternal',  :class => 'radio_action_options'
+        .col-md-2= f.radio_button :loantype, 1, :id => 'loanmodeinternal',  :class => 'radio_action_options'
+        .col-md-3= t 'asset.loan.internal'
+        .col-md-2= f.radio_button :loantype, 2, :id => 'loanmodexternal',  :class => 'radio_action_options'
         .col-md-2= t 'asset.loan.external'
 

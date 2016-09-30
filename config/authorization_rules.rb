@@ -291,26 +291,70 @@ authorization do
      if_attribute :decision => is_not {true}
    end
    
+   # NOTE - Index - list display -> model - SAMPLE (Position Id=77, assign (1)staff_id=118:rosilah, (2)unit='Unit Tenaga Pengajar & Pengurusan Aset' / unit='kenderaan & dot'
+   # NOTE - applied to both : Vehicle & Other Asset Loan/Reservation
    has_permission_on :asset_asset_loans, :to => :create                                                          # A staff can create loan
    has_permission_on :asset_asset_loans, :to =>:read do 
      if_attribute :staff_id => is {user.userable.id}
    end
+   
+   # NOTE - Other Asset Loan, INDEX - as in model/controller
    has_permission_on :asset_asset_loans, :to =>:update, :join_by => :and do                         # applicant can update unless loan is approved
      if_attribute :staff_id => is {user.userable.id}
      if_attribute :is_approved => is_not {true}
+     if_attribute :asset_id => is_in {Asset.otherasset.pluck(:id)}
    end
-   has_permission_on :asset_asset_loans, :to => [:read, :lampiran_a] do                                 # loan can be viewed by Unit Members
-     if_attribute :loaned_by => is_in {user.unit_members}
-   end
+    has_permission_on :asset_asset_loans, :to => [:show, :lampiran_a], :join_by => :and do    # loan can be viewed by Unit Members
+      if_attribute :loaned_by => is_in {user.unit_members}
+      if_attribute :asset_id => is_in {Asset.otherasset.pluck(:id)}
+    end
    has_permission_on :asset_asset_loans, :to => [:update, :approval], :join_by => :and do     # loan can be approved by Unit Members when not yet approved 
      if_attribute :loaned_by => is_in {user.unit_members}
      if_attribute :is_approved => is_not {true}
+     if_attribute :asset_id => is_in {Asset.otherasset.pluck(:id)}
    end
-   has_permission_on :asset_asset_loans, :to => :update, :join_by => :and do                         # As of Travel Request,Claim, AssetDefect - loaner must not hv access to EDIT 
-     if_attribute :loaned_by => is_in {user.unit_members}                                                           # temp - hide in Edit as of Travel Claim & AssetDefect
+   has_permission_on :asset_asset_loans, :to => :update, :join_by => :and do                        # As of Travel Request,Claim, AssetDefect - loaner must not hv access to EDIT 
+     if_attribute :loaned_by => is_in {user.unit_members}                                                          # temp - hide in Edit as of Travel Claim & AssetDefect
      if_attribute :is_approved => is {true}
      if_attribute :is_returned => is_not {true}
+     if_attribute :asset_id => is_in {Asset.otherasset.pluck(:id)}
    end
+   
+   # NOTE - Vehicle Reservation - starts here - 30 Sept 2016
+    has_permission_on :asset_asset_loans, :to => :show, :join_by => :and do                          # loan can be viewed by Unit Members
+      if_attribute :loaned_by => is_in {user.vehicle_unit_members}
+      if_attribute :asset_id => is_in {Asset.vehicle.pluck(:id)}
+   end
+   #PDF
+   has_permission_on :asset_asset_loans, :to => :vehicle_reservation, :join_by => :or do
+     if_attribute :staff_id => is {user.userable.id}
+      if_attribute :loaned_by => is_in {user.vehicle_unit_members}
+      if_attribute :loan_officer => is {user.userable.id}
+      if_attribute :hod => is {user.userable.id}
+      if_attribute :received_officer => is {user.userable.id}
+      if_attribute :driver_id => is {user.userable.id}
+   end
+   #Penyokong
+   has_permission_on :asset_asset_loans, :to => [:update, :vehicle_endorsement], :join_by => :and do     # loan can be SUPPORTED by Unit Members when not yet approved 
+      if_attribute :loaned_by => is_in {user.vehicle_unit_members}
+      if_attribute :is_endorsed => is_not {true}
+      if_attribute :asset_id => is_in {Asset.vehicle.pluck(:id)}
+   end
+   #Pelulus (Position : Ketua Tadbir Operasi Latihan)
+   has_permission_on :asset_asset_loans, :to =>[:update, :vehicle_approval], :join_by => :and do
+     if_attribute :hod => is {user.userable.id}
+     if_attribute :is_approved => is_not {true}
+     if_attribute :asset_id => is_in {Asset.vehicle.pluck(:id)}
+   end  
+   #Receiving Officer (return)
+   has_permission_on :asset_asset_loans, :to =>[:update, :vehicle_return], :join_by => :and do 
+     if_attribute :loaned_by => is_in {user.vehicle_unit_members}                                              
+     if_attribute :is_endorsed => is {true}
+     if_attribute :is_approved => is {true}
+     if_attribute :is_returned => is_not {true}
+     if_attribute :asset_id => is_in {Asset.vehicle.pluck(:id)}
+   end
+   # NOTE - vehicle reservation - ends here - 30September2016
    
    has_permission_on :student_student_discipline_cases, :to => [:menu, :create]                     # A staff can register discipline case
    has_permission_on :student_student_discipline_cases, :to => :delete, :join_by => :and do   # reporter can remove case before action type entered by Programme Mgr

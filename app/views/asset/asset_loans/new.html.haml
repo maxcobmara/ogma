@@ -10,6 +10,7 @@
     = render 'shared/error_messages', object: f.object
     = f.hidden_field :asset_id
     = f.hidden_field :staff_id, :value => current_user.userable_id
+    = f.hidden_field :college_id, :value => current_user.college_id
     
     - if @current_asset.category_id==3 || @current_asset.category.description.downcase.include?("kenderaan")
       = render 'form_vehicle', :f => f
