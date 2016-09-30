@@ -76,6 +76,7 @@ en:
         loan_officer: Loan Officer
         approved_date: Approve on
         hod: Hod Approval
+        loantype: Loan Type
       student:
         name: Name
         sstatus: Student Status

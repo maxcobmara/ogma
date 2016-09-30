@@ -58,6 +58,7 @@ ms_MY:
         loan_officer: Pegawai Pengeluar
         approved_date: Diluluskan pada
         hod: Kelulusan Ketua Jabatan
+        loantype: Jenis Pinjaman
       student:
         name: Nama
         sstatus: Status Pelajar

@@ -1,12 +1,15 @@
 .col-md-offset-1
   / Nav tabs
   %ul.nav.nav-tabs
-    %li.active= link_to (t "asset.loan.request"), "#request_edit",  "data-toggle" => "tab" 
+    - if @asset_loan.is_approved != true
+      %li.active= link_to (t "asset.loan.request"), "#request_edit",  "data-toggle" => "tab" 
+    - elsif @asset_loan.is_approved == true
+      %li= link_to (t "asset.loan.request"), "#request_edit",  "data-toggle" => "tab" 
     / to revise - LINK FOR APPROVAL - if login as peminjam OR login as unit_members of responsible unit
     /- elsif (@asset_loan.is_approved == true && @asset_loan.loaned_by == Login.current_login.staff_id) || (@asset_loan.is_approved == true && @unit_members.include?(current_login.staff_id))
     - if @asset_loan.is_approved == true
       %li=link_to (t "asset.loan.approval"), "#approval", "data-toggle" => "tab"
-      %li=link_to (t "asset.loan.return"), "#return", "data-toggle" => "tab"
+      %li.active=link_to (t "asset.loan.return"), "#return", "data-toggle" => "tab"
       
   /display
   .tab-content{style:"padding-top:1em"}
@@ -16,21 +19,24 @@
         %dd= @asset_loan.asset.assetcode
         
         %dt=(t 'asset.loan.loaned_by')+(t 'asset.loan.separator_slash')+(t 'asset.loan.responsible_unit')
-        %dd=h @asset_loan.owner.try(:name)+(t 'asset.loan.separator_slash')+@asset_loan.asset.assignedto.try(:positions).first.try(:unit).to_s
+        %dd=h @asset_loan.owner.try(:staff_with_rank)+(t 'asset.loan.separator_slash')+@asset_loan.asset.assignedto.try(:positions).first.try(:unit).to_s
         %br
-    #request_edit.tab-pane.fade.in.active 
-      %br
-      - if @asset_loan.is_approved == nil && @asset_loan.staff_id==@current_user.userable_id
-        = render 'tab_request_edit', :f => f
-      - elsif @asset_loan.is_approved == true || @asset_loan.is_approved == nil && @asset_loan.staff_id!=@current_user.userable_id
-        = render 'tab_show_request'
+    - if @asset_loan.is_approved != true
+      #request_edit.tab-pane.fade.in.active 
+    - else
+      #request_edit.tab-pane.fade
+        %br
+        - if @asset_loan.is_approved == nil && @asset_loan.staff_id==@current_user.userable_id
+          = render 'tab_request_edit', :f => f
+        - elsif @asset_loan.is_approved == true || @asset_loan.is_approved == nil && @asset_loan.staff_id!=@current_user.userable_id
+          = render 'tab_show_request'
       
     - if @asset_loan.is_approved == true
       #approval.tab-pane.fade 
         %br
         = render 'tab_show_approval'
 
-      #return.tab-pane.fade
+      #return.tab-pane.fade.active
         %br
         = render 'tab_return_edit', :f => f
 

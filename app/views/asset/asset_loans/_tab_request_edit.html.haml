@@ -7,7 +7,7 @@
     .col-sm-2.control-label
       = f.label t 'asset.loan.staff_id', for: :staff_id
     .col-md-4
-      = f.collection_select :staff_id, Staff.all, :id, :name, {:include_blank =>t('helpers.prompt.select_staff'), :selected=>loaner},{class: 'selectpicker', "data-width"=>'350px'}               
+      = f.collection_select :staff_id, Staff.all.order(rank_id: :asc, name: :asc), :id, :name, {:include_blank =>t('helpers.prompt.select_staff'), :selected=>loaner},{class: 'selectpicker mandatory', "data-width"=>'350px'}               
   .form-group
     .col-sm-2.control-label
       = f.label t 'asset.loan.reasons', for: :reasons
@@ -17,12 +17,12 @@
     .col-sm-2.control-label
       = f.label t 'asset.loan.requested_for', for: :loaned_on
     .col-md-3
-      = f.text_field :loaned_on, class: 'date_picker_reverse form-control', value: @asset_loan.loaned_on.try(:strftime, '%d-%m-%Y')
+      = f.text_field :loaned_on, class: 'date_picker_reverse form-control mandatory', value: @asset_loan.loaned_on.try(:strftime, '%d-%m-%Y')
   .form-group
     .col-sm-2.control-label
       = f.label t 'asset.loan.returned_date'
     .col-md-3
-      = f.text_field :expected_on, class: 'date_picker_reverse form-control', value: @asset_loan.expected_on.try(:strftime, '%d-%m-%Y')
+      = f.text_field :expected_on, class: 'date_picker_reverse form-control mandatory', value: @asset_loan.expected_on.try(:strftime, '%d-%m-%Y')
   .form-group
     .col-sm-2.control-label
       = f.label t 'asset.loan.loantype', for: :loantype
