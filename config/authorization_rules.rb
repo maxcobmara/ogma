@@ -482,10 +482,28 @@ authorization do
     has_permission_on :asset_asset_defects, :to =>[:update, :process2], :join_by => :and do #3nov2013, 21Jan2016
       if_attribute :is_processed => is_not {true}
     end
-    has_permission_on :asset_asset_loans, :to => [:read, :create, :lampiran_a] #create added to work with Staffs Modules
+    has_permission_on :asset_asset_loans, :to => [:read, :create, :lampiran_a, :vehicle_reservation] #create added to work with Staffs Modules
     has_permission_on :asset_asset_loans, :to => [:update, :approval] , :join_by => :and do
       if_attribute :is_returned => is_not {true}
+      if_attribute :asset_id => is_in {Asset.otherasset.pluck(:id)}
     end
+    #vehicle reservation - START - full access? - 1 Oct 2016
+    #1)As owner (loaned_by)?
+    #has_permission_on :asset_asset_loans, :to => [:update, :vehicle_endorsement], :join_by => :and do
+    #  if_attribute :is_endorsed => is_not {true}
+    #  if_attribute :asset_id => is_in {Asset.vehicle.pluck(:id)}
+    #end
+    #2)act as..Hod - Ketua Tadbir Bantuan Operasi Latihan (AMSAS) / Timbalan Pengarah (Pengurusan) (KSKBJB)
+    has_permission_on :asset_asset_loans, :to => [:update, :vehicle_approval], :join_by => :and do
+      if_attribute :is_approved => is_not {true}
+      if_attribute :asset_id => is_in {Asset.vehicle.pluck(:id)}
+    end
+    #3)As (received_officer)?
+    #has_permission_on :asset_asset_loans, :to => [:update, :vehicle_return], :join_by => :and do
+    #  if_attribute :is_returned => is_not {true}
+    #  if_attribute :asset_id => is_in {Asset.vehicle.pluck(:id)}
+    #end
+    #vehicle reservation - END - full access? - 1 Oct 2016
     has_permission_on :campus_locations, :to => [:manage, :kewpa7, :kewpa10, :kewpa11]
     has_permission_on :asset_asset_disposals, :to =>[:manage, :kewpa17_20, :kewpa17, :kewpa20, :kewpa16, :kewpa18, :kewpa19, :dispose, :revalue, :verify, :view_close]
     has_permission_on :asset_asset_losses, :to => [:manage, :kewpa28, :kewpa29, :kewpa30, :kewpa31] 
@@ -1742,44 +1760,90 @@ authorization do
   end
 # NOTE - DISABLE(in EACH radio buttons/click : radio & checkbox - assetown[1].disabled=true as the only owner is asset_administrator
 
-  #40-OK
+
   #40 - OK 10Feb2016
+  #40 - Revision 1Oct2016: Vehicle reservation added
   role :asset_loans_module_admin do
-     has_permission_on :asset_asset_loans, :to => [:manage, :approval, :lampiran_a]
+     has_permission_on :asset_asset_loans, :to => [:manage, :approval, :vehicle_endorsement, :vehicle_approval, :vehicle_return, :lampiran_a, :vehicle_reservation]
   end
   role :asset_loans_module_viewer do
-     has_permission_on :asset_asset_loans, :to => [:read, :lampiran_a]
+     has_permission_on :asset_asset_loans, :to => [:read, :lampiran_a, :vehicle_reservation]
   end
   role :asset_loans_module_user do
-    has_permission_on :asset_asset_loans, :to => [:read, :approval, :update, :lampiran_a]
+    has_permission_on :asset_asset_loans, :to => [:read, :approval, :vehicle_endorsement, :vehicle_approval, :vehicle_return, :update, :lampiran_a, :vehicle_reservation]
   end
   role :asset_loans_module_member do
-    #own record (staff - loaner / unit members)
+    #own record (staff - loaner / unit members) - NOTE - applied to both : Vehicle & Other Asset Loan/Reservation
     has_permission_on :asset_asset_loans, :to => :create                                                          # A staff can create loan
     has_permission_on :asset_asset_loans, :to =>:read do 
       if_attribute :staff_id => is {user.userable.id}
     end
+   # NOTE - Other Asset Loan, INDEX - as in model/controller
     has_permission_on :asset_asset_loans, :to =>:update, :join_by => :and do                         # applicant can update unless loan is approved
       if_attribute :staff_id => is {user.userable.id}
       if_attribute :is_approved => is_not {true}
+      if_attribute :asset_id => is_in {Asset.otherasset.pluck(:id)}
     end
-    has_permission_on :asset_asset_loans, :to => [:read, :lampiran_a] do                                 # loan can be viewed by Unit Members
+    has_permission_on :asset_asset_loans, :to => [:show, :lampiran_a], :join_by => :and do    # loan can be viewed by Unit Members
       if_attribute :loaned_by => is_in {user.unit_members}
+      if_attribute :asset_id => is_in {Asset.otherasset.pluck(:id)}
     end
     has_permission_on :asset_asset_loans, :to => [:update, :approval], :join_by => :and do     # loan can be approved by Unit Members when not yet approved 
-      if_attribute :loaned_by => is_in {user.unit_members}
-      if_attribute :is_approved => is_not {true}
-    end
-    has_permission_on :asset_asset_loans, :to => :update, :join_by => :and do                         # As of Travel Request,Claim, AssetDefect - loaner must not hv access to EDIT 
-      if_attribute :loaned_by => is_in {user.unit_members}                                                           # temp - hide in Edit as of Travel Claim & AssetDefect
-      if_attribute :is_approved => is {true}
-      if_attribute :is_returned => is_not {true}
-    end
+     if_attribute :loaned_by => is_in {user.unit_members}
+     if_attribute :is_approved => is_not {true}
+     if_attribute :asset_id => is_in {Asset.otherasset.pluck(:id)}
+   end
+   has_permission_on :asset_asset_loans, :to => :update, :join_by => :and do                        # As of Travel Request,Claim, AssetDefect - loaner must not hv access to EDIT 
+     if_attribute :loaned_by => is_in {user.unit_members}                                                          # temp - hide in Edit as of Travel Claim & AssetDefect
+     if_attribute :is_approved => is {true}
+     if_attribute :is_returned => is_not {true}
+     if_attribute :asset_id => is_in {Asset.otherasset.pluck(:id)}
+   end
+   # NOTE - Vehicle Reservation - starts here - 30 Sept 2016
+    has_permission_on :asset_asset_loans, :to => :show, :join_by => :and do                          # loan can be viewed by Unit Members
+      if_attribute :loaned_by => is_in {user.vehicle_unit_members}
+      if_attribute :asset_id => is_in {Asset.vehicle.pluck(:id)}
+   end
+   #PDF
+   has_permission_on :asset_asset_loans, :to => :vehicle_reservation, :join_by => :or do
+     if_attribute :staff_id => is {user.userable.id}
+      if_attribute :loaned_by => is_in {user.vehicle_unit_members}
+      if_attribute :loan_officer => is {user.userable.id}
+      if_attribute :hod => is {user.userable.id}
+      if_attribute :received_officer => is {user.userable.id}
+      if_attribute :driver_id => is {user.userable.id}
+   end
+   #Penyokong
+   has_permission_on :asset_asset_loans, :to => [:update, :vehicle_endorsement], :join_by => :and do     # loan can be SUPPORTED by Unit Members when not yet approved 
+      if_attribute :loaned_by => is_in {user.vehicle_unit_members}
+      if_attribute :is_endorsed => is_not {true}
+      if_attribute :asset_id => is_in {Asset.vehicle.pluck(:id)}
+   end
+   #Pelulus (Position : Ketua Tadbir Operasi Latihan)
+   has_permission_on :asset_asset_loans, :to =>[:update, :vehicle_approval], :join_by => :and do
+     if_attribute :hod => is {user.userable.id}
+     if_attribute :is_approved => is_not {true}
+     if_attribute :asset_id => is_in {Asset.vehicle.pluck(:id)}
+   end  
+   #Receiving Officer (return)
+   has_permission_on :asset_asset_loans, :to =>[:update, :vehicle_return], :join_by => :and do 
+     if_attribute :loaned_by => is_in {user.vehicle_unit_members}                                              
+     if_attribute :is_endorsed => is {true}
+     if_attribute :is_approved => is {true}
+     if_attribute :is_returned => is_not {true}
+     if_attribute :asset_id => is_in {Asset.vehicle.pluck(:id)}
+   end
+   # NOTE - vehicle reservation - ends here - 30September2016
     #own (approval - asset admin)
-    has_permission_on :asset_asset_loans, :to => [:read, :lampiran_a]
-    has_permission_on :asset_asset_loans, :to => [:update, :approval] , :join_by => :and do
-      if_attribute :is_returned => is_not {true}
-    end
+    #has_permission_on :asset_asset_loans, :to => [:read, :lampiran_a]
+    #has_permission_on :asset_asset_loans, :to => [:update, :approval] , :join_by => :and do
+    #  if_attribute :is_returned => is_not {true}
+    #end
+    #2)(approval- asset admin)act as..Hod - Ketua Tadbir Bantuan Operasi Latihan (AMSAS) / Timbalan Pengarah (Pengurusan) (KSKBJB)
+    #has_permission_on :asset_asset_loans, :to => [:update, :vehicle_approval], :join_by => :and do
+    #  if_attribute :is_approved => is_not {true}
+    #  if_attribute :asset_id => is_in {Asset.vehicle.pluck(:id)}
+    #end
   end
   
   #41-OK

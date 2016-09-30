@@ -4,9 +4,9 @@
       = f.label t 'asset.loan.is_returned', for: :is_returned
     .col-md-1
       = f.check_box :is_returned
-    .col-md-2
+    .col-md-3
       %span.return_it{:style=> "display: none;"}
-        = f.text_field :returned_on, class: 'date_picker form-control'
+        = f.text_field :returned_on, class: 'date_picker_reverse form-control mandatory', value: @asset_loan.try(:strftime, '%d-%m-%Y')
 
   .form-group
     .col-sm-2.control-label.return_it{:style=> "display: none;"}
@@ -18,7 +18,7 @@
     .col-sm-2.control-label.return_it{:style=> "display: none;"}
       = f.label t 'asset.loan.received_officer', for: :received_officer
     .col-md-6.return_it{:style=> "display: none;"}
-      = Staff.where(id: @current_user.userable_id).first.name
+      = Staff.where(id: @current_user.userable_id).first.staff_with_rank
       = f.hidden_field :received_officer, :value => @current_user.userable_id
 %br
 

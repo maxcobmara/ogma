@@ -13,7 +13,7 @@
     = f.hidden_field :college_id, :value => current_user.college_id
     
     - if @current_asset.category_id==3 || @current_asset.category.description.downcase.include?("kenderaan")
-      = render 'form_vehicle', :f => f
+      = render 'asset/asset_loans/vehicle/form_vehicle', :f => f
     - else
       = render 'form', :f => f
     %br  

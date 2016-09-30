@@ -2,7 +2,7 @@
   %dl.dl-horizontal
 
     %dt=t 'asset.loan.staff_id'
-    %dd= link_to @asset_loan.staff.try(:name), (staff_info_path(@asset_loan.staff_id)) rescue nil
+    %dd= link_to @asset_loan.staff.try(:staff_with_rank), (staff_info_path(@asset_loan.staff_id)) rescue nil
   
     %dt=t 'asset.loan.reasons'
     %dd=h @asset_loan.reasons
