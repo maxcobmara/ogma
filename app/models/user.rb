@@ -230,6 +230,10 @@ class User < ActiveRecord::Base
     #where('staff_id IN(?)', unit_members) ##use in ptdo.rb (controller - index)
   end
   
+  def vehicle_unit_members
+    Position.where('unit ilike(?) or unit ilike(?) or unit ilike(?) or unit ilike(?)', '%kenderaan%', '%Kenderaan%', '%vehicle%', '%Vehicle%').pluck(:staff_id).uniq
+  end
+  
   #call this method if academician also lead a mgmt unit
   def unit_lead_by_academician
     main_tasks=userable.positions.first.tasks_main

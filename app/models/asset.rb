@@ -29,7 +29,11 @@ class Asset < ActiveRecord::Base
   
   scope :hm, -> { where(assettype: 1)}
   scope :inv, -> {where(assettype: 2)}
+  scope :vehicle, -> {where(category_id: Asset.category_id_of_vehicle)}
+  scope :otherasset, -> {where.not(category_id: 3)}
   
+  def self.category_id_of_vehicle; Assetcategory.where('description ilike(?) or description ilike(?) or description ilike(?) or description ilike(?)', '%kenderaan%', '%Kenderaan%', '%vehicle%', '%Vehicle%').first.id; end
+    
   def code_asset
     "#{assetcode} - #{name}"
   end

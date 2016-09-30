@@ -1,6 +1,6 @@
 class AssetLoan < ActiveRecord::Base
    
-  before_save :set_loaned_by
+  before_save :set_loaned_by_and_hod
   
   belongs_to :asset, :foreign_key => 'asset_id'
   belongs_to :staff, :foreign_key => 'staff_id'   #peminjam / loaner
@@ -73,14 +73,21 @@ class AssetLoan < ActiveRecord::Base
   end
   
   def self.sstaff2(u)
-     aa=User.where(userable_id: u).first.unit_members
-     where('staff_id=? OR loaned_by=? OR loan_officer=? OR hod=? OR received_officer=? OR loaned_by IN(?)', u,u,u,u,u,aa)
+    current_unit = Position.where(staff_id: u).first.try(:unit).downcase
+    if current_unit.include?('kenderaan') || current_unit.include?('vehicle')
+      bb=User.where(userable_id: u).first.vehicle_unit_members
+    else
+      bb=[]
+    end
+    aa=User.where(userable_id: u).first.unit_members
+    where('staff_id=? OR loaned_by=? OR loan_officer=? OR hod=? OR received_officer=? OR loaned_by IN(?) OR loaned_by IN(?)', u,u,u,u,u,aa,bb)
   end
   
-  def set_loaned_by
+  def set_loaned_by_and_hod
     if loaned_by.blank?
       self.loaned_by = asset.assignedto_id
     end
+    self.hod= Staff.joins(:positions).where('positions.unit=?', 'Ketua Tadbir Bantuan Operasi Latihan').first.id
   end
   
   def loaner
@@ -96,7 +103,7 @@ class AssetLoan < ActiveRecord::Base
     exist_unit_of_staff_in_position = Position.where('unit is not null and staff_id=?',self.loaned_by).pluck(:staff_id).uniq
     #if exist_unit_of_staff_in_position.include?(self.loaned_by)
     if exist_unit_of_staff_in_position.count > 0
-      current_unit = Position.where(staff_id: self.loaned_by).try(:unit)
+      current_unit = Position.where(staff_id: self.loaned_by).first.try(:unit)
       if current_unit
         unit_members = Position.where(unit: current_unit).pluck(:staff_id).uniq-[nil]
       else

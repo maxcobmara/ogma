@@ -4,15 +4,15 @@
       = f.label t 'asset.loan.is_approved', for: :is_approved
     .col-md-6
       .row
-        .col-md-1= f.radio_button :is_approved, true, :id => 'is_approved_true'  , :class => 'approval' 
-        .col-md-2= t 'asset.loan.approve'
-        .col-md-1= f.radio_button :is_approved, false, :id => 'is_approved_false' , :class => 'approval' 
+        .col-md-2= f.radio_button :is_approved, true, :id => 'is_approved_true'  , :class => 'approval' 
+        .col-md-3= t 'asset.loan.approve'
+        .col-md-2= f.radio_button :is_approved, false, :id => 'is_approved_false' , :class => 'approval' 
         .col-md-2= t 'asset.loan.reject'
   .form-group
     .col-sm-2.control_label
       = f.label t 'asset.loan.approved_date', for: :approved_date
     .col-md-4
-      = f.text_field :approved_date, class: 'date_picker form-control', :value => Date.today
+      = f.text_field :approved_date, class: 'date_picker_reverse form-control', :value => Date.today.strftime('%d-%m-%Y')
   .form-group
     .col-sm-2.control-label
       = f.label t 'asset.loan.loan_officer', for: :loan_officer
@@ -24,19 +24,22 @@
       = f.label t 'asset.loan.notify_hod', for: :notify_hod
       
     .col-md-4.notify_hod
-      - @unit_members = @asset_loan.unit_members 
-      - if @asset_loan.loantype == 1
-        - if @unit_members.count==1 
-          = f.collection_select :hod, Staff.where('id=?',@unit_members[0]), :id, :name, {:include_blank=> t('helpers.prompt.select_staff')},{class: 'selectpicker', "data-width"=>'350px'}
-          /= f.collection_select :staff_id, Staff.all.order(name: :asc), :id, :name, {:include_blank =>t('helpers.prompt.select_staff'), :selected=>@asset_loan.staff_id},{class: 'selectpicker', "data-width"=>'350px'}    
-        - elsif @unit_members.count>1
-          = f.collection_select :hod, Staff.find(:all, :conditions => ['id IN (?)', @unit_members]), :id, :name
-        - else
-          /to revised later - for now - if unit members not exist, use Pn Nabilah
-          = f.collection_select :hod, Staff.where(id: 113), :id, :name, {:include_blank =>t('helpers.prompt.select_staff'), :selected=>113},{class: 'selectpicker', "data-width"=>'350px'}   
-      - elsif @asset_loan.loantype == 2
-        /for external - fixed must inform Pengarah
-        = f.collection_select :hod, Staff.where(id: 58), :id, :name, {:include_blank =>t('helpers.prompt.select_staff'), :selected=>58},{class: 'selectpicker', "data-width"=>'350px'}    
+      - if current_user.college.code!="kskbjb"
+        =f.collection_select :hod, Staff.order(rank_id: :asc, name: :asc), :id, :staff_with_rank, {:include_blank=> t('helpers.prompt.select_staff')},{class: 'selectpicker', "data-width"=>'350px'}
+      - elsif current_user.college.code=="kskbjb"
+        - @unit_members = @asset_loan.unit_members 
+        - if @asset_loan.loantype == 1
+          - if @unit_members.count==1 
+            = f.collection_select :hod, Staff.where('id=?',@unit_members[0]), :id, :name, {:include_blank=> t('helpers.prompt.select_staff')},{class: 'selectpicker', "data-width"=>'350px'}
+            /= f.collection_select :staff_id, Staff.all.order(name: :asc), :id, :name, {:include_blank =>t('helpers.prompt.select_staff'), :selected=>@asset_loan.staff_id},{class: 'selectpicker', "data-width"=>'350px'}    
+          - elsif @unit_members.count>1
+            = f.collection_select :hod, Staff.where('id IN (?)', @unit_members), :id, :name
+          - else
+            /to revised later - for now - if unit members not exist, use Pn Nabilah
+            = f.collection_select :hod, Staff.where(id: 113), :id, :name, {:include_blank =>t('helpers.prompt.select_staff'), :selected=>113},{class: 'selectpicker', "data-width"=>'350px'}   
+        - elsif @asset_loan.loantype == 2
+          /for external - fixed must inform Pengarah
+          = f.collection_select :hod, Staff.where(id: 58), :id, :name, {:include_blank =>t('helpers.prompt.select_staff'), :selected=>58},{class: 'selectpicker', "data-width"=>'350px'}    
 
 :javascript
 

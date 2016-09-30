@@ -33,14 +33,15 @@
           %td
             /current login - as maslinda (login_id = 11)
             / <% unless current_login.staff == asset_loan.staff %>
-            - current_login_roles = Login.joins(:roles).where(id:11).pluck('roles.id').uniq
-            - unless asset_loan.staff == Staff.where(id: 25)
-              =h asset_loan.staff.name
-            - else
-              %b=asset_loan.staff.name if current_login_roles.include?(11)
+            /- current_login_roles = Login.joins(:roles).where(id:11).pluck('roles.id').uniq
+            /- unless asset_loan.staff == Staff.where(id: 25)
+            /  =h asset_loan.staff.name
+            /- else
+            /  %b=asset_loan.staff.name if current_login_roles.include?(11)
+            =asset_loan.staff.staff_with_rank
             %br= asset_loan.reasons.capitalize
           %td
-            =h asset_loan.asset.assignedto.name unless asset_loan.asset.assignedto.blank?
+            =h asset_loan.asset.assignedto.staff_with_rank unless asset_loan.asset.assignedto.blank?
             %br
               %b=h asset_loan.asset.assignedto.positions.first.unit unless asset_loan.asset.assignedto.positions.blank?
           %td  
