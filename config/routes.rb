@@ -91,6 +91,7 @@ Ogma::Application.routes.draw do
     resources :travel_claim_mileage_rates
     resources :employgrades
     resources :postinfos
+    resources :mentors
   end
 
   match '/travel_requests/logs', to: 'staff/travel_requests#travel_log_index', via: 'get'

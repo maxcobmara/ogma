@@ -100,6 +100,8 @@ class Staff < ActiveRecord::Base
   has_many :evaluate_courses
   has_many :average_scores_lecturer, class_name: 'AverageCourse'
   has_many :average_scores_verifier, class_name: 'AverageCourse'
+  
+  has_one :mentor, foreign_key: 'staff_id'
 
   #validates_attachment_size         :photo, :less_than => 500.kilobytes
   #validates_attachment_content_type :photo, :content_type => ['image/jpeg', 'image/png']

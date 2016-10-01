@@ -30,6 +30,7 @@ authorization do
      if_attribute :admin => is {true}
    end
    has_permission_on :repositories, :to => [:manage, :download]
+   has_permission_on :staff_mentors, :to => :manage
     
   #by existing roles?
 #    includes :staff
@@ -421,6 +422,10 @@ authorization do
    has_permission_on :repositories, :to => :update do
      if_attribute :staff_id => is {user.userable.id}
    end
+   has_permission_on :staff_mentors, :to => [:read, :create]
+   has_permission_on :staff_mentors, :to => :update do 
+     if_attribute :staff_id => is {user.userable.id}
+   end
    has_permission_on :campus_bookingfacilities, :to => [:menu, :create]
    has_permission_on :campus_bookingfacilities, :to => [:update, :show, :booking_facility] do
      if_attribute :staff_id => is {user.userable.id}
@@ -716,6 +721,7 @@ authorization do
         if_attribute :studentsubmit => is_not {true}
       end
       has_permission_on :campus_pages, :to => :flexipage
+      has_permission_on :staff_mentors, :to => :read
   end
   
   role :student_administrator do

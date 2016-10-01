@@ -1,0 +1,37 @@
+- model_class = Mentor
+.page-header
+  %h1= t('staff.mentors.title')
+  
+.navbar.navbar-inverse{role: "navigation", style: "padding-right:40px;"}
+  %ul.nav.navbar-nav
+    - permitted_to? :create, :staff_mentors do
+      %li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'actions.new'))), new_staff_mentor_path
+  %ul.nav.navbar-nav.navbar-right
+    %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "index_search_bar"
+    %li.dropdown
+      %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#"}
+        = fa_icon "print", text: (t 'actions.print')
+        %b.caret
+
+.row
+  %table.table-striped.table-hover.ogma
+    %thead
+      %tr
+        %th{width: '25%'}=sort_link(@search, :staff_id, (t 'staff.mentors.staff_id'))
+        %th{width: '15%'}=sort_link(@search, :mentor_date, (t 'staff.mentors.mentor_date'))
+        %th{width: '35%'}=(t 'staff.mentors.mentee')
+        %th{width: '25%'}=(t 'staff.mentors.remark')
+        
+    %tbody
+    = render "index_search"
+    - @mentors.each do |mentor|
+      %tr
+        %td=link_to mentor.staff.staff_with_rank, staff_mentor_path(mentor)
+        %td=h mentor.mentor_date.strftime('%d-%m-%Y')
+        %td
+          %ol
+            - for mentee in Student.where(id: mentor.mentees.pluck(:student_id))
+              %li=mentee.student_with_rank
+        %td=h mentor.remark
+
+  .right{style:"padding:0 30px; margin:0;"}= paginate @mentors, :theme => 'twitter-bootstrap-3'

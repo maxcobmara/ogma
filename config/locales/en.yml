@@ -572,6 +572,8 @@ en:
     rule21: "Average Instructor Module (Member) access for updating records are limited to Evaluator, while evaluated Instructor can only view his records."
     rule22: "For display of non-static pages eg. 'Library Rules & Regulation', either activate 'Student' role, 'Staff' role or activate access by module ie. 'Staff Module' (Admin/Viewer/User/Member)."
     rule23: "All user accounts with 'Staff' role may upload or download MS:ISO document in PDF/image format. However, editing is restricted to repository creator and user with 'administration' and 'developer'."
+    rule24: "Activate 'Staff' or 'Student' role to gain access for Mentor / Mentee module. Updates permitted only to Mentor (own record), Administration and Developer."
+    rule25: "'Vehicle Reservation' function accessible in Asset Loan module."
     
     #Filling Parts
     events_module_admin: Events Module Admin
@@ -1408,6 +1410,18 @@ en:
       post_count: Position Count
       position: Position
 
+    mentors:
+      title: Mentor - Mentee
+      list: Mentor - Mentee List
+      new: New Mentor - Mentee Group
+      edit: Edit Mentor - Mentee Group
+      details: Details
+      staff_id: Mentor
+      mentor_date: Date
+      remark: Remark
+      mentee: Mentee
+      name_or_rank: Name or Rank
+    
     staff_appraisal:
       title: Staff Appraisal
       new: New Staff Appraisal
@@ -3854,6 +3868,7 @@ en:
       view_html: HTML Tags
       remark_editor: "(Remark : Click 'Text Editor' to edit 'body' in the Text Editor)"
       remark_html: "(Remark : Click 'HTML Tags' to edit 'body' in HTML format)"
+      campus_info: Campus Info
       
     bookingfacilities:
       title: Facilities Reservation
