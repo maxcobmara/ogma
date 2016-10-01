@@ -11,7 +11,7 @@
   %table.table-striped.table-hover.ogma
     %thead
       %tr
-        %th{width: '20%'}= sort_link(@search, :asset_id, (t 'asset.loan.asset_id'))
+        %th{width: '20%'}= sort_link(@search, :asset_id, ((t 'asset.loan.vehicle')+" / "+(t 'asset.loan.other_asset')))
         %th{width: '20%'}
           = sort_link(@search, :staff_id, (t 'asset.loan.staff_id'))
           = (t 'asset.loan.separator_slash')+(t 'asset.loan.reasons')
@@ -29,15 +29,12 @@
       /to revised later - upon completion of roles assignment - Admin, Asset Admin & Owner+Responsible Unit (index list)
       - @asset_loans.each do |asset_loan|
         %tr
-          %td= link_to asset_loan.asset.code_asset, asset_loan_path(asset_loan)
           %td
-            /current login - as maslinda (login_id = 11)
-            / <% unless current_login.staff == asset_loan.staff %>
-            /- current_login_roles = Login.joins(:roles).where(id:11).pluck('roles.id').uniq
-            /- unless asset_loan.staff == Staff.where(id: 25)
-            /  =h asset_loan.staff.name
-            /- else
-            /  %b=asset_loan.staff.name if current_login_roles.include?(11)
+            - if Asset.vehicle.pluck(:id).include?(asset_loan.asset_id)
+              = link_to (fa_icon("car")+" "+asset_loan.asset.code_asset), asset_loan_path(asset_loan)
+            - else
+              = link_to asset_loan.asset.code_asset, asset_loan_path(asset_loan) 
+          %td
             =asset_loan.staff.staff_with_rank
             %br= asset_loan.reasons.capitalize
           %td

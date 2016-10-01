@@ -2246,6 +2246,8 @@ en:
       asset_on_loan: Vehicle / Other Asset Loan List
       approve_loan: Loan Approval
       asset_id: Asset
+      vehicle: Vehicle
+      other_asset: Other Asset
       staff_id: Loaned by
       reasons: Reasons
       loaned_by: Responsible Staff

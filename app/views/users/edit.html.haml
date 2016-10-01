@@ -1514,7 +1514,7 @@ $(function(){
       c_staffown[3].disabled=true;
       a_staffown[2].disabled=true;
     }
-    /*when role : Staff is selected, uncheck Staffs(O), Staff Attendance(O), Training Attendance(O), Staff Appraisal(O), Staff Leaves(O), Travel Requests(O), Travel Claims(O), Asset List(R), Asset Defect(O), Asset Loan(O), Student Discipline Case(O), Events(O), Bulletins(R), Document Registry(O), Library Books(R), Library Analysis & Statistics(R), Instructor Appraisals(O), Average Instructors(O), Facilities Reservation(O)*/
+    /*when role : Staff is selected, uncheck Staffs(O), Staff Attendance(O), Training Attendance(O), Staff Appraisal(O), Staff Leaves(O), Travel Requests(O), Travel Claims(O), Asset Loss(O), Asset List(R), Asset Defect(O), Asset Loan(O), Student Discipline Case(O), Events(O), Bulletins(R), Document Registry(O), Library Books(R), Library Analysis & Statistics(R), Instructor Appraisals(O), Average Instructors(O), Facilities Reservation(O)*/
     if(inputElements[5].checked){
       a_staffown[2].disabled=true;
       c_staffown[3].disabled=true;
@@ -1523,6 +1523,7 @@ $(function(){
       b_staffown[0].disabled=true;
       b_staffown[1].disabled=true;
       assetrd[5].disabled=true;
+      assetown[2].disabled=true;
       assetown[4].disabled=true;
       assetown[1].disabled=true;
       studentown[3].disabled=true;
@@ -2735,13 +2736,15 @@ $(function(){
       if(inputElements[5].checked){
         assetrd[5].disabled=true;    /*list*/
         assetown[4].disabled=true; /*defect*/
-        assetown[1].disabled=true; /*loan*/
+        assetown[1].disabled=true; /*loss*/
+        assetown[2].disabled=true; /*loan*/
       }
       else
       {
         assetrd[5].disabled=false;
         assetown[4].disabled=false;
         assetown[1].disabled=false; 
+        assetown[2].disabled=false;
       }
       /*asset categories - available when asset admin is not selected*/
       supportmg[6].disabled=false;

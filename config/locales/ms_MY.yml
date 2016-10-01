@@ -2137,6 +2137,8 @@ ms_MY:
       asset_on_loan: Senarai Pinjaman Kenderaan / Aset Lain
       approve_loan: Kelulusan Pinjaman 
       asset_id: Aset
+      vehicle: Kenderaan
+      other_asset: Aset Lain
       staff_id: Peminjam
       reasons: Sebab Peminjaman
       loaned_by: Pegawai 
