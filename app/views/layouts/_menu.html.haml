@@ -170,7 +170,7 @@
           %h2.icon E-Filing
           %a.mp-back{:href => "#"}=t('back')
           %ul
-            %li= link_to content_tag(:i, "", :class => "icon-numb") + "Campus Info", campus_page_path(1)
+            %li= link_to content_tag(:i, "", :class => "icon-numb") + (t "campus.pages.campus_info"), flexipage_campus_page_path(1)
             - permitted_to? :read, :events do
               %li= link_to content_tag(:i, "", :class => "icon-numb") + (t "events.campus_events"), events_path
               %li= link_to content_tag(:i, "", :class => "icon-numb") + "Campus Events Calendar", '#'

@@ -3774,6 +3774,7 @@ ms_MY:
       view_html: Tag HTML
       remark_editor: "(Catatan : Klik 'Penyunting Teks' untuk suntingan dalam Penyunting Teks)"
       remark_html: "(Catatan : Klik 'Tag HTML' untuk suntingan teks dalam format HTML)"
+      campus_info: Info Kampus
   
     bookingfacilities:
       title: Tempahan Kemudahan

@@ -3854,6 +3854,7 @@ en:
       view_html: HTML Tags
       remark_editor: "(Remark : Click 'Text Editor' to edit 'body' in the Text Editor)"
       remark_html: "(Remark : Click 'HTML Tags' to edit 'body' in HTML format)"
+      campus_info: Campus Info
       
     bookingfacilities:
       title: Facilities Reservation
