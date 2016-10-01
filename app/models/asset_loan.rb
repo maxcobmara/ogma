@@ -50,10 +50,22 @@ class AssetLoan < ActiveRecord::Base
     end 
     loanstatus
   end
+  
+  def self.category_search(query)
+    vehicle_ids=Asset.vehicle.pluck(:id)
+    if query== '1'
+      assetcategory=where(asset_id: vehicle_ids)
+    elsif query=='2'
+      assetcategory=where.not(asset_id: vehicle_ids)
+    else
+      assetcategory=AssetLoan.all
+    end
+    assetcategory
+  end
 
   # whitelist the scope
   def self.ransackable_scopes(auth_object = nil)
-    [:keyword_search, :status_search]
+    [:keyword_search, :status_search, :category_search]
   end
   
   def must_assign_if_external?  #16July2013
@@ -73,12 +85,7 @@ class AssetLoan < ActiveRecord::Base
   end
   
   def self.sstaff2(u)
-    current_unit = Position.where(staff_id: u).first.try(:unit).downcase
-    if current_unit.include?('kenderaan') || current_unit.include?('vehicle')
-      bb=User.where(userable_id: u).first.vehicle_unit_members
-    else
-      bb=[]
-    end
+    bb=User.where(userable_id: u).first.vehicle_unit_members
     aa=User.where(userable_id: u).first.unit_members
     where('staff_id=? OR loaned_by=? OR loan_officer=? OR hod=? OR received_officer=? OR loaned_by IN(?) OR loaned_by IN(?)', u,u,u,u,u,aa,bb)
   end

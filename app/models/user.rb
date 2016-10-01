@@ -230,8 +230,16 @@ class User < ActiveRecord::Base
     #where('staff_id IN(?)', unit_members) ##use in ptdo.rb (controller - index)
   end
   
+  # NOTE - if current user is from 'Unit Kenderaan', display array of 'Unit Kenderaan' - staff_id, otherwise display empty array
+  # NOTE - usage: auth rules & asset_loan.rb
   def vehicle_unit_members
-    Position.where('unit ilike(?) or unit ilike(?) or unit ilike(?) or unit ilike(?)', '%kenderaan%', '%Kenderaan%', '%vehicle%', '%Vehicle%').pluck(:staff_id).uniq
+    current_unit = Position.where(staff_id: userable_id).first.try(:unit).downcase
+    if current_unit.include?('kenderaan') || current_unit.include?('vehicle')
+      bb=Position.where('unit ilike(?) or unit ilike(?) or unit ilike(?) or unit ilike(?)', '%kenderaan%', '%Kenderaan%', '%vehicle%', '%Vehicle%').pluck(:staff_id).uniq
+    else
+      bb=[]
+    end
+    bb
   end
   
   #call this method if academician also lead a mgmt unit

@@ -294,8 +294,9 @@ authorization do
    # NOTE - Index - list display -> model - SAMPLE (Position Id=77, assign (1)staff_id=118:rosilah, (2)unit='Unit Tenaga Pengajar & Pengurusan Aset' / unit='kenderaan & dot'
    # NOTE - applied to both : Vehicle & Other Asset Loan/Reservation
    has_permission_on :asset_asset_loans, :to => :create                                                          # A staff can create loan
-   has_permission_on :asset_asset_loans, :to =>:read do 
+   has_permission_on :asset_asset_loans, :to =>:read, :join_by => :or do 
      if_attribute :staff_id => is {user.userable.id}
+     if_attribute :hod => is {user.userable.id}
    end
    
    # NOTE - Other Asset Loan, INDEX - as in model/controller
@@ -1800,6 +1801,11 @@ authorization do
      if_attribute :asset_id => is_in {Asset.otherasset.pluck(:id)}
    end
    # NOTE - Vehicle Reservation - starts here - 30 Sept 2016
+    has_permission_on :asset_asset_loans, :to =>:update, :join_by => :and do                         # applicant can update unless loan is approved
+      if_attribute :staff_id => is {user.userable.id}
+      if_attribute :is_endorsed => is_not {true}
+      if_attribute :asset_id => is_in {Asset.vehicle.pluck(:id)}
+    end
     has_permission_on :asset_asset_loans, :to => :show, :join_by => :and do                          # loan can be viewed by Unit Members
       if_attribute :loaned_by => is_in {user.vehicle_unit_members}
       if_attribute :asset_id => is_in {Asset.vehicle.pluck(:id)}

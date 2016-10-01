@@ -23,6 +23,11 @@
         %br
     - if @asset_loan.is_approved != true
       #request_edit.tab-pane.fade.in.active 
+        %br
+        - if @asset_loan.is_approved == nil && @asset_loan.staff_id==@current_user.userable_id
+          = render 'tab_request_edit', :f => f
+        - elsif @asset_loan.is_approved == true || @asset_loan.is_approved == nil && @asset_loan.staff_id!=@current_user.userable_id
+          = render 'tab_show_request'
     - else
       #request_edit.tab-pane.fade
         %br
