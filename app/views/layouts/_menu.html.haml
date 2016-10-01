@@ -219,7 +219,8 @@
             %li= link_to content_tag(:i, "", :class => "icon-numb") + t("student.discipline.title2"), student_student_discipline_cases_path
           - permitted_to? :read, :student_student_counseling_sessions do
             %li= link_to content_tag(:i, "", :class => "icon-numb") + t("student.counseling.title2"), student_student_counseling_sessions_path
-          %li=link_to content_tag(:i, "", :class => "icon-numb") + t("staff.mentors.title"), staff_mentors_path
+          - permitted_to? :read, :staff_mentors do
+            %li=link_to content_tag(:i, "", :class => "icon-numb") + t("staff.mentors.title"), staff_mentors_path
 
     - permitted_to? :menu, :training_trainingnotes do
       %li.icon.icon-left
