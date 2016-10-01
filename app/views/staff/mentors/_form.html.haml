@@ -1,0 +1,95 @@
+.row
+  .col-md-10.col-md-offset-1
+    / Nav tabs
+    %ul.nav.nav-tabs
+      %li.active= link_to ((t 'staff.mentors.details')),"#mentor_edit", "data-toggle" => "tab"
+
+    .tab-content{style:"padding-top:1em"}
+      #mentor_edit.tab-pane.active
+        %br
+        .col-md-offset-1
+          .form-group
+            .col-sm-2.control-label
+              = f.label t 'staff.mentors.mentor_date', for: :mentor_date
+            .col-md-2
+              = f.text_field :mentor_date, class: 'form-control date_picker_reverse mandatory', value: @mentor.mentor_date.try(:strftime, '%d-%m-%Y')
+              
+          .form-group
+            .col-sm-2.control-label
+              = f.label t 'staff.mentors.staff_id', for: :staff_id
+            .col-md-6
+              = f.collection_select :staff_id, Staff.order(rank_id: :asc, name: :asc), :id, :staff_with_rank, { :include_blank => (t 'select')}, {class: 'selectpicker mandatory', "data-width" => "390px"}
+
+          .form-group
+            .col-sm-2.control-label
+              = f.label t 'staff.mentors.remark', for: :remark
+            .col-md-6
+              = f.text_area :remark, class: 'form-control', size: '5x2'
+         
+        .col-md-8.col-md-offset-2
+          %br
+          .row
+            .col-sm-6= t 'staff.mentors.mentee'
+            .row
+              %hr{width: '100%'}
+              = f.fields_for :mentees do |builder|
+                = render 'mentee_fields', :f => builder
+              .row
+                .col-sm-3
+                  = link_to_add_fields content_tag(:i, "", class: "fa fa-plus-square")+" "+(t 'addmore'), f, :mentees, "", t('addmore')
+            %BR
+            
+:javascript
+
+  function add_fields(link, association, content) {
+    var new_id = new Date().getTime();
+    var regexp = new RegExp("new_" + association, "g");
+    $(link).parent().before(content.replace(regexp, new_id));
+  }
+//////
+
+/         /staff myCPD point
+/         .col-md-8.col-sm-offset-2
+/           %br
+/           .row
+/             .col-sm-2= t 'staff.training.mycpd.cpd_year'
+/             .col-sm-4=t 'staff.training.mycpd.cpd_value'
+/             %hr
+/           = f.fields_for :mycpds do |builder|
+/             = render 'mycpd_fields', :f => builder
+/ 
+/           .help-block.small
+/             =(t 'staff.training.mycpd.inserted_values')
+/             = link_to ((t 'staff.training.application_status.viewsummary')+" "+Date.today.year.to_s), show_total_days_staff_training_ptdos_path(:id=>@current_user.userable_id)
+/           .col-sm-2
+/             = link_to_add_fields content_tag(:i, "", class: "fa fa-plus-square")+" "+(t 'addmore'), f, :mycpds, "", t('addmore')
+/             
+/#contacts.tab-pane
+/ .col-md-8
+/   .row
+/     .col-sm-offset-1.col-sm-1= t 'staff.mentors.mentee'
+/     .row 
+/       %hr{width: '80%'}
+/   .row 
+/     = f.fields_for :mentees do |builder|
+/       = render 'mentee_fields', :f => builder
+/     .col-sm-offset-2.col-sm-2
+/       = link_to_add_fields content_tag(:i, "", class: "fa fa-plus-square")+" "+(t 'addmore'), f, :mentees, "", t('addmore')
+
+/         .row
+/           .col-sm-offset-1.col-sm-1= t 'staff.loans.ltype'
+/           .col-sm-1= t 'staff.loans.accno'
+/           .col-sm-1= t 'staff.loans.startdt'
+/           .col-sm-1= t 'staff.loans.durationmn'
+/           .col-sm-1= t 'staff.loans.amount'
+/           .col-sm-1= t 'staff.loans.deductions'
+/           .col-sm-1= t 'staff.loans.firstdate'
+/           .col-sm-1= t 'staff.loans.enddate'
+/           .col-sm-1= t 'staff.loans.enddeduction'
+/           .row 
+/             %hr{width: '80%'}
+/         .row
+/           = f.fields_for :loans do |builder|
+/             = render 'loan_fields', :f => builder
+/           .col-sm-offset-2.col-sm-2
+/             = link_to_add_fields content_tag(:i, "", class: "fa fa-plus-square")+" "+(t 'addmore'), f, :loans, "", t('addmore')

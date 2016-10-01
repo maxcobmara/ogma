@@ -552,7 +552,9 @@ ms_MY:
     rule19: "Modul Jadual Waktu Mingguan (Pemilik) hanya berfungsi untuk penyedia jadual (Penyelaras) dan pemilik slot - slot masa dalam jadual. Bagi fungsian kelulusan jadual, sila gunakan peranan 'Ketua Program'."
     rule21: "Akses Modul Penilaian & Analisa Skor Purata Jurulatih(Pemilik) untuk mengemaskini rekod adalah terhad kepada Pegawai Penilai sahaja, manakala Jurulatih yang dinilai hanya boleh membuat semakan."
     rule22: "Aktifkan peranan 'Pelajar' atau peranan 'Staf' atau akses bagi modul Staf (Pentadbir/Paparan/Pengguna/Pemilik) bagi memberikan akses paparan bagi laman-laman tidak statik seperti laman 'Peraturan Perpustakaan'."
-    rule23: "Semua pemilik akaun dengan peranan 'Staf' boleh memuatnaik dan memuatturun fail dokumen MS:ISO dalam bentuk PDF/imej. Namun begitu, suntingan dihadkan kepada penyedia repositori dan pengguna dengan peranan 'Pentadbir Sistem' dan 'Pembangun Sistem' sahaja."
+    rule23: "Semua pemilik akaun dengan peranan 'Staf' dan akses mengikut modul Staf (Pentadbir/Paparan/Pengguna/Pemilik)  boleh memuatnaik dan memuatturun fail dokumen MS:ISO dalam bentuk PDF/imej. Namun begitu, suntingan dihadkan kepada penyedia repositori dan pengguna dengan peranan 'Pentadbir Sistem' dan 'Pembangun Sistem' sahaja."
+    rule24: "Aktifkan peranan 'Staf' atau 'Pelajar' untuk akses ke modul Mentor / Mentee. Kemaskini hanya boleh dibuat oleh Mentor (rekod sendiri), Pentadbir Sistem dan Pembangun Sistem."
+    rule25: "Fungsian 'Pinjaman Kenderaan' terkandung dalam modul Peminjaman Aset."
     
     #Filling Parts
     events_module_admin: Pentadbir Modul Acara
@@ -1377,6 +1379,18 @@ ms_MY:
       staffgrade_id: Gred
       post_count: Bilangan Jawatan
       position: Jawatan
+    
+    mentors:
+      title: Mentor - Mentee
+      list: Senarai Mentor - Mentee
+      new: Kumpulan Mentor - Mentee Baru
+      edit: Sunting Kumpulan Mentor - Mentee
+      details: Butiran
+      staff_id: Mentor
+      mentor_date: Tarikh
+      remark: Catatan
+      mentee: Mentee
+      name_or_rank: Nama atau pangkat
       
     staff_appraisal:
       title: Penilaian Prestasi
