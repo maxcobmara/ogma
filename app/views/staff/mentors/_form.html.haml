@@ -18,7 +18,7 @@
             .col-sm-2.control-label
               = f.label t 'staff.mentors.staff_id', for: :staff_id
             .col-md-6
-              = f.collection_select :staff_id, Staff.order(rank_id: :asc, name: :asc), :id, :staff_with_rank, { :include_blank => (t 'select')}, {class: 'selectpicker mandatory', "data-width" => "390px"}
+              = f.collection_select :staff_id, Staff.where.not(id: Mentor.pluck(:staff_id)).order(rank_id: :asc, name: :asc), :id, :staff_with_rank, { :include_blank => (t 'select')}, {class: 'selectpicker mandatory', "data-width" => "390px"}
 
           .form-group
             .col-sm-2.control-label

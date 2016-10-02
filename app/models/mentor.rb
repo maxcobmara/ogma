@@ -3,4 +3,6 @@ class Mentor < ActiveRecord::Base
   has_many :mentees, :dependent => :destroy
   accepts_nested_attributes_for :mentees, :allow_destroy => true , :reject_if => lambda { |a| a[:student_id].blank? }
   validates :staff_id, :mentor_date, presence: true
+  validates :staff_id, uniqueness: true
+  validates_associated :mentees
 end

@@ -38,6 +38,8 @@ ms_MY:
       instructor_appraisal: Penilaian Diri  Jurulatih
       repository: Repositori
       bookingfacility: Tempahan Fasiliti
+      mentor: Mentor
+      mentee: Mentee
     attributes:
       asset:
         assignedto_id: Pegawai Bertanggungjawab
@@ -253,6 +255,13 @@ ms_MY:
         purpose: Tujuan
         approval_date: Tarikh Kelulusan
         approval_date2: Tarikh Kelulusan (Fasiliti)
+      mentor:
+        staff_id: Mentor
+        mentees:
+          one: Mentee
+          other: Mentee
+      mentees:
+        student_id: Mentee
     errors:
         template:
           body: "Berikut adalah beberapa masalah:"
