@@ -56,6 +56,8 @@ en:
       rank: Rank
       instructor_appraisal: Instructor Appraisal
       bookingfacility: Facilities Reservation
+      mentor: Mentor
+      mentee: Mentee
     attributes:
       asset:
         assignedto_id: Assigned to
@@ -271,6 +273,13 @@ en:
         purpose: Purpose
         approval_date: Approval Date
         approval_date2: Approval Date (Facility)
+      mentor:
+        staff_id: Mentor
+        mentees:
+          one: Mentee
+          other: Mentee
+      mentees:
+        student_id: Mentee
     errors:
         template:
           body: "There were problems with the following fields:"

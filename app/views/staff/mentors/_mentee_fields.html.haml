@@ -2,7 +2,7 @@
   .row
     .col-md-offset-1.col-sm-7
       = f.hidden_field :_destroy
-      = f.collection_select :student_id, Student.order(rank_id: :asc, name: :asc), :id, :student_with_rank, {include_blank: (t 'select')}, {class: 'selectpicker', "data-width"=>"auto"}
+      = f.collection_select :student_id, Student.where.not(id: Mentee.pluck(:student_id)).order(rank_id: :asc, name: :asc), :id, :student_with_rank, {include_blank: (t 'select')}, {class: 'selectpicker', "data-width"=>"auto"}
     .col-sm-1= link_to content_tag(:i, "", class: "fa fa-trash-o"), "#", class: "removing_fields"
     
 :javascript
