@@ -212,14 +212,14 @@ authorization do
    end
 
    has_permission_on :staff_leaveforstaffs, :to => :create                                                       # A staff can register for leave
-   has_permission_on :staff_leaveforstaffs, :to => :read do                                                    # Staff can view his leave 
+   has_permission_on :staff_leaveforstaffs, :to => [:read, :borang_cuti] do                                                    # Staff can view his leave 
      if_attribute :staff_id => is {user.userable.id}
    end
    has_permission_on :staff_leaveforstaffs, :to =>  :delete, :join_by => :and do                    # Staff can delete as long as it is not processed yet
      if_attribute :staff_id => is {user.userable.id}
      if_attribute :approval1 => is_not {true}
    end
-   has_permission_on :staff_leaveforstaffs, :to => :read, :join_by => :or do                          # Penyokong and pelulus can view staff leave
+   has_permission_on :staff_leaveforstaffs, :to => [:read, :borang_cuti], :join_by => :or do                          # Penyokong and pelulus can view staff leave
       if_attribute :approval1_id => is {user.userable.id}
       if_attribute :approval2_id => is {user.userable.id}
     end

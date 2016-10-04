@@ -37,12 +37,12 @@
     = f.label t 'position.staff_id', for: :staff_id
   .col-md-4
     #person
-      = f.collection_select :staff_id2, Staff.where('staffgrade_id =?', @position.staffgrade_id).order(name: :asc), :id, :name, {:include_blank => (t 'select') , :selected => @position.staff_id} , {class: 'selectpicker', "data-width"=>"auto"}
+      = f.collection_select :staff_id2, Staff.where('staffgrade_id =?', @position.staffgrade_id).order(rank_id: :asc, name: :asc), :id, :staff_with_rank, {:include_blank => (t 'select') , :selected => @position.staff_id}, {class: 'selectpicker', "data-width"=>"auto"}
       = link_to (t 'position.get_all'), "#", id: "get_all"
 
     #person2{style: "display: none;"}
       /must deselect staff_id2 - to takes effect
-      = f.collection_select :staff_id, Staff.all.order(name: :asc), :id, :name, {:include_blank => (t 'select')}, {class: 'selectpicker', "data-width"=>"auto"}
+      = f.collection_select :staff_id, Staff.all.order(rank_id: :asc, name: :asc), :id, :staff_with_rank, {:include_blank => (t 'select')}, {class: 'selectpicker', "data-width"=>"auto"}
       = link_to (t 'position.get_matched'), "#", id: "get_matched"
       /= render :partial => 'staff_all', :locals => {:f => f} 
 

@@ -482,6 +482,46 @@ class Programme < ActiveRecord::Base
     total
   end
   
+  #kskbjb   
+  COURSE_TYPES_PROG1 =  [
+      # Displayed	stored in db
+       ['Diploma','Diploma'],
+       ['Pos Basik','Pos Basik'],
+       ['Diploma Lanjutan','Diploma Lanjutan']
+  ]
+  
+  #amsas
+  COURSE_TYPES_PROG2 =  [
+      # Displayed	stored in db
+          ['Asas', 'Asas'],
+          ['Pertengahan', 'Pertengahan'],
+          ['Lanjutan', 'Lanjutan']
+  ]
+    
+  #amsas
+  COURSE_LEVEL=[
+        ['Pegawai', 'peg'],
+        ['Lain-lain Pangkat', 'llp']
+  ]
+
+  #kskbjb
+  COURSE_TYPES_SUB1 = [
+      # Displayed	stored in db
+       [I18n.t('training.programme.semester'),'Semester'],
+       [I18n.t('training.programme.subject'),'Subject'],
+       [I18n.t('training.programme.commonsubject'),'Commonsubject'],
+       [I18n.t('training.programme.topic'),'Topic'],
+       [I18n.t('training.programme.subtopic'), 'Subtopic']
+  ]
+    
+  #amsas
+  COURSE_TYPES_SUB2 = [
+      # Displayed	stored in db
+       [I18n.t('training.programme.subject'),'Subject'],
+       [I18n.t('training.programme.topic'),'Topic'],
+       [I18n.t('training.programme.subtopic'), 'Subtopic']
+  ]
+    
   private
   
     def valid_for_removal

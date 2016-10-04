@@ -25,6 +25,7 @@ Ogma::Application.routes.draw do
       member do
         get :processing_level_1
         get :processing_level_2
+        get :borang_cuti
       end
     end
     resources :travel_claims do

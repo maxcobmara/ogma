@@ -98,6 +98,9 @@ ms_MY:
         start_at: Dari
         finish_at: Hingga
         travel_log: Log Perjalanan
+      leaveforstaff:
+        staff_id: Nama Staf
+        leavetype: Jenis Cuti
       leaveforstudent:
         student_id: Nama pelajar
         leavetype: Jenis cuti
@@ -380,6 +383,7 @@ ms_MY:
   download: Muat turun
   endorsed: Disokong
   not_endorsed: Tidak Disokong
+  not_required: Tidak diperlukan
  
   actions:
     new: Baru
@@ -1569,6 +1573,7 @@ ms_MY:
     approve_leave: Kelulusan 
     list: Senarai Cuti Staf
     id: Nama dan No IC
+    staff_id: Staf
     name: Nama Staf
     leavetype: Jenis Cuti
     from: Daripada
@@ -1581,6 +1586,7 @@ ms_MY:
     replacement: Staf Gantian
     entitlement: Baki Cuti Rehat
     id_or: No IC atau Nama
+    name_rank: Nama atau Pangkat
     rest_leave: Cuti Rehat
     sick_leave: Cuti Sakit
     unrecord_leave: Cuti Tanpa Rekod
@@ -1588,6 +1594,8 @@ ms_MY:
     unpaid_leave: Cuti Tanpa Gaji
     maternity_leave: Cuti Bersalin  
     hajj_leave: Cuti Haji
+    approval1_id: Penyokong
+    approval2_id: Pelulus
     approver_decision: Keputusan Pelulus
     approval_name: Nama Yang Meluluskan
     approve_date: Tarikh Diluluskan
@@ -1599,11 +1607,13 @@ ms_MY:
     for_approval: Untuk Kelulusan
     approve_staff_leave: Kelulusan Cuti Staf
     approve_by_date: Tarikh Meluluskan
+    endorse_staff_leave: Sokongan Cuti Staf
     endorse_by_date: Tarikh Sokongan
     decision: Keputusan
     approve: Meluluskan
     reject: Menolak
     support: Menyokong
+    supported: Disokong
     approved: Diluluskan
     rejected: Ditolak
     appointdt_not_exist: "Sila kemaskini 'Tarikh Lantikan Pertama' dalam submodul 'Maklumat Kakitangan'"
@@ -1613,6 +1623,10 @@ ms_MY:
     leave_already_taken: "Cuti telah diambil pada tarikh cuti yang sedang dimohon!"
     begin_before_ends: "Tarikh mula cuti mestilah sebelum cuti berakhir dan selepas tarikh semasa"
     submit: Hantar
+    leave_form: Borang Cuti
+    requestdate: Tarikh Permohonan
+    address_on_leave: Alamat semasa bercuti
+    phone_on_leave: No Telefon semasa bercuti
   
   position:
     title: "Tugas & Tanggungjawab"
@@ -2927,6 +2941,7 @@ ms_MY:
 
   buletin:
     list: Senarai Buletin
+    title: Papan Buletin
     headline: Tajuk Utama
     content: Kandungan
     posted_by: Disiarkan Oleh

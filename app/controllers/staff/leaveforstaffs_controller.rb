@@ -1,12 +1,12 @@
 class Staff::LeaveforstaffsController < ApplicationController
   filter_access_to :index, :new, :create, :attribute_check => false
-  filter_access_to :show, :edit, :update, :destroy,  :processing_level_1, :processing_level_2, :attribute_check => true
+  filter_access_to :show, :edit, :update, :destroy,  :processing_level_1, :processing_level_2, :borang_cuti, :attribute_check => true
   before_action :set_leaveforstaff, only: [:show, :edit, :update, :destroy]
   before_action :set_admin, only: [:new, :edit]
    
   def index
     roles = current_user.roles.pluck(:authname)
-    @is_admin = true if roles.include?("administration") || roles.include?("staff_leaves_module_admin") || roles.include?("staff_leaves_module_viewer") || roles.include?("staff_leaves_module_user")
+    @is_admin = true if roles.include?('developer') || roles.include?("administration") || roles.include?("staff_leaves_module_admin") || roles.include?("staff_leaves_module_viewer") || roles.include?("staff_leaves_module_user")
     if @is_admin
       @search = Leaveforstaff.search(params[:q])
     else
@@ -79,6 +79,20 @@ class Staff::LeaveforstaffsController < ApplicationController
   def processing_level_2
     @leaveforstaff = Leaveforstaff.find(params[:id])
   end
+  
+  
+  def borang_cuti
+    @leaveforstaff = Leaveforstaff.find(params[:id])
+    
+    respond_to do |format|
+       format.pdf do
+         pdf = Borang_cutiPdf.new(@leaveforstaff, view_context, current_user.college)
+         send_data pdf.render, filename: "borang_cuti-{Date.today}",
+                               type: "application/pdf",
+                               disposition: "inline"
+       end
+     end
+  end
 
   private
     # Use callbacks to share common setup or constraints between actions.
@@ -88,12 +102,11 @@ class Staff::LeaveforstaffsController < ApplicationController
     
     def set_admin
       roles = current_user.roles.pluck(:authname)
-      @is_admin = true if roles.include?("administration") || roles.include?("travel_requests_module_admin") || roles.include?("travel_requests_module_viewer") || roles.include?("travel_requests_module_user")
+      @is_admin = true if roles.include?("developer") || roles.include?("administration") || roles.include?("travel_requests_module_admin") || roles.include?("travel_requests_module_viewer") || roles.include?("travel_requests_module_user")
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def leaveforstaff_params
-      params.require(:leaveforstaff).permit(:id, :staff_id, :leavetype, :leavestartdate, :leavenddate, :leavedays, :reason, :notes, :replacement_id, :submit, 
-                                            :approval1, :approval1_id, :approval1date, :approver2, :approver2_id, :approval2date, :created_at, :updated_at)
+      params.require(:leaveforstaff).permit(:id, :staff_id, :leavetype, :leavestartdate, :leavenddate, :leavedays, :reason, :notes, :replacement_id, :submit,  :approval1, :approval1_id, :approval1date, :approver2, :approval2_id, :approval2date, :address_on_leave, :phone_on_leave, :requestdate, :college_id, {:data => []})
     end
 end

@@ -122,6 +122,9 @@ en:
         leave_startdate: On leave starting
         leave_enddate: Leave end date
         telno: Phone No
+      leaveforstaff:
+        staff_id: Staff
+        leavetype: Leave Type
       travel_claim:
         claim_month: "Claim For (month & year) "
         travel_requests: "Travel Request(s) "
@@ -401,6 +404,7 @@ en:
   download: Download
   endorsed: Endorsed
   not_endorsed: Not Endorsed
+  not_required: Tidak diperlukan
 
   actions:
     new: New
@@ -1675,6 +1679,7 @@ en:
     approve_leave: Approval
     list: Staff Leave List
     id: Staff Name and IC No
+    staff_id: Staff
     name: Staff Name
     leavetype: Leave Type
     from: Start Date
@@ -1687,6 +1692,7 @@ en:
     replacement: Replacement Staff
     entitlement: Balance of Entitled Leave
     id_or: IC No or Name
+    name_rank: Name or Rank
     rest_leave: Rest Leave
     sick_leave: Sick Leave
     unrecord_leave: Unrecorded Leave
@@ -1694,6 +1700,8 @@ en:
     unpaid_leave: Unpaid Leave
     maternity_leave: Maternity Leave
     hajj_leave: Hajj Leave
+    approval1_id: Endorser
+    approval2_id: Approver
     approver_decision: Approver Decision
     approval_name: Name of Approver
     approve_date: Date Approved
@@ -1705,6 +1713,7 @@ en:
     for_approval: For Approval
     approve_staff_leave: Approve Staff Leave
     approve_by_date: Approve By Date
+    endorse_staff_leave: Endorse Staff Leave
     endorse_by_date: Endorse By Date
     decision: Decision
     approve: Approve
@@ -1718,6 +1727,10 @@ en:
     leave_already_taken: "Leave already taken for current applied dates!"
     begin_before_ends: "Your leave must begin before it ends"
     submit: Submit
+    leave_form: Leave Form
+    requestdate: Request Date
+    address_on_leave: Address (during leave)
+    phone_on_leave: Phone (during leave)
       
   position:
     title: "Tasks & Responsibilities"
@@ -3033,6 +3046,7 @@ en:
       
   buletin:
     list: List of Bulletins
+    title: Bulletin Board
     headline: Headline
     content: Content
     posted_by: Posted By

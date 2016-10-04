@@ -5,6 +5,7 @@ class College < ActiveRecord::Base
   has_many :pages
   has_many :examanalyses
   has_many :exams
+  has_many :leaveforstaffs
   #student, staffs
   
   serialize :data, Hash

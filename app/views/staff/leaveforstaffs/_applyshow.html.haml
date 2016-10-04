@@ -1,6 +1,9 @@
 %dl.dl-horizontal
   %dt= t 'staff_leave.name'
-  %dd= link_to @leaveforstaff.applicant.try(:mykad_with_staff_name), (staff_info_path(@leaveforstaff.staff_id)) rescue nil
+  %dd= link_to @leaveforstaff.applicant.staff_with_rank_position, (staff_info_path(@leaveforstaff.staff_id)) rescue nil
+  
+  %dt= t 'staff_leave.requestdate'
+  %dd= @leaveforstaff.requestdate.try(:strftime, '%d-%m-%Y')
 
   %dt= t 'staff_leave.leavetype'
   %dd= (DropDown::STAFFLEAVETYPE.find_all{|disp, value| value == @leaveforstaff.leavetype}).map {|disp, value| disp} [0]
@@ -13,6 +16,12 @@
     
   %dt= t 'staff_leave.for' 
   %dd= @leaveforstaff.try(:leave_for).to_s + (" ")+(t 'staff_leave.days')
+  
+  %dt=t 'staff_leave.address_on_leave'
+  %dd{style: 'padding-left: 70px;'}= @leaveforstaff.address_on_leave
+  
+  %dt=t 'staff_leave.phone_on_leave'
+  %dd= @leaveforstaff.phone_on_leave
 
   %dt= t 'staff_leave.reason'
   %dd= @leaveforstaff.try(:reason)

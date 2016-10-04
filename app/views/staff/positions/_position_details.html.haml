@@ -8,7 +8,7 @@
     %dd=h @position.name
 
     %dt= t 'position.staff_id'
-    %dd=h @position.staff.blank? ? "-" : @position.staff.name
+    %dd=h @position.staff.blank? ? "-" : @position.staff.staff_with_rank
     
     - if @position.parent_id != nil 
       %dt= t 'position.parent_id' 

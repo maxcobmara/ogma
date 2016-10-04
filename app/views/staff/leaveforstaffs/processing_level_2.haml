@@ -22,27 +22,35 @@
               
               %dt= t 'staff_leave.endorser_decision'
               %dd
-                = @leaveforstaff.approval1? ? t('staff_leave.approved')+t("by2")+@leaveforstaff.seconder.name+t("on2")+@leaveforstaff.approval1date.try(:strftime, "%d %b %Y") : t("staff_leave.rejected") 
+                - if @leaveforstaff.college.code=='kskbjb'
+                  = @leaveforstaff.approval1? && @leaveforstaff.approval1_id!=nil ? t('staff_leave.approved')+t("by2")+@leaveforstaff.seconder.name+t("on2")+@leaveforstaff.approval1date.try(:strftime, "%d %b %Y") : t("staff_leave.rejected") 
+                - else
+                  - if @leaveforstaff.approval1?
+                    =@leaveforstaff.approval1_id!=nil ? t('staff_leave.approved')+t("by2")+@leaveforstaff.seconder.name+t("on2")+@leaveforstaff.approval1date.try(:strftime, "%d %b %Y") : (t 'not_required')
+                  - else
+                    =t("staff_leave.rejected") 
                 
-            .form-group
-              .col-sm-3.control-label
-                = f.label t 'staff_leave.approver_decision', for: :approver2
-              .col-md-7
-                .form-inline
-                  .form-group
-                    = t 'staff_leave.approve'
-                    = f.radio_button :approver2, true
-                  .form-group
-                    = t 'staff_leave.reject'
-                    = f.radio_button :approver2, false
-                    
-            .form-group
-              .col-sm-3.control-label
-                = f.label t 'staff_leave.approve_by_date', for: :approval2date
-              .col-md-2
-                = f.text_field :approval2date, :order => [:day, :month, :year,], :default => DateTime.now, class: 'date_picker form-control' 
             
-        .col-md-5.col-md-offset-1
+            .col-md-offset-1
+              .form-group
+                .col-sm-3.control-label
+                  = f.label t 'staff_leave.approver_decision', for: :approver2
+                .col-md-7
+                  .form-inline
+                    .form-group
+                      = t 'staff_leave.approve'
+                      = f.radio_button :approver2, true
+                    .form-group
+                      = t 'staff_leave.reject'
+                      = f.radio_button :approver2, false
+                    
+              .form-group
+                .col-sm-3.control-label
+                  = f.label t 'staff_leave.approve_by_date', for: :approval2date
+                .col-md-3
+                  = f.text_field :approval2date, class: 'date_picker_reverse form-control', value: @leaveforstaff.approval2date.try(:strftime, '%d-%m-%Y')
+            
+        .col-md-7.col-md-offset-1
           %BR
             .form-group
               .col-sm-offset-2.col-sm-2
