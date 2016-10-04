@@ -1,4 +1,11 @@
 - model_class = Programme
+- if current_user.college.code=='kskbjb'
+  - course_type=Programme::COURSE_TYPES_PROG1
+  - course_type_sub=Programme::COURSE_TYPES_SUB1
+- else
+  - course_type=Programme::COURSE_TYPES_PROG2
+  - course_type_sub=Programme::COURSE_TYPES_SUB2
+
 .page-header
   %h1
     - if !@programme.course_type.nil? && !@programme.name.nil?
@@ -17,8 +24,8 @@
 
       %dt=t 'training.programme.course_type', :default => model_class.human_attribute_name(:course_type) + ":"
       %dd
-        =h @programme.is_root? ?  (DropDown::COURSE_TYPES.find_all{|disp, value| value == @programme.course_type}).map {|disp, value| disp}[0] :  (DropDown::COURSE_TYPES_SUB.find_all{|disp, value| value == @programme.course_type}).map {|disp, value| disp}[0]
-        /= h (DropDown::COURSE_TYPES.find_all{|disp, value| value == @programme.course_type}).map {|disp, value| disp}[0]
+        =h @programme.is_root? ?  (course_type.find_all{|disp, value| value == @programme.course_type}).map {|disp, value| disp}[0] :  (course_type_sub.find_all{|disp, value| value == @programme.course_type}).map {|disp, value| disp}[0]
+        /= h (course_type.find_all{|disp, value| value == @programme.course_type}).map {|disp, value| disp}[0]
        
       - if ['Topic', 'Subtopic'].include?(@programme.course_type)
         %dt=t 'training.programme.method', :default => model_class.human_attribute_name(:course_type) + ":"
@@ -41,9 +48,9 @@
         %dt= t 'training.programme.subject_abbreviation', :default => model_class.human_attribute_name(:subject_abbreviation) + ":"
         %dd= @programme.subject_abbreviation
 
-      - if @programme.is_root?
+      - if current_user.college.code=="amsas" && @programme.is_root?
         %dt= t 'training.programme.level', :default => model_class.human_attribute_name(:level) + ":"
-        %dd= (DropDown::COURSE_LEVEL.find_all{|disp, value| value == @programme.level}).map {|disp, value| disp} [0]
+        %dd= (Programme::COURSE_LEVEL.find_all{|disp, value| value == @programme.level}).map {|disp, value| disp} [0]
       
       %dt= t 'training.programme.credits', :default => model_class.human_attribute_name(:credits) + ":"
       %dd= @programme.credits

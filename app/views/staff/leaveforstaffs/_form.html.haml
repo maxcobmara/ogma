@@ -20,37 +20,55 @@
               - else
                 - staff_list=Staff.where(id: @current_user.userable_id)
               - selected=@current_user.userable_id
-            = f.collection_select :staff_id, staff_list, :id,  :staff_name_with_position, {:include_blank =>t('helpers.prompt.select_staff'), :selected=>selected},{class: 'selectpicker mandatory', "data-width"=>'440px'}
+            = f.collection_select :staff_id, staff_list, :id,  :staff_with_rank_position, {:include_blank =>t('helpers.prompt.select_staff'), :selected=>selected},{class: 'selectpicker mandatory', "data-width"=>'400px'}
+
+        .form-group
+          .col-sm-2.control-label
+            = f.label t 'staff_leave.requestdate', for: :requestdate
+          .col-md-2
+            = f.text_field :requestdate, :class =>  'date_picker_reverse form-control', value: Date.today.strftime('%d-%m-%Y')
 
         .form-group
           .col-sm-2.control-label
             = f.label t 'staff_leave.leavetype', for: :leavetype
           .col-md-3
             = f.select :leavetype, DropDown::STAFFLEAVETYPE, {:include_blank =>t('helpers.prompt.select_leave_type')} , {class: 'form-control mandatory'}
-			
+
         .form-group
           .col-sm-2.control-label
             = f.label t 'staff_leave.from', for: :leavestartdate
-          .col-md-3
-            = f.text_field :leavestartdate, :order => [:day, :month, :year], :default => 2.days.from_now,  :class =>  'date-picker form-control'
-			
+          .col-md-2
+            = f.text_field :leavestartdate, :class =>  'date_picker_reverse form-control', value: @leaveforstaff.leavestartdate.try(:strftime, '%d-%m-%Y')
+
         .form-group
           .col-sm-2.control-label
             = f.label t 'staff_leave.to', for: :leavenddate
+          .col-md-2
+            = f.text_field :leavenddate, :class =>  'date_picker_reverse form-control', value: @leaveforstaff.leavenddate.try(:strftime, '%d-%m-%Y')
+
+        .form-group
+          .col-sm-2.control-label
+            = f.label t 'staff_leave.address_on_leave', for: :address_on_leave
+          .col-md-5
+            = f.text_area :address_on_leave, class: 'form-control'
+
+        .form-group
+          .col-sm-2.control-label
+            = f.label t 'staff_leave.phone_on_leave', for: :phone_on_leave
           .col-md-3
-            = f.text_field :leavenddate, :order => [:day, :month, :year], :default => 3.days.from_now,  :class =>  'date-picker form-control'
-			
+            = f.text_field :phone_on_leave, class: 'form-control'
+
         .form-group
           .col-sm-2.control-label
             = f.label t 'staff_leave.reason', for: :reason
-          .col-md-3
-            = f.text_field :reason , class: 'form-control'
+          .col-md-5
+            = f.text_field :reason, class: 'form-control'
 
         .form-group
           .col-sm-2.control-label
             = f.label t 'staff_leave.notes', for: :notes
-          .col-md-3
-            = f.text_area :notes, :size => "30x5", class: 'form-control'
+          .col-md-5
+            = f.text_area :notes, class: 'form-control'
 
         /.form-group
         /  .col-sm-2.control-label
@@ -58,6 +76,18 @@
         /  .col-md-3
         /    = f.check_box :submit
 
+        - if current_user.college.code!='kskbjb' && @leaveforstaff.applicant.positions.count > 1
+          .form-group
+            .col-sm-2.control-label
+              =f.label t 'staff_leave.approval1_id'
+            .col-md-6
+              =f.collection_select :approval1_id, Staff.where(id: @leaveforstaff.approver1_list_multipost).order(rank_id: :asc, name: :asc), :id, :staff_with_rank_position, {include_blank: (t 'select')}, {class: 'selectpicker', "data-width"=>'400px'}
+  
+          .form-group
+            .col-sm-2.control-label
+              =f.label t 'staff_leave.approval2_id'
+            .col-md-6
+              =f.collection_select :approval2_id, Staff.where(id: @leaveforstaff.approver2_list_multipost).order(rank_id: :asc, name: :asc), :id, :staff_with_rank_position, {include_blank: (t 'select')}, {class: 'selectpicker', "data-width"=>'400px'}
   
   :javascript
     $('.date-picker').datetimepicker({

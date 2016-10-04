@@ -2,20 +2,21 @@ class Leaveforstaff < ActiveRecord::Base
   
     paginates_per 10  
   
-    before_save :save_my_approvers
+    before_save :save_my_approvers, :save_duration
   
 
     belongs_to :applicant,    :class_name => 'Staff', :foreign_key => 'staff_id'
     belongs_to :replacement,  :class_name => 'Staff', :foreign_key => 'replacement_id'
     belongs_to :seconder,     :class_name => 'Staff', :foreign_key => 'approval1_id'
     belongs_to :approver,     :class_name => 'Staff', :foreign_key => 'approval2_id'
+    belongs_to :college, :foreign_key => 'college_id'
   
     validates_presence_of :staff_id, :leavetype
     validate :validate_positions_exist
     validate :validate_end_date_before_start_date, :validate_leave_application_is_unique
   
     def validate_positions_exist
-      if applicant.position_for_staff == "-"
+      if !staff_id.blank? && applicant.position_for_staff == "-"
         errors.add(:position,I18n.t('must_exist'))
       end
     end
@@ -67,15 +68,6 @@ class Leaveforstaff < ActiveRecord::Base
     #named_scope :mine,        :conditions =>  ["staff_id=?", User.current_user[:staff_id]]
     #named_scope :forsupport,  :conditions =>  ["approval1_id=? AND approval1 IS ?", User.current_user.staff_id, nil]
     #named_scope :forapprove,  :conditions =>  ["approval2_id=? AND approver2 IS ? AND approval1=?", User.current_user.staff_id, nil, true]
-
-    def self.keyword_search(query) 
-      staff_ids = Staff.where('icno ILIKE (?) OR name ILIKE(?)', "%#{query}%", "%#{query}%").pluck(:id).uniq
-      where('staff_id IN(?)', staff_ids)
-    end
-    
-    def self.ransackable_scopes(auth_object = nil)
-      [:keyword_search]
-    end
   
     def self.sstaff2(u)
       where('staff_id=? OR approval1_id=? OR approval2_id=?', u,u,u)
@@ -84,19 +76,70 @@ class Leaveforstaff < ActiveRecord::Base
     def self.find_main
       Staff.find(:all, :condition => ["staff_id=? OR approval1_id=? OR approval2_id=?", User.current_user.staff_id, User.current_user.staff_id, User.current_user.staff_id])
     end
+    
+    def save_duration
+      self.leavedays=leave_for
+    end
   
     def save_my_approvers
       if applicant.positions.nil?
       else
+        college_code=College.where(id: college_id).first.code
         if approval1_id == nil
-          self.approval1_id = set_approver1
+          if college_code=='kskbjb'
+            self.approval1_id = set_approver1
+          else
+	    if applicant.positions.count==1
+              self.approval1_id = set_approver1_default
+              #temporary set default value as true if superior not exist
+              if set_approver1_default==nil
+                self.approval1=true
+                self.approval1date=Date.today
+              end
+            end
+          end
         end
         if approval2_id == nil
-          self.approval2_id = set_approver2
+          if college_code=='kskbjb'
+            self.approval2_id = set_approver2
+          else
+	    if applicant.positions.count==1
+              self.approval2_id = set_approver2_default
+	    end
+          end
         end
       end
     end
-  
+
+    #Multi positions
+    def approver1_list_multipost
+      parent_post_ids=applicant.positions.map(&:parent_id)
+      parent_staff_ids=Position.where(id: parent_post_ids).pluck(:staff_id)
+    end
+    
+    def approver2_list_multipost
+      parent_post_ids=applicant.positions.map(&:parent_id)
+      grandparent_post_ids=Position.where(id: parent_post_ids).map(&:parent_id)
+      grandparent_staff_ids=Position.where(id: grandparent_post_ids).pluck(:staff_id)
+    end
+    
+    def set_approver1_default
+      if applicant.positions.first.parent.staff_id == []
+        approver1 = nil
+      else
+        approver1 = applicant.positions.first.parent.staff_id
+      end    
+    end
+    
+    def set_approver2_default
+      if applicant.positions.first.parent.is_root?
+        approver2 = 0
+      else
+        # TODO - confirm with user
+        approver2 = applicant.positions.first.parent.parent.staff_id
+      end
+    end 
+      
     def set_approver1
 #       if applicant.positions.first.parent.staff.id == []
 #         approver1 = nil
@@ -174,7 +217,7 @@ class Leaveforstaff < ActiveRecord::Base
       end
       #-----------------------------------
     end
-  
+
     def set_approver2
 #       if applicant.positions.first.parent.is_root?
 #         approver2 = 0
@@ -318,9 +361,9 @@ class Leaveforstaff < ActiveRecord::Base
   
     def endorser
       if approval2_id == 0
-        "Note Required"
+        "Not Required"
       else
-        approver.name
+        approver.staff_with_rank
       end
     end
   
@@ -329,6 +372,16 @@ class Leaveforstaff < ActiveRecord::Base
       dept   = applicant.positions.first.unit
       sibs   = Position.where(["id IN (?) AND unit=?" , sibpos,dept]).pluck(:staff_id)
       applicant = Array(staff_id)
+      sibs - applicant
+    end
+    
+    def repl_staff_multipost
+      sibpos=Array.new
+      dept=Array.new
+      applicant.positions.each{|x|sibpos+=x.sibling_ids}
+      applicant.positions.each{|x|dept << x.unit}
+      sibs=Position.where('id IN(?) and unit IN(?)', sibpos, dept).pluck(:staff_id)
+      applicant=Array(staff_id)
       sibs - applicant
     end
   

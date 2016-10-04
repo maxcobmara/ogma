@@ -441,55 +441,6 @@ module DropDown
          [ I18n.t('training.programme.months'),     'months' ],
          [ I18n.t('training.programme.years'),      'years' ]
     ]
-    
-    COURSE_TYPES_PROG =  [
-      # Displayed	stored in db
-          ['Asas', 'Asas'],
-          ['Pertengahan', 'Pertengahan'],
-          ['Lanjutan', 'Lanjutan']
-#       ['Diploma','Diploma'],
-#       ['Pos Basik','Pos Basik'],
-#       ['Diploma Lanjutan','Diploma Lanjutan']
-    ]
-    
-    COURSE_TYPES_SUB = [
-      # Displayed	stored in db
-#        [I18n.t('training.programme.semester'),'Semester'],
-       [I18n.t('training.programme.subject'),'Subject'],
-#        [I18n.t('training.programme.commonsubject'),'Commonsubject'],
-       [I18n.t('training.programme.topic'),'Topic'],
-       [I18n.t('training.programme.subtopic'), 'Subtopic']
-      ]
-    
-    #COURSE_TYPES = [
-    #   ['Diploma','Diploma'],
-    #   ['Pos Basik','Pos Basik'],
-    #   ['Diploma Lanjutan','Diploma Lanjutan'],
-    #   [I18n.t('training.programme.semester'),'Semester'],
-    #   [I18n.t('training.programme.subject'),'Subject'],
-    #  [I18n.t('training.programme.commonsubject'),'Commonsubject'],
-    #   [I18n.t('training.programme.topic'),'Topic'],
-     #  [I18n.t('training.programme.subtopic'), 'Subtopic']
-     # ]
-    
-    COURSE_TYPES = [
-          ['Asas', 'Asas'],
-          ['Pertengahan', 'Pertengahan'],
-          ['Lanjutan', 'Lanjutan']
-#        ['Diploma','Diploma'],
-#        ['Pos Basik','Pos Basik'],
-#        ['Diploma Lanjutan','Diploma Lanjutan'],
-#        ['Semester','Semester'],
-#        ['Subject','Subject'],
-#        ['Commonsubject','Commonsubject'],
-#        ['Topic','Topic'],
-#        ['Subtopic', 'Subtopic']
-      ]
-    
-    COURSE_LEVEL=[
-        ['Pegawai', 'peg'],
-        ['Lain-lain Pangkat', 'llp']
-      ]
 
     LECTURE_TIME = [
       [I18n.t('training.programme.hours'), 1],

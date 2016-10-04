@@ -1,4 +1,11 @@
 = f.hidden_field :parent_id
+- if current_user.college.code=='kskbjb'
+  - course_type=Programme::COURSE_TYPES_PROG1
+  - course_type_sub=Programme::COURSE_TYPES_SUB1
+- else
+  - course_type=Programme::COURSE_TYPES_PROG2
+  - course_type_sub=Programme::COURSE_TYPES_SUB2
+  
 .col-md-offset-1
   .form-group
     .col-sm-2.control-label
@@ -15,11 +22,11 @@
       = f.label t 'training.programme.course_type'
     .col-md-9
       - if @programme.parent_id == nil
-        = f.select :course_type,DropDown::COURSE_TYPES_PROG,{:include_blank => t('helpers.prompt.select_course_type')},{ class: 'selectpicker', "data-width"=>'160px'} 
+        = f.select :course_type, course_type,{:include_blank => t('helpers.prompt.select_course_type')},{ class: 'selectpicker', "data-width"=>'160px'} 
       - else
         %table
           %tr
-            %td{:style=>"padding: 0 12px 0 0;  vertical-align: top;"}= f.select :course_type, DropDown::COURSE_TYPES_SUB,{:include_blank => t('helpers.prompt.select_course_type')},{ class: 'selectpicker', "data-width"=>'160px'} 
+            %td{:style=>"padding: 0 12px 0 0;  vertical-align: top;"}= f.select :course_type, course_type_sub,{:include_blank => t('helpers.prompt.select_course_type')},{ class: 'selectpicker', "data-width"=>'160px'} 
             %td.bbb{:style=>"padding: 0 12px 0 0;"}= f.label t 'training.programme.lecture'
             %td.bbb{:style=>"padding: 0 12px 0 0;"}= f.text_field :lecture_d, :size => '4', class: 'form-control time_picker_duration', value: @programme.try(:lecture_d).try(:strftime, '%H:%M')
             %td.bbb{:style=>"padding: 0 12px 0 0;"}=f.label t 'training.programme.tutorial'
@@ -60,7 +67,7 @@
       .col-sm-2.control-label
         = f.label t 'training.programme.level'
       .col-md-3
-        = f.select :level, DropDown::COURSE_LEVEL,{:include_blank => t('select')},{ class: 'selectpicker', "data-width"=>'160px'} 
+        = f.select :level, Programme::COURSE_LEVEL,{:include_blank => t('select')},{ class: 'selectpicker', "data-width"=>'160px'} 
      
   .form-group
     .col-sm-2.control-label
