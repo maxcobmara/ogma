@@ -480,12 +480,6 @@ class User < ActiveRecord::Base
     group_ids
   end
   
-  #leaveforstaff
-  def approver1_list_multipost
-    parent_post_ids=userable.positions.map(&:parent_id)
-    parent_staff_ids=Position.where(id: parent_post_ids).pluck(:staff_id)
-  end
-  
   def role_symbols
    roles.map do |role|
     role.authname.to_sym
