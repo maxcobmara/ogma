@@ -2753,6 +2753,7 @@ ms_MY:
   
   library:
     title: Perpustakaan
+    help: Bantuan
     transaction: 
       manager: Pengurusan Transaksi Perpustakaan
       title: Transaksi Perpustakaan
@@ -2807,6 +2808,13 @@ ms_MY:
       report: Laporan Kehilangan
       analysis_statistic: "Analisis & Statistik"
       loan_details: Butiran buku dipinjam
+      latereturn_report: Laporan Lewat Pemulangan Buku
+      borrower_name: Nama Peminjam
+      book_title: Tajuk Buku
+      staff: "Staf "
+      student: Pelajar
+      late_by_days: "Lewat (Hari)"
+      total_fine: Jumlah Denda
       analysis:
         main_title: "Analisis & Statistik (Peminjam) - "
         main_title2: "Analisis & Statistik (Monograf) - "

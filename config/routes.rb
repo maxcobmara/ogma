@@ -393,6 +393,7 @@ Ogma::Application.routes.draw do
         get :analysis_statistic
         post :analysis_statistic
         get :analysis_statistic_main
+	get :latereturn_report
       end
     end
     resources :books do

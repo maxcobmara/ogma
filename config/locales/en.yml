@@ -2860,6 +2860,7 @@ en:
   
   library:
     title: Library
+    help: Help
     transaction: 
       manager: Library Transaction Manager
       title: Library Transactions
@@ -2913,6 +2914,13 @@ en:
       report: Report Lost
       analysis_statistic: "Analysis & Statistics"
       loan_details: Book on-loan details
+      latereturn_report: Late Book Return Report
+      borrower_name: Borrower Name
+      book_title: Book Title
+      staff: "Staff of "
+      student: Student
+      late_by_days: "Late (Days)"
+      total_fine: Total Fine
       analysis:
         main_title: "Analysis & Statistic (Borrower) - "
         main_title2: "Analysis & Statistic (Monograph) - "
