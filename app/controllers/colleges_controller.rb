@@ -66,6 +66,6 @@ class CollegesController < ApplicationController
     end
 
     def college_params
-      params.require(:college).permit(:code, :name,{ :data=>[]}, :address, :phone, :fax, :email, :logo)
+      params.require(:college).permit(:code, :name,{ :data=>[]}, :address, :phone, :fax, :email, :logo, :library_email, :library_pwd)
     end
 end

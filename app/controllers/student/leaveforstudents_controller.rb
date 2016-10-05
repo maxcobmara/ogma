@@ -125,8 +125,8 @@ class Student::LeaveforstudentsController < ApplicationController
   end
   
   def studentleave_report
-    @search = Leaveforstudent.search(params[:q])
-    @leaveforstudents = @search.result
+    @search = Leaveforstudent.where(college_id: current_user.college_id).search(params[:q])
+    @leaveforstudents = @search.result.search2(current_user)
     @expired_wc=[]
     @leaveforstudents.each_with_index do |leaveforstudent, ind|
       @expired_wc << ind+1 if leaveforstudent.studentsubmit==true && leaveforstudent.leave_startdate < Date.tomorrow && (leaveforstudent.approved2==nil || leaveforstudent.approved==nil)

@@ -24,7 +24,7 @@
     .col-sm-2.control-label
       = f.label t 'student.leaveforstudent.requestdate', for: :requestdate
     .col-md-2 
-      = f.text_field :requestdate, class: 'date_picker form-control'
+      = f.text_field :requestdate, class: 'date_picker_reverse form-control'
   
   .form-group
     .col-sm-2.control-label
@@ -48,16 +48,24 @@
     .col-sm-2.control-label
       = f.label t 'student.leaveforstudent.leave_startdate', for: :leave_startdate
     .col-md-2
-      = f.text_field :leave_startdate, class: 'date_picker form-control mandatory'
+      = f.text_field :leave_startdate, class: 'date_picker_reverse form-control mandatory'
   
   .form-group
     .col-sm-2.control-label
       = f.label t 'student.leaveforstudent.leave_enddate', for: :leave_enddate
     .col-md-2
-      = f.text_field :leave_enddate, class: 'date_picker form-control mandatory'
+      = f.text_field :leave_enddate, class: 'date_picker_reverse form-control mandatory'
 
   .form-group
     .col-sm-2.control-label
       = f.label t 'student.leaveforstudent.submit_approval', for: :submit_approval
     .col-md-1 
       = f.check_box :studentsubmit, class: 'form-control'
+      
+  - if current_user.college.code!='kskbjb'
+    .form-group
+      .col-sm-2.control-label
+        = f.label t 'student.leaveforstudent.staff_id', for: :staff_id
+      .col-md-2
+        = f.collection_select :staff_id, Staff.joins(:positions).where('positions.id IN(?)', [2, 55]).order(rank_id: :asc, name: :asc), :id, :staff_with_rank, {:include_blank =>t('helpers.prompt.select_staff')},{class: 'selectpicker mandatory', "data-width"=>'320px'}
+%br

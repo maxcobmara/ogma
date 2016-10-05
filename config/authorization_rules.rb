@@ -434,6 +434,11 @@ authorization do
    has_permission_on :campus_bookingfacilities, :to => [:approval, :update, :show, :booking_facility] do 
      if_attribute :approver_id => is {user.userable.id}
    end
+   #amsas only
+   has_permission_on :student_leaveforstudents, :to => [:menu, :read, :approving, :update, :slip_pengesahan_cuti_pelajar, :studentleave_report], :join_by => :and do
+     if_attribute :studentsubmit => true
+     if_attribute :staff_id => is {user.userable.id} #specific to Approver
+   end
  end
   
   role :staff_administrator do
@@ -521,6 +526,7 @@ authorization do
  #Group Trainings ------------------------------------------------------------
   role :lecturer do
 
+   # NOTE - works for kskbjb only, refer staff role for amsas (approving - 1 level approval)
    ###HOLD first - works well in Catechumen but not in ogma - just let all lecturers access, afterall only coordinator/programme lecture appear in the list! 
    ##HIDE ON 17MAY2015--has_permission_on :student_leaveforstudents, :to => [:index, :menu, :create, :show, :update, :approve_coordinator]
    #prob - if warden(not lecturer) ok, if warden also lecturer-tak boleh,....staff --> index, menu, create, show, update??, 
@@ -533,8 +539,9 @@ authorization do
    
    #revised - 17May2015-start
    #restricted access for penyelaras - [relationship: approver, FK: staff_id, page: approve], in case of non-exist of penyelaras other lecturer fr the same programme
-    has_permission_on :student_leaveforstudents, :to => [:index,:menu, :create, :show, :update, :approve_coordinator, :slip_pengesahan_cuti_pelajar] do #, :join_by => :and do
+    has_permission_on :student_leaveforstudents, :to => [:index,:menu, :create, :show, :update, :approve_coordinator, :slip_pengesahan_cuti_pelajar], :join_by => :and do
       if_attribute :studentsubmit => true
+      if_attribute :college_id => is {College.where(code: 'kskbjb').first.id} #Revised - added 5 Oct 2016
       #if_attribute :student_id => is_in {user.under_my_supervision} - not working - access 'under_my_supervision' method from controller & model via 'search2'
     end
     #revised - 17May2015-end
@@ -722,6 +729,7 @@ authorization do
       end
       has_permission_on :campus_pages, :to => :flexipage
       has_permission_on :staff_mentors, :to => :read
+      has_permission_on :library_books, :to => :read
   end
   
   role :student_administrator do
@@ -755,8 +763,9 @@ authorization do
     has_permission_on :campus_locations, :to => [:read, :kewpa7] #:core - NOTE - kewpa7 visible to all (sticked on wall)
     has_permission_on :student_tenants, :to => :read
     #all wardens have access - [relationship: second_approver, FK: staff_id2, page: approve_warden]
-    has_permission_on :student_leaveforstudents, :to => [:index, :menu, :create, :show, :update, :approve_warden] do
+    has_permission_on :student_leaveforstudents, :to => [:index, :menu, :create, :show, :update, :approve_warden], :join_by => :and do
       if_attribute :studentsubmit => true
+      if_attribute :college_id => is {College.where(code: 'kskbjb').first.id} #{user.userable.college_id}
     end
     has_permission_on :students, :to => :read
     has_permission_on :student_student_attendances, :to => :read                                                     #lecturer role - shall override this rule
@@ -1194,14 +1203,24 @@ authorization do
   #13-OK, but note - lecturers & warden has related access rules too, use other user for checking
   #13 - 3/4 OK (Admin, Viewer, User)
   role :student_leaves_module_admin do
-     has_permission_on :student_leaveforstudents, :to => [:manage, :approve_coordinator, :approve_warden, :slip_pengesahan_cuti_pelajar, :studentleave_report]
-     # [:manage, :approve, :studentleave_report, :slip_pengesahan_cuti_pelajar] 
+    has_permission_on :student_leaveforstudents, :to => [:manage, :approve_coordinator, :approve_warden, :slip_pengesahan_cuti_pelajar, :studentleave_report] do
+      if_attribute :college_id => is {College.where(code: 'kskbjb').first.id}
+    end
+    # [:manage, :approve, :studentleave_report, :slip_pengesahan_cuti_pelajar] 
+    has_permission_on :student_leaveforstudents, :to => [:manage, :approving, :slip_pengesahan_cuti_pelajar, :studentleave_report] do
+      if_attribute :college_id => is {College.where(code: 'amsas').first.id} #is_not {College.where(code: 'kskbjb').first.id}
+    end
   end
   role :student_leaves_module_viewer do
      has_permission_on :student_leaveforstudents, :to => [:read, :slip_pengesahan_cuti_pelajar, :studentleave_report]
   end
   role :student_leaves_module_user do
-     has_permission_on :student_leaveforstudents, :to => [:read, :approve_coordinator, :approve_warden, :update, :slip_pengesahan_cuti_pelajar, :studentleave_report]
+     has_permission_on :student_leaveforstudents, :to => [:read, :approve_coordinator, :approve_warden, :update, :slip_pengesahan_cuti_pelajar, :studentleave_report] do
+       if_attribute :college_id => is {College.where(code: 'kskbjb').first.id}
+     end
+     has_permission_on :student_leaveforstudents, :to => [:read, :approving, :update, :slip_pengesahan_cuti_pelajar, :studentleave_report] do
+       if_attribute :college_id => is {College.where(code: 'amsas').first.id}
+     end
   end
   role :student_leaves_module_member do
     #own records (student)
@@ -1209,7 +1228,12 @@ authorization do
     has_permission_on :student_leaveforstudents, :to => [:read, :slip_pengesahan_cuti_pelajar] do
       if_attribute :student_id => is {user.userable.id}
     end
-    # NOTE approver (Warden & Lecturer[penyelaras]) not applicable, activate Warden and / or Lecturer role accordingly
+    # NOTE KSKBJB - approver (Warden & Lecturer[penyelaras]) not applicable, activate Warden and / or Lecturer role accordingly
+    #below :amsas only
+    has_permission_on :student_leaveforstudents, :to => [:read, :approving, :update, :slip_pengesahan_cuti_pelajar, :studentleave_report], :join_by => :and do
+      if_attribute :studentsubmit => true
+      if_attribute :staff_id => is {user.userable.id} #specific to user
+    end
   end
 
   #14-OK, but note - in controller, ':attribute_check => true' only applicable for show, edit, update & destroy of SINGLE record

@@ -43,4 +43,16 @@
       = f.label (t 'college.logo')
     .col-md-4
       =f.text_field :logo, class: 'form-control'
-    
+  
+  - if is_developer?
+    .form-group
+      .col-sm-2.control-label
+        = f.label (t 'college.library_email')
+      .col-md-4
+        =f.text_field :library_email, class: 'form-control'
+
+    .form-group
+      .col-sm-2.control-label
+        = f.label (t 'college.library_pwd')
+      .col-md-4
+        =f.text_field :library_pwd, class: 'form-control'

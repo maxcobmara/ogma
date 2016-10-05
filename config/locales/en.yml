@@ -122,6 +122,9 @@ en:
         leave_startdate: On leave starting
         leave_enddate: Leave end date
         telno: Phone No
+        reason: Reason
+        address: Address
+        staff_id: Approver
       leaveforstaff:
         staff_id: Staff
         leavetype: Leave Type
@@ -469,6 +472,8 @@ en:
     fax: Fax No
     logo: Logo
     restrict_deletion: "Deletion is restricted. College user still exist."
+    library_email: Emel (Kegunaan Notifikasi Perpustakaan)
+    library_pwd: Kata Laluan (Kegunaan Notifikasi Perpustakaan)
     
   banks:
     title: Banks
