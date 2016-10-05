@@ -256,6 +256,21 @@ class Library::LibrarytransactionsController < ApplicationController
       redirect_to general_analysis_library_librarytransactions_path(:reporting_year => reporting_year)
     end
   end
+  
+  def latereturn_report
+    reporting_year=params[:report_year].to_i
+    beginyear=Date.new(reporting_year, 1,1)
+    endyear=beginyear.end_of_year
+    @librarytransactions=Librarytransaction.overdue.where('returnduedate >=? and returnduedate <=?', beginyear, endyear)
+    respond_to do |format|
+       format.pdf do
+         pdf = LatereturnReportPdf.new(@librarytransactions, view_context, current_user.college)
+         send_data pdf.render, filename: "latereturn_report-{Date.today}",
+                               type: "application/pdf",
+                               disposition: "inline"
+       end
+     end
+  end
 
   private
     # Use callbacks to share common setup or constraints between actions.

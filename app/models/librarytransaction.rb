@@ -22,6 +22,7 @@ class Librarytransaction < ActiveRecord::Base
   ##scope :returned,  :conditions => ["returned = ? AND returneddate > ?", true, 8.days.ago]
   #scope :overdue,   lambda{where("returnduedate < ? AND returneddate IS ?", 1.day.ago, nil)}
   ##scope :overdue, lambda { |time| { :conditions => ["returnduedate < ? AND returneddate !=?", Time.now, nil] } }
+  scope :overdue, lambda{where("returneddate > returnduedate")}
   
   FILTERS = [
     #{:scope => "all",        :label => "Semua transaksi"},   #All 
@@ -97,6 +98,10 @@ class Librarytransaction < ActiveRecord::Base
   
   def recommended_fine
     (Date.today.yesterday-returnduedate)*1.0
+  end
+  
+  def late_days
+    (returneddate-returnduedate).to_i if returneddate > returnduedate
   end
 
 end
