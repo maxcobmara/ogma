@@ -107,6 +107,9 @@ ms_MY:
         leave_startdate: Tarikh cuti bermula
         leave_enddate: Tarikh cuti berakhir
         telno: Telefon
+        reason: Sebab
+        address: Alamat
+        staff_id: Pelulus
       travel_claim:
         claim_month: "Tuntutan Bagi (bulan & tahun) "
         travel_requests: "Permohonan Perjalanan "
@@ -448,6 +451,8 @@ ms_MY:
     fax: No Faks
     logo: Logo
     restrict_deletion: "Rekod kolej tidak boleh dipadam. Masih terdapat pengguna bagi kolej ini."
+    library_email: Email (Library Notification use)
+    library_pwd: Password (Library Notification use)
 
   banks:
     title: Bank

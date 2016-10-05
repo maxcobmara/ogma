@@ -49,6 +49,22 @@ class College < ActiveRecord::Base
   def logo
     data[:logo]
   end  
+  
+  def library_email=(value)
+    data[:library_email]=value
+  end
+  
+  def library_email
+    data[:library_email]
+  end
+  
+  def library_pwd=(value)
+    data[:library_pwd]=value
+  end
+  
+  def library_pwd
+    data[:library_pwd]
+  end
 
   def valid_for_removal
     if users.count ==0

@@ -53,6 +53,9 @@
             
               %dt= t 'position.name'
               %dd= @selected_staff.try(:position).try(:name)
+              
+              %dt= t 'staff.email'
+              %dd= @selected_staff.try(:coemail)
             %hr
             = render 'book_list'          
         - if @selected_student
@@ -75,8 +78,11 @@
               %dt= t 'student.icno'
               %dd= @selected_student.icno
             
-              %dt= t 'student.programme'
+              %dt= t 'student.course'
               %dd= @selected_student.try(:course).try(:name)
+              
+              %dt= t 'student.email'
+              %dd= @selected_student.try(:semail)
             %hr
             = render 'book_list'
 

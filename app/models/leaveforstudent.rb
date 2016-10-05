@@ -8,6 +8,7 @@ class Leaveforstudent < ActiveRecord::Base
   validates_numericality_of :telno
   validate :validate_kin_exist
   validate :validate_end_date_before_start_date
+  validates_presence_of :staff_id, :if => :student_submit? #applicable to amsas
   validates_presence_of :staff_id, :if => :is_approved?
   validates_presence_of :staffid2, :if => :is_approved2?
 
@@ -83,6 +84,10 @@ class Leaveforstudent < ActiveRecord::Base
   
   def is_approved2?
     approved2==true
+  end
+  
+  def student_submit?
+    studentsubmit==true && college_id!=College.where(code: 'kskbjb').first.id
   end
   
   def self.find_main
@@ -166,21 +171,29 @@ class Leaveforstudent < ActiveRecord::Base
       if curr_roles.include?("developer") || curr_roles.include?("administration") || curr_roles.include?("student_leaves_module_admin") || curr_roles.include?("student_leaves_module_viewer") || curr_roles.include?("student_leaves_module_user")
         leaveforstudents = Leaveforstudent.all
       else
-###
-         if curr_user.roles.pluck(:id).include?(7)
-           if curr_user.userable.positions.first.tasks_main.include?('Penyelaras Kumpulan')
-             leaveforstudents = Leaveforstudent.where('student_id IN(?)', curr_user.under_my_supervision)     
-           else
-             leaveforstudents = Leaveforstudent.all
-           end
-         else
-           leaveforstudents = Leaveforstudent.where('student_id IN(?)', curr_user.under_my_supervision)  
-         end
-#       if curr_user.roles.pluck(:id).include?(7)
-#         leaveforstudents = Leaveforstudent.all
-#       else
-#         leaveforstudents = Leaveforstudent.where('student_id IN(?)', curr_user.under_my_supervision)  
-#       end
+        if curr_user.college.code=='kskbjb'
+          ###
+          if curr_user.roles.pluck(:id).include?(7)
+            if curr_user.userable.positions.first.tasks_main.include?('Penyelaras Kumpulan')
+              leaveforstudents = Leaveforstudent.where('student_id IN(?)', curr_user.under_my_supervision)     
+            else
+              leaveforstudents = Leaveforstudent.all
+            end
+          else
+            leaveforstudents = Leaveforstudent.where('student_id IN(?)', curr_user.under_my_supervision)  
+          end
+          #       if curr_user.roles.pluck(:id).include?(7)
+          #         leaveforstudents = Leaveforstudent.all
+          #       else
+          #         leaveforstudents = Leaveforstudent.where('student_id IN(?)', curr_user.under_my_supervision)  
+          #       end
+          ###
+        else
+          #Amsas - at least, must have staff role - to access 'approving' page
+          if curr_roles.include?("staff")
+            leaveforstudents = Leaveforstudent.where(staff_id: curr_user.userable_id)
+          end
+        end
       end
     end
     leaveforstudents
