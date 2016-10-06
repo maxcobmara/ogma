@@ -44,10 +44,12 @@ class LatereturnReportPdf < Prawn::Document
     for transaction in @transactions.where('staff_id is not null')
       data << [count+=1, transaction.staff.staff_with_rank, transaction.accession.book.title, transaction.checkoutdate.strftime('%d-%m-%Y'), transaction.returneddate.strftime('%d-%m-%Y'), transaction.late_days, "#{transaction.finepay? ? @view.number_with_precision(transaction.fine, precision: 2) : '0.00'}" ]
     end
+    data << [{content: I18n.t('library.transaction.total_sum_fine'), colspan: 6}, @transactions.where('staff_id is not null').sum(:fine)]
     
     table(data, :column_widths => [30, 120, 135, 60, 60, 45, 70], :cell_style => {:size=>10, :borders => [:left, :right, :top, :bottom],  :inline_format => :true, :padding=>[3,5,3,2]}, :header => 2) do
       row(0).font_style=:bold
       column(5..6).style :align => :right
+      row(count+2).style :align => :right
     end  
   end
   
@@ -60,10 +62,12 @@ class LatereturnReportPdf < Prawn::Document
     for transaction in @transactions.where('student_id is not null')
       data << [count2+=1, transaction.student.student_with_rank, transaction.accession.book.title, transaction.checkoutdate.strftime('%d-%m-%Y'), transaction.returneddate.strftime('%d-%m-%Y'), transaction.late_days, "#{transaction.finepay? ? @view.number_with_precision(transaction.fine, precision: 2) : '0.00'}" ]
     end
+    data << [{content: I18n.t('library.transaction.total_sum_fine'), colspan: 6}, @transactions.where('student_id is not null').sum(:fine)]
     
     table(data, :column_widths => [30, 120, 135, 60, 60, 45, 70], :cell_style => {:size=>10, :borders => [:left, :right, :top, :bottom],  :inline_format => :true, :padding=>[3,5,3,2]}, :header => 2) do
       row(0).font_style=:bold
       column(5..6).style :align => :right
+      row(count2+2).style :align => :right
     end  
   end
   

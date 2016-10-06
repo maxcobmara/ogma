@@ -13,10 +13,15 @@ class Programme < ActiveRecord::Base
   
   validates_uniqueness_of :combo_code
   validates_presence_of :durationtype, :if => :duration_exist?
+  validates_presence_of :level, :if => :maritim_roots?
 
   #scope :by_semester, -> { where(course_type: 'Semester')}
   def duration_exist?
     duration!=nil || duration!=0
+  end
+  
+  def maritim_roots?
+    college_id==College.where(code: 'amsas').first.id && ancestry_depth==0
   end
   
   def code2
@@ -49,9 +54,9 @@ class Programme < ActiveRecord::Base
   end
   
   def programme_list
+    prog="#{course_type}" + " " + "#{name}"   
     if is_root?
-      prog="#{course_type}" + " " + "#{name}"   
-      prog+=" ("+level.upcase+")" if level?
+      prog+=" ("+level.upcase+")" unless level.blank?
     else
     end
     prog
@@ -487,7 +492,8 @@ class Programme < ActiveRecord::Base
       # Displayed	stored in db
        ['Diploma','Diploma'],
        ['Pos Basik','Pos Basik'],
-       ['Diploma Lanjutan','Diploma Lanjutan']
+       ['Diploma Lanjutan','Diploma Lanjutan'],
+       ['Pengkhususan', 'Pengkhususan']
   ]
   
   #amsas

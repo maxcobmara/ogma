@@ -97,6 +97,6 @@ class Training::ProgrammesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def programme_params
-      params.require(:programme).permit(:parent_id, :code, :combo_code, :name, :course_type, :ancestry, :ancestry_depth, :objective, :duration, :duration_type, :credits, :status, :lecture, :tutorial, :practical, :lecture_time, :tutorial_time, :practical_time, :subject_abbreviation, :durationtype, :lecture_d, :tutorial_d, :practical_d, :level)
+      params.require(:programme).permit(:parent_id, :code, :combo_code, :name, :course_type, :ancestry, :ancestry_depth, :objective, :duration, :duration_type, :credits, :status, :lecture, :tutorial, :practical, :lecture_time, :tutorial_time, :practical_time, :subject_abbreviation, :durationtype, :lecture_d, :tutorial_d, :practical_d, :level, :college_id, {:data => []})
     end
 end
