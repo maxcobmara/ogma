@@ -401,7 +401,7 @@ module StudentsHelper
         end
       end
       
-      ##
+      ## TODO - Check will error arise at line 405 for KSKBJB (KSKBJB: non-mandatory, AMSAS: mandatory) : birthplace_e=row["birthplace"] & line 423 : religion_e=row["religion"]
       birthplace_e=row["birthplace"]
       if birthplace_e.is_a? String 
         if LibraryHelper.all_digits(birthplace_e) && student_birthplace.include?(birthplace_e.to_i)
