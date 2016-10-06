@@ -49,6 +49,7 @@ en:
       staff_attendance: Staff Attendance
       fingerprint: Fingerprint
       holiday: Public Holiday
+      programme: Programme
       weeklytimetable: Weekly Timetable
       academic_session: Academic Session
       evaluate_course: Course Evaluation
@@ -173,6 +174,8 @@ en:
       holiday:
         hname: Name
         hdate: Date
+      programme:
+        level: Level
       weeklytimetable:
         programme_id: Programme
         intake_id: Intake
@@ -2921,6 +2924,7 @@ en:
       student: Student
       late_by_days: "Late (Days)"
       total_fine: Total Fine
+      total_sum_fine: Grand Total of Fine (RM)
       analysis:
         main_title: "Analysis & Statistic (Borrower) - "
         main_title2: "Analysis & Statistic (Monograph) - "

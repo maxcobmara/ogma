@@ -175,7 +175,13 @@ class Library::LibrarytransactionsController < ApplicationController
     unless yyear.blank?
       sstart = yyear.to_date
       eend = sstart.end_of_year
-      @progs=Programme.where('course_type=? OR course_type=? OR course_type=? OR course_type=?', 'Diploma', 'Diploma Lanjutan', 'Pos Basik', 'Pengkhususan').where(ancestry_depth: 0).where('name NOT ILIKE(?) and name NOT ILIKE(?)', '%test%', '%unknown%').select(:id, :name, :course_type).order(course_type: :asc, name: :asc)
+      course_types=[]
+      if current_user.college.code=='kskbjb'
+        Programme::COURSE_TYPES_PROG1.each{|k,v|course_types << k}
+      else
+        Programme::COURSE_TYPES_PROG2.each{|k,v|course_types << k}
+      end
+      @progs=Programme.where(course_type: course_types).where(ancestry_depth: 0).where('name NOT ILIKE(?) and name NOT ILIKE(?)', '%test%', '%unknown%').select(:id, :name, :course_type, :level).order(course_type: :asc, name: :asc)
       student_ids=Student.all.pluck(:id)
       @librarytransactions=Librarytransaction.where(ru_staff: false).where('student_id IN(?)', student_ids).where('checkoutdate >=? and checkoutdate <=?', sstart, eend).group_by{|x|x.student.course_id}
       @librarytransactions_staff=Librarytransaction.where(ru_staff: true).where('checkoutdate >=? and checkoutdate <=?', sstart, eend)
@@ -258,12 +264,14 @@ class Library::LibrarytransactionsController < ApplicationController
       redirect_to general_analysis_library_librarytransactions_path(:reporting_year => reporting_year)
     end
   end
-  
+
   def latereturn_report
     reporting_year=params[:report_year].to_i
     beginyear=Date.new(reporting_year, 1,1)
     endyear=beginyear.end_of_year
-    @librarytransactions=Librarytransaction.overdue.where('returnduedate >=? and returnduedate <=?', beginyear, endyear)
+    extended_late_history=Librarytransaction.where(extended: true).where('finepay=? and fine is not null', true).pluck(:id)
+    normal_late=Librarytransaction.overdue.where('returnduedate >=? and returnduedate <=?', beginyear, endyear).pluck(:id)
+    @librarytransactions=Librarytransaction.where(id: extended_late_history+normal_late)
     respond_to do |format|
        format.pdf do
          pdf = LatereturnReportPdf.new(@librarytransactions, view_context, current_user.college)
@@ -282,7 +290,7 @@ class Library::LibrarytransactionsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def librarytransaction_params
-      params.require(:librarytransaction).permit(:accession_id, :ru_staff, :staff_id, :student_id, :checkoutdate, :returnduedate, :accession, :accession_no, :accession_acc_book, :libcheckout_by, :returned, :returneddate, :extended, :fine, :finepay, :finepaydate)
+      params.require(:librarytransaction).permit(:accession_id, :ru_staff, :staff_id, :student_id, :checkoutdate, :returnduedate, :accession, :accession_no, :accession_acc_book, :libcheckout_by, :returned, :returneddate, :extended, :fine, :finepay, :finepaydate, :college_id, {:data => []})
       # <-- insert editable fields here inside here e.g (:date, :name)
     end
 

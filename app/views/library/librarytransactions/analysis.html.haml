@@ -91,7 +91,7 @@
       %tbody
         - 0.upto(@thisyearcourse.count-1).each do |ind|
           %tr
-            %td=@progs[ind].name
+            %td=@progs[ind].programme_list
             %td{:width=>"20%", :align =>:center}=@thisyearcourse[ind]
         %tr
           %td=t('library.transaction.analysis.staff')
@@ -111,7 +111,7 @@
   .col-md-6
     - aa = []
     - 0.upto(@thisyearcourse.count-1).each do |ind|
-      - aa << [@progs[ind].name, @thisyearcourse[ind]]
+      - aa << [@progs[ind].programme_list, @thisyearcourse[ind]]
     - aa << [t('library.transaction.analysis.staff'), thisyearstaff]
     %h4.centre= t 'library.transaction.analysis.borrower_statistic_category'
     = pie_chart aa, :height => "390px", :width=> "590px", :library => {legend: { position: 'left', maxLines: aa.count},backgroundColor: "#FBFBFB"}

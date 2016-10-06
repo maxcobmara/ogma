@@ -30,6 +30,7 @@ ms_MY:
       staff_attendance: Kedatangan Staf
       fingerprint: Fingerprint
       holiday: Cuti Umum
+      programme: Program
       weeklytimetable: Jadual Waktu Mingguan
       academic_session: Sesi Akademik
       evaluate_course: Penilaian Kursus
@@ -155,6 +156,8 @@ ms_MY:
       holiday:
         hname: Nama
         hdate: Tarikh
+      programme:
+        level: Peringkat
       weeklytimetable:
         programme_id: Program
         intake_id: "Kumpulan /Sesi Pengambilan"
@@ -2815,6 +2818,7 @@ ms_MY:
       student: Pelajar
       late_by_days: "Lewat (Hari)"
       total_fine: Jumlah Denda
+      total_sum_fine: Jumlah Keseluruhan Denda (RM)
       analysis:
         main_title: "Analisis & Statistik (Peminjam) - "
         main_title2: "Analisis & Statistik (Monograf) - "
