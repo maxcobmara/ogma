@@ -13,8 +13,8 @@ class LatereturnReportPdf < Prawn::Document
     end
     bounding_box([90,760], :width => 350, :height => 100) do |y2|
       move_down 10
-      text "#{college.name}", :align => :center
-      text "#{I18n.t('library.transaction.latereturn_report')}", :align => :center
+      text "#{college.name}", :align => :center, :style => :bold
+      text "#{I18n.t('library.transaction.latereturn_report')}", :align => :center, :style => :bold
     end
     
     if college.code=="kskbjb"

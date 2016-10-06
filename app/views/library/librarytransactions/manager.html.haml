@@ -2,6 +2,11 @@
 .page-header
   %h1= t('library.transaction.manager')
 
+- if current_user.college.code=='amsas'
+  - staff_list=Staff.order(rank_id: :asc, name: :asc).map(&:staff_with_rank)
+  - student_list=Student.order(rank_id: :asc, name: :asc).map(&:student_with_rank)
+- else
+  - staff_list=Staff.order(:name).map(&:name)
 
 - unless @selected_staff || @selected_student
   .row
@@ -16,7 +21,7 @@
     .col-md-6.staff_search{style: "display:none;"}
       = form_for :search, :url => { :action => "manager" }, :html=>{:class => "form-horizontal", :role => "form", :style => 'padding: 0 30px 0 30px; margin-top: 0;' } do |f|
         .input-group
-          = f.text_field :staff_name, data: {autocomplete_source: Staff.order(:name).map(&:name)}, :autofocus => true, :required => true, :class => 'form-control search-field', :type => "input", placeholder: (t 'staff.name')
+          = f.text_field :staff_name, data: {autocomplete_source: staff_list}, :autofocus => true, :required => true, :class => 'form-control search-field', :type => "input", placeholder: (t 'staff.name')
           %span.input-group-btn
             = f.submit (t 'search'), :class => "btn btn-primary", style: "width:80px;"
         %span.help-block.small= (t 'library.check.search')
@@ -99,5 +104,6 @@
             = link_to content_tag(:i, "", class: "fa fa-bookmark"), '#', {class: "btn btn-default", :type => "button", "data-toggle" => "tooltip", title: "You Have Hit Limit", disabled: "disabled"}
         %span#onchange_links
         = link_to content_tag(:i, "", class: "fa fa-repeat"), manager_library_librarytransactions_path, {class: "btn btn-default", :type => "button", "data-toggle" => "tooltip", title: "Reset Form"}
-        = link_to content_tag(:i, "", class: "fa fa-square"), "http://#{request.host}:3000", {class: "btn btn-default", :type => "button", "data-toggle" => "tooltip", title: "Back to OLD ICMS"}
+        - if current_user.college.code=="kskbjb"
+          = link_to content_tag(:i, "", class: "fa fa-square"), "http://#{request.host}:3000", {class: "btn btn-default", :type => "button", "data-toggle" => "tooltip", title: "Back to OLD ICMS"}
       %div#add_book_form

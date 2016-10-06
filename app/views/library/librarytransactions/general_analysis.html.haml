@@ -143,7 +143,10 @@
             - unless e.pages.blank?
               - pgs=trim_epages[-2,2]
               - ab=trim_epages.size-2
-              = trim_epages[0,ab]+" "+t('library.transaction.analysis.'+pgs.downcase)
+              - if pgs.downcase=="ms"
+                = trim_epages[0,ab]+" "+t('library.transaction.analysis.'+pgs.downcase)
+              - else
+                = trim_epages[0,ab]+" "+t('library.transaction.analysis.ms')
             
 
 %BR     

@@ -14,8 +14,8 @@
 
 :javascript
   $('.removing_fields').click(function(){
-    var row=$(this).parent().parent();
-    var all_fields=row.children().children();
+    var row=$(this).parent().parent().parent();
+    var all_fields=row.children().children().children();;
     var destroyer=all_fields[0];
     destroyer.value=true;    
     row.hide();

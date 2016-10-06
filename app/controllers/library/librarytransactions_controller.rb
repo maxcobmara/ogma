@@ -80,7 +80,8 @@ class Library::LibrarytransactionsController < ApplicationController
     #set person
     @existing_library_transactions = []
     if params[:search].present? && params[:search][:staff_name].present?
-      @staff_name = params[:search][:staff_name]
+      @staff_name = params[:search][:staff_name].strip
+      @staff_name = @staff_name.split("(M)")[1].strip if @staff_name.include?("(M)")
       @selected_staff = Staff.where("name = ?", "#{@staff_name}").first
       unless @selected_staff.nil?
         scope = Librarytransaction.where(staff: @selected_staff).where(returneddate: nil).order(returnduedate: :asc)
@@ -247,7 +248,8 @@ class Library::LibrarytransactionsController < ApplicationController
   
   def analysis_statistic_main
     commit = params[:list_submit_button]
-    reporting_year = params[:report_year]
+    yyear=params[:report_year]
+    reporting_year = Date.new(yyear.to_i,1,1)
     if commit == t('library.transaction.analysis.borrower_data')
       redirect_to analysis_library_librarytransactions_path(:reporting_year => reporting_year)
     elsif commit == t('library.transaction.analysis.book_data')
