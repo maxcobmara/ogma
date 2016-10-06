@@ -256,7 +256,13 @@ module StudentsHelper
     Student::RACE.each do |name, saved_race|
       student_race << saved_race
     end
+    
+    student_birthplace=[]
+    Student::STATECD.each{|n, sb| student_birthplace << sb}
       
+    student_religion=[]
+    Student::RELIGION.each{|n, sb| student_religion << sb}
+    
     saved_students=[]
     icno_not_exist=[]
     name_not_exist=[]
@@ -279,9 +285,9 @@ module StudentsHelper
       #lstrip required for string to remove leading/preceeding spaces
       icno_e=row["icno"] 
       if icno_e.is_a? Numeric
-        icno_e=icno_e.to_i.to_s if icno_e.to_i.to_s.size==12
+        icno_e=icno_e.to_i.to_s #if icno_e.to_i.to_s.size==12 #- temporary remark for as armed force no size is differ
       elsif icno_e.is_a? String
-        icno_e=icno_e.lstrip if icno_e.lstrip.size==12 
+        icno_e=icno_e.lstrip #if icno_e.lstrip.size==12 #- temporary remark for as armed force no size is differ
       else
        #cell is blank? 
         icno_not_exist << i
@@ -395,6 +401,44 @@ module StudentsHelper
         end
       end
       
+      ##
+      birthplace_e=row["birthplace"]
+      if birthplace_e.is_a? String 
+        if LibraryHelper.all_digits(birthplace_e) && student_birthplace.include?(birthplace_e.to_i)
+          birthplace_e=birthplace_e.to_i
+        else
+          #wrong data ignored - number required
+          birthplace_e=nil
+          #race_not_valid << i
+        end
+      else
+        if student_birthplace.include?(birthplace_e.to_i)
+          birthplace_e=birthplace_e.to_i 
+        else
+          birthplace_e=nil
+          #race_not_valid << i
+        end
+      end
+      
+      religion_e=row["religion"]
+      if religion_e.is_a? String 
+        if LibraryHelper.all_digits(religion_e) && student_religion.include?(religion_e.to_i)
+          religion_e=religion_e.to_i
+        else
+          #wrong data ignored - number required
+          religion_e=nil
+          #race_not_valid << i
+        end
+      else
+        if student_religion.include?(religion_e.to_i)
+          religion_e=religion_e.to_i 
+        else
+          religion_e=nil
+          #race_not_valid << i
+        end
+      end
+      ##
+      
       mrtlstatuscd_e=row["mrtlstatuscd"]
       if mrtlstatuscd_e.is_a? String 
         if LibraryHelper.all_digits(mrtlstatuscd_e) && student_marital.include?(mrtlstatuscd_e)
@@ -481,8 +525,10 @@ module StudentsHelper
         student_rec.mrtlstatuscd = mrtlstatuscd_e
         student_rec.sstatus = sstatus_e
         student_rec.ssponsor = ssponsor_e
-        student_rec.sbirthdt = sbirthdt_e
+        student_rec.sbirthdt = sbirthdt_e 
         student_rec.intake = intake_e
+	student_rec.birthplace=birthplace_e #required for Amsas
+	student_rec.religion=religion_e #required for Amsas
         student_rec.attributes = row.to_hash.slice("matrixno","sstatus_remark", "semail", "regdate", "offer_letter_serial", "end_training", "address", "address_posbasik")
         student_rec.save!
         #saved_students << student_rec if !student_rec.id.nil?

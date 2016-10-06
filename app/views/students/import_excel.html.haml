@@ -102,6 +102,21 @@
   %li
     %b college_id
     = " - "+t('student.students.college_id_default')+" "+current_user.college.name.upcase+" : "+current_user.college_id.to_s
+  %li
+    %b birthplace
+    %font{color: "red"}*
+    =" - "+t('student.students.birthplace_accordingly')
+    %ul
+      - Student::STATECD.each do |v,k|
+        %li= v+" - "+v.to_s
+  %li
+    %b religion
+    %font{color: "red"}*
+    =" - "+t('student.students.religion_accordingly')
+    %ul
+      - Student::RELIGION.each do |v,k|
+        %li= v+" - "+v.to_s
+        
 %br
 %B 
   %u=t('notes')+" : "
