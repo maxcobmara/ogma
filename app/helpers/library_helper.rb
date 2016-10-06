@@ -54,7 +54,7 @@ module LibraryHelper
       if title2.is_a? String
 	title2=title2.lstrip if title2
       end
-      isbn2=row["isbn_e"]
+      isbn2=row["isbn"] #row["isbn_e"]
       if isbn2.is_a? Float
 	isbn2=isbn2.to_i.to_s
       end

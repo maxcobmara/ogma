@@ -1,5 +1,6 @@
 .topnav.navbar-fixed-top
-  =link_to (fa_icon "square"), "http://#{request.host}:3000"
+  - if request.subdomain.split(".").first=="kskbjb"
+    =link_to (fa_icon "square"), "http://#{request.host}:3000"
   - if user_signed_in?
     =link_to (fa_icon "home"), root_url
     %a#trigger.menu-trigger{:href => "#"}= fa_icon "bars", text: ""
