@@ -13,6 +13,9 @@
         %br
         .form-group
           .col-md-1.col-md-offset-2
-            = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), campus_page_path, :class => 'btn btn-default'
+            - if permitted_to? :manage, :campus_pages
+              = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), campus_page_path, :class => 'btn btn-default'
+            - else
+              = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), flexipage_campus_page_path(@page), :class => 'btn btn-default'
           .col-md-2.col-md-offset-1
             = f.submit t('update'), class: "btn btn-primary"	 

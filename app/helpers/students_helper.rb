@@ -43,10 +43,10 @@ module StudentsHelper
   
   #for Export Excel -- start
   def display_matrixno
-    unless matrixno.nil?
+    unless matrixno.blank?
       a="#{matrixno}"
     else
-      nil
+      a="\'\'"
     end
   end
  
@@ -64,18 +64,32 @@ module StudentsHelper
   end
 
   def display_regdate
-    "#{regdate.to_date.strftime("%d-%m-%Y") unless regdate.nil?}"
+    #"#{regdate.to_date.strftime("%d-%m-%Y") unless regdate.nil?}"
+    unless regdate.blank?
+      a=regdate.to_date.strftime("%d-%m-%Y") 
+    else
+      a="\'\'"
+    end
   end
   def display_gender
    "#{((Student::GENDER.find_all{|disp, value| value == gender.to_s}).map {|disp, value| disp}).first}"
   end
 
   def display_enddate
-    "#{end_training.to_date.strftime("%d-%m-%Y") unless end_training.nil?}"
+    #"#{end_training.to_date.strftime("%d-%m-%Y") unless end_training.nil?}"
+    unless end_training.blank?
+      end_training.to_date.strftime("%d-%m-%Y") 
+    else
+      "\'\'"
+    end
   end
 
   def display_birthdate
-    "#{sbirthdt.to_date.strftime("%d-%m-%Y") unless sbirthdt.nil?}"
+    unless sbirthdt.blank?
+      "#{sbirthdt.to_date.strftime("%d-%m-%Y") unless sbirthdt.nil?}"
+    else
+      "\'\'"
+    end
   end
  
   def display_bloodtype
@@ -96,23 +110,45 @@ module StudentsHelper
     a
   end
   def display_marital
-    "#{((Student::MARITAL_STATUS.find_all{|disp, value| value == mrtlstatuscd.to_s}).map {|disp, value| disp}).first}"
+    unless mrtlstatuscd.blank?
+      "#{((Student::MARITAL_STATUS.find_all{|disp, value| value == mrtlstatuscd.to_s}).map {|disp, value| disp}).first}"
+    else
+      "\'\'"
+    end
   end
+  
+  def display_stelno
+    unless stelno.nil?
+      a= "\'"+stelno+"\'"
+    else
+      nil
+    end
+  end
+  
   def display_status
-    "#{((Student::STATUS.find_all{|disp, value| value==sstatus}).map {|disp, value| disp}).first}"
+    #"#{((Student::STATUS.find_all{|disp, value| value==sstatus}).map {|disp, value| disp}).first}"
+    unless sstatus.blank?
+      if college_id==College.where(code: 'amsas').first.id
+        a="#{((Student::STATUS_AMSAS.find_all{|disp, value| value==sstatus}).map {|disp, value| disp}).first}"
+      else
+        a="#{((Student::STATUS.find_all{|disp, value| value==sstatus}).map {|disp, value| disp}).first}"
+      end
+    else
+      a="\'\'"
+    end
   end
   def display_sstatus_remark
     if sstatus == "Repeat"
-      unless sstatus_remark.nil?
+      unless sstatus_remark.blank?
         a="#{I18n.t('student.students.semester_repeated')+": "+ sstatus_remark}"
       else
-        a=nil
+        a="\'\'"
       end
     else
-      unless sstatus_remark.nil? 
+      unless sstatus_remark.blank? 
         a="#{sstatus_remark}"
       else
-        a=nil
+        a="\'\'"
       end
     end
     a

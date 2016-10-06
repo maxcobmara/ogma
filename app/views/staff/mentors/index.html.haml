@@ -24,7 +24,7 @@
         
     %tbody
     = render "index_search"
-    - @mentors.each do |mentor|
+    - @mentors.uniq.each do |mentor|
       %tr
         %td=link_to mentor.staff.staff_with_rank, staff_mentor_path(mentor)
         %td=h mentor.mentor_date.strftime('%d-%m-%Y')

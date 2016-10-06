@@ -46,16 +46,16 @@ class Student < ActiveRecord::Base
   accepts_nested_attributes_for :kins, :reject_if => lambda { |a| a[:kintype_id].blank? }
   
   has_one :student, foreign_key: 'student_id'
-
-  def self.course_search(query)
-    programme_ids = Programme.roots.where('name ILIKE(?)', "%#{query}%").pluck(:id)
-    where(course_id: programme_ids)
-  end
-  
-  # whitelist the scope
-  def self.ransackable_scopes(auth_object = nil)
-    [:course_search]
-  end
+# 
+#   def self.course_search(query)
+#     programme_ids = Programme.roots.where('name ILIKE(?) or course_type ILIKE(?) or level ILIKE(?)', "%#{query}%", "%#{query}%", "%#{query.downcase}%").pluck(:id)
+#     where(course_id: programme_ids)
+#   end
+#   
+#   # whitelist the scope
+#   def self.ransackable_scopes(auth_object = nil)
+#     [:course_search]
+#   end
   
   def intake_course
     "#{intake}"+","+"#{course_id}"
@@ -459,14 +459,14 @@ class Student < ActiveRecord::Base
  accepts_nested_attributes_for :spmresults, :allow_destroy => true, :reject_if => lambda { |a| a[:spm_subject].blank? }
 
  #export excel section ---
- 
+ #ref : "\'"+student.display_stelno+"\'"
   def self.to_csv2(options = {})
     CSV.generate(options) do |csv|
         csv << [I18n.t('student.students.list')] #title added
         csv << [] #blank row added
         csv << [I18n.t('student.students.icno'), I18n.t('student.students.name'), I18n.t('student.students.matrixno'), I18n.t('student.students.course_id'), I18n.t('student.students.intake_id'), I18n.t('student.students.regdate'), I18n.t('student.students.end_training'),I18n.t('student.students.offer_letter_serial'),I18n.t('student.students.ssponsor'),"Status",I18n.t('student.students.status_remark'), I18n.t('student.students.gender'), I18n.t('student.students.race'), I18n.t('student.students.mrtlstatuscd'),I18n.t('student.students.stelno'), I18n.t('student.students.semail'), I18n.t('student.students.sbirthd'), I18n.t('student.students.physical'), I18n.t('student.students.allergy'), I18n.t('student.students.disease'),I18n.t('student.students.bloodtype'), I18n.t('student.students.medication'),I18n.t('student.students.remark')+" ("+I18n.t('student.students.medical')+")", I18n.t('student.students.address'), I18n.t('student.students.remark')]
         all.each do |student|
-          csv << [student.formatted_mykad, student.name, student.display_matrixno, student.display_programme, student.display_intake, student.display_regdate,student.display_enddate, student.display_offer_letter, student.ssponsor, student.display_status, student.display_sstatus_remark, student.display_gender, student.display_race, student.display_marital,  "\'"+student.try(:stelno)+"\'", student.display_semail, student.display_birthdate, student.display_physical, student.display_allergy, student.display_disease, student.display_bloodtype, student.display_medication, student.display_medicalremarks,  student.display_address, student.display_courseremarks]
+          csv << [student.formatted_mykad, student.name, student.display_matrixno, student.display_programme, student.display_intake, student.display_regdate,student.display_enddate, student.display_offer_letter, student.ssponsor, student.display_status, student.display_sstatus_remark, student.display_gender, student.display_race, student.display_marital,  student.display_stelno, student.display_semail, student.display_birthdate, student.display_physical, student.display_allergy, student.display_disease, student.display_bloodtype, student.display_medication, student.display_medicalremarks,  student.display_address, student.display_courseremarks]
         end
       end
   end

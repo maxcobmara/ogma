@@ -25,7 +25,8 @@
               %li= link_to  (fa_icon "file-pdf-o", text: programme.name), student_report_students_path(programme_id: programme.id, format: 'pdf')
               ss
             - else
-              %li= link_to  (fa_icon "file-pdf-o", text: programme.fullname), student_report_students_path(programme_id: programme.id, format: 'pdf')
+              /%li= link_to  (fa_icon "file-pdf-o", text: programme.fullname), student_report_students_path(programme_id: programme.id, format: 'pdf')
+              %li= link_to  (fa_icon "file-pdf-o", text: programme.programme_list), student_report_students_path(programme_id: programme.id, format: 'pdf')
     - permitted_to? :manage, :students do
       %li.dropdown
         %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#"}
@@ -41,9 +42,9 @@
   %table.table-striped.table-hover.ogma
     %thead
       %tr
-        %th= sort_link(@search, :formatted_mykad, (t 'student.students.formatted_mykad'))
-        %th= sort_link(@search, :name, (t 'student.students.name'))
-        %th= sort_link(@search, :matrixno, (t 'student.students.matrixno'))
+        %th{width: '20%'}= sort_link(@search, :formatted_mykad, (t 'student.students.formatted_mykad'))
+        %th{width: '40%'}= sort_link(@search, :name, (t 'student.students.name'))
+        %th{width: '20%'}= sort_link(@search, :matrixno, (t 'student.students.matrixno'))
         %th{style: "width:20%;"}= sort_link(@search, :race, (t 'student.students.race'))
         //%th.ac{:colspan => "2"}= t 'control'
 
@@ -61,7 +62,7 @@
         - for student in students
           %tr
             %td= link_to student.formatted_mykad, student_path(student)
-            %td= student.name
+            %td= student.student_with_rank
             %td= student.matrixno
             %td
               - if (student.race2.nil? && !student.race.nil? && student.race!='')||(student.race2.blank? && !student.race.blank? &&  student.race!='')

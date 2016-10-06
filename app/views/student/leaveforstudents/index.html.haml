@@ -18,22 +18,19 @@
   %table.table-striped.table-hover.ogma
     %thead
       %tr
-        %th= sort_link(@search, :student_name, (t 'student.leaveforstudent.student_id'))
-        %th= sort_link(@search, :student_course_name, (t 'student.students.course_id'))
-        %th= sort_link(@search, :student_tenants_location, (t 'student.students.intake_id'))
-        %th= sort_link(@search, :student_intake, (t 'student.leaveforstudent.hostel_block'))
-        %th= sort_link(@search, :leavetype, (t 'student.leaveforstudent.leavetype'))
-        %th= sort_link(@search, :requestdate, (t 'student.leaveforstudent.requestdate'))
-        %th= sort_link(@search, :leave_startdate, (t 'student.leaveforstudent.leaves_date'))
-        %th= sort_link(@search, :studentsubmit, (t 'student.leaveforstudent.studentsubmit'))
-        - if current_user.college.code=="icmskskb"
-          %th= sort_link(@search, :staff_name, (t 'student.leaveforstudent.coordinator'))
-        - else
-          %th= sort_link(@search, :staff_name, (t 'student.leaveforstudent.approver'))
-        %th= sort_link(@search, :approved, (t 'student.leaveforstudent.approved'))
-        - if current_user.college.code=="icmskskb"
-          %th= sort_link(@search, :second_approver_name, (t 'student.leaveforstudent.warden'))
-          %th= sort_link(@search, :approved2, (t 'student.leaveforstudent.approved'))
+        %th{width: '10%'}= sort_link(@search, :student_name, (t 'student.leaveforstudent.student_id'))
+        %th{width: '10%'}= sort_link(@search, :student_course_name, (t 'student.students.course_id'))
+        %th{width: '5%'}= sort_link(@search, :student_tenants_location, (t 'student.students.intake_id'))
+        %th{width: '5%'}= sort_link(@search, :student_intake, (t 'student.leaveforstudent.hostel_block'))
+        %th{width: '10%'}= sort_link(@search, :leavetype, (t 'student.leaveforstudent.leavetype'))
+        %th{width: '10%'}= sort_link(@search, :requestdate, (t 'student.leaveforstudent.requestdate'))
+        %th{width: '10%'}= sort_link(@search, :leave_startdate, (t 'student.leaveforstudent.leaves_date'))
+        %th{width: '10%'}= sort_link(@search, :studentsubmit, (t 'student.leaveforstudent.studentsubmit'))
+        - if current_user.college.code=="kskbjb"
+          %th{width: '10%'}= sort_link(@search, :staff_name, (t 'student.leaveforstudent.coordinator'))
+          %th{width: '5%'}= sort_link(@search, :coordinator_search, (t 'student.leaveforstudent.approved'))
+        %th{width: '10%'}= sort_link(@search, :second_approver_name, (t 'student.leaveforstudent.approver'))
+        %th{width: '5%'}= sort_link(@search, :warden_search, (t 'student.leaveforstudent.approved'))
     %tbody
     = render "index_search"
     - @leaveforstudent.each do |leaveforstudent|
@@ -54,18 +51,18 @@
         %td.centre
           =h leaveforstudent.leave_startdate.try(:strftime, '%d %b %y')+" - "
           %br=h leaveforstudent.leave_enddate.try(:strftime, '%d %b %y')
-        %td.centre=h leaveforstudent.studentsubmit? ? image_tag("tick.png") : image_tag("cross.png") 
+        %td.centre=h leaveforstudent.studentsubmit? ? fa_icon("check") : fa_icon("times")
         %td=h leaveforstudent.staff_id? ? leaveforstudent.approver_details : ""
         %td.centre
           - unless leaveforstudent.leave_startdate < Date.tomorrow && leaveforstudent.approved==nil 
-            =h leaveforstudent.approved? ? image_tag("tick.png") : image_tag("cross.png")
+            =h leaveforstudent.approved? ? fa_icon("check") : fa_icon("times")
           - else
             %font{:color =>"red"}=t('student.leaveforstudent.expired') if leaveforstudent.studentsubmit==true
         - if current_user.college.code=="icmskskb"
           %td=h leaveforstudent.staff_id2? ? leaveforstudent.approver_details2 : ""
           %td.centre
             - unless leaveforstudent.leave_startdate < Date.tomorrow && leaveforstudent.approved2==nil 
-              =h leaveforstudent.approved2? ? image_tag("tick.png") : image_tag("cross.png")
+              =h leaveforstudent.approved2? ? fa_icon("check") : fa_icon("times")
             - else
               %font{:color=>"red"}=t('student.leaveforstudent.expired') if leaveforstudent.studentsubmit==true
 
