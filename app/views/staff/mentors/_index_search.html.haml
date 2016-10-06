@@ -2,11 +2,10 @@
   %tr.search_row{style: "display: none;"}
     %td=f.text_field :staff_name_or_staff_rank_name_or_staff_rank_shortname_cont, class: 'form-control', placeholder: (t 'staff.mentors.name_or_rank')
     %td=f.text_field :mentor_date_eq, class: 'form-control date_picker_reverse', value: @search.mentor_date_eq.try(:strftime, '%d-%m-%Y')
-    %td=f.text_field :mentees_student_name_cont, class: 'form-control'
+    %td=f.text_field :mentees_student_name_or_mentees_student_rank_name_or_mentees_student_rank_shortname_cont, class: 'form-control', placeholder: (t 'staff.mentors.name_or_rank')
     %td 
       .input-group
         =f.text_field :remark_cont, class: 'form-control'
         %span.input-group-btn
           %button.btn.btn-sm.btn-default.right{:type => "submit"}
             %i.fa.fa-search.fa-fw
-            
