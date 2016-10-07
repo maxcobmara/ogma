@@ -2533,7 +2533,7 @@ ms_MY:
       kin_info: Maklumat Waris
       has_no_kin: "Pelajar tidak mempunyai maklumat waris terdekat (ibu bapa / penjaga / penjamin)."
       update_kin: Kemaskini maklumat waris
-      update_student_kin: ". Sila kemaskini maklumat waris dalam submodul Pelajar terlebih dahulu."
+      update_student_kin: " Sila kemaskini maklumat waris dalam submodul Pelajar terlebih dahulu."
       student_approve_leave_coordinator: "Kelulusan Permohonan Cuti Pelajar (Penyelaras Kumpulan)"
       student_approve_leave_warden: "Kelulusan Permohonan Cuti Pelajar (Warden)"
       student_leave_approval: Kelulusan Permohonan Cuti Pelajar

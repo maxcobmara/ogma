@@ -73,6 +73,14 @@ class Student < ActiveRecord::Base
      (Student::RACE.find_all{|disp, value| value == race2.to_i}).map {|disp, value| disp} [0]
   end
   
+  def render_status
+    (Student::STATUS_COMBINE.find_all{|disp, value| value==sstatus}).map {|disp, value| disp}[0]
+  end
+  
+  def render_sponsor
+    (Student::SPONSOR.find_all{|disp, value| value==ssponsor}).map {|disp, value| disp}[0]
+  end
+  
   def render_marital
     (Student::MARITAL_STATUS.find_all{|disp, value| value == mrtlstatuscd.to_s}).map {|disp, value| disp} [0]
   end
@@ -130,7 +138,7 @@ class Student < ActiveRecord::Base
   end
 
   def age
-    Date.today.year - sbirthdt.year
+    Date.today.year - sbirthdt.year if sbirthdt.present?
   end
 
   def intake_acryn
