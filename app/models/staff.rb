@@ -260,6 +260,18 @@ class Staff < ActiveRecord::Base
     end
   end
   
+  #Multi positions - for use in Leaveforstaff
+    def approver1_list_multipost
+      parent_post_ids=positions.map(&:parent_id)
+      parent_staff_ids=Position.where(id: parent_post_ids).pluck(:staff_id)
+    end
+    
+    def approver2_list_multipost
+      parent_post_ids=positions.map(&:parent_id)
+      grandparent_post_ids=Position.where(id: parent_post_ids).map(&:parent_id)
+      grandparent_staff_ids=Position.where(id: grandparent_post_ids).pluck(:staff_id)
+    end
+  
 end
 
 # == Schema Information

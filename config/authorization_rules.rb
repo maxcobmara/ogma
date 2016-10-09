@@ -557,7 +557,7 @@ authorization do
    #HACK : INDEX (new) - restricted access except for Penyelaras Kumpulan (diploma & posbasics)
    #has_permission_on :training_weeklytimetables, :to => [:menu, :read, :create]
    
-   # TODO - remove below 3 lines once access by module for weeklytimetaable in Catechumen added - to remove those in menu too
+   # TODO - remove below 3 lines once access by module for weeklytimetable in Catechumen added - to remove those in menu too
    #HACK : INDEX (list+show)- restricted access except for Penyelaras Kumpulan/Ketua Program/Ketua Subjek(+'unit_leader' role)/Administration/creator(prepared_by)
    #HACK : SHOW (+edit) - restricted access UNLESS is_submitted!=true (+submission only allowed for Penyelaras Kumpulan)
    #has_permission_on :training_weeklytimetables, :to => [:manage, :weekly_timetable] 
@@ -565,7 +565,7 @@ authorization do
    # TODO lecturer : refer MENU - training_weeklytimetables ENDED here
    
    #OK FROM here..... 29Jan2016 - start
-   has_permission_on :training_weeklytimetables, :to => [:read, :personalize_index, :personalize_show, :personalize_timetable, :personalizetimetable] do
+   has_permission_on :training_weeklytimetables, :to => [:personalize_index, :personalize_show, :personalize_timetable, :personalizetimetable] do    #:read
        if_attribute :staff_id => is {user.userable_id}
    end
    
