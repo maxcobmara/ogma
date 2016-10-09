@@ -46,7 +46,8 @@
               =h @leaveforstaff.approval1? ? (t 'staff_leave.support') : (t 'staff_leave.reject')
             - else
               - if @leaveforstaff.approval1?
-                =h @leaveforstaff.approval1_id!=nil ? t('staff_leave.approved')+t("by2")+@leaveforstaff.seconder.name+t("on2")+@leaveforstaff.approval1date.try(:strftime, "%d %b %Y") : (t 'not_required')
+                =h @leaveforstaff.approval1_id!=nil ? t('endorsed') : (t 'not_required')
+                /=h @leaveforstaff.approval1_id!=nil ? t('staff_leave.approved')+t("by2")+@leaveforstaff.seconder.name+t("on2")+@leaveforstaff.approval1date.try(:strftime, "%d %b %Y") : (t 'not_required')
               - else
                 =t("staff_leave.rejected") 
           
@@ -65,7 +66,7 @@
         %dt= t 'staff_leave.approver_decision'
         %dd
           - unless @leaveforstaff.approver2.blank?
-            =h @leaveforstaff.approver2? ? (t 'staff_leave.approve') : (t 'staff_leave.reject')
+            =h @leaveforstaff.approver2? ? (t 'approved') : (t 'staff_leave.reject')
 
         %dt= t 'staff_leave.approval_name'
         %dd=h  @leaveforstaff.approval2_id.blank? ? (t 'not_required') : @leaveforstaff.endorser

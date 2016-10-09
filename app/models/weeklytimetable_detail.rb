@@ -19,6 +19,8 @@ class WeeklytimetableDetail < ActiveRecord::Base
    #validates_presence_of :lecturer_id, :lecture_method, :if => :topic?#,:time_slot, :time_slot2, :day2, :is_friday, :location,
    validates_presence_of :weeklytimetable_id
    
+   serialize :data, Hash
+   
    def set_day_time_slot_for_non_selected
        if is_friday == true
          self.day2 = 0
@@ -27,6 +29,14 @@ class WeeklytimetableDetail < ActiveRecord::Base
          self.is_friday = false
          self.time_slot = 0
        end 
+   end
+
+   def klass_name=(value)
+     data[:klass_name]=value
+   end
+  
+   def klass_name
+     data[:klass_name]
    end
 
    #def set_false_if_topic_not_exist

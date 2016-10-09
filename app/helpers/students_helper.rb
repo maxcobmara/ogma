@@ -43,10 +43,11 @@ module StudentsHelper
   
   #for Export Excel -- start
   def display_matrixno
-    unless matrixno.blank?
+    unless matrixno.blank? 
       a="#{matrixno}"
-    else
-      a="\'\'"
+    else                      #blank includes: nil, false, [], {}, ""
+      a="\'\'"                 #use in Excel (remove '' from empty cells)
+      #a=nil                 #use in PDF (remove '' from empty cells))
     end
   end
  

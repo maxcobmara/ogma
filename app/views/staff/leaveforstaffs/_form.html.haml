@@ -75,19 +75,33 @@
         /    = f.label t 'staff_leave.submit', for: :submit
         /  .col-md-3
         /    = f.check_box :submit
-
-        - if current_user.college.code!='kskbjb' && @leaveforstaff.applicant.positions.count > 1
-          .form-group
-            .col-sm-2.control-label
-              =f.label t 'staff_leave.approval1_id'
-            .col-md-6
-              =f.collection_select :approval1_id, Staff.where(id: @leaveforstaff.approver1_list_multipost).order(rank_id: :asc, name: :asc), :id, :staff_with_rank_position, {include_blank: (t 'select')}, {class: 'selectpicker', "data-width"=>'400px'}
+        
+        - if current_user.college.code!='kskbjb' 
+          - if @leaveforstaff.new_record?
+            - if @is_admin
+              - approver1_multipost=Staff.all
+              - approver2_multipost=Staff.all
+            - else
+              - if current_user.userable.positions.count > 1
+                - approver1_multipost=Staff.where(id: current_user.userable.approver1_list_multipost)
+                - approver2_multipost=Staff.where(id: current_user.userable.approver2_list_multipost)
+          - else
+            - if @leaveforstaff.applicant.positions.count > 1
+              - approver1_multipost=Staff.where(id: @leaveforstaff.approver1_list_multipost)
+              - approver2_multipost=Staff.where(id: @leaveforstaff.approver2_list_multipost)
+            
+          - if @is_admin || current_user.userable.positions.count > 1
+            .form-group
+              .col-sm-2.control-label
+                =f.label t 'staff_leave.approval1_id'
+              .col-md-6
+                =f.collection_select :approval1_id, approver1_multipost.order(rank_id: :asc, name: :asc), :id, :staff_with_rank_position, {include_blank: (t 'select')}, {class: 'selectpicker', "data-width"=>'400px'}
   
-          .form-group
-            .col-sm-2.control-label
-              =f.label t 'staff_leave.approval2_id'
-            .col-md-6
-              =f.collection_select :approval2_id, Staff.where(id: @leaveforstaff.approver2_list_multipost).order(rank_id: :asc, name: :asc), :id, :staff_with_rank_position, {include_blank: (t 'select')}, {class: 'selectpicker', "data-width"=>'400px'}
+            .form-group
+              .col-sm-2.control-label
+                =f.label t 'staff_leave.approval2_id'
+              .col-md-6
+                =f.collection_select :approval2_id, approver2_multipost.order(rank_id: :asc, name: :asc), :id, :staff_with_rank_position, {include_blank: (t 'select')}, {class: 'selectpicker', "data-width"=>'400px'}
   
   :javascript
     $('.date-picker').datetimepicker({

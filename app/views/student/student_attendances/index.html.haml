@@ -51,12 +51,12 @@
     %table.table-striped.table-hover.ogma
       %thead
         %tr
-          %th{:style=>"width:20px;"} &nbsp;
-          %th= sort_link(@search, :student_id, (t 'student.attendance.student_id'))
-          %th= t 'student.attendance.attend'
-          %th= t 'student.attendance.reason'
-          %th= t 'student.attendance.action_taken'
-          %th= t 'student.attendance.action_close'
+          %th{width: '5%'} &nbsp;
+          %th{width: '35%'}= sort_link(@search, :student_id, (t 'student.attendance.student_id'))
+          %th{width: '10%'}= t 'student.attendance.attend'
+          %th{width: '20%'}= t 'student.attendance.reason'
+          %th{width: '20%'}= t 'student.attendance.action_taken'
+          %th{width: '10%'}= t 'student.attendance.action_close'
 
       %tbody
         = render "search_bar"
