@@ -84,24 +84,24 @@
     full_id=$(this).attr("id");
     var isbreak_val=$(this).is(":checked");
     var idno=full_id.substring(full_id.lastIndexOf("attributes_")+11, full_id.lastIndexOf("_is_break"));
-    var data_id="timetable_timetable_periods_attributes_"+idno+"_data";
-    var data_input=document.getElementById(data_id);
+    var non_class_id="timetable_timetable_periods_attributes_"+idno+"_non_class";
+    var non_class_input=document.getElementById(non_class_id);
     
     if(isbreak_val==true)
-    { data_input.style.display="block";}
+    { non_class_input.style.display="block";}
     else
-    { data_input.style.display="none";}
+    { non_class_input.style.display="none";}
   });
   
   $('.isbreak').click(function(){
     full_id=$(this).attr("id");
     var isbreak_val=$(this).is(":checked");
     var idno=full_id.substring(full_id.lastIndexOf("attributes_")+11, full_id.lastIndexOf("_is_break"));
-    var data_id="timetable_timetable_periods_attributes_"+idno+"_data";
-    var data_input=document.getElementById(data_id);
+    var non_class_id="timetable_timetable_periods_attributes_"+idno+"_non_class";
+    var non_class_input=document.getElementById(non_class_id);
     
     if(isbreak_val==true)
-    { data_input.style.display="block";}
+    { non_class_input.style.display="block";}
     else
-    { data_input.style.display="none";}
+    { non_class_input.style.display="none";}
   });

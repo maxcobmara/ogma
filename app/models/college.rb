@@ -6,6 +6,8 @@ class College < ActiveRecord::Base
   has_many :examanalyses
   has_many :exams
   has_many :leaveforstaffs
+  has_many :timetables
+  has_many :weeklytimetables
   #student, staffs
   
   serialize :data, Hash

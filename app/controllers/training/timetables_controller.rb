@@ -81,7 +81,7 @@ class Training::TimetablesController < ApplicationController
     @timetable.destroy
 
     respond_to do |format|
-      format.html { redirect_to(timetables_url) }
+      format.html { redirect_to(training_timetables_url) }
       format.xml  { head :ok }
     end
   end
@@ -94,6 +94,6 @@ class Training::TimetablesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def timetable_params
-      params.require(:timetable).permit(:code, :name, :description, :created_by, :college_id, {:data => []}, timetable_periods_attributes: [:id, :timetable_id, :sequence, :day_name, :start_at, :end_at, :is_break, :_destroy, :college_id, :data])# :non_class, {:data => []}])
+      params.require(:timetable).permit(:code, :name, :description, :created_by, :college_id, {:data => []}, timetable_periods_attributes: [:id, :timetable_id, :sequence, :day_name, :start_at, :end_at, :is_break, :_destroy, :college_id, :non_class, {:data => []}])
     end
 end

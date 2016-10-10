@@ -14,7 +14,12 @@
                 %td{:align => "center", :style=>"border-right:1px solid #FFFFFF;padding: 6px 6px 6px 6px;text-align:center;background: #E6E7E8;font-size:10px;"}
                   %b= periods.sequence
                   %br= periods.timing
-                  %br= periods.is_break? ? "Break" : ""
+                  %br
+                    /= periods.is_break? ? "Break" : ""
+                    - if @weeklytimetable.college.code=='amsas'
+                      = periods.is_break? ? periods.render_no_class : ""
+                    - else
+                      = periods.is_break? ? (t 'training.timetable_period.is_break') : "" 
 
   %dl.dl-horizontal
     %dt= t 'training.weeklytimetable.format2' , :default => model_class.human_attribute_name(:format2) + ":"
@@ -29,4 +34,9 @@
                 %td{:align => "center", :style=>"border-right:1px solid #FFFFFF;padding: 6px 6px 6px 6px;text-align:center;background: #E6E7E8;font-size:10px;"}
                   %b= periods.sequence
                   %br= periods.timing
-                  %br= periods.is_break? ? "Break" : ""
+                  %br
+                    /= periods.is_break? ? "Break" : ""
+                    - if @weeklytimetable.college.code=='amsas'
+                      = periods.is_break? ? periods.render_no_class : ""
+                    - else
+                      = periods.is_break? ? (t 'training.timetable_period.is_break') : "" 

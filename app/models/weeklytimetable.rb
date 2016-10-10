@@ -14,6 +14,7 @@ class Weeklytimetable < ActiveRecord::Base
   belongs_to :timetable_monthurs, :class_name => 'Timetable',       :foreign_key => 'format1'
   belongs_to :timetable_friday,   :class_name => 'Timetable',       :foreign_key => 'format2'
   belongs_to :academic_semester,  :class_name => 'AcademicSession', :foreign_key => 'semester'
+  belongs_to :college, :foreign_key => 'college_id'
   
   has_many :weeklytimetable_details, :dependent => :destroy
   accepts_nested_attributes_for :weeklytimetable_details, :reject_if => proc {|a|a['topic'].blank? || a['lecturer_id'].blank? || a['lecture_method'].blank?} 

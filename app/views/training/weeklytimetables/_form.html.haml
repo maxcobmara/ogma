@@ -1,6 +1,6 @@
 /- a_condition = (@weeklytimetable.id.nil? || @weeklytimetable.id.blank?) || (@weeklytimetable.prepared_by == @staffid && @weeklytimetable.is_submitted != true) || (@weeklytimetable.prepared_by == @current_user.userable_id && @weeklytimetable.hod_rejected? == true ) || (@is_admin==true && @weeklytimetable.is_submitted != true)
 /- b_condition = (@weeklytimetable.is_submitted == true && @weeklytimetable.endorsed_by == @staffid) || (@is_admin==true && @weeklytimetable.is_submitted == true)
-
+= f.hidden_field :college_id, value: current_user.college_id
 .row
   .col-md-10.col-md-offset-1
     / Nav tabs

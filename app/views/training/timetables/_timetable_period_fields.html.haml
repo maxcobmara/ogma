@@ -19,7 +19,7 @@
     /.col-md-3
     - if current_user.college.code=='amsas'
       .col-md-1= f.check_box :is_break, class: 'isbreak'
-      .col-md-2= f.select :data, TimetablePeriod::NON_CLASS, {include_blank: (t 'select')}, {class: 'form-control non_class', "data-width" => "auto"}
+      .col-md-2= f.select :non_class, TimetablePeriod::NON_CLASS, {include_blank: (t 'select')}, {class: 'form-control non_class', "data-width" => "auto"}
     - else
       .col-md-3
         = f.check_box :is_break
@@ -37,8 +37,8 @@
 
   $('.non_class').each(function(){
     full_id=$(this).attr("id");  
-    var idno=full_id.substring(full_id.lastIndexOf("attributes_")+11, full_id.lastIndexOf("_data"));
-    var data_input=document.getElementById(full_id);
+    var idno=full_id.substring(full_id.lastIndexOf("attributes_")+11, full_id.lastIndexOf("_non_class"));
+    var non_class_input=document.getElementById(full_id);
     var ischeck_input=document.getElementById("timetable_timetable_periods_attributes_"+idno+"_is_break");
     ischeck_value=ischeck_input.checked;
     
@@ -46,9 +46,9 @@
     if(idno > saved1[0].value)
     {  
       if(ischeck_value==true)
-      { data_input.style.display="block";}
+      { non_class_input.style.display="block";}
       else
-      { data_input.style.display="none";}
+      { non_class_input.style.display="none";}
     }
   });
   
@@ -59,15 +59,15 @@
     ischeck_value=ischeck_input.checked;
     
     var idno=full_id.substring(full_id.lastIndexOf("attributes_")+11, full_id.lastIndexOf("_is_break"));
-    var data_input=document.getElementById("timetable_timetable_periods_attributes_"+idno+"_data");
+    var non_class_input=document.getElementById("timetable_timetable_periods_attributes_"+idno+"_non_class");
    
     /*if(idno > 20) */
     if(idno > saved1[0].value)
     { 
       if (ischeck_value==true)
-      {  data_input.style.display="block";}
+      {  non_class_input.style.display="block";}
       else
-      {  data_input.style.display="none";}
+      {  non_class_input.style.display="none";}
     }
   });
   

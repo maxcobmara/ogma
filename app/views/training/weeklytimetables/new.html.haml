@@ -8,7 +8,7 @@
   = form_for [:training, @weeklytimetable], html: { multipart: true, class: 'form-horizontal' }  do |f| 
     = render 'shared/error_messages', object: f.object
     = render :partial => 'form', :locals => {:f => f}
-	
+
     .col-md-offset-1
       .form-group
         .col-sm-offset-2.col-sm-1
