@@ -1,6 +1,7 @@
 class Timetable < ActiveRecord::Base
   # befores, relationships, validations, before logic, validation logic, 
   #controller searches, variables, lists, relationship checking
+  before_save :set_non_class_nil_when_class
   before_destroy :valid_for_removal
   belongs_to :creator, :class_name => 'Staff', :foreign_key => 'created_by'
   
@@ -37,6 +38,12 @@ class Timetable < ActiveRecord::Base
       return true
     else
       return false
+    end
+  end
+  
+  def set_non_class_nil_when_class
+    for period in timetable_periods
+      period.data='' if period.is_break==false
     end
   end
   

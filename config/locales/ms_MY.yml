@@ -3614,6 +3614,9 @@ ms_MY:
       is_approved: "Diluluskan ?"
       daily_details: Butiran Harian
       break: REHAT
+      non_class: Bukan kelas
+      ignore_if_class: "* Pilih jika bukan kelas"
+      #"* nyahpilih kotak semak jika sesi pembelajaran ATAU sebaliknya pilih kotak semak beserta pilihan diberikan"
       hod: Ketua Jabatan
       compulsory_fields: Medan - medan yang wajib diisi
       activate_format: "Klik 'Tambah Data' untuk aktifkan format jadual waktu."

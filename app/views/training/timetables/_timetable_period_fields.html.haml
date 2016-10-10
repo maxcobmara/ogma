@@ -1,27 +1,81 @@
 %fieldset
-  = f.hidden_field :_destroy
+  = f.hidden_field :college_id, value: current_user.userable.college_id
+  =f.hidden_field :another, value: @timetable.timetable_periods.count, class: "saved_one"
   .row
-    .col-md-1.col-sm-offset-2= f.select :sequence, 1..12, { :prompt => (t 'select')}, {class: 'selectpicker', "data-width"=>"auto"}
+    .col-md-1.col-sm-offset-2
+      = f.hidden_field :_destroy
+      = f.select :sequence, 1..12, { :prompt => (t 'select')}, {class: 'selectpicker', "data-width"=>"auto"}
     .col-md-2= f.select :day_name, DropDown::DAY_CHOICE,{ :prompt => (t 'select')}, {class: 'selectpicker',"data-width"=>"auto"}
     .col-md-1
-      - unless f.object.start_at.nil?
+      - unless f.object.start_at.blank?
         = f.text_field :start_at, class: 'form-control time_picker2', value: f.object.start_at.strftime("%H:%M")
       - else
         = f.text_field :start_at, class: 'form-control time_picker2'
     .col-md-1
-      - unless f.object.start_at.nil?
+      - unless f.object.end_at.blank?
         = f.text_field :end_at, class: 'form-control time_picker2', value: f.object.end_at.strftime("%H:%M")
       - else
         = f.text_field :end_at, class: 'form-control time_picker2'
-    .col-md-2
-      = f.check_box :is_break
-      =t 'training.weeklytimetable.break'
+    /.col-md-3
+    - if current_user.college.code=='amsas'
+      .col-md-1= f.check_box :is_break, class: 'isbreak'
+      .col-md-2= f.select :data, TimetablePeriod::NON_CLASS, {include_blank: (t 'select')}, {class: 'form-control non_class', "data-width" => "auto"}
+    - else
+      .col-md-3
+        = f.check_box :is_break
+        =t 'training.weeklytimetable.break'
     .col-md-2
       - if @timetable.valid_for_removal
-        = link_to_remove_fields (fa_icon "trash-o"), f
-        /= link_to content_tag(:i, "", class: "fa fa-trash-o"), data: {"data-toggle" => "tooltip", title: "Delete"}, class: "btn btn-danger remove_fields"
+        = link_to content_tag(:i, "", class: "fa fa-trash-o"), "#", class: "removing_fields"
+
 
 :javascript
   $('.selectpicker').selectpicker('render');
-  $('.time_picker2').time_picker2('render');
+  /*$('.time_picker2').time_picker2('render');*/
 
+  var saved1=document.getElementsByClassName('saved_one');
+
+  $('.non_class').each(function(){
+    full_id=$(this).attr("id");  
+    var idno=full_id.substring(full_id.lastIndexOf("attributes_")+11, full_id.lastIndexOf("_data"));
+    var data_input=document.getElementById(full_id);
+    var ischeck_input=document.getElementById("timetable_timetable_periods_attributes_"+idno+"_is_break");
+    ischeck_value=ischeck_input.checked;
+    
+    /*new fieldset ONLY*/
+    if(idno > saved1[0].value)
+    {  
+      if(ischeck_value==true)
+      { data_input.style.display="block";}
+      else
+      { data_input.style.display="none";}
+    }
+  });
+  
+  $('.isbreak').click(function(){
+    var break_inc_new=document.getElementsByClassName('isbreak');
+    full_id=$(this).attr("id");    
+    var ischeck_input=document.getElementById(full_id);
+    ischeck_value=ischeck_input.checked;
+    
+    var idno=full_id.substring(full_id.lastIndexOf("attributes_")+11, full_id.lastIndexOf("_is_break"));
+    var data_input=document.getElementById("timetable_timetable_periods_attributes_"+idno+"_data");
+   
+    /*if(idno > 20) */
+    if(idno > saved1[0].value)
+    { 
+      if (ischeck_value==true)
+      {  data_input.style.display="block";}
+      else
+      {  data_input.style.display="none";}
+    }
+  });
+  
+  $('.removing_fields').click(function(){
+    var fieldset=$(this).parent().parent().parent();
+    var row=$(this).parent().parent();
+    var all_fields=row.children().children();
+    var destroyer=all_fields[0];
+    destroyer.value=true;    
+    fieldset.hide();
+  });

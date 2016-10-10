@@ -3692,6 +3692,9 @@ en:
       is_approved: "Approved ?"
       daily_details: Daily Details
       break: BREAK
+      non_class: Non class
+      ignore_if_class: "Tick if not a class"
+      #"* untick checkbox if not a learning session, otherwise tick checkbox and make selection appropiately"
       hod: Head of Department
       compulsory_fields: Indicates compulsory fields
       activate_format: "Klik 'Create' to activate timetable formating."
