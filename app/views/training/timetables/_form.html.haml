@@ -1,3 +1,4 @@
+= f.hidden_field :college_id, value: current_user.userable.college_id
 .row
   .col-md-10.col-md-offset-1
     / Nav tabs
@@ -45,26 +46,26 @@
               %b= t'training.timetable_period.start_at'
             .col-md-1
               %b= t'training.timetable_period.end_at'
-            .col-md-2
-              %b= t'training.timetable_period.is_break'
+            .col-md-3
+              %b= current_user.college.code=='amsas' ? (t 'training.weeklytimetable.non_class') : (t 'training.timetable_period.is_break')
+              .small{style: 'color: red;'}=t 'training.weeklytimetable.ignore_if_class'
             .col-md-2
               %b= t'helpers.links.destroy'
           %br
           %br
           %hr
-          = f.fields_for :timetable_periods do |builder|
+          = f.fields_for :timetable_periods, @timetable.timetable_periods.order(sequence: :asc) do |builder|
             = render 'timetable_period_fields', f: builder
           .row
             /= link_to_add_fields (t 'training.timetable.add_details'), f, :timetable_periods
             = link_to_add_fields t('addmore'), f, :timetable_periods, "",  t('addmore')
-
-
 
 /- f.fields_for :timetable_periods do |builder| 
 /= render 'timetable_period_fields', :f => builder
 /%br
 /= link_to_add_fields image_tag("add.png", :border => 0, :title => 'Add More'), f, :timetable_periods
 /Add More
+/=f.text_field :another, value: @timetable.timetable_periods.count
 
 :javascript
   function add_fields(link, association, content) {
@@ -73,5 +74,34 @@
     $(link).parent().before(content.replace(regexp, new_id));
   }
 
+  /*alert("iii");*/
 
-
+  $('.non_class').each(function(){
+    $(this).hide();
+  });
+  
+  $('.isbreak').each(function(){
+    full_id=$(this).attr("id");
+    var isbreak_val=$(this).is(":checked");
+    var idno=full_id.substring(full_id.lastIndexOf("attributes_")+11, full_id.lastIndexOf("_is_break"));
+    var data_id="timetable_timetable_periods_attributes_"+idno+"_data";
+    var data_input=document.getElementById(data_id);
+    
+    if(isbreak_val==true)
+    { data_input.style.display="block";}
+    else
+    { data_input.style.display="none";}
+  });
+  
+  $('.isbreak').click(function(){
+    full_id=$(this).attr("id");
+    var isbreak_val=$(this).is(":checked");
+    var idno=full_id.substring(full_id.lastIndexOf("attributes_")+11, full_id.lastIndexOf("_is_break"));
+    var data_id="timetable_timetable_periods_attributes_"+idno+"_data";
+    var data_input=document.getElementById(data_id);
+    
+    if(isbreak_val==true)
+    { data_input.style.display="block";}
+    else
+    { data_input.style.display="none";}
+  });
