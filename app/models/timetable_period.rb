@@ -9,6 +9,10 @@ class TimetablePeriod < ActiveRecord::Base
     "#{start_at.try(:strftime, "%l:%M%P")}"+"-"+"#{end_at.try(:strftime, "%l:%M%P")}"
   end 
   
+  def timing_24hrs
+    "#{start_at.try(:strftime, '%H:%M')} - #{end_at.try(:strftime, '%H:%M')}"
+  end
+  
   def render_no_class
     (TimetablePeriod::NON_CLASS.find_all{|disp, value| value == non_class}).map{|disp, value| disp}[0]
   end

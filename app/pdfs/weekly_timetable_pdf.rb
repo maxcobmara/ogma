@@ -13,47 +13,71 @@ class Weekly_timetablePdf < Prawn::Document
     @daycount2 = (@weeklytimetable.enddate.to_date - @weekdays_end).to_i 
     @college=college
     
-    font "Times-Roman"
+    font "Helvetica"
     if college.code=="kskbjb"
       text "BPL.KKM.PK(T)", :align => :right, :size => 8
-    else
-      move_down 5
-    end
-    image "#{Rails.root}/app/assets/images/logo_kerajaan.png", :position => :center, :scale => 0.5
-    move_down 3
-    if college.code=="kskbjb"
-      text "KEMENTERIAN KESIHATAN MALAYSIA", :align => :center, :size => 9
-    else
-      move_down 5
-    end
-    text "JADUAL WAKTU MINGGUAN", :align => :center, :size => 9
-    move_down 3
-    text "INSTITUSI : #{college.name.upcase}", :align => :left, :size => 9
-    text "KUMPULAN PELATIH : #{@weeklytimetable.try(:schedule_intake).try(:group_with_intake_name)}", :align => :left, :size => 9
-    table_date_semester_week
-    table_schedule_sun_wed
-    table_schedule_thurs
-    if @daycount2 > 0
-      start_new_page
-      ##same page header
-      if college.code=="kskbjb"
-        text "BPL.KKM.PK(T)", :align => :right, :size => 8
-      else
-        move_down 5
-      end
       image "#{Rails.root}/app/assets/images/logo_kerajaan.png", :position => :center, :scale => 0.5
       move_down 3
-      if college.code=="kskbjb"
-        text "KEMENTERIAN KESIHATAN MALAYSIA", :align => :center, :size => 9
-      else
-        move_down 5
+    else
+      bounding_box([10,520], :width => 400, :height => 100) do |y2|
+        image "#{Rails.root}/app/assets/images/logo_kerajaan.png",  :width =>72.9, :height =>58.32
       end
+      bounding_box([700,520], :width => 400, :height => 90) do |y2|
+        image "#{Rails.root}/app/assets/images/amsas_logo_small.png", :scale => 0.75
+      end
+      bounding_box([200, 520], :width => 400, :height => 90) do |y2|
+        move_down 10
+        text "PPL APMM", :align => :center, :style => :bold, :size => 10
+        text "NO. DOKUMEN: BK-LAT-RAN-01-01", :align => :center, :style => :bold, :size => 10
+        text "RANCANGAN LATIHAN MINGGUAN", :align => :center, :style => :bold, :size => 10
+      end
+    end
+    
+    if college.code=="kskbjb"
+      text "KEMENTERIAN KESIHATAN MALAYSIA", :align => :center, :size => 9
       text "JADUAL WAKTU MINGGUAN", :align => :center, :size => 9
       move_down 3
       text "INSTITUSI : #{college.name.upcase}", :align => :left, :size => 9
       text "KUMPULAN PELATIH : #{@weeklytimetable.try(:schedule_intake).try(:group_with_intake_name)}", :align => :left, :size => 9
       table_date_semester_week
+    else
+      move_down 5
+    end
+    table_schedule_sun_wed
+    table_schedule_thurs
+    
+    if @daycount2 > 0
+      start_new_page
       ##same page header
+      if college.code=="kskbjb"
+        text "BPL.KKM.PK(T)", :align => :right, :size => 8
+        image "#{Rails.root}/app/assets/images/logo_kerajaan.png", :position => :center, :scale => 0.5
+        move_down 3
+      else
+        bounding_box([10,520], :width => 400, :height => 100) do |y2|
+          image "#{Rails.root}/app/assets/images/logo_kerajaan.png",  :width =>72.9, :height =>58.32
+        end
+        bounding_box([700,520], :width => 400, :height => 90) do |y2|
+          image "#{Rails.root}/app/assets/images/amsas_logo_small.png", :scale => 0.75
+        end
+        bounding_box([200, 520], :width => 400, :height => 90) do |y2|
+          move_down 10
+          text "PPL APMM", :align => :center, :style => :bold, :size => 10
+          text "NO. DOKUMEN: BK-LAT-RAN-01-01", :align => :center, :style => :bold, :size => 10
+          text "RANCANGAN LATIHAN MINGGUAN#{@weeklytimetable.weeklytimetable_details.count}~~#{@weeklytimetable.timetable_monthurs.timetable_periods.where(is_break: true).pluck(:sequence)}", :align => :center, :style => :bold, :size => 10
+        end
+      end
+      if college.code=="kskbjb"
+        text "KEMENTERIAN KESIHATAN MALAYSIA", :align => :center, :size => 9
+	text "JADUAL WAKTU MINGGUAN", :align => :center, :size => 9
+        move_down 3
+        text "INSTITUSI : #{college.name.upcase}", :align => :left, :size => 9
+        text "KUMPULAN PELATIH : #{@weeklytimetable.try(:schedule_intake).try(:group_with_intake_name)}", :align => :left, :size => 9
+        table_date_semester_week
+      ##same page header
+      else
+        move_down 5
+      end
       table_weekend 
     end
     table_signatory
@@ -72,17 +96,30 @@ class Weekly_timetablePdf < Prawn::Document
   
   def table_schedule_sun_wed
     #size & columns count
-    all_col = [55]
-    0.upto(@count1) do |no|
-      #all_col << 80 #remove below conditions & use JUST this line if error occurs
-      if (no==1) || (no==4) || (no==7)
-        all_col << 45
-      else
-        if @count1 > 7
-          #all_col << 80 #remove above conditions & use JUST this line if error occurs
-	  all_col << 95 ###9July2015
+    #[1]Amsas - define column sizes, based on non_class(is_break==true) vs class(is_break==false) cells NOTE - Amsas schedule - covers the whole day (0600-2359hrs)
+    if @college.code=='amsas' && @count1 > 8
+      all_col = [55]
+      isbreak=@weeklytimetable.timetable_monthurs.timetable_periods.where(is_break: true).pluck(:sequence)
+      1.upto(@count1) do |col|
+        if isbreak.include?(col)
+          all_col << 55
         else
-          all_col << 122
+          all_col << 90
+        end
+      end 
+    else
+      all_col = [55]
+      0.upto(@count1) do |no|
+        #all_col << 80 #remove below conditions & use JUST this line if error occurs
+        if (no==1) || (no==4) || (no==7)
+          all_col << 45
+        else
+          if @count1 > 7 #KSKBJB (evening session)
+            #all_col << 80 #remove above conditions & use JUST this line if error occurs
+	    all_col << 95 ###9July2015
+          else
+            all_col << 122
+          end
         end
       end
     end
@@ -92,7 +129,11 @@ class Weekly_timetablePdf < Prawn::Document
     @weeklytimetable.timetable_monthurs.timetable_periods.order(sequence: :asc).in_groups_of(@count1, false).map do |row_things|
       #header (Sun - Wed)
       for periods in row_things
-        header_col << "#{periods.sequence} <br> #{periods.timing}"
+        if @college.code=='amsas'
+          header_col << periods.timing_24hrs
+        else
+          header_col << "#{periods.sequence} <br> #{periods.timing}"
+        end
       end
       #rows & columns of data
       1.upto(@daycount) do |row|
@@ -132,12 +173,20 @@ class Weekly_timetablePdf < Prawn::Document
     #data = [header_col]+[abab]+[abab]+[abab]
     #data = [header_col, abab, abab, abab]
     #data = [header_col]+[abab, abab, abab]
+    college_code=@college.code
+    isbreak=@weeklytimetable.timetable_monthurs.timetable_periods.where(is_break: true).pluck(:sequence)
+    
     data = [header_col]+allrows_content
     table(data, :column_widths => all_col, :cell_style => { :size => 9, :align=> :center,  :inline_format => true}) do
       #self.width = all_col.sum-80 #use this if below error
       if header_col.count > 8
-        #self.width = all_col.sum-80#750
-        self.width = all_col.sum-95 ###9July2015
+        #[1]Amsas - TOTAL up column sizes, based on non_class(is_break==true) vs class(is_break==false) cells - MATCH ABOVE
+        if college_code=='amsas'
+          self.width=all_col.sum
+        else
+          #self.width = all_col.sum-80#750
+          self.width = all_col.sum-95 ###9July2015  #KSKBJB (evening session)
+        end
       else
         self.width = all_col.sum-45#755
       end
@@ -145,7 +194,14 @@ class Weekly_timetablePdf < Prawn::Document
       cells[1,2].valign = :center
       cells[1,5].valign = :center
       if header_col.count > 8
-        cells[1,8].valign = :center
+        #asal - cells[1,8].valign = :center
+        if college_code=='amsas'
+          for abreak in isbreak
+            cells[1, abreak].valign = :center
+          end
+        else
+          cells[1,8].valign = :center
+        end
       end
     end 
   end
@@ -181,19 +237,35 @@ class Weekly_timetablePdf < Prawn::Document
     #Day & date(column - data assigned here)
     allrows_content=["#{I18n.t(:'date.day_names')[@weekdays_end.wday]}#{'<br>'+@weekdays_end.try(:strftime, "%d/%m/%Y")}"]  
     weekdays_dayname=@weekdays_end.try(:strftime, "%A")
+    
     #size & columns count
-    all_col = [55]
-    0.upto(@count1) do |no|
-       if (no==1) || (no==4) || (no==7)
-        all_col << 45
-      else
-        if @count1 > 7
-          #all_col << 80 #remove above conditions & use JUST this line if error occurs
-          all_col << 95 ###9July2015
+    #[2]Amsas - define column sizes, based on non_class(is_break==true) vs class(is_break==false) cells NOTE - Amsas schedule - covers the whole day (0600-2359hrs)
+    if @college.code=='amsas' && @count1 > 8
+       all_col = [55]
+       isbreak=@weeklytimetable.timetable_monthurs.timetable_periods.where(is_break: true).pluck(:sequence)
+       1.upto(@count1) do |col|
+	 if isbreak.include?(col)
+	   all_col << 55
+	 else
+           all_col << 90
+	 end
+       end 
+    else
+      ###asal-start
+      all_col = [55]
+      0.upto(@count1) do |no|
+        if (no==1) || (no==4) || (no==7)
+          all_col << 45
         else
-          all_col << 122
+          if @count1 > 7 #KSKBJB (evening session)
+            #all_col << 80 #remove above conditions & use JUST this line if error occurs
+            all_col << 95 ###9July2015
+          else
+            all_col << 122
+          end
         end
       end
+      ###asal-end
     end
     
     #########
@@ -201,8 +273,7 @@ class Weekly_timetablePdf < Prawn::Document
     if @weeklytimetable.format1==@weeklytimetable.format2
       #Display CONTENT(inc day/date column) of Friday ONLY when same format in use
       
-      # TODO---TODO--TODO--TODO--TODO
-      
+      ####Display-start
       1.upto(1) do |row2|
         onerow_content=[]
 
@@ -241,8 +312,7 @@ class Weekly_timetablePdf < Prawn::Document
 
         allrows_content += onerow_content
       end
-
-      # TODO---TODO--TODO--TODO--TODO - include above 
+      #Display-end
 
     else
       #Display HEADER(time slot) + CONTENT(inc day/date column) of Friday when different format in use - NOTE break & classes span accordingly
@@ -252,9 +322,17 @@ class Weekly_timetablePdf < Prawn::Document
         #Header (Thursday)
         for periods in row_things
           if colfriday == @break_tospan || @classes_tospan.include?(colfriday)==true
-            header_col << {content: "#{periods.sequence} <br> #{periods.timing}", colspan: @span_count}
+            if @college.code=='amsas'
+              header_col << {content: periods.timing_24hrs, colspan: @span_count}
+            else
+              header_col << {content: "#{periods.sequence} <br> #{periods.timing}", colspan: @span_count}
+            end
           else
-            header_col << "#{periods.sequence} <br> #{periods.timing}"
+            if @college.code=='amsas'
+              header_col << periods.timing_24hrs
+            else
+              header_col << "#{periods.sequence} <br> #{periods.timing}"
+            end
           end
           colfriday+=1
         end
@@ -297,7 +375,7 @@ class Weekly_timetablePdf < Prawn::Document
       ##Header+Thursday Content row - end
     end
     ############
-    #2a)Amsas - to sync/combine columns when same format in use for Mon-Thurs Vs Friday, NOTE - refer same==1
+    #2a)Amsas - to remove header, when same format in use for Mon-Thurs Vs Friday
     if @weeklytimetable.format1==@weeklytimetable.format2
       data=[allrows_content]
       same=1
@@ -305,20 +383,29 @@ class Weekly_timetablePdf < Prawn::Document
       data = [header_col]+[allrows_content]
       same=0
     end
+    count1=@count1
+    college_code=@college.code
+    
     table(data, :column_widths => all_col, :cell_style => { :size => 9, :align=> :center,  :inline_format => true}) do
       #self.width = all_col.sum-80 #use this if below error #750 #705
       if @count1==9 && @count2==7
         self.width = 705
       elsif @count1==10 && @count2==7
         self.width = 750
-
+	
       else
         if same==1
-          self.width = 950 #################################
+	  if count1 > 8 && college_code=='amsas'
+	    #[2]Amsas - TOTAL up column sizes, based on non_class(is_break==true) vs class(is_break==false) cells - MATCH above
+            self.width = all_col.sum#=755#950 #################################
+	  else
+	    #KSKBJB (evening session) not define
+	    #unremark this if error arise #all_col.sum-95
+          end
         end
-      end 
+      end
       
-      #2b)Amsas - to sync/combine columns when same format in use for Mon-Thurs Vs Friday
+      #2b)Amsas - to ignore styling for default BREAK cells, when same format in use for Mon-Thurs Vs Friday
       if same==1
       else
         row(0).background_color = 'ABA9A9'  
@@ -336,19 +423,32 @@ class Weekly_timetablePdf < Prawn::Document
     allrows_content=[] 
     
     #size & columns count
-    all_col = [55]
-    0.upto(@count1) do |no|
-       if (no==1) || (no==4) || (no==7)
-        all_col << 45
-      else
-        if @count1 > 7
-          #all_col << 80 #remove above conditions & use JUST this line if error occurs
-          all_col << 95 ###9July2015
+    #[3]Amsas - define column sizes, based on non_class(is_break==true) vs class(is_break==false) cells NOTE - Amsas schedule - covers the whole day (0600-2359hrs)
+    if @college.code=='amsas' && @count1 > 8
+       all_col = [55]
+       isbreak=@weeklytimetable.timetable_monthurs.timetable_periods.where(is_break: true).pluck(:sequence)
+       1.upto(@count1) do |col|
+	 if isbreak.include?(col)
+	   all_col << 55
+	 else
+           all_col << 90
+	 end
+       end 
+    else
+      all_col = [55]
+      0.upto(@count1) do |no|
+         if (no==1) || (no==4) || (no==7)
+          all_col << 45
         else
-          all_col << 122
+          if @count1 > 7  #KSKBJB (evening session)
+            #all_col << 80 #remove above conditions & use JUST this line if error occurs
+            all_col << 95 ###9July2015
+          else
+            all_col << 122
+          end
         end
-      end
-    end  
+      end  
+    end 
     
     ##Header : Weekend+WeekendContent row - start
     if @daycount2 > 0
@@ -356,7 +456,11 @@ class Weekly_timetablePdf < Prawn::Document
         #4)Amsas - No changes required, most of the time weekends classes are displayed on 2nd page, no need to hide weeekend header(time slot/period)
         #Header (Weekend)
         for periods in row_things
-          header_col << "#{periods.sequence} <br> #{periods.timing}"
+          if @college.code=='amsas'
+             header_col << periods.timing_24hrs
+          else
+            header_col << "#{periods.sequence} <br> #{periods.timing}"
+          end
         end
         #Day & date(column) : (ADDITIONAL - Weekends classes) - row starts after timeslot header
         1.upto(@daycount2) do |row2|
@@ -403,20 +507,35 @@ class Weekly_timetablePdf < Prawn::Document
     end ### end for (if daycount2 > 0)
     ##Header : Weekend+WeekendContent row - end
     
+    college_code=@college.code
+    isbreak=@weeklytimetable.timetable_monthurs.timetable_periods.where(is_break: true).pluck(:sequence)
+
     data = [header_col]+allrows_content
     table(data, :column_widths => all_col, :cell_style => { :size => 9, :align=> :center,  :inline_format => true}) do
       #self.width = all_col.sum-80 #use this if below error
       if header_col.count > 8
-        #self.width = all_col.sum-80#750
-        self.width = all_col.sum-95 ###9July2015
+	if college_code=='amsas'
+	  #[3]Amsas - TOTAL up column sizes, based on non_class(is_break==true) vs class(is_break==false) cells - MATCH above
+	  self.width=all_col.sum
+	else
+          #self.width = all_col.sum-80#750
+          self.width = all_col.sum-95 ###9July2015   #KSKBJB (evening session)
+	end
       else
         self.width = all_col.sum-45#755
       end
       row(0).background_color = 'ABA9A9'  
       cells[1,2].valign = :center
       cells[1,5].valign = :center
-       if header_col.count > 8
-        cells[1,8].valign = :center
+      if header_col.count > 8
+        #asal - cells[1,8].valign = :center
+        if college_code=='amsas'
+          for abreak in isbreak
+            cells[1, abreak].valign = :center
+          end
+        else
+          cells[1,8].valign = :center
+        end
       end
     end 
     
