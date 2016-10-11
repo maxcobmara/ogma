@@ -102,7 +102,15 @@ class Weekly_timetablePdf < Prawn::Document
 	  #---------------------
 	  if @break_format1[col-1]==true && row==1 
 	    #break part
-	    onerow_content << {content: "REHAT", rowspan: 4}
+	    #1)Amsas - to display non_class items accordingly
+            if @weeklytimetable.timetable_monthurs.timetable_periods.where('non_class is not null').count > 0
+              non_class_value=@weeklytimetable.timetable_monthurs.timetable_periods.where(sequence: col).first.non_class
+              rehat=TimetablePeriod::NON_CLASS.find_all{|disp, value|value==non_class_value}.map{|disp, value|disp}[0]
+            else
+              rehat=I18n.t('training.weeklytimetable.break')
+	    end
+	    #onerow_content << {content: "REHAT", rowspan: 4}
+	    onerow_content << {content: rehat, rowspan: 4}
 	  elsif @break_format1[col-1]==true && row!=1
 	    #do-not-remove : should not have any field or value
 	  elsif @break_format1[col-1]==false
@@ -170,8 +178,9 @@ class Weekly_timetablePdf < Prawn::Document
     @span_count=2            
     header_col = [""]
     colfriday=1
+    #Day & date(column - data assigned here)
     allrows_content=["#{I18n.t(:'date.day_names')[@weekdays_end.wday]}#{'<br>'+@weekdays_end.try(:strftime, "%d/%m/%Y")}"]  
-    
+    weekdays_dayname=@weekdays_end.try(:strftime, "%A")
     #size & columns count
     all_col = [55]
     0.upto(@count1) do |no|
@@ -187,68 +196,135 @@ class Weekly_timetablePdf < Prawn::Document
       end
     end
     
-    ##Header+Thursday Content row - start
-    @weeklytimetable.timetable_friday.timetable_periods.order(sequence: :asc).in_groups_of(@count2, false).map do |row_things|  
-      #Header (Thursday)
-      for periods in row_things
-        if colfriday == @break_tospan || @classes_tospan.include?(colfriday)==true
-          header_col << {content: "#{periods.sequence} <br> #{periods.timing}", colspan: @span_count}
-        else
-          header_col << "#{periods.sequence} <br> #{periods.timing}"
-        end
-        colfriday+=1
-      end
+    #########
+    #2)Amsas - to sync/combine columns when same format in use for Mon-Thurs Vs Friday
+    if @weeklytimetable.format1==@weeklytimetable.format2
+      #Display CONTENT(inc day/date column) of Friday ONLY when same format in use
       
-      #Content for THURSDAY-(start) - COMPULSORY long break on the fouth time slot-START
-      1.upto(@count2) do |col2|
-        if @break_format2[col2-1]==true 
-          if col2 == @break_tospan
-            allrows_content<< {content: "REHAT", colspan: @span_count}
-          else
-            allrows_content<< "REHAT"
-          end       
- 
-        #NON-BREAK columns----start
-        elsif @break_format2[col2-1]==false 
-          if @classes_tospan.include?(col2)
-            gg=""
-            @weeklytimetable.weeklytimetable_details.each do |xx|
-              if xx.is_friday == true && xx.time_slot == col2 #@count1+col2 
-                #= render 'subtab_class_details', {:xx=>xx}   
-                gg+="#{xx.weeklytimetable_topic.parent.parent.subject_abbreviation.blank? ? "-" :  xx.weeklytimetable_topic.parent.parent.subject_abbreviation.upcase  if xx.weeklytimetable_topic.ancestry_depth == 4} #{ '<br>'+xx.weeklytimetable_topic.parent.name if xx.weeklytimetable_topic.ancestry_depth == 4}  #{xx.weeklytimetable_topic.parent.subject_abbreviation.blank? ? "-" :  xx.weeklytimetable_topic.parent.subject_abbreviation.upcase if xx.weeklytimetable_topic.ancestry_depth != 4} #{'<br>'+xx.weeklytimetable_topic.name  if xx.weeklytimetable_topic.ancestry_depth != 4} #{ xx.location_desc}#{"(K)" if xx.lecture_method==1} #{"(T)" if xx.lecture_method==2}#{"(A)" if xx.lecture_method==3} #{'<br>'+@college.code=="amsas" ? xx.weeklytimetable_lecturer.staff_with_rank : xx.weeklytimetable_lecturer.name}"
-              end
-            end
-            allrows_content<< {content: gg, colspan: @span_count}
-          else
-            hh=""
-            @weeklytimetable.weeklytimetable_details.each do |xx|
-              if xx.is_friday == true && xx.time_slot == col2 #@count1+col2
-                #=render 'subtab_class_details', {:xx=>xx}
-                hh+="#{xx.weeklytimetable_topic.parent.parent.subject_abbreviation.blank? ? "-" :  xx.weeklytimetable_topic.parent.parent.subject_abbreviation.upcase  if xx.weeklytimetable_topic.ancestry_depth == 4} #{ '<br>'+xx.weeklytimetable_topic.parent.name if xx.weeklytimetable_topic.ancestry_depth == 4}  #{xx.weeklytimetable_topic.parent.subject_abbreviation.blank? ? "-" :  xx.weeklytimetable_topic.parent.subject_abbreviation.upcase if xx.weeklytimetable_topic.ancestry_depth != 4} #{'<br>'+xx.weeklytimetable_topic.name  if xx.weeklytimetable_topic.ancestry_depth != 4} #{ xx.location_desc}#{"(K)" if xx.lecture_method==1} #{"(T)" if xx.lecture_method==2}#{"(A)" if xx.lecture_method==3} #{'<br>'+@college.code=="amsas" ? xx.weeklytimetable_lecturer.staff_with_rank : xx.weeklytimetable_lecturer.name}"
-              end
-            end
-            allrows_content<< hh
-          end
-        end 
-        #NON-BREAK columns----end 
+      # TODO---TODO--TODO--TODO--TODO
+      
+      1.upto(1) do |row2|
+        onerow_content=[]
+
+        #Content - (ADDITIONAL - Weekends classes)
+        #span BREAK fields & display CLASSES fields accordingly - col (column) starts after day/date column
+        1.upto(@count1) do |col2|
+            if @break_format1[col2-1]==true && row2==1
+                #3)Amsas - to display non_class items accordingly
+                if @weeklytimetable.timetable_friday.timetable_periods.where('non_class is not null').count > 0
+                    non_class_value=@weeklytimetable.timetable_friday.timetable_periods.where(sequence: col2).first.non_class
+                    rehat=TimetablePeriod::NON_CLASS.find_all{|disp, value|value==non_class_value}.map{|disp, value|disp}[0]
+                else
+                    rehat= I18n.t('training.weeklytimetable.break')
+                end
+                onerow_content << rehat
+            elsif @break_format1[col2-1]==true && row2!=1
+                #do-not-remove : should not have any field or value
+            elsif @break_format1[col2-1]==false
+                gg=[]
+   
+                #1-DECLARE BREAK for 4th slot(12:00-13:00) for Weekend class (Friday only) for Week starting on Sunday
+                #if weekdays_dayname=="Friday" && col2==4
+                #    gg << "REHAT "
+                #else
+                    #1-display Friday slot here
+                    @weeklytimetable.weeklytimetable_details.each do |xx|
+                        if xx.is_friday == true && xx.time_slot == col2
+                            gg << "#{xx.weeklytimetable_topic.parent.parent.subject_abbreviation.blank? ? "-" :  xx.weeklytimetable_topic.parent.parent.subject_abbreviation.upcase  if xx.weeklytimetable_topic.ancestry_depth == 4} #{ '<br>'+xx.weeklytimetable_topic.parent.name if xx.weeklytimetable_topic.ancestry_depth == 4}  #{xx.weeklytimetable_topic.parent.subject_abbreviation.blank? ? "-" :  xx.weeklytimetable_topic.parent.subject_abbreviation.upcase if xx.weeklytimetable_topic.ancestry_depth != 4} #{'<br>'+xx.weeklytimetable_topic.name  if xx.weeklytimetable_topic.ancestry_depth != 4}#{"(K)" if xx.lecture_method==1} #{xx.location_desc}#{"(T)" if xx.lecture_method==2}#{"(A)" if xx.lecture_method==3} #{'<br>'+@college.code=="amsas" ? xx.weeklytimetable_lecturer.staff_with_rank : xx.weeklytimetable_lecturer.name}"
+                        end
+                    end #end for @weeklytimetable..
+                #end #end for weekend_dayname friday
+
+                onerow_content+=gg
+            end 
+        end   #end for 1.upto(@count1) ...
+
+        allrows_content += onerow_content
       end
-      #Content for THURSDAY-(start) - COMPULSORY long break on the fouth time slot-END
-    end
-    ##Header+Thursday Content row - end
+
+      # TODO---TODO--TODO--TODO--TODO - include above 
+
+    else
+      #Display HEADER(time slot) + CONTENT(inc day/date column) of Friday when different format in use - NOTE break & classes span accordingly
+      
+      ##Header+Thursday Content row - start
+      @weeklytimetable.timetable_friday.timetable_periods.order(sequence: :asc).in_groups_of(@count2, false).map do |row_things|  
+        #Header (Thursday)
+        for periods in row_things
+          if colfriday == @break_tospan || @classes_tospan.include?(colfriday)==true
+            header_col << {content: "#{periods.sequence} <br> #{periods.timing}", colspan: @span_count}
+          else
+            header_col << "#{periods.sequence} <br> #{periods.timing}"
+          end
+          colfriday+=1
+        end
+      
+        #Content for THURSDAY-(start) - COMPULSORY long break on the fouth time slot-START
+        1.upto(@count2) do |col2|
+          if @break_format2[col2-1]==true 
+            if col2 == @break_tospan
+              allrows_content<< {content: "REHAT", colspan: @span_count}
+            else
+              allrows_content<< "REHAT"
+            end       
  
-    data = [header_col]+[allrows_content]
+          #NON-BREAK columns----start
+          elsif @break_format2[col2-1]==false 
+            if @classes_tospan.include?(col2)
+              gg=""
+              @weeklytimetable.weeklytimetable_details.each do |xx|
+                if xx.is_friday == true && xx.time_slot == col2 #@count1+col2 
+                  #= render 'subtab_class_details', {:xx=>xx}   
+                  gg+="#{xx.weeklytimetable_topic.parent.parent.subject_abbreviation.blank? ? "-" :  xx.weeklytimetable_topic.parent.parent.subject_abbreviation.upcase  if xx.weeklytimetable_topic.ancestry_depth == 4} #{ '<br>'+xx.weeklytimetable_topic.parent.name if xx.weeklytimetable_topic.ancestry_depth == 4}  #{xx.weeklytimetable_topic.parent.subject_abbreviation.blank? ? "-" :  xx.weeklytimetable_topic.parent.subject_abbreviation.upcase if xx.weeklytimetable_topic.ancestry_depth != 4} #{'<br>'+xx.weeklytimetable_topic.name  if xx.weeklytimetable_topic.ancestry_depth != 4} #{ xx.location_desc}#{"(K)" if xx.lecture_method==1} #{"(T)" if xx.lecture_method==2}#{"(A)" if xx.lecture_method==3} #{'<br>'+@college.code=="amsas" ? xx.weeklytimetable_lecturer.staff_with_rank : xx.weeklytimetable_lecturer.name}"
+                end
+              end
+              allrows_content<< {content: gg, colspan: @span_count}
+            else
+              hh=""
+              @weeklytimetable.weeklytimetable_details.each do |xx|
+                if xx.is_friday == true && xx.time_slot == col2 #@count1+col2
+                  #=render 'subtab_class_details', {:xx=>xx}
+                  hh+="#{xx.weeklytimetable_topic.parent.parent.subject_abbreviation.blank? ? "-" :  xx.weeklytimetable_topic.parent.parent.subject_abbreviation.upcase  if xx.weeklytimetable_topic.ancestry_depth == 4} #{ '<br>'+xx.weeklytimetable_topic.parent.name if xx.weeklytimetable_topic.ancestry_depth == 4}  #{xx.weeklytimetable_topic.parent.subject_abbreviation.blank? ? "-" :  xx.weeklytimetable_topic.parent.subject_abbreviation.upcase if xx.weeklytimetable_topic.ancestry_depth != 4} #{'<br>'+xx.weeklytimetable_topic.name  if xx.weeklytimetable_topic.ancestry_depth != 4} #{ xx.location_desc}#{"(K)" if xx.lecture_method==1} #{"(T)" if xx.lecture_method==2}#{"(A)" if xx.lecture_method==3} #{'<br>'+@college.code=="amsas" ? xx.weeklytimetable_lecturer.staff_with_rank : xx.weeklytimetable_lecturer.name}"
+                end
+              end
+              allrows_content<< hh
+            end
+          end 
+          #NON-BREAK columns----end 
+        end
+        #Content for THURSDAY-(start) - COMPULSORY long break on the fouth time slot-END
+      end
+      ##Header+Thursday Content row - end
+    end
+    ############
+    #2a)Amsas - to sync/combine columns when same format in use for Mon-Thurs Vs Friday, NOTE - refer same==1
+    if @weeklytimetable.format1==@weeklytimetable.format2
+      data=[allrows_content]
+      same=1
+    else
+      data = [header_col]+[allrows_content]
+      same=0
+    end
     table(data, :column_widths => all_col, :cell_style => { :size => 9, :align=> :center,  :inline_format => true}) do
       #self.width = all_col.sum-80 #use this if below error #750 #705
       if @count1==9 && @count2==7
         self.width = 705
       elsif @count1==10 && @count2==7
         self.width = 750
-      #else
-        #self.width = 750
+
+      else
+        if same==1
+          self.width = 950 #################################
+        end
       end 
-      row(0).background_color = 'ABA9A9'  
-      cells[1,2].valign = :center
-      cells[1,4].valign = :center
+      
+      #2b)Amsas - to sync/combine columns when same format in use for Mon-Thurs Vs Friday
+      if same==1
+      else
+        row(0).background_color = 'ABA9A9'  
+        cells[1,2].valign = :center
+        cells[1,4].valign = :center
+      end
       if header_col.count > 8
         cells[1,8].valign = :center
       end
@@ -277,6 +353,7 @@ class Weekly_timetablePdf < Prawn::Document
     ##Header : Weekend+WeekendContent row - start
     if @daycount2 > 0
       @weeklytimetable.timetable_monthurs.timetable_periods.order(sequence: :asc).in_groups_of(@count1, false).map do |row_things|  
+        #4)Amsas - No changes required, most of the time weekends classes are displayed on 2nd page, no need to hide weeekend header(time slot/period)
         #Header (Weekend)
         for periods in row_things
           header_col << "#{periods.sequence} <br> #{periods.timing}"
@@ -290,7 +367,15 @@ class Weekly_timetablePdf < Prawn::Document
           #span BREAK fields & display CLASSES fields accordingly - col (column) starts after day/date column
           1.upto(@count1) do |col2|
             if @break_format1[col2-1]==true && row2==1
-              onerow_content << {content: "REHAT", rowspan: @daycount2}
+              #onerow_content << {content: "REHAT", rowspan: @daycount2}
+              #5)Amsas - to display non_class items accordingly
+                if @weeklytimetable.timetable_friday.timetable_periods.where('non_class is not null').count > 0
+                    non_class_value=@weeklytimetable.timetable_friday.timetable_periods.where(sequence: col2).first.non_class
+                    rehat=TimetablePeriod::NON_CLASS.find_all{|disp, value|value==non_class_value}.map{|disp, value|disp}[0]
+                else
+                    rehat= I18n.t('training.weeklytimetable.break')
+                end
+                onerow_content << {content: rehat, rowspan: @daycount2}
             elsif @break_format1[col2-1]==true && row2!=1
               #do-not-remove : should not have any field or value
             elsif @break_format1[col2-1]==false
