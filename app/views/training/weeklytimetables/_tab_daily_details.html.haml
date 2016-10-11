@@ -7,7 +7,7 @@
 
   .showform
     %table#subtable
-      - daycount=4	
+      - daycount=4
       - weekdays_end = @weeklytimetable.startdate.to_date+4.days
       /Header(row) : sequence & time period (Sunday - Wednesday)  
       - @weeklytimetable.timetable_monthurs.timetable_periods.order(sequence: :asc).in_groups_of(@count1, false) do |row_things|
@@ -48,31 +48,31 @@
                     - if xx.day2 == row && xx.time_slot2 == col 
                       %b= render 'subtab_class_details', {:xx=>xx}
 
-      //Header & Friday lines - hide from display if same Mon-Thurs & Friday format in use////////////////////////////////////////////////// - start - 10 Oct 2016
+      //Header(time slot) for Friday - hide from display if same Mon-Thurs & Friday format in use////////////////////////////////////////////////// - start - 10 Oct 2016
       
       ////2)Amsas - to sync/combine columns when same format in use for Mon-Thurs Vs Friday
       - if @weeklytimetable.format1==@weeklytimetable.format2
-        ///// TODO - recheck these part - start
-        /Day & date(column) : (ADDITIONAL - Weekends classes) - row starts after timeslot header
+        //Display CONTENT(inc day/date column) of Friday ONLY when same format in use
+        
+        /Day & date(column) : (FRIDAY classes - when Mon-Thurs & Friday timetable format are the same) - row starts after timeslot header
         - 1.upto(1) do |row2|
           %tr
             %td{:align =>"center", :style=> "border:1px solid black;text-align:center; padding:4px; vertical-align:middle;font-size:12px;"} 
-              /ref : - weekend_dayname=(weekdays_end+row2).try(:strftime, "%A")
               - weekdays_dayname=weekdays_end.try(:strftime, "%A")
               - weekdays_end.try(:strftime, "%A")
               /this format refers to translation file -- t(:'date.day_names')[0]
               =t(:'date.day_names')[weekdays_end.wday]
               %br=weekdays_end.try(:strftime, "%d/%m/%Y")
 
-            /Content - (ADDITIONAL - Weekends classes)
+            /Content - (FRIDAY classes - when Mon-Thurs & Friday timetable format are the same)
             /span BREAK fields & display CLASSES fields accordingly - col (column) starts after day/date column
             - 1.upto(@count1) do |col2|
               - if break_format1[col2-1]==true && row2==1
                 %td{:align =>"center", :style=>"border:1px solid black; text-align:center; padding:4px;vertical-align:middle;font-size:12px;" } 
                   /=t 'training.weeklytimetable.break'
                   //3)Amsas - to display non_class items accordingly
-                  - if @weeklytimetable.timetable_monthurs.timetable_periods.where('non_class is not null').count > 0
-                    - non_class_value=@weeklytimetable.timetable_monthurs.timetable_periods.where(sequence: col2).first.non_class
+                  - if @weeklytimetable.timetable_friday.timetable_periods.where('non_class is not null').count > 0
+                    - non_class_value=@weeklytimetable.timetable_friday.timetable_periods.where(sequence: col2).first.non_class
                     =TimetablePeriod::NON_CLASS.find_all{|disp, value|value==non_class_value}.map{|disp, value|disp}[0]
                   - else
                     = t 'training.weeklytimetable.break'
@@ -87,11 +87,11 @@
                     /1-display Sat slot accordingly for Week starting on Sunday 
                     /2-OR display Weekends slot (Sat & Sun) for week starting on Monday
                     - @weeklytimetable.weeklytimetable_details.each do |xx|
-                      - if xx.day2 == row2+daycount+1 && xx.time_slot2 == col2 
-                        %b= render 'subtab_class_details', {:xx=>xx}    
+                      - if xx.is_friday == true && xx.time_slot == col2
+                        %b= render 'subtab_class_details', {:xx=>xx}   
         
-        /////TODO - recheck this part - end
       - else
+        //Display HEADER(time slot) + CONTENT(inc day/date column) of Friday when different format in use - NOTE break & classes span accordingly
         
         /Header(row) : sequence & time period THURSDAY (fixed - 5 time slot)-duration for 2 last columns = 2 hours each, span ABOVE 2 columns
         /Lunch break for Thursday is similar to Sun-Wed, except : working hours is less than Sun-Wed 

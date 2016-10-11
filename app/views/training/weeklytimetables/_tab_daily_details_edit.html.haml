@@ -23,97 +23,167 @@
         - 1.upto(daycount) do |row|
           %tr
             %td{:align =>"center", :style=> "border:1px solid black;text-align:center; padding:4px; vertical-align:middle;font-size:12px;"} 
-              =(@weeklytimetable.startdate+(row-1)).try(:strftime, "%A")
-              %br=(@weeklytimetable.startdate+(row-1)).try(:strftime, "%d-%b-%Y")
+              /=(@weeklytimetable.startdate+(row-1)).try(:strftime, "%A")
+              /this format refers to translation file -- t(:'date.day_names')[0]
+              =t(:'date.day_names')[(@weeklytimetable.startdate+(row-1)).wday]
+              %br=(@weeklytimetable.startdate+(row-1)).try(:strftime, "%d/%m/%Y")
 
             /Content - (Sunday - Wednesday)
             /span BREAK fields & display CLASSES fields accordingly - col (column) starts after day/date column
             - 1.upto(@count1) do |col|
               - if @break_format1[col-1]==true && row==1
                 %td{:align =>"center", :rowspan=>"#{daycount}", :style=>"border:1px solid black; text-align:center; padding:4px;vertical-align:middle;font-size:12px;" } 
-                  =t 'training.weeklytimetable.break'
+                  /=t 'training.weeklytimetable.break'
+                  //1)Amsas - to display non_class items accordingly
+                  - if @weeklytimetable.timetable_monthurs.timetable_periods.where('non_class is not null').count > 0
+                    - non_class_value=@weeklytimetable.timetable_monthurs.timetable_periods.where(sequence: col).first.non_class
+                    =TimetablePeriod::NON_CLASS.find_all{|disp, value|value==non_class_value}.map{|disp, value|disp}[0]
+                  - else
+                    = t 'training.weeklytimetable.break'
               - elsif @break_format1[col-1]==true && row!=1
                 /do-not-remove : should not have any field or value
               - elsif @break_format1[col-1]==false
                 %td{:align=>"center", :style=>"border:1px solid black; text-align:center; padding:4px;font-size:12px;"}
                   = render 'subtab_class_details_edit', {:f => f, :colno =>col, :rowno=>row, :daycount_check=>daycount}
 
-      /Header(row) : sequence & time period FRIDAY (fixed - 5 time slot)-duration for 2 last columns = 2 hours each, span ABOVE 2 columns
-      /- break_tospan=4	
-      /- classes_tospan=[5,7]
-      /Lunch break for Thursday is similar to Sun-Wed, except : working hours is less than Sun-Wed 
-      - if weekdays_end.strftime('%A')=="Friday"
-        - break_tospan=4
-        - classes_tospan=[5,7]
+      //Header(time slot) for Friday - hide from display if same Mon-Thurs & Friday format in use////////////////////////////////////////////////// - start - 11 Oct 2016
+      
+      ////2)Amsas - to sync/combine columns when same format in use for Mon-Thurs Vs Friday
+      - if @weeklytimetable.format1==@weeklytimetable.format2
+        //Display CONTENT(inc day/date column) of Friday ONLY when same format in use
+        
+        /Day & date(column) : (FRIDAY classes - when Mon-Thurs & Friday timetable format are the same) - row starts after timeslot header
+        - 1.upto(1) do |row2|
+          %tr
+            %td{:align =>"center", :style=> "border:1px solid black;text-align:center; padding:4px; vertical-align:middle;font-size:12px;"} 
+              /ref : - weekend_dayname=(weekdays_end+row2).try(:strftime, "%A")
+              - weekdays_dayname=weekdays_end.try(:strftime, "%A")
+              - weekdays_end.try(:strftime, "%A")
+              /this format refers to translation file -- t(:'date.day_names')[0]
+              =t(:'date.day_names')[weekdays_end.wday]
+              %br=weekdays_end.try(:strftime, "%d/%m/%Y")
+
+            /Content - (FRIDAY classes - when Mon-Thurs & Friday timetable format are the same)
+            /span BREAK fields & display CLASSES fields accordingly - col (column) starts after day/date column
+            - 1.upto(@count1) do |col2|
+              - if @break_format1[col2-1]==true && row2==1
+                %td{:align =>"center", :style=>"border:1px solid black; text-align:center; padding:4px;vertical-align:middle;font-size:12px;" } 
+                  /=t 'training.weeklytimetable.break'
+                  //3)Amsas - to display non_class items accordingly
+                  - if @weeklytimetable.timetable_friday.timetable_periods.where('non_class is not null').count > 0
+                    - non_class_value=@weeklytimetable.timetable_friday.timetable_periods.where(sequence: col2).first.non_class
+                    =TimetablePeriod::NON_CLASS.find_all{|disp, value|value==non_class_value}.map{|disp, value|disp}[0]
+                  - else
+                    = t 'training.weeklytimetable.break'
+              - elsif @break_format1[col2-1]==true && row2!=1
+                /do-not-remove : should not have any field or value
+              - elsif @break_format1[col2-1]==false
+                %td{:align=>"center", :style=>"border:1px solid black; text-align:center; padding:4px;font-size:12px;"}
+                  /1-DECLARE BREAK for 4th slot for Weekend class (Friday only) for Week starting on Sunday
+                  - if weekdays_dayname=="Friday" && col2==4
+                    = (t 'training.timetable_period.is_break').upcase
+                  - else
+                    /1-display Sat slot accordingly for Week starting on Sunday 
+                    /2-OR display Weekends slot (Sat & Sun) for week starting on Monday
+                    - @weeklytimetable.weeklytimetable_details.each do |xx|
+                      - if xx.is_friday == true && xx.time_slot == col2
+                        /%b= render 'subtab_class_details_edit', {:xx=>xx}   
+                        = render 'subtab_class_details_edit', {:colno =>col2, :rowno=>0, :daycount_check=>daycount}
+
       - else
-        /Thursday or any other day
-        - break_tospan=0
-        - classes_tospan=[]
-      - span_count="2"
-      - @weeklytimetable.timetable_friday.timetable_periods.order(sequence: :asc).in_groups_of(@count2, false) do |row_things|
-        %tr
-          %th{:align=>"center", :style=>"border:1px solid black; text-align:center; padding:4px; vertical-align:middle;background-color:#FEE;font-size:12px;"}
-            &nbsp;
-            - colfriday=1
-          - for periods in row_things
-            - if colfriday == break_tospan || classes_tospan.include?(colfriday)
-              %th{:colspan=>span_count, :style=>"border:1px solid black; text-align:center; padding:4px;background-color:#FEE;font-size:12px;"}
-                %b=periods.sequence
-                %BR= periods.timing
-            - else
-              %th{:align=>"center", :style=>"border:1px solid black; text-align:center; padding:4px;background-color:#FEE;font-size:12px;"} 
-                =periods.sequence
-                %BR= periods.timing
-            -colfriday+=1
+        //Display HEADER(time slot) + CONTENT(inc day/date column) of Friday when different format in use - NOTE breaks & classes are span accordingly
+        
+        /Header(row) : sequence & time period FRIDAY (fixed - 5 time slot)-duration for 2 last columns = 2 hours each, span ABOVE 2 columns
+        /- break_tospan=4	
+        /- classes_tospan=[5,7]
+        /Lunch break for Thursday is similar to Sun-Wed, except : working hours is less than Sun-Wed 
+        - if weekdays_end.strftime('%A')=="Friday"
+          - break_tospan=4
+          - classes_tospan=[5,7]
+        - else
+          /Thursday or any other day
+          - break_tospan=0
+          - classes_tospan=[]
+        - span_count="2"
+        - @weeklytimetable.timetable_friday.timetable_periods.order(sequence: :asc).in_groups_of(@count2, false) do |row_things|
+          %tr
+            %th{:align=>"center", :style=>"border:1px solid black; text-align:center; padding:4px; vertical-align:middle;background-color:#FEE;font-size:12px;"}
+              &nbsp;
+              - colfriday=1
+            - for periods in row_things
+              - if colfriday == break_tospan || classes_tospan.include?(colfriday)
+                %th{:colspan=>span_count, :style=>"border:1px solid black; text-align:center; padding:4px;background-color:#FEE;font-size:12px;"}
+                  %b=periods.sequence
+                  %BR= periods.timing
+              - else
+                %th{:align=>"center", :style=>"border:1px solid black; text-align:center; padding:4px;background-color:#FEE;font-size:12px;"} 
+                  =periods.sequence
+                  %BR= periods.timing
+              -colfriday+=1
 
-        /Content for Friday-(start) - COMPULSORY long break on the fouth time - slot if Week start on Monday
-        %tr
-          %td{:align=>"center", :style=>"border:1px solid black;text-align:center; padding:4px; vertical-align:middle;font-size:12px;"}
-            =weekdays_end.try(:strftime, "%A")
-            %br=weekdays_end.try(:strftime, "%d-%b-%Y")
-            - 1.upto(@count2) do |col2|
-              - if @break_format2[col2-1]==true
-                /BREAK columns
-                - if col2 == break_tospan
-                  %td{:colspan=>span_count, :align=>"center", :style=>"border:1px solid black;text-align:center; padding:4px; vertical-align:middle;font-size:12px;"}
-                    =t 'training.weeklytimetable.break'
-                - else
-                  %td{:align=>"center", :style=>"border:1px solid black;text-align:center; padding:4px; vertical-align:middle;font-size:12px;"}
-                    =t 'training.weeklytimetable.break' 
-              - elsif @break_format2[col2-1]==false 
-                /Non-break columns
-                - if classes_tospan.include?(col2)
-                  %td{:colspan=>span_count, :align=>"center", :style=>"border:1px solid black;text-align:center; padding:4px; vertical-align:middle;font-size:12px;"}
-                    = render 'subtab_class_details_edit', {:colno =>col2, :rowno=>0, :daycount_check=>daycount}      
-                - else
-                  %td{:align=>"center", :style=>"border:1px solid black;text-align:center; padding:4px; vertical-align:middle;font-size:12px"}
-                    = render 'subtab_class_details_edit', {:colno =>col2, :rowno=>0, :daycount_check=>daycount}
-
+          /Content for Friday-(start) - COMPULSORY long break on the fouth time - slot if Week start on Monday
+          %tr
+            %td{:align=>"center", :style=>"border:1px solid black;text-align:center; padding:4px; vertical-align:middle;font-size:12px;"}
+              =weekdays_end.try(:strftime, "%A")
+              %br=weekdays_end.try(:strftime, "%d-%b-%Y")
+              - 1.upto(@count2) do |col2|
+                - if @break_format2[col2-1]==true
+                  /BREAK columns
+                  - if col2 == break_tospan
+                    %td{:colspan=>span_count, :align=>"center", :style=>"border:1px solid black;text-align:center; padding:4px; vertical-align:middle;font-size:12px;"}
+                      =t 'training.weeklytimetable.break'
+                  - else
+                    %td{:align=>"center", :style=>"border:1px solid black;text-align:center; padding:4px; vertical-align:middle;font-size:12px;"}
+                      =t 'training.weeklytimetable.break' 
+                - elsif @break_format2[col2-1]==false 
+                  /Non-break columns
+                  - if classes_tospan.include?(col2)
+                    %td{:colspan=>span_count, :align=>"center", :style=>"border:1px solid black;text-align:center; padding:4px; vertical-align:middle;font-size:12px;"}
+                      = render 'subtab_class_details_edit', {:colno =>col2, :rowno=>0, :daycount_check=>daycount}      
+                  - else
+                    %td{:align=>"center", :style=>"border:1px solid black;text-align:center; padding:4px; vertical-align:middle;font-size:12px"}
+                      = render 'subtab_class_details_edit', {:colno =>col2, :rowno=>0, :daycount_check=>daycount}
+      //Header & Friday lines - hide from display if same Mon-Thurs & Friday format in use///////////////////////////////////////////////// - end - 11 Oct 2016
+                      
       /Header(row) : sequence & time period (ADDITIONAL - Weekends classes)
       - daycount2 = (@weeklytimetable.enddate.to_date - weekdays_end).to_i 	  
       - if (@weeklytimetable.enddate.to_date - weekdays_end).to_i > 0
         - @weeklytimetable.timetable_monthurs.timetable_periods.order(sequence: :asc).in_groups_of(@count1, false) do |row_things|
-          %tr
-            %th{:align => "center", :style=>"border:1px solid black; text-align:center; padding:4px; vertical-align:middle;background-color:#FEE;font-size:12px;"} 
-              &nbsp;
-            - for periods in row_things
-              %th{:align => "center", :style=>"border:1px solid black; text-align:center; padding:4px;background-color:#FEE;font-size:12px;"} 
-                =periods.sequence
-                %BR= periods.timing
 
+          //Header for weekends - hide from display if AMSAS////////////////////////////////////////////////// - start - 10 Oct 2016
+          /////4)Amsas - to sync/combine columns when same format in use for Mon-Thurs Vs Friday
+          - if @weeklytimetable.format1==@weeklytimetable.format2
+          - else
+            %tr
+              %th{:align => "center", :style=>"border:1px solid black; text-align:center; padding:4px; vertical-align:middle;background-color:#FEE;font-size:12px;"} 
+                &nbsp;
+              - for periods in row_things
+                %th{:align => "center", :style=>"border:1px solid black; text-align:center; padding:4px;background-color:#FEE;font-size:12px;"} 
+                  =periods.sequence
+                  %BR= periods.timing
+          //Header for weekends - hide from display if AMSAS////////////////////////////////////////////////// - end - 10 Oct 2016
+          
           /Day & date(column) : (ADDITIONAL - Weekends classes) - row starts after timeslot header
           - 1.upto(daycount2) do |row2|
             %tr
               %td{:align =>"center", :style=> "border:1px solid black;text-align:center; padding:4px; vertical-align:middle;font-size:12px;"} 
-                =weekend_dayname=(weekdays_end+row2).try(:strftime, "%A")
-                %br=(weekdays_end+row2).try(:strftime, "%d-%b-%Y") 
+                - weekend_dayname=(weekdays_end+row2).try(:strftime, "%A")
+                /this format refers to translation file -- t(:'date.day_names')[0]
+                =t(:'date.day_names')[(weekdays_end+row2).wday]
+                %br=(weekdays_end+row2).try(:strftime, "%d/%m/%Y")
 
               /Content - (ADDITIONAL - Weekends classes)
               /span BREAK fields & display CLASSES fields accordingly - col (column) starts after day/date column
               - 1.upto(@count1) do |col2|
                 - if @break_format1[col2-1]==true && row2==1
                   %td{:align =>"center", :rowspan=>"#{daycount2}", :style=>"border:1px solid black; text-align:center; padding:4px;vertical-align:middle;font-size:12px;" } 
-                    =t 'training.weeklytimetable.break'
+                    /=t 'training.weeklytimetable.break'
+                    //5)Amsas - to display non_class items accordingly
+                    - if @weeklytimetable.timetable_monthurs.timetable_periods.where('non_class is not null').count > 0
+                      - non_class_value=@weeklytimetable.timetable_monthurs.timetable_periods.where(sequence: col2).first.non_class
+                      =TimetablePeriod::NON_CLASS.find_all{|disp, value|value==non_class_value}.map{|disp, value|disp}[0]
+                    - else
+                      = t 'training.weeklytimetable.break'
                 - elsif @break_format1[col2-1]==true && row2!=1
                   /do-not-remove : should not have any field or value
                 - elsif @break_format1[col2-1]==false
