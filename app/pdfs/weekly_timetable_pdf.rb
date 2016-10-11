@@ -64,7 +64,8 @@ class Weekly_timetablePdf < Prawn::Document
           move_down 10
           text "PPL APMM", :align => :center, :style => :bold, :size => 10
           text "NO. DOKUMEN: BK-LAT-RAN-01-01", :align => :center, :style => :bold, :size => 10
-          text "RANCANGAN LATIHAN MINGGUAN#{@weeklytimetable.weeklytimetable_details.count}~~#{@weeklytimetable.timetable_monthurs.timetable_periods.where(is_break: true).pluck(:sequence)}", :align => :center, :style => :bold, :size => 10
+          text "RANCANGAN LATIHAN MINGGUAN", :align => :center, :style => :bold, :size => 10
+	  #text "#{@weeklytimetable.weeklytimetable_details.count}~~#{@weeklytimetable.timetable_monthurs.timetable_periods.where(is_break: true).pluck(:sequence)}", :align => :center, :style => :bold, :size => 10
         end
       end
       if college.code=="kskbjb"
@@ -79,8 +80,13 @@ class Weekly_timetablePdf < Prawn::Document
         move_down 5
       end
       table_weekend 
+      if @college.code=='amsas'
+        move_down 100
+        table_ending
+      else
+        table_signatory
+      end
     end
-    table_signatory
   end
    
   def table_date_semester_week
@@ -541,12 +547,30 @@ class Weekly_timetablePdf < Prawn::Document
     
   end
   
-  def table_signatory
-    if @college.code=="amsas"
-      approver="Nama: #{@weeklytimetable.endorsed_by? ? @weeklytimetable.schedule_approver.staff_with_rank : "-"}"
-    else
-      approver="Nama: #{@weeklytimetable.endorsed_by? ? @weeklytimetable.schedule_approver.name : "-"}"
+  
+  def table_ending
+    data=[["DISEDIAKAN OLEH :"," <u>#{@weeklytimetable.schedule_creator.staff_with_rank}</u><br>RANCANG LATIHAN", "", ""],
+       ["Tarikh :", Date.today.strftime('%d-%m-%Y'), "", ""],
+      [{content: "Disediakan : IMPLEMENTASI LATIHAN", colspan: 3},"#{I18n.t('exam.evaluate_course.date_updated')} : #{@weeklytimetable.updated_at.try(:strftime, '%d-%m-%Y')} "]]
+    table(data, :column_widths => [125,200,240,200], :cell_style => {:size=>11, :borders => [:left, :right, :top, :bottom], :inline_format => true}) do
+      a = 0
+      b = 1
+      column(0..3).font_style = :bold
+      row(0..2).borders=[]
+      row(0).column(1).style :align => :center
+      row(1).column(0).style :align => :center
+      row(1).height=100
+      row(2).column(0).borders=[:top, :left, :bottom, :right]
+      row(2).column(3).borders=[:top, :bottom, :right]
+      while a < b do
+        a=+1
+      end
     end
+  end
+  
+  def table_signatory
+    approver="Nama: #{@weeklytimetable.endorsed_by? ? @weeklytimetable.schedule_approver.name : "-"}"
+    
     data1 = [["Disediakan Oleh :","Disemak Oleh :" ],
                   ["#{'.'*90}","#{'.'*90}"],
                   ["Nama: #{@college.code=="amsas" ? @weeklytimetable.schedule_creator.staff_with_rank : @weeklytimetable.schedule_creator.name}", approver],
@@ -558,7 +582,7 @@ class Weekly_timetablePdf < Prawn::Document
       self.width = 700
     end
   end 
-  
+
 end
 
   
