@@ -4,6 +4,7 @@ class Timetable < ActiveRecord::Base
   before_save :set_non_class_nil_when_class
   before_destroy :valid_for_removal
   belongs_to :creator, :class_name => 'Staff', :foreign_key => 'created_by'
+  belongs_to :college, :foreign_key => 'college_id'
   
   has_many :timetable_periods, :dependent => :destroy
   accepts_nested_attributes_for :timetable_periods, :allow_destroy => true#, :reject_if => lambda { |a| a[:start_at].blank? }
@@ -43,7 +44,7 @@ class Timetable < ActiveRecord::Base
   
   def set_non_class_nil_when_class
     for period in timetable_periods
-      period.data='' if period.is_break==false
+      period.non_class=0 if period.is_break==false
     end
   end
   
