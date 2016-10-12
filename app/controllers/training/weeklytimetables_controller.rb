@@ -27,21 +27,39 @@ class Training::WeeklytimetablesController < ApplicationController
           @weeklytimetables3 = @weeklytimetables2.search2(programme_id, roles, current_user.userable_id)
         end
       else
-        if @is_admin
-          @weeklytimetables3 = @weeklytimetables2
-        elsif ["Diploma Lanjutan", "Pos Basik", "Pengkhususan"].include?(lecturer_programme)
-          if roles.include?("programme_manager")  #Ketua Program Pengkhususan
-            programme_ids=Programme.where(course_type: ["Diploma Lanjutan", "Pos Basik", "Pengkhususan"]).pluck(:id)
-            @weeklytimetables3 = @weeklytimetables2.where(programme_id: programme_ids)
-          else
-            programme_id=Position.get_postbasic_id(main_task_first, lecturer_programme)
-            @weeklytimetables3 = @weeklytimetables2.search2(programme_id, roles, current_user.userable_id)
-          end
-        elsif ["Sains Perubatan Asas", "Anatomi & Fisiologi", "Sains Tingkahlaku", "Komunikasi & Sains Pengurusan", "Komuniti"].include?(lecturer_programme) && roles.include?("unit_leader")
+	###amsas
+        if current_user.college.code=='amsas'
+	  if @is_admin
             @weeklytimetables3 = @weeklytimetables2
-        end
+	  else
+	    @weeklytimetables3 = @weeklytimetables2.where('prepared_by=? or endorsed_by=?', current_user.userable_id, current_user.userable_id)
+	  end
+	else
+	  ###kskbjb
+          if @is_admin
+            @weeklytimetables3 = @weeklytimetables2
+          elsif ["Diploma Lanjutan", "Pos Basik", "Pengkhususan"].include?(lecturer_programme)
+            if roles.include?("programme_manager")  #Ketua Program Pengkhususan
+              programme_ids=Programme.where(course_type: ["Diploma Lanjutan", "Pos Basik", "Pengkhususan"]).pluck(:id)
+              @weeklytimetables3 = @weeklytimetables2.where(programme_id: programme_ids)
+            else
+              programme_id=Position.get_postbasic_id(main_task_first, lecturer_programme)
+              @weeklytimetables3 = @weeklytimetables2.search2(programme_id, roles, current_user.userable_id)
+            end
+          elsif ["Sains Perubatan Asas", "Anatomi & Fisiologi", "Sains Tingkahlaku", "Komunikasi & Sains Pengurusan", "Komuniti"].include?(lecturer_programme) && roles.include?("unit_leader")
+            @weeklytimetables3 = @weeklytimetables2
+          end
+	  ###
+	end
+        ###
       end
-      @is_coordinator= Intake.where(programme_id: programme_id, staff_id: current_user.userable_id).count > 0       #coordinator - determine in Intakes
+      if current_user.college.code=='kskbjb'
+        @is_coordinator= Intake.where(programme_id: programme_id, staff_id: current_user.userable_id).count > 0       #coordinator - determine in Intakes
+      elsif current_user.college.code=='amsas'
+	@is_coordinator=Staff.joins(:positions).where('staff_id=? and positions.unit ILIKE(?)', current_user.userable_id, 'Rancang Latihan').count > 0
+      else
+	@is_coordinator=false
+      end
       @weeklytimetables = @weeklytimetables3.order(programme_id: :asc, intake_id: :desc, startdate: :desc).page(params[:page]||1)
       
     end 
@@ -74,7 +92,14 @@ class Training::WeeklytimetablesController < ApplicationController
     roles=current_user.roles.pluck(:authname)
     lecturer_programme = current_user.userable.positions[0].unit
     @is_admin=true if roles.include?("developer") || roles.include?("administration") || roles.include?("weeklytimetables_module_admin") || roles.include?("weeklytimetables_module_viewer") || roles.include?("weeklytimetables_module_user")
-    @is_coordinator= Intake.where(programme_id: @weeklytimetable.programme_id, staff_id: current_user.userable_id).count > 0 
+    #@is_coordinator= Intake.where(programme_id: @weeklytimetable.programme_id, staff_id: current_user.userable_id).count > 0 
+    if current_user.college.code=='kskbjb'
+      @is_coordinator= Intake.where(programme_id: programme_id, staff_id: current_user.userable_id).count > 0       #coordinator - determine in Intakes
+    elsif current_user.college.code=='amsas'
+      @is_coordinator=Staff.joins(:positions).where('staff_id=? and positions.unit ILIKE(?)', current_user.userable_id, 'Rancang Latihan').count > 0
+    else
+      @is_coordinator=false
+    end
     @is_creator=@weeklytimetable.prepared_by==@staffid
     @is_common_leader=["Sains Perubatan Asas", "Anatomi & Fisiologi", "Sains Tingkahlaku", "Komunikasi & Sains Pengurusan", "Komuniti"].include?(lecturer_programme) && roles.include?("unit_leader")
     respond_to do |format|
@@ -113,10 +138,15 @@ class Training::WeeklytimetablesController < ApplicationController
         @lecturer_list=Staff.joins(:positions).where('positions.name=?', 'Jurulatih')
       end
     else
-      #retrieve programme & groups coordinated from Intake
-      @programme_id=Intake.where(staff_id: @staffid).first.programme_id
-      @programme_list=Programme.roots.where(id: @programme_id)
-      group_intake_ids=Intake.where(programme_id: @programme_id, staff_id: @staffid).pluck(:id).compact
+      if current_user.college.code=='kskbjb'
+        #retrieve programme & groups coordinated from Intake
+        @programme_id=Intake.where(staff_id: @staffid).first.programme_id
+        @programme_list=Programme.roots.where(id: @programme_id)
+        group_intake_ids=Intake.where(programme_id: @programme_id, staff_id: @staffid).pluck(:id).compact
+      else
+	@programme_list=Programme.roots
+        group_intake_ids=Intake.all.pluck(:id)
+      end
       @intake_list=Intake.where(id: group_intake_ids)
       @lecturer_list=Staff.where(id: @staffid)
     end
@@ -132,7 +162,14 @@ class Training::WeeklytimetablesController < ApplicationController
     @is_admin = roles.include?("developer") || roles.include?("administration") || roles.include?("weeklytimetables_module_admin") || roles.include?("weeklytimetables_module_viewer") || roles.include?("weeklytimetables_module_user")
     @staffid = current_user.userable_id
     lecturer_programme = current_user.userable.positions[0].unit
-    @is_coordinator= Intake.where(programme_id: @weeklytimetable.programme_id, staff_id: current_user.userable_id).count > 0
+    #@is_coordinator= Intake.where(programme_id: @weeklytimetable.programme_id, staff_id: current_user.userable_id).count > 0
+    if current_user.college.code=='kskbjb'
+       @is_coordinator= Intake.where(programme_id: programme_id, staff_id: current_user.userable_id).count > 0       #coordinator - determine in Intakes
+    elsif current_user.college.code=='amsas'
+       @is_coordinator=Staff.joins(:positions).where('staff_id=? and positions.unit ILIKE(?)', current_user.userable_id, 'Rancang Latihan').count > 0
+    else
+       @is_coordinator=false
+    end
     @is_creator=@weeklytimetable.prepared_by==@staffid
     @is_common_leader=["Sains Perubatan Asas", "Anatomi & Fisiologi", "Sains Tingkahlaku", "Komunikasi & Sains Pengurusan", "Komuniti"].include?(lecturer_programme) && roles.include?("unit_leader")
     #start-remove from partial : tab_daily_details_edit
@@ -189,7 +226,7 @@ class Training::WeeklytimetablesController < ApplicationController
       @semester_subject_topic_list = Programme.find(@weeklytimetable.programme_id).descendants.where('ancestry_depth=? OR ancestry_depth=?',3,4).where(id: @comms_topic).sort_by(&:combo_code)
     end
     ##########amsas
-    lecturer_ids=Staff.joins(:positions).where('positions.name=?', 'Jurulatih') if current_user.college.code=="amsas"
+    lecturer_ids=Staff.joins(:positions).where('positions.name=?', 'Jurulatih').pluck(:id) if current_user.college.code=="amsas"
     if @is_admin
       lecturer_ids+=Staff.joins(:positions).where('unit IN(?)', common_subjects).pluck(:id)
       @semester_subject_topic_list = full_topics
@@ -197,6 +234,7 @@ class Training::WeeklytimetablesController < ApplicationController
     ##########amsas
     if current_user.college.code=="amsas"
       @lecturer_list=Staff.where('id IN(?)', lecturer_ids).order('rank_id ASC, name ASC')
+      @semester_subject_topic_list = full_topics
     else
       @lecturer_list=Staff.where('id IN(?)', lecturer_ids).order(name: :asc)
     end
@@ -220,9 +258,15 @@ class Training::WeeklytimetablesController < ApplicationController
       @lecturer_list= Staff.joins(:positions).where('positions.unit IN(?) or positions.unit IN(?)', prog_names, posbasics).order(name: :asc)
     else
       #retrieve programme & groups coordinated from Intake
-      @programme_id=Intake.where(staff_id: @staffid).first.programme_id
-      @programme_list=Programme.roots.where(id: @programme_id)
-      group_intake_ids=Intake.where(programme_id: @programme_id, staff_id: @staffid).pluck(:id).compact
+      if current_user.college.code=='kskbjb'
+        #retrieve programme & groups coordinated from Intake
+        @programme_id=Intake.where(staff_id: @staffid).first.programme_id
+        @programme_list=Programme.roots.where(id: @programme_id)
+        group_intake_ids=Intake.where(programme_id: @programme_id, staff_id: @staffid).pluck(:id).compact
+      else
+	@programme_list=Programme.roots
+        group_intake_ids=Intake.all.pluck(:id)
+      end
       @intake_list=Intake.where(id: group_intake_ids)
       @lecturer_list=Staff.where(id: @staffid)
     end
@@ -246,7 +290,14 @@ class Training::WeeklytimetablesController < ApplicationController
     @is_admin =roles.include?("developer") || roles.include?("administration") || roles.include?("weeklytimetables_module_admin") || roles.include?("weeklytimetables_module_viewer") || roles.include?("weeklytimetables_module_user")
     @staffid = current_user.userable_id
     lecturer_programme = current_user.userable.positions[0].unit
-    @is_coordinator= Intake.where(programme_id: @weeklytimetable.programme_id, staff_id: current_user.userable_id).count > 0
+    #@is_coordinator= Intake.where(programme_id: @weeklytimetable.programme_id, staff_id: current_user.userable_id).count > 0
+    if current_user.college.code=='kskbjb'
+      @is_coordinator= Intake.where(programme_id: programme_id, staff_id: current_user.userable_id).count > 0       #coordinator - determine in Intakes
+    elsif current_user.college.code=='amsas'
+      @is_coordinator=Staff.joins(:positions).where('staff_id=? and positions.unit ILIKE(?)', current_user.userable_id, 'Rancang Latihan').count > 0
+    else
+      @is_coordinator=false
+    end
     @is_creator=@weeklytimetable.prepared_by==@staffid
     @is_common_leader=["Sains Perubatan Asas", "Anatomi & Fisiologi", "Sains Tingkahlaku", "Komunikasi & Sains Pengurusan", "Komuniti"].include?(lecturer_programme) && roles.include?("unit_leader")
     #start-copy from edit

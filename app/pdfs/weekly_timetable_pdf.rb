@@ -19,13 +19,13 @@ class Weekly_timetablePdf < Prawn::Document
       image "#{Rails.root}/app/assets/images/logo_kerajaan.png", :position => :center, :scale => 0.5
       move_down 3
     else
-      bounding_box([10,520], :width => 400, :height => 100) do |y2|
+      bounding_box([10,520], :width => 400, :height => 85) do |y2|
         image "#{Rails.root}/app/assets/images/logo_kerajaan.png",  :width =>72.9, :height =>58.32
       end
-      bounding_box([700,520], :width => 400, :height => 90) do |y2|
+      bounding_box([700,520], :width => 400, :height => 75) do |y2|
         image "#{Rails.root}/app/assets/images/amsas_logo_small.png", :scale => 0.75
       end
-      bounding_box([200, 520], :width => 400, :height => 90) do |y2|
+      bounding_box([200, 520], :width => 400, :height => 75) do |y2|
         move_down 10
         text "PPL APMM", :align => :center, :style => :bold, :size => 10
         text "NO. DOKUMEN: BK-LAT-RAN-01-01", :align => :center, :style => :bold, :size => 10
@@ -41,8 +41,11 @@ class Weekly_timetablePdf < Prawn::Document
       text "KUMPULAN PELATIH : #{@weeklytimetable.try(:schedule_intake).try(:group_with_intake_name)}", :align => :left, :size => 9
       table_date_semester_week
     else
-      move_down 5
+      text "KUMPULAN PELATIH : #{@weeklytimetable.try(:schedule_intake).try(:group_with_intake_name)}", :align => :left, :size => 9
     end
+    
+    text "TARIKH : #{@weeklytimetable.startdate.to_date.strftime('%d-%m-%Y')} HINGGA : #{@weeklytimetable.enddate.to_date.strftime('%d-%m-%Y')}", :align =>:left, :size => 9
+    move_down 5
     table_schedule_sun_wed
     table_schedule_thurs
     
@@ -311,6 +314,11 @@ class Weekly_timetablePdf < Prawn::Document
                         end
                     end #end for @weeklytimetable..
                 #end #end for weekend_dayname friday
+		    
+		# NOTE-Amsas : Generate ONE empty cell per @count1 loop, when weeklytimetable_details not yet exist
+		if gg.count==0
+		  gg << ""
+		end
 
                 onerow_content+=gg
             end 
@@ -552,7 +560,7 @@ class Weekly_timetablePdf < Prawn::Document
     data=[["DISEDIAKAN OLEH :"," <u>#{@weeklytimetable.schedule_creator.staff_with_rank}</u><br>RANCANG LATIHAN", "", ""],
        ["Tarikh :", Date.today.strftime('%d-%m-%Y'), "", ""],
       [{content: "Disediakan : IMPLEMENTASI LATIHAN", colspan: 3},"#{I18n.t('exam.evaluate_course.date_updated')} : #{@weeklytimetable.updated_at.try(:strftime, '%d-%m-%Y')} "]]
-    table(data, :column_widths => [125,200,240,200], :cell_style => {:size=>11, :borders => [:left, :right, :top, :bottom], :inline_format => true}) do
+    table(data, :column_widths => [125,240,200,200], :cell_style => {:size=>11, :borders => [:left, :right, :top, :bottom], :inline_format => true}) do
       a = 0
       b = 1
       column(0..3).font_style = :bold

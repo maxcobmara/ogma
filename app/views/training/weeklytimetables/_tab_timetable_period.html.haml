@@ -13,7 +13,7 @@
               - for periods in row_things
                 %td{:align => "center", :style=>"border-right:1px solid #FFFFFF;padding: 6px 6px 6px 6px;text-align:center;background: #E6E7E8;font-size:10px;"}
                   %b= periods.sequence
-                  %br= periods.timing
+                  %br= @weeklytimetable.college.code=='amsas' ? periods.timing_24hrs : periods.timing
                   %br
                     /= periods.is_break? ? "Break" : ""
                     - if @weeklytimetable.college.code=='amsas'
@@ -33,7 +33,7 @@
               - for periods in row_things
                 %td{:align => "center", :style=>"border-right:1px solid #FFFFFF;padding: 6px 6px 6px 6px;text-align:center;background: #E6E7E8;font-size:10px;"}
                   %b= periods.sequence
-                  %br= periods.timing
+                  %br= @weeklytimetable.college.code=='amsas' ? periods.timing_24hrs : periods.timing
                   %br
                     /= periods.is_break? ? "Break" : ""
                     - if @weeklytimetable.college.code=='amsas'

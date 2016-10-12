@@ -20,11 +20,11 @@
     %dd= @weeklytimetable.week.to_s+" / "+@weeklytimetable.academic_semester.total_week.to_s
 
     %dt= t 'training.weeklytimetable.prepared_by' , :default => model_class.human_attribute_name(:prepared_by) + ":"
-    %dd= @weeklytimetable.schedule_creator.name
+    %dd= @weeklytimetable.college.code=="amsas" ? @weeklytimetable.schedule_creator.staff_with_rank : @weeklytimetable.schedule_creator.name
 
     %dt= t 'training.weeklytimetable.endorsed_by' , :default => model_class.human_attribute_name(:endorsed_by) + ":"
     %dd= @weeklytimetable.endorsed_by? ? @weeklytimetable.schedule_approver.name : "-"
-		  
+	  
     %dt= t 'training.weeklytimetable.format1' , :default => model_class.human_attribute_name(:format1) + ":"
     %dd= @weeklytimetable.timetable_monthurs.name
 
