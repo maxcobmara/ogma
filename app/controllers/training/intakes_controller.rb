@@ -95,7 +95,7 @@ class Training::IntakesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def intake_params
-      params.require(:intake).permit(:name, :description, :register_on, :programme_id, :is_active, :monthyear_intake, :staff_id)
+      params.require(:intake).permit(:name, :description, :register_on, :programme_id, :is_active, :monthyear_intake, :staff_id, :college_id, {:data => []})
     end
 
 end

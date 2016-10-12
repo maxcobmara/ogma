@@ -10,7 +10,7 @@
       = f.label :intake_id
     .col-md-3
       - if current_user.college.code=="amsas"
-        = f.collection_select :intake_id, @intake_list, :id, :programmelist_group_intake,{:include_blank=> (t 'helpers.prompt.select_intake')},{class: 'selectpicker mandatory', "data-width"=>'280px'}
+        = f.collection_select :intake_id, @intake_list.order(monthyear_intake: :desc), :id, :programmelist_group_intake,{:include_blank=> (t 'helpers.prompt.select_intake')},{class: 'selectpicker mandatory', "data-width"=>'280px'}
       - else
         = f.collection_select :intake_id, @intake_list, :id, :programme_group_intake,{:include_blank=> (t 'helpers.prompt.select_intake')},{class: 'selectpicker mandatory', "data-width"=>'280px'}
        

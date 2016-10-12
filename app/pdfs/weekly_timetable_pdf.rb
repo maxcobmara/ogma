@@ -560,7 +560,7 @@ class Weekly_timetablePdf < Prawn::Document
     data=[["DISEDIAKAN OLEH :"," <u>#{@weeklytimetable.schedule_creator.staff_with_rank}</u><br>RANCANG LATIHAN", "", ""],
        ["Tarikh :", Date.today.strftime('%d-%m-%Y'), "", ""],
       [{content: "Disediakan : IMPLEMENTASI LATIHAN", colspan: 3},"#{I18n.t('exam.evaluate_course.date_updated')} : #{@weeklytimetable.updated_at.try(:strftime, '%d-%m-%Y')} "]]
-    table(data, :column_widths => [125,240,200,200], :cell_style => {:size=>11, :borders => [:left, :right, :top, :bottom], :inline_format => true}) do
+    table(data, :column_widths => [125,240,200,200], :cell_style => {:size=>9, :borders => [:left, :right, :top, :bottom], :inline_format => true}) do
       a = 0
       b = 1
       column(0..3).font_style = :bold
@@ -584,7 +584,7 @@ class Weekly_timetablePdf < Prawn::Document
                   ["Nama: #{@college.code=="amsas" ? @weeklytimetable.schedule_creator.staff_with_rank : @weeklytimetable.schedule_creator.name}", approver],
                   ["Pengajar Penyelaras","#{@weeklytimetable.endorsed_by? ? @weeklytimetable.schedule_approver.positions.first.try(:name) : "-"}"],
                   ["Pelatih Ambilan #{@weeklytimetable.try(:schedule_intake).try(:name)}", @college.code.upcase]]
-    table(data1, :column_widths => [350], :cell_style => { :size => 10}) do
+    table(data1, :column_widths => [350], :cell_style => { :size => 9}) do
       columns(0..1).borders=[]
       rows(0..4).height=18
       self.width = 700
