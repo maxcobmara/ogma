@@ -18,7 +18,7 @@
           /= link_to (fa_icon "file-pdf-o", text: "Student Attendences"), student_attendan_form_student_student_attendances_path(params.merge(format: 'pdf' ))
 
 = render 'shared/flashes'
-
+/ TODO - check create by intake
 .row
   - permitted_to? :new_multiple_intake, :student_student_attendances do
     .col-md-6
@@ -63,16 +63,12 @@
         /edit multiple - based on selection (MUST by same classes, Must by classes of same(1) intake), others - error shall arise
         = form_tag edit_multiple_student_student_attendances_path, :method => :put , :id => "form1" do
           - index2=0
-          - @student_attendances_intake.each do |intake, student_attendances|
+          - @student_attendances_intake.each do |intake_id, student_attendances|
             - @studentattendance_ids=student_attendances.map(&:id)
             %tr
               %td.group{:colspan => "6"} 
                 = (t 'student.attendance.student_intake').upcase 
-                - if current_user.college.code=="kskbjb"
-                  =intake.to_date.strftime("%b %Y").upcase 
-                - elsif current_user.college.code=="amsas"
-                  Siri
-                  =intake.to_date.strftime("%m / %Y")
+                =student_attendances.first.student.intake_list[0]
             
             - student_attendances.group_by{|xx|xx.weeklytimetable_details_id}.each do |classes_schedule| 
               - if classes_schedule[0] != nil 

@@ -120,6 +120,10 @@ class WeeklytimetableDetail < ActiveRecord::Base
    def subject_day_time_class_method
       "#{subject_day_time}"+ " ("+"#{render_class_method}"+")"
    end
+   
+   def subject_details
+      [subject_day_time, id]
+   end
      
      #25March2013==========
   private

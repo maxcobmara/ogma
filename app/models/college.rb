@@ -8,6 +8,7 @@ class College < ActiveRecord::Base
   has_many :leaveforstaffs
   has_many :timetables
   has_many :weeklytimetables
+  has_many :intakes
   #student, staffs
   
   serialize :data, Hash

@@ -58,7 +58,8 @@ class Student < ActiveRecord::Base
 #   end
   
   def intake_course
-    "#{intake}"+","+"#{course_id}"
+    #asal "#{intake}"+","+"#{course_id}"
+    "#{intakestudent.monthyear_intake.strftime('%d-%m-%Y')}"+","+"#{course_id}"
   end
   
   def student_list
@@ -146,12 +147,12 @@ class Student < ActiveRecord::Base
   end
 
   def intake_acryn_prog
-      #intake.to_date.strftime("%b %Y")+" | #{course.course_type} - #{course.name}"
-#     if intake_id?
-#       "#{intakestudent.monthyear_intake.strftime("%b %Y")} | #{course.programme_list}"
-#     else
-      "#{intake.to_date.strftime("%b %Y")} | #{course.programme_list}"
-    #end
+     if intakestudent.college.code=='amsas'
+        "Siri #{intakestudent.monthyear_intake.to_date.strftime("%m/%Y")} | #{course.programme_list}"
+     else
+        "#{intakestudent.monthyear_intake.to_date.strftime("%b %Y")} | #{course.programme_list}"
+     end
+  
   end
 
   #group by intake
@@ -159,7 +160,16 @@ class Student < ActiveRecord::Base
  #   suid = intake_id
  #   Intake.find(:all, :select => "name", :conditions => {:id => suid}).map(&:name)
  # end
-
+  
+  def intake_list
+    if intakestudent.college.code=='amsas'
+      a="Siri "+intakestudent.monthyear_intake.strftime("%m/%Y")
+    else
+      a=intakestudent.monthyear_intake.strftime("%b %Y")
+    end
+    [(a+" "+course.name), (intakestudent.monthyear_intake.to_s+","+course_id.to_s)]
+  end
+      
   def formatted_mykad
     if icno.size==12
     "#{icno[0,6]}-#{icno[6,2]}-#{icno[-4,4]}"

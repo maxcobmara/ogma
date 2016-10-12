@@ -5,6 +5,7 @@ class Intake < ActiveRecord::Base
   
   belongs_to :programme, :foreign_key => 'programme_id'
   belongs_to :coordinator, :class_name => 'Staff', :foreign_key => 'staff_id'
+  belongs_to :college, :foreign_key => 'college_id'
   has_many   :students
   has_many   :weeklytimetables
   has_many   :lessonplans, :class_name => 'LessonPlan', :foreign_key=>'intake_id' 
