@@ -487,6 +487,10 @@ class Programme < ActiveRecord::Base
     total
   end
   
+  def root_programme
+    root_id
+  end
+  
   #kskbjb   
   COURSE_TYPES_PROG1 =  [
       # Displayed	stored in db
