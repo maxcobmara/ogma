@@ -6,7 +6,7 @@
       = f.check_box :hod_approved, :id => 'check_hod_accept'
     .col-md-2
       #span_hod_endorse{:style=>"display:none;"}
-        = f.text_field :hod_approved_on, class: 'form-control date_picker_reverse'
+        = f.text_field :hod_approved_on, class: 'form-control date_picker_reverse', value: @weeklytimetable.hod_approved_on.try(:strftime, '%d-%m-%Y')
   .form-group
     .col-sm-2.control-label
       = f.label :hod_rejected
@@ -14,5 +14,5 @@
       = f.check_box :hod_rejected, :id => 'check_hod_reject'
     .col-md-2
       #span_hod_endorse2{:style=>"display:none;"}
-        = f.text_field :hod_rejected_on, class: 'form-control date_picker_reverse'  
+        = f.text_field :hod_rejected_on, class: 'form-control date_picker_reverse', value: @weeklytimetable.hod_rejected_on.try(:strftime, '%d-%m-%Y')
         %br= f.text_area :reason, :col=>30, :rows=> 3, :placeholder => "State reason for rejection."

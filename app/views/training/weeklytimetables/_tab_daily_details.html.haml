@@ -16,8 +16,8 @@
             &nbsp;
           - for periods in row_things
             %th{:align => "center", :style=>"border:1px solid black; text-align:center; padding:4px;background-color:#FEE;font-size:12px;"} 
-              =periods.sequence
-              %BR= periods.timing
+              =@weeklytimetable.college.code=='amsas' ? "" : periods.sequence
+              %BR= @weeklytimetable.college.code=='amsas' ? periods.timing_24hrs : periods.timing
 
         /Day & date(column) : (Sunday - Wednesday) - row starts after timeslot header
         - 1.upto(daycount) do |row|
@@ -111,12 +111,12 @@
             - for periods in row_things
               - if colfriday == break_tospan || colfriday == classes_tospan[0] || colfriday == classes_tospan[1] 
                 %th{:colspan=>span_count, :style=>"border:1px solid black; text-align:center; padding:4px;background-color:#FEE;font-size:12px;"}
-                  %b=periods.sequence
-                  %BR= periods.timing
+                  %b=@weeklytimetable.college.code=='amsas' ? "" : periods.sequence
+                  %BR= @weeklytimetable.college.code=='amsas' ? periods.timing_24hrs : periods.timing
               - else
                 %th{:align=>"center", :style=>"border:1px solid black; text-align:center; padding:4px;background-color:#FEE;font-size:12px;"} 
-                  =periods.sequence
-                  %BR= periods.timing
+                  =@weeklytimetable.college.code=='amsas' ? "" : periods.sequence
+                  %BR= @weeklytimetable.college.code=='amsas' ? periods.timing_24hrs : periods.timing
               -colfriday+=1
 
           /Content for FRIDAY-(start) - COMPULSORY long break on the fouth time slot - if Week start on Monday
@@ -166,8 +166,8 @@
                 &nbsp;
               - for periods in row_things
                 %th{:align => "center", :style=>"border:1px solid black; text-align:center; padding:4px;background-color:#FEE;font-size:12px;"} 
-                  =periods.sequence
-                  %BR= periods.timing
+                  =@weeklytimetable.college.code=='amsas' ? "" : periods.sequence
+                  %BR= @weeklytimetable.college.code=='amsas' ? periods.timing_24hrs : periods.timing
           //Header for weekends - hide from display if AMSAS////////////////////////////////////////////////// - end - 10 Oct 2016
 
           /Day & date(column) : (ADDITIONAL - Weekends classes) - row starts after timeslot header

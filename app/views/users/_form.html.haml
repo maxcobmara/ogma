@@ -138,7 +138,7 @@
           %li.small=t('user.rule20')
           %li.small=t('user.rule16')
           %li.small=t('user.rule17')
-          %li.small=t('user.rule19')
+          %li.small=@user.college.code=='amsas' ? t('user.rule19_amsas') : t('user.rule19')
           %li.small=t('user.rule20')
           %li.small=t('user.rule21')
           %li.small=t('user.rule22')

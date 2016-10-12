@@ -555,7 +555,7 @@ authorization do
    #TRAINING modules
    # TODO - remove below 2 lines once access by module for weeklytimrtable in Catechumen added - to remove those in menu too
    #HACK : INDEX (new) - restricted access except for Penyelaras Kumpulan (diploma & posbasics)
-   #has_permission_on :training_weeklytimetables, :to => [:menu, :read, :create]
+   has_permission_on :training_weeklytimetables, :to => [:menu, :read, :create]
    
    # TODO - remove below 3 lines once access by module for weeklytimetable in Catechumen added - to remove those in menu too
    #HACK : INDEX (list+show)- restricted access except for Penyelaras Kumpulan/Ketua Program/Ketua Subjek(+'unit_leader' role)/Administration/creator(prepared_by)
@@ -564,9 +564,16 @@ authorization do
    
    # TODO lecturer : refer MENU - training_weeklytimetables ENDED here
    
-   #OK FROM here..... 29Jan2016 - start
+   #OK FROM here..... 29Jan2016 - start 
+   #WT owner
    has_permission_on :training_weeklytimetables, :to => [:personalize_index, :personalize_show, :personalize_timetable, :personalizetimetable] do    #:read
        if_attribute :staff_id => is {user.userable_id}
+   end
+   
+   # NOTE-Amsas: when pengajar also from 'Rancang Latihan', otherwise use 'weeklytimetables_module_member' for access as owner & creator of WT
+   #WT creator - for 1st time? be4 creation
+   has_permission_on :training_weeklytimetables, :to => [:manage, :weekly_timetable] do    #:read
+       if_attribute :prepared_by => is {user.userable_id}
    end
    
    has_permission_on :training_trainingnotes, :to => :manage, :join_by => :or do
@@ -679,7 +686,7 @@ authorization do
       if_attribute :thumb_id => is_in {user.admin_unitleaders_thumb}
     end   
     #SHOW (approval button) & approval action
-    has_permission_on :training_weeklytimetables, :to => :approval do
+    has_permission_on :training_weeklytimetables, :to => [:approval, :update] do
       if_attribute :is_submitted => is {true}
     end
     has_permission_on [:training_programmes, :training_academic_sessions, :training_intakes, :training_timetables, :training_topicdetails], :to => :manage
@@ -1542,21 +1549,21 @@ authorization do
   #28-OK but requires additional rules as personalize pages is based on logged-in user (existing one requires lecturer's role)
   role :weeklytimetables_module_admin do
      has_permission_on :training_weeklytimetables, :to => [:manage, :weekly_timetable, :approval]
-     has_permission_on :training_weeklytimetables, :to => [:personalize_index, :personalize_timetable, :personalize_show, :personalizetimetable] do
-       if_attribute :staff_id =>  is {user.userable_id}
-     end
+     has_permission_on :training_weeklytimetables, :to => [:personalize_index, :personalize_timetable, :personalize_show, :personalizetimetable] #do
+#        if_attribute :prepared_by =>  is {user.userable_id}
+#      end
   end
   role :weeklytimetables_module_viewer do
      has_permission_on :training_weeklytimetables, :to => [:read, :weekly_timetable]
-     has_permission_on :training_weeklytimetables, :to => [:personalize_index, :personalize_timetable, :personalize_show, :personalizetimetable] do
-       if_attribute :staff_id =>  is {user.userable_id}
-     end
+     has_permission_on :training_weeklytimetables, :to => [:personalize_index, :personalize_timetable, :personalize_show, :personalizetimetable] #do
+#        if_attribute :staff_id =>  is {user.userable_id}
+#      end
   end
   role :weeklytimetables_module_user do
     has_permission_on :training_weeklytimetables, :to => [:read, :update, :approval, :weekly_timetable]
-     has_permission_on :training_weeklytimetables, :to => [:personalize_index, :personalize_timetable, :personalize_show, :personalizetimetable] do
-       if_attribute :staff_id =>  is {user.userable_id}
-     end
+     has_permission_on :training_weeklytimetables, :to => [:personalize_index, :personalize_timetable, :personalize_show, :personalizetimetable]# do
+#        if_attribute :staff_id =>  is {user.userable_id}
+#      end
   end
   role :weeklytimetables_module_member do
     #own (lecturer / coordinator) - lecturer role?, Coordinator may use this to manage Weeklytimetable
@@ -1565,18 +1572,25 @@ authorization do
    
     #HACK : INDEX (list+show)- restricted access except for Penyelaras Kumpulan/Ketua Program/Ketua Subjek(+'unit_leader' role)/Administration/creator(prepared_by)
     #HACK : SHOW (+edit) - restricted access UNLESS is_submitted!=true (+submission only allowed for Penyelaras Kumpulan)
-    has_permission_on :training_weeklytimetables, :to => [:manage, :weekly_timetable] do
+    # NOTE - join_by -> OR (Amsas - creator is someone from Rancang Latihan) - 12 Oct 2016
+    has_permission_on :training_weeklytimetables, :to => [:manage, :weekly_timetable], :join_by => :or do
       if_attribute :programme_id => is_in {Programme.where(name: Position.where(staff_id: user.userable.id).first.unit).pluck(:id)}
+      if_attribute :prepared_by => is {user.userable_id}
     end
 
-    has_permission_on :training_weeklytimetables, :to => [:personalize_index, :personalize_show, :personalize_timetable, :personalizetimetable] do
-      if_attribute :staff_id => is {user.userable_id}
-    end
-    #programme mgr
-    #SHOW (approval button) & approval action
-    has_permission_on :training_weeklytimetables, :to => :approval, :join_by => :and do
+    has_permission_on :training_weeklytimetables, :to => [:personalize_index, :personalize_show, :personalize_timetable, :personalizetimetable] #do
+#       if_attribute :staff_id => is {user.userable_id}
+#     end
+    #programme mgr (KSKBJB) / Rancang Latihan (Amsas)
+    #SHOW (approval button) & approval action -NOTE: works for KSKBJB
+#     has_permission_on :training_weeklytimetables, :to => :approval, :join_by => :and do
+#       if_attribute :is_submitted => is {true}
+#       if_attribute :programme_id => is_in {Programme.where(name: Position.where(staff_id: user.userable.id).first.unit).pluck(:id)}
+#     end
+    # NOTE: Amsas
+    has_permission_on :training_weeklytimetables, :to => [:approval, :update], :join_by => :and do
       if_attribute :is_submitted => is {true}
-      if_attribute :programme_id => is_in {Programme.where(name: Position.where(staff_id: user.userable.id).first.unit).pluck(:id)}
+      if_attribute :endorsed_by => is {user.userable_id}
     end
   end
   #####end for Training modules####################################

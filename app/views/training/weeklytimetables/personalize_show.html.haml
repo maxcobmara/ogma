@@ -60,7 +60,7 @@
                       - if periods.day_name == 1
                         %th{:align => "center", :style=>"width:200px; border:1px solid black; text-align:center; padding:4px;background-color:#FEE;font-size:12px;"} 
                           =periods.sequence
-                          %BR= periods.timing
+                          %BR= j.weeklytimetable.college.code=='amsas' ? periods.timing_24hrs : periods.timing
 
             /Content - (Sunday - Wednesday)
             - 1.upto(daycount) do |row|
@@ -195,11 +195,11 @@
                           - if colfriday == break_tospan || classes_tospan.include?(colfriday)==true
                             %th{:align => "center", :colspan=>"2", :style=>"border:1px solid black; text-align:center; padding:4px;background-color:#FEE;font-size:12px;"} 
                               =periods.sequence
-                              %BR= periods.timing
+                              %BR= j.weeklytimetable.college.code=='amsas' ? periods.timing_24hrs : periods.timing
                           - else
                             %th{:align => "center", :style=>"border:1px solid black; text-align:center; padding:4px;background-color:#FEE;font-size:12px;"} 
                               =periods.sequence
-                              %BR= periods.timing
+                              %BR= j.weeklytimetable.college.code=='amsas' ? periods.timing_24hrs : periods.timing
                           - colfriday+=1
  
               /Content for Thursday-(start)
@@ -274,7 +274,7 @@
                         - if periods.day_name == 1
                           %th{:align => "center", :style=>"border:1px solid black; text-align:center; padding:4px;background-color:#FEE;font-size:12px;"} 
                             =periods.sequence
-                            %BR= periods.timing
+                            %BR= j.weeklytimetable.college.code=='amsas' ? periods.timing_24hrs : periods.timing
 
 
               /Day & date(column) : (ADDITIONAL - Weekends classes) - row starts after timeslot header

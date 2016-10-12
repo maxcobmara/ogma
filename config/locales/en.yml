@@ -162,6 +162,9 @@ en:
         evaluation_year: Evaluation year
       staff:
         mycpds: "Accumulative CPD points (MyCPD)"
+        code: Staff Code
+        appointdt: Appointment Date
+        current_salary: Current Salary
       mycpd:
         cpd_year: Year
         cpd_value: CPD value
@@ -590,6 +593,7 @@ en:
     rule18b: "Activate 'Travel Claims Transport Groups' & 'Travel Claim Mileage Rates'in addition to access by Travel Claims modules."
     rule18c: "Activate 'Asset Categories' in addition to access by Asset List modules."
     rule19: "Weeklytimetable Module (Member) only applicable to creator of Weeklytimetable (Penyelaras) and Weeklytimetable time slot owner. For approval of weeklytimetable, please use 'Programme Manager' role."
+    rule19_amsas:  "Weeklytimetable Module (Member) applicable to creator of Weeklytimetable (Penyelaras), Weeklytimetable time slot owner and Weeklytimetable approver."
     rule21: "Average Instructor Module (Member) access for updating records are limited to Evaluator, while evaluated Instructor can only view his records."
     rule22: "For display of non-static pages eg. 'Library Rules & Regulation', either activate 'Student' role, 'Staff' role or activate access by module ie. 'Staff Module' (Admin/Viewer/User/Member)."
     rule23: "All user accounts with 'Staff' role may upload or download MS:ISO document in PDF/image format. However, editing is restricted to repository creator and user with 'administration' and 'developer'."

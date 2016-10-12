@@ -144,6 +144,9 @@ ms_MY:
         evaluation_year: Tahun Penilaian
       staff:
         mycpds: "Jumlah Mata Kumulatif (MyCPD)"
+        code: Kod Kakitangan
+        appointdt: Tarikh Lantikan Pertama
+        current_salary: Gaji Semasa
       mycpds:
         cpd_year: Tahun
         cpd_value: Jumlah Mata Kumulatif
@@ -570,7 +573,8 @@ ms_MY:
     rule18a: "Aktifkan modul 'Bank', 'Gelaran', 'Jadual Waktu Anjal', 'Pangkat', 'Gred Perkhidmatan' & 'Butiran Perjawatan' untuk digunakan bersama modul 'Staf'."
     rule18b: "Aktifkan modul 'Kumpulan Kenderaan' & 'Kadar Batuan' untuk digunakan bersama modul 'Tuntutan Perjalanan'."
     rule18c: "Aktifkan modul 'Kategori Aset' untuk digunakan bersama modul Senarai Aset."
-    rule19: "Modul Jadual Waktu Mingguan (Pemilik) hanya berfungsi untuk penyedia jadual (Penyelaras) dan pemilik slot - slot masa dalam jadual. Bagi fungsian kelulusan jadual, sila gunakan peranan 'Ketua Program'."
+    rule19: "Modul Jadual Waktu Mingguan (Pemilik) hanya berfungsi untuk penyedia jadual (Penyelaras) dan pemilik slot - slot masa dalam jadual. Bagi fungsian kelulusan jadual, sila gunakan peranan 'Ketua Program'. Sila aktifkan sekurang-kurangnya modul Nota Latihan(Paparan) bagi mendapatkan akses kepada menu Latihan yang berkenaan."
+    rule19_amsas: "Modul Jadual Waktu Mingguan (Pemilik) berfungsi untuk penyedia jadual (Rancang Latihan) dan pemilik slot - slot masa dalam jadual dan pelulus jadual.  Sila aktifkan sekurang-kurangnya modul Nota Latihan(Paparan) bagi mendapatkan akses kepada menu Latihan yang berkenaan."
     rule21: "Akses Modul Penilaian & Analisa Skor Purata Jurulatih(Pemilik) untuk mengemaskini rekod adalah terhad kepada Pegawai Penilai sahaja, manakala Jurulatih yang dinilai hanya boleh membuat semakan."
     rule22: "Aktifkan peranan 'Pelajar' atau peranan 'Staf' atau akses bagi modul Staf (Pentadbir/Paparan/Pengguna/Pemilik) bagi memberikan akses paparan bagi laman-laman tidak statik seperti laman 'Peraturan Perpustakaan'."
     rule23: "Semua pemilik akaun dengan peranan 'Staf' dan akses mengikut modul Staf (Pentadbir/Paparan/Pengguna/Pemilik)  boleh memuatnaik dan memuatturun fail dokumen MS:ISO dalam bentuk PDF/imej. Namun begitu, suntingan dihadkan kepada penyedia repositori dan pengguna dengan peranan 'Pentadbir Sistem' dan 'Pembangun Sistem' sahaja."

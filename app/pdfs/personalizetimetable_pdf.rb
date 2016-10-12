@@ -45,27 +45,26 @@ class PersonalizetimetablePdf < Prawn::Document
       move_down 3
       text "KEMENTERIAN KESIHATAN MALAYSIA", :align => :center, :size => 9
       move_down 3
-      text "INSTITUSI : #{college.name.upcase}", :align => :left, :size => 9
+      text "INSTITUSI : #{college.name.upcase}", :align => :left, :size => 9    
       text "NAMA PENSYARAH : #{@test_lecturer.userable.rank_id? ? @test_lecturer.userable.staff_with_rank : @test_lecturer.userable.name}", :align => :left, :size => 9
-      text "TARIKH : #{@sdt} HINGGA : #{@edt}", :align =>:left, :size => 9
     else
-      move_down 10
-      ##
-      bounding_box([10,520], :width => 400, :height => 100) do |y2|
+      bounding_box([10,520], :width => 400, :height => 85) do |y2|
         image "#{Rails.root}/app/assets/images/logo_kerajaan.png",  :width =>72.9, :height =>58.32
       end
-      bounding_box([700,520], :width => 400, :height => 90) do |y2|
+      bounding_box([700,520], :width => 400, :height => 75) do |y2|
         image "#{Rails.root}/app/assets/images/amsas_logo_small.png", :scale => 0.75
       end
-      bounding_box([200, 520], :width => 400, :height => 90) do |y2|
+      bounding_box([200, 520], :width => 400, :height => 75) do |y2|
         move_down 10
         text "PPL APMM", :align => :center, :style => :bold, :size => 10
         text "NO. DOKUMEN: BK-LAT-RAN-01-01", :align => :center, :style => :bold, :size => 10
         text "RANCANGAN LATIHAN MINGGUAN", :align => :center, :style => :bold, :size => 10
       end
-      ##
+      text "NAMA PENGAJAR / JURULATIH : #{@test_lecturer.userable.rank_id? ? @test_lecturer.userable.staff_with_rank : @test_lecturer.userable.name}", :align => :left, :size => 9
     end
     
+    text "TARIKH : #{@sdt} HINGGA : #{@edt}", :align =>:left, :size => 9
+    move_down 5
     table_schedule_sun_wed
     table_schedule_thurs
     
