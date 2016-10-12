@@ -34,19 +34,19 @@
       - weeklytimetables.each do |weeklytimetable|
         %tr
           %td=h link_to weeklytimetable.try(:schedule_programme).try(:programme_list), training_weeklytimetable_path(weeklytimetable)     
-          %td=h weeklytimetable.try(:schedule_intake).try(:group_with_intake_name)
+          %td=h weeklytimetable.college.code=="amsas"? "Siri "+weeklytimetable.schedule_intake.monthyear_intake.strftime('%m / %Y') : weeklytimetable.schedule_intake.group_with_intake_name
           %td=h weeklytimetable.try(:startdate).try(:strftime, "%d %b %Y") 
           %td=h weeklytimetable.try(:enddate).try(:strftime, "%d %b %Y") 
           %td=h weeklytimetable.try(:academic_semester).try(:semester)
           %td=h weeklytimetable.try(:schedule_creator).rank_id? ? weeklytimetable.try(:schedule_creator).staff_with_rank :  weeklytimetable.try(:schedule_creator).try(:name) 
           %td
-            =h weeklytimetable.is_submitted? ? image_tag("tick.png") : image_tag("cross.png") 
+            =h weeklytimetable.is_submitted? ? fa_icon('check') : fa_icon('times')
             - if weeklytimetable.hod_rejected==true && weeklytimetable.is_submitted==nil 
-              = t 'training.weeklytimetable.is_returned'	
+              = t 'training.weeklytimetable.is_returned'
             - elsif weeklytimetable.hod_rejected_on!=nil && weeklytimetable.is_submitted==true && weeklytimetable.hod_approved!=true
               = t 'training.weeklytimetable.is_resubmitted'
           %td
-            =h weeklytimetable.hod_approved? ? image_tag("tick.png") : image_tag("cross.png") 
+            =h weeklytimetable.hod_approved? ? fa_icon('check') : fa_icon('times')
             =h weeklytimetable.hod_rejected? ? "- "+(t 'rejected') : "" 
 
   .right{style:"padding:0 30px; margin:0;"}= paginate @weeklytimetables, :theme => 'twitter-bootstrap-3'

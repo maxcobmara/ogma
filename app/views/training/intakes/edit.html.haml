@@ -13,7 +13,7 @@
     = render :partial => 'form', :locals => {:f => f}
     .row
       .form-group
-        .col-md-1.col-md-offset-2
+        .col-md-2.col-md-offset-3
           = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), training_intake_path(@intake), :class => 'btn btn-default'
         .col-md-2
           .div{style: "margin-left:-40px;"}
