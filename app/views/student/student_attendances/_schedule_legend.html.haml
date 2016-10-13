@@ -1,5 +1,5 @@
 %tr
-  %th{:colspan=>"#{@schedule_list.count};"}= t 'student.attendance.class_schedule_details'
+  %th{:colspan=>"#{@schedule_list.count+1};"}= t 'student.attendance.class_schedule_details'
 %tr
   %td{:style => "width:100px; padding:5px;"} &nbsp;
   - 1.upto(@schedule_list.count) do |index|

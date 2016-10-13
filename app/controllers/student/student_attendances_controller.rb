@@ -168,7 +168,7 @@ class Student::StudentAttendancesController < ApplicationController
     @intake_list = Intake.where(programme_id: @programme_id, monthyear_intake: @iii.to_date)
     if @intake_list.count > 0
       @intake_of_prog_id = @intake_list.first.id
-      topics_ids_this_prog = Programme.find(@programme_id).descendants.at_depth(3).map(&:id)
+      topics_ids_this_prog = Programme.find(@programme_id).descendants.where(course_type: ['Topic', 'Subtopic']).map(&:id)
       #@schedule_list = WeeklytimetableDetail.where('topic IN(?)',topics_ids_this_prog).order(:topic)
       @schedule_list = WeeklytimetableDetail.joins(:weeklytimetable).where('topic IN(?) and intake_id=?',topics_ids_this_prog, @intake_of_prog_id).order(:topic)
       @student_list = Student.where('course_id=? AND intake>=? AND intake <?',@programme_id.to_i,@iii.to_date,@iii.to_date+1.day)
