@@ -249,6 +249,10 @@ class Staff < ActiveRecord::Base
     end
   end
   
+  def name_id
+    [staff_with_rank, id]
+  end
+  
   def transport_class
     abc = TravelClaimsTransportGroup.abcrate
     de = TravelClaimsTransportGroup.derate

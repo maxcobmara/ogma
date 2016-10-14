@@ -83,7 +83,7 @@
                 .col-md-5
                   = select_tag(:staff, grouped_options_for_select(@udept_staffs), :include_blank => (t 'select'), :class => 'form-control')
                   /= grouped_options_for_select(@udept_staffs)
-                .col-md-7
+                .col-md-5
                   &nbsp;
             %BR
             .col-md-offset-2
@@ -110,7 +110,7 @@
                 .col-md-5
                   = select_tag(:staff2, grouped_options_for_select(@udept_staffs), :include_blank => (t 'select'), :class => 'form-control')
                   /= grouped_options_for_select(@udept_staffs)
-                .col-md-7
+                .col-md-5
                   &nbsp;
             %BR
             .col-md-offset-2
@@ -136,7 +136,8 @@
                       = radio_button_tag :details_type,"2"
                     .form-group
                       %font{size: "-1", color: "grey"}= t 'staff_attendance.shortlisted_note'
-                  
+                .col-md-3
+                  &nbsp;
             %BR
             .row
               .form-group

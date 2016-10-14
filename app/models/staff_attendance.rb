@@ -87,6 +87,24 @@ class StaffAttendance < ActiveRecord::Base
     #Staff.joins(:positions,:staffgrade).where('unit is not null and unit!=?',"").sort_by{|u|u.staffgrade.gred_no}.reverse!.group_by{|x|x.positions.first.unit} #better
   end
   
+  def self.get_thumb_ids_unit_names_amsas
+    unit_staffdetails=[]
+    StaffAttendance.staff_with_unit_groupbyunit.each{|u_name,staffs| unit_staffdetails << [u_name, staffs.map(&:name_id) ]}
+    unit_staffdetails
+    
+#     @unit_staffs2=[]
+#     a=StaffAttendance.staff_with_unit_groupbyunit
+#     a.each do |u_name,staffs|
+#       staffs.each do |astaff|
+#         @unit_staffs2 << [astaff.name, astaff.id] if astaff.positions.first.name != "ICMS Vendor Admin" || astaff.icno!="123456789012"
+#       end
+#       @name_id22 = [@p_name2, @unit_staffs2]
+#       end
+#       @name_id << @name_id22
+#     end
+#     @name_id
+  end
+  
   def self.get_thumb_ids_unit_names(val)
     
     a=StaffAttendance.staff_with_unit_groupbyunit

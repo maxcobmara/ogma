@@ -259,7 +259,11 @@ class Staff::StaffAttendancesController < ApplicationController
   
   def attendance_report 
     @udept=Position.unit_department2 #Position.unit_department
-    @udept_staffs=Position.unit_department_staffs2 #Position.unit_department_staffs
+    if current_user.college.code=='amsas'
+      @udept_staffs=StaffAttendance.get_thumb_ids_unit_names_amsas
+    else
+      @udept_staffs=Position.unit_department_staffs2 #Position.unit_department_staffs
+    end
   end
   
   def attendance_report_main
