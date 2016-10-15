@@ -1,5 +1,7 @@
 class Exam::AverageCoursesController < ApplicationController
-  filter_resource_access
+  #filter_resource_access
+  filter_access_to :index, :new, :create, :attribute_check => false
+  filter_access_to :show, :edit, :update, :destroy, :evaluation_analysis, :attribute_check => true
   before_action :set_average_course, only: [:show, :edit, :update, :destroy] 
 
   def new

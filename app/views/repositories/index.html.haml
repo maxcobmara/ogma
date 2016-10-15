@@ -33,7 +33,7 @@
                 - ind=@exist_in_syst.index{|x|x==repository}
                 = link_to "*", @access[ind] 
             %td= link_to repository.title, repository_path(repository)
-            %td= repository.uploaded_file_name
+            %td= link_to repository.uploaded_file_name, repository.uploaded.url
             %td= link_to fa_icon("download"), download_repository_path(repository)
           
      

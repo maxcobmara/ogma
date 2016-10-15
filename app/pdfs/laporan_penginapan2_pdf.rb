@@ -6,15 +6,14 @@ class Laporan_penginapan2Pdf < Prawn::Document
     @view = view
     font "Times-Roman"
     text "#{college.name}", :align => :center, :size => 12, :style => :bold
-    text "#{I18n.t('student.tenant.report_main')}", :align => :center, :size => 12, :style => :bold
-    move_down 10
+    move_down 20
     text "#{@residentials[0].root.name}"
     move_down 10
-    text "#{I18n.t 'student.tenant.statistics_block'}"
+    text "#{I18n.t 'student.tenant.statistics_block'}", :style => :bold
     move_down 20
     room_status
     move_down 30
-    text "#{(I18n.t 'student.tenant.tenants_students')}"
+    text "#{(I18n.t 'student.tenant.tenants_students')}", :style => :bold
     move_down 20
     tenant_programme
   end

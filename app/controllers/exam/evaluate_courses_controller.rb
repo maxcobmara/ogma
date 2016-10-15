@@ -1,6 +1,7 @@
 class Exam::EvaluateCoursesController < ApplicationController
   #filter_resource_access
-  filter_access_to :all
+  filter_access_to :index, :new, :create, :attribute_check => false
+  filter_access_to :show, :edit, :update, :destroy, :courseevaluation, :evaluation_report, :attribute_check => true
   before_action :set_evaluate_course, only: [:show, :edit, :update, :destroy] 
   #before_action :set_programme_subject_lecturer, only: [:edit, :update]
   before_action :set_data_new_create, only: [:new, :create, :edit, :update]

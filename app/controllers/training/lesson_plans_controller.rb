@@ -159,7 +159,7 @@ class Training::LessonPlansController < ApplicationController
   
   def set_admin
     roles = current_user.roles.pluck(:authname)
-    @is_admin = roles.include?("administration") || roles.include?("lesson_plans_module_admin") || roles.include?("lesson_plans_module_viewer") || roles.include?("lesson_plans_module_user")
+    @is_admin = roles.include?("developer") || roles.include?("administration") || roles.include?("lesson_plans_module_admin") || roles.include?("lesson_plans_module_viewer") || roles.include?("lesson_plans_module_user")
   end
   
   #sample from exam_templates########

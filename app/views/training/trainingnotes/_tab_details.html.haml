@@ -6,7 +6,8 @@
     %dt=t 'training.trainingnote.document'
     %dd
       - if @trainingnote.document.exists?
-        = link_to image_tag('attach.png'), @trainingnote.document.url
+        = link_to image_tag('attach.png'), download_training_trainingnote_path(@trainingnote)
+        ||
         = link_to @trainingnote.document_file_name, @trainingnote.document.url 
       - else
         = link_to image_tag('attach.png'),  "http://#{request.host}:3000"+@trainingnote.document.url

@@ -557,9 +557,9 @@ en:
     student_administrator_modules: "Student Infos, Student Attendances"
     student_counsellor_modules: "Student Counselling, Student Discipline Case(R), Student Infos(R), Student Attendances(R)"
     disciplinary_officer_modules: "Student Discipline Case, Student Counseling Session(Case), Student Infos(R), Student Attendances(R)"
-    student_modules: "Course Evaluation, Student Infos(O), Student Leaves(O)"
+    student_modules: "Course Evaluation(Lecturer), Student Infos(O), Student Leaves(O), Mentor-Mentee(R), Book List & Library Rules & Regulations(R), Training Notes(R)"
     lecturer_modules: "Student Leaves(Coordinator), Student Attendances, Weeklytimetables(Coordinator), Weeklytimetables(O:Personalize Timetables), Training Notes(O), Lesson Plans(O), Examquestions(O)"
-    programme_manager_modules: "Programmes, Academic Sessions, Intakes, Timetables, Topic Details, Examquestions, Course Evaluation, Examresults(R), Examanalysis(R), Training Attendance(O), Staff Attendance(O), Weeklytimetables(O), Lesson Plans(O)"
+    programme_manager_modules: "Programmes, Academic Sessions, Intakes, Timetables, Topic Details, Examquestions, Course Evaluation(Lecturer), Examresults(R), Examanalysis(R), Training Attendance(O), Staff Attendance(O), Weeklytimetables(O), Lesson Plans(O)"
     exam_administration_modules: "Examquestions, Exam Templates, Exampaper, Exammarks, Exam Grade, Examresults, Exam Analysis"
     unit_leader_modules: "Training Attendance(O), Staff Attendance(O), Programmes(Common Subjects)"
     administration_staff_modules: "Training Attendance(HOD), Staff Attendance(HOD)"
@@ -646,6 +646,7 @@ en:
     exampaper_module_admin: Examination Paper Module Admin
     examquestions_module_admin: Examquestions Module Admin
     course_evaluation_module_admin: Course Evaluation Module Admin
+    course_average_module_admin: Analysis Data for Average Score of Evaluation for Lecturer Module Admin
     exam_templates_module_viewer: Examination Templates Module Viewer
     examresults_module_viewer: Examination Result Module Viewer
     exam_grade_module_viewer: Examination Grade Module Viewer
@@ -654,6 +655,7 @@ en:
     exampaper_module_viewer: Examination Paper Module Viewer
     examquestions_module_viewer: Examquestions Module Viewer
     course_evaluation_module_viewer: Course Evaluation Module Viewer
+    course_average_module_viewer: Analysis Data for Average Score of Evaluation for Lecturer Module Viewer
     exam_templates_module_user: Examination Templates Module User
     examresults_module_user: Examination Result Module User
     exam_grade_module_user: Examination Grade Module User
@@ -662,6 +664,7 @@ en:
     exampaper_module_user: Examination Paper Module User
     examquestions_module_user: Examquestions Module User
     course_evaluation_module_user: Course Evaluation Module User
+    course_average_module_user: Analysis Data for Average Score of Evaluation for Lecturer Module User
     exam_templates_module_member: Examination Templates Module  Member
     examresults_module_member: Examination Result Module Member
     exam_grade_module_member: Examination Grade Module Member
@@ -670,6 +673,7 @@ en:
     exampaper_module_member: Examination Paper Module Member
     examquestions_module_member: Examquestions Module Member
     course_evaluation_module_member: Course Evaluation Module Member
+    course_average_module_member: Analysis Data for Average Score of Evaluation for Lecturer Module Member
     exam_templates: Examination Templates
     examresults: Examination Result
     exam_grade: Examination Grade
@@ -677,7 +681,8 @@ en:
     exam_analysis: Examination Analysis
     exampaper: Examination Paper
     examquestions: Examquestions
-    course_evaluation: Course Evaluation
+    course_evaluation: Course Evaluation(Lecturer)
+    course_average: Analysis Data for Average Score of Evaluation for Lecturer Module Admin
     
     #Training Parts
     training_notes_module_admin: Training Notes Module Admin

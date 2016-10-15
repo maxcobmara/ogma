@@ -7,6 +7,7 @@ class Student::StudentAttendancesController < ApplicationController
   # GET /student_attendances
   # GET /student_attendances.xml
   def index
+    current_roles= current_user.roles.pluck(:authname)
     position_exist = current_user.userable.positions
     programme_list_ids = Programme.roots.pluck(:id)
     current_roles=current_user.roles.pluck(:authname)
@@ -53,7 +54,11 @@ class Student::StudentAttendancesController < ApplicationController
       
       @search = StudentAttendance.search(params[:q])
       #BELOW : order(:weeklytimetable_details_id) - added, when group by class, won't split up (continueos paging), unless different Intake
-      @student_attendances = @search.result.search2(current_user).order(:weeklytimetable_details_id)
+      if current_roles.include?('developer') || current_roles.include?('administration') || current_roles.include?('student_attendances_module_admin') || ('student_attendances_module_viewer') || ('student_attendances_module_user')
+	 @student_attendances = @search.result
+      else
+         @student_attendances = @search.result.search2(current_user).order(:weeklytimetable_details_id)
+      end
       @student_attendances  = @student_attendances.page(params[:page]||1)
       @student_attendances_intake = @student_attendances.group_by{|x|x.student.intake_id}
     end # end for if position_exist

@@ -346,7 +346,11 @@ Ogma::Application.routes.draw do
     resources :timetable_periods
     resources :academic_sessions
     resources :topicdetails
-    resources :trainingnotes
+    resources :trainingnotes do
+      member do
+        get :download
+      end
+    end
     resources :lesson_plans do
       member do
         get :lesson_report

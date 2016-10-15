@@ -73,10 +73,15 @@ class Examination_slipPdf < Prawn::Document
       bounding_box([410,760], :width => 100, :height => 90) do |y2|
         image "#{Rails.root}/app/assets/images/amsas_logo_small.png"
       end
-      draw_text "PUSAT LATIHAN DAN AKADEMI MARITIM MALAYSIA (PLAMM)", :at => [70, 735], :size => 11, :style => :bold
-      draw_text "SLIP KEPUTUSAN PEPERIKSAAN", :at => [135, 720], :size => 11, :style => :bold
-      draw_text "#{@resultline.examresult.programmestudent.programme_list.upcase}", :at => [150, 705], :size => 11, :style => :bold
-      move_down 20
+       bounding_box([-15, 740], :width => 500, :height => 70) do |y2|
+        text "PUSAT LATIHAN DAN AKADEMI MARITIM MALAYSIA (PLAMM)", :align => :center, :size => 11, :style => :bold
+	text  "SLIP KEPUTUSAN PEPERIKSAAN",  :align => :center, :size => 11, :style => :bold
+	text "#{@resultline.examresult.programmestudent.programme_list.upcase}", :align => :center, :size => 11, :style => :bold
+      end
+      #draw_text "PUSAT LATIHAN DAN AKADEMI MARITIM MALAYSIA (PLAMM)", :at => [70, 735], :size => 11, :style => :bold
+      #draw_text "SLIP KEPUTUSAN PEPERIKSAAN", :at => [135, 720], :size => 11, :style => :bold
+      #draw_text "#{@resultline.examresult.programmestudent.programme_list.upcase}", :at => [150, 705], :size => 11, :style => :bold
+      #move_down 20
       text " #{I18n.t('exam.examresult.student')} : #{@resultline.student.student_with_rank}",  :align => :left, :size => 11, :style => :bold
       text " #{I18n.t('student.icno')} : #{@resultline.student.formatted_mykad}",  :align => :left, :size => 11, :style => :bold      
       text " #{I18n.t('exam.examresult.intake')} : #{@view.l(@resultline.examresult.intake.monthyear_intake)}", :align => :left, :size => 11, :style => :bold

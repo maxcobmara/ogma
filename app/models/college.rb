@@ -10,6 +10,7 @@ class College < ActiveRecord::Base
   has_many :weeklytimetables
   has_many :intakes
   has_many :students
+  has_many :tenants
   # staffs
   
   serialize :data, Hash
