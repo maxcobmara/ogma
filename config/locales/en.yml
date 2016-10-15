@@ -3972,6 +3972,7 @@ en:
     category: Category
     uploaded: File Name
     current_file: Current file
+    remark: Please refer to related modules for access to produce PDF format via online data entry.
     
   conversation:
     local_messaging: Local Messaging

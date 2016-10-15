@@ -8,7 +8,7 @@ class Exam::EvaluateCoursesController < ApplicationController
   
    def index
      roles = current_user.roles.pluck(:authname)
-    @is_admin = roles.include?("administration") || roles.include?("course_evaluation_module_admin") || roles.include?("course_evaluation_module_viewer") || roles.include?("course_evaluation_module_user")
+    @is_admin = roles.include?("developer") || roles.include?("administration") || roles.include?("course_evaluation_module_admin") || roles.include?("course_evaluation_module_viewer") || roles.include?("course_evaluation_module_user")
     @search = EvaluateCourse.search(params[:q])
     if @is_admin
       @evaluate_courses = @search.result

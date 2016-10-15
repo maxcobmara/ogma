@@ -10,6 +10,9 @@ class RepositoriesController < ApplicationController
     @search=Repository.search(params[:q])
     @repositories=@search.result.order(category: :asc)
     @repositories=@repositories.page(params[:page]||1)
+    @exist_in_syst=Repository.where('title ILIKE(?) OR title ILIKE(?) OR title ILIKE(?) OR title ILIKE(?) OR title ILIKE(?) OR title ILIKE(?) ', '%penilaian diri untuk jurulatih%', '%PENILAIAN ANALISA SKOR PURATA JURULATIH%', '%PENILAIAN PENSYARAH%', '%DATA ANALISA SKOR PURATA PENILAIAN PENSYARAH%', '%KEDIAMAN ASRAMA%', '%MAKLUMAT PERIBADI%')
+    @exist_in_syst+=Repository.where('title ILIKE (?) OR title ILIKE(?)', '%PENGGUNAAN PINJAMAN LATIHAN%', '%RANCANGAN LATIHAN MINGGUAN%')
+    @access=[staff_instructor_appraisals_path, staff_average_instructors_path, exam_evaluate_courses_path, exam_evaluate_courses_path, student_tenants_path, students_path, asset_loans_path, training_weeklytimetables_path]
   end
 
   # GET /repositories/1

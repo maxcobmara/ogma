@@ -10,21 +10,31 @@
     %li= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "index_search_bar"
       
 .row
+  .col-md-12
+    .alert.alert-warning
+      *
+      =t 'repositories.remark'
   %table.table-striped.table-hover.ogma
     %thead
       %tr
-        %th{width: '45%'}= sort_link(@search, :title, (t 'repositories.title2'))
+        %th{width: '2%'}
+        %th{width: '43%'}= sort_link(@search, :title, (t 'repositories.title2'))
         %th{width: '45%'}= sort_link(@search, :title, (t 'repositories.uploaded'))
         %th{width: '10%'}= (t 'download')
     %tbody
       = render "index_search"
       - @repositories.group_by{|x|x.render_category}.each do |cat, repositories|
         %tr
-          %td.group{colspan: 3}=cat
+          %td.group{colspan: 4}=cat
         - for repository in repositories
           %tr
+            %td
+              - if @exist_in_syst.include?(repository) 
+                - ind=@exist_in_syst.index{|x|x==repository}
+                = link_to "*", @access[ind] 
             %td= link_to repository.title, repository_path(repository)
             %td= repository.uploaded_file_name
             %td= link_to fa_icon("download"), download_repository_path(repository)
+          
      
   .right{style:"padding:0 30px; margin:0;"}= paginate @repositories, :theme => 'twitter-bootstrap-3'
