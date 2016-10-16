@@ -21,7 +21,7 @@ class CofilesController < ApplicationController
   def update
     respond_to do |format|
       if @cofile.update(cofile_params)
-        format.html { redirect_to @cofile, notice: 'File Registry was successfully updated.' }
+        format.html { redirect_to @cofile, notice: (t 'cofile.title')+(t 'actions.updated') }
         format.json { head :no_content }
       else
         format.html { render action: 'edit' }
@@ -68,7 +68,7 @@ private
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def cofile_params
-      params.require(:cofile).permit(:cofileno, :name, :location, :owner_id, :staffloan_id, :onloan, :onloandt, :onloanxdt)
+      params.require(:cofile).permit(:cofileno, :name, :location, :owner_id, :staffloan_id, :onloan, :onloandt, :onloanxdt, :college_id, {:data => []})
     end
 
 end

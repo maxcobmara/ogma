@@ -3,7 +3,7 @@
     
     %dt=t 'student.counseling.student_id'
     %dd
-      =h @student_counseling_session.student.formatted_mykad_and_student_name 
+      =h @student_counseling_session.college.code=='amsas' ? @student_counseling_session.student.student_with_rank :  @student_counseling_session.student.formatted_mykad_and_student_name 
       %font{:style=>"color: red;"}*
    
     %dt=t 'student.counseling.appointment_for'

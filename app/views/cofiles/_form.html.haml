@@ -1,11 +1,12 @@
+= f.hidden_field :college_id, value: current_user.college_id
 .col-md-offset-1
   .form-group
     .col-sm-2.control-label
       = f.label t 'cofile.cofileno', for: :cofileno
     .col-md-3
       = f.text_field :cofileno, class: 'form-control mandatory'
-      .help-block.small Sample: APMM.AMSAS.100-1/8/1
-      /Format: ()KSKBJB/       
+      .help-block.small 
+        = current_user.college.code=='amsas' ? 'Sample: APMM.AMSAS.100-1/8/1' : 'Sample: Format: ()KSKBJB/'      
 
   .form-group
     .col-sm-2.control-label
@@ -25,7 +26,10 @@
     .col-sm-2.control-label
       = f.label t 'cofile.owner', for: :owner
     .col-md-4
-      = f.collection_select :owner_id, Staff.all, :id, :mykad_with_staff_name, {:include_blank => true}, {class: 'selectpicker', "data-width"=>"350px"}
+      - if current_user.college.code=='amsas'
+        = f.collection_select :owner_id, Staff.all.order(rank_id: :asc, name: :asc), :id, :staff_with_rank, {:include_blank => (t 'select')}, {class: 'selectpicker', "data-width"=>"350px"}
+      - else
+        = f.collection_select :owner_id, Staff.all.order(name: :asc), :id, :mykad_with_staff_name, {:include_blank => (t 'select')}, {class: 'selectpicker', "data-width"=>"350px"}
 
   .form-group
     .col-sm-2.control-label
@@ -38,12 +42,15 @@
     .col-sm-2.control-label
       = f.label t 'cofile.onloan_to', for: :onloan_to
     .col-md-2
-      - if @cofile.onloanxdt == nil
-        = f.collection_select :staffloan_id, Staff.all, :id, :mykad_with_staff_name,{:include_blank => true}, {class: 'selectpicker', "data-width"=>"350px"}
+      /- if @cofile.onloanxdt == nil
+      /  = f.collection_select :staffloan_id, Staff.all, :id, :mykad_with_staff_name,{:include_blank => true}, {class: 'selectpicker', "data-width"=>"350px"}
+      /- else
+      /  = f.collection_select :staffloan_id, Staff.all, :id, :mykad_with_staff_name, {:include_blank => true}, {class: 'selectpicker', "data-width"=>"350px"}
+      - if current_user.college.code=='amsas'
+        = f.collection_select :staffloan_id, Staff.all.order(rank_id: :asc, name: :asc), :id, :staff_with_rank, {:include_blank => (t 'select')}, {class: 'selectpicker', "data-width"=>"350px"}
       - else
-        = f.collection_select :staffloan_id, Staff.all, :id, :mykad_with_staff_name, {:include_blank => true}, {class: 'selectpicker', "data-width"=>"350px"}
-		
-		
+        = f.collection_select :staffloan_id, Staff.all, :id, :mykad_with_staff_name, {:include_blank => (t 'select')}, {class: 'selectpicker', "data-width"=>"350px"}
+
   .form-group#loaneddate
     .col-sm-2.control-label
       = f.label t 'cofile.onloandt', for: :onloandt

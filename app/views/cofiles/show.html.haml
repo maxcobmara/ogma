@@ -15,11 +15,11 @@
       %dd= @cofile.location
 
       %dt= t 'cofile.owner', :default => model_class.human_attribute_name(:owner_id) + ":"
-      %dd= @cofile.owner.mykad_with_staff_name
+      %dd= @cofile.college.code=='amsas' ? @cofile.owner.staff_with_rank : @cofile.owner.mykad_with_staff_name
 
 
       %dt= t 'cofile.onloan', :default => model_class.human_attribute_name(:onloan) + ":"  
-      %dd= @cofile.onloan? ? "Yes" : "No"
+      %dd= @cofile.onloan? ? (t 'yes2') : (t 'no2')
     
       -if @cofile.onloan == true
         %dt= t 'cofile.onloan_to', :default => model_class.human_attribute_name(:staffloan_id) + ":"

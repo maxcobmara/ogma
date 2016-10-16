@@ -3,7 +3,7 @@
     .col-sm-2.control-label
       = f.label t 'student.discipline.case_created_on', for: :case_created_on
     .col-md-2
-      = f.text_field :case_created_on, class: 'date_picker form-control'
+      = f.text_field :case_created_on, class: 'date_picker_reverse form-control', value: @student_discipline_case.case_created_on.try(:strftime, '%d-%m-%Y')
   .form-group
     .col-sm-2.control-label
       = f.label  t 'student.discipline.file_id', for: :file_id
@@ -27,7 +27,7 @@
     .col-sm-2.control-label
       = f.label  t 'student.discipline.closed_at_college_on', for: :closed_at_college_on
     .col-md-2
-      = f.text_field :closed_at_college_on, class: 'date_picker form-control'
+      = f.text_field :closed_at_college_on, class: 'date_picker_reverse form-control', value: @student_discipline_case.closed_at_college_on.try(:strftime, '%d-%m-%Y')
   .form-group#ja_item{style: "display: none;"}
     .col-sm-2.control-label
       = f.label  t 'student.discipline.other_info', for: :other_info
@@ -41,14 +41,14 @@
     .col-sm-2.control-label
       = f.label  t 'student.discipline.assigned2_to', for: :notify_hod
     .col-md-5
-      = f.collection_select :assigned2_to, Staff.where('id IN (?)', myhod), :id, :name, {:prompt => t('select')}, {class: 'selectpicker', "data-width"=>'460px'}
+      = f.collection_select :assigned2_to, Staff.where('id IN (?)', myhod).order(rank_id: :asc, name: :asc), :id, :staff_with_rank, {:prompt => t('select')}, {class: 'selectpicker', "data-width"=>'460px'}
       /replace this with - model/student_discipline_case.rb - line 46- self.assigned2_to = nil
       /= select_tag "student_discipline_case[assigned2_to]","<option value=''>"+'Please select'+"</option>"+options_from_collection_for_select(Staff.find(:all, :conditions => ['id IN (?)', myhod]), :id, :name)
   .form-group.au_item{style: "display: none;"}
     .col-sm-2.control-label
       = f.label  t 'student.discipline.assigned2_on', for: :notify_hod_date
     .col-md-2
-      = f.text_field :assigned2_on, class: 'date_picker form-control'
+      = f.text_field :assigned2_on, class: 'date_picker_reverse form-control', value: @student_discipline_case.assigned2_on.try(:strftime, '%d-%m-%Y')
       
  
 :javascript

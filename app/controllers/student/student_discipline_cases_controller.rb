@@ -8,9 +8,8 @@ class Student::StudentDisciplineCasesController < ApplicationController
   # GET /student_discipline_cases.xml
   def index
     roles = current_user.roles.pluck(:authname)
-    @is_admin = roles.include?("administration") || roles.include?("disciplinary_officer") || roles.include?("student_discipline_module_admin") || roles.include?("student_discipline_module_viewer") || roles.include?("student_discipline_module_user") || roles.include?("warden")
-    #@viewer_only=roles.include?(25)
-    if @is_admin #|| @viewer_only
+    @is_admin = roles.include?("developer") || roles.include?("administration") || roles.include?("disciplinary_officer") || roles.include?("student_discipline_module_admin") || roles.include?("student_discipline_module_viewer") || roles.include?("student_discipline_module_user") || roles.include?("warden")
+    if @is_admin
       @search = StudentDisciplineCase.search(params[:q])      #have access to discipline_report & anacdotal_report
     else
       @search = StudentDisciplineCase.sstaff2(current_user.userable.id).search(params[:q])
@@ -33,8 +32,8 @@ class Student::StudentDisciplineCasesController < ApplicationController
   end
   
   def discipline_report
-    roles = current_user.roles.pluck(:id)
-    @is_admin = roles.include?(2) || roles.include?(40)
+    roles = current_user.roles.pluck(:authname)
+    @is_admin =  roles.include?("developer") || roles.include?("administration") || roles.include?("disciplinary_officer") || roles.include?("student_discipline_module_admin") || roles.include?("student_discipline_module_viewer") || roles.include?("student_discipline_module_user") || roles.include?("warden")
     if @is_admin
       @search = StudentDisciplineCase.search(params[:q])
     else
