@@ -9,16 +9,33 @@
   %ul.nav.navbar-nav.navbar-right
     %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "index_search_bar"
     %li.dropdown
-      %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#"}
-        = fa_icon "print", text: (t 'actions.print')
-        %b.caret
-      %ul.dropdown-menu
-        %li
-          %a{:href => student_attendan_form_student_student_attendances_path(params.merge(:format => 'pdf'))} Student Attendences
-          /= link_to (fa_icon "file-pdf-o", text: "Student Attendences"), student_attendan_form_student_student_attendances_path(params.merge(format: 'pdf' ))
+      - class_count=@student_attendances.group_by{|x|x.weeklytimetable_details_id}.count
+      - if current_user.college.code=='amsas' 
+        - if class_count==1
+          %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#"}
+            = fa_icon "print", text: (t 'actions.print')
+            %b.caret
+          %ul.dropdown-menu
+            %li= link_to (t 'student.attendance.form'), student_attendan_form_student_student_attendances_path(params.merge(format: 'pdf' ))
+            
+      - else
+        %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#"}
+          = fa_icon "print", text: (t 'actions.print')
+          %b.caret
+        %ul.dropdown-menu
+          %li
+            %a{:href => student_attendan_form_student_student_attendances_path(params.merge(:format => 'pdf'))} Student Attendences
+            /= link_to (fa_icon "file-pdf-o", text: "Student Attendences"), student_attendan_form_student_student_attendances_path(params.merge(format: 'pdf' ))
 
 = render 'shared/flashes'
-/ TODO - check create by intake
+
+- if current_user.college.code=='amsas' && class_count > 1
+  .row
+    .col-md-12
+      .alert.alert-warning
+        = fa_icon "print", text: (t 'actions.print')
+        %strong="("+(t 'student.attendance.form')+")"
+        =t 'student.attendance.form_display'
 .row
   - permitted_to? :new_multiple_intake, :student_student_attendances do
     .col-md-6

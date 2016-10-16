@@ -186,7 +186,7 @@ class Exam::EvaluateCoursesController < ApplicationController
           @student_list = Student.where(course_id: @preselect_prog)
         else
           @programme_list = Programme.roots
-          @subjectlist_preselect_prog = Programme.all.at_depth(2)
+          @subjectlist_preselect_prog = Programme.where(course_type: 'Subject')#all.at_depth(2)
           @lecturer_list = Staff.joins(:positions).where('positions.name=?', "Pengajar").order(name: :asc)
           @student_list = Student.all  
         end

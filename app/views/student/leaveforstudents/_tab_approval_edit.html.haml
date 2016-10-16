@@ -15,7 +15,7 @@
     .col-sm-2.control-label
       = f.label t 'student.leaveforstudent.approved_by'
     .col-md-4
-      = f.collection_select :staff_id, Staff.where('id IN(?)', Position.where(id: [2,55]).pluck(:staff_id)).order(name: :asc), :id,  :staff_name_with_position, {:include_blank => t('helpers.prompt.select_staff')}, {class: 'selectpicker', "data-width"=>'300px'}
+      = f.collection_select :staff_id, Staff.where('id IN(?)', Position.where(id: [2,55]).pluck(:staff_id)).order(name: :asc), :id,  :staff_name_with_position, {:include_blank => t('helpers.prompt.select_staff')}, {class: 'selectpicker', "data-width"=>"auto"}
 
   .form-group
     .col-sm-2.control-label
