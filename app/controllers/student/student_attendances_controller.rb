@@ -7,26 +7,33 @@ class Student::StudentAttendancesController < ApplicationController
   # GET /student_attendances
   # GET /student_attendances.xml
   def index
-    position_exist = @current_user.userable.positions
-    @programme_list_ids = Programme.roots.pluck(:id)
-    if position_exist  
-      lecturer_programme = @current_user.userable.positions[0].unit
+    current_roles= current_user.roles.pluck(:authname)
+    position_exist = current_user.userable.positions
+    programme_list_ids = Programme.roots.pluck(:id)
+    current_roles=current_user.roles.pluck(:authname)
+    if position_exist
+      lecturer_programme = current_user.userable.positions[0].unit
       unless lecturer_programme.nil?
         programme = Programme.where('name ILIKE (?) AND ancestry_depth=?',"%#{lecturer_programme}%",0)  if !(lecturer_programme=="Pos Basik" || lecturer_programme=="Diploma Lanjutan")
       end
       unless programme.nil? || programme.count==0
         @programme_id = programme.try(:first).try(:id)
         @intake_list2 = Student.where('course_id=?',@programme_id).select("DISTINCT intake_id, course_id").order(:intake_id) 
-        #@topics_ids_this_prog = Programme.find(@programme_id).descendants.at_depth(3).map(&:id)
-        @topics_ids_this_prog = Programme.find(@programme_id).descendants.where(course_type: ['Topic', 'Subtopic']).map(&:id)
+        topics_ids_this_prog = Programme.find(@programme_id).descendants.where(course_type: ['Topic', 'Subtopic']).map(&:id)
         @student_ids = Student.where('course_id=?',@programme_id).pluck(:id)
       else
-        #Amsas: also use this part - based on logged in lecturer
-        #additional-start - to limit programme list therein subject-topic taught by current lecturer/jurulatih 
-        @topics_ids_this_prog=WeeklytimetableDetail.where(lecturer_id: current_user.userable_id).pluck(:topic)
-        @programme_list_ids=Programme.where(id: @topics_ids_this_prog).map(&:root_programme)
-        #additional-end
-        @intake_list2 = Student.where('course_id IS NOT NULL and course_id IN(?)',@programme_list_ids).select("DISTINCT intake_id, course_id").order("course_id, intake_id") 
+        # NOTE - system
+        if current_roles.include?('developer') || current_roles.include?('administration') || current_roles.include?('student_attendances_module_admin') 
+          topics_ids_this_prog=WeeklytimetableDetail.pluck(:topic)
+          programme_list_ids=Programme.where(id: topics_ids_this_prog).map(&:root_programme).uniq
+        else
+          #Amsas: also use this part - based on logged in lecturer
+          #additional-start - to limit programme list therein subject-topic taught by current lecturer/jurulatih 
+          topics_ids_this_prog=WeeklytimetableDetail.where(lecturer_id: current_user.userable_id).pluck(:topic)
+          programme_list_ids=Programme.where(id: topics_ids_this_prog).map(&:root_programme).uniq
+          #additional-end
+        end
+        @intake_list2 = Student.where('course_id IS NOT NULL and course_id IN(?)', programme_list_ids).select("DISTINCT intake_id, course_id").order("course_id, intake_id") 
         @student_ids = Student.all.pluck(:id)
         # TODO - kskbjb: common subjects - refer final UAT doc - refer catechumen (acceptance)
       end
@@ -36,7 +43,7 @@ class Student::StudentAttendancesController < ApplicationController
       intake_id_of_exist_classes=Weeklytimetable.joins(:weeklytimetable_details).where('weeklytimetable_details.id IN(?)', exist_classes).pluck(:intake_id)
       #LIST (1)classes & (2)intakes -> that attendance NOT yet created - NEW Attendance (by class & by intake)
       #LIST (3)classes & (4)intakes -> attendance (already exist) - SEARCH existing attendance (by class & by intake)
-      @schedule_list = WeeklytimetableDetail.where('topic IN(?)',@topics_ids_this_prog).where.not(id: exist_classes).order(:topic)
+      @schedule_list = WeeklytimetableDetail.where('topic IN(?)',topics_ids_this_prog).where.not(id: exist_classes).order(:topic)
       @intake_list2=@intake_list2.where.not(intake_id: intake_id_of_exist_classes)
       @exist_timetable_attendances=WeeklytimetableDetail.where(id: exist_classes).map(&:subject_details)
       @intake_list3=Student.joins(:student_attendances).where(intake_id: intake_id_of_exist_classes).order(course_id: :asc).map(&:intake_list)
@@ -47,7 +54,11 @@ class Student::StudentAttendancesController < ApplicationController
       
       @search = StudentAttendance.search(params[:q])
       #BELOW : order(:weeklytimetable_details_id) - added, when group by class, won't split up (continueos paging), unless different Intake
-      @student_attendances = @search.result.search2(current_user).order(:weeklytimetable_details_id)
+      if current_roles.include?('developer') || current_roles.include?('administration') || current_roles.include?('student_attendances_module_admin') || ('student_attendances_module_viewer') || ('student_attendances_module_user')
+	 @student_attendances = @search.result
+      else
+         @student_attendances = @search.result.search2(current_user).order(:weeklytimetable_details_id)
+      end
       @student_attendances  = @student_attendances.page(params[:page]||1)
       @student_attendances_intake = @student_attendances.group_by{|x|x.student.intake_id}
     end # end for if position_exist

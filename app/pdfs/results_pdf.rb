@@ -4,8 +4,26 @@ class ResultsPdf < Prawn::Document
     @examresult = examresult
     @view = view
     font "Helvetica"
-   
-    if college.code=="kskbjb"
+    if college.code=="amsas"
+      student_intake=@examresult.intake.monthyear_intake.try(:strftime, '%b %Y')
+      prog_id=Intake.find(@examresult.intake_id).programme_id
+      bounding_box([30,530], :width => 400, :height => 90) do |y2|
+        image "#{Rails.root}/app/assets/images/logo_kerajaan.png", :scale => 0.80
+      end
+      bounding_box([680,530], :width => 400, :height => 90) do |y2|
+        image "#{Rails.root}/app/assets/images/amsas_logo_small.png"
+      end
+      @subjects=Programme.find(prog_id).descendants.where(course_type: 'Subject')
+      bounding_box([140, 520], :width => 500, :height => 80) do |y2|
+        text "PUSAT LATIHAN DAN AKADEMI MARITIM MALAYSIA (PLAMM)", :align => :center, :size => 11, :style => :bold
+	text "LAPORAN PEMARKAHAN PEPERIKSAAN",  :align => :center, :size => 11, :style => :bold
+	text "#{@examresult.programmestudent.programme_list.upcase}", :align => :center, :size => 11, :style => :bold
+	text "SEHINGGA #{Date.today.strftime('%d-%m-%Y')}", :align => :center, :size => 11, :style => :bold
+      end
+      text "#{I18n.t 'exam.examresult.examdts'} : #{@examresult.examdts.try(:strftime, '%d-%m-%Y')}", :align => :left, :size => 10
+      text "#{I18n.t 'exam.examresult.examdte'} : #{@examresult.examdte.try(:strftime, '%d-%m- %Y')}", :align => :left, :size => 10
+      result_table2
+    elsif college.code=="kskbjb"
       text "#{I18n.t 'exam.examresult.programme_id'} : #{@examresult.programmestudent.programme_list}", :align => :left, :size => 10, :style => :bold
       text "Semester : #{@examresult.render_semester}", :align => :left, :size => 10, :style => :bold
       text "#{I18n.t 'exam.examresult.examdts'} : #{@examresult.examdts.try(:strftime, '%d %b %Y')}", :align => :left, :size => 10, :style => :bold
@@ -19,24 +37,6 @@ class ResultsPdf < Prawn::Document
       @subjects = @examresult.retrieve_subject
       move_down 20
       result_table
-    elsif college.code=="amsas"
-      student_intake=@examresult.intake.monthyear_intake.try(:strftime, '%b %Y')
-      prog_id=Intake.find(@examresult.intake_id).programme_id
-      bounding_box([30,530], :width => 400, :height => 90) do |y2|
-        image "#{Rails.root}/app/assets/images/logo_kerajaan.png", :scale => 0.80
-      end
-      bounding_box([680,530], :width => 400, :height => 90) do |y2|
-        image "#{Rails.root}/app/assets/images/amsas_logo_small.png"
-      end
-      @subjects=Programme.find(prog_id).descendants.where(course_type: 'Subject')
-      draw_text "PUSAT LATIHAN DAN AKADEMI MARITIM MALAYSIA (PLAMM)", :at => [225, 505], :size => 11, :style => :bold
-      draw_text "LAPORAN PEMARKAHAN PEPERIKSAAN", :at => [285, 490], :size => 11, :style => :bold
-      draw_text "#{@examresult.programmestudent.programme_list.upcase}", :at => [325, 475], :size => 11, :style => :bold
-      draw_text "SEHINGGA #{Date.today.strftime('%d-%m-%Y')}", :at => [335 ,460], :size => 11, :style => :bold
-      move_down 20
-      text "#{I18n.t 'exam.examresult.examdts'} : #{@examresult.examdts.try(:strftime, '%d-%m-%Y')}", :align => :left, :size => 10
-      text "#{I18n.t 'exam.examresult.examdte'} : #{@examresult.examdte.try(:strftime, '%d-%m- %Y')}", :align => :left, :size => 10
-      result_table2
     end
   end
   
@@ -53,7 +53,7 @@ class ResultsPdf < Prawn::Document
       row(0).font_style = :bold
       row(0..1).background_color = 'FFE34D'
       self.row_colors = ["FEFEFE", "FFFFFF"]
-      #self.header = true
+      self.header = true
       self.width=(365+bb)
       #header = true
      end

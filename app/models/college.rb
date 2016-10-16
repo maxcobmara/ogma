@@ -9,7 +9,13 @@ class College < ActiveRecord::Base
   has_many :timetables
   has_many :weeklytimetables
   has_many :intakes
-  #student, staffs
+  has_many :students
+  has_many :tenants
+  has_many :cofiles
+  has_many :student
+  has_many :student_discipline_cases
+  has_many :student_counseling_sessions
+  # staffs
   
   serialize :data, Hash
   

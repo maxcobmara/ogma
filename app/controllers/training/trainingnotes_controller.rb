@@ -1,6 +1,8 @@
  class Training:: TrainingnotesController < ApplicationController
-   filter_resource_access
-   before_action :set_trainingnote, only: [:show, :edit, :update, :destroy]
+   #filter_resource_access
+   filter_access_to :index, :new, :create, :attribute_check => false
+  filter_access_to :show, :edit, :update, :destroy, :download, :attribute_check => true
+   before_action :set_trainingnote, only: [:show, :edit, :update, :destroy, :download]
    before_action :set_data_index_new_edit, only: [:index, :new, :edit, :create, :update] #create & update - if validations failed
    before_action :set_data_new_edit, only: [:new, :edit, :create, :update]
 
@@ -98,6 +100,11 @@
       format.html { redirect_to(training_trainingnotes_url) }
       format.xml  { head :ok }
     end
+  end
+  
+  def download
+    #url=/assets/notes/1/original/BK-KKM-01-01_BORANG_PENILAIAN_KURSUS.pdf?1474870599
+    send_file("#{::Rails.root.to_s}/public#{@trainingnote.document.url.split("?").first}")
   end
   
   private

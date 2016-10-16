@@ -6,6 +6,7 @@ class StudentCounselingSession < ActiveRecord::Base
   
   belongs_to :student
   belongs_to :student_discipline_case, :foreign_key => 'case_id'
+  belongs_to :college
   
   validates_presence_of :student_id
   validates_presence_of :confirmed_at, :if => :is_confirmed?

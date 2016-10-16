@@ -3,6 +3,7 @@ class Tenant < ActiveRecord::Base
   belongs_to :location, touch: true
   belongs_to :staff
   belongs_to :student
+  belongs_to :college
   has_many  :damages, :class_name => 'LocationDamage', :foreign_key => 'user_id', :dependent => :destroy
   accepts_nested_attributes_for :damages, :allow_destroy => true, reject_if: proc { |damages| damages[:description].blank?}
   

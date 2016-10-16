@@ -176,35 +176,41 @@ class Exam::ExamresultsController < ApplicationController
     end
     
     def set_index_index2_data
-      position_exist = @current_user.userable.positions
-      posbasiks=["Pos Basik", "Diploma Lanjutan", "Pengkhususan"]
-      @common_subjects=['Sains Tingkahlaku','Sains Perubatan Asas', 'Komunikasi & Sains Pengurusan', 'Anatomi & Fisiologi', 'Komuniti']
-      roles=@current_user.roles.pluck(:authname)
-      if position_exist && position_exist.count > 0
-        lecturer_programme = @current_user.userable.positions[0].unit
-        unless lecturer_programme.nil?
-          programme = Programme.where('name ILIKE (?) AND ancestry_depth=?',"%#{lecturer_programme}%",0)  if posbasiks.include?(lecturer_programme)==false
-        end
-        unless programme.nil? || programme.count==0
-          programme_id = programme.try(:first).try(:id)
-        else
-          tasks_main = @current_user.userable.positions[0].tasks_main
-          if @common_subjects.include?(lecturer_programme) 
-            programme_id ='1'
-          elsif posbasiks.include?(lecturer_programme) && tasks_main!=nil
-            # NOTE - have access to all postbasic programme
-            programme_id='2'
-            #allposbasic_prog = Programme.where(course_type: posbasiks).pluck(:name)  #Onkologi, Perioperating, Kebidanan etc
-            #for basicprog in allposbasic_prog
-            #  lecturer_basicprog_name = basicprog if tasks_main.include?(basicprog)==true
-            #end
-            #programme_id=Programme.where(name: lecturer_basicprog_name, ancestry_depth: 0).first.id
-          elsif roles.include?("administration") || roles.include?("examresults_module_admin")|| roles.include?("examresults_module_viewer")|| roles.include?("examresults_module_user")
-            programme_id='0'
+      if current_user.userable_type=='Student'
+	@search2 = Resultline.search(params[:q])
+	@resultlines=@search2.result.where(student_id: current_user.userable_id)
+        @resultlines = Kaminari.paginate_array(@resultlines).page(params[:page]||1) #@resultlines.page(params[:page]||1)
+      else
+        position_exist = @current_user.userable.positions
+        posbasiks=["Pos Basik", "Diploma Lanjutan", "Pengkhususan"]
+        @common_subjects=['Sains Tingkahlaku','Sains Perubatan Asas', 'Komunikasi & Sains Pengurusan', 'Anatomi & Fisiologi', 'Komuniti']
+        roles=@current_user.roles.pluck(:authname)
+        if position_exist && position_exist.count > 0
+          lecturer_programme = @current_user.userable.positions[0].unit
+          unless lecturer_programme.nil?
+            programme = Programme.where('name ILIKE (?) AND ancestry_depth=?',"%#{lecturer_programme}%",0)  if posbasiks.include?(lecturer_programme)==false
+          end
+          unless programme.nil? || programme.count==0
+            programme_id = programme.try(:first).try(:id)
           else
-            leader_unit=tasks_main.scan(/Program (.*)/)[0][0].split(" ")[0] if tasks_main!="" && tasks_main.include?('Program')
-            if leader_unit
-              programme_id = Programme.where('name ILIKE (?) AND ancestry_depth=?',"%#{leader_unit}%",0).first.id
+            tasks_main = @current_user.userable.positions[0].tasks_main
+            if @common_subjects.include?(lecturer_programme) 
+              programme_id ='1'
+            elsif posbasiks.include?(lecturer_programme) && tasks_main!=nil
+              # NOTE - have access to all postbasic programme
+              programme_id='2'
+              #allposbasic_prog = Programme.where(course_type: posbasiks).pluck(:name)  #Onkologi, Perioperating, Kebidanan etc
+              #for basicprog in allposbasic_prog
+              #  lecturer_basicprog_name = basicprog if tasks_main.include?(basicprog)==true
+              #end
+              #programme_id=Programme.where(name: lecturer_basicprog_name, ancestry_depth: 0).first.id
+            elsif roles.include?("developer") || roles.include?("administration") || roles.include?("examresults_module_admin")|| roles.include?("examresults_module_viewer")|| roles.include?("examresults_module_user")
+              programme_id='0'
+            else
+              leader_unit=tasks_main.scan(/Program (.*)/)[0][0].split(" ")[0] if tasks_main!="" && tasks_main.include?('Program')
+              if leader_unit
+                programme_id = Programme.where('name ILIKE (?) AND ancestry_depth=?',"%#{leader_unit}%",0).first.id
+              end
             end
           end
         end
@@ -214,7 +220,7 @@ class Exam::ExamresultsController < ApplicationController
         @examresults = @examresults.page(params[:page]||1)
         #INDEX2 use
         @search2 = Resultline.search(params[:q])
-        @resultlines = @search2.result.search2(programme_id) 
+	@resultlines = @search2.result.search2(programme_id) 
         @resultlines = @resultlines.sort_by(&:student_id)#order(student_id: :asc)
         @resultlines = Kaminari.paginate_array(@resultlines).page(params[:page]||1) #@resultlines.page(params[:page]||1)
         @progid=programme_id

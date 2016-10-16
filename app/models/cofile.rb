@@ -3,6 +3,7 @@ class Cofile < ActiveRecord::Base
   validates_presence_of :name, :location, :owner_id#:cofileno, 
   belongs_to :owner,    :class_name => 'Staff', :foreign_key => 'owner_id' 
   belongs_to :borrower, :class_name => 'Staff', :foreign_key => 'staffloan_id' 
+  belongs_to :college
   
   has_many :documents, :foreign_key => 'file_id'
   has_many :sdiciplines, :foreign_key => 'file_id'

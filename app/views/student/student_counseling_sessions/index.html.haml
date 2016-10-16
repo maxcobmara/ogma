@@ -70,8 +70,8 @@
               %td=h session_done.student.programme_for_student2 if session_done.student.course_id <15 
               %td=h strip_tags(Student.year_and_sem(session_done.student.intake))
               %td
-                /=h session_done.confirmed_at.try(:getlocal).try(:strftime,"%d %b %Y, %l:%M %P")   
-                =h l(session_done.confirmed_at+8.hours, format: "%d %b %Y, %l:%M %P") 
+                =h session_done.confirmed_at.try(:getlocal).try(:strftime,"%d %b %Y, %l:%M %P")   
+                /=h l(session_done.confirmed_at+8.hours, format: "%d %b %Y, %l:%M %P") 
               %td=h session_done.duration
               %td=h session_done.is_confirmed? ? image_tag("tick.png") : ""  
               - if session_done.c_scope == "case" && !session_done.case_id.blank? && !session_done.student_discipline_case.nil?

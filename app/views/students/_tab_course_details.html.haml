@@ -7,7 +7,7 @@
     %dt= t 'student.students.intake_id' , :default => model_class.human_attribute_name(:intake_id) + ":"
     %dd
       - unless @student.intake_id.blank? 
-        = @student.intakestudent.monthyear_intake.strftime("%B %Y")
+        = @student.college.code=='amsas' ? "Siri "+@student.intakestudent.monthyear_intake.strftime("%m/%Y") : @student.intakestudent.monthyear_intake.strftime("%B %Y")
       - else
         = @student.intake.blank? ? "-" : @student.intake.strftime("%B %Y")
     

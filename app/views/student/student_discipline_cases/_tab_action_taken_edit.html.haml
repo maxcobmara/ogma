@@ -24,8 +24,8 @@
     = f.fields_for :student_counseling_sessions do |builder|
       .col-sm-2.control-label
         = f.label t 'student.discipline.counseling_request', for: :counseling_request
-      .col-md-2
-        = builder.text_field :requested_at, class: 'datetime_picker3 form-control'
+      .col-md-3
+        = builder.text_field :requested_at, class: 'datetime_picker3_reverse form-control'
         = builder.hidden_field :student_id, :value => @student_discipline_case.student_id
         = builder.hidden_field :case_id, :value => @student_discipline_case.id
       

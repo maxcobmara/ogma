@@ -538,9 +538,9 @@ ms_MY:
     student_administrator_modules: "Maklumat Pelajar, Kedatangan Pelajar"
     student_counsellor_modules: "Sesi Kaunseling Pelajar, Kes Disiplin Pelajar(R), Maklumat Pelajar(R), Kedatangan Pelajar(R)"
     disciplinary_officer_modules: "Kes Disiplin Pelajar, Sesi Kaunseling Pelajar(Kes), Maklumat Pelajar(R), Kedatangan Pelajar(R)"
-    student_modules: "Penilaian Kursus, Maklumat Pelajar(O), Cuti Pelajar(O)"
+    student_modules: "Penilaian Program(Pensyarah), Maklumat Pelajar(O), Permohonan Cuti Pelajar(O), Mentor-Mentee(R), Senarai Buku & Peraturan Perpustakaan(R), Nota Latihan(R)"
     lecturer_modules: "Cuti Pelajar(Penyelaras), Kedatangan Pelajar, Jadual Waktu Mingguan(Penyelaras), Jadual Waktu Mingguan(O:Jadual Waktu Individu), Nota Latihan(O), Pelan Pengajaran(O), Soalan Peperiksaan(O)"
-    programme_manager_modules: "Program, Sesi Akademik, Ambilan Pelajar, Jadual Waktu, Butiran Topik, Soalan Peperiksaan, Penilaian Kursus, Keputusan Peperiksaan(R), Analisis Peperiksaan(R), Kedatangan Latihan(O), Kedatangan Staf(O), Jadual Waktu Mingguan(O), Pelan Pengajaran(O)"
+    programme_manager_modules: "Program, Sesi Akademik, Ambilan Pelajar, Jadual Waktu, Butiran Topik, Soalan Peperiksaan, Penilaian Program(Pensyarah), Keputusan Peperiksaan(R), Analisis Peperiksaan(R), Kedatangan Latihan(O), Kedatangan Staf(O), Jadual Waktu Mingguan(O), Pelan Pengajaran(O)"
     exam_administration_modules: "Soalan Peperiksaan, Template Peperiksaan, Kertas Peperiksaan, Markah Peperiksaan, Gred Peperiksaan, Keputusan Peperiksaan, Analisis Peperiksaan"
     unit_leader_modules: "Kedatangan Latihan(O), Kedatangan Staf(O), Program(Subjek Asas)"
     administration_staff_modules: "Kedatangan Latihan(HOD), Kedatangan Staf(HOD)"
@@ -626,7 +626,8 @@ ms_MY:
     exam_analysis_module_admin: Pentadbir Modul Analisis Peperiksaan
     exampaper_module_admin: Pentadbir Modul Kertas Peperiksaan
     examquestions_module_admin: Pentadbir Modul Soalan Peperiksaan
-    course_evaluation_module_admin: Pentadbir Modul Penilaian Kursus
+    course_evaluation_module_admin: Pentadbir Modul Penilaian Program(Pensyarah)
+    course_average_module_admin: Pentadbir Modul Data Analisa Skor Purata Penilaian Pensyarah
     exam_templates_module_viewer: Paparan Modul Template Peperiksaan
     examresults_module_viewer: Paparan Modul Keputusan Peperiksaan
     exam_grade_module_viewer: Paparan Modul Gred Peperiksaan
@@ -634,7 +635,8 @@ ms_MY:
     exam_analysis_module_viewer: Paparan Modul Analisis Peperiksaan
     exampaper_module_viewer: Paparan Modul Kertas Peperiksaan
     examquestions_module_viewer: Paparan Modul Soalan Peperiksaan
-    course_evaluation_module_viewer: Paparan Modul Penilaian Kursus
+    course_evaluation_module_viewer: Paparan Modul Penilaian Kursus(Pensyarah)
+    course_average_module_viewer: Paparan Modul Data Analisa Skor Purata Penilaian Pensyarah
     exam_templates_module_user: Pengguna Modul Template Peperiksaan
     examresults_module_user: Pengguna Modul Keputusan Peperiksaan
     exam_grade_module_user: Pengguna Modul Gred Peperiksaan
@@ -642,7 +644,8 @@ ms_MY:
     exam_analysis_module_user: Pengguna Modul Analisis Peperiksaan
     exampaper_module_user: Pengguna Modul Kertas Peperiksaan
     examquestions_module_user: Pengguna Modul Soalan Peperiksaan
-    course_evaluation_module_user: Pengguna Modul Penilaian Kursus
+    course_evaluation_module_user: Pengguna Modul Penilaian Kursus(Pensyarah)
+    course_average_module_user: Pengguna Modul Data Analisa Skor Purata Penilaian Pensyarah
     exam_templates_module_member: Pemilik Modul Template Peperiksaan
     examresults_module_member: Pemilik Modul Keputusan Peperiksaan
     exam_grade_module_member: Pemilik Modul Gred Peperiksaan
@@ -650,7 +653,8 @@ ms_MY:
     exam_analysis_module_member: Pemilik Modul Analisis Peperiksaan
     exampaper_module_member: Pemilik Modul Kertas Peperiksaan
     examquestions_module_member: Pemilik Modul Soalan Peperiksaan
-    course_evaluation_module_member: Pemilik Modul Penilaian Kursus
+    course_evaluation_module_member: Pemilik Modul Penilaian Kursus(Pensyarah)
+    course_average_module_member: Pemilik Modul Data Analisa Skor Purata Penilaian Pensyarah
     exam_templates: Template Peperiksaan
     examresults: Keputusan Peperiksaan
     exam_grade: Gred Peperiksaan
@@ -658,7 +662,8 @@ ms_MY:
     exam_analysis: Analisis Peperiksaan
     exampaper: Kertas Peperiksaan
     examquestions: Soalan Peperiksaan
-    course_evaluation: Penilaian Kursus
+    course_evaluation: Penilaian Kursus(Pensyarah)
+    course_average: Data Analisa Skor Purata Penilaian Pensyarah
     
     #Training Parts
     training_notes_module_admin: Pentadbir Modul Nota Latihan
@@ -3893,6 +3898,7 @@ ms_MY:
     category: Kategori
     uploaded: Nama Fail
     current_file: Fail semasa
+    remark: Sila rujuk modul berkaitan bagi akses ke proses / borang PDF yang diisi secara atas talian. 
 
   conversation:
     local_messaging: Pemesejan Dalaman

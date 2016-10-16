@@ -81,9 +81,25 @@ $(document).ready(function(e) {
     defaultSeconds: 0,
     autoclose: true
   });
+  $('.datetime_picker2_reverse').datetimepicker({
+    timepicker:true,
+    format:'d-m-Y H:i',
+    formatDate:'Y-m-d H:i',
+    step: 1,
+    defaultSeconds: 0,
+    autoclose: true
+  });
   $('.datetime_picker3').datetimepicker({
     timepicker:true,
     format: "Y-m-d H:i",
+    step: 30,
+    defaultSeconds: 0,
+    autoclose: true
+  });
+  $('.datetime_picker3_reverse').datetimepicker({
+    timepicker:true,
+    format:'d-m-Y H:i',
+    formatDate:'Y-m-d H:i',
     step: 30,
     defaultSeconds: 0,
     autoclose: true

@@ -2,7 +2,7 @@ class Student < ActiveRecord::Base
   include StudentsHelper
   
   before_save  :titleize_name
-  validates_presence_of     :icno, :name, :sstatus, :stelno, :ssponsor, :gender, :sbirthdt, :mrtlstatuscd, :intake,:course_id
+  validates_presence_of     :icno, :name, :sstatus, :stelno, :ssponsor, :gender, :sbirthdt, :mrtlstatuscd, :intake,:course_id, :intake_id
   validates_presence_of :birthplace, :religion, :if => :college_is_amsas?
   validates_numericality_of :icno, :stelno
   #validates_length_of       :icno, :is =>12
@@ -21,6 +21,7 @@ class Student < ActiveRecord::Base
   belongs_to :course,         :class_name => 'Programme', :foreign_key => 'course_id'       #Link to Programme
   belongs_to :intakestudent,  :class_name => 'Intake',    :foreign_key => 'intake_id'       #Link to Model intake
   belongs_to :rank, :foreign_key => 'rank_id'
+  belongs_to :college, :foreign_key => 'college_id'
 
   #has_one   :user,              :dependent => :destroy                                      #Link to Model user
   has_many  :leaveforstudents,  :dependent => :destroy                                      #Link to LeaveStudent

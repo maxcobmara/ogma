@@ -378,7 +378,7 @@
               %th.centre{width: "12%"} 
           %body
             - cnt=0
-            - for role in Role.where('authname ILIKE(?)', '%module_admin').where.not('name ILIKE(?)', '%Mailer%').where(description: ["Course Evaluation"])
+            - for role in Role.where('authname ILIKE(?)', '%module_admin').where.not('name ILIKE(?)', '%Mailer%').where(description: ["Course Evaluation", "Course Average"])
               - read=Role.where('id !=?', role.id).where(description: role.description).first
               - user=Role.where.not(id: [role.id, read.id]).where(description: role.description).first
               - owner=Role.where.not(id: [role.id, read.id, user.id]).where(description: role.description).first

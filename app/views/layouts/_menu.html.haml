@@ -285,7 +285,7 @@
     %li.icon.icon-left
       = link_to content_tag(:i, "", :class => "icon-numb") + (t "exam.title"), '#'
       .mp-level
-        %h2.icon Exams
+        %h2.icon=(t "exam.title")
         %a.mp-back{:href => "#"}= t 'helpers.links.back'
         %ul
           /- permitted_to? :create, :exam_examquestions do
@@ -321,10 +321,10 @@
                       %h2.icon= t "exam.result"
                       %a.mp-back{:href => "#"}= t 'helpers.links.back'
                       %ul
-                        /- permitted_to? :manage, :exam_examresults do
-                        /activate above, once examresults - lecturers & programme manager ready
-                        %li= link_to (t "exam.examresult.title2"), exam_examresults_path
-                        //no need to put any permitted_to here -- as access given above(line 173 -174)
+                        - permitted_to? :manage, :exam_examresults do
+                          /activate above, once examresults - lecturers & programme manager ready
+                          %li= link_to (t "exam.examresult.title2"), exam_examresults_path
+                          //no need to put any permitted_to here -- as access given above(line 173 -174)
                         - permitted_to? :examination_slip, :exam_examresults do
                           - if current_user.college.code=="kskbjb"
                             %li= link_to content_tag(:i, "", :class => "icon-numb") + (t "exam.examresult.exam_slip_transcript"), index2_exam_examresults_path

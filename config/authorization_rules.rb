@@ -92,6 +92,7 @@ authorization do
    includes :exampaper_module_admin
    includes :examquestions_module_admin
    includes :course_evaluation_module_admin 
+   includes :course_average_module_admin
    includes :stationeries_module_admin
    includes :asset_losses_module_admin 
    includes :asset_loans_module_admin
@@ -576,11 +577,11 @@ authorization do
        if_attribute :prepared_by => is {user.userable_id}
    end
    
-   has_permission_on :training_trainingnotes, :to => :manage, :join_by => :or do
+   has_permission_on :training_trainingnotes, :to => [:manage, :download], :join_by => :or do
      if_attribute :topicdetail_id => is_in {user.topicdetails_of_programme}
      if_attribute :timetable_id => is_in {user.timetables_of_programme} 
    end
-   has_permission_on :training_trainingnotes, :to => :manage, :join_by => :and do
+   has_permission_on :training_trainingnotes, :to => [:manage, :download], :join_by => :and do
      if_attribute :topicdetail_id => is {nil}
      if_attribute :timetable_id => is {nil}
    end
@@ -737,6 +738,11 @@ authorization do
       has_permission_on :campus_pages, :to => :flexipage
       has_permission_on :staff_mentors, :to => :read
       has_permission_on :library_books, :to => :read
+      # TODO - disable 'module viewer' training notes -> when student role is selected 16Oct2016
+      has_permission_on :training_trainingnotes, :to => [:read , :download]
+      has_permission_on :exam_examresults, :to => [:menu, :index2, :show2, :examination_slip, :examination_transcript] do
+	if_attribute :id => is_in {user.userable.resultlines.pluck(:examresult_id)}
+      end
   end
   
   role :student_administrator do
@@ -1407,13 +1413,13 @@ authorization do
   #21-OK
   #21 - 3/4 OK - 9Feb2016
   role :training_notes_module_admin do
-     has_permission_on :training_trainingnotes, :to => [:menu, :manage]
+     has_permission_on :training_trainingnotes, :to => [:menu, :manage, :download]
   end
   role :training_notes_module_viewer do
-     has_permission_on :training_trainingnotes, :to => [:menu, :read]
+     has_permission_on :training_trainingnotes, :to => [:menu, :read, :download]
   end
   role :training_notes_module_user do
-     has_permission_on :training_trainingnotes, :to => [:menu, :read, :update]
+     has_permission_on :training_trainingnotes, :to => [:menu, :read, :update, :download]
   end
 # NOTE - DISABLE(in EACH radio buttons/click : radio & checkbox - training[0].disabled=true as the only owner of this module requires 'Lecturer' role 
 #   role :training_notes_module_member do
@@ -1774,6 +1780,29 @@ authorization do
     #own (programme manager-reader)
     has_permission_on :exam_evaluate_courses, :to => [:read, :courseevaluation, :evaluation_report] do
       if_attribute :course_id => is_in {user.evaluations_of_programme}
+    end
+  end
+  
+  # TODO - check if this is working correctly
+  #58-updated 16Oct2016
+  role :course_average_module_admin do
+    has_permission_on :exam_average_courses, :to => [:manage, :evaluation_analysis]
+  end
+  role :course_average_module_viewer do
+    has_permission_on :exam_average_courses, :to => [:read, :evaluation_analysis]
+  end
+  role :course_average_module_user do
+    has_permission_on :exam_average_courses, :to => [:read, :update, :evaluation_analysis]
+  end
+  role :course_average_module_member do
+    #evaluated lecturer
+    has_permission_on :exam_average_courses, :to => [:read, :evaluation_analysis] do
+      if_attribute :lecturer_id => is {user.userable_id}
+    end
+    #principal
+    has_permission_on :exam_average_courses, :to => [:read, :update, :evaluation_analysis], :join_by => :and do
+      if_attribute :principal_id => is{user.userable_id}
+      if_attribute :support_justify => is {nil}
     end
   end
   #end for Examination modules####################################

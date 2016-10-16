@@ -35,7 +35,7 @@ class Student_attendan_formPdf < Prawn::Document
           @arr << x
         end
 	table(line_item_rows,  :header => 2, :column_widths => @arr, :cell_style => { :size => 10}) do
-          self.width = 540
+          #self.width = 540
 	  row(0..1).background_color = 'FFE34D'
 	  column(3).style :align => :center
         end
@@ -69,7 +69,7 @@ class Student_attendan_formPdf < Prawn::Document
 	  cnt+=1
 	end
 	atts=[]
-        sas.each{|j|atts << 'Hadir' if j.attend==true; atts << 'Tidak Hadir' if j.attend==false }
+        sas.each{|j|atts << 'Hadir' if j.attend==true; atts << 'Tidak Hadir' if j.attend==false; atts << "" if j.attend.blank?}
 	data << ["#{counter += 1}", {content: st.student_with_rank, colspan: 2}]+atts
       end
     end

@@ -1,5 +1,6 @@
 = search_form_for @search, url: repositories_path,  class: "form-inline" do |f|
   %tr.search_row{style: "display: none;"}
+    %td &nbsp;
     %td= f.text_field :title_cont, size: 2,  :class => "form-control"
     %td= f.text_field :uploaded_file_name_cont, size: 2,  :class => "form-control"
     %td
