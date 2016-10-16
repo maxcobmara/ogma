@@ -1,10 +1,11 @@
 class Feedback_referrerPdf < Prawn::Document 
-  def initialize(sessions, view, case_details)
+  def initialize(sessions, view, case_details, college)
     super({top_margin: 50, page_size: 'A4', page_layout: :portrait })
     @sessions_by_case  = sessions
     @view = view
     @case_details = case_details
     @intake=@case_details.student.intake
+    @college=college
     font "Times-Roman"
     move_down 20
     text "MAKLUM BALAS KAUNSELING BAGI KES RUJUKAN", :align => :center, :size => 12, :style => :bold
@@ -23,11 +24,14 @@ class Feedback_referrerPdf < Prawn::Document
   end
 
   def table_case
-    data=[["Nama Pelajar","#{@case_details.student.name}","Pelapor Kes","#{@case_details.staff.staff_with_rank}"],
-          ["No Matrik","#{@case_details.student.matrixno}","Ambilan","#{@case_details.student_id.blank? ? "" : @case_details.student.try(:intake).try(:strftime,"%B %Y")}"],
-          ["Program","#{@case_details.student.try(:course).try(:programme_list)}","Tahun/Semester","#{Student.year_and_sem(@intake)}"],
-          ["Kesalahan","#{(DropDown::INFRACTION.find_all{|disp, value| value == @case_details.infraction_id}).map {|disp, value| disp}[0]}","Lokasi Kes","#{@case_details.location.try(:location_list)}"],
-          ["Tarikh & Masa","#{@case_details.reported_on.try(:strftime, "%d %b %y, %l:%M %P")}","Jenis Tindakan","#{"Kaunseling" if @case_details.action_type='counseling'}"]]
+    data=[["Nama Pelajar","#{@case_details.student.name}","Pelapor Kes","#{@case_details.staff.staff_with_rank}"]]
+    if @college.code=='amsas'
+      data << ["Program","#{@case_details.student.try(:course).try(:programme_list)}", "Ambilan","#{@case_details.student_id.blank? ? "" : "Siri "+@case_details.student.intakestudent.monthyear_intake.try(:strftime,"%m/%Y")}"]
+    else
+      data += [["No Matrik","#{@case_details.student.matrixno}","Ambilan","#{@case_details.student_id.blank? ? "" : @case_details.student.try(:intake).try(:strftime,"%B %Y")}"], ["Program","#{@case_details.student.try(:course).try(:programme_list)}","Tahun/Semester","#{Student.year_and_sem(@intake)}"]]
+    end
+    data+=[["Kesalahan","#{(DropDown::INFRACTION.find_all{|disp, value| value == @case_details.infraction_id}).map {|disp, value| disp}[0]}","Lokasi Kes","#{@case_details.location.try(:location_list)}"],  ["Tarikh & Masa","#{@case_details.reported_on.try(:strftime, "%d %b %y, %l:%M %P")}","Jenis Tindakan","#{"Kaunseling" if @case_details.action_type='counseling'}"]]
+    
     table(data, :column_widths => [100, 190, 90, 130], :cell_style => { :size => 11, :borders => [:left, :right, :top, :bottom]})  do
               a = 0
               b = 5

@@ -1,9 +1,11 @@
-%td=h appointment.student.matrixno  
+- unless current_user.college.code=='amsas'
+  %td=h appointment.student.matrixno  
 %td
   =link_to appointment.student.name, student_student_counseling_session_path(appointment)
   =h appointment.c_type == 'involuntary' ? image_tag("flag_red.png") : ""  
 %td=h appointment.student.programme_for_student2 if appointment.student.course_id <15 
-%td=h strip_tags(Student.year_and_sem(appointment.student.intake)) 
+- unless current_user.college.code=='amsas'
+  %td=h strip_tags(Student.year_and_sem(appointment.student.intake)) 
 %td
   =h appointment.is_confirmed? ?  appointment.confirmed_at.try(:getlocal).try(:strftime, "%d %b %y, %l:%M %P") :  appointment.requested_at.try(:getlocal).try(:strftime,"%d %b %y, %l:%M %P")
   /=h appointment.is_confirmed? ?  l(appointment.confirmed_at+8.hours, format: "%d %b %y, %l:%M %P") : l(appointment.requested_at+8.hours, format: "%d %b %y, %l:%M %P")
