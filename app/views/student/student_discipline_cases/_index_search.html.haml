@@ -2,8 +2,9 @@
   %tr.search_row{style: "display: none;"}
     %td= select_tag('q[status_cont_any]', options_for_select(DropDown::STATUS+[['Refer to TPHEP','Refer to TPHEP']]))
     %td= f.text_field :student_course_name_cont, size: 2, class: 'form-control'
-    %td &nbsp;
-    %td= f.text_field :student_matrixno_cont, size: 2, class: 'form-control'
+    - unless current_user.college.code=='amsas'
+      %td &nbsp;
+      %td= f.text_field :student_matrixno_cont, size: 2, class: 'form-control'
     %td= f.text_field :student_name_cont, size: 2, class: 'form-control'
     %td= f.text_field :description_cont, size:2, class: 'form-control'
     %td= f.text_field :reported_on_gteq, :size=> 2,  class:  'date_picker form-control'

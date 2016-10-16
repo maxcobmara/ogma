@@ -28,8 +28,9 @@
       %tr
         %th= sort_link(@search, :status, (t 'student.discipline.status'))
         %th{:width=>'230px'}= sort_link(@search, :programme, (t 'student.discipline.programme'))
-        %th{:width=>'80px'}= t 'student.discipline.year_semester'
-        %th= sort_link(@search, :matrix_no, (t 'student.discipline.matrix_no'))
+        - unless current_user.college.code=='amsas'
+          %th{:width=>'80px'}= t 'student.discipline.year_semester'
+          %th= sort_link(@search, :matrix_no, (t 'student.discipline.matrix_no'))
         %th= sort_link(@search, :student_id, (t 'student.discipline.student_id'))
         %th= sort_link(@search, :infraction_id, (t 'student.discipline.infraction'))
         %th= sort_link(@search, :reported_on, (t 'student.discipline.reported_on'))
@@ -44,10 +45,11 @@
       %tr
         %td=h link_to student_discipline_case.render_status, student_student_discipline_case_path(student_discipline_case)
         %td=h student_discipline_case.student.course.programme_list
-        %td
-          - @intake=student_discipline_case.student.intake
-          = Student.year_and_sem(@intake)
-        %td=h student_discipline_case.student.matrixno
+        - unless current_user.college.code=='amsas'
+          %td
+            - @intake=student_discipline_case.student.intake
+            = Student.year_and_sem(@intake)
+          %td=h student_discipline_case.student.matrixno
         %td=h student_discipline_case.student.name 
         %td=h student_discipline_case.render_infraction
         %td=h student_discipline_case.try(:reported_on).try(:strftime, '%d %b %Y')

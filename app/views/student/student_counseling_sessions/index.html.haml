@@ -30,10 +30,12 @@
   %table.table-hover.ogma
     %thead
       %tr
-        %th= sort_link(@search, :student_matrixno, (t 'student.counseling.matrix_no'))
+        - unless current_user.college.code=='amsas'
+          %th= sort_link(@search, :student_matrixno, (t 'student.counseling.matrix_no'))
         %th= sort_link(@search, :student_name, (t 'student.counseling.student_id'))
         %th= sort_link(@search, :student_course_name, (t 'student.counseling.programme'))
-        %th= t 'student.counseling.year_semester'
+        - unless current_user.college.code=='amsas'
+          %th= t 'student.counseling.year_semester'
         %th= sort_link(@search, :confirmed_at, (t 'student.counseling.appointment_for'))
         %th{:style=>"width: 90px;"}=sort_link(@search, :duration, (t 'student.counseling.duration'))
         %th= sort_link(@search, :is_confirmed, (t 'student.counseling.is_confirmed'))
@@ -63,12 +65,14 @@
           - count2=0
           - session_dones.each do |session_done| 
             %tr{:style=> "background-color: #EFE;"}
-              %td=h session_done.student.matrixno
+              - unless current_user.college.code=='amsas'
+                %td=h session_done.student.matrixno
               %td
                 =link_to session_done.student.name, student_student_counseling_session_path(session_done)
                 =h session_done.c_type == 'involuntary' ? image_tag("flag_red.png") : "" 
               %td=h session_done.student.programme_for_student2 if session_done.student.course_id <15 
-              %td=h strip_tags(Student.year_and_sem(session_done.student.intake))
+              - unless current_user.college.code=='amsas'
+                %td=h strip_tags(Student.year_and_sem(session_done.student.intake))
               %td
                 =h session_done.confirmed_at.try(:getlocal).try(:strftime,"%d %b %Y, %l:%M %P")   
                 /=h l(session_done.confirmed_at+8.hours, format: "%d %b %Y, %l:%M %P") 

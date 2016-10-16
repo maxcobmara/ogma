@@ -124,7 +124,7 @@ class Student::StudentCounselingSessionsController < ApplicationController
     @case_details = StudentDisciplineCase.find(params[:id])
     respond_to do |format|
        format.pdf do
-         pdf = Feedback_referrerPdf.new(@sessions_by_case, view_context, @case_details)
+         pdf = Feedback_referrerPdf.new(@sessions_by_case, view_context, @case_details, current_user.college)
          send_data pdf.render, filename: "feedback_referrer-{Date.today}",
                                type: "application/pdf",
                                disposition: "inline"
