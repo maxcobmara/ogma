@@ -738,11 +738,12 @@ authorization do
       has_permission_on :campus_pages, :to => :flexipage
       has_permission_on :staff_mentors, :to => :read
       has_permission_on :library_books, :to => :read
-      # TODO - disable 'module viewer' training notes -> when student role is selected 16Oct2016
-      has_permission_on :training_trainingnotes, :to => [:read , :download]
       has_permission_on :exam_examresults, :to => [:menu, :index2, :show2, :examination_slip, :examination_transcript] do
 	if_attribute :id => is_in {user.userable.resultlines.pluck(:examresult_id)}
       end
+      
+      # TODO - disable 'module viewer' training notes -> when student role is selected 16Oct2016
+      has_permission_on :training_trainingnotes, :to => [:read , :download]
   end
   
   role :student_administrator do

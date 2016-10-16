@@ -2805,6 +2805,8 @@ en:
     attendance:
       title: Student Attendance
       title2: Attendance
+      form: Student Attendance Form
+      form_display: " : Printing only allowed for a class / schedule at one time. Please use the Search function to short list student list to just a class / schedule."
       student_id: Student
       attend: "Attend?"
       reason: Reason

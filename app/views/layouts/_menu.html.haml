@@ -117,51 +117,52 @@
                     %li= link_to t('asset.loan.asset_on_loan'), asset_loans_path
             %li= link_to content_tag(:i, "", :class => "icon-numb") + (t "asset.reportdownload"), "/asset_report"
 
-    %li.icon.icon-left
-      = link_to content_tag(:i, "", :class => "icon-numb") + (t "location.title"), '#'
-      .mp-level
-        %h2.icon= (t "location.title")
-        %a.mp-back{:href => "#"}=t("back")
-        %ul
-          - permitted_to? :read, :campus_locations do
-            %li= link_to content_tag(:i, "", :class => "icon-numb") +  (t "location.title"), campus_locations_path
-          - permitted_to? :read, :student_tenants do
-            %li.icon.icon-left
-              = link_to (t "student.tenant.title"), '#'
-              .mp-level
-                %h2.icon= t "student.tenant.title"
-                %a.mp-back{:href => "#"}= t 'helpers.links.back'
-                %ul
-                  - permitted_to? :room_map, :student_tenants do
-                    %li= link_to (t "student.tenant.room_map"), room_map_student_tenants_path
-                  - permitted_to? :read, :student_tenants do
-                    %li= link_to (t "student.tenant.list"), student_tenants_path
-                  - permitted_to? :return_key, :student_tenants do
-                    %li= link_to (t "student.tenant.return_key"), return_key_student_tenants_path
-                  - permitted_to? :read, :campus_location_damages do
-                    %li= link_to (t "location.damage.list2"), campus_location_damages_path
-                  - permitted_to? :reports, :student_tenants do
-                    %li= link_to (t "student.tenant.report_census"), reports_student_tenants_path
-                  - permitted_to? :statistics, :student_tenants do
-                    %li= link_to (t "student.tenant.statistics_menu"), statistics_student_tenants_path
-            
-            - permitted_to? :index_staff, :student_tenants do
+    - if user_signed_in? && current_user.userable_type=='Staff'
+      %li.icon.icon-left
+        = link_to content_tag(:i, "", :class => "icon-numb") + (t "location.title"), '#'
+        .mp-level
+          %h2.icon= (t "location.title")
+          %a.mp-back{:href => "#"}=t("back")
+          %ul
+            - permitted_to? :read, :campus_locations do
+              %li= link_to content_tag(:i, "", :class => "icon-numb") +  (t "location.title"), campus_locations_path
+            - permitted_to? :read, :student_tenants do
               %li.icon.icon-left
-                = link_to (t "student.tenant.title2"), '#'
+                = link_to (t "student.tenant.title"), '#'
                 .mp-level
-                  %h2.icon= t "student.tenant.title2"
+                  %h2.icon= t "student.tenant.title"
                   %a.mp-back{:href => "#"}= t 'helpers.links.back'
                   %ul
-                    - permitted_to? :room_map2, :student_tenants do
-                      %li= link_to (t "student.tenant.unit_map"), room_map2_student_tenants_path
-                    - permitted_to? :index_staff, :student_tenants do
-                      %li= link_to (t "student.tenant.list"), index_staff_student_tenants_path
-                    - permitted_to? :return_key2, :student_tenants do
-                      %li= link_to (t "student.tenant.return_key"), return_key2_student_tenants_path
-                    - permitted_to? :index_staff, :campus_location_damages do
-                      %li= link_to (t "location.damage.list2"), index_staff_campus_location_damages_path
-          - permitted_to? :menu, :campus_bookingfacilities do
-            %li= link_to content_tag(:i, "", :class => "icon-numb") +   (t "campus.bookingfacilities.title"), campus_bookingfacilities_path
+                    - permitted_to? :room_map, :student_tenants do
+                      %li= link_to (t "student.tenant.room_map"), room_map_student_tenants_path
+                    - permitted_to? :read, :student_tenants do
+                      %li= link_to (t "student.tenant.list"), student_tenants_path
+                    - permitted_to? :return_key, :student_tenants do
+                      %li= link_to (t "student.tenant.return_key"), return_key_student_tenants_path
+                    - permitted_to? :read, :campus_location_damages do
+                      %li= link_to (t "location.damage.list2"), campus_location_damages_path
+                    - permitted_to? :reports, :student_tenants do
+                      %li= link_to (t "student.tenant.report_census"), reports_student_tenants_path
+                    - permitted_to? :statistics, :student_tenants do
+                      %li= link_to (t "student.tenant.statistics_menu"), statistics_student_tenants_path
+            
+              - permitted_to? :index_staff, :student_tenants do
+                %li.icon.icon-left
+                  = link_to (t "student.tenant.title2"), '#'
+                  .mp-level
+                    %h2.icon= t "student.tenant.title2"
+                    %a.mp-back{:href => "#"}= t 'helpers.links.back'
+                    %ul
+                      - permitted_to? :room_map2, :student_tenants do
+                        %li= link_to (t "student.tenant.unit_map"), room_map2_student_tenants_path
+                      - permitted_to? :index_staff, :student_tenants do
+                        %li= link_to (t "student.tenant.list"), index_staff_student_tenants_path
+                      - permitted_to? :return_key2, :student_tenants do
+                        %li= link_to (t "student.tenant.return_key"), return_key2_student_tenants_path
+                      - permitted_to? :index_staff, :campus_location_damages do
+                        %li= link_to (t "location.damage.list2"), index_staff_campus_location_damages_path
+            - permitted_to? :menu, :campus_bookingfacilities do
+              %li= link_to content_tag(:i, "", :class => "icon-numb") +   (t "campus.bookingfacilities.title"), campus_bookingfacilities_path
 
     - permitted_to? :menu, :documents do
       %li.icon.icon-left
@@ -375,30 +376,32 @@
             %li= link_to content_tag(:i, "", :class => "icon-numb") + t('campus.address.title'), campus_address_books_path
           - permitted_to? :read, :repositories do
             %li=link_to content_tag(:i, "", :class => "icon-numb") + t('repositories.list'), repositories_path
-          %li.icon.icon-left
-            = link_to t('support.title'), '#'
-            .mp-level
-              %h2.icon= t('support.title')
-              %a.mp-back{:href => "#"}= t 'helpers.links.back'
-              %ul
-                - permitted_to? :read, :banks do
-                  %li= link_to t('banks.list'), banks_path
-                - permitted_to? :read, :staff_titles do
-                  %li= link_to t('staff.titles.title'), staff_titles_path
-                - permitted_to? :read, :staff_staff_shifts do
-                  %li= link_to t('staff.staff_shifts.title'), staff_staff_shifts_path
-                - permitted_to? :read, :staff_travel_claims_transport_groups do
-                  %li= link_to t('staff.travel_claims_transport_groups.title'), staff_travel_claims_transport_groups_path
-                - permitted_to? :read, :staff_travel_claim_mileage_rates do
-                  %li= link_to t('staff.travel_claim_mileage_rates.title'), staff_travel_claim_mileage_rates_path
-                - permitted_to? :read, :asset_assetcategories do
-                  %li= link_to (t "asset.category.title"), asset_assetcategories_path
-                - permitted_to? :read, :staff_ranks do
-                  %li=link_to (t 'rank.title'), staff_ranks_path
-                - permitted_to? :read, :staff_employgrades do
-                  %li= link_to t('staff.employgrades.title'), staff_employgrades_path
-                - permitted_to? :read, :staff_postinfos do
-                  %li= link_to t('staff.postinfos.title'), staff_postinfos_path
+
+          - if user_signed_in? && current_user.userable_type=='Staff'
+            %li.icon.icon-left
+              = link_to t('support.title'), '#'
+              .mp-level
+                %h2.icon= t('support.title')
+                %a.mp-back{:href => "#"}= t 'helpers.links.back'
+                %ul
+                  - permitted_to? :read, :banks do
+                    %li= link_to t('banks.list'), banks_path
+                  - permitted_to? :read, :staff_titles do
+                    %li= link_to t('staff.titles.title'), staff_titles_path
+                  - permitted_to? :read, :staff_staff_shifts do
+                    %li= link_to t('staff.staff_shifts.title'), staff_staff_shifts_path
+                  - permitted_to? :read, :staff_travel_claims_transport_groups do
+                    %li= link_to t('staff.travel_claims_transport_groups.title'), staff_travel_claims_transport_groups_path
+                  - permitted_to? :read, :staff_travel_claim_mileage_rates do
+                    %li= link_to t('staff.travel_claim_mileage_rates.title'), staff_travel_claim_mileage_rates_path
+                  - permitted_to? :read, :asset_assetcategories do
+                    %li= link_to (t "asset.category.title"), asset_assetcategories_path
+                  - permitted_to? :read, :staff_ranks do
+                    %li=link_to (t 'rank.title'), staff_ranks_path
+                  - permitted_to? :read, :staff_employgrades do
+                    %li= link_to t('staff.employgrades.title'), staff_employgrades_path
+                  - permitted_to? :read, :staff_postinfos do
+                    %li= link_to t('staff.postinfos.title'), staff_postinfos_path
                 
                 
                 

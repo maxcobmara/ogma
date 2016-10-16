@@ -2697,6 +2697,8 @@ ms_MY:
     attendance:
       title: Kedatangan Pelajar
       title2: Kedatangan
+      form: Borang Kehadiran Pelatih 
+      form_display: " : Cetakan hanya dibenarkan bagi sebuah kelas / jadual pada satu-satu masa. Sila gunakan fungsi Carian bagi menyenarai pendek senarai pelatih kepada satu kelas / jadual."
       student_id: Pelajar
       attend: Kehadiran
       reason: Sebab

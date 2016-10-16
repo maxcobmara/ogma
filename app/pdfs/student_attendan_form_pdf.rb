@@ -6,14 +6,27 @@ class Student_attendan_formPdf < Prawn::Document
     @college=college
     @classes_count=classes_count
     font "Helvetica"
-    image "#{Rails.root}/app/assets/images/logo_kerajaan.png", :position => :center, :scale => 0.5
-    move_down 10
     if college.code=="kskbjb"
+      image "#{Rails.root}/app/assets/images/logo_kerajaan.png", :position => :center, :scale => 0.5
+      move_down 10
       text "KEMENTERIAN KESIHATAN MALAYSIA", :align => :center, :size => 12, :style => :bold
+      text "BORANG KEHADIRAN PELATIH", :align => :center, :size => 12, :style => :bold
+    elsif college.code=="amsas"
+      bounding_box([10,770], :width => 400, :height => 60) do |y2|
+        image "#{Rails.root}/app/assets/images/logo_kerajaan.png", :scale => 0.65#  :width =>97.2, :height =>77.76
+      end
+      bounding_box([440,770], :width => 400, :height => 60) do |y2|
+        image "#{Rails.root}/app/assets/images/amsas_logo_small.png", :scale => 0.75
+      end
+      bounding_box([90,760], :width => 350, :height => 60) do |y2|
+        text "PPL APMM", :style => :bold, :align => :center
+        text "BORANG KEHADIRAN PELATIH", :align => :center, :size => 12, :style => :bold
+      end
     else
       text "#{college.name.upcase}", :align => :center, :style => :bold
+      text "BORANG KEHADIRAN PELATIH", :align => :center, :size => 12, :style => :bold
     end
-    text "BORANG KEHADIRAN PELATIH", :align => :center, :size => 12, :style => :bold
+    
     table_attendance
     pengajar
     page_count.times do |i|
@@ -28,19 +41,26 @@ class Student_attendan_formPdf < Prawn::Document
       self.width = 540
       end
     elsif @college.code=="amsas"
-      if @classes_count < 4
-	@arr=[40, 180, 50]#[40, 230]
-        x=270/@classes_count
-	1.upto(@classes_count).each do |y|
-          @arr << x
-        end
-	table(line_item_rows,  :header => 2, :column_widths => @arr, :cell_style => { :size => 10}) do
-          #self.width = 540
-	  row(0..1).background_color = 'FFE34D'
-	  column(3).style :align => :center
-        end
+      table(line_item_rows,  :header => 2, :column_widths => [40, 180, 50, 250], :cell_style => { :size => 10}) do
+          self.width=520
+          row(0..1).background_color = 'FFE34D'
+          column(3).style :align => :center
       end
     end
+      
+#       if @classes_count < 4
+# 	@arr=[40, 180, 50]#[40, 230]
+#         x=270/@classes_count
+# 	1.upto(@classes_count).each do |y|
+#           @arr << x
+#         end
+# 	table(line_item_rows,  :header => 2, :column_widths => @arr, :cell_style => { :size => 10}) do
+#           self.width=540
+# 	  row(0..1).background_color = 'FFE34D'
+# 	  column(3).style :align => :center
+#         end
+#       end
+      
   end
   
   def line_item_rows
@@ -83,15 +103,9 @@ class Student_attendan_formPdf < Prawn::Document
 	self.width = 540
       end
     elsif @college.code=="amsas"
-      data = [" ", "", "Nama dan Tandatangan Pengajar "]
-      @arr=[40, 80, 150]
-      x=270/@classes_count
-      1.upto(@classes_count).each do |y|
-        @arr << x
-        data << ""
-      end
-      table([data], :column_widths => @arr, :cell_style => { :size => 10}) do
-	self.width = 540
+      data = [" ", "", "Nama dan Tandatangan Pengajar ", ""]
+      table([data], :column_widths => [40, 80, 150, 250], :cell_style => { :size => 10}) do #40, 180, 50, 250
+	self.width = 520
       end
     end
     move_down 5
