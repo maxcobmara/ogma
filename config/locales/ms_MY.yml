@@ -75,6 +75,7 @@ ms_MY:
         icno: No Mykad
         birthplace: Tempat Lahir
         religion: Agama
+        intake_id: Kumpulan (Sesi Pengambilan)
       location:
         combo_code: Kod Lokasi
         damages: Kerosakan di Lokasi

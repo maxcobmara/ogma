@@ -61,7 +61,19 @@ module StudentsHelper
   end
 
   def display_intake
-    "#{intake.to_date.strftime("%b %Y") }"
+    if intake_id.blank?
+      "#{intake.to_date.strftime("%b %Y") }"
+    else
+      intakestudent.monthyear_intake.strftime('%b %Y')
+    end
+  end
+  
+  def display_intake_amsas
+    if intake_id.blank?
+      "#{intake.to_date.strftime("%b %Y") }"
+    else
+     "Siri #{intakestudent.monthyear_intake.strftime('%m/%Y')}"
+    end
   end
 
   def display_regdate

@@ -86,9 +86,11 @@
     .col-md-3
       = f.select :mrtlstatuscd, Student::MARITAL_STATUS, {:include_blank =>t('helpers.prompt.select_maritial_status')}, {class: 'selectpicker mandatory'}
 
-.col-md-offset-2
-  .form-group
-    .col-sm-2.control-label
-      =f.label t 'student.students.intake_id', for: :intake
-    .col-md-2
-      = f.text_field :intake, class: 'form-control date_picker_reverse mandatory', 'data-behaviour' => 'datepicker_today', value: @student.try(:intake).try(:strftime, '%d-%m-%Y')
+/ TODO - kskbjb - to update manually (intake -> intake_id), may require new Intake creation - 17Oct2016
+- if !@student.id.blank? && @student.college.code=='kskbjb' && !@student.intake.blank?
+  .col-md-offset-2
+    .form-group
+      .col-sm-2.control-label
+        =f.label t 'student.students.intake_id', for: :intake
+      .col-md-2
+        = f.text_field :intake, class: 'form-control date_picker_reverse mandatory', 'data-behaviour' => 'datepicker_today', value: @student.try(:intake).try(:strftime, '%d-%m-%Y')

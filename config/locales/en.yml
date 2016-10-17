@@ -93,6 +93,7 @@ en:
         icno: Mykad No
         birthplace: Place Of Birth
         religion: Religion
+        intake_id: Group (Intake)
       location:
         combo_code: Location Code
         damages: Location Damages
