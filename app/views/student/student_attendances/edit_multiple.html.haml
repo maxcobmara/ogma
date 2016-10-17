@@ -19,6 +19,8 @@
             %dl.dl-horizontal
               %dt= t 'student.attendance.programme'
               %dd=@studentattendances[0].student.course.programme_list
+              %dt=t('student.attendance.lecturer')
+              %dd=@studentattendances[0].weeklytimetable_detail.weeklytimetable_lecturer.staff_with_rank
               %dt= t 'student.attendance.intake'
               %dd=@studentattendances[0].college.code=='amsas' ? "Siri "+@studentattendances[0].student.intakestudent.monthyear_intake.try(:strftime, '%m/%Y') : @studentattendances[0].student.intakestudent.monthyear_intake.try(:strftime, '%b %Y')
             %br

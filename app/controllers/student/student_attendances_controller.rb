@@ -181,8 +181,13 @@ class Student::StudentAttendancesController < ApplicationController
       @intake_of_prog_id = @intake_list.first.id
       topics_ids_this_prog = Programme.find(@programme_id).descendants.where(course_type: ['Topic', 'Subtopic']).map(&:id)
       #@schedule_list = WeeklytimetableDetail.where('topic IN(?)',topics_ids_this_prog).order(:topic)
-      @schedule_list = WeeklytimetableDetail.joins(:weeklytimetable).where('topic IN(?) and intake_id=?',topics_ids_this_prog, @intake_of_prog_id).order(:topic)
-      @student_list = Student.where('course_id=? AND intake>=? AND intake <?',@programme_id.to_i,@iii.to_date,@iii.to_date+1.day)
+      # NOTE - ref for edit multiple - TODO - edit multiple - scope by current user, but check for admin first (w/o scope)
+      #@schedule_list = WeeklytimetableDetail.joins(:weeklytimetable).where('topic IN(?) and intake_id=?',topics_ids_this_prog, @intake_of_prog_id).order(:topic)
+      @schedule_list = WeeklytimetableDetail.joins(:weeklytimetable).where('topic IN(?) and intake_id=?',topics_ids_this_prog, @intake_of_prog_id).where(lecturer_id: current_user.userable_id)order(:topic)
+      #by intake column
+      #@student_list = Student.where('course_id=? AND intake>=? AND intake <?',@programme_id.to_i,@iii.to_date,@iii.to_date+1.day)
+      #by intake_id column
+      @student_list = Student.where(course_id: @programme_id.to_i, intake_id: @intake_list.pluck(:id))
     else
       #weeklytimetable details must exist, whereby it's weeklytimetable contains intake_id (from INTAKE table)
       entered_item = Programme.find(@programme_id).programme_list+", "+t('student.attendance.intake')+" "+@iii.to_date.strftime('%b %Y')+" "
