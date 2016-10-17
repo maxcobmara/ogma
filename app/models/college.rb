@@ -15,6 +15,7 @@ class College < ActiveRecord::Base
   has_many :student
   has_many :student_discipline_cases
   has_many :student_counseling_sessions
+  has_many :student_attendances
   # staffs
   
   serialize :data, Hash

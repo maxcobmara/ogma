@@ -266,15 +266,20 @@
 
               - detailing.each_with_index do |j,index|
                 - if index==0
-                  - j.weeklytimetable.timetable_monthurs.timetable_periods.order(sequence: :asc).in_groups_of(@column_count_monthur, false) do |row_things|
-                    %tr
-                      %th{:align => "center", :style=>"border:1px solid black; text-align:center; padding:4px; vertical-align:middle;background-color:#FEE;font-size:12px;"} 
-                        &nbsp;
-                      - for periods in row_things
-                        - if periods.day_name == 1
-                          %th{:align => "center", :style=>"border:1px solid black; text-align:center; padding:4px;background-color:#FEE;font-size:12px;"} 
-                            =periods.sequence
-                            %BR= j.weeklytimetable.college.code=='amsas' ? periods.timing_24hrs : periods.timing
+                
+                  ////Amsas - hide weekends header when same timetable format in use for Mon-Thurs & Friday, as weekends must follow Mon-Thurs format
+                  - if j.weeklytimetable.format1==j.weeklytimetable.format2
+                  - else
+                    //otherwise display weekends header as usual
+                    - j.weeklytimetable.timetable_monthurs.timetable_periods.order(sequence: :asc).in_groups_of(@column_count_monthur, false) do |row_things|
+                      %tr
+                        %th{:align => "center", :style=>"border:1px solid black; text-align:center; padding:4px; vertical-align:middle;background-color:#FEE;font-size:12px;"} 
+                          &nbsp;
+                        - for periods in row_things
+                          - if periods.day_name == 1
+                            %th{:align => "center", :style=>"border:1px solid black; text-align:center; padding:4px;background-color:#FEE;font-size:12px;"} 
+                              =periods.sequence
+                              %BR= j.weeklytimetable.college.code=='amsas' ? periods.timing_24hrs : periods.timing
 
 
               /Day & date(column) : (ADDITIONAL - Weekends classes) - row starts after timeslot header
