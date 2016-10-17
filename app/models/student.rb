@@ -2,7 +2,7 @@ class Student < ActiveRecord::Base
   include StudentsHelper
   
   before_save  :titleize_name
-  validates_presence_of     :icno, :name, :sstatus, :stelno, :ssponsor, :gender, :sbirthdt, :mrtlstatuscd, :intake,:course_id, :intake_id
+  validates_presence_of     :icno, :name, :sstatus, :stelno, :ssponsor, :gender, :sbirthdt, :mrtlstatuscd, :course_id, :intake_id   #:intake
   validates_presence_of :birthplace, :religion, :if => :college_is_amsas?
   validates_numericality_of :icno, :stelno
   #validates_length_of       :icno, :is =>12

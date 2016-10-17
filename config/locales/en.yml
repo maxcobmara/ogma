@@ -2603,6 +2603,7 @@ en:
       end_training_must_use: "(Additional notes : End of training - date must in 'yyyy-mm-dd' format)"
       additional_notes: "Additional notes : "
       intake_must_use: "(Additional notes : Intake - must in date format 'yyyy-mm-01', note '01' is used)"
+      intake_id_accordingly: "(Additional notes : Use 'intake_id' accordingly as per listed (intake_id - Siri | Programme))"
       race2_accordingly: "(Additional notes : Use 'race2' accordingly as per listed (race2 - race name)) : "
       birthplace_accordingly: "(Additional notes : Use 'birthplace' accordingly as per listed (birthplace - state name))"
       religion_accordingly: "(Additional notes : Use 'religion' accordingly as per listed (religion - religion name))"

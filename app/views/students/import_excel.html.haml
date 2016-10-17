@@ -83,11 +83,19 @@
   %li 
     %b end_training
     =" - "+t('student.students.end_training_must_use')
-  %li 
-    %b intake
+  /%li 
+  /  %b intake
+  /  %font{color: "red"}*
+  /  =" - "+t('student.students.intake_must_use')
+  %li
+    %b intake_id
     %font{color: "red"}*
-    =" - "+t('student.students.intake_must_use')
-  %li 
+    =" - "+t('student.students.intake_id_accordingly')
+    %ul
+      - Intake.all.group_by{|x|x.monthyear_intake}.each do |monthyear_int, intakes|
+        - for intake in intakes.sort_by{|y|y.id}
+          %li= intake.id.to_s+" - Siri "+monthyear_int.strftime('%m/%Y')+" | "+intake.programme.programme_list
+  %li
     %b race2
     =" - "+t('student.students.race2_accordingly')
     %ul
