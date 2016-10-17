@@ -3,6 +3,7 @@ class Student_reportPdf < Prawn::Document
     super({top_margin: 50, page_size: 'A4', page_layout: :landscape })
     @students = students
     @view = view
+    @college = college
     course=Programme.find(programme_id)
     font "Times-Roman"
     text "#{college.name}", :align => :center, :size => 12, :style => :bold
@@ -31,7 +32,7 @@ class Student_reportPdf < Prawn::Document
     header =[ ["", "#{I18n.t('student.students.icno')}", "#{I18n.t('student.students.name')}", "#{I18n.t('student.students.matrixno')}", "#{I18n.t('student.students.course_id')}", "#{I18n.t('student.students.intake_id')}","#{I18n.t('student.students.ssponsor')}", "Status", "#{I18n.t('student.students.status_remark')}", "#{I18n.t('student.students.gender')}", "#{I18n.t('student.students.race')}", "#{I18n.t('student.students.mrtlstatuscd')}", "#{I18n.t('student.students.stelno')}", "#{I18n.t('student.students.semail')}"]]
     header +
       @students.map do |student|
-      ["#{counter+=1}","#{student.formatted_mykad}", "#{student.name}", "#{student.matrixno unless student.matrixno.blank?}", "#{student.display_programme}", "#{student.display_intake}", "#{student.ssponsor}", "#{student.render_status unless student.sstatus.blank?}", "#{student.sstatus_remark unless student.sstatus_remark.blank?}", "#{student.display_gender}", "#{student.display_race}", "#{student.render_marital unless student.mrtlstatuscd}", "#{student.try(:stelno)}", "#{student.display_semail}"]
+      ["#{counter+=1}","#{student.formatted_mykad}", "#{student.name}", "#{student.matrixno unless student.matrixno.blank?}", "#{student.display_programme}", "#{@college.code=='amsas' ? student.display_intake_amsas : student.display_intake}", "#{student.ssponsor}", "#{student.render_status unless student.sstatus.blank?}", "#{student.sstatus_remark unless student.sstatus_remark.blank?}", "#{student.display_gender}", "#{student.display_race}", "#{student.render_marital unless student.mrtlstatuscd}", "#{student.try(:stelno)}", "#{student.display_semail}"]
     end
   end
   

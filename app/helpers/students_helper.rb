@@ -61,7 +61,19 @@ module StudentsHelper
   end
 
   def display_intake
-    "#{intake.to_date.strftime("%b %Y") }"
+    if intake_id.blank?
+      "#{intake.to_date.strftime("%b %Y") }"
+    else
+      intakestudent.monthyear_intake.strftime('%b %Y')
+    end
+  end
+  
+  def display_intake_amsas
+    if intake_id.blank?
+      "#{intake.to_date.strftime("%b %Y") }"
+    else
+     "Siri #{intakestudent.monthyear_intake.strftime('%m/%Y')}"
+    end
   end
 
   def display_regdate
@@ -263,6 +275,8 @@ module StudentsHelper
       
     student_religion=[]
     Student::RELIGION.each{|n, sb| student_religion << sb}
+    
+    student_intake=Intake.pluck(:id)
     
     saved_students=[]
     icno_not_exist=[]
@@ -474,20 +488,38 @@ module StudentsHelper
         sbirthdt_not_valid << i
       end
       
-      intake_e=row["intake"]
-      unless intake_e.nil? || intake_e.blank? || intake_e==""
-        if intake_e.is_a? Date
+#       intake_e=row["intake"]
+#       unless intake_e.nil? || intake_e.blank? || intake_e==""
+#         if intake_e.is_a? Date
+#         else
+#            if intake_e.size==10
+#              intake_e=intake_e.to_date
+#            else
+#              intake_e=nil
+#              intake_not_valid << i
+#            end
+#         end
+#       else
+#         intake_e=nil
+#         intake_not_valid << i
+#       end
+      
+      intake_e=row["intake_id"]
+      if intake_e.is_a? String 
+        if LibraryHelper.all_digits(intake_e) && student_intake.include?(intake_e.to_i)
+          intake_id_e=intake_id_e.to_i
         else
-           if intake_e.size==10
-             intake_e=intake_e.to_date
-           else
-             intake_e=nil
-             intake_not_valid << i
-           end
+          #wrong data ignored - number required
+          intake_e=nil
+          intake_not_valid << i
         end
       else
-        intake_e=nil
-        intake_not_valid << i
+        if student_intake.include?(intake_e)
+          intake_e=intake_e.to_i
+        else
+          intake_e=nil
+          intake_not_valid << i
+        end
       end
       
       college_id_e=row["college_id"]
@@ -530,6 +562,8 @@ module StudentsHelper
         student_rec.intake = intake_e
 	student_rec.birthplace=birthplace_e #required for Amsas
 	student_rec.religion=religion_e #required for Amsas
+	student_rec.intake_id=intake_e
+	student_rec.intake=''
         student_rec.attributes = row.to_hash.slice("matrixno","sstatus_remark", "semail", "regdate", "offer_letter_serial", "end_training", "address", "address_posbasik")
         student_rec.save!
         #saved_students << student_rec if !student_rec.id.nil?

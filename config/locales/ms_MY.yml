@@ -75,6 +75,7 @@ ms_MY:
         icno: No Mykad
         birthplace: Tempat Lahir
         religion: Agama
+        intake_id: Kumpulan (Sesi Pengambilan)
       location:
         combo_code: Kod Lokasi
         damages: Kerosakan di Lokasi
@@ -2484,7 +2485,7 @@ ms_MY:
       name_must_not_blank: "(Nota Tambahan : Medan ini tidak boleh dikosongkan)"
       stelno_must_not_blank: "(Nota Tambahan : Medan ini (no telefon pelajar) tidak boleh dikosongkan)"
       sstatus_must_use: "(Nota Tambahan : Gunakan 'Current', 'Graduated', 'Repeat', 'On Leave', 'Transfer College' atau 'Expelled' mengikut kesesuaian)"
-      sstatus_must_use: "(Nota Tambahan : Gunakan 'asaspeg' , 'asasllp', 'lanpeg' atau 'lanllp' mengikut kesesuaian)"
+      sstatus_must_use2: "(Nota Tambahan : Gunakan 'asaspeg' , 'asasllp', 'lanpeg' atau 'lanllp' mengikut kesesuaian)"
       ssponsor_must_use: "(Nota Tambahan : Gunakan 'KKM' untuk Kementerian Kesihatan Malaysia, 'SPA' untuk Suruhanjaya Perkhidmatan Awam, 'swasta' untuk Swasta dan 'FaMa' untuk sendiri)"
       gender_must_use: "(Nota Tambahan : Gunakan '1' untuk Lelaki dan '2' untuk Perempuan)"
       sbirthdt_must_use: "(Nota Tambahan : Tarikh Lahir - tarikh mesti dalam format 'tttt-bb-hh')"
@@ -2495,6 +2496,7 @@ ms_MY:
       end_training_must_use: "(Nota Tambahan : Tarikh Tamat Belajar - tarikh mesti dalam format 'tttt-bb-hh')"
       additional_notes: "Nota Tambahan : "
       intake_must_use: "(Nota Tambahan : Sesi Ambilan - mesti dalam format tarikh 'tttt-bb-01', pastikan '01' digunakan)"
+      intake_id_accordingly: "(Nota Tambahan : Gunakan 'intake_id' berdasarkan senarai berikut (intake_id - Siri | Program))"
       race2_accordingly: "(Nota Tambahan : Gunakan 'race2' berdasarkan senarai berikut (race2 - nama kaum)) : "
       birthplace_accordingly: "(Nota Tambahan : Gunakan 'birthplace' berdasarkan senarai berikut (birthplace - name negeri))"
       religion_accordingly: "(Nota Tambahan : Gunakan 'religion' berdasarkan senarai berikut (religion - nama agama))"
