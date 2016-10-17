@@ -21,15 +21,11 @@
 %tr
   %td{:style => "width:100px; padding:5px; "}=t('student.attendance.time')
   - @sas.each_with_index do |studentattendance, index|
-    %td{:style => "width:250px; padding:5px;"}
-      - if studentattendance.weeklytimetable_detail.time_slot==0 
-        =TimetablePeriod.find(studentattendance.weeklytimetable_detail.time_slot2).timing
-      - else
-        =TimetablePeriod.find(studentattendance.weeklytimetable_detail.time_slot).timing
+    %td{:style => "width:250px; padding:5px;"}= studentattendance.weeklytimetable_detail.get_time_slot
 %tr
   %td{:style => "width:100px; padding:5px;"}=t('student.attendance.lecturer')
   - @sas.each_with_index do |studentattendance, index|
-    %td{:style => "width:250px; padding:5px;"}=studentattendance.weeklytimetable_detail.weeklytimetable_lecturer.name 
+    %td{:style => "width:250px; padding:5px;"}=studentattendance.weeklytimetable_detail.weeklytimetable_lecturer.staff_with_rank
 %tr
   %td{:style => "width:100px; padding:5px;"}=t('student.attendance.intake2')
   - @sas.each_with_index do |studentattendance, index|

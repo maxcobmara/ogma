@@ -3,6 +3,8 @@ class StudentAttendance < ActiveRecord::Base
   before_save :set_absent_details_nil_if_attend
   belongs_to :weeklytimetable_detail, :foreign_key => 'weeklytimetable_details_id'
   belongs_to :student
+  belongs_to :college
+  
   validates_uniqueness_of :student_id, :scope => :weeklytimetable_details_id, :message => " - Attendance for this student for selected schedule/class already exist" 
   
   validates_presence_of :reason, :if => :is_absent?

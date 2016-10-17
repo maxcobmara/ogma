@@ -11,8 +11,8 @@
       %dt= t 'staff.rank_id'
       %dd= @staff.try(:rank).try(:name)
 
-    %dt= t 'staff.position'
-    %dd= @staff.try(:position).try(:name)
+    /%dt= t 'staff.position'
+    /%dd= @staff.try(:position).try(:name)
 
     %dt= t 'staff.coemail', :default => model_class.human_attribute_name(:coemail) + ":"
     %dd= @staff.coemail

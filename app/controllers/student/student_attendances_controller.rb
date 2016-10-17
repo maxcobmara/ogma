@@ -175,7 +175,7 @@ class Student::StudentAttendancesController < ApplicationController
     @intake = params["intake"]
     @student_attendances = Array.new(5) { StudentAttendance.new }
     @programme_id =@intake.split(",")[1]
-    @iii=@intake.split(",")[0]   #Intake data from Student table
+    @iii=@intake.split(",")[0]   #(monthyear_intake value of Intake table) relation: Intake_id data from Student table
     @intake_list = Intake.where(programme_id: @programme_id, monthyear_intake: @iii.to_date)
     if @intake_list.count > 0
       @intake_of_prog_id = @intake_list.first.id
@@ -377,7 +377,7 @@ class Student::StudentAttendancesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def student_attendance_params
-      params.require(:student_attendance).permit(:student_id, :attend, :weeklytimetable_details_id, :reason, :action, :status, :remark)
+      params.require(:student_attendance).permit(:student_id, :attend, :weeklytimetable_details_id, :reason, :action, :status, :remark, :college_id, {:data => []})
     end
  
 end

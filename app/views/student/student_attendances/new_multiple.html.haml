@@ -31,7 +31,11 @@
                   
                   %dt= t 'student.attendance.intake'
                   %dd
-                    =intake_name=@iii.try(:strftime,'%b %Y')
+                    - if current_user.college.code=='amsas'
+                      Siri 
+                      =intake_name=@iii.try(:strftime, '%m/%Y')
+                    - else
+                      =intake_name=@iii.try(:strftime,'%b %Y')
                     - if @student_intake.count==0
                       %font{:style=>"color: red;"}=(t 'student.attendance.student_not_exist')
                     - else
@@ -49,8 +53,9 @@
                         %th{:style => "width: 400px;"}= t 'student.attendance.student_id'
                         %th= t 'student.attendance.title2' 
                       - @student_listing.each_with_index do |student, nos| 
-                        = hidden_field "student_attendances[#{nos}]",:student_id, :size=>2, :value=>student.id 
-                        = hidden_field "student_attendances[#{nos}]",:weeklytimetable_details_id, :size=>2, :value=> @classid 
+                        = hidden_field "student_attendances[#{nos}]",:student_id, :value=>student.id 
+                        = hidden_field "student_attendances[#{nos}]",:weeklytimetable_details_id, :value=> @classid 
+                        = hidden_field "student_attendances[#{nos}]",:college_id, value: current_user.college_id
                         %tr
                           %td=nos+1
                           %td= student.matrix_name 
@@ -75,7 +80,10 @@
                             - elsif student_a.attend==false
                               =t 'student.attendance.absent'
                           %td
-                            - @iii2=student_a.student.intake.try(:strftime, '%b %Y')
+                            - if current_user.college.code=='amsas'
+                              - @iii2=student_a.student.intake.try(:strftime, '%m/%Y')
+                            - else
+                              - @iii2=student_a.student.intake.try(:strftime, '%b %Y')
                             - if @iii2!=intake_name
                               %font{:style=>"color: red;"}= @iii2
                               

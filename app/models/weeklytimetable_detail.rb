@@ -69,22 +69,40 @@ class WeeklytimetableDetail < ActiveRecord::Base
       return (sdate+6).strftime('%d-%b-%Y') + " Sun" if day2 == 7
    end   
    
+   # TODO - revise - check where it's use
    def get_start_time
      timeslot = time_slot2 if is_friday == false || is_friday == nil
      timeslot = time_slot if is_friday == true 
      "#{TimetablePeriod.find(timeslot).start_at.strftime("%l:%M %p")}"
    end   
    
+   # TODO - revise - check where it's use
    def get_end_time
      timeslot = time_slot2 if is_friday == false || is_friday == nil
      timeslot = time_slot if is_friday == true 
      "#{TimetablePeriod.find(timeslot).end_at.strftime("%l:%M %p")}"
    end   
    
+   #working sample: Student Attendance - Index pg - 17Oct2016
    def get_time_slot
-      timeslot = time_slot2 if is_friday == false || is_friday == nil
-      timeslot = time_slot if is_friday == true 
-      stime = "#{TimetablePeriod.find(timeslot).start_at.strftime("%l:%M %p")}"+"-"+"#{TimetablePeriod.find(timeslot).end_at.strftime("%l:%M %p")}"
+      #asal
+      #timeslot = time_slot2 if is_friday == false || is_friday == nil
+      #timeslot = time_slot if is_friday == true 
+      #stime = "#{TimetablePeriod.find(timeslot).start_at.strftime("%l:%M %p")}"+"-"+"#{TimetablePeriod.find(timeslot).end_at.strftime("%l:%M %p")}"
+      ####
+      if is_friday == false || is_friday == nil
+        timeslot = time_slot2 
+        slot=weeklytimetable.timetable_monthurs.timetable_periods.where(sequence: timeslot).first   #format1
+      end
+      if is_friday == true 
+        timeslot = time_slot 
+        slot=weeklytimetable.timetable_friday.timetable_periods.where(sequence: timeslot).first         #weeklytimetable.format2
+      end
+      if weeklytimetable.college.code=='amsas'
+        stime="#{slot.start_at.strftime('%H:%M')} - #{slot.end_at.strftime('%H:%M')}"
+      else
+        stime="#{slot.start_at.strftime("%l:%M %p")} - #{slot.end_at.strftime("%l:%M %p")}"
+      end
    end
    
    def day_time_slot
