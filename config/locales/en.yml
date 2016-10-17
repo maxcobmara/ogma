@@ -2819,12 +2819,12 @@ en:
       tick_attend: " Tick if attend"
       class_schedule: "Class / Schedule"
       student_intake: "Student Intake : "
-      subject: "Subject : "
-      topic: "Topic : "
-      date: "Date : "
-      time: "Time : "
-      lecturer: "Lecturer : "
-      intake2: "Intake : "
+      subject: Subject
+      topic: Topic
+      date: Date
+      time: Time
+      lecturer: Lecturer
+      intake2: Intake
       other_intake: "Other Intake (if any)"
       attendance_details: Attendance Details
       date_time_subject_topic: "Date | Time | Subject-Topic "

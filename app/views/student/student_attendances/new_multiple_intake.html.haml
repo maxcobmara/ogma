@@ -22,55 +22,97 @@
                 %dl.dl-horizontal
                   %dt= t 'student.attendance.programme'
                   %dd= Programme.find(@programme_id).programme_coursetype_name
-                    
+
+                  %dt=t('student.attendance.lecturer')
+                  %dd=@schedule_list[0].weeklytimetable_lecturer.staff_with_rank
                   
                   %dt= t 'student.attendance.intake'
                   %dd
                     = current_user.college.code=='amsas' ? "Siri #{@iii.to_date.try(:strftime, '%m/%Y')}" : @iii.to_date.try(:strftime, '%b %Y')
                     /required for submission (in create_multiple)
                     = hidden_field_tag 'intake', @intake
+                    %font{:style=>"color: blue;"}=" ("+@student_list.count.to_s+" "+t('student.attendance.student_id')+") "
+
               
               #attendance_details.tab-pane.active 
-                .col-md-8.col-md-offset-1
+                .col-md-10.col-md-offset-1
                   %br
                   /display all schedules in current intake+programme
                   - if @schedule_list.count <= 0
                     =t 'student.attendance.no_schedule_available'
                     %br
                   - else
-                    %table.table.table-bordered
+                    %table.table.table-bordered.table-condensed
                       = render 'schedule_legend'
+
                   %br
                   /display all students in current intake+programme
                   - if @student_list.count <= 0 
                     =t 'student.attendance no_student_available'
                     %br
                   - else
-                    %table.table
+                    %table.table.table-bordered.table-condensed
                       %tr
-                        %th{:style => "width: 50px;"} No
-                        %th{:style => "width: 400px;"}=t 'student.attendance.student_id'
-                        - 1.upto(@schedule_list.count) do |index|
-                          %th{:style => "width: 50px;"}=index
-                      - @next=0
+                        - span=@schedule_list.count/10
+                        - bal=@schedule_list.count%10
+                        - row_to_span=span+1 if bal>0
+                        - row_to_span=span if bal==0
+                        
+                        %th{:style => "width: 3%;"} No
+                        %th{:style => "width: 25%;"}=t 'student.attendance.student_id'
+                        /- 1.upto(@schedule_list.count) do |index|
+                        /  %th=index
+                        - row=0
+                        - @schedule_list.in_groups_of(30, false) do |wtds|
+                          - col=0
+                          - wtds.each_with_index do |wtd, index|
+                            /%th=wtd.id
+                           
+                            - if row > 0 && col < 2
+                              %th &nbsp;
+                              %th &nbsp;
+                            - col+=2
+                            %th=(row*30)+index+=1
+                          %tr
+                          - row+=1
+
+                        
+                      /- @next=0
                       - @exist_att_list = 0
                       - @student_list.sort_by{|x|x.name}.each_with_index do |student, nos|
                         %tr
                           %td=nos+1
                           %td= student.matrix_name 
-                          - 0.upto(@schedule_list.count-1) do |count|
-                            - exist_att = StudentAttendance.where(student_id: student.id, weeklytimetable_details_id: @schedule_list[count].id)
-                            - if exist_att.count ==0
-                              %td
-                                = hidden_field "student_attendances[#{nos+count+@next}]", :student_id, :size=>2, :value=>student.id 
-                                = hidden_field "student_attendances[#{nos+count+@next}]", :weeklytimetable_details_id, :size=>2, :value=>@schedule_list[count].id
-                                = check_box_tag "student_attendances[#{nos+count+@next}][attend]", true
-                            - else
-                              - @exist_att_list+=1
-                              %td
-                                %font{:style=>"color: red;"}
-                                  *
-                            - @next=@next+count if count==@schedule_list.count-1
+                          /- 0.upto(@schedule_list.count-1) do |count|
+                          - row=0
+                          - @schedule_list.in_groups_of(30, false) do |wtds|
+                            - col=0
+                            - wtds.each_with_index do |wtd, count|
+                              - if row > 0 && col < 2
+                                %th &nbsp;
+                                %th &nbsp;
+                              /- exist_att = StudentAttendance.where(student_id: student.id, weeklytimetable_details_id: @schedule_list[count].id)
+                              - exist_att = StudentAttendance.where(student_id: student.id, weeklytimetable_details_id: wtd.id)
+                              - if exist_att.count ==0
+                                %td{style: 'text-align: left;'}
+                                  /- a= nos+count+@next
+                                  = a= (row*30)+count+(nos*@schedule_list.count)
+                                  = hidden_field "student_attendances[#{a}]", :student_id, :size=>2, :value=>student.id 
+                                  /= hidden_field "student_attendances[#{a}]", :weeklytimetable_details_id, :size=>2, :value=>@schedule_list[count].id
+                                  = hidden_field "student_attendances[#{a}]", :weeklytimetable_details_id, :size=>2, :value=>wtd.id
+                                  = hidden_field "student_attendances[#{a}]", :college_id, :size=>2, :value=>current_user.college_id
+                                  = check_box_tag "student_attendances[#{a}][attend]", true
+                                /////test column - max 30-%td= check_box_tag "student_attendances[#{a}][attend]", true
+                              - else
+                                - @exist_att_list+=1
+                                %td{style: 'text-align: left;'}
+                                  %font{:style=>"color: red;"}
+                                    *
+                              /- @next=@next+count if count==@schedule_list.count-1
+                              - col+=2
+                            %tr
+                            - row+=1
+
                          
                   %br
                   - if @exist_att_list > 0

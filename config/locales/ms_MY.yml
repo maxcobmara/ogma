@@ -2711,12 +2711,12 @@ ms_MY:
       tick_attend: " Pilih jika hadir"
       class_schedule: "Kelas / Jadual Waktu"
       student_intake: "Ambilan Pelajar : "
-      subject: "Subjek : "
-      topic: "Topik : "
-      date: "Tarikh : "
-      time: "Masa : "
-      lecturer: "Pengajar : "
-      intake2: "Ambilan : "
+      subject: Subjek
+      topic: Topik
+      date: Tarikh
+      time: Masa
+      lecturer: Pengajar
+      intake2: Ambilan
       other_intake: "Ambilan Lain (jika ada)"
       attendance_details: Butiran Kedatangan
       date_time_subject_topic: "Tarikh | Masa | Subjek-Topik "

@@ -10,7 +10,11 @@
       =f.label t 'student.students.group_id', for: :intake_id
     .col-md-3
       - unless @student.new_record?
-        - curr_intake=Intake.get_intake(@student.intake, @student.course_id) if @student.intake!=0
+        - unless @student.intake_id.blank?
+          - curr_intake=@student.intake_id
+        - else
+          - curr_intake=Intake.get_intake(@student.intake, @student.course_id) 
+        
       /= f.text_field :group_id, class: 'form-control'
       = f.collection_select :intake_id, Intake.all.order(programme_id: :asc, monthyear_intake: :desc), :id, :programmelist_group_intake,{:include_blank=> (t 'helpers.prompt.select_intake'), :selected => curr_intake},{class: 'selectpicker mandatory', "data-width"=>"auto"}
       %font{size: "-2px;", color: "grey"}=h @student.intake.try(:strftime, '%b %Y')
