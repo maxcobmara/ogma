@@ -11,6 +11,7 @@ class Student::StudentAttendancesController < ApplicationController
     position_exist = current_user.userable.positions
     programme_list_ids = Programme.roots.pluck(:id)
     current_roles=current_user.roles.pluck(:authname)
+    is_admin=true if current_roles.include?('developer') || current_roles.include?('administration') || current_roles.include?('student_attendances_module_admin') 
     if position_exist
       lecturer_programme = current_user.userable.positions[0].unit
       unless lecturer_programme.nil?
@@ -23,7 +24,7 @@ class Student::StudentAttendancesController < ApplicationController
         @student_ids = Student.where('course_id=?',@programme_id).pluck(:id)
       else
         # NOTE - system
-        if current_roles.include?('developer') || current_roles.include?('administration') || current_roles.include?('student_attendances_module_admin') 
+        if is_admin==true
           topics_ids_this_prog=WeeklytimetableDetail.pluck(:topic)
           programme_list_ids=Programme.where(id: topics_ids_this_prog).map(&:root_programme).uniq
         else
@@ -45,8 +46,12 @@ class Student::StudentAttendancesController < ApplicationController
       #LIST (3)classes & (4)intakes -> attendance (already exist) - SEARCH existing attendance (by class & by intake)
       @schedule_list = WeeklytimetableDetail.where('topic IN(?)',topics_ids_this_prog).where.not(id: exist_classes).order(:topic)
       @intake_list2=@intake_list2.where.not(intake_id: intake_id_of_exist_classes)
-      @exist_timetable_attendances=WeeklytimetableDetail.where(id: exist_classes).map(&:subject_details)
-      @intake_list3=Student.joins(:student_attendances).where(intake_id: intake_id_of_exist_classes).order(course_id: :asc).map(&:intake_list)
+      if is_admin==true
+        @exist_timetable_attendances=WeeklytimetableDetail.where(id: exist_classes).map(&:subject_details)
+      else
+        @exist_timetable_attendances=WeeklytimetableDetail.where(id: exist_classes, lecturer_id: current_user.userable_id).map(&:subject_details)
+      end
+      @intake_list3=Student.joins(:student_attendances).where(intake_id: intake_id_of_exist_classes).order(course_id: :asc).map(&:intake_list).uniq
       
       # NOTE - user with Index pg access may create attendance by Intake, although some classes are not taught by him
       
@@ -54,7 +59,7 @@ class Student::StudentAttendancesController < ApplicationController
       
       @search = StudentAttendance.search(params[:q])
       #BELOW : order(:weeklytimetable_details_id) - added, when group by class, won't split up (continueos paging), unless different Intake
-      if current_roles.include?('developer') || current_roles.include?('administration') || current_roles.include?('student_attendances_module_admin') || current_roles.include?('student_attendances_module_viewer') || current_roles.include?('student_attendances_module_user')
+      if is_admin==true
 	 @student_attendances = @search.result
       else
          @student_attendances = @search.result.search2(current_user).order(:weeklytimetable_details_id)
@@ -140,10 +145,15 @@ class Student::StudentAttendancesController < ApplicationController
     @subject_name = @selected_class.weeklytimetable_topic.parent.name 
     @programmeid = @selected_class.weeklytimetable_topic.root.id 
     @iii = @selected_class.weeklytimetable.schedule_intake.monthyear_intake
-    @student_intake = Student.where('course_id=? AND intake>=? AND intake <?',@programmeid,@iii,@iii.to_date+1.day)
+    intake_id=@selected_class.weeklytimetable.intake_id
+    #@student_intake = Student.where('course_id=? AND intake>=? AND intake <?',@programmeid,@iii,@iii.to_date+1.day)
+    @student_intake=Student.where(course_id: @programmeid, intake_id: intake_id)
     @student_att_exist = StudentAttendance.where('weeklytimetable_details_id=?', @classid)
     @student_ids_att_exist = @student_att_exist.pluck(:student_id)
-    @student_list = Student.where('course_id=? AND intake>=? AND intake <? and id NOT IN(?)',@programmeid,@iii,@iii.to_date+1.day, @student_ids_att_exist)
+    #by intake column
+    #@student_list = Student.where('course_id=? AND intake>=? AND intake <? and id NOT IN(?)',@programmeid,@iii,@iii.to_date+1.day, @student_ids_att_exist)
+    #by intake_id column
+    @student_list = Student.where(course_id: @programme_id.to_i, intake_id: intake_id)
     @student_listing = @student_list if @student_list.count > 0
     @student_listing = @student_intake if @student_list.count==0 && @student_ids_att_exist.count ==0 && @student_intake.count>0 
   end

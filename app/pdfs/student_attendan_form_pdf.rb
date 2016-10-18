@@ -89,7 +89,7 @@ class Student_attendan_formPdf < Prawn::Document
 	  cnt+=1
 	end
 	atts=[]
-        sas.each{|j|atts << 'Hadir' if j.attend==true; atts << 'Tidak Hadir' if j.attend==false; atts << "" if j.attend.blank?}
+        sas.each{|j|atts << 'Hadir' if j.attend==true; atts << 'Tidak Hadir' if j.attend==false || j.attend.blank?}
 	data << ["#{counter += 1}", {content: st.student_with_rank, colspan: 2}]+atts
       end
     end
