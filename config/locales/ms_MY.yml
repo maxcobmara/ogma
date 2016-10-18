@@ -2752,6 +2752,7 @@ ms_MY:
       max_class_multiple_edit: "Jumlah maksima jadual / kelas bagi suntingan (pukal) kedatangan pelajar ialah enam (6) jadual / kelas (5 pelajar tiap kelas)."
       complete_combination: "Sila pilih kombinasi lengkap kedatangan pelajar bagi setiap jadual / kelas. (Catatan : Hanya 30 rekod kedatangan dibenarkan bagi suntingan (pukal) iaitu bagi : 2 kelas - 15 pelajar/kelas, 3 kelas - 10 pelajar/kelas, 4 kelas - 7 pelajar/kelas, 5 kelas - 6 pelajar/kelas, 6 kelas - 5 pelajar. Pastikan juga kesemua pelajar bagi kelas-kelas yang dipilih mestilah sama)."
       edit_absent_by_class: "Sila sunting kehadiran pelajar mengikut jadual / kelas masing-masing untuk kemasukan butiran 'Kedatangan' (sebab, tindakan diambil, tindakan selesai dan catatan)."
+      details: Butiran Kedatangan (Pilih kotak semak jika hadir)
       
   cofile:
     title: Daftar Fail
@@ -2782,8 +2783,8 @@ ms_MY:
       add: Tambah
       author : Pengarang
       staffstudent: Staf / Pelatih
-      staff: S
-      student: P
+      staff_index: S
+      student_index: P
       studentname: Dipinjam Oleh
       checkoutdate: Tarikh Pinjaman
       checkoutby: Pengawai Pengeluar Pinjaman

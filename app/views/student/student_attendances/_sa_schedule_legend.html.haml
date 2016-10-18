@@ -31,6 +31,7 @@
 /   - @sas.each_with_index do |studentattendance, index|
 /     %td{:style => "width:250px; padding:5px;"}=studentattendance.weeklytimetable_detail.weeklytimetable.schedule_intake.name 
 
+- lecturer_count=WeeklytimetableDetail.where(id: @sas.map(&:weeklytimetable_details_id).uniq).pluck(:lecturer_id).uniq.count
 
 %tr
   %th{:colspan=>6, style: 'text-align: center;'}= t 'student.attendance.class_schedule_details'
@@ -40,14 +41,17 @@
   %th=t('student.attendance.topic')
   %th=t('student.attendance.date')
   %th=t('student.attendance.time')
-  /%th=t('student.attendance.lecturer')
-  /%td=t('student.attendance.intake2')
+  - if lecturer_count > 1
+    %th=t('student.attendance.lecturer')
+
 - @sas.each_with_index do |sa, ind|
   %tr
-    %td=ind+=1
+    %td
+      =ind+=1
+      /=sa.weeklytimetable_details_id
     %td=sa.weeklytimetable_detail.weeklytimetable_topic.full_parent
     %td=sa.weeklytimetable_detail.weeklytimetable_topic.subject_list
     %td=sa.weeklytimetable_detail.get_date_day_of_schedule+" "
     %td=sa.weeklytimetable_detail.get_time_slot
-    /%td=sa.weeklytimetable_detail.weeklytimetable_lecturer.staff_with_rank
-    /%td=sa.weeklytimetable_detail.weeklytimetable.schedule_intake.name 
+    - if lecturer_count > 1
+      %td=sa.weeklytimetable_detail.weeklytimetable_lecturer.staff_with_rank

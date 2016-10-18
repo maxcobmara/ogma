@@ -2860,6 +2860,7 @@ en:
       max_class_multiple_edit: "Maximum selection of student attendances for 'Multiple Edit' is six (6) schedules / classes (5 student per class)."
       complete_combination: "Please select complete combination of student attendances for each schedule / class. (Remark : Total 30 records allowed for Multiple Edit ie. 2 classes - 15 students/class, 3 classes - 10 students/class, 4 classes - 7 students/class, 5 classes - 6 students/class, 6 classes - 5 students/class. Also note, students for all selected class must be the same.)"
       edit_absent_by_class: "Please edit student attendances by schedule / class (one class) to enter 'Absence' details (reason, actions taken, action close/completeness and remark)."
+      details: Attendance Details (Tick check box if attend)
 
   cofile:
     title: File Registry
@@ -2889,8 +2890,8 @@ en:
       add: Add
       author: Author
       staffstudent: Staff / Trainee
-      staff: S
-      student: T
+      staff_index: S
+      student_index: T
       checkoutdate: Checked Out
       checkoutby: Loan Released By
       extendby: Loan Extended By

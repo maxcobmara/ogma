@@ -53,10 +53,10 @@
                   - else
                     %table.table.table-bordered.table-condensed
                       %tr
-                        - span=@schedule_list.count/10
-                        - bal=@schedule_list.count%10
-                        - row_to_span=span+1 if bal>0
-                        - row_to_span=span if bal==0
+                        /- span=@schedule_list.count/10
+                        /- bal=@schedule_list.count%10
+                        /- row_to_span=span+1 if bal>0
+                        /- row_to_span=span if bal==0
                         
                         %th{:style => "width: 3%;"} No
                         %th{:style => "width: 25%;"}=t 'student.attendance.student_id'
