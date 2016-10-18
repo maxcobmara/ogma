@@ -103,7 +103,7 @@ class Student_attendan_formPdf < Prawn::Document
 	self.width = 540
       end
     elsif @college.code=="amsas"
-      data = [" ", "", "Nama dan Tandatangan Pengajar ", ""]
+      data = [" ", "", "Nama dan Tandatangan Pengajar ", @student_attendances.first.weeklytimetable_detail.weeklytimetable_lecturer.staff_with_rank.titleize]
       table([data], :column_widths => [40, 80, 150, 250], :cell_style => { :size => 10}) do #40, 180, 50, 250
 	self.width = 520
       end

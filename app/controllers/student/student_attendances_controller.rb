@@ -119,14 +119,8 @@ class Student::StudentAttendancesController < ApplicationController
   end
   
   def student_attendan_form
-    #@programme_id = 3            #params[:programme].to_i
-    #@student = Student.where('course_id=?',@programme_id )  
-    # @student = Student.all
-    
-    @search = StudentAttendance.search(params[:q])
-    @student_attendances = @search.result
+    @student_attendances = StudentAttendance.where(id: params[:sas])#@search.result
     classes_count=@student_attendances.group_by(&:weeklytimetable_details_id).count
-    @groupped_attendances=@student_attendances.group_by(&:weeklytimetable_details_id)
     respond_to do |format|
       format.pdf do
         pdf = Student_attendan_formPdf.new(@student_attendances, view_context, current_user.college, classes_count)
@@ -136,22 +130,6 @@ class Student::StudentAttendancesController < ApplicationController
       end
     end
   end
-  
-#   def examination_slip
-#     @programme_id = 3            #params[:programme].to_i
-#     @student =   35 #Student.where('course_id=?',@programme_id )  
-#     
-#     
-#    # @student = Student.all
-#     respond_to do |format|
-#       format.pdf do
-#         pdf = Examination_slipPdf.new(@student, view_context, @programme_id)
-#         send_data pdf.render, filename: "Examination_slip-{Date.today}",
-#                               type: "application/pdf",
-#                               disposition: "inline"
-#       end
-#     end
-#   end
     
   def new_multiple
     @create_type = params[:new_submit]
@@ -182,7 +160,6 @@ class Student::StudentAttendancesController < ApplicationController
       @intake_of_prog_id = @intake_list.first.id
       topics_ids_this_prog = Programme.find(@programme_id).descendants.where(course_type: ['Topic', 'Subtopic']).map(&:id)
       #@schedule_list = WeeklytimetableDetail.where('topic IN(?)',topics_ids_this_prog).order(:topic)
-      # NOTE - ref for edit multiple - TODO - edit multiple - scope by current user, but check for admin first (w/o scope)
       if current_roles.include?('developer') || current_roles.include?('administration') || current_roles.include?('student_attendances_module_admin') 
         @schedule_list = WeeklytimetableDetail.joins(:weeklytimetable).where('topic IN(?) and intake_id=?',topics_ids_this_prog, @intake_of_prog_id).order(:topic)
       else
