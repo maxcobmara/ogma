@@ -1,3 +1,4 @@
+=f.hidden_field :college_id, value: current_user.college_id
 .row
   .col-md-10.col-md-offset-1
     / Nav tabs
@@ -13,7 +14,7 @@
             - if current_user.college.code=="kskbjb"
               = f.collection_select :reported_by, Staff.all.order(name: :asc), :id,  :staff_name_with_position_grade, {:prompt =>t('helpers.prompt.select_staff'), :selected=>current_user.userable_id},{class: 'selectpicker', "data-width"=>'460px'}
             - elsif current_user.college.code=="amsas"
-              = f.collection_select :reported_by, Staff.all.order(name: :asc), :id,  :staff_with_rank, {:prompt =>t('helpers.prompt.select_staff'), :selected=>current_user.userable_id},{class: 'selectpicker', "data-width"=>'460px'}
+              = f.collection_select :reported_by, Staff.all.order(rank_id: :asc, name: :asc), :id,  :staff_with_rank, {:prompt =>t('helpers.prompt.select_staff'), :selected=>current_user.userable_id},{class: 'selectpicker', "data-width"=>'460px'}
         .form-group
           .col-sm-2.control-label
             = f.label t 'student.discipline.student_id', for: :student_id

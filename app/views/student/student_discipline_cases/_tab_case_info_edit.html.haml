@@ -37,11 +37,15 @@
     - myhod = Position.where(id: 3).first.staff_id
   - else
     - myhod = Position.where('staff_id is not null').pluck(:staff_id)
+    - tatatertib = Position.where(unit: 'Pejabat Tatatertib').first.staff_id
   .form-group.au_item{style: "display: none;"}
     .col-sm-2.control-label
       = f.label  t 'student.discipline.assigned2_to', for: :notify_hod
     .col-md-5
-      = f.collection_select :assigned2_to, Staff.where('id IN (?)', myhod).order(rank_id: :asc, name: :asc), :id, :staff_with_rank, {:prompt => t('select')}, {class: 'selectpicker', "data-width"=>'460px'}
+      - if current_user.college.code=="amsas"
+        = f.collection_select :assigned2_to, Staff.where('id IN (?)', myhod).order(rank_id: :asc, name: :asc), :id, :staff_with_rank_unit, {:prompt => t('select'), :selected => tatatertib}, {class: 'selectpicker', "data-width"=>'460px'}
+      - else
+        = f.collection_select :assigned2_to, Staff.where('id IN (?)', myhod).order(rank_id: :asc, name: :asc), :id, :staff_with_rank, {:prompt => t('select')}, {class: 'selectpicker', "data-width"=>'460px'}
       /replace this with - model/student_discipline_case.rb - line 46- self.assigned2_to = nil
       /= select_tag "student_discipline_case[assigned2_to]","<option value=''>"+'Please select'+"</option>"+options_from_collection_for_select(Staff.find(:all, :conditions => ['id IN (?)', myhod]), :id, :name)
   .form-group.au_item{style: "display: none;"}

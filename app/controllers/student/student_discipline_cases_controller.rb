@@ -178,7 +178,7 @@ class Student::StudentDisciplineCasesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def student_discipline_case_params
-      params.require(:student_discipline_case).permit(:reported_by, :student_id, :infraction_id, :description, :reported_on, :assigned_to, :assigned_on, :status, :file_id, :investigation, :action_type, :other_info, :case_created, :action, :location_id, :assigned2_to, :assigned2_on, :is_innocent, :closed_at_college_on, :sent_to_board_on, :board_meeting_on, :board_decision_on, :board_decision, :appeal_on, :appeal_decision, :appeal_decision_on, :counselor_feedback, :action_type2, student_counseling_sessions_attributes: [:id, :destroy, :requested_at, :student_id, :case_id])
+      params.require(:student_discipline_case).permit(:reported_by, :student_id, :infraction_id, :description, :reported_on, :assigned_to, :assigned_on, :status, :file_id, :investigation, :action_type, :other_info, :case_created_on, :action, :location_id, :assigned2_to, :assigned2_on, :is_innocent, :closed_at_college_on, :sent_to_board_on, :board_meeting_on, :board_decision_on, :board_decision, :appeal_on, :appeal_decision, :appeal_decision_on, :counselor_feedback, :action_type2, :college_id, {:data => []}, student_counseling_sessions_attributes: [:id, :destroy, :requested_at, :student_id, :case_id, :college_id])
     end
   
 end

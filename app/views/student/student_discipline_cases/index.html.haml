@@ -27,16 +27,16 @@
     %thead
       %tr
         %th= sort_link(@search, :status, (t 'student.discipline.status'))
-        %th{:width=>'230px'}= sort_link(@search, :programme, (t 'student.discipline.programme'))
+        %th{:width=>'20%'}= sort_link(@search, :programme, (t 'student.discipline.programme'))
         - unless current_user.college.code=='amsas'
           %th{:width=>'80px'}= t 'student.discipline.year_semester'
           %th= sort_link(@search, :matrix_no, (t 'student.discipline.matrix_no'))
-        %th= sort_link(@search, :student_id, (t 'student.discipline.student_id'))
-        %th= sort_link(@search, :infraction_id, (t 'student.discipline.infraction'))
-        %th= sort_link(@search, :reported_on, (t 'student.discipline.reported_on'))
-        %th= sort_link(@search, :file_id, (t 'student.discipline.file_id'))
-        %th=sort_link(@search, :location_id, (t 'student.discipline.location_id'))
-        %th= sort_link(@search, :counselor_feedback, (t 'student.discipline.counselor_feedback'))
+        %th{:width=>'20%'}= sort_link(@search, :student_id, (t 'student.discipline.student_id'))
+        %th{:width=>'10%'}= sort_link(@search, :infraction_id, (t 'student.discipline.infraction'))
+        %th{:width=>'10%'}= sort_link(@search, :reported_on, (t 'student.discipline.reported_on'))
+        %th{:width=>'10%'}= sort_link(@search, :file_id, (t 'student.discipline.file_id'))
+        %th{:width=>'10%'}=sort_link(@search, :location_id, (t 'student.discipline.location_id'))
+        %th{:width=>'10%'}= sort_link(@search, :counselor_feedback, (t 'student.discipline.counselor_feedback'))
         
     %tbody
     = render "search_bar"
@@ -56,8 +56,8 @@
         %td=h student_discipline_case.cofile.try(:name)
         %td=h student_discipline_case.location.try(:name)
         %td
-          - if student_discipline_case.action_type == 'counseling'
-            =h student_discipline_case.counselor_feedback? ? image_tag("tick.png") : image_tag("cross.png")
+          - if StudentCounselingSession.pluck(:case_id).compact.uniq.include?(student_discipline_case.id)
+            =h student_discipline_case.counselor_feedback? ? fa_icon('check') : t('student.discipline.not_completed')
             /= link_to image_tag("printer.png", :border => 0, :title => 'Feedback Referrer'),:controller=>:student_counseling_sessions ,:action => 'feedback_referrer', :id => student_discipline_case.id if !student_discipline_case.counselor_feedback.blank? %>
           - else
             = t('student.discipline.not_related')

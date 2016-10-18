@@ -15,7 +15,7 @@ class StudentDisciplineCase < ActiveRecord::Base
   belongs_to :college
   
   has_many :student_counseling_sessions, :foreign_key => 'case_id', :validate => false#, :dependent => :destroy
-  accepts_nested_attributes_for :student_counseling_sessions#, :reject_if => lambda { |a| a[:requested_at].blank? }
+  accepts_nested_attributes_for :student_counseling_sessions, :reject_if => lambda { |a| a[:requested_at].blank? }
   
   validates_presence_of :reported_by, :student_id, :status, :infraction_id, :assigned_to
   

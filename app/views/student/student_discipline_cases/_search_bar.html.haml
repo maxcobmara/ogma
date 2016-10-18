@@ -2,8 +2,9 @@
   %tr.search_row{style: "display: none;"}
     %td= select_tag('q[status_cont_any]', options_for_select([[t('student.discipline.all'), '']]+DropDown::SDCSTATUS), {class: 'selectpicker', "data-width"=>"100px"})
     %td= f.text_field :student_course_name_cont, size: 2, class: 'form-control'
-    %td &nbsp;
-    %td= f.text_field :student_matrixno_cont, size: 2, class: 'form-control'
+    - unless current_user.college.code=='amsas'
+      %td &nbsp;
+      %td= f.text_field :student_matrixno_cont, size: 2, class: 'form-control'
     %td= f.text_field :student_name_cont, size: 2, class: 'form-control'
     /%td= f.text_field :description_cont, size:2, class: 'form-control'
     %td= select_tag('q[infraction_id_eq]',options_for_select([[t('student.discipline.all_infraction'),''],[t('student.discipline.smooking'), 1],[t('student.discipline.skip_class'), 2],[t('student.discipline.quarrel'), 3],[t('student.discipline.others'), 4]]), {class: 'selectpicker', "data-width"=>"100px"})

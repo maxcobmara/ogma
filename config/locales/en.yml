@@ -2803,6 +2803,7 @@ en:
       case_reference: Discipline Case Reference
       display_feedback: Display Feeback
       removal_prohibited_case_still_exist: "Removal of selected appoinment/session is NOT ALLOWED, referrred case (discipline case) still exist."
+      not_completed: Not Completed
     
     attendance:
       title: Student Attendance

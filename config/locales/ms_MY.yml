@@ -2643,6 +2643,7 @@ ms_MY:
       warning_letter_counseling: "Amaran Bertulis & Kaunseling"
       discharge_leave_counseling: "Lucut Cuti & Kaunseling"
       charity_works_counseling: "Kerja Amal & Kaunseling"
+      not_completed: Belum selesai
     
     counseling:
       title: Sesi Kaunseling Pelajar

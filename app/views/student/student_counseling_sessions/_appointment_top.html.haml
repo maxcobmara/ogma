@@ -7,7 +7,7 @@
 
       /session already confirmed, display 'confirmed_at' instead of 'requested_at'
       %dt=t 'student.counseling.appointment_for'
-      %dd=@student_counseling_session.confirmed_at.try(:getlocal).try(:strftime, "%d %b %y, %l:%M %P")
+      %dd=@student_counseling_session.college.code=='amsas' ? @student_counseling_session.confirmed_at.try(:getlocal).try(:strftime, "%d %b %y, %H:%M") : @student_counseling_session.confirmed_at.try(:getlocal).try(:strftime, "%d %b %y, %l:%M %P")
    
       %dt=t 'student.counseling.c_scope'
       %dd

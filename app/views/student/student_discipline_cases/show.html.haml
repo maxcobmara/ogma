@@ -67,7 +67,8 @@
       = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('helpers.links.back'), student_student_discipline_cases_path, :class => 'btn btn-default'
       - permitted_to? :feedback_referrer, :student_student_counseling_sessions do
         /- if @student_discipline_case.action_type == 'counseling'
-        = link_to content_tag(:i, "", class: "fa fa-file-pdf-o"), feedback_referrer_student_student_counseling_sessions_path(id: @student_discipline_case.id, format: "pdf"), class: "btn btn-default", "data-toggle" => "tooltip", title: (t 'student.discipline.counselor_feedback')
+        - if StudentCounselingSession.where('requested_at is not null').pluck(:case_id).include?(@student_discipline_case.id)
+          = link_to content_tag(:i, "", class: "fa fa-file-pdf-o"), feedback_referrer_student_student_counseling_sessions_path(id: @student_discipline_case.id, format: "pdf"), class: "btn btn-default", "data-toggle" => "tooltip", title: (t 'student.discipline.counselor_feedback')
 
       /- permitted_to? :approve, @student_discipline_case do
       - permitted_to? :update, :student_student_discipline_cases do
