@@ -7,7 +7,10 @@
 - unless current_user.college.code=='amsas'
   %td=h strip_tags(Student.year_and_sem(appointment.student.intake)) 
 %td
-  =h appointment.is_confirmed? ?  appointment.confirmed_at.try(:getlocal).try(:strftime, "%d %b %y, %l:%M %P") :  appointment.requested_at.try(:getlocal).try(:strftime,"%d %b %y, %l:%M %P")
+  - unless current_user.college.code=='amsas'
+    =h appointment.is_confirmed? ?  appointment.confirmed_at.try(:getlocal).try(:strftime, "%d %b %y, %l:%M %P") :  appointment.requested_at.try(:getlocal).try(:strftime,"%d %b %y, %l:%M %P")
+  - else
+    =h appointment.is_confirmed? ?  appointment.confirmed_at.try(:getlocal).try(:strftime, "%d %b %y, %H:%M") :  appointment.requested_at.try(:getlocal).try(:strftime,"%d %b %y, %H:%M")
   /=h appointment.is_confirmed? ?  l(appointment.confirmed_at+8.hours, format: "%d %b %y, %l:%M %P") : l(appointment.requested_at+8.hours, format: "%d %b %y, %l:%M %P")
 %td=h appointment.duration
 %td=h appointment.is_confirmed? ? image_tag("tick.png") : ""  

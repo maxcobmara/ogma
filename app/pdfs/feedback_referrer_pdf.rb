@@ -30,7 +30,7 @@ class Feedback_referrerPdf < Prawn::Document
     else
       data += [["No Matrik","#{@case_details.student.matrixno}","Ambilan","#{@case_details.student_id.blank? ? "" : @case_details.student.try(:intake).try(:strftime,"%B %Y")}"], ["Program","#{@case_details.student.try(:course).try(:programme_list)}","Tahun/Semester","#{Student.year_and_sem(@intake)}"]]
     end
-    data+=[["Kesalahan","#{(DropDown::INFRACTION.find_all{|disp, value| value == @case_details.infraction_id}).map {|disp, value| disp}[0]}","Lokasi Kes","#{@case_details.location.try(:location_list)}"],  ["Tarikh & Masa","#{@case_details.reported_on.try(:strftime, "%d %b %y, %l:%M %P")}","Jenis Tindakan","#{"Kaunseling" if @case_details.action_type='counseling'}"]]
+    data+=[["Kesalahan","#{(DropDown::INFRACTION.find_all{|disp, value| value == @case_details.infraction_id}).map {|disp, value| disp}[0]} #{" ("+@case_details.description+")" if @case_details.infraction_id==4}","Lokasi Kes","#{@case_details.location.try(:location_list)}"],  ["Tarikh & Masa","#{@case_details.reported_on.try(:strftime, "%d %b %y, %l:%M %P") if @case_details.college.code!='amsas'}#{@case_details.reported_on.try(:strftime, "%d %b %y, %H:%M") if @case_details.college.code=='amsas'}","Jenis Tindakan","#{"Kaunseling" if @case_details.action_type='counseling'}"]]
     
     table(data, :column_widths => [100, 190, 90, 130], :cell_style => { :size => 11, :borders => [:left, :right, :top, :bottom]})  do
               a = 0
@@ -60,7 +60,7 @@ class Feedback_referrerPdf < Prawn::Document
   
   def table_sessions
      for session in @sessions_by_case 
-       data=[["Tarikh & Masa","#{session.confirmed_at.try(:strftime, "%d %b %y, %l:%M %P")}", "Skop Sesi", "#{session.c_scope if !session.c_scope.blank?}"],["Tempoh Sesi","#{session.duration}","Jenis Sesi","#{session.c_type}"],["Deskripsi Isu",{content: "#{session.issue_desc}", colspan: 3}],["Nota Sesi",{content: "#{session.notes}", colspan: 3}],["Maklumbalas Kaunselor (bagi sesi ini)",{content: "#{session.remark}", colspan: 3}]]
+       data=[["Tarikh & Masa","#{session.confirmed_at.try(:strftime, "%d %b %y, %l:%M %P") if session.college.code!='amsas'}#{session.confirmed_at.try(:strftime, "%d %b %y, %H:%M") if session.college.code=='amsas'}", "Skop Sesi", "#{session.c_scope if !session.c_scope.blank?}"],["Tempoh Sesi","#{session.duration} minit","Jenis Sesi","#{session.c_type}"],["Deskripsi Isu",{content: "#{session.issue_desc}", colspan: 3}],["Nota Sesi",{content: "#{session.notes}", colspan: 3}],["Maklumbalas Kaunselor (bagi sesi ini)",{content: "#{session.remark}", colspan: 3}]]
        table(data, :column_widths => [100, 190, 90, 130], :cell_style=>{:size=>11, :borders=>[:left, :right, :top, :bottom]}) do
 	 a=0
 	 b=5

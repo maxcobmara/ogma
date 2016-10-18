@@ -15,7 +15,12 @@
     %dd=h @student_discipline_case.student.try(:course).try(:programme_list)
     
     %dt=t 'student.discipline.intake', :default => model_class.human_attribute_name(:intake)+":"
-    %dd=h @student_discipline_case.student.intake.try(:strftime, "%B %Y") 
+    %dd
+      - if @student_discipline_case.college.code=='amsas'
+        Siri
+        =h @student_discipline_case.student.intake_id.blank? ? @student_discipline_case.student.intake.try(:strftime, "%m/%Y") :  @student_discipline_case.student.intakestudent.monthyear_intake.try(:strftime, "%m/%Y")
+      - else
+        =h @student_discipline_case.student.intake_id.blank? ? @student_discipline_case.student.intake.try(:strftime, "%B %Y") :  @student_discipline_case.student.intakestudent.monthyear_intake.try(:strftime, "%B %Y")
     
     %dt=t 'student.discipline.infraction_id', :default => model_class.human_attribute_name(:infraction)+":"
     %dd=h (DropDown::INFRACTION.find_all{|disp, value| value == @student_discipline_case.infraction_id}).map {|disp, value| disp}[0]

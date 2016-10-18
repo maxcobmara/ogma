@@ -5,7 +5,7 @@
     %dd=h @student_discipline_case.case_created_on.try(:strftime, '%d %b %Y')
     
     %dt=t 'student.discipline.file_id', :default => model_class.human_attribute_name(:file_id)+":"
-    %dd=h @student_discipline_case.file_id.blank? ? "No File" : @student_discipline_case.cofile.file_no_and_name 
+    %dd{style: 'padding-left: 70px;'}=h @student_discipline_case.file_id.blank? ? "No File" : @student_discipline_case.cofile.file_no_and_name 
     
     %dt=t 'student.discipline.investigation_notes', :default => model_class.human_attribute_name(:investigation_notes)+":"
     %dd=h @student_discipline_case.investigation_notes
@@ -63,4 +63,4 @@
     
     - if @student_discipline_case.action_type == "Ref TPHEP"
       %dt=t 'student.discipline.notified', :default => model_class.human_attribute_name(:notified)+":"
-      %dd=h @student_discipline_case.tphep.try(:name)+(t 'on2')+(@student_discipline_case.assigned2_on.try(:strftime, '%d %b %Y')).to_s
+      %dd=h @student_discipline_case.tphep.try(:staff_with_rank)+(t 'on2')+(@student_discipline_case.assigned2_on.try(:strftime, '%d %b %Y')).to_s
