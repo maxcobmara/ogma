@@ -1,71 +1,130 @@
-%table.table
+%table.table.table-bordered.table-condensed
+  /- span=@schedule_list.count/10
+  /- bal=@schedule_list.count%10
+  /- row_to_span=span+1 if bal>0
+  /- row_to_span=span if bal==0
+  - schedule=@studentattendances.map(&:weeklytimetable_details_id).uniq
+  /- schedule_count=@studentattendances.map(&:weeklytimetable_details_id).uniq.count
+  /- span=schedule_count/10
+  /- bal=schedule_count%10
   %tr
-    %th No
-    %th=t 'student.attendance.student_id'
-    %th
-      - index3=0
-      - @studentattendances_group.each do |student, studentattendances| 
-        - if index3 == 0
-          - 1.upto(studentattendances.count) do |index4|
-            - if studentattendances.count>1
-              - if index4 == 1
-                &nbsp;
-              - else
-                &nbsp;&nbsp;
-            =index4
-            &nbsp;
-        - index3+=1
+    %th{:style => "width: 3%;"} No
+    %th{:style => "width: 25%;"}=t 'student.attendance.student_id'
+    - row=0
+    - schedule.in_groups_of(10, false) do |wtds|
+      - col=0
+      - wtds.each_with_index do |wtd, index|
+        - if row > 0 && col < 2
+          %th &nbsp;
+          %th &nbsp;
+        - col+=2
+        %th=@time_slot_main_count > 1 ? "#{(row*10)+index+=1}" : t('student.attendance.details')
+      %tr
+      - row+=1
+
+    /%th
+    /  - index3=0
+    /  - @studentattendances_group.each do |student, studentattendances| 
+    /    - if index3 == 0
+    /      - 1.upto(studentattendances.count) do |index4|
+    /        - if studentattendances.count>1
+    /          - if index4 == 1
+    /            &nbsp;
+    /          - else
+    /            &nbsp;&nbsp;
+    /        =index4
+    /        &nbsp;
+    /    - index3+=1
 
   - count = 0 
   - @next = 0 
-  - @sa_sort_then_group = @studentattendances.sort_by{|y|y.student.name}.group_by{|x|x.student_id}
-  - @sa_sort_then_group.each do |student_id, studentattendances|
+  /- @sa_sort_then_group = @studentattendances.sort_by{|y|y.student.name}.group_by{|x|x.student_id}  
+  /- @sa_sort_then_group.each do |student_id, studentattendances|
+
+  - @studentattendances_group.each do |student_id, studentattendances|
     - one_student_atts_count=studentattendances.count
+    - studentattendances_sorted = studentattendances.sort_by{|u|[u.weeklytimetable_detail.get_date_day_of_schedule , u.weeklytimetable_detail.get_time_slot]}
+    
     %tr
       %td=count+=1
-      %td= Student.find(student_id).matrix_name
-      %td
-        %table
+      %td= studentattendances[0].college.code=='amsas' ? Student.find(student_id).student_with_rank : Student.find(student_id).matrix_name
+
+      - if @time_slot_main_count > 1
+        - row=0
+        - studentattendances_sorted.in_groups_of(10, false) do |studentattendances|
+          - col=0
+          - studentattendances.each_with_index do |studentattendance, no|
+            - if row > 0 && col < 2
+              %th &nbsp;
+              %th &nbsp
+            = hidden_field_tag "student_attendance_ids[]", studentattendance.id 
+            
+            %td{style: 'text-align: left;'}
+              - a= (row*10)+no+((count-1)*schedule.count)
+              /= studentattendance.weeklytimetable_details_id
+              /= studentattendance.id
+              /= studentattendance.attend
+              = check_box_tag "attends[#{a}]", true, studentattendance.attend, :class => "check" 
+              /- if studentattendance.attend == true
+              /  = check_box_tag "attends[#{a}]", true, studentattendance.attend, :class => "check" 
+              /- else
+              /  = check_box_tag "attends[#{a}]"
+            - col+=2
           %tr
-            - if @studentattendances[@studentattendances.count-1].weeklytimetable_details_id != nil
-              - studentattendances_sorted = studentattendances.sort_by{|u|u.weeklytimetable_detail.get_time_slot}
-            - else
-              - studentattendances_sorted = studentattendances 
-            - studentattendances_sorted.each_with_index do |studentattendance, no|
-              = hidden_field_tag "student_attendance_ids[]", studentattendance.id 
-              
-              %td{:style=>"padding-right: 5px;"}
-                - if studentattendance.attend == true
+          - row+=1
+        
+      - elsif @time_slot_main_count==1
+        ///below part only works for edit multiple of ONE CLASS / SCHEDULE
+        - studentattendances_sorted.each_with_index do |studentattendance, no|
+          = hidden_field_tag "student_attendance_ids[]", studentattendance.id 
+          %td
+            %table
+              %tr
+                %td{:style=>"padding-right: 5px;"}
+                  /=no+@next
+                  /=studentattendance.id
+                  /=studentattendance.attend
+                  
+                  = hidden_field_tag "attends[#{no+@next}]", ''
                   = check_box_tag "attends[#{no+@next}]", true, studentattendance.attend, :class => "check" 
-                - else
-                  = check_box_tag "attends[#{no+@next}]", true
-                /= check_box_tag "attends[#{no+@next}]", true, studentattendance.attend, :id => "attendss_#{no+@next}" 
-              - if @time_slot_main_count==1
-                %td{:style=>"padding-left: 15px; width: 80px;"}
-                  - if studentattendance.attend == true
-                    &nbsp;
-                  - else
-                    = t('select')+" :"
-                %td{:style=>"padding-left: 5px; width: 115px;"}
-                  - if studentattendance.attend == true
-                    &nbsp;
-                  - else
-                    = select_tag("reasons[#{no+@next}]", options_for_select([[(t 'student.attendance.reason'),'0']]+DropDown::ABSENT_REASON, studentattendance.reason), {class: 'selectpicker', "data-width"=>"100px"})
-                %td{:style=>"padding-left: 5px; width: 165px;"}
-                  - if studentattendance.attend == true
-                    &nbsp;
-                  - else
-                    = select_tag("actions[#{no+@next}]", options_for_select([[(t 'student.attendance.action_taken'),'0']]+DropDown::ABSENT_ACTION, studentattendance.action), {class: 'selectpicker', "data-width"=>"150px"})
-                %td{:style=>"padding-left: 5px; width: 165px;"}
-                  - if studentattendance.attend == true
-                    &nbsp;
-                  - else
-                    =select_tag("statuss[#{no+@next}]", options_for_select([[(t 'student.attendance.action_close'),'0'],[(t 'student.attendance.complete'),'Yes'],[(t 'student.attendance.incomplete'),'No']], studentattendance.status), {class: 'selectpicker', "data-width"=>"150px"})
-                %td{:style=>"padding-left: 5px; width: 100px;"}
-                  - if studentattendance.attend == true
-                    &nbsp;
-                  - else
-                    = text_field_tag "remarks[#{no+@next}]", studentattendance.remark, class: 'form-control', placeholder: t('student.attendance.remark')
+                  
+                  /- if studentattendance.attend == true
+                  /  = check_box_tag "attends[#{no+@next}]", true, studentattendance.attend, :class => "check" 
+                  /- else
+                  /  = check_box_tag "attends[#{no+@next}]", true
+                  
+                /By default display details for not attend, otherwise - refer EACH -> of attends[] is checked
+                %td{:style=>"padding-left: 15px; width: 80px;", :id => "span_select_#{no+@next}"}= t('select')+" :"
+                %td{:style=>"padding-left: 5px; width: 115px;", :id => "span_reason_#{no+@next}"}= select_tag("reasons[#{no+@next}]", options_for_select([[(t 'student.attendance.reason'),'0']]+DropDown::ABSENT_REASON, studentattendance.reason), {class: 'selectpicker', "data-width"=>"100px"})
+                %td{:style=>"padding-left: 5px; width: 165px;", :id => "span_action_taken_#{no+@next}"}= select_tag("actions[#{no+@next}]", options_for_select([[(t 'student.attendance.action_taken'),'0']]+DropDown::ABSENT_ACTION, studentattendance.action), {class: 'selectpicker', "data-width"=>"150px"})
+                %td{:style=>"padding-left: 5px; width: 165px;", :id => "span_action_close_#{no+@next}"}=select_tag("statuss[#{no+@next}]", options_for_select([[(t 'student.attendance.action_close'),'0'],[(t 'student.attendance.complete'),'Yes'],[(t 'student.attendance.incomplete'),'No']], studentattendance.status), {class: 'selectpicker', "data-width"=>"150px"})
+                %td{:style=>"padding-left: 5px; width: 100px;", :id => "span_remark_#{no+@next}"}= text_field_tag "remarks[#{no+@next}]", studentattendance.remark, class: 'form-control', placeholder: t('student.attendance.remark')
+                
+                /%td{:style=>"padding-left: 15px; width: 80px;"}
+                /  - if studentattendance.attend == true
+                /    &nbsp;
+                /  - else
+                /    = t('select')+" :"
+                /%td{:style=>"padding-left: 5px; width: 115px;"}
+                /  - if studentattendance.attend == true
+                /    &nbsp;
+                /  - else
+                /    = select_tag("reasons[#{no+@next}]", options_for_select([[(t 'student.attendance.reason'),'0']]+DropDown::ABSENT_REASON, studentattendance.reason), {class: 'selectpicker', "data-width"=>"100px"})
+                /%td{:style=>"padding-left: 5px; width: 165px;"}
+                /  - if studentattendance.attend == true
+                /    &nbsp;
+                /  - else
+                /    = select_tag("actions[#{no+@next}]", options_for_select([[(t 'student.attendance.action_taken'),'0']]+DropDown::ABSENT_ACTION, studentattendance.action), {class: 'selectpicker', "data-width"=>"150px"})
+                /%td{:style=>"padding-left: 5px; width: 165px;"}
+                /  - if studentattendance.attend == true
+                /    &nbsp;
+                /  - else
+                /    =select_tag("statuss[#{no+@next}]", options_for_select([[(t 'student.attendance.action_close'),'0'],[(t 'student.attendance.complete'),'Yes'],[(t 'student.attendance.incomplete'),'No']], studentattendance.status), {class: 'selectpicker', "data-width"=>"150px"})
+                /%td{:style=>"padding-left: 5px; width: 100px;"}
+                /  - if studentattendance.attend == true
+                /    &nbsp;
+                /  - else
+                /    = text_field_tag "remarks[#{no+@next}]", studentattendance.remark, class: 'form-control', placeholder: t('student.attendance.remark')
 
               - if no == one_student_atts_count-1 
                 - @next = @next+no+1
@@ -81,10 +140,48 @@
 :javascript
 $(document).ready(function(){
   var checkbox =$("input:checkbox");
+  var attend_check = document.getElementsByClassName('check'); 
+  
   $('.check').each(function(){
     if ($(this).is(':checked')) {
-      $(this).val() = "checked";
+      /*$(this).val() = "checked";*/
+      $(this).checked=true;
     }
+
+    for(i=0; i < checkbox.length; i++){
+      if (attend_check[i].checked==true) 
+      { 
+        $('#span_select_'+i).hide();
+        $('#span_reason_'+i).hide();
+        $('#span_action_taken_'+i).hide();
+        $('#span_action_close_'+i).hide();
+        $('#span_remark_'+i).hide();
+      }
+    }
+
+  });
+  
+  $('.check').click(function(){
+    var attend_check_clk = document.getElementsByClassName('check'); 
+    for(i=0; i < checkbox.length; i++){
+      if (attend_check_clk[i].checked==true) 
+      { 
+        $('#span_select_'+i).hide();
+        $('#span_reason_'+i).hide();
+        $('#span_action_taken_'+i).hide();
+        $('#span_action_close_'+i).hide();
+        $('#span_remark_'+i).hide();
+      }
+      else
+      {
+        $('#span_select_'+i).show();
+        $('#span_reason_'+i).show();
+        $('#span_action_taken_'+i).show();
+        $('#span_action_close_'+i).show();
+        $('#span_remark_'+i).show();
+      }
+    }
+   
   });
 
   $("input[id='check_all']").change(function() {  
@@ -115,6 +212,8 @@ $(document).ready(function(){
       }
     }
   });
+  
+  /*var attend_check=document.getElementByClassName('check')*/
 
 });
 

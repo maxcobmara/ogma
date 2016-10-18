@@ -54,7 +54,7 @@ class Student::StudentAttendancesController < ApplicationController
       
       @search = StudentAttendance.search(params[:q])
       #BELOW : order(:weeklytimetable_details_id) - added, when group by class, won't split up (continueos paging), unless different Intake
-      if current_roles.include?('developer') || current_roles.include?('administration') || current_roles.include?('student_attendances_module_admin') || ('student_attendances_module_viewer') || ('student_attendances_module_user')
+      if current_roles.include?('developer') || current_roles.include?('administration') || current_roles.include?('student_attendances_module_admin') || current_roles.include?('student_attendances_module_viewer') || current_roles.include?('student_attendances_module_user')
 	 @student_attendances = @search.result
       else
          @student_attendances = @search.result.search2(current_user).order(:weeklytimetable_details_id)
@@ -171,6 +171,7 @@ class Student::StudentAttendancesController < ApplicationController
   end
   
   def new_multiple_intake
+    current_roles=current_user.roles.pluck(:authname)
     @create_type = params[:new_submit]
     @intake = params["intake"]
     @student_attendances = Array.new(5) { StudentAttendance.new }
@@ -182,8 +183,11 @@ class Student::StudentAttendancesController < ApplicationController
       topics_ids_this_prog = Programme.find(@programme_id).descendants.where(course_type: ['Topic', 'Subtopic']).map(&:id)
       #@schedule_list = WeeklytimetableDetail.where('topic IN(?)',topics_ids_this_prog).order(:topic)
       # NOTE - ref for edit multiple - TODO - edit multiple - scope by current user, but check for admin first (w/o scope)
-      #@schedule_list = WeeklytimetableDetail.joins(:weeklytimetable).where('topic IN(?) and intake_id=?',topics_ids_this_prog, @intake_of_prog_id).order(:topic)
-      @schedule_list = WeeklytimetableDetail.joins(:weeklytimetable).where('topic IN(?) and intake_id=?',topics_ids_this_prog, @intake_of_prog_id).where(lecturer_id: current_user.userable_id)order(:topic)
+      if current_roles.include?('developer') || current_roles.include?('administration') || current_roles.include?('student_attendances_module_admin') 
+        @schedule_list = WeeklytimetableDetail.joins(:weeklytimetable).where('topic IN(?) and intake_id=?',topics_ids_this_prog, @intake_of_prog_id).order(:topic)
+      else
+        @schedule_list = WeeklytimetableDetail.joins(:weeklytimetable).where('topic IN(?) and intake_id=?',topics_ids_this_prog, @intake_of_prog_id).where(lecturer_id: current_user.userable_id).order(:topic)
+      end
       #by intake column
       #@student_list = Student.where('course_id=? AND intake>=? AND intake <?',@programme_id.to_i,@iii.to_date,@iii.to_date+1.day)
       #by intake_id column
@@ -267,6 +271,7 @@ class Student::StudentAttendancesController < ApplicationController
   
   
   def update_multiple
+    #raise params.inspect
     submit_val = params[:applychange]
     @studentattendance_ids = params[:student_attendance_ids]	
     @attends = params[:attends] 
@@ -301,28 +306,27 @@ class Student::StudentAttendancesController < ApplicationController
  
       #start-for edit_multiple.html.erb--------
       if !@weeklytimetable_details_ids
-        @next2 = 0
-        @sa_sort_then_group = @studentattendances.sort_by{|y|y.student.name}.group_by{|x|x.student_id} 
-
-        @sa_sort_then_group.each do |student_id, studentattendances| 
-          studentattendances.sort_by{|u|u.weeklytimetable_detail.get_time_slot}.each_with_index do |studentattendance, no2|
-            if @attends && @attends[(no2+@next2).to_s]!=nil
-              studentattendance.attend = true
-            else
-              studentattendance.attend = false
-              if @reasons && @reasons[(no2+@next2).to_s] != nil
-                studentattendance.reason = @reasons[(no2+@next2).to_s]
-                studentattendance.action = @actions[(no2+@next2).to_s]
-                studentattendance.status = @statuss[(no2+@next2).to_s]
-                studentattendance.remark = @remarks[(no2+@next2).to_s]
-              end
+	next2=0
+	@studentattendances_group.each do |student_id, studentattendances|
+	  studentattendances.sort_by{|u|[u.weeklytimetable_detail.get_date_day_of_schedule , u.weeklytimetable_detail.get_time_slot]}.each_with_index do |studentattendance, no2|
+	    #studentattendance.attend=false
+	    #studentattendance.reason=@reasons[(no2+next2).to_s]
+	    #studentattendance.save!
+	    if @attends[(no2+next2).to_s]!=""
+	      studentattendance.attend=true
+	    else
+	      studentattendance.attend=false
+	      studentattendance.reason=@reasons[(no2+next2).to_s]
+	      studentattendance.action = @actions[(no2+next2).to_s]
+              studentattendance.status = @statuss[(no2+next2).to_s]
+              studentattendance.remark = @remarks[(no2+next2).to_s]
+	    end
+	    studentattendance.save!
+	    if no2 == studentattendances.count-1 #2 
+              next2 = next2+no2+1 
             end
-            studentattendance.save 
-            if no2 == studentattendances.count-1 #2 
-              @next2 = @next2+no2+1 
-            end
-          end #end for studentattendance.sort_by....
-        end #end for @sa_sort_the_group...
+	  end #end for studentattendance.sort_by...
+        end #end for @studentattendances_group
 
       end
       #end-for edit_multiple.html.erb--------

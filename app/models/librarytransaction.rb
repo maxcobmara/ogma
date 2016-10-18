@@ -82,9 +82,9 @@ class Librarytransaction < ActiveRecord::Base
   
   def borrower_name
     if ru_staff?
-      staff.try(:name)
+      staff.try(:staff_with_rank)
     else
-      student.try(:name)
+      student.try(:student_with_rank)
     end
   end
   

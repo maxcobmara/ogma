@@ -19,14 +19,20 @@
             %dl.dl-horizontal
               %dt= t 'student.attendance.programme'
               %dd=@studentattendances[0].student.course.programme_list
-              %dt=t('student.attendance.lecturer')
-              %dd=@studentattendances[0].weeklytimetable_detail.weeklytimetable_lecturer.staff_with_rank
+              
+              - lecturer_count=WeeklytimetableDetail.where(id: @studentattendances.map(&:weeklytimetable_details_id).uniq).pluck(:lecturer_id).uniq.count
+              - if lecturer_count==1
+                %dt=t('student.attendance.lecturer')
+                %dd=@studentattendances[0].weeklytimetable_detail.weeklytimetable_lecturer.staff_with_rank
+                
               %dt= t 'student.attendance.intake'
               %dd=@studentattendances[0].college.code=='amsas' ? "Siri "+@studentattendances[0].student.intakestudent.monthyear_intake.try(:strftime, '%m/%Y') : @studentattendances[0].student.intakestudent.monthyear_intake.try(:strftime, '%b %Y')
             %br
-            %table.table.table-bordered
+            
+            %table.table.table-bordered.table-condensed
               - @studentattendances_group.each do |student, studentattendances|   
-                - @sas = studentattendances.sort_by{|u|u.weeklytimetable_detail.get_time_slot}
+                /- @sas = studentattendances.sort_by{|u|u.weeklytimetable_detail.get_time_slot}
+                - @sas = studentattendances.sort_by{|u|[u.weeklytimetable_detail.get_date_day_of_schedule, u.weeklytimetable_detail.get_time_slot]}
                 - if index2 == 0
                   = render 'sa_schedule_legend'
                   - index2+=1  
