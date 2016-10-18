@@ -89,7 +89,7 @@
               - if no == one_student_atts_count-1 
                 - @next = @next+no+1
 
-- if @studentattendances.map(&:attend).count(true) == 0
+  /- if @studentattendances.map(&:attend).count(true) == 0
   %table
     %tr
       %td{:style=> "width:200px; text-align: right; padding:5px;"}
@@ -100,7 +100,7 @@
 :javascript
 $(document).ready(function(){
   var checkbox =$("input:checkbox");
-  var attend_check = document.getElementsByClassName('check'); 
+  
   
   $('.check').each(function(){
     if ($(this).is(':checked')) {
@@ -108,7 +108,8 @@ $(document).ready(function(){
       $(this).checked=true;
     }
 
-    for(i=0; i < checkbox.length; i++){
+    var attend_check = document.getElementsByClassName('check'); 
+    for(i=0; i < checkbox.length-1; i++){
       if (attend_check[i].checked==true) 
       { 
         $('#span_select_'+i).hide();
@@ -123,7 +124,7 @@ $(document).ready(function(){
   
   $('.check').click(function(){
     var attend_check_clk = document.getElementsByClassName('check'); 
-    for(i=0; i < checkbox.length; i++){
+    for(i=0; i < checkbox.length-1; i++){
       if (attend_check_clk[i].checked==true) 
       { 
         $('#span_select_'+i).hide();
@@ -144,31 +145,44 @@ $(document).ready(function(){
    
   });
 
-  $("input[id='check_all']").change(function() {  
+  $("input[id='check_all']").click(function() {  
+    var attend_check_clk = document.getElementsByClassName('check'); 
     if($('#check_all').is(':checked')) { 
-      for (var j=0; j<checkbox.length; j++) {
-        var cc = document.getElementById('attends_'+j)
-        cc.checked = true;
+      for (var j=0; j<checkbox.length-1; j++) {
+        attend_check_clk[j].checked=true;
+        $('#span_select_'+j).hide();
+        $('#span_reason_'+j).hide();
+        $('#span_action_taken_'+j).hide();
+        $('#span_action_close_'+j).hide();
+        $('#span_remark_'+j).hide();
       }
 
     }else{
-      for (var j=0; j<checkbox.length; j++) {
-        var cc = document.getElementById('attends_'+j)
-        cc.checked = false;
+      for (var j=0; j<checkbox.length-1; j++) {
+        attend_check_clk[j].checked=false;
+        $('#span_select_'+j).show();
+        $('#span_reason_'+j).show();
+        $('#span_action_taken_'+j).show();
+        $('#span_action_close_'+j).show();
+        $('#span_remark_'+j).show();
       }
     }
   });
 
   $("input[id='check_all']").each(function() {  
+    var attend_check = document.getElementsByClassName('check'); 
     if($('#check_all').is(':checked')) { 
-      for (var j=0; j<checkbox.length; j++) {
-        var cc = document.getElementById('attends_'+j)
-        cc.checked = true;
+      for (var j=0; j<checkbox.length-1; j++) {
+        attend_check[j].checked=true;
+        $('#span_select_'+j).hide();
+        $('#span_reason_'+j).hide();
+        $('#span_action_taken_'+j).hide();
+        $('#span_action_close_'+j).hide();
+        $('#span_remark_'+j).hide();
       }
     }else{
-      for (var j=0; j<checkbox.length; j++) {
-        var cc = document.getElementById('attends_'+j)
-        cc.checked = false;
+      for (var j=0; j<checkbox.length-1; j++) {
+        attend_check[j].checked=false;
       }
     }
   });
