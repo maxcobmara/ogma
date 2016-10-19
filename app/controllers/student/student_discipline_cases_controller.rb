@@ -148,8 +148,8 @@ class Student::StudentDisciplineCasesController < ApplicationController
   
   def anacdotal_report
     @student_id=params[:student].to_i    
-    roles = current_user.roles.pluck(:id)
-    @is_admin = roles.include?(2) || roles.include?(40)
+    current_roles = current_user.roles.pluck(:authname)
+    @is_admin = current_roles.include?('developer') || current_roles.include?('administration') || current_roles.include?('student_discipline_module_admin') || current_roles.include?('disciplinary_officer') #from Pej Tatatertib
     if @is_admin
       @discipline_cases=StudentDisciplineCase.where(student_id: @student_id)
     else
