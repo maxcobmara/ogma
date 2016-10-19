@@ -1,9 +1,9 @@
 class Kewpa10Pdf < Prawn::Document
-  def initialize(location, view, asset_placements)
+  def initialize(location, view, assets_located_at, college)
     super({top_margin: 50, page_size: 'A4', page_layout: :landscape })
     @location = location
     @view = view
-    @asset_placements = asset_placements
+    @assets_located_at = assets_located_at
 
     font "Times-Roman"
     text "KEW.PA-10", :align => :right, :size => 16, :style => :bold
@@ -11,11 +11,11 @@ class Kewpa10Pdf < Prawn::Document
     text "LAPORAN PEMERIKSAAN HARTA MODAL", :align => :center, :size => 14, :style => :bold
     text "(Diisi oleh Pegawai Pemeriksa)", :align => :center, :size => 14
     move_down 10
-    text "Kementerian/Jabatan:_________________________                                                                                        Bahagian:_________________________", :align => :left, :size => 12
+    text "Kementerian/Jabatan: #{college.name}                                                        Bahagian:_________________________", :align => :left, :size => 12
     move_down 5
     make_heading1
     make_heading2
-    make_data1
+    make_data1 if @assets_located_at.hm.count > 1
     #text "#{y}"
     #move_down 500 #for test
     if y < 240
@@ -23,7 +23,7 @@ class Kewpa10Pdf < Prawn::Document
       make_heading1
       make_heading2
     end
-    make_data2
+    make_data2 if @assets_located_at.hm.count > 0
     make_empty_rows
     signatory
     #text "#{y}"
@@ -66,8 +66,8 @@ class Kewpa10Pdf < Prawn::Document
   def data1
     counter = counter || 0
     boddy =[]
-    @asset_placements.p_fixed.each do |asset_placement|
-      boddy << ["#{counter += 1}", "#{asset_placement.asset.assetcode}","#{asset_placement.asset.name}", "#{asset_placement.try(:location).try(:name)}","","","","", "","",""] if counter < @asset_placements.p_fixed.count-1
+    @assets_located_at.hm.each do |asset_placement|
+      boddy << ["#{counter += 1}", "#{asset_placement.assetcode}","#{asset_placement.name}", "#{asset_placement.try(:location).try(:name)}","","","","", "","",""] 
     end
     boddy
   end
@@ -85,9 +85,9 @@ class Kewpa10Pdf < Prawn::Document
   end 
   
   def data2
-    ccount=@asset_placements.p_fixed.count
-    asset_placement=@asset_placements.p_fixed[ccount-1]
-    boddy =[["#{ccount}", "#{asset_placement.asset.assetcode}","#{asset_placement.asset.name}", "#{asset_placement.try(:location).try(:name)}","","","","", "","",""]]
+    ccount=@assets_located_at.hm.count
+    asset_placement=@assets_located_at.hm[ccount-1]
+    boddy =[["#{ccount}", "#{asset_placement.assetcode}","#{asset_placement.name}", "#{asset_placement.try(:location).try(:name)}","","","","", "","",""]]
   end
 
   def make_data2
@@ -103,7 +103,7 @@ class Kewpa10Pdf < Prawn::Document
   end
 
   def make_empty_rows
-    ccount=indx=@asset_placements.p_fixed.count
+    ccount=indx=@assets_located_at.hm.count
     data=[]
     if ccount < 5 #2 #for test use 2 - http://localhost:3003/campus/locations/1/kewpa10.pdf?locale=en
       while ccount < 5 #2

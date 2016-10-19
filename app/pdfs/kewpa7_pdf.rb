@@ -1,23 +1,24 @@
 class Kewpa7Pdf < Prawn::Document
-  def initialize(location, current_user, asset_placements)
+  def initialize(location, current_user, asset_placements, college)
     super({top_margin: 40, page_size: 'A4', page_layout: :portrait })
     @location = location
     #@current_user = current_user
     @asset_admin_post = Position.where('name ILIKE(?) OR tasks_main ILIKE(?) OR tasks_other ILIKE(?)', "%pegawai aset%", "%pegawai aset%", "%pegawai aset%").first
     @asset_placements = asset_placements
+    @college=college
     font "Times-Roman"
     text "KEW.PA-7", :align => :right, :size => 16, :style => :bold
     move_down 20
     text "SENARAI ASET ALIH KERAJAAN", :align => :center, :size => 14, :style => :bold
     description
     heading
-    asset_list
+    asset_list if @asset_placements.count > 1
     #move_down 500
     if y < 360
       start_new_page
       heading
     end
-    asset_last
+    asset_last if @asset_placements.count > 0
     blank_rows if @asset_placements.count < 14 #4
     signature_block
     row_only_block
@@ -26,14 +27,16 @@ class Kewpa7Pdf < Prawn::Document
   
   def description
     move_down 15
-    data = [["BAHAGIAN", ":", "KSKB JOHOR" ],["LOKASI", ":", "#{@location.combo_code} - #{@location.name}"]]
-    table(data, :width => 250, :cell_style => {:border_color => "FFFFFF"})
+    #data = [["BAHAGIAN", ":", @college.name],["LOKASI", ":", "#{@location.combo_code} - #{@location.name}"]]
+    #table(data,  :column_widths => [100, 10, 415], :cell_style => {:border_color => "FFFFFF",  :size => 10, :height => 20})
+    text "BAHAGIAN : #{@college.name}", :size => 12
+    text "LOKASI : #{@location.combo_code}", :size => 12
   end
   
   def heading
     move_down 5
     heading_row = [[ 'Bil', 'Keterangan Aset', "", 'Kuantiti']]
-    table(heading_row, :column_widths => [30, 130, 250], :cell_style => { :size => 10, :height => 20}) do
+    table(heading_row, :column_widths => [30, 130, 250, 115], :cell_style => { :size => 10, :height => 20}) do
       row(0).font_style = :bold
       row(0).background_color = 'FFE34D'
       columns(1).borders = [:top, :left, :bottom]
@@ -46,7 +49,7 @@ class Kewpa7Pdf < Prawn::Document
   end
 
   def asset_list
-    table(line_item_rows, :column_widths => [30, 130, 250], :cell_style => { :size => 10, :height => 20})  do
+    table(line_item_rows, :column_widths => [30, 130, 250, 115], :cell_style => { :size => 10, :height => 20})  do
       columns(1).borders = [:top, :left, :bottom]
       columns(2).borders = [:top, :right, :bottom]
       columns(3).align = :center
@@ -61,7 +64,6 @@ class Kewpa7Pdf < Prawn::Document
     @asset_placements.each do |asset_placement|
       a << ["#{counter += 1}", "#{asset_placement.asset.assetcode}", "#{asset_placement.asset.typename} #{asset_placement.asset.name} #{asset_placement.asset.modelname}","#{asset_placement.asset.assettype==1 ? 1 : asset_placement.quantity}"] if counter < @asset_placements.count-1
     end  
-    a
   end
   
   def asset_last
@@ -69,7 +71,7 @@ class Kewpa7Pdf < Prawn::Document
     asset_placement=@asset_placements[ccount-1]
     asset_last_row =[["#{ccount}", "#{asset_placement.asset.assetcode}", "#{asset_placement.asset.typename} #{asset_placement.asset.name} #{asset_placement.asset.modelname}","#{asset_placement.asset.assettype==1 ? 1 : asset_placement.quantity}"]]
     
-    table(asset_last_row, :column_widths => [30, 130, 250], :cell_style => { :size => 10, :height => 20}) do
+    table(asset_last_row, :column_widths => [30, 130, 250, 115], :cell_style => { :size => 10, :height => 20}) do
       columns(1).borders = [:top, :left, :bottom]
       columns(2).borders = [:top, :right, :bottom]
       columns(3).align = :center
@@ -78,7 +80,7 @@ class Kewpa7Pdf < Prawn::Document
   end
 
   def blank_rows
-    table(b_rows, :column_widths => [30, 130, 250], :cell_style => { :size => 10, :height => 20}) do
+    table(b_rows, :column_widths => [30, 130, 250, 115], :cell_style => { :size => 10, :height => 20}) do
       columns(1).borders = [:top, :left, :bottom]
       columns(2).borders = [:top, :right, :bottom]
       columns(3).align = :center
@@ -89,7 +91,7 @@ class Kewpa7Pdf < Prawn::Document
   
   def b_rows
     b=[]
-    0.upto(14-@asset_placements.count-1) do |count|
+    0.upto(13-@asset_placements.count-1) do |count|
       b+= [ ["","","",""]]
     end
     b

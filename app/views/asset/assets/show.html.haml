@@ -49,7 +49,12 @@
             =@asset.hmlocation.try(:location_list)
           - elsif @asset.assettype==2
             - for asset_placement in @asset.asset_placements
-              = asset_placement.location.name+" "
+              /= asset_placement.location.name+" "
+              / NOTE - 3-Staff Residence, 4-Student Residence
+              - if [3, 4].include?(asset_placement.location.root.lclass)
+                = asset_placement.location.combo_code
+              - else
+                = asset_placement.location.name+" "
       %dt= t 'asset.assigned_to'
       %dd
         - if current_user.college.code=="kskbjb"
