@@ -1,5 +1,5 @@
 class Kewpa3Pdf < Prawn::Document
-  def initialize(asset, view, lead)
+  def initialize(asset, view, lead, college)
     super({top_margin: 50, page_size: 'A4', page_layout: :portrait })
     @asset = asset
     @view = view
@@ -11,7 +11,7 @@ class Kewpa3Pdf < Prawn::Document
     move_down 15
     text "DAFTAR INVENTORI", :align => :center, :size => 14, :style => :bold
     move_down 15
-    text "Kementerian/Jabatan   : Kolej Kesihatan Bersekutu Johor Bahru", :align => :left, :size => 14
+    text "Kementerian/Jabatan   : #{college.name}", :align => :left, :size => 14
     text "Bahagian  :", :align => :left, :size => 14
     move_down 5
     make_tables1
@@ -32,7 +32,7 @@ class Kewpa3Pdf < Prawn::Document
   end
     
   def make_tables1
-    data = [ [ "Kod Nasional", " "], [ "Kategori ", "#{@asset.try(:assetcategoryies).try(:description)}"], [ "Sub Kategori", "#{@asset.subcategory} "] ]
+    data = [ [ "Kod Nasional", " "], [ "Kategori ", "#{@asset.try(:category).try(:description)}"], [ "Sub Kategori", "#{@asset.subcategory} "] ]
     table(data, :column_widths => [130, 390], :cell_style => { :size => 10})  
     
     data1 = [ ["Jenis", "#{@asset.typename}", "Harga Perolehan Asal", @view.currency(@asset.purchaseprice.to_f)], 
@@ -181,6 +181,8 @@ class Kewpa3Pdf < Prawn::Document
                     "#{asset_disposal.try(:discard_location)}",
                     ""]
       end
+    else
+      data2=[[]]
     end
     
     data = left_title+data2    

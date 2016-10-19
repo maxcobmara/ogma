@@ -10,13 +10,13 @@ class Kewpa11Pdf < Prawn::Document
     text "(Diisi oleh Pegawai Pemeriksa)", :align => :center, :size => 12
     move_down 10
     make_heading
-    make_table2a
+    make_table2a if @location.asset_placements.p_inventory.count > 1
     #move_down 500 #for test
     if y < 250
       start_new_page
       make_heading
     end
-    make_table2b
+    make_table2b if @location.asset_placements.p_inventory.count > 0
     make_empty_rows
     signatory
   end
@@ -65,8 +65,13 @@ class Kewpa11Pdf < Prawn::Document
     counter = counter || 0
     boddy=[]
     p_inv_count=@location.asset_placements.p_inventory.count
+    if [3, 4].include?(asset_placement.location.root.lclass) #3-Staff Residence, 4-Student Residence
+      location_details= asset_placement.try(:location).try(:combo_code)
+    else
+      location_details= asset_placement.try(:location).try(:name)
+    end
     @location.asset_placements.p_inventory.each do |asset_placement|
-      boddy << ["#{counter += 1}", "#{asset_placement.asset.name}","", "","","","#{asset_placement.try(:location).try(:name)}","", "#{asset_placement.quantity}","","",""] if counter < p_inv_count-1
+      boddy << ["#{counter += 1}", "#{asset_placement.asset.name}","", "","","","#{location_details}","", "#{asset_placement.quantity}","","",""] if counter < p_inv_count-1
     end
     boddy
   end
@@ -87,7 +92,12 @@ class Kewpa11Pdf < Prawn::Document
   def data2b
     p_inv_count=@location.asset_placements.p_inventory.count
     p_inv=@location.asset_placements.p_inventory[p_inv_count-1]
-    boddy = [["#{p_inv_count}", "#{p_inv.asset.name}","", "","","","#{p_inv.try(:location).try(:name)}","", "#{p_inv.quantity}","","",""]]
+    if [3, 4].include?(p_inv.location.root.lclass) #3-Staff Residence, 4-Student Residence
+      location_details= p_inv.try(:location).try(:combo_code)
+    else
+      location_details= p_inv.try(:location).try(:name)
+    end
+    boddy = [["#{p_inv_count}", "#{p_inv.asset.name}","", "","","",location_details,"", "#{p_inv.quantity}","","",""]]
   end
    
   def make_table2b

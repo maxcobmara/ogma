@@ -114,7 +114,7 @@
             - if current_user.college.code=="kskbjb"
               = f.collection_select :assignedto_id, Staff.all.order(rank_id: :asc, name: :asc), :id,  :staff_name_with_position, {:include_blank => (t 'select')}, {class: 'selectpicker', "data-width"=>'410px'}
             - elsif current_user.college.code=="amsas"
-              = f.collection_select :assignedto_id, Staff.all.order(rank_id: :asc, name: :asc), :id,  :staff_with_rank, {:include_blank => (t 'select')}, {class: 'selectpicker', "data-width"=>'410px'}
+              = f.collection_select :assignedto_id, Staff.all.order(rank_id: :asc, name: :asc), :id,  :staff_with_rank_unit, {:include_blank => (t 'select')}, {class: 'selectpicker', "data-width"=>'410px'}
 		  	  
         .form-group
           .col-sm-2.control-label
