@@ -5,7 +5,7 @@
     %ul.nav.nav-tabs
       %li= link_to (t 'student.discipline.report_details'),"#report_details", "data-toggle" => "tab"
       /- if ["Open", "Closed", "No Case", "Refer to TPHEP", "Refer to BPL"].include? (@student_discipline_case.status) 
-      - if ["New", "Open"].include? (@student_discipline_case.status)
+      - if (["New", "Open", "Closed"].include? (@student_discipline_case.status)) || (@student_discipline_case.status=="Closed" && (@student_discipline_case.case_created_on.nil? ||  @student_discipline_case.investigation_notes.nil? || @student_discipline_case.closed_at_college_on.nil?) ) || (["Refer to Mentor","Refer to Counselor"].include?(@student_discipline_case.status) && (@student_discipline_case.case_created_on.nil? || @student_discipline_case.investigation_notes.nil? || @student_discipline_case.assigned2_to.nil? || @student_discipline_case.assigned2_on.nil?))
         %li.active=link_to (t 'student.discipline.case_info'), "#case_info_edit", "data-toggle" => "tab" 
 
     .tab-content{style:"padding-top:1em"}
@@ -24,7 +24,7 @@
         %br
         =render 'tab_details'
       /- if ["Open", "Closed", "No Case", "Refer to TPHEP", "Refer to BPL"].include? (@student_discipline_case.status) 
-      - if ["New", "Open"].include? (@student_discipline_case.status)
+      - if (["New", "Open"].include? (@student_discipline_case.status)) || (@student_discipline_case.status=="Closed" && (@student_discipline_case.case_created_on.nil? ||  @student_discipline_case.investigation_notes.nil? || @student_discipline_case.closed_at_college_on.nil?))  || (["Refer to Mentor","Refer to Counselor"].include?(@student_discipline_case.status) && (@student_discipline_case.case_created_on.nil? || @student_discipline_case.investigation_notes.nil? || @student_discipline_case.assigned2_to.nil? || @student_discipline_case.assigned2_on.nil?))
         #case_info_edit.tab-pane.active
           .col-md-10
             %br

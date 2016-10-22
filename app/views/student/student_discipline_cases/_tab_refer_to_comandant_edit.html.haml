@@ -1,0 +1,13 @@
+.col-md-offset-2
+  .form-group
+    .col-sm-2.control-label
+      = f.label t 'student.discipline.action', for: :action_taken
+    .col-md-5
+      = f.text_area :action, :size => "40x5", class: 'form-control mandatory'
+      
+  .form-group.taking_action
+    /{style: "display: none;"}
+    .col-sm-2.control-label
+      = f.label t 'student.discipline.closed_at_college_on', for: :closed_at_college_on
+    .col-md-2
+      = f.text_field :closed_at_college_on, class: 'date_picker_reverse form-control mandatory', value: @student_discipline_case.closed_at_college_on.try(:strftime, '%d-%m-%Y')

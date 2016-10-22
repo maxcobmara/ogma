@@ -1,0 +1,72 @@
+.col-md-offset-2
+  - if @student_discipline_case.action_type=="Ref Counselor"
+    //display create counseling part
+  - else
+    //Mentor part
+    
+  //evaluate case
+  .form-group
+    .col-sm-2.control-label
+      = f.label t 'student.discipline.evaluate_case', for: :other_info
+    .col-md-5
+      = f.text_area :other_info, :size => "40x5", class: 'mandatory'
+
+  //option for Mentor / Counselor 
+  .form-group
+    .col-sm-2.control-label
+      /= f.label  t 'student.discipline.action_type', for: :action_type
+      = f.label t 'student.discipline.refer_comandant'
+    .col-md-1=f.check_box :action_type2, :id => 'com', checked: 'checked'
+    .col-md-4.small Tick to refer case to Comandant, otherwise untick, enter 'Action' taken and 'Date closed'.
+    /Leave check box untick to proceed with Action Execution by Mentor & close the case/ Counselor OR
+    /- if @student_discipline_case.action_type=="Ref Mentor"
+    /  /.col-md-1= f.radio_button :action_type, "Ref Mentor", :id => 'mn', :class => 'radio_action_type'
+    /.col-md-1= f.radio_button :action_type, "Mentor Action", :id => 'mn', :class => 'radio_action_type'
+    /- elsif @student_discipline_case.action_type=="Ref Counselor"
+    /  /.col-md-1= f.radio_button :action_type, "Ref Counselor", :id => 'cn', :class => 'radio_action_type'
+    /.col-md-1= f.radio_button :action_type, "Counselor Action", :id => 'cn', :class => 'radio_action_type'
+    /.col-md-2=t('student.discipline.take_action')
+    /.col-md-1= f.radio_button :action_type, "Ref Comandant", :id => 'cmd', :class => 'radio_action_type'
+    /.col-md-2=t('student.discipline.refer_comandant') 
+    
+
+  //display this part when action taken by Mentor/Counselor
+  .form-group.taking_action{style: "display: none;"}
+    .col-sm-2.control-label
+      = f.label t 'student.discipline.action', for: :action_done
+    .col-md-5
+      = f.text_area :action, :size => "40x5", class: 'mandatory'
+     
+  .form-group.taking_action{style: "display: none;"}
+    .col-sm-2.control-label
+      = f.label t 'student.discipline.closed_at_college_on', for: :closed_at_college_on
+    .col-md-2
+      = f.text_field :closed_at_college_on, class: 'date_picker_reverse form-control mandatory', value: @student_discipline_case.closed_at_college_on.try(:strftime, '%d-%m-%Y')
+      
+:javascript
+
+
+/$(document).ready(function(){ 
+  
+  $("input[id='com']").change(function() {  
+    if($('#com').is(':checked')) 
+    {  
+      $('.taking_action').hide();
+      /*var ansM = document.getElementById("student_discipline_case_status");*/
+      /*ansM.value = "Refer to Comandant";*/
+      $("#student_discipline_case_status").val("Refer to Comandant").change();
+    }
+    else
+    {  
+      $('.taking_action').show();
+      /*var ansM = document.getElementById("student_discipline_case_status");*/
+      /*ansM.value ="Closed";*/
+      $("#student_discipline_case_status").val("Closed").change();
+    }
+  });
+  
+  
+/});
+
+
+

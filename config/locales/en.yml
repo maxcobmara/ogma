@@ -59,6 +59,7 @@ en:
       bookingfacility: Facilities Reservation
       mentor: Mentor
       mentee: Mentee
+      student_discipline_case: Student Discipline Case
     attributes:
       asset:
         assignedto_id: Assigned to
@@ -293,6 +294,16 @@ en:
           other: Mentee
       mentees:
         student_id: Mentee
+      student_discipline_case:
+        assigned_to: Assigned to
+        reported_on: Reported on
+        case_created_on: Case created on
+        investigation_notes: Investigation notes
+        assigned2_to: Refer to
+        assigned2_on: Notify HOD date
+        other_info: Evaluate Case
+        action: Action
+        closed_at_college_on: Date closed (college)
     errors:
         template:
           body: "There were problems with the following fields:"
@@ -2693,6 +2704,7 @@ en:
       description: Details
       reported_on: Reported On
       assigned_to: Assign to Programme Head
+      assigned_to_amsas: Assign to School Head
       file_id: File Reference
       location_id: Location
       counselor_feedback: Counselor Feedback
@@ -2728,6 +2740,8 @@ en:
       appeal_decision_on: Appeal Decision Date
       description: "If Others, Please Specify"
       assigned2_to: Notify HOD
+      assigned2_to_mentor: Refer to Mentor
+      assigned2_to_counselor: Refer to Counselor
       assigned2_on: Notify HOD Date
       counseling_request: Counseling request
       removal_prohibited_for_referred_case: "Selected discipline case is NOT ALLOWED for removal, as case already referred to Counselor for action."
@@ -2751,6 +2765,15 @@ en:
       warning_letter_counseling: "Warning Letter & Counseling"
       discharge_leave_counseling: "Discharge Leave & Counseling"
       charity_works_counseling: "Charity Works & Counseling"
+      refer_counselor: Refer Counselor
+      refer_mentor: Refer Mentor
+      refer_comandant: Refer Comandant
+      take_action: Execute Action
+      evaluate_case: Evaluate Case
+      evaluate_case2: Case Evaluation
+      action_by: Action By
+      comandant: Comandant
+      counselor: Counselor
       
     counseling:
       title: Student Counseling Session

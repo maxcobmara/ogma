@@ -1,6 +1,6 @@
 class Student::StudentDisciplineCasesController < ApplicationController
   filter_access_to :index, :new, :create, :discipline_report, :anacdotal_report, :attribute_check => false
-  filter_access_to :show, :edit, :update, :referbpl, :actiontaken, :destroy, :attribute_check => true
+  filter_access_to :show, :edit, :update, :referbpl, :refercomandant, :actiontaken, :destroy, :attribute_check => true
   
   before_action :set_student_discipline_case, only: [:show, :edit, :update, :destroy]
    
@@ -111,8 +111,16 @@ class Student::StudentDisciplineCasesController < ApplicationController
         format.html { redirect_to(student_student_discipline_case_path(@student_discipline_case), :notice => (t 'student.discipline.case')+t('actions.updated')) }
         format.xml  { head :ok }
       else
-        format.html { render :action => "edit" }
-        format.xml  { render :xml => @student_discipline_case.errors, :status => :unprocessable_entity }
+	if @student_discipline_case.action_type=="Ref Comandant"
+	   format.html { render :action => "refercomandant" }
+           format.xml  { render :xml => @student_discipline_case.errors, :status => :unprocessable_entity }
+        elsif ["Ref Counselor", "Ref Mentor"].include?(@student_discipline_case.action_type) && !@student_discipline_case.action_type2.nil?
+	   format.html { render :action => "actiontaken" }
+           format.xml  { render :xml => @student_discipline_case.errors, :status => :unprocessable_entity }
+	else
+          format.html { render :action => "edit" }
+          format.xml  { render :xml => @student_discipline_case.errors, :status => :unprocessable_entity }
+	end
       end
     end
   end
@@ -140,6 +148,10 @@ class Student::StudentDisciplineCasesController < ApplicationController
   end
 
   def referbpl
+    @student_discipline_case = StudentDisciplineCase.find(params[:id]) 
+  end
+  
+  def refercomandant
     @student_discipline_case = StudentDisciplineCase.find(params[:id]) 
   end
   
@@ -178,7 +190,7 @@ class Student::StudentDisciplineCasesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def student_discipline_case_params
-      params.require(:student_discipline_case).permit(:reported_by, :student_id, :infraction_id, :description, :reported_on, :assigned_to, :assigned_on, :status, :file_id, :investigation, :action_type, :other_info, :case_created_on, :action, :location_id, :assigned2_to, :assigned2_on, :is_innocent, :closed_at_college_on, :sent_to_board_on, :board_meeting_on, :board_decision_on, :board_decision, :appeal_on, :appeal_decision, :appeal_decision_on, :counselor_feedback, :action_type2, :college_id, {:data => []}, student_counseling_sessions_attributes: [:id, :destroy, :requested_at, :student_id, :case_id, :college_id])
+      params.require(:student_discipline_case).permit(:reported_by, :student_id, :infraction_id, :description, :reported_on, :assigned_to, :assigned_on, :status, :file_id, :investigation_notes, :action_type, :other_info, :case_created_on, :action, :location_id, :assigned2_to, :assigned2_on, :is_innocent, :closed_at_college_on, :sent_to_board_on, :board_meeting_on, :board_decision_on, :board_decision, :appeal_on, :appeal_decision, :appeal_decision_on, :counselor_feedback, :action_type2, :college_id, {:data => []}, student_counseling_sessions_attributes: [:id, :destroy, :requested_at, :student_id, :case_id, :college_id])
     end
   
 end

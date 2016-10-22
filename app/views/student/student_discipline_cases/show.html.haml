@@ -4,17 +4,22 @@
  
 = render 'shared/flashes'
 
+- current_roles=current_user.roles.pluck(:authname)
+
 .row
   .col-md-offset-1
     / Nav tabs
     %ul.nav.nav-tabs
       %li.active= link_to (t 'student.discipline.report_details'),"#report_details", "data-toggle" => "tab"
-      %li=link_to ((t 'student.discipline.case_info')+" ("+@student_discipline_case.render_status+")"), "#case_info", "data-toggle" => "tab"  if ["Open", "Closed", "No Case", "Refer to TPHEP", "Refer to BPL"].include? (@student_discipline_case.status) 
-      %li=link_to (t 'student.discipline.action_details'), "#action_taken", "data-toggle" => "tab" if (["Open", "Closed", "Refer to TPHEP", "Refer to BPL"].include? (@student_discipline_case.status)) && (@student_discipline_case.assigned2_to == @current_user.userable_id || @current_user.roles.pluck(:name).include?("Administration"))
+      %li=link_to ((t 'student.discipline.case_info')+" ("+@student_discipline_case.render_status+")"), "#case_info", "data-toggle" => "tab"  if ["Open", "Closed", "No Case", "Refer to TPHEP", "Refer to BPL", "Refer to Mentor", "Refer to Counselor", "Refer to Comandant"].include? (@student_discipline_case.status) 
+      %li=link_to (t 'student.discipline.action_details'), "#action_taken", "data-toggle" => "tab" if (["Open", "Closed", "Refer to TPHEP", "Refer to BPL",  "Refer to Mentor", "Refer to Counselor", "Refer to Comandant"].include? (@student_discipline_case.status)) && (@student_discipline_case.assigned2_to == current_user.userable_id || current_roles.include?("administration") || current_roles.include?("developer"))
       
       /- if ["Closed","Refer to BPL"].include? (@student_discipline_case.status)  
       - if ["Refer to BPL"].include? (@student_discipline_case.status) 
         %li=link_to (t 'student.discipline.refer_to_bpl'), "#refer_to_bpl", "data-toggle" => "tab" 
+      - if @student_discipline_case.action_type =="Ref Comandant"
+        %li=link_to (t 'student.discipline.refer_comandant'), "#refer_to_comandant", "data-toggle" => "tab" 
+        /(@student_discipline_case.status=="Closed" && (@student_discipline_case.action.blank? || @student_discipline_case.closed_at_college_on.blank?))
 
     / display 
     .tab-content{style:"padding-top:1em"}
@@ -44,12 +49,12 @@
         %br
         =render 'tab_details'
       
-      - if ["Open", "Closed", "No Case", "Refer to TPHEP", "Refer to BPL"].include? (@student_discipline_case.status) 
+      - if ["Open", "Closed", "No Case", "Refer to TPHEP", "Refer to BPL", "Refer to Mentor", "Refer to Counselor", "Refer to Comandant"].include? (@student_discipline_case.status) 
         #case_info.tab-pane
           %br
           =render 'tab_case_info'
       
-      - if ["Open", "Closed", "Refer to TPHEP", "Refer to BPL"].include? (@student_discipline_case.status) 
+      - if ["Open", "Closed", "Refer to TPHEP", "Refer to BPL", "Refer to Mentor", "Refer to Counselor", "Refer to Comandant"].include? (@student_discipline_case.status) 
         #action_taken.tab-pane
           %br
           =render 'tab_action_taken'
@@ -59,6 +64,11 @@
         #refer_to_bpl.tab-pane
           %br
           = render 'tab_refer_to_bpl'
+        
+      - if @student_discipline_case.action_type == "Ref Commandant"
+        #refer_to_comandant
+          %br
+          = render 'tab_refer_comandant'
       
 .row
   .col-md-7.col-md-offset-2
@@ -80,7 +90,7 @@
       /  /- if (["Refer to TPHEP"].include? (@student_discipline_case.status)) && (@student_discipline_case.assigned2_to == @current_user.userable_id || @current_user.roles.pluck(:name).include?("Administration"))
       /- permitted_to? :actiontaken, @student_discipline_case do
       - permitted_to? :actiontaken, :student_student_discipline_cases do
-        - if ["Refer to TPHEP"].include? (@student_discipline_case.status)
+        - if ["Refer to TPHEP", "Refer to Mentor", "Refer to Counselor"].include? (@student_discipline_case.status)
           = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('student.discipline.action_details'), actiontaken_student_student_discipline_case_path(@student_discipline_case),  :class => 'btn btn-primary'
       
       /- permitted_to? :referbpl, @student_discipline_case do
@@ -88,6 +98,11 @@
         - if @student_discipline_case.status == "Refer to BPL" 
           = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('student.discipline.refer_to_bpl'), referbpl_student_student_discipline_case_path(@student_discipline_case), :class => 'btn btn-primary' 
       
+      - permitted_to? :refercomandant, :student_discipline_cases do
+        - if @student_discipline_case.status == "Refer to Comandant" 
+          = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('student.discipline.refer_to_comandant'), refercomandant_student_student_discipline_case_path(@student_discipline_case), :class => 'btn btn-primary' 
+          
+          
       /- permitted_to? :destroy, @student_discipline_case do
       - permitted_to? :destroy, :student_student_discipline_cases do
         = link_to content_tag(:i, "", :class => "fa fa-trash-o icon-white") + " " + t('helpers.links.destroy'), |
