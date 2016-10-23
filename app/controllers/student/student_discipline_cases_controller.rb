@@ -17,7 +17,7 @@ class Student::StudentDisciplineCasesController < ApplicationController
     
     ##@student_discipline_cases2 = @search.result
     ##@student_discipline_cases = @student_discipline_cases2.page(params[:page]||1)
-    @student_discipline_cases2 = @search.result.sort_by{|x|x.student.course_id}
+    @student_discipline_cases2 = @search.result.sort_by{|x|[x.student.course_id, x.created_at]}
     @student_discipline_cases = Kaminari.paginate_array(@student_discipline_cases2).page(params[:page]||1) 
 
 #     @student_year_sem=[]

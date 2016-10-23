@@ -46,7 +46,7 @@
       %dt=t 'student.discipline.other_info', :default => model_class.human_attribute_name(:other_info)+":"
       %dd=h @student_discipline_case.other_info 
       
-    -  if @student_discipline_case.action_type == "counseling" || @student_discipline_case.action_type.include?("counseling")
+    -  if @student_discipline_case.action_type == "counseling" || ["counseling"].include?(@student_discipline_case.action_type)
       %dt=t 'student.discipline.counseling_session', :default => model_class.human_attribute_name(:counseling_session)+":"
       %dd &nbsp;
       %br

@@ -100,7 +100,7 @@
       
       - permitted_to? :refercomandant, :student_discipline_cases do
         - if @student_discipline_case.status == "Refer to Comandant" 
-          = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('student.discipline.refer_to_comandant'), refercomandant_student_student_discipline_case_path(@student_discipline_case), :class => 'btn btn-primary' 
+          = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('student.discipline.refer_comandant'), refercomandant_student_student_discipline_case_path(@student_discipline_case), :class => 'btn btn-primary' 
           
           
       /- permitted_to? :destroy, @student_discipline_case do

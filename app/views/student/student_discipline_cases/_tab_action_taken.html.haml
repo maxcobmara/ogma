@@ -19,7 +19,7 @@
 
     /action & close date by Ketua Sekolah(no case) / Mentor / Counselor / Comandant
     %dt=t 'student.discipline.action', :default => model_class.human_attribute_name(:action)+":" 
-    %dd=h @student_discipline_case.action
+    %dd{style: 'padding-left: 70px;'}=h @student_discipline_case.action
     
     %dt=t 'student.discipline.closed_at_college_on', :default => model_class.human_attribute_name(:closed_at_college_on)+":" 
     %dd= @student_discipline_case.closed_at_college_on.try(:strftime, '%d %b %Y')

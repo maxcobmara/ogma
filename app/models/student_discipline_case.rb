@@ -18,32 +18,11 @@ class StudentDisciplineCase < ActiveRecord::Base
   accepts_nested_attributes_for :student_counseling_sessions, :reject_if => lambda { |a| a[:requested_at].blank? }
   
   validates_presence_of :reported_by, :student_id, :status, :infraction_id, :assigned_to, :reported_on
-  #validate :action_type_and_status_must_match 
   validates :case_created_on, :investigation_notes, :closed_at_college_on , presence: true, :if => :case_is_closed?
   validates :case_created_on, :investigation_notes, :assigned2_to, :assigned2_on, presence: true, :if => :case_is_referred_to_mentor_counselor?
   validates :other_info, :action, :closed_at_college_on, presence: true, :if => :action_by_mentor_counselor?
   validates :other_info, presence: true, :if => :case_referred_to_comandant?
   validates :action, :closed_at_college_on, presence: true, :if => :action_by_comandant?
-  
-  def case_is_closed?
-    status=="Closed" && college.code=="amsas"
-  end
-  
-  def case_is_referred_to_mentor_counselor?
-    (status=="Refer to Counselor" || status=="Refer to Mentor") && college.code=="amsas"
-  end
-  
-  def action_by_mentor_counselor?
-    status=="Closed" && (action_type=="Ref Counselor" || action_type=="Ref Mentor") && college.code=="amsas"
-  end
-  
-  def case_referred_to_comandant?
-    status=="Refer to Comandant"
-  end
-  
-  def action_by_comandant?
-    status=="Closed" && (action_type=="Ref Comandant")
-  end
   
   #validate :confimed_date
   
@@ -98,6 +77,47 @@ class StudentDisciplineCase < ActiveRecord::Base
 #     	
 #   	end
   end
+  
+  def rev_action_type
+    if status=="Closed" 
+      if action_type2 && (action_type2==1 || action_type2=='1') 
+        if  (action_type=="" || action_type==nil)
+          self.action_type="counseling"
+        else
+          self.action_type=action_type+" & counseling"
+        end
+      end
+    elsif status=="Refer to BPL"
+      if action_type2 && (action_type2==1 || action_type2=='1') 
+        self.action_type=action_type+" & counseling"
+      end
+    elsif status=="Refer to Counselor" || status=="Refer to Mentor"
+      #do nothing - value assigned by radio button & select field.
+    elsif status=="Refer to Comandant"
+      self.action_type= "Ref Comandant"
+    end 
+  end
+  
+  #Validation use
+  def case_is_closed?
+    status=="Closed" && college.code=="amsas"
+  end
+  
+  def case_is_referred_to_mentor_counselor?
+    (status=="Refer to Counselor" || status=="Refer to Mentor") && college.code=="amsas"
+  end
+  
+  def action_by_mentor_counselor?
+    status=="Closed" && (action_type=="Ref Counselor" || action_type=="Ref Mentor") && college.code=="amsas"
+  end
+  
+  def case_referred_to_comandant?
+    status=="Refer to Comandant"
+  end
+  
+  def action_by_comandant?
+    status=="Closed" && (action_type=="Ref Comandant")
+  end
     
   #note : status - in English all the time
   def status_workflow
@@ -129,7 +149,6 @@ class StudentDisciplineCase < ActiveRecord::Base
     flow
   end
 
-  ###
   def status_workflow_amsas
       flow = Array.new
       if status == nil || status.blank?
@@ -163,7 +182,6 @@ class StudentDisciplineCase < ActiveRecord::Base
       end
       flow
   end
-  ###
   
   def render_status
     if college.code=='amsas'
@@ -173,27 +191,6 @@ class StudentDisciplineCase < ActiveRecord::Base
     end
   end
   
-  SDCSTATUS = [
-         #  Displayed       stored in db
-         [ I18n.t('student.discipline.new2'),"New" ],
-         [ I18n.t('student.discipline.open'),"Open" ],
-         [ I18n.t('student.discipline.no_case'),"No Case" ],
-         [ I18n.t('student.discipline.closed'), "Closed" ],
-         [ I18n.t('student.discipline.refer_bpl'), "Refer to BPL" ],   
-         [ I18n.t('student.discipline.refer_tphep'), "Refer to TPHEP"]
-    ]
-  
-  SDCSTATUS_AMSAS = [
-         #  Displayed       stored in db
-         [ I18n.t('student.discipline.new2'),"New" ],
-         [ I18n.t('student.discipline.open'),"Open" ],
-         [ I18n.t('student.discipline.no_case'),"No Case" ],
-         [ I18n.t('student.discipline.closed'), "Closed" ],
-         [ I18n.t('student.discipline.refer_counselor'), "Refer to Counselor" ],   
-         [ I18n.t('student.discipline.refer_mentor'), "Refer to Mentor" ],   
-         [ I18n.t('student.discipline.refer_comandant'), "Refer to Comandant"]
-    ]
-    
   def render_infraction
     a=(DropDown::INFRACTION.find_all{|disp, value| value == infraction_id }).map {|disp, value| disp}.first
     a+=" - "+description if infraction_id==4
@@ -219,17 +216,16 @@ class StudentDisciplineCase < ActiveRecord::Base
   end
     
   def reporter_details 
-          suid = Array(reported_by)
-          exists = Staff.all.pluck(:id)
-          checker = suid & exists     
-
-          if reported_by == nil
-             "" 
-           elsif checker == []
-             "Staff No Longer Exists" 
-          else
-            staff.mykad_with_staff_name
-          end
+    suid = Array(reported_by)
+    exists = Staff.all.pluck(:id)
+    checker = suid & exists
+    if reported_by == nil
+       "" 
+    elsif checker == []
+      "Staff No Longer Exists" 
+    else
+      staff.mykad_with_staff_name
+    end
   end
     
   def student_name
@@ -243,7 +239,7 @@ class StudentDisciplineCase < ActiveRecord::Base
   def room_no
     location.blank? ? "Not Assigned" : " #{location.location_list}"  
   end
-    
+  
   #def self.display_msg(err)
     #full_msg=[]
     #err.each do |k,v|
@@ -251,40 +247,29 @@ class StudentDisciplineCase < ActiveRecord::Base
     #end
     #full_msg
   #end
-    
-  def rev_action_type
-    if status=="Closed" 
-      if action_type2 && (action_type2==1 || action_type2=='1') 
-        if  (action_type=="" || action_type==nil)
-          self.action_type="counseling"
-        else
-          self.action_type=action_type+" & counseling"
-        end
-      end
-    elsif status=="Refer to BPL"
-      if action_type2 && (action_type2==1 || action_type2=='1') 
-        self.action_type=action_type+" & counseling"
-      end
-    elsif status=="Refer to Counselor" || status=="Refer to Mentor"
-#       if action_type2 
-#          if (action_type2==1 || action_type2=='1') 
-#            self.action_type="Ref Comandant"
-# # #           self.status="Refer to Comandant"      #js not working, temp use this
-# #         else
-# #           # NOTE - unless all fields are filled in, records will remain editable (by Counselor/Mentor)
-# # #           if !other_info.blank? && !action.blank? && !closed_at_college_on.blank?
-# # #             self.action_type=action_type+" (action taken)"
-# # # #             self.status="Closed"
-# # #           end
-#         end
-#        end
-    elsif status=="Refer to Comandant"
-      self.action_type= "Ref Comandant"
-    end 
-  end
+   
+  SDCSTATUS = [
+         #  Displayed       stored in db
+         [ I18n.t('student.discipline.new2'),"New" ],
+         [ I18n.t('student.discipline.open'),"Open" ],
+         [ I18n.t('student.discipline.no_case'),"No Case" ],
+         [ I18n.t('student.discipline.closed'), "Closed" ],
+         [ I18n.t('student.discipline.refer_bpl'), "Refer to BPL" ],   
+         [ I18n.t('student.discipline.refer_tphep'), "Refer to TPHEP"]
+    ]
   
-    
-    private
+  SDCSTATUS_AMSAS = [
+         #  Displayed       stored in db
+         [ I18n.t('student.discipline.new2'),"New" ],
+         [ I18n.t('student.discipline.open'),"Open" ],
+         [ I18n.t('student.discipline.no_case'),"No Case" ],
+         [ I18n.t('student.discipline.closed'), "Closed" ],
+         [ I18n.t('student.discipline.refer_counselor'), "Refer to Counselor" ],   
+         [ I18n.t('student.discipline.refer_mentor'), "Refer to Mentor" ],   
+         [ I18n.t('student.discipline.refer_comandant'), "Refer to Comandant"]
+    ]
+     
+  private
     
     def check_case_referred_for_counseling
       counseling_sessions=StudentCounselingSession.where(case_id: id)
