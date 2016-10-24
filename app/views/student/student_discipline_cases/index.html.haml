@@ -27,15 +27,16 @@
     %thead
       %tr
         %th= sort_link(@search, :status, (t 'student.discipline.status'))
-        %th{:width=>'20%'}= sort_link(@search, :programme, (t 'student.discipline.programme'))
+        %th{:width=>'15%'}= sort_link(@search, :programme, (t 'student.discipline.programme'))
         - unless current_user.college.code=='amsas'
           %th{:width=>'80px'}= t 'student.discipline.year_semester'
           %th= sort_link(@search, :matrix_no, (t 'student.discipline.matrix_no'))
         %th{:width=>'20%'}= sort_link(@search, :student_id, (t 'student.discipline.student_id'))
         %th{:width=>'10%'}= sort_link(@search, :infraction_id, (t 'student.discipline.infraction'))
         %th{:width=>'10%'}= sort_link(@search, :reported_on, (t 'student.discipline.reported_on'))
-        %th{:width=>'10%'}= sort_link(@search, :file_id, (t 'student.discipline.file_id'))
+        /%th{:width=>'10%'}= sort_link(@search, :file_id, (t 'student.discipline.file_id'))
         %th{:width=>'10%'}=sort_link(@search, :location_id, (t 'student.discipline.location_id'))
+        %th{:width=>'15%'}=(t 'student.discipline.action_by')
         %th{:width=>'10%'}= sort_link(@search, :counselor_feedback, (t 'student.discipline.counselor_feedback'))
         
     %tbody
@@ -53,8 +54,15 @@
         %td=h student_discipline_case.student.name 
         %td=h student_discipline_case.render_infraction
         %td=h student_discipline_case.try(:reported_on).try(:strftime, '%d %b %Y')
-        %td=h student_discipline_case.cofile.try(:name)
-        %td=h student_discipline_case.location.try(:name)
+        /%td=h student_discipline_case.cofile.try(:name)
+        %td=h [3,4].include?(student_discipline_case.location.root.lclass) ? student_discipline_case.location.try(:combo_code) : student_discipline_case.location.try(:name)
+        %td
+          - if student_discipline_case.render_action_by==I18n.t('student.discipline.no_case')
+            %font{style: 'color: green; font-weight: bold'}=h student_discipline_case.render_action_by
+          - elsif student_discipline_case.render_action_by==I18n.t('not_completed')
+            %font{style: 'color: red;'}=h student_discipline_case.render_action_by
+          - else
+            =h student_discipline_case.render_action_by
         %td
           - if StudentCounselingSession.pluck(:case_id).compact.uniq.include?(student_discipline_case.id)
             =h student_discipline_case.counselor_feedback? ? fa_icon('check') : t('student.discipline.not_completed')

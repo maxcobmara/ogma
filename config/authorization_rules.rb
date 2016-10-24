@@ -368,18 +368,27 @@ authorization do
      if_attribute :reported_by => is {user.userable.id}
    end
    has_permission_on :student_student_discipline_cases, :to => [:read, :discipline_report, :anacdotal_report], :join_by => :or do        
-     if_attribute :assigned_to => is {user.userable.id}
-     if_attribute :assigned2_to => is {user.userable.id}                                                              # Programme Mgr & TPHEP may Show & view reports
+     if_attribute :assigned_to => is {user.userable.id}                                                                # (kskbjb)Programme Mgr & TPHEP / (amsas) Ketua Sek, Mentor & 
+     if_attribute :assigned2_to => is {user.userable.id}                                                              #Counselor may Show & view reports                                                                                                                                                                                                     
    end
-   has_permission_on :student_student_discipline_cases, :to => :update, :join_by => :and do # Programme Manager can enter action type (EDIT)
+   has_permission_on :student_student_discipline_cases, :to => :update, :join_by => :and do # Programme Manager/KS can enter action type (EDIT)
      if_attribute :assigned_to =>  is {user.userable.id}
      if_attribute :action_type => is {nil}
    end
-   has_permission_on :student_student_discipline_cases, :to => [:update, :actiontaken, :referbpl], :join_by => :and do 
+   has_permission_on :student_student_discipline_cases, :to => [:update, :actiontaken], :join_by => :and do 
+     if_attribute :assigned2_to => is {user.userable.id}                                                             # TPHEP can log action TAKEN if action type==Refer to TPHEP
+     if_attribute :action_type => is_not {nil}                                                                               # Kaunselor/Mentor can log action if action_type==Refer to Counselor  
+   end                                                                                                                                        # /Refer to Mentor                                      
+   has_permission_on :student_student_discipline_cases, :to =>  [:update, :referbpl], :join_by => :and do 
      if_attribute :assigned2_to => is {user.userable.id}
-     if_attribute :action_type => is_not {nil}                                                                             # TPHEP can log action TAKEN if action type==Refer to TPHEP
-   end                                                                                                                                      # TODO - edit is still accessible when update accessible(actiontaken, referbpl)
-   
+     if_attribute :action_type => is_not {nil}                                                                               # TPHEP refer case to BPL
+     if_attribute :college_id => is {College.where(code: 'kskbjb').first.id}
+   end 
+   has_permission_on :student_student_discipline_cases, :to => [:update, :refercomandant], :join_by => :and do 
+     if_attribute :action_type => is {"Ref Comandant"}                                                               # Comandant to log action TAKEN
+     if_attribute :college_id => is {College.where(code: 'amsas').first.id}
+   end 
+
    has_permission_on :campus_locations, :to => [:read, :kewpa7]                                          # A staff can read+kewpa7 all location inc. staff & student residences
    
    has_permission_on :events, :to => [:create, :read]                                                             # A staff can read, create but update own
@@ -751,7 +760,7 @@ authorization do
   end
   
   role :disciplinary_officer do
-    has_permission_on :student_student_discipline_cases, :to => [:menu, :read, :delete, :reports, :discipline_report, :anacdotal_report, :actiontaken, :referbpl]
+    has_permission_on :student_student_discipline_cases, :to => [:menu, :read, :delete, :reports, :discipline_report, :anacdotal_report, :actiontaken, :referbpl, :refercomandant]
     has_permission_on :student_student_discipline_cases, :to => :update do
       if_attribute :status => is_not {"Closed"}                                                            # TODO - Edit still accessible although status is referbpl
     end 
@@ -1288,17 +1297,18 @@ authorization do
 
   #16-OK - 1) for READ & Manage, note 'discipline_report' & 'anacdotal_report' accessibility is same as INDEX pg, 2) New - open for all staff
   #3) additional report - fr menu, Students | Reporting -- (i) Discipline Case Listing by Students, (ii) Student Discipline Case Listing
+  #4) NOTE - Refer to Comandant - has no assigned default value of user --> requires 'student_discipline_module_admin' access
   role :student_discipline_module_admin do
-     has_permission_on :student_student_discipline_cases, :to => [:manage, :actiontaken, :referbpl,:reports, :discipline_report, :anacdotal_report]
+     has_permission_on :student_student_discipline_cases, :to => [:manage, :actiontaken, :referbpl, :refercomandant,:reports, :discipline_report, :anacdotal_report]
   end
   role :student_discipline_module_viewer do
      has_permission_on :student_student_discipline_cases, :to => [:menu, :read, :reports, :discipline_report] 
   end
   role :student_discipline_module_user do
-     has_permission_on :student_student_discipline_cases, :to => [:menu, :read, :update, :actiontaken, :referbpl,:reports, :discipline_report, :anacdotal_report] 
+     has_permission_on :student_student_discipline_cases, :to => [:menu, :read, :update, :actiontaken, :referbpl, :refercomandant, :reports, :discipline_report, :anacdotal_report] 
   end
   # NOTE workable SELECTION of auth rules for members: (positions data must complete) 
-  #1) Reporter, Programme Manager & TPHEP - 'Staff' role / Student Discipline Module Member
+  #1) Reporter, Programme Manager & TPHEP / KS, Mentor &Counselor - 'Staff' role / Student Discipline Module Member
   #2) Discipline Officer - must activate 'Disciplinary Officer 'role
   role :student_discipline_module_member do
     #own records
@@ -1310,18 +1320,27 @@ authorization do
     has_permission_on :student_student_discipline_cases, :to => :read do                                 # reporter have access to read cases
       if_attribute :reported_by => is {user.userable.id}
     end
-    #own (Programme Manager & TPHEP)
+    #own (kskbjb: Programme Manager & TPHEP) (amsas: Ketua Sekolah(KS) & Kaunselor / Mentor)
     has_permission_on :student_student_discipline_cases, :to => [:read, :discipline_report, :anacdotal_report], :join_by => :or do        
       if_attribute :assigned_to => is {user.userable.id}
       if_attribute :assigned2_to => is {user.userable.id}                                                              # Programme Mgr & TPHEP may Show & view reports
     end
-    has_permission_on :student_student_discipline_cases, :to => :update, :join_by => :and do # Programme Manager can enter action type (EDIT)
+    has_permission_on :student_student_discipline_cases, :to => :update, :join_by => :and do # Programme Manager/KS can enter action type (EDIT)
       if_attribute :assigned_to =>  is {user.userable.id}
       if_attribute :action_type => is {nil}
     end
-    has_permission_on :student_student_discipline_cases, :to => [:update, :actiontaken, :referbpl], :join_by => :and do 
+    has_permission_on :student_student_discipline_cases, :to => [:update, :actiontaken], :join_by => :and do 
+      if_attribute :assigned2_to => is {user.userable.id}                                                             # TPHEP can log action TAKEN if action type==Refer to TPHEP
+      if_attribute :action_type => is_not {nil}                                                                               # Kaunselor/Mentor can log action if action_type==Refer to Counselor  
+    end                                                                                                                                        # /Refer to Mentor                                      
+    has_permission_on :student_student_discipline_cases, :to =>  [:update, :referbpl], :join_by => :and do 
       if_attribute :assigned2_to => is {user.userable.id}
-      if_attribute :action_type => is_not {nil}                                                                             # TPHEP can log action TAKEN if action type==Refer to TPHEP
+      if_attribute :action_type => is_not {nil}                                                                               # TPHEP refer case to BPL
+      if_attribute :college_id => is {College.where(code: 'kskbjb').first.id}
+    end 
+    has_permission_on :student_student_discipline_cases, :to => [:update, :refercomandant], :join_by => :and do 
+      if_attribute :action_type => is {"Ref Comandant"}                                                               # Comandant to log action TAKEN
+      if_attribute :college_id => is {College.where(code: 'amsas').first.id}
     end 
   end
   

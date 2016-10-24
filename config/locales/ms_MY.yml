@@ -41,6 +41,7 @@ ms_MY:
       bookingfacility: Tempahan Fasiliti
       mentor: Mentor
       mentee: Mentee
+      student_discipline_case: Kes Disiplin Pelajar
     attributes:
       asset:
         assignedto_id: Pegawai Bertanggungjawab
@@ -275,6 +276,16 @@ ms_MY:
           other: Mentee
       mentees:
         student_id: Mentee
+      student_discipline_case:
+        assigned_to: Dihantar kepada
+        reported_on: Tarikh dilaporkan
+        case_created_on: Kes direkodkan pada
+        investigation_notes: Ringkasan siasatan
+        assigned2_to: Rujuk ke
+        assigned2_on: Tarikh makluman
+        other_info: Penilaian Kes 
+        action: Tindakan
+        closed_at_college_on: Tarikh Ditutup (Kolej)
     errors:
         template:
           body: "Berikut adalah beberapa masalah:"
@@ -368,6 +379,7 @@ ms_MY:
   not_submitted: Belum dihantar
   approved: Diluluskan
   not_approved: Belum Diluluskan
+  not_completed: Belum Selesai
   view: Papar
   edit_checked: Sunting Rekod Dipilih
   newrecord_type: Jenis Rekod
@@ -2585,6 +2597,7 @@ ms_MY:
       description: Butiran
       reported_on: Tarikh Dilaporkan
       assigned_to: Dihantar kepada Ketua Jabatan
+      assigned_to_amsas: Dihantar kepada Ketua Sekolah
       file_id: Rujukan Fail
       location_id: Lokasi
       counselor_feedback: Maklum Balas Kaunselor
@@ -2620,6 +2633,8 @@ ms_MY:
       appeal_decision_on: Tarikh Keputusan Rayuan
       description: "Jika Lain-lain, Sila Nyatakan"
       assigned2_to: Makluman kepada Ketua Jabatan
+      assigned2_to_mentor: Rujuk ke Mentor
+      assigned2_to_counselor: Rujuk ke Kaunselor
       assigned2_on: Tarikh Makluman
       counseling_request: Permohonan Kaunseling
       removal_prohibited_for_referred_case: "Rekod disiplin pelajar yang dipilih TIDAK BOLEH DIPADAM, kerana telah dirujuk kepada pihak Kaunselor."
@@ -2644,6 +2659,25 @@ ms_MY:
       discharge_leave_counseling: "Lucut Cuti & Kaunseling"
       charity_works_counseling: "Kerja Amal & Kaunseling"
       not_completed: Belum selesai
+      refer_counselor: Rujuk ke Kaunselor
+      refer_mentor: Rujuk ke Mentor
+      refer_comandant: Rujuk ke Komandan
+      take_action: Laksana Tindakan
+      evaluate_case: Penilaian Kes
+      evaluate_case2: Penilaian Kes
+      action_by: Tindakan Oleh
+      comandant: Komandan
+      counselor: Kaunselor
+      session_feedback: "Sesi Kaunseling & Maklumbalas"
+      final_feedback: Maklum Balas Akhir
+      request_counseling: "Sila mohon sesi kaunseling, klik 'Kemaskini' & terus ke modul 'Sesi Kaunseling Pelajar' untuk"
+      confirm_appointment: Sahkan temujanji
+      log_sessions: Isikan butiran sesi kaunseling
+      add_sessions: "Tambah sesi, ulangi langkah 1 & 2 (jika perlukan sesi kaunseling tambahan) *"
+      complete_session: "Selesaikan sesi dengan mengisi medan (Tindakan oleh Kaunselor - Ringkasan/Maklumbalas(Akhir) kepada Perujuk Kes)"
+      session_time: Tarikh / Masa
+      counselor_action: Tindakan Kaunselor
+      tick_refer_comandant: "Pilih kotak semak untuk rujuk kes ke Komandan, sebaliknya nyahpilih, masukkan 'Tindakan' and 'Tarikh ditutup(kolej)'."
     
     counseling:
       title: Sesi Kaunseling Pelajar

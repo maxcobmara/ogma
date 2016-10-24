@@ -506,18 +506,6 @@ module DropDown
           [ "Amazon.com",2 ],
           [ "Others",3 ]
 ]
-  
-  
-  #student discipline cases  
-   SDCSTATUS = [
-         #  Displayed       stored in db
-         [ I18n.t('student.discipline.new2'),"New" ],
-         [ I18n.t('student.discipline.open'),"Open" ],
-         [ I18n.t('student.discipline.no_case'),"No Case" ],
-         [ I18n.t('student.discipline.closed'), "Closed" ],
-         [ I18n.t('student.discipline.refer_bpl'), "Refer to BPL" ],   
-         [ I18n.t('student.discipline.refer_tphep'), "Refer to TPHEP"]
-    ]
    
    INFRACTION = [
          #  Displayed       stored in db

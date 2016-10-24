@@ -12,7 +12,7 @@ class Anacdotal_reportPdf < Prawn::Document
       text "#{I18n.t('student.students.matrixno')} : #{@discipline_cases.first.student.try(:matrixno)}", :align => :left, :size => 11, :indent_paragraphs => 10
     end
     text "#{I18n.t('student.students.course_id')} : #{@discipline_cases.first.student.course.try(:programme_list)}", :align => :left, :size => 11, :indent_paragraphs => 10
-    text "#{I18n.t('student.students.intake_id')} : #{@discipline_cases.first.student.intake_id? ? @discipline_cases.first.student.intakestudent.monthyear_intake.try(:strftime, '%b %Y') : @discipline_cases.first.student.intake.try(:strftime, '%b %Y')}", :align => :left, :size => 11, :indent_paragraphs => 10
+    text "#{I18n.t('student.students.intake_id')} : #{@discipline_cases.first.college.code=='amsas' ? 'Siri '+ @discipline_cases.first.student.intakestudent.monthyear_intake.try(:strftime, '%m/%Y') : @discipline_cases.first.student.intakestudent.monthyear_intake.try(:strftime, '%b %Y')}", :align => :left, :size => 11, :indent_paragraphs => 10
     move_down 10
     record
   end
@@ -33,7 +33,7 @@ class Anacdotal_reportPdf < Prawn::Document
     header = [[ "", "#{I18n.t('student.discipline.reported_on')}","#{I18n.t('student.discipline.infraction_id')}", "#{I18n.t('student.discipline.room_no')}", "#{I18n.t('student.discipline.status')}", "#{I18n.t('student.discipline.action')}"]]   
      header +
        @discipline_cases.map do |discipline_case|
-       ["#{counter += 1}", "#{discipline_case.reported_on.try(:strftime, '%d-%m-%Y')}", "#{discipline_case.render_infraction}" , "#{discipline_case.location.try(:name)}"," #{discipline_case.render_status}", "#{discipline_case.action_type} - #{discipline_case.action}"]
+       ["#{counter += 1}", "#{discipline_case.reported_on.try(:strftime, '%d-%m-%Y')}", "#{discipline_case.render_infraction}" , "#{discipline_case.location.try(:name)}"," #{discipline_case.render_status}", "#{discipline_case.action_type=='no_case' ? I18n.t('student.discipline.no_case') : discipline_case.render_action_by+' - '} #{discipline_case.action}"]
        #Tindakan
        #"#{I18n.t('student.discipline.refer_bpl') if discipline_case.action_type=="Ref to BPL" && !discipline_case.action_type.blank?} #{I18n.t('student.discipline.refer_tphep') if discipline_case.action_type=="Ref TPHEP" && !discipline_case.action_type.blank?} #{I18n.t('student.discipline.no_case') if discipline_case.action_type=="no_case" && !discipline_case.action_type.blank? } #{I18n.t('student.discipline.advise') if discipline_case.action_type=="advise" && !discipline_case.action_type.blank?}"
      end

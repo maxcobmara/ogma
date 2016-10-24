@@ -296,6 +296,7 @@ Ogma::Application.routes.draw do
       member do
         get :actiontaken
         get :referbpl
+        get :refercomandant
       end
       collection do
         get :reports

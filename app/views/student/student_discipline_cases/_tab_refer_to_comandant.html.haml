@@ -1,0 +1,15 @@
+- model_class=StudentDisciplineCase
+.col-md-8.col-md-offset-1
+  %dl.dl-horizontal
+    %dt=t 'student.discipline.case_evaluation', :default => model_class.human_attribute_name(:board_decision)+":"
+    %dd{style: 'padding-left: 70px;'}=h @student_discipline_case.board_decision 
+    
+    %dt=t 'student.discipline.evaluation_date', :default => model_class.human_attribute_name(:board_decision_on)+":"
+    %dd=@student_discipline_case.board_decision_on.try(:strftime, '%d %b %Y')
+    
+    %dt=t 'student.discipline.action'
+    %dd{style: 'padding-left: 70px;'}=h @student_discipline_case.action
+    
+    %dt Status
+    %dd=h @student_discipline_case.render_status 
+

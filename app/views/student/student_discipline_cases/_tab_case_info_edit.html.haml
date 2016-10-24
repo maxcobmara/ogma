@@ -3,7 +3,7 @@
     .col-sm-2.control-label
       = f.label t 'student.discipline.case_created_on', for: :case_created_on
     .col-md-2
-      = f.text_field :case_created_on, class: 'date_picker_reverse form-control', value: @student_discipline_case.case_created_on.try(:strftime, '%d-%m-%Y')
+      = f.text_field :case_created_on, class: 'date_picker_reverse form-control mandatory', value: @student_discipline_case.case_created_on.try(:strftime, '%d-%m-%Y')
   .form-group
     .col-sm-2.control-label
       = f.label  t 'student.discipline.file_id', for: :file_id
@@ -13,47 +13,69 @@
     .col-sm-2.control-label
       = f.label  t 'student.discipline.investigation_notes', for: :investigation_notes
     .col-md-5
-      = f.text_area :investigation_notes, :size => "60x5" 
+      = f.text_area :investigation_notes, :size => "60x5", class: 'mandatory'
   .form-group
     .col-sm-2.control-label
       = f.label  t 'student.discipline.action_type', for: :action_type
-    .col-md-1= f.radio_button :action_type, "no_case", :id => 'nc', :class => 'radio_action_type'
-    .col-md-1=t('student.discipline.no_case')
-    .col-md-1= f.radio_button :action_type, "advise", :id => 'ja', :class => 'radio_action_type' 
-    .col-md-1=t('student.discipline.advise')
-    .col-md-1= f.radio_button :action_type, "Ref TPHEP",	:id => 'au', :class => 'radio_action_type'
-    .col-md-2=t('student.discipline.refer_tphep')
+    - if @student_discipline_case.college.code=='amsas'
+      .col-md-1= f.radio_button :action_type, "no_case", :id => 'nc', :class => 'radio_action_type'
+      .col-md-1=t('student.discipline.no_case')
+      .col-md-1= f.radio_button :action_type, "Ref Mentor", :id => 'mn', :class => 'radio_action_type'
+      .col-md-2=t('student.discipline.refer_mentor')
+      .col-md-1= f.radio_button :action_type, "Ref Counselor", :id => 'cn', :class => 'radio_action_type'
+      .col-md-2=t('student.discipline.refer_counselor')
+    - else
+      .col-md-1= f.radio_button :action_type, "no_case", :id => 'nc', :class => 'radio_action_type'
+      .col-md-1=t('student.discipline.no_case')
+      .col-md-1= f.radio_button :action_type, "advise", :id => 'ja', :class => 'radio_action_type' 
+      .col-md-1=t('student.discipline.advise')
+      .col-md-1= f.radio_button :action_type, "Ref TPHEP",	:id => 'au', :class => 'radio_action_type'
+      .col-md-2=t('student.discipline.refer_tphep')
+
   .form-group#nc_item{style: "display: none;"}
     .col-sm-2.control-label
       = f.label  t 'student.discipline.closed_at_college_on', for: :closed_at_college_on
     .col-md-2
-      = f.text_field :closed_at_college_on, class: 'date_picker_reverse form-control', value: @student_discipline_case.closed_at_college_on.try(:strftime, '%d-%m-%Y')
+      = f.text_field :closed_at_college_on, class: 'date_picker_reverse form-control mandatory', value: @student_discipline_case.closed_at_college_on.try(:strftime, '%d-%m-%Y')
+
   .form-group#ja_item{style: "display: none;"}
     .col-sm-2.control-label
       = f.label  t 'student.discipline.other_info', for: :other_info
     .col-md-5
-      = f.text_area :other_info, :size => "40x5"
+      = f.text_area :other_info, :size => "40x5", class: 'mandatory'
+
   - if current_user.college.code=="kskbjb"
     - myhod = Position.where(id: 3).first.staff_id
   - else
-    - myhod = Position.where('staff_id is not null').pluck(:staff_id)
-    - tatatertib = Position.where(unit: 'Pejabat Tatatertib').first.staff_id
-  .form-group.au_item{style: "display: none;"}
+    - counselor=Position.where('unit ILIKE(?)', '%Kaunseling%').pluck(:staff_id)
+    - mentor=Staff.joins(:mentor).pluck(:id)
+
+  .form-group#au_item{style: "display: none;"}
     .col-sm-2.control-label
-      = f.label  t 'student.discipline.assigned2_to', for: :notify_hod
+      = f.label  t 'student.discipline.assigned2_to', for: :assigned2_to
     .col-md-5
-      - if current_user.college.code=="amsas"
-        = f.collection_select :assigned2_to, Staff.where('id IN (?)', myhod).order(rank_id: :asc, name: :asc), :id, :staff_with_rank_unit, {:prompt => t('select'), :selected => tatatertib}, {class: 'selectpicker', "data-width"=>'460px'}
-      - else
-        = f.collection_select :assigned2_to, Staff.where('id IN (?)', myhod).order(rank_id: :asc, name: :asc), :id, :staff_with_rank, {:prompt => t('select')}, {class: 'selectpicker', "data-width"=>'460px'}
+      = f.collection_select :assigned2_to, Staff.where('id IN (?)', myhod).order(rank_id: :asc, name: :asc), :id, :staff_with_rank, {:prompt => t('select')}, {class: 'selectpicker', "data-width"=>'460px'}
       /replace this with - model/student_discipline_case.rb - line 46- self.assigned2_to = nil
       /= select_tag "student_discipline_case[assigned2_to]","<option value=''>"+'Please select'+"</option>"+options_from_collection_for_select(Staff.find(:all, :conditions => ['id IN (?)', myhod]), :id, :name)
-  .form-group.au_item{style: "display: none;"}
+  
+  .form-group#mn_item{style: "display: none;"}
     .col-sm-2.control-label
-      = f.label  t 'student.discipline.assigned2_on', for: :notify_hod_date
-    .col-md-2
-      = f.text_field :assigned2_on, class: 'date_picker_reverse form-control', value: @student_discipline_case.assigned2_on.try(:strftime, '%d-%m-%Y')
+      = f.label  t 'student.discipline.assigned2_to_mentor', for: :assigned2_to
+    .col-md-5
+      = f.collection_select :assigned2_to, Staff.where('id IN (?)', mentor).order(rank_id: :asc, name: :asc), :id, :staff_with_rank_unit, {}, {class: 'selectpicker mandatory', "data-width"=>'460px'}
       
+  / NOTE - is_counselor -> field for Counselor (assigned2_to - refer model)
+  .form-group#cn_item{style: "display: none;"}
+    .col-sm-2.control-label
+      = f.label  t 'student.discipline.assigned2_to_counselor', for: :assigned2_to
+    .col-md-5
+      = f.collection_select :is_counselor, Staff.where('id IN (?)', counselor).order(rank_id: :asc, name: :asc), :id, :staff_with_rank_unit, {}, {class: 'selectpicker mandatory', "data-width"=>'460px'}
+  
+  .form-group#assign_date{style: "display: none;"}
+    .col-sm-2.control-label
+      = f.label  t 'student.discipline.assigned2_on', for: :assigned2_to_date
+    .col-md-2
+      = f.text_field :assigned2_on, class: 'date_picker_reverse form-control mandatory', value: @student_discipline_case.assigned2_on.try(:strftime, '%d-%m-%Y')
  
 :javascript
 
@@ -62,50 +84,63 @@ $(document).ready(function(){
     if($('#nc').is(':checked')) { 
       $("#nc_item").show();
       $("#ja_item").hide();
-      $(".co_item").hide();
-      $(".au_item").hide();
+      $("#au_item").hide();
+      $("#mn_item").hide();
+      $("#cn_item").hide();
+      $("#assign_date").hide();
  
-      var ansM = document.getElementById("student_discipline_case_status");
-      ansM.value = "Closed";
+      /*var ansM = document.getElementById("student_discipline_case_status");*/
+      /*ansM.value = "Closed";*/
+      $("#student_discipline_case_status").val("Closed").change();
 
     }else if ($('#ja').is(':checked')){
       $("#nc_item").hide();
       $("#ja_item").show();
-      $(".co_item").hide();
-      $(".au_item").hide();
+      $("#au_item").hide();
+      $("#mn_item").hide();
+      $("#cn_item").hide();
+      $("#assign_date").hide();
  
-      var ansM = document.getElementById("student_discipline_case_status");
-      ansM.value = "Closed";
+      /*var ansM = document.getElementById("student_discipline_case_status");*/
+      /*ansM.value = "Closed";*/
+      $("#student_discipline_case_status").val("Closed").change();
  
     }else if ($('#au').is(':checked')){
       $("#nc_item").hide();
       $("#ja_item").hide();
-      $(".co_item").hide();
-      $(".au_item").show();
-      $(".bpl_item").hide();
+      $("#au_item").show();
+      $("#mn_item").hide();
+      $("#cn_item").hide();
+      $("#assign_date").show();
 
-      var ansM = document.getElementById("student_discipline_case_status");
-      ansM.value = "Refer to TPHEP";
+      /*var ansM = document.getElementById("student_discipline_case_status");*/
+      /*ansM.value = "Refer to TPHEP";*/
+      $("#student_discipline_case_status").val("Refer to TPHEP").change();
  
-    }else if($('#co').is(':checked')){
+    }else if ($('#mn').is(':checked')){
       $("#nc_item").hide();
       $("#ja_item").hide();
-      $(".co_item").show();
-      $(".au_item").hide();
-      $(".bpl_item").hide();
+      $("#au_item").hide();
+      $("#mn_item").show();
+      $("#cn_item").hide();
+      $("#assign_date").show();
 
-      var ansM = document.getElementById("student_discipline_case_status");
-      ansM.value = "Closed";
-    
-    }else if ($('#bpl').is(':checked')){
+      /*var ansM = document.getElementById("student_discipline_case_status");*/
+      /*ansM.value = "Refer to Mentor";*/
+      $("#student_discipline_case_status").val("Refer to Mentor").change();
+ 
+    }else if ($('#cn').is(':checked')){
       $("#nc_item").hide();
       $("#ja_item").hide();
-      $(".co_item").hide();
-      $(".au_item").hide();
-      $(".bpl_item").show();
+      $("#au_item").hide();
+      $("#mn_item").hide();
+      $("#cn_item").show();
+      $("#assign_date").show()
 
-      var ansM = document.getElementById("student_discipline_case_status");
-      ansM.value = "Refer to BPL";
+      /*var ansM = document.getElementById("student_discipline_case_status");*/
+      /*ansM.value = "Refer to Counselor";*/
+      $("#student_discipline_case_status").val("Refer to Counselor").change();
+ 
     }
   });
 
@@ -113,31 +148,40 @@ $(document).ready(function(){
     if($('#nc').is(':checked')) { 
       $("#nc_item").show();
       $("#ja_item").hide();
-      $(".co_item").hide();
-      $(".au_item").hide();
+      $("#au_item").hide();
+      $("#mn_item").hide();
+      $("#cn_item").hide();
+      $("#assign_date").hide();
     }else if ($('#ja').is(':checked')){
       $("#nc_item").hide();
       $("#ja_item").show();
-      $(".co_item").hide();
-      $(".au_item").hide();
+      $("#au_item").hide();
+      $("#mn_item").hide();
+      $("#cn_item").hide();
+      $("#assign_date").hide();
     }else if ($('#au').is(':checked')){
       $("#nc_item").hide();
       $("#ja_item").hide();
-      $(".co_item").hide();
-      $(".au_item").show();
-      $(".bpl_item").hide();
-    }else if($('#co').is(':checked')){
+      $("#au_item").show();
+      $("#mn_item").hide();
+      $("#cn_item").hide();
+      $("#assign_date").show();
+    }
+    else if ($('#mn').is(':checked')){
       $("#nc_item").hide();
       $("#ja_item").hide();
-      $(".co_item").show();
-      $(".au_item").hide();
-      $(".bpl_item").hide();
-    }else if ($('#bpl').is(':checked')){
+      $("#au_item").hide();
+      $("#mn_item").show();
+      $("#cn_item").hide();
+      $("#assign_date").show();
+    }
+    else if ($('#cn').is(':checked')){
       $("#nc_item").hide();
       $("#ja_item").hide();
-      $(".co_item").hide();
-      $(".au_item").hide();
-      $(".bpl_item").show();
+      $("#au_item").hide();
+      $("#mn_item").hide();
+      $("#cn_item").show();
+      $("#assign_date").show();
     }
   });
 

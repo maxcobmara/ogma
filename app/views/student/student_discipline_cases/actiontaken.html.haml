@@ -4,6 +4,7 @@
 
 = render 'shared/flashes'
 
+- current_roles=current_user.roles.pluck(:authname)
 .row
   = form_for [:student, @student_discipline_case], html: { multipart: true, class: 'form-horizontal' }  do |f| 
     = render 'shared/error_messages', object: f.object
@@ -16,8 +17,10 @@
           %li= link_to (t 'student.discipline.report_details'),"#report_details", "data-toggle" => "tab"
           /add-in  && @student_discipline_case.assigned2_to == Login.current_login.staff_id below condition - only TPHEP can view action details-19dec2012
           / if (["Refer to TPHEP"].include? (@student_discipline_case.status) && @student_discipline_case.assigned2_to == Login.current_login.staff_id) ||(["Open"].include? (@student_discipline_case.status) && @student_discipline_case.assigned2_to == Login.current_login.staff_id)
-          - if (["Refer to TPHEP"].include? (@student_discipline_case.status)) && (@student_discipline_case.assigned2_to == @current_user.userable_id || @current_user.roles.pluck(:authname).include?("administration") || @current_user.roles.pluck(:authname).include?("student_discipline_module_admin") || @current_user.roles.pluck(:authname).include?("student_discipline_module_viewer") || @current_user.roles.pluck(:authname).include?("student_discipline_module_user"))
+          - if (["Refer to TPHEP", "Refer to Mentor", "Refer to Counselor"].include? (@student_discipline_case.status)) && (@student_discipline_case.assigned2_to == current_user.userable_id || current_roles.include?("developer") || current_roles.include?("administration") || current_roles.include?("student_discipline_module_admin") || current_roles.include?("student_discipline_module_viewer") || current_roles.include?("student_discipline_module_user")) || (["Ref Mentor", "Ref Counselor"].include?@student_discipline_case.action_type ) && (@student_discipline_case.other_info.blank? || @student_discipline_case.action.blank? || @student_discipline_case.closed_at_college_on.blank?)
+          
             %li=link_to (t 'student.discipline.case_info'), "#case_info", "data-toggle" => "tab" 
+            
           %li.active=link_to (t 'student.discipline.action_details'), "#action_taken", "data-toggle" => "tab" 
 
         / display 
@@ -37,7 +40,7 @@
             %br
             =render 'tab_details'
             
-          - if (["Refer to TPHEP"].include? (@student_discipline_case.status)) && (@student_discipline_case.assigned2_to == @current_user.userable_id || @current_user.roles.pluck(:name).include?("Administration"))
+          - if (["Refer to TPHEP", "Refer to Mentor", "Refer to Counselor"].include? (@student_discipline_case.status)) && (@student_discipline_case.assigned2_to == current_user.userable_id || current_roles.include?("developer") || current_roles.include?("administration") || current_roles.include?("student_discipline_module_admin") || current_roles.include?("student_discipline_module_viewer") || current_roles.include?("student_discipline_module_user")) || (["Ref Mentor", "Ref Counselor"].include?@student_discipline_case.action_type ) && (@student_discipline_case.other_info.blank? || @student_discipline_case.action.blank? || @student_discipline_case.closed_at_college_on.blank?)
             #case_info.tab-pane
               %br
               = render 'tab_case_info'
@@ -45,11 +48,22 @@
           #action_taken.tab-pane.active
             .col-md-10
               %br
-              = render 'tab_action_taken_edit', :f=>f
+              - if @student_discipline_case.college.code=="amsas"
+                
+                - if ["Refer to Mentor", "Refer to Counselor"].include?(@student_discipline_case.status) || (["Ref Mentor", "Ref Counselor"].include?@student_discipline_case.action_type ) && (@student_discipline_case.other_info.blank? || @student_discipline_case.action.blank? || @student_discipline_case.closed_at_college_on.blank?)
+                
+                  = render 'tab_action_taken_amsas_edit', :f=>f
+                  
+              - elsif @student_discipline_case.colege.code=="kskbjb"
+                = render 'tab_action_taken_edit', :f=>f
           
           .col-md-10
             %br
-            = render 'status', :f => f
+            - if @student_discipline_case.college.code=='amsas' && @student_discipline_case.action_type=="Ref Counselor" && @student_discipline_case.counselor_feedback.blank?
+              /do not display status selection
+            - else
+              = render 'status', :f => f 
+              /if @student_discipline_case.college.code!="amsas"
       
     %br
     .row

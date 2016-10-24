@@ -22,7 +22,7 @@ class Discipline_reportPdf < Prawn::Document
         header = true
       end
     elsif @college.code=="amsas"
-      table(line_item_rows, :column_widths => [30, 60, 130,120, 50, 50, 60, 60, 60,160], :cell_style => { :size => 8,  :inline_format => :true}) do
+      table(line_item_rows, :column_widths => [30, 60, 130,120, 55, 50, 60, 60, 55,160], :cell_style => { :size => 8,  :inline_format => :true}) do
         row(0).font_style = :bold
         row(0).background_color = 'FFE34D'
         self.row_colors = ["FEFEFE", "FFFFFF"]
@@ -48,7 +48,7 @@ class Discipline_reportPdf < Prawn::Document
       @student_discipline_cases.each do |discipline_case|
         body_no=["#{counter += 1}"]
         body_matrix=[ "#{discipline_case.student.matrixno}"]
-        body_details=[ "#{discipline_case.student.icno}", "#{discipline_case.student.student_with_rank}","#{discipline_case.student.course.programme_list}","#{discipline_case.student.intake.try(:strftime, '%b %Y')}", "#{discipline_case.reported_on.try(:strftime, '%d-%m-%Y')}", "#{discipline_case.render_infraction}" , "#{discipline_case.location.try(:name)}"," #{discipline_case.render_status}","#{discipline_case.action_type} - #{discipline_case.action}"]
+        body_details=[ "#{discipline_case.student.icno}", "#{discipline_case.student.student_with_rank}","#{discipline_case.student.course.programme_list}","#{discipline_case.college.code=='amsas' ? 'Siri '+discipline_case.student.intakestudent.monthyear_intake.strftime('%m/%Y') : discipline_case.student.intakestudent.monthyear_intake.strftime('%b %Y')}", "#{discipline_case.reported_on.try(:strftime, '%d-%m-%Y')}", "#{discipline_case.render_infraction}" , "#{[3,4].include?(discipline_case.location.root.lclass) ? discipline_case.location.try(:combo_code) : discipline_case.location.try(:name)}"," #{discipline_case.render_status}","#{discipline_case.action_type=='no_case' ? I18n.t('student.discipline.no_case') : discipline_case.render_action_by} #{" - "+discipline_case.action unless discipline_case.action.blank?}"]
 	#ACTION
 	# "#{I18n.t('student.discipline.refer_bpl') if discipline_case.action_type=="Ref to BPL" && !discipline_case.action_type.blank?} #{I18n.t('student.discipline.refer_tphep') if discipline_case.action_type=="Ref TPHEP" && !discipline_case.action_type.blank?} #{I18n.t('student.discipline.no_case') if discipline_case.action_type=="no_case" && !discipline_case.action_type.blank? } #{I18n.t('student.discipline.advise') if discipline_case.action_type=="advise" && !discipline_case.action_type.blank?}"
         if @college.code=="kskbjb"

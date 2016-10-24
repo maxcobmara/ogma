@@ -47,6 +47,8 @@ class Student < ActiveRecord::Base
   accepts_nested_attributes_for :kins, :reject_if => lambda { |a| a[:kintype_id].blank? }
   
   has_one :student, foreign_key: 'student_id'
+  
+  has_one :mentee
 # 
 #   def self.course_search(query)
 #     programme_ids = Programme.roots.where('name ILIKE(?) or course_type ILIKE(?) or level ILIKE(?)', "%#{query}%", "%#{query}%", "%#{query.downcase}%").pluck(:id)
