@@ -2,7 +2,7 @@ class StudentDisciplineCase < ActiveRecord::Base
   # befores, relationships, validations, before logic, validation logic, 
   #controller searches, variables, lists, relationship checking
   
-  before_save :close_if_no_case, :rev_action_type
+  before_save :close_if_no_case, :rev_action_type, :set_refferer
   before_destroy :check_case_referred_for_counseling
   
   belongs_to :staff, :foreign_key => 'reported_by'
@@ -49,7 +49,7 @@ class StudentDisciplineCase < ActiveRecord::Base
     {:scope => "closed",:label => I18n.t('student.discipline.closed')}
   ]  
  
-  attr_accessor :action_type2
+  attr_accessor :action_type2, :is_counselor
  
   def self.sstaff2(u)
      where('reported_by=? OR assigned_to=? OR assigned2_to=?', u,u,u)
@@ -96,6 +96,12 @@ class StudentDisciplineCase < ActiveRecord::Base
     elsif status=="Refer to Comandant"
       self.action_type= "Ref Comandant"
     end 
+  end
+  
+  def set_refferer
+    if action_type=="Ref Counselor"
+      self.assigned2_to=is_counselor
+    end
   end
   
   #Validation use
@@ -211,6 +217,8 @@ class StudentDisciplineCase < ActiveRecord::Base
       if action_type=="no_case"
        actioner= I18n.t('student.discipline.no_case')
       end
+    else
+      actioner=I18n.t('not_completed')
     end
     actioner
   end

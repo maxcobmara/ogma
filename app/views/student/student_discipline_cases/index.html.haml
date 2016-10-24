@@ -58,6 +58,8 @@
         %td=h [3,4].include?(student_discipline_case.location.root.lclass) ? student_discipline_case.location.try(:combo_code) : student_discipline_case.location.try(:name)
         %td
           - if student_discipline_case.render_action_by==I18n.t('student.discipline.no_case')
+            %font{style: 'color: green; font-weight: bold'}=h student_discipline_case.render_action_by
+          - elsif student_discipline_case.render_action_by==I18n.t('not_completed')
             %font{style: 'color: red;'}=h student_discipline_case.render_action_by
           - else
             =h student_discipline_case.render_action_by

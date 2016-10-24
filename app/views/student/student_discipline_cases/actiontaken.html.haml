@@ -59,8 +59,11 @@
           
           .col-md-10
             %br
-            = render 'status', :f => f 
-            /if @student_discipline_case.college.code!="amsas"
+            - if @student_discipline_case.college.code=='amsas' && @student_discipline_case.action_type=="Ref Counselor" && @student_discipline_case.counselor_feedback.blank?
+              /do not display status selection
+            - else
+              = render 'status', :f => f 
+              /if @student_discipline_case.college.code!="amsas"
       
     %br
     .row

@@ -400,6 +400,7 @@ en:
   not_submitted: Not Submitted
   approved: Approved
   not_approved: Not Approved
+  not_completed: Not Completed
   view: View
   edit_checked: Edit Checked Records
   newrecord_type: Record Type

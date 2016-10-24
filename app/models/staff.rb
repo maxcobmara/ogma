@@ -156,6 +156,10 @@ class Staff < ActiveRecord::Base
       end
       staff_with_rank+a
     end
+    
+    def staff_rank_unit_id
+      [staff_with_rank_unit, id]
+    end
 
     def staff_list
     "#{icno}"+" "+"#{name}"

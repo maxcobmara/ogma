@@ -379,6 +379,7 @@ ms_MY:
   not_submitted: Belum dihantar
   approved: Diluluskan
   not_approved: Belum Diluluskan
+  not_completed: Belum Selesai
   view: Papar
   edit_checked: Sunting Rekod Dipilih
   newrecord_type: Jenis Rekod
