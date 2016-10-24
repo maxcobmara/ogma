@@ -13,14 +13,17 @@
     =h appointment.is_confirmed? ?  appointment.confirmed_at.try(:getlocal).try(:strftime, "%d %b %y, %H:%M") :  appointment.requested_at.try(:getlocal).try(:strftime,"%d %b %y, %H:%M")
   /=h appointment.is_confirmed? ?  l(appointment.confirmed_at+8.hours, format: "%d %b %y, %l:%M %P") : l(appointment.requested_at+8.hours, format: "%d %b %y, %l:%M %P")
 %td=h appointment.duration
-%td=h appointment.is_confirmed? ? image_tag("tick.png") : ""  
+%td=h appointment.is_confirmed? ? fa_icon('check') : fa_icon('times')
 - if appointment.c_scope == "case" && !appointment.case_id.blank? 
   - if count==0   
     %td{:rowspan=>appointments.count, :style=>"text-align:center;"}
       /=h appointment.student_discipline_case.counselor_feedback.blank? ? (link_to image_tag("add.png", :border => 0, :title => 'Create new appointment') + (t 'student.counseling.add_session'), new_student_student_counseling_session_path(:caseid => appointment.case_id)) : image_tag("tick.png")  
-      =h appointment.student_discipline_case.counselor_feedback.blank? ? (link_to t('student.counseling.add_session'), new_student_student_counseling_session_path(:caseid => appointment.case_id)) : ""
-      = link_to t('student.counseling.display_feedback'), :action => 'feedback_referrer', :id => appointment.case_id if !appointment.student_discipline_case.counselor_feedback.blank?
-    /- count+=1
+      - if appointment.student_discipline_case.counselor_feedback.blank?  
+        =h appointment.student_discipline_case.counselor_feedback.blank? ? (link_to t('student.counseling.add_session'), new_student_student_counseling_session_path(:caseid => appointment.case_id)) : ""
+      - else
+        %b=t('student.counseling.session_complete')
+        %br= link_to t('student.counseling.display_feedback'), feedback_referrer_student_student_counseling_sessions_path(:format =>'pdf',:id=> appointment.case_id )
+    - count+=1
 - else
   %td{:style=>"text-align:center;"}= t 'student.counseling.not_related'
 

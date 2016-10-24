@@ -2668,6 +2668,16 @@ ms_MY:
       action_by: Tindakan Oleh
       comandant: Komandan
       counselor: Kaunselor
+      session_feedback: "Sesi Kaunseling & Maklumbalas"
+      final_feedback: Maklum Balas Akhir
+      request_counseling: "Sila mohon sesi kaunseling, klik 'Kemaskini' & terus ke modul 'Sesi Kaunseling Pelajar' untuk"
+      confirm_appointment: Sahkan temujanji
+      log_sessions: Isikan butiran sesi kaunseling
+      add_sessions: "Tambah sesi, ulangi langkah 1 & 2 (jika perlukan sesi kaunseling tambahan) *"
+      complete_session: "Selesaikan sesi dengan mengisi medan (Tindakan oleh Kaunselor - Ringkasan/Maklumbalas(Akhir) kepada Perujuk Kes)"
+      session_time: Tarikh / Masa
+      counselor_action: Tindakan Kaunselor
+      tick_refer_comandant: "Pilih kotak semak untuk rujuk kes ke Komandan, sebaliknya nyahpilih, masukkan 'Tindakan' and 'Tarikh ditutup(kolej)'."
     
     counseling:
       title: Sesi Kaunseling Pelajar

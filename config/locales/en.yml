@@ -2775,6 +2775,16 @@ en:
       action_by: Action By
       comandant: Comandant
       counselor: Counselor
+      session_feedback: "Counseling Session & Feedback"
+      final_feedback: Final Feedback
+      request_counseling: "Please issue request for a counseling session, click 'Update' & proceed to 'Student Counseling Session' to"
+      confirm_appointment: Confirm appointment
+      log_sessions: Log session details accordingly
+      add_sessions: "Add session, repeat step 1 & 2  (if additional session is required) *"
+      complete_session: "Complete session(s) by providing (Action by Counselor - Summary/Feedback(FINAL) to referrer)"
+      session_time: Date / Time
+      counselor_action: Action by Counselor
+      tick_refer_comandant: "Tick to refer case to Comandant, otherwise untick, enter 'Action' taken and 'Date closed(college)'."
       
     counseling:
       title: Student Counseling Session

@@ -99,8 +99,8 @@ class StudentDisciplineCase < ActiveRecord::Base
   end
   
   def set_refferer
-    if action_type=="Ref Counselor"
-      self.assigned2_to=is_counselor
+    if action_type=="Ref Counselor" && student_counseling_sessions.count==0
+      self.assigned2_to=is_counselor 
     end
   end
   

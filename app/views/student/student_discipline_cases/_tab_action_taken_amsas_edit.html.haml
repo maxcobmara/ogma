@@ -2,31 +2,38 @@
 
 .col-md-offset-2
   - if @student_discipline_case.action_type=="Ref Counselor" && @student_discipline_case.counselor_feedback.blank?
-    = f.hidden_field :is_counselor, value: @student_discipline_case.assigned2_to
-    /= f.hidden_field :status, value: "Refer to Counselor"
+    /= f.hidden_field :is_counselor, value: @student_discipline_case.assigned2_to
     //display create counseling part
     .form-group
       = f.fields_for :student_counseling_sessions do |builder|
         .col-sm-2.control-label
           = f.label t 'student.discipline.counseling_request', for: :counseling_request
         .col-md-3
-          = builder.text_field :requested_at, class: 'datetime_picker3_reverse form-control'
+          /- if builder.object.id?
+          /  = builder.text_field :requested_at, class: 'datetime_picker3_reverse form-control', value: builder.object.requested_at.try(:strftime, '%d-%m-%Y %H:%M'), readonly: 'readonly'
+          
+          = builder.text_field :requested_at, class: 'datetime_picker3_reverse form-control', value: builder.object.requested_at.try(:strftime, '%d-%m-%Y %H:%M')
           = builder.hidden_field :student_id, :value => @student_discipline_case.student_id
           = builder.hidden_field :case_id, :value => @student_discipline_case.id
           = builder.hidden_field :college_id, :value => current_user.college_id
   - else
     - if @student_discipline_case.action_type=="Ref Counselor"
       = f.hidden_field :is_counselor, value: @student_discipline_case.assigned2_to
-      /= f.hidden_field :status, value: "Refer to Counselor"
       %hr
       .form-group
+        .col-sm-2
+        .col-sm-2.centre
+          %b=t 'student.discipline.session_time'
+        .col-sm-8
+          %b=t 'student.discipline.counselor_action'
+      .form-group
         .col-sm-2.control-label
-          =f.label "Counseling Session & Feedback"
+          =f.label (t 'student.discipline.session_feedback')
         .col-sm-8
           %ol
             - for session in @student_discipline_case.student_counseling_sessions
-              %li=session.suggestions
-          %b Final Feedback : 
+              %li=session.confirmed_at.strftime('%d-%m-%Y %H:%M')+" | "+session.remark
+          %b=(t 'student.discipline.final_feedback')+" : "
           =@student_discipline_case.counselor_feedback
         
   
@@ -36,12 +43,12 @@
     .form-group
       .col-sm-2
       .col-md-10
-        Please issue request for a counseling session, click 'Update' & proceed to 'Student Counseling Session' to :
+        =(t 'student.discipline.request_counseling')+" : "
         %ol
-          %li Confirm appointment
-          %li Log session details accordingly
-          %li Add session, confirm & log details accordingly,  (if required) *
-          %li Complete session(s) by providing (Action by Counselor - Summary/Feedback(FINAL) to referrer/TPHEP)
+          %li=t 'student.discipline.confirm_appointment'
+          %li=t 'student.discipline.log_session'
+          %li=t 'student.discipline.add_session'
+          %li=t 'student.discipline.complete_session'
         
   - else
     //evaluate case
@@ -57,7 +64,7 @@
         /= f.label  t 'student.discipline.action_type', for: :action_type
         = f.label t 'student.discipline.refer_comandant'
       .col-md-1=f.check_box :action_type2, :id => 'com', checked: 'checked'
-      .col-md-4.small Tick to refer case to Comandant, otherwise untick, enter 'Action' taken and 'Date closed'.
+      .col-md-6.small=t 'student.discipline.tick_refer_comandant'
 
     //display this part when action taken by Mentor/Counselor
     .form-group.taking_action{style: "display: none;"}

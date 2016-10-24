@@ -85,7 +85,7 @@ class Student::StudentCounselingSessionsController < ApplicationController
       else
 	@abc.counselor_feedback =''
       end
-      @abc.assigned2_to=current_user.userable_id
+      #@abc.assigned2_to=current_user.userable_id
       @abc.save
     end
     respond_to do |format|
