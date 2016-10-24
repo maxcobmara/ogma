@@ -76,33 +76,6 @@
       = f.label  t 'student.discipline.assigned2_on', for: :assigned2_to_date
     .col-md-2
       = f.text_field :assigned2_on, class: 'date_picker_reverse form-control mandatory', value: @student_discipline_case.assigned2_on.try(:strftime, '%d-%m-%Y')
-      
-/assets/javascript/programmes.js.coffee
-/   subjects = $('#subject_listing').html()
-/   $('#programme_listing').change ->
-/     programme = $('#programme_listing :selected').text()
-/     escaped_programme = programme.replace(/([ #;&,.+*~\':"!^$[\]()=>|\/@])/g, '\\$1')
-/     options = $(subjects).filter("optgroup[label=#{escaped_programme}]").html()
-/     if options
-/       $('#subject_listing').html(options)
-/       $('#subject_listing').parent().show()
-/     else
-/       $('#subject_listing').empty
-/       $('#subject_listing').parent().hide()
-/= f.select :subject_id, grouped_options_for_select(@subjects, @examquestion.subject_id), {:include_blank => (t 'select')}, {class: 'form-control mandatory'}
-/@subjects=Programme.subject_groupbyprogramme2 
-/#original - start
-/   def self.subject_groupbyprogramme2
-/     subjectby_programmelists=Programme.where(course_type: "Subject").group_by{|x|x.root.programme_list}
-/     @groupped_subject=[]
-/     subjectby_programmelists.each do |programmelist, subjects|
-/       pg_subjects=[[I18n.t('helpers.prompt.select_subject'), '']]
-/       subjects.each{|subject|pg_subjects << [subject.subject_list, subject.id]} 
-/       @groupped_subject << [programmelist, pg_subjects]
-/     end
-/     @groupped_subject
-/   end
-/   #original - end
  
 :javascript
 
