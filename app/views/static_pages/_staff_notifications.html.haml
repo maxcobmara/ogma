@@ -31,3 +31,13 @@
  - if current_user.roles.pluck(:id).include?(7) || current_user.roles.pluck(:id).include?(14) || current_user.roles.pluck(:id).include?(2) 
   - if staff_notifications_of_student_leave > 0
    %li= link_to content_tag(:span, "#{staff_notifications_of_student_leave}", class: "badge") + " Student leaves require approval", student_leaveforstudents_path
+   
+ #25Oct2016
+ - if ks_student_discipline > 0
+  %li=link_to content_tag(:span, "#{ks_student_discipline}", class: "badge") + " Discipline report(s) for process", student_student_discipline_cases_path
+  
+ - if tphep_mentor_counselor_student_discipline > 0
+  %li=link_to content_tag(:span, "#{tphep_mentor_counselor_student_discipline}", class: "badge") + " Discipline report(s) for action", student_student_discipline_cases_path
+  
+ - if comandant_student_discipline > 0
+  %li=link_to content_tag(:span, "#{comandant_student_discipline}", class: "badge") + " Discipline report(s) for action", student_student_discipline_cases_path

@@ -358,14 +358,17 @@ authorization do
      if_attribute :asset_id => is_in {Asset.vehicle.pluck(:id)}
    end
    # NOTE - vehicle reservation - ends here - 30September2016
-   
+    
    has_permission_on :student_student_discipline_cases, :to => [:menu, :create]                     # A staff can register discipline case
    has_permission_on :student_student_discipline_cases, :to => :delete, :join_by => :and do   # reporter can remove case before action type entered by Programme Mgr
      if_attribute :reported_by => is {user.userable.id}
      if_attribute :action_type => is {nil}
    end
-   has_permission_on :student_student_discipline_cases, :to => :read do                                 # reporter have access to read cases
+   has_permission_on :student_student_discipline_cases, :to => :read, :join_by => :or do                                 # reporter have access to read cases
      if_attribute :reported_by => is {user.userable.id}
+     if_attribute :assigned_to =>  is {user.userable.id}
+     if_attribute :assigned2_to =>  is {user.userable.id}
+     if_attribute :comandant_id =>  is {user.userable.id}
    end
    has_permission_on :student_student_discipline_cases, :to => [:read, :discipline_report, :anacdotal_report], :join_by => :or do        
      if_attribute :assigned_to => is {user.userable.id}                                                                # (kskbjb)Programme Mgr & TPHEP / (amsas) Ketua Sek, Mentor & 
@@ -385,9 +388,13 @@ authorization do
      if_attribute :college_id => is {College.where(code: 'kskbjb').first.id}
    end 
    has_permission_on :student_student_discipline_cases, :to => [:update, :refercomandant], :join_by => :and do 
+     if_attribute :comandant_id => is {user.userable_id}
      if_attribute :action_type => is {"Ref Comandant"}                                                               # Comandant to log action TAKEN
      if_attribute :college_id => is {College.where(code: 'amsas').first.id}
-   end 
+   end
+   has_permission_on :student_student_counseling_sessions, :to => :feedback_referrer do      # discipline case : reporter, KS/Prog Mgr, Mentor@Kaunselor 
+      if_attribute :case_id =>  is_in {StudentDisciplineCase.sstaff2(user.userable_id).pluck(:id)} # /TPHEP & Comandant should hv access
+   end
 
    has_permission_on :campus_locations, :to => [:read, :kewpa7]                                          # A staff can read+kewpa7 all location inc. staff & student residences
    
@@ -1313,17 +1320,20 @@ authorization do
   role :student_discipline_module_member do
     #own records
     has_permission_on :student_student_discipline_cases, :to => [:menu, :create]                     # A staff can register discipline case
-    has_permission_on :student_student_discipline_cases, :to => :delete, :join_by => :and do   # reporter can remove case before action type entered by Programme Mgr
+    has_permission_on :student_student_discipline_cases, :to => :delete, :join_by => :and do   # reporter can remove case before action type entered by Programme Mgr/KS
       if_attribute :reported_by => is {user.userable.id}
       if_attribute :action_type => is {nil}
     end
-    has_permission_on :student_student_discipline_cases, :to => :read do                                 # reporter have access to read cases
+    has_permission_on :student_student_discipline_cases, :to => :read, :join_by => :or do   # reporter, KS/Prog Mgr, Mentor@Kaunselor/TPHEP, Komandan hv read access
       if_attribute :reported_by => is {user.userable.id}
+      if_attribute :assigned_to =>  is {user.userable.id}
+      if_attribute :assigned2_to =>  is {user.userable.id}
+      if_attribute :comandant_id =>  is {user.userable.id}
     end
     #own (kskbjb: Programme Manager & TPHEP) (amsas: Ketua Sekolah(KS) & Kaunselor / Mentor)
     has_permission_on :student_student_discipline_cases, :to => [:read, :discipline_report, :anacdotal_report], :join_by => :or do        
-      if_attribute :assigned_to => is {user.userable.id}
-      if_attribute :assigned2_to => is {user.userable.id}                                                              # Programme Mgr & TPHEP may Show & view reports
+      if_attribute :assigned_to => is {user.userable.id}                                                                # (kskbjb)Programme Mgr & TPHEP / (amsas) Ketua Sek, Mentor & 
+      if_attribute :assigned2_to => is {user.userable.id}                                                              #Counselor may Show & view reports
     end
     has_permission_on :student_student_discipline_cases, :to => :update, :join_by => :and do # Programme Manager/KS can enter action type (EDIT)
       if_attribute :assigned_to =>  is {user.userable.id}
@@ -1339,9 +1349,13 @@ authorization do
       if_attribute :college_id => is {College.where(code: 'kskbjb').first.id}
     end 
     has_permission_on :student_student_discipline_cases, :to => [:update, :refercomandant], :join_by => :and do 
+      if_attribute :comandant_id => is {user.userable_id}
       if_attribute :action_type => is {"Ref Comandant"}                                                               # Comandant to log action TAKEN
       if_attribute :college_id => is {College.where(code: 'amsas').first.id}
-    end 
+    end
+    has_permission_on :student_student_counseling_sessions, :to => :feedback_referrer do     # discipline case : reporter, KS/Prog Mgr, Mentor@Kaunselor 
+      if_attribute :case_id =>  is_in {StudentDisciplineCase.sstaff2(user.userable_id).pluck(:id)} # /TPHEP & Comandant should hv access
+    end
   end
   
   #Modules : Tenants & Locations

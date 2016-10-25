@@ -19,7 +19,8 @@
     %td{:rowspan=>appointments.count, :style=>"text-align:center;"}
       /=h appointment.student_discipline_case.counselor_feedback.blank? ? (link_to image_tag("add.png", :border => 0, :title => 'Create new appointment') + (t 'student.counseling.add_session'), new_student_student_counseling_session_path(:caseid => appointment.case_id)) : image_tag("tick.png")  
       - if appointment.student_discipline_case.counselor_feedback.blank?  
-        =h appointment.student_discipline_case.counselor_feedback.blank? ? (link_to t('student.counseling.add_session'), new_student_student_counseling_session_path(:caseid => appointment.case_id)) : ""
+        
+        =h !appointment.remark.blank? ? (link_to t('student.counseling.add_session'), new_student_student_counseling_session_path(:caseid => appointment.case_id)) : ""
       - else
         %b=t('student.counseling.session_complete')
         %br= link_to t('student.counseling.display_feedback'), feedback_referrer_student_student_counseling_sessions_path(:format =>'pdf',:id=> appointment.case_id )

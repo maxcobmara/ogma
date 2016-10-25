@@ -2,21 +2,41 @@
 
 .col-md-offset-2
   - if @student_discipline_case.action_type=="Ref Counselor" && @student_discipline_case.counselor_feedback.blank?
-    /= f.hidden_field :is_counselor, value: @student_discipline_case.assigned2_to
+    = f.hidden_field :is_counselor, value: @student_discipline_case.assigned2_to
     //display create counseling part
+    
     .form-group
       = f.fields_for :student_counseling_sessions do |builder|
         .col-sm-2.control-label
           = f.label t 'student.discipline.counseling_request', for: :counseling_request
-        .col-md-3
-          /- if builder.object.id?
-          /  = builder.text_field :requested_at, class: 'datetime_picker3_reverse form-control', value: builder.object.requested_at.try(:strftime, '%d-%m-%Y %H:%M'), readonly: 'readonly'
-          
-          = builder.text_field :requested_at, class: 'datetime_picker3_reverse form-control', value: builder.object.requested_at.try(:strftime, '%d-%m-%Y %H:%M')
+        .col-md-6
+          - if builder.object.id?
+            .col-md-6= builder.text_field :requested_at, class: 'datetime_picker3_reverse form-control', value: builder.object.requested_at.try(:strftime, '%d-%m-%Y %H:%M'), readonly: 'readonly'
+ 
+            /Display these notes, once counseling session is requested / exist
+            %br
+            %br
+            %hr
+            =(t 'student.discipline.proceed_counseling')+" : "
+            %ol
+              %li=t 'student.discipline.confirm_appointment'
+              %li=t 'student.discipline.log_session'
+              %li=t 'student.discipline.add_session'
+              %li=t 'student.discipline.complete_session'
+            
+          - else
+            =(t 'student.discipline.request_counseling')
+            .col-md-6= builder.text_field :requested_at, class: 'datetime_picker3_reverse form-control', value: builder.object.requested_at.try(:strftime, '%d-%m-%Y %H:%M')
           = builder.hidden_field :student_id, :value => @student_discipline_case.student_id
           = builder.hidden_field :case_id, :value => @student_discipline_case.id
           = builder.hidden_field :college_id, :value => current_user.college_id
+
   - else
+    /This part shall covers
+    /1) Counselor - when 'counselor feedback' exist
+    /2) Counselor & Mentor part (sharing properties) - 1) evaluate case, 2) tick - Refer to Comandant, 3) action & 4) closed date
+    
+    /Part 1 - Counselor (counselor feedback exist)
     - if @student_discipline_case.action_type=="Ref Counselor"
       = f.hidden_field :is_counselor, value: @student_discipline_case.assigned2_to
       %hr
@@ -37,20 +57,22 @@
           =@student_discipline_case.counselor_feedback
         
   
-  - if @student_discipline_case.action_type=="Ref Counselor" && @student_discipline_case.counselor_feedback.blank?
+    /- if @student_discipline_case.action_type=="Ref Counselor" && @student_discipline_case.counselor_feedback.blank?
     
     /do not display 1) evaluate case, 2) tick - Refer to Comandant, 3) action & 4) closed date
-    .form-group
-      .col-sm-2
-      .col-md-10
-        =(t 'student.discipline.request_counseling')+" : "
-        %ol
-          %li=t 'student.discipline.confirm_appointment'
-          %li=t 'student.discipline.log_session'
-          %li=t 'student.discipline.add_session'
-          %li=t 'student.discipline.complete_session'
+    /.form-group
+    /  .col-sm-2
+    /  .col-md-10
+    /    =(t 'student.discipline.proceed_counseling')+" : "
+    /    %ol
+    /      %li=t 'student.discipline.confirm_appointment'
+    /      %li=t 'student.discipline.log_session'
+    /      %li=t 'student.discipline.add_session'
+    /      %li=t 'student.discipline.complete_session'
         
-  - else
+    /- else
+    
+    /Part 2 - 
     //evaluate case
     .form-group
       .col-sm-2.control-label
@@ -58,13 +80,19 @@
       .col-md-5
         = f.text_area :other_info, :size => "40x5", class: 'mandatory'
 
-    //option for Mentor / Counselor 
+    //option for Mentor / Counselor - to refer to Comandant or close the case
     .form-group
       .col-sm-2.control-label
         /= f.label  t 'student.discipline.action_type', for: :action_type
         = f.label t 'student.discipline.refer_comandant'
       .col-md-1=f.check_box :action_type2, :id => 'com', checked: 'checked'
       .col-md-6.small=t 'student.discipline.tick_refer_comandant'
+      
+    .form-group#comandant_select
+      .col-sm-2.control-label
+        = f.label t 'student.discipline.comandant_id'
+      .col-md-5
+        = f.collection_select :comandant_id, Staff.joins(:positions).where('positions.name ILIKE(?)', '%Komandan%'), :id, :staff_with_rank_unit, {}, {class: 'selectpicker mandatory' , "data-width" => "auto"}
 
     //display this part when action taken by Mentor/Counselor
     .form-group.taking_action{style: "display: none;"}
@@ -88,6 +116,7 @@
     if($('#com').is(':checked')) 
     {  
       $('.taking_action').hide();
+      $('#comandant_select').show();
       /*var ansM = document.getElementById("student_discipline_case_status");*/
       /*ansM.value = "Refer to Comandant";*/
       $("#student_discipline_case_status").val("Refer to Comandant").change();
@@ -95,8 +124,7 @@
     else
     {  
       $('.taking_action').show();
-      /*var ansM = document.getElementById("student_discipline_case_status");*/
-      /*ansM.value ="Closed";*/
+      $('#comandant_select').hide();
       $("#student_discipline_case_status").val("Closed").change();
     }
   });

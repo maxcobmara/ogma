@@ -85,7 +85,7 @@
                 - if count2==0
                   %td{:rowspan=>session_dones.count, :style=>"text-align:center; vertical-align: middle"}
                     - if session_done.student_discipline_case.counselor_feedback.blank?  
-                      =link_to t('student.counseling.add_session'), new_student_student_counseling_session_path(:caseid => session_done.case_id)
+                      =h !session_done.remark.blank? ? (link_to t('student.counseling.add_session'), new_student_student_counseling_session_path(:caseid => session_done.case_id)) : ""
                     - else
                       %b=t('student.counseling.session_complete')
                       %br= link_to t('student.counseling.display_feedback'), feedback_referrer_student_student_counseling_sessions_path(:format =>'pdf',:id=>session_done.case_id )

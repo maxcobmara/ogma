@@ -96,6 +96,19 @@ module Notifications
    end
    leaveforstudents.count if leaveforstudents
  end 
+ 
+ def ks_student_discipline
+   StudentDisciplineCase.where('assigned_to=? AND assigned2_to is null', current_staff_id).where.not(status: 'Closed').count
+ end
+ 
+ def tphep_mentor_counselor_student_discipline
+   StudentDisciplineCase.where('assigned2_to=? AND action is null', current_staff_id).where.not(status: 'Closed').count
+ end
+ 
+ def comandant_student_discipline
+   StudentDisciplineCase.where(comandant_id: current_staff_id).where.not(status: 'Closed').count
+ end
+ 
 
 end
 

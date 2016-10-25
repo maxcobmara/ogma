@@ -4,7 +4,7 @@
       - aa=StudentDisciplineCase::SDCSTATUS_AMSAS
     - else
       - aa=StudentDisciplineCase::SDCSTATUS
-    %td= select_tag('q[status_cont_any]', options_for_select([[t('student.discipline.all'), '']]+aa), {class: 'selectpicker', "data-width"=>"100px"})
+    %td= select_tag('q[status_cont_any]', options_for_select([[t('all_records'), '']]+aa), {class: 'selectpicker', "data-width"=>"100px"})
     %td= f.text_field :student_course_name_cont, size: 2, class: 'form-control'
     - unless current_user.college.code=='amsas'
       %td &nbsp;
@@ -13,8 +13,9 @@
     /%td= f.text_field :description_cont, size:2, class: 'form-control'
     %td= select_tag('q[infraction_id_eq]',options_for_select([[t('student.discipline.all_infraction'),''],[t('student.discipline.smooking'), 1],[t('student.discipline.skip_class'), 2],[t('student.discipline.quarrel'), 3],[t('student.discipline.others'), 4]]), {class: 'selectpicker', "data-width"=>"100px"})
     %td= f.text_field :reported_on_gteq, :size=> 2,  class:  'date_picker form-control'
-    %td= f.text_field :cofile_name_cont, size:2, class: 'form-control'
+    /%td= f.text_field :cofile_name_cont, size:2, class: 'form-control'
     %td= f.text_field :location_name_cont, size:2, class: 'form-control'
+    %td= select_tag('q[action_type_eq]', options_for_select([[t('all_records'), ''], [t('student.discipline.counselor'), 'Ref Counselor'], ['Mentor', 'Ref Mentor'], [t('student.discipline.comandant'), 'Ref Comandant']]), {class: 'selectpicker', "data-width" => "120px"})
     %td
       .input-group
         = select_tag('q[action_type_cont_any]',options_for_select([[t('student.discipline.all_case'), ''],[t('student.discipline.counseling'), 'counseling']]), {class: 'selectpicker', "data-width"=>"100px"} )  
