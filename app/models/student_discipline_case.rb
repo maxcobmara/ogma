@@ -2,12 +2,13 @@ class StudentDisciplineCase < ActiveRecord::Base
   # befores, relationships, validations, before logic, validation logic, 
   #controller searches, variables, lists, relationship checking
   
-  before_save :close_if_no_case, :rev_action_type, :set_refferer
+  before_save :close_if_no_case, :rev_action_type, :set_refferer, :set_comandant
   before_destroy :check_case_referred_for_counseling
   
   belongs_to :staff, :foreign_key => 'reported_by'
   belongs_to :ketua, :class_name => 'Staff', :foreign_key => 'assigned_to'
   belongs_to :tphep, :class_name => 'Staff', :foreign_key => 'assigned2_to'
+  belongs_to :comandant, :class_name => 'Staff', :foreign_key => 'comandant_id'
   
   belongs_to :location
   belongs_to :student
@@ -52,7 +53,7 @@ class StudentDisciplineCase < ActiveRecord::Base
   attr_accessor :action_type2, :is_counselor
  
   def self.sstaff2(u)
-     where('reported_by=? OR assigned_to=? OR assigned2_to=?', u,u,u)
+     where('reported_by=? OR assigned_to=? OR assigned2_to=? OR comandant_id=?', u,u,u,u)
   end    
   
   def close_if_no_case
@@ -101,6 +102,13 @@ class StudentDisciplineCase < ActiveRecord::Base
   def set_refferer
     if action_type=="Ref Counselor" && student_counseling_sessions.count==0
       self.assigned2_to=is_counselor 
+    end
+  end
+  
+  def set_comandant
+    if action_type2 && (action_type2==1 || action_type2=='1')
+    else
+      self.comandant_id=0 if comandant_id.blank?
     end
   end
   

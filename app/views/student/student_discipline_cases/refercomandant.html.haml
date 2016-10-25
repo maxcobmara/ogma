@@ -1,6 +1,6 @@
 - model_class = StudentDisciplineCase
 .page-header
-  %h1=t 'student.discipline.action_details'
+  %h1=t 'student.discipline.refer_comandant'
 
 = render 'shared/flashes'
 - current_roles=current_user.roles.pluck(:authname)
@@ -17,7 +17,7 @@
           %li= link_to (t 'student.discipline.report_details'),"#report_details", "data-toggle" => "tab"
           %li=link_to (t 'student.discipline.case_info'), "#case_info", "data-toggle" => "tab" 
           %li=link_to (t 'student.discipline.action_details'), "#action_taken", "data-toggle" => "tab" 
-          %li.active=link_to (t 'student.discipline.refer_to_comandant'), "#refer_to_comandant_edit", "data-toggle" => "tab"  if @student_discipline_case.status == "Refer to Comandant" || (["Ref Counselor", "Ref Mentor"].include?(@student_discipline_case.action_type) && @student_discipline_case.action_type2.nil?) || (@student_discipline_case.status=="Closed" && (@student_discipline_case.action.blank? || @student_discipline_case.closed_at_college_on.blank?))
+          %li.active=link_to (t 'student.discipline.refer_comandant'), "#refer_to_comandant_edit", "data-toggle" => "tab"  if @student_discipline_case.status == "Refer to Comandant" || (["Ref Counselor", "Ref Mentor"].include?(@student_discipline_case.action_type) && @student_discipline_case.action_type2.nil?) || (@student_discipline_case.status=="Closed" && (@student_discipline_case.action.blank? || @student_discipline_case.closed_at_college_on.blank?))
           
           
         / display 
@@ -31,7 +31,11 @@
               %dd=h @student_discipline_case.reported_on.try(:strftime, "%d %b %Y")
           
               %dt= t 'student.discipline.student_id', :default => model_class.human_attribute_name(:student_id)+":"
-              %dd=h @student_discipline_case.student.try(:matrix_name)
+              %dd=h @student_discipline_case.college.code=="amsas" ? @student_discipline_case.student.student_with_rank :  @student_discipline_case.student.try(:matrix_name)
+              
+              %dt=t 'student.discipline.principal'
+              %dd=h @student_discipline_case.ketua.staff_with_rank
+          
 
           #report_details.tab-pane
             %br
@@ -57,7 +61,7 @@
     %br
     .row
       .form-group
-        .col-md-1.col-md-offset-2
+        .col-md-2.col-md-offset-3
           = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), student_student_discipline_case_path(@student_discipline_case), :class => 'btn btn-default'
         .col-md-2
           .div{style: "margin-left:-40px;"}

@@ -19,7 +19,7 @@
         = f.check_box :feedback_this,	:id => 'ind_feedback',:checked=>"checked"
     .col-md-4
       .feedback_item{:style=>"display:none;"}
-        = f.text_area :remark, :size => "50x6", class: 'form-control'
+        = f.text_area :remark, :size => "50x6", class: 'form-control mandatory'
       /END-add remark for feedback into student_counseling_session table (for each individual counseling session-1 student_discipline_case may have 1 or more counselling session)
 
       /START-add remark for FINAL feedback into student_discipline_case table (for all associated counseling session)
@@ -44,7 +44,7 @@
       .col-sm-2.control-label
         %b= t 'student.counseling.counselor_feedback1'
         %br
-        %b= t 'student.counseling.counselor_feedback2'
+        %b=@student_counseling_session.college.code=="amsas" ? (t 'student.counseling.counselor_feedback_amsas') : (t 'student.counseling.counselor_feedback2')
       .col-md-4
         = f.text_area :feedback_final, :size => "50x6", :value => @student_counseling_session.student_discipline_case.counselor_feedback, class: 'form-control'
 
@@ -64,7 +64,7 @@ $(document).ready(function(){
       $(".feedback_item").show(); 
     }else{
       $(".feedback_item").hide(); 
-    }s
+    }
   });
 
   $("input[id='ind_feedback']").each(function() {  

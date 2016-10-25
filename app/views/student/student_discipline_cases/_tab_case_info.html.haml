@@ -36,7 +36,9 @@
           =h t('student.discipline.refer_mentor') if @student_discipline_case.action_type=="Ref Mentor"
           =h t('student.discipline.refer_comandant') if @student_discipline_case.action_type=="Ref Comandant"
           
-          =h " : "+@student_discipline_case.tphep.staff_with_rank_unit if ["Ref Counselor", "Ref Mentor"].include?(@student_discipline_case.action_type) & @student_discipline_case.college.code=='amsas'
+          - if @student_discipline_case.college.code=="amsas"
+            = ["Ref Mentor", "Ref Counselor"].include?(@student_discipline_case.action_type) ? " - "+@student_discipline_case.tphep.staff_with_rank : ""
+            = ["Ref Comandant"].include?(@student_discipline_case.action_type) ? " - "+@student_discipline_case.comandant.staff_with_rank : ""
           
     - if @student_discipline_case.action_type == "no_case"
       %dt=t 'student.discipline.closed_at_college_on', :default => model_class.human_attribute_name(:closed_at_college_on)+":"

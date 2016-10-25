@@ -2598,12 +2598,13 @@ ms_MY:
       reported_on: Tarikh Dilaporkan
       assigned_to: Dihantar kepada Ketua Jabatan
       assigned_to_amsas: Dihantar kepada Ketua Sekolah
+      principal: Ketua Sekolah
+      comandant_id: Komandan
       file_id: Rujukan Fail
       location_id: Lokasi
       counselor_feedback: Maklum Balas Kaunselor
       year: Tahun
       not_related: Tidak Berkaitan
-      all: Semua rekod
       counseling: Kaunseling
       report_details: Perincian Laporan
       reported_by: Pelapor
@@ -2670,10 +2671,11 @@ ms_MY:
       counselor: Kaunselor
       session_feedback: "Sesi Kaunseling & Maklumbalas"
       final_feedback: Maklum Balas Akhir
-      request_counseling: "Sila mohon sesi kaunseling, klik 'Kemaskini' & terus ke modul 'Sesi Kaunseling Pelajar' untuk"
+      request_counseling: "Sila mohon sesi kaunseling dan klik 'Kemaskini'."
+      proceed_counseling: "Sila ke modul 'Sesi Kaunseling Pelajar' untuk"
       confirm_appointment: Sahkan temujanji
-      log_sessions: Isikan butiran sesi kaunseling
-      add_sessions: "Tambah sesi, ulangi langkah 1 & 2 (jika perlukan sesi kaunseling tambahan) *"
+      log_session: Isikan butiran sesi kaunseling
+      add_session: "Tambah sesi, ulangi langkah 1 & 2 (jika perlukan sesi kaunseling tambahan) *"
       complete_session: "Selesaikan sesi dengan mengisi medan (Tindakan oleh Kaunselor - Ringkasan/Maklumbalas(Akhir) kepada Perujuk Kes)"
       session_time: Tarikh / Masa
       counselor_action: Tindakan Kaunselor
@@ -2717,6 +2719,7 @@ ms_MY:
       total_session: Jumlah sesi bagi kes ini
       counselor_feedback1: "Tindakan kaunselor - Rumusan/"
       counselor_feedback2: "Maklumbalas kepada perujuk/TPHEP"
+      counselor_feedback_amsas: Maklumbalas kepada perujuk
       include_this: " (termasuk sesi kaunseling ini)"
       personal: Peribadi
       academic: Akademik

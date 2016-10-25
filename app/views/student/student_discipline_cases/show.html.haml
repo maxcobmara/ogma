@@ -41,10 +41,14 @@
               =h @student_discipline_case.student.try(:matrix_name)
             - elsif current_user.college.code=="amsas"
               =h @student_discipline_case.student.student_with_rank
+              
+          %dt=t 'student.discipline.principal'
+          %dd=h @student_discipline_case.ketua.staff_with_rank
           
           %dt Status :
           %dd=h @student_discipline_case.render_status 
-        
+            
+            
       #report_details.tab-pane.active
         %br
         =render 'tab_details'
@@ -65,10 +69,10 @@
           %br
           = render 'tab_refer_to_bpl'
         
-      - if @student_discipline_case.action_type == "Ref Commandant"
+      - if @student_discipline_case.action_type == "Ref Comandant"
         #refer_to_comandant
           %br
-          = render 'tab_refer_comandant'
+          = render 'tab_refer_to_comandant'
       
 .row
   .col-md-7.col-md-offset-2
@@ -98,7 +102,7 @@
         - if @student_discipline_case.status == "Refer to BPL" 
           = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('student.discipline.refer_to_bpl'), referbpl_student_student_discipline_case_path(@student_discipline_case), :class => 'btn btn-primary' 
       
-      - permitted_to? :refercomandant, :student_discipline_cases do
+      - permitted_to? :refercomandant, :student_student_discipline_cases do
         - if @student_discipline_case.status == "Refer to Comandant" 
           = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('student.discipline.refer_comandant'), refercomandant_student_student_discipline_case_path(@student_discipline_case), :class => 'btn btn-primary' 
           

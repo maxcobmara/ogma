@@ -102,6 +102,10 @@ class Staff < ActiveRecord::Base
   has_many :average_scores_verifier, class_name: 'AverageCourse'
   
   has_one :mentor, foreign_key: 'staff_id'
+  
+  has_many :discipline_case_processed, class_name: 'StudentDisciplineCase' #KS / Programme Mgr - FK : assigned_to
+  has_many :discipline_case_referred, class_name: 'StudentDisciplineCase' # Mentor @ Kaunselor / TPHEP - FK : assigned2_to
+  has_many :discipline_case_comanded, class_name: 'StudentDisciplineCase' #Comandant (amsas only) - FK : commandant_id
 
   #validates_attachment_size         :photo, :less_than => 500.kilobytes
   #validates_attachment_content_type :photo, :content_type => ['image/jpeg', 'image/png']

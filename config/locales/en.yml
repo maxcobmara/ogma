@@ -2706,12 +2706,13 @@ en:
       reported_on: Reported On
       assigned_to: Assign to Programme Head
       assigned_to_amsas: Assign to School Head
+      principal: School Head
+      comandant_id: Comandant
       file_id: File Reference
       location_id: Location
       counselor_feedback: Counselor Feedback
       year: Year
       not_related: Not Related
-      all : All records
       counseling: Counseling
       report_details: Report Details
       reported_by: Reported By
@@ -2777,7 +2778,8 @@ en:
       counselor: Counselor
       session_feedback: "Counseling Session & Feedback"
       final_feedback: Final Feedback
-      request_counseling: "Please issue request for a counseling session, click 'Update' & proceed to 'Student Counseling Session' to"
+      request_counseling: "Please issue request for a counseling session, click 'Update'."
+      proceed_counseling: "Proceed to 'Student Counseling Session' module to"
       confirm_appointment: Confirm appointment
       log_sessions: Log session details accordingly
       add_sessions: "Add session, repeat step 1 & 2  (if additional session is required) *"
@@ -2824,6 +2826,7 @@ en:
       total_session: Total session for this case
       counselor_feedback1: "Action by Counselor - Summary/"
       counselor_feedback2: "Feedback(FINAL) to referrer/TPHEP"
+      counselor_feedback_amsas: "Feedback(FINAL) to referrer"
       include_this: " (including this session)"
       personal: Personal
       academic: Academic
