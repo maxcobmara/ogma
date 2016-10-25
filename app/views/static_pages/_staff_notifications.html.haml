@@ -34,10 +34,10 @@
    
  #25Oct2016
  - if ks_student_discipline > 0
-  %li=link_to content_tag(:span, "#{ks_student_discipline}", class: "badge") + " Discipline report(s) for process", student_student_discipline_cases_path
+  %li=link_to content_tag(:span, "#{ks_student_discipline}", class: "badge") + (t 'notifications.discipline_process'), student_student_discipline_cases_path
   
  - if tphep_mentor_counselor_student_discipline > 0
-  %li=link_to content_tag(:span, "#{tphep_mentor_counselor_student_discipline}", class: "badge") + " Discipline report(s) for action", student_student_discipline_cases_path
+  %li=link_to content_tag(:span, "#{tphep_mentor_counselor_student_discipline}", class: "badge") + (t 'notifications.discipline_action'), student_student_discipline_cases_path
   
  - if comandant_student_discipline > 0
-  %li=link_to content_tag(:span, "#{comandant_student_discipline}", class: "badge") + " Discipline report(s) for action", student_student_discipline_cases_path
+  %li=link_to content_tag(:span, "#{comandant_student_discipline}", class: "badge") + (t 'notications.discipline_action'), student_student_discipline_cases_path

@@ -1,5 +1,3 @@
-/(case_created_on.nil? || investigation_notes.nil? || assigned2_to.nil? || assigned2_on.nil?)
-
 .col-md-offset-2
   - if @student_discipline_case.action_type=="Ref Counselor" && @student_discipline_case.counselor_feedback.blank?
     = f.hidden_field :is_counselor, value: @student_discipline_case.assigned2_to
@@ -55,24 +53,8 @@
               %li=session.confirmed_at.strftime('%d-%m-%Y %H:%M')+" | "+session.remark
           %b=(t 'student.discipline.final_feedback')+" : "
           =@student_discipline_case.counselor_feedback
-        
-  
-    /- if @student_discipline_case.action_type=="Ref Counselor" && @student_discipline_case.counselor_feedback.blank?
     
-    /do not display 1) evaluate case, 2) tick - Refer to Comandant, 3) action & 4) closed date
-    /.form-group
-    /  .col-sm-2
-    /  .col-md-10
-    /    =(t 'student.discipline.proceed_counseling')+" : "
-    /    %ol
-    /      %li=t 'student.discipline.confirm_appointment'
-    /      %li=t 'student.discipline.log_session'
-    /      %li=t 'student.discipline.add_session'
-    /      %li=t 'student.discipline.complete_session'
-        
-    /- else
-    
-    /Part 2 - 
+    /Part 2 - Display for Both Referer (Counselor / Mentor) : 1) evaluate case, 2) tick - Refer to Comandant, 3) action & 4) closed date
     //evaluate case
     .form-group
       .col-sm-2.control-label

@@ -3990,6 +3990,10 @@ ms_MY:
     details: Butiran Kumpulan
     membership: Keahlian
 
+  notifications:
+    discipline_process: " Laporan disiplin pelajar untuk diproses"
+    discipline_action: " Laporan disiplin pelajar untuk tindakan"
+    
   helpers:
     links:
       new: Cipta
