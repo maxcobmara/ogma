@@ -4069,6 +4069,10 @@ en:
     details: Group Details
     membership: Membership
 
+  notifications:
+    discipline_process: " Discipline reports require processing"
+    discipline_action: " Discipline reports for action"
+
   helpers:
     links:
       new: New
