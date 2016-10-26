@@ -6,14 +6,14 @@
     .col-md-8
       = f.text_area :otherinfo, :size => '40x3'
 
-  .form-group
-    .col-sm-2.control-label
-      = f.label  t 'document.circulate_to' , for: :attached_name
-    .col-md-8
-      = f.text_field :to_name, class: 'form-control', data: {autocomplete_source: Staff.order(:name).map(&:name)}
-      %i
-        %br
-        %font{:size => "2"}=t('document.recipient_remark')
+  /.form-group
+  /  .col-sm-2.control-label
+  /    = f.label  t 'document.circulate_to' , for: :attached_name
+  /  .col-md-8
+  /    = f.text_field :to_name, class: 'form-control', data: {autocomplete_source: Staff.order(:name).map(&:name)}
+  /    %i
+  /      %br
+  /      %font{:size => "2"}=t('document.recipient_remark')
 
   .form-group
     .col-sm-2.control-label

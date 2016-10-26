@@ -9,8 +9,8 @@ class Document < ActiveRecord::Base
                      :path => ":rails_root/public/assets/documents/:id/:style/:basename.:extension"
   #has_and_belongs_to_many   :staffs, :join_table => :documents_staffs 
   has_many :circulations
-  has_many :staffs, :through => :circulations
-  accepts_nested_attributes_for :circulations
+  has_many :staffs, :through => :circulations#, :autosave => true
+  accepts_nested_attributes_for :circulations, :allow_destroy => :true 
 
   belongs_to :stafffilled,  :class_name => 'Staff', :foreign_key => 'stafffiled_id'
   belongs_to :preparedby,   :class_name => 'Staff', :foreign_key => 'prepared_by'
@@ -27,6 +27,8 @@ class Document < ActiveRecord::Base
   validates_attachment_size :data, :less_than => 5.megabytes
   validates_presence_of :serialno, :refno, :category, :title, :from, :stafffiled_id#,:letterdt, :letterxdt, :sender,
 
+  attr_accessor :recipients
+  
   def doc_details
      "#{refno}"+" : "+"#{title.capitalize}"
   end
@@ -110,6 +112,9 @@ class Document < ActiveRecord::Base
       document_ids=Document.joins(:staffs).where('staff_id=?', search).pluck(:id)   #recepients
       @documents=Document.where('stafffiled_id=? OR prepared_by=? OR id IN(?)', search, search, document_ids)
     end
+  end
+  
+  def recipients_list
   end
   
 end
