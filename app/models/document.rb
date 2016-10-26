@@ -114,7 +114,33 @@ class Document < ActiveRecord::Base
     end
   end
   
-  def recipients_list
+  def saved_recipients_list
+    #selected recipients - staff_ids (individual & group) - sample: [87, 117, 3, 57, 101]
+    recipients_staffids=circulations.pluck(:staff_id) # staffs.pluck(:staff_id) - also can
+            
+    Group.all.each do |x|
+      #group members (staff_id) in array - sample: [117, 3]
+      group_staffids=User.where(id: x.listing).pluck(:userable_id)
+              
+      #group members (staff_id) in string - sample: (slist="3,117", rlist="117,3")
+      slist=""
+      rlist=""
+      group_staffids.sort.each_with_index{|y, ind|slist+=y.to_s; slist+="," if ind < (x.listing.size)-1}
+      group_staffids.sort.reverse.each_with_index{|y, ind|rlist+=y.to_s; rlist+="," if ind < (x.listing.size)-1}
+              
+      #recipients (staff_id) in string - sample: "87, 117, 3, 57, 101"
+      recipients_staffids_list=""
+      recipients_staffids.each_with_index{|t, ind|recipients_staffids_list+=t.to_s; recipients_staffids_list+="," if ind < recipients_staffids.size-1}
+              
+      #When recipients (previously save circulation recs) contains ALL members of a group
+      if recipients_staffids_list.include?(slist) || recipients_staffids_list.include?(rlist)
+        #remove staff_ids (of group) fr recipients_staffids & re-add in an Array form
+        recipients_staffids-=group_staffids
+        recipients_staffids+=[group_staffids]
+      end
+    end
+    
+    recipients_staffids
   end
   
 end

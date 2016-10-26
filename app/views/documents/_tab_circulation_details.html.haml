@@ -8,9 +8,23 @@
 
     %dt= t 'document.circulate_to' , :default => model_class.human_attribute_name(:circulate_to) + ":"
     %dd{style: 'padding-left: 70px;'}
-      - @document.staffs.each_with_index do |doc_recepient,ind|
-        (#{ind+=1}) #{doc_recepient.name}
-        %br
+      /- @document.staffs.each_with_index do |doc_recepient,ind|
+      /  (#{ind+=1}) #{doc_recepient.name}
+      /  %br
+      - cnt=0
+      - @document.saved_recipients_list.each do |doc_recepient|
+        - if doc_recepient.is_a?(Array)
+          - for group in Group.all
+            - if group.staffids_list==doc_recepient
+              %u= (t 'group.groups')+group.name
+              %br
+          - for recepient in doc_recepient
+            (#{cnt+=1}) #{Staff.find(recepient).name}
+            %br
+        - else
+          (#{cnt+=1}) #{Staff.find(doc_recepient).name}
+          %br
+      %hr
 
     %dt= t 'document.circulate_minute_date' , :default => model_class.human_attribute_name(:cc1date) + ":"
     %dd= @document.cc1date.try(:strftime, "%d %b %Y" )

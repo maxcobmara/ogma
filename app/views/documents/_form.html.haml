@@ -23,37 +23,12 @@
         .col-md-offset-2.col-sm-8
           .form-group
             /full group listing for selection - sample: [["Kumpulan : Teknologi Maklumat", [117, 3]], ["Kumpulan : Unit Latihan", [117, 48]]]
-            - group_list=Group.all.collect{|x|[(t 'group.groups')+x.name, User.where(id: (x.members[:user_ids]-[""])).pluck(:userable_id) ]}
-            
-            /selected recipients - staff_ids (individual & group) - sample: [87, 117, 3, 57, 101]
-            - recipients_staffids=@document.circulations.pluck(:staff_id)
-            
-            - Group.all.each do |x|
-              /group members (staff_id) in array - sample: [117, 3]
-              - group_staffids=User.where(id: x.listing).pluck(:userable_id)
-              
-              /group members (staff_id) in string - sample: (slist="3,117", rlist="117,3")
-              - slist=""
-              - rlist=""
-              - group_staffids.sort.each_with_index{|y, ind|slist+=y.to_s; slist+="," if ind < (x.listing.size)-1}
-              - group_staffids.sort.reverse.each_with_index{|y, ind|rlist+=y.to_s; rlist+="," if ind < (x.listing.size)-1}
-              
-              /recipients (staff_id) in string - sample: "87, 117, 3, 57, 101"
-              - recipients_staffids_list=""
-              - recipients_staffids.each_with_index{|t, ind|recipients_staffids_list+=t.to_s; recipients_staffids_list+="," if ind < recipients_staffids.size-1}
-              
-              /When recipients (previously save circulation recs) contains ALL members of a group
-              - if recipients_staffids_list.include?(slist) || recipients_staffids_list.include?(rlist)
-                /remove staff_ids (of group) fr recipients_staffids & re-add in an Array form
-                - recipients_staffids-=group_staffids
-                - recipients_staffids+=[group_staffids]
-                
-            = recipients_staffids2=@document.recipients_list
-
+            /- group_list=Group.all.collect{|x|[(t 'group.groups')+x.name, User.where(id: (x.members[:user_ids]-[""])).pluck(:userable_id) ]}
+            - group_list=Group.all.map(&:group_staffids_list)
             
             /// NOTE - this part is to capture currently selected staff_id for circulation
             = f.label  t 'document.circulate_to' , for: :attached_name
-            = f.select(:recipients, (Staff.order(rank_id: :asc, name: :asc).map(&:staff_rank_unit_id))+group_list, {selected: recipients_staffids}, { multiple: true , class: "chosen-select form-control" })
+            = f.select(:recipients, (Staff.order(rank_id: :asc, name: :asc).map(&:staff_rank_unit_id))+group_list, {selected: @document.saved_recipients_list}, { multiple: true , class: "chosen-select form-control" })
             
             //// NOTE - this part to capture previously saved circulation records
             = f.fields_for :circulations do |builder|
