@@ -98,9 +98,53 @@ class DocumentsController < ApplicationController
    # PUT /documents/1
    # PUT /documents/1.xml
    def update
+     #raise params.inspect
+     #################################
+     all_recipients=document_params[:recipients]-[""]
+     selected_recipients=[]
+     for selected in all_recipients
+       if selected.include?("[")
+         # NOTE - group
+         selected_rev=selected.gsub("[", "")
+         selected_rev2=selected_rev.gsub("]", "")
+         if selected.include?(",")
+	   selected_recipients+=selected_rev2.split(",")
+         end
+       else
+         # NOTE - individual
+         if selected.include?(",")
+           selected_recipients+=selected.split(",")
+         else
+           selected_recipients << selected
+         end
+       end
+     end
+     
+     rev_selected_recipients=[]
+     selected_recipients.each{|x|rev_selected_recipients << x.strip}
+
+     #existing / new items - find / create
+     for selected in rev_selected_recipients
+       recs=@document.circulations.where(staff_id: selected)
+       rec=recs.first || @document.circulations.build
+       rec.staff_id=selected
+       rec.college_id=current_user.college_id
+     end
+     
+     #items no longer exist - mark for destruction
+     exist_cnt=document_params[:circulations_attributes].count
+     exist_staff_ids=[]
+     0.upto(exist_cnt-1){ |ind| exist_staff_ids << document_params[:circulations_attributes][ind.to_s]["staff_id"]}
+     rmv_staff_ids=exist_staff_ids - rev_selected_recipients
+     rmv_recs=@document.circulations.where(staff_id: rmv_staff_ids)
+     for rmv_rec in rmv_recs
+       @document.circulations_attributes = { id: rmv_rec.id , _destroy: '1' }
+     end
+     #############################
+     
      respond_to do |format|
        if @document.update(document_params)
-         format.html { redirect_to document_path, notice: (t 'document.title')+(t 'actions.updated') }
+         format.html { redirect_to document_path, notice: (t 'document.title')+(t 'actions.updated')}
          format.json { head :no_content }
        else
          format.html { render action: 'edit' }
@@ -129,7 +173,7 @@ class DocumentsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def document_params
-      params.require(:document).permit(:id, :serialno, :refno, :title, :category, :letterdt, :letterxdt, :from, :stafffiled_id, :file_id, :otherinfo, :cc1date, :cctype_id, :closed, :data, circulations_attributes: [:id, :_destroy, :document_id, :staff_id, :action_date, :action_taken, :action_closed, :action_remarks, :action]) 
+      params.require(:document).permit(:id, :serialno, :refno, :title, :category, :letterdt, :letterxdt, :from, :stafffiled_id, :file_id, :otherinfo, :cc1date, :cctype_id, :closed, :data, circulations_attributes: [:id, :_destroy, :document_id, :staff_id, :action_date, :action_taken, :action_closed, :action_remarks, :action], recipients:[]) 
     end
 
 end

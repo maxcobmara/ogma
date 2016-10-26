@@ -50,4 +50,14 @@ class Group < ActiveRecord::Base
       return false
     end
   end
+  
+  #usage - documents/tab_circulation_details.html.haml
+  def staffids_list
+    User.where(id: (members[:user_ids]-[""])).pluck(:userable_id) 
+  end
+  
+  #usage - documents/_form.html.haml
+  def group_staffids_list
+    [(I18n.t 'group.groups')+name, staffids_list]
+  end
 end

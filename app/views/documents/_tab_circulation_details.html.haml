@@ -7,10 +7,24 @@
     %dd= @document.otherinfo
 
     %dt= t 'document.circulate_to' , :default => model_class.human_attribute_name(:circulate_to) + ":"
-    %dd
-      - @document.staffs.each_with_index do |doc_recepient,ind|
-        (#{ind+=1}) #{doc_recepient.name}
-        %br
+    %dd{style: 'padding-left: 70px;'}
+      /- @document.staffs.each_with_index do |doc_recepient,ind|
+      /  (#{ind+=1}) #{doc_recepient.name}
+      /  %br
+      - cnt=0
+      - @document.saved_recipients_list.each do |doc_recepient|
+        - if doc_recepient.is_a?(Array)
+          - for group in Group.all
+            - if group.staffids_list==doc_recepient
+              %u= (t 'group.groups')+group.name
+              %br
+          - for recepient in doc_recepient
+            (#{cnt+=1}) #{Staff.find(recepient).name}
+            %br
+        - else
+          (#{cnt+=1}) #{Staff.find(doc_recepient).name}
+          %br
+      %hr
 
     %dt= t 'document.circulate_minute_date' , :default => model_class.human_attribute_name(:cc1date) + ":"
     %dd= @document.cc1date.try(:strftime, "%d %b %Y" )
@@ -19,4 +33,4 @@
     %dd= (DropDown::DOCUMENT_ACTION.find_all{|disp, value| value == @document.cctype_id.to_s}).map {|disp, value| disp} [0]
 	  
     %dt= t 'document.file_closed' , :default => model_class.human_attribute_name(:closed) + ":"
-    %dd= @document.closed? ? "Yes" : "No"
+    %dd= @document.closed? ? (t 'yes2') : (t 'no2')

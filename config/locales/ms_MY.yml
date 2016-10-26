@@ -3031,7 +3031,7 @@ ms_MY:
     letter_date: Tarikh Surat
     received_date: Tarikh Terima
     from: Daripada
-    circulate_to: Diedarkan Untuk
+    circulate_to: Diedarkan Kepada
     action_notifications: "Tindakan / Makluman"
     closed: Ditutup
     file_no: No Fail

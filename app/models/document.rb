@@ -9,8 +9,8 @@ class Document < ActiveRecord::Base
                      :path => ":rails_root/public/assets/documents/:id/:style/:basename.:extension"
   #has_and_belongs_to_many   :staffs, :join_table => :documents_staffs 
   has_many :circulations
-  has_many :staffs, :through => :circulations
-  accepts_nested_attributes_for :circulations
+  has_many :staffs, :through => :circulations#, :autosave => true
+  accepts_nested_attributes_for :circulations, :allow_destroy => :true 
 
   belongs_to :stafffilled,  :class_name => 'Staff', :foreign_key => 'stafffiled_id'
   belongs_to :preparedby,   :class_name => 'Staff', :foreign_key => 'prepared_by'
@@ -27,6 +27,8 @@ class Document < ActiveRecord::Base
   validates_attachment_size :data, :less_than => 5.megabytes
   validates_presence_of :serialno, :refno, :category, :title, :from, :stafffiled_id#,:letterdt, :letterxdt, :sender,
 
+  attr_accessor :recipients
+  
   def doc_details
      "#{refno}"+" : "+"#{title.capitalize}"
   end
@@ -110,6 +112,35 @@ class Document < ActiveRecord::Base
       document_ids=Document.joins(:staffs).where('staff_id=?', search).pluck(:id)   #recepients
       @documents=Document.where('stafffiled_id=? OR prepared_by=? OR id IN(?)', search, search, document_ids)
     end
+  end
+  
+  def saved_recipients_list
+    #selected recipients - staff_ids (individual & group) - sample: [87, 117, 3, 57, 101]
+    recipients_staffids=circulations.pluck(:staff_id) # staffs.pluck(:staff_id) - also can
+            
+    Group.all.each do |x|
+      #group members (staff_id) in array - sample: [117, 3]
+      group_staffids=User.where(id: x.listing).pluck(:userable_id)
+              
+      #group members (staff_id) in string - sample: (slist="3,117", rlist="117,3")
+      slist=""
+      rlist=""
+      group_staffids.sort.each_with_index{|y, ind|slist+=y.to_s; slist+="," if ind < (x.listing.size)-1}
+      group_staffids.sort.reverse.each_with_index{|y, ind|rlist+=y.to_s; rlist+="," if ind < (x.listing.size)-1}
+              
+      #recipients (staff_id) in string - sample: "87, 117, 3, 57, 101"
+      recipients_staffids_list=""
+      recipients_staffids.each_with_index{|t, ind|recipients_staffids_list+=t.to_s; recipients_staffids_list+="," if ind < recipients_staffids.size-1}
+              
+      #When recipients (previously save circulation recs) contains ALL members of a group
+      if recipients_staffids_list.include?(slist) || recipients_staffids_list.include?(rlist)
+        #remove staff_ids (of group) fr recipients_staffids & re-add in an Array form
+        recipients_staffids-=group_staffids
+        recipients_staffids+=[group_staffids]
+      end
+    end
+    
+    recipients_staffids
   end
   
 end
