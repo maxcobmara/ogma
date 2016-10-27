@@ -42,6 +42,7 @@ ms_MY:
       mentor: Mentor
       mentee: Mentee
       student_discipline_case: Kes Disiplin Pelajar
+      document: Dokumen
     attributes:
       asset:
         assignedto_id: Pegawai Bertanggungjawab
@@ -286,6 +287,11 @@ ms_MY:
         other_info: Penilaian Kes 
         action: Tindakan
         closed_at_college_on: Tarikh Ditutup (Kolej)
+      document:
+        cc1date: Tarikh Edaran / Minit
+        cc2date: Tarikh Edaran / Minit
+        circulations: Diedarkan kepada
+        
     errors:
         template:
           body: "Berikut adalah beberapa masalah:"
@@ -3999,6 +4005,8 @@ ms_MY:
   notifications:
     discipline_process: " Laporan disiplin pelajar untuk diproses"
     discipline_action: " Laporan disiplin pelajar untuk tindakan"
+    document_forwarded: "Dokumen dimajukan untuk tindakan"
+    document_action: " Dokumen (edaran) untuk tindakan"
     
   helpers:
     links:

@@ -109,6 +109,20 @@ module Notifications
    StudentDisciplineCase.where(comandant_id: current_staff_id).where.not(status: 'Closed').count
  end
  
+ def cc1staff_document
+   #amsas only (creator --> Pengarah/Komandan..)
+   Document.where(cc1staff_id: current_staff_id).where(cc2closed: [nil, false]).where(closed: [nil, false]).count
+ end
+ 
+ def recipient_document
+   doc_circulates=Circulation.where(staff_id: current_staff_id).where(action_closed: [nil, false]).pluck(:document_id)
+   if current_user.college.code=='amsas'
+     Document.where(id: doc_circulates).where(cc2closed: true).where(closed: [nil, false]).count
+   else
+     Document.where(id: doc_circulates).where(cc1closed: true).where(closed: [nil, false]).count
+   end
+ end
+ 
 
 end
 

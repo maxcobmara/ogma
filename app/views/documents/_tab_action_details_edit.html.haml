@@ -47,7 +47,7 @@
         .col-sm-2.control-label
           =builder.label t('document.cc1actiondate')
         .col-md-5
-          = builder.text_field :action_date, class: 'form-control date_picker'
+          = builder.text_field :action_date, class: 'form-control date_picker_reverse', value: Date.today.strftime('%d-%m-%Y')
 
       .form-group
         .col-sm-2.control-label

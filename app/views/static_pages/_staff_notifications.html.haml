@@ -41,3 +41,10 @@
   
  - if comandant_student_discipline > 0
   %li=link_to content_tag(:span, "#{comandant_student_discipline}", class: "badge") + (t 'notications.discipline_action'), student_student_discipline_cases_path
+  
+ #27Oct2016
+ - if cc1staff_document > 0
+  %li=link_to content_tag(:span, "#{cc1staff_document}", class: "badge") + (t 'notifications.document_forwarded'), documents_path
+  
+ - if recipient_document > 0
+  %li=link_to content_tag(:span, "#{recipient_document}", class: "badge") + (t 'notifications.document_action'), documents_path

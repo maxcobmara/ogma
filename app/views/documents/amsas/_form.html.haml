@@ -19,7 +19,7 @@ DLM amsas
         - else
           = render 'tab_details'
           = render "documents/amsas/forward_cc1"
-          = render 'tab_close_edit', :f => f
+          = render 'tab_close'
           
       - if @document.cc1staff_id==current_user.userable_id || is_developer? || current_roles.include?("administration") || current_roles.include?("documents_module_manage") || current_roles.include?("e_filing")
 

@@ -57,7 +57,7 @@
   
   .form-group
     .col-sm-2.control-label
-      = f.label t 'document.file_no'   , for: :file_id
+      = f.label t 'document.file_no', for: :file_id
     .col-md-6
       = f.collection_select :file_id, Cofile.order(cofileno: :asc), :id, :file_no_and_name, {:include_blank => (t 'select')}, {class: 'selectpicker', "data-width"=>"500px"}
   
@@ -70,6 +70,7 @@
         \#{link_to (t 'document.download'), @document.data.url}
       - else
         =t 'document.no_attachment'
+        / TODO - check this - to remove '3'- output: 'Tiada fail dilampirkan 3'
 
   .form-group
     .col-sm-2.control-label
