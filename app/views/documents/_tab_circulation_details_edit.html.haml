@@ -6,20 +6,6 @@
     .col-md-8
       = f.text_area :otherinfo, :size => '40x3'
 
-  - if @document.college.code=='amsas'
-    .form-group
-      .col-sm-2.control-label
-        = f.label  t 'document.circulate_minute_date' , for: :cc2date
-      .col-md-3
-        = f.text_field :cc2date, class: 'form-control mandatory date_picker_reverse', value: @document.cc2date.try(:strftime, '%d-%m-%Y')
-
-  - else
-    .form-group
-      .col-sm-2.control-label
-        = f.label  t 'document.circulate_minute_date' , for: :cc1date
-      .col-md-3
-        = f.text_field :cc1date, class: 'form-control mandatory date_picker_reverse', value: @document.cc1date.try(:strftime, '%d-%m-%Y')
-
   .form-group
     .col-sm-2.control-label
       = f.label t 'document.action_type' , for: :cctype_id

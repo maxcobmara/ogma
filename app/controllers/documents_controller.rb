@@ -11,7 +11,7 @@ class DocumentsController < ApplicationController
     if @is_admin
       @search = Document.search(params[:q])
     else
-      @search = Document.sstaff2(current_user.userable.id).search(params[:q])
+      @search = Document.sstaff2(current_user.userable_id).search(params[:q])
     end 
     @documents = @search.result
     @documents_pagi = @documents.page(params[:page]||1) 
@@ -177,7 +177,7 @@ class DocumentsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def document_params
-      params.require(:document).permit(:id, :serialno, :refno, :title, :category, :letterdt, :letterxdt, :from, :stafffiled_id, :file_id, :otherinfo, :cc1staff_id, :cc1date, :cctype_id, :cc2date, :closed, :data, circulations_attributes: [:id, :_destroy, :document_id, :staff_id, :action_date, :action_taken, :action_closed, :action_remarks, :action], recipients:[]) 
+      params.require(:document).permit(:id, :serialno, :refno, :title, :category, :letterdt, :letterxdt, :from, :stafffiled_id, :file_id, :otherinfo, :cc1staff_id, :cc1date, :cc1closed, :cc2closed, :cctype_id, :cc2date, :closed, :data, circulations_attributes: [:id, :_destroy, :document_id, :staff_id, :action_date, :action_taken, :action_closed, :action_remarks, :action], recipients:[]) 
     end
 
 end

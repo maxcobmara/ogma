@@ -27,9 +27,19 @@ class Document < ActiveRecord::Base
                                 
   validates_attachment_size :data, :less_than => 5.megabytes
   validates_presence_of :serialno, :refno, :category, :title, :from, :stafffiled_id#,:letterdt, :letterxdt, :sender,
-
-  attr_accessor :recipients
+  validates :cc1date, :circulations, presence: true, :if => :creator_action_is_closed?
+  validates :cc2date, :circulations, presence: true, :if => :director_action_is_closed?
   
+  attr_accessor :recipients 
+ 
+  def creator_action_is_closed?
+    college.code=='kskbjb' && cc1closed==true
+  end
+  
+  def director_action_is_closed?
+    college.code=='amsas' && cc2closed==true
+  end
+
   def doc_details
      "#{refno}"+" : "+"#{title.capitalize}"
   end
@@ -89,8 +99,8 @@ class Document < ActiveRecord::Base
 
   def self.sstaff2(search)
     if search
-      document_ids=Document.joins(:staffs).where('staff_id=?', search).pluck(:id)   #recepients
-      @documents=Document.where('stafffiled_id=? OR prepared_by=? OR id IN(?)', search, search, document_ids)
+      document_ids=Circulation.where(staff_id: search).pluck(:document_id)
+      where('stafffiled_id=? OR prepared_by=? OR cc1staff_id=? OR id IN(?)', search, search, search, document_ids)
     end
   end
   

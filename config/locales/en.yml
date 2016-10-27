@@ -60,6 +60,7 @@ en:
       mentor: Mentor
       mentee: Mentee
       student_discipline_case: Student Discipline Case
+      document: Document
     attributes:
       asset:
         assignedto_id: Assigned to
@@ -304,6 +305,9 @@ en:
         other_info: Evaluate Case
         action: Action
         closed_at_college_on: Date closed (college)
+      document:
+        cc2date: Circulation/Minute date
+        circulations: Circulate to
     errors:
         template:
           body: "There were problems with the following fields:"
@@ -3170,6 +3174,7 @@ en:
     cc1action: Action Taken
     cc1remarks: Remark
     cc1closed: Close Action
+    cc2closed: Close Action
     cc1actiondate: Action Date
     action_by: Action By
     attachment_action: "Attachment (Action)"
@@ -4078,6 +4083,8 @@ en:
   notifications:
     discipline_process: " Discipline reports require processing"
     discipline_action: " Discipline reports for action"
+    document_forwarded: "Document forwarded for action"
+    document_action: " Document (circulate) for action"
 
   helpers:
     links:

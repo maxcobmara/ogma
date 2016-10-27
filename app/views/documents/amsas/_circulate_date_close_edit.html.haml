@@ -1,0 +1,13 @@
+.col-md-offset-2
+  .form-group
+    .col-sm-2.control-label
+      = f.label  t 'document.circulate_minute_date' , for: :cc2date
+    .col-md-3
+      = f.text_field :cc2date, class: 'form-control mandatory date_picker_reverse', value: Date.today.strftime('%d-%m-%Y')
+
+  .form-group
+    .col-sm-2.control-label
+      = f.label t 'document.cc1closed'  , for: :cc1closed
+    .col-md-3
+      = f.check_box :cc2closed
+
