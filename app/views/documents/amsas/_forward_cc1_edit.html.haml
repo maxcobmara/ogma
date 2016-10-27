@@ -1,0 +1,12 @@
+.col-md-offset-2
+  .form-group
+    .col-sm-2.control-label
+      = f.label t 'document.cc1staff_id'   , for: :cc1staff_id
+    .col-md-6
+      = f.collection_select :cc1staff_id, Staff.joins(:positions).where('positions.name IN(?) OR positions.name ILIKE(?)', ['Pengarah','Komandan Akademi', 'Komandan Pusat Latihan'], '%Pengarah Kompetensi%'), :id,  :staff_with_rank_position, {:include_blank => t('select')}, {class: 'selectpicker mandatory', "data-width"=> "auto"}
+      
+  .form-group
+    .col-sm-2.control-label
+      = f.label  t 'document.cc1date' , for: :cc1date
+    .col-md-3
+      = f.text_field :cc1date, class: 'form-control mandatory date_picker_reverse', value: @document.cc1date.try(:strftime, '%d-%m-%Y')

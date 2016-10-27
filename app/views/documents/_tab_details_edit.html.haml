@@ -28,13 +28,13 @@
     .col-sm-2.control-label
       = f.label t 'document.letterdt' , for: :letterdt
     .col-md-3
-      = f.text_field :letterdt, class: 'form-control date_picker'
+      = f.text_field :letterdt, class: 'form-control date_picker_reverse', value: @document.letterdt.try(:strftime, '%d-%m-%Y')
 
   .form-group
     .col-sm-2.control-label
       = f.label t 'document.letterxdt'  , for: :letterxdt
     .col-md-3
-      = f.text_field :letterxdt, class: 'form-control date_picker'
+      = f.text_field :letterxdt, class: 'form-control date_picker_reverse', value: @document.letterxdt.try(:strftime, '%d-%m-%Y')
 
   .form-group
     .col-sm-2.control-label
@@ -46,19 +46,20 @@
     .col-sm-2.control-label
       = f.label t 'document.stafffiled_id' , for: :prepared_by
     .col-md-3
+      / TODO - revision required (amsas vs kskbjb - default kskbjb)
       - if @document.new_record?
         - filedby = 164
       - else
         - filedby = @document.stafffiled_id 
       = f.collection_select :stafffiled_id, Staff.where('id IN(?)', @document.staffiled_list).order(name: :asc), :id, :name, {:selected => filedby}, {class: 'selectpicker', "data-width"=>"350px"}
       /= f.collection_select :stafffiled_id, Staff.order(name: :asc), :id, :name, {:include_blank => true}, {class: 'selectpicker', "data-width"=>"350px"}
-      = f.hidden_field :prepared_by, :value=>current_user
+      = f.hidden_field :prepared_by, :value=>current_user.userable_id
   
   .form-group
     .col-sm-2.control-label
       = f.label t 'document.file_no'   , for: :file_id
     .col-md-6
-      = f.collection_select :file_id, Cofile.order(cofileno: :asc), :id, :file_no_and_name, {:include_blank => true}, {class: 'selectpicker', "data-width"=>"500px"}
+      = f.collection_select :file_id, Cofile.order(cofileno: :asc), :id, :file_no_and_name, {:include_blank => (t 'select')}, {class: 'selectpicker', "data-width"=>"500px"}
   
   .form-group
     .col-sm-2.control-label
@@ -68,7 +69,7 @@
         = @document.data_file_name
         \#{link_to (t 'document.download'), @document.data.url}
       - else
-      No Attachment yet
+        =t 'document.no_attachment'
 
   .form-group
     .col-sm-2.control-label

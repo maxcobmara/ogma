@@ -18,7 +18,7 @@
     %dd= check_kin {@document.stafffiled_details}
 
     %dt= t 'document.file_no' , :default => model_class.human_attribute_name(:file_id) + ":"
-    %dd= check_kin {@document.file_details} 
+    %dd{style: 'padding-left: 70px;'}= check_kin {@document.file_details} 
 
     %dt= t 'document.uploaded' , :default => model_class.human_attribute_name(:data) + ":"
     %dd
@@ -26,4 +26,5 @@
         = @document.data_file_name
         = link_to (t 'document.download'), @document.data.url 
       - else
-        No File Available
+        =t 'document.no_attachment'
+  %br

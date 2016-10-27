@@ -3161,6 +3161,11 @@ en:
     circular: Circular
     others: Others
     email: "E-mail"
+    cc1staff_id: Forwarded to
+    cc1date: Date forwarded
+    director_action: Director / Comandant Action
+    staff_action: Staff Action
+    other_staffs: Other Staff
     circulation1_action: Action by Recipient
     cc1action: Action Taken
     cc1remarks: Remark
@@ -3170,6 +3175,7 @@ en:
     attachment_action: "Attachment (Action)"
     generate_report: Report
     new: New Document
+    no_attachment: No attachment yet
 
   events:
     campus_events: Campus Events

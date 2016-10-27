@@ -14,8 +14,9 @@ class Document < ActiveRecord::Base
 
   belongs_to :stafffilled,  :class_name => 'Staff', :foreign_key => 'stafffiled_id'
   belongs_to :preparedby,   :class_name => 'Staff', :foreign_key => 'prepared_by'
-  #belongs_to :cc1staff,     :class_name => 'Staff', :foreign_key => 'cc1staff_id' 
+  belongs_to :cc1staff,     :class_name => 'Staff', :foreign_key => 'cc1staff_id'          #amsas - Pengarah/Komandan Pusat Latihan/Komandan Akademi/Pengarah Kompetensi
   belongs_to :cofile,       :foreign_key => 'file_id'
+  belongs_to :college, :foreign_key => 'college_id'
 
   validates_attachment_content_type :data, 
                                     :content_type => ['application/pdf','application/txt', 'application/msword',
@@ -85,27 +86,6 @@ class Document < ActiveRecord::Base
   def doc_details_date 
     doc_details+" - "+"#{letterdt}"
   end
-    
-
-  def to_name
-  	recipient_qty = staffs.count
-  	staff_names = []
-  	count = 0
-  	for staff in staffs 
-  		count+=1
-  		if count != recipient_qty
-  			staff_names << staff.name+"," 
-  		else
-  			staff_names << staff.name
-  		end
-  	end 
-  	return staff_names [0]
-  end
-
-
-  def to_name=(name)
-    self.staffs = Staff.find_by_name(name) unless name.blank?
-  end
 
   def self.sstaff2(search)
     if search
@@ -121,25 +101,13 @@ class Document < ActiveRecord::Base
     Group.all.each do |x|
       #group members (staff_id) in array - sample: [117, 3]
       group_staffids=User.where(id: x.listing).pluck(:userable_id)
-              
-      #group members (staff_id) in string - sample: (slist="3,117", rlist="117,3")
-      slist=""
-      rlist=""
-      group_staffids.sort.each_with_index{|y, ind|slist+=y.to_s; slist+="," if ind < (x.listing.size)-1}
-      group_staffids.sort.reverse.each_with_index{|y, ind|rlist+=y.to_s; rlist+="," if ind < (x.listing.size)-1}
-              
-      #recipients (staff_id) in string - sample: "87, 117, 3, 57, 101"
-      recipients_staffids_list=""
-      recipients_staffids.each_with_index{|t, ind|recipients_staffids_list+=t.to_s; recipients_staffids_list+="," if ind < recipients_staffids.size-1}
-              
-      #When recipients (previously save circulation recs) contains ALL members of a group
-      if recipients_staffids_list.include?(slist) || recipients_staffids_list.include?(rlist)
-        #remove staff_ids (of group) fr recipients_staffids & re-add in an Array form
+      #a2.all? { |e| a1.include?(e) } #ref: http://stackoverflow.com/questions/7387937/ruby-rails-how-to-determine-if-one-array-contains-all-elements-of-another-array
+      if group_staffids.all? {|e| recipients_staffids.include?(e)}
         recipients_staffids-=group_staffids
         recipients_staffids+=[group_staffids]
       end
     end
-    
+
     recipients_staffids
   end
   

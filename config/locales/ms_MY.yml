@@ -3057,6 +3057,11 @@ ms_MY:
     circular: Pekeliling
     others: "Lain-lain"
     email: Emel
+    cc1staff_id: Dimajukan kepada
+    cc1date: Tarikh dimajukan
+    director_action: Tindakan Pengarah / Komandan
+    staff_action: Tindakan Staf
+    other_staffs: Lain - lain Staf
     circulation1_action: Tindakan oleh Penerima Edaran
     cc1action: Tindakan yang diambil
     cc1remarks: Catatan
@@ -3066,6 +3071,7 @@ ms_MY:
     attachment_action: "Lampiran (Tindakan)"
     generate_report: Laporan
     new: Dokumen Baru
+    no_attachment: Tiada fail dilampirkan
 
   campus:
     tenants:
