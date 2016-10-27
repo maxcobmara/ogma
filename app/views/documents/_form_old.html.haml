@@ -38,8 +38,9 @@
             
       #circulation_details_edit.tab-pane
         %br  
+        - current_roles=current_user.roles.pluck(:authname)
         - if @document.staffs.pluck(:staff_id).include?(@current_user.userable_id)==true
-          - if @current_user.roles.pluck(:authname).include?("administration") || @current_user.roles.pluck(:authname).include?("documents_module_manage") || @current_user.roles.pluck(:authname).include?("e_filing")
+          - if current_roles.include?("administration") || current_roles.include?("documents_module_manage") || current_roles.include?("e_filing")
             = render 'tab_circulation_details_edit', :f => f
           - else
             = render 'tab_circulation_details'
@@ -50,7 +51,7 @@
       - if @document.circulations.count > 0 
         #action_details_edit.tab-pane
           %br
-          - if @document.staffs.pluck(:staff_id).include?(@current_user.userable_id)==true || @current_user.roles.pluck(:authname).include?("administration") || @current_user.roles.pluck(:authname).include?("documents_module_manage")
+          - if @document.staffs.pluck(:staff_id).include?(@current_user.userable_id)==true || current_roles.include?("administration") || current_roles.include?("documents_module_manage")
             = render 'tab_action_details_edit', :f => f
             = f.hidden_field :id, :value => @document.id
           - else

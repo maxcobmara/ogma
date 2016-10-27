@@ -1,15 +1,18 @@
 =f.hidden_field :action_type, :value=>"action1"
 .col-md-offset-2 
-  - admin_staff_ids = Role.joins(:users).where('roles.name=?', "Administration").pluck(:userable_id)
+  - current_roles=current_user.roles.pluck(:authname)
   
   = f.fields_for :circulations do |builder| 
-    - if (builder.object.staff_id == current_user.userable.id) || (admin_staff_ids.include?(current_user.userable.id))
-      - if builder.object.staff_id != current_user.userable.id
-        .form-group
-          .col-sm-2.control-label
-            =builder.label  t('document.staff_id')
-          .col-md-5
-            =builder.object.staff.staff_name_with_position
+    - if (builder.object.staff_id == current_user.userable.id || current_roles.include?('administration') || is_developer? || current_roles.include?("documents_module_manage") || current_roles.include?("e_filing"))
+      
+      .form-group
+        .col-sm-2.control-label
+          =builder.label  t('document.staff_id')
+        .col-md-5
+          - if builder.object.staff_id == current_user.userable.id
+            =builder.object.staff.staff_name_with_position 
+          - else
+            %span{style: 'color: red;'}=builder.object.staff.staff_name_with_position 
 
       .form-group
         .col-sm-2.control-label
@@ -52,5 +55,5 @@
         .col-md-1
           =builder.check_box :action_closed
           
-    /- if builder.object.staff_id != current_user.userable.id
-    /  %hr
+      - if builder.object.staff_id != current_user.userable.id
+        %hr

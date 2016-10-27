@@ -1,30 +1,70 @@
 - model_class = Document
 .col-md-8.col-md-offset-1
   %dl.dl-horizontal
-    - @document.circulations.each do |y| 
-      %dt= t 'document.cc1action' , :default => model_class.human_attribute_name(:cc1action) + ":" 
-      %dd=h y.action_taken
+    - cnt=0
+    - no=0
+    - @document.saved_recipients_list.each do |doc_recepient|
+      - if doc_recepient.is_a?(Array)
+        - for group in Group.all
+          - if group.staffids_list==doc_recepient
+            %h4= (t 'group.groups')+group.name
+            %br
+        - for recepient in doc_recepient
+          - y=@document.circulations.where(staff_id: recepient).first
+          %dt= t 'document.cc1action' , :default => model_class.human_attribute_name(:cc1action) + ":" 
+          %dd=h y.action_taken
 
-      %dt=t 'document.cc1remarks', :default => model_class.human_attribute_name(:cc1remarks) + ":"
-      %dd=h y.action_remarks 
+          %dt=t 'document.cc1remarks', :default => model_class.human_attribute_name(:cc1remarks) + ":"
+          %dd=h y.action_remarks 
       
-      %dt=t 'document.action_by'
-      %dd=h y.staff.try(:staff_name_with_position)
+          %dt=t 'document.action_by'
+          %dd=h y.staff.try(:staff_name_with_position)
       
-      %dt=t 'document.attachment_action'
-      %dd
-        - if y.action.exists? then
-          =h y.action_file_name
-          = link_to (t 'document.download'), y.action.url
-          ||
-          = link_to "ALT", y.action.url
-        - else
-          =t 'document.no_attachment'
+          %dt=t 'document.attachment_action'
+          %dd
+            - if y.action.exists? then
+              =h y.action_file_name
+              = link_to (t 'document.download'), y.action.url
+              ||
+              = link_to "ALT", y.action.url
+            - else
+              =t 'document.no_attachment'
 
-      %dt=t 'document.cc1actiondate' 
-      %dd=h y.action_date.try(:strftime, '%d %b %Y')
+          %dt=t 'document.cc1actiondate' 
+          %dd=h y.action_date.try(:strftime, '%d %b %Y')
         
-      %dt= t 'document.cc1closed'
-      %dd=h y.action_closed? ? (t 'yes2') : (t 'no2')  
+          %dt= t 'document.cc1closed'
+          %dd=h y.action_closed? ? (t 'yes2') : (t 'no2')  
 
-      %hr
+          %hr
+      - else
+        %h4=t('document.other_staffs') if no==0 && @document.saved_recipients_list.any? {|x|x.is_a? Array}
+        - y=@document.circulations.where(staff_id: doc_recepient).first
+          
+        %dt= t 'document.cc1action' , :default => model_class.human_attribute_name(:cc1action) + ":" 
+        %dd=h y.action_taken
+
+        %dt=t 'document.cc1remarks', :default => model_class.human_attribute_name(:cc1remarks) + ":"
+        %dd=h y.action_remarks 
+      
+        %dt=t 'document.action_by'
+        %dd=h y.staff.try(:staff_name_with_position)
+      
+        %dt=t 'document.attachment_action'
+        %dd
+          - if y.action.exists? then
+            =h y.action_file_name
+            = link_to (t 'document.download'), y.action.url
+            ||
+            = link_to "ALT", y.action.url
+          - else
+            =t 'document.no_attachment'
+
+        %dt=t 'document.cc1actiondate' 
+        %dd=h y.action_date.try(:strftime, '%d %b %Y')
+        
+        %dt= t 'document.cc1closed'
+        %dd=h y.action_closed? ? (t 'yes2') : (t 'no2')  
+
+        %hr
+        - no+=1

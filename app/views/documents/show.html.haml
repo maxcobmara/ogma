@@ -2,6 +2,12 @@
 .page-header
   %h1 #{@document.refno} :  #{@document.title.capitalize}
 
+- if @document.college.code=='amsas'
+  - tab_title=(t 'document.director_action')
+  - tab_title2=(t 'document.staff_action')
+- else
+  - tab_title=(t 'document.circulation_details')
+  - tab_title2= (t 'document.action_details')
 = render 'shared/flashes'
 
 .row
@@ -9,8 +15,8 @@
     / Nav tabs
     %ul.nav.nav-tabs
       %li.active= link_to  (t 'document.document_details'), "#details", "data-toggle" => "tab"
-      %li=link_to (t 'document.circulation_details'), "#circulation_details", "data-toggle" => "tab"
-      %li=link_to (t 'document.action_details'), "#action_details", "data-toggle" => "tab" if @document.circulations.count > 0 
+      %li=link_to tab_title, "#circulation_details", "data-toggle" => "tab"
+      %li=link_to tab_title2, "#action_details", "data-toggle" => "tab" if @document.circulations.count > 0 
  
     /display 
     .tab-content{style:"padding-top:1em"}
@@ -28,10 +34,15 @@
       #details.tab-pane.active
         %br
         = render 'tab_details'
+        - if @document.college.code=='amsas'
+          = render "documents/amsas/forward_cc1"
+          = render 'tab_close'
  
       #circulation_details.tab-pane
         %br
         = render 'tab_circulation_details'
+        - if @document.college.code=='kskbjb'
+          = render 'tab_close'
 
       - if @document.circulations.count > 0 
         #action_details.tab-pane

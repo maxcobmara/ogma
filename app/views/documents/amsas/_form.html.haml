@@ -1,0 +1,57 @@
+DLM amsas
+- current_roles=current_user.roles.pluck(:authname)
+.row
+  .col-md-10.col-md-offset-1
+    / Nav tabs
+    %ul.nav.nav-tabs
+      %li.active= link_to (t 'document.document_details'),"#details_edit", "data-toggle" => "tab"
+      %li=link_to (t 'document.director_action'), "#director_action_edit", "data-toggle" => "tab" 
+      %li=link_to (t 'document.staff_action'), "#action_details_edit", "data-toggle" => "tab"  if @document.circulations.count > 0 
+      
+    .tab-content{style:"padding-top:1em"}
+      #details_edit.tab-pane.active
+        %br
+        - if @document.stafffiled_id==current_user.userable_id || is_developer? || current_roles.include?("administration") || current_roles.include?("documents_module_manage") || current_roles.include?("e_filing")
+          = render 'tab_details_edit', :f => f
+          = render "documents/amsas/forward_cc1_edit", :f => f
+          = render 'tab_close_edit', :f => f
+          
+        - else
+          = render 'tab_details'
+          = render "documents/amsas/forward_cc1"
+          = render 'tab_close_edit', :f => f
+          
+      - if @document.cc1staff_id==current_user.userable_id || is_developer? || current_roles.include?("administration") || current_roles.include?("documents_module_manage") || current_roles.include?("e_filing")
+
+        // TODO - chosen-select - didn't work with .tab-pane
+        .row
+          .col-md-offset-2.col-sm-8
+            .form-group
+              /full group listing for selection - sample: [["Kumpulan : Teknologi Maklumat", [117, 3]], ["Kumpulan : Unit Latihan", [117, 48]]]
+              - group_list=Group.all.map(&:group_staffids_list)
+            
+              /// NOTE - this part is to capture currently selected staff_id for circulation
+              = f.label  t 'document.circulate_to' , for: :attached_name
+              = f.select(:recipients, (Staff.order(rank_id: :asc, name: :asc).map(&:staff_rank_unit_id))+group_list, {selected: @document.saved_recipients_list}, { multiple: true , class: "chosen-select form-control" })
+            
+              //// NOTE - this part to capture previously saved circulation records
+              = f.fields_for :circulations do |builder|
+                = builder.hidden_field :staff_id
+                = builder.hidden_field :document_id, :value => @document.id
+                = builder.hidden_field :college_id, :value => current_user.college_id
+            
+      #director_action_edit.tab-pane
+        %br  
+        - if @document.cc1staff_id==current_user.userable_id || is_developer? || current_roles.include?("administration") || current_roles.include?("documents_module_manage") || current_roles.include?("e_filing")
+          = render 'tab_circulation_details_edit', :f => f
+        - else
+          = render 'tab_circulation_details'
+      
+      - if @document.circulations.count > 0 
+        #action_details_edit.tab-pane
+          %br
+          - if @document.staffs.pluck(:staff_id).include?(current_user.userable_id)==true || is_developer? || current_roles.include?("administration") || current_roles.include?("documents_module_manage")
+            = render 'tab_action_details_edit', :f => f
+            = f.hidden_field :id, :value => @document.id
+          - else
+            = render 'tab_action_details'
