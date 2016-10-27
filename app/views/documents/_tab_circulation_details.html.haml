@@ -16,28 +16,13 @@
               %u= (t 'group.groups')+group.name
               %br
           - for recepient in doc_recepient
-            (#{cnt+=1}) #{Staff.find(recepient).name}
+            (#{cnt+=1}) #{Staff.find(recepient).staff_with_rank_position}
             %br
         - else
-          (#{cnt+=1}) #{Staff.find(doc_recepient).name}
+          (#{cnt+=1}) #{Staff.find(doc_recepient).staff_with_rank_position}
           %br
       %hr
     
     %dt= t 'document.action_type' , :default => model_class.human_attribute_name(:action) + ":"
     %dd= (DropDown::DOCUMENT_ACTION.find_all{|disp, value| value == @document.cctype_id.to_s}).map {|disp, value| disp} [0]
 
-    - if @document.college.code=='amsas'
-      %dt= t 'document.circulate_minute_date' , :default => model_class.human_attribute_name(:cc2date) + ":"
-      %dd= @document.cc2date.try(:strftime, "%d-%m-%Y" )
-      
-      %dt=t 'document.cc2closed', :default => model_class.human_attribute_name(:cc1closed) + ":"
-      %dd= @document.cc2closed? ? (t 'yes2') : (t 'no2')
-      
-    - else
-      %dt= t 'document.circulate_minute_date' , :default => model_class.human_attribute_name(:cc1date) + ":"
-      %dd= @document.cc1date.try(:strftime, "%d %b %Y" )
-      
-      %dt=t 'document.cc1closed', :default => model_class.human_attribute_name(:cc1closed) + ":"
-      %dd= @document.cc1closed? ? (t 'yes2') : (t 'no2')
-  
-  %br

@@ -15,7 +15,7 @@
     %dd= @document.from
 
     %dt= t 'document.stafffiled_id' , :default => model_class.human_attribute_name(:stafffiled_id) + ":"
-    %dd= check_kin {@document.stafffiled_details}
+    %dd= @document.college.code=='amsas' ? @document.stafffilled.staff_with_rank_position : check_kin {@document.stafffiled_details}
 
     %dt= t 'document.file_no' , :default => model_class.human_attribute_name(:file_id) + ":"
     %dd{style: 'padding-left: 70px;'}= check_kin {@document.file_details} 

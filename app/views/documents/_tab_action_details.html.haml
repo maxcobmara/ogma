@@ -18,7 +18,7 @@
           %dd=h y.action_remarks 
       
           %dt=t 'document.action_by'
-          %dd=h y.staff.try(:staff_name_with_position)
+          %dd=h y.staff.try(:staff_with_rank_position)
       
           %dt=t 'document.attachment_action'
           %dd
@@ -48,7 +48,7 @@
         %dd=h y.action_remarks 
       
         %dt=t 'document.action_by'
-        %dd=h y.staff.try(:staff_name_with_position)
+        %dd=h y.staff.try(:staff_with_rank_position)
       
         %dt=t 'document.attachment_action'
         %dd

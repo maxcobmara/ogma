@@ -2112,29 +2112,38 @@ authorization do
   role :documents_module_member do
     has_permission_on :documents, :to => [:menu, :create]                                                    # A staff can access Index, but listing restricted to roles / if recepients
     has_permission_on :documents, :to => :read, :join_by => :or do                                       # Any of these staff hv access to Show
-      #if_attribute :id => is_in {user.document_recepient}
-      if_attribute :id => is_in {Circulation.where(staff_id: user.userable_id).pluck(:document_id)}
-      if_attribute :stafffiled_id => is {user.userable_id}
-      if_attribute :prepared_by => is {user.userable_id}
-      if_attribute :cc1staff_id => is {user.userable_id}                                                           # applicable to amsas
-    end
-    has_permission_on :documents, :to =>  :update, :join_by => :and do                             # These 3+1group(recipients)* of users may update, unless the file is closed
-      if_attribute :closed => is_not {true}
-      #if_attribute :id => is_in {user.document_recepient}
-      if_attribute :id => is_in {Circulation.where(staff_id: user.userable_id).pluck(:document_id)}
-    end
-    has_permission_on :documents, :to =>  :update, :join_by => :and do
-      if_attribute :closed => is_not {true}
-      if_attribute :stafffiled_id => is {user.userable.id}
-    end
-    has_permission_on :documents, :to => :update, :join_by => :and do
-      if_attribute :closed => is_not {true}
-      if_attribute :prepared_by => is {user.userable.id}
-    end
-    has_permission_on :documents, :to => :update, :join_by => :and do
-      if_attribute :closed => is_not {true}
-      if_attribute :cc1staff_id => is {user.userable.id}
-    end
+     #if_attribute :id => is_in {user.document_recepient}
+     if_attribute :id => is_in {Circulation.where(staff_id: user.userable_id).pluck(:document_id)}
+     if_attribute :stafffiled_id => is {user.userable_id}
+     if_attribute :prepared_by => is {user.userable_id}
+     if_attribute :cc1staff_id => is {user.userable_id}                                                           # applicable to amsas only
+   end
+   has_permission_on :documents, :to =>  :update, :join_by => :and do
+     if_attribute :closed => is_not {true}
+     if_attribute :stafffiled_id => is {user.userable.id}
+   end
+   has_permission_on :documents, :to => :update, :join_by => :and do
+     if_attribute :closed => is_not {true}
+     if_attribute :prepared_by => is {user.userable.id}
+   end
+   has_permission_on :documents, :to => :update, :join_by => :and do                             #Amsas - Pengarah/Komandan Akademi/Komandan Pusat Latihan/Pengarah 
+     if_attribute :closed => is_not {true}                                                                              #Kompetensi
+     if_attribute :cc1staff_id => is {user.userable.id}                                                           #cc1closed - not used for Amsas 
+     if_attribute :cc2closed => is_in {[nil, false]}                                                                  # NOTE (* cc1: from creator --> pengarah..), (*cc2: from pengarah.. --> staffs)
+     if_attribute :college_id => is {College.where(code: 'amsas').first.id}                             #cc2closed - action by Pengarah..
+   end
+   has_permission_on :documents, :to =>  :update, :join_by => :and do                             # These 3+1group(recipients)* of users may update, unless the file is closed
+     if_attribute :closed => is_not {true}                                                                               # & document is closed for circulation (cc1closed==true) - kskbjb
+     if_attribute :id => is_in {Circulation.where(staff_id: user.userable_id).pluck(:document_id)}
+     if_attribute :cc1closed => is {true}
+     if_attribute :college_id => is {College.where(code: 'kskbjb').first.id}   
+   end
+   has_permission_on :documents, :to =>  :update, :join_by => :and do                             # These 3+1group(recipients)* of users may update, unless the file is closed
+     if_attribute :closed => is_not {true}                                                                               # & document is closed for circulation (cc2closed==true) - amsas
+     if_attribute :id => is_in {Circulation.where(staff_id: user.userable_id).pluck(:document_id)}
+     if_attribute :cc2closed => is {true}
+     if_attribute :college_id => is {College.where(code: 'amsas').first.id}   
+   end
   end
   
   #OK until here 10Feb2016==============

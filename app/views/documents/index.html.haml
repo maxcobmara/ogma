@@ -19,15 +19,15 @@
     %thead
       %tr
         %th{style: "width:8%;"}= sort_link(@search, :serialno, (t 'document.serial_no'))
-        %th= sort_link(@search, :refno, (t 'document.ref_no'))
-        %th= sort_link(@search, :category, (t 'document.category'))
-        %th= sort_link(@search, :title, (t 'document.title2'))
-        %th{style: "width:10%;"}= sort_link(@search, :letterdt, (t 'document.letter_date'))
-        %th{style: "width:10%;"}= sort_link(@search, :letterxdt, (t 'document.received_date'))
-        %th= sort_link(@search, :from, (t 'document.from'))
+        %th{style: "width:8%;"}= sort_link(@search, :refno, (t 'document.ref_no'))
+        %th{style: "width:7%;"}= sort_link(@search, :category, (t 'document.category'))
+        %th{style: "width:18%;"}= sort_link(@search, :title, (t 'document.title2'))
+        %th{style: "width:7%;"}= sort_link(@search, :letterdt, (t 'document.letter_date'))
+        %th{style: "width:7%;"}= sort_link(@search, :letterxdt, (t 'document.received_date'))
+        %th{style: "width:10%;"}= sort_link(@search, :from, (t 'document.from'))
         %th{style: "width:10%;"}= sort_link(@search, :cc1date, ("Status / "+(t 'document.circulation_date')))
         %th{style: "width:15%;"}=(t 'document.action_notifications')
-        %th= sort_link(@search, :closed, (t 'document.file_closed'))
+        %th{style: "width:5%;"}= sort_link(@search, :closed, (t 'document.file_closed'))
 
     %tbody
     = render "index_search"
@@ -61,4 +61,4 @@
 
   .right{style:"padding:0 30px; margin:0;"}= paginate @documents_pagi, :theme => 'twitter-bootstrap-3'
   
-:javascript
+

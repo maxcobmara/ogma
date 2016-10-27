@@ -1,0 +1,9 @@
+- model_class = Document
+.col-md-8.col-md-offset-1
+  %dl.dl-horizontal
+    %dt= t 'document.circulate_minute_date' , :default => model_class.human_attribute_name(:cc1date) + ":"
+    %dd= @document.cc1date.try(:strftime, "%d %b %Y" )
+      
+    %dt=t 'document.cc1closed', :default => model_class.human_attribute_name(:cc1closed) + ":"
+    %dd= @document.cc1closed? ? (t 'yes2') : (t 'no2')
+  %br

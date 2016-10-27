@@ -41,6 +41,7 @@
       #circulation_details.tab-pane
         %br
         = render 'tab_circulation_details'
+        = render "documents/#{@document.college.code}/circulate_date_close"
         - if @document.college.code=='kskbjb'
           = render 'tab_close'
 

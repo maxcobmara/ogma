@@ -3174,6 +3174,7 @@ en:
     cc1action: Action Taken
     cc1remarks: Remark
     cc1closed: Close Action
+    cc2closed: Close Action
     cc1actiondate: Action Date
     action_by: Action By
     attachment_action: "Attachment (Action)"

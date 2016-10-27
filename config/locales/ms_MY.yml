@@ -3072,6 +3072,7 @@ ms_MY:
     cc1action: Tindakan yang diambil
     cc1remarks: Catatan
     cc1closed: Selesai Tindakan
+    cc2closed: Selesai Tindakan
     cc1actiondate: Tarikh Tindakan Diambil
     action_by: Tindakan Oleh
     attachment_action: "Lampiran (Tindakan)"
