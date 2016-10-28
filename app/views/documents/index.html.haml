@@ -52,7 +52,7 @@
           %td
             - document.circulations.each_with_index do |circulation, ind|
               - if document.college.code=='amsas'
-                (#{ind+=1}) #{circulation.staff.name} 
+                (#{ind+=1}) #{circulation.staff.staff_with_rank} 
                 =circulation.action_closed? ? fa_icon("check") : fa_icon("times")
               - else
                 (#{ind+=1}) #{circulation.staff.name} - #{circulation.action_taken}

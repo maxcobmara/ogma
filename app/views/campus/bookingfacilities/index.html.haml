@@ -8,7 +8,7 @@
       %li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'campus.bookingfacilities.new'))), new_campus_bookingfacility_path
   %ul.nav.navbar-nav.navbar-right
     %li= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "index_search_bar"
-    %li= link_to content_tag(:li, fa_icon("print", text: (t 'actions.print'))), "#", class: 'bogus'
+    %li= link_to  (fa_icon "file-pdf-o", text: (t 'actions.print')),  bookingfacilities_report_campus_bookingfacilities_path(params.merge(format: 'pdf' ))
 
 = render 'shared/flashes'
 

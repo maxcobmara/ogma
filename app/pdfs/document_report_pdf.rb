@@ -1,21 +1,22 @@
 class Document_reportPdf < Prawn::Document
-  def initialize(documents, view)
+  def initialize(documents, view, college)
     super({top_margin: 50, page_size: 'A4', page_layout: :portrait })
     @documents = documents
     @view = view
+    @college=college
     font "Times-Roman"
-    move_down 20
-    text "REKOD MASUK SURAT-SURAT RASMI KOLEJ SAINS KESIHATAN BERSEKUTU JOHOR BAHRU", :align => :center, :size => 12, :style => :bold
-    move_down 20
     record
   end
   
   def record
-    table(line_item_rows, :column_widths => [30,50, 100, 90, 80, 80 ,110], :cell_style => { :size => 10,  :inline_format => :true}) do
-      row(0).font_style = :bold
-      row(0).background_color = 'FFE34D'
+    table(line_item_rows, :column_widths => [30,50, 100, 90, 80, 80 ,110], :cell_style => { :size => 10,  :inline_format => :true}, :header => 2) do
+      row(0).borders =[]
+      row(0).height=50
+      row(0).style size: 12
+      row(0).align = :center
+      row(0..1).font_style = :bold
+      row(1).background_color = 'FFE34D'
       self.row_colors = ["FEFEFE", "FFFFFF"]
-      self.header = true
       self.width = 540
       header = true
     end
@@ -31,7 +32,7 @@ class Document_reportPdf < Prawn::Document
       @circulation_details << circulation_details
     end
     counter = counter || 0
-    header = [[ 'No', 'Tarikh', 'Daripada', 'No Rujukan', 'Tarikh Surat', 'Perkara', 'Tindakan/Makluman']]
+    header = [[{content: "REKOD MASUK SURAT-SURAT RASMI #{@college.name.upcase}", colspan: 7}],[ 'No', 'Tarikh', 'Daripada', 'No Rujukan', 'Tarikh Surat', 'Perkara', 'Tindakan/Makluman']]
     header +
       @documents.map do |document|
       ["#{counter += 1}", "#{document.letterxdt.try(:strftime, "%d/%m/%y")}", "#{document.from} " , "#{document.refno}"," #{document.letterdt.try(:strftime, "%d/%m/%y")}", "#{document.title}",  "#{@circulation_details[counter-1]}"]

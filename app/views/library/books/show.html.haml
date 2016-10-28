@@ -49,11 +49,11 @@
                     %th= t 'library.book.location'
                     %th Status
                 %tbody
-                  - for accession in @book.accessions
+                  - for accession in @book.accessions.order(accession_no: :asc)
                     %tr
                       %td= accession.accession_no
                       %td= accession.order_no
-                      %td= (DropDown::STATUS.find_all{|disp, value| value==accession.received_by}).map{|disp, value|disp}.first
+                      %td= (DropDown::STATUS.find_all{|disp, value| value==accession.status}).map{|disp, value|disp}.first
         
       - permitted_to? :manage, :library_books do 
         #purchase_details.tab-pane

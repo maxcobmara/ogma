@@ -49,7 +49,11 @@ class Document < ActiveRecord::Base
     if id
       Document.find(id).serialno
     else
-      (Document.last.id)+1
+      if Document.all.count > 0
+        (Document.last.id)+1
+      else
+        1
+      end
     end
   end
 

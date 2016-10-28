@@ -222,6 +222,9 @@ Ogma::Application.routes.draw do
         get :approval_facility
         get :booking_facility
       end
+      collection do
+        get :bookingfacilities_report
+      end
     end
   end
   resources :repositories do
