@@ -4008,6 +4008,8 @@ ms_MY:
     discipline_action: " Laporan disiplin pelajar untuk tindakan"
     document_forwarded: "Dokumen dimajukan untuk tindakan"
     document_action: " Dokumen (edaran) untuk tindakan"
+    instructor_appraisal_check: " Penilaian Diri Jurulatih untuk disemak"
+    instructor_appraisal_checked: " Penilaian Diri Jurulatih telah disemak"
     
   helpers:
     links:

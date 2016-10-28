@@ -123,6 +123,13 @@ module Notifications
    end
  end
  
+ def checker_instructor_appraisal
+   InstructorAppraisal.where(qc_sent: true).where(check_qc: current_staff_id).where(checked: [nil, false]).count
+ end
+ 
+ def owner_instructor_appraisal
+   InstructorAppraisal.where(qc_sent: true).where(staff_id: current_staff_id).where(checked: true).count
+ end
 
 end
 

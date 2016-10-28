@@ -7,8 +7,7 @@
       - if current_roles.include?('instructor_appraisals_module_admin') || current_roles.include?('administration') || current_roles.include?('developer')
         = f.collection_select :staff_id, Staff.joins(:positions).where('positions.name=?', 'Jurulatih').order(rank_id: :asc, name: :asc), :id, :staff_with_rank,{ include_blank: (t 'select')},{class: 'selectpicker mandatory', "data-width"=> "300px"}
       - else
-        = f.collection_select :staff_id, Staff.joins(:positions).where('positions.name=? and positions.staff_id=?', 'Jurulatih', current_user.userable_id), :id, :staff_with_rank,{},{class: 'selectpicker mandatory', "data-width"=> "300px"}
-      
+        = f.collection_select :staff_id, Staff.joins(:positions).where('positions.name=? and positions.staff_id=?', 'Jurulatih', current_user.userable_id).uniq, :id, :staff_with_rank,{ include_blank: (t 'select'), selected: current_user.userable_id},{class: 'selectpicker mandatory', "data-width"=> "300px"}
 
   .form-group
     .col-sm-2.control-label

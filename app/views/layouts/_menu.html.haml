@@ -33,7 +33,8 @@
             - permitted_to? :index, :staff_staff_appraisals do        
               %li= link_to t('staff.staff_appraisal.title'), staff_staff_appraisals_path
             - permitted_to? :menu, :staff_instructor_appraisals do
-              %li= link_to t('instructor_appraisal.title'), staff_instructor_appraisals_path
+              - if current_user.college.code=='amsas'
+                %li= link_to t('instructor_appraisal.title'), staff_instructor_appraisals_path
             - permitted_to? :menu, :staff_average_instructors do 
               %li= link_to t('average_instructor.title'), staff_average_instructors_path
               
