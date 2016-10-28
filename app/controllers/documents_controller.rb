@@ -71,7 +71,7 @@ class DocumentsController < ApplicationController
     @documents = @search.result
      respond_to do |format|
        format.pdf do
-         pdf = Document_reportPdf.new(@documents, view_context)
+         pdf = Document_reportPdf.new(@documents, view_context, current_user.college)
          send_data pdf.render, filename: "document_report-{Date.today}",
                                type: "application/pdf",
                                disposition: "inline"

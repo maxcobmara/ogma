@@ -39,7 +39,7 @@ DLM kskbjb
         - current_roles=current_user.roles.pluck(:authname)
         - if is_developer? || current_roles.include?("administration") || current_roles.include?("documents_module_manage") || current_roles.include?("e_filing")
           = render 'tab_circulation_details_edit', :f => f
-          = render "documents/#{@document.college.code}/circulate_date_close_edit", :f => f
+          = render "documents/kskbjb/circulate_date_close_edit", :f => f
           = render 'tab_close_edit', :f => f
         - else
           = render 'tab_circulation_details'

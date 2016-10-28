@@ -12,6 +12,24 @@ class Librarytransaction < ActiveRecord::Base
   
   #validates_presence_of :accession_id
   before_save :set_fine_paid_value_exist, :set_default_finepaydate
+  after_save :update_book_status
+  before_destroy :update_book_status2
+  
+  def update_book_status
+    acc_to_update=Accession.find(accession_id)
+    if returned==true
+      acc_to_update.status=1 #available
+    else
+      acc_to_update.status=2 #on loan
+    end
+    acc_to_update.save!
+  end
+  
+  def update_book_status2
+    acc_to_update=Accession.find(accession_id)
+    acc_to_update.status=1 #available
+    acc_to_update.save!
+  end
   
   #18May2013-compulsory to have this method in order for autocomplete field to work
 

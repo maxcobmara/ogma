@@ -81,11 +81,11 @@
       = f.label t 'library.book.mediatype', for: :mediatype
     .col-md-2
       = f.select :mediatype, DropDown::MEDIA,{:include_blank =>t('select')},{class: 'selectpicker', "data-width"=>'160px'}
-  .form-group
-    .col-sm-2.control-label
-      = f.label "Status", for: :status
-    .col-md-2   
-      = f.select :status, DropDown::STATUS,{:include_blank =>t('select')},{class: 'selectpicker', "data-width"=>'160px'}
+  /.form-group
+  /  .col-sm-2.control-label
+  /    = f.label "Status", for: :status
+  /  .col-md-2   
+  /    = f.select :status, DropDown::STATUS,{:include_blank =>t('select')},{class: 'selectpicker', "data-width"=>'160px'}
   .form-group
     .col-sm-2.control-label
       = f.label t 'library.book.series', for: :series

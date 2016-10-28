@@ -48,7 +48,8 @@
     .col-md-3
       / TODO - revision required (amsas vs kskbjb - default kskbjb)
       - if @document.new_record?
-        - filedby = 164
+        - if current_user.college.code=='kskbjb'
+          - filedby = 164
       - else
         - filedby = @document.stafffiled_id 
       = f.collection_select :stafffiled_id, Staff.where('id IN(?)', @document.staffiled_list).order(name: :asc), :id, :name, {:selected => filedby}, {class: 'selectpicker', "data-width"=>"350px"}

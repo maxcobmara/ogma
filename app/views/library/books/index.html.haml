@@ -78,9 +78,8 @@
           %td=h book.classlcc
           %td=h book.location
           %td
-            /=h (DropDown::STATUS.find_all{|disp, value| value == book.status}).map {|disp, value| disp}[0]
             - acc3.each_with_index do |acc,index2|
-              =h (DropDown::STATUS.find_all{|disp, value| value == acc.received_by}).map {|disp, value| disp}[0]
+              =h (DropDown::STATUS.find_all{|disp, value| value == acc.status}).map {|disp, value| disp}[0]
               %br
           %td
             - if book.roman != nil 

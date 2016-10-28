@@ -88,6 +88,19 @@ class Campus::BookingfacilitiesController < ApplicationController
        end
      end
   end
+  
+  def bookingfacilities_report
+    @search=Bookingfacility.search(params[:q])
+    @bookingfacilities=@search.result.order(start_date: :desc)
+    respond_to do |format|
+       format.pdf do
+         pdf = Bookingfacilities_reportPdf.new(@bookingfacilities, view_context, current_user.college)
+         send_data pdf.render, filename: "bookingfacilities_report-{Date.today}",
+                               type: "application/pdf",
+                               disposition: "inline"
+       end
+     end
+  end
 
   private
     # Use callbacks to share common setup or constraints between actions.
