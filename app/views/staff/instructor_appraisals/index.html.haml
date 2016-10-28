@@ -35,7 +35,7 @@
         
     %tbody
       = render "index_search"
-      - @instructor_appraisals.each do |instructor_appraisal|
+      - @instructor_appraisals.sort_by{|x|x.instructor.staff_with_rank}.reverse.each do |instructor_appraisal|
         %tr
           %td=h link_to instructor_appraisal.instructor.staff_with_rank, staff_instructor_appraisal_path(instructor_appraisal)
           %td.centre=h instructor_appraisal.appraisal_date.try(:strftime, '%d-%m-%Y')

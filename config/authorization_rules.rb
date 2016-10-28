@@ -147,12 +147,18 @@ authorization do
    #instructor Appraisal
    has_permission_on :staff_instructor_appraisals, :to => :menu
    has_permission_on :staff_instructor_appraisals, :to => :create
-   has_permission_on :staff_instructor_appraisals, :to => :update do
-     if_attribute :staff_id => is {user.userable.id}
-   end
    has_permission_on :staff_instructor_appraisals, :to => [:read, :instructorevaluation], :join_by => :or do
      if_attribute :staff_id => is {user.userable.id}
      if_attribute :check_qc => is {user.userable.id}
+   end
+   has_permission_on :staff_instructor_appraisals, :to => :update, :join_by => :and do                                #instructor page
+     if_attribute :staff_id => is {user.userable.id}
+     if_attribute :qc_sent => is_in{[nil, false]}
+   end
+   has_permission_on :staff_instructor_appraisals, :to => [:qc_appraisal, :update], :join_by => :and do       #kompetensi/kawalan mutu page
+     if_attribute :check_qc => is {user.userable_id}
+     if_attribute :qc_sent => is {true}
+     if_attribute :checked => is_in {[nil, false]}
    end
    # HACK restriction to Administration, Developer & instructor_appraisals_module_admin in INDEX page
    has_permission_on :staff_instructor_appraisals, :to => :instructorevaluation_report 
@@ -2284,6 +2290,15 @@ authorization do
     has_permission_on :staff_instructor_appraisals, :to => [:read, :instructorevaluation], :join_by => :or do
       if_attribute :staff_id => is {user.userable.id}
       if_attribute :check_qc => is {user.userable.id}
+    end
+    has_permission_on :staff_instructor_appraisals, :to => :update, :join_by => :and do                                #instructor page
+      if_attribute :staff_id => is {user.userable.id}
+      if_attribute :qc_sent => is_in{[nil, false]}
+    end
+    has_permission_on :staff_instructor_appraisals, :to => [:qc_appraisal, :update], :join_by => :and do       #kompetensi/kawalan mutu page
+      if_attribute :check_qc => is {user.userable_id}
+      if_attribute :qc_sent => is {true}
+      if_attribute :checked => is_in {[nil, false]}
     end
     # HACK restriction to Administration, Developer & instructor_appraisals_module_admin in INDEX page
     has_permission_on :staff_instructor_appraisals, :to => :instructorevaluation_report 

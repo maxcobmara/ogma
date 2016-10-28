@@ -35,7 +35,8 @@
       = link_to content_tag(:i, "", :class => "fa fa-arrow-left ") + " " + t('.back', :default => t("helpers.links.back")), staff_instructor_appraisals_path, :class => 'btn btn-default'
       = link_to content_tag(:i, "", class: "fa fa-file-pdf-o"), instructorevaluation_staff_instructor_appraisal_path(@instructor_appraisal, format: "pdf"), class: "btn btn-default", "data-toggle" => "tooltip", title: t('instructor_appraisal.title')
       - permitted_to? :update, :staff_instructor_appraisals do
-        = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('.edit', :default => t("helpers.links.edit")), edit_staff_instructor_appraisal_path(@instructor_appraisal),  :class => 'btn btn-primary' 
+        - if @instructor_appraisal.staff_id==current_user.userable_id
+          = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('.edit', :default => t("helpers.links.edit")), edit_staff_instructor_appraisal_path(@instructor_appraisal),  :class => 'btn btn-primary' 
       - permitted_to? :qc_appraisal, :staff_instructor_appraisals do
         = link_to content_tag(:i, "", :class => "fa fa-edit") + " " + t('.edit', :default => t("instructor_appraisal.quality_control")), qc_appraisal_staff_instructor_appraisal_path(@instructor_appraisal),  :class => 'btn btn-primary' 
       - permitted_to? :manage, :staff_instructor_appraisals do

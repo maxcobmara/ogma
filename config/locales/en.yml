@@ -4085,6 +4085,8 @@ en:
     discipline_action: " Discipline reports for action"
     document_forwarded: "Documents forwarded for action"
     document_action: " Documents (circulated) for action"
+    instructor_appraisal_check: " Instructor Appraisals require checking"
+    instructor_appraisal_checked: " Instructor Appraisals were checked"
 
   helpers:
     links:

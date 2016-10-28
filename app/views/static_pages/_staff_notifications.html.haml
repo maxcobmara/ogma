@@ -48,3 +48,10 @@
   
  - if recipient_document > 0
   %li=link_to content_tag(:span, "#{recipient_document}", class: "badge") + (t 'notifications.document_action'), documents_path
+
+ #28Oct2016
+ - if checker_instructor_appraisal > 0
+  %li=link_to content_tag(:span, "#{checker_instructor_appraisal}", class: "badge") + (t 'notifications.instructor_appraisal_check'), staff_instructor_appraisals_path  
+
+ - if owner_instructor_appraisal > 0
+  %li=link_to content_tag(:span, "#{owner_instructor_appraisal}", class: "badge") + (t 'notifications.instructor_appraisal_checked'), staff_instructor_appraisals_path  
