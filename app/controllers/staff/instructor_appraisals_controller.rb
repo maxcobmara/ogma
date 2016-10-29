@@ -9,7 +9,7 @@ class Staff::InstructorAppraisalsController < ApplicationController
   def index
     current_roles=current_user.roles.pluck(:authname)
     @search = InstructorAppraisal.search(params[:q])
-    if current_roles.include?('developer') || current_roles.include?('administration') || current_roles.include?('instructor_appraisals_module_admin') || current_roles.include?('instructor_appraisals_module_viewer') || current_roles.include?('instructor_appraisals_module_user')
+    if current_roles.include?('developer') || current_roles.include?('administration') || current_roles.include?('instructor_appraisals_module_admin') || current_roles.include?('instructor_appraisals_module_viewer') || current_roles.include?('instructor_appraisals_module_user') || current_roles.include?('e_filing')
       @instructor_appraisals = @search.result
     else
       @instructor_appraisals = @search.result.search2(current_user.userable_id)
