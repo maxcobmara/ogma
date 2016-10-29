@@ -2,12 +2,14 @@
 .page-header
   %h1= t 'instructor_appraisal.edit'
 = render 'shared/flashes'
+- current_roles=current_user.roles.pluck(:authname)
 
 .row
   = form_for [:staff, @instructor_appraisal],  :html => { :class => 'form-horizontal' } do |f| 
     = render 'shared/error_messages', object: f.object
 
-    - if @instructor_appraisal.staff_id==current_user.userable_id
+    - if @instructor_appraisal.staff_id==current_user.userable_id || is_developer? || current_roles.include?('administration') || current_roles.include?('instructor_appraisals_module_admin') || current_roles.include?('instructor_appraisals_module_viewer') || current_roles.include?('instructor_appraisals_module_user') || current_roles.include?('e_filing')
+    
       = render :partial => 'form', :locals => {:f => f}
 
       .row
