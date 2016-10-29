@@ -1,29 +1,13 @@
 class Library::BooksController < ApplicationController
   
-  filter_access_to :index, :new, :create, :import_excel, :import, :download_excel_format, :check_availability, :attribute_check => false
+  filter_access_to :index, :new, :create, :import_excel, :import, :download_excel_format, :check_availability, :stock_listing, :book_summary, :attribute_check => false
   filter_access_to :show, :edit, :update, :destroy, :attribute_check => true
   before_action :set_book, only: [:show, :edit, :update, :destroy]
+  before_action :set_book_accession, only: [:index, :stock_listing, :book_summary]
  
   # GET /books
   # GET /books.xml
   def index
-    @search = Book.search(params[:q])
-    @media=params[:q][:mediatype_search] if params[:q]
-    @status=params[:q][:status_search] if params[:q]
-    @books2 = @search.result
-    @books2 = @books2.mediatype_search(@media.to_i) if @media
-    @books2 = @books2.status_search(@status.to_i) if @status
-    @books = @books2.order(title: :asc).page(params[:page]||1)
-    @result_by_accession=Accession.where('accession_no ILIKE (?)', "%#{@search.accessionno_search}%").pluck(:accession_no)  if @search.accessionno_search 
-   
-    @searched_accession = Accession.where('book_id IN (?)', @books2.pluck(:id))				#3 (Book id 1298 ) 10003, 10004, 10005 
-    @all_accessions = @searched_accession.sort_by(&:accession_no).sort_by(&:book_id)		#pg 3 consist of 7 records only --> 3 accession records w/o book (25+25+7)
-    #@all_accessions = Accession.all.sort_by(&:accession_no)							#pg 3 consist of 10 records (25+25+10)
-    #@accessions_by_book =@all_accessions.group_by(&:book_id)						#dah paginate yg asal - group by book id	#just for checking
-    @accessions = Kaminari.paginate_array(@all_accessions).page(params[:page]||1)    
-    @acc_by_book = @accessions.group_by(&:book_id)
-    
-    
     #retrieve book without accession no
     @book_wo_acc=Book.where('id NOT IN(?)', Accession.all.pluck(:book_id).uniq)
 
@@ -160,10 +144,52 @@ class Library::BooksController < ApplicationController
     end
   end
   
+  def stock_listing
+    respond_to do |format|
+      format.pdf do
+         pdf = Stock_listingPdf.new(@all_accessions, @search, @params_count, view_context, current_user.college)
+         send_data pdf.render, filename: "document_report-{Date.today}",
+                               type: "application/pdf",
+                               disposition: "inline"
+      end
+    end
+  end
+  
+  def book_summary
+    respond_to do |format|
+      format.pdf do
+         pdf = Book_summaryPdf.new(@all_accessions, @search, @params_count, view_context, current_user.college)
+         send_data pdf.render, filename: "document_report-{Date.today}",
+                               type: "application/pdf",
+                               disposition: "inline"
+      end
+    end
+  end
+  
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_book
       @book = Book.find(params[:id])
+    end
+    
+    def set_book_accession
+      @search = Book.search(params[:q])
+      @media=params[:q][:mediatype_search] if params[:q]
+      @status=params[:q][:status_search] if params[:q]
+      @books2 = @search.result
+      @books2 = @books2.mediatype_search(@media.to_i) if @media
+      @books2 = @books2.status_search(@status.to_i) if @status
+      @books = @books2.order(title: :asc).page(params[:page]||1)
+      @result_by_accession=Accession.where('accession_no ILIKE (?)', "%#{@search.accessionno_search}%").pluck(:accession_no)  if @search.accessionno_search 
+   
+      @searched_accession = Accession.where('book_id IN (?)', @books2.pluck(:id))				#3 (Book id 1298 ) 10003, 10004, 10005 
+      @all_accessions = @searched_accession.sort_by(&:accession_no).sort_by(&:book_id)		#pg 3 consist of 7 records only --> 3 accession records w/o book (25+25+7)
+      #@all_accessions = Accession.all.sort_by(&:accession_no)							#pg 3 consist of 10 records (25+25+10)
+      #@accessions_by_book =@all_accessions.group_by(&:book_id)						#dah paginate yg asal - group by book id	#just for checking
+      @accessions = Kaminari.paginate_array(@all_accessions).page(params[:page]||1)    
+      @acc_by_book = @accessions.group_by(&:book_id)
+      
+      @params_count= params[:q].count if params[:q]
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

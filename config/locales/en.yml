@@ -3118,6 +3118,17 @@ en:
       isbn_exist3: record accordingly.
       enter_isbn: Please enter ISBN for checking.
       not_exist_proceed: ISBN not yet exist. You may proceed with new book creation.
+      book_summary: "Book Summary (For Stock Verification)"
+      total_books_titles: Total Books / Titles
+      book_summary_all: Summary of all stocks
+      book_summary_accession:  Summary by Accession No
+      book_summary_callno: Summary by Class No (LC / NLM)
+      stock_listing: "Stock Listing"
+      stock_listing_accession: Listing by Accession No
+      stock_listing_callno: Listing by Class No (LC/NLM)
+      range: Range
+      started_with: started with string 
+      physical_description: Physical Description
       
   buletin:
     list: List of Bulletins

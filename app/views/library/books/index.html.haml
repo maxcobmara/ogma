@@ -12,8 +12,16 @@
       %li= link_to content_tag(:li, fa_icon("file-excel-o", text: (t 'actions.import_excel'))), import_excel_library_books_path     
   %ul.nav.navbar-nav.navbar-right
     %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: 'index_search_bar'
-    %li= link_to content_tag(:li, fa_icon("print", text: (t 'actions.print'))), "#", class: 'bogus'
-
+    %li.dropdown
+      %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#"}
+        = fa_icon "external-link", text: (t 'actions.print')
+        %b.caret
+      %ul.dropdown-menu
+        %li= link_to  (fa_icon "file-pdf-o", text: (t 'library.book.stock_listing')),  stock_listing_library_books_path(params.merge(format: 'pdf' ))
+        %li= link_to  (fa_icon "file-pdf-o", text: (t 'library.book.book_summary')),  book_summary_library_books_path(params.merge(format: 'pdf' ))
+      
+        
+    
 .row
   %table.table-striped.table-hover.ogma
     %thead

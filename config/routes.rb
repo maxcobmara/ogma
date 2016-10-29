@@ -410,6 +410,8 @@ Ogma::Application.routes.draw do
 	get 'import_excel', to: "books#import_excel"
         get 'check_availability'
         post 'check_availability'
+	get :stock_listing
+	get :book_summary
       end
     end
   end
