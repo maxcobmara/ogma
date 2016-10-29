@@ -6,7 +6,11 @@
     %td= f.text_field :author_cont, size: 2,  :class => "form-control"
     %td= f.text_field :isbn_cont, size: 2,  :class => "form-control"
     %td &nbsp;
-    %td=f.text_field :accessionno_search, size: 2, :class => "form-control"
+    %td
+      =f.text_field :accessionno_search, size: 2, :class => "form-control"
+      .col-md-6=f.text_field :accessionno_from, size: 2, :class => "form-control", :placeholder => "from"
+      .col-md-6=f.text_field :accessionno_to, size: 2, :class => "form-control", :placeholder => "to"
+      /= params[:q].count if params[:q]
     %td= f.text_field :classlcc_cont, size: 2, :class => "form-control"
     %td= f.text_field :location_cont, size: 2, :class => "form-control"
     %td= select_tag('q[status_search]',options_for_select(DropDown::STATUS),:prompt=>t("helpers.prompt.select_status"))

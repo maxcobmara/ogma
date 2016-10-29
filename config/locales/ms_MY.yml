@@ -3015,6 +3015,17 @@ ms_MY:
       isbn_exist3: " (jika perlu)."
       enter_isbn: Sila masukkan ISBN untuk semakan.
       not_exist_proceed: ISBN belum digunakan. Anda boleh teruskan mencipta rekod baru.
+      book_summary: "Ringkasan Buku (Verifikasi Stok)"
+      total_books_titles: Jumlah Buku / Judul
+      book_summary_all: Ringkasan Semua Stok
+      book_summary_accession: Ringkasan Mengikut No Panggilan
+      book_summary_callno: Ringkasan Mengikut No Kelas (LC / NLM)
+      stock_listing: Senarai Stok
+      stock_listing_accession: Senarai Mengikut No Panggilan
+      stock_listing_callno: Senarai Mengikut No Kelas (LC/NLM)
+      range: Julat
+      started_with: bermula dengan aksara 
+      physical_description: Deskripsi Fizikal
 
   buletin:
     list: Senarai Buletin

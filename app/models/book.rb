@@ -96,12 +96,25 @@ class Book < ActiveRecord::Base
   def self.accessionno_search(query)
     Book.joins(:accessions).where('accessions.accession_no ILIKE(?)', "%#{query}%")
   end
+  def self.accessionno_from(query)
+    query_final=""
+    query1=(query.to_i-1).to_s
+    if query.size > 1 && query[0]=="0"
+      lead_zeros=query.count("0")
+      0.upto(lead_zeros-1){query_final+="0"}
+    end
+    query_final=query_final+query1
+    Book.joins(:accessions).where('accessions.accession_no >=?', "%#{query_final}%")
+  end
+  def self.accessionno_to(query)
+    Book.joins(:accessions).where('accessions.accession_no <=?', "%#{query}%")
+  end
     
   # whitelist the scope
   def self.ransackable_scopes(auth_object = nil)
     [:mediatype_search]
     [:status_search]
-    [:accessionno_search]
+    [:accessionno_search, :accessionno_from, :accessionno_to]
   end
   
   def self.import(file) 
