@@ -4021,6 +4021,8 @@ ms_MY:
     document_action: " Dokumen (edaran) untuk tindakan"
     instructor_appraisal_check: " Penilaian Diri Jurulatih untuk disemak"
     instructor_appraisal_checked: " Penilaian Diri Jurulatih telah disemak"
+    booking_facility_approval: " Tempahan Kemudahan untuk kelulusan"
+    booking_facility_process: " Tempahan Kemudahan untuk diproses"
     
   helpers:
     links:

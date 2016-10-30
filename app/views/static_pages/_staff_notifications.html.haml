@@ -55,3 +55,10 @@
 
  - if owner_instructor_appraisal > 0
   %li=link_to content_tag(:span, "#{owner_instructor_appraisal}", class: "badge") + (t 'notifications.instructor_appraisal_checked'), staff_instructor_appraisals_path  
+  
+ #30Oct2016
+ - if approver_booking_facility > 0
+  %li=link_to content_tag(:span, "#{approver_booking_facility}", class: "badge") + (t 'notifications.booking_facility_approval'), campus_bookingfacilities_path  
+ 
+ - if officer_booking_facility > 0
+  %li=link_to content_tag(:span, "#{officer_booking_facility}", class: "badge") + (t 'notifications.booking_facility_process'), campus_bookingfacilities_path
