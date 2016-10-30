@@ -4003,7 +4003,7 @@ en:
       approval: Approval
       approval_date: Approval Date
       remark: Remark
-      approval2: Facility Officer
+      approval2: Facility Officer Approval
       approval_date2: Facility Approval Date
       remark2: Remark
       approver_id2: Facility Officer
@@ -4098,6 +4098,8 @@ en:
     document_action: " Documents (circulated) for action"
     instructor_appraisal_check: " Instructor Appraisals require checking"
     instructor_appraisal_checked: " Instructor Appraisals were checked"
+    booking_facility_approval: " Booking Facilities require approval"
+    booking_facility_process: " Booking Facilities require processing"
 
   helpers:
     links:

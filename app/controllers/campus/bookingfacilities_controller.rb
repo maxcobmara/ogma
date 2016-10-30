@@ -7,8 +7,13 @@ class Campus::BookingfacilitiesController < ApplicationController
   # GET /bookingfacilities
   # GET /bookingfacilities.xml
   def index
+    current_roles=current_user.roles.pluck(:authname)
     @search=Bookingfacility.search(params[:q])
-    @bookingfacilities=@search.result.order(start_date: :desc)
+    if current_roles.include?('developer') || current_roles.include?('administration') ||  current_roles.include?('bookingfacilities_module_admin') || current_roles.include?('bookingfacilities_module_user') || current_roles.include?('bookingfacilities_module_viewer')
+      @bookingfacilities=@search.result.order(start_date: :desc)
+    else
+      @bookingfacilities=@search.result.search2(current_user.userable_id).order(start_date: :desc)
+    end
     @bookingfacilities=@bookingfacilities.page(params[:page]||1)
   end
 

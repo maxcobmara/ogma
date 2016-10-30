@@ -130,6 +130,21 @@ module Notifications
  def owner_instructor_appraisal
    InstructorAppraisal.where(qc_sent: true).where(staff_id: current_staff_id).where(checked: true).count
  end
+ 
+ def approver_booking_facility
+   Bookingfacility.where(approver_id: current_staff_id).where(approval: [nil, false]).where('start_date >=?', Date.today).count
+ end
+ 
+ def officer_booking_facility
+   # NOTE : require 1)staff to be the administor of location & 2)roles - 'facilities_administrator'
+   # NOTE : approver_id2 - not define by 1st approver, but selection provided includes location's administrator (refer _tab_reservation_edit.html.haml)
+   location_ids=Location.where(staffadmin_id: current_staff_id).pluck(:id)
+   if current_user.roles.pluck(:authname).include?('facilities_administrator')
+     Bookingfacility.where(location_id: location_ids).where(approval: true, approval2: [nil, false]).count#.where('start_date >=?', Date.today).count
+   else
+     0
+   end
+ end
 
 end
 

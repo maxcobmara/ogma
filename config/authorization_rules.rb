@@ -466,12 +466,18 @@ authorization do
      if_attribute :staff_id => is {user.userable.id}
    end
    has_permission_on :campus_bookingfacilities, :to => [:menu, :create]
-   has_permission_on :campus_bookingfacilities, :to => [:update, :show, :booking_facility] do
-     if_attribute :staff_id => is {user.userable.id}
+   has_permission_on :campus_bookingfacilities, :to => [:read, :booking_facility], :join_by => :or do
+     if_attribute :staff_id => is {user.userable_id}
+     if_attribute :approver_id => is {user.userable_id}
+     if_attribute :approver_id2 => is {user.userable_id}                                                                             #after selection (& saved) in approval_facility pg 
    end
-   # HACK :approval --> will :update too, avoid combine w above :update, to restrict approval page access
-   has_permission_on :campus_bookingfacilities, :to => [:approval, :update, :show, :booking_facility] do 
+   has_permission_on :campus_bookingfacilities, :to => :update, :join_by => :and do
+     if_attribute :staff_id => is {user.userable.id}
+     if_attribute :approval => is_in {[nil, false]}
+   end
+   has_permission_on :campus_bookingfacilities, :to => [:approval, :update] do 
      if_attribute :approver_id => is {user.userable.id}
+     if_attribute :approval => is_in {[nil, false]}
    end
    #amsas only
    has_permission_on :student_leaveforstudents, :to => [:menu, :read, :approving, :update, :slip_pengesahan_cuti_pelajar, :studentleave_report], :join_by => :and do
@@ -2340,20 +2346,32 @@ authorization do
     has_permission_on :campus_bookingfacilities, :to => [:menu, :show, :booking_facility]
   end
   role :bookingfacilities_module_member do
+    ####
+    
+    
+    
+    ####
+    has_permission_on :campus_bookingfacilities, :to => [:read, :booking_facility], :join_by => :or do
+      if_attribute :staff_id => is {user.userable_id}
+      if_attribute :approver_id => is {user.userable_id}
+      if_attribute :approver_id2 => is {user.userable_id}                                                                             #after selection (& saved) in approval_facility pg 
+    end
     #creator (staff_id)
-    has_permission_on :campus_bookingfacilities, :to => [:menu, :create]
-    has_permission_on :campus_bookingfacilities, :to => [:update, :show, :booking_facility] do
+    has_permission_on :campus_bookingfacilities, :to => :update, :join_by => :and do
       if_attribute :staff_id => is {user.userable.id}
+      if_attribute :approval => is_in {[nil, false]}
     end
     #approver1 (approver_id)
-    # HACK :approval --> will :update too, avoid combine w above :update, to restrict approval page access
-    has_permission_on :campus_bookingfacilities, :to => [:approval, :update, :show, :booking_facility] do 
+    has_permission_on :campus_bookingfacilities, :to => [:approval, :update] do 
       if_attribute :approver_id => is {user.userable.id}
+      if_attribute :approval => is_in {[nil, false]}
     end
   end
   role :bookingfacilities_module_user do
     #facilities_administrator 
-    has_permission_on :campus_bookingfacilities, :to => [:menu, :show, :update, :approval_facility, :booking_facility]
+    has_permission_on :campus_bookingfacilities, :to => [:menu, :show, :update, :approval_facility, :booking_facility] do
+      if_attribute :location_id => is_in {Bookingfacility.location_admin(user.userable_id)}
+    end
   end
 end
 
