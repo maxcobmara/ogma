@@ -137,13 +137,37 @@ module Notifications
  
  def officer_booking_facility
    # NOTE : require 1)staff to be the administor of location & 2)roles - 'facilities_administrator'
-   # NOTE : approver_id2 - not define by 1st approver, but selection provided includes location's administrator (refer _tab_reservation_edit.html.haml)
+   # NOTE : 'approver_id2' - not define by 1st approver, but selection provided includes location's administrator & access granted by 'facilities administor' role (refer _tab_reservation_edit.html.haml)
    location_ids=Location.where(staffadmin_id: current_staff_id).pluck(:id)
    if current_user.roles.pluck(:authname).include?('facilities_administrator')
-     Bookingfacility.where(location_id: location_ids).where(approval: true, approval2: [nil, false]).count#.where('start_date >=?', Date.today).count
+     Bookingfacility.where(location_id: location_ids).where(approval: true, approval2: [nil, false]).where('start_date >=?', Date.today).count
    else
      0
    end
+ end
+ 
+ def applicant_booking_facility
+   Bookingfacility.where(staff_id: current_staff_id).where(approval: true).where(approval: true).where('start_date >=?', Date.today).count
+ end
+ 
+ def librarian_staff_late_library_books
+   if current_user.roles.pluck(:authname).include?('librarian')
+     Librarytransaction.where(ru_staff: true).where(returned: [nil, false]).where('returnduedate <?', Date.today).count
+   else
+     0
+   end
+ end
+ 
+ def librarian_student_late_library_books
+   if current_user.roles.pluck(:authname).include?('librarian')
+     Librarytransaction.where(ru_staff: false).where(returned: [nil, false]).where('returnduedate <?', Date.today).count
+   else
+     0
+   end
+ end
+ 
+ def borrower_late_library_books
+   Librarytransaction.where(staff_id: current_staff_id).where(returned: [nil, false]).where('returnduedate <?', Date.today).count
  end
 
 end

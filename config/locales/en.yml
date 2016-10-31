@@ -3121,14 +3121,14 @@ en:
       book_summary: "Book Summary (For Stock Verification)"
       total_books_titles: Total Books / Titles
       book_summary_all: Summary of all stocks
-      book_summary_accession:  Summary by Accession No
-      book_summary_callno: Summary by Class No (LC / NLM)
-      stock_listing: "Stock Listing"
-      stock_listing_accession: Listing by Accession No
-      stock_listing_callno: Listing by Class No (LC/NLM)
+      book_summary_accessionno:  Summary by Accession No
+      book_summary_classlcc: Summary by Class No (LC / NLM) starting with string
+      stock_listing: Stock Listing
+      stock_listing_accessionno: Listing by Accession No
+      stock_listing_classlcc: Listing by Class No (LC/NLM) starting with string
       range: Range
-      started_with: started with string 
       physical_description: Physical Description
+      starting_with: Starting with
       
   buletin:
     list: List of Bulletins
@@ -4100,7 +4100,10 @@ en:
     instructor_appraisal_checked: " Instructor Appraisals were checked"
     booking_facility_approval: " Booking Facilities require approval"
     booking_facility_process: " Booking Facilities require processing"
-
+    booking_facility_approved: " Booking Facilities were approved"
+    late_book_staff: " late return of library book (staff)"
+    late_book_student: " late return of library book (student)"
+    
   helpers:
     links:
       new: New

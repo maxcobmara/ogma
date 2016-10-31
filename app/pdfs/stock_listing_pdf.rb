@@ -13,7 +13,7 @@ class Stock_listingPdf < Prawn::Document
   def record
     aaa=@all_accessions.count
     x=2
-    table(line_item_rows, :column_widths => [100, 15, 100, 100, 15, 100, 90], :cell_style => { :size => 10,  :inline_format => :true}, :header => 2) do
+    table(line_item_rows, :column_widths => [110, 15, 100, 100, 15, 100, 80], :cell_style => { :size => 10,  :inline_format => :true}, :header => 2) do
       self.row_colors = ["FEFEFE", "FFFFFF"]
       self.width = 520
       row(0..1).borders =[]
@@ -55,10 +55,10 @@ class Stock_listingPdf < Prawn::Document
     title_row="#{I18n.t('library.book.total_books_titles')} : #{@all_accessions.count} / #{@all_accessions.group_by(&:book_id).count}"
     if !@search.accessionno_from.blank? && !@search.accessionno_to.blank? && @params_count==2
       #search by accession_no
-      title_row+=" - #{I18n.t('library.book.stock_listing_accession')} (#{I18n.t('library.book.range')} : #{@search.accessionno_from} - #{@search.accessionno_to})"
+      title_row+=" - #{I18n.t('library.book.stock_listing_accessionno')} (#{I18n.t('library.book.range')} : #{@search.accessionno_from} - #{@search.accessionno_to})"
     elsif !@search.classlcc_cont.blank? && @params_count==1
       #search by call no (NLM/LC)
-      title_row+=" - #{I18n.t('library.book.stock_listing')} #{I18n.t('library.book.started_with')} <b><i>#{@search.classlcc_cont.upcase}</i></b>"
+      title_row+=" - #{I18n.t('library.book.stock_listing_classlcc')} <b><i>#{@search.classlcc_cont.upcase}</i></b>"
     end
     header = [[{content: "#{@college.name.upcase}<br>#{I18n.t('library.book.stock_listing').upcase}", colspan: 7}],
                     [{content: title_row, colspan: 7}]]
@@ -75,7 +75,7 @@ class Stock_listingPdf < Prawn::Document
 	else
 	  subtable=I18n.t('library.book.no_image')
 	end
-        body << [I18n.t('library.book.classno'),":", acc.book.classlcc, I18n.t('library.book.accessionno'), ":", acc.accession_no, {content:  subtable, rowspan: 4}] 
+        body << [I18n.t('library.book.classlcc'),":", acc.book.classlcc, I18n.t('library.book.accessionno'), ":", acc.accession_no, {content:  subtable, rowspan: 4}] 
         body << ["ISBN/ISSN",":", acc.book.isbn, I18n.t('library.book.physical_description'),":","#{acc.book.roman}X#{acc.book.size}X#{acc.book.pages}"] 
 	body << [I18n.t('library.book.catsource'), ":", (DropDown::CATSOURCE.find_all{|disp, value| value == acc.book.catsource.to_i}).map {|disp, value| disp}[0], "#{I18n.t('library.book.series')}/#{I18n.t('library.book.edition')} ", ":", "#{acc.book.series}/#{acc.book.edition}"]
         body << ["Imprint", ":", {content: "#{acc.book.publish_location}, #{acc.book.publisher},  #{acc.book.publish_date}", colspan: 4}]

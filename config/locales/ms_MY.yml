@@ -2944,7 +2944,7 @@ ms_MY:
       book_details: Butiran Buku
       tagno: No Bilangan
       classddc: No Kelas (DDC/LC)
-      classlcc: No Panggilan
+      classlcc: No Kelas  (LC / NLM) 
       title: Tajuk
       language: Bahasa
       author: Penulis
@@ -2956,9 +2956,8 @@ ms_MY:
       publish_location: Tempat Terbitan
       links: Pautan Ruangan Elektonik
       bookcode: Kod Perpustakaan
-      accessionno: No Perolehan
+      accessionno: No Perolehan #Panggilan
       catsource: Sumber Katalog Untuk
-      classno: No Kelas
       description: Huraian Fizikal
       roman: Roman
       size: Saiz
@@ -3018,14 +3017,14 @@ ms_MY:
       book_summary: "Ringkasan Buku (Verifikasi Stok)"
       total_books_titles: Jumlah Buku / Judul
       book_summary_all: Ringkasan Semua Stok
-      book_summary_accession: Ringkasan Mengikut No Panggilan
-      book_summary_callno: Ringkasan Mengikut No Kelas (LC / NLM)
+      book_summary_accessionno: Ringkasan Mengikut No Perolehan
+      book_summary_classlcc: Ringkasan Mengikut No Kelas (LC / NLM) bermula dengan aksana
       stock_listing: Senarai Stok
-      stock_listing_accession: Senarai Mengikut No Panggilan
-      stock_listing_callno: Senarai Mengikut No Kelas (LC/NLM)
+      stock_listing_accessionno: Senarai Mengikut No Perolehan
+      stock_listing_classlcc: Senarai Mengikut No.Kelas (LC / NLM) bermula dengan aksara
       range: Julat
-      started_with: bermula dengan aksara 
       physical_description: Deskripsi Fizikal
+      starting_with: Bermula dengan
 
   buletin:
     list: Senarai Buletin
@@ -4023,6 +4022,9 @@ ms_MY:
     instructor_appraisal_checked: " Penilaian Diri Jurulatih telah disemak"
     booking_facility_approval: " Tempahan Kemudahan untuk kelulusan"
     booking_facility_process: " Tempahan Kemudahan untuk diproses"
+    booking_facility_approved: " Tempahan Kemudahan telah diluluskan"
+    late_book_staff: " buku perpustakaan lewat/belum dipulangkan (staf)"
+    late_book_student: " buku perpustakaan lewat/belum dipulangkan (pelajar)"
     
   helpers:
     links:

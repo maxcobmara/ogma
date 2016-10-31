@@ -62,3 +62,14 @@
  
  - if officer_booking_facility > 0
   %li=link_to content_tag(:span, "#{officer_booking_facility}", class: "badge") + (t 'notifications.booking_facility_process'), campus_bookingfacilities_path
+  
+ - if applicant_booking_facility > 0
+  %li=link_to content_tag(:span, "#{applicant_booking_facility}", class: "badge") + (t 'notifications.booking_facility_approved'), campus_bookingfacilities_path
+  
+ #31Oct2016
+ - if librarian_staff_late_library_books > 0
+  %li=link_to content_tag(:span, "#{librarian_staff_late_library_books}", class: "badge") + (t 'notifications.late_book_staff'), library_librarytransactions_path
+  
+ - if librarian_student_late_library_books > 0
+  %li=link_to content_tag(:span, "#{librarian_student_late_library_books}", class: "badge") + (t 'notifications.late_book_student'), library_librarytransactions_path
+  
