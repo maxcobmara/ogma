@@ -4101,8 +4101,10 @@ en:
     booking_facility_approval: " Booking Facilities require approval"
     booking_facility_process: " Booking Facilities require processing"
     booking_facility_approved: " Booking Facilities were approved"
-    late_book_staff: " late return of library book (staff)"
-    late_book_student: " late return of library book (student)"
+    late_book_staff: " Late return of library book (staff)"
+    late_book_student: " Late return of library book (student)"
+    late_return_book: " Late return of library book"
+    check_email: (Please check your email)
     
   helpers:
     links:

@@ -73,3 +73,8 @@
  - if librarian_student_late_library_books > 0
   %li=link_to content_tag(:span, "#{librarian_student_late_library_books}", class: "badge") + (t 'notifications.late_book_student'), library_librarytransactions_path
   
+ - if borrower_staff_late_library_books > 0
+  %li=link_to content_tag(:span, "#{borrower_staff_late_library_books}", class: "badge") +((t 'notifications.late_return_book')+ "<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"+(t 'notifications.check_email')).html_safe, "#"
+
+  
+

@@ -12,6 +12,12 @@ module Notifications
    current_user.userable
   end
  end
+ 
+ def current_student_id
+   if is_student?
+     current_user.userable_id
+   end
+ end
 
 
 
@@ -166,8 +172,12 @@ module Notifications
    end
  end
  
- def borrower_late_library_books
+ def borrower_staff_late_library_books
    Librarytransaction.where(staff_id: current_staff_id).where(returned: [nil, false]).where('returnduedate <?', Date.today).count
+ end
+ 
+ def borrower_student_late_library_books
+   Librarytransaction.where(student_id: current_student_id).where(returned: [nil, false]).where('returnduedate <?', Date.today).count
  end
 
 end

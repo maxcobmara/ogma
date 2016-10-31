@@ -4023,8 +4023,10 @@ ms_MY:
     booking_facility_approval: " Tempahan Kemudahan untuk kelulusan"
     booking_facility_process: " Tempahan Kemudahan untuk diproses"
     booking_facility_approved: " Tempahan Kemudahan telah diluluskan"
-    late_book_staff: " buku perpustakaan lewat/belum dipulangkan (staf)"
-    late_book_student: " buku perpustakaan lewat/belum dipulangkan (pelajar)"
+    late_book_staff: " Buku perpustakaan lewat/belum dipulangkan (staf)"
+    late_book_student: " Buku perpustakaan lewat/belum dipulangkan (pelajar)"
+    late_return_book: " Buku perpustakaan lewat/belum dipulangkan"
+    check_email: (Sila semak emel anda)
     
   helpers:
     links:
