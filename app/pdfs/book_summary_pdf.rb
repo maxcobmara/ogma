@@ -35,10 +35,10 @@ class Book_summaryPdf < Prawn::Document
       title_row+="<br>#{I18n.t('library.book.book_summary_all')}"
     elsif !@search.accessionno_from.blank? && !@search.accessionno_to.blank? && @params_count==2
       #search by accession_no
-      title_row+="<br>#{I18n.t('library.book.book_summary_accession')} (#{I18n.t('library.book.range')} : #{@search.accessionno_from} - #{@search.accessionno_to})"
+      title_row+="<br>#{I18n.t('library.book.book_summary_accessionno')} (#{I18n.t('library.book.range')} : #{@search.accessionno_from} - #{@search.accessionno_to})"
     elsif !@search.classlcc_cont.blank? && @params_count==1
       #search by call no (NLM/LC)
-      title_row+="<br>#{I18n.t('library.book.book_summary_callno')} #{I18n.t('library.book.started_with')} <b><i>#{@search.classlcc_cont.upcase}</i></b>"
+      title_row+="<br>#{I18n.t('library.book.book_summary_classlcc')} <b><i>#{@search.classlcc_cont.upcase}</i></b>"
     end
     counter = counter || 0
     header = [[{content: "#{@college.name.upcase}<br>#{I18n.t('library.book.book_summary').upcase}", colspan: 6}], 

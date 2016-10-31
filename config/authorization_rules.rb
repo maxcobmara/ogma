@@ -754,7 +754,7 @@ authorization do
  #Group Library   -------------------------------------------------------------------------------
 
   role :librarian do
-    has_permission_on :library_books, :to => [:manage, :import_excel, :download_excel_format, :import, :check_availability]
+    has_permission_on :library_books, :to => [:manage, :import_excel, :download_excel_format, :import, :check_availability, :stock_listing, :book_summary]
     has_permission_on :library_librarytransactions, :to => [:manage, :extending, :returning, :check_status, :analysis_statistic, :analysis_statistic_main, :analysis, :analysis_book, :general_analysis, :general_analysis_ext]
     has_permission_on :students, :to => [:read, :borang_maklumat_pelajar]
     has_permission_on :campus_pages, :to => :update do
@@ -1680,13 +1680,13 @@ authorization do
   
   #30-OK
   role :library_books_module_admin do
-     has_permission_on :library_books, :to => [:manage, :import_excel, :download_excel_format, :import]
+     has_permission_on :library_books, :to => [:manage, :import_excel, :download_excel_format, :import, :stock_listing, :book_summary]
   end
   role :library_books_module_viewer do
-     has_permission_on :library_books, :to => :read 
+     has_permission_on :library_books, :to => [:read, :stock_listing, :book_summary]
   end
   role :library_books_module_user do
-    has_permission_on :library_books, :to => [:read, :update]
+    has_permission_on :library_books, :to => [:read, :update, :stock_listing, :book_summary]
   end
 # NOTE - DISABLE(in EACH radio buttons/click : radio & checkbox - lbrary[0].disabled=true as the only owner of this module requires 'Librarian' role
 #   role :library_books_module_member do
