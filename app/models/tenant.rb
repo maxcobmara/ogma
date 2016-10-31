@@ -7,6 +7,23 @@ class Tenant < ActiveRecord::Base
   has_many  :damages, :class_name => 'LocationDamage', :foreign_key => 'user_id', :dependent => :destroy
   accepts_nested_attributes_for :damages, :allow_destroy => true, reject_if: proc { |damages| damages[:description].blank?}
   
+  validates :student_id, presence: true, :if => :location_is_student_residence?
+  validates :staff_id, presence: true, :if => :location_is_staff_residence?
+  validates :keyaccept, :keyexpectedreturn, :total_keys, presence: true
+  
+  def location_is_student_residence?
+    #male lclass=3, typename=8 , ancestry_depth=3,
+    #female lclass=3, typename=2, ditto
+    student_beds=Location.where(ancestry_depth: 3).where(lclass: 3).where('typename=? OR typename=?', 3, 8).pluck(:id)
+    student_beds.include?(location_id)==true
+  end
+  
+  def location_is_staff_residence?
+    #lclass=3, typename=1, ancestry_depth=2
+    staff_houses=Location.where(ancestry_depth: 2).where(lclass: 3).where(typename: 1).pluck(:id)
+    staff_houses.include?(location_id)==true
+  end
+  
   #student autocomplete - New Tenant 
   def student_icno
     student.try(:student_list)

@@ -7,7 +7,6 @@ ms_MY:
       asset_defect: Kerosakan Aset
       asset_loan: Peminjaman Aset
       student: Pelajar
-      location: Lokasi
       examquestion: Soalan Peperiksaan
       exam: Peperiksaan
       examresult: Keputusan Peperiksaan
@@ -43,6 +42,7 @@ ms_MY:
       mentee: Mentee
       student_discipline_case: Kes Disiplin Pelajar
       document: Dokumen
+      tenant: Penghuni
     attributes:
       asset:
         assignedto_id: Pegawai Bertanggungjawab
@@ -291,6 +291,12 @@ ms_MY:
         cc1date: Tarikh Edaran / Minit
         cc2date: Tarikh Edaran / Minit
         circulations: Diedarkan kepada
+      tenant:
+        staff_id: Nama
+        student_id: No Mykad
+        keyaccept: Tarikh Kunci Diberi
+        keyexpectedreturn: Tarikh Dijangka Pulang
+        total_keys: Jumlah Kunci
         
     errors:
         template:
