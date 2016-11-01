@@ -61,6 +61,7 @@ en:
       student_discipline_case: Student Discipline Case
       document: Document
       tenant: Tenant
+      book: Book
     attributes:
       asset:
         assignedto_id: Assigned to
@@ -314,6 +315,11 @@ en:
         keyaccept: Date Key Provided
         keyexpectedreturn: Date Key Expected Returned
         total_keys: Total Keys Given
+      book:
+        accessions: Accession No
+      accessions:
+        accession_no: Accession No
+ 
     errors:
         template:
           body: "There were problems with the following fields:"
@@ -4104,7 +4110,7 @@ en:
   notifications:
     discipline_process: " Discipline reports require processing"
     discipline_action: " Discipline reports for action"
-    document_forwarded: "Documents forwarded for action"
+    document_forwarded: " Documents forwarded for action"
     document_action: " Documents (circulated) for action"
     instructor_appraisal_check: " Instructor Appraisals require checking"
     instructor_appraisal_checked: " Instructor Appraisals were checked"
@@ -4117,6 +4123,9 @@ en:
     check_email: (Please check your email)
     late_return_keys_staff: " Late return of staff resindence keys "
     late_return_keys_student: " Late return of student residence keys"
+    approver_weeklytimetable: " Weeklytimetables require approval"
+    creator_approved_weeklytimetable: " Weeklytimetables were approved"
+    creator_rejected_weeklytimetable: " Weeklytimetable were rejected"
     
   helpers:
     links:

@@ -15,4 +15,4 @@
     .col-md-2
       #span_hod_endorse2{:style=>"display:none;"}
         = f.text_field :hod_rejected_on, class: 'form-control date_picker_reverse', value: @weeklytimetable.hod_rejected_on.try(:strftime, '%d-%m-%Y')
-        %br= f.text_area :reason, :col=>30, :rows=> 3, :placeholder => "State reason for rejection."
+        %br= f.text_area :reason, :col=>60, :rows=> 3, :placeholder => "State reason for rejection."

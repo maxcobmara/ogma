@@ -85,3 +85,13 @@
 
  - if tenant_staff_late_keys_return > 0
   %li=link_to content_tag(:span, "#{tenant_staff_late_keys_return}", class: "badge") +(t 'notifications.late_return_keys_staff') +"<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(#{Tenant.where(staff_id: current_staff_id).last.location.combo_code})".html_safe, "#"
+
+ - if approver_weeklytimetable > 0
+  %li=link_to content_tag(:span, "#{approver_weeklytimetable}", class: "badge") +(t 'notifications.approver_weeklytimetable'), training_weeklytimetables_path
+  
+ - if creator_approved_weeklytimetable > 0
+  %li=link_to content_tag(:span, "#{creator_approved_weeklytimetable}", class: "badge") +(t 'notifications.creator_approved_weeklytimetable'), training_weeklytimetables_path
+
+
+ - if creator_rejected_weeklytimetable > 0
+  %li=link_to content_tag(:span, "#{creator_rejected_weeklytimetable}", class: "badge") +(t 'notifications.creator_rejected_weeklytimetable'), training_weeklytimetables_path

@@ -176,13 +176,9 @@ module Notifications
    Librarytransaction.where(staff_id: current_staff_id).where(returned: [nil, false]).where('returnduedate <?', Date.today).count
  end
  
- def borrower_student_late_library_books
-   Librarytransaction.where(student_id: current_student_id).where(returned: [nil, false]).where('returnduedate <?', Date.today).count
- end
- 
-  #  TODO - notify
-   #llate return key --> tenant (keyexpectedreturn < Date.today, keyreturned.blank?)
-   #--> notify :  location (staffadmin_id),
+  def borrower_student_late_library_books
+    Librarytransaction.where(student_id: current_student_id).where(returned: [nil, false]).where('returnduedate <?', Date.today).count
+  end
 
   def tenancy_admin_staff_late_keys_return
     location_ids=Location.where(staffadmin_id: current_staff_id).pluck(:id)
@@ -201,6 +197,19 @@ module Notifications
   def tenant_student_late_keys_return
     Tenant.where(student_id: current_student_id).where('keyexpectedreturn <? AND keyreturned is null', Date.today).count
   end
+  
+  def approver_weeklytimetable
+    Weeklytimetable.where(is_submitted: true).where(endorsed_by: current_staff_id).where(hod_approved: [nil, false]).count #where(startdate > Date.today).count
+  end
+  
+  def creator_approved_weeklytimetable 
+    Weeklytimetable.where(prepared_by: current_staff_id).where(hod_approved: true).count #where(startdate > Date.today).count
+  end
+  
+  def creator_rejected_weeklytimetable 
+    Weeklytimetable.where(prepared_by: current_staff_id).where(hod_rejected: true).count #where(startdate > Date.today).count
+  end
+  
   
 end
 

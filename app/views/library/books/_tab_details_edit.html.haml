@@ -6,7 +6,8 @@
       = f.select :catsource, DropDown::CATSOURCE,{:include_blank =>t('select')},{class: 'selectpicker', "data-width"=>'160px'}
   .form-group
     .col-sm-2.control-label
-      %b= (t 'library.book.classno')+" (NLM) / (DDC)"
+      %b= (t 'library.book.classno')+" (LC) / (NLM)"
+      /+" (NLM) / (DDC)"
      
     .col-md-3
       = f.text_field :classlcc, class:'form-control'
@@ -14,7 +15,7 @@
     .col-sm-2.control-label
       = f.label t 'library.book.language', for: :book_language
     .col-md-2
-      = f.select :language, DropDown::LANGUAGE,{:include_blank =>t('select')},{class: 'selectpicker', "data-width"=>'160px'}
+      = f.select :language, DropDown::LANGUAGE,{:include_blank =>t('select')},{class: 'selectpicker mandatory', "data-width"=>'160px'}
   .form-group
     .col-sm-2.control-label
       = f.label  t 'library.book.author', for: :author

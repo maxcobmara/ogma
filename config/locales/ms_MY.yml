@@ -43,6 +43,7 @@ ms_MY:
       student_discipline_case: Kes Disiplin Pelajar
       document: Dokumen
       tenant: Penghuni
+      book: Buku
     attributes:
       asset:
         assignedto_id: Pegawai Bertanggungjawab
@@ -297,6 +298,10 @@ ms_MY:
         keyaccept: Tarikh Kunci Diberi
         keyexpectedreturn: Tarikh Dijangka Pulang
         total_keys: Jumlah Kunci
+      book:
+        accessions: No Perolehan
+      accessions:
+        accession_no: No Perolehan
         
     errors:
         template:
@@ -2967,6 +2972,7 @@ ms_MY:
       bookcode: Kod Perpustakaan
       accessionno: No Perolehan #Panggilan
       catsource: Sumber Katalog Untuk
+      classno: No Kelas
       description: Huraian Fizikal
       roman: Roman
       size: Saiz
@@ -4026,7 +4032,7 @@ ms_MY:
   notifications:
     discipline_process: " Laporan disiplin pelajar untuk diproses"
     discipline_action: " Laporan disiplin pelajar untuk tindakan"
-    document_forwarded: "Dokumen dimajukan untuk tindakan"
+    document_forwarded: " Dokumen dimajukan untuk tindakan"
     document_action: " Dokumen (edaran) untuk tindakan"
     instructor_appraisal_check: " Penilaian Diri Jurulatih untuk disemak"
     instructor_appraisal_checked: " Penilaian Diri Jurulatih telah disemak"
@@ -4039,6 +4045,9 @@ ms_MY:
     check_email: (Sila semak emel anda)
     late_return_keys_staff: " Kediaman Staf belum dipulangkan kunci"
     late_return_keys_student: " Kediaman Pelajar belum dipulangkan kunci"
+    approver_weeklytimetable: " Jadual Waktu Mingguan untuk diluluskan"
+    creator_approved_weeklytimetable: " Jadual Waktu Mingguan telah diluluskan"
+    creator_rejected_weeklytimetable: " Jadual Waktu Mingguan telah ditolak"
     
   helpers:
     links:
