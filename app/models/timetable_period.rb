@@ -1,6 +1,7 @@
 class TimetablePeriod < ActiveRecord::Base
     
   belongs_to :timetable, :foreign_key => 'timetable_id'
+  belongs_to :college
   
   validates_uniqueness_of :sequence, :scope => :timetable_id
       

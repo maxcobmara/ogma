@@ -10,7 +10,7 @@
         %li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'actions.new'))), new_training_weeklytimetable_path
   %ul.nav.navbar-nav.navbar-right
     %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "index_search_bar"
-    %li= link_to  (fa_icon "file-pdf-o", text: (t 'document.generate_report')),  weeklytimetable_report_training_weeklytimetables_path(params.merge(format: 'pdf' ))
+    %li= link_to  (fa_icon "file-pdf-o", text: (t 'print')),  weeklytimetable_report_training_weeklytimetables_path(params.merge(format: 'pdf' ))
 
 .row.filter{style: "display:none;"}
   .col-md-2

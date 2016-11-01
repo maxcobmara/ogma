@@ -7,6 +7,7 @@ class College < ActiveRecord::Base
   has_many :exams
   has_many :leaveforstaffs
   has_many :timetables
+  has_many :timetable_periods
   has_many :weeklytimetables
   has_many :intakes
   has_many :students

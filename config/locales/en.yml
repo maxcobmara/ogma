@@ -3715,6 +3715,7 @@ en:
     teaching_learning: "Teaching & Learning"
     intake:
       title: Intake
+      list: Intake List
       new: New Intake
       edit: Editing Intake
       details: Intake Details
@@ -3726,6 +3727,7 @@ en:
       staff_id: Group Coordinator
     timetable:
       title: Timetable
+      list: Timetable Format List
       new: New Timetable
       edit: Edit Timetable
       code: Code

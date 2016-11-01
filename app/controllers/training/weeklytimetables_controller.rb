@@ -1,5 +1,5 @@
 class Training::WeeklytimetablesController < ApplicationController
-    filter_access_to :index, :new, :create, :personalize_index, :weekly_timetable, :personalizetimetable,:personalize_show, :attribute_check => false
+    filter_access_to :index, :new, :create, :personalize_index, :weekly_timetable, :personalizetimetable,:personalize_show, :weeklytimetable_report, :attribute_check => false
     filter_access_to :show, :edit, :update, :destroy, :approval, :attribute_check => true
   
   before_action :set_weeklytimetable, only: [:show, :edit, :update, :destroy]

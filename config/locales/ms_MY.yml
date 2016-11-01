@@ -3638,6 +3638,7 @@ ms_MY:
     teaching_learning: "Pengajaran & Pembelajaran"
     intake:
       title: Sesi Pengambilan
+      list: Senarai Sesi Pengambilan
       new: Sesi Pengambilan Baru
       edit: Sunting Sesi Pengambilan
       details: Butiran Pengambilan
@@ -3649,6 +3650,7 @@ ms_MY:
       staff_id: Penyelaras Kumpulan
     timetable:
       title: Jadual Waktu
+      list: Senarai Format Jadual Waktu
       new: Jadual Waktu Baru
       edit: Sunting Jadual Waktu
       code: Kod

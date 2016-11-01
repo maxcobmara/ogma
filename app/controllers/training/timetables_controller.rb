@@ -1,5 +1,7 @@
 class Training::TimetablesController < ApplicationController
-  filter_resource_access
+  filter_access_to :index, :new, :create, :timetable_report, :attribute_check => false
+  filter_access_to :show, :edit, :update, :destroy, :attribute_check => true
+  
   before_action :set_timetable, only: [:show, :edit, :update, :destroy]
   # GET /timetables
   # GET /timetables.xml
@@ -84,6 +86,19 @@ class Training::TimetablesController < ApplicationController
       format.html { redirect_to(training_timetables_url) }
       format.xml  { head :ok }
     end
+  end
+  
+  def timetable_report
+    @search = Timetable.search(params[:q])
+    @timetables = @search.result.order(code: :asc)
+     respond_to do |format|
+       format.pdf do
+         pdf = Timetable_reportPdf.new(@timetables, view_context, current_user.college)
+         send_data pdf.render, filename: "timetable_report-{Date.today}",
+                               type: "application/pdf",
+                               disposition: "inline"
+       end
+     end
   end
   
   private
