@@ -3678,6 +3678,7 @@ ms_MY:
       total_week: Bilangan Minggu
     weeklytimetable:
       title: Jadual Waktu Mingguan
+      list: Senarai Jadual Waktu Mingguan
       new: Jadual Waktu Mingguan Baru
       edit: Sunting Jadual Waktu Mingguan
       approval: Kelulusan Jadual Waktu Mingguan
@@ -3690,6 +3691,7 @@ ms_MY:
       semester: Semester
       prepared_by: Disediakan Oleh
       endorsed_by: Dihantar untuk kelulusan
+      endorser: Diluluskan Oleh
       format1: "Format (Ahad - Rabu / Isnin - Khamis)"
       format2: "Format (Khamis / Jumaat)"
       week: Minggu

@@ -3755,6 +3755,7 @@ en:
       total_week: Total Week
     weeklytimetable:
       title: Weekly Timetable
+      list: Weekly Timetable List
       new: New Weekly Timetable
       edit: Edit Weekly Timetable
       approval: Weekly Timetable Approval
@@ -3767,6 +3768,7 @@ en:
       semester: Semester
       prepared_by: Prepared By
       endorsed_by: Submitted for Endorsement by
+      endorser: Endorsed By
       format1: "Format (Sun-Wed / Mon-Thurs)"
       format2: "Format (Thursday / Friday)"
       week: Week
@@ -4117,7 +4119,7 @@ en:
     booking_facility_approval: " Booking Facilities require approval"
     booking_facility_process: " Booking Facilities require processing"
     booking_facility_approved: " Booking Facilities were approved"
-    late_book_staff: " Late return of library book (staff)"o
+    late_book_staff: " Late return of library book (staff)"
     late_book_student: " Late return of library book (student)"
     late_return_book: " Late return of library book"
     check_email: (Please check your email)
