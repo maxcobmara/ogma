@@ -3649,6 +3649,7 @@ ms_MY:
       staff_id: Penyelaras Kumpulan
     timetable:
       title: Jadual Waktu
+      list: Senarai Format Jadual Waktu
       new: Jadual Waktu Baru
       edit: Sunting Jadual Waktu
       code: Kod

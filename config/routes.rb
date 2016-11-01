@@ -346,7 +346,11 @@ Ogma::Application.routes.draw do
   namespace :training do
     resources :programmes
     resources :intakes
-    resources :timetables
+    resources :timetables do
+      collection do
+        get :timetable_report
+      end
+    end
     resources :timetable_periods
     resources :academic_sessions
     resources :topicdetails
