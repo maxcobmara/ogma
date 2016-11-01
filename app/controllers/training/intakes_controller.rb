@@ -1,5 +1,7 @@
 class Training::IntakesController < ApplicationController
-  filter_resource_access
+  filter_access_to :index, :new, :create, :intake_report, :attribute_check => false
+  filter_access_to :show, :edit, :update, :destroy, :attribute_check => true
+    
   before_action :set_intake, only: [:show, :edit, :update, :destroy]
   # GET /intakes
   # GET /intakes.xml
@@ -85,6 +87,21 @@ class Training::IntakesController < ApplicationController
       format.html { redirect_to(training_intakes_url) }
       format.xml  { head :ok }
     end
+  end
+  
+  def intake_report
+    @search = Intake.search(params[:q])
+    @intakes2 = @search.result
+    @intakes3 = @intakes2.page(params[:page]||1)  
+    @intakes = @intakes3.order(monthyear_intake: :desc).group_by(&:monthyear_intake)
+     respond_to do |format|
+       format.pdf do
+         pdf = Intake_reportPdf.new(@intakes, view_context, current_user.college)
+         send_data pdf.render, filename: "intake_report-{Date.today}",
+                               type: "application/pdf",
+                               disposition: "inline"
+       end
+     end
   end
    
   private

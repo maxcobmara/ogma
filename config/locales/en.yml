@@ -3715,6 +3715,7 @@ en:
     teaching_learning: "Teaching & Learning"
     intake:
       title: Intake
+      list: Intake List
       new: New Intake
       edit: Editing Intake
       details: Intake Details

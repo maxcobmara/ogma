@@ -1511,16 +1511,16 @@ authorization do
 
   #23-OK 
   role :student_intake_module_admin do
-     has_permission_on :training_intakes, :to => :manage
+     has_permission_on :training_intakes, :to =>[:manage, :intake_report]
   end
   role :student_intake_module_viewer do
-     has_permission_on :training_intakes, :to => :read
+     has_permission_on :training_intakes, :to => [:read, :intake_report]
   end
   role :student_intake_module_user do
-    has_permission_on :training_intakes, :to => [:read, :update]
+    has_permission_on :training_intakes, :to => [:read, :update, :intake_report]
   end
   role :student_intake_module_member do
-    has_permission_on :training_intakes, :to => :read
+    has_permission_on :training_intakes, :to => [:read, :intake_report]
     # NOTE - restriction on updates - lecturers of the same programme only
     has_permission_on :training_intakes, :to => :update do
       if_attribute :programme_id => is_in {Programme.where(name: Position.where(staff_id: user.userable.id).first.unit).pluck(:id)}
