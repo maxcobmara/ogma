@@ -28,7 +28,6 @@ en:
       asset_defect: Asset Defect
       asset_loan: Asset Loan
       student: Student
-      location: Location
       examquestion: Examquestion
       exam: Examination
       examresult: Keputusan Peperiksaan
@@ -61,6 +60,7 @@ en:
       mentee: Mentee
       student_discipline_case: Student Discipline Case
       document: Document
+      tenant: Tenant
     attributes:
       asset:
         assignedto_id: Assigned to
@@ -308,6 +308,12 @@ en:
       document:
         cc2date: Circulation/Minute date
         circulations: Circulate to
+      tenant:
+        staff_id: Name
+        student_id: Mykad No.
+        keyaccept: Date Key Provided
+        keyexpectedreturn: Date Key Expected Returned
+        total_keys: Total Keys Given
     errors:
         template:
           body: "There were problems with the following fields:"
@@ -430,7 +436,8 @@ en:
   download: Download
   endorsed: Endorsed
   not_endorsed: Not Endorsed
-  not_required: Tidak diperlukan
+  not_required: Not required
+  remark: Remark 
 
   actions:
     new: New
@@ -2409,6 +2416,7 @@ en:
     administrator: Administrated By
     select_admin: "Select Administrator"
     has_assets: "This location contains assets, click here to show/hide"
+    administered: " refers to administered locations"
     
     location_categories:
       building: Building
@@ -2465,7 +2473,7 @@ en:
       edit2: Edit Staff Tenancy
       key:
         provided: Date Key Provided
-        expected: Date Key expected returned
+        expected: Date Key Expected Returned
         returned: Date Returned
       vacate: Force Vacate
       tenancy_details_nil: Student data not available
@@ -2536,6 +2544,7 @@ en:
       formatted_mykad: MyKad No
       name: Name
       matrixno: Matrix No
+      bodyno: Body No
       rank_id: Rank
       position: Position
       department: Unit /  Department / Branch
@@ -4101,8 +4110,12 @@ en:
     booking_facility_approval: " Booking Facilities require approval"
     booking_facility_process: " Booking Facilities require processing"
     booking_facility_approved: " Booking Facilities were approved"
-    late_book_staff: " late return of library book (staff)"
-    late_book_student: " late return of library book (student)"
+    late_book_staff: " Late return of library book (staff)"
+    late_book_student: " Late return of library book (student)"
+    late_return_book: " Late return of library book"
+    check_email: (Please check your email)
+    late_return_keys_staff: " Late return of staff resindence keys "
+    late_return_keys_student: " Late return of student residence keys"
     
   helpers:
     links:

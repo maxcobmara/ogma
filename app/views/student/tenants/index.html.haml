@@ -16,23 +16,28 @@
           %li= link_to (fa_icon "file-excel-o", text: (t "student.tenant.list")), student_tenants_path(params.merge(format: "xls"))
           %li= link_to (fa_icon "file-pdf-o", text: (t "student.tenant.list")), tenant_report_student_tenants_path(params.merge(format: 'pdf' ))
 
-
+.row
+  .col-md-12
+    .alert.alert-warning
+      %strong=(t 'remark')+": "
+      %span{style: 'color: red;'} *
+      =t('location.administered')
 .row
   %table.table-striped.table-hover.ogma
     %thead
       %tr
-        %th= t 'location.code'
-        %th= t 'student.students.icno'
-        %th= t 'student.name'
-        %th= t 'student.students.matrixno'
-        %th= t 'student.students.intake_id'
-        %th= t 'course.name'
-        %th= t 'student.tenant.key.provided'
-        %th= t 'student.tenant.key.expected'
-        %th= t 'student.tenant.key.returned'
-        %th= t 'student.tenant.vacate'
-        %th= t 'student.tenant.damage_status'
-        %th= t 'student.tenant.damage_type'
+        %th{width: '9%'}= t 'location.code'
+        %th{width: '7%'}= t 'student.students.icno'
+        %th{width: '18%'}= t 'student.name'
+        %th{width: '8%'}= current_user.college.code=='amsas' ? (t 'student.students.bodyno') : (t 'student.students.matrixno')
+        %th{width: '5%'}= t 'student.students.intake_id'
+        %th{width: '10%'}= t 'course.name'
+        %th{width: '7%'}= t 'student.tenant.key.provided'
+        %th{width: '7%'}= t 'student.tenant.key.expected'
+        %th{width: '7%'}= t 'student.tenant.key.returned'
+        %th{width: '7%'}= t 'student.tenant.vacate'
+        %th{width: '8%'}= t 'student.tenant.damage_status'
+        %th{width: '7%'}= t 'student.tenant.damage_type'
 
     %tbody
     = render "index_search"
@@ -43,14 +48,20 @@
         - damage_description = []
 
         %tr
-          %td= link_to tenant.location.try(:combo_code), campus_location_path(tenant.location)
+          %td
+            = link_to tenant.location.try(:combo_code), campus_location_path(tenant.location)
+            %span{style: 'color: red;'}="*" if [tenant.location.try(:staffadmin_id)].include?(current_user.userable_id)
           %td= link_to tenant.try(:student).try(:icno), student_tenant_path(tenant)
-          %td= link_to tenant.try(:student).try(:name), student_path(tenant.student)
+          %td= link_to tenant.try(:student).try(:student_with_rank), student_path(tenant.student)
           %td= tenant.try(:student).try(:matrixno)
-          %td= tenant.try(:student).try(:intake).try(:strftime, '%b %Y')
+          %td= current_user.college.code=='amsas' ? tenant.try(:student).try(:intakestudent).try(:monthyear_intake).try(:strftime, '%m/%Y') : tenant.try(:student).try(:intakestudent).try(:monthyear_intake).try(:strftime, '%b %Y')
           %td= tenant.try(:student).try(:course).try(:name)
           %td= tenant.keyaccept.try(:strftime, '%d %b %Y')
-          %td= tenant.keyexpectedreturn.try(:strftime, '%d %b %Y')
+          %td
+            - if tenant.keyexpectedreturn < Date.today && tenant.keyreturned.blank?
+              %span{style: 'color: red;'}=tenant.keyexpectedreturn.try(:strftime, '%d %b %Y')
+            - else
+              =tenant.keyexpectedreturn.try(:strftime, '%d %b %Y')
           %td= tenant.keyreturned.try(:strftime, '%d %b %Y')
           %td= tenant.force_vacate? ? (t 'yes2') : (t 'no2')
           %td= damages_text

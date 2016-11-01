@@ -7,7 +7,6 @@ ms_MY:
       asset_defect: Kerosakan Aset
       asset_loan: Peminjaman Aset
       student: Pelajar
-      location: Lokasi
       examquestion: Soalan Peperiksaan
       exam: Peperiksaan
       examresult: Keputusan Peperiksaan
@@ -43,6 +42,7 @@ ms_MY:
       mentee: Mentee
       student_discipline_case: Kes Disiplin Pelajar
       document: Dokumen
+      tenant: Penghuni
     attributes:
       asset:
         assignedto_id: Pegawai Bertanggungjawab
@@ -291,6 +291,12 @@ ms_MY:
         cc1date: Tarikh Edaran / Minit
         cc2date: Tarikh Edaran / Minit
         circulations: Diedarkan kepada
+      tenant:
+        staff_id: Nama
+        student_id: No Mykad
+        keyaccept: Tarikh Kunci Diberi
+        keyexpectedreturn: Tarikh Dijangka Pulang
+        total_keys: Jumlah Kunci
         
     errors:
         template:
@@ -412,6 +418,7 @@ ms_MY:
   endorsed: Disokong
   not_endorsed: Tidak Disokong
   not_required: Tidak diperlukan
+  remark: Catatan
  
   actions:
     new: Baru
@@ -2303,6 +2310,7 @@ ms_MY:
     administrator: Ditadbir oleh
     select_admin: "Pilih Pentadbir"
     has_assets: "Lokasi ini punyai asset, klik di sini untuk lihat/sorok"
+    administered: " merujuk kepada lokasi yang ditadbir"
     
     
     location_categories:
@@ -2431,6 +2439,7 @@ ms_MY:
       formatted_mykad: No Mykad
       name: Nama
       matrixno: No Matrik
+      bodyno: No Body
       rank_id: Pangkat
       position: Jawatan
       department: Unit / Bahagian / Cawangan
@@ -4023,8 +4032,12 @@ ms_MY:
     booking_facility_approval: " Tempahan Kemudahan untuk kelulusan"
     booking_facility_process: " Tempahan Kemudahan untuk diproses"
     booking_facility_approved: " Tempahan Kemudahan telah diluluskan"
-    late_book_staff: " buku perpustakaan lewat/belum dipulangkan (staf)"
-    late_book_student: " buku perpustakaan lewat/belum dipulangkan (pelajar)"
+    late_book_staff: " Buku perpustakaan lewat/belum dipulangkan (staf)"
+    late_book_student: " Buku perpustakaan lewat/belum dipulangkan (pelajar)"
+    late_return_book: " Buku perpustakaan lewat/belum dipulangkan"
+    check_email: (Sila semak emel anda)
+    late_return_keys_staff: " Kediaman Staf belum dipulangkan kunci"
+    late_return_keys_student: " Kediaman Pelajar belum dipulangkan kunci"
     
   helpers:
     links:

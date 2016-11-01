@@ -14,21 +14,26 @@
           %b.caret
         %ul.dropdown-menu
           %li= link_to  (fa_icon "file-pdf-o", text: (t "student.tenant.list")), tenant_report_staff_student_tenants_path(params.merge(format: 'pdf' ))
-          
 
+.row
+  .col-md-12
+    .alert.alert-warning
+      %strong=(t 'remark')+": "
+      %span{style: 'color: red;'} *
+      =t('location.administered')
 .row
   %table.table-striped.table-hover.ogma
     %thead
       %tr
-        %th= t 'location.code'
-        %th= t 'staff.icno'
-        %th= t 'staff.name'
-        %th= t 'student.tenant.key.provided'
-        %th= t 'student.tenant.key.expected'
-        %th= t 'student.tenant.key.returned'
-        %th= t 'student.tenant.vacate'
-        %th= t 'student.tenant.damage_status'
-        %th= t 'student.tenant.damage_type'
+        %th{width: '10%'}= t 'location.code'
+        %th{width: '10%'}= t 'staff.icno'
+        %th{width: '20%'}= t 'staff.name'
+        %th{width: '10%'}= t 'student.tenant.key.provided'
+        %th{width: '10%'}= t 'student.tenant.key.expected'
+        %th{width: '10%'}= t 'student.tenant.key.returned'
+        %th{width: '10%'}= t 'student.tenant.vacate'
+        %th{width: '10%'}= t 'student.tenant.damage_status'
+        %th{width: '10%'}= t 'student.tenant.damage_type'
 
     %tbody
     = render "index_search2"
@@ -39,11 +44,17 @@
         - damage_description = []
 
         %tr
-          %td= link_to tenant.location.try(:combo_code), campus_location_path(tenant.location)
+          %td
+            = link_to tenant.location.try(:combo_code), campus_location_path(tenant.location)
+            %span{style: 'color: red;'}="*" if [tenant.location.try(:staffadmin_id)].include?(current_user.userable_id)
           %td= link_to tenant.try(:staff).try(:icno), student_tenant_path(tenant)
-          %td= link_to tenant.try(:staff).try(:name), staff_info_path(tenant.staff)
+          %td= link_to tenant.try(:staff).try(:staff_with_rank), staff_info_path(tenant.staff)
           %td= tenant.keyaccept.try(:strftime, '%d %b %Y')
-          %td= tenant.keyexpectedreturn.try(:strftime, '%d %b %Y')
+          %td
+            - if tenant.keyexpectedreturn < Date.today && tenant.keyreturned.blank?
+              %span{style: 'color: red;'}=tenant.keyexpectedreturn.try(:strftime, '%d %b %Y')
+            - else
+              =tenant.keyexpectedreturn.try(:strftime, '%d %b %Y')
           %td= tenant.keyreturned.try(:strftime, '%d %b %Y')
           %td= tenant.force_vacate? ? (t 'yes2') : (t 'no2')
           %td= damages_text

@@ -121,6 +121,10 @@ module ApplicationHelper
     current_user.roles.pluck(:authname).include?('developer')==true
   end
   
+  def is_student?
+    current_user.userable_type == 'Student'
+  end
+  
   def list_comma(arr)
     a=""
     arr.each{|x|a+=x+", "}
