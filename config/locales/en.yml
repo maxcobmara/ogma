@@ -3114,6 +3114,7 @@ en:
       book_wo_acc2: Books WIthout Accession No
       acc_not_exist: "Not Exist"
       acc_must_unique: "(Additional Notes : Accession No must UNIQUE)"
+      classlcc_is: "(Additional Notes : Refers to LC / NLM number)"
       use_language: "(Additional Notes : Use 'ing' or 'en' for English, use 'mel' or 'ms_MY' for Malay)"
       bibliography: Bibliography
       indice: Index

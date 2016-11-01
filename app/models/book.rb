@@ -7,7 +7,7 @@ class Book < ActiveRecord::Base
   has_many  :accessions, :dependent => :destroy
   accepts_nested_attributes_for :accessions, :reject_if => lambda { |a| a[:accession_no].blank? }, :allow_destroy =>true
   
-  attr_accessor :no_perolehan, :no_panggilan, :pengarang, :judul_utama, :edisi, :isbn_e, :bahasa, :tajuk_perkara, :imprint, :ms_indeks, :ms_bibliografi, :deskripsi_fizikal, :harga_rm, :sumber_kewangan, :lokasi, :catitan		#from excel (no_perolehan=accession_no, no_panggilan=classlcc)
+  attr_accessor :no_perolehan, :no_kelas, :pengarang, :judul_utama, :edisi, :isbn_e, :bahasa, :tajuk_perkara, :imprint, :ms_indeks, :ms_bibliografi, :deskripsi_fizikal, :harga_rm, :sumber_kewangan, :lokasi, :catitan		#from excel (no_perolehan=accession_no, no_kelas=classlcc)
 
   #-----------Attach Photo---------------
   has_attached_file :photo,
