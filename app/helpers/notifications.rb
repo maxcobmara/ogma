@@ -179,7 +179,29 @@ module Notifications
  def borrower_student_late_library_books
    Librarytransaction.where(student_id: current_student_id).where(returned: [nil, false]).where('returnduedate <?', Date.today).count
  end
+ 
+  #  TODO - notify
+   #llate return key --> tenant (keyexpectedreturn < Date.today, keyreturned.blank?)
+   #--> notify :  location (staffadmin_id),
 
+  def tenancy_admin_staff_late_keys_return
+    location_ids=Location.where(staffadmin_id: current_staff_id).pluck(:id)
+    Tenant.where(location_id: location_ids).where('keyexpectedreturn <? AND keyreturned is null', Date.today).where('staff_id is not null').count
+  end
+   
+  def tenancy_admin_student_late_keys_return
+    location_ids=Location.where(staffadmin_id: current_staff_id).pluck(:id)
+    Tenant.where(location_id: location_ids).where('keyexpectedreturn <? AND keyreturned is null', Date.today).where('student_id is not null').count
+  end
+  
+  def tenant_staff_late_keys_return
+    Tenant.where(staff_id: current_staff_id).where('keyexpectedreturn <? AND keyreturned is null', Date.today).count
+  end
+
+  def tenant_student_late_keys_return
+    Tenant.where(student_id: current_student_id).where('keyexpectedreturn <? AND keyreturned is null', Date.today).count
+  end
+  
 end
 
 

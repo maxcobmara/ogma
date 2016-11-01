@@ -311,8 +311,8 @@ en:
       tenant:
         staff_id: Name
         student_id: Mykad No.
-        keyaccept: Date Key provided
-        keyexpectedreturn: Date Key expected returned
+        keyaccept: Date Key Provided
+        keyexpectedreturn: Date Key Expected Returned
         total_keys: Total Keys Given
     errors:
         template:
@@ -436,7 +436,8 @@ en:
   download: Download
   endorsed: Endorsed
   not_endorsed: Not Endorsed
-  not_required: Tidak diperlukan
+  not_required: Not required
+  remark: Remark 
 
   actions:
     new: New
@@ -2415,6 +2416,7 @@ en:
     administrator: Administrated By
     select_admin: "Select Administrator"
     has_assets: "This location contains assets, click here to show/hide"
+    administered: " refers to administered locations"
     
     location_categories:
       building: Building
@@ -2471,7 +2473,7 @@ en:
       edit2: Edit Staff Tenancy
       key:
         provided: Date Key Provided
-        expected: Date Key expected returned
+        expected: Date Key Expected Returned
         returned: Date Returned
       vacate: Force Vacate
       tenancy_details_nil: Student data not available
@@ -2542,6 +2544,7 @@ en:
       formatted_mykad: MyKad No
       name: Name
       matrixno: Matrix No
+      bodyno: Body No
       rank_id: Rank
       position: Position
       department: Unit /  Department / Branch
@@ -4111,6 +4114,8 @@ en:
     late_book_student: " Late return of library book (student)"
     late_return_book: " Late return of library book"
     check_email: (Please check your email)
+    late_return_keys_staff: " Late return of staff resindence keys "
+    late_return_keys_student: " Late return of student residence keys"
     
   helpers:
     links:

@@ -75,6 +75,13 @@
   
  - if borrower_staff_late_library_books > 0
   %li=link_to content_tag(:span, "#{borrower_staff_late_library_books}", class: "badge") +((t 'notifications.late_return_book')+ "<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"+(t 'notifications.check_email')).html_safe, "#"
-
   
+ #1Nov2016
+ - if tenancy_admin_staff_late_keys_return > 0
+  %li=link_to content_tag(:span, "#{tenancy_admin_staff_late_keys_return}", class: "badge") +(t 'notifications.late_return_keys_staff'), index_staff_student_tenants_path
 
+ - if tenancy_admin_student_late_keys_return > 0
+  %li=link_to content_tag(:span, "#{tenancy_admin_student_late_keys_return}", class: "badge") +(t 'notifications.late_return_keys_student'), student_tenants_path
+
+ - if tenant_staff_late_keys_return > 0
+  %li=link_to content_tag(:span, "#{tenant_staff_late_keys_return}", class: "badge") +(t 'notifications.late_return_keys_staff') +"<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(#{Tenant.where(staff_id: current_staff_id).last.location.combo_code})".html_safe, "#"

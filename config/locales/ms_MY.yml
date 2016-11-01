@@ -418,6 +418,7 @@ ms_MY:
   endorsed: Disokong
   not_endorsed: Tidak Disokong
   not_required: Tidak diperlukan
+  remark: Catatan
  
   actions:
     new: Baru
@@ -2309,6 +2310,7 @@ ms_MY:
     administrator: Ditadbir oleh
     select_admin: "Pilih Pentadbir"
     has_assets: "Lokasi ini punyai asset, klik di sini untuk lihat/sorok"
+    administered: " merujuk kepada lokasi yang ditadbir"
     
     
     location_categories:
@@ -2437,6 +2439,7 @@ ms_MY:
       formatted_mykad: No Mykad
       name: Nama
       matrixno: No Matrik
+      bodyno: No Body
       rank_id: Pangkat
       position: Jawatan
       department: Unit / Bahagian / Cawangan
@@ -4033,6 +4036,8 @@ ms_MY:
     late_book_student: " Buku perpustakaan lewat/belum dipulangkan (pelajar)"
     late_return_book: " Buku perpustakaan lewat/belum dipulangkan"
     check_email: (Sila semak emel anda)
+    late_return_keys_staff: " Kediaman Staf belum dipulangkan kunci"
+    late_return_keys_student: " Kediaman Pelajar belum dipulangkan kunci"
     
   helpers:
     links:
