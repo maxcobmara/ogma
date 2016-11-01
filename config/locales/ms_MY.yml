@@ -43,6 +43,7 @@ ms_MY:
       student_discipline_case: Kes Disiplin Pelajar
       document: Dokumen
       tenant: Penghuni
+      book: Buku
     attributes:
       asset:
         assignedto_id: Pegawai Bertanggungjawab
@@ -297,6 +298,10 @@ ms_MY:
         keyaccept: Tarikh Kunci Diberi
         keyexpectedreturn: Tarikh Dijangka Pulang
         total_keys: Jumlah Kunci
+      book:
+        accessions: No Perolehan
+      accessions:
+        accession_no: No Perolehan
         
     errors:
         template:
@@ -2967,6 +2972,7 @@ ms_MY:
       bookcode: Kod Perpustakaan
       accessionno: No Perolehan #Panggilan
       catsource: Sumber Katalog Untuk
+      classno: No Kelas
       description: Huraian Fizikal
       roman: Roman
       size: Saiz
@@ -3010,6 +3016,7 @@ ms_MY:
       book_wo_acc2: Buku Tanpa No Perolehan
       acc_not_exist: Tidak Wujud
       acc_must_unique: "(Nota Tambahan : No Perolehan mestilah UNIK)"
+      classlcc_is: "(Nota Tambahan : Merujuk kepada nombor LC / NLM)"
       use_language: "(Nota Tambahan : Gunakan 'ing' atau 'en' for Bahasa Inggeris, use 'mel' atau 'ms_MY' for Bahasa Malaysia)"
       bibliography: Bibliografi
       indice: Indeks
@@ -3671,6 +3678,7 @@ ms_MY:
       total_week: Bilangan Minggu
     weeklytimetable:
       title: Jadual Waktu Mingguan
+      list: Senarai Jadual Waktu Mingguan
       new: Jadual Waktu Mingguan Baru
       edit: Sunting Jadual Waktu Mingguan
       approval: Kelulusan Jadual Waktu Mingguan
@@ -3683,6 +3691,7 @@ ms_MY:
       semester: Semester
       prepared_by: Disediakan Oleh
       endorsed_by: Dihantar untuk kelulusan
+      endorser: Diluluskan Oleh
       format1: "Format (Ahad - Rabu / Isnin - Khamis)"
       format2: "Format (Khamis / Jumaat)"
       week: Minggu
@@ -4025,7 +4034,7 @@ ms_MY:
   notifications:
     discipline_process: " Laporan disiplin pelajar untuk diproses"
     discipline_action: " Laporan disiplin pelajar untuk tindakan"
-    document_forwarded: "Dokumen dimajukan untuk tindakan"
+    document_forwarded: " Dokumen dimajukan untuk tindakan"
     document_action: " Dokumen (edaran) untuk tindakan"
     instructor_appraisal_check: " Penilaian Diri Jurulatih untuk disemak"
     instructor_appraisal_checked: " Penilaian Diri Jurulatih telah disemak"
@@ -4038,6 +4047,9 @@ ms_MY:
     check_email: (Sila semak emel anda)
     late_return_keys_staff: " Kediaman Staf belum dipulangkan kunci"
     late_return_keys_student: " Kediaman Pelajar belum dipulangkan kunci"
+    approver_weeklytimetable: " Jadual Waktu Mingguan untuk diluluskan"
+    creator_approved_weeklytimetable: " Jadual Waktu Mingguan telah diluluskan"
+    creator_rejected_weeklytimetable: " Jadual Waktu Mingguan telah ditolak"
     
   helpers:
     links:

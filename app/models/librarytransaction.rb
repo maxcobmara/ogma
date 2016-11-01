@@ -1,19 +1,20 @@
 class Librarytransaction < ActiveRecord::Base
-  
-  
+
   belongs_to :accession
   belongs_to :staff
   belongs_to :student
   belongs_to :libcheckoutby, :class_name => 'Staff', :foreign_key => 'libcheckout_by'
   belongs_to :libextendby, :class_name => 'Staff', :foreign_key => 'libextended_by'
   belongs_to :libreturnby, :class_name => 'Staff', :foreign_key => 'libreturned_by'
+
+  before_save :set_fine_paid_value_exist, :set_default_finepaydate, :set_default_checkoutdate_returnduedate
+  after_save :update_book_status
+  before_destroy :update_book_status2
   
   attr_accessor :booktitle, :staf_who, :student_who, :newduedate, :late_days_count
   
-  #validates_presence_of :accession_id
-  before_save :set_fine_paid_value_exist, :set_default_finepaydate
-  after_save :update_book_status
-  before_destroy :update_book_status2
+  #validates :accession_id , presence: true
+  #validates :checkoutdate, :returnduedate, presence: true
   
   def update_book_status
     acc_to_update=Accession.find(accession_id)
@@ -86,6 +87,19 @@ class Librarytransaction < ActiveRecord::Base
   def set_default_finepaydate
     if finepay==true && finepaydate==nil
       self.finepaydate=Date.today
+    end
+  end
+  
+  def set_default_checkoutdate_returnduedate
+    if checkoutdate.blank?
+      self.checkoutdate=Date.today
+    end
+    if returnduedate.blank?
+      if ru_staff==true
+        self.returnduedate=Date.today+21.days
+      else
+        self.returnduedate=Date.today+14.days
+      end
     end
   end
   

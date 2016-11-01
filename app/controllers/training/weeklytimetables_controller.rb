@@ -457,6 +457,19 @@ class Training::WeeklytimetablesController < ApplicationController
 #     @is_common_leader=["Sains Perubatan Asas", "Anatomi & Fisiologi", "Sains Tingkahlaku", "Komunikasi & Sains Pengurusan", "Komuniti"].include?(lecturer_programme) && roles.include?("unit_leader")
   end
   
+  def weeklytimetable_report
+    @search = Weeklytimetable.search(params[:q])
+    @weeklytimetables = @search.result
+     respond_to do |format|
+       format.pdf do
+         pdf = Weeklytimetable_reportPdf.new(@weeklytimetables, view_context, current_user.college)
+         send_data pdf.render, filename: "weeklytimetable_report-{Date.today}",
+                               type: "application/pdf",
+                               disposition: "inline"
+       end
+     end
+  end
+  
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_weeklytimetable

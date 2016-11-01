@@ -40,7 +40,7 @@ module LibraryHelper
       #retrieve UNIQUE fields of a book
       #additional Float check required for numbers-only data
       #lstrip required for string to remove leading/preceeding spaces
-      callno=row["no_panggilan"]     
+      callno=row["no_kelas"]     
       if callno.is_a? Float
 	callno=callno.to_i.to_s
       elsif callno.is_a? String
