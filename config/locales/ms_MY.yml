@@ -3673,6 +3673,7 @@ ms_MY:
       is_break: Rehat 
     academic_session:
       title: Sesi Akademik
+      list: Senarai Sesi Akademik
       new: Sesi Akademik Baru
       edit: Sunting Sesi Akademik
       details: Butiran Sesi Akademik

@@ -1,11 +1,11 @@
 class Training::AcademicSessionsController < ApplicationController
-  filter_resource_access
+  filter_access_to :index, :new, :create, :academicsession_report, :attribute_check => false
+  filter_access_to :show, :edit, :update, :destroy, :attribute_check => true
+  
   before_action :set_academic_session, only: [:show, :edit, :update, :destroy]
   # GET /academic_sessions
   # GET /academic_sessions.xml
   def index
-    #@academic_sessions = AcademicSession.all
-
     @search = AcademicSession.search(params[:q])
     @academic_sessions2 = @search.result
     @academic_sessions = @academic_sessions2.page(params[:page]||1)  
@@ -84,6 +84,19 @@ class Training::AcademicSessionsController < ApplicationController
     respond_to do |format|
       format.html { redirect_to(training_academic_sessions_url) }
       format.xml  { head :ok }
+    end
+  end
+  
+  def academicsession_report
+    @search = AcademicSession.search(params[:q])
+    @academic_sessions = @search.result
+    respond_to do |format|
+      format.pdf do
+        pdf = Academicsession_reportPdf.new(@academic_sessions, view_context, current_user.college)
+        send_data pdf.render, filename: "academicsession_report-{Date.today}",
+                               type: "application/pdf",
+                               disposition: "inline"
+      end
     end
   end
   

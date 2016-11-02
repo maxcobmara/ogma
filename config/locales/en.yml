@@ -3750,6 +3750,7 @@ en:
       is_break: Break
     academic_session:
       title: Academic Session
+      list: Academic Session List
       new: New Academic Session
       edit: Edit Academic Session
       details: Academic Session Details

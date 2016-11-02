@@ -344,7 +344,11 @@ Ogma::Application.routes.draw do
   resources :bulletins
 
   namespace :training do
-    resources :programmes
+    resources :programmes do
+      collection do
+        get :programme_report
+      end
+    end
     resources :intakes do
       collection do
         get :intake_report
@@ -356,7 +360,11 @@ Ogma::Application.routes.draw do
       end
     end
     resources :timetable_periods
-    resources :academic_sessions
+    resources :academic_sessions do
+      collection do
+        get :academicsession_report
+      end
+    end
     resources :topicdetails
     resources :trainingnotes do
       member do
