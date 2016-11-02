@@ -4487,6 +4487,14 @@ en:
     months: months
     years: years
     weeks: weeks
+    mi: mi
+    ho: h
+    da: d
+    mo: mo
+    ye: y
+    we: w
+    legend: "Legend : (1) Duration : mi - minutes, h - hours, h - days, w - weeks, mo - months, y - years."
+    legend2: " (2) Lecture / Tutorial / Practical - hours:minutes"
       
   datetime:
     formats:
