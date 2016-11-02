@@ -380,6 +380,7 @@ Ogma::Application.routes.draw do
       end
       collection do
         get :index_report
+        get :lessonplan_listing
       end
     end
     resources :weeklytimetables do

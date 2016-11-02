@@ -6,6 +6,10 @@ class Academicsession_reportPdf < Prawn::Document
     @college=college
     font "Helvetica"
     record
+    page_count.times do |i|
+      go_to_page(i+1)
+      footer
+    end
   end
   
   def record
@@ -28,6 +32,10 @@ class Academicsession_reportPdf < Prawn::Document
     @academicsessions.map do |academic_session|
          ["#{counter += 1}", academic_session.semester, academic_session.total_week]
     end
+  end
+  
+  def footer
+    draw_text "#{page_number} / #{page_count}",  :size => 8, :at => [470,-5]
   end
 
 end

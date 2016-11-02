@@ -3915,6 +3915,7 @@ en:
       intake_id: Intake
       student_qty: Total of Student
       semester: Semester
+      intake: Intake
       topic: Topic
       lecture_date: Lecture Date
       start_time: Start Time

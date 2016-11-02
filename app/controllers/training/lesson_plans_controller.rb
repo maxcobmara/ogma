@@ -1,9 +1,9 @@
 class Training::LessonPlansController < ApplicationController
-   filter_access_to :index, :new, :create, :attribute_check => false  # :index_report, - no longer use, Inde already combine plan & report
+   filter_access_to :index, :new, :create, :lessonplan_listing, :attribute_check => false  # :index_report, - no longer use, Inde already combine plan & report
    filter_access_to :show, :edit, :update, :destroy, :lesson_plan,:lesson_report, :attribute_check => true  # :lessonplan_reporting, - no longer use -ditto-
-   before_action :set_index_data, only: :index
+   before_action :set_index_data, only: [:index, :lessonplan_listing]
    before_action :set_lesson_plan, only: [:show, :edit, :update, :destroy]
-   before_action :set_admin, only: [:index, :new, :edit,:update, :show,  :lessonplan_reporting, :index_report]
+   before_action :set_admin, only: [:index, :new, :edit,:update, :show,  :lessonplan_reporting, :index_report, :lessonplan_listing]
 
   # GET /lesson_plans
   # GET /lesson_plans.xml
@@ -148,6 +148,29 @@ class Training::LessonPlansController < ApplicationController
       @lesson_plans2 = @search.result.where('hod_approved=?', true)
       @lesson_plans3 = @lesson_plans2.sort_by{|t|t.lecturer} 
       @lesson_plans =  Kaminari.paginate_array(@lesson_plans3).page(params[:page]||1) 
+  end
+  
+  def lessonplan_listing
+    if @is_admin
+      @search = LessonPlan.search(params[:q])
+    else
+      roles=current_user.roles
+      if roles.include?("programme_manager")
+        @search = LessonPlan.search2(@programme_id).search(params[:q])
+      else
+        @search = LessonPlan.sstaff2(current_user.userable.id).search(params[:q])
+      end
+    end
+    @lesson_plans = @search.result
+    #@lesson_plans3 = @lesson_plans.sort_by{|t|t.lecturer} 
+    respond_to do |format|
+      format.pdf do
+        pdf = Lessonplan_listingPdf.new(@lesson_plans, view_context, current_user.college)
+        send_data pdf.render, filename: "lessonplan_listing-{Date.today}",
+                               type: "application/pdf",
+                               disposition: "inline"
+      end
+    end
   end
   
   private
