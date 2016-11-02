@@ -7,7 +7,7 @@
     %li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'actions.new'))), new_training_lesson_plan_path
   %ul.nav.navbar-nav.navbar-right
     %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "toga"
-    %li= link_to content_tag(:li, fa_icon("print", text: (t 'actions.print'))), "#", class: 'bogus'
+    %li= link_to  (fa_icon "file-pdf-o", text: (t 'print')),  lessonplan_listing_training_lesson_plans_path(params.merge(format: 'pdf' ))
 
 .row.filter{style: "display:none;"}
   .col-md-2
@@ -54,12 +54,12 @@
         %td=h lesson_plan.try(:lecture_date).try(:strftime, '%d %b %Y')
         %td=h lesson_plan.try(:start_time).try(:strftime, '%H:%M')
         %td=h lesson_plan.try(:end_time).try(:strftime, '%H:%M')
-        %td=h lesson_plan.is_submitted? ? image_tag("tick.png") : image_tag("cross.png")
+        %td=h lesson_plan.is_submitted? ? fa_icon('check') : fa_icon('times')
         %td
-          =h lesson_plan.hod_approved? ? image_tag("tick.png") : image_tag("cross.png")
+          =h lesson_plan.hod_approved? ? fa_icon('check') : fa_icon('times')
           =h lesson_plan.hod_rejected? ? "- Rejected" : ""
-        %td=h lesson_plan.report_submit? ? image_tag("tick.png") : image_tag("cross.png")
-        %td=h lesson_plan.report_endorsed? ? image_tag("tick.png") : image_tag("cross.png") 
+        %td=h lesson_plan.report_submit? ? fa_icon('check') : fa_icon('times')
+        %td=h lesson_plan.report_endorsed? ? fa_icon('check') : fa_icon('times')
 
   .right{style:"padding:0 30px; margin:0;"}= paginate @lesson_plans, :theme => 'twitter-bootstrap-3'
  
