@@ -7,7 +7,7 @@
     %li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'actions.new'))), new_training_topicdetail_path
   %ul.nav.navbar-nav.navbar-right
     %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "toga"
-    %li= link_to content_tag(:li, fa_icon("print", text: (t 'actions.print'))), "#", class: 'bogus'
+    %li= link_to  (fa_icon "file-pdf-o", text: (t 'print')),  topicdetail_report_training_topicdetails_path(params.merge(format: 'pdf' ))
 
 .row.filter{style: "display:none;"}
   .col-md-2

@@ -3860,6 +3860,7 @@ en:
     topicdetail:
       create: Create Topic Detail
       title: Topic Detail
+      list: Topic Detail List
       new: New Topic Detail
       edit: Edit Topic Detail
       subject: Subject
