@@ -631,7 +631,7 @@ authorization do
    end
    
    has_permission_on :training_lesson_plans, :to => :create
-   has_permission_on :training_lesson_plans, :to => [:read, :lesson_plan, :lesson_report] do
+   has_permission_on :training_lesson_plans, :to => [:read, :lesson_plan, :lesson_report, :lessonplan_listing] do
      if_attribute :lecturer => is {user.userable_id}
    end
    has_permission_on :training_lesson_plans, :to => :update, :join_by => :and do
@@ -739,7 +739,7 @@ authorization do
     has_permission_on :training_academic_sessions, :to => [:manage, :academicsession_report]
     has_permission_on :training_intakes, :to => [:manage, :intake_report]
     has_permission_on :training_timetables, :to => [:manage, :timetable_report]
-    has_permission_on :training_lesson_plans, :to => [:read, :lesson_plan, :lesson_report, :delete] do
+    has_permission_on :training_lesson_plans, :to => [:read, :lesson_plan, :lesson_report, :delete, :lessonplan_listing] do
       if_attribute :lecturer => is_in {user.unit_members}
     end
     has_permission_on :training_lesson_plans, :to =>:update, :join_by => :and do
@@ -747,7 +747,7 @@ authorization do
       if_attribute :is_submitted => is {true}
       if_attribute :hod_approved => is_not {true}
     end
-    has_permission_on :training_lesson_plans, :to => [:lessonplan_reporting, :update], :join_by  => :and do
+    has_permission_on :training_lesson_plans, :to => [:lessonplan_reporting, :update, :lessonplan_listing], :join_by  => :and do
       if_attribute :lecturer => is {user.userable_id}
       if_attribute :is_submitted => is {true}
       if_attribute :hod_approved => is {true}
@@ -1551,13 +1551,13 @@ authorization do
   #25-OK
   #25 - 3/4 OK (Admin/Viewer/User)
   role :lesson_plans_module_admin do
-     has_permission_on :training_lesson_plans, :to => [:manage, :lessonplan_reporting, :lesson_plan, :lesson_report]
+     has_permission_on :training_lesson_plans, :to => [:manage, :lessonplan_reporting, :lesson_plan, :lesson_report, :lessonplan_listing]
   end
   role :lesson_plans_module_viewer do
-     has_permission_on :training_lesson_plans, :to => [:read, :lesson_plan, :lesson_report]
+     has_permission_on :training_lesson_plans, :to => [:read, :lesson_plan, :lesson_report, :lessonplan_listing]
   end
   role :lesson_plans_module_user do
-     has_permission_on :training_lesson_plans, :to => [:read, :update, :lessonplan_reporting, :lesson_plan, :lesson_report]
+     has_permission_on :training_lesson_plans, :to => [:read, :update, :lessonplan_reporting, :lesson_plan, :lesson_report, :lessonplan_listing]
   end
 # NOTE - DISABLE(in EACH radio buttons/click : radio & checkbox - training[0].disabled=true as the only owner of this module requires 'Lecturer' & 'Programme Manager' role 
 #   role :lesson_plans_module_member do
