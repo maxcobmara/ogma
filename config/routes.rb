@@ -365,7 +365,11 @@ Ogma::Application.routes.draw do
         get :academicsession_report
       end
     end
-    resources :topicdetails
+    resources :topicdetails do
+      collection do
+        get :topicdetail_report
+      end
+    end
     resources :trainingnotes do
       member do
         get :download

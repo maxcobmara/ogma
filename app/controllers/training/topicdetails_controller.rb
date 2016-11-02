@@ -1,5 +1,7 @@
 class Training::TopicdetailsController < ApplicationController
-  filter_resource_access
+  filter_access_to :index, :new, :create, :topicdetail_report, :attribute_check => false
+  filter_access_to :show, :edit, :update, :destroy, :attribute_check => true
+  
   before_action :set_topicdetail, only: [:show, :edit, :update, :destroy]
   # GET /topicdetails
   # GET /topicdetails.xml
@@ -112,6 +114,21 @@ class Training::TopicdetailsController < ApplicationController
     respond_to do |format|
       format.html { redirect_to(training_topicdetails_url) }
       format.xml  { head :ok }
+    end
+  end
+  
+    
+  def topicdetail_report
+    @search =Topicdetail.search(params[:q])
+    @topicdetails = @search.result
+    @topicdetails = @topicdetails.where('topic_code IN(?)',Programme.all.pluck(:id)).sort_by{|x|x.subject_topic.parent_id}
+    respond_to do |format|
+      format.pdf do
+        pdf = Topicdetail_reportPdf.new(@topicdetails, view_context, current_user.college)
+        send_data pdf.render, filename: "topicdetail_report-{Date.today}",
+                               type: "application/pdf",
+                               disposition: "inline"
+      end
     end
   end
   

@@ -479,7 +479,7 @@ class Programme < ActiveRecord::Base
   
   def total_duration
     if durationtype
-      total=duration.to_s+" "+durationtype #+(DropDown::DURATIONTYPES.find_all{|disp, value| value == durationtype}).map {|disp, value| disp}[0] 
+      total=duration.to_s+" "+I18n.t('time.'+durationtype) #+(DropDown::DURATIONTYPES.find_all{|disp, value| value == durationtype}).map {|disp, value| disp}[0] 
     elsif duration_type
       total=duration.to_s+" "+(DropDown::DURATION_TYPES.find_all{|disp, value| value == duration_type}).map {|disp, value| disp}[0]
     else

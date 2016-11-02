@@ -734,7 +734,7 @@ authorization do
     has_permission_on :training_weeklytimetables, :to => [:approval, :update, :weeklytimetable_report] do
       if_attribute :is_submitted => is {true}
     end
-    has_permission_on :training_topicdetails, :to => :manage
+    has_permission_on :training_topicdetails, :to => [:manage, :topicdetail_report]
     has_permission_on :training_programmes, :to => [:manage, :programme_report]
     has_permission_on :training_academic_sessions, :to => [:manage, :academicsession_report]
     has_permission_on :training_intakes, :to => [:manage, :intake_report]
@@ -1596,13 +1596,13 @@ authorization do
   #26-OK
   #26 - 3/4 OK (Admin/Viewer/User) - 9Feb2016
   role :topic_details_module_admin do
-    has_permission_on :training_topicdetails, :to => :manage
+    has_permission_on :training_topicdetails, :to => [:manage, :topicdetail_report]
   end
   role :topic_details_module_viewer do
-    has_permission_on :training_topicdetails, :to => :read
+    has_permission_on :training_topicdetails, :to => [:read, :topicdetail_report]
   end
   role :topic_details_module_user do
-    has_permission_on :training_topicdetails, :to => [:read, :update]
+    has_permission_on :training_topicdetails, :to => [:read, :update, :topicdetail_report]
   end
   # NOTE - DISABLE(in EACH radio buttons/click : radio & checkbox - training[5].disabled=true as the only owner of this module requires 'Programme Manager' role
   

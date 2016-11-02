@@ -3782,6 +3782,7 @@ ms_MY:
     topicdetail:
       create: Cipta Butiran Topik
       title: Butiran Topik
+      list: Senarai Butiran Topik
       new: Butiran Topik Baru
       edit: Sunting Butiran Topik
       subject: Subjek
