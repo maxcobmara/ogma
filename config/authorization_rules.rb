@@ -734,7 +734,11 @@ authorization do
     has_permission_on :training_weeklytimetables, :to => [:approval, :update, :weeklytimetable_report] do
       if_attribute :is_submitted => is {true}
     end
-    has_permission_on [:training_programmes, :training_academic_sessions, :training_intakes, :training_timetables, :training_topicdetails], :to => :manage
+    has_permission_on :training_topicdetails, :to => :manage
+    has_permission_on :training_programmes, :to => [:manage, :programme_report]
+    has_permission_on :training_academic_sessions, :to => [:manage, :academicsession_report]
+    has_permission_on :training_intakes, :to => [:manage, :intake_report]
+    has_permission_on :training_timetables, :to => [:manage, :timetable_report]
     has_permission_on :training_lesson_plans, :to => [:read, :lesson_plan, :lesson_report, :delete] do
       if_attribute :lecturer => is_in {user.unit_members}
     end
@@ -749,6 +753,7 @@ authorization do
       if_attribute :hod_approved => is {true}
       if_attribute :report_submit => is {true}
     end
+    has_permission_on :training_trainingnotes, :to => :menu
   end
   
  #Group Library   -------------------------------------------------------------------------------
@@ -1499,13 +1504,13 @@ authorization do
   #22-OK
   #22 - 3/4 OK - 9Feb2016
   role :academic_session_module_admin do
-     has_permission_on :training_academic_sessions, :to => :manage
+     has_permission_on :training_academic_sessions, :to => [:manage, :academicsession_report]
   end
   role :academic_session_module_viewer do
-     has_permission_on :training_academic_sessions, :to => :read
+     has_permission_on :training_academic_sessions, :to => [:read, :academicsession_report]
   end
   role :academic_session_module_user do
-     has_permission_on :training_academic_sessions, :to =>[:read, :update]
+     has_permission_on :training_academic_sessions, :to =>[:read, :update, :academicsession_report]
   end
 # NOTE - DISABLE(in EACH radio buttons/click : radio & checkbox - training[1].disabled=true as the only owner of this module requires 'Programme Manager' role 
 
@@ -1604,13 +1609,13 @@ authorization do
   #27-OK
   #27 - 3/4 OK (Admin/Viewer/User) - 9Feb2016
   role :programmes_module_admin do
-    has_permission_on :training_programmes, :to => :manage
+    has_permission_on :training_programmes, :to => [:manage, :programme_report]
   end
   role :programmes_module_viewer do
-    has_permission_on :training_programmes, :to => :read
+    has_permission_on :training_programmes, :to => [:read, :programme_report]
   end
   role :programmes_module_user do
-    has_permission_on :training_programmes, :to => [:read, :update]
+    has_permission_on :training_programmes, :to => [:read, :update, :programme_report]
   end
 # NOTE - DISABLE(in EACH radio buttons/click : radio & checkbox - training[6].disabled=true as the only owner of this module requires 'Programme Manager' role
   

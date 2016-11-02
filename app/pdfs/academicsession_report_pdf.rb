@@ -6,7 +6,6 @@ class Academicsession_reportPdf < Prawn::Document
     @college=college
     font "Helvetica"
     record
-    pages.count
   end
   
   def record
@@ -29,10 +28,6 @@ class Academicsession_reportPdf < Prawn::Document
     @academicsessions.map do |academic_session|
          ["#{counter += 1}", academic_session.semester, academic_session.total_week]
     end
-  end
-  
-  def footer
-    text ""
   end
 
 end
