@@ -3673,6 +3673,7 @@ ms_MY:
       is_break: Rehat 
     academic_session:
       title: Sesi Akademik
+      list: Senarai Sesi Akademik
       new: Sesi Akademik Baru
       edit: Sunting Sesi Akademik
       details: Butiran Sesi Akademik
@@ -4413,6 +4414,15 @@ ms_MY:
     months: bulan
     years: tahun
     weeks: minggu
+    mi: mn
+    ho: j
+    da: h
+    mo: b
+    ye: t
+    we: m
+    legend: "Petunjuk : (1) Jangka Masa: mn - minit, j - jam, h - hari, m - minggu, b - bulan, t - tahun."
+    legend2: " (2) Kuliah / Tutorial / Amali : jam:minit"
+    
 
   number:
     currency:

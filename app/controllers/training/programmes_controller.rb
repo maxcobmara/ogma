@@ -1,5 +1,7 @@
 class Training::ProgrammesController < ApplicationController
-  filter_resource_access
+  filter_access_to :index, :new, :create, :programme_report, :attribute_check => false
+  filter_access_to :show, :edit, :update, :destroy, :attribute_check => true
+
   before_action :set_programme, only: [:show, :edit, :update, :destroy]
   # GET /programmes
   # GET /programmes.xml
@@ -86,6 +88,18 @@ class Training::ProgrammesController < ApplicationController
     respond_to do |format|
       format.html { redirect_to(training_programmes_url) }
       format.xml  { head :ok }
+    end
+  end
+  
+  def programme_report
+    @programmes = Programme.all.order(:combo_code)
+    respond_to do |format|
+      format.pdf do
+        pdf = Programme_reportPdf.new(@programmes, view_context, current_user.college)
+        send_data pdf.render, filename: "programme_report-{Date.today}",
+                               type: "application/pdf",
+                               disposition: "inline"
+      end
     end
   end
   

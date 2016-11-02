@@ -14,6 +14,7 @@ class Programme < ActiveRecord::Base
   validates_uniqueness_of :combo_code
   validates_presence_of :durationtype, :if => :duration_exist?
   validates_presence_of :level, :if => :maritim_roots?
+  validates :course_type, presence: true
 
   #scope :by_semester, -> { where(course_type: 'Semester')}
   def duration_exist?
@@ -478,7 +479,19 @@ class Programme < ActiveRecord::Base
   
   def total_duration
     if durationtype
-     total=duration.to_s+" "+(DropDown::DURATIONTYPES.find_all{|disp, value| value == durationtype}).map {|disp, value| disp}[0] 
+      total=duration.to_s+" "+durationtype #+(DropDown::DURATIONTYPES.find_all{|disp, value| value == durationtype}).map {|disp, value| disp}[0] 
+    elsif duration_type
+      total=duration.to_s+" "+(DropDown::DURATION_TYPES.find_all{|disp, value| value == duration_type}).map {|disp, value| disp}[0]
+    else
+      total=""
+    end
+    total
+  end
+  
+  def total_duration2
+    if !durationtype.blank?
+      starting=durationtype[0, 2]
+      total=duration.to_s+" "+I18n.t('time.'+starting.to_s) 
     elsif duration_type
       total=duration.to_s+" "+(DropDown::DURATION_TYPES.find_all{|disp, value| value == duration_type}).map {|disp, value| disp}[0]
     else
@@ -489,6 +502,10 @@ class Programme < ActiveRecord::Base
   
   def root_programme
     root_id
+  end
+  
+  def render_status
+    (DropDown::COURSE_STATUS.find_all{|disp, value| value == status}).map {|disp, value| disp}.first
   end
   
   #kskbjb   
