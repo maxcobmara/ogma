@@ -75,7 +75,8 @@ class Training::WeeklytimetablesController < ApplicationController
   end
   
   def personalize_index
-    @weeklytimetables_details=WeeklytimetableDetail.where('lecturer_id=?', current_user.userable_id)
+    @search = WeeklytimetableDetail.search(params[:q])
+    @weeklytimetables_details= @search.result.where('lecturer_id=?', current_user.userable_id)
     respond_to do |format|
       format.html { render :action => "personalize_index" }
       format.xml  { render :xml => @weeklytimetables }
@@ -471,7 +472,8 @@ class Training::WeeklytimetablesController < ApplicationController
   end
   
   def personalize_report
-    @weeklytimetables_details=WeeklytimetableDetail.where('lecturer_id=?', current_user.userable_id)
+    @search = WeeklytimetableDetail.search(params[:q])
+    @weeklytimetables_details= @search.result.where('lecturer_id=?', current_user.userable_id)
     all_combine = []
     @weeklytimetables_details.each{|x| all_combine << Weeklytimetable.find(x.weeklytimetable.id)}
     @personalize = all_combine.group_by{|t|t.startdate}

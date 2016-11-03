@@ -35,7 +35,7 @@ class Personalize_reportPdf < Prawn::Document
         if index==0
           aa=item.weeklytimetable_details.where(lecturer_id: @userable_id)
           aa.each{|x|bb+=x.get_date_day_of_schedule+' ('+x.get_time_slot+') - '+x.weeklytimetable_topic.subject_list+' ('+x.render_class_method.first+') <br>'}
-          body << ["#{counter+=1}", item.schedule_programme.programme_list, sdate.try(:strftime, "%d-%m- %Y"), item.try(:enddate).try(:strftime, "%d-%m-%Y"), "#{bb}"]
+          body << ["#{counter+=1}", item.schedule_programme.programme_list, sdate.try(:strftime, "%d-%m-%Y"), item.try(:enddate).try(:strftime, "%d-%m-%Y"), "#{bb}"]
         end
       end
      end
