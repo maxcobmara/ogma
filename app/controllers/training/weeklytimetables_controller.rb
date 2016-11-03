@@ -1,5 +1,5 @@
 class Training::WeeklytimetablesController < ApplicationController
-    filter_access_to :index, :new, :create, :personalize_index, :weekly_timetable, :personalizetimetable,:personalize_show, :weeklytimetable_report, :attribute_check => false
+    filter_access_to :index, :new, :create, :personalize_index, :weekly_timetable, :personalizetimetable,:personalize_show, :weeklytimetable_report,  :personalize_report, :attribute_check => false
     filter_access_to :show, :edit, :update, :destroy, :approval, :attribute_check => true
   
   before_action :set_weeklytimetable, only: [:show, :edit, :update, :destroy]
@@ -464,6 +464,21 @@ class Training::WeeklytimetablesController < ApplicationController
        format.pdf do
          pdf = Weeklytimetable_reportPdf.new(@weeklytimetables, view_context, current_user.college)
          send_data pdf.render, filename: "weeklytimetable_report-{Date.today}",
+                               type: "application/pdf",
+                               disposition: "inline"
+       end
+     end
+  end
+  
+  def personalize_report
+    @weeklytimetables_details=WeeklytimetableDetail.where('lecturer_id=?', current_user.userable_id)
+    all_combine = []
+    @weeklytimetables_details.each{|x| all_combine << Weeklytimetable.find(x.weeklytimetable.id)}
+    @personalize = all_combine.group_by{|t|t.startdate}
+     respond_to do |format|
+       format.pdf do
+         pdf = Personalize_reportPdf.new(@personalize, view_context, current_user.college, current_user.userable_id)
+         send_data pdf.render, filename: "personalize_report-{Date.today}",
                                type: "application/pdf",
                                disposition: "inline"
        end

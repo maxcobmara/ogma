@@ -3718,6 +3718,7 @@ ms_MY:
       activate_format: "Klik 'Tambah Data' untuk aktifkan format jadual waktu."
       submission_approval: "Penghantaran & Kelulusan"
       personalize_timetable: Jadual Waktu Mingguan Pengajar
+      personalize_timetable_list: Senarai Jadual Waktu Mingguan Pengajar
       lecturer_name: Nama Pengajar
       intake: Ambilan
       date_time: "Tarikh & Masa : "
@@ -3728,6 +3729,8 @@ ms_MY:
       reason_rejection: Sebab Penolakan
       choose_approve_or_reject: Sila pilih samada untuk meluluskan atau menolak Jadual Waktu Mingguan ini
       personalize: Jadual Waktu Individu
+      date_day_time_topic_method: "Tarikh Hari (Slot Masa) - Topik (Kaedah Pengajaran)"
+
     weeklytimetable_detail:
       topic: Topik
       lecturer_id: Pengajar      
