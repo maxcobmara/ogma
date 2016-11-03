@@ -374,6 +374,9 @@ Ogma::Application.routes.draw do
       member do
         get :download
       end
+      collection do
+        get :trainingnote_report
+      end
     end
     resources :lesson_plans do
       member do

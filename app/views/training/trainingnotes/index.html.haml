@@ -7,7 +7,7 @@
     %li= link_to content_tag(:li, fa_icon("asterisk", text: (t 'actions.new'))), new_training_trainingnote_path
   %ul.nav.navbar-nav.navbar-right
     %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "index_search_bar"
-    %li= link_to content_tag(:li, fa_icon("print", text: (t 'actions.print'))), "#", class: 'bogus'
+    %li= link_to  (fa_icon "file-pdf-o", text: (t 'print')), trainingnote_report_training_trainingnotes_path(params.merge(format: 'pdf' ))
 
 .row.filter{style: "display:none;"}
   .col-md-2
@@ -104,17 +104,17 @@
                 /=y.topicdetail.topic_code 
               %td
                 =h link_to y.title, training_trainingnote_path(y)
-              /%br
-              - if y.topicdetail_id==nil && y.timetable_id!=nil
-                %font{:color=>'blue'}
-                  %b Topic Detail
-                  not exist, 
-                  = link_to "CREATE ONE", new_training_topicdetail_path
-                  to match.
-                  - @topic=WeeklytimetableDetail.find(y.timetable_id).topic
-                  Topic : 
-                  =Programme.find(@topic).semester_subject_topic 
-                  )
+                /%br
+                - if y.topicdetail_id==nil && y.timetable_id!=nil
+                  %font{:color=>'blue'}
+                    %b Topic Detail
+                    not exist, 
+                    = link_to "CREATE ONE", new_training_topicdetail_path
+                    to match.
+                    - @topic=WeeklytimetableDetail.find(y.timetable_id).topic
+                    Topic : 
+                    =Programme.find(@topic).semester_subject_topic 
+                    )
               %td=y.reference
               %td=y.version
               %td=y.release.try(:strftime, '%d %b %Y')
@@ -125,6 +125,9 @@
               /%BR
               %td= y.note_creator.rank_id? ? y.note_creator.staff_with_rank : y.note_creator.try(:name)
       - else
+        /---NOTE - this part shall cater for existing Training Notes without Topic Detail - applied only to KSKBJB
+        / as for AMSAS - latest codes updates -- New Training Note (Topic selection - filtered by Topic Detail record)
+        / TODO - to remove this part when no longer required
         %tr
           /%td=prog.id
           %td
@@ -141,7 +144,7 @@
           %td
             =h link_to prog.title, training_trainingnote_path(prog)
             /%br
-            - if prog.topicdetail_id==nil && prog.timetable_id!=nil
+            - if prog.topicdetail_id.blank? && prog.timetable_id!=nil
               %font{:color=>'blue'}
                 %b Topic Detail
                 not exist, 

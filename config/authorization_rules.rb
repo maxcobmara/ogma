@@ -621,11 +621,11 @@ authorization do
        if_attribute :prepared_by => is {user.userable_id}
    end
    
-   has_permission_on :training_trainingnotes, :to => [:manage, :download], :join_by => :or do
+   has_permission_on :training_trainingnotes, :to => [:manage, :download, :trainingnote_report], :join_by => :or do
      if_attribute :topicdetail_id => is_in {user.topicdetails_of_programme}
      if_attribute :timetable_id => is_in {user.timetables_of_programme} 
    end
-   has_permission_on :training_trainingnotes, :to => [:manage, :download], :join_by => :and do
+   has_permission_on :training_trainingnotes, :to => [:manage, :download, :trainingnote_report], :join_by => :and do
      if_attribute :topicdetail_id => is {nil}
      if_attribute :timetable_id => is {nil}
    end
@@ -792,7 +792,7 @@ authorization do
       end
       
       # TODO - disable 'module viewer' training notes -> when student role is selected 16Oct2016
-      has_permission_on :training_trainingnotes, :to => [:read , :download]
+      has_permission_on :training_trainingnotes, :to => [:read , :download, :trainingnote_report]
   end
   
   role :student_administrator do
@@ -1480,13 +1480,13 @@ authorization do
   #21-OK
   #21 - 3/4 OK - 9Feb2016
   role :training_notes_module_admin do
-     has_permission_on :training_trainingnotes, :to => [:menu, :manage, :download]
+     has_permission_on :training_trainingnotes, :to => [:menu, :manage, :download, :trainingnote_report]
   end
   role :training_notes_module_viewer do
-     has_permission_on :training_trainingnotes, :to => [:menu, :read, :download]
+     has_permission_on :training_trainingnotes, :to => [:menu, :read, :download, :trainingnote_report]
   end
   role :training_notes_module_user do
-     has_permission_on :training_trainingnotes, :to => [:menu, :read, :update, :download]
+     has_permission_on :training_trainingnotes, :to => [:menu, :read, :update, :download, :trainingnote_report]
   end
 # NOTE - DISABLE(in EACH radio buttons/click : radio & checkbox - training[0].disabled=true as the only owner of this module requires 'Lecturer' role 
 #   role :training_notes_module_member do

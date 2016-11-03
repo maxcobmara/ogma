@@ -1,9 +1,9 @@
  class Training:: TrainingnotesController < ApplicationController
-   #filter_resource_access
-   filter_access_to :index, :new, :create, :attribute_check => false
-  filter_access_to :show, :edit, :update, :destroy, :download, :attribute_check => true
+   filter_access_to :index, :new, :create, :trainingnote_report, :attribute_check => false
+   filter_access_to :show, :edit, :update, :destroy, :download, :attribute_check => true
+   
    before_action :set_trainingnote, only: [:show, :edit, :update, :destroy, :download]
-   before_action :set_data_index_new_edit, only: [:index, :new, :edit, :create, :update] #create & update - if validations failed
+   before_action :set_data_index_new_edit, only: [:index, :new, :edit, :create, :update, :trainingnote_report] #create & update - if validations failed
    before_action :set_data_new_edit, only: [:new, :edit, :create, :update]
 
   # GET /trainingnotes
@@ -15,9 +15,7 @@
                 
     by_subject  =@trainingnotes2.where('topicdetail_id is not null').group_by{|x|x.topicdetail.subject_topic}  
     arr_w_topic=[]
-    by_subject.each do |tns|
-      arr_w_topic<< tns
-    end
+    by_subject.each{ |tns| arr_w_topic<< tns}
     wo_topic = @trainingnotes2.where('topicdetail_id is null')
     combine = arr_w_topic+wo_topic
     @trainingnotes_lala = Kaminari.paginate_array(combine).page(params[:page]||1) 
@@ -105,6 +103,25 @@
   def download
     #url=/assets/notes/1/original/BK-KKM-01-01_BORANG_PENILAIAN_KURSUS.pdf?1474870599
     send_file("#{::Rails.root.to_s}/public#{@trainingnote.document.url.split("?").first}")
+  end
+  
+  def trainingnote_report
+    @search = Trainingnote.search(params[:q])
+    @trainingnotes2 = @search.result.search2(@programme_id)                
+    by_subject  =@trainingnotes2.where('topicdetail_id is not null').group_by{|x|x.topicdetail.subject_topic}  
+    arr_w_topic=[]
+    by_subject.each{|tns| arr_w_topic<< tns}
+    wo_topic = @trainingnotes2.where('topicdetail_id is null')
+    @trainingnotes = arr_w_topic+wo_topic
+    
+    respond_to do |format|
+      format.pdf do
+        pdf = Trainingnote_reportPdf.new(@trainingnotes, view_context, current_user.college)
+        send_data pdf.render, filename: "trainingnote_report-{Date.today}",
+                               type: "application/pdf",
+                               disposition: "inline"
+      end
+    end
   end
   
   private
