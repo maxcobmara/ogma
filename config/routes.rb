@@ -402,6 +402,7 @@ Ogma::Application.routes.draw do
         get 'personalize_timetable', to: "weeklytimetables#personalize_timetable"
         #get 'personalize_index', to: "weeklytimetables#personalize_index"
         get :personalize_index
+        get :personalize_report
 	get :weeklytimetable_report
       end
     end

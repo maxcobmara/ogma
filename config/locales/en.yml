@@ -3795,6 +3795,7 @@ en:
       activate_format: "Klik 'Create' to activate timetable formating."
       submission_approval: "Submission & Approval"
       personalize_timetable: Personalize Weekly Timetables
+      personalize_timetable_list: Personalize Weekly Timetables List
       lecturer_name: Lecturer Name
       intake: Intake
       date_time: "Date & Time : "
@@ -3805,6 +3806,7 @@ en:
       reason_rejection: Reason for Rejection
       choose_approve_or_reject: Please choose either to approve or reject this Weekly Timetable
       personalize: Personalize Timetable
+      date_day_time_topic_method: "Date Day (Time Slot) - Topic (Class Method)"
       
     weeklytimetable_detail:
       topic: Topic
