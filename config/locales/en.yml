@@ -3881,6 +3881,7 @@ en:
       add_details: Add Details
     trainingnote:
       title2: Training Notes
+      list: Training Notes List
       new: New Training Note
       edit: Edit Training Note
       details: Training Note Details
@@ -3902,6 +3903,9 @@ en:
       plan_remark1: " - Notes are non-removable and limited fields allowed for editing."
       plan_remark2: " - Notes are non-removable."
       remark_title: Reference
+      topicdetail_not_exist: "'Topic Detail' record not exist"
+      legend: "Legend : "
+
     lesson_plan:
       title: Lesson Plan & Report Listing
       title2: Lesson and Learning
@@ -3918,6 +3922,7 @@ en:
       semester: Semester
       intake: Intake
       topic: Topic
+      lecture_title: Lecture Title
       lecture_date: Lecture Date
       start_time: Start Time
       end_time: End Time

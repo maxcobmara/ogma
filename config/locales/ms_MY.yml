@@ -3803,6 +3803,7 @@ ms_MY:
       add_details: Tambah Butiran
     trainingnote:
       title2: Nota Latihan
+      list: Senarai Nota Latihan
       new: Nota Latihan Baru
       edit: Sunting Nota Latihan
       details: Butiran Nota Latihan
@@ -3824,6 +3825,9 @@ ms_MY:
       plan_remark1: " - Nota tidak boleh dipadam dan hanya sebahagian medan sahaja boleh disunting."
       plan_remark2: " - Nota tidak boleh dipadam."
       remark_title: Rujukan
+      topicdetail_not_exist: Rekod 'Butiran Topik' tidak wujud
+      legend: "Petunjuk :"
+
     lesson_plan:
       title: Senarai Pelan & Laporan Pengajaran
       title2: Pengajaran dan Pembelajaran
