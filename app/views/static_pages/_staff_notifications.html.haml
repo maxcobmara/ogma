@@ -92,6 +92,9 @@
  - if creator_approved_weeklytimetable > 0
   %li=link_to content_tag(:span, "#{creator_approved_weeklytimetable}", class: "badge") +(t 'notifications.creator_approved_weeklytimetable'), training_weeklytimetables_path
 
-
  - if creator_rejected_weeklytimetable > 0
   %li=link_to content_tag(:span, "#{creator_rejected_weeklytimetable}", class: "badge") +(t 'notifications.creator_rejected_weeklytimetable'), training_weeklytimetables_path
+  
+ #3Nov2016
+ - if lecturer_approved_personalize_weeklytimetable > 0
+  %li=link_to content_tag(:span, "#{lecturer_approved_personalize_weeklytimetable}", class: "badge") +(t 'notifications.lecturer_approved_personalize'), personalize_index_training_weeklytimetables_path

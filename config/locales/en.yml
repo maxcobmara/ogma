@@ -4140,6 +4140,7 @@ en:
     approver_weeklytimetable: " Weeklytimetables require approval"
     creator_approved_weeklytimetable: " Weeklytimetables were approved"
     creator_rejected_weeklytimetable: " Weeklytimetable were rejected"
+    lecturer_approved_personalize: " Personalize Weeklytimetable were approved"
     
   helpers:
     links:

@@ -4062,6 +4062,7 @@ ms_MY:
     approver_weeklytimetable: " Jadual Waktu Mingguan untuk diluluskan"
     creator_approved_weeklytimetable: " Jadual Waktu Mingguan telah diluluskan"
     creator_rejected_weeklytimetable: " Jadual Waktu Mingguan telah ditolak"
+    lecturer_approved_personalize: " Jadual Waktu Individu Mingguan telah diluluskan"
     
   helpers:
     links:
