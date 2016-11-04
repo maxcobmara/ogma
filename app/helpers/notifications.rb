@@ -210,6 +210,16 @@ module Notifications
     Weeklytimetable.where(prepared_by: current_staff_id).where(hod_rejected: true).count #where(startdate > Date.today).count
   end
   
+  def lecturer_approved_personalize_weeklytimetable
+    complete_approval=0
+    all=Weeklytimetable.joins(:weeklytimetable_details).where('weeklytimetable_details.lecturer_id=?', current_staff_id) #where(startdate > Date.today)
+    all.group_by(&:startdate).each do |sdate, a2|
+      a=all.where('startdate=?', sdate)
+      b=all.where('startdate=?',sdate).where('hod_approved=?', true)
+      complete_approval+=1 if a.count==b.count
+    end
+    complete_approval
+  end
   
 end
 

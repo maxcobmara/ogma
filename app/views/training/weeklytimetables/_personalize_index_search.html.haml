@@ -2,8 +2,10 @@
   %tr.search_row2{style: "display: none;"}
     %td=f.text_field :weeklytimetable_schedule_programme_name_or_weeklytimetable_schedule_programme_code_or_weeklytimetable_schedule_programme_course_type_or_weeklytimetable_schedule_programme_level_cont, size: 2, :class => "form-control"
     %td= f.text_field :weeklytimetable_startdate_eq, size: 2,  :class => "form-control date_picker_reverse", value: @search.weeklytimetable_startdate_eq.try(:strftime, '%d-%m-%Y')
+    %td= f.text_field :weeklytimetable_enddate_eq, size: 2,  :class => "form-control date_picker_reverse", value: @search.weeklytimetable_enddate_eq.try(:strftime, '%d-%m-%Y')
+    %td
     %td.input-group
-      = f.text_field :weeklytimetable_enddate_eq, size: 2,  :class => "form-control date_picker_reverse", value: @search.weeklytimetable_enddate_eq.try(:strftime, '%d-%m-%Y')
+      
       %span.input-group-btn
         %button.btn.btn-sm.btn-default.right{:type => "submit"}
           %i.fa.fa-search.fa-fw
