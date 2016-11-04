@@ -29,6 +29,7 @@ en:
       asset_loan: Asset Loan
       student: Student
       timetable: Timetable
+      intake: Intake
       examquestion: Examquestion
       exam: Examination
       examresult: Keputusan Peperiksaan
@@ -182,6 +183,12 @@ en:
       holiday:
         hname: Name
         hdate: Date
+      intake:
+         programme_id: Programme
+         name: Month & Year
+         description: Group
+         register_on: Register on
+         staff_id: Group Coordinator
       programme:
         level: Level
       weeklytimetable:
