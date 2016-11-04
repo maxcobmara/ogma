@@ -7,6 +7,7 @@ ms_MY:
       asset_defect: Kerosakan Aset
       asset_loan: Peminjaman Aset
       student: Pelajar
+      timetable: Jadual Waktu
       examquestion: Soalan Peperiksaan
       exam: Peperiksaan
       examresult: Keputusan Peperiksaan
@@ -179,6 +180,10 @@ ms_MY:
         hod_rejected_on: Tarikh ditolak
       timetable:
         timetable_periods: Butiran Jadual Waktu
+        code: Kod
+        name: Nama
+        description: Deskripsi
+        created_by: Disediakan Oleh
       timetable_periods:
         sequence: Sesi
       academic_session:
@@ -3662,7 +3667,7 @@ ms_MY:
       period_timings: Turutan Sesi Pembelajaran
       remark: Catatan
       editable_removal_restricted: "Format Jadual Waktu sedang digunakan : suntingan hanya dibenarkan bagi jangka masa sahaja dan rekod tidak boleh dipadam."
-      editing_restricted: "Format Jadual Waktu yang digunakan dalam Jadual Waktu Mingguan yang telah DILULUSKAN sudah tidak boleh disunting."
+      editing_restricted: "Format Jadual Waktu yang digunakan dalam Jadual Waktu Mingguan yang telah DILULUSKAN, sudah tidak boleh disunting."
     timetable_period:
       title: Sesi Pembelajaran
       period: Sesi

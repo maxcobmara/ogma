@@ -13,17 +13,17 @@
             .col-sm-2.control-label
               = f.label :code
             .col-md-3
-              = f.text_field :code, class: 'form-control'
+              = f.text_field :code, class: 'form-control mandatory'
           .form-group
             .col-sm-2.control-label
               = f.label :name
             .col-md-3
-              = f.text_field :name, class: 'form-control'
+              = f.text_field :name, class: 'form-control mandatory'
           .form-group
             .col-sm-2.control-label
               = f.label :description
             .col-md-3
-              = f.text_field :description, class: 'form-control'
+              = f.text_field :description, class: 'form-control mandatory'
           .form-group
             .col-sm-2.control-label
               = f.label :created_by
@@ -32,7 +32,7 @@
                 - createdby=@timetable.created_by
               - else
                 - createdby=@current_user.userable_id
-              = f.collection_select :created_by, Staff.where('id =?', createdby), :id, :name,{ :include_blank => t('select')},{ class: 'selectpicker',  "data-width"=>"200px"}
+              = f.collection_select :created_by, Staff.where('id =?', createdby), :id, :name,{ :include_blank => t('select')},{ class: 'selectpicker mandatory',  "data-width"=>"200px"}
 
         %br
         .row
