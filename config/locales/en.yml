@@ -3807,6 +3807,7 @@ en:
       choose_approve_or_reject: Please choose either to approve or reject this Weekly Timetable
       personalize: Personalize Timetable
       date_day_time_topic_method: "Date Day (Time Slot) - Topic (Class Method)"
+      slot_count: Slot Count
       
     weeklytimetable_detail:
       topic: Topic

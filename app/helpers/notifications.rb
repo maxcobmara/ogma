@@ -211,40 +211,14 @@ module Notifications
   end
   
   def lecturer_approved_personalize_weeklytimetable
-    #where(startdate < Date.today)
-    #approved_wt_ids=Weeklytimetable.where(hod_approved: true).pluck(:id)
-    #approved_wd=WeeklytimetableDetail.where(lecturer_id: current_staff_id).where(weeklytimetable_id: approved_wt_ids)
-#     
-#     approved_wt_wd=Weeklytimetable.joins(:weeklytimetable_details).where(hod_approved: true).where('weeklytimetable_details.lecturer_id=?', current_staff_id)
-#     approved_wt_wd_ids=approved_wt_wd.pluck(:id)
-#     #approved_wd=WeeklytimetableDetail.where(weeklytimetable_id: approved_wt_ids).where(lecturer_id: current_staff_id)
-#     approved_wt=Weeklytimetable.where(id: approved_wt_wd_ids)
-#     #approved_wt.group_by(&:startdate).count
-#     approved_wt_wd_ids.count #3
-#     not_approved_wt_wd=Weeklytimetable.joins(:weeklytimetable_details).where(hod_approved: [nil, false]).where('weeklytimetable_details.lecturer_id=?', current_staff_id)
-#     not_approved_wt_wd_ids=not_approved_wt_wd.pluck(:id)
-#     not_approved_wt_wd_ids.count #4
-#     all=Weeklytimetable.joins(:weeklytimetable_details).where('weeklytimetable_details.lecturer_id=?', current_staff_id)
-#     all_ids=all.pluck(:id)
-#     all.count #7
-#     
-#     approved_wt_wd.count
-#     approved_wt.group_by(&:startdate).count #2   ##############
-#     approved_wt.count #2
-#     
-#     ######
-#     all.group_by(&:startdate).count #3 ###############
-#     
-#     
     complete_approval=0
-    all=Weeklytimetable.joins(:weeklytimetable_details).where('weeklytimetable_details.lecturer_id=?', current_staff_id)
+    all=Weeklytimetable.joins(:weeklytimetable_details).where('weeklytimetable_details.lecturer_id=?', current_staff_id) #where(startdate > Date.today)
     all.group_by(&:startdate).each do |sdate, a2|
       a=all.where('startdate=?', sdate)
       b=all.where('startdate=?',sdate).where('hod_approved=?', true)
       complete_approval+=1 if a.count==b.count
     end
     complete_approval
-    
   end
   
 end

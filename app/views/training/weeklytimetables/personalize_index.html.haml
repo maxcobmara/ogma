@@ -20,39 +20,49 @@
         /%th= sort_link(@search, :startdate, (t 'training.weeklytimetable.startdate'))
         /%th= sort_link(@search, :end_date, (t 'training.weeklytimetable.enddate'))
         /%th= sort_link(@search, :semester, (t 'training.weeklytimetable.semester'))
-        %th{width: '50%'}= (t 'training.weeklytimetable.programme_id')
+        %th{width: '30%'}= (t 'training.weeklytimetable.programme_id')
         /%th= (t 'training.weeklytimetable.intake_id') - may have multiple groups (intakes) in 1 week
-        %th{width: '25%'}= (t 'training.weeklytimetable.startdate')
-        %th{width: '25%'}= (t 'training.weeklytimetable.enddate')
+        %th{width: '15%'}= (t 'training.weeklytimetable.startdate')
+        %th{width: '15%'}= (t 'training.weeklytimetable.enddate')
+        %th{width: '20%'} Status
+        %th{width: '20%'}= (t 'training.weeklytimetable.slot_count')
         /%th= (t 'training.weeklytimetable.semester')
 
     - all_combine = []
     - @weeklytimetables_details.each do |x|
       - all_combine << Weeklytimetable.find(x.weeklytimetable.id)
     - @personalize = all_combine.group_by{|t|t.startdate}
-    /=h current_user.id
+
     %tbody
     = render "personalize_index_search"
+
     - @personalize.each do |sdate, items2|
+      - combined_wt=""
+      - combined_slot_count=""
+      - combined_status=""
+      /- items2.map(&:id).uniq.each{|x| combined_wt+=(Weeklytimetable.find(x).schedule_programme.programme_list+"<br>")}
+      /- items2.map(&:id).uniq.each{|x| combined_slot_count+=(Weeklytimetable.find(x).weeklytimetable_details.where(lecturer_id: current_user.userable_id).count.to_s+"<br>")}
+      /- items2.map(&:id).uniq.each{|x| combined_status+=(Weeklytimetable.find(x).hod_approved? ? (t 'approved')+"<br>" : "<span style='color: red;'>"+(t 'not_approved')+"</span><br>")}
+
+      - items2.map(&:id).uniq.each do |x|
+        - combined_wt+=(Weeklytimetable.find(x).schedule_programme.programme_list+"<br>")
+        - combined_slot_count+=(Weeklytimetable.find(x).weeklytimetable_details.where(lecturer_id: current_user.userable_id).count.to_s+"<br>")
+        - combined_status+=(Weeklytimetable.find(x).hod_approved? ? (t 'approved')+"<br>" : "<span style='color: red;'>"+(t 'not_approved')+"</span><br>")
+
       - items2.each_with_index do |item, index|
-        - if index==0
+        - if index==items2.count-1
           %tr
             /%td=h link_to weeklytimetable.schedule_programme.programme_list, training_weeklytimetable_path(weeklytimetable)     
-            %td=h link_to item.schedule_programme.programme_list, personalize_show_training_weeklytimetable_path(sdate)
+            %td=h link_to (combined_wt).html_safe, personalize_show_training_weeklytimetable_path(sdate)
             /%td=h item.schedule_intake.group_with_intake_name
             %td=h sdate.try(:strftime, "%d %b %Y")
             %td=h item.try(:enddate).try(:strftime, "%d %b %Y")
+            %td=combined_status.html_safe
+            %td=combined_slot_count.html_safe
+            
             /%td=h item.academic_semester.semester
 
-
   /.right{style:"padding:0 30px; margin:0;"}= paginate @weeklytimetables, :theme => 'twitter-bootstrap-3'
-
-/= &nbsp;
-/= item.schedule_intake.group_with_intake_name
-/=sdate
-/= item.enddate
-/= item.academic_semester.semester
-/= link_to image_tag("document.png", :border => 0, :title => 'Show'), :action => 'personalize_show', :id => sdate
 
 :javascript
 
