@@ -175,8 +175,6 @@ ms_MY:
       academic_session:
         semester: Semester
         total_week: Bilangan Minggu
-      programme:
-        level: Peringkat
       weeklytimetable:
         programme_id: Program
         intake_id: "Kumpulan /Sesi Pengambilan"
@@ -258,7 +256,12 @@ ms_MY:
       rank:
         employgrade_id: Gred
       programme:
+        code: Kod
+        duration: Jangka Masa
+        name: Nama
         durationtype: Jenis jangka masa
+        level: Peringkat
+        course_type: Jenis Kurikulum
       topicdetail:
         prepared_by: Disediakan Oleh
         topic_code: Topik

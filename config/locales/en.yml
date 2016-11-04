@@ -193,8 +193,6 @@ en:
       academic_session:
         semester: Semester
         total_week: Total Week
-      programme:
-        level: Level
       weeklytimetable:
         programme_id: Programme
         intake_id: Intake
@@ -276,7 +274,12 @@ en:
       rank:
         employgrade_id: Grade
       programme:
+        code: Code
+        duration: Duration
+        name: Name
         durationtype: Duration type
+        level: Level
+        course_type: Course Type
       topicdetail:
         prepared_by: Prepared by
         topic_code: Topic
