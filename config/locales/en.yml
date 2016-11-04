@@ -441,6 +441,8 @@ en:
   newrecord_type: Record Type
   single: Single Record
   multiple: Multiple Records
+  exist: Exist
+  not_exist: Not Exist
   no3: No
   records: records
   positions_required: "Position (task & responsibilities) is required to access submodule : "
@@ -3885,6 +3887,7 @@ en:
       list: Topic Detail List
       new: New Topic Detail
       edit: Edit Topic Detail
+      programme: Programme
       subject: Subject
       topic_code: Topic
       version_no: Version No

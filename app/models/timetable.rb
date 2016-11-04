@@ -7,7 +7,7 @@ class Timetable < ActiveRecord::Base
   belongs_to :college, :foreign_key => 'college_id'
   
   has_many :timetable_periods, :dependent => :destroy
-  accepts_nested_attributes_for :timetable_periods, :allow_destroy => true#, :reject_if => lambda { |a| a[:start_at].blank? }
+  accepts_nested_attributes_for :timetable_periods, :allow_destroy => true, :reject_if => lambda { |a| a[:start_at].blank? }
   validates_associated :timetable_periods
 
   #20March2013- weeklytimetables - newly added models..

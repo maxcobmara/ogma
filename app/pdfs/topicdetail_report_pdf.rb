@@ -13,7 +13,7 @@ class Topicdetail_reportPdf < Prawn::Document
   end
   
   def record
-    table(line_item_rows, :column_widths => [30, 100, 100, 40, 70, 70, 70, 70, 70, 140], :cell_style => { :size => 9,  :inline_format => :true}, :header => 2) do
+    table(line_item_rows, :column_widths => [30, 175, 100, 50, 60, 50, 50, 55, 70, 120], :cell_style => { :size => 9,  :inline_format => :true}, :header => 2) do
       row(0).borders =[]
       row(0).height=50
       row(0).style size: 11
@@ -26,10 +26,10 @@ class Topicdetail_reportPdf < Prawn::Document
   def line_item_rows
     counter = counter || 0
     header = [[{content: "#{I18n.t('training.topicdetail.list').upcase}<br> #{@college.name.upcase}", colspan: 10}],
-              [ 'No', I18n.t('training.topicdetail.subject'),I18n.t('training.topicdetail.topic_code'), I18n.t('training.topicdetail.version_no'), I18n.t('training.topicdetail.duration'), I18n.t('training.topicdetail.theory'), I18n.t('training.topicdetail.tutorial'), I18n.t('training.topicdetail.practical'), I18n.t('training.topicdetail.training_notes'), I18n.t('training.topicdetail.prepared_by') ]]
+              [ 'No', "#{I18n.t('training.topicdetail.programme')}<br> - #{I18n.t('training.topicdetail.subject')}",I18n.t('training.topicdetail.topic_code'), I18n.t('training.topicdetail.version_no'), I18n.t('training.topicdetail.duration'), I18n.t('training.topicdetail.theory'), I18n.t('training.topicdetail.tutorial'), I18n.t('training.topicdetail.practical'), I18n.t('training.topicdetail.training_notes'), I18n.t('training.topicdetail.prepared_by') ]]
     header +
     @topicdetails.map do |topicd|
-         ["#{counter += 1}", topicd.subject_topic.ancestors.where(course_type: "Subject").first.subject_list, topicd.subject_topic.name, topicd.version_no, topicd.subject_topic.try(:total_duration), "#{topicd.subject_topic.try(:lecture_duration) unless topicd.subject_topic.lecture_d.blank?}", "#{topicd.subject_topic.try(:tutorial_duration) unless topicd.subject_topic.tutorial_d.blank?}", "#{topicd.subject_topic.try(:practical_duration) unless topicd.subject_topic.practical_d.blank?}", "#{topicd.trainingnotes.count > 0 ? I18n.t('yes2') : I18n.t('no2')} #{'('+topicd.trainingnotes.count.to_s+')' if topicd.trainingnotes.count > 0}", "#{topicd.topic_creator.rank_id? ? topicd.topic_creator.try(:staff_with_rank) : topicd.topic_creator.try(:name)}"]
+         ["#{counter += 1}", "#{topicd.subject_topic.root.programme_list}<br> - #{topicd.subject_topic.ancestors.where(course_type: "Subject").first.subject_list}", topicd.subject_topic.name, topicd.version_no, topicd.subject_topic.try(:total_duration), "#{topicd.subject_topic.try(:lecture_duration) unless topicd.subject_topic.lecture_d.blank?}", "#{topicd.subject_topic.try(:tutorial_duration) unless topicd.subject_topic.tutorial_d.blank?}", "#{topicd.subject_topic.try(:practical_duration) unless topicd.subject_topic.practical_d.blank?}", "#{topicd.trainingnotes.count > 0 ? I18n.t('yes2') : I18n.t('no2')} #{'('+topicd.trainingnotes.count.to_s+')' if topicd.trainingnotes.count > 0}", "#{topicd.topic_creator.rank_id? ? topicd.topic_creator.try(:staff_with_rank) : topicd.topic_creator.try(:name)}"]
     end
   end
   

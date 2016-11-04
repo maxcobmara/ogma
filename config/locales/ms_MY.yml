@@ -421,6 +421,8 @@ ms_MY:
   newrecord_type: Jenis Rekod
   single: Rekod Individu
   multiple: Rekod Pukal
+  exist: Ada
+  not_exist: Tiada
   no3: Tiada
   records: rekod
   positions_required: "Butiran Perjawatan (tugas & tanggungjawab) diperlukan bagi mengakses submodul : "
@@ -3808,6 +3810,7 @@ ms_MY:
       list: Senarai Butiran Topik
       new: Butiran Topik Baru
       edit: Sunting Butiran Topik
+      programme: Program
       subject: Subjek
       topic_code: Topik
       version_no: Versi
