@@ -98,3 +98,10 @@
  #3Nov2016
  - if lecturer_approved_personalize_weeklytimetable > 0
   %li=link_to content_tag(:span, "#{lecturer_approved_personalize_weeklytimetable}", class: "badge") +(t 'notifications.lecturer_approved_personalize'), personalize_index_training_weeklytimetables_path
+  
+ #4Nov2016
+ - if lecturer_rejected_lesson_plan > 0
+  %li=link_to content_tag(:span, "#{lecturer_rejected_lesson_plan}", class: "badge") +(t 'notifications.lecturer_rejected_lesson_plan'), training_lesson_plans_path
+  
+ - if endorser_lesson_plan > 0
+  %li=link_to content_tag(:span, "#{endorser_lesson_plan}", class: "badge") +(t 'notifications.endorser_lesson_plan'), training_lesson_plans_path

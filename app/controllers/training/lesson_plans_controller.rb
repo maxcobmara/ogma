@@ -12,12 +12,12 @@ class Training::LessonPlansController < ApplicationController
     if @is_admin
       @search = LessonPlan.search(params[:q])
     else
-      roles=current_user.roles
-      if roles.include?("programme_manager")
-        @search = LessonPlan.search2(@programme_id).search(params[:q])
-      else
+#       current_roles=current_user.roles.pluck(:authname)
+#       if current_roles.include?("programme_manager")
+#         @search = LessonPlan.search2(@programme_id).search(params[:q])
+#       else
         @search = LessonPlan.sstaff2(current_user.userable.id).search(params[:q])
-      end
+#       end
     end
     @lesson_plans2 = @search.result
     @lesson_plans3 = @lesson_plans2.sort_by{|t|t.lecturer} 
@@ -69,6 +69,16 @@ class Training::LessonPlansController < ApplicationController
   # POST /lesson_plans.xml
   def create
     @lesson_plan = LessonPlan.new(lesson_plan_params)
+    newlocation = params[:new_location]
+    if newlocation!=nil
+      scheduleid = params[:lesson_plan][:schedule]
+      scheduleid = @lesson_plan.schedule if scheduleid==nil
+      if scheduleid!=nil
+        schedule = WeeklytimetableDetail.find(scheduleid) 
+        schedule.location_desc = newlocation
+        schedule.save!
+      end
+    end
     respond_to do |format|
       if @lesson_plan.save
         format.html { redirect_to(training_lesson_plan_path(@lesson_plan), :notice => t('training.lesson_plan.title')+t('actions.created')) }
@@ -83,6 +93,7 @@ class Training::LessonPlansController < ApplicationController
   # PUT /lesson_plans/1
   # PUT /lesson_plans/1.xml
   def update
+    #raise params.inspect
     @lesson_plan = LessonPlan.find(params[:id])
     newlocation = params[:new_location]
     if newlocation!=nil
@@ -220,7 +231,7 @@ class Training::LessonPlansController < ApplicationController
   
   # Never trust parameters from the scary internet, only allow the white list through.
   def lesson_plan_params
-    params.require(:lesson_plan).permit(:lecturer, :intake_id, :student_qty, :location, :semester, :topic, :lecture_title, :lecture_date, :start_time, :end_time, :reference, :is_submitted, :submitted_on, :hod_approved, :hod_approved_on, :hod_rejected, :hod_rejected_on, :data, :prerequisites, :year, :reason, :prepared_by, :endorsed_by, :condition_isgood, :condition_isnotgood, :condition_desc, :training_aids, :summary, :total_absent, :report_submit, :report_submit_on, :report_endorsed, :report_endorsed_on, :report_summary, :schedule, :college, {:college_data=>[]}, :data_title, lessonplan_methodologies_attributes: [:id,:content,:lecturer_activity, :student_activity, :training_aids, :evaluation, :start_meth, :end_meth, :_destroy], lesson_plan_trainingnotes_attributes: [:id,:_destroy,:lesson_plan_id,:trainingnote_id], trainingnotes_attributes: [:id,:_destroy,:document,:timetable_id,:staff_id,:title] )
+    params.require(:lesson_plan).permit(:lecturer, :whoami, :intake_id, :student_qty, :location, :semester, :topic, :lecture_title, :lecture_date, :start_time, :end_time, :reference, :is_submitted, :submitted_on, :hod_approved, :hod_approved_on, :hod_rejected, :hod_rejected_on, :data, :prerequisites, :year, :reason, :prepared_by, :endorsed_by, :condition_isgood, :condition_isnotgood, :condition_desc, :training_aids, :summary, :total_absent, :report_submit, :report_submit_on, :report_endorsed, :report_endorsed_on, :report_summary, :schedule, :college, {:college_data=>[]}, :data_title, lessonplan_methodologies_attributes: [:id,:content,:lecturer_activity, :student_activity, :training_aids, :evaluation, :start_meth, :end_meth, :_destroy], lesson_plan_trainingnotes_attributes: [:id,:_destroy,:lesson_plan_id,:trainingnote_id], trainingnotes_attributes: [:id,:_destroy,:document,:timetable_id,:staff_id,:title] )
   end
   
 end

@@ -6,6 +6,10 @@ class Timetable_reportPdf < Prawn::Document
     @college=college
     font "Helvetica"
     record
+    page_count.times do |i|
+      go_to_page(i+1)
+      footer
+    end
   end
   
   def record
@@ -21,8 +25,7 @@ class Timetable_reportPdf < Prawn::Document
       header = true
     end
   end
-  
-  
+
   def line_item_rows
     counter = counter || 0
     header = [[{content: "#{I18n.t('training.timetable.list').upcase}<br> #{@college.name.upcase}", colspan: 6}],
@@ -37,4 +40,9 @@ class Timetable_reportPdf < Prawn::Document
      end
      header+body
   end
+  
+  def footer
+    draw_text "#{page_number} / #{page_count}",  :size => 8, :at => [470,-5]
+  end
+  
 end

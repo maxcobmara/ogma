@@ -7,6 +7,7 @@
     %td
     %td
     %td
+    %td=f.select :notes_search, [[(t 'all_records'), ''],[(t 'exist'), '1'],[(t 'not_exist'), '0']], {}, {class: 'selectpicker', "data-width" => "auto"}
     %td.input-group
       = f.text_field :topic_creator_name_cont, size: 2,  :class => "form-control"
       %span.input-group-btn

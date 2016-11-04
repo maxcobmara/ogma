@@ -16,15 +16,15 @@
   %table.table-striped.table-hover.ogma
     %thead
       %tr
-        %th{width: '8%'}= t 'training.topicdetail.subject'
-        %th{width: '22%'}= sort_link(@search, :topic_code, (t 'training.topicdetail.topic_code'))
+        %th{width: '27%'}=(t 'training.topicdetail.programme')+" | "+(t 'training.topicdetail.subject')
+        %th{width: '20%'}= sort_link(@search, :topic_code, (t 'training.topicdetail.topic_code'))
         %th{width: '8%'}= t 'training.topicdetail.version_no'
         %th{width: '10%'}= t 'training.topicdetail.duration'
-        %th{width: '8%'}= t 'training.topicdetail.theory'
-        %th{width: '8%'}= t 'training.topicdetail.tutorial'
-        %th{width: '8%'}= t 'training.topicdetail.practical'
-        %th{width: '8%'}= t 'training.topicdetail.training_notes'
-        %th{width: '20%'}= sort_link(@search, :prepared_by, (t 'training.topicdetail.prepared_by'))
+        %th{width: '5%'}= t 'training.topicdetail.theory'
+        %th{width: '5%'}= t 'training.topicdetail.tutorial'
+        %th{width: '5%'}= t 'training.topicdetail.practical'
+        %th{width: '5%'}= t 'training.topicdetail.training_notes'
+        %th{width: '15%'}= sort_link(@search, :prepared_by, (t 'training.topicdetail.prepared_by'))
         
     %tbody
     = render "index_search"
@@ -33,6 +33,7 @@
       %tr
         /subject column
         %td
+          =topicdetail.subject_topic.root.programme_list+" | "
           - if topicdetail.subject_topic.ancestry_depth == 3
             = topicdetail.subject_topic.parent.code
           - elsif topicdetail.subject_topic.ancestry_depth == 4

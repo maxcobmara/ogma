@@ -19,10 +19,19 @@
     subjects.each{|x|topic_ids += x.descendants.where(course_type: 'Topic').pluck(:id)}
     where('topic_code IN(?)', topic_ids)
   end
+  
+  def self.notes_search(query)
+    ids=Trainingnote.where('topicdetail_id is not null').pluck(:topicdetail_id)
+    if query=='1'
+      where(id: ids)
+    elsif query=='0'
+      where.not(id: ids)
+    end
+  end
     
   # whitelist the scope
   def self.ransackable_scopes(auth_object = nil)
-    [:subject_search]
+    [:subject_search, :notes_search]
   end
   
   def duration_lecture_tutorial_practical

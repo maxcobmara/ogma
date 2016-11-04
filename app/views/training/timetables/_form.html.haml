@@ -13,17 +13,17 @@
             .col-sm-2.control-label
               = f.label :code
             .col-md-3
-              = f.text_field :code, class: 'form-control'
+              = f.text_field :code, class: 'form-control mandatory'
           .form-group
             .col-sm-2.control-label
               = f.label :name
             .col-md-3
-              = f.text_field :name, class: 'form-control'
+              = f.text_field :name, class: 'form-control mandatory'
           .form-group
             .col-sm-2.control-label
               = f.label :description
             .col-md-3
-              = f.text_field :description, class: 'form-control'
+              = f.text_field :description, class: 'form-control mandatory'
           .form-group
             .col-sm-2.control-label
               = f.label :created_by
@@ -32,7 +32,7 @@
                 - createdby=@timetable.created_by
               - else
                 - createdby=@current_user.userable_id
-              = f.collection_select :created_by, Staff.where('id =?', createdby), :id, :name,{ :include_blank => t('select')},{ class: 'selectpicker',  "data-width"=>"200px"}
+              = f.collection_select :created_by, Staff.where('id =?', createdby), :id, :name,{ :include_blank => t('select')},{ class: 'selectpicker mandatory',  "data-width"=>"200px"}
 
         %br
         .row
@@ -58,7 +58,8 @@
             = render 'timetable_period_fields', f: builder
           .row
             /= link_to_add_fields (t 'training.timetable.add_details'), f, :timetable_periods
-            = link_to_add_fields t('addmore'), f, :timetable_periods, "",  t('addmore')
+            /= link_to_add_fields t('addmore'), f, :timetable_periods, "",  t('addmore')
+            .col-md-offset-1= link_to_add_fields content_tag(:i, "", class: "fa fa-plus-square")+" "+(t 'addmore'), f, :timetable_periods, "", t('addmore')
 
 /- f.fields_for :timetable_periods do |builder| 
 /= render 'timetable_period_fields', :f => builder

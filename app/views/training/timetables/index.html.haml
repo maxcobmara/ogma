@@ -14,20 +14,26 @@
     .alert.alert-warning
       %strong=t 'training.timetable.remark'
       %ul
-        %li=t 'training.timetable.editable_removal_restricted'
-        %li=t 'training.timetable.editing_restricted'
+        %li=fa_icon('check-square-o')+" "+(t 'training.timetable.editable_removal_restricted')
+        %li=fa_icon('check-square')+" "+(t 'training.timetable.editing_restricted')
   %table.table-striped.table-hover.ogma
     %thead
       %tr
-        %th= sort_link(@search, :code, (t 'training.timetable.code'))
-        %th= sort_link(@search, :name, (t 'training.timetable.name'))
-        %th= sort_link(@search, :description, (t 'training.timetable.description'))
-        %th= sort_link(@search, :created_by, (t 'training.timetable.created_by'))
+        %th{style: 'width: 5%;'} Status
+        %th{width: '10%'}= sort_link(@search, :code, (t 'training.timetable.code'))
+        %th{width: '20%'}= sort_link(@search, :name, (t 'training.timetable.name'))
+        %th{width: '30%'}= sort_link(@search, :description, (t 'training.timetable.description'))
+        %th{width: '20%'}= sort_link(@search, :created_by, (t 'training.timetable.created_by'))
 
     %tbody
     = render "index_search"
     - @timetables.each do |timetable| 
       %tr
+        %td
+          - if timetable.timetable_activated==true 
+            = fa_icon('check-square') 
+          - else
+            = fa_icon('check-square-o') if timetable.valid_for_removal==false
         %td=h link_to timetable.code, training_timetable_path(timetable)     
         %td=h timetable.name
         %td=h timetable.description

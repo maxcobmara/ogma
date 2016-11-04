@@ -14,8 +14,9 @@ class LessonPlan < ActiveRecord::Base
   accepts_nested_attributes_for :lessonplan_methodologies, :allow_destroy => true#, :reject_if => lambda { |a| a[:start_at].blank? }
   
   #validate :approved_or_rejected, :satisfy_or_notsatisfy
-  validates_presence_of :schedule    #hide on 31st October 2013
+  validates :schedule, :lecturer, presence: true    #hide on 31st October 2013
   validate :schedule_and_plan_owner_must_match
+  validates :endorsed_by, presence: true, :if => :is_submitted? 
   
   #trial section------------
   has_many :lesson_plan_trainingnotes
@@ -24,7 +25,7 @@ class LessonPlan < ActiveRecord::Base
   accepts_nested_attributes_for :trainingnotes, :reject_if => lambda {|a| a[:topic_id].blank?}
   #trial section-----------
   
-  attr_accessor :schedule2
+  attr_accessor :schedule2, :whoami
 
   #---------------------AttachFile------------------------------------------------------------------------
    has_attached_file :data,
@@ -35,7 +36,7 @@ class LessonPlan < ActiveRecord::Base
                           :storage => :file_system,
                           :message => "Invalid File Format" 
    validates_attachment_size :data, :less_than => 5.megabytes 
-   
+  
   def set_to_nil_where_false
     if is_submitted == true
       self.submitted_on= Date.today
@@ -44,23 +45,19 @@ class LessonPlan < ActiveRecord::Base
     if hod_approved == false
       self.hod_approved_on= nil
     end
-    
-    if hod_rejected == true && endorsed_by == 25#current_user.staff_id #User.current_user.staff_id
-      self.is_submitted = nil
-   end
+
+    if hod_rejected?
+      self.is_submitted = nil if whoami.to_i==endorsed_by
+    end
    
-   if prepared_by == nil
-      self.prepared_by = 107#current_user.staff_id #User.current_user.staff_id
-   end
-   
-   if report_submit == true
+    if report_submit == true
       report_submit_on = Date.today
-   end   
+    end   
    
-   if report_summary != nil
+    if report_summary != nil
       self.report_endorsed = true
       self.report_endorsed_on = Date.today
-   end  
+    end  
    
     #--start--3Nov2013-schedule no longer compulsory
     if schedule != nil
@@ -147,7 +144,7 @@ class LessonPlan < ActiveRecord::Base
   end
   
   def self.sstaff2(u)
-    where(lecturer: u)
+    where('lecturer=? OR prepared_by=? OR endorsed_by=?', u, u, u)
   end
   
   def self.search2(search)
@@ -188,7 +185,7 @@ class LessonPlan < ActiveRecord::Base
   private
   
     def schedule_and_plan_owner_must_match
-      if lecturer!=schedule_item.lecturer_id
+      if !schedule.blank? && (lecturer!=schedule_item.lecturer_id)
         errors.add(:base, I18n.t('training.lesson_plan.owner_must_match'))
       end
     end

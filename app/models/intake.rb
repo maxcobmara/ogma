@@ -11,6 +11,8 @@ class Intake < ActiveRecord::Base
   has_many   :lessonplans, :class_name => 'LessonPlan', :foreign_key=>'intake_id' 
   has_one :examresult
   
+  validates :programme_id, :name, :description, :register_on, :staff_id, presence: true
+
   def apply_month_year_if_nil
     if monthyear_intake==nil && register_on!=nil
       self.monthyear_intake = register_on.to_date.beginning_of_month

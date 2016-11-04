@@ -14,7 +14,7 @@ class Programme < ActiveRecord::Base
   validates_uniqueness_of :combo_code
   validates_presence_of :durationtype, :if => :duration_exist?
   validates_presence_of :level, :if => :maritim_roots?
-  validates :course_type, presence: true
+  validates :course_type, :code, :duration, presence: true
 
   #scope :by_semester, -> { where(course_type: 'Semester')}
   def duration_exist?

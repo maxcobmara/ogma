@@ -28,6 +28,9 @@ en:
       asset_defect: Asset Defect
       asset_loan: Asset Loan
       student: Student
+      timetable: Timetable
+      intake: Intake
+      academic_session: Academic Session
       examquestion: Examquestion
       exam: Examination
       examresult: Keputusan Peperiksaan
@@ -62,6 +65,7 @@ en:
       document: Document
       tenant: Tenant
       book: Book
+      lesson_plan: Lesson Plan
     attributes:
       asset:
         assignedto_id: Assigned to
@@ -181,8 +185,15 @@ en:
       holiday:
         hname: Name
         hdate: Date
-      programme:
-        level: Level
+      intake:
+        programme_id: Programme
+        name: Month & Year
+        description: Group
+        register_on: Register on
+        staff_id: Group Coordinator
+      academic_session:
+        semester: Semester
+        total_week: Total Week
       weeklytimetable:
         programme_id: Programme
         intake_id: Intake
@@ -197,6 +208,10 @@ en:
         hod_rejected_on: Rejection date
       timetable:
         timetable_periods: Timetable Details
+        code: Code
+        name: Name
+        description: Description
+        created_by: Created by
       timetable_periods:
         sequence: Period
       academic_session:
@@ -260,10 +275,19 @@ en:
       rank:
         employgrade_id: Grade
       programme:
+        code: Code
+        duration: Duration
+        name: Name
         durationtype: Duration type
+        level: Level
+        course_type: Course Type
       topicdetail:
         prepared_by: Prepared by
         topic_code: Topic
+        endorsed_by: Endorsed By
+      lesson_plan:
+        lecturer: Lecturer
+        schedule: Timetable
       instructor_appraisal:
         check_qc: Checked By
       user:
@@ -422,6 +446,8 @@ en:
   newrecord_type: Record Type
   single: Single Record
   multiple: Multiple Records
+  exist: Exist
+  not_exist: Not Exist
   no3: No
   records: records
   positions_required: "Position (task & responsibilities) is required to access submodule : "
@@ -3866,6 +3892,7 @@ en:
       list: Topic Detail List
       new: New Topic Detail
       edit: Edit Topic Detail
+      programme: Programme
       subject: Subject
       topic_code: Topic
       version_no: Version No
@@ -3985,7 +4012,8 @@ en:
       location: Location
       add_notes: Add Notes
       adding_notes: "Add Training Notes (after Lesson Plan submitted for approval)"
-      owner_must_match: "Lecturer must match with Timetable owner."
+      owner_must_match: "Lecturer must match with Timetable (class) owner."
+      reason_for_rejection: "State reason for rejection."
  
   campus:
     address: 
@@ -4140,8 +4168,10 @@ en:
     late_return_keys_student: " Late return of student residence keys"
     approver_weeklytimetable: " Weeklytimetables require approval"
     creator_approved_weeklytimetable: " Weeklytimetables were approved"
-    creator_rejected_weeklytimetable: " Weeklytimetable were rejected"
-    lecturer_approved_personalize: " Personalize Weeklytimetable were approved"
+    creator_rejected_weeklytimetable: " Weeklytimetables were rejected"
+    lecturer_approved_personalize: " Personalize Weeklytimetables were approved"
+    lecturer_rejected_lesson_plan: " Lesson Plans were rejected"
+    endorser_lesson_plan: " Lesson Plans require approval"
     
   helpers:
     links:
