@@ -4,6 +4,7 @@ class AcademicSession < ActiveRecord::Base
    before_destroy :valid_for_removal
    has_many :semester_for_schedules, :class_name => 'Weeklytimetable', :foreign_key => 'semester'
    validates_numericality_of :total_week
+   validates :semester, :total_week, presence: true
    
    private
    

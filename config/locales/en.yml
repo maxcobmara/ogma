@@ -30,6 +30,7 @@ en:
       student: Student
       timetable: Timetable
       intake: Intake
+      academic_session: Academic Session
       examquestion: Examquestion
       exam: Examination
       examresult: Keputusan Peperiksaan
@@ -184,11 +185,14 @@ en:
         hname: Name
         hdate: Date
       intake:
-         programme_id: Programme
-         name: Month & Year
-         description: Group
-         register_on: Register on
-         staff_id: Group Coordinator
+        programme_id: Programme
+        name: Month & Year
+        description: Group
+        register_on: Register on
+        staff_id: Group Coordinator
+      academic_session:
+        semester: Semester
+        total_week: Total Week
       programme:
         level: Level
       weeklytimetable:

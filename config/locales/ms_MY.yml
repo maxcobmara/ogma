@@ -9,6 +9,7 @@ ms_MY:
       student: Pelajar
       timetable: Jadual Waktu
       intake: Ambilan
+      academic_session: Sesi Akademik
       examquestion: Soalan Peperiksaan
       exam: Peperiksaan
       examresult: Keputusan Peperiksaan
@@ -166,11 +167,14 @@ ms_MY:
         hname: Nama
         hdate: Tarikh
       intake:
-         programme_id: Program
-         name: Bulan & Tahun
-         description: Kumpulan
-         register_on: Tarikh Pendaftaran
-         staff_id: Penyelaras Kumpulan
+        programme_id: Program
+        name: Bulan & Tahun
+        description: Kumpulan
+        register_on: Tarikh Pendaftaran
+        staff_id: Penyelaras Kumpulan
+      academic_session:
+        semester: Semester
+        total_week: Bilangan Minggu
       programme:
         level: Peringkat
       weeklytimetable:
