@@ -1,5 +1,6 @@
 .col-md-offset-2 
-  - if @lesson_plan.is_submitted!=true
+  - if @lesson_plan.is_submitted!=true || (@lesson_plan.is_submitted==true && @lesson_plan.endorsed_by.blank?)
+    = f.hidden_field :whoami, value: @lesson_plan.lecturer
     .form-group
       .col-sm-2.control-label
         = f.label :is_submitted
@@ -12,25 +13,27 @@
         = f.label :endorsed_by
       .col-md-3
         - if current_user.college.code=="kskbjb"
-          = f.collection_select :endorsed_by, Staff.where('id IN (?)', @lesson_plan.hods).order(name: :asc), :id, :name,{:include_blank=>t('helpers.prompt.select_hod')},{ class: 'selectpicker', "data-width"=>'230px'}
+          = f.collection_select :endorsed_by, Staff.where('id IN (?)', @lesson_plan.hods).order(name: :asc), :id, :name,{:include_blank=>t('helpers.prompt.select_hod')},{ class: 'selectpicker mandatory', "data-width"=>"auto"}
         - else
-          = f.collection_select :endorsed_by, Staff.all.order('rank_id ASC, name ASC'), :id, :staff_with_rank,{:include_blank=>t('helpers.prompt.select_hod')},{ class: 'selectpicker', "data-width"=>'230px'}
+          = f.collection_select :endorsed_by, Staff.all.order('rank_id ASC, name ASC'), :id, :staff_with_rank,{:include_blank=>t('helpers.prompt.select_hod')},{ class: 'selectpicker mandatory', "data-width"=>"auto"}
   - else
+    = f.hidden_field :whoami, value: @lesson_plan.endorsed_by
     .form-group
       .col-sm-2.control-label
         = f.label :hod_approved
       .col-md-3
         = f.check_box :hod_approved, :id => 'check_hod_accept'
         #span_hod_endorse{:style=>"display: none;"}
-          = f.text_field :hod_approved_on, class: 'date_picker form-control'
+          = f.text_field :hod_approved_on, class: 'date_picker_reverse form-control', value: @lesson_plan.hod_approved_on.try(:strftime, '%d-%m-%Y')
     .form-group
       .col-sm-2.control-label
         = f.label :hod_rejected
       .col-md-3
         = f.check_box :hod_rejected, :id => 'check_hod_reject'
         #span_hod_endorse2{:style=>"display: none;"}
-          = f.text_field :hod_rejected_on, class: 'date_picker form-control'
-          = f.text_area :reason, :col=>30, :rows=> 3, :placeholder => "State reason for rejection."
+          = f.text_field :hod_rejected_on, class: 'date_picker_reverse form-control', value: @lesson_plan.hod_rejected_on.try(:strftime, '%d-%m-%Y')
+          = f.text_area :reason, :col=>30, :rows=> 3, :placeholder => I18n.t('training.lesson_plan.reason_for_rejection')
+
 
     /:javascript
   

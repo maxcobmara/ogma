@@ -221,6 +221,14 @@ module Notifications
     complete_approval
   end
   
+  def lecturer_rejected_lesson_plan
+    LessonPlan.where(lecturer: current_staff_id).where(is_submitted: nil).where(hod_rejected: true).count
+  end
+  
+  def endorser_lesson_plan
+    LessonPlan.where(endorsed_by: current_staff_id).where(is_submitted: true).where(hod_approved: [nil, false]).count
+  end
+  
 end
 
 

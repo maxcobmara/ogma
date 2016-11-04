@@ -8,7 +8,8 @@
       %li=link_to (t 'training.lesson_plan.submission'), "#lesson_plan_submission", "data-toggle" => "tab"
       
     .tab-content{style:"padding-top:1em"}
-      - if @lesson_plan.is_submitted!=true
+      /- if @lesson_plan.is_submitted!=true 
+      - if @lesson_plan.is_submitted!=true || (@lesson_plan.is_submitted==true && @lesson_plan.endorsed_by.blank?)
         .col-md-offset-2 
           .form-group
             .col-sm-2.control-label
@@ -18,7 +19,7 @@
                 - lecturers=Staff.joins(:positions).where('positions.name=?','Pengajar').order('name ASC')
               - else
                 - lecturers=Staff.joins(:positions).where('positions.name=?','Jurulatih').order('rank_id ASC, name ASC')
-              = f.collection_select :lecturer, lecturers, :id, :staff_with_rank, {:include_blank =>t('helpers.prompt.select_lecturer')},{class: 'selectpicker', "data-width"=>'280px'} 
+              = f.collection_select :lecturer, lecturers, :id, :staff_with_rank, {:include_blank =>t('helpers.prompt.select_lecturer')},{class: 'selectpicker mandatory', "data-width"=>'280px'} 
             
         .col-md-offset-2 
           .form-group
@@ -32,7 +33,7 @@
                 /- WeeklytimetableDetail.all.sort_by{|x|x.weeklytimetable_lecturer.name}.each do |c|
                 - WeeklytimetableDetail.joins(:weeklytimetable_lecturer).order('rank_id ASC, name ASC, weeklytimetable_id ASC, time_slot, time_slot2').each do |c|
                   - arr << [c.day_time_slot3, c.id, {'data'=>c.location_desc}]
-                = select_tag("lesson_plan[schedule]", options_for_select(arr, @lesson_plan.schedule), {class: 'selectpicker', "data-width"=>'620px'})
+                = select_tag("lesson_plan[schedule]", options_for_select(arr, @lesson_plan.schedule), {class: 'selectpicker mandatory', "data-width"=>'620px'})
               - else
                 /lecturer
                 - if @lesson_plan && !@lesson_plan.schedule
@@ -40,12 +41,12 @@
                   /-  WeeklytimetableDetail.where('lecturer_id=? AND id NOT IN (?)', @current_user.userable_id,@lessonplan_schedule).each do |c|
                   - WeeklytimetableDetail.joins(:weeklytimetable_lecturer).order('rank_id ASC, name ASC, weeklytimetable_id ASC, time_slot, time_slot2').each do |c|
                     - arr << [c.day_time_slot3, c.id, {'data'=>c.location_desc}]
-                  = select_tag("lesson_plan[schedule]", options_for_select(arr, @lesson_plan.schedule), {class: 'selectpicker', "data-width"=>'620px'})
+                  = select_tag("lesson_plan[schedule]", options_for_select(arr, @lesson_plan.schedule), {class: 'selectpicker mandatory', "data-width"=>'620px'})
                 - else
                   /- WeeklytimetableDetail.where('lecturer_id=?', @current_user.userable_id).each do |c|
                   - WeeklytimetableDetail.joins(:weeklytimetable_lecturer).order('rank_id ASC, name ASC, weeklytimetable_id ASC, time_slot, time_slot2').each do |c|
                     - arr << [c.day_time_slot3, c.id, {'data'=>c.location_desc}]
-                  = select_tag("lesson_plan[schedule]", options_for_select(arr, @lesson_plan.schedule), {class: 'selectpicker', "data-width"=>'620px'})
+                  = select_tag("lesson_plan[schedule]", options_for_select(arr, @lesson_plan.schedule), {class: 'selectpicker mandatory', "data-width"=>'620px'})
        
           .form-group.bong{:style=> "display: none;"}
             .col-sm-2.control-label
@@ -59,7 +60,7 @@
         .col-md-8.col-md-offset-1
           %dl.dl-horizontal
             %dt= t 'training.lesson_plan.lecturer', :default => model_class.human_attribute_name(:lecturer) + ":"
-            %dd=h @lesson_plan.lessonplan_owner.name
+            %dd=h @lesson_plan.lessonplan_owner.rank_id? ? @lesson_plan.lessonplan_owner.staff_with_rank : @lesson_plan.lessonplan_owner.name
           
             %dt= t 'training.lesson_plan.intake_id', :default => model_class.human_attribute_name(:intake_id)+":"
             %dd
@@ -74,14 +75,16 @@
 
       #lesson_plan_descriptions.tab-pane.active
         %br
-        - if @lesson_plan.is_submitted!=true
+        /- if @lesson_plan.is_submitted!=true 
+        - if @lesson_plan.is_submitted!=true || (@lesson_plan.is_submitted==true && @lesson_plan.endorsed_by.blank?)
           = render 'tab_descriptions_edit.html.haml', :f => f
         - else
           = render 'tab_descriptions'
          
       #lesson_plan_methodologies.tab-pane
         %br
-        - if @lesson_plan.is_submitted!=true
+        /- if @lesson_plan.is_submitted!=true
+        - if @lesson_plan.is_submitted!=true || (@lesson_plan.is_submitted==true && @lesson_plan.endorsed_by.blank?)
           = render 'tab_methodologies_edit.html.haml', :f => f
         - else
           = render 'tab_methodologies'

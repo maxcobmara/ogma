@@ -47,6 +47,7 @@ ms_MY:
       document: Dokumen
       tenant: Penghuni
       book: Buku
+      lesson_plan: Pelan Pengajaran
     attributes:
       asset:
         assignedto_id: Pegawai Bertanggungjawab
@@ -265,6 +266,10 @@ ms_MY:
       topicdetail:
         prepared_by: Disediakan Oleh
         topic_code: Topik
+      lesson_plan:
+        lecturer: Pengajar
+        schedule: Jadual waktu
+        endorsed_by: Kelulusan Oleh
       instructor_appraisal:
         check_qc: Disemak Oleh
       user:
@@ -3929,7 +3934,8 @@ ms_MY:
       status: Status Kelulusan
       add_notes: Tambah Nota
       adding_notes: "Tambah Nota Latihan (selepas Pelan Pengajaran dihantar untuk kelulusan)"
-      owner_must_match: "Pengajar mestilah sepadan dengan pemilik Jadual Waktu."
+      owner_must_match: "Pengajar mestilah sepadan dengan pemilik Jadual Waktu (kelas)."
+      reason_for_rejection: "Sila nyatakan sebab penolakan."
 
   campus:
     address: 
@@ -4086,6 +4092,8 @@ ms_MY:
     creator_approved_weeklytimetable: " Jadual Waktu Mingguan telah diluluskan"
     creator_rejected_weeklytimetable: " Jadual Waktu Mingguan telah ditolak"
     lecturer_approved_personalize: " Jadual Waktu Individu Mingguan telah diluluskan"
+    lecturer_rejected_lesson_plan: " Pelan Pengajaran ditolak"
+    endorser_lesson_plan: " Pelan Pengajaran untuk kelulusan"
     
   helpers:
     links:

@@ -65,6 +65,7 @@ en:
       document: Document
       tenant: Tenant
       book: Book
+      lesson_plan: Lesson Plan
     attributes:
       asset:
         assignedto_id: Assigned to
@@ -283,6 +284,10 @@ en:
       topicdetail:
         prepared_by: Prepared by
         topic_code: Topic
+        endorsed_by: Endorsed By
+      lesson_plan:
+        lecturer: Lecturer
+        schedule: Timetable
       instructor_appraisal:
         check_qc: Checked By
       user:
@@ -4007,7 +4012,8 @@ en:
       location: Location
       add_notes: Add Notes
       adding_notes: "Add Training Notes (after Lesson Plan submitted for approval)"
-      owner_must_match: "Lecturer must match with Timetable owner."
+      owner_must_match: "Lecturer must match with Timetable (class) owner."
+      reason_for_rejection: "State reason for rejection."
  
   campus:
     address: 
@@ -4162,8 +4168,10 @@ en:
     late_return_keys_student: " Late return of student residence keys"
     approver_weeklytimetable: " Weeklytimetables require approval"
     creator_approved_weeklytimetable: " Weeklytimetables were approved"
-    creator_rejected_weeklytimetable: " Weeklytimetable were rejected"
-    lecturer_approved_personalize: " Personalize Weeklytimetable were approved"
+    creator_rejected_weeklytimetable: " Weeklytimetables were rejected"
+    lecturer_approved_personalize: " Personalize Weeklytimetables were approved"
+    lecturer_rejected_lesson_plan: " Lesson Plans were rejected"
+    endorser_lesson_plan: " Lesson Plans require approval"
     
   helpers:
     links:
