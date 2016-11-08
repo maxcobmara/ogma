@@ -19,14 +19,14 @@
   %table.table-striped.table-hover.ogma
     %thead
       %tr
-        %th= sort_link(@search, :programme_id, (t 'training.weeklytimetable.programme_id'))
-        %th= sort_link(@search, :intake_id, (t 'training.weeklytimetable.intake_id'))
-        %th= sort_link(@search, :startdate, (t 'training.weeklytimetable.startdate'))
-        %th= sort_link(@search, :end_date, (t 'training.weeklytimetable.enddate'))
-        %th= sort_link(@search, :semester, (t 'training.weeklytimetable.semester'))
-        %th= sort_link(@search, :prepared_by, (t 'training.weeklytimetable.prepared_by'))
-        %th= sort_link(@search, :is_submitted, (t 'training.weeklytimetable.is_submitted'))
-        %th= sort_link(@search, :hod_approved, (t 'training.weeklytimetable.is_approved'))
+        %th{width: '25%'}= sort_link(@search, :programme_id, (t 'training.weeklytimetable.programme_id'))
+        %th{width: '12%'}= sort_link(@search, :intake_id, (t 'training.weeklytimetable.intake_id'))
+        %th{width: '8%'}= sort_link(@search, :startdate, (t 'training.weeklytimetable.startdate'))
+        %th{width: '8%'}= sort_link(@search, :end_date, (t 'training.weeklytimetable.enddate'))
+        %th{width: '7%'}= sort_link(@search, :semester, (t 'training.weeklytimetable.semester'))
+        %th{width: '20%'}= sort_link(@search, :prepared_by, (t 'training.weeklytimetable.prepared_by'))
+        %th{width: '10%'}= sort_link(@search, :is_submitted, (t 'training.weeklytimetable.is_submitted'))
+        %th{width: '10%'}= sort_link(@search, :hod_approved, (t 'training.weeklytimetable.is_approved'))
 
     %tbody
     = render "index_search"
@@ -35,8 +35,8 @@
         %tr
           %td=h link_to weeklytimetable.try(:schedule_programme).try(:programme_list), training_weeklytimetable_path(weeklytimetable)     
           %td=h weeklytimetable.college.code=="amsas"? "Siri "+weeklytimetable.schedule_intake.monthyear_intake.strftime('%m / %Y') : weeklytimetable.schedule_intake.group_with_intake_name
-          %td=h weeklytimetable.try(:startdate).try(:strftime, "%d %b %Y") 
-          %td=h weeklytimetable.try(:enddate).try(:strftime, "%d %b %Y") 
+          %td=h weeklytimetable.college.code=='amsas' ? weeklytimetable.try(:startdate).try(:strftime, "%d-%m-%Y") : weeklytimetable.try(:startdate).try(:strftime, "%d %b %Y") 
+          %td=h weeklytimetable.college.code=='amsas' ? weeklytimetable.try(:enddate).try(:strftime, "%d-%m-%Y") : weeklytimetable.try(:enddate).try(:strftime, "%d %b %Y") 
           %td=h weeklytimetable.try(:academic_semester).try(:semester)
           %td=h weeklytimetable.try(:schedule_creator).rank_id? ? weeklytimetable.try(:schedule_creator).staff_with_rank :  weeklytimetable.try(:schedule_creator).try(:name) 
           %td
