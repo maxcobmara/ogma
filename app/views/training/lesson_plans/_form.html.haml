@@ -27,7 +27,7 @@
                   - lecturers=Staff.joins(:positions).where('positions.name=?','Pengajar').where(id: current_user.userable_id).order('name ASC')
               - else
                 - if @is_admin
-                  - lecturers=Staff.joins(:positions).where('positions.name=?','Jurulatih').order('rank_id ASC, name ASC')
+                  - lecturers=Staff.joins(:positions).where('positions.name=?','Jurulatih').order('rank_id ASC, name ASC').distinct
                 - else
                   - lecturers=Staff.joins(:positions).where('positions.name=?','Jurulatih').where(id: current_user.userable_id).order('rank_id ASC, name ASC')
               = f.collection_select :lecturer, lecturers, :id, :staff_with_rank, {:include_blank =>t('helpers.prompt.select_lecturer'), selected: selected_lecturer},{class: 'selectpicker mandatory', "data-width"=>'280px'} 
@@ -37,27 +37,25 @@
             .col-sm-2.control-label
               = f.label :schedule
             .col-md-3
+              - schedule_inuse = LessonPlan.all.pluck(:schedule).uniq.compact
               - arr=[[t('select'),"", {'data'=>""}]]
               - if @is_admin
                 /admin
-                - @lessonplan_schedule = LessonPlan.all.map(&:schedule).uniq.compact
-                /- WeeklytimetableDetail.all.sort_by{|x|x.weeklytimetable_lecturer.name}.each do |c|
                 - WeeklytimetableDetail.joins(:weeklytimetable_lecturer).order('rank_id ASC, name ASC, weeklytimetable_id ASC, time_slot, time_slot2').each do |c|
-                  - arr << [c.day_time_slot3, c.id, {'data'=>c.location_desc}]
+                  - arr << [c.day_time_slot3, c.id, {'data'=>c.location_desc}] if (schedule_inuse.include?(c.id)==false || @lesson_plan.schedule==c.id)
                 = select_tag("lesson_plan[schedule]", options_for_select(arr, @lesson_plan.schedule), {class: 'selectpicker mandatory', "data-width"=>'620px'})
               - else
                 /lecturer
-                / NOTE - remove this part (.where(lecturer_id: current_user.userable_id)) when prob arise
                 - if @lesson_plan && !@lesson_plan.schedule
+                  /EXISTING record - WITHOUT schedule - to cater previously saved records only
                   - @lessonplan_schedule = LessonPlan.all.map(&:schedule).uniq.compact
-                  /-  WeeklytimetableDetail.where('lecturer_id=? AND id NOT IN (?)', @current_user.userable_id,@lessonplan_schedule).each do |c|
                   - WeeklytimetableDetail.joins(:weeklytimetable_lecturer).where(lecturer_id: current_user.userable_id).order('rank_id ASC, name ASC, weeklytimetable_id ASC, time_slot, time_slot2').each do |c|
-                    - arr << [c.day_time_slot3, c.id, {'data'=>c.location_desc}]
+                    - arr << [c.day_time_slot3, c.id, {'data'=>c.location_desc}] if schedule_inuse.include?(c.id)==false
                   = select_tag("lesson_plan[schedule]", options_for_select(arr, @lesson_plan.schedule), {class: 'selectpicker mandatory', "data-width"=>'620px'})
                 - else
-                  /- WeeklytimetableDetail.where('lecturer_id=?', @current_user.userable_id).each do |c|
+                  /EXISTING record - WITH schedule
                   - WeeklytimetableDetail.joins(:weeklytimetable_lecturer).where(lecturer_id: current_user.userable_id).order('rank_id ASC, name ASC, weeklytimetable_id ASC, time_slot, time_slot2').each do |c|
-                    - arr << [c.day_time_slot3, c.id, {'data'=>c.location_desc}]
+                    - arr << [c.day_time_slot3, c.id, {'data'=>c.location_desc}] if (schedule_inuse.include?(c.id)==false || @lesson_plan.schedule==c.id)
                   = select_tag("lesson_plan[schedule]", options_for_select(arr, @lesson_plan.schedule), {class: 'selectpicker mandatory', "data-width"=>'620px'})
        
           .form-group.bong{:style=> "display: none;"}
@@ -102,9 +100,11 @@
           = render 'tab_methodologies'
         
       #lesson_plan_submission.tab-pane
-        %br
-        = render 'tab_submission_edit.html.haml', :f => f 
-              
+        /in case - edit page accessed by owner/approver - when PLAN already approved
+        - unless (@lesson_plan.is_submitted==true && @lesson_plan.hod_approved==true)
+          %br
+          = render 'tab_submission_edit.html.haml', :f => f 
+             
 :javascript
 
   if ($('#lesson_plan_schedule option:selected').val()=="")

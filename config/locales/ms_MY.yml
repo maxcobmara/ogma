@@ -427,6 +427,8 @@ ms_MY:
   approved: Diluluskan
   not_approved: Belum Diluluskan
   not_completed: Belum Selesai
+  checked: Disemak
+  not_checked: Belum Disemak
   view: Papar
   edit_checked: Sunting Rekod Dipilih
   newrecord_type: Jenis Rekod
@@ -3913,7 +3915,9 @@ ms_MY:
       training_aids: Alatan Bantuan Mengajar
       lecturer_review: Ulasan Pengajar
       tpa_hod_review: "Ulasan TPA / Ketua Program"
+      general_review: Ulasan Ketua Jabatan
       awaiting_review: "Menunggu Ulasan oleh TPA / Ketua Program"
+      awaiting_review_general: Menunggu Ulasan Ketua Jabatan
       summary: "Ringkasan (Ulasan)"
       total_absent: Jumlah Tidak Hadir
       report_review: Semakan Laporan
@@ -4100,7 +4104,10 @@ ms_MY:
     creator_rejected_weeklytimetable: " Jadual Waktu Mingguan telah ditolak"
     lecturer_approved_personalize: " Jadual Waktu Individu Mingguan telah diluluskan"
     lecturer_rejected_lesson_plan: " Pelan Pengajaran ditolak"
+    lecturer_approved_lesson_plan: " Pelan Pengajaran telah diluluskan"
     endorser_lesson_plan: " Pelan Pengajaran untuk kelulusan"
+    endorser_lesson_report: " Laporan Pengajaran & Pembelajaran untuk ulasan"
+    lecturer_approved_lesson_report: " Laporan Pengajaran & Pembelajaran telah diluluskan"
     
   helpers:
     links:

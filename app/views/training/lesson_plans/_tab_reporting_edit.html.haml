@@ -37,7 +37,8 @@
     .col-md-6
       = f.check_box :report_submit , :id => 'check_submitted' 
       #span_submitted{:style=>"display: none;"}
-        = Date.today.strftime('%d %b %Y')
+        = @lesson_plan.college.code=='amsas' ? Date.today.strftime('%d-%m-%Y') : Date.today.strftime('%d %b %Y')
+        = f.hidden_field :report_submit_on, value: Date.today
   .form-group
     .col-sm-2.control-label
       = f.label :endorsed_by
