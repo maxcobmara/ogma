@@ -631,14 +631,14 @@ authorization do
    end
    
    has_permission_on :training_lesson_plans, :to => :create
-   has_permission_on :training_lesson_plans, :to => [:read, :lesson_plan, :lesson_report, :lessonplan_listing] do
+   has_permission_on :training_lesson_plans, :to => [:read, :lesson_plan, :lessonplan_listing] do
      if_attribute :lecturer => is {user.userable_id}
    end
    has_permission_on :training_lesson_plans, :to => :update, :join_by => :and do
      if_attribute :lecturer => is {user.userable_id}
      if_attribute :is_submitted => is_not {true}                                                                               #first time-nil, rejected also nil
    end
-   has_permission_on :training_lesson_plans, :to => :lessonplan_reporting, :join_by => :and do  #[:lessonplan_reporting, :update]
+   has_permission_on :training_lesson_plans, :to =>[:lessonplan_reporting,  :lesson_report] , :join_by => :and do  #[:lessonplan_reporting, :update]
      if_attribute :lecturer => is {user.userable_id}
      if_attribute :is_submitted => is {true}
      if_attribute :hod_approved => is {true}
@@ -740,7 +740,7 @@ authorization do
     has_permission_on :training_intakes, :to => [:manage, :intake_report]
     has_permission_on :training_timetables, :to => [:manage, :timetable_report]
     
-    has_permission_on :training_lesson_plans, :to => [:read, :lesson_plan, :lesson_report, :delete, :lessonplan_listing], :join_by => :or do
+    has_permission_on :training_lesson_plans, :to => [:read, :lesson_plan, :delete, :lessonplan_listing], :join_by => :or do
       if_attribute :lecturer => is_in {user.unit_members}
       if_attribute :endorsed_by => is {user.userable_id}
     end
@@ -750,7 +750,7 @@ authorization do
       if_attribute :is_submitted => is {true}
       if_attribute :hod_approved => is_not {true}
     end
-    has_permission_on :training_lesson_plans, :to => [:lessonplan_reporting, :update, :lessonplan_listing], :join_by  => :and do
+    has_permission_on :training_lesson_plans, :to => [:lessonplan_reporting, :lesson_report, :update, :lessonplan_listing], :join_by  => :and do
       if_attribute :lecturer => is {user.userable_id}
       if_attribute :is_submitted => is {true}
       if_attribute :hod_approved => is {true}

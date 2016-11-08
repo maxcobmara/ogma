@@ -140,7 +140,7 @@ class Training::TopicdetailsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def topicdetail_params
-      params.require(:topicdetail).permit(:topic_name, :topic_code, :duration, :version_no, :objctives, :contents, :theory, :tutorial, :practical, :prepared_by, trainingnotes_attributes: [:id, :release, :title, :version, :document, :_destroy])
+      params.require(:topicdetail).permit(:topic_name, :topic_code, :duration, :version_no, :objctives, :contents, :theory, :tutorial, :practical, :prepared_by, trainingnotes_attributes: [:id, :release, :title, :version, :document, :staff_id, :_destroy])
     end
     
 end

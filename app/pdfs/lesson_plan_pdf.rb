@@ -4,7 +4,7 @@ class Lesson_planPdf< Prawn::Document
     @lesson_plan = lesson_plan
     @view = view
     @college=college
-    @objectives_lines=LessonPlan.in_string(@lesson_plan.schedule_item.weeklytimetable_topic.topic_details.last.try(:objctives))
+    @objectives_lines=@lesson_plan.schedule_item.weeklytimetable_topic.topic_details.last.try(:objctives).blank? ? "" : LessonPlan.in_string(@lesson_plan.schedule_item.weeklytimetable_topic.topic_details.last.try(:objctives))
     @references_lines=LessonPlan.in_string(@lesson_plan.reference)
     
     font "Times-Roman"

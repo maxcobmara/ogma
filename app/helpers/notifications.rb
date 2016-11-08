@@ -222,7 +222,7 @@ module Notifications
   end
   
   def lecturer_rejected_lesson_plan
-    LessonPlan.where(lecturer: current_staff_id).where(is_submitted: nil).where(hod_rejected: true).count
+    LessonPlan.where(lecturer: current_staff_id).where(is_submitted: [nil, false]).where(hod_rejected: true).count
   end
   
   def endorser_lesson_plan

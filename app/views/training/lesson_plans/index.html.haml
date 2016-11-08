@@ -52,8 +52,8 @@
           %b=lesson_plan.schedule_item.try(:render_class_method).try(:first)
         %td=h lesson_plan.lecture_title
         %td=h lesson_plan.try(:lecture_date).try(:strftime, '%d %b %Y')
-        %td=h lesson_plan.try(:start_time).try(:strftime, '%H:%M')
-        %td=h lesson_plan.try(:end_time).try(:strftime, '%H:%M')
+        %td=h lesson_plan.college.code=='amsas' ? lesson_plan.try(:start_time).try(:strftime, '%H:%M') : lesson_plan.try(:strftime, '%l:%M %p')
+        %td=h lesson_plan.college.code=='amsas' ? lesson_plan.try(:end_time).try(:strftime, '%H:%M') : lesson_plan.try(:strftime, '%l:%M %p')
         %td=h lesson_plan.is_submitted? ? fa_icon('check') : fa_icon('times')
         %td
           =h lesson_plan.hod_approved? ? fa_icon('check') : fa_icon('times')

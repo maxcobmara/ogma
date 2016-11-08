@@ -5,8 +5,8 @@
       %hr
       %dt= t 'training.lesson_plan.time'
       %dd
-        =h LessonPlan.start_end_time(l)
-        =h LessonPlan.start_end_time_in_minutes(l)
+        = h l.start_end_time
+        = h l.start_end_time_in_minutes
               
       %dt=t 'training.lesson_plan.content_subtopic'
       %dd= simple_format(l.content)

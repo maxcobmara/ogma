@@ -4,6 +4,7 @@
       = t 'training.lesson_plan.time'
     .col-sm-2
       = f.text_field :start_meth, :placeholder => "Start", class: 'form-control time_picker'
+      = f.hidden_field :college_id, value: current_user.college_id
     .col-sm-2
       = t 'training.lesson_plan.to'
     .col-sm-2
