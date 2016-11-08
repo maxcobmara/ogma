@@ -27,7 +27,16 @@
     .col-sm-2
       = f.label :version
       = f.text_field :version, :placeholder => t('training.trainingnote.version'), :size => '2', class: 'form-control'
-    .col-sm-1
+  .row    
+    .col-sm-8
+      = f.label (t 'activerecord.attributes.trainingnotes.staff_id')
+      - if current_user.college.code=='amsas'
+        = f.collection_select :staff_id, Staff.joins(:positions).where('positions.name=?', 'Jurulatih').order(rank_id: :asc, name: :asc), :id, :staff_with_rank, {:include_blank => (t 'select')}, {class: 'selectpicker mandatory', "data_width" => "auto"}
+      - else
+        = f.collection_select :staff_id, Staff.joins(:positions).where('positions.name=?', 'Pengajar').order(rank_id: :asc, name: :asc), :id, :staff_with_rank, {:include_blank => (t 'select')}, {class: 'selectpicker mandatory', "data_width" => "auto"}
+
+    .col-sm-2
+    .col-sm-2
       /= link_to image_tag("delete.png", :border => 0, :title => 'Remove'), class: "remove_fields"
       /= link_to content_tag(:i, "", class: "fa fa-trash-o"), data: {"data-toggle" => "tooltip", title: "Delete"}, class: "btn btn-danger remove_fields"
       = link_to content_tag(:i, "", class: "fa fa-trash-o"), "#", class: "removing_fields"

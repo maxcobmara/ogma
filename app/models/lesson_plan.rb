@@ -9,6 +9,7 @@ class LessonPlan < ActiveRecord::Base
   #belongs_to :lessonplan_topic,   :class_name => 'Programme',      :foreign_key => 'topic'	#refer WeeklytimetableDetail
   belongs_to :endorser,           :class_name => 'Staff',                 :foreign_key => 'endorsed_by'
   belongs_to :schedule_item,      :class_name => 'WeeklytimetableDetail', :foreign_key => 'schedule'
+  belongs_to :college
   
   has_many :lessonplan_methodologies, :dependent => :destroy
   accepts_nested_attributes_for :lessonplan_methodologies, :allow_destroy => true#, :reject_if => lambda { |a| a[:start_at].blank? }
@@ -133,14 +134,6 @@ class LessonPlan < ActiveRecord::Base
         approver = Staff.where('id IN(?)',staff_with_kprole).pluck(:id).uniq
       #end
       approver  
-  end
-  
-  def self.start_end_time(l)
-    "#{l.start_meth.strftime('%H:%M') }"+" - "+"#{l.end_meth.strftime('%H:%M %p') }"
-  end
-  
-  def self.start_end_time_in_minutes(l)
-    "("+"#{ (((l.end_meth - l.start_meth )/60 ) % 60).to_i }"+" minutes)"
   end
   
   def self.sstaff2(u)

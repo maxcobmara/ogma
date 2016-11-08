@@ -64,7 +64,7 @@
                       = t('training.trainingnote.document')+" : "+trainingnote.document_file_name if trainingnote.document_file_name
                       = t('training.trainingnote.version')+" : " +trainingnote.version+", " if trainingnote.version
                       = t('training.trainingnote.release')+" : "+trainingnote.try(:release).try(:strftime, "%d %b %Y") if trainingnote.release
-                      )
+                      = t('activerecord.attributes.trainingnotes.staff_id')+" : "+trainingnote.note_creator.staff_with_rank+")"
                       %br
   
 .row

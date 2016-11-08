@@ -57,7 +57,7 @@
           .col-sm-2.control-label
             = f.label :topic_code
           .col-md-3
-            = f.collection_select :topic_code, @semester_subject_topic_list, :id, :semester_subject_topic,{:prompt =>t('select')},{ class: 'selectpicker mandatory', "data-width"=>'500px'}   
+            = f.collection_select :topic_code, @semester_subject_topic_list.sort_by{|x|x.root_id}, :id, :semester_subject_topic,{:prompt =>t('select')},{ class: 'selectpicker mandatory', "data-width"=>'auto'}   
       #topic_details_edit.tab-pane.active
         %br
         .col-md-offset-2   

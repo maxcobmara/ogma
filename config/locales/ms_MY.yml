@@ -48,6 +48,8 @@ ms_MY:
       tenant: Penghuni
       book: Buku
       lesson_plan: Pelan Pengajaran
+      topic_detail: Butiran Topik
+      trainingnote: Nota Latihan
     attributes:
       asset:
         assignedto_id: Pegawai Bertanggungjawab
@@ -326,6 +328,10 @@ ms_MY:
         accessions: No Perolehan
       accessions:
         accession_no: No Perolehan
+      topic_detail:
+        trainingnotes: Nota Latihan
+      trainingnotes:
+        staff_id: Disediakan oleh
         
     errors:
         template:
@@ -3936,6 +3942,7 @@ ms_MY:
       adding_notes: "Tambah Nota Latihan (selepas Pelan Pengajaran dihantar untuk kelulusan)"
       owner_must_match: "Pengajar mestilah sepadan dengan pemilik Jadual Waktu (kelas)."
       reason_for_rejection: "Sila nyatakan sebab penolakan."
+      update_topicdetails: Sila kemaskini rekod Butiran Topik
 
   campus:
     address: 

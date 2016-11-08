@@ -74,7 +74,7 @@ class Programme < ActiveRecord::Base
     if ancestry_depth == 2
       if parent.course_type=="Subject"
         #amsas only
-        "#{parent.code} #{parent.name} > #{name}"
+        "#{root.programme_list} | #{parent.code} #{parent.name} > #{name}"
       end
     elsif ancestry_depth == 3 
       if parent.parent.course_type=="Semester"
@@ -82,17 +82,18 @@ class Programme < ActiveRecord::Base
         "Sem #{parent.parent.code}"+"-"+"#{parent.code}"+" | "+"#{name}"
       elsif parent.parent.course_type=="Subject"
         #amsas
-        "#{parent.parent.code} #{parent.parent.name} >> #{name}"
+        "#{root.programme_list} | #{parent.parent.code} #{parent.parent.name} >> #{name}"
       end
     elsif ancestry_depth == 4
       if parent.parent.parent.course_type=="Semester"
         ">>Sem #{parent.parent.parent.code}"+"-"+"#{parent.parent.code}"+" | "+"#{code} "+"#{name}"
       elsif parent.parent.parent.course_type=="Subject"
-        "#{parent.parent.parent.code} #{parent.parent.parent.name} >>> #{name} "
+       #amsas???
+        "#{root.programme_list} | #{parent.parent.parent.code} #{parent.parent.parent.name} >>> #{name} "
       end 
     elsif ancestry_depth == 5
       #amsas only
-      "#{parent.parent.parent.parent.code} #{parent.parent.parent.parent.name} >>>>#{name} "
+      "#{root.programme_list} | #{parent.parent.parent.parent.code} #{parent.parent.parent.parent.name} >>>>#{name} "
     end
   end
 

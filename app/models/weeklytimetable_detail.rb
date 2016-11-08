@@ -69,18 +69,18 @@ class WeeklytimetableDetail < ActiveRecord::Base
       return (sdate+6).strftime('%d-%b-%Y') + " Sun" if day2 == 7
    end   
    
-   # TODO - revise - check where it's use
+   #usage - lesson_plan.rb -  to save default value of start_time, which later being used in Index & Show
    def get_start_time
      timeslot = time_slot2 if is_friday == false || is_friday == nil
      timeslot = time_slot if is_friday == true 
-     "#{TimetablePeriod.find(timeslot).start_at.strftime("%l:%M %p")}"
+     "#{weeklytimetable.timetable_monthurs.timetable_periods.where(sequence: timeslot).first.start_at.strftime("%l:%M %p")}"
    end   
    
-   # TODO - revise - check where it's use
+   #usage - lesson_plan.rb -  to save default value of end_time, which later being used in Index & Show
    def get_end_time
      timeslot = time_slot2 if is_friday == false || is_friday == nil
      timeslot = time_slot if is_friday == true 
-     "#{TimetablePeriod.find(timeslot).end_at.strftime("%l:%M %p")}"
+     "#{weeklytimetable.timetable_friday.timetable_periods.where(sequence: timeslot).first.end_at.strftime("%l:%M %p")}"
    end   
    
    #working sample: Student Attendance - Index pg - 17Oct2016

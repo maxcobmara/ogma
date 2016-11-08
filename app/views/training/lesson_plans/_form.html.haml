@@ -15,11 +15,22 @@
             .col-sm-2.control-label
               = f.label :lecturer
             .col-md-3
-              - if current_user.college.code=="kskbjb"
-                - lecturers=Staff.joins(:positions).where('positions.name=?','Pengajar').order('name ASC')
+              - if @lesson_plan.new_record?
+                - selected_lecturer=current_user.userable_id
               - else
-                - lecturers=Staff.joins(:positions).where('positions.name=?','Jurulatih').order('rank_id ASC, name ASC')
-              = f.collection_select :lecturer, lecturers, :id, :staff_with_rank, {:include_blank =>t('helpers.prompt.select_lecturer')},{class: 'selectpicker mandatory', "data-width"=>'280px'} 
+                - selected_lecturer= @lesson_plan.lecturer
+              
+              - if current_user.college.code=="kskbjb"
+                - if @is_admin
+                  - lecturers=Staff.joins(:positions).where('positions.name=?','Pengajar').order('name ASC')
+                - else
+                  - lecturers=Staff.joins(:positions).where('positions.name=?','Pengajar').where(id: current_user.userable_id).order('name ASC')
+              - else
+                - if @is_admin
+                  - lecturers=Staff.joins(:positions).where('positions.name=?','Jurulatih').order('rank_id ASC, name ASC')
+                - else
+                  - lecturers=Staff.joins(:positions).where('positions.name=?','Jurulatih').where(id: current_user.userable_id).order('rank_id ASC, name ASC')
+              = f.collection_select :lecturer, lecturers, :id, :staff_with_rank, {:include_blank =>t('helpers.prompt.select_lecturer'), selected: selected_lecturer},{class: 'selectpicker mandatory', "data-width"=>'280px'} 
             
         .col-md-offset-2 
           .form-group
@@ -36,15 +47,16 @@
                 = select_tag("lesson_plan[schedule]", options_for_select(arr, @lesson_plan.schedule), {class: 'selectpicker mandatory', "data-width"=>'620px'})
               - else
                 /lecturer
+                / NOTE - remove this part (.where(lecturer_id: current_user.userable_id)) when prob arise
                 - if @lesson_plan && !@lesson_plan.schedule
                   - @lessonplan_schedule = LessonPlan.all.map(&:schedule).uniq.compact
                   /-  WeeklytimetableDetail.where('lecturer_id=? AND id NOT IN (?)', @current_user.userable_id,@lessonplan_schedule).each do |c|
-                  - WeeklytimetableDetail.joins(:weeklytimetable_lecturer).order('rank_id ASC, name ASC, weeklytimetable_id ASC, time_slot, time_slot2').each do |c|
+                  - WeeklytimetableDetail.joins(:weeklytimetable_lecturer).where(lecturer_id: current_user.userable_id).order('rank_id ASC, name ASC, weeklytimetable_id ASC, time_slot, time_slot2').each do |c|
                     - arr << [c.day_time_slot3, c.id, {'data'=>c.location_desc}]
                   = select_tag("lesson_plan[schedule]", options_for_select(arr, @lesson_plan.schedule), {class: 'selectpicker mandatory', "data-width"=>'620px'})
                 - else
                   /- WeeklytimetableDetail.where('lecturer_id=?', @current_user.userable_id).each do |c|
-                  - WeeklytimetableDetail.joins(:weeklytimetable_lecturer).order('rank_id ASC, name ASC, weeklytimetable_id ASC, time_slot, time_slot2').each do |c|
+                  - WeeklytimetableDetail.joins(:weeklytimetable_lecturer).where(lecturer_id: current_user.userable_id).order('rank_id ASC, name ASC, weeklytimetable_id ASC, time_slot, time_slot2').each do |c|
                     - arr << [c.day_time_slot3, c.id, {'data'=>c.location_desc}]
                   = select_tag("lesson_plan[schedule]", options_for_select(arr, @lesson_plan.schedule), {class: 'selectpicker mandatory', "data-width"=>'620px'})
        

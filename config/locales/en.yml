@@ -66,6 +66,8 @@ en:
       tenant: Tenant
       book: Book
       lesson_plan: Lesson Plan
+      topic_detail: Topic Detail
+      trainingnote: Training Note
     attributes:
       asset:
         assignedto_id: Assigned to
@@ -343,6 +345,10 @@ en:
         accessions: Accession No
       accessions:
         accession_no: Accession No
+      topic_detail:
+        trainingnotes: Training Note
+      trainingnotes:
+        staff_id: Prepared by
  
     errors:
         template:
@@ -4014,6 +4020,7 @@ en:
       adding_notes: "Add Training Notes (after Lesson Plan submitted for approval)"
       owner_must_match: "Lecturer must match with Timetable (class) owner."
       reason_for_rejection: "State reason for rejection."
+      update_topicdetails: Please update Topic Details accordingly
  
   campus:
     address: 

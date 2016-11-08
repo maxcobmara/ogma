@@ -1,6 +1,6 @@
 class Training::LessonPlansController < ApplicationController
    filter_access_to :index, :new, :create, :lessonplan_listing, :attribute_check => false  # :index_report, - no longer use, Inde already combine plan & report
-   filter_access_to :show, :edit, :update, :destroy, :lesson_plan,:lesson_report, :attribute_check => true  # :lessonplan_reporting, - no longer use -ditto-
+   filter_access_to :show, :edit, :update, :destroy, :lesson_plan,:lesson_report, :lessonplan_reporting, :attribute_check => true 
    before_action :set_index_data, only: [:index, :lessonplan_listing]
    before_action :set_lesson_plan, only: [:show, :edit, :update, :destroy]
    before_action :set_admin, only: [:index, :new, :edit,:update, :show,  :lessonplan_reporting, :index_report, :lessonplan_listing]
@@ -165,12 +165,12 @@ class Training::LessonPlansController < ApplicationController
     if @is_admin
       @search = LessonPlan.search(params[:q])
     else
-      roles=current_user.roles
-      if roles.include?("programme_manager")
-        @search = LessonPlan.search2(@programme_id).search(params[:q])
-      else
+#       roles=current_user.roles
+#       if roles.include?("programme_manager")
+#         @search = LessonPlan.search2(@programme_id).search(params[:q])
+#       else
         @search = LessonPlan.sstaff2(current_user.userable.id).search(params[:q])
-      end
+#       end
     end
     @lesson_plans = @search.result
     #@lesson_plans3 = @lesson_plans.sort_by{|t|t.lecturer} 
@@ -231,7 +231,7 @@ class Training::LessonPlansController < ApplicationController
   
   # Never trust parameters from the scary internet, only allow the white list through.
   def lesson_plan_params
-    params.require(:lesson_plan).permit(:lecturer, :whoami, :intake_id, :student_qty, :location, :semester, :topic, :lecture_title, :lecture_date, :start_time, :end_time, :reference, :is_submitted, :submitted_on, :hod_approved, :hod_approved_on, :hod_rejected, :hod_rejected_on, :data, :prerequisites, :year, :reason, :prepared_by, :endorsed_by, :condition_isgood, :condition_isnotgood, :condition_desc, :training_aids, :summary, :total_absent, :report_submit, :report_submit_on, :report_endorsed, :report_endorsed_on, :report_summary, :schedule, :college, {:college_data=>[]}, :data_title, lessonplan_methodologies_attributes: [:id,:content,:lecturer_activity, :student_activity, :training_aids, :evaluation, :start_meth, :end_meth, :_destroy], lesson_plan_trainingnotes_attributes: [:id,:_destroy,:lesson_plan_id,:trainingnote_id], trainingnotes_attributes: [:id,:_destroy,:document,:timetable_id,:staff_id,:title] )
+    params.require(:lesson_plan).permit(:lecturer, :whoami, :intake_id, :student_qty, :location, :semester, :topic, :lecture_title, :lecture_date, :start_time, :end_time, :reference, :is_submitted, :submitted_on, :hod_approved, :hod_approved_on, :hod_rejected, :hod_rejected_on, :data, :prerequisites, :year, :reason, :prepared_by, :endorsed_by, :condition_isgood, :condition_isnotgood, :condition_desc, :training_aids, :summary, :total_absent, :report_submit, :report_submit_on, :report_endorsed, :report_endorsed_on, :report_summary, :schedule, :college_id, {:college_data=>[]}, :data_title, lessonplan_methodologies_attributes: [:id,:content,:lecturer_activity, :student_activity, :training_aids, :evaluation, :start_meth, :end_meth, :_destroy, :college_id], lesson_plan_trainingnotes_attributes: [:id,:_destroy,:lesson_plan_id,:trainingnote_id], trainingnotes_attributes: [:id,:_destroy,:document,:timetable_id,:staff_id,:title] )
   end
   
 end

@@ -14,7 +14,7 @@
     %dt=t 'training.lesson_plan.topic', :default => model_class.human_attribute_name(:topic)+":"
     %dd
       /=h @lesson_plan.try(:schedule_item).try(:weeklytimetable_topic).try(:full_parent)
-      =h @lesson_plan.try(:schedule_item).try(:weeklytimetable_topic).try(:subject_with_topic)
+      =h @lesson_plan.college.code=='amsas' ? @lesson_plan.try(:schedule_item).try(:weeklytimetable_topic).try(:semester_subject_topic) :  @lesson_plan.try(:schedule_item).try(:weeklytimetable_topic).try(:subject_with_topic)
 
     %dt=t 'training.lesson_plan.lecture_title', :default => model_class.human_attribute_name(:lecture_title)+":"
     %dd=h @lesson_plan.lecture_title
@@ -27,16 +27,19 @@
       %dd=h @lesson_plan.try(:schedule_item).try(:location_desc)
       
     %dt=t 'training.lesson_plan.start_time', :default => model_class.human_attribute_name(:start_time)+":"
-    %dd=h @lesson_plan.try(:schedule_item).try(:get_start_time)
+    %dd=h @lesson_plan.college.code=='amsas' ? @lesson_plan.try(:start_time).try(:strftime, '%H:%M') : @lesson_plan.try(:start_time).try(:strftime, '%l:%M %p')
             
     %dt=t 'training.lesson_plan.end_time', :default => model_class.human_attribute_name(:end_time)+":"
-    %dd=h @lesson_plan.try(:schedule_item).try(:get_end_time)
+    %dd=h @lesson_plan.college.code=='amsas' ? @lesson_plan.try(:end_time).try(:strftime, '%H:%M') : @lesson_plan.try(:end_time).try(:strftime, '%l:%M %p')
             
     %dt=t 'training.lesson_plan.prerequisites', :default => model_class.human_attribute_name(:prerequisites)+":"
     %dd=h @lesson_plan.prerequisites
             
     %dt=t 'training.topicdetail.objctives'
-    %dd{style: "margin-left: 230px;"}=h check_kin {simple_format(@lesson_plan.try(:schedule_item).try(:weeklytimetable_topic).try(:topic_details).last.objctives)}
+    %dd{style: "margin-left: 230px;"}
+      =h aa=check_kin {simple_format(@lesson_plan.try(:schedule_item).try(:weeklytimetable_topic).try(:topic_details).last.objctives)}
+      - if aa=="Empty"
+        %span{style: 'color: red;'}="- "+(t 'training.lesson_plan.update_topicdetails')
         
     %dt=t 'training.lesson_plan.reference', :default => model_class.human_attribute_name(:reference)+":"
     %dd{style: "margin-left: 230px;"}=h simple_format(@lesson_plan.reference)
