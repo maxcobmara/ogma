@@ -225,8 +225,21 @@ module Notifications
     LessonPlan.where(lecturer: current_staff_id).where(is_submitted: [nil, false]).where(hod_rejected: true).count
   end
   
+  def lecturer_approved_lesson_plan
+    LessonPlan.where(lecturer: current_staff_id).where(is_submitted: true).where(hod_approved: true).where(report_submit: [nil, false]).count
+  end
+  
   def endorser_lesson_plan
     LessonPlan.where(endorsed_by: current_staff_id).where(is_submitted: true).where(hod_approved: [nil, false]).count
+  end
+  
+  def endorser_lesson_report
+    LessonPlan.where(endorsed_by: current_staff_id).where(report_submit: true).where(report_endorsed: [nil, false]).count
+  end
+  
+  def lecturer_approved_lesson_report
+    #temp - keep NOTIFICATION 4 report review completion for 30 days
+    LessonPlan.where(lecturer: current_staff_id).where(report_submit: true).where(report_endorsed: true).where('report_endorsed_on <?', Date.today+30.days).count
   end
   
 end

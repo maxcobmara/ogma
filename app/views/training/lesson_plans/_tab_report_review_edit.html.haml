@@ -6,11 +6,12 @@
       = f.check_box :report_endorsed , :id => 'check_submitted'
   .form-group
     .col-sm-2.control-label
-      %b= t 'training.lesson_plan.tpa_hod_review'
+      %b= @lesson_plan.college.code=='amsas' ? (t 'training.lesson_plan.general_review') : (t 'training.lesson_plan.tpa_hod_review')
     .col-md-6
       = f.text_area :report_summary, class: 'form-control'    
       #span_submitted{:style=>"display: none;"}
-      = Date.today.strftime('%d %b %Y')
+      = @lesson_plan.college.code=='amsas' ? Date.today.strftime('%d-%m-%Y') : Date.today.strftime('%d %b %Y')
+      = f.hidden_field :report_endorsed_on, value: Date.today
 
 /:javascript
 /$(document).ready(function(){

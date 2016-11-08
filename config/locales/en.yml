@@ -447,6 +447,8 @@ en:
   approved: Approved
   not_approved: Not Approved
   not_completed: Not Completed
+  checked: Checked
+  not_checked: Not Checked
   view: View
   edit_checked: Edit Checked Records
   newrecord_type: Record Type
@@ -3990,7 +3992,9 @@ en:
       training_aids: Training Aids
       lecturer_review: Lecturer Review
       tpa_hod_review: "TPA/Head of Programme Review"
+      general_review: HOD Review
       awaiting_review: "Awaiting review by TPA / Head of Programme"
+      awaiting_review_general: Awaiting review by HOD
       summary: Summary
       total_absent: Total Absent
       report_review: Report Review
@@ -4178,7 +4182,10 @@ en:
     creator_rejected_weeklytimetable: " Weeklytimetables were rejected"
     lecturer_approved_personalize: " Personalize Weeklytimetables were approved"
     lecturer_rejected_lesson_plan: " Lesson Plans were rejected"
+    lecturer_approved_lesson_plan: " Lesson Plans were approved"
     endorser_lesson_plan: " Lesson Plans require approval"
+    endorser_lesson_report: " Lesson & Learning Reports for review"
+    lecturer_approved_lesson_report: " Lesson & Learning Reports were approved"
     
   helpers:
     links:

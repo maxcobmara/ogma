@@ -71,16 +71,26 @@ class WeeklytimetableDetail < ActiveRecord::Base
    
    #usage - lesson_plan.rb -  to save default value of start_time, which later being used in Index & Show
    def get_start_time
-     timeslot = time_slot2 if is_friday == false || is_friday == nil
-     timeslot = time_slot if is_friday == true 
-     "#{weeklytimetable.timetable_monthurs.timetable_periods.where(sequence: timeslot).first.start_at.strftime("%l:%M %p")}"
+#      timeslot = time_slot2 if is_friday == false || is_friday == nil
+#      timeslot = time_slot if is_friday == true 
+#      "#{weeklytimetable.timetable_monthurs.timetable_periods.where(sequence: timeslot).first.start_at.strftime("%l:%M %p")}"
+     if is_friday == false || is_friday == nil
+       "#{weeklytimetable.timetable_monthurs.timetable_periods.where(sequence: time_slot2).first.start_at.strftime("%l:%M %p")}"
+     else
+       "#{weeklytimetable.timetable_friday.timetable_periods.where(sequence: time_slot).first.start_at.strftime("%l:%M %p")}"
+     end
    end   
    
    #usage - lesson_plan.rb -  to save default value of end_time, which later being used in Index & Show
    def get_end_time
-     timeslot = time_slot2 if is_friday == false || is_friday == nil
-     timeslot = time_slot if is_friday == true 
-     "#{weeklytimetable.timetable_friday.timetable_periods.where(sequence: timeslot).first.end_at.strftime("%l:%M %p")}"
+#      timeslot = time_slot2 if is_friday == false || is_friday == nil
+#      timeslot = time_slot if is_friday == true 
+#      "#{weeklytimetable.timetable_friday.timetable_periods.where(sequence: timeslot).first.end_at.strftime("%l:%M %p")}"
+     if is_friday == false || is_friday == nil
+       "#{weeklytimetable.timetable_monthurs.timetable_periods.where(sequence: time_slot2).first.end_at.strftime("%l:%M %p")}"
+     else
+       "#{weeklytimetable.timetable_friday.timetable_periods.where(sequence: time_slot).first.end_at.strftime("%l:%M %p")}"
+     end
    end   
    
    #working sample: Student Attendance - Index pg - 17Oct2016
@@ -116,7 +126,7 @@ class WeeklytimetableDetail < ActiveRecord::Base
    def day_time_slot3
      wl=weeklytimetable_lecturer
      if wl.rank_id?
-       "#{wl.rank.shortname} #{wl.name[0,10]}"+" | "+"#{day_time_slot}"
+       "#{wl.rank.shortname} #{wl.name[0,20]}"+" | "+"#{day_time_slot}"
      else
        "#{wl.name[0,10]}"+" | "+"#{day_time_slot}"
      end

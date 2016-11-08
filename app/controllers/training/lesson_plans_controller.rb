@@ -70,7 +70,7 @@ class Training::LessonPlansController < ApplicationController
   def create
     @lesson_plan = LessonPlan.new(lesson_plan_params)
     newlocation = params[:new_location]
-    if newlocation!=nil
+    if !newlocation.blank?#!=nil
       scheduleid = params[:lesson_plan][:schedule]
       scheduleid = @lesson_plan.schedule if scheduleid==nil
       if scheduleid!=nil

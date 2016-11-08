@@ -105,3 +105,13 @@
   
  - if endorser_lesson_plan > 0
   %li=link_to content_tag(:span, "#{endorser_lesson_plan}", class: "badge") +(t 'notifications.endorser_lesson_plan'), training_lesson_plans_path
+  
+ #8Nov2016
+ - if lecturer_approved_lesson_plan > 0
+  %li=link_to content_tag(:span, "#{lecturer_approved_lesson_plan}", class: "badge") +(t 'notifications.lecturer_approved_lesson_plan'), training_lesson_plans_path
+
+ - if endorser_lesson_report > 0
+  %li=link_to content_tag(:span, "#{endorser_lesson_report}", class: "badge") +(t 'notifications.endorser_lesson_report'), training_lesson_plans_path
+  
+ - if lecturer_approved_lesson_report > 0
+  %li=link_to content_tag(:span, "#{lecturer_approved_lesson_report}", class: "badge") +(t 'notifications.lecturer_approved_lesson_report'), training_lesson_plans_path

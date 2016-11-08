@@ -55,10 +55,10 @@ class LessonPlan < ActiveRecord::Base
       report_submit_on = Date.today
     end   
    
-    if report_summary != nil
-      self.report_endorsed = true
-      self.report_endorsed_on = Date.today
-    end  
+#     if report_summary != nil
+#       self.report_endorsed = true
+#       self.report_endorsed_on = Date.today
+#     end  
    
     #--start--3Nov2013-schedule no longer compulsory
     if schedule != nil

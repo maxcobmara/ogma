@@ -634,16 +634,35 @@ authorization do
    has_permission_on :training_lesson_plans, :to => [:read, :lesson_plan, :lessonplan_listing] do
      if_attribute :lecturer => is {user.userable_id}
    end
-   has_permission_on :training_lesson_plans, :to => :update, :join_by => :and do
-     if_attribute :lecturer => is {user.userable_id}
-     if_attribute :is_submitted => is_not {true}                                                                               #first time-nil, rejected also nil
-   end
-   has_permission_on :training_lesson_plans, :to =>[:lessonplan_reporting,  :lesson_report] , :join_by => :and do  #[:lessonplan_reporting, :update]
-     if_attribute :lecturer => is {user.userable_id}
-     if_attribute :is_submitted => is {true}
-     if_attribute :hod_approved => is {true}
-     if_attribute :report_submit => is_not {true}
-   end
+   
+#    has_permission_on :training_lesson_plans, :to => :update, :join_by => :and do
+#      if_attribute :lecturer => is {user.userable_id}
+#      if_attribute :is_submitted => is_not {true}                                                                               #first time-nil, rejected also nil
+#    end
+#    has_permission_on :training_lesson_plans, :to =>[:lessonplan_reporting,  :update, :lesson_report] , :join_by => :and do  #[:lessonplan_reporting, :update]
+#      if_attribute :lecturer => is {user.userable_id}
+#      if_attribute :is_submitted => is {true}
+#      if_attribute :hod_approved => is {true}
+#      if_attribute :report_submit => is_not {true}
+#    end
+   
+    #just like Lecturer : New/Edit (inc rejected) & submit PLAN
+    has_permission_on :training_lesson_plans, :to => :update, :join_by => :and do
+      if_attribute :lecturer => is {user.userable_id}
+      if_attribute :is_submitted => is_not {true}
+    end
+    #just like Lecturer : 'Laporan'(lessonplan_reporting pg) & submit REPORT
+    has_permission_on :training_lesson_plans, :to => [:lessonplan_reporting, :update], :join_by => :and do
+      if_attribute :lecturer => is {user.userable_id}
+      if_attribute :hod_approved => is {true}
+      if_attribute :report_submit => is_not {true}                                                                        
+    end
+    #just like Lecturer & Programme Mgr : View PDF for report
+    has_permission_on :training_lesson_plans, :to => :lesson_report, :join_by => :and do
+      if_attribute :hod_approved => is {true}
+      if_attribute :report_submit => is {true}
+    end
+    
    #OK until here..... 29Jan2016
    
    #EXAMINATION modules
@@ -744,15 +763,34 @@ authorization do
       if_attribute :lecturer => is_in {user.unit_members}
       if_attribute :endorsed_by => is {user.userable_id}
     end
-    has_permission_on :training_lesson_plans, :to =>:update, :join_by => :and do
-      #if_attribute :lecturer => is_in {user.unit_members}
+
+#     has_permission_on :training_lesson_plans, :to =>:update, :join_by => :and do
+#       #if_attribute :lecturer => is_in {user.unit_members}
+#       if_attribute :endorsed_by => is {user.userable_id}
+#       if_attribute :is_submitted => is {true}
+#       if_attribute :hod_approved => is_not {true}
+#     end
+#     has_permission_on :training_lesson_plans, :to => [:lessonplan_reporting, :lesson_report, :update], :join_by  => :and do
+#       if_attribute :endorsed_by => is {user.userable_id}
+#       if_attribute :is_submitted => is {true}
+#       if_attribute :hod_approved => is {true}
+#       if_attribute :report_submit => is {true}
+#     end
+    
+    #just like Programme Mgr : Edit & approved PLAN
+    has_permission_on :training_lesson_plans, :to => :update, :join_by => :and do
       if_attribute :endorsed_by => is {user.userable_id}
       if_attribute :is_submitted => is {true}
       if_attribute :hod_approved => is_not {true}
     end
-    has_permission_on :training_lesson_plans, :to => [:lessonplan_reporting, :lesson_report, :update, :lessonplan_listing], :join_by  => :and do
-      if_attribute :lecturer => is {user.userable_id}
-      if_attribute :is_submitted => is {true}
+    #just like Programme Mgr : 'Laporan'(lessonplan_reporting pg) & endorsed REPORT
+    has_permission_on :training_lesson_plans, :to => [:lessonplan_reporting, :update], :join_by => :and do
+      if_attribute :endorsed_by => is {user.userable_id}
+      if_attribute :report_submit => is {true}
+      if_attribute :report_endorsed => is_in {[nil, true, false]}                                                                                              #may change review at anytime
+    end
+    #just like Lecturer & Programme Mgr : View PDF for report
+    has_permission_on :training_lesson_plans, :to => :lesson_report, :join_by => :and do
       if_attribute :hod_approved => is {true}
       if_attribute :report_submit => is {true}
     end
@@ -1555,45 +1593,97 @@ authorization do
   #25-OK
   #25 - 3/4 OK (Admin/Viewer/User)
   role :lesson_plans_module_admin do
-     has_permission_on :training_lesson_plans, :to => [:manage, :lessonplan_reporting, :lesson_plan, :lesson_report, :lessonplan_listing]
+     #has_permission_on  :training_lesson_plans, :to => [:manage, :lesson_plan, :lessonplan_listing, lessonplan_reporting, :lesson_report]
+     has_permission_on :training_lesson_plans, :to => [:create, :read, :delete, :lesson_plan, :lessonplan_listing]
+     #just like Lecturer : New/Edit (inc rejected) & submit PLAN
+     has_permission_on :training_lesson_plans, :to => :update do
+       if_attribute :is_submitted => is_not {true}
+     end
+     #just like Programme Mgr : Edit & approved PLAN
+     has_permission_on :training_lesson_plans, :to => :update, :join_by => :and do
+       if_attribute :is_submitted => is {true}
+       if_attribute :hod_approved => is_not {true}
+     end
+     #just like Lecturer : 'Laporan'(lessonplan_reporting pg) & submit REPORT
+     has_permission_on :training_lesson_plans, :to => [:lessonplan_reporting, :update], :join_by => :and do
+       if_attribute :hod_approved => is {true}
+       if_attribute :report_submit => is_not {true}                                                                        
+     end
+     #just like Programme Mgr : 'Laporan'(lessonplan_reporting pg) & endorsed REPORT
+     has_permission_on :training_lesson_plans, :to => [:lessonplan_reporting, :update], :join_by => :and do
+       if_attribute :report_submit => is {true}
+       if_attribute :report_endorsed => is_in {[nil, true, false]}                                                                                              #may change review at anytime
+     end
+     #just like Lecturer & Programme Mgr : View PDF for report
+     has_permission_on :training_lesson_plans, :to => :lesson_report, :join_by => :and do
+       if_attribute :hod_approved => is {true}
+       if_attribute :report_submit => is {true}
+     end
   end
   role :lesson_plans_module_viewer do
-     has_permission_on :training_lesson_plans, :to => [:read, :lesson_plan, :lesson_report, :lessonplan_listing]
+     has_permission_on :training_lesson_plans, :to => [:read, :lesson_plan, :lessonplan_listing, :lesson_report]
   end
   role :lesson_plans_module_user do
-     has_permission_on :training_lesson_plans, :to => [:read, :update, :lessonplan_reporting, :lesson_plan, :lesson_report, :lessonplan_listing]
+     #NO CREATE & DELETE
+     #has_permission_on :training_lesson_plans, :to => [:read, :update, :lessonplan_reporting, :lesson_plan, :lesson_report, :lessonplan_listing]
+     #just like Lecturer : New/Edit (inc rejected) & submit PLAN
+     has_permission_on :training_lesson_plans, :to => :update do
+       if_attribute :is_submitted => is_not {true}
+     end
+     #just like Programme Mgr : Edit & approved PLAN
+     has_permission_on :training_lesson_plans, :to => :update, :join_by => :and do
+       if_attribute :is_submitted => is {true}
+       if_attribute :hod_approved => is_not {true}
+     end
+     #just like Lecturer : 'Laporan'(lessonplan_reporting pg) & submit REPORT
+     has_permission_on :training_lesson_plans, :to => [:lessonplan_reporting, :update], :join_by => :and do
+       if_attribute :hod_approved => is {true}
+       if_attribute :report_submit => is_not {true}                                                                        
+     end
+     #just like Programme Mgr : 'Laporan'(lessonplan_reporting pg) & endorsed REPORT
+     has_permission_on :training_lesson_plans, :to => [:lessonplan_reporting, :update], :join_by => :and do
+       if_attribute :report_submit => is {true}
+       if_attribute :report_endorsed => is_in {[nil, true, false]}                                                                                              #may change review at anytime
+     end
+     #just like Lecturer & Programme Mgr : View PDF for report
+     has_permission_on :training_lesson_plans, :to => :lesson_report, :join_by => :and do
+       if_attribute :hod_approved => is {true}
+       if_attribute :report_submit => is {true}
+     end
   end
 # NOTE - DISABLE(in EACH radio buttons/click : radio & checkbox - training[0].disabled=true as the only owner of this module requires 'Lecturer' & 'Programme Manager' role 
 #   role :lesson_plans_module_member do
-#      #own (Programme Manager)
-#      has_permission_on :training_lesson_plans, :to => [:read, :lesson_plan, :lesson_report, :delete] do
-#       if_attribute :lecturer => is_in {user.unit_members}
-#     end
-#     has_permission_on :training_lesson_plans, :to =>:update, :join_by => :and do
-#       if_attribute :lecturer => is_in {user.unit_members}
-#       if_attribute :is_submitted => is {true}
-#       if_attribute :hod_approved => is_not {true}
-#     end
-#     has_permission_on :training_lesson_plans, :to => [:lessonplan_reporting, :update], :join_by  => :and do
-#       if_attribute :lecturer => is {user.userable_id}
-#       if_attribute :is_submitted => is {true}
-#       if_attribute :hod_approved => is {true}
-#       if_attribute :report_submit => is {true}
-#     end
-#     #own (lecturer)
+#     -----lecturer----------
 #     has_permission_on :training_lesson_plans, :to => :create
-#     has_permission_on :training_lesson_plans, :to => [:read, :lesson_plan, :lesson_report] do
+#     has_permission_on :training_lesson_plans, :to => [:read, :lesson_plan, :lessonplan_listing] do
 #       if_attribute :lecturer => is {user.userable_id}
 #     end
 #     has_permission_on :training_lesson_plans, :to => :update, :join_by => :and do
 #       if_attribute :lecturer => is {user.userable_id}
-#       if_attribute :is_submitted => is_not {true}
+#       if_attribute :is_submitted => is_not {true}                                                                               #first time-nil, rejected also nil
 #     end
-#     has_permission_on :training_lesson_plans, :to => [:lessonplan_reporting, :update], :join_by => :and do
+#     has_permission_on :training_lesson_plans, :to =>[:lessonplan_reporting,  :update, :lesson_report] , :join_by => :and do  #[:lessonplan_reporting, :update]
 #       if_attribute :lecturer => is {user.userable_id}
 #       if_attribute :is_submitted => is {true}
 #       if_attribute :hod_approved => is {true}
 #       if_attribute :report_submit => is_not {true}
+#     end
+#     -----programme_manager--------------
+#     has_permission_on :training_lesson_plans, :to => [:read, :lesson_plan, :delete, :lessonplan_listing], :join_by => :or do
+#       if_attribute :lecturer => is_in {user.unit_members}
+#       if_attribute :endorsed_by => is {user.userable_id}
+#     end
+#     has_permission_on :training_lesson_plans, :to =>:update, :join_by => :and do
+#       #if_attribute :lecturer => is_in {user.unit_members}
+#       if_attribute :endorsed_by => is {user.userable_id}
+#       if_attribute :is_submitted => is {true}
+#       if_attribute :hod_approved => is_not {true}
+#     end
+#     has_permission_on :training_lesson_plans, :to => [:lessonplan_reporting, :lesson_report, :update], :join_by  => :and do
+#       if_attribute :endorsed_by => is {user.userable_id}
+#       if_attribute :is_submitted => is {true}
+#       if_attribute :hod_approved => is {true}
+#       if_attribute :report_submit => is {true}
 #     end
 #   end
   

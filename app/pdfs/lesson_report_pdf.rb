@@ -3,6 +3,7 @@ class Lesson_reportPdf< Prawn::Document
     super({top_margin: 10, page_size: 'A4', page_layout: :portrait })
     @lesson_plan = lesson_plan
     @view = view
+    @college=college
     font "Times-Roman"
     if college.code=="kskbjb"
       text "BPL.KKM.PK(T04D/09)", :align => :right, :size => 9
@@ -112,13 +113,18 @@ class Lesson_reportPdf< Prawn::Document
   end
   
   def table_signatory
+    if @college.code=='kskbjb'
+      review_by="TPA/KP"
+    else
+      review_by="Ketua Jabatan"
+    end
     data = [["","Tandatangan Pengajar :"],
                 ["","<b>Nama Pengajar :</b> #{@lesson_plan.lessonplan_owner.rank_id? ? @lesson_plan.lessonplan_owner.staff_with_rank : @lesson_plan.lessonplan_owner.name }"],
-                ["","Ulasan TPA/KP : "],
+                ["","Ulasan #{review_by} : "],
                 ["", "#{@lesson_plan.report_summary }"],
                 ["", ""],
                 ["", "Tandatangan"],
-                ["", "<b>TPA/KP </b>#{@lesson_plan.endorser.rank_id? ? @lesson_plan.endorser.staff_with_rank : @lesson_plan.endorser.name }"],
+                ["", "<b>#{review_by} :</b> #{@lesson_plan.endorser.rank_id? ? @lesson_plan.endorser.staff_with_rank : @lesson_plan.endorser.name }"],
                 ["","<b>Tarikh : </b>#{Date.today.try(:strftime, '%d %b %Y')}"]
              ]
           
