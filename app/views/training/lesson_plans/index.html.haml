@@ -16,21 +16,21 @@
   %table.table-striped.table-hover.ogma
     %thead
       %tr
-        %th= sort_link(@search, :lecturer, (t 'training.lesson_plan.lecturer'))
-        %th= sort_link(@search, :intake, (t 'training.lesson_plan.intake'))
-        %th= t 'training.lesson_plan.student_qty'
+        %th{width: '14%'}= sort_link(@search, :lecturer, (t 'training.lesson_plan.lecturer'))
+        %th{width: '3%'}= sort_link(@search, :intake, (t 'training.lesson_plan.intake'))
+        %th{width: '3%'}= t 'training.lesson_plan.student_qty'
         - if current_user.college.code=="kskbjb"
-          %th= t 'training.lesson_plan.year'
-          %th Sem
-        %th= sort_link(@search, :topic, (t 'training.lesson_plan.topic'))
-        %th= sort_link(@search, :lecture_title, (t 'training.lesson_plan.lecture_title'))
-        %th= sort_link(@search, :lecture_date, (t 'training.lesson_plan.lecture_date'))
-        %th= t 'training.lesson_plan.start_time'
-        %th= t 'training.lesson_plan.end_time'
-        %th= sort_link(@search, :is_submitted, (t 'training.lesson_plan.is_submitted2'))
-        %th= sort_link(@search, :hod_approved, (t 'training.lesson_plan.hod_approved3'))
-        %th= sort_link(@search, :report_submit, (t 'training.lesson_plan.report_submit2'))
-        %th= sort_link(@search, :report_endorsed, (t 'training.lesson_plan.report_endorsed2'))
+          %th{width: '5%'}= t 'training.lesson_plan.year'
+          %th{width: '5%'} Sem
+        %th{width: '16%'}= sort_link(@search, :topic, (t 'training.lesson_plan.topic'))
+        %th{width: '14%'}= sort_link(@search, :lecture_title, (t 'training.lesson_plan.lecture_title'))
+        %th{width: '8%'}= sort_link(@search, :lecture_date, (t 'training.lesson_plan.lecture_date'))
+        %th{width: '4%'}= t 'training.lesson_plan.start_time'
+        %th{width: '4%'}= t 'training.lesson_plan.end_time'
+        %th{width: '6%'}= sort_link(@search, :is_submitted, (t 'training.lesson_plan.is_submitted2'))
+        %th{width: '6%'}= sort_link(@search, :hod_approved, (t 'training.lesson_plan.hod_approved3'))
+        %th{width: '6%'}= sort_link(@search, :report_submit, (t 'training.lesson_plan.report_submit2'))
+        %th{width: '6%'}= sort_link(@search, :report_endorsed, (t 'training.lesson_plan.report_endorsed2'))
         
     %tbody
     = render "index_search"
@@ -51,7 +51,7 @@
           =h lesson_plan.schedule_item.try(:weeklytimetable_topic).try(:subject_list).to_s+"-"
           %b=lesson_plan.schedule_item.try(:render_class_method).try(:first)
         %td=h lesson_plan.lecture_title
-        %td=h lesson_plan.try(:lecture_date).try(:strftime, '%d %b %Y')
+        %td=h lesson_plan.college.code=='amsas' ? lesson_plan.try(:lecture_date).try(:strftime, '%d-%m-%Y') : lesson_plan.try(:lecture_date).try(:strftime, '%d %b %Y')
         %td=h lesson_plan.college.code=='amsas' ? lesson_plan.try(:start_time).try(:strftime, '%H:%M') : lesson_plan.try(:strftime, '%l:%M %p')
         %td=h lesson_plan.college.code=='amsas' ? lesson_plan.try(:end_time).try(:strftime, '%H:%M') : lesson_plan.try(:strftime, '%l:%M %p')
         %td=h lesson_plan.is_submitted? ? fa_icon('check') : fa_icon('times')
