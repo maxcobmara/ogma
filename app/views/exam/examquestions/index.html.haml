@@ -8,7 +8,7 @@
     %li= link_to (t 'actions.download_excel'), exam_examquestions_path(format: "xls"), class: 'bogus'
   %ul.nav.navbar-nav.navbar-right
     %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "index_search_bar"
-    %li.toga= link_to content_tag(:li, fa_icon("print", text: (t 'actions.print'))), "#", class: 'bogus'  
+    %li= link_to  (fa_icon "file-pdf-o", text: (t 'print')), examquestion_report_exam_examquestions_path(params.merge(format: 'pdf' ))
 
 .row
   %table.table-striped.table-hover.ogma

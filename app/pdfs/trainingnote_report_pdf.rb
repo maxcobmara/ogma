@@ -1,6 +1,6 @@
 class Trainingnote_reportPdf < Prawn::Document
   def initialize(trainingnotes, view, college)
-    super({top_margin: 50,  page_size: 'A4', page_layout: :landscape })
+    super({top_margin: 30,  bottom_margin: 35, page_size: 'A4', page_layout: :landscape })
     @trainingnotes = trainingnotes
     @view = view
     @college=college
