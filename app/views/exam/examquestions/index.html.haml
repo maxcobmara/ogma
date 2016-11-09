@@ -14,39 +14,39 @@
   %table.table-striped.table-hover.ogma
     %thead
       %tr
-        %th &nbsp;
-        %th= sort_link(@search, :subject_id, (t 'exam.examquestion.subject_id'))
-        %th= sort_link(@search, :topic_id, (t 'exam.examquestion.topic_id'))
-        %th= sort_link(@search, :questiontype, (t 'exam.examquestion.questiontype'))
-        %th= sort_link(@search, :question, (t 'exam.examquestion.question'))
-        %th= sort_link(@search, :answer, (t 'exam.examquestion.answer'))
-        %th= sort_link(@search, :marks, (t 'exam.examquestion.marks'))
-        %th= sort_link(@search, :category, (t 'exam.examquestion.category'))
-        %th= sort_link(@search, :difficulty, (t 'exam.examquestion.difficulty'))
-        %th= sort_link(@search, :qstatus, (t 'exam.examquestion.qstatus'))
-        %th= sort_link(@search, :creator_id, (t 'exam.examquestion.creator_id'))
+        %th{width: '5%'} &nbsp;
+        %th{width: '10%'}= sort_link(@search, :subject_id, (t 'exam.examquestion.subject_id'))
+        %th{width: '10%'}= sort_link(@search, :topic_id, (t 'exam.examquestion.topic_id'))
+        %th{width: '10%'}= sort_link(@search, :questiontype, (t 'exam.examquestion.questiontype'))
+        %th{width: '40%'}= sort_link(@search, :question, (t 'exam.examquestion.question')+ (t 'exam.examquestion.answer'))
+        /%th{width: '20%'}= sort_link(@search, :answer, (t 'exam.examquestion.answer'))
+        %th{width: '5%'}= sort_link(@search, :marks, (t 'exam.examquestion.marks'))
+        %th{width: '5%'}= sort_link(@search, :category, (t 'exam.examquestion.category'))
+        %th{width: '5%'}= sort_link(@search, :difficulty, (t 'exam.examquestion.difficulty'))
+        %th{width: '5%'}= sort_link(@search, :qstatus, (t 'exam.examquestion.qstatus'))
+        %th{width: '5%'}= sort_link(@search, :creator_id, (t 'exam.examquestion.creator_id'))
 
     %tbody
       = render "search_bar"
       - @programme_exams.each do |prog, examquestions|
         %tr
-          %td.group{:colspan => "12"}
+          %td.group{:colspan => "10"}
             %span
             - unless prog.blank?
               = (t 'exam.examquestion.programme_id')+' : '+Programme.find(prog).name
 
         - examquestions.group_by{|t|t.subject_details}.sort.each do |subject_details, examquestions| 
           %tr
-            %td.group{:colspan => "9"}
+            %td.group{:colspan => "7", :width => '85%'}
               %span= (t 'exam.examquestion.subject_id')+' : '+subject_details
-            %td.group{:colspan => "3"}
+            %td.group{:colspan => "3", :width => '15%'}
               %span= (t 'exam.examquestion.total_questions')+' = '+examquestions.count.to_s
 
           - @groupbytopic=examquestions.group_by{|x|x.topic_id} 
           - @groupbytopic.sort.each do |topic, allquestions|
-          - no=0		
+            - no=0		
             %tr
-              %td.group{:colspan => "7"} 
+              %td.group{:colspan => "5"} 
                 %span= (t 'exam.examquestion.topic_id')+' : '+Programme.find(topic).subject_list #topic details    
               %td.group{:colspan => "2"}
                 %span= Programme.find(topic).parent.code.to_s+' | '+topic.to_s
@@ -62,8 +62,67 @@
                   %td= link_to question.subject_details, exam_examquestion_path(question)
                   %td= question.topic.name
                   %td= question.questiontype
-                  %td= simple_format(question.question)
-                  %td= question.answer
+                  %td
+                    = simple_format(question.question)
+                    /%td
+                    %b= (t 'exam.examquestion.answer')
+                    /MCQ start
+                    - if question.questiontype=="MCQ"
+                      %br
+                      - if question.answerchoices.count != 0 && question.answerchoices[0].description!=""
+                        - for answerchoice in question.answerchoices.sort_by{|x|x.item}
+                          = answerchoice.item
+                          = answerchoice.description
+                          %br
+                        %br
+                      - for examanswer in question.examanswers.sort_by{|y|y.item}
+                        = examanswer.item
+                        = examanswer.answer_desc
+                        %br
+                                   
+                    - elsif question.questiontype=="SEQ" 
+                      /SEQ start
+                      - for shortessay in question.shortessays.sort_by{|x|x.item}	
+                        %br
+                        %u= (t 'exam.examquestion.subquestion')+" "+shortessay.item+" :"
+                        %br
+                        =h shortessay.subquestion+" ("+ shortessay.submark.to_s+" "+(t 'exam.examquestion.marks')+")"
+                        %br
+                        %u= (t 'exam.examquestion.keyword')+" "+shortessay.item+" :"
+                        %br
+                        =h shortessay.keyword
+                        %br
+                        %u= (t 'exam.examquestion.subanswer')+" "+shortessay.item+" :"
+                        %br
+                        =h simple_format(shortessay.subanswer)
+                        
+                    - elsif question.questiontype=="TRUEFALSE"
+                      %br
+                      %u= t 'exam.examquestion.booleanchoices'
+                      %br
+                      - for booleanchoice in question.booleanchoices.sort_by{|x|x.item}
+                        = booleanchoice.item+". "
+                        = booleanchoice.description
+                        %br
+                      %u= t 'exam.examquestion.booleananswers'
+                      %br
+                      - for booleananswer in question.booleananswers.sort_by{|y|y.item}
+                        = booleananswer.item+". "
+                        = (t 'exam.examquestion.true1') if booleananswer.answer==true 
+                        = (t 'exam.examquestion.false1') if booleananswer.answer==false
+                        %br
+                    
+                    /MCQ final ANSWER
+                    - if question.questiontype=="MCQ"
+                      %u
+                        =(t 'exam.examquestion.answermcq')+" : "
+                        =h question.answer.to_s
+                        
+                    /answer field for other than MCQ & SEQ 
+                    - if !(question.questiontype=="MCQ" || question.questiontype=="SEQ")
+                      =(t 'exam.examquestion.answer')+" : "
+                      =h question.answer  
+                      
                   %td= question.marks
                   %td= question.category
                   %td= question.render_difficulty

@@ -10,6 +10,7 @@ class Examquestion_reportPdf < Prawn::Document
     @programme_exams.each{|prog, examquestions| @progg << prog}
     0.upto(@programme_exams.count-1) do |counting|
       start_new_page if counting > 0
+      @ccc=counting
       record
     end
     #record
@@ -28,7 +29,7 @@ class Examquestion_reportPdf < Prawn::Document
     count=2
     yo=page_number-1
     @programme_exams.each do |prog, examquestions|
-      if @progg[page_number-1]==prog 
+      if @progg[@ccc]==prog#if @progg[page_number-1]==prog 
         unless prog.blank?
           prog_line << count
           count+=1
@@ -54,7 +55,7 @@ class Examquestion_reportPdf < Prawn::Document
       end 
     end #endof @programme_exams.each
 
-    table(line_item_rows, :column_widths => [25, 50, 230, 180, 40, 50, 70, 50, 60], :cell_style => { :size => 8,  :inline_format => :true}, :header => 2) do
+    table(line_item_rows, :column_widths => [25, 50, 410, 40, 50, 70, 50, 60], :cell_style => { :size => 8,  :inline_format => :true}, :header => 2) do
       row(0).borders =[]
       row(0).height=50
       row(0).style size: 11
@@ -87,27 +88,28 @@ class Examquestion_reportPdf < Prawn::Document
   
   def line_item_rows
     counter = counter || 0
-    header = [[{content: "#{I18n.t('exam.examquestion.list').upcase}<br> #{@college.name.upcase}", colspan: 9}],
-              [ 'No',  I18n.t('exam.examquestion.questiontype'),  I18n.t('exam.examquestion.question'), I18n.t('exam.examquestion.answer'), I18n.t('exam.examquestion.marks'), I18n.t('exam.examquestion.category'), I18n.t('exam.examquestion.difficulty'), I18n.t('exam.examquestion.qstatus'), I18n.t('exam.examquestion.creator_id'),]]
+    header = [[{content: "#{I18n.t('exam.examquestion.list').upcase}<br> #{@college.name.upcase}", colspan: 8}],
+              [ 'No',  I18n.t('exam.examquestion.questiontype'), "#{ I18n.t('exam.examquestion.question')} & #{I18n.t('exam.examquestion.answer')}", I18n.t('exam.examquestion.marks'), I18n.t('exam.examquestion.category'), I18n.t('exam.examquestion.difficulty'), I18n.t('exam.examquestion.qstatus'), I18n.t('exam.examquestion.creator_id'),]]
     body=[]
     yo2=page_number-1
     @programme_exams.each do |prog, examquestions|
-      if @progg[page_number-1]==prog
+      if @progg[@ccc]==prog #if @progg[page_number-1]==prog
         ###
         unless prog.blank?
-          body << [ {content: "#{I18n.t('exam.examquestion.programme_id')} : #{Programme.find(prog).name}", colspan: 9}]
+          body << [ {content: "#{I18n.t('exam.examquestion.programme_id')} : #{Programme.find(prog).name}", colspan: 8}]
         end
         examquestions.group_by{|t|t.subject_details}.sort.each do |subject_details, examquestions| 
-          body << [ {content: "#{I18n.t('exam.examquestion.subject_id')} : #{subject_details}", colspan: 7}, {content: "#{I18n.t('exam.examquestion.total_questions')} = #{examquestions.count.to_s}", colspan: 2}]
+          body << [ {content: "#{I18n.t('exam.examquestion.subject_id')} : #{subject_details}", colspan: 5}, {content: "#{I18n.t('exam.examquestion.total_questions')} = #{examquestions.count.to_s}", colspan: 3}]
   
           #--------------------------------------------------------------------
           @groupbytopic=examquestions.group_by{|x|x.topic_id} 
           @groupbytopic.sort.each do |topic, allquestions|
-              body << [ {content: "#{I18n.t('exam.examquestion.topic_id')} : #{Programme.find(topic).subject_list}", colspan: 5}, {content: "#{Programme.find(topic).parent.code.to_s} | #{topic.to_s}", colspan: 2}, {content: "#{I18n.t('exam.examquestion.total_questions')} = #{allquestions.count.to_s}", colspan: 2} ]
+              body << [ {content: "#{I18n.t('exam.examquestion.topic_id')} : #{Programme.find(topic).subject_list}", colspan: 3}, {content: "#{Programme.find(topic).parent.code.to_s} | #{topic.to_s}", colspan: 2}, {content: "#{I18n.t('exam.examquestion.total_questions')} = #{allquestions.count.to_s}", colspan: 3} ]
 
               questions=allquestions.group_by{|t|t.questiontype}
               questions.each do |questiontype,questionbytype|            
                   questionbytype.each do |question|
+                      #START - question
                       if question.question.include?('span')==false
                         qtext=question.question
                       else
@@ -115,7 +117,76 @@ class Examquestion_reportPdf < Prawn::Document
                         qtext=ActionView::Base.full_sanitizer.sanitize(question.question, :tags => %w(img br p span), :attributes => %w(src style))
                         qtext=qtext.gsub!("&nbsp;", " ")
                       end
-                      body << ["#{counter+=1}", question.questiontype, qtext, question.answer, question.marks, question.category,   question.render_difficulty, question.qstatus, question.creator_details]
+		      
+                      #START - answer===========================
+		      qanswer=""
+		      qanswer+="<br><b>#{I18n.t('exam.examquestion.answer')}</b>"
+                      
+                      #MCQ start
+                      if question.questiontype=="MCQ"
+                        qanswer+="<br>"
+                        if question.answerchoices.count != 0 && question.answerchoices[0].description!=""
+                          for answerchoice in question.answerchoices.sort_by{|x|x.item}
+                            qanswer+="#{answerchoice.item}"
+                            qanswer+=" #{answerchoice.description}<br>"
+                          end  
+                          qanswer+="<br>"
+			end
+                        for examanswer in question.examanswers.sort_by{|y|y.item}
+                          qanswer+="#{examanswer.item}"
+                          qanswer+=" #{examanswer.answer_desc}<br>"
+			end
+                                   
+                      elsif question.questiontype=="SEQ" 
+                        #SEQ start
+                        for shortessay in question.shortessays.sort_by{|x|x.item}	
+                          qanswer+="<br>"
+			  qanswer+="<u>#{I18n.t('exam.examquestion.subquestion')} #{shortessay.item} : </u><br>"
+                          qanswer+="#{shortessay.subquestion} (#{shortessay.submark.to_s} #{I18n.t('exam.examquestion.marks')})<br>"
+                          qanswer+="<u>#{I18n.t('exam.examquestion.keyword')} #{shortessay.item} :</u><br>"
+                          qanswer+="#{shortessay.keyword}<br>"
+                          qanswer+="<u>#{I18n.t('exam.examquestion.subanswer')} #{shortessay.item} :</u><br>"
+			  ###-----------------
+			  if shortessay.subanswer.include?('span')==false
+			    subanswer=shortessay.subanswer
+			  else
+			    #http://stackoverflow.com/questions/7414267/strip-html-from-string-ruby-on-rails
+                            subanswer=ActionView::Base.full_sanitizer.sanitize(shortessay.subanswer, :tags => %w(img br p span), :attributes => %w(src style))
+                            subanswer=subanswer.gsub!("&nbsp;", " ")
+			  end
+			  ###----------------
+                          qanswer+="#{subanswer}"
+			end
+                      elsif question.questiontype=="TRUEFALSE"
+			qanswer+="<br><u>#{I18n.t('exam.examquestion.booleanchoices')}</u><br>"
+                       
+                        for booleanchoice in question.booleanchoices.sort_by{|x|x.item}
+                          qanswer+="#{booleanchoice.item}. "
+                          qanswer+="#{booleanchoice.description}<br>"
+			end
+                        qanswer+="<u>#{I18n.t( 'exam.examquestion.booleananswers')}</u><br>"
+                        
+                        for booleananswer in question.booleananswers.sort_by{|y|y.item}
+			  qanswer+="#{booleananswer.item}. "
+                          qanswer+="#{I18n.t('exam.examquestion.true1') if booleananswer.answer==true}"
+			  qanswer+="#{I18n.t('exam.examquestion.false1') if booleananswer.answer==false}"
+                          qanswer+="<br>"
+			end
+                      end
+
+                      #MCQ final ANSWER
+                      if question.questiontype=="MCQ"
+                        qanswer+="<u>#{I18n.t('exam.examquestion.answermcq')} : #{question.answer.to_s}</u>"
+		      end
+                      #answer field for other than MCQ & SEQ 
+                      if !(question.questiontype=="MCQ" || question.questiontype=="SEQ")
+                        qanswer+="<br>#{I18n.t('exam.examquestion.answer')} : #{question.answer  }"  
+		      end
+                      #END - answer=============================
+		      
+		      qtext+=qanswer
+		      
+                      body << ["#{counter+=1}", question.questiontype, qtext, question.marks, question.category,   question.render_difficulty, question.qstatus, question.creator_details]
                   end
               end
           end #endof @groupbytopic.sort.each
@@ -128,7 +199,7 @@ class Examquestion_reportPdf < Prawn::Document
   end
   
   def footer
-    draw_text "#{page_number} / #{page_count}",  :size => 8, :at => [770,-5]
+    draw_text "#{page_number} / #{page_count}",  :size => 8, :at => [750,-5]
   end
   
   # [ 'No', I18n.t('exam.examquestion.subject_id'),  I18n.t('exam.examquestion.topic_id'),  I18n.t('exam.examquestion.questiontype'),  I18n.t('exam.examquestion.question'), I18n.t('exam.examquestion.answer'), I18n.t('exam.examquestion.marks'), I18n.t('exam.examquestion.category'), I18n.t('exam.examquestion.difficulty'), I18n.t('exam.examquestion.qstatus'), I18n.t('exam.examquestion.creator_id'),]
