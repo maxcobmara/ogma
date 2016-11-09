@@ -3286,6 +3286,7 @@ en:
       new_title: New Examquestion
       edit: Edit Examquestion
       title: Examination Development
+      list: Examquestion List
       questiontype: Type
       programme_id: Programme
       subject_id: Subject
