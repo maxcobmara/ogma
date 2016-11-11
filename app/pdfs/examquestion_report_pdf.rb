@@ -25,7 +25,7 @@ class Examquestion_reportPdf < Prawn::Document
     subject_line=[]
     topic_line=[]
     question_line=[]
-    count=2
+    count=3#2
     yo=page_number-1
     @programme_exams.each do |prog, examquestions|
       if @progg[@ccc]==prog
@@ -54,13 +54,14 @@ class Examquestion_reportPdf < Prawn::Document
       end 
     end #endof @programme_exams.each
 
-    table(line_item_rows, :column_widths => [25, 50, 410, 40, 50, 70, 50, 60], :cell_style => { :size => 8,  :inline_format => :true}, :header => 2) do
+    table(line_item_rows, :column_widths => [25, 40, 230, 40, 50, 65, 50, 60, 20, 20, 20, 20, 20, 20, 20, 20, 20], :cell_style => { :size => 8,  :inline_format => :true}, :header => 3) do
       row(0).borders =[]
       row(0).height=50
       row(0).style size: 11
       row(0).align = :center
-      row(0..1).font_style = :bold
-      row(1).background_color = 'FFE34D'
+      row(0..2).font_style = :bold
+      row(1..2).background_color = 'FFE34D'
+      row(1).column(8).align =:center
 
       #programme lines
       for pline in prog_line
@@ -87,23 +88,23 @@ class Examquestion_reportPdf < Prawn::Document
   
   def line_item_rows
     counter = counter || 0
-    header = [[{content: "#{I18n.t('exam.examquestion.list').upcase}<br> #{@college.name.upcase}", colspan: 8}],
-              [ 'No',  I18n.t('exam.examquestion.questiontype'), "#{ I18n.t('exam.examquestion.question')} & #{I18n.t('exam.examquestion.answer')}", I18n.t('exam.examquestion.marks'), I18n.t('exam.examquestion.category'), I18n.t('exam.examquestion.difficulty'), I18n.t('exam.examquestion.qstatus'), I18n.t('exam.examquestion.creator_id'),]]
+    header = [[{content: "#{I18n.t('exam.examquestion.list').upcase}<br> #{@college.name.upcase}", colspan: 17}],
+              [ {content: 'No', rowspan: 2}, {content: "#{I18n.t('exam.examquestion.questiontype')}", rowspan:2}, {content: "#{ I18n.t('exam.examquestion.question')} & #{I18n.t('exam.examquestion.answer')}", rowspan: 2}, {content: "#{I18n.t('exam.examquestion.marks')}", rowspan: 2} , {content: "#{I18n.t('exam.examquestion.category')}", rowspan: 2}, {content: "#{I18n.t('exam.examquestion.difficulty')}", rowspan: 2}, {content: "#{I18n.t('exam.examquestion.qstatus')}", rowspan: 2}, {content: "#{I18n.t('exam.examquestion.creator_id')}", rowspan: 2}, {content: I18n.t('exam.examquestion.edit_details'), colspan: 9}], ["1", "2", "3", "4", "5", "6", "7", "8", "9"]]
     body=[]
     yo2=page_number-1
     @programme_exams.each do |prog, examquestions|
       if @progg[@ccc]==prog
         ###
         unless prog.blank?
-          body << [ {content: "#{I18n.t('exam.examquestion.programme_id')} : #{Programme.find(prog).name}", colspan: 8}]
+          body << [ {content: "#{I18n.t('exam.examquestion.programme_id')} : #{Programme.find(prog).name}", colspan: 8}, {content: I18n.t('exam.examquestion.conformity'), colspan: 3, rowspan: 2}, {content: I18n.t('exam.examquestion.accuracy'), colspan: 3, rowspan: 2}, {content: I18n.t('exam.examquestion.fit'), colspan: 3, rowspan: 2}]
         end
         examquestions.group_by{|t|t.subject_details}.sort.each do |subject_details, examquestions| 
-          body << [ {content: "#{I18n.t('exam.examquestion.subject_id')} : #{subject_details}", colspan: 5}, {content: "#{I18n.t('exam.examquestion.total_questions')} = #{examquestions.count.to_s}", colspan: 3}]
+          body << [ {content: "#{I18n.t('exam.examquestion.subject_id')} : #{subject_details}", colspan: 5}, {content: "#{I18n.t('exam.examquestion.total_questions')} = #{examquestions.count.to_s}", colspan: 3}] ###
   
           #--------------------------------------------------------------------
           @groupbytopic=examquestions.group_by{|x|x.topic_id} 
           @groupbytopic.sort.each do |topic, allquestions|
-              body << [ {content: "#{I18n.t('exam.examquestion.topic_id')} : #{Programme.find(topic).subject_list}", colspan: 3}, {content: "#{Programme.find(topic).parent.code.to_s} | #{topic.to_s}", colspan: 2}, {content: "#{I18n.t('exam.examquestion.total_questions')} = #{allquestions.count.to_s}", colspan: 3} ]
+              body << [ {content: "#{I18n.t('exam.examquestion.topic_id')} : #{Programme.find(topic).subject_list}", colspan: 3}, {content: "#{Programme.find(topic).parent.code.to_s} | #{topic.to_s}", colspan: 2}, {content: "#{I18n.t('exam.examquestion.total_questions')} = #{allquestions.count.to_s}", colspan: 3}, "1", "2", "3", "4", "5", "6", "7", "8", "9"] ###
 
               questions=allquestions.group_by{|t|t.questiontype}
               questions.each do |questiontype,questionbytype|            
@@ -176,8 +177,8 @@ class Examquestion_reportPdf < Prawn::Document
                       #END - answer=============================
 		      
 		      qtext+=qanswer
-		      
-                      body << ["#{counter+=1}", question.questiontype, qtext, question.marks, question.category,   question.render_difficulty, question.qstatus, question.creator_details]
+
+                      body << ["#{counter+=1}", question.questiontype, qtext, question.marks, question.category,   question.render_difficulty, question.qstatus, question.creator_details, "#{question.conform_curriculum? ? '/' : 'X'}", "#{question.conform_specification? ? '/' : 'X'}", "#{question.conform_opportunity? ? '/' : 'X'}", "#{question.accuracy_construct? ? '/' : 'X'}", "#{question.accuracy_topic? ? '/' : 'X'}", "#{question.accuracy_component? ? '/' : 'X'}", "#{question.fit_difficulty? ? '/' : 'X'}", "#{question.fit_important? ? '/' : 'X'}", "#{question.fit_fairness? ? '/' : 'X'}"]
                   end
               end
           end #endof @groupbytopic.sort.each
@@ -191,6 +192,8 @@ class Examquestion_reportPdf < Prawn::Document
   
   def footer
     draw_text "#{page_number} / #{page_count}",  :size => 8, :at => [750,-5]
+    draw_text "#{I18n.t('legend')} (#{I18n.t('exam.examquestion.edit_details')}) : ", :size => 9, :at => [0, 5], :style => :bold
+    draw_text "#{I18n.t('exam.examquestion.conformity').upcase}: 1-#{I18n.t('exam.examquestion.conform_curriculum')}, 2-#{I18n.t('exam.examquestion.conform_specification')}, 3-#{I18n.t('exam.examquestion.conform_opportunity')}  |  #{I18n.t('exam.examquestion.accuracy').upcase}: 4-#{I18n.t('exam.examquestion.accuracy_construct')}, 5-#{I18n.t('exam.examquestion.accuracy_topic')}, 6-#{I18n.t('exam.examquestion.accuracy_component')}  |  #{I18n.t('exam.examquestion.fit').upcase} : 7-#{ I18n.t('exam.examquestion.fit_difficulty')}, 8-#{ I18n.t('exam.examquestion.fit_important')}, 9-#{ I18n.t('exam.examquestion.fit_fairness')}", :size => 8, :at => [0, -5]
   end
   
   # [ 'No', I18n.t('exam.examquestion.subject_id'),  I18n.t('exam.examquestion.topic_id'),  I18n.t('exam.examquestion.questiontype'),  I18n.t('exam.examquestion.question'), I18n.t('exam.examquestion.answer'), I18n.t('exam.examquestion.marks'), I18n.t('exam.examquestion.category'), I18n.t('exam.examquestion.difficulty'), I18n.t('exam.examquestion.qstatus'), I18n.t('exam.examquestion.creator_id'),]

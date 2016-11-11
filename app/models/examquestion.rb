@@ -267,11 +267,13 @@ class Examquestion < ActiveRecord::Base
 #       end
 #     end
 #   end
+
   def self.to_csv(options = {})
     CSV.generate(options) do |csv|
         csv << ["\'\'", "\'\'", I18n.t('exam.examquestion.list').upcase]  #title added ---> refer examanalysis.rb
         csv << [] #blank row added
-        csv << ["NO", I18n.t('exam.examquestion.questiontype').upcase, I18n.t('exam.examquestion.question').upcase+" & "+I18n.t('exam.examquestion.answer').upcase, I18n.t('exam.examquestion.marks').upcase, I18n.t('exam.examquestion.category').upcase, I18n.t('exam.examquestion.difficulty').upcase, I18n.t('exam.examquestion.qstatus').upcase, I18n.t('exam.examquestion.creator_id').upcase]
+        csv << ["NO", I18n.t('exam.examquestion.questiontype').upcase, I18n.t('exam.examquestion.question').upcase+" & "+I18n.t('exam.examquestion.answer').upcase, I18n.t('exam.examquestion.marks').upcase, I18n.t('exam.examquestion.category').upcase, I18n.t('exam.examquestion.difficulty').upcase, I18n.t('exam.examquestion.qstatus').upcase, I18n.t('exam.examquestion.creator_id').upcase, I18n.t('exam.examquestion.conformity').upcase, "\'\'", "\'\'", I18n.t('exam.examquestion.accuracy').upcase, "\'\'", "\'\'", I18n.t('exam.examquestion.fit').upcase ]
+        csv << ["\'\'", "\'\'", "\'\'", "\'\'", "\'\'", "\'\'", "\'\'", "\'\'", I18n.t('exam.examquestion.conform_curriculum'), I18n.t('exam.examquestion.conform_specification'), I18n.t('exam.examquestion.conform_opportunity'), I18n.t('exam.examquestion.accuracy_construct'), I18n.t('exam.examquestion.accuracy_topic'), I18n.t('exam.examquestion.accuracy_component'), I18n.t('exam.examquestion.fit_difficulty'), I18n.t('exam.examquestion.fit_important'), I18n.t('exam.examquestion.fit_fairness')]
 
         all.group_by{|x|x.subject.root_id}.each do |prog, examquestions|
           unless prog.blank?
@@ -298,106 +300,72 @@ class Examquestion < ActiveRecord::Base
                           else
                               qtext=(ActionView::Base.full_sanitizer.sanitize(q.question, :tags => %w(img br p span), :attributes => %w(src style)) ).gsub!("&nbsp;", " ")
                           end
-                          csv << [cnt+=1, q.questiontype, qtext, q.marks, q.category.blank? ? "\'\'" : q.category, q.render_difficulty, q.qstatus, q.creator_details] 
+                          csv << [cnt+=1, q.questiontype, qtext, q.marks, q.category.blank? ? "\'\'" : q.category, q.render_difficulty, q.qstatus, q.creator_details, "#{q.conform_curriculum? ? I18n.t('yes2') : I18n.t('no2')}", "#{q.conform_specification? ? I18n.t('yes2') : I18n.t('no2')}", "#{q.conform_opportunity? ? I18n.t('yes2') : I18n.t('no2')}", "#{q.accuracy_construct? ? I18n.t('yes2') : I18n.t('no2')}", "#{q.accuracy_topic? ? I18n.t('yes2') : I18n.t('no2')}", "#{q.accuracy_component? ? I18n.t('yes2') : I18n.t('no2')}", "#{q.fit_difficulty? ? I18n.t('yes2') : I18n.t('no2')}", "#{q.fit_important? ? I18n.t('yes2') : I18n.t('no2')}", "#{q.fit_fairness? ? I18n.t('yes2') : I18n.t('no2')} "] 
 
                           ######ANSWER - start
-                          #qanswer=""
-                          #qanswer+="<br><b>#{I18n.t('exam.examquestion.answer')}</b>"
                           csv << []
                           csv << ["\'\'", "\'\'", I18n.t('exam.examquestion.answer').upcase+" : "]
                           
                           #MCQ start
                           if q.questiontype=="MCQ"
-                              #qanswer+="<br>"
                               if q.answerchoices.count != 0 && q.answerchoices[0].description!=""
                                   for answerchoice in q.answerchoices.sort_by{|x|x.item}
-                                      #qanswer+="#{answerchoice.item}"
-                                      #qanswer+=" #{answerchoice.description}<br>"
                                       csv << ["\'\'", "\'\'", answerchoice.item+". "+answerchoice.description]
                                   end  
-                                  #qanswer+="<br>"
                                   csv << []
                               end
                               for examanswer in q.examanswers.sort_by{|y|y.item}
-                                  #qanswer+="#{examanswer.item}"
-                                  #qanswer+=" #{examanswer.answer_desc}<br>"
                                   csv << ["\'\'", "\'\'", examanswer.item+". "+examanswer.answer_desc]
                               end
                           
                           elsif q.questiontype=="SEQ" 
-                              #$$$$$$$$$$$$$$$$
                               for shortessay in q.shortessays.sort_by{|x|x.item}	
-                                  #qanswer+="<br>"
                                   csv << []
-                                  #qanswer+="<u>#{I18n.t('exam.examquestion.subquestion')} #{shortessay.item} : </u><br>"
-                                  #qanswer+="#{shortessay.subquestion} (#{shortessay.submark.to_s} #{I18n.t('exam.examquestion.marks')})<br>"
                                   csv << ["\'\'", "\'\'", I18n.t('exam.examquestion.subquestion')+" "+shortessay.item+" : "]
                                   csv << ["\'\'", "\'\'", shortessay.subquestion+" ("+shortessay.submark.to_s+I18n.t('exam.examquestion.marks')+")"]
                                   csv << []
-                                  #qanswer+="<u>#{I18n.t('exam.examquestion.keyword')} #{shortessay.item} :</u><br>"
-                                  #qanswer+="#{shortessay.keyword}<br>"
                                   csv << ["\'\'", "\'\'", I18n.t('exam.examquestion.keyword')+" "+shortessay.item+" : "]
                                   csv << ["\'\'", "\'\'", shortessay.keyword]
                                   csv << []
-
-                                  #qanswer+="<u>#{I18n.t('exam.examquestion.subanswer')} #{shortessay.item} :</u><br>"
                                   csv << ["\'\'", "\'\'", I18n.t('exam.examquestion.subanswer')+" "+shortessay.item+" : "]
                                   ###-----------------
                                   if shortessay.subanswer.include?('span')==false
-                                      #subanswer=shortessay.subanswer
                                       subanswer=ActionView::Base.full_sanitizer.sanitize(shortessay.subanswer, :tags => %w(img br p), :attributes => %w(src style))
                                   else
-                                      #subanswer=@view.texteditor_content(shortessay.subanswer)
                                       subanswer=(ActionView::Base.full_sanitizer.sanitize(shortessay.subanswer, :tags => %w(img br p span), :attributes => %w(src style)) ).gsub!("&nbsp;", " ")
                                   end
                                   ###----------------
-                                  #qanswer+="#{subanswer}"
                                   csv << ["\'\'", "\'\'", subanswer]
                               end
                               csv << []
-                              #$$$$$$$$$$$$$$$$
                           
                           elsif q.questiontype=="TRUEFALSE"
-                              #***********************
-                              #qanswer+="<br><u>#{I18n.t('exam.examquestion.booleanchoices')}</u><br>"
                               csv << []
                               csv << ["\'\'", "\'\'", I18n.t('exam.examquestion.booleanchoices')]
                               csv << []
                               for booleanchoice in q.booleanchoices.sort_by{|x|x.item}
-                                  #qanswer+="#{booleanchoice.item}. "
-                                  #qanswer+="#{booleanchoice.description}<br>"
                                   csv << ["\'\'", "\'\'", booleanchoice.item+". "+booleanchoice.description]
                               end
-                              #qanswer+="<u>#{I18n.t( 'exam.examquestion.booleananswers')}</u><br>"
                               csv << []
                               csv << ["\'\'", "\'\'", I18n.t( 'exam.examquestion.booleananswers')]
                               csv << []
                               for booleananswer in q.booleananswers.sort_by{|y|y.item}
-                                  #qanswer+="#{booleananswer.item}. "
-                                  #qanswer+="#{I18n.t('exam.examquestion.true1') if booleananswer.answer==true}"
-                                  #qanswer+="#{I18n.t('exam.examquestion.false1') if booleananswer.answer==false}"
                                   if booleananswer.answer==true
                                       ans=I18n.t('exam.examquestion.true1') 
                                   else
                                       ans=I18n.t('exam.examquestion.false1')
                                   end
-                                  #qanswer+="<br>"
                                   csv << ["\'\'", "\'\'", booleananswer.item+". "+ans]
-                                  #csv << []
                               end
                               #***********************
                           end #endof if mcq etc
 
-
-
                           #MCQ final ANSWER
                           if q.questiontype=="MCQ"
-                              #qanswer+="<u>#{I18n.t('exam.examquestion.answermcq')} : #{q.answer.to_s}</u>"
                               csv << ["\'\'", "\'\'", I18n.t('exam.examquestion.answermcq')+" : "+q.answer.to_s]
                           end
                           #answer field for other than MCQ & SEQ 
                           if !(q.questiontype=="MCQ" || q.questiontype=="SEQ")
-                              #qanswer+="<br>#{I18n.t('exam.examquestion.answer')} : #{q.answer  }"  
                               csv << ["\'\'", "\'\'", I18n.t('exam.examquestion.answer')+" : "+q.answer]
                               csv << []
                           end
