@@ -458,6 +458,7 @@ ms_MY:
   not_endorsed: Tidak Disokong
   not_required: Tidak diperlukan
   remark: Catatan
+  legend: "Petunjuk :"
  
   actions:
     new: Baru
@@ -3866,7 +3867,7 @@ ms_MY:
       plan_remark2: " - Nota tidak boleh dipadam."
       remark_title: Rujukan
       topicdetail_not_exist: Rekod 'Butiran Topik' tidak wujud
-      legend: "Petunjuk :"
+      legend: Petunjuk
 
     lesson_plan:
       title: Senarai Pelan & Laporan Pengajaran

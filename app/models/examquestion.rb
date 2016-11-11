@@ -259,13 +259,128 @@ class Examquestion < ActiveRecord::Base
     subq.to_s
   end
 
-  def self.csv(options={})
+#   def self.csv(options={})
+#     CSV.generate(options) do |csv|
+#       csv << column_names
+#       all.each do |examquestion|
+#         csv << examquestion.attributes.values_at(*column_names)
+#       end
+#     end
+#   end
+
+  def self.to_csv(options = {})
     CSV.generate(options) do |csv|
-      csv << column_names
-      all.each do |examquestion|
-        csv << examquestion.attributes.values_at(*column_names)
-      end
-    end
+        csv << ["\'\'", "\'\'", I18n.t('exam.examquestion.list').upcase]  #title added ---> refer examanalysis.rb
+        csv << [] #blank row added
+        csv << ["NO", I18n.t('exam.examquestion.questiontype').upcase, I18n.t('exam.examquestion.question').upcase+" & "+I18n.t('exam.examquestion.answer').upcase, I18n.t('exam.examquestion.marks').upcase, I18n.t('exam.examquestion.category').upcase, I18n.t('exam.examquestion.difficulty').upcase, I18n.t('exam.examquestion.qstatus').upcase, I18n.t('exam.examquestion.creator_id').upcase, I18n.t('exam.examquestion.conformity').upcase, "\'\'", "\'\'", I18n.t('exam.examquestion.accuracy').upcase, "\'\'", "\'\'", I18n.t('exam.examquestion.fit').upcase ]
+        csv << ["\'\'", "\'\'", "\'\'", "\'\'", "\'\'", "\'\'", "\'\'", "\'\'", I18n.t('exam.examquestion.conform_curriculum'), I18n.t('exam.examquestion.conform_specification'), I18n.t('exam.examquestion.conform_opportunity'), I18n.t('exam.examquestion.accuracy_construct'), I18n.t('exam.examquestion.accuracy_topic'), I18n.t('exam.examquestion.accuracy_component'), I18n.t('exam.examquestion.fit_difficulty'), I18n.t('exam.examquestion.fit_important'), I18n.t('exam.examquestion.fit_fairness')]
+
+        all.group_by{|x|x.subject.root_id}.each do |prog, examquestions|
+          unless prog.blank?
+              csv << []
+              csv << ["\'\'", "\'\'", I18n.t('exam.examquestion.programme_id')+" : "+ Programme.find(prog).name]
+          end
+          cnt=0 #question counter per programme
+          #-------------------------
+          examquestions.group_by{|t|t.subject_details}.sort.each do |subject_details, examquestions| 
+              csv << ["\'\'", "\'\'", I18n.t('exam.examquestion.subject_id')+" : "+subject_details, "\'\'", "\'\'", I18n.t('exam.examquestion.total_questions')+" = "+examquestions.count.to_s]
+
+              topic_count=0
+              examquestions.group_by{|x|x.topic_id}.sort.each do |topic, allquestions|
+                  csv << [] if topic_count > 0     #add blank row when there's more than 1 topic exist per subject
+                  csv << ["\'\'", "\'\'", I18n.t('exam.examquestion.topic_id')+" : "+ Programme.find(topic).subject_list, "\'\'", Programme.find(topic).parent.code.to_s+' | '+topic.to_s, I18n.t('exam.examquestion.total_questions')+' = '+allquestions.count.to_s]
+                  csv << []
+              
+                  allquestions.group_by{|t|t.questiontype}.each do |questiontype,questionbytype|  
+                      qbytype_count=0
+                      questionbytype.each do |q|
+                          csv << [] if qbytype_count > 0
+                          if q.question.include?('span')==false
+                              qtext=ActionView::Base.full_sanitizer.sanitize(q.question, :tags => %w(img br p), :attributes => %w(src style))
+                          else
+                              qtext=(ActionView::Base.full_sanitizer.sanitize(q.question, :tags => %w(img br p span), :attributes => %w(src style)) ).gsub!("&nbsp;", " ")
+                          end
+                          csv << [cnt+=1, q.questiontype, qtext, q.marks, q.category.blank? ? "\'\'" : q.category, q.render_difficulty, q.qstatus, q.creator_details, "#{q.conform_curriculum? ? I18n.t('yes2') : I18n.t('no2')}", "#{q.conform_specification? ? I18n.t('yes2') : I18n.t('no2')}", "#{q.conform_opportunity? ? I18n.t('yes2') : I18n.t('no2')}", "#{q.accuracy_construct? ? I18n.t('yes2') : I18n.t('no2')}", "#{q.accuracy_topic? ? I18n.t('yes2') : I18n.t('no2')}", "#{q.accuracy_component? ? I18n.t('yes2') : I18n.t('no2')}", "#{q.fit_difficulty? ? I18n.t('yes2') : I18n.t('no2')}", "#{q.fit_important? ? I18n.t('yes2') : I18n.t('no2')}", "#{q.fit_fairness? ? I18n.t('yes2') : I18n.t('no2')} "] 
+
+                          ######ANSWER - start
+                          csv << []
+                          csv << ["\'\'", "\'\'", I18n.t('exam.examquestion.answer').upcase+" : "]
+                          
+                          #MCQ start
+                          if q.questiontype=="MCQ"
+                              if q.answerchoices.count != 0 && q.answerchoices[0].description!=""
+                                  for answerchoice in q.answerchoices.sort_by{|x|x.item}
+                                      csv << ["\'\'", "\'\'", answerchoice.item+". "+answerchoice.description]
+                                  end  
+                                  csv << []
+                              end
+                              for examanswer in q.examanswers.sort_by{|y|y.item}
+                                  csv << ["\'\'", "\'\'", examanswer.item+". "+examanswer.answer_desc]
+                              end
+                          
+                          elsif q.questiontype=="SEQ" 
+                              for shortessay in q.shortessays.sort_by{|x|x.item}	
+                                  csv << []
+                                  csv << ["\'\'", "\'\'", I18n.t('exam.examquestion.subquestion')+" "+shortessay.item+" : "]
+                                  csv << ["\'\'", "\'\'", shortessay.subquestion+" ("+shortessay.submark.to_s+I18n.t('exam.examquestion.marks')+")"]
+                                  csv << []
+                                  csv << ["\'\'", "\'\'", I18n.t('exam.examquestion.keyword')+" "+shortessay.item+" : "]
+                                  csv << ["\'\'", "\'\'", shortessay.keyword]
+                                  csv << []
+                                  csv << ["\'\'", "\'\'", I18n.t('exam.examquestion.subanswer')+" "+shortessay.item+" : "]
+                                  ###-----------------
+                                  if shortessay.subanswer.include?('span')==false
+                                      subanswer=ActionView::Base.full_sanitizer.sanitize(shortessay.subanswer, :tags => %w(img br p), :attributes => %w(src style))
+                                  else
+                                      subanswer=(ActionView::Base.full_sanitizer.sanitize(shortessay.subanswer, :tags => %w(img br p span), :attributes => %w(src style)) ).gsub!("&nbsp;", " ")
+                                  end
+                                  ###----------------
+                                  csv << ["\'\'", "\'\'", subanswer]
+                              end
+                              csv << []
+                          
+                          elsif q.questiontype=="TRUEFALSE"
+                              csv << []
+                              csv << ["\'\'", "\'\'", I18n.t('exam.examquestion.booleanchoices')]
+                              csv << []
+                              for booleanchoice in q.booleanchoices.sort_by{|x|x.item}
+                                  csv << ["\'\'", "\'\'", booleanchoice.item+". "+booleanchoice.description]
+                              end
+                              csv << []
+                              csv << ["\'\'", "\'\'", I18n.t( 'exam.examquestion.booleananswers')]
+                              csv << []
+                              for booleananswer in q.booleananswers.sort_by{|y|y.item}
+                                  if booleananswer.answer==true
+                                      ans=I18n.t('exam.examquestion.true1') 
+                                  else
+                                      ans=I18n.t('exam.examquestion.false1')
+                                  end
+                                  csv << ["\'\'", "\'\'", booleananswer.item+". "+ans]
+                              end
+                              #***********************
+                          end #endof if mcq etc
+
+                          #MCQ final ANSWER
+                          if q.questiontype=="MCQ"
+                              csv << ["\'\'", "\'\'", I18n.t('exam.examquestion.answermcq')+" : "+q.answer.to_s]
+                          end
+                          #answer field for other than MCQ & SEQ 
+                          if !(q.questiontype=="MCQ" || q.questiontype=="SEQ")
+                              csv << ["\'\'", "\'\'", I18n.t('exam.examquestion.answer')+" : "+q.answer]
+                              csv << []
+                          end
+                          ######ANSWER - end
+
+                          qbytype_count+=1
+                      end #endof questionbytype
+                  end #endof allquestions.group_by
+                  topic_count+=1
+              end
+          end 
+          #-------------------------
+        end #endof all.group_by....
+
+      end #endof CSV.generate
   end
 
 end

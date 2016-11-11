@@ -478,6 +478,7 @@ en:
   not_endorsed: Not Endorsed
   not_required: Not required
   remark: Remark 
+  legend: Legend
 
   actions:
     new: New
