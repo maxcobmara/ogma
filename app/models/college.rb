@@ -20,6 +20,7 @@ class College < ActiveRecord::Base
   has_many :student_counseling_sessions
   has_many :student_attendances
   has_many :documents
+  has_many :examquestions
   # staffs
   
   serialize :data, Hash

@@ -10,7 +10,9 @@
   %ul.nav.navbar-nav.navbar-right
     %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: "index_search_bar"
     %li= link_to  (fa_icon "file-pdf-o", text: (t 'print')), examquestion_report_exam_examquestions_path(params.merge(format: 'pdf' ))
-
+/=@programme_id
+/=current_user.userable_id
+/=Staff.joins(:positions).where('positions.unit ILIKE(?) OR positions.unit ILIKE(?)', 'Kompetensi', 'Kawalan Mutu').pluck(:id)
 .row
   %table.table-striped.table-hover.ogma
     %thead

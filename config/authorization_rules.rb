@@ -484,6 +484,29 @@ authorization do
      if_attribute :studentsubmit => true
      if_attribute :staff_id => is {user.userable.id} #specific to Approver
    end
+   # NOTE : amsas only
+   has_permission_on :exam_examquestions, :to => [:menu, :read], :join_by => :or do
+     if_attribute :approver_id => is {user.userable_id}                                                                           #approver
+     if_attribute :programme_id => is_in {user.editors_programme}                                                      #editors
+   end
+   # NOTE : amsas only - for approver (any staff being assigned as approver)
+   has_permission_on :exam_examquestions, :to => :update, :join_by => :and do 
+     if_attribute :approver_id => is {user.userable_id}
+     if_attribute :college_id => is {College.where(code: 'amsas').first.id}
+     if_attribute :qstatus => is_in {["Ready For Approval", "For Approval"]}
+   end
+   # NOTE :amsas only - for editor (Kawalan Mutu / Kompetensi)
+   has_permission_on :exam_examquestions, :to => :update, :join_by => :and do
+     if_attribute :college_id => is {College.where(code: 'amsas').first.id}
+     if_attribute :qstatus => is {"Submit"}
+     if_attribute :programme_id => is_in {user.editors_programme}
+   end
+   # NOTE :amsas only - for assigned editor (previously saved w/o submission OR submitted but rejected examquestion)- (Kawalan Mutu / Kompetensi)
+   has_permission_on :exam_examquestions, :to => :update, :join_by => :and do
+     if_attribute :college_id => is {College.where(code: 'amsas').first.id}
+     if_attribute :qstatus => is_in {["Editing", "Re-Edit"]}
+     if_attribute :editor_id => is {user.userable_id}
+   end
  end
   
   role :staff_administrator do
@@ -668,8 +691,9 @@ authorization do
    #EXAMINATION modules
    #moved examination modules to role - exam_administration
    has_permission_on :exam_examquestions, :to => [:menu, :read, :index, :create, :examquestion_report]
-   has_permission_on :exam_examquestions, :to => :update do
+   has_permission_on :exam_examquestions, :to => :update, :join_by => :and do
      if_attribute :programme_id => is_in {user.lecturers_programme}
+     if_attribute :qstatus => is {"New"}
    end
    # TODO - fix below, temp use above
 #    has_permission_on :exam_examquestions, :to =>:update, :join_by => :and do

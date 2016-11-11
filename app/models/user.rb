@@ -360,6 +360,18 @@ class User < ActiveRecord::Base
     Staff.where(id: unit_members).pluck(:thumb_id).compact #[5658]
   end
   
+  #examquestion - editor access (Kawalan Mutu / Kompetensi) - auth rules
+  def editors_programme
+    qc_ids=Staff.joins(:positions).where('positions.unit ILIKE(?) OR positions.unit ILIKE(?)', 'Kompetensi', 'Kawalan Mutu').pluck(:id)
+    if qc_ids.include?(userable_id)
+      #11Nov2016 - temp - must fr Kawalan Mutu / Kompetensi
+      programmeid=Programme.roots.pluck(:id) 
+    else
+      programmeid=[]
+    end
+    programmeid
+  end
+  
   #use in - auth_rules(examquestion) - return [programme_id] for academician
   def lecturers_programme
     mypost = Position.where(staff_id: userable_id).first
@@ -378,7 +390,9 @@ class User < ActiveRecord::Base
         end
         programmeid=@programmeid
       else
-        programmeid=0 #default val for admin, common_subjects lecturer too
+        #programmeid=[0] #default val for admin, common_subjects lecturer too - 11 Nov 2016 -  to check admin?? 
+        #TEMP below applied to Amsas lecturer & jurulatih
+        programmeid=Programme.roots.pluck(:id)
       end
     end
     programmeid

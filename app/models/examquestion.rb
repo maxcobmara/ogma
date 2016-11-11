@@ -1,5 +1,6 @@
 class Examquestion < ActiveRecord::Base
 
+  belongs_to :college, :foreign_key => :college_id
   belongs_to :creator,  :class_name => 'Staff', :foreign_key => 'creator_id'
   belongs_to :approver, :class_name => 'Staff', :foreign_key => 'approver_id'
   belongs_to :editor,   :class_name => 'Staff', :foreign_key => 'editor_id'
@@ -110,11 +111,18 @@ class Examquestion < ActiveRecord::Base
   end
 
   def question_creator(current_user)
-    if current_user.roles.pluck(:authname).include?("administration")
-      diploma=Programme.roots.where(course_type: "Diploma").pluck(:name)
-      creator_units=diploma+["Diploma Lanjutan", "Pos Basik", "Pengkhususan"]
-      creator_ids=Staff.joins(:positions).where('positions.unit IN(?)', creator_units).pluck(:id)
-      creator=creator_ids+[current_user.userable_id]
+    current_roles=current_user.roles.pluck(:authname)
+    if current_roles.include?("developer") || current_roles.include?("administration") || current_roles.include?("examquestions_module")
+      if college.code=='kskbjb'
+        diploma=Programme.roots.where(course_type: "Diploma").pluck(:name)
+        creator_units=diploma+["Diploma Lanjutan", "Pos Basik", "Pengkhususan"]
+        creator_ids=Staff.joins(:positions).where('positions.unit IN(?)', creator_units).pluck(:id)
+        creator=creator_ids+[current_user.userable_id]
+      else
+        jurulatih_ids=Staff.joins(:positions).where('positions.name ILIKE(?)', '%Jurulatih%')
+        lecturer_ids=User.joins(:roles).where('roles.authname=?', 'lecturer').pluck(:userable_id)
+        creator=jurulatih_ids+lecturer_ids+[current_user.userable_id]
+      end
     else
       creator=[current_user.userable_id]
     end
@@ -180,27 +188,72 @@ class Examquestion < ActiveRecord::Base
     end
   end
   
+  #Other College : Temp (11 Nov 2016) - temporary display ALL existing questions to Kawalan Mutu / Kompetensi & restrict lecturer display to OWN created question only 
+  def self.search3(search)
+    if search
+      qc_ids=Staff.joins(:positions).where('positions.unit ILIKE(?) OR positions.unit ILIKE(?)', 'Kompetensi', 'Kawalan Mutu').pluck(:id)
+      if qc_ids.include?(search)
+        Examquestion.all
+      else
+        Examquestion.where('creator_id=? OR approver_id=?', search, search)
+      end
+    end
+  end
+  
   #logic to set editable - ref: Staff Appraisal
   def edit_icon(curr_user)
-    is_admin=true  if curr_user.roles.pluck(:authname).include?("administration")
-    if qstatus=="New" &&(creator_id==curr_user.userable_id || is_admin)
-      "edit.png"
-    elsif qstatus=="New" && creator_id!=curr_user.userable_id
-      "noedit"
-    elsif qstatus=="Submit" && (curr_user.lecturers_programme==programme_id || is_admin)#(curr_user.lecturers_programme.include?(programme_id) || is_admin)
-      "edit.png"
-    elsif ["Editing", "Re-Edit"].include?(qstatus) && (editor_id==curr_user.userable_id || is_admin)
-      "edit.png"
-    elsif qstatus=="Re-Edit" && approver_id==curr_user.userable_id
-      "noedit"
-    elsif ["Ready For Approval", "For Approval"].include?(qstatus) && (creator_id==curr_user.userable_id || editor_id==curr_user.userable_id) && !is_admin
-      "noedit"
-    elsif  ["Ready For Approval", "For Approval"].include?(qstatus) && (approver_id==curr_user.userable_id || is_admin)
-      "edit.png"
-    elsif qstatus=="Approved" && (approver_id==curr_user.userable_id || is_admin)
-      "edit.png"
-    elsif qstatus=="Approved" && approver_id!=curr_user.userable_id
-      "noedit"
+    current_roles=curr_user.roles.pluck(:authname)
+    is_admin=true  if current_roles.include?("administration")|| current_roles.include?("developer") || current_roles.include?("examquestions_module")
+    if curr_user.college.code=='kskbjb'
+      #---------------kskbjb--start
+      # NOTE - editors - among lecturer of the same programme
+      if qstatus=="New" &&(creator_id==curr_user.userable_id || is_admin)
+        "edit.png"
+      elsif qstatus=="New" && creator_id!=curr_user.userable_id
+        "noedit"
+      elsif qstatus=="Submit" && (curr_user.lecturers_programme==programme_id || is_admin)#(curr_user.lecturers_programme.include?(programme_id) || is_admin)
+        "edit.png"
+      elsif ["Editing", "Re-Edit"].include?(qstatus) && (editor_id==curr_user.userable_id || is_admin)
+        "edit.png"
+      elsif qstatus=="Re-Edit" && approver_id==curr_user.userable_id
+        "noedit"
+      elsif ["Ready For Approval", "For Approval"].include?(qstatus) && (creator_id==curr_user.userable_id || editor_id==curr_user.userable_id) && !is_admin
+        "noedit"
+      elsif  ["Ready For Approval", "For Approval"].include?(qstatus) && (approver_id==curr_user.userable_id || is_admin)
+        "edit.png"
+      elsif qstatus=="Approved" && (approver_id==curr_user.userable_id || is_admin)
+        "edit.png"
+      elsif qstatus=="Approved" && approver_id!=curr_user.userable_id
+        "noedit"
+      end
+      #-----------kskbjb--end
+    else
+      #-----------amsas-start
+      # NOTE - editors - must be from Kawalan Mutu / Kompetensi department - 11Nov2016
+      qc_ids=Staff.joins(:positions).where('positions.unit ILIKE(?) OR positions.unit ILIKE(?)', 'Kompetensi', 'Kawalan Mutu').pluck(:id)
+      if qstatus=="New" &&(creator_id==curr_user.userable_id || is_admin)
+        "edit.png"
+      elsif qstatus=="New" && creator_id!=curr_user.userable_id
+        "noedit"
+      elsif qstatus=="Submit" && (qc_ids.include?(curr_user.userable_id) || is_admin)
+        "edit.png"
+      elsif qstatus=="Submit" && (qc_ids.include?(curr_user.userable_id)==false)
+        "noedit"
+      # 
+      elsif ["Editing", "Re-Edit"].include?(qstatus) && (editor_id==curr_user.userable_id || is_admin)
+        "edit.png"
+      elsif qstatus=="Re-Edit" && (approver_id==curr_user.userable_id || creator_id==curr_user.userable_id)
+        "noedit"
+      elsif ["Ready For Approval", "For Approval"].include?(qstatus) && (creator_id==curr_user.userable_id || editor_id==curr_user.userable_id) && !is_admin
+        "noedit"
+      elsif  ["Ready For Approval", "For Approval"].include?(qstatus) && (approver_id==curr_user.userable_id || is_admin)
+        "edit.png"
+      elsif qstatus=="Approved" && (approver_id==curr_user.userable_id || is_admin)
+        "edit.png"
+      elsif qstatus=="Approved" && approver_id!=curr_user.userable_id
+        "noedit"
+      end
+      #-----------amsas-end
     end
   end
    
@@ -238,7 +291,7 @@ class Examquestion < ActiveRecord::Base
     if approver.blank?
       "None Assigned"
     else
-      approver.name
+      approver.staff_with_rank
     end
   end
 

@@ -51,15 +51,15 @@
                 =t'exam.examquestion.fit_fairness' 
                 &nbsp;
             %tr
-              %td{:align => "center"}=h @examquestion.conform_curriculum? ? image_tag("tick.png") : image_tag("cross.png")
-              %td{:align => "center"}= h @examquestion.conform_specification? ? image_tag("tick.png") : image_tag("cross.png")
-              %td{:align => "center"}= h @examquestion.conform_opportunity? ? image_tag("tick.png") : image_tag("cross.png")
-              %td{:align => "center"}= h @examquestion.accuracy_construct? ? image_tag("tick.png") : image_tag("cross.png")
-              %td{:align => "center"}= h @examquestion.accuracy_topic? ? image_tag("tick.png") : image_tag("cross.png")
-              %td{:align => "center"}= h @examquestion.accuracy_component? ? image_tag("tick.png") : image_tag("cross.png")
-              %td{:align => "center"}= h @examquestion.fit_difficulty? ? image_tag("tick.png") : image_tag("cross.png")
-              %td{:align => "center"}= h @examquestion.fit_important? ? image_tag("tick.png") : image_tag("cross.png")
-              %td{:align => "center"}= h @examquestion.fit_fairness? ? image_tag("tick.png") : image_tag("cross.png")
+              %td{:align => "center"}=h @examquestion.conform_curriculum? ? fa_icon('check') : fa_icon('times')
+              %td{:align => "center"}= h @examquestion.conform_specification? ? fa_icon('check') : fa_icon('times')
+              %td{:align => "center"}= h @examquestion.conform_opportunity? ? fa_icon('check') : fa_icon('times')
+              %td{:align => "center"}= h @examquestion.accuracy_construct? ? fa_icon('check') : fa_icon('times')
+              %td{:align => "center"}= h @examquestion.accuracy_topic? ? fa_icon('check') : fa_icon('times')
+              %td{:align => "center"}= h @examquestion.accuracy_component? ? fa_icon('check') : fa_icon('times')
+              %td{:align => "center"}= h @examquestion.fit_difficulty? ? fa_icon('check') : fa_icon('times')
+              %td{:align => "center"}= h @examquestion.fit_important? ? fa_icon('check') : fa_icon('times')
+              %td{:align => "center"}= h @examquestion.fit_fairness? ? fa_icon('check') : fa_icon('times')
     %dt= t'exam.examquestion.editdt'
     %dd=h l(@examquestion.editdt) unless @examquestion.editdt.blank? 
 

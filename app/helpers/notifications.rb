@@ -242,6 +242,18 @@ module Notifications
     LessonPlan.where(lecturer: current_staff_id).where(report_submit: true).where(report_endorsed: true).where('report_endorsed_on <?', Date.today+30.days).count
   end
   
+  def editors_submitted_examquestion
+    Examquestion.where(qstatus: 'Submit').where(college_id: College.where(code: 'amsas').first.id).where(programme_id: current_user.editors_programme).count
+  end
+  
+  def approver_submitted_examquestion
+    Examquestion.where(qstatus: ['Ready For Approval', 'For Approval']).where(college_id: College.where(code: 'amsas').first.id).where(approver_id: current_staff_id).count
+  end
+  
+  def editors_rejected_examquestion
+    Examquestion.where(qstatus: 'Re-Edit').where(college_id: College.where(code: 'amsas').first.id).where(editor_id: current_staff_id).count
+  end
+  
 end
 
 

@@ -115,3 +115,13 @@
   
  - if lecturer_approved_lesson_report > 0
   %li=link_to content_tag(:span, "#{lecturer_approved_lesson_report}", class: "badge") +(t 'notifications.lecturer_approved_lesson_report'), training_lesson_plans_path
+  
+ #12Nov2016
+ - if editors_submitted_examquestion > 0
+  %li=link_to content_tag(:span, "#{editors_submitted_examquestion}", class: "badge") +(t 'notifications.editors_submitted_examquestion'), exam_examquestions_path
+  
+ - if approver_submitted_examquestion > 0
+  %li=link_to content_tag(:span, "#{approver_submitted_examquestion}", class: "badge") +(t 'notifications.approver_submitted_examquestion'), exam_examquestions_path
+  
+ - if editors_rejected_examquestion > 0
+  %li=link_to content_tag(:span, "#{editors_rejected_examquestion}", class: "badge") +(t 'notifications.editors_rejected_examquestion'), exam_examquestions_path

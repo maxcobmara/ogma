@@ -4,9 +4,9 @@
       = f.label :creator_id
     .col-md-6 
       - if @examquestion.creator_id!=nil && ["Submit", "Editing", "Re-Edit"].include?(@examquestion.qstatus)
-        = f.collection_select :creator_id, Staff.where('id IN (?)', @examquestion.creator_id), :id, :name,{}, {class: 'selectpicker readonly', "data-width"=>"300px"}
+        = f.collection_select :creator_id, Staff.where('id IN (?)', @examquestion.creator_id), :id, :staff_with_rank,{}, {class: 'selectpicker readonly', "data-width"=>"300px"}
       - else
-        = f.collection_select :creator_id, Staff.where('id IN (?)', @examquestion.question_creator(current_user)).order('name ASC'), :id, :name, {:include_blank => (t 'select'), :selected =>@creator, :prompt => t('helpers.prompt.select_creator')}, {class: 'selectpicker mandatory', "data-width"=>"300px"}
+        = f.collection_select :creator_id, Staff.where('id IN (?)', @examquestion.question_creator(current_user)).order(rank_id: :asc, name: :asc), :id, :staff_with_rank, {:include_blank => (t 'select'), :selected =>@creator, :prompt => t('helpers.prompt.select_creator')}, {class: 'selectpicker mandatory', "data-width"=>"300px"}
 
   .form-group
     .col-sm-2.control-label
