@@ -21,8 +21,8 @@ class Exam::ExamquestionsController < ApplicationController
       if @examquestions && @programme_exams
         format.html # index.html.erb
         format.xml  { render :xml => @examquestions }
-        format.csv { send_data @examquestions.to_csv }
-        format.xls { send_data @examquestions.to_csv(col_sep: "\t") }
+        format.csv { send_data @examquestions_all.to_csv }
+        format.xls { send_data @examquestions_all.to_csv(col_sep: "\t") }
       else
         format.html { redirect_to(dashboard_url, :notice =>t('positions_required')+(t 'exam.title')+" - "+(t 'exam.examquestion.title')) }
       end
@@ -181,8 +181,8 @@ class Exam::ExamquestionsController < ApplicationController
 	end
 	if @programme_id
 	@search = Examquestion.search(params[:q])
-	@examquestions = @search.result.search2(@programme_id)
-	@examquestions = @examquestions.page(params[:page]||1)
+	@examquestions_all = @search.result.search2(@programme_id)
+	@examquestions = @examquestions_all.page(params[:page]||1)
 	@programme_exams = @examquestions.group_by{|x|x.subject.root_id}
 	end
       end

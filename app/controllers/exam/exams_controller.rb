@@ -38,7 +38,7 @@ class Exam::ExamsController < ApplicationController
           #else
             @programme_id='2'#Programme.where(name: lecturer_basicprog_name, ancestry_depth: 0).first.id
           #end
-        elsif roles.include?("administration") || roles.include?("exampaper_module_admin")|| roles.include?("exampaper_module_viewer")||  roles.include?("exampaper_module_member")
+        elsif roles.include?("developer") || roles.include?("administration") || roles.include?("exampaper_module_admin")|| roles.include?("exampaper_module_viewer")||  roles.include?("exampaper_module_member")
           @programme_id='0'
         else
           leader_unit=@tasks_main.scan(/Program (.*)/)[0][0].split(" ")[0] if @tasks_main!="" && @tasks_main.include?('Program')
@@ -319,7 +319,7 @@ class Exam::ExamsController < ApplicationController
             @subjects=Programme.subject_groupbycommonsubjects
             @programme_names=Programme.programme_names
           else
-            if roles.include?("administration") || roles.include?("exampaper_module")
+            if roles.include?("developer") || roles.include?("administration") || roles.include?("exampaper_module")
               @programme_names=Programme.programme_names
               @topics=Programme.topic_groupbysubject2
               @subjects=Programme.subject_groupbyprogramme2
@@ -377,7 +377,7 @@ class Exam::ExamsController < ApplicationController
           #  @subjects_paper=Programme.subject_groupbyoneprogramme2(@programme2.id) #new only
           @subjects_paper=Programme.subject_groupbyposbasiks2 #new only
           #end
-        elsif roles.include?("administration") || roles.include?("exampaper_module")
+        elsif roles.include?("developer") || roles.include?("administration") || roles.include?("exampaper_module")
           @staff_listing=@exam.creator_list unless @exam.nil?
           @subjects_paper=Programme.subject_groupbyprogramme2 #new only
         else

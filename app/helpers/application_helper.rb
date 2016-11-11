@@ -137,4 +137,9 @@ module ApplicationHelper
     a[0, a.size-2] if a.size > 0
   end
   
+  def texteditor_content(string)
+    #http://stackoverflow.com/questions/7414267/strip-html-from-string-ruby-on-rails
+    ActionView::Base.full_sanitizer.sanitize(string, :tags => %w(img br p span), :attributes => %w(src style)).gsub!("&nbsp;", " ")
+  end
+  
 end

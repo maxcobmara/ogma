@@ -667,7 +667,7 @@ authorization do
    
    #EXAMINATION modules
    #moved examination modules to role - exam_administration
-   has_permission_on :exam_examquestions, :to => [:menu, :read, :index, :create]
+   has_permission_on :exam_examquestions, :to => [:menu, :read, :index, :create, :examquestion_report]
    has_permission_on :exam_examquestions, :to => :update do
      if_attribute :programme_id => is_in {user.lecturers_programme}
    end
@@ -732,7 +732,7 @@ authorization do
 
   #28Dec2015- confirmed by EN Ahmad - access for Examination modules restricted ONLY for Exam Admin (except for Programme Mgr : Examresult by Prog, Examanalysis, Examquestions & Course Evaluation)
   role :programme_manager do
-    has_permission_on :exam_examquestions, :to => :manage
+    has_permission_on :exam_examquestions, :to => [:manage, :examquestion_report]
     #has_permission_on [:exam_exam_templates, :exam_grades], :to => [:menu, :read]
     #has_permission_on :exam_exams, :to => [:menu, :read, :exampaper, :question_selection] #[:manage, :exampaper, :question_selection]
     #has_permission_on :exam_exammarks, :to => [:menu, :read] #[:manage, :edit_multiple, :update_multiple, :new_multiple, :create_multiple]
@@ -1905,13 +1905,13 @@ authorization do
   
   #37-OK - 3/4 OK (Admin, Viewer, User) - revised on 19Feb2016, disable Member (use 'Lecturer' role instead)
   role :examquestions_module_admin do
-     has_permission_on :exam_examquestions, :to => :manage
+     has_permission_on :exam_examquestions, :to => [:manage, :examquestion_report]
   end
   role :examquestions_module_viewer do
-     has_permission_on :exam_examquestions, :to => [:menu, :read]
+     has_permission_on :exam_examquestions, :to => [:menu, :read, :examquestion_report]
   end
   role :examquestions_module_user do
-     has_permission_on :exam_examquestions, :to => [:menu, :read, :index, :update]
+     has_permission_on :exam_examquestions, :to => [:menu, :read, :index, :update, :examquestion_report]
   end
 #   role :examquestions_module_member do
 #     has_permission_on :exam_examquestions, :to => [:menu, :read, :index, :create]

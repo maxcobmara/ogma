@@ -13,7 +13,6 @@ class Examquestion_reportPdf < Prawn::Document
       @ccc=counting
       record
     end
-    #record
     
     page_count.times do |i|
       go_to_page(i+1)
@@ -29,7 +28,7 @@ class Examquestion_reportPdf < Prawn::Document
     count=2
     yo=page_number-1
     @programme_exams.each do |prog, examquestions|
-      if @progg[@ccc]==prog#if @progg[page_number-1]==prog 
+      if @progg[@ccc]==prog
         unless prog.blank?
           prog_line << count
           count+=1
@@ -93,7 +92,7 @@ class Examquestion_reportPdf < Prawn::Document
     body=[]
     yo2=page_number-1
     @programme_exams.each do |prog, examquestions|
-      if @progg[@ccc]==prog #if @progg[page_number-1]==prog
+      if @progg[@ccc]==prog
         ###
         unless prog.blank?
           body << [ {content: "#{I18n.t('exam.examquestion.programme_id')} : #{Programme.find(prog).name}", colspan: 8}]
@@ -113,11 +112,9 @@ class Examquestion_reportPdf < Prawn::Document
                       if question.question.include?('span')==false
                         qtext=question.question
                       else
-                        #http://stackoverflow.com/questions/7414267/strip-html-from-string-ruby-on-rails
-                        qtext=ActionView::Base.full_sanitizer.sanitize(question.question, :tags => %w(img br p span), :attributes => %w(src style))
-                        qtext=qtext.gsub!("&nbsp;", " ")
+                        qtext=@view.texteditor_content(question.question)
                       end
-		      
+
                       #START - answer===========================
 		      qanswer=""
 		      qanswer+="<br><b>#{I18n.t('exam.examquestion.answer')}</b>"
@@ -136,9 +133,7 @@ class Examquestion_reportPdf < Prawn::Document
                           qanswer+="#{examanswer.item}"
                           qanswer+=" #{examanswer.answer_desc}<br>"
 			end
-                                   
                       elsif question.questiontype=="SEQ" 
-                        #SEQ start
                         for shortessay in question.shortessays.sort_by{|x|x.item}	
                           qanswer+="<br>"
 			  qanswer+="<u>#{I18n.t('exam.examquestion.subquestion')} #{shortessay.item} : </u><br>"
@@ -150,22 +145,18 @@ class Examquestion_reportPdf < Prawn::Document
 			  if shortessay.subanswer.include?('span')==false
 			    subanswer=shortessay.subanswer
 			  else
-			    #http://stackoverflow.com/questions/7414267/strip-html-from-string-ruby-on-rails
-                            subanswer=ActionView::Base.full_sanitizer.sanitize(shortessay.subanswer, :tags => %w(img br p span), :attributes => %w(src style))
-                            subanswer=subanswer.gsub!("&nbsp;", " ")
+			    subanswer=@view.texteditor_content(shortessay.subanswer)
 			  end
 			  ###----------------
                           qanswer+="#{subanswer}"
 			end
                       elsif question.questiontype=="TRUEFALSE"
 			qanswer+="<br><u>#{I18n.t('exam.examquestion.booleanchoices')}</u><br>"
-                       
                         for booleanchoice in question.booleanchoices.sort_by{|x|x.item}
                           qanswer+="#{booleanchoice.item}. "
                           qanswer+="#{booleanchoice.description}<br>"
 			end
                         qanswer+="<u>#{I18n.t( 'exam.examquestion.booleananswers')}</u><br>"
-                        
                         for booleananswer in question.booleananswers.sort_by{|y|y.item}
 			  qanswer+="#{booleananswer.item}. "
                           qanswer+="#{I18n.t('exam.examquestion.true1') if booleananswer.answer==true}"
