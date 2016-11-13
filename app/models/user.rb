@@ -365,7 +365,7 @@ class User < ActiveRecord::Base
     qc_ids=Staff.joins(:positions).where('positions.unit ILIKE(?) OR positions.unit ILIKE(?)', 'Kompetensi', 'Kawalan Mutu').pluck(:id)
     if qc_ids.include?(userable_id)
       #11Nov2016 - temp - must fr Kawalan Mutu / Kompetensi
-      programmeid=Programme.roots.pluck(:id) 
+      programmeid=Programme.roots.where(college_id: College.where(code: 'amsas')).pluck(:id) 
     else
       programmeid=[]
     end

@@ -4114,6 +4114,7 @@ ms_MY:
     editors_submitted_examquestion: " Soalan Peperiksaan telah dihantar untuk disemak"
     approver_submitted_examquestion: " Soalan Peperiksaan telah dihantar untuk diluluskan"
     editors_rejected_examquestion: " Soalan Peperiksaan telah ditolak"
+    editors_pending_submission_for_approval: " Soalan Peperiksaan dalam semakan belum dihantar untuk kelulusan"
     
   helpers:
     links:

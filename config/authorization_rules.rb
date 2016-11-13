@@ -484,10 +484,15 @@ authorization do
      if_attribute :studentsubmit => true
      if_attribute :staff_id => is {user.userable.id} #specific to Approver
    end
-   # NOTE : amsas only
+   
+   # NOTE - 13Nov2016 exam_examquestions related roles 
+   #(1) amsas (creator: lecturer role, editor & approver: staff role)
+   #(2) kskbjb (creator: lecturer role, editor: lecturer role -> of the same programme as creator, Approver: programme manager role)
+   
+   # NOTE : amsas only (college_id -> refer user.rb)
    has_permission_on :exam_examquestions, :to => [:menu, :read], :join_by => :or do
      if_attribute :approver_id => is {user.userable_id}                                                                           #approver
-     if_attribute :programme_id => is_in {user.editors_programme}                                                      #editors
+     if_attribute :programme_id => is_in {user.editors_programme}                                                      #editors - Kawalan Mutu / Kompetensi
    end
    # NOTE : amsas only - for approver (any staff being assigned as approver)
    has_permission_on :exam_examquestions, :to => :update, :join_by => :and do 
@@ -688,14 +693,40 @@ authorization do
     
    #OK until here..... 29Jan2016
    
+   # NOTE - 13Nov2016 exam_examquestions related roles 
+   #(1) amsas (creator: lecturer role, editor & approver: staff role)
+   #(2) kskbjb (creator: lecturer role, editor: lecturer of the same programme as creator, Approver: Programme Manager / any assigned staff?)
+   
    #EXAMINATION modules
    #moved examination modules to role - exam_administration
    has_permission_on :exam_examquestions, :to => [:menu, :read, :index, :create, :examquestion_report]
+
+   #13Nov2016 - start
+   #if creator save record first be4 submit - applicable to both college
    has_permission_on :exam_examquestions, :to => :update, :join_by => :and do
-     if_attribute :programme_id => is_in {user.lecturers_programme}
+     if_attribute :creator_id => is {user.userable_id}
      if_attribute :qstatus => is {"New"}
    end
-   # TODO - fix below, temp use above
+   # NOTE : kskbjb only - editors are among lecturers of the same programme as creator 
+   has_permission_on :exam_examquestions, :to => :update, :join_by => :and do
+     if_attribute :programme_id => is_in {user.lecturers_programme}
+     if_attribute :qstatus => is {"Submit"}
+     if_attribute :college_id => is {College.where(code: 'kskbjb').first.id}
+   end
+    # NOTE : kskbjb only - for assigned editor (previously saved w/o submission OR submitted but rejected examquestion) - same programme as creator
+   has_permission_on :exam_examquestions, :to => :update, :join_by => :and do
+     if_attribute :college_id => is {College.where(code: 'kskbjb').first.id}
+     if_attribute :qstatus => is_in {["Editing", "Re-Edit"]}
+     if_attribute :editor_id => is {user.userable_id}
+   end
+   #13Nov2016 - end
+
+#before 13Nov2016
+#    has_permission_on :exam_examquestions, :to => :update, :join_by => :and do
+#      if_attribute :programme_id => is_in {user.lecturers_programme}
+#      if_attribute :qstatus => is {"New"}
+#    end
+   # TODO - fix below, temp use above 
 #    has_permission_on :exam_examquestions, :to =>:update, :join_by => :and do
 #      if_attribute :creator_id => is {user.userable.id}
 #      if_attribute :qstatus => is {"New"}
@@ -756,7 +787,16 @@ authorization do
 
   #28Dec2015- confirmed by EN Ahmad - access for Examination modules restricted ONLY for Exam Admin (except for Programme Mgr : Examresult by Prog, Examanalysis, Examquestions & Course Evaluation)
   role :programme_manager do
-    has_permission_on :exam_examquestions, :to => [:manage, :examquestion_report]
+    #has_permission_on :exam_examquestions, :to => [:manage, :examquestion_report]
+    # NOTE - kskbjb only, for amsas approver - refer staff role
+    has_permission_on :exam_examquestions, :to => [:menu, :read, :examquestion_report] do
+       if_attribute :college_id => is {College.where(code: 'kskbjb').first.id}
+    end
+    has_permission_on :exam_examquestions, :to => :update, :join_by => :and do 
+     if_attribute :approver_id => is {user.userable_id}
+     if_attribute :college_id => is {College.where(code: 'kskbjb').first.id}
+     if_attribute :qstatus => is_in {["Ready For Approval", "For Approval"]}
+   end
     #has_permission_on [:exam_exam_templates, :exam_grades], :to => [:menu, :read]
     #has_permission_on :exam_exams, :to => [:menu, :read, :exampaper, :question_selection] #[:manage, :exampaper, :question_selection]
     #has_permission_on :exam_exammarks, :to => [:menu, :read] #[:manage, :edit_multiple, :update_multiple, :new_multiple, :create_multiple]

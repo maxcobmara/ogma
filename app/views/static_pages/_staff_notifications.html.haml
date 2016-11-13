@@ -125,3 +125,7 @@
   
  - if editors_rejected_examquestion > 0
   %li=link_to content_tag(:span, "#{editors_rejected_examquestion}", class: "badge") +(t 'notifications.editors_rejected_examquestion'), exam_examquestions_path
+  
+ #14Nov2016
+ - if editors_pending_submission_for_approval > 0
+  %li=link_to content_tag(:span, "#{editors_pending_submission_for_approval}", class: "badge") +(t 'notifications.editors_pending_submission_for_approval'), exam_examquestions_path
