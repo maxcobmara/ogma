@@ -56,16 +56,30 @@ class Exam < ActiveRecord::Base
   end
   
   def self.complete_search(query)
-    query2=true if query=='1'
-    query2=false if query=='0'
+    query=true if query=='1'
+    query=false if query=='0'
     aa=[]
-    Exam.all.each{|x|aa << x.id if x.complete_paper==query2}
+    Exam.all.each{|x|aa << x.id if x.complete_paper==query}
     where(id: aa)
+  end
+  
+  def self.full_marks_search(query)
+    et_ids=[]
+    ExamTemplate.all.each{|et| et_ids << et.id if et.template_full_marks.to_f==query.to_f}
+    where(topic_id: et_ids)
+  end
+  
+  def self.starttime_search(query)
+    where('starttime=?', query)
+  end
+  
+  def self.endtime_search(query)
+    where('endtime=?', query)
   end
 
   # whitelist the scope
   def self.ransackable_scopes(auth_object = nil)
-    [:subject_search, :programme_search, :semester_search, :complete_search]
+    [:subject_search, :programme_search, :semester_search, :complete_search, :full_marks_search, :starttime_search, :endtime_search]
   end
   
   def set_sequence
@@ -296,7 +310,11 @@ class Exam < ActiveRecord::Base
   #--12June2013
   
   def timing
-    "#{starttime.try(:strftime, "%l:%M %P")}"+" - "+"#{endtime.try(:strftime, "%l:%M %P")}" if starttime!=nil && endtime!=nil
+    if college.code=='amsas'
+       "#{starttime.try(:strftime, "%H:%M")}"+" - "+"#{endtime.try(:strftime, "%H:%M")}" if starttime!=nil && endtime!=nil
+    else
+      "#{starttime.try(:strftime, "%l:%M %P")}"+" - "+"#{endtime.try(:strftime, "%l:%M %P")}" if starttime!=nil && endtime!=nil
+    end
   end 
   
   def syear 
