@@ -3,13 +3,17 @@
     .col-sm-2.control-label
       = f.label :editor_id
     .col-md-6
-      = f.collection_select :editor_id, Staff.where('id IN (?)', @examquestion.question_editor(current_user)).order('staffgrade_id DESC, name ASC'), :id, :name, {:prompt => t('helpers.prompt.select_editor'), :selected => @current_user.userable_id}, {class: 'selectpicker', "data-width"=>"300px"}
+      - if current_user.college.code=="kskbjb"
+        - editors=@examquestion.question_editor(current_user)
+      - else
+        - editors=Staff.joins(:positions).where('positions.unit ILIKE(?) OR positions.unit ILIKE(?)', 'Kompetensi', 'Kawalan Mutu').pluck(:id)
+      = f.collection_select :editor_id, Staff.where('id IN (?)', editors).order('staffgrade_id DESC, name ASC'), :id, :staff_with_rank, {:include_blank => t('helpers.prompt.select_editor'), :selected => current_user.userable_id}, {class: 'selectpicker', "data-width"=>"300px"}
 
   .form-group
     .col-sm-2.control-label
       = f.label :editdt
     .col-md-2
-      = f.text_field :editdt, class: 'date_picker_reverse form-control'
+      = f.text_field :editdt, class: 'date_picker_reverse form-control', value: @examquestion.editdt.try(:strftime, '%d-%m-%Y')
 
   .form-group
     .col-sm-2.control-label
@@ -74,7 +78,8 @@
       - if current_user.college.code=="kskb"
         = f.collection_select :approver_id, Staff.where("id IN (?)", @examquestion.question_approver).order('staffgrade_id DESC, name ASC'), :id, :name, {:include_blank => (t 'helpers.prompt.select_approver')},{class: 'selectpicker', "data-width"=>"230px"}
       - else
-        = f.collection_select :approver_id, Staff.all.order(rank_id: :asc, name: :asc), :id, :staff_with_rank, {:include_blank => (t 'helpers.prompt.select_approver')},{class: 'selectpicker', "data-width"=>"230px"}
+        - approvers=Staff.joins(:positions).where('positions.unit ILIKE(?)', 'Kompetensi/Kawalan Mutu').pluck(:id)
+        = f.collection_select :approver_id, Staff.where("id IN(?)", approvers).order(rank_id: :asc, name: :asc), :id, :staff_with_rank, {:include_blank => (t 'helpers.prompt.select_approver')},{class: 'selectpicker', "data-width"=>"auto"}
       
   //copied from partial : form_approval.html.haml in order to assign HOD accordingly - end
 

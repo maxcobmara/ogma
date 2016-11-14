@@ -89,7 +89,7 @@ class Examquestion_reportPdf < Prawn::Document
   def line_item_rows
     counter = counter || 0
     header = [[{content: "#{I18n.t('exam.examquestion.list').upcase}<br> #{@college.name.upcase}", colspan: 17}],
-              [ {content: 'No', rowspan: 2}, {content: "#{I18n.t('exam.examquestion.questiontype')}", rowspan:2}, {content: "#{ I18n.t('exam.examquestion.question')} & #{I18n.t('exam.examquestion.answer')}", rowspan: 2}, {content: "#{I18n.t('exam.examquestion.marks')}", rowspan: 2} , {content: "#{I18n.t('exam.examquestion.category')}", rowspan: 2}, {content: "#{I18n.t('exam.examquestion.difficulty')}", rowspan: 2}, {content: "#{I18n.t('exam.examquestion.qstatus')}", rowspan: 2}, {content: "#{I18n.t('exam.examquestion.creator_id')}", rowspan: 2}, {content: I18n.t('exam.examquestion.edit_details'), colspan: 9}], ["1", "2", "3", "4", "5", "6", "7", "8", "9"]]
+              [ {content: 'No', rowspan: 2}, {content: "#{I18n.t('exam.examquestion.questiontype')}", rowspan:2}, {content: "#{ I18n.t('exam.examquestion.question')} & #{I18n.t('exam.examquestion.answer')}", rowspan: 2}, {content: "#{I18n.t('exam.examquestion.marks')}", rowspan: 2} , {content: "#{I18n.t('exam.examquestion.category')}", rowspan: 2}, {content: "#{I18n.t('exam.examquestion.difficulty')}", rowspan: 2}, {content: "#{I18n.t('exam.examquestion.qstatus')}", rowspan: 2}, {content: "#{I18n.t('exam.examquestion.creator_id')}", rowspan: 2}, {content: "#{I18n.t('exam.examquestion.edit_details')} / #{I18n.t('exam.examquestion.quality_control')}", colspan: 9}], ["1", "2", "3", "4", "5", "6", "7", "8", "9"]]
     body=[]
     yo2=page_number-1
     @programme_exams.each do |prog, examquestions|
@@ -192,7 +192,7 @@ class Examquestion_reportPdf < Prawn::Document
   
   def footer
     draw_text "#{page_number} / #{page_count}",  :size => 8, :at => [750,-5]
-    draw_text "#{I18n.t('legend')} (#{I18n.t('exam.examquestion.edit_details')}) : ", :size => 9, :at => [0, 5], :style => :bold
+    draw_text "#{I18n.t('legend')} (#{I18n.t('exam.examquestion.edit_details')} / #{I18n.t('exam.examquestion.quality_control')}) : ", :size => 9, :at => [0, 5], :style => :bold
     draw_text "#{I18n.t('exam.examquestion.conformity').upcase}: 1-#{I18n.t('exam.examquestion.conform_curriculum')}, 2-#{I18n.t('exam.examquestion.conform_specification')}, 3-#{I18n.t('exam.examquestion.conform_opportunity')}  |  #{I18n.t('exam.examquestion.accuracy').upcase}: 4-#{I18n.t('exam.examquestion.accuracy_construct')}, 5-#{I18n.t('exam.examquestion.accuracy_topic')}, 6-#{I18n.t('exam.examquestion.accuracy_component')}  |  #{I18n.t('exam.examquestion.fit').upcase} : 7-#{ I18n.t('exam.examquestion.fit_difficulty')}, 8-#{ I18n.t('exam.examquestion.fit_important')}, 9-#{ I18n.t('exam.examquestion.fit_fairness')}", :size => 8, :at => [0, -5]
   end
   

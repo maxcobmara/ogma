@@ -107,14 +107,7 @@ class Exam::ExamquestionsController < ApplicationController
   end
   
   def examquestion_report
-#     @search = Examquestion.search(params[:q])
-#     @examquestions = @search.result
-    ####
     if @examquestions && @programme_exams
-#         format.html # index.html.erb
-#         format.xml  { render :xml => @examquestions }
-#         format.csv { send_data @examquestions.to_csv }
-#         format.xls { send_data @examquestions.to_csv(col_sep: "\t") }
       respond_to do |format|
         format.pdf do
           pdf = Examquestion_reportPdf.new(@examquestions, @programme_exams, view_context, current_user.college)
@@ -126,15 +119,6 @@ class Exam::ExamquestionsController < ApplicationController
     else
       format.html { redirect_to(dashboard_url, :notice =>t('positions_required')+(t 'exam.title')+" - "+(t 'exam.examquestion.title')) }
     end
-    ####
-#     respond_to do |format|
-#       format.pdf do
-#         pdf = Examquestion_reportPdf.new(@examquestions, view_context, current_user.college)
-#         send_data pdf.render, filename: "examquestion_report-{Date.today}",
-#                                type: "application/pdf",
-#                                disposition: "inline"
-#       end
-#     end
   end
   
   private
@@ -173,17 +157,25 @@ class Exam::ExamquestionsController < ApplicationController
 	  elsif current_roles.include?("developer") || current_roles.include?("administration") || current_roles.include?("examquestions_module")
 	    @programme_id='0'
 	  else
-	    leader_unit=@tasks_main.scan(/Program (.*)/)[0][0].split(" ")[0] if @tasks_main!="" && @tasks_main.include?('Program')
+            leader_unit=@tasks_main.scan(/Program (.*)/)[0][0].split(" ")[0] if @tasks_main!="" && @tasks_main.include?('Program')
 	    if leader_unit
 	      @programme_id = Programme.where('name ILIKE (?) AND ancestry_depth=?',"%#{leader_unit}%",0).first.id
 	    end
 	  end
 	end
+
 	if @programme_id
-	@search = Examquestion.search(params[:q])
-	@examquestions_all = @search.result.search2(@programme_id)
-	@examquestions = @examquestions_all.page(params[:page]||1)
-	@programme_exams = @examquestions.group_by{|x|x.subject.root_id}
+	  @search = Examquestion.search(params[:q])
+          @examquestions_all = @search.result.search2(@programme_id)
+	  @examquestions = @examquestions_all.page(params[:page]||1)
+	  @programme_exams = @examquestions.group_by{|x|x.subject.root_id}
+	else
+	  if current_user.college.code=="amsas"
+	    @search = Examquestion.search(params[:q])
+	    @examquestions_all = @search.result.search3(current_user.userable_id)
+	    @examquestions = @examquestions_all.page(params[:page]||1)
+	    @programme_exams = @examquestions.group_by{|x|x.subject.root_id}
+	  end
 	end
       end
       ##----------
@@ -227,13 +219,19 @@ class Exam::ExamquestionsController < ApplicationController
              @subjects=Programme.subject_groupbyprogramme_amsas
            end
         else
-          tasks_main=@current_user.userable.positions.first.tasks_main
-          leader_unit=tasks_main.scan(/Program (.*)/)[0][0].split(" ")[0] if tasks_main!="" && tasks_main.include?('Program')
-          if leader_unit       
-            @programme = Programme.where('name ILIKE (?) AND ancestry_depth=?',"%#{leader_unit}%",0).first
-            @preselect_prog=@programme.id
-            @programme_list=Programme.where(id: @preselect_prog)
-            @subjects=Programme.subject_groupbyoneprogramme2(@preselect_prog)
+          if current_user.college.code=="kskbjb"
+            tasks_main=current_user.userable.positions.first.tasks_main
+            leader_unit=tasks_main.scan(/Program (.*)/)[0][0].split(" ")[0] if tasks_main!="" && tasks_main.include?('Program')
+            if leader_unit       
+              @programme = Programme.where('name ILIKE (?) AND ancestry_depth=?',"%#{leader_unit}%",0).first
+              @preselect_prog=@programme.id
+              @programme_list=Programme.where(id: @preselect_prog)
+              @subjects=Programme.subject_groupbyoneprogramme2(@preselect_prog)
+            end
+          else
+            #Other College : Temp (11 Nov 2016) - temporary may create question for any subject
+            @programme_list=Programme.roots
+            @subjects=Programme.subject_groupbyprogramme_amsas
           end
         end
       end
@@ -269,6 +267,6 @@ class Exam::ExamquestionsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def examquestion_params
-      params.require(:examquestion).permit(:activate,:answermcq, :subject_id, :questiontype, :question, :answer, :marks, :category, :qkeyword, :qstatus, :creator_id, :createdt, :difficulty, :statusremark, :editor_id, :editdt, :approver_id, :approvedt, :bplreserve, :bplsent, :bplsentdt, :diagram, :diagram_file_name, :diagram_content_type, :diagram_file_size, :diagram_updated_at, :diagram_caption, :topic_id , :construct, :conform_curriculum, :conform_specification, :conform_opportunity, :accuracy_construct, :accuracy_topic, :accuracy_component, :fit_difficulty, :fit_important, :fit_fairness, :programme_id, answerchoices_attributes: [:id,:examquestion_id, :item, :description], examanswers_attributes: [:id,:examquestion_id,:item,:answer_desc], shortessays_attributes: [:id,:item,:subquestion,:submark,:subanswer, :examquestion_id, :keyword], booleanchoices_attributes: [:id, :examquestion_id,:item,:description], booleananswers_attributes: [:id,:examquestion_id, :item, :answer])
+      params.require(:examquestion).permit(:activate,:answermcq, :subject_id, :questiontype, :question, :answer, :marks, :category, :qkeyword, :qstatus, :creator_id, :createdt, :difficulty, :statusremark, :editor_id, :editdt, :approver_id, :approvedt, :bplreserve, :bplsent, :bplsentdt, :diagram, :diagram_file_name, :diagram_content_type, :diagram_file_size, :diagram_updated_at, :diagram_caption, :topic_id , :construct, :conform_curriculum, :conform_specification, :conform_opportunity, :accuracy_construct, :accuracy_topic, :accuracy_component, :fit_difficulty, :fit_important, :fit_fairness, :programme_id, :college_id, {:data => []}, answerchoices_attributes: [:id,:examquestion_id, :item, :description], examanswers_attributes: [:id,:examquestion_id,:item,:answer_desc], shortessays_attributes: [:id,:item,:subquestion,:submark,:subanswer, :examquestion_id, :keyword], booleanchoices_attributes: [:id, :examquestion_id,:item,:description], booleananswers_attributes: [:id,:examquestion_id, :item, :answer])
     end
 end
