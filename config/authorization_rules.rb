@@ -490,9 +490,9 @@ authorization do
    #(2) kskbjb (creator: lecturer role, editor: lecturer role -> of the same programme as creator, Approver: programme manager role)
    
    # NOTE : amsas only (college_id -> refer user.rb)
-   has_permission_on :exam_examquestions, :to => [:menu, :read], :join_by => :or do
-     if_attribute :approver_id => is {user.userable_id}                                                                           #approver
-     if_attribute :programme_id => is_in {user.editors_programme}                                                      #editors - Kawalan Mutu / Kompetensi
+   has_permission_on :exam_examquestions, :to => [:menu, :read], :join_by => :or do                       #approver - Ketua Pen Pgh Kompetensi/Kawalan Mutu OR.. 
+     if_attribute :approver_id => is {user.userable_id}                                                                           #..OR Pen Pgh Kanan Kompetensi/Kawalan Mutu
+     if_attribute :programme_id => is_in {user.editors_programme}                                                      #editors - staff of Unit='Kawalan Mutu' OR Unit='Kompetensi'
    end
    # NOTE : amsas only - for approver (any staff being assigned as approver)
    has_permission_on :exam_examquestions, :to => :update, :join_by => :and do 

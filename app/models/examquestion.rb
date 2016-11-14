@@ -215,15 +215,16 @@ class Examquestion < ActiveRecord::Base
         "edit.png"
       elsif ["Editing", "Re-Edit"].include?(qstatus) && (editor_id==curr_user.userable_id || is_admin)
         "edit.png"
-      elsif qstatus=="Re-Edit" && approver_id==curr_user.userable_id
+      #elsif qstatus=="Re-Edit" && approver_id==curr_user.userable_id 
+      elsif qstatus=="Re-Edit" && (approver_id==curr_user.userable_id || creator_id==curr_user.userable_id || editor_id !=curr_user.userable_id)
         "noedit"
       elsif ["Ready For Approval", "For Approval"].include?(qstatus) && (creator_id==curr_user.userable_id || editor_id==curr_user.userable_id) && !is_admin
         "noedit"
       elsif  ["Ready For Approval", "For Approval"].include?(qstatus) && (approver_id==curr_user.userable_id || is_admin)
         "edit.png"
-      elsif qstatus=="Approved" && (approver_id==curr_user.userable_id || is_admin)
+      elsif qstatus=="Approved" && is_admin #(approver_id==curr_user.userable_id || is_admin)
         "edit.png"
-      elsif qstatus=="Approved" && approver_id!=curr_user.userable_id
+      elsif qstatus=="Approved" &&  (approver_id==curr_user.userable_id || creator_id==curr_user.userable_id || editor_id ==curr_user.userable_id) #approver_id!=curr_user.userable_id
         "noedit"
       end
       #-----------kskbjb--end
@@ -242,15 +243,15 @@ class Examquestion < ActiveRecord::Base
       # 
       elsif ["Editing", "Re-Edit"].include?(qstatus) && (editor_id==curr_user.userable_id || is_admin)
         "edit.png"
-      elsif qstatus=="Re-Edit" && (approver_id==curr_user.userable_id || creator_id==curr_user.userable_id)
+      elsif qstatus=="Re-Edit" && (approver_id==curr_user.userable_id || creator_id==curr_user.userable_id || editor_id !=curr_user.userable_id)
         "noedit"
       elsif ["Ready For Approval", "For Approval"].include?(qstatus) && (creator_id==curr_user.userable_id || editor_id==curr_user.userable_id) && !is_admin
         "noedit"
       elsif  ["Ready For Approval", "For Approval"].include?(qstatus) && (approver_id==curr_user.userable_id || is_admin)
         "edit.png"
-      elsif qstatus=="Approved" && (approver_id==curr_user.userable_id || is_admin)
+      elsif qstatus=="Approved" && is_admin # (approver_id==curr_user.userable_id || is_admin)
         "edit.png"
-      elsif qstatus=="Approved" && approver_id!=curr_user.userable_id
+      elsif qstatus=="Approved" && (approver_id==curr_user.userable_id || creator_id==curr_user.userable_id || editor_id ==curr_user.userable_id)
         "noedit"
       end
       #-----------amsas-end
@@ -281,7 +282,11 @@ class Examquestion < ActiveRecord::Base
     if editor.blank?
       "None Assigned"
     elsif editor_id?
-      editor.staff_name_with_position
+      if college.code=='amsas'
+        editor.staff_with_rank_position
+      else
+        editor.staff_name_with_position
+      end
     else 
       "None Assigned"
     end

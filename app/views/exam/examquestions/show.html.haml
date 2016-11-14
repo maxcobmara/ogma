@@ -13,7 +13,10 @@
         %li= link_to ((t 'exam.examquestion.edit_details')), "#show_checklist", "data-toggle" => "tab"
       /hide nav tab for APPROVAL DETAILS
       - if ["Approved", "Reserve for BPL"].include? (@examquestion.qstatus) 
-        %li= link_to ((t 'exam.examquestion.approval_bpl_details')), "#show_approval_bpl", "data-toggle" => "tab" 
+        - if @examquestion.college.code=='kskbjb'
+          %li= link_to ((t 'exam.examquestion.approval_bpl_details')), "#show_approval_bpl", "data-toggle" => "tab" 
+        - else
+          %li= link_to ((t 'exam.examquestion.approval_details')), "#show_approval_bpl", "data-toggle" => "tab" 
       - elsif ["Ready For Approval", "Re-Edit", "For Approval", "Approved", "Reserve for BPL"].include? (@examquestion.qstatus)
         %li= link_to ((t 'exam.examquestion.approval_details')), "#show_approval_bpl", "data-toggle" => "tab"
 
@@ -62,7 +65,7 @@
         %br
         - if ["Ready For Approval", "Re-Edit", "For Approval", "Approved", "Reserve for BPL"].include? (@examquestion.qstatus)
           = render 'show_approval'
-          - if ["Approved", "Reserve for BPL"].include? (@examquestion.qstatus) 
+          - if ["Approved", "Reserve for BPL"].include? (@examquestion.qstatus) && @examquestion.college.code=='kskbjb'
             .row
               .col-md-8.col-md-offset-2
                 %dl.dl-horizontal

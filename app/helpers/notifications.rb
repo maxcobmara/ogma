@@ -262,6 +262,10 @@ module Notifications
     Examquestion.where(qstatus: 'Re-Edit').where(editor_id: current_staff_id).count #applicable to both colleges
   end
   
+  def creator_approved_examquestions
+    Examquestion.where(qstatus: 'Approved').where(creator_id: current_staff_id).count
+  end
+  
 end
 
 

@@ -129,3 +129,6 @@
  #14Nov2016
  - if editors_pending_submission_for_approval > 0
   %li=link_to content_tag(:span, "#{editors_pending_submission_for_approval}", class: "badge") +(t 'notifications.editors_pending_submission_for_approval'), exam_examquestions_path
+  
+ - if creator_approved_examquestions > 0
+  %li=link_to content_tag(:span, "#{creator_approved_examquestions}", class: "badge") +(t 'notifications.creator_approved_examquestions'), exam_examquestions_path
