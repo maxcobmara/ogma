@@ -506,7 +506,8 @@ authorization do
      if_attribute :qstatus => is {"Submit"}
      if_attribute :programme_id => is_in {user.editors_programme}
    end
-   # NOTE :amsas only - for assigned editor (previously saved w/o submission OR submitted but rejected examquestion)- (Kawalan Mutu / Kompetensi)
+   # NOTE :amsas only - for assigned editor (previously saved w/o submission OR submitted but advise for RE-EDIT examquestion)- (Kawalan Mutu / Kompetensi)
+   # NOTE - RE-EDIT vs REJECTED (approver provided with 3 option of status ie. RE-EDIT, APPROVED & REJECTED)
    has_permission_on :exam_examquestions, :to => :update, :join_by => :and do
      if_attribute :college_id => is {College.where(code: 'amsas').first.id}
      if_attribute :qstatus => is_in {["Editing", "Re-Edit"]}
@@ -713,7 +714,8 @@ authorization do
      if_attribute :qstatus => is {"Submit"}
      if_attribute :college_id => is {College.where(code: 'kskbjb').first.id}
    end
-    # NOTE : kskbjb only - for assigned editor (previously saved w/o submission OR submitted but rejected examquestion) - same programme as creator
+   # NOTE : kskbjb only - for assigned editor (previously saved w/o submission OR submitted but advise for RE-EDIT examquestion) - same programme as creator
+   # NOTE - RE-EDIT vs REJECTED (approver provided with 3 option of status ie. RE-EDIT, APPROVED & REJECTED)
    has_permission_on :exam_examquestions, :to => :update, :join_by => :and do
      if_attribute :college_id => is {College.where(code: 'kskbjb').first.id}
      if_attribute :qstatus => is_in {["Editing", "Re-Edit"]}
