@@ -795,7 +795,7 @@ authorization do
     has_permission_on :exam_examquestions, :to => :update, :join_by => :and do 
      if_attribute :approver_id => is {user.userable_id}
      if_attribute :college_id => is {College.where(code: 'kskbjb').first.id}
-     if_attribute :qstatus => is_in {["Ready For Approval", "For Approval"]}
+     if_attribute :qstatus => is_in {["Ready For Approval", "For Approval", "Approved"]}        #'Approved' - access for BPL part still required for KSKBJB
    end
     #has_permission_on [:exam_exam_templates, :exam_grades], :to => [:menu, :read]
     #has_permission_on :exam_exams, :to => [:menu, :read, :exampaper, :question_selection] #[:manage, :exampaper, :question_selection]

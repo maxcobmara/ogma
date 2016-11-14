@@ -222,9 +222,9 @@ class Examquestion < ActiveRecord::Base
         "noedit"
       elsif  ["Ready For Approval", "For Approval"].include?(qstatus) && (approver_id==curr_user.userable_id || is_admin)
         "edit.png"
-      elsif qstatus=="Approved" && is_admin #(approver_id==curr_user.userable_id || is_admin)
+      elsif qstatus=="Approved" && (approver_id==curr_user.userable_id || is_admin)
         "edit.png"
-      elsif qstatus=="Approved" &&  (approver_id==curr_user.userable_id || creator_id==curr_user.userable_id || editor_id ==curr_user.userable_id) #approver_id!=curr_user.userable_id
+      elsif qstatus=="Approved" &&  (creator_id==curr_user.userable_id || editor_id ==curr_user.userable_id) #approver_id!=curr_user.userable_id
         "noedit"
       end
       #-----------kskbjb--end
