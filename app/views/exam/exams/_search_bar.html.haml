@@ -3,17 +3,20 @@
     %td
       =select_tag('q[name_eq]',options_for_select([[(t 'actions.all_records'),''],[(t 'exam.midsem'), "M"],[(t 'exam.final'),"F"], [(t 'exam.repeat'),"R"]]),class: 'selectpicker',"data-width"=>'110px')
       =select_tag('q[complete_search]', options_for_select([[(t 'actions.all_records'),''],[(t 'exam.exams.complete'), '1'], [(t 'exam.exams.incomplete'), '0']]), class: 'selectpicker',"data-width"=>'110px')
-    %td= f.text_field :semester_search, size: 2, class: 'form-control', placeholder: t('exam.exams.by_semester')
+    - if current_user.college.code=="kskbjb"
+      %td= f.text_field :semester_search, size: 2, class: 'form-control', placeholder: t('exam.exams.by_semester')
     %td= f.text_field :programme_search, size: 2, class: 'form-control'
     %td= f.text_field :subject_search, class: 'form-control'
-    %td= f.text_field :exam_on_eq, class: 'date_picker form-control'
-    %td= f.text_field :starttime_eq, class: 'time_picker2 form-control'
+    %td= f.text_field :exam_on_eq, class: 'date_picker_reverse form-control', value: @search.exam_on_eq.try(:strftime, '%d-%m-%Y')
+    %td
+      = f.text_field :starttime_search, class: 'time_picker2 form-control', value: @search.starttime_search.try(:strftime, '%H:%M'), placeholder: t('exam.exams.starttime')
+      = f.text_field :endtime_search, class: 'time_picker2 form-control', value: @search.endtime_search.try(:strftime, '%H:%M'), placeholder: t('exam.exams.endtime')
     %td= f.text_field :creator_name_cont, class: 'form-control'
     %td= f.text_field :duration_eq, class: 'form-control', placeholder: t('exam.exams.in_minutes')
-    %td= f.text_field :full_marks_eq, size: 8,  class: 'form-control'
     %td
       .input-group
         /= f.text_field :creator_name_cont, size: 8,  class: 'form-control'
+        = f.text_field :full_marks_search, size: 8,  class: 'form-control'
         %span.input-group-btn
           %button.btn.btn-sm.btn-default.right{:type => "submit"}
             %i.fa.fa-search.fa-fw

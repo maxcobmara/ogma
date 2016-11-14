@@ -23,6 +23,7 @@ class ExamTemplate < ActiveRecord::Base
     user_ids = User.where(userable_id: staff_ids).pluck(:id)
     where(created_by: user_ids)
   end
+
   # whitelist the scope
   def self.ransackable_scopes(auth_object = nil)
     [:creator_search]
@@ -53,7 +54,7 @@ class ExamTemplate < ActiveRecord::Base
   
   def self.search2(search)
     if search
-      admin_ids=Role.joins(:users).where(authname: 'administration').pluck(:user_id)
+      admin_ids=Role.joins(:users).where(authname: ['developer','administration', 'exam_templates_module_admin']).pluck(:user_id)
       if search=='0'
         @exam_templates=ExamTemplate.all
       elsif search=='1' 

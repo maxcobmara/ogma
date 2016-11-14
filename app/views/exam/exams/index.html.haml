@@ -34,20 +34,20 @@
   %table.table-striped.table-hover.ogma
     %thead
       %tr
-        %th= sort_link(@search, :name_cont, (t 'exam.exams.name'))
+        %th{width: '20%'}= sort_link(@search, :name_cont, (t 'exam.exams.name'))
         - if current_user.college.code=="kskbjb"
           %th=(t 'exam.exams.year_semester')
-        %th=(t 'exam.exams.course_id')
-        %th= sort_link(@search, :subject_id, (t 'exam.exams.subject_id'))
-        %th= sort_link(@search, :exam_on, (t 'exam.exams.exam_on'))
-        %th= sort_link(@search, :starttime, (t 'exam.exams.time'))
-        %th= sort_link(@search, :created_by, (t 'exam.exams.created_by'))
+        %th{width: '15%'}=(t 'exam.exams.course_id')
+        %th{width: '13%'}= sort_link(@search, :subject_id, (t 'exam.exams.subject_id'))
+        %th{width: '6%'}= sort_link(@search, :exam_on, (t 'exam.exams.exam_on'))
+        %th{width: '9%'}= sort_link(@search, :starttime, (t 'exam.exams.time'))
+        %th{width: '10%'}= sort_link(@search, :created_by, (t 'exam.exams.created_by'))
         /%th= sort_link(@search, :duration, (t 'exam.exams.duration'))
-        %th=(t 'exam.exams.duration')
+        %th{width: '6%'}=(t 'exam.exams.duration')
         /%th= sort_link(@search, :full_marks, (t 'exam.exams.full_marks'))
-        %th=(t 'exam.exams.full_marks')
+        %th{width: '5%'}=(t 'exam.exams.full_marks')
         - if current_user.college.code=="kskbjb"
-          %th=(t 'exam.exams.separate_combine')
+          %th{width: '7%'}=(t 'exam.exams.separate_combine')
 
     %tbody
       = render "search_bar"
