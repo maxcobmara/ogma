@@ -9,7 +9,7 @@
     %li= link_to (t 'actions.download_excel'), exam_exams_path(format: "xls"), class: 'bogus'
   %ul.nav.navbar-nav.navbar-right
     %li.toga= link_to content_tag(:li, fa_icon("search", text: (t 'actions.search'))), "#", class: 'index_search_bar'
-    %li.toga= link_to content_tag(:li, fa_icon("print", text: (t 'actions.print'))), "#", class: 'bogus'  
+    %li= link_to  (fa_icon "file-pdf-o", text: (t 'print')),  exam_list_exam_exams_path(params.merge(format: 'pdf' ))
 
 .row
   .col-md-12
@@ -60,7 +60,7 @@
           
           %tr
             %td
-              = link_to (DropDown::EXAMTYPE.find_all{|disp, value| value == exam.name}).map {|disp, value| disp}[0], exam_exam_path(exam)
+              = link_to exam.render_examtype[0], exam_exam_path(exam)
               - if exam.klass_id == 1
                 %span{:style=>"color:blue;"}
                   =t 'exam.exams.with_questions'

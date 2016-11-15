@@ -1,63 +1,14 @@
 class Exam::ExamsController < ApplicationController
-  filter_access_to :index, :new, :create, :exampaper, :question_selection, :attribute_check => false
+  filter_access_to :index, :new, :create, :exampaper, :question_selection, :exam_list, :attribute_check => false
   filter_access_to :show, :edit, :update, :destroy, :attribute_check => true
   before_action :set_exam, only: [:show, :edit, :update, :destroy]
+  before_action :set_index_data, only: [:index, :exam_list]
   before_action :set_shareable_data, only: [:new, :edit, :update, :create]
   before_action :set_new_create_data, only: [:new, :create]
 
   # GET /exams
   # GET /exams.xml
   def index
-    #@exams = Exam.all
-    ##----------
-    @position_exist = @current_user.userable.positions
-    roles=@current_user.roles.pluck(:authname)
-    posbasiks=['Diploma Lanjutan', 'Pos Basik', 'Pengkhususan']
-    if @position_exist && @position_exist.count > 0
-      @lecturer_programme = @current_user.userable.positions[0].unit
-      unless @lecturer_programme.nil?
-        @programme = Programme.where('name ILIKE (?) AND ancestry_depth=?',"%#{@lecturer_programme}%",0) if posbasiks.include?(@lecturer_programme)==false
-      end
-      unless @programme.nil? || @programme.count==0
-        @programme_id = @programme.try(:first).try(:id)
-      else
-        @tasks_main = @current_user.userable.positions[0].tasks_main
-        common_subjects=['Sains Tingkahlaku','Sains Perubatan Asas', 'Komunikasi & Sains Pengurusan', 'Anatomi & Fisiologi', 'Komuniti']
-        if common_subjects.include?(@lecturer_programme) 
-          # NOTE - common subject lecturer no longer hv access
-          #@programme_id ='1'
-        elsif posbasiks.include?(@lecturer_programme) && @tasks_main!=nil
-          @allposbasic_prog = Programme.where(course_type: ['Pos Basik', 'Diploma Lanjutan', 'Pengkhususan']).pluck(:name)  #Onkologi, Perioperating, Kebidanan etc
-          #for basicprog in @allposbasic_prog
-            #lecturer_basicprog_name = basicprog if @tasks_main.include?(basicprog)==true
-          #end
-          # NOTE - whoever (posbasic lecturer) becoming SUP, shall have access to all Posbasic programmes
-	  # NOTE - posbasic (Ketua Pengkhususan) also no longer hv access
-          #if @lecturer_programme=="Pengkhususan" && current_user.roles.pluck(:authname).include?("programme_manager")
-          #  @programme_id='2'
-          #else
-            @programme_id='2'#Programme.where(name: lecturer_basicprog_name, ancestry_depth: 0).first.id
-          #end
-        elsif roles.include?("developer") || roles.include?("administration") || roles.include?("exampaper_module_admin")|| roles.include?("exampaper_module_viewer")||  roles.include?("exampaper_module_member")
-          @programme_id='0'
-        else
-          leader_unit=@tasks_main.scan(/Program (.*)/)[0][0].split(" ")[0] if @tasks_main!="" && @tasks_main.include?('Program')
-          if leader_unit
-            @programme_id = Programme.where('name ILIKE (?) AND ancestry_depth=?',"%#{leader_unit}%",0).first.id
-          end
-        end
-      end
-      if @programme_id
-        @search = Exam.search(params[:q])
-        @exams = @search.result.search2(@programme_id)
-        @exams = @exams.page(params[:page]||1)
-        @programme_exams = @exams.group_by{|x|x.subject.root}
-      end
-    end
-    ##----------
-    #@search = Exam.search(params[:q])
-    #@exams = @search.result       
-    
     respond_to do |format|
       if @exams 
         format.html # index.html.erb
@@ -264,10 +215,73 @@ class Exam::ExamsController < ApplicationController
     render :partial => 'view_questions', :layout => false
   end
 
+  def exam_list
+    respond_to do |format|
+      format.pdf do
+        pdf = Exam_listPdf.new(@programme_exams, view_context, current_user.college)
+        send_data pdf.render, filename: "exam_list-{Date.today}",
+                               type: "application/pdf",
+                               disposition: "inline"
+      end
+    end
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_exam
       @exam = Exam.find(params[:id])
+    end
+    
+    def set_index_data
+      #@exams = Exam.all
+      ##----------
+      @position_exist = @current_user.userable.positions
+      roles=@current_user.roles.pluck(:authname)
+      posbasiks=['Diploma Lanjutan', 'Pos Basik', 'Pengkhususan']
+      if @position_exist && @position_exist.count > 0
+        @lecturer_programme = @current_user.userable.positions[0].unit
+        unless @lecturer_programme.nil?
+          @programme = Programme.where('name ILIKE (?) AND ancestry_depth=?',"%#{@lecturer_programme}%",0) if posbasiks.include?(@lecturer_programme)==false
+        end
+        unless @programme.nil? || @programme.count==0
+          @programme_id = @programme.try(:first).try(:id)
+        else
+          @tasks_main = @current_user.userable.positions[0].tasks_main
+          common_subjects=['Sains Tingkahlaku','Sains Perubatan Asas', 'Komunikasi & Sains Pengurusan', 'Anatomi & Fisiologi', 'Komuniti']
+          if common_subjects.include?(@lecturer_programme) 
+            # NOTE - common subject lecturer no longer hv access
+            #@programme_id ='1'
+          elsif posbasiks.include?(@lecturer_programme) && @tasks_main!=nil
+            @allposbasic_prog = Programme.where(course_type: ['Pos Basik', 'Diploma Lanjutan', 'Pengkhususan']).pluck(:name)  #Onkologi, Perioperating, Kebidanan etc
+            #for basicprog in @allposbasic_prog
+              #lecturer_basicprog_name = basicprog if @tasks_main.include?(basicprog)==true
+            #end
+            # NOTE - whoever (posbasic lecturer) becoming SUP, shall have access to all Posbasic programmes
+	    # NOTE - posbasic (Ketua Pengkhususan) also no longer hv access
+            #if @lecturer_programme=="Pengkhususan" && current_user.roles.pluck(:authname).include?("programme_manager")
+            #  @programme_id='2'
+            #else
+              @programme_id='2'#Programme.where(name: lecturer_basicprog_name, ancestry_depth: 0).first.id
+            #end
+          elsif roles.include?("developer") || roles.include?("administration") || roles.include?("exampaper_module_admin")|| roles.include?("exampaper_module_viewer")||  roles.include?("exampaper_module_member")
+            @programme_id='0'
+          else
+            leader_unit=@tasks_main.scan(/Program (.*)/)[0][0].split(" ")[0] if @tasks_main!="" && @tasks_main.include?('Program')
+            if leader_unit
+              @programme_id = Programme.where('name ILIKE (?) AND ancestry_depth=?',"%#{leader_unit}%",0).first.id
+            end
+          end
+        end
+        if @programme_id
+          @search = Exam.search(params[:q])
+          @exams = @search.result.search2(@programme_id)
+          @exams = @exams.page(params[:page]||1)
+          @programme_exams = @exams.group_by{|x|x.subject.root}
+        end
+      end
+      ##----------
+      #@search = Exam.search(params[:q])
+      #@exams = @search.result    
     end
     
     # Assign shared data among new, edit, create & update
