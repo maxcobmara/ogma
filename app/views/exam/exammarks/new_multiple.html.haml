@@ -26,6 +26,7 @@
                           %b= t 'exam.exammark.programme'
                         .col-md-8
                           = f.hidden_field :programme_id, :value => @programme_id
+                          = f.hidden_field :college_id, value: current_user.college_id
                           - if @dept_unit_prog 
                             =@dept_unit_prog 
                           - else

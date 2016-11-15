@@ -756,7 +756,9 @@ authorization do
  
   #OK - 29Jan2016 - this role + programme mgr (exam parts) works fine as of latest Nov 2015-Jan 2016 accepted unless stated below..
   role :exam_administration do
-    has_permission_on [:exam_exams, :exam_exam_templates, :exam_exammarks, :exam_grades], :to => [:menu, :read, :index, :create, :exam_list]
+    has_permission_on [:exam_exam_templates, :exam_grades], :to => [:menu, :read, :index, :create]
+    has_permission_on :exam_exams, :to => [:menu, :read, :index, :create, :exam_list]
+    has_permission_on :exam_exammarks, :to => [:menu, :read, :index, :create, :exammark_list]
     has_permission_on :exam_examresults, :to => [:menu, :read, :index2, :create, :update, :destroy, :show2, :examination_slip, :show3, :examination_transcript, :results]   
     has_permission_on :exam_examanalyses, :to => [:menu, :read, :create]
     has_permission_on :exam_exam_templates, :to =>[:manage] do
@@ -1914,17 +1916,17 @@ authorization do
   #34-OK
   #34 OK - 10Feb2016
   role :exammarks_module_admin do
-     has_permission_on :exam_exammarks, :to => [:manage, :new_multiple, :edit_multiple, :create_multiple, :update_multiple]
+     has_permission_on :exam_exammarks, :to => [:manage, :new_multiple, :edit_multiple, :create_multiple, :update_multiple, :exammark_list]
   end
   role :exammarks_module_viewer do
-     has_permission_on :exam_exammarks, :to => [:menu, :read]
+     has_permission_on :exam_exammarks, :to => [:menu, :read, :exammark_list]
   end
   role :exammarks_module_user do
-     has_permission_on :exam_exammarks, :to => [:menu, :read, :update, :edit_multiple, :update_multiple ]
+     has_permission_on :exam_exammarks, :to => [:menu, :read, :update, :edit_multiple, :update_multiple, :exammark_list ]
   end
   role :exammarks_module_member do
     ###own (of same programme)
-    has_permission_on :exam_exammarks, :to => [:menu, :read, :index, :create, :new_multiple, :create_multiple]
+    has_permission_on :exam_exammarks, :to => [:menu, :read, :index, :create, :new_multiple, :create_multiple, :exammark_list]
     has_permission_on :exam_exammarks, :to =>[:update, :delete, :edit_multiple, :update_multiple, :new_multiple, :create_multiple] do
       if_attribute :exam_id => is_in {user.exams_of_programme}
     end

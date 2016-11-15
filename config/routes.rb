@@ -475,6 +475,7 @@ Ogma::Application.routes.draw do
 
     resources :exammarks do
       collection do
+	get :exammark_list
         put 'edit_multiple'
         post 'update_multiple'
         put 'new_multiple'

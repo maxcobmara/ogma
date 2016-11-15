@@ -1,4 +1,5 @@
 class Exammark < ActiveRecord::Base
+  belongs_to :college, :foreign_key => 'college_id'
   belongs_to :exampaper, :class_name =>'Exam', :foreign_key => 'exam_id'
   belongs_to :studentmark, :class_name => 'Student', :foreign_key => 'student_id'
   has_many :marks, :dependent => :destroy                                                     
